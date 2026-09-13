@@ -21,7 +21,7 @@ func TestSceneCacheInvalidation(t *testing.T) {
 	}
 	w.SetTerrain(1, 1, Forest)
 	second := cache.Ensure(w)
-	if second == first || len(second.Decorations) < 3 {
+	if second == first || len(second.Decorations) != 1 {
 		t.Fatal("edit did not rebuild placements")
 	}
 	if cache.Ensure(w) != second {

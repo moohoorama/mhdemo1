@@ -82,41 +82,31 @@ func TestDecoratedGroundAndDepth(t *testing.T) {
 	}
 }
 
-func TestForestMinimumAndMarginalProbabilities(t *testing.T) {
+func TestForestHasOneTileScaleTree(t *testing.T) {
 	w := New(256, 256)
 	for i := range w.cells {
 		w.SetTerrain(i%w.Width, i/w.Width, Forest)
 	}
 	counts := map[Object]int{}
-	three, four := 0, 0
+	trees := 0
 	for y := 0; y < w.Height; y++ {
 		for x := 0; x < w.Width; x++ {
-			n := 0
 			for _, object := range w.Objects(x, y) {
 				counts[object]++
 				if object == LargeTree || object == SmallTree {
-					n++
+					trees++
 				}
 			}
-			switch n {
-			case 3:
-				three++
-			case 4:
-				four++
-			default:
-				t.Fatal("forest has fewer than three trees", x, y, n)
+			if trees != y*w.Width+x+1 {
+				t.Fatal("forest must have exactly one tree per tile", x, y, trees)
+			}
+			if counts[Empty] != 3*(y*w.Width+x+1) {
+				t.Fatal("forest remaining subtiles must be empty", x, y)
 			}
 		}
 	}
-	total := float64(4 * w.Width * w.Height)
-	for object, want := range map[Object]float64{Empty: .1, LargeTree: .4, SmallTree: .4, GrassTuft1: .025, GrassTuft2: .025, GrassTuft3: .025, GrassTuft4: .025} {
-		fraction := float64(counts[object]) / total
-		if fraction < want-.004 || fraction > want+.004 {
-			t.Fatalf("forest object %d fraction %.4f", object, fraction)
-		}
-	}
-	if float64(three)/float64(three+four) < .79 || float64(three)/float64(three+four) > .81 {
-		t.Fatal("forest tile distribution", three, four)
+	if counts[LargeTree]+counts[SmallTree] != w.Width*w.Height {
+		t.Fatal("one tree per forest tile", counts)
 	}
 }
 

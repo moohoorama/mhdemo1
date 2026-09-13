@@ -20,7 +20,7 @@ func Generate(source, out string) error {
 	}
 	c := &graphics.Catalog{Manifest: graphics.Manifest{Version: 1, Sheets: []graphics.Sheet{
 		{File: "terrain.png", CellWidth: 16, CellHeight: 8, Columns: 8, Rows: 5},
-		{File: "objects.png", CellWidth: 24, CellHeight: 24, Columns: 8, Rows: 4},
+		{File: "objects.png", CellWidth: 24, CellHeight: 32, Columns: 8, Rows: 4},
 	}, Animations: map[string]graphics.Animation{}}}
 	for _, s := range c.Sheets {
 		c.Images = append(c.Images, image.NewNRGBA(image.Rect(0, 0, s.CellWidth*s.Columns, s.CellHeight*s.Rows)))
@@ -42,7 +42,7 @@ func Generate(source, out string) error {
 		}
 	}
 	for i, im := range objects {
-		if err := pack(1, i, im, image.Pt(12, 20), image.Pt(im.Bounds().Dx()/2, im.Bounds().Dy()-2)); err != nil {
+		if err := pack(1, i, im, image.Pt(12, 28), image.Pt(im.Bounds().Dx()/2, im.Bounds().Dy()-2)); err != nil {
 			return err
 		}
 	}
@@ -81,7 +81,7 @@ func Generate(source, out string) error {
 	if err != nil {
 		return err
 	}
-	return save(filepath.Join(out, "preview.png"), graphics.RenderPNG(c, items, scene.Bounds, 2))
+	return save(filepath.Join(out, "preview.png"), graphics.RenderPNG(c, items, graphics.SceneBounds(c, items, scene.Bounds), 2))
 }
 
 func save(path string, im image.Image) error {

@@ -38,18 +38,9 @@ func (w *World) Objects(x, y int) [4]Object {
 	}
 	cell := w.Cell(x, y)
 	if cell.Decoration == Trees {
-		// Correlate four slots to retain 80/10/10 marginals AND at least three trees.
-		gap := -1
-		if roll(x, y, 0, 3, 5) < 4 {
-			gap = roll(x, y, 0, 4, 4)
-		}
-		for slot := range result {
-			if slot != gap {
-				result[slot] = tree(x, y, slot)
-			} else if roll(x, y, slot, 5, 2) == 0 {
-				result[slot] = tuft(x, y, slot)
-			}
-		}
+		// Forest is a tile-scale decoration: one broad tree per large tile,
+		// anchored at its center rather than one tree per subtile.
+		result[0] = tree(x, y, 0)
 		return result
 	}
 	for slot := range result {
@@ -91,6 +82,9 @@ func (w *World) Placements() []Placement {
 	return result
 }
 func (p Placement) Position() (float64, float64) {
+	if p.Object == LargeTree || p.Object == SmallTree {
+		return Project(float64(p.X)+.5, float64(p.Y)+.5)
+	}
 	return Project(float64(p.X)+float64(p.Slot%2)/2+.25, float64(p.Y)+float64(p.Slot/2)/2+.25)
 }
 

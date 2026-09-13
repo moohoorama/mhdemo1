@@ -50,3 +50,12 @@ func Enlarge(src image.Image, scale int) *image.NRGBA {
 	}
 	return out
 }
+
+// SceneBounds includes tall sprites extending beyond the map's minimum export bounds.
+func SceneBounds(c *Catalog, items []DrawItem, minimum image.Rectangle) image.Rectangle {
+	for _, item := range items {
+		p := item.Position.Sub(c.Sprites[item.Sprite].Pivot)
+		minimum = minimum.Union(image.Rectangle{Min: p, Max: p.Add(c.Rect(item.Sprite).Size())})
+	}
+	return minimum
+}

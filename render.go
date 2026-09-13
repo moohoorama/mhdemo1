@@ -48,5 +48,5 @@ func (g *game) buildDrawList() []graphics.DrawItem {
 }
 func (g *game) exportImage(scale int) *image.NRGBA {
 	items := g.buildDrawList()
-	return graphics.RenderPNG(g.catalog, items, g.sceneCache.Ensure(g.w).Bounds, scale)
+	return graphics.RenderPNG(g.catalog, items, graphics.SceneBounds(g.catalog, items, g.sceneCache.Ensure(g.w).Bounds), scale)
 }

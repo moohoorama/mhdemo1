@@ -19,7 +19,7 @@ var objectSources = []struct {
 	{"rock_medium2.png", 10, 9, 1}, {"rock_large.png", 14, 12, 1},
 	{"grass_0.png", 6, 5, 1}, {"grass_1.png", 6, 4, 1},
 	{"grass_2.png", 5, 5, 1}, {"grass_3.png", 6, 5, 1},
-	{"tree_0.png", 14, 12, 4}, {"tree_1.png", 12, 10, 4},
+	{"tree_0-redrawn.png", 22, 20, 4}, {"tree_1-redrawn.png", 20, 18, 4},
 }
 
 // blackOutline is a one-game-pixel, four-neighbor silhouette effect.
@@ -95,7 +95,7 @@ func LoadObjects(files fs.FS) ([terrain.ObjectSpriteCount]image.Image, error) {
 			// Keep the trunk/root pixels identical; only the crown uses animation frames.
 			if spec.Frames > 1 && frame > 0 {
 				base := sprites[index-frame]
-				for y := spec.Height - 3; y < spec.Height; y++ {
+				for y := spec.Height - max(3, spec.Height/3); y < spec.Height; y++ {
 					for x := 0; x < spec.Width; x++ {
 						sprite.Set(x, y, base.At(x, y))
 					}
