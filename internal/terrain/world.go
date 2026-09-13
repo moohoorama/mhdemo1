@@ -1,13 +1,10 @@
 package terrain
 
 import (
-	"encoding/json"
-	"fmt"
 	"math"
-	"os"
 )
 
-// Kind is the editable terrain of one large diamond. Base controls ground blending.
+// Kind names editor presets. Cell.Ground accepts only River, Grass and Wasteland.
 type Kind uint8
 
 const (
@@ -47,38 +44,97 @@ func (k Kind) Base() Kind {
 	}
 }
 
+// Kind remains the editor's brush preset; persistent cells separate the two axes.
+type Decoration uint8
+
+const (
+	NoDecoration Decoration = iota
+	Rocks
+	Trees
+)
+
+type Cell struct {
+	Ground     Kind       `json:"ground"`
+	Decoration Decoration `json:"decoration"`
+}
+
+func (c Cell) String() string {
+	switch c.Decoration {
+	case Rocks:
+		return "ROCK / " + c.Ground.String()
+	case Trees:
+		return "TREES / " + c.Ground.String()
+	default:
+		return c.Ground.String()
+	}
+}
+
+func (k Kind) Cell() Cell {
+	c := Cell{Ground: k.Base()}
+	switch k {
+	case RockGrass, RockWasteland:
+		c.Decoration = Rocks
+	case Forest:
+		c.Decoration = Trees
+	}
+	return c
+}
+
+const MapVersion = 5
+
 type World struct {
-	Version int    `json:"version"`
-	Width   int    `json:"width"`
-	Height  int    `json:"height"`
-	Cells   []Kind `json:"terrain_cells"`
+	Version       int
+	Width, Height int
+	cells         []Cell
+	revision      uint64
 }
 
 func New(w, h int) *World {
-	world := &World{4, w, h, make([]Kind, w*h)}
-	for i := range world.Cells {
-		world.Cells[i] = Wasteland
+	world := &World{Version: MapVersion, Width: w, Height: h, cells: make([]Cell, w*h)}
+	for i := range world.cells {
+		world.cells[i] = Cell{Ground: Wasteland}
 	}
 	return world
 }
-func (w *World) Clone() *World        { c := *w; c.Cells = append([]Kind(nil), w.Cells...); return &c }
+func (w *World) Clone() *World        { c := *w; c.cells = append([]Cell(nil), w.cells...); return &c }
+func (w *World) Revision() uint64     { return w.revision }
 func (w *World) Inside(x, y int) bool { return x >= 0 && y >= 0 && x < w.Width && y < w.Height }
-func (w *World) Terrain(x, y int) Kind {
+func (w *World) Cell(x, y int) Cell {
 	if !w.Inside(x, y) {
-		return River
+		return Cell{Ground: River}
 	}
-	return w.Cells[y*w.Width+x]
+	return w.cells[y*w.Width+x]
 }
-func (w *World) SetTerrain(x, y int, k Kind) bool {
-	if !w.Inside(x, y) || k > Forest {
+func (w *World) Terrain(x, y int) Kind {
+	c := w.Cell(x, y)
+	switch c.Decoration {
+	case Rocks:
+		if c.Ground == Grass {
+			return RockGrass
+		}
+		return RockWasteland
+	case Trees:
+		return Forest
+	}
+	return c.Ground
+}
+func (w *World) SetCell(x, y int, c Cell) bool {
+	if !w.Inside(x, y) || c.Ground > Wasteland || c.Decoration > Trees || (c.Ground == River && c.Decoration != NoDecoration) {
 		return false
 	}
 	i := y*w.Width + x
-	if w.Cells[i] == k {
+	if w.cells[i] == c {
 		return false
 	}
-	w.Cells[i] = k
+	w.cells[i] = c
+	w.revision++
 	return true
+}
+func (w *World) SetTerrain(x, y int, k Kind) bool {
+	if k > Forest {
+		return false
+	}
+	return w.SetCell(x, y, k.Cell())
 }
 
 // Binary helpers for legacy river/wasteland maps.
@@ -97,7 +153,7 @@ func (w *World) vertexAtLeast(sx, sy int, kind Kind) bool {
 	for y := (sy - 1) / 2; y <= sy/2; y++ {
 		for x := (sx - 1) / 2; x <= sx/2; x++ {
 			// At the origin, truncation skips only the outside neighbor.
-			if w.Inside(x, y) && w.Terrain(x, y).Base() >= kind {
+			if w.Inside(x, y) && w.Cell(x, y).Ground >= kind {
 				return true
 			}
 		}
@@ -155,75 +211,4 @@ func Demo() *World {
 		}
 	}
 	return w
-}
-func (w *World) Save(path string) error {
-	b, err := json.MarshalIndent(w, "", "  ")
-	if err != nil {
-		return err
-	}
-	// Atomic replacement avoids leaving half a map on an interrupted save.
-	tmp := path + ".tmp"
-	if err = os.WriteFile(tmp, append(b, '\n'), 0644); err != nil {
-		return err
-	}
-	return os.Rename(tmp, path)
-}
-func Load(path string) (*World, error) {
-	f, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-	var data struct {
-		Version  int    `json:"version"`
-		Width    int    `json:"width"`
-		Height   int    `json:"height"`
-		Cells    []bool `json:"water_cells"`
-		Vertices []bool `json:"water_vertices"`
-		Terrain  []Kind `json:"terrain_cells"`
-	}
-	if err = json.NewDecoder(f).Decode(&data); err != nil {
-		return nil, err
-	}
-	if data.Width < 1 || data.Height < 1 || data.Width > 256 || data.Height > 256 {
-		return nil, fmt.Errorf("invalid map dimensions")
-	}
-	w := New(data.Width, data.Height)
-	switch data.Version {
-	case 3, 4:
-		if len(data.Terrain) != w.Width*w.Height {
-			return nil, fmt.Errorf("invalid terrain count")
-		}
-		for _, k := range data.Terrain {
-			if k > Forest || (data.Version == 3 && k > Wasteland) {
-				return nil, fmt.Errorf("invalid terrain kind %d", k)
-			}
-		}
-		w.Cells = data.Terrain
-	case 2:
-		if len(data.Cells) != w.Width*w.Height {
-			return nil, fmt.Errorf("invalid cell count")
-		}
-		for i, v := range data.Cells {
-			w.Set(i%w.Width, i/w.Width, v)
-		}
-	case 1:
-		if len(data.Vertices) != (w.Width+1)*(w.Height+1) {
-			return nil, fmt.Errorf("invalid vertex count")
-		}
-		for y := 0; y < w.Height; y++ {
-			for x := 0; x < w.Width; x++ {
-				n := 0
-				for _, p := range [][2]int{{x, y}, {x + 1, y}, {x + 1, y + 1}, {x, y + 1}} {
-					if data.Vertices[p[1]*(w.Width+1)+p[0]] {
-						n++
-					}
-				}
-				w.Set(x, y, n >= 2)
-			}
-		}
-	default:
-		return nil, fmt.Errorf("unsupported map version %d", data.Version)
-	}
-	return w, nil
 }

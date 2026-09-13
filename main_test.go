@@ -2,7 +2,10 @@ package main
 
 import (
 	"bytes"
+	"demo1/internal/assetbuild"
+	"demo1/internal/graphics"
 	"demo1/internal/terrain"
+	"os"
 
 	"image/png"
 	"io/fs"
@@ -12,26 +15,24 @@ import (
 )
 
 func TestEmbeddedTiles(t *testing.T) {
-	entries, err := assets.ReadDir("assets/tiles")
-	if err != nil || len(entries) != terrain.AssetCount {
-		t.Fatalf("expected 38 PNGs: %d, %v", len(entries), err)
+	files, err := fs.Sub(assets, "assets/generated")
+	if err != nil {
+		t.Fatal(err)
+	}
+	c, err := graphics.Load(files)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := terrain.ValidateAssets(c); err != nil {
+		t.Fatal(err)
 	}
 	for m := 0; m < terrain.AssetCount; m++ {
-		b, err := assets.ReadFile("assets/tiles/" + terrain.AssetName(m))
-		if err != nil {
-			t.Fatal(err)
-		}
-		im, err := png.Decode(bytes.NewReader(b))
-		if err != nil {
-			t.Fatal(err)
-		}
-		want := terrain.Asset(m)
-		if im.Bounds() != want.Bounds() {
-			t.Fatalf("tile %d size", m)
-		}
+		rect := c.Rect(m)
+		im := c.Images[c.Sprites[m].Sheet]
+		want := assetbuild.Asset(m)
 		for y := 0; y < 8; y++ {
 			for x := 0; x < 16; x++ {
-				r, g, b, a := im.At(x, y).RGBA()
+				r, g, b, a := im.At(rect.Min.X+x, rect.Min.Y+y).RGBA()
 				rr, gg, bb, aa := want.At(x, y).RGBA()
 				if r != rr || g != gg || b != bb || a != aa {
 					t.Fatalf("tile %d pixel %d,%d", m, x, y)
@@ -98,11 +99,8 @@ func TestGrassBrushHistory(t *testing.T) {
 }
 
 func TestObjectSpritesAndForestHistory(t *testing.T) {
-	files, err := fs.Sub(assets, "assets/objects")
-	if err != nil {
-		t.Fatal(err)
-	}
-	sprites, err := terrain.LoadObjects(files)
+	files := os.DirFS("assets/objects")
+	sprites, err := assetbuild.LoadObjects(files)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -164,8 +162,8 @@ func TestSwaySpeedAndContinuity(t *testing.T) {
 	}
 }
 func TestGrassAnimationFrames(t *testing.T) {
-	files, _ := fs.Sub(assets, "assets/objects")
-	sprites, err := terrain.LoadObjects(files)
+	files := os.DirFS("assets/objects")
+	sprites, err := assetbuild.LoadObjects(files)
 	if err != nil {
 		t.Fatal(err)
 	}

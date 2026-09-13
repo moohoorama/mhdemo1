@@ -36,7 +36,8 @@ func (w *World) Objects(x, y int) [4]Object {
 	if !w.Inside(x, y) {
 		return result
 	}
-	if w.Terrain(x, y) == Forest {
+	cell := w.Cell(x, y)
+	if cell.Decoration == Trees {
 		// Correlate four slots to retain 80/10/10 marginals AND at least three trees.
 		gap := -1
 		if roll(x, y, 0, 3, 5) < 4 {
@@ -52,12 +53,12 @@ func (w *World) Objects(x, y int) [4]Object {
 		return result
 	}
 	for slot := range result {
-		switch w.Terrain(x, y) {
-		case Grass:
+		switch {
+		case cell.Decoration == NoDecoration && cell.Ground == Grass:
 			if roll(x, y, slot, 0, 4) == 0 {
 				result[slot] = tuft(x, y, slot)
 			}
-		case RockGrass, RockWasteland:
+		case cell.Decoration == Rocks:
 			pick := roll(x, y, slot, 0, 5)
 			if pick < 4 {
 				result[slot] = SmallRock + Object(pick)

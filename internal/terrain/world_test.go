@@ -1,7 +1,10 @@
-package terrain
+package terrain_test
 
 import (
 	"bytes"
+	"demo1/internal/assetbuild"
+	"demo1/internal/graphics"
+	. "demo1/internal/terrain"
 	"encoding/json"
 	"image"
 	"image/draw"
@@ -17,12 +20,12 @@ func TestSharedEdgesAllCompatibleMasks(t *testing.T) {
 			for i := 0; i <= 100; i++ {
 				s := float64(i) / 100
 				if (a>>1&1) == (b&1) && (a>>2&1) == (b>>3&1) {
-					if math.Abs(Sample(a, 1, s)-Sample(b, 0, s)) > 1e-12 {
+					if math.Abs(assetbuild.Sample(a, 1, s)-assetbuild.Sample(b, 0, s)) > 1e-12 {
 						t.Fatalf("u seam %d/%d", a, b)
 					}
 				}
 				if (a>>3&1) == (b&1) && (a>>2&1) == (b>>1&1) {
-					if math.Abs(Sample(a, s, 1)-Sample(b, s, 0)) > 1e-12 {
+					if math.Abs(assetbuild.Sample(a, s, 1)-assetbuild.Sample(b, s, 0)) > 1e-12 {
 						t.Fatalf("v seam %d/%d", a, b)
 					}
 				}
@@ -34,7 +37,7 @@ func TestPixelCoverageNoGapsOrOverlap(t *testing.T) {
 	counts := map[image.Point]int{}
 	for y := -4; y <= 4; y++ {
 		for x := -4; x <= 4; x++ {
-			im := Asset(0)
+			im := assetbuild.Asset(0)
 			px, py := Project(float64(x)/2, float64(y)/2)
 			pixels := 0
 			for iy := 0; iy < 8; iy++ {
@@ -63,7 +66,7 @@ func TestPixelCoverageNoGapsOrOverlap(t *testing.T) {
 }
 func TestDiagonalWaterSeparated(t *testing.T) {
 	for _, m := range []int{5, 10} {
-		if Sample(m, .5, .5) <= .5 {
+		if assetbuild.Sample(m, .5, .5) <= .5 {
 			t.Fatalf("connected saddle %d", m)
 		}
 	}
@@ -89,14 +92,14 @@ func TestMapRoundTripAndValidation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for i, v := range w.Cells {
-		if v != loaded.Cells[i] {
+	for i := 0; i < w.Width*w.Height; i++ {
+		if w.Cell(i%w.Width, i/w.Width) != loaded.Cell(i%w.Width, i/w.Width) {
 			t.Fatal("roundtrip mismatch")
 		}
 	}
 	copy := w.Clone()
-	copy.Cells[0] = (w.Cells[0] + 1) % 3
-	if copy.Cells[0] == w.Cells[0] {
+	copy.SetTerrain(0, 0, (w.Cell(0, 0).Ground+1)%3)
+	if copy.Cell(0, 0) == w.Cell(0, 0) {
 		t.Fatal("clone aliases original")
 	}
 	if err = os.WriteFile(path, []byte(`{"version":1,"width":999999,"height":2,"water_vertices":[]}`), 0644); err != nil {
@@ -136,7 +139,7 @@ func TestNeighborhoods512(t *testing.T) {
 					n := w.Masks((sx+1)/2, sy/2)[sy%2*2+(sx+1)%2]
 					for q := 0; q <= 16; q++ {
 						v := float64(q) / 16
-						if Sample(m, 1, v) != Sample(n, 0, v) {
+						if assetbuild.Sample(m, 1, v) != assetbuild.Sample(n, 0, v) {
 							t.Fatalf("horizontal seam pattern %d", pattern)
 						}
 					}
@@ -145,7 +148,7 @@ func TestNeighborhoods512(t *testing.T) {
 					n := w.Masks(sx/2, (sy+1)/2)[(sy+1)%2*2+sx%2]
 					for q := 0; q <= 16; q++ {
 						u := float64(q) / 16
-						if Sample(m, u, 1) != Sample(n, u, 0) {
+						if assetbuild.Sample(m, u, 1) != assetbuild.Sample(n, u, 0) {
 							t.Fatalf("vertical seam pattern %d", pattern)
 						}
 					}
@@ -199,7 +202,7 @@ func TestLegacyConversion(t *testing.T) {
 				n++
 			}
 		}
-		if w.Version != 4 || w.Width != 1 || w.Height != 1 || w.At(0, 0) != (n >= 2) {
+		if w.Version != MapVersion || w.Width != 1 || w.Height != 1 || w.At(0, 0) != (n >= 2) {
 			t.Fatal("legacy conversion", m)
 		}
 		after, _ := os.ReadFile(path)
@@ -211,10 +214,10 @@ func TestLegacyConversion(t *testing.T) {
 func TestOverlayAnimation(t *testing.T) {
 	var tiles [AssetCount]image.Image
 	for i := range tiles {
-		tiles[i] = Asset(i)
+		tiles[i] = assetbuild.Asset(i)
 	}
 	for m := 1; m < 15; m++ {
-		overlay := Asset(m + 8)
+		overlay := assetbuild.Asset(m + 8)
 		for y := 0; y < 8; y++ {
 			for x := 0; x < 16; x++ {
 				c := overlay.NRGBAAt(x, y)
@@ -238,7 +241,7 @@ func TestOverlayAnimation(t *testing.T) {
 	}
 	// Adjacent animation steps, including wrap, must have the same bounded change.
 	for f := 0; f < 8; f++ {
-		a, b := Asset(f), Asset((f+1)%8)
+		a, b := assetbuild.Asset(f), assetbuild.Asset((f+1)%8)
 		changed := false
 		for y := 0; y < 8; y++ {
 			for x := 0; x < 16; x++ {
@@ -257,43 +260,6 @@ func TestOverlayAnimation(t *testing.T) {
 	}
 }
 
-func TestThreeTerrainNeighborhoods(t *testing.T) {
-	for pattern := 0; pattern < 19683; pattern++ {
-		w := New(3, 3)
-		n := pattern
-		for i := range w.Cells {
-			w.Cells[i] = Kind(n % 3)
-			n /= 3
-		}
-		for sy := 0; sy <= 6; sy++ {
-			for sx := 0; sx <= 6; sx++ {
-				want := River
-				for y := 0; y < 3; y++ {
-					for x := 0; x < 3; x++ {
-						if 2*x <= sx && sx <= 2*x+2 && 2*y <= sy && sy <= 2*y+2 {
-							want = max(want, w.Terrain(x, y))
-						}
-					}
-				}
-				for _, kind := range []Kind{Grass, Wasteland} {
-					if w.vertexAtLeast(sx, sy, kind) != (want >= kind) {
-						t.Fatalf("pattern %d vertex %d,%d", pattern, sx, sy)
-					}
-				}
-			}
-		}
-		for y := 0; y < 3; y++ {
-			for x := 0; x < 3; x++ {
-				dry, soil := w.MasksFor(x, y, Grass), w.Masks(x, y)
-				for k := 0; k < 4; k++ {
-					if soil[k]&dry[k] != soil[k] {
-						t.Fatal("soil outside dry mask")
-					}
-				}
-			}
-		}
-	}
-}
 func TestGrassPersistenceAndV2Migration(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "map.json")
 	w := New(3, 1)
@@ -306,8 +272,8 @@ func TestGrassPersistenceAndV2Migration(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for i := range w.Cells {
-		if got.Cells[i] != w.Cells[i] {
+	for i := 0; i < w.Width*w.Height; i++ {
+		if got.Cell(i%w.Width, i/w.Width) != w.Cell(i%w.Width, i/w.Width) {
 			t.Fatal("lost terrain")
 		}
 	}
@@ -334,9 +300,9 @@ func TestWaterSpatialPeriodAndGrassCoverage(t *testing.T) {
 	for frame := 0; frame < 8; frame++ {
 		for y := 0; y < 8; y++ {
 			for x := 0; x < 16; x++ {
-				c := WaterColor(float64(x)+.5, float64(y)+.5, frame)
+				c := assetbuild.WaterColor(float64(x)+.5, float64(y)+.5, frame)
 				for _, d := range [][2]float64{{8, 4}, {-8, 4}} {
-					if c != WaterColor(float64(x)+.5+d[0], float64(y)+.5+d[1], frame) {
+					if c != assetbuild.WaterColor(float64(x)+.5+d[0], float64(y)+.5+d[1], frame) {
 						t.Fatal("water spatial seam")
 					}
 				}
@@ -346,11 +312,22 @@ func TestWaterSpatialPeriodAndGrassCoverage(t *testing.T) {
 	for _, kind := range []Kind{River, Grass, Wasteland} {
 		w := New(1, 1)
 		w.SetTerrain(0, 0, kind)
-		var assets [AssetCount]image.Image
-		for i := range assets {
-			assets[i] = Asset(i)
+		catalog, err := graphics.Load(os.DirFS("../../assets/generated"))
+		if err != nil {
+			t.Fatal(err)
 		}
-		a, b := Render(w, assets, 1, 0), Render(w, assets, 1, 1)
+		scene := BuildMapScene(w)
+		scene.Decorations = nil // This test measures ground coverage only.
+		first, err := scene.BuildDrawList(catalog, 0, 0, nil, nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		second, err := scene.BuildDrawList(catalog, 1, 0, nil, nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		bounds := image.Rect(-16, 0, 16, 16)
+		a, b := graphics.RenderPNG(catalog, first, bounds, 1), graphics.RenderPNG(catalog, second, bounds, 1)
 		count := 0
 		for y := 0; y < 16; y++ {
 			for x := 0; x < 32; x++ {

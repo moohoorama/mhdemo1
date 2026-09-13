@@ -1,0 +1,653 @@
+{
+  "version": 1,
+  "sheets": [
+    {
+      "file": "terrain.png",
+      "cell_width": 16,
+      "cell_height": 8,
+      "columns": 8,
+      "rows": 5
+    },
+    {
+      "file": "objects.png",
+      "cell_width": 24,
+      "cell_height": 24,
+      "columns": 8,
+      "rows": 4
+    }
+  ],
+  "sprites": [
+    {
+      "sheet": 0,
+      "cell": 0,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 1,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 2,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 3,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 4,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 5,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 6,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 7,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 8,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 9,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 10,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 11,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 12,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 13,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 14,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 15,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 16,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 17,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 18,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 19,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 20,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 21,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 22,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 23,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 24,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 25,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 26,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 27,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 28,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 29,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 30,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 31,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 32,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 33,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 34,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 35,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 36,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 0,
+      "cell": 37,
+      "pivot": {
+        "X": 8,
+        "Y": 0
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 0,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 1,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 2,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 3,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 4,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 5,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 6,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 7,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 8,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 9,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 10,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 11,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 12,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 13,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 14,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 15,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 16,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 17,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 18,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 19,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 20,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 21,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 22,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 23,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 24,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 25,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 26,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 27,
+      "pivot": {
+        "X": 12,
+        "Y": 20
+      }
+    }
+  ],
+  "animations": {
+    "grass_0": {
+      "frames": [
+        42,
+        54,
+        55,
+        56
+      ],
+      "frame_ticks": 16,
+      "loop": true
+    },
+    "grass_1": {
+      "frames": [
+        43,
+        57,
+        58,
+        59
+      ],
+      "frame_ticks": 16,
+      "loop": true
+    },
+    "grass_2": {
+      "frames": [
+        44,
+        60,
+        61,
+        62
+      ],
+      "frame_ticks": 16,
+      "loop": true
+    },
+    "grass_3": {
+      "frames": [
+        45,
+        63,
+        64,
+        65
+      ],
+      "frame_ticks": 16,
+      "loop": true
+    },
+    "rock_large": {
+      "frames": [
+        41
+      ],
+      "frame_ticks": 16,
+      "loop": true
+    },
+    "rock_medium": {
+      "frames": [
+        39
+      ],
+      "frame_ticks": 16,
+      "loop": true
+    },
+    "rock_medium2": {
+      "frames": [
+        40
+      ],
+      "frame_ticks": 16,
+      "loop": true
+    },
+    "rock_small": {
+      "frames": [
+        38
+      ],
+      "frame_ticks": 16,
+      "loop": true
+    },
+    "tree_0": {
+      "frames": [
+        46,
+        47,
+        48,
+        49
+      ],
+      "frame_ticks": 16,
+      "loop": true
+    },
+    "tree_1": {
+      "frames": [
+        50,
+        51,
+        52,
+        53
+      ],
+      "frame_ticks": 16,
+      "loop": true
+    },
+    "water": {
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "frame_ticks": 1,
+      "loop": true
+    }
+  }
+}

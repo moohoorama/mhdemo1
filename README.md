@@ -1,6 +1,8 @@
 # demo1 — 아이소메트릭 지형·오브젝트 에디터
 
-강·초원·황무지와 바위·나무 지형을 칠할 수 있는 Go/Ebitengine 데모입니다. **32×16픽셀 큰 타일**에 지형을 저장하고, 각 타일을 **16×8픽셀 서브타일 4개**로 그립니다. 지형 경계는 자동으로 연결되며, 잔디·바위·나무는 서브타일 단위로 배치됩니다.
+강·초원·황무지와 바위·나무 지형을 칠할 수 있는 Go/Ebitengine 데모입니다. **32×16픽셀 큰 타일**에 바닥과 장식 종류를 나누어 저장하고, 각 타일을 **16×8픽셀 서브타일 4개**로 그립니다. 지형 경계는 자동으로 연결되며, 잔디·바위·나무는 서브타일 단위로 배치됩니다.
+
+자료구조, 함수 호출 흐름, ASCII 아키텍처는 [ARCHITECTURE.md](ARCHITECTURE.md)를 참고하세요.
 
 ![편집기 화면](assets/editor-preview.png)
 
@@ -66,7 +68,7 @@ go run . -map example-map.json -screenshot assets/editor-preview.png
 
 ## 큰 타일과 서브타일
 
-큰 타일 하나는 지형 값 하나만 저장합니다. 서브타일의 지형이나 마스크를 별도로 저장하지 않고, 주변 큰 타일에서 계산합니다.
+큰 타일 하나는 `Cell{Ground, Decoration}`을 저장합니다. 기존 지형 브러시는 두 값을 함께 설정하는 프리셋입니다. 서브타일의 지형이나 마스크를 별도로 저장하지 않고, 주변 큰 타일에서 계산합니다.
 
 | 편집 지형 | 경계 계산에 사용하는 바닥 |
 |---|---|
@@ -121,11 +123,11 @@ screenY = (u + v) × 8
 
 각 큰 타일의 서브타일 4칸마다 **최대 1개의 오브젝트**를 배치합니다. 바위나 나무를 직접 선택해 놓는 방식이 아니라, 큰 타일의 지형 종류에 따라 자동으로 정합니다.
 
-![오브젝트와 나무 애니메이션 프레임](assets/objects-preview.png)
+![게임용 오브젝트 시트 — 24×24 셀](assets/generated/objects.png)
 
 ### 종류와 크기
 
-크기는 투명 여백을 제외하고 게임 해상도로 샘플링하는 크기입니다. 검은 외곽선을 추가한 최종 이미지 캔버스는 가로·세로가 각각 2픽셀 더 큽니다.
+크기는 투명 여백을 제외하고 게임 해상도로 샘플링하는 크기입니다. 외곽선은 가로·세로에 각각 2픽셀을 추가합니다. 잔디는 흔들림을 위해 가로 4픽셀 여백도 사용합니다. 최종 그림은 공통 24×24픽셀 셀에 발밑을 맞춰 넣습니다.
 
 | 오브젝트 | 종류 | 외곽선 추가 전 크기 |
 |---|---|---|
@@ -133,7 +135,7 @@ screenY = (u + v) × 8
 | 잔디 | 4종 | 6×5 / 6×4 / 5×5 / 6×5 |
 | 나무 | 큰 나무 / 작은 나무 | 14×12 / 12×10 |
 
-모든 오브젝트에는 상하좌우 실루엣을 따라 **1픽셀 검은 외곽선**을 붙입니다. 외곽선은 로딩 시 게임 해상도에서 생성하며, 원본 PNG는 보존합니다. 외곽선 여백이 생겨도 발밑 기준점은 유지합니다.
+모든 오브젝트에는 상하좌우 실루엣을 따라 **1픽셀 검은 외곽선**을 붙입니다. 외곽선은 `assetgen`에서 게임 해상도로 생성하며, 원본 PNG는 보존합니다. 게임은 완성된 시트만 읽습니다. 외곽선 여백이 생겨도 발밑 기준점은 유지합니다.
 
 오브젝트는 서브타일 중앙에 발밑을 맞추고 화면 아래쪽에 있는 것이 나중에 그려지도록 정렬합니다. 지형 전체를 먼저 그린 뒤 오브젝트를 그리므로 이웃 바닥이 나무나 바위를 덮지 않습니다.
 
@@ -168,45 +170,48 @@ screenY = (u + v) × 8
 | 대상 | 프레임 수 | 프레임 간격 | 반복 주기 | 동기화 |
 |---|---|---|---|---|
 | 물 | 8 | 0.125초 | 1초 | 모든 물 타일이 같은 프레임 사용 |
-| 나무 | 종류별 4 | 2초 | 8초 | 서브타일별 의사난수 위상 |
+| 나무·잔디 | 종류별 4 | 2초(1배 기준) | 8초(1배 기준) | 서브타일별 의사난수 위상 |
 
-물은 대비가 낮은 잔물결과 짧은 수평 반사광을 사용합니다. 공간·시간 주기 함수로 이웃 타일의 무늬와 마지막→첫 프레임을 연결합니다. 초원·황무지·바위·잔디는 애니메이션하지 않습니다.
+물은 대비가 낮은 잔물결과 짧은 수평 반사광을 사용합니다. 공간·시간 주기 함수로 이웃 타일의 무늬와 마지막→첫 프레임을 연결합니다. 초원·황무지 바닥과 바위는 애니메이션하지 않습니다. 잔디는 뿌리를 고정하고 잎을 좌우로 흔듭니다. 식물 속도는 UI에서 1/2/4/8배로 변경할 수 있으며 기본값은 2배입니다.
 
 나무는 잎 부분만 움직이며 원래 스프라이트의 아래 3행에 있는 줄기·뿌리는 고정합니다. 각 나무에 **0–7.875초의 시작 위상**을 0.125초 단위로 부여하므로 표시 프레임뿐 아니라 프레임 전환 시점도 분산됩니다. 위상은 좌표로 고정되고, 재실행하면 같은 위상을 가진 애니메이션이 실행 시작 시간을 기준으로 다시 재생됩니다. 현재 재생 시각은 지도에 저장하지 않습니다.
 
 ## 저장 형식과 이전 지도 호환
 
-현재 저장 형식은 **버전 4 JSON**입니다.
+현재 저장 형식은 **버전 5 JSON**입니다. 바닥과 장식을 독립적으로 저장합니다.
 
 ```json
 {
-  "version": 4,
+  "version": 5,
   "width": 3,
-  "height": 2,
-  "terrain_cells": [0, 1, 2, 3, 4, 5]
+  "height": 1,
+  "cells": [
+    {"ground": 0, "decoration": 0},
+    {"ground": 1, "decoration": 1},
+    {"ground": 2, "decoration": 2}
+  ]
 }
 ```
 
-`terrain_cells`는 행 우선 순서이며 인덱스는 `y × width + x`입니다.
+`cells`는 행 우선 순서이며 인덱스는 `y × width + x`입니다.
 
-| 값 | 지형 |
+| 필드 | 값 |
 |---|---|
-| 0 | 강 |
-| 1 | 초원 |
-| 2 | 황무지 |
-| 3 | 바위(초원) |
-| 4 | 바위(황무지) |
-| 5 | 나무(초원) |
+| ground | 0=강, 1=초원, 2=황무지 |
+| decoration | 0=기본 배치, 1=바위, 2=숲 |
 
-불러올 수 있는 가로·세로 크기는 각각 1–256칸입니다. 지형 배열 길이는 반드시 `width × height`여야 합니다. 서브타일 마스크, 오브젝트 목록, 애니메이션 위상은 저장하지 않고 계산합니다. 저장은 임시 파일을 쓴 뒤 대상 파일로 교체합니다.
+기본 배치의 초원에는 기존대로 확률적으로 잔디가 놓입니다. 물 위 바위·숲은 허용하지 않습니다. UI의 기존 6개 브러시는 유지됩니다.
+
+불러올 수 있는 크기는 각각 1–256칸입니다. 셀 배열 길이는 반드시 `width × height`여야 합니다. 경계 마스크, 장식 목록, 애니메이션 시각과 캐시는 저장하지 않습니다. 저장은 임시 파일을 쓴 뒤 대상 파일로 교체합니다.
 
 | 이전 버전 | 입력 데이터 | 변환 |
 |---|---|---|
-| 1 | `(width+1) × (height+1)`개의 `water_vertices` | 기존 칸의 물 꼭짓점이 2개 이상이면 강, 아니면 황무지 |
-| 2 | `width × height`개의 `water_cells` | `true`는 강, `false`는 황무지 |
-| 3 | `terrain_cells`의 값 0–2 | 강·초원·황무지 값 유지 |
+| 1 | `(width+1) × (height+1)`개의 water_vertices | 큰 칸의 물 꼭짓점이 2개 이상이면 강, 아니면 황무지 |
+| 2 | `width × height`개의 water_cells | true=강, false=황무지 |
+| 3 | terrain_cells의 값 0–2 | 바닥 종류로 변환, 기본 장식 |
+| 4 | terrain_cells의 값 0–5 | 기존 프리셋을 바닥·장식으로 분리 |
 
-이전 지도의 가로·세로 칸 수를 유지합니다. 불러오기만으로 원본 파일을 수정하지 않으며, 이후 저장하면 버전 4로 기록합니다.
+이전 지도의 크기와 배치를 유지합니다. 불러오기만으로 원본 파일을 수정하지 않으며, 이후 저장하면 버전 5로 기록합니다. `example-map.json`은 버전 4 호환성 샘플로 보존합니다.
 
 ## PNG 내보내기와 에셋 생성
 
@@ -215,36 +220,47 @@ screenY = (u + v) × 8
 `-screenshot`은 패널을 포함한 **실제 편집기 화면**을 저장하는 별도 기능입니다.
 
 ```sh
-# 지형 PNG, 아틀라스, 오브젝트·샘플 미리보기, 샘플 JSON 재생성
-go run ./cmd/tilegen
+# 시트, 카탈로그, 공통 렌더 경로의 미리보기 생성
+go run ./cmd/assetgen
 
-# 실제 창의 편집기 미리보기 갱신
+# 별도 디렉터리에 생성
+go run ./cmd/assetgen -out /tmp/demo1-assets
+
+# 실제 편집기 화면 캡처
 go run . -map example-map.json -screenshot assets/editor-preview.png
 ```
 
-`tilegen`은 생성된 에셋과 `example-map.json`을 덮어씁니다. 샘플 파일에 편집 내용을 보관하려면 먼저 다른 경로에 저장하세요. 오브젝트 원본은 다시 생성하지 않고 `assets/objects/`의 PNG를 읽습니다. 지형 색상·경계 함수는 [tiles.go](internal/terrain/tiles.go), 오브젝트 크기·외곽선·샘플링은 [sprites.go](internal/terrain/sprites.go)에서 수정할 수 있습니다.
+`assetgen`은 `assets/objects/` 원본을 읽어 여백 제거·축소·외곽선·잔디 애니메이션을 처리하고 `assets/generated/`에 결과를 씁니다. 맵 JSON과 원본 PNG는 변경하지 않습니다. 기존 `cmd/tilegen` 호출도 같은 생성기로 연결됩니다.
+
+| 생성 파일 | 구성 |
+|---|---|
+| terrain.png | 16×8 셀, 8열×5행, 128×40px. 지형 38종 |
+| objects.png | 24×24 셀, 8열×4행, 192×96px. 바위 4장 + 나무 8프레임 + 잔디 16프레임 |
+| catalog.json | 시트 크기, 셀 번호, 발밑 피벗, 애니메이션 프레임과 시간 |
+| preview.png | 생성 에셋을 사용하는 샘플 장면의 2배 PNG |
+
+게임에는 두 시트와 카탈로그만 포함됩니다. 기존 `assets/tiles/`, `assets/atlas*.png`, 예전 미리보기는 참고용으로 보존하며 게임에서 로딩하지 않습니다. 지형 38종의 순서는 물 8장 → 황무지 1장과 경계 14장 → 초원 1장과 경계 14장입니다.
+
+![생성 시트로 그린 샘플](assets/generated/preview.png)
 
 ## 파일 구성
 
 | 경로 | 역할 |
 |---|---|
-| [main.go](main.go) | Ebitengine 창, 입력, 브러시, 이력, 화면 렌더링, 내보내기 |
-| [internal/terrain/world.go](internal/terrain/world.go) | 지형 모델, 꼭짓점·마스크, 좌표 변환, 샘플 맵, 저장·변환 |
-| [internal/terrain/tiles.go](internal/terrain/tiles.go) | 지형 PNG 생성, 물 무늬, 레이어 합성, 정적 렌더링 |
-| [internal/terrain/objects.go](internal/terrain/objects.go) | 배치 확률, 좌표 해시, 깊이 정렬, 나무 위상 |
-| [internal/terrain/sprites.go](internal/terrain/sprites.go) | 오브젝트 로딩, 게임 해상도 샘플링, 외곽선, 장면 렌더링 |
-| [cmd/tilegen/main.go](cmd/tilegen/main.go) | 지형 에셋·미리보기·샘플 지도 생성 명령 |
-| [assets/tiles/](assets/tiles/) | 실제 16×8 지형 PNG 38개 |
-| [assets/objects/](assets/objects/) | 바위·잔디 PNG 8개와 나무 4프레임 스트립 2개 |
-| [assets/objects/PROMPTS.md](assets/objects/PROMPTS.md) | image_gen으로 만든 오브젝트 원본의 생성 프롬프트 |
-| [assets/atlas.png](assets/atlas.png) | 지형 38종을 8열로 배치한 128×40 아틀라스 |
-| [assets/atlas-preview.png](assets/atlas-preview.png) | 확대 지형 아틀라스 |
-| [assets/objects-preview.png](assets/objects-preview.png) | 외곽선을 포함한 오브젝트 16프레임 확대 미리보기 |
-| [assets/demo-preview.png](assets/demo-preview.png) | 샘플 장면 미리보기 |
-| [assets/editor-preview.png](assets/editor-preview.png) | 실제 편집기 화면 캡처 |
-| [example-map.json](example-map.json) | 버전 4 샘플 지도 |
-
-지형 PNG 38개는 물 `water_0.png`–`water_7.png` 8개, 황무지 `land.png` 1개와 `edge_01.png`–`edge_14.png` 14개, 초원 `grass.png` 1개와 `grass_edge_01.png`–`grass_edge_14.png` 14개로 구성됩니다. 모두 투명 배경의 16×8 마름모입니다.
+| [ARCHITECTURE.md](ARCHITECTURE.md) | 자료구조, 호출 흐름, 렌더링 아키텍처 |
+| [main.go](main.go) | 게임 루프, 입력, 브러시, 편집 이력 |
+| [render.go](render.go) | GPU 시트 로딩, 화면 렌더러, 공통 PNG 출력 연결 |
+| [editor_render.go](editor_render.go) | 격자·브러시·편집기 UI 표시 |
+| [internal/terrain/world.go](internal/terrain/world.go) | 셀 모델, 좌표, 경계 계산, 샘플 맵 |
+| [internal/terrain/world_io.go](internal/terrain/world_io.go) | 버전 1–5 호환 로딩과 저장 |
+| [internal/terrain/objects.go](internal/terrain/objects.go) | 장식 확률, 배치, 깊이 정렬, 위상 |
+| [internal/terrain/scene.go](internal/terrain/scene.go) | 변경 시 갱신하는 맵 캐시와 공통 그릴 목록 |
+| [internal/graphics/](internal/graphics/) | 범용 시트 카탈로그, 애니메이션, PNG 렌더러 |
+| [internal/assetbuild/](internal/assetbuild/) | 개발용 지형 이미지 생성과 오브젝트 전처리 |
+| [cmd/assetgen/main.go](cmd/assetgen/main.go) | 별도 에셋 생성 실행 프로그램 |
+| [assets/generated/](assets/generated/) | 완성된 런타임 시트와 카탈로그 |
+| [assets/objects/](assets/objects/) | 보존한 큰 원본 PNG |
+| [example-map.json](example-map.json) | 버전 4 호환 샘플 지도 |
 
 ## 검증
 
@@ -265,10 +281,11 @@ DEMO1_WINDOW_TEST=1 go test -count=1
 - 이진 지형 주변 조합 512가지와 세 바닥 지형 조합 19,683가지.
 - 공유 꼭짓점·경계, 강 중심, 고립된 강·수로·합류·대각선·맵 가장자리.
 - 마름모 픽셀의 빈틈·중복, 좌표 투영과 큰 타일 선택.
-- PNG와 생성 코드 일치, 물의 공간 주기·반복, 고정 육지 레이어.
+- 생성 시트·카탈로그 재현성, 이전 출력과 픽셀 단위 일치, 물의 공간 주기·반복, 고정 육지 레이어.
 - 초원·바위·나무 배치 확률과 나무 최소 3개 조건.
 - 오브젝트 지형의 바닥 경계 유지, 깊이 정렬, 1픽셀 검은 외곽선.
-- 나무 4프레임과 줄기 고정, 위상 분포·전환 시점 분산·주기 반복.
+- 나무·잔디 4프레임과 뿌리 고정, 위상 분포·전환 시점 분산·주기 반복.
+- 캐시 갱신, 바닥·장식 분리, 버전 5 검증, 공통 깊이 정렬과 카탈로그 검증.
 - 편집·되돌리기·다시 실행·저장 왕복·이전 버전 변환과 배치 유지.
 
 실제 창 테스트는 일반 테스트와 별도로 실행하는 애니메이션 검증 경로입니다. 문서나 설명만 변경할 때는 에셋 재생성이나 창 실행이 필요하지 않습니다.

@@ -9,8 +9,8 @@ func TestDecorationProbabilitiesAndStability(t *testing.T) {
 	for _, kind := range []Kind{Grass, RockGrass, RockWasteland} {
 		counts := map[Object]int{}
 		w := New(256, 256)
-		for i := range w.Cells {
-			w.Cells[i] = kind
+		for i := range w.cells {
+			w.SetTerrain(i%w.Width, i/w.Width, kind)
 		}
 		for y := 0; y < w.Height; y++ {
 			for x := 0; x < w.Width; x++ {
@@ -69,8 +69,8 @@ func TestDecoratedGroundAndDepth(t *testing.T) {
 		}
 	}
 	w := New(32, 32)
-	for i := range w.Cells {
-		w.Cells[i] = RockGrass
+	for i := range w.cells {
+		w.SetTerrain(i%w.Width, i/w.Width, RockGrass)
 	}
 	lastY := -1.0
 	for _, p := range w.Placements() {
@@ -84,8 +84,8 @@ func TestDecoratedGroundAndDepth(t *testing.T) {
 
 func TestForestMinimumAndMarginalProbabilities(t *testing.T) {
 	w := New(256, 256)
-	for i := range w.Cells {
-		w.Cells[i] = Forest
+	for i := range w.cells {
+		w.SetTerrain(i%w.Width, i/w.Width, Forest)
 	}
 	counts := map[Object]int{}
 	three, four := 0, 0
@@ -124,8 +124,8 @@ func TestTreePhasesStableAndStaggered(t *testing.T) {
 	offsets := map[int]bool{}
 	transitions := map[int]bool{}
 	w := New(32, 32)
-	for i := range w.Cells {
-		w.Cells[i] = Forest
+	for i := range w.cells {
+		w.SetTerrain(i%w.Width, i/w.Width, Forest)
 	}
 	path := filepath.Join(t.TempDir(), "forest.json")
 	if err := w.Save(path); err != nil {
