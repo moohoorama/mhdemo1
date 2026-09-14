@@ -4,8 +4,6 @@
 
 자료구조, 함수 호출 흐름, ASCII 아키텍처는 [ARCHITECTURE.md](ARCHITECTURE.md)를 참고하세요.
 
-![편집기 화면](assets/editor-preview.png)
-
 ## 실행
 
 저장소 루트에서 실행합니다.
@@ -26,7 +24,7 @@ go build -o demo1 .
 ./demo1
 
 # 실제 편집기 화면을 PNG로 저장하고 종료
-go run . -map example-map.json -screenshot assets/editor-preview.png
+go run . -map example-map.json -screenshot editor-preview.png
 ```
 
 이하 명령은 `demo1/` 디렉터리에서 실행합니다. 이미지 에셋은 실행 파일에 포함됩니다. 지도와 내보내기 경로는 실행 시 작업 디렉터리를 기준으로 합니다.
@@ -123,7 +121,7 @@ screenY = (u + v) × 8
 
 각 큰 타일의 서브타일 4칸마다 **최대 1개의 오브젝트**를 배치합니다. 바위나 나무를 직접 선택해 놓는 방식이 아니라, 큰 타일의 지형 종류에 따라 자동으로 정합니다.
 
-![게임용 오브젝트 시트 — 24×32 셀](assets/generated/objects.png)
+![게임용 오브젝트 시트 — 24×32 셀](assets/objects.png)
 
 ### 종류와 크기
 
@@ -135,7 +133,7 @@ screenY = (u + v) × 8
 | 잔디 | 4종 | 6×5 / 6×4 / 5×5 / 6×5 |
 | 나무 | 큰 나무 / 작은 나무 | 22×20 / 20×18 |
 
-모든 오브젝트에는 상하좌우 실루엣을 따라 **1픽셀 검은 외곽선**을 붙입니다. 외곽선은 `assetgen`에서 게임 해상도로 생성하며, 원본 PNG는 보존합니다. 게임은 완성된 시트만 읽습니다. 나무 원본은 새로 그린 `tree_0-redrawn.png`, `tree_1-redrawn.png`를 사용하며 이전 원본은 보존합니다. 외곽선 여백이 생겨도 발밑 기준점은 유지합니다.
+모든 오브젝트에는 상하좌우 실루엣을 따라 **1픽셀 검은 외곽선**을 붙입니다. 범용 `spritetool`이 Makefile에 명시된 크기와 외곽선을 적용하고, 게임은 완성된 시트만 읽습니다. 나무는 기존 `tree_0.png`, `tree_1.png`의 4프레임 원본을 사용합니다. 외곽선 여백이 생겨도 발밑 기준점은 유지합니다.
 
 오브젝트는 서브타일 중앙에 발밑을 맞추고 화면 아래쪽에 있는 것이 나중에 그려지도록 정렬합니다. 지형 전체를 먼저 그린 뒤 오브젝트를 그리므로 이웃 바닥이 나무나 바위를 덮지 않습니다.
 
@@ -167,7 +165,7 @@ screenY = (u + v) × 8
 
 물은 대비가 낮은 잔물결과 짧은 수평 반사광을 사용합니다. 공간·시간 주기 함수로 이웃 타일의 무늬와 마지막→첫 프레임을 연결합니다. 초원·황무지 바닥과 바위는 애니메이션하지 않습니다. 잔디는 뿌리를 고정하고 잎을 좌우로 흔듭니다. 식물 속도는 UI에서 1/2/4/8배로 변경할 수 있으며 기본값은 2배입니다.
 
-나무는 잎 부분만 움직이며 새로 그린 나무 스프라이트의 하단 약 1/3(큰 나무 8행, 작은 나무 6행)에 있는 줄기·뿌리는 고정합니다. 각 나무에 **0–7.875초의 시작 위상**을 0.125초 단위로 부여하므로 표시 프레임뿐 아니라 프레임 전환 시점도 분산됩니다. 위상은 좌표로 고정되고, 재실행하면 같은 위상을 가진 애니메이션이 실행 시작 시간을 기준으로 다시 재생됩니다. 현재 재생 시각은 지도에 저장하지 않습니다.
+나무와 잔디의 움직임은 `tools/spritetool/assets/`에 저장된 4프레임 원본에 이미 포함되어 있습니다. 빌드 도구는 애니메이션 형태를 만들어내지 않고 프레임을 자르고 크기와 외곽선만 정리합니다. 각 나무에는 **0–7.875초의 시작 위상**을 0.125초 단위로 부여하므로 표시 프레임뿐 아니라 프레임 전환 시점도 분산됩니다. 위상은 좌표로 고정되고, 재실행하면 같은 위상을 가진 애니메이션이 실행 시작 시간을 기준으로 다시 재생됩니다. 현재 재생 시각은 지도에 저장하지 않습니다.
 
 ## 저장 형식과 이전 지도 호환
 
@@ -206,35 +204,60 @@ screenY = (u + v) × 8
 
 이전 지도의 크기와 배치를 유지합니다. 불러오기만으로 원본 파일을 수정하지 않으며, 이후 저장하면 버전 5로 기록합니다. `example-map.json`은 버전 4 호환성 샘플로 보존합니다.
 
-## PNG 내보내기와 에셋 생성
+## PNG 내보내기
 
 `P`는 현재 물 프레임과 각 나무의 위상을 반영한 장면을 **4배 PNG**로 `map-export.png`에 저장합니다. 편집기 패널과 격자는 포함하지 않습니다. 지도 가장자리 오브젝트가 잘리지 않도록 원본 해상도 기준 사방 최소 16픽셀 여백을 두고, 큰 스프라이트가 범위를 벗어나면 출력 영역을 자동으로 넓힙니다.
 
 `-screenshot`은 패널을 포함한 **실제 편집기 화면**을 저장하는 별도 기능입니다.
 
 ```sh
-# 시트, 카탈로그, 공통 렌더 경로의 미리보기 생성
-go run ./cmd/assetgen
-
-# 별도 디렉터리에 생성
-go run ./cmd/assetgen -out /tmp/demo1-assets
-
 # 실제 편집기 화면 캡처
-go run . -map example-map.json -screenshot assets/editor-preview.png
+go run . -map example-map.json -screenshot editor-preview.png
 ```
 
-`assetgen`은 `assets/objects/` 원본을 읽어 여백 제거·축소·외곽선·잔디 애니메이션을 처리하고 `assets/generated/`에 결과를 씁니다. 맵 JSON과 원본 PNG는 변경하지 않습니다. 기존 `cmd/tilegen` 호출도 같은 생성기로 연결됩니다.
+## Asset Pipeline
 
-| 생성 파일 | 구성 |
+`assets/`에는 게임과 맵 에디터가 직접 읽는 `terrain.png`, `objects.png`,
+`catalog.json`만 둡니다. 원본 이미지와 생성 코드는 런타임 패키지에서 분리합니다.
+
+| 경로 | 책임 |
 |---|---|
-| terrain.png | 16×8 셀, 8열×5행, 128×40px. 지형 38종 |
-| objects.png | 24×32 셀, 8열×4행, 192×128px. 바위 4장 + 나무 8프레임 + 잔디 16프레임 |
-| catalog.json | 시트 크기, 셀 번호, 발밑 피벗, 애니메이션 프레임과 시간 |
-| preview.png | 생성 에셋을 사용하는 샘플 장면의 2배 PNG |
+| `assets/` | 실행 파일에 포함되는 최종 에셋만 보관 |
+| `tools/tilegenerator/` | 프로젝트의 절차적 지형 규칙으로 `terrain.png` 생성 |
+| `tools/spritetool/` | crop, resize, frame slicing, outline, atlas packing을 제공하는 범용 PNG CLI |
+| `tools/spritetool/assets/` | 바위·잔디·나무 원본. 애니메이션 오브젝트는 완성된 4프레임을 가로로 보관 |
+| `Makefile` | 이 프로젝트의 크기·순서·atlas 배치를 명시하는 빌드 레시피 |
 
-게임에는 두 시트와 카탈로그만 포함됩니다. 기존 `assets/tiles/`, `assets/atlas*.png`, 예전 미리보기는 참고용으로 보존하며 게임에서 로딩하지 않습니다. 지형 38종의 순서는 물 8장 → 황무지 1장과 경계 14장 → 초원 1장과 경계 14장입니다.
+전체 런타임 에셋을 다시 만들려면 다음을 실행합니다.
 
-![생성 시트로 그린 샘플](assets/generated/preview.png)
+```sh
+make assets
+```
+
+개별 도구도 직접 사용할 수 있습니다. `spritetool`은 이미지의 의미를 알지
+못하며 ImageMagick `convert`와 비슷하게 입력 옵션만 적용합니다.
+
+```sh
+go run ./tools/spritetool \
+  --crop 10,20,110,140 \
+  --size 22x20 \
+  --outline 1 \
+  input.png output.png
+
+go run ./tools/spritetool \
+  --frames 4 --frame 2 --trim --size 22x20 --outline 1 \
+  input-sheet.png output-frame.png
+
+go run ./tools/spritetool \
+  --atlas 24x32,8x4 \
+  frame-*.png objects.png
+
+go run ./tools/tilegenerator assets/terrain.png
+```
+
+`catalog.json`은 셀 번호, 피벗, 애니메이션 이름과 시간을 담는 프로젝트 파일이므로
+범용 `spritetool`이 생성하지 않습니다. 지형 시트 순서는 물 8장 → 황무지 1장과
+경계 14장 → 초원 1장과 경계 14장입니다.
 
 ## 파일 구성
 
@@ -249,10 +272,10 @@ go run . -map example-map.json -screenshot assets/editor-preview.png
 | [internal/terrain/objects.go](internal/terrain/objects.go) | 장식 확률, 배치, 깊이 정렬, 위상 |
 | [internal/terrain/scene.go](internal/terrain/scene.go) | 변경 시 갱신하는 맵 캐시와 공통 그릴 목록 |
 | [internal/graphics/](internal/graphics/) | 범용 시트 카탈로그, 애니메이션, PNG 렌더러 |
-| [internal/assetbuild/](internal/assetbuild/) | 개발용 지형 이미지 생성과 오브젝트 전처리 |
-| [cmd/assetgen/main.go](cmd/assetgen/main.go) | 별도 에셋 생성 실행 프로그램 |
-| [assets/generated/](assets/generated/) | 완성된 런타임 시트와 카탈로그 |
-| [assets/objects/](assets/objects/) | 보존한 큰 원본 PNG |
+| [tools/tilegenerator/](tools/tilegenerator/) | 프로젝트 전용 절차적 지형 생성기 |
+| [tools/spritetool/](tools/spritetool/) | 범용 PNG 스프라이트 가공·atlas 도구와 원본 이미지 |
+| [Makefile](Makefile) | 프로젝트별 에셋 제작 순서와 옵션 |
+| [assets/](assets/) | 완성된 런타임 시트와 카탈로그만 보관 |
 | [example-map.json](example-map.json) | 버전 4 호환 샘플 지도 |
 
 ## 검증
@@ -274,7 +297,7 @@ DEMO1_WINDOW_TEST=1 go test -count=1
 - 이진 지형 주변 조합 512가지와 세 바닥 지형 조합 19,683가지.
 - 공유 꼭짓점·경계, 강 중심, 고립된 강·수로·합류·대각선·맵 가장자리.
 - 마름모 픽셀의 빈틈·중복, 좌표 투영과 큰 타일 선택.
-- 생성 시트·카탈로그 재현성, 이전 출력과 픽셀 단위 일치, 물의 공간 주기·반복, 고정 육지 레이어.
+- 생성기의 경계 연속성, 마름모 픽셀 피복, 물의 공간 주기·반복과 고정 육지 레이어.
 - 초원·바위 배치 확률과 타일당 나무 1개 조건.
 - 오브젝트 지형의 바닥 경계 유지, 깊이 정렬, 1픽셀 검은 외곽선.
 - 나무·잔디 4프레임과 뿌리 고정, 위상 분포·전환 시점 분산·주기 반복.

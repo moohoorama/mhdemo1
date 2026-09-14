@@ -20,7 +20,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
-//go:embed assets/generated/terrain.png assets/generated/objects.png assets/generated/catalog.json
+//go:embed assets/terrain.png assets/objects.png assets/catalog.json
 var assets embed.FS
 
 const screenW, screenH, panelW = 1280, 800, 280
@@ -93,7 +93,7 @@ type game struct {
 
 func newGame(path, screenshot string) (*game, error) {
 	g := &game{started: time.Now(), swaySpeed: 2, w: terrain.Demo(), camera: Camera{Zoom: 3}, brush: terrain.River, path: path, screenshot: screenshot, status: "Ready. Paint river, soil or grass."}
-	files, err := fs.Sub(assets, "assets/generated")
+	files, err := fs.Sub(assets, "assets")
 	if err != nil {
 		return nil, err
 	}
