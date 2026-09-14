@@ -104,7 +104,6 @@ func newGame(path, screenshot string) (*game, error) {
 	if err = terrain.ValidateAssets(g.catalog); err != nil {
 		return nil, err
 	}
-	g.renderer = newScreenRenderer(g.catalog)
 	if w, err := terrain.Load(path); err == nil {
 		g.w = w
 		g.status = "Loaded " + filepath.Base(path)
@@ -349,14 +348,41 @@ func writePNG(path string, im image.Image) error {
 	}
 	return f.Close()
 }
+
+func renderToPNG(mapPath, outputPath string, scale, tick int) error {
+	if scale < 1 {
+		return fmt.Errorf("render scale must be at least 1")
+	}
+	if tick < 0 {
+		return fmt.Errorf("render tick must not be negative")
+	}
+	g, err := newGame(mapPath, "")
+	if err != nil {
+		return err
+	}
+	g.waterFrame = tick % 8
+	g.treeTick = tick % terrain.TreeCycleTicks
+	return writePNG(outputPath, g.exportImage(scale))
+}
+
 func main() {
 	path := flag.String("map", "map.json", "map JSON to load/save")
 	shot := flag.String("screenshot", "", "save one rendered editor frame and exit")
+	render := flag.String("render", "", "render the map to PNG without opening a window")
+	renderScale := flag.Int("render-scale", 4, "nearest-neighbor scale for -render")
+	renderTick := flag.Int("render-tick", 0, "deterministic animation tick for -render")
 	flag.Parse()
+	if *render != "" {
+		if err := renderToPNG(*path, *render, *renderScale, *renderTick); err != nil {
+			log.Fatal(err)
+		}
+		return
+	}
 	g, err := newGame(*path, *shot)
 	if err != nil {
 		log.Fatal(err)
 	}
+	g.renderer = newScreenRenderer(g.catalog)
 	ebiten.SetWindowSize(screenW, screenH)
 	ebiten.SetWindowTitle("demo1 - River / Wasteland Autotile Editor")
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)

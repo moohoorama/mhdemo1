@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"demo1/internal/graphics"
 	"demo1/internal/terrain"
 	"image"
+	"image/png"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -28,6 +30,38 @@ func TestEmbeddedTiles(t *testing.T) {
 	}
 	if got := c.Images[1].Bounds().Size(); got != image.Pt(192, 128) {
 		t.Fatalf("object atlas size %v", got)
+	}
+}
+
+func TestHeadlessRenderPNG(t *testing.T) {
+	dir := t.TempDir()
+	first := filepath.Join(dir, "first.png")
+	second := filepath.Join(dir, "second.png")
+	for _, output := range []string{first, second} {
+		if err := renderToPNG("example-map.json", output, 2, 17); err != nil {
+			t.Fatal(err)
+		}
+	}
+	a, err := os.ReadFile(first)
+	if err != nil {
+		t.Fatal(err)
+	}
+	b, err := os.ReadFile(second)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(a, b) {
+		t.Fatal("headless render is not deterministic")
+	}
+	im, err := png.Decode(bytes.NewReader(a))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if im.Bounds().Dx() == 0 || im.Bounds().Dy() == 0 {
+		t.Fatal("headless render produced an empty image")
+	}
+	if err := renderToPNG("example-map.json", filepath.Join(dir, "invalid.png"), 0, 0); err == nil {
+		t.Fatal("zero render scale must fail")
 	}
 }
 func TestEditorStrokeUndoRedoSaveLoad(t *testing.T) {

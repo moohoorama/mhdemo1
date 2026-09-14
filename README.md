@@ -25,6 +25,9 @@ go build -o demo1 .
 
 # 실제 편집기 화면을 PNG로 저장하고 종료
 go run . -map example-map.json -screenshot editor-preview.png
+
+# 창을 열지 않고 맵 장면만 결정적으로 PNG로 렌더링
+go run . -map example-map.json -render map.png -render-scale 4 -render-tick 0
 ```
 
 이하 명령은 `demo1/` 디렉터리에서 실행합니다. 이미지 에셋은 실행 파일에 포함됩니다. 지도와 내보내기 경로는 실행 시 작업 디렉터리를 기준으로 합니다.
@@ -33,6 +36,9 @@ go run . -map example-map.json -screenshot editor-preview.png
 |---|---|---|
 | `-map` | `map.json` | 불러오기·저장에 사용할 JSON 경로 |
 | `-screenshot` | 없음 | 편집기 화면을 지정한 PNG로 캡처한 뒤 종료 |
+| `-render` | 없음 | 창을 열지 않고 맵 장면만 지정한 PNG로 저장 후 종료 |
+| `-render-scale` | `4` | `-render` PNG의 최근접 정수 확대 배율 |
+| `-render-tick` | `0` | `-render`의 결정적 애니메이션 tick. 물은 8, 식물은 64 tick 주기 |
 
 지도가 없으면 28×22칸 샘플 맵으로 시작합니다. 파일이 잘못된 경우에도 샘플 맵을 표시하되 상태 표시줄에 오류를 알립니다. **종료 시 자동 저장하지 않습니다.**
 
@@ -207,6 +213,13 @@ screenY = (u + v) × 8
 ## PNG 내보내기
 
 `P`는 현재 물 프레임과 각 나무의 위상을 반영한 장면을 **4배 PNG**로 `map-export.png`에 저장합니다. 편집기 패널과 격자는 포함하지 않습니다. 지도 가장자리 오브젝트가 잘리지 않도록 원본 해상도 기준 사방 최소 16픽셀 여백을 두고, 큰 스프라이트가 범위를 벗어나면 출력 영역을 자동으로 넓힙니다.
+
+`-render`는 Ebitengine 창과 이벤트 루프를 시작하지 않고 동일한 draw list를 소프트웨어로 합성합니다. 같은 지도·에셋·tick이면 PNG 바이트가 같으므로 골든 이미지 기반 통합테스트와 시각적 diff에 사용할 수 있습니다.
+
+```sh
+go run . -map example-map.json -render actual.png -render-scale 4 -render-tick 0
+cmp testdata/expected.png actual.png
+```
 
 `-screenshot`은 패널을 포함한 **실제 편집기 화면**을 저장하는 별도 기능입니다.
 
