@@ -34,7 +34,7 @@ func TestSceneCacheInvalidation(t *testing.T) {
 }
 
 func TestDrawListAnimationAndSharedDepth(t *testing.T) {
-	c, err := graphics.Load(os.DirFS("../../assets/generated"))
+	c, err := graphics.Load(os.DirFS("../../assets"))
 	if err != nil {
 		t.Fatal(err)
 	}

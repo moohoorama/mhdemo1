@@ -2,20 +2,19 @@ package main
 
 import (
 	"bytes"
-	"demo1/internal/assetbuild"
 	"demo1/internal/graphics"
 	"demo1/internal/terrain"
-	"os"
-
+	"image"
 	"image/png"
 	"io/fs"
+	"os"
 	"path/filepath"
 	"testing"
 	"time"
 )
 
 func TestEmbeddedTiles(t *testing.T) {
-	files, err := fs.Sub(assets, "assets/generated")
+	files, err := fs.Sub(assets, "assets")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -26,19 +25,43 @@ func TestEmbeddedTiles(t *testing.T) {
 	if err := terrain.ValidateAssets(c); err != nil {
 		t.Fatal(err)
 	}
-	for m := 0; m < terrain.AssetCount; m++ {
-		rect := c.Rect(m)
-		im := c.Images[c.Sprites[m].Sheet]
-		want := assetbuild.Asset(m)
-		for y := 0; y < 8; y++ {
-			for x := 0; x < 16; x++ {
-				r, g, b, a := im.At(rect.Min.X+x, rect.Min.Y+y).RGBA()
-				rr, gg, bb, aa := want.At(x, y).RGBA()
-				if r != rr || g != gg || b != bb || a != aa {
-					t.Fatalf("tile %d pixel %d,%d", m, x, y)
-				}
-			}
+	if got := c.Images[0].Bounds().Size(); got != image.Pt(128, 40) {
+		t.Fatalf("terrain atlas size %v", got)
+	}
+	if got := c.Images[1].Bounds().Size(); got != image.Pt(192, 128) {
+		t.Fatalf("object atlas size %v", got)
+	}
+}
+
+func TestHeadlessRenderPNG(t *testing.T) {
+	dir := t.TempDir()
+	first := filepath.Join(dir, "first.png")
+	second := filepath.Join(dir, "second.png")
+	for _, output := range []string{first, second} {
+		if err := renderToPNG("example-map.json", output, 2, 17); err != nil {
+			t.Fatal(err)
 		}
+	}
+	a, err := os.ReadFile(first)
+	if err != nil {
+		t.Fatal(err)
+	}
+	b, err := os.ReadFile(second)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(a, b) {
+		t.Fatal("headless render is not deterministic")
+	}
+	im, err := png.Decode(bytes.NewReader(a))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if im.Bounds().Dx() == 0 || im.Bounds().Dy() == 0 {
+		t.Fatal("headless render produced an empty image")
+	}
+	if err := renderToPNG("example-map.json", filepath.Join(dir, "invalid.png"), 0, 0); err == nil {
+		t.Fatal("zero render scale must fail")
 	}
 }
 func TestEditorStrokeUndoRedoSaveLoad(t *testing.T) {
@@ -99,27 +122,15 @@ func TestGrassBrushHistory(t *testing.T) {
 }
 
 func TestObjectSpritesAndForestHistory(t *testing.T) {
-	files := os.DirFS("assets/objects")
-	sprites, err := assetbuild.LoadObjects(files)
+	c, err := graphics.Load(os.DirFS("assets"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	for tree := 0; tree < 2; tree++ {
-		base := sprites[8+tree*4]
 		seen := map[string]bool{}
 		for frame := 0; frame < 4; frame++ {
-			im := sprites[8+tree*4+frame]
-			pixels := []byte{}
-			for y := 0; y < im.Bounds().Dy(); y++ {
-				for x := 0; x < im.Bounds().Dx(); x++ {
-					r, g, b, a := im.At(x, y).RGBA()
-					pixels = append(pixels, byte(r>>8), byte(g>>8), byte(b>>8), byte(a>>8))
-					if y >= im.Bounds().Dy()-3 && im.At(x, y) != base.At(x, y) {
-						t.Fatal("tree trunk moves")
-					}
-				}
-			}
-			seen[string(pixels)] = true
+			id := terrain.AssetCount + terrain.ObjectSprite(terrain.LargeTree+terrain.Object(tree), frame)
+			seen[string(spritePixels(c, id))] = true
 		}
 		if len(seen) != 4 {
 			t.Fatal("tree needs four distinct foliage frames", tree)
@@ -162,24 +173,21 @@ func TestSwaySpeedAndContinuity(t *testing.T) {
 	}
 }
 func TestGrassAnimationFrames(t *testing.T) {
-	files := os.DirFS("assets/objects")
-	sprites, err := assetbuild.LoadObjects(files)
+	c, err := graphics.Load(os.DirFS("assets"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	for object := terrain.GrassTuft1; object <= terrain.GrassTuft4; object++ {
 		seen := map[string]bool{}
-		base := sprites[terrain.ObjectSprite(object, 0)]
+		baseID := terrain.AssetCount + terrain.ObjectSprite(object, 0)
 		for frame := 0; frame < 4; frame++ {
-			im := sprites[terrain.ObjectSprite(object, frame)]
-			var buf bytes.Buffer
-			if err := png.Encode(&buf, im); err != nil {
-				t.Fatal(err)
-			}
-			seen[buf.String()] = true
-			for y := im.Bounds().Dy() - 2; y < im.Bounds().Dy(); y++ {
-				for x := 0; x < im.Bounds().Dx(); x++ {
-					if im.At(x, y) != base.At(x, y) {
+			id := terrain.AssetCount + terrain.ObjectSprite(object, frame)
+			seen[string(spritePixels(c, id))] = true
+			baseRect, rect := c.Rect(baseID), c.Rect(id)
+			baseImage, im := c.Images[c.Sprites[baseID].Sheet], c.Images[c.Sprites[id].Sheet]
+			for y := 28; y < 32; y++ {
+				for x := 0; x < 24; x++ {
+					if im.At(rect.Min.X+x, rect.Min.Y+y) != baseImage.At(baseRect.Min.X+x, baseRect.Min.Y+y) {
 						t.Fatal("grass roots moved")
 					}
 				}
@@ -195,4 +203,17 @@ func TestGrassAnimationFrames(t *testing.T) {
 			t.Fatalf("grass %d has %d poses", object, len(seen))
 		}
 	}
+}
+
+func spritePixels(c *graphics.Catalog, id int) []byte {
+	rect := c.Rect(id)
+	im := c.Images[c.Sprites[id].Sheet]
+	pixels := make([]byte, 0, rect.Dx()*rect.Dy()*4)
+	for y := rect.Min.Y; y < rect.Max.Y; y++ {
+		for x := rect.Min.X; x < rect.Max.X; x++ {
+			r, g, b, a := im.At(x, y).RGBA()
+			pixels = append(pixels, byte(r>>8), byte(g>>8), byte(b>>8), byte(a>>8))
+		}
+	}
+	return pixels
 }

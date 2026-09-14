@@ -8,23 +8,21 @@
 개발할 때 실행                         게임을 실행할 때
 ==============                         ==================
 
-cmd/assetgen/main.go                    main.go: newGame()
-        |                                      |
-        v                                      v
-assetbuild.Generate()                  graphics.Load()
+Makefile                                main.go: newGame()
   |                                            |
-  +-- 지형 픽셀 생성                           +-- 시트 PNG 디코딩
-  +-- 원본 오브젝트 읽기                       +-- catalog.json 검증
-  +-- 여백 정리 / 축소 / 외곽선                +-- GPU 시트 업로드
-  +-- 잔디 4프레임 생성                        |
-  +-- 고정 셀에 시트 조립                      v
-  |                                     graphics.Catalog
-  v                                            |
-assets/generated/                              |
+  +--> tools/tilegenerator                     v
+  |      +-- 지형 픽셀 생성             graphics.Load()
+  |                                            |
+  +--> tools/spritetool                         +-- 시트 PNG 디코딩
+         +-- 원본 프레임 분리                   +-- catalog.json 검증
+         +-- crop / resize / outline            +-- GPU 시트 업로드
+         +-- 고정 셀 atlas 조립                 |
+  |                                            v
+  v                                     graphics.Catalog
+assets/                                        |
   +-- terrain.png  ----------------------------+
   +-- objects.png  ----------------------------+
   +-- catalog.json ----------------------------+
-  +-- preview.png  (검토용, 게임에 포함하지 않음)
 
 맵 JSON ---> terrain.Load() ---> World
                                   |
@@ -57,17 +55,18 @@ assets/generated/                              |
               drawEditorUI()
 ```
 
-`assetgen`은 맵 파일이나 원본 PNG를 덮어쓰지 않는다. 출력 디렉터리의 시트·카탈로그·검토용 미리보기만 갱신한다. `preview.png`는 메모리에 만든 샘플 맵을 공통 렌더 경로로 그린 결과다.
+Makefile이 프로젝트별 입력 순서, 목표 크기와 atlas 위치를 소유한다. `spritetool`은 이미지가 나무인지 잔디인지 알지 못하며, 애니메이션의 모양도 생성하지 않는다. 애니메이션 원본은 `tools/spritetool/assets/`에 완성된 가로 프레임으로 둔다.
 
 ```sh
-# 기본 출력: assets/generated/
-go run ./cmd/assetgen
+# 두 런타임 시트 생성
+make assets
 
-# 다른 위치에 생성하고 검토
-go run ./cmd/assetgen -source assets/objects -out /tmp/demo1-assets
+# 개별 생성기 실행
+go run ./tools/tilegenerator assets/terrain.png
+go run ./tools/spritetool --size 8x6 --outline 1 input.png output.png
 ```
 
-`cmd/tilegen/main.go`는 기존 호출을 위한 얇은 별칭이다. 실제 생성은 같은 `assetbuild.Generate()`를 호출한다. 예전처럼 개별 타일 PNG와 `example-map.json`을 재생성하지 않는다.
+`catalog.json`은 게임 고유의 셀 번호·피벗·애니메이션 계약이므로 직접 관리한다. 두 범용/전용 이미지 도구는 맵 JSON이나 카탈로그를 수정하지 않는다.
 
 ## 2. 자료구조
 
@@ -129,7 +128,7 @@ main()
  |
  +--> newGame()
  |     |
- |     +--> graphics.Load(embedded generated assets)
+ |     +--> graphics.Load(embedded runtime assets)
  |     |     +--> Manifest.Validate()
  |     |     +--> PNG 크기와 셀 격자 일치 검사
  |     |
@@ -207,7 +206,7 @@ PNG에서 그릴 왼쪽 위 (확대 전):
   point = Position - Pivot - exportBounds.Min
 ```
 
-피벗은 이미지 높이에서 추정하지 않고 카탈로그에 명시한다. 장식의 발밑 위치는 유지한다. 나무는 줄기와 수관부터 새로 그린 `tree_0-redrawn.png`, `tree_1-redrawn.png`를 사용한다. 게임 해상도는 큰 나무 22×20, 작은 나무 20×18이며 이전 원본을 세로로 늘려 사용하지 않는다. PNG 출력은 `graphics.SceneBounds()`로 나무가 잘리지 않도록 범위를 확장한다. 원본 PNG의 축소·외곽선·잔디 변형은 `assetbuild`에서만 실행된다.
+피벗은 이미지 높이에서 추정하지 않고 카탈로그에 명시한다. 장식의 발밑 위치는 유지한다. 나무는 기존 4프레임 `tree_0.png`, `tree_1.png`를 사용하며 게임 해상도는 큰 나무 22×20, 작은 나무 20×18이다. PNG 출력은 `graphics.SceneBounds()`로 나무가 잘리지 않도록 범위를 확장한다. 원본 PNG의 프레임 분리·축소·외곽선은 Makefile이 `spritetool` 옵션으로 명시한다.
 
 시간의 기본 단위는 125ms다. 물은 1 tick마다 8프레임을 순환한다. 나무·잔디는 기본 16 ticks마다 4프레임을 순환하며 좌표별 위상이 있다. 편집기의 식물 속도 기본값은 2배이고 1/2/4/8배를 선택할 수 있다. 카탈로그의 `Animation.Frame()`은 반복과 비반복의 마지막 프레임 유지 모두 지원한다.
 
@@ -232,17 +231,21 @@ PNG에서 그릴 왼쪽 위 (확대 전):
 ## 6. 코드 경계와 확장 지점
 
 ```text
-cmd/assetgen ---> internal/assetbuild ---> internal/terrain
-                        |                        |
-                        +------> internal/graphics <----+
-                                                       |
-main.go / render.go / editor_render.go -----------------+
+Makefile ---> tools/tilegenerator ---> internal/terrain
+        \\--> tools/spritetool
+
+assets ---> main.go ---> internal/graphics <--- internal/terrain
+                         ^
+render.go / editor_render.go
 ```
 
 | 파일/패키지 | 책임 |
 |---|---|
-| cmd/assetgen/main.go | 생성 도구의 인자와 진입점 |
-| internal/assetbuild | 지형 이미지 생성, 원본 오브젝트 전처리, 시트·카탈로그 조립 |
+| Makefile | 프로젝트의 입력 순서, 크기, 프레임, atlas 배치 레시피 |
+| tools/tilegenerator | 프로젝트 전용 지형 이미지 생성 |
+| tools/spritetool | 의미를 모르는 범용 PNG 프레임 가공과 atlas 조립 |
+| tools/spritetool/assets | 완성된 애니메이션 프레임을 포함한 원본 이미지 |
+| assets | 실행 파일에 포함되는 최종 시트와 카탈로그 |
 | internal/terrain/world.go | 셀 모델, 브러시 변환, 좌표 투영, 경계 계산, 샘플 맵 |
 | internal/terrain/world_io.go | 버전 변환, 검증, 저장·불러오기 |
 | internal/terrain/objects.go | 장식 확률, 위치, 깊이 순서, 위상 규칙 |
@@ -266,8 +269,8 @@ go build .
 DEMO1_WINDOW_TEST=1 go test -count=1
 ```
 
-- 생성 결과와 체크인한 시트·카탈로그·미리보기가 바이트 단위로 일치하는지 검사한다.
-- 이전 렌더링 공식을 독립적인 테스트 기준으로 보존해 샘플 맵과 6종 지형 맵을 여러 물/식물 프레임에서 픽셀 단위로 비교한다.
+- `spritetool`의 공유 crop, 최근접 축소, 외곽선과 `tilegenerator`의 지형 경계를 각각 도구 옆에서 검사한다.
+- 체크인한 런타임 시트·카탈로그를 로드해 크기, 셀 수와 애니메이션 계약을 검사한다.
 - 맵 변경·무변경·교체의 캐시 재사용/갱신, 셀 분리와 구버전 변환, 잘못된 카탈로그, 애니메이션 시간, 이동 스프라이트와 장식의 깊이 정렬을 검사한다.
 - 기존 경계 조합·확률·편집 이력·식물 애니메이션 검증을 유지한다.
 - 실제 창 검증은 GPU 화면에서 물 8프레임, 식물 4프레임, 고정 지형을 확인한다.
