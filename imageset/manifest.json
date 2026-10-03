@@ -1,0 +1,2492 @@
+{
+  "images": [
+    {
+      "file": "history/runtime/knights-v1.png",
+      "source": "assets/knights-v1.png",
+      "size": [
+        640,
+        480
+      ],
+      "frames": 1,
+      "description": "기사 v1 과거 런타임 아틀라스; 현재 적용본과 비교용.",
+      "sha256": "d878fe0edcea5eaf12b28097c729bc47d7c0fa6bb292e4fbda74f8d4120d350c"
+    },
+    {
+      "file": "history/runtime/knights-v2.png",
+      "source": "assets/knights-v2.png",
+      "size": [
+        768,
+        480
+      ],
+      "frames": 1,
+      "description": "기사 v2 과거 런타임 아틀라스; 현재 적용본과 비교용.",
+      "sha256": "11d000894feb3ca8e24824d06206c5db900e4877f4a771e5d8d1681875a4e4e4"
+    },
+    {
+      "file": "history/runtime/knights-v3.png",
+      "source": "assets/knights-v3.png",
+      "size": [
+        768,
+        480
+      ],
+      "frames": 1,
+      "description": "기사 v3 과거 런타임 아틀라스; 현재 적용본과 비교용.",
+      "sha256": "4e7437b9230330d24f208956937c5f491b28629b8de53d8f1d557362cfccdda2"
+    },
+    {
+      "file": "history/runtime/knights-v4.png",
+      "source": "assets/knights-v4.png",
+      "size": [
+        768,
+        480
+      ],
+      "frames": 1,
+      "description": "기사 v4 과거 런타임 아틀라스; 현재 적용본과 비교용.",
+      "sha256": "e3fc3b95df3d14bfded85596d69a6687ae8dca99a859fd48078e7e03445e89dd"
+    },
+    {
+      "file": "history/runtime/knights-v5.png",
+      "source": "assets/knights-v5.png",
+      "size": [
+        768,
+        480
+      ],
+      "frames": 1,
+      "description": "기사 v5 과거 런타임 아틀라스; 현재 적용본과 비교용.",
+      "sha256": "defdc8c07c7ac7a529a866421aa566486899ba0db990738df65529a006fff369"
+    },
+    {
+      "file": "current/knights.png",
+      "source": "assets/knights.png",
+      "size": [
+        768,
+        480
+      ],
+      "frames": 1,
+      "description": "현재 기사 v6: 8방향×5동작×4프레임. 셀 48×48, 16열×10행, 피벗 (24,38).",
+      "sha256": "578d5c38b4141db07680a48d80cbba8751220279abb64289895de14ceb9fd4fd"
+    },
+    {
+      "file": "current/objects.png",
+      "source": "assets/objects.png",
+      "size": [
+        320,
+        144
+      ],
+      "frames": 1,
+      "description": "현재 맵 장식: 바위 4종, 잔디 4종×4프레임, 나무 3종. 셀 40×48, 8열×3행, 피벗 (20,44).",
+      "sha256": "a2e7207fb47ce568a1f8606e89952c249a4bdce38c669f02378f698c6f9a0839"
+    },
+    {
+      "file": "current/terrain.png",
+      "source": "assets/terrain.png",
+      "size": [
+        128,
+        40
+      ],
+      "frames": 1,
+      "description": "현재 맵 지형 아틀라스: 물 8프레임, 황무지·초원 바닥과 경계. 셀 16×8, 8열×5행.",
+      "sha256": "ed5b31cf4017f8bd9103f12c13386d173c52d5680d46a85206d6e57f1a297241"
+    },
+    {
+      "file": "references/footman.png",
+      "source": "footman.png",
+      "size": [
+        284,
+        308
+      ],
+      "frames": 1,
+      "description": "footman 이름의 보병 참고 이미지; 현재 맵 에디터 런타임 미연결.",
+      "sha256": "09a28316f4b0475b7cdf69ee34cb79e48d9e36f5196140a60e2a115fb9193b27"
+    },
+    {
+      "file": "reviews/knight-frame-review/E-after.png",
+      "source": "output/knight-frame-review/E-after.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 동쪽 방향 프레임 보정 후 검수 이미지.",
+      "sha256": "af840354eeab2a751033d54f42ff580fe24b4a321f4cfc0ea05fe0b30c3497f9"
+    },
+    {
+      "file": "reviews/knight-frame-review/E-before.png",
+      "source": "output/knight-frame-review/E-before.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 동쪽 방향 프레임 보정 전 검수 이미지.",
+      "sha256": "af840354eeab2a751033d54f42ff580fe24b4a321f4cfc0ea05fe0b30c3497f9"
+    },
+    {
+      "file": "reviews/knight-frame-review/N-after.png",
+      "source": "output/knight-frame-review/N-after.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 북쪽 방향 프레임 보정 후 검수 이미지.",
+      "sha256": "0814ad4f0dace9a8c94b6e83b50a2ec69c26a561068a977839f62f74861f6796"
+    },
+    {
+      "file": "reviews/knight-frame-review/N-before.png",
+      "source": "output/knight-frame-review/N-before.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 북쪽 방향 프레임 보정 전 검수 이미지.",
+      "sha256": "0814ad4f0dace9a8c94b6e83b50a2ec69c26a561068a977839f62f74861f6796"
+    },
+    {
+      "file": "reviews/knight-frame-review/NE-after.png",
+      "source": "output/knight-frame-review/NE-after.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 북동 방향 프레임 보정 후 검수 이미지.",
+      "sha256": "4cb978e82456c85dfeace30ec09a980bfc181e7d2607b9509121710d41fe37cb"
+    },
+    {
+      "file": "reviews/knight-frame-review/NE-before.png",
+      "source": "output/knight-frame-review/NE-before.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 북동 방향 프레임 보정 전 검수 이미지.",
+      "sha256": "ea0174eb8cc98a14ea76411bb0f14477f6fb026f0693bc3dd6e60797b54e220e"
+    },
+    {
+      "file": "reviews/knight-frame-review/NW-after.png",
+      "source": "output/knight-frame-review/NW-after.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 북서 방향 프레임 보정 후 검수 이미지.",
+      "sha256": "94ed57fe75802850ecdb594e33b2b5844fbfa115327cece8013a24fb0dd2c861"
+    },
+    {
+      "file": "reviews/knight-frame-review/NW-before.png",
+      "source": "output/knight-frame-review/NW-before.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 북서 방향 프레임 보정 전 검수 이미지.",
+      "sha256": "4239aab67e0165e67c2b62eeb6e25e12334dd1c0e51afeaefe2a9c5311faa210"
+    },
+    {
+      "file": "reviews/knight-frame-review/S-after.png",
+      "source": "output/knight-frame-review/S-after.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 남쪽 방향 프레임 보정 후 검수 이미지.",
+      "sha256": "f26b57a8891fd747d1d1497f141dc9ca6b5c42227ae381b48759f51126d29948"
+    },
+    {
+      "file": "reviews/knight-frame-review/S-before.png",
+      "source": "output/knight-frame-review/S-before.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 남쪽 방향 프레임 보정 전 검수 이미지.",
+      "sha256": "610c2a5c17f1faf38646009f95b58dda796fd1c9c57f32660b7820434a2701de"
+    },
+    {
+      "file": "reviews/knight-frame-review/SE-after.png",
+      "source": "output/knight-frame-review/SE-after.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 남동 방향 프레임 보정 후 검수 이미지.",
+      "sha256": "39ed754fdd621ae7fff6cb08b6f1ec3fe2957184c6d256a359695dae245717b0"
+    },
+    {
+      "file": "reviews/knight-frame-review/SE-before.png",
+      "source": "output/knight-frame-review/SE-before.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 남동 방향 프레임 보정 전 검수 이미지.",
+      "sha256": "ae19ab41beb7590731763526315175564a636149ff9c412d5dca41a128861ef3"
+    },
+    {
+      "file": "reviews/knight-frame-review/SW-after.png",
+      "source": "output/knight-frame-review/SW-after.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 남서 방향 프레임 보정 후 검수 이미지.",
+      "sha256": "608a1afb455eb879a81688b06f0a199e27e60336ab9eafb7c8172883720e0d71"
+    },
+    {
+      "file": "reviews/knight-frame-review/SW-before.png",
+      "source": "output/knight-frame-review/SW-before.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 남서 방향 프레임 보정 전 검수 이미지.",
+      "sha256": "97aef80780c8b07dc08865c778e5582e70029005a93ec33d6b621c4ddcf4ecc0"
+    },
+    {
+      "file": "reviews/knight-frame-review/W-after.png",
+      "source": "output/knight-frame-review/W-after.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 서쪽 방향 프레임 보정 후 검수 이미지.",
+      "sha256": "ac185794e7a8e5e5c9b56ee0f99dd80c88e6f4b7be07f6908e35d595c06d1ea1"
+    },
+    {
+      "file": "reviews/knight-frame-review/W-before.png",
+      "source": "output/knight-frame-review/W-before.png",
+      "size": [
+        1152,
+        1540
+      ],
+      "frames": 1,
+      "description": "기사 서쪽 방향 프레임 보정 전 검수 이미지.",
+      "sha256": "7654445d5f05d9cb3807ff0ff691ccac527e85d9aed59e5b2e9e14844b947690"
+    },
+    {
+      "file": "reviews/knight-frame-review/retouch-comparison.png",
+      "source": "output/knight-frame-review/retouch-comparison.png",
+      "size": [
+        1152,
+        2156
+      ],
+      "frames": 1,
+      "description": "기사 프레임 보정 비교.",
+      "sha256": "99578be3e38ee679bf93ea9f011b0f6349ae1b61b4721d6519e876b1a73b6d84"
+    },
+    {
+      "file": "reviews/knight-frame-review/v6-exhausted.gif",
+      "source": "output/knight-frame-review/v6-exhausted.gif",
+      "size": [
+        768,
+        424
+      ],
+      "frames": 4,
+      "description": "기사 v6 탈진 애니메이션 검수 GIF.",
+      "sha256": "f9a017716b50816cc55f79d3f505caff5ea5fc878fe3a461d80d15e300286de1"
+    },
+    {
+      "file": "reviews/knight-frame-review/v6-hit.gif",
+      "source": "output/knight-frame-review/v6-hit.gif",
+      "size": [
+        768,
+        424
+      ],
+      "frames": 3,
+      "description": "기사 v6 피격 애니메이션 검수 GIF.",
+      "sha256": "81577758521a87f3626bae4b304c51fa3c30ada99c603ef236e03482f96c97c1"
+    },
+    {
+      "file": "reviews/knight-frame-review/v6-walk.gif",
+      "source": "output/knight-frame-review/v6-walk.gif",
+      "size": [
+        768,
+        424
+      ],
+      "frames": 4,
+      "description": "기사 v6 걷기 애니메이션 검수 GIF.",
+      "sha256": "2fe73d5996417326bc383f8752619ebd223d3bb9809321049e95cb64ce90c86a"
+    },
+    {
+      "file": "reviews/knights-v2-comparison.png",
+      "source": "output/knights-v2-comparison.png",
+      "size": [
+        1536,
+        440
+      ],
+      "frames": 1,
+      "description": "기사 초기 축소본과 v2 재도트 비교.",
+      "sha256": "8b56d75a6799a371b8c2e531b32b6f9506f524d2f6674e5b82abd3221694c83d"
+    },
+    {
+      "file": "reviews/trees-preview.png",
+      "source": "output/trees-preview.png",
+      "size": [
+        2496,
+        1296
+      ],
+      "frames": 1,
+      "description": "나무 3종 배치 검수 이미지.",
+      "sha256": "924b423a1959d337c81c33e8b9a76c86e97500f3d0d607c3135a2868d1369844"
+    },
+    {
+      "file": "legacy/dist/retouched/E-transparent.png",
+      "source": "temp/dist/retouched/E-transparent.png",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 동쪽 방향 배경 투명화 원본 시트.",
+      "sha256": "5667f784ac75c55da8c897f72003b1dff1abca86b2effdb0a6f7eb75d24a66b6"
+    },
+    {
+      "file": "legacy/dist/retouched/E.webp",
+      "source": "temp/dist/retouched/E.webp",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 동쪽 방향 초기 WebP 원본.",
+      "sha256": "df5e97a1b15e2c6e3066bbc9d2dfd052465e7db8615352d248303ab29325624e"
+    },
+    {
+      "file": "legacy/dist/retouched/N-transparent.png",
+      "source": "temp/dist/retouched/N-transparent.png",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 북쪽 방향 배경 투명화 원본 시트.",
+      "sha256": "40c658fd54a5e808638d3f651f2621d14ffa9b6aa121fc8024184986524de907"
+    },
+    {
+      "file": "legacy/dist/retouched/N.webp",
+      "source": "temp/dist/retouched/N.webp",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 북쪽 방향 초기 WebP 원본.",
+      "sha256": "3c5e5398e003fbdda0c03027ffbb0ead526bf17c65333b59e9cb9df9a7796f3e"
+    },
+    {
+      "file": "legacy/dist/retouched/NE-transparent.png",
+      "source": "temp/dist/retouched/NE-transparent.png",
+      "size": [
+        1120,
+        1404
+      ],
+      "frames": 1,
+      "description": "기사 북동 방향 배경 투명화 원본 시트.",
+      "sha256": "f3cf6bef77b1006ee4eba98aeeec17fd23b555e95640a7f9f8e6cf08b0e88ddf"
+    },
+    {
+      "file": "legacy/dist/retouched/NE.webp",
+      "source": "temp/dist/retouched/NE.webp",
+      "size": [
+        1120,
+        1404
+      ],
+      "frames": 1,
+      "description": "기사 북동 방향 초기 WebP 원본.",
+      "sha256": "83ca03e3eae0d1e8db63722b9152173ed5d4f990162013ef28340ccc98ce8253"
+    },
+    {
+      "file": "legacy/dist/retouched/NW-transparent.png",
+      "source": "temp/dist/retouched/NW-transparent.png",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 북서 방향 배경 투명화 원본 시트.",
+      "sha256": "66bcba51e1c27a6110d5ca13cf56f68c1ec51bf8d953fd744afbaef3bd24dd79"
+    },
+    {
+      "file": "legacy/dist/retouched/NW.webp",
+      "source": "temp/dist/retouched/NW.webp",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 북서 방향 초기 WebP 원본.",
+      "sha256": "6e14e47839a37cbd09448184574da207c69d6c51ebb736d544f464b73a1d2148"
+    },
+    {
+      "file": "legacy/dist/retouched/S-transparent.png",
+      "source": "temp/dist/retouched/S-transparent.png",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 남쪽 방향 배경 투명화 원본 시트.",
+      "sha256": "efbc0c37ff995716df1f337a14b4536b7d86cd8e4b27924f8a2d4fea640e8e82"
+    },
+    {
+      "file": "legacy/dist/retouched/S.webp",
+      "source": "temp/dist/retouched/S.webp",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 남쪽 방향 초기 WebP 원본.",
+      "sha256": "0592e2766862cbeee38061db5fcad286b1d0853aa2039f7f8bc48e9589eac181"
+    },
+    {
+      "file": "legacy/dist/retouched/SE-transparent.png",
+      "source": "temp/dist/retouched/SE-transparent.png",
+      "size": [
+        1120,
+        1404
+      ],
+      "frames": 1,
+      "description": "기사 남동 방향 배경 투명화 원본 시트.",
+      "sha256": "53f857994ac1d04a6004242380f91e7a34275f16a711de0b570613e2709624f9"
+    },
+    {
+      "file": "legacy/dist/retouched/SE.webp",
+      "source": "temp/dist/retouched/SE.webp",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 남동 방향 초기 WebP 원본.",
+      "sha256": "650805efd0e4e00a63f44bd8ff8a2581a23f065e57323f0f7ece78eb84c9bcc1"
+    },
+    {
+      "file": "legacy/dist/retouched/SW-transparent.png",
+      "source": "temp/dist/retouched/SW-transparent.png",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 남서 방향 배경 투명화 원본 시트.",
+      "sha256": "75359ad7d61d8ab2470862fe62e507c2036eb261bd78e27e3491357901830ecb"
+    },
+    {
+      "file": "legacy/dist/retouched/SW.webp",
+      "source": "temp/dist/retouched/SW.webp",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 남서 방향 초기 WebP 원본.",
+      "sha256": "22b05a470b003f1ff343e911fe41146aaf19c73c91476336d4a050c619485c58"
+    },
+    {
+      "file": "legacy/dist/retouched/W-transparent.png",
+      "source": "temp/dist/retouched/W-transparent.png",
+      "size": [
+        1120,
+        1404
+      ],
+      "frames": 1,
+      "description": "기사 서쪽 방향 배경 투명화 원본 시트.",
+      "sha256": "de647ea7a1e03d69b60a1202da52a73218c18a2fe37692b6b9dcd680321b82b7"
+    },
+    {
+      "file": "legacy/dist/retouched/W.webp",
+      "source": "temp/dist/retouched/W.webp",
+      "size": [
+        1120,
+        1404
+      ],
+      "frames": 1,
+      "description": "기사 서쪽 방향 초기 WebP 원본.",
+      "sha256": "57770e12d3c46aa9d1ab34de30a6036c3aaed75f573328f44049df4ee3d97ba3"
+    },
+    {
+      "file": "legacy/dist/retouched/knight-preview/assets/knights.png",
+      "source": "temp/dist/retouched/knight-preview/assets/knights.png",
+      "size": [
+        640,
+        480
+      ],
+      "frames": 1,
+      "description": "초기 웹 미리보기에 포함된 기사 아틀라스 복사본.",
+      "sha256": "d878fe0edcea5eaf12b28097c729bc47d7c0fa6bb292e4fbda74f8d4120d350c"
+    },
+    {
+      "file": "legacy/dist/retouched/knight-preview/assets/terrain.png",
+      "source": "temp/dist/retouched/knight-preview/assets/terrain.png",
+      "size": [
+        128,
+        40
+      ],
+      "frames": 1,
+      "description": "초기 웹 미리보기에 포함된 지형 아틀라스 복사본.",
+      "sha256": "ed5b31cf4017f8bd9103f12c13386d173c52d5680d46a85206d6e57f1a297241"
+    },
+    {
+      "file": "legacy/dist/sprites/E.png",
+      "source": "temp/dist/sprites/E.png",
+      "size": [
+        2048,
+        640
+      ],
+      "frames": 1,
+      "description": "기사 동쪽 방향 초기 렌더링 시트.",
+      "sha256": "c1d6ea837ead73f0f78eadb3a67a47e188f4abd70ad90f13ece669280e51f9d4"
+    },
+    {
+      "file": "legacy/dist/sprites/N.png",
+      "source": "temp/dist/sprites/N.png",
+      "size": [
+        2048,
+        640
+      ],
+      "frames": 1,
+      "description": "기사 북쪽 방향 초기 렌더링 시트.",
+      "sha256": "c8099b99be6c25ae88990839a06451117be29fd2d17bcc4f2897bc04feac199d"
+    },
+    {
+      "file": "legacy/dist/sprites/NE.png",
+      "source": "temp/dist/sprites/NE.png",
+      "size": [
+        2048,
+        640
+      ],
+      "frames": 1,
+      "description": "기사 북동 방향 초기 렌더링 시트.",
+      "sha256": "bf575b9e7b56e083fc234c91440f13ea108f33695da548fca87e1d62da3e5402"
+    },
+    {
+      "file": "legacy/dist/sprites/NW.png",
+      "source": "temp/dist/sprites/NW.png",
+      "size": [
+        2048,
+        640
+      ],
+      "frames": 1,
+      "description": "기사 북서 방향 초기 렌더링 시트.",
+      "sha256": "162a1f3da48724f8b1c3313640ae84d7f31ca51e617bef062d5c5bf9b6890900"
+    },
+    {
+      "file": "legacy/dist/sprites/S.png",
+      "source": "temp/dist/sprites/S.png",
+      "size": [
+        2048,
+        640
+      ],
+      "frames": 1,
+      "description": "기사 남쪽 방향 초기 렌더링 시트.",
+      "sha256": "3ac101f7087fb80d67ba16dc8525c4465ef861067784982d86bcb1406ce4bbb0"
+    },
+    {
+      "file": "legacy/dist/sprites/SE.png",
+      "source": "temp/dist/sprites/SE.png",
+      "size": [
+        2048,
+        640
+      ],
+      "frames": 1,
+      "description": "기사 남동 방향 초기 렌더링 시트.",
+      "sha256": "a79b61a803a9873018f1eb374effe8b49df6cb16cd68abaa1d21e2c888ffd2f6"
+    },
+    {
+      "file": "legacy/dist/sprites/SW.png",
+      "source": "temp/dist/sprites/SW.png",
+      "size": [
+        2048,
+        640
+      ],
+      "frames": 1,
+      "description": "기사 남서 방향 초기 렌더링 시트.",
+      "sha256": "2ee7d79f2edb60c12285cfd79649409a17749ab2e9a52644f5107a6918caca8f"
+    },
+    {
+      "file": "legacy/dist/sprites/W.png",
+      "source": "temp/dist/sprites/W.png",
+      "size": [
+        2048,
+        640
+      ],
+      "frames": 1,
+      "description": "기사 서쪽 방향 초기 렌더링 시트.",
+      "sha256": "27b5a7e79e6eda6cae78d150df50bc61cb3e7b571608d2ca14a122cbdaee34f7"
+    },
+    {
+      "file": "legacy/dist/units/archer.webp",
+      "source": "temp/dist/units/archer.webp",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "궁병 초기 WebP 원본 (temp 제작 자료).",
+      "sha256": "8349655da9e74222cc5cf5518c34a91339ef87dbb1e1ed9c338e3d0c67d35314"
+    },
+    {
+      "file": "legacy/dist/units/cavalry.webp",
+      "source": "temp/dist/units/cavalry.webp",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기병 초기 WebP 원본 (temp 제작 자료).",
+      "sha256": "7e9da186a41e27f6efb8bd7f926b4fa09cda2583147a81dc1100c5c003b6ac68"
+    },
+    {
+      "file": "sources/E-transparent.png",
+      "source": "tools/spritetool/assets/E-transparent.png",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 동쪽 방향 배경 투명화 원본 시트.",
+      "sha256": "5667f784ac75c55da8c897f72003b1dff1abca86b2effdb0a6f7eb75d24a66b6"
+    },
+    {
+      "file": "sources/N-transparent.png",
+      "source": "tools/spritetool/assets/N-transparent.png",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 북쪽 방향 배경 투명화 원본 시트.",
+      "sha256": "40c658fd54a5e808638d3f651f2621d14ffa9b6aa121fc8024184986524de907"
+    },
+    {
+      "file": "sources/NE-transparent.png",
+      "source": "tools/spritetool/assets/NE-transparent.png",
+      "size": [
+        1120,
+        1404
+      ],
+      "frames": 1,
+      "description": "기사 북동 방향 배경 투명화 원본 시트.",
+      "sha256": "f3cf6bef77b1006ee4eba98aeeec17fd23b555e95640a7f9f8e6cf08b0e88ddf"
+    },
+    {
+      "file": "sources/NW-transparent.png",
+      "source": "tools/spritetool/assets/NW-transparent.png",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 북서 방향 배경 투명화 원본 시트.",
+      "sha256": "66bcba51e1c27a6110d5ca13cf56f68c1ec51bf8d953fd744afbaef3bd24dd79"
+    },
+    {
+      "file": "sources/S-transparent.png",
+      "source": "tools/spritetool/assets/S-transparent.png",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 남쪽 방향 배경 투명화 원본 시트.",
+      "sha256": "efbc0c37ff995716df1f337a14b4536b7d86cd8e4b27924f8a2d4fea640e8e82"
+    },
+    {
+      "file": "sources/SE-transparent.png",
+      "source": "tools/spritetool/assets/SE-transparent.png",
+      "size": [
+        1120,
+        1404
+      ],
+      "frames": 1,
+      "description": "기사 남동 방향 배경 투명화 원본 시트.",
+      "sha256": "53f857994ac1d04a6004242380f91e7a34275f16a711de0b570613e2709624f9"
+    },
+    {
+      "file": "sources/SW-transparent.png",
+      "source": "tools/spritetool/assets/SW-transparent.png",
+      "size": [
+        1121,
+        1403
+      ],
+      "frames": 1,
+      "description": "기사 남서 방향 배경 투명화 원본 시트.",
+      "sha256": "75359ad7d61d8ab2470862fe62e507c2036eb261bd78e27e3491357901830ecb"
+    },
+    {
+      "file": "sources/W-transparent.png",
+      "source": "tools/spritetool/assets/W-transparent.png",
+      "size": [
+        1120,
+        1404
+      ],
+      "frames": 1,
+      "description": "기사 서쪽 방향 배경 투명화 원본 시트.",
+      "sha256": "de647ea7a1e03d69b60a1202da52a73218c18a2fe37692b6b9dcd680321b82b7"
+    },
+    {
+      "file": "sources/grass_0.png",
+      "source": "tools/spritetool/assets/grass_0.png",
+      "size": [
+        40,
+        5
+      ],
+      "frames": 1,
+      "description": "잔디 0번 원본: 가로 4프레임 애니메이션.",
+      "sha256": "874bedabb8d4b1fe2310271a102b497aa7bd828a421ce785dbe77a04f9172268"
+    },
+    {
+      "file": "sources/grass_1.png",
+      "source": "tools/spritetool/assets/grass_1.png",
+      "size": [
+        40,
+        4
+      ],
+      "frames": 1,
+      "description": "잔디 1번 원본: 가로 4프레임 애니메이션.",
+      "sha256": "f3ffd505c89af5dd016dc634715149686360c2bfda3939658eeb063ab92631d0"
+    },
+    {
+      "file": "sources/grass_2.png",
+      "source": "tools/spritetool/assets/grass_2.png",
+      "size": [
+        36,
+        5
+      ],
+      "frames": 1,
+      "description": "잔디 2번 원본: 가로 4프레임 애니메이션.",
+      "sha256": "e9727b4cbecb2e1f5080d89188abcf55478a6d7d215677807728a82dd00f322d"
+    },
+    {
+      "file": "sources/grass_3.png",
+      "source": "tools/spritetool/assets/grass_3.png",
+      "size": [
+        40,
+        5
+      ],
+      "frames": 1,
+      "description": "잔디 3번 원본: 가로 4프레임 애니메이션.",
+      "sha256": "9c016ea6d7d359897330b3360f4de602118c98639727c7ee8bef32784742dd91"
+    },
+    {
+      "file": "sources/knight-hit-candidates/SW-hit-options.png",
+      "source": "tools/spritetool/assets/knight-hit-candidates/SW-hit-options.png",
+      "size": [
+        1227,
+        1282
+      ],
+      "frames": 1,
+      "description": "기사 남서 방향 피격 후보 4개 비교 시트. 후보 1번을 후속 버전에 적용.",
+      "sha256": "f4a4056d6f89374d68e637c61c7e97c5fbfdced9d0a798072dfe5494620db3b9"
+    },
+    {
+      "file": "sources/knights-pixel-v2/E-normalized-reference.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/E-normalized-reference.png",
+      "size": [
+        640,
+        960
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 동쪽 보기 머리 크기 정규화 참고 시트.",
+      "sha256": "f28abedb7a3ecc59a643db469f9ff99b71d170869d7393862d511cf222041766"
+    },
+    {
+      "file": "sources/knights-pixel-v2/E-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/E-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 동쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "e357e065d203edee5e67c27f455364f1506c1b69296dadc6c53814b404d12034"
+    },
+    {
+      "file": "sources/knights-pixel-v2/E-redrawn.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/E-redrawn.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 동쪽 보기 재도트 생성 원화.",
+      "sha256": "61a4430ae815b719c57471dff9e88530379ea152a43f41af5fd881cab1fdbc45"
+    },
+    {
+      "file": "sources/knights-pixel-v2/N-normalized-reference.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/N-normalized-reference.png",
+      "size": [
+        640,
+        960
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 북쪽 보기 머리 크기 정규화 참고 시트.",
+      "sha256": "43d716f20b3b0570d64bc9559abf7fb0fd6fe53e2d3376c72ff04eaa14d05290"
+    },
+    {
+      "file": "sources/knights-pixel-v2/N-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/N-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 북쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "030183b3cba71dc5bd1b1c506bf50e9da0fb81cb76252e14ff3a4e26bb2ee229"
+    },
+    {
+      "file": "sources/knights-pixel-v2/N-redrawn.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/N-redrawn.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 북쪽 보기 재도트 생성 원화.",
+      "sha256": "ebe8a07dfcb6d703d530d977a7bdae79c5f4f76c35c0d3a8c555026c6e272660"
+    },
+    {
+      "file": "sources/knights-pixel-v2/NE-normalized-reference.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/NE-normalized-reference.png",
+      "size": [
+        640,
+        960
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 북동 보기 머리 크기 정규화 참고 시트.",
+      "sha256": "f1bd6dd01049024c5f2b395db40debce9a2f522b55cfae6998ecbdfcd88f8854"
+    },
+    {
+      "file": "sources/knights-pixel-v2/NE-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/NE-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 북동 보기 방향별 완성 도트 시트.",
+      "sha256": "f0442521a594ffbb182928a680feda192f639b31559f0432ce2a40cbc5ee4c8b"
+    },
+    {
+      "file": "sources/knights-pixel-v2/NE-redrawn.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/NE-redrawn.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 북동 보기 재도트 생성 원화.",
+      "sha256": "1dbe20c59eb843a868263febbfae23fd06088345361320a5fcaa601397741397"
+    },
+    {
+      "file": "sources/knights-pixel-v2/NW-normalized-reference.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/NW-normalized-reference.png",
+      "size": [
+        640,
+        960
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 북서 보기 머리 크기 정규화 참고 시트.",
+      "sha256": "9d2f472411d609867997cd2ecfb6cb95b32b657f2618ddc6cbb4fd403f988995"
+    },
+    {
+      "file": "sources/knights-pixel-v2/NW-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/NW-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 북서 보기 방향별 완성 도트 시트.",
+      "sha256": "348574f15c892aa866eb2ad38188acc6af3c0a8937f5d97bcf4295f7113df2d1"
+    },
+    {
+      "file": "sources/knights-pixel-v2/NW-redrawn.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/NW-redrawn.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 북서 보기 재도트 생성 원화.",
+      "sha256": "e627d4d66c651cf56ca4d44d60ec7b7924f6efd731a9393d295c6d73faae9944"
+    },
+    {
+      "file": "sources/knights-pixel-v2/S-normalized-reference.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/S-normalized-reference.png",
+      "size": [
+        640,
+        960
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 남쪽 보기 머리 크기 정규화 참고 시트.",
+      "sha256": "0b5f6d66fbe84cccb07c1058312ddb691c113f32d482c37e8705ef41ae059dcd"
+    },
+    {
+      "file": "sources/knights-pixel-v2/S-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/S-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 남쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "5088d2f786256039fedd84775d4d6deb612c90b2a6e193ee348f2240984be5d5"
+    },
+    {
+      "file": "sources/knights-pixel-v2/S-redrawn.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/S-redrawn.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 남쪽 보기 재도트 생성 원화.",
+      "sha256": "87c87cfa9868c378b60f0b0ee349158ff353c699c59e83fa9e55c66674e0a2c0"
+    },
+    {
+      "file": "sources/knights-pixel-v2/SE-normalized-reference.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/SE-normalized-reference.png",
+      "size": [
+        640,
+        960
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 남동 보기 머리 크기 정규화 참고 시트.",
+      "sha256": "d6865e057bdd6d11e706686800114b4f528516c71dfcff1f2441ce7967a303b7"
+    },
+    {
+      "file": "sources/knights-pixel-v2/SE-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/SE-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 남동 보기 방향별 완성 도트 시트.",
+      "sha256": "60e85afa9701144bc9177d3816d7074f40be70515c30d1d7c58d8367c3127cb5"
+    },
+    {
+      "file": "sources/knights-pixel-v2/SE-redrawn.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/SE-redrawn.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 남동 보기 재도트 생성 원화.",
+      "sha256": "806c08956f880eef7f44bc6396fcd37948733a003dbc65e239f898105507c3cf"
+    },
+    {
+      "file": "sources/knights-pixel-v2/SW-normalized-reference.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/SW-normalized-reference.png",
+      "size": [
+        640,
+        960
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 남서 보기 머리 크기 정규화 참고 시트.",
+      "sha256": "16d92346b78fd99485d44da21ee2e5997b9f5f591c241e304a5939b48103d8c4"
+    },
+    {
+      "file": "sources/knights-pixel-v2/SW-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/SW-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 남서 보기 방향별 완성 도트 시트.",
+      "sha256": "48dbc007aea7ba7380458742d52f8c1358260c0b2c7641e236576db9216970b8"
+    },
+    {
+      "file": "sources/knights-pixel-v2/SW-redrawn.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/SW-redrawn.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 남서 보기 재도트 생성 원화.",
+      "sha256": "0f8b3d58932d0929a8e564a04095fadba5636b853fa2e9d70ec7b6d68906bfe8"
+    },
+    {
+      "file": "sources/knights-pixel-v2/W-normalized-reference.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/W-normalized-reference.png",
+      "size": [
+        640,
+        960
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 서쪽 보기 머리 크기 정규화 참고 시트.",
+      "sha256": "42dcad02bdc941f573a68dd5ae930115efe9b235fd92e6a1fed4abe1d7ff6fec"
+    },
+    {
+      "file": "sources/knights-pixel-v2/W-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/W-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 서쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "f3c549ebe9dab3d1eef67cf61157d4912bf4e441d92db8de2be7fd8ff066a3bf"
+    },
+    {
+      "file": "sources/knights-pixel-v2/W-redrawn.png",
+      "source": "tools/spritetool/assets/knights-pixel-v2/W-redrawn.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "frames": 1,
+      "description": "기사 v2 (최초 재도트), 서쪽 보기 재도트 생성 원화.",
+      "sha256": "dda1f3e9a61665d1f5ea08cd2b464ac18fe2a02add5cea2eeac80fe8593a6a8c"
+    },
+    {
+      "file": "sources/knights-pixel-v3/E-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v3/E-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v3 (초기 동작 구성), 동쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "4afc129ab0e7b172f2077852bffeca0cdf2acfe94a87232d00af49e580ff6340"
+    },
+    {
+      "file": "sources/knights-pixel-v3/N-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v3/N-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v3 (초기 동작 구성), 북쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "83dcf378d3f17ad7cd1a7fd6c938736713097e3ba1183ba41dabfef5b0738c42"
+    },
+    {
+      "file": "sources/knights-pixel-v3/NE-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v3/NE-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v3 (초기 동작 구성), 북동 보기 방향별 완성 도트 시트.",
+      "sha256": "86038558c63c6331c9f982112f2f314118d4340ec4d0607385fdd93bd09aad12"
+    },
+    {
+      "file": "sources/knights-pixel-v3/NW-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v3/NW-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v3 (초기 동작 구성), 북서 보기 방향별 완성 도트 시트.",
+      "sha256": "6cf489517945b71577b862109901b961c76ab49d5a4df857a257690486d3a29e"
+    },
+    {
+      "file": "sources/knights-pixel-v3/S-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v3/S-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v3 (초기 동작 구성), 남쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "2da8bef244506dcdac7772cf54c79565008e6e6d459fc64dbe98c6650afaf134"
+    },
+    {
+      "file": "sources/knights-pixel-v3/SE-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v3/SE-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v3 (초기 동작 구성), 남동 보기 방향별 완성 도트 시트.",
+      "sha256": "b64fc7872d9ea6378ea632ca19d6cd54eae5f3c289ce89c7bcebbaa3cb15104d"
+    },
+    {
+      "file": "sources/knights-pixel-v3/SW-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v3/SW-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v3 (초기 동작 구성), 남서 보기 방향별 완성 도트 시트.",
+      "sha256": "a69db6074817b823150174fa7aa99b68a7adc3cd3bb87dba2372f3d9628fea24"
+    },
+    {
+      "file": "sources/knights-pixel-v3/W-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v3/W-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v3 (초기 동작 구성), 서쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "101dcb45fe6638827c6a4f316b0d54145263c06b2ab3ea53b6db0f6a61f29e93"
+    },
+    {
+      "file": "sources/knights-pixel-v4/E-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v4/E-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v4 (피격 후보 1 적용), 동쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "5a4a7c716fe13d761cc8f2508aa2a13b60d307665e65f4edc545a16238bda615"
+    },
+    {
+      "file": "sources/knights-pixel-v4/N-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v4/N-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v4 (피격 후보 1 적용), 북쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "b397cdb40c389310431e387de0521334cbb091d3e6c5af9231dbbd7e482cf058"
+    },
+    {
+      "file": "sources/knights-pixel-v4/NE-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v4/NE-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v4 (피격 후보 1 적용), 북동 보기 방향별 완성 도트 시트.",
+      "sha256": "d01bfc7f9beaef2de9be7d3ec134bd166168ad7a63550f1613502ce54b00cdaf"
+    },
+    {
+      "file": "sources/knights-pixel-v4/NW-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v4/NW-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v4 (피격 후보 1 적용), 북서 보기 방향별 완성 도트 시트.",
+      "sha256": "ebe52e84c6d4ff518209d1e931b3bbf75647a39a91d35cb0a23e9999d16b8e0b"
+    },
+    {
+      "file": "sources/knights-pixel-v4/S-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v4/S-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v4 (피격 후보 1 적용), 남쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "28d506d3bb00d7b2c52525dd9e41e14883e7eb7dec99f1e85928c9b4281f62f8"
+    },
+    {
+      "file": "sources/knights-pixel-v4/SE-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v4/SE-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v4 (피격 후보 1 적용), 남동 보기 방향별 완성 도트 시트.",
+      "sha256": "2921472797eb2c37834749acae58ab2469c9e97ff265a82eb9a928366dfb90e6"
+    },
+    {
+      "file": "sources/knights-pixel-v4/SW-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v4/SW-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v4 (피격 후보 1 적용), 남서 보기 방향별 완성 도트 시트.",
+      "sha256": "77553458622ea560850dece4f7163f54555e1b98535df7cddb17d70002deec17"
+    },
+    {
+      "file": "sources/knights-pixel-v4/W-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v4/W-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v4 (피격 후보 1 적용), 서쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "1a41e2313877367cbd752e475a8ecbd918e997f6d2e1af308eaddaba5c484451"
+    },
+    {
+      "file": "sources/knights-pixel-v5/E-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v5/E-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v5 (국소 조각 보정), 동쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "5a4a7c716fe13d761cc8f2508aa2a13b60d307665e65f4edc545a16238bda615"
+    },
+    {
+      "file": "sources/knights-pixel-v5/N-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v5/N-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v5 (국소 조각 보정), 북쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "b397cdb40c389310431e387de0521334cbb091d3e6c5af9231dbbd7e482cf058"
+    },
+    {
+      "file": "sources/knights-pixel-v5/NE-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v5/NE-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v5 (국소 조각 보정), 북동 보기 방향별 완성 도트 시트.",
+      "sha256": "8f83ed11d7982d9808519a41c08008fb9a2f144a0f572c822805c80e04d19931"
+    },
+    {
+      "file": "sources/knights-pixel-v5/NW-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v5/NW-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v5 (국소 조각 보정), 북서 보기 방향별 완성 도트 시트.",
+      "sha256": "79db87dbd9835e9e9e38066b03f66dfaa78f45ede5d6b58cc325aba48bd3329e"
+    },
+    {
+      "file": "sources/knights-pixel-v5/S-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v5/S-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v5 (국소 조각 보정), 남쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "3add8d7538e62cc23611bf72bbed809f2cfa5ce72a2f9b0d3b121dec6cf78fe7"
+    },
+    {
+      "file": "sources/knights-pixel-v5/SE-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v5/SE-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v5 (국소 조각 보정), 남동 보기 방향별 완성 도트 시트.",
+      "sha256": "bd2a5b04063bfc79d6c8088e140ac6b3763f97bbd7102975403f407b09f31352"
+    },
+    {
+      "file": "sources/knights-pixel-v5/SW-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v5/SW-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v5 (국소 조각 보정), 남서 보기 방향별 완성 도트 시트.",
+      "sha256": "55c104d3563baff7844fd9a20be604be47957d7a04448197f5d1ca81d90eadaf"
+    },
+    {
+      "file": "sources/knights-pixel-v5/W-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v5/W-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v5 (국소 조각 보정), 서쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "258947f1f167c8b8dc2458095216ca3f0386030472960add5d8830a4ffca58ab"
+    },
+    {
+      "file": "sources/knights-pixel-v6/E-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v6/E-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v6 (현재 채택한 연결부·동작 재구성), 동쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "fee0a7c85bfcbb3c4289874b41cb2ae2d6ca5404b6a9dbcc1fd68bb50a7e0ddd"
+    },
+    {
+      "file": "sources/knights-pixel-v6/N-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v6/N-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v6 (현재 채택한 연결부·동작 재구성), 북쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "be6ccd7181d742d67d8f25ab0716cf7479ebbf85b702873a2e7ef2e5529b19a2"
+    },
+    {
+      "file": "sources/knights-pixel-v6/NE-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v6/NE-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v6 (현재 채택한 연결부·동작 재구성), 북동 보기 방향별 완성 도트 시트.",
+      "sha256": "012f44d23d5b430c6bd3d117e56a031916ce9865b6ff404f8d8fde859fee63d7"
+    },
+    {
+      "file": "sources/knights-pixel-v6/NW-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v6/NW-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v6 (현재 채택한 연결부·동작 재구성), 북서 보기 방향별 완성 도트 시트.",
+      "sha256": "73bb283d0c1d781c81f29608cc6c7e08ee8a890014d7f79dc42314e1c2e3d401"
+    },
+    {
+      "file": "sources/knights-pixel-v6/S-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v6/S-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v6 (현재 채택한 연결부·동작 재구성), 남쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "cbcfb8a6663ff3f94914194f2fabb66e3d365562f0c6a1fbebafb97d8961f5d5"
+    },
+    {
+      "file": "sources/knights-pixel-v6/SE-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v6/SE-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v6 (현재 채택한 연결부·동작 재구성), 남동 보기 방향별 완성 도트 시트.",
+      "sha256": "22acb4d93145a19589812e0347a62224675b2e871d842d10ad7982c04b880bcb"
+    },
+    {
+      "file": "sources/knights-pixel-v6/SW-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v6/SW-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v6 (현재 채택한 연결부·동작 재구성), 남서 보기 방향별 완성 도트 시트.",
+      "sha256": "69843c2163d6de82aaf3d7491a1bf54cfc54bfb5cd51809a098d6ee5e8d7e7c4"
+    },
+    {
+      "file": "sources/knights-pixel-v6/W-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v6/W-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v6 (현재 채택한 연결부·동작 재구성), 서쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "0060fb676734f77ac19cf30e1b8e4ddaf45aeabf05e91704e244965dc78f58be"
+    },
+    {
+      "file": "sources/knights-pixel-v7/E-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v7/E-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v7 (OpenCV 자동 복원 제안 · 미적용), 동쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "54afa0c6efee1b9ecf1906665fc95b71b2fe9f0b564ea3d89e39c686d59b3b85"
+    },
+    {
+      "file": "sources/knights-pixel-v7/N-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v7/N-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v7 (OpenCV 자동 복원 제안 · 미적용), 북쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "1e98f571b0a6dc1389d3a2d0b3f4bfb12bf6a41d0631113c8c334078efe332a5"
+    },
+    {
+      "file": "sources/knights-pixel-v7/NE-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v7/NE-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v7 (OpenCV 자동 복원 제안 · 미적용), 북동 보기 방향별 완성 도트 시트.",
+      "sha256": "2aa1e9faf80936b48335623b669bc712de8a3102aa472432d654cb8c73547d9d"
+    },
+    {
+      "file": "sources/knights-pixel-v7/NW-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v7/NW-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v7 (OpenCV 자동 복원 제안 · 미적용), 북서 보기 방향별 완성 도트 시트.",
+      "sha256": "5c6320e65ee269b3f52cc0e5a6220fea72faa174a701926bf60ff9777a27b660"
+    },
+    {
+      "file": "sources/knights-pixel-v7/S-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v7/S-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v7 (OpenCV 자동 복원 제안 · 미적용), 남쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "b1451dc5e2d20d04cdfd192a5ca22a4a355deb90df69cf121cc63ac78f8ddc29"
+    },
+    {
+      "file": "sources/knights-pixel-v7/SE-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v7/SE-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v7 (OpenCV 자동 복원 제안 · 미적용), 남동 보기 방향별 완성 도트 시트.",
+      "sha256": "6a90dde92f16ebcb900a05fed7ead271c6f5d149876f83bb872a52494891224b"
+    },
+    {
+      "file": "sources/knights-pixel-v7/SW-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v7/SW-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v7 (OpenCV 자동 복원 제안 · 미적용), 남서 보기 방향별 완성 도트 시트.",
+      "sha256": "98889f7d6380051e232b13a62803ea4e4e28fd28b52761be206e6eb58cea1b49"
+    },
+    {
+      "file": "sources/knights-pixel-v7/W-pixel.png",
+      "source": "tools/spritetool/assets/knights-pixel-v7/W-pixel.png",
+      "size": [
+        192,
+        240
+      ],
+      "frames": 1,
+      "description": "기사 v7 (OpenCV 자동 복원 제안 · 미적용), 서쪽 보기 방향별 완성 도트 시트.",
+      "sha256": "6fa7d0090719142c2c0a385d7e5fd652ecbc426e7a66eeddfaef2ebc6426a08a"
+    },
+    {
+      "file": "sources/rock_large.png",
+      "source": "tools/spritetool/assets/rock_large.png",
+      "size": [
+        1354,
+        1161
+      ],
+      "frames": 1,
+      "description": "바위 대형 원본.",
+      "sha256": "e7037503ce16aba149f081d2b7c8d0c2da54de8f6d2c405b899e5809af653064"
+    },
+    {
+      "file": "sources/rock_medium.png",
+      "source": "tools/spritetool/assets/rock_medium.png",
+      "size": [
+        1470,
+        1070
+      ],
+      "frames": 1,
+      "description": "바위 중형 원본.",
+      "sha256": "5401dfa65f10793e769209c53375284f91277050ac325d8d69bdacd30bebf530"
+    },
+    {
+      "file": "sources/rock_medium2.png",
+      "source": "tools/spritetool/assets/rock_medium2.png",
+      "size": [
+        1322,
+        1190
+      ],
+      "frames": 1,
+      "description": "바위 중형 변형 원본.",
+      "sha256": "c9abf8165b8cce221560257bd3bd01c5655bfc3fc2f983932099779cc94e14b4"
+    },
+    {
+      "file": "sources/rock_small.png",
+      "source": "tools/spritetool/assets/rock_small.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "frames": 1,
+      "description": "바위 소형 원본.",
+      "sha256": "f4902e0e3912096780ff915c1091b3a8971b827e4c831e8d60fa3fb09891ca20"
+    },
+    {
+      "file": "sources/tree1.png",
+      "source": "tools/spritetool/assets/tree1.png",
+      "size": [
+        1028,
+        940
+      ],
+      "frames": 1,
+      "description": "나무 1번 투명 PNG 원본.",
+      "sha256": "10249b8139c1fcde2b7424fab8557b0b5dfe61d9addc2e38c95b7f94cb90f1c7"
+    },
+    {
+      "file": "sources/tree2.png",
+      "source": "tools/spritetool/assets/tree2.png",
+      "size": [
+        1315,
+        1196
+      ],
+      "frames": 1,
+      "description": "나무 2번 투명 PNG 원본.",
+      "sha256": "0f608898a8d85768279d14e63368b7e3124bbe337c9f30bf0e8d9a7416de4910"
+    },
+    {
+      "file": "sources/tree3.png",
+      "source": "tools/spritetool/assets/tree3.png",
+      "size": [
+        1315,
+        1196
+      ],
+      "frames": 1,
+      "description": "나무 3번 투명 PNG 원본.",
+      "sha256": "f530c4b9603a48d5d5a06d9245d528b90711c0db8fc09bde79fcdeb69cfa6ce4"
+    },
+    {
+      "file": "sources/tree_0.png",
+      "source": "tools/spritetool/assets/tree_0.png",
+      "size": [
+        1774,
+        887
+      ],
+      "frames": 1,
+      "description": "이전 나무 생성 시트 0; 현재 tree1~3 교체 전 참고 원본.",
+      "sha256": "fcc745bcc5695df49290b92756cf46ffdcce1e131b1219a56f9f1b792d03df5c"
+    },
+    {
+      "file": "sources/tree_1.png",
+      "source": "tools/spritetool/assets/tree_1.png",
+      "size": [
+        2172,
+        724
+      ],
+      "frames": 1,
+      "description": "이전 나무 생성 시트 1; 현재 tree1~3 교체 전 참고 원본.",
+      "sha256": "46b57056b45adf9effd7fcaa79a08ebebfb4526ce8c0e33105ec6360a7733aaa"
+    },
+    {
+      "file": "references/tree1.jpeg",
+      "source": "tree1.jpeg",
+      "size": [
+        1536,
+        1397
+      ],
+      "frames": 1,
+      "description": "나무 1번 JPEG 참고 원화.",
+      "sha256": "1857b75a3fbe3fd0d5860349170ecae552298a1f469feb5b2840babecb6d18aa"
+    },
+    {
+      "file": "references/tree2.jpeg",
+      "source": "tree2.jpeg",
+      "size": [
+        1536,
+        1397
+      ],
+      "frames": 1,
+      "description": "나무 2번 JPEG 참고 원화.",
+      "sha256": "a50055e264c764ed4b3f4151ce7dfc1f131a6605bebe00a1b3156d82a76420b3"
+    },
+    {
+      "file": "references/tree3.jpeg",
+      "source": "tree3.jpeg",
+      "size": [
+        1536,
+        1397
+      ],
+      "frames": 1,
+      "description": "나무 3번 JPEG 참고 원화.",
+      "sha256": "a9301ea3300f199be7c604cbd967bf766cd08d9af22e8678bffda56627e55297"
+    },
+    {
+      "file": "variants/ver1/assets/graphics/enemies.png",
+      "source": "ver1/assets/graphics/enemies.png",
+      "size": [
+        2172,
+        724
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 여포·화웅·장각·황건 장수 초상; 런타임 시트.",
+      "sha256": "208f04f5f2de575932b1794f2eb127ba34c818954b9bef299b24d650b20aaef7"
+    },
+    {
+      "file": "variants/ver1/assets/graphics/portraits.png",
+      "source": "ver1/assets/graphics/portraits.png",
+      "size": [
+        2172,
+        724
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 유비·관우·장비·간옹 초상; 런타임 시트.",
+      "sha256": "b80af355686312c91f0558910bb63e459f3b6b21ae302c69095485bb79d91051"
+    },
+    {
+      "file": "variants/ver1/assets/graphics/terrain.png",
+      "source": "ver1/assets/graphics/terrain.png",
+      "size": [
+        1774,
+        887
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 초원·사막·숲·산·성채·요새·마을·물 지형; 런타임 시트.",
+      "sha256": "026fe921991b5a8525d43dcca4ce968e79814fe038df106b74fac0c7b5442c6f"
+    },
+    {
+      "file": "variants/ver1/assets/graphics/units.png",
+      "source": "ver1/assets/graphics/units.png",
+      "size": [
+        1402,
+        1122
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 보병·기병·궁병·문관 × 대기·보행A·보행B·공격·피격; 런타임 시트.",
+      "sha256": "96d7150553348f6f678f58558a63b781435b905bdf73a3a49eeb4ed6af04cd28"
+    },
+    {
+      "file": "variants/ver1/bin/SRPG.app/Contents/Resources/assets/graphics/enemies.png",
+      "source": "ver1/bin/SRPG.app/Contents/Resources/assets/graphics/enemies.png",
+      "size": [
+        2172,
+        724
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 여포·화웅·장각·황건 장수 초상; 앱 패키지 복사본.",
+      "sha256": "208f04f5f2de575932b1794f2eb127ba34c818954b9bef299b24d650b20aaef7"
+    },
+    {
+      "file": "variants/ver1/bin/SRPG.app/Contents/Resources/assets/graphics/portraits.png",
+      "source": "ver1/bin/SRPG.app/Contents/Resources/assets/graphics/portraits.png",
+      "size": [
+        2172,
+        724
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 유비·관우·장비·간옹 초상; 앱 패키지 복사본.",
+      "sha256": "b80af355686312c91f0558910bb63e459f3b6b21ae302c69095485bb79d91051"
+    },
+    {
+      "file": "variants/ver1/bin/SRPG.app/Contents/Resources/assets/graphics/terrain.png",
+      "source": "ver1/bin/SRPG.app/Contents/Resources/assets/graphics/terrain.png",
+      "size": [
+        1774,
+        887
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 초원·사막·숲·산·성채·요새·마을·물 지형; 앱 패키지 복사본.",
+      "sha256": "026fe921991b5a8525d43dcca4ce968e79814fe038df106b74fac0c7b5442c6f"
+    },
+    {
+      "file": "variants/ver1/bin/SRPG.app/Contents/Resources/assets/graphics/units.png",
+      "source": "ver1/bin/SRPG.app/Contents/Resources/assets/graphics/units.png",
+      "size": [
+        1402,
+        1122
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 보병·기병·궁병·문관 × 대기·보행A·보행B·공격·피격; 앱 패키지 복사본.",
+      "sha256": "96d7150553348f6f678f58558a63b781435b905bdf73a3a49eeb4ed6af04cd28"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000005.png",
+      "source": "ver1/reports/gui-verify/screen-000005.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000005.",
+      "sha256": "ea245e8a9c365d0758614c4c76461b442081e1df98e225288cb14bf7fd4c0986"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000010.png",
+      "source": "ver1/reports/gui-verify/screen-000010.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000010.",
+      "sha256": "8b23d5b7f8b4f35cef632448a454f9b0b5597b06527baf74c02b71020e5deb3f"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000015.png",
+      "source": "ver1/reports/gui-verify/screen-000015.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000015.",
+      "sha256": "9600feaa6366651784d5efb718bcaa9bcb54d7f478221c9f3d9be54b846dcb2e"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000027.png",
+      "source": "ver1/reports/gui-verify/screen-000027.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000027.",
+      "sha256": "75b7229766644763ea3f9f82d2d8cde159777985e73321b08108bf75214a8954"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000269.png",
+      "source": "ver1/reports/gui-verify/screen-000269.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000269.",
+      "sha256": "7dc396fe01081bfba18e4811658254ef7cd18396ed7f6afbf5502998a16fa3ca"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000271.png",
+      "source": "ver1/reports/gui-verify/screen-000271.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000271.",
+      "sha256": "7128e0f8c33c8d6bf09227b736c3deb82591d87016872348b6d492104528cd27"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000273.png",
+      "source": "ver1/reports/gui-verify/screen-000273.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000273.",
+      "sha256": "ae5cb492fc4f67824848b2b5f3dcb1a2f0915200b69ce7361db04a8f19bfae23"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000275.png",
+      "source": "ver1/reports/gui-verify/screen-000275.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000275.",
+      "sha256": "8c0c01b86a08d1825f050e7581f886e1944975c24044ef962da393e2ea297687"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000277.png",
+      "source": "ver1/reports/gui-verify/screen-000277.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000277.",
+      "sha256": "c945cc5427f08cfec94d73fcfa1c8d67fa87a170a2c48f4c4163296c211ab953"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000279.png",
+      "source": "ver1/reports/gui-verify/screen-000279.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000279.",
+      "sha256": "0820a1f0e6b746a5a7e3475a9fd30e503bb097c4d39f9f1cd9c39e9c9422899e"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000299.png",
+      "source": "ver1/reports/gui-verify/screen-000299.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000299.",
+      "sha256": "166ec213fb641745558be88b70164fa710be86f6fd2503756773bca46c5988a0"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000623.png",
+      "source": "ver1/reports/gui-verify/screen-000623.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000623.",
+      "sha256": "1e0730b6aaafed35b3ac0b5a7c25540323d232756213d54d1e9e71cc595287ed"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000625.png",
+      "source": "ver1/reports/gui-verify/screen-000625.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000625.",
+      "sha256": "3633e22a8ecb5e4dae0652342acbcfa93a23ae1403a968027735126dbc9d7249"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000627.png",
+      "source": "ver1/reports/gui-verify/screen-000627.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000627.",
+      "sha256": "7acee4362c1dd41a4148039ab46611415abd453aed555092f343f6514b1aa567"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000631.png",
+      "source": "ver1/reports/gui-verify/screen-000631.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000631.",
+      "sha256": "8708c3a38491ed02049e5c8031458b85f2379e752e86b3c99a52101e98a24483"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000633.png",
+      "source": "ver1/reports/gui-verify/screen-000633.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000633.",
+      "sha256": "e7c9206bb84ce38518ee76fb4f30c5fd97ec8ee3927bfecd8585494a2794ebc4"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-000653.png",
+      "source": "ver1/reports/gui-verify/screen-000653.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 000653.",
+      "sha256": "53033b726f5fa0855a3437434a774b78053d62da5c135c6146c800b4e8509fd2"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-001377.png",
+      "source": "ver1/reports/gui-verify/screen-001377.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 001377.",
+      "sha256": "feada8d37693434e460bc434199b6ce28940c4390d8ec22981cdf87541fa5a8c"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-001379.png",
+      "source": "ver1/reports/gui-verify/screen-001379.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 001379.",
+      "sha256": "bb9728007a2a59c7b1e67eb504c4ff17b08c856ddc3f19d0c5f2ecd764319e81"
+    },
+    {
+      "file": "variants/ver1/reports/gui-verify/screen-001381.png",
+      "source": "ver1/reports/gui-verify/screen-001381.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 GUI 동작 검증 화면 캡처 001381.",
+      "sha256": "bb9728007a2a59c7b1e67eb504c4ff17b08c856ddc3f19d0c5f2ecd764319e81"
+    },
+    {
+      "file": "variants/ver1/tools/spritetool/assets/three-kingdoms/enemies-source.png",
+      "source": "ver1/tools/spritetool/assets/three-kingdoms/enemies-source.png",
+      "size": [
+        2172,
+        724
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 여포·화웅·장각·황건 장수 초상; 원화.",
+      "sha256": "208f04f5f2de575932b1794f2eb127ba34c818954b9bef299b24d650b20aaef7"
+    },
+    {
+      "file": "variants/ver1/tools/spritetool/assets/three-kingdoms/portraits-source.png",
+      "source": "ver1/tools/spritetool/assets/three-kingdoms/portraits-source.png",
+      "size": [
+        2172,
+        724
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 유비·관우·장비·간옹 초상; 원화.",
+      "sha256": "b80af355686312c91f0558910bb63e459f3b6b21ae302c69095485bb79d91051"
+    },
+    {
+      "file": "variants/ver1/tools/spritetool/assets/three-kingdoms/terrain-source.png",
+      "source": "ver1/tools/spritetool/assets/three-kingdoms/terrain-source.png",
+      "size": [
+        1774,
+        887
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 초원·사막·숲·산·성채·요새·마을·물 지형; 원화.",
+      "sha256": "026fe921991b5a8525d43dcca4ce968e79814fe038df106b74fac0c7b5442c6f"
+    },
+    {
+      "file": "variants/ver1/tools/spritetool/assets/three-kingdoms/units-source.png",
+      "source": "ver1/tools/spritetool/assets/three-kingdoms/units-source.png",
+      "size": [
+        1402,
+        1122
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 보병·기병·궁병·문관 × 대기·보행A·보행B·공격·피격; 원화.",
+      "sha256": "ee3184ac7f6a08289453d9b9a74526bb3aba732fbf6a86b4571c2910478c2da4"
+    },
+    {
+      "file": "variants/ver1/tools/spritetool/assets/three-kingdoms/units-v2-source.png",
+      "source": "ver1/tools/spritetool/assets/three-kingdoms/units-v2-source.png",
+      "size": [
+        1402,
+        1122
+      ],
+      "frames": 1,
+      "description": "ver1 삼국지 보병·기병·궁병·문관 × 대기·보행A·보행B·공격·피격; 원화.",
+      "sha256": "96d7150553348f6f678f58558a63b781435b905bdf73a3a49eeb4ed6af04cd28"
+    },
+    {
+      "file": "variants/ver2/art-candidates/A/out/portrait.png",
+      "source": "ver2/art-candidates/A/out/portrait.png",
+      "size": [
+        32,
+        36
+      ],
+      "frames": 1,
+      "description": "ver2 후보 A (클래식): 관우 초상.",
+      "sha256": "6e9cb84c548d2fb2f29cfd15d31f6d7efeee4e5f99adea7209e1a68ba1887596"
+    },
+    {
+      "file": "variants/ver2/art-candidates/A/out/screen.png",
+      "source": "ver2/art-candidates/A/out/screen.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver2 후보 A (클래식): 전장·UI 화면 목업.",
+      "sha256": "cfa0109b22cc1e1632a904601c249ef9928a883f517c0871d35e2a2710ea5097"
+    },
+    {
+      "file": "variants/ver2/art-candidates/A/out/sheet-x4.png",
+      "source": "ver2/art-candidates/A/out/sheet-x4.png",
+      "size": [
+        1536,
+        336
+      ],
+      "frames": 1,
+      "description": "ver2 후보 A (클래식): 보병·기병·황건 적병 애니메이션 시트 (4배 확대 검수본).",
+      "sha256": "c03d27d5481441ec93ade8e259ee65f530d68720e18e01402c7d9758a206eb9b"
+    },
+    {
+      "file": "variants/ver2/art-candidates/A/out/sheet.png",
+      "source": "ver2/art-candidates/A/out/sheet.png",
+      "size": [
+        384,
+        84
+      ],
+      "frames": 1,
+      "description": "ver2 후보 A (클래식): 보병·기병·황건 적병 애니메이션 시트.",
+      "sha256": "a66493a8d35474eb26ea2c8a177e2c5255873f56a3b48946e53b8bbb4df4c42f"
+    },
+    {
+      "file": "variants/ver2/art-candidates/B/out/portrait-x4.png",
+      "source": "ver2/art-candidates/B/out/portrait-x4.png",
+      "size": [
+        256,
+        288
+      ],
+      "frames": 1,
+      "description": "ver2 후보 B (정밀): 관우 초상 (4배 확대 검수본).",
+      "sha256": "ac7dc388909724d46cbecc9fb29d4a3619bc9237c887af8e96095770863f4661"
+    },
+    {
+      "file": "variants/ver2/art-candidates/B/out/portrait.png",
+      "source": "ver2/art-candidates/B/out/portrait.png",
+      "size": [
+        64,
+        72
+      ],
+      "frames": 1,
+      "description": "ver2 후보 B (정밀): 관우 초상.",
+      "sha256": "de7981410762cf32f03cb29efd389240b1db0fee92ae6d6d0b544b91c0bf17fc"
+    },
+    {
+      "file": "variants/ver2/art-candidates/B/out/screen.png",
+      "source": "ver2/art-candidates/B/out/screen.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver2 후보 B (정밀): 전장·UI 화면 목업.",
+      "sha256": "a6ad47a1539eef78958b5ae364e43d6614aabbd7e79a07e9d26bfada071387c2"
+    },
+    {
+      "file": "variants/ver2/art-candidates/B/out/sheet-x4.png",
+      "source": "ver2/art-candidates/B/out/sheet-x4.png",
+      "size": [
+        3584,
+        672
+      ],
+      "frames": 1,
+      "description": "ver2 후보 B (정밀): 보병·기병·황건 적병 애니메이션 시트 (4배 확대 검수본).",
+      "sha256": "7e2d2ce096963f5fd98b8fe478e888b31958c469f67902c2dab61331752b10c2"
+    },
+    {
+      "file": "variants/ver2/art-candidates/B/out/sheet.png",
+      "source": "ver2/art-candidates/B/out/sheet.png",
+      "size": [
+        896,
+        168
+      ],
+      "frames": 1,
+      "description": "ver2 후보 B (정밀): 보병·기병·황건 적병 애니메이션 시트.",
+      "sha256": "333b95fba9938c9f598d2d20eb55c9c75ac5e5fb5cacf6d24ac5ac6a4a6e413e"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C/out/portrait.png",
+      "source": "ver2/art-candidates/C/out/portrait.png",
+      "size": [
+        48,
+        48
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C (아이소메트릭): 관우 초상.",
+      "sha256": "84bbdb902845640f2dfd0c8c5013c12ac4b524a464c7b2df85b10846266b018b"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C/out/screen.png",
+      "source": "ver2/art-candidates/C/out/screen.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C (아이소메트릭): 전장·UI 화면 목업.",
+      "sha256": "6b2cbdbcd799e4138b26cf7d0419b0e20d920a036de3a357cdfbd14d33328566"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C/out/sheet-x4.png",
+      "source": "ver2/art-candidates/C/out/sheet-x4.png",
+      "size": [
+        2560,
+        800
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C (아이소메트릭): 보병·기병·황건 적병 애니메이션 시트 (4배 확대 검수본).",
+      "sha256": "40b8e7eef280e0b060abcc822e454c7e226fbf1df5dff765cba3c2c5daa79da2"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C/out/sheet.png",
+      "source": "ver2/art-candidates/C/out/sheet.png",
+      "size": [
+        640,
+        200
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C (아이소메트릭): 보병·기병·황건 적병 애니메이션 시트.",
+      "sha256": "7dc856801394108dac8c010b8fb21edf19b7cf0d7cf2228a2ed3020e5e1a8de9"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/out/portrait.png",
+      "source": "ver2/art-candidates/C2/out/portrait.png",
+      "size": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 관우 초상.",
+      "sha256": "c35c33b6d857c2dfbc1b60b687eaa90af46b7f7d8a0a267bfbc6b5c6b0893c6d"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/out/portraits/chengyuanzhi.png",
+      "source": "ver2/art-candidates/C2/out/portraits/chengyuanzhi.png",
+      "size": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 정원지 초상.",
+      "sha256": "30357995a6ec97159c4cee688a58c03b2f993dd95f8aa5a11b6a49d2e85e864a"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/out/portraits/guanyu.png",
+      "source": "ver2/art-candidates/C2/out/portraits/guanyu.png",
+      "size": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 관우 초상.",
+      "sha256": "c35c33b6d857c2dfbc1b60b687eaa90af46b7f7d8a0a267bfbc6b5c6b0893c6d"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/out/portraits/liubei.png",
+      "source": "ver2/art-candidates/C2/out/portraits/liubei.png",
+      "size": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 유비 초상.",
+      "sha256": "50bdd91e289c1c1ee73cc295641a6e14682f579ac599adaba628e8a2e2d19cce"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/out/portraits/zhangfei.png",
+      "source": "ver2/art-candidates/C2/out/portraits/zhangfei.png",
+      "size": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 장비 초상.",
+      "sha256": "d839c55236775230703db2ccccdfa13c234913709523902a23cc47ebfecc7e23"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/out/portraits/zhangjue.png",
+      "source": "ver2/art-candidates/C2/out/portraits/zhangjue.png",
+      "size": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 장각 초상.",
+      "sha256": "b97c0a621a315f3042ba741d4682f243254ad51a226ecc0da8b0db011cded623"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/out/screen.png",
+      "source": "ver2/art-candidates/C2/out/screen.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 전장·UI 화면 목업.",
+      "sha256": "9af10be526bf1783c83b70ec4a1de8a53813a5d40fb34828845165740ac9dfc3"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/out/sheet-x4.png",
+      "source": "ver2/art-candidates/C2/out/sheet-x4.png",
+      "size": [
+        4096,
+        1024
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 보병·기병·황건 적병 애니메이션 시트 (4배 확대 검수본).",
+      "sha256": "abcc2724c73a19c053781ccd928ac999f24d15c9725bfa1f6912395b4bdf515a"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/out/sheet.png",
+      "source": "ver2/art-candidates/C2/out/sheet.png",
+      "size": [
+        1024,
+        256
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 보병·기병·황건 적병 애니메이션 시트.",
+      "sha256": "86a02f381d1b6b7111cddd2b42d73cc746dab75add446a453a12cc23b5a41420"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/src/guanyu-test.png",
+      "source": "ver2/art-candidates/C2/src/guanyu-test.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 관우 초상 시험 원화.",
+      "sha256": "c76b7e62daa7bca31b22719b5b749815c7ec2e962ade1e9fd1334ac52748f1d9"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/src/portrait-chengyuanzhi.png",
+      "source": "ver2/art-candidates/C2/src/portrait-chengyuanzhi.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 정원지 초상 원화.",
+      "sha256": "4e803a06c7f3a910fa92d7940a64820f84c89b1e2f57b9975f300dfea328f52d"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/src/portrait-guanyu.png",
+      "source": "ver2/art-candidates/C2/src/portrait-guanyu.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 관우 초상 원화.",
+      "sha256": "8ba49f52bd78523fdce16c6b7d240db52d2f5fa9035fb1378bcae0766921879b"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/src/portrait-liubei.png",
+      "source": "ver2/art-candidates/C2/src/portrait-liubei.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 유비 초상 원화.",
+      "sha256": "4314e85d04b8fc84132d37121a788862906ebac51b1c3f11723095b86edc5073"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/src/portrait-zhangfei.png",
+      "source": "ver2/art-candidates/C2/src/portrait-zhangfei.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 장비 초상 원화.",
+      "sha256": "909203dfe85c76e3bd714a0b39c12979826e41cfee3a5f2d30dc55f99fefbff9"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/src/portrait-zhangjue.png",
+      "source": "ver2/art-candidates/C2/src/portrait-zhangjue.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 장각 초상 원화.",
+      "sha256": "cfbcd8eda87fb81d2b77b529175b7183cb591c8b4c67223f12bbf829accf36aa"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/src/unit-bandit-idle.png",
+      "source": "ver2/art-candidates/C2/src/unit-bandit-idle.png",
+      "size": [
+        2172,
+        724
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 황건 적병 대기 생성 원화.",
+      "sha256": "097c8d4931490e52799de7669af7cdf0600d3b075dd0d344f1ce725055c7cc7d"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/src/unit-bandit-walk.png",
+      "source": "ver2/art-candidates/C2/src/unit-bandit-walk.png",
+      "size": [
+        2172,
+        724
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 황건 적병 걷기 생성 원화.",
+      "sha256": "3dc6cec658dab2c691f2553bf2a77643bfcb807c1274cbc3f1a85ebc4686e595"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/src/unit-cavalry-idle.png",
+      "source": "ver2/art-candidates/C2/src/unit-cavalry-idle.png",
+      "size": [
+        2172,
+        724
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 기병 대기 생성 원화.",
+      "sha256": "c3178d7a20111a9bf3caf9601a22aa5dd2aa2046dd59695e97a81de6ea8f4348"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/src/unit-cavalry-walk.png",
+      "source": "ver2/art-candidates/C2/src/unit-cavalry-walk.png",
+      "size": [
+        2172,
+        724
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 기병 걷기 생성 원화.",
+      "sha256": "e3ff3977522eee15e94710af461693db2999bf8a039a0d1e7990d4f56bb3dd6f"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/src/unit-infantry-idle.png",
+      "source": "ver2/art-candidates/C2/src/unit-infantry-idle.png",
+      "size": [
+        2172,
+        724
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 보병 대기 생성 원화.",
+      "sha256": "f3c5c8b66213befff82db3ce68c6cda871b99aeba07f925dd83cf9b9ef3159c4"
+    },
+    {
+      "file": "variants/ver2/art-candidates/C2/src/unit-infantry-walk.png",
+      "source": "ver2/art-candidates/C2/src/unit-infantry-walk.png",
+      "size": [
+        2172,
+        724
+      ],
+      "frames": 1,
+      "description": "ver2 후보 C2 (아이소메트릭 생성 원화): 보병 걷기 생성 원화.",
+      "sha256": "e2632fd85df1c953d5ccc4a837dbf74caf408b0e88b25a37792d8d0e8ed99154"
+    },
+    {
+      "file": "variants/ver2/art-candidates/D/out/portrait-x4.png",
+      "source": "ver2/art-candidates/D/out/portrait-x4.png",
+      "size": [
+        288,
+        288
+      ],
+      "frames": 1,
+      "description": "ver2 후보 D (수묵 UI): 관우 초상 (4배 확대 검수본).",
+      "sha256": "960485bb2e5af6fb820ebf3a02d6a82b86597d4940274f99ddeef4dc78becd4b"
+    },
+    {
+      "file": "variants/ver2/art-candidates/D/out/portrait.png",
+      "source": "ver2/art-candidates/D/out/portrait.png",
+      "size": [
+        72,
+        72
+      ],
+      "frames": 1,
+      "description": "ver2 후보 D (수묵 UI): 관우 초상.",
+      "sha256": "c837bd2eada1fc24b03622c49bab899fda0f7361c94f88c53cbb9cbae7ac7c6d"
+    },
+    {
+      "file": "variants/ver2/art-candidates/D/out/screen.png",
+      "source": "ver2/art-candidates/D/out/screen.png",
+      "size": [
+        1280,
+        850
+      ],
+      "frames": 1,
+      "description": "ver2 후보 D (수묵 UI): 전장·UI 화면 목업.",
+      "sha256": "a4653a447ecb12be4f0abcffcf3a62d88601a3732302b84da40bd31794218f97"
+    },
+    {
+      "file": "variants/ver2/art-candidates/D/out/sheet-x4.png",
+      "source": "ver2/art-candidates/D/out/sheet-x4.png",
+      "size": [
+        4096,
+        768
+      ],
+      "frames": 1,
+      "description": "ver2 후보 D (수묵 UI): 보병·기병·황건 적병 애니메이션 시트 (4배 확대 검수본).",
+      "sha256": "a54a71ffb8c4dba2f1ca6c037cb73da05ce1029c40229f71f0a8e780819ce72e"
+    },
+    {
+      "file": "variants/ver2/art-candidates/D/out/sheet.png",
+      "source": "ver2/art-candidates/D/out/sheet.png",
+      "size": [
+        1024,
+        192
+      ],
+      "frames": 1,
+      "description": "ver2 후보 D (수묵 UI): 보병·기병·황건 적병 애니메이션 시트.",
+      "sha256": "68e315c5b0ba4014f370870186ed7655ed2248837c3039eb85094a333d47c6fb"
+    },
+    {
+      "file": "variants/ver2/art-candidates/D/out/terrain-x3.png",
+      "source": "ver2/art-candidates/D/out/terrain-x3.png",
+      "size": [
+        1344,
+        192
+      ],
+      "frames": 1,
+      "description": "ver2 후보 D (수묵 UI): 지형 타일 시트 (3배 확대 검수본).",
+      "sha256": "4b511f1b3a28c3169984ded69ace64002bdf2d7a1725cd6d7de66f4cc76a5f41"
+    },
+    {
+      "file": "variants/ver2/art-candidates/D/out/terrain.png",
+      "source": "ver2/art-candidates/D/out/terrain.png",
+      "size": [
+        448,
+        64
+      ],
+      "frames": 1,
+      "description": "ver2 후보 D (수묵 UI): 지형 타일 시트.",
+      "sha256": "7e4d0cea84d2855012c65793e40370d3d528313e4820a34e21fc36dc538260d5"
+    }
+  ],
+  "support_files": [
+    "history/runtime/knights-v1.json",
+    "current/knights.json",
+    "history/runtime/knights-v5.json",
+    "history/runtime/knights-v4.json",
+    "history/runtime/knights-v3.json",
+    "current/catalog.json",
+    "history/runtime/knights-v2.json",
+    "sources/knight-frames.json",
+    "sources/SPRITE_ART_GUIDE.md",
+    "sources/README.md",
+    "sources/knights-pixel-v7/README.md",
+    "sources/knights-pixel-v7/frames.json",
+    "sources/knights-pixel-v6/README.md",
+    "sources/knights-pixel-v6/frames.json",
+    "sources/knight-hit-candidates/README.md",
+    "sources/knights-pixel-v4/README.md",
+    "sources/knights-pixel-v4/frames.json",
+    "sources/knights-pixel-v3/rig.json",
+    "sources/knights-pixel-v3/README.md",
+    "sources/knights-pixel-v3/frames.json",
+    "sources/knights-pixel-v2/normalization.json",
+    "sources/knights-pixel-v2/README.md",
+    "sources/knights-pixel-v2/frames.json",
+    "sources/knights-pixel-v5/README.md",
+    "sources/knights-pixel-v5/frames.json",
+    "variants/ver1/assets/graphics/README.md",
+    "variants/ver1/tools/spritetool/assets/SPRITE_ART_GUIDE.md",
+    "variants/ver1/tools/spritetool/assets/three-kingdoms/README.md",
+    "variants/ver1/tools/spritetool/assets/three-kingdoms/ART_DIRECTION.md",
+    "variants/ver2/art-candidates/A/README.md",
+    "variants/ver2/art-candidates/A/out/sheet.json",
+    "variants/ver2/art-candidates/A/out/portrait.json",
+    "variants/ver2/art-candidates/C2/README.md",
+    "variants/ver2/art-candidates/C2/out/sheet.json",
+    "variants/ver2/art-candidates/C2/out/portrait.json",
+    "variants/ver2/art-candidates/C/README.md",
+    "variants/ver2/art-candidates/C/out/sheet.json",
+    "variants/ver2/art-candidates/C/out/portrait.json",
+    "variants/ver2/art-candidates/D/README.md",
+    "variants/ver2/art-candidates/D/out/sheet.json",
+    "variants/ver2/art-candidates/D/out/portrait.json",
+    "variants/ver2/art-candidates/B/README.md",
+    "variants/ver2/art-candidates/B/out/sheet.json",
+    "variants/ver2/art-candidates/B/out/portrait.json"
+  ]
+}

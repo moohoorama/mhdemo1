@@ -1,0 +1,2265 @@
+[
+  {
+    "direction": "N",
+    "animation": "idle",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "idle",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "idle",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "idle",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "walk",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "walk",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "walk",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "walk",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "attack",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "attack",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "attack",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "attack",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "hit",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "hit",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "hit",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "hit",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "exhausted",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "exhausted",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "exhausted",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "N",
+    "animation": "exhausted",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "idle",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "idle",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "idle",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "idle",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "walk",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 19,
+    "changes": [
+      {
+        "op": "fill",
+        "note": "Reconnect far arm to shoulder",
+        "polygon": [
+          [
+            16,
+            23
+          ],
+          [
+            19,
+            23
+          ],
+          [
+            19,
+            27
+          ],
+          [
+            16,
+            26
+          ]
+        ],
+        "color": "7"
+      },
+      {
+        "op": "fill",
+        "note": "Reconnect sword-side elbow",
+        "polygon": [
+          [
+            27,
+            24
+          ],
+          [
+            30,
+            25
+          ],
+          [
+            31,
+            29
+          ],
+          [
+            28,
+            29
+          ],
+          [
+            27,
+            27
+          ]
+        ],
+        "color": "8"
+      },
+      {
+        "op": "pixels",
+        "note": "Shade the two repaired elbow joints",
+        "pixels": [
+          [
+            17,
+            24,
+            "8"
+          ],
+          [
+            18,
+            24,
+            "9"
+          ],
+          [
+            17,
+            25,
+            "8"
+          ],
+          [
+            18,
+            25,
+            "8"
+          ],
+          [
+            28,
+            26,
+            "9"
+          ],
+          [
+            28,
+            27,
+            "8"
+          ],
+          [
+            29,
+            28,
+            "7"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "walk",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "walk",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "walk",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "attack",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "attack",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "attack",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "attack",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "hit",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "hit",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "hit",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "hit",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "exhausted",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "exhausted",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "exhausted",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NE",
+    "animation": "exhausted",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "idle",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "idle",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "idle",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "idle",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "walk",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "walk",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "walk",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "walk",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "attack",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "attack",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "attack",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "attack",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "hit",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "hit",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "hit",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "hit",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "exhausted",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "exhausted",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "exhausted",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "E",
+    "animation": "exhausted",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "idle",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "idle",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "idle",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "idle",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "walk",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "walk",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "walk",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 25,
+    "changes": [
+      {
+        "op": "fill",
+        "note": "Restore shield arm across displaced shield gap",
+        "polygon": [
+          [
+            28,
+            24
+          ],
+          [
+            31,
+            25
+          ],
+          [
+            31,
+            29
+          ],
+          [
+            28,
+            29
+          ]
+        ],
+        "color": "7"
+      },
+      {
+        "op": "pixels",
+        "note": "Shield-arm shading",
+        "pixels": [
+          [
+            29,
+            25,
+            "9"
+          ],
+          [
+            30,
+            26,
+            "8"
+          ],
+          [
+            29,
+            26,
+            "8"
+          ],
+          [
+            29,
+            27,
+            "8"
+          ],
+          [
+            30,
+            27,
+            "7"
+          ],
+          [
+            29,
+            28,
+            "0"
+          ]
+        ]
+      },
+      {
+        "op": "restore",
+        "note": "Close torso cut beside sword arm",
+        "polygon": [
+          [
+            21,
+            24
+          ],
+          [
+            24,
+            24
+          ],
+          [
+            24,
+            31
+          ],
+          [
+            21,
+            31
+          ]
+        ],
+        "color": "7"
+      }
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "walk",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "attack",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "attack",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "attack",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "attack",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "hit",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "hit",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "hit",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 24,
+    "changes": [
+      {
+        "op": "erase",
+        "note": "Remove duplicated sword-hilt pixels at original hand position",
+        "box": [
+          17,
+          31,
+          21,
+          33
+        ]
+      },
+      {
+        "op": "erase",
+        "note": "Remove stationary shield fragments beside waist",
+        "box": [
+          27,
+          28,
+          30,
+          32
+        ]
+      },
+      {
+        "op": "pixels",
+        "note": "Remove last shield-outline pixel",
+        "pixels": [
+          [
+            30,
+            31,
+            "."
+          ]
+        ]
+      },
+      {
+        "op": "fill",
+        "note": "Repair hip articulation after removing duplicated hand",
+        "polygon": [
+          [
+            20,
+            30
+          ],
+          [
+            24,
+            29
+          ],
+          [
+            26,
+            32
+          ],
+          [
+            21,
+            33
+          ],
+          [
+            19,
+            32
+          ]
+        ],
+        "color": "7"
+      },
+      {
+        "op": "pixels",
+        "note": "Shade hip joint",
+        "pixels": [
+          [
+            21,
+            31,
+            "8"
+          ],
+          [
+            22,
+            31,
+            "9"
+          ],
+          [
+            21,
+            32,
+            "8"
+          ]
+        ]
+      },
+      {
+        "op": "pixels",
+        "note": "Close two shield rotation pinholes",
+        "pixels": [
+          [
+            27,
+            21,
+            "G"
+          ],
+          [
+            27,
+            23,
+            "G"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "hit",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 23,
+    "changes": [
+      {
+        "op": "erase",
+        "note": "Remove duplicated sword-hilt pixels at original hand position",
+        "box": [
+          17,
+          31,
+          21,
+          33
+        ]
+      },
+      {
+        "op": "erase",
+        "note": "Remove stationary shield fragments beside waist",
+        "box": [
+          27,
+          28,
+          30,
+          32
+        ]
+      },
+      {
+        "op": "pixels",
+        "note": "Remove last shield-outline pixel",
+        "pixels": [
+          [
+            30,
+            31,
+            "."
+          ]
+        ]
+      },
+      {
+        "op": "fill",
+        "note": "Repair hip articulation after removing duplicated hand",
+        "polygon": [
+          [
+            20,
+            30
+          ],
+          [
+            24,
+            29
+          ],
+          [
+            26,
+            32
+          ],
+          [
+            21,
+            33
+          ],
+          [
+            19,
+            32
+          ]
+        ],
+        "color": "7"
+      },
+      {
+        "op": "pixels",
+        "note": "Shade hip joint",
+        "pixels": [
+          [
+            21,
+            31,
+            "8"
+          ],
+          [
+            22,
+            31,
+            "9"
+          ],
+          [
+            21,
+            32,
+            "8"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "exhausted",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "exhausted",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "exhausted",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SE",
+    "animation": "exhausted",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "idle",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "idle",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "idle",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "idle",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "walk",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "walk",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "walk",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "walk",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "attack",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "attack",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "attack",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "attack",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "hit",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "hit",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "hit",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 11,
+    "changes": [
+      {
+        "op": "erase",
+        "note": "Remove old shield stem beneath raised shield",
+        "box": [
+          27,
+          29,
+          28,
+          33
+        ]
+      },
+      {
+        "op": "erase",
+        "note": "Remove stationary shield-bottom rectangle",
+        "box": [
+          28,
+          33,
+          32,
+          34
+        ]
+      },
+      {
+        "op": "pixels",
+        "note": "Close rotation pinholes in shield wood",
+        "pixels": [
+          [
+            28,
+            26,
+            "G"
+          ],
+          [
+            28,
+            27,
+            "H"
+          ],
+          [
+            28,
+            28,
+            "G"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "hit",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 8,
+    "changes": [
+      {
+        "op": "erase",
+        "note": "Remove old shield stem beneath raised shield",
+        "box": [
+          27,
+          29,
+          28,
+          33
+        ]
+      },
+      {
+        "op": "erase",
+        "note": "Remove stationary shield-bottom rectangle",
+        "box": [
+          28,
+          33,
+          32,
+          34
+        ]
+      }
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "exhausted",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "exhausted",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "exhausted",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "S",
+    "animation": "exhausted",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "idle",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "idle",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "idle",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "idle",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "walk",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 28,
+    "changes": [
+      {
+        "op": "fill",
+        "note": "Restore chest exposed by shifting both arms without duplicating old shield",
+        "polygon": [
+          [
+            21,
+            24
+          ],
+          [
+            25,
+            24
+          ],
+          [
+            25,
+            31
+          ],
+          [
+            21,
+            30
+          ]
+        ],
+        "color": "8"
+      },
+      {
+        "op": "pixels",
+        "note": "Continue chest sash across repaired pixels",
+        "pixels": [
+          [
+            21,
+            26,
+            "C"
+          ],
+          [
+            21,
+            27,
+            "D"
+          ],
+          [
+            21,
+            28,
+            "C"
+          ],
+          [
+            23,
+            25,
+            "9"
+          ],
+          [
+            24,
+            26,
+            "9"
+          ],
+          [
+            24,
+            29,
+            "7"
+          ]
+        ]
+      },
+      {
+        "op": "erase",
+        "note": "Remove narrow helmet/sword sliver carried by arm mask",
+        "box": [
+          17,
+          17,
+          19,
+          24
+        ]
+      },
+      {
+        "op": "erase",
+        "note": "Remove upper end of same sliver beside blade",
+        "box": [
+          16,
+          19,
+          17,
+          22
+        ]
+      }
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "walk",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "walk",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 5,
+    "changes": [
+      {
+        "op": "restore",
+        "note": "Close horizontal chest cut above shield",
+        "polygon": [
+          [
+            21,
+            24
+          ],
+          [
+            26,
+            24
+          ],
+          [
+            26,
+            27
+          ],
+          [
+            22,
+            29
+          ]
+        ],
+        "color": "8"
+      },
+      {
+        "op": "erase",
+        "note": "Remove dangling leg-mask pixels beneath stance",
+        "box": [
+          21,
+          37,
+          22,
+          39
+        ]
+      }
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "walk",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "attack",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "attack",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "attack",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "attack",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "hit",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "hit",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "hit",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 7,
+    "changes": [
+      {
+        "op": "fill",
+        "note": "Connect rotated chest to anchored pelvis",
+        "polygon": [
+          [
+            22,
+            29
+          ],
+          [
+            25,
+            28
+          ],
+          [
+            25,
+            31
+          ],
+          [
+            22,
+            33
+          ]
+        ],
+        "color": "7"
+      },
+      {
+        "op": "pixels",
+        "note": "Shade pelvis articulation",
+        "pixels": [
+          [
+            23,
+            30,
+            "8"
+          ],
+          [
+            23,
+            31,
+            "9"
+          ],
+          [
+            23,
+            32,
+            "8"
+          ],
+          [
+            24,
+            30,
+            "8"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "hit",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "exhausted",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "exhausted",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "exhausted",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "SW",
+    "animation": "exhausted",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "idle",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "idle",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "idle",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "idle",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "walk",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 26,
+    "changes": [
+      {
+        "op": "restore",
+        "note": "Restore missing vertical chest strip",
+        "polygon": [
+          [
+            21,
+            24
+          ],
+          [
+            24,
+            24
+          ],
+          [
+            24,
+            33
+          ],
+          [
+            21,
+            33
+          ]
+        ],
+        "color": "8"
+      },
+      {
+        "op": "pixels",
+        "note": "Remove detached sword-mask pixel",
+        "pixels": [
+          [
+            18,
+            13,
+            "."
+          ]
+        ]
+      },
+      {
+        "op": "erase",
+        "note": "Remove old blade sliver next to helmet",
+        "box": [
+          18,
+          15,
+          20,
+          19
+        ]
+      }
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "walk",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "walk",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 4,
+    "changes": [
+      {
+        "op": "erase",
+        "note": "Remove stationary shield-bottom trace",
+        "box": [
+          14,
+          34,
+          18,
+          35
+        ]
+      }
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "walk",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "attack",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "attack",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "attack",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "attack",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "hit",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "hit",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "hit",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 5,
+    "changes": [
+      {
+        "op": "erase",
+        "note": "Remove five-pixel stationary shield-bottom trace",
+        "box": [
+          16,
+          34,
+          21,
+          35
+        ]
+      }
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "hit",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 5,
+    "changes": [
+      {
+        "op": "erase",
+        "note": "Remove five-pixel stationary shield-bottom trace",
+        "box": [
+          16,
+          34,
+          21,
+          35
+        ]
+      }
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "exhausted",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "exhausted",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "exhausted",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "W",
+    "animation": "exhausted",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "idle",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "idle",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "idle",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "idle",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "walk",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "walk",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "walk",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 17,
+    "changes": [
+      {
+        "op": "restore",
+        "note": "Restore torso exposed by moving shield",
+        "polygon": [
+          [
+            20,
+            23
+          ],
+          [
+            24,
+            23
+          ],
+          [
+            24,
+            31
+          ],
+          [
+            20,
+            30
+          ]
+        ],
+        "color": "8"
+      },
+      {
+        "op": "pixels",
+        "note": "Remove remaining toe-mask spur",
+        "pixels": [
+          [
+            27,
+            35,
+            "."
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "walk",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "attack",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "attack",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "attack",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "attack",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "hit",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "hit",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "hit",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "hit",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "exhausted",
+    "frame": 1,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "exhausted",
+    "frame": 2,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "exhausted",
+    "frame": 3,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  },
+  {
+    "direction": "NW",
+    "animation": "exhausted",
+    "frame": 4,
+    "reviewed": true,
+    "changed_pixels": 0,
+    "changes": [
+      "No local clipping, orphan pixels or broken joints found in enlarged review."
+    ]
+  }
+]

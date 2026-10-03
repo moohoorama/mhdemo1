@@ -1,0 +1,89 @@
+{
+  "manifest": "tools/spritetool/assets/knights-pixel-v6/frames.json",
+  "columns": 16,
+  "tile": [
+    32,
+    16
+  ],
+  "preview": {
+    "versions": [
+      {
+        "id": "current",
+        "label": "현재 적용본",
+        "metadata": "assets/knights.json",
+        "image": "assets/knights.png"
+      },
+      {
+        "id": "v5",
+        "label": "직전 조각 보정본",
+        "metadata": "assets/knights-v5.json",
+        "image": "assets/knights-v5.png"
+      },
+      {
+        "id": "v4",
+        "label": "피격 후보 적용본",
+        "metadata": "assets/knights-v4.json",
+        "image": "assets/knights-v4.png"
+      },
+      {
+        "id": "v2",
+        "label": "초기 도트",
+        "metadata": "assets/knights-v2.json",
+        "image": "assets/knights-v2.png"
+      },
+      {
+        "id": "v1",
+        "label": "이전 축소본",
+        "metadata": "assets/knights-v1.json",
+        "image": "assets/knights-v1.png"
+      }
+    ],
+    "animations": {
+      "idle": {
+        "label": "대기",
+        "phases": [
+          "날숨",
+          "들숨",
+          "들숨 유지",
+          "날숨"
+        ]
+      },
+      "walk": {
+        "label": "걷기",
+        "phases": [
+          "왼발 앞 · 오른팔 앞",
+          "발 모으기 · 왼발 통과",
+          "오른발 앞 · 왼팔 앞",
+          "발 모으기 · 오른발 통과"
+        ]
+      },
+      "attack": {
+        "label": "공격",
+        "phases": [
+          "준비",
+          "공격",
+          "공격",
+          "회수"
+        ]
+      },
+      "hit": {
+        "label": "피격",
+        "phases": [
+          "피격 전",
+          "피격 전",
+          "충격 · 크게 젖힘",
+          "회복"
+        ]
+      },
+      "exhausted": {
+        "label": "탈진",
+        "phases": [
+          "날숨",
+          "들숨",
+          "날숨",
+          "들숨"
+        ]
+      }
+    }
+  }
+}

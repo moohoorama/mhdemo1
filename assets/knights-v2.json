@@ -1,0 +1,2950 @@
+{
+  "version": 2,
+  "directions": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+  ],
+  "animations": [
+    "idle",
+    "walk",
+    "attack",
+    "hit",
+    "exhausted"
+  ],
+  "cell": [
+    48,
+    48
+  ],
+  "pivot": [
+    24,
+    38
+  ],
+  "target_head_geometric_size": 10,
+  "palette": [
+    "#0b101b",
+    "#222b38",
+    "#3f4a56",
+    "#637280",
+    "#93a3af",
+    "#c4d2d9",
+    "#f1f6f5",
+    "#102441",
+    "#193b65",
+    "#245784",
+    "#3974a0",
+    "#650d24",
+    "#ab1633",
+    "#ed2342",
+    "#ff5362",
+    "#3d211d",
+    "#663720",
+    "#96522b",
+    "#c4783c",
+    "#e2a061",
+    "#ad6318",
+    "#e69d23",
+    "#ffd052",
+    "#ffe89a",
+    "#247ec5",
+    "#49adf0",
+    "#8cd5ff",
+    "#d4f3ff"
+  ],
+  "idle_policy": "four pixel-identical frames",
+  "frames": [
+    {
+      "direction": "N",
+      "animation": "idle",
+      "frame": 0,
+      "index": 0,
+      "crop": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.018099568784236908,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "N",
+      "animation": "idle",
+      "frame": 1,
+      "index": 1,
+      "crop": [
+        48,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.0190171767026186,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "N",
+      "animation": "idle",
+      "frame": 2,
+      "index": 2,
+      "crop": [
+        96,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.018386399373412132,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "N",
+      "animation": "idle",
+      "frame": 3,
+      "index": 3,
+      "crop": [
+        144,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.017883365973830223,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "N",
+      "animation": "walk",
+      "frame": 0,
+      "index": 4,
+      "crop": [
+        0,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.03522148355841637,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "N",
+      "animation": "walk",
+      "frame": 1,
+      "index": 5,
+      "crop": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.03501937538385391,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "N",
+      "animation": "walk",
+      "frame": 2,
+      "index": 6,
+      "crop": [
+        96,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.03463207185268402,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "N",
+      "animation": "walk",
+      "frame": 3,
+      "index": 7,
+      "crop": [
+        144,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.03519075736403465,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "N",
+      "animation": "attack",
+      "frame": 0,
+      "index": 8,
+      "crop": [
+        0,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.032475054264068604,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "N",
+      "animation": "attack",
+      "frame": 1,
+      "index": 9,
+      "crop": [
+        48,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.030385680496692657,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "N",
+      "animation": "attack",
+      "frame": 2,
+      "index": 10,
+      "crop": [
+        96,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.023130521178245544,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "N",
+      "animation": "attack",
+      "frame": 3,
+      "index": 11,
+      "crop": [
+        144,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.021880997344851494,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "N",
+      "animation": "hit",
+      "frame": 0,
+      "index": 12,
+      "crop": [
+        0,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.632,
+        8.597
+      ],
+      "head_match_error": 0.02592887543141842,
+      "scale": 0.1264304343560434
+    },
+    {
+      "direction": "N",
+      "animation": "hit",
+      "frame": 1,
+      "index": 13,
+      "crop": [
+        48,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.632,
+        8.597
+      ],
+      "head_match_error": 0.0350162535905838,
+      "scale": 0.1264304343560434
+    },
+    {
+      "direction": "N",
+      "animation": "hit",
+      "frame": 2,
+      "index": 14,
+      "crop": [
+        96,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.632,
+        8.597
+      ],
+      "head_match_error": 0.029546361416578293,
+      "scale": 0.1264304343560434
+    },
+    {
+      "direction": "N",
+      "animation": "hit",
+      "frame": 3,
+      "index": 15,
+      "crop": [
+        144,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.632,
+        8.597
+      ],
+      "head_match_error": 0.03155055269598961,
+      "scale": 0.1264304343560434
+    },
+    {
+      "direction": "N",
+      "animation": "exhausted",
+      "frame": 0,
+      "index": 16,
+      "crop": [
+        0,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.036710768938064575,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "N",
+      "animation": "exhausted",
+      "frame": 1,
+      "index": 17,
+      "crop": [
+        48,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.03483346849679947,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "N",
+      "animation": "exhausted",
+      "frame": 2,
+      "index": 18,
+      "crop": [
+        96,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.03751148283481598,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "N",
+      "animation": "exhausted",
+      "frame": 3,
+      "index": 19,
+      "crop": [
+        144,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.03540847823023796,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "NE",
+      "animation": "idle",
+      "frame": 0,
+      "index": 20,
+      "crop": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.01411553006619215,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NE",
+      "animation": "idle",
+      "frame": 1,
+      "index": 21,
+      "crop": [
+        48,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.017067650333046913,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NE",
+      "animation": "idle",
+      "frame": 2,
+      "index": 22,
+      "crop": [
+        96,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.014107589609920979,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NE",
+      "animation": "idle",
+      "frame": 3,
+      "index": 23,
+      "crop": [
+        144,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.017965715378522873,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NE",
+      "animation": "walk",
+      "frame": 0,
+      "index": 24,
+      "crop": [
+        0,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.01930813491344452,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "NE",
+      "animation": "walk",
+      "frame": 1,
+      "index": 25,
+      "crop": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.021175025030970573,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "NE",
+      "animation": "walk",
+      "frame": 2,
+      "index": 26,
+      "crop": [
+        96,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.020792042836546898,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "NE",
+      "animation": "walk",
+      "frame": 3,
+      "index": 27,
+      "crop": [
+        144,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.022080320864915848,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "NE",
+      "animation": "attack",
+      "frame": 0,
+      "index": 28,
+      "crop": [
+        0,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.18,
+        8.944
+      ],
+      "head_match_error": 0.0928773581981659,
+      "scale": 0.13975424859373686
+    },
+    {
+      "direction": "NE",
+      "animation": "attack",
+      "frame": 1,
+      "index": 29,
+      "crop": [
+        48,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.021462535485625267,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NE",
+      "animation": "attack",
+      "frame": 2,
+      "index": 30,
+      "crop": [
+        96,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.18,
+        8.944
+      ],
+      "head_match_error": 0.020279765129089355,
+      "scale": 0.13975424859373686
+    },
+    {
+      "direction": "NE",
+      "animation": "attack",
+      "frame": 3,
+      "index": 31,
+      "crop": [
+        144,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.019846968352794647,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "NE",
+      "animation": "hit",
+      "frame": 0,
+      "index": 32,
+      "crop": [
+        0,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.18,
+        8.944
+      ],
+      "head_match_error": 0.022191427648067474,
+      "scale": 0.13975424859373686
+    },
+    {
+      "direction": "NE",
+      "animation": "hit",
+      "frame": 1,
+      "index": 33,
+      "crop": [
+        48,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.18,
+        8.944
+      ],
+      "head_match_error": 0.021487442776560783,
+      "scale": 0.13975424859373686
+    },
+    {
+      "direction": "NE",
+      "animation": "hit",
+      "frame": 2,
+      "index": 34,
+      "crop": [
+        96,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.18,
+        8.944
+      ],
+      "head_match_error": 0.01704583130776882,
+      "scale": 0.13975424859373686
+    },
+    {
+      "direction": "NE",
+      "animation": "hit",
+      "frame": 3,
+      "index": 35,
+      "crop": [
+        144,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.017535144463181496,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "NE",
+      "animation": "exhausted",
+      "frame": 0,
+      "index": 36,
+      "crop": [
+        0,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.027728181332349777,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "NE",
+      "animation": "exhausted",
+      "frame": 1,
+      "index": 37,
+      "crop": [
+        48,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.18,
+        8.944
+      ],
+      "head_match_error": 0.033009301871061325,
+      "scale": 0.13975424859373686
+    },
+    {
+      "direction": "NE",
+      "animation": "exhausted",
+      "frame": 2,
+      "index": 38,
+      "crop": [
+        96,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.028616270050406456,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "NE",
+      "animation": "exhausted",
+      "frame": 3,
+      "index": 39,
+      "crop": [
+        144,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.02963254600763321,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "E",
+      "animation": "idle",
+      "frame": 0,
+      "index": 40,
+      "crop": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.274,
+        9.733
+      ],
+      "head_match_error": 0.018263686448335648,
+      "scale": 0.1351845176089688
+    },
+    {
+      "direction": "E",
+      "animation": "idle",
+      "frame": 1,
+      "index": 41,
+      "crop": [
+        48,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.274,
+        9.733
+      ],
+      "head_match_error": 0.019350893795490265,
+      "scale": 0.1351845176089688
+    },
+    {
+      "direction": "E",
+      "animation": "idle",
+      "frame": 2,
+      "index": 42,
+      "crop": [
+        96,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.274,
+        9.733
+      ],
+      "head_match_error": 0.01880234107375145,
+      "scale": 0.1351845176089688
+    },
+    {
+      "direction": "E",
+      "animation": "idle",
+      "frame": 3,
+      "index": 43,
+      "crop": [
+        144,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.274,
+        9.733
+      ],
+      "head_match_error": 0.01824796199798584,
+      "scale": 0.1351845176089688
+    },
+    {
+      "direction": "E",
+      "animation": "walk",
+      "frame": 0,
+      "index": 44,
+      "crop": [
+        0,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.29,
+        9.718
+      ],
+      "head_match_error": 0.0242413729429245,
+      "scale": 0.14291548761875736
+    },
+    {
+      "direction": "E",
+      "animation": "walk",
+      "frame": 1,
+      "index": 45,
+      "crop": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.29,
+        9.718
+      ],
+      "head_match_error": 0.027356645092368126,
+      "scale": 0.14291548761875736
+    },
+    {
+      "direction": "E",
+      "animation": "walk",
+      "frame": 2,
+      "index": 46,
+      "crop": [
+        96,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.29,
+        9.718
+      ],
+      "head_match_error": 0.026476971805095673,
+      "scale": 0.14291548761875736
+    },
+    {
+      "direction": "E",
+      "animation": "walk",
+      "frame": 3,
+      "index": 47,
+      "crop": [
+        144,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.29,
+        9.718
+      ],
+      "head_match_error": 0.024088043719530106,
+      "scale": 0.14291548761875736
+    },
+    {
+      "direction": "E",
+      "animation": "attack",
+      "frame": 0,
+      "index": 48,
+      "crop": [
+        0,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.541,
+        9.487
+      ],
+      "head_match_error": 0.1929416060447693,
+      "scale": 0.13176156917368248
+    },
+    {
+      "direction": "E",
+      "animation": "attack",
+      "frame": 1,
+      "index": 49,
+      "crop": [
+        48,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.308,
+        9.701
+      ],
+      "head_match_error": 0.04675537347793579,
+      "scale": 0.15158476564770812
+    },
+    {
+      "direction": "E",
+      "animation": "attack",
+      "frame": 2,
+      "index": 50,
+      "crop": [
+        96,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.29,
+        9.718
+      ],
+      "head_match_error": 0.013541235588490963,
+      "scale": 0.14291548761875736
+    },
+    {
+      "direction": "E",
+      "animation": "attack",
+      "frame": 3,
+      "index": 51,
+      "crop": [
+        144,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.29,
+        9.718
+      ],
+      "head_match_error": 0.0225282721221447,
+      "scale": 0.14291548761875736
+    },
+    {
+      "direction": "E",
+      "animation": "hit",
+      "frame": 0,
+      "index": 52,
+      "crop": [
+        0,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.274,
+        9.733
+      ],
+      "head_match_error": 0.052590254694223404,
+      "scale": 0.1351845176089688
+    },
+    {
+      "direction": "E",
+      "animation": "hit",
+      "frame": 1,
+      "index": 53,
+      "crop": [
+        48,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.29,
+        9.718
+      ],
+      "head_match_error": 0.056951843202114105,
+      "scale": 0.14291548761875736
+    },
+    {
+      "direction": "E",
+      "animation": "hit",
+      "frame": 2,
+      "index": 54,
+      "crop": [
+        96,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.29,
+        9.718
+      ],
+      "head_match_error": 0.05506795644760132,
+      "scale": 0.14291548761875736
+    },
+    {
+      "direction": "E",
+      "animation": "hit",
+      "frame": 3,
+      "index": 55,
+      "crop": [
+        144,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.29,
+        9.718
+      ],
+      "head_match_error": 0.048478953540325165,
+      "scale": 0.14291548761875736
+    },
+    {
+      "direction": "E",
+      "animation": "exhausted",
+      "frame": 0,
+      "index": 56,
+      "crop": [
+        0,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.26,
+        9.747
+      ],
+      "head_match_error": 0.01713571883738041,
+      "scale": 0.12824729401064427
+    },
+    {
+      "direction": "E",
+      "animation": "exhausted",
+      "frame": 1,
+      "index": 57,
+      "crop": [
+        48,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.26,
+        9.747
+      ],
+      "head_match_error": 0.017838548868894577,
+      "scale": 0.12824729401064427
+    },
+    {
+      "direction": "E",
+      "animation": "exhausted",
+      "frame": 2,
+      "index": 58,
+      "crop": [
+        96,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.26,
+        9.747
+      ],
+      "head_match_error": 0.01760753244161606,
+      "scale": 0.12824729401064427
+    },
+    {
+      "direction": "E",
+      "animation": "exhausted",
+      "frame": 3,
+      "index": 59,
+      "crop": [
+        144,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.26,
+        9.747
+      ],
+      "head_match_error": 0.018972357735037804,
+      "scale": 0.12824729401064427
+    },
+    {
+      "direction": "SE",
+      "animation": "idle",
+      "frame": 0,
+      "index": 60,
+      "crop": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.033872608095407486,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "SE",
+      "animation": "idle",
+      "frame": 1,
+      "index": 61,
+      "crop": [
+        48,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.0325390063226223,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "SE",
+      "animation": "idle",
+      "frame": 2,
+      "index": 62,
+      "crop": [
+        96,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.632,
+        8.597
+      ],
+      "head_match_error": 0.03249599039554596,
+      "scale": 0.1264304343560434
+    },
+    {
+      "direction": "SE",
+      "animation": "idle",
+      "frame": 3,
+      "index": 63,
+      "crop": [
+        144,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.03075885772705078,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "SE",
+      "animation": "walk",
+      "frame": 0,
+      "index": 64,
+      "crop": [
+        0,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.022827569395303726,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "SE",
+      "animation": "walk",
+      "frame": 1,
+      "index": 65,
+      "crop": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.03274742513895035,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "SE",
+      "animation": "walk",
+      "frame": 2,
+      "index": 66,
+      "crop": [
+        96,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.02372768148779869,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "SE",
+      "animation": "walk",
+      "frame": 3,
+      "index": 67,
+      "crop": [
+        144,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.028988122940063477,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "SE",
+      "animation": "attack",
+      "frame": 0,
+      "index": 68,
+      "crop": [
+        0,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.547,
+        8.66
+      ],
+      "head_match_error": 0.06510920822620392,
+      "scale": 0.14433756729740643
+    },
+    {
+      "direction": "SE",
+      "animation": "attack",
+      "frame": 1,
+      "index": 69,
+      "crop": [
+        48,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.547,
+        8.66
+      ],
+      "head_match_error": 0.09179984778165817,
+      "scale": 0.14433756729740643
+    },
+    {
+      "direction": "SE",
+      "animation": "attack",
+      "frame": 2,
+      "index": 70,
+      "crop": [
+        96,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.047509580850601196,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "SE",
+      "animation": "attack",
+      "frame": 3,
+      "index": 71,
+      "crop": [
+        144,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.035742826759815216,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "SE",
+      "animation": "hit",
+      "frame": 0,
+      "index": 72,
+      "crop": [
+        0,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.020034318789839745,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "SE",
+      "animation": "hit",
+      "frame": 1,
+      "index": 73,
+      "crop": [
+        48,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.632,
+        8.597
+      ],
+      "head_match_error": 0.03947470337152481,
+      "scale": 0.1264304343560434
+    },
+    {
+      "direction": "SE",
+      "animation": "hit",
+      "frame": 2,
+      "index": 74,
+      "crop": [
+        96,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.632,
+        8.597
+      ],
+      "head_match_error": 0.044553544372320175,
+      "scale": 0.1264304343560434
+    },
+    {
+      "direction": "SE",
+      "animation": "hit",
+      "frame": 3,
+      "index": 75,
+      "crop": [
+        144,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.04037010669708252,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "SE",
+      "animation": "exhausted",
+      "frame": 0,
+      "index": 76,
+      "crop": [
+        0,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.632,
+        8.597
+      ],
+      "head_match_error": 0.022079646587371826,
+      "scale": 0.1264304343560434
+    },
+    {
+      "direction": "SE",
+      "animation": "exhausted",
+      "frame": 1,
+      "index": 77,
+      "crop": [
+        48,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.02766529656946659,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "SE",
+      "animation": "exhausted",
+      "frame": 2,
+      "index": 78,
+      "crop": [
+        96,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.020913803949952126,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "SE",
+      "animation": "exhausted",
+      "frame": 3,
+      "index": 79,
+      "crop": [
+        144,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.726,
+        8.528
+      ],
+      "head_match_error": 0.02739798091351986,
+      "scale": 0.13325044772225653
+    },
+    {
+      "direction": "S",
+      "animation": "idle",
+      "frame": 0,
+      "index": 80,
+      "crop": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.003501835046336055,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "idle",
+      "frame": 1,
+      "index": 81,
+      "crop": [
+        48,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.008819213137030602,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "idle",
+      "frame": 2,
+      "index": 82,
+      "crop": [
+        96,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.021266693249344826,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "idle",
+      "frame": 3,
+      "index": 83,
+      "crop": [
+        144,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.02671900950372219,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "walk",
+      "frame": 0,
+      "index": 84,
+      "crop": [
+        0,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.01092446967959404,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "walk",
+      "frame": 1,
+      "index": 85,
+      "crop": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.03433207795023918,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "walk",
+      "frame": 2,
+      "index": 86,
+      "crop": [
+        96,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.028588194400072098,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "walk",
+      "frame": 3,
+      "index": 87,
+      "crop": [
+        144,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.03094259835779667,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "attack",
+      "frame": 0,
+      "index": 88,
+      "crop": [
+        0,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.03260516747832298,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "attack",
+      "frame": 1,
+      "index": 89,
+      "crop": [
+        48,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.013810986652970314,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "attack",
+      "frame": 2,
+      "index": 90,
+      "crop": [
+        96,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.012285674922168255,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "attack",
+      "frame": 3,
+      "index": 91,
+      "crop": [
+        144,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.018350748345255852,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "hit",
+      "frame": 0,
+      "index": 92,
+      "crop": [
+        0,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.016925416886806488,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "hit",
+      "frame": 1,
+      "index": 93,
+      "crop": [
+        48,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.041537847369909286,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "hit",
+      "frame": 2,
+      "index": 94,
+      "crop": [
+        96,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.02381005510687828,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "hit",
+      "frame": 3,
+      "index": 95,
+      "crop": [
+        144,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.036563340574502945,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "exhausted",
+      "frame": 0,
+      "index": 96,
+      "crop": [
+        0,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.304,
+        8.847
+      ],
+      "head_match_error": 0.057809460908174515,
+      "scale": 0.12286829679574762
+    },
+    {
+      "direction": "S",
+      "animation": "exhausted",
+      "frame": 1,
+      "index": 97,
+      "crop": [
+        48,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.06378490477800369,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "S",
+      "animation": "exhausted",
+      "frame": 2,
+      "index": 98,
+      "crop": [
+        96,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.304,
+        8.847
+      ],
+      "head_match_error": 0.06256433576345444,
+      "scale": 0.12286829679574762
+    },
+    {
+      "direction": "S",
+      "animation": "exhausted",
+      "frame": 3,
+      "index": 99,
+      "crop": [
+        144,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.376,
+        8.79
+      ],
+      "head_match_error": 0.04775940254330635,
+      "scale": 0.1292719224987548
+    },
+    {
+      "direction": "SW",
+      "animation": "idle",
+      "frame": 0,
+      "index": 100,
+      "crop": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.572,
+        9.459
+      ],
+      "head_match_error": 0.016991907730698586,
+      "scale": 0.1391037210186643
+    },
+    {
+      "direction": "SW",
+      "animation": "idle",
+      "frame": 1,
+      "index": 101,
+      "crop": [
+        48,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.572,
+        9.459
+      ],
+      "head_match_error": 0.02049233764410019,
+      "scale": 0.1391037210186643
+    },
+    {
+      "direction": "SW",
+      "animation": "idle",
+      "frame": 2,
+      "index": 102,
+      "crop": [
+        96,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.572,
+        9.459
+      ],
+      "head_match_error": 0.02093658782541752,
+      "scale": 0.1391037210186643
+    },
+    {
+      "direction": "SW",
+      "animation": "idle",
+      "frame": 3,
+      "index": 103,
+      "crop": [
+        144,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.572,
+        9.459
+      ],
+      "head_match_error": 0.021208863705396652,
+      "scale": 0.1391037210186643
+    },
+    {
+      "direction": "SW",
+      "animation": "walk",
+      "frame": 0,
+      "index": 104,
+      "crop": [
+        0,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.572,
+        9.459
+      ],
+      "head_match_error": 0.02854142151772976,
+      "scale": 0.1391037210186643
+    },
+    {
+      "direction": "SW",
+      "animation": "walk",
+      "frame": 1,
+      "index": 105,
+      "crop": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.572,
+        9.459
+      ],
+      "head_match_error": 0.022213777527213097,
+      "scale": 0.1391037210186643
+    },
+    {
+      "direction": "SW",
+      "animation": "walk",
+      "frame": 2,
+      "index": 106,
+      "crop": [
+        96,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.572,
+        9.459
+      ],
+      "head_match_error": 0.030077500268816948,
+      "scale": 0.1391037210186643
+    },
+    {
+      "direction": "SW",
+      "animation": "walk",
+      "frame": 3,
+      "index": 107,
+      "crop": [
+        144,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.572,
+        9.459
+      ],
+      "head_match_error": 0.024239104241132736,
+      "scale": 0.1391037210186643
+    },
+    {
+      "direction": "SW",
+      "animation": "attack",
+      "frame": 0,
+      "index": 108,
+      "crop": [
+        0,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.572,
+        9.459
+      ],
+      "head_match_error": 0.025195268914103508,
+      "scale": 0.1391037210186643
+    },
+    {
+      "direction": "SW",
+      "animation": "attack",
+      "frame": 1,
+      "index": 109,
+      "crop": [
+        48,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.607,
+        9.428
+      ],
+      "head_match_error": 0.02468217723071575,
+      "scale": 0.1473139127471974
+    },
+    {
+      "direction": "SW",
+      "animation": "attack",
+      "frame": 2,
+      "index": 110,
+      "crop": [
+        96,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.572,
+        9.459
+      ],
+      "head_match_error": 0.009301030077040195,
+      "scale": 0.1391037210186643
+    },
+    {
+      "direction": "SW",
+      "animation": "attack",
+      "frame": 3,
+      "index": 111,
+      "crop": [
+        144,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.572,
+        9.459
+      ],
+      "head_match_error": 0.030473358929157257,
+      "scale": 0.1391037210186643
+    },
+    {
+      "direction": "SW",
+      "animation": "hit",
+      "frame": 0,
+      "index": 112,
+      "crop": [
+        0,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.572,
+        9.459
+      ],
+      "head_match_error": 0.03051174432039261,
+      "scale": 0.1391037210186643
+    },
+    {
+      "direction": "SW",
+      "animation": "hit",
+      "frame": 1,
+      "index": 113,
+      "crop": [
+        48,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.572,
+        9.459
+      ],
+      "head_match_error": 0.032035958021879196,
+      "scale": 0.1391037210186643
+    },
+    {
+      "direction": "SW",
+      "animation": "hit",
+      "frame": 2,
+      "index": 114,
+      "crop": [
+        96,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.541,
+        9.487
+      ],
+      "head_match_error": 0.03491101786494255,
+      "scale": 0.13176156917368248
+    },
+    {
+      "direction": "SW",
+      "animation": "hit",
+      "frame": 3,
+      "index": 115,
+      "crop": [
+        144,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.541,
+        9.487
+      ],
+      "head_match_error": 0.03390521556138992,
+      "scale": 0.13176156917368248
+    },
+    {
+      "direction": "SW",
+      "animation": "exhausted",
+      "frame": 0,
+      "index": 116,
+      "crop": [
+        0,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.801,
+        9.258
+      ],
+      "head_match_error": 0.022949667647480965,
+      "scale": 0.12858612496840993
+    },
+    {
+      "direction": "SW",
+      "animation": "exhausted",
+      "frame": 1,
+      "index": 117,
+      "crop": [
+        48,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.541,
+        9.487
+      ],
+      "head_match_error": 0.01807602122426033,
+      "scale": 0.13176156917368248
+    },
+    {
+      "direction": "SW",
+      "animation": "exhausted",
+      "frame": 2,
+      "index": 118,
+      "crop": [
+        96,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.541,
+        9.487
+      ],
+      "head_match_error": 0.018199246376752853,
+      "scale": 0.13176156917368248
+    },
+    {
+      "direction": "SW",
+      "animation": "exhausted",
+      "frame": 3,
+      "index": 119,
+      "crop": [
+        144,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.541,
+        9.487
+      ],
+      "head_match_error": 0.015316891483962536,
+      "scale": 0.13176156917368248
+    },
+    {
+      "direction": "W",
+      "animation": "idle",
+      "frame": 0,
+      "index": 120,
+      "crop": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.69,
+        9.354
+      ],
+      "head_match_error": 0.03881259262561798,
+      "scale": 0.16703827619526523
+    },
+    {
+      "direction": "W",
+      "animation": "idle",
+      "frame": 1,
+      "index": 121,
+      "crop": [
+        48,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.308,
+        9.701
+      ],
+      "head_match_error": 0.027001813054084778,
+      "scale": 0.15158476564770812
+    },
+    {
+      "direction": "W",
+      "animation": "idle",
+      "frame": 2,
+      "index": 122,
+      "crop": [
+        96,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.308,
+        9.701
+      ],
+      "head_match_error": 0.02946912683546543,
+      "scale": 0.15158476564770812
+    },
+    {
+      "direction": "W",
+      "animation": "idle",
+      "frame": 3,
+      "index": 123,
+      "crop": [
+        144,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.308,
+        9.701
+      ],
+      "head_match_error": 0.030687887221574783,
+      "scale": 0.15158476564770812
+    },
+    {
+      "direction": "W",
+      "animation": "walk",
+      "frame": 0,
+      "index": 124,
+      "crop": [
+        0,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.328,
+        9.682
+      ],
+      "head_match_error": 0.0397089384496212,
+      "scale": 0.1613743060919757
+    },
+    {
+      "direction": "W",
+      "animation": "walk",
+      "frame": 1,
+      "index": 125,
+      "crop": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.308,
+        9.701
+      ],
+      "head_match_error": 0.04009110480546951,
+      "scale": 0.15158476564770812
+    },
+    {
+      "direction": "W",
+      "animation": "walk",
+      "frame": 2,
+      "index": 126,
+      "crop": [
+        96,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.308,
+        9.701
+      ],
+      "head_match_error": 0.03690890595316887,
+      "scale": 0.15158476564770812
+    },
+    {
+      "direction": "W",
+      "animation": "walk",
+      "frame": 3,
+      "index": 127,
+      "crop": [
+        144,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.328,
+        9.682
+      ],
+      "head_match_error": 0.039737675338983536,
+      "scale": 0.1613743060919757
+    },
+    {
+      "direction": "W",
+      "animation": "attack",
+      "frame": 0,
+      "index": 128,
+      "crop": [
+        0,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.328,
+        9.682
+      ],
+      "head_match_error": 0.03689005225896835,
+      "scale": 0.1613743060919757
+    },
+    {
+      "direction": "W",
+      "animation": "attack",
+      "frame": 1,
+      "index": 129,
+      "crop": [
+        48,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.328,
+        9.682
+      ],
+      "head_match_error": 0.03361823782324791,
+      "scale": 0.1613743060919757
+    },
+    {
+      "direction": "W",
+      "animation": "attack",
+      "frame": 2,
+      "index": 130,
+      "crop": [
+        96,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.328,
+        9.682
+      ],
+      "head_match_error": 0.028609979897737503,
+      "scale": 0.1613743060919757
+    },
+    {
+      "direction": "W",
+      "animation": "attack",
+      "frame": 3,
+      "index": 131,
+      "crop": [
+        144,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.308,
+        9.701
+      ],
+      "head_match_error": 0.04067293554544449,
+      "scale": 0.15158476564770812
+    },
+    {
+      "direction": "W",
+      "animation": "hit",
+      "frame": 0,
+      "index": 132,
+      "crop": [
+        0,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.308,
+        9.701
+      ],
+      "head_match_error": 0.029282430186867714,
+      "scale": 0.15158476564770812
+    },
+    {
+      "direction": "W",
+      "animation": "hit",
+      "frame": 1,
+      "index": 133,
+      "crop": [
+        48,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.328,
+        9.682
+      ],
+      "head_match_error": 0.03034181520342827,
+      "scale": 0.1613743060919757
+    },
+    {
+      "direction": "W",
+      "animation": "hit",
+      "frame": 2,
+      "index": 134,
+      "crop": [
+        96,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.328,
+        9.682
+      ],
+      "head_match_error": 0.013534881174564362,
+      "scale": 0.1613743060919757
+    },
+    {
+      "direction": "W",
+      "animation": "hit",
+      "frame": 3,
+      "index": 135,
+      "crop": [
+        144,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.328,
+        9.682
+      ],
+      "head_match_error": 0.01648852415382862,
+      "scale": 0.1613743060919757
+    },
+    {
+      "direction": "W",
+      "animation": "exhausted",
+      "frame": 0,
+      "index": 136,
+      "crop": [
+        0,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.328,
+        9.682
+      ],
+      "head_match_error": 0.023429380729794502,
+      "scale": 0.1613743060919757
+    },
+    {
+      "direction": "W",
+      "animation": "exhausted",
+      "frame": 1,
+      "index": 137,
+      "crop": [
+        48,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.308,
+        9.701
+      ],
+      "head_match_error": 0.02956223115324974,
+      "scale": 0.15158476564770812
+    },
+    {
+      "direction": "W",
+      "animation": "exhausted",
+      "frame": 2,
+      "index": 138,
+      "crop": [
+        96,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.308,
+        9.701
+      ],
+      "head_match_error": 0.01846759207546711,
+      "scale": 0.15158476564770812
+    },
+    {
+      "direction": "W",
+      "animation": "exhausted",
+      "frame": 3,
+      "index": 139,
+      "crop": [
+        144,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        10.308,
+        9.701
+      ],
+      "head_match_error": 0.01893741637468338,
+      "scale": 0.15158476564770812
+    },
+    {
+      "direction": "NW",
+      "animation": "idle",
+      "frame": 0,
+      "index": 140,
+      "crop": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.022112563252449036,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NW",
+      "animation": "idle",
+      "frame": 1,
+      "index": 141,
+      "crop": [
+        48,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.025908274576067924,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NW",
+      "animation": "idle",
+      "frame": 2,
+      "index": 142,
+      "crop": [
+        96,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.022588782012462616,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NW",
+      "animation": "idle",
+      "frame": 3,
+      "index": 143,
+      "crop": [
+        144,
+        0,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.024214105680584908,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NW",
+      "animation": "walk",
+      "frame": 0,
+      "index": 144,
+      "crop": [
+        0,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.02168327569961548,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NW",
+      "animation": "walk",
+      "frame": 1,
+      "index": 145,
+      "crop": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.020943598821759224,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NW",
+      "animation": "walk",
+      "frame": 2,
+      "index": 146,
+      "crop": [
+        96,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.023653896525502205,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NW",
+      "animation": "walk",
+      "frame": 3,
+      "index": 147,
+      "crop": [
+        144,
+        48,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.019988270476460457,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NW",
+      "animation": "attack",
+      "frame": 0,
+      "index": 148,
+      "crop": [
+        0,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.339,
+        8.819
+      ],
+      "head_match_error": 0.04190295934677124,
+      "scale": 0.157485197087178
+    },
+    {
+      "direction": "NW",
+      "animation": "attack",
+      "frame": 1,
+      "index": 149,
+      "crop": [
+        48,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.04434593394398689,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NW",
+      "animation": "attack",
+      "frame": 2,
+      "index": 150,
+      "crop": [
+        96,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.042329370975494385,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NW",
+      "animation": "attack",
+      "frame": 3,
+      "index": 151,
+      "crop": [
+        144,
+        96,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.040879059582948685,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NW",
+      "animation": "hit",
+      "frame": 0,
+      "index": 152,
+      "crop": [
+        0,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.18,
+        8.944
+      ],
+      "head_match_error": 0.02783055417239666,
+      "scale": 0.13975424859373686
+    },
+    {
+      "direction": "NW",
+      "animation": "hit",
+      "frame": 1,
+      "index": 153,
+      "crop": [
+        48,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.021697470918297768,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NW",
+      "animation": "hit",
+      "frame": 2,
+      "index": 154,
+      "crop": [
+        96,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.02608981728553772,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NW",
+      "animation": "hit",
+      "frame": 3,
+      "index": 155,
+      "crop": [
+        144,
+        144,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.026245685294270515,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "NW",
+      "animation": "exhausted",
+      "frame": 0,
+      "index": 156,
+      "crop": [
+        0,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.18,
+        8.944
+      ],
+      "head_match_error": 0.035890232771635056,
+      "scale": 0.13975424859373686
+    },
+    {
+      "direction": "NW",
+      "animation": "exhausted",
+      "frame": 1,
+      "index": 157,
+      "crop": [
+        48,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.456,
+        8.729
+      ],
+      "head_match_error": 0.02729160711169243,
+      "scale": 0.13638618139749525
+    },
+    {
+      "direction": "NW",
+      "animation": "exhausted",
+      "frame": 2,
+      "index": 158,
+      "crop": [
+        96,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.034809090197086334,
+      "scale": 0.14808721943977307
+    },
+    {
+      "direction": "NW",
+      "animation": "exhausted",
+      "frame": 3,
+      "index": 159,
+      "crop": [
+        144,
+        192,
+        48,
+        48
+      ],
+      "helmet_dimensions": [
+        11.255,
+        8.885
+      ],
+      "head_match_error": 0.031212273985147476,
+      "scale": 0.14808721943977307
+    }
+  ],
+  "sheet": "knights.png",
+  "columns": 16,
+  "rows": 10,
+  "tile": [
+    32,
+    16
+  ],
+  "note": "Head-normalized pixel redraw. Idle frames are identical. Binary alpha and shared 28-color palette. Native pixel cells are packed without resizing."
+}

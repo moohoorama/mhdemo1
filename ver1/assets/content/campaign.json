@@ -1,0 +1,2373 @@
+{
+  "InitialInventory": {
+    "소군량": 18,
+    "소병법단": 8
+  },
+  "Version": "opening-2",
+  "Draft": "대사, 선택, 고정 배치, 초기 소모품 18/8, 승리 보급 8/4, 행동XP24/병법2배/격퇴2배/필요XP100*1.035^(L-1)/승리XP없음, 초기 특성치0: 플레이 가능한 초안. 그 외 수치: 통합 기획서 2부 초안. 초열/탁류 비용20: 문관 회복14 대비 자원 소모를 남기는 초안. 기본 병종 HP계수 3/3/3/3/2, 소군량220/중군량700: 동일 능력치 격퇴 타격 수 측정에 따른 조정. 승급 프로토타입은 계수와 기존 구현 능력만 제공. 후반 고유 병법/학습 목록 미공급. 일기토 결과는 영걸전 공략을 참고한 고정 초안.",
+  "Classes": {
+    "경기병": {
+      "Name": "경기병",
+      "Family": "기병",
+      "Weapon": "창",
+      "Armor": "갑옷",
+      "Move": 5,
+      "Range": 1,
+      "Bonus": [
+        12.0,
+        8.0,
+        4.0,
+        9.0,
+        8.0,
+        16.0
+      ],
+      "HPFactor": 3,
+      "Skills": [
+        "돌격"
+      ],
+      "Learn": [
+        "기병숙련",
+        "속공",
+        "반격술"
+      ],
+      "MPBase": 12,
+      "MPCoeff": 0.6,
+      "RecoveryBase": 2,
+      "RecoveryCoeff": 0.08,
+      "Tier": 0,
+      "Promotes": [
+        "중기병"
+      ]
+    },
+    "경보병": {
+      "Name": "경보병",
+      "Family": "보병",
+      "Weapon": "검",
+      "Armor": "갑옷",
+      "Move": 4,
+      "Range": 1,
+      "Bonus": [
+        9.0,
+        10.0,
+        5.0,
+        7.0,
+        8.0,
+        18.0
+      ],
+      "HPFactor": 3,
+      "Skills": [
+        "반격"
+      ],
+      "Learn": [
+        "보병숙련",
+        "반격술",
+        "방패"
+      ],
+      "MPBase": 14,
+      "MPCoeff": 0.6,
+      "RecoveryBase": 2,
+      "RecoveryCoeff": 0.08,
+      "Tier": 0,
+      "Promotes": [
+        "중보병"
+      ]
+    },
+    "궁병": {
+      "Name": "궁병",
+      "Family": "궁병",
+      "Weapon": "활",
+      "Armor": "갑옷",
+      "Move": 4,
+      "Range": 3,
+      "Bonus": [
+        8.0,
+        6.0,
+        5.0,
+        10.0,
+        9.0,
+        14.0
+      ],
+      "HPFactor": 3,
+      "Skills": [
+        "원시"
+      ],
+      "Learn": [
+        "궁병숙련",
+        "원시술",
+        "독공"
+      ],
+      "MPBase": 14,
+      "MPCoeff": 0.6,
+      "RecoveryBase": 2,
+      "RecoveryCoeff": 0.08,
+      "Tier": 0,
+      "Promotes": [
+        "노병"
+      ]
+    },
+    "사마": {
+      "Name": "사마",
+      "Family": "문관",
+      "Weapon": "부채",
+      "Armor": "옷",
+      "Move": 4,
+      "Range": 1,
+      "Bonus": [
+        3.0,
+        4.0,
+        12.0,
+        8.0,
+        9.0,
+        11.0
+      ],
+      "HPFactor": 3,
+      "Skills": [
+        "초열",
+        "탁류",
+        "소회복",
+        "격려"
+      ],
+      "Learn": [
+        "계략",
+        "의술",
+        "집중",
+        "격려"
+      ],
+      "MPBase": 28,
+      "MPCoeff": 0.65,
+      "RecoveryBase": 5,
+      "RecoveryCoeff": 0.13,
+      "Tier": 0,
+      "Promotes": [
+        "참모"
+      ]
+    },
+    "적병": {
+      "Name": "적병",
+      "Family": "도적",
+      "Weapon": "검",
+      "Armor": "옷",
+      "Move": 4,
+      "Range": 1,
+      "Bonus": [
+        7.0,
+        5.0,
+        4.0,
+        10.0,
+        15.0,
+        24.0
+      ],
+      "HPFactor": 2,
+      "Skills": [
+        "탈취"
+      ],
+      "Learn": [
+        "도적숙련",
+        "독공",
+        "강행",
+        "탈취"
+      ],
+      "MPBase": 14,
+      "MPCoeff": 0.6,
+      "RecoveryBase": 2,
+      "RecoveryCoeff": 0.09,
+      "Tier": 0,
+      "Promotes": [
+        "흉적"
+      ]
+    },
+    "중기병": {
+      "Name": "중기병",
+      "Family": "기병",
+      "Weapon": "창",
+      "Armor": "갑옷",
+      "Move": 5,
+      "Range": 1,
+      "Bonus": [
+        14.0,
+        10.0,
+        6.0,
+        10.0,
+        10.0,
+        20.0
+      ],
+      "HPFactor": 10,
+      "Skills": [
+        "돌격",
+        "맹공",
+        "반격"
+      ],
+      "Learn": [
+        "기병숙련",
+        "용장",
+        "철벽",
+        "분기술"
+      ],
+      "MPBase": 18,
+      "MPCoeff": 0.6,
+      "RecoveryBase": 2,
+      "RecoveryCoeff": 0.08,
+      "Tier": 1,
+      "Promotes": [
+        "친위대"
+      ]
+    },
+    "친위대": {
+      "Name": "친위대",
+      "Family": "기병",
+      "Weapon": "창",
+      "Armor": "갑옷",
+      "Move": 6,
+      "Range": 1,
+      "Bonus": [
+        18.0,
+        15.0,
+        7.0,
+        12.0,
+        12.0,
+        24.0
+      ],
+      "HPFactor": 12,
+      "Skills": [
+        "돌격",
+        "맹공",
+        "반격",
+        "분기"
+      ],
+      "Learn": [
+        "기병숙련"
+      ],
+      "MPBase": 24,
+      "MPCoeff": 0.6,
+      "RecoveryBase": 2,
+      "RecoveryCoeff": 0.08,
+      "Tier": 2
+    },
+    "중보병": {
+      "Name": "중보병",
+      "Family": "보병",
+      "Weapon": "검",
+      "Armor": "갑옷",
+      "Move": 4,
+      "Range": 1,
+      "Bonus": [
+        12.0,
+        14.0,
+        6.0,
+        8.0,
+        10.0,
+        23.0
+      ],
+      "HPFactor": 11,
+      "Skills": [
+        "반격"
+      ],
+      "Learn": [
+        "보병숙련",
+        "철벽",
+        "분기술"
+      ],
+      "MPBase": 20,
+      "MPCoeff": 0.6,
+      "RecoveryBase": 2,
+      "RecoveryCoeff": 0.08,
+      "Tier": 1,
+      "Promotes": [
+        "근위대"
+      ]
+    },
+    "근위대": {
+      "Name": "근위대",
+      "Family": "보병",
+      "Weapon": "검",
+      "Armor": "갑옷",
+      "Move": 4,
+      "Range": 1,
+      "Bonus": [
+        15.0,
+        19.0,
+        8.0,
+        10.0,
+        13.0,
+        29.0
+      ],
+      "HPFactor": 14,
+      "Skills": [
+        "반격",
+        "분기"
+      ],
+      "Learn": [
+        "보병숙련",
+        "불굴"
+      ],
+      "MPBase": 26,
+      "MPCoeff": 0.6,
+      "RecoveryBase": 2,
+      "RecoveryCoeff": 0.08,
+      "Tier": 2
+    },
+    "노병": {
+      "Name": "노병",
+      "Family": "궁병",
+      "Weapon": "활",
+      "Armor": "갑옷",
+      "Move": 4,
+      "Range": 4,
+      "Bonus": [
+        12.0,
+        8.0,
+        6.0,
+        12.0,
+        11.0,
+        18.0
+      ],
+      "HPFactor": 9,
+      "Skills": [
+        "원시"
+      ],
+      "Learn": [
+        "궁병숙련"
+      ],
+      "MPBase": 20,
+      "MPCoeff": 0.6,
+      "RecoveryBase": 2,
+      "RecoveryCoeff": 0.08,
+      "Tier": 1,
+      "Promotes": [
+        "연노병"
+      ]
+    },
+    "연노병": {
+      "Name": "연노병",
+      "Family": "궁병",
+      "Weapon": "활",
+      "Armor": "갑옷",
+      "Move": 4,
+      "Range": 4,
+      "Bonus": [
+        19.0,
+        10.0,
+        7.0,
+        15.0,
+        14.0,
+        20.0
+      ],
+      "HPFactor": 10,
+      "Skills": [
+        "원시"
+      ],
+      "Learn": [
+        "독공"
+      ],
+      "MPBase": 26,
+      "MPCoeff": 0.6,
+      "RecoveryBase": 2,
+      "RecoveryCoeff": 0.08,
+      "Tier": 2
+    },
+    "참모": {
+      "Name": "참모",
+      "Family": "문관",
+      "Weapon": "부채",
+      "Armor": "옷",
+      "Move": 4,
+      "Range": 1,
+      "Bonus": [
+        4.0,
+        5.0,
+        18.0,
+        10.0,
+        12.0,
+        14.0
+      ],
+      "HPFactor": 8,
+      "Skills": [
+        "초열",
+        "탁류",
+        "혼란",
+        "봉책"
+      ],
+      "Learn": [],
+      "MPBase": 34,
+      "MPCoeff": 0.65,
+      "RecoveryBase": 5,
+      "RecoveryCoeff": 0.13,
+      "Tier": 1,
+      "Promotes": [
+        "군사"
+      ]
+    },
+    "군사": {
+      "Name": "군사",
+      "Family": "문관",
+      "Weapon": "부채",
+      "Armor": "옷",
+      "Move": 4,
+      "Range": 1,
+      "Bonus": [
+        5.0,
+        7.0,
+        25.0,
+        12.0,
+        16.0,
+        17.0
+      ],
+      "HPFactor": 9,
+      "Skills": [
+        "초열",
+        "탁류",
+        "혼란",
+        "봉책"
+      ],
+      "Learn": [
+        "연환"
+      ],
+      "MPBase": 40,
+      "MPCoeff": 0.65,
+      "RecoveryBase": 5,
+      "RecoveryCoeff": 0.13,
+      "Tier": 2
+    },
+    "흉적": {
+      "Name": "흉적",
+      "Family": "도적",
+      "Weapon": "검",
+      "Armor": "옷",
+      "Move": 5,
+      "Range": 1,
+      "Bonus": [
+        10.0,
+        7.0,
+        5.0,
+        13.0,
+        20.0,
+        29.0
+      ],
+      "HPFactor": 12,
+      "Skills": [
+        "탈취",
+        "맹공"
+      ],
+      "Learn": [
+        "도적숙련",
+        "행운"
+      ],
+      "MPBase": 20,
+      "MPCoeff": 0.6,
+      "RecoveryBase": 2,
+      "RecoveryCoeff": 0.09,
+      "Tier": 1,
+      "Promotes": [
+        "의적"
+      ]
+    },
+    "의적": {
+      "Name": "의적",
+      "Family": "도적",
+      "Weapon": "검",
+      "Armor": "옷",
+      "Move": 5,
+      "Range": 1,
+      "Bonus": [
+        13.0,
+        10.0,
+        7.0,
+        16.0,
+        25.0,
+        33.0
+      ],
+      "HPFactor": 14,
+      "Skills": [
+        "탈취",
+        "맹공",
+        "분기"
+      ],
+      "Learn": [
+        "도적숙련",
+        "협동",
+        "부호"
+      ],
+      "MPBase": 26,
+      "MPCoeff": 0.6,
+      "RecoveryBase": 2,
+      "RecoveryCoeff": 0.09,
+      "Tier": 2
+    }
+  },
+  "Officers": {
+    "유비": {
+      "ID": "유비",
+      "Name": "유비",
+      "Class": "경보병",
+      "Stats": [
+        85,
+        76,
+        82,
+        75,
+        87,
+        99
+      ],
+      "Level": 1,
+      "Traits": [
+        "인덕",
+        "격려"
+      ],
+      "Learn": [
+        "지휘",
+        "천명",
+        "국사무쌍"
+      ],
+      "Equipment": [
+        "item_001",
+        "item_013",
+        "item_023"
+      ]
+    },
+    "관우": {
+      "ID": "관우",
+      "Name": "관우",
+      "Class": "경기병",
+      "Stats": [
+        95,
+        98,
+        79,
+        83,
+        85,
+        92
+      ],
+      "Level": 1,
+      "Traits": [
+        "호걸",
+        "반격술"
+      ],
+      "Learn": [
+        "군신",
+        "필살",
+        "철벽"
+      ],
+      "Equipment": [
+        "item_004",
+        "item_013",
+        "item_019"
+      ]
+    },
+    "장비": {
+      "ID": "장비",
+      "Name": "장비",
+      "Class": "경기병",
+      "Stats": [
+        83,
+        99,
+        42,
+        92,
+        72,
+        74
+      ],
+      "Level": 1,
+      "Traits": [
+        "위압",
+        "맹공"
+      ],
+      "Learn": [
+        "투신",
+        "분기술",
+        "패왕"
+      ],
+      "Equipment": [
+        "item_004",
+        "item_013",
+        "item_019"
+      ]
+    },
+    "간옹": {
+      "ID": "간옹",
+      "Name": "간옹",
+      "Class": "궁병",
+      "Stats": [
+        36,
+        42,
+        76,
+        66,
+        94,
+        96
+      ],
+      "Level": 2,
+      "Traits": [
+        "행운",
+        "정화"
+      ],
+      "Learn": [
+        "부호",
+        "논객",
+        "연환"
+      ],
+      "Equipment": [
+        "item_007",
+        "item_013",
+        "item_022"
+      ]
+    },
+    "정원지": {
+      "ID": "정원지",
+      "Name": "정원지",
+      "Class": "적병",
+      "Stats": [
+        58,
+        66,
+        30,
+        58,
+        47,
+        42
+      ],
+      "Level": 4,
+      "Traits": [
+        "도적숙련"
+      ],
+      "Learn": [],
+      "Equipment": [
+        "item_001",
+        "item_016",
+        "item_021"
+      ]
+    },
+    "등무": {
+      "ID": "등무",
+      "Name": "등무",
+      "Class": "적병",
+      "Stats": [
+        49,
+        62,
+        25,
+        57,
+        45,
+        39
+      ],
+      "Level": 2,
+      "Traits": [
+        "맹공"
+      ],
+      "Learn": [],
+      "Equipment": [
+        "item_001",
+        "item_016",
+        "item_020"
+      ]
+    },
+    "장각": {
+      "ID": "장각",
+      "Name": "장각",
+      "Class": "사마",
+      "Stats": [
+        82,
+        25,
+        94,
+        74,
+        84,
+        93
+      ],
+      "Level": 2,
+      "Traits": [
+        "격려"
+      ],
+      "Learn": [],
+      "Equipment": [
+        "item_010",
+        "item_016",
+        "item_023"
+      ]
+    },
+    "화웅": {
+      "ID": "화웅",
+      "Name": "화웅",
+      "Class": "경기병",
+      "Stats": [
+        82,
+        92,
+        39,
+        78,
+        60,
+        53
+      ],
+      "Level": 6,
+      "Traits": [
+        "맹공",
+        "위압"
+      ],
+      "Learn": [],
+      "Equipment": [
+        "item_004",
+        "item_013",
+        "item_019"
+      ]
+    },
+    "호진": {
+      "ID": "호진",
+      "Name": "호진",
+      "Class": "경기병",
+      "Stats": [
+        66,
+        72,
+        48,
+        66,
+        51,
+        48
+      ],
+      "Level": 4,
+      "Traits": [
+        "기병숙련"
+      ],
+      "Learn": [],
+      "Equipment": [
+        "item_004",
+        "item_013",
+        "item_019"
+      ]
+    },
+    "여포": {
+      "ID": "여포",
+      "Name": "여포",
+      "Class": "경기병",
+      "Stats": [
+        95,
+        100,
+        34,
+        99,
+        76,
+        42
+      ],
+      "Level": 9,
+      "Traits": [
+        "용장",
+        "호걸"
+      ],
+      "Learn": [],
+      "Equipment": [
+        "item_004",
+        "item_013",
+        "item_019"
+      ]
+    },
+    "이유": {
+      "ID": "이유",
+      "Name": "이유",
+      "Class": "사마",
+      "Stats": [
+        61,
+        25,
+        93,
+        65,
+        57,
+        43
+      ],
+      "Level": 7,
+      "Traits": [
+        "계략"
+      ],
+      "Learn": [],
+      "Equipment": [
+        "item_010",
+        "item_016",
+        "item_023"
+      ]
+    },
+    "이각": {
+      "ID": "이각",
+      "Name": "이각",
+      "Class": "경기병",
+      "Stats": [
+        71,
+        78,
+        52,
+        69,
+        50,
+        45
+      ],
+      "Level": 7,
+      "Traits": [
+        "기병숙련"
+      ],
+      "Learn": [],
+      "Equipment": [
+        "item_004",
+        "item_013",
+        "item_019"
+      ]
+    },
+    "B01_troop_1": {
+      "ID": "B01_troop_1",
+      "Name": "황건 도적1",
+      "Class": "적병",
+      "Stats": [
+        35,
+        45,
+        20,
+        40,
+        45,
+        40
+      ],
+      "Level": 2,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_001",
+        "item_016"
+      ]
+    },
+    "B01_troop_2": {
+      "ID": "B01_troop_2",
+      "Name": "황건 도적2",
+      "Class": "적병",
+      "Stats": [
+        35,
+        45,
+        20,
+        40,
+        45,
+        40
+      ],
+      "Level": 2,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_001",
+        "item_016"
+      ]
+    },
+    "B01_troop_3": {
+      "ID": "B01_troop_3",
+      "Name": "황건 도적3",
+      "Class": "적병",
+      "Stats": [
+        35,
+        45,
+        20,
+        40,
+        45,
+        40
+      ],
+      "Level": 2,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_001",
+        "item_016"
+      ]
+    },
+    "B01_troop_4": {
+      "ID": "B01_troop_4",
+      "Name": "황건 도적4",
+      "Class": "적병",
+      "Stats": [
+        35,
+        45,
+        20,
+        40,
+        45,
+        40
+      ],
+      "Level": 2,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_001",
+        "item_016"
+      ]
+    },
+    "B02_troop_1": {
+      "ID": "B02_troop_1",
+      "Name": "일반 부대1",
+      "Class": "경보병",
+      "Stats": [
+        50,
+        48,
+        30,
+        40,
+        40,
+        45
+      ],
+      "Level": 4,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_001",
+        "item_013"
+      ]
+    },
+    "B02_troop_2": {
+      "ID": "B02_troop_2",
+      "Name": "일반 부대2",
+      "Class": "궁병",
+      "Stats": [
+        40,
+        43,
+        30,
+        52,
+        45,
+        40
+      ],
+      "Level": 4,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_007",
+        "item_013"
+      ]
+    },
+    "B02_troop_3": {
+      "ID": "B02_troop_3",
+      "Name": "일반 부대3",
+      "Class": "경보병",
+      "Stats": [
+        50,
+        48,
+        30,
+        40,
+        40,
+        45
+      ],
+      "Level": 4,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_001",
+        "item_013"
+      ]
+    },
+    "B02_troop_4": {
+      "ID": "B02_troop_4",
+      "Name": "일반 부대4",
+      "Class": "궁병",
+      "Stats": [
+        40,
+        43,
+        30,
+        52,
+        45,
+        40
+      ],
+      "Level": 4,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_007",
+        "item_013"
+      ]
+    },
+    "B02_troop_5": {
+      "ID": "B02_troop_5",
+      "Name": "일반 부대5",
+      "Class": "경보병",
+      "Stats": [
+        50,
+        48,
+        30,
+        40,
+        40,
+        45
+      ],
+      "Level": 4,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_001",
+        "item_013"
+      ]
+    },
+    "B02_troop_6": {
+      "ID": "B02_troop_6",
+      "Name": "일반 부대6",
+      "Class": "궁병",
+      "Stats": [
+        40,
+        43,
+        30,
+        52,
+        45,
+        40
+      ],
+      "Level": 4,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_007",
+        "item_013"
+      ]
+    },
+    "B03_troop_1": {
+      "ID": "B03_troop_1",
+      "Name": "일반 부대1",
+      "Class": "경보병",
+      "Stats": [
+        50,
+        48,
+        30,
+        40,
+        40,
+        45
+      ],
+      "Level": 6,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_001",
+        "item_013"
+      ]
+    },
+    "B03_troop_2": {
+      "ID": "B03_troop_2",
+      "Name": "일반 부대2",
+      "Class": "궁병",
+      "Stats": [
+        40,
+        43,
+        30,
+        52,
+        45,
+        40
+      ],
+      "Level": 6,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_007",
+        "item_013"
+      ]
+    },
+    "B03_troop_3": {
+      "ID": "B03_troop_3",
+      "Name": "일반 부대3",
+      "Class": "경보병",
+      "Stats": [
+        50,
+        48,
+        30,
+        40,
+        40,
+        45
+      ],
+      "Level": 6,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_001",
+        "item_013"
+      ]
+    },
+    "B03_troop_4": {
+      "ID": "B03_troop_4",
+      "Name": "일반 부대4",
+      "Class": "궁병",
+      "Stats": [
+        40,
+        43,
+        30,
+        52,
+        45,
+        40
+      ],
+      "Level": 6,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_007",
+        "item_013"
+      ]
+    },
+    "B03_troop_5": {
+      "ID": "B03_troop_5",
+      "Name": "일반 부대5",
+      "Class": "경보병",
+      "Stats": [
+        50,
+        48,
+        30,
+        40,
+        40,
+        45
+      ],
+      "Level": 6,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_001",
+        "item_013"
+      ]
+    },
+    "B03_troop_6": {
+      "ID": "B03_troop_6",
+      "Name": "일반 부대6",
+      "Class": "궁병",
+      "Stats": [
+        40,
+        43,
+        30,
+        52,
+        45,
+        40
+      ],
+      "Level": 6,
+      "Traits": [],
+      "Learn": [],
+      "Equipment": [
+        "item_007",
+        "item_013"
+      ]
+    }
+  },
+  "Equipment": {
+    "item_001": {
+      "Name": "철검",
+      "Slot": "weapon",
+      "Type": "검",
+      "Bonus": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Traits": [],
+      "Learn": [],
+      "Skills": []
+    },
+    "item_004": {
+      "Name": "철창",
+      "Slot": "weapon",
+      "Type": "창",
+      "Bonus": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Traits": [],
+      "Learn": [],
+      "Skills": []
+    },
+    "item_007": {
+      "Name": "단궁",
+      "Slot": "weapon",
+      "Type": "활",
+      "Bonus": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Traits": [],
+      "Learn": [],
+      "Skills": []
+    },
+    "item_010": {
+      "Name": "죽선",
+      "Slot": "weapon",
+      "Type": "부채",
+      "Bonus": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Traits": [],
+      "Learn": [],
+      "Skills": []
+    },
+    "item_024": {
+      "Name": "고정도",
+      "Slot": "weapon",
+      "Type": "검",
+      "Bonus": [
+        3.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Traits": [
+        "위압"
+      ],
+      "Learn": [
+        "맹공"
+      ],
+      "Skills": []
+    },
+    "item_013": {
+      "Name": "가죽갑옷",
+      "Slot": "armor",
+      "Type": "갑옷",
+      "Bonus": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "Traits": [],
+      "Learn": [],
+      "Skills": []
+    },
+    "item_016": {
+      "Name": "평복",
+      "Slot": "armor",
+      "Type": "옷",
+      "Bonus": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Traits": [],
+      "Learn": [],
+      "Skills": []
+    },
+    "item_019": {
+      "Name": "군마",
+      "Slot": "aux",
+      "Type": "전체",
+      "Bonus": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "Traits": [],
+      "Learn": [
+        "행군"
+      ],
+      "Skills": []
+    },
+    "item_020": {
+      "Name": "군량낭",
+      "Slot": "aux",
+      "Type": "전체",
+      "Bonus": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.0
+      ],
+      "Traits": [],
+      "Learn": [
+        "보급"
+      ],
+      "Skills": []
+    },
+    "item_021": {
+      "Name": "지도",
+      "Slot": "aux",
+      "Type": "전체",
+      "Bonus": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "Traits": [],
+      "Learn": [
+        "강행"
+      ],
+      "Skills": []
+    },
+    "item_022": {
+      "Name": "약낭",
+      "Slot": "aux",
+      "Type": "전체",
+      "Bonus": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Traits": [],
+      "Learn": [
+        "의술"
+      ],
+      "Skills": [
+        "소회복"
+      ]
+    },
+    "item_023": {
+      "Name": "병법입문",
+      "Slot": "aux",
+      "Type": "전체",
+      "Bonus": [
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Traits": [],
+      "Learn": [
+        "속공",
+        "침착",
+        "격려"
+      ],
+      "Skills": [
+        "격려"
+      ]
+    }
+  },
+  "Traits": {
+    "필살": {
+      "Cost": 1600,
+      "Skills": []
+    },
+    "독공": {
+      "Cost": 300,
+      "Skills": []
+    },
+    "속공": {
+      "Cost": 100,
+      "Skills": [
+        "신속"
+      ]
+    },
+    "연환": {
+      "Cost": 1200,
+      "Skills": []
+    },
+    "침착": {
+      "Cost": 250,
+      "Skills": []
+    },
+    "위압": {
+      "Cost": 500,
+      "Skills": []
+    },
+    "국사무쌍": {
+      "Cost": 2400,
+      "Skills": []
+    },
+    "부호": {
+      "Cost": 900,
+      "Skills": []
+    },
+    "분기술": {
+      "Cost": 800,
+      "Skills": [
+        "분기"
+      ]
+    },
+    "반격술": {
+      "Cost": 200,
+      "Skills": [
+        "반격"
+      ]
+    },
+    "원시술": {
+      "Cost": 200,
+      "Skills": [
+        "원시"
+      ]
+    },
+    "호걸": {
+      "Cost": 450,
+      "Skills": []
+    },
+    "용장": {
+      "Cost": 900,
+      "Skills": []
+    },
+    "투신": {
+      "Cost": 1400,
+      "Skills": []
+    },
+    "강행": {
+      "Cost": 350,
+      "Skills": []
+    },
+    "행군": {
+      "Cost": 200,
+      "Skills": []
+    },
+    "철벽": {
+      "Cost": 500,
+      "Skills": []
+    },
+    "불굴": {
+      "Cost": 650,
+      "Skills": []
+    },
+    "방패": {
+      "Cost": 300,
+      "Skills": []
+    },
+    "원거리방어": {
+      "Cost": 400,
+      "Skills": []
+    },
+    "책략방어": {
+      "Cost": 450,
+      "Skills": []
+    },
+    "논객": {
+      "Cost": 600,
+      "Skills": [
+        "설파",
+        "이간"
+      ]
+    },
+    "계략": {
+      "Cost": 450,
+      "Skills": [
+        "혼란",
+        "봉책"
+      ]
+    },
+    "군율": {
+      "Cost": 300,
+      "Skills": []
+    },
+    "정화": {
+      "Cost": 400,
+      "Skills": [
+        "해독",
+        "정신통일",
+        "정화"
+      ]
+    },
+    "의술": {
+      "Cost": 450,
+      "Skills": []
+    },
+    "인덕": {
+      "Cost": 700,
+      "Skills": []
+    },
+    "보급": {
+      "Cost": 500,
+      "Skills": []
+    },
+    "양생": {
+      "Cost": 350,
+      "Skills": []
+    },
+    "집중": {
+      "Cost": 400,
+      "Skills": []
+    },
+    "격려": {
+      "Cost": 250,
+      "Skills": [
+        "격려",
+        "분발"
+      ]
+    },
+    "맹공": {
+      "Cost": 400,
+      "Skills": [
+        "맹공"
+      ]
+    },
+    "기병숙련": {
+      "Cost": 400,
+      "Skills": []
+    },
+    "보병숙련": {
+      "Cost": 400,
+      "Skills": []
+    },
+    "궁병숙련": {
+      "Cost": 400,
+      "Skills": []
+    },
+    "도적숙련": {
+      "Cost": 350,
+      "Skills": []
+    },
+    "탈취": {
+      "Cost": 350,
+      "Skills": []
+    },
+    "행운": {
+      "Cost": 600,
+      "Skills": []
+    },
+    "군신": {
+      "Cost": 2100,
+      "Skills": []
+    },
+    "패왕": {
+      "Cost": 2200,
+      "Skills": []
+    },
+    "천명": {
+      "Cost": 2000,
+      "Skills": []
+    },
+    "협동": {
+      "Cost": 550,
+      "Skills": []
+    },
+    "지휘": {
+      "Cost": 850,
+      "Skills": [
+        "대분발",
+        "대방진"
+      ]
+    }
+  },
+  "Skills": {
+    "신속": {
+      "Kind": "buff",
+      "Mode": "자기",
+      "Shape": "single",
+      "Effect": "speed",
+      "Condition": "",
+      "Cost": 4,
+      "Hit": 100,
+      "Min": 0,
+      "Max": 0,
+      "Coeff": 0.0,
+      "Duration": 1
+    },
+    "돌격": {
+      "Kind": "buff",
+      "Mode": "자기",
+      "Shape": "single",
+      "Effect": "charge",
+      "Condition": "",
+      "Cost": 6,
+      "Hit": 100,
+      "Min": 0,
+      "Max": 0,
+      "Coeff": 0.0,
+      "Duration": 1
+    },
+    "반격": {
+      "Kind": "buff",
+      "Mode": "자기",
+      "Shape": "single",
+      "Effect": "counter",
+      "Condition": "",
+      "Cost": 6,
+      "Hit": 100,
+      "Min": 0,
+      "Max": 0,
+      "Coeff": 0.0,
+      "Duration": 2
+    },
+    "원시": {
+      "Kind": "buff",
+      "Mode": "자기",
+      "Shape": "single",
+      "Effect": "range",
+      "Condition": "",
+      "Cost": 5,
+      "Hit": 100,
+      "Min": 0,
+      "Max": 0,
+      "Coeff": 0.0,
+      "Duration": 1
+    },
+    "분기": {
+      "Kind": "physical",
+      "Mode": "근접",
+      "Shape": "all",
+      "Effect": "",
+      "Condition": "",
+      "Cost": 18,
+      "Hit": 90,
+      "Min": 1,
+      "Max": 0,
+      "Coeff": 1.0,
+      "Duration": 0
+    },
+    "맹공": {
+      "Kind": "physical",
+      "Mode": "전체",
+      "Shape": "single",
+      "Effect": "",
+      "Condition": "",
+      "Cost": 10,
+      "Hit": 80,
+      "Min": 1,
+      "Max": 0,
+      "Coeff": 1.45,
+      "Duration": 0
+    },
+    "탈취": {
+      "Kind": "physical",
+      "Mode": "근접",
+      "Shape": "single",
+      "Effect": "",
+      "Condition": "",
+      "Cost": 8,
+      "Hit": 90,
+      "Min": 1,
+      "Max": 0,
+      "Coeff": 0.7,
+      "Duration": 0
+    },
+    "초열": {
+      "Kind": "magic",
+      "Mode": "화계",
+      "Shape": "single",
+      "Effect": "",
+      "Condition": "",
+      "Cost": 20,
+      "Hit": 90,
+      "Min": 1,
+      "Max": 3,
+      "Coeff": 1.0,
+      "Duration": 0
+    },
+    "탁류": {
+      "Kind": "magic",
+      "Mode": "수계",
+      "Shape": "single",
+      "Effect": "",
+      "Condition": "water",
+      "Cost": 20,
+      "Hit": 90,
+      "Min": 1,
+      "Max": 3,
+      "Coeff": 1.0,
+      "Duration": 0
+    },
+    "혼란": {
+      "Kind": "status",
+      "Mode": "정신",
+      "Shape": "single",
+      "Effect": "confusion",
+      "Condition": "",
+      "Cost": 12,
+      "Hit": 70,
+      "Min": 1,
+      "Max": 3,
+      "Coeff": 0.0,
+      "Duration": 2
+    },
+    "봉책": {
+      "Kind": "status",
+      "Mode": "정신",
+      "Shape": "single",
+      "Effect": "seal",
+      "Condition": "",
+      "Cost": 12,
+      "Hit": 75,
+      "Min": 1,
+      "Max": 3,
+      "Coeff": 0.0,
+      "Duration": 2
+    },
+    "설파": {
+      "Kind": "status",
+      "Mode": "정신",
+      "Shape": "single",
+      "Effect": "sealroot",
+      "Condition": "",
+      "Cost": 18,
+      "Hit": 75,
+      "Min": 1,
+      "Max": 3,
+      "Coeff": 0.0,
+      "Duration": 2
+    },
+    "이간": {
+      "Kind": "status",
+      "Mode": "정신",
+      "Shape": "cross",
+      "Effect": "confusion",
+      "Condition": "",
+      "Cost": 24,
+      "Hit": 65,
+      "Min": 1,
+      "Max": 3,
+      "Coeff": 0.0,
+      "Duration": 2
+    },
+    "소회복": {
+      "Kind": "heal",
+      "Mode": "지원",
+      "Shape": "single",
+      "Effect": "heal",
+      "Condition": "",
+      "Cost": 8,
+      "Hit": 95,
+      "Min": 0,
+      "Max": 3,
+      "Coeff": 3.0,
+      "Duration": 0
+    },
+    "해독": {
+      "Kind": "heal",
+      "Mode": "지원",
+      "Shape": "single",
+      "Effect": "curepoison",
+      "Condition": "",
+      "Cost": 4,
+      "Hit": 100,
+      "Min": 0,
+      "Max": 3,
+      "Coeff": 0.0,
+      "Duration": 0
+    },
+    "정신통일": {
+      "Kind": "heal",
+      "Mode": "지원",
+      "Shape": "single",
+      "Effect": "curemental",
+      "Condition": "",
+      "Cost": 6,
+      "Hit": 100,
+      "Min": 0,
+      "Max": 3,
+      "Coeff": 0.0,
+      "Duration": 0
+    },
+    "정화": {
+      "Kind": "heal",
+      "Mode": "지원",
+      "Shape": "cross",
+      "Effect": "cure",
+      "Condition": "",
+      "Cost": 12,
+      "Hit": 100,
+      "Min": 0,
+      "Max": 3,
+      "Coeff": 0.0,
+      "Duration": 0
+    },
+    "격려": {
+      "Kind": "buff",
+      "Mode": "지원",
+      "Shape": "single",
+      "Effect": "morale",
+      "Condition": "",
+      "Cost": 6,
+      "Hit": 95,
+      "Min": 0,
+      "Max": 3,
+      "Coeff": 0.25,
+      "Duration": 2
+    },
+    "분발": {
+      "Kind": "buff",
+      "Mode": "지원",
+      "Shape": "single",
+      "Effect": "attack",
+      "Condition": "",
+      "Cost": 8,
+      "Hit": 95,
+      "Min": 0,
+      "Max": 3,
+      "Coeff": 0.3,
+      "Duration": 2
+    },
+    "대분발": {
+      "Kind": "buff",
+      "Mode": "지원",
+      "Shape": "cross",
+      "Effect": "attack",
+      "Condition": "",
+      "Cost": 20,
+      "Hit": 90,
+      "Min": 0,
+      "Max": 3,
+      "Coeff": 0.25,
+      "Duration": 2
+    },
+    "대방진": {
+      "Kind": "buff",
+      "Mode": "지원",
+      "Shape": "cross",
+      "Effect": "defense",
+      "Condition": "",
+      "Cost": 20,
+      "Hit": 90,
+      "Min": 0,
+      "Max": 3,
+      "Coeff": 0.25,
+      "Duration": 2
+    }
+  },
+  "Terrain": {
+    "기병": {
+      ".": {
+        "Factor": 1.1,
+        "Cost": 1
+      },
+      "d": {
+        "Factor": 1,
+        "Cost": 2
+      },
+      "s": {
+        "Factor": 0.8,
+        "Cost": 4
+      },
+      "f": {
+        "Factor": 0.8,
+        "Cost": 3
+      },
+      "c": {
+        "Factor": 0.9,
+        "Cost": 2
+      },
+      "i": {
+        "Factor": 1,
+        "Cost": 1
+      },
+      "v": {
+        "Factor": 1,
+        "Cost": 1
+      },
+      "~": {
+        "Factor": 1,
+        "Cost": 0
+      }
+    },
+    "보병": {
+      ".": {
+        "Factor": 1,
+        "Cost": 1
+      },
+      "d": {
+        "Factor": 1,
+        "Cost": 1
+      },
+      "s": {
+        "Factor": 1.1,
+        "Cost": 2
+      },
+      "f": {
+        "Factor": 1.1,
+        "Cost": 2
+      },
+      "c": {
+        "Factor": 1.2,
+        "Cost": 1
+      },
+      "i": {
+        "Factor": 1.2,
+        "Cost": 1
+      },
+      "v": {
+        "Factor": 1.1,
+        "Cost": 1
+      },
+      "~": {
+        "Factor": 1,
+        "Cost": 0
+      }
+    },
+    "궁병": {
+      ".": {
+        "Factor": 1,
+        "Cost": 1
+      },
+      "d": {
+        "Factor": 1,
+        "Cost": 1
+      },
+      "s": {
+        "Factor": 1,
+        "Cost": 2
+      },
+      "f": {
+        "Factor": 1.1,
+        "Cost": 2
+      },
+      "c": {
+        "Factor": 1.1,
+        "Cost": 1
+      },
+      "i": {
+        "Factor": 1.1,
+        "Cost": 1
+      },
+      "v": {
+        "Factor": 1,
+        "Cost": 1
+      },
+      "~": {
+        "Factor": 1,
+        "Cost": 0
+      }
+    },
+    "문관": {
+      ".": {
+        "Factor": 1,
+        "Cost": 1
+      },
+      "d": {
+        "Factor": 1,
+        "Cost": 1
+      },
+      "s": {
+        "Factor": 0.9,
+        "Cost": 3
+      },
+      "f": {
+        "Factor": 1,
+        "Cost": 2
+      },
+      "c": {
+        "Factor": 1,
+        "Cost": 1
+      },
+      "i": {
+        "Factor": 1.1,
+        "Cost": 1
+      },
+      "v": {
+        "Factor": 1.1,
+        "Cost": 1
+      },
+      "~": {
+        "Factor": 1,
+        "Cost": 0
+      }
+    },
+    "도적": {
+      ".": {
+        "Factor": 1,
+        "Cost": 1
+      },
+      "d": {
+        "Factor": 1.1,
+        "Cost": 1
+      },
+      "s": {
+        "Factor": 1.2,
+        "Cost": 2
+      },
+      "f": {
+        "Factor": 1.2,
+        "Cost": 1
+      },
+      "c": {
+        "Factor": 0.8,
+        "Cost": 2
+      },
+      "i": {
+        "Factor": 0.9,
+        "Cost": 1
+      },
+      "v": {
+        "Factor": 1,
+        "Cost": 1
+      },
+      "~": {
+        "Factor": 1,
+        "Cost": 0
+      }
+    }
+  },
+  "Items": {
+    "소군량": 220,
+    "소병법단": 15,
+    "중군량": 700,
+    "승급:중기병": 0,
+    "승급:친위대": 0,
+    "승급:중보병": 0,
+    "승급:근위대": 0,
+    "승급:노병": 0,
+    "승급:연노병": 0,
+    "승급:참모": 0,
+    "승급:군사": 0,
+    "승급:흉적": 0,
+    "승급:의적": 0
+  },
+  "CommonLearn": [
+    "속공",
+    "반격술",
+    "침착",
+    "행군",
+    "강행",
+    "군율",
+    "방패",
+    "양생",
+    "집중",
+    "협동",
+    "행운",
+    "보급",
+    "책략방어",
+    "원거리방어",
+    "철벽",
+    "불굴"
+  ],
+  "Stages": [
+    {
+      "ID": "B01",
+      "Name": "황건적의 난",
+      "Boss": "장각",
+      "Width": 18,
+      "Height": 14,
+      "Limit": 3,
+      "Threshold": 0,
+      "Tiles": [
+        "..................",
+        "..................",
+        ".........f........",
+        ".........f........",
+        ".........f........",
+        ".vvv..............",
+        ".vvv..............",
+        ".vvv..............",
+        ".vvv..............",
+        "..................",
+        "..................",
+        ".........~........",
+        ".........~........",
+        ".........~........"
+      ],
+      "Allies": [
+        {
+          "X": 2,
+          "Y": 5
+        },
+        {
+          "X": 2,
+          "Y": 6
+        },
+        {
+          "X": 2,
+          "Y": 7
+        },
+        {
+          "X": 2,
+          "Y": 8
+        }
+      ],
+      "Enemies": [
+        {
+          "Officer": "정원지",
+          "X": 14,
+          "Y": 6
+        },
+        {
+          "Officer": "등무",
+          "X": 12,
+          "Y": 8
+        },
+        {
+          "Officer": "장각",
+          "X": 12,
+          "Y": 10
+        },
+        {
+          "Officer": "B01_troop_1",
+          "X": 9,
+          "Y": 2
+        },
+        {
+          "Officer": "B01_troop_2",
+          "X": 10,
+          "Y": 4
+        },
+        {
+          "Officer": "B01_troop_3",
+          "X": 9,
+          "Y": 6
+        },
+        {
+          "Officer": "B01_troop_4",
+          "X": 10,
+          "Y": 8
+        }
+      ],
+      "Reward": {
+        "소군량": 8,
+        "소병법단": 4
+      }
+    },
+    {
+      "ID": "B02",
+      "Name": "사수관 전투",
+      "Boss": "화웅",
+      "Width": 20,
+      "Height": 16,
+      "Limit": 4,
+      "Threshold": 0,
+      "Tiles": [
+        "....................",
+        "................cccc",
+        "..........f.....cccc",
+        "..........f.....cccc",
+        "..........f....c....",
+        "...............c....",
+        "...............c....",
+        "...............c....",
+        "...............c....",
+        "...............c....",
+        "...............c....",
+        "...............c....",
+        "...............c....",
+        "..........~....c....",
+        "..........~.........",
+        "..........~........."
+      ],
+      "Allies": [
+        {
+          "X": 2,
+          "Y": 5
+        },
+        {
+          "X": 2,
+          "Y": 6
+        },
+        {
+          "X": 2,
+          "Y": 7
+        },
+        {
+          "X": 2,
+          "Y": 8
+        }
+      ],
+      "Enemies": [
+        {
+          "Officer": "화웅",
+          "X": 16,
+          "Y": 6
+        },
+        {
+          "Officer": "호진",
+          "X": 14,
+          "Y": 8
+        },
+        {
+          "Officer": "B02_troop_1",
+          "X": 11,
+          "Y": 2
+        },
+        {
+          "Officer": "B02_troop_2",
+          "X": 12,
+          "Y": 4
+        },
+        {
+          "Officer": "B02_troop_3",
+          "X": 11,
+          "Y": 6
+        },
+        {
+          "Officer": "B02_troop_4",
+          "X": 12,
+          "Y": 8
+        },
+        {
+          "Officer": "B02_troop_5",
+          "X": 11,
+          "Y": 10
+        },
+        {
+          "Officer": "B02_troop_6",
+          "X": 12,
+          "Y": 12
+        }
+      ],
+      "Reward": {
+        "소군량": 8,
+        "소병법단": 4
+      },
+      "Duels": [
+        {
+          "ID": "sishui-guan-yu",
+          "Ally": "관우",
+          "Enemy": "화웅",
+          "Outcome": "victory",
+          "AllyResult": "stay",
+          "EnemyResult": "retreat",
+          "Text": "관우: 내 칼을 받아라! 화웅이 물러났다."
+        }
+      ]
+    },
+    {
+      "ID": "B03",
+      "Name": "호로관 전투",
+      "Boss": "여포",
+      "Width": 22,
+      "Height": 18,
+      "Limit": 4,
+      "Threshold": 40,
+      "Tiles": [
+        "dddddddddddddddd......",
+        "dddddddddddddddd..iiii",
+        "dddddddddddfdddd..iiii",
+        "dddddddddddfdddd..iiii",
+        "dddddddddddfdddd.c....",
+        "dddddddddddddddd.c....",
+        "dddddddddddddddd.c....",
+        "dddddddddddddddd.c....",
+        "dddddddddddddddd.c....",
+        "dddddddddddddddd.c....",
+        "dddddddddddddddd.c....",
+        "dddddddddddddddd.c....",
+        "dddddddddddddddd.c....",
+        "dddddddddddddddd.c....",
+        "dddddddddddddddd.c....",
+        "ddddddddddd~dddd.c....",
+        "ddddddddddd~dddd......",
+        "ddddddddddd~dddd......"
+      ],
+      "Allies": [
+        {
+          "X": 2,
+          "Y": 5
+        },
+        {
+          "X": 2,
+          "Y": 6
+        },
+        {
+          "X": 2,
+          "Y": 7
+        },
+        {
+          "X": 2,
+          "Y": 8
+        }
+      ],
+      "Enemies": [
+        {
+          "Officer": "여포",
+          "X": 18,
+          "Y": 6
+        },
+        {
+          "Officer": "이유",
+          "X": 20,
+          "Y": 15
+        },
+        {
+          "Officer": "이각",
+          "X": 20,
+          "Y": 1
+        },
+        {
+          "Officer": "B03_troop_1",
+          "X": 13,
+          "Y": 2
+        },
+        {
+          "Officer": "B03_troop_2",
+          "X": 14,
+          "Y": 4
+        },
+        {
+          "Officer": "B03_troop_3",
+          "X": 13,
+          "Y": 6
+        },
+        {
+          "Officer": "B03_troop_4",
+          "X": 14,
+          "Y": 8
+        },
+        {
+          "Officer": "B03_troop_5",
+          "X": 13,
+          "Y": 10
+        },
+        {
+          "Officer": "B03_troop_6",
+          "X": 14,
+          "Y": 12
+        }
+      ],
+      "Reward": {
+        "소군량": 8,
+        "소병법단": 4,
+        "중군량": 1
+      },
+      "Duels": [
+        {
+          "ID": "hulao-zhang-fei",
+          "Ally": "장비",
+          "Enemy": "여포",
+          "Outcome": "draw",
+          "AllyResult": "stay",
+          "EnemyResult": "stay",
+          "Text": "장비와 여포의 일기토가 무승부로 끝났다."
+        }
+      ]
+    }
+  ],
+  "Nodes": [
+    {
+      "ID": "oath",
+      "Kind": "dialogue",
+      "Text": "유비: 백성을 지키기 위해 함께 뜻을 세웁시다. 관우·장비: 생사를 함께하겠습니다.",
+      "Next": "oath_choice"
+    },
+    {
+      "ID": "oath_choice",
+      "Kind": "choice",
+      "Text": "도원결의: 의용군을 일으킨다.",
+      "Choices": {
+        "결의": "prep1"
+      }
+    },
+    {
+      "ID": "prep1",
+      "Kind": "preparation",
+      "Text": "황건적의 난 — 출전 준비"
+    },
+    {
+      "ID": "join",
+      "Kind": "join",
+      "Officer": "간옹",
+      "Event": "join-간옹",
+      "Next": "joined"
+    },
+    {
+      "ID": "joined",
+      "Kind": "dialogue",
+      "Text": "간옹: 나도 백성을 위한 싸움에 힘을 보태겠소.",
+      "Next": "coalition"
+    },
+    {
+      "ID": "coalition",
+      "Kind": "dialogue",
+      "Text": "동탁 타도군 일어나다. 유비: 연합군과 함께 사수관으로 나아갑시다.",
+      "Next": "prep2"
+    },
+    {
+      "ID": "prep2",
+      "Kind": "preparation",
+      "Text": "사수관 — 출전 준비"
+    },
+    {
+      "ID": "sword",
+      "Kind": "grant",
+      "Item": "item_024",
+      "Count": 1,
+      "Event": "grant-고정도",
+      "Next": "chase"
+    },
+    {
+      "ID": "chase",
+      "Kind": "dialogue",
+      "Text": "손건: 이 고정도를 받아 주십시오. 유비: 감사하오. 이제 호로관으로 추격합시다.",
+      "Next": "prep3"
+    },
+    {
+      "ID": "prep3",
+      "Kind": "preparation",
+      "Text": "호로관 — 출전 준비. 고정도는 창고에서 직접 장착한다."
+    }
+  ]
+}

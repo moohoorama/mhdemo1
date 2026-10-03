@@ -89,7 +89,7 @@ func (s *MapScene) BuildDrawList(c *graphics.Catalog, waterTick, plantTick int, 
 }
 
 func ObjectAnimation(object Object) string {
-	names := [...]string{"", "rock_small", "rock_medium", "rock_medium2", "rock_large", "grass_0", "grass_1", "grass_2", "grass_3", "tree_0", "tree_1"}
+	names := [...]string{"", "rock_small", "rock_medium", "rock_medium2", "rock_large", "grass_0", "grass_1", "grass_2", "grass_3", "tree_0", "tree_1", "tree_2"}
 	return names[object]
 }
 
@@ -112,10 +112,10 @@ func ValidateAssets(c *graphics.Catalog) error {
 			return fmt.Errorf("water frames must reference ground sprites 0-7")
 		}
 	}
-	for o := SmallRock; o <= SmallTree; o++ {
+	for o := SmallRock; o <= TallTree; o++ {
 		a, ok := c.Animations[ObjectAnimation(o)]
 		want := 1
-		if o >= GrassTuft1 {
+		if o >= GrassTuft1 && o <= GrassTuft4 {
 			want = 4
 		}
 		if !ok || len(a.Frames) != want || a.FrameTicks != TreeFrameTicks || !a.Loop {

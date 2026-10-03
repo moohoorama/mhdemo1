@@ -1,0 +1,61 @@
+{
+ "cell": [
+  64,
+  64
+ ],
+ "anchor": [
+  32,
+  57
+ ],
+ "displayScale": 1,
+ "sprites": [
+  {
+   "id": "infantry-ally",
+   "row": 0,
+   "anims": [
+    {
+     "name": "idle",
+     "start": 0,
+     "frames": 8,
+     "ms": 150
+    },
+    {
+     "name": "walk",
+     "start": 8,
+     "frames": 8,
+     "ms": 100
+    }
+   ]
+  },
+  {
+   "id": "cavalry-ally",
+   "row": 1,
+   "anims": [
+    {
+     "name": "idle",
+     "start": 0,
+     "frames": 8,
+     "ms": 150
+    },
+    {
+     "name": "walk",
+     "start": 8,
+     "frames": 8,
+     "ms": 110
+    }
+   ]
+  },
+  {
+   "id": "bandit-enemy",
+   "row": 2,
+   "anims": [
+    {
+     "name": "idle",
+     "start": 0,
+     "frames": 8,
+     "ms": 150
+    }
+   ]
+  }
+ ]
+}

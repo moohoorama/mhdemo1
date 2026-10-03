@@ -1,0 +1,124 @@
+[
+  {
+    "d": "NE",
+    "action": "walk",
+    "f": 1,
+    "components": [
+      {
+        "n": 380,
+        "points": null
+      },
+      {
+        "n": 22,
+        "points": null
+      }
+    ]
+  },
+  {
+    "d": "SE",
+    "action": "walk",
+    "f": 3,
+    "components": [
+      {
+        "n": 306,
+        "points": null
+      },
+      {
+        "n": 44,
+        "points": null
+      }
+    ]
+  },
+  {
+    "d": "W",
+    "action": "walk",
+    "f": 1,
+    "components": [
+      {
+        "n": 478,
+        "points": null
+      },
+      {
+        "n": 1,
+        "points": [
+          [
+            18,
+            13
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "d": "W",
+    "action": "hit",
+    "f": 3,
+    "components": [
+      {
+        "n": 429,
+        "points": null
+      },
+      {
+        "n": 5,
+        "points": [
+          [
+            17,
+            34
+          ],
+          [
+            18,
+            34
+          ],
+          [
+            19,
+            34
+          ],
+          [
+            20,
+            34
+          ],
+          [
+            16,
+            34
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "d": "W",
+    "action": "hit",
+    "f": 4,
+    "components": [
+      {
+        "n": 423,
+        "points": null
+      },
+      {
+        "n": 5,
+        "points": [
+          [
+            17,
+            34
+          ],
+          [
+            18,
+            34
+          ],
+          [
+            19,
+            34
+          ],
+          [
+            20,
+            34
+          ],
+          [
+            16,
+            34
+          ]
+        ]
+      }
+    ]
+  }
+]

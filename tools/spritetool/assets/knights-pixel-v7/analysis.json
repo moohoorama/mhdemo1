@@ -1,0 +1,5218 @@
+[
+  {
+    "direction": "N",
+    "animation": "idle",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        358
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 50
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        358
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 50
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "idle",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        371
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 52
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        371
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 52
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "idle",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        371
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 52
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        371
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 52
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "idle",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        358
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 50
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        358
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 50
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "walk",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        354
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 47
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.024045057074968203,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          0,
+          1
+        ],
+        "bounds": [
+          13,
+          22,
+          6,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.010024330832741478,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          -2
+        ],
+        "bounds": [
+          31,
+          14,
+          3,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 3,
+    "after": {
+      "components": 1,
+      "areas": [
+        354
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 47
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "walk",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        351
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 43
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          13,
+          21,
+          6,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          31,
+          16,
+          3,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        351
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 43
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "walk",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        364
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 49
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.018538541572038516,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          0,
+          -1
+        ],
+        "bounds": [
+          13,
+          20,
+          6,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.006878592751242898,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          2
+        ],
+        "bounds": [
+          31,
+          18,
+          3,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 3,
+    "after": {
+      "components": 1,
+      "areas": [
+        364
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 49
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "walk",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        354
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.011029221290765806,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          13,
+          21,
+          6,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.010024330832741478,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          -1
+        ],
+        "bounds": [
+          31,
+          15,
+          3,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 20,
+    "after": {
+      "components": 1,
+      "areas": [
+        355
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "attack",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        365
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        365
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "attack",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        378
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        378
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "attack",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        377
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        377
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "attack",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        325
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 29
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        325
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 29
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "hit",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        358
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 50
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        358
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 50
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "hit",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        358
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 50
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        358
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 50
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "hit",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        371
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 53
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.0029766171477561775,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          -1,
+          0
+        ],
+        "bounds": [
+          12,
+          21,
+          6,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          1,
+          0
+        ],
+        "bounds": [
+          32,
+          16,
+          3,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 4,
+    "after": {
+      "components": 1,
+      "areas": [
+        371
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 53
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "hit",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        358
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 50
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          13,
+          21,
+          6,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          31,
+          16,
+          3,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        358
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 50
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "exhausted",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        271
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 29
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        271
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 29
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "exhausted",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        288
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 31
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        288
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 31
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "exhausted",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        271
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 29
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        271
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 29
+    }
+  },
+  {
+    "direction": "N",
+    "animation": "exhausted",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        288
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 31
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        288
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 31
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "idle",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        397
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        397
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "idle",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        408
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        408
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "idle",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        408
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        408
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "idle",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        397
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        397
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "walk",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        415
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.010351015173870584,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          15,
+          20,
+          4,
+          7
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          2,
+          -1
+        ],
+        "bounds": [
+          34,
+          15,
+          6,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 6,
+    "after": {
+      "components": 1,
+      "areas": [
+        415
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "walk",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        391
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 47
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          15,
+          20,
+          4,
+          7
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          32,
+          16,
+          6,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        391
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 47
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "walk",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        376
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 56
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.02168497831925102,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          1,
+          -1
+        ],
+        "bounds": [
+          16,
+          19,
+          4,
+          7
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.010699699664938039,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          -2,
+          1
+        ],
+        "bounds": [
+          30,
+          17,
+          6,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        376
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 56
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "walk",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        385
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.019722026327381962,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          1,
+          -1
+        ],
+        "bounds": [
+          16,
+          19,
+          4,
+          7
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          -1
+        ],
+        "bounds": [
+          32,
+          15,
+          6,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        385
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "attack",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        374
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        374
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "attack",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        521
+      ],
+      "interior_transparent_pixels": 27,
+      "contour_points": 47
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        521
+      ],
+      "interior_transparent_pixels": 27,
+      "contour_points": 47
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "attack",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        443
+      ],
+      "interior_transparent_pixels": 29,
+      "contour_points": 49
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        443
+      ],
+      "interior_transparent_pixels": 29,
+      "contour_points": 49
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "attack",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        337
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 47
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        337
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 47
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "hit",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        397
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        397
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "hit",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        397
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        397
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "hit",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        404
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 60
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.00905434981636379,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          -3,
+          4
+        ],
+        "bounds": [
+          12,
+          24,
+          4,
+          7
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.04877224678828798,
+        "accepted": true,
+        "angle": 20,
+        "translation": [
+          -5,
+          -3
+        ],
+        "bounds": [
+          27,
+          13,
+          5,
+          9
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 27,
+    "after": {
+      "components": 1,
+      "areas": [
+        405
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 60
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "hit",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        403
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 47
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.0077148935069208556,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          -2,
+          1
+        ],
+        "bounds": [
+          13,
+          21,
+          4,
+          7
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.036138833322832666,
+        "accepted": true,
+        "angle": 10,
+        "translation": [
+          -2,
+          -2
+        ],
+        "bounds": [
+          30,
+          14,
+          6,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 17,
+    "after": {
+      "components": 1,
+      "areas": [
+        404
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "exhausted",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        291
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 41
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        291
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 41
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "exhausted",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        315
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 43
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        315
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 43
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "exhausted",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        291
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 41
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        291
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 41
+    }
+  },
+  {
+    "direction": "NE",
+    "animation": "exhausted",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        315
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 43
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        315
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 43
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "idle",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        344
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        344
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "idle",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        350
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        350
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "idle",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        350
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        350
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "idle",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        344
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        344
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "walk",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        375
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 43
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.007450103759765625,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          29,
+          18,
+          5,
+          8
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0648651123046875,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          2,
+          0
+        ],
+        "bounds": [
+          33,
+          20,
+          5,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 8,
+    "after": {
+      "components": 1,
+      "areas": [
+        375
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 43
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "walk",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        357
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 34
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 5.960464477539063e-08,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          29,
+          18,
+          5,
+          8
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          31,
+          20,
+          5,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        357
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 34
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "walk",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        360
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 43
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.028169095516204834,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          29,
+          18,
+          5,
+          8
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.12263579595656622,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          -2,
+          1
+        ],
+        "bounds": [
+          29,
+          21,
+          5,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 4,
+    "after": {
+      "components": 1,
+      "areas": [
+        360
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 43
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "walk",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        345
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 37
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 5.960464477539063e-08,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          29,
+          18,
+          5,
+          8
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.06409263610839844,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          31,
+          20,
+          5,
+          8
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 9,
+    "after": {
+      "components": 1,
+      "areas": [
+        346
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 37
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "attack",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        368
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 49
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        368
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 49
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "attack",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        569
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 88
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        569
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 88
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "attack",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        555
+      ],
+      "interior_transparent_pixels": 6,
+      "contour_points": 54
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        555
+      ],
+      "interior_transparent_pixels": 6,
+      "contour_points": 54
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "attack",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        438
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 51
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        438
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 51
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "hit",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        344
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        344
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "hit",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        344
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        344
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "hit",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        364
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 59
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.01450844500141759,
+        "accepted": true,
+        "angle": 20,
+        "translation": [
+          -4,
+          -2
+        ],
+        "bounds": [
+          24,
+          16,
+          6,
+          8
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0676012077331543,
+        "accepted": true,
+        "angle": 20,
+        "translation": [
+          -3,
+          -4
+        ],
+        "bounds": [
+          28,
+          16,
+          4,
+          9
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 24,
+    "after": {
+      "components": 1,
+      "areas": [
+        364
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 59
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "hit",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        353
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 44
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.01968049769247732,
+        "accepted": true,
+        "angle": 20,
+        "translation": [
+          -2,
+          -1
+        ],
+        "bounds": [
+          26,
+          17,
+          6,
+          8
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.07922382736206054,
+        "accepted": true,
+        "angle": 20,
+        "translation": [
+          -1,
+          -2
+        ],
+        "bounds": [
+          30,
+          18,
+          4,
+          9
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 19,
+    "after": {
+      "components": 1,
+      "areas": [
+        353
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 44
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "exhausted",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        299
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 30
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        299
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 30
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "exhausted",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        317
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 32
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        317
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 32
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "exhausted",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        299
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 30
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        299
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 30
+    }
+  },
+  {
+    "direction": "E",
+    "animation": "exhausted",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        317
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 32
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        317
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 32
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "idle",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        357
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        357
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "idle",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        374
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        374
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "idle",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        374
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        374
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "idle",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        357
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        357
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "walk",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        335
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 50
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.025058134546819724,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          -2,
+          -1
+        ],
+        "bounds": [
+          26,
+          20,
+          6,
+          11
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.05817386082240513,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          19,
+          24,
+          5,
+          5
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 7,
+    "after": {
+      "components": 1,
+      "areas": [
+        335
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 50
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "walk",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        348
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 44
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          28,
+          21,
+          6,
+          11
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          19,
+          24,
+          5,
+          5
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        348
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 44
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "walk",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        379
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.02294079762584758,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          28,
+          21,
+          6,
+          11
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.07681546892438616,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          -3,
+          -2
+        ],
+        "bounds": [
+          16,
+          22,
+          5,
+          5
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 22,
+    "after": {
+      "components": 1,
+      "areas": [
+        380
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 54
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "walk",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        341
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 43
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.014938210541347289,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          28,
+          21,
+          6,
+          11
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.028894356318882534,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          19,
+          24,
+          5,
+          5
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 17,
+    "after": {
+      "components": 1,
+      "areas": [
+        343
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 39
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "attack",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        464
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 64
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        464
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 64
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "attack",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        539
+      ],
+      "interior_transparent_pixels": 14,
+      "contour_points": 58
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        539
+      ],
+      "interior_transparent_pixels": 14,
+      "contour_points": 58
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "attack",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        415
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 53
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        415
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 53
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "attack",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        378
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 49
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        378
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 49
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "hit",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        357
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        357
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "hit",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        357
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        357
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "hit",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        386
+      ],
+      "interior_transparent_pixels": 1,
+      "contour_points": 58
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.015152776544744319,
+        "accepted": true,
+        "angle": 30,
+        "translation": [
+          -2,
+          -4
+        ],
+        "bounds": [
+          24,
+          18,
+          9,
+          10
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.03069979975773738,
+        "accepted": true,
+        "angle": 20,
+        "translation": [
+          -2,
+          1
+        ],
+        "bounds": [
+          17,
+          25,
+          4,
+          5
+        ]
+      }
+    ],
+    "cavity_repairs": 1,
+    "changed_pixels": 24,
+    "after": {
+      "components": 1,
+      "areas": [
+        387
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 58
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "hit",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        369
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 45
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.010123918641288325,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          -1,
+          -2
+        ],
+        "bounds": [
+          27,
+          19,
+          6,
+          11
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.03673509098933293,
+        "accepted": true,
+        "angle": 20,
+        "translation": [
+          -1,
+          0
+        ],
+        "bounds": [
+          18,
+          24,
+          4,
+          5
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 22,
+    "after": {
+      "components": 1,
+      "areas": [
+        370
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "exhausted",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        312
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 39
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        312
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 39
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "exhausted",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        328
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        328
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "exhausted",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        312
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 39
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        312
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 39
+    }
+  },
+  {
+    "direction": "SE",
+    "animation": "exhausted",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        328
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        328
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 40
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "idle",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        348
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 44
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        348
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 44
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "idle",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        363
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        363
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "idle",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        363
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        363
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "idle",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        348
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 44
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        348
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 44
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "walk",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        356
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 44
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.01700319562639509,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          0,
+          -1
+        ],
+        "bounds": [
+          27,
+          24,
+          7,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.01024156458237592,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          0,
+          1
+        ],
+        "bounds": [
+          15,
+          23,
+          3,
+          7
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        356
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 44
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "walk",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        339
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 42
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.0007081031799316406,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          27,
+          25,
+          7,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          15,
+          22,
+          3,
+          7
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 2,
+    "after": {
+      "components": 1,
+      "areas": [
+        339
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 42
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "walk",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        346
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 47
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.029607091631208147,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          -1,
+          0
+        ],
+        "bounds": [
+          26,
+          25,
+          7,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.02023158353917739,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          15,
+          22,
+          3,
+          7
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 4,
+    "after": {
+      "components": 1,
+      "areas": [
+        346
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 47
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "walk",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        342
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 38
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.007340363093784877,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          27,
+          25,
+          7,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0007124508128446691,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          15,
+          22,
+          3,
+          7
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 13,
+    "after": {
+      "components": 1,
+      "areas": [
+        342
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 38
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "attack",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        382
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 42
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        382
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 42
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "attack",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        376
+      ],
+      "interior_transparent_pixels": 3,
+      "contour_points": 44
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        376
+      ],
+      "interior_transparent_pixels": 3,
+      "contour_points": 44
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "attack",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        372
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        372
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "attack",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        333
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 36
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        333
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 36
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "hit",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        348
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 44
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        348
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 44
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "hit",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        348
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 44
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        348
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 44
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "hit",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        391
+      ],
+      "interior_transparent_pixels": 5,
+      "contour_points": 51
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.011195114680698939,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          1,
+          -2
+        ],
+        "bounds": [
+          28,
+          23,
+          7,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.041608361636891085,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          -2
+        ],
+        "bounds": [
+          15,
+          20,
+          3,
+          7
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 23,
+    "after": {
+      "components": 1,
+      "areas": [
+        391
+      ],
+      "interior_transparent_pixels": 5,
+      "contour_points": 51
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "hit",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        358
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 47
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.005082130432128906,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          -1
+        ],
+        "bounds": [
+          27,
+          24,
+          7,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          -1
+        ],
+        "bounds": [
+          15,
+          21,
+          3,
+          7
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 11,
+    "after": {
+      "components": 1,
+      "areas": [
+        358
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 47
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "exhausted",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        284
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 35
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        284
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 35
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "exhausted",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        303
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 35
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        303
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 35
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "exhausted",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        284
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 35
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        284
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 35
+    }
+  },
+  {
+    "direction": "S",
+    "animation": "exhausted",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        303
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 35
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        303
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 35
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "idle",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        325
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        325
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "idle",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        335
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        335
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "idle",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        335
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        335
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "idle",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        325
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        325
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "walk",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        346
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 53
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.019180374145507814,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          23,
+          24,
+          7,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          -2,
+          1
+        ],
+        "bounds": [
+          11,
+          19,
+          4,
+          6
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 22,
+    "after": {
+      "components": 1,
+      "areas": [
+        346
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 53
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "walk",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        314
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 47
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.0002147674560546875,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          23,
+          24,
+          7,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          13,
+          18,
+          4,
+          6
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 1,
+    "after": {
+      "components": 1,
+      "areas": [
+        314
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 47
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "walk",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        318
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 54
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.02745372772216797,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          -1,
+          -1
+        ],
+        "bounds": [
+          22,
+          23,
+          7,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          2,
+          -1
+        ],
+        "bounds": [
+          15,
+          17,
+          4,
+          6
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        318
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 54
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "walk",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        314
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 51
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.011040802001953126,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          23,
+          24,
+          7,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          -1
+        ],
+        "bounds": [
+          13,
+          17,
+          4,
+          6
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 10,
+    "after": {
+      "components": 1,
+      "areas": [
+        315
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 53
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "attack",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        353
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 58
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        353
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 58
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "attack",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        430
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 71
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        430
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 71
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "attack",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        371
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 57
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        371
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 57
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "attack",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        315
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 39
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        315
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 39
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "hit",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        325
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        325
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "hit",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        325
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        325
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "hit",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        349
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 58
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.011513961791992187,
+        "accepted": true,
+        "angle": -20,
+        "translation": [
+          1,
+          0
+        ],
+        "bounds": [
+          23,
+          24,
+          8,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.03838511085510254,
+        "accepted": true,
+        "angle": -30,
+        "translation": [
+          4,
+          -4
+        ],
+        "bounds": [
+          18,
+          14,
+          3,
+          6
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 26,
+    "after": {
+      "components": 1,
+      "areas": [
+        349
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 58
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "hit",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        338
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 59
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.016586685180664064,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          23,
+          24,
+          7,
+          9
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.005687204996744791,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          2,
+          -3
+        ],
+        "bounds": [
+          15,
+          15,
+          4,
+          6
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 28,
+    "after": {
+      "components": 1,
+      "areas": [
+        338
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 59
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "exhausted",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        259
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 34
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        259
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 34
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "exhausted",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        277
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 37
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        277
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 37
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "exhausted",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        259
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 34
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        259
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 34
+    }
+  },
+  {
+    "direction": "SW",
+    "animation": "exhausted",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        277
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 37
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        277
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 37
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "idle",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        443
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        443
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "idle",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        456
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        456
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "idle",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        456
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        456
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "idle",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        443
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        443
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "walk",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        484
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 50
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.02959040048960093,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          -2,
+          0
+        ],
+        "bounds": [
+          12,
+          24,
+          8,
+          11
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 1.1920928955078125e-07,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          -2,
+          0
+        ],
+        "bounds": [
+          10,
+          12,
+          6,
+          10
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 25,
+    "after": {
+      "components": 1,
+      "areas": [
+        489
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 52
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "walk",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        446
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 49
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          14,
+          24,
+          8,
+          11
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 1.1920928955078125e-07,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          12,
+          12,
+          6,
+          10
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        446
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 49
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "walk",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        445
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 53
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.01645773810309333,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          2,
+          0
+        ],
+        "bounds": [
+          16,
+          24,
+          8,
+          11
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 1.1920928955078125e-07,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          2,
+          0
+        ],
+        "bounds": [
+          14,
+          12,
+          6,
+          10
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        445
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 53
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "walk",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        457
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.005718128101245777,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          0,
+          -1
+        ],
+        "bounds": [
+          14,
+          23,
+          8,
+          11
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 1.1920928955078125e-07,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          -1
+        ],
+        "bounds": [
+          12,
+          11,
+          6,
+          10
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        457
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "attack",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        527
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 58
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        527
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 58
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "attack",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        637
+      ],
+      "interior_transparent_pixels": 34,
+      "contour_points": 73
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        637
+      ],
+      "interior_transparent_pixels": 34,
+      "contour_points": 73
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "attack",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        561
+      ],
+      "interior_transparent_pixels": 1,
+      "contour_points": 75
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        561
+      ],
+      "interior_transparent_pixels": 1,
+      "contour_points": 75
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "attack",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        414
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        414
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 48
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "hit",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        443
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        443
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "hit",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        443
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        443
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "hit",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        485
+      ],
+      "interior_transparent_pixels": 1,
+      "contour_points": 68
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.021972398500184755,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          2,
+          -4
+        ],
+        "bounds": [
+          16,
+          20,
+          8,
+          11
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.04757884724934895,
+        "accepted": true,
+        "angle": -20,
+        "translation": [
+          6,
+          -4
+        ],
+        "bounds": [
+          19,
+          8,
+          4,
+          10
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 56,
+    "after": {
+      "components": 1,
+      "areas": [
+        486
+      ],
+      "interior_transparent_pixels": 1,
+      "contour_points": 68
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "hit",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        467
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 64
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.012997498383393159,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          1,
+          -2
+        ],
+        "bounds": [
+          15,
+          22,
+          8,
+          11
+        ]
+      },
+      {
+        "part": "sword",
+        "match_error": 0.06127195693507339,
+        "accepted": true,
+        "angle": -10,
+        "translation": [
+          3,
+          -2
+        ],
+        "bounds": [
+          15,
+          10,
+          6,
+          10
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 41,
+    "after": {
+      "components": 1,
+      "areas": [
+        468
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 62
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "exhausted",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        399
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        399
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "exhausted",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        415
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        415
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "exhausted",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        399
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        399
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "W",
+    "animation": "exhausted",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        415
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        415
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "idle",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        368
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        368
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "idle",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        379
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        379
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "idle",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        379
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        379
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "idle",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        368
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        368
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "walk",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        349
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.01995939016342163,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          2,
+          1
+        ],
+        "bounds": [
+          13,
+          20,
+          9,
+          11
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        349
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 55
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "walk",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        367
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 51
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.0,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          0,
+          0
+        ],
+        "bounds": [
+          11,
+          19,
+          9,
+          11
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        367
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 51
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "walk",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        381
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 50
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.01130741834640503,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          -2,
+          -1
+        ],
+        "bounds": [
+          9,
+          18,
+          9,
+          11
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 6,
+    "after": {
+      "components": 1,
+      "areas": [
+        383
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 52
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "walk",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        363
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 49
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.01591712236404419,
+        "accepted": false,
+        "angle": 0,
+        "translation": [
+          0,
+          -1
+        ],
+        "bounds": [
+          11,
+          18,
+          9,
+          11
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        363
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 49
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "attack",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        454
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 64
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        454
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 64
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "attack",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        478
+      ],
+      "interior_transparent_pixels": 11,
+      "contour_points": 65
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        478
+      ],
+      "interior_transparent_pixels": 11,
+      "contour_points": 65
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "attack",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        439
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 57
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        439
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 57
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "attack",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        383
+      ],
+      "interior_transparent_pixels": 3,
+      "contour_points": 37
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        383
+      ],
+      "interior_transparent_pixels": 3,
+      "contour_points": 37
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "hit",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        368
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        368
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "hit",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        368
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        368
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 46
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "hit",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        377
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 67
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.021646062941778274,
+        "accepted": true,
+        "angle": -20,
+        "translation": [
+          3,
+          -3
+        ],
+        "bounds": [
+          14,
+          16,
+          10,
+          11
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 19,
+    "after": {
+      "components": 1,
+      "areas": [
+        379
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 66
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "hit",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        373
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 57
+    },
+    "objects": [
+      {
+        "part": "shield",
+        "match_error": 0.02659231424331665,
+        "accepted": true,
+        "angle": 0,
+        "translation": [
+          2,
+          -1
+        ],
+        "bounds": [
+          13,
+          18,
+          9,
+          11
+        ]
+      }
+    ],
+    "cavity_repairs": 0,
+    "changed_pixels": 37,
+    "after": {
+      "components": 1,
+      "areas": [
+        374
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 57
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "exhausted",
+    "frame": 1,
+    "before": {
+      "components": 1,
+      "areas": [
+        272
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 36
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        272
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 36
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "exhausted",
+    "frame": 2,
+    "before": {
+      "components": 1,
+      "areas": [
+        286
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 37
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        286
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 37
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "exhausted",
+    "frame": 3,
+    "before": {
+      "components": 1,
+      "areas": [
+        272
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 36
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        272
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 36
+    }
+  },
+  {
+    "direction": "NW",
+    "animation": "exhausted",
+    "frame": 4,
+    "before": {
+      "components": 1,
+      "areas": [
+        286
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 37
+    },
+    "objects": [],
+    "changed_pixels": 0,
+    "after": {
+      "components": 1,
+      "areas": [
+        286
+      ],
+      "interior_transparent_pixels": 0,
+      "contour_points": 37
+    }
+  }
+]

@@ -42,6 +42,7 @@ func TestDrawListAnimationAndSharedDepth(t *testing.T) {
 	w.SetTerrain(0, 0, Forest)
 	w.SetTerrain(1, 1, River)
 	s := BuildMapScene(w)
+	s.Decorations = append(s.Decorations, DecorationPlacement{Position: image.Pt(16, 16), Object: GrassTuft1})
 	a, err := s.BuildDrawList(c, 0, 0, nil, nil)
 	if err != nil {
 		t.Fatal(err)

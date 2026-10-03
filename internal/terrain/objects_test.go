@@ -93,7 +93,7 @@ func TestForestHasOneTileScaleTree(t *testing.T) {
 		for x := 0; x < w.Width; x++ {
 			for _, object := range w.Objects(x, y) {
 				counts[object]++
-				if object == LargeTree || object == SmallTree {
+				if object >= LargeTree && object <= TallTree {
 					trees++
 				}
 			}
@@ -105,8 +105,19 @@ func TestForestHasOneTileScaleTree(t *testing.T) {
 			}
 		}
 	}
-	if counts[LargeTree]+counts[SmallTree] != w.Width*w.Height {
+	if counts[LargeTree]+counts[SmallTree]+counts[TallTree] != w.Width*w.Height {
 		t.Fatal("one tree per forest tile", counts)
+	}
+	for object := LargeTree; object <= TallTree; object++ {
+		fraction := float64(counts[object]) / float64(w.Width*w.Height)
+		if fraction < 1.0/3-.01 || fraction > 1.0/3+.01 {
+			t.Fatalf("tree %d fraction %f", object, fraction)
+		}
+		x, y := (Placement{X: 3, Y: 4, Object: object}).Position()
+		wantX, wantY := Project(3.5, 4.5)
+		if x != wantX || y != wantY {
+			t.Fatal("tree not centered", object)
+		}
 	}
 }
 

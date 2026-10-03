@@ -15,6 +15,7 @@ const (
 	GrassTuft4
 	LargeTree
 	SmallTree
+	TallTree
 )
 
 // Coordinate hashing makes decoration stable through repaint, undo and loading.
@@ -29,7 +30,7 @@ func decorationHash(x, y, slot, stream int) uint64 {
 }
 func roll(x, y, slot, stream, n int) int { return int(decorationHash(x, y, slot, stream) % uint64(n)) }
 func tuft(x, y, slot int) Object         { return GrassTuft1 + Object(roll(x, y, slot, 1, 4)) }
-func tree(x, y, slot int) Object         { return LargeTree + Object(roll(x, y, slot, 2, 2)) }
+func tree(x, y, slot int) Object         { return LargeTree + Object(roll(x, y, slot, 2, 3)) }
 
 func (w *World) Objects(x, y int) [4]Object {
 	var result [4]Object
@@ -82,7 +83,7 @@ func (w *World) Placements() []Placement {
 	return result
 }
 func (p Placement) Position() (float64, float64) {
-	if p.Object == LargeTree || p.Object == SmallTree {
+	if p.Object >= LargeTree && p.Object <= TallTree {
 		return Project(float64(p.X)+.5, float64(p.Y)+.5)
 	}
 	return Project(float64(p.X)+float64(p.Slot%2)/2+.25, float64(p.Y)+float64(p.Slot/2)/2+.25)

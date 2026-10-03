@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>좌하향 피격 · 후보 4개</title>
+<style>
+:root{color-scheme:dark;font:16px system-ui;background:#10151b;color:#e5ebf1}*{box-sizing:border-box}body{max-width:1180px;margin:auto;padding:24px}h1{font-size:24px}p{color:#a8b7c8;line-height:1.6}button,select{font:inherit;padding:9px 14px;border:1px solid #50627a;border-radius:7px;background:#26313e;color:inherit;cursor:pointer}button:focus-visible,select:focus-visible{outline:2px solid #9bd9ff}.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:20px 0}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}article{background:#18212b;border:1px solid #38485c;border-radius:12px;padding:16px}h2{font-size:19px;margin:0}article p{font-size:14px;min-height:65px}.stage{background:#425a56;border-radius:6px}canvas{display:block;width:100%;height:auto;image-rendering:pixelated}.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:14px}.strip button{padding:0;background:#263442}.strip span{display:block;font-size:13px;padding:4px}.active{outline:2px solid #8acfff}a{color:#9dd2ff}#error{color:#ffaaa3}@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:480px){.grid{grid-template-columns:1fr}body{padding:16px}}
+</style>
+<h1>좌하향(SW) 피격 · 후보 4개</h1>
+<p>1·2프레임은 피격 전, 3프레임은 충격, 4프레임은 회복입니다. 원하는 후보 번호를 대화에 알려주세요.</p>
+<div class="controls"><button id="play">일시정지</button><button id="impact">3프레임 비교</button><label>속도 <select id="speed"><option value="1">기본</option><option value="2">느리게</option></select></label><span id="frame" aria-live="off">1 / 4</span></div>
+<div class="grid" id="grid"></div><p id="error" role="alert" hidden></p>
+<p>동작 선택용 시안입니다. 선택한 반동을 기존 도트 크기와 팔레트에 맞춰 전 방향에 적용합니다.</p>
+<p><a href="knight-preview.html?v=4">현재 적용본 보기</a></p>
+<script src="knight-hit-candidates.js"></script></html>

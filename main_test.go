@@ -28,7 +28,7 @@ func TestEmbeddedTiles(t *testing.T) {
 	if got := c.Images[0].Bounds().Size(); got != image.Pt(128, 40) {
 		t.Fatalf("terrain atlas size %v", got)
 	}
-	if got := c.Images[1].Bounds().Size(); got != image.Pt(192, 128) {
+	if got := c.Images[1].Bounds().Size(); got != image.Pt(320, 144) {
 		t.Fatalf("object atlas size %v", got)
 	}
 }
@@ -126,16 +126,15 @@ func TestObjectSpritesAndForestHistory(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for tree := 0; tree < 2; tree++ {
-		seen := map[string]bool{}
-		for frame := 0; frame < 4; frame++ {
-			id := terrain.AssetCount + terrain.ObjectSprite(terrain.LargeTree+terrain.Object(tree), frame)
-			seen[string(spritePixels(c, id))] = true
-		}
-		if len(seen) != 4 {
-			t.Fatal("tree needs four distinct foliage frames", tree)
-		}
+	seen := map[string]bool{}
+	for tree := 0; tree < 3; tree++ {
+		id := terrain.AssetCount + terrain.ObjectSprite(terrain.LargeTree+terrain.Object(tree), 0)
+		seen[string(spritePixels(c, id))] = true
 	}
+	if len(seen) != 3 {
+		t.Fatal("expected three distinct tree sprites")
+	}
+
 	g := &game{w: terrain.New(3, 3), path: filepath.Join(t.TempDir(), "map.json")}
 	for _, action := range []string{"rockgrass", "rockland", "forest"} {
 		g.action(action)
@@ -185,8 +184,8 @@ func TestGrassAnimationFrames(t *testing.T) {
 			seen[string(spritePixels(c, id))] = true
 			baseRect, rect := c.Rect(baseID), c.Rect(id)
 			baseImage, im := c.Images[c.Sprites[baseID].Sheet], c.Images[c.Sprites[id].Sheet]
-			for y := 28; y < 32; y++ {
-				for x := 0; x < 24; x++ {
+			for y := c.Sprites[id].Pivot.Y; y < rect.Dy(); y++ {
+				for x := 0; x < rect.Dx(); x++ {
 					if im.At(rect.Min.X+x, rect.Min.Y+y) != baseImage.At(baseRect.Min.X+x, baseRect.Min.Y+y) {
 						t.Fatal("grass roots moved")
 					}

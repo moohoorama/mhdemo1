@@ -4,7 +4,7 @@ SPRITE_SOURCE ?= tools/spritetool/assets
 SPRITETOOL := go run ./tools/spritetool
 TILEGENERATOR := go run ./tools/tilegenerator
 
-.PHONY: assets terrain objects clean-assets
+.PHONY: assets terrain objects clean-assets knights check-knights preview-knights
 
 assets: terrain objects
 
@@ -22,29 +22,36 @@ objects:
 	$(SPRITETOOL) --frames 4 --frame 0 --outline 1 $(SPRITE_SOURCE)/grass_1.png $(ASSET_TEMP)/05.png
 	$(SPRITETOOL) --frames 4 --frame 0 --outline 1 $(SPRITE_SOURCE)/grass_2.png $(ASSET_TEMP)/06.png
 	$(SPRITETOOL) --frames 4 --frame 0 --outline 1 $(SPRITE_SOURCE)/grass_3.png $(ASSET_TEMP)/07.png
-	$(SPRITETOOL) --crop 0,0,1772,887 --frames 4 --frame 0 --trim --size 22x20 --outline 1 $(SPRITE_SOURCE)/tree_0.png $(ASSET_TEMP)/08.png
-	$(SPRITETOOL) --crop 0,0,1772,887 --frames 4 --frame 1 --trim --size 22x20 --outline 1 $(SPRITE_SOURCE)/tree_0.png $(ASSET_TEMP)/09.png
-	$(SPRITETOOL) --crop 0,0,1772,887 --frames 4 --frame 2 --trim --size 22x20 --outline 1 $(SPRITE_SOURCE)/tree_0.png $(ASSET_TEMP)/10.png
-	$(SPRITETOOL) --crop 0,0,1772,887 --frames 4 --frame 3 --trim --size 22x20 --outline 1 $(SPRITE_SOURCE)/tree_0.png $(ASSET_TEMP)/11.png
-	$(SPRITETOOL) --frames 4 --frame 0 --trim --size 20x18 --outline 1 $(SPRITE_SOURCE)/tree_1.png $(ASSET_TEMP)/12.png
-	$(SPRITETOOL) --frames 4 --frame 1 --trim --size 20x18 --outline 1 $(SPRITE_SOURCE)/tree_1.png $(ASSET_TEMP)/13.png
-	$(SPRITETOOL) --frames 4 --frame 2 --trim --size 20x18 --outline 1 $(SPRITE_SOURCE)/tree_1.png $(ASSET_TEMP)/14.png
-	$(SPRITETOOL) --frames 4 --frame 3 --trim --size 20x18 --outline 1 $(SPRITE_SOURCE)/tree_1.png $(ASSET_TEMP)/15.png
-	$(SPRITETOOL) --frames 4 --frame 1 --outline 1 $(SPRITE_SOURCE)/grass_0.png $(ASSET_TEMP)/16.png
-	$(SPRITETOOL) --frames 4 --frame 2 --outline 1 $(SPRITE_SOURCE)/grass_0.png $(ASSET_TEMP)/17.png
-	$(SPRITETOOL) --frames 4 --frame 3 --outline 1 $(SPRITE_SOURCE)/grass_0.png $(ASSET_TEMP)/18.png
-	$(SPRITETOOL) --frames 4 --frame 1 --outline 1 $(SPRITE_SOURCE)/grass_1.png $(ASSET_TEMP)/19.png
-	$(SPRITETOOL) --frames 4 --frame 2 --outline 1 $(SPRITE_SOURCE)/grass_1.png $(ASSET_TEMP)/20.png
-	$(SPRITETOOL) --frames 4 --frame 3 --outline 1 $(SPRITE_SOURCE)/grass_1.png $(ASSET_TEMP)/21.png
-	$(SPRITETOOL) --frames 4 --frame 1 --outline 1 $(SPRITE_SOURCE)/grass_2.png $(ASSET_TEMP)/22.png
-	$(SPRITETOOL) --frames 4 --frame 2 --outline 1 $(SPRITE_SOURCE)/grass_2.png $(ASSET_TEMP)/23.png
-	$(SPRITETOOL) --frames 4 --frame 3 --outline 1 $(SPRITE_SOURCE)/grass_2.png $(ASSET_TEMP)/24.png
-	$(SPRITETOOL) --frames 4 --frame 1 --outline 1 $(SPRITE_SOURCE)/grass_3.png $(ASSET_TEMP)/25.png
-	$(SPRITETOOL) --frames 4 --frame 2 --outline 1 $(SPRITE_SOURCE)/grass_3.png $(ASSET_TEMP)/26.png
-	$(SPRITETOOL) --frames 4 --frame 3 --outline 1 $(SPRITE_SOURCE)/grass_3.png $(ASSET_TEMP)/27.png
-	$(SPRITETOOL) --atlas 24x32,8x4 --atlas-pivot 12,28 --sprite-pivot center,bottom-2 $(ASSET_TEMP)/*.png $(ASSET_DIR)/objects.png
+	$(SPRITETOOL) --size 36x33 --outline 1 $(SPRITE_SOURCE)/tree1.png $(ASSET_TEMP)/08.png
+	$(SPRITETOOL) --crop 126,139,1059,945 --size 36x32 --outline 1 $(SPRITE_SOURCE)/tree2.png $(ASSET_TEMP)/09.png
+	$(SPRITETOOL) --crop 208,95,875,1020 --size 36x42 --outline 1 $(SPRITE_SOURCE)/tree3.png $(ASSET_TEMP)/10.png
+	$(SPRITETOOL) --frames 4 --frame 1 --outline 1 $(SPRITE_SOURCE)/grass_0.png $(ASSET_TEMP)/11.png
+	$(SPRITETOOL) --frames 4 --frame 2 --outline 1 $(SPRITE_SOURCE)/grass_0.png $(ASSET_TEMP)/12.png
+	$(SPRITETOOL) --frames 4 --frame 3 --outline 1 $(SPRITE_SOURCE)/grass_0.png $(ASSET_TEMP)/13.png
+	$(SPRITETOOL) --frames 4 --frame 1 --outline 1 $(SPRITE_SOURCE)/grass_1.png $(ASSET_TEMP)/14.png
+	$(SPRITETOOL) --frames 4 --frame 2 --outline 1 $(SPRITE_SOURCE)/grass_1.png $(ASSET_TEMP)/15.png
+	$(SPRITETOOL) --frames 4 --frame 3 --outline 1 $(SPRITE_SOURCE)/grass_1.png $(ASSET_TEMP)/16.png
+	$(SPRITETOOL) --frames 4 --frame 1 --outline 1 $(SPRITE_SOURCE)/grass_2.png $(ASSET_TEMP)/17.png
+	$(SPRITETOOL) --frames 4 --frame 2 --outline 1 $(SPRITE_SOURCE)/grass_2.png $(ASSET_TEMP)/18.png
+	$(SPRITETOOL) --frames 4 --frame 3 --outline 1 $(SPRITE_SOURCE)/grass_2.png $(ASSET_TEMP)/19.png
+	$(SPRITETOOL) --frames 4 --frame 1 --outline 1 $(SPRITE_SOURCE)/grass_3.png $(ASSET_TEMP)/20.png
+	$(SPRITETOOL) --frames 4 --frame 2 --outline 1 $(SPRITE_SOURCE)/grass_3.png $(ASSET_TEMP)/21.png
+	$(SPRITETOOL) --frames 4 --frame 3 --outline 1 $(SPRITE_SOURCE)/grass_3.png $(ASSET_TEMP)/22.png
+	$(SPRITETOOL) --atlas 40x48,8x3 --atlas-pivot 20,44 --sprite-pivot center,bottom-2 $(ASSET_TEMP)/*.png $(ASSET_DIR)/objects.png
 	rm -rf -- "$(ASSET_TEMP)"
 
 clean-assets:
 	rm -f -- "$(ASSET_DIR)/terrain.png" "$(ASSET_DIR)/objects.png"
 	rm -rf -- "$(ASSET_TEMP)"
+
+# Knight artwork is already native-sized; normal builds only validate and pack.
+knights:
+	python3 tools/build_knights.py --output "$(ASSET_DIR)"
+
+check-knights:
+	python3 tools/build_knights.py --check
+	node --check knight-preview.js
+	node tools/knights/check_preview.cjs
+
+preview-knights:
+	python3 -m http.server 8765 --bind 127.0.0.1
