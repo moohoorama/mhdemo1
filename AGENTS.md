@@ -10,3 +10,6 @@ Before creating or modifying any sprite, read
 `tools/spritetool/assets/SPRITE_ART_GUIDE.md` and the target asset's settings
 or README. Apply the common rules and the relevant asset-type rules to both
 candidate previews and final artwork.
+
+For unit sprites (soldiers, cavalry, archers, heroes), also read
+`tools/spritetool/assets/UNIT_ART_GUIDE.md`; the pipeline lives in `tools/unit3d/`.

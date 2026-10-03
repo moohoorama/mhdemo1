@@ -1,0 +1,51 @@
+# ver2 병종 세트
+
+[병종 기준](../UNIT_ART_GUIDE.md)과 [공통 기준](../SPRITE_ART_GUIDE.md)을 따른다. 구현은 [`tools/unit3d/`](../../../unit3d/DESIGN.md).
+
+8방향 × 5동작(대기·걷기·공격·피격·탈진) × 4프레임. 병종 폴더마다 `{N,NE,E,SE,S,SW,W,NW}-pixel.png`(4열 × 5행)과
+`frames.json`(셀·기준점·프레임 좌표·재생 시간·팔레트). 진영색은 `factions.json`.
+
+```sh
+python3 tools/unit3d/build.py --full                 # 전체 재생성 (약 10분)
+python3 tools/unit3d/build.py --full --unit guanyu   # 한 병종만
+python3 tools/unit3d/build.py                        # 8방향 대기 검토 시트만 (output/ver2-units.png)
+python3 tools/unit3d/attack_candidates.py            # 공격 후보 비교 (output/ver2-attack-candidates.*)
+make preview-knights                                 # http://127.0.0.1:8765/ver2-units-preview.html
+python3 ver3/tools/build_assets.py                   # ver3/asset 재패키징 (캐릭터별 1장 + assets.yaml)
+```
+
+## 병종
+
+| 폴더 | 병종 | 외형 | 공격 (`attacks.SELECTED`) | 셀 · 기준점 |
+|---|---|---|---|---|
+| `infantry` | 경보병 | 철투구, 칼, 원형 방패 | 횡베기 `sweep` | 56×46 · (28,38) |
+| `bandit` | 황건 적병 | 상투 + 황건, 삼베 옷, 칼, 원형 방패 | 내려베기 `overhead` | 58×54 · (29,41) |
+| `spearman` | 창병 | 원뿔 투구, 창 | 찌르기 `thrust` | 104×50 · (52,36) |
+| `archer` | 궁병 | 두건, 활·화살통 | 강궁 `power` | 94×48 · (47,39) |
+| `cavalry` | 경기병 | 철투구, 창, 밤색 말 | 돌진 찌르기 `charge` | 102×53 · (51,50) |
+| `guanyu` | 관우 | 녹건·녹포, 붉은 얼굴, 긴 수염, 청룡언월도, 적토마 | 언월도 횡베기 `glaive_sweep` | 70×60 · (35,57) |
+| `zhangfei` | 장비 | 검은 투구·갑옷, 거뭇한 얼굴, 뻣뻣한 수염, 장팔사모, 흑마 | 휘두르기 `swing` | 68×53 · (34,50) |
+
+셀은 병종마다 전 프레임의 합집합으로 자동으로 정해지므로 다시 생성하면 바뀔 수 있다. 값은 `frames.json`이 기준이다.
+재생 시간(ms): 대기 180, 걷기 120, 공격 180·280·240·200, 피격 120, 탈진 220.
+
+## 공격 후보 (백업)
+
+선택되지 않은 후보는 `tools/unit3d/attacks.py`에 정의를 남겼다. `SELECTED`만 바꾸면 다시 적용된다.
+
+- 칼 `SWORD`: 내려베기 `overhead`, 횡베기 `sweep`, 올려베기 `rising`, 찌르기 `thrust`
+- 창(기마) `SPEAR`: 돌진 찌르기 `charge`, 내려찍기 `downstab`, 휘두르기 `swing`, 도약 찌르기 `leap`, 언월도 횡베기 `glaive_sweep`
+- 활 `BOW`: 강궁 `power`, 낮게 쏘기 `low`, 하늘로 쏘기 `sky`, 속사 `rapid`
+
+## 진영색
+
+진영색 부위는 키 램프 `W X Y Z`(`#1b3358 #264d80 #3567a6 #5a8fd0`)로 그려져 있다. `factions.json`의
+`team_keys`와 정확히 같은 픽셀을 각 진영의 `ramp`로 바꾼다. 진영은 `tools/unit3d/factions.py`에서 색조·채도·밝기로 정의한다.
+
+위(청, 키 그대로) · 촉(금빛 노랑) · 오(빨강) · 황건적(주황빛 황색) · 동탁·여포(곤색) · 공손찬(흰색) · 원소·원술(레몬빛 노랑) · 이민족(보라)
+
+## 이력
+
+- 초기 2D 후보(기사 v6 몸 + 머리 교체)는 [`../ver2-unit-candidates/`](../ver2-unit-candidates/README.md)에 보관.
+- 기사 프레임 머리 교체 방식은 몸이 잘리고 공격·피격에서 머리를 추적할 수 없어 3D 렌더로 바꿨다.
+- 피격은 넉백·베임·웅크림·흔들림 4안 중 베임의 자세만 채택했다(색 효과는 런타임).
