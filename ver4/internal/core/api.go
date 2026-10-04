@@ -101,17 +101,28 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 		return Preview{}, err
 	}
 	p := Preview{Cost: e.cost(u, s), Hit: e.hitChance(u, v, s), Effect: s.Effect}
+	if s.Kind == "physical" {
+		p.Crit = e.critChance(u, v)
+	}
 	for _, q := range e.targets(u, v, s) {
 		p.Targets = append(p.Targets, q.ID)
+		heal := 0
 		if s.Effect == "heal" {
-			p.Healing += min(e.stats(q).MaxHP-q.HP, e.healAmount(u, s))
+			heal = min(e.stats(q).MaxHP-q.HP, e.healAmount(u, s))
+			p.Healing += heal
 		}
 		if s.Kind == "physical" || s.Kind == "magic" {
 			d := e.damage(u, q, s)
+			normal, crit := int(math.Floor(d)), int(math.Floor(d))
 			if s.Kind == "physical" {
-				d *= 1.5
+				crit = int(math.Floor(d * 1.5))
 			}
-			p.MaxDamage += int(math.Floor(d))
+			p.MaxDamage += crit
+			p.XP += e.actionXPAmount(u, q, 24, c.Kind == "skill", normal >= q.HP)
+			p.CritXP += e.actionXPAmount(u, q, 24, c.Kind == "skill", crit >= q.HP)
+		} else if u.Faction == "ally" && (s.Effect != "heal" || heal > 0) {
+			p.XP += e.supportXP(u)
+			p.CritXP += e.supportXP(u)
 		}
 	}
 	return p, nil
@@ -286,6 +297,15 @@ func (e *Engine) CounterDamage(c Command) int {
 		return 0
 	}
 	return int(math.Floor(e.damage(v, u, basic) * 1.5 * .7))
+}
+
+// StepCost is what entering (x, y) costs the unit, 0 where it cannot enter.
+func (e *Engine) StepCost(id string, x, y int) int {
+	u := e.unit(id)
+	if u == nil {
+		return 0
+	}
+	return e.terrain(u, x, y).Cost
 }
 
 // Threat is every cell the unit could attack next time it acts: its movement reach from

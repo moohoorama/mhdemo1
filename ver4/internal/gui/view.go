@@ -155,10 +155,11 @@ func (g *Game) toScreen(x, y float64) (float64, float64) {
 	return (x-g.camX)*z + float64(viewport.Min.X+viewport.Dx()/2), (y-g.camY)*z + float64(viewport.Min.Y+viewport.Dy()/2)
 }
 
-// camera pans with the arrow keys or a right-button drag and zooms with the wheel.
-// A right click without dragging cancels instead.
+// camera pans with the arrow keys, the window's edges or a drag with either button and
+// zooms with the wheel. A click without dragging selects (left) or cancels (right) instead.
 func (g *Game) camera() {
 	if g.field == nil || g.overlay != "" || g.input || len(g.modals) > 0 {
+		g.dragging = false
 		return
 	}
 	step := 12.0 / g.zoom
@@ -175,14 +176,32 @@ func (g *Game) camera() {
 		g.camY += step
 	}
 	x, y := cursorPos()
-	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonRight) && image.Pt(x, y).In(viewport) {
-		g.dragging, g.dragMoved, g.dragX, g.dragY = true, false, x, y
+	// the window's edge scrolls too (not while a screenshot run drives the game)
+	const edge = 8
+	if len(g.Shots) == 0 && !g.dragging && ebiten.IsFocused() && image.Pt(x, y).In(viewport) {
+		switch {
+		case x < edge:
+			g.camX -= step
+		case x >= Width-edge:
+			g.camX += step
+		}
+		switch {
+		case y < edge:
+			g.camY -= step
+		case y >= Height-edge:
+			g.camY += step
+		}
+	}
+	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonRight) && image.Pt(x, y).In(viewport) && !g.dragging {
+		g.dragging, g.dragMoved, g.dragButton, g.dragX, g.dragY = true, false, ebiten.MouseButtonRight, x, y
 	}
 	if g.dragging {
-		if !ebiten.IsMouseButtonPressed(ebiten.MouseButtonRight) {
+		if !ebiten.IsMouseButtonPressed(g.dragButton) {
 			g.dragging = false
-			if !g.dragMoved {
+			if !g.dragMoved && g.dragButton == ebiten.MouseButtonRight {
 				g.rightClick()
+			} else if !g.dragMoved {
+				g.mapRelease()
 			}
 		} else if g.dragMoved || abs(x-g.dragX)+abs(y-g.dragY) > 4 {
 			g.dragMoved = true
@@ -191,7 +210,7 @@ func (g *Game) camera() {
 			g.dragX, g.dragY = x, y
 		}
 	}
-	if _, wy := ebiten.Wheel(); wy != 0 && image.Pt(x, y).In(viewport) {
+	if _, wy := ebiten.Wheel(); wy != 0 && image.Pt(x, y).In(viewport) && !g.overHUD(x, y) {
 		i := 0
 		for j, z := range zooms {
 			if z <= g.zoom {
@@ -203,6 +222,15 @@ func (g *Game) camera() {
 	size := g.field.Size()
 	g.camX = math.Max(0, math.Min(float64(size.X), g.camX))
 	g.camY = math.Max(0, math.Min(float64(size.Y), g.camY))
+}
+
+func (g *Game) overHUD(x, y int) bool {
+	for _, r := range g.blocks {
+		if image.Pt(x, y).In(r) {
+			return true
+		}
+	}
+	return false
 }
 
 func cell(im *ebiten.Image, col, row, cols, rows int) *ebiten.Image {

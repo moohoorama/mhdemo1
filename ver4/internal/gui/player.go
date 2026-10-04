@@ -11,12 +11,14 @@ import (
 )
 
 const (
-	stepTime  = .28 // seconds per cell while walking
-	stagger   = .2  // minimum delay between two actions starting
-	shakeTime = .45
-	shakePx   = 3.0
-	shakeHz   = 11.0
-	blinkTime = 1.2
+	stepTime   = .28 // seconds per cell while walking
+	stagger    = .2  // minimum delay between two actions starting
+	shakeTime  = .45
+	shakePx    = 3.0
+	critShake  = 2.8 // a critical blow shakes the target this many times harder
+	chargeTime = .75 // seconds a unit gathers itself, whitening, before a critical blow
+	shakeHz    = 11.0
+	blinkTime  = 1.2
 )
 
 var directions = []string{"E", "SE", "S", "SW", "W", "NW", "N", "NE"} // by screen angle from +x
@@ -40,6 +42,9 @@ type unitVis struct {
 	walk         *walkState
 	shakeSign    float64
 	shakeT       float64
+	shakeAmp     float64
+	charge       float64 // 0..1: how white the sprite is drawn while gathering a critical blow
+	charging     bool    // holds the first attack frame and whitens
 	dying        float64 // < 0: alive
 	gone, greyed bool
 	ranged       bool
@@ -79,10 +84,15 @@ func (u *unitVis) shakeOffset() float64 {
 		return 0
 	}
 	t := shakeTime - u.shakeT
-	return u.shakeSign * shakePx * math.Sin(2*math.Pi*shakeHz*t) * (u.shakeT / shakeTime)
+	return u.shakeSign * shakePx * max(1, u.shakeAmp) * math.Sin(2*math.Pi*shakeHz*t) * min(1, u.shakeT/shakeTime)
 }
 func (u *unitVis) update(dt float64) {
-	u.animT += dt
+	if u.charging {
+		u.charge = math.Min(1, u.charge+dt/chargeTime)
+	} else {
+		u.animT += dt
+		u.charge = math.Max(0, u.charge-dt*5)
+	}
 	if w := u.walk; w != nil {
 		w.t = math.Min(stepTime, w.t+dt)
 		k := w.t / stepTime
@@ -110,7 +120,15 @@ type popup struct {
 	text string
 	col  color.RGBA
 	t    float64
+	row  int // stacked above the unit's other fresh popups
 }
+
+var (
+	hpLossC = color.RGBA{255, 236, 160, 255}
+	hpGainC = color.RGBA{135, 245, 144, 255}
+	mpTextC = color.RGBA{130, 190, 255, 255}
+	expC    = color.RGBA{255, 214, 110, 255}
+)
 
 type beat struct {
 	dur float64
@@ -238,42 +256,34 @@ func (g *Game) perform(a *replay.Action) []beat {
 			if actor == nil {
 				continue
 			}
-			ms := actor.art.Animations["attack"].MS
-			gather := float64(ms[0]+ms[1]) / 1000
-			follow := float64(ms[2]+ms[3])/1000 + .25
-			kind := g.effectKind(actor, c)
-			tint := buffTint[g.S.Data.Skills[c.Skill].Effect]
-			add(gather, func() {
-				if target != nil {
-					actor.face(target.u, target.v)
-				}
-				actor.play("attack")
-				if c.Kind == "skill" {
-					g.say(actor, c.Skill, color.RGBA{180, 220, 255, 255})
-				}
-				if kind == "arrow" && target != nil && target != actor {
-					g.spawn("arrow", actor, target, gather, spark)
-				}
-			})
-			wait := follow
-			for _, e := range events {
-				if e.Kind == "retreat" {
-					wait = math.Max(wait, blinkTime)
-				} else if e.Kind == "damage" {
-					wait = math.Max(wait, shakeTime)
-				}
+			blow, counters := splitCounters(c.Actor, events)
+			crit := false
+			for _, e := range blow {
+				crit = crit || e.Kind == "critical"
 			}
-			ev := events
-			add(wait, func() { g.impact(kind, actor, ev, tint); g.strike(actor, ev) })
+			g.swing(add, actor, target, c, blow, crit)
+			for _, k := range counters {
+				back := g.unitAt(k.by)
+				if back == nil {
+					continue
+				}
+				add(.15, func() {})
+				g.swing(add, back, actor, core.Command{Kind: "attack"}, k.events, false)
+			}
 		case "item":
 			ev := events
 			add(.6, func() {
 				for _, e := range ev {
-					if e.Kind == "item" {
-						if t := g.unitAt(e.Target); t != nil {
-							g.spawn("heal", nil, t, 1.1, healC)
-							g.say(t, fmt.Sprintf("+%d", e.Amount), color.RGBA{135, 245, 144, 255})
-						}
+					t := g.unitAt(e.Target)
+					if e.Kind != "item" || t == nil {
+						continue
+					}
+					g.spawn("heal", nil, t, 1.1, healC)
+					if c.Item == "소병법단" {
+						g.say(t, fmt.Sprintf("MP +%d", e.Amount), mpTextC)
+					} else {
+						t.shownHP = min(t.maxHP, t.shownHP+e.Amount)
+						g.say(t, fmt.Sprintf("HP +%d", e.Amount), hpGainC)
 					}
 				}
 			})
@@ -315,6 +325,84 @@ func (g *Game) perform(a *replay.Action) []beat {
 	return beats
 }
 
+// counter is a counter-attack inside an action's events: who strikes back and what it does.
+type counter struct {
+	by     string
+	events []core.Event
+}
+
+// splitCounters separates the counter-attacks from an attack's events. A counter is a
+// blow (critical, damage, miss) by someone other than the actor, with the actor's retreat
+// it may cause; each one is shown as its own swing after the attack lands.
+func splitCounters(actor string, events []core.Event) ([]core.Event, []counter) {
+	blow, counters := []core.Event{}, []counter{}
+	for _, e := range events {
+		back := e.Actor != actor && e.Actor != "" && (e.Kind == "critical" || e.Kind == "damage" || e.Kind == "miss")
+		switch {
+		case back && (len(counters) == 0 || counters[len(counters)-1].by != e.Actor):
+			counters = append(counters, counter{by: e.Actor, events: []core.Event{e}})
+		case back || e.Kind == "retreat" && e.Actor == actor && len(counters) > 0:
+			k := &counters[len(counters)-1]
+			k.events = append(k.events, e)
+		default:
+			blow = append(blow, e)
+		}
+	}
+	return blow, counters
+}
+
+// swing adds the beats of one blow: the attack motion (preceded, for a critical blow, by
+// holding its first frame while the unit glows white) and then the impact.
+func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.Command, events []core.Event, crit bool) {
+	ms := actor.art.Animations["attack"].MS
+	gather := float64(ms[0]+ms[1]) / 1000
+	follow := float64(ms[2]+ms[3])/1000 + .25
+	kind := g.effectKind(actor, c)
+	tint := buffTint[g.S.Data.Skills[c.Skill].Effect]
+	start := func() {
+		if target != nil && target != actor {
+			actor.face(target.u, target.v)
+		}
+		actor.play("attack")
+		if c.Kind == "skill" {
+			g.say(actor, c.Skill, color.RGBA{180, 220, 255, 255})
+		}
+		for _, e := range events {
+			if e.Kind == "cost" {
+				g.say(actor, fmt.Sprintf("MP -%d", e.Amount), mpTextC)
+			}
+		}
+	}
+	if crit {
+		add(chargeTime, func() {
+			start()
+			actor.charging = true
+		})
+	}
+	add(gather, func() {
+		if crit {
+			actor.charging = false
+		} else {
+			start()
+		}
+		if kind == "arrow" && target != nil && target != actor {
+			g.spawn("arrow", actor, target, gather, spark)
+		}
+	})
+	wait := follow
+	for _, e := range events {
+		if e.Kind == "retreat" {
+			wait = math.Max(wait, blinkTime)
+		} else if e.Kind == "damage" {
+			wait = math.Max(wait, shakeTime)
+		}
+	}
+	if crit {
+		wait = math.Max(wait, shakeTime*1.6)
+	}
+	add(wait, func() { g.impact(kind, actor, events, tint); g.strike(actor, events) })
+}
+
 func (g *Game) stepTo(u *unitVis, p content.Point) {
 	tu, tv := float64(p.X), float64(p.Y)
 	u.face(tu, tv)
@@ -325,14 +413,35 @@ func (g *Game) stepTo(u *unitVis, p content.Point) {
 }
 
 func (g *Game) say(u *unitVis, text string, c color.RGBA) {
-	if u != nil {
-		g.popups = append(g.popups, &popup{unit: u, text: text, col: c})
+	if u == nil {
+		return
 	}
+	row := 0
+	for _, p := range g.popups {
+		if p.unit == u && p.t < .45 {
+			row++
+		}
+	}
+	g.popups = append(g.popups, &popup{unit: u, text: text, col: c, row: row})
+}
+
+// expShown converts raw experience to the 0..100 scale the experience bar uses.
+func (g *Game) expShown(id string, raw int) int {
+	if u := g.unitView(g.S.Engine.Observe(), id); u != nil {
+		return max(1, int(math.Round(float64(raw)*100/float64(max(1, u.XPRequired)))))
+	}
+	return raw
 }
 
 // strike shows the outcome events of a blow: damage with a hit reaction that shakes away
 // from the attacker, misses, healing and effects, retreats blinking out.
 func (g *Game) strike(attacker *unitVis, events []core.Event) {
+	crit := map[string]bool{}
+	for _, e := range events {
+		if e.Kind == "critical" {
+			crit[e.Target] = true
+		}
+	}
 	for _, e := range events {
 		t := g.unitAt(e.Target)
 		switch e.Kind {
@@ -355,8 +464,13 @@ func (g *Game) strike(attacker *unitVis, events []core.Event) {
 					t.shakeSign = -1
 				}
 			}
-			t.shakeT = shakeTime
-			g.say(t, fmt.Sprintf("-%d", e.Amount), color.RGBA{255, 236, 160, 255})
+			t.shakeT, t.shakeAmp = shakeTime, 1
+			if crit[e.Target] {
+				t.shakeT, t.shakeAmp, t.flash = shakeTime*1.6, critShake, .5
+				g.say(t, fmt.Sprintf("치명타! HP -%d", e.Amount), color.RGBA{255, 120, 80, 255})
+				continue
+			}
+			g.say(t, fmt.Sprintf("HP -%d", e.Amount), hpLossC)
 		case "miss": // the target blocks: its block motion when the sprite has one, else a flinch
 			if t != nil {
 				if _, ok := t.art.Animations["block"]; ok {
@@ -373,7 +487,16 @@ func (g *Game) strike(attacker *unitVis, events []core.Event) {
 			if t != nil {
 				t.shownHP = min(t.maxHP, t.shownHP+e.Amount)
 			}
-			g.say(t, fmt.Sprintf("+%d", e.Amount), color.RGBA{135, 245, 144, 255})
+			g.say(t, fmt.Sprintf("HP +%d", e.Amount), hpGainC)
+		case "recover-hp":
+			if u := g.unitAt(e.Actor); u != nil {
+				u.shownHP = min(u.maxHP, u.shownHP+e.Amount)
+				g.say(u, fmt.Sprintf("HP +%d", e.Amount), hpGainC)
+			}
+		case "recover-mp":
+			g.say(g.unitAt(e.Actor), fmt.Sprintf("MP +%d", e.Amount), mpTextC)
+		case "experience":
+			g.say(g.unitAt(e.Actor), fmt.Sprintf("EXP +%d", g.expShown(e.Actor, e.Amount)), expC)
 		case "effect":
 			if t != nil {
 				t.flash = .3

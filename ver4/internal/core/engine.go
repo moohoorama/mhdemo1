@@ -427,7 +427,7 @@ func (e *Engine) spawn(id, f string, x, y int) {
 	}
 	st := e.stats(&u)
 	u.HP = st.MaxHP
-	u.MP = st.MaxMP / 2
+	u.MP = 0
 	e.unitIDs[id] = e.units.NewEntity(&u)
 }
 func (e *Engine) settle() {

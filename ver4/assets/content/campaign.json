@@ -1535,7 +1535,7 @@
       "Shape": "single",
       "Effect": "speed",
       "Condition": "",
-      "Cost": 4,
+      "Cost": 12,
       "Hit": 100,
       "Min": 0,
       "Max": 0,
@@ -1548,7 +1548,7 @@
       "Shape": "single",
       "Effect": "charge",
       "Condition": "",
-      "Cost": 6,
+      "Cost": 18,
       "Hit": 100,
       "Min": 0,
       "Max": 0,
@@ -1561,7 +1561,7 @@
       "Shape": "single",
       "Effect": "counter",
       "Condition": "",
-      "Cost": 6,
+      "Cost": 18,
       "Hit": 100,
       "Min": 0,
       "Max": 0,
@@ -1574,7 +1574,7 @@
       "Shape": "single",
       "Effect": "range",
       "Condition": "",
-      "Cost": 5,
+      "Cost": 15,
       "Hit": 100,
       "Min": 0,
       "Max": 0,
@@ -1587,7 +1587,7 @@
       "Shape": "all",
       "Effect": "",
       "Condition": "",
-      "Cost": 18,
+      "Cost": 54,
       "Hit": 90,
       "Min": 1,
       "Max": 0,
@@ -1600,7 +1600,7 @@
       "Shape": "single",
       "Effect": "",
       "Condition": "",
-      "Cost": 10,
+      "Cost": 30,
       "Hit": 80,
       "Min": 1,
       "Max": 0,
@@ -1613,7 +1613,7 @@
       "Shape": "single",
       "Effect": "",
       "Condition": "",
-      "Cost": 8,
+      "Cost": 24,
       "Hit": 90,
       "Min": 1,
       "Max": 0,
@@ -1626,7 +1626,7 @@
       "Shape": "single",
       "Effect": "",
       "Condition": "",
-      "Cost": 20,
+      "Cost": 60,
       "Hit": 90,
       "Min": 1,
       "Max": 3,
@@ -1639,7 +1639,7 @@
       "Shape": "single",
       "Effect": "",
       "Condition": "water",
-      "Cost": 20,
+      "Cost": 60,
       "Hit": 90,
       "Min": 1,
       "Max": 3,
@@ -1652,7 +1652,7 @@
       "Shape": "single",
       "Effect": "confusion",
       "Condition": "",
-      "Cost": 12,
+      "Cost": 36,
       "Hit": 70,
       "Min": 1,
       "Max": 3,
@@ -1665,7 +1665,7 @@
       "Shape": "single",
       "Effect": "seal",
       "Condition": "",
-      "Cost": 12,
+      "Cost": 36,
       "Hit": 75,
       "Min": 1,
       "Max": 3,
@@ -1678,7 +1678,7 @@
       "Shape": "single",
       "Effect": "sealroot",
       "Condition": "",
-      "Cost": 18,
+      "Cost": 54,
       "Hit": 75,
       "Min": 1,
       "Max": 3,
@@ -1691,7 +1691,7 @@
       "Shape": "cross",
       "Effect": "confusion",
       "Condition": "",
-      "Cost": 24,
+      "Cost": 72,
       "Hit": 65,
       "Min": 1,
       "Max": 3,
@@ -1704,7 +1704,7 @@
       "Shape": "single",
       "Effect": "heal",
       "Condition": "",
-      "Cost": 8,
+      "Cost": 24,
       "Hit": 95,
       "Min": 0,
       "Max": 3,
@@ -1717,7 +1717,7 @@
       "Shape": "single",
       "Effect": "curepoison",
       "Condition": "",
-      "Cost": 4,
+      "Cost": 12,
       "Hit": 100,
       "Min": 0,
       "Max": 3,
@@ -1730,7 +1730,7 @@
       "Shape": "single",
       "Effect": "curemental",
       "Condition": "",
-      "Cost": 6,
+      "Cost": 18,
       "Hit": 100,
       "Min": 0,
       "Max": 3,
@@ -1743,7 +1743,7 @@
       "Shape": "cross",
       "Effect": "cure",
       "Condition": "",
-      "Cost": 12,
+      "Cost": 36,
       "Hit": 100,
       "Min": 0,
       "Max": 3,
@@ -1756,7 +1756,7 @@
       "Shape": "single",
       "Effect": "morale",
       "Condition": "",
-      "Cost": 6,
+      "Cost": 18,
       "Hit": 95,
       "Min": 0,
       "Max": 3,
@@ -1769,7 +1769,7 @@
       "Shape": "single",
       "Effect": "attack",
       "Condition": "",
-      "Cost": 8,
+      "Cost": 24,
       "Hit": 95,
       "Min": 0,
       "Max": 3,
@@ -1782,7 +1782,7 @@
       "Shape": "cross",
       "Effect": "attack",
       "Condition": "",
-      "Cost": 20,
+      "Cost": 60,
       "Hit": 90,
       "Min": 0,
       "Max": 3,
@@ -1795,7 +1795,7 @@
       "Shape": "cross",
       "Effect": "defense",
       "Condition": "",
-      "Cost": 20,
+      "Cost": 60,
       "Hit": 90,
       "Min": 0,
       "Max": 3,
@@ -1819,11 +1819,11 @@
       },
       "f": {
         "Factor": 0.8,
-        "Cost": 3
+        "Cost": 0
       },
       "c": {
         "Factor": 0.9,
-        "Cost": 2
+        "Cost": 0
       },
       "i": {
         "Factor": 1,
@@ -1853,11 +1853,11 @@
       },
       "f": {
         "Factor": 1.1,
-        "Cost": 2
+        "Cost": 0
       },
       "c": {
         "Factor": 1.2,
-        "Cost": 1
+        "Cost": 0
       },
       "i": {
         "Factor": 1.2,
@@ -1887,11 +1887,11 @@
       },
       "f": {
         "Factor": 1.1,
-        "Cost": 2
+        "Cost": 0
       },
       "c": {
         "Factor": 1.1,
-        "Cost": 1
+        "Cost": 0
       },
       "i": {
         "Factor": 1.1,
@@ -1921,11 +1921,11 @@
       },
       "f": {
         "Factor": 1,
-        "Cost": 2
+        "Cost": 0
       },
       "c": {
         "Factor": 1,
-        "Cost": 1
+        "Cost": 0
       },
       "i": {
         "Factor": 1.1,
@@ -1955,11 +1955,11 @@
       },
       "f": {
         "Factor": 1.2,
-        "Cost": 1
+        "Cost": 0
       },
       "c": {
         "Factor": 0.8,
-        "Cost": 2
+        "Cost": 0
       },
       "i": {
         "Factor": 0.9,
@@ -2069,7 +2069,7 @@
         },
         {
           "Officer": "B01_troop_1",
-          "X": 9,
+          "X": 10,
           "Y": 2
         },
         {

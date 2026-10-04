@@ -48,7 +48,7 @@ func TestFormulaAndResources(t *testing.T) {
 	if s.Attack != 178 || s.Defense != 201 || s.Mind != 141 || s.MaxHP != 948 || s.MaxMP != 65 || s.Recovery != 8 {
 		t.Fatalf("stats: %+v", s)
 	}
-	if u.HP != s.MaxHP || u.MP != 32 {
+	if u.HP != s.MaxHP || u.MP != 0 {
 		t.Fatal("initial resources")
 	}
 	e.officer("유비").Level = 20
@@ -80,6 +80,8 @@ func TestActionBudgetsAndPermissions(t *testing.T) {
 	p := e.moves(e.unit("유비"))[0]
 	apply(t, e, Command{Kind: "move", Actor: "유비", X: p.X, Y: p.Y})
 	assertRejected(t, e, Command{Kind: "move", Actor: "유비", X: 2, Y: 5})
+	assertRejected(t, e, Command{Kind: "skill", Actor: "유비", Skill: "반격"}) // battles start with no 병법치
+	e.unit("유비").MP = 60
 	apply(t, e, Command{Kind: "skill", Actor: "유비", Skill: "반격"})
 	assertRejected(t, e, Command{Kind: "item", Actor: "유비", Item: "소군량", Target: "유비"})
 	e = New(data(t), 1)
@@ -100,6 +102,7 @@ func TestLearningAndFreeActions(t *testing.T) {
 		t.Fatal("learning")
 	}
 	assertRejected(t, e, Command{Kind: "learn", Actor: "유비", Trait: "속공"})
+	e.unit("유비").MP = 60
 	apply(t, e, Command{Kind: "skill", Actor: "유비", Skill: "신속"})
 	assertRejected(t, e, Command{Kind: "learn", Actor: "유비", Trait: "반격술"})
 	u = e.unit("유비")
@@ -153,6 +156,7 @@ func TestCounterDamageAndExpiration(t *testing.T) {
 	e := battle(t)
 	e.unit("등무").X = 3
 	e.unit("등무").Y = 5
+	e.unit("유비").MP = 60
 	apply(t, e, Command{Kind: "skill", Actor: "유비", Skill: "반격"})
 	apply(t, e, Command{Kind: "end"})
 	hp := e.unit("등무").HP

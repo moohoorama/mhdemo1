@@ -26,15 +26,19 @@ func (g *Game) openOverlay(name string) {
 }
 
 // ask opens a confirmation window; ok runs on 확인.
-func (g *Game) ask(message string, ok func()) {
-	g.question, g.answer = message, ok
+func (g *Game) ask(message string, ok func()) { g.askWith(message, "확인", "취소", ok) }
+
+// askWith is ask with its own button labels; ok runs on yes.
+func (g *Game) askWith(message, yes, no string, ok func()) {
+	g.question, g.yes, g.no, g.answer = message, yes, no, ok
 	g.openOverlay("confirm")
 }
 
 // modal is a window shown after a replay, closed with a click.
 type modal struct {
-	kind  string // objective, levelup
+	kind  string // objective, levelup, trait
 	level levelUp
+	trait string
 	t     float64
 }
 
@@ -67,14 +71,14 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 	switch g.overlay {
 	case "confirm":
 		g.label(dst, g.question, float64(left), float64(y+44), 18, ink)
-		g.btn(dst, image.Rect(left, y+h-62, left+190, y+h-28), "확인", func() {
+		g.btn(dst, image.Rect(left, y+h-62, left+190, y+h-28), g.yes, func() {
 			f := g.answer
 			g.overlay = ""
 			if f != nil {
 				f()
 			}
 		})
-		g.btn(dst, image.Rect(x+w-222, y+h-62, x+w-32, y+h-28), "취소", func() { g.overlay = "" })
+		g.btn(dst, image.Rect(x+w-222, y+h-62, x+w-32, y+h-28), g.no, func() { g.overlay = "" })
 	case "menu":
 		items := []menuItem{
 			{"게임으로", func() { g.overlay = ""; g.request(session.Request{Op: "resume"}) }},
@@ -150,7 +154,7 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 		for i, it := range rows {
 			g.btn(dst, image.Rect(left, y+70+i*54, x+w-32, y+70+i*54+42), it.label, it.click)
 		}
-		g.label(dst, "조작: 클릭 선택 · 우클릭/Esc 취소 · 우클릭 드래그/화살표 화면 이동 · 휠 확대\n"+
+		g.label(dst, "조작: 클릭 선택 · 우클릭/Esc 취소 · 드래그/화면 가장자리/화살표 화면 이동 · 휠 확대\n"+
 			"U 부대 일람 · T 위협 범위 · L 기록 · P 자동 진행 · E 진영 종료\n"+
 			"Space 추천 한 명령 · F 재생 속도 · Enter 재생 건너뛰기 · F5/F9 저장/불러오기",
 			float64(left), float64(y+300), 13, muted)
@@ -296,6 +300,15 @@ func (g *Game) drawModal(dst *ebiten.Image) {
 			}
 		}
 		g.centered(dst, "클릭하여 계속", float64(Width/2), 512, 13, muted)
+	case "trait":
+		r := image.Rect(Width/2-300, 220, Width/2+300, 560)
+		g.titled(dst, r, "특성")
+		g.centered(dst, m.trait, float64(Width/2), 252, 34, gold)
+		if t, ok := g.S.Data.Traits[m.trait]; ok {
+			g.centered(dst, fmt.Sprintf("습득 특성치 %d", t.Cost), float64(Width/2), 304, 14, muted)
+		}
+		g.label(dst, wrap(g.traitDesc(m.trait), 34), float64(r.Min.X+48), 342, 18, ink)
+		g.centered(dst, "클릭하여 닫기", float64(Width/2), float64(r.Max.Y-36), 13, muted)
 	}
 }
 

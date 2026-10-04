@@ -44,10 +44,8 @@ func (g *Game) updateHover() {
 		return
 	}
 	x, y := cursorPos()
-	for _, r := range g.blocks {
-		if image.Pt(x, y).In(r) {
-			return
-		}
+	if g.overHUD(x, y) {
+		return
 	}
 	cx, cy := g.toCanvas(float64(x), float64(y))
 	mx, my := g.field.Cell(cx, cy)
@@ -173,22 +171,22 @@ func (g *Game) dock(dst *ebiten.Image, o core.Observation) {
 
 // endPhase ends the allied phase, asking first when some allies have not acted.
 func (g *Game) endPhase() {
-	end := func() { g.clearOrder(); g.request(session.Request{Op: "command", Command: core.Command{Kind: "end"}}) }
 	if left, _ := g.pending(g.S.Engine.Observe()); left > 0 {
-		g.ask(fmt.Sprintf("아직 행동하지 않은 부대가 %d개 있습니다.\n진영을 종료하시겠습니까?", left), end)
+		g.ask(fmt.Sprintf("아직 행동하지 않은 부대가 %d개 있습니다.\n진영을 종료하시겠습니까?", left), g.endTurn)
 		return
 	}
-	end()
+	g.endTurn()
 }
 
-// infoUnit is the unit the card describes: the hovered one, else the acting or selected one.
+func (g *Game) endTurn() {
+	g.clearOrder()
+	g.request(session.Request{Op: "command", Command: core.Command{Kind: "end"}})
+}
+
+// infoUnit is the unit whose terrain the panel rates: the hovered one, else the acting or selected one.
 func (g *Game) infoUnit(o core.Observation) *core.UnitView {
-	if g.hover.ok {
-		for i := range o.UnitViews {
-			if u := &o.UnitViews[i]; u.HP > 0 && u.X == g.hover.x && u.Y == g.hover.y {
-				return u
-			}
-		}
+	if u := g.hoveredUnit(o); u != nil {
+		return u
 	}
 	for _, id := range []string{g.ord.actor, g.selected} {
 		if u := g.unitView(o, id); u != nil && u.HP > 0 {
@@ -198,51 +196,133 @@ func (g *Game) infoUnit(o core.Observation) *core.UnitView {
 	return nil
 }
 
-// unitCard describes one unit in the lower left corner.
-func (g *Game) unitCard(dst *ebiten.Image, o core.Observation) {
-	u := g.infoUnit(o)
-	if u == nil {
+func (g *Game) hoveredUnit(o core.Observation) *core.UnitView {
+	if !g.hover.ok {
+		return nil
+	}
+	for i := range o.UnitViews {
+		if u := &o.UnitViews[i]; u.HP > 0 && u.X == g.hover.x && u.Y == g.hover.y {
+			return u
+		}
+	}
+	return nil
+}
+
+func teamColor(u *core.UnitView) color.NRGBA {
+	if u.Faction == "enemy" {
+		return bad
+	}
+	return color.NRGBA{R: 120, G: 180, B: 240, A: 255}
+}
+
+// brief is the small card right of the cursor while it rests on a unit. While a target
+// is being picked the forecast takes its place.
+func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
+	u := g.hoveredUnit(o)
+	if u == nil || g.ord.stage == "target" {
 		return
 	}
-	x, y, w, h := 12, Height-12-168, 392, 168
-	window(dst, image.Rect(x, y, x+w, y+h))
-	g.portrait(dst, u.ID, float64(x+14), float64(y+14), 84)
-	team := color.NRGBA{R: 120, G: 180, B: 240, A: 255}
-	if u.Faction == "enemy" {
-		team = bad
+	w, h := 214, 82
+	if u.Faction == "ally" {
+		h += 16
 	}
-	g.label(dst, u.Name, float64(x+110), float64(y+10), 21, team)
-	g.label(dst, fmt.Sprintf("%s  Lv%d", u.Class, u.Level), float64(x+122)+g.width(u.Name, 21), float64(y+16), 14, ink)
+	x, y := cursorPos()
+	x += 22
+	if x+w > Width-8 {
+		x -= w + 44
+	}
+	y = max(48, min(Height-h-8, y-h/2))
+	window(dst, image.Rect(x, y, x+w, y+h))
+	g.label(dst, u.Name, float64(x+14), float64(y+9), 15, teamColor(u))
+	g.label(dst, fmt.Sprintf("Lv%d", u.Level), float64(x+22)+g.width(u.Name, 15), float64(y+12), 12, ink)
+	row := func(i int, name string, now, maxV int, k float64, c color.Color) {
+		ry := float64(y + 36 + i*16)
+		g.label(dst, name, float64(x+14), ry-4, 11, muted)
+		bar(dst, float32(x+60), float32(ry), 90, 7, k, c)
+		g.label(dst, fmt.Sprintf("%d/%d", now, maxV), float64(x+156), ry-4, 11, ink)
+	}
+	k := float64(u.HP) / float64(max(1, u.Stats.MaxHP))
+	row(0, "병력", u.HP, u.Stats.MaxHP, k, hpColor(k))
+	row(1, "병법치", u.MP, u.Stats.MaxMP, float64(u.MP)/float64(max(1, u.Stats.MaxMP)), mpC)
+	if u.Faction == "ally" {
+		row(2, "경험치", int(u.XPProgress), 100, u.XPProgress/100, xpC)
+	}
+}
+
+// detail describes the selected unit under the minimap, its traits listed below; a trait
+// opens its explanation in the middle of the screen.
+func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
+	u := g.unitView(o, g.selected)
+	if u == nil || u.HP <= 0 {
+		return
+	}
+	if g.traitOf != u.ID {
+		g.traitOf, g.traitTop = u.ID, 0
+	}
+	const w, rowH, arrowH = 300, 26, 20
+	x, y := Width-12-w, g.miniRect.Max.Y+10
+	bottom := Height - 260 // clear of the dock
+	rows := min(len(u.Traits), max(2, (bottom-y-232-2*arrowH)/rowH))
+	h := 232 + 2*arrowH + max(1, rows)*rowH + 12
+	r := image.Rect(x, y, x+w, y+h)
+	window(dst, r)
+	g.block(r)
+	g.portrait(dst, u.ID, float64(x+16), float64(y+16), 64)
+	g.label(dst, u.Name, float64(x+94), float64(y+12), 19, teamColor(u))
+	g.label(dst, fmt.Sprintf("%s  Lv%d", u.Class, u.Level), float64(x+94), float64(y+42), 13, ink)
 	state := ""
-	if u.Faction != o.Turn {
-	} else if u.Done {
+	switch {
+	case u.Faction != o.Turn:
+	case u.Done:
 		state = "행동 완료"
-	} else if u.Moved {
+	case u.Moved:
 		state = "이동함"
 	}
-	g.label(dst, state, float64(x+w-80), float64(y+16), 13, muted)
-	k := float64(u.HP) / float64(max(1, u.Stats.MaxHP))
-	g.label(dst, fmt.Sprintf("병력  %d / %d", u.HP, u.Stats.MaxHP), float64(x+110), float64(y+42), 13, ink)
-	bar(dst, float32(x+110), float32(y+62), 266, 8, k, hpColor(k))
-	g.label(dst, fmt.Sprintf("병법치  %d / %d", u.MP, u.Stats.MaxMP), float64(x+110), float64(y+72), 13, ink)
-	bar(dst, float32(x+110), float32(y+92), 266, 6, float64(u.MP)/float64(max(1, u.Stats.MaxMP)), mpC)
-	if u.Faction == "ally" {
-		bar(dst, float32(x+14), float32(y+102), 84, 5, u.XPProgress/100, xpC)
-		g.label(dst, fmt.Sprintf("EXP %.0f", u.XPProgress), float64(x+14), float64(y+108), 11, muted)
+	g.label(dst, state, float64(x+w-80), float64(y+16), 12, muted)
+	gauge := func(by int, name string, now, maxV int, k float64, c color.Color) {
+		g.label(dst, name, float64(x+16), float64(by), 12, muted)
+		g.label(dst, fmt.Sprintf("%d / %d", now, maxV), float64(x+w-16)-g.width(fmt.Sprintf("%d / %d", now, maxV), 12), float64(by), 12, ink)
+		bar(dst, float32(x+16), float32(by+18), float32(w-32), 7, k, c)
 	}
-	s := u.Stats
-	g.label(dst, fmt.Sprintf("공격 %d  방어 %d  정신 %d  순발 %d  사기 %d", s.Attack, s.Defense, s.Mind, s.Agility, s.Morale),
-		float64(x+110), float64(y+102), 12, muted)
+	k := float64(u.HP) / float64(max(1, u.Stats.MaxHP))
+	gauge(y+88, "병력", u.HP, u.Stats.MaxHP, k, hpColor(k))
+	gauge(y+116, "병법치", u.MP, u.Stats.MaxMP, float64(u.MP)/float64(max(1, u.Stats.MaxMP)), mpC)
+	if u.Faction == "ally" {
+		gauge(y+144, "경험치", int(u.XPProgress), 100, u.XPProgress/100, xpC)
+	}
+	st := u.Stats
+	g.label(dst, fmt.Sprintf("공격 %d  방어 %d  정신 %d  순발 %d  사기 %d", st.Attack, st.Defense, st.Mind, st.Agility, st.Morale),
+		float64(x+16), float64(y+174), 12, ink)
 	status := []string{}
 	for _, k := range sorted(u.Status) {
 		status = append(status, fmt.Sprintf("%s %d", statusNames[k], u.Status[k].Turns))
 	}
 	if len(status) > 0 {
-		g.label(dst, "상태  "+strings.Join(status, " · "), float64(x+110), float64(y+122), 12, gold)
+		g.label(dst, "상태  "+strings.Join(status, " · "), float64(x+16), float64(y+192), 12, gold)
 	}
-	if len(u.Traits) > 0 {
-		g.label(dst, wrap("특성  "+strings.Join(u.Traits, " · "), 44), float64(x+14), float64(y+140), 11, muted)
+	g.label(dst, "특성", float64(x+16), float64(y+210), 14, gold)
+	g.traitTop = max(0, min(len(u.Traits)-rows, g.traitTop))
+	var up, down func()
+	if g.traitTop > 0 {
+		up = func() { g.traitTop-- }
 	}
+	if g.traitTop+rows < len(u.Traits) {
+		down = func() { g.traitTop++ }
+	}
+	ly := y + 232
+	g.arrow(dst, image.Rect(x+16, ly, x+w-16, ly+arrowH), true, up)
+	ly += arrowH + 2
+	for i := 0; i < rows; i++ {
+		trait := u.Traits[g.traitTop+i]
+		g.btn(dst, image.Rect(x+16, ly+i*rowH, x+w-16, ly+i*rowH+rowH-2), trait, func() {
+			g.modals = append(g.modals, &modal{kind: "trait", trait: trait})
+		})
+	}
+	if rows == 0 {
+		g.label(dst, "(없음)", float64(x+24), float64(ly+4), 13, muted)
+	}
+	ly += max(1, rows) * rowH
+	g.arrow(dst, image.Rect(x+16, ly, x+w-16, ly+arrowH), false, down)
 }
 
 // terrainPanel names the hovered cell and what it does for the described unit's family.
@@ -256,7 +336,7 @@ func (g *Game) terrainPanel(dst *ebiten.Image, o core.Observation) {
 		family = g.S.Data.Classes[u.Class].Family
 	}
 	t := g.S.Data.Terrain[family][string(tile)]
-	x, y, w, h := 412, Height-12-86, 196, 86
+	x, y, w, h := 12, Height-12-86, 196, 86
 	window(dst, image.Rect(x, y, x+w, y+h))
 	g.label(dst, fmt.Sprintf("%s  (%d,%d)", terrainNames[tile], g.hover.x, g.hover.y), float64(x+14), float64(y+10), 16, gold)
 	move := "진입 불가"
@@ -285,6 +365,7 @@ func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
 	x0 := float64(Width) - 12 - w - 14
 	y0 := 52.0
 	r := image.Rect(int(x0)-10, int(y0)-10, int(x0+w)+10, int(y0+h)+10)
+	g.miniRect = r
 	window(dst, r)
 	ox := x0 + float64(m.H)*miniScale
 	at := func(u, v float64) (float32, float32) {

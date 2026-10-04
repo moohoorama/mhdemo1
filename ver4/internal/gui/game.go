@@ -46,6 +46,7 @@ type Game struct {
 	speed                int
 	dragging, dragMoved  bool
 	dragX, dragY         int
+	dragButton           ebiten.MouseButton
 	shownNode            string
 	lineIndex, lineStart int
 	Verify               bool
@@ -61,8 +62,12 @@ type Game struct {
 	threatAll            bool
 	threats              map[string][]content.Point
 	diffs                map[string]string
-	question             string
+	question, yes, no    string
 	answer               func()
+	endAsked             string // the battle turn whose "all allies ordered" prompt was shown
+	miniRect             image.Rectangle
+	traitOf              string
+	traitTop             int
 	toasts               []*toast
 	history              []string
 	modals               []*modal
@@ -151,7 +156,7 @@ func (g *Game) send(q session.Request) session.Response {
 		g.vis = map[string]*unitVis{}
 		g.popups, g.effects, g.modals = nil, nil, nil
 		g.clearOrder()
-		g.selected = ""
+		g.selected, g.endAsked = "", ""
 		g.field, g.scene = nil, nil
 	}
 	if g.S.Engine != nil && (q.Op == "command" || q.Op == "ai" || q.Op == "retry" || q.Op == "new") {
@@ -415,9 +420,23 @@ func (g *Game) Update() error {
 			if o.Phase == "battle" && o.Turn == "enemy" && g.S.Settings.AI == "auto" && !g.busy() {
 				g.resolvePhase()
 			}
+			g.offerEnd(o)
 		}
 	}
 	return nil
+}
+
+// offerEnd asks once per turn to end the allied phase when every ally has been ordered.
+func (g *Game) offerEnd(o core.Observation) {
+	if o.Phase != "battle" || o.Turn != "ally" || g.busy() || g.ord.actor != "" {
+		return
+	}
+	key := fmt.Sprint(o.Stage, "-", o.Round)
+	if left, total := g.pending(o); left > 0 || total == 0 || g.endAsked == key {
+		return
+	}
+	g.endAsked = key
+	g.askWith("모든 아군에게 명령을 내렸습니다.\n턴을 넘기겠습니까?", "예", "아니오", g.endTurn)
 }
 
 // cliInput is the debug command line (backquote): CLI syntax, one command.
@@ -541,6 +560,8 @@ func (g *Game) keys() {
 	}
 }
 
+// leftClick presses a button at once; on the battlefield it waits for the release, since
+// holding the button and dragging scrolls the map instead (camera).
 func (g *Game) leftClick() {
 	x, y := cursorPos()
 	for i := len(g.buttons) - 1; i >= 0; i-- {
@@ -549,10 +570,21 @@ func (g *Game) leftClick() {
 			return
 		}
 	}
-	if g.overlay != "" || len(g.modals) > 0 || g.S.Screen != "playing" || g.S.Engine == nil || g.field == nil || g.busy() {
+	if g.overlay != "" || len(g.modals) > 0 || g.S.Screen != "playing" || g.S.Engine == nil || g.field == nil || g.dragging {
 		return
 	}
 	if o := g.S.Engine.Observe(); o.Phase != "battle" {
+		return
+	}
+	if g.overHUD(x, y) {
+		return
+	}
+	g.dragging, g.dragMoved, g.dragButton, g.dragX, g.dragY = true, false, ebiten.MouseButtonLeft, x, y
+}
+
+// mapRelease is a left click on the battlefield that did not become a drag.
+func (g *Game) mapRelease() {
+	if g.overlay != "" || len(g.modals) > 0 || g.S.Engine == nil || g.field == nil || g.busy() {
 		return
 	}
 	if g.hover.ok {
@@ -697,7 +729,7 @@ func (g *Game) battle(dst *ebiten.Image, o core.Observation) {
 	g.drawEffects(dst)
 	for _, p := range g.popups {
 		x, y := g.field.Center(p.unit.u, p.unit.v)
-		sx, sy := g.toScreen(x+p.unit.shakeOffset(), y-p.unit.lift-p.unit.top-10-p.t*16)
+		sx, sy := g.toScreen(x+p.unit.shakeOffset(), y-p.unit.lift-p.unit.top-10-p.t*16-float64(p.row)*18/g.zoom)
 		g.outlined(dst, p.text, sx-g.width(p.text, 16)/2, sy, 16, p.col)
 	}
 	if g.bannerT > 0 {
@@ -709,12 +741,13 @@ func (g *Game) battle(dst *ebiten.Image, o core.Observation) {
 	}
 	g.topBar(dst, o)
 	g.minimap(dst, o)
-	g.unitCard(dst, o)
+	g.detail(dst, o)
 	g.terrainPanel(dst, o)
 	if o.Phase == "battle" {
 		g.dock(dst, o)
 	}
 	g.drawMenu(dst)
 	g.forecast(dst)
+	g.brief(dst, o)
 	g.messages(dst)
 }

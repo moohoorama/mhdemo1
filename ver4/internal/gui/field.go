@@ -7,6 +7,7 @@ import (
 	"sort"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/colorm"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 	"srpg/internal/content"
 )
@@ -133,9 +134,18 @@ type Highlight struct {
 }
 
 type drawItem struct {
-	y    float64
-	kind int // 0 scenery, 1 unit
-	draw func()
+	y     float64
+	kind  int // 0 scenery, 1 unit
+	draw  func()
+	rect  image.Rectangle // canvas area the sprite's image covers
+	ghost func()          // units: redraw at half opacity when scenery drawn later covers it
+}
+
+// mapRect is the canvas area blitMap covers with s at map position (x, y).
+func mapRect(s Sprite, x, y float64) image.Rectangle {
+	b := s.Image.Bounds()
+	rx, ry := int(math.Round(x-s.PivotX)), int(math.Round(y-s.PivotY))
+	return image.Rect(rx*K, ry*K, (rx+b.Dx())*K, (ry+b.Dy())*K)
 }
 
 // Draw renders the field and returns nothing; units come from the replay's visual state.
@@ -162,17 +172,18 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			f.blitMap(f.shadows, s, x, y, &ebiten.DrawImageOptions{Blend: maxBlend})
 		}
 		s := f.A.Tiles[sid]
-		items = append(items, drawItem{y * K, 0, func() { f.blitMap(c, s, x, y, nil) }})
+		items = append(items, drawItem{y: y * K, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: mapRect(s, x, y)})
 	}
 	for v, row := range f.Map.Tiles {
 		for u, t := range row {
 			x, y := f.mapCenter(float64(u), float64(v))
 			switch t {
 			case 'v':
-				items = append(items, drawItem{y*K - .1, 0, func() { f.blitMap(c, f.A.Structures["village"], x, y, nil) }})
+				s := f.A.Structures["village"]
+				items = append(items, drawItem{y: y*K - .1, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: mapRect(s, x, y)})
 			case 'c':
 				s := f.A.Structures[wallName(f, u, v)]
-				items = append(items, drawItem{y * K, 0, func() { f.blitMap(c, s, x, y, nil) }})
+				items = append(items, drawItem{y: y * K, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: mapRect(s, x, y)})
 			}
 		}
 	}
@@ -188,7 +199,10 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			f.blit(f.shadows, sh, x, y-lift, &ebiten.DrawImageOptions{Blend: maxBlend})
 		}
 		unit := u
-		items = append(items, drawItem{y, 1, func() { f.drawUnit(unit, x, y-lift) }})
+		b := u.art.Frame(u.faction, u.dir, u.anim, u.frame()).Bounds()
+		rx, ry := int(math.Round(x-u.art.Pivot[0])), int(math.Round(y-lift-u.art.Pivot[1]))
+		items = append(items, drawItem{y: y, kind: 1, draw: func() { f.drawUnit(unit, x, y-lift, false) },
+			rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy()), ghost: func() { f.drawUnit(unit, x, y-lift, true) }})
 	}
 	// one layer so overlapping shadows do not darken each other, kept on the ground
 	f.shadows.DrawImage(f.clip, &ebiten.DrawImageOptions{Blend: ebiten.BlendDestinationIn})
@@ -201,6 +215,19 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	})
 	for _, it := range items {
 		it.draw()
+	}
+	// a unit behind a tree, wall or house shows through it at half opacity; where nothing
+	// covers it the ghost lands on its own pixels and changes nothing
+	for i, it := range items {
+		if it.kind != 1 {
+			continue
+		}
+		for _, later := range items[i+1:] {
+			if later.kind == 0 && later.rect.Overlaps(it.rect) {
+				it.ghost()
+				break
+			}
+		}
 	}
 }
 
@@ -215,11 +242,14 @@ func wallName(f *Field, u, v int) string {
 	return "wall_" + string(rune('0'+mask/10)) + string(rune('0'+mask%10))
 }
 
-func (f *Field) drawUnit(u *unitVis, x, y float64) {
+func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {
 	if !u.visible() {
 		return
 	}
 	op := &ebiten.DrawImageOptions{}
+	if ghost {
+		op.ColorScale.ScaleAlpha(.5)
+	}
 	if u.greyed {
 		op.ColorScale.Scale(.62, .62, .62, 1)
 	}
@@ -227,7 +257,16 @@ func (f *Field) drawUnit(u *unitVis, x, y float64) {
 		k := float32(1 + u.flash*1.6)
 		op.ColorScale.Scale(k, k, k, 1)
 	}
-	f.blit(f.Canvas, Sprite{u.art.Frame(u.faction, u.dir, u.anim, u.frame()), u.art.Pivot[0], u.art.Pivot[1]}, x, y, op)
+	s := Sprite{u.art.Frame(u.faction, u.dir, u.anim, u.frame()), u.art.Pivot[0], u.art.Pivot[1]}
+	f.blit(f.Canvas, s, x, y, op)
+	if u.charge > 0 && !ghost { // gathering a critical blow: a white silhouette fades in over the sprite
+		var cm colorm.ColorM
+		cm.Scale(0, 0, 0, .9*u.charge)
+		cm.Translate(1, 1, 1, 0)
+		wop := &colorm.DrawImageOptions{}
+		wop.GeoM.Translate(math.Round(x-s.PivotX), math.Round(y-s.PivotY))
+		colorm.DrawImage(f.Canvas, s.Image, cm, wop)
+	}
 	if u.shownHP <= 0 || u.actor {
 		return
 	}

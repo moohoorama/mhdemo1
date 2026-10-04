@@ -127,6 +127,17 @@ func (g *Game) spawn(kind string, from, to *unitVis, dur float64, tint color.NRG
 			add(particle{x: (r.Float64() - .5) * 20, y: chest - 10 - r.Float64()*8, vy: 14 + r.Float64()*16,
 				size: 2, life: .7 + r.Float64()*.3, col: debuffC, shape: 4})
 		}
+	case "critical":
+		for i := 0; i < 34; i++ {
+			a := r.Float64() * 2 * math.Pi
+			v := 120 + r.Float64()*200
+			col := hot
+			if i%3 == 0 {
+				col = spark
+			}
+			add(particle{x: 0, y: chest, vx: math.Cos(a) * v, vy: math.Sin(a)*v*.7 - 50, g: 320, size: 1.6 + r.Float64()*1.6,
+				life: .3 + r.Float64()*.35, col: col, shape: 1})
+		}
 	case "block":
 		// sparks fly back toward the attacker's side
 		fx, _ := g.field.Center(e.fu, e.fv)
@@ -154,6 +165,11 @@ func (g *Game) impact(kind string, actor *unitVis, events []core.Event, tint col
 	seen := map[string]bool{}
 	for _, e := range events {
 		switch e.Kind {
+		case "critical":
+			if t := g.unitAt(e.Target); t != nil {
+				g.spawn("critical", actor, t, .7, hot)
+				g.shakeT = .4
+			}
 		case "damage", "heal", "effect":
 			if seen[e.Target] || e.Kind == "damage" && actor != nil && e.Target == actor.id {
 				continue
@@ -337,6 +353,18 @@ func (g *Game) drawEffects(dst *ebiten.Image) {
 			ellipse(dst, px, py, float32(14-6*k)*zf, 1.5*zf, debuffC, (1-k)*.8)
 		case "block":
 			g.barrier(dst, e, px, chest, k)
+		case "critical": // a white burst, rays and a shockwave on the ground
+			if k < .35 {
+				glow(dst, px, chest, float32(12+k*90)*zf, hot, 1.4*(1-k/.35))
+			}
+			for i := 0; i < 8; i++ {
+				a := float64(i)*math.Pi/4 + .3
+				r0, r1 := (6+k*40)*z, (16+k*70)*z
+				stroke(dst, px+float32(math.Cos(a)*r0), chest+float32(math.Sin(a)*r0*.7), px+float32(math.Cos(a)*r1),
+					chest+float32(math.Sin(a)*r1*.7), 2.2*zf, hot, 1-k)
+			}
+			ellipse(dst, px, py, float32(6+k*44)*zf, 3*zf, spark, 1-k)
+			ellipse(dst, px, py, float32(3+k*28)*zf, 1.5*zf, hot, (1-k)*.8)
 		}
 		for _, q := range e.parts {
 			if e.t > q.life {

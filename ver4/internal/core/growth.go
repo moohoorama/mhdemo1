@@ -15,8 +15,13 @@ func ExperienceProgress(level, xp int) float64 {
 // repeated attacks reduce it: using weak attacks and healing enemies is valid.
 // Counters earn no XP; poison/burn earn only the finishing bonus, not tick XP.
 func (e *Engine) actionXP(u, v *Unit, base int, spell, defeated bool) {
+	if n := e.actionXPAmount(u, v, base, spell, defeated); n > 0 {
+		e.xp(u.Officer, n)
+	}
+}
+func (e *Engine) actionXPAmount(u, v *Unit, base int, spell, defeated bool) int {
 	if u.Faction != "ally" || v.Faction != "enemy" {
-		return
+		return 0
 	}
 	a, b := e.officer(u.Officer), e.officer(v.Officer)
 	factor := clamp(1+.12*float64(b.Level-a.Level), .25, 2)
@@ -27,7 +32,12 @@ func (e *Engine) actionXP(u, v *Unit, base int, spell, defeated bool) {
 	if defeated {
 		n *= 2
 	}
-	e.xp(a.ID, max(1, int(math.Round(n))))
+	return max(1, int(math.Round(n)))
+}
+
+// supportXP is what an ally earns per target of a landed support spell.
+func (e *Engine) supportXP(u *Unit) int {
+	return max(1, ExperienceRequired(e.officer(u.Officer).Level)*16/100)
 }
 func (e *Engine) xp(id string, n int) {
 	o := e.officer(id)

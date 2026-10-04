@@ -22,6 +22,8 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		return fmt.Sprintf("%s → %s  피해 %d", a, t, e.Amount), false
 	case "miss":
 		return fmt.Sprintf("%s의 공격이 %s에게 빗나감", a, t), false
+	case "critical":
+		return fmt.Sprintf("%s의 치명타!", a), false
 	case "heal":
 		return fmt.Sprintf("%s → %s  병력 +%d", a, t, e.Amount), false
 	case "effect":
@@ -52,7 +54,7 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		return fmt.Sprintf("%s ×%d 획득", g.itemName(e.Target), e.Amount), true
 	case "deputy":
 		return fmt.Sprintf("%s 부관: %s", a, t), false
-	case "attack-hit", "spell-hit", "move":
+	case "attack-hit", "spell-hit", "move", "cost", "recover-hp", "recover-mp":
 		return "", false
 	}
 	if e.Text != "" {

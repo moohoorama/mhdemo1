@@ -158,6 +158,44 @@ func (g *Game) btn(dst *ebiten.Image, r image.Rectangle, label string, click fun
 	g.label(dst, label, float64(x)+10, float64(y)+(float64(h)-size*1.45)/2, size, fg)
 }
 
+// arrow is a scroll button: raised with a white mark while it can scroll, flat and dark
+// (and not clickable) when it cannot.
+func (g *Game) arrow(dst *ebiten.Image, r image.Rectangle, up bool, click func()) {
+	x, y, w, h := float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy())
+	fg := color.Color(color.White)
+	if click == nil {
+		rect(dst, x, y, w, h, color.NRGBA{R: 30, G: 24, B: 20, A: 235})
+		vector.StrokeRect(dst, x+.5, y+.5, w-1, h-1, 1, color.NRGBA{R: 58, G: 48, B: 40, A: 255}, false)
+		fg = color.NRGBA{R: 74, G: 66, B: 58, A: 255}
+	} else {
+		g.buttons = append(g.buttons, button{r, "", click})
+		body := lacquer2
+		if hovered(r) {
+			body = hoverC
+		}
+		rect(dst, x, y, w, h, body)
+		rect(dst, x, y, w, 2, color.NRGBA{R: 255, G: 244, B: 220, A: 150})
+		rect(dst, x, y, 2, h, color.NRGBA{R: 255, G: 244, B: 220, A: 150})
+		rect(dst, x, y+h-2, w, 2, color.NRGBA{A: 200})
+		rect(dst, x+w-2, y, 2, h, color.NRGBA{A: 200})
+	}
+	var p vector.Path
+	cx, cy := x+w/2, y+h/2
+	if up {
+		p.MoveTo(cx-7, cy+4)
+		p.LineTo(cx+7, cy+4)
+		p.LineTo(cx, cy-4)
+	} else {
+		p.MoveTo(cx-7, cy-4)
+		p.LineTo(cx+7, cy-4)
+		p.LineTo(cx, cy+4)
+	}
+	p.Close()
+	op := &vector.DrawPathOptions{AntiAlias: true}
+	op.ColorScale.ScaleWithColor(fg)
+	vector.FillPath(dst, &p, nil, op)
+}
+
 // button keeps the older x, y, width form.
 func (g *Game) button(dst *ebiten.Image, label string, x, y, w int, f func()) {
 	g.btn(dst, image.Rect(x, y, x+w, y+32), label, f)

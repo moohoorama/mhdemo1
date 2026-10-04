@@ -336,6 +336,19 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 	}
 	return clamp(h, 5, 100)
 }
+
+// critChance is the chance in percent that a physical blow lands 1.5×; 100 when forced.
+func (e *Engine) critChance(u, v *Unit) float64 {
+	if e.has(u, "필살") || e.has(u, "군신") && e.data.Classes[e.officer(u.Officer).Class].Weapon != "활" && e.data.Officers[u.Officer].Stats[1] > e.data.Officers[v.Officer].Stats[1] {
+		return 100
+	}
+	a, b := e.stats(u), e.stats(v)
+	crit := clamp(10+float64(a.Morale-b.Morale)/20, 5, 40)
+	if e.has(u, "행운") {
+		crit += 5
+	}
+	return crit
+}
 func (e *Engine) applyStatus(v *Unit, id string, turns, value int) {
 	if contains([]string{"poison", "confusion", "seal", "root", "weak", "burn"}, id) && e.has(v, "군율") {
 		turns = max(1, turns-1)
@@ -363,14 +376,10 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, counter bool) int {
 	d := e.damage(u, v, s)
 	if s.Kind == "physical" {
 		a, b := e.stats(u), e.stats(v)
-		crit := clamp(10+float64(a.Morale-b.Morale)/20, 5, 40)
-		if e.has(u, "행운") {
-			crit += 5
-		}
-		force := e.has(u, "필살") || e.has(u, "군신") && e.data.Classes[e.officer(u.Officer).Class].Weapon != "활" && e.data.Officers[u.Officer].Stats[1] > e.data.Officers[v.Officer].Stats[1]
 		roll := e.rand(100)
-		if force || float64(roll) < crit {
+		if float64(roll) < e.critChance(u, v) {
 			d *= 1.5
+			e.emit("critical", u.ID, v.ID, 0)
 		}
 		guard := clamp(10+float64(b.Agility-a.Agility)/50, 5, 25)
 		if e.has(v, "방패") {
@@ -440,7 +449,10 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 		e.duel(u, v, d)
 		return nil
 	}
-	u.MP -= e.cost(u, s)
+	if n := e.cost(u, s); n > 0 {
+		u.MP -= n
+		e.emit("cost", u.ID, "", n)
+	}
 	if c.Kind == "attack" {
 		u.Attacked = true
 		u.Acted = true
@@ -504,7 +516,7 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 		e.emit("effect", u.ID, q.ID, 0)
 		// Support spells provide training too. Full-health healing does not.
 		if u.Faction == "ally" && (s.Effect != "heal" || actualSupport) {
-			e.xp(u.Officer, max(1, ExperienceRequired(e.officer(u.Officer).Level)*16/100))
+			e.xp(u.Officer, e.supportXP(u))
 		}
 	}
 	for _, q := range targets {
@@ -594,6 +606,8 @@ func (e *Engine) endFaction() {
 	for _, id := range keys(e.unitIDs) {
 		e.unit(id).FirstHitUsed = false
 	}
+	// what each unit holds after damage over time, so the regeneration below can be reported
+	hp, mp := map[string]int{}, map[string]int{}
 	for _, id := range keys(e.unitIDs) {
 		u := e.unit(id)
 		if u.HP <= 0 || u.Faction != starting {
@@ -615,6 +629,7 @@ func (e *Engine) endFaction() {
 		if u.HP <= 0 {
 			continue
 		}
+		hp[id], mp[id] = u.HP, u.MP
 		r := st.Recovery
 		if e.has(u, "집중") {
 			r += 2
@@ -644,6 +659,15 @@ func (e *Engine) endFaction() {
 				v.HP = min(e.stats(v).MaxHP, v.HP+e.stats(v).MaxHP*3/100)
 				break
 			}
+		}
+	}
+	for _, id := range keys(hp) {
+		u := e.unit(id)
+		if n := u.HP - hp[id]; n > 0 {
+			e.emit("recover-hp", id, "", n)
+		}
+		if n := u.MP - mp[id]; n > 0 {
+			e.emit("recover-mp", id, "", n)
 		}
 	}
 	e.emit("turn", "", starting, e.state.Round)

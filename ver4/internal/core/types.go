@@ -3,7 +3,7 @@ package core
 import "srpg/internal/content"
 
 const CoreVersion = "1"
-const AIPolicyVersion = "greedy-2"
+const AIPolicyVersion = "greedy-3"
 const RulesVersion = "opening-rules-2"
 
 type Officer struct {
@@ -74,7 +74,8 @@ type Preview struct {
 	Cost, MinDamage, MaxDamage int
 	Healing, MPRecovery        int
 	Effect                     string
-	Hit                        float64
+	Hit, Crit                  float64 // percent; Crit is 0 for non-physical actions
+	XP, CritXP                 int     // the actor's raw experience if it lands, normally and critically
 	Targets                    []string
 }
 type Options struct{ Commands []Command }

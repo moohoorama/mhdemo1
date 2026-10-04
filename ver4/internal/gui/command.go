@@ -469,8 +469,9 @@ func (g *Game) threatUnion(o core.Observation) []content.Point {
 	return out
 }
 
-// forecast shows the expected outcome when the cursor is on a valid target: both
-// sides' 병력 and 병법치 gauges with what the action takes away or restores, and the odds.
+// forecast shows the expected outcome when the cursor is on a valid target: each side's
+// 병력, 병법치 and 경험치 after a normal and a critical blow, and the odds. The panel sits
+// beside the target, clear of every unit, and never takes the cursor from the map.
 func (g *Game) forecast(dst *ebiten.Image) {
 	if g.ord.stage != "target" || !g.hover.ok || g.busy() {
 		return
@@ -496,111 +497,209 @@ func (g *Game) forecast(dst *ebiten.Image) {
 	counter := 0
 	dmg := p.MaxDamage
 	if !duel {
-		counter = e.CounterDamage(*c)
+		counter = e.CounterDamage(*c) * 2 / 3 // CounterDamage's maximum includes the critical blow
 		if c.Kind == "attack" || c.Kind == "skill" && g.S.Data.Skills[c.Skill].Kind == "physical" {
 			dmg = p.MaxDamage * 2 / 3 // Preview's maximum includes the critical blow
 		}
 	} else {
-		dmg, p.Cost, p.Healing = 0, 0, 0
-	}
-	w, h := 640, 268
-	x, y := Width/2-w/2, 50
-	r := image.Rect(x, y, x+w, y+h)
-	title := map[string]string{"attack": "공격", "skill": c.Skill, "item": c.Item}[c.Kind]
-	g.titled(dst, r, title+" 예측")
-	g.block(r)
-	if t.ID == a.ID {
-		g.side(dst, a, x+20, y+24, 0, p.Healing, p.Cost)
-	} else {
-		g.side(dst, a, x+20, y+24, counter, 0, p.Cost)
-		g.side(dst, t, x+w/2+20, y+24, dmg, p.Healing, 0)
-		g.label(dst, "▶", float64(x+w/2-8), float64(y+46), 18, gold)
-	}
-	cy := float64(y + 176)
-	rect(dst, float32(x+16), float32(cy-8), float32(w-32), 1, goldDim)
-	switch {
-	case duel:
-		g.label(dst, "일기토 발생!", float64(x+24), cy, 26, gold)
-		g.label(dst, with(g.name(a.ID))+" "+g.name(t.ID)+"의 일기토가 벌어집니다.\n공격 대신 일기토 결과가 적용됩니다.", float64(x+220), cy+2, 14, ink)
-		return
-	case c.Kind == "item":
-		g.label(dst, "효과 확정", float64(x+24), cy, 22, gold)
-	default:
-		word := "명중"
-		if p.MaxDamage == 0 {
-			word = "성공"
-		}
-		g.label(dst, fmt.Sprintf("%s %.0f%%", word, p.Hit), float64(x+24), cy-2, 30, gold)
-		bar(dst, float32(x+24), float32(cy+44), 170, 8, p.Hit/100, gold)
+		dmg, p.MaxDamage, p.Cost, p.Healing, p.MPRecovery, p.XP, p.CritXP = 0, 0, 0, 0, 0, 0, 0
 	}
 	lines := []string{}
 	switch {
-	case p.MaxDamage > 0:
-		s := fmt.Sprintf("피해 %d", dmg)
-		if dmg != p.MaxDamage {
-			s += fmt.Sprintf("   (치명타 시 %d)", p.MaxDamage)
+	case duel:
+		lines = append(lines, "일기토 발생! 공격 대신 일기토 결과가 적용됩니다.")
+	case dmg >= t.HP:
+		lines = append(lines, "격파!")
+	case p.MaxDamage >= t.HP:
+		lines = append(lines, "치명타 시 격파!")
+	}
+	if p.Effect != "" && p.MaxDamage == 0 && p.Healing == 0 {
+		if effect := statusNames[p.Effect]; effect != "" {
+			lines = append(lines, "효과: "+effect)
 		}
-		if dmg >= t.HP {
-			s += "   격파!"
-		}
-		lines = append(lines, s)
-	case p.Healing > 0:
-		lines = append(lines, fmt.Sprintf("병력 회복 +%d", p.Healing))
-	case p.MPRecovery > 0:
-		lines = append(lines, fmt.Sprintf("병법치 회복 +%d", p.MPRecovery))
-	case p.Effect != "":
-		effect := statusNames[p.Effect]
-		if effect == "" {
-			effect = p.Effect
-		}
-		lines = append(lines, "효과: "+effect)
 	}
 	if counter > 0 {
-		lines = append(lines, fmt.Sprintf("반격을 받음: 최대 %d", counter))
-	} else if p.MaxDamage > 0 {
-		lines = append(lines, "반격 없음")
+		lines = append(lines, fmt.Sprintf("반격을 받음 (최대 %d)", e.CounterDamage(*c)))
 	}
 	if len(p.Targets) > 1 {
 		lines = append(lines, "대상 "+strings.Join(names(g, p.Targets), " · "))
 	}
-	g.label(dst, strings.Join(lines, "\n"), float64(x+220), cy, 16, ink)
+	self := t.ID == a.ID
+	w, h := 336, 58+len(lines)*18
+	h += sideHeight(a)
+	if !self {
+		h += sideHeight(t) + 8
+	}
+	r := g.besideTarget(o, t, w, h)
+	title := map[string]string{"attack": "공격", "skill": c.Skill, "item": c.Item}[c.Kind]
+	g.titled(dst, r, title)
+	x, y := r.Min.X+16, r.Min.Y+18
+	if self {
+		y = g.side(dst, a, x, y, sideChange{hp: [2]int{p.Healing, p.Healing}, mp: p.MPRecovery - p.Cost, xp: [2]int{p.XP, p.CritXP}})
+	} else {
+		// a counter only comes back when the target is still standing
+		back := [2]int{-counter, -counter}
+		if dmg >= t.HP {
+			back[0] = 0
+		}
+		if p.MaxDamage >= t.HP {
+			back[1] = 0
+		}
+		y = g.side(dst, a, x, y, sideChange{hp: back, mp: -p.Cost, xp: [2]int{p.XP, p.CritXP}})
+		rect(dst, float32(x), float32(y+3), float32(w-32), 1, goldDim)
+		y = g.side(dst, t, x, y+8, sideChange{hp: [2]int{p.Healing - dmg, p.Healing - p.MaxDamage}, mp: p.MPRecovery})
+	}
+	rect(dst, float32(x), float32(y+3), float32(w-32), 1, goldDim)
+	if !duel {
+		odds := fmt.Sprintf("명중 %.0f%%", p.Hit)
+		if c.Kind == "item" {
+			odds = "효과 확정"
+		} else if p.Crit > 0 {
+			odds += fmt.Sprintf("     치명 %.0f%%", p.Crit)
+		}
+		g.label(dst, odds, float64(x), float64(y+8), 16, gold)
+	}
+	g.label(dst, strings.Join(lines, "\n"), float64(x), float64(y+34), 12, ink)
 }
 
-// side is one unit's half of the forecast: 병력 and 병법치 now and after the action.
-func (g *Game) side(dst *ebiten.Image, u *core.UnitView, x, y, hpLoss, hpGain, mpLoss int) {
-	g.portrait(dst, u.ID, float64(x), float64(y), 60)
+// sideChange is what an action does to one unit: 병력 after a normal and a critical
+// blow, 병법치, and raw experience after a normal and a critical blow.
+type sideChange struct {
+	hp [2]int
+	mp int
+	xp [2]int
+}
+
+func sideHeight(u *core.UnitView) int {
+	if u.Faction == "ally" {
+		return 84
+	}
+	return 64
+}
+
+// side is one unit's half of the forecast: name, level and gauges with the change marked.
+// It returns the y below it.
+func (g *Game) side(dst *ebiten.Image, u *core.UnitView, x, y int, ch sideChange) int {
 	team := color.NRGBA{R: 120, G: 180, B: 240, A: 255}
 	if u.Faction == "enemy" {
 		team = bad
 	}
-	g.label(dst, u.Name, float64(x+72), float64(y-2), 19, team)
-	tile := g.field.Tile(u.X, u.Y)
-	factor := g.S.Data.Terrain[g.S.Data.Classes[u.Class].Family][string(tile)].Factor
-	g.label(dst, fmt.Sprintf("%s · Lv%d · %s %.0f%%", u.Class, u.Level, terrainNames[tile], factor*100), float64(x+72), float64(y+26), 12, muted)
-	gauge := func(by int, name string, now, maxV, loss, gain int, c color.NRGBA) {
-		w := float32(270)
-		k := float64(now) / float64(max(1, maxV))
-		after := max(0, min(maxV, now-loss+gain))
-		bar(dst, float32(x), float32(by), w, 14, k, c)
-		if loss > 0 {
-			lost := float64(now-after) / float64(max(1, maxV))
-			rect(dst, float32(x)+1+(w-2)*float32(float64(after)/float64(max(1, maxV))), float32(by+1), (w-2)*float32(lost), 12,
-				color.NRGBA{R: 240, G: 70, B: 50, A: 235})
-		}
-		if gain > 0 {
-			rect(dst, float32(x)+1+(w-2)*float32(k), float32(by+1), (w-2)*float32(float64(after-now)/float64(max(1, maxV))), 12,
-				color.NRGBA{R: 170, G: 245, B: 160, A: 235})
-		}
-		text := fmt.Sprintf("%s  %d / %d", name, now, maxV)
-		col := ink
-		if after != now {
-			text = fmt.Sprintf("%s  %d → %d / %d  (%+d)", name, now, after, maxV, after-now)
-			col = gold
-		}
-		g.label(dst, text, float64(x), float64(by+16), 13, col)
+	g.label(dst, u.Name, float64(x), float64(y), 16, team)
+	g.label(dst, fmt.Sprintf("Lv%d  %s", u.Level, u.Class), float64(x)+g.width(u.Name, 16)+8, float64(y+3), 12, muted)
+	y += 26
+	clamp := func(v, hi int) int { return max(0, min(hi, v)) }
+	hp := u.Stats.MaxHP
+	g.gauge(dst, x, y, "병력", u.HP, clamp(u.HP+ch.hp[0], hp), clamp(u.HP+ch.hp[1], hp), hp, hpColor(float64(u.HP)/float64(max(1, hp))), "")
+	mp := clamp(u.MP+ch.mp, u.Stats.MaxMP)
+	g.gauge(dst, x, y+20, "병법치", u.MP, mp, mp, u.Stats.MaxMP, mpC, "")
+	if u.Faction == "ally" {
+		now := int(u.XPProgress)
+		gain := func(n int) int { return now + n*100/max(1, u.XPRequired) }
+		g.gauge(dst, x, y+40, "경험치", now, gain(ch.xp[0]), gain(ch.xp[1]), 100, xpC, "LV UP")
+		return y + 58
 	}
-	gauge(y+68, "병력", u.HP, u.Stats.MaxHP, hpLoss, hpGain, hpColor(float64(u.HP)/float64(max(1, u.Stats.MaxHP))))
-	gauge(y+108, "병법치", u.MP, u.Stats.MaxMP, mpLoss, 0, mpC)
+	return y + 38
+}
+
+// gauge draws one forecast bar: the value now and after a normal and a critical blow.
+// Losses are red (the extra a critical blow takes darker), gains pale. full replaces a
+// value that reaches maxV (a level up).
+func (g *Game) gauge(dst *ebiten.Image, x, y int, name string, now, normal, crit, maxV int, c color.NRGBA, full string) {
+	g.label(dst, name, float64(x), float64(y-3), 12, muted)
+	bx, bw := float32(x+48), float32(120)
+	at := func(v int) float32 { return bx + 1 + (bw-2)*float32(min(v, maxV))/float32(max(1, maxV)) }
+	span := func(from, to int, c color.Color) {
+		if to < from {
+			from, to = to, from
+		}
+		rect(dst, at(from), float32(y+1), at(to)-at(from), 8, c)
+	}
+	bar(dst, bx, float32(y), bw, 10, float64(min(now, normal, crit))/float64(max(1, maxV)), c)
+	if crit < normal {
+		span(crit, normal, color.NRGBA{R: 150, G: 30, B: 24, A: 255})
+	}
+	if normal < now {
+		span(normal, now, color.NRGBA{R: 240, G: 70, B: 50, A: 255})
+	}
+	if normal > now {
+		span(now, normal, color.NRGBA{R: 200, G: 245, B: 170, A: 255})
+	}
+	if crit > normal {
+		span(normal, crit, color.NRGBA{R: 255, G: 250, B: 210, A: 255})
+	}
+	show := func(v int) string {
+		if full != "" && v >= maxV {
+			return full
+		}
+		return fmt.Sprint(v)
+	}
+	s, col := fmt.Sprintf("%d / %d", now, maxV), ink
+	if full != "" {
+		s = fmt.Sprint(now)
+	}
+	if normal != now || crit != now {
+		s, col = show(now)+" → "+show(normal), gold
+		if crit != normal {
+			s += "  (치명 " + show(crit) + ")"
+		}
+	}
+	g.label(dst, s, float64(bx+bw+8), float64(y-3), 12, col)
+}
+
+// unitBox is the screen area a unit's sprite covers.
+func (g *Game) unitBox(v *unitVis) image.Rectangle {
+	cx, cy := g.field.Center(v.u, v.v)
+	sx, sy := g.toScreen(cx, cy-v.lift)
+	half, top := 16*K*g.zoom, (v.top+8)*g.zoom
+	return image.Rect(int(sx-half), int(sy-top), int(sx+half), int(sy+8*K*g.zoom))
+}
+
+// besideTarget places a w×h panel to the right of the target, else to its left, moving
+// it up or down until it covers no unit; failing that, no unit but the HUD may be covered.
+func (g *Game) besideTarget(o core.Observation, t *core.UnitView, w, h int) image.Rectangle {
+	boxes := []image.Rectangle{}
+	for _, u := range o.UnitViews {
+		if v := g.vis[u.ID]; v != nil && u.HP > 0 {
+			boxes = append(boxes, g.unitBox(v))
+		}
+	}
+	tb := image.Rect(Width/2, Height/2, Width/2, Height/2)
+	if v := g.vis[t.ID]; v != nil {
+		tb = g.unitBox(v)
+	}
+	const gap = 10
+	clear := func(r image.Rectangle, avoid []image.Rectangle) bool {
+		for _, b := range avoid {
+			if r.Overlaps(b) {
+				return false
+			}
+		}
+		return true
+	}
+	mid := (tb.Min.Y+tb.Max.Y)/2 - h/2
+	for _, hud := range []bool{false, true} {
+		avoid := boxes
+		if !hud {
+			avoid = append(append([]image.Rectangle{}, boxes...), g.blocks...)
+		}
+		for dy := 0; dy <= Height; dy += 24 {
+			for _, y := range []int{mid - dy, mid + dy} {
+				y = max(48, min(Height-h-8, y))
+				for _, x := range []int{tb.Max.X + gap, tb.Min.X - gap - w} {
+					if r := image.Rect(x, y, x+w, y+h); x >= 8 && x+w <= Width-8 && clear(r, avoid) {
+						return r
+					}
+				}
+			}
+		}
+	}
+	x := tb.Max.X + gap
+	if x+w > Width-8 {
+		x = tb.Min.X - gap - w
+	}
+	x = max(8, min(Width-w-8, x))
+	y := max(48, min(Height-h-8, mid))
+	return image.Rect(x, y, x+w, y+h)
 }
 
 func names(g *Game, ids []string) []string {

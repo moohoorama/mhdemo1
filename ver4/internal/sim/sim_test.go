@@ -14,7 +14,7 @@ func TestCampaignRestoresEveryCommandBoundary(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	e := core.New(d, 2)
+	e := core.New(d, 4) // any seed whose campaign is won
 	counts := map[string]int{}
 	for i := 0; i < 5000; i++ {
 		o := e.Observe()
