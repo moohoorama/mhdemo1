@@ -276,6 +276,23 @@ def flat_cap(rows):
     return [r if y >= 3 else '.' * len(r) for y, r in enumerate(rows)]
 
 
+def gwanmo(rows, style=1):
+    """Scholar's cap (관모) on the topknot: the face, ears and hairline stay open (the old flat_cap kept
+    the helmet's cheek guards and read as a hood). style 1 small cap, 2 tall cap, 3 cap with a black
+    headband over the hairline, 4 small cap with a gold pin."""
+    out = []
+    for y, row in enumerate(rows):
+        if y < 4 or (style == 3 and y == 4):
+            row = row.translate(str.maketrans({'f': '2', 'g': '3'}))
+        if style == 4 and y == 2:
+            i, j = row.find('0'), row.rfind('0')
+            row = row[:i] + 'm' + row[i + 1:j] + 'm' + row[j + 1:]
+        out.append(row)
+    if style == 2:  # two more rows of cap; heads(..., crest=2) keeps the face anchor
+        out = out[:2] + out[1:2] + out[1:]
+    return out
+
+
 DARK_IRON = {'5': '3', '4': '3', '3': '2', '2': '1'}
 GOLD_IRON = {'2': 'k', '3': 'l', '4': 'm', '5': 'n'}
 WHITE_HOOD = {'7': '3', '8': '4', '9': '5', 'a': '6'}

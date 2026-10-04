@@ -31,8 +31,12 @@ python3 ver3/tools/build_assets.py                   # ver3/asset 재패키징 (
 | `zhangjiao` | 장각 | 황건 띠, 긴 수염, 삼베 도포, 금고리 지팡이 | 횡베기 `sweep` | `frames.json` |
 | `huaxiong` | 화웅 | 검은 투구·갑옷, 언월도, 흑마 | 언월도 횡베기 `glaive_sweep` | `frames.json` |
 | `lubu` | 여포 | 꿩깃 금관, 붉은 갑옷, 방천화극, 적토마 | 휘두르기 `swing` | `frames.json` |
+| `zhangshiping` | 장세평(상단) | 검은 관모, 진영색 도포, 큰 등짐, 무기 없음(비전투 우군) | — (공격 행은 쓰지 않음) | `frames.json` |
+| `sushuang` | 소쌍(상단) | 맨상투, 장세평과 같은 몸 | — | `frames.json` |
+| `chengyuanzhi` | 정원지 | 노란 두건, 긴 수염, 삼베 도포, 지팡이 | 횡베기 `sweep` | `frames.json` |
+| `dengmao` | 등무 | 노란 두건, 가죽 갑옷, 칼·방패 | 횡베기 `sweep` | `frames.json` |
 
-ver4에서 추가한 6종(사마~여포)은 `tools/unit3d/looks.py`의 후보 중 사용자가 고른 외형이다(`SELECTED`, 나머지는 백업).
+ver4에서 추가한 6종(사마~여포)과 B01의 장세평·소쌍·정원지·등무는 `tools/unit3d/looks.py`의 후보 중 사용자가 고른 외형이다(`SELECTED`, 나머지는 백업).
 후보 비교: `python3 tools/unit3d/look_candidates.py [--unit KEY]` → `output/ver4-look-candidates*.png`.
 
 셀은 병종마다 전 프레임의 합집합으로 자동으로 정해지므로 다시 생성하면 바뀔 수 있다. 값은 `frames.json`이 기준이다.
@@ -47,6 +51,8 @@ ver4에서 추가한 6종(사마~여포)은 `tools/unit3d/looks.py`의 후보 �
 ## 장면용 평복 (`../ver4-civilians/`)
 
 시나리오 장면에서 쓰는 도보·무기 없는 차림. 같은 형식이고 동작만 다르다: 대기·걷기·말하기·포권·건배·놀람·끄덕임.
+**방향은 좌상(NW)·좌하(SW) 2개만 만든다**(2026-10-04 사용자 결정). 우상(NE)·우하(SE)는 게임에서 좌우반전하고, 장면에서는 정방향(N·E·S·W)을 쓰지 않는다.
+반전하면 빛 방향도 뒤집히고 비대칭 장식이 반대편으로 가므로, 평복은 좌우 대칭에 가깝게 디자인한다.
 
 | 키 | 장수 | 외형 |
 |---|---|---|
@@ -55,6 +61,17 @@ ver4에서 추가한 6종(사마~여포)은 `tools/unit3d/looks.py`의 후보 �
 | `liubei` | 유비 | 금빛 관모 · 진영색 도포 (후보 2) |
 | `jianyong` | 간옹 | 흰 윤건 · 진영색 옷 (전투 외형에서 활만 뺌) |
 | `sunqian` | 손건 | 검은 관모 · 진영색 도포 (사마 외형에서 부채만 뺌) |
+| `zhangshiping` | 장세평 | 검은 관모 · 녹색 도포 (후보 4) |
+| `sushuang` | 소쌍 | 맨상투 · 녹색 옷 · 큰 등짐 (후보 4) |
+| `yuanshao` | 원소 | 금빛 관모 · 흰 도포 · 금빛 어깨 (후보 1) |
+| `yuanshu` | 원술 | 금관 · 금빛 도포 · 뻣뻣한 수염 (후보 2) |
+| `gongsunzan` | 공손찬 | 철 투구 · 흰 깃털 · 은빛 옷 · 흰 갑옷 (후보 4) |
+| `dongzhuo` | 동탁 | 검은 관모 · 덥수룩한 수염 · 검은 도포 · 금빛 어깨 · 비대 (후보 1) |
+| `liru` | 이유 | 검은 관모 · 긴 수염 · 회색 도포 (후보 4) |
+| `caocao` | 조조 | 검은 관모 · 염소수염 · 흰 속옷 · 밝은 푸른 전포 · 금빛 띠 (3차 후보 4, `caocao3`; 1·2차 검정·붉은 후보는 백업) |
+
+촉 이외 인물의 평복은 진영 키 대신 고정색을 쓴다(장면은 모든 인물을 한 진영색으로 그린다).
+조조의 푸른색은 진영 키가 아니라 기사 v6 청색 램프(`7 8 9 a`, 밝은 전포는 `8 9 a o`)다.
 
 ```sh
 python3 tools/unit3d/civilian_candidates.py   # 외형 후보 → output/ver4-civilian-candidates.png

@@ -10,16 +10,19 @@ one (SELECTED) and the rest stay as backups. Kits register into units.KITS as
 import copy
 import heads as Hd
 import looks as L
+import render as R
 import units as U
 
 GREEN, DARK_GREEN, BLACK, DARK, HEMP = U.GREEN, U.DARK_GREEN, U.BLACK, U.DARK_STEEL, U.HEMP
-WHITE, GOLD, BLUE, STEEL = L.WHITE, U.GOLD, U.BLUE, U.STEEL
+WHITE, GOLD, BLUE, STEEL, RED = L.WHITE, U.GOLD, U.BLUE, U.STEEL, U.RED
 
 
 def walker(key, n, **kit):
     name = f'{key}_civ{n}'
     U.KITS[name] = L.kit(**kit)
-    return U.foot_unit(name)
+    build = U.foot_unit(name)
+    build.kit = name  # chosen() renders the scene sheet with this kit
+    return build
 
 
 H = Hd.heads
@@ -54,14 +57,102 @@ LOOKS = {
          H(L.bearded(Hd.HAIR, 'goatee'))),
     ],
 }
-TITLES = {'guanyu': '관우', 'zhangfei': '장비', 'liubei': '유비'}
-SELECTED = {'guanyu': 1, 'zhangfei': 1, 'liubei': 1}  # chosen by the user (2026-10-04); others are backups
+# Scene candidates for the prologue and chapter 1 cast (2026-10-04). Non-Shu officers use fixed
+# colors, not the team keys: scenes draw every actor with one faction.
+BRICK, MAROON, LEATHER, PURPLE, SILVER, PALE = '#a14a35', '#7a2f22', '#704022', L.PURPLE, '#c9cdd0', '#dde1e3'
+B = L.bearded
+WHITE_PLUME = {'b': '4', 'c': '5', 'd': '6'}  # fixed white plume instead of the team key
+WEI_BLUE, WEI_SKY = '#193b65', '#245784'  # knight v6 blue ramp 7 8 9 a (+ o), no new colors
+R.add_ramps({WEI_BLUE: '789a', WEI_SKY: '89ao'})
+LOOKS.update({
+    'zhangshiping': [
+        ('검은 관모 · 염소수염 · 벽돌색 비단 도포', walker('zhangshiping', 1, cloth=BRICK, robe=BRICK, guard=GOLD, tabard=GOLD), H(B(L.CAP, 'goatee'))),
+        ('맨상투 · 염소수염 · 흰 도포', walker('zhangshiping', 2, cloth=WHITE, robe=WHITE, guard=LEATHER, tabard=LEATHER), H(B(Hd.HAIR, 'goatee'))),
+        ('금빛 관모 · 긴 수염 · 적갈색 도포', walker('zhangshiping', 3, cloth=MAROON, robe=MAROON, guard=GOLD, tabard=GOLD), H(B(L.GOLD_CAP, 'long'))),
+        ('검은 관모 · 녹색 도포', walker('zhangshiping', 4, cloth=GREEN, robe=GREEN, guard=LEATHER, tabard=GOLD), H(L.CAP)),
+    ],
+    'sushuang': [
+        ('맨상투 · 벽돌색 옷', walker('sushuang', 1, cloth=BRICK, guard=LEATHER, tabard=GOLD), H(Hd.HAIR)),
+        ('검은 관모 · 흰 도포', walker('sushuang', 2, cloth=WHITE, robe=WHITE, guard=BRICK, tabard=BRICK), H(L.CAP)),
+        ('흰 윤건 · 적갈색 도포', walker('sushuang', 3, cloth=MAROON, robe=MAROON, guard=LEATHER, tabard=GOLD), H(L.WHITE_HOOD)),
+        ('맨상투 · 녹색 옷 · 등짐', walker('sushuang', 4, cloth=GREEN, guard=LEATHER, tabard=LEATHER, pack=HEMP), H(Hd.HAIR)),
+    ],
+    'caocao': [
+        ('검은 관모 · 염소수염 · 검은 도포 · 붉은 띠', walker('caocao', 1, cloth=BLACK, robe=BLACK, guard=RED, tabard=RED), H(B(L.CAP, 'goatee'))),
+        ('금빛 관모 · 염소수염 · 적갈색 도포', walker('caocao', 2, cloth=MAROON, robe=MAROON, guard=GOLD, tabard=GOLD), H(B(L.GOLD_CAP, 'goatee'))),
+        ('검은 관모 · 철 갑옷 · 검은 도포', walker('caocao', 3, cloth=BLACK, robe=BLACK, guard=STEEL, tabard=GOLD), H(B(L.CAP, 'goatee'))),
+        ('검은 투구 · 검은 갑옷 · 붉은 띠', walker('caocao', 4, cloth=BLACK, guard=DARK, tabard=RED), H(B(L.DARK_IRON, 'goatee'), Hd.PLUME)),
+    ],
+    'caocao2': [  # second round: a red look (user, 2026-10-04)
+        ('검은 관모 · 붉은 도포 · 검은 띠', walker('caocao', 5, cloth=RED, robe=RED, guard=BLACK, tabard=BLACK), H(B(L.CAP, 'goatee'))),
+        ('금빛 관모 · 붉은 도포 · 금빛 어깨', walker('caocao', 6, cloth=RED, robe=RED, guard=GOLD, tabard=GOLD), H(B(L.GOLD_CAP, 'goatee'))),
+        ('검은 관모 · 적갈색 옷 · 붉은 도포 · 철 어깨', walker('caocao', 7, cloth=MAROON, robe=RED, guard=STEEL, tabard=GOLD),
+         H(B(L.CAP, 'goatee'))),
+        ('검은 투구 · 붉은 갑옷 · 붉은 술', walker('caocao', 8, cloth=RED, guard=DARK, tabard=RED), H(B(L.DARK_IRON, 'goatee'))),
+    ],
+    'caocao3': [  # third round: blue battle robe and cap (user, 2026-10-04); fixed knight-v6 blue, not the team keys
+        ('검은 관모 · 푸른 전포 · 검은 띠', walker('caocao', 9, cloth=WEI_BLUE, robe=WEI_BLUE, guard=BLACK, tabard=BLACK),
+         H(B(L.CAP, 'goatee'))),
+        ('금빛 관모 · 푸른 전포 · 금빛 어깨', walker('caocao', 10, cloth=WEI_BLUE, robe=WEI_BLUE, guard=GOLD, tabard=GOLD),
+         H(B(L.GOLD_CAP, 'goatee'))),
+        ('검은 관모 · 푸른 전포 · 철 어깨 · 금빛 띠', walker('caocao', 11, cloth=WEI_BLUE, robe=WEI_BLUE, guard=STEEL, tabard=GOLD),
+         H(B(L.CAP, 'goatee'))),
+        ('검은 관모 · 흰 속옷 · 밝은 푸른 전포 · 금빛 띠', walker('caocao', 12, cloth=WHITE, robe=WEI_SKY, guard=WEI_SKY, tabard=GOLD),
+         H(B(L.CAP, 'goatee'))),
+    ],
+    'yuanshao': [
+        ('금빛 관모 · 흰 도포 · 금빛 어깨', walker('yuanshao', 1, cloth=WHITE, robe=WHITE, guard=GOLD, tabard=GOLD), H(B(L.GOLD_CAP, 'goatee'))),
+        ('금빛 투구 · 흰 옷 · 금빛 갑옷', walker('yuanshao', 2, cloth=WHITE, guard=GOLD, tabard=GOLD), H(B(L.GOLD_IRON, 'goatee'), Hd.PLUME)),
+        ('금빛 관모 · 금빛 도포 · 흰 띠', walker('yuanshao', 3, cloth=GOLD, robe=GOLD, guard=WHITE, tabard=WHITE), H(B(L.GOLD_CAP, 'goatee'))),
+        ('금관 · 흰 도포 · 긴 수염', walker('yuanshao', 4, cloth=WHITE, robe=WHITE, guard=GOLD, tabard=GOLD), H(B(Hd.CROWN, 'long'))),
+    ],
+    'yuanshu': [
+        ('금빛 관모 · 금빛 도포 · 붉은 띠', walker('yuanshu', 1, cloth=GOLD, robe=GOLD, guard=RED, tabard=RED), H(L.GOLD_CAP)),
+        ('금관 · 금빛 도포 · 뻣뻣한 수염', walker('yuanshu', 2, cloth=GOLD, robe=GOLD, guard=MAROON, tabard=RED), H(B(Hd.CROWN, 'bristle'))),
+        ('금빛 관모 · 적갈색 도포 · 금빛 어깨', walker('yuanshu', 3, cloth=MAROON, robe=MAROON, guard=GOLD, tabard=GOLD), H(B(L.GOLD_CAP, 'goatee'))),
+        ('금빛 관모 · 붉은 도포 · 금빛 어깨', walker('yuanshu', 4, cloth=RED, robe=RED, guard=GOLD, tabard=GOLD), H(B(L.GOLD_CAP, 'goatee'))),
+    ],
+    'gongsunzan': [
+        ('철 투구 · 흰 옷 · 은빛 갑옷 (백마장군)', walker('gongsunzan', 1, cloth=WHITE, guard=SILVER, tabard=PALE), H(B(Hd.IRON, 'goatee'), Hd.PLUME)),
+        ('흰 윤건 · 흰 도포', walker('gongsunzan', 2, cloth=WHITE, robe=WHITE, guard=PALE, tabard=SILVER), H(B(L.WHITE_HOOD, 'goatee'))),
+        ('검은 관모 · 흰 도포 · 철 어깨', walker('gongsunzan', 3, cloth=WHITE, robe=WHITE, guard=STEEL, tabard=STEEL), H(B(L.CAP, 'goatee'))),
+        ('철 투구 · 은빛 옷 · 흰 갑옷', walker('gongsunzan', 4, cloth=SILVER, guard=PALE, tabard=WHITE), H(Hd.IRON, WHITE_PLUME)),
+    ],
+    'dongzhuo': [
+        ('검은 관모 · 덥수룩한 수염 · 검은 도포 · 금빛 어깨 · 비대', walker('dongzhuo', 1, cloth=BLACK, robe=BLACK, guard=GOLD, tabard=GOLD, belly=True),
+         H(B(L.CAP, 'bushy'))),
+        ('금빛 관모 · 덥수룩한 수염 · 붉은 도포 · 비대', walker('dongzhuo', 2, cloth=RED, robe=RED, guard=GOLD, tabard=GOLD, belly=True),
+         H(B(L.GOLD_CAP, 'bushy'))),
+        ('맨상투 · 뻣뻣한 수염 · 적갈색 도포 · 비대', walker('dongzhuo', 3, cloth=MAROON, robe=MAROON, guard=GOLD, tabard=GOLD, belly=True),
+         H(B(Hd.HAIR, 'bristle'))),
+        ('검은 투구 · 덥수룩한 수염 · 검은 갑옷 · 비대', walker('dongzhuo', 4, cloth=BLACK, guard=DARK, tabard=GOLD, belly=True),
+         H(B(L.DARK_IRON, 'bushy'), Hd.PLUME)),
+    ],
+    'liru': [
+        ('검은 관모 · 염소수염 · 검은 도포', walker('liru', 1, cloth=BLACK, robe=BLACK, guard=PURPLE, tabard=PURPLE), H(B(L.CAP, 'goatee'))),
+        ('검은 관모 · 적갈색 도포', walker('liru', 2, cloth=MAROON, robe=MAROON, guard=BLACK, tabard=BLACK), H(L.CAP)),
+        ('흰 윤건 · 검은 도포', walker('liru', 3, cloth=BLACK, robe=BLACK, guard=STEEL, tabard=PURPLE), H(L.WHITE_HOOD)),
+        ('검은 관모 · 긴 수염 · 회색 도포', walker('liru', 4, cloth='#5a5f66', robe='#5a5f66', guard=BLACK, tabard=PURPLE), H(B(L.CAP, 'long'))),
+    ],
+})
+TITLES = {'guanyu': '관우', 'zhangfei': '장비', 'liubei': '유비', 'zhangshiping': '장세평', 'sushuang': '소쌍', 'caocao': '조조', 'caocao2': '조조', 'caocao3': '조조','yuanshao': '원소', 'yuanshu': '원술',
+          'gongsunzan': '공손찬', 'dongzhuo': '동탁', 'liru': '이유'}
+SELECTED = {'guanyu': 1, 'zhangfei': 1, 'liubei': 1,
+            'zhangshiping': 3, 'sushuang': 3, 'yuanshao': 0, 'yuanshu': 1, 'gongsunzan': 3, 'dongzhuo': 0, 'liru': 3,
+            'caocao3': 3}  # chosen by the user (2026-10-04); others are backups
+# look key -> sprite key, for officers whose pick came from a later candidate round
+SPRITE_KEYS = {'caocao3': 'caocao'}
 
 # Officers who speak in scenes but had no candidate round: their battle look without the weapon.
 EXTRA = {
     'jianyong': ('간옹', walker('jianyong', 1), H(L.WHITE_HOOD)),
     'sunqian': ('손건', walker('sunqian', 1, robe=BLUE, guard=BLUE), H(L.CAP)),
 }
+
+# Scene sprites face only the four diagonals and are drawn for NW and SW; the game mirrors
+# them horizontally for NE and SE (user rule, 2026-10-04). Battle sprites keep all eight.
+DIRECTIONS = ['NW', 'SW']
+MIRRORED = {'NE': 'NW', 'SE': 'SW'}
 
 # Scene motions (rows). Poses use the soldier keys; hand 0 is the gesturing hand.
 ANIMATIONS = ['idle', 'walk', 'talk', 'salute', 'toast', 'surprise', 'nod']
@@ -126,7 +217,7 @@ def chosen():
     out = []
     for key, i in SELECTED.items():
         _, walk, head = LOOKS[key][i]
-        out.append((key, TITLES[key], scene_unit(walk, f'{key}_civ{i + 1}'), head))
+        out.append((SPRITE_KEYS.get(key, key), TITLES[key], scene_unit(walk, walk.kit), head))
     for key, (title, walk, head) in EXTRA.items():
-        out.append((key, title, scene_unit(walk, f'{key}_civ1'), head))
+        out.append((key, title, scene_unit(walk, walk.kit), head))
     return out

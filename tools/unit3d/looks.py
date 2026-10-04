@@ -47,7 +47,8 @@ def rider(key, k, coat, weapon, style):
 H = Hd.heads
 DARK_IRON = {d: Hd.recolor(r, Hd.DARK_IRON) for d, r in Hd.IRON.items()}
 GOLD_IRON = {d: Hd.recolor(r, Hd.GOLD_IRON) for d, r in Hd.IRON.items()}
-CAP = {d: Hd.flat_cap(r) for d, r in DARK_IRON.items()}
+# black scholar's cap: small cap with a gold pin on the topknot (user pick 4 of 4, 2026-10-04)
+CAP = {d: Hd.gwanmo(r, 4) for d, r in Hd.HAIR.items()}
 GOLD_CAP = {d: Hd.flat_cap(r) for d, r in GOLD_IRON.items()}
 WHITE_HOOD = {d: Hd.recolor(r, Hd.WHITE_HOOD) for d, r in Hd.HOOD.items()}
 YELLOW_HOOD = {d: Hd.recolor(r, Hd.YELLOW_HOOD) for d, r in Hd.HOOD.items()}
@@ -145,12 +146,52 @@ LOOKS = {
          H(Hd.crested(GOLD_IRON, Hd.FEATHERS), crest=Hd.FEATHER_ROWS)),
     ],
 }
-TITLES = {'liubei3': '유비', 'liubei2': '유비', 'strategist': '사마(문관)', 'liubei': '유비', 'jianyong': '간옹', 'zhangjiao': '장각', 'huaxiong': '화웅', 'lubu': '여포'}
-SELECTED = {'strategist': 2, 'liubei3': 0, 'jianyong': 0, 'zhangjiao': 0, 'huaxiong': 0, 'lubu': 3}
+
+# B01 and later (2026-10-04): candidates only until the user picks.
+BRICK, MAROON, LEATHER = '#a14a35', '#7a2f22', '#704022'
+LOOKS.update({
+    'merchant': [  # 장세평 head; the merchant caravan class (non-combatant ally)
+        ('말 탄 상인 · 진영색 도포 · 밤색 말', rider('merchant_1', kit(robe=BLUE, guard=BLUE), 'bay', 'none', 'charge'),
+         H(bearded(CAP, 'goatee'))),
+        ('말 탄 상인 · 짐 실은 말', rider('merchant_2', kit(robe=BLUE, guard=BLUE, packs=LEATHER), 'bay', 'none', 'charge'),
+         H(bearded(CAP, 'goatee'))),
+        ('도보 상인 · 등짐', foot('merchant_3', kit(robe=BLUE, guard=BLUE, pack=HEMP)), H(bearded(CAP, 'goatee'))),
+        ('도보 상인 · 진영색 도포 · 지팡이', foot('merchant_4', kit(robe=BLUE, guard=BLUE, weapon='staff')),
+         H(bearded(CAP, 'goatee'))),
+    ],
+    'chengyuanzhi': [
+        ('황건 · 덥수룩한 수염 · 철 어깨 · 칼·방패', foot('chengyuanzhi_1', kit(cloth=HEMP, guard=STEEL, weapon='sword', shield=True)),
+         H(bearded(Hd.TOPKNOT, 'bushy'), Hd.BAND)),
+        ('노란 두건 · 뻣뻣한 수염 · 가죽 갑옷 · 칼', foot('chengyuanzhi_2', kit(cloth=HEMP, guard=LEATHER, weapon='sword')),
+         H(bearded(YELLOW_HOOD, 'bristle'))),
+        ('황건 · 검은 옷 · 뻣뻣한 수염 · 칼·방패', foot('chengyuanzhi_3', kit(cloth=BLACK, guard=DARK, weapon='sword', shield=True)),
+         H(bearded(Hd.TOPKNOT, 'bristle'), Hd.BAND)),
+        ('노란 두건 · 삼베 도포 · 긴 수염 · 지팡이', foot('chengyuanzhi_4', kit(cloth=HEMP, robe=HEMP, guard=U.HEMP_DARK, weapon='staff')),
+         H(bearded(YELLOW_HOOD, 'long'))),
+    ],
+    'dengmao': [
+        ('황건 · 붉은 옷 · 칼·방패', foot('dengmao_1', kit(cloth=RED, guard=U.HEMP_DARK, weapon='sword', shield=True)),
+         H(Hd.TOPKNOT, Hd.BAND)),
+        ('황건 · 삼베 옷 · 뻣뻣한 수염 · 칼', foot('dengmao_2', kit(cloth=HEMP, guard=U.HEMP_DARK, weapon='sword')),
+         H(bearded(Hd.TOPKNOT, 'bristle'), Hd.BAND)),
+        ('황건 · 삼베 옷 · 창', foot('dengmao_3', kit(cloth=HEMP, guard=U.HEMP_DARK, weapon='spear')),
+         H(Hd.TOPKNOT, Hd.BAND)),
+        ('노란 두건 · 가죽 갑옷 · 칼·방패', foot('dengmao_4', kit(cloth=HEMP, guard=LEATHER, weapon='sword', shield=True)),
+         H(YELLOW_HOOD)),
+    ],
+})
+TITLES = {'liubei3': '유비', 'liubei2': '유비', 'strategist': '사마(문관)', 'liubei': '유비', 'jianyong': '간옹', 'zhangjiao': '장각', 'huaxiong': '화웅', 'lubu': '여포',
+          'merchant': '상단(장세평)', 'chengyuanzhi': '정원지', 'dengmao': '등무'}
+SELECTED = {'strategist': 2, 'liubei3': 0, 'jianyong': 0, 'zhangjiao': 0, 'huaxiong': 0, 'lubu': 3,
+            'merchant': 2, 'chengyuanzhi': 3, 'dengmao': 3}  # 2026-10-04: walking merchant (bigger pack), both yellow hoods
 # unit key in the sprite set -> look key (liubei went through three rounds of candidates)
 CHOSEN = {'strategist': 'strategist', 'liubei': 'liubei3', 'jianyong': 'jianyong', 'zhangjiao': 'zhangjiao',
-          'huaxiong': 'huaxiong', 'lubu': 'lubu'}
-NAMES = {'strategist': '사마', 'liubei': '유비', 'jianyong': '간옹', 'zhangjiao': '장각', 'huaxiong': '화웅', 'lubu': '여포'}
+          'huaxiong': 'huaxiong', 'lubu': 'lubu', 'zhangshiping': 'merchant', 'chengyuanzhi': 'chengyuanzhi',
+          'dengmao': 'dengmao', 'sushuang': 'merchant'}
+# The two merchants share the walking merchant body; heads match their scene sprites.
+HEADS = {'zhangshiping': H(CAP), 'sushuang': H(Hd.HAIR)}
+NAMES = {'strategist': '사마', 'liubei': '유비', 'jianyong': '간옹', 'zhangjiao': '장각', 'huaxiong': '화웅', 'lubu': '여포',
+         'zhangshiping': '장세평', 'chengyuanzhi': '정원지', 'dengmao': '등무', 'sushuang': '소쌍'}
 
 
 def chosen():
@@ -158,5 +199,5 @@ def chosen():
     out = []
     for key, look in CHOSEN.items():
         _, build, head = LOOKS[look][SELECTED[look]]
-        out.append((key, NAMES[key], build, head))
+        out.append((key, NAMES[key], build, HEADS.get(key, head)))
     return out  # key -> candidate index (user picks)

@@ -94,6 +94,12 @@ def soldier(p, kit, weapon=True):
     m.ell(T([0, 0, .92]), [.43, .27, .31], cloth)
     m.ell(T([0, 0, 1.26]), [.4, .27, .38], cloth)
     m.ell(T([0, -.035, 1.3]), [.36, .275, .27], guard)
+    if k.get('belly'):  # stout figure (Dong Zhuo): a round belly over the sash
+        m.ell(T([0, -.14, 1.0]), [.62, .5, .46], k.get('robe') or cloth)
+    if k.get('pack'):  # merchant's bundle on the back
+        m.box(T([0, .4, 1.3]), [.72, .42, .86], k['pack'])  # tall enough to show over the shoulders
+        for z in (1.08, 1.5):
+            m.box(T([0, .4, z]), [.75, .45, .06], BROWN)
     m.box(T([0, 0, 1.01]), [.79, .56, .105], k['tabard'])
     m.box(T([0, -.29, .8]), [.13, .05, .36], k['tabard'])
     m.rod(T([0, 0, 1.48]), T([0, 0, 1.68]), .14, SKIN)
@@ -250,7 +256,7 @@ def foot_unit(kit):
         effects = []
         if row == ATTACK:
             p = sword_pose(A.SWORD[style]['frames'][f])
-            effects = sword_effects(style, f, KITS[kit]['weapon'])
+            effects = sword_effects(style, f, KITS[kit]['weapon']) if KITS[kit]['weapon'] else []
         elif row == HIT:
             p = hit_pose(f, pose(0, 0))
         else:
@@ -347,7 +353,7 @@ COATS = {'bay': ('#825032', '#9a6845', '#352820'), 'black': ('#2b2b33', '#3d3d48
          'red': ('#7a2f22', '#a14a35', '#352820'),  # red: Red Hare
          'white': ('#c9cdd0', '#dde1e3', '#5a5f66')}
 RAMPS.update({'#7a2f22': 'bKLM', '#a14a35': 'KLLM', '#c9cdd0': '3455', '#dde1e3': '4556', '#5a5f66': '1223'})
-MOUNT_REACH = {'spear': (.9, 1.75), 'snake': (.9, 1.75), 'glaive': (1.15, 1.95), 'halberd': (.9, 1.75)}
+MOUNT_REACH = {'none': (.9, 1.75), 'spear': (.9, 1.75), 'snake': (.9, 1.75), 'glaive': (1.15, 1.95), 'halberd': (.9, 1.75)}
 RIDER_OFFSET = V([0, .12, 1.2])
 
 
@@ -426,7 +432,7 @@ def cavalry(row, f, style=None, kit='rider', coat='bay', weapon='spear'):
     side = A.unit(np.cross(dv, [0, 0, 1]))*.1 if abs(dv[2]) < .9 else V([.1, 0, 0])
     if weapon == 'glaive':
         glaive_at(hand, dv, side*10)
-    else:
+    elif weapon != 'none':  # 'none': an unarmed rider (merchant)
         m.rod(hand - dv*.5, hand + dv*1.45, .045, '#966131')
     tip, base = hand + dv*1.75, hand + dv*1.42
     if weapon == 'snake':
@@ -485,6 +491,9 @@ def cavalry(row, f, style=None, kit='rider', coat='bay', weapon='spear'):
     sway = [0, .12, 0, -.12][f] if row == 0 else 0
     m.rod(H([0, .73, 1.3]), H([sway, 1.02, .60]), .09, dark)
     m.ell(H([0, .06, 1.52]), [.47, .38, .07], '#a91e2c')
+    if KITS[kit].get('packs'):  # saddle bags behind the rider
+        for x in [-.47, .47]:
+            m.box(H([x, .42, 1.3]), [.16, .42, .34], KITS[kit]['packs'])
     for x in [-.22, .22]:
         m.rod(H([x, -1.27, 1.74]), V([x, -.25, 1.98]), .017, '#38261d')
     fs, effects = m.meshes, []
@@ -492,7 +501,7 @@ def cavalry(row, f, style=None, kit='rider', coat='bay', weapon='spear'):
         move = horse_move(k.get('rear', 0), k.get('shift', 0))
         fs = [(move(v), c) for v, c in fs]
         head = move(head)
-        effects = spear_effects(style, f, weapon)
+        effects = spear_effects(style, f, weapon) if weapon != 'none' else []
     return result(fs, head, row, f, effects)
 
 

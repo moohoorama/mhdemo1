@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the scene (평복) sprites: 8 directions x 7 motions x 4 frames, same format as ver2-units.
+"""Build the scene (평복) sprites: NW and SW x 7 motions x 4 frames (NE, SE are mirrored at runtime).
 
   python3 tools/unit3d/civilian_build.py [--unit KEY]   (the review sheet always shows every built unit)
   -> tools/spritetool/assets/ver4-civilians/<key>/{D}-pixel.png + frames.json
@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[2]
 V.OUT = ROOT / 'tools/spritetool/assets/ver4-civilians'
 V.ANIMATIONS = C.ANIMATIONS
 V.DURATIONS = C.DURATIONS
+V.DIRECTIONS = C.DIRECTIONS
 
 
 def review(results):

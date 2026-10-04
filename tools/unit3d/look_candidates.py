@@ -16,9 +16,9 @@ CELL, PIVOT = (84, 72), (42, 54)
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--unit', choices=list(L.LOOKS))
+    ap.add_argument('--unit', nargs='*', choices=list(L.LOOKS))
     args = ap.parse_args()
-    keys = [args.unit] if args.unit else list(L.LOOKS)
+    keys = args.unit or list(L.LOOKS)
     sc, pad, label = 6, 12, 30
     bw, bh = CELL[0]*sc, CELL[1]*sc
     width = pad + 4*(bw + pad)
@@ -38,7 +38,7 @@ def main():
                 draw.rectangle((x0, y0 + label, x0 + bw - 1, y0 + label + bh - 1), fill=(148, 179, 110, 255))
                 sheet.alpha_composite(im.resize((bw, bh), Image.NEAREST), (x0, y0 + label))
             print(key, c + 1, flush=True)
-    out = ROOT / f"output/ver4-look-candidates{'-' + args.unit if args.unit else ''}.png"
+    out = ROOT / f"output/ver4-look-candidates{'-' + '-'.join(args.unit) if args.unit else ''}.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     sheet.convert('RGB').save(out)
     print(out)
