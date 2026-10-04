@@ -29,6 +29,8 @@ F5/F9 저장/불러오기 · ` 명령 입력(CLI 문법, 디버그).
 ver4/
 ├─ design.md                 설계서 v0.6 (ver2 v0.5 + 클레임 리플레이)
 ├─ scenario.md               시나리오·스테이지 설계 (B01 상세, 전체 스테이지 목록, 숨은 조건 연쇄)
+├─ scenario-system.md        시나리오 노드·회의장·상점·전투 이벤트 데이터 구조
+├─ script-c1.md              서장~계교 대본과 전투 설계
 ├─ cmd/srpg-{gui,cli,sim}
 ├─ internal/
 │  ├─ core, ai, session, storage, cli, sim, content   ver1에서 가져온 코어 (변경점은 아래)
