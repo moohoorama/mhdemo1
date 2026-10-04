@@ -43,7 +43,7 @@ func (g *Game) updateHover() {
 	if g.field == nil || g.overlay != "" || len(g.modals) > 0 {
 		return
 	}
-	x, y := ebiten.CursorPosition()
+	x, y := cursorPos()
 	for _, r := range g.blocks {
 		if image.Pt(x, y).In(r) {
 			return
@@ -52,7 +52,7 @@ func (g *Game) updateHover() {
 	cx, cy := g.toCanvas(float64(x), float64(y))
 	mx, my := g.field.Cell(cx, cy)
 	// a castle wall's surface is drawn lifted; prefer it when the cursor is on it
-	if lu, lv := g.field.Cell(cx, cy+float64(g.assets.Rise)); g.field.Tile(lu, lv) == 'c' {
+	if lu, lv := g.field.Cell(cx, cy+float64(g.assets.Rise*K)); g.field.Tile(lu, lv) == 'c' {
 		mx, my = lu, lv
 	}
 	if g.field.Inside(mx, my) {
@@ -67,7 +67,7 @@ func (g *Game) cursor(dst *ebiten.Image) {
 	}
 	cx, cy := g.field.Center(float64(g.hover.x), float64(g.hover.y))
 	cy -= g.field.Lift(g.hover.x, g.hover.y)
-	pts := [][2]float64{{cx, cy - 8}, {cx + 16, cy}, {cx, cy + 8}, {cx - 16, cy}}
+	pts := [][2]float64{{cx, cy - 8*K}, {cx + 16*K, cy}, {cx, cy + 8*K}, {cx - 16*K, cy}}
 	pulse := uint8(180 + 60*math.Sin(g.clockMS/160))
 	for i := range pts {
 		ax, ay := g.toScreen(pts[i][0], pts[i][1])
@@ -311,7 +311,8 @@ func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
 	// visible area: screen corners → canvas → minimap (both are linear in the iso projection)
 	toMini := func(sx, sy float64) (float32, float32) {
 		cx, cy := g.toCanvas(sx, sy)
-		return float32(ox + (cx-g.field.OriginX)/16*miniScale), float32(y0 + (cy-g.field.OriginY)/16*miniScale)
+		mx, my := ToMap(cx, cy)
+		return float32(ox + (mx-g.field.OriginX)/16*miniScale), float32(y0 + (my-g.field.OriginY)/16*miniScale)
 	}
 	ax, ay := toMini(0, 40)
 	bx, by := toMini(Width, Height)
@@ -321,9 +322,9 @@ func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
 		vector.StrokeRect(dst, ax, ay, bx-ax, by-ay, 1, ink, false)
 	}
 	g.buttons = append(g.buttons, button{r, "", func() {
-		mx, my := ebiten.CursorPosition()
-		g.camX = (float64(mx)-ox)/miniScale*16 + g.field.OriginX
-		g.camY = (float64(my)-y0)/miniScale*16 + g.field.OriginY
+		mx, my := cursorPos()
+		g.camX = ((float64(mx)-ox)/miniScale*16 + g.field.OriginX) * K
+		g.camY = ((float64(my)-y0)/miniScale*16 + g.field.OriginY) * K
 	}})
 	g.block(r)
 }

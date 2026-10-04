@@ -69,3 +69,43 @@ func firstEnemy(e *Engine) *Unit {
 	}
 	return nil
 }
+
+func TestDuelSetOffByEitherSide(t *testing.T) {
+	setup := func(t *testing.T) *Engine {
+		e := battle(t)
+		e.data = copyOf(e.data)
+		e.data.Hash = e.state.ContentHash
+		e.data.Stages[0].Duels = []content.Duel{{ID: "fixture", Ally: "관우", Enemy: "등무", Outcome: "victory", AllyResult: "stay", EnemyResult: "retreat"}}
+		u, v := e.unit("관우"), e.unit("등무")
+		u.X, u.Y, v.X, v.Y = 4, 4, 5, 4
+		return e
+	}
+	t.Run("enemy attacks", func(t *testing.T) {
+		e := setup(t)
+		e.state.Turn = "enemy"
+		hp := e.unit("관우").HP
+		r := apply(t, e, Command{Kind: "attack", Actor: "등무", Target: "관우"})
+		if len(r.Events) == 0 || r.Events[0].Kind != "duel" || r.Events[0].Actor != "관우" {
+			t.Fatalf("events %+v", r.Events)
+		}
+		if e.unit("등무").HP != 0 || e.unit("관우").HP != hp || e.officer("관우").Level != 2 {
+			t.Fatal("duel outcome")
+		}
+	})
+	t.Run("out of reach", func(t *testing.T) {
+		e := setup(t)
+		e.unit("관우").X = 3
+		if e.DuelFor(Command{Kind: "attack", Actor: "관우", Target: "등무"}) {
+			t.Fatal("duel at range 2")
+		}
+	})
+	t.Run("no duel command", func(t *testing.T) {
+		e := setup(t)
+		assertRejected(t, e, Command{Kind: "duel", Actor: "관우", Target: "등무"})
+		for _, c := range e.LegalActions("관우").Commands {
+			if c.Kind == "duel" {
+				t.Fatal("duel offered as a command")
+			}
+		}
+	})
+}

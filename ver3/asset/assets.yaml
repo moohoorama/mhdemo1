@@ -23,6 +23,7 @@ units:
       attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
       hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
       exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
   bandit:
     name: 황건 적병
     image: units/bandit.png
@@ -35,6 +36,7 @@ units:
       attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
       hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
       exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
   spearman:
     name: 창병
     image: units/spearman.png
@@ -47,6 +49,7 @@ units:
       attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
       hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
       exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
   archer:
     name: 궁병
     image: units/archer.png
@@ -59,6 +62,7 @@ units:
       attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
       hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
       exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
   cavalry:
     name: 경기병
     image: units/cavalry.png
@@ -71,6 +75,7 @@ units:
       attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
       hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
       exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
   guanyu:
     name: 관우
     image: units/guanyu.png
@@ -83,6 +88,7 @@ units:
       attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
       hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
       exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
   zhangfei:
     name: 장비
     image: units/zhangfei.png
@@ -95,6 +101,85 @@ units:
       attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
       hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
       exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
+  strategist:
+    name: 사마
+    image: units/strategist.png
+    cell: [47, 41]
+    pivot: [23, 33]
+    rows: [N, NE, E, SE, S, SW, W, NW]
+    animations:
+      idle: {first_column: 0, frames: 4, ms: [180, 180, 180, 180], loop: true}
+      walk: {first_column: 4, frames: 4, ms: [120, 120, 120, 120], loop: true}
+      attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
+      hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
+      exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
+  liubei:
+    name: 유비
+    image: units/liubei.png
+    cell: [56, 46]
+    pivot: [28, 38]
+    rows: [N, NE, E, SE, S, SW, W, NW]
+    animations:
+      idle: {first_column: 0, frames: 4, ms: [180, 180, 180, 180], loop: true}
+      walk: {first_column: 4, frames: 4, ms: [120, 120, 120, 120], loop: true}
+      attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
+      hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
+      exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
+  jianyong:
+    name: 간옹
+    image: units/jianyong.png
+    cell: [94, 48]
+    pivot: [47, 39]
+    rows: [N, NE, E, SE, S, SW, W, NW]
+    animations:
+      idle: {first_column: 0, frames: 4, ms: [180, 180, 180, 180], loop: true}
+      walk: {first_column: 4, frames: 4, ms: [120, 120, 120, 120], loop: true}
+      attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
+      hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
+      exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
+  zhangjiao:
+    name: 장각
+    image: units/zhangjiao.png
+    cell: [62, 52]
+    pivot: [31, 40]
+    rows: [N, NE, E, SE, S, SW, W, NW]
+    animations:
+      idle: {first_column: 0, frames: 4, ms: [180, 180, 180, 180], loop: true}
+      walk: {first_column: 4, frames: 4, ms: [120, 120, 120, 120], loop: true}
+      attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
+      hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
+      exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
+  huaxiong:
+    name: 화웅
+    image: units/huaxiong.png
+    cell: [70, 60]
+    pivot: [35, 57]
+    rows: [N, NE, E, SE, S, SW, W, NW]
+    animations:
+      idle: {first_column: 0, frames: 4, ms: [180, 180, 180, 180], loop: true}
+      walk: {first_column: 4, frames: 4, ms: [120, 120, 120, 120], loop: true}
+      attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
+      hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
+      exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
+  lubu:
+    name: 여포
+    image: units/lubu.png
+    cell: [68, 55]
+    pivot: [34, 52]
+    rows: [N, NE, E, SE, S, SW, W, NW]
+    animations:
+      idle: {first_column: 0, frames: 4, ms: [180, 180, 180, 180], loop: true}
+      walk: {first_column: 4, frames: 4, ms: [120, 120, 120, 120], loop: true}
+      attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
+      hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
+      exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
 tileset:
   image: map/tileset.png
   sprites:

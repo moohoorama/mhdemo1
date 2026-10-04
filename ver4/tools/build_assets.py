@@ -5,6 +5,8 @@ index.json for the Go GUI. Requires Pillow, PyYAML (ver3 shadow cache) and Go.
 
 Sources (read only):
   tools/spritetool/assets/ver2-units/        unit sheets (python3 tools/unit3d/build.py --full)
+  tools/spritetool/assets/ver4-civilians/    scene sprites, packed as civ_<key> (tools/unit3d/civilian_build.py)
+  ver4/assets/scenes.json                    scenario scene maps (exported like battle maps)
   tools/spritetool/assets/ver4-structures/   village, castle floor and walls (tools/unit3d/structures.py)
   assets/terrain.png, objects.png, catalog.json   terrain tiles and decorations (make assets)
   ver4/assets/content/campaign.json          battle maps (Tiles)
@@ -24,7 +26,10 @@ sys.path.insert(0, str(ROOT / 'ver3/tools'))
 sys.path.insert(0, str(ROOT / 'ver3'))
 sys.path.insert(0, str(ROOT / 'tools/unit3d'))
 import build_assets as v3  # noqa: E402  (ver3 packer: unit sheets, tileset)
+import civilian  # noqa: E402
 import shadows  # noqa: E402
+
+CIVILIANS = ROOT / 'tools/spritetool/assets/ver4-civilians'
 
 STRUCTURES = ROOT / 'tools/spritetool/assets/ver4-structures'
 # Rules tile -> editor ground (0 river, 1 grass, 2 wasteland) and decoration (1 rocks, 2 trees).
@@ -55,9 +60,12 @@ def main():
         (OUT / d).mkdir(parents=True, exist_ok=True)
     v3.ASSET = OUT
     content = json.loads((ROOT / 'ver4/assets/content/campaign.json').read_text())
-    index = dict(version=1, units=v3.build_units(), tileset=v3.build_tileset(),
+    scenes = json.loads((ROOT / 'ver4/assets/scenes.json').read_text())
+    units = v3.build_units()
+    units.update(v3.build_units([(k, t) for k, t, _, _ in civilian.chosen()], CIVILIANS, prefix='civ_'))
+    index = dict(version=1, units=units, tileset=v3.build_tileset(),
                  factions=json.loads((v3.UNITS_SRC / 'factions.json').read_text()),
-                 maps=[build_map(s) for s in content['Stages']])
+                 maps=[build_map(s) for s in content['Stages'] + scenes['maps']])
     shutil.copy2(STRUCTURES / 'structures.png', OUT / 'map/structures.png')
     structures = json.loads((STRUCTURES / 'structures.json').read_text())
     structures['image'] = 'map/structures.png'

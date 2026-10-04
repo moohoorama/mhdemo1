@@ -31,12 +31,14 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 	for _, c := range options {
 		s := -1.0
 		switch c.Kind {
-		case "duel":
-			if !duels {
-				continue
-			}
-			s = 2000
 		case "attack", "skill":
+			if e.DuelFor(c) {
+				if !duels {
+					continue
+				}
+				s = 2000
+				break
+			}
 			p, err := e.Preview(c)
 			if err != nil {
 				continue

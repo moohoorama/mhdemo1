@@ -15,6 +15,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -39,8 +40,10 @@ type Game struct {
 	player               Player
 	banner               string
 	bannerT, clockMS     float64
+	shakeT               float64
 	camX, camY           float64
-	zoom, speed          int
+	zoom                 float64
+	speed                int
 	dragging, dragMoved  bool
 	dragX, dragY         int
 	shownNode            string
@@ -63,6 +66,8 @@ type Game struct {
 	toasts               []*toast
 	history              []string
 	modals               []*modal
+	scenes               *sceneFile
+	scene                *scene
 	battleXP, startLevel map[string]int
 	slotInfo             map[string]string
 	selected, overlay    string
@@ -86,9 +91,10 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 		return nil, err
 	}
 	g := &Game{S: s, font: source, seed: seed, verified: map[string]bool{}, slot: 1, auditDir: auditDir,
-		vis: map[string]*unitVis{}, zoom: 2, speed: 1, threats: map[string][]content.Point{}, diffs: map[string]string{},
+		vis: map[string]*unitVis{}, zoom: 1, speed: 1, threats: map[string][]content.Point{}, diffs: map[string]string{},
 		battleXP: map[string]int{}, startLevel: map[string]int{}}
 	g.player.g = g
+	g.scenes = loadScenes(filepath.Join(filepath.Dir(fontPath), "..", "scenes.json"))
 	g.assets, err = LoadAssets(filepath.Join(filepath.Dir(fontPath), "..", "graphics"))
 	if err != nil {
 		return nil, err
@@ -146,7 +152,7 @@ func (g *Game) send(q session.Request) session.Response {
 		g.popups, g.effects, g.modals = nil, nil, nil
 		g.clearOrder()
 		g.selected = ""
-		g.field = nil
+		g.field, g.scene = nil, nil
 	}
 	if g.S.Engine != nil && (q.Op == "command" || q.Op == "ai" || q.Op == "retry" || q.Op == "new") {
 		if err := g.S.Store.Save("auto", g.S.Engine.Snapshot(), true); err != nil {
@@ -536,7 +542,7 @@ func (g *Game) keys() {
 }
 
 func (g *Game) leftClick() {
-	x, y := ebiten.CursorPosition()
+	x, y := cursorPos()
 	for i := len(g.buttons) - 1; i >= 0; i-- {
 		if b := g.buttons[i]; image.Pt(x, y).In(b.rect) {
 			b.click()
@@ -572,7 +578,10 @@ func (g *Game) Draw(dst *ebiten.Image) {
 		g.portrait(dst, e.Actor, 296, 290, 140)
 		g.portrait(dst, e.Target, 844, 290, 140)
 		g.centered(dst, g.name(e.Actor)+"  VS  "+g.name(e.Target), 640, 300, 24, gold)
-		g.label(dst, wrap(e.Text, 20), 470, 350, 17, ink)
+		text, outcome, _ := strings.Cut(e.Text, " [")
+		outcome = map[string]string{"victory]": "승리", "draw]": "무승부", "defeat]": "패배"}[outcome]
+		g.label(dst, wrap(text, 20), 470, 350, 17, ink)
+		g.centered(dst, outcome, 640, 460, 24, gold)
 	}
 	if g.overlay != "" {
 		g.drawOverlay(dst)
@@ -676,9 +685,12 @@ func (g *Game) battle(dst *ebiten.Image, o core.Observation) {
 		}
 	}
 	g.field.Draw(g.clockMS, units, g.marks(o))
+	sx, sy := g.shake()
+	g.camX, g.camY = g.camX-sx/g.zoom, g.camY-sy/g.zoom
+	defer func() { g.camX, g.camY = g.camX+sx/g.zoom, g.camY+sy/g.zoom }()
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-g.camX, -g.camY)
-	op.GeoM.Scale(float64(g.zoom), float64(g.zoom))
+	op.GeoM.Scale(g.zoom, g.zoom)
 	op.GeoM.Translate(float64(viewport.Min.X+viewport.Dx()/2), float64(viewport.Min.Y+viewport.Dy()/2))
 	dst.DrawImage(g.field.Canvas, op)
 	g.cursor(dst)

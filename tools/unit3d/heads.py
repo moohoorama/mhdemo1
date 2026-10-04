@@ -112,8 +112,9 @@ def outline_beard(g, start):
 
 
 def beard(rows, skin, kind):
-    """'long': mustache and a long tapering beard (Guan Yu); 'bristle': bushy jaw and spikes (Zhang Fei);
-    'goatee': mustache and a short pointed chin beard (Liu Bei).
+    """'long': mustache and a long tapering beard (Guan Yu); 'bristle': bushy jaw and spikes;
+    'goatee': mustache and a short pointed chin beard (Liu Bei); 'bushy': a full dwarf-like beard from
+    the cheeks down, wide and shaggy, dark brown with lighter strands (Zhang Fei).
     Beard pixels are marked 'B' while drawing so they never mix with dark helmet pixels."""
     g = [list(r) for r in rows]
     eyes = find_eyes(g, skin)
@@ -123,6 +124,8 @@ def beard(rows, skin, kind):
     ey, xs = eyes[0][0], sorted(x for _, x in eyes)
     profile = len(xs) == 1
     chin = max(y for y, row in enumerate(g) if any(c in skin for c in row))
+    if kind == 'bushy':
+        return bushy(g, ey, chin, skin)
     if kind in ('long', 'goatee'):
         x0, x1 = (xs[0] - 2, xs[0] + 1) if profile else (xs[0] - 1, xs[-1] + 1)
         for x in range(max(0, x0), min(w, x1 + 1)):
@@ -156,6 +159,31 @@ def beard(rows, skin, kind):
     return [''.join(r).replace('B', '1') for r in g]
 
 
+def bushy(g, ey, chin, skin):
+    w = len(g[0])
+    for y in range(ey + 2, chin + 1):  # everything below the eyes
+        for x in range(w):
+            if g[y][x] in skin:
+                g[y][x] = 'B'
+    cols = [x for x, c in enumerate(g[chin]) if c == 'B']
+    left, right = min(cols), max(cols)
+    start = chin + 1
+    g += [['.'] * w for _ in range(max(0, start + 5 - len(g)))]
+    for i, (l, r) in enumerate([(left - 1, right + 1), (left - 1, right + 1), (left, right), (left + 1, right - 1)]):
+        for x in range(max(0, l), min(w, r + 1)):
+            g[start + i][x] = 'B'
+    outline_beard(g, start)
+    last = start + 3
+    hair = [[c == 'B' for c in row] for row in g]
+    for y in range(len(g)):  # light from the upper left: lit edges and a few strands, dark tips
+        for x in range(w):
+            if not hair[y][x]:
+                continue
+            edge = y == 0 or not hair[y-1][x] or x == 0 or not hair[y][x-1]
+            g[y][x] = '1' if y == last else 'g' if edge or (x + 2*y) % 5 == 0 else 'f'
+    return [''.join(r) for r in g]
+
+
 # Spearman: pointed cone helmet on the iron-helmet face.
 CONE_TOPS = {
     'SW': ['.......0.....', '......040....', '.....03430...', '....0345430..'],
@@ -169,7 +197,7 @@ CONE = {d: top + IRON[d][len(top):] for d, top in CONE_TOPS.items()}
 GUANYU = {d: beard(recolor(rows, {'7': 'G', '8': 'H', '9': 'I', 'a': 'J', 'j': 'L', 'i': 'K'}), 'KL', 'long')
           for d, rows in HOOD.items()}
 # Zhang Fei: blackened helmet, swarthy face, bristling beard.
-ZHANGFEI = {d: beard(recolor(rows, {'5': '3', '4': '3', '3': '2', '2': '1', 'j': 'h', 'i': 'g'}), 'gh', 'bristle')
+ZHANGFEI = {d: beard(recolor(rows, {'5': '4', '4': '3', '3': '2', '2': '1', 'j': 'i', 'i': 'h'}), 'hi', 'bushy')
             for d, rows in IRON.items()}
 
 # Faction-colored head pixels -> team keys.

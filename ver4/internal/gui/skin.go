@@ -66,17 +66,34 @@ func (g *Game) outlined(dst *ebiten.Image, s string, x, y, size float64, c color
 	g.label(dst, s, x, y, size, c)
 }
 
+// wrap breaks lines at n runes, at the last space before the limit when there is one.
 func wrap(s string, n int) string {
 	out := []string{}
 	for _, line := range strings.Split(s, "\n") {
 		r := []rune(line)
 		for len(r) > n {
-			out = append(out, string(r[:n]))
-			r = r[n:]
+			cut := n
+			for i := n; i > n/2; i-- {
+				if r[i] == ' ' {
+					cut = i
+					break
+				}
+			}
+			out = append(out, strings.TrimRight(string(r[:cut]), " "))
+			r = []rune(strings.TrimLeft(string(r[cut:]), " "))
 		}
 		out = append(out, string(r))
 	}
 	return strings.Join(out, "\n")
+}
+
+// with picks the 와/과 particle for a Korean name.
+func with(name string) string {
+	r := []rune(name)
+	if len(r) > 0 && r[len(r)-1] >= 0xAC00 && r[len(r)-1] <= 0xD7A3 && (r[len(r)-1]-0xAC00)%28 != 0 {
+		return name + "과"
+	}
+	return name + "와"
 }
 
 // window draws the shared frame: lacquered body, gold double rim and corner studs.
@@ -111,8 +128,11 @@ func (g *Game) titled(dst *ebiten.Image, r image.Rectangle, title string) {
 	g.label(dst, title, float64(x)+18, float64(r.Min.Y)-11, 17, ink)
 }
 
+// cursorPos is the mouse position; screenshot drivers replace it.
+var cursorPos = ebiten.CursorPosition
+
 func hovered(r image.Rectangle) bool {
-	x, y := ebiten.CursorPosition()
+	x, y := cursorPos()
 	return image.Pt(x, y).In(r)
 }
 
@@ -160,4 +180,18 @@ func hpColor(k float64) color.NRGBA {
 		return color.NRGBA{R: 232, G: 184, B: 64, A: 255}
 	}
 	return hpC
+}
+
+// tooltip draws wrapped help text in a small window at (x, y), kept on screen.
+func (g *Game) tooltip(dst *ebiten.Image, s string, x, y int) {
+	s = wrap(s, 20)
+	lines := strings.Count(s, "\n") + 1
+	w, h := 300, 20+lines*20
+	if x+w > Width-8 {
+		x = max(8, x-w-330)
+	}
+	y = max(48, min(Height-h-8, y))
+	r := image.Rect(x, y, x+w, y+h)
+	window(dst, r)
+	g.label(dst, s, float64(x+14), float64(y+9), 13, ink)
 }

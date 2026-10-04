@@ -2,7 +2,7 @@
 
 [병종 기준](../UNIT_ART_GUIDE.md)과 [공통 기준](../SPRITE_ART_GUIDE.md)을 따른다. 구현은 [`tools/unit3d/`](../../../unit3d/DESIGN.md).
 
-8방향 × 5동작(대기·걷기·공격·피격·탈진) × 4프레임. 병종 폴더마다 `{N,NE,E,SE,S,SW,W,NW}-pixel.png`(4열 × 5행)과
+8방향 × 6동작(대기·걷기·공격·피격·탈진·막기) × 4프레임. 병종 폴더마다 `{N,NE,E,SE,S,SW,W,NW}-pixel.png`(4열 × 5행)과
 `frames.json`(셀·기준점·프레임 좌표·재생 시간·팔레트). 진영색은 `factions.json`.
 
 ```sh
@@ -24,7 +24,7 @@ python3 ver3/tools/build_assets.py                   # ver3/asset 재패키징 (
 | `archer` | 궁병 | 두건, 활·화살통 | 강궁 `power` | 94×48 · (47,39) |
 | `cavalry` | 경기병 | 철투구, 창, 밤색 말 | 돌진 찌르기 `charge` | 102×53 · (51,50) |
 | `guanyu` | 관우 | 녹건·녹포, 붉은 얼굴, 긴 수염, 청룡언월도, 적토마 | 언월도 횡베기 `glaive_sweep` | 70×60 · (35,57) |
-| `zhangfei` | 장비 | 검은 투구·갑옷, 거뭇한 얼굴, 뻣뻣한 수염, 장팔사모, 흑마 | 휘두르기 `swing` | 68×53 · (34,50) |
+| `zhangfei` | 장비 | 검은 투구, 진영색 옷·붉은 띠, 검은 철갑, 거뭇한 얼굴, 덥수룩한 갈색 수염, 장팔사모, 흑마 | 휘두르기 `swing` | 68×53 · (34,50) |
 | `strategist` | 사마(문관) | 검은 관모, 진영색 도포, 깃털부채 | 횡베기 `sweep` | `frames.json` |
 | `liubei` | 유비 | 금빛 관모, 작은 귀, 진영색 도포·금빛 어깨, 쌍검 | 횡베기 `sweep` | `frames.json` |
 | `jianyong` | 간옹 | 흰 윤건, 진영색 옷, 활 | 강궁 `power` | `frames.json` |
@@ -36,7 +36,30 @@ ver4에서 추가한 6종(사마~여포)은 `tools/unit3d/looks.py`의 후보 �
 후보 비교: `python3 tools/unit3d/look_candidates.py [--unit KEY]` → `output/ver4-look-candidates*.png`.
 
 셀은 병종마다 전 프레임의 합집합으로 자동으로 정해지므로 다시 생성하면 바뀔 수 있다. 값은 `frames.json`이 기준이다.
-재생 시간(ms): 대기 180, 걷기 120, 공격 180·280·240·200, 피격 120, 탈진 220.
+재생 시간(ms): 대기 180, 걷기 120, 공격 180·280·240·200, 피격 120, 탈진 220, 막기 100·140·260·200.
+
+## 막기
+
+공격이 빗나가면 나오는 동작이다. 후보 4안(막아서기·쳐내기·몸 비켜 피하기·뒤로 물러서기) 중 **막아서기**를 골랐다
+(`tools/unit3d/blocks.py`의 `SELECTED`, 나머지는 백업). 칼 병종은 칼과 방패, 창병은 창대, 궁병은 굵게 그린 활,
+기마는 무기를 가로로 들어 막는다. 후보 비교: `python3 tools/unit3d/block_candidates.py` → `output/ver4-block-candidates.png`.
+
+## 장면용 평복 (`../ver4-civilians/`)
+
+시나리오 장면에서 쓰는 도보·무기 없는 차림. 같은 형식이고 동작만 다르다: 대기·걷기·말하기·포권·건배·놀람·끄덕임.
+
+| 키 | 장수 | 외형 |
+|---|---|---|
+| `guanyu` | 관우 | 녹건 · 녹색 도포 (후보 2) |
+| `zhangfei` | 장비 | 맨상투 · 진영색 도포 · 붉은 띠 · 덥수룩한 갈색 수염 (후보 2를 밝게 고침) |
+| `liubei` | 유비 | 금빛 관모 · 진영색 도포 (후보 2) |
+| `jianyong` | 간옹 | 흰 윤건 · 진영색 옷 (전투 외형에서 활만 뺌) |
+| `sunqian` | 손건 | 검은 관모 · 진영색 도포 (사마 외형에서 부채만 뺌) |
+
+```sh
+python3 tools/unit3d/civilian_candidates.py   # 외형 후보 → output/ver4-civilian-candidates.png
+python3 tools/unit3d/civilian_build.py        # 전체 → ver4-civilians/, 검토 output/ver4-civilians.png
+```
 
 ## 공격 후보 (백업)
 

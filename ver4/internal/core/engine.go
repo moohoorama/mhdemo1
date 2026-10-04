@@ -305,8 +305,6 @@ func (e *Engine) execute(c Command) error {
 		o.Learned = append(o.Learned, c.Trait)
 		e.emit("learn", u.ID, c.Trait, 0)
 		return nil
-	case "duel":
-		return e.duel(u, c)
 	case "item":
 		return e.useItem(u, c)
 	case "attack", "skill":

@@ -97,26 +97,46 @@ func (e *Engine) promote(u *Unit, c Command) error {
 	e.emit("promotion", u.ID, target, required)
 	return nil
 }
-func (e *Engine) duelDefinition(u *Unit, c Command) (content.Duel, error) {
-	v := e.unit(c.Target)
-	if u.Faction != "ally" || u.Acted || v == nil || v.HP <= 0 || v.Faction != "enemy" || dist(u.X, u.Y, v.X, v.Y) > 1 {
-		return content.Duel{}, fail("InvalidDuel")
+
+// duelFor is the stage duel an attack sets off: the two officers of a pending duel meet
+// when either attacks the other at close range with a weapon (영걸전 style). The duel
+// replaces the attack.
+func (e *Engine) duelFor(u, v *Unit, s content.Skill) (content.Duel, bool) {
+	if v == nil || u.HP <= 0 || v.HP <= 0 || s.Kind != "physical" || dist(u.X, u.Y, v.X, v.Y) > 1 {
+		return content.Duel{}, false
 	}
 	for _, d := range e.data.Stages[e.state.Stage].Duels {
-		if d.Ally == u.Officer && d.Enemy == v.Officer && !e.state.Executed["duel-"+d.ID] {
-			return d, nil
+		pair := d.Ally == u.Officer && d.Enemy == v.Officer || d.Enemy == u.Officer && d.Ally == v.Officer
+		if pair && u.Faction != v.Faction && !e.state.Executed["duel-"+d.ID] {
+			return d, true
 		}
 	}
-	return content.Duel{}, fail("InvalidDuel")
+	return content.Duel{}, false
 }
-func (e *Engine) duel(u *Unit, c Command) error {
-	d, err := e.duelDefinition(u, c)
-	if err != nil {
-		return err
+
+// DuelFor reports whether the attack c would set off a stage duel.
+func (e *Engine) DuelFor(c Command) bool {
+	u, v := e.unit(c.Actor), e.unit(c.Target)
+	if u == nil {
+		return false
 	}
-	v := e.unit(c.Target)
+	s, err := e.skillDef(c)
+	if err != nil {
+		return false
+	}
+	_, ok := e.duelFor(u, v, s)
+	return ok
+}
+
+// duel resolves a stage duel in place of the attacker's action. The event names the
+// ally first whichever side attacked.
+func (e *Engine) duel(attacker, defender *Unit, d content.Duel) {
+	ally, enemy := attacker, defender
+	if ally.Faction != "ally" {
+		ally, enemy = defender, attacker
+	}
 	e.state.Executed["duel-"+d.ID] = true
-	e.events = append(e.events, Event{Kind: "duel", Actor: u.ID, Target: v.ID, Text: d.Text + " [" + d.Outcome + "]"})
+	e.events = append(e.events, Event{Kind: "duel", Actor: ally.ID, Target: enemy.ID, Text: d.Text + " [" + d.Outcome + "]"})
 	outcome := func(q *Unit, result string) {
 		if result == "retreat" || result == "death" {
 			q.HP = 0
@@ -136,13 +156,13 @@ func (e *Engine) duel(u *Unit, c Command) error {
 			}
 		}
 	}
-	outcome(u, d.AllyResult)
-	outcome(v, d.EnemyResult)
-	u.Acted = true
-	if u.HP > 0 {
-		e.xp(u.Officer, ExperienceRequired(e.officer(u.Officer).Level))
+	outcome(ally, d.AllyResult)
+	outcome(enemy, d.EnemyResult)
+	attacker.Acted = true
+	attacker.Attacked = true
+	if ally.HP > 0 {
+		e.xp(ally.Officer, ExperienceRequired(e.officer(ally.Officer).Level))
 	}
-	return nil
 }
 
 func classReachable(d *content.Data, base, target string) bool {

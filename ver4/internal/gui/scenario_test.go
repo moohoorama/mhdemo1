@@ -30,3 +30,18 @@ func TestSplitLines(t *testing.T) {
 		})
 	}
 }
+
+func TestWrapAndParticle(t *testing.T) {
+	t.Run("wrap at spaces", func(t *testing.T) {
+		if got := wrap("이번 턴 적 옆을 지나가도 멈추지 않습니다", 12); got != "이번 턴 적 옆을\n지나가도 멈추지\n않습니다" {
+			t.Fatalf("%q", got)
+		}
+	})
+	t.Run("particle", func(t *testing.T) {
+		for name, want := range map[string]string{"장비": "장비와", "관우": "관우와", "여포": "여포와", "화웅": "화웅과"} {
+			if got := with(name); got != want {
+				t.Fatalf("%s: %s", name, got)
+			}
+		}
+	})
+}

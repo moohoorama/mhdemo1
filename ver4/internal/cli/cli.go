@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-const Help = "next | choose 선택ID | deploy 장수... | equip/unequip 장수 장비ID | start\nmove 장수 x y | attack 장수 적ID | skill 장수 병법 대상 | item 장수 아이템 대상\ndeputy 주장 부관 | undeputy 주장 | duel 장수 적ID\nlearn 장수 특성 | wait 장수 | end | ai(적 한 명령) | auto(현재 진영)\nmap | status | legal 장수 | preview attack 장수 대상 | save/load 슬롯 | slots\nsettings [ai auto/step | color true/false | detail true/false | speed 밀리초]\nmenu | resume | title | retry | quit"
+const Help = "next | choose 선택ID | deploy 장수... | equip/unequip 장수 장비ID | start\nmove 장수 x y | attack 장수 적ID | skill 장수 병법 대상 | item 장수 아이템 대상\ndeputy 주장 부관 | undeputy 주장\nlearn 장수 특성 | wait 장수 | end | ai(적 한 명령) | auto(현재 진영)\nmap | status | legal 장수 | preview attack 장수 대상 | save/load 슬롯 | slots\nsettings [ai auto/step | color true/false | detail true/false | speed 밀리초]\nmenu | resume | title | retry | quit"
 
 func Parse(line string) (core.Command, error) {
 	p := strings.Fields(line)
@@ -46,7 +46,7 @@ func Parse(line string) (core.Command, error) {
 			return c, err
 		}
 		c.Actor = p[1]
-	case "attack", "duel", "deputy":
+	case "attack", "deputy":
 		if err := argc(3); err != nil {
 			return c, err
 		}

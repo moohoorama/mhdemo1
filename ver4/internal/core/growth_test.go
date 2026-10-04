@@ -117,7 +117,10 @@ func TestDuelLedgerDeathAndRetry(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		c := Command{Kind: "duel", Actor: "관우", Target: "등무"}
+		c := Command{Kind: "attack", Actor: "관우", Target: "등무"}
+		if !e.DuelFor(c) {
+			t.Fatal("adjacent attack does not set off the duel")
+		}
 		a := apply(t, e, c)
 		b := apply(t, r, c)
 		if !reflect.DeepEqual(a, b) || !reflect.DeepEqual(e.Snapshot(), r.Snapshot()) {
@@ -135,7 +138,9 @@ func TestDuelLedgerDeathAndRetry(t *testing.T) {
 		if _, err := Restore(e.data, e.Snapshot()); err != nil {
 			t.Fatal("after duel", err)
 		}
-		assertRejected(t, e, c)
+		if e.DuelFor(c) {
+			t.Fatal("duel set off twice")
+		}
 		e.unit("유비").HP = 0
 		e.settle()
 		if err := e.Retry(); err != nil {

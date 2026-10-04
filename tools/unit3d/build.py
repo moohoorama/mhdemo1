@@ -17,6 +17,7 @@ import json
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
+import blocks as B
 import effects as E
 import factions as F
 import heads as Hd
@@ -29,9 +30,10 @@ OUT = ROOT / 'tools/spritetool/assets/ver2-units'
 SHEET = ROOT / 'output/ver2-units.png'
 FONT = '/System/Library/Fonts/AppleSDGothicNeo.ttc'
 DIRECTIONS = R.DIRECTIONS
-ANIMATIONS = ['idle', 'walk', 'attack', 'hit', 'exhausted']
-# ms per frame; attack holds the gathered power (frame 2) and the strike (frame 3).
-DURATIONS = {'idle': 180, 'walk': 120, 'attack': [180, 280, 240, 200], 'hit': 120, 'exhausted': 220}
+ANIMATIONS = ['idle', 'walk', 'attack', 'hit', 'exhausted', 'block']
+# ms per frame; attack holds the gathered power (frame 2) and the strike (frame 3); block holds the clash.
+DURATIONS = {'idle': 180, 'walk': 120, 'attack': [180, 280, 240, 200], 'hit': 120, 'exhausted': 220,
+             'block': [100, 140, 260, 200]}
 
 UNITS = [
     ('infantry', '경보병', U.infantry, Hd.heads(Hd.IRON, Hd.PLUME)),
@@ -40,9 +42,27 @@ UNITS = [
     ('archer', '궁병', U.archer, Hd.heads(Hd.HOOD, Hd.HOOD_CLOTH)),
     ('cavalry', '경기병', U.cavalry, Hd.heads(Hd.IRON, Hd.PLUME)),
     ('guanyu', '관우', U.guanyu, Hd.heads(Hd.GUANYU, skin='KL', lid='K')),
-    ('zhangfei', '장비', U.zhangfei, Hd.heads(Hd.ZHANGFEI, Hd.PLUME, skin='gh', lid='g')),
+    ('zhangfei', '장비', U.zhangfei, Hd.heads(Hd.ZHANGFEI, Hd.PLUME, skin='hi', lid='h')),
 ]
 UNITS += looks.chosen()  # ver4 additions: strategist class and heroes (candidates in looks.py)
+BLOCK = 5  # animation row of the block motion (blocks.py)
+BLOCKS = {'infantry': B.foot('infantry'), 'bandit': B.foot('bandit'), 'spearman': B.foot('spearman'),
+          'archer': B.bowman('archer'), 'cavalry': B.rider(kit='rider', coat='bay', weapon='spear'),
+          'guanyu': B.rider(kit='guanyu', coat='red', weapon='glaive'),
+          'zhangfei': B.rider(kit='zhangfei', coat='black', weapon='snake')}
+
+
+def with_block(key, build):
+    block = BLOCKS.get(key) or looks.BLOCK_OF[build]
+
+    def full(row, f, style=None):
+        if row == BLOCK:
+            return block(f, B.SELECTED)
+        return build(row, f, style=style) if style else build(row, f)
+    return full
+
+
+UNITS = [(key, title, with_block(key, build), head) for key, title, build, head in UNITS]
 # Working canvas; each unit is cropped afterwards to the union of all its frames.
 SPEC = dict(cell=(192, 160), pivot=(96, 116), scale=11.5)
 R.add_ramps(U.RAMPS)
@@ -101,7 +121,7 @@ def build_unit(key, build, head_set, full):
             for col in range(4):
                 sheet.alpha_composite(images[d, row, col], (col*w, row*h))
                 frames.append({'direction': d, 'animation': action, 'frame': col,
-                               'index': di*20 + row*4 + col, 'crop': [col*w, row*h, w, h]})
+                               'index': (di*len(ANIMATIONS) + row)*4 + col, 'crop': [col*w, row*h, w, h]})
         sheet.save(out / f'{d}-pixel.png')
     manifest = {'version': 1, 'unit': key, 'directions': DIRECTIONS, 'animations': ANIMATIONS,
                 'cell': [w, h], 'pivot': pivot, 'frame_durations_ms': DURATIONS,

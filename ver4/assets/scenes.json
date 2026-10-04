@@ -1,0 +1,72 @@
+{
+ "about": "Scenario scenes (GUI only; not part of the rules content). maps: rules tiles like battle maps, exported to graphics/maps by tools/build_assets.py. scenes: per dialogue node, the map, the cast [x, y, facing] (placed when the map changes or when listed) and beats: for each speaker line of the node, groups of steps run before that line; steps in a group start together, the next group waits for them. Steps: move [x, y], face DIR, play MOTION (salute toast surprise nod talk), emote TEXT, wait SECONDS.",
+ "actors": {"유비": "civ_liubei", "관우": "civ_guanyu", "장비": "civ_zhangfei", "간옹": "civ_jianyong", "손건": "civ_sunqian"},
+ "maps": [
+  {"ID": "S_peach", "Name": "도원", "Width": 11, "Height": 9, "Tiles": [
+   "ff.f.f.f.ff",
+   "f..........",
+   "...........",
+   "f..........",
+   "...........",
+   "...........",
+   "...........",
+   "...........",
+   "..........."]},
+  {"ID": "S_village", "Name": "탁현 마을", "Width": 11, "Height": 9, "Tiles": [
+   "vvv..v..fff",
+   "vv.........",
+   "v..........",
+   "....dd.....",
+   "....dd.....",
+   "...........",
+   "...........",
+   "...........",
+   "..........."]},
+  {"ID": "S_camp", "Name": "연합군 진영", "Width": 11, "Height": 9, "Tiles": [
+   "ddsdddsddsd",
+   "d..........",
+   "s..........",
+   "d...ddd....",
+   "d...ddd....",
+   "...........",
+   "...........",
+   "...........",
+   "..........."]}
+ ],
+ "scenes": {
+  "oath": {"map": "S_peach",
+   "cast": {"유비": [5, 3, "S"], "관우": [2, 7, "NE"], "장비": [8, 7, "NW"]},
+   "beats": [
+    [[{"actor": "유비", "emote": "…"}],
+     [{"actor": "관우", "move": [4, 5]}, {"actor": "장비", "move": [6, 5]}],
+     [{"actor": "관우", "face": "NE"}, {"actor": "장비", "face": "NW"}, {"actor": "유비", "face": "S"}]],
+    [[{"actor": "관우", "play": "salute"}, {"actor": "장비", "play": "salute"}]]
+   ]},
+  "oath_choice": {"map": "S_peach",
+   "beats": [
+    [[{"actor": "유비", "play": "toast"}, {"actor": "관우", "play": "toast"}, {"actor": "장비", "play": "toast"}],
+     [{"actor": "장비", "emote": "♪"}]]
+   ]},
+  "joined": {"map": "S_village",
+   "cast": {"유비": [5, 4, "SE"], "관우": [4, 5, "SE"], "장비": [6, 3, "SE"], "간옹": [10, 7, "NW"]},
+   "beats": [
+    [[{"actor": "간옹", "move": [7, 5]}],
+     [{"actor": "유비", "play": "surprise"}, {"actor": "간옹", "face": "NW"}],
+     [{"actor": "간옹", "play": "salute"}]]
+   ]},
+  "coalition": {"map": "S_camp",
+   "cast": {"유비": [5, 3, "S"], "관우": [3, 5, "NE"], "장비": [7, 5, "NW"], "간옹": [5, 6, "N"]},
+   "beats": [
+    [[{"actor": "유비", "move": [5, 4]}]],
+    [[{"actor": "관우", "play": "nod"}, {"actor": "장비", "play": "nod"}, {"actor": "간옹", "play": "nod"}]]
+   ]},
+  "chase": {"map": "S_camp",
+   "cast": {"유비": [5, 3, "S"], "관우": [3, 4, "SE"], "장비": [7, 4, "SW"], "간옹": [6, 2, "S"], "손건": [5, 8, "N"]},
+   "beats": [
+    [[{"actor": "손건", "move": [5, 5]}],
+     [{"actor": "손건", "play": "salute"}]],
+    [[{"actor": "유비", "play": "nod"}],
+     [{"actor": "장비", "emote": "!"}, {"actor": "관우", "play": "nod"}]]
+   ]}
+ }
+}

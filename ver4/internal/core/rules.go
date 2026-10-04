@@ -436,6 +436,10 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 	if err != nil {
 		return err
 	}
+	if d, ok := e.duelFor(u, v, s); ok {
+		e.duel(u, v, d)
+		return nil
+	}
 	u.MP -= e.cost(u, s)
 	if c.Kind == "attack" {
 		u.Attacked = true

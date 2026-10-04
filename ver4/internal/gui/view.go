@@ -35,7 +35,7 @@ func classArt(class string) string {
 	return "infantry"
 }
 
-func (g *Game) busy() bool { return g.player.Busy() }
+func (g *Game) busy() bool { return g.player.Busy() || g.sceneBusy() }
 
 // advance moves the clock, the replay and every unit's animation by one frame.
 func (g *Game) advance(dt float64) {
@@ -46,6 +46,7 @@ func (g *Game) advance(dt float64) {
 		u.update(dt)
 	}
 	g.updateEffects(dt)
+	g.updateScene(dt)
 	keptToasts := g.toasts[:0]
 	for _, t := range g.toasts {
 		t.t += dt / float64(g.speed)
@@ -85,7 +86,7 @@ func (g *Game) ensureField(o core.Observation) {
 		return
 	}
 	g.field = NewField(g.assets, g.assets.Maps[o.Map.ID])
-	g.vis = map[string]*unitVis{}
+	g.vis, g.scene, g.zoom = map[string]*unitVis{}, nil, 1
 	size := g.field.Size()
 	g.camX, g.camY = float64(size.X)/2, float64(size.Y)/2
 	g.clearOrder()
@@ -140,14 +141,17 @@ func (g *Game) sync(o core.Observation) {
 	}
 }
 
+// zooms are the canvas scales the wheel steps through; 1 shows unit pixels 1:1.
+var zooms = []float64{.5, 1, 1.5, 2}
+
 func (g *Game) toCanvas(x, y float64) (float64, float64) {
-	z := float64(g.zoom)
+	z := g.zoom
 	return (x-float64(viewport.Min.X+viewport.Dx()/2))/z + g.camX, (y-float64(viewport.Min.Y+viewport.Dy()/2))/z + g.camY
 }
 
 // toScreen maps canvas pixels to the viewport sub-image (which keeps screen coordinates).
 func (g *Game) toScreen(x, y float64) (float64, float64) {
-	z := float64(g.zoom)
+	z := g.zoom
 	return (x-g.camX)*z + float64(viewport.Min.X+viewport.Dx()/2), (y-g.camY)*z + float64(viewport.Min.Y+viewport.Dy()/2)
 }
 
@@ -157,7 +161,7 @@ func (g *Game) camera() {
 	if g.field == nil || g.overlay != "" || g.input || len(g.modals) > 0 {
 		return
 	}
-	step := 6.0 / float64(g.zoom)
+	step := 12.0 / g.zoom
 	if ebiten.IsKeyPressed(ebiten.KeyArrowLeft) {
 		g.camX -= step
 	}
@@ -170,7 +174,7 @@ func (g *Game) camera() {
 	if ebiten.IsKeyPressed(ebiten.KeyArrowDown) {
 		g.camY += step
 	}
-	x, y := ebiten.CursorPosition()
+	x, y := cursorPos()
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonRight) && image.Pt(x, y).In(viewport) {
 		g.dragging, g.dragMoved, g.dragX, g.dragY = true, false, x, y
 	}
@@ -182,13 +186,19 @@ func (g *Game) camera() {
 			}
 		} else if g.dragMoved || abs(x-g.dragX)+abs(y-g.dragY) > 4 {
 			g.dragMoved = true
-			g.camX -= float64(x-g.dragX) / float64(g.zoom)
-			g.camY -= float64(y-g.dragY) / float64(g.zoom)
+			g.camX -= float64(x-g.dragX) / g.zoom
+			g.camY -= float64(y-g.dragY) / g.zoom
 			g.dragX, g.dragY = x, y
 		}
 	}
 	if _, wy := ebiten.Wheel(); wy != 0 && image.Pt(x, y).In(viewport) {
-		g.zoom = max(1, min(4, g.zoom+int(math.Copysign(1, wy))))
+		i := 0
+		for j, z := range zooms {
+			if z <= g.zoom {
+				i = j
+			}
+		}
+		g.zoom = zooms[max(0, min(len(zooms)-1, i+int(math.Copysign(1, wy))))]
 	}
 	size := g.field.Size()
 	g.camX = math.Max(0, math.Min(float64(size.X), g.camX))

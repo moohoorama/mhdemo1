@@ -59,11 +59,12 @@ def dump(data):
     return yaml.dump(data, Dumper=Dumper, allow_unicode=True, sort_keys=False, width=140)
 
 
-def build_units():
-    """Each character becomes one image: a row per facing, 5 animations x 4 frames per row."""
+def build_units(units=None, src=UNITS_SRC, prefix=''):
+    """Each character becomes one image: a row per facing, its animations x 4 frames per row.
+    units: (key, title) pairs, default the battle units; prefix names the packed keys."""
     entries = {}
-    for key, title, _, _ in unit_build.UNITS:
-        meta = json.loads((UNITS_SRC / key / 'frames.json').read_text())
+    for key, title in units or [(u[0], u[1]) for u in unit_build.UNITS]:
+        meta = json.loads((src / key / 'frames.json').read_text())
         w, h = meta['cell']
         directions, animations = meta['directions'], meta['animations']
         counts = {a: sum(1 for f in meta['frames'] if f['direction'] == directions[0] and f['animation'] == a)
@@ -76,12 +77,13 @@ def build_units():
             first[a] = col
             col += counts[a]
         for row, d in enumerate(directions):
-            src = Image.open(UNITS_SRC / key / f'{d}-pixel.png')
+            sheet_src = Image.open(src / key / f'{d}-pixel.png')
             for f in meta['frames']:
                 if f['direction'] != d:
                     continue
                 x, y, cw, ch = f['crop']
-                sheet.paste(src.crop((x, y, x + cw, y + ch)), ((first[f['animation']] + f['frame'])*w, row*h))
+                sheet.paste(sheet_src.crop((x, y, x + cw, y + ch)), ((first[f['animation']] + f['frame'])*w, row*h))
+        key = prefix + key
         path = f'units/{key}.png'
         sheet.save(ASSET / path)
         anims = {}
@@ -89,7 +91,7 @@ def build_units():
             ms = meta['frame_durations_ms'][a]
             anims[a] = dict(first_column=first[a], frames=counts[a],
                             ms=ms if isinstance(ms, list) else [ms]*counts[a],
-                            loop=a in ('idle', 'walk', 'exhausted'))
+                            loop=a in ('idle', 'walk', 'exhausted', 'talk'))
         entries[key] = dict(name=title, image=path, cell=[w, h], pivot=meta['pivot'], rows=directions,
                             animations=anims)
         print('unit', key, sheet.size)

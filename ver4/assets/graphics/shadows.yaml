@@ -9,81 +9,111 @@ units:
   infantry:
     image: units/infantry.shadow.png
     source: units/infantry.png
-    hash: e2168971ab3d1397
+    hash: 1bd87984c185de6e
     cell: [95, 29]
     pivot: [36, 8]
   bandit:
     image: units/bandit.shadow.png
     source: units/bandit.png
-    hash: c4714bcb4390c72a
+    hash: 6ae21272e48bcb0c
     cell: [99, 30]
     pivot: [37, 8]
   spearman:
     image: units/spearman.shadow.png
     source: units/spearman.png
-    hash: c07630144d0f49ca
+    hash: 1de7f0cfe41e0039
     cell: [142, 28]
     pivot: [60, 8]
   archer:
     image: units/archer.shadow.png
     source: units/archer.png
-    hash: 05da7cf3b2aaed18
+    hash: 3a6839e0db5b1c82
     cell: [134, 29]
     pivot: [55, 8]
   cavalry:
     image: units/cavalry.shadow.png
     source: units/cavalry.png
-    hash: 5adc758c5d23257f
+    hash: 67e49c61c2fd4f2a
     cell: [148, 32]
     pivot: [59, 8]
   guanyu:
     image: units/guanyu.shadow.png
     source: units/guanyu.png
-    hash: ff38f76cb5b82c5b
+    hash: 5b203cc5b1c1f47e
     cell: [121, 35]
     pivot: [43, 8]
   zhangfei:
     image: units/zhangfei.shadow.png
     source: units/zhangfei.png
-    hash: 3b93fce1cded2a6d
+    hash: 560c4c2eaf28d63a
     cell: [114, 32]
     pivot: [42, 8]
   strategist:
     image: units/strategist.shadow.png
     source: units/strategist.png
-    hash: 92785642323cf2b1
+    hash: de2deab40a6575d7
     cell: [83, 27]
     pivot: [31, 8]
   liubei:
     image: units/liubei.shadow.png
     source: units/liubei.png
-    hash: 14c812200217aadc
+    hash: 522e18b6bbdfca19
     cell: [95, 29]
     pivot: [36, 8]
   jianyong:
     image: units/jianyong.shadow.png
     source: units/jianyong.png
-    hash: fef2cc0d4cf7a29c
+    hash: ca6027152b82845f
     cell: [134, 29]
     pivot: [55, 8]
   zhangjiao:
     image: units/zhangjiao.shadow.png
     source: units/zhangjiao.png
-    hash: fe907002af423aef
+    hash: 85a7deb6ef269727
     cell: [102, 29]
     pivot: [39, 8]
   huaxiong:
     image: units/huaxiong.shadow.png
     source: units/huaxiong.png
-    hash: 6500e2ab2c0ee19b
+    hash: def0a7ce2a53a9c8
     cell: [121, 35]
     pivot: [43, 8]
   lubu:
     image: units/lubu.shadow.png
     source: units/lubu.png
-    hash: 958e4dffc8e6e950
-    cell: [114, 32]
+    hash: f2a3ba8e6ffc82e4
+    cell: [116, 33]
     pivot: [42, 8]
+  civ_guanyu:
+    image: units/civ_guanyu.shadow.png
+    source: units/civ_guanyu.png
+    hash: 6b36d2d85f239722
+    cell: [61, 26]
+    pivot: [21, 8]
+  civ_zhangfei:
+    image: units/civ_zhangfei.shadow.png
+    source: units/civ_zhangfei.png
+    hash: 571d255a11e285ca
+    cell: [61, 26]
+    pivot: [21, 8]
+  civ_liubei:
+    image: units/civ_liubei.shadow.png
+    source: units/civ_liubei.png
+    hash: 9873f314cc83fc33
+    cell: [61, 26]
+    pivot: [21, 8]
+  civ_jianyong:
+    image: units/civ_jianyong.shadow.png
+    source: units/civ_jianyong.png
+    hash: 3e3f88991a1b0c3e
+    cell: [61, 26]
+    pivot: [21, 8]
+  civ_sunqian:
+    image: units/civ_sunqian.shadow.png
+    source: units/civ_sunqian.png
+    hash: a0b146a95885f0a1
+    cell: [61, 26]
+    pivot: [21, 8]
 tileset:
   image: map/shadows.png
   source: map/tileset.png

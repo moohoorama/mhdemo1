@@ -43,6 +43,7 @@ type unitVis struct {
 	dying        float64 // < 0: alive
 	gone, greyed bool
 	ranged       bool
+	actor        bool // a scene actor: no HP bar, always rests standing
 	shownHP      int
 	maxHP        int
 	flash        float64
@@ -57,7 +58,7 @@ func (u *unitVis) play(anim string) {
 	u.anim, u.animT = anim, 0
 }
 func (u *unitVis) rest() string {
-	if u.shownHP*2 <= u.maxHP {
+	if !u.actor && u.shownHP*2 <= u.maxHP {
 		return "exhausted"
 	}
 	return "idle"
@@ -214,7 +215,13 @@ func (g *Game) perform(a *replay.Action) []beat {
 	actor := g.unitAt(a.Actor)
 	for _, s := range a.Steps {
 		c, events := s.Command, s.Events
-		switch c.Kind {
+		kind := c.Kind
+		for _, e := range events {
+			if e.Kind == "duel" { // an attack that set off a stage duel shows the duel instead
+				kind = "duel"
+			}
+		}
+		switch kind {
 		case "move":
 			for _, e := range events {
 				if e.Kind != "move" || actor == nil {
@@ -235,6 +242,7 @@ func (g *Game) perform(a *replay.Action) []beat {
 			gather := float64(ms[0]+ms[1]) / 1000
 			follow := float64(ms[2]+ms[3])/1000 + .25
 			kind := g.effectKind(actor, c)
+			tint := buffTint[g.S.Data.Skills[c.Skill].Effect]
 			add(gather, func() {
 				if target != nil {
 					actor.face(target.u, target.v)
@@ -244,7 +252,7 @@ func (g *Game) perform(a *replay.Action) []beat {
 					g.say(actor, c.Skill, color.RGBA{180, 220, 255, 255})
 				}
 				if kind == "arrow" && target != nil && target != actor {
-					g.spawn("arrow", actor, target, gather)
+					g.spawn("arrow", actor, target, gather, spark)
 				}
 			})
 			wait := follow
@@ -256,14 +264,14 @@ func (g *Game) perform(a *replay.Action) []beat {
 				}
 			}
 			ev := events
-			add(wait, func() { g.impact(kind, actor, ev); g.strike(actor, ev) })
+			add(wait, func() { g.impact(kind, actor, ev, tint); g.strike(actor, ev) })
 		case "item":
 			ev := events
 			add(.6, func() {
 				for _, e := range ev {
 					if e.Kind == "item" {
 						if t := g.unitAt(e.Target); t != nil {
-							g.spawn("heal", nil, t, .6)
+							g.spawn("heal", nil, t, 1.1, healC)
 							g.say(t, fmt.Sprintf("+%d", e.Amount), color.RGBA{135, 245, 144, 255})
 						}
 					}
@@ -349,8 +357,18 @@ func (g *Game) strike(attacker *unitVis, events []core.Event) {
 			}
 			t.shakeT = shakeTime
 			g.say(t, fmt.Sprintf("-%d", e.Amount), color.RGBA{255, 236, 160, 255})
-		case "miss":
-			g.say(t, "빗나감", color.RGBA{200, 210, 220, 255})
+		case "miss": // the target blocks: its block motion when the sprite has one, else a flinch
+			if t != nil {
+				if _, ok := t.art.Animations["block"]; ok {
+					t.play("block")
+				} else {
+					t.shakeSign, t.shakeT = 1, shakeTime*.6
+				}
+				if src := g.unitAt(e.Actor); src != nil {
+					t.face(src.u, src.v)
+				}
+			}
+			g.say(t, "막음!", color.RGBA{170, 220, 255, 255})
 		case "heal":
 			if t != nil {
 				t.shownHP = min(t.maxHP, t.shownHP+e.Amount)

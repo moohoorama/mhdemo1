@@ -52,7 +52,14 @@ func (g *Game) shownText(l line) (string, bool) {
 // advanceDialogue finishes typing, then shows the next speaker, then the next node.
 func (g *Game) advanceDialogue() {
 	o := g.S.Engine.Observe()
-	if o.Phase != "scenario" || o.Dialogue.Kind != "dialogue" || g.busy() {
+	if o.Phase != "scenario" || o.Dialogue.Kind != "dialogue" {
+		return
+	}
+	if g.sceneBusy() {
+		g.skipBeats()
+		return
+	}
+	if g.busy() {
 		return
 	}
 	lines := splitLines(o.Dialogue.Text)
@@ -63,6 +70,7 @@ func (g *Game) advanceDialogue() {
 	if g.lineIndex+1 < len(lines) {
 		g.lineIndex++
 		g.lineStart = g.ticks
+		g.startLine(g.lineIndex)
 		return
 	}
 	g.command(core.Command{Kind: "next"})
@@ -82,6 +90,9 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 	g.backdrop(dst, o)
 	if g.shownNode != o.Node {
 		g.shownNode, g.lineIndex, g.lineStart = o.Node, 0, g.ticks
+		if g.scene != nil {
+			g.scene.node = ""
+		}
 	}
 	if o.Dialogue.Kind == "preparation" {
 		g.preparation(dst, o)
@@ -89,16 +100,34 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 	}
 	lines := splitLines(o.Dialogue.Text)
 	l := lines[min(g.lineIndex, len(lines)-1)]
-	// speakers stand above the box
-	for i, sp := range l.speakers {
-		if isParty(sp) || hasEnemyPortrait[sp] {
-			g.portrait(dst, sp, float64(60+i*190), 330, 180)
+	staged := g.enterScene(o)
+	if !staged {
+		for i, sp := range l.speakers { // no scene: speakers stand above the box
+			if isParty(sp) || hasEnemyPortrait[sp] {
+				g.portrait(dst, sp, float64(60+i*190), 330, 180)
+			}
 		}
 	}
+	if o.Dialogue.Kind == "dialogue" {
+		g.buttons = append(g.buttons, button{image.Rect(0, 0, Width, Height), "", g.advanceDialogue})
+	}
 	r := image.Rect(40, 560, Width-40, 800)
+	if staged {
+		g.drawScene(dst, l.speakers)
+		if g.sceneBusy() { // the line waits for its beats
+			g.lineStart = g.ticks
+			g.label(dst, "클릭: 넘기기", float64(Width-150), float64(Height-40), 13, muted)
+			return
+		}
+		r = image.Rect(40, 640, Width-40, 830)
+	}
 	window(dst, r)
 	text, done := g.shownText(l)
 	x := float64(r.Min.X + 36)
+	if staged && len(l.speakers) > 0 {
+		g.portrait(dst, l.speakers[0], float64(r.Min.X+22), float64(r.Min.Y+24), 140)
+		x = float64(r.Min.X + 190)
+	}
 	if len(l.speakers) > 0 {
 		name := strings.Join(l.speakers, "·")
 		w := g.width(name, 20) + 40
@@ -106,7 +135,7 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 		rect(dst, float32(r.Min.X+24), float32(r.Min.Y-16), float32(w), 2, gold)
 		g.label(dst, name, float64(r.Min.X+44), float64(r.Min.Y-13), 20, ink)
 	}
-	g.label(dst, wrap(text, 44), x, float64(r.Min.Y+34), 23, ink)
+	g.label(dst, wrap(text, 40), x, float64(r.Min.Y+34), 23, ink)
 	if o.Dialogue.Kind == "choice" {
 		y := 380
 		box := image.Rect(Width/2-180, y-30, Width/2+180, y+20+len(o.Dialogue.Choices)*52)
@@ -121,7 +150,6 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 	if done && g.ticks/30%2 == 0 {
 		g.label(dst, "▼", float64(r.Max.X-44), float64(r.Max.Y-40), 16, gold)
 	}
-	g.buttons = append(g.buttons, button{image.Rect(0, 0, Width, Height), "", g.advanceDialogue})
 }
 
 var party = []string{"유비", "관우", "장비", "간옹"}

@@ -5,6 +5,7 @@ Every candidate stays defined here as a backup; build.UNITS takes the chosen one
 
   python3 tools/unit3d/look_candidates.py   -> output/ver4-look-candidates.png
 """
+import blocks as B
 import heads as Hd
 import units as U
 
@@ -18,19 +19,29 @@ def kit(cloth=BLUE, tabard=LIGHT, guard=STEEL, weapon=None, **extra):
     return dict(cloth=cloth, tabard=tabard, guard=guard, shield=extra.pop('shield', False), weapon=weapon, **extra)
 
 
+# builder -> its block motion builder (blocks.py), so build.py can render the block row
+BLOCK_OF = {}
+
+
 def foot(key, k):
     U.KITS[key] = k
-    return U.foot_unit(key)
+    build = U.foot_unit(key)
+    BLOCK_OF[build] = B.foot(key)
+    return build
 
 
 def bowman(key, k):
     U.KITS[key] = k
-    return lambda row, f, style=None: U.archer(row, f, style, kit=key)
+    build = lambda row, f, style=None: U.archer(row, f, style, kit=key)  # noqa: E731
+    BLOCK_OF[build] = B.bowman(key)
+    return build
 
 
 def rider(key, k, coat, weapon, style):
     U.KITS[key] = k
-    return lambda row, f, style_=None: U.cavalry(row, f, style_ or style, kit=key, coat=coat, weapon=weapon)
+    build = lambda row, f, style_=None: U.cavalry(row, f, style_ or style, kit=key, coat=coat, weapon=weapon)  # noqa: E731
+    BLOCK_OF[build] = B.rider(kit=key, coat=coat, weapon=weapon)
+    return build
 
 
 H = Hd.heads

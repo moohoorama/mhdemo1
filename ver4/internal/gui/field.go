@@ -11,10 +11,15 @@ import (
 	"srpg/internal/content"
 )
 
-const margin = 48 // canvas pixels around the map bounds (sprites reach past the ground)
+const margin = 48 // map pixels around the map bounds (sprites reach past the ground)
 
-// Field draws one battle map in map pixels (1x). Cell (u, v) has its centre at
-// ((u - v) * 16, (u + v + 1) * 8) relative to Origin.
+// K is how many canvas pixels one map pixel covers. The map is drawn K times larger
+// than its tiles while units keep their native pixels, so units stand at 1/K of the
+// size they had when everything shared one scale, without losing any detail.
+const K = 2
+
+// Field draws one battle map. Map pixels: cell (u, v) has its centre at
+// ((u - v) * 16, (u + v + 1) * 8) relative to Origin; the canvas is K times that.
 type Field struct {
 	A       *Assets
 	Map     *MapArt
@@ -34,7 +39,7 @@ var maxBlend = ebiten.Blend{
 }
 
 func NewField(a *Assets, m *MapArt) *Field {
-	w, h := m.Bounds.Dx()+2*margin, m.Bounds.Dy()+2*margin
+	w, h := (m.Bounds.Dx()+2*margin)*K, (m.Bounds.Dy()+2*margin)*K
 	f := &Field{A: a, Map: m, OriginX: float64(margin - m.Bounds.Min.X), OriginY: float64(margin - m.Bounds.Min.Y),
 		clip: ebiten.NewImage(w, h), shadows: ebiten.NewImage(w, h), Canvas: ebiten.NewImage(w, h)}
 	water := a.Animations["water"].Frames
@@ -45,14 +50,14 @@ func NewField(a *Assets, m *MapArt) *Field {
 				if id == 0 {
 					id = water[i%len(water)]
 				}
-				f.blit(g, a.Tiles[id], f.OriginX+float64(t.X), f.OriginY+float64(t.Y), nil)
+				f.blitMap(g, a.Tiles[id], f.OriginX+float64(t.X), f.OriginY+float64(t.Y), nil)
 			}
 		}
 		for v, row := range m.Tiles {
 			for u, c := range row {
 				if c == 'i' {
-					x, y := f.Center(float64(u), float64(v))
-					f.blit(g, a.Structures["floor"], x, y, nil)
+					x, y := f.mapCenter(float64(u), float64(v))
+					f.blitMap(g, a.Structures["floor"], x, y, nil)
 				}
 			}
 		}
@@ -67,16 +72,24 @@ func NewField(a *Assets, m *MapArt) *Field {
 	return f
 }
 
-// Center is the map-pixel position of a (fractional) cell's centre on the canvas.
+// Center is the canvas position of a (fractional) cell's centre.
 func (f *Field) Center(u, v float64) (float64, float64) {
+	x, y := f.mapCenter(u, v)
+	return x * K, y * K
+}
+
+func (f *Field) mapCenter(u, v float64) (float64, float64) {
 	return f.OriginX + (u-v)*16, f.OriginY + (u+v+1)*8
 }
 
 // Cell maps a canvas position back to the cell under it.
 func (f *Field) Cell(x, y float64) (int, int) {
-	a, b := (x-f.OriginX)/16, (y-f.OriginY)/8
+	a, b := (x/K-f.OriginX)/16, (y/K-f.OriginY)/8
 	return int(math.Floor((a + b) / 2)), int(math.Floor((b - a) / 2))
 }
+
+// ToMap converts canvas pixels to map pixels.
+func ToMap(x, y float64) (float64, float64) { return x / K, y / K }
 
 func (f *Field) Inside(u, v int) bool { return u >= 0 && v >= 0 && u < f.Map.W && v < f.Map.H }
 
@@ -87,10 +100,10 @@ func (f *Field) Tile(u, v int) byte {
 	return f.Map.Tiles[v][u]
 }
 
-// Lift is how many pixels a cell's surface stands above the ground (castle walls).
+// Lift is how many canvas pixels a cell's surface stands above the ground (castle walls).
 func (f *Field) Lift(u, v int) float64 {
 	if f.Tile(u, v) == 'c' {
-		return float64(f.A.Rise)
+		return float64(f.A.Rise * K)
 	}
 	return 0
 }
@@ -100,6 +113,16 @@ func (f *Field) blit(dst *ebiten.Image, s Sprite, x, y float64, op *ebiten.DrawI
 		op = &ebiten.DrawImageOptions{}
 	}
 	op.GeoM.Translate(math.Round(x-s.PivotX), math.Round(y-s.PivotY))
+	dst.DrawImage(s.Image, op)
+}
+
+// blitMap draws map art (tiles, scenery, structures) at a map-pixel position, K times larger.
+func (f *Field) blitMap(dst *ebiten.Image, s Sprite, x, y float64, op *ebiten.DrawImageOptions) {
+	if op == nil {
+		op = &ebiten.DrawImageOptions{}
+	}
+	op.GeoM.Translate(math.Round(x-s.PivotX), math.Round(y-s.PivotY))
+	op.GeoM.Scale(K, K)
 	dst.DrawImage(s.Image, op)
 }
 
@@ -122,9 +145,10 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	water := f.A.Animations["water"]
 	c.DrawImage(f.ground[int(clockMS/float64(water.MS))%len(f.ground)], nil)
 	for _, m := range marks {
-		x, y := f.Center(float64(m.U), float64(m.V))
+		x, y := f.mapCenter(float64(m.U), float64(m.V))
 		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(x-16, y-8-f.Lift(m.U, m.V))
+		op.GeoM.Translate(x-16, y-8-f.Lift(m.U, m.V)/K)
+		op.GeoM.Scale(K, K)
 		a := float32(m.Color.A) / 255 // Highlight colors are straight alpha
 		op.ColorScale.Scale(float32(m.Color.R)/255*a, float32(m.Color.G)/255*a, float32(m.Color.B)/255*a, a)
 		c.DrawImage(f.diamond, op)
@@ -135,20 +159,20 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		sid := f.A.TileFrame(d.Animation, clockMS+float64(d.Phase)*125)
 		x, y := f.OriginX+float64(d.X), f.OriginY+float64(d.Y)
 		if s, ok := f.A.TileShadow[sid]; ok {
-			f.blit(f.shadows, s, x, y, &ebiten.DrawImageOptions{Blend: maxBlend})
+			f.blitMap(f.shadows, s, x, y, &ebiten.DrawImageOptions{Blend: maxBlend})
 		}
 		s := f.A.Tiles[sid]
-		items = append(items, drawItem{y, 0, func() { f.blit(c, s, x, y, nil) }})
+		items = append(items, drawItem{y * K, 0, func() { f.blitMap(c, s, x, y, nil) }})
 	}
 	for v, row := range f.Map.Tiles {
 		for u, t := range row {
-			x, y := f.Center(float64(u), float64(v))
+			x, y := f.mapCenter(float64(u), float64(v))
 			switch t {
 			case 'v':
-				items = append(items, drawItem{y - .1, 0, func() { f.blit(c, f.A.Structures["village"], x, y, nil) }})
+				items = append(items, drawItem{y*K - .1, 0, func() { f.blitMap(c, f.A.Structures["village"], x, y, nil) }})
 			case 'c':
 				s := f.A.Structures[wallName(f, u, v)]
-				items = append(items, drawItem{y, 0, func() { f.blit(c, s, x, y, nil) }})
+				items = append(items, drawItem{y * K, 0, func() { f.blitMap(c, s, x, y, nil) }})
 			}
 		}
 	}
@@ -204,7 +228,7 @@ func (f *Field) drawUnit(u *unitVis, x, y float64) {
 		op.ColorScale.Scale(k, k, k, 1)
 	}
 	f.blit(f.Canvas, Sprite{u.art.Frame(u.faction, u.dir, u.anim, u.frame()), u.art.Pivot[0], u.art.Pivot[1]}, x, y, op)
-	if u.shownHP <= 0 {
+	if u.shownHP <= 0 || u.actor {
 		return
 	}
 	top := float32(math.Round(y - u.top - 4))

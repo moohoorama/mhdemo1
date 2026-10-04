@@ -16,9 +16,10 @@ V = m.V
 BLUE, LIGHT_BLUE, STEEL, BROWN, SKIN = '#28486e', '#3974a0', '#636971', '#754323', '#efb15c'
 GOLD, HEMP, HEMP_DARK = '#d5a123', '#cdb88a', '#8a7650'
 GREEN, DARK_GREEN, BLACK, DARK_STEEL, RED = '#2f6b3a', '#1f4a2e', '#2a2d36', '#30343a', '#b91828'
+BLACK_STEEL = '#34383f'  # Zhang Fei's armor: dark, but with all four light steps
 RAMPS = {HEMP: 'UTSS', HEMP_DARK: 'UUTT', '#976039': 'fghh', '#ede1bd': '5566',
          '#b99553': 'ghkk', '#ede1b8': 'TSSS', '#bacbd6': '4556', '#704022': 'fggh', '#d7bc7c': 'kllm',
-         GREEN: 'GHIJ', DARK_GREEN: 'GGHI', BLACK: '0112', '#2b2b33': '1223', '#3d3d48': '2334',
+         GREEN: 'GHIJ', DARK_GREEN: 'GGHI', BLACK: '1234', BLACK_STEEL: '1234', '#2b2b33': '1234', '#3d3d48': '2334',
          '#15151a': '0011'}
 HEAD = [0, .02, 1.84]
 SHOULDER = V([-.4, 0, 1.42])  # weapon-arm shoulder
@@ -34,7 +35,7 @@ KITS = {
     'guanyu': dict(cloth=GREEN, tabard=LIGHT_BLUE, guard=DARK_GREEN, shield=False, weapon=None),
     'archer': dict(cloth=BLUE, tabard=LIGHT_BLUE, guard=STEEL, shield=False, weapon=None),
     'rider': dict(cloth=BLUE, tabard=LIGHT_BLUE, guard=STEEL, shield=False, weapon=None),
-    'zhangfei': dict(cloth=BLACK, tabard=LIGHT_BLUE, guard=DARK_STEEL, shield=False, weapon=None),
+    'zhangfei': dict(cloth=BLUE, tabard=RED, guard=BLACK_STEEL, shield=False, weapon=None),  # team color, red trim
 }
 # (inner, tip) distance from the hand along the weapon, for trails and thrust bursts.
 WEAPONS = {'sword': (.45, 1.0), 'spear': (.9, 1.75), 'glaive': (1.15, 1.95), 'fan': (.25, .7), 'staff': (.9, 1.35)}
@@ -264,10 +265,10 @@ bandit = foot_unit('bandit')
 spearman = foot_unit('spearman')
 
 
-def bow(h, nock, axis, belly, bend=1.0):
+def bow(h, nock, axis, belly, bend=1.0, width=.045):
     pts = [h + belly*.18*bend*math.sin(math.pi*t) + axis*.67*(1 - 2*t) for t in np.linspace(0, 1, 13)]
     for a, b in zip(pts, pts[1:]):
-        m.rod(a, b, .045, '#976039')
+        m.rod(a, b, width, '#976039')
     for end in [pts[0], pts[-1]]:
         m.rod(end, nock, .02, '#ede1bd')
 

@@ -16,15 +16,16 @@
   "walk",
   "attack",
   "hit",
-  "exhausted"
+  "exhausted",
+  "block"
  ],
  "cell": [
   68,
-  53
+  55
  ],
  "pivot": [
   34,
-  50
+  52
  ],
  "frame_durations_ms": {
   "idle": 180,
@@ -36,7 +37,13 @@
    200
   ],
   "hit": 120,
-  "exhausted": 220
+  "exhausted": 220,
+  "block": [
+   100,
+   140,
+   260,
+   200
+  ]
  },
  "palette": [
   "#0b101b",
@@ -92,7 +99,7 @@
     0,
     0,
     68,
-    53
+    55
    ]
   },
   {
@@ -104,7 +111,7 @@
     68,
     0,
     68,
-    53
+    55
    ]
   },
   {
@@ -116,7 +123,7 @@
     136,
     0,
     68,
-    53
+    55
    ]
   },
   {
@@ -128,7 +135,7 @@
     204,
     0,
     68,
-    53
+    55
    ]
   },
   {
@@ -138,9 +145,9 @@
    "index": 4,
    "crop": [
     0,
-    53,
+    55,
     68,
-    53
+    55
    ]
   },
   {
@@ -150,9 +157,9 @@
    "index": 5,
    "crop": [
     68,
-    53,
+    55,
     68,
-    53
+    55
    ]
   },
   {
@@ -162,9 +169,9 @@
    "index": 6,
    "crop": [
     136,
-    53,
+    55,
     68,
-    53
+    55
    ]
   },
   {
@@ -174,9 +181,9 @@
    "index": 7,
    "crop": [
     204,
-    53,
+    55,
     68,
-    53
+    55
    ]
   },
   {
@@ -186,9 +193,9 @@
    "index": 8,
    "crop": [
     0,
-    106,
+    110,
     68,
-    53
+    55
    ]
   },
   {
@@ -198,9 +205,9 @@
    "index": 9,
    "crop": [
     68,
-    106,
+    110,
     68,
-    53
+    55
    ]
   },
   {
@@ -210,9 +217,9 @@
    "index": 10,
    "crop": [
     136,
-    106,
+    110,
     68,
-    53
+    55
    ]
   },
   {
@@ -222,9 +229,9 @@
    "index": 11,
    "crop": [
     204,
-    106,
+    110,
     68,
-    53
+    55
    ]
   },
   {
@@ -234,9 +241,9 @@
    "index": 12,
    "crop": [
     0,
-    159,
+    165,
     68,
-    53
+    55
    ]
   },
   {
@@ -246,9 +253,9 @@
    "index": 13,
    "crop": [
     68,
-    159,
+    165,
     68,
-    53
+    55
    ]
   },
   {
@@ -258,9 +265,9 @@
    "index": 14,
    "crop": [
     136,
-    159,
+    165,
     68,
-    53
+    55
    ]
   },
   {
@@ -270,9 +277,9 @@
    "index": 15,
    "crop": [
     204,
-    159,
+    165,
     68,
-    53
+    55
    ]
   },
   {
@@ -282,9 +289,9 @@
    "index": 16,
    "crop": [
     0,
-    212,
+    220,
     68,
-    53
+    55
    ]
   },
   {
@@ -294,9 +301,9 @@
    "index": 17,
    "crop": [
     68,
-    212,
+    220,
     68,
-    53
+    55
    ]
   },
   {
@@ -306,9 +313,9 @@
    "index": 18,
    "crop": [
     136,
-    212,
+    220,
     68,
-    53
+    55
    ]
   },
   {
@@ -318,1213 +325,1213 @@
    "index": 19,
    "crop": [
     204,
-    212,
+    220,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "NE",
-   "animation": "idle",
+   "direction": "N",
+   "animation": "block",
    "frame": 0,
    "index": 20,
    "crop": [
     0,
-    0,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "NE",
-   "animation": "idle",
+   "direction": "N",
+   "animation": "block",
    "frame": 1,
    "index": 21,
    "crop": [
     68,
-    0,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "NE",
-   "animation": "idle",
+   "direction": "N",
+   "animation": "block",
    "frame": 2,
    "index": 22,
    "crop": [
     136,
-    0,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "NE",
-   "animation": "idle",
+   "direction": "N",
+   "animation": "block",
    "frame": 3,
    "index": 23,
    "crop": [
     204,
-    0,
+    275,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "walk",
+   "animation": "idle",
    "frame": 0,
    "index": 24,
    "crop": [
     0,
-    53,
+    0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "walk",
+   "animation": "idle",
    "frame": 1,
    "index": 25,
    "crop": [
     68,
-    53,
+    0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "walk",
+   "animation": "idle",
    "frame": 2,
    "index": 26,
    "crop": [
     136,
-    53,
+    0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "walk",
+   "animation": "idle",
    "frame": 3,
    "index": 27,
    "crop": [
     204,
-    53,
+    0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "attack",
+   "animation": "walk",
    "frame": 0,
    "index": 28,
    "crop": [
     0,
-    106,
+    55,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "attack",
+   "animation": "walk",
    "frame": 1,
    "index": 29,
    "crop": [
     68,
-    106,
+    55,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "attack",
+   "animation": "walk",
    "frame": 2,
    "index": 30,
    "crop": [
     136,
-    106,
+    55,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "attack",
+   "animation": "walk",
    "frame": 3,
    "index": 31,
    "crop": [
     204,
-    106,
+    55,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "hit",
+   "animation": "attack",
    "frame": 0,
    "index": 32,
    "crop": [
     0,
-    159,
+    110,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "hit",
+   "animation": "attack",
    "frame": 1,
    "index": 33,
    "crop": [
     68,
-    159,
+    110,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "hit",
+   "animation": "attack",
    "frame": 2,
    "index": 34,
    "crop": [
     136,
-    159,
+    110,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "hit",
+   "animation": "attack",
    "frame": 3,
    "index": 35,
    "crop": [
     204,
-    159,
+    110,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "exhausted",
+   "animation": "hit",
    "frame": 0,
    "index": 36,
    "crop": [
     0,
-    212,
+    165,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "exhausted",
+   "animation": "hit",
    "frame": 1,
    "index": 37,
    "crop": [
     68,
-    212,
+    165,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NE",
-   "animation": "exhausted",
+   "animation": "hit",
    "frame": 2,
    "index": 38,
    "crop": [
     136,
-    212,
+    165,
     68,
-    53
+    55
+   ]
+  },
+  {
+   "direction": "NE",
+   "animation": "hit",
+   "frame": 3,
+   "index": 39,
+   "crop": [
+    204,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "NE",
+   "animation": "exhausted",
+   "frame": 0,
+   "index": 40,
+   "crop": [
+    0,
+    220,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "NE",
+   "animation": "exhausted",
+   "frame": 1,
+   "index": 41,
+   "crop": [
+    68,
+    220,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "NE",
+   "animation": "exhausted",
+   "frame": 2,
+   "index": 42,
+   "crop": [
+    136,
+    220,
+    68,
+    55
    ]
   },
   {
    "direction": "NE",
    "animation": "exhausted",
    "frame": 3,
-   "index": 39,
-   "crop": [
-    204,
-    212,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "E",
-   "animation": "idle",
-   "frame": 0,
-   "index": 40,
-   "crop": [
-    0,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "E",
-   "animation": "idle",
-   "frame": 1,
-   "index": 41,
-   "crop": [
-    68,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "E",
-   "animation": "idle",
-   "frame": 2,
-   "index": 42,
-   "crop": [
-    136,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "E",
-   "animation": "idle",
-   "frame": 3,
    "index": 43,
    "crop": [
     204,
-    0,
+    220,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "E",
-   "animation": "walk",
+   "direction": "NE",
+   "animation": "block",
    "frame": 0,
    "index": 44,
    "crop": [
     0,
-    53,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "E",
-   "animation": "walk",
+   "direction": "NE",
+   "animation": "block",
    "frame": 1,
    "index": 45,
    "crop": [
     68,
-    53,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "E",
-   "animation": "walk",
+   "direction": "NE",
+   "animation": "block",
    "frame": 2,
    "index": 46,
    "crop": [
     136,
-    53,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "E",
-   "animation": "walk",
+   "direction": "NE",
+   "animation": "block",
    "frame": 3,
    "index": 47,
    "crop": [
     204,
-    53,
+    275,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "E",
-   "animation": "attack",
+   "animation": "idle",
    "frame": 0,
    "index": 48,
    "crop": [
     0,
-    106,
+    0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "E",
-   "animation": "attack",
+   "animation": "idle",
    "frame": 1,
    "index": 49,
    "crop": [
     68,
-    106,
+    0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "E",
-   "animation": "attack",
+   "animation": "idle",
    "frame": 2,
    "index": 50,
    "crop": [
     136,
-    106,
+    0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "E",
-   "animation": "attack",
+   "animation": "idle",
    "frame": 3,
    "index": 51,
    "crop": [
     204,
-    106,
+    0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "E",
-   "animation": "hit",
+   "animation": "walk",
    "frame": 0,
    "index": 52,
    "crop": [
     0,
-    159,
+    55,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "E",
-   "animation": "hit",
+   "animation": "walk",
    "frame": 1,
    "index": 53,
    "crop": [
     68,
-    159,
+    55,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "E",
-   "animation": "hit",
+   "animation": "walk",
    "frame": 2,
    "index": 54,
    "crop": [
     136,
-    159,
+    55,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "E",
-   "animation": "hit",
+   "animation": "walk",
    "frame": 3,
    "index": 55,
    "crop": [
     204,
-    159,
+    55,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "E",
-   "animation": "exhausted",
+   "animation": "attack",
    "frame": 0,
    "index": 56,
    "crop": [
     0,
-    212,
+    110,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "E",
-   "animation": "exhausted",
+   "animation": "attack",
    "frame": 1,
    "index": 57,
    "crop": [
     68,
-    212,
+    110,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "E",
-   "animation": "exhausted",
+   "animation": "attack",
    "frame": 2,
    "index": 58,
    "crop": [
     136,
-    212,
+    110,
     68,
-    53
+    55
+   ]
+  },
+  {
+   "direction": "E",
+   "animation": "attack",
+   "frame": 3,
+   "index": 59,
+   "crop": [
+    204,
+    110,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "E",
+   "animation": "hit",
+   "frame": 0,
+   "index": 60,
+   "crop": [
+    0,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "E",
+   "animation": "hit",
+   "frame": 1,
+   "index": 61,
+   "crop": [
+    68,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "E",
+   "animation": "hit",
+   "frame": 2,
+   "index": 62,
+   "crop": [
+    136,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "E",
+   "animation": "hit",
+   "frame": 3,
+   "index": 63,
+   "crop": [
+    204,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "E",
+   "animation": "exhausted",
+   "frame": 0,
+   "index": 64,
+   "crop": [
+    0,
+    220,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "E",
+   "animation": "exhausted",
+   "frame": 1,
+   "index": 65,
+   "crop": [
+    68,
+    220,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "E",
+   "animation": "exhausted",
+   "frame": 2,
+   "index": 66,
+   "crop": [
+    136,
+    220,
+    68,
+    55
    ]
   },
   {
    "direction": "E",
    "animation": "exhausted",
    "frame": 3,
-   "index": 59,
-   "crop": [
-    204,
-    212,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SE",
-   "animation": "idle",
-   "frame": 0,
-   "index": 60,
-   "crop": [
-    0,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SE",
-   "animation": "idle",
-   "frame": 1,
-   "index": 61,
-   "crop": [
-    68,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SE",
-   "animation": "idle",
-   "frame": 2,
-   "index": 62,
-   "crop": [
-    136,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SE",
-   "animation": "idle",
-   "frame": 3,
-   "index": 63,
-   "crop": [
-    204,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SE",
-   "animation": "walk",
-   "frame": 0,
-   "index": 64,
-   "crop": [
-    0,
-    53,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SE",
-   "animation": "walk",
-   "frame": 1,
-   "index": 65,
-   "crop": [
-    68,
-    53,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SE",
-   "animation": "walk",
-   "frame": 2,
-   "index": 66,
-   "crop": [
-    136,
-    53,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SE",
-   "animation": "walk",
-   "frame": 3,
    "index": 67,
    "crop": [
     204,
-    53,
+    220,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "SE",
-   "animation": "attack",
+   "direction": "E",
+   "animation": "block",
    "frame": 0,
    "index": 68,
    "crop": [
     0,
-    106,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "SE",
-   "animation": "attack",
+   "direction": "E",
+   "animation": "block",
    "frame": 1,
    "index": 69,
    "crop": [
     68,
-    106,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "SE",
-   "animation": "attack",
+   "direction": "E",
+   "animation": "block",
    "frame": 2,
    "index": 70,
    "crop": [
     136,
-    106,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "SE",
-   "animation": "attack",
+   "direction": "E",
+   "animation": "block",
    "frame": 3,
    "index": 71,
    "crop": [
     204,
-    106,
+    275,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "SE",
-   "animation": "hit",
+   "animation": "idle",
    "frame": 0,
    "index": 72,
    "crop": [
     0,
-    159,
+    0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "SE",
-   "animation": "hit",
+   "animation": "idle",
    "frame": 1,
    "index": 73,
    "crop": [
     68,
-    159,
+    0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "SE",
-   "animation": "hit",
+   "animation": "idle",
    "frame": 2,
    "index": 74,
    "crop": [
     136,
-    159,
+    0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "SE",
-   "animation": "hit",
+   "animation": "idle",
    "frame": 3,
    "index": 75,
    "crop": [
     204,
-    159,
+    0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "SE",
-   "animation": "exhausted",
+   "animation": "walk",
    "frame": 0,
    "index": 76,
    "crop": [
     0,
-    212,
+    55,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "SE",
-   "animation": "exhausted",
+   "animation": "walk",
    "frame": 1,
    "index": 77,
    "crop": [
     68,
-    212,
+    55,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "SE",
-   "animation": "exhausted",
+   "animation": "walk",
    "frame": 2,
    "index": 78,
    "crop": [
     136,
-    212,
+    55,
     68,
-    53
+    55
+   ]
+  },
+  {
+   "direction": "SE",
+   "animation": "walk",
+   "frame": 3,
+   "index": 79,
+   "crop": [
+    204,
+    55,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SE",
+   "animation": "attack",
+   "frame": 0,
+   "index": 80,
+   "crop": [
+    0,
+    110,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SE",
+   "animation": "attack",
+   "frame": 1,
+   "index": 81,
+   "crop": [
+    68,
+    110,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SE",
+   "animation": "attack",
+   "frame": 2,
+   "index": 82,
+   "crop": [
+    136,
+    110,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SE",
+   "animation": "attack",
+   "frame": 3,
+   "index": 83,
+   "crop": [
+    204,
+    110,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SE",
+   "animation": "hit",
+   "frame": 0,
+   "index": 84,
+   "crop": [
+    0,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SE",
+   "animation": "hit",
+   "frame": 1,
+   "index": 85,
+   "crop": [
+    68,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SE",
+   "animation": "hit",
+   "frame": 2,
+   "index": 86,
+   "crop": [
+    136,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SE",
+   "animation": "hit",
+   "frame": 3,
+   "index": 87,
+   "crop": [
+    204,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SE",
+   "animation": "exhausted",
+   "frame": 0,
+   "index": 88,
+   "crop": [
+    0,
+    220,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SE",
+   "animation": "exhausted",
+   "frame": 1,
+   "index": 89,
+   "crop": [
+    68,
+    220,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SE",
+   "animation": "exhausted",
+   "frame": 2,
+   "index": 90,
+   "crop": [
+    136,
+    220,
+    68,
+    55
    ]
   },
   {
    "direction": "SE",
    "animation": "exhausted",
    "frame": 3,
-   "index": 79,
-   "crop": [
-    204,
-    212,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "S",
-   "animation": "idle",
-   "frame": 0,
-   "index": 80,
-   "crop": [
-    0,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "S",
-   "animation": "idle",
-   "frame": 1,
-   "index": 81,
-   "crop": [
-    68,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "S",
-   "animation": "idle",
-   "frame": 2,
-   "index": 82,
-   "crop": [
-    136,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "S",
-   "animation": "idle",
-   "frame": 3,
-   "index": 83,
-   "crop": [
-    204,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "S",
-   "animation": "walk",
-   "frame": 0,
-   "index": 84,
-   "crop": [
-    0,
-    53,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "S",
-   "animation": "walk",
-   "frame": 1,
-   "index": 85,
-   "crop": [
-    68,
-    53,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "S",
-   "animation": "walk",
-   "frame": 2,
-   "index": 86,
-   "crop": [
-    136,
-    53,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "S",
-   "animation": "walk",
-   "frame": 3,
-   "index": 87,
-   "crop": [
-    204,
-    53,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "S",
-   "animation": "attack",
-   "frame": 0,
-   "index": 88,
-   "crop": [
-    0,
-    106,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "S",
-   "animation": "attack",
-   "frame": 1,
-   "index": 89,
-   "crop": [
-    68,
-    106,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "S",
-   "animation": "attack",
-   "frame": 2,
-   "index": 90,
-   "crop": [
-    136,
-    106,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "S",
-   "animation": "attack",
-   "frame": 3,
    "index": 91,
    "crop": [
     204,
-    106,
+    220,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "S",
-   "animation": "hit",
+   "direction": "SE",
+   "animation": "block",
    "frame": 0,
    "index": 92,
    "crop": [
     0,
-    159,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "S",
-   "animation": "hit",
+   "direction": "SE",
+   "animation": "block",
    "frame": 1,
    "index": 93,
    "crop": [
     68,
-    159,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "S",
-   "animation": "hit",
+   "direction": "SE",
+   "animation": "block",
    "frame": 2,
    "index": 94,
    "crop": [
     136,
-    159,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "S",
-   "animation": "hit",
+   "direction": "SE",
+   "animation": "block",
    "frame": 3,
    "index": 95,
    "crop": [
     204,
-    159,
+    275,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "S",
-   "animation": "exhausted",
+   "animation": "idle",
    "frame": 0,
    "index": 96,
    "crop": [
     0,
-    212,
+    0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "S",
-   "animation": "exhausted",
+   "animation": "idle",
    "frame": 1,
    "index": 97,
    "crop": [
     68,
-    212,
+    0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "S",
-   "animation": "exhausted",
+   "animation": "idle",
    "frame": 2,
    "index": 98,
    "crop": [
     136,
-    212,
+    0,
     68,
-    53
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "idle",
+   "frame": 3,
+   "index": 99,
+   "crop": [
+    204,
+    0,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "walk",
+   "frame": 0,
+   "index": 100,
+   "crop": [
+    0,
+    55,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "walk",
+   "frame": 1,
+   "index": 101,
+   "crop": [
+    68,
+    55,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "walk",
+   "frame": 2,
+   "index": 102,
+   "crop": [
+    136,
+    55,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "walk",
+   "frame": 3,
+   "index": 103,
+   "crop": [
+    204,
+    55,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "attack",
+   "frame": 0,
+   "index": 104,
+   "crop": [
+    0,
+    110,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "attack",
+   "frame": 1,
+   "index": 105,
+   "crop": [
+    68,
+    110,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "attack",
+   "frame": 2,
+   "index": 106,
+   "crop": [
+    136,
+    110,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "attack",
+   "frame": 3,
+   "index": 107,
+   "crop": [
+    204,
+    110,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "hit",
+   "frame": 0,
+   "index": 108,
+   "crop": [
+    0,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "hit",
+   "frame": 1,
+   "index": 109,
+   "crop": [
+    68,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "hit",
+   "frame": 2,
+   "index": 110,
+   "crop": [
+    136,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "hit",
+   "frame": 3,
+   "index": 111,
+   "crop": [
+    204,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "exhausted",
+   "frame": 0,
+   "index": 112,
+   "crop": [
+    0,
+    220,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "exhausted",
+   "frame": 1,
+   "index": 113,
+   "crop": [
+    68,
+    220,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "S",
+   "animation": "exhausted",
+   "frame": 2,
+   "index": 114,
+   "crop": [
+    136,
+    220,
+    68,
+    55
    ]
   },
   {
    "direction": "S",
    "animation": "exhausted",
    "frame": 3,
-   "index": 99,
-   "crop": [
-    204,
-    212,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "idle",
-   "frame": 0,
-   "index": 100,
-   "crop": [
-    0,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "idle",
-   "frame": 1,
-   "index": 101,
-   "crop": [
-    68,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "idle",
-   "frame": 2,
-   "index": 102,
-   "crop": [
-    136,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "idle",
-   "frame": 3,
-   "index": 103,
-   "crop": [
-    204,
-    0,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "walk",
-   "frame": 0,
-   "index": 104,
-   "crop": [
-    0,
-    53,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "walk",
-   "frame": 1,
-   "index": 105,
-   "crop": [
-    68,
-    53,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "walk",
-   "frame": 2,
-   "index": 106,
-   "crop": [
-    136,
-    53,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "walk",
-   "frame": 3,
-   "index": 107,
-   "crop": [
-    204,
-    53,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "attack",
-   "frame": 0,
-   "index": 108,
-   "crop": [
-    0,
-    106,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "attack",
-   "frame": 1,
-   "index": 109,
-   "crop": [
-    68,
-    106,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "attack",
-   "frame": 2,
-   "index": 110,
-   "crop": [
-    136,
-    106,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "attack",
-   "frame": 3,
-   "index": 111,
-   "crop": [
-    204,
-    106,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "hit",
-   "frame": 0,
-   "index": 112,
-   "crop": [
-    0,
-    159,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "hit",
-   "frame": 1,
-   "index": 113,
-   "crop": [
-    68,
-    159,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "hit",
-   "frame": 2,
-   "index": 114,
-   "crop": [
-    136,
-    159,
-    68,
-    53
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "hit",
-   "frame": 3,
    "index": 115,
    "crop": [
     204,
-    159,
+    220,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "SW",
-   "animation": "exhausted",
+   "direction": "S",
+   "animation": "block",
    "frame": 0,
    "index": 116,
    "crop": [
     0,
-    212,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "SW",
-   "animation": "exhausted",
+   "direction": "S",
+   "animation": "block",
    "frame": 1,
    "index": 117,
    "crop": [
     68,
-    212,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "SW",
-   "animation": "exhausted",
+   "direction": "S",
+   "animation": "block",
    "frame": 2,
    "index": 118,
    "crop": [
     136,
-    212,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "SW",
-   "animation": "exhausted",
+   "direction": "S",
+   "animation": "block",
    "frame": 3,
    "index": 119,
    "crop": [
     204,
-    212,
+    275,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "idle",
    "frame": 0,
    "index": 120,
@@ -1532,11 +1539,11 @@
     0,
     0,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "idle",
    "frame": 1,
    "index": 121,
@@ -1544,11 +1551,11 @@
     68,
     0,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "idle",
    "frame": 2,
    "index": 122,
@@ -1556,11 +1563,11 @@
     136,
     0,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "idle",
    "frame": 3,
    "index": 123,
@@ -1568,439 +1575,823 @@
     204,
     0,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "walk",
    "frame": 0,
    "index": 124,
    "crop": [
     0,
-    53,
+    55,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "walk",
    "frame": 1,
    "index": 125,
    "crop": [
     68,
-    53,
+    55,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "walk",
    "frame": 2,
    "index": 126,
    "crop": [
     136,
-    53,
+    55,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "walk",
    "frame": 3,
    "index": 127,
    "crop": [
     204,
-    53,
+    55,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "attack",
    "frame": 0,
    "index": 128,
    "crop": [
     0,
-    106,
+    110,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "attack",
    "frame": 1,
    "index": 129,
    "crop": [
     68,
-    106,
+    110,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "attack",
    "frame": 2,
    "index": 130,
    "crop": [
     136,
-    106,
+    110,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "attack",
    "frame": 3,
    "index": 131,
    "crop": [
     204,
-    106,
+    110,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "hit",
    "frame": 0,
    "index": 132,
    "crop": [
     0,
-    159,
+    165,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "hit",
    "frame": 1,
    "index": 133,
    "crop": [
     68,
-    159,
+    165,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "hit",
    "frame": 2,
    "index": 134,
    "crop": [
     136,
-    159,
+    165,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "hit",
    "frame": 3,
    "index": 135,
    "crop": [
     204,
-    159,
+    165,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "exhausted",
    "frame": 0,
    "index": 136,
    "crop": [
     0,
-    212,
+    220,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "exhausted",
    "frame": 1,
    "index": 137,
    "crop": [
     68,
-    212,
+    220,
     68,
-    53
+    55
    ]
   },
   {
-   "direction": "W",
+   "direction": "SW",
    "animation": "exhausted",
    "frame": 2,
    "index": 138,
    "crop": [
     136,
-    212,
+    220,
     68,
-    53
+    55
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "exhausted",
+   "frame": 3,
+   "index": 139,
+   "crop": [
+    204,
+    220,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "block",
+   "frame": 0,
+   "index": 140,
+   "crop": [
+    0,
+    275,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "block",
+   "frame": 1,
+   "index": 141,
+   "crop": [
+    68,
+    275,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "block",
+   "frame": 2,
+   "index": 142,
+   "crop": [
+    136,
+    275,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "block",
+   "frame": 3,
+   "index": 143,
+   "crop": [
+    204,
+    275,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "idle",
+   "frame": 0,
+   "index": 144,
+   "crop": [
+    0,
+    0,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "idle",
+   "frame": 1,
+   "index": 145,
+   "crop": [
+    68,
+    0,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "idle",
+   "frame": 2,
+   "index": 146,
+   "crop": [
+    136,
+    0,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "idle",
+   "frame": 3,
+   "index": 147,
+   "crop": [
+    204,
+    0,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "walk",
+   "frame": 0,
+   "index": 148,
+   "crop": [
+    0,
+    55,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "walk",
+   "frame": 1,
+   "index": 149,
+   "crop": [
+    68,
+    55,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "walk",
+   "frame": 2,
+   "index": 150,
+   "crop": [
+    136,
+    55,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "walk",
+   "frame": 3,
+   "index": 151,
+   "crop": [
+    204,
+    55,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "attack",
+   "frame": 0,
+   "index": 152,
+   "crop": [
+    0,
+    110,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "attack",
+   "frame": 1,
+   "index": 153,
+   "crop": [
+    68,
+    110,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "attack",
+   "frame": 2,
+   "index": 154,
+   "crop": [
+    136,
+    110,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "attack",
+   "frame": 3,
+   "index": 155,
+   "crop": [
+    204,
+    110,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "hit",
+   "frame": 0,
+   "index": 156,
+   "crop": [
+    0,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "hit",
+   "frame": 1,
+   "index": 157,
+   "crop": [
+    68,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "hit",
+   "frame": 2,
+   "index": 158,
+   "crop": [
+    136,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "hit",
+   "frame": 3,
+   "index": 159,
+   "crop": [
+    204,
+    165,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "exhausted",
+   "frame": 0,
+   "index": 160,
+   "crop": [
+    0,
+    220,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "exhausted",
+   "frame": 1,
+   "index": 161,
+   "crop": [
+    68,
+    220,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "exhausted",
+   "frame": 2,
+   "index": 162,
+   "crop": [
+    136,
+    220,
+    68,
+    55
    ]
   },
   {
    "direction": "W",
    "animation": "exhausted",
    "frame": 3,
-   "index": 139,
+   "index": 163,
    "crop": [
     204,
-    212,
+    220,
     68,
-    53
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "block",
+   "frame": 0,
+   "index": 164,
+   "crop": [
+    0,
+    275,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "block",
+   "frame": 1,
+   "index": 165,
+   "crop": [
+    68,
+    275,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "block",
+   "frame": 2,
+   "index": 166,
+   "crop": [
+    136,
+    275,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "W",
+   "animation": "block",
+   "frame": 3,
+   "index": 167,
+   "crop": [
+    204,
+    275,
+    68,
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "idle",
    "frame": 0,
-   "index": 140,
+   "index": 168,
    "crop": [
     0,
     0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "idle",
    "frame": 1,
-   "index": 141,
+   "index": 169,
    "crop": [
     68,
     0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "idle",
    "frame": 2,
-   "index": 142,
+   "index": 170,
    "crop": [
     136,
     0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "idle",
    "frame": 3,
-   "index": 143,
+   "index": 171,
    "crop": [
     204,
     0,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "walk",
    "frame": 0,
-   "index": 144,
+   "index": 172,
    "crop": [
     0,
-    53,
+    55,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "walk",
    "frame": 1,
-   "index": 145,
+   "index": 173,
    "crop": [
     68,
-    53,
+    55,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "walk",
    "frame": 2,
-   "index": 146,
+   "index": 174,
    "crop": [
     136,
-    53,
+    55,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "walk",
    "frame": 3,
-   "index": 147,
+   "index": 175,
    "crop": [
     204,
-    53,
+    55,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "attack",
    "frame": 0,
-   "index": 148,
+   "index": 176,
    "crop": [
     0,
-    106,
+    110,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "attack",
    "frame": 1,
-   "index": 149,
+   "index": 177,
    "crop": [
     68,
-    106,
+    110,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "attack",
    "frame": 2,
-   "index": 150,
+   "index": 178,
    "crop": [
     136,
-    106,
+    110,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "attack",
    "frame": 3,
-   "index": 151,
+   "index": 179,
    "crop": [
     204,
-    106,
+    110,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "hit",
    "frame": 0,
-   "index": 152,
+   "index": 180,
    "crop": [
     0,
-    159,
+    165,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "hit",
    "frame": 1,
-   "index": 153,
+   "index": 181,
    "crop": [
     68,
-    159,
+    165,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "hit",
    "frame": 2,
-   "index": 154,
+   "index": 182,
    "crop": [
     136,
-    159,
+    165,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "hit",
    "frame": 3,
-   "index": 155,
+   "index": 183,
    "crop": [
     204,
-    159,
+    165,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "exhausted",
    "frame": 0,
-   "index": 156,
+   "index": 184,
    "crop": [
     0,
-    212,
+    220,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "exhausted",
    "frame": 1,
-   "index": 157,
+   "index": 185,
    "crop": [
     68,
-    212,
+    220,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "exhausted",
    "frame": 2,
-   "index": 158,
+   "index": 186,
    "crop": [
     136,
-    212,
+    220,
     68,
-    53
+    55
    ]
   },
   {
    "direction": "NW",
    "animation": "exhausted",
    "frame": 3,
-   "index": 159,
+   "index": 187,
    "crop": [
     204,
-    212,
+    220,
     68,
-    53
+    55
+   ]
+  },
+  {
+   "direction": "NW",
+   "animation": "block",
+   "frame": 0,
+   "index": 188,
+   "crop": [
+    0,
+    275,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "NW",
+   "animation": "block",
+   "frame": 1,
+   "index": 189,
+   "crop": [
+    68,
+    275,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "NW",
+   "animation": "block",
+   "frame": 2,
+   "index": 190,
+   "crop": [
+    136,
+    275,
+    68,
+    55
+   ]
+  },
+  {
+   "direction": "NW",
+   "animation": "block",
+   "frame": 3,
+   "index": 191,
+   "crop": [
+    204,
+    275,
+    68,
+    55
    ]
   }
  ]

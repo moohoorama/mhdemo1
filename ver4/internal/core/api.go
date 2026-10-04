@@ -15,12 +15,6 @@ func (e *Engine) LegalActions(actor string) Options {
 		return out
 	}
 	out.Commands = append(out.Commands, Command{Kind: "wait", Actor: actor})
-	for _, id := range keys(e.unitIDs) {
-		c := Command{Kind: "duel", Actor: actor, Target: id}
-		if _, err := e.duelDefinition(u, c); err == nil {
-			out.Commands = append(out.Commands, c)
-		}
-	}
 	for _, p := range e.moves(u) {
 		out.Commands = append(out.Commands, Command{Kind: "move", Actor: actor, X: p.X, Y: p.Y})
 	}
@@ -85,13 +79,6 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 	}
 	if u.Done {
 		return Preview{}, fail("ActionSpent")
-	}
-	if c.Kind == "duel" {
-		d, err := e.duelDefinition(u, c)
-		if err != nil {
-			return Preview{}, err
-		}
-		return Preview{Effect: d.Outcome, Hit: 100, Targets: []string{c.Target}}, nil
 	}
 	if c.Kind == "item" {
 		t := fromState(e.data, e.Snapshot())

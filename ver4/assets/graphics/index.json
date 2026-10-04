@@ -77,6 +77,17 @@
       220
      ],
      "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
     }
    }
   },
@@ -156,6 +167,17 @@
       220
      ],
      "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
     }
    }
   },
@@ -235,6 +257,17 @@
       220
      ],
      "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
     }
    }
   },
@@ -314,6 +347,17 @@
       220
      ],
      "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
     }
    }
   },
@@ -393,6 +437,17 @@
       220
      ],
      "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
     }
    }
   },
@@ -472,6 +527,17 @@
       220
      ],
      "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
     }
    }
   },
@@ -551,6 +617,17 @@
       220
      ],
      "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
     }
    }
   },
@@ -630,6 +707,17 @@
       220
      ],
      "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
     }
    }
   },
@@ -709,6 +797,17 @@
       220
      ],
      "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
     }
    }
   },
@@ -788,6 +887,17 @@
       220
      ],
      "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
     }
    }
   },
@@ -867,6 +977,17 @@
       220
      ],
      "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
     }
    }
   },
@@ -946,6 +1067,17 @@
       220
      ],
      "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
     }
    }
   },
@@ -954,11 +1086,11 @@
    "image": "units/lubu.png",
    "cell": [
     68,
-    53
+    55
    ],
    "pivot": [
     34,
-    50
+    52
    ],
    "rows": [
     "N",
@@ -1025,6 +1157,522 @@
       220
      ],
      "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "civ_guanyu": {
+   "name": "관우",
+   "image": "units/civ_guanyu.png",
+   "cell": [
+    27,
+    33
+   ],
+   "pivot": [
+    13,
+    29
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    }
+   }
+  },
+  "civ_zhangfei": {
+   "name": "장비",
+   "image": "units/civ_zhangfei.png",
+   "cell": [
+    27,
+    34
+   ],
+   "pivot": [
+    13,
+    30
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    }
+   }
+  },
+  "civ_liubei": {
+   "name": "유비",
+   "image": "units/civ_liubei.png",
+   "cell": [
+    27,
+    33
+   ],
+   "pivot": [
+    13,
+    29
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    }
+   }
+  },
+  "civ_jianyong": {
+   "name": "간옹",
+   "image": "units/civ_jianyong.png",
+   "cell": [
+    27,
+    33
+   ],
+   "pivot": [
+    13,
+    29
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    }
+   }
+  },
+  "civ_sunqian": {
+   "name": "손건",
+   "image": "units/civ_sunqian.png",
+   "cell": [
+    27,
+    33
+   ],
+   "pivot": [
+    13,
+    29
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
     }
    }
   }
@@ -1831,7 +2479,10 @@
  "maps": [
   "maps/B01.json",
   "maps/B02.json",
-  "maps/B03.json"
+  "maps/B03.json",
+  "maps/S_peach.json",
+  "maps/S_village.json",
+  "maps/S_camp.json"
  ],
  "structures": {
   "version": 1,
@@ -1883,7 +2534,7 @@
    "infantry": {
     "image": "units/infantry.shadow.png",
     "source": "units/infantry.png",
-    "hash": "e2168971ab3d1397",
+    "hash": "1bd87984c185de6e",
     "cell": [
      95,
      29
@@ -1896,7 +2547,7 @@
    "bandit": {
     "image": "units/bandit.shadow.png",
     "source": "units/bandit.png",
-    "hash": "c4714bcb4390c72a",
+    "hash": "6ae21272e48bcb0c",
     "cell": [
      99,
      30
@@ -1909,7 +2560,7 @@
    "spearman": {
     "image": "units/spearman.shadow.png",
     "source": "units/spearman.png",
-    "hash": "c07630144d0f49ca",
+    "hash": "1de7f0cfe41e0039",
     "cell": [
      142,
      28
@@ -1922,7 +2573,7 @@
    "archer": {
     "image": "units/archer.shadow.png",
     "source": "units/archer.png",
-    "hash": "05da7cf3b2aaed18",
+    "hash": "3a6839e0db5b1c82",
     "cell": [
      134,
      29
@@ -1935,7 +2586,7 @@
    "cavalry": {
     "image": "units/cavalry.shadow.png",
     "source": "units/cavalry.png",
-    "hash": "5adc758c5d23257f",
+    "hash": "67e49c61c2fd4f2a",
     "cell": [
      148,
      32
@@ -1948,7 +2599,7 @@
    "guanyu": {
     "image": "units/guanyu.shadow.png",
     "source": "units/guanyu.png",
-    "hash": "ff38f76cb5b82c5b",
+    "hash": "5b203cc5b1c1f47e",
     "cell": [
      121,
      35
@@ -1961,7 +2612,7 @@
    "zhangfei": {
     "image": "units/zhangfei.shadow.png",
     "source": "units/zhangfei.png",
-    "hash": "3b93fce1cded2a6d",
+    "hash": "560c4c2eaf28d63a",
     "cell": [
      114,
      32
@@ -1974,7 +2625,7 @@
    "strategist": {
     "image": "units/strategist.shadow.png",
     "source": "units/strategist.png",
-    "hash": "92785642323cf2b1",
+    "hash": "de2deab40a6575d7",
     "cell": [
      83,
      27
@@ -1987,7 +2638,7 @@
    "liubei": {
     "image": "units/liubei.shadow.png",
     "source": "units/liubei.png",
-    "hash": "14c812200217aadc",
+    "hash": "522e18b6bbdfca19",
     "cell": [
      95,
      29
@@ -2000,7 +2651,7 @@
    "jianyong": {
     "image": "units/jianyong.shadow.png",
     "source": "units/jianyong.png",
-    "hash": "fef2cc0d4cf7a29c",
+    "hash": "ca6027152b82845f",
     "cell": [
      134,
      29
@@ -2013,7 +2664,7 @@
    "zhangjiao": {
     "image": "units/zhangjiao.shadow.png",
     "source": "units/zhangjiao.png",
-    "hash": "fe907002af423aef",
+    "hash": "85a7deb6ef269727",
     "cell": [
      102,
      29
@@ -2026,7 +2677,7 @@
    "huaxiong": {
     "image": "units/huaxiong.shadow.png",
     "source": "units/huaxiong.png",
-    "hash": "6500e2ab2c0ee19b",
+    "hash": "def0a7ce2a53a9c8",
     "cell": [
      121,
      35
@@ -2039,13 +2690,78 @@
    "lubu": {
     "image": "units/lubu.shadow.png",
     "source": "units/lubu.png",
-    "hash": "958e4dffc8e6e950",
+    "hash": "f2a3ba8e6ffc82e4",
     "cell": [
-     114,
-     32
+     116,
+     33
     ],
     "pivot": [
      42,
+     8
+    ]
+   },
+   "civ_guanyu": {
+    "image": "units/civ_guanyu.shadow.png",
+    "source": "units/civ_guanyu.png",
+    "hash": "6b36d2d85f239722",
+    "cell": [
+     61,
+     26
+    ],
+    "pivot": [
+     21,
+     8
+    ]
+   },
+   "civ_zhangfei": {
+    "image": "units/civ_zhangfei.shadow.png",
+    "source": "units/civ_zhangfei.png",
+    "hash": "571d255a11e285ca",
+    "cell": [
+     61,
+     26
+    ],
+    "pivot": [
+     21,
+     8
+    ]
+   },
+   "civ_liubei": {
+    "image": "units/civ_liubei.shadow.png",
+    "source": "units/civ_liubei.png",
+    "hash": "9873f314cc83fc33",
+    "cell": [
+     61,
+     26
+    ],
+    "pivot": [
+     21,
+     8
+    ]
+   },
+   "civ_jianyong": {
+    "image": "units/civ_jianyong.shadow.png",
+    "source": "units/civ_jianyong.png",
+    "hash": "3e3f88991a1b0c3e",
+    "cell": [
+     61,
+     26
+    ],
+    "pivot": [
+     21,
+     8
+    ]
+   },
+   "civ_sunqian": {
+    "image": "units/civ_sunqian.shadow.png",
+    "source": "units/civ_sunqian.png",
+    "hash": "a0b146a95885f0a1",
+    "cell": [
+     61,
+     26
+    ],
+    "pivot": [
+     21,
      8
     ]
    }
