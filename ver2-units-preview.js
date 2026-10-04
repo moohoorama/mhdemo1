@@ -6,6 +6,8 @@ const UNITS = [
   {id: 'infantry', name: '경보병'}, {id: 'bandit', name: '황건 적병'}, {id: 'spearman', name: '창병'},
   {id: 'archer', name: '궁병'}, {id: 'cavalry', name: '경기병'},
   {id: 'guanyu', name: '관우'}, {id: 'zhangfei', name: '장비'},
+  {id: 'strategist', name: '사마'}, {id: 'liubei', name: '유비'}, {id: 'jianyong', name: '간옹'},
+  {id: 'zhangjiao', name: '장각'}, {id: 'huaxiong', name: '화웅'}, {id: 'lubu', name: '여포'},
 ];
 const ACTIONS = {idle: '대기', walk: '걷기', attack: '공격', hit: '피격', exhausted: '탈진'};
 const DIRECTION_NAMES = {N: '북', NE: '북동', E: '동', SE: '남동', S: '남', SW: '남서', W: '서', NW: '북서'};

@@ -22,6 +22,7 @@ import factions as F
 import heads as Hd
 import render as R
 import units as U
+import looks
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'tools/spritetool/assets/ver2-units'
@@ -41,6 +42,7 @@ UNITS = [
     ('guanyu', '관우', U.guanyu, Hd.heads(Hd.GUANYU, skin='KL', lid='K')),
     ('zhangfei', '장비', U.zhangfei, Hd.heads(Hd.ZHANGFEI, Hd.PLUME, skin='gh', lid='g')),
 ]
+UNITS += looks.chosen()  # ver4 additions: strategist class and heroes (candidates in looks.py)
 # Working canvas; each unit is cropped afterwards to the union of all its frames.
 SPEC = dict(cell=(192, 160), pivot=(96, 116), scale=11.5)
 R.add_ramps(U.RAMPS)

@@ -37,7 +37,7 @@ KITS = {
     'zhangfei': dict(cloth=BLACK, tabard=LIGHT_BLUE, guard=DARK_STEEL, shield=False, weapon=None),
 }
 # (inner, tip) distance from the hand along the weapon, for trails and thrust bursts.
-WEAPONS = {'sword': (.45, 1.0), 'spear': (.9, 1.75), 'glaive': (1.15, 1.95)}
+WEAPONS = {'sword': (.45, 1.0), 'spear': (.9, 1.75), 'glaive': (1.15, 1.95), 'fan': (.25, .7), 'staff': (.9, 1.35)}
 
 
 def result(faces, head, row, f, effects=()):
@@ -88,6 +88,8 @@ def soldier(p, kit, weapon=True):
         m.rod(hip, knee, .16, cloth)
         m.rod(knee, foot, .13, guard)
         m.ell(foot + [0, -.035, 0], [.135, .2, .105], BROWN)
+    if k.get('robe'):  # long robe over the thighs; shins and feet show below
+        m.ell(T([0, -.01, .66]), [.42, .31, .42], k['robe'])
     m.ell(T([0, 0, .92]), [.43, .27, .31], cloth)
     m.ell(T([0, 0, 1.26]), [.4, .27, .38], cloth)
     m.ell(T([0, -.035, 1.3]), [.36, .275, .27], guard)
@@ -102,6 +104,12 @@ def soldier(p, kit, weapon=True):
         m.ell(ha, [.125]*3, SKIN)
     if weapon and k['weapon']:
         WEAPON_DRAW[k['weapon']](p, T)
+        if k.get('twin'):  # second sword in the off hand, mirrored
+            q = copy.deepcopy(p)
+            q['hands'][0] = p['hands'][1]
+            # held out to the side so it clears the body; mirrors the main blade while attacking
+            q['blade'] = [-p['blade'][0] + .3, p['blade'][1], p['blade'][2]] if p['row'] == ATTACK else [.8, -.3, .5]
+            WEAPON_DRAW[k['weapon']](q, T)
         if k['shield']:
             center = T(p['hands'][1]) + V([0, -.09, 0])
             m.ell(center, [.3, .07, .39], BROWN)
@@ -164,7 +172,26 @@ def strip(left, right, color):
         m.poly([left[i], left[i+1], right[i+1], right[i]], color)
 
 
-WEAPON_DRAW = {'sword': sword, 'spear': spear, 'glaive': glaive}
+def fan(p, T):
+    """Feather fan: short handle, broad convex fan head (strategists)."""
+    hand, d, side = grip(p, T)
+    m.rod(hand - d*.08, hand + d*.22, .04, BROWN)
+    base = hand + d*.2
+    pts = [base] + [base + (d*math.cos(a) + side*math.sin(a))*.62 for a in np.linspace(-.8, .8, 7)]
+    m.poly(pts, '#ede1bd')
+    m.ell(base, [.06]*3, GOLD)
+
+
+def staff(p, T):
+    """Taoist staff: long shaft with a gold ring head."""
+    hand, d, side = grip(p, T)
+    m.rod(hand - d*.7, hand + d*1.05, .045, '#966131')
+    head = hand + d*1.22
+    for a in np.linspace(0, 2*math.pi, 7)[:-1]:
+        m.ell(head + (d*math.cos(a) + side*math.sin(a))*.15, [.05]*3, GOLD)
+
+
+WEAPON_DRAW = {'sword': sword, 'spear': spear, 'glaive': glaive, 'fan': fan, 'staff': staff}
 
 
 def weapon_edge(p, weapon, reach=1.0):
@@ -218,7 +245,7 @@ def hit_pose(f, base):
 
 def foot_unit(kit):
     def build(row, f, style=None):
-        style = style or A.SELECTED[kit]
+        style = style or A.SELECTED.get(kit, 'sweep')
         effects = []
         if row == ATTACK:
             p = sword_pose(A.SWORD[style]['frames'][f])
@@ -272,8 +299,8 @@ def bow_effects(style, f, h, aim, tail):
     return []
 
 
-def archer(row, f, style=None):
-    style = style or A.SELECTED['archer']
+def archer(row, f, style=None, kit='archer'):
+    style = style or A.SELECTED.get(kit, A.SELECTED['archer'])
     p = pose(0 if row == HIT else row, 0 if row == HIT else f)
     p['hands'] = [[.05, -.22, 1.18], [.12, -.62, .97]]
     p['elbows'] = [[-.42, -.02, 1.18], [.42, -.24, 1.13]]
@@ -290,7 +317,7 @@ def archer(row, f, style=None):
         p['hands'] = [[-.4, -.25, 1.1], [.35, -.55, 1.0]]
     if row == HIT:
         hit_lean(p, f)
-    _, head = soldier(p, 'archer', weapon=False)
+    _, head = soldier(p, kit, weapon=False)
     T = transform(p)
     h, pull = T(p['hands'][1]), T(p['hands'][0])
     effects = []
@@ -316,9 +343,10 @@ def archer(row, f, style=None):
 
 
 COATS = {'bay': ('#825032', '#9a6845', '#352820'), 'black': ('#2b2b33', '#3d3d48', '#15151a'),
-         'red': ('#7a2f22', '#a14a35', '#352820')}  # red: Red Hare
-RAMPS.update({'#7a2f22': 'bKLM', '#a14a35': 'KLLM'})
-MOUNT_REACH = {'spear': (.9, 1.75), 'snake': (.9, 1.75), 'glaive': (1.15, 1.95)}
+         'red': ('#7a2f22', '#a14a35', '#352820'),  # red: Red Hare
+         'white': ('#c9cdd0', '#dde1e3', '#5a5f66')}
+RAMPS.update({'#7a2f22': 'bKLM', '#a14a35': 'KLLM', '#c9cdd0': '3455', '#dde1e3': '4556', '#5a5f66': '1223'})
+MOUNT_REACH = {'spear': (.9, 1.75), 'snake': (.9, 1.75), 'glaive': (1.15, 1.95), 'halberd': (.9, 1.75)}
 RIDER_OFFSET = V([0, .12, 1.2])
 
 
@@ -405,8 +433,16 @@ def cavalry(row, f, style=None, kit='rider', coat='bay', weapon='spear'):
         center = [base + dv*.55*t + side*.6*math.sin(3*math.pi*t) for t in ts]
         strip([c - side*.9*(1 - t) for c, t in zip(center, ts)],
               [c + side*.9*(1 - t) for c, t in zip(center, ts)], '#d6e7ec')
-    elif weapon == 'spear':
+    elif weapon in ('spear', 'halberd'):
         m.poly([base - side, tip, base + side, base - dv*.06], '#d6e7ec')
+    if weapon == 'halberd':  # Sky Piercer: crescent blade on one side of the spear head
+        ts = np.linspace(0, 1, 6)
+        bulge = [math.sin(math.pi*t) for t in ts]
+        inner = [base - dv*.25 + dv*.45*t + side*(1.2 + .8*b) for t, b in zip(ts, bulge)]
+        outer = [base - dv*.25 + dv*.45*t + side*(1.2 + 2.6*b) for t, b in zip(ts, bulge)]
+        strip(inner, outer, '#d6e7ec')
+        m.rod(base - dv*.3, base - dv*.18, .06, GOLD)
+        m.ell(base - dv*.36 - side*.6, [.07]*3, RED)
     chest_c, muzzle, dark = COATS[coat]
     nod = [0, -.04, -.08, -.04][f] if row == 0 else 0
 

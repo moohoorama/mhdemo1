@@ -1,0 +1,2194 @@
+{
+ "version": 1,
+ "units": {
+  "infantry": {
+   "name": "경보병",
+   "image": "units/infantry.png",
+   "cell": [
+    56,
+    46
+   ],
+   "pivot": [
+    28,
+    38
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "bandit": {
+   "name": "황건 적병",
+   "image": "units/bandit.png",
+   "cell": [
+    58,
+    54
+   ],
+   "pivot": [
+    29,
+    41
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "spearman": {
+   "name": "창병",
+   "image": "units/spearman.png",
+   "cell": [
+    104,
+    50
+   ],
+   "pivot": [
+    52,
+    36
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "archer": {
+   "name": "궁병",
+   "image": "units/archer.png",
+   "cell": [
+    94,
+    48
+   ],
+   "pivot": [
+    47,
+    39
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "cavalry": {
+   "name": "경기병",
+   "image": "units/cavalry.png",
+   "cell": [
+    102,
+    53
+   ],
+   "pivot": [
+    51,
+    50
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "guanyu": {
+   "name": "관우",
+   "image": "units/guanyu.png",
+   "cell": [
+    70,
+    60
+   ],
+   "pivot": [
+    35,
+    57
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "zhangfei": {
+   "name": "장비",
+   "image": "units/zhangfei.png",
+   "cell": [
+    68,
+    53
+   ],
+   "pivot": [
+    34,
+    50
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "strategist": {
+   "name": "사마",
+   "image": "units/strategist.png",
+   "cell": [
+    47,
+    41
+   ],
+   "pivot": [
+    23,
+    33
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "liubei": {
+   "name": "유비",
+   "image": "units/liubei.png",
+   "cell": [
+    56,
+    46
+   ],
+   "pivot": [
+    28,
+    38
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "jianyong": {
+   "name": "간옹",
+   "image": "units/jianyong.png",
+   "cell": [
+    94,
+    48
+   ],
+   "pivot": [
+    47,
+    39
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "zhangjiao": {
+   "name": "장각",
+   "image": "units/zhangjiao.png",
+   "cell": [
+    62,
+    52
+   ],
+   "pivot": [
+    31,
+    40
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "huaxiong": {
+   "name": "화웅",
+   "image": "units/huaxiong.png",
+   "cell": [
+    70,
+    60
+   ],
+   "pivot": [
+    35,
+    57
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "lubu": {
+   "name": "여포",
+   "image": "units/lubu.png",
+   "cell": [
+    68,
+    53
+   ],
+   "pivot": [
+    34,
+    50
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  }
+ },
+ "tileset": {
+  "image": "map/tileset.png",
+  "sprites": {
+   "0": [
+    0,
+    0,
+    16,
+    8,
+    8,
+    0
+   ],
+   "1": [
+    16,
+    0,
+    16,
+    8,
+    8,
+    0
+   ],
+   "2": [
+    32,
+    0,
+    16,
+    8,
+    8,
+    0
+   ],
+   "3": [
+    48,
+    0,
+    16,
+    8,
+    8,
+    0
+   ],
+   "4": [
+    64,
+    0,
+    16,
+    8,
+    8,
+    0
+   ],
+   "5": [
+    80,
+    0,
+    16,
+    8,
+    8,
+    0
+   ],
+   "6": [
+    96,
+    0,
+    16,
+    8,
+    8,
+    0
+   ],
+   "7": [
+    112,
+    0,
+    16,
+    8,
+    8,
+    0
+   ],
+   "8": [
+    0,
+    8,
+    16,
+    8,
+    8,
+    0
+   ],
+   "9": [
+    16,
+    8,
+    16,
+    8,
+    8,
+    0
+   ],
+   "10": [
+    32,
+    8,
+    16,
+    8,
+    8,
+    0
+   ],
+   "11": [
+    48,
+    8,
+    16,
+    8,
+    8,
+    0
+   ],
+   "12": [
+    64,
+    8,
+    16,
+    8,
+    8,
+    0
+   ],
+   "13": [
+    80,
+    8,
+    16,
+    8,
+    8,
+    0
+   ],
+   "14": [
+    96,
+    8,
+    16,
+    8,
+    8,
+    0
+   ],
+   "15": [
+    112,
+    8,
+    16,
+    8,
+    8,
+    0
+   ],
+   "16": [
+    0,
+    16,
+    16,
+    8,
+    8,
+    0
+   ],
+   "17": [
+    16,
+    16,
+    16,
+    8,
+    8,
+    0
+   ],
+   "18": [
+    32,
+    16,
+    16,
+    8,
+    8,
+    0
+   ],
+   "19": [
+    48,
+    16,
+    16,
+    8,
+    8,
+    0
+   ],
+   "20": [
+    64,
+    16,
+    16,
+    8,
+    8,
+    0
+   ],
+   "21": [
+    80,
+    16,
+    16,
+    8,
+    8,
+    0
+   ],
+   "22": [
+    96,
+    16,
+    16,
+    8,
+    8,
+    0
+   ],
+   "23": [
+    112,
+    16,
+    16,
+    8,
+    8,
+    0
+   ],
+   "24": [
+    0,
+    24,
+    16,
+    8,
+    8,
+    0
+   ],
+   "25": [
+    16,
+    24,
+    16,
+    8,
+    8,
+    0
+   ],
+   "26": [
+    32,
+    24,
+    16,
+    8,
+    8,
+    0
+   ],
+   "27": [
+    48,
+    24,
+    16,
+    8,
+    8,
+    0
+   ],
+   "28": [
+    64,
+    24,
+    16,
+    8,
+    8,
+    0
+   ],
+   "29": [
+    80,
+    24,
+    16,
+    8,
+    8,
+    0
+   ],
+   "30": [
+    96,
+    24,
+    16,
+    8,
+    8,
+    0
+   ],
+   "31": [
+    112,
+    24,
+    16,
+    8,
+    8,
+    0
+   ],
+   "32": [
+    0,
+    32,
+    16,
+    8,
+    8,
+    0
+   ],
+   "33": [
+    16,
+    32,
+    16,
+    8,
+    8,
+    0
+   ],
+   "34": [
+    32,
+    32,
+    16,
+    8,
+    8,
+    0
+   ],
+   "35": [
+    48,
+    32,
+    16,
+    8,
+    8,
+    0
+   ],
+   "36": [
+    64,
+    32,
+    16,
+    8,
+    8,
+    0
+   ],
+   "37": [
+    80,
+    32,
+    16,
+    8,
+    8,
+    0
+   ],
+   "38": [
+    0,
+    40,
+    40,
+    48,
+    20,
+    44
+   ],
+   "39": [
+    40,
+    40,
+    40,
+    48,
+    20,
+    44
+   ],
+   "40": [
+    80,
+    40,
+    40,
+    48,
+    20,
+    44
+   ],
+   "41": [
+    120,
+    40,
+    40,
+    48,
+    20,
+    44
+   ],
+   "42": [
+    160,
+    40,
+    40,
+    48,
+    20,
+    44
+   ],
+   "43": [
+    200,
+    40,
+    40,
+    48,
+    20,
+    44
+   ],
+   "44": [
+    240,
+    40,
+    40,
+    48,
+    20,
+    44
+   ],
+   "45": [
+    280,
+    40,
+    40,
+    48,
+    20,
+    44
+   ],
+   "46": [
+    0,
+    88,
+    40,
+    48,
+    20,
+    44
+   ],
+   "47": [
+    40,
+    88,
+    40,
+    48,
+    20,
+    44
+   ],
+   "48": [
+    80,
+    88,
+    40,
+    48,
+    20,
+    44
+   ],
+   "49": [
+    120,
+    88,
+    40,
+    48,
+    20,
+    44
+   ],
+   "50": [
+    160,
+    88,
+    40,
+    48,
+    20,
+    44
+   ],
+   "51": [
+    200,
+    88,
+    40,
+    48,
+    20,
+    44
+   ],
+   "52": [
+    240,
+    88,
+    40,
+    48,
+    20,
+    44
+   ],
+   "53": [
+    280,
+    88,
+    40,
+    48,
+    20,
+    44
+   ],
+   "54": [
+    0,
+    136,
+    40,
+    48,
+    20,
+    44
+   ],
+   "55": [
+    40,
+    136,
+    40,
+    48,
+    20,
+    44
+   ],
+   "56": [
+    80,
+    136,
+    40,
+    48,
+    20,
+    44
+   ],
+   "57": [
+    120,
+    136,
+    40,
+    48,
+    20,
+    44
+   ],
+   "58": [
+    160,
+    136,
+    40,
+    48,
+    20,
+    44
+   ],
+   "59": [
+    200,
+    136,
+    40,
+    48,
+    20,
+    44
+   ],
+   "60": [
+    240,
+    136,
+    40,
+    48,
+    20,
+    44
+   ],
+   "61": [
+    280,
+    136,
+    40,
+    48,
+    20,
+    44
+   ],
+   "62": [
+    0,
+    184,
+    40,
+    48,
+    20,
+    44
+   ],
+   "63": [
+    40,
+    184,
+    40,
+    48,
+    20,
+    44
+   ],
+   "64": [
+    80,
+    184,
+    40,
+    48,
+    20,
+    44
+   ],
+   "65": [
+    120,
+    184,
+    40,
+    48,
+    20,
+    44
+   ],
+   "66": [
+    160,
+    184,
+    40,
+    48,
+    20,
+    44
+   ],
+   "67": [
+    200,
+    184,
+    40,
+    48,
+    20,
+    44
+   ],
+   "68": [
+    240,
+    184,
+    40,
+    48,
+    20,
+    44
+   ],
+   "69": [
+    280,
+    184,
+    40,
+    48,
+    20,
+    44
+   ]
+  },
+  "animations": {
+   "grass_0": {
+    "frames": [
+     42,
+     49,
+     50,
+     51
+    ],
+    "ms": 2000,
+    "loop": true
+   },
+   "grass_1": {
+    "frames": [
+     43,
+     52,
+     53,
+     54
+    ],
+    "ms": 2000,
+    "loop": true
+   },
+   "grass_2": {
+    "frames": [
+     44,
+     55,
+     56,
+     57
+    ],
+    "ms": 2000,
+    "loop": true
+   },
+   "grass_3": {
+    "frames": [
+     45,
+     58,
+     59,
+     60
+    ],
+    "ms": 2000,
+    "loop": true
+   },
+   "rock_large": {
+    "frames": [
+     41
+    ],
+    "ms": 2000,
+    "loop": true
+   },
+   "rock_medium": {
+    "frames": [
+     39
+    ],
+    "ms": 2000,
+    "loop": true
+   },
+   "rock_medium2": {
+    "frames": [
+     40
+    ],
+    "ms": 2000,
+    "loop": true
+   },
+   "rock_small": {
+    "frames": [
+     38
+    ],
+    "ms": 2000,
+    "loop": true
+   },
+   "tree_0": {
+    "frames": [
+     46,
+     61,
+     62,
+     63
+    ],
+    "ms": 2000,
+    "loop": true
+   },
+   "tree_1": {
+    "frames": [
+     47,
+     64,
+     65,
+     66
+    ],
+    "ms": 2000,
+    "loop": true
+   },
+   "tree_2": {
+    "frames": [
+     48,
+     67,
+     68,
+     69
+    ],
+    "ms": 2000,
+    "loop": true
+   },
+   "water": {
+    "frames": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "ms": 125,
+    "loop": true
+   }
+  },
+  "ground": {
+   "water": "0-7 (animation water)",
+   "wasteland": "8-22 (8 = full, 8+mask = edge)",
+   "grass": "23-37 (23 = full, 23+mask = edge)"
+  },
+  "decorations": "38-69 (see animations: rock_*, grass_*, tree_*)"
+ },
+ "factions": {
+  "team_keys": [
+   "#1b3358",
+   "#264d80",
+   "#3567a6",
+   "#5a8fd0"
+  ],
+  "factions": [
+   {
+    "id": "wei",
+    "name": "위",
+    "hue": null,
+    "chroma": 1.0,
+    "lightness": 0.0,
+    "ramp": [
+     "#1b3358",
+     "#264d80",
+     "#3567a6",
+     "#5a8fd0"
+    ]
+   },
+   {
+    "id": "shu",
+    "name": "촉",
+    "hue": 92,
+    "chroma": 1.7,
+    "lightness": 0.26,
+    "ramp": [
+     "#937812",
+     "#b79401",
+     "#d7b01e",
+     "#fddc76"
+    ]
+   },
+   {
+    "id": "wu",
+    "name": "오",
+    "hue": 27,
+    "chroma": 1.45,
+    "lightness": 0.06,
+    "ramp": [
+     "#712722",
+     "#9d352f",
+     "#c6453e",
+     "#f47065"
+    ]
+   },
+   {
+    "id": "turban",
+    "name": "황건적",
+    "hue": 74,
+    "chroma": 1.5,
+    "lightness": 0.19,
+    "ramp": [
+     "#895d14",
+     "#ae7616",
+     "#d38e11",
+     "#ffb84f"
+    ]
+   },
+   {
+    "id": "dong",
+    "name": "동탁·여포",
+    "hue": 268,
+    "chroma": 0.75,
+    "lightness": -0.08,
+    "ramp": [
+     "#151e3a",
+     "#27355d",
+     "#3c4d7f",
+     "#5f73a7"
+    ]
+   },
+   {
+    "id": "gongsun",
+    "name": "공손찬",
+    "hue": 250,
+    "chroma": 0.1,
+    "lightness": 0.4,
+    "ramp": [
+     "#a2a6aa",
+     "#bfc4ca",
+     "#dce2e9",
+     "#f0f6fd"
+    ]
+   },
+   {
+    "id": "yuan",
+    "name": "원소·원술",
+    "hue": 104,
+    "chroma": 1.6,
+    "lightness": 0.3,
+    "ramp": [
+     "#938a27",
+     "#b3a824",
+     "#d4c513",
+     "#fff059"
+    ]
+   },
+   {
+    "id": "barbarian",
+    "name": "이민족",
+    "hue": 312,
+    "chroma": 1.05,
+    "lightness": 0.04,
+    "ramp": [
+     "#4b315b",
+     "#6a4580",
+     "#895ba4",
+     "#b182ce"
+    ]
+   }
+  ]
+ },
+ "maps": [
+  "maps/B01.json",
+  "maps/B02.json",
+  "maps/B03.json"
+ ],
+ "structures": {
+  "version": 1,
+  "image": "map/structures.png",
+  "cell": [
+   40,
+   48
+  ],
+  "pivot": [
+   21,
+   39
+  ],
+  "pivot_note": "cell centre of the map diamond (32x16)",
+  "rise": 10,
+  "wall_mask_sides": [
+   "nw",
+   "ne",
+   "se",
+   "sw"
+  ],
+  "layer": {
+   "village": "object",
+   "floor": "ground",
+   "wall": "object"
+  },
+  "sprites": {
+   "village": 0,
+   "floor": 1,
+   "wall_00": 2,
+   "wall_01": 3,
+   "wall_02": 4,
+   "wall_03": 5,
+   "wall_04": 6,
+   "wall_05": 7,
+   "wall_06": 8,
+   "wall_07": 9,
+   "wall_08": 10,
+   "wall_09": 11,
+   "wall_10": 12,
+   "wall_11": 13,
+   "wall_12": 14,
+   "wall_13": 15,
+   "wall_14": 16,
+   "wall_15": 17
+  }
+ },
+ "shadows": {
+  "units": {
+   "infantry": {
+    "image": "units/infantry.shadow.png",
+    "source": "units/infantry.png",
+    "hash": "e2168971ab3d1397",
+    "cell": [
+     95,
+     29
+    ],
+    "pivot": [
+     36,
+     8
+    ]
+   },
+   "bandit": {
+    "image": "units/bandit.shadow.png",
+    "source": "units/bandit.png",
+    "hash": "c4714bcb4390c72a",
+    "cell": [
+     99,
+     30
+    ],
+    "pivot": [
+     37,
+     8
+    ]
+   },
+   "spearman": {
+    "image": "units/spearman.shadow.png",
+    "source": "units/spearman.png",
+    "hash": "c07630144d0f49ca",
+    "cell": [
+     142,
+     28
+    ],
+    "pivot": [
+     60,
+     8
+    ]
+   },
+   "archer": {
+    "image": "units/archer.shadow.png",
+    "source": "units/archer.png",
+    "hash": "05da7cf3b2aaed18",
+    "cell": [
+     134,
+     29
+    ],
+    "pivot": [
+     55,
+     8
+    ]
+   },
+   "cavalry": {
+    "image": "units/cavalry.shadow.png",
+    "source": "units/cavalry.png",
+    "hash": "5adc758c5d23257f",
+    "cell": [
+     148,
+     32
+    ],
+    "pivot": [
+     59,
+     8
+    ]
+   },
+   "guanyu": {
+    "image": "units/guanyu.shadow.png",
+    "source": "units/guanyu.png",
+    "hash": "ff38f76cb5b82c5b",
+    "cell": [
+     121,
+     35
+    ],
+    "pivot": [
+     43,
+     8
+    ]
+   },
+   "zhangfei": {
+    "image": "units/zhangfei.shadow.png",
+    "source": "units/zhangfei.png",
+    "hash": "3b93fce1cded2a6d",
+    "cell": [
+     114,
+     32
+    ],
+    "pivot": [
+     42,
+     8
+    ]
+   },
+   "strategist": {
+    "image": "units/strategist.shadow.png",
+    "source": "units/strategist.png",
+    "hash": "92785642323cf2b1",
+    "cell": [
+     83,
+     27
+    ],
+    "pivot": [
+     31,
+     8
+    ]
+   },
+   "liubei": {
+    "image": "units/liubei.shadow.png",
+    "source": "units/liubei.png",
+    "hash": "14c812200217aadc",
+    "cell": [
+     95,
+     29
+    ],
+    "pivot": [
+     36,
+     8
+    ]
+   },
+   "jianyong": {
+    "image": "units/jianyong.shadow.png",
+    "source": "units/jianyong.png",
+    "hash": "fef2cc0d4cf7a29c",
+    "cell": [
+     134,
+     29
+    ],
+    "pivot": [
+     55,
+     8
+    ]
+   },
+   "zhangjiao": {
+    "image": "units/zhangjiao.shadow.png",
+    "source": "units/zhangjiao.png",
+    "hash": "fe907002af423aef",
+    "cell": [
+     102,
+     29
+    ],
+    "pivot": [
+     39,
+     8
+    ]
+   },
+   "huaxiong": {
+    "image": "units/huaxiong.shadow.png",
+    "source": "units/huaxiong.png",
+    "hash": "6500e2ab2c0ee19b",
+    "cell": [
+     121,
+     35
+    ],
+    "pivot": [
+     43,
+     8
+    ]
+   },
+   "lubu": {
+    "image": "units/lubu.shadow.png",
+    "source": "units/lubu.png",
+    "hash": "958e4dffc8e6e950",
+    "cell": [
+     114,
+     32
+    ],
+    "pivot": [
+     42,
+     8
+    ]
+   }
+  },
+  "tileset": {
+   "image": "map/shadows.png",
+   "source": "map/tileset.png",
+   "hash": "9795248613c57800",
+   "sprites": {
+    "38": [
+     0,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "39": [
+     83,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "40": [
+     166,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "41": [
+     249,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "46": [
+     332,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "47": [
+     415,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "48": [
+     498,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "61": [
+     581,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "62": [
+     664,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "63": [
+     747,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "64": [
+     830,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "65": [
+     913,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "66": [
+     996,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "67": [
+     1079,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "68": [
+     1162,
+     0,
+     83,
+     31,
+     28,
+     8
+    ],
+    "69": [
+     1245,
+     0,
+     83,
+     31,
+     28,
+     8
+    ]
+   }
+  }
+ },
+ "shadow_rgb": [
+  18,
+  26,
+  14
+ ]
+}

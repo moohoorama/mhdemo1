@@ -25,6 +25,15 @@ python3 ver3/tools/build_assets.py                   # ver3/asset 재패키징 (
 | `cavalry` | 경기병 | 철투구, 창, 밤색 말 | 돌진 찌르기 `charge` | 102×53 · (51,50) |
 | `guanyu` | 관우 | 녹건·녹포, 붉은 얼굴, 긴 수염, 청룡언월도, 적토마 | 언월도 횡베기 `glaive_sweep` | 70×60 · (35,57) |
 | `zhangfei` | 장비 | 검은 투구·갑옷, 거뭇한 얼굴, 뻣뻣한 수염, 장팔사모, 흑마 | 휘두르기 `swing` | 68×53 · (34,50) |
+| `strategist` | 사마(문관) | 검은 관모, 진영색 도포, 깃털부채 | 횡베기 `sweep` | `frames.json` |
+| `liubei` | 유비 | 금빛 관모, 작은 귀, 진영색 도포·금빛 어깨, 쌍검 | 횡베기 `sweep` | `frames.json` |
+| `jianyong` | 간옹 | 흰 윤건, 진영색 옷, 활 | 강궁 `power` | `frames.json` |
+| `zhangjiao` | 장각 | 황건 띠, 긴 수염, 삼베 도포, 금고리 지팡이 | 횡베기 `sweep` | `frames.json` |
+| `huaxiong` | 화웅 | 검은 투구·갑옷, 언월도, 흑마 | 언월도 횡베기 `glaive_sweep` | `frames.json` |
+| `lubu` | 여포 | 꿩깃 금관, 붉은 갑옷, 방천화극, 적토마 | 휘두르기 `swing` | `frames.json` |
+
+ver4에서 추가한 6종(사마~여포)은 `tools/unit3d/looks.py`의 후보 중 사용자가 고른 외형이다(`SELECTED`, 나머지는 백업).
+후보 비교: `python3 tools/unit3d/look_candidates.py [--unit KEY]` → `output/ver4-look-candidates*.png`.
 
 셀은 병종마다 전 프레임의 합집합으로 자동으로 정해지므로 다시 생성하면 바뀔 수 있다. 값은 `frames.json`이 기준이다.
 재생 시간(ms): 대기 180, 걷기 120, 공격 180·280·240·200, 피격 120, 탈진 220.

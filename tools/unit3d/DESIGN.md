@@ -25,6 +25,9 @@ ver2 병종(경보병·황건 적병·창병·궁병·경기병·관우·장비)
 | `factions.py` | 진영 색조·채도·밝기 → 치환 램프 |
 | `base_model.py` | 원본 3D 모델 (수정하지 않음) |
 | `attack_candidates.py` | 공격 후보 비교 이미지 |
+| `looks.py` | ver4 신규 병종·장수 외형 후보(장비·머리 조합)와 선택 `SELECTED`; `build.UNITS`에 고른 것이 추가된다 |
+| `look_candidates.py` | 외형 후보 비교 이미지 (좌하단 대기·공격 순간) |
+| `structures.py` | ver4 맵 구조물: 마을 초가집 묶음, 성벽(성가퀴·벽면 16변형), 성내 돌바닥 → `ver4-structures/` |
 | `candidates_2d.py` | 초기 2D 후보 생성기 (보관) |
 
 기준은 [`UNIT_ART_GUIDE.md`](../spritetool/assets/UNIT_ART_GUIDE.md), 작업 절차는 `.claude/skills/unit-sprite`.

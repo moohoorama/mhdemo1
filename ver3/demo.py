@@ -1,23 +1,26 @@
 #!/usr/bin/env python3
 """ver3 battle demo (pygame): two factions take turns on the demo map.
 
-Each turn the active side reinforces from its map edge, then its units, starting a
-moment apart, walk toward the nearest enemy and attack when in reach. The blow lands on the attack's third
-frame: the target plays its hit motion and shakes sideways, away from the attacker
-first. At half health or less a unit idles in its exhausted motion; at zero it
-blinks and disappears.
+Each turn the active side reinforces from its map edge, then its units walk toward the
+nearest enemy and attack when in reach. The turn is resolved one unit at a time and then
+replayed with independent actions overlapping (claim replay, see _ClaimReplay.md). The blow
+lands on the attack's third frame: the target plays its hit motion and shakes sideways, away
+from the attacker first. At half health or less a unit idles in its exhausted motion; at zero
+it blinks and disappears.
 
   python3 ver3/demo.py                      # window
   python3 ver3/demo.py --wave 8 --fps 30    # start with 8 reinforcements per turn at 30 fps
+  python3 ver3/demo.py --accel 4            # each shown frame advances four frames of play
   python3 ver3/demo.py --shots out 3 6 12   # headless: save frames at 3s, 6s, 12s
-The bottom bar picks the reinforcement size (1-16 per turn) and the frame rate.
-Keys: Space pause, F fast forward, R restart, 1-5 reinforcement size, [ ] frame rate, Esc quit.
+The bottom bar picks the reinforcement size (1-16 per turn), the frame rate and the acceleration.
+Keys: Space pause, F cycle acceleration, R restart, 1-5 reinforcement size, [ ] frame rate, Esc quit.
 """
 import argparse
 import math
 import os
 import random
 import sys
+from dataclasses import dataclass, field
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -25,9 +28,9 @@ sys.path.insert(0, str(ROOT))
 
 SCALE = 2
 FPS_CHOICES = [15, 30, 60, 120]   # frames per second; motion is timed in ms, so this only sets smoothness
+ACCEL_CHOICES = [1, 2, 4, 8]      # frames of play advanced per shown frame
 WAVES = [1, 2, 4, 8, 16]          # reinforcements per turn
 STEP = .28            # seconds per tile while walking
-STAGGER = .25         # start delay between units acting in the same turn
 SIDES = [
     dict(faction='shu', units=['guanyu', 'zhangfei', 'infantry', 'spearman', 'archer', 'cavalry'], edge='west'),
     dict(faction='wei', units=['infantry', 'spearman', 'archer', 'cavalry'], edge='east'),
@@ -53,11 +56,14 @@ def facing(du, dv):
 
 
 class Unit:
+    """`cell` and `hp` are the rules state, already resolved for the whole turn;
+    `at`, `pos` and `shown_hp` are what the replay has shown so far."""
+
     def __init__(self, art, side, ramp, cell):
         self.art, self.side, self.ramp = art, side, ramp
         hp, self.attack, self.move, self.reach = STATS[art.key]
-        self.hp = self.max_hp = hp
-        self.cell = cell
+        self.hp = self.shown_hp = self.max_hp = hp
+        self.cell = self.at = cell
         self.pos = [float(cell[0]), float(cell[1])]
         self.direction = 'SE' if side == 0 else 'NW'
         self.anim, self.anim_ms = 'idle', 0.0
@@ -72,19 +78,23 @@ class Unit:
     def alive(self):
         return self.hp > 0
 
+    @property
+    def shown_alive(self):
+        return self.shown_hp > 0
+
     def rest_anim(self):
-        return 'exhausted' if self.hp <= self.max_hp/2 else 'idle'
+        return 'exhausted' if self.shown_hp <= self.max_hp/2 else 'idle'
 
     def play(self, anim):
         self.anim, self.anim_ms = anim, 0.0
 
     def face(self, other_cell):
-        self.direction = facing(other_cell[0] - self.cell[0], other_cell[1] - self.cell[1])
+        self.direction = facing(other_cell[0] - self.at[0], other_cell[1] - self.at[1])
 
     def step_to(self, cell):
         self.face(cell)
-        self.walk = (self.cell, cell, 0.0)
-        self.cell = cell
+        self.walk = (self.at, cell, 0.0)
+        self.at = cell
         if self.anim != 'walk':
             self.play('walk')
 
@@ -121,6 +131,24 @@ class Unit:
         return origin[0] + x + dx, origin[1] + y
 
 
+@dataclass(eq=False)
+class Action:
+    """One unit's resolved turn: the cells it walks, whom it hits for how much,
+    and the earlier actions that must finish before it may be shown."""
+    unit: Unit
+    path: list
+    target: Unit = None
+    damage: int = 0
+    after: set = field(default_factory=set)
+    done: bool = False
+
+    def claims(self, start):
+        keys = {self.unit, start, *self.path}
+        if self.target:
+            keys |= {self.target, self.target.cell}
+        return keys
+
+
 class Battle:
     def __init__(self, assets, rng, wave=1):
         self.assets, self.rng, self.wave = assets, rng, wave
@@ -132,7 +160,7 @@ class Battle:
 
     # ---- board -------------------------------------------------------------
     def occupied(self, cell, ignore=None):
-        return any(u.cell == cell and u is not ignore and not u.gone for u in self.units)
+        return any(u.cell == cell and u is not ignore and u.alive for u in self.units)
 
     def enemies(self, unit):
         return [u for u in self.units if u.side != unit.side and u.alive]
@@ -184,16 +212,13 @@ class Battle:
                 self.units.append(Unit(self.assets.units[self.rng.choice(keys)], side, ramp, cell))
                 count -= 1
 
-    def strike(self, attacker, target, ox):
-        if not target.alive:  # another unit finished it during the wind-up
-            return
-        damage = self.rng.randint(*attacker.attack)
-        target.hp = max(0, target.hp - damage)
+    def strike(self, attacker, target, damage, ox):
+        target.shown_hp = max(0, target.shown_hp - damage)
         target.play('hit')
         # shake away from the attacker first (hit from the left -> pushed right)
         sign = 1 if attacker.foot(ox)[0] <= target.foot(ox)[0] else -1
         target.shake = (sign, 0.0)
-        if not target.alive:
+        if not target.shown_alive:
             target.dying = 0.0
         self.popups.append([target, f'-{damage}', 0.0])
 
@@ -206,48 +231,71 @@ class Battle:
             yield .9
             order = sorted((u for u in self.units if u.side == self.side and u.alive),
                            key=lambda u: len(self.plan(u)[0]))
-            yield from self.together([self.act(u) for u in order])
+            yield from self.replay(self.resolve(order))
             self.side ^= 1
             yield .4
 
-    @staticmethod
-    def together(scripts):
-        """Run unit scripts side by side, each starting STAGGER seconds after the previous one."""
-        timers = [[script, i*STAGGER] for i, script in enumerate(scripts)]
-        while timers:
-            wait = min(t for _, t in timers)
+    def resolve(self, order):
+        """Play the turn by the rules, one unit after another, without showing anything.
+        Each action waits for the last earlier action that claimed any of the same units or cells."""
+        claims, actions = {}, []
+        for unit in order:
+            if not unit.alive:
+                continue
+            start = unit.cell
+            path = self.plan(unit)[0][:unit.move]
+            if path:
+                unit.cell = path[-1]
+            action = Action(unit, path)
+            action.target = min((e for e in self.enemies(unit) if self.in_reach(unit, unit.cell, e)),
+                                key=lambda e: e.hp, default=None)
+            if action.target:
+                action.damage = self.rng.randint(*unit.attack)
+                action.target.hp = max(0, action.target.hp - action.damage)
+            keys = action.claims(start)
+            action.after = {claims[k] for k in keys if k in claims}
+            for k in keys:
+                claims[k] = action
+            actions.append(action)
+        return actions
+
+    def replay(self, actions):
+        """Show resolved actions, each as soon as everything it waits for is done."""
+        waiting, running = list(actions), []
+        while waiting or running:
+            for action in [a for a in waiting if all(p.done for p in a.after)]:
+                waiting.remove(action)
+                running.append([action, self.perform(action), 0.0])
+            wait = min(t for _, _, t in running)
             if wait > 0:
                 yield wait
-            for entry in timers:
-                entry[1] -= wait
-            for entry in [e for e in timers if e[1] <= 1e-9]:
+            for entry in running:
+                entry[2] -= wait
+            for entry in [e for e in running if e[2] <= 1e-9]:
                 try:
-                    entry[1] = next(entry[0])
+                    entry[2] = next(entry[1])
                 except StopIteration:
-                    timers.remove(entry)
+                    entry[0].done = True
+                    running.remove(entry)
 
-    def act(self, unit):
-        if not unit.alive:
-            return
-        path, target = self.plan(unit)
-        for cell in path[:unit.move]:
-            if not unit.alive or self.occupied(cell, unit):  # another unit took the cell meanwhile
-                break
+    def perform(self, action):
+        """Show one action. It ends once the target's hit or death effect has finished too."""
+        unit, target = action.unit, action.target
+        for cell in action.path:
             unit.step_to(cell)
             yield STEP
         if unit.anim == 'walk':
             unit.play(unit.rest_anim())
-        target = min((e for e in self.enemies(unit) if self.in_reach(unit, unit.cell, e)),
-                     key=lambda e: e.hp, default=None)
         if not target:
             yield .1
             return
-        unit.face(target.cell)
+        unit.face(target.at)
         unit.play('attack')
         ms = unit.art.animations['attack']['ms']
         yield sum(ms[:2])/1000          # gather power
-        self.strike(unit, target, (0, 0))
-        yield sum(ms[2:])/1000 + .25     # follow through
+        self.strike(unit, target, action.damage, (0, 0))
+        effect = BLINK_TIME if not target.shown_alive else max(SHAKE_TIME, target.art.length('hit')/1000)
+        yield max(sum(ms[2:])/1000 + .25, effect)  # follow through
 
     def update(self, dt):
         self.wait -= dt
@@ -274,6 +322,9 @@ class View:
         self.font = pygame.font.Font(font_path, 13)
         self.big = pygame.font.Font(font_path, 18)
         self.grounds = [self.bake_ground(m, frame) for frame in range(8)]
+        self.shadows = pygame.Surface(self.size, pygame.SRCALPHA)
+        self.ground_clip = self.grounds[0].copy()  # alpha = where the ground is, color = white
+        self.ground_clip.fill((255, 255, 255, 0), special_flags=pygame.BLEND_RGBA_MAX)
 
     def bake_ground(self, m, water_frame):
         pg = self.pg
@@ -290,14 +341,23 @@ class View:
         s.fill((30, 38, 46, 255))
         tiles = self.assets.tileset
         s.blit(self.grounds[tiles.animation_frame('water', clock_ms)], (0, 0))
+        self.shadows.fill((0, 0, 0, 0))
         items = []
         for x, y, anim, phase in battle.map.decorations:
             sid = tiles.animation_frame(anim, clock_ms + phase*125)
             image, (px, py) = tiles.sprites[sid]
-            items.append((self.origin[1] + y, 0, image, (self.origin[0] + x - px, self.origin[1] + y - py)))
+            foot = (self.origin[0] + x, self.origin[1] + y)
+            items.append((foot[1], 0, image, (foot[0] - px, foot[1] - py)))
+            if sid in tiles.shadows:
+                self.cast(tiles.shadows[sid], foot)
         for u in battle.units:
             fx, fy = u.foot(self.origin)
             items.append((fy, 1, u, (fx, fy)))
+            if u.visible():
+                self.cast(u.art.shadow(u.direction, u.anim, u.art.frame_index(u.anim, u.anim_ms)), (fx, fy))
+        # one layer so overlapping shadows do not darken each other, kept on the ground
+        self.shadows.blit(self.ground_clip, (0, 0), special_flags=pg.BLEND_RGBA_MULT)
+        s.blit(self.shadows, (0, 0))
         for depth, kind, obj, pos in sorted(items, key=lambda i: (i[0], i[1])):
             if kind == 0:
                 s.blit(obj, pos)
@@ -312,32 +372,37 @@ class View:
         s.blit(banner, (16, 12))
         return s
 
+    def cast(self, shadow, foot):
+        image, (px, py) = shadow
+        self.shadows.blit(image, (round(foot[0] - px), round(foot[1] - py)), special_flags=self.pg.BLEND_RGBA_MAX)
+
     def draw_unit(self, u, foot):
         pg = self.pg
         fx, fy = foot
-        ring = pg.Surface((22, 9), pg.SRCALPHA)
-        r, g, b = (int(u.ramp[2][i:i+2], 16) for i in (1, 3, 5))
-        pg.draw.ellipse(ring, (r, g, b, 120), ring.get_rect())
-        self.surface.blit(ring, (fx - 11, fy - 5))
         if not u.visible():
             return
         art = u.art
         frame = art.frame(u.ramp, u.direction, u.anim, art.frame_index(u.anim, u.anim_ms))
         self.surface.blit(frame, (round(fx - art.pivot[0]), round(fy - art.pivot[1])))
-        if u.alive:
+        if u.shown_alive:
             top = fy - art.pivot[1] + u.top - 4
             pg.draw.rect(self.surface, (20, 20, 24), (fx - 9, top, 18, 3))
-            k = u.hp/u.max_hp
+            k = u.shown_hp/u.max_hp
             color = (96, 214, 110) if k > .5 else (236, 184, 64) if k > .25 else (226, 72, 60)
             pg.draw.rect(self.surface, color, (fx - 8, top + 1, max(1, round(16*k)), 1))
 
 
 FONT = '/System/Library/Fonts/AppleSDGothicNeo.ttc'
 PANEL_H = 52
+GROUPS = (('wave', '증원', WAVES), ('fps', 'FPS', FPS_CHOICES), ('accel', '가속', ACCEL_CHOICES))
+
+
+def button_text(kind, value):
+    return f'×{value}' if kind == 'accel' else str(value)
 
 
 class Controls:
-    """Bottom bar: reinforcement size and frame rate buttons, live counters."""
+    """Bottom bar: reinforcement size, frame rate and acceleration buttons, live counters."""
 
     def __init__(self, pygame, font_path, width, top):
         self.pg, self.top, self.width = pygame, top, width
@@ -345,10 +410,10 @@ class Controls:
         self.small = pygame.font.Font(font_path, 15)
         self.buttons = []  # (rect, kind, value)
         x = 16
-        for kind, label, values in (('wave', '증원', WAVES), ('fps', 'FPS', FPS_CHOICES)):
+        for kind, label, values in GROUPS:
             x += self.font.size(label)[0] + 10
             for v in values:
-                w = self.font.size(str(v))[0] + 18
+                w = self.font.size(button_text(kind, v))[0] + 18
                 self.buttons.append((pygame.Rect(x, top + 10, w, 32), kind, v))
                 x += w + 6
             x += 24
@@ -360,31 +425,30 @@ class Controls:
                 return kind, value
         return None
 
-    def draw(self, screen, battle, fps, measured):
+    def draw(self, screen, battle, fps, accel, measured):
         pg = self.pg
         pg.draw.rect(screen, (22, 28, 36), (0, self.top, self.width, PANEL_H))
-        x = 16
-        for kind, label in (('wave', '증원'), ('fps', 'FPS')):
+        for kind, label, _ in GROUPS:
             first = next(r for r, k, _ in self.buttons if k == kind)
             screen.blit(self.font.render(label, True, (190, 205, 220)), (first.x - self.font.size(label)[0] - 10, self.top + 14))
         for rect, kind, value in self.buttons:
-            active = value == (battle.wave if kind == 'wave' else fps)
+            active = value == {'wave': battle.wave, 'fps': fps, 'accel': accel}[kind]
             pg.draw.rect(screen, (56, 87, 115) if active else (38, 49, 62), rect, border_radius=6)
             pg.draw.rect(screen, (131, 200, 255) if active else (65, 80, 100), rect, 1, border_radius=6)
-            text = self.font.render(str(value), True, (237, 243, 250))
+            text = self.font.render(button_text(kind, value), True, (237, 243, 250))
             screen.blit(text, text.get_rect(center=rect.center))
-        counts = [sum(1 for u in battle.units if u.side == i and u.alive) for i in range(2)]
+        counts = [sum(1 for u in battle.units if u.side == i and u.shown_alive) for i in range(2)]
         names = [battle.assets.factions[SIDES[i]['faction']]['name'] for i in range(2)]
-        info = f'실제 {measured:.0f} fps · {names[0]} {counts[0]} : {counts[1]} {names[1]} · 최대 {battle.cap()}명/진영'
+        info = f'실제 {measured:.0f} fps · {names[0]} {counts[0]} : {counts[1]} {names[1]} · 최대 {battle.cap()}명'
         screen.blit(self.small.render(info, True, (152, 170, 188)), (self.labels_x, self.top + 17))
-        keys = 'Space 정지 · F 빨리 · R 재시작 · 1–5 증원 · [ ] FPS'
+        keys = 'Space 정지 · F 가속 · R 재시작 · 1–5 증원 · [ ] FPS'
         screen.blit(self.small.render(keys, True, (120, 136, 152)), (self.width - self.small.size(keys)[0] - 16, self.top + 17))
 
 
-def compose(screen, view, controls, battle, clock_ms, fps, measured):
+def compose(screen, view, controls, battle, clock_ms, fps, accel, measured):
     surf = view.draw(battle, clock_ms)
     screen.blit(view.pg.transform.scale(surf, (surf.get_width()*SCALE, surf.get_height()*SCALE)), (0, 0))
-    controls.draw(screen, battle, fps, measured)
+    controls.draw(screen, battle, fps, accel, measured)
 
 
 def main():
@@ -393,6 +457,8 @@ def main():
     ap.add_argument('--seed', type=int, default=7)
     ap.add_argument('--wave', type=int, choices=WAVES, default=1, help='reinforcements per turn')
     ap.add_argument('--fps', type=int, choices=FPS_CHOICES, default=60)
+    ap.add_argument('--accel', type=int, choices=ACCEL_CHOICES, default=1,
+                    help='frames of play advanced per shown frame')
     args = ap.parse_args()
     if args.shots:
         os.environ.setdefault('SDL_VIDEODRIVER', 'dummy')
@@ -406,7 +472,7 @@ def main():
     battle = Battle(assets, random.Random(args.seed), args.wave)
     size = (view.size[0]*SCALE, view.size[1]*SCALE + PANEL_H)
     controls = Controls(pygame, font, size[0], size[1] - PANEL_H)
-    fps = args.fps
+    fps, accel = args.fps, args.accel
     if args.shots:
         screen = pygame.Surface(size)
         prefix, times = args.shots[0], sorted(float(t) for t in args.shots[1:])
@@ -415,12 +481,12 @@ def main():
             while clock_ms/1000 < t:
                 battle.update(dt)
                 clock_ms += dt*1000
-            compose(screen, view, controls, battle, clock_ms, fps, fps)
+            compose(screen, view, controls, battle, clock_ms, fps, accel, fps)
             pygame.image.save(screen, f'{prefix}-{t:g}s.png')
         return
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('ver3 · 전투 데모')
-    clock, clock_ms, paused, speed = pygame.time.Clock(), 0.0, False, 1
+    clock, clock_ms, paused = pygame.time.Clock(), 0.0, False
     while True:
         dt = clock.tick(fps)/1000
         for e in pygame.event.get():
@@ -430,13 +496,15 @@ def main():
                 hit = controls.click(e.pos)
                 if hit and hit[0] == 'wave':
                     battle.wave = hit[1]
-                elif hit:
+                elif hit and hit[0] == 'fps':
                     fps = hit[1]
+                elif hit:
+                    accel = hit[1]
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_SPACE:
                     paused = not paused
                 elif e.key == pygame.K_f:
-                    speed = 3 if speed == 1 else 1
+                    accel = ACCEL_CHOICES[(ACCEL_CHOICES.index(accel) + 1) % len(ACCEL_CHOICES)]
                 elif e.key == pygame.K_r:
                     battle = Battle(assets, random.Random(), battle.wave)
                 elif pygame.K_1 <= e.key <= pygame.K_5:
@@ -445,10 +513,10 @@ def main():
                     i = FPS_CHOICES.index(fps) + (1 if e.key == pygame.K_RIGHTBRACKET else -1)
                     fps = FPS_CHOICES[max(0, min(len(FPS_CHOICES) - 1, i))]
         if not paused:
-            for _ in range(speed):
+            for _ in range(accel):  # advance `accel` frames of play, show only the last
                 battle.update(min(dt, .1))
                 clock_ms += min(dt, .1)*1000
-        compose(screen, view, controls, battle, clock_ms, fps, clock.get_fps())
+        compose(screen, view, controls, battle, clock_ms, fps, accel, clock.get_fps())
         pygame.display.flip()
 
 

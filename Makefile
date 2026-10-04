@@ -22,9 +22,9 @@ objects:
 	$(SPRITETOOL) --frames 4 --frame 0 --outline 1 $(SPRITE_SOURCE)/grass_1.png $(ASSET_TEMP)/05.png
 	$(SPRITETOOL) --frames 4 --frame 0 --outline 1 $(SPRITE_SOURCE)/grass_2.png $(ASSET_TEMP)/06.png
 	$(SPRITETOOL) --frames 4 --frame 0 --outline 1 $(SPRITE_SOURCE)/grass_3.png $(ASSET_TEMP)/07.png
-	$(SPRITETOOL) --size 36x33 --outline 1 $(SPRITE_SOURCE)/tree1.png $(ASSET_TEMP)/08.png
-	$(SPRITETOOL) --crop 126,139,1059,945 --size 36x32 --outline 1 $(SPRITE_SOURCE)/tree2.png $(ASSET_TEMP)/09.png
-	$(SPRITETOOL) --crop 208,95,875,1020 --size 36x42 --outline 1 $(SPRITE_SOURCE)/tree3.png $(ASSET_TEMP)/10.png
+	$(SPRITETOOL) --frames 4 --frame 0 --trim --size 36x35 --outline 1 $(SPRITE_SOURCE)/tree-sway/tree1.png $(ASSET_TEMP)/08.png
+	$(SPRITETOOL) --frames 4 --frame 0 --trim --size 36x35 --outline 1 $(SPRITE_SOURCE)/tree-sway/tree2.png $(ASSET_TEMP)/09.png
+	$(SPRITETOOL) --frames 4 --frame 0 --trim --size 30x42 --outline 1 $(SPRITE_SOURCE)/tree-sway/tree3.png $(ASSET_TEMP)/10.png
 	$(SPRITETOOL) --frames 4 --frame 1 --outline 1 $(SPRITE_SOURCE)/grass_0.png $(ASSET_TEMP)/11.png
 	$(SPRITETOOL) --frames 4 --frame 2 --outline 1 $(SPRITE_SOURCE)/grass_0.png $(ASSET_TEMP)/12.png
 	$(SPRITETOOL) --frames 4 --frame 3 --outline 1 $(SPRITE_SOURCE)/grass_0.png $(ASSET_TEMP)/13.png
@@ -37,7 +37,16 @@ objects:
 	$(SPRITETOOL) --frames 4 --frame 1 --outline 1 $(SPRITE_SOURCE)/grass_3.png $(ASSET_TEMP)/20.png
 	$(SPRITETOOL) --frames 4 --frame 2 --outline 1 $(SPRITE_SOURCE)/grass_3.png $(ASSET_TEMP)/21.png
 	$(SPRITETOOL) --frames 4 --frame 3 --outline 1 $(SPRITE_SOURCE)/grass_3.png $(ASSET_TEMP)/22.png
-	$(SPRITETOOL) --atlas 40x48,8x3 --atlas-pivot 20,44 --sprite-pivot center,bottom-2 $(ASSET_TEMP)/*.png $(ASSET_DIR)/objects.png
+	$(SPRITETOOL) --frames 4 --frame 1 --trim --size 36x35 --outline 1 $(SPRITE_SOURCE)/tree-sway/tree1.png $(ASSET_TEMP)/23.png
+	$(SPRITETOOL) --frames 4 --frame 2 --trim --size 36x35 --outline 1 $(SPRITE_SOURCE)/tree-sway/tree1.png $(ASSET_TEMP)/24.png
+	$(SPRITETOOL) --frames 4 --frame 3 --trim --size 36x35 --outline 1 $(SPRITE_SOURCE)/tree-sway/tree1.png $(ASSET_TEMP)/25.png
+	$(SPRITETOOL) --frames 4 --frame 1 --trim --size 36x35 --outline 1 $(SPRITE_SOURCE)/tree-sway/tree2.png $(ASSET_TEMP)/26.png
+	$(SPRITETOOL) --frames 4 --frame 2 --trim --size 36x35 --outline 1 $(SPRITE_SOURCE)/tree-sway/tree2.png $(ASSET_TEMP)/27.png
+	$(SPRITETOOL) --frames 4 --frame 3 --trim --size 36x35 --outline 1 $(SPRITE_SOURCE)/tree-sway/tree2.png $(ASSET_TEMP)/28.png
+	$(SPRITETOOL) --frames 4 --frame 1 --trim --size 30x42 --outline 1 $(SPRITE_SOURCE)/tree-sway/tree3.png $(ASSET_TEMP)/29.png
+	$(SPRITETOOL) --frames 4 --frame 2 --trim --size 30x42 --outline 1 $(SPRITE_SOURCE)/tree-sway/tree3.png $(ASSET_TEMP)/30.png
+	$(SPRITETOOL) --frames 4 --frame 3 --trim --size 30x42 --outline 1 $(SPRITE_SOURCE)/tree-sway/tree3.png $(ASSET_TEMP)/31.png
+	$(SPRITETOOL) --atlas 40x48,8x4 --atlas-pivot 20,44 --sprite-pivot center,bottom-2 $(ASSET_TEMP)/*.png $(ASSET_DIR)/objects.png
 	rm -rf -- "$(ASSET_TEMP)"
 
 clean-assets:

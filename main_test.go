@@ -28,7 +28,7 @@ func TestEmbeddedTiles(t *testing.T) {
 	if got := c.Images[0].Bounds().Size(); got != image.Pt(128, 40) {
 		t.Fatalf("terrain atlas size %v", got)
 	}
-	if got := c.Images[1].Bounds().Size(); got != image.Pt(320, 144) {
+	if got := c.Images[1].Bounds().Size(); got != image.Pt(320, 192) {
 		t.Fatalf("object atlas size %v", got)
 	}
 }
@@ -171,12 +171,12 @@ func TestSwaySpeedAndContinuity(t *testing.T) {
 		}
 	}
 }
-func TestGrassAnimationFrames(t *testing.T) {
+func TestPlantAnimationFrames(t *testing.T) {
 	c, err := graphics.Load(os.DirFS("assets"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	for object := terrain.GrassTuft1; object <= terrain.GrassTuft4; object++ {
+	for object := terrain.GrassTuft1; object <= terrain.TallTree; object++ {
 		seen := map[string]bool{}
 		baseID := terrain.AssetCount + terrain.ObjectSprite(object, 0)
 		for frame := 0; frame < 4; frame++ {
@@ -187,7 +187,7 @@ func TestGrassAnimationFrames(t *testing.T) {
 			for y := c.Sprites[id].Pivot.Y; y < rect.Dy(); y++ {
 				for x := 0; x < rect.Dx(); x++ {
 					if im.At(rect.Min.X+x, rect.Min.Y+y) != baseImage.At(baseRect.Min.X+x, baseRect.Min.Y+y) {
-						t.Fatal("grass roots moved")
+						t.Fatal("plant roots moved", object)
 					}
 				}
 			}
@@ -195,11 +195,11 @@ func TestGrassAnimationFrames(t *testing.T) {
 			tree := terrain.Placement{Object: terrain.LargeTree}
 			tick := frame * terrain.TreeFrameTicks
 			if grass.Sprite(tick) != terrain.ObjectSprite(object, tree.TreeFrame(tick)) {
-				t.Fatal("grass timing differs")
+				t.Fatal("plant timing differs", object)
 			}
 		}
 		if len(seen) != 4 {
-			t.Fatalf("grass %d has %d poses", object, len(seen))
+			t.Fatalf("plant %d has %d poses", object, len(seen))
 		}
 	}
 }

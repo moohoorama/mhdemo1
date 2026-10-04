@@ -13,7 +13,7 @@
       "cell_width": 40,
       "cell_height": 48,
       "columns": 8,
-      "rows": 3
+      "rows": 4
     }
   ],
   "sprites": [
@@ -504,6 +504,78 @@
         "X": 20,
         "Y": 44
       }
+    },
+    {
+      "sheet": 1,
+      "cell": 23,
+      "pivot": {
+        "X": 20,
+        "Y": 44
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 24,
+      "pivot": {
+        "X": 20,
+        "Y": 44
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 25,
+      "pivot": {
+        "X": 20,
+        "Y": 44
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 26,
+      "pivot": {
+        "X": 20,
+        "Y": 44
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 27,
+      "pivot": {
+        "X": 20,
+        "Y": 44
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 28,
+      "pivot": {
+        "X": 20,
+        "Y": 44
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 29,
+      "pivot": {
+        "X": 20,
+        "Y": 44
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 30,
+      "pivot": {
+        "X": 20,
+        "Y": 44
+      }
+    },
+    {
+      "sheet": 1,
+      "cell": 31,
+      "pivot": {
+        "X": 20,
+        "Y": 44
+      }
     }
   ],
   "animations": {
@@ -577,14 +649,20 @@
     },
     "tree_0": {
       "frames": [
-        46
+        46,
+        61,
+        62,
+        63
       ],
       "frame_ticks": 16,
       "loop": true
     },
     "tree_1": {
       "frames": [
-        47
+        47,
+        64,
+        65,
+        66
       ],
       "frame_ticks": 16,
       "loop": true
@@ -605,7 +683,10 @@
     },
     "tree_2": {
       "frames": [
-        48
+        48,
+        67,
+        68,
+        69
       ],
       "frame_ticks": 16,
       "loop": true

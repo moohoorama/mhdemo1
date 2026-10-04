@@ -1,0 +1,45 @@
+{
+ "version": 1,
+ "image": "structures.png",
+ "cell": [
+  40,
+  48
+ ],
+ "pivot": [
+  21,
+  39
+ ],
+ "pivot_note": "cell centre of the map diamond (32x16)",
+ "rise": 10,
+ "wall_mask_sides": [
+  "nw",
+  "ne",
+  "se",
+  "sw"
+ ],
+ "layer": {
+  "village": "object",
+  "floor": "ground",
+  "wall": "object"
+ },
+ "sprites": {
+  "village": 0,
+  "floor": 1,
+  "wall_00": 2,
+  "wall_01": 3,
+  "wall_02": 4,
+  "wall_03": 5,
+  "wall_04": 6,
+  "wall_05": 7,
+  "wall_06": 8,
+  "wall_07": 9,
+  "wall_08": 10,
+  "wall_09": 11,
+  "wall_10": 12,
+  "wall_11": 13,
+  "wall_12": 14,
+  "wall_13": 15,
+  "wall_14": 16,
+  "wall_15": 17
+ }
+}

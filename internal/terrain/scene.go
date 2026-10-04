@@ -115,7 +115,7 @@ func ValidateAssets(c *graphics.Catalog) error {
 	for o := SmallRock; o <= TallTree; o++ {
 		a, ok := c.Animations[ObjectAnimation(o)]
 		want := 1
-		if o >= GrassTuft1 && o <= GrassTuft4 {
+		if o >= GrassTuft1 {
 			want = 4
 		}
 		if !ok || len(a.Frames) != want || a.FrameTicks != TreeFrameTicks || !a.Loop {

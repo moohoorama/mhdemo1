@@ -112,7 +112,8 @@ def outline_beard(g, start):
 
 
 def beard(rows, skin, kind):
-    """'long': mustache and a long tapering beard (Guan Yu); 'bristle': bushy jaw and spikes (Zhang Fei).
+    """'long': mustache and a long tapering beard (Guan Yu); 'bristle': bushy jaw and spikes (Zhang Fei);
+    'goatee': mustache and a short pointed chin beard (Liu Bei).
     Beard pixels are marked 'B' while drawing so they never mix with dark helmet pixels."""
     g = [list(r) for r in rows]
     eyes = find_eyes(g, skin)
@@ -122,7 +123,7 @@ def beard(rows, skin, kind):
     ey, xs = eyes[0][0], sorted(x for _, x in eyes)
     profile = len(xs) == 1
     chin = max(y for y, row in enumerate(g) if any(c in skin for c in row))
-    if kind == 'long':
+    if kind in ('long', 'goatee'):
         x0, x1 = (xs[0] - 2, xs[0] + 1) if profile else (xs[0] - 1, xs[-1] + 1)
         for x in range(max(0, x0), min(w, x1 + 1)):
             if g[ey + 3][x] in skin:
@@ -137,8 +138,13 @@ def beard(rows, skin, kind):
     cols = [x for x, c in enumerate(g[chin]) if c == 'B']
     left, right = min(cols), max(cols)
     start = chin + 1  # continue right under the chin, over its old outline row
-    g += [['.'] * w for _ in range(max(0, start + (6 if kind == 'long' else 2) - len(g)))]
-    if kind == 'long':
+    g += [['.'] * w for _ in range(max(0, start + {'long': 6, 'goatee': 3}.get(kind, 2) - len(g)))]
+    if kind == 'goatee':
+        mid = (left + right)//2 - profile
+        for i, half in enumerate((1, 0)):
+            for x in range(mid - half, mid + half + 1):
+                g[start + i][x] = 'B'
+    elif kind == 'long':
         for i in range(5):
             l, r = (left - (1 <= i <= 2), right - i) if profile else (left + i//2, right - (i + 1)//2)
             for x in range(max(0, l), min(w, r + 1)):
@@ -170,11 +176,12 @@ ZHANGFEI = {d: beard(recolor(rows, {'5': '3', '4': '3', '3': '2', '2': '1', 'j':
 PLUME, BAND, HOOD_CLOTH = {'b': 'X', 'c': 'Y', 'd': 'Z'}, {'k': 'X', 'l': 'Y', 'm': 'Z'}, {'7': 'W', '8': 'X', '9': 'Y', 'a': 'Z'}
 
 
-def heads(grids, team=None, skin='ij', lid='i'):
-    """A head set: grids per view, team key mapping applied, and the face's skin/eyelid keys."""
+def heads(grids, team=None, skin='ij', lid='i', crest=0):
+    """A head set: grids per view, team key mapping applied, and the face's skin/eyelid keys.
+    crest: rows added above the usual 12-row head (feathers), so the face keeps its anchor."""
     if team:
         grids = {d: recolor(rows, team) for d, rows in grids.items()}
-    return dict(grids=grids, skin=skin, lid=lid)
+    return dict(grids=grids, skin=skin, lid=lid, anchor=(ANCHOR[0], ANCHOR[1] + crest))
 
 
 def head_for(grids, d):
@@ -212,4 +219,52 @@ def expression(head, kind, skin, lid):
 def stamp(g, head_set, d, face, cx, cy):
     """Stamp the view's head, with the frame's expression, centred on (cx, cy)."""
     head = expression(head_for(head_set['grids'], d), face, head_set['skin'], head_set['lid'])
-    overlay(g, head, round(cx) - ANCHOR[0], round(cy) - ANCHOR[1])
+    ax, ay = head_set.get('anchor', ANCHOR)
+    overlay(g, head, round(cx) - ax, round(cy) - ay)
+
+
+# ---- ver4 heads (candidates; see look_candidates.py) ---------------------------------------
+
+def topknot_crown(rows):
+    """Gold topknot crown: the hair bun above the band becomes a small gold crown."""
+    out = []
+    for y, row in enumerate(rows):
+        if y < 4:
+            row = row.translate(str.maketrans({'f': 'l', 'g': 'k'}))
+            i = row.find('l')
+            if i >= 0:
+                row = row[:i] + 'm' + row[i+1:]
+        out.append(row)
+    return out
+
+
+def band_to_hair(rows):
+    """Turn the topknot band (and its loose tails) into dark hair."""
+    return recolor(rows, {'m': 'g', 'l': 'g', 'k': 'f'})
+
+
+def flat_cap(rows):
+    """Iron helmet without the plume: a flat scholar cap once darkened."""
+    return [r if y >= 3 else '.' * len(r) for y, r in enumerate(rows)]
+
+
+DARK_IRON = {'5': '3', '4': '3', '3': '2', '2': '1'}
+GOLD_IRON = {'2': 'k', '3': 'l', '4': 'm', '5': 'n'}
+WHITE_HOOD = {'7': '3', '8': '4', '9': '5', 'a': '6'}
+YELLOW_HOOD = {'7': 'k', '8': 'l', '9': 'm', 'a': 'n'}
+HAIR = {d: band_to_hair(rows) for d, rows in TOPKNOT.items()}
+CROWN = {d: topknot_crown(rows) for d, rows in HAIR.items()}
+
+# Pheasant tail feathers above Lu Bu's crown (FEATHER_ROWS rows over the 12-row head).
+FEATHERS = {
+    'S': ['.0.........0.', '.h0.......0h.', '..h0.....0h..', '..ih.....hi..',
+          '...ih...hi...', '....h...h....', '....ih.hi....', '.....h.h.....'],
+    'W': ['.........0..0', '........h0.h.', '.......ih.ih.', '......ih.ih..',
+          '.....ih.ih...', '.....h.ih....', '....ih.h.....', '.....hh......'],
+}
+FEATHERS.update(SW=FEATHERS['S'], NW=FEATHERS['W'], N=FEATHERS['S'])
+FEATHER_ROWS = 8
+
+
+def crested(grids, crest):
+    return {d: crest[d] + rows for d, rows in grids.items()}

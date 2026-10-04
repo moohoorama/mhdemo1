@@ -6,3 +6,5 @@ __pycache__/
 /ver1/bin/
 /ver1/reports/
 /ver2/**/*.log
+/ver4/bin/
+/ver4/reports/
