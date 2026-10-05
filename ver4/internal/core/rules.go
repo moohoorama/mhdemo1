@@ -120,7 +120,8 @@ func (e *Engine) moves(u *Unit) []content.Point {
 	return out
 }
 
-// reach returns the movement cost of every reachable cell and the cell each was entered from.
+// reach returns the movement cost of every cell the unit can stop on and the cell each was
+// entered from. Allies can be walked through but not stopped on.
 func (e *Engine) reach(u *Unit) (map[content.Point]int, map[content.Point]content.Point) {
 	start := content.Point{X: u.X, Y: u.Y}
 	cost := map[content.Point]int{start: 0}
@@ -142,7 +143,10 @@ func (e *Engine) reach(u *Unit) (map[content.Point]int, map[content.Point]conten
 		for _, delta := range []content.Point{{X: 0, Y: -1}, {X: -1, Y: 0}, {X: 1, Y: 0}, {X: 0, Y: 1}} {
 			q := content.Point{X: p.X + delta.X, Y: p.Y + delta.Y}
 			t := e.terrain(u, q.X, q.Y)
-			if t.Cost == 0 || e.occupied(q.X, q.Y) != nil {
+			if t.Cost == 0 {
+				continue
+			}
+			if o := e.occupied(q.X, q.Y); o != nil && o.Faction != u.Faction {
 				continue
 			}
 			n := cost[p] + t.Cost
@@ -156,6 +160,11 @@ func (e *Engine) reach(u *Unit) (map[content.Point]int, map[content.Point]conten
 			cost[q] = n
 			prev[q] = p
 			todo = append(todo, q)
+		}
+	}
+	for p := range cost {
+		if p != start && e.occupied(p.X, p.Y) != nil {
+			delete(cost, p)
 		}
 	}
 	return cost, prev

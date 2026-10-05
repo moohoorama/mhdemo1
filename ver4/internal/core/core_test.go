@@ -199,6 +199,38 @@ func TestTerrainZOCAndCharge(t *testing.T) {
 		t.Fatal("water traversable")
 	}
 }
+func TestMovePassesThroughAllies(t *testing.T) {
+	e := battle(t)
+	u := e.unit("관우")
+	for i, id := range keys(e.unitIDs) {
+		e.unit(id).X, e.unit(id).Y = i, 0
+	}
+	u.X, u.Y = 4, 4
+	e.data.Stages[0].Tiles[3] = "~~~~~~~~~~~~~~"
+	e.data.Stages[0].Tiles[5] = "~~~~~~~~~~~~~~"
+	ally := e.unit("유비")
+	ally.X, ally.Y = 5, 4
+	t.Run("ally cell is passable but not a stop", func(t *testing.T) {
+		if containsPoint(e.moves(u), content.Point{X: 5, Y: 4}) {
+			t.Fatal("stopped on ally")
+		}
+		if !containsPoint(e.moves(u), content.Point{X: 6, Y: 4}) {
+			t.Fatal("ally blocks passage")
+		}
+		if got := encoded(e.route(u, content.Point{X: 6, Y: 4})); got != encoded([]content.Point{{X: 4, Y: 4}, {X: 5, Y: 4}, {X: 6, Y: 4}}) {
+			t.Fatalf("route %s", got)
+		}
+	})
+	t.Run("enemy cell blocks", func(t *testing.T) {
+		ally.X, ally.Y = 1, 0
+		enemy := e.unit("등무")
+		enemy.X, enemy.Y = 5, 4
+		u.Status["charge"] = Status{Turns: 1}
+		if containsPoint(e.moves(u), content.Point{X: 6, Y: 4}) {
+			t.Fatal("walked through enemy")
+		}
+	})
+}
 func TestReplayAtScenarioMoveEnemyAndResult(t *testing.T) {
 	e := New(data(t), 5)
 	for _, c := range []Command{{Kind: "next"}, {Kind: "choose", Option: "결의"}, {Kind: "start"}, {Kind: "move", Actor: "유비", X: 3, Y: 5}, {Kind: "end"}, {Kind: "wait", Actor: "등무"}} {
