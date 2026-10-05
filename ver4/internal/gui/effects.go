@@ -225,7 +225,7 @@ func glow(dst *ebiten.Image, x, y, r float32, c color.NRGBA, a float64) {
 		p.Arc(x, y, r*k, 0, 2*math.Pi, vector.Clockwise)
 		op := *lighter
 		op.ColorScale.ScaleWithColor(with8(c, a*[]float64{.18, .28, .45}[i]))
-		vector.FillPath(dst, &p, nil, &op)
+		fillPath(dst, &p, &op)
 	}
 }
 
@@ -243,11 +243,11 @@ func ellipse(dst *ebiten.Image, x, y, r, w float32, c color.NRGBA, a float64) {
 	}
 	op := *lighter
 	op.ColorScale.ScaleWithColor(with8(c, a))
-	vector.StrokePath(dst, &p, &vector.StrokeOptions{Width: w}, &op)
+	strokePath(dst, &p, vector.StrokeOptions{Width: w}, &op)
 }
 
 func stroke(dst *ebiten.Image, x0, y0, x1, y1, w float32, c color.NRGBA, a float64) {
-	vector.StrokeLine(dst, x0, y0, x1, y1, w, with8(c, a), true)
+	strokeLine(dst, x0, y0, x1, y1, w, with8(c, a))
 }
 
 func (g *Game) drawEffects(dst *ebiten.Image) {
@@ -301,7 +301,7 @@ func (g *Game) drawEffects(dst *ebiten.Image) {
 					}
 					op := *lighter
 					op.ColorScale.ScaleWithColor(with8(hot, 1-k))
-					vector.StrokePath(dst, &p, &vector.StrokeOptions{Width: 2.4 * zf, LineCap: vector.LineCapRound}, &op)
+					strokePath(dst, &p, vector.StrokeOptions{Width: 2.4 * zf, LineCap: vector.LineCapRound}, &op)
 				}
 			}
 			glow(dst, px, chest, float32(6+k*18)*zf, hot, 1-k)
@@ -320,7 +320,7 @@ func (g *Game) drawEffects(dst *ebiten.Image) {
 				p.LineTo(px+5*zf, py)
 				op := *lighter
 				op.ColorScale.ScaleWithColor(with8(waterC[1], .6))
-				vector.FillPath(dst, &p, nil, &op)
+				fillPath(dst, &p, &op)
 			}
 		case "heal", "buff":
 			tint := e.tint
@@ -340,7 +340,7 @@ func (g *Game) drawEffects(dst *ebiten.Image) {
 				p.LineTo(px+w*zf*.6, py-h)
 				p.LineTo(px+w*zf, py)
 				op.ColorScale.ScaleWithColor(with8(tint, (1-k*k)*[]float64{.3, .4, .6}[i]))
-				vector.FillPath(dst, &p, nil, &op)
+				fillPath(dst, &p, &op)
 			}
 		case "debuff":
 			for i := 0; i < 6; i++ {
@@ -441,10 +441,10 @@ func (g *Game) barrier(dst *ebiten.Image, e *effect, px, chest float32, k float6
 	}
 	op := *lighter
 	op.ColorScale.ScaleWithColor(with8(barrierC, .28*fade))
-	vector.FillPath(dst, &body, nil, &op)
+	fillPath(dst, &body, &op)
 	op = *lighter
 	op.ColorScale.ScaleWithColor(with8(color.NRGBA{220, 245, 255, 255}, .9*fade))
-	vector.StrokePath(dst, &body, &vector.StrokeOptions{Width: 1.5 * zf}, &op)
+	strokePath(dst, &body, vector.StrokeOptions{Width: 1.5 * zf}, &op)
 	// hex cells inside the pane
 	hr := 3.2 * zf * float32(pop)
 	for _, c := range [][2]float32{{0, 0}, {0, -1.75}, {0, 1.75}, {-1.1, -.87}, {-1.1, .87}, {1.1, -.87}, {1.1, .87}} {
@@ -461,7 +461,7 @@ func (g *Game) barrier(dst *ebiten.Image, e *effect, px, chest float32, k float6
 		}
 		op := *lighter
 		op.ColorScale.ScaleWithColor(with8(barrierC, .5*fade))
-		vector.StrokePath(dst, &h, &vector.StrokeOptions{Width: .8 * zf}, &op)
+		strokePath(dst, &h, vector.StrokeOptions{Width: .8 * zf}, &op)
 	}
 	// ripple from the contact point and the flash itself
 	contact := cx + side*rx*.4

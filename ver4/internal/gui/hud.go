@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 	"srpg/internal/core"
 	"srpg/internal/session"
 )
@@ -70,7 +69,7 @@ func (g *Game) cursor(dst *ebiten.Image) {
 	for i := range pts {
 		ax, ay := g.toScreen(pts[i][0], pts[i][1])
 		bx, by := g.toScreen(pts[(i+1)%4][0], pts[(i+1)%4][1])
-		vector.StrokeLine(dst, float32(ax), float32(ay), float32(bx), float32(by), 2, color.NRGBA{R: 255, G: 240, B: 190, A: pulse}, true)
+		strokeLine(dst, float32(ax), float32(ay), float32(bx), float32(by), 2, color.NRGBA{R: 255, G: 240, B: 190, A: pulse})
 	}
 }
 
@@ -387,7 +386,7 @@ func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
 			c = color.NRGBA{R: 240, G: 80, B: 64, A: 255}
 		}
 		px, py := at(float64(u.X), float64(u.Y))
-		vector.FillCircle(dst, px+float32(miniScale), py+float32(miniScale/2), 2.5, c, true)
+		fillCircle(dst, px+float32(miniScale), py+float32(miniScale/2), 2.5, c)
 	}
 	// visible area: screen corners → canvas → minimap (both are linear in the iso projection)
 	toMini := func(sx, sy float64) (float32, float32) {
@@ -400,7 +399,7 @@ func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
 	ax, ay = max(ax, float32(x0)), max(ay, float32(y0))
 	bx, by = min(bx, float32(x0+w)), min(by, float32(y0+h))
 	if bx > ax && by > ay {
-		vector.StrokeRect(dst, ax, ay, bx-ax, by-ay, 1, ink, false)
+		strokeRect(dst, ax, ay, bx-ax, by-ay, 1, ink)
 	}
 	g.buttons = append(g.buttons, button{r, "", func() {
 		mx, my := cursorPos()

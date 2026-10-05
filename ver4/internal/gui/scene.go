@@ -286,7 +286,8 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	op.GeoM.Translate(-g.camX, -g.camY)
 	op.GeoM.Scale(g.zoom, g.zoom)
 	op.GeoM.Translate(float64(Width/2), float64(Height/2))
-	dst.DrawImage(g.field.Canvas, op)
+	op.Filter = ebiten.FilterPixelated
+	drawScaled(dst, g.field.Canvas, op)
 	for name := range talking {
 		if v := s.actors[name]; v != nil {
 			g.bubble(dst, v, "", true)
@@ -323,14 +324,14 @@ func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) 
 	p.Close()
 	op := &vector.DrawPathOptions{AntiAlias: true}
 	op.ColorScale.ScaleWithColor(color.NRGBA{R: 250, G: 246, B: 232, A: 240})
-	vector.FillPath(dst, &p, nil, op)
+	fillPath(dst, &p, op)
 	op = &vector.DrawPathOptions{AntiAlias: true}
 	op.ColorScale.ScaleWithColor(color.NRGBA{R: 60, G: 40, B: 30, A: 255})
-	vector.StrokePath(dst, &p, &vector.StrokeOptions{Width: 1.2}, op)
+	strokePath(dst, &p, vector.StrokeOptions{Width: 1.2}, op)
 	if talking {
 		for i := 0; i < 3; i++ {
 			k := math.Sin(g.clockMS/140 - float64(i)*.9)
-			vector.FillCircle(dst, bx+(5+float32(i)*4)*z, by+h/2-float32(max(0, k))*1.5*z, 1.2*z, color.NRGBA{R: 60, G: 40, B: 30, A: 255}, true)
+			fillCircle(dst, bx+(5+float32(i)*4)*z, by+h/2-float32(max(0, k))*1.5*z, 1.2*z, color.NRGBA{R: 60, G: 40, B: 30, A: 255})
 		}
 		return
 	}

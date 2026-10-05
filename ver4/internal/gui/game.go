@@ -12,6 +12,7 @@ import (
 	"image"
 	"image/color"
 	"image/png"
+	"math"
 	"os"
 	"path/filepath"
 	"sort"
@@ -594,7 +595,16 @@ func (g *Game) mapRelease() {
 	}
 }
 
-func (g *Game) Layout(_, _ int) (int, int) { return Width, Height }
+func (g *Game) Layout(w, h int) (int, int) {
+	lw, lh := g.LayoutF(float64(w), float64(h))
+	return int(math.Ceil(lw)), int(math.Ceil(lh))
+}
+
+// LayoutF renders at the window's device resolution, keeping the Width×Height aspect.
+func (g *Game) LayoutF(w, h float64) (float64, float64) {
+	scale = min(w/Width, h/Height) * ebiten.Monitor().DeviceScaleFactor()
+	return Width * scale, Height * scale
+}
 
 func (g *Game) Draw(dst *ebiten.Image) {
 	dst.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
@@ -636,7 +646,7 @@ func (g *Game) screenshot(dst *ebiten.Image) {
 		dir = "reports/gui"
 	}
 	_ = os.MkdirAll(dir, 0755)
-	img := image.NewRGBA(image.Rect(0, 0, Width, Height))
+	img := image.NewRGBA(dst.Bounds())
 	dst.ReadPixels(img.Pix)
 	file, err := os.Create(filepath.Join(dir, fmt.Sprintf("screen-%06d.png", g.ticks)))
 	if err == nil {
@@ -724,13 +734,14 @@ func (g *Game) battle(dst *ebiten.Image, o core.Observation) {
 	op.GeoM.Translate(-g.camX, -g.camY)
 	op.GeoM.Scale(g.zoom, g.zoom)
 	op.GeoM.Translate(float64(viewport.Min.X+viewport.Dx()/2), float64(viewport.Min.Y+viewport.Dy()/2))
-	dst.DrawImage(g.field.Canvas, op)
+	op.Filter = ebiten.FilterPixelated
+	drawScaled(dst, g.field.Canvas, op)
 	g.cursor(dst)
 	g.drawEffects(dst)
 	for _, p := range g.popups {
 		x, y := g.field.Center(p.unit.u, p.unit.v)
 		sx, sy := g.toScreen(x+p.unit.shakeOffset(), y-p.unit.lift-p.unit.top-10-p.t*16-float64(p.row)*18/g.zoom)
-		g.outlined(dst, p.text, sx-g.width(p.text, 16)/2, sy, 16, p.col)
+		g.outlined(dst, p.text, sx-g.width(p.text, 16)/2, sy, 16)
 	}
 	if g.bannerT > 0 {
 		w := g.width(g.banner, 30)

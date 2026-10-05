@@ -7,7 +7,6 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 	"srpg/internal/core"
 )
 
@@ -247,7 +246,7 @@ func blit(dst, src *ebiten.Image, x, y, w, h float64, tint color.Color) {
 	if tint != nil {
 		op.ColorScale.ScaleWithColor(tint)
 	}
-	dst.DrawImage(src, op)
+	drawScaled(dst, src, op)
 }
 
 func (g *Game) portrait(dst *ebiten.Image, id string, x, y, size float64) {
@@ -265,5 +264,5 @@ func (g *Game) portrait(dst *ebiten.Image, id string, x, y, size float64) {
 	// Square viewport crops the lower chest rather than distorting the face.
 	src = src.SubImage(image.Rect(b.Min.X, b.Min.Y, b.Max.X, b.Min.Y+b.Dx())).(*ebiten.Image)
 	blit(dst, src, x, y, size, size, nil)
-	vector.StrokeRect(dst, float32(x-2), float32(y-2), float32(size+4), float32(size+4), 2, gold, false)
+	strokeRect(dst, float32(x-2), float32(y-2), float32(size+4), float32(size+4), 2, gold)
 }

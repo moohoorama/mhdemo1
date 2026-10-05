@@ -2,7 +2,6 @@ package gui
 
 import (
 	"fmt"
-	"image/color"
 	"math"
 
 	"srpg/internal/content"
@@ -118,17 +117,9 @@ func (u *unitVis) update(dt float64) {
 type popup struct {
 	unit *unitVis
 	text string
-	col  color.RGBA
 	t    float64
 	row  int // stacked above the unit's other fresh popups
 }
-
-var (
-	hpLossC = color.RGBA{255, 236, 160, 255}
-	hpGainC = color.RGBA{135, 245, 144, 255}
-	mpTextC = color.RGBA{130, 190, 255, 255}
-	expC    = color.RGBA{255, 214, 110, 255}
-)
 
 type beat struct {
 	dur float64
@@ -280,15 +271,15 @@ func (g *Game) perform(a *replay.Action) []beat {
 					}
 					g.spawn("heal", nil, t, 1.1, healC)
 					if c.Item == "소병법단" {
-						g.say(t, fmt.Sprintf("MP +%d", e.Amount), mpTextC)
+						g.say(t, fmt.Sprintf("MP +%d", e.Amount))
 					} else {
 						t.shownHP = min(t.maxHP, t.shownHP+e.Amount)
-						g.say(t, fmt.Sprintf("HP +%d", e.Amount), hpGainC)
+						g.say(t, fmt.Sprintf("HP +%d", e.Amount))
 					}
 				}
 			})
 		case "learn":
-			add(.6, func() { g.say(actor, "학습: "+c.Trait, color.RGBA{255, 224, 140, 255}) })
+			add(.6, func() { g.say(actor, "학습: "+c.Trait) })
 		case "duel":
 			for _, e := range events {
 				if e.Kind == "duel" {
@@ -365,11 +356,11 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 		}
 		actor.play("attack")
 		if c.Kind == "skill" {
-			g.say(actor, c.Skill, color.RGBA{180, 220, 255, 255})
+			g.say(actor, c.Skill)
 		}
 		for _, e := range events {
 			if e.Kind == "cost" {
-				g.say(actor, fmt.Sprintf("MP -%d", e.Amount), mpTextC)
+				g.say(actor, fmt.Sprintf("MP -%d", e.Amount))
 			}
 		}
 	}
@@ -412,7 +403,7 @@ func (g *Game) stepTo(u *unitVis, p content.Point) {
 	}
 }
 
-func (g *Game) say(u *unitVis, text string, c color.RGBA) {
+func (g *Game) say(u *unitVis, text string) {
 	if u == nil {
 		return
 	}
@@ -422,7 +413,7 @@ func (g *Game) say(u *unitVis, text string, c color.RGBA) {
 			row++
 		}
 	}
-	g.popups = append(g.popups, &popup{unit: u, text: text, col: c, row: row})
+	g.popups = append(g.popups, &popup{unit: u, text: text, row: row})
 }
 
 // expShown converts raw experience to the 0..100 scale the experience bar uses.
@@ -467,10 +458,10 @@ func (g *Game) strike(attacker *unitVis, events []core.Event) {
 			t.shakeT, t.shakeAmp = shakeTime, 1
 			if crit[e.Target] {
 				t.shakeT, t.shakeAmp, t.flash = shakeTime*1.6, critShake, .5
-				g.say(t, fmt.Sprintf("치명타! HP -%d", e.Amount), color.RGBA{255, 120, 80, 255})
+				g.say(t, fmt.Sprintf("치명타! HP -%d", e.Amount))
 				continue
 			}
-			g.say(t, fmt.Sprintf("HP -%d", e.Amount), hpLossC)
+			g.say(t, fmt.Sprintf("HP -%d", e.Amount))
 		case "miss": // the target blocks: its block motion when the sprite has one, else a flinch
 			if t != nil {
 				if _, ok := t.art.Animations["block"]; ok {
@@ -482,21 +473,21 @@ func (g *Game) strike(attacker *unitVis, events []core.Event) {
 					t.face(src.u, src.v)
 				}
 			}
-			g.say(t, "막음!", color.RGBA{170, 220, 255, 255})
+			g.say(t, "막음!")
 		case "heal":
 			if t != nil {
 				t.shownHP = min(t.maxHP, t.shownHP+e.Amount)
 			}
-			g.say(t, fmt.Sprintf("HP +%d", e.Amount), hpGainC)
+			g.say(t, fmt.Sprintf("HP +%d", e.Amount))
 		case "recover-hp":
 			if u := g.unitAt(e.Actor); u != nil {
 				u.shownHP = min(u.maxHP, u.shownHP+e.Amount)
-				g.say(u, fmt.Sprintf("HP +%d", e.Amount), hpGainC)
+				g.say(u, fmt.Sprintf("HP +%d", e.Amount))
 			}
 		case "recover-mp":
-			g.say(g.unitAt(e.Actor), fmt.Sprintf("MP +%d", e.Amount), mpTextC)
+			g.say(g.unitAt(e.Actor), fmt.Sprintf("MP +%d", e.Amount))
 		case "experience":
-			g.say(g.unitAt(e.Actor), fmt.Sprintf("EXP +%d", g.expShown(e.Actor, e.Amount)), expC)
+			g.say(g.unitAt(e.Actor), fmt.Sprintf("EXP +%d", g.expShown(e.Actor, e.Amount)))
 		case "effect":
 			if t != nil {
 				t.flash = .3
