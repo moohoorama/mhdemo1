@@ -10,6 +10,7 @@ Sources (read only):
   tools/spritetool/assets/ver4-structures/   village, castle floor and walls (tools/unit3d/structures.py)
   assets/terrain.png, objects.png, catalog.json   terrain tiles and decorations (make assets)
   ver4/assets/content/campaign.json          battle maps (Tiles)
+  ver4/tools/doteditor/units/*.yaml          dot editor sheets, replacing the unit of the same id
 
   python3 ver4/tools/build_assets.py
 """
@@ -25,6 +26,8 @@ OUT = ROOT / 'ver4/assets/graphics'
 sys.path.insert(0, str(ROOT / 'ver3/tools'))
 sys.path.insert(0, str(ROOT / 'ver3'))
 sys.path.insert(0, str(ROOT / 'tools/unit3d'))
+sys.path.insert(0, str(ROOT / 'ver4/tools/doteditor'))
+import apply as doteditor  # noqa: E402
 import build_assets as v3  # noqa: E402  (ver3 packer: unit sheets, tileset)
 import civilian  # noqa: E402
 import shadows  # noqa: E402
@@ -62,6 +65,7 @@ def main():
     content = json.loads((ROOT / 'ver4/assets/content/campaign.json').read_text())
     scenes = json.loads((ROOT / 'ver4/assets/scenes.json').read_text())
     units = v3.build_units()
+    doteditor.apply_all(units, OUT)
     units.update(v3.build_units([(k, t) for k, t, _, _ in civilian.chosen()], CIVILIANS, prefix='civ_'))
     index = dict(version=1, units=units, tileset=v3.build_tileset(),
                  factions=json.loads((v3.UNITS_SRC / 'factions.json').read_text()),

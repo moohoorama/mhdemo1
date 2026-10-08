@@ -13,6 +13,8 @@ go test ./... && go vet ./...
 go build -o bin/srpg-cli ./cmd/srpg-cli && python3 tools/smoke_cli.py   # CLI 전체 캠페인
 go run ./cmd/srpg-gui -audit /tmp/shots -shots 600,1200   # 새 게임 자동 진행, 지정 틱(60/초) 화면 저장
 python3 tools/build_assets.py              # assets/graphics 다시 묶기 (Pillow, PyYAML, Go)
+(cd tools/doteditor && python3 -m http.server)  # 병종 도트 에디터: http://localhost:8000 (units/*.yaml)
+(cd tools/doteditor && make apply)          # 에디터 units/*.yaml을 같은 id 병종 시트·그림자·index.json에 반영
 ```
 
 GUI 조작(조조전식, [UI 설계](ui-design.md)): 아군 클릭 → 이동 칸 클릭 → 유닛 옆 행동 메뉴 → 대상에 마우스(예측 창) → 클릭.
@@ -41,7 +43,8 @@ ver4/
 │  ├─ content/campaign.json  실행 콘텐츠 (ver1과 같음)
 │  ├─ fonts/                 NotoSansKR
 │  └─ graphics/              build_assets.py 결과: index.json, units/, map/, maps/B01–B03.json, 초상
-└─ tools/build_assets.py, smoke_cli.py
+└─ tools/build_assets.py, smoke_cli.py,
+   doteditor/                태그 팔레트 도트 에디터(index.html)와 기본형 units/{infantry,cavalry}.yaml, 반영 apply.py
 ```
 
 ## ver1 코어에서 바뀐 점
