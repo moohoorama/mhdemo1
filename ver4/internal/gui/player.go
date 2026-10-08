@@ -10,14 +10,15 @@ import (
 )
 
 const (
-	stepTime   = .28 // seconds per cell while walking
-	stagger    = .2  // minimum delay between two actions starting
-	shakeTime  = .45
-	shakePx    = 3.0
-	critShake  = 2.8 // a critical blow shakes the target this many times harder
-	chargeTime = .75 // seconds a unit gathers itself, whitening, before a critical blow
-	shakeHz    = 11.0
-	blinkTime  = 1.2
+	stepTime        = .28 // seconds per cell while walking
+	stagger         = .2  // minimum delay between two actions starting
+	shakeTime       = .45
+	shakePx         = 3.0
+	critShake       = 2.8 // a critical blow shakes the target this many times harder
+	chargeTime      = .75 // seconds a unit gathers itself, whitening, before a critical blow
+	shakeHz         = 11.0
+	blinkTime       = 1.2
+	arrowSecPerCell = .07 // an arrow's flight time per cell of distance
 )
 
 var directions = []string{"E", "SE", "S", "SW", "W", "NW", "N", "NE"} // by screen angle from +x
@@ -376,10 +377,12 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 		} else {
 			start()
 		}
-		if kind == "arrow" && target != nil && target != actor {
-			g.spawn("arrow", actor, target, gather, spark)
-		}
 	})
+	if kind == "arrow" && target != nil && target != actor {
+		// released on the third frame, it lands after its flight
+		flight := math.Max(.12, math.Hypot(target.u-actor.u, target.v-actor.v)*arrowSecPerCell)
+		add(flight, func() { g.spawn("arrow", actor, target, flight, spark) })
+	}
 	wait := follow
 	for _, e := range events {
 		if e.Kind == "retreat" {

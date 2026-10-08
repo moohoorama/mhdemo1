@@ -19,6 +19,8 @@ type effect struct {
 	fu, fv float64
 	lift   float64 // target cell surface height
 	height float64 // target sprite height, to aim at the chest
+	flift  float64 // source cell surface height and sprite height, where an arrow leaves
+	fh     float64
 	tint   color.NRGBA
 	t, dur float64
 	parts  []particle
@@ -78,7 +80,7 @@ func (g *Game) spawn(kind string, from, to *unitVis, dur float64, tint color.NRG
 	}
 	e := &effect{kind: kind, tu: to.u, tv: to.v, fu: to.u, fv: to.v, lift: to.lift, height: to.top, dur: dur, tint: tint}
 	if from != nil {
-		e.fu, e.fv = from.u, from.v
+		e.fu, e.fv, e.flift, e.fh = from.u, from.v, from.lift, from.top
 	}
 	r := rand.New(rand.NewPCG(uint64(g.ticks), uint64(len(g.effects))))
 	chest := -e.height * .55
@@ -260,14 +262,12 @@ func (g *Game) drawEffects(dst *ebiten.Image) {
 		zf := float32(z)
 		chest := py - float32(e.height*.55*z)
 		switch e.kind {
-		case "arrow":
+		case "arrow": // a flat shot from the shooter's chest to the target's
 			fx, fy := g.field.Center(e.fu, e.fv)
-			ax, ay := g.toScreen(fx, fy-e.height*.55)
+			ax, ay := g.toScreen(fx, fy-e.flift-e.fh*.55)
 			bx, by := float64(px), float64(chest)
-			hx, hy := ax+(bx-ax)*k, ay+(by-ay)*k-math.Sin(k*math.Pi)*30*z
-			// direction along the arc
-			k2 := math.Min(1, k+.05)
-			nx, ny := ax+(bx-ax)*k2-hx, ay+(by-ay)*k2-math.Sin(k2*math.Pi)*30*z-hy
+			hx, hy := ax+(bx-ax)*k, ay+(by-ay)*k
+			nx, ny := bx-ax, by-ay
 			n := math.Hypot(nx, ny)
 			if n == 0 {
 				continue
