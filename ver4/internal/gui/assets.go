@@ -25,8 +25,15 @@ type Assets struct {
 	Maps       map[string]*MapArt
 	Factions   map[string][4]color.RGBA
 	teamKeys   [4]color.RGBA
-	Portraits  *ebiten.Image
-	Enemies    *ebiten.Image
+	Portraits  map[string]*ebiten.Image // officer art key -> ink-wash portrait
+	Props      map[string]Prop
+}
+
+// Prop is scene art at the characters' pixel scale (not K times larger like map tiles).
+// Ground props (floors, bridges) are baked into the ground; the rest are depth sorted.
+type Prop struct {
+	Sprite
+	Ground bool
 }
 
 // Sprite is an image whose pivot lands on the drawing position.
@@ -73,6 +80,16 @@ type MapArt struct {
 	Bounds      image.Rectangle
 	Ground      []GroundTile
 	Decorations []Decoration
+	Props       []MapProp
+	Deformed    bool // battle map: forests and mountains drawn as deformed cells, like villages
+}
+
+// MapProp places a prop with its pivot at cell (U, V), fractions allowed. With U1, V1 it
+// fills every cell from (U, V) to (U1, V1) (floors).
+type MapProp struct {
+	Name         string
+	U, V, U1, V1 float64
+	Fill         bool
 }
 type GroundTile struct {
 	X, Y   int
@@ -162,13 +179,23 @@ func LoadAssets(dir string) (*Assets, error) {
 			}
 		}
 		ShadowRGB [3]uint8 `json:"shadow_rgb"`
+		Portraits map[string]string
+		Props     struct {
+			Image   string
+			Sprites map[string]struct {
+				Rect  [4]int
+				Pivot [2]float64
+				Layer string
+			}
+		}
 	}
 	if err = json.Unmarshal(b, &index); err != nil {
 		return nil, err
 	}
 	a := &Assets{Units: map[string]*UnitArt{}, Tiles: map[int]Sprite{}, TileShadow: map[int]Sprite{},
 		Animations: map[string]TileAnimation{}, Structures: map[string]Sprite{}, Maps: map[string]*MapArt{},
-		Factions: map[string][4]color.RGBA{}, Rise: index.Structures.Rise}
+		Factions: map[string][4]color.RGBA{}, Rise: index.Structures.Rise, Portraits: map[string]*ebiten.Image{},
+		Props: map[string]Prop{}}
 	shade := color.RGBA{index.ShadowRGB[0], index.ShadowRGB[1], index.ShadowRGB[2], 255}
 	for i, k := range index.Factions.TeamKeys {
 		a.teamKeys[i] = hexColor(k)
@@ -229,6 +256,17 @@ func LoadAssets(dir string) (*Assets, error) {
 		a.Structures[name] = Sprite{stSheet.SubImage(image.Rect(i*w, 0, (i+1)*w, h)).(*ebiten.Image),
 			index.Structures.Pivot[0], index.Structures.Pivot[1]}
 	}
+	if index.Props.Image != "" {
+		pr, err := loadRGBA(filepath.Join(dir, index.Props.Image))
+		if err != nil {
+			return nil, err
+		}
+		prSheet := ebiten.NewImageFromImage(pr)
+		for name, p := range index.Props.Sprites {
+			r := image.Rect(p.Rect[0], p.Rect[1], p.Rect[0]+p.Rect[2], p.Rect[1]+p.Rect[3])
+			a.Props[name] = Prop{Sprite{prSheet.SubImage(r).(*ebiten.Image), p.Pivot[0], p.Pivot[1]}, p.Layer == "ground"}
+		}
+	}
 	for _, path := range index.Maps {
 		b, err := os.ReadFile(filepath.Join(dir, path))
 		if err != nil {
@@ -241,11 +279,13 @@ func LoadAssets(dir string) (*Assets, error) {
 			Bounds      [4]int
 			Ground      [][3]json.RawMessage
 			Decorations [][4]json.RawMessage
+			Props       [][]json.RawMessage
+			Deformed    bool
 		}
 		if err = json.Unmarshal(b, &m); err != nil {
 			return nil, fmt.Errorf("%s: %w", path, err)
 		}
-		art := &MapArt{ID: m.ID, Name: m.Name, W: m.Size[0], H: m.Size[1], Tiles: m.Tiles,
+		art := &MapArt{ID: m.ID, Name: m.Name, W: m.Size[0], H: m.Size[1], Tiles: m.Tiles, Deformed: m.Deformed,
 			Bounds: image.Rect(m.Bounds[0], m.Bounds[1], m.Bounds[2], m.Bounds[3])}
 		for _, g := range m.Ground {
 			var t GroundTile
@@ -262,18 +302,29 @@ func LoadAssets(dir string) (*Assets, error) {
 			_ = json.Unmarshal(d[3], &t.Phase)
 			art.Decorations = append(art.Decorations, t)
 		}
+		for _, p := range m.Props {
+			var mp MapProp
+			if len(p) < 3 {
+				return nil, fmt.Errorf("%s: prop %s needs [name, u, v]", path, p)
+			}
+			_ = json.Unmarshal(p[0], &mp.Name)
+			_ = json.Unmarshal(p[1], &mp.U)
+			_ = json.Unmarshal(p[2], &mp.V)
+			if len(p) >= 5 {
+				mp.Fill = true
+				_ = json.Unmarshal(p[3], &mp.U1)
+				_ = json.Unmarshal(p[4], &mp.V1)
+			}
+			art.Props = append(art.Props, mp)
+		}
 		a.Maps[m.ID] = art
 	}
-	for name, file := range map[string]string{"portraits": "portraits.png", "enemies": "enemies.png"} {
+	for key, file := range index.Portraits {
 		im, err := loadRGBA(filepath.Join(dir, file))
 		if err != nil {
 			return nil, err
 		}
-		if name == "portraits" {
-			a.Portraits = ebiten.NewImageFromImage(im)
-		} else {
-			a.Enemies = ebiten.NewImageFromImage(im)
-		}
+		a.Portraits[key] = ebiten.NewImageFromImage(im)
 	}
 	return a, nil
 }
@@ -338,22 +389,31 @@ func (u *UnitArt) Length(anim string) float64 {
 	return float64(total) / 1000
 }
 
+// row is the sheet row of a facing. Scene sprites have only the diagonals; a straight
+// facing falls back to one next to it, toward the viewer when it can.
+func (u *UnitArt) row(dir string) int {
+	if r, ok := u.rows[dir]; ok {
+		return r
+	}
+	return u.rows[map[string]string{"N": "NW", "E": "SE", "S": "SW", "W": "SW"}[dir]]
+}
+
 func (u *UnitArt) Frame(faction, dir, anim string, i int) *ebiten.Image {
 	w, h := u.cell[0], u.cell[1]
-	col, row := u.Animations[anim].FirstColumn+i, u.rows[dir]
+	col, row := u.Animations[anim].FirstColumn+i, u.row(dir)
 	return u.sheet(faction).SubImage(image.Rect(col*w, row*h, (col+1)*w, (row+1)*h)).(*ebiten.Image)
 }
 
 func (u *UnitArt) Shadow(dir, anim string, i int) *ebiten.Image {
 	w, h := u.shadowCell[0], u.shadowCell[1]
-	col, row := u.Animations[anim].FirstColumn+i, u.rows[dir]
+	col, row := u.Animations[anim].FirstColumn+i, u.row(dir)
 	return u.shadow.SubImage(image.Rect(col*w, row*h, (col+1)*w, (row+1)*h)).(*ebiten.Image)
 }
 
 // TopOffset is how far above the pivot the idle south frame's first opaque row is (for HP bars).
 func (u *UnitArt) TopOffset() float64 {
 	w, h := u.cell[0], u.cell[1]
-	col, row := u.Animations["idle"].FirstColumn, u.rows["S"]
+	col, row := u.Animations["idle"].FirstColumn, u.row("S")
 	for y := 0; y < h; y++ {
 		for x := 0; x < w; x++ {
 			if u.source.RGBAAt(col*w+x, row*h+y).A > 0 {

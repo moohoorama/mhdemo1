@@ -24,6 +24,8 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		return fmt.Sprintf("%s의 공격이 %s에게 빗나감", a, t), false
 	case "critical":
 		return fmt.Sprintf("%s의 치명타!", a), false
+	case "double":
+		return fmt.Sprintf("%s의 2회 공격!", a), false
 	case "heal":
 		return fmt.Sprintf("%s → %s  병력 +%d", a, t, e.Amount), false
 	case "effect":
@@ -44,6 +46,10 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		return fmt.Sprintf("%s 승급: %s", a, e.Target), true
 	case "duel":
 		return fmt.Sprintf("일기토  %s VS %s", a, t), true
+	case "defense-down":
+		return fmt.Sprintf("적의 진형이 흐트러졌다! 적 전체 방어 −%d%%", e.Amount), true
+	case "attack-down":
+		return fmt.Sprintf("적이 전의를 잃었다! 적 전체 공격 −%d%%", e.Amount), true
 	case "victory":
 		return "승리!", true
 	case "turn":
@@ -54,7 +60,7 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		return fmt.Sprintf("%s ×%d 획득", g.itemName(e.Target), e.Amount), true
 	case "deputy":
 		return fmt.Sprintf("%s 부관: %s", a, t), false
-	case "attack-hit", "spell-hit", "move", "cost", "recover-hp", "recover-mp":
+	case "attack-hit", "spell-hit", "move", "place", "cost", "recover-hp", "recover-mp":
 		return "", false
 	}
 	if e.Text != "" {
@@ -74,11 +80,11 @@ func factionName(f string) string {
 	return map[string]string{"ally": "아군", "enemy": "적군"}[f]
 }
 
-var terrainNames = map[byte]string{'.': "초원", 'd': "황무지", 's': "산지", 'f': "숲", 'c': "성벽", 'i': "성내", 'v': "마을", '~': "강"}
+var terrainNames = map[byte]string{'.': "초원", 'd': "황무지", 's': "산지", 'f': "숲", 'c': "성벽", 'i': "성내", 'v': "마을", '~': "강", 'b': "다리", 'g': "성문", 'k': "주둔지"}
 
 var statusNames = map[string]string{"speed": "신속", "charge": "돌격", "counter": "반격", "range": "원시",
 	"morale": "사기↑", "attack": "공격↑", "defense": "방어↑", "poison": "중독", "burn": "화상",
-	"confusion": "혼란", "seal": "봉책", "root": "속박", "weak": "약화"}
+	"confusion": "혼란", "seal": "봉책", "root": "속박", "weak": "약화", "attack-down": "공격↓", "defense-down": "방어↓"}
 
 var badStatus = map[string]bool{"poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "weak": true}
 

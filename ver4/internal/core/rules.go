@@ -64,6 +64,8 @@ func (e *Engine) stats(u *Unit) Stats {
 			v[1] = max(1, v[1]-s.Value)
 		}
 	}
+	v[0] = max(1, v[0]*(100-u.Status["attack-down"].Value)/100)
+	v[1] = max(1, v[1]*(100-u.Status["defense-down"].Value)/100)
 	return Stats{v[0], v[1], v[2], v[3], v[4], v[5], int(float64(c.MPBase) + a[0]*c.MPCoeff), int(float64(c.RecoveryBase) + a[2]*c.RecoveryCoeff)}
 }
 func (e *Engine) tile(x, y int) string {
@@ -321,7 +323,8 @@ func (e *Engine) multiplier(u, v *Unit, magic bool) float64 {
 }
 func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	a, b := e.stats(u), e.stats(v)
-	base := math.Max(1, 1.5*float64(a.Attack)*e.terrain(u, u.X, u.Y).Factor-.75*float64(b.Defense)*e.terrain(v, v.X, v.Y).Factor)
+	atk, def := float64(a.Attack)*e.terrain(u, u.X, u.Y).Factor, float64(b.Defense)*e.terrain(v, v.X, v.Y).Factor
+	base := math.Max(1, atk*curve(atk/math.Max(1, def), damageCurve))
 	if s.Kind == "magic" {
 		base = math.Max(1, 2*float64(a.Mind)-.5*float64(b.Mind))
 	}
@@ -331,10 +334,21 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 	a, b := e.stats(u), e.stats(v)
 	h := float64(s.Hit)
 	if s.Kind == "physical" {
-		h += float64(a.Agility-b.Agility) / 20
 		if e.has(u, "군신") && e.data.Classes[e.officer(u.Officer).Class].Weapon != "활" && e.data.Officers[u.Officer].Stats[1] > e.data.Officers[v.Officer].Stats[1] {
-			h = 100
+			return 100
 		}
+		h += curve(ratio(a.Agility, b.Agility), hitCurve) - 90
+		if e.has(u, "행운") {
+			h += 5
+		}
+		if e.has(v, "방패") {
+			h -= 10
+		}
+		h = clamp(h, 30, 100)
+		if e.has(u, "패왕") {
+			h = math.Max(h, 80)
+		}
+		return h
 	} else if s.Kind == "magic" || s.Kind == "status" {
 		h += float64(e.data.Officers[u.Officer].Stats[4]-e.data.Officers[v.Officer].Stats[4]) * .5
 	} else if s.Mode != "자기" && s.Hit < 100 {
@@ -346,17 +360,48 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 	return clamp(h, 5, 100)
 }
 
+// damageCurve maps attack over defense to the share of attack a physical blow deals.
+var damageCurve = [][2]float64{{.5, .8}, {1, 1}, {2, 1.2}}
+
+// hitCurve maps the attacker's 순발 over the defender's to the physical hit chance
+// before the skill's own hit adjustment.
+var hitCurve = [][2]float64{{1. / 3, 30}, {.5, 60}, {1, 80}, {2, 100}}
+
+// ratio is a over b, guarding against a zero stat.
+func ratio(a, b int) float64 { return float64(max(1, a)) / float64(max(1, b)) }
+
+// curve interpolates linearly between points sorted by x and holds the end values outside them.
+func curve(x float64, pts [][2]float64) float64 {
+	if x <= pts[0][0] {
+		return pts[0][1]
+	}
+	for i := 1; i < len(pts); i++ {
+		if p, q := pts[i-1], pts[i]; x <= q[0] {
+			return p[1] + (x-p[0])*(q[1]-p[1])/(q[0]-p[0])
+		}
+	}
+	return pts[len(pts)-1][1]
+}
+
+// ratioChance is 10% at an even ratio and 30%p more per extra multiple, within 0..70%.
+func ratioChance(r float64) float64 { return clamp(10+30*(r-1), 0, 70) }
+
 // critChance is the chance in percent that a physical blow lands 1.5×; 100 when forced.
 func (e *Engine) critChance(u, v *Unit) float64 {
 	if e.has(u, "필살") || e.has(u, "군신") && e.data.Classes[e.officer(u.Officer).Class].Weapon != "활" && e.data.Officers[u.Officer].Stats[1] > e.data.Officers[v.Officer].Stats[1] {
 		return 100
 	}
 	a, b := e.stats(u), e.stats(v)
-	crit := clamp(10+float64(a.Morale-b.Morale)/20, 5, 40)
+	crit := 10 + 30*(ratio(a.Morale, b.Morale)-1)
 	if e.has(u, "행운") {
 		crit += 5
 	}
-	return crit
+	return clamp(crit, 0, 70)
+}
+
+// doubleChance is the chance in percent that a physical skill strikes the target twice.
+func (e *Engine) doubleChance(u, v *Unit) float64 {
+	return ratioChance(ratio(e.stats(u).Agility, e.stats(v).Agility))
 }
 func (e *Engine) applyStatus(v *Unit, id string, turns, value int) {
 	if contains([]string{"poison", "confusion", "seal", "root", "weak", "burn"}, id) && e.has(v, "군율") {
@@ -374,34 +419,23 @@ func (e *Engine) hurt(v *Unit, n int, u *Unit) int {
 	}
 	return n
 }
+
+// strike is one blow: hit, critical and damage, with 위압 still landing half on a miss.
 func (e *Engine) strike(u, v *Unit, s content.Skill, counter bool) int {
 	if u.HP <= 0 || v.HP <= 0 {
 		return 0
 	}
-	if float64(e.rand(100)) >= e.hitChance(u, v, s) {
-		e.emit("miss", u.ID, v.ID, 0)
-		return 0
-	}
 	d := e.damage(u, v, s)
-	if s.Kind == "physical" {
-		a, b := e.stats(u), e.stats(v)
-		roll := e.rand(100)
-		if float64(roll) < e.critChance(u, v) {
-			d *= 1.5
-			e.emit("critical", u.ID, v.ID, 0)
+	hit := float64(e.rand(100)) < e.hitChance(u, v, s)
+	if !hit {
+		e.emit("miss", u.ID, v.ID, 0)
+		if s.Kind != "physical" || !e.has(u, "위압") {
+			return 0
 		}
-		guard := clamp(10+float64(b.Agility-a.Agility)/50, 5, 25)
-		if e.has(v, "방패") {
-			guard += 10
-		}
-		roll = e.rand(100)
-		if float64(roll) < guard && !e.has(u, "패왕") {
-			if e.has(u, "위압") {
-				d *= .5
-			} else {
-				d = 0
-			}
-		}
+		d *= .5
+	} else if s.Kind == "physical" && float64(e.rand(100)) < e.critChance(u, v) {
+		d *= 1.5
+		e.emit("critical", u.ID, v.ID, 0)
 	}
 	if counter {
 		d *= .7
@@ -411,22 +445,27 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, counter bool) int {
 		v.FirstHitUsed = true
 	}
 	n := e.hurt(v, int(math.Floor(d)), u)
-	if n > 0 && s.Kind == "physical" && e.has(u, "독공") {
+	if hit && n > 0 && s.Kind == "physical" && e.has(u, "독공") {
 		e.applyStatus(v, "poison", 3, 0)
 		status := v.Status["poison"]
 		status.Source = u.ID
 		v.Status["poison"] = status
 	}
-	if !counter && v.HP > 0 && u.HP > 0 && v.Status["counter"].Turns > 0 {
-		basic, _ := e.skillDef(Command{Kind: "attack"})
-		if e.inRange(v, u, basic) {
-			r := e.strike(v, u, basic, true)
-			if e.has(v, "심공") && v.HP > 0 {
-				v.HP = min(e.stats(v).MaxHP, v.HP+r/4)
-			}
+	return n
+}
+
+// counterBack is the target's counter-attack after it took u's physical action.
+func (e *Engine) counterBack(u, v *Unit) {
+	if v.HP <= 0 || u.HP <= 0 || v.Status["counter"].Turns == 0 {
+		return
+	}
+	basic, _ := e.skillDef(Command{Kind: "attack"})
+	if e.inRange(v, u, basic) {
+		r := e.strike(v, u, basic, true)
+		if e.has(v, "심공") && v.HP > 0 {
+			v.HP = min(e.stats(v).MaxHP, v.HP+r/4)
 		}
 	}
-	return n
 }
 func (e *Engine) targets(u, v *Unit, s content.Skill) []*Unit {
 	out := []*Unit{}
@@ -469,27 +508,11 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 		u.Acted = true
 	}
 	targets := e.targets(u, v, s)
-	total := 0
+	struck, dealt := []*Unit{}, map[string]int{}
 	apply := func(q *Unit) {
 		if s.Kind == "physical" || s.Kind == "magic" {
-			n := e.strike(u, q, s, false)
-			total += n
-			if n > 0 {
-				kind := "attack-hit"
-				if c.Kind == "skill" {
-					kind = "spell-hit"
-				}
-				e.emit(kind, u.ID, q.ID, n)
-				e.actionXP(u, q, 24, c.Kind == "skill", q.HP == 0)
-			}
-			if c.Skill == "탈취" && q.Items["소군량"] > 0 && e.rand(100) < 30 {
-				q.Items["소군량"]--
-				if u.Faction == "ally" {
-					e.state.Inventory["소군량"]++
-				} else {
-					u.Items["소군량"]++
-				}
-			}
+			struck = append(struck, q)
+			dealt[q.ID] += e.strike(u, q, s, false)
 			return
 		}
 		if float64(e.rand(100)) >= e.hitChance(u, q, s) {
@@ -543,6 +566,36 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 			apply(near[e.rand(len(near))])
 		}
 	}
+	if s.Kind == "physical" {
+		for _, q := range struck {
+			if q.HP > 0 && u.HP > 0 && float64(e.rand(100)) < e.doubleChance(u, q) {
+				e.emit("double", u.ID, q.ID, 0)
+				dealt[q.ID] += e.strike(u, q, s, false)
+			}
+		}
+	}
+	total := 0
+	for _, q := range struck {
+		e.counterBack(u, q)
+		n := dealt[q.ID]
+		total += n
+		if n > 0 {
+			kind := "attack-hit"
+			if c.Kind == "skill" {
+				kind = "spell-hit"
+			}
+			e.emit(kind, u.ID, q.ID, n)
+			e.actionXP(u, q, 24, c.Kind == "skill", q.HP == 0)
+		}
+		if c.Skill == "탈취" && q.Items["소군량"] > 0 && e.rand(100) < 30 {
+			q.Items["소군량"]--
+			if u.Faction == "ally" {
+				e.state.Inventory["소군량"]++
+			} else {
+				u.Items["소군량"]++
+			}
+		}
+	}
 	if e.has(u, "심공") && u.HP > 0 && s.Kind == "physical" {
 		u.HP = min(e.stats(u).MaxHP, u.HP+total/4)
 	}
@@ -594,8 +647,8 @@ func (e *Engine) endFaction() {
 		}
 		for _, k := range keys(u.Status) {
 			s := u.Status[k]
-			if k == "counter" {
-				continue
+			if k == "counter" || k == "attack-down" || k == "defense-down" {
+				continue // counter ends on its own; the duel debuffs last the battle
 			}
 			s.Turns--
 			if s.Turns <= 0 {
@@ -643,9 +696,12 @@ func (e *Engine) endFaction() {
 		if e.has(u, "집중") {
 			r += 2
 		}
-		if e.tile(u.X, u.Y) == "v" || e.tile(u.X, u.Y) == "i" {
-			r *= 2
+		switch e.tile(u.X, u.Y) {
+		case "k", "v": // 주둔지·마을 restore 병력; 성내 only 병법치
 			u.HP = min(st.MaxHP, u.HP+st.MaxHP*8/100)
+			r *= 2
+		case "i":
+			r *= 2
 		}
 		if e.has(u, "양생") {
 			u.HP = min(st.MaxHP, u.HP+st.MaxHP*3/100)

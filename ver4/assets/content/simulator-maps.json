@@ -1,0 +1,96 @@
+[
+ {
+  "ID": "SIM_grass",
+  "Name": "초원",
+  "Width": 16,
+  "Height": 12,
+  "Tiles": [
+   "................",
+   "................",
+   "................",
+   "................",
+   "................",
+   "................",
+   "................",
+   "................",
+   "................",
+   "................",
+   "................",
+   "................"
+  ]
+ },
+ {
+  "ID": "SIM_waste",
+  "Name": "황무지",
+  "Width": 16,
+  "Height": 12,
+  "Tiles": [
+   "dddddddddddddddd",
+   "dddddddddddddddd",
+   "dddddddddddddddd",
+   "dddddddddddddddd",
+   "dddddddddddddddd",
+   "dddddddddddddddd",
+   "dddddddddddddddd",
+   "dddddddddddddddd",
+   "dddddddddddddddd",
+   "dddddddddddddddd",
+   "dddddddddddddddd",
+   "dddddddddddddddd"
+  ]
+ },
+ {
+  "ID": "SIM_castle",
+  "Name": "성내",
+  "Width": 16,
+  "Height": 12,
+  "Tiles": [
+   "iiiiiiiiiiiiiiii",
+   "iiiiiiiiiiiiiiii",
+   "iiiiiiiiiiiiiiii",
+   "iiiiiiiiiiiiiiii",
+   "iiiiiiiiiiiiiiii",
+   "iiiiiiiiiiiiiiii",
+   "iiiiiiiiiiiiiiii",
+   "iiiiiiiiiiiiiiii",
+   "iiiiiiiiiiiiiiii",
+   "iiiiiiiiiiiiiiii",
+   "iiiiiiiiiiiiiiii",
+   "iiiiiiiiiiiiiiii"
+  ]
+ },
+ {
+  "ID": "SIM_forest",
+  "Name": "숲",
+  "Width": 16,
+  "Height": 12,
+  "Tiles": [
+   "ffffffffffffffff",
+   "ffffffffffffffff",
+   "ffffffffffffffff",
+   "ffffffffffffffff",
+   "ffffffffffffffff",
+   "ffffffffffffffff",
+   "ffffffffffffffff",
+   "ffffffffffffffff",
+   "ffffffffffffffff",
+   "ffffffffffffffff",
+   "ffffffffffffffff",
+   "ffffffffffffffff"
+  ],
+  "Art": [
+   "f....f....f....f",
+   "...f....f....f..",
+   ".f....f....f....",
+   "....f....f....f.",
+   "..f....f....f...",
+   "f....f....f....f",
+   "...f....f....f..",
+   ".f....f....f....",
+   "....f....f....f.",
+   "..f....f....f...",
+   "f....f....f....f",
+   "...f....f....f.."
+  ]
+ }
+]

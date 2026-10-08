@@ -175,6 +175,11 @@ func (g *Game) mapClick(x, y int) {
 	}
 	switch g.ord.stage {
 	case "move":
+		if g.S.Engine.Deploying() && containsCell(o.Map.Allies, x, y) {
+			g.command(core.Command{Kind: "place", Actor: g.ord.actor, X: x, Y: y})
+			g.clearOrder()
+			return
+		}
 		for _, c := range g.S.Engine.LegalActions(g.ord.actor).Commands {
 			if c.Kind == "move" && c.X == x && c.Y == y {
 				g.tentative(x, y)
@@ -298,12 +303,19 @@ func (g *Game) subItems() []entry {
 			out = append(out, entry{menuItem{fmt.Sprintf("%s ×%d", id, o.Inventory[id]), click}, g.itemHelp(id)})
 		}
 	case "learn":
+		ok := map[string]bool{}
 		for _, c := range legal {
 			if c.Kind == "learn" {
-				cmd := c
-				cost := g.S.Data.Traits[c.Trait].Cost
-				out = append(out, entry{menuItem{fmt.Sprintf("%s  %d", c.Trait, cost), func() { g.confirm(cmd) }}, g.traitHelp(c.Trait)})
+				ok[c.Trait] = true
 			}
+		}
+		for _, t := range g.sortedTraits(u.Learnable, "cost") {
+			var click func()
+			if ok[t] {
+				cmd := core.Command{Kind: "learn", Actor: g.ord.actor, Trait: t}
+				click = func() { g.confirm(cmd) }
+			}
+			out = append(out, entry{menuItem{fmt.Sprintf("%s  %d", t, g.S.Data.Traits[t].Cost), click}, g.traitHelp(t)})
 		}
 	}
 	if len(out) == 0 {
@@ -353,6 +365,9 @@ func (g *Game) drawMenu(dst *ebiten.Image) {
 	r := draw(g.menuItems(), x, int(sy)-110, 128, g.name(g.ord.actor))
 	if g.ord.stage == "sub" {
 		title := map[string]string{"skill": "병법 · 소모", "item": "도구", "learn": "학습 · 특성치"}[g.ord.sub]
+		if u := g.unitView(g.engine().Observe(), g.ord.actor); u != nil && g.ord.sub == "learn" {
+			title = fmt.Sprintf("학습 · 특성치 %d", u.Points)
+		}
 		draw(g.subItems(), r.Max.X+6, r.Min.Y+20, 178, title)
 	}
 	g.label(dst, "우클릭/Esc: 취소", float64(r.Min.X), float64(r.Max.Y+4), 12, muted)
@@ -375,6 +390,11 @@ func (g *Game) marks(o core.Observation) []Highlight {
 			add(p, color.RGBA{240, 60, 30, 110})
 		}
 		add(content.Point{X: sel.X, Y: sel.Y}, color.RGBA{255, 120, 90, 150})
+	}
+	if g.S.Engine.Deploying() && !g.autoplay && (g.ord.actor == "" || g.ord.stage == "move") {
+		for _, p := range o.Map.Allies {
+			add(p, color.RGBA{240, 196, 80, 90})
+		}
 	}
 	if g.busy() || g.ord.actor == "" {
 		return out
@@ -410,6 +430,15 @@ func (g *Game) marks(o core.Observation) []Highlight {
 	}
 	add(content.Point{X: a.X, Y: a.Y}, color.RGBA{255, 214, 96, 150})
 	return out
+}
+
+func containsCell(cells []content.Point, x, y int) bool {
+	for _, p := range cells {
+		if p.X == x && p.Y == y {
+			return true
+		}
+	}
+	return false
 }
 
 // reach is the distance band a picked action covers, as the core measures it.
@@ -556,6 +585,9 @@ func (g *Game) forecast(dst *ebiten.Image) {
 			odds = "효과 확정"
 		} else if p.Crit > 0 {
 			odds += fmt.Sprintf("     치명 %.0f%%", p.Crit)
+		}
+		if p.Double > 0 {
+			odds += fmt.Sprintf("     2회 %.0f%%", p.Double)
 		}
 		g.label(dst, odds, float64(x), float64(y+8), 16, gold)
 	}

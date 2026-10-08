@@ -12,7 +12,7 @@ with tempfile.TemporaryDirectory(prefix='srpg-smoke-') as directory:
         result=json.loads(proc.stdout.readline())
         assert result['ok'],result
         return result.get('observation')
-    state=call('new',seed=1)
+    state=call('new',seed=3)
     call('settings',settings=dict(ai='step',color=False,detail=False,text_delay_ms=0))
     rounds=[];saved=0
     for step in range(5000):

@@ -200,3 +200,12 @@ func TestBuffWeakOrderAndPromotionLevels(t *testing.T) {
 		t.Fatal("advanced")
 	}
 }
+func TestLearnableSkipsInnateTraits(t *testing.T) {
+	e := battle(t)
+	e.officer("관우").Points = 1000
+	u := e.unit("관우")
+	if contains(e.learnable(u), "반격술") || !contains(e.learnable(u), "속공") {
+		t.Fatal(e.learnable(u))
+	}
+	assertRejected(t, e, Command{Kind: "learn", Actor: "관우", Trait: "반격술"})
+}

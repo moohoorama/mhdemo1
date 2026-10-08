@@ -636,7 +636,7 @@
    "image": "units/strategist.png",
    "cell": [
     47,
-    41
+    43
    ],
    "pivot": [
     23,
@@ -1171,116 +1171,15 @@
     }
    }
   },
-  "civ_guanyu": {
-   "name": "관우",
-   "image": "units/civ_guanyu.png",
+  "zhangshiping": {
+   "name": "장세평",
+   "image": "units/zhangshiping.png",
    "cell": [
-    27,
-    33
+    33,
+    36
    ],
    "pivot": [
-    13,
-    29
-   ],
-   "rows": [
-    "N",
-    "NE",
-    "E",
-    "SE",
-    "S",
-    "SW",
-    "W",
-    "NW"
-   ],
-   "animations": {
-    "idle": {
-     "first_column": 0,
-     "frames": 4,
-     "ms": [
-      180,
-      180,
-      180,
-      180
-     ],
-     "loop": true
-    },
-    "walk": {
-     "first_column": 4,
-     "frames": 4,
-     "ms": [
-      120,
-      120,
-      120,
-      120
-     ],
-     "loop": true
-    },
-    "talk": {
-     "first_column": 8,
-     "frames": 4,
-     "ms": [
-      160,
-      160,
-      160,
-      160
-     ],
-     "loop": true
-    },
-    "salute": {
-     "first_column": 12,
-     "frames": 4,
-     "ms": [
-      160,
-      200,
-      420,
-      300
-     ],
-     "loop": false
-    },
-    "toast": {
-     "first_column": 16,
-     "frames": 4,
-     "ms": [
-      160,
-      200,
-      420,
-      300
-     ],
-     "loop": false
-    },
-    "surprise": {
-     "first_column": 20,
-     "frames": 4,
-     "ms": [
-      80,
-      120,
-      320,
-      220
-     ],
-     "loop": false
-    },
-    "nod": {
-     "first_column": 24,
-     "frames": 4,
-     "ms": [
-      140,
-      160,
-      220,
-      160
-     ],
-     "loop": false
-    }
-   }
-  },
-  "civ_zhangfei": {
-   "name": "장비",
-   "image": "units/civ_zhangfei.png",
-   "cell": [
-    27,
-    34
-   ],
-   "pivot": [
-    13,
+    16,
     30
    ],
    "rows": [
@@ -1316,6 +1215,1892 @@
      ],
      "loop": true
     },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "chengyuanzhi": {
+   "name": "정원지",
+   "image": "units/chengyuanzhi.png",
+   "cell": [
+    62,
+    52
+   ],
+   "pivot": [
+    31,
+    40
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "dengmao": {
+   "name": "등무",
+   "image": "units/dengmao.png",
+   "cell": [
+    56,
+    46
+   ],
+   "pivot": [
+    28,
+    38
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "sushuang": {
+   "name": "소쌍",
+   "image": "units/sushuang.png",
+   "cell": [
+    33,
+    36
+   ],
+   "pivot": [
+    16,
+    30
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "zhaoyun": {
+   "name": "조운",
+   "image": "units/zhaoyun.png",
+   "cell": [
+    104,
+    52
+   ],
+   "pivot": [
+    52,
+    48
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "wenchou": {
+   "name": "문추",
+   "image": "units/wenchou.png",
+   "cell": [
+    68,
+    51
+   ],
+   "pivot": [
+    34,
+    48
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "yanliang": {
+   "name": "안량",
+   "image": "units/yanliang.png",
+   "cell": [
+    70,
+    60
+   ],
+   "pivot": [
+    35,
+    57
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "zhanghe": {
+   "name": "장합",
+   "image": "units/zhanghe.png",
+   "cell": [
+    102,
+    53
+   ],
+   "pivot": [
+    51,
+    50
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "yuanshao": {
+   "name": "원소",
+   "image": "units/yuanshao.png",
+   "cell": [
+    56,
+    46
+   ],
+   "pivot": [
+    28,
+    38
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "tianyu": {
+   "name": "전예",
+   "image": "units/tianyu.png",
+   "cell": [
+    56,
+    46
+   ],
+   "pivot": [
+    28,
+    38
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "fangong": {
+   "name": "번궁",
+   "image": "units/fangong.png",
+   "cell": [
+    72,
+    36
+   ],
+   "pivot": [
+    36,
+    31
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "chunyuqiong": {
+   "name": "순우경",
+   "image": "units/chunyuqiong.png",
+   "cell": [
+    70,
+    60
+   ],
+   "pivot": [
+    35,
+    57
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "yangang": {
+   "name": "엄강",
+   "image": "units/yangang.png",
+   "cell": [
+    102,
+    53
+   ],
+   "pivot": [
+    51,
+    50
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "quyi": {
+   "name": "국의",
+   "image": "units/quyi.png",
+   "cell": [
+    94,
+    48
+   ],
+   "pivot": [
+    47,
+    39
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "gaolan": {
+   "name": "고람",
+   "image": "units/gaolan.png",
+   "cell": [
+    56,
+    46
+   ],
+   "pivot": [
+    28,
+    38
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "shenpei": {
+   "name": "심배",
+   "image": "units/shenpei.png",
+   "cell": [
+    47,
+    43
+   ],
+   "pivot": [
+    23,
+    33
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "tianfeng": {
+   "name": "전풍",
+   "image": "units/tianfeng.png",
+   "cell": [
+    47,
+    43
+   ],
+   "pivot": [
+    23,
+    33
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "hanying": {
+   "name": "한영",
+   "image": "units/hanying.png",
+   "cell": [
+    56,
+    46
+   ],
+   "pivot": [
+    28,
+    38
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "guoshi": {
+   "name": "곽적",
+   "image": "units/guoshi.png",
+   "cell": [
+    56,
+    46
+   ],
+   "pivot": [
+    28,
+    38
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "gengwu": {
+   "name": "경무",
+   "image": "units/gengwu.png",
+   "cell": [
+    56,
+    46
+   ],
+   "pivot": [
+    28,
+    38
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "guanchun": {
+   "name": "관순",
+   "image": "units/guanchun.png",
+   "cell": [
+    94,
+    48
+   ],
+   "pivot": [
+    47,
+    39
+   ],
+   "rows": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "attack": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      180,
+      280,
+      240,
+      200
+     ],
+     "loop": false
+    },
+    "hit": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    },
+    "block": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      100,
+      140,
+      260,
+      200
+     ],
+     "loop": false
+    }
+   }
+  },
+  "civ_guanyu": {
+   "name": "관우",
+   "image": "units/civ_guanyu.png",
+   "cell": [
+    22,
+    34
+   ],
+   "pivot": [
+    11,
+    29
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
     "talk": {
      "first_column": 8,
      "frames": 4,
@@ -1370,6 +3155,125 @@
       160
      ],
      "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_zhangfei": {
+   "name": "장비",
+   "image": "units/civ_zhangfei.png",
+   "cell": [
+    24,
+    35
+   ],
+   "pivot": [
+    12,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
     }
    }
   },
@@ -1377,22 +3281,18 @@
    "name": "유비",
    "image": "units/civ_liubei.png",
    "cell": [
-    27,
-    33
+    22,
+    34
    ],
    "pivot": [
-    13,
+    11,
     29
    ],
    "rows": [
-    "N",
-    "NE",
-    "E",
-    "SE",
-    "S",
+    "NW",
     "SW",
-    "W",
-    "NW"
+    "NE",
+    "SE"
    ],
    "animations": {
     "idle": {
@@ -1471,6 +3371,881 @@
       160
      ],
      "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_zhangshiping": {
+   "name": "장세평",
+   "image": "units/civ_zhangshiping.png",
+   "cell": [
+    24,
+    35
+   ],
+   "pivot": [
+    12,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_sushuang": {
+   "name": "소쌍",
+   "image": "units/civ_sushuang.png",
+   "cell": [
+    26,
+    35
+   ],
+   "pivot": [
+    13,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_yuanshao": {
+   "name": "원소",
+   "image": "units/civ_yuanshao.png",
+   "cell": [
+    22,
+    34
+   ],
+   "pivot": [
+    11,
+    29
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_yuanshu": {
+   "name": "원술",
+   "image": "units/civ_yuanshu.png",
+   "cell": [
+    24,
+    35
+   ],
+   "pivot": [
+    12,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_gongsunzan": {
+   "name": "공손찬",
+   "image": "units/civ_gongsunzan.png",
+   "cell": [
+    22,
+    35
+   ],
+   "pivot": [
+    11,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_dongzhuo": {
+   "name": "동탁",
+   "image": "units/civ_dongzhuo.png",
+   "cell": [
+    24,
+    35
+   ],
+   "pivot": [
+    12,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_liru": {
+   "name": "이유",
+   "image": "units/civ_liru.png",
+   "cell": [
+    24,
+    35
+   ],
+   "pivot": [
+    12,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_caocao": {
+   "name": "조조",
+   "image": "units/civ_caocao.png",
+   "cell": [
+    24,
+    35
+   ],
+   "pivot": [
+    12,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
     }
    }
   },
@@ -1478,22 +4253,18 @@
    "name": "간옹",
    "image": "units/civ_jianyong.png",
    "cell": [
-    27,
-    33
+    22,
+    34
    ],
    "pivot": [
-    13,
+    11,
     29
    ],
    "rows": [
-    "N",
-    "NE",
-    "E",
-    "SE",
-    "S",
+    "NW",
     "SW",
-    "W",
-    "NW"
+    "NE",
+    "SE"
    ],
    "animations": {
     "idle": {
@@ -1572,6 +4343,17 @@
       160
      ],
      "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
     }
    }
   },
@@ -1579,22 +4361,18 @@
    "name": "손건",
    "image": "units/civ_sunqian.png",
    "cell": [
-    27,
-    33
+    24,
+    35
    ],
    "pivot": [
-    13,
-    29
+    12,
+    30
    ],
    "rows": [
-    "N",
-    "NE",
-    "E",
-    "SE",
-    "S",
+    "NW",
     "SW",
-    "W",
-    "NW"
+    "NE",
+    "SE"
    ],
    "animations": {
     "idle": {
@@ -1673,6 +4451,1097 @@
       160
      ],
      "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_zhaoyun": {
+   "name": "조운",
+   "image": "units/civ_zhaoyun.png",
+   "cell": [
+    22,
+    35
+   ],
+   "pivot": [
+    11,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_wenchou": {
+   "name": "문추",
+   "image": "units/civ_wenchou.png",
+   "cell": [
+    22,
+    35
+   ],
+   "pivot": [
+    11,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_tianyu": {
+   "name": "전예",
+   "image": "units/civ_tianyu.png",
+   "cell": [
+    22,
+    35
+   ],
+   "pivot": [
+    11,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_fangong": {
+   "name": "번궁",
+   "image": "units/civ_fangong.png",
+   "cell": [
+    22,
+    34
+   ],
+   "pivot": [
+    11,
+    29
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_gengwu": {
+   "name": "경무",
+   "image": "units/civ_gengwu.png",
+   "cell": [
+    24,
+    35
+   ],
+   "pivot": [
+    12,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_guanchun": {
+   "name": "관순",
+   "image": "units/civ_guanchun.png",
+   "cell": [
+    24,
+    35
+   ],
+   "pivot": [
+    12,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_turban": {
+   "name": "황건병",
+   "image": "units/civ_turban.png",
+   "cell": [
+    24,
+    35
+   ],
+   "pivot": [
+    12,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_villager": {
+   "name": "마을 젊은이",
+   "image": "units/civ_villager.png",
+   "cell": [
+    24,
+    35
+   ],
+   "pivot": [
+    12,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_elder": {
+   "name": "촌로",
+   "image": "units/civ_elder.png",
+   "cell": [
+    24,
+    35
+   ],
+   "pivot": [
+    12,
+    30
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
+    }
+   }
+  },
+  "civ_cart": {
+   "name": "짐수레 상인",
+   "image": "units/civ_cart.png",
+   "cell": [
+    48,
+    39
+   ],
+   "pivot": [
+    24,
+    34
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 4,
+     "frames": 4,
+     "ms": [
+      120,
+      120,
+      120,
+      120
+     ],
+     "loop": true
+    },
+    "talk": {
+     "first_column": 8,
+     "frames": 4,
+     "ms": [
+      160,
+      160,
+      160,
+      160
+     ],
+     "loop": true
+    },
+    "salute": {
+     "first_column": 12,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "toast": {
+     "first_column": 16,
+     "frames": 4,
+     "ms": [
+      160,
+      200,
+      420,
+      300
+     ],
+     "loop": false
+    },
+    "surprise": {
+     "first_column": 20,
+     "frames": 4,
+     "ms": [
+      80,
+      120,
+      320,
+      220
+     ],
+     "loop": false
+    },
+    "nod": {
+     "first_column": 24,
+     "frames": 4,
+     "ms": [
+      140,
+      160,
+      220,
+      160
+     ],
+     "loop": false
+    },
+    "exhausted": {
+     "first_column": 28,
+     "frames": 4,
+     "ms": [
+      220,
+      220,
+      220,
+      220
+     ],
+     "loop": true
     }
    }
   }
@@ -2374,26 +6243,26 @@
     "id": "wei",
     "name": "위",
     "hue": null,
-    "chroma": 1.0,
-    "lightness": 0.0,
+    "chroma": 1.15,
+    "lightness": 0.1,
     "ramp": [
-     "#1b3358",
-     "#264d80",
-     "#3567a6",
-     "#5a8fd0"
+     "#304e7b",
+     "#3b69a7",
+     "#4985d0",
+     "#6faefc"
     ]
    },
    {
     "id": "shu",
     "name": "촉",
-    "hue": 92,
-    "chroma": 1.7,
-    "lightness": 0.26,
+    "hue": 135,
+    "chroma": 1.4,
+    "lightness": 0.16,
     "ramp": [
-     "#937812",
-     "#b79401",
-     "#d7b01e",
-     "#fddc76"
+     "#446b2c",
+     "#558b31",
+     "#67aa3a",
+     "#90d467"
     ]
    },
    {
@@ -2473,6 +6342,19 @@
      "#895ba4",
      "#b182ce"
     ]
+   },
+   {
+    "id": "merchant",
+    "name": "상단",
+    "hue": 298,
+    "chroma": 1.4,
+    "lightness": 0,
+    "ramp": [
+     "#3b2460",
+     "#57378b",
+     "#734bb4",
+     "#9973df"
+    ]
    }
   ]
  },
@@ -2482,8 +6364,51 @@
   "maps/B03.json",
   "maps/S_peach.json",
   "maps/S_village.json",
-  "maps/S_camp.json"
+  "maps/S_camp.json",
+  "maps/SIM_grass.json",
+  "maps/SIM_waste.json",
+  "maps/SIM_castle.json",
+  "maps/SIM_forest.json"
  ],
+ "portraits": {
+  "caocao": "portraits/caocao.png",
+  "chengyuanzhi": "portraits/chengyuanzhi.png",
+  "chunyuqiong": "portraits/chunyuqiong.png",
+  "dengmao": "portraits/dengmao.png",
+  "dongzhuo": "portraits/dongzhuo.png",
+  "fangong": "portraits/fangong.png",
+  "gaolan": "portraits/gaolan.png",
+  "gengwu": "portraits/gengwu.png",
+  "gongsunzan": "portraits/gongsunzan.png",
+  "guanchun": "portraits/guanchun.png",
+  "guanyu": "portraits/guanyu.png",
+  "guoshi": "portraits/guoshi.png",
+  "hanying": "portraits/hanying.png",
+  "huaxiong": "portraits/huaxiong.png",
+  "huzhen": "portraits/huzhen.png",
+  "jianyong": "portraits/jianyong.png",
+  "lijue": "portraits/lijue.png",
+  "liru": "portraits/liru.png",
+  "liubei": "portraits/liubei.png",
+  "lubu": "portraits/lubu.png",
+  "quyi": "portraits/quyi.png",
+  "shenpei": "portraits/shenpei.png",
+  "sunqian": "portraits/sunqian.png",
+  "sushuang": "portraits/sushuang.png",
+  "tianfeng": "portraits/tianfeng.png",
+  "tianyu": "portraits/tianyu.png",
+  "turban_soldier": "portraits/turban_soldier.png",
+  "wenchou": "portraits/wenchou.png",
+  "yangang": "portraits/yangang.png",
+  "yanliang": "portraits/yanliang.png",
+  "yuanshao": "portraits/yuanshao.png",
+  "yuanshu": "portraits/yuanshu.png",
+  "zhangfei": "portraits/zhangfei.png",
+  "zhanghe": "portraits/zhanghe.png",
+  "zhangjiao": "portraits/zhangjiao.png",
+  "zhangshiping": "portraits/zhangshiping.png",
+  "zhaoyun": "portraits/zhaoyun.png"
+ },
  "structures": {
   "version": 1,
   "image": "map/structures.png",
@@ -2506,7 +6431,8 @@
   "layer": {
    "village": "object",
    "floor": "ground",
-   "wall": "object"
+   "wall": "object",
+   "mountain": "object"
   },
   "sprites": {
    "village": 0,
@@ -2526,7 +6452,419 @@
    "wall_12": 14,
    "wall_13": 15,
    "wall_14": 16,
-   "wall_15": 17
+   "wall_15": 17,
+   "mountain": 18
+  }
+ },
+ "props": {
+  "version": 1,
+  "image": "map/props.png",
+  "pivot_note": "footprint centre on the ground (cell centre for one-cell props)",
+  "axes_note": "map u runs to the lower right, v to the lower left; _u/_v props span that axis",
+  "sprites": {
+   "floor_wood": {
+    "rect": [
+     0,
+     0,
+     62,
+     32
+    ],
+    "pivot": [
+     31,
+     16
+    ],
+    "layer": "ground"
+   },
+   "floor_carpet": {
+    "rect": [
+     63,
+     0,
+     62,
+     32
+    ],
+    "pivot": [
+     31,
+     16
+    ],
+    "layer": "ground"
+   },
+   "floor_palace": {
+    "rect": [
+     126,
+     0,
+     62,
+     32
+    ],
+    "pivot": [
+     31,
+     16
+    ],
+    "layer": "ground"
+   },
+   "floor_tent": {
+    "rect": [
+     189,
+     0,
+     62,
+     32
+    ],
+    "pivot": [
+     31,
+     16
+    ],
+    "layer": "ground"
+   },
+   "bridge_u": {
+    "rect": [
+     252,
+     0,
+     63,
+     34
+    ],
+    "pivot": [
+     32,
+     17
+    ],
+    "layer": "ground"
+   },
+   "bridge_v": {
+    "rect": [
+     316,
+     0,
+     63,
+     34
+    ],
+    "pivot": [
+     32,
+     17
+    ],
+    "layer": "ground"
+   },
+   "wall_plaster_nw": {
+    "rect": [
+     380,
+     0,
+     37,
+     50
+    ],
+    "pivot": [
+     34,
+     48
+    ],
+    "layer": "object"
+   },
+   "wall_plaster_ne": {
+    "rect": [
+     418,
+     0,
+     37,
+     50
+    ],
+    "pivot": [
+     4,
+     48
+    ],
+    "layer": "object"
+   },
+   "wall_lacquer_nw": {
+    "rect": [
+     456,
+     0,
+     37,
+     50
+    ],
+    "pivot": [
+     34,
+     48
+    ],
+    "layer": "object"
+   },
+   "wall_lacquer_ne": {
+    "rect": [
+     494,
+     0,
+     37,
+     50
+    ],
+    "pivot": [
+     4,
+     48
+    ],
+    "layer": "object"
+   },
+   "wall_canvas_nw": {
+    "rect": [
+     532,
+     0,
+     37,
+     50
+    ],
+    "pivot": [
+     34,
+     48
+    ],
+    "layer": "object"
+   },
+   "wall_canvas_ne": {
+    "rect": [
+     570,
+     0,
+     37,
+     50
+    ],
+    "pivot": [
+     4,
+     48
+    ],
+    "layer": "object"
+   },
+   "pillar_red": {
+    "rect": [
+     608,
+     0,
+     15,
+     50
+    ],
+    "pivot": [
+     8,
+     46
+    ],
+    "layer": "object"
+   },
+   "pillar_wood": {
+    "rect": [
+     624,
+     0,
+     15,
+     50
+    ],
+    "pivot": [
+     8,
+     46
+    ],
+    "layer": "object"
+   },
+   "dais": {
+    "rect": [
+     640,
+     0,
+     53,
+     54
+    ],
+    "pivot": [
+     27,
+     40
+    ],
+    "layer": "object"
+   },
+   "table_wine": {
+    "rect": [
+     694,
+     0,
+     25,
+     23
+    ],
+    "pivot": [
+     13,
+     17
+    ],
+    "layer": "object"
+   },
+   "altar": {
+    "rect": [
+     720,
+     0,
+     25,
+     22
+    ],
+    "pivot": [
+     13,
+     16
+    ],
+    "layer": "object"
+   },
+   "desk": {
+    "rect": [
+     746,
+     0,
+     25,
+     20
+    ],
+    "pivot": [
+     13,
+     14
+    ],
+    "layer": "object"
+   },
+   "peach_tree": {
+    "rect": [
+     772,
+     0,
+     54,
+     67
+    ],
+    "pivot": [
+     27,
+     62
+    ],
+    "layer": "object"
+   },
+   "gate_u": {
+    "rect": [
+     827,
+     0,
+     68,
+     88
+    ],
+    "pivot": [
+     35,
+     72
+    ],
+    "layer": "object"
+   },
+   "gate_v": {
+    "rect": [
+     896,
+     0,
+     68,
+     88
+    ],
+    "pivot": [
+     34,
+     72
+    ],
+    "layer": "object"
+   },
+   "notice_board": {
+    "rect": [
+     965,
+     0,
+     17,
+     33
+    ],
+    "pivot": [
+     9,
+     29
+    ],
+    "layer": "object"
+   },
+   "tent": {
+    "rect": [
+     983,
+     0,
+     43,
+     45
+    ],
+    "pivot": [
+     22,
+     34
+    ],
+    "layer": "object"
+   },
+   "tent_round": {
+    "rect": [
+     1027,
+     0,
+     47,
+     58
+    ],
+    "pivot": [
+     24,
+     46
+    ],
+    "layer": "object"
+   },
+   "banner": {
+    "rect": [
+     1075,
+     0,
+     10,
+     56
+    ],
+    "pivot": [
+     3,
+     54
+    ],
+    "layer": "object"
+   },
+   "command_flag": {
+    "rect": [
+     1086,
+     0,
+     15,
+     56
+    ],
+    "pivot": [
+     3,
+     54
+    ],
+    "layer": "object"
+   },
+   "tavern": {
+    "rect": [
+     1102,
+     0,
+     74,
+     75
+    ],
+    "pivot": [
+     39,
+     58
+    ],
+    "layer": "object"
+   },
+   "forest_0": {
+    "rect": [
+     1177,
+     0,
+     56,
+     39
+    ],
+    "pivot": [
+     26,
+     26
+    ],
+    "layer": "object"
+   },
+   "forest_1": {
+    "rect": [
+     1234,
+     0,
+     58,
+     39
+    ],
+    "pivot": [
+     30,
+     26
+    ],
+    "layer": "object"
+   },
+   "forest_2": {
+    "rect": [
+     1293,
+     0,
+     60,
+     40
+    ],
+    "pivot": [
+     31,
+     27
+    ],
+    "layer": "object"
+   },
+   "forest_3": {
+    "rect": [
+     1354,
+     0,
+     54,
+     39
+    ],
+    "pivot": [
+     27,
+     27
+    ],
+    "layer": "object"
+   }
   }
  },
  "shadows": {
@@ -2534,7 +6872,7 @@
    "infantry": {
     "image": "units/infantry.shadow.png",
     "source": "units/infantry.png",
-    "hash": "1bd87984c185de6e",
+    "hash": "f73cfeeb4ace6df5",
     "cell": [
      95,
      29
@@ -2547,7 +6885,7 @@
    "bandit": {
     "image": "units/bandit.shadow.png",
     "source": "units/bandit.png",
-    "hash": "6ae21272e48bcb0c",
+    "hash": "cb086f375e187829",
     "cell": [
      99,
      30
@@ -2560,7 +6898,7 @@
    "spearman": {
     "image": "units/spearman.shadow.png",
     "source": "units/spearman.png",
-    "hash": "1de7f0cfe41e0039",
+    "hash": "b4f4de840747b981",
     "cell": [
      142,
      28
@@ -2573,7 +6911,7 @@
    "archer": {
     "image": "units/archer.shadow.png",
     "source": "units/archer.png",
-    "hash": "3a6839e0db5b1c82",
+    "hash": "4dd9a871f86a0181",
     "cell": [
      134,
      29
@@ -2586,7 +6924,7 @@
    "cavalry": {
     "image": "units/cavalry.shadow.png",
     "source": "units/cavalry.png",
-    "hash": "67e49c61c2fd4f2a",
+    "hash": "3866f252df7db8c4",
     "cell": [
      148,
      32
@@ -2599,7 +6937,7 @@
    "guanyu": {
     "image": "units/guanyu.shadow.png",
     "source": "units/guanyu.png",
-    "hash": "5b203cc5b1c1f47e",
+    "hash": "a7305ac499db2686",
     "cell": [
      121,
      35
@@ -2612,7 +6950,7 @@
    "zhangfei": {
     "image": "units/zhangfei.shadow.png",
     "source": "units/zhangfei.png",
-    "hash": "560c4c2eaf28d63a",
+    "hash": "c79c23ec39d5b202",
     "cell": [
      114,
      32
@@ -2625,7 +6963,7 @@
    "strategist": {
     "image": "units/strategist.shadow.png",
     "source": "units/strategist.png",
-    "hash": "de2deab40a6575d7",
+    "hash": "0101ace6622be8f6",
     "cell": [
      83,
      27
@@ -2638,7 +6976,7 @@
    "liubei": {
     "image": "units/liubei.shadow.png",
     "source": "units/liubei.png",
-    "hash": "522e18b6bbdfca19",
+    "hash": "d6e7c351ef1808f3",
     "cell": [
      95,
      29
@@ -2651,7 +6989,7 @@
    "jianyong": {
     "image": "units/jianyong.shadow.png",
     "source": "units/jianyong.png",
-    "hash": "ca6027152b82845f",
+    "hash": "f51a908ab5415fc8",
     "cell": [
      134,
      29
@@ -2664,7 +7002,7 @@
    "zhangjiao": {
     "image": "units/zhangjiao.shadow.png",
     "source": "units/zhangjiao.png",
-    "hash": "85a7deb6ef269727",
+    "hash": "24c6e96eba8fe1ed",
     "cell": [
      102,
      29
@@ -2677,7 +7015,7 @@
    "huaxiong": {
     "image": "units/huaxiong.shadow.png",
     "source": "units/huaxiong.png",
-    "hash": "def0a7ce2a53a9c8",
+    "hash": "1316ae96cb96c8f3",
     "cell": [
      121,
      35
@@ -2690,7 +7028,7 @@
    "lubu": {
     "image": "units/lubu.shadow.png",
     "source": "units/lubu.png",
-    "hash": "f2a3ba8e6ffc82e4",
+    "hash": "1aa4aa632908b4db",
     "cell": [
      116,
      33
@@ -2700,68 +7038,575 @@
      8
     ]
    },
-   "civ_guanyu": {
-    "image": "units/civ_guanyu.shadow.png",
-    "source": "units/civ_guanyu.png",
-    "hash": "6b36d2d85f239722",
+   "zhangshiping": {
+    "image": "units/zhangshiping.shadow.png",
+    "source": "units/zhangshiping.png",
+    "hash": "efdc9c4617af1ae7",
     "cell": [
-     61,
+     67,
      26
     ],
     "pivot": [
-     21,
+     24,
+     8
+    ]
+   },
+   "chengyuanzhi": {
+    "image": "units/chengyuanzhi.shadow.png",
+    "source": "units/chengyuanzhi.png",
+    "hash": "ab7f1d887aeccb34",
+    "cell": [
+     102,
+     29
+    ],
+    "pivot": [
+     39,
+     8
+    ]
+   },
+   "dengmao": {
+    "image": "units/dengmao.shadow.png",
+    "source": "units/dengmao.png",
+    "hash": "b92580f81fc84a1f",
+    "cell": [
+     95,
+     29
+    ],
+    "pivot": [
+     36,
+     8
+    ]
+   },
+   "sushuang": {
+    "image": "units/sushuang.shadow.png",
+    "source": "units/sushuang.png",
+    "hash": "c0eda4719083302c",
+    "cell": [
+     67,
+     26
+    ],
+    "pivot": [
+     24,
+     8
+    ]
+   },
+   "zhaoyun": {
+    "image": "units/zhaoyun.shadow.png",
+    "source": "units/zhaoyun.png",
+    "hash": "5ac912c689ae76eb",
+    "cell": [
+     149,
+     32
+    ],
+    "pivot": [
+     60,
+     8
+    ]
+   },
+   "wenchou": {
+    "image": "units/wenchou.shadow.png",
+    "source": "units/wenchou.png",
+    "hash": "d796a1ff0dc4c7d7",
+    "cell": [
+     113,
+     32
+    ],
+    "pivot": [
+     42,
+     8
+    ]
+   },
+   "yanliang": {
+    "image": "units/yanliang.shadow.png",
+    "source": "units/yanliang.png",
+    "hash": "b615f959cca9d18d",
+    "cell": [
+     121,
+     35
+    ],
+    "pivot": [
+     43,
+     8
+    ]
+   },
+   "zhanghe": {
+    "image": "units/zhanghe.shadow.png",
+    "source": "units/zhanghe.png",
+    "hash": "af1c8b3ec5ecba0b",
+    "cell": [
+     148,
+     32
+    ],
+    "pivot": [
+     59,
+     8
+    ]
+   },
+   "yuanshao": {
+    "image": "units/yuanshao.shadow.png",
+    "source": "units/yuanshao.png",
+    "hash": "a42be6a87d2784e3",
+    "cell": [
+     95,
+     29
+    ],
+    "pivot": [
+     36,
+     8
+    ]
+   },
+   "tianyu": {
+    "image": "units/tianyu.shadow.png",
+    "source": "units/tianyu.png",
+    "hash": "38e4a9a77045bd0c",
+    "cell": [
+     95,
+     29
+    ],
+    "pivot": [
+     36,
+     8
+    ]
+   },
+   "fangong": {
+    "image": "units/fangong.shadow.png",
+    "source": "units/fangong.png",
+    "hash": "37346faf4638b922",
+    "cell": [
+     107,
+     27
+    ],
+    "pivot": [
+     44,
+     8
+    ]
+   },
+   "chunyuqiong": {
+    "image": "units/chunyuqiong.shadow.png",
+    "source": "units/chunyuqiong.png",
+    "hash": "f831657a810d541d",
+    "cell": [
+     121,
+     35
+    ],
+    "pivot": [
+     43,
+     8
+    ]
+   },
+   "yangang": {
+    "image": "units/yangang.shadow.png",
+    "source": "units/yangang.png",
+    "hash": "b574d643aa121e40",
+    "cell": [
+     148,
+     32
+    ],
+    "pivot": [
+     59,
+     8
+    ]
+   },
+   "quyi": {
+    "image": "units/quyi.shadow.png",
+    "source": "units/quyi.png",
+    "hash": "74d96085d7d34cda",
+    "cell": [
+     134,
+     29
+    ],
+    "pivot": [
+     55,
+     8
+    ]
+   },
+   "gaolan": {
+    "image": "units/gaolan.shadow.png",
+    "source": "units/gaolan.png",
+    "hash": "78e272cb5674e420",
+    "cell": [
+     95,
+     29
+    ],
+    "pivot": [
+     36,
+     8
+    ]
+   },
+   "shenpei": {
+    "image": "units/shenpei.shadow.png",
+    "source": "units/shenpei.png",
+    "hash": "c27f63c4a8e0a296",
+    "cell": [
+     83,
+     27
+    ],
+    "pivot": [
+     31,
+     8
+    ]
+   },
+   "tianfeng": {
+    "image": "units/tianfeng.shadow.png",
+    "source": "units/tianfeng.png",
+    "hash": "13a78068d8f4d4c4",
+    "cell": [
+     83,
+     27
+    ],
+    "pivot": [
+     31,
+     8
+    ]
+   },
+   "hanying": {
+    "image": "units/hanying.shadow.png",
+    "source": "units/hanying.png",
+    "hash": "0dc030c9e923df5e",
+    "cell": [
+     95,
+     29
+    ],
+    "pivot": [
+     36,
+     8
+    ]
+   },
+   "guoshi": {
+    "image": "units/guoshi.shadow.png",
+    "source": "units/guoshi.png",
+    "hash": "1a31459d66a83379",
+    "cell": [
+     95,
+     29
+    ],
+    "pivot": [
+     36,
+     8
+    ]
+   },
+   "gengwu": {
+    "image": "units/gengwu.shadow.png",
+    "source": "units/gengwu.png",
+    "hash": "8f6c8ab527b9b87b",
+    "cell": [
+     95,
+     29
+    ],
+    "pivot": [
+     36,
+     8
+    ]
+   },
+   "guanchun": {
+    "image": "units/guanchun.shadow.png",
+    "source": "units/guanchun.png",
+    "hash": "f4de47bd8865ff32",
+    "cell": [
+     134,
+     29
+    ],
+    "pivot": [
+     55,
+     8
+    ]
+   },
+   "civ_guanyu": {
+    "image": "units/civ_guanyu.shadow.png",
+    "source": "units/civ_guanyu.png",
+    "hash": "605c6515c8ad0cc5",
+    "cell": [
+     56,
+     26
+    ],
+    "pivot": [
+     19,
      8
     ]
    },
    "civ_zhangfei": {
     "image": "units/civ_zhangfei.shadow.png",
     "source": "units/civ_zhangfei.png",
-    "hash": "571d255a11e285ca",
+    "hash": "7a52b9da61d14185",
     "cell": [
-     61,
+     58,
      26
     ],
     "pivot": [
-     21,
+     20,
      8
     ]
    },
    "civ_liubei": {
     "image": "units/civ_liubei.shadow.png",
     "source": "units/civ_liubei.png",
-    "hash": "9873f314cc83fc33",
+    "hash": "faa7af4258c7b21b",
     "cell": [
-     61,
+     56,
+     26
+    ],
+    "pivot": [
+     19,
+     8
+    ]
+   },
+   "civ_zhangshiping": {
+    "image": "units/civ_zhangshiping.shadow.png",
+    "source": "units/civ_zhangshiping.png",
+    "hash": "5ff74411b6b87f7b",
+    "cell": [
+     58,
+     26
+    ],
+    "pivot": [
+     20,
+     8
+    ]
+   },
+   "civ_sushuang": {
+    "image": "units/civ_sushuang.shadow.png",
+    "source": "units/civ_sushuang.png",
+    "hash": "3f0883f7893d1506",
+    "cell": [
+     60,
      26
     ],
     "pivot": [
      21,
+     8
+    ]
+   },
+   "civ_yuanshao": {
+    "image": "units/civ_yuanshao.shadow.png",
+    "source": "units/civ_yuanshao.png",
+    "hash": "55b5503b2a5d426b",
+    "cell": [
+     56,
+     26
+    ],
+    "pivot": [
+     19,
+     8
+    ]
+   },
+   "civ_yuanshu": {
+    "image": "units/civ_yuanshu.shadow.png",
+    "source": "units/civ_yuanshu.png",
+    "hash": "eb312b6e5be3d7c4",
+    "cell": [
+     58,
+     26
+    ],
+    "pivot": [
+     20,
+     8
+    ]
+   },
+   "civ_gongsunzan": {
+    "image": "units/civ_gongsunzan.shadow.png",
+    "source": "units/civ_gongsunzan.png",
+    "hash": "396a76f3d83a9694",
+    "cell": [
+     56,
+     26
+    ],
+    "pivot": [
+     19,
+     8
+    ]
+   },
+   "civ_dongzhuo": {
+    "image": "units/civ_dongzhuo.shadow.png",
+    "source": "units/civ_dongzhuo.png",
+    "hash": "35111ae58c8c8e77",
+    "cell": [
+     58,
+     26
+    ],
+    "pivot": [
+     20,
+     8
+    ]
+   },
+   "civ_liru": {
+    "image": "units/civ_liru.shadow.png",
+    "source": "units/civ_liru.png",
+    "hash": "9095b90a79d75978",
+    "cell": [
+     58,
+     26
+    ],
+    "pivot": [
+     20,
+     8
+    ]
+   },
+   "civ_caocao": {
+    "image": "units/civ_caocao.shadow.png",
+    "source": "units/civ_caocao.png",
+    "hash": "878150b28bb358ed",
+    "cell": [
+     58,
+     26
+    ],
+    "pivot": [
+     20,
      8
     ]
    },
    "civ_jianyong": {
     "image": "units/civ_jianyong.shadow.png",
     "source": "units/civ_jianyong.png",
-    "hash": "3e3f88991a1b0c3e",
+    "hash": "6a52eb5cc39a104e",
     "cell": [
-     61,
+     56,
      26
     ],
     "pivot": [
-     21,
+     19,
      8
     ]
    },
    "civ_sunqian": {
     "image": "units/civ_sunqian.shadow.png",
     "source": "units/civ_sunqian.png",
-    "hash": "a0b146a95885f0a1",
+    "hash": "52902f32fb24bb70",
     "cell": [
-     61,
+     58,
      26
     ],
     "pivot": [
-     21,
+     20,
+     8
+    ]
+   },
+   "civ_zhaoyun": {
+    "image": "units/civ_zhaoyun.shadow.png",
+    "source": "units/civ_zhaoyun.png",
+    "hash": "c01bcd0a86cc654b",
+    "cell": [
+     56,
+     26
+    ],
+    "pivot": [
+     19,
+     8
+    ]
+   },
+   "civ_wenchou": {
+    "image": "units/civ_wenchou.shadow.png",
+    "source": "units/civ_wenchou.png",
+    "hash": "abdf9fdeb31b75e4",
+    "cell": [
+     56,
+     26
+    ],
+    "pivot": [
+     19,
+     8
+    ]
+   },
+   "civ_tianyu": {
+    "image": "units/civ_tianyu.shadow.png",
+    "source": "units/civ_tianyu.png",
+    "hash": "52b17bff78fcbf34",
+    "cell": [
+     56,
+     26
+    ],
+    "pivot": [
+     19,
+     8
+    ]
+   },
+   "civ_fangong": {
+    "image": "units/civ_fangong.shadow.png",
+    "source": "units/civ_fangong.png",
+    "hash": "1d4a59ed21cec9d1",
+    "cell": [
+     56,
+     26
+    ],
+    "pivot": [
+     19,
+     8
+    ]
+   },
+   "civ_gengwu": {
+    "image": "units/civ_gengwu.shadow.png",
+    "source": "units/civ_gengwu.png",
+    "hash": "1413a569a80daf34",
+    "cell": [
+     58,
+     26
+    ],
+    "pivot": [
+     20,
+     8
+    ]
+   },
+   "civ_guanchun": {
+    "image": "units/civ_guanchun.shadow.png",
+    "source": "units/civ_guanchun.png",
+    "hash": "cde0a922ce27ee1c",
+    "cell": [
+     58,
+     26
+    ],
+    "pivot": [
+     20,
+     8
+    ]
+   },
+   "civ_turban": {
+    "image": "units/civ_turban.shadow.png",
+    "source": "units/civ_turban.png",
+    "hash": "1b3c920c9f80df9b",
+    "cell": [
+     58,
+     26
+    ],
+    "pivot": [
+     20,
+     8
+    ]
+   },
+   "civ_villager": {
+    "image": "units/civ_villager.shadow.png",
+    "source": "units/civ_villager.png",
+    "hash": "7473f9447b674237",
+    "cell": [
+     58,
+     26
+    ],
+    "pivot": [
+     20,
+     8
+    ]
+   },
+   "civ_elder": {
+    "image": "units/civ_elder.shadow.png",
+    "source": "units/civ_elder.png",
+    "hash": "cfc69a1b2d325522",
+    "cell": [
+     58,
+     26
+    ],
+    "pivot": [
+     20,
+     8
+    ]
+   },
+   "civ_cart": {
+    "image": "units/civ_cart.shadow.png",
+    "source": "units/civ_cart.png",
+    "hash": "3f931df543af9719",
+    "cell": [
+     85,
+     28
+    ],
+    "pivot": [
+     32,
      8
     ]
    }

@@ -109,3 +109,44 @@ func TestDuelSetOffByEitherSide(t *testing.T) {
 		}
 	})
 }
+
+func TestPlacementAndDemoralize(t *testing.T) {
+	t.Run("placement", func(t *testing.T) {
+		e := battle(t)
+		apply(t, e, Command{Kind: "place", Actor: "유비", X: 7, Y: 3})
+		if u := e.unit("유비"); u.X != 7 || u.Y != 3 {
+			t.Fatalf("유비 at %d,%d", u.X, u.Y)
+		}
+		gx, gy := e.unit("관우").X, e.unit("관우").Y
+		apply(t, e, Command{Kind: "place", Actor: "유비", X: gx, Y: gy})
+		if g := e.unit("관우"); g.X != 7 || g.Y != 3 || e.unit("유비").X != gx {
+			t.Fatal("placing onto an ally does not swap")
+		}
+		assertRejected(t, e, Command{Kind: "place", Actor: "유비", X: 9, Y: 3})
+		apply(t, e, Command{Kind: "wait", Actor: "장비"})
+		assertRejected(t, e, Command{Kind: "place", Actor: "유비", X: 7, Y: 4})
+	})
+	t.Run("duel demoralizes the enemy", func(t *testing.T) {
+		e := battle(t)
+		before := e.stats(e.unit("B01_troop_1"))
+		v := e.unit("등무")
+		e.unit("장비").X, e.unit("장비").Y = v.X-1, v.Y
+		apply(t, e, Command{Kind: "attack", Actor: "장비", Target: "등무"})
+		if e.unit("등무").HP != 0 || !e.officer("등무").Dead {
+			t.Fatal("등무 survived the duel")
+		}
+		troop := e.unit("B01_troop_1")
+		after := e.stats(troop)
+		if after.Attack != before.Attack || after.Defense != before.Defense*80/100 {
+			t.Fatalf("등무's death: %+v → %+v", before, after)
+		}
+		apply(t, e, Command{Kind: "end"})
+		apply(t, e, Command{Kind: "end"})
+		if e.stats(e.unit("B01_troop_1")).Defense != after.Defense {
+			t.Fatal("the debuff wore off")
+		}
+		if _, err := Restore(e.data, e.Snapshot()); err != nil {
+			t.Fatal(err)
+		}
+	})
+}

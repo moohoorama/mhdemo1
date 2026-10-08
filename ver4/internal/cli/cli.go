@@ -188,7 +188,7 @@ func Map(o core.Observation, out io.Writer) {
 		}
 		fmt.Fprintln(out)
 	}
-	fmt.Fprintln(out, ".초원 d황무지 f숲 s산 c성 i성내 v마을 ~물 / 좌표는 0부터")
+	fmt.Fprintln(out, ".초원 d황무지 f숲 s산 c성 i성내 v마을 ~물 b다리 g성문 / 좌표는 0부터")
 	for i, u := range o.UnitViews {
 		if u.HP <= 0 {
 			continue

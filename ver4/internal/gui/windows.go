@@ -149,7 +149,7 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 				v.TextDelayMS = map[bool]int{true: 20, false: 0}[v.TextDelayMS == 0]
 				g.request(session.Request{Op: "settings", Settings: &v})
 			}},
-			{fmt.Sprintf("재생 속도: ×%d", g.speed), func() { g.speed = map[int]int{1: 2, 2: 4, 4: 1}[g.speed] }},
+			{fmt.Sprintf("재생 속도: ×%d", g.speed), func() { g.speed = nextSpeed[g.speed] }},
 		}
 		for i, it := range rows {
 			g.btn(dst, image.Rect(left, y+70+i*54, x+w-32, y+70+i*54+42), it.label, it.click)

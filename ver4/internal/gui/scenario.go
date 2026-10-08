@@ -103,9 +103,7 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 	staged := g.enterScene(o)
 	if !staged {
 		for i, sp := range l.speakers { // no scene: speakers stand above the box
-			if isParty(sp) || hasEnemyPortrait[sp] {
-				g.portrait(dst, sp, float64(60+i*190), 330, 180)
-			}
+			g.portrait(dst, sp, float64(60+i*190), 330, 180)
 		}
 	}
 	if o.Dialogue.Kind == "dialogue" {
@@ -124,8 +122,7 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 	window(dst, r)
 	text, done := g.shownText(l)
 	x := float64(r.Min.X + 36)
-	if staged && len(l.speakers) > 0 {
-		g.portrait(dst, l.speakers[0], float64(r.Min.X+22), float64(r.Min.Y+24), 140)
+	if staged && len(l.speakers) > 0 && g.portrait(dst, l.speakers[0], float64(r.Min.X+22), float64(r.Min.Y+24), 140) {
 		x = float64(r.Min.X + 190)
 	}
 	if len(l.speakers) > 0 {
@@ -153,8 +150,6 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 }
 
 var party = []string{"유비", "관우", "장비", "간옹"}
-
-var hasEnemyPortrait = map[string]bool{"여포": true, "화웅": true, "장각": true}
 
 func isParty(id string) bool {
 	for _, p := range party {

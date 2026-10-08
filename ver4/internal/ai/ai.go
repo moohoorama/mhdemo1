@@ -30,6 +30,7 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 	best := options[0]
 	score := -1e9
 	var walk map[content.Point]int
+	var threat map[content.Point]int
 	for _, c := range options {
 		s := -1.0
 		switch c.Kind {
@@ -111,7 +112,7 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 				walk = walking(e, o, me)
 			}
 			nearest, old := far(walk, c.X, c.Y), far(walk, me.X, me.Y)
-			if me.Faction == "enemy" && old > 5 {
+			if me.Faction == "enemy" && old > 5 && o.Map.Goal != "rout" && !o.Map.Charge {
 				s = -5
 				break
 			}
@@ -122,6 +123,16 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 			} // Hold the selected firing position after acting.
 			if me.ID == "유비" {
 				s -= 1
+			}
+			if me.Faction == "ally" && (o.Map.Charge || me.ID == "유비") {
+				if threat == nil {
+					threat = threatened(e, o, me.Faction)
+				}
+				if o.Map.Charge {
+					s += hold(e, o, me, c.X, c.Y, threat)
+				} else if n := threat[content.Point{X: c.X, Y: c.Y}]; n >= 2 || n == 1 && me.HP*100 < me.Stats.MaxHP*70 {
+					s -= 10 * float64(n) // 유비's retreat loses the battle
+				}
 			}
 
 		case "wait":
@@ -135,6 +146,44 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 	return best, nil
 }
 func distance(x, y, a, b int) int { return abs(x-a) + abs(y-b) }
+
+// threatened counts, for every cell, the opposing units that could attack it next turn.
+func threatened(e *core.Engine, o core.Observation, faction string) map[content.Point]int {
+	cells := map[content.Point]int{}
+	for _, v := range o.UnitViews {
+		if v.Faction != faction && v.HP > 0 {
+			for _, p := range e.Threat(v.ID) {
+				cells[p]++
+			}
+		}
+	}
+	return cells
+}
+
+// hold scores a move when the enemy is coming: stepping into its reach without striking
+// first is a loss, so is a cell many enemies reach (most of all for 유비, whose retreat
+// loses the battle), and a hurt unit wants a cell that heals (village or castle floor).
+func hold(e *core.Engine, o core.Observation, me *core.UnitView, x, y int, threat map[content.Point]int) float64 {
+	s := 0.0
+	lo, hi := e.AttackRange(me.ID)
+	strike := false
+	for _, v := range o.UnitViews {
+		if d := distance(x, y, v.X, v.Y); v.Faction != me.Faction && v.HP > 0 && d >= lo && d <= hi {
+			strike = true
+		}
+	}
+	n := threat[content.Point{X: x, Y: y}]
+	switch {
+	case n > 0 && !strike:
+		s -= 40 // outweighs any approach (3 per cell)
+	case me.ID == "유비" && n >= 2, n >= 3:
+		s -= 8 * float64(n-1)
+	}
+	if me.HP*100 < me.Stats.MaxHP*60 && (o.Map.Tiles[y][x] == 'k' || o.Map.Tiles[y][x] == 'v') {
+		s += 6
+	}
+	return s
+}
 
 // walking is how far each cell is from the nearest opposing unit, walking around
 // what me cannot enter (water, trees, walls) at its terrain costs.

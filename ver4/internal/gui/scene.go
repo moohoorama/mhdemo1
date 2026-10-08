@@ -8,30 +8,30 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
-	"srpg/internal/content"
 	"srpg/internal/core"
 )
 
 // sceneFile is assets/scenes.json: scenario scenes played on small maps with the
 // officers' scene (평복) sprites. It is GUI data, not rules content.
 type sceneFile struct {
-	Actors map[string]string
 	Scenes map[string]sceneDef
 }
 
 type sceneDef struct {
 	Map   string
-	Cast  map[string][]any // name -> [x, y, facing]
+	Cast  map[string][]any // name -> [x, y, facing, faction?, sprite?]
 	Beats [][][]sceneStep  // per speaker line: groups of steps run before it
 }
 
 type sceneStep struct {
-	Actor string
-	Move  []int
-	Face  string
-	Play  string
-	Emote string
-	Wait  float64
+	Actor  string
+	Move   []float64
+	Face   string
+	Play   string
+	Emote  string
+	Wait   float64
+	Effect string    // petals or fire, until the scene changes; "none" clears them
+	At     []float64 // effect position [x, y] (fire); petals fall over the whole stage
 }
 
 func loadScenes(path string) *sceneFile {
@@ -48,16 +48,23 @@ func loadScenes(path string) *sceneFile {
 
 // scene is the running scene: its actors stay put across nodes that share a map.
 type scene struct {
-	mapID  string
-	node   string
-	actors map[string]*unitVis
-	groups [][]sceneStep
-	gi     int
-	begun  bool
-	wait   float64
-	paths  map[string][]content.Point
-	plays  map[string]string
-	emotes map[string]*emote
+	mapID   string
+	node    string
+	actors  map[string]*unitVis
+	groups  [][]sceneStep
+	gi      int
+	begun   bool
+	wait    float64
+	paths   map[string][][2]float64
+	plays   map[string]string
+	emotes  map[string]*emote
+	effects []sceneEffect
+}
+
+type sceneEffect struct {
+	kind string
+	u, v float64
+	t    float64
 }
 
 type emote struct {
@@ -85,7 +92,7 @@ func (g *Game) enterScene(o core.Observation) bool {
 	}
 	s := g.scene
 	s.node = o.Node
-	s.paths, s.plays, s.emotes = map[string][]content.Point{}, map[string]string{}, map[string]*emote{}
+	s.paths, s.plays, s.emotes, s.effects = map[string][][2]float64{}, map[string]string{}, map[string]*emote{}, nil
 	for name, at := range def.Cast {
 		if len(at) < 3 {
 			continue
@@ -93,13 +100,22 @@ func (g *Game) enterScene(o core.Observation) bool {
 		x, _ := at[0].(float64)
 		y, _ := at[1].(float64)
 		dir, _ := at[2].(string)
+		sprite := ""
+		if len(at) > 4 {
+			sprite, _ = at[4].(string)
+		}
 		v := s.actors[name]
 		if v == nil {
-			v = g.newActor(name)
+			v = g.newActor(name, sprite)
 			if v == nil {
 				continue
 			}
 			s.actors[name] = v
+		}
+		if len(at) > 3 {
+			if fa, _ := at[3].(string); fa != "" {
+				v.faction = fa
+			}
 		}
 		v.u, v.v, v.dir, v.walk = x, y, dir, nil
 		v.lift = g.field.Lift(int(x), int(y))
@@ -115,17 +131,27 @@ func (g *Game) enterScene(o core.Observation) bool {
 	return true
 }
 
-func (g *Game) newActor(name string) *unitVis {
-	key := g.scenes.Actors[name]
-	art := g.assets.Units[key]
-	if art == nil { // scene sprite not packed yet: fall back to the battle sprite
-		key = heroArt[name]
-		art = g.assets.Units[key]
+// newActor stands an officer on the scene in their scene sprite (the battle sprite when
+// they have none), in their faction's color unless the cast names another. sprite names
+// any packed sprite instead: extras ("civ_villager"), soldiers ("infantry"), messengers
+// ("cavalry"), or an officer's battle sprite for a fight on the stage.
+func (g *Game) newActor(name, sprite string) *unitVis {
+	look := officers[name]
+	art := g.assets.Units[sprite]
+	if art == nil {
+		art = g.assets.Units["civ_"+look.key]
+	}
+	if art == nil {
+		art = g.assets.Units[look.key]
 	}
 	if art == nil {
 		return nil
 	}
-	return &unitVis{id: name, faction: "shu", ally: true, art: art, dir: "S", anim: "idle", dying: -1,
+	faction := look.faction
+	if faction == "" {
+		faction = "shu"
+	}
+	return &unitVis{id: name, faction: faction, ally: true, art: art, dir: "SW", anim: "idle", dying: -1,
 		top: art.TopOffset(), shownHP: 1, maxHP: 1, actor: true}
 }
 
@@ -152,11 +178,14 @@ func (g *Game) updateScene(dt float64) {
 	for _, v := range s.actors {
 		v.update(dt)
 		if p := s.paths[v.id]; v.walk == nil && len(p) > 0 {
-			g.stepTo(v, p[0])
+			g.walkTo(v, p[0][0], p[0][1])
 			s.paths[v.id] = p[1:]
 		} else if v.walk == nil && len(p) == 0 && v.anim == "walk" {
 			v.play("idle")
 		}
+	}
+	for i := range s.effects {
+		s.effects[i].t += dt
 	}
 	for k, e := range s.emotes {
 		if e.t += dt; e.t > emoteTime {
@@ -193,21 +222,22 @@ func (g *Game) startStep(st sceneStep) {
 	if st.Wait > 0 {
 		s.wait = math.Max(s.wait, st.Wait)
 	}
+	switch {
+	case st.Effect == "":
+	case st.Effect == "none":
+		s.effects = nil
+	case len(st.At) == 2:
+		s.effects = append(s.effects, sceneEffect{kind: st.Effect, u: st.At[0], v: st.At[1]})
+	case v != nil:
+		s.effects = append(s.effects, sceneEffect{kind: st.Effect, u: v.u, v: v.v})
+	default:
+		s.effects = append(s.effects, sceneEffect{kind: st.Effect})
+	}
 	if v == nil {
 		return
 	}
-	if len(st.Move) == 2 { // straight legs: along u, then along v
-		path := []content.Point{}
-		u, w := int(math.Round(v.u)), int(math.Round(v.v))
-		for u != st.Move[0] {
-			u += sign(st.Move[0] - u)
-			path = append(path, content.Point{X: u, Y: w})
-		}
-		for w != st.Move[1] {
-			w += sign(st.Move[1] - w)
-			path = append(path, content.Point{X: u, Y: w})
-		}
-		s.paths[v.id] = path
+	if len(st.Move) == 2 {
+		s.paths[v.id] = scenePath(v.u, v.v, st.Move[0], st.Move[1])
 	}
 	if st.Face != "" {
 		v.dir = st.Face
@@ -223,14 +253,19 @@ func (g *Game) startStep(st sceneStep) {
 	}
 }
 
-func sign(n int) int {
-	switch {
-	case n > 0:
-		return 1
-	case n < 0:
-		return -1
+// scenePath walks straight legs, along u then along v, one cell per step; the last step of
+// a leg covers what is left when the target lies between cells.
+func scenePath(u, v, tu, tv float64) [][2]float64 {
+	path := [][2]float64{}
+	for u != tu {
+		u += math.Copysign(math.Min(1, math.Abs(tu-u)), tu-u)
+		path = append(path, [2]float64{u, v})
 	}
-	return 0
+	for v != tv {
+		v += math.Copysign(math.Min(1, math.Abs(tv-v)), tv-v)
+		path = append(path, [2]float64{u, v})
+	}
+	return path
 }
 
 // skipBeats finishes the running beats at once: walkers arrive, motions end.
@@ -245,15 +280,15 @@ func (g *Game) skipBeats() {
 		for name, v := range s.actors {
 			if p := s.paths[name]; len(p) > 0 {
 				last := p[len(p)-1]
-				v.face(float64(last.X), float64(last.Y))
-				v.u, v.v = float64(last.X), float64(last.Y)
+				v.face(last[0], last[1])
+				v.u, v.v = last[0], last[1]
 			} else if v.walk != nil {
 				v.u, v.v = v.walk.tu, v.walk.tv
 			}
 			v.walk, v.lift = nil, g.field.Lift(int(v.u), int(v.v))
 			v.play("idle")
 		}
-		s.paths, s.plays, s.wait = map[string][]content.Point{}, map[string]string{}, 0
+		s.paths, s.plays, s.wait = map[string][][2]float64{}, map[string]string{}, 0
 		s.gi++
 		s.begun = false
 	}
@@ -288,6 +323,7 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	op.GeoM.Translate(float64(Width/2), float64(Height/2))
 	op.Filter = ebiten.FilterPixelated
 	drawScaled(dst, g.field.Canvas, op)
+	g.drawSceneEffects(dst)
 	for name := range talking {
 		if v := s.actors[name]; v != nil {
 			g.bubble(dst, v, "", true)
@@ -336,4 +372,50 @@ func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) 
 		return
 	}
 	g.centered(dst, mark, float64(bx+w/2), float64(by)-1, float64(10*z), color.NRGBA{R: 160, G: 40, B: 30, A: 255})
+}
+
+var (
+	petalColors = []color.NRGBA{{R: 242, G: 167, B: 184, A: 255}, {R: 255, G: 214, B: 222, A: 255}, {R: 215, G: 119, B: 144, A: 255}}
+	flameColors = []color.NRGBA{{R: 255, G: 232, B: 154, A: 255}, {R: 255, G: 160, B: 50, A: 255}, {R: 214, G: 64, B: 40, A: 255}}
+)
+
+// drawSceneEffects draws the stage effects: peach petals drifting across the whole screen,
+// and fires burning at map positions. Particles are pure functions of the effect's age, so
+// skipping beats or replaying a line shows the same thing.
+func (g *Game) drawSceneEffects(dst *ebiten.Image) {
+	z := float32(g.zoom)
+	for _, e := range g.scene.effects {
+		switch e.kind {
+		case "petals":
+			for i := 0; i < 48; i++ {
+				k := float64(i)
+				fall, drift := 34+11*math.Mod(k*7.3, 5), 26+9*math.Mod(k*3.1, 4)
+				x := math.Mod(k*97.13+drift*e.t+12*math.Sin(e.t*1.3+k), Width+40) - 20
+				y := math.Mod(k*61.7+fall*e.t, Height+40) - 20
+				w := 2.5 + float32(math.Abs(math.Sin(e.t*3+k)))*2 // tumbling
+				c := petalColors[i%len(petalColors)]
+				rect(dst, float32(x), float32(y), w*z, 1.6*z, c)
+			}
+		case "fire":
+			x, y := g.field.Center(e.u, e.v)
+			sx, sy := g.toScreen(x, y)
+			glow(dst, float32(sx), float32(sy)-8*z, 22*z, flameColors[1], .7+.2*math.Sin(e.t*9))
+			for i := 0; i < 14; i++ {
+				k := float64(i)
+				life := math.Mod(e.t*1.6+k*.37, 1) // 0 at the base, 1 burnt out at the top
+				px := float32(sx) + float32(math.Sin(k*2.4)*7+math.Sin(e.t*5+k)*2*(life))*z
+				py := float32(sy) - float32(life*26)*z
+				r := float32((1-life)*4.5+1) * z
+				c := flameColors[min(2, int(life*3))]
+				fillCircle(dst, px, py, r, with8(c, 1-life*.6))
+			}
+			for i := 0; i < 5; i++ { // smoke
+				k := float64(i)
+				life := math.Mod(e.t*.5+k*.2, 1)
+				px := float32(sx) + float32(math.Sin(k*1.7+e.t)*6)*z
+				py := float32(sy) - float32(26+life*30)*z
+				fillCircle(dst, px, py, float32(3+life*6)*z, color.NRGBA{R: 60, G: 56, B: 52, A: uint8(110 * (1 - life))})
+			}
+		}
+	}
 }

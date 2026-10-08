@@ -52,6 +52,7 @@ type Game struct {
 	lineIndex, lineStart int
 	Verify               bool
 	Shots                []int // capture the screen at these ticks while autoplaying, then quit
+	Skirmish             *Skirmish
 	verified             map[string]bool
 	verifyDone           int
 	S                    *session.Session
@@ -69,6 +70,7 @@ type Game struct {
 	miniRect             image.Rectangle
 	traitOf              string
 	traitTop             int
+	traitTab, traitSort  string // detail panel: "" owned / "learn"; "" cost / "name"
 	toasts               []*toast
 	history              []string
 	modals               []*modal
@@ -323,7 +325,7 @@ func (g *Game) assist() {
 		return
 	}
 	if o.Phase == "result" {
-		if o.Result == "victory" {
+		if o.Result == "victory" && g.Skirmish == nil {
 			g.command(core.Command{Kind: "continue"})
 		} else {
 			g.autoplay = false
@@ -351,6 +353,10 @@ func (g *Game) assist() {
 	}
 	g.command(core.Command{Kind: "end"})
 }
+
+// nextSpeed is the replay speed the F key steps to.
+var nextSpeed = map[int]int{1: 2, 2: 4, 4: 8, 8: 1}
+
 func sorted[V any](m map[string]V) []string {
 	out := []string{}
 	for k := range m {
@@ -386,6 +392,9 @@ func (g *Game) Update() error {
 	}
 	if g.S.Screen == "quit" {
 		return ebiten.Termination
+	}
+	if g.Skirmish != nil && g.skirmishTick() {
+		return nil
 	}
 	if len(g.Shots) > 0 {
 		if g.S.Engine == nil {
@@ -517,7 +526,7 @@ func (g *Game) keys() {
 		g.player.Skip()
 	}
 	if pressed(ebiten.KeyF) {
-		g.speed = map[int]int{1: 2, 2: 4, 4: 1}[g.speed]
+		g.speed = nextSpeed[g.speed]
 		g.toast(fmt.Sprintf("재생 속도 ×%d", g.speed), gold)
 	}
 	if o.Phase != "battle" {
@@ -609,7 +618,9 @@ func (g *Game) LayoutF(w, h float64) (float64, float64) {
 func (g *Game) Draw(dst *ebiten.Image) {
 	dst.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
 	g.buttons, g.blocks = nil, nil
-	if g.S.Screen == "title" || g.S.Engine == nil {
+	if g.Skirmish != nil && g.Skirmish.setup {
+		g.drawSetup(dst)
+	} else if g.S.Screen == "title" || g.S.Engine == nil {
 		g.title(dst)
 	} else {
 		g.play(dst)
@@ -692,7 +703,11 @@ func (g *Game) play(dst *ebiten.Image) {
 		g.btn(dst, image.Rect(1176, 12, 1268, 42), "메뉴", func() { g.openOverlay("menu") })
 	default:
 		g.battle(dst, o)
-		if o.Phase == "result" && !g.busy() {
+		if g.Skirmish != nil {
+			if g.skirmishOver(o) && !g.busy() {
+				g.skirmishResult(dst, o)
+			}
+		} else if o.Phase == "result" && !g.busy() {
 			g.result(dst, o)
 		}
 	}
@@ -751,6 +766,12 @@ func (g *Game) battle(dst *ebiten.Image, o core.Observation) {
 		g.label(dst, g.banner, float64(Width/2)-w/2, 308, 30, gold)
 	}
 	g.topBar(dst, o)
+	if g.S.Engine.Deploying() && !g.autoplay {
+		hint := "배치 — 아군을 고르고 금색 칸을 누르면 그 자리로 옮깁니다. 첫 행동을 하면 배치가 끝납니다."
+		w := g.width(hint, 15)
+		rect(dst, float32(Width/2-w/2-14), 48, float32(w+28), 30, color.NRGBA{R: 20, G: 14, B: 12, A: 210})
+		g.label(dst, hint, float64(Width/2)-w/2, 53, 15, gold)
+	}
 	g.minimap(dst, o)
 	g.detail(dst, o)
 	g.terrainPanel(dst, o)

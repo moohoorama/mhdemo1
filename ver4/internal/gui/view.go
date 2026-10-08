@@ -16,9 +16,32 @@ var viewport = image.Rect(0, 0, Width, Height)
 // stageFaction colours each battle's enemies (unit team keys swapped to the faction ramp).
 var stageFaction = map[string]string{"B01": "turban", "B02": "dong", "B03": "dong"}
 
-// heroArt are officers with their own sprite; everyone else uses their class's.
-var heroArt = map[string]string{"유비": "liubei", "관우": "guanyu", "장비": "zhangfei", "간옹": "jianyong",
-	"장각": "zhangjiao", "화웅": "huaxiong", "여포": "lubu"}
+// officerLook is a named officer's art key (battle sprite, civ_<key> scene sprite and
+// portrait, whichever exist) and faction color.
+type officerLook struct{ key, faction string }
+
+var officers = map[string]officerLook{
+	"유비": {"liubei", "shu"}, "관우": {"guanyu", "shu"}, "장비": {"zhangfei", "shu"}, "간옹": {"jianyong", "shu"},
+	"손건": {"sunqian", "shu"}, "전예": {"tianyu", "shu"}, "번궁": {"fangong", "shu"}, "경무": {"gengwu", "shu"},
+	"관순": {"guanchun", "shu"}, "한영": {"hanying", "shu"}, "곽적": {"guoshi", "shu"},
+	"장세평": {"zhangshiping", "merchant"}, "소쌍": {"sushuang", "merchant"},
+	"조운": {"zhaoyun", "gongsun"}, "공손찬": {"gongsunzan", "gongsun"}, "엄강": {"yangang", "gongsun"},
+	"원소": {"yuanshao", "yuan"}, "문추": {"wenchou", "yuan"}, "안량": {"yanliang", "yuan"}, "장합": {"zhanghe", "yuan"},
+	"순우경": {"chunyuqiong", "yuan"}, "국의": {"quyi", "yuan"}, "고람": {"gaolan", "yuan"}, "전풍": {"tianfeng", "yuan"},
+	"심배": {"shenpei", "yuan"}, "원술": {"yuanshu", "yuan"},
+	"조조": {"caocao", "wei"},
+	"동탁": {"dongzhuo", "dong"}, "이유": {"liru", "dong"}, "여포": {"lubu", "dong"}, "화웅": {"huaxiong", "dong"},
+	"이각": {"lijue", "dong"}, "호진": {"huzhen", "dong"},
+	"장각": {"zhangjiao", "turban"}, "정원지": {"chengyuanzhi", "turban"}, "등무": {"dengmao", "turban"},
+}
+
+// battleArt is the officer's own sprite, or their class's.
+func (g *Game) battleArt(officer, class string) *UnitArt {
+	if art := g.assets.Units[officers[g.name(officer)].key]; art != nil {
+		return art
+	}
+	return g.assets.Units[classArt(class)]
+}
 
 func classArt(class string) string {
 	switch class {
@@ -111,16 +134,15 @@ func (g *Game) sync(o core.Observation) {
 		}
 		v, ok := g.vis[u.ID]
 		if !ok {
-			key := heroArt[u.Officer]
-			if key == "" {
-				key = classArt(u.Class)
-			}
 			faction := "shu"
 			dir := "SE"
 			if u.Faction != "ally" {
-				faction, dir = stageFaction[o.Map.ID], "NW"
+				faction, dir = officers[g.name(u.Officer)].faction, "NW"
+				if faction == "" || faction == "shu" {
+					faction = stageFaction[o.Map.ID]
+				}
 			}
-			art := g.assets.Units[key]
+			art := g.battleArt(u.Officer, u.Class)
 			v = &unitVis{id: u.ID, faction: faction, ally: u.Faction == "ally", art: art, dir: dir, anim: "idle",
 				dying: -1, top: art.TopOffset()}
 			g.vis[u.ID] = v
@@ -249,20 +271,24 @@ func blit(dst, src *ebiten.Image, x, y, w, h float64, tint color.Color) {
 	drawScaled(dst, src, op)
 }
 
-func (g *Game) portrait(dst *ebiten.Image, id string, x, y, size float64) {
-	col, known := map[string]int{"유비": 0, "관우": 1, "장비": 2, "간옹": 3}[id]
-	sheet := g.assets.Portraits
-	if !known {
-		sheet = g.assets.Enemies
-		col = 3
-		if c, ok := map[string]int{"여포": 0, "화웅": 1, "장각": 2}[id]; ok {
-			col = c
-		}
+// portraitImage is the officer's ink-wash portrait; unnamed yellow turban soldiers share one.
+func (g *Game) portraitImage(id string) *ebiten.Image {
+	if im := g.assets.Portraits[officers[id].key]; im != nil {
+		return im
 	}
-	src := cell(sheet, col, 0, 4, 1)
-	b := src.Bounds()
-	// Square viewport crops the lower chest rather than distorting the face.
-	src = src.SubImage(image.Rect(b.Min.X, b.Min.Y, b.Max.X, b.Min.Y+b.Dx())).(*ebiten.Image)
+	if of, ok := g.S.Data.Officers[id]; ok && classArt(of.Class) == "bandit" {
+		return g.assets.Portraits["turban_soldier"]
+	}
+	return nil
+}
+
+// portrait draws a framed portrait; someone without one shows only the name plate the caller draws.
+func (g *Game) portrait(dst *ebiten.Image, id string, x, y, size float64) bool {
+	src := g.portraitImage(id)
+	if src == nil {
+		return false
+	}
 	blit(dst, src, x, y, size, size, nil)
 	strokeRect(dst, float32(x-2), float32(y-2), float32(size+4), float32(size+4), 2, gold)
+	return true
 }

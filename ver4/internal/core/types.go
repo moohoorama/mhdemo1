@@ -3,8 +3,8 @@ package core
 import "srpg/internal/content"
 
 const CoreVersion = "1"
-const AIPolicyVersion = "greedy-3"
-const RulesVersion = "opening-rules-2"
+const AIPolicyVersion = "greedy-4"
+const RulesVersion = "opening-rules-4"
 
 type Officer struct {
 	ID, Class, Deputy string
@@ -48,7 +48,10 @@ type UnitView struct {
 	Level, XP, XPRequired int
 	XPProgress            float64
 	Stats                 Stats
+	Attributes            [6]int // 통솔/무력/지력/민첩/운/매력 after the deputy blend
+	Points                int
 	Traits, Skills        []string
+	Learnable             []string // traits the officer may still learn, owned ones left out
 }
 type Observation struct {
 	State
@@ -74,7 +77,7 @@ type Preview struct {
 	Cost, MinDamage, MaxDamage int
 	Healing, MPRecovery        int
 	Effect                     string
-	Hit, Crit                  float64 // percent; Crit is 0 for non-physical actions
+	Hit, Crit, Double          float64 // percent; Crit and Double are 0 for non-physical actions
 	XP, CritXP                 int     // the actor's raw experience if it lands, normally and critically
 	Targets                    []string
 }

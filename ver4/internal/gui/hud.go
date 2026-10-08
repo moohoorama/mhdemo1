@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 	"srpg/internal/core"
 	"srpg/internal/session"
 )
@@ -69,6 +70,12 @@ func (g *Game) cursor(dst *ebiten.Image) {
 }
 
 func objective(st *coreStage) (win, lose string) {
+	if st.goal == "rout" && st.skirmish {
+		return "적군 전멸", "아군 전멸"
+	}
+	if st.goal == "rout" {
+		return "적군 전멸", "유비 퇴각"
+	}
 	win = st.boss + " 격파"
 	if st.threshold > 0 {
 		win = fmt.Sprintf("%s 병력 %d%% 이하", st.boss, st.threshold)
@@ -77,13 +84,14 @@ func objective(st *coreStage) (win, lose string) {
 }
 
 type coreStage struct {
-	name, boss string
-	threshold  int
+	name, boss, goal string
+	threshold        int
+	skirmish         bool
 }
 
 func (g *Game) stageInfo(o core.Observation) *coreStage {
 	st := g.S.Data.Stages[o.Stage]
-	return &coreStage{st.Name, g.name(st.Boss), st.Threshold}
+	return &coreStage{st.Name, g.name(st.Boss), st.Goal, st.Threshold, st.Party != nil}
 }
 
 func (g *Game) pending(o core.Observation) (left, total int) {
@@ -243,8 +251,9 @@ func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
 	}
 }
 
-// detail describes the selected unit under the minimap, its traits listed below; a trait
-// opens its explanation in the middle of the screen.
+// detail describes the selected unit under the minimap: gauges, a hexagon of its unit
+// stats against the battle's best, and its owned or learnable traits; a trait opens its
+// explanation in the middle of the screen.
 func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 	u := g.unitView(o, g.selected)
 	if u == nil || u.HP <= 0 {
@@ -253,17 +262,21 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 	if g.traitOf != u.ID {
 		g.traitOf, g.traitTop = u.ID, 0
 	}
-	const w, rowH, arrowH = 300, 26, 20
+	traits := u.Traits
+	if g.traitTab == "learn" {
+		traits = g.sortedTraits(u.Learnable, g.traitSort)
+	}
+	const w, rowH, arrowH, listY = 320, 24, 18, 350
 	x, y := Width-12-w, g.miniRect.Max.Y+10
-	bottom := Height - 260 // clear of the dock
-	rows := min(len(u.Traits), max(2, (bottom-y-232-2*arrowH)/rowH))
-	h := 232 + 2*arrowH + max(1, rows)*rowH + 12
+	bottom := Height - 240 // clear of the dock
+	rows := min(len(traits), max(2, (bottom-y-listY-2*arrowH-10)/rowH))
+	h := listY + 2*arrowH + max(1, rows)*rowH + 10
 	r := image.Rect(x, y, x+w, y+h)
 	window(dst, r)
 	g.block(r)
-	g.portrait(dst, u.ID, float64(x+16), float64(y+16), 64)
-	g.label(dst, u.Name, float64(x+94), float64(y+12), 19, teamColor(u))
-	g.label(dst, fmt.Sprintf("%s  Lv%d", u.Class, u.Level), float64(x+94), float64(y+42), 13, ink)
+	g.portrait(dst, u.ID, float64(x+14), float64(y+14), 56)
+	g.label(dst, u.Name, float64(x+82), float64(y+10), 19, teamColor(u))
+	g.label(dst, fmt.Sprintf("%s  Lv%d", u.Class, u.Level), float64(x+82), float64(y+40), 13, ink)
 	state := ""
 	switch {
 	case u.Faction != o.Turn:
@@ -272,51 +285,197 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 	case u.Moved:
 		state = "이동함"
 	}
-	g.label(dst, state, float64(x+w-80), float64(y+16), 12, muted)
+	g.label(dst, state, float64(x+w-16)-g.width(state, 12), float64(y+14), 12, muted)
+	points := fmt.Sprintf("특성치 %d", u.Points)
+	g.label(dst, points, float64(x+w-16)-g.width(points, 13), float64(y+40), 13, gold)
 	gauge := func(by int, name string, now, maxV int, k float64, c color.Color) {
+		v := fmt.Sprintf("%d / %d", now, maxV)
 		g.label(dst, name, float64(x+16), float64(by), 12, muted)
-		g.label(dst, fmt.Sprintf("%d / %d", now, maxV), float64(x+w-16)-g.width(fmt.Sprintf("%d / %d", now, maxV), 12), float64(by), 12, ink)
-		bar(dst, float32(x+16), float32(by+18), float32(w-32), 7, k, c)
+		bar(dst, float32(x+70), float32(by+6), float32(w-160), 7, k, c)
+		g.label(dst, v, float64(x+w-16)-g.width(v, 12), float64(by), 12, ink)
 	}
 	k := float64(u.HP) / float64(max(1, u.Stats.MaxHP))
-	gauge(y+88, "병력", u.HP, u.Stats.MaxHP, k, hpColor(k))
-	gauge(y+116, "병법치", u.MP, u.Stats.MaxMP, float64(u.MP)/float64(max(1, u.Stats.MaxMP)), mpC)
+	gauge(y+78, "병력", u.HP, u.Stats.MaxHP, k, hpColor(k))
+	gauge(y+96, "병법치", u.MP, u.Stats.MaxMP, float64(u.MP)/float64(max(1, u.Stats.MaxMP)), mpC)
 	if u.Faction == "ally" {
-		gauge(y+144, "경험치", int(u.XPProgress), 100, u.XPProgress/100, xpC)
+		gauge(y+114, "경험치", int(u.XPProgress), 100, u.XPProgress/100, xpC)
 	}
-	st := u.Stats
-	g.label(dst, fmt.Sprintf("공격 %d  방어 %d  정신 %d  순발 %d  사기 %d", st.Attack, st.Defense, st.Mind, st.Agility, st.Morale),
-		float64(x+16), float64(y+174), 12, ink)
+	g.statHexagon(dst, o, u, float64(x+w/2), float64(y+222), 48)
 	status := []string{}
 	for _, k := range sorted(u.Status) {
+		if strings.HasSuffix(k, "-down") { // lasts the battle; show its size instead
+			status = append(status, fmt.Sprintf("%s %d%%", statusNames[k], u.Status[k].Value))
+			continue
+		}
 		status = append(status, fmt.Sprintf("%s %d", statusNames[k], u.Status[k].Turns))
 	}
 	if len(status) > 0 {
-		g.label(dst, "상태  "+strings.Join(status, " · "), float64(x+16), float64(y+192), 12, gold)
+		g.label(dst, "상태  "+strings.Join(status, " · "), float64(x+16), float64(y+306), 12, gold)
 	}
-	g.label(dst, "특성", float64(x+16), float64(y+210), 14, gold)
-	g.traitTop = max(0, min(len(u.Traits)-rows, g.traitTop))
+
+	ty := y + listY - 30
+	tab := func(tx, tw int, label, key string) {
+		b := image.Rect(tx, ty, tx+tw, ty+24)
+		if g.traitTab == key {
+			rect(dst, float32(b.Min.X), float32(b.Min.Y), float32(tw), 24, hoverC)
+			strokeRect(dst, float32(b.Min.X)+.5, float32(b.Min.Y)+.5, float32(tw)-1, 23, 1, gold)
+			g.label(dst, label, float64(tx+10), float64(ty+4), 13, gold)
+			return
+		}
+		g.btn(dst, b, label, func() { g.traitTab, g.traitTop = key, 0 })
+	}
+	tab(x+16, 100, fmt.Sprintf("특성 %d", len(u.Traits)), "")
+	tab(x+120, 112, fmt.Sprintf("학습 가능 %d", len(u.Learnable)), "learn")
+	if g.traitTab == "learn" {
+		label := map[string]string{"": "비용순", "name": "이름순"}[g.traitSort]
+		g.btn(dst, image.Rect(x+w-16-72, ty, x+w-16, ty+24), label+" ⇅", func() {
+			g.traitSort = map[string]string{"": "name", "name": ""}[g.traitSort]
+		})
+	}
+	g.traitTop = max(0, min(len(traits)-rows, g.traitTop))
 	var up, down func()
 	if g.traitTop > 0 {
 		up = func() { g.traitTop-- }
 	}
-	if g.traitTop+rows < len(u.Traits) {
+	if g.traitTop+rows < len(traits) {
 		down = func() { g.traitTop++ }
 	}
-	ly := y + 232
+	ly := y + listY
 	g.arrow(dst, image.Rect(x+16, ly, x+w-16, ly+arrowH), true, up)
 	ly += arrowH + 2
 	for i := 0; i < rows; i++ {
-		trait := u.Traits[g.traitTop+i]
-		g.btn(dst, image.Rect(x+16, ly+i*rowH, x+w-16, ly+i*rowH+rowH-2), trait, func() {
+		trait := traits[g.traitTop+i]
+		b := image.Rect(x+16, ly+i*rowH, x+w-16, ly+i*rowH+rowH-2)
+		g.btn(dst, b, trait, func() {
 			g.modals = append(g.modals, &modal{kind: "trait", trait: trait})
 		})
+		if g.traitTab == "learn" {
+			cost := g.S.Data.Traits[trait].Cost
+			c := color.Color(good)
+			if cost > u.Points {
+				c = muted
+			}
+			v := fmt.Sprintf("특성치 %d", cost)
+			g.label(dst, v, float64(b.Max.X-10)-g.width(v, 12), float64(b.Min.Y+4), 12, c)
+		}
 	}
 	if rows == 0 {
 		g.label(dst, "(없음)", float64(x+24), float64(ly+4), 13, muted)
 	}
 	ly += max(1, rows) * rowH
 	g.arrow(dst, image.Rect(x+16, ly, x+w-16, ly+arrowH), false, down)
+}
+
+// sortedTraits orders traits by learning cost (then name), or by name alone.
+func (g *Game) sortedTraits(ts []string, by string) []string {
+	out := append([]string(nil), ts...)
+	sort.SliceStable(out, func(i, j int) bool {
+		a, b := g.S.Data.Traits[out[i]].Cost, g.S.Data.Traits[out[j]].Cost
+		if by == "name" || a == b {
+			return out[i] < out[j]
+		}
+		return a < b
+	})
+	return out
+}
+
+// hexAxes are the hexagon's corners clockwise from the top: each unit stat with the
+// officer attribute it grows from (core/rules.go: stats).
+var hexAxes = []struct {
+	stat, attr string
+	attrIdx    int
+	get        func(core.Stats) int
+}{
+	{"공격", "무력", 1, func(s core.Stats) int { return s.Attack }},
+	{"방어", "통솔", 0, func(s core.Stats) int { return s.Defense }},
+	{"정신", "지력", 2, func(s core.Stats) int { return s.Mind }},
+	{"순발", "민첩", 3, func(s core.Stats) int { return s.Agility }},
+	{"사기", "운", 4, func(s core.Stats) int { return s.Morale }},
+	{"병력", "매력", 5, func(s core.Stats) int { return s.MaxHP }},
+}
+
+// statHexagon draws u's unit stats as a hexagon whose rim is the highest value of each
+// stat among every unit in this battle.
+func (g *Game) statHexagon(dst *ebiten.Image, o core.Observation, u *core.UnitView, cx, cy, radius float64) {
+	best := make([]int, len(hexAxes))
+	for _, v := range o.UnitViews {
+		for i, a := range hexAxes {
+			best[i] = max(best[i], a.get(v.Stats))
+		}
+	}
+	corner := func(i int, k float64) (float32, float32) {
+		t := -math.Pi/2 + float64(i)*math.Pi/3
+		return float32(cx + radius*k*math.Cos(t)), float32(cy + radius*k*math.Sin(t))
+	}
+	ring := func(k float64) *vector.Path {
+		var p vector.Path
+		for i := range hexAxes {
+			px, py := corner(i, k)
+			if i == 0 {
+				p.MoveTo(px, py)
+			} else {
+				p.LineTo(px, py)
+			}
+		}
+		p.Close()
+		return &p
+	}
+	op := &vector.DrawPathOptions{AntiAlias: true}
+	op.ColorScale.ScaleWithColor(color.NRGBA{R: 18, G: 14, B: 12, A: 200})
+	fillPath(dst, ring(1), op)
+	for _, k := range []float64{1, 2.0 / 3, 1.0 / 3} {
+		op := &vector.DrawPathOptions{AntiAlias: true}
+		op.ColorScale.ScaleWithColor(goldDim)
+		strokePath(dst, ring(k), vector.StrokeOptions{Width: 1}, op)
+	}
+	var shape vector.Path
+	for i, a := range hexAxes {
+		ex, ey := corner(i, 1)
+		strokeLine(dst, float32(cx), float32(cy), ex, ey, 1, goldDim)
+		px, py := corner(i, max(.04, min(1, float64(a.get(u.Stats))/float64(max(1, best[i])))))
+		if i == 0 {
+			shape.MoveTo(px, py)
+		} else {
+			shape.LineTo(px, py)
+		}
+	}
+	shape.Close()
+	c := teamColor(u)
+	fill := &vector.DrawPathOptions{AntiAlias: true}
+	fill.ColorScale.ScaleWithColor(color.NRGBA{R: c.R, G: c.G, B: c.B, A: 110})
+	fillPath(dst, &shape, fill)
+	edge := &vector.DrawPathOptions{AntiAlias: true}
+	edge.ColorScale.ScaleWithColor(c)
+	strokePath(dst, &shape, vector.StrokeOptions{Width: 1.6, LineJoin: vector.LineJoinRound}, edge)
+
+	tip := []string{"바깥선은 이번 전투 부대 중 최고치입니다."}
+	for i, a := range hexAxes {
+		top := fmt.Sprintf("%s %d", a.stat, a.get(u.Stats))
+		sub := fmt.Sprintf("%s %d", a.attr, u.Attributes[a.attrIdx])
+		ex, ey := corner(i, 1)
+		lx, ly := float64(ex), float64(ey)
+		tw := max(g.width(top, 12), g.width(sub, 11))
+		switch i {
+		case 0:
+			lx, ly = lx-tw/2, ly-36
+		case 3:
+			lx, ly = lx-tw/2, ly+3
+		case 1, 2:
+			lx, ly = lx+8, ly-16
+		default:
+			lx, ly = lx-8-tw, ly-16
+		}
+		g.label(dst, top, lx, ly, 12, ink)
+		g.label(dst, sub, lx, ly+16, 11, muted)
+		tip = append(tip, fmt.Sprintf("%s %d / 최고 %d (%s %d)", a.stat, a.get(u.Stats), best[i], a.attr, u.Attributes[a.attrIdx]))
+	}
+	area := image.Rect(int(cx-radius), int(cy-radius), int(cx+radius), int(cy+radius))
+	if hovered(area) {
+		tw, th := 270, 14+len(tip)*19
+		tx, ty := int(cx-radius)-110-tw, int(cy)-th/2
+		window(dst, image.Rect(tx, ty, tx+tw, ty+th))
+		g.label(dst, strings.Join(tip, "\n"), float64(tx+14), float64(ty+7), 12, ink)
+	}
 }
 
 // terrainPanel names the hovered cell and what it does for the described unit's family.
@@ -338,7 +497,7 @@ func (g *Game) terrainPanel(dst *ebiten.Image, o core.Observation) {
 		move = fmt.Sprintf("이동 비용 %d", t.Cost)
 	}
 	lines := []string{fmt.Sprintf("%s 보정 %.0f%%", family, t.Factor*100), move}
-	if tile == 'v' || tile == 'i' {
+	if tile == 'k' || tile == 'v' {
 		lines[1] += " · 회복"
 	}
 	g.label(dst, strings.Join(lines, "\n"), float64(x+14), float64(y+36), 13, ink)
@@ -347,6 +506,7 @@ func (g *Game) terrainPanel(dst *ebiten.Image, o core.Observation) {
 var miniColors = map[byte]color.NRGBA{
 	'.': {104, 150, 72, 255}, 'd': {164, 142, 96, 255}, 's': {120, 104, 88, 255}, 'f': {54, 100, 52, 255},
 	'c': {150, 150, 156, 255}, 'i': {190, 180, 160, 255}, 'v': {206, 150, 72, 255}, '~': {60, 110, 170, 255},
+	'b': {150, 100, 60, 255}, 'g': {110, 110, 118, 255}, 'k': {196, 120, 70, 255},
 }
 
 const miniScale = 4.0 // minimap pixels per half cell width

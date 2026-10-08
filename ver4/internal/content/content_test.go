@@ -17,11 +17,26 @@ func TestOpeningProfilesAndValidation(t *testing.T) {
 			t.Fatal(c.id)
 		}
 	}
-	if len(d.Stages[0].Enemies) != 7 || len(d.Stages[1].Enemies) != 8 || len(d.Stages[2].Enemies) != 9 {
+	if len(d.Stages[0].Enemies) != 6 || len(d.Stages[1].Enemies) != 8 || len(d.Stages[2].Enemies) != 9 {
 		t.Fatal("enemy counts")
 	}
 	d.Stages[0].Tiles[0] = "bad"
 	if d.Validate() == nil {
 		t.Fatal("bad map accepted")
+	}
+}
+
+func TestBridgeAndGateTerrain(t *testing.T) {
+	d, err := Load("../../assets/content/campaign.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for family, table := range d.Terrain {
+		if table["b"] != table["."] {
+			t.Errorf("%s: bridge %+v differs from grass %+v", family, table["b"], table["."])
+		}
+		if table["g"].Cost != 0 {
+			t.Errorf("%s: gate can be entered (cost %d)", family, table["g"].Cost)
+		}
 	}
 }

@@ -62,6 +62,15 @@ func NewField(a *Assets, m *MapArt) *Field {
 				}
 			}
 		}
+		for v, row := range m.Tiles {
+			for u, c := range row {
+				if c == 'b' {
+					x, y := f.Center(float64(u), float64(v))
+					f.blit(g, a.Props[f.bridgeName(u, v)].Sprite, x, y, nil)
+				}
+			}
+		}
+		f.eachProp(true, func(s Sprite, x, y float64) { f.blit(g, s, x, y, nil) })
 		f.ground[i] = g
 	}
 	f.clip.DrawImage(f.ground[0], nil)
@@ -71,6 +80,28 @@ func NewField(a *Assets, m *MapArt) *Field {
 		vector.FillRect(f.diamond, float32(16-half), float32(y), float32(2*half), 1, color.White, false)
 	}
 	return f
+}
+
+// eachProp calls fn with every placed prop of one layer at its canvas position; fills repeat
+// the prop on every cell of their range.
+func (f *Field) eachProp(ground bool, fn func(s Sprite, x, y float64)) {
+	for _, p := range f.Map.Props {
+		pr, ok := f.A.Props[p.Name]
+		if !ok || pr.Ground != ground {
+			continue
+		}
+		if !p.Fill {
+			x, y := f.Center(p.U, p.V)
+			fn(pr.Sprite, x, y)
+			continue
+		}
+		for v := p.V; v <= p.V1; v++ {
+			for u := p.U; u <= p.U1; u++ {
+				x, y := f.Center(u, v)
+				fn(pr.Sprite, x, y)
+			}
+		}
+	}
 }
 
 // Center is the canvas position of a (fractional) cell's centre.
@@ -178,15 +209,44 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		for u, t := range row {
 			x, y := f.mapCenter(float64(u), float64(v))
 			switch t {
-			case 'v':
-				s := f.A.Structures["village"]
+			case 'v', 's':
+				if t == 's' && !f.Map.Deformed {
+					break // scenario stages keep the big rocks
+				}
+				s := f.A.Structures[map[rune]string{'v': "village", 's': "mountain"}[t]]
 				items = append(items, drawItem{y: y*K - .1, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: mapRect(s, x, y)})
+			case 'f':
+				if !f.Map.Deformed {
+					break // scenario stages keep the big trees
+				}
+				s := f.A.Props["forest_"+string(rune('0'+(u*7+v*3)%4))].Sprite // pines at the characters' scale
+				cx, cy := x*K, y*K
+				b := s.Image.Bounds()
+				rx, ry := int(math.Round(cx-s.PivotX)), int(math.Round(cy-s.PivotY))
+				items = append(items, drawItem{y: cy - .1, draw: func() { f.blit(c, s, cx, cy, nil) }, rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy())})
 			case 'c':
 				s := f.A.Structures[wallName(f, u, v)]
 				items = append(items, drawItem{y: y * K, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: mapRect(s, x, y)})
+			case 'k': // 주둔지: a tent on its cell
+				s := f.A.Props[[]string{"tent", "tent_round"}[(u+v)%2]].Sprite
+				cx, cy := x*K, y*K
+				b := s.Image.Bounds()
+				rx, ry := int(math.Round(cx-s.PivotX)), int(math.Round(cy-s.PivotY))
+				items = append(items, drawItem{y: cy - .1, draw: func() { f.blit(c, s, cx, cy, nil) }, rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy())})
+			case 'g':
+				s := f.A.Props[gateName(f, u, v)].Sprite
+				cx, cy := x*K, y*K
+				b := s.Image.Bounds()
+				rx, ry := int(math.Round(cx-s.PivotX)), int(math.Round(cy-s.PivotY))
+				items = append(items, drawItem{y: cy, draw: func() { f.blit(c, s, cx, cy, nil) }, rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy())})
 			}
 		}
 	}
+	f.eachProp(false, func(s Sprite, x, y float64) {
+		b := s.Image.Bounds()
+		rx, ry := int(math.Round(x-s.PivotX)), int(math.Round(y-s.PivotY))
+		items = append(items, drawItem{y: y, draw: func() { f.blit(c, s, x, y, nil) }, rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy())})
+	})
 	for _, u := range units {
 		if u.gone {
 			continue
@@ -231,11 +291,47 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	}
 }
 
+// gateName turns a gate along its wall line: along u when a wall or gate continues on the u sides.
+func gateName(f *Field, u, v int) string {
+	wall := func(t byte) bool { return t == 'c' || t == 'g' }
+	if wall(f.Tile(u-1, v)) || wall(f.Tile(u+1, v)) {
+		return "gate_u"
+	}
+	return "gate_v"
+}
+
+// bridgeName lays a bridge cell across the water: along the axis whose run of bridge cells
+// ends on land at both ends; when both or neither do, along the longer run (u on a tie).
+func (f *Field) bridgeName(u, v int) string {
+	span := func(du, dv int) (int, bool) {
+		n, k0, k1 := 0, 1, 1
+		for ; f.Tile(u+k1*du, v+k1*dv) == 'b'; k1++ {
+			n++
+		}
+		for ; f.Tile(u-k0*du, v-k0*dv) == 'b'; k0++ {
+			n++
+		}
+		return n, f.Tile(u+k1*du, v+k1*dv) != '~' && f.Tile(u-k0*du, v-k0*dv) != '~'
+	}
+	nu, lu := span(1, 0)
+	nv, lv := span(0, 1)
+	if lu != lv {
+		if lu {
+			return "bridge_u"
+		}
+		return "bridge_v"
+	}
+	if nv > nu {
+		return "bridge_v"
+	}
+	return "bridge_u"
+}
+
 // wallName picks the wall sprite whose parapets face the cell's non-wall neighbours.
 func wallName(f *Field, u, v int) string {
 	mask := 0
 	for i, d := range []content.Point{{X: -1}, {Y: -1}, {X: 1}, {Y: 1}} { // nw, ne, se, sw
-		if f.Tile(u+d.X, v+d.Y) != 'c' {
+		if t := f.Tile(u+d.X, v+d.Y); t != 'c' && t != 'g' {
 			mask |= 1 << i
 		}
 	}

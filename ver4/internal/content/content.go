@@ -48,6 +48,7 @@ type Spawn struct {
 }
 type Duel struct {
 	ID, Ally, Enemy, Outcome, AllyResult, EnemyResult, Text string
+	AttackDown, DefenseDown                                 int `json:",omitempty"` // an ally win cuts every enemy's attack or defense by this percent for the battle
 }
 type Stage struct {
 	ID, Name, Boss                  string
@@ -57,6 +58,9 @@ type Stage struct {
 	Enemies                         []Spawn
 	Reward                          map[string]int
 	Duels                           []Duel
+	Goal                            string  `json:",omitempty"` // "rout": a skirmish won by routing the other side
+	Party                           []Spawn `json:",omitempty"` // a skirmish's allies
+	Charge                          bool    `json:",omitempty"` // the enemy marches on the allies from the first turn
 }
 type Node struct {
 	ID, Kind, Text, Next, Event, Officer, Item string
@@ -174,8 +178,8 @@ func (d *Data) Validate() error {
 		}
 	}
 	duelIDs := map[string]bool{}
-	for i, s := range d.Stages {
-		if s.Width != 18+i*2 || s.Height != 14+i*2 || len(s.Tiles) != s.Height || len(s.Allies) < s.Limit {
+	for _, s := range d.Stages {
+		if s.Width < 8 || s.Height < 8 || len(s.Tiles) != s.Height || len(s.Allies) < s.Limit {
 			return fmt.Errorf("map %s", s.ID)
 		}
 		seen := map[Point]bool{}
@@ -216,12 +220,12 @@ func (d *Data) Validate() error {
 				}
 				return false
 			}
-			if event.ID == "" || duelIDs[event.ID] || !enemy || !ally || !valid(event.Outcome, "victory", "defeat", "draw") || !valid(event.AllyResult, "stay", "retreat", "death") || !valid(event.EnemyResult, "stay", "retreat", "death") {
+			if event.ID == "" || duelIDs[event.ID] || !enemy || !ally || event.AttackDown < 0 || event.AttackDown > 90 || event.DefenseDown < 0 || event.DefenseDown > 90 || !valid(event.Outcome, "victory", "defeat", "draw") || !valid(event.AllyResult, "stay", "retreat", "death") || !valid(event.EnemyResult, "stay", "retreat", "death") {
 				return fmt.Errorf("duel %s", event.ID)
 			}
 			duelIDs[event.ID] = true
 		}
-		if !boss {
+		if !boss && s.Goal != "rout" {
 			return fmt.Errorf("boss %s", s.ID)
 		}
 		for _, p := range s.Allies {

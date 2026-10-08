@@ -249,11 +249,16 @@ func (g *Game) perform(a *replay.Action) []beat {
 				continue
 			}
 			blow, counters := splitCounters(c.Actor, events)
-			crit := false
-			for _, e := range blow {
-				crit = crit || e.Kind == "critical"
+			for i, part := range splitDouble(blow) {
+				crit := false
+				for _, e := range part {
+					crit = crit || e.Kind == "critical"
+				}
+				if i > 0 {
+					add(.15, func() {})
+				}
+				g.swing(add, actor, target, c, part, crit)
 			}
-			g.swing(add, actor, target, c, blow, crit)
 			for _, k := range counters {
 				back := g.unitAt(k.by)
 				if back == nil {
@@ -343,6 +348,17 @@ func splitCounters(actor string, events []core.Event) ([]core.Event, []counter) 
 	return blow, counters
 }
 
+// splitDouble separates an attack's second blows, which follow its first "double" event,
+// so they are shown as a second swing.
+func splitDouble(events []core.Event) [][]core.Event {
+	for i, e := range events {
+		if e.Kind == "double" {
+			return [][]core.Event{events[:i], events[i:]}
+		}
+	}
+	return [][]core.Event{events}
+}
+
 // swing adds the beats of one blow: the attack motion (preceded, for a critical blow, by
 // holding its first frame while the unit glows white) and then the impact.
 func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.Command, events []core.Event, crit bool) {
@@ -397,10 +413,13 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	add(wait, func() { g.impact(kind, actor, events, tint); g.strike(actor, events) })
 }
 
-func (g *Game) stepTo(u *unitVis, p content.Point) {
-	tu, tv := float64(p.X), float64(p.Y)
+func (g *Game) stepTo(u *unitVis, p content.Point) { g.walkTo(u, float64(p.X), float64(p.Y)) }
+
+// walkTo starts one walking step to a (fractional) cell position.
+func (g *Game) walkTo(u *unitVis, tu, tv float64) {
 	u.face(tu, tv)
-	u.walk = &walkState{fu: u.u, fv: u.v, tu: tu, tv: tv, fl: u.lift, tl: g.field.Lift(p.X, p.Y)}
+	u.walk = &walkState{fu: u.u, fv: u.v, tu: tu, tv: tv, fl: u.lift,
+		tl: g.field.Lift(int(math.Round(tu)), int(math.Round(tv)))}
 	if u.anim != "walk" {
 		u.play("walk")
 	}

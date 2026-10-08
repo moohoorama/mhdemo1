@@ -103,14 +103,9 @@ func (g *Game) itemHelp(id string) string {
 	return fmt.Sprintf("병력을 %d 회복합니다.\n자신 또는 인접 부대", n)
 }
 
-// traitHelp lists what learning a trait gives.
+// traitHelp explains a trait and what learning it costs.
 func (g *Game) traitHelp(id string) string {
-	t := g.S.Data.Traits[id]
-	s := fmt.Sprintf("특성치 %d를 써서 특성 '%s'을(를) 익힙니다. 행동을 소모하지 않습니다.", t.Cost, id)
-	if len(t.Skills) > 0 {
-		s += "\n얻는 병법: " + strings.Join(t.Skills, " · ")
-	}
-	return s
+	return g.traitDesc(id) + fmt.Sprintf("\n\n특성치 %d · 행동을 소모하지 않습니다.", g.S.Data.Traits[id].Cost)
 }
 
 // traitNotes say what each trait does, as core/rules.go applies it.
@@ -120,7 +115,7 @@ var traitNotes = map[string]string{
 	"속공":    "병법 '신속'을 쓸 수 있습니다.",
 	"연환":    "단일 대상 병법을 쓰면 대상 곁의 다른 적 하나에게도 같은 병법이 이어집니다.",
 	"침착":    "자기 진영 차례가 시작될 때 중독·화상·약화·혼란·봉책·속박이 풀립니다.",
-	"위압":    "적이 공격을 막아내도 피해를 절반은 줍니다.",
+	"위압":    "물리 공격이 빗나가도 피해를 절반은 줍니다.",
 	"국사무쌍":  "병법을 써도 행동이 끝나지 않아 한 턴에 여러 번 병법을 쓸 수 있습니다.",
 	"부호":    "도구를 써도 행동이 끝나지 않습니다.",
 	"분기술":   "병법 '분기'를 쓸 수 있습니다.",
@@ -133,7 +128,7 @@ var traitNotes = map[string]string{
 	"행군":    "황무지 이동 비용이 1이 됩니다.",
 	"철벽":    "받는 물리 피해 ×0.85.",
 	"불굴":    "병력이 30% 이하일 때 받는 피해 ×0.75.",
-	"방패":    "물리 공격을 막아낼 확률 +10%.",
+	"방패":    "받는 물리 공격의 명중률 -10%.",
 	"원거리방어": "활 부대에게 받는 피해 ×0.8.",
 	"책략방어":  "병법으로 받는 피해 ×0.8.",
 	"논객":    "병법 '설파'·'이간'을 쓸 수 있습니다.",
@@ -154,7 +149,7 @@ var traitNotes = map[string]string{
 	"탈취":    "병법 '탈취'로 적의 군량을 빼앗을 수 있습니다.",
 	"행운":    "명중률과 치명타율 +5%.",
 	"군신":    "활이 아닌 무기로 자신보다 무력이 낮은 장수를 치면 반드시 명중하고 치명타가 됩니다.",
-	"패왕":    "활이 아닌 무기의 물리 피해 ×1.25. 적이 공격을 막아내지 못합니다.",
+	"패왕":    "활이 아닌 무기의 물리 피해 ×1.25. 물리 명중률이 80% 아래로 내려가지 않습니다.",
 	"천명":    "적 차례마다 처음 받는 피해가 절반이 됩니다.",
 	"협동":    "곁에 아군이 둘 이상 있으면 물리 피해 ×1.15.",
 	"지휘":    "병법 '대분발'·'대방진'을 쓸 수 있습니다.",

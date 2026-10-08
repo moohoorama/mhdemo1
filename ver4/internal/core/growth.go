@@ -41,7 +41,7 @@ func (e *Engine) supportXP(u *Unit) int {
 }
 func (e *Engine) xp(id string, n int) {
 	o := e.officer(id)
-	if o == nil || o.Dead || n <= 0 {
+	if o == nil || o.Dead || n <= 0 || e.data.Stages[e.state.Stage].Party != nil { // skirmishes award none
 		return
 	}
 	o.XP += n

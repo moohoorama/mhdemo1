@@ -1,6 +1,8 @@
 package gui
 
 import (
+	"encoding/json"
+	"os"
 	"reflect"
 	"testing"
 )
@@ -44,4 +46,85 @@ func TestWrapAndParticle(t *testing.T) {
 			}
 		}
 	})
+}
+
+func TestScenesData(t *testing.T) {
+	f := loadScenes("../../assets/scenes.json")
+	if f == nil {
+		t.Fatal("assets/scenes.json does not load")
+	}
+	b, err := os.ReadFile("../../assets/graphics/index.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var index struct {
+		Factions struct{ Factions []struct{ ID string } }
+		Units    map[string]json.RawMessage
+		Props    struct{ Sprites map[string]json.RawMessage }
+	}
+	if err := json.Unmarshal(b, &index); err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile("../../assets/scenes.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var maps struct {
+		Maps []struct {
+			ID    string
+			Props [][]any
+		}
+	}
+	if err := json.Unmarshal(raw, &maps); err != nil {
+		t.Fatal(err)
+	}
+	for _, m := range maps.Maps {
+		for _, p := range m.Props {
+			if name, _ := p[0].(string); index.Props.Sprites[name] == nil || (len(p) != 3 && len(p) != 5) {
+				t.Errorf("%s: prop %v: unknown name or not [name, x, y] / [name, x0, y0, x1, y1]", m.ID, p)
+			}
+		}
+	}
+	factions := map[string]bool{}
+	for _, fa := range index.Factions.Factions {
+		factions[fa.ID] = true
+	}
+	diagonal := map[string]bool{"NW": true, "NE": true, "SW": true, "SE": true}
+	for node, def := range f.Scenes {
+		t.Run(node, func(t *testing.T) {
+			for name, at := range def.Cast {
+				if len(at) < 3 {
+					t.Errorf("%s: cast %v needs [x, y, facing]", name, at)
+					continue
+				}
+				if dir, _ := at[2].(string); !diagonal[dir] {
+					t.Errorf("%s: facing %v is not a diagonal", name, at[2])
+				}
+				if len(at) > 3 {
+					if fa, _ := at[3].(string); !factions[fa] {
+						t.Errorf("%s: unknown faction %v", name, at[3])
+					}
+				}
+				sprite := ""
+				if len(at) > 4 {
+					sprite, _ = at[4].(string)
+					if index.Units[sprite] == nil {
+						t.Errorf("%s: unknown sprite %q", name, sprite)
+					}
+				}
+				if _, ok := officers[name]; !ok && sprite == "" {
+					t.Errorf("%s: not in the officers table and no sprite given", name)
+				}
+			}
+			for _, line := range def.Beats {
+				for _, group := range line {
+					for _, st := range group {
+						if st.Face != "" && !diagonal[st.Face] {
+							t.Errorf("%s: face %q is not a diagonal", st.Actor, st.Face)
+						}
+					}
+				}
+			}
+		})
+	}
 }

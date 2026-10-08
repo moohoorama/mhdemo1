@@ -95,7 +95,7 @@ func (e *Engine) Observe() Observation {
 	}
 	for _, u := range s.Units {
 		of := e.officer(u.Officer)
-		o.UnitViews = append(o.UnitViews, UnitView{Unit: u, Name: e.data.Officers[u.Officer].Name, Class: of.Class, Level: of.Level, XP: of.XP, XPRequired: ExperienceRequired(of.Level), XPProgress: ExperienceProgress(of.Level, of.XP), Stats: e.stats(&u), Traits: e.traits(&u, false), Skills: e.skills(&u)})
+		o.UnitViews = append(o.UnitViews, UnitView{Unit: u, Name: e.data.Officers[u.Officer].Name, Class: of.Class, Level: of.Level, XP: of.XP, XPRequired: ExperienceRequired(of.Level), XPProgress: ExperienceProgress(of.Level, of.XP), Stats: e.stats(&u), Attributes: attributes(e.attributes(of)), Points: of.Points, Traits: e.traits(&u, false), Skills: e.skills(&u), Learnable: e.learnable(&u)})
 	}
 	return o
 }
@@ -184,6 +184,24 @@ func (e *Engine) traits(u *Unit, learning bool) []string {
 	return keys(set)
 }
 func (e *Engine) has(u *Unit, t string) bool { return contains(e.traits(u, false), t) }
+
+// learnable lists the traits u's officer may learn but does not already have, innate or not.
+func (e *Engine) learnable(u *Unit) []string {
+	owned := e.traits(u, false)
+	out := []string{}
+	for _, t := range e.traits(u, true) {
+		if !contains(owned, t) {
+			out = append(out, t)
+		}
+	}
+	return out
+}
+func attributes(a [6]float64) (out [6]int) {
+	for i, v := range a {
+		out[i] = int(v)
+	}
+	return out
+}
 func (e *Engine) skills(u *Unit) []string {
 	set := map[string]bool{}
 	for _, s := range e.data.Classes[e.officer(u.Officer).Class].Skills {
@@ -267,6 +285,8 @@ func (e *Engine) execute(c Command) error {
 		return fail("ActionSpent")
 	}
 	switch c.Kind {
+	case "place":
+		return e.place(u, c)
 	case "wait":
 		u.Moved = true
 		u.Acted = true
@@ -295,7 +315,7 @@ func (e *Engine) execute(c Command) error {
 		}
 		o := e.officer(u.Officer)
 		t, ok := e.data.Traits[c.Trait]
-		if !ok || !contains(e.traits(u, true), c.Trait) || contains(o.Learned, c.Trait) {
+		if !ok || !contains(e.learnable(u), c.Trait) {
 			return fail("InvalidTrait")
 		}
 		if o.Points < t.Cost {
@@ -434,10 +454,21 @@ func (e *Engine) settle() {
 	if e.state.Phase != "battle" {
 		return
 	}
-	loss := e.unit("유비") == nil || e.unit("유비").HP <= 0
 	stage := e.data.Stages[e.state.Stage]
-	boss := e.unit(stage.Boss)
-	win := boss.HP*100 <= e.stats(boss).MaxHP*stage.Threshold
+	alive := map[string]bool{}
+	for _, id := range keys(e.unitIDs) {
+		if u := e.unit(id); u.HP > 0 {
+			alive[u.Faction] = true
+		}
+	}
+	loss, win := !alive["ally"], !alive["enemy"]
+	if stage.Party == nil { // the campaign is lost with 유비; a skirmish only when routed
+		loss = loss || e.unit("유비") == nil || e.unit("유비").HP <= 0
+	}
+	if stage.Goal != "rout" {
+		boss := e.unit(stage.Boss)
+		win = boss.HP*100 <= e.stats(boss).MaxHP*stage.Threshold
+	}
 	if !loss && !win {
 		return
 	}

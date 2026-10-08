@@ -2,6 +2,7 @@ package core
 
 import (
 	"encoding/json"
+	"math"
 	"reflect"
 	"srpg/internal/content"
 	"testing"
@@ -45,7 +46,7 @@ func TestFormulaAndResources(t *testing.T) {
 	e := battle(t)
 	u := e.unit("유비")
 	s := e.stats(u)
-	if s.Attack != 178 || s.Defense != 201 || s.Mind != 141 || s.MaxHP != 948 || s.MaxMP != 65 || s.Recovery != 8 {
+	if s.Attack != 211 || s.Defense != 201 || s.Mind != 141 || s.MaxHP != 948 || s.MaxMP != 65 || s.Recovery != 8 {
 		t.Fatalf("stats: %+v", s)
 	}
 	if u.HP != s.MaxHP || u.MP != 0 {
@@ -56,6 +57,39 @@ func TestFormulaAndResources(t *testing.T) {
 	if r.MaxMP != s.MaxMP || r.Recovery != s.Recovery || r.Attack <= s.Attack {
 		t.Fatal("MP must not scale with level")
 	}
+}
+func TestRatioOdds(t *testing.T) {
+	t.Run("hit curve", func(t *testing.T) {
+		for r, want := range map[float64]float64{.2: 30, 1. / 3: 30, .5: 60, .75: 70, 1: 80, 1.5: 90, 2: 100, 3: 100} {
+			if got := curve(r, hitCurve); math.Abs(got-want) > 1e-9 {
+				t.Errorf("hit at %.2f: %v, want %v", r, got, want)
+			}
+		}
+	})
+	t.Run("damage curve", func(t *testing.T) {
+		for r, want := range map[float64]float64{.25: .8, .5: .8, .75: .9, 1: 1, 1.5: 1.1, 2: 1.2, 3: 1.2} {
+			if got := curve(r, damageCurve); math.Abs(got-want) > 1e-9 {
+				t.Errorf("damage at %.2f: %v, want %v", r, got, want)
+			}
+		}
+	})
+	t.Run("crit and double", func(t *testing.T) {
+		for r, want := range map[float64]float64{.5: 0, 1: 10, 2: 40, 3: 70, 4: 70} {
+			if got := ratioChance(r); math.Abs(got-want) > 1e-9 {
+				t.Errorf("chance at %.2f: %v, want %v", r, got, want)
+			}
+		}
+	})
+	t.Run("physical damage", func(t *testing.T) {
+		e := battle(t)
+		u, v := e.unit("유비"), firstEnemy(e)
+		a, b := e.stats(u), e.stats(v)
+		atk, def := float64(a.Attack)*e.terrain(u, u.X, u.Y).Factor, float64(b.Defense)*e.terrain(v, v.X, v.Y).Factor
+		want := atk * curve(atk/def, damageCurve)
+		if got := e.damage(u, v, content.Skill{Kind: "physical", Coeff: 1}); math.Abs(got-want*e.multiplier(u, v, false)) > 1e-9 {
+			t.Fatalf("damage %v, want %v", got, want)
+		}
+	})
 }
 func TestAtomicRejectionAndCopies(t *testing.T) {
 	e := battle(t)
@@ -143,8 +177,8 @@ func TestTraitsDedupAndNoBasicCounter(t *testing.T) {
 		t.Fatal("duplicate trait")
 	}
 	target := e.unit("등무")
-	target.X = 3
-	target.Y = 7
+	target.X = 2
+	target.Y = 3
 	hp := u.HP
 	apply(t, e, Command{Kind: "attack", Actor: "장비", Target: "등무"})
 	if e.unit("장비").HP != hp {
@@ -154,8 +188,8 @@ func TestTraitsDedupAndNoBasicCounter(t *testing.T) {
 }
 func TestCounterDamageAndExpiration(t *testing.T) {
 	e := battle(t)
-	e.unit("등무").X = 3
-	e.unit("등무").Y = 5
+	e.unit("등무").X = 5
+	e.unit("등무").Y = 3
 	e.unit("유비").MP = 60
 	apply(t, e, Command{Kind: "skill", Actor: "유비", Skill: "반격"})
 	apply(t, e, Command{Kind: "end"})
@@ -183,8 +217,8 @@ func TestTerrainZOCAndCharge(t *testing.T) {
 	}
 	u.X = 4
 	u.Y = 4
-	e.data.Stages[0].Tiles[3] = "~~~~~~~~~~~~~~~~~~"
-	e.data.Stages[0].Tiles[5] = "~~~~~.~~~~~~~~~~~~"
+	e.data.Stages[0].Tiles[3] = "~~~~~~~~~~~~~~"
+	e.data.Stages[0].Tiles[5] = "~~~~~.~~~~~~~~"
 	e.unit("등무").X = 5
 	e.unit("등무").Y = 5
 	if containsPoint(e.moves(u), content.Point{X: 7, Y: 4}) {
@@ -194,8 +228,8 @@ func TestTerrainZOCAndCharge(t *testing.T) {
 	if !containsPoint(e.moves(u), content.Point{X: 7, Y: 4}) {
 		t.Fatal("charge does not bypass ZOC")
 	}
-	e.data.Stages[0].Tiles[4] = "................~."
-	if containsPoint(e.moves(u), content.Point{X: 16, Y: 4}) {
+	e.data.Stages[0].Tiles[4] = ".......~......"
+	if containsPoint(e.moves(u), content.Point{X: 8, Y: 4}) {
 		t.Fatal("water traversable")
 	}
 }
@@ -233,7 +267,7 @@ func TestMovePassesThroughAllies(t *testing.T) {
 }
 func TestReplayAtScenarioMoveEnemyAndResult(t *testing.T) {
 	e := New(data(t), 5)
-	for _, c := range []Command{{Kind: "next"}, {Kind: "choose", Option: "결의"}, {Kind: "start"}, {Kind: "move", Actor: "유비", X: 3, Y: 5}, {Kind: "end"}, {Kind: "wait", Actor: "등무"}} {
+	for _, c := range []Command{{Kind: "next"}, {Kind: "choose", Option: "결의"}, {Kind: "start"}, {Kind: "move", Actor: "유비", X: 5, Y: 4}, {Kind: "end"}, {Kind: "wait", Actor: "등무"}} {
 		restored, err := Restore(e.data, e.Snapshot())
 		if err != nil {
 			t.Fatal(err)
@@ -259,7 +293,11 @@ func TestRewardsRetryAndCompatibility(t *testing.T) {
 		t.Fatal("retry not exact checkpoint")
 	}
 	apply(t, e, Command{Kind: "start"})
-	e.unit("장각").HP = 0
+	for _, id := range keys(e.unitIDs) {
+		if u := e.unit(id); u.Faction == "enemy" {
+			u.HP = 0
+		}
+	}
 	apply(t, e, Command{Kind: "wait", Actor: "유비"})
 	xp := e.officer("유비").Level
 	restored, err := Restore(e.data, e.Snapshot())

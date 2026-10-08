@@ -90,7 +90,7 @@ func TestSaveLoadMenusAndRevision(t *testing.T) {
 func TestEnemyStepSaveContinuation(t *testing.T) {
 	s := setup(t)
 	request(t, s, Request{Op: "new", Seed: 4})
-	for _, c := range []core.Command{{Kind: "next"}, {Kind: "choose", Option: "결의"}, {Kind: "start"}, {Kind: "move", Actor: "유비", X: 3, Y: 5}, {Kind: "end"}} {
+	for _, c := range []core.Command{{Kind: "next"}, {Kind: "choose", Option: "결의"}, {Kind: "start"}, {Kind: "move", Actor: "유비", X: 5, Y: 4}, {Kind: "end"}} {
 		request(t, s, Request{Op: "command", Command: c})
 	}
 	request(t, s, Request{Op: "ai"})

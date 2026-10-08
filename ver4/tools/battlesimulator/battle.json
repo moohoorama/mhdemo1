@@ -1,0 +1,57 @@
+{
+  "Terrain": "초원",
+  "Seed": 1,
+  "MaxRounds": 30,
+  "Speed": 2,
+  "Ally": {
+    "Level": 10,
+    "Officers": [
+      "유비",
+      "관우",
+      "장비"
+    ]
+  },
+  "Enemy": {
+    "Level": 10,
+    "Officers": [
+      "여포",
+      "화웅",
+      {
+        "Officer": "호진",
+        "Level": 8
+      }
+    ]
+  },
+  "Terrains": {
+    "기병": {
+      "f": {
+        "Factor": 0.8,
+        "Cost": 3
+      }
+    },
+    "보병": {
+      "f": {
+        "Factor": 1.1,
+        "Cost": 2
+      }
+    },
+    "궁병": {
+      "f": {
+        "Factor": 1.1,
+        "Cost": 2
+      }
+    },
+    "문관": {
+      "f": {
+        "Factor": 1.0,
+        "Cost": 2
+      }
+    },
+    "도적": {
+      "f": {
+        "Factor": 1.2,
+        "Cost": 2
+      }
+    }
+  }
+}

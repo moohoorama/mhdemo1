@@ -37,9 +37,8 @@ func (e *Engine) LegalActions(actor string) Options {
 		}
 	}
 	if !u.Acted {
-		for _, t := range e.traits(u, true) {
-			o := e.officer(u.Officer)
-			if !contains(o.Learned, t) && o.Points >= e.data.Traits[t].Cost {
+		for _, t := range e.learnable(u) {
+			if e.officer(u.Officer).Points >= e.data.Traits[t].Cost {
 				out.Commands = append(out.Commands, Command{Kind: "learn", Actor: actor, Trait: t})
 			}
 		}
@@ -103,6 +102,7 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 	p := Preview{Cost: e.cost(u, s), Hit: e.hitChance(u, v, s), Effect: s.Effect}
 	if s.Kind == "physical" {
 		p.Crit = e.critChance(u, v)
+		p.Double = e.doubleChance(u, v)
 	}
 	for _, q := range e.targets(u, v, s) {
 		p.Targets = append(p.Targets, q.ID)
@@ -238,7 +238,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 			return nil, fail("CorruptSave")
 		}
 		for id, v := range u.Status {
-			if !contains([]string{"speed", "charge", "counter", "range", "morale", "attack", "defense", "poison", "burn", "confusion", "seal", "root", "weak"}, id) || v.Turns < 1 || v.Turns > 10 || v.Value < 0 || (v.Source != "" && !ids[v.Source] && e.unit(v.Source) == nil) {
+			if !contains([]string{"speed", "charge", "counter", "range", "morale", "attack", "defense", "poison", "burn", "confusion", "seal", "root", "weak", "attack-down", "defense-down"}, id) || v.Turns < 1 || v.Turns > 10 || v.Value < 0 || strings.HasSuffix(id, "-down") && v.Value > 90 || (v.Source != "" && !ids[v.Source] && e.unit(v.Source) == nil) {
 				return nil, fail("CorruptSave")
 			}
 		}
@@ -249,7 +249,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 		}
 	}
 	if s.Phase == "battle" || s.Phase == "result" {
-		if s.Round < 1 || !contains([]string{"ally", "enemy"}, s.Turn) || !ids[stage.Boss] || s.Checkpoint == nil {
+		if s.Round < 1 || !contains([]string{"ally", "enemy"}, s.Turn) || stage.Goal != "rout" && !ids[stage.Boss] || s.Checkpoint == nil {
 			return nil, fail("CorruptSave")
 		}
 		for id := range deploy {
@@ -297,6 +297,15 @@ func (e *Engine) CounterDamage(c Command) int {
 		return 0
 	}
 	return int(math.Floor(e.damage(v, u, basic) * 1.5 * .7))
+}
+
+// AttackRange is the reach of the unit's basic attack.
+func (e *Engine) AttackRange(id string) (lo, hi int) {
+	u := e.unit(id)
+	if u == nil {
+		return 0, 0
+	}
+	return e.rangeFor(u, content.Skill{Min: 1})
 }
 
 // StepCost is what entering (x, y) costs the unit, 0 where it cannot enter.

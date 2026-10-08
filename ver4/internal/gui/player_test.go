@@ -38,6 +38,18 @@ func TestSplitCounters(t *testing.T) {
 	})
 }
 
+func TestSplitDouble(t *testing.T) {
+	ev := func(kind string) core.Event { return core.Event{Kind: kind, Actor: "a", Target: "b"} }
+	t.Run("second blow", func(t *testing.T) {
+		events := []core.Event{ev("damage"), ev("double"), ev("critical"), ev("damage")}
+		check(t, splitDouble(events), [][]core.Event{events[:1], events[1:]})
+	})
+	t.Run("single blow", func(t *testing.T) {
+		events := []core.Event{ev("miss")}
+		check(t, splitDouble(events), [][]core.Event{events})
+	})
+}
+
 func check(t *testing.T, got, want any) {
 	t.Helper()
 	if !reflect.DeepEqual(got, want) {
