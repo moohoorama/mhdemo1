@@ -48,22 +48,17 @@ func (g *Game) updateHover() {
 	}
 	cx, cy := g.toCanvas(float64(x), float64(y))
 	mx, my := g.field.Cell(cx, cy)
-	// a castle wall's surface is drawn lifted; prefer it when the cursor is on it
-	if lu, lv := g.field.Cell(cx, cy+float64(g.assets.Rise*K)); g.field.Tile(lu, lv) == 'c' {
-		mx, my = lu, lv
-	}
 	if g.field.Inside(mx, my) {
 		g.hover = hoverCell{mx, my, true}
 	}
 }
 
-// cursor outlines the hovered cell.
+// cursor outlines the hovered cell at ground level, even on a lifted castle wall.
 func (g *Game) cursor(dst *ebiten.Image) {
 	if !g.hover.ok {
 		return
 	}
 	cx, cy := g.field.Center(float64(g.hover.x), float64(g.hover.y))
-	cy -= g.field.Lift(g.hover.x, g.hover.y)
 	pts := [][2]float64{{cx, cy - 8*K}, {cx + 16*K, cy}, {cx, cy + 8*K}, {cx - 16*K, cy}}
 	pulse := uint8(180 + 60*math.Sin(g.clockMS/160))
 	for i := range pts {
