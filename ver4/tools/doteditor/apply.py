@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Apply the dot editor's units/*.yaml to ver4/assets/graphics: each file replaces the packed sheet
 of the unit with the same id, then index.json and the drop shadows are updated.
-build_assets.py applies them too, so a full rebuild keeps the edits. Requires Pillow and PyYAML.
+build_assets.py applies them too, so a full rebuild keeps the edits. A <hero>_noncombat file (NW·SW only)
+is expanded to four directions and a four-step walk (expand_noncombat). Requires Pillow and PyYAML.
 
   make apply                  # all units/*.yaml
   python3 apply.py units/infantry.yaml
@@ -19,11 +20,39 @@ OUT = ROOT / 'ver4/assets/graphics'
 UNITS = HERE / 'units'
 
 
+def expand_noncombat(doc):
+    """A <hero>_noncombat file holds NW·SW idle, two walk steps and one action. The sheet gets NE·SE as
+    mirrored rows (cell widened to be symmetric about the pivot) and walk as idle, left, idle, right."""
+    u = doc['unit']
+    (w, h), (px, py) = u['cell'], u['pivot']
+    half = max(px, w - px)
+    pad = lambda row: [0]*(half - px) + row + [0]*(half - (w - px))
+    src = {(f['direction'], f['animation'], f['frame']): [pad(r) for r in f['pixels']] for f in doc['frames']}
+    walk = u['animations']['walk']['ms']
+    plan = {'idle': [('idle', 0)], 'walk': [('idle', 0), ('walk', 0), ('idle', 0), ('walk', 1)], 'action': [('action', 0)]}
+    ms = {'idle': u['animations']['idle']['ms'], 'walk': [walk[0], walk[0], walk[1], walk[1]],
+          'action': u['animations']['action']['ms']}
+    frames, anims, col = [], {}, 0
+    for name, cells in plan.items():
+        anims[name] = dict(first_column=col, frames=len(cells), ms=ms[name], loop=u['animations'][name]['loop'])
+        col += len(cells)
+        for d, mirror in (('NW', None), ('SW', None), ('NE', 'NW'), ('SE', 'SW')):
+            for k, (a, n) in enumerate(cells):
+                pixels = src[(mirror or d, a, n)]
+                frames.append(dict(direction=d, animation=name, frame=k,
+                                   pixels=[r[::-1] for r in pixels] if mirror else pixels))
+    doc['frames'] = frames
+    u.update(cell=[2*half, h], pivot=[half, py], rows=['NW', 'SW', 'NE', 'SE'], animations=anims)
+    return doc
+
+
 def render(path, out=OUT):
     """Draw one editor YAML as units/<id>.png under out; returns (id, index entry)."""
     doc = yaml.safe_load(path.read_text())
     if doc.get('format') != 'mhdemo-unit-pixels':
         raise SystemExit(f'{path}: not a dot editor unit file')
+    if doc['unit']['id'].endswith('_noncombat'):
+        doc = expand_noncombat(doc)
     u = doc['unit']
     (w, h), rows, anims = u['cell'], u['rows'], u['animations']
     palette = [bytes.fromhex(c[1:]) for c in doc['palette']]

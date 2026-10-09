@@ -1,0 +1,4 @@
+# generated: previews, live progress renders, grid working copies (re-export with grid.py export --force)
+*/preview/
+*/grid/
+live/
