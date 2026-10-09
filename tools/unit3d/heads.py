@@ -248,7 +248,21 @@ def stamp(g, head_set, d, face, cx, cy):
     """Stamp the view's head, with the frame's expression, centred on (cx, cy)."""
     head = expression(head_for(head_set['grids'], d), face, head_set['skin'], head_set['lid'])
     ax, ay = head_set.get('anchor', ANCHOR)
-    overlay(g, head, round(cx) - ax, round(cy) - ay)
+    x0, y0 = round(cx) - ax, round(cy) - ay
+    overlay(g, head, x0, y0)
+    edge(g, head, x0, y0)
+
+
+def edge(g, head, x0, y0):
+    """Outline head pixels left open to the background (plume tips, cap knots on the grid's top row)."""
+    h, w = len(g), len(g[0])
+    for dy, row in enumerate(head):
+        for dx, c in enumerate(row):
+            if c in '.,0':
+                continue
+            for ny, nx in ((y0+dy-1, x0+dx), (y0+dy+1, x0+dx), (y0+dy, x0+dx-1), (y0+dy, x0+dx+1)):
+                if 0 <= ny < h and 0 <= nx < w and g[ny][nx] == '.':
+                    g[ny][nx] = '0'
 
 
 # ---- ver4 heads (candidates; see look_candidates.py) ---------------------------------------

@@ -9,6 +9,7 @@ cd ver4
 go run ./cmd/srpg-gui                      # 그래픽 (1280×850)
 go run ./cmd/srpg-cli                      # 사람용 CLI, -json 으로 JSON Lines
 go run ./cmd/srpg-sim -seeds 10            # 반복 시뮬레이션
+go run ./tools/battlesimulator [-n 200]    # 전투 시뮬레이터: 설정한 두 진영의 대결 (tools/battlesimulator/README.md)
 go test ./... && go vet ./...
 go build -o bin/srpg-cli ./cmd/srpg-cli && python3 tools/smoke_cli.py   # CLI 전체 캠페인
 go run ./cmd/srpg-gui -audit /tmp/shots -shots 600,1200   # 새 게임 자동 진행, 지정 틱(60/초) 화면 저장
@@ -21,6 +22,7 @@ GUI 조작(조조전식, [UI 설계](ui-design.md)): 아군 클릭 → 이동 �
 우클릭/Esc는 한 단계 취소(이동 취소 포함), 우클릭 드래그·화살표로 화면 이동, 휠 확대(×0.5–2, 기본 ×1에서 병종 도트가 1:1).
 병법·도구·학습 항목에 마우스를 올리면 효과 설명이 뜬다. 예측 창은 양쪽 병력·병법치 게이지와 변화량, 명중률을 보여 준다.
 일기토는 명령이 아니다. 지정된 두 장수가 서로 공격하면 자동으로 벌어진다(설계서 0.6).
+전투 첫 턴에 아무도 행동하기 전이면 금색 배치 칸이 보이고, 아군을 고른 뒤 그 칸을 누르면 그 자리로 옮긴다(다른 아군이 있으면 맞바꾼다).
 적을 클릭하면 그 적의 위협 범위를 보여 준다. U 부대 일람 · T 적 전체 위협 범위 · L 전투 기록 · E 진영 종료 ·
 Tab 다음 미행동 부대 · F 재생 속도(×1·×2·×4) · Enter 재생 건너뛰기 · Space 추천 한 명령 · P 자동 진행 ·
 F5/F9 저장/불러오기 · ` 명령 입력(CLI 문법, 디버그).
@@ -43,7 +45,7 @@ ver4/
 │  ├─ content/campaign.json  실행 콘텐츠 (ver1과 같음)
 │  ├─ fonts/                 NotoSansKR
 │  └─ graphics/              build_assets.py 결과: index.json, units/, map/, maps/B01–B03.json, 초상
-└─ tools/build_assets.py, smoke_cli.py,
+└─ tools/build_assets.py, smoke_cli.py, battlesimulator/,
    doteditor/                태그 팔레트 도트 에디터(index.html)와 기본형 units/{infantry,cavalry}.yaml, 반영 apply.py
 ```
 
@@ -56,7 +58,7 @@ ver4/
 - 일기토 명령(`duel`)을 없앴다. 지정된 두 장수가 인접해서 무기로 서로 공격하면 그 공격 대신 일기토가 벌어진다.
 - `Session.ResolvePhase`: 현재 진영의 페이즈를 AI로 한 명령씩 끝까지 해결하고 리플레이용 행동 목록을 돌려준다.
   결과는 `ai.Step`을 반복한 것과 같다(테스트). 끝나면 자동 저장한다.
-- 규칙·콘텐츠·저장 형식은 그대로다. CLI 스모크 결과가 ver1과 같다(391 요청, 라운드 10/10/16).
+- 규칙·콘텐츠는 ver1에서 바뀌었다(비율 피해 곡선, 명중·치명·2회 공격 비율식, B01~B03 맵). CLI 스모크(시드 3)는 365 요청, 라운드 13/8/15로 완주한다.
 
 ## 클레임 리플레이 (`internal/replay`, `internal/gui/player.go`)
 
@@ -72,14 +74,18 @@ ver4/
 
 | 대상 | 원본 | 비고 |
 |---|---|---|
-| 병종·장수 13종 | `tools/spritetool/assets/ver2-units/` | ver3 7종 + ver4 추가 6종(사마·유비·간옹·장각·화웅·여포) |
+| 병종·장수 34종 | `tools/spritetool/assets/ver2-units/` | 병종 6종 + 장수 28종(서장~1장 등장 인물). 목록은 그 폴더 README |
+| 평복(장면) 23종 | `tools/spritetool/assets/ver4-civilians/` | 장수 19 + 황건병·마을 젊은이·촌로·짐수레 상인. 동작 8개(탈진 포함). 원본은 NW·SW 2방향이고 `build_assets.py`가 좌우반전해 NE·SE 행을 붙여 `civ_<키>`로 묶는다 |
+| 장면 소품·실내 타일 | `tools/spritetool/assets/ver4-props/` | `tools/unit3d/props.py`. 캐릭터와 같은 1배 픽셀(칸 64×32). 바닥·벽·기둥·상석·탁자·다리·성문·군막·깃발·주막·복숭아나무 |
 | 지형 타일·장식 | `assets/terrain.png`, `objects.png`, `catalog.json` | ver3 타일셋 그대로 |
-| 마을·성벽·성내 | `tools/spritetool/assets/ver4-structures/` | `tools/unit3d/structures.py`. 성벽 칸은 10px 높고 그 위 유닛도 올려 그린다 |
+| 마을·숲·산·성벽·성내 | `tools/spritetool/assets/ver4-structures/` | `tools/unit3d/structures.py`. 성벽 칸은 10px 높고 그 위 유닛도 올려 그린다 |
 | 전투 맵 | `assets/content/campaign.json`의 `Tiles` | 에디터 지형 규칙(`ver3/tools/exportmap`)으로 경계·장식 생성 |
-| 초상 | ver1 `assets/graphics/portraits.png`, `enemies.png` | 대사·정보창용 |
+| 초상 37명 | `tools/illustrations/portraits/`, 유비는 `style-samples/4-ink-wash.png` | 수묵 담채. 256×256으로 줄여 `graphics/portraits/<키>.png` |
 
-장수는 고유 도트(유비·관우·장비·간옹·장각·화웅·여포), 나머지는 병종 도트를 쓴다. 아군은 촉(금빛),
-적은 B01 황건적, B02·B03 동탁·여포 진영색으로 바꾼다.
+장수 이름 → 키·진영 표는 `internal/gui/view.go`의 `officers` 하나다. 키로 전투 도트, `civ_<키>` 평복,
+초상을 찾고, 없으면 병종 도트를 쓰고 초상은 이름표만 띄운다(이름 없는 황건병은 `turban_soldier`).
+아군은 촉(초록), 적은 장수 진영(없으면 스테이지 진영: B01 황건적, B02·B03 동탁)으로 바꾼다.
+장면 출연자는 장수 진영색을 쓰고, `scenes.json` `cast`의 넷째 값으로 바꿀 수 있다. 상단(장세평·소쌍)은 보라.
 
 ## 남은 일
 
@@ -87,7 +93,9 @@ ver4/
 - 공격이 빗나가면 대상이 막기 동작을 하고 방어막이 "팡" 하고 뜬다. 타격·화계·수계·회복·버프·상태 이상은
   입자·발광·지면 고리·빛기둥으로 그린다(`effects.go`). 큰 피해에는 화면이 짧게 흔들린다.
 - 시나리오는 장면으로 진행한다(`assets/scenes.json`, `scene.go`): 작은 맵에 평복 장수들이 서서 걷고, 포권·건배·
-  놀람·끄덕임을 하고, 말하는 장수 오른쪽 위에 말풍선이 뜬다. 클릭하면 연출을 넘긴다.
+  놀람·끄덕임·탈진을 하고, 말하는 장수 오른쪽 위에 말풍선이 뜬다. 클릭하면 연출을 넘긴다.
+  맵의 `Props`로 소품을 놓고, 출연자는 칸 사이(소수 좌표)에 서거나 걸을 수 있다. `cast`의 다섯째 값으로 엑스트라나
+  전투 도트(병사=보병, 전령=경기병, 무대 위 겨루기)를 세우고, 비트의 `effect`로 꽃잎(화면 전체)·불길(지점)을 띄운다.
 - 병법·아이템 이펙트는 맵 위 절차적 이펙트(화살·베기·화계·수계·회복·버프·상태)까지다. 전투 컷인 화면은 없고,
   일기토는 결과 패널만 보여 준다. 상점·배치 칸 선택은 코어 규칙이 없어 화면도 없다.
 - 0.9.6 확장 중 시차만 넣었다. 읽기/쓰기 구분, 구간 단위 클레임은 없다.

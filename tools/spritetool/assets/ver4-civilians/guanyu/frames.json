@@ -12,11 +12,12 @@
   "salute",
   "toast",
   "surprise",
-  "nod"
+  "nod",
+  "exhausted"
  ],
  "cell": [
   22,
-  32
+  34
  ],
  "pivot": [
   11,
@@ -49,7 +50,8 @@
    160,
    220,
    160
-  ]
+  ],
+  "exhausted": 220
  },
  "palette": [
   "#0b101b",
@@ -105,7 +107,7 @@
     0,
     0,
     22,
-    32
+    34
    ]
   },
   {
@@ -117,7 +119,7 @@
     22,
     0,
     22,
-    32
+    34
    ]
   },
   {
@@ -129,7 +131,7 @@
     44,
     0,
     22,
-    32
+    34
    ]
   },
   {
@@ -141,7 +143,7 @@
     66,
     0,
     22,
-    32
+    34
    ]
   },
   {
@@ -151,9 +153,9 @@
    "index": 4,
    "crop": [
     0,
-    32,
+    34,
     22,
-    32
+    34
    ]
   },
   {
@@ -163,9 +165,9 @@
    "index": 5,
    "crop": [
     22,
-    32,
+    34,
     22,
-    32
+    34
    ]
   },
   {
@@ -175,9 +177,9 @@
    "index": 6,
    "crop": [
     44,
-    32,
+    34,
     22,
-    32
+    34
    ]
   },
   {
@@ -187,9 +189,9 @@
    "index": 7,
    "crop": [
     66,
-    32,
+    34,
     22,
-    32
+    34
    ]
   },
   {
@@ -199,9 +201,9 @@
    "index": 8,
    "crop": [
     0,
-    64,
+    68,
     22,
-    32
+    34
    ]
   },
   {
@@ -211,9 +213,9 @@
    "index": 9,
    "crop": [
     22,
-    64,
+    68,
     22,
-    32
+    34
    ]
   },
   {
@@ -223,9 +225,9 @@
    "index": 10,
    "crop": [
     44,
-    64,
+    68,
     22,
-    32
+    34
    ]
   },
   {
@@ -235,9 +237,9 @@
    "index": 11,
    "crop": [
     66,
-    64,
+    68,
     22,
-    32
+    34
    ]
   },
   {
@@ -247,9 +249,9 @@
    "index": 12,
    "crop": [
     0,
-    96,
+    102,
     22,
-    32
+    34
    ]
   },
   {
@@ -259,9 +261,9 @@
    "index": 13,
    "crop": [
     22,
-    96,
+    102,
     22,
-    32
+    34
    ]
   },
   {
@@ -271,9 +273,9 @@
    "index": 14,
    "crop": [
     44,
-    96,
+    102,
     22,
-    32
+    34
    ]
   },
   {
@@ -283,9 +285,9 @@
    "index": 15,
    "crop": [
     66,
-    96,
+    102,
     22,
-    32
+    34
    ]
   },
   {
@@ -295,9 +297,9 @@
    "index": 16,
    "crop": [
     0,
-    128,
+    136,
     22,
-    32
+    34
    ]
   },
   {
@@ -307,9 +309,9 @@
    "index": 17,
    "crop": [
     22,
-    128,
+    136,
     22,
-    32
+    34
    ]
   },
   {
@@ -319,9 +321,9 @@
    "index": 18,
    "crop": [
     44,
-    128,
+    136,
     22,
-    32
+    34
    ]
   },
   {
@@ -331,9 +333,9 @@
    "index": 19,
    "crop": [
     66,
-    128,
+    136,
     22,
-    32
+    34
    ]
   },
   {
@@ -343,9 +345,9 @@
    "index": 20,
    "crop": [
     0,
-    160,
+    170,
     22,
-    32
+    34
    ]
   },
   {
@@ -355,9 +357,9 @@
    "index": 21,
    "crop": [
     22,
-    160,
+    170,
     22,
-    32
+    34
    ]
   },
   {
@@ -367,9 +369,9 @@
    "index": 22,
    "crop": [
     44,
-    160,
+    170,
     22,
-    32
+    34
    ]
   },
   {
@@ -379,9 +381,9 @@
    "index": 23,
    "crop": [
     66,
-    160,
+    170,
     22,
-    32
+    34
    ]
   },
   {
@@ -391,9 +393,9 @@
    "index": 24,
    "crop": [
     0,
-    192,
+    204,
     22,
-    32
+    34
    ]
   },
   {
@@ -403,9 +405,9 @@
    "index": 25,
    "crop": [
     22,
-    192,
+    204,
     22,
-    32
+    34
    ]
   },
   {
@@ -415,9 +417,9 @@
    "index": 26,
    "crop": [
     44,
-    192,
+    204,
     22,
-    32
+    34
    ]
   },
   {
@@ -427,345 +429,441 @@
    "index": 27,
    "crop": [
     66,
-    192,
+    204,
     22,
-    32
+    34
    ]
   },
   {
-   "direction": "SW",
-   "animation": "idle",
+   "direction": "NW",
+   "animation": "exhausted",
    "frame": 0,
    "index": 28,
    "crop": [
     0,
-    0,
+    238,
     22,
-    32
+    34
    ]
   },
   {
-   "direction": "SW",
-   "animation": "idle",
+   "direction": "NW",
+   "animation": "exhausted",
    "frame": 1,
    "index": 29,
    "crop": [
     22,
-    0,
+    238,
     22,
-    32
+    34
    ]
   },
   {
-   "direction": "SW",
-   "animation": "idle",
+   "direction": "NW",
+   "animation": "exhausted",
    "frame": 2,
    "index": 30,
    "crop": [
     44,
+    238,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "NW",
+   "animation": "exhausted",
+   "frame": 3,
+   "index": 31,
+   "crop": [
+    66,
+    238,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "idle",
+   "frame": 0,
+   "index": 32,
+   "crop": [
+    0,
     0,
     22,
-    32
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "idle",
+   "frame": 1,
+   "index": 33,
+   "crop": [
+    22,
+    0,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "idle",
+   "frame": 2,
+   "index": 34,
+   "crop": [
+    44,
+    0,
+    22,
+    34
    ]
   },
   {
    "direction": "SW",
    "animation": "idle",
    "frame": 3,
-   "index": 31,
-   "crop": [
-    66,
-    0,
-    22,
-    32
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "walk",
-   "frame": 0,
-   "index": 32,
-   "crop": [
-    0,
-    32,
-    22,
-    32
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "walk",
-   "frame": 1,
-   "index": 33,
-   "crop": [
-    22,
-    32,
-    22,
-    32
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "walk",
-   "frame": 2,
-   "index": 34,
-   "crop": [
-    44,
-    32,
-    22,
-    32
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "walk",
-   "frame": 3,
    "index": 35,
    "crop": [
     66,
-    32,
+    0,
     22,
-    32
+    34
    ]
   },
   {
    "direction": "SW",
-   "animation": "talk",
+   "animation": "walk",
    "frame": 0,
    "index": 36,
    "crop": [
     0,
-    64,
+    34,
     22,
-    32
+    34
    ]
   },
   {
    "direction": "SW",
-   "animation": "talk",
+   "animation": "walk",
    "frame": 1,
    "index": 37,
    "crop": [
     22,
-    64,
+    34,
     22,
-    32
+    34
    ]
   },
   {
    "direction": "SW",
-   "animation": "talk",
+   "animation": "walk",
    "frame": 2,
    "index": 38,
    "crop": [
     44,
-    64,
+    34,
     22,
-    32
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "walk",
+   "frame": 3,
+   "index": 39,
+   "crop": [
+    66,
+    34,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "talk",
+   "frame": 0,
+   "index": 40,
+   "crop": [
+    0,
+    68,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "talk",
+   "frame": 1,
+   "index": 41,
+   "crop": [
+    22,
+    68,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "talk",
+   "frame": 2,
+   "index": 42,
+   "crop": [
+    44,
+    68,
+    22,
+    34
    ]
   },
   {
    "direction": "SW",
    "animation": "talk",
    "frame": 3,
-   "index": 39,
-   "crop": [
-    66,
-    64,
-    22,
-    32
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "salute",
-   "frame": 0,
-   "index": 40,
-   "crop": [
-    0,
-    96,
-    22,
-    32
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "salute",
-   "frame": 1,
-   "index": 41,
-   "crop": [
-    22,
-    96,
-    22,
-    32
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "salute",
-   "frame": 2,
-   "index": 42,
-   "crop": [
-    44,
-    96,
-    22,
-    32
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "salute",
-   "frame": 3,
    "index": 43,
    "crop": [
     66,
-    96,
+    68,
     22,
-    32
+    34
    ]
   },
   {
    "direction": "SW",
-   "animation": "toast",
+   "animation": "salute",
    "frame": 0,
    "index": 44,
    "crop": [
     0,
-    128,
+    102,
     22,
-    32
+    34
    ]
   },
   {
    "direction": "SW",
-   "animation": "toast",
+   "animation": "salute",
    "frame": 1,
    "index": 45,
    "crop": [
     22,
-    128,
+    102,
     22,
-    32
+    34
    ]
   },
   {
    "direction": "SW",
-   "animation": "toast",
+   "animation": "salute",
    "frame": 2,
    "index": 46,
    "crop": [
     44,
-    128,
+    102,
     22,
-    32
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "salute",
+   "frame": 3,
+   "index": 47,
+   "crop": [
+    66,
+    102,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "toast",
+   "frame": 0,
+   "index": 48,
+   "crop": [
+    0,
+    136,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "toast",
+   "frame": 1,
+   "index": 49,
+   "crop": [
+    22,
+    136,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "toast",
+   "frame": 2,
+   "index": 50,
+   "crop": [
+    44,
+    136,
+    22,
+    34
    ]
   },
   {
    "direction": "SW",
    "animation": "toast",
    "frame": 3,
-   "index": 47,
-   "crop": [
-    66,
-    128,
-    22,
-    32
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "surprise",
-   "frame": 0,
-   "index": 48,
-   "crop": [
-    0,
-    160,
-    22,
-    32
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "surprise",
-   "frame": 1,
-   "index": 49,
-   "crop": [
-    22,
-    160,
-    22,
-    32
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "surprise",
-   "frame": 2,
-   "index": 50,
-   "crop": [
-    44,
-    160,
-    22,
-    32
-   ]
-  },
-  {
-   "direction": "SW",
-   "animation": "surprise",
-   "frame": 3,
    "index": 51,
    "crop": [
     66,
-    160,
+    136,
     22,
-    32
+    34
    ]
   },
   {
    "direction": "SW",
-   "animation": "nod",
+   "animation": "surprise",
    "frame": 0,
    "index": 52,
    "crop": [
     0,
-    192,
+    170,
     22,
-    32
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "surprise",
+   "frame": 1,
+   "index": 53,
+   "crop": [
+    22,
+    170,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "surprise",
+   "frame": 2,
+   "index": 54,
+   "crop": [
+    44,
+    170,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "surprise",
+   "frame": 3,
+   "index": 55,
+   "crop": [
+    66,
+    170,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "nod",
+   "frame": 0,
+   "index": 56,
+   "crop": [
+    0,
+    204,
+    22,
+    34
    ]
   },
   {
    "direction": "SW",
    "animation": "nod",
    "frame": 1,
-   "index": 53,
+   "index": 57,
    "crop": [
     22,
-    192,
+    204,
     22,
-    32
+    34
    ]
   },
   {
    "direction": "SW",
    "animation": "nod",
    "frame": 2,
-   "index": 54,
+   "index": 58,
    "crop": [
     44,
-    192,
+    204,
     22,
-    32
+    34
    ]
   },
   {
    "direction": "SW",
    "animation": "nod",
    "frame": 3,
-   "index": 55,
+   "index": 59,
    "crop": [
     66,
-    192,
+    204,
     22,
-    32
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "exhausted",
+   "frame": 0,
+   "index": 60,
+   "crop": [
+    0,
+    238,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "exhausted",
+   "frame": 1,
+   "index": 61,
+   "crop": [
+    22,
+    238,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "exhausted",
+   "frame": 2,
+   "index": 62,
+   "crop": [
+    44,
+    238,
+    22,
+    34
+   ]
+  },
+  {
+   "direction": "SW",
+   "animation": "exhausted",
+   "frame": 3,
+   "index": 63,
+   "crop": [
+    66,
+    238,
+    22,
+    34
    ]
   }
  ]

@@ -325,18 +325,21 @@ SIDES = ['nw', 'ne', 'se', 'sw']  # wall mask bit i: the neighbour on SIDES[i] i
 
 
 def build():
-    """One sheet: village, interior floor, and the 16 wall variants by open-edge mask."""
+    """One sheet: village, interior floor, the 16 wall variants by open-edge mask, and the deformed
+    mountain cell battle maps draw instead of the big rocks (user pick, 2026-10-05). The battle-map
+    forest is drawn at the characters' pixel scale, so it lives in props.py (forest_0-3)."""
     OUT.mkdir(parents=True, exist_ok=True)
     sprites = [('village', village(4)), ('floor', floor('light'))]
     sprites += [(f'wall_{mask:02d}', castle({s: bool(mask >> i & 1) for i, s in enumerate(SIDES)}))
                 for mask in range(16)]
+    sprites += [('mountain', mountain('stone'))]
     sheet = Image.new('RGBA', (CELL[0]*len(sprites), CELL[1]))
     for i, (_, im) in enumerate(sprites):
         sheet.alpha_composite(im, (i*CELL[0], 0))
     sheet.save(OUT / 'structures.png')
     meta = dict(version=1, image='structures.png', cell=list(CELL), pivot=[PIVOT[0] + 1, PIVOT[1] + 1],
                 pivot_note='cell centre of the map diamond (32x16)', rise=RISE,
-                wall_mask_sides=SIDES, layer=dict(village='object', floor='ground', wall='object'),
+                wall_mask_sides=SIDES, layer=dict(village='object', floor='ground', wall='object', mountain='object'),
                 sprites={name: i for i, (name, _) in enumerate(sprites)})
     (OUT / 'structures.json').write_text(json.dumps(meta, indent=1) + '\n')
     print(OUT / 'structures.png')
@@ -469,6 +472,528 @@ def village(count=4):
     for dx, dy in sorted(spots, key=lambda p: p[1]):
         im.alpha_composite(house, (cx + dx - hx, cy + dy - hy))
     return im
+
+
+def mini_tree(kind='round', size=1.0):
+    """Deformed little tree for battle-map forest cells (about a third of a character), drawn as
+    pixels like MINI_HOUSE: 'round' broadleaf or 'pine'. Light from the upper left. Returns
+    (image, pivot at the foot of the trunk)."""
+    w, h = 13, 15
+    g = [['.'] * w for _ in range(h)]
+    cx = 6
+    if kind == 'round':
+        r = 4.2*size
+        cy = 5.0
+        for y in range(h):
+            for x in range(w):
+                dx, dy = x + .5 - (cx + .5), y + .5 - cy
+                if dx*dx + (dy*1.1)**2 <= r*r:
+                    d = dx + dy*1.2
+                    g[y][x] = 'J' if d < -3.2 else 'I' if d < .2 else 'H' if d < 3.2 else 'G'
+        for y in range(int(cy + r*.8), int(cy + r*.8) + 3):
+            g[y][cx] = 'g'
+            g[y][cx - 1] = 'h' if g[y][cx - 1] == '.' else g[y][cx - 1]
+        foot = int(cy + r*.8) + 3
+    else:
+        top, base = 1, 11
+        for y in range(top, base):
+            t = (y - top)/(base - top)
+            half = 1 + int(4.6*size*t) - (1 if (y - top) % 3 == 0 and y > top + 2 else 0)  # tiered outline
+            for x in range(cx - half, cx + half + 1):
+                d = (x - cx) + (y - top)*.2 - 1
+                g[y][x] = 'J' if d < -2 else 'I' if d < 0 else 'H' if d < 2 else 'G'
+        for y in range(base, base + 2):
+            g[y][cx] = 'g'
+        foot = base + 2
+    edge = R.outline(g, (0, 0, w, h))
+    return Hd.to_img(edge), (cx, foot)
+
+
+FOREST_SPOTS = {  # tree offsets from the cell centre (pixels), kind per spot
+    'round': [((-6, -3), 'round'), ((6, -3), 'round'), ((0, -1), 'round'), ((-7, 3), 'round'), ((7, 3), 'round')],
+    'pine': [((-6, -3), 'pine'), ((6, -3), 'pine'), ((0, -1), 'pine'), ((-7, 3), 'pine'), ((7, 3), 'pine')],
+    'mixed': [((-6, -3), 'pine'), ((6, -3), 'round'), ((0, -1), 'pine'), ((-7, 3), 'round'), ((7, 3), 'pine')],
+    'dense': [((-8, -3), 'round'), ((0, -4), 'pine'), ((8, -3), 'round'), ((-4, 0), 'round'), ((4, 0), 'pine'),
+              ((-8, 4), 'round'), ((0, 4), 'round'), ((8, 4), 'pine')],
+}
+
+
+def forest(kind='round'):
+    """A battle-map forest cell: little trees in a diamond cluster, drawn back to front, like village()."""
+    im = Image.new('RGBA', CELL)
+    cx, cy = PIVOT[0] + 1, PIVOT[1] + 1
+    size = .8 if kind == 'dense' else 1.0
+    for (dx, dy), tree in sorted(FOREST_SPOTS[kind], key=lambda s: s[0][1]):
+        t, (tx, ty) = mini_tree(tree, size)
+        im.alpha_composite(t, (cx + dx - tx, cy + dy - ty))
+    return im
+
+
+MOUNTAIN_KEYS = {  # lit face, base, shadow face, dark edge
+    'stone': ('5', '4', '3', '2'), 'earth': ('j', 'i', 'h', 'g'), 'green': ('J', 'I', 'H', 'G')}
+
+
+def mini_peak(w, h, kind='stone', snow=False):
+    """Deformed little mountain: a triangle with a lit left face and a shaded right face split at the
+    ridge, a darker band at the foot. Returns (image, pivot at the middle of the base)."""
+    lit, base, shade, dark = MOUNTAIN_KEYS[kind]
+    W, H = w + 2, h + 2
+    g = [['.'] * W for _ in range(H)]
+    cx = W//2
+    for y in range(1, h + 1):
+        t = y/h
+        half = max(0, int(round(t*w/2)))
+        ridge = cx + int(round((t - .5)*1.5))  # the ridge leans a little to the right going down
+        for x in range(cx - half, cx + half + 1):
+            if not 0 <= x < W:
+                continue
+            c = lit if x < ridge else shade
+            if y > h - 2:
+                c = base if x < ridge else dark
+            if snow and y <= max(2, h//4):
+                c = '6' if x < ridge else '5'
+            g[y][x] = c
+    edge = R.outline(g, (0, 0, W, H))
+    return Hd.to_img(edge), (cx, h + 1)
+
+
+def boulder(r=3, kind='stone'):
+    lit, base, shade, dark = MOUNTAIN_KEYS[kind]
+    W, H = 2*r + 3, 2*r + 2
+    g = [['.'] * W for _ in range(H)]
+    cx, cy = W/2, H/2
+    for y in range(H):
+        for x in range(W):
+            dx, dy = x + .5 - cx, (y + .5 - cy)*1.3
+            if dx*dx + dy*dy <= r*r:
+                d = dx + dy
+                g[y][x] = lit if d < -1.5 else base if d < 1 else shade
+    edge = R.outline(g, (0, 0, W, H))
+    return Hd.to_img(edge), (W//2, H - 1)
+
+
+MOUNTAIN_SPOTS = {  # (offset from the cell centre, maker)
+    'stone': [((0, -2), lambda: mini_peak(16, 15, 'stone', True)), ((-8, 3), lambda: mini_peak(12, 10, 'stone')),
+              ((8, 3), lambda: mini_peak(11, 9, 'stone'))],
+    'earth': [((-3, -2), lambda: mini_peak(16, 13, 'earth')), ((6, 0), lambda: mini_peak(13, 11, 'earth')),
+              ((-5, 4), lambda: mini_peak(10, 7, 'earth'))],
+    'green': [((0, -2), lambda: mini_peak(18, 12, 'green')), ((-8, 3), lambda: mini_peak(11, 7, 'green')),
+              ((7, 3), lambda: boulder(3, 'stone'))],
+    'rocks': [((-6, -3), lambda: boulder(4)), ((5, -3), lambda: boulder(3)), ((0, 0), lambda: boulder(4)),
+              ((-8, 3), lambda: boulder(3)), ((7, 3), lambda: boulder(4))],
+}
+
+
+def mountain(kind='stone'):
+    """A battle-map mountain cell: little peaks (or boulders) in a cluster, drawn back to front."""
+    im = Image.new('RGBA', CELL)
+    cx, cy = PIVOT[0] + 1, PIVOT[1] + 1
+    for (dx, dy), make in sorted(MOUNTAIN_SPOTS[kind], key=lambda s: s[0][1]):
+        t, (tx, ty) = make()
+        im.alpha_composite(t, (cx + dx - tx, cy + dy - ty))
+    return im
+
+
+# ---------------------------------------------------------------- forest, second round (2026-10-05)
+# The first forest read cold and scattered. These use the olive ramp N-R (matching the map's grass and
+# trees), leaf clumps shaded one by one, and a dark olive outline instead of black.
+
+def canopy(clumps, w, h, ramp='NOPQR', trunks=(), outline='N'):
+    """Pixel canopy: the union of leaf clumps (cx, cy, r); each clump is lit from the upper left on
+    its own, so the mass reads as bunched leaves. trunks: (x, y0, y1) columns drawn under the leaves."""
+    dark, shade, base, lit, hi = ramp
+    g = [['.'] * w for _ in range(h)]
+    for x, y0, y1 in trunks:
+        for y in range(y0, y1):
+            g[y][x], g[y][x + 1] = 'g', 'f'
+    owner = {}
+    for i, (cx, cy, r) in enumerate(clumps):  # later clumps sit in front
+        for y in range(h):
+            for x in range(w):
+                dx, dy = x + .5 - cx, (y + .5 - cy)*1.15
+                if dx*dx + dy*dy <= r*r:
+                    owner[x, y] = i
+    for (x, y), i in owner.items():
+        cx, cy, r = clumps[i]
+        dx, dy = (x + .5 - cx)/r, (y + .5 - cy)/r
+        d = dx*.8 + dy  # toward the lower right is darker
+        k = hi if d < -.95 else lit if d < -.35 else base if d < .3 else shade
+        if y > max(c[1] for c in clumps) + 1:  # underside of the whole mass
+            k = shade if k in (hi, lit) else dark if k == shade else k
+        g[y][x] = k
+    lined = R.outline(g, (0, 0, w, h))
+    return [[outline if c == '0' else c for c in row] for row in lined]
+
+
+def olive_tree(r=4, kind='broad'):
+    """One tree of the second round: 'broad' (three clumps), 'tall' (stacked clumps), 'pine' (tiers)."""
+    if kind == 'broad':
+        w, h = 2*r + 6, 2*r + 7
+        c = w/2
+        clumps = [(c - r*.55, r + 2.2, r*.75), (c + r*.6, r + 2.4, r*.72), (c, r*.9 + 1, r*.8), (c, r + 3, r*.7)]
+        g = canopy(clumps, w, h, trunks=[(int(c) - 1, int(r*1.8) + 2, h - 1)])
+    elif kind == 'tall':
+        w, h = 2*r + 4, 3*r + 6
+        c = w/2
+        clumps = [(c, r*.9, r*.65), (c - r*.3, r*1.7, r*.75), (c + r*.3, r*2.3, r*.75), (c, r*2.6, r*.7)]
+        g = canopy(clumps, w, h, trunks=[(int(c) - 1, int(r*3), h - 1)])
+    else:
+        w, h = 2*r + 4, 3*r + 5
+        c = w/2
+        clumps = [(c, r*.7, r*.45), (c, r*1.5, r*.65), (c, r*2.3, r*.85)]
+        g = canopy(clumps, w, h, ramp='NNOPQ', trunks=[(int(c) - 1, int(r*2.9), h - 1)])
+    foot = max(y for y, row in enumerate(g) for ch in row if ch != '.') + 1
+    return Hd.to_img(g), (int(w/2), foot)
+
+
+def forest_mass(bumps=7):
+    """One merged canopy over the cell: a bumpy-topped block of leaves with trunks at its foot."""
+    w, h = CELL
+    cx, cy = PIVOT[0] + 1, PIVOT[1] + 1
+    clumps = []
+    for i in range(bumps):  # back row of bumps along the diamond's upper edges, front row lower
+        t = i/(bumps - 1)
+        clumps.append((cx - 13 + 26*t, cy - 9 + abs(t - .5)*6, 5.2))
+    for i in range(4):
+        t = i/3
+        clumps.append((cx - 10 + 20*t, cy - 3 + abs(t - .5)*4, 5.6))
+    trunks = [(int(cx - 9), int(cy) - 2, int(cy) + 3), (int(cx + 2), int(cy), int(cy) + 5), (int(cx + 10), int(cy) - 3, int(cy) + 2)]
+    return Hd.to_img(canopy(clumps, w, h, trunks=trunks))
+
+
+def forest2(kind):
+    """Second-round forest cells."""
+    if kind == 'mass':
+        return forest_mass()
+    im = Image.new('RGBA', CELL)
+    cx, cy = PIVOT[0] + 1, PIVOT[1] + 1
+    spots = {
+        'broad3': [((-7, -2), 'broad', 5), ((7, -2), 'broad', 4), ((0, 3), 'broad', 5)],
+        'mixed5': [((-8, -3), 'pine', 3), ((5, -4), 'broad', 4), ((-2, 0), 'tall', 3), ((9, 2), 'pine', 3),
+                   ((-6, 4), 'broad', 4)],
+        'grove': [((-9, -2), 'tall', 3), ((-2, -4), 'broad', 4), ((7, -3), 'tall', 3), ((-5, 3), 'broad', 4),
+                  ((4, 2), 'broad', 4), ((10, 4), 'tall', 2)],
+    }[kind]
+    for (dx, dy), tree, r in sorted(spots, key=lambda s: s[0][1]):
+        t, (tx, ty) = olive_tree(r, tree)
+        im.alpha_composite(t, (cx + dx - tx, cy + dy - ty))
+    return im
+
+
+FOREST2 = {'broad3': '올리브 활엽수 3그루 (큰 수관)', 'mixed5': '올리브 활엽·키 큰 나무·침엽 5그루',
+           'grove': '숲 덩어리 (6그루 촘촘히)', 'mass': '한 덩어리 수관 (이어지는 숲)'}
+
+
+def forest2_candidates():
+    """Like forest_candidates: a 3 x 3 forest block, an L of forest, a village and an infantry unit."""
+    kinds = list(FOREST2)
+    sc, bw, bh = 4, 170, 110
+    sheet = Image.new('RGBA', (2*bw*sc, 2*(bh*sc + 40)), (236, 232, 220, 255))
+    d = ImageDraw.Draw(sheet)
+    font = ImageFont.truetype(FONT, 22)
+    unit = Image.open(ROOT / 'ver4/assets/graphics/units/infantry.png').crop((0, 3*46, 56, 4*46))
+    for i, kind in enumerate(kinds):
+        box = Image.new('RGBA', (bw, bh), (104, 150, 72, 255))
+        bd = ImageDraw.Draw(box)
+        ox, oy = 85, 22
+        items = []
+        for v in range(4):
+            for u in range(4):
+                x, y = ox + (u - v)*16, oy + (u + v + 1)*8
+                bd.polygon([(x, y - 8), (x + 16, y), (x, y + 8), (x - 16, y)], outline=(92, 136, 62))
+                if u < 3 and v < 3 or (u, v) == (3, 0):
+                    items.append((y, forest2(kind), x, y))
+                elif (u, v) == (3, 2):
+                    items.append((y, village(4), x, y))
+        for y, im, x, yy in sorted(items, key=lambda t: t[0]):
+            box.alpha_composite(im, (x - PIVOT[0] - 1, yy - PIVOT[1] - 1))
+        big = box.resize((bw*2, bh*2), Image.NEAREST)
+        x, y = ox + (3 - 3)*16, oy + (3 + 3 + 1)*8
+        big.alpha_composite(unit, (x*2 - 28, y*2 - 38))
+        X, Y = (i % 2)*bw*sc, (i//2)*(bh*sc + 40)
+        sheet.alpha_composite(big.resize((bw*sc, bh*sc), Image.NEAREST), (X, Y + 40))
+        d.text((X + 10, Y + 8), f'숲 {i + 1} · {FOREST2[kind]}', fill=(40, 36, 30), font=font)
+    out = ROOT / 'output/ver4-forest-candidates-2.png'
+    sheet.convert('RGB').save(out)
+    print(out)
+
+
+# ---------------------------------------------------------------- forest, third round (2026-10-05)
+# Rendered with the cel renderer like the units and props (leaf clumps as ellipsoids, cone tiers for
+# pines), small trees jittered in size and place, and a dark forest floor that ties a cell together.
+OLIVE, OLIVE_LIGHT, OLIVE_DARK, PINE, FLOOR = '#688630', '#98b242', '#405826', '#3e5a2c', '#33461f'
+R.add_ramps({OLIVE: 'NOPQ', OLIVE_LIGHT: 'OPQR', OLIVE_DARK: 'NOOP', PINE: 'NNOP', FLOOR: 'NNOO'})
+
+
+def leafy(x, y, r, color=OLIVE, seed=0):
+    """A broadleaf tree at (x, y): trunk and a crown of four to five leaf clumps."""
+    rng = np.random.default_rng(seed)
+    h = r*1.5
+    m.rod(V(x, y, 0), V(x, y, h), r*.13, WOOD)
+    for k in range(5):
+        a = k*2*math.pi/5 + rng.uniform(-.4, .4)
+        d = r*(.42 if k else 0)
+        m.ell(V(x + d*math.cos(a), y + d*math.sin(a), h + r*(.35 + rng.uniform(-.1, .2))),
+              [r*.62]*2 + [r*.55], color if k % 2 else OLIVE_LIGHT if color == OLIVE else color)
+    m.ell(V(x, y, h + r*.75), [r*.5, r*.5, r*.42], OLIVE_LIGHT if color == OLIVE else color)
+
+
+def conifer(x, y, r, seed=0):
+    """A pine at (x, y): a short trunk and three stacked cone tiers."""
+    m.rod(V(x, y, 0), V(x, y, r*.8), r*.12, WOOD)
+    n = 10
+    for i, (z, rr, hh) in enumerate([(r*.55, r*.75, r*1.1), (r*1.15, r*.58, r*.95), (r*1.7, r*.4, r*.85)]):
+        ring = [V(x + rr*math.cos(t), y + rr*math.sin(t), z) for t in np.linspace(0, 2*math.pi, n + 1)]
+        top = V(x, y, z + hh)
+        for p0, p1 in zip(ring, ring[1:]):
+            m.poly([p1, p0, top], PINE)
+
+
+PINE_LIGHT = '#4f7030'
+R.add_ramps({PINE_LIGHT: 'NOPQ'})
+
+
+def spruce(x, y, r, tiers=4, slim=1.0, color=PINE, seed=0):
+    """Pine of the fifth round: tiers of cones that narrow toward the top, each a little offset."""
+    rng = np.random.default_rng(seed)
+    m.rod(V(x, y, 0), V(x, y, r*.7), r*.11, WOOD)
+    n = 12
+    z = r*.45
+    for i in range(tiers):
+        t = i/max(1, tiers - 1)
+        rr = r*(.78 - .45*t)*slim
+        hh = r*(1.05 - .25*t)
+        ox, oy = rng.uniform(-.02, .02), rng.uniform(-.02, .02)
+        ring = [V(x + ox + rr*math.cos(a), y + oy + rr*math.sin(a), z) for a in np.linspace(0, 2*math.pi, n + 1)]
+        top = V(x + ox, y + oy, z + hh)
+        for p0, p1 in zip(ring, ring[1:]):
+            m.poly([p1, p0, top], color)
+        z += hh*.5
+
+
+def bush(x, y, r):
+    m.ell(V(x, y, r*.45), [r, r*.9, r*.6], OLIVE_DARK)
+
+
+def forest3(kind, seed=1, floor=True, fine=False):
+    """Third-round forest cells (map scale: one model unit is one cell). fine: rendered at the
+    characters' pixel scale (twice the map's), returned with its pivot for a 1x blit."""
+    m.meshes = []
+    rng = np.random.default_rng(seed)
+    if floor:
+        floor_r = .44
+        pts = [V(floor_r*math.cos(t)*1.0, floor_r*math.sin(t), .002) for t in np.linspace(0, 2*math.pi, 17)]
+        m.poly(pts[:-1], FLOOR)  # dark forest floor under the trees
+    j = lambda: rng.uniform(-.04, .04)  # noqa: E731
+    if kind == 'broad':
+        for (x, y), r in zip([(-.22, .2), (.2, .22), (0, -.02), (-.25, -.22), (.22, -.24)], [.15, .14, .17, .14, .15]):
+            leafy(x + j(), y + j(), r*rng.uniform(.9, 1.1), seed=int(rng.integers(99)))
+    elif kind == 'mixed':
+        for (x, y), r, t in zip([(-.22, .22), (.2, .2), (0, 0), (-.24, -.2), (.22, -.24), (.02, -.3)],
+                                [.13, .15, .16, .14, .13, .1], 'plbpbl'):
+            x, y = x + j(), y + j()
+            if t == 'p':
+                conifer(x, y, r*1.2)
+            elif t == 'b':
+                bush(x, y, r*.9)
+            else:
+                leafy(x, y, r, seed=int(rng.integers(99)))
+    elif kind == 'dense':
+        for (x, y) in [(-.28, .28), (0, .3), (.28, .26), (-.3, 0), (-.05, .05), (.25, .02), (-.22, -.27), (.08, -.24), (.32, -.28)]:
+            leafy(x + j(), y + j(), rng.uniform(.11, .14), seed=int(rng.integers(99)))
+    elif kind == 'pines':
+        for (x, y) in [(-.22, .22), (.18, .24), (-.02, .02), (-.26, -.22), (.22, -.2), (.0, -.32)]:
+            conifer(x + j(), y + j(), rng.uniform(.13, .17))
+    elif kind == 'big':  # fewer, larger crowns
+        for (x, y), r in zip([(-.2, .18), (.2, .16), (-.02, -.18)], [.2, .18, .21]):
+            leafy(x + j(), y + j(), r*rng.uniform(.92, 1.08), seed=int(rng.integers(99)))
+    elif kind == 'bigmix':
+        for (x, y), r, t in zip([(-.22, .2), (.2, .18), (0, -.04), (-.2, -.26), (.24, -.22)], [.15, .16, .18, .14, .13], 'lplpl'):
+            (conifer if t == 'p' else leafy)(x + j(), y + j(), r*(1.15 if t == 'p' else 1), seed=int(rng.integers(99)))
+    elif kind in ('pine_bold', 'pine_bold8'):  # the round-4 pine (three wide tiers), all pines
+        spots = [(-.24, .22), (.2, .24), (-.02, .02), (-.26, -.22), (.22, -.2), (.02, -.3)] if kind == 'pine_bold' else \
+            [(-.28, .28), (0, .3), (.28, .24), (-.28, -.02), (.02, .02), (.28, -.04), (-.18, -.3), (.14, -.28)]
+        for x, y in spots:
+            conifer(x + j(), y + j(), rng.uniform(.17, .21) if kind == 'pine_bold' else rng.uniform(.14, .17))
+    elif kind == 'pine_fill':  # the chosen pine spread over the whole cell so neighbouring cells join
+        g = [-.34, 0, .34]
+        for x in g:
+            for y in g:
+                conifer(x + rng.uniform(-.06, .06), y + rng.uniform(-.06, .06), rng.uniform(.14, .17))
+    elif kind in ('pine6', 'pine_tall', 'pine_light', 'pine_broad'):
+        spots = {'pine6': [(-.24, .22, .15), (.2, .24, .13), (-.02, .02, .17), (-.26, -.22, .13), (.22, -.2, .15), (.02, -.3, .11)],
+                 'pine_tall': [(-.22, .2, .16), (.2, .2, .13), (0, 0, .19), (-.24, -.24, .12), (.24, -.22, .15)],
+                 'pine_light': [(-.24, .22, .15), (.2, .24, .13), (-.02, .02, .17), (-.26, -.22, .13), (.22, -.2, .15), (.02, -.3, .11)],
+                 'pine_broad': [(-.22, .2, .15), (.22, .22, .15), (0, -.02, .17), (-.24, -.24, .15), (.22, -.22, .13)]}[kind]
+        for i, (x, y, r) in enumerate(spots):
+            x, y, r = x + j(), y + j(), r*rng.uniform(.9, 1.1)
+            if kind == 'pine_broad' and i in (1, 3):
+                leafy(x, y, r*.95, seed=int(rng.integers(99)))
+            elif kind == 'pine_tall':
+                spruce(x, y, r, tiers=5, slim=.8, seed=int(rng.integers(99)))
+            else:
+                spruce(x, y, r, color=PINE_LIGHT if kind == 'pine_light' else PINE, seed=int(rng.integers(99)))
+    if fine:
+        m.meshes = [(np.asarray(v)*2, c) for v, c in m.meshes]
+        im = draw(m.meshes, cell=(80, 96), pivot=(39, 71))
+        im.pivot = (40, 72)
+        return im
+    return draw(m.meshes)
+
+
+FOREST3 = {'broad': '활엽수 5그루 + 숲 바닥', 'mixed': '활엽·침엽·덤불 섞음', 'dense': '작은 활엽수 9그루 빽빽이',
+           'pines': '침엽수 6그루'}
+
+
+FOREST4 = [('dense', False, '3번 그대로 · 숲 바닥 없음 (맵 픽셀)'), ('dense', True, '3번 · 캐릭터 픽셀(1배, 2배 촘촘)'),
+           ('big', True, '큰 활엽수 3그루 · 캐릭터 픽셀'), ('bigmix', True, '활엽·침엽 5그루 · 캐릭터 픽셀')]
+
+
+FOREST6 = [('pine_bold8', True, '5차 2번 (가운데에 모임)'), ('pine_fill', True, '칸 전체에 고르게 9그루')]
+FOREST5 = [('pine_bold', True, '굵은 침엽수 6그루 (4차 4번의 나무)'), ('pine_bold8', True, '굵은 침엽수 8그루 촘촘히'),
+           ('pine6', True, '침엽수 6그루 · 4층'), ('pine_broad', True, '침엽수 3 + 활엽수 2')]
+
+
+def forest4_candidates(rounds=FOREST4, out_name='ver4-forest-candidates-4.png'):
+    """Fourth round: no forest floor; map-scale vs character-scale pixels, at game scale."""
+    sc, bw, bh = 2, 340, 220  # canvas pixels (the game's scale), then x2 for viewing
+    sheet = Image.new('RGBA', (2*bw*sc, 2*(bh*sc + 40)), (236, 232, 220, 255))
+    d = ImageDraw.Draw(sheet)
+    font = ImageFont.truetype(FONT, 22)
+    unit = Image.open(ROOT / 'ver4/assets/graphics/units/infantry.png').crop((0, 3*46, 56, 4*46))
+    vil = village(4).resize((CELL[0]*2, CELL[1]*2), Image.NEAREST)
+    for i, (kind, fine, title) in enumerate(rounds):
+        box = Image.new('RGBA', (bw, bh), (104, 150, 72, 255))
+        bd = ImageDraw.Draw(box)
+        ox, oy = 170, 44
+        items = []
+        for v in range(4):
+            for u in range(4):
+                x, y = ox + (u - v)*32, oy + (u + v + 1)*16
+                bd.polygon([(x, y - 16), (x + 32, y), (x, y + 16), (x - 32, y)], outline=(92, 136, 62))
+                if u < 3 and v < 3 or (u, v) == (3, 0):
+                    im = forest3(kind, seed=u*7 + v*3 + 1, floor=False, fine=fine)
+                    if not fine:
+                        im = im.resize((CELL[0]*2, CELL[1]*2), Image.NEAREST)
+                        im.pivot = ((PIVOT[0] + 1)*2, (PIVOT[1] + 1)*2)
+                    items.append((y, im, x - im.pivot[0], y - im.pivot[1]))
+                elif (u, v) == (3, 2):
+                    items.append((y, vil, x - (PIVOT[0] + 1)*2, y - (PIVOT[1] + 1)*2))
+        x, y = ox, oy + 7*16
+        items.append((y + .5, unit, x - 28, y - 38))
+        for _, im, x, y in sorted(items, key=lambda t: t[0]):
+            box.alpha_composite(im, (int(x), int(y)))
+        X, Y = (i % 2)*bw*sc, (i//2)*(bh*sc + 40)
+        sheet.alpha_composite(box.resize((bw*sc, bh*sc), Image.NEAREST), (X, Y + 40))
+        d.text((X + 10, Y + 8), f'숲 {i + 1} · {title}', fill=(40, 36, 30), font=font)
+    out = ROOT / 'output' / out_name
+    sheet.convert('RGB').save(out)
+    print(out)
+
+
+def forest3_candidates():
+    kinds = list(FOREST3)
+    sc, bw, bh = 4, 170, 110
+    sheet = Image.new('RGBA', (2*bw*sc, 2*(bh*sc + 40)), (236, 232, 220, 255))
+    d = ImageDraw.Draw(sheet)
+    font = ImageFont.truetype(FONT, 22)
+    unit = Image.open(ROOT / 'ver4/assets/graphics/units/infantry.png').crop((0, 3*46, 56, 4*46))
+    for i, kind in enumerate(kinds):
+        box = Image.new('RGBA', (bw, bh), (104, 150, 72, 255))
+        bd = ImageDraw.Draw(box)
+        ox, oy = 85, 22
+        items = []
+        for v in range(4):
+            for u in range(4):
+                x, y = ox + (u - v)*16, oy + (u + v + 1)*8
+                bd.polygon([(x, y - 8), (x + 16, y), (x, y + 8), (x - 16, y)], outline=(92, 136, 62))
+                if u < 3 and v < 3 or (u, v) == (3, 0):
+                    items.append((y, forest3(kind, seed=u*7 + v*3 + 1), x, y))
+                elif (u, v) == (3, 2):
+                    items.append((y, village(4), x, y))
+        for y, im, x, yy in sorted(items, key=lambda t: t[0]):
+            box.alpha_composite(im, (x - PIVOT[0] - 1, yy - PIVOT[1] - 1))
+        big = box.resize((bw*2, bh*2), Image.NEAREST)
+        x, y = ox + (3 - 3)*16, oy + (3 + 3 + 1)*8
+        big.alpha_composite(unit, (x*2 - 28, y*2 - 38))
+        X, Y = (i % 2)*bw*sc, (i//2)*(bh*sc + 40)
+        sheet.alpha_composite(big.resize((bw*sc, bh*sc), Image.NEAREST), (X, Y + 40))
+        d.text((X + 10, Y + 8), f'숲 {i + 1} · {FOREST3[kind]}', fill=(40, 36, 30), font=font)
+    out = ROOT / 'output/ver4-forest-candidates-3.png'
+    sheet.convert('RGB').save(out)
+    print(out)
+
+
+def mountain_candidates():
+    """3 x 2 mountain blocks per candidate with the chosen forest, a village and an infantry unit."""
+    kinds = list(MOUNTAIN_SPOTS)
+    titles = {'stone': '회색 바위산 (눈 덮인 봉우리)', 'earth': '갈색 흙산', 'green': '초록 언덕 + 바위', 'rocks': '바위 무더기'}
+    sc, bw, bh = 4, 170, 110
+    sheet = Image.new('RGBA', (len(kinds)*bw*sc, bh*sc + 40), (236, 232, 220, 255))
+    d = ImageDraw.Draw(sheet)
+    font = ImageFont.truetype(FONT, 22)
+    unit = Image.open(ROOT / 'ver4/assets/graphics/units/infantry.png').crop((0, 3*46, 56, 4*46))
+    for i, kind in enumerate(kinds):
+        box = Image.new('RGBA', (bw, bh), (104, 150, 72, 255))
+        bd = ImageDraw.Draw(box)
+        ox, oy = 85, 22
+        items = []
+        for v in range(4):
+            for u in range(4):
+                x, y = ox + (u - v)*16, oy + (u + v + 1)*8
+                fill = (164, 142, 96, 255) if u < 3 and v < 2 else None
+                bd.polygon([(x, y - 8), (x + 16, y), (x, y + 8), (x - 16, y)], outline=(92, 136, 62), fill=fill)
+                if u < 3 and v < 2:
+                    items.append((y, mountain(kind), x, y))
+                elif v == 2 and u < 2:
+                    items.append((y, forest('mixed'), x, y))
+                elif (u, v) == (3, 2):
+                    items.append((y, village(4), x, y))
+        for y, im, x, yy in sorted(items, key=lambda t: t[0]):
+            box.alpha_composite(im, (x - PIVOT[0] - 1, yy - PIVOT[1] - 1))
+        big = box.resize((bw*2, bh*2), Image.NEAREST)
+        x, y = ox + (3 - 3)*16, oy + (3 + 3 + 1)*8
+        big.alpha_composite(unit, (x*2 - 28, y*2 - 38))
+        sheet.alpha_composite(big.resize((bw*sc, bh*sc), Image.NEAREST), (i*bw*sc, 40))
+        d.text((i*bw*sc + 10, 8), f'산 {i + 1} · {titles[kind]}', fill=(40, 36, 30), font=font)
+    out = ROOT / 'output/ver4-mountain-candidates.png'
+    sheet.convert('RGB').save(out)
+    print(out)
+
+
+def forest_candidates():
+    """3 x 3 forest blocks per candidate beside a village cell and an infantry unit, at game scale (x2 map)."""
+    kinds = list(FOREST_SPOTS)
+    titles = {'round': '활엽수', 'pine': '침엽수', 'mixed': '활엽+침엽', 'dense': '빽빽한 숲'}
+    sc = 4
+    bw, bh = 170, 110
+    sheet = Image.new('RGBA', (len(kinds)*bw*sc, bh*sc + 40), (236, 232, 220, 255))
+    d = ImageDraw.Draw(sheet)
+    font = ImageFont.truetype(FONT, 22)
+    unit = Image.open(ROOT / 'ver4/assets/graphics/units/infantry.png').crop((0, 3*46, 56, 4*46))  # SE idle
+    for i, kind in enumerate(kinds):
+        box = Image.new('RGBA', (bw, bh), (104, 150, 72, 255))
+        bd = ImageDraw.Draw(box)
+        ox, oy = 85, 22
+        cells = [(u, v) for v in range(4) for u in range(4)]
+        items = []
+        for u, v in cells:
+            x, y = ox + (u - v)*16, oy + (u + v + 1)*8
+            bd.polygon([(x, y - 8), (x + 16, y), (x, y + 8), (x - 16, y)], outline=(92, 136, 62))
+            if u < 3 and v < 3:
+                items.append((y, forest(kind), x, y))
+            elif (u, v) == (3, 1):
+                items.append((y, village(4), x, y))
+        for y, im, x, yy in sorted(items, key=lambda t: t[0]):
+            box.alpha_composite(im, (x - PIVOT[0] - 1, yy - PIVOT[1] - 1))
+        big = box.resize((bw*2, bh*2), Image.NEAREST)  # the game draws map art twice as large
+        x, y = ox + (3 - 3)*16, oy + (3 + 3 + 1)*8
+        big.alpha_composite(unit, (x*2 - 28, y*2 - 38))
+        sheet.alpha_composite(big.resize((bw*sc, bh*sc), Image.NEAREST).crop((0, 0, bw*sc, bh*sc)), (i*bw*sc, 40))
+        d.text((i*bw*sc + 10, 8), f'숲 {i + 1} · {titles[kind]}', fill=(40, 36, 30), font=font)
+    out = ROOT / 'output/ver4-forest-candidates.png'
+    sheet.convert('RGB').save(out)
+    print(out)
 
 
 if __name__ == '__main__':

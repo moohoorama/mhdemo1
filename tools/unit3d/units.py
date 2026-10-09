@@ -17,6 +17,9 @@ BLUE, LIGHT_BLUE, STEEL, BROWN, SKIN = '#28486e', '#3974a0', '#636971', '#754323
 GOLD, HEMP, HEMP_DARK = '#d5a123', '#cdb88a', '#8a7650'
 GREEN, DARK_GREEN, BLACK, DARK_STEEL, RED = '#2f6b3a', '#1f4a2e', '#2a2d36', '#30343a', '#b91828'
 BLACK_STEEL = '#34383f'  # Zhang Fei's armor: dark, but with all four light steps
+SHAFT = '#966131'  # weapon wood; same ramp as leather, but kept apart so weapons can be found by color
+# Materials that only weapons use: build.py redraws them over the stamped head where they pass in front of it.
+WEAPON_COLORS = {SHAFT, '#bad9f1', '#e5f4ff', '#d6e7ec', '#976039', '#b99553', '#bacbd6'}
 RAMPS = {HEMP: 'UTSS', HEMP_DARK: 'UUTT', '#976039': 'fghh', '#ede1bd': '5566',
          '#b99553': 'ghkk', '#ede1b8': 'TSSS', '#bacbd6': '4556', '#704022': 'fggh', '#d7bc7c': 'kllm',
          GREEN: 'GHIJ', DARK_GREEN: 'GGHI', BLACK: '1234', BLACK_STEEL: '1234', '#2b2b33': '1234', '#3d3d48': '2334',
@@ -38,7 +41,7 @@ KITS = {
     'zhangfei': dict(cloth=BLUE, tabard=RED, guard=BLACK_STEEL, shield=False, weapon=None),  # team color, red trim
 }
 # (inner, tip) distance from the hand along the weapon, for trails and thrust bursts.
-WEAPONS = {'sword': (.45, 1.0), 'spear': (.9, 1.75), 'glaive': (1.15, 1.95), 'fan': (.25, .7), 'staff': (.9, 1.35)}
+WEAPONS = {'fist': (-.05, .45), 'sword': (.45, 1.0), 'spear': (.9, 1.75), 'glaive': (1.15, 1.95), 'fan': (.25, .7), 'staff': (.9, 1.35)}
 
 
 def result(faces, head, row, f, effects=()):
@@ -96,6 +99,10 @@ def soldier(p, kit, weapon=True):
     m.ell(T([0, -.035, 1.3]), [.36, .275, .27], guard)
     if k.get('belly'):  # stout figure (Dong Zhuo): a round belly over the sash
         m.ell(T([0, -.14, 1.0]), [.62, .5, .46], k.get('robe') or cloth)
+    if k.get('scarf'):  # scarf around the neck with a tail down the back
+        m.ell(T([0, -.04, 1.45]), [.42, .34, .13], k['scarf'])  # wide enough to show below the head
+        tail = k.get('scarf_tail', .36)
+        m.box(T([-.12, -.3, 1.42 - tail/2]), [.15, .06, tail], k['scarf'])  # end hanging over the chest
     if k.get('pack'):  # merchant's bundle on the back
         m.box(T([0, .4, 1.3]), [.72, .42, .86], k['pack'])  # tall enough to show over the shoulders
         for z in (1.08, 1.5):
@@ -105,9 +112,9 @@ def soldier(p, kit, weapon=True):
     m.rod(T([0, 0, 1.48]), T([0, 0, 1.68]), .14, SKIN)
     for i in range(2):
         sh, el, ha = T([(-.4 if i == 0 else .4), 0, 1.42]), T(p['elbows'][i]), T(p['hands'][i])
-        m.ell(sh, [.19, .22, .19], guard)
-        m.rod(sh, el, .14, cloth)
-        m.rod(el, ha, .12, cloth)
+        m.ell(sh, [.19, .22, .19], k.get('shoulder', guard))
+        m.rod(sh, el, .14, k.get('arms', cloth))  # arms=SKIN: bare arms (martial artist)
+        m.rod(el, ha, .12, k.get('arms', cloth))
         m.ell(ha, [.125]*3, SKIN)
     if weapon and k['weapon']:
         WEAPON_DRAW[k['weapon']](p, T)
@@ -124,12 +131,26 @@ def soldier(p, kit, weapon=True):
     return m.meshes, T(HEAD)
 
 
+VIEW = {'t': None}  # camera direction of the frame being built (build.frame sets it)
+
+
+def facing(d):
+    """Flat side for a weapon held still: the blade's broad face turned to the camera, so blades never
+    render edge-on (E and W views). Bulging blades lean forward (-y) where they can."""
+    t = VIEW['t']
+    s = np.cross(d, t) if t is not None else V([0, 0, 0])
+    if np.linalg.norm(s) < 1e-3:
+        return V([1., 0, 0])
+    s = s/np.linalg.norm(s)
+    return -s if s[1] > 1e-6 or (abs(s[1]) <= 1e-6 and s[0] < 0) else s
+
+
 def grip(p, T):
     """Weapon hand, direction and the flat side of the weapon head."""
     hand = T(p['hands'][0])
     d = A.unit(p['blade'])
     if p['row'] != ATTACK:
-        side = V([1, 0, 0])
+        side = facing(d)
     else:
         side = np.cross(V([1, 0, 0]), d) if abs(d[0]) < .9 else V([0, 0, 1])
     side -= d*np.dot(side, d)
@@ -138,7 +159,7 @@ def grip(p, T):
 
 def sword(p, T):
     hand, d, side = grip(p, T)
-    m.rod(hand - d*.12, hand + d*.1, .045, BROWN)
+    m.rod(hand - d*.12, hand + d*.1, .045, SHAFT)
     base = hand + d*.15
     m.rod(base - side*.18, base + side*.18, .045, GOLD)
     tip, mid = base + d*.85, base + d*.55
@@ -160,7 +181,7 @@ def glaive(p, T):
 
 def glaive_at(hand, d, side):
     """Green Dragon crescent blade: long shaft, broad curved head, gold collar, red tassel."""
-    m.rod(hand - d*.8, hand + d*1.2, .05, BROWN)
+    m.rod(hand - d*.8, hand + d*1.2, .05, SHAFT)
     b = hand + d*1.15
     ts = np.linspace(0, 1, 7)
     bulge = [math.sin(math.pi*t) for t in ts]
@@ -198,7 +219,7 @@ def staff(p, T):
         m.ell(head + (d*math.cos(a) + side*math.sin(a))*.15, [.05]*3, GOLD)
 
 
-WEAPON_DRAW = {'sword': sword, 'spear': spear, 'glaive': glaive, 'fan': fan, 'staff': staff}
+WEAPON_DRAW = {'fist': lambda p, T: None, 'sword': sword, 'spear': spear, 'glaive': glaive, 'fan': fan, 'staff': staff}
 
 
 def weapon_edge(p, weapon, reach=1.0):
@@ -232,7 +253,7 @@ def sword_effects(style, f, weapon):
         keys = A.sample(A.swing_path(spec), 4, lerp_key)
         if f == 3:
             keys = keys[-6:] + A.sample([spec['frames'][2], spec['frames'][3]], 3, lerp_key)[1:]
-        reach = A.TRAIL_REACH if weapon == 'sword' else 1.1
+        reach = {'sword': A.TRAIL_REACH, 'fist': 2.4}.get(weapon, 1.1)  # a fist's short reach is widened most
         pairs = [weapon_edge(sword_pose(k), weapon, reach) for k in keys]
         return [A.arc(pairs, alpha=1 if f == 2 else .45)]
     p = sword_pose(spec['frames'][f])
@@ -429,7 +450,10 @@ def cavalry(row, f, style=None, kit='rider', coat='bay', weapon='spear'):
     head = head*.8 + off
     hand = transform(p)(p['hands'][0])*.8 + off
     dv = A.unit(k['dir']) if k else V([0, -.35, .94])/np.linalg.norm([0, -.35, .94])
-    side = A.unit(np.cross(dv, [0, 0, 1]))*.1 if abs(dv[2]) < .9 else V([.1, 0, 0])
+    if k:
+        side = A.unit(np.cross(dv, [0, 0, 1]))*.1 if abs(dv[2]) < .9 else V([.1, 0, 0])
+    else:
+        side = facing(dv)*.1
     if weapon == 'glaive':
         glaive_at(hand, dv, side*10)
     elif weapon != 'none':  # 'none': an unarmed rider (merchant)

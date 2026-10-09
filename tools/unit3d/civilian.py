@@ -8,9 +8,12 @@ one (SELECTED) and the rest stay as backups. Kits register into units.KITS as
   python3 tools/unit3d/civilian_candidates.py  -> output/ver4-civilian-candidates.png
 """
 import copy
+import math
+
+import numpy as np
+
 import heads as Hd
 import looks as L
-import render as R
 import units as U
 
 GREEN, DARK_GREEN, BLACK, DARK, HEMP = U.GREEN, U.DARK_GREEN, U.BLACK, U.DARK_STEEL, U.HEMP
@@ -57,13 +60,11 @@ LOOKS = {
          H(L.bearded(Hd.HAIR, 'goatee'))),
     ],
 }
-# Scene candidates for the prologue and chapter 1 cast (2026-10-04). Non-Shu officers use fixed
-# colors, not the team keys: scenes draw every actor with one faction.
+# Scene candidates for the prologue and chapter 1 cast (2026-10-04). Team-key parts take each actor's
+# faction in the scene (Cao Cao: wei); officers with a strong signature color use fixed colors.
 BRICK, MAROON, LEATHER, PURPLE, SILVER, PALE = '#a14a35', '#7a2f22', '#704022', L.PURPLE, '#c9cdd0', '#dde1e3'
 B = L.bearded
 WHITE_PLUME = {'b': '4', 'c': '5', 'd': '6'}  # fixed white plume instead of the team key
-WEI_BLUE, WEI_SKY = '#193b65', '#245784'  # knight v6 blue ramp 7 8 9 a (+ o), no new colors
-R.add_ramps({WEI_BLUE: '789a', WEI_SKY: '89ao'})
 LOOKS.update({
     'zhangshiping': [
         ('검은 관모 · 염소수염 · 벽돌색 비단 도포', walker('zhangshiping', 1, cloth=BRICK, robe=BRICK, guard=GOLD, tabard=GOLD), H(B(L.CAP, 'goatee'))),
@@ -90,15 +91,12 @@ LOOKS.update({
          H(B(L.CAP, 'goatee'))),
         ('검은 투구 · 붉은 갑옷 · 붉은 술', walker('caocao', 8, cloth=RED, guard=DARK, tabard=RED), H(B(L.DARK_IRON, 'goatee'))),
     ],
-    'caocao3': [  # third round: blue battle robe and cap (user, 2026-10-04); fixed knight-v6 blue, not the team keys
-        ('검은 관모 · 푸른 전포 · 검은 띠', walker('caocao', 9, cloth=WEI_BLUE, robe=WEI_BLUE, guard=BLACK, tabard=BLACK),
+    'caocao3': [  # third round: Wei blue (team key; scenes draw him with the wei faction)
+        ('검은 관모 · 청색 도포 · 검은 띠', walker('caocao', 9, cloth=BLUE, robe=BLUE, guard=BLACK, tabard=BLACK), H(B(L.CAP, 'goatee'))),
+        ('검은 관모 · 청색 도포 · 금빛 어깨', walker('caocao', 10, cloth=BLUE, robe=BLUE, guard=GOLD, tabard=GOLD), H(B(L.CAP, 'goatee'))),
+        ('검은 관모 · 청색 도포 · 철 어깨 · 붉은 띠', walker('caocao', 11, cloth=BLUE, robe=BLUE, guard=STEEL, tabard=RED),
          H(B(L.CAP, 'goatee'))),
-        ('금빛 관모 · 푸른 전포 · 금빛 어깨', walker('caocao', 10, cloth=WEI_BLUE, robe=WEI_BLUE, guard=GOLD, tabard=GOLD),
-         H(B(L.GOLD_CAP, 'goatee'))),
-        ('검은 관모 · 푸른 전포 · 철 어깨 · 금빛 띠', walker('caocao', 11, cloth=WEI_BLUE, robe=WEI_BLUE, guard=STEEL, tabard=GOLD),
-         H(B(L.CAP, 'goatee'))),
-        ('검은 관모 · 흰 속옷 · 밝은 푸른 전포 · 금빛 띠', walker('caocao', 12, cloth=WHITE, robe=WEI_SKY, guard=WEI_SKY, tabard=GOLD),
-         H(B(L.CAP, 'goatee'))),
+        ('검은 투구 · 청색 옷 · 검은 갑옷', walker('caocao', 12, cloth=BLUE, guard=DARK, tabard=BLACK), H(B(L.DARK_IRON, 'goatee'), Hd.PLUME)),
     ],
     'yuanshao': [
         ('금빛 관모 · 흰 도포 · 금빛 어깨', walker('yuanshao', 1, cloth=WHITE, robe=WHITE, guard=GOLD, tabard=GOLD), H(B(L.GOLD_CAP, 'goatee'))),
@@ -135,11 +133,11 @@ LOOKS.update({
         ('검은 관모 · 긴 수염 · 회색 도포', walker('liru', 4, cloth='#5a5f66', robe='#5a5f66', guard=BLACK, tabard=PURPLE), H(B(L.CAP, 'long'))),
     ],
 })
-TITLES = {'guanyu': '관우', 'zhangfei': '장비', 'liubei': '유비', 'zhangshiping': '장세평', 'sushuang': '소쌍', 'caocao': '조조', 'caocao2': '조조', 'caocao3': '조조','yuanshao': '원소', 'yuanshu': '원술',
+TITLES = {'guanyu': '관우', 'zhangfei': '장비', 'liubei': '유비', 'zhangshiping': '장세평', 'sushuang': '소쌍', 'caocao': '조조', 'caocao2': '조조', 'caocao3': '조조', 'yuanshao': '원소', 'yuanshu': '원술',
           'gongsunzan': '공손찬', 'dongzhuo': '동탁', 'liru': '이유'}
 SELECTED = {'guanyu': 1, 'zhangfei': 1, 'liubei': 1,
             'zhangshiping': 3, 'sushuang': 3, 'yuanshao': 0, 'yuanshu': 1, 'gongsunzan': 3, 'dongzhuo': 0, 'liru': 3,
-            'caocao3': 3}  # chosen by the user (2026-10-04); others are backups
+            'caocao3': 2}  # chosen by the user (2026-10-04; Cao Cao: Wei blue, steel shoulders, red sash); others are backups
 # look key -> sprite key, for officers whose pick came from a later candidate round
 SPRITE_KEYS = {'caocao3': 'caocao'}
 
@@ -149,15 +147,37 @@ EXTRA = {
     'sunqian': ('손건', walker('sunqian', 1, robe=BLUE, guard=BLUE), H(L.CAP)),
 }
 
+
+def from_battle(kit):
+    """The chosen battle kit on foot, without weapon, shield or saddle bags."""
+    k = {key: v for key, v in U.KITS[kit].items() if key not in ('weapon', 'shield', 'packs')}
+    return dict(k, weapon=None, shield=False)
+
+
+# Chapter 1 officers (2026-10-05): the picked battle look, dismounted and unarmed.
+for key, title, kit, head in [
+        ('zhaoyun', '조운', 'zhaoyun_4', H(Hd.IRON, Hd.PLUME)),
+        ('wenchou', '문추', 'wenchou_2', H(L.bearded(L.DARK_IRON, 'bushy'), Hd.PLUME)),
+        ('tianyu', '전예', 'tianyu_5', H(Hd.IRON, L.WHITE_PLUME)),
+        ('fangong', '번궁', 'fangong_jab', H(L.GREEN_HOOD)),
+        ('gengwu', '경무', 'gengwu_1', H(L.CAP)),
+        ('guanchun', '관순', 'guanchun_5', H(L.bearded(L.CAP, 'goatee')))]:
+    U.KITS[f'{key}_civ1'] = from_battle(kit)
+    _walk = U.foot_unit(f'{key}_civ1')
+    _walk.kit = f'{key}_civ1'
+    EXTRA[key] = (title, _walk, head)
+
 # Scene sprites face only the four diagonals and are drawn for NW and SW; the game mirrors
 # them horizontally for NE and SE (user rule, 2026-10-04). Battle sprites keep all eight.
 DIRECTIONS = ['NW', 'SW']
 MIRRORED = {'NE': 'NW', 'SE': 'SW'}
 
 # Scene motions (rows). Poses use the soldier keys; hand 0 is the gesturing hand.
-ANIMATIONS = ['idle', 'walk', 'talk', 'salute', 'toast', 'surprise', 'nod']
+# exhausted: the battle sprites' winded pose, also used for kneeling and pleading (user, 2026-10-05)
+ANIMATIONS = ['idle', 'walk', 'talk', 'salute', 'toast', 'surprise', 'nod', 'exhausted']
 DURATIONS = {'idle': 180, 'walk': 120, 'talk': 160, 'salute': [160, 200, 420, 300], 'toast': [160, 200, 420, 300],
-             'surprise': [80, 120, 320, 220], 'nod': [140, 160, 220, 160]}
+             'surprise': [80, 120, 320, 220], 'nod': [140, 160, 220, 160], 'exhausted': 220}
+EXHAUSTED = 4  # battle row of the winded pose (units.result shows the tired face for it)
 REST = dict(hands=[[-.5, -.2, 1.0], [.5, -.2, 1.0]], elbows=[[-.52, 0, 1.18], [.52, 0, 1.18]])
 MOTIONS = {
     'talk': [dict(hand=[-.5, -.45, 1.25]), dict(hand=[-.45, -.6, 1.45], bob=.01), dict(hand=[-.55, -.5, 1.32]),
@@ -199,9 +219,13 @@ def scene_unit(walk_build, kit):
             p = U.pose(row, f)
             p.update(copy.deepcopy(REST)) if name == 'idle' else None
             p['bob'] = [0, .02, 0, -.01][f] if name == 'idle' else p['bob']
+        elif name == 'exhausted':
+            p = U.pose(EXHAUSTED, f)
         else:
             p, k = scene_pose(name, f)
         faces, head = U.soldier(p, kit, weapon=False)
+        if name == 'exhausted':
+            return U.result(faces, head, EXHAUSTED, f)
         if name == 'toast':  # a small cup in the raised hand
             T = U.transform(p)
             h = T(p['hands'][0])
@@ -220,4 +244,122 @@ def chosen():
         out.append((SPRITE_KEYS.get(key, key), TITLES[key], scene_unit(walk, walk.kit), head))
     for key, (title, walk, head) in EXTRA.items():
         out.append((key, title, scene_unit(walk, walk.kit), head))
+    for key, (title, build, head) in SCENE_EXTRAS.items():
+        out.append((key, title, build, head))
     return out
+
+
+# ---------------------------------------------------------------- extras (2026-10-05)
+# Unnamed people for scenes. Soldiers and messengers use the battle infantry and light cavalry
+# sprites; villagers and the caravan's cart puller are drawn here (user, 2026-10-05).
+GREY_HAIR = {d: Hd.recolor(r, {'f': '5', 'g': '6'}) for d, r in Hd.HAIR.items()}
+WHITE_BEARD = {d: Hd.beard(r, '56', 'long') for d, r in GREY_HAIR.items()}
+OCHRE, BROWN_CLOTH = '#a0763a', '#6b4a30'
+U.RAMPS.update({OCHRE: 'hiij', BROWN_CLOTH: 'fggh'})
+LOOKS.update({
+    'commoner': [
+        ('맨상투 · 삼베 옷 (마을 젊은이)', walker('commoner', 1, cloth=HEMP, guard=U.HEMP_DARK, tabard=LEATHER), H(Hd.HAIR)),
+        ('흰 두건 · 삼베 옷', walker('commoner', 2, cloth=HEMP, guard=U.HEMP_DARK, tabard=U.HEMP_DARK), H(L.WHITE_HOOD)),
+        ('흰머리 · 흰 수염 · 갈색 옷 (촌로)', walker('commoner', 3, cloth=BROWN_CLOTH, robe=BROWN_CLOTH, guard=U.HEMP_DARK, tabard=HEMP),
+         H(WHITE_BEARD)),
+        ('맨상투 · 황토색 옷 · 등짐', walker('commoner', 4, cloth=OCHRE, guard=LEATHER, tabard=LEATHER, pack=HEMP), H(Hd.HAIR)),
+    ],
+})
+TITLES.update({'commoner': '백성', 'cart': '짐수레 상인'})
+
+# Yellow turban soldier off the battlefield: the battle look without sword and shield.
+U.KITS['turban_civ1'] = from_battle('bandit')
+_walk = U.foot_unit('turban_civ1')
+_walk.kit = 'turban_civ1'
+EXTRA['turban'] = ('황건병', _walk, H(Hd.TOPKNOT, Hd.BAND))
+
+
+def disc(c, r, axis, color, n=12):
+    """Flat wheel facing along a model axis ('x' or 'y')."""
+    pts = []
+    for a in np.linspace(0, 2*math.pi, n, endpoint=False):
+        u, v = r*math.cos(a), r*math.sin(a)
+        pts.append(c + (U.V([0, u, v]) if axis == 'x' else U.V([u, 0, v])))
+    U.m.poly(pts, color)
+
+
+def cart(kind):
+    """The cart, in world space (it does not lean or bob with the puller). The puller faces -y
+    and holds the shafts at his sides; the cart follows behind (+y). 'barrow' is pushed in front."""
+    W = U.V
+    if kind == 'barrow':
+        for s in (-1, 1):
+            U.m.rod(W([s*.28, -.25, .95]), W([s*.26, -1.15, .55]), .045, U.SHAFT)
+        U.m.box(W([0, -1.05, .62]), [.66, .8, .2], U.SHAFT)
+        U.m.ell(W([0, -1.05, .86]), [.32, .34, .24], HEMP)
+        disc(W([0, -1.6, .34]), .34, 'x', '#6e4126')
+        U.m.ell(W([0, -1.6, .34]), [.06, .08, .08], U.STEEL)
+        return
+    y0, L, B, Z = .5, 1.5, 1.3, .8  # front of the bed, bed length and width, bed height
+    yc = y0 + L/2
+    for s in (-1, 1):
+        U.m.rod(W([s*.42, -.1, .95]), W([s*.5, y0 + .1, Z]), .045, U.SHAFT)
+        disc(W([s*(B/2 + .08), yc, .46]), .46, 'x', '#6e4126')
+        U.m.ell(W([s*(B/2 + .12), yc, .46]), [.07, .09, .09], U.STEEL)
+    U.m.rod(W([-B/2 - .08, yc, .46]), W([B/2 + .08, yc, .46]), .035, U.SHAFT)
+    U.m.box(W([0, yc, Z]), [B, L, .1], '#976039')
+    for s in (-1, 1):
+        U.m.box(W([s*(B/2 - .03), yc, Z + .13]), [.06, L, .2], '#976039')
+    U.m.box(W([0, y0 + L - .03, Z + .13]), [B, .06, .2], '#976039')
+    if kind == 'sacks':
+        for x, y, z in ((-.3, y0 + .45, 1.05), (.3, y0 + .5, 1.05), (-.15, y0 + 1.1, 1.05), (.3, y0 + 1.1, 1.05),
+                        (0, y0 + .75, 1.38)):
+            U.m.ell(W([x, y, z]), [.3, .27, .25], HEMP)
+            U.m.rod(W([x, y, z + .18]), W([x, y, z + .3]), .06, U.HEMP_DARK)
+    elif kind == 'crates':
+        U.m.box(W([0, yc, Z + .35]), [B - .15, L - .15, .6], '#6e4126')
+        U.m.box(W([0, yc, Z + .68]), [B - .1, L - .1, .07], HEMP)
+        for y in (y0 + .4, y0 + L - .4):
+            U.m.box(W([0, y, Z + .38]), [B - .08, .05, .68], U.HEMP_DARK)
+    elif kind == 'covered':
+        n, r = 8, B/2
+        for i in range(n):
+            a0, a1 = math.pi*i/n, math.pi*(i + 1)/n
+            p = lambda a, y: W([r*math.cos(a), y, Z + .05 + r*math.sin(a)])  # noqa: E731
+            U.m.poly([p(a0, y0 + .05), p(a1, y0 + .05), p(a1, y0 + L - .05), p(a0, y0 + L - .05)], HEMP)
+
+
+def cart_unit(kit, kind):
+    """Scene sheet of a cart puller: hands stay on the shafts while idle and walking."""
+    grips = [[-.42, -.12, .95], [.42, -.12, .95]] if kind != 'barrow' else [[-.28, -.3, .95], [.28, -.3, .95]]
+
+    def build(row, f, style=None):
+        name = ANIMATIONS[row]
+        if name in ('idle', 'walk'):
+            p = U.pose(row, f)
+            p.update(copy.deepcopy(REST))
+            p['hands'] = copy.deepcopy(grips)
+            p['elbows'] = [[-.5, -.02, 1.18], [.5, -.02, 1.18]]
+            p['bob'] = [0, .02, 0, -.01][f] if name == 'idle' else U.pose(row, f)['bob']
+            p['lean'] = .1 if kind != 'barrow' else .14  # leaning into the load
+        elif name == 'exhausted':
+            p = U.pose(EXHAUSTED, f)
+        else:
+            p, _ = scene_pose(name, f)
+        faces, head = U.soldier(p, kit, weapon=False)
+        cart(kind)
+        return U.result(U.m.meshes, head, EXHAUSTED if name == 'exhausted' else 0, f)
+    return build
+
+
+U.KITS['cart_civ'] = L.kit(cloth=HEMP, guard=LEATHER, tabard=LEATHER)
+_cart_walk = U.foot_unit('cart_civ')
+_cart_walk.kit = 'cart_civ'
+LOOKS['cart'] = [(title, cart_unit('cart_civ', kind), H(L.WHITE_HOOD))
+                 for title, kind in (('손수레 · 짐 자루', 'sacks'), ('손수레 · 나무 상자', 'crates'),
+                                     ('손수레 · 천 덮개', 'covered'), ('외바퀴 수레 (밀기)', 'barrow'))]
+for _title, _build, _head in LOOKS['cart']:
+    _build.kit = 'cart_civ'
+
+# Chosen extras (user, 2026-10-05): the village youth and the elder, the cart puller with sacks.
+# Scene builders, packed like the officers (civ_<key>).
+SCENE_EXTRAS = {
+    'villager': ('마을 젊은이', scene_unit(LOOKS['commoner'][0][1], LOOKS['commoner'][0][1].kit), LOOKS['commoner'][0][2]),
+    'elder': ('촌로', scene_unit(LOOKS['commoner'][2][1], LOOKS['commoner'][2][1].kit), LOOKS['commoner'][2][2]),
+    'cart': ('짐수레 상인', LOOKS['cart'][0][1], LOOKS['cart'][0][2]),
+}

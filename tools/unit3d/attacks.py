@@ -45,6 +45,29 @@ SWORD = {
         dict(hand=[-.8, .5, 1.4], elbow=[-.78, .25, 1.35], blade=[.15, -1, .12], lean=.28, bob=-.12, crouch=1),
         dict(hand=[-.25, -1.15, 1.2], elbow=[-.38, -.6, 1.25], blade=[0, -1, 0], lean=-.46, bob=-.08, lunge=1.2),
         dict(hand=[-.3, -.8, 1.15], elbow=[-.42, -.45, 1.2], blade=[0, -1, -.1], lean=-.26, bob=-.06, lunge=1)]),
+    # Bare hands (martial artist, weapon 'fist'): blade = forearm direction, the effect sits on the fist.
+    'jab': dict(name='정권 지르기', effect='pierce', frames=[
+        dict(hand=[-.4, .15, 1.2], elbow=[-.6, .1, 1.15], blade=[0, -1, 0], lean=.05),
+        dict(hand=[-.45, .38, 1.15], elbow=[-.62, .25, 1.2], blade=[0, -1, .05], lean=.22, bob=-.1, crouch=1),
+        dict(hand=[-.25, -1.05, 1.4], elbow=[-.35, -.55, 1.4], blade=[0, -1, 0], lean=-.4, bob=-.06, lunge=1.1),
+        dict(hand=[-.3, -.8, 1.35], elbow=[-.4, -.45, 1.35], blade=[0, -1, 0], lean=-.22, bob=-.04, lunge=.9)]),
+    'hook': dict(name='돌려치기', effect='arc', frames=[
+        dict(hand=[-.7, .1, 1.35], elbow=[-.62, 0, 1.3], blade=[-.5, -.8, 0], lean=.05),
+        dict(hand=[-.95, .3, 1.4], elbow=[-.8, .15, 1.4], blade=[-.6, -.6, 0], lean=.2, bob=-.08, crouch=.8),
+        dict(hand=[.05, -.85, 1.4], elbow=[-.3, -.55, 1.4], blade=[.9, -.4, 0], lean=-.35, bob=-.05, lunge=.8),
+        dict(hand=[.3, -.6, 1.35], elbow=[-.05, -.45, 1.35], blade=[1, 0, 0], lean=-.2, bob=-.03, lunge=.8)],
+        via=[dict(hand=[-.85, -.4, 1.4], blade=[-.3, -.95, 0]), dict(hand=[-.4, -.9, 1.4], blade=[.2, -1, 0])]),
+    'upper': dict(name='올려치기', effect='arc', frames=[
+        dict(hand=[-.5, .05, 1.05], elbow=[-.62, .05, 1.15], blade=[0, -.4, -.9], lean=.08, bob=-.04, crouch=.5),
+        dict(hand=[-.6, .2, .85], elbow=[-.65, .1, 1.05], blade=[0, -.4, -.9], lean=.22, bob=-.15, crouch=1),
+        dict(hand=[-.3, -.6, 2.0], elbow=[-.45, -.4, 1.6], blade=[0, -.3, .95], lean=-.22, bob=.06, lunge=.6),
+        dict(hand=[-.3, -.4, 2.05], elbow=[-.45, -.25, 1.65], blade=[0, 0, 1], lean=-.1, bob=.03, lunge=.5)],
+        via=[dict(hand=[-.5, -.5, 1.1], blade=[0, -1, -.2]), dict(hand=[-.4, -.7, 1.55], blade=[0, -.7, .7])]),
+    'rush': dict(name='돌진 지르기', effect='pierce', frames=[
+        dict(hand=[-.4, .2, 1.2], elbow=[-.6, .15, 1.15], blade=[0, -1, 0], lean=.1, bob=-.04, crouch=.5),
+        dict(hand=[-.5, .45, 1.1], elbow=[-.65, .3, 1.15], blade=[0, -1, .05], lean=.3, bob=-.14, crouch=1.2),
+        dict(hand=[-.2, -1.35, 1.35], elbow=[-.3, -.75, 1.38], blade=[0, -1, 0], lean=-.58, bob=-.1, lunge=1.5),
+        dict(hand=[-.25, -1.0, 1.3], elbow=[-.35, -.6, 1.33], blade=[0, -1, 0], lean=-.35, bob=-.07, lunge=1.3)]),
 }
 
 # Spear (cavalry). hand/elbow in rider space, dir = spear direction,

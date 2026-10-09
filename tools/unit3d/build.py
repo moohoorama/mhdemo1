@@ -15,6 +15,7 @@ factions.json and a review sheet.
 import argparse
 import json
 from pathlib import Path
+import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 import blocks as B
@@ -69,15 +70,19 @@ R.add_ramps(U.RAMPS)
 
 
 def frame(build, head_set, spec, d, row, col, lift=1, style=None):
+    U.VIEW['t'] = R.view(R.AZIMUTH[d])[0]
     fr = build(row, col, style=style) if style else build(row, col)
     pivot = (spec['pivot'][0], spec['pivot'][1] - lift)
-    gr = R.render(fr['faces'], d, spec['scale'], cell=spec['cell'], pivot=pivot)
+    depth = []
+    gr = R.render(fr['faces'], d, spec['scale'], cell=spec['cell'], pivot=pivot, depths=depth)
 
     def to_px(p):
         x, y = R.project(p, d, spec['scale'], pivot)
         return x - .5, y - .5
 
+    body = [r[:] for r in gr]
     Hd.stamp(gr, head_set, d, fr['face'], *to_px(fr['head']))
+    weapon_over_head(gr, body, depth[0], fr, d, spec, pivot)
     sprite = Hd.to_img(gr)
     if not fr['effects']:
         return sprite
@@ -85,6 +90,27 @@ def frame(build, head_set, spec, d, row, col, lift=1, style=None):
     under.alpha_composite(sprite)
     under.alpha_composite(over)
     return under
+
+
+HEAD_FRONT = .15  # model units in front of the head centre; a weapon past this is drawn over the 2D head
+
+
+def weapon_over_head(gr, body, depth, fr, d, spec, pivot):
+    """The 2D head is stamped over the whole render; put back the weapon pixels that lie in front of it
+    (a shaft across the face, a blade raised beside the head in E/S views)."""
+    weapon = [(v, c) for v, c in fr['faces'] if c in U.WEAPON_COLORS]
+    if not weapon:
+        return
+    wd = []
+    mask = R.render(weapon, d, spec['scale'], cell=spec['cell'], pivot=pivot, depths=wd)
+    wd = wd[0]
+    t, _, _ = R.view(R.AZIMUTH[d])
+    front = float(np.dot(fr['head'], t)) + HEAD_FRONT
+    for y, row in enumerate(gr):
+        for x, c in enumerate(row):
+            if c != body[y][x] and mask[y][x] not in '.0' and body[y][x] != '.' \
+                    and abs(depth[y, x] - wd[y, x]) < .1 and wd[y, x] > front:
+                row[x] = body[y][x]
 
 
 def build_unit(key, build, head_set, full):

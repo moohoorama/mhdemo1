@@ -12,14 +12,17 @@ TEAM_KEYS = ['#1b3358', '#264d80', '#3567a6', '#5a8fd0']  # shadow, base, light,
 
 # hue in degrees (OKLCH), chroma multiplier, lightness offset
 FACTIONS = [
-    dict(id='wei', name='위', hue=None, chroma=1.0, lightness=0.0),        # the key ramp itself (blue)
-    dict(id='shu', name='촉', hue=92, chroma=1.7, lightness=.26),
+    # 2026-10-04 user: 위 blue (brighter than the key ramp), 오 red, 촉 green (yellowish, apart from Guan Yu's robe)
+    dict(id='wei', name='위', hue=None, chroma=1.15, lightness=.1),
+    dict(id='shu', name='촉', hue=135, chroma=1.4, lightness=.16),
     dict(id='wu', name='오', hue=27, chroma=1.45, lightness=.06),
     dict(id='turban', name='황건적', hue=74, chroma=1.5, lightness=.19),
     dict(id='dong', name='동탁·여포', hue=268, chroma=.75, lightness=-.08),
     dict(id='gongsun', name='공손찬', hue=250, chroma=.1, lightness=.4),
     dict(id='yuan', name='원소·원술', hue=104, chroma=1.6, lightness=.3),
     dict(id='barbarian', name='이민족', hue=312, chroma=1.05, lightness=.04),
+    # 2026-10-05 user: 상단(장세평·소쌍) purple, deeper than 이민족 and apart from 동탁's navy
+    dict(id='merchant', name='상단', hue=298, chroma=1.4, lightness=0),
 ]
 
 

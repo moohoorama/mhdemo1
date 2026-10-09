@@ -29,9 +29,10 @@ ver2 병종(경보병·황건 적병·창병·궁병·경기병·관우·장비)
 | `look_candidates.py` | 외형 후보 비교 이미지 (좌하단 대기·공격 순간) |
 | `blocks.py` | 막기 동작: 무기 계열별 4안(막아서기·쳐내기·비켜 피하기·물러서기)과 선택 `SELECTED`; `build.py`가 6번째 행으로 그린다 |
 | `block_candidates.py` | 막기 후보 비교 이미지 |
-| `civilian.py` | 장면용 평복 외형 후보·선택과 장면 동작(말하기·포권·건배·놀람·끄덕임) |
+| `civilian.py` | 장면용 평복 외형 후보·선택과 장면 동작(말하기·포권·건배·놀람·끄덕임·탈진), 엑스트라(백성·촌로·짐수레 상인·황건병) |
 | `civilian_candidates.py`, `civilian_build.py` | 평복 후보 비교, 전체 생성(`ver4-civilians/`) |
 | `structures.py` | ver4 맵 구조물: 마을 초가집 묶음, 성벽(성가퀴·벽면 16변형), 성내 돌바닥 → `ver4-structures/` |
+| `props.py` | ver4 장면 소품·실내 타일(캐릭터 1배 크기): 바닥·벽·기둥·상석·탁자·다리·성문·군막·깃발·주막·복숭아나무 → `ver4-props/` |
 | `candidates_2d.py` | 초기 2D 후보 생성기 (보관) |
 
 기준은 [`UNIT_ART_GUIDE.md`](../spritetool/assets/UNIT_ART_GUIDE.md), 작업 절차는 `.claude/skills/unit-sprite`.

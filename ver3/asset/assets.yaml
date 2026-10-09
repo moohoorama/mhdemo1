@@ -105,7 +105,7 @@ units:
   strategist:
     name: 사마
     image: units/strategist.png
-    cell: [47, 41]
+    cell: [47, 43]
     pivot: [23, 33]
     rows: [N, NE, E, SE, S, SW, W, NW]
     animations:
@@ -172,6 +172,58 @@ units:
     image: units/lubu.png
     cell: [68, 55]
     pivot: [34, 52]
+    rows: [N, NE, E, SE, S, SW, W, NW]
+    animations:
+      idle: {first_column: 0, frames: 4, ms: [180, 180, 180, 180], loop: true}
+      walk: {first_column: 4, frames: 4, ms: [120, 120, 120, 120], loop: true}
+      attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
+      hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
+      exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
+  zhangshiping:
+    name: 장세평
+    image: units/zhangshiping.png
+    cell: [33, 36]
+    pivot: [16, 30]
+    rows: [N, NE, E, SE, S, SW, W, NW]
+    animations:
+      idle: {first_column: 0, frames: 4, ms: [180, 180, 180, 180], loop: true}
+      walk: {first_column: 4, frames: 4, ms: [120, 120, 120, 120], loop: true}
+      attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
+      hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
+      exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
+  chengyuanzhi:
+    name: 정원지
+    image: units/chengyuanzhi.png
+    cell: [62, 52]
+    pivot: [31, 40]
+    rows: [N, NE, E, SE, S, SW, W, NW]
+    animations:
+      idle: {first_column: 0, frames: 4, ms: [180, 180, 180, 180], loop: true}
+      walk: {first_column: 4, frames: 4, ms: [120, 120, 120, 120], loop: true}
+      attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
+      hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
+      exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
+  dengmao:
+    name: 등무
+    image: units/dengmao.png
+    cell: [56, 46]
+    pivot: [28, 38]
+    rows: [N, NE, E, SE, S, SW, W, NW]
+    animations:
+      idle: {first_column: 0, frames: 4, ms: [180, 180, 180, 180], loop: true}
+      walk: {first_column: 4, frames: 4, ms: [120, 120, 120, 120], loop: true}
+      attack: {first_column: 8, frames: 4, ms: [180, 280, 240, 200], loop: false}
+      hit: {first_column: 12, frames: 4, ms: [120, 120, 120, 120], loop: false}
+      exhausted: {first_column: 16, frames: 4, ms: [220, 220, 220, 220], loop: true}
+      block: {first_column: 20, frames: 4, ms: [100, 140, 260, 200], loop: false}
+  sushuang:
+    name: 소쌍
+    image: units/sushuang.png
+    cell: [33, 36]
+    pivot: [16, 30]
     rows: [N, NE, E, SE, S, SW, W, NW]
     animations:
       idle: {first_column: 0, frames: 4, ms: [180, 180, 180, 180], loop: true}
@@ -271,8 +323,8 @@ tileset:
 factions:
   team_keys: ['#1b3358', '#264d80', '#3567a6', '#5a8fd0']
   factions:
-  - {id: wei, name: 위, hue: null, chroma: 1.0, lightness: 0.0, ramp: ['#1b3358', '#264d80', '#3567a6', '#5a8fd0']}
-  - {id: shu, name: 촉, hue: 92, chroma: 1.7, lightness: 0.26, ramp: ['#937812', '#b79401', '#d7b01e', '#fddc76']}
+  - {id: wei, name: 위, hue: null, chroma: 1.15, lightness: 0.1, ramp: ['#304e7b', '#3b69a7', '#4985d0', '#6faefc']}
+  - {id: shu, name: 촉, hue: 135, chroma: 1.4, lightness: 0.16, ramp: ['#446b2c', '#558b31', '#67aa3a', '#90d467']}
   - {id: wu, name: 오, hue: 27, chroma: 1.45, lightness: 0.06, ramp: ['#712722', '#9d352f', '#c6453e', '#f47065']}
   - {id: turban, name: 황건적, hue: 74, chroma: 1.5, lightness: 0.19, ramp: ['#895d14', '#ae7616', '#d38e11', '#ffb84f']}
   - {id: dong, name: 동탁·여포, hue: 268, chroma: 0.75, lightness: -0.08, ramp: ['#151e3a', '#27355d', '#3c4d7f', '#5f73a7']}

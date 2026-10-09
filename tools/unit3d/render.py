@@ -22,7 +22,9 @@ COLOR = {KEYS[i]: tuple(int(h[j:j+2], 16) for j in (1, 3, 5)) for i, h in enumer
 # W X Y Z are the team key ramp (factions.TEAM_KEYS), recolored per faction at runtime.
 EXTRA = {'S': '#d9c698', 'T': '#a89266', 'U': '#6c583c', 'G': '#183a24', 'H': '#2a5e35', 'I': '#3f8a4a',
          'J': '#79b866', 'K': '#8e3326', 'L': '#c0503a', 'M': '#df7b5c',
-         'W': '#1b3358', 'X': '#264d80', 'Y': '#3567a6', 'Z': '#5a8fd0'}
+         'W': '#1b3358', 'X': '#264d80', 'Y': '#3567a6', 'Z': '#5a8fd0',
+         'A': '#963e5c', 'B': '#d77790', 'C': '#f2a7b8', 'D': '#ffd6de',  # A-D: peach blossom pink (props)
+         'N': '#22301a', 'O': '#405826', 'P': '#688630', 'Q': '#98b242', 'R': '#ccd668'}  # N-R: olive foliage (map forest)
 COLOR.update({k: tuple(int(h[j:j+2], 16) for j in (1, 3, 5)) for k, h in EXTRA.items()})
 
 DIRECTIONS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
@@ -131,8 +133,9 @@ def light_basis(light):
     return light, r, np.cross(light, r)
 
 
-def render(faces, direction, scale, cell=(48, 48), pivot=(24, 38), ss=4):
-    """Return a cell-sized grid of palette keys ('.' transparent)."""
+def render(faces, direction, scale, cell=(48, 48), pivot=(24, 38), ss=4, depths=None):
+    """Return a cell-sized grid of palette keys ('.' transparent).
+    depths: if a list, the per-pixel depth toward the viewer (model units, NaN where empty) is appended."""
     faces = prepare(faces)
     t, r, u = view(AZIMUTH[direction])
     light = LIGHT[0]*r + LIGHT[1]*u + LIGHT[2]*t
@@ -172,6 +175,8 @@ def render(faces, direction, scale, cell=(48, 48), pivot=(24, 38), ss=4):
     depth = np.full((cell[1], cell[0]), np.nan)
     blocks = hit.reshape(cell[1], ss, cell[0], ss).any(axis=(1, 3))
     rows, cols = np.nonzero(blocks)
+    if depths is not None:
+        depths.append(depth)
     if not len(rows):
         return out
     box = (max(0, cols.min() - 1), max(0, rows.min() - 1), min(cell[0], cols.max() + 2), min(cell[1], rows.max() + 2))

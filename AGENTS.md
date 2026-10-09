@@ -13,3 +13,7 @@ candidate previews and final artwork.
 
 For unit sprites (soldiers, cavalry, archers, heroes), also read
 `tools/spritetool/assets/UNIT_ART_GUIDE.md`; the pipeline lives in `tools/unit3d/`.
+
+Illustrations (officer portraits, event CGs, backgrounds, UI art) are not
+sprites: their sources live under `tools/illustrations/`. Read
+`tools/illustrations/README.md` first and keep the chosen ink-wash style.

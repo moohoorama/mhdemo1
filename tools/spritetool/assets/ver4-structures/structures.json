@@ -20,7 +20,8 @@
  "layer": {
   "village": "object",
   "floor": "ground",
-  "wall": "object"
+  "wall": "object",
+  "mountain": "object"
  },
  "sprites": {
   "village": 0,
@@ -40,6 +41,7 @@
   "wall_12": 14,
   "wall_13": 15,
   "wall_14": 16,
-  "wall_15": 17
+  "wall_15": 17,
+  "mountain": 18
  }
 }
