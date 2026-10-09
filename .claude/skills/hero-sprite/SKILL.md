@@ -1,6 +1,6 @@
 ---
 name: hero-sprite
-description: Draws officer (장수) dot sprites in the ver4 dot editor format from the 경보병/경기병 base — combat sheets (8 directions × idle/walk/attack/hit/exhausted/block) and non-combat sheets (NW·SW idle, two steps, one action) — with feature extraction, agent drawing, independent review and the viewer.html check. Use for requests like "유비 경보병 걷는장군", "관우 경기병 장군", "장비 비전투", "장수 도트 다시 그려줘".
+description: Draws officer (장수) and unit dot sprites in the ver4 dot editor format from an existing base sheet (경보병, 경기병, …) — combat sheets (8 directions × idle/walk/attack/hit/exhausted/block) and non-combat sheets (NW·SW idle, two steps, one action) — with feature extraction, agent drawing, independent review and the viewer.html check. Arguments: <대상 명칭> <참고할 원본> <그릴 대상의 상태>, e.g. "장비 경기병 말 타고 창 든 장수", "여포 경보병 비전투", "장수 도트 다시 그려줘".
 ---
 
 # Hero dot workflow
@@ -12,14 +12,17 @@ code that edits or judges the drawing.
 
 ## 0. Parse the request
 
-| Request | Base | Output id |
-|---|---|---|
-| `<장수> 경보병 [걷는장군]` | infantry | `<id>` |
-| `<장수> 경기병 [장군]` | cavalry | `<id>` |
-| `<장수> 비전투` | infantry (dismounted, weapon removed) | `<id>_noncombat` |
+Arguments: `<대상 명칭> <참고할 원본> <그릴 대상의 상태>` — e.g. `장비 경기병 말 타고 창 든 장수`,
+`여포 경보병 비전투`, `황충 궁병 활 든 장수`.
 
-If a combat request does not name the base, ask. `<id>` is the officer key in `ver4/internal/gui/view.go` `officers`
-(유비 `liubei`, 관우 `guanyu`, 장비 `zhangfei`, 여포 `lubu`).
+| Argument | Meaning | How it is resolved |
+|---|---|---|
+| 대상 명칭 | who is drawn | officer → key from `ver4/internal/gui/view.go` `officers` (유비 `liubei`, 관우 `guanyu`, 장비 `zhangfei`, 여포 `lubu`); not an officer (a unit type, an extra) → ask for the id |
+| 참고할 원본 | base sheet the frames start from | a unit in `ver4/tools/doteditor/units/*.yaml` by Korean name or id (경보병 `infantry`, 경기병 `cavalry`, …); not there → ask |
+| 그릴 대상의 상태 | what the sprite shows | `비전투` (no weapon, scene use) → non-combat layout: NW·SW, idle + two steps + action, id `<id>_noncombat`; anything else (말 타고 창 든 장수, 활 든 궁병, …) → combat sheet with the base's rows/animations, id `<id>`. The text (mount, weapon, attack style) goes into the profile |
+
+Ask when an argument is missing, or when the state contradicts the base (e.g. "말 타고" with an infantry base).
+Several targets may be given at once, one triple each.
 
 ## 1. Tools (`ver4/tools/doteditor/heroes/tools/`, run from there)
 
@@ -41,10 +44,19 @@ python3 grid.py import <id>                                          # grid work
 - faction1–3 colours are the game team keys and never change per hero; a hero colour that should follow the faction
   is drawn with faction tags (e.g. 관우 녹포), everything else uses themeA/B/C with per-hero ramps.
 
-Progress page: `python3 live.py <ids…> --every 30` (run it through the Monitor tool; each line is a progress event)
-renders the grid working copies to `heroes/live/` for `progress.html`. Serve `ver4/tools/doteditor` with
-`python3 -m http.server <port>`. Every progress report to the user carries the progress URL and the viewer URL of
-each finished unit.
+## Progress reporting
+
+- When the first artist starts, serve `ver4/tools/doteditor` (`python3 -m http.server <port>`, background) and start
+  `python3 -u live.py <ids…> --every 30` through the Monitor tool (timeout 30 min; re-arm it every time it expires,
+  and stop it when all units are imported). It renders the grid working copies to `heroes/live/` for
+  `progress.html` and prints one line per round.
+- On every monitor line, report to the user: time, elapsed, changed frames / total, per-unit per-animation status
+  (drawing / in review / passed), the ETA with the caveat that review rounds are not included, the progress URL,
+  and the viewer URL of every unit already imported. Keep it short when nothing changed.
+- `live.py` compares non-combat units with the yaml it first read, so after an import and a monitor restart they
+  show 0/n — say so and count them as done.
+- Also report each artist/reviewer hand-back as it arrives: what was drawn or found (반드시/권장), and what was sent
+  back.
 
 ## 2. Agents
 
