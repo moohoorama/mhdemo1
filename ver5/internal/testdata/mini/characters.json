@@ -1,0 +1,116 @@
+{
+ "Characters": {
+  "hero": {
+   "Name": "Hero",
+   "Class": "footman",
+   "Level": 1,
+   "Stats": [
+    91,
+    76,
+    82,
+    75,
+    87,
+    99
+   ],
+   "Lord": true,
+   "Playable": true,
+   "Equipment": [
+    "iron_sword",
+    "jerkin"
+   ],
+   "Learn": [
+    "crit_t",
+    "twice",
+    "poison_t"
+   ],
+   "Look": {
+    "Sprite": "liubei",
+    "Faction": "blue"
+   }
+  },
+  "archer1": {
+   "Name": "Arrow",
+   "Class": "archer",
+   "Level": 1,
+   "Stats": [
+    70,
+    70,
+    70,
+    70,
+    70,
+    70
+   ],
+   "Playable": true,
+   "Equipment": [
+    "short_bow"
+   ],
+   "Learn": [
+    "leech_t"
+   ],
+   "Look": {
+    "Faction": "blue"
+   }
+  },
+  "sage": {
+   "Name": "Sage",
+   "Class": "mage",
+   "Level": 1,
+   "Stats": [
+    60,
+    40,
+    95,
+    70,
+    80,
+    90
+   ],
+   "Playable": true,
+   "Learn": [
+    "reach",
+    "deep"
+   ],
+   "Look": {
+    "Faction": "blue"
+   }
+  },
+  "boss": {
+   "Name": "Boss",
+   "Class": "footman",
+   "Level": 5,
+   "Stats": [
+    80,
+    80,
+    50,
+    60,
+    60,
+    60
+   ],
+   "Equipment": [
+    "iron_sword"
+   ],
+   "Look": {
+    "Faction": "red"
+   }
+  },
+  "troop": {
+   "Name": "Troop",
+   "Class": "footman",
+   "Level": 3,
+   "Stats": [
+    35,
+    45,
+    20,
+    40,
+    45,
+    40
+   ],
+   "Template": true,
+   "Equipment": [
+    "iron_sword",
+    "jerkin"
+   ],
+   "Look": {
+    "Faction": "red"
+   }
+  }
+ }
+}

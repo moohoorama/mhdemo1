@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>장수 도트 뷰어</title>
+<style>
+:root{color-scheme:dark;--bg:#101315;--panel:#191d20;--line:#2b3237;--muted:#89939b;--text:#e7ecef;--accent:#b5f078}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,sans-serif}
+button,select,input{font:inherit;color:inherit;background:#22282d;border:1px solid #384148;border-radius:6px;padding:5px 10px}
+button{cursor:pointer}button:hover{border-color:var(--accent)}button.active{color:var(--accent);border-color:#7eab50;background:#293525}
+header{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:12px 20px;background:#14181bf2;border-bottom:1px solid var(--line);backdrop-filter:blur(4px)}
+h1{font-size:17px;margin:0 8px 0 0}label{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px}
+.group{display:flex;gap:4px}#frame-info{font:12px monospace;color:var(--muted)}
+main{padding:16px 20px 24px}section.anim{margin-bottom:18px}section.anim h2{font-size:14px;margin:0 0 6px;color:var(--accent)}
+section.anim h2 span{color:var(--muted);font:11px monospace;margin-left:8px}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:3px}
+figcaption{font:11px monospace;color:var(--muted)}canvas{image-rendering:pixelated;display:block}
+footer{border-top:1px solid var(--line);padding:16px 20px 40px;background:#14181b}
+footer h2{font-size:14px;margin:0 0 10px}
+#tags{display:flex;flex-wrap:wrap;gap:12px}
+.tag-group{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:8px 10px;display:flex;flex-direction:column;gap:6px;min-width:150px}
+.tag-group strong{font-size:12px}.tag-group .colors{display:flex;gap:4px}
+.tag-group input[type=color]{width:34px;height:28px;padding:0;border:0;background:none;cursor:pointer}
+.tag-group input[type=range]{width:100%;accent-color:var(--accent)}.tag-group button{font-size:11px;padding:3px 8px}
+.tag-group.changed{border-color:#7eab50}
+#status{color:var(--muted);font-size:12px}#status.error{color:#ff9c9c}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+</head>
+<body>
+<header>
+<h1>장수 도트 뷰어</h1>
+<label>유닛 <select id="unit"></select></label>
+<div class="group"><button id="play">Ⅱ 정지</button><button id="step">다음 프레임 ▸</button></div>
+<div class="group" id="speeds"><button data-speed="1" class="active">×1</button><button data-speed="2">×2</button><button data-speed="4">×4</button><button data-speed="8">×8</button></div>
+<label>확대 <select id="zoom"><option>2</option><option selected>3</option><option>4</option><option>6</option></select>×</label>
+<label>배경 <select id="bg"><option value="#3c3c3c">회색</option><option value="#5a7a3a">풀밭</option><option value="#101315">어둡게</option></select></label>
+<span id="status">불러오는 중…</span>
+</header>
+<main id="anims"></main>
+<footer><h2>태그 색 바꿔 보기 <button id="reset-all">전체 원복</button></h2><div id="tags"></div></footer>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const NAMES={idle:'대기',walk:'이동',attack:'공격',hit:'피격',exhausted:'탈진',block:'막기',action:'액션'};
+const ORDER=['idle','walk','attack','hit','exhausted','block','action'];
+const DIRS=['N','NE','E','SE','S','SW','W','NW'];
+const GROUPS=[['iron','철'],['skin','피부색'],['hair','털색'],['faction','진영색'],['themeA','테마색 A'],['themeB','테마색 B'],['themeC','테마색 C'],
+  ['horseSkin','말 피부색'],['horseMane','말 갈기색'],['saddle','말 안장색'],['outline','외곽선'],['effect','공격 효과']];
+let unit=null,colors=[],playing=true,speed=1,last=performance.now(),states={};
+const status=(m,e=false)=>{$('status').textContent=m;$('status').classList.toggle('error',e);};
+const rgb=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+
+// Same layout as apply.py expand_noncombat: NE·SE mirror NW·SW (cell widened about the pivot), walk = idle, left, idle, right.
+function expandNoncombat(u,frames){
+  const [w,h]=u.cell,[px,py]=u.pivot,half=Math.max(px,w-px),W=2*half;
+  const pad=f=>({...f,cells:f.cells.map(r=>[...Array(half-px).fill(null),...r,...Array(half-(w-px)).fill(null)])});
+  const src={};frames.forEach(f=>src[f.direction+'/'+f.animation+'/'+f.frame]=pad(f));
+  const plan={idle:[['idle',0]],walk:[['idle',0],['walk',0],['idle',0],['walk',1]],action:[['action',0]]};
+  const wm=u.animations.walk.ms,ms={idle:u.animations.idle.ms,walk:[wm[0],wm[0],wm[1],wm[1]],action:u.animations.action.ms};
+  const out=[],anims={};
+  for(const [name,cells] of Object.entries(plan)){
+    anims[name]={frames:cells.length,ms:ms[name],loop:u.animations[name].loop};
+    for(const [d,m] of [['NW'],['SW'],['NE','NW'],['SE','SW']])cells.forEach(([a,n],k)=>{
+      const s=src[(m||d)+'/'+a+'/'+n];out.push({direction:d,animation:name,frame:k,cells:m?s.cells.map(r=>[...r].reverse()):s.cells});});
+  }
+  return {u:{...u,cell:[W,h],pivot:[half,py],rows:['NW','SW','NE','SE'],animations:anims},frames:out};
+}
+
+function decode(doc){
+  let u=doc.unit;
+  const pal=doc.palette.map(h=>[...rgb(h),parseInt(h.slice(7,9),16)]);
+  // cell = [tag index or 0, palette rgba]; drawing resolves tagged pixels through the live tag colors
+  let frames=doc.frames.map(f=>({direction:f.direction,animation:f.animation,frame:f.frame,
+    cells:f.pixels.map((row,y)=>row.map((p,x)=>pal[p][3]?[f.tags?f.tags[y][x]:0,pal[p]]:null))}));
+  if(u.id.endsWith('_noncombat'))({u,frames}=expandNoncombat(u,frames));
+  return {id:u.id,name:u.name,cell:u.cell,pivot:u.pivot,rows:u.rows,animations:u.animations,frames,
+    tagIds:doc.tag_definitions.map(t=>t.id),original:doc.tag_colors.map(c=>c.slice(0,7))};
+}
+
+function sprite(f){
+  const [w,h]=unit.cell,c=document.createElement('canvas');c.width=w;c.height=h;
+  const ctx=c.getContext('2d'),img=ctx.createImageData(w,h),tc=colors.map(rgb);
+  f.cells.forEach((row,y)=>row.forEach((cell,x)=>{if(!cell)return;const [t,p]=cell,v=t?tc[t-1]:p,i=(y*w+x)*4;
+    img.data[i]=v[0];img.data[i+1]=v[1];img.data[i+2]=v[2];img.data[i+3]=p[3];}));
+  ctx.putImageData(img,0,0);return c;
+}
+
+let sprites=new Map();
+function rebuildSprites(){sprites=new Map();unit.frames.forEach(f=>sprites.set(f.direction+'/'+f.animation+'/'+f.frame,sprite(f)));}
+
+function layout(){
+  const dirs=DIRS.filter(d=>unit.rows.includes(d)),anims=ORDER.filter(a=>unit.animations[a]);
+  states={};anims.forEach(a=>states[a]={frame:0,elapsed:0});
+  $('anims').replaceChildren(...anims.map(a=>{
+    const s=document.createElement('section');s.className='anim';
+    const an=unit.animations[a];
+    s.innerHTML=`<h2>${NAMES[a]||a}<span>${a} · ${an.frames}프레임 · ${an.ms.join('/')}ms${an.loop?' · 반복':''}</span></h2>`;
+    const row=document.createElement('div');row.className='row';
+    row.append(...dirs.map(d=>{const fig=document.createElement('figure'),c=document.createElement('canvas');
+      c.dataset.dir=d;c.dataset.anim=a;fig.append(c,document.createElement('figcaption'));return fig;}));
+    s.append(row);return s;}));
+  draw();
+}
+
+function draw(){
+  const z=+$('zoom').value,[w,h]=unit.cell,bg=$('bg').value,[px,py]=unit.pivot;
+  document.querySelectorAll('#anims canvas').forEach(c=>{
+    const a=c.dataset.anim,st=states[a];
+    c.width=w*z;c.height=h*z;const ctx=c.getContext('2d');ctx.imageSmoothingEnabled=false;
+    ctx.fillStyle=bg;ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle='#0003';ctx.fillRect((px-3)*z,py*z,7*z,z);
+    const s=sprites.get(c.dataset.dir+'/'+a+'/'+st.frame);if(s)ctx.drawImage(s,0,0,w*z,h*z);
+    c.nextSibling.textContent=c.dataset.dir+' · '+(st.frame+1)+'/'+unit.animations[a].frames;
+  });
+}
+
+const HOLD=500; // pause after a one-shot animation before it plays again
+function tick(now){
+  const dt=Math.min(250,now-last)*speed;last=now;
+  if(playing&&unit){let changed=false;
+    for(const [a,st] of Object.entries(states)){const an=unit.animations[a];st.elapsed+=dt;
+      for(;;){const end=!an.loop&&st.frame===an.frames-1,ms=an.ms[st.frame]+(end?HOLD:0);
+        if(st.elapsed<ms)break;st.elapsed-=ms;st.frame=(st.frame+1)%an.frames;changed=true;}}
+    if(changed)draw();}
+  requestAnimationFrame(tick);
+}
+
+function tagPanel(){
+  $('tags').replaceChildren(...GROUPS.map(([g,name])=>{
+    const idx=unit.tagIds.map((id,i)=>id.replace(/[123]$/,'')===g?i:-1).filter(i=>i>=0);
+    const box=document.createElement('div');box.className='tag-group';box.dataset.group=g;
+    box.innerHTML=`<strong>${name}</strong>`;
+    const row=document.createElement('div');row.className='colors';
+    const inputs=idx.map(i=>{const inp=document.createElement('input');inp.type='color';inp.value=colors[i];inp.title=unit.tagIds[i];
+      inp.oninput=()=>{colors[i]=inp.value;mark();refresh();};return inp;});
+    row.append(...inputs);
+    const hue=document.createElement('input');hue.type='range';hue.min=-180;hue.max=180;hue.value=0;hue.title='색조 돌리기';
+    hue.oninput=()=>{idx.forEach((i,k)=>{colors[i]=rotate(unit.original[i],+hue.value);inputs[k].value=colors[i];});mark();refresh();};
+    const reset=document.createElement('button');reset.textContent='원복';
+    reset.onclick=()=>{idx.forEach((i,k)=>{colors[i]=unit.original[i];inputs[k].value=colors[i];});hue.value=0;mark();refresh();};
+    const mark=()=>box.classList.toggle('changed',idx.some(i=>colors[i]!==unit.original[i]));
+    box.append(row,hue,reset);return box;}));
+}
+$('reset-all').onclick=()=>{colors=[...unit.original];tagPanel();refresh();};
+
+function rotate(hex,deg){
+  let [r,g,b]=rgb(hex).map(v=>v/255);const max=Math.max(r,g,b),min=Math.min(r,g,b),l=(max+min)/2,d=max-min;
+  let h=0,s=0;
+  if(d){s=d/(1-Math.abs(2*l-1));h=max===r?((g-b)/d)%6:max===g?(b-r)/d+2:(r-g)/d+4;h*=60;}
+  else{s=.6;h=300;} // grey or black ramps: give them a hue so the change is visible
+  h=((h+deg)%360+360)%360;const c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2;
+  const v=h<60?[c,x,0]:h<120?[x,c,0]:h<180?[0,c,x]:h<240?[0,x,c]:h<300?[x,0,c]:[c,0,x];
+  return '#'+v.map(n=>Math.round((n+m)*255).toString(16).padStart(2,'0')).join('');
+}
+
+let pending=false;
+function refresh(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;rebuildSprites();draw();});}
+
+async function listUnits(){
+  try{const html=await (await fetch('units/')).text();
+    return [...html.matchAll(/href="([A-Za-z0-9_-]+)\.yaml"/g)].map(m=>m[1]);}
+  catch{return ['infantry','cavalry'];}
+}
+
+async function load(id){
+  status('불러오는 중… '+id);
+  try{const r=await fetch('units/'+id+'.yaml');if(!r.ok)throw Error('units/'+id+'.yaml 로드 실패 · doteditor 폴더에서 make serve 로 여세요.');
+    unit=decode(jsyaml.load(await r.text(),{schema:jsyaml.JSON_SCHEMA}));colors=[...unit.original];
+    history.replaceState(null,'','?unit='+id);
+    rebuildSprites();tagPanel();layout();status(unit.name+' · '+unit.id+' · '+unit.cell.join('×')+' px');
+  }catch(e){status(e.message,true);}
+}
+
+$('unit').onchange=e=>load(e.target.value);
+$('zoom').onchange=draw;$('bg').onchange=draw;
+$('play').onclick=()=>{playing=!playing;$('play').textContent=playing?'Ⅱ 정지':'▶ 재생';};
+$('step').onclick=()=>{if(!unit)return;playing=false;$('play').textContent='▶ 재생';
+  for(const [a,st] of Object.entries(states)){st.frame=(st.frame+1)%unit.animations[a].frames;st.elapsed=0;}draw();};
+$('speeds').onclick=e=>{const b=e.target.closest('button');if(!b)return;speed=+b.dataset.speed;
+  $('speeds').querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));};
+
+(async()=>{
+  const ids=await listUnits(),want=new URLSearchParams(location.search).get('unit');
+  $('unit').append(...ids.map(id=>new Option(id,id)));
+  const id=ids.includes(want)?want:ids[0];$('unit').value=id;await load(id);requestAnimationFrame(tick);
+})();
+</script>
+</body></html>

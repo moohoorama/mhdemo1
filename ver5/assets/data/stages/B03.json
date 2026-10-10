@@ -1,0 +1,123 @@
+{
+ "ID": "B03",
+ "Name": "호로관 전투",
+ "Boss": "lubu",
+ "Width": 28,
+ "Height": 8,
+ "Limit": 4,
+ "Threshold": 40,
+ "Tiles": [
+  "ffffffffffffffffffffffffffff",
+  ".....k.....f.....fk.......ci",
+  "..........................ci",
+  "...........................i",
+  "...........................i",
+  "..........................ci",
+  "......f....fk....f........ci",
+  "ffffffffffffffffffffffffffff"
+ ],
+ "Allies": [
+  {
+   "X": 2,
+   "Y": 3
+  },
+  {
+   "X": 2,
+   "Y": 4
+  },
+  {
+   "X": 1,
+   "Y": 3
+  },
+  {
+   "X": 1,
+   "Y": 4
+  },
+  {
+   "X": 3,
+   "Y": 3
+  },
+  {
+   "X": 3,
+   "Y": 4
+  },
+  {
+   "X": 2,
+   "Y": 2
+  },
+  {
+   "X": 2,
+   "Y": 5
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "lubu",
+   "X": 24,
+   "Y": 4
+  },
+  {
+   "Character": "liru",
+   "X": 22,
+   "Y": 2
+  },
+  {
+   "Character": "lijue",
+   "X": 14,
+   "Y": 5
+  },
+  {
+   "Character": "troop_footman",
+   "X": 8,
+   "Y": 3,
+   "Level": 6
+  },
+  {
+   "Character": "troop_archer",
+   "X": 9,
+   "Y": 5,
+   "Level": 6
+  },
+  {
+   "Character": "troop_footman",
+   "X": 14,
+   "Y": 2,
+   "Level": 6
+  },
+  {
+   "Character": "troop_archer",
+   "X": 15,
+   "Y": 4,
+   "Level": 6
+  },
+  {
+   "Character": "troop_footman",
+   "X": 20,
+   "Y": 3,
+   "Level": 6
+  },
+  {
+   "Character": "troop_archer",
+   "X": 21,
+   "Y": 5,
+   "Level": 6
+  }
+ ],
+ "Reward": {
+  "small_food": 8,
+  "small_scroll": 4,
+  "medium_food": 1
+ },
+ "Duels": [
+  {
+   "ID": "hulao-zhang-fei",
+   "Ally": "zhangfei",
+   "Enemy": "lubu",
+   "Outcome": "draw",
+   "AllyResult": "stay",
+   "EnemyResult": "stay",
+   "Text": "장비와 여포의 일기토가 무승부로 끝났다."
+  }
+ ],
+ "Faction": "dong"
+}

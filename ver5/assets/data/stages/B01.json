@@ -1,0 +1,133 @@
+{
+ "ID": "B01",
+ "Name": "황건적의 난",
+ "Boss": "chengyuanzhi",
+ "Width": 14,
+ "Height": 10,
+ "Limit": 3,
+ "Threshold": 0,
+ "Tiles": [
+  "..............",
+  ".cccccc.......",
+  ".ckiiic....f..",
+  ".ciiii.....f..",
+  ".ciiii........",
+  ".ckiiic.......",
+  ".cccccc...~~..",
+  "...vv......~..",
+  "...vv.........",
+  ".............."
+ ],
+ "Allies": [
+  {
+   "X": 4,
+   "Y": 3
+  },
+  {
+   "X": 4,
+   "Y": 4
+  },
+  {
+   "X": 3,
+   "Y": 3
+  },
+  {
+   "X": 3,
+   "Y": 4
+  },
+  {
+   "X": 2,
+   "Y": 3
+  },
+  {
+   "X": 2,
+   "Y": 4
+  },
+  {
+   "X": 5,
+   "Y": 3
+  },
+  {
+   "X": 5,
+   "Y": 4
+  },
+  {
+   "X": 6,
+   "Y": 3
+  },
+  {
+   "X": 6,
+   "Y": 4
+  },
+  {
+   "X": 7,
+   "Y": 3
+  },
+  {
+   "X": 7,
+   "Y": 4
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "chengyuanzhi",
+   "X": 10,
+   "Y": 5
+  },
+  {
+   "Character": "dengmao",
+   "X": 10,
+   "Y": 2
+  },
+  {
+   "Character": "troop_turban",
+   "X": 11,
+   "Y": 1
+  },
+  {
+   "Character": "troop_turban",
+   "X": 12,
+   "Y": 3
+  },
+  {
+   "Character": "troop_turban",
+   "X": 12,
+   "Y": 5
+  },
+  {
+   "Character": "troop_turban",
+   "X": 12,
+   "Y": 7
+  }
+ ],
+ "Reward": {
+  "small_food": 8,
+  "small_scroll": 4
+ },
+ "Charge": true,
+ "Goal": "rout",
+ "Duels": [
+  {
+   "ID": "B01-duel-1",
+   "Ally": "zhangfei",
+   "Enemy": "dengmao",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "death",
+   "Text": "등무: 어디서 굴러온 촌놈이냐! 장비: 연인 장익덕이 여기 있다! 장비가 장팔사모로 등무를 단번에 꿰뚫었다.",
+   "DefenseDown": 20
+  },
+  {
+   "ID": "B01-duel-2",
+   "Ally": "guanyu",
+   "Enemy": "chengyuanzhi",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "death",
+   "Text": "정원지: 등무의 원수를 갚겠다! 관우: 그 목, 내가 거두겠다. 관우가 청룡도 한 번에 정원지를 베어 넘겼다.",
+   "AttackDown": 20
+  }
+ ],
+ "Faction": "turban",
+ "Next": "join"
+}

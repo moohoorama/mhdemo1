@@ -1,0 +1,840 @@
+{
+ "Characters": {
+  "liubei": {
+   "Name": "유비",
+   "Class": "light_infantry",
+   "Stats": [
+    91,
+    76,
+    82,
+    75,
+    87,
+    99
+   ],
+   "Level": 1,
+   "Lord": true,
+   "Playable": true,
+   "Traits": [],
+   "Learn": [
+    "benevolence",
+    "employment",
+    "supply"
+   ],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor",
+    "tactics_primer"
+   ],
+   "Look": {
+    "Sprite": "liubei",
+    "Scene": "liubei_noncombat",
+    "Portrait": "liubei",
+    "Faction": "shu"
+   }
+  },
+  "guanyu": {
+   "Name": "관우",
+   "Class": "light_cavalry",
+   "Stats": [
+    100,
+    98,
+    79,
+    83,
+    85,
+    92
+   ],
+   "Level": 1,
+   "Playable": true,
+   "Traits": [],
+   "Learn": [
+    "valor",
+    "relentless",
+    "warlord",
+    "deadly",
+    "counter_art"
+   ],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Sprite": "guanyu",
+    "Scene": "guanyu_noncombat",
+    "Portrait": "guanyu",
+    "Faction": "shu"
+   }
+  },
+  "zhangfei": {
+   "Name": "장비",
+   "Class": "light_cavalry",
+   "Stats": [
+    83,
+    99,
+    42,
+    92,
+    72,
+    74
+   ],
+   "Level": 1,
+   "Playable": true,
+   "Traits": [],
+   "Learn": [
+    "battle_fury",
+    "sweep_art",
+    "relentless",
+    "cross_strike",
+    "square_strike"
+   ],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Sprite": "zhangfei",
+    "Scene": "zhangfei_noncombat",
+    "Portrait": "zhangfei",
+    "Faction": "shu"
+   }
+  },
+  "jianyong": {
+   "Name": "간옹",
+   "Class": "archer",
+   "Stats": [
+    36,
+    42,
+    76,
+    66,
+    94,
+    96
+   ],
+   "Level": 2,
+   "Playable": true,
+   "Traits": [],
+   "Learn": [
+    "supply",
+    "medicine",
+    "discipline",
+    "insight"
+   ],
+   "Equipment": [
+    "short_bow",
+    "leather_armor",
+    "medicine_pouch"
+   ],
+   "Look": {
+    "Portrait": "jianyong",
+    "Faction": "shu"
+   }
+  },
+  "chengyuanzhi": {
+   "Name": "정원지",
+   "Class": "bandit",
+   "Stats": [
+    58,
+    66,
+    30,
+    58,
+    47,
+    42
+   ],
+   "Level": 4,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes",
+    "route_map"
+   ],
+   "Look": {
+    "Portrait": "chengyuanzhi",
+    "Faction": "turban"
+   }
+  },
+  "dengmao": {
+   "Name": "등무",
+   "Class": "bandit",
+   "Stats": [
+    49,
+    62,
+    25,
+    57,
+    45,
+    39
+   ],
+   "Level": 2,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes",
+    "ration_bag"
+   ],
+   "Look": {
+    "Portrait": "dengmao",
+    "Faction": "turban"
+   }
+  },
+  "zhangjiao": {
+   "Name": "장각",
+   "Class": "scholar",
+   "Stats": [
+    82,
+    25,
+    94,
+    74,
+    84,
+    93
+   ],
+   "Level": 2,
+   "Traits": [
+    "exhort"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes",
+    "tactics_primer"
+   ],
+   "Look": {
+    "Portrait": "zhangjiao",
+    "Faction": "turban",
+    "Palette": {
+     "themeA": [
+      "#f4dc70",
+      "#e0c030",
+      "#9a7a10"
+     ],
+     "hair": "#d8d8d8"
+    }
+   }
+  },
+  "huaxiong": {
+   "Name": "화웅",
+   "Class": "light_cavalry",
+   "Stats": [
+    82,
+    92,
+    39,
+    78,
+    60,
+    53
+   ],
+   "Level": 6,
+   "Traits": [
+    "intimidate"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Sprite": "cavalry",
+    "Portrait": "huaxiong",
+    "Faction": "dong",
+    "Palette": {
+     "iron": [
+      "#8a8a94",
+      "#55555e",
+      "#2e2e36"
+     ],
+     "horseSkin": [
+      "#55555e",
+      "#33333a",
+      "#1c1c22"
+     ]
+    }
+   }
+  },
+  "huzhen": {
+   "Name": "호진",
+   "Class": "light_cavalry",
+   "Stats": [
+    66,
+    72,
+    48,
+    66,
+    51,
+    48
+   ],
+   "Level": 4,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Portrait": "huzhen",
+    "Faction": "dong",
+    "Palette": {
+     "horseSkin": [
+      "#b8b0a0",
+      "#8a8272",
+      "#5c5648"
+     ]
+    }
+   }
+  },
+  "lubu": {
+   "Name": "여포",
+   "Class": "light_cavalry",
+   "Stats": [
+    95,
+    100,
+    34,
+    99,
+    76,
+    42
+   ],
+   "Level": 9,
+   "Traits": [
+    "valor"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Sprite": "cavalry",
+    "Portrait": "lubu",
+    "Faction": "dong",
+    "Palette": {
+     "iron": [
+      "#6a6a78",
+      "#3a3a46",
+      "#1a1a22"
+     ],
+     "themeA": [
+      "#d04848",
+      "#9a2424",
+      "#5a1010"
+     ],
+     "horseSkin": [
+      "#e06050",
+      "#b03020",
+      "#741a10"
+     ],
+     "horseMane": [
+      "#901818",
+      "#601010",
+      "#300808"
+     ]
+    }
+   }
+  },
+  "liru": {
+   "Name": "이유",
+   "Class": "scholar",
+   "Stats": [
+    61,
+    25,
+    93,
+    65,
+    57,
+    43
+   ],
+   "Level": 7,
+   "Traits": [
+    "stratagem"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes",
+    "tactics_primer"
+   ],
+   "Look": {
+    "Portrait": "liru",
+    "Faction": "dong",
+    "Palette": {
+     "themeA": [
+      "#9a8ab8",
+      "#6a5a8a",
+      "#3a2e58"
+     ]
+    }
+   }
+  },
+  "lijue": {
+   "Name": "이각",
+   "Class": "light_cavalry",
+   "Stats": [
+    71,
+    78,
+    52,
+    69,
+    50,
+    45
+   ],
+   "Level": 7,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Portrait": "lijue",
+    "Faction": "dong",
+    "Palette": {
+     "horseSkin": [
+      "#a07850",
+      "#785430",
+      "#4c3418"
+     ]
+    }
+   }
+  },
+  "sunqian": {
+   "Name": "손건",
+   "Class": "scholar",
+   "Stats": [
+    54,
+    32,
+    82,
+    65,
+    85,
+    92
+   ],
+   "Level": 3,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Portrait": "sunqian",
+    "Faction": "shu"
+   }
+  },
+  "zhaoyun": {
+   "Name": "조운",
+   "Class": "light_cavalry",
+   "Stats": [
+    92,
+    97,
+    78,
+    96,
+    90,
+    90
+   ],
+   "Level": 8,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Portrait": "zhaoyun",
+    "Faction": "gongsun",
+    "Palette": {
+     "horseSkin": [
+      "#ffffff",
+      "#e8e8ec",
+      "#b0b0b8"
+     ]
+    }
+   }
+  },
+  "gongsunzan": {
+   "Name": "공손찬",
+   "Class": "light_cavalry",
+   "Stats": [
+    89,
+    86,
+    63,
+    86,
+    72,
+    79
+   ],
+   "Level": 8,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Portrait": "gongsunzan",
+    "Faction": "gongsun",
+    "Palette": {
+     "horseSkin": [
+      "#ffffff",
+      "#e8e8ec",
+      "#b0b0b8"
+     ]
+    }
+   }
+  },
+  "yangang": {
+   "Name": "엄강",
+   "Class": "light_cavalry",
+   "Stats": [
+    77,
+    80,
+    48,
+    76,
+    61,
+    59
+   ],
+   "Level": 6,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Portrait": "yangang",
+    "Faction": "gongsun"
+   }
+  },
+  "yuanshao": {
+   "Name": "원소",
+   "Class": "light_cavalry",
+   "Stats": [
+    86,
+    69,
+    74,
+    67,
+    81,
+    91
+   ],
+   "Level": 10,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Portrait": "yuanshao",
+    "Faction": "yuan",
+    "Palette": {
+     "themeA": [
+      "#f0d860",
+      "#d0b030",
+      "#8a7410"
+     ]
+    }
+   }
+  },
+  "wenchou": {
+   "Name": "문추",
+   "Class": "light_cavalry",
+   "Stats": [
+    86,
+    95,
+    35,
+    88,
+    63,
+    59
+   ],
+   "Level": 10,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Portrait": "wenchou",
+    "Faction": "yuan"
+   }
+  },
+  "yanliang": {
+   "Name": "안량",
+   "Class": "light_cavalry",
+   "Stats": [
+    87,
+    94,
+    40,
+    84,
+    67,
+    62
+   ],
+   "Level": 10,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Portrait": "yanliang",
+    "Faction": "yuan"
+   }
+  },
+  "zhanghe": {
+   "Name": "장합",
+   "Class": "light_cavalry",
+   "Stats": [
+    91,
+    90,
+    77,
+    91,
+    80,
+    78
+   ],
+   "Level": 11,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Portrait": "zhanghe",
+    "Faction": "yuan"
+   }
+  },
+  "chunyuqiong": {
+   "Name": "순우경",
+   "Class": "light_infantry",
+   "Stats": [
+    73,
+    78,
+    47,
+    65,
+    44,
+    51
+   ],
+   "Level": 11,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Portrait": "chunyuqiong",
+    "Faction": "yuan"
+   }
+  },
+  "gaolan": {
+   "Name": "고람",
+   "Class": "light_infantry",
+   "Stats": [
+    85,
+    86,
+    65,
+    79,
+    68,
+    66
+   ],
+   "Level": 10,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Portrait": "gaolan",
+    "Faction": "yuan"
+   }
+  },
+  "tianfeng": {
+   "Name": "전풍",
+   "Class": "scholar",
+   "Stats": [
+    82,
+    29,
+    96,
+    68,
+    70,
+    77
+   ],
+   "Level": 9,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Portrait": "tianfeng",
+    "Faction": "yuan"
+   }
+  },
+  "shenpei": {
+   "Name": "심배",
+   "Class": "light_infantry",
+   "Stats": [
+    80,
+    59,
+    83,
+    65,
+    62,
+    61
+   ],
+   "Level": 9,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Portrait": "shenpei",
+    "Faction": "yuan"
+   }
+  },
+  "yuanshu": {
+   "Name": "원술",
+   "Class": "light_infantry",
+   "Stats": [
+    65,
+    68,
+    58,
+    59,
+    63,
+    49
+   ],
+   "Level": 8,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Portrait": "yuanshu",
+    "Faction": "yuan"
+   }
+  },
+  "caocao": {
+   "Name": "조조",
+   "Class": "light_infantry",
+   "Stats": [
+    96,
+    72,
+    94,
+    82,
+    88,
+    96
+   ],
+   "Level": 14,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Portrait": "caocao",
+    "Faction": "wei"
+   }
+  },
+  "dongzhuo": {
+   "Name": "동탁",
+   "Class": "light_cavalry",
+   "Stats": [
+    77,
+    84,
+    68,
+    59,
+    46,
+    38
+   ],
+   "Level": 12,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Portrait": "dongzhuo",
+    "Faction": "dong",
+    "Palette": {
+     "themeA": [
+      "#7a5a9a",
+      "#523470",
+      "#2e1a44"
+     ],
+     "horseSkin": [
+      "#55555e",
+      "#33333a",
+      "#1c1c22"
+     ]
+    }
+   }
+  },
+  "troop_turban": {
+   "Name": "황건 도적",
+   "Class": "bandit",
+   "Stats": [
+    35,
+    45,
+    20,
+    40,
+    45,
+    40
+   ],
+   "Level": 2,
+   "Template": true,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Portrait": "turban_soldier"
+   }
+  },
+  "troop_footman": {
+   "Name": "일반 부대",
+   "Class": "light_infantry",
+   "Stats": [
+    50,
+    48,
+    30,
+    40,
+    40,
+    45
+   ],
+   "Level": 4,
+   "Template": true,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {}
+  },
+  "troop_archer": {
+   "Name": "일반 부대",
+   "Class": "archer",
+   "Stats": [
+    40,
+    43,
+    30,
+    52,
+    45,
+    40
+   ],
+   "Level": 4,
+   "Template": true,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {}
+  }
+ }
+}

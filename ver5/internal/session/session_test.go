@@ -1,0 +1,178 @@
+package session
+
+import (
+	"encoding/json"
+	"os"
+	"path/filepath"
+	"srpg/internal/ai"
+	"srpg/internal/content"
+	"srpg/internal/core"
+	"srpg/internal/storage"
+	"testing"
+)
+
+func setup(t *testing.T) *Session {
+	t.Helper()
+	d, err := content.Load("../testdata/mini")
+	if err != nil {
+		t.Fatal(err)
+	}
+	s, err := New(d, t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	return s
+}
+func request(t *testing.T, s *Session, q Request) Response {
+	t.Helper()
+	if s.Engine != nil {
+		rev := s.Engine.Observe().Revision
+		q.Revision = &rev
+	}
+	r := s.Handle(q)
+	if !r.OK {
+		t.Fatalf("%s: %s", q.Op, r.Error)
+	}
+	return r
+}
+func snapshot(s *Session) string { b, _ := json.Marshal(s.Engine.Snapshot()); return string(b) }
+func TestSaveLoadMenusAndRevision(t *testing.T) {
+	s := setup(t)
+	request(t, s, Request{Op: "new", Seed: 1})
+	before := snapshot(s)
+	request(t, s, Request{Op: "menu"})
+	request(t, s, Request{Op: "resume"})
+	if snapshot(s) != before {
+		t.Fatal("menu advances game")
+	}
+	r := s.Handle(Request{Op: "command", Command: core.Command{Kind: "next"}})
+	if r.OK || r.Error != "StaleRevision" || before != snapshot(s) {
+		t.Fatal("stale revision")
+	}
+	request(t, s, Request{Op: "save", Slot: "1"})
+	request(t, s, Request{Op: "command", Command: core.Command{Kind: "next"}})
+	if s.Handle(Request{Op: "load", Slot: "1"}).Error != "DiscardRequired" {
+		t.Fatal("discard intent")
+	}
+	v := storage.DefaultSettings()
+	v.AI = "step"
+	request(t, s, Request{Op: "settings", Settings: &v})
+	request(t, s, Request{Op: "load", Slot: "1", Discard: true})
+	if snapshot(s) != before || s.Settings.AI != "step" {
+		t.Fatal("load changed settings or state")
+	}
+	if s.Handle(Request{Op: "save", Slot: "1"}).Error != "OverwriteRequired" {
+		t.Fatal("overwrite")
+	}
+	request(t, s, Request{Op: "save", Slot: "1", Overwrite: true})
+	before = snapshot(s)
+	p := filepath.Join(s.Store.Dir, "slot-1.json")
+	_ = os.WriteFile(p, []byte("bad"), 0600)
+	if s.Handle(Request{Op: "load", Slot: "1", Discard: true}).OK || snapshot(s) != before {
+		t.Fatal("bad load replaced game")
+	}
+	bad := s.Engine.Snapshot()
+	bad.Core = "future"
+	if err := s.Store.Save("2", bad, false); err != nil {
+		t.Fatal(err)
+	}
+	if s.Handle(Request{Op: "load", Slot: "2", Discard: true}).Error != "IncompatibleSave" || snapshot(s) != before {
+		t.Fatal("incompatible load replaced game")
+	}
+	request(t, s, Request{Op: "title", Discard: true})
+	if s.Engine != nil || s.Screen != "title" {
+		t.Fatal("title")
+	}
+	if s.Handle(Request{Op: "load", Slot: "2", Discard: true}).OK {
+		t.Fatal("title incompatible load")
+	}
+}
+func TestEnemyStepSaveContinuation(t *testing.T) {
+	s := setup(t)
+	request(t, s, Request{Op: "new", Seed: 4})
+	for _, c := range []core.Command{{Kind: "next"}, {Kind: "choose", Option: "go"}, {Kind: "start"}, {Kind: "move", Actor: "hero", X: 2, Y: 3}, {Kind: "end"}} {
+		request(t, s, Request{Op: "command", Command: c})
+	}
+	request(t, s, Request{Op: "ai"})
+	request(t, s, Request{Op: "save", Slot: "1"})
+	before := snapshot(s)
+	a := request(t, s, Request{Op: "ai"})
+	after := snapshot(s)
+	request(t, s, Request{Op: "load", Slot: "1", Discard: true})
+	if snapshot(s) != before {
+		t.Fatal("enemy cursor")
+	}
+	b := request(t, s, Request{Op: "ai"})
+	ab, _ := json.Marshal(a.Events)
+	bb, _ := json.Marshal(b.Events)
+	if string(ab) != string(bb) || after != snapshot(s) {
+		t.Fatal("enemy replay mismatch")
+	}
+}
+func TestResolvePhase(t *testing.T) {
+	s := setup(t)
+	request(t, s, Request{Op: "new", Seed: 3})
+	request(t, s, Request{Op: "command", Command: core.Command{Kind: "next"}})
+	request(t, s, Request{Op: "command", Command: core.Command{Kind: "choose", Option: "go"}})
+	request(t, s, Request{Op: "command", Command: core.Command{Kind: "start"}})
+	request(t, s, Request{Op: "command", Command: core.Command{Kind: "end"}})
+	// The same phase resolved command by command must end in the same state.
+	twin := setup(t)
+	twin.Engine, _ = core.Restore(s.Data, s.Engine.Snapshot())
+	actions, err := s.ResolvePhase()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for twin.Engine.Observe().Turn == "enemy" {
+		if _, err := ai.Step(twin.Engine); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if snapshot(s) != snapshot(twin) {
+		t.Fatal("resolved phase differs from step-by-step AI")
+	}
+	if len(actions) < 2 || !actions[len(actions)-1].Barrier {
+		t.Fatalf("actions: %d, last barrier %v", len(actions), actions[len(actions)-1].Barrier)
+	}
+	for i, a := range actions {
+		for _, j := range a.After {
+			if j >= i {
+				t.Fatalf("action %d waits for later action %d", i, j)
+			}
+		}
+	}
+	// Any two actions sharing a claim must be ordered through the precedence graph.
+	reach := func(from, to int) bool {
+		seen := map[int]bool{}
+		var walk func(int) bool
+		walk = func(i int) bool {
+			if i == to {
+				return true
+			}
+			if seen[i] {
+				return false
+			}
+			seen[i] = true
+			for _, j := range actions[i].After {
+				if walk(j) {
+					return true
+				}
+			}
+			return false
+		}
+		return walk(from)
+	}
+	for i := range actions {
+		for j := 0; j < i; j++ {
+			shared := false
+			for _, a := range actions[i].Claims() {
+				for _, b := range actions[j].Claims() {
+					shared = shared || a == b
+				}
+			}
+			if shared && !reach(i, j) {
+				t.Fatalf("actions %d and %d share a claim but are unordered", j, i)
+			}
+		}
+	}
+}

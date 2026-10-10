@@ -1,0 +1,19 @@
+{
+ "Items": {
+  "ration": {
+   "Name": "Ration",
+   "Effect": "hp",
+   "Amount": 220
+  },
+  "tonic": {
+   "Name": "Tonic",
+   "Effect": "mp",
+   "Amount": 15
+  },
+  "promo_guard": {
+   "Name": "Guard Writ",
+   "Effect": "promote",
+   "Class": "guard"
+  }
+ }
+}

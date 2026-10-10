@@ -1,0 +1,214 @@
+{
+ "Equipment": {
+  "iron_sword": {
+   "Name": "철검",
+   "Desc": "평범한 쇠 검.",
+   "Slot": "weapon",
+   "Type": "sword",
+   "Bonus": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "iron_spear": {
+   "Name": "철창",
+   "Desc": "평범한 쇠 창.",
+   "Slot": "weapon",
+   "Type": "spear",
+   "Bonus": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "short_bow": {
+   "Name": "단궁",
+   "Desc": "짧은 활.",
+   "Slot": "weapon",
+   "Type": "bow",
+   "Bonus": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "bamboo_fan": {
+   "Name": "죽선",
+   "Desc": "대나무 부채.",
+   "Slot": "weapon",
+   "Type": "fan",
+   "Bonus": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ]
+  },
+  "gujeong_blade": {
+   "Name": "고정도",
+   "Desc": "싸움터에서 수습한 명검. 위압을 준다.",
+   "Slot": "weapon",
+   "Type": "sword",
+   "Bonus": [
+    3,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "intimidate"
+   ]
+  },
+  "leather_armor": {
+   "Name": "가죽갑옷",
+   "Desc": "질긴 가죽 갑옷.",
+   "Slot": "armor",
+   "Type": "armor",
+   "Bonus": [
+    0,
+    1,
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  "plain_clothes": {
+   "Name": "평복",
+   "Desc": "평범한 옷.",
+   "Slot": "armor",
+   "Type": "robe",
+   "Bonus": [
+    0,
+    1,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "war_horse": {
+   "Name": "군마",
+   "Desc": "잘 길들인 말.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Bonus": [
+    0,
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "Learn": [
+    "dash"
+   ]
+  },
+  "ration_bag": {
+   "Name": "군량낭",
+   "Desc": "군량을 담은 주머니.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Bonus": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    2
+   ],
+   "Learn": [
+    "supply"
+   ]
+  },
+  "route_map": {
+   "Name": "지도",
+   "Desc": "지형을 적은 지도.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Bonus": [
+    0,
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "Learn": [
+    "rough_terrain"
+   ]
+  },
+  "medicine_pouch": {
+   "Name": "약낭",
+   "Desc": "약을 담은 주머니. 구휼 책략을 쓰게 한다.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Bonus": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "relief"
+   ],
+   "Learn": [
+    "medicine"
+   ]
+  },
+  "tactics_primer": {
+   "Name": "병법입문",
+   "Desc": "병법 입문서. 독려 책략을 쓰게 한다.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Bonus": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "exhort"
+   ],
+   "Learn": [
+    "composure",
+    "swiftness"
+   ]
+  },
+  "imperial_seal": {
+   "Name": "옥쇄",
+   "Desc": "전국새. 반드시 치명타를 낸다.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Bonus": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "resolve_strike"
+   ]
+  }
+ }
+}

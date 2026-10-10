@@ -1,0 +1,94 @@
+{
+ "Items": {
+  "small_food": {
+   "Name": "소군량",
+   "Desc": "병력을 220 회복한다.",
+   "Effect": "hp",
+   "Amount": 220
+  },
+  "medium_food": {
+   "Name": "중군량",
+   "Desc": "병력을 700 회복한다.",
+   "Effect": "hp",
+   "Amount": 700
+  },
+  "small_scroll": {
+   "Name": "소병법단",
+   "Desc": "병법치를 15 회복한다.",
+   "Effect": "mp",
+   "Amount": 15
+  },
+  "promote_heavy_cavalry": {
+   "Name": "승급서(중기병)",
+   "Desc": "중기병(으)로 승급한다.",
+   "Effect": "promote",
+   "Class": "heavy_cavalry"
+  },
+  "promote_royal_guard": {
+   "Name": "승급서(친위대)",
+   "Desc": "친위대(으)로 승급한다.",
+   "Effect": "promote",
+   "Class": "royal_guard"
+  },
+  "promote_heavy_infantry": {
+   "Name": "승급서(중보병)",
+   "Desc": "중보병(으)로 승급한다.",
+   "Effect": "promote",
+   "Class": "heavy_infantry"
+  },
+  "promote_guards": {
+   "Name": "승급서(근위대)",
+   "Desc": "근위대(으)로 승급한다.",
+   "Effect": "promote",
+   "Class": "guards"
+  },
+  "promote_crossbow": {
+   "Name": "승급서(노병)",
+   "Desc": "노병(으)로 승급한다.",
+   "Effect": "promote",
+   "Class": "crossbow"
+  },
+  "promote_repeating_crossbow": {
+   "Name": "승급서(연노병)",
+   "Desc": "연노병(으)로 승급한다.",
+   "Effect": "promote",
+   "Class": "repeating_crossbow"
+  },
+  "promote_staff_officer": {
+   "Name": "승급서(참모)",
+   "Desc": "참모(으)로 승급한다.",
+   "Effect": "promote",
+   "Class": "staff_officer"
+  },
+  "promote_strategist": {
+   "Name": "승급서(군사)",
+   "Desc": "군사(으)로 승급한다.",
+   "Effect": "promote",
+   "Class": "strategist"
+  },
+  "promote_sorcerer": {
+   "Name": "승급서(방술사)",
+   "Desc": "방술사(으)로 승급한다.",
+   "Effect": "promote",
+   "Class": "sorcerer"
+  },
+  "promote_mystic": {
+   "Name": "승급서(선술사)",
+   "Desc": "선술사(으)로 승급한다.",
+   "Effect": "promote",
+   "Class": "mystic"
+  },
+  "promote_ruffian": {
+   "Name": "승급서(흉적)",
+   "Desc": "흉적(으)로 승급한다.",
+   "Effect": "promote",
+   "Class": "ruffian"
+  },
+  "promote_outlaw": {
+   "Name": "승급서(의적)",
+   "Desc": "의적(으)로 승급한다.",
+   "Effect": "promote",
+   "Class": "outlaw"
+  }
+ }
+}

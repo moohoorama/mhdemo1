@@ -1,0 +1,152 @@
+{
+ "Title": "Mini",
+ "Version": "mini-1",
+ "Rules": {
+  "DamageCurve": [
+   [
+    0.5,
+    0.8
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    2,
+    1.2
+   ]
+  ],
+  "HitCurve": [
+   [
+    0.3333333333,
+    30
+   ],
+   [
+    0.5,
+    60
+   ],
+   [
+    1,
+    80
+   ],
+   [
+    2,
+    100
+   ]
+  ],
+  "StatNumerator": 400,
+  "StatDenominator": 140,
+  "StatLevelBase": 10,
+  "BasicAttack": {
+   "Name": "attack",
+   "Kind": "physical",
+   "Mode": "any",
+   "Shape": "single",
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1
+  },
+  "HitFloor": 30,
+  "HitCeil": 100,
+  "SpellFloor": 5,
+  "SpellCeil": 100,
+  "MagicPower": 2,
+  "MagicGuard": 0.5,
+  "Crit": {
+   "Base": 10,
+   "Per": 30,
+   "Max": 70
+  },
+  "Double": {
+   "Base": 10,
+   "Per": 30,
+   "Max": 70
+  },
+  "CritMultiplier": 1.5,
+  "CounterShare": 0.7,
+  "PoisonPercent": 5,
+  "BurnPercent": 4,
+  "BuffPercent": 20,
+  "BuffTurns": 2,
+  "ExpBase": 100,
+  "ExpGrowth": 1.035,
+  "ExpAction": 24,
+  "ExpSpell": 2,
+  "ExpDefeat": 2,
+  "ExpLevelStep": 0.12,
+  "ExpMinFactor": 0.25,
+  "ExpMaxFactor": 2,
+  "ExpSupportPercent": 16,
+  "PointsPerLevel": 100,
+  "MaxLevel": 99,
+  "DeputyShare": 85,
+  "DeputyWeight": 2,
+  "DeputyDivisor": 300,
+  "DeputyMinTier": 1,
+  "PromoteLevels": [
+   15,
+   30
+  ],
+  "EnemyStock": {
+   "ration": 1
+  },
+  "EdgeTile": "~"
+ },
+ "Campaign": {
+  "Start": "intro",
+  "Roster": [
+   "hero",
+   "archer1"
+  ],
+  "Deployment": [
+   "hero",
+   "archer1"
+  ],
+  "Inventory": {
+   "ration": 5,
+   "tonic": 2,
+   "promo_guard": 1
+  }
+ },
+ "Factions": {
+  "blue": {
+   "Name": "Blue",
+   "Colors": [
+    "#6faefc",
+    "#4985d0",
+    "#304e7b"
+   ]
+  },
+  "red": {
+   "Name": "Red",
+   "Colors": [
+    "#ff8080",
+    "#d04040",
+    "#802020"
+   ]
+  }
+ },
+ "Tiles": {
+  ".": {
+   "Name": "plain"
+  },
+  "f": {
+   "Name": "forest",
+   "Ambush": true
+  },
+  "~": {
+   "Name": "water",
+   "Water": true
+  },
+  "i": {
+   "Name": "keep",
+   "Castle": true,
+   "RestMP": 2
+  },
+  "v": {
+   "Name": "village",
+   "RestHP": 8,
+   "RestMP": 2
+  }
+ }
+}

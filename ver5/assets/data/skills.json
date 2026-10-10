@@ -1,0 +1,806 @@
+{
+ "Skills": {
+  "sweep": {
+   "Name": "무쌍",
+   "Desc": "공격범위 안의 모든 적을 벤다.",
+   "Kind": "physical",
+   "Mode": "melee",
+   "Shape": "all",
+   "Cost": 54,
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
+   "Requires": [
+    "sweep_art"
+   ]
+  },
+  "barrage": {
+   "Name": "난사",
+   "Desc": "공격범위 안의 모든 적을 쏜다.",
+   "Kind": "physical",
+   "Mode": "ranged",
+   "Shape": "all",
+   "Cost": 40,
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 0.5,
+   "Requires": [
+    "volley"
+   ]
+  },
+  "counter": {
+   "Name": "반격",
+   "Desc": "다음 적 차례까지 반격 태세를 취한다.",
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 18,
+   "Hit": 100,
+   "Effect": "counter",
+   "Duration": 2,
+   "Requires": [
+    "counter_art"
+   ]
+  },
+  "steal": {
+   "Name": "탈취",
+   "Desc": "적이 가진 아이템을 빼앗는다.",
+   "Kind": "physical",
+   "Mode": "melee",
+   "Shape": "single",
+   "Cost": 24,
+   "Hit": 90,
+   "Effect": "steal",
+   "Item": "small_food",
+   "Min": 1,
+   "Coeff": 0.7
+  },
+  "eightfold": {
+   "Name": "팔진도",
+   "Desc": "아군 한 명의 단일 책략을 3×3 범위로 넓힌다.",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 40,
+   "Hit": 100,
+   "Effect": "eightfold",
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "eight_formation"
+   ]
+  },
+  "scorch": {
+   "Name": "초열",
+   "Desc": "화염으로 적을 태운다.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 60,
+   "Hit": 110,
+   "Element": "fire",
+   "Min": 1,
+   "Max": 4,
+   "Coeff": 1,
+   "Requires": [
+    "fire"
+   ]
+  },
+  "blaze": {
+   "Name": "업화",
+   "Desc": "초열보다 피해 1.5배.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 80,
+   "Hit": 110,
+   "Element": "fire",
+   "Min": 1,
+   "Max": 3,
+   "Coeff": 1.5,
+   "Requires": [
+    "fire",
+    "fire_boost"
+   ]
+  },
+  "fire_array": {
+   "Name": "화진",
+   "Desc": "십자 범위 화염.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 80,
+   "Hit": 110,
+   "Element": "fire",
+   "Min": 1,
+   "Max": 4,
+   "Coeff": 0.7,
+   "Requires": [
+    "fire",
+    "fire_spread"
+   ]
+  },
+  "inferno": {
+   "Name": "폭염",
+   "Desc": "일자 6칸 화염.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "line",
+   "Cost": 100,
+   "Hit": 110,
+   "Element": "fire",
+   "Min": 1,
+   "Max": 2,
+   "Length": 6,
+   "Coeff": 1.2,
+   "Requires": [
+    "fire",
+    "fire_boost",
+    "fire_spread"
+   ]
+  },
+  "fire_dragon": {
+   "Name": "화룡",
+   "Desc": "십자 범위 화염.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 100,
+   "Hit": 110,
+   "Element": "fire",
+   "Min": 1,
+   "Max": 3,
+   "Coeff": 1,
+   "Requires": [
+    "fire",
+    "fire_boost",
+    "fire_spread"
+   ]
+  },
+  "torrent": {
+   "Name": "탁류",
+   "Desc": "탁류로 적을 휩쓴다.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 60,
+   "Hit": 110,
+   "Element": "water",
+   "Condition": "water",
+   "Min": 1,
+   "Max": 4,
+   "Coeff": 1,
+   "Requires": [
+    "water"
+   ]
+  },
+  "rapids": {
+   "Name": "격류",
+   "Desc": "탁류보다 피해 1.5배.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 80,
+   "Hit": 110,
+   "Element": "water",
+   "Condition": "water",
+   "Min": 1,
+   "Max": 3,
+   "Coeff": 1.5,
+   "Requires": [
+    "water",
+    "water_boost"
+   ]
+  },
+  "water_array": {
+   "Name": "수진",
+   "Desc": "십자 범위 물.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 80,
+   "Hit": 110,
+   "Element": "water",
+   "Condition": "water",
+   "Min": 1,
+   "Max": 4,
+   "Coeff": 0.7,
+   "Requires": [
+    "water",
+    "water_spread"
+   ]
+  },
+  "tsunami": {
+   "Name": "해일",
+   "Desc": "멀리까지 닿는 거센 파도.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 100,
+   "Hit": 110,
+   "Element": "water",
+   "Condition": "water",
+   "Min": 1,
+   "Max": 7,
+   "Coeff": 1.5,
+   "Requires": [
+    "water",
+    "water_boost",
+    "water_spread"
+   ]
+  },
+  "water_dragon": {
+   "Name": "수룡",
+   "Desc": "십자 범위 물.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 100,
+   "Hit": 110,
+   "Element": "water",
+   "Condition": "water",
+   "Min": 1,
+   "Max": 3,
+   "Coeff": 1,
+   "Requires": [
+    "water",
+    "water_boost",
+    "water_spread"
+   ]
+  },
+  "rockfall": {
+   "Name": "낙석",
+   "Desc": "바위를 굴려 적을 친다.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 60,
+   "Hit": 110,
+   "Element": "earth",
+   "Min": 1,
+   "Max": 4,
+   "Coeff": 1,
+   "Requires": [
+    "earth"
+   ]
+  },
+  "landslide": {
+   "Name": "산사태",
+   "Desc": "낙석보다 피해 1.5배.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 80,
+   "Hit": 110,
+   "Element": "earth",
+   "Min": 1,
+   "Max": 3,
+   "Coeff": 1.5,
+   "Requires": [
+    "earth",
+    "earth_boost"
+   ]
+  },
+  "earthquake": {
+   "Name": "지진",
+   "Desc": "십자 범위 지진.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 80,
+   "Hit": 110,
+   "Element": "earth",
+   "Min": 1,
+   "Max": 4,
+   "Coeff": 0.7,
+   "Requires": [
+    "earth",
+    "earth_spread"
+   ]
+  },
+  "boulder": {
+   "Name": "거암",
+   "Desc": "낙석보다 피해 2배.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 100,
+   "Hit": 110,
+   "Element": "earth",
+   "Min": 1,
+   "Max": 2,
+   "Coeff": 2,
+   "Requires": [
+    "earth",
+    "earth_boost",
+    "earth_spread"
+   ]
+  },
+  "earth_dragon": {
+   "Name": "지룡",
+   "Desc": "십자 범위 대지.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 100,
+   "Hit": 110,
+   "Element": "earth",
+   "Min": 1,
+   "Max": 3,
+   "Coeff": 1,
+   "Requires": [
+    "earth",
+    "earth_boost",
+    "earth_spread"
+   ]
+  },
+  "minor_supply": {
+   "Name": "소보급",
+   "Desc": "아군 한 명의 병력을 회복한다.",
+   "Kind": "heal",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 24,
+   "Hit": 95,
+   "Effect": "heal",
+   "Max": 3,
+   "Coeff": 3,
+   "Requires": [
+    "relief"
+   ]
+  },
+  "petition": {
+   "Name": "헌책",
+   "Desc": "병법치 24를 써서 아군 한 명의 병법치를 24 올린다.",
+   "Kind": "heal",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 24,
+   "Hit": 100,
+   "Effect": "refill",
+   "Max": 3,
+   "Coeff": 24,
+   "Requires": [
+    "relief"
+   ]
+  },
+  "medium_supply": {
+   "Name": "중보급",
+   "Desc": "소보급의 2배 회복.",
+   "Kind": "heal",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 48,
+   "Hit": 95,
+   "Effect": "heal",
+   "Max": 3,
+   "Coeff": 6,
+   "Requires": [
+    "relief",
+    "relief_boost"
+   ]
+  },
+  "awaken": {
+   "Name": "각성",
+   "Desc": "아군 한 명의 모든 상태이상을 푼다.",
+   "Kind": "heal",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 36,
+   "Hit": 100,
+   "Effect": "cure",
+   "Max": 3,
+   "Requires": [
+    "relief",
+    "relief_boost"
+   ]
+  },
+  "reinforce": {
+   "Name": "원군",
+   "Desc": "십자 범위 아군을 소보급만큼 회복한다.",
+   "Kind": "heal",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 72,
+   "Hit": 95,
+   "Effect": "heal",
+   "Max": 3,
+   "Coeff": 3,
+   "Requires": [
+    "relief",
+    "relief_spread"
+   ]
+  },
+  "grand_supply": {
+   "Name": "대보급",
+   "Desc": "소보급의 3배 회복.",
+   "Kind": "heal",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 72,
+   "Hit": 95,
+   "Effect": "heal",
+   "Max": 3,
+   "Coeff": 9,
+   "Requires": [
+    "relief",
+    "relief_boost",
+    "relief_spread"
+   ]
+  },
+  "grand_reinforce": {
+   "Name": "대원군",
+   "Desc": "3×3 범위 아군을 중보급만큼 회복한다.",
+   "Kind": "heal",
+   "Mode": "any",
+   "Shape": "square",
+   "Cost": 120,
+   "Hit": 95,
+   "Effect": "heal",
+   "Max": 3,
+   "Coeff": 6,
+   "Requires": [
+    "relief",
+    "relief_boost",
+    "relief_spread"
+   ]
+  },
+  "transport": {
+   "Name": "수송",
+   "Desc": "멀리 있는 아군도 중보급만큼 회복한다.",
+   "Kind": "heal",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 60,
+   "Hit": 95,
+   "Effect": "heal",
+   "Max": 99,
+   "Coeff": 6,
+   "Requires": [
+    "relief",
+    "relief_boost",
+    "relief_spread"
+   ]
+  },
+  "counsel": {
+   "Name": "간언",
+   "Desc": "병법치 48을 써서 아군 한 명의 병법치를 48 올린다.",
+   "Kind": "heal",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 48,
+   "Hit": 100,
+   "Effect": "refill",
+   "Max": 3,
+   "Coeff": 48,
+   "Requires": [
+    "relief",
+    "relief_boost",
+    "relief_spread"
+   ]
+  },
+  "swift_wit": {
+   "Name": "기민",
+   "Desc": "십자 범위 아군의 민첩 +20%.",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 48,
+   "Hit": 95,
+   "Effect": "agility",
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "exhort"
+   ]
+  },
+  "uplift": {
+   "Name": "고양",
+   "Desc": "십자 범위 아군의 사기 +20%.",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 48,
+   "Hit": 95,
+   "Effect": "morale",
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "exhort"
+   ]
+  },
+  "rouse": {
+   "Name": "분기",
+   "Desc": "아군 한 명의 공격력 +20%.",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 24,
+   "Hit": 95,
+   "Effect": "attack",
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "exhort"
+   ]
+  },
+  "harden": {
+   "Name": "견고",
+   "Desc": "아군 한 명의 방어력 +20%.",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 24,
+   "Hit": 95,
+   "Effect": "defense",
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "exhort"
+   ]
+  },
+  "inspire": {
+   "Name": "고무",
+   "Desc": "십자 범위 아군의 공격력 +20%.",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 60,
+   "Hit": 90,
+   "Effect": "attack",
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "exhort",
+    "exhort_boost"
+   ]
+  },
+  "fortify_line": {
+   "Name": "강진",
+   "Desc": "십자 범위 아군의 방어력 +20%.",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 60,
+   "Hit": 90,
+   "Effect": "defense",
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "exhort",
+    "exhort_boost"
+   ]
+  },
+  "forced_march": {
+   "Name": "강행",
+   "Desc": "아군 한 명의 이동력 +2.",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 36,
+   "Hit": 95,
+   "Effect": "speed",
+   "Max": 3,
+   "Duration": 2,
+   "Coeff": 2,
+   "Requires": [
+    "exhort",
+    "exhort_boost"
+   ]
+  },
+  "slow": {
+   "Name": "둔화",
+   "Desc": "십자 범위 적의 민첩 -20%.",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 48,
+   "Hit": 75,
+   "Effect": "agility",
+   "Min": 1,
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "hinder"
+   ]
+  },
+  "unrest": {
+   "Name": "동요",
+   "Desc": "십자 범위 적의 사기 -20%.",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 48,
+   "Hit": 75,
+   "Effect": "morale",
+   "Min": 1,
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "hinder"
+   ]
+  },
+  "weaken": {
+   "Name": "쇠약",
+   "Desc": "적 한 명의 공격력 -20%.",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 30,
+   "Hit": 75,
+   "Effect": "attack",
+   "Min": 1,
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "hinder"
+   ]
+  },
+  "enfeeble": {
+   "Name": "약화",
+   "Desc": "적 한 명의 방어력 -20%.",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 30,
+   "Hit": 75,
+   "Effect": "defense",
+   "Min": 1,
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "hinder"
+   ]
+  },
+  "shrink": {
+   "Name": "위축",
+   "Desc": "십자 범위 적의 공격력 -20%.",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 60,
+   "Hit": 70,
+   "Effect": "attack",
+   "Min": 1,
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "hinder",
+    "hinder_boost"
+   ]
+  },
+  "collapse": {
+   "Name": "와해",
+   "Desc": "십자 범위 적의 방어력 -20%.",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 60,
+   "Hit": 70,
+   "Effect": "defense",
+   "Min": 1,
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "hinder",
+    "hinder_boost"
+   ]
+  },
+  "seal_spell": {
+   "Name": "봉책",
+   "Desc": "적 한 명의 책략을 막는다.",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 36,
+   "Hit": 75,
+   "Effect": "seal",
+   "Min": 1,
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "stratagem"
+   ]
+  },
+  "poison_mist": {
+   "Name": "독연",
+   "Desc": "적 한 명에게 독을 건다.",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 36,
+   "Hit": 75,
+   "Effect": "poison",
+   "Min": 1,
+   "Max": 3,
+   "Duration": 3,
+   "Requires": [
+    "stratagem"
+   ]
+  },
+  "confuse": {
+   "Name": "혼란",
+   "Desc": "적 한 명을 혼란에 빠뜨린다.",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 36,
+   "Hit": 70,
+   "Effect": "confusion",
+   "Min": 1,
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "stratagem"
+   ]
+  },
+  "root_spell": {
+   "Name": "봉쇄",
+   "Desc": "적 한 명의 이동을 막는다.",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 54,
+   "Hit": 75,
+   "Effect": "root",
+   "Min": 1,
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "stratagem",
+    "stratagem_boost"
+   ]
+  },
+  "disarm_spell": {
+   "Name": "봉격",
+   "Desc": "적 한 명의 공격을 막는다.",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 54,
+   "Hit": 75,
+   "Effect": "disarm",
+   "Min": 1,
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "stratagem",
+    "stratagem_boost"
+   ]
+  },
+  "great_confusion": {
+   "Name": "대혼란",
+   "Desc": "십자 범위 적을 혼란에 빠뜨린다.",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 72,
+   "Hit": 65,
+   "Effect": "confusion",
+   "Min": 1,
+   "Max": 3,
+   "Duration": 2,
+   "Requires": [
+    "stratagem",
+    "stratagem_boost"
+   ]
+  },
+  "poison_fog": {
+   "Name": "독무",
+   "Desc": "십자 범위 적에게 독을 건다.",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 72,
+   "Hit": 65,
+   "Effect": "poison",
+   "Min": 1,
+   "Max": 3,
+   "Duration": 3,
+   "Requires": [
+    "stratagem",
+    "stratagem_boost"
+   ]
+  }
+ }
+}

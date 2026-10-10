@@ -1,0 +1,229 @@
+{
+ "Title": "삼국지 SRPG",
+ "Version": "ver5-1",
+ "Rules": {
+  "DamageCurve": [
+   [
+    0.5,
+    0.8
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    2,
+    1.2
+   ]
+  ],
+  "HitCurve": [
+   [
+    0.3333,
+    30
+   ],
+   [
+    0.5,
+    60
+   ],
+   [
+    1,
+    80
+   ],
+   [
+    2,
+    100
+   ]
+  ],
+  "StatNumerator": 400,
+  "StatDenominator": 140,
+  "StatLevelBase": 10,
+  "BasicAttack": {
+   "Name": "공격",
+   "Kind": "physical",
+   "Mode": "any",
+   "Shape": "single",
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1
+  },
+  "HitFloor": 30,
+  "HitCeil": 100,
+  "SpellFloor": 5,
+  "SpellCeil": 100,
+  "MagicPower": 2,
+  "MagicGuard": 0.5,
+  "Crit": {
+   "Base": 10,
+   "Per": 30,
+   "Max": 70
+  },
+  "CritMultiplier": 1.5,
+  "Double": {
+   "Base": 10,
+   "Per": 30,
+   "Max": 70
+  },
+  "CounterShare": 0.7,
+  "PoisonPercent": 5,
+  "BurnPercent": 4,
+  "BuffPercent": 20,
+  "BuffTurns": 2,
+  "ExpBase": 100,
+  "ExpGrowth": 1.035,
+  "ExpAction": 24,
+  "ExpSpell": 2,
+  "ExpDefeat": 2,
+  "ExpLevelStep": 0.12,
+  "ExpMinFactor": 0.25,
+  "ExpMaxFactor": 2,
+  "ExpSupportPercent": 16,
+  "PointsPerLevel": 100,
+  "MaxLevel": 99,
+  "DeputyShare": 85,
+  "DeputyWeight": 2,
+  "DeputyDivisor": 300,
+  "DeputyMinTier": 1,
+  "PromoteLevels": [
+   15,
+   30
+  ],
+  "EnemyStock": {
+   "small_food": 1
+  },
+  "EdgeTile": "~"
+ },
+ "Campaign": {
+  "Start": "oath",
+  "Roster": [
+   "liubei",
+   "guanyu",
+   "zhangfei"
+  ],
+  "Deployment": [
+   "liubei",
+   "guanyu",
+   "zhangfei"
+  ],
+  "Inventory": {
+   "small_food": 18,
+   "small_scroll": 8
+  }
+ },
+ "Factions": {
+  "wei": {
+   "Name": "위",
+   "Colors": [
+    "#6faefc",
+    "#4985d0",
+    "#304e7b"
+   ]
+  },
+  "shu": {
+   "Name": "촉",
+   "Colors": [
+    "#90d467",
+    "#67aa3a",
+    "#446b2c"
+   ]
+  },
+  "wu": {
+   "Name": "오",
+   "Colors": [
+    "#f47065",
+    "#c6453e",
+    "#712722"
+   ]
+  },
+  "turban": {
+   "Name": "황건적",
+   "Colors": [
+    "#ffb84f",
+    "#d38e11",
+    "#895d14"
+   ]
+  },
+  "dong": {
+   "Name": "동탁·여포",
+   "Colors": [
+    "#5f73a7",
+    "#3c4d7f",
+    "#151e3a"
+   ]
+  },
+  "gongsun": {
+   "Name": "공손찬",
+   "Colors": [
+    "#f0f6fd",
+    "#dce2e9",
+    "#a2a6aa"
+   ]
+  },
+  "yuan": {
+   "Name": "원소·원술",
+   "Colors": [
+    "#fff059",
+    "#d4c513",
+    "#938a27"
+   ]
+  },
+  "barbarian": {
+   "Name": "이민족",
+   "Colors": [
+    "#b182ce",
+    "#895ba4",
+    "#4b315b"
+   ]
+  },
+  "merchant": {
+   "Name": "상단",
+   "Colors": [
+    "#9973df",
+    "#734bb4",
+    "#3b2460"
+   ]
+  }
+ },
+ "Tiles": {
+  ".": {
+   "Name": "평지"
+  },
+  "d": {
+   "Name": "황무지"
+  },
+  "~": {
+   "Name": "물",
+   "Water": true
+  },
+  "f": {
+   "Name": "숲",
+   "Ambush": true
+  },
+  "s": {
+   "Name": "산"
+  },
+  "v": {
+   "Name": "마을",
+   "RestHP": 8,
+   "RestMP": 2
+  },
+  "c": {
+   "Name": "성벽"
+  },
+  "i": {
+   "Name": "성내",
+   "Castle": true,
+   "RestMP": 2
+  },
+  "b": {
+   "Name": "다리"
+  },
+  "g": {
+   "Name": "성문"
+  },
+  "k": {
+   "Name": "주둔지",
+   "RestHP": 8,
+   "RestMP": 2
+  }
+ }
+}

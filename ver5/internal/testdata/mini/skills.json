@@ -1,0 +1,219 @@
+{
+ "Skills": {
+  "sweep": {
+   "Name": "Sweep",
+   "Kind": "physical",
+   "Mode": "melee",
+   "Shape": "all",
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
+   "Cost": 20,
+   "Requires": [
+    "sweep_art"
+   ]
+  },
+  "volley": {
+   "Name": "Volley",
+   "Kind": "physical",
+   "Mode": "ranged",
+   "Shape": "all",
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 0.5,
+   "Cost": 20,
+   "Max": 3,
+   "Requires": [
+    "far_t"
+   ]
+  },
+  "stance": {
+   "Name": "Stance",
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Hit": 100,
+   "Min": 0,
+   "Coeff": 1,
+   "Effect": "counter",
+   "Duration": 2,
+   "Cost": 10,
+   "Requires": [
+    "stance_art"
+   ]
+  },
+  "flame": {
+   "Name": "Flame",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "single",
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
+   "Element": "fire",
+   "Cost": 30,
+   "Max": 3,
+   "Requires": [
+    "fire"
+   ]
+  },
+  "inferno": {
+   "Name": "Inferno",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "single",
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1.5,
+   "Element": "fire",
+   "Cost": 40,
+   "Max": 3,
+   "Requires": [
+    "fire",
+    "fire_up"
+   ]
+  },
+  "mend": {
+   "Name": "Mend",
+   "Kind": "heal",
+   "Mode": "any",
+   "Shape": "single",
+   "Hit": 100,
+   "Min": 0,
+   "Coeff": 3,
+   "Effect": "heal",
+   "Cost": 20,
+   "Max": 3,
+   "Requires": [
+    "mercy"
+   ]
+  },
+  "bolster": {
+   "Name": "Bolster",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "single",
+   "Hit": 100,
+   "Min": 0,
+   "Coeff": 1,
+   "Effect": "attack",
+   "Duration": 2,
+   "Cost": 10,
+   "Max": 3,
+   "Requires": [
+    "mercy"
+   ]
+  },
+  "weaken": {
+   "Name": "Weaken",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "single",
+   "Hit": 100,
+   "Min": 1,
+   "Coeff": 1,
+   "Effect": "attack",
+   "Duration": 2,
+   "Cost": 10,
+   "Max": 3,
+   "Requires": [
+    "fire"
+   ]
+  },
+  "daze": {
+   "Name": "Daze",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "single",
+   "Hit": 100,
+   "Min": 1,
+   "Coeff": 1,
+   "Effect": "confusion",
+   "Duration": 2,
+   "Cost": 10,
+   "Max": 3,
+   "Requires": [
+    "fire"
+   ]
+  },
+  "seal": {
+   "Name": "Seal",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "single",
+   "Hit": 100,
+   "Min": 1,
+   "Coeff": 1,
+   "Effect": "seal",
+   "Duration": 2,
+   "Cost": 10,
+   "Max": 3,
+   "Requires": [
+    "fire"
+   ]
+  },
+  "disarm": {
+   "Name": "Disarm",
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "single",
+   "Hit": 100,
+   "Min": 1,
+   "Coeff": 1,
+   "Effect": "disarm",
+   "Duration": 2,
+   "Cost": 10,
+   "Max": 3,
+   "Requires": [
+    "fire"
+   ]
+  },
+  "lightning": {
+   "Name": "Line",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "line",
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
+   "Element": "fire",
+   "Length": 4,
+   "Cost": 30,
+   "Max": 2,
+   "Requires": [
+    "fire"
+   ]
+  },
+  "eight": {
+   "Name": "Eightfold",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "single",
+   "Hit": 100,
+   "Min": 0,
+   "Coeff": 1,
+   "Effect": "eightfold",
+   "Duration": 2,
+   "Cost": 10,
+   "Max": 3,
+   "Requires": [
+    "mercy"
+   ]
+  },
+  "steal": {
+   "Name": "Steal",
+   "Kind": "physical",
+   "Mode": "melee",
+   "Shape": "single",
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 0.7,
+   "Effect": "steal",
+   "Item": "ration",
+   "Cost": 5,
+   "Requires": [
+    "fire"
+   ]
+  }
+ }
+}

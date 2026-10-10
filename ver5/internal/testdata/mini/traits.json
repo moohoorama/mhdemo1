@@ -1,0 +1,451 @@
+{
+ "Traits": {
+  "fire": {
+   "Name": "Fire",
+   "Desc": "",
+   "Cost": 0,
+   "Requires": [],
+   "Effects": {}
+  },
+  "mercy": {
+   "Name": "Mercy",
+   "Desc": "",
+   "Cost": 0,
+   "Requires": [],
+   "Effects": {}
+  },
+  "fire_up": {
+   "Name": "Fire Up",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [
+    "fire"
+   ],
+   "Effects": {}
+  },
+  "stance_art": {
+   "Name": "Stance Art",
+   "Desc": "",
+   "Cost": 200,
+   "Requires": [],
+   "Effects": {}
+  },
+  "sweep_art": {
+   "Name": "Sweep Art",
+   "Desc": "",
+   "Cost": 800,
+   "Requires": [],
+   "Effects": {}
+  },
+  "bulwark_t": {
+   "Name": "Bulwark",
+   "Desc": "",
+   "Cost": 500,
+   "Requires": [],
+   "Effects": {
+    "bulwark": 0.1
+   }
+  },
+  "lucky_t": {
+   "Name": "Lucky",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {}
+  },
+  "far_t": {
+   "Name": "Far",
+   "Desc": "",
+   "Cost": 200,
+   "Requires": [],
+   "Effects": {
+    "no_min_range": 1
+   }
+  },
+  "crit_t": {
+   "Name": "Crit",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": [],
+   "Effects": {
+    "crit_always": 1
+   }
+  },
+  "weak_crit": {
+   "Name": "Duelist",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": [],
+   "Effects": {
+    "crit_vs_weaker": 1
+   }
+  },
+  "twice": {
+   "Name": "Twice",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": [],
+   "Effects": {
+    "double_always": 1
+   }
+  },
+  "poison_t": {
+   "Name": "Venom",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "poison_on_hit": 1
+   }
+  },
+  "leech_t": {
+   "Name": "Leech",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "life_steal": 0.25
+   }
+  },
+  "awe": {
+   "Name": "Awe",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "miss_half": 0.5
+   }
+  },
+  "assist_t": {
+   "Name": "Assist",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "assist": 0.5
+   }
+  },
+  "cross_t": {
+   "Name": "Cross",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "splash_cross": 0.75
+   }
+  },
+  "square_t": {
+   "Name": "Square",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [
+    "cross_t"
+   ],
+   "Effects": {
+    "splash_square": 0.75
+   }
+  },
+  "pierce_t": {
+   "Name": "Pierce",
+   "Desc": "",
+   "Cost": 0,
+   "Requires": [],
+   "Effects": {
+    "pierce": 0.75
+   }
+  },
+  "counter_t": {
+   "Name": "Counter",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "counter_force": 1
+   }
+  },
+  "gold": {
+   "Name": "Gold",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "crit_immune": 1
+   }
+  },
+  "shield": {
+   "Name": "Shield",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "ranged_immune": 1
+   }
+  },
+  "riposte_t": {
+   "Name": "Riposte",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "riposte": 0.7
+   }
+  },
+  "reflect_t": {
+   "Name": "Reflect",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "reflect": 1
+   }
+  },
+  "fort": {
+   "Name": "Fort",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "fortify": 1
+   }
+  },
+  "dash": {
+   "Name": "Dash",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "move": 1
+   }
+  },
+  "gale": {
+   "Name": "Gale",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [
+    "dash"
+   ],
+   "Effects": {
+    "move": 2
+   }
+  },
+  "rough": {
+   "Name": "Rough",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "ignore_move_cost": 1
+   }
+  },
+  "charge_t": {
+   "Name": "Charge",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "ignore_zoc": 1
+   }
+  },
+  "haste_t": {
+   "Name": "Haste",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "haste": 2
+   }
+  },
+  "sight_t": {
+   "Name": "Sight",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "far_sight": 1
+   }
+  },
+  "steed": {
+   "Name": "Steed",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "mounted_range": 2,
+    "light_move": 1
+   }
+  },
+  "reach": {
+   "Name": "Reach",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "spell_range": 3
+   }
+  },
+  "sure_t": {
+   "Name": "Sure",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "spell_sure": 1
+   }
+  },
+  "deep": {
+   "Name": "Deep",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "spell_crit": 1
+   }
+  },
+  "chain_t": {
+   "Name": "Chain",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "chain": 1
+   }
+  },
+  "firestorm": {
+   "Name": "Firestorm",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "sure:fire": 1,
+    "crit:fire": 1
+   }
+  },
+  "see": {
+   "Name": "See",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "dispel": 1
+   }
+  },
+  "calm": {
+   "Name": "Calm",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "status_immune": 1,
+    "cleanse": 1
+   }
+  },
+  "heal_t": {
+   "Name": "Heal+",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "heal_bonus": 1
+   }
+  },
+  "aura_t": {
+   "Name": "Aura",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "aura_heal": 0.1
+   }
+  },
+  "lead": {
+   "Name": "Lead",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "deputy_rate": 1.1
+   }
+  },
+  "share": {
+   "Name": "Share",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "item_share": 1
+   }
+  },
+  "focus": {
+   "Name": "Focus",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "mana_regen": 1
+   }
+  },
+  "blood": {
+   "Name": "Blood",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "blood_cost": 10
+   }
+  },
+  "regen_t": {
+   "Name": "Regen",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "regen": 0.1
+   }
+  },
+  "extend": {
+   "Name": "Extend",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "buff_extend": 1
+   }
+  },
+  "last": {
+   "Name": "Last",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "last_stand": 1
+   }
+  },
+  "half": {
+   "Name": "Half",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "cost_half": 1
+   }
+  },
+  "ambush_t": {
+   "Name": "Ambush",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "crit_ambush": 1
+   }
+  },
+  "siege": {
+   "Name": "Siege",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "ignore_terrain": 1
+   }
+  }
+ }
+}

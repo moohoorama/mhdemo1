@@ -1,0 +1,56 @@
+{
+ "ID": "S1",
+ "Name": "Stage 1",
+ "Boss": "boss",
+ "Width": 12,
+ "Height": 8,
+ "Limit": 2,
+ "Threshold": 0,
+ "Tiles": [
+  "............",
+  "..ff....i...",
+  "............",
+  "....~~......",
+  "....~~......",
+  "...vv.......",
+  "............",
+  "............"
+ ],
+ "Allies": [
+  {
+   "X": 1,
+   "Y": 2
+  },
+  {
+   "X": 1,
+   "Y": 3
+  },
+  {
+   "X": 2,
+   "Y": 2
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "boss",
+   "X": 9,
+   "Y": 2
+  },
+  {
+   "Character": "troop",
+   "X": 9,
+   "Y": 4
+  },
+  {
+   "Character": "troop",
+   "X": 10,
+   "Y": 3,
+   "Level": 5
+  }
+ ],
+ "Reward": {
+  "tonic": 1
+ },
+ "Next": "after1",
+ "Faction": "red"
+}

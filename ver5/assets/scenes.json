@@ -1,0 +1,76 @@
+{
+ "about": "Scenario scenes (GUI only; not part of the rules content). maps: rules tiles like battle maps, exported to graphics/maps by tools/build_assets.py. Props: [name, x, y] (fractions allowed) or [name, x0, y0, x1, y1] to fill cells, names from tools/spritetool/assets/ver4-props/props.json. scenes: per dialogue node, the map, the cast [x, y, facing, faction, sprite] (placed when the map changes or when listed; names are the characters' display names from the data bundle; faction defaults to the character's Look.Faction; sprite picks any sprite id instead of the character's scene sprite: infantry (soldier, villager), cavalry (messenger), archer, strategist, or a battle sprite for a fight) and beats: for each speaker line of the node, groups of steps run before that line; steps in a group start together, the next group waits for them. Facings are the diagonals NW, NE, SW, SE only (scene sprites are drawn facing NW and SW; NE and SE are flipped). Steps: move [x, y] (fractions allowed), face DIR, play MOTION (action: a character's own pose, then back to idle; battle sprites: attack hit block exhausted), emote TEXT, wait SECONDS, effect petals|fire|none (fire at [x, y] given by at, else at the actor).",
+ "maps": [
+  {"ID": "S_peach", "Name": "도원", "Width": 11, "Height": 9, "Tiles": [
+   "ff.f.f.f.ff",
+   "f..........",
+   "...........",
+   "f..........",
+   "...........",
+   "...........",
+   "...........",
+   "...........",
+   "..........."],
+   "Props": [["peach_tree", 2.5, 1.6], ["peach_tree", 7.8, 1.4], ["peach_tree", 1, 3.5], ["peach_tree", 9.6, 3.2],
+             ["altar", 5, 2.1]]},
+  {"ID": "S_village", "Name": "탁현 마을", "Width": 11, "Height": 9, "Tiles": [
+   "vvv..v..fff",
+   "vv.........",
+   "v..........",
+   "....dd.....",
+   "....dd.....",
+   "...........",
+   "...........",
+   "...........",
+   "..........."],
+   "Props": [["tavern", 7.6, 1.6], ["notice_board", 3.2, 2.6]]},
+  {"ID": "S_camp", "Name": "연합군 진영", "Width": 11, "Height": 9, "Tiles": [
+   "ddsdddsddsd",
+   "d..........",
+   "s..........",
+   "d...ddd....",
+   "d...ddd....",
+   "...........",
+   "...........",
+   "...........",
+   "..........."],
+   "Props": [["tent_round", 5, 1.1], ["tent", 2.2, 1.6], ["tent", 8.4, 1.4], ["banner", 3.6, 2.3], ["banner", 6.5, 2.2],
+             ["command_flag", 6.3, 1.2]]}
+ ],
+ "scenes": {
+  "oath": {"map": "S_peach",
+   "cast": {"유비": [5, 3, "SW"], "관우": [2, 7, "NE"], "장비": [8, 7, "NW"]},
+   "beats": [
+    [[{"actor": "유비", "emote": "…"}, {"effect": "petals"}],
+     [{"actor": "관우", "move": [4, 5]}, {"actor": "장비", "move": [6, 5]}],
+     [{"actor": "관우", "face": "NE"}, {"actor": "장비", "face": "NW"}, {"actor": "유비", "face": "SW"}]],
+    [[{"actor": "관우", "play": "action"}, {"actor": "장비", "play": "action"}]]
+   ]},
+  "oath_choice": {"map": "S_peach",
+   "beats": [
+    [[{"actor": "유비", "play": "action"}, {"actor": "관우", "play": "action"}, {"actor": "장비", "play": "action"}],
+     [{"actor": "장비", "emote": "♪"}]]
+   ]},
+  "joined": {"map": "S_village",
+   "cast": {"유비": [5, 4, "SE"], "관우": [4, 5, "SE"], "장비": [6, 3, "SE"], "간옹": [10, 7, "NW"]},
+   "beats": [
+    [[{"actor": "간옹", "move": [7, 5]}],
+     [{"actor": "유비", "play": "action"}, {"actor": "간옹", "face": "NW"}],
+     [{"actor": "간옹", "play": "action"}]]
+   ]},
+  "coalition": {"map": "S_camp",
+   "cast": {"유비": [5, 3, "SW"], "관우": [3, 5, "NE"], "장비": [7, 5, "NW"], "간옹": [5, 6, "NW"]},
+   "beats": [
+    [[{"actor": "유비", "move": [5, 4]}]],
+    [[{"actor": "관우", "play": "action"}, {"actor": "장비", "play": "action"}, {"actor": "간옹", "play": "action"}]]
+   ]},
+  "chase": {"map": "S_camp",
+   "cast": {"유비": [5, 3, "SW"], "관우": [3, 4, "SE"], "장비": [7, 4, "SW"], "간옹": [6, 2, "SW"], "손건": [5, 8, "NW"]},
+   "beats": [
+    [[{"actor": "손건", "move": [5, 5]}],
+     [{"actor": "손건", "play": "action"}]],
+    [[{"actor": "유비", "play": "action"}],
+     [{"actor": "장비", "emote": "!"}, {"actor": "관우", "play": "action"}]]
+   ]}
+ }
+}

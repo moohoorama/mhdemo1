@@ -1,0 +1,45 @@
+{
+ "Nodes": [
+  {
+   "ID": "intro",
+   "Kind": "dialogue",
+   "Text": "Hello",
+   "Next": "pick"
+  },
+  {
+   "ID": "pick",
+   "Kind": "choice",
+   "Text": "Pick",
+   "Choices": {
+    "go": "prep1"
+   }
+  },
+  {
+   "ID": "prep1",
+   "Kind": "preparation",
+   "Text": "Prepare",
+   "Stage": "S1"
+  },
+  {
+   "ID": "after1",
+   "Kind": "join",
+   "Character": "sage",
+   "Event": "join-sage",
+   "Next": "after1b"
+  },
+  {
+   "ID": "after1b",
+   "Kind": "grant",
+   "Item": "spear",
+   "Count": 1,
+   "Event": "grant-spear",
+   "Next": "prep2"
+  },
+  {
+   "ID": "prep2",
+   "Kind": "preparation",
+   "Text": "Prepare 2",
+   "Stage": "S2"
+  }
+ ]
+}

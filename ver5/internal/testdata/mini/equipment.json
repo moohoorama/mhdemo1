@@ -1,0 +1,59 @@
+{
+ "Equipment": {
+  "iron_sword": {
+   "Name": "Sword",
+   "Slot": "weapon",
+   "Type": "blade",
+   "Bonus": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "spear": {
+   "Name": "Spear",
+   "Slot": "weapon",
+   "Type": "lance",
+   "Bonus": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "pierce_t"
+   ]
+  },
+  "short_bow": {
+   "Name": "Bow",
+   "Slot": "weapon",
+   "Type": "bow",
+   "Bonus": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "jerkin": {
+   "Name": "Jerkin",
+   "Slot": "armor",
+   "Type": "plate",
+   "Bonus": [
+    0,
+    1,
+    0,
+    0,
+    0,
+    1
+   ]
+  }
+ }
+}

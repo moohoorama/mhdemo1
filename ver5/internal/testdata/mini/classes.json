@@ -1,0 +1,151 @@
+{
+ "Classes": {
+  "footman": {
+   "Terrain": "foot",
+   "Attack": "melee",
+   "Weapon": "blade",
+   "Armor": "plate",
+   "Move": 4,
+   "Range": 1,
+   "HPFactor": 3,
+   "Bonus": [
+    12,
+    10,
+    5,
+    7,
+    8,
+    18
+   ],
+   "MPBase": 14,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.08,
+   "Sprite": "infantry",
+   "Name": "Footman",
+   "Tier": 0,
+   "Promotes": [
+    "guard"
+   ],
+   "Pool": [
+    "stance_art",
+    "sweep_art",
+    "bulwark_t"
+   ],
+   "Grants": []
+  },
+  "guard": {
+   "Terrain": "foot",
+   "Attack": "melee",
+   "Weapon": "blade",
+   "Armor": "plate",
+   "Move": 4,
+   "Range": 1,
+   "HPFactor": 3,
+   "Bonus": [
+    12,
+    10,
+    5,
+    7,
+    8,
+    18
+   ],
+   "MPBase": 14,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.08,
+   "Sprite": "infantry",
+   "Name": "Guard",
+   "Tier": 1,
+   "Promotes": [],
+   "Pool": [
+    "lucky_t"
+   ],
+   "Grants": []
+  },
+  "archer": {
+   "Terrain": "bow",
+   "Attack": "ranged",
+   "Weapon": "bow",
+   "Armor": "plate",
+   "Move": 4,
+   "Range": 3,
+   "HPFactor": 3,
+   "Bonus": [
+    12,
+    10,
+    5,
+    7,
+    8,
+    18
+   ],
+   "MPBase": 14,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.08,
+   "Sprite": "archer",
+   "Name": "Archer",
+   "MinRange": 2,
+   "Pool": [
+    "far_t"
+   ],
+   "Grants": []
+  },
+  "rider": {
+   "Terrain": "foot",
+   "Attack": "melee",
+   "Weapon": "lance",
+   "Armor": "plate",
+   "Move": 5,
+   "Range": 1,
+   "HPFactor": 3,
+   "Bonus": [
+    12,
+    10,
+    5,
+    7,
+    8,
+    18
+   ],
+   "MPBase": 14,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.08,
+   "Sprite": "cavalry",
+   "Name": "Rider",
+   "Tags": [
+    "mounted",
+    "light"
+   ]
+  },
+  "mage": {
+   "Terrain": "foot",
+   "Attack": "melee",
+   "Weapon": "fan",
+   "Armor": "robe",
+   "Move": 4,
+   "Range": 1,
+   "HPFactor": 2,
+   "Bonus": [
+    5,
+    5,
+    15,
+    7,
+    8,
+    12
+   ],
+   "MPBase": 14,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.08,
+   "Sprite": "strategist",
+   "Name": "Mage",
+   "Grants": [
+    "fire",
+    "mercy"
+   ],
+   "Pool": [
+    "fire_up"
+   ]
+  }
+ }
+}

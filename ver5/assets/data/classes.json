@@ -1,0 +1,602 @@
+{
+ "Classes": {
+  "light_infantry": {
+   "Name": "경보병",
+   "Desc": "기본 보병. 검과 갑옷으로 전선을 지킨다.",
+   "Terrain": "infantry",
+   "Attack": "melee",
+   "Weapon": "sword",
+   "Armor": "armor",
+   "Move": 4,
+   "Range": 1,
+   "Bonus": [
+    12,
+    10,
+    5,
+    7,
+    8,
+    18
+   ],
+   "HPFactor": 3,
+   "MPBase": 14,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.08,
+   "Tier": 0,
+   "Sprite": "infantry",
+   "Pool": [
+    "counter_art",
+    "composure",
+    "rough_terrain"
+   ],
+   "Promotes": [
+    "heavy_infantry"
+   ]
+  },
+  "heavy_infantry": {
+   "Name": "중보병",
+   "Desc": "두꺼운 갑옷의 보병.",
+   "Terrain": "infantry",
+   "Attack": "melee",
+   "Weapon": "sword",
+   "Armor": "armor",
+   "Move": 4,
+   "Range": 1,
+   "Bonus": [
+    15,
+    14,
+    6,
+    8,
+    10,
+    23
+   ],
+   "HPFactor": 3,
+   "MPBase": 20,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.08,
+   "Tier": 1,
+   "Sprite": "infantry",
+   "Pool": [
+    "ironwall",
+    "missile_immunity",
+    "sweep_art"
+   ],
+   "Promotes": [
+    "guards"
+   ]
+  },
+  "guards": {
+   "Name": "근위대",
+   "Desc": "주군을 지키는 정예 보병.",
+   "Terrain": "infantry",
+   "Attack": "melee",
+   "Weapon": "sword",
+   "Armor": "armor",
+   "Move": 4,
+   "Range": 1,
+   "Bonus": [
+    18,
+    19,
+    8,
+    10,
+    13,
+    29
+   ],
+   "HPFactor": 3,
+   "MPBase": 26,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.08,
+   "Tier": 2,
+   "Sprite": "infantry",
+   "Pool": [
+    "castle_defense",
+    "diamond",
+    "vitality"
+   ]
+  },
+  "light_cavalry": {
+   "Name": "경기병",
+   "Desc": "기본 기병. 빠르게 달려 적진을 흔든다.",
+   "Terrain": "cavalry",
+   "Attack": "melee",
+   "Weapon": "spear",
+   "Armor": "armor",
+   "Move": 5,
+   "Range": 1,
+   "Bonus": [
+    14,
+    8,
+    4,
+    9,
+    8,
+    14
+   ],
+   "HPFactor": 3,
+   "MPBase": 12,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.08,
+   "Tier": 0,
+   "Sprite": "cavalry",
+   "Pool": [
+    "dash",
+    "white_horse",
+    "charge"
+   ],
+   "Tags": [
+    "mounted",
+    "light"
+   ],
+   "Promotes": [
+    "heavy_cavalry"
+   ]
+  },
+  "heavy_cavalry": {
+   "Name": "중기병",
+   "Desc": "갑옷을 두른 기병.",
+   "Terrain": "cavalry",
+   "Attack": "melee",
+   "Weapon": "spear",
+   "Armor": "armor",
+   "Move": 5,
+   "Range": 1,
+   "Bonus": [
+    18,
+    10,
+    6,
+    10,
+    10,
+    18
+   ],
+   "HPFactor": 3,
+   "MPBase": 18,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.08,
+   "Tier": 1,
+   "Sprite": "cavalry",
+   "Pool": [
+    "gale",
+    "sweep_art",
+    "ironwall"
+   ],
+   "Tags": [
+    "mounted"
+   ],
+   "Promotes": [
+    "royal_guard"
+   ]
+  },
+  "royal_guard": {
+   "Name": "친위대",
+   "Desc": "군주 직속의 정예 기병.",
+   "Terrain": "cavalry",
+   "Attack": "melee",
+   "Weapon": "spear",
+   "Armor": "armor",
+   "Move": 6,
+   "Range": 1,
+   "Bonus": [
+    22,
+    15,
+    7,
+    12,
+    12,
+    22
+   ],
+   "HPFactor": 3,
+   "MPBase": 24,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.08,
+   "Tier": 2,
+   "Sprite": "cavalry",
+   "Pool": [
+    "deadly",
+    "siegecraft",
+    "diamond"
+   ],
+   "Tags": [
+    "mounted"
+   ]
+  },
+  "archer": {
+   "Name": "궁병",
+   "Desc": "활로 멀리서 적을 쏜다.",
+   "Terrain": "archer",
+   "Attack": "ranged",
+   "Weapon": "bow",
+   "Armor": "armor",
+   "Move": 4,
+   "Range": 3,
+   "Bonus": [
+    11,
+    6,
+    5,
+    10,
+    9,
+    14
+   ],
+   "HPFactor": 3,
+   "MPBase": 14,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.08,
+   "Tier": 0,
+   "Sprite": "archer",
+   "MinRange": 2,
+   "Pool": [
+    "venom",
+    "far_sight",
+    "rough_terrain"
+   ],
+   "Promotes": [
+    "crossbow"
+   ]
+  },
+  "crossbow": {
+   "Name": "노병",
+   "Desc": "강한 쇠뇌를 쏘는 궁병.",
+   "Terrain": "archer",
+   "Attack": "ranged",
+   "Weapon": "bow",
+   "Armor": "armor",
+   "Move": 4,
+   "Range": 4,
+   "Bonus": [
+    15,
+    8,
+    6,
+    12,
+    11,
+    18
+   ],
+   "HPFactor": 3,
+   "MPBase": 20,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.08,
+   "Tier": 1,
+   "Sprite": "archer",
+   "MinRange": 2,
+   "Pool": [
+    "pierce",
+    "return_fire",
+    "divine_archer"
+   ],
+   "Promotes": [
+    "repeating_crossbow"
+   ]
+  },
+  "repeating_crossbow": {
+   "Name": "연노병",
+   "Desc": "연발 쇠뇌를 쏘는 정예 궁병.",
+   "Terrain": "archer",
+   "Attack": "ranged",
+   "Weapon": "bow",
+   "Armor": "armor",
+   "Move": 4,
+   "Range": 4,
+   "Bonus": [
+    22,
+    10,
+    7,
+    15,
+    14,
+    20
+   ],
+   "HPFactor": 3,
+   "MPBase": 26,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.08,
+   "Tier": 2,
+   "Sprite": "archer",
+   "MinRange": 2,
+   "Pool": [
+    "volley",
+    "cross_strike",
+    "drain"
+   ]
+  },
+  "scholar": {
+   "Name": "사마",
+   "Desc": "화계·수계·구휼을 쓰는 문관.",
+   "Terrain": "scholar",
+   "Attack": "melee",
+   "Weapon": "fan",
+   "Armor": "robe",
+   "Move": 4,
+   "Range": 1,
+   "Bonus": [
+    6,
+    4,
+    12,
+    8,
+    9,
+    11
+   ],
+   "HPFactor": 3,
+   "MPBase": 28,
+   "MPCoeff": 0.65,
+   "RecoveryBase": 5,
+   "RecoveryCoeff": 0.13,
+   "Tier": 0,
+   "Sprite": "strategist",
+   "Grants": [
+    "fire",
+    "water",
+    "relief"
+   ],
+   "Pool": [
+    "fire_boost",
+    "water_boost",
+    "focus"
+   ],
+   "Promotes": [
+    "staff_officer",
+    "sorcerer"
+   ]
+  },
+  "staff_officer": {
+   "Name": "참모",
+   "Desc": "공격 책략과 방해 책략에 능한 참모.",
+   "Terrain": "scholar",
+   "Attack": "melee",
+   "Weapon": "fan",
+   "Armor": "robe",
+   "Move": 4,
+   "Range": 1,
+   "Bonus": [
+    7,
+    5,
+    18,
+    10,
+    12,
+    14
+   ],
+   "HPFactor": 3,
+   "MPBase": 34,
+   "MPCoeff": 0.65,
+   "RecoveryBase": 5,
+   "RecoveryCoeff": 0.13,
+   "Tier": 1,
+   "Sprite": "strategist",
+   "Grants": [
+    "fire",
+    "water",
+    "earth",
+    "hinder",
+    "stratagem"
+   ],
+   "Pool": [
+    "fire_spread",
+    "water_spread",
+    "earth_boost",
+    "feint",
+    "fire_god"
+   ],
+   "Promotes": [
+    "strategist"
+   ]
+  },
+  "strategist": {
+   "Name": "군사",
+   "Desc": "모든 공격·방해 책략을 쓰는 군사.",
+   "Terrain": "scholar",
+   "Attack": "melee",
+   "Weapon": "fan",
+   "Armor": "robe",
+   "Move": 4,
+   "Range": 1,
+   "Bonus": [
+    8,
+    7,
+    25,
+    12,
+    16,
+    17
+   ],
+   "HPFactor": 3,
+   "MPBase": 40,
+   "MPCoeff": 0.65,
+   "RecoveryBase": 5,
+   "RecoveryCoeff": 0.13,
+   "Tier": 2,
+   "Sprite": "strategist",
+   "Grants": [
+    "fire",
+    "water",
+    "earth",
+    "hinder",
+    "stratagem"
+   ],
+   "Pool": [
+    "earth_spread",
+    "hinder_boost",
+    "stratagem_boost",
+    "chain",
+    "half_cost"
+   ]
+  },
+  "sorcerer": {
+   "Name": "방술사",
+   "Desc": "구휼과 독려로 아군을 돕는 술사.",
+   "Terrain": "scholar",
+   "Attack": "melee",
+   "Weapon": "fan",
+   "Armor": "robe",
+   "Move": 4,
+   "Range": 1,
+   "Bonus": [
+    6,
+    5,
+    16,
+    9,
+    11,
+    13
+   ],
+   "HPFactor": 3,
+   "MPBase": 34,
+   "MPCoeff": 0.65,
+   "RecoveryBase": 5,
+   "RecoveryCoeff": 0.13,
+   "Tier": 1,
+   "Sprite": "strategist",
+   "Grants": [
+    "relief",
+    "exhort"
+   ],
+   "Pool": [
+    "relief_boost",
+    "relief_spread",
+    "medicine",
+    "cunning"
+   ],
+   "Promotes": [
+    "mystic"
+   ]
+  },
+  "mystic": {
+   "Name": "선술사",
+   "Desc": "상급 회복과 버프를 쓰는 선술사.",
+   "Terrain": "scholar",
+   "Attack": "melee",
+   "Weapon": "fan",
+   "Armor": "robe",
+   "Move": 4,
+   "Range": 1,
+   "Bonus": [
+    7,
+    6,
+    22,
+    11,
+    14,
+    16
+   ],
+   "HPFactor": 3,
+   "MPBase": 40,
+   "MPCoeff": 0.65,
+   "RecoveryBase": 5,
+   "RecoveryCoeff": 0.13,
+   "Tier": 2,
+   "Sprite": "strategist",
+   "Grants": [
+    "relief",
+    "exhort"
+   ],
+   "Pool": [
+    "exhort_boost",
+    "eight_formation",
+    "lasting",
+    "deep_scheme"
+   ]
+  },
+  "bandit": {
+   "Name": "적병",
+   "Desc": "재물을 노리는 무뢰배.",
+   "Terrain": "bandit",
+   "Attack": "melee",
+   "Weapon": "sword",
+   "Armor": "robe",
+   "Move": 4,
+   "Range": 1,
+   "Bonus": [
+    10,
+    5,
+    4,
+    10,
+    15,
+    24
+   ],
+   "HPFactor": 3,
+   "MPBase": 14,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.09,
+   "Tier": 0,
+   "Sprite": "infantry",
+   "Skills": [
+    "steal"
+   ],
+   "Pool": [
+    "venom",
+    "rough_terrain",
+    "ambush_crit"
+   ],
+   "Promotes": [
+    "ruffian"
+   ]
+  },
+  "ruffian": {
+   "Name": "흉적",
+   "Desc": "거칠고 날랜 도적.",
+   "Terrain": "bandit",
+   "Attack": "melee",
+   "Weapon": "sword",
+   "Armor": "robe",
+   "Move": 5,
+   "Range": 1,
+   "Bonus": [
+    13,
+    7,
+    5,
+    13,
+    20,
+    29
+   ],
+   "HPFactor": 3,
+   "MPBase": 20,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.09,
+   "Tier": 1,
+   "Sprite": "infantry",
+   "Skills": [
+    "steal"
+   ],
+   "Pool": [
+    "drain",
+    "dash",
+    "fortune"
+   ],
+   "Promotes": [
+    "outlaw"
+   ]
+  },
+  "outlaw": {
+   "Name": "의적",
+   "Desc": "의기를 아는 도적 두목.",
+   "Terrain": "bandit",
+   "Attack": "melee",
+   "Weapon": "sword",
+   "Armor": "robe",
+   "Move": 5,
+   "Range": 1,
+   "Bonus": [
+    16,
+    10,
+    7,
+    16,
+    25,
+    33
+   ],
+   "HPFactor": 3,
+   "MPBase": 26,
+   "MPCoeff": 0.6,
+   "RecoveryBase": 2,
+   "RecoveryCoeff": 0.09,
+   "Tier": 2,
+   "Sprite": "infantry",
+   "Skills": [
+    "steal"
+   ],
+   "Pool": [
+    "assist",
+    "charge"
+   ]
+  }
+ }
+}
