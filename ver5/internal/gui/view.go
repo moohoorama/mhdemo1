@@ -18,6 +18,7 @@ func (g *Game) busy() bool { return g.player.Busy() || g.sceneBusy() }
 
 // advance moves the clock, the replay and every unit's animation by one frame.
 func (g *Game) advance(dt float64) {
+	g.uiSeconds += dt
 	dt *= float64(g.speed)
 	g.clockMS += dt * 1000
 	g.player.Update(dt)
@@ -50,7 +51,7 @@ func (g *Game) advance(dt float64) {
 	g.bannerT = math.Max(0, g.bannerT-dt)
 	if !g.busy() && g.S.Engine != nil {
 		o := g.S.Engine.Observe()
-		if o.Phase == "battle" || o.Phase == "result" {
+		if o.Phase == "deployment" || o.Phase == "battle" || o.Phase == "result" {
 			g.sync(o)
 		}
 	}
@@ -63,6 +64,9 @@ func (g *Game) ensureField(o core.Observation) {
 	}
 	if g.field != nil && g.field.Map.ID == o.Map.ID {
 		return
+	}
+	if g.field != nil {
+		g.field.dispose()
 	}
 	g.field = NewField(g.assets, g.assets.Maps[o.Map.ID])
 	g.vis, g.scene, g.zoom = map[string]*unitVis{}, nil, 1
@@ -77,6 +81,15 @@ func (g *Game) ensureField(o core.Observation) {
 	if o.Phase == "battle" && o.Round == 1 && o.Turn == "ally" {
 		g.modals = append(g.modals, &modal{kind: "objective"})
 	}
+	if o.Phase == "deployment" && len(o.Map.Allies) > 0 {
+		var x, y float64
+		for _, p := range o.Map.Allies {
+			cx, cy := g.field.Center(float64(p.X), float64(p.Y))
+			x += cx
+			y += cy
+		}
+		g.camX, g.camY = x/float64(len(o.Map.Allies)), y/float64(len(o.Map.Allies))
+	}
 	g.sync(o)
 }
 
@@ -84,6 +97,15 @@ func (g *Game) ensureField(o core.Observation) {
 func (g *Game) sync(o core.Observation) {
 	if o.Map == nil || g.field == nil || g.field.Map.ID != o.Map.ID {
 		return
+	}
+	present := map[string]bool{}
+	for _, u := range o.UnitViews {
+		present[u.ID] = true
+	}
+	for id := range g.vis {
+		if !present[id] {
+			delete(g.vis, id)
+		}
 	}
 	for _, u := range o.UnitViews {
 		if g.ord.move != nil && u.ID == g.ord.actor {
@@ -95,13 +117,17 @@ func (g *Game) sync(o core.Observation) {
 			if u.Faction != "ally" {
 				dir = "NW"
 			}
-			art := g.battleArt(u.Def, u.Color)
+			if u.Facing != "" {
+				dir = u.Facing
+			}
+			art := g.battleClassArt(u.Def, u.Class, u.Color)
 			v = &unitVis{id: u.ID, ally: u.Faction == "ally", art: art, dir: dir, anim: "idle", dying: -1, top: art.TopOffset()}
 			g.vis[u.ID] = v
 		}
 		v.u, v.v, v.walk = float64(u.X), float64(u.Y), nil
 		v.lift = g.field.Lift(u.X, u.Y)
 		v.shownHP, v.maxHP = u.HP, u.Stats.MaxHP
+		v.status = u.Status
 		v.inactive = o.Phase != "battle" || u.Faction != o.Turn || u.Done
 		v.greyed = u.Done && u.Faction == o.Turn && o.Phase == "battle"
 		v.ranged = g.S.Data.Classes[u.Class].Attack == content.AttackRanged
@@ -120,13 +146,15 @@ var zooms = []float64{.5, 1, 1.5, 2}
 
 func (g *Game) toCanvas(x, y float64) (float64, float64) {
 	z := g.zoom
-	return (x-float64(viewport.Min.X+viewport.Dx()/2))/z + g.camX, (y-float64(viewport.Min.Y+viewport.Dy()/2))/z + g.camY
+	vp := g.battleViewport()
+	return (x-float64(vp.Min.X+vp.Dx()/2))/z + g.camX, (y-float64(vp.Min.Y+vp.Dy()/2))/z + g.camY
 }
 
 // toScreen maps canvas pixels to the viewport sub-image (which keeps screen coordinates).
 func (g *Game) toScreen(x, y float64) (float64, float64) {
 	z := g.zoom
-	return (x-g.camX)*z + float64(viewport.Min.X+viewport.Dx()/2), (y-g.camY)*z + float64(viewport.Min.Y+viewport.Dy()/2)
+	vp := g.battleViewport()
+	return (x-g.camX)*z + float64(vp.Min.X+vp.Dx()/2), (y-g.camY)*z + float64(vp.Min.Y+vp.Dy()/2)
 }
 
 // camera pans with the arrow keys, the window's edges or a drag with either button and
@@ -136,6 +164,7 @@ func (g *Game) camera() {
 		g.dragging = false
 		return
 	}
+	vp := g.battleViewport()
 	step := 12.0 / g.zoom
 	if ebiten.IsKeyPressed(ebiten.KeyArrowLeft) {
 		g.camX -= step
@@ -152,7 +181,7 @@ func (g *Game) camera() {
 	x, y := cursorPos()
 	// the window's edge scrolls too (not while a screenshot run drives the game)
 	const edge = 8
-	if len(g.Shots) == 0 && !g.dragging && ebiten.IsFocused() && image.Pt(x, y).In(viewport) {
+	if len(g.Shots) == 0 && !g.dragging && ebiten.IsFocused() && image.Pt(x, y).In(vp) && !g.overHUD(x, y) {
 		switch {
 		case x < edge:
 			g.camX -= step
@@ -162,11 +191,11 @@ func (g *Game) camera() {
 		switch {
 		case y < edge:
 			g.camY -= step
-		case y >= Height-edge:
+		case y >= vp.Max.Y-edge:
 			g.camY += step
 		}
 	}
-	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonRight) && image.Pt(x, y).In(viewport) && !g.dragging {
+	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonRight) && image.Pt(x, y).In(vp) && !g.overHUD(x, y) && !g.dragging {
 		g.dragging, g.dragMoved, g.dragButton, g.dragX, g.dragY = true, false, ebiten.MouseButtonRight, x, y
 	}
 	if g.dragging {
@@ -184,7 +213,7 @@ func (g *Game) camera() {
 			g.dragX, g.dragY = x, y
 		}
 	}
-	if _, wy := ebiten.Wheel(); wy != 0 && image.Pt(x, y).In(viewport) && !g.overHUD(x, y) {
+	if _, wy := ebiten.Wheel(); wy != 0 && image.Pt(x, y).In(vp) && !g.overHUD(x, y) && !g.overHUD(x, y) {
 		i := 0
 		for j, z := range zooms {
 			if z <= g.zoom {

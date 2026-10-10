@@ -10,6 +10,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
+	"srpg/internal/content"
 	"srpg/internal/core"
 	"srpg/internal/session"
 )
@@ -44,7 +45,7 @@ func (g *Game) updateHover() {
 		return
 	}
 	x, y := cursorPos()
-	if g.overHUD(x, y) {
+	if g.overHUD(x, y) || !image.Pt(x, y).In(g.battleViewport()) {
 		return
 	}
 	cx, cy := g.toCanvas(float64(x), float64(y))
@@ -62,6 +63,9 @@ func (g *Game) cursor(dst *ebiten.Image) {
 	cx, cy := g.field.Center(float64(g.hover.x), float64(g.hover.y))
 	pts := [][2]float64{{cx, cy - 8*K}, {cx + 16*K, cy}, {cx, cy + 8*K}, {cx - 16*K, cy}}
 	pulse := uint8(180 + 60*math.Sin(g.clockMS/160))
+	if g.deploying() {
+		pulse = uint8(150 + 105*(deploymentPulse(g.uiSeconds)-.12)/.18)
+	}
 	for i := range pts {
 		ax, ay := g.toScreen(pts[i][0], pts[i][1])
 		bx, by := g.toScreen(pts[(i+1)%4][0], pts[(i+1)%4][1])
@@ -465,18 +469,11 @@ func (g *Game) terrainPanel(dst *ebiten.Image, o core.Observation) {
 		c := g.S.Data.Classes[u.Class]
 		family, class = c.Terrain, c.Name
 	}
-	t := g.S.Data.Terrain[family][string(tile)]
-	x, y, w, h := 12, g.battleLogRect().Min.Y-8-86, 196, 86
+	lines := terrainInfoLines(g.S.Data, string(tile), family, class)
+	w, h := 238, 44+len(lines)*19
+	x, y := 12, g.battleLogRect().Min.Y-8-h
 	window(dst, image.Rect(x, y, x+w, y+h))
 	g.label(dst, fmt.Sprintf("%s  (%d,%d)", g.S.Data.Tiles[string(tile)].Name, g.hover.x, g.hover.y), float64(x+14), float64(y+10), 16, gold)
-	move := "진입 불가"
-	if t.Cost > 0 {
-		move = fmt.Sprintf("이동 비용 %d", t.Cost)
-	}
-	lines := []string{fmt.Sprintf("%s 보정 %.0f%%", class, t.Factor*100), move}
-	if d := g.S.Data.Tiles[string(tile)]; d.RestHP > 0 || d.RestMP > 0 {
-		lines[1] += " · 회복"
-	}
 	g.label(dst, strings.Join(lines, "\n"), float64(x+14), float64(y+36), 13, ink)
 }
 
@@ -527,7 +524,8 @@ func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
 		return float32(ox + (mx-g.field.OriginX)/16*miniScale), float32(y0 + (my-g.field.OriginY)/16*miniScale)
 	}
 	ax, ay := toMini(0, 40)
-	bx, by := toMini(Width, Height)
+	vp := g.battleViewport()
+	bx, by := toMini(float64(vp.Max.X), float64(vp.Max.Y))
 	ax, ay = max(ax, float32(x0)), max(ay, float32(y0))
 	bx, by = min(bx, float32(x0+w)), min(by, float32(y0+h))
 	if bx > ax && by > ay {
@@ -578,4 +576,31 @@ func (g *Game) unitRecovery(id string, revision uint64) core.RecoveryPreview {
 		g.recoveryEngine, g.recoveryRevision, g.recoveryID = e, revision, id
 	}
 	return g.recovery
+}
+
+func terrainInfoLines(data *content.Data, tile, family, class string) []string {
+	d := data.Tiles[tile]
+	var lines []string
+	if family == "" {
+		lines = []string{"이동·보정: 유닛 선택 시 표시"}
+	} else {
+		t := data.Terrain[family][tile]
+		move := "진입 불가"
+		if t.Cost > 0 {
+			move = fmt.Sprintf("이동 비용 %d", t.Cost)
+		}
+		lines = []string{fmt.Sprintf("%s 보정 %.0f%%", class, t.Factor*100), move}
+	}
+	if d.RestHP > 0 {
+		lines = append(lines, fmt.Sprintf("병력 회복 +%d%%", d.RestHP))
+	} else if d.RestMP > 1 {
+		lines = append(lines, "병력 회복 없음")
+	}
+	if d.RestMP > 1 {
+		lines = append(lines, fmt.Sprintf("병법치 회복 ×%d", d.RestMP))
+	}
+	if d.RestHP == 0 && d.RestMP <= 1 {
+		lines = append(lines, "지형 회복 효과 없음")
+	}
+	return lines
 }

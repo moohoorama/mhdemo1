@@ -271,6 +271,13 @@ func Next(e *core.Engine) (core.Command, error) { return NextWithDuels(e, true) 
 // NextWithDuels is Next with stage duels allowed or not.
 func NextWithDuels(e *core.Engine, duels bool) (core.Command, error) {
 	o := e.Observe()
+	if o.Phase == "deployment" {
+		commands, err := e.DeploymentPlan()
+		if err != nil {
+			return core.Command{}, err
+		}
+		return commands[0], nil
+	}
 	if o.Phase != "battle" {
 		return core.Command{}, fmt.Errorf("WrongPhase")
 	}

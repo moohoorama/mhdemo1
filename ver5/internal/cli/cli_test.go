@@ -48,7 +48,7 @@ func TestJSONLines(t *testing.T) {
 func TestHumanMenusSettingsAndSave(t *testing.T) {
 	s := game(t)
 	var out bytes.Buffer
-	input := "3\nsettings ai step\n1\nnext\nchoose go\nsave 1\nsave 1\ny\nmenu\nresume\nstart\nmove hero 3 3\nend\nai\nsave 2\nload 1\nquit\n"
+	input := "3\nsettings ai step\n1\nnext\nchoose go\nsave 1\nsave 1\ny\nmenu\nresume\nstart\nplace hero 1 2\nplace archer1 1 3\ndeployment_finish\nmove hero 3 3\nend\nai\nsave 2\nload 1\nquit\n"
 	if err := RunHuman(s, strings.NewReader(input), &out, 1); err != nil {
 		t.Fatal(err)
 	}

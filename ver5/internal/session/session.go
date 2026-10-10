@@ -191,19 +191,20 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 			}
 			v, err = s.Engine.Apply(q.Command)
 		} else if q.Op == "ai" {
-			if s.Engine.Observe().Turn != "enemy" {
+			if s.Engine.Observe().Turn != "enemy" && !s.Engine.Deploying() {
 				return nil, fmt.Errorf("NotYourTurn")
 			}
 			v, err = ai.Step(s.Engine)
 		} else {
 			turn := s.Engine.Observe().Turn
+			phase := s.Engine.Observe().Phase
 			deadline := time.Now().Add(10 * time.Second)
 			for i := 0; i < 1000; i++ {
 				if time.Now().After(deadline) {
 					return v.Events, fmt.Errorf("AITimeLimit")
 				}
 				o := s.Engine.Observe()
-				if o.Phase != "battle" || o.Turn != turn {
+				if (o.Phase != "battle" && o.Phase != "deployment") || o.Turn != turn || o.Phase != phase {
 					break
 				}
 				step, x := ai.Step(s.Engine)

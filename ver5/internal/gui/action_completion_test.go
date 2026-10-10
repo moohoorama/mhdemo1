@@ -22,7 +22,7 @@ func battleController(t *testing.T) *Game {
 	if r := g.send(session.Request{Op: "new", Seed: 17}); !r.OK {
 		t.Fatal(r.Error)
 	}
-	for _, c := range []core.Command{{Kind: "next"}, {Kind: "choose", Option: "go"}, {Kind: "start"}} {
+	for _, c := range []core.Command{{Kind: "next"}, {Kind: "choose", Option: "go"}, {Kind: "start"}, {Kind: "place", Actor: "hero", X: 1, Y: 2}, {Kind: "place", Actor: "archer1", X: 1, Y: 3}, {Kind: "deployment_finish"}} {
 		if r := g.send(session.Request{Op: "command", Command: c}); !r.OK {
 			t.Fatal(r.Error)
 		}

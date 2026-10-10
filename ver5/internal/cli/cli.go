@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-const Help = "next | choose 선택ID | deploy 장수... | equip/unequip 장수 장비ID | start\nmove 장수 x y | attack 장수 적ID | skill 장수 병법 대상 | item 장수 아이템 대상\ndeputy 주장 부관 | undeputy 주장\nlearn 장수 특성 | learn_close 장수 | wait 장수 | end | ai(적 한 명령) | auto(현재 진영)\nmap | status | legal 장수 | preview attack 장수 대상 | save/load 슬롯 | slots\nsettings [ai auto/step | color true/false | detail true/false | speed 밀리초]\nmenu | resume | title | retry | quit"
+const Help = "next | choose 선택ID | deploy 장수... | equip/unequip 장수 장비ID | start\nplace 장수 x y | unplace 장수 | deployment_finish\nmove 장수 x y | attack 장수 적ID | skill 장수 병법 대상 | item 장수 아이템 대상\ndeputy 주장 부관 | undeputy 주장\nlearn 장수 특성 | learn_close 장수 | wait 장수 | end | ai(적 한 명령) | auto(현재 진영)\nmap | status | legal [장수] | preview attack 장수 대상 | save/load 슬롯 | slots\nsettings [ai auto/step | color true/false | detail true/false | speed 밀리초]\nmenu | resume | title | retry | quit"
 
 func Parse(line string) (core.Command, error) {
 	p := strings.Fields(line)
@@ -28,7 +28,7 @@ func Parse(line string) (core.Command, error) {
 		return nil
 	}
 	switch c.Kind {
-	case "next", "start", "end", "continue":
+	case "next", "start", "end", "continue", "deployment_finish":
 		if err := argc(1); err != nil {
 			return c, err
 		}
@@ -42,7 +42,7 @@ func Parse(line string) (core.Command, error) {
 			return c, fmt.Errorf("InvalidDeployment")
 		}
 		c.Deployment = p[1:]
-	case "wait", "undeputy", "learn_close":
+	case "wait", "undeputy", "learn_close", "unplace":
 		if err := argc(2); err != nil {
 			return c, err
 		}
@@ -60,7 +60,7 @@ func Parse(line string) (core.Command, error) {
 		c.Actor = p[1]
 		c.Item = p[2]
 		c.Trait = p[2]
-	case "move":
+	case "move", "place":
 		if err := argc(4); err != nil {
 			return c, err
 		}
@@ -155,6 +155,23 @@ func show(s *session.Session, out io.Writer) {
 		if o.Dialogue.Kind == "preparation" {
 			fmt.Fprintln(out, "편성:", o.Deployment, "창고:", o.Warehouse, "→ start")
 		}
+	case "deployment":
+		fmt.Fprintf(out, " %s · 아군 배치\n", o.Map.Name)
+		Map(o, out)
+		for _, id := range o.Deployment {
+			placed := false
+			for _, u := range o.Units {
+				if u.ID == id {
+					placed = true
+				}
+			}
+			label := "미배치"
+			if placed {
+				label = "배치됨"
+			}
+			fmt.Fprintf(out, "%s: %s\n", id, label)
+		}
+		fmt.Fprintln(out, "place 장수 x y / unplace 장수 / deployment_finish / auto")
 	case "battle":
 		fmt.Fprintf(out, " %s / 라운드 %d / %s 차례\n", o.Map.Name, o.Round, o.Turn)
 		Map(o, out)
@@ -261,11 +278,13 @@ func RunHuman(s *session.Session, in io.Reader, out io.Writer, seed uint64) erro
 			}
 			q.Slot = p[1]
 		case "legal":
-			if len(p) != 2 {
-				fmt.Fprintln(out, "legal 장수")
+			if len(p) > 2 {
+				fmt.Fprintln(out, "legal [장수]")
 				continue
 			}
-			q.Actor = p[1]
+			if len(p) == 2 {
+				q.Actor = p[1]
+			}
 		case "preview":
 			c, err := Parse(strings.TrimPrefix(line, "preview "))
 			if err != nil {

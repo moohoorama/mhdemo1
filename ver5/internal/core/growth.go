@@ -16,7 +16,7 @@ func ExperienceProgress(d *content.Data, level, xp int) float64 {
 
 // Action XP is awarded per effective target. Neither damage magnitude nor
 // repeated attacks reduce it: using weak attacks and healing enemies is valid.
-// Counters earn no XP; poison/burn earn only the finishing bonus, not tick XP.
+// Counterattacks grant defense XP to the recipient; poison/burn grant only a finishing bonus.
 func (e *Engine) actionXP(u, v *Unit, spell, defeated bool) {
 	if n := e.actionXPAmount(u, v, spell, defeated); n > 0 {
 		e.xp(u.Character, n)
@@ -37,6 +37,13 @@ func (e *Engine) actionXPAmount(u, v *Unit, spell, defeated bool) int {
 		n *= R.ExpDefeat
 	}
 	return max(1, int(math.Round(n)))
+}
+
+// defenseXP is awarded once per incoming strike, including a successfully avoided one.
+func (e *Engine) defenseXP(v, u *Unit, spell bool) {
+	if n := e.actionXPAmount(v, u, spell, false); n > 0 && e.data.Rules.ExpDefenseShare > 0 {
+		e.xp(v.Character, max(1, int(math.Round(float64(n)*e.data.Rules.ExpDefenseShare))))
+	}
 }
 
 // supportXP is what an ally earns per target of a landed support spell.

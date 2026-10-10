@@ -201,38 +201,3 @@ func classReachable(d *content.Data, base, target string) bool {
 	}
 	return visit(base)
 }
-
-// Deploying is the start of a battle, before any ally has acted: allies may still be
-// placed on the stage's deployment cells.
-func (e *Engine) Deploying() bool {
-	if e.state.Phase != "battle" || e.state.Round != 1 || e.state.Turn != "ally" {
-		return false
-	}
-	for _, id := range keys(e.unitIDs) {
-		if u := e.unit(id); u.Faction == "ally" && (u.Moved || u.Acted || u.Done) {
-			return false
-		}
-	}
-	return true
-}
-
-// place moves an ally to a free deployment cell, or swaps it with the ally standing there.
-func (e *Engine) place(u *Unit, c Command) error {
-	if u.Faction != "ally" || !e.Deploying() {
-		return fail("WrongPhase")
-	}
-	p := content.Point{X: c.X, Y: c.Y}
-	if !containsPoint(e.data.Stages[e.state.Stage].Allies, p) {
-		return fail("OutOfRange")
-	}
-	if q := e.occupied(c.X, c.Y); q != nil {
-		if q.Faction != "ally" {
-			return fail("Occupied")
-		}
-		q.X, q.Y = u.X, u.Y
-	}
-	from := content.Point{X: u.X, Y: u.Y}
-	u.X, u.Y = c.X, c.Y
-	e.events = append(e.events, Event{Kind: "place", Actor: u.ID, Path: []content.Point{from, p}})
-	return nil
-}

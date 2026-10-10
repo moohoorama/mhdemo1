@@ -22,15 +22,28 @@ const K = 2
 // Field draws one battle map. Map pixels: cell (u, v) has its centre at
 // ((u - v) * 16, (u + v + 1) * 8) relative to Origin; the canvas is K times that.
 type Field struct {
-	A       *Assets
-	Map     *MapArt
-	OriginX float64
-	OriginY float64
-	ground  [8]*ebiten.Image // per water frame; castle floor baked in
-	clip    *ebiten.Image    // opaque where there is ground
-	shadows *ebiten.Image
-	Canvas  *ebiten.Image
-	diamond *ebiten.Image
+	deployment                   bool
+	sceneryLayer                 bool
+	deploymentCells              []content.Point
+	deploymentMask               *ebiten.Image
+	deploymentMaskKey            string
+	worldSize                    image.Point
+	renderZoom, renderX, renderY float64
+	DrawBounds                   image.Rectangle
+	nativeWater                  []GroundTile
+	nativeItems                  []drawItem
+	nativeGround                 []drawItem
+	A                            *Assets
+	Map                          *MapArt
+	OriginX                      float64
+	OriginY                      float64
+	ground                       [8]*ebiten.Image // per water frame; castle floor baked in
+	clip                         *ebiten.Image    // opaque where there is ground
+	shadows                      *ebiten.Image
+	Canvas                       *ebiten.Image
+	diamond                      *ebiten.Image
+	ShowExterior                 bool
+	exterior                     *ebiten.Image
 }
 
 var maxBlend = ebiten.Blend{
@@ -41,12 +54,27 @@ var maxBlend = ebiten.Blend{
 
 func NewField(a *Assets, m *MapArt) *Field {
 	w, h := (m.Bounds.Dx()+2*margin)*K, (m.Bounds.Dy()+2*margin)*K
-	f := &Field{A: a, Map: m, OriginX: float64(margin - m.Bounds.Min.X), OriginY: float64(margin - m.Bounds.Min.Y),
+	f := &Field{worldSize: image.Pt(w, h), A: a, Map: m, OriginX: float64(margin - m.Bounds.Min.X), OriginY: float64(margin - m.Bounds.Min.Y),
 		clip: ebiten.NewImage(w, h), shadows: ebiten.NewImage(w, h), Canvas: ebiten.NewImage(w, h)}
 	water := a.Animations["water"].Frames
 	for i := range f.ground {
+		if m.Native && i > 0 {
+			f.ground[i] = f.ground[0]
+			continue
+		}
 		g := ebiten.NewImage(w, h)
+		if m.Native {
+			f.fillGround(g)
+		}
 		for _, t := range m.Ground {
+			if i == 0 && m.Native {
+				for _, id := range t.Layers {
+					if id == 0 {
+						f.nativeWater = append(f.nativeWater, t)
+						break
+					}
+				}
+			}
 			for _, id := range t.Layers {
 				if id == 0 {
 					id = water[i%len(water)]
@@ -56,7 +84,7 @@ func NewField(a *Assets, m *MapArt) *Field {
 		}
 		for v, row := range m.Tiles {
 			for u, c := range row {
-				if c == 'i' {
+				if c == 'i' && !m.Native {
 					x, y := f.mapCenter(float64(u), float64(v))
 					f.blitMap(g, a.Structures["floor"], x, y, nil)
 				}
@@ -64,7 +92,7 @@ func NewField(a *Assets, m *MapArt) *Field {
 		}
 		for v, row := range m.Tiles {
 			for u, c := range row {
-				if c == 'b' {
+				if c == 'b' && !m.Native {
 					x, y := f.Center(float64(u), float64(v))
 					f.blit(g, a.Props[f.bridgeName(u, v)].Sprite, x, y, nil)
 				}
@@ -78,6 +106,11 @@ func NewField(a *Assets, m *MapArt) *Field {
 	for y := 0; y < 16; y++ {
 		half := 16 - int(math.Abs(float64(y)+.5-8)*2)
 		vector.FillRect(f.diamond, float32(16-half), float32(y), float32(2*half), 1, color.White, false)
+	}
+	if m.Native {
+		f.makeNativeFloors()
+		f.makeExterior()
+		f.nativeObjects(&f.nativeItems)
 	}
 	return f
 }
@@ -135,7 +168,7 @@ func (f *Field) Tile(u, v int) byte {
 // Lift is how many canvas pixels a cell's surface stands above the ground (castle walls).
 func (f *Field) Lift(u, v int) float64 {
 	if f.Tile(u, v) == 'c' {
-		return float64(f.A.Rise * K)
+		return float64(f.A.Rise) * f.artScale()
 	}
 	return 0
 }
@@ -144,17 +177,28 @@ func (f *Field) blit(dst *ebiten.Image, s Sprite, x, y float64, op *ebiten.DrawI
 	if op == nil {
 		op = &ebiten.DrawImageOptions{}
 	}
+	f.shadeScenery(dst, op, x, y)
 	op.GeoM.Translate(math.Round(x-s.PivotX), math.Round(y-s.PivotY))
+	f.renderOp(dst, op)
 	dst.DrawImage(s.Image, op)
 }
 
 // blitMap draws map art (tiles, scenery, structures) at a map-pixel position, K times larger.
+func (f *Field) artScale() float64 {
+	if f.Map.Native {
+		return 1
+	}
+	return K
+}
 func (f *Field) blitMap(dst *ebiten.Image, s Sprite, x, y float64, op *ebiten.DrawImageOptions) {
 	if op == nil {
 		op = &ebiten.DrawImageOptions{}
 	}
-	op.GeoM.Translate(math.Round(x-s.PivotX), math.Round(y-s.PivotY))
-	op.GeoM.Scale(K, K)
+	f.shadeScenery(dst, op, x*K, y*K)
+	k := f.artScale()
+	op.GeoM.Scale(k, k)
+	op.GeoM.Translate(math.Round(x*K-s.PivotX*k), math.Round(y*K-s.PivotY*k))
+	f.renderOp(dst, op)
 	dst.DrawImage(s.Image, op)
 }
 
@@ -173,18 +217,34 @@ type drawItem struct {
 }
 
 // mapRect is the canvas area blitMap covers with s at map position (x, y).
-func mapRect(s Sprite, x, y float64) image.Rectangle {
+func (f *Field) mapRect(s Sprite, x, y float64) image.Rectangle {
 	b := s.Image.Bounds()
-	rx, ry := int(math.Round(x-s.PivotX)), int(math.Round(y-s.PivotY))
-	return image.Rect(rx*K, ry*K, (rx+b.Dx())*K, (ry+b.Dy())*K)
+	k := f.artScale()
+	rx, ry := int(math.Round(x*K-s.PivotX*k)), int(math.Round(y*K-s.PivotY*k))
+	return image.Rect(rx, ry, rx+int(float64(b.Dx())*k), ry+int(float64(b.Dy())*k))
 }
 
 // Draw renders the field and returns nothing; units come from the replay's visual state.
 func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	c := f.Canvas
+	f.sceneryLayer = false
 	c.Fill(color.RGBA{30, 38, 46, 255})
 	water := f.A.Animations["water"]
-	c.DrawImage(f.ground[int(clockMS/float64(water.MS))%len(f.ground)], nil)
+	if f.Map.Native && f.renderZoom > 0 {
+		f.renderBackground(c)
+	}
+	groundOp := &ebiten.DrawImageOptions{}
+	f.renderOp(c, groundOp)
+	c.DrawImage(f.ground[int(clockMS/float64(water.MS))%len(f.ground)], groundOp)
+	if f.Map.Native {
+		f.drawNativeWater(c, clockMS)
+		for _, it := range f.nativeGround {
+			if f.DrawBounds.Empty() || it.rect.Overlaps(f.DrawBounds) {
+				it.draw()
+			}
+		}
+	}
+	f.drawDeploymentGround()
 	for _, m := range marks {
 		x, y := f.mapCenter(float64(m.U), float64(m.V))
 		op := &ebiten.DrawImageOptions{}
@@ -192,6 +252,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		op.GeoM.Scale(K, K)
 		a := float32(m.Color.A) / 255 // Highlight colors are straight alpha
 		op.ColorScale.Scale(float32(m.Color.R)/255*a, float32(m.Color.G)/255*a, float32(m.Color.B)/255*a, a)
+		f.renderOp(c, op)
 		c.DrawImage(f.diamond, op)
 	}
 	f.shadows.Clear()
@@ -203,10 +264,23 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			f.blitMap(f.shadows, s, x, y, &ebiten.DrawImageOptions{Blend: maxBlend})
 		}
 		s := f.A.Tiles[sid]
-		items = append(items, drawItem{y: y * K, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: mapRect(s, x, y)})
+		if !f.DrawBounds.Empty() && !f.mapRect(s, x, y).Overlaps(f.DrawBounds) {
+			continue
+		}
+		items = append(items, drawItem{y: y * K, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: f.mapRect(s, x, y)})
+	}
+	if f.Map.Native {
+		for _, it := range f.nativeItems {
+			if f.DrawBounds.Empty() || it.rect.Empty() || it.rect.Overlaps(f.DrawBounds) {
+				items = append(items, it)
+			}
+		}
 	}
 	for v, row := range f.Map.Tiles {
 		for u, t := range row {
+			if f.Map.Native {
+				continue
+			}
 			x, y := f.mapCenter(float64(u), float64(v))
 			switch t {
 			case 'v', 's':
@@ -214,7 +288,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 					break // scenario stages keep the big rocks
 				}
 				s := f.A.Structures[map[rune]string{'v': "village", 's': "mountain"}[t]]
-				items = append(items, drawItem{y: y*K - .1, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: mapRect(s, x, y)})
+				items = append(items, drawItem{y: y*K - .1, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: f.mapRect(s, x, y)})
 			case 'f':
 				if !f.Map.Deformed {
 					break // scenario stages keep the big trees
@@ -226,7 +300,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 				items = append(items, drawItem{y: cy - .1, draw: func() { f.blit(c, s, cx, cy, nil) }, rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy())})
 			case 'c':
 				s := f.A.Structures[wallName(f, u, v)]
-				items = append(items, drawItem{y: y * K, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: mapRect(s, x, y)})
+				items = append(items, drawItem{y: y * K, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: f.mapRect(s, x, y)})
 			case 'k': // 주둔지: a tent on its cell
 				s := f.A.Props[[]string{"tent", "tent_round"}[(u+v)%2]].Sprite
 				cx, cy := x*K, y*K
@@ -265,7 +339,9 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy()), ghost: func() { f.drawUnit(unit, x, y-lift, true) }})
 	}
 	// one layer so overlapping shadows do not darken each other, kept on the ground
-	f.shadows.DrawImage(f.clip, &ebiten.DrawImageOptions{Blend: ebiten.BlendDestinationIn})
+	clipOp := &ebiten.DrawImageOptions{Blend: ebiten.BlendDestinationIn}
+	f.renderOp(f.shadows, clipOp)
+	f.shadows.DrawImage(f.clip, clipOp)
 	c.DrawImage(f.shadows, nil)
 	sort.SliceStable(items, func(i, j int) bool {
 		if items[i].y != items[j].y {
@@ -274,8 +350,10 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		return items[i].kind < items[j].kind
 	})
 	for _, it := range items {
+		f.sceneryLayer = it.kind == 0
 		it.draw()
 	}
+	f.sceneryLayer = false
 	// a unit behind a tree, wall or house shows through it at half opacity; where nothing
 	// covers it the ghost lands on its own pixels and changes nothing
 	for i, it := range items {
@@ -288,6 +366,15 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 				break
 			}
 		}
+	}
+	if f.exterior != nil && !f.ShowExterior {
+		op := &ebiten.DrawImageOptions{}
+		f.renderOp(c, op)
+		c.DrawImage(f.exterior, op)
+	}
+	for _, u := range units {
+		x, y := f.Center(u.u, u.v)
+		f.drawUnitStatuses(u, x+u.shakeOffset(), y-u.lift, clockMS)
 	}
 }
 
@@ -346,6 +433,15 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {
 	if ghost {
 		op.ColorScale.ScaleAlpha(.5)
 	}
+	if u.status["poison"].Turns > 0 {
+		op.ColorScale.Scale(.45, 1, .45, 1)
+	}
+	if u.status["weak"].Turns > 0 {
+		op.ColorScale.Scale(.7, .7, .8, 1)
+	}
+	if f.deployment && !u.ally {
+		op.ColorScale.Scale(.45, .45, .45, 1)
+	}
 	if u.greyed {
 		op.ColorScale.Scale(.62, .62, .62, 1)
 	}
@@ -361,14 +457,23 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {
 		cm.Translate(1, 1, 1, 0)
 		wop := &colorm.DrawImageOptions{}
 		wop.GeoM.Translate(math.Round(x-s.PivotX), math.Round(y-s.PivotY))
+		if f.renderZoom > 0 {
+			wop.GeoM.Translate(-f.renderX, -f.renderY)
+			wop.GeoM.Scale(f.renderZoom, f.renderZoom)
+		}
 		colorm.DrawImage(f.Canvas, s.Image, cm, wop)
 	}
 	if u.shownHP <= 0 || u.actor {
 		return
 	}
-	top := float32(math.Round(y - u.top - 4))
-	bx := float32(math.Round(x))
-	vector.FillRect(f.Canvas, bx-9, top, 18, 3, color.RGBA{20, 20, 24, 255}, false)
+	rx, ry := f.renderPoint(x, y-u.top-4)
+	z := float32(1)
+	if f.renderZoom > 0 {
+		z = float32(f.renderZoom)
+	}
+	top := float32(math.Round(ry))
+	bx := float32(math.Round(rx))
+	vector.FillRect(f.Canvas, bx-9*z, top, 18*z, 3*z, color.RGBA{20, 20, 24, 255}, false)
 	k := float32(u.shownHP) / float32(max(1, u.maxHP))
 	bar := color.RGBA{96, 214, 110, 255}
 	if k <= .25 {
@@ -376,13 +481,23 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {
 	} else if k <= .5 {
 		bar = color.RGBA{236, 184, 64, 255}
 	}
-	vector.FillRect(f.Canvas, bx-8, top+1, float32(math.Max(1, math.Round(float64(16*k)))), 1, bar, false)
+	if f.deployment && !u.ally {
+		bar.R = uint8(float64(bar.R) * .45)
+		bar.G = uint8(float64(bar.G) * .45)
+		bar.B = uint8(float64(bar.B) * .45)
+	}
+	vector.FillRect(f.Canvas, bx-8*z, top+z, float32(math.Max(1, math.Round(float64(16*k*z)))), z, bar, false)
 	team := color.RGBA{86, 160, 236, 255}
 	if !u.ally {
 		team = color.RGBA{232, 84, 70, 255}
 	}
-	vector.FillRect(f.Canvas, bx-11, top, 2, 3, team, false)
+	if f.deployment && !u.ally {
+		team.R = uint8(float64(team.R) * .45)
+		team.G = uint8(float64(team.G) * .45)
+		team.B = uint8(float64(team.B) * .45)
+	}
+	vector.FillRect(f.Canvas, bx-11*z, top, 2*z, 3*z, team, false)
 }
 
 // Bounds of the canvas, for the camera.
-func (f *Field) Size() image.Point { return f.Canvas.Bounds().Size() }
+func (f *Field) Size() image.Point { return f.worldSize }

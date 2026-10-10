@@ -1,6 +1,9 @@
 package core
 
-import "testing"
+import (
+	"srpg/internal/content"
+	"testing"
+)
 
 func TestNextTurnRecoveryMatchesTurnStart(t *testing.T) {
 	for _, tc := range []struct {
@@ -88,5 +91,28 @@ func TestNextTurnRecoveryForMissingOrDeadUnit(t *testing.T) {
 				t.Fatalf("unexpected recovery %+v", got)
 			}
 		})
+	}
+}
+
+func TestCastleInteriorRestoresOnlyMP(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	if err != nil {
+		t.Fatal(err)
+	}
+	e := battle(t)
+	e.data.Tiles["i"] = d.Tiles["i"]
+	u := e.unit("hero")
+	u.X, u.Y = 8, 1
+	u.HP -= 20
+	st := e.stats(u)
+	predicted := e.NextTurnRecovery(u.ID)
+	if predicted.TerrainHP || predicted.HP != 0 || predicted.MP != min(st.MaxMP, st.Recovery*2) {
+		t.Fatalf("castle interior %+v", predicted)
+	}
+	apply(t, e, Command{Kind: "end"})
+	hp, mp := e.unit("hero").HP, e.unit("hero").MP
+	apply(t, e, Command{Kind: "end"})
+	if e.unit("hero").HP != hp || e.unit("hero").MP != mp+predicted.MP {
+		t.Fatal("castle interior HP or MP recovery differs")
 	}
 }

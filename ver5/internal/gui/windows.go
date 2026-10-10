@@ -246,7 +246,7 @@ func (g *Game) readSlots() map[string]string {
 			continue
 		}
 		stage := g.S.Data.Stages[min(max(0, s.Stage), len(g.S.Data.Stages)-1)]
-		where := map[string]string{"scenario": "이야기", "result": "전투 결과", "complete": "완료"}[s.Phase]
+		where := map[string]string{"scenario": "이야기", "deployment": "아군 배치", "result": "전투 결과", "complete": "완료"}[s.Phase]
 		if s.Phase == "battle" {
 			where = fmt.Sprintf("%d턴", s.Round)
 		}

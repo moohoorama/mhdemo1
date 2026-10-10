@@ -55,6 +55,7 @@ func (e *Engine) stats(u *Unit) Stats {
 	}
 	v[0] = max(1, percent(v[0], u.Status["attack"].Value))
 	v[1] = max(1, percent(v[1], u.Status["defense"].Value))
+	v[2] = max(1, percent(v[2], u.Status["mind"].Value))
 	v[3] = max(1, percent(v[3], u.Status["agility"].Value))
 	v[4] = max(1, percent(v[4], u.Status["morale"].Value))
 	v[0] = max(1, percent(v[0], -u.Status["attack-down"].Value))

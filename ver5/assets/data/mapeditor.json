@@ -1,0 +1,190 @@
+{
+ "MapEditor": {
+  "Families": [
+   {
+    "ID": "infantry",
+    "Name": "보병",
+    "Classes": [
+     {
+      "ID": "light_infantry",
+      "Name": "경보병"
+     },
+     {
+      "ID": "heavy_infantry",
+      "Name": "중보병"
+     },
+     {
+      "ID": "guards",
+      "Name": "근위대"
+     },
+     {
+      "ID": "pikeman",
+      "Name": "장창병"
+     },
+     {
+      "ID": "chariot",
+      "Name": "전차대"
+     }
+    ]
+   },
+   {
+    "ID": "cavalry",
+    "Name": "기병",
+    "Classes": [
+     {
+      "ID": "light_cavalry",
+      "Name": "경기병"
+     },
+     {
+      "ID": "heavy_cavalry",
+      "Name": "중기병"
+     },
+     {
+      "ID": "royal_guard",
+      "Name": "친위대"
+     }
+    ]
+   },
+   {
+    "ID": "archer",
+    "Name": "궁병",
+    "Classes": [
+     {
+      "ID": "archer",
+      "Name": "궁병"
+     },
+     {
+      "ID": "crossbow",
+      "Name": "노병"
+     },
+     {
+      "ID": "repeating_crossbow",
+      "Name": "연노병"
+     }
+    ]
+   },
+   {
+    "ID": "scholar",
+    "Name": "사마",
+    "Classes": [
+     {
+      "ID": "scholar",
+      "Name": "사마"
+     },
+     {
+      "ID": "staff_officer",
+      "Name": "참모"
+     },
+     {
+      "ID": "strategist",
+      "Name": "군사"
+     },
+     {
+      "ID": "sorcerer",
+      "Name": "방술사"
+     },
+     {
+      "ID": "mystic",
+      "Name": "선술사"
+     }
+    ]
+   },
+   {
+    "ID": "bandit",
+    "Name": "적병",
+    "Classes": [
+     {
+      "ID": "bandit",
+      "Name": "적병"
+     },
+     {
+      "ID": "ruffian",
+      "Name": "흉적"
+     },
+     {
+      "ID": "outlaw",
+      "Name": "의적"
+     }
+    ]
+   },
+   {
+    "ID": "warrior",
+    "Name": "무인",
+    "Classes": [
+     {
+      "ID": "warrior",
+      "Name": "무인"
+     }
+    ]
+   }
+  ],
+  "Armies": [
+   {
+    "ID": "shu",
+    "Name": "유비군"
+   },
+   {
+    "ID": "wei",
+    "Name": "조조군"
+   },
+   {
+    "ID": "wu",
+    "Name": "손권군"
+   },
+   {
+    "ID": "yuan",
+    "Name": "원소군"
+   },
+   {
+    "ID": "dong",
+    "Name": "동탁군"
+   },
+   {
+    "ID": "other",
+    "Name": "기타"
+   }
+  ],
+  "CharacterArmies": {
+   "liubei": "shu",
+   "guanyu": "shu",
+   "zhangfei": "shu",
+   "jianyong": "shu",
+   "chengyuanzhi": "other",
+   "dengmao": "other",
+   "zhangjiao": "other",
+   "huaxiong": "dong",
+   "huzhen": "dong",
+   "lubu": "dong",
+   "liru": "dong",
+   "lijue": "dong",
+   "sunqian": "shu",
+   "zhaoyun": "other",
+   "gongsunzan": "other",
+   "yangang": "other",
+   "yuanshao": "yuan",
+   "wenchou": "yuan",
+   "yanliang": "yuan",
+   "zhanghe": "yuan",
+   "chunyuqiong": "yuan",
+   "gaolan": "yuan",
+   "tianfeng": "yuan",
+   "shenpei": "yuan",
+   "yuanshu": "yuan",
+   "caocao": "wei",
+   "dongzhuo": "dong"
+  },
+  "Brushes": [
+   ".",
+   "d",
+   "~",
+   "f",
+   "s",
+   "v",
+   "c",
+   "i",
+   "b",
+   "g",
+   "k"
+  ]
+ }
+}

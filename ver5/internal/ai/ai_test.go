@@ -14,7 +14,7 @@ func TestPolicyAndPreviewDoNotConsumeRNG(t *testing.T) {
 		t.Fatal(err)
 	}
 	e := core.New(d, 3)
-	for _, c := range []core.Command{{Kind: "next"}, {Kind: "choose", Option: "go"}, {Kind: "start"}} {
+	for _, c := range []core.Command{{Kind: "next"}, {Kind: "choose", Option: "go"}, {Kind: "start"}, {Kind: "place", Actor: "hero", X: 1, Y: 2}, {Kind: "place", Actor: "archer1", X: 1, Y: 3}, {Kind: "deployment_finish"}} {
 		if _, err = e.Apply(c); err != nil {
 			t.Fatal(err)
 		}

@@ -34,6 +34,7 @@ with tempfile.TemporaryDirectory(prefix='srpg-smoke-') as directory:
                 command=dict(kind='choose',option=sorted(state['Dialogue']['Choices'])[0])
             else:command=dict(kind='start')
             state=call('command',revision=rev,command=command)
+        elif phase=='deployment':state=call('auto',revision=rev)
         elif phase=='battle':state=call('auto' if state['Turn']=='ally' else 'ai',revision=rev)
         elif phase=='result':
             assert state['Result']=='victory',state['Stage']

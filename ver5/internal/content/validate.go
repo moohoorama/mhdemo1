@@ -253,7 +253,7 @@ func (d *Data) Validate() error {
 	}
 	duelIDs, stageIDs := map[string]bool{}, map[string]bool{}
 	for _, s := range d.Stages {
-		if stageIDs[s.ID] || s.Width < 8 || s.Height < 8 || len(s.Tiles) != s.Height || len(s.Allies) < s.Limit {
+		if stageIDs[s.ID] || s.Width < 4 || s.Height < 4 || len(s.Tiles) != s.Height || len(s.Allies) < s.Limit {
 			return fmt.Errorf("map %s", s.ID)
 		}
 		stageIDs[s.ID] = true
@@ -277,8 +277,18 @@ func (d *Data) Validate() error {
 				}
 			}
 		}
-		for _, side := range [][]Spawn{s.Enemies} {
+		officers := map[string]bool{}
+		for _, side := range [][]Spawn{s.Enemies, s.Party} {
 			for _, e := range side {
+				if err := d.ValidateSpawn(e); err != nil {
+					return fmt.Errorf("stage %s: %w", s.ID, err)
+				}
+				if !d.Characters[e.Character].Template {
+					if officers[e.Character] {
+						return fmt.Errorf("duplicate officer %s", e.Character)
+					}
+					officers[e.Character] = true
+				}
 				p := Point{e.X, e.Y}
 				if !d.Has(e.Character) || e.X < 0 || e.Y < 0 || e.X >= s.Width || e.Y >= s.Height || seen[p] || e.Level < 0 || e.Level > r.MaxLevel {
 					return fmt.Errorf("stage %s spawn %s", s.ID, e.Character)

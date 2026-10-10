@@ -123,6 +123,10 @@ func (g *Game) options(pick core.Command) []core.Command {
 // mapClick handles a left click on the battlefield cell (x, y).
 func (g *Game) mapClick(x, y int) {
 	o := g.S.Engine.Observe()
+	if o.Phase == "deployment" {
+		g.deploymentMapClick(x, y)
+		return
+	}
 	var here *core.UnitView
 	for i := range o.UnitViews {
 		if u := &o.UnitViews[i]; u.HP > 0 && u.X == x && u.Y == y && u.ID != g.ord.actor {
@@ -139,11 +143,6 @@ func (g *Game) mapClick(x, y int) {
 	}
 	switch g.ord.stage {
 	case "move":
-		if g.S.Engine.Deploying() && containsCell(o.Map.Allies, x, y) {
-			g.command(core.Command{Kind: "place", Actor: g.ord.actor, X: x, Y: y})
-			g.clearOrder()
-			return
-		}
 		for _, c := range g.S.Engine.LegalActions(g.ord.actor).Commands {
 			if c.Kind == "move" && c.X == x && c.Y == y {
 				g.tentative(x, y)
@@ -324,6 +323,9 @@ func (g *Game) drawMenu(dst *ebiten.Image) {
 
 // marks are the cells tinted on the field for the current order or selection.
 func (g *Game) marks(o core.Observation) []Highlight {
+	if o.Phase == "deployment" {
+		return g.deploymentMarks()
+	}
 	out := []Highlight{}
 	add := func(p content.Point, c color.RGBA) { out = append(out, Highlight{p.X, p.Y, c}) }
 	if g.threatAll {
@@ -336,11 +338,6 @@ func (g *Game) marks(o core.Observation) []Highlight {
 			add(p, color.RGBA{240, 60, 30, 110})
 		}
 		add(content.Point{X: sel.X, Y: sel.Y}, color.RGBA{255, 120, 90, 150})
-	}
-	if g.S.Engine.Deploying() && !g.autoplay && (g.ord.actor == "" || g.ord.stage == "move") {
-		for _, p := range o.Map.Allies {
-			add(p, color.RGBA{240, 196, 80, 90})
-		}
 	}
 	if g.busy() || g.ord.actor == "" {
 		return out

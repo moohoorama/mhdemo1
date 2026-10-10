@@ -20,6 +20,24 @@ func (e *Engine) LegalActions(actor string) Options {
 		}
 		return out
 	}
+	if e.Deploying() {
+		if actor == "" {
+			if e.deploymentReady() {
+				out.Commands = append(out.Commands, Command{Kind: "deployment_finish"})
+			}
+		} else if contains(e.state.Deployment, actor) {
+			if e.unit(actor) != nil {
+				out.Commands = append(out.Commands, Command{Kind: "unplace", Actor: actor})
+			} else {
+				for _, p := range e.data.Stages[e.state.Stage].Allies {
+					if e.deploymentCell(actor, p) {
+						out.Commands = append(out.Commands, Command{Kind: "place", Actor: actor, X: p.X, Y: p.Y})
+					}
+				}
+			}
+		}
+		return out
+	}
 	u := e.unit(actor)
 	if e.state.Phase != "battle" || u == nil || u.HP <= 0 || u.Faction != e.state.Turn || u.Done {
 		return out
@@ -151,7 +169,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	if s.Stage < 0 || s.Stage >= len(d.Stages) || s.Inventory == nil || s.Warehouse == nil || s.Executed == nil {
 		return nil, fail("CorruptSave")
 	}
-	if !contains([]string{"scenario", "battle", "result", "complete"}, s.Phase) {
+	if !contains([]string{"scenario", "deployment", "battle", "result", "complete"}, s.Phase) {
 		return nil, fail("CorruptSave")
 	}
 	if s.Phase == "scenario" {
@@ -167,12 +185,21 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	for _, o := range s.Characters {
 		def, ok := d.Characters[o.Def]
 		_, cl := d.Classes[o.Class]
-		if !ok || !cl || o.Temp != def.Template || !o.Temp && o.ID != o.Def || !classReachable(d, def.Class, o.Class) || seen[o.ID] || o.Level < 1 || o.Level > R.MaxLevel ||
+		if !ok || !cl || o.Temp != (def.Template || o.Placement) || !o.Temp && o.ID != o.Def || (!o.Placement && !classReachable(d, def.Class, o.Class) || o.Placement && d.ClassFamily(def.Class) != d.ClassFamily(o.Class)) || seen[o.ID] || o.Level < 1 || o.Level > R.MaxLevel ||
 			o.XP < 0 || o.XP >= ExperienceRequired(d, o.Level) || o.Points < 0 || o.XPShareRemainder < 0 || o.XPShareRemainder >= 100 || o.Equipment == nil {
 			return nil, fail("CorruptSave")
 		}
-		if t := d.Classes[o.Class].Tier; t > 0 && o.Level < R.PromoteLevels[t-1] {
+		if t := d.Classes[o.Class].Tier; !o.Placement && t > 0 && o.Level < R.PromoteLevels[t-1] {
 			return nil, fail("CorruptSave")
+		}
+		if o.TraitsOverride != nil {
+			set := map[string]bool{}
+			for _, id := range *o.TraitsOverride {
+				if _, ok := d.Traits[id]; !ok || set[id] {
+					return nil, fail("CorruptSave")
+				}
+				set[id] = true
+			}
 		}
 		seen[o.ID] = true
 		learned := map[string]bool{}
@@ -253,8 +280,32 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	ids := map[string]bool{}
 	positions := map[content.Point]bool{}
 	stage := d.Stages[s.Stage]
+	fixed := map[string]string{}
+	fixedUnits := map[string]Unit{}
+	if s.Phase == "deployment" || s.Phase == "battle" || s.Phase == "result" {
+		if s.Checkpoint == nil {
+			return nil, fail("CorruptSave")
+		}
+		expected := fromState(d, copyOf(*s.Checkpoint))
+		for _, side := range []struct {
+			faction string
+			spawns  []content.Spawn
+		}{{"ally", stage.Party}, {"enemy", stage.Enemies}} {
+			for _, sp := range side.spawns {
+				u := expected.spawn(sp.Character, sp.Character, side.faction, sp.X, sp.Y, sp)
+				if deploy[u.ID] {
+					return nil, fail("CorruptSave")
+				}
+				fixed[u.ID] = side.faction
+				fixedUnits[u.ID] = copyOf(*u)
+			}
+		}
+	}
 	for _, u := range s.Units {
-		if ids[u.ID] || u.ID != u.Character || !seen[u.Character] || u.Status == nil || u.Items == nil || !contains([]string{"ally", "enemy"}, u.Faction) || u.Faction == "ally" && !deploy[u.ID] || u.X < 0 || u.Y < 0 || u.X >= stage.Width || u.Y >= stage.Height || e.tileAt(u.X, u.Y).Water {
+		if u.Facing != "" && !contains([]string{"N", "NE", "E", "SE", "S", "SW", "W", "NW"}, u.Facing) {
+			return nil, fail("CorruptSave")
+		}
+		if ids[u.ID] || u.ID != u.Character || !seen[u.Character] || u.Status == nil || u.Items == nil || !contains([]string{"ally", "enemy"}, u.Faction) || u.Faction == "ally" && !deploy[u.ID] && fixed[u.ID] != "ally" || u.X < 0 || u.Y < 0 || u.X >= stage.Width || u.Y >= stage.Height || e.tileAt(u.X, u.Y).Water {
 			return nil, fail("CorruptSave")
 		}
 		ids[u.ID] = true
@@ -280,17 +331,48 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 			}
 		}
 	}
-	if s.Phase == "battle" || s.Phase == "result" {
+	if s.Phase == "deployment" || s.Phase == "battle" || s.Phase == "result" {
 		if s.Round < 1 || !contains([]string{"ally", "enemy"}, s.Turn) || stage.Goal != "rout" && !seen[stage.Boss] || s.Checkpoint == nil {
 			return nil, fail("CorruptSave")
 		}
 		for id := range deploy {
-			if !ids[id] {
+			if !ids[id] && s.Phase != "deployment" {
 				return nil, fail("CorruptSave")
 			}
 		}
-		if len(ids) != len(deploy)+len(stage.Enemies) {
+		for id, faction := range fixed {
+			if !ids[id] || e.unit(id).Faction != faction {
+				return nil, fail("CorruptSave")
+			}
+		}
+		count := len(fixed)
+		for id := range deploy {
+			if ids[id] {
+				count++
+			}
+		}
+		if len(ids) != count {
 			return nil, fail("CorruptSave")
+		}
+		if s.Phase == "deployment" {
+			if s.Round != 1 || s.Turn != "ally" || s.Result != "" || len(s.Learning) != 0 {
+				return nil, fail("CorruptSave")
+			}
+			for _, u := range s.Units {
+				if base, ok := fixedUnits[u.ID]; ok {
+					if u.X != base.X || u.Y != base.Y || u.HP != base.HP || u.MP != base.MP {
+						return nil, fail("CorruptSave")
+					}
+				}
+				if u.Moved || u.Acted || u.Attacked || u.Done || u.HP <= 0 || len(u.Status) != 0 {
+					return nil, fail("CorruptSave")
+				}
+				if deploy[u.ID] {
+					if !containsPoint(stage.Allies, content.Point{X: u.X, Y: u.Y}) || e.terrain(&u, u.X, u.Y).Cost <= 0 || u.HP != e.stats(&u).MaxHP || u.MP != 0 {
+						return nil, fail("CorruptSave")
+					}
+				}
+			}
 		}
 		if s.Phase == "result" && !contains([]string{"victory", "defeat"}, s.Result) {
 			return nil, fmt.Errorf("CorruptSave: result")

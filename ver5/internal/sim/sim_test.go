@@ -45,7 +45,9 @@ func restoresEveryBoundary(t *testing.T, d *content.Data, seed uint64) bool {
 			return true
 		}
 		var c core.Command
-		if o.Phase == "scenario" {
+		if learn, ok := ai.Learning(e); ok {
+			c = learn
+		} else if o.Phase == "scenario" {
 			switch o.Dialogue.Kind {
 			case "dialogue":
 				c.Kind = "next"

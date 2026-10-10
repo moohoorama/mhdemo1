@@ -110,7 +110,7 @@ var Harmful = map[string]bool{"poison": true, "burn": true, "confusion": true, "
 var Statuses = map[string]bool{
 	"poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "weak": true,
 	"speed": true, "range": true, "counter": true, "eightfold": true,
-	"attack": true, "defense": true, "morale": true, "agility": true, "attack-down": true, "defense-down": true,
+	"attack": true, "defense": true, "mind": true, "morale": true, "agility": true, "attack-down": true, "defense-down": true,
 }
 
 // Class tags the engine reads.

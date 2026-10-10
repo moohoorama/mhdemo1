@@ -1,7 +1,8 @@
 # assets/data — ver5 game data bundle
 
 `content.Load("assets/data")` reads every `.json` here. Top-level files hold sections of `content.Data`
-(split freely); `stages/<ID>.json` holds one `Stage` each, ordered by file name (B01, B02, B03).
+(split freely); `maps/<ID>.json` holds one shared map document each, ordered by file name (B01, B02, B03).
+Stage grids and graphics are derived in memory. Simple `stages/*.json` definitions remain supported for test/custom bundles.
 Scenes live in `assets/scenes.json`, not here.
 
 | File | Section |
@@ -13,7 +14,7 @@ Scenes live in `assets/scenes.json`, not here.
 | `traits.json`, `skills.json` | Trait effects (vocab.go keys) and skills; spells and special moves open through `Requires` traits |
 | `equipment.json`, `items.json` | Equipment (slots weapon/armor/accessory) and items (`hp`/`mp`/`promote`) |
 | `script.json` | Scenario nodes |
-| `stages/*.json` | Maps, spawns (`Character` + optional `Level`), rewards, duels, `Next` node |
+| `maps/*.json` | Shared editor/game map: small tiles, resolved terrain, exterior, spawns, rewards, duels, `Next` node |
 
 ## Id conventions
 
@@ -30,3 +31,20 @@ Scenes live in `assets/scenes.json`, not here.
 - Tiered spell families: root + `<x>_boost` / `<x>_spread`; top spells need all three.
 
 `tools/migrate/gen_data.py` regenerated this bundle from ver4 once; after that, edit the JSON directly.
+
+## Map editor overrides
+
+`mapeditor.json` defines terrain brush order, class families (including disabled choices),
+army tabs and officer-to-army membership. These labels remain content data, separate from faction colors.
+`Tiles.Surface` selects the ground atlas surface (0 water, 1 grass, 2 wasteland).
+`Class.Family`, when present, overrides the movement group used for editor family selection.
+
+Stage spawns can override `Class`, `Level`, `Facing` (`NE SE SW NW`),
+current `HP`/`MP`, `Traits` and `Equipment`. Omitted HP starts at the derived maximum and omitted MP keeps the existing initial value (0);
+explicit MP 0 is supported. Maxima are calculated by the engine, not stored overrides.
+An omitted trait/equipment list uses the character definition; an explicit empty list removes those choices.
+Class and equipment grants still apply. Officers must be unique; soldier templates create independent instances.
+Class changes must remain in the same family, and equipment must fit the resulting class and slots.
+
+The GUI saves exactly one map document. The game reads that same file; see
+[the map format](../../docs/maps.md). Defense XP is controlled by `Rules.ExpDefenseShare`.

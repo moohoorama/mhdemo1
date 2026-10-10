@@ -55,6 +55,7 @@ type unitVis struct {
 	maxHP        int
 	flash        float64
 	top          float64
+	status       map[string]core.Status
 }
 type walkState struct {
 	fu, fv, tu, tv, fl, tl, t float64

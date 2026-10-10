@@ -90,7 +90,7 @@ func TestSaveLoadMenusAndRevision(t *testing.T) {
 func TestEnemyStepSaveContinuation(t *testing.T) {
 	s := setup(t)
 	request(t, s, Request{Op: "new", Seed: 4})
-	for _, c := range []core.Command{{Kind: "next"}, {Kind: "choose", Option: "go"}, {Kind: "start"}, {Kind: "move", Actor: "hero", X: 2, Y: 3}, {Kind: "end"}} {
+	for _, c := range []core.Command{{Kind: "next"}, {Kind: "choose", Option: "go"}, {Kind: "start"}, {Kind: "place", Actor: "hero", X: 1, Y: 2}, {Kind: "place", Actor: "archer1", X: 1, Y: 3}, {Kind: "deployment_finish"}, {Kind: "move", Actor: "hero", X: 2, Y: 3}, {Kind: "end"}} {
 		request(t, s, Request{Op: "command", Command: c})
 	}
 	request(t, s, Request{Op: "ai"})
@@ -115,6 +115,7 @@ func TestResolvePhase(t *testing.T) {
 	request(t, s, Request{Op: "command", Command: core.Command{Kind: "next"}})
 	request(t, s, Request{Op: "command", Command: core.Command{Kind: "choose", Option: "go"}})
 	request(t, s, Request{Op: "command", Command: core.Command{Kind: "start"}})
+	request(t, s, Request{Op: "auto"})
 	request(t, s, Request{Op: "command", Command: core.Command{Kind: "end"}})
 	// The same phase resolved command by command must end in the same state.
 	twin := setup(t)
@@ -173,6 +174,31 @@ func TestResolvePhase(t *testing.T) {
 			if shared && !reach(i, j) {
 				t.Fatalf("actions %d and %d share a claim but are unordered", j, i)
 			}
+		}
+	}
+}
+
+func TestPartialDeploymentSaveAndAuto(t *testing.T) {
+	s := setup(t)
+	request(t, s, Request{Op: "new", Seed: 7})
+	for _, c := range []core.Command{{Kind: "next"}, {Kind: "choose", Option: "go"}, {Kind: "start"}, {Kind: "place", Actor: "hero", X: 1, Y: 2}} {
+		request(t, s, Request{Op: "command", Command: c})
+	}
+	request(t, s, Request{Op: "save", Slot: "1"})
+	before := snapshot(s)
+	request(t, s, Request{Op: "command", Command: core.Command{Kind: "unplace", Actor: "hero"}})
+	request(t, s, Request{Op: "load", Slot: "1", Discard: true})
+	if snapshot(s) != before {
+		t.Fatal("partial deployment not restored")
+	}
+	request(t, s, Request{Op: "auto"})
+	o := s.Engine.Observe()
+	if o.Phase != "battle" || o.Round != 1 || o.Turn != "ally" {
+		t.Fatal("auto did not complete deployment")
+	}
+	for _, u := range o.Units {
+		if u.Faction == "ally" && (u.Moved || u.Acted || u.Done) {
+			t.Fatal("auto continued into battle")
 		}
 	}
 }

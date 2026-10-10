@@ -27,6 +27,7 @@ func battle(t *testing.T) *Engine {
 	apply(t, e, Command{Kind: "next"})
 	apply(t, e, Command{Kind: "choose", Option: "go"})
 	apply(t, e, Command{Kind: "start"})
+	finishDeployment(t, e)
 	return e
 }
 func encoded(v any) string { b, _ := json.Marshal(v); return string(b) }
@@ -134,6 +135,7 @@ func TestCampaignFlowAndJoin(t *testing.T) {
 	assertRejected(t, e, Command{Kind: "deploy", Deployment: []string{"archer1"}}) // the lord must go
 	apply(t, e, Command{Kind: "deploy", Deployment: []string{"hero", "sage"}})
 	apply(t, e, Command{Kind: "start"})
+	finishDeployment(t, e)
 	e.unit("boss").HP = 0
 	apply(t, e, Command{Kind: "wait", Actor: "hero"})
 	apply(t, e, Command{Kind: "continue"})

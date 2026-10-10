@@ -154,6 +154,7 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool) {
 			hit, crit = false, false
 		}
 	}
+	e.defenseXP(v, u, s.Kind == content.KindMagic)
 	if !hit {
 		e.emit("miss", u.ID, v.ID, 0)
 		half := e.fx(u, content.FxMissHalf)
@@ -433,7 +434,7 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 		case "refill":
 			recovered = min(e.stats(q).MaxMP-q.MP, int(s.Coeff))
 			q.MP += recovered
-		case "attack", "defense", "morale", "agility":
+		case "attack", "defense", "mind", "morale", "agility":
 			p := R.BuffPercent
 			if s.Kind == content.KindStatus {
 				p = -p

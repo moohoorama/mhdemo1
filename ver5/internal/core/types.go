@@ -3,8 +3,8 @@ package core
 import "srpg/internal/content"
 
 const CoreVersion = "2"
-const AIPolicyVersion = "greedy-5"
-const RulesVersion = "rules-6"
+const AIPolicyVersion = "greedy-6"
+const RulesVersion = "rules-9"
 
 // Character is a persistent record: a party member, or a troop made for one battle (Temp).
 type Character struct {
@@ -13,6 +13,8 @@ type Character struct {
 	XPShareRemainder       int
 	Level, XP, Points      int
 	Learned                []string
+	TraitsOverride         *[]string `json:",omitempty"`
+	Placement              bool      `json:",omitempty"`
 	Equipment              map[string]string
 }
 type Status struct {
@@ -21,6 +23,7 @@ type Status struct {
 }
 type Unit struct {
 	ID, Character, Faction, Color        string
+	Facing                               string `json:",omitempty"`
 	X, Y, HP, MP                         int
 	Moved, Acted, Attacked, Done, Spared bool
 	Status                               map[string]Status

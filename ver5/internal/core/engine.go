@@ -114,7 +114,7 @@ func (e *Engine) addCharacter(id, def string) *Character {
 func (e *Engine) Observe() Observation {
 	s := e.Snapshot()
 	o := Observation{State: s, Dialogue: copyOf(e.data.Node(s.Node))}
-	if s.Phase == "battle" || s.Phase == "result" {
+	if s.Phase == "deployment" || s.Phase == "battle" || s.Phase == "result" {
 		m := copyOf(e.data.Stages[s.Stage])
 		o.Map = &m
 	}
@@ -192,7 +192,11 @@ func (e *Engine) traits(c *Character) []string {
 			set[id] = true
 		}
 	}
-	add(e.def(c).Traits)
+	if c.TraitsOverride != nil {
+		add(*c.TraitsOverride)
+	} else {
+		add(e.def(c).Traits)
+	}
 	add(c.Learned)
 	add(e.class(c).Grants)
 	for _, eq := range c.Equipment {
@@ -357,6 +361,8 @@ func (e *Engine) execute(c Command) error {
 		return e.prepare(c)
 	case "learn", "learn_close":
 		return e.learn(c)
+	case "place", "unplace", "deployment_finish":
+		return e.deployCommand(c)
 	case "end":
 		if e.state.Phase != "battle" {
 			return fail("WrongPhase")
@@ -378,8 +384,6 @@ func (e *Engine) execute(c Command) error {
 		return fail("ActionSpent")
 	}
 	switch c.Kind {
-	case "place":
-		return e.place(u, c)
 	case "wait":
 		u.Moved = true
 		u.Acted = true
@@ -477,7 +481,7 @@ func (e *Engine) prepare(c Command) error {
 	if c.Kind != "start" {
 		return fail("UnknownCommand")
 	}
-	if len(e.state.Deployment) > e.data.Stages[e.state.Stage].Limit {
+	if len(e.state.Deployment) < 1 || len(e.state.Deployment) > e.data.Stages[e.state.Stage].Limit {
 		return fail("InvalidDeployment")
 	}
 	// Remove prior transient units and enemies from the preparation checkpoint.
@@ -494,14 +498,16 @@ func (e *Engine) prepare(c Command) error {
 	*e = *t
 	cp := e.Snapshot()
 	e.state.Checkpoint = &cp
-	e.state.Phase = "battle"
+	e.state.Phase = "deployment"
 	e.state.Turn = "ally"
 	e.state.Round = 1
 	e.state.Result = ""
 	stage := e.data.Stages[e.state.Stage]
-	for i, id := range e.state.Deployment {
-		p := stage.Allies[i]
-		e.spawn(id, id, "ally", p.X, p.Y, content.Spawn{})
+	for _, sp := range stage.Party {
+		if !e.data.Characters[sp.Character].Template && contains(e.state.Deployment, sp.Character) {
+			return fail("InvalidDeployment")
+		}
+		e.spawn(sp.Character, sp.Character, "ally", sp.X, sp.Y, sp)
 	}
 	for _, sp := range stage.Enemies {
 		e.spawn(sp.Character, sp.Character, "enemy", sp.X, sp.Y, sp)
@@ -527,11 +533,27 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 		id = def + "#" + strconv.Itoa(n)
 	}
 	c := e.addCharacter(id, def)
+	if side == "enemy" || d.Template {
+		c.Temp = true
+		c.Placement = true
+	}
 	if sp.Level > 0 {
 		c.Level = sp.Level
 	}
+	if sp.Class != "" {
+		c.Class = sp.Class
+	}
+	if sp.Traits != nil {
+		c.TraitsOverride = copyOf(sp.Traits)
+	}
+	if sp.Equipment != nil {
+		c.Equipment = map[string]string{}
+		for _, id := range *sp.Equipment {
+			c.Equipment[e.data.Equipment[id].Slot] = id
+		}
+	}
 	color := d.Look.Faction
-	if side == "enemy" && e.state.Stage < len(e.data.Stages) {
+	if side == "enemy" && e.state.Stage >= 0 && e.state.Stage < len(e.data.Stages) {
 		if f := e.data.Stages[e.state.Stage].Faction; f != "" && sp.Faction == "" {
 			color = f
 		}
@@ -539,7 +561,7 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	if sp.Faction != "" {
 		color = sp.Faction
 	}
-	u := Unit{ID: id, Character: id, Faction: side, Color: color, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
+	u := Unit{ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
 	if side == "enemy" {
 		for item, n := range e.data.Rules.EnemyStock {
 			u.Items[item] = n
@@ -548,6 +570,12 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	st := e.stats(&u)
 	u.HP = st.MaxHP
 	u.MP = 0
+	if sp.HP != nil {
+		u.HP = min(st.MaxHP, max(1, *sp.HP))
+	}
+	if sp.MP != nil {
+		u.MP = min(st.MaxMP, max(0, *sp.MP))
+	}
 	e.unitIDs[id] = e.units.NewEntity(&u)
 	return e.unit(id)
 }
@@ -607,4 +635,12 @@ func (e *Engine) clearBattle() {
 	}
 	s.Characters = kept
 	*e = *fromState(e.data, s)
+}
+
+// SpawnPreview uses the battle initialization path for editor stat previews.
+func SpawnPreview(d *content.Data, sp content.Spawn) UnitView {
+	e := fromState(d, State{Difficulty: "normal", Stage: -1})
+	u := e.spawn(sp.Character, sp.Character, "enemy", sp.X, sp.Y, sp)
+	c := e.char(u.Character)
+	return UnitView{Unit: *u, Name: e.name(c), Class: c.Class, Def: c.Def, Level: c.Level, Stats: e.stats(u), Traits: e.traits(c), Skills: e.skills(c)}
 }

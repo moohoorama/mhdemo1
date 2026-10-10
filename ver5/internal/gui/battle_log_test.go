@@ -44,6 +44,11 @@ func TestBattleLogCommand(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			g := logTestGame(t)
 			g.logCommand(tc.cmd, tc.events)
+			check(t, g.logPending, tc.want)
+			check(t, len(g.history), 0)
+			for range tc.want {
+				g.publishBattleLog()
+			}
 			check(t, g.history, tc.want)
 		})
 	}
@@ -73,6 +78,7 @@ func TestBattleLogRetainsRecentRecords(t *testing.T) {
 	g := logTestGame(t)
 	for i := 0; i < 310; i++ {
 		g.logCommand(core.Command{}, []core.Event{{Kind: "experience", Actor: "liubei", Amount: i}})
+		g.publishBattleLog()
 	}
 	check(t, len(g.history), 300)
 	check(t, g.history[0], "유비: 경험치 +10")
@@ -98,4 +104,35 @@ func TestBattleLogHeight(t *testing.T) {
 			check(t, r.Max.Y, Height-12)
 		})
 	}
+}
+
+func TestBattleLogQueueAndStageChange(t *testing.T) {
+	g := &Game{}
+	g.bindBattleLogStage("first")
+	g.logPending = []string{"one", "two", "three"}
+	g.publishBattleLog()
+	check(t, g.history, []string{"one"})
+	check(t, g.logPending, []string{"two", "three"})
+	g.logScroll = 2
+	g.publishBattleLog()
+	check(t, g.history, []string{"one", "two"})
+	check(t, g.logScroll, 3)
+	g.bindBattleLogStage("first")
+	check(t, len(g.logPending), 1)
+	g.bindBattleLogStage("second")
+	check(t, len(g.history), 0)
+	check(t, len(g.logPending), 0)
+	check(t, g.logScroll, 0)
+}
+
+func TestBattleLogScrollbar(t *testing.T) {
+	r := (&Game{}).battleLogRect()
+	track, thumb := logScrollbar(r, 100, 7, 0)
+	check(t, thumb.Max.Y, track.Max.Y)
+	check(t, logScrollAt(track.Min.Y, track, thumb.Dy(), 93), 93)
+	check(t, logScrollAt(track.Max.Y, track, thumb.Dy(), 93), 0)
+	_, top := logScrollbar(r, 100, 7, 93)
+	check(t, top.Min.Y, track.Min.Y)
+	_, full := logScrollbar(r, 3, 7, 0)
+	check(t, full, track)
 }

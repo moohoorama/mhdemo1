@@ -73,11 +73,15 @@ func (g *Game) art(id, faction string, look content.Look) *sprite.Art {
 
 // battleArt is the character's battle sprite, or its class's.
 func (g *Game) battleArt(def, faction string) *sprite.Art {
+	return g.battleClassArt(def, g.S.Data.Characters[def].Class, faction)
+}
+
+func (g *Game) battleClassArt(def, class, faction string) *sprite.Art {
 	c := g.S.Data.Characters[def]
 	if a := g.art(c.Look.Sprite, faction, c.Look); a != nil {
 		return a
 	}
-	return g.art(g.S.Data.Classes[c.Class].Sprite, faction, c.Look)
+	return g.art(g.S.Data.Classes[class].Sprite, faction, c.Look)
 }
 
 // sceneArt is the sprite a character stands on a scene in: the cast's own pick, else the

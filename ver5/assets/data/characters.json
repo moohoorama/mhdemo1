@@ -835,6 +835,44 @@
     "leather_armor"
    ],
    "Look": {}
+  },
+  "troop_cavalry": {
+   "Name": "일반 부대",
+   "Class": "light_cavalry",
+   "Stats": [
+    50,
+    48,
+    30,
+    40,
+    40,
+    45
+   ],
+   "Level": 4,
+   "Template": true,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "leather_armor"
+   ],
+   "Look": {}
+  },
+  "troop_scholar": {
+   "Name": "일반 부대",
+   "Class": "scholar",
+   "Stats": [
+    50,
+    48,
+    30,
+    40,
+    40,
+    45
+   ],
+   "Level": 4,
+   "Template": true,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [],
+   "Look": {}
   }
  }
 }

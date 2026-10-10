@@ -33,6 +33,13 @@ import (
 const Width, Height = 1280, 850
 
 type Game struct {
+	editor               *mapEditor
+	editorReturn         *mapEditor
+	editorSession        *session.Session
+	deploymentSelected   string
+	deploymentScroll     int
+	uiSeconds            float64
+	root                 string
 	assets               *Assets
 	field                *Field
 	vis                  map[string]*unitVis
@@ -72,6 +79,10 @@ type Game struct {
 	traitTab, traitSort  string // detail panel: "" owned / "learn"; "" cost / "name"
 	toasts               []*toast
 	history              []string
+	logPending           []string
+	logStage             string
+	logThumbDragging     bool
+	logThumbOffset       int
 	logHeight, logScroll int
 	logDragging          bool
 	logDragOffset        int
@@ -110,6 +121,7 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 	g := &Game{S: s, font: source, seed: seed, verified: map[string]bool{}, slot: 1, auditDir: auditDir,
 		vis: map[string]*unitVis{}, zoom: 1, speed: 1, threats: map[string][]content.Point{}, diffs: map[string]string{},
 		battleXP: map[string]int{}, startLevel: map[string]int{}}
+	g.root = filepath.Dir(filepath.Dir(filepath.Dir(fontPath)))
 	g.player.g = g
 	g.names = nameIndex(s.Data)
 	g.scenes = loadScenes(filepath.Join(filepath.Dir(fontPath), "..", "scenes.json"))
@@ -117,6 +129,10 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 	if err != nil {
 		return nil, err
 	}
+	for id, doc := range s.Data.Maps {
+		g.assets.Maps[id] = artFromDocument(doc, s.Data)
+	}
+
 	if auditDir != "" {
 		if err = os.MkdirAll(auditDir, 0755); err != nil {
 			return nil, err
@@ -129,6 +145,20 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 	return g, nil
 }
 func (g *Game) Close() {
+	fields := []*Field{g.field}
+	if g.editor != nil {
+		fields = append(fields, g.editor.field)
+	}
+	if g.editorReturn != nil {
+		fields = append(fields, g.editorReturn.field)
+	}
+	seen := map[*Field]bool{}
+	for _, f := range fields {
+		if f != nil && !seen[f] {
+			f.dispose()
+			seen[f] = true
+		}
+	}
 	if g.log != nil {
 		g.log.Close()
 	}
@@ -174,8 +204,12 @@ func (g *Game) send(q session.Request) session.Response {
 		g.popups, g.effects, g.modals = nil, nil, nil
 		g.clearOrder()
 		g.selected, g.endAsked = "", ""
+		if g.field != nil {
+			g.field.dispose()
+		}
 		g.field, g.scene = nil, nil
-		g.history, g.logScroll, g.logDragging = nil, 0, false
+		g.resetBattleLog()
+		g.resetDeployment()
 	}
 	if g.S.Engine != nil && (q.Op == "command" || q.Op == "ai" || q.Op == "retry" || q.Op == "new") {
 		if err := g.S.Store.Save("auto", g.S.Engine.Snapshot(), true); err != nil {
@@ -218,6 +252,12 @@ func (g *Game) request(q session.Request) session.Response {
 			c = aiCommand
 		}
 		g.replayOne(*before, c, r.Events)
+	}
+	if r.OK && g.S.Engine != nil && before != nil && (before.Phase == "deployment" || g.S.Engine.Deploying()) {
+		if before.Phase != "deployment" || !g.S.Engine.Deploying() {
+			g.resetDeployment()
+		}
+		g.sync(g.S.Engine.Observe())
 	}
 	return r
 }
@@ -352,6 +392,16 @@ func (g *Game) assist() {
 		}
 		return
 	}
+	if o.Phase == "deployment" {
+		c, err := ai.Next(g.S.Engine)
+		if err != nil {
+			g.toast(koreanError(err.Error()), bad)
+			g.autoplay = false
+			return
+		}
+		g.command(c)
+		return
+	}
 	if o.Phase != "battle" {
 		g.autoplay = false
 		return
@@ -391,6 +441,8 @@ func (g *Game) rightClick() {
 	switch {
 	case g.overlay != "":
 		g.overlay = ""
+	case g.deploying():
+		g.deploymentSelected = ""
 	case g.cancel():
 	default:
 		g.selected = ""
@@ -399,7 +451,11 @@ func (g *Game) rightClick() {
 
 func (g *Game) Update() error {
 	g.ticks++
+	if g.editor != nil {
+		return g.updateEditor()
+	}
 	g.advance(1.0 / 60)
+	g.syncBattleLogStage()
 	g.learn = nil
 	if g.S.Engine != nil && g.S.Screen == "playing" {
 		g.learn = g.S.Engine.Observe().Learners
@@ -434,6 +490,7 @@ func (g *Game) Update() error {
 		return nil
 	}
 	logInput := g.updateBattleLog()
+	g.updateDeploymentPanel()
 	g.updateHover()
 	g.keys()
 	if !logInput {
@@ -514,6 +571,8 @@ func (g *Game) keys() {
 		case len(g.modals) > 0:
 			g.closeModal()
 		case len(g.learn) > 0:
+		case g.deploying() && g.deploymentSelected != "":
+			g.deploymentSelected = ""
 		case g.cancel():
 		default:
 			g.openOverlay("menu")
@@ -559,6 +618,10 @@ func (g *Game) keys() {
 	if pressed(ebiten.KeyF) {
 		g.speed = nextSpeed[g.speed]
 		g.toast(fmt.Sprintf("재생 속도 ×%d", g.speed), gold)
+	}
+	if o.Phase == "deployment" {
+		g.deploymentKeys()
+		return
 	}
 	if o.Phase != "battle" {
 		return
@@ -614,10 +677,10 @@ func (g *Game) leftClick() {
 	if g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 || g.S.Screen != "playing" || g.S.Engine == nil || g.field == nil || g.dragging {
 		return
 	}
-	if o := g.S.Engine.Observe(); o.Phase != "battle" {
+	if o := g.S.Engine.Observe(); o.Phase != "battle" && o.Phase != "deployment" {
 		return
 	}
-	if g.overHUD(x, y) {
+	if g.overHUD(x, y) || !image.Pt(x, y).In(g.battleViewport()) {
 		return
 	}
 	g.dragging, g.dragMoved, g.dragButton, g.dragX, g.dragY = true, false, ebiten.MouseButtonLeft, x, y
@@ -626,6 +689,10 @@ func (g *Game) leftClick() {
 // mapRelease is a left click on the battlefield that did not become a drag.
 func (g *Game) mapRelease() {
 	if g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 || g.S.Engine == nil || g.field == nil || g.busy() {
+		return
+	}
+	x, y := cursorPos()
+	if !image.Pt(x, y).In(g.battleViewport()) || g.overHUD(x, y) {
 		return
 	}
 	if g.hover.ok {
@@ -647,12 +714,20 @@ func (g *Game) LayoutF(w, h float64) (float64, float64) {
 }
 
 func (g *Game) Draw(dst *ebiten.Image) {
+	if g.editor == nil {
+		g.publishBattleLog()
+	}
 	dst.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
 	g.buttons, g.blocks = nil, nil
-	if g.S.Screen == "title" || g.S.Engine == nil {
+	if g.editor != nil {
+		g.drawEditor(dst)
+	} else if g.S.Screen == "title" || g.S.Engine == nil {
 		g.title(dst)
 	} else {
 		g.play(dst)
+	}
+	if g.editorReturn != nil && !g.deploying() {
+		g.btn(dst, image.Rect(1050, 12, 1266, 44), "에디터로 돌아가기", g.endEditorTrial)
 	}
 	if e := g.player.Duel; e != nil {
 		r := image.Rect(260, 250, 1020, 520)
@@ -714,11 +789,12 @@ func (g *Game) title(dst *ebiten.Image) {
 		names[i] = st.Name
 	}
 	g.label(dst, strings.Join(names, " → "), 104, 214, 16, muted)
-	r := image.Rect(96, 290, 420, 560)
+	r := image.Rect(96, 290, 420, 620)
 	window(dst, r)
 	items := []menuItem{
 		{"새로 시작", func() { g.request(session.Request{Op: "new", Seed: g.seed}); g.overlay = "" }},
 		{"불러오기", func() { g.openOverlay("load") }},
+		{"맵에디터", func() { g.editor = &mapEditor{selected: -1, level: 1, facing: "NW", zoom: 1} }},
 		{"설정", func() { g.openOverlay("settings") }},
 		{"종료", func() { g.request(session.Request{Op: "quit"}) }},
 	}
@@ -768,14 +844,26 @@ func (g *Game) battle(dst *ebiten.Image, o core.Observation) {
 			units = append(units, v)
 		}
 	}
+	vp := g.battleViewport()
+	hw, hh := float64(vp.Dx())/2/g.zoom, float64(vp.Dy())/2/g.zoom
+	g.field.prepareRender(g.zoom, g.camX-hw, g.camY-hh, vp.Dx(), vp.Dy())
+	g.field.DrawBounds = image.Rect(int(g.camX-hw)-64, int(g.camY-hh)-96, int(g.camX+hw)+64, int(g.camY+hh)+96)
+	g.field.setDeployment(o.Phase == "deployment", o.Map.Allies)
 	g.field.Draw(g.clockMS, units, g.marks(o))
+	if g.field.Map.Native && g.shakeT > 0 {
+		g.field.background(dst, vp, g.zoom, -g.camX*g.zoom+Width/2, -g.camY*g.zoom+Height/2, false)
+	}
 	sx, sy := g.shake()
 	g.camX, g.camY = g.camX-sx/g.zoom, g.camY-sy/g.zoom
 	defer func() { g.camX, g.camY = g.camX+sx/g.zoom, g.camY+sy/g.zoom }()
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-g.camX, -g.camY)
 	op.GeoM.Scale(g.zoom, g.zoom)
-	op.GeoM.Translate(float64(viewport.Min.X+viewport.Dx()/2), float64(viewport.Min.Y+viewport.Dy()/2))
+	op.GeoM.Translate(float64(vp.Min.X+vp.Dx()/2), float64(vp.Min.Y+vp.Dy()/2))
+	if g.field.Map.Native {
+		op = &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(sx, sy)
+	}
 	op.Filter = ebiten.FilterPixelated
 	drawScaled(dst, g.field.Canvas, op)
 	g.cursor(dst)
@@ -792,13 +880,13 @@ func (g *Game) battle(dst *ebiten.Image, o core.Observation) {
 		rect(dst, float32(Width/2-w/2-30), 356, float32(w+60), 2, gold)
 		g.label(dst, g.banner, float64(Width/2)-w/2, 308, 30, gold)
 	}
-	g.topBar(dst, o)
-	if g.S.Engine.Deploying() && !g.autoplay {
-		hint := "배치 — 아군을 고르고 금색 칸을 누르면 그 자리로 옮깁니다. 첫 행동을 하면 배치가 끝납니다."
-		w := g.width(hint, 15)
-		rect(dst, float32(Width/2-w/2-14), 48, float32(w+28), 30, color.NRGBA{R: 20, G: 14, B: 12, A: 210})
-		g.label(dst, hint, float64(Width/2)-w/2, 53, 15, gold)
+	if o.Phase == "deployment" {
+		g.drawDeployment(dst, o)
+		g.minimap(dst, o)
+		g.messages(dst)
+		return
 	}
+	g.topBar(dst, o)
 	g.minimap(dst, o)
 	g.detail(dst, o)
 	g.terrainPanel(dst, o)

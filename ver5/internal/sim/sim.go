@@ -140,7 +140,7 @@ func RunConfigured(d *content.Data, seed uint64, party []string, duels bool) (Re
 				return r, nil
 			}
 			c.Kind = "continue"
-		case "battle":
+		case "deployment", "battle":
 			var err error
 			if c, err = ai.NextWithDuels(e, duels); err != nil {
 				return r, err

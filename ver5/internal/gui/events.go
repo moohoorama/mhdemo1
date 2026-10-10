@@ -115,11 +115,11 @@ func factionName(f string) string {
 
 // statusLabels are the engine's status ids as the screen names them.
 var statusLabels = map[string]string{"speed": "신속", "range": "원시", "counter": "반격", "eightfold": "팔진",
-	"morale": "사기", "attack": "공격", "defense": "방어", "agility": "순발", "poison": "중독", "burn": "화상",
+	"mind": "정신", "morale": "사기", "attack": "공격", "defense": "방어", "agility": "순발", "poison": "중독", "burn": "화상",
 	"confusion": "혼란", "seal": "봉책", "root": "속박", "disarm": "봉격", "weak": "약화", "attack-down": "공격↓", "defense-down": "방어↓"}
 
 // percentStatus lists the statuses whose value is a signed percent.
-var percentStatus = map[string]bool{"attack": true, "defense": true, "morale": true, "agility": true}
+var percentStatus = map[string]bool{"attack": true, "defense": true, "mind": true, "morale": true, "agility": true}
 
 // statusText is a status with its size or remaining turns: stat changes show their percent,
 // the battle-long "-down" ones their cut, the rest their turns.
@@ -137,6 +137,8 @@ var errorNames = map[string]string{
 	"StaleRevision": "화면이 최신 상태가 아닙니다", "NotYourTurn": "지금은 행동할 수 없습니다",
 	"OutOfRange": "범위 밖입니다", "InvalidTarget": "대상이 올바르지 않습니다", "ActionSpent": "이미 행동했습니다",
 	"InsufficientMP": "병법치가 부족합니다", "MoveSpent": "이미 이동했습니다", "WrongPhase": "지금은 할 수 없습니다",
+	"DeploymentIncomplete": "출전 장수를 모두 배치해 주세요", "InvalidPlacement": "이 칸에는 배치할 수 없습니다",
+	"AlreadyPlaced": "이미 배치된 장수입니다", "NoDeploymentSpace": "모든 장수를 배치할 수 있는 빈칸이 없습니다",
 	"InvalidSlot": "슬롯이 올바르지 않습니다", "NoGame": "진행 중인 게임이 없습니다",
 	"IncompatibleSave": "호환되지 않는 저장입니다", "CorruptSave": "저장 파일이 손상되었습니다",
 }

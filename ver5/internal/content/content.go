@@ -36,6 +36,7 @@ type Rules struct {
 	ExpBase                float64
 	ExpGrowth              float64
 	ExpAction, ExpSpell    float64 // action XP in percent of the target's level cost, and its spell multiplier
+	ExpDefenseShare        float64 // received strike or successful defense XP, relative to action XP
 	ExpDefeat              float64
 	ExpLevelStep           float64
 	ExpMinFactor           float64
@@ -66,6 +67,7 @@ type Faction struct {
 // Tile describes one map glyph.
 type Tile struct {
 	Name           string
+	Surface        int  `json:",omitempty"`
 	Water          bool // beyond it lies the map edge; spells that need water look for it beside the caster or target
 	Ambush         bool
 	Castle         bool
@@ -73,6 +75,7 @@ type Tile struct {
 }
 type Class struct {
 	Name, Desc                      string
+	Family                          string `json:",omitempty"`
 	Terrain, Attack                 string // movement group; melee or ranged
 	Weapon, Armor                   string // equipment types it carries
 	Move, Range, MinRange, HPFactor int    // MinRange: the nearest cell a ranged class can attack
@@ -150,10 +153,13 @@ type Terrain struct {
 }
 type Point struct{ X, Y int }
 type Spawn struct {
-	Character string
-	X, Y      int
-	Level     int    `json:",omitempty"` // overrides the character's level
-	Faction   string `json:",omitempty"` // overrides the stage's and the character's faction color
+	Class, Facing     string    `json:",omitempty"`
+	HP, MP            *int      `json:",omitempty"`
+	Traits, Equipment *[]string `json:",omitempty"`
+	Character         string
+	X, Y              int
+	Level             int    `json:",omitempty"` // overrides the character's level
+	Faction           string `json:",omitempty"` // overrides the stage's and the character's faction color
 }
 type Duel struct {
 	ID, Ally, Enemy, Outcome, AllyResult, EnemyResult, Text string
@@ -178,7 +184,20 @@ type Node struct {
 	Count                                               int
 	Choices                                             map[string]string
 }
+type EditorChoice struct{ ID, Name string }
+type EditorFamily struct {
+	ID, Name string
+	Classes  []EditorChoice
+}
+type EditorCatalog struct {
+	Families        []EditorFamily
+	Armies          []EditorChoice
+	CharacterArmies map[string]string
+	Brushes         []string
+}
+
 type Data struct {
+	MapEditor      EditorCatalog `json:",omitempty"`
 	Title, Version string
 	Hash           string `json:"-"`
 	Rules          Rules
@@ -192,6 +211,7 @@ type Data struct {
 	Items          map[string]Item
 	Skills         map[string]Skill
 	Traits         map[string]Trait
+	Maps           map[string]*MapDocument `json:"-"`
 	Stages         []Stage
 	Nodes          []Node
 }
@@ -221,7 +241,23 @@ func Load(dir string) (*Data, error) {
 		h.Write(b)
 		dec := json.NewDecoder(bytes.NewReader(b))
 		dec.DisallowUnknownFields()
-		if filepath.Base(filepath.Dir(p)) == "stages" {
+		if filepath.Base(filepath.Dir(p)) == "maps" {
+			var doc MapDocument
+			if err = dec.Decode(&doc); err != nil {
+				return nil, fmt.Errorf("%s: %w", p, err)
+			}
+			if err = doc.ValidateShape(); err != nil {
+				return nil, fmt.Errorf("%s: %w", p, err)
+			}
+			if d.Maps == nil {
+				d.Maps = map[string]*MapDocument{}
+			}
+			if _, exists := d.Maps[doc.Stage.ID]; exists {
+				return nil, fmt.Errorf("duplicate map %s", doc.Stage.ID)
+			}
+			d.Maps[doc.Stage.ID] = &doc
+			d.Stages = append(d.Stages, doc.Compile())
+		} else if filepath.Base(filepath.Dir(p)) == "stages" {
 			var s Stage
 			if err = dec.Decode(&s); err != nil {
 				return nil, fmt.Errorf("%s: %w", p, err)
@@ -233,7 +269,15 @@ func Load(dir string) (*Data, error) {
 	}
 	d.Hash = fmt.Sprintf("%x", h.Sum(nil))
 	d.link()
-	return &d, d.Validate()
+	if err := d.Validate(); err != nil {
+		return nil, err
+	}
+	for _, id := range sortedKeys(d.Maps) {
+		if err := d.Maps[id].Validate(&d); err != nil {
+			return nil, fmt.Errorf("map %s: %w", id, err)
+		}
+	}
+	return &d, nil
 }
 
 // link derives the learn pools: a class's own pool and those of the classes it promotes from.

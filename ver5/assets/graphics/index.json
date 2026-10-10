@@ -1148,14 +1148,6 @@
   26,
   14
  ],
- "maps": [
-  "maps/B01.json",
-  "maps/B02.json",
-  "maps/B03.json",
-  "maps/S_peach.json",
-  "maps/S_village.json",
-  "maps/S_camp.json"
- ],
  "shadows": {
   "tileset": {
    "image": "map/shadows.png",
@@ -1292,5 +1284,10 @@
     ]
    }
   }
- }
+ },
+ "maps": [
+  "maps/S_camp.json",
+  "maps/S_peach.json",
+  "maps/S_village.json"
+ ]
 }

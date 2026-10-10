@@ -18,15 +18,16 @@ import (
 
 // Assets mirrors assets/graphics/index.json (built by tools/build_assets.py).
 type Assets struct {
-	Lib        *sprite.Library
-	Tiles      map[int]Sprite
-	TileShadow map[int]Sprite
-	Animations map[string]TileAnimation
-	Structures map[string]Sprite
-	Rise       int
-	Maps       map[string]*MapArt
-	Portraits  map[string]*ebiten.Image // Look.Portrait -> ink-wash portrait
-	Props      map[string]Prop
+	groundPattern *ebiten.Image
+	Lib           *sprite.Library
+	Tiles         map[int]Sprite
+	TileShadow    map[int]Sprite
+	Animations    map[string]TileAnimation
+	Structures    map[string]Sprite
+	Rise          int
+	Maps          map[string]*MapArt
+	Portraits     map[string]*ebiten.Image // Look.Portrait -> ink-wash portrait
+	Props         map[string]Prop
 }
 
 // Prop is scene art at the characters' pixel scale (not K times larger like map tiles).
@@ -57,6 +58,9 @@ type MapArt struct {
 	Ground      []GroundTile
 	Decorations []Decoration
 	Props       []MapProp
+	Native      bool
+	Visual      [4]int
+	SmallTiles  []string
 	Deformed    bool // battle map: forests and mountains drawn as deformed cells, like villages
 }
 
@@ -115,7 +119,7 @@ func LoadAssets(dir string) (*Assets, error) {
 				MS     int
 			}
 		}
-		Maps       []string
+		Maps       []string // narrative map artwork; battle maps come from content documents
 		Structures struct {
 			Image   string
 			Cell    [2]int
