@@ -33,6 +33,7 @@ import (
 const Width, Height = 1280, 850
 
 type Game struct {
+	gallery              *duelGallery
 	editor               *mapEditor
 	editorReturn         *mapEditor
 	editorSession        *session.Session
@@ -128,6 +129,13 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 	g.assets, err = LoadAssets(filepath.Join(filepath.Dir(fontPath), "..", "graphics"))
 	if err != nil {
 		return nil, err
+	}
+	for id, script := range g.assets.Duels {
+		for _, actor := range script.Supports {
+			if _, ok := s.Data.Characters[actor]; !ok {
+				return nil, fmt.Errorf("duel %s: unknown support %q", id, actor)
+			}
+		}
 	}
 	for id, doc := range s.Data.Maps {
 		g.assets.Maps[id] = artFromDocument(doc, s.Data)
@@ -451,6 +459,9 @@ func (g *Game) rightClick() {
 
 func (g *Game) Update() error {
 	g.ticks++
+	if g.gallery != nil {
+		return g.updateDuelGallery()
+	}
 	if g.editor != nil {
 		return g.updateEditor()
 	}
@@ -487,6 +498,10 @@ func (g *Game) Update() error {
 	}
 	if g.input {
 		g.cliInput()
+		return nil
+	}
+	if g.player.Duel != nil {
+		g.updateDuel()
 		return nil
 	}
 	logInput := g.updateBattleLog()
@@ -714,11 +729,29 @@ func (g *Game) LayoutF(w, h float64) (float64, float64) {
 }
 
 func (g *Game) Draw(dst *ebiten.Image) {
+	if g.gallery != nil {
+		dst.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
+		g.buttons, g.blocks = nil, nil
+		g.drawDuelGallery(dst)
+		if g.capture {
+			g.capture = false
+			g.screenshot(dst)
+		}
+		return
+	}
 	if g.editor == nil {
 		g.publishBattleLog()
 	}
 	dst.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
 	g.buttons, g.blocks = nil, nil
+	if g.player.Duel != nil {
+		g.drawDuel(dst)
+		if g.capture {
+			g.capture = false
+			g.screenshot(dst)
+		}
+		return
+	}
 	if g.editor != nil {
 		g.drawEditor(dst)
 	} else if g.S.Screen == "title" || g.S.Engine == nil {
@@ -729,17 +762,7 @@ func (g *Game) Draw(dst *ebiten.Image) {
 	if g.editorReturn != nil && !g.deploying() {
 		g.btn(dst, image.Rect(1050, 12, 1266, 44), "에디터로 돌아가기", g.endEditorTrial)
 	}
-	if e := g.player.Duel; e != nil {
-		r := image.Rect(260, 250, 1020, 520)
-		g.titled(dst, r, "一騎討")
-		g.portrait(dst, e.Actor, 296, 290, 140)
-		g.portrait(dst, e.Target, 844, 290, 140)
-		g.centered(dst, g.name(e.Actor)+"  VS  "+g.name(e.Target), 640, 300, 24, gold)
-		text, outcome, _ := strings.Cut(e.Text, " [")
-		outcome = map[string]string{"victory]": "승리", "draw]": "무승부", "defeat]": "패배"}[outcome]
-		g.label(dst, wrap(text, 20), 470, 350, 17, ink)
-		g.centered(dst, outcome, 640, 460, 24, gold)
-	}
+
 	if g.overlay != "" {
 		g.drawOverlay(dst)
 	} else if len(g.modals) > 0 && !g.busy() && g.S.Engine != nil {
@@ -789,11 +812,12 @@ func (g *Game) title(dst *ebiten.Image) {
 		names[i] = st.Name
 	}
 	g.label(dst, strings.Join(names, " → "), 104, 214, 16, muted)
-	r := image.Rect(96, 290, 420, 620)
+	r := image.Rect(96, 290, 420, 680)
 	window(dst, r)
 	items := []menuItem{
 		{"새로 시작", func() { g.request(session.Request{Op: "new", Seed: g.seed}); g.overlay = "" }},
 		{"불러오기", func() { g.openOverlay("load") }},
+		{"일기토", func() { _ = g.OpenDuel("", "", false) }},
 		{"맵에디터", func() { g.editor = &mapEditor{selected: -1, level: 1, facing: "NW", zoom: 1} }},
 		{"설정", func() { g.openOverlay("settings") }},
 		{"종료", func() { g.request(session.Request{Op: "quit"}) }},
@@ -850,6 +874,7 @@ func (g *Game) battle(dst *ebiten.Image, o core.Observation) {
 	g.field.DrawBounds = image.Rect(int(g.camX-hw)-64, int(g.camY-hh)-96, int(g.camX+hw)+64, int(g.camY+hh)+96)
 	g.field.setDeployment(o.Phase == "deployment", o.Map.Allies)
 	g.field.Draw(g.clockMS, units, g.marks(o))
+	g.drawDeploymentPreview(o)
 	if g.field.Map.Native && g.shakeT > 0 {
 		g.field.background(dst, vp, g.zoom, -g.camX*g.zoom+Width/2, -g.camY*g.zoom+Height/2, false)
 	}

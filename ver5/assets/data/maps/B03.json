@@ -1285,10 +1285,28 @@
     "ID": "hulao-zhang-fei",
     "Ally": "zhangfei",
     "Enemy": "lubu",
-    "Outcome": "draw",
+    "Outcome": "victory",
     "AllyResult": "stay",
-    "EnemyResult": "stay",
-    "Text": "장비와 여포의 일기토가 무승부로 끝났다."
+    "EnemyResult": "retreat",
+    "Text": "세 형제가 합세하자 여포가 퇴각했다."
+   },
+   {
+    "ID": "hulao-guan-yu",
+    "Ally": "guanyu",
+    "Enemy": "lubu",
+    "Outcome": "victory",
+    "AllyResult": "stay",
+    "EnemyResult": "retreat",
+    "Text": "세 형제가 합세하자 여포가 퇴각했다."
+   },
+   {
+    "ID": "hulao-liu-bei",
+    "Ally": "liubei",
+    "Enemy": "lubu",
+    "Outcome": "victory",
+    "AllyResult": "stay",
+    "EnemyResult": "retreat",
+    "Text": "세 형제가 합세하자 여포가 퇴각했다."
    }
   ],
   "Faction": "dong"

@@ -1,0 +1,84 @@
+{
+  "poison": [
+    "....o....",
+    "...oho...",
+    "...ohmo..",
+    "..ohmmo..",
+    ".ohmmmmo.",
+    ".ohmmmmo.",
+    ".ommmmmo.",
+    "..ommmo..",
+    "...ooo..."
+  ],
+  "root": [
+    "..ooo....",
+    ".ohhmo...",
+    "oh..omo..",
+    "om.ohmo..",
+    ".omomomo.",
+    "..omho.mo",
+    "..omo..mo",
+    "...omhmo.",
+    "....ooo.."
+  ],
+  "disarm": [
+    ".........",
+    ".oo...oo.",
+    ".oho.omo.",
+    "..ohomo..",
+    "...omo...",
+    "..omomo..",
+    ".omo.omo.",
+    ".oo...oo.",
+    "........."
+  ],
+  "burn": [
+    "....o....",
+    "...oho...",
+    "...ohmo..",
+    ".o.ohmo..",
+    "omoommmo.",
+    "ommmhmmo.",
+    "omhmmmmo.",
+    ".omhmoo..",
+    "..ooo...."
+  ],
+  "confusion": [
+    "..oooo...",
+    ".ohhhmo..",
+    ".om.ommo.",
+    "....ommo.",
+    "...ommo..",
+    "...omo...",
+    "....o....",
+    "...oho...",
+    "....o...."
+  ],
+  "seal": [
+    "..oooo...",
+    ".ohhhmo..",
+    ".ohrrmo..",
+    ".ohrhmo..",
+    ".ohrrmo..",
+    ".ohrhmo..",
+    ".ohhhmo..",
+    ".ommmoo..",
+    "..ooo...."
+  ],
+  "up": [
+    "..h..",
+    ".hhm.",
+    "hhmmm",
+    "..m..",
+    "..m..",
+    "..o.."
+  ],
+  "down": [
+    "..h..",
+    "..h..",
+    "..m..",
+    "hhmmm",
+    ".mmm.",
+    "..m.."
+  ]
+}

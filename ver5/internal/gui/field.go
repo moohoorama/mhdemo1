@@ -434,7 +434,7 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {
 		op.ColorScale.ScaleAlpha(.5)
 	}
 	if u.status["poison"].Turns > 0 {
-		op.ColorScale.Scale(.45, 1, .45, 1)
+		op.ColorScale.Scale(.82, .95, .76, 1)
 	}
 	if u.status["weak"].Turns > 0 {
 		op.ColorScale.Scale(.7, .7, .8, 1)
@@ -466,7 +466,7 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {
 	if u.shownHP <= 0 || u.actor {
 		return
 	}
-	rx, ry := f.renderPoint(x, y-u.top-4)
+	rx, ry := f.renderPoint(x, y-u.top-statusBarOffset(u))
 	z := float32(1)
 	if f.renderZoom > 0 {
 		z = float32(f.renderZoom)
@@ -497,6 +497,17 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {
 		team.B = uint8(float64(team.B) * .45)
 	}
 	vector.FillRect(f.Canvas, bx-11*z, top, 2*z, 3*z, team, false)
+	vector.FillRect(f.Canvas, bx-9*z, top+4*z, 18*z, 3*z, color.RGBA{20, 20, 24, 255}, false)
+	mp := color.RGBA{85, 150, 255, 255}
+	if f.deployment && !u.ally {
+		mp.R = uint8(float64(mp.R) * .45)
+		mp.G = uint8(float64(mp.G) * .45)
+		mp.B = uint8(float64(mp.B) * .45)
+	}
+	mpWidth := float32(math.Round(float64(16*z) * float64(u.shownMP) / float64(max(1, u.maxMP))))
+	if u.shownMP > 0 {
+		vector.FillRect(f.Canvas, bx-8*z, top+5*z, max(z, min(16*z, mpWidth)), z, mp, false)
+	}
 }
 
 // Bounds of the canvas, for the camera.

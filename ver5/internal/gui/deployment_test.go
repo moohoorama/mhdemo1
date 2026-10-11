@@ -66,6 +66,37 @@ func TestDeploymentCardsAndMap(t *testing.T) {
 		t.Fatal("battle HUD not restored")
 	}
 }
+
+func TestDeploymentPreview(t *testing.T) {
+	for _, tc := range []struct {
+		name    string
+		change  func(*Game)
+		visible bool
+	}{
+		{"legal empty cell", func(g *Game) {}, true},
+		{"no selection", func(g *Game) { g.deploymentSelected = "" }, false},
+		{"outside map or HUD", func(g *Game) { g.hover.ok = false }, false},
+		{"outside deployment area", func(g *Game) { g.hover = hoverCell{0, 0, true} }, false},
+		{"occupied", func(g *Game) { g.deploymentMapClick(1, 2); g.selectDeployment("archer1") }, false},
+		{"placed", func(g *Game) { g.deploymentMapClick(1, 2); g.deploymentSelected = "hero" }, false},
+		{"overlay", func(g *Game) { g.overlay = "menu" }, false},
+		{"modal", func(g *Game) { g.modals = []*modal{{kind: "objective"}} }, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			g := deploymentController(t)
+			g.selectDeployment("hero")
+			g.hover = hoverCell{1, 2, true}
+			tc.change(g)
+			c, ok := g.deploymentPreviewCommand()
+			if ok != tc.visible {
+				t.Fatalf("preview visible=%t, want %t", ok, tc.visible)
+			}
+			if ok && (c.Actor != "hero" || c.X != 1 || c.Y != 2) {
+				t.Fatalf("wrong preview: %+v", c)
+			}
+		})
+	}
+}
 func TestDeploymentPulseAndViewport(t *testing.T) {
 	for _, speed := range []int{1, 2, 4} {
 		g := deploymentController(t)

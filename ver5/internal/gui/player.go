@@ -6,6 +6,7 @@ import (
 
 	"srpg/internal/content"
 	"srpg/internal/core"
+	"srpg/internal/duelview"
 	"srpg/internal/replay"
 	"srpg/internal/sprite"
 )
@@ -52,6 +53,8 @@ type unitVis struct {
 	inactive     bool
 	actor        bool // a scene actor: no HP bar, always rests standing
 	shownHP      int
+	shownMP      int
+	maxMP        int
 	maxHP        int
 	flash        float64
 	top          float64
@@ -162,7 +165,7 @@ type Player struct {
 	running []*running
 	gap     float64
 	final   core.Observation
-	Duel    *core.Event
+	Duel    *duelview.View
 }
 
 func (p *Player) Busy() bool { return len(p.waiting)+len(p.running) > 0 }
@@ -185,6 +188,9 @@ func (p *Player) Play(actions []*replay.Action, final core.Observation) {
 func (p *Player) Update(dt float64) {
 	if !p.Busy() {
 		return
+	}
+	if p.Duel != nil {
+		p.Duel.Time = min(p.Duel.Story.Duration(), p.Duel.Time+dt*duelview.PlaybackSpeed)
 	}
 	p.gap += dt
 	for k, i := range p.waiting {
@@ -300,6 +306,7 @@ func (g *Game) perform(a *replay.Action) []beat {
 					}
 					g.spawn("heal", nil, t, 1.1, healC)
 					if g.S.Data.Items[c.Item].Effect == content.ItemMP {
+						t.shownMP = min(t.maxMP, t.shownMP+e.Amount)
 						g.say(t, fmt.Sprintf("MP +%d", e.Amount))
 					} else {
 						t.shownHP = min(t.maxHP, t.shownHP+e.Amount)
@@ -312,8 +319,8 @@ func (g *Game) perform(a *replay.Action) []beat {
 		case "duel":
 			for _, e := range events {
 				if e.Kind == "duel" {
-					duel := e
-					add(2.6, func() { g.player.Duel = &duel })
+					view := g.duelView(e)
+					add(view.Story.Duration()/duelview.PlaybackSpeed, func() { g.player.Duel = view })
 				}
 			}
 			ev := events
@@ -400,6 +407,7 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 		}
 		for _, e := range events {
 			if e.Kind == "cost" {
+				actor.shownMP = max(0, actor.shownMP-e.Amount)
 				g.say(actor, fmt.Sprintf("MP -%d", e.Amount))
 			}
 		}
@@ -530,14 +538,17 @@ func (g *Game) strike(attacker *unitVis, events []core.Event) {
 				g.say(u, fmt.Sprintf("HP +%d", e.Amount))
 			}
 		case "recover-mp":
-			g.say(g.unitAt(e.Actor), fmt.Sprintf("MP +%d", e.Amount))
+			if u := g.unitAt(e.Actor); u != nil {
+				u.shownMP = min(u.maxMP, u.shownMP+e.Amount)
+				g.say(u, fmt.Sprintf("MP +%d", e.Amount))
+			}
 		case "experience":
 			g.say(g.unitAt(e.Actor), fmt.Sprintf("EXP +%d", g.expShown(e.Actor, e.Amount)))
 		case "effect":
 			if t != nil {
 				t.flash = .3
 			}
-		case "retreat":
+		case "retreat", "death":
 			if u := g.unitAt(e.Actor); u != nil {
 				u.shownHP = 0
 				u.dying = 0

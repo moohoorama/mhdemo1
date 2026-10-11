@@ -77,6 +77,8 @@ type Command struct {
 	Deployment                                      []string
 }
 type Event struct {
+	DuelID                    string `json:",omitempty"`
+	Outcome                   string `json:",omitempty"`
 	Kind, Actor, Target, Text string
 	Amount                    int
 	Path                      []content.Point `json:",omitempty"` // move: cells walked, both ends included

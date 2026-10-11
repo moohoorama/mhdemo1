@@ -13,12 +13,17 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"srpg/internal/duel"
+	"srpg/internal/duelview"
 	"srpg/internal/sprite"
 )
 
 // Assets mirrors assets/graphics/index.json (built by tools/build_assets.py).
 type Assets struct {
+	Duels         duel.Scripts
+	Bubble        *duelview.Bubble
 	groundPattern *ebiten.Image
+	StatusIcons   map[string]*ebiten.Image
 	Lib           *sprite.Library
 	Tiles         map[int]Sprite
 	TileShadow    map[int]Sprite
@@ -106,6 +111,14 @@ func shadowed(im *image.RGBA, c color.RGBA) *ebiten.Image {
 }
 
 func LoadAssets(dir string) (*Assets, error) {
+	scripts, err := duel.LoadScripts(filepath.Join(dir, "..", "duels.json"))
+	if err != nil {
+		return nil, err
+	}
+	bubble, err := duelview.LoadBubble(filepath.Join(dir, "ui", "speech-bubble"))
+	if err != nil {
+		return nil, err
+	}
 	b, err := os.ReadFile(filepath.Join(dir, "index.json"))
 	if err != nil {
 		return nil, err
@@ -146,9 +159,26 @@ func LoadAssets(dir string) (*Assets, error) {
 	if err = json.Unmarshal(b, &index); err != nil {
 		return nil, err
 	}
-	a := &Assets{Tiles: map[int]Sprite{}, TileShadow: map[int]Sprite{},
+	a := &Assets{Bubble: bubble, Duels: scripts, Tiles: map[int]Sprite{}, TileShadow: map[int]Sprite{},
 		Animations: map[string]TileAnimation{}, Structures: map[string]Sprite{}, Maps: map[string]*MapArt{},
 		Rise: index.Structures.Rise, Portraits: map[string]*ebiten.Image{}, Props: map[string]Prop{}}
+	statusPixels, err := loadRGBA(filepath.Join(dir, "status", "icons.png"))
+	if err != nil {
+		return nil, err
+	}
+	statusIndex, err := os.ReadFile(filepath.Join(dir, "status", "icons.json"))
+	if err != nil {
+		return nil, err
+	}
+	var statusRects map[string][4]int
+	if err := json.Unmarshal(statusIndex, &statusRects); err != nil {
+		return nil, err
+	}
+	statusSheet := ebiten.NewImageFromImage(statusPixels)
+	a.StatusIcons = make(map[string]*ebiten.Image, len(statusRects))
+	for key, r := range statusRects {
+		a.StatusIcons[key] = statusSheet.SubImage(image.Rect(r[0], r[1], r[0]+r[2], r[1]+r[3])).(*ebiten.Image)
+	}
 	shade := color.RGBA{index.ShadowRGB[0], index.ShadowRGB[1], index.ShadowRGB[2], 255}
 	sheets, err := sprite.LoadDir(filepath.Join(dir, "..", "sprites"))
 	if err != nil {

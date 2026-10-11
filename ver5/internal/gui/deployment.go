@@ -86,6 +86,38 @@ func (g *Game) deploymentMarks() []Highlight {
 	}
 	return out
 }
+
+func (g *Game) deploymentPreviewCommand() (core.Command, bool) {
+	if !g.deploying() || g.deploymentSelected == "" || !g.hover.ok || g.overlay != "" || len(g.modals) > 0 || g.input {
+		return core.Command{}, false
+	}
+	for _, c := range g.S.Engine.LegalActions(g.deploymentSelected).Commands {
+		if c.Kind == "place" && c.X == g.hover.x && c.Y == g.hover.y {
+			return c, true
+		}
+	}
+	return core.Command{}, false
+}
+
+func (g *Game) drawDeploymentPreview(o core.Observation) {
+	c, ok := g.deploymentPreviewCommand()
+	if !ok {
+		return
+	}
+	for _, ch := range o.Characters {
+		if ch.ID != c.Actor {
+			continue
+		}
+		art := g.battleClassArt(ch.Def, ch.Class, g.S.Data.Characters[ch.Def].Look.Faction)
+		if art == nil {
+			return
+		}
+		u := &unitVis{art: art, ally: true, actor: true, dir: "SE", anim: "idle", dying: -1}
+		x, y := g.field.Center(float64(c.X), float64(c.Y))
+		g.field.drawUnit(u, x, y-g.field.Lift(c.X, c.Y), true)
+		return
+	}
+}
 func (g *Game) deploymentCardsRect() image.Rectangle {
 	return image.Rect(48, deploymentTop+48, Width-48, Height-52)
 }

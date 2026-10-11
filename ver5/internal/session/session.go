@@ -186,13 +186,16 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 		var err error
 		if q.Op == "command" {
 			o := s.Engine.Observe()
-			if o.Phase == "battle" && o.Turn == "enemy" {
+			if o.Phase == "battle" && o.Turn == "enemy" && q.Command.Kind != "learn" && q.Command.Kind != "learn_close" {
 				return nil, fmt.Errorf("NotYourTurn")
 			}
 			v, err = s.Engine.Apply(q.Command)
 		} else if q.Op == "ai" {
 			if s.Engine.Observe().Turn != "enemy" && !s.Engine.Deploying() {
 				return nil, fmt.Errorf("NotYourTurn")
+			}
+			if len(s.Engine.Observe().Learning) > 0 {
+				return nil, fmt.Errorf("LearningPending")
 			}
 			v, err = ai.Step(s.Engine)
 		} else {
@@ -205,6 +208,9 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 				}
 				o := s.Engine.Observe()
 				if (o.Phase != "battle" && o.Phase != "deployment") || o.Turn != turn || o.Phase != phase {
+					break
+				}
+				if turn == "enemy" && len(o.Learning) > 0 {
 					break
 				}
 				step, x := ai.Step(s.Engine)
@@ -239,7 +245,7 @@ func (s *Session) AdvanceEnemies() ([]core.Event, error) {
 			return out, fmt.Errorf("AITimeLimit")
 		}
 		o := s.Engine.Observe()
-		if o.Phase != "battle" || o.Turn != "enemy" {
+		if o.Phase != "battle" || o.Turn != "enemy" || len(o.Learning) > 0 {
 			return out, nil
 		}
 		v, err := ai.Step(s.Engine)
@@ -256,8 +262,9 @@ func (s *Session) AdvanceEnemies() ([]core.Event, error) {
 }
 
 // ResolvePhase runs the current AI faction's whole phase through the core, one command at
-// a time exactly as AdvanceEnemies does, and returns the actions for claim replay. The
-// returned state is final; the replay only shows it. It autosaves once at the end.
+// a time exactly as AdvanceEnemies does, and returns the actions for claim replay.
+// It pauses for player learning; the replay only shows the returned state.
+// It autosaves once at the end.
 func (s *Session) ResolvePhase() ([]*replay.Action, error) {
 	if s.Engine == nil {
 		return nil, fmt.Errorf("NoGame")
@@ -273,7 +280,7 @@ func (s *Session) ResolvePhase() ([]*replay.Action, error) {
 			return actions, fmt.Errorf("AITimeLimit")
 		}
 		o := s.Engine.Observe()
-		if o.Phase != "battle" || o.Turn != turn {
+		if o.Phase != "battle" || o.Turn != turn || len(o.Learning) > 0 {
 			break
 		}
 		c, err := ai.Next(s.Engine)

@@ -127,6 +127,7 @@ func (g *Game) sync(o core.Observation) {
 		v.u, v.v, v.walk = float64(u.X), float64(u.Y), nil
 		v.lift = g.field.Lift(u.X, u.Y)
 		v.shownHP, v.maxHP = u.HP, u.Stats.MaxHP
+		v.shownMP, v.maxMP = u.MP, u.Stats.MaxMP
 		v.status = u.Status
 		v.inactive = o.Phase != "battle" || u.Faction != o.Turn || u.Done
 		v.greyed = u.Done && u.Faction == o.Turn && o.Phase == "battle"

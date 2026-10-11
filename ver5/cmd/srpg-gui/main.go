@@ -21,6 +21,9 @@ func main() {
 	audit := flag.String("audit", "", "write GUI input trace and F12 captures")
 	seed := flag.Uint64("seed", 1, "new-game seed")
 	shots := flag.String("shots", "", "autoplay a new game and save screens at these ticks (60/s), e.g. 600,1200; needs -audit")
+	duelID := flag.String("duel", "", "open a duel directly by its scenario ID")
+	duelCapture := flag.String("duel-capture", "", "capture each beat of -duel and exit")
+	duelDebug := flag.Bool("duel-debug", false, "show authoring descriptions and seeking controls")
 	flag.Parse()
 	// Finder launches apps with an arbitrary working directory. Resolve bundled
 	// runtime assets beside the executable while respecting explicit flags.
@@ -57,6 +60,11 @@ func main() {
 		fail(err)
 	}
 	defer g.Close()
+	if *duelID != "" || *duelCapture != "" || *duelDebug {
+		if err := g.OpenDuel(*duelID, *duelCapture, *duelDebug); err != nil {
+			fail(err)
+		}
+	}
 	g.Verify = *verify
 	for _, t := range strings.Split(*shots, ",") {
 		if n, err := strconv.Atoi(strings.TrimSpace(t)); err == nil {

@@ -139,7 +139,7 @@ func (e *Engine) duel(attacker, defender *Unit, d content.Duel) {
 		ally, enemy = defender, attacker
 	}
 	e.state.Executed["duel-"+d.ID] = true
-	e.events = append(e.events, Event{Kind: "duel", Actor: ally.ID, Target: enemy.ID, Text: d.Text + " [" + d.Outcome + "]"})
+	e.events = append(e.events, Event{Kind: "duel", DuelID: d.ID, Outcome: d.Outcome, Actor: ally.ID, Target: enemy.ID, Text: d.Text + " [" + d.Outcome + "]"})
 	outcome := func(q *Unit, result string) {
 		if result == "retreat" || result == "death" {
 			q.HP = 0

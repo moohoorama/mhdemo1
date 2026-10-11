@@ -1059,8 +1059,8 @@
     "Enemy": "huaxiong",
     "Outcome": "victory",
     "AllyResult": "stay",
-    "EnemyResult": "retreat",
-    "Text": "관우: 내 칼을 받아라! 화웅이 물러났다."
+    "EnemyResult": "death",
+    "Text": "화웅이 거듭 칼을 휘둘렀으나 관우는 여유롭게 모두 막아냈다. 화웅이 겁먹고 도망치자 관우가 뒤쫓아 베었다."
    }
   ],
   "Next": "sword",

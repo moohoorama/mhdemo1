@@ -1,0 +1,723 @@
+{
+  "B01-duel-1": {
+    "Outcome": "victory",
+    "Beats": [
+      {
+        "Kind": "talk",
+        "Title": "등무의 조롱",
+        "Speech": "어디서 굴러온 촌놈이냐!",
+        "Side": 1,
+        "Duration": 2
+      },
+      {
+        "Kind": "talk",
+        "Title": "연인 장익덕",
+        "Speech": "연인 장익덕이 여기 있다!",
+        "Side": 0,
+        "Duration": 2
+      },
+      {
+        "Kind": "approach",
+        "Title": "등무도 기세등등하게 중앙으로 나서다",
+        "Speech": "덤벼라!",
+        "Side": 1,
+        "Duration": 1.4
+      },
+      {
+        "Kind": "talk",
+        "Title": "중앙에서 정면으로 대치하다",
+        "Speech": "네놈의 창쯤이야!",
+        "Side": 1,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "critical",
+        "Title": "첫 합 · 장팔사모의 일격",
+        "Speech": "받아라!",
+        "Side": 0,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "win",
+        "Title": "장비가 한 합에 등무를 꿰뚫다",
+        "Speech": "다음은 누구냐!",
+        "Side": 0,
+        "Duration": 2.2
+      }
+    ]
+  },
+  "B01-duel-2": {
+    "Outcome": "victory",
+    "Beats": [
+      {
+        "Kind": "talk",
+        "Title": "정원지의 복수 선언",
+        "Speech": "등무의 원수를 갚겠다!",
+        "Side": 1,
+        "Duration": 2
+      },
+      {
+        "Kind": "talk",
+        "Title": "관우의 차분한 응답",
+        "Speech": "그 목, 내가 거두겠다.",
+        "Side": 0,
+        "Duration": 2
+      },
+      {
+        "Kind": "advance",
+        "Title": "정원지가 성난 기세로 돌진",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.1
+      },
+      {
+        "Kind": "critical",
+        "Title": "첫 합 · 돌진을 받아 청룡도를 휘두르다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.3
+      },
+      {
+        "Kind": "win",
+        "Title": "관우가 한 칼에 정원지를 베다",
+        "Speech": "적장은 쓰러졌다.",
+        "Side": 0,
+        "Duration": 2.5
+      }
+    ]
+  },
+  "sishui-guan-yu": {
+    "Outcome": "victory",
+    "Beats": [
+      {
+        "Kind": "talk",
+        "Title": "화웅의 자신만만한 도발",
+        "Speech": "연합군에는 사람이 없느냐!",
+        "Side": 1,
+        "Duration": 1.8
+      },
+      {
+        "Kind": "talk",
+        "Title": "관우의 차분한 응답",
+        "Speech": "관운장이 상대하겠다.",
+        "Side": 0,
+        "Duration": 1.8
+      },
+      {
+        "Kind": "approach",
+        "Title": "정면에서 맞붙다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.1
+      },
+      {
+        "Kind": "talk",
+        "Title": "화웅이 기세를 올리다",
+        "Speech": "내 칼을 받아라!",
+        "Side": 1,
+        "Duration": 0.8
+      },
+      {
+        "Kind": "block",
+        "Title": "화웅의 첫 공격을 가볍게 막다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 0.95
+      },
+      {
+        "Kind": "block",
+        "Title": "화웅의 거듭된 공격도 막다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 0.95
+      },
+      {
+        "Kind": "block",
+        "Title": "화웅의 연타에도 관우는 흔들리지 않다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 0.95
+      },
+      {
+        "Kind": "talk",
+        "Title": "화웅이 온 힘을 끌어모으다",
+        "Speech": "이번에는 끝이다!",
+        "Side": 1,
+        "Duration": 0.9
+      },
+      {
+        "Kind": "critical-block",
+        "Title": "화웅의 강타와 섬광 · 관우의 여유로운 방어",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.3
+      },
+      {
+        "Kind": "talk",
+        "Title": "관우의 태연한 한마디",
+        "Speech": "그뿐이냐?",
+        "Side": 0,
+        "Duration": 1.1
+      },
+      {
+        "Kind": "withdraw",
+        "Title": "화웅이 겁먹고 뒷걸음질하다",
+        "Speech": "이… 이럴 수가!",
+        "Side": 1,
+        "Duration": 1
+      },
+      {
+        "Kind": "talk",
+        "Title": "화웅이 도주를 결심하다",
+        "Speech": "물러나라!",
+        "Side": 1,
+        "Duration": 0.8
+      },
+      {
+        "Kind": "straight-chase",
+        "Title": "화웅의 직선 도주 · 관우의 추격",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 2.3
+      },
+      {
+        "Kind": "backhit",
+        "Title": "관우가 따라잡아 화웅을 베다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.3
+      },
+      {
+        "Kind": "win",
+        "Title": "화웅을 베고 돌아서는 관우",
+        "Speech": "끝났다.",
+        "Side": 0,
+        "Duration": 2.2
+      }
+    ]
+  },
+  "hulao-zhang-fei": {
+    "Outcome": "victory",
+    "Supports": [
+      "guanyu",
+      "liubei"
+    ],
+    "Beats": [
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "여포! 이 장익덕과 겨뤄 보자!",
+        "Side": 0,
+        "Duration": 1.8
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "네 실력을 보겠다!",
+        "Side": 1,
+        "Duration": 1.5
+      },
+      {
+        "Kind": "approach",
+        "Title": "approach",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "block",
+        "Title": "block",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "block",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "critical-block",
+        "Title": "critical-block",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "critical-block",
+        "Title": "critical-block",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "block",
+        "Title": "block",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "block",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "이놈… 내 공격에도 밀리지 않는군!",
+        "Side": 1,
+        "Duration": 1.7
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "아직 멀었다! 더 덤벼라!",
+        "Side": 0,
+        "Duration": 1.5
+      },
+      {
+        "Kind": "critical-block",
+        "Title": "critical-block",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.15
+      },
+      {
+        "Kind": "critical-block",
+        "Title": "critical-block",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.15
+      },
+      {
+        "Kind": "block",
+        "Title": "block",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "block",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "reinforcements",
+        "Title": "좌하단과 우하단에서 두 형제가 합류해 여포를 포위하다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.8
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "함께 싸우자!",
+        "Side": 2,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "우리 셋이 상대하겠다!",
+        "Side": 3,
+        "Duration": 1.3
+      },
+      {
+        "Kind": "block",
+        "Title": "합류한 형제가 공격하다",
+        "Speech": "",
+        "Side": 2,
+        "Duration": 1.15
+      },
+      {
+        "Kind": "block",
+        "Title": "다른 형제도 공격에 가세하다",
+        "Speech": "",
+        "Side": 3,
+        "Duration": 1.15
+      },
+      {
+        "Kind": "advance",
+        "Title": "세 형제가 여포를 압박하다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 0.7
+      },
+      {
+        "Kind": "block",
+        "Title": "세 형제가 여포의 공격을 받아내다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.0
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "셋을 한꺼번에 상대하기는 무리다!",
+        "Side": 1,
+        "Duration": 1.8
+      },
+      {
+        "Kind": "retreat",
+        "Title": "여포가 본진 대열 입구까지만 직선 퇴각하다",
+        "Speech": "물러난다!",
+        "Side": 1,
+        "Duration": 2.2
+      },
+      {
+        "Kind": "withdrawn",
+        "Title": "세 형제 앞에서 여포가 퇴각하다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.1
+      }
+    ]
+  },
+  "hulao-guan-yu": {
+    "Outcome": "victory",
+    "Supports": [
+      "zhangfei",
+      "liubei"
+    ],
+    "Beats": [
+      {
+        "Kind": "approach",
+        "Title": "approach",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "critical-block",
+        "Title": "관우가 첫 합부터 강공하다",
+        "Speech": "받아라!",
+        "Side": 0,
+        "Duration": 1.25
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "(이 일격… 생각보다 무겁군!)",
+        "Side": 1,
+        "Duration": 1.7
+      },
+      {
+        "Kind": "block",
+        "Title": "block",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "block",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "틈이 보이는군.",
+        "Side": 0,
+        "Duration": 1
+      },
+      {
+        "Kind": "critical-dodge",
+        "Title": "틈을 찌른 관우의 강공을 여포가 피해내다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.3
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "(이 일격! 받아내면 안되겠군.)",
+        "Side": 1,
+        "Duration": 2
+      },
+      {
+        "Kind": "block",
+        "Title": "block",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "dodge",
+        "Title": "dodge",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "block",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "critical-dodge",
+        "Title": "critical-dodge",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.3
+      },
+      {
+        "Kind": "reinforcements",
+        "Title": "좌하단과 우하단에서 두 형제가 합류해 여포를 포위하다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.8
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "함께 싸우자!",
+        "Side": 2,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "우리 셋이 상대하겠다!",
+        "Side": 3,
+        "Duration": 1.3
+      },
+      {
+        "Kind": "block",
+        "Title": "합류한 형제가 공격하다",
+        "Speech": "",
+        "Side": 2,
+        "Duration": 1.15
+      },
+      {
+        "Kind": "block",
+        "Title": "다른 형제도 공격에 가세하다",
+        "Speech": "",
+        "Side": 3,
+        "Duration": 1.15
+      },
+      {
+        "Kind": "advance",
+        "Title": "세 형제가 여포를 압박하다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 0.7
+      },
+      {
+        "Kind": "block",
+        "Title": "세 형제가 여포의 공격을 받아내다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.0
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "셋을 한꺼번에 상대하기는 무리다!",
+        "Side": 1,
+        "Duration": 1.8
+      },
+      {
+        "Kind": "retreat",
+        "Title": "여포가 본진 대열 입구까지만 직선 퇴각하다",
+        "Speech": "물러난다!",
+        "Side": 1,
+        "Duration": 2.2
+      },
+      {
+        "Kind": "withdrawn",
+        "Title": "세 형제 앞에서 여포가 퇴각하다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.1
+      }
+    ]
+  },
+  "hulao-liu-bei": {
+    "Outcome": "victory",
+    "Supports": [
+      "guanyu",
+      "zhangfei"
+    ],
+    "Beats": [
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "내가 상대하겠다!",
+        "Side": 0,
+        "Duration": 1.5
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "네가 얼마나 버티는지 보자!",
+        "Side": 1,
+        "Duration": 1.5
+      },
+      {
+        "Kind": "approach",
+        "Title": "approach",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "yielding-block",
+        "Title": "유비가 화극을 막지만 뒤로 밀리다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "advance",
+        "Title": "advance",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 0.6
+      },
+      {
+        "Kind": "dodge",
+        "Title": "dodge",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "yielding-block",
+        "Title": "yielding-block",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "advance",
+        "Title": "advance",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 0.6
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "여기서 물러설 수는 없다!",
+        "Side": 0,
+        "Duration": 1.5
+      },
+      {
+        "Kind": "critical-dodge",
+        "Title": "critical-dodge",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.25
+      },
+      {
+        "Kind": "yielding-block",
+        "Title": "yielding-block",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "advance",
+        "Title": "advance",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 0.6
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "질긴 놈이군… 아직도 버티다니!",
+        "Side": 1,
+        "Duration": 1.7
+      },
+      {
+        "Kind": "dodge",
+        "Title": "dodge",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "reinforcements",
+        "Title": "좌하단과 우하단에서 두 형제가 합류해 여포를 포위하다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.8
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "함께 싸우자!",
+        "Side": 2,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "우리 셋이 상대하겠다!",
+        "Side": 3,
+        "Duration": 1.3
+      },
+      {
+        "Kind": "block",
+        "Title": "합류한 형제가 공격하다",
+        "Speech": "",
+        "Side": 2,
+        "Duration": 1.15
+      },
+      {
+        "Kind": "block",
+        "Title": "다른 형제도 공격에 가세하다",
+        "Speech": "",
+        "Side": 3,
+        "Duration": 1.15
+      },
+      {
+        "Kind": "advance",
+        "Title": "세 형제가 여포를 압박하다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 0.7
+      },
+      {
+        "Kind": "block",
+        "Title": "세 형제가 여포의 공격을 받아내다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.0
+      },
+      {
+        "Kind": "talk",
+        "Title": "talk",
+        "Speech": "셋을 한꺼번에 상대하기는 무리다!",
+        "Side": 1,
+        "Duration": 1.8
+      },
+      {
+        "Kind": "retreat",
+        "Title": "여포가 본진 대열 입구까지만 직선 퇴각하다",
+        "Speech": "물러난다!",
+        "Side": 1,
+        "Duration": 2.2
+      },
+      {
+        "Kind": "withdrawn",
+        "Title": "세 형제 앞에서 여포가 퇴각하다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.1
+      }
+    ]
+  }
+}

@@ -156,6 +156,8 @@ func (p *editorRenderTest) Update() error {
 				continue
 			}
 			if n == 0 {
+				g.selected = u.ID
+				u.MP = 1
 				u.Status = map[string]core.Status{"poison": {Turns: 2}, "root": {Turns: 2}, "disarm": {Turns: 2}, "attack": {Turns: 2, Value: 20}, "defense": {Turns: 2, Value: -20}, "speed": {Turns: 2, Value: 1}}
 			}
 			if n == 1 {
@@ -170,6 +172,12 @@ func (p *editorRenderTest) Update() error {
 		}
 		g.S.Engine = restored
 		g.ensureField(g.S.Engine.Observe())
+		for _, u := range g.S.Engine.Observe().UnitViews {
+			if u.Faction == "ally" && u.Status["attack"].Turns > 0 {
+				g.selected = u.ID
+				break
+			}
+		}
 		g.modals = nil
 		for i := 0; i < 30; i++ {
 			g.history = append(g.history, fmt.Sprintf("전투 기록 %d", i+1))
@@ -196,6 +204,12 @@ func (p *editorRenderTest) Update() error {
 			return ebiten.Termination
 		}
 		g.uiSeconds = .25
+		for _, c := range g.S.Engine.LegalActions(g.deploymentSelected).Commands {
+			if c.Kind == "place" {
+				g.hover = hoverCell{c.X, c.Y, true}
+				break
+			}
+		}
 	case 7:
 		commands, err := g.S.Engine.DeploymentPlan()
 		if err != nil {
@@ -280,7 +294,7 @@ func (p *editorRenderTest) Draw(dst *ebiten.Image) {
 		for _, factor := range []float64{1, 2} {
 			scale = factor
 			icon := ebiten.NewImage(40, 32)
-			drawStatusIcon(icon, statusIcon{kind: "attack", tint: statusIconColors["attack"]}, 16, 8, 1)
+			drawStatusIcon(icon, p.g.assets.StatusIcons["attack-up"], 16, 8, 1)
 			pix := make([]byte, 40*32*4)
 			icon.ReadPixels(pix)
 			if factor == 1 {
@@ -288,13 +302,16 @@ func (p *editorRenderTest) Draw(dst *ebiten.Image) {
 				for y := 3; y < 21; y++ {
 					for x := 10; x < 23; x++ {
 						i := (y*40 + x) * 4
-						if pix[i] > 180 && pix[i+1] < 130 && pix[i+2] < 130 {
+						if pix[i] > 180 && int(pix[i]) > int(pix[i+1])*6/5 && pix[i+2] < 160 {
 							colored++
 						}
 					}
 				}
-				if colored < 8 {
+				if colored < 5 {
 					p.err = fmt.Errorf("status icon has no visible red arrow")
+				}
+				if pix[(4*40+10)*4+3] != 0 || pix[(19*40+16)*4+3] != 0 {
+					p.err = fmt.Errorf("status arrow retained background or ornament")
 				}
 				baseline = pix
 			} else if !bytes.Equal(baseline, pix) {
@@ -321,8 +338,12 @@ func (p *editorRenderTest) Draw(dst *ebiten.Image) {
 		gallery.Fill(color.NRGBA{R: 40, G: 45, B: 50, A: 255})
 		for i, kind := range []string{"attack", "defense", "agility", "mind", "morale", "speed"} {
 			for row := 0; row < 2; row++ {
-				x, y := float32(31+i*62), float32(20+row*78)
-				drawStatusIcon(gallery, statusIcon{kind: kind, down: row == 1, tint: statusIconColors[kind]}, x, y, 2)
+				x, y := float64(31+i*62), float64(20+row*78)
+				direction := "-up"
+				if row == 1 {
+					direction = "-down"
+				}
+				drawStatusIcon(gallery, p.g.assets.StatusIcons[kind+direction], x, y, 2)
 				p.g.label(gallery, map[string]string{"attack": "공격", "defense": "방어", "agility": "순발", "mind": "정신", "morale": "사기", "speed": "이동"}[kind], float64(x-13), float64(y+30), 12, ink)
 			}
 		}
@@ -337,6 +358,9 @@ func (p *editorRenderTest) Draw(dst *ebiten.Image) {
 			p.err = err
 		}
 		gallery.Deallocate()
+		if err := p.statusPixelPreview(); err != nil {
+			p.err = err
+		}
 		scale = oldScale
 	}
 	if p.step == 0 {
@@ -377,4 +401,63 @@ func (p *editorRenderTest) Draw(dst *ebiten.Image) {
 		}
 	}
 	p.drawn = true
+}
+
+// Each sample uses the same native unit and draw path as the battle map.
+func (p *editorRenderTest) statusPixelPreview() error {
+	sample := p.g.vis[p.g.selected]
+	if sample == nil {
+		return fmt.Errorf("status preview: no unit")
+	}
+	gallery := ebiten.NewImage(960, 1060)
+	defer gallery.Deallocate()
+	gallery.Fill(color.NRGBA{R: 30, G: 34, B: 31, A: 255})
+	p.g.label(gallery, "상태 도트 · 실제 게임 스프라이트", 24, 16, 24, ink)
+	p.g.label(gallery, "3배 확대 / 오른쪽 1배 원본 · HP → MP → 상태 · 투명 배경 픽셀", 24, 52, 14, ink)
+	labels := []string{"중독 · 독방울", "속박 · 사슬", "봉격 · 붉은 X", "화상 · 불꽃", "혼란 · 물음표", "봉책 · 부적"}
+	for i, key := range ailmentOrder {
+		x, y := float64(i%3*320), float64(90+i/3*355)
+		p.g.label(gallery, labels[i], x+18, y, 18, ink)
+		native := ebiten.NewImage(80, 96)
+		native.Fill(color.NRGBA{R: 83, G: 102, B: 62, A: 255})
+		u := *sample
+		u.status = map[string]core.Status{key: {Turns: 2}}
+		u.shownHP, u.maxHP, u.shownMP, u.maxMP = 80, 100, 30, 50
+		u.anim, u.animT, u.flash, u.greyed = "idle", 0, 0, false
+		f := &Field{A: p.g.assets, Canvas: native}
+		f.drawUnit(&u, 40, 83, false)
+		f.drawUnitStatuses(&u, 40, 83, 0)
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(3, 3)
+		op.GeoM.Translate(x+8, y+30)
+		gallery.DrawImage(native, op)
+		op = &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(x+236, y+205)
+		gallery.DrawImage(native, op)
+		p.g.label(gallery, "1×", x+262, y+306, 12, ink)
+		native.Deallocate()
+	}
+	p.g.label(gallery, "강화 / 약화 · 화살표만 5×6 도트 (위 3배 / 아래 1배)", 24, 808, 18, ink)
+	for i, kind := range []string{"attack", "defense", "agility", "mind", "morale", "speed", "range", "counter", "eightfold", "weak"} {
+		x := float64(48 + i*94)
+		for j, direction := range []string{"-up", "-down"} {
+			drawStatusIcon(gallery, p.g.assets.StatusIcons[kind+direction], x+float64(j*23)-12, 854, 3)
+			drawStatusIcon(gallery, p.g.assets.StatusIcons[kind+direction], x+float64(j*12)-6, 890, 1)
+		}
+		label := map[string]string{"attack": "공격", "defense": "방어", "agility": "순발", "mind": "정신", "morale": "사기", "speed": "이동", "range": "사거리", "counter": "반격", "eightfold": "팔진", "weak": "쇠약"}[kind]
+		p.g.label(gallery, label, x-20, 917, 14, ink)
+	}
+	p.g.label(gallery, "한 칸의 픽셀을 직접 그린 제한 팔레트 · 검은 바탕 / 흐림 / 몸을 덮는 선 없음", 24, 988, 15, ink)
+	out := "../../reports/status-pixel-art"
+	if err := os.MkdirAll(out, 0755); err != nil {
+		return err
+	}
+	img := image.NewRGBA(gallery.Bounds())
+	gallery.ReadPixels(img.Pix)
+	file, err := os.Create(filepath.Join(out, "preview.png"))
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	return png.Encode(file, img)
 }

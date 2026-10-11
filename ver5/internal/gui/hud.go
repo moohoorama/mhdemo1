@@ -374,13 +374,25 @@ var hexAxes = []struct {
 	{"병력", "매력", 5, func(s core.Stats) int { return s.MaxHP }},
 }
 
-// statHexagon draws u's unit stats as a hexagon whose rim is the highest value of each
-// stat among every unit in this battle.
+func (g *Game) originalStats(u *core.UnitView) core.Stats {
+	base, err := g.S.Engine.CharacterStats(u.ID)
+	if err != nil {
+		return u.Stats
+	}
+	return base
+}
+
 func (g *Game) statHexagon(dst *ebiten.Image, o core.Observation, u *core.UnitView, cx, cy, radius float64) {
+	base := g.originalStats(u)
+	changed := false
+	for _, a := range hexAxes {
+		changed = changed || a.get(base) != a.get(u.Stats)
+	}
 	best := make([]int, len(hexAxes))
 	for _, v := range o.UnitViews {
+		original := g.originalStats(&v)
 		for i, a := range hexAxes {
-			best[i] = max(best[i], a.get(v.Stats))
+			best[i] = max(best[i], a.get(v.Stats), a.get(original))
 		}
 	}
 	corner := func(i int, k float64) (float32, float32) {
@@ -408,27 +420,37 @@ func (g *Game) statHexagon(dst *ebiten.Image, o core.Observation, u *core.UnitVi
 		op.ColorScale.ScaleWithColor(goldDim)
 		strokePath(dst, ring(k), vector.StrokeOptions{Width: 1}, op)
 	}
-	var shape vector.Path
-	for i, a := range hexAxes {
+	for i := range hexAxes {
 		ex, ey := corner(i, 1)
 		strokeLine(dst, float32(cx), float32(cy), ex, ey, 1, goldDim)
-		px, py := corner(i, max(.04, min(1, float64(a.get(u.Stats))/float64(max(1, best[i])))))
-		if i == 0 {
-			shape.MoveTo(px, py)
-		} else {
-			shape.LineTo(px, py)
-		}
 	}
-	shape.Close()
-	c := teamColor(u)
-	fill := &vector.DrawPathOptions{AntiAlias: true}
-	fill.ColorScale.ScaleWithColor(color.NRGBA{R: c.R, G: c.G, B: c.B, A: 110})
-	fillPath(dst, &shape, fill)
-	edge := &vector.DrawPathOptions{AntiAlias: true}
-	edge.ColorScale.ScaleWithColor(c)
-	strokePath(dst, &shape, vector.StrokeOptions{Width: 1.6, LineJoin: vector.LineJoinRound}, edge)
+	drawShape := func(stats core.Stats, c color.NRGBA) {
+		var shape vector.Path
+		for i, a := range hexAxes {
+			px, py := corner(i, max(.04, min(1, float64(a.get(stats))/float64(max(1, best[i])))))
+			if i == 0 {
+				shape.MoveTo(px, py)
+			} else {
+				shape.LineTo(px, py)
+			}
+		}
+		shape.Close()
+		fill := &vector.DrawPathOptions{AntiAlias: true}
+		fill.ColorScale.ScaleWithColor(color.NRGBA{R: c.R, G: c.G, B: c.B, A: 35})
+		fillPath(dst, &shape, fill)
+		edge := &vector.DrawPathOptions{AntiAlias: true}
+		edge.ColorScale.ScaleWithColor(c)
+		strokePath(dst, &shape, vector.StrokeOptions{Width: 1.6, LineJoin: vector.LineJoinRound}, edge)
+	}
+	if changed {
+		drawShape(base, color.NRGBA{R: 145, G: 145, B: 145, A: 255})
+	}
+	drawShape(u.Stats, color.NRGBA{R: 255, G: 255, B: 255, A: 255})
 
-	tip := []string{"바깥선은 이번 전투 부대 중 최고치입니다."}
+	tip := []string{"바깥선: 전투 부대의 현재·원래 최고치", "흰색: 현재 능력치"}
+	if changed {
+		tip = append(tip, "회색: 상태 효과 적용 전 능력치")
+	}
 	for i, a := range hexAxes {
 		top := fmt.Sprintf("%s %d", a.stat, a.get(u.Stats))
 		sub := fmt.Sprintf("%s %d", a.attr, u.Attributes[a.attrIdx])
@@ -447,7 +469,7 @@ func (g *Game) statHexagon(dst *ebiten.Image, o core.Observation, u *core.UnitVi
 		}
 		g.label(dst, top, lx, ly, 12, ink)
 		g.label(dst, sub, lx, ly+16, 11, muted)
-		tip = append(tip, fmt.Sprintf("%s %d / 최고 %d (%s %d)", a.stat, a.get(u.Stats), best[i], a.attr, u.Attributes[a.attrIdx]))
+		tip = append(tip, fmt.Sprintf("%s %d (원래 %d) / 최고 %d", a.stat, a.get(u.Stats), a.get(base), best[i]))
 	}
 	area := image.Rect(int(cx-radius), int(cy-radius), int(cx+radius), int(cy+radius))
 	if hovered(area) {

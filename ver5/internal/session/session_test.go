@@ -2,6 +2,7 @@ package session
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"srpg/internal/ai"
@@ -199,6 +200,121 @@ func TestPartialDeploymentSaveAndAuto(t *testing.T) {
 	for _, u := range o.Units {
 		if u.Faction == "ally" && (u.Moved || u.Acted || u.Done) {
 			t.Fatal("auto continued into battle")
+		}
+	}
+}
+
+func TestEnemyTurnLearning(t *testing.T) {
+	for _, mode := range []string{"resolve", "advance", "auto", "ai"} {
+		for _, learn := range []bool{false, true} {
+			t.Run(fmt.Sprintf("%s/learn=%t", mode, learn), func(t *testing.T) {
+				s := setup(t)
+				s.Data.Rules.ExpDefenseShare = .5
+				request(t, s, Request{Op: "new", Seed: 3})
+				for _, c := range []core.Command{{Kind: "next"}, {Kind: "choose", Option: "go"}, {Kind: "start"}} {
+					request(t, s, Request{Op: "command", Command: c})
+				}
+				for _, c := range []core.Command{{Kind: "place", Actor: "hero", X: 1, Y: 2}, {Kind: "place", Actor: "archer1", X: 1, Y: 3}, {Kind: "deployment_finish"}} {
+					request(t, s, Request{Op: "command", Command: c})
+				}
+				request(t, s, Request{Op: "command", Command: core.Command{Kind: "end"}})
+				state := s.Engine.Snapshot()
+				for i := range state.Characters {
+					if state.Characters[i].ID == "hero" {
+						state.Characters[i].XP = core.ExperienceRequired(s.Data, state.Characters[i].Level) - 1
+						state.Characters[i].Points = 900
+					}
+				}
+				for i := range state.Units {
+					if state.Units[i].ID == "boss" {
+						state.Units[i].X, state.Units[i].Y = 2, 2
+					}
+				}
+				var err error
+				s.Engine, err = core.Restore(s.Data, state)
+				if err != nil {
+					t.Fatal(err)
+				}
+				advance := func() []core.Event {
+					t.Helper()
+					switch mode {
+					case "resolve":
+						actions, err := s.ResolvePhase()
+						if err != nil {
+							t.Fatal(err)
+						}
+						var events []core.Event
+						for _, a := range actions {
+							for _, step := range a.Steps {
+								events = append(events, step.Events...)
+							}
+						}
+						return events
+					case "advance":
+						events, err := s.AdvanceEnemies()
+						if err != nil {
+							t.Fatal(err)
+						}
+						return events
+					default:
+						return request(t, s, Request{Op: mode}).Events
+					}
+				}
+				var events []core.Event
+				for i := 0; i < 100 && len(s.Engine.Observe().Learning) == 0; i++ {
+					events = append(events, advance()...)
+				}
+				o := s.Engine.Observe()
+				if o.Turn != "enemy" || len(o.Learning) != 1 || o.Learning[0] != "hero" {
+					t.Fatalf("expected learning during enemy turn, got %s / %v", o.Turn, o.Learning)
+				}
+				leveled := false
+				for _, e := range events {
+					leveled = leveled || e.Kind == "level" && e.Actor == "hero"
+					if e.Kind == "learn" {
+						t.Fatal("enemy AI learned a player trait")
+					}
+				}
+				if !leveled {
+					t.Fatal("enemy attack did not level the hero")
+				}
+				before := snapshot(s)
+				if mode == "ai" {
+					rev := o.Revision
+					r := s.Handle(Request{Op: "ai", Revision: &rev})
+					if r.OK || r.Error != "LearningPending" {
+						t.Fatalf("AI during learning: %+v", r)
+					}
+				} else {
+					advance()
+				}
+				if snapshot(s) != before {
+					t.Fatal("pending learning did not pause enemy AI")
+				}
+				request(t, s, Request{Op: "save", Slot: "1"})
+				request(t, s, Request{Op: "load", Slot: "1", Discard: true})
+				if snapshot(s) != before {
+					t.Fatal("save/load did not preserve pending learning")
+				}
+				if learn {
+					r := request(t, s, Request{Op: "command", Command: core.Command{Kind: "learn", Actor: "hero", Trait: "poison_t"}})
+					if len(r.Events) != 1 || r.Events[0].Kind != "learn" || r.Events[0].Target != "poison_t" {
+						t.Fatalf("player learning events: %v", r.Events)
+					}
+				}
+				request(t, s, Request{Op: "command", Command: core.Command{Kind: "learn_close", Actor: "hero"}})
+				rev := s.Engine.Observe().Revision
+				r := s.Handle(Request{Op: "command", Revision: &rev, Command: core.Command{Kind: "end"}})
+				if r.OK || r.Error != "NotYourTurn" {
+					t.Fatalf("player ended enemy turn: %+v", r)
+				}
+				for i := 0; i < 100 && s.Engine.Observe().Phase == "battle" && s.Engine.Observe().Turn == "enemy"; i++ {
+					advance()
+				}
+				if o := s.Engine.Observe(); o.Phase == "battle" && o.Turn == "enemy" {
+					t.Fatal("enemy turn did not resume after learning")
+				}
+			})
 		}
 	}
 }

@@ -843,7 +843,7 @@ func (g *Game) editorUnits() []*unitVis {
 		if dir == "" {
 			dir = "NW"
 		}
-		units = append(units, &unitVis{id: fmt.Sprint(i), ally: i >= len(e.doc.Stage.Enemies), art: art, u: float64(sp.X - e.doc.Play.X), v: float64(sp.Y - e.doc.Play.Y), lift: e.field.Lift(sp.X-e.doc.Play.X, sp.Y-e.doc.Play.Y), dir: dir, anim: "idle", dying: -1, shownHP: v.HP, maxHP: v.Stats.MaxHP, top: art.TopOffset(), inactive: true})
+		units = append(units, &unitVis{id: fmt.Sprint(i), ally: i >= len(e.doc.Stage.Enemies), art: art, u: float64(sp.X - e.doc.Play.X), v: float64(sp.Y - e.doc.Play.Y), lift: e.field.Lift(sp.X-e.doc.Play.X, sp.Y-e.doc.Play.Y), dir: dir, anim: "idle", dying: -1, shownHP: v.HP, maxHP: v.Stats.MaxHP, shownMP: v.MP, maxMP: v.Stats.MaxMP, top: art.TopOffset(), inactive: true})
 	}
 	e.units, e.unitsKey = units, key
 	return units

@@ -1,0 +1,21 @@
+{
+  "cell": [9, 9],
+  "origin": "top-left",
+  "anchor": [4, 0],
+  "arrow_size": [5, 6],
+  "arrow_offset": [2, 1],
+  "frame_order": ["poison", "root", "disarm", "burn", "confusion", "seal", "attack", "defense", "agility", "mind", "morale", "speed", "range", "counter", "eightfold", "weak"],
+  "timing": "static; stat frames alternate up/down",
+  "alpha": [0, 255],
+  "outline": "#24252b",
+  "palette": {
+    "poison": ["#7da84f", "#d3e790"], "root": ["#939eab", "#dce2df"],
+    "disarm": ["#da6354", "#ffc49a"], "burn": ["#e7823d", "#ffe39a"],
+    "confusion": ["#bb88cf", "#efc8ec"], "seal": ["#d3af6b", "#f6df9b", "#ab5256"],
+    "attack": ["#e67360", "#ffbd91"], "defense": ["#699ed8", "#b4d9ed"],
+    "agility": ["#dcba56", "#fff0a1"], "mind": ["#71b579", "#b5e5a0"],
+    "morale": ["#dcba56", "#fff0a1"], "speed": ["#c7cdd2", "#f4f0dd"],
+    "range": ["#d59b5b", "#ffe1a0"], "counter": ["#af8bcc", "#dfc5eb"],
+    "eightfold": ["#69b7b3", "#b1e1cc"], "weak": ["#95969e", "#d0cbd0"]
+  }
+}
