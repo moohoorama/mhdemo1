@@ -586,6 +586,11 @@ func (e *Engine) settle() {
 	if e.state.Phase != "battle" {
 		return
 	}
+	if limit := e.data.Stages[e.state.Stage].TurnLimit; limit > 0 && e.state.Round > limit {
+		e.state.Phase, e.state.Result = "result", "defeat"
+		e.emit("turn-limit", "", "", limit)
+		return
+	}
 	e.battleEvents()
 	stage := e.data.Stages[e.state.Stage]
 	alive := map[string]bool{}

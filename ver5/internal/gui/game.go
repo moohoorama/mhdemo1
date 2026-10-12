@@ -99,6 +99,7 @@ type Game struct {
 	learnPage            int
 	scene                *scene
 	battleXP, startLevel map[string]int
+	resultPage           int
 	slotInfo             map[string]string
 	selected, overlay    string
 	notice, entry        string
@@ -288,9 +289,6 @@ func (g *Game) record(before *core.Observation, events []core.Event) {
 			continue
 		}
 		g.notice = line
-		if important && e.Kind != "level" {
-			g.toast(line, gold)
-		}
 	}
 	for _, id := range order {
 		l := levels[id]

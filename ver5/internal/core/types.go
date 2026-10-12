@@ -4,7 +4,7 @@ import "srpg/internal/content"
 
 const CoreVersion = "2"
 const AIPolicyVersion = "greedy-7"
-const RulesVersion = "rules-10"
+const RulesVersion = "rules-11"
 
 // Character is a persistent record: a party member, or a troop made for one battle (Temp).
 type Character struct {

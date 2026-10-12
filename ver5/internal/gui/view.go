@@ -75,6 +75,7 @@ func (g *Game) ensureField(o core.Observation) {
 	g.clearOrder()
 	g.selected = ""
 	g.battleXP, g.startLevel = map[string]int{}, map[string]int{}
+	g.resultPage = 0
 	for _, c := range o.Characters {
 		g.startLevel[c.ID] = c.Level
 	}

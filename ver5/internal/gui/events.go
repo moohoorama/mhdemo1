@@ -7,7 +7,7 @@ import (
 	"srpg/internal/core"
 )
 
-// eventText is one log line; important events are also announced over the field.
+// eventText is one log line; important events are retained even with detail disabled.
 func (g *Game) eventText(e core.Event) (line string, important bool) {
 	a, t := g.name(e.Actor), g.name(e.Target)
 	switch e.Kind {
@@ -22,7 +22,13 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 	case "unit-arrival":
 		return a + " 동맹군 합류", false
 	case "retreat-sweep":
-		return a + " 주변 추가 공격", false
+		return a + " 요극 발동", false
+	case "followup-start":
+		return fmt.Sprintf("%s → %s: 요극 추가 공격", a, t), false
+	case "followup-end":
+		return "", false
+	case "turn-limit":
+		return fmt.Sprintf("%d턴 제한 초과: 패배", e.Amount), true
 	case "damage":
 		if e.Actor == "" {
 			return fmt.Sprintf("%s: 지속 피해 %d", t, e.Amount), false

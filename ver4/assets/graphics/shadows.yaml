@@ -27,9 +27,9 @@ units:
   archer:
     image: units/archer.shadow.png
     source: units/archer.png
-    hash: 4dd9a871f86a0181
-    cell: [134, 29]
-    pivot: [55, 8]
+    hash: 23ce02fa0be95732
+    cell: [95, 29]
+    pivot: [36, 8]
   cavalry:
     image: units/cavalry.shadow.png
     source: units/cavalry.png
@@ -39,25 +39,25 @@ units:
   guanyu:
     image: units/guanyu.shadow.png
     source: units/guanyu.png
-    hash: a7305ac499db2686
-    cell: [121, 35]
-    pivot: [43, 8]
+    hash: 0377ae47b899700c
+    cell: [148, 32]
+    pivot: [59, 8]
   zhangfei:
     image: units/zhangfei.shadow.png
     source: units/zhangfei.png
-    hash: c79c23ec39d5b202
-    cell: [114, 32]
-    pivot: [42, 8]
+    hash: eed1e02d7b7187d1
+    cell: [148, 32]
+    pivot: [59, 8]
   strategist:
     image: units/strategist.shadow.png
     source: units/strategist.png
-    hash: 0101ace6622be8f6
-    cell: [83, 27]
-    pivot: [31, 8]
+    hash: 9f2aea9aa687d8cc
+    cell: [95, 29]
+    pivot: [36, 8]
   liubei:
     image: units/liubei.shadow.png
     source: units/liubei.png
-    hash: d6e7c351ef1808f3
+    hash: 0cba4bacb887d68d
     cell: [95, 29]
     pivot: [36, 8]
   jianyong:
@@ -348,6 +348,18 @@ units:
     hash: 3f931df543af9719
     cell: [85, 28]
     pivot: [32, 8]
+  guanyu_noncombat:
+    image: units/guanyu_noncombat.shadow.png
+    source: units/guanyu_noncombat.png
+    hash: 7c24c1a40ec0a875
+    cell: [95, 29]
+    pivot: [36, 8]
+  liubei_noncombat:
+    image: units/liubei_noncombat.shadow.png
+    source: units/liubei_noncombat.png
+    hash: c342012fcd3640cb
+    cell: [95, 29]
+    pivot: [36, 8]
 tileset:
   image: map/shadows.png
   source: map/tileset.png

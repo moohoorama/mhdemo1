@@ -132,7 +132,6 @@ func (e *Engine) hurt(v *Unit, n int, u *Unit) int {
 type blow struct {
 	share   float64
 	derived bool
-	sweep   bool
 }
 
 // strike is one blow: hit, critical and damage, with a missed blow still landing a share of it for 위압-like traits.
@@ -180,9 +179,6 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool) {
 			status.Source = u.ID
 			v.Status["poison"] = status
 		}
-	}
-	if n > 0 && v.HP == 0 {
-		e.retreatSweep(u, v, b.sweep)
 	}
 	return n, hit
 }
@@ -354,10 +350,24 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 	if c.Kind == "attack" {
 		u.Attacked = true
 	}
+	start := len(e.events)
 	if s.Kind == content.KindPhysical {
 		e.physical(u, v, s, c)
 	} else {
 		e.spell(u, v, s, c)
+	}
+	// Finish the original exchange before resolving followups; followup kills do not chain.
+	events := append([]Event(nil), e.events[start:]...)
+	for i, event := range events {
+		if event.Kind != "retreat" {
+			continue
+		}
+		for j := i - 1; j >= 0; j-- {
+			if hit := events[j]; hit.Kind == "damage" && hit.Target == event.Actor {
+				e.retreatSweep(e.unit(hit.Actor), e.unit(event.Actor), false)
+				break
+			}
+		}
 	}
 	return nil
 }

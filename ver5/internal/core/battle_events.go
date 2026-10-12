@@ -81,20 +81,20 @@ func (e *Engine) battleEvents() {
 }
 
 func (e *Engine) retreatSweep(u, fallen *Unit, derived bool) {
-	share := e.fx(u, content.FxRetreatSweep)
-	if derived || share <= 0 || u.HP <= 0 || u.Faction == fallen.Faction {
+	if derived || u == nil || fallen == nil || u.HP <= 0 || u.Faction == fallen.Faction || !e.has(u, content.FxRetreatSweep) {
 		return
 	}
 	e.emit("retreat-sweep", u.ID, fallen.ID, 0)
 	for _, id := range keys(e.unitIDs) {
 		v := e.unit(id)
-		if v.HP <= 0 || v.Faction == u.Faction || v.ID == fallen.ID || abs(v.X-fallen.X) > 1 || abs(v.Y-fallen.Y) > 1 {
+		if u.HP <= 0 {
+			break
+		}
+		if v.HP <= 0 || v.Faction == u.Faction || v.ID == fallen.ID || !e.inRange(u, v, e.basic()) {
 			continue
 		}
-		n, _ := e.strike(u, v, e.basic(), blow{share: share, derived: true, sweep: true})
-		e.leech(u, n)
-		if n > 0 {
-			e.actionXP(u, v, false, v.HP == 0)
-		}
+		e.emit("followup-start", u.ID, v.ID, 0)
+		e.physical(u, v, e.basic(), Command{Kind: "attack", Actor: u.ID, Target: v.ID})
+		e.emit("followup-end", u.ID, v.ID, 0)
 	}
 }

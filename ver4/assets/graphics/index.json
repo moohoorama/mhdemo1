@@ -275,12 +275,12 @@
    "name": "궁병",
    "image": "units/archer.png",
    "cell": [
-    94,
-    48
+    56,
+    46
    ],
    "pivot": [
-    47,
-    39
+    28,
+    38
    ],
    "rows": [
     "N",
@@ -455,12 +455,12 @@
    "name": "관우",
    "image": "units/guanyu.png",
    "cell": [
-    70,
-    60
+    102,
+    53
    ],
    "pivot": [
-    35,
-    57
+    51,
+    50
    ],
    "rows": [
     "N",
@@ -545,11 +545,11 @@
    "name": "장비",
    "image": "units/zhangfei.png",
    "cell": [
-    68,
+    102,
     53
    ],
    "pivot": [
-    34,
+    51,
     50
    ],
    "rows": [
@@ -632,15 +632,15 @@
    }
   },
   "strategist": {
-   "name": "사마",
+   "name": "문사",
    "image": "units/strategist.png",
    "cell": [
-    47,
-    43
+    56,
+    46
    ],
    "pivot": [
-    23,
-    33
+    28,
+    38
    ],
    "rows": [
     "N",
@@ -5544,6 +5544,100 @@
      "loop": true
     }
    }
+  },
+  "guanyu_noncombat": {
+   "name": "관우",
+   "image": "units/guanyu_noncombat.png",
+   "cell": [
+    56,
+    46
+   ],
+   "pivot": [
+    28,
+    38
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 1,
+     "ms": [
+      400
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 1,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "action": {
+     "first_column": 5,
+     "frames": 1,
+     "ms": [
+      800
+     ],
+     "loop": false
+    }
+   }
+  },
+  "liubei_noncombat": {
+   "name": "유비",
+   "image": "units/liubei_noncombat.png",
+   "cell": [
+    56,
+    46
+   ],
+   "pivot": [
+    28,
+    38
+   ],
+   "rows": [
+    "NW",
+    "SW",
+    "NE",
+    "SE"
+   ],
+   "animations": {
+    "idle": {
+     "first_column": 0,
+     "frames": 1,
+     "ms": [
+      400
+     ],
+     "loop": true
+    },
+    "walk": {
+     "first_column": 1,
+     "frames": 4,
+     "ms": [
+      180,
+      180,
+      180,
+      180
+     ],
+     "loop": true
+    },
+    "action": {
+     "first_column": 5,
+     "frames": 1,
+     "ms": [
+      800
+     ],
+     "loop": false
+    }
+   }
   }
  },
  "tileset": {
@@ -6911,13 +7005,13 @@
    "archer": {
     "image": "units/archer.shadow.png",
     "source": "units/archer.png",
-    "hash": "4dd9a871f86a0181",
+    "hash": "23ce02fa0be95732",
     "cell": [
-     134,
+     95,
      29
     ],
     "pivot": [
-     55,
+     36,
      8
     ]
    },
@@ -6937,46 +7031,46 @@
    "guanyu": {
     "image": "units/guanyu.shadow.png",
     "source": "units/guanyu.png",
-    "hash": "a7305ac499db2686",
+    "hash": "0377ae47b899700c",
     "cell": [
-     121,
-     35
+     148,
+     32
     ],
     "pivot": [
-     43,
+     59,
      8
     ]
    },
    "zhangfei": {
     "image": "units/zhangfei.shadow.png",
     "source": "units/zhangfei.png",
-    "hash": "c79c23ec39d5b202",
+    "hash": "eed1e02d7b7187d1",
     "cell": [
-     114,
+     148,
      32
     ],
     "pivot": [
-     42,
+     59,
      8
     ]
    },
    "strategist": {
     "image": "units/strategist.shadow.png",
     "source": "units/strategist.png",
-    "hash": "0101ace6622be8f6",
+    "hash": "9f2aea9aa687d8cc",
     "cell": [
-     83,
-     27
+     95,
+     29
     ],
     "pivot": [
-     31,
+     36,
      8
     ]
    },
    "liubei": {
     "image": "units/liubei.shadow.png",
     "source": "units/liubei.png",
-    "hash": "d6e7c351ef1808f3",
+    "hash": "0cba4bacb887d68d",
     "cell": [
      95,
      29
@@ -7607,6 +7701,32 @@
     ],
     "pivot": [
      32,
+     8
+    ]
+   },
+   "guanyu_noncombat": {
+    "image": "units/guanyu_noncombat.shadow.png",
+    "source": "units/guanyu_noncombat.png",
+    "hash": "7c24c1a40ec0a875",
+    "cell": [
+     95,
+     29
+    ],
+    "pivot": [
+     36,
+     8
+    ]
+   },
+   "liubei_noncombat": {
+    "image": "units/liubei_noncombat.shadow.png",
+    "source": "units/liubei_noncombat.png",
+    "hash": "c342012fcd3640cb",
+    "cell": [
+     95,
+     29
+    ],
+    "pivot": [
+     36,
      8
     ]
    }
