@@ -2,6 +2,7 @@ package duel
 
 import (
 	"encoding/json"
+	"math"
 	"srpg/internal/content"
 	"testing"
 )
@@ -137,6 +138,8 @@ func TestScriptValidation(t *testing.T) {
 	for name, script := range map[string]Script{
 		"empty":            {Outcome: "draw"},
 		"unknown outcome":  {Outcome: "escape", Beats: []Beat{{Kind: "draw", Duration: 1}}},
+		"invalid rush":     {Outcome: "draw", Beats: []Beat{{Kind: "rush-talk", Duration: 1}, {Kind: "draw", Duration: 1}}},
+		"nested rush":      {Outcome: "draw", Beats: []Beat{{Kind: "rush-rush-block", Duration: 1}, {Kind: "draw", Duration: 1}}},
 		"unknown motion":   {Outcome: "draw", Beats: []Beat{{Kind: "fly", Duration: 1}, {Kind: "draw", Duration: 1}}},
 		"invalid side":     {Outcome: "draw", Beats: []Beat{{Kind: "draw", Side: 2, Duration: 1}}},
 		"zero duration":    {Outcome: "draw", Beats: []Beat{{Kind: "draw"}}},
@@ -202,35 +205,57 @@ func TestThreeBrothersAgainstOne(t *testing.T) {
 
 			enemyX, enemyY := joined.Actors[1].ScreenPosition()
 			for i := 2; i < 4; i++ {
-				sx, sy := before.Actors[i].ScreenPosition()
+				sx, sy := story.Sample(story.Start(arrival)).Actors[i].ScreenPosition()
 				x, y := joined.Actors[i].ScreenPosition()
-				if before.Actors[i].Visible || !joined.Actors[i].Visible || sy < 850 || y >= sy {
-					t.Fatal("support must enter from a lower screen corner")
+				if before.Actors[i].Visible || !joined.Actors[i].Visible {
+					t.Fatal("support visibility must change on arrival")
 				}
-				if i == 2 && (sx >= 0 || x >= enemyX || y <= enemyY) || i == 3 && (sx <= 1280 || x <= enemyX) {
-					t.Fatal("support entered or surrounded from the wrong side")
-				}
-			}
-			// The enemy must lie inside the triangle formed by all three brothers.
-			vertices := []int{0, 2, 3}
-			sign := 0.0
-			for i, v := range vertices {
-				x, y := joined.Actors[v].ScreenPosition()
-				nx, ny := joined.Actors[vertices[(i+1)%3]].ScreenPosition()
-				cross := (nx-x)*(enemyY-y) - (ny-y)*(enemyX-x)
-				if i == 0 {
-					sign = cross
-				} else if cross*sign <= 0 {
-					t.Fatal("three brothers do not enclose the enemy")
+				if i == 2 && (sx >= 0 || sy <= 850 || y >= sy || x >= enemyX || y <= enemyY) || i == 3 && (sx <= 1280 || sy >= 0 || y <= sy || x <= enemyX || y >= enemyY) {
+					t.Fatalf("support %d entered or surrounded from the wrong side: start=(%g,%g) end=(%g,%g) enemy=(%g,%g)", i, sx, sy, x, y, enemyX, enemyY)
 				}
 			}
-			previousY := [2]float64{850, 850}
+			// The flanks face diagonally inward and leave the southeast retreat open.
+			for i := 2; i < 4; i++ {
+				x, y := joined.Actors[i].ScreenPosition()
+				if math.Abs(math.Abs(x-enemyX)-2*math.Abs(y-enemyY)) > 1e-6 {
+					t.Fatal("support must stand on the map's isometric southwest/northeast axis")
+				}
+				want := "NE"
+				if i == 3 {
+					want = "SW"
+				}
+				if joined.Actors[i].Facing != want {
+					t.Fatal("support must face diagonally inward")
+				}
+				if math.Abs(.89*(y-enemyY)-.45*(x-enemyX)) < 100 {
+					t.Fatal("support blocks the southeast retreat corridor")
+				}
+			}
+			for i := range 2 {
+				x, y := joined.Actors[i].ScreenPosition()
+				if x >= 640 || y >= 440 {
+					t.Fatal("main fighters should have been pressed northwest")
+				}
+				if x < 375 || y < 270 {
+					t.Fatal("main fighter is hidden by the portrait UI")
+				}
+				if .5*x+y < 285+80 {
+					t.Fatal("main fighter has been pushed into allied ranks")
+				}
+			}
+			previousY := [2]float64{}
 			for _, local := range []float64{.01, .5, 1, 1.7} {
 				state := at(story, "reinforcements", local)
 				for i := 2; i < 4; i++ {
-					_, y := state.Actors[i].ScreenPosition()
-					if y >= previousY[i-2] && local > .01 {
-						t.Fatal("reinforcement path must approach from below")
+					x, y := state.Actors[i].ScreenPosition()
+					if x >= 0 && x <= 1280 && y >= 0 && y <= 850 && .5*x+y > 1234-100 {
+						t.Fatal("reinforcement path crosses enemy ranks")
+					}
+					if math.Abs((x-enemyX)+2*(y-enemyY)) > 1e-6 {
+						t.Fatal("reinforcement path left the map's isometric axis")
+					}
+					if local > .01 && (i == 2 && y >= previousY[0] || i == 3 && y <= previousY[1]) {
+						t.Fatal("reinforcement path must approach from its assigned corner")
 					}
 					previousY[i-2] = y
 				}
@@ -256,11 +281,11 @@ func TestThreeBrothersAgainstOne(t *testing.T) {
 				}
 			}
 			last := story.Sample(story.Duration())
-			if last.Actors[1].Position != 160 || last.Actors[1].Animation == "exhausted" {
+			if last.Actors[1].Position != 340 || last.Actors[1].Animation == "exhausted" {
 				t.Fatal("retreat must stop at the formation entrance without exhaustion")
 			}
 			x, y := last.Actors[1].ScreenPosition()
-			if .5*x+y > 1074-160 {
+			if .5*x+y > 1234-160 {
 				t.Fatal("retreat crossed into the front rank")
 			}
 			for time := 0.; time < story.Duration(); time += .04 {
@@ -276,7 +301,7 @@ func TestThreeBrothersAgainstOne(t *testing.T) {
 	t.Run("heavy strike is evaded without hitting", func(t *testing.T) {
 		s := scripts.Story("hulao-guan-yu", "victory")
 		r := at(s, "critical-dodge", .65)
-		if !r.Critical || r.Flash <= 0 || r.Impact != 0 || r.Actors[1].Animation != "walk" || r.Actors[1].Position <= 60 {
+		if !r.Critical || r.Flash <= 0 || r.Impact != 0 || r.Actors[1].Animation != "walk" || r.Actors[1].Position <= at(s, "critical-dodge", .55).Actors[1].Position {
 			t.Fatalf("heavy evasion: %+v", r)
 		}
 	})

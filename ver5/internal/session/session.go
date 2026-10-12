@@ -131,6 +131,9 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 		if err := need(); err != nil {
 			return nil, err
 		}
+		if !storage.IsManualSlot(q.Slot) {
+			return nil, fmt.Errorf("InvalidSlot")
+		}
 		if err := s.Store.Save(q.Slot, s.Engine.Snapshot(), q.Overwrite); err != nil {
 			return nil, err
 		}
@@ -186,18 +189,18 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 		var err error
 		if q.Op == "command" {
 			o := s.Engine.Observe()
-			if o.Phase == "battle" && o.Turn == "enemy" && q.Command.Kind != "learn" && q.Command.Kind != "learn_close" {
+			if o.Phase == "battle" && o.Turn != "ally" && q.Command.Kind != "learn" && q.Command.Kind != "learn_close" {
 				return nil, fmt.Errorf("NotYourTurn")
 			}
-			v, err = s.Engine.Apply(q.Command)
+			v, err = s.apply(q.Command)
 		} else if q.Op == "ai" {
-			if s.Engine.Observe().Turn != "enemy" && !s.Engine.Deploying() {
+			if s.Engine.Observe().Turn == "ally" && !s.Engine.Deploying() {
 				return nil, fmt.Errorf("NotYourTurn")
 			}
 			if len(s.Engine.Observe().Learning) > 0 {
 				return nil, fmt.Errorf("LearningPending")
 			}
-			v, err = ai.Step(s.Engine)
+			v, err = s.stepAI()
 		} else {
 			turn := s.Engine.Observe().Turn
 			phase := s.Engine.Observe().Phase
@@ -210,10 +213,10 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 				if (o.Phase != "battle" && o.Phase != "deployment") || o.Turn != turn || o.Phase != phase {
 					break
 				}
-				if turn == "enemy" && len(o.Learning) > 0 {
+				if turn != "ally" && len(o.Learning) > 0 {
 					break
 				}
-				step, x := ai.Step(s.Engine)
+				step, x := s.stepAI()
 				if x != nil {
 					return v.Events, x
 				}
@@ -233,10 +236,10 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 	return nil, fmt.Errorf("UnknownOperation")
 }
 
-// AdvanceEnemies honors the one-command setting and saves at every command boundary.
+// AdvanceEnemies honors the one-command setting and saves at allied turn starts.
 func (s *Session) AdvanceEnemies() ([]core.Event, error) {
 	out := []core.Event{}
-	if s.Settings.AI != "auto" || s.Engine == nil {
+	if s.Engine == nil || s.Settings.AI != "auto" && s.Engine.Observe().Turn != "support" {
 		return out, nil
 	}
 	deadline := time.Now().Add(10 * time.Second)
@@ -245,18 +248,15 @@ func (s *Session) AdvanceEnemies() ([]core.Event, error) {
 			return out, fmt.Errorf("AITimeLimit")
 		}
 		o := s.Engine.Observe()
-		if o.Phase != "battle" || o.Turn != "enemy" || len(o.Learning) > 0 {
+		if o.Phase != "battle" || o.Turn == "ally" || o.Turn == "enemy" && s.Settings.AI != "auto" || len(o.Learning) > 0 {
 			return out, nil
 		}
-		v, err := ai.Step(s.Engine)
+		v, err := s.stepAI()
 		if err != nil {
 			return out, err
 		}
 		out = append(out, v.Events...)
 		s.Dirty = true
-		if err = s.Store.Save("auto", s.Engine.Snapshot(), true); err != nil {
-			return out, err
-		}
 	}
 	return out, fmt.Errorf("AILimit")
 }
@@ -264,7 +264,7 @@ func (s *Session) AdvanceEnemies() ([]core.Event, error) {
 // ResolvePhase runs the current AI faction's whole phase through the core, one command at
 // a time exactly as AdvanceEnemies does, and returns the actions for claim replay.
 // It pauses for player learning; the replay only shows the returned state.
-// It autosaves once at the end.
+// Commands use the same turn-start autosave path as manual play.
 func (s *Session) ResolvePhase() ([]*replay.Action, error) {
 	if s.Engine == nil {
 		return nil, fmt.Errorf("NoGame")
@@ -294,7 +294,7 @@ func (s *Session) ResolvePhase() ([]*replay.Action, error) {
 			a = replay.New(o, c.Actor)
 			actions = append(actions, a)
 		}
-		r, err := s.Engine.Apply(c)
+		r, err := s.apply(c)
 		if err != nil {
 			return actions, err
 		}
@@ -302,5 +302,33 @@ func (s *Session) ResolvePhase() ([]*replay.Action, error) {
 		s.Dirty = true
 	}
 	replay.Link(actions)
-	return actions, s.Store.Save("auto", s.Engine.Snapshot(), true)
+	return actions, nil
+}
+
+func (s *Session) stepAI() (core.Result, error) {
+	c, err := ai.Next(s.Engine)
+	if err != nil {
+		return core.Result{}, err
+	}
+	return s.apply(c)
+}
+
+func (s *Session) apply(c core.Command) (core.Result, error) {
+	r, err := s.Engine.Apply(c)
+	if err != nil {
+		return r, err
+	}
+	for _, event := range r.Events {
+		if event.Kind == "deployment_finish" || event.Kind == "turn" && event.Target == "ally" {
+			state := s.Engine.Snapshot()
+			if state.Phase != "battle" {
+				break
+			}
+			if err := s.Store.Autosave(state); err != nil {
+				r.Events = append(r.Events, core.Event{Kind: "autosave-failed", Text: "자동 저장 실패: " + err.Error()})
+			}
+			break
+		}
+	}
+	return r, nil
 }

@@ -285,7 +285,7 @@ func NextWithDuels(e *core.Engine, duels bool) (core.Command, error) {
 		return chooseLearning(e, o), nil
 	}
 	for _, u := range o.UnitViews {
-		if u.Faction == o.Turn && u.HP > 0 && !u.Done {
+		if u.ActsIn(o.Turn) && u.HP > 0 && !u.Done {
 			return ChooseWithDuels(e, u.ID, duels)
 		}
 	}

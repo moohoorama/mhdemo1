@@ -2,6 +2,7 @@
  "Characters": {
   "liubei": {
    "Name": "유비",
+   "Biography": "자는 현덕. 탁현에서 짚신을 팔던 한실의 후예로, 도원에서 관우·장비와 의형제를 맺고 의용군을 일으킨다. 인덕으로 인재를 모아 촉한을 세운다.",
    "Class": "light_infantry",
    "Stats": [
     91,
@@ -34,6 +35,7 @@
   },
   "guanyu": {
    "Name": "관우",
+   "Biography": "자는 운장. 하동 해량 출신으로 유비의 의제. 화웅을 베고 오관을 돌파하며 의리를 지킨 무신이다. 형주를 홀로 지키다 맥성에서 최후를 맞는다.",
    "Class": "light_cavalry",
    "Stats": [
     100,
@@ -67,6 +69,7 @@
   },
   "zhangfei": {
    "Name": "장비",
+   "Biography": "자는 익덕. 탁현의 푸줏간 주인으로 유비의 의제. 호로관에서 여포와 맞서고 장판교에서 홀로 조조군을 꾸짖어 물리친 맹장. 술과 성급함이 흠이다.",
    "Class": "light_cavalry",
    "Stats": [
     83,
@@ -100,6 +103,7 @@
   },
   "jianyong": {
    "Name": "간옹",
+   "Biography": "자는 헌화. 유비와 어릴 적부터 알고 지낸 동향 친구로 거병 때부터 따른다. 말솜씨가 좋아 사신으로 자주 나서며, 익주 유장 설득에도 공을 세운다.",
    "Class": "archer",
    "Stats": [
     36,
@@ -130,6 +134,7 @@
   },
   "chengyuanzhi": {
    "Name": "정원지",
+   "Biography": "탁군을 침범한 황건적의 장수. 오만 무리를 이끌고 왔으나 의병을 일으킨 유비 삼형제의 첫 싸움에서 관우의 칼에 쓰러졌다.",
    "Class": "bandit",
    "Stats": [
     58,
@@ -154,6 +159,7 @@
   },
   "dengmao": {
    "Name": "등무",
+   "Biography": "정원지의 부장. 탁군 싸움에서 앞서 나왔다가 장비의 장팔사모에 찔려 죽었다.",
    "Class": "bandit",
    "Stats": [
     49,
@@ -178,6 +184,7 @@
   },
   "zhangjiao": {
    "Name": "장각",
+   "Biography": "남화노선에게 태평요술을 받아 천공장군을 칭했다. \"창천은 이미 죽었고 황천이 서리라\"며 황건의 난을 일으켰으나 병으로 죽는다.",
    "Class": "scholar",
    "Stats": [
     82,
@@ -212,6 +219,7 @@
   },
   "huaxiong": {
    "Name": "화웅",
+   "Biography": "동탁군 효기교위. 사수관에서 제후 연합의 장수들을 연달아 베어 위세를 떨친다. 술이 식기 전에 관우의 칼에 목이 떨어진다(온주참화웅).",
    "Class": "light_cavalry",
    "Stats": [
     82,
@@ -251,6 +259,7 @@
   },
   "huzhen": {
    "Name": "호진",
+   "Biography": "동탁군 장수. 사수관에서 화웅과 함께 관문을 지키며 연합군의 공세를 막는다. 정사에서는 손견을 공격하다 패한다.",
    "Class": "light_cavalry",
    "Stats": [
     66,
@@ -282,6 +291,7 @@
   },
   "lubu": {
    "Name": "여포",
+   "Biography": "천하제일의 무용을 지닌 비장. 적토마에 눈이 멀어 양부 정원을 베고, 초선 때문에 동탁마저 죽인다. 서주를 빼앗고 떠돌다 하비에서 조조에게 사로잡혀 처형된다.",
    "Class": "light_cavalry",
    "Stats": [
     95,
@@ -297,9 +307,9 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
-    "leather_armor",
-    "war_horse"
+    "fangtian_halberd",
+    "red_hare",
+    "diamond_armor"
    ],
    "Look": {
     "Sprite": "cavalry",
@@ -331,6 +341,7 @@
   },
   "liru": {
    "Name": "이유",
+   "Biography": "동탁의 사위이자 모사. 소제를 독살하고 천도를 권하는 등 동탁의 악행을 꾸민다. 연환계를 간파했으나 동탁이 듣지 않았고, 동탁이 죽은 뒤 처형된다.",
    "Class": "scholar",
    "Stats": [
     61,
@@ -364,6 +375,7 @@
   },
   "lijue": {
    "Name": "이각",
+   "Biography": "동탁의 부장. 동탁이 죽자 가후의 계책으로 곽사와 함께 장안을 쳐 왕윤을 죽이고 조정을 장악한다. 곽사와 다투다 몰락한다.",
    "Class": "light_cavalry",
    "Stats": [
     71,
@@ -395,6 +407,7 @@
   },
   "sunqian": {
    "Name": "손건",
+   "Biography": "자는 공우. 북해 출신 문관으로 도겸의 천거로 유비를 섬긴다. 원소·유표 등에게 사신으로 오가며 유비가 몸을 의탁할 곳을 마련한 외교의 공신이다.",
    "Class": "scholar",
    "Stats": [
     54,
@@ -418,6 +431,7 @@
   },
   "zhaoyun": {
    "Name": "조운",
+   "Biography": "자는 자룡. 상산 출신으로 공손찬 휘하에서 유비와 만나 훗날 합류한다. 장판파에서 아두를 품고 단기로 조조군을 돌파한 충용의 명장이다.",
    "Class": "light_cavalry",
    "Stats": [
     92,
@@ -448,6 +462,7 @@
   },
   "gongsunzan": {
    "Name": "공손찬",
+   "Biography": "북평태수. 흰 말을 탄 백마의종으로 이민족을 떨게 한다. 유비의 동문 선배로 그를 후원하고, 반하에서 조운을 얻는다. 원소에게 밀려 역경루에서 일가와 함께 스스로 불타 죽는다.",
    "Class": "light_cavalry",
    "Stats": [
     89,
@@ -478,6 +493,7 @@
   },
   "yangang": {
    "Name": "엄강",
+   "Biography": "공손찬의 장수. 계교에서 선봉으로 다리를 향해 돌진하다 국의의 강노 매복에 걸리고, 국의에게 베인다.",
    "Class": "light_cavalry",
    "Stats": [
     77,
@@ -501,6 +517,7 @@
   },
   "yuanshao": {
    "Name": "원소",
+   "Biography": "사세삼공 명문의 후예. 반동탁 연합의 맹주가 되고 한복에게서 기주를 빼앗아 하북 최대 세력이 된다. 우유부단해 모사들의 진언을 살리지 못하고 관도에서 조조에게 대패한다.",
    "Class": "light_cavalry",
    "Stats": [
     86,
@@ -531,6 +548,7 @@
   },
   "wenchou": {
    "Name": "문추",
+   "Biography": "안량과 나란히 이름난 하북의 맹장. 반하에서 공손찬을 몰아붙이다 조운과 맞선다. 안량의 원수를 갚으러 나섰다가 연진에서 관우에게 베인다.",
    "Class": "light_cavalry",
    "Stats": [
     86,
@@ -554,6 +572,7 @@
   },
   "yanliang": {
    "Name": "안량",
+   "Biography": "원소군의 하북 명장. 백마에서 송헌·위속을 베고 서황을 물리쳐 위세를 떨친다. 조조 진영에 있던 관우가 단기로 돌진해 일격에 벤다.",
    "Class": "light_cavalry",
    "Stats": [
     87,
@@ -577,6 +596,7 @@
   },
   "zhanghe": {
    "Name": "장합",
+   "Biography": "원래 한복과 원소의 장수로 관도에서 조조에게 항복했다. 임기응변에 능해 제갈량도 꺼렸다. 와구관에서 장비에게 패했고, 목문도에서 화살을 맞아 전사했다.",
    "Class": "light_cavalry",
    "Stats": [
     91,
@@ -600,6 +620,7 @@
   },
   "chunyuqiong": {
    "Name": "순우경",
+   "Biography": "원소군 장수. 관도에서 오소 군량고를 지키다 술에 취해 있던 중 조조의 야습을 받는다. 군량을 모두 불태우고 코가 베인 채 돌아가 처형된다.",
    "Class": "light_infantry",
    "Stats": [
     73,
@@ -623,6 +644,7 @@
   },
   "gaolan": {
    "Name": "고람",
+   "Biography": "원소군 장수. 관도에서 장합과 함께 조조 본채를 공격한다. 곽도의 참언으로 위태로워지자 장합과 함께 조조에게 항복한다.",
    "Class": "light_infantry",
    "Stats": [
     85,
@@ -646,6 +668,7 @@
   },
   "tianfeng": {
    "Name": "전풍",
+   "Biography": "원소의 강직한 모사. 허도를 기습하라, 관도에서 서두르지 말라 간언했으나 미움을 사 옥에 갇힌다. 원소가 패하자 부끄러워한 원소에게 처형된다.",
    "Class": "scholar",
    "Stats": [
     82,
@@ -669,6 +692,7 @@
   },
   "shenpei": {
    "Name": "심배",
+   "Biography": "원소의 모사. 원소 사후 원상을 세워 업성을 굳게 지키며 조조의 공격을 막는다. 성이 함락되자 끝까지 북쪽을 향해 무릎 꿇고 죽음을 택한다.",
    "Class": "light_infantry",
    "Stats": [
     80,
@@ -692,6 +716,7 @@
   },
   "yuanshu": {
    "Name": "원술",
+   "Biography": "원소의 이복동생. 손견에게서 옥새를 얻자 수춘에서 황제를 참칭한다. 사치와 폭정으로 민심을 잃고, 원소에게 의탁하러 가다 꿀물 한 그릇을 찾으며 피를 토하고 죽는다.",
    "Class": "light_infantry",
    "Stats": [
     65,
@@ -715,6 +740,7 @@
   },
   "caocao": {
    "Name": "조조",
+   "Biography": "자는 맹덕. 반동탁 연합을 일으키고 헌제를 허창에 맞아 천하를 호령한 난세의 간웅. 유비를 영웅이라 인정하면서도 평생의 맞수로 삼았다.",
    "Class": "light_infantry",
    "Stats": [
     96,
@@ -738,6 +764,7 @@
   },
   "dongzhuo": {
    "Name": "동탁",
+   "Biography": "서량의 군벌. 십상시의 난을 틈타 낙양에 들어와 소제를 폐하고 헌제를 세운다. 장안으로 천도하며 폭정을 일삼다가 왕윤의 연환계에 걸려 양아들 여포에게 죽는다.",
    "Class": "light_cavalry",
    "Stats": [
     77,
@@ -873,6 +900,75 @@
    "Learn": [],
    "Equipment": [],
    "Look": {}
+  },
+  "fangyue": {
+   "Name": "방열",
+   "Biography": "반동탁 동맹군에 참여한 장수. 유비군이 호로관 전선을 돌파하자 공을 세우려고 나선다. 여포에게 도전하지만 두 합 만에 패하여 목숨을 잃는다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    60,
+    66,
+    31,
+    52,
+    42,
+    51
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "yuan"
+   }
+  },
+  "mushun": {
+   "Name": "목순",
+   "Biography": "반동탁 동맹군에 참여한 장수. 홀로 남은 여포를 무찌르고 공을 세우려 호로관에 나선다. 기세 좋게 일기토를 청하지만 한 합 만에 여포에게 쓰러진다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    57,
+    61,
+    27,
+    48,
+    35,
+    46
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "yuan"
+   }
+  },
+  "wuanguo": {
+   "Name": "무안국",
+   "Biography": "북해 공융 휘하의 장수. 호로관에서 철퇴를 들고 여포와 맞서 10여 합을 버티다 손목이 잘려 물러난다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    69,
+    73,
+    33,
+    61,
+    48,
+    55
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "yuan"
+   }
   }
  }
 }

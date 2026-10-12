@@ -7,7 +7,7 @@ import (
 
 func at(s Story, kind string, local float64) State {
 	for i, b := range s.Beats {
-		if b.Kind == kind {
+		if b.Kind == kind || strikeKind(b.Kind) == kind {
 			return s.Sample(s.Start(i) + local)
 		}
 	}

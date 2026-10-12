@@ -108,7 +108,7 @@ type Look struct {
 	Palette  map[string]Colors // tag group -> one base colour or three shades
 }
 type Character struct {
-	Name, Class              string
+	Name, Class, Biography   string
 	Stats                    [6]int
 	Level                    int
 	Lord, Playable, Template bool
@@ -153,6 +153,7 @@ type Terrain struct {
 }
 type Point struct{ X, Y int }
 type Spawn struct {
+	AI, Guard         bool      `json:",omitempty"`
 	Class, Facing     string    `json:",omitempty"`
 	HP, MP            *int      `json:",omitempty"`
 	Traits, Equipment *[]string `json:",omitempty"`
@@ -165,7 +166,15 @@ type Duel struct {
 	ID, Ally, Enemy, Outcome, AllyResult, EnemyResult, Text string
 	AttackDown, DefenseDown                                 int `json:",omitempty"` // an ally win cuts every enemy's attack or defense by this percent for the battle
 }
+type Speech struct{ Actor, Text string }
+type BattleEvent struct {
+	ID, Trigger string
+	Duels       []string   `json:",omitempty"`
+	Spawns      []Spawn    `json:",omitempty"`
+	Dialogue    [][]Speech `json:",omitempty"`
+}
 type Stage struct {
+	Events                          []BattleEvent `json:",omitempty"`
 	ID, Name, Boss                  string
 	Width, Height, Limit, Threshold int
 	Tiles                           []string

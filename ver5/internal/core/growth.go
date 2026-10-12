@@ -53,7 +53,7 @@ func (e *Engine) supportXP(u *Unit) int {
 func (e *Engine) xp(id string, n int) {
 	R := e.data.Rules
 	o := e.char(id)
-	if o == nil || o.Dead || n <= 0 {
+	if o == nil || o.Dead || n <= 0 || (e.unit(id) != nil && e.unit(id).AI) {
 		return
 	}
 	o.XP += n

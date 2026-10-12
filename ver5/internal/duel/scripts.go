@@ -50,10 +50,14 @@ func (s Script) Validate() error {
 	}
 	joined := false
 	for i, b := range s.Beats {
+		kind := strikeKind(b.Kind)
+		if kind != b.Kind && (kind != strikeKind(kind) || !isStrike(kind)) {
+			return fmt.Errorf("invalid rush motion %q", b.Kind)
+		}
 		if b.Side < 0 || b.Side > 1+len(s.Supports) || b.Duration <= 0 || math.IsNaN(b.Duration) || math.IsInf(b.Duration, 0) {
 			return fmt.Errorf("invalid beat %d", i)
 		}
-		if b.Side > 1 && ((b.Kind != "talk" && b.Kind != "block" && b.Kind != "critical-block" && b.Kind != "dodge") || !joined) {
+		if b.Side > 1 && ((kind != "talk" && kind != "engage" && kind != "charge-ready" && kind != "block" && kind != "critical-block" && kind != "dodge") || !joined) {
 			return fmt.Errorf("unsupported support action or action before arrival")
 		}
 		if b.Kind == "reinforcements" {
@@ -62,8 +66,8 @@ func (s Script) Validate() error {
 			}
 			joined = true
 		}
-		switch b.Kind {
-		case "reinforcements", "retreat", "withdrawn", "yielding-block", "critical-dodge", "talk", "withdraw", "critical-block", "straight-chase", "advance", "approach", "close", "backstep", "crossing-charge", "turn", "hit", "block", "dodge", "critical", "backhit", "rest", "win", "draw", "escape", "catch", "escaped":
+		switch kind {
+		case "charge-ready", "engage", "press", "reinforcements", "retreat", "withdrawn", "yielding-block", "critical-dodge", "talk", "withdraw", "critical-block", "straight-chase", "advance", "approach", "close", "backstep", "crossing-charge", "turn", "hit", "block", "dodge", "critical", "backhit", "rest", "win", "draw", "escape", "catch", "escaped":
 		default:
 			return fmt.Errorf("unknown motion %q", b.Kind)
 		}
@@ -83,7 +87,7 @@ func (s Script) Validate() error {
 
 func (s Scripts) Story(id, outcome string) Story {
 	if script, ok := s[id]; ok && script.Outcome == outcome {
-		return Story{Beats: script.Beats}
+		return prepareStory(script.Beats)
 	}
 	ending := 0
 	switch outcome {

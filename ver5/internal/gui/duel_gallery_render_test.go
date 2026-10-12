@@ -75,8 +75,8 @@ func (p *galleryMenuRenderTest) Update() error {
 	if p.step >= len(labels) {
 		return ebiten.Termination
 	}
-	if p.step == 1 && len(p.g.buttons) != 7 {
-		p.err = fmt.Errorf("expected six duels and menu, got %d buttons", len(p.g.buttons))
+	if p.step == 1 && len(p.g.buttons) != 10 {
+		p.err = fmt.Errorf("expected nine duels and menu, got %d buttons", len(p.g.buttons))
 		return ebiten.Termination
 	}
 	if p.step == 2 && len(p.g.buttons) != 1 {

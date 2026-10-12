@@ -15,11 +15,14 @@ func (e *Engine) NextTurnRecovery(id string) RecoveryPreview {
 	}
 	out := RecoveryPreview{TerrainHP: e.tileAt(u.X, u.Y).RestHP > 0}
 	t := fromState(e.data, e.Snapshot())
-	if t.state.Turn == u.Faction {
+	// At most three phases separate two starts of the same controller.
+	for i := 0; i < 3; i++ {
+		t.events = nil
 		t.endFaction()
+		if u.ActsIn(t.state.Turn) {
+			break
+		}
 	}
-	t.events = nil
-	t.endFaction()
 	for _, event := range t.events {
 		if event.Actor != id {
 			continue

@@ -41,7 +41,7 @@ func (g *Game) toast(s string, c color.Color) {
 // updateHover finds the battlefield cell under the cursor (not under a HUD panel).
 func (g *Game) updateHover() {
 	g.hover = hoverCell{}
-	if g.field == nil || g.overlay != "" || len(g.modals) > 0 {
+	if g.field == nil || g.popupPending() {
 		return
 	}
 	x, y := cursorPos()
@@ -107,7 +107,7 @@ func (g *Game) stageInfo(o core.Observation) *coreStage {
 
 func (g *Game) pending(o core.Observation) (left, total int) {
 	for _, u := range o.UnitViews {
-		if u.Faction == "ally" && u.HP > 0 {
+		if u.Faction == "ally" && !u.AI && u.HP > 0 {
 			total++
 			if !u.Done {
 				left++
@@ -126,6 +126,9 @@ func (g *Game) topBar(dst *ebiten.Image, o core.Observation) {
 	st := g.stageInfo(o)
 	g.label(dst, st.name, 16, 8, 18, gold)
 	turn := color.NRGBA{R: 120, G: 180, B: 240, A: 255}
+	if o.Turn == "support" {
+		turn = good
+	}
 	if o.Turn == "enemy" {
 		turn = bad
 	}
@@ -163,7 +166,7 @@ func (g *Game) dock(dst *ebiten.Image, o core.Observation) {
 			end = g.endPhase
 		}
 		entries = append(entries, entry{"진영 종료 E", end})
-	} else if g.S.Settings.AI != "auto" {
+	} else if o.Turn == "enemy" && g.S.Settings.AI != "auto" {
 		var one, all func()
 		if idle {
 			one = func() { g.request(session.Request{Op: "ai"}) }
@@ -184,6 +187,9 @@ func (g *Game) dock(dst *ebiten.Image, o core.Observation) {
 
 // endPhase ends the allied phase, asking first when some allies have not acted.
 func (g *Game) endPhase() {
+	if g.popupPending() {
+		return
+	}
 	if left, _ := g.pending(g.S.Engine.Observe()); left > 0 {
 		g.ask(fmt.Sprintf("아직 행동하지 않은 부대가 %d개 있습니다.\n진영을 종료하시겠습니까?", left), g.endTurn)
 		return
@@ -192,6 +198,9 @@ func (g *Game) endPhase() {
 }
 
 func (g *Game) endTurn() {
+	if g.popupPending() {
+		return
+	}
 	g.clearOrder()
 	g.request(session.Request{Op: "command", Command: core.Command{Kind: "end"}})
 }
@@ -222,6 +231,9 @@ func (g *Game) hoveredUnit(o core.Observation) *core.UnitView {
 }
 
 func teamColor(u *core.UnitView) color.NRGBA {
+	if u.AI && u.Faction == "ally" {
+		return good
+	}
 	if u.Faction == "enemy" {
 		return bad
 	}
@@ -278,13 +290,11 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 	}
 	if g.traitOf != u.ID {
 		g.traitOf, g.traitTop = u.ID, 0
+		g.detailTab, g.detailPage = 0, 0
 	}
-	traits := u.Traits
-	const w, rowH, arrowH, listY = 320, 24, 18, 350
+	const w = 320
 	x, y := Width-12-w, g.miniRect.Max.Y+10
-	bottom := Height - 240 // clear of the dock
-	rows := min(len(traits), max(2, (bottom-y-listY-2*arrowH-10)/rowH))
-	h := listY + 2*arrowH + max(1, rows)*rowH + 10
+	h := Height - 240 - y
 	r := image.Rect(x, y, x+w, y+h)
 	window(dst, r)
 	g.block(r)
@@ -293,7 +303,9 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 	g.label(dst, fmt.Sprintf("%s  Lv%d", g.className(u.Class), u.Level), float64(x+82), float64(y+40), 13, ink)
 	state := ""
 	switch {
-	case u.Faction != o.Turn:
+	case u.AI:
+		state = "동맹군 · AI"
+	case !u.ActsIn(o.Turn):
 	case u.Done:
 		state = "행동 완료"
 	case u.Moved:
@@ -324,17 +336,71 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 		gauge(y+114, "경험치", int(u.XPProgress), 100, u.XPProgress/100, xpC, 0, false)
 	}
 	g.label(dst, "+수치: 다음 자기 턴 회복 · 현재 위치", float64(x+82), float64(y+62), 10, muted)
-	g.statHexagon(dst, o, u, float64(x+w/2), float64(y+222), 48)
-	status := []string{}
-	for _, k := range sorted(u.Status) {
-		status = append(status, statusText(k, u.Status[k]))
+	for i, title := range []string{"능력", "특성", "장비", "열전"} {
+		bx := x + 12 + i*75
+		var click func()
+		if g.detailTab != i {
+			click = func() { g.detailTab, g.detailPage = i, 0 }
+		}
+		g.btn(dst, image.Rect(bx, y+138, bx+72, y+168), title, click)
+		if g.detailTab == i {
+			rect(dst, float32(bx), float32(y+166), 72, 2, gold)
+		}
 	}
-	if len(status) > 0 {
-		g.label(dst, "상태  "+strings.Join(status, " · "), float64(x+16), float64(y+306), 12, gold)
+	body := image.Rect(x+16, y+180, x+w-16, y+h-12)
+	switch g.detailTab {
+	case 0:
+		g.statHexagon(dst, o, u, float64(x+w/2), float64(body.Min.Y+95), 48)
+		status := []string{}
+		for _, k := range sorted(u.Status) {
+			status = append(status, statusText(k, u.Status[k]))
+		}
+		if len(status) == 0 {
+			status = append(status, "상태 이상 없음")
+		}
+		g.detailText(dst, image.Rect(body.Min.X, body.Min.Y+180, body.Max.X, body.Max.Y), strings.Join(status, " · "))
+	case 1:
+		g.detailTraits(dst, body, u.Traits)
+	case 2:
+		lines := []string{}
+		for _, c := range o.Characters {
+			if c.ID != u.Character {
+				continue
+			}
+			for _, slot := range []string{"weapon", "armor", "accessory"} {
+				eq, ok := g.S.Data.Equipment[c.Equipment[slot]]
+				name := map[string]string{"weapon": "무기", "armor": "방어구", "accessory": "장신구"}[slot]
+				if !ok {
+					lines = append(lines, name+" · 없음", "")
+					continue
+				}
+				lines = append(lines, name+" · "+eq.Name, eq.Desc)
+				for _, id := range eq.Traits {
+					lines = append(lines, g.traitName(id)+": "+g.traitDesc(id))
+				}
+				lines = append(lines, "")
+			}
+			break
+		}
+		g.detailText(dst, body, strings.Join(lines, "\n"))
+	case 3:
+		for i, name := range []string{"통솔", "무력", "지력", "민첩", "운", "매력"} {
+			g.label(dst, fmt.Sprintf("%s  %d", name, u.Attributes[i]), float64(body.Min.X+i%2*144), float64(body.Min.Y+i/2*24), 14, ink)
+		}
+		g.label(dst, "열전", float64(body.Min.X), float64(body.Min.Y+80), 14, gold)
+		bio := g.S.Data.Characters[u.Def].Biography
+		if bio == "" {
+			bio = "등록된 열전이 없습니다."
+		}
+		g.detailText(dst, image.Rect(body.Min.X, body.Min.Y+108, body.Max.X, body.Max.Y), bio)
 	}
+}
 
-	g.label(dst, fmt.Sprintf("특성 %d", len(u.Traits)), float64(x+16), float64(y+listY-28), 13, gold)
-	g.traitTop = max(0, min(len(traits)-rows, g.traitTop))
+func (g *Game) detailTraits(dst *ebiten.Image, r image.Rectangle, traits []string) {
+	const rowH, arrowH = 28, 18
+	rows := max(1, (r.Dy()-28-2*arrowH-4)/rowH)
+	g.traitTop = max(0, min(max(0, len(traits)-rows), g.traitTop))
+	g.label(dst, fmt.Sprintf("보유 특성 %d", len(traits)), float64(r.Min.X), float64(r.Min.Y), 13, gold)
 	var up, down func()
 	if g.traitTop > 0 {
 		up = func() { g.traitTop-- }
@@ -342,21 +408,44 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 	if g.traitTop+rows < len(traits) {
 		down = func() { g.traitTop++ }
 	}
-	ly := y + listY
-	g.arrow(dst, image.Rect(x+16, ly, x+w-16, ly+arrowH), true, up)
-	ly += arrowH + 2
-	for i := 0; i < rows; i++ {
-		trait := traits[g.traitTop+i]
-		b := image.Rect(x+16, ly+i*rowH, x+w-16, ly+i*rowH+rowH-2)
-		g.btn(dst, b, g.traitName(trait), func() {
-			g.modals = append(g.modals, &modal{kind: "trait", trait: trait})
+	y := r.Min.Y + 26
+	g.arrow(dst, image.Rect(r.Min.X, y, r.Max.X, y+arrowH), true, up)
+	y += arrowH + 2
+	for i := 0; i < min(rows, len(traits)); i++ {
+		id := traits[g.traitTop+i]
+		g.btn(dst, image.Rect(r.Min.X, y+i*rowH, r.Max.X, y+(i+1)*rowH-2), g.traitName(id), func() {
+			if !g.popupPending() {
+				g.modals = append(g.modals, &modal{kind: "trait", trait: id})
+			}
 		})
 	}
-	if rows == 0 {
-		g.label(dst, "(없음)", float64(x+24), float64(ly+4), 13, muted)
+	if len(traits) == 0 {
+		g.label(dst, "(없음)", float64(r.Min.X+8), float64(y+4), 13, muted)
 	}
-	ly += max(1, rows) * rowH
-	g.arrow(dst, image.Rect(x+16, ly, x+w-16, ly+arrowH), false, down)
+	g.arrow(dst, image.Rect(r.Min.X, y+rows*rowH, r.Max.X, y+rows*rowH+arrowH), false, down)
+}
+
+func (g *Game) detailText(dst *ebiten.Image, r image.Rectangle, text string) {
+	lines := strings.Split(wrap(text, 23), "\n")
+	rows := max(1, (r.Dy()-28)/20)
+	pages := max(1, (len(lines)+rows-1)/rows)
+	g.detailPage = max(0, min(pages-1, g.detailPage))
+	start := g.detailPage * rows
+	g.label(dst, strings.Join(lines[start:min(len(lines), start+rows)], "\n"), float64(r.Min.X), float64(r.Min.Y), 12, ink)
+	if pages <= 1 {
+		return
+	}
+	var prev, next func()
+	if g.detailPage > 0 {
+		prev = func() { g.detailPage-- }
+	}
+	if g.detailPage+1 < pages {
+		next = func() { g.detailPage++ }
+	}
+	g.btn(dst, image.Rect(r.Min.X, r.Max.Y-26, r.Min.X+64, r.Max.Y), "이전", prev)
+	g.btn(dst, image.Rect(r.Max.X-64, r.Max.Y-26, r.Max.X, r.Max.Y), "다음", next)
+	g.centered(dst, fmt.Sprintf("%d / %d", g.detailPage+1, pages), float64(r.Min.X+r.Dx()/2), float64(r.Max.Y-22), 12, muted)
+
 }
 
 // hexAxes are the hexagon's corners clockwise from the top: each unit stat with the

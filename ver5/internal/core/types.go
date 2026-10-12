@@ -3,8 +3,8 @@ package core
 import "srpg/internal/content"
 
 const CoreVersion = "2"
-const AIPolicyVersion = "greedy-6"
-const RulesVersion = "rules-9"
+const AIPolicyVersion = "greedy-7"
+const RulesVersion = "rules-10"
 
 // Character is a persistent record: a party member, or a troop made for one battle (Temp).
 type Character struct {
@@ -22,6 +22,7 @@ type Status struct {
 	Source       string
 }
 type Unit struct {
+	AI, Guard                            bool `json:",omitempty"`
 	ID, Character, Faction, Color        string
 	Facing                               string `json:",omitempty"`
 	X, Y, HP, MP                         int
@@ -29,6 +30,14 @@ type Unit struct {
 	Status                               map[string]Status
 	Items                                map[string]int
 }
+
+func (u Unit) ActsIn(turn string) bool {
+	if u.AI && u.Faction == "ally" {
+		return turn == "support"
+	}
+	return u.Faction == turn
+}
+
 type State struct {
 	Format                            int
 	Core, Rules, Content, ContentHash string
@@ -77,8 +86,10 @@ type Command struct {
 	Deployment                                      []string
 }
 type Event struct {
-	DuelID                    string `json:",omitempty"`
-	Outcome                   string `json:",omitempty"`
+	Speech                    []content.Speech `json:",omitempty"`
+	Unit                      *Unit            `json:",omitempty"`
+	DuelID                    string           `json:",omitempty"`
+	Outcome                   string           `json:",omitempty"`
 	Kind, Actor, Target, Text string
 	Amount                    int
 	Path                      []content.Point `json:",omitempty"` // move: cells walked, both ends included

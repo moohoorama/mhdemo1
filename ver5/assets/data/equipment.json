@@ -209,6 +209,57 @@
    "Traits": [
     "resolve_strike"
    ]
+  },
+  "fangtian_halberd": {
+   "Name": "방천화극",
+   "Desc": "요극: 적을 퇴각시키면 그 적 주변의 다른 적도 공격한다.",
+   "Slot": "weapon",
+   "Type": "spear",
+   "Bonus": [
+    3,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "halberd_sweep"
+   ]
+  },
+  "red_hare": {
+   "Name": "적토마",
+   "Desc": "이동력 +2. 마중적토: 사거리 안의 물리 공격에 반드시 반격한다.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Bonus": [
+    0,
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "Traits": [
+    "red_hare_counter"
+   ]
+  },
+  "diamond_armor": {
+   "Name": "금강갑",
+   "Desc": "매 자기 차례 방어력 20% 강화.",
+   "Slot": "armor",
+   "Type": "armor",
+   "Bonus": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    1
+   ],
+   "Traits": [
+    "diamond_guard"
+   ]
   }
  }
 }

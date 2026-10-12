@@ -11,6 +11,18 @@ import (
 func (g *Game) eventText(e core.Event) (line string, important bool) {
 	a, t := g.name(e.Actor), g.name(e.Target)
 	switch e.Kind {
+	case "autosave-failed":
+		return e.Text, true
+	case "speech":
+		lines := []string{}
+		for _, line := range e.Speech {
+			lines = append(lines, g.name(line.Actor)+": "+line.Text)
+		}
+		return strings.Join(lines, " / "), false
+	case "unit-arrival":
+		return a + " 동맹군 합류", false
+	case "retreat-sweep":
+		return a + " 주변 추가 공격", false
 	case "damage":
 		if e.Actor == "" {
 			return fmt.Sprintf("%s: 지속 피해 %d", t, e.Amount), false
@@ -110,7 +122,7 @@ func (g *Game) skillName(id string) string {
 }
 
 func factionName(f string) string {
-	return map[string]string{"ally": "아군", "enemy": "적군"}[f]
+	return map[string]string{"ally": "아군", "enemy": "적군", "support": "동맹군"}[f]
 }
 
 // statusLabels are the engine's status ids as the screen names them.

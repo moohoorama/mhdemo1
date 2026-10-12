@@ -111,34 +111,7 @@ func (g *Game) sync(o core.Observation) {
 		if g.ord.move != nil && u.ID == g.ord.actor {
 			continue // shown at its tentative cell until the order is confirmed or cancelled
 		}
-		v, ok := g.vis[u.ID]
-		if !ok {
-			dir := "SE"
-			if u.Faction != "ally" {
-				dir = "NW"
-			}
-			if u.Facing != "" {
-				dir = u.Facing
-			}
-			art := g.battleClassArt(u.Def, u.Class, u.Color)
-			v = &unitVis{id: u.ID, ally: u.Faction == "ally", art: art, dir: dir, anim: "idle", dying: -1, top: art.TopOffset()}
-			g.vis[u.ID] = v
-		}
-		v.u, v.v, v.walk = float64(u.X), float64(u.Y), nil
-		v.lift = g.field.Lift(u.X, u.Y)
-		v.shownHP, v.maxHP = u.HP, u.Stats.MaxHP
-		v.shownMP, v.maxMP = u.MP, u.Stats.MaxMP
-		v.status = u.Status
-		v.inactive = o.Phase != "battle" || u.Faction != o.Turn || u.Done
-		v.greyed = u.Done && u.Faction == o.Turn && o.Phase == "battle"
-		v.ranged = g.S.Data.Classes[u.Class].Attack == content.AttackRanged
-		v.gone = u.HP <= 0
-		if !v.gone {
-			v.dying = -1
-			if v.anim == "idle" || v.anim == "exhausted" {
-				v.anim = v.rest()
-			}
-		}
+		g.syncUnit(u, o)
 	}
 }
 
@@ -161,7 +134,7 @@ func (g *Game) toScreen(x, y float64) (float64, float64) {
 // camera pans with the arrow keys, the window's edges or a drag with either button and
 // zooms with the wheel. A click without dragging selects (left) or cancels (right) instead.
 func (g *Game) camera() {
-	if g.field == nil || g.overlay != "" || g.input || len(g.modals) > 0 {
+	if g.field == nil || g.popupPending() || g.input {
 		g.dragging = false
 		return
 	}
@@ -265,4 +238,35 @@ func (g *Game) portrait(dst *ebiten.Image, ref string, x, y, size float64) bool 
 	blit(dst, src, x, y, size, size, nil)
 	strokeRect(dst, float32(x-2), float32(y-2), float32(size+4), float32(size+4), 2, gold)
 	return true
+}
+
+func (g *Game) syncUnit(u core.UnitView, o core.Observation) {
+	v, ok := g.vis[u.ID]
+	if !ok {
+		dir := "SE"
+		if u.Faction != "ally" {
+			dir = "NW"
+		}
+		if u.Facing != "" {
+			dir = u.Facing
+		}
+		art := g.battleClassArt(u.Def, u.Class, u.Color)
+		v = &unitVis{id: u.ID, ally: u.Faction == "ally", art: art, dir: dir, anim: "idle", dying: -1, top: art.TopOffset()}
+		g.vis[u.ID] = v
+	}
+	v.u, v.v, v.walk = float64(u.X), float64(u.Y), nil
+	v.lift = g.field.Lift(u.X, u.Y)
+	v.shownHP, v.maxHP = u.HP, u.Stats.MaxHP
+	v.shownMP, v.maxMP = u.MP, u.Stats.MaxMP
+	v.status = u.Status
+	v.inactive = o.Phase != "battle" || !u.ActsIn(o.Turn) || u.Done
+	v.greyed = u.Done && u.ActsIn(o.Turn) && o.Phase == "battle"
+	v.ranged = g.S.Data.Classes[u.Class].Attack == content.AttackRanged
+	v.gone = u.HP <= 0
+	if !v.gone {
+		v.dying = -1
+		if v.anim == "idle" || v.anim == "exhausted" {
+			v.anim = v.rest()
+		}
+	}
 }

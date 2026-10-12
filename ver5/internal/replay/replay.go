@@ -32,7 +32,7 @@ type Step struct {
 }
 
 // barrierKinds are events shown over the whole field.
-var barrierKinds = map[string]bool{"duel": true, "victory": true, "turn": true}
+var barrierKinds = map[string]bool{"speech": true, "unit-arrival": true, "duel": true, "victory": true, "turn": true}
 
 // New starts an action in the observed state; Add then records each applied command.
 func New(o core.Observation, actor string) *Action {

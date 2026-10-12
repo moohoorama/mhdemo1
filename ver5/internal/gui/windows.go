@@ -12,26 +12,39 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/core"
 	"srpg/internal/session"
+	"srpg/internal/storage"
 )
 
 var overlayTitles = map[string]string{"menu": "메뉴", "save": "저장", "load": "불러오기", "settings": "설정",
 	"confirm": "확인", "units": "부대 일람", "log": "전투 기록", "equipment": "장비", "deputy": "부관"}
 
-func (g *Game) openOverlay(name string) {
+func (g *Game) popupPending() bool {
+	return g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 ||
+		(g.S.Engine != nil && g.S.Screen == "playing" && len(g.S.Engine.Observe().Learners) > 0)
+}
+
+func (g *Game) openOverlay(name string) bool {
+	if g.overlay == "" && g.popupPending() {
+		return false
+	}
 	g.overlay, g.page = name, 0
 	g.autoplay = false
 	if name == "save" || name == "load" {
 		g.slotInfo = g.readSlots()
 	}
+	return true
 }
 
 // ask opens a confirmation window; ok runs on 확인.
 func (g *Game) ask(message string, ok func()) { g.askWith(message, "확인", "취소", ok) }
 
 // askWith is ask with its own button labels; ok runs on yes.
-func (g *Game) askWith(message, yes, no string, ok func()) {
+func (g *Game) askWith(message, yes, no string, ok func()) bool {
+	if !g.openOverlay("confirm") {
+		return false
+	}
 	g.question, g.yes, g.no, g.answer = message, yes, no, ok
-	g.openOverlay("confirm")
+	return true
 }
 
 // modal is a window shown after a replay, closed with a click.
@@ -58,8 +71,10 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 		w, h = 480, 210
 	case "units", "log":
 		w, h = 860, 640
-	case "save", "load":
+	case "save":
 		w, h = 640, 480
+	case "load":
+		w, h = 760, 660
 	case "equipment", "deputy":
 		w, h = 640, 560
 	}
@@ -102,16 +117,16 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 	case "save", "load":
 		op := g.overlay
 		g.label(dst, map[string]string{"save": "저장할 슬롯을 고르십시오. 덮어쓸 때는 확인합니다.", "load": "불러올 슬롯을 고르십시오."}[op], float64(left), float64(y+56), 14, muted)
-		slots := []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}
+		slots := storage.ManualSlots()
 		if op == "load" {
-			slots = append([]string{"auto"}, slots...)
+			slots = append(storage.AutoSlots(), slots...)
 		}
 		for i, s := range slots {
 			slot := s
 			info, ok := g.slotInfo[slot]
 			name := "슬롯 " + slot
-			if slot == "auto" {
-				name = "자동 저장"
+			if !storage.IsManualSlot(slot) {
+				name = "자동 저장 " + strings.TrimPrefix(slot, "auto")
 			}
 			label := name + "   —   비어 있음"
 			if ok {
@@ -120,7 +135,7 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 			var click func()
 			if op == "save" || ok {
 				click = func() {
-					if slot != "auto" {
+					if storage.IsManualSlot(slot) {
 						fmt.Sscan(slot, &g.slot)
 					}
 					g.request(session.Request{Op: op, Slot: slot})
@@ -248,7 +263,7 @@ func (g *Game) readSlots() map[string]string {
 		stage := g.S.Data.Stages[min(max(0, s.Stage), len(g.S.Data.Stages)-1)]
 		where := map[string]string{"scenario": "이야기", "deployment": "아군 배치", "result": "전투 결과", "complete": "완료"}[s.Phase]
 		if s.Phase == "battle" {
-			where = fmt.Sprintf("%d턴", s.Round)
+			where = fmt.Sprintf("%d턴 · %s", s.Round, factionName(s.Turn))
 		}
 		when := ""
 		if fi, err := os.Stat(filepath.Join(g.S.Store.Dir, "slot-"+slot+".json")); err == nil {

@@ -39,7 +39,7 @@ func (e *Engine) LegalActions(actor string) Options {
 		return out
 	}
 	u := e.unit(actor)
-	if e.state.Phase != "battle" || u == nil || u.HP <= 0 || u.Faction != e.state.Turn || u.Done {
+	if e.state.Phase != "battle" || u == nil || u.HP <= 0 || !u.ActsIn(e.state.Turn) || u.Done {
 		return out
 	}
 	out.Commands = append(out.Commands, Command{Kind: "wait", Actor: actor})
@@ -94,7 +94,7 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 	if e.state.Phase != "battle" || u == nil || u.HP <= 0 {
 		return Preview{}, fail("InvalidActor")
 	}
-	if u.Faction != e.state.Turn {
+	if !u.ActsIn(e.state.Turn) {
 		return Preview{}, fail("NotYourTurn")
 	}
 	if u.Done {
@@ -300,8 +300,30 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 				fixedUnits[u.ID] = copyOf(*u)
 			}
 		}
+		if s.Phase != "deployment" {
+			for _, event := range stage.Events {
+				if s.Executed["battle-"+stage.ID+"-"+event.ID] {
+					for _, sp := range event.Spawns {
+						u := expected.spawn(sp.Character, sp.Character, "ally", sp.X, sp.Y, sp)
+						fixed[u.ID] = "ally"
+						fixedUnits[u.ID] = copyOf(*u)
+					}
+				}
+			}
+		}
 	}
+
 	for _, u := range s.Units {
+		if base, ok := fixedUnits[u.ID]; ok {
+			if u.Guard && (u.X != base.X || u.Y != base.Y) {
+				return nil, fail("CorruptSave")
+			}
+			if u.AI != base.AI || u.Guard != base.Guard {
+				return nil, fail("CorruptSave")
+			}
+		} else if u.AI || u.Guard {
+			return nil, fail("CorruptSave")
+		}
 		if u.Facing != "" && !contains([]string{"N", "NE", "E", "SE", "S", "SW", "W", "NW"}, u.Facing) {
 			return nil, fail("CorruptSave")
 		}
@@ -332,7 +354,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 		}
 	}
 	if s.Phase == "deployment" || s.Phase == "battle" || s.Phase == "result" {
-		if s.Round < 1 || !contains([]string{"ally", "enemy"}, s.Turn) || stage.Goal != "rout" && !seen[stage.Boss] || s.Checkpoint == nil {
+		if s.Round < 1 || !contains([]string{"ally", "support", "enemy"}, s.Turn) || stage.Goal != "rout" && !seen[stage.Boss] || s.Checkpoint == nil {
 			return nil, fail("CorruptSave")
 		}
 		for id := range deploy {
@@ -398,7 +420,7 @@ func (e *Engine) CounterDamage(c Command) int {
 		return 0
 	}
 	forced := e.has(v, content.FxCounterForce) && e.might(u) < e.might(v)
-	if v.Status["counter"].Turns == 0 && !forced {
+	if v.Status["counter"].Turns == 0 && !forced && !e.has(v, content.FxCounterAlways) {
 		return 0
 	}
 	s, err := e.skillDef(c)

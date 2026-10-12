@@ -167,7 +167,7 @@ func (g *Game) mapClick(x, y int) {
 		return
 	}
 	g.selected = here.ID
-	if here.Faction == "ally" && o.Turn == "ally" && !here.Done {
+	if here.Faction == "ally" && !here.AI && o.Turn == "ally" && !here.Done {
 		g.begin(*here)
 	}
 }

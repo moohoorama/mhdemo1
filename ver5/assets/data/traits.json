@@ -538,6 +538,31 @@
    "Requires": [
     "stratagem"
    ]
+  },
+  "halberd_sweep": {
+   "Name": "요극",
+   "Desc": "적 퇴각 시 그 적 주변 8칸의 다른 적에게 추가 타격. 추가 타격은 연쇄하지 않는다.",
+   "Cost": 0,
+   "Effects": {
+    "retreat_sweep": 1
+   }
+  },
+  "red_hare_counter": {
+   "Name": "마중적토",
+   "Desc": "이동력 +2. 사거리 안의 물리 공격에 100% 반격.",
+   "Cost": 0,
+   "Effects": {
+    "move": 2,
+    "counter_always": 1
+   }
+  },
+  "diamond_guard": {
+   "Name": "금강갑",
+   "Desc": "전투 시작과 매 자기 차례 방어력 20% 강화.",
+   "Cost": 0,
+   "Effects": {
+    "turn_defense": 20
+   }
   }
  }
 }

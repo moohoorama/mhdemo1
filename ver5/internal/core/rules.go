@@ -129,7 +129,7 @@ func (e *Engine) reach(u *Unit) (map[content.Point]int, map[content.Point]conten
 	start := content.Point{X: u.X, Y: u.Y}
 	cost := map[content.Point]int{start: 0}
 	prev := map[content.Point]content.Point{}
-	if u.Moved || u.Done || u.Status["confusion"].Turns > 0 || u.Status["root"].Turns > 0 {
+	if u.Guard || u.Moved || u.Done || u.Status["confusion"].Turns > 0 || u.Status["root"].Turns > 0 {
 		return map[content.Point]int{}, prev
 	}
 	budget := e.movement(u)

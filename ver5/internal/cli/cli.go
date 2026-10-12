@@ -273,7 +273,7 @@ func RunHuman(s *session.Session, in io.Reader, out io.Writer, seed uint64) erro
 			continue
 		case "save", "load":
 			if len(p) != 2 {
-				fmt.Fprintln(out, "save/load 슬롯(1~10, auto)")
+				fmt.Fprintln(out, "save 슬롯(1~10) / load 슬롯(1~10, auto1~auto4)")
 				continue
 			}
 			q.Slot = p[1]
@@ -337,13 +337,22 @@ func RunHuman(s *session.Session, in io.Reader, out io.Writer, seed uint64) erro
 			q.Overwrite = true
 		}
 		if (q.Op == "title" || q.Op == "quit" || q.Op == "load" || q.Op == "new") && s.Dirty {
-			fmt.Fprint(out, "미저장 진행: save(자동 슬롯에 저장) / discard(포기) / cancel: ")
+			fmt.Fprint(out, "미저장 진행: save(수동 슬롯에 저장) / discard(포기) / cancel: ")
 			if !scan.Scan() {
 				break
 			}
 			switch strings.TrimSpace(scan.Text()) {
 			case "save":
-				r := s.Handle(session.Request{Op: "save", Slot: "auto", Overwrite: true})
+				fmt.Fprint(out, "수동 저장 슬롯(1~10): ")
+				if !scan.Scan() {
+					break
+				}
+				slot := strings.TrimSpace(scan.Text())
+				overwrite := s.Store.Exists(slot)
+				if overwrite && !ask("기존 슬롯을 덮어쓸까요?") {
+					continue
+				}
+				r := s.Handle(session.Request{Op: "save", Slot: slot, Overwrite: overwrite})
 				if !r.OK {
 					fmt.Fprintln(out, r.Error)
 					continue
@@ -394,12 +403,6 @@ func RunHuman(s *session.Session, in io.Reader, out io.Writer, seed uint64) erro
 	}
 	if err := scan.Err(); err != nil {
 		return err
-	}
-	if s.Engine != nil && s.Dirty {
-		r := s.Handle(session.Request{Op: "save", Slot: "auto", Overwrite: true})
-		if !r.OK {
-			return fmt.Errorf("EOF autosave: %s", r.Error)
-		}
 	}
 	return nil
 }

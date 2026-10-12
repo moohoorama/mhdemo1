@@ -150,6 +150,12 @@ func (d *MapDocument) Compile() Stage {
 			list[i].Y -= d.Play.Y
 		}
 	}
+	for i := range st.Events {
+		for j := range st.Events[i].Spawns {
+			st.Events[i].Spawns[j].X -= d.Play.X
+			st.Events[i].Spawns[j].Y -= d.Play.Y
+		}
+	}
 	return st
 }
 func (d *MapDocument) Validate(data *Data) error {

@@ -77,7 +77,8 @@ type Game struct {
 	miniRect             image.Rectangle
 	traitOf              string
 	traitTop             int
-	traitTab, traitSort  string // detail panel: "" owned / "learn"; "" cost / "name"
+	detailTab            int
+	detailPage           int
 	toasts               []*toast
 	history              []string
 	logPending           []string
@@ -218,11 +219,6 @@ func (g *Game) send(q session.Request) session.Response {
 		g.field, g.scene = nil, nil
 		g.resetBattleLog()
 		g.resetDeployment()
-	}
-	if g.S.Engine != nil && (q.Op == "command" || q.Op == "ai" || q.Op == "retry" || q.Op == "new") {
-		if err := g.S.Store.Save("auto", g.S.Engine.Snapshot(), true); err != nil {
-			g.toast("자동 저장 실패: "+err.Error(), bad)
-		}
 	}
 	g.notice = "완료"
 	switch q.Op {
@@ -414,12 +410,12 @@ func (g *Game) assist() {
 		g.autoplay = false
 		return
 	}
-	if o.Turn == "enemy" || g.autoplay {
+	if o.Turn != "ally" || g.autoplay {
 		g.resolvePhase()
 		return
 	}
 	for _, u := range o.UnitViews {
-		if u.Faction == "ally" && u.HP > 0 && !u.Done {
+		if u.Faction == "ally" && !u.AI && u.HP > 0 && !u.Done {
 			c, err := ai.Choose(g.S.Engine, u.ID)
 			if err != nil {
 				g.toast(err.Error(), bad)
@@ -449,6 +445,7 @@ func (g *Game) rightClick() {
 	switch {
 	case g.overlay != "":
 		g.overlay = ""
+	case g.popupPending():
 	case g.deploying():
 		g.deploymentSelected = ""
 	case g.cancel():
@@ -523,7 +520,7 @@ func (g *Game) Update() error {
 			g.assist()
 		} else {
 			o := g.S.Engine.Observe()
-			if o.Phase == "battle" && o.Turn == "enemy" && g.S.Settings.AI == "auto" && !g.busy() && len(g.learn) == 0 {
+			if o.Phase == "battle" && (o.Turn == "support" || o.Turn == "enemy" && g.S.Settings.AI == "auto") && !g.busy() && len(g.learn) == 0 {
 				g.resolvePhase()
 			}
 			g.offerEnd(o)
@@ -534,15 +531,16 @@ func (g *Game) Update() error {
 
 // offerEnd asks once per turn to end the allied phase when every ally has been ordered.
 func (g *Game) offerEnd(o core.Observation) {
-	if o.Phase != "battle" || o.Turn != "ally" || g.busy() || g.ord.actor != "" {
+	if o.Phase != "battle" || o.Turn != "ally" || g.busy() || g.ord.actor != "" || g.popupPending() || len(o.Learners) > 0 {
 		return
 	}
 	key := fmt.Sprint(o.Stage, "-", o.Round)
 	if left, total := g.pending(o); left > 0 || total == 0 || g.endAsked == key {
 		return
 	}
-	g.endAsked = key
-	g.askWith("모든 아군에게 명령을 내렸습니다.\n턴을 넘기겠습니까?", "예", "아니오", g.endTurn)
+	if g.askWith("모든 아군에게 명령을 내렸습니다.\n턴을 넘기겠습니까?", "예", "아니오", g.endTurn) {
+		g.endAsked = key
+	}
 }
 
 // cliInput is the debug command line (backquote): CLI syntax, one command.
@@ -573,10 +571,10 @@ func (g *Game) keys() {
 	if pressed(ebiten.KeyF12) {
 		g.capture = true
 	}
-	if pressed(ebiten.KeyF5) && g.S.Engine != nil {
+	if pressed(ebiten.KeyF5) && g.S.Engine != nil && !g.popupPending() {
 		g.request(session.Request{Op: "save", Slot: fmt.Sprint(g.slot)})
 	}
-	if pressed(ebiten.KeyF9) {
+	if pressed(ebiten.KeyF9) && !g.popupPending() {
 		g.request(session.Request{Op: "load", Slot: fmt.Sprint(g.slot)})
 	}
 	if pressed(ebiten.KeyEscape) {
@@ -656,7 +654,7 @@ func (g *Game) keys() {
 	if pressed(ebiten.KeyTab) {
 		ids := []string{}
 		for _, u := range o.UnitViews {
-			if u.Faction == "ally" && u.HP > 0 && !u.Done {
+			if u.Faction == "ally" && !u.AI && u.HP > 0 && !u.Done {
 				ids = append(ids, u.ID)
 			}
 		}
@@ -923,4 +921,5 @@ func (g *Game) battle(dst *ebiten.Image, o core.Observation) {
 	g.forecast(dst)
 	g.brief(dst, o)
 	g.messages(dst)
+	g.drawBattleSpeech(dst)
 }

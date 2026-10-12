@@ -302,12 +302,16 @@ func (d *Data) Validate() error {
 				boss = boss || e.Character == s.Boss
 			}
 		}
+		eventAllies, err := d.validateBattleEvents(s)
+		if err != nil {
+			return fmt.Errorf("stage %s: %w", s.ID, err)
+		}
 		for _, event := range s.Duels {
 			enemy := false
 			for _, sp := range s.Enemies {
 				enemy = enemy || sp.Character == event.Enemy
 			}
-			if event.ID == "" || duelIDs[event.ID] || !enemy || !d.Characters[event.Ally].Playable || event.AttackDown < 0 || event.AttackDown > 90 ||
+			if event.ID == "" || duelIDs[event.ID] || !enemy || (!d.Characters[event.Ally].Playable && !eventAllies[event.Ally]) || event.AttackDown < 0 || event.AttackDown > 90 ||
 				event.DefenseDown < 0 || event.DefenseDown > 90 || !in(event.Outcome, "victory", "defeat", "draw") ||
 				!in(event.AllyResult, "stay", "retreat", "death") || !in(event.EnemyResult, "stay", "retreat", "death") {
 				return fmt.Errorf("duel %s", event.ID)

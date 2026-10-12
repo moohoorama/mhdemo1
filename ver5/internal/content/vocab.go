@@ -6,6 +6,9 @@ package content
 // Trait effects. A trait's Effects maps one of these keys to a number; a flag is 1.
 // Effects of the same key from several traits (own, deputy, equipment, class grants) add up.
 const (
+	FxRetreatSweep   = "retreat_sweep"    // defeats trigger one extra strike on surrounding foes
+	FxCounterAlways  = "counter_always"   // counter every physical attack in reach
+	FxTurnDefense    = "turn_defense"     // defense percent granted each own turn
 	FxCritWeaker     = "crit_vs_weaker"   // physical attacks on a lower-might target always crit
 	FxCritAlways     = "crit_always"      // physical attacks always crit
 	FxSpellCrit      = "spell_crit"       // landed attack spells always crit
@@ -59,7 +62,7 @@ const (
 var TraitEffects = map[string]bool{}
 
 func init() {
-	for _, k := range []string{FxCritWeaker, FxCritAlways, FxSpellCrit, FxCritAmbush, FxDoubleAlways, FxCounterForce, FxAssist,
+	for _, k := range []string{FxRetreatSweep, FxCounterAlways, FxTurnDefense, FxCritWeaker, FxCritAlways, FxSpellCrit, FxCritAmbush, FxDoubleAlways, FxCounterForce, FxAssist,
 		FxSplashCross, FxSplashSquare, FxPierce, FxIgnoreTerrain, FxPoison, FxLifeSteal, FxMissHalf, FxBulwark, FxCritImmune,
 		FxRangedImmune, FxRiposte, FxReflect, FxFortify, FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxFarSight,
 		FxMountedRange, FxLightMove, FxSpellRange, FxSpellSure, FxChain, FxSure, FxCritElement, FxDispel, FxStatusImmune,

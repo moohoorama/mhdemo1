@@ -11,6 +11,18 @@ import (
 )
 
 type Store struct{ Dir string }
+
+func ManualSlots() []string { return []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"} }
+func AutoSlots() []string   { return []string{"auto1", "auto2", "auto3", "auto4"} }
+func IsManualSlot(slot string) bool {
+	for _, id := range ManualSlots() {
+		if slot == id {
+			return true
+		}
+	}
+	return false
+}
+
 type Settings struct {
 	AI          string `json:"ai"`
 	Color       bool   `json:"color"`
@@ -26,16 +38,12 @@ func (s Settings) Validate() error {
 	return nil
 }
 func (s Store) path(slot string) (string, error) {
-	if slot != "auto" {
-		valid := false
-		for i := 1; i <= 10; i++ {
-			if slot == fmt.Sprint(i) {
-				valid = true
-			}
-		}
-		if !valid {
-			return "", fmt.Errorf("InvalidSlot")
-		}
+	valid := slot == "auto" || IsManualSlot(slot)
+	for _, id := range AutoSlots() {
+		valid = valid || slot == id
+	}
+	if !valid {
+		return "", fmt.Errorf("InvalidSlot")
 	}
 	return filepath.Join(s.Dir, "slot-"+slot+".json"), nil
 }
@@ -49,7 +57,7 @@ func (s Store) Exists(slot string) bool {
 }
 func (s Store) Slots() []string {
 	out := []string{}
-	for _, id := range []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "auto"} {
+	for _, id := range append(append(ManualSlots(), AutoSlots()...), "auto") {
 		if s.Exists(id) {
 			out = append(out, id)
 		}
@@ -58,12 +66,16 @@ func (s Store) Slots() []string {
 }
 
 type envelope struct {
+	Sequence uint64          `json:"sequence,omitempty"`
 	Format   int             `json:"format"`
 	Checksum string          `json:"checksum"`
 	State    json.RawMessage `json:"state"`
 }
 
 func (s Store) Save(slot string, state core.State, overwrite bool) error {
+	return s.save(slot, state, overwrite, 0)
+}
+func (s Store) save(slot string, state core.State, overwrite bool, sequence uint64) error {
 	p, err := s.path(slot)
 	if err != nil {
 		return err
@@ -75,7 +87,7 @@ func (s Store) Save(slot string, state core.State, overwrite bool) error {
 	if err != nil {
 		return err
 	}
-	v := envelope{1, fmt.Sprintf("%x", sha256.Sum256(b)), b}
+	v := envelope{Sequence: sequence, Format: 1, Checksum: fmt.Sprintf("%x", sha256.Sum256(b)), State: b}
 	b, err = json.Marshal(v)
 	if err != nil {
 		return err
@@ -148,4 +160,25 @@ func (s Store) LoadSettings() (Settings, error) {
 		return DefaultSettings(), err
 	}
 	return v, v.Validate()
+}
+
+// Autosave stores the next turn snapshot and the rotation sequence in the same atomic write.
+func (s Store) Autosave(state core.State) error {
+	var latest uint64
+	slots := AutoSlots()
+	for _, slot := range slots {
+		p, _ := s.path(slot)
+		b, err := os.ReadFile(p)
+		if errors.Is(err, os.ErrNotExist) {
+			continue
+		}
+		if err != nil {
+			return err
+		}
+		var v envelope
+		if json.Unmarshal(b, &v) == nil {
+			latest = max(latest, v.Sequence)
+		}
+	}
+	return s.save(slots[latest%uint64(len(slots))], state, true, latest+1)
 }

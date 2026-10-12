@@ -152,9 +152,9 @@ func (g *Game) drawDuelGallery(dst *ebiten.Image) {
 		for _, stage := range g.S.Data.Stages {
 			for _, d := range stage.Duels {
 				duelID := d.ID
-				x, y := 96+(n%2)*550, 180+(n/2)*155
+				x, y := 65+(n%3)*390, 180+(n/3)*180
 				label := stage.Name + "\n" + g.S.Data.Characters[d.Ally].Name + " · " + g.S.Data.Characters[d.Enemy].Name
-				g.btn(dst, image.Rect(x, y, x+510, y+115), label, func() {
+				g.btn(dst, image.Rect(x, y, x+360, y+135), label, func() {
 					if err := g.OpenDuel(duelID, "", p.debug); err != nil {
 						g.toast(err.Error(), bad)
 					}

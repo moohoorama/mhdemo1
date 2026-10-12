@@ -18,11 +18,15 @@ Scenes live in `assets/scenes.json`, not here.
 
 ## Id conventions
 
-- Every map key and reference is an English snake_case id; Korean appears only in `Name`, `Desc`, `Text` (and choice labels).
+- Every map key and reference is an English snake_case id; Korean appears only in `Name`, `Desc`, `Text`, `Biography` (and choice labels).
 - Characters use pinyin matching portrait/sprite stems (`liubei`, `lubu`, ...). Soldier templates: `troop_turban`, `troop_footman`, `troop_archer`.
 - Classes: English names (`light_infantry`, `scholar`, `staff_officer`, `sorcerer`, ...). Equipment types: `sword spear bow fan` / `armor robe` / `any`.
 - Skills: English (`scorch`, `minor_supply`, `sweep`); traits: English (`valor`, `fire_boost`). Spell family roots (`fire water earth relief exhort hinder stratagem`) are given-only (Cost 0).
 - Promotion items: `promote_<class id>`. Scenario events: `join-<id>`, `grant-<id>`.
+
+## Officer biographies
+
+`Character.Biography` is optional display text for the battle detail panel’s fourth tab. Named officers use the biographies in `docs/officers.md`; coalition officers added for the scenario describe their in-game story. Soldier templates can omit it.
 
 ## Trait rules
 
@@ -48,3 +52,11 @@ Class changes must remain in the same family, and equipment must fit the resulti
 
 The GUI saves exactly one map document. The game reads that same file; see
 [the map format](../../docs/maps.md). Defense XP is controlled by `Rules.ExpDefenseShare`.
+
+## Battle events and allied AI
+
+`Spawn.Guard` holds a unit at its spawn cell. `Spawn.AI` makes an allied spawn act in the automatic `support` phase between player and enemy phases. Such reinforcements are temporary and cannot be commanded by the player.
+
+`Stage.Events` defines one-shot events with a stage-local `ID`. `Trigger: "boss-alone"` fires while the boss survives and all other enemies are gone. `Trigger: "duel"` fires after any ID listed in `Duels` resolves. `Spawns` contains allied AI spawns; occupied entry cells use the closest usable free cell. `Dialogue` is an ordered array of groups of `{Actor, Text}` lines. Lines in the same group appear simultaneously in battlefield speech bubbles. Executed events and spawned units survive save/load.
+
+Equipment can grant `retreat_sweep` (damage share for one additional strike on foes in the defeated target’s surrounding eight cells), `counter_always` (a counter against every physical attack in reach), and `turn_defense` (defense percentage renewed at the start of each own phase). The effects follow the wearer’s faction. Additional sweep blows do not cascade.

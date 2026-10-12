@@ -166,12 +166,14 @@ type Player struct {
 	gap     float64
 	final   core.Observation
 	Duel    *duelview.View
+	Speech  []*battleBubble
 }
 
 func (p *Player) Busy() bool { return len(p.waiting)+len(p.running) > 0 }
 
 // Play queues actions; final is the observation after all of them (synced at the end).
 func (p *Player) Play(actions []*replay.Action, final core.Observation) {
+	p.Speech = nil
 	p.actions, p.final = actions, final
 	p.done = make([]bool, len(actions))
 	p.waiting = p.waiting[:0]
@@ -222,7 +224,7 @@ func (p *Player) Update(dt float64) {
 			p.done[r.index] = true
 			id := p.actions[r.index].Actor
 			if v, u := p.g.unitAt(id), p.g.unitView(p.final, id); v != nil && u != nil {
-				v.inactive = p.final.Phase != "battle" || u.Faction != p.final.Turn || u.Done
+				v.inactive = p.final.Phase != "battle" || !u.ActsIn(p.final.Turn) || u.Done
 			}
 		} else {
 			kept = append(kept, r)
@@ -231,6 +233,7 @@ func (p *Player) Update(dt float64) {
 	p.running = kept
 	if !p.Busy() {
 		p.Duel = nil
+		p.Speech = nil
 		p.g.sync(p.final)
 	}
 }
@@ -241,6 +244,7 @@ func (p *Player) Skip() {
 		return
 	}
 	p.waiting, p.running, p.Duel = nil, nil, nil
+	p.Speech = nil
 	p.g.popups = nil
 	p.g.sync(p.final)
 }
@@ -339,6 +343,30 @@ func (g *Game) perform(a *replay.Action) []beat {
 			}
 		default:
 			add(.1, func() {})
+		}
+		for _, e := range events {
+			switch e.Kind {
+			case "unit-arrival":
+				event := e
+				add(.15, func() {
+					if event.Unit == nil {
+						return
+					}
+					if final := g.unitView(g.player.final, event.Actor); final != nil {
+						view := *final
+						view.Unit = *event.Unit
+						g.syncUnit(view, g.player.final)
+					}
+				})
+			case "speech":
+				lines := e.Speech
+				duration := 3.0
+				for _, line := range lines {
+					duration = max(duration, 1.5+float64(len([]rune(line.Text)))*.09)
+				}
+				add(duration, func() { g.showBattleSpeech(lines) })
+				add(0, func() { g.player.Speech = nil })
+			}
 		}
 		for _, e := range events {
 			if e.Kind == "victory" {

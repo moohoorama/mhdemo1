@@ -140,8 +140,8 @@ func (g *View) draw(dst *ebiten.Image) {
 		for rank := range 24 {
 			for col := -24; col <= 24; col++ {
 				// Ranks run across the duel axis; depth extends behind the front rank.
-				x := float64(328 + col*44 - rank*44)
-				y := float64(282 - col*22 - rank*22)
+				x := float64(168 + col*44 - rank*44)
+				y := float64(202 - col*22 - rank*22)
 				if side == 1 {
 					x = width - x
 					y = 880 - y

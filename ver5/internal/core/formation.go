@@ -161,6 +161,12 @@ func (e *Engine) duel(attacker, defender *Unit, d content.Duel) {
 	}
 	outcome(ally, d.AllyResult)
 	outcome(enemy, d.EnemyResult)
+	if ally.HP == 0 && enemy.HP > 0 {
+		e.retreatSweep(enemy, ally, false)
+	}
+	if enemy.HP == 0 && ally.HP > 0 {
+		e.retreatSweep(ally, enemy, false)
+	}
 	for _, down := range []struct {
 		status string
 		n      int
@@ -176,7 +182,7 @@ func (e *Engine) duel(attacker, defender *Unit, d content.Duel) {
 		e.emit(down.status, ally.ID, "", down.n)
 	}
 	attacker.Attacked = true
-	if ally.HP > 0 {
+	if ally.HP > 0 && !ally.AI {
 		e.xp(ally.Character, ExperienceRequired(e.data, e.char(ally.Character).Level))
 	}
 }

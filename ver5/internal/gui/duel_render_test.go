@@ -64,6 +64,7 @@ type duelRenderTest struct {
 	out         string
 	cases       []duelRenderCase
 	index, beat int
+	sample      int
 	drawn       bool
 	err         error
 }
@@ -75,6 +76,11 @@ func (p *duelRenderTest) Update() error {
 	}
 	p.drawn = false
 	if p.index >= 0 {
+		p.sample++
+		if p.sample < 3 {
+			return nil
+		}
+		p.sample = 0
 		p.beat++
 		if p.beat < len(p.g.player.Duel.Story.Beats) {
 			return nil
@@ -90,7 +96,9 @@ func (p *duelRenderTest) Update() error {
 		if g.player.Duel != nil {
 			return p.fail(fmt.Errorf("duel did not return to map"))
 		}
-		g.player.Update(blinkTime + 2)
+		for i := 0; i < 100 && g.player.Busy(); i++ {
+			g.player.Update(.5)
+		}
 		if g.player.Busy() {
 			return p.fail(fmt.Errorf("aftermath never completed"))
 		}
@@ -137,6 +145,22 @@ func (p *duelRenderTest) start(c duelRenderCase) error {
 			return err
 		}
 	}
+	if !g.S.Data.Characters[c.duel.Ally].Playable {
+		snap := e.Snapshot()
+		for i := range snap.Units {
+			if snap.Units[i].Faction == "enemy" && snap.Units[i].ID != g.S.Data.Stages[c.stage].Boss {
+				snap.Units[i].HP = 0
+			}
+		}
+		e, err = core.Restore(g.S.Data, snap)
+		if err != nil {
+			return err
+		}
+		g.S.Engine = e
+		if _, err = e.Apply(core.Command{Kind: "wait", Actor: g.S.Data.Campaign.Deployment[0]}); err != nil {
+			return err
+		}
+	}
 	snap := e.Snapshot()
 	ai, ei := -1, -1
 	for i, u := range snap.Units {
@@ -152,6 +176,13 @@ func (p *duelRenderTest) start(c duelRenderCase) error {
 	}
 	st := g.S.Data.Stages[c.stage]
 	placed := false
+	if snap.Units[ei].Guard {
+		snap.Units[ai].X, snap.Units[ai].Y = snap.Units[ei].X-1, snap.Units[ei].Y
+		placed = true
+	}
+	if snap.Units[ai].AI {
+		snap.Turn = "support"
+	}
 	for y := 1; y < st.Height-1 && !placed; y++ {
 		for x := 1; x < st.Width-2 && !placed; x++ {
 			free := true
@@ -215,10 +246,12 @@ func (p *duelRenderTest) Draw(dst *ebiten.Image) {
 	}
 	g := p.g
 	view := g.player.Duel
-	view.Time = view.Story.Start(p.beat) + min(.57, view.Story.Beats[p.beat].Duration/2)
+	duration := view.Story.Beats[p.beat].Duration
+	local := []float64{min(.2, duration/4), min(.57, duration/2), duration - .001}[p.sample]
+	view.Time = view.Story.Start(p.beat) + local
 	g.Draw(dst)
 	// Verify shared renderer at twice the logical resolution too.
-	if p.beat == 0 {
+	if p.beat == 0 && p.sample == 0 {
 		large := ebiten.NewImage(Width*2, Height*2)
 		view.Draw(large)
 		pixels := make([]byte, Width*Height*16)
@@ -230,7 +263,7 @@ func (p *duelRenderTest) Draw(dst *ebiten.Image) {
 	}
 	img := image.NewRGBA(dst.Bounds())
 	dst.ReadPixels(img.Pix)
-	path := filepath.Join(p.out, fmt.Sprintf("%s-%d-%02d.png", p.cases[p.index].duel.ID, p.index, p.beat))
+	path := filepath.Join(p.out, fmt.Sprintf("%s-%d-%02d-%d.png", p.cases[p.index].duel.ID, p.index, p.beat, p.sample))
 	f, err := os.Create(path)
 	if err == nil {
 		err = png.Encode(f, img)

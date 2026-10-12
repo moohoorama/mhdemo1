@@ -132,6 +132,7 @@ func (e *Engine) hurt(v *Unit, n int, u *Unit) int {
 type blow struct {
 	share   float64
 	derived bool
+	sweep   bool
 }
 
 // strike is one blow: hit, critical and damage, with a missed blow still landing a share of it for 위압-like traits.
@@ -179,6 +180,9 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool) {
 			status.Source = u.ID
 			v.Status["poison"] = status
 		}
+	}
+	if n > 0 && v.HP == 0 {
+		e.retreatSweep(u, v, b.sweep)
 	}
 	return n, hit
 }
@@ -229,7 +233,7 @@ func (e *Engine) counterBack(u, v *Unit) {
 		return
 	}
 	forced := e.has(v, content.FxCounterForce) && e.might(u) < e.might(v)
-	if v.Status["counter"].Turns == 0 && !forced || !e.inRange(v, u, e.basic()) {
+	if v.Status["counter"].Turns == 0 && !forced && !e.has(v, content.FxCounterAlways) || !e.inRange(v, u, e.basic()) {
 		return
 	}
 	R := e.data.Rules
@@ -367,7 +371,7 @@ func (e *Engine) physical(u, v *Unit, s content.Skill, c Command) {
 	for _, id := range keys(e.unitIDs) {
 		w := e.unit(id)
 		k := e.fx(w, content.FxAssist)
-		if k == 0 || w.ID == u.ID || w.HP <= 0 || w.Faction != u.Faction || e.state.Turn != u.Faction {
+		if k == 0 || w.ID == u.ID || w.HP <= 0 || w.Faction != u.Faction || !u.ActsIn(e.state.Turn) {
 			continue
 		}
 		for _, q := range hit {
@@ -529,7 +533,7 @@ func (e *Engine) endFaction() {
 	ending := e.state.Turn
 	for _, id := range keys(e.unitIDs) {
 		u := e.unit(id)
-		if u.Faction != ending {
+		if !u.ActsIn(ending) {
 			continue
 		}
 		for _, k := range keys(u.Status) {
@@ -547,6 +551,14 @@ func (e *Engine) endFaction() {
 	}
 	if ending == "ally" {
 		e.state.Turn = "enemy"
+		for _, id := range keys(e.unitIDs) {
+			if u := e.unit(id); u.AI && u.Faction == "ally" && u.HP > 0 {
+				e.state.Turn = "support"
+				break
+			}
+		}
+	} else if ending == "support" {
+		e.state.Turn = "enemy"
 	} else {
 		e.state.Turn = "ally"
 		e.state.Round++
@@ -556,7 +568,7 @@ func (e *Engine) endFaction() {
 	hp, mp := map[string]int{}, map[string]int{}
 	for _, id := range keys(e.unitIDs) {
 		u := e.unit(id)
-		if u.HP <= 0 || u.Faction != starting {
+		if u.HP <= 0 || !u.ActsIn(starting) {
 			continue
 		}
 		if e.has(u, content.FxCleanse) {
@@ -583,6 +595,9 @@ func (e *Engine) endFaction() {
 		if t.RestMP > 0 {
 			r *= t.RestMP
 		}
+		if k := int(e.fx(u, content.FxTurnDefense)); k > 0 {
+			e.applyStatus(u, "defense", R.BuffTurns, k)
+		}
 		if e.has(u, content.FxFortify) && t.Castle {
 			e.applyStatus(u, "defense", R.BuffTurns, R.BuffPercent)
 		}
@@ -604,12 +619,12 @@ func (e *Engine) endFaction() {
 	// Auras are deduplicated per recipient, independent of component iteration order.
 	for _, id := range keys(e.unitIDs) {
 		v := e.unit(id)
-		if v.Faction != starting || v.HP <= 0 {
+		if !v.ActsIn(starting) || v.HP <= 0 {
 			continue
 		}
 		for _, aid := range keys(e.unitIDs) {
 			u := e.unit(aid)
-			if k := e.fx(u, content.FxAura); k > 0 && u.ID != v.ID && u.HP > 0 && u.Faction == starting && abs(u.X-v.X) <= 1 && abs(u.Y-v.Y) <= 1 {
+			if k := e.fx(u, content.FxAura); k > 0 && u.ID != v.ID && u.HP > 0 && u.Faction == v.Faction && abs(u.X-v.X) <= 1 && abs(u.Y-v.Y) <= 1 {
 				v.HP = min(e.stats(v).MaxHP, v.HP+e.healAmount(v, float64(e.stats(v).MaxHP)*k))
 				break
 			}

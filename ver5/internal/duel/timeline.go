@@ -1,7 +1,10 @@
 // Package duel samples a scripted duel without changing battle state.
 package duel
 
-import "math"
+import (
+	"math"
+	"strings"
+)
 
 var Endings = []string{"아군 승리", "아군 패배", "무승부", "아군 도주 성공", "아군 도주 실패", "적 도주 성공", "적 도주 실패"}
 
@@ -47,6 +50,60 @@ type Story struct {
 	Beats []Beat
 }
 
+const attackReach = 120.0
+const chargeReach = 190.0
+
+func strikeKind(kind string) string {
+	return strings.TrimPrefix(kind, "rush-")
+}
+
+func defender(side int) int {
+	if side == 1 {
+		return 0
+	}
+	return 1
+}
+
+func isStrike(kind string) bool {
+	switch strikeKind(kind) {
+	case "hit", "block", "critical-block", "yielding-block", "dodge", "critical-dodge", "critical", "backhit":
+		return true
+	}
+	return false
+}
+
+func initialState() State {
+	return State{Actors: [4]Actor{{Visible: true, Position: -260}, {Visible: true, Position: 260}}}
+}
+
+// prepareStory connects each exchange to the positions left by the preceding one.
+func prepareStory(beats []Beat) Story {
+	story := Story{}
+	state := initialState()
+	for _, beat := range beats {
+		if isStrike(beat.Kind) || beat.Kind == "press" {
+			a, d := state.Actors[beat.Side], state.Actors[defender(beat.Side)]
+			distance := math.Hypot(d.Position-a.Position, d.Lane-a.Lane)
+			reach, kind, title := attackReach, "engage", "공격 거리까지 접근"
+			if strikeKind(beat.Kind) != beat.Kind {
+				reach, kind, title = chargeReach, "charge-ready", "상대를 보며 전진 공격의 간격 확보"
+			}
+			if distance > reach+1e-6 || kind == "charge-ready" && math.Abs(distance-reach) > 1e-6 {
+				step := Beat{Kind: kind, Title: title, Side: beat.Side, Duration: max(.25, math.Abs(distance-reach)/220)}
+				story.Beats = append(story.Beats, step)
+				apply(&state, step, step.Duration)
+			}
+		}
+		story.Beats = append(story.Beats, beat)
+		apply(&state, beat, beat.Duration)
+	}
+	return story
+}
+
+func screenOffset(x, y float64) (float64, float64) {
+	return (.89*x + .45*y) / .9946, (-.45*x + .89*y) / .9946
+}
+
 func New(ending int) Story {
 	ending = max(0, min(6, ending))
 	b := []Beat{
@@ -87,7 +144,7 @@ func New(ending int) Story {
 			b = append(b, Beat{"escaped", Endings[ending], "다음에 다시 겨루자!", runner, 3})
 		}
 	}
-	return Story{Beats: b}
+	return prepareStory(b)
 }
 
 func (s Story) Duration() float64 {
@@ -107,23 +164,26 @@ func (s Story) Start(index int) float64 {
 }
 
 func (s Story) Sample(t float64) State {
-	r := State{Actors: [4]Actor{{Visible: true, Position: -260}, {Visible: true, Position: 260}, {Position: -460, Lane: 710}, {Position: 880, Lane: 90}}}
+	r := initialState()
 	t = max(0, t)
 	r.Done = t >= s.Duration()
+	elapsed := 0.0
 	for i, b := range s.Beats {
-		local := min(t, b.Duration)
+		local := max(0, min(t-elapsed, b.Duration))
 		apply(&r, b, local)
 		r.Stage, r.Index, r.Local = b.Title, i, local
-		if t < b.Duration {
+		elapsed += b.Duration
+		if t < elapsed {
 			return r
 		}
-		t -= b.Duration
 	}
 	r.Done = true
 	return r
 }
 
 func apply(s *State, b Beat, t float64) {
+	rush := strikeKind(b.Kind) != b.Kind
+	b.Kind = strikeKind(b.Kind)
 	from := [4]float64{}
 	facing := [4]string{}
 	lanes := [4]float64{}
@@ -133,9 +193,6 @@ func apply(s *State, b Beat, t float64) {
 	for i := range s.Actors {
 		a := &s.Actors[i]
 		a.Animation, a.Speech, a.MS, a.Hold = "idle", "", t*1000, -1
-		if i < 2 {
-			a.Lane = 0
-		}
 		target := 1
 		if i == 1 {
 			target = 0
@@ -157,20 +214,51 @@ func apply(s *State, b Beat, t float64) {
 	p := t / b.Duration
 	move := func(i int, to, k float64) {
 		s.Actors[i].Position = from[i] + (to-from[i])*max(0, min(1, k))
-		s.Actors[i].Animation = "walk"
+		if from[i] != to && k > 0 && k < 1 {
+			s.Actors[i].Animation = "walk"
+		}
 	}
 	switch b.Kind {
+	case "engage", "charge-ready":
+		a, d := &s.Actors[b.Side], s.Actors[defender(b.Side)]
+		delta, laneDelta := d.Position-from[b.Side], d.Lane-lanes[b.Side]
+		distance := math.Hypot(delta, laneDelta)
+		reach := attackReach
+		if b.Kind == "charge-ready" {
+			reach = chargeReach
+		}
+		if distance > 0 && (distance > reach || b.Kind == "charge-ready") {
+			travel := (distance - reach) * p
+			a.Position += delta / distance * travel
+			a.Lane += laneDelta / distance * travel
+			if p > 0 && p < 1 {
+				a.Animation = "walk"
+			}
+		}
+	case "press":
+		direction := 1.0
+		if from[b.Side] > from[defender(b.Side)] {
+			direction = -1
+		}
+		for i := range 2 {
+			move(i, from[i]+direction*80, p)
+		}
 	case "reinforcements":
 		for i := 2; i < 4; i++ {
 			s.Actors[i].Visible = true
-			offset, lane := -35.0, 130.0
+			sign := -1.0
 			if i == 3 {
-				offset, lane = 125, -105
+				sign = 1
 			}
-			move(i, from[1]+offset, p)
-			s.Actors[i].Lane = lanes[i] + (lane-lanes[i])*p
-			destination := Actor{Position: from[1] + offset, Lane: lane}
-			s.Actors[i].Facing = (Actor{Position: from[i], Lane: lanes[i]}).facingToward(destination)
+			// Match the map's (u-v)*16, (u+v)*8 isometric grid axis.
+			offset, lane := screenOffset(sign*120, -sign*60)
+			startOffset, startLane := screenOffset(sign*1200, -sign*600)
+			s.Actors[i].Position = from[1] + startOffset + (offset-startOffset)*p
+			s.Actors[i].Lane = lanes[1] + startLane + (lane-startLane)*p
+			if p > 0 && p < 1 {
+				s.Actors[i].Animation = "walk"
+			}
+			s.Actors[i].Facing = s.Actors[i].facingToward(s.Actors[1])
 		}
 	case "retreat", "withdrawn":
 		sign := -1.0
@@ -182,7 +270,12 @@ func apply(s *State, b Beat, t float64) {
 			s.Actors[b.Side].Facing = "SE"
 		}
 		if b.Kind == "retreat" {
-			move(b.Side, sign*160, p)
+			// Stop before the rearward ranks and keep the ally clear of its portrait.
+			target := -280.0
+			if b.Side == 1 {
+				target = 340
+			}
+			move(b.Side, target, p)
 		}
 	case "withdraw":
 		direction := 1.0
@@ -241,19 +334,19 @@ func apply(s *State, b Beat, t float64) {
 		a.Facing, d.Facing = a.facingToward(*d), d.facingToward(*a)
 		a.Animation = "attack"
 		a.MS = max(0, t-.1) * 1000
+		if rush {
+			delta, laneDelta := d.Position-from[att], d.Lane-lanes[att]
+			distance := math.Hypot(delta, laneDelta)
+			if distance > attackReach {
+				progress := max(0, min(1, (t-.1)/.46))
+				travel := (distance - attackReach) * progress
+				a.Position += delta / distance * travel
+				a.Lane += laneDelta / distance * travel
+			}
+		}
 		direction := 1.0
 		if from[att] > from[def] {
 			direction = -1
-		}
-		delta, laneDelta := from[def]-from[att], lanes[def]-lanes[att]
-		distance := math.Hypot(delta, laneDelta)
-		lunge := 24.0
-		if att > 1 {
-			lunge = 48
-		}
-		if distance > 0 {
-			a.Position += delta / distance * lunge * math.Sin(math.Pi*p)
-			a.Lane += laneDelta / distance * lunge * math.Sin(math.Pi*p)
 		}
 		if b.Kind == "backhit" {
 			d.Facing = a.Facing
@@ -272,15 +365,18 @@ func apply(s *State, b Beat, t float64) {
 					d.Position += direction * 55 * min(1, (t-.56)/.35)
 				}
 			case "dodge", "critical-dodge":
-				d.Animation = "walk"
-				d.Position += direction * 64 * math.Sin(math.Pi*min(1, (t-.56)/(b.Duration-.56)))
+				progress := min(1, (t-.56)/.35)
+				d.Position += direction * 64 * progress
+				if progress < 1 {
+					d.Animation = "walk"
+				}
 			default:
 				d.Animation = "hit"
 				push := 20.0
 				if b.Kind == "critical" || b.Kind == "backhit" {
 					push = 52
 				}
-				d.Position += direction * push * math.Sin(math.Pi*min(1, (t-.56)/(b.Duration-.56)))
+				d.Position += direction * push * math.Sin(math.Pi/2*min(1, (t-.56)/.35))
 			}
 			if b.Kind != "dodge" && b.Kind != "critical-dodge" {
 				s.Impact = max(0, 1-(t-.56)/.28)

@@ -377,7 +377,7 @@ func (e *Engine) execute(c Command) error {
 	if u == nil || u.HP <= 0 {
 		return fail("InvalidActor")
 	}
-	if u.Faction != e.state.Turn {
+	if !u.ActsIn(e.state.Turn) {
 		return fail("NotYourTurn")
 	}
 	if u.Done {
@@ -533,7 +533,7 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 		id = def + "#" + strconv.Itoa(n)
 	}
 	c := e.addCharacter(id, def)
-	if side == "enemy" || d.Template {
+	if side == "enemy" || d.Template || sp.AI {
 		c.Temp = true
 		c.Placement = true
 	}
@@ -561,7 +561,7 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	if sp.Faction != "" {
 		color = sp.Faction
 	}
-	u := Unit{ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
+	u := Unit{AI: sp.AI, Guard: sp.Guard, ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
 	if side == "enemy" {
 		for item, n := range e.data.Rules.EnemyStock {
 			u.Items[item] = n
@@ -576,6 +576,9 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	if sp.MP != nil {
 		u.MP = min(st.MaxMP, max(0, *sp.MP))
 	}
+	if k := int(e.fx(&u, content.FxTurnDefense)); k > 0 {
+		e.applyStatus(&u, "defense", e.data.Rules.BuffTurns, k)
+	}
 	e.unitIDs[id] = e.units.NewEntity(&u)
 	return e.unit(id)
 }
@@ -583,6 +586,7 @@ func (e *Engine) settle() {
 	if e.state.Phase != "battle" {
 		return
 	}
+	e.battleEvents()
 	stage := e.data.Stages[e.state.Stage]
 	alive := map[string]bool{}
 	loss := false
