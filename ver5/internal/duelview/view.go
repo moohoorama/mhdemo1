@@ -74,9 +74,10 @@ func (g *View) Cover() float64 {
 
 func smooth(p float64) float64 { return p * p * (3 - 2*p) }
 
-// DrawOver composites the duel onto an already drawn battle screen by Cover.
+// DrawOver composites the duel onto an already drawn battle screen of the same size as dst.
 func (g *View) DrawOver(dst, battle *ebiten.Image) {
 	c := g.Cover()
+	s := float64(dst.Bounds().Dx()) / width
 	cx, cy := float64(width)/2, float64(height)/2
 	ax, ay := cx, cy
 	if g.Anchor != nil {
@@ -89,17 +90,19 @@ func (g *View) DrawOver(dst, battle *ebiten.Image) {
 	// The battle swells as the duel opens out of it.
 	k := 1 + .12*c
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(-ax, -ay)
+	op.GeoM.Translate(-ax*s, -ay*s)
 	op.GeoM.Scale(k, k)
-	op.GeoM.Translate(ax, ay)
+	op.GeoM.Translate(ax*s, ay*s)
 	dst.DrawImage(battle, op)
-	k = .06 + .94*c
+	// Zoom is geometric so growth reads as steady rather than bursting at the end.
+	k = math.Pow(.06, 1-c)
 	px, py := ax+(cx-ax)*c, ay+(cy-ay)*c
 	op = &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-cx, -cy)
-	op.GeoM.Scale(k, k)
-	op.GeoM.Translate(px, py)
+	op.GeoM.Scale(k*s, k*s)
+	op.GeoM.Translate(px*s, py*s)
 	op.ColorScale.ScaleAlpha(float32(c))
+	op.Filter = ebiten.FilterLinear
 	dst.DrawImage(g.canvas, op)
 }
 

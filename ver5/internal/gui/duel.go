@@ -89,8 +89,8 @@ func (g *Game) updateDuel() {
 func (g *Game) drawDuel(dst *ebiten.Image) {
 	v := g.player.Duel
 	if v.Cover() < 1 {
-		if g.duelBattle == nil {
-			g.duelBattle = ebiten.NewImage(Width, Height)
+		if b := dst.Bounds(); g.duelBattle == nil || g.duelBattle.Bounds().Dx() != b.Dx() || g.duelBattle.Bounds().Dy() != b.Dy() {
+			g.duelBattle = ebiten.NewImage(b.Dx(), b.Dy())
 		}
 		g.duelBattle.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
 		g.play(g.duelBattle)

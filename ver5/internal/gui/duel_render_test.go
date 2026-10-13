@@ -259,6 +259,14 @@ func (p *duelRenderTest) Draw(dst *ebiten.Image) {
 			g.Draw(dst)
 			p.save(dst, fmt.Sprintf("%s-%d-transition-%d.png", p.cases[p.index].duel.ID, p.index, i))
 		}
+		// Retina windows render at device resolution; the transition must scale with it.
+		scale = 2
+		large := ebiten.NewImage(Width*2, Height*2)
+		view.Clock = .4
+		g.Draw(large)
+		p.save(large, fmt.Sprintf("%s-%d-transition-2x.png", p.cases[p.index].duel.ID, p.index))
+		large.Deallocate()
+		scale = 1
 		view.Clock = duelview.TransitionTime
 		g.Draw(dst)
 	}
