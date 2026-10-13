@@ -30,7 +30,8 @@ func (g *Game) duelView(e core.Event) *duelview.View {
 		}
 	}
 	if a, t := g.unitView(g.player.final, e.Actor), g.unitView(g.player.final, e.Target); a != nil && t != nil && g.field != nil {
-		v.Floor, v.Staged = g.floorImage(t.X, t.Y), true
+		v.Staged = true
+		v.Tint = g.groundTint()
 		ax, ay := g.field.Center(float64(a.X), float64(a.Y))
 		tx, ty := g.field.Center(float64(t.X), float64(t.Y))
 		v.Focus = [2]float64{(ax + tx) / 2, (ay + ty) / 2}
@@ -117,24 +118,21 @@ func (g *Game) drawDuel(dst *ebiten.Image) {
 	}
 }
 
-// floorImage is the battle map's grass pattern at the duel's pixel scale for a defender on
-// open ground, nil (the duel's own dirt arena) on water. Structures and props are left out.
-func (g *Game) floorImage(u, v int) *ebiten.Image {
-	if g.field.small(2*u, 2*v) == '~' {
-		return nil
+// groundTint is the average colour of the battle map's ground pattern; structures, props
+// and water are ignored.
+func (g *Game) groundTint() color.NRGBA {
+	tile := g.assets.pattern()
+	b := tile.Bounds()
+	pix := make([]byte, 4*b.Dx()*b.Dy())
+	tile.ReadPixels(pix)
+	var r, gr, bl, a float64
+	for i := 0; i < len(pix); i += 4 {
+		r, gr, bl, a = r+float64(pix[i]), gr+float64(pix[i+1]), bl+float64(pix[i+2]), a+float64(pix[i+3])
 	}
-	floor := ebiten.NewImage(Width, Height)
-	pattern := g.assets.pattern()
-	w, h := float64(pattern.Bounds().Dx())*3, float64(pattern.Bounds().Dy())*3
-	for y := 0.0; y < Height; y += h {
-		for x := 0.0; x < Width; x += w {
-			op := &ebiten.DrawImageOptions{}
-			op.GeoM.Scale(3, 3)
-			op.GeoM.Translate(x, y)
-			floor.DrawImage(pattern, op)
-		}
+	if a == 0 {
+		return color.NRGBA{}
 	}
-	return floor
+	return color.NRGBA{uint8(r / a * 255), uint8(gr / a * 255), uint8(bl / a * 255), 255}
 }
 
 func (g *Game) duelFighter(id, classID, faction string) duelview.Fighter {

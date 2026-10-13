@@ -50,8 +50,8 @@ type View struct {
 	Story    duel.Story
 	// Axis is the direction from the ally to the enemy on screen: SE (default), SW, NE or NW.
 	Axis string
-	// Floor is the arena ground, one full-screen image; nil draws the default dirt.
-	Floor *ebiten.Image
+	// Tint is the arena's ground colour; the zero value keeps the default dirt.
+	Tint color.NRGBA
 	// Staged views follow the battle transition; others (the gallery) always show everything.
 	Staged bool
 	// Focus is where the duelists meet, in battle canvas coordinates, for the camera.
@@ -133,6 +133,13 @@ func (g *View) Compose(dst, battle, battleUI *ebiten.Image) {
 	op.ColorScale.ScaleAlpha(float32(smooth(zoom)))
 	dst.DrawImage(g.canvas, op)
 }
+
+func shade(c color.NRGBA, k float64) color.NRGBA {
+	f := func(v uint8) uint8 { return uint8(min(255, float64(v)*k)) }
+	return color.NRGBA{f(c.R), f(c.G), f(c.B), 255}
+}
+
+func lerp8(a, b uint8, k float64) uint8 { return uint8(float64(a) + (float64(b)-float64(a))*k) }
 
 func box(dst *ebiten.Image, x, y, w, h float64, c color.Color) {
 	vector.FillRect(dst, float32(x), float32(y), float32(w), float32(h), c, false)
@@ -261,21 +268,22 @@ func (g *View) render(dst *ebiten.Image, ui float64) {
 func (g *View) draw(dst *ebiten.Image) duel.State {
 	s := g.Story.Sample(g.Time)
 	dst.Fill(color.NRGBA{21, 27, 30, 255})
-	// A subdued dirt arena keeps existing pixel art and ink-wash portraits legible.
+	// A subdued ground keeps existing pixel art and ink-wash portraits legible.
+	far, near := color.NRGBA{74, 74, 63, 255}, color.NRGBA{93, 86, 71, 255}
+	speck := color.NRGBA{126, 118, 91, 55}
+	if g.Tint.A != 0 {
+		far, near = shade(g.Tint, .8), g.Tint
+		speck = shade(g.Tint, 1.35)
+		speck.A = 55
+	}
 	for y := 0; y < height; y += 4 {
 		k := max(0, min(1, float64(y-160)/550))
-		box(dst, 0, float64(y), width, 4, color.NRGBA{uint8(74 + 19*k), uint8(74 + 12*k), uint8(63 + 8*k), 255})
-	}
-	if g.Floor != nil {
-		dst.DrawImage(g.Floor, nil)
+		box(dst, 0, float64(y), width, 4, color.NRGBA{lerp8(far.R, near.R, k), lerp8(far.G, near.G, k), lerp8(far.B, near.B, k), 255})
 	}
 	for i := range 160 {
-		if g.Floor != nil {
-			break
-		}
 		x := float64((i * 197) % 1280)
 		y := float64((i * 113) % height)
-		line(dst, x, y, x+7, y+2, 1, color.NRGBA{126, 118, 91, 55})
+		line(dst, x, y, x+7, y+2, 1, speck)
 	}
 	var units []unitDraw
 	for side := range 2 {
