@@ -40,7 +40,7 @@
   "assist": {
    "Name": "협동",
    "Desc": "자기 차례에 공격범위 안의 적이 아군의 물리 공격을 받으면 같은 대상을 50% 피해로 추가 공격.",
-   "Cost": 700,
+   "Cost": 1000,
    "Effects": {
     "assist": 0.5
    }
@@ -80,7 +80,7 @@
   "siegecraft": {
    "Name": "공성",
    "Desc": "대상의 지형 방어 보정을 무시한다.",
-   "Cost": 700,
+   "Cost": 1500,
    "Effects": {
     "ignore_terrain": 1
    }
@@ -163,7 +163,7 @@
   "ironwall": {
    "Name": "철벽",
    "Desc": "한 번의 피격에서 최대 병력 10%를 넘는 피해는 절반만 받는다.",
-   "Cost": 500,
+   "Cost": 1200,
    "Effects": {
     "bulwark": 0.1
    }
@@ -203,15 +203,15 @@
   "castle_defense": {
    "Name": "수성",
    "Desc": "성에 있으면 매 턴 방어력 버프를 건다.",
-   "Cost": 700,
+   "Cost": 1000,
    "Effects": {
     "fortify": 20
    }
   },
   "dash": {
-   "Name": "질주",
+   "Name": "기마술",
    "Desc": "이동력 +1.",
-   "Cost": 300,
+   "Cost": 1000,
    "Effects": {
     "move": 1
    }
@@ -219,7 +219,7 @@
   "gale": {
    "Name": "질풍",
    "Desc": "이동력 +2(질주와 합쳐 +3).",
-   "Cost": 700,
+   "Cost": 1200,
    "Requires": [
     "dash"
    ],
@@ -238,7 +238,7 @@
   "charge": {
    "Name": "돌격",
    "Desc": "적의 견제(ZOC)에 막히지 않고 이동한다.",
-   "Cost": 400,
+   "Cost": 1200,
    "Effects": {
     "ignore_zoc": 1
    }
@@ -418,38 +418,38 @@
   },
   "fire": {
    "Name": "화계",
-   "Desc": "화염계 책략을 쓴다. 병종·장비가 주는 특성.",
-   "Cost": 0
+   "Desc": "화염계 책략을 쓴다.",
+   "Cost": 700
   },
   "water": {
    "Name": "수계",
-   "Desc": "수계 책략을 쓴다. 병종·장비가 주는 특성.",
-   "Cost": 0
+   "Desc": "수계 책략을 쓴다.",
+   "Cost": 600
   },
   "earth": {
    "Name": "지계",
-   "Desc": "토지계 책략을 쓴다. 병종·장비가 주는 특성.",
-   "Cost": 0
+   "Desc": "토지계 책략을 쓴다.",
+   "Cost": 600
   },
   "relief": {
    "Name": "구휼",
-   "Desc": "회복계 책략을 쓴다. 병종·장비가 주는 특성.",
-   "Cost": 0
+   "Desc": "회복계 책략을 쓴다.",
+   "Cost": 500
   },
   "exhort": {
    "Name": "독려",
-   "Desc": "버프계 책략을 쓴다. 병종·장비가 주는 특성.",
-   "Cost": 0
+   "Desc": "버프계 책략을 쓴다.",
+   "Cost": 1200
   },
   "hinder": {
    "Name": "견제",
-   "Desc": "디버프계 책략을 쓴다. 병종·장비가 주는 특성.",
-   "Cost": 0
+   "Desc": "디버프계 책략을 쓴다.",
+   "Cost": 600
   },
   "stratagem": {
    "Name": "계략",
-   "Desc": "방해계 책략을 쓴다. 병종·장비가 주는 특성.",
-   "Cost": 0
+   "Desc": "방해계 책략을 쓴다.",
+   "Cost": 700
   },
   "fire_boost": {
    "Name": "화계강화",

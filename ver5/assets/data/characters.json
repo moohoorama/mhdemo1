@@ -196,6 +196,7 @@
    ],
    "Level": 2,
    "Traits": [
+    "fire",
     "exhort"
    ],
    "Learn": [],
@@ -353,6 +354,7 @@
    ],
    "Level": 7,
    "Traits": [
+    "fire",
     "stratagem"
    ],
    "Learn": [],
@@ -418,7 +420,9 @@
     92
    ],
    "Level": 3,
-   "Traits": [],
+   "Traits": [
+    "fire"
+   ],
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
@@ -679,7 +683,10 @@
     77
    ],
    "Level": 9,
-   "Traits": [],
+   "Traits": [
+    "fire",
+    "water"
+   ],
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
@@ -898,7 +905,9 @@
    ],
    "Level": 4,
    "Template": true,
-   "Traits": [],
+   "Traits": [
+    "fire"
+   ],
    "Learn": [],
    "Equipment": [],
    "Look": {}

@@ -53,7 +53,7 @@ func (d *Data) ValidateSpawn(s Spawn) error {
 	if s.Traits != nil {
 		base = *s.Traits
 	}
-	for _, id := range append(append([]string{}, base...), d.Classes[class].Grants...) {
+	for _, id := range base {
 		effective[id] = true
 	}
 	equipment := c.Equipment

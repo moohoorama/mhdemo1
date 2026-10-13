@@ -95,7 +95,6 @@ func (d *Data) Validate() error {
 			}
 		}
 	}
-	granted := map[string]bool{}
 	for id, c := range d.Classes {
 		if _, ok := d.Terrain[c.Terrain]; !ok || !in(c.Attack, AttackMelee, AttackRanged) || c.Move < 1 || c.Range < 1 || c.HPFactor < 1 ||
 			c.Tier < 0 || c.Tier >= len(r.PromoteLevels)+1 || c.Name == "" {
@@ -112,12 +111,6 @@ func (d *Data) Validate() error {
 				return fmt.Errorf("class %s: unknown skill %s", id, s)
 			}
 		}
-		for _, t := range c.Grants {
-			if _, ok := d.Traits[t]; !ok {
-				return fmt.Errorf("class %s: unknown trait %s", id, t)
-			}
-			granted[t] = true
-		}
 		for _, t := range c.Pool {
 			if d.Traits[t].Cost < 1 {
 				return fmt.Errorf("class %s: pool trait %s is not learnable", id, t)
@@ -132,7 +125,6 @@ func (d *Data) Validate() error {
 			if _, ok := d.Traits[t]; !ok {
 				return fmt.Errorf("equipment %s: unknown trait %s", id, t)
 			}
-			granted[t] = true
 		}
 		for _, t := range e.Learn {
 			if d.Traits[t].Cost < 1 {
@@ -143,11 +135,6 @@ func (d *Data) Validate() error {
 			if _, ok := d.Skills[s]; !ok {
 				return fmt.Errorf("equipment %s: unknown skill %s", id, s)
 			}
-		}
-	}
-	for t := range granted {
-		if d.Traits[t].Cost > 0 {
-			return fmt.Errorf("trait %s is learnable and also granted", t)
 		}
 	}
 	for id, it := range d.Items {

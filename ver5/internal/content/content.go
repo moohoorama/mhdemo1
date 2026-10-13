@@ -83,7 +83,7 @@ type Class struct {
 	Move, Range, MinRange, HPFactor int    // MinRange: the nearest cell a ranged class can attack
 	Bonus                           [6]float64
 	MPBase, RecoveryBase            int
-	Grants, Skills, Pool, Tags      []string
+	Skills, Pool, Tags              []string
 	Promotes                        []string
 	Tier                            int
 	Sprite                          string

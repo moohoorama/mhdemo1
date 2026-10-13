@@ -70,7 +70,11 @@
    ],
    "Look": {
     "Faction": "blue"
-   }
+   },
+   "Traits": [
+    "fire",
+    "mercy"
+   ]
   },
   "boss": {
    "Name": "Boss",

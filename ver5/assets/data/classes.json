@@ -23,9 +23,7 @@
    "Tier": 0,
    "Sprite": "infantry",
    "Pool": [
-    "counter_art",
-    "composure",
-    "rough_terrain"
+    "fire"
    ],
    "Promotes": [
     "heavy_infantry"
@@ -54,9 +52,7 @@
    "Tier": 1,
    "Sprite": "infantry",
    "Pool": [
-    "ironwall",
-    "missile_immunity",
-    "sweep_art"
+    "assist"
    ],
    "Promotes": [
     "guards"
@@ -86,8 +82,8 @@
    "Sprite": "infantry",
    "Pool": [
     "castle_defense",
-    "diamond",
-    "vitality"
+    "ironwall",
+    "siegecraft"
    ]
   },
   "light_cavalry": {
@@ -113,9 +109,7 @@
    "Tier": 0,
    "Sprite": "cavalry",
    "Pool": [
-    "dash",
-    "white_horse",
-    "charge"
+    "dash"
    ],
    "Tags": [
     "mounted",
@@ -147,11 +141,7 @@
    "RecoveryBase": 2,
    "Tier": 1,
    "Sprite": "cavalry",
-   "Pool": [
-    "gale",
-    "sweep_art",
-    "ironwall"
-   ],
+   "Pool": [],
    "Tags": [
     "mounted"
    ],
@@ -182,9 +172,8 @@
    "Tier": 2,
    "Sprite": "cavalry",
    "Pool": [
-    "deadly",
-    "siegecraft",
-    "diamond"
+    "gale",
+    "charge"
    ],
    "Tags": [
     "mounted"
@@ -214,9 +203,7 @@
    "Sprite": "archer",
    "MinRange": 2,
    "Pool": [
-    "venom",
-    "far_sight",
-    "rough_terrain"
+    "relief"
    ],
    "Promotes": [
     "crossbow"
@@ -246,9 +233,7 @@
    "Sprite": "archer",
    "MinRange": 2,
    "Pool": [
-    "pierce",
-    "return_fire",
-    "divine_archer"
+    "water"
    ],
    "Promotes": [
     "repeating_crossbow"
@@ -278,9 +263,7 @@
    "Sprite": "archer",
    "MinRange": 2,
    "Pool": [
-    "volley",
-    "cross_strike",
-    "drain"
+    "exhort"
    ]
   },
   "scholar": {
@@ -305,12 +288,10 @@
    "RecoveryBase": 5,
    "Tier": 0,
    "Sprite": "strategist",
-   "Grants": [
+   "Pool": [
     "fire",
     "water",
-    "relief"
-   ],
-   "Pool": [
+    "relief",
     "fire_boost",
     "water_boost",
     "focus"
@@ -342,14 +323,10 @@
    "RecoveryBase": 5,
    "Tier": 1,
    "Sprite": "strategist",
-   "Grants": [
-    "fire",
-    "water",
+   "Pool": [
     "earth",
     "hinder",
-    "stratagem"
-   ],
-   "Pool": [
+    "stratagem",
     "fire_spread",
     "water_spread",
     "earth_boost",
@@ -382,13 +359,6 @@
    "RecoveryBase": 5,
    "Tier": 2,
    "Sprite": "strategist",
-   "Grants": [
-    "fire",
-    "water",
-    "earth",
-    "hinder",
-    "stratagem"
-   ],
    "Pool": [
     "earth_spread",
     "hinder_boost",
@@ -419,11 +389,8 @@
    "RecoveryBase": 5,
    "Tier": 1,
    "Sprite": "strategist",
-   "Grants": [
-    "relief",
-    "exhort"
-   ],
    "Pool": [
+    "exhort",
     "relief_boost",
     "relief_spread",
     "medicine",
@@ -455,10 +422,6 @@
    "RecoveryBase": 5,
    "Tier": 2,
    "Sprite": "strategist",
-   "Grants": [
-    "relief",
-    "exhort"
-   ],
    "Pool": [
     "exhort_boost",
     "eight_formation",

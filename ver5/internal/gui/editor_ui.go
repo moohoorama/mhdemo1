@@ -421,7 +421,7 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 			if class == "" {
 				class = data.Characters[s.Character].Class
 			}
-			given := append([]string{}, data.Classes[class].Grants...)
+			var given []string
 			eq := data.Characters[s.Character].Equipment
 			if s.Equipment != nil {
 				eq = *s.Equipment

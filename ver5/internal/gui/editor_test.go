@@ -63,7 +63,7 @@ func TestEditorTraitChoicesBelongToOfficer(t *testing.T) {
 		}
 		base := content.Spawn{Character: id}
 		traits := g.editorPreview(base).Traits
-		owned := append(append([]string{}, c.Traits...), d.Classes[c.Class].Grants...)
+		owned := append([]string{}, c.Traits...)
 		for _, eq := range c.Equipment {
 			owned = append(owned, d.Equipment[eq].Traits...)
 		}

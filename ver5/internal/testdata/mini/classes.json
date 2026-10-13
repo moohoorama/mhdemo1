@@ -28,8 +28,7 @@
     "stance_art",
     "sweep_art",
     "bulwark_t"
-   ],
-   "Grants": []
+   ]
   },
   "guard": {
    "Terrain": "foot",
@@ -55,8 +54,7 @@
    "Promotes": [],
    "Pool": [
     "lucky_t"
-   ],
-   "Grants": []
+   ]
   },
   "archer": {
    "Terrain": "bow",
@@ -81,8 +79,7 @@
    "MinRange": 2,
    "Pool": [
     "far_t"
-   ],
-   "Grants": []
+   ]
   },
   "rider": {
    "Terrain": "foot",
@@ -129,10 +126,6 @@
    "RecoveryBase": 2,
    "Sprite": "strategist",
    "Name": "Mage",
-   "Grants": [
-    "fire",
-    "mercy"
-   ],
    "Pool": [
     "fire_up"
    ]
