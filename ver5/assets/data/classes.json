@@ -52,6 +52,7 @@
    "Tier": 1,
    "Sprite": "infantry",
    "Pool": [
+    "deputy_appoint",
     "assist"
    ],
    "Promotes": [
@@ -141,7 +142,9 @@
    "RecoveryBase": 2,
    "Tier": 1,
    "Sprite": "cavalry",
-   "Pool": [],
+   "Pool": [
+    "deputy_appoint"
+   ],
    "Tags": [
     "mounted"
    ],
@@ -233,6 +236,7 @@
    "Sprite": "archer",
    "MinRange": 2,
    "Pool": [
+    "deputy_appoint",
     "water"
    ],
    "Promotes": [
@@ -324,6 +328,7 @@
    "Tier": 1,
    "Sprite": "strategist",
    "Pool": [
+    "deputy_appoint",
     "earth",
     "hinder",
     "stratagem",
@@ -390,6 +395,7 @@
    "Tier": 1,
    "Sprite": "strategist",
    "Pool": [
+    "deputy_appoint",
     "exhort",
     "relief_boost",
     "relief_spread",

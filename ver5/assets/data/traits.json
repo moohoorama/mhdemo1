@@ -571,6 +571,14 @@
    "Effects": {
     "blend_bonus": 1
    }
+  },
+  "deputy_appoint": {
+   "Name": "부관임명",
+   "Desc": "부관을 둘 수 있다. 부관의 능력치와 특성이 주장을 돕는다.",
+   "Cost": 800,
+   "Effects": {
+    "deputy_appoint": 1
+   }
   }
  }
 }

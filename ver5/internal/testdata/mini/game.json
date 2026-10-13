@@ -65,7 +65,6 @@
   "DeputyShare": 85,
   "DeputyWeight": 2,
   "DeputyDivisor": 300,
-  "DeputyMinTier": 1,
   "PromoteLevels": [
    15,
    30

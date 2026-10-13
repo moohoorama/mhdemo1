@@ -262,7 +262,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 			continue
 		}
 		q := e.char(o.Deputy)
-		if o.Dead || !e.playable(e.char(o.ID)) || d.Classes[o.Class].Tier < R.DeputyMinTier || q == nil || !e.playable(q) || e.def(q).Lord || q.ID == o.ID || q.Dead || q.Deputy != "" || deputies[q.ID] || deploy[q.ID] || len(q.Equipment) > 0 {
+		if o.Dead || !e.playable(e.char(o.ID)) || e.fxOf(&o, content.FxDeputyAppoint) == 0 || q == nil || !e.playable(q) || e.def(q).Lord || q.ID == o.ID || q.Dead || q.Deputy != "" || deputies[q.ID] || deploy[q.ID] || len(q.Equipment) > 0 {
 			return nil, fail("CorruptDeputy")
 		}
 		deputies[q.ID] = true

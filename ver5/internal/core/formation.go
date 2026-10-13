@@ -13,6 +13,12 @@ func (e *Engine) isDeputy(id string) bool {
 	}
 	return false
 }
+
+// CanDeputize reports whether the character may name a deputy.
+func (e *Engine) CanDeputize(id string) bool {
+	o := e.char(id)
+	return o != nil && e.fxOf(o, content.FxDeputyAppoint) != 0
+}
 func (e *Engine) assignDeputy(c Command) error {
 	o := e.char(c.Actor)
 	if !e.playable(o) || o.Dead || e.isDeputy(o.ID) {
@@ -23,7 +29,7 @@ func (e *Engine) assignDeputy(c Command) error {
 		return nil
 	}
 	d := e.char(c.Target)
-	if e.class(o).Tier < e.data.Rules.DeputyMinTier {
+	if !e.CanDeputize(o.ID) {
 		return fail("DeputyUnavailable")
 	}
 	if !e.playable(d) || d.ID == o.ID || e.def(d).Lord || d.Dead || d.Deputy != "" || e.isDeputy(d.ID) {

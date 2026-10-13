@@ -280,7 +280,7 @@ func (g *Game) officerDetail(dst *ebiten.Image, o core.Observation, r image.Rect
 	}
 	g.label(dst, wrap("습득 특성  "+traits, 40), x, ey+8, 13, muted)
 	var deputy func()
-	if !of.Dead {
+	if !of.Dead && g.S.Engine.CanDeputize(of.ID) {
 		deputy = func() { g.openOverlay("deputy") }
 	}
 	g.btn(dst, image.Rect(r.Min.X, r.Max.Y-44, r.Min.X+200, r.Max.Y-8), "장비 변경", func() { g.openOverlay("equipment") })

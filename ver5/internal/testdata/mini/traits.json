@@ -80,6 +80,15 @@
     "crit_vs_weaker": 1
    }
   },
+  "deputy_t": {
+   "Name": "Appoint",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": [],
+   "Effects": {
+    "deputy_appoint": 1
+   }
+  },
   "blend_t": {
    "Name": "Blend",
    "Desc": "",

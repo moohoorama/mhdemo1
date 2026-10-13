@@ -656,3 +656,23 @@ func TestBlendBonusRaisesTheLowerClassBonus(t *testing.T) {
 		}
 	}
 }
+
+func TestDeputyNeedsTheAppointTrait(t *testing.T) {
+	e, _, _ := arena(t)
+	sage(e, 4, 6)
+	cmd := Command{Kind: "deputy", Actor: "hero", Target: "sage"}
+	if err := e.assignDeputy(cmd); err == nil {
+		t.Fatal("a deputy was named without the trait")
+	}
+	with(e, "hero", "deputy_t")
+	if err := e.assignDeputy(cmd); err != nil {
+		t.Fatal(err)
+	}
+	if e.char("hero").Deputy != "sage" {
+		t.Fatalf("deputy %q", e.char("hero").Deputy)
+	}
+	e.char("hero").Class = "guard"
+	if e.fxOf(e.char("hero"), content.FxDeputyAppoint) == 0 {
+		t.Fatal("the trait is permanent across class changes")
+	}
+}

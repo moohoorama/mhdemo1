@@ -50,7 +50,6 @@ type Rules struct {
 	DeputyWeight          int   // deputy attribute blend: ratio = (own charm*DeputyWeight + deputy charm) / DeputyDivisor
 	DeputyDivisor         int   // also the percent scale of charm
 	PromoteLevels         []int // minimum level to promote from tier i
-	DeputyMinTier         int   // lowest class tier that may take a deputy
 	EnemyStock            map[string]int
 	EdgeTile              string // what lies beyond the map's edge
 	AuraHeal              int
