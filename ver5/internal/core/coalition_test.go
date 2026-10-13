@@ -139,7 +139,7 @@ func TestEquipmentTraitsWorkForEitherFaction(t *testing.T) {
 			sp := content.Spawn{Character: "troop_footman", Level: 1}
 			fallen := e.spawn(sp.Character, sp.Character, foeSide, 11, 3, sp)
 			fallen.HP = 0
-			other := e.spawn(sp.Character, sp.Character, foeSide, 12, 3, sp)
+			other := e.spawn(sp.Character, sp.Character, foeSide, 10, 4, sp)
 			other.HP = 1
 			friendly := e.spawn(sp.Character, sp.Character, side, 11, 4, sp)
 			farther := e.spawn(sp.Character, sp.Character, foeSide, 13, 3, sp)

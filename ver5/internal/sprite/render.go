@@ -54,7 +54,7 @@ func (s *Sheet) Render(p Palette) *image.RGBA {
 	return img
 }
 
-// Shadow constants, as in ver3/shadows.py.
+// Shadow constants, as in tools/spritebuild/shadows.py.
 const (
 	grow, core, halo, blur = 1, 130, 110, 3
 	shadowPad              = grow + 2*blur + 1

@@ -11,7 +11,6 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 
 	"srpg/internal/content"
 	"srpg/internal/core"
@@ -167,9 +166,9 @@ func (e *mapEditor) cornerAt(r mapedit.Rect, i int) (float64, float64) {
 func (g *Game) updateEditor() error {
 	e := g.editor
 	g.clockMS += 1000.0 / 60
-	pressed := inpututil.IsKeyJustPressed
+	pressed := keyJustPressed
 	x, y := cursorPos()
-	left := inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft)
+	left := mouseJustPressed(ebiten.MouseButtonLeft)
 	if pressed(ebiten.KeyF12) {
 		g.capture = true
 	}
@@ -263,7 +262,7 @@ func (g *Game) updateEditor() error {
 		g.editorRebuild(false)
 	}
 	if e.resizing {
-		if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+		if mousePressed(ebiten.MouseButtonLeft) {
 			px, py := e.canvas(x, y)
 			a, b := (px/K-e.field.OriginX)/16, (py/K-e.field.OriginY)/8
 			u, v := int(math.Round((a+b)/2))+e.doc.Play.X, int(math.Round((b-a)/2))+e.doc.Play.Y
@@ -323,14 +322,14 @@ func (g *Game) updateEditor() error {
 			}
 		}
 	}
-	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonRight) && image.Pt(x, y).In(editorViewport) {
+	if mouseJustPressed(ebiten.MouseButtonRight) && image.Pt(x, y).In(editorViewport) {
 		e.rightPending = true
 		e.rightMoved = false
 		e.rightStart = image.Pt(x, y)
 		e.rightLast = e.rightStart
 	}
 	if e.rightPending {
-		if ebiten.IsMouseButtonPressed(ebiten.MouseButtonRight) {
+		if mousePressed(ebiten.MouseButtonRight) {
 			if e.rightMoved || abs(x-e.rightStart.X)+abs(y-e.rightStart.Y) > 4 {
 				e.rightMoved = true
 				e.cx -= float64(x-e.rightLast.X) / e.zoom
@@ -356,7 +355,7 @@ func (g *Game) updateEditor() error {
 		}
 		return nil
 	}
-	pan := ebiten.IsMouseButtonPressed(ebiten.MouseButtonMiddle) || ebiten.IsKeyPressed(ebiten.KeySpace) && ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft)
+	pan := mousePressed(ebiten.MouseButtonMiddle) || ebiten.IsKeyPressed(ebiten.KeySpace) && mousePressed(ebiten.MouseButtonLeft)
 	if pan {
 		if e.pan {
 			e.cx -= float64(x-e.lastX) / e.zoom
@@ -368,7 +367,7 @@ func (g *Game) updateEditor() error {
 		return nil
 	}
 	e.pan = false
-	if image.Pt(x, y).In(editorViewport) && ebiten.IsFocused() && len(g.Shots) == 0 {
+	if !pointer.used && image.Pt(x, y).In(editorViewport) && ebiten.IsFocused() && len(g.Shots) == 0 {
 		dx, dy := editorEdgeScroll(image.Pt(x, y), editorViewport)
 		e.cx += float64(dx) * 8 / e.zoom
 		e.cy += float64(dy) * 8 / e.zoom
@@ -380,7 +379,7 @@ func (g *Game) updateEditor() error {
 			e.zoom = math.Max(.1, math.Min(3, e.zoom*math.Pow(1.15, wheel)))
 		}
 	}
-	held := ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft)
+	held := mousePressed(ebiten.MouseButtonLeft)
 	if !held {
 		if e.stroke {
 			e.stroke = false

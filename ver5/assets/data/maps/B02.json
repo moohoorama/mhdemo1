@@ -970,6 +970,7 @@
   "Width": 0,
   "Height": 0,
   "Limit": 4,
+  "TurnLimit": 30,
   "Threshold": 0,
   "Tiles": null,
   "Allies": [

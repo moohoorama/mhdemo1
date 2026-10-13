@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"srpg/internal/content"
 	"srpg/internal/core"
 )
@@ -40,12 +39,12 @@ func (g *Game) updateBattleLog() bool {
 	x, y := cursorPos()
 	r := g.battleLogRect()
 	inside := image.Pt(x, y).In(r)
-	if inside && y < r.Min.Y+28 && inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) && !g.dragging {
+	if inside && y < r.Min.Y+28 && mouseJustPressed(ebiten.MouseButtonLeft) && !g.dragging {
 		g.logDragging = true
 		g.logDragOffset = y - r.Min.Y
 	}
 	if g.logDragging {
-		if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+		if mousePressed(ebiten.MouseButtonLeft) {
 			g.logHeight = max(80, min(440, r.Max.Y-y+g.logDragOffset))
 		} else {
 			g.logDragging = false
@@ -56,7 +55,7 @@ func (g *Game) updateBattleLog() bool {
 	rows := (r.Dy() - 40) / logLineHeight
 	maxScroll := max(0, len(lines)-rows)
 	track, thumb := logScrollbar(r, len(lines), rows, g.logScroll)
-	if inside && maxScroll > 0 && image.Pt(x, y).In(track) && inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) && !g.dragging {
+	if inside && maxScroll > 0 && image.Pt(x, y).In(track) && mouseJustPressed(ebiten.MouseButtonLeft) && !g.dragging {
 		g.logThumbDragging = true
 		g.logThumbOffset = thumb.Dy() / 2
 		if image.Pt(x, y).In(thumb) {
@@ -64,7 +63,7 @@ func (g *Game) updateBattleLog() bool {
 		}
 	}
 	if g.logThumbDragging {
-		if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+		if mousePressed(ebiten.MouseButtonLeft) {
 			g.logScroll = logScrollAt(y-g.logThumbOffset, track, thumb.Dy(), maxScroll)
 		} else {
 			g.logThumbDragging = false

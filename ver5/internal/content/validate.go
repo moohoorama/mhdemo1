@@ -253,7 +253,7 @@ func (d *Data) Validate() error {
 	}
 	duelIDs, stageIDs := map[string]bool{}, map[string]bool{}
 	for _, s := range d.Stages {
-		if stageIDs[s.ID] || s.Width < 4 || s.Height < 4 || len(s.Tiles) != s.Height || len(s.Allies) < s.Limit {
+		if stageIDs[s.ID] || s.Width < 4 || s.Height < 4 || len(s.Tiles) != s.Height || len(s.Allies) < s.Limit || s.TurnLimit < 0 {
 			return fmt.Errorf("map %s", s.ID)
 		}
 		stageIDs[s.ID] = true

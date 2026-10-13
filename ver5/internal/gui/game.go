@@ -20,7 +20,6 @@ import (
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
 	"srpg/internal/ai"
 	"srpg/internal/cli"
@@ -453,6 +452,7 @@ func (g *Game) rightClick() {
 }
 
 func (g *Game) Update() error {
+	g.updatePointer()
 	g.ticks++
 	if g.gallery != nil {
 		return g.updateDuelGallery()
@@ -506,7 +506,7 @@ func (g *Game) Update() error {
 	if !logInput {
 		g.camera()
 	}
-	if !logInput && inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+	if !logInput && mouseJustPressed(ebiten.MouseButtonLeft) {
 		g.leftClick()
 	}
 	playing := g.S.Screen == "playing" && g.S.Engine != nil
@@ -544,12 +544,12 @@ func (g *Game) offerEnd(o core.Observation) {
 // cliInput is the debug command line (backquote): CLI syntax, one command.
 func (g *Game) cliInput() {
 	g.entry = string(ebiten.AppendInputChars([]rune(g.entry)))
-	if inpututil.IsKeyJustPressed(ebiten.KeyBackspace) {
+	if keyJustPressed(ebiten.KeyBackspace) {
 		if r := []rune(g.entry); len(r) > 0 {
 			g.entry = string(r[:len(r)-1])
 		}
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+	if keyJustPressed(ebiten.KeyEnter) {
 		c, err := cli.Parse(g.entry)
 		if err != nil {
 			g.toast(err.Error(), bad)
@@ -559,13 +559,13 @@ func (g *Game) cliInput() {
 			g.entry, g.input = "", false
 		}
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+	if keyJustPressed(ebiten.KeyEscape) {
 		g.input = false
 	}
 }
 
 func (g *Game) keys() {
-	pressed := inpututil.IsKeyJustPressed
+	pressed := keyJustPressed
 	if pressed(ebiten.KeyF12) {
 		g.capture = true
 	}

@@ -174,7 +174,7 @@ type BattleEvent struct {
 	Dialogue    [][]Speech `json:",omitempty"`
 }
 type Stage struct {
-	TurnLimit                       int `json:",omitempty"`
+	TurnLimit                       int           `json:",omitempty"`
 	Events                          []BattleEvent `json:",omitempty"`
 	ID, Name, Boss                  string
 	Width, Height, Limit, Threshold int

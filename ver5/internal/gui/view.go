@@ -6,7 +6,6 @@ import (
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"srpg/internal/content"
 	"srpg/internal/core"
 )
@@ -156,7 +155,7 @@ func (g *Game) camera() {
 	x, y := cursorPos()
 	// the window's edge scrolls too (not while a screenshot run drives the game)
 	const edge = 8
-	if len(g.Shots) == 0 && !g.dragging && ebiten.IsFocused() && image.Pt(x, y).In(vp) && !g.overHUD(x, y) {
+	if !pointer.used && len(g.Shots) == 0 && !g.dragging && ebiten.IsFocused() && image.Pt(x, y).In(vp) && !g.overHUD(x, y) {
 		switch {
 		case x < edge:
 			g.camX -= step
@@ -170,11 +169,11 @@ func (g *Game) camera() {
 			g.camY += step
 		}
 	}
-	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonRight) && image.Pt(x, y).In(vp) && !g.overHUD(x, y) && !g.dragging {
+	if mouseJustPressed(ebiten.MouseButtonRight) && image.Pt(x, y).In(vp) && !g.overHUD(x, y) && !g.dragging {
 		g.dragging, g.dragMoved, g.dragButton, g.dragX, g.dragY = true, false, ebiten.MouseButtonRight, x, y
 	}
 	if g.dragging {
-		if !ebiten.IsMouseButtonPressed(g.dragButton) {
+		if !mousePressed(g.dragButton) {
 			g.dragging = false
 			if !g.dragMoved && g.dragButton == ebiten.MouseButtonRight {
 				g.rightClick()

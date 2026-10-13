@@ -5,7 +5,7 @@ and you judge by looking at renders. Never write a script that generates, transf
 is an edit you choose (Edit tool on whole rows). Copying a finished grid file of your own group as a starting point
 is fine; so is copying a head/sword block you drew by hand from the model sheet into the same place.
 
-Read first: `heroes/<id>/profile.md`, `heroes/<id>/model-sheet.md`, `ver4/tools/doteditor/HERO_DESIGN.md` §4.2–4.3,
+Read first: `heroes/<id>/profile.md`, `heroes/<id>/model-sheet.md`, `ver5/tools/doteditor/HERO_DESIGN.md` §4.2–4.3,
 `tools/spritetool/assets/SPRITE_ART_GUIDE.md`, `tools/spritetool/assets/UNIT_ART_GUIDE.md` §2–5.
 
 Rules

@@ -186,6 +186,9 @@ func (g *Game) titled(dst *ebiten.Image, r image.Rectangle, title string) {
 // cursorPos is the mouse position in layout coordinates; screenshot drivers replace it.
 var cursorPos = func() (int, int) {
 	x, y := ebiten.CursorPosition()
+	if pointer.used {
+		x, y = pointer.x, pointer.y
+	}
 	return int(float64(x) / scale), int(float64(y) / scale)
 }
 

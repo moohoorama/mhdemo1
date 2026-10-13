@@ -23,7 +23,6 @@ The standards live in the repo; this skill is only the procedure. Read before ch
 | Translucent effect drawing | `tools/unit3d/effects.py` |
 | Faction hue/chroma/lightness | `tools/unit3d/factions.py` |
 | Unit list, durations, output | `tools/unit3d/build.py` (`UNITS`, `DURATIONS`) |
-| Viewer unit list | `ver2-units-preview.js` (`UNITS`) |
 
 ## Steps
 
@@ -36,11 +35,8 @@ The standards live in the repo; this skill is only the procedure. Read before ch
    - `python3 tools/unit3d/build.py` → `output/ver2-units.png` (8-direction idle review; does not overwrite sheets)
    - `python3 tools/unit3d/build.py --full [--unit KEY]` → sheets + `frames.json` (~1.5 min per unit; run in background)
    - Generation asserts the idle ground row and the working-canvas edge; a failure means a pose or effect overflows.
-4. **Viewer.** `make preview-knights`, open `http://127.0.0.1:8765/ver2-units-preview.html#UNIT/DIR/ACTION/FACTION`.
-   For your own check, serve on another port and screenshot with headless Chrome.
-5. **Record.** Update `ver2-units/README.md` (units, attacks, cells) and, when a rule changed, `UNIT_ART_GUIDE.md`.
-   Then refresh the packaged assets: `python3 ver3/tools/build_assets.py` (one image per unit + `ver3/asset/assets.yaml`);
-   a new unit also needs an entry in `ver3/demo.py` `STATS`/`SIDES` to appear in the demo.
-6. Do not wire sprites into `assets/` or the game, and do not commit, unless the user asks.
+4. **Record.** Update `ver2-units/README.md` (units, attacks, cells) and, when a rule changed, `UNIT_ART_GUIDE.md`.
+   The sheets are reference material for the dot editor (`ver5/tools/doteditor`); the game reads `.spr` files built from its YAML.
+5. Do not wire sprites into `assets/` or the game, and do not commit, unless the user asks.
 
 Codex image generation (`codex-image` skill) is for illustrations, not for these sprites.

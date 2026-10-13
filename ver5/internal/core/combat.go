@@ -235,6 +235,9 @@ func (e *Engine) counterBack(u, v *Unit) {
 	R := e.data.Rules
 	double := forced || float64(e.rand(100)) < e.doubleChance(v, u)
 	for i := 0; i < 1+btoi(double) && u.HP > 0; i++ {
+		if i > 0 {
+			e.emit("double", v.ID, u.ID, 0)
+		}
 		n, _ := e.strike(v, u, e.basic(), blow{share: R.CounterShare, derived: true})
 		e.leech(v, n)
 	}

@@ -75,6 +75,9 @@ func (g *Game) cursor(dst *ebiten.Image) {
 
 func (g *Game) objective(st *coreStage) (win, lose string) {
 	lose = g.lordName() + " 퇴각"
+	if st.turnLimit > 0 {
+		lose += fmt.Sprintf(" / %d턴 초과", st.turnLimit)
+	}
 	if st.goal == "rout" {
 		return "적군 전멸", lose
 	}
@@ -96,13 +99,13 @@ func (g *Game) lordName() string {
 }
 
 type coreStage struct {
-	name, boss, goal string
-	threshold        int
+	name, boss, goal     string
+	threshold, turnLimit int
 }
 
 func (g *Game) stageInfo(o core.Observation) *coreStage {
 	st := g.S.Data.Stages[o.Stage]
-	return &coreStage{st.Name, g.name(st.Boss), st.Goal, st.Threshold}
+	return &coreStage{st.Name, g.name(st.Boss), st.Goal, st.Threshold, st.TurnLimit}
 }
 
 func (g *Game) pending(o core.Observation) (left, total int) {
@@ -133,10 +136,14 @@ func (g *Game) topBar(dst *ebiten.Image, o core.Observation) {
 		turn = bad
 	}
 	x := 24 + g.width(st.name, 18)
-	g.label(dst, fmt.Sprintf("%d턴", o.Round), x, 9, 16, ink)
-	g.label(dst, factionName(o.Turn)+" 진영", x+52, 9, 16, turn)
+	turnText := fmt.Sprintf("%d턴", o.Round)
+	if st.turnLimit > 0 {
+		turnText = fmt.Sprintf("%d/%d턴", o.Round, st.turnLimit)
+	}
+	g.label(dst, turnText, x, 9, 16, ink)
+	g.label(dst, factionName(o.Turn)+" 진영", x+g.width(turnText, 16)+12, 9, 16, turn)
 	win, lose := g.objective(st)
-	g.label(dst, "승리  "+win+"     패배  "+lose, x+150, 11, 14, muted)
+	g.label(dst, "승리  "+win+"     패배  "+lose, x+180, 11, 12, muted)
 	if o.Phase == "battle" {
 		left, total := g.pending(o)
 		g.label(dst, fmt.Sprintf("미행동 %d / %d", left, total), 905, 10, 15, ink)

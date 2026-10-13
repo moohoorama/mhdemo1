@@ -3,27 +3,53 @@
 삼국지 SRPG. ver4를 정리한 판이다. 엔진(`internal/`)에는 인물·병종·아이템·스킬·특성 이름이 하나도 없고,
 게임 내용은 모두 `assets/data/`의 데이터 묶음이다. 스프라이트는 도트 에디터 YAML을 빌드한 `.spr`만 쓰며
 (픽셀별 색 태그), 진영색·옷색·말색은 캐릭터 데이터가 정한다. 특성은 `docs/trait-design.md`의 규칙형 특성이다.
-설계는 [docs/ver5-design.md](docs/ver5-design.md).
 
 ```sh
 cd ver5
 go run ./cmd/srpg-gui                      # 그래픽 (1280×850)
 go run ./cmd/srpg-cli                      # 사람용 CLI, -json 으로 JSON Lines
-go run ./cmd/srpg-sim -seeds 10            # AI 대 AI 캠페인 시뮬레이션
 go test ./... && go vet ./...
 python3 tools/spritebuild/build.py         # tools/doteditor/units/*.yaml → assets/sprites/*.spr
 (cd tools/doteditor && python3 -m http.server)  # 도트 에디터: http://localhost:8000
 ```
 
+## Android APK
+
+Go, Python 3, JDK, Android SDK Platform 33·Build-Tools·NDK를 설치한 뒤 실행한다.
+Android Studio/Gradle은 필요하지 않다. macOS의 기본 SDK 경로는
+`~/Library/Android/sdk`이고 다른 경로는 `--sdk` 또는 `ANDROID_HOME`으로 지정한다.
+
+```sh
+cd ver5
+python3 tools/build_android.py
+# ARM64 휴대폰 전용으로 작게 빌드
+python3 tools/build_android.py --targets android/arm64
+# 연결된 기기에 설치
+adb install -r bin/android/srpg-ver5-debug.apk
+```
+
+결과는 `bin/android/srpg-ver5-debug.apk`이며 ARM64 휴대폰과 x86_64 에뮬레이터를
+지원한다. 최소 Android 6.0(API 23), OpenGL ES 3.0, 가로 화면이다.
+테스트 서명 APK이며 Play Store 배포용 서명·AAB는 포함하지 않는다.
+서명 키는 `bin/android/debug.keystore`에 보관하므로 같은 기기에 업데이트하려면
+이 파일을 유지한다.
+
+한 손가락으로 버튼/유닛을 누르며, 전장에서는 드래그로 화면을 이동한다.
+두 손가락으로 지도 이동·핀치 확대/축소가 가능하다. 에디터에서는 한 손가락
+드래그로 칠하고 두 손가락으로 이동한다. Android 뒤로 가기는 Escape와 같다.
+세이브는 앱 내부 저장소에 유지된다. 에셋이 변경된 APK 업데이트는 배포 에셋을
+다시 풀기 때문에 앱에서 편집한 맵이 덮어써질 수 있다.
+설계와 검증 범위는 [Android 빌드 문서](docs/android-build.md)에 있다.
+
 ## 구조
 
 ```
 ver5/
-├─ cmd/srpg-{gui,cli,sim}
+├─ cmd/srpg-{gui,cli,duel}
 ├─ internal/
 │  ├─ content   데이터 묶음 로더·검증, 엔진 어휘(vocab.go)
 │  ├─ core      규칙 엔진
-│  ├─ ai, session, storage, cli, sim, replay
+│  ├─ ai, session, storage, cli, replay
 │  ├─ sprite    .spr 로더, 태그 팔레트, 그림자, 시트 캐시
 │  ├─ gui       Ebitengine 화면
 │  └─ testdata/mini   엔진 테스트용 최소 데이터 묶음 (다른 게임으로도 엔진이 돈다는 증거)
@@ -44,7 +70,6 @@ ver5/
 
 | 문서 | 내용 |
 |---|---|
-| [ver5-design.md](docs/ver5-design.md) | ver5 목표, 데이터 묶음 구조, 엔진 변경 |
 | [sprite-binary.md](docs/sprite-binary.md) | `.spr` 형식, 태그 색 규칙 |
 | [trait-design.md](docs/trait-design.md) | 특성·책략 설계 (구현 대상) |
 | [claim-replay.md](docs/claim-replay.md) | 클레임 리플레이: 규칙은 턴제, 화면은 동시 재생 |
@@ -58,7 +83,7 @@ ver5/
 - 레벨업으로 특성치가 쌓이면 학습창이 열리고, 닫기 전까지 다른 명령은 받지 않는다(`Learning`).
 - 스프라이트는 신형 7종(경보병·경기병·궁병·문사·유비·관우·장비)과 비전투 3종만 있다. 나머지 인물은 가장 가까운 병종 도트에
   진영색과 `Look.Palette`로 구분한다.
-- 전투 시뮬레이터(skirmish)와 옛 ver2·ver3 스프라이트 체인은 가져오지 않았다.
+- 옛 ver2·ver3 스프라이트 체인은 가져오지 않았다.
 
 ## 맵에디터
 
@@ -137,8 +162,10 @@ SRPG_RENDER_TEST=1 go test ./internal/gui -run TestRenderedEditorAndStatuses -co
 
 일기토 제작은 프로젝트 스킬 `.agents/skills/duel-authoring/SKILL.md`를 참고한다. 예제에 없는 동작도 이야기 요구에 맞게 확장한다. `srpg-gui`에서 `-duel-debug`를 지정하면 저작용 상황 설명과 조작을 표시한다.
 
-호로관의 여포는 후방 성벽 앞 주둔지를 지킨다. 다른 적을 모두 제거하면 레벨 1 동맹 경보병 6명과 방열·목순·무안국이 여포 남서쪽 숲 사이 소로에서 합류하여 유비군보다 먼저 여포에게 접근한다. 동맹군은 직접 명령할 수 없으며 아군 명령 종료 후 AI로 움직인다. 방열은 두 합, 목순은 한 합에 전사하고 무안국은 세 합 뒤 달아난다. 첫 동맹 일기토 후 유비의 제안에 장비·관우가 동시에 말풍선으로 응답한다. 방천화극은 퇴각시킨 적 주변을 추가 공격하며, 적토마는 이동력 +2와 확정 반격, 금강갑은 매 차례 방어 강화 20%를 부여한다.
+호로관의 여포는 후방 성벽 앞 주둔지를 지킨다. 다른 적을 모두 제거하면 레벨 1 동맹 경보병 6명과 방열·목순·무안국이 여포 남서쪽 숲 사이 소로에서 합류하여 유비군보다 먼저 여포에게 접근한다. 동맹군은 직접 명령할 수 없으며 아군 명령 종료 후 AI로 움직인다. 방열은 두 합, 목순은 한 합에 전사하고 무안국은 세 합 뒤 달아난다. 첫 동맹 일기토 후 유비의 제안에 장비·관우가 동시에 말풍선으로 응답한다. 방천화극은 적 퇴각 후 일반 공격 사거리 내의 다른 적을 차례로 공격하며(2회 공격·반격 적용, 요극 연쇄 없음), 적토마는 이동력 +2와 확정 반격, 금강갑은 매 차례 방어 강화 20%를 부여한다.
 
 ## 자동 저장
 
 전투 시작과 매 아군 새 턴 시작에 **자동 저장 1~4**를 순서대로 덮어쓴다(1→2→3→4→1). 수동 슬롯 1~10과 독립적이며, 이동·공격·적군/동맹군 차례에는 회전하지 않아 최근 네 턴의 시작 상태를 남긴다. 게임을 다시 실행하거나 과거 저장을 불러와도 슬롯 순서는 이어진다. **불러오기**에서 자동 저장 네 개의 전투·턴·시각을 보고 선택할 수 있다. CLI는 `load auto1`~`load auto4`, 수동 저장은 `save 1`~`save 10`이다.
+
+전투 중요 이벤트는 하단 로그에 남기고 상단 노란 토스트로 중복 표시하지 않는다. 승리 공훈에는 직접 조작하는 아군만 표시하며 5명씩 페이지를 나눈다. 현재 B01~B03은 30턴 제한으로, 30턴 적 차례가 끝난 뒤 승리하지 못하면 패배한다. 맵의 `Stage.TurnLimit`은 0이면 무제한이다.

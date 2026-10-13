@@ -255,9 +255,13 @@ func (g *Game) unitAt(id string) *unitVis { return g.vis[id] }
 func (g *Game) perform(a *replay.Action) []beat {
 	beats := []beat{}
 	add := func(d float64, f func()) { beats = append(beats, beat{d, f}) }
-	actor := g.unitAt(a.Actor)
+	steps := []replay.Step{}
 	for _, s := range a.Steps {
+		steps = append(steps, splitFollowups(s.Command, s.Events)...)
+	}
+	for _, s := range steps {
 		c, events := s.Command, s.Events
+		actor := g.unitAt(c.Actor)
 		kind := c.Kind
 		for _, e := range events {
 			if e.Kind == "duel" { // an attack that set off a stage duel shows the duel instead
@@ -298,7 +302,13 @@ func (g *Game) perform(a *replay.Action) []beat {
 					continue
 				}
 				add(.15, func() {})
-				g.swing(add, back, actor, core.Command{Kind: "attack"}, k.events, false)
+				for _, part := range splitDouble(k.events) {
+					crit := false
+					for _, e := range part {
+						crit = crit || e.Kind == "critical"
+					}
+					g.swing(add, back, actor, core.Command{Kind: "attack"}, part, crit)
+				}
 			}
 		case "item":
 			ev := events
@@ -380,6 +390,22 @@ func (g *Game) perform(a *replay.Action) []beat {
 	return beats
 }
 
+// splitFollowups preserves the completed original exchange before each extra attack.
+func splitFollowups(c core.Command, events []core.Event) []replay.Step {
+	steps := []replay.Step{{Command: c}}
+	for _, e := range events {
+		switch e.Kind {
+		case "followup-start":
+			steps = append(steps, replay.Step{Command: core.Command{Kind: "attack", Actor: e.Actor, Target: e.Target}})
+		case "followup-end":
+		default:
+			i := len(steps) - 1
+			steps[i].Events = append(steps[i].Events, e)
+		}
+	}
+	return steps
+}
+
 // counter is a counter-attack inside an action's events: who strikes back and what it does.
 type counter struct {
 	by     string
@@ -392,7 +418,7 @@ type counter struct {
 func splitCounters(actor string, events []core.Event) ([]core.Event, []counter) {
 	blow, counters := []core.Event{}, []counter{}
 	for _, e := range events {
-		back := e.Actor != actor && e.Actor != "" && (e.Kind == "critical" || e.Kind == "damage" || e.Kind == "miss")
+		back := e.Actor != actor && e.Actor != "" && (e.Kind == "critical" || e.Kind == "damage" || e.Kind == "miss" || e.Kind == "double")
 		switch {
 		case back && (len(counters) == 0 || counters[len(counters)-1].by != e.Actor):
 			counters = append(counters, counter{by: e.Actor, events: []core.Event{e}})

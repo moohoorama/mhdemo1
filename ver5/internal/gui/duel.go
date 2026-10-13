@@ -4,7 +4,6 @@ import (
 	"image"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"srpg/internal/content"
 	"srpg/internal/core"
 	"srpg/internal/duelview"
@@ -42,16 +41,16 @@ func (p *Player) SkipDuel() {
 }
 
 func (g *Game) updateDuel() {
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace) || inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+	if keyJustPressed(ebiten.KeyEnter) || keyJustPressed(ebiten.KeySpace) || keyJustPressed(ebiten.KeyEscape) {
 		g.player.SkipDuel()
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyF) {
+	if keyJustPressed(ebiten.KeyF) {
 		g.speed = nextSpeed[g.speed]
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyF12) {
+	if keyJustPressed(ebiten.KeyF12) {
 		g.capture = true
 	}
-	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+	if mouseJustPressed(ebiten.MouseButtonLeft) {
 		x, y := cursorPos()
 		for _, b := range g.buttons {
 			if image.Pt(x, y).In(b.rect) {

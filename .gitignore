@@ -2,11 +2,5 @@
 .DS_Store
 __pycache__/
 *.pyc
-/demo1
-/ver1/bin/
-/ver1/reports/
-/ver2/**/*.log
-/ver4/bin/
-/ver4/reports/
 /ver5/bin/
 /ver5/reports/

@@ -338,12 +338,16 @@ func (g *Game) result(dst *ebiten.Image, o core.Observation) {
 	g.buttons, g.blocks = nil, nil
 	rect(dst, 0, 0, Width, Height, color.NRGBA{A: 120})
 	st := g.stageInfo(o)
-	r := image.Rect(Width/2-330, 130, Width/2+330, 720)
+	r := image.Rect(Width/2-330, 130, Width/2+330, 760)
 	if o.Result != "victory" {
 		r = image.Rect(Width/2-280, 250, Width/2+280, 560)
 		g.titled(dst, r, "패배")
 		g.centered(dst, st.name, float64(Width/2), 290, 28, bad)
-		g.centered(dst, g.lordName()+" 퇴각", float64(Width/2), 346, 19, ink)
+		reason := g.lordName() + " 퇴각 또는 아군 전멸"
+		if st.turnLimit > 0 && o.Round > st.turnLimit {
+			reason = fmt.Sprintf("%d턴 제한 초과", st.turnLimit)
+		}
+		g.centered(dst, reason, float64(Width/2), 346, 19, ink)
 		g.btn(dst, image.Rect(r.Min.X+40, 420, r.Max.X-40, 456), "출전 준비부터 재도전", func() { g.request(session.Request{Op: "retry"}) })
 		g.btn(dst, image.Rect(r.Min.X+40, 466, r.Min.X+260, 502), "불러오기", func() { g.openOverlay("load") })
 		g.btn(dst, image.Rect(r.Max.X-260, 466, r.Max.X-40, 502), "시작 메뉴", func() { g.request(session.Request{Op: "title"}) })
@@ -351,14 +355,17 @@ func (g *Game) result(dst *ebiten.Image, o core.Observation) {
 	}
 	g.titled(dst, r, "승리")
 	g.centered(dst, st.name+" 승리", float64(Width/2), 160, 30, gold)
-	allies := unitsByFaction(o, "ally")
+	allies := resultUnits(o)
 	best, bestXP := "", 0
 	for _, u := range allies {
 		if g.battleXP[u.ID] > bestXP {
 			best, bestXP = u.ID, g.battleXP[u.ID]
 		}
 	}
-	for i, u := range allies {
+	pages := max(1, (len(allies)+4)/5)
+	g.resultPage = max(0, min(g.resultPage, pages-1))
+	start := g.resultPage * 5
+	for i, u := range allies[start:min(start+5, len(allies))] {
 		y := 222 + i*76
 		g.portrait(dst, u.ID, float64(r.Min.X+40), float64(y), 60)
 		g.label(dst, u.Name, float64(r.Min.X+116), float64(y), 19, ink)
@@ -373,6 +380,11 @@ func (g *Game) result(dst *ebiten.Image, o core.Observation) {
 			g.label(dst, "최다 공훈", float64(r.Min.X+510), float64(y+14), 16, good)
 		}
 	}
+	if pages > 1 {
+		g.btn(dst, image.Rect(r.Min.X+40, 604, r.Min.X+140, 636), "이전", func() { g.resultPage = max(0, g.resultPage-1) })
+		g.centered(dst, fmt.Sprintf("%d / %d", g.resultPage+1, pages), float64(Width/2), 610, 14, muted)
+		g.btn(dst, image.Rect(r.Max.X-140, 604, r.Max.X-40, 636), "다음", func() { g.resultPage = min(pages-1, g.resultPage+1) })
+	}
 	rewards := []string{}
 	reward := g.S.Data.Stages[o.Stage].Reward
 	keys := make([]string, 0, len(reward))
@@ -381,10 +393,20 @@ func (g *Game) result(dst *ebiten.Image, o core.Observation) {
 	}
 	sort.Strings(keys)
 	for _, k := range keys {
-		rewards = append(rewards, fmt.Sprintf("%s ×%d", k, reward[k]))
+		rewards = append(rewards, fmt.Sprintf("%s ×%d", g.itemName(k), reward[k]))
 	}
-	g.label(dst, "획득 물품   "+strings.Join(rewards, "  ·  "), float64(r.Min.X+40), float64(r.Max.Y-110), 16, ink)
+	g.label(dst, "획득 물품   "+strings.Join(rewards, "  ·  "), float64(r.Min.X+40), float64(r.Max.Y-98), 14, ink)
 	g.btn(dst, image.Rect(r.Min.X+40, r.Max.Y-64, r.Max.X-40, r.Max.Y-26), "다음 이야기", func() {
 		g.command(core.Command{Kind: "continue"})
 	})
+}
+
+func resultUnits(o core.Observation) []core.UnitView {
+	units := []core.UnitView{}
+	for _, u := range unitsByFaction(o, "ally") {
+		if !u.AI {
+			units = append(units, u)
+		}
+	}
+	return units
 }

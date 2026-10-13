@@ -3,7 +3,6 @@ package gui
 import (
 	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"image"
 	"image/color"
 	"math"
@@ -136,7 +135,7 @@ func (g *Game) updateDeploymentPanel() bool {
 	if y < deploymentTop {
 		return false
 	}
-	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonRight) {
+	if mouseJustPressed(ebiten.MouseButtonRight) {
 		g.deploymentSelected = ""
 	}
 	if wx, wy := ebiten.Wheel(); wx != 0 || wy != 0 {
@@ -145,7 +144,7 @@ func (g *Game) updateDeploymentPanel() bool {
 	return x >= 0 && x < Width
 }
 func (g *Game) deploymentKeys() {
-	pressed := inpututil.IsKeyJustPressed
+	pressed := keyJustPressed
 	if pressed(ebiten.KeyE) || pressed(ebiten.KeyEnter) {
 		if len(g.S.Engine.LegalActions("").Commands) > 0 {
 			g.finishDeployment()

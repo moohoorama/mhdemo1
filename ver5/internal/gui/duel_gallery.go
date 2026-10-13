@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"srpg/internal/duelview"
 )
 
@@ -109,30 +108,30 @@ func (g *Game) updateDuelGallery() error {
 			p.view.Time += duelview.PlaybackSpeed / 60
 		}
 		if p.debug {
-			if inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+			if keyJustPressed(ebiten.KeySpace) {
 				p.paused = !p.paused
 			}
-			if inpututil.IsKeyJustPressed(ebiten.KeyR) {
+			if keyJustPressed(ebiten.KeyR) {
 				p.view.Time = 0
 			}
 			for key, delta := range map[ebiten.Key]int{ebiten.KeyArrowLeft: -1, ebiten.KeyArrowRight: 1} {
-				if inpututil.IsKeyJustPressed(key) {
+				if keyJustPressed(key) {
 					index := p.view.Story.Sample(p.view.Time).Index + delta
 					p.view.Time = p.view.Story.Start(max(0, min(index, len(p.view.Story.Beats)-1)))
 				}
 			}
 		}
-		if p.view.Time >= p.view.Story.Duration() || inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyEnter) || !p.debug && inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+		if p.view.Time >= p.view.Story.Duration() || keyJustPressed(ebiten.KeyEscape) || keyJustPressed(ebiten.KeyEnter) || !p.debug && keyJustPressed(ebiten.KeySpace) {
 			p.view = nil
 		}
-	} else if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+	} else if keyJustPressed(ebiten.KeyEscape) {
 		g.gallery = nil
 		return nil
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyF12) {
+	if keyJustPressed(ebiten.KeyF12) {
 		g.capture = true
 	}
-	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+	if mouseJustPressed(ebiten.MouseButtonLeft) {
 		x, y := cursorPos()
 		for _, b := range g.buttons {
 			if image.Pt(x, y).In(b.rect) {

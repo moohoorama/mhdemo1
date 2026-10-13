@@ -30,9 +30,9 @@
 - 작업 기록은 `heroes/<id>/`에 둔다: `profile.md`(특징), `review-N.md`(검수 지적), `preview/`(확대 PNG, 지워도 되는 파일).
 - 게임 반영은 사용자가 `make apply`로 한다. 스킬은 웹뷰 확인까지만 한다.
 
-### 비전투 도트의 반영 (`apply.py` 변경)
+### 비전투 도트의 반영 (`spritebuild/build.py`)
 
-에디터 파일에는 그린 4프레임만 저장하고, `apply.py`가 게임 시트로 펼친다.
+에디터 파일에는 그린 4프레임만 저장하고, `spritebuild/build.py`가 게임 시트로 펼친다.
 
 - 행: NW·SW만 있으면 좌우반전해 NE·SE 행을 붙인다. 반전 전에 기준점 기준으로 칸을 좌우 대칭으로 넓힌다(`build_assets.py`의 평복 처리와 같은 방식).
 - walk: `[대기, 왼발 앞, 대기, 오른발 앞]` 4프레임으로 펼친다.
@@ -58,7 +58,7 @@
 ### 4.1 특징 추출 → `heroes/<id>/profile.md`
 
 - 자료: 기존 전투 도트(`tools/spritetool/assets/ver2-units/<id>/`), 평복 도트(`ver4-civilians/`), 초상(`tools/illustrations/`),
-  `tools/unit3d`의 머리·수염 정의, `ver4/design.md`의 장수 설명.
+  `tools/unit3d`의 머리·수염 정의, `docs/design.md`의 장수 설명.
 - 기록 항목:
   - 색과 태그 배정: 부위마다 진영색 / 테마 A·B·C / 고정 재질
   - 옷과 갑옷, 신체 특징(귀, 수염, 얼굴색), 모자·관·투구
@@ -123,7 +123,7 @@
 
 ## 6. 진행 순서
 
-1. 이 문서 확정 → `apply.py`의 비전투 펼치기, 보조 스크립트, `viewer.html`, 스킬 `SKILL.md` 작성
+1. 이 문서 확정 → `build.py`의 비전투 펼치기, 보조 스크립트, `viewer.html`, 스킬 `SKILL.md` 작성
 2. 유비 경보병 전투 도트로 전체 흐름 검증
 3. 관우·장비·여포 경기병 전투 도트(병렬)
 4. 유비·관우·장비·여포 비전투 도트

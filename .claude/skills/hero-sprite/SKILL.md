@@ -1,11 +1,11 @@
 ---
 name: hero-sprite
-description: Draws officer (장수) and unit dot sprites in the ver4 dot editor format from an existing base sheet (경보병, 경기병, …) — combat sheets (8 directions × idle/walk/attack/hit/exhausted/block) and non-combat sheets (NW·SW idle, two steps, one action) — with feature extraction, agent drawing, independent review and the viewer.html check. Arguments: <대상 명칭> <참고할 원본> <그릴 대상의 상태>, e.g. "장비 경기병 말 타고 창 든 장수", "여포 경보병 비전투", "장수 도트 다시 그려줘".
+description: Draws officer (장수) and unit dot sprites in the ver5 dot editor format from an existing base sheet (경보병, 경기병, …) — combat sheets (8 directions × idle/walk/attack/hit/exhausted/block) and non-combat sheets (NW·SW idle, two steps, one action) — with feature extraction, agent drawing, independent review and the viewer.html check. Arguments: <대상 명칭> <참고할 원본> <그릴 대상의 상태>, e.g. "장비 경기병 말 타고 창 든 장수", "여포 경보병 비전투", "장수 도트 다시 그려줘".
 ---
 
 # Hero dot workflow
 
-The design and rules are in `ver4/tools/doteditor/HERO_DESIGN.md`; read it first, then
+The design and rules are in `ver5/tools/doteditor/HERO_DESIGN.md`; read it first, then
 `tools/spritetool/assets/SPRITE_ART_GUIDE.md` and `tools/spritetool/assets/UNIT_ART_GUIDE.md` (sections 1, 3, 4, 6).
 Drawing and review are done by agents looking at the pictures. The scripts only move pixels and render; never write
 code that edits or judges the drawing.
@@ -17,14 +17,14 @@ Arguments: `<대상 명칭> <참고할 원본> <그릴 대상의 상태>` — e.
 
 | Argument | Meaning | How it is resolved |
 |---|---|---|
-| 대상 명칭 | who is drawn | officer → key from `ver4/internal/gui/view.go` `officers` (유비 `liubei`, 관우 `guanyu`, 장비 `zhangfei`, 여포 `lubu`); not an officer (a unit type, an extra) → ask for the id |
-| 참고할 원본 | base sheet the frames start from | a unit in `ver4/tools/doteditor/units/*.yaml` by Korean name or id (경보병 `infantry`, 경기병 `cavalry`, …); not there → ask |
+| 대상 명칭 | who is drawn | officer → key from `ver5/internal/gui/view.go` `officers` (유비 `liubei`, 관우 `guanyu`, 장비 `zhangfei`, 여포 `lubu`); not an officer (a unit type, an extra) → ask for the id |
+| 참고할 원본 | base sheet the frames start from | a unit in `ver5/tools/doteditor/units/*.yaml` by Korean name or id (경보병 `infantry`, 경기병 `cavalry`, …); not there → ask |
 | 그릴 대상의 상태 | what the sprite shows | `비전투` (no weapon, scene use) → non-combat layout: NW·SW, idle + two steps + action, id `<id>_noncombat`; anything else (말 타고 창 든 장수, 활 든 궁병, …) → combat sheet with the base's rows/animations, id `<id>`. The text (mount, weapon, attack style) goes into the profile |
 
 Ask when an argument is missing, or when the state contradicts the base (e.g. "말 타고" with an infantry base).
 Several targets may be given at once, one triple each.
 
-## 1. Tools (`ver4/tools/doteditor/heroes/tools/`, run from there)
+## 1. Tools (`ver5/tools/doteditor/heroes/tools/`, run from there)
 
 ```
 python3 grid.py new <base> <id> <이름> [--noncombat --steps L,R]   # units/<id>.yaml from the base
@@ -46,7 +46,7 @@ python3 grid.py import <id>                                          # grid work
 
 ## Progress reporting
 
-- When the first artist starts, serve `ver4/tools/doteditor` (`python3 -m http.server <port>`, background) and start
+- When the first artist starts, serve `ver5/tools/doteditor` (`python3 -m http.server <port>`, background) and start
   `python3 -u live.py <ids…> --every 30` through the Monitor tool (timeout 30 min; re-arm it every time it expires,
   and stop it when all units are imported). It renders the grid working copies to `heroes/live/` for
   `progress.html` and prints one line per round.
@@ -65,8 +65,8 @@ Artists follow `motion-artist.md`, reviewers follow `reviewer.md` (both in this 
 keep its helper scripts in its own scratchpad subfolder — the scratchpad is shared and agents overwrite each other.
 
 1. **Profile** (`heroes/<id>/profile.md`): from the old sprite (`tools/spritetool/assets/ver2-units/<id>/`, look at
-   the PNGs), the civilian sprite (`ver4-civilians/`), portraits (`ver4/assets/graphics/portraits/`), `tools/unit3d`
-   head/beard/kit definitions and `ver4/design.md`. Use the template in HERO_DESIGN.md §4.1, including the tag
+   the PNGs), the civilian sprite (`ver4-civilians/`), portraits (`ver5/assets/graphics/portraits/`), `tools/unit3d`
+   head/beard/kit definitions and `ver5/docs/design.md`. Use the template in HERO_DESIGN.md §4.1, including the tag
    assignment table, weapon shape (which gaps are intended) and the per-direction visibility table.
 2. **Model sheet artist**: sets tag colors, draws idle frame 0 in every row, then idle 1–3. Report the idle sheet.
    **User gate:** the orchestrator looks at it, then shows the user the idle 8-direction sheet (and the progress/viewer
