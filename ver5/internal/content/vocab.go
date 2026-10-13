@@ -55,7 +55,6 @@ const (
 	FxLastStand      = "last_stand"       // survives its first fall with 1 HP
 	FxCostHalf       = "cost_half"        // skill costs are halved
 	FxCleanse        = "cleanse"          // harmful statuses end at turn start
-	FxFirstHit       = "first_hit_half"   // the first hit taken each enemy turn deals half
 	FxBlendBonus     = "blend_bonus"      // the lower of the class attack and mind bonuses rises to their average
 	FxDeputyAppoint  = "deputy_appoint"   // may name a deputy
 )
@@ -69,7 +68,7 @@ func init() {
 		FxRangedImmune, FxRiposte, FxReflect, FxFortify, FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxFarSight,
 		FxMountedRange, FxLightMove, FxSpellRange, FxSpellSure, FxChain, FxSure, FxCritElement, FxDispel, FxStatusImmune,
 		FxHealBonus, FxAura, FxDeputy, FxItemShare, FxManaRegen, FxBloodCost, FxRegen, FxBuffExtend, FxLastStand,
-		FxCostHalf, FxCleanse, FxFirstHit, FxBlendBonus, FxDeputyAppoint} {
+		FxCostHalf, FxCleanse, FxBlendBonus, FxDeputyAppoint} {
 		TraitEffects[k] = true
 	}
 }
