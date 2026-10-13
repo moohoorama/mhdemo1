@@ -384,20 +384,10 @@ func (g *View) drawUI(dst *ebiten.Image, s duel.State) {
 		}
 		x, y := g.at(a.ScreenPosition())
 		y -= g.Fighters[i].Art.TopOffset() * 3
-		f := &text.GoTextFace{Source: g.Font, Size: 17}
-		f.SetVariation(text.MustParseTag("wght"), 400)
-		w, h := text.Measure(a.Speech, f, 17*1.45)
-		nameFace := &text.GoTextFace{Source: g.Font, Size: 16}
-		nameFace.SetVariation(text.MustParseTag("wght"), 800)
-		nameWidth, _ := text.Measure(g.Fighters[i].Name, nameFace, 16*1.45)
-		w = max(80, max(w, nameWidth)+40)
-		h = max(80, h+59)
+		w, h := g.Bubble.Size(g.Fighters[i].Name, a.Speech)
 		x = max(12, min(width-w-12, x-28))
-		y = max(145, min(610-h, y-h-18))
-		g.Bubble.Draw(dst, x, y, w, h)
-		textColor := color.NRGBA{40, 37, 34, 255}
-		g.labelWeight(dst, g.Fighters[i].Name, x+20, y+14, 16, textColor, 800)
-		g.label(dst, a.Speech, x+20, y+41, 17, textColor)
+		y = max(145, min(610-h, y-h))
+		g.Bubble.DrawText(dst, g.Fighters[i].Name, a.Speech, x, y, 1)
 	}
 	allyX, allyY, enemyX, enemyY := 24.0, 70.0, 930.0, 664.0
 	if g.flipX() {

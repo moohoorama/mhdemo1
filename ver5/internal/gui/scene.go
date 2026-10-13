@@ -5,9 +5,9 @@ import (
 	"image/color"
 	"math"
 	"os"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 	"srpg/internal/core"
 	"srpg/internal/sprite"
 )
@@ -341,42 +341,16 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	}
 }
 
-// bubble is a small speech balloon at the actor's upper right: animated dots while
-// talking, or an emote mark.
+// bubble is a speech balloon above the actor's head: animated dots while talking, or an
+// emote mark.
 func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) {
+	if talking {
+		mark = strings.Repeat("•", 1+int(g.clockMS/300)%3)
+	}
 	x, y := g.field.Center(v.u, v.v)
 	sx, sy := g.toScreen(x, y-v.lift-v.top)
-	z := float32(g.zoom)
-	bx, by := float32(sx)+6*z, float32(sy)-14*z
-	w, h := 18*z, 11*z
-	var p vector.Path
-	p.MoveTo(bx+2*z, by)
-	p.LineTo(bx+w-2*z, by)
-	p.QuadTo(bx+w, by, bx+w, by+2*z)
-	p.LineTo(bx+w, by+h-2*z)
-	p.QuadTo(bx+w, by+h, bx+w-2*z, by+h)
-	p.LineTo(bx+6*z, by+h)
-	p.LineTo(bx+1*z, by+h+4*z) // tail toward the head
-	p.LineTo(bx+3*z, by+h)
-	p.LineTo(bx+2*z, by+h)
-	p.QuadTo(bx, by+h, bx, by+h-2*z)
-	p.LineTo(bx, by+2*z)
-	p.QuadTo(bx, by, bx+2*z, by)
-	p.Close()
-	op := &vector.DrawPathOptions{AntiAlias: true}
-	op.ColorScale.ScaleWithColor(color.NRGBA{R: 250, G: 246, B: 232, A: 240})
-	fillPath(dst, &p, op)
-	op = &vector.DrawPathOptions{AntiAlias: true}
-	op.ColorScale.ScaleWithColor(color.NRGBA{R: 60, G: 40, B: 30, A: 255})
-	strokePath(dst, &p, vector.StrokeOptions{Width: 1.2}, op)
-	if talking {
-		for i := 0; i < 3; i++ {
-			k := math.Sin(g.clockMS/140 - float64(i)*.9)
-			fillCircle(dst, bx+(5+float32(i)*4)*z, by+h/2-float32(max(0, k))*1.5*z, 1.2*z, color.NRGBA{R: 60, G: 40, B: 30, A: 255})
-		}
-		return
-	}
-	g.centered(dst, mark, float64(bx+w/2), float64(by)-1, float64(10*z), color.NRGBA{R: 160, G: 40, B: 30, A: 255})
+	_, h := g.assets.Bubble.Size("", mark)
+	g.assets.Bubble.DrawText(dst, "", mark, sx-28, sy-h, scale)
 }
 
 var (

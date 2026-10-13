@@ -135,7 +135,7 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 	g.player.g = g
 	g.names = nameIndex(s.Data)
 	g.scenes = loadScenes(filepath.Join(filepath.Dir(fontPath), "..", "scenes.json"))
-	g.assets, err = LoadAssets(filepath.Join(filepath.Dir(fontPath), "..", "graphics"))
+	g.assets, err = LoadAssets(filepath.Join(filepath.Dir(fontPath), "..", "graphics"), source)
 	if err != nil {
 		return nil, err
 	}

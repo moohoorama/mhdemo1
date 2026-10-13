@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/text/v2"
 	"srpg/internal/duel"
 	"srpg/internal/duelview"
 	"srpg/internal/sprite"
@@ -110,12 +111,12 @@ func shadowed(im *image.RGBA, c color.RGBA) *ebiten.Image {
 	return ebiten.NewImageFromImage(im)
 }
 
-func LoadAssets(dir string) (*Assets, error) {
+func LoadAssets(dir string, font *text.GoTextFaceSource) (*Assets, error) {
 	scripts, err := duel.LoadScripts(filepath.Join(dir, "..", "duels.json"))
 	if err != nil {
 		return nil, err
 	}
-	bubble, err := duelview.LoadBubble(filepath.Join(dir, "ui", "speech-bubble"))
+	bubble, err := duelview.LoadBubble(filepath.Join(dir, "ui", "speech-bubble"), font)
 	if err != nil {
 		return nil, err
 	}
