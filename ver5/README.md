@@ -71,6 +71,7 @@ ver5/
 | 문서 | 내용 |
 |---|---|
 | [sprite-binary.md](docs/sprite-binary.md) | `.spr` 형식, 태그 색 규칙 |
+| [battle.md](docs/battle.md) | 전투 종합 문서: 규칙·공식·MP·경험치·일기토 (현행 + 개정안) |
 | [trait-design.md](docs/trait-design.md) | 특성·책략 설계 (구현 대상) |
 | [claim-replay.md](docs/claim-replay.md) | 클레임 리플레이: 규칙은 턴제, 화면은 동시 재생 |
 | design.md, scenario*.md, script-c1.md, officers.md, ui-design.md | ver4에서 이어받은 설계·시나리오 문서 (일부 용어는 ver4 기준) |
