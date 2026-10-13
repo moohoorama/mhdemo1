@@ -676,3 +676,21 @@ func TestDeputyNeedsTheAppointTrait(t *testing.T) {
 		t.Fatal("the trait is permanent across class changes")
 	}
 }
+
+func TestSelfSkillsHealAndGuardTheCaster(t *testing.T) {
+	e, _, _ := arena(t)
+	with(e, "hero", "aid_t", "brace_t")
+	h := e.unit("hero")
+	h.HP, h.MP = e.stats(h).MaxHP/2, 100
+	before, mp := h.HP, h.MP
+	apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "hero", Skill: "first_aid"})
+	if h = e.unit("hero"); h.HP <= before || h.MP >= mp {
+		t.Fatalf("first aid: hp %d→%d mp %d→%d", before, h.HP, mp, h.MP)
+	}
+	resetActions(h)
+	apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "hero", Skill: "brace"})
+	if s := e.unit("hero").Status["defense"]; s.Turns != 2 || s.Value != e.data.Rules.BuffPercent {
+		t.Fatalf("brace status %+v", s)
+	}
+	assertRejected(t, e, Command{Kind: "skill", Actor: "hero", Target: "boss", Skill: "brace"})
+}

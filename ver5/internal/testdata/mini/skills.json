@@ -214,6 +214,34 @@
    "Requires": [
     "fire"
    ]
+  },
+  "first_aid": {
+   "Name": "FirstAid",
+   "Desc": "",
+   "Kind": "heal",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 24,
+   "Hit": 100,
+   "Effect": "heal",
+   "Coeff": 3,
+   "Requires": [
+    "aid_t"
+   ]
+  },
+  "brace": {
+   "Name": "Brace",
+   "Desc": "",
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 24,
+   "Hit": 100,
+   "Effect": "defense",
+   "Duration": 2,
+   "Requires": [
+    "brace_t"
+   ]
   }
  }
 }

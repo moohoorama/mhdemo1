@@ -801,6 +801,48 @@
     "stratagem",
     "stratagem_boost"
    ]
+  },
+  "first_aid": {
+   "Name": "응급처치",
+   "Desc": "자신의 병력을 회복한다.",
+   "Kind": "heal",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 24,
+   "Hit": 100,
+   "Effect": "heal",
+   "Coeff": 3,
+   "Requires": [
+    "first_aid"
+   ]
+  },
+  "brace": {
+   "Name": "대비",
+   "Desc": "자신의 방어력을 2턴 높인다.",
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 24,
+   "Hit": 100,
+   "Effect": "defense",
+   "Duration": 2,
+   "Requires": [
+    "brace_prep"
+   ]
+  },
+  "reload": {
+   "Name": "장전",
+   "Desc": "자신의 공격력을 2턴 높인다.",
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 24,
+   "Hit": 100,
+   "Effect": "attack",
+   "Duration": 2,
+   "Requires": [
+    "reload_prep"
+   ]
   }
  }
 }

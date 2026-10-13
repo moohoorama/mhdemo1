@@ -23,7 +23,8 @@
    "Tier": 0,
    "Sprite": "infantry",
    "Pool": [
-    "fire"
+    "fire",
+    "first_aid"
    ],
    "Promotes": [
     "heavy_infantry"
@@ -53,7 +54,8 @@
    "Sprite": "infantry",
    "Pool": [
     "deputy_appoint",
-    "assist"
+    "assist",
+    "brace_prep"
    ],
    "Promotes": [
     "guards"
@@ -237,7 +239,8 @@
    "MinRange": 2,
    "Pool": [
     "deputy_appoint",
-    "water"
+    "water",
+    "reload_prep"
    ],
    "Promotes": [
     "repeating_crossbow"

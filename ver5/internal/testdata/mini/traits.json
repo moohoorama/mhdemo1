@@ -464,6 +464,18 @@
    "Effects": {
     "ignore_terrain": 1
    }
+  },
+  "aid_t": {
+   "Name": "Aid",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": []
+  },
+  "brace_t": {
+   "Name": "Brace",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": []
   }
  }
 }

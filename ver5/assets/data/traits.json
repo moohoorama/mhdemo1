@@ -206,7 +206,10 @@
    "Cost": 1000,
    "Effects": {
     "fortify": 20
-   }
+   },
+   "Requires": [
+    "brace_prep"
+   ]
   },
   "dash": {
    "Name": "기마술",
@@ -579,6 +582,21 @@
    "Effects": {
     "deputy_appoint": 1
    }
+  },
+  "first_aid": {
+   "Name": "응급처치",
+   "Desc": "응급처치 병법 사용 가능. 자신의 병력을 회복한다.",
+   "Cost": 1000
+  },
+  "brace_prep": {
+   "Name": "대비",
+   "Desc": "대비 병법 사용 가능. 자신의 방어력을 높인다.",
+   "Cost": 800
+  },
+  "reload_prep": {
+   "Name": "장전",
+   "Desc": "장전 병법 사용 가능. 자신의 공격력을 높인다.",
+   "Cost": 1000
   }
  }
 }
