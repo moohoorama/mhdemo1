@@ -1,0 +1,51 @@
+// Temporary tool: loops the battle-to-duel transition of one stage duel.
+//
+//	go run ./cmd/_duel-transition [-duel B01-duel-1]
+//
+// Enter/Space skips the duel; F12 saves a screenshot to reports/gui.
+package main
+
+import (
+	"flag"
+	"fmt"
+	"os"
+
+	"github.com/hajimehoshi/ebiten/v2"
+	"srpg/internal/content"
+	"srpg/internal/gui"
+	"srpg/internal/session"
+)
+
+func main() {
+	duelID := flag.String("duel", "B01-duel-1", "stage duel ID")
+	path := flag.String("content", "assets/data", "content directory")
+	font := flag.String("font", "assets/fonts/NotoSansKR.ttf", "Korean font")
+	flag.Parse()
+	d, err := content.Load(*path)
+	if err != nil {
+		fail(err)
+	}
+	s, err := session.New(d, os.TempDir())
+	if err != nil {
+		fail(err)
+	}
+	g, err := gui.New(s, *font, 1, "")
+	if err != nil {
+		fail(err)
+	}
+	defer g.Close()
+	if err := g.PreviewDuelTransition(*duelID); err != nil {
+		fail(err)
+	}
+	ebiten.SetWindowSize(gui.Width, gui.Height)
+	ebiten.SetWindowTitle("duel transition")
+	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
+	if err := ebiten.RunGame(g); err != nil {
+		fail(err)
+	}
+}
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}

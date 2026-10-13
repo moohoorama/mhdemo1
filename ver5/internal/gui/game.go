@@ -32,6 +32,8 @@ import (
 const Width, Height = 1280, 850
 
 type Game struct {
+	duelPreview          func() error
+	previewIdle          int
 	duelBattle           *ebiten.Image
 	gallery              *duelGallery
 	editor               *mapEditor
@@ -495,6 +497,9 @@ func (g *Game) Update() error {
 	if g.input {
 		g.cliInput()
 		return nil
+	}
+	if g.duelPreview != nil {
+		g.updateDuelPreview()
 	}
 	if g.player.Duel != nil {
 		g.updateDuel()
