@@ -40,6 +40,10 @@ func (e *Engine) stats(u *Unit) Stats {
 	a := e.attributes(o)
 	c := e.class(o)
 	b := c.Bonus
+	if e.has(u, content.FxBlendBonus) {
+		mean := (b[0] + b[2]) / 2
+		b[0], b[2] = math.Max(b[0], mean), math.Max(b[2], mean)
+	}
 	for _, eq := range o.Equipment {
 		for i, n := range e.data.Equipment[eq].Bonus {
 			b[i] += n
@@ -60,7 +64,7 @@ func (e *Engine) stats(u *Unit) Stats {
 	v[4] = max(1, percent(v[4], u.Status["morale"].Value))
 	v[0] = max(1, percent(v[0], -u.Status["attack-down"].Value))
 	v[1] = max(1, percent(v[1], -u.Status["defense-down"].Value))
-	return Stats{v[0], v[1], v[2], v[3], v[4], v[5], int(float64(c.MPBase) + a[0]*c.MPCoeff), int(float64(c.RecoveryBase) + a[2]*c.RecoveryCoeff)}
+	return Stats{v[0], v[1], v[2], v[3], v[4], v[5], int(float64(c.MPBase) + R.ManaMaxFactor*R.StatNumerator/(R.StatDenominator-a[0])), int(float64(c.RecoveryBase) + R.ManaRecoveryFactor*R.StatNumerator/(R.StatDenominator-a[2]))}
 }
 func (e *Engine) tile(x, y int) string {
 	s := e.data.Stages[e.state.Stage]

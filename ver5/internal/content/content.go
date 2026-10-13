@@ -18,39 +18,42 @@ type Chance struct{ Base, Per, Max float64 }
 
 // Rules are the balance numbers of the engine's formulas.
 type Rules struct {
-	DamageCurve, HitCurve  Curve
-	StatNumerator          float64 // an attribute a gives stat = k*(level+StatLevelBase) * (StatNumerator/(StatDenominator-a) + bonus)
-	StatDenominator        float64
-	StatLevelBase          int
-	BasicAttack            Skill
-	HitFloor, HitCeil      float64 // physical hit chance clamp
-	SpellFloor, SpellCeil  float64
-	MagicPower, MagicGuard float64 // spell damage = MagicPower*mind - MagicGuard*target mind
-	Crit, Double           Chance
-	CritMultiplier         float64
-	CounterShare           float64 // a counter deals this share of a normal blow
-	PoisonPercent          int
-	BurnPercent            int
-	BuffPercent            int     // the size of an attack/defense/morale/agility buff or debuff
-	BuffTurns              int     // how long a trait's automatic buff lasts
-	ExpGrowth              float64 // action XP is scaled by this per level the target is above the actor
-	ExpAction, ExpSpell    float64 // action XP in percent of the actor's level bar at equal levels, and its spell multiplier
-	ExpDefenseShare        float64 // received strike or successful defense XP, relative to action XP
-	ExpDefeat              float64
-	ExpLevelStep           float64
-	ExpMinFactor           float64
-	ExpMaxFactor           float64
-	ExpSupportPercent      int
-	PointsPerLevel         int
-	MaxLevel               int
-	DeputyShare            int   // percent of the main officer's experience a deputy also earns
-	DeputyWeight           int   // deputy attribute blend: ratio = (own charm*DeputyWeight + deputy charm) / DeputyDivisor
-	DeputyDivisor          int   // also the percent scale of charm
-	PromoteLevels          []int // minimum level to promote from tier i
-	DeputyMinTier          int   // lowest class tier that may take a deputy
-	EnemyStock             map[string]int
-	EdgeTile               string // what lies beyond the map's edge
-	AuraHeal               int
+	HitCurve              Curve
+	StatNumerator         float64 // an attribute a gives stat = k*(level+StatLevelBase) * (StatNumerator/(StatDenominator-a) + bonus)
+	StatDenominator       float64
+	StatLevelBase         int
+	BasicAttack           Skill
+	HitFloor, HitCeil     float64 // physical hit chance clamp
+	SpellFloor, SpellCeil float64
+	PhysicalLevelScale    float64 // physical damage = attack - defense + (level+StatLevelBase)*PhysicalLevelScale
+	MagicLevelScale       float64 // spell damage = mind - target mind + (level+StatLevelBase)*MagicLevelScale
+	ManaMaxFactor         float64 // max spell points = base + ManaMaxFactor*StatNumerator/(StatDenominator-command)
+	ManaRecoveryFactor    float64 // spell points per turn = base + ManaRecoveryFactor*StatNumerator/(StatDenominator-intellect)
+	Crit, Double          Chance
+	CritMultiplier        float64
+	CounterShare          float64 // a counter deals this share of a normal blow
+	PoisonPercent         int
+	BurnPercent           int
+	BuffPercent           int     // the size of an attack/defense/morale/agility buff or debuff
+	BuffTurns             int     // how long a trait's automatic buff lasts
+	ExpGrowth             float64 // action XP is scaled by this per level the target is above the actor
+	ExpAction, ExpSpell   float64 // action XP in percent of the actor's level bar at equal levels, and its spell multiplier
+	ExpDefenseShare       float64 // received strike or successful defense XP, relative to action XP
+	ExpDefeat             float64
+	ExpLevelStep          float64
+	ExpMinFactor          float64
+	ExpMaxFactor          float64
+	ExpSupportPercent     int
+	PointsPerLevel        int
+	MaxLevel              int
+	DeputyShare           int   // percent of the main officer's experience a deputy also earns
+	DeputyWeight          int   // deputy attribute blend: ratio = (own charm*DeputyWeight + deputy charm) / DeputyDivisor
+	DeputyDivisor         int   // also the percent scale of charm
+	PromoteLevels         []int // minimum level to promote from tier i
+	DeputyMinTier         int   // lowest class tier that may take a deputy
+	EnemyStock            map[string]int
+	EdgeTile              string // what lies beyond the map's edge
+	AuraHeal              int
 }
 type Campaign struct {
 	Start      string // first scenario node
@@ -80,7 +83,6 @@ type Class struct {
 	Move, Range, MinRange, HPFactor int    // MinRange: the nearest cell a ranged class can attack
 	Bonus                           [6]float64
 	MPBase, RecoveryBase            int
-	MPCoeff, RecoveryCoeff          float64
 	Grants, Skills, Pool, Tags      []string
 	Promotes                        []string
 	Tier                            int

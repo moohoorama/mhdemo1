@@ -17,7 +17,7 @@ func in(s string, list ...string) bool {
 // Validate checks that the bundle is complete and consistent, so the engine can trust it.
 func (d *Data) Validate() error {
 	r := d.Rules
-	if len(r.DamageCurve) < 2 || len(r.HitCurve) < 2 || r.StatDenominator <= 0 || r.MaxLevel < 1 || len(r.PromoteLevels) == 0 ||
+	if len(r.HitCurve) < 2 || r.StatDenominator <= 0 || r.PhysicalLevelScale <= 0 || r.MagicLevelScale <= 0 || r.ManaMaxFactor <= 0 || r.ManaRecoveryFactor <= 0 || r.MaxLevel < 1 || len(r.PromoteLevels) == 0 ||
 		r.BasicAttack.Kind != KindPhysical || r.ExpGrowth <= 0 || r.DeputyDivisor <= 0 {
 		return fmt.Errorf("rules incomplete")
 	}

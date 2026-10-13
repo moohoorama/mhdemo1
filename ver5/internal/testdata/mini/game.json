@@ -2,20 +2,6 @@
  "Title": "Mini",
  "Version": "mini-1",
  "Rules": {
-  "DamageCurve": [
-   [
-    0.5,
-    0.8
-   ],
-   [
-    1,
-    1
-   ],
-   [
-    2,
-    1.2
-   ]
-  ],
   "HitCurve": [
    [
     0.3333333333,
@@ -50,8 +36,6 @@
   "HitCeil": 100,
   "SpellFloor": 5,
   "SpellCeil": 100,
-  "MagicPower": 2,
-  "MagicGuard": 0.5,
   "Crit": {
    "Base": 10,
    "Per": 30,
@@ -89,7 +73,11 @@
   "EnemyStock": {
    "ration": 1
   },
-  "EdgeTile": "~"
+  "EdgeTile": "~",
+  "PhysicalLevelScale": 20,
+  "MagicLevelScale": 10,
+  "ManaMaxFactor": 8,
+  "ManaRecoveryFactor": 1.5
  },
  "Campaign": {
   "Start": "intro",

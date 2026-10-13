@@ -244,7 +244,7 @@ func TestSecondStrikeIsRolledBeforeTheFirstLands(t *testing.T) {
 		resetActions(h)
 		h.HP = e.stats(h).MaxHP
 		b.HP = e.stats(b).MaxHP
-		e.state.Learning = nil
+		e.state.Phase, e.state.Result, e.state.Learning = "battle", "", nil
 	}
 	if doubles < 25 {
 		t.Fatalf("double_always gave %d/30 (a strike that kills ends it)", doubles)
@@ -316,6 +316,8 @@ func TestRiposteAnswersEveryMiss(t *testing.T) {
 			t.Fatal("ranged_immune makes every shot miss and the riposte answers")
 		}
 		e.unit("boss").HP = e.stats(e.unit("boss")).MaxHP
+		e.unit("hero").HP = e.stats(e.unit("hero")).MaxHP
+		e.state.Phase, e.state.Result = "battle", ""
 	}
 }
 func TestBulwarkHalvesTheExcess(t *testing.T) {
@@ -605,4 +607,52 @@ func TestSaveRoundTripThroughJSON(t *testing.T) {
 
 func resetActions(u *Unit) {
 	u.Moved, u.Acted, u.Attacked, u.Done = false, false, false, false
+}
+
+func TestDamageIsAttackMinusDefensePlusLevelTerm(t *testing.T) {
+	e, a, b := arena(t)
+	R := e.data.Rules
+	level := float64(e.char(a.Character).Level + R.StatLevelBase)
+	sa, sb := e.stats(a), e.stats(b)
+	want := float64(sa.Attack)*e.terrain(a, a.X, a.Y).Factor - float64(sb.Defense)*e.terrain(b, b.X, b.Y).Factor + level*R.PhysicalLevelScale
+	if got := e.damage(a, b, e.basic()); got != want {
+		t.Fatalf("physical %v, want %v", got, want)
+	}
+	spell := content.Skill{Kind: content.KindMagic, Coeff: 1.5}
+	want = (float64(sa.Mind-sb.Mind) + level*R.MagicLevelScale) * 1.5
+	if got := e.damage(a, b, spell); got != want {
+		t.Fatalf("spell %v, want %v", got, want)
+	}
+}
+func TestManaFollowsCommandAndIntellect(t *testing.T) {
+	e := battle(t)
+	u := e.unit("hero")
+	R := e.data.Rules
+	a := e.attributes(e.char("hero"))
+	c := e.class(e.char("hero"))
+	st := e.stats(u)
+	if want := int(float64(c.MPBase) + R.ManaMaxFactor*R.StatNumerator/(R.StatDenominator-a[0])); st.MaxMP != want {
+		t.Fatalf("max mp %d, want %d", st.MaxMP, want)
+	}
+	if want := int(float64(c.RecoveryBase) + R.ManaRecoveryFactor*R.StatNumerator/(R.StatDenominator-a[2])); st.Recovery != want {
+		t.Fatalf("recovery %d, want %d", st.Recovery, want)
+	}
+}
+func TestBlendBonusRaisesTheLowerClassBonus(t *testing.T) {
+	e := battle(t)
+	u := e.unit("hero")
+	c := e.class(e.char("hero"))
+	before := e.stats(u)
+	with(e, "hero", "blend_t")
+	after := e.stats(e.unit("hero"))
+	switch {
+	case c.Bonus[0] > c.Bonus[2]:
+		if after.Mind <= before.Mind || after.Attack != before.Attack {
+			t.Fatalf("mind should rise alone: %+v -> %+v", before, after)
+		}
+	case c.Bonus[2] > c.Bonus[0]:
+		if after.Attack <= before.Attack || after.Mind != before.Mind {
+			t.Fatalf("attack should rise alone: %+v -> %+v", before, after)
+		}
+	}
 }

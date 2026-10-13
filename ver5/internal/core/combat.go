@@ -28,15 +28,16 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	R := e.data.Rules
 	a, b := e.stats(u), e.stats(v)
 	var base float64
+	level := float64(e.char(u.Character).Level + R.StatLevelBase)
 	if s.Kind == content.KindMagic {
-		base = math.Max(1, R.MagicPower*float64(a.Mind)-R.MagicGuard*float64(b.Mind))
+		base = math.Max(1, float64(a.Mind-b.Mind)+level*R.MagicLevelScale)
 	} else {
 		tf := e.terrain(v, v.X, v.Y).Factor
 		if e.has(u, content.FxIgnoreTerrain) {
 			tf = 1
 		}
 		atk, def := float64(a.Attack)*e.terrain(u, u.X, u.Y).Factor, float64(b.Defense)*tf
-		base = math.Max(1, atk*curve(atk/math.Max(1, def), R.DamageCurve))
+		base = math.Max(1, atk-def+level*R.PhysicalLevelScale)
 	}
 	return base * s.Coeff
 }

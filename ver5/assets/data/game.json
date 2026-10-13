@@ -2,20 +2,6 @@
  "Title": "삼국지 SRPG",
  "Version": "ver5-1",
  "Rules": {
-  "DamageCurve": [
-   [
-    0.5,
-    0.8
-   ],
-   [
-    1,
-    1
-   ],
-   [
-    2,
-    1.2
-   ]
-  ],
   "HitCurve": [
    [
     0.3333,
@@ -50,8 +36,6 @@
   "HitCeil": 100,
   "SpellFloor": 5,
   "SpellCeil": 100,
-  "MagicPower": 2,
-  "MagicGuard": 0.5,
   "Crit": {
    "Base": 10,
    "Per": 30,
@@ -90,7 +74,11 @@
    "small_food": 1
   },
   "EdgeTile": "~",
-  "ExpDefenseShare": 0.5
+  "ExpDefenseShare": 0.5,
+  "PhysicalLevelScale": 20,
+  "MagicLevelScale": 10,
+  "ManaMaxFactor": 8,
+  "ManaRecoveryFactor": 1.5
  },
  "Campaign": {
   "Start": "oath",

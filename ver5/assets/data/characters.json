@@ -741,7 +741,7 @@
   "caocao": {
    "Name": "조조",
    "Biography": "자는 맹덕. 반동탁 연합을 일으키고 헌제를 허창에 맞아 천하를 호령한 난세의 간웅. 유비를 영웅이라 인정하면서도 평생의 맞수로 삼았다.",
-   "Class": "light_infantry",
+   "Class": "light_cavalry",
    "Stats": [
     96,
     72,
@@ -751,10 +751,12 @@
     96
    ],
    "Level": 14,
-   "Traits": [],
+   "Traits": [
+    "civil_martial"
+   ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "iron_spear",
     "leather_armor"
    ],
    "Look": {
@@ -889,7 +891,7 @@
    "Stats": [
     50,
     48,
-    30,
+    60,
     40,
     40,
     45

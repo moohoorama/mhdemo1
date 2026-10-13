@@ -56,6 +56,7 @@ const (
 	FxCostHalf       = "cost_half"        // skill costs are halved
 	FxCleanse        = "cleanse"          // harmful statuses end at turn start
 	FxFirstHit       = "first_hit_half"   // the first hit taken each enemy turn deals half
+	FxBlendBonus     = "blend_bonus"      // the lower of the class attack and mind bonuses rises to their average
 )
 
 // TraitEffects lists every trait effect key; keys ending in ':' take an element after it.
@@ -67,7 +68,7 @@ func init() {
 		FxRangedImmune, FxRiposte, FxReflect, FxFortify, FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxFarSight,
 		FxMountedRange, FxLightMove, FxSpellRange, FxSpellSure, FxChain, FxSure, FxCritElement, FxDispel, FxStatusImmune,
 		FxHealBonus, FxAura, FxDeputy, FxItemShare, FxManaRegen, FxBloodCost, FxRegen, FxBuffExtend, FxLastStand,
-		FxNoMinRange, FxCostHalf, FxCleanse, FxFirstHit} {
+		FxNoMinRange, FxCostHalf, FxCleanse, FxFirstHit, FxBlendBonus} {
 		TraitEffects[k] = true
 	}
 }

@@ -76,12 +76,12 @@
    "Kind": "magic",
    "Mode": "any",
    "Shape": "single",
-   "Cost": 60,
+   "Cost": 50,
    "Hit": 110,
    "Element": "fire",
    "Min": 1,
    "Max": 4,
-   "Coeff": 1,
+   "Coeff": 1.5,
    "Requires": [
     "fire"
    ]
@@ -97,7 +97,7 @@
    "Element": "fire",
    "Min": 1,
    "Max": 3,
-   "Coeff": 1.5,
+   "Coeff": 2.25,
    "Requires": [
     "fire",
     "fire_boost"

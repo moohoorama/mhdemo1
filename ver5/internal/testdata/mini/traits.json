@@ -80,6 +80,15 @@
     "crit_vs_weaker": 1
    }
   },
+  "blend_t": {
+   "Name": "Blend",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": [],
+   "Effects": {
+    "blend_bonus": 1
+   }
+  },
   "twice": {
    "Name": "Twice",
    "Desc": "",

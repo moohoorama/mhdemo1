@@ -563,6 +563,14 @@
    "Effects": {
     "turn_defense": 20
    }
+  },
+  "civil_martial": {
+   "Name": "문무겸비",
+   "Desc": "병종의 공격력·정신력 보너스 중 낮은 쪽이 둘의 평균으로 오른다.",
+   "Cost": 1000,
+   "Effects": {
+    "blend_bonus": 1
+   }
   }
  }
 }
