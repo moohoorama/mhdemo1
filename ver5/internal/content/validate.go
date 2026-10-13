@@ -81,7 +81,7 @@ func (d *Data) Validate() error {
 	for id, s := range d.Skills {
 		if s.Name == "" || !in(s.Kind, KindPhysical, KindMagic, KindStatus, KindBuff, KindHeal) || !in(s.Mode, ModeMelee, ModeRanged, ModeSelf, ModeAny) ||
 			!in(s.Shape, ShapeSingle, ShapeCross, ShapeSquare, ShapeLine, ShapeAll) || s.Cost < 0 || s.Hit < 0 || s.Min < 0 || s.Max < 0 ||
-			s.Shape == ShapeLine && s.Length < 1 || s.Effect != "" && !SkillEffects[s.Effect] || s.Kind != KindPhysical && s.Kind != KindMagic && s.Effect == "" {
+			s.Shape == ShapeLine && s.Length < 1 || s.Strikes < 0 || s.Strikes > 2 || s.Pierce < 0 || s.Pierce > 1 || s.Pierce > 0 && s.Shape != ShapeSingle || s.MagicCoeff < 0 || s.MagicCoeff > 0 && s.Kind != KindPhysical || s.Effect != "" && !SkillEffects[s.Effect] || s.Kind != KindPhysical && s.Kind != KindMagic && s.Effect == "" {
 			return fmt.Errorf("skill %s", id)
 		}
 		for _, t := range s.Requires {

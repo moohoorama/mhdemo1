@@ -219,6 +219,11 @@ func (e *Engine) payable(u *Unit, n int) (hp int, ok bool) {
 	hp = (n - u.MP) * k
 	return hp, k > 0 && u.HP > hp
 }
+
+// weaponType is the kind of weapon the unit has equipped.
+func (e *Engine) weaponType(u *Unit) string {
+	return e.data.Equipment[e.char(u.Character).Equipment["weapon"]].Type
+}
 func (e *Engine) mounted(u *Unit) bool { return contains(e.unitClass(u).Tags, content.TagMounted) }
 
 // canRange and canMelee tell which attack modes the unit's class and traits allow.
@@ -237,7 +242,7 @@ func (e *Engine) rangeFor(u *Unit, s content.Skill) (int, int) {
 		if e.mounted(u) {
 			hi = max(hi, int(e.fx(u, content.FxMountedRange)))
 		}
-		if cl.Attack == content.AttackRanged && !e.has(u, content.FxNoMinRange) {
+		if cl.Attack == content.AttackRanged {
 			lo = max(lo, cl.MinRange)
 		}
 	}
@@ -289,6 +294,9 @@ func (e *Engine) validateSkill(u *Unit, c Command, s content.Skill) (*Unit, erro
 	}
 	if s.Mode == content.ModeMelee && !e.canMelee(u) || s.Mode == content.ModeRanged && !e.canRange(u) {
 		return nil, fail("WrongAttackMode")
+	}
+	if s.Weapon != "" && e.weaponType(u) != s.Weapon {
+		return nil, fail("WrongWeapon")
 	}
 	v := e.unit(c.Target)
 	if s.Mode == content.ModeSelf {

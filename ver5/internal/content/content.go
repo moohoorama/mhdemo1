@@ -145,6 +145,10 @@ type Skill struct {
 	Duration      int
 	Length        int // cells of a line
 	Coeff         float64
+	Weapon        string  // the weapon type that must be equipped
+	Pierce        float64 // share of damage the enemy behind the target takes
+	Strikes       int     // 2 makes every use strike twice
+	MagicCoeff    float64 // a physical skill also deals spell damage at this coefficient
 	Deprecated    bool
 }
 type Terrain struct {

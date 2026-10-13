@@ -19,6 +19,7 @@ const (
 	FxSplashCross    = "splash_cross"     // physical attack also hits the cross; value is the damage share
 	FxSplashSquare   = "splash_square"    // physical attack also hits the 3x3; value is the damage share
 	FxPierce         = "pierce"           // the enemy behind the target takes this share
+	FxPierceBoost    = "pierce_boost"     // adds to the pierce share of skills
 	FxIgnoreTerrain  = "ignore_terrain"   // target's terrain defense is ignored
 	FxPoison         = "poison_on_hit"    // landed physical hits poison
 	FxLifeSteal      = "life_steal"       // heals this share of damage dealt
@@ -52,7 +53,6 @@ const (
 	FxRegen          = "regen"            // recovers this share of max HP at turn start
 	FxBuffExtend     = "buff_extend"      // buffs it casts last this many turns longer
 	FxLastStand      = "last_stand"       // survives its first fall with 1 HP
-	FxNoMinRange     = "no_min_range"     // ranged attacks have no minimum range
 	FxCostHalf       = "cost_half"        // skill costs are halved
 	FxCleanse        = "cleanse"          // harmful statuses end at turn start
 	FxFirstHit       = "first_hit_half"   // the first hit taken each enemy turn deals half
@@ -65,11 +65,11 @@ var TraitEffects = map[string]bool{}
 
 func init() {
 	for _, k := range []string{FxRetreatSweep, FxCounterAlways, FxTurnDefense, FxCritWeaker, FxCritAlways, FxSpellCrit, FxCritAmbush, FxDoubleAlways, FxCounterForce, FxAssist,
-		FxSplashCross, FxSplashSquare, FxPierce, FxIgnoreTerrain, FxPoison, FxLifeSteal, FxMissHalf, FxBulwark, FxCritImmune,
+		FxSplashCross, FxSplashSquare, FxPierce, FxPierceBoost, FxIgnoreTerrain, FxPoison, FxLifeSteal, FxMissHalf, FxBulwark, FxCritImmune,
 		FxRangedImmune, FxRiposte, FxReflect, FxFortify, FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxFarSight,
 		FxMountedRange, FxLightMove, FxSpellRange, FxSpellSure, FxChain, FxSure, FxCritElement, FxDispel, FxStatusImmune,
 		FxHealBonus, FxAura, FxDeputy, FxItemShare, FxManaRegen, FxBloodCost, FxRegen, FxBuffExtend, FxLastStand,
-		FxNoMinRange, FxCostHalf, FxCleanse, FxFirstHit, FxBlendBonus, FxDeputyAppoint} {
+		FxCostHalf, FxCleanse, FxFirstHit, FxBlendBonus, FxDeputyAppoint} {
 		TraitEffects[k] = true
 	}
 }

@@ -843,6 +843,85 @@
    "Requires": [
     "reload_prep"
    ]
+  },
+  "thrust": {
+   "Name": "찌르기",
+   "Desc": "창으로 찔러 목표 뒤의 적도 반 피해를 준다.",
+   "Kind": "physical",
+   "Mode": "melee",
+   "Shape": "single",
+   "Cost": 24,
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
+   "Weapon": "spear",
+   "Pierce": 0.5,
+   "Requires": [
+    "thrust_art"
+   ]
+  },
+  "chain_thrust": {
+   "Name": "연속찌르기",
+   "Desc": "창으로 두 번 찔러 목표 뒤의 적도 반 피해를 준다.",
+   "Kind": "physical",
+   "Mode": "melee",
+   "Shape": "single",
+   "Cost": 48,
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
+   "Weapon": "spear",
+   "Pierce": 0.5,
+   "Strikes": 2,
+   "Requires": [
+    "chain_thrust_art"
+   ]
+  },
+  "rapid_fire": {
+   "Name": "연발",
+   "Desc": "원거리 공격을 두 번 한다.",
+   "Kind": "physical",
+   "Mode": "ranged",
+   "Shape": "single",
+   "Cost": 36,
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
+   "Strikes": 2,
+   "Requires": [
+    "rapid_art"
+   ]
+  },
+  "penetrate": {
+   "Name": "관통",
+   "Desc": "목표 뒤의 적도 75% 피해를 받는다.",
+   "Kind": "physical",
+   "Mode": "ranged",
+   "Shape": "single",
+   "Cost": 40,
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
+   "Pierce": 0.75,
+   "Requires": [
+    "penetrate_art"
+   ]
+  },
+  "fire_arrow": {
+   "Name": "화시",
+   "Desc": "물리 70%와 정신력 기반 화염 70% 피해를 준다.",
+   "Kind": "physical",
+   "Mode": "ranged",
+   "Shape": "single",
+   "Cost": 40,
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 0.7,
+   "Element": "fire",
+   "MagicCoeff": 0.7,
+   "Requires": [
+    "fire_arrow_art"
+   ]
   }
  }
 }

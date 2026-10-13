@@ -175,10 +175,6 @@ func TestMovementTraitsAndRiders(t *testing.T) {
 	if lo != 2 || hi != 3 {
 		t.Fatalf("range %d-%d", lo, hi)
 	}
-	with(e, "archer1", "far_t")
-	if lo, _ = e.AttackRange("archer1"); lo != 1 {
-		t.Fatal("no_min_range")
-	}
 	e.char("hero").Class = "rider"
 	e.char("hero").Equipment = map[string]string{}
 	with(e, "hero", "steed")
@@ -693,4 +689,57 @@ func TestSelfSkillsHealAndGuardTheCaster(t *testing.T) {
 		t.Fatalf("brace status %+v", s)
 	}
 	assertRejected(t, e, Command{Kind: "skill", Actor: "hero", Target: "boss", Skill: "brace"})
+}
+
+func TestPierceSkillReachesBehindAndBreakthroughAddsToIt(t *testing.T) {
+	e, a, b := arena(t)
+	t2 := e.unit("troop#2")
+	t2.HP = e.stats(t2).MaxHP
+	t2.X, t2.Y = 7, 6 // behind the target
+	skill := e.data.Skills["thrust_s"]
+	if _, share := e.victims(a, b, skill); share["troop#2"] != .5 {
+		t.Fatalf("pierce share %v", share)
+	}
+	with(e, "hero", "boost_t")
+	if _, share := e.victims(a, b, skill); share["troop#2"] != .75 {
+		t.Fatalf("boosted share %v", share)
+	}
+	if _, share := e.victims(a, b, e.basic()); share["troop#2"] != 0 {
+		t.Fatalf("a plain attack must not pierce: %v", share)
+	}
+}
+func TestSkillNeedsItsWeapon(t *testing.T) {
+	e, _, _ := arena(t)
+	with(e, "hero", "thrust_t")
+	assertRejected(t, e, Command{Kind: "skill", Actor: "hero", Target: "boss", Skill: "thrust_s"})
+	e.char("hero").Equipment = map[string]string{"weapon": "spear"}
+	e.unit("hero").MP = 50
+	apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "boss", Skill: "thrust_s"})
+}
+func TestStrikesForcesTheSecondBlow(t *testing.T) {
+	e, _, _ := arena(t)
+	e.char("hero").Class = "archer"
+	e.char("hero").Equipment = map[string]string{}
+	with(e, "hero", "rapid_t")
+	e.unit("hero").X, e.unit("hero").MP = 3, 50
+	r := apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "boss", Skill: "rapid_s"})
+	for _, ev := range r.Events {
+		if ev.Kind == "double" {
+			return
+		}
+	}
+	t.Fatal("no second blow")
+}
+func TestMagicCoefficientAddsSpellDamage(t *testing.T) {
+	e, a, b := arena(t)
+	R := e.data.Rules
+	skill := e.data.Skills["arrow_s"]
+	plain := skill
+	plain.MagicCoeff = 0
+	sa, sb := e.stats(a), e.stats(b)
+	level := float64(e.char(a.Character).Level + R.StatLevelBase)
+	want := e.damage(a, b, plain) + (float64(sa.Mind-sb.Mind)+level*R.MagicLevelScale)*.7
+	if got := e.damage(a, b, skill); got != want {
+		t.Fatalf("damage %v, want %v", got, want)
+	}
 }

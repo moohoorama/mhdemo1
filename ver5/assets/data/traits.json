@@ -411,14 +411,6 @@
     "last_stand": 1
    }
   },
-  "divine_archer": {
-   "Name": "신궁",
-   "Desc": "원거리 공격의 최소 사거리가 없다.",
-   "Cost": 1000,
-   "Effects": {
-    "no_min_range": 1
-   }
-  },
   "fire": {
    "Name": "화계",
    "Desc": "화염계 책략을 쓴다.",
@@ -597,6 +589,45 @@
    "Name": "장전",
    "Desc": "장전 병법 사용 가능. 자신의 공격력을 높인다.",
    "Cost": 1000
+  },
+  "thrust_art": {
+   "Name": "찌르기",
+   "Desc": "찌르기 병법 사용 가능. 창으로 목표 뒤의 적까지 꿰뚫는다.",
+   "Cost": 700
+  },
+  "breakthrough": {
+   "Name": "돌파",
+   "Desc": "병법의 관통 피해가 25%p 늘어난다.",
+   "Cost": 1000,
+   "Requires": [
+    "thrust_art"
+   ],
+   "Effects": {
+    "pierce_boost": 0.25
+   }
+  },
+  "chain_thrust_art": {
+   "Name": "연속찌르기",
+   "Desc": "연속찌르기 병법 사용 가능. 창으로 두 번 찌르고 뒤의 적까지 꿰뚫는다.",
+   "Cost": 1500,
+   "Requires": [
+    "breakthrough"
+   ]
+  },
+  "fire_arrow_art": {
+   "Name": "화시",
+   "Desc": "화시 병법 사용 가능. 물리와 정신력 기반 화염 피해를 함께 준다.",
+   "Cost": 900
+  },
+  "rapid_art": {
+   "Name": "연발",
+   "Desc": "연발 병법 사용 가능. 원거리 공격을 두 번 한다.",
+   "Cost": 1000
+  },
+  "penetrate_art": {
+   "Name": "관통",
+   "Desc": "관통 병법 사용 가능. 원거리 공격이 목표 뒤의 적까지 닿는다.",
+   "Cost": 1500
   }
  }
 }

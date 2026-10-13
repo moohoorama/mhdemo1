@@ -39,7 +39,11 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 		atk, def := float64(a.Attack)*e.terrain(u, u.X, u.Y).Factor, float64(b.Defense)*tf
 		base = math.Max(1, atk-def+level*R.PhysicalLevelScale)
 	}
-	return base * s.Coeff
+	out := base * s.Coeff
+	if s.MagicCoeff > 0 {
+		out += math.Max(1, float64(a.Mind-b.Mind)+level*R.MagicLevelScale) * s.MagicCoeff
+	}
+	return out
 }
 
 // rangedAttack tells whether the blow comes from a distance: by an archer's weapon or at range 2 and beyond.
@@ -194,7 +198,7 @@ func (e *Engine) leech(u *Unit, dealt int) {
 // attackOn is one physical attack on one target: the second strike is rolled before the first lands,
 // and a miss lets a riposting target strike back.
 func (e *Engine) attackOn(u, v *Unit, s content.Skill, b blow) int {
-	double := float64(e.rand(100)) < e.doubleChance(u, v)
+	double := float64(e.rand(100)) < e.doubleChance(u, v) || s.Strikes > 1
 	total := 0
 	for i := 0; i < 1+btoi(double) && u.HP > 0 && v.HP > 0; i++ {
 		if i == 1 {
@@ -276,7 +280,11 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 			}
 		}
 	}
-	if k := e.fx(u, content.FxPierce); k > 0 {
+	k := e.fx(u, content.FxPierce)
+	if s.Pierce > 0 {
+		k = math.Max(k, s.Pierce+e.fx(u, content.FxPierceBoost))
+	}
+	if k > 0 {
 		dx, dy := v.X-u.X, v.Y-u.Y
 		if abs(dx) >= abs(dy) {
 			dx, dy = sign(dx), 0

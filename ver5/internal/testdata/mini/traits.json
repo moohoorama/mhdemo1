@@ -53,15 +53,6 @@
    "Requires": [],
    "Effects": {}
   },
-  "far_t": {
-   "Name": "Far",
-   "Desc": "",
-   "Cost": 200,
-   "Requires": [],
-   "Effects": {
-    "no_min_range": 1
-   }
-  },
   "crit_t": {
    "Name": "Crit",
    "Desc": "",
@@ -475,6 +466,39 @@
    "Name": "Brace",
    "Desc": "",
    "Cost": 400,
+   "Requires": []
+  },
+  "thrust_t": {
+   "Name": "Thrust",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": []
+  },
+  "rapid_t": {
+   "Name": "Rapid",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": []
+  },
+  "arrow_t": {
+   "Name": "Arrow",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": []
+  },
+  "boost_t": {
+   "Name": "Boost",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": [],
+   "Effects": {
+    "pierce_boost": 0.25
+   }
+  },
+  "far_t": {
+   "Name": "Far",
+   "Desc": "",
+   "Cost": 200,
    "Requires": []
   }
  }
