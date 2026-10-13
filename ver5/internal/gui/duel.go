@@ -117,36 +117,21 @@ func (g *Game) drawDuel(dst *ebiten.Image) {
 	}
 }
 
-// floorImage is the arena ground of the cell the defender stands on, at the duel's pixel
-// scale: still water on a water cell, the battle map's grass pattern anywhere else. Structures
-// and props are left out.
+// floorImage is the battle map's grass pattern at the duel's pixel scale for a defender on
+// open ground, nil (the duel's own dirt arena) on water. Structures and props are left out.
 func (g *Game) floorImage(u, v int) *ebiten.Image {
-	floor := ebiten.NewImage(Width, Height)
-	if g.field.small(2*u, 2*v) != '~' {
-		pattern := g.assets.pattern()
-		w, h := float64(pattern.Bounds().Dx())*3, float64(pattern.Bounds().Dy())*3
-		for y := 0.0; y < Height; y += h {
-			for x := 0.0; x < Width; x += w {
-				op := &ebiten.DrawImageOptions{}
-				op.GeoM.Scale(3, 3)
-				op.GeoM.Translate(x, y)
-				floor.DrawImage(pattern, op)
-			}
-		}
-		return floor
+	if g.field.small(2*u, 2*v) == '~' {
+		return nil
 	}
-	s := g.assets.Tiles[g.assets.Animations["water"].Frames[0]]
-	// Small tiles are half a cell apart: (8, 4) map pixels, 3x on screen.
-	for i := -60; i <= 60; i++ {
-		for j := -60; j <= 60; j++ {
-			x, y := 640+float64(i-j)*24, 440+float64(i+j)*12
-			if x < -48 || x > Width+48 || y < -24 || y > Height+24 {
-				continue
-			}
+	floor := ebiten.NewImage(Width, Height)
+	pattern := g.assets.pattern()
+	w, h := float64(pattern.Bounds().Dx())*3, float64(pattern.Bounds().Dy())*3
+	for y := 0.0; y < Height; y += h {
+		for x := 0.0; x < Width; x += w {
 			op := &ebiten.DrawImageOptions{}
 			op.GeoM.Scale(3, 3)
-			op.GeoM.Translate(x-s.PivotX*3, y-s.PivotY*3-12)
-			floor.DrawImage(s.Image, op)
+			op.GeoM.Translate(x, y)
+			floor.DrawImage(pattern, op)
 		}
 	}
 	return floor
