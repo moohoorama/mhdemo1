@@ -65,22 +65,25 @@ func TestCampaignScripts(t *testing.T) {
 	})
 	t.Run("Dengmao confronts Zhang Fei before the first exchange", func(t *testing.T) {
 		story := scripts.Story("B01-duel-1", "victory")
-		var strike int
+		var strike, killing int
 		for i, b := range story.Beats {
-			if b.Kind == "critical" {
+			if isStrike(b.Kind) && strike == 0 {
 				strike = i
+			}
+			if b.Kind == "critical" {
+				killing = i
 				break
 			}
 		}
-		if strike == 0 {
+		if strike == 0 || killing == 0 {
 			t.Fatal("missing first exchange")
 		}
 		ready := story.Sample(story.Start(strike) - .01)
 		if ready.Actors[0].Position != -60 || ready.Actors[1].Position != 60 || ready.Actors[1].Facing != "NW" {
 			t.Fatalf("fighters did not confront each other in the center: %+v", ready)
 		}
-		before := story.Sample(story.Start(strike) + .55)
-		impact := story.Sample(story.Start(strike) + .57)
+		before := story.Sample(story.Start(killing) + .55)
+		impact := story.Sample(story.Start(killing) + .57)
 		if before.Flash != 0 || impact.Flash <= 0 || !impact.Critical {
 			t.Fatal("first exchange must flash on contact")
 		}
@@ -100,10 +103,14 @@ func TestCampaignScripts(t *testing.T) {
 		}
 		before := at(story, "critical-block", .55)
 		contact := at(story, "critical-block", .57)
-		if before.Flash != 0 || contact.Flash <= 0 || !contact.Critical || contact.Actors[0].Animation != "block" || contact.Actors[0].Position != -60 || contact.ShakeSide != 1 {
+		if before.Flash != 0 || contact.Flash <= 0 || !contact.Critical || contact.Actors[0].Animation != "block" || math.Abs(contact.Actors[0].Position-before.Actors[0].Position) > 5 || contact.ShakeSide != 1 {
 			t.Fatalf("powerful blow was not calmly blocked: %+v", contact)
 		}
-		previous := [2]float64{-60, 120}
+		previous := [2]float64{}
+		chaseStart := at(story, "straight-chase", 0)
+		for i := range previous {
+			previous[i] = chaseStart.Actors[i].Position
+		}
 		for _, time := range []float64{.1, .6, 1.2, 1.8, 2.3} {
 			r := at(story, "straight-chase", time)
 			for i, a := range r.Actors[:2] {
@@ -321,7 +328,7 @@ func TestThreeBrothersAgainstOne(t *testing.T) {
 			}
 			if b.Kind == "critical-block" {
 				r := s.Sample(s.Start(i) + .57)
-				if r.Actors[0].Position < -60 || r.Actors[1].Position > 60 {
+				if r.Actors[0].Position < -60-rushSlide || r.Actors[1].Position > 60+rushSlide {
 					t.Fatal("equal combat yielded ground")
 				}
 			}

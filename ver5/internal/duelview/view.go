@@ -376,17 +376,28 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 	return s
 }
 
+// bubbleTop places a bubble of height h above the head at headY. Near the top edge it moves
+// below the feet instead of being pushed down over the fighter.
+func bubbleTop(headY, footY, h float64) float64 {
+	const margin, bottomLimit = 12, 610
+	top := headY - h
+	if top < margin {
+		top = footY + 18
+	}
+	return max(margin, min(bottomLimit-h, top))
+}
+
 // drawUI is the duel's own interface: speech bubbles and fighter portraits.
 func (g *View) drawUI(dst *ebiten.Image, s duel.State) {
 	for i, a := range s.Actors {
 		if !a.Visible || a.Speech == "" {
 			continue
 		}
-		x, y := g.at(a.ScreenPosition())
-		y -= g.Fighters[i].Art.TopOffset() * 3
+		x, footY := g.at(a.ScreenPosition())
+		headY := footY - g.Fighters[i].Art.TopOffset()*3
 		w, h := g.Bubble.Size(g.Fighters[i].Name, a.Speech)
 		x = max(12, min(width-w-12, x-28))
-		y = max(145, min(610-h, y-h))
+		y := bubbleTop(headY, footY, h)
 		g.Bubble.DrawText(dst, g.Fighters[i].Name, a.Speech, x, y, 1)
 	}
 	allyX, allyY, enemyX, enemyY := 24.0, 70.0, 930.0, 664.0

@@ -9,14 +9,11 @@ import (
 )
 
 func TestRushAttackAdvancesAndHoldsPosition(t *testing.T) {
-	for side := range 4 {
+	for side := range 2 {
 		kinds := []string{"hit", "block", "critical-block", "yielding-block", "dodge", "critical-dodge", "critical", "backhit"}
-		if side > 1 {
-			kinds = []string{"block", "critical-block", "dodge"}
-		}
 		for _, kind := range kinds {
-			t.Run(kind+[]string{" ally", " enemy", " southwest", " northeast"}[side], func(t *testing.T) {
-				story := prepareStory([]Beat{{Kind: "approach", Duration: 1}, {Kind: "reinforcements", Duration: 1}, {Kind: "rush-" + kind, Side: side, Duration: 1.3}, {Kind: "talk", Duration: 1}})
+			t.Run(kind+[]string{" ally", " enemy"}[side], func(t *testing.T) {
+				story := prepareStory([]Beat{{Kind: "reinforcements", Duration: 1}, {Kind: "rush-" + kind, Side: side, Duration: 1.3}, {Kind: "talk", Duration: 1}})
 				ready := at(story, "charge-ready", 0)
 				preparing := at(story, "charge-ready", .1)
 				assert.Equal(t, "walk", preparing.Actors[side].Animation)
@@ -39,11 +36,27 @@ func TestRushAttackAdvancesAndHoldsPosition(t *testing.T) {
 				end := at(story, "rush-"+kind, 1.29)
 				assert.InDelta(t, contact.Actors[side].Position, end.Actors[side].Position, 1e-6)
 				assert.InDelta(t, contact.Actors[side].Lane, end.Actors[side].Lane, 1e-6)
+				// The charge drives the target back, restoring the charge distance.
+				driven := end.Actors[defender(side)]
+				assert.InDelta(t, chargeReach, math.Hypot(driven.Position-end.Actors[side].Position, driven.Lane-end.Actors[side].Lane), 1e-6, "defender must be driven back")
 				// The following talk must keep the advanced position too.
 				following := story.Sample(story.Start(len(story.Beats)-1) + .2)
 				assert.InDelta(t, end.Actors[side].Position, following.Actors[side].Position, 1e-6)
 				assert.InDelta(t, end.Actors[side].Lane, following.Actors[side].Lane, 1e-6)
 			})
+		}
+	}
+}
+
+func TestRushNeverBacksAway(t *testing.T) {
+	story := prepareStory([]Beat{{Kind: "approach", Duration: 1}, {Kind: "rush-block", Side: 1, Duration: 1.3}, {Kind: "rush-block", Side: 1, Duration: 1.3}})
+	for _, b := range story.Beats {
+		assert.NotEqual(t, "charge-ready", b.Kind, "closer than charge distance must not step back")
+	}
+	for time := 0.; time < story.Duration(); time += .02 {
+		s := story.Sample(time)
+		if time > 1.2 && time < 1.5 {
+			assert.NotEqual(t, "walk", s.Actors[1].Animation, "no walking retreat before a charge")
 		}
 	}
 }

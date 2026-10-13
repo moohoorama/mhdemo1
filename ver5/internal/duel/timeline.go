@@ -53,9 +53,11 @@ type Story struct {
 }
 
 const attackReach = 120.0
-const chargeReach = 190.0
+const chargeReach = 170.0
 
 // rankDepth is where a retreating fighter meets the front rank of its own troops.
+const rushSlide = chargeReach - attackReach
+
 const rankDepth, fadeSpan = 500.0, 100.0
 
 func strikeKind(kind string) string {
@@ -93,7 +95,7 @@ func prepareStory(beats []Beat) Story {
 			if strikeKind(beat.Kind) != beat.Kind {
 				reach, kind, title = chargeReach, "charge-ready", "상대를 보며 전진 공격의 간격 확보"
 			}
-			if distance > reach+1e-6 || kind == "charge-ready" && math.Abs(distance-reach) > 1e-6 {
+			if distance > reach+1e-6 {
 				step := Beat{Kind: kind, Title: title, Side: beat.Side, Duration: max(.25, math.Abs(distance-reach)/220)}
 				story.Beats = append(story.Beats, step)
 				apply(&state, step, step.Duration)
@@ -232,7 +234,7 @@ func apply(s *State, b Beat, t float64) {
 		if b.Kind == "charge-ready" {
 			reach = chargeReach
 		}
-		if distance > 0 && (distance > reach || b.Kind == "charge-ready") {
+		if distance > reach {
 			travel := (distance - reach) * p
 			a.Position += delta / distance * travel
 			a.Lane += laneDelta / distance * travel
@@ -361,18 +363,24 @@ func apply(s *State, b Beat, t float64) {
 			d.Animation = "block"
 			d.MS = (t - .38) * 1000
 		}
+		slide, dodgeStep := 0.0, 64.0
+		if b.Kind == "yielding-block" {
+			slide = 55
+		}
+		if rush {
+			// A charge drives the target back so the next exchange starts at charge distance.
+			slide, dodgeStep = rushSlide, rushSlide
+		}
 		if t >= .56 {
 			d.MS = (t - .56) * 1000
 			switch b.Kind {
 			case "block", "critical-block", "yielding-block":
 				d.Animation = "block"
 				d.MS = (t - .38) * 1000
-				if b.Kind == "yielding-block" {
-					d.Position += direction * 55 * min(1, (t-.56)/.35)
-				}
+				d.Position += direction * slide * min(1, (t-.56)/.35)
 			case "dodge", "critical-dodge":
 				progress := min(1, (t-.56)/.35)
-				d.Position += direction * 64 * progress
+				d.Position += direction * dodgeStep * progress
 				if progress < 1 {
 					d.Animation = "walk"
 				}
@@ -381,6 +389,9 @@ func apply(s *State, b Beat, t float64) {
 				push := 20.0
 				if b.Kind == "critical" || b.Kind == "backhit" {
 					push = 52
+				}
+				if rush {
+					push = rushSlide
 				}
 				d.Position += direction * push * math.Sin(math.Pi/2*min(1, (t-.56)/.35))
 			}
