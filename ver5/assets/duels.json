@@ -12,7 +12,7 @@
       {
         "Kind": "talk",
         "Title": "장비의 호통",
-        "Speech": "연인 장익덕이 여기 있다! 목을 씻고 기다려라!",
+        "Speech": "연인 장익덕이 여기 있슈! 목 씻고 기다리랑께!",
         "Side": 0,
         "Duration": 2.9
       },
@@ -33,14 +33,14 @@
       {
         "Kind": "block",
         "Title": "등무가 먼저 칼을 휘둘러 들어가다",
-        "Speech": "간지럽구나!",
+        "Speech": "간지럽구먼!",
         "Side": 1,
         "Duration": 1.05
       },
       {
         "Kind": "hit",
         "Title": "장비가 칼날을 쳐내고 반격하다",
-        "Speech": "어딜 베려 하느냐!",
+        "Speech": "어딜 베려고 그러는겨!",
         "Side": 0,
         "Duration": 1.1
       },
@@ -54,7 +54,7 @@
       {
         "Kind": "rush-block",
         "Title": "성난 등무가 돌진하며 거듭 베다",
-        "Speech": "흥, 어림없다!",
+        "Speech": "흥, 어림없슈!",
         "Side": 1,
         "Duration": 1.1
       },
@@ -68,9 +68,9 @@
       {
         "Kind": "talk",
         "Title": "장비가 마무리를 선언하다",
-        "Speech": "이제 내 차례다. 이 장팔사모를 받아라!",
+        "Speech": "이제 내 차례여! 이 장팔사모 맛 좀 보랑께!",
         "Side": 0,
-        "Duration": 2.5
+        "Duration": 2.8
       },
       {
         "Kind": "critical",
@@ -82,7 +82,7 @@
       {
         "Kind": "win",
         "Title": "장비가 한 합에 등무를 꿰뚫다",
-        "Speech": "다음은 누구냐!",
+        "Speech": "다음은 누구여! 어서 나와 보랑께!",
         "Side": 0,
         "Duration": 2.5
       }
@@ -381,9 +381,9 @@
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "여포! 연인 장익덕이 상대해 주마! 목을 길게 빼고 기다려라!",
+        "Speech": "여포! 연인 장익덕이 상대해 주겠슈! 목 길게 빼고 기다리랑께!",
         "Side": 0,
-        "Duration": 3.4
+        "Duration": 3.5
       },
       {
         "Kind": "talk",
@@ -409,7 +409,7 @@
       {
         "Kind": "block",
         "Title": "여포가 화극으로 맞받다",
-        "Speech": "이 정도냐!",
+        "Speech": "겨우 이 정도여!",
         "Side": 1,
         "Duration": 1.05
       },
@@ -451,7 +451,7 @@
       {
         "Kind": "block",
         "Title": "여포가 연달아 찌르다",
-        "Speech": "어림없다!",
+        "Speech": "어림없슈!",
         "Side": 1,
         "Duration": 1.05
       },
@@ -479,9 +479,9 @@
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "아직 멀었다! 더 덤벼라!",
+        "Speech": "아직 멀었슈! 더 덤벼 보랑께!",
         "Side": 0,
-        "Duration": 2.0
+        "Duration": 2.2
       },
       {
         "Kind": "critical-block",
@@ -493,7 +493,7 @@
       {
         "Kind": "rush-critical-block",
         "Title": "장비가 다시 전진하며 강하게 맞받아치다",
-        "Speech": "이 몸의 사모를 받아라!",
+        "Speech": "이 몸의 사모를 받아 보랑께!",
         "Side": 0,
         "Duration": 1.25
       },
@@ -514,9 +514,9 @@
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "삼백 합이라도 상대해 주마!",
+        "Speech": "삼백 합이라도 상대해 주겠슈!",
         "Side": 0,
-        "Duration": 2.0
+        "Duration": 2.1
       },
       {
         "Kind": "talk",
@@ -535,21 +535,21 @@
       {
         "Kind": "block",
         "Title": "여포가 화극으로 받아넘기다",
-        "Speech": "흥, 간지럽다!",
+        "Speech": "흥, 간지럽구먼!",
         "Side": 1,
         "Duration": 1.05
       },
       {
         "Kind": "rush-block",
         "Title": "여포가 몸을 낮추고 파고들다",
-        "Speech": "이 정도 힘이냐!",
+        "Speech": "힘이 겨우 그것뿐이여!",
         "Side": 1,
         "Duration": 1.1
       },
       {
         "Kind": "critical-block",
         "Title": "장비가 맞서 창을 휘두르다",
-        "Speech": "이 괴물 같은 놈!",
+        "Speech": "이 괴물 같은 자식!",
         "Side": 0,
         "Duration": 1.2
       },
@@ -570,9 +570,9 @@
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "하하하! 이거다! 이런 놈과 싸워 보고 싶었다!",
+        "Speech": "하하하! 이거여! 이런 놈이랑 싸워 보고 싶었던겨!",
         "Side": 0,
-        "Duration": 2.9
+        "Duration": 3.0
       },
       {
         "Kind": "critical-block",
@@ -605,23 +605,23 @@
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "아우여, 홀로 싸우게 두지 않겠다!",
+        "Speech": "익덕, 홀로 싸우게 두지 않겠다.",
         "Side": 2,
-        "Duration": 2.3
+        "Duration": 2.2
       },
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "삼형제가 함께 상대해 주마!",
+        "Speech": "삼형제가 함께 상대하겠소!",
         "Side": 3,
         "Duration": 2.0
       },
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "형님들! 기다리고 있었수다!",
+        "Speech": "형~ 왔슈! 기다리고 있었슈!",
         "Side": 0,
-        "Duration": 2.0
+        "Duration": 2.1
       },
       {
         "Kind": "block",
@@ -675,7 +675,7 @@
       {
         "Kind": "block",
         "Title": "여포가 세 방향을 한꺼번에 쳐내다",
-        "Speech": "형님들이 계신다! 겁날 게 없다!",
+        "Speech": "형님들이 계시는디 겁날 게 뭐 있슈!",
         "Side": 1,
         "Duration": 1.05
       },
@@ -929,23 +929,23 @@
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "형님, 혼자서만 즐기시면 곤란하오!",
+        "Speech": "형님~ 혼자서만 재밌게 놀면 섭섭하쥬!",
         "Side": 2,
-        "Duration": 2.3
+        "Duration": 2.5
       },
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "운장, 우리가 함께한다!",
+        "Speech": "운장, 우리가 함께하오!",
         "Side": 3,
         "Duration": 1.9
       },
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "아우와 형님… 늦지 않으셨군.",
+        "Speech": "형님. 익덕. 오셨습니까.",
         "Side": 0,
-        "Duration": 2.1
+        "Duration": 2.0
       },
       {
         "Kind": "block",
@@ -1078,7 +1078,7 @@
       {
         "Kind": "dodge",
         "Title": "유비가 화극을 피해 물러서다",
-        "Speech": "아슬아슬했다!",
+        "Speech": "아슬아슬했소!",
         "Side": 1,
         "Duration": 1.05
       },
@@ -1092,7 +1092,7 @@
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "여기서 물러설 수는 없다!",
+        "Speech": "여기서 물러설 수는 없소!",
         "Side": 0,
         "Duration": 2.0
       },
@@ -1106,7 +1106,7 @@
       {
         "Kind": "block",
         "Title": "여포가 곧바로 되받아치다",
-        "Speech": "아직이다!",
+        "Speech": "아직이오!",
         "Side": 1,
         "Duration": 1.05
       },
@@ -1225,21 +1225,21 @@
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "형님, 잘 버텨 주셨소!",
+        "Speech": "형님, 잘 버티셨습니다.",
         "Side": 2,
         "Duration": 1.9
       },
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "이제부터는 우리 차례요!",
+        "Speech": "이제부터는 우리 차례유!",
         "Side": 3,
         "Duration": 1.9
       },
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "아우들… 기다리고 있었다!",
+        "Speech": "아우들… 기다리고 있었소!",
         "Side": 0,
         "Duration": 2.0
       },
@@ -1295,7 +1295,7 @@
       {
         "Kind": "talk",
         "Title": "대사",
-        "Speech": "형제가 모이면 천하에 못 이길 자가 없다!",
+        "Speech": "형제가 모이면 천하에 못 이길 자가 없소!",
         "Side": 0,
         "Duration": 2.6
       },
