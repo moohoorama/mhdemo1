@@ -29,6 +29,14 @@ func (g *Game) duelView(e core.Event) *duelview.View {
 			v.Fighters[i+2] = g.duelFighter(u.Def, u.Class, u.Color)
 		}
 	}
+	if g.field != nil {
+		a, t := g.unitAt(e.Actor), g.unitAt(e.Target)
+		if a != nil && t != nil {
+			ax, ay := g.field.Center(a.u, a.v)
+			tx, ty := g.field.Center(t.u, t.v)
+			v.Ground, v.GroundX, v.GroundY = g.field.ground[0], (ax+tx)/2, (ay+ty)/2
+		}
+	}
 	v.Anchor = func() (float64, float64) {
 		a, t := g.unitAt(e.Actor), g.unitAt(e.Target)
 		if a == nil || t == nil || g.field == nil {
@@ -96,9 +104,11 @@ func (g *Game) drawDuel(dst *ebiten.Image) {
 		g.play(g.duelBattle)
 		g.buttons, g.blocks = nil, nil
 		v.DrawOver(dst, g.duelBattle)
+		g.drawDuelPreviewInfo(dst)
 		return
 	}
 	v.Draw(dst)
+	g.drawDuelPreviewInfo(dst)
 	g.btn(dst, image.Rect(1000, 805, 1254, 839), "일기토 건너뛰기", g.player.SkipDuel)
 }
 

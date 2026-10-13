@@ -42,7 +42,10 @@ type View struct {
 	Axis string
 	// Anchor is the battle-screen point the duel grows from and shrinks back to; nil means the centre.
 	Anchor func() (float64, float64)
-	Time   float64
+	// Ground is the battle map's baked terrain; (GroundX, GroundY) in it is where the duelists meet.
+	Ground           *ebiten.Image
+	GroundX, GroundY float64
+	Time             float64
 	// Clock is real seconds since the duel began; Time follows it between the two transitions.
 	Clock  float64
 	canvas *ebiten.Image
@@ -55,7 +58,7 @@ func (g *View) Length() float64 {
 
 // Advance moves the real clock and the story clock it drives.
 func (g *View) Advance(dt float64) {
-	g.Clock = min(g.Length(), g.Clock+dt)
+	g.Clock = max(0, min(g.Length(), g.Clock+dt))
 	g.Time = max(0, min(g.Story.Duration(), (g.Clock-TransitionTime)*PlaybackSpeed))
 }
 
@@ -87,20 +90,21 @@ func (g *View) DrawOver(dst, battle *ebiten.Image) {
 		g.canvas = ebiten.NewImage(width, height)
 	}
 	g.draw(g.canvas)
-	// The battle swells as the duel opens out of it.
+	// The battle pans the meeting point toward the centre while the duel opens out of it.
+	pan := smooth(min(1, c*2))
+	mx, my := ax+(cx-ax)*pan, ay+(cy-ay)*pan
 	k := 1 + .12*c
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-ax*s, -ay*s)
 	op.GeoM.Scale(k, k)
-	op.GeoM.Translate(ax*s, ay*s)
+	op.GeoM.Translate(mx*s, my*s)
 	dst.DrawImage(battle, op)
 	// Zoom is geometric so growth reads as steady rather than bursting at the end.
 	k = math.Pow(.06, 1-c)
-	px, py := ax+(cx-ax)*c, ay+(cy-ay)*c
 	op = &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-cx, -cy)
 	op.GeoM.Scale(k*s, k*s)
-	op.GeoM.Translate(px*s, py*s)
+	op.GeoM.Translate(mx*s, my*s)
 	op.ColorScale.ScaleAlpha(float32(c))
 	op.Filter = ebiten.FilterLinear
 	dst.DrawImage(g.canvas, op)
@@ -219,7 +223,19 @@ func (g *View) draw(dst *ebiten.Image) {
 		k := max(0, min(1, float64(y-160)/550))
 		box(dst, 0, float64(y), width, 4, color.NRGBA{uint8(74 + 19*k), uint8(74 + 12*k), uint8(63 + 8*k), 255})
 	}
+	if g.Ground != nil {
+		// Battle ground is drawn at 2 canvas px per tile pixel; duelists are 3x their native pixels.
+		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterNearest}
+		op.GeoM.Translate(-g.GroundX, -g.GroundY)
+		op.GeoM.Scale(1.5, 1.5)
+		op.GeoM.Translate(640, 440)
+		dst.DrawImage(g.Ground, op)
+		box(dst, 0, 0, width, height, color.NRGBA{18, 22, 20, 70})
+	}
 	for i := range 160 {
+		if g.Ground != nil {
+			break
+		}
 		x := float64((i * 197) % 1280)
 		y := float64((i * 113) % height)
 		line(dst, x, y, x+7, y+2, 1, color.NRGBA{126, 118, 91, 55})

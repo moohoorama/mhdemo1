@@ -19,6 +19,12 @@ func (g *Game) busy() bool { return g.player.Busy() || g.sceneBusy() }
 func (g *Game) advance(dt float64) {
 	g.uiSeconds += dt
 	dt *= float64(g.speed)
+	if g.duelPreview != nil {
+		dt *= g.previewRate
+		if g.previewPaused {
+			dt = 0
+		}
+	}
 	g.clockMS += dt * 1000
 	g.player.Update(dt)
 	for _, u := range g.vis {

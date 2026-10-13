@@ -34,6 +34,8 @@ const Width, Height = 1280, 850
 type Game struct {
 	duelPreview          func() error
 	previewIdle          int
+	previewRate          float64
+	previewPaused        bool
 	duelBattle           *ebiten.Image
 	gallery              *duelGallery
 	editor               *mapEditor
