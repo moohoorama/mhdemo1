@@ -221,7 +221,7 @@ func TestEnemyTurnLearning(t *testing.T) {
 				state := s.Engine.Snapshot()
 				for i := range state.Characters {
 					if state.Characters[i].ID == "hero" {
-						state.Characters[i].XP = core.ExperienceRequired(s.Data, state.Characters[i].Level) - 1
+						state.Characters[i].XP = core.XPPerLevel - 1
 						state.Characters[i].Points = 900
 					}
 				}

@@ -18,7 +18,7 @@ func in(s string, list ...string) bool {
 func (d *Data) Validate() error {
 	r := d.Rules
 	if len(r.DamageCurve) < 2 || len(r.HitCurve) < 2 || r.StatDenominator <= 0 || r.MaxLevel < 1 || len(r.PromoteLevels) == 0 ||
-		r.BasicAttack.Kind != KindPhysical || r.ExpBase <= 0 || r.ExpGrowth <= 0 || r.DeputyDivisor <= 0 {
+		r.BasicAttack.Kind != KindPhysical || r.ExpGrowth <= 0 || r.DeputyDivisor <= 0 {
 		return fmt.Errorf("rules incomplete")
 	}
 	if len(d.Classes) == 0 || len(d.Characters) == 0 || len(d.Terrain) == 0 || len(d.Tiles) == 0 || len(d.Stages) == 0 || len(d.Nodes) == 0 {

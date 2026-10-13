@@ -68,7 +68,6 @@
   "BurnPercent": 4,
   "BuffPercent": 20,
   "BuffTurns": 2,
-  "ExpBase": 100,
   "ExpGrowth": 1.035,
   "ExpAction": 24,
   "ExpSpell": 2,

@@ -248,7 +248,7 @@ func (g *Game) officerDetail(dst *ebiten.Image, o core.Observation, r image.Rect
 	g.portrait(dst, of.ID, x, y, 120)
 	g.label(dst, g.name(of.ID), x+140, y, 28, gold)
 	g.label(dst, fmt.Sprintf("%s · Lv%d", g.className(of.Class), of.Level), x+140, y+42, 17, ink)
-	progress := core.ExperienceProgress(g.S.Data, of.Level, of.XP)
+	progress := core.ExperienceProgress(of.XP)
 	bar(dst, float32(x+140), float32(y+74), 260, 8, progress/100, xpC)
 	g.label(dst, fmt.Sprintf("EXP %.1f / 100   ·   특성치 %d", progress, of.Points), x+140, y+86, 14, muted)
 	stats, err := g.S.Engine.CharacterStats(of.ID)

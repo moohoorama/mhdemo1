@@ -53,7 +53,7 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 	case "level":
 		return fmt.Sprintf("%s 레벨 업! Lv%d", a, e.Amount), true
 	case "experience":
-		return fmt.Sprintf("%s: 경험치 +%d", a, e.Amount), false
+		return fmt.Sprintf("%s: 경험치 +%s", a, xpText(e.Amount)), false
 	case "cost":
 		return fmt.Sprintf("%s: 병법치 -%d", a, e.Amount), false
 	case "recover-hp":
@@ -185,4 +185,9 @@ var statRows = []statRow{
 	{"공격", func(s core.Stats) int { return s.Attack }}, {"방어", func(s core.Stats) int { return s.Defense }},
 	{"정신", func(s core.Stats) int { return s.Mind }}, {"순발", func(s core.Stats) int { return s.Agility }},
 	{"사기", func(s core.Stats) int { return s.Morale }},
+}
+
+// xpText shows raw experience as percent of a level bar, without a trailing ".0".
+func xpText(raw int) string {
+	return strings.TrimSuffix(fmt.Sprintf("%.1f", float64(raw)*100/core.XPPerLevel), ".0")
 }

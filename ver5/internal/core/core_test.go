@@ -528,10 +528,20 @@ func TestDeputyBlend(t *testing.T) {
 		t.Fatalf("deputy_rate %v", a)
 	}
 }
+func TestExperienceBarIsLevelIndependent(t *testing.T) {
+	e, _, _ := arena(t)
+	c := e.char("hero")
+	c.XP = 3000
+	level := c.Level
+	e.xp("hero", XPPerLevel)
+	if c.Level != level+1 || c.XP != 3000 {
+		t.Fatalf("one bar of xp: level %d->%d, xp %d", level, c.Level, c.XP)
+	}
+}
 func TestLearningWindow(t *testing.T) {
 	e, _, _ := arena(t)
 	e.char("hero").Points = 250
-	e.xp("hero", ExperienceRequired(e.data, e.char("hero").Level))
+	e.xp("hero", XPPerLevel)
 	if len(e.state.Learning) != 1 {
 		t.Fatalf("window %v (points %d)", e.state.Learning, e.char("hero").Points)
 	}

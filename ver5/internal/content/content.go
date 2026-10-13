@@ -31,11 +31,10 @@ type Rules struct {
 	CounterShare           float64 // a counter deals this share of a normal blow
 	PoisonPercent          int
 	BurnPercent            int
-	BuffPercent            int // the size of an attack/defense/morale/agility buff or debuff
-	BuffTurns              int // how long a trait's automatic buff lasts
-	ExpBase                float64
-	ExpGrowth              float64
-	ExpAction, ExpSpell    float64 // action XP in percent of the target's level cost, and its spell multiplier
+	BuffPercent            int     // the size of an attack/defense/morale/agility buff or debuff
+	BuffTurns              int     // how long a trait's automatic buff lasts
+	ExpGrowth              float64 // action XP is scaled by this per level the target is above the actor
+	ExpAction, ExpSpell    float64 // action XP in percent of the actor's level bar at equal levels, and its spell multiplier
 	ExpDefenseShare        float64 // received strike or successful defense XP, relative to action XP
 	ExpDefeat              float64
 	ExpLevelStep           float64

@@ -183,7 +183,7 @@ func (e *Engine) duel(attacker, defender *Unit, d content.Duel) {
 	}
 	attacker.Attacked = true
 	if ally.HP > 0 && !ally.AI {
-		e.xp(ally.Character, ExperienceRequired(e.data, e.char(ally.Character).Level))
+		e.xp(ally.Character, XPPerLevel)
 	}
 }
 

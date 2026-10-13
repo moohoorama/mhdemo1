@@ -120,8 +120,8 @@ func (e *Engine) Observe() Observation {
 	}
 	for _, u := range s.Units {
 		c := e.char(u.Character)
-		o.UnitViews = append(o.UnitViews, UnitView{Unit: u, Name: e.name(c), Class: c.Class, Def: c.Def, Level: c.Level, XP: c.XP, XPRequired: ExperienceRequired(e.data, c.Level),
-			XPProgress: ExperienceProgress(e.data, c.Level, c.XP), Stats: e.stats(&u), Attributes: attributes(e.attributes(c)), Points: c.Points,
+		o.UnitViews = append(o.UnitViews, UnitView{Unit: u, Name: e.name(c), Class: c.Class, Def: c.Def, Level: c.Level, XP: c.XP, XPRequired: XPPerLevel,
+			XPProgress: ExperienceProgress(c.XP), Stats: e.stats(&u), Attributes: attributes(e.attributes(c)), Points: c.Points,
 			Traits: e.traits(c), Skills: e.skills(c)})
 	}
 	for _, id := range s.Learning {

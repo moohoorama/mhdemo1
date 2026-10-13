@@ -374,7 +374,7 @@ func (g *Game) result(dst *ebiten.Image, o core.Observation) {
 			lv = fmt.Sprintf("Lv %d → %d", from, u.Level)
 		}
 		g.label(dst, lv, float64(r.Min.X+116), float64(y+28), 15, gold)
-		g.label(dst, fmt.Sprintf("경험치 +%d", g.battleXP[u.ID]), float64(r.Min.X+260), float64(y+4), 15, ink)
+		g.label(dst, fmt.Sprintf("경험치 +%s", xpText(g.battleXP[u.ID])), float64(r.Min.X+260), float64(y+4), 15, ink)
 		bar(dst, float32(r.Min.X+260), float32(y+32), 220, 8, u.XPProgress/100, xpC)
 		if u.ID == best {
 			g.label(dst, "최다 공훈", float64(r.Min.X+510), float64(y+14), 16, good)

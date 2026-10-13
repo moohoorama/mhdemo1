@@ -26,7 +26,7 @@ func TestBattleLogCommand(t *testing.T) {
 	}{
 		{"attack and experience", core.Command{Kind: "attack", Actor: "liubei", Target: "guanyu"}, []core.Event{
 			{Kind: "damage", Actor: "liubei", Target: "guanyu", Amount: 320},
-			{Kind: "experience", Actor: "liubei", Amount: 12},
+			{Kind: "experience", Actor: "liubei", Amount: 1200},
 		}, []string{"유비 → 관우: 일반 공격", "유비 → 관우: 피해 320", "유비: 경험치 +12"}},
 		{"supply at the cap", core.Command{Kind: "skill", Actor: "liubei", Target: "guanyu", Skill: "petition"}, []core.Event{
 			{Kind: "cost", Actor: "liubei", Amount: 24},
@@ -77,7 +77,7 @@ func TestLogWindow(t *testing.T) {
 func TestBattleLogRetainsRecentRecords(t *testing.T) {
 	g := logTestGame(t)
 	for i := 0; i < 310; i++ {
-		g.logCommand(core.Command{}, []core.Event{{Kind: "experience", Actor: "liubei", Amount: i}})
+		g.logCommand(core.Command{}, []core.Event{{Kind: "experience", Actor: "liubei", Amount: i * 100}})
 		g.publishBattleLog()
 	}
 	check(t, len(g.history), 300)

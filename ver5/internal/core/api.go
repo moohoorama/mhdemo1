@@ -186,7 +186,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 		def, ok := d.Characters[o.Def]
 		_, cl := d.Classes[o.Class]
 		if !ok || !cl || o.Temp != (def.Template || o.Placement) || !o.Temp && o.ID != o.Def || (!o.Placement && !classReachable(d, def.Class, o.Class) || o.Placement && d.ClassFamily(def.Class) != d.ClassFamily(o.Class)) || seen[o.ID] || o.Level < 1 || o.Level > R.MaxLevel ||
-			o.XP < 0 || o.XP >= ExperienceRequired(d, o.Level) || o.Points < 0 || o.XPShareRemainder < 0 || o.XPShareRemainder >= 100 || o.Equipment == nil {
+			o.XP < 0 || o.XP >= XPPerLevel || o.Points < 0 || o.XPShareRemainder < 0 || o.XPShareRemainder >= 100 || o.Equipment == nil {
 			return nil, fail("CorruptSave")
 		}
 		if t := d.Classes[o.Class].Tier; !o.Placement && t > 0 && o.Level < R.PromoteLevels[t-1] {

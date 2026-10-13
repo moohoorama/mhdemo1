@@ -310,7 +310,7 @@ func (g *Game) record(before *core.Observation, events []core.Event) {
 			}
 			for _, c := range o.Characters {
 				if c.ID == id && up.progress == 0 {
-					up.progress = core.ExperienceProgress(g.S.Data, c.Level, c.XP)
+					up.progress = core.ExperienceProgress(c.XP)
 				}
 			}
 		}

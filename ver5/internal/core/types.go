@@ -103,7 +103,7 @@ type Preview struct {
 	Healing, MPRecovery        int
 	Effect                     string
 	Hit, Crit, Double          float64 // percent; Crit and Double are 0 for non-physical actions
-	XP, CritXP                 int     // the actor's raw experience if it lands, normally and critically
+	XP, CritXP                 int     // the actor's experience in 1/100 percent of a level if it lands, normally and critically
 	Targets                    []string
 }
 type Options struct{ Commands []Command }

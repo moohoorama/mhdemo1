@@ -1,17 +1,14 @@
 package core
 
-import (
-	"math"
-	"srpg/internal/content"
-)
+import "math"
 
-// ExperienceRequired is the raw cost from level L to L+1. The UI always
-// displays progress on a 0..100 scale; surplus raw experience is retained.
-func ExperienceRequired(d *content.Data, level int) int {
-	return int(math.Round(d.Rules.ExpBase*math.Pow(d.Rules.ExpGrowth, float64(max(1, level)-1)) + 1e-9))
-}
-func ExperienceProgress(d *content.Data, level, xp int) float64 {
-	return min(100, 100*float64(xp)/float64(ExperienceRequired(d, level)))
+// XPPerLevel is the experience between two levels at every level: Character.XP is the
+// progress through the current level's bar in 1/100 percent, so a surplus keeps its meaning
+// across level-ups and an XPPerLevel grant is always exactly one bar.
+const XPPerLevel = 10000
+
+func ExperienceProgress(xp int) float64 {
+	return min(100, 100*float64(xp)/XPPerLevel)
 }
 
 // Action XP is awarded per effective target. Neither damage magnitude nor
@@ -29,7 +26,7 @@ func (e *Engine) actionXPAmount(u, v *Unit, spell, defeated bool) int {
 	}
 	a, b := e.char(u.Character), e.char(v.Character)
 	factor := clamp(1+R.ExpLevelStep*float64(b.Level-a.Level), R.ExpMinFactor, R.ExpMaxFactor)
-	n := R.ExpAction * float64(ExperienceRequired(e.data, b.Level)) / 100 * factor
+	n := R.ExpAction * XPPerLevel / 100 * factor * math.Pow(R.ExpGrowth, float64(b.Level-a.Level))
 	if spell {
 		n *= R.ExpSpell
 	}
@@ -48,7 +45,7 @@ func (e *Engine) defenseXP(v, u *Unit, spell bool) {
 
 // supportXP is what an ally earns per target of a landed support spell.
 func (e *Engine) supportXP(u *Unit) int {
-	return max(1, ExperienceRequired(e.data, e.char(u.Character).Level)*e.data.Rules.ExpSupportPercent/100)
+	return max(1, XPPerLevel*e.data.Rules.ExpSupportPercent/100)
 }
 func (e *Engine) xp(id string, n int) {
 	R := e.data.Rules
@@ -58,15 +55,15 @@ func (e *Engine) xp(id string, n int) {
 	}
 	o.XP += n
 	leveled := false
-	for o.Level < R.MaxLevel && o.XP >= ExperienceRequired(e.data, o.Level) {
-		o.XP -= ExperienceRequired(e.data, o.Level)
+	for o.Level < R.MaxLevel && o.XP >= XPPerLevel {
+		o.XP -= XPPerLevel
 		o.Level++
 		o.Points += R.PointsPerLevel
 		leveled = true
 		e.emit("level", id, "", o.Level)
 	}
 	if o.Level == R.MaxLevel {
-		o.XP = min(o.XP, ExperienceRequired(e.data, R.MaxLevel)-1)
+		o.XP = min(o.XP, XPPerLevel-1)
 	}
 	e.emit("experience", id, "", n)
 	if leveled && e.def(o).Playable && e.canLearn(o) && !contains(e.state.Learning, id) {
