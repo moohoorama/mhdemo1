@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"srpg/internal/duelview"
 
 	"srpg/internal/content"
 	"srpg/internal/core"
@@ -171,10 +172,42 @@ func (g *Game) updateDuelPreviewKeys() {
 			v.Advance(step)
 		}
 	}
-	if keyJustPressed(ebiten.KeyR) {
-		g.previewIdle = 1 << 20
-		g.player.Skip()
+	t := &duelview.Transition
+	for _, k := range []struct {
+		down, up ebiten.Key
+		v        *float64
+		step     float64 // added; or multiplied when mul
+		mul      bool
+	}{
+		{ebiten.KeyQ, ebiten.KeyW, &t.ZoomFactor, 1.25, true},
+		{ebiten.KeyA, ebiten.KeyS, &t.PanTime, .1, false},
+		{ebiten.KeyZ, ebiten.KeyX, &t.ZoomTime, .1, false},
+		{ebiten.KeyE, ebiten.KeyD, &t.StartScale, 1.25, true},
+	} {
+		for i, key := range []ebiten.Key{k.down, k.up} {
+			if !keyJustPressed(key) {
+				continue
+			}
+			sign := float64(2*i - 1)
+			switch {
+			case k.mul && sign > 0:
+				*k.v *= k.step
+			case k.mul:
+				*k.v /= k.step
+			default:
+				*k.v = max(.1, *k.v+sign*k.step)
+			}
+			g.restartDuelPreview()
+		}
 	}
+	if keyJustPressed(ebiten.KeyR) {
+		g.restartDuelPreview()
+	}
+}
+
+func (g *Game) restartDuelPreview() {
+	g.previewIdle = 1 << 20
+	g.player.Skip()
 }
 
 func (g *Game) drawDuelPreviewInfo(dst *ebiten.Image) {
@@ -186,7 +219,10 @@ func (g *Game) drawDuelPreviewInfo(dst *ebiten.Image) {
 	if g.previewPaused {
 		state = "정지"
 	}
-	g.outlined(dst, fmt.Sprintf("전환 %.2f/%.2fs  덮임 %.2f  배속 %s   [P]정지 [1-4]속도 [←→]프레임 [R]다시 [Enter]건너뛰기", v.Clock, v.Length(), v.Cover(), state), 12, Height-34, 15)
+	pan, zoom := v.Phase()
+	t := duelview.Transition
+	g.outlined(dst, fmt.Sprintf("%.2f/%.2fs  스크롤 %.2f 확대 %.2f  배속 %s   [P]정지 [1-4]속도 [←→]프레임 [R]다시 [Enter]건너뛰기", v.Clock, v.Length(), pan, zoom, state), 12, Height-58, 15)
+	g.outlined(dst, fmt.Sprintf("전투확대 %.2f [Q/W]  스크롤 %.2fs [A/S]  확대 %.2fs [Z/X]  일기토시작크기 %.3f [E/D]", t.ZoomFactor, t.PanTime, t.ZoomTime, t.StartScale), 12, Height-34, 15)
 }
 
 func (g *Game) updateDuelPreview() {

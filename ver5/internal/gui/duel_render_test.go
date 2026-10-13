@@ -89,7 +89,7 @@ func (p *duelRenderTest) Update() error {
 		before := g.S.Engine.Snapshot()
 		if p.index%2 == 0 {
 			g.player.SkipDuel()
-			g.player.Update(duelview.TransitionTime)
+			g.player.Update(duelview.Transition.Intro())
 		} else {
 			g.player.Update(g.player.Duel.Length())
 		}
@@ -136,11 +136,11 @@ func (p *duelRenderTest) Draw(dst *ebiten.Image) {
 	duration := view.Story.Beats[p.beat].Duration
 	local := []float64{min(.2, duration/4), min(.57, duration/2), duration - .001}[p.sample]
 	view.Time = view.Story.Start(p.beat) + local
-	view.Clock = duelview.TransitionTime + view.Time/duelview.PlaybackSpeed
+	view.Clock = duelview.Transition.Intro() + view.Time/duelview.PlaybackSpeed
 	g.Draw(dst)
 	if p.beat == 0 && p.sample == 0 {
 		length := view.Length()
-		for i, clock := range []float64{.2, .4, .55, length - .55, length - .3} {
+		for i, clock := range []float64{.3, duelview.Transition.PanTime, duelview.Transition.PanTime + .3, duelview.Transition.PanTime + .6, length - duelview.Transition.Intro() + .3} {
 			view.Clock = clock
 			g.Draw(dst)
 			p.save(dst, fmt.Sprintf("%s-%d-transition-%d.png", p.cases[p.index].duel.ID, p.index, i))
@@ -148,12 +148,12 @@ func (p *duelRenderTest) Draw(dst *ebiten.Image) {
 		// Retina windows render at device resolution; the transition must scale with it.
 		scale = 2
 		large := ebiten.NewImage(Width*2, Height*2)
-		view.Clock = .4
+		view.Clock = duelview.Transition.PanTime + .3
 		g.Draw(large)
 		p.save(large, fmt.Sprintf("%s-%d-transition-2x.png", p.cases[p.index].duel.ID, p.index))
 		large.Deallocate()
 		scale = 1
-		view.Clock = duelview.TransitionTime
+		view.Clock = duelview.Transition.Intro()
 		g.Draw(dst)
 	}
 	// Verify shared renderer at twice the logical resolution too.

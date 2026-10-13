@@ -32,11 +32,14 @@ import (
 const Width, Height = 1280, 850
 
 type Game struct {
+	layer                int
 	duelPreview          func() error
 	previewIdle          int
 	previewRate          float64
 	previewPaused        bool
-	duelBattle           *ebiten.Image
+	duelMap, duelUI      *ebiten.Image
+	duelCam              [2]float64
+	duelCamHeld          bool
 	gallery              *duelGallery
 	editor               *mapEditor
 	editorReturn         *mapEditor
@@ -503,6 +506,9 @@ func (g *Game) Update() error {
 	if g.duelPreview != nil {
 		g.updateDuelPreview()
 	}
+	if g.player.Duel == nil && g.duelCamHeld {
+		g.camX, g.camY, g.duelCamHeld = g.duelCam[0], g.duelCam[1], false
+	}
 	if g.player.Duel != nil {
 		g.updateDuel()
 		return nil
@@ -863,8 +869,28 @@ func (g *Game) complete(dst *ebiten.Image, o core.Observation) {
 	g.btn(dst, image.Rect(r.Max.X-220, r.Max.Y-60, r.Max.X-32, r.Max.Y-24), "시작 메뉴", func() { g.request(session.Request{Op: "title"}) })
 }
 
+// Layers of the battle screen; the duel transition draws and fades them apart.
+const (
+	layerAll = iota
+	layerMap
+	layerUI
+)
+
 // battle draws the field full-screen with the HUD over it.
 func (g *Game) battle(dst *ebiten.Image, o core.Observation) {
+	if g.layer != layerUI {
+		restore := g.battleMap(dst, o)
+		defer restore()
+	}
+	if g.layer == layerMap {
+		return
+	}
+	g.battleHUD(dst, o)
+}
+
+// battleMap draws the field with its units, effects and popups. The returned func undoes
+// the camera shake applied while drawing.
+func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 	g.ensureField(o)
 	units := make([]*unitVis, 0, len(g.vis))
 	for _, u := range o.UnitViews {
@@ -884,7 +910,6 @@ func (g *Game) battle(dst *ebiten.Image, o core.Observation) {
 	}
 	sx, sy := g.shake()
 	g.camX, g.camY = g.camX-sx/g.zoom, g.camY-sy/g.zoom
-	defer func() { g.camX, g.camY = g.camX+sx/g.zoom, g.camY+sy/g.zoom }()
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-g.camX, -g.camY)
 	op.GeoM.Scale(g.zoom, g.zoom)
@@ -902,6 +927,10 @@ func (g *Game) battle(dst *ebiten.Image, o core.Observation) {
 		sx, sy := g.toScreen(x+p.unit.shakeOffset(), y-p.unit.lift-p.unit.top-10-p.t*16-float64(p.row)*18/g.zoom)
 		g.outlined(dst, p.text, sx-g.width(p.text, 16)/2, sy, 16)
 	}
+	return func() { g.camX, g.camY = g.camX+sx/g.zoom, g.camY+sy/g.zoom }
+}
+
+func (g *Game) battleHUD(dst *ebiten.Image, o core.Observation) {
 	if g.bannerT > 0 {
 		w := g.width(g.banner, 30)
 		rect(dst, float32(Width/2-w/2-30), 300, float32(w+60), 58, color.NRGBA{R: 40, G: 14, B: 10, A: 200})

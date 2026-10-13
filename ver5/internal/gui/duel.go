@@ -29,22 +29,11 @@ func (g *Game) duelView(e core.Event) *duelview.View {
 			v.Fighters[i+2] = g.duelFighter(u.Def, u.Class, u.Color)
 		}
 	}
-	if g.field != nil {
-		a, t := g.unitAt(e.Actor), g.unitAt(e.Target)
-		if a != nil && t != nil {
-			ax, ay := g.field.Center(a.u, a.v)
-			tx, ty := g.field.Center(t.u, t.v)
-			v.Ground, v.GroundX, v.GroundY = g.field.ground[0], (ax+tx)/2, (ay+ty)/2
-		}
-	}
-	v.Anchor = func() (float64, float64) {
-		a, t := g.unitAt(e.Actor), g.unitAt(e.Target)
-		if a == nil || t == nil || g.field == nil {
-			return Width / 2, Height / 2
-		}
-		ax, ay := g.field.Center(a.u, a.v)
-		tx, ty := g.field.Center(t.u, t.v)
-		return g.toScreen((ax+tx)/2, (ay+ty)/2)
+	if a, t := g.unitView(g.player.final, e.Actor), g.unitView(g.player.final, e.Target); a != nil && t != nil && g.field != nil {
+		v.Floor = g.floorTiles(t.X, t.Y)
+		ax, ay := g.field.Center(float64(a.X), float64(a.Y))
+		tx, ty := g.field.Center(float64(t.X), float64(t.Y))
+		v.Focus = [2]float64{(ax + tx) / 2, (ay + ty) / 2}
 	}
 	return v
 }
@@ -69,7 +58,7 @@ func (p *Player) SkipDuel() {
 	p.Duel.Finish()
 	// A duel is a replay barrier: it is the sole running action.
 	for _, r := range p.running {
-		r.left = min(r.left, duelview.TransitionTime)
+		r.left = min(r.left, duelview.Transition.Intro())
 	}
 }
 
@@ -96,20 +85,56 @@ func (g *Game) updateDuel() {
 
 func (g *Game) drawDuel(dst *ebiten.Image) {
 	v := g.player.Duel
+	pan, _ := v.Phase()
+	if !g.duelCamHeld {
+		g.duelCam, g.duelCamHeld = [2]float64{g.camX, g.camY}, true
+	}
 	if v.Cover() < 1 {
-		if b := dst.Bounds(); g.duelBattle == nil || g.duelBattle.Bounds().Dx() != b.Dx() || g.duelBattle.Bounds().Dy() != b.Dy() {
-			g.duelBattle = ebiten.NewImage(b.Dx(), b.Dy())
+		g.camX = g.duelCam[0] + (v.Focus[0]-g.duelCam[0])*pan
+		g.camY = g.duelCam[1] + (v.Focus[1]-g.duelCam[1])*pan
+		b := dst.Bounds()
+		if g.duelMap == nil || g.duelMap.Bounds() != b {
+			g.duelMap, g.duelUI = ebiten.NewImage(b.Dx(), b.Dy()), ebiten.NewImage(b.Dx(), b.Dy())
 		}
-		g.duelBattle.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
-		g.play(g.duelBattle)
+		g.duelMap.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
+		g.layer = layerMap
+		g.play(g.duelMap)
+		g.duelUI.Clear()
+		if pan < 1 {
+			g.layer = layerUI
+			g.play(g.duelUI)
+		}
+		g.layer = layerAll
 		g.buttons, g.blocks = nil, nil
-		v.DrawOver(dst, g.duelBattle)
+		v.Compose(dst, g.duelMap, g.duelUI)
 		g.drawDuelPreviewInfo(dst)
 		return
 	}
 	v.Draw(dst)
 	g.drawDuelPreviewInfo(dst)
 	g.btn(dst, image.Rect(1000, 805, 1254, 839), "일기토 건너뛰기", g.player.SkipDuel)
+}
+
+// floorTiles are the ground layers of a map cell without structures or props: water
+// shows its first frame, and cells with no tile layers (native maps) use the ground pattern.
+func (g *Game) floorTiles(u, v int) []duelview.Tile {
+	x, y := (u-v)*16, (u+v+1)*8
+	layers := []int{23}
+	for _, t := range g.field.Map.Ground {
+		if t.X == x && t.Y == y {
+			layers = t.Layers
+			break
+		}
+	}
+	var tiles []duelview.Tile
+	for _, id := range layers {
+		if id == 0 {
+			id = g.assets.Animations["water"].Frames[0]
+		}
+		s := g.assets.Tiles[id]
+		tiles = append(tiles, duelview.Tile{Image: s.Image, PivotX: s.PivotX, PivotY: s.PivotY})
+	}
+	return tiles
 }
 
 func (g *Game) duelFighter(id, classID, faction string) duelview.Fighter {

@@ -38,13 +38,13 @@ func TestDuelPlaybackAndSkip(t *testing.T) {
 				if view.Time != view.Story.Duration() || view.Cover() != 1 || aftermath {
 					t.Fatal("skip must keep the closing transition")
 				}
-				p.Update(duelview.TransitionTime)
+				p.Update(duelview.Transition.Intro())
 			case "finish":
-				p.Update(duelview.TransitionTime)
+				p.Update(duelview.Transition.Intro())
 				if view.Time != 0 || view.Cover() != 1 || aftermath {
 					t.Fatal("wrong presentation clock")
 				}
-				p.Update(view.Length() - duelview.TransitionTime - .01)
+				p.Update(view.Length() - duelview.Transition.Intro() - .01)
 			}
 			p.Update(.01)
 			if p.Duel != nil || !aftermath || !p.Busy() || g.vis["enemy"].shownHP != 0 || g.vis["enemy"].dying != 0 {

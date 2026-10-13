@@ -17,8 +17,17 @@ const width, height = 1280, 850
 
 const PlaybackSpeed = 2.0
 
-// TransitionTime is the real-time length of the zoom-and-fade into and out of the duel.
-const TransitionTime = 0.7
+// Params tunes the transition between battle and duel screens. Entering first scrolls
+// the meeting point to the screen centre while the UI fades out (PanTime), then zooms the
+// battle in by ZoomFactor as the duel grows from StartScale to full size (ZoomTime).
+// Leaving plays the same in reverse.
+type Params struct {
+	PanTime, ZoomTime, ZoomFactor, StartScale float64
+}
+
+var Transition = Params{PanTime: .6, ZoomTime: .8, ZoomFactor: 4, StartScale: .06}
+
+func (p Params) Intro() float64 { return p.PanTime + p.ZoomTime }
 
 var (
 	ink  = color.NRGBA{239, 226, 195, 255}
@@ -26,6 +35,12 @@ var (
 	blue = color.NRGBA{91, 174, 216, 255}
 	red  = color.NRGBA{221, 99, 79, 255}
 )
+
+// Tile is one ground tile layer whose pivot sits on the cell centre.
+type Tile struct {
+	Image          *ebiten.Image
+	PivotX, PivotY float64
+}
 
 type Fighter struct {
 	Name, Class string
@@ -40,12 +55,12 @@ type View struct {
 	Story    duel.Story
 	// Axis is the direction from the ally to the enemy on screen: SE (default), SW, NE or NW.
 	Axis string
-	// Anchor is the battle-screen point the duel grows from and shrinks back to; nil means the centre.
-	Anchor func() (float64, float64)
-	// Ground is the battle map's baked terrain; (GroundX, GroundY) in it is where the duelists meet.
-	Ground           *ebiten.Image
-	GroundX, GroundY float64
-	Time             float64
+	// Floor is the ground tile layers under the defender, tiled over the arena.
+	Floor []Tile
+	// Focus is where the duelists meet, in battle canvas coordinates, for the camera.
+	Focus    [2]float64
+	floorImg *ebiten.Image
+	Time     float64
 	// Clock is real seconds since the duel began; Time follows it between the two transitions.
 	Clock  float64
 	canvas *ebiten.Image
@@ -53,61 +68,91 @@ type View struct {
 
 // Length is the real duration of the whole presentation, transitions included.
 func (g *View) Length() float64 {
-	return g.Story.Duration()/PlaybackSpeed + 2*TransitionTime
+	return g.Story.Duration()/PlaybackSpeed + 2*Transition.Intro()
 }
 
 // Advance moves the real clock and the story clock it drives.
 func (g *View) Advance(dt float64) {
 	g.Clock = max(0, min(g.Length(), g.Clock+dt))
-	g.Time = max(0, min(g.Story.Duration(), (g.Clock-TransitionTime)*PlaybackSpeed))
+	g.Time = max(0, min(g.Story.Duration(), (g.Clock-Transition.Intro())*PlaybackSpeed))
 }
 
 // Finish jumps to the start of the closing transition.
 func (g *View) Finish() {
-	g.Clock = max(g.Clock, g.Length()-TransitionTime)
+	g.Clock = max(g.Clock, g.Length()-Transition.Intro())
 	g.Time = g.Story.Duration()
 }
 
-// Cover is how much of the screen the duel fills: 0 shows only the battle, 1 only the duel.
-func (g *View) Cover() float64 {
-	in := min(1, g.Clock/TransitionTime)
-	out := min(1, max(0, g.Clock-(g.Length()-TransitionTime))/TransitionTime)
-	return smooth(in) * (1 - smooth(out))
-}
+func ramp(p float64) float64 { return smooth(max(0, min(1, p))) }
 
 func smooth(p float64) float64 { return p * p * (3 - 2*p) }
 
-// DrawOver composites the duel onto an already drawn battle screen of the same size as dst.
-func (g *View) DrawOver(dst, battle *ebiten.Image) {
-	c := g.Cover()
-	s := float64(dst.Bounds().Dx()) / width
-	cx, cy := float64(width)/2, float64(height)/2
-	ax, ay := cx, cy
-	if g.Anchor != nil {
-		ax, ay = g.Anchor()
-	}
+// Phase is how far the camera has scrolled to the meeting point (pan) and how far the
+// battle has zoomed into the duel (zoom), both 0..1. Pan runs first when entering and last
+// when leaving.
+func (g *View) Phase() (pan, zoom float64) {
+	t := max(0, min(g.Clock, g.Length()-g.Clock))
+	return ramp(t / Transition.PanTime), ramp((t - Transition.PanTime) / Transition.ZoomTime)
+}
+
+// Cover is 1 once the duel fills the screen and the battle need not be drawn.
+func (g *View) Cover() float64 {
+	_, zoom := g.Phase()
+	return zoom
+}
+
+// Compose draws the battle map and its UI with the duel growing out of the screen centre.
+// battle and ui are full-screen layers the same size as dst; the camera is already
+// scrolled to the meeting point.
+func (g *View) Compose(dst, battle, ui *ebiten.Image) {
+	pan, zoom := g.Phase()
+	w, h := float64(dst.Bounds().Dx()), float64(dst.Bounds().Dy())
+	s := w / width
 	if g.canvas == nil {
 		g.canvas = ebiten.NewImage(width, height)
 	}
 	g.draw(g.canvas)
-	// The battle pans the meeting point toward the centre while the duel opens out of it.
-	pan := smooth(min(1, c*2))
-	mx, my := ax+(cx-ax)*pan, ay+(cy-ay)*pan
-	k := 1 + .12*c
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(-ax*s, -ay*s)
+	k := math.Pow(max(1, Transition.ZoomFactor), zoom)
+	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterNearest}
+	op.GeoM.Translate(-w/2, -h/2)
 	op.GeoM.Scale(k, k)
-	op.GeoM.Translate(mx*s, my*s)
+	op.GeoM.Translate(w/2, h/2)
 	dst.DrawImage(battle, op)
+	if pan < 1 {
+		op = &ebiten.DrawImageOptions{}
+		op.ColorScale.ScaleAlpha(float32(1 - pan))
+		dst.DrawImage(ui, op)
+	}
 	// Zoom is geometric so growth reads as steady rather than bursting at the end.
-	k = math.Pow(.06, 1-c)
-	op = &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(-cx, -cy)
-	op.GeoM.Scale(k*s, k*s)
-	op.GeoM.Translate(mx*s, my*s)
-	op.ColorScale.ScaleAlpha(float32(c))
-	op.Filter = ebiten.FilterLinear
+	k = math.Pow(Transition.StartScale, 1-zoom) * s
+	op = &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
+	op.GeoM.Translate(-width/2, -height/2)
+	op.GeoM.Scale(k, k)
+	op.GeoM.Translate(w/2, h/2)
+	op.ColorScale.ScaleAlpha(float32(smooth(zoom)))
 	dst.DrawImage(g.canvas, op)
+}
+
+// floor tiles the defender's ground over the arena along the duel's isometric axes.
+func (g *View) floor(dst *ebiten.Image) {
+	if g.floorImg == nil {
+		g.floorImg = ebiten.NewImage(width, height)
+		for a := -24; a <= 24; a++ {
+			for b := -24; b <= 24; b++ {
+				x, y := 640+float64(a-b)*48, 440+float64(a+b)*24
+				if x < -96 || x > width+96 || y < -48 || y > height+48 {
+					continue
+				}
+				for _, t := range g.Floor {
+					op := &ebiten.DrawImageOptions{}
+					op.GeoM.Scale(3, 3)
+					op.GeoM.Translate(math.Round(x-t.PivotX*3), math.Round(y-t.PivotY*3))
+					g.floorImg.DrawImage(t.Image, op)
+				}
+			}
+		}
+	}
+	dst.DrawImage(g.floorImg, nil)
 }
 
 func box(dst *ebiten.Image, x, y, w, h float64, c color.Color) {
@@ -223,17 +268,11 @@ func (g *View) draw(dst *ebiten.Image) {
 		k := max(0, min(1, float64(y-160)/550))
 		box(dst, 0, float64(y), width, 4, color.NRGBA{uint8(74 + 19*k), uint8(74 + 12*k), uint8(63 + 8*k), 255})
 	}
-	if g.Ground != nil {
-		// Battle ground is drawn at 2 canvas px per tile pixel; duelists are 3x their native pixels.
-		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterNearest}
-		op.GeoM.Translate(-g.GroundX, -g.GroundY)
-		op.GeoM.Scale(1.5, 1.5)
-		op.GeoM.Translate(640, 440)
-		dst.DrawImage(g.Ground, op)
-		box(dst, 0, 0, width, height, color.NRGBA{18, 22, 20, 70})
+	if len(g.Floor) > 0 {
+		g.floor(dst)
 	}
 	for i := range 160 {
-		if g.Ground != nil {
+		if len(g.Floor) > 0 {
 			break
 		}
 		x := float64((i * 197) % 1280)
