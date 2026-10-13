@@ -4,6 +4,7 @@ import (
 	"image/color"
 	"math"
 	"sort"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
@@ -34,8 +35,10 @@ type View struct {
 	Bubble   *Bubble
 	Fighters [4]Fighter
 	Story    duel.Story
-	Time     float64
-	canvas   *ebiten.Image
+	// Axis is the direction from the ally to the enemy on screen: SE (default), SW, NE or NW.
+	Axis   string
+	Time   float64
+	canvas *ebiten.Image
 }
 
 func box(dst *ebiten.Image, x, y, w, h float64, c color.Color) {
@@ -57,6 +60,31 @@ func (g *View) labelWeight(dst *ebiten.Image, s string, x, y, size float64, c co
 	op.LineSpacing = size * 1.45
 	text.Draw(dst, s, f, op)
 }
+
+// at mirrors a default-axis (ally upper left, enemy lower right) arena point onto Axis.
+func (g *View) at(x, y float64) (float64, float64) {
+	if g.flipX() {
+		x = width - x
+	}
+	if g.flipY() {
+		y = 880 - y
+	}
+	return x, y
+}
+
+func (g *View) flipX() bool { return strings.HasSuffix(g.Axis, "W") }
+func (g *View) flipY() bool { return strings.HasPrefix(g.Axis, "N") }
+
+func (g *View) facing(dir string) string {
+	if g.flipX() {
+		dir = strings.NewReplacer("E", "W", "W", "E").Replace(dir)
+	}
+	if g.flipY() {
+		dir = strings.NewReplacer("N", "S", "S", "N").Replace(dir)
+	}
+	return dir
+}
+
 func point(q float64) (float64, float64) { return (duel.Actor{Position: q}).ScreenPosition() }
 
 type unitDraw struct {
@@ -146,12 +174,13 @@ func (g *View) draw(dst *ebiten.Image) {
 					x = width - x
 					y = 880 - y
 				}
+				x, y = g.at(x, y)
 				if x < -120 || x > width+120 || y < -160 || y > height+160 {
 					continue
 				}
 				art := g.Fighters[side].Troops
 				frame := art.FrameIndex("idle", g.Time*1000+float64((col+24)*63+rank*91))
-				units = append(units, unitDraw{art, dir, "idle", frame, x, y})
+				units = append(units, unitDraw{art, g.facing(dir), "idle", frame, x, y})
 			}
 		}
 	}
@@ -165,7 +194,7 @@ func (g *View) draw(dst *ebiten.Image) {
 		if !a.Visible {
 			continue
 		}
-		x, y := a.ScreenPosition()
+		x, y := g.at(a.ScreenPosition())
 		if s.ShakeSide < 0 || s.ShakeSide == i {
 			x += dx
 			y += dy
@@ -175,7 +204,7 @@ func (g *View) draw(dst *ebiten.Image) {
 		if a.Hold >= 0 {
 			frame = min(a.Hold, art.Animations[a.Animation].Frames-1)
 		}
-		units = append(units, unitDraw{art, a.Facing, a.Animation, frame, x, y})
+		units = append(units, unitDraw{art, g.facing(a.Facing), a.Animation, frame, x, y})
 	}
 	sort.SliceStable(units, func(i, j int) bool { return units[i].y < units[j].y })
 	for _, u := range units {
@@ -194,6 +223,7 @@ func (g *View) draw(dst *ebiten.Image) {
 		lane := (s.Actors[s.Attacker].Lane + s.Actors[def].Lane) / 2
 		x -= lane * .45
 		y += lane * .89
+		x, y = g.at(x, y)
 		y -= 58
 		r := 36.0
 		if s.Critical {
@@ -213,7 +243,7 @@ func (g *View) draw(dst *ebiten.Image) {
 		if !a.Visible || a.Speech == "" {
 			continue
 		}
-		x, y := a.ScreenPosition()
+		x, y := g.at(a.ScreenPosition())
 		y -= g.Fighters[i].Art.TopOffset() * 3
 		f := &text.GoTextFace{Source: g.Font, Size: 17}
 		f.SetVariation(text.MustParseTag("wght"), 400)
@@ -230,6 +260,13 @@ func (g *View) draw(dst *ebiten.Image) {
 		g.labelWeight(dst, g.Fighters[i].Name, x+20, y+14, 16, textColor, 800)
 		g.label(dst, a.Speech, x+20, y+41, 17, textColor)
 	}
-	g.portrait(dst, 0, 24, 70)
-	g.portrait(dst, 1, 930, 664)
+	allyX, allyY, enemyX, enemyY := 24.0, 70.0, 930.0, 664.0
+	if g.flipX() {
+		allyX, enemyX = enemyX, allyX
+	}
+	if g.flipY() {
+		allyY, enemyY = enemyY, allyY
+	}
+	g.portrait(dst, 0, allyX, allyY)
+	g.portrait(dst, 1, enemyX, enemyY)
 }

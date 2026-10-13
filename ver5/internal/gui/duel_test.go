@@ -53,3 +53,14 @@ func TestDuelPlaybackAndSkip(t *testing.T) {
 		})
 	}
 }
+
+func TestDuelAxis(t *testing.T) {
+	for _, c := range []struct {
+		dx, dy int
+		want   string
+	}{{1, 0, "SE"}, {0, 1, "SW"}, {-1, 0, "NW"}, {0, -1, "NE"}, {2, 0, "SE"}} {
+		if got := duelAxis(c.dx, c.dy); got != c.want {
+			t.Errorf("duelAxis(%d,%d) = %s, want %s", c.dx, c.dy, got, c.want)
+		}
+	}
+}

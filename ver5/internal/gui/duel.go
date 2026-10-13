@@ -18,6 +18,9 @@ func (g *Game) duelView(e core.Event) *duelview.View {
 		}
 		v.Fighters[i] = g.duelFighter(u.Def, u.Class, u.Color)
 	}
+	if a, t := g.unitView(g.player.final, e.Actor), g.unitView(g.player.final, e.Target); a != nil && t != nil {
+		v.Axis = duelAxis(t.X-a.X, t.Y-a.Y)
+	}
 	for i, id := range g.assets.Duels[e.DuelID].Supports {
 		c := g.S.Data.Characters[id]
 		v.Fighters[i+2] = g.duelFighter(id, c.Class, c.Look.Faction)
@@ -26,6 +29,18 @@ func (g *Game) duelView(e core.Event) *duelview.View {
 		}
 	}
 	return v
+}
+
+// duelAxis names the screen direction of a map offset on the (u-v, u+v) isometric grid.
+func duelAxis(dx, dy int) string {
+	axis := "S"
+	if dx+dy < 0 {
+		axis = "N"
+	}
+	if dx-dy < 0 {
+		return axis + "W"
+	}
+	return axis + "E"
 }
 
 // SkipDuel finishes only the presentation, leaving its aftermath queued.
