@@ -1,5 +1,7 @@
 # 특성·책략 개편 설계
 
+> **일부 개정됨.** 병종 `Grants`(주어지는 특성)는 없어졌다. 책략 권한 특성은 병종이 주지 않고 배우는 특성이며, 장비가 같은 특성을 주는 것은 허용한다. 병종별 학습 풀은 [trait-design-v2.md](trait-design-v2.md)와 [_todo_speciality.md](_todo_speciality.md), 현재 규칙은 [battle.md](battle.md)를 따른다. 아래의 "주어지는 특성" 설명은 이 개정 전 내용이다.
+
 `_todo_speciality.md`를 정리하고, 레벨업 학습창과 선행 특성 구조를 더한 문서다.
 
 ## 방향
