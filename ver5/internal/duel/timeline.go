@@ -14,7 +14,9 @@ type Actor struct {
 	Lane                      float64
 	Facing, Animation, Speech string
 	MS                        float64
-	Hold                      int // -1 animates; otherwise a fixed frame
+	Hold                      int     // -1 animates; otherwise a fixed frame
+	Fade                      float64 // 0 opaque, 1 invisible
+	Gray                      float64 // 0 coloured, 1 grayscale
 }
 
 // ScreenPosition projects the duel axis and its perpendicular lane onto the arena.
@@ -52,6 +54,9 @@ type Story struct {
 
 const attackReach = 120.0
 const chargeReach = 190.0
+
+// rankDepth is where a retreating fighter meets the front rank of its own troops.
+const rankDepth, fadeSpan = 500.0, 100.0
 
 func strikeKind(kind string) string {
 	return strings.TrimPrefix(kind, "rush-")
@@ -270,13 +275,14 @@ func apply(s *State, b Beat, t float64) {
 			s.Actors[b.Side].Facing = "SE"
 		}
 		if b.Kind == "retreat" {
-			// Stop before the rearward ranks and keep the ally clear of its portrait.
-			target := -280.0
+			// Walk into the rearward ranks and vanish among them.
+			target := -rankDepth - fadeSpan
 			if b.Side == 1 {
-				target = 340
+				target = rankDepth + fadeSpan
 			}
 			move(b.Side, target, p)
 		}
+		s.Actors[b.Side].Fade = max(0, min(1, (math.Abs(s.Actors[b.Side].Position)-rankDepth)/fadeSpan))
 	case "withdraw":
 		direction := 1.0
 		if from[b.Side] < from[1-b.Side] {
@@ -393,6 +399,32 @@ func apply(s *State, b Beat, t float64) {
 				}
 			}
 		}
+	case "slash-through":
+		// Dash in, flash, and reappear behind the target, which has already been cut.
+		att, def := b.Side, defender(b.Side)
+		a, d := &s.Actors[att], &s.Actors[def]
+		delta, laneDelta := d.Position-from[att], d.Lane-lanes[att]
+		distance := math.Hypot(delta, laneDelta)
+		ux, uy := delta/distance, laneDelta/distance
+		a.Animation, a.MS = "attack", max(0, t-.1)*1000
+		d.Facing = d.facingToward(Actor{Position: from[att], Lane: lanes[att]})
+		const contact = .5
+		if t < contact {
+			travel := max(0, distance-attackReach) * max(0, min(1, (t-.1)/(contact-.1)))
+			a.Position += ux * travel
+			a.Lane += uy * travel
+			a.Facing = a.facingToward(*d)
+			s.Flash = max(0, (t-.4)/.1)
+			break
+		}
+		a.Position, a.Lane = d.Position+ux*110, d.Lane+uy*110
+		a.Facing = a.facingToward(Actor{Position: a.Position + ux*200, Lane: a.Lane + uy*200})
+		d.Animation, d.MS = "hit", (t-contact)*1000
+		d.Position += ux * 20 * math.Sin(math.Pi/2*min(1, (t-contact)/.35))
+		d.Lane += uy * 20 * math.Sin(math.Pi/2*min(1, (t-contact)/.35))
+		s.Critical = true
+		s.Flash = max(0, 1-(t-contact)/.35)
+		s.Impact = max(0, 1-(t-contact)/.28)
 	case "rest", "draw":
 		for i := range 2 {
 			s.Actors[i].Animation = "exhausted"
@@ -405,6 +437,7 @@ func apply(s *State, b Beat, t float64) {
 		s.Actors[b.Side].Hold = 0
 		s.Actors[1-b.Side].Animation = "exhausted"
 		s.Actors[1-b.Side].Hold = 3
+		s.Actors[1-b.Side].Gray = min(1, t/.6)
 	case "escape", "catch", "straight-chase":
 		runner, chaser := b.Side, 1-b.Side
 		sign := -1.0

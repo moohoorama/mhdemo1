@@ -5,44 +5,86 @@
       {
         "Kind": "talk",
         "Title": "등무의 조롱",
-        "Speech": "어디서 굴러온 촌놈이냐!",
+        "Speech": "어디서 굴러온 촌놈이냐! 내 창 아래 쓰러진 자가 한둘이 아니다!",
         "Side": 1,
-        "Duration": 2
+        "Duration": 3.6
       },
       {
         "Kind": "talk",
-        "Title": "연인 장익덕",
-        "Speech": "연인 장익덕이 여기 있다!",
+        "Title": "장비의 호통",
+        "Speech": "연인 장익덕이 여기 있다! 목을 씻고 기다려라!",
         "Side": 0,
-        "Duration": 2
+        "Duration": 2.9
       },
       {
         "Kind": "approach",
         "Title": "등무도 기세등등하게 중앙으로 나서다",
         "Speech": "덤벼라!",
         "Side": 1,
-        "Duration": 1.4
+        "Duration": 1.2
       },
       {
         "Kind": "talk",
         "Title": "중앙에서 정면으로 대치하다",
         "Speech": "네놈의 창쯤이야!",
         "Side": 1,
-        "Duration": 1.2
+        "Duration": 1.6
+      },
+      {
+        "Kind": "block",
+        "Title": "등무가 먼저 창을 찔러 들어가다",
+        "Speech": "간지럽구나!",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "hit",
+        "Title": "장비가 창끝을 쳐내고 반격하다",
+        "Speech": "어디를 노리느냐!",
+        "Side": 0,
+        "Duration": 1.1
+      },
+      {
+        "Kind": "talk",
+        "Title": "등무가 당황하다",
+        "Speech": "이… 이놈이 제법이구나!",
+        "Side": 1,
+        "Duration": 1.9
+      },
+      {
+        "Kind": "rush-block",
+        "Title": "성난 등무가 돌진하며 거듭 찌르다",
+        "Speech": "흥, 어림없다!",
+        "Side": 1,
+        "Duration": 1.1
+      },
+      {
+        "Kind": "talk",
+        "Title": "등무가 두려움을 느끼다",
+        "Speech": "(이 괴력은 무엇이란 말이냐…!)",
+        "Side": 1,
+        "Duration": 2.2
+      },
+      {
+        "Kind": "talk",
+        "Title": "장비가 마무리를 선언하다",
+        "Speech": "이제 내 차례다. 이 장팔사모를 받아라!",
+        "Side": 0,
+        "Duration": 2.5
       },
       {
         "Kind": "critical",
-        "Title": "첫 합 · 장팔사모의 일격",
-        "Speech": "받아라!",
+        "Title": "장팔사모의 일격",
+        "Speech": "으라아앗!",
         "Side": 0,
-        "Duration": 1.2
+        "Duration": 1.3
       },
       {
         "Kind": "win",
         "Title": "장비가 한 합에 등무를 꿰뚫다",
         "Speech": "다음은 누구냐!",
         "Side": 0,
-        "Duration": 2.2
+        "Duration": 2.5
       }
     ]
   },
@@ -52,28 +94,63 @@
       {
         "Kind": "talk",
         "Title": "정원지의 복수 선언",
-        "Speech": "등무의 원수를 갚겠다!",
+        "Speech": "등무가 네놈들 손에 죽었다 들었다! 이 정원지가 원수를 갚겠다!",
         "Side": 1,
-        "Duration": 2
+        "Duration": 3.5
       },
       {
         "Kind": "talk",
         "Title": "관우의 차분한 응답",
-        "Speech": "그 목, 내가 거두겠다.",
+        "Speech": "그 목, 내가 거두겠다. 청룡도가 오래 굶었다.",
         "Side": 0,
-        "Duration": 2
+        "Duration": 2.9
       },
       {
         "Kind": "advance",
         "Title": "정원지가 성난 기세로 돌진",
-        "Speech": "",
+        "Speech": "죽어라!",
+        "Side": 1,
+        "Duration": 0.7
+      },
+      {
+        "Kind": "block",
+        "Title": "정원지가 연달아 창을 찔러 넣다",
+        "Speech": "서두르는구나.",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "관우가 창끝을 가볍게 흘리다",
+        "Speech": "창끝이 흔들리는군.",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "정원지의 초조함",
+        "Speech": "(이놈… 어찌 이리 꿈쩍도 않느냐!)",
+        "Side": 1,
+        "Duration": 2.4
+      },
+      {
+        "Kind": "rush-block",
+        "Title": "정원지가 이를 악물고 마지막으로 돌진하다",
+        "Speech": "복수를 입에 담기엔 힘이 부족하다.",
         "Side": 1,
         "Duration": 1.1
       },
       {
+        "Kind": "talk",
+        "Title": "관우가 청룡도를 고쳐 쥐다",
+        "Speech": "이제 끝내자.",
+        "Side": 0,
+        "Duration": 1.4
+      },
+      {
         "Kind": "critical",
-        "Title": "첫 합 · 돌진을 받아 청룡도를 휘두르다",
-        "Speech": "",
+        "Title": "관우가 돌진을 받아 청룡도를 휘두르다",
+        "Speech": "하앗!",
         "Side": 0,
         "Duration": 1.3
       },
@@ -92,86 +169,184 @@
       {
         "Kind": "talk",
         "Title": "화웅의 자신만만한 도발",
-        "Speech": "연합군에는 사람이 없느냐!",
+        "Speech": "연합군에는 사람이 없느냐! 이 화웅의 칼 아래 설 자가 하나도 없단 말이냐!",
         "Side": 1,
-        "Duration": 1.8
+        "Duration": 4.0
+      },
+      {
+        "Kind": "talk",
+        "Title": "관우의 출전 선언",
+        "Speech": "소장이 나가 화웅의 목을 베어 오겠소.",
+        "Side": 0,
+        "Duration": 2.5
+      },
+      {
+        "Kind": "talk",
+        "Title": "화웅의 멸시",
+        "Speech": "마궁수 따위가 어디서 나서느냐!",
+        "Side": 1,
+        "Duration": 2.2
       },
       {
         "Kind": "talk",
         "Title": "관우의 차분한 응답",
-        "Speech": "관운장이 상대하겠다.",
+        "Speech": "관운장이다. 그 입부터 닥치게 해 주마.",
         "Side": 0,
-        "Duration": 1.8
+        "Duration": 2.5
       },
       {
         "Kind": "approach",
         "Title": "정면에서 맞붙다",
         "Speech": "",
         "Side": 0,
-        "Duration": 1.1
+        "Duration": 1.2
       },
       {
         "Kind": "talk",
         "Title": "화웅이 기세를 올리다",
         "Speech": "내 칼을 받아라!",
         "Side": 1,
-        "Duration": 0.8
+        "Duration": 1.6
       },
       {
         "Kind": "block",
         "Title": "화웅의 첫 공격을 가볍게 막다",
-        "Speech": "",
+        "Speech": "가볍군.",
         "Side": 1,
-        "Duration": 0.95
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "화웅이 연이어 베어 오다",
+        "Speech": "그것이 전부냐.",
+        "Side": 1,
+        "Duration": 1.05
       },
       {
         "Kind": "rush-block",
         "Title": "화웅이 전진하며 거듭 몰아치다",
-        "Speech": "",
+        "Speech": "칼이 무디구나.",
         "Side": 1,
-        "Duration": 0.95
+        "Duration": 1.1
+      },
+      {
+        "Kind": "talk",
+        "Title": "화웅이 당황하다",
+        "Speech": "(이놈… 어찌 꿈쩍도 않는가!)",
+        "Side": 1,
+        "Duration": 2.2
       },
       {
         "Kind": "block",
         "Title": "화웅의 연타에도 관우는 흔들리지 않다",
         "Speech": "",
         "Side": 1,
-        "Duration": 0.95
+        "Duration": 1.05
+      },
+      {
+        "Kind": "rush-block",
+        "Title": "화웅이 밀어붙이며 칼날을 비벼 대다",
+        "Speech": "아직도 몸이 덜 풀렸다.",
+        "Side": 1,
+        "Duration": 1.1
+      },
+      {
+        "Kind": "talk",
+        "Title": "관우가 여유를 보이다",
+        "Speech": "그 정도 솜씨로 이 관모의 앞에 서다니.",
+        "Side": 0,
+        "Duration": 2.5
+      },
+      {
+        "Kind": "block",
+        "Title": "화웅이 이를 악물고 베다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "화웅의 일격이 청룡도에 튕기다",
+        "Speech": "….",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "화웅의 팔이 저려 오다",
+        "Speech": "으으… 팔이 저려 온다!",
+        "Side": 1,
+        "Duration": 1.9
+      },
+      {
+        "Kind": "rush-block",
+        "Title": "화웅이 발악하듯 돌진하다",
+        "Speech": "소란스럽구나.",
+        "Side": 1,
+        "Duration": 1.1
+      },
+      {
+        "Kind": "block",
+        "Title": "청룡도가 칼날을 밀어내다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
       },
       {
         "Kind": "talk",
         "Title": "화웅이 온 힘을 끌어모으다",
-        "Speech": "이번에는 끝이다!",
+        "Speech": "이놈! 내 필살의 일격이다!",
         "Side": 1,
-        "Duration": 0.9
+        "Duration": 2.0
       },
       {
         "Kind": "rush-critical-block",
         "Title": "화웅이 온 힘으로 돌진하지만 관우가 여유롭게 막다",
-        "Speech": "",
+        "Speech": "이것으로 끝이다!",
         "Side": 1,
-        "Duration": 1.3
+        "Duration": 1.25
       },
       {
         "Kind": "talk",
         "Title": "관우의 태연한 한마디",
         "Speech": "그뿐이냐?",
         "Side": 0,
+        "Duration": 1.4
+      },
+      {
+        "Kind": "rush-block",
+        "Title": "화웅이 마지막 발악을 하다",
+        "Speech": "….",
+        "Side": 1,
         "Duration": 1.1
+      },
+      {
+        "Kind": "talk",
+        "Title": "화웅이 공포에 질리다",
+        "Speech": "(저자는 사람이 아니다… 귀신이로구나!)",
+        "Side": 1,
+        "Duration": 2.5
       },
       {
         "Kind": "withdraw",
         "Title": "화웅이 겁먹고 뒷걸음질하다",
         "Speech": "이… 이럴 수가!",
         "Side": 1,
-        "Duration": 1
+        "Duration": 1.0
+      },
+      {
+        "Kind": "talk",
+        "Title": "관우가 한 걸음 내딛다",
+        "Speech": "어디를 가느냐.",
+        "Side": 0,
+        "Duration": 1.5
       },
       {
         "Kind": "talk",
         "Title": "화웅이 도주를 결심하다",
-        "Speech": "물러나라!",
+        "Speech": "전군은 길을 열어라! 물러난다!",
         "Side": 1,
-        "Duration": 0.8
+        "Duration": 2.2
       },
       {
         "Kind": "straight-chase",
@@ -183,7 +358,7 @@
       {
         "Kind": "backhit",
         "Title": "관우가 따라잡아 화웅을 베다",
-        "Speech": "",
+        "Speech": "도망칠 곳은 없다!",
         "Side": 0,
         "Duration": 1.3
       },
@@ -192,7 +367,7 @@
         "Title": "화웅을 베고 돌아서는 관우",
         "Speech": "끝났다.",
         "Side": 0,
-        "Duration": 2.2
+        "Duration": 2.5
       }
     ]
   },
@@ -205,17 +380,17 @@
     "Beats": [
       {
         "Kind": "talk",
-        "Title": "talk",
-        "Speech": "여포! 이 장익덕과 겨뤄 보자!",
+        "Title": "대사",
+        "Speech": "여포! 연인 장익덕이 상대해 주마! 목을 길게 빼고 기다려라!",
         "Side": 0,
-        "Duration": 1.8
+        "Duration": 3.4
       },
       {
         "Kind": "talk",
-        "Title": "talk",
-        "Speech": "네 실력을 보겠다!",
+        "Title": "대사",
+        "Speech": "시끄러운 놈이로군. 입만큼 창도 매운지 보자.",
         "Side": 1,
-        "Duration": 1.5
+        "Duration": 2.8
       },
       {
         "Kind": "approach",
@@ -227,92 +402,197 @@
       {
         "Kind": "rush-block",
         "Title": "장비가 먼저 치고 들어가다",
-        "Speech": "",
+        "Speech": "가소롭군!",
         "Side": 0,
-        "Duration": 1.05
+        "Duration": 1.1
       },
       {
         "Kind": "block",
-        "Title": "block",
-        "Speech": "",
+        "Title": "여포가 화극으로 맞받다",
+        "Speech": "이 정도냐!",
         "Side": 1,
         "Duration": 1.05
       },
       {
+        "Kind": "block",
+        "Title": "장비가 장팔사모를 휘두르다",
+        "Speech": "제법이로군.",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
         "Kind": "critical-block",
-        "Title": "critical-block",
-        "Speech": "",
+        "Title": "장비가 힘을 실어 내려치다",
+        "Speech": "으라앗!",
         "Side": 0,
         "Duration": 1.2
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "(이 괴력… 보통내기가 아니다.)",
+        "Side": 1,
+        "Duration": 2.2
       },
       {
         "Kind": "rush-critical-block",
         "Title": "여포가 화극을 휘두르며 돌진하다",
+        "Speech": "이것도 받아 보아라!",
+        "Side": 1,
+        "Duration": 1.25
+      },
+      {
+        "Kind": "block",
+        "Title": "장비가 맞받아치다",
         "Speech": "",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 연달아 찌르다",
+        "Speech": "어림없다!",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "장비가 창으로 화극을 걷어내다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "여포의 화극이 장비의 어깨를 스치려다 막히다",
+        "Speech": "흥!",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "이놈… 내 공격에도 밀리지 않는군!",
+        "Side": 1,
+        "Duration": 2.3
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "아직 멀었다! 더 덤벼라!",
+        "Side": 0,
+        "Duration": 2.0
+      },
+      {
+        "Kind": "critical-block",
+        "Title": "여포가 강하게 내리치다",
+        "Speech": "하앗!",
+        "Side": 1,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "rush-critical-block",
+        "Title": "장비가 다시 전진하며 강하게 맞받아치다",
+        "Speech": "이얏!",
+        "Side": 0,
+        "Duration": 1.25
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 반격하다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "장비가 창을 휘두르다",
+        "Speech": "아직도 버틸 만하냐!",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "삼백 합이라도 상대해 주마!",
+        "Side": 0,
+        "Duration": 2.0
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "삼백 합? 네놈의 숨이 먼저 끊어지게 해 주마.",
+        "Side": 1,
+        "Duration": 2.9
+      },
+      {
+        "Kind": "block",
+        "Title": "장비가 호통과 함께 찌르다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 화극으로 받아넘기다",
+        "Speech": "하!",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "rush-block",
+        "Title": "여포가 몸을 낮추고 파고들다",
+        "Speech": "느리다!",
+        "Side": 1,
+        "Duration": 1.1
+      },
+      {
+        "Kind": "critical-block",
+        "Title": "장비가 맞서 창을 휘두르다",
+        "Speech": "이 괴물 같은 놈!",
+        "Side": 0,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 화극을 돌려 치다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "장비가 한 발도 물러서지 않고 맞받다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "하하하! 이 맛이다! 사람 같은 놈과 싸우는 줄 알았더니!",
+        "Side": 0,
+        "Duration": 3.3
+      },
+      {
+        "Kind": "critical-block",
+        "Title": "여포가 눈빛을 바꾸며 강타하다",
+        "Speech": "건방진 놈!",
         "Side": 1,
         "Duration": 1.2
       },
       {
         "Kind": "block",
-        "Title": "block",
-        "Speech": "",
-        "Side": 0,
-        "Duration": 1.05
-      },
-      {
-        "Kind": "block",
-        "Title": "block",
-        "Speech": "",
-        "Side": 1,
-        "Duration": 1.05
-      },
-      {
-        "Kind": "talk",
-        "Title": "talk",
-        "Speech": "이놈… 내 공격에도 밀리지 않는군!",
-        "Side": 1,
-        "Duration": 1.7
-      },
-      {
-        "Kind": "talk",
-        "Title": "talk",
-        "Speech": "아직 멀었다! 더 덤벼라!",
-        "Side": 0,
-        "Duration": 1.5
-      },
-      {
-        "Kind": "critical-block",
-        "Title": "critical-block",
-        "Speech": "",
-        "Side": 1,
-        "Duration": 1.15
-      },
-      {
-        "Kind": "rush-critical-block",
-        "Title": "장비가 다시 전진하며 강하게 맞받아치다",
-        "Speech": "",
-        "Side": 0,
-        "Duration": 1.15
-      },
-      {
-        "Kind": "block",
-        "Title": "block",
-        "Speech": "",
-        "Side": 1,
-        "Duration": 1.05
-      },
-      {
-        "Kind": "block",
-        "Title": "block",
+        "Title": "장비가 화극을 비껴내다",
         "Speech": "",
         "Side": 0,
         "Duration": 1.05
       },
       {
         "Kind": "press",
-        "Side": 1,
         "Title": "여포가 압박하며 좌상단으로 대치를 밀어붙이다",
-        "Speech": "",
+        "Speech": "비켜라!",
+        "Side": 1,
         "Duration": 1.2
       },
       {
@@ -324,31 +604,45 @@
       },
       {
         "Kind": "talk",
-        "Title": "talk",
-        "Speech": "함께 싸우자!",
+        "Title": "대사",
+        "Speech": "아우여, 홀로 싸우게 두지 않겠다!",
         "Side": 2,
-        "Duration": 1.2
+        "Duration": 2.3
       },
       {
         "Kind": "talk",
-        "Title": "talk",
-        "Speech": "우리 셋이 상대하겠다!",
+        "Title": "대사",
+        "Speech": "삼형제가 함께 상대해 주마!",
         "Side": 3,
-        "Duration": 1.3
+        "Duration": 2.0
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "형님들! 기다리고 있었수다!",
+        "Side": 0,
+        "Duration": 2.0
       },
       {
         "Kind": "block",
         "Title": "합류한 형제가 공격하다",
-        "Speech": "",
+        "Speech": "청룡언월도를 받아라!",
         "Side": 2,
-        "Duration": 1.15
+        "Duration": 1.05
       },
       {
         "Kind": "block",
         "Title": "다른 형제도 공격에 가세하다",
-        "Speech": "",
+        "Speech": "쌍고검이 간다!",
         "Side": 3,
-        "Duration": 1.15
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "(셋이라… 성가시군.)",
+        "Side": 1,
+        "Duration": 1.8
       },
       {
         "Kind": "advance",
@@ -359,24 +653,52 @@
       },
       {
         "Kind": "block",
-        "Title": "세 형제가 여포의 공격을 받아내다",
+        "Title": "장비가 정면에서 치다",
+        "Speech": "이번엔 놓치지 않는다!",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "critical-block",
+        "Title": "관우가 측면에서 강하게 내려치다",
+        "Speech": "하앗!",
+        "Side": 2,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "block",
+        "Title": "유비가 반대편에서 파고들다",
         "Speech": "",
+        "Side": 3,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 세 방향을 한꺼번에 쳐내다",
+        "Speech": "이놈들이!",
         "Side": 1,
-        "Duration": 1.0
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "관우가 다시 틈을 노리다",
+        "Speech": "",
+        "Side": 2,
+        "Duration": 1.05
       },
       {
         "Kind": "talk",
-        "Title": "talk",
+        "Title": "대사",
         "Speech": "셋을 한꺼번에 상대하기는 무리다!",
         "Side": 1,
-        "Duration": 1.8
+        "Duration": 2.2
       },
       {
         "Kind": "retreat",
-        "Title": "여포가 본진 대열 입구까지만 직선 퇴각하다",
+        "Title": "여포가 본진 대열 속으로 직선 퇴각하다",
         "Speech": "물러난다!",
         "Side": 1,
-        "Duration": 2.2
+        "Duration": 3.0
       },
       {
         "Kind": "withdrawn",
@@ -395,6 +717,20 @@
     ],
     "Beats": [
       {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "여포, 관운장이 상대해 주마. 방천화극이 명성만큼인지 보겠다.",
+        "Side": 0,
+        "Duration": 3.4
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "수염 긴 놈이 입만 살았군. 와 보아라.",
+        "Side": 1,
+        "Duration": 2.5
+      },
+      {
         "Kind": "approach",
         "Title": "approach",
         "Speech": "",
@@ -410,79 +746,177 @@
       },
       {
         "Kind": "talk",
-        "Title": "talk",
+        "Title": "대사",
         "Speech": "(이 일격… 생각보다 무겁군!)",
         "Side": 1,
-        "Duration": 1.7
+        "Duration": 2.2
       },
       {
         "Kind": "block",
-        "Title": "block",
-        "Speech": "",
+        "Title": "여포가 반격하다",
+        "Speech": "그 정도냐.",
         "Side": 1,
         "Duration": 1.05
       },
       {
         "Kind": "block",
-        "Title": "block",
+        "Title": "여포가 한 번 더 몰아치다",
         "Speech": "",
         "Side": 1,
         "Duration": 1.05
       },
       {
         "Kind": "talk",
-        "Title": "talk",
+        "Title": "대사",
+        "Speech": "(호흡은 읽었다.)",
+        "Side": 0,
+        "Duration": 1.6
+      },
+      {
+        "Kind": "block",
+        "Title": "관우가 청룡도를 휘두르다",
+        "Speech": "음!",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 화극으로 쳐내다",
+        "Speech": "흥.",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "이름값은 하는군. 허나 내 창은 아직 시작도 안 했다!",
+        "Side": 1,
+        "Duration": 3.1
+      },
+      {
+        "Kind": "rush-block",
+        "Title": "여포가 돌진하며 찌르다",
+        "Speech": "무겁지만 느리구나.",
+        "Side": 1,
+        "Duration": 1.1
+      },
+      {
+        "Kind": "critical-block",
+        "Title": "여포가 강하게 내리치다",
+        "Speech": "이걸 막다니!",
+        "Side": 1,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
         "Speech": "틈이 보이는군.",
         "Side": 0,
-        "Duration": 1
+        "Duration": 1.5
       },
       {
         "Kind": "rush-critical-dodge",
         "Title": "틈을 찌른 관우의 전진 강공을 여포가 피해내다",
-        "Speech": "",
+        "Speech": "하앗!",
         "Side": 0,
         "Duration": 1.3
       },
       {
         "Kind": "talk",
-        "Title": "talk",
-        "Speech": "(이 일격! 받아내면 안되겠군.)",
+        "Title": "대사",
+        "Speech": "(이 일격! 받아내면 안 되겠군.)",
         "Side": 1,
-        "Duration": 2
+        "Duration": 2.3
       },
       {
         "Kind": "block",
-        "Title": "block",
+        "Title": "여포가 반격하다",
         "Speech": "",
         "Side": 1,
         "Duration": 1.05
       },
       {
         "Kind": "dodge",
-        "Title": "dodge",
+        "Title": "관우가 고개를 젖혀 화극을 피하다",
+        "Speech": "느리다.",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 다시 찌르다",
         "Speech": "",
         "Side": 1,
         "Duration": 1.05
       },
       {
         "Kind": "block",
-        "Title": "block",
+        "Title": "관우가 반격하다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "dodge",
+        "Title": "여포가 물러서며 피하다",
+        "Speech": "하!",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "하하, 재미있구나! 천하에 이만한 자가 있었다니!",
+        "Side": 1,
+        "Duration": 2.9
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 화극을 휘두르다",
+        "Speech": "",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "웃을 때가 아니다.",
+        "Side": 0,
+        "Duration": 1.6
+      },
+      {
+        "Kind": "rush-dodge",
+        "Title": "관우가 몸을 던지듯 돌진하자 여포가 물러서다",
+        "Speech": "이얏!",
+        "Side": 0,
+        "Duration": 1.15
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 재빨리 응수하다",
         "Speech": "",
         "Side": 1,
         "Duration": 1.05
       },
       {
         "Kind": "critical-dodge",
-        "Title": "critical-dodge",
-        "Speech": "",
+        "Title": "관우가 온 힘을 실어 베지만 여포가 피하다",
+        "Speech": "하아앗!",
         "Side": 0,
         "Duration": 1.3
       },
       {
-        "Kind": "press",
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "건방진 수염 같으니! 이번엔 내가 밀어붙이겠다!",
         "Side": 1,
+        "Duration": 2.9
+      },
+      {
+        "Kind": "press",
         "Title": "여포가 압박하며 좌상단으로 대치를 밀어붙이다",
-        "Speech": "",
+        "Speech": "물러서라!",
+        "Side": 1,
         "Duration": 1.2
       },
       {
@@ -494,31 +928,45 @@
       },
       {
         "Kind": "talk",
-        "Title": "talk",
-        "Speech": "함께 싸우자!",
+        "Title": "대사",
+        "Speech": "형님, 혼자서만 즐기시면 곤란하오!",
         "Side": 2,
-        "Duration": 1.2
+        "Duration": 2.3
       },
       {
         "Kind": "talk",
-        "Title": "talk",
-        "Speech": "우리 셋이 상대하겠다!",
+        "Title": "대사",
+        "Speech": "운장, 우리가 함께한다!",
         "Side": 3,
-        "Duration": 1.3
+        "Duration": 1.9
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "아우와 형님… 늦지 않으셨군.",
+        "Side": 0,
+        "Duration": 2.1
       },
       {
         "Kind": "block",
         "Title": "합류한 형제가 공격하다",
-        "Speech": "",
+        "Speech": "장팔사모를 받아라!",
         "Side": 2,
-        "Duration": 1.15
+        "Duration": 1.05
       },
       {
         "Kind": "block",
         "Title": "다른 형제도 공격에 가세하다",
-        "Speech": "",
+        "Speech": "쌍고검이다!",
         "Side": 3,
-        "Duration": 1.15
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "(셋이라… 성가시군.)",
+        "Side": 1,
+        "Duration": 1.8
       },
       {
         "Kind": "advance",
@@ -528,25 +976,53 @@
         "Duration": 0.7
       },
       {
+        "Kind": "critical-block",
+        "Title": "관우가 정면에서 강하게 내려치다",
+        "Speech": "하앗!",
+        "Side": 0,
+        "Duration": 1.2
+      },
+      {
         "Kind": "block",
-        "Title": "세 형제가 여포의 공격을 받아내다",
+        "Title": "장비가 측면에서 파고들다",
         "Speech": "",
+        "Side": 2,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "유비가 반대편에서 쌍검을 휘두르다",
+        "Speech": "",
+        "Side": 3,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 세 방향을 한꺼번에 쳐내다",
+        "Speech": "이놈들이!",
         "Side": 1,
-        "Duration": 1.0
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "장비가 다시 한 번 달려들다",
+        "Speech": "",
+        "Side": 2,
+        "Duration": 1.05
       },
       {
         "Kind": "talk",
-        "Title": "talk",
+        "Title": "대사",
         "Speech": "셋을 한꺼번에 상대하기는 무리다!",
         "Side": 1,
-        "Duration": 1.8
+        "Duration": 2.2
       },
       {
         "Kind": "retreat",
-        "Title": "여포가 본진 대열 입구까지만 직선 퇴각하다",
+        "Title": "여포가 본진 대열 속으로 직선 퇴각하다",
         "Speech": "물러난다!",
         "Side": 1,
-        "Duration": 2.2
+        "Duration": 3.0
       },
       {
         "Kind": "withdrawn",
@@ -566,17 +1042,17 @@
     "Beats": [
       {
         "Kind": "talk",
-        "Title": "talk",
-        "Speech": "내가 상대하겠다!",
+        "Title": "대사",
+        "Speech": "내가 상대하겠다! 우리 형제를 건드리지 마라!",
         "Side": 0,
-        "Duration": 1.5
+        "Duration": 2.8
       },
       {
         "Kind": "talk",
-        "Title": "talk",
-        "Speech": "네가 얼마나 버티는지 보자!",
+        "Title": "대사",
+        "Speech": "네가 얼마나 버티는지 보자.",
         "Side": 1,
-        "Duration": 1.5
+        "Duration": 2.0
       },
       {
         "Kind": "approach",
@@ -588,77 +1064,147 @@
       {
         "Kind": "rush-yielding-block",
         "Title": "여포가 치고 들어오자 유비가 막으며 밀리다",
-        "Speech": "",
+        "Speech": "무릎을 꿇어라!",
         "Side": 1,
         "Duration": 1.2
       },
       {
-        "Kind": "advance",
-        "Title": "advance",
-        "Speech": "",
-        "Side": 1,
-        "Duration": 0.6
-      },
-      {
         "Kind": "dodge",
-        "Title": "dodge",
-        "Speech": "",
+        "Title": "유비가 화극을 피해 물러서다",
+        "Speech": "아슬아슬했다!",
         "Side": 1,
         "Duration": 1.05
       },
       {
         "Kind": "yielding-block",
-        "Title": "yielding-block",
-        "Speech": "",
+        "Title": "유비가 막지만 또 밀리다",
+        "Speech": "크윽!",
         "Side": 1,
         "Duration": 1.2
       },
       {
-        "Kind": "advance",
-        "Title": "advance",
-        "Speech": "",
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "여기서 물러설 수는 없다!",
+        "Side": 0,
+        "Duration": 2.0
+      },
+      {
+        "Kind": "dodge",
+        "Title": "유비가 쌍고검으로 반격하지만 여포가 가볍게 피하다",
+        "Speech": "느리군.",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 곧바로 되받아치다",
+        "Speech": "흩어지지 마라!",
         "Side": 1,
-        "Duration": 0.6
+        "Duration": 1.05
       },
       {
         "Kind": "talk",
-        "Title": "talk",
-        "Speech": "여기서 물러설 수는 없다!",
+        "Title": "대사",
+        "Speech": "인덕이니 뭐니 하는 자가 칼은 무디구나.",
+        "Side": 1,
+        "Duration": 2.5
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "칼이 무딘 것은… 맞다. 그러나 버티는 것은 자신 있다.",
         "Side": 0,
-        "Duration": 1.5
+        "Duration": 3.2
+      },
+      {
+        "Kind": "yielding-block",
+        "Title": "여포의 연격에 유비가 다시 밀리다",
+        "Speech": "으윽!",
+        "Side": 1,
+        "Duration": 1.2
       },
       {
         "Kind": "rush-critical-block",
         "Title": "여포의 전진 강공을 유비가 간신히 막아내다",
-        "Speech": "",
+        "Speech": "이것도 막겠느냐!",
         "Side": 1,
         "Duration": 1.25
       },
       {
         "Kind": "yielding-block",
-        "Title": "yielding-block",
-        "Speech": "",
+        "Title": "유비가 몸을 낮춰 충격을 받아내다",
+        "Speech": "으… 으윽!",
         "Side": 1,
         "Duration": 1.2
       },
       {
-        "Kind": "advance",
-        "Title": "advance",
-        "Speech": "",
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "질긴 놈이군… 아직도 버티다니!",
         "Side": 1,
-        "Duration": 0.6
+        "Duration": 2.2
+      },
+      {
+        "Kind": "dodge",
+        "Title": "유비가 틈을 노려 일격을 날리지만 여포가 피하다",
+        "Speech": "형제들이 오고 있다!",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 화극으로 쳐내다",
+        "Speech": "하!",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "유비가 쌍검으로 막아 내다",
+        "Speech": "아직이다!",
+        "Side": 1,
+        "Duration": 1.05
       },
       {
         "Kind": "talk",
-        "Title": "talk",
-        "Speech": "질긴 놈이군… 아직도 버티다니!",
+        "Title": "대사",
+        "Speech": "(조금만 더… 조금만 더 버티면…)",
+        "Side": 0,
+        "Duration": 2.3
+      },
+      {
+        "Kind": "yielding-block",
+        "Title": "유비가 막으며 또 밀리다",
+        "Speech": "크윽!",
         "Side": 1,
-        "Duration": 1.7
+        "Duration": 1.2
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "이쯤 되면 오히려 감탄스럽군. 허나 여기까지다!",
+        "Side": 1,
+        "Duration": 2.9
       },
       {
         "Kind": "block",
         "Title": "여포의 압박을 버티다",
-        "Speech": "",
+        "Speech": "….",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "끝까지… 끝까지 버텨 보겠다!",
+        "Side": 0,
+        "Duration": 2.1
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 마지막 일격을 가하다",
+        "Speech": "크윽…!",
         "Side": 1,
         "Duration": 1.05
       },
@@ -671,31 +1217,45 @@
       },
       {
         "Kind": "talk",
-        "Title": "talk",
-        "Speech": "함께 싸우자!",
+        "Title": "대사",
+        "Speech": "형님, 잘 버텨 주셨소!",
         "Side": 2,
-        "Duration": 1.2
+        "Duration": 1.9
       },
       {
         "Kind": "talk",
-        "Title": "talk",
-        "Speech": "우리 셋이 상대하겠다!",
+        "Title": "대사",
+        "Speech": "이제부터는 우리 차례다!",
         "Side": 3,
-        "Duration": 1.3
+        "Duration": 1.9
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "아우들… 기다리고 있었다!",
+        "Side": 0,
+        "Duration": 2.0
       },
       {
         "Kind": "block",
         "Title": "합류한 형제가 공격하다",
-        "Speech": "",
+        "Speech": "청룡도를 받아라!",
         "Side": 2,
-        "Duration": 1.15
+        "Duration": 1.05
       },
       {
         "Kind": "block",
         "Title": "다른 형제도 공격에 가세하다",
-        "Speech": "",
+        "Speech": "장팔사모가 간다!",
         "Side": 3,
-        "Duration": 1.15
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "(셋이라… 성가시군.)",
+        "Side": 1,
+        "Duration": 1.8
       },
       {
         "Kind": "advance",
@@ -705,25 +1265,67 @@
         "Duration": 0.7
       },
       {
+        "Kind": "critical-block",
+        "Title": "관우가 측면에서 강하게 내려치다",
+        "Speech": "하앗!",
+        "Side": 2,
+        "Duration": 1.2
+      },
+      {
         "Kind": "block",
-        "Title": "세 형제가 여포의 공격을 받아내다",
+        "Title": "장비가 반대편에서 찌르다",
         "Speech": "",
-        "Side": 1,
-        "Duration": 1.0
+        "Side": 3,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "유비도 쌍고검으로 가세하다",
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.05
       },
       {
         "Kind": "talk",
-        "Title": "talk",
+        "Title": "대사",
+        "Speech": "형제가 모이면 천하에 못 이길 자가 없다!",
+        "Side": 0,
+        "Duration": 2.6
+      },
+      {
+        "Kind": "block",
+        "Title": "관우가 다시 틈을 노리다",
+        "Speech": "",
+        "Side": 2,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "장비가 호통을 치며 달려들다",
+        "Speech": "이얏!",
+        "Side": 3,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 세 방향을 한꺼번에 쳐내다",
+        "Speech": "이놈들이!",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
         "Speech": "셋을 한꺼번에 상대하기는 무리다!",
         "Side": 1,
-        "Duration": 1.8
+        "Duration": 2.2
       },
       {
         "Kind": "retreat",
-        "Title": "여포가 본진 대열 입구까지만 직선 퇴각하다",
+        "Title": "여포가 본진 대열 속으로 직선 퇴각하다",
         "Speech": "물러난다!",
         "Side": 1,
-        "Duration": 2.2
+        "Duration": 3.0
       },
       {
         "Kind": "withdrawn",
@@ -734,76 +1336,99 @@
       }
     ]
   },
-  "hulao-fangyue": {
-    "Outcome": "defeat",
-    "Beats": [
-      {
-        "Kind": "approach",
-        "Side": 0,
-        "Title": "공을 노리는 도전",
-        "Speech": "여포! 네 목을 베고 공을 세우겠다!",
-        "Duration": 3
-      },
-      {
-        "Kind": "close",
-        "Side": 1,
-        "Title": "여포의 접근",
-        "Speech": "",
-        "Duration": 2.4
-      },
-      {
-        "Kind": "block",
-        "Side": 0,
-        "Title": "첫 합: 가볍게 막음",
-        "Speech": "그 정도로 내 목을 노리느냐?",
-        "Duration": 2.4
-      },
-      {
-        "Kind": "critical",
-        "Side": 1,
-        "Title": "둘째 합: 방천화극의 일격",
-        "Speech": "",
-        "Duration": 2.4
-      },
-      {
-        "Kind": "win",
-        "Side": 1,
-        "Title": "방열 전사",
-        "Speech": "고작 두 합도 견디지 못하는군.",
-        "Duration": 3
-      }
-    ]
-  },
   "hulao-mushun": {
     "Outcome": "defeat",
     "Beats": [
       {
-        "Kind": "approach",
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "네가 여포냐? 이 목순이 네 목을 거두어 공을 세우겠다!",
         "Side": 0,
+        "Duration": 3.2
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "또 한 마리가 제 발로 걸어오는군.",
+        "Side": 1,
+        "Duration": 2.3
+      },
+      {
+        "Kind": "approach",
         "Title": "목순의 성급한 도전",
-        "Speech": "네가 여포냐? 내가 상대해 주마!",
-        "Duration": 3
+        "Speech": "",
+        "Side": 0,
+        "Duration": 1.2
       },
       {
-        "Kind": "close",
-        "Side": 1,
-        "Title": "정면 대치",
-        "Speech": "",
-        "Duration": 2.4
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "받아라! 단숨에 끝내주마!",
+        "Side": 0,
+        "Duration": 2.0
       },
       {
-        "Kind": "critical",
-        "Side": 1,
-        "Title": "첫 합: 단숨에 베기",
+        "Kind": "dodge",
+        "Title": "목순이 마구 휘두르고 여포가 가볍게 물러나다",
+        "Speech": "느리구나.",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "rush-dodge",
+        "Title": "목순이 돌진하며 베지만 여포가 몸을 비키다",
+        "Speech": "어디를 노리느냐.",
+        "Side": 0,
+        "Duration": 1.15
+      },
+      {
+        "Kind": "dodge",
+        "Title": "목순의 칼이 허공을 가르다",
+        "Speech": "하품이 나는군.",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "이놈! 왜 맞서지 않느냐! 도망만 칠 셈이냐!",
+        "Side": 0,
+        "Duration": 2.8
+      },
+      {
+        "Kind": "rush-dodge",
+        "Title": "목순이 이성을 잃고 달려들다",
+        "Speech": "그게 전부냐?",
+        "Side": 0,
+        "Duration": 1.15
+      },
+      {
+        "Kind": "dodge",
+        "Title": "여포가 한 걸음씩 물러나며 피하다",
         "Speech": "",
-        "Duration": 2.4
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "다 보았다. 이제 끝내주마.",
+        "Side": 1,
+        "Duration": 2.0
+      },
+      {
+        "Kind": "slash-through",
+        "Title": "여포가 달려들며 베고 목순의 등 뒤에 서다",
+        "Speech": "한 번이면 족하다.",
+        "Side": 1,
+        "Duration": 1.5
       },
       {
         "Kind": "win",
-        "Side": 1,
         "Title": "목순 전사",
         "Speech": "또 나설 자가 있느냐!",
-        "Duration": 3
+        "Side": 1,
+        "Duration": 2.5
       }
     ]
   },
@@ -811,67 +1436,130 @@
     "Outcome": "defeat",
     "Beats": [
       {
-        "Kind": "approach",
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "그 위세도 여기까지다! 이 무안국이 상대해 주마!",
         "Side": 0,
-        "Title": "무안국의 도전",
-        "Speech": "그 위세도 여기까지다!",
-        "Duration": 2.4
-      },
-      {
-        "Kind": "close",
-        "Side": 1,
-        "Title": "무기를 맞댐",
-        "Speech": "",
-        "Duration": 2.4
-      },
-      {
-        "Kind": "block",
-        "Side": 0,
-        "Title": "첫 합: 공격을 막아냄",
-        "Speech": "헛된 공명에 눈이 멀었구나.",
-        "Duration": 2.4
-      },
-      {
-        "Kind": "yielding-block",
-        "Side": 1,
-        "Title": "둘째 합: 밀리는 무안국",
-        "Speech": "으윽!",
-        "Duration": 2.4
-      },
-      {
-        "Kind": "critical",
-        "Side": 1,
-        "Title": "셋째 합: 큰 부상",
-        "Speech": "",
-        "Duration": 2.4
+        "Duration": 2.9
       },
       {
         "Kind": "talk",
+        "Title": "대사",
+        "Speech": "오십 근 철퇴로 나를 쓰러뜨리겠다는 거냐?",
+        "Side": 1,
+        "Duration": 2.6
+      },
+      {
+        "Kind": "approach",
+        "Title": "무안국의 도전",
+        "Speech": "",
         "Side": 0,
-        "Title": "승산을 잃음",
-        "Speech": "도저히 당해낼 수 없구나!",
+        "Duration": 1.2
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "이 철퇴 맛을 보아라!",
+        "Side": 0,
+        "Duration": 1.8
+      },
+      {
+        "Kind": "block",
+        "Title": "무안국이 철퇴를 내려치다",
+        "Speech": "오십 근이라더니, 가볍구나.",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "block",
+        "Title": "다시 철퇴를 휘두르다",
+        "Speech": "….",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "critical-block",
+        "Title": "무안국이 온 힘으로 내리치다",
+        "Speech": "으라아앗!",
+        "Side": 0,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "공명에 눈이 멀어 제 분수를 모르는구나.",
+        "Side": 1,
+        "Duration": 2.5
+      },
+      {
+        "Kind": "block",
+        "Title": "여포가 처음으로 화극을 휘두르다",
+        "Speech": "크윽…",
+        "Side": 1,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "yielding-block",
+        "Title": "무안국이 막지만 밀리다",
+        "Speech": "으윽!",
+        "Side": 1,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "block",
+        "Title": "무안국이 필사적으로 철퇴를 휘두르다",
+        "Speech": "아직… 끝나지 않았다!",
+        "Side": 0,
+        "Duration": 1.05
+      },
+      {
+        "Kind": "yielding-block",
+        "Title": "여포의 화극에 무안국이 크게 밀리다",
+        "Speech": "으아악!",
+        "Side": 1,
+        "Duration": 1.2
+      },
+      {
+        "Kind": "critical",
+        "Title": "여포의 일격이 무안국의 팔을 베다",
+        "Speech": "여기까지다.",
+        "Side": 1,
+        "Duration": 1.3
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "아직도 서 있다니… 질긴 놈이군.",
+        "Side": 1,
+        "Duration": 2.2
+      },
+      {
+        "Kind": "talk",
+        "Title": "대사",
+        "Speech": "(팔이… 도저히 당해낼 수 없구나!)",
+        "Side": 0,
         "Duration": 2.4
       },
       {
         "Kind": "retreat",
-        "Side": 0,
-        "Title": "직선으로 달아남",
+        "Title": "직선으로 달아나 아군 대열 속으로 사라지다",
         "Speech": "물러나라!",
-        "Duration": 3
+        "Side": 0,
+        "Duration": 3.0
       },
       {
         "Kind": "talk",
-        "Side": 1,
-        "Title": "추격하지 않는 여포",
+        "Title": "대사",
         "Speech": "쫓을 가치도 없군!",
-        "Duration": 3
+        "Side": 1,
+        "Duration": 1.6
       },
       {
         "Kind": "withdrawn",
-        "Side": 0,
-        "Title": "퇴각을 마침",
+        "Title": "무안국이 대열 속으로 사라지다",
         "Speech": "",
-        "Duration": 1.5
+        "Side": 0,
+        "Duration": 1.1
       }
     ]
   }

@@ -44,7 +44,7 @@ func TestSupportPhaseIsAlwaysAutomaticAndRejectsPlayerCommands(t *testing.T) {
 	require.NoError(t, err)
 	before := snapshot(s)
 	rev := s.Engine.Observe().Revision
-	r := s.Handle(Request{Op: "command", Revision: &rev, Command: core.Command{Kind: "wait", Actor: "fangyue"}})
+	r := s.Handle(Request{Op: "command", Revision: &rev, Command: core.Command{Kind: "wait", Actor: "mushun"}})
 	assert.False(t, r.OK)
 	assert.Equal(t, "NotYourTurn", r.Error)
 	assert.Equal(t, before, snapshot(s))

@@ -48,7 +48,7 @@ func TestCampaignScripts(t *testing.T) {
 	if count != len(scripts) {
 		t.Fatalf("%d scripts for %d campaign duels", len(scripts), count)
 	}
-	t.Run("one exchange kills", func(t *testing.T) {
+	t.Run("short fights end on the killing blow", func(t *testing.T) {
 		for _, id := range []string{"B01-duel-1", "B01-duel-2"} {
 			strikes := 0
 			for _, b := range scripts[id].Beats {
@@ -57,8 +57,9 @@ func TestCampaignScripts(t *testing.T) {
 					strikes++
 				}
 			}
-			if strikes != 1 {
-				t.Fatalf("%s has %d exchanges", id, strikes)
+			beats := scripts[id].Beats
+			if strikes < 3 || beats[len(beats)-2].Kind != "critical" {
+				t.Fatalf("%s has %d exchanges or does not end on a critical blow", id, strikes)
 			}
 		}
 	})
@@ -281,12 +282,11 @@ func TestThreeBrothersAgainstOne(t *testing.T) {
 				}
 			}
 			last := story.Sample(story.Duration())
-			if last.Actors[1].Position != 340 || last.Actors[1].Animation == "exhausted" {
-				t.Fatal("retreat must stop at the formation entrance without exhaustion")
+			if last.Actors[1].Fade != 1 || last.Actors[1].Animation == "exhausted" {
+				t.Fatal("retreat must fade out among the ranks without exhaustion")
 			}
-			x, y := last.Actors[1].ScreenPosition()
-			if .5*x+y > 1234-160 {
-				t.Fatal("retreat crossed into the front rank")
+			if at(story, "retreat", .3).Actors[1].Fade != 0 {
+				t.Fatal("retreat must not fade before reaching the ranks")
 			}
 			for time := 0.; time < story.Duration(); time += .04 {
 				state := story.Sample(time)
@@ -316,6 +316,9 @@ func TestThreeBrothersAgainstOne(t *testing.T) {
 	t.Run("Zhang Fei holds his ground", func(t *testing.T) {
 		s := scripts.Story("hulao-zhang-fei", "victory")
 		for i, b := range s.Beats {
+			if b.Kind == "press" {
+				break
+			}
 			if b.Kind == "critical-block" {
 				r := s.Sample(s.Start(i) + .57)
 				if r.Actors[0].Position < -60 || r.Actors[1].Position > 60 {

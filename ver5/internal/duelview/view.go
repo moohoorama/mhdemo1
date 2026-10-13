@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/colorm"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 	"srpg/internal/duel"
@@ -192,6 +193,8 @@ type unitDraw struct {
 	dir, anim string
 	frame     int
 	x, y      float64
+	fade      float64
+	gray      float64
 }
 
 func drawUnit(dst *ebiten.Image, u unitDraw, shadow bool) {
@@ -201,11 +204,16 @@ func drawUnit(dst *ebiten.Image, u unitDraw, shadow bool) {
 		pivot = u.art.ShadowPivot
 		im = u.art.Shadow(u.dir, u.anim, u.frame)
 	}
-	op := &ebiten.DrawImageOptions{}
+	op := &colorm.DrawImageOptions{}
 	op.GeoM.Translate(-pivot[0], -pivot[1])
 	op.GeoM.Scale(3, 3)
 	op.GeoM.Translate(u.x, u.y)
-	dst.DrawImage(im, op)
+	var cm colorm.ColorM
+	if u.gray > 0 && !shadow {
+		cm.ChangeHSV(0, 1-u.gray, 1)
+	}
+	cm.Scale(1, 1, 1, 1-u.fade)
+	colorm.DrawImage(dst, im, cm, op)
 }
 
 func (g *View) portrait(dst *ebiten.Image, i int, x, y float64) {
@@ -306,7 +314,7 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 				}
 				art := g.Fighters[side].Troops
 				frame := art.FrameIndex("idle", g.Time*1000+float64((col+24)*63+rank*91))
-				units = append(units, unitDraw{art, g.facing(dir), "idle", frame, x, y})
+				units = append(units, unitDraw{art: art, dir: g.facing(dir), anim: "idle", frame: frame, x: x, y: y})
 			}
 		}
 	}
@@ -330,7 +338,7 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 		if a.Hold >= 0 {
 			frame = min(a.Hold, art.Animations[a.Animation].Frames-1)
 		}
-		units = append(units, unitDraw{art, g.facing(a.Facing), a.Animation, frame, x, y})
+		units = append(units, unitDraw{art, g.facing(a.Facing), a.Animation, frame, x, y, a.Fade, a.Gray})
 	}
 	sort.SliceStable(units, func(i, j int) bool { return units[i].y < units[j].y })
 	for _, u := range units {

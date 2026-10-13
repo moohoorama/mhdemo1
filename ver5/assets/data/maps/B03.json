@@ -1312,15 +1312,6 @@
     "Text": "세 형제가 합세하자 여포가 퇴각했다."
    },
    {
-    "ID": "hulao-fangyue",
-    "Ally": "fangyue",
-    "Enemy": "lubu",
-    "Outcome": "defeat",
-    "AllyResult": "death",
-    "EnemyResult": "stay",
-    "Text": "방열이 여포에게 패하고 전사했다."
-   },
-   {
     "ID": "hulao-mushun",
     "Ally": "mushun",
     "Enemy": "lubu",
@@ -1345,15 +1336,6 @@
     "ID": "coalition-arrival",
     "Trigger": "boss-alone",
     "Spawns": [
-     {
-      "Character": "fangyue",
-      "X": 25,
-      "Y": 7,
-      "Level": 1,
-      "AI": true,
-      "Faction": "yuan",
-      "Facing": "NE"
-     },
      {
       "Character": "mushun",
       "X": 24,
@@ -1436,12 +1418,6 @@
     "Dialogue": [
      [
       {
-       "Actor": "fangyue",
-       "Text": "유비군이 돌파에 성공했다! 이제 여포는 혼자다!"
-      }
-     ],
-     [
-      {
        "Actor": "mushun",
        "Text": "지금이 기회다! 여포를 무찌르고 공을 세우자!"
       }
@@ -1458,7 +1434,6 @@
     "ID": "brothers-challenge",
     "Trigger": "duel",
     "Duels": [
-     "hulao-fangyue",
      "hulao-mushun",
      "hulao-wuanguo"
     ],

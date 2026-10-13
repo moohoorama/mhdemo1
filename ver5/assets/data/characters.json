@@ -901,29 +901,6 @@
    "Equipment": [],
    "Look": {}
   },
-  "fangyue": {
-   "Name": "방열",
-   "Biography": "반동탁 동맹군에 참여한 장수. 유비군이 호로관 전선을 돌파하자 공을 세우려고 나선다. 여포에게 도전하지만 두 합 만에 패하여 목숨을 잃는다.",
-   "Class": "light_cavalry",
-   "Stats": [
-    60,
-    66,
-    31,
-    52,
-    42,
-    51
-   ],
-   "Level": 1,
-   "Traits": [],
-   "Learn": [],
-   "Equipment": [
-    "iron_spear",
-    "leather_armor"
-   ],
-   "Look": {
-    "Faction": "yuan"
-   }
-  },
   "mushun": {
    "Name": "목순",
    "Biography": "반동탁 동맹군에 참여한 장수. 홀로 남은 여포를 무찌르고 공을 세우려 호로관에 나선다. 기세 좋게 일기토를 청하지만 한 합 만에 여포에게 쓰러진다.",

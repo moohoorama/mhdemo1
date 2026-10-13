@@ -83,7 +83,7 @@ func TestCoalitionAIReachesGuardAndTriggersDuels(t *testing.T) {
 	}
 	assert.Equal(t, 0, firstDuelRound, "coalition must reach the guard before the player resumes advancing")
 	assert.Positive(t, moves)
-	assert.Len(t, duels, 3)
+	assert.Len(t, duels, 2)
 	for _, u := range e.Observe().UnitViews {
 		if u.ID == "lubu" {
 			assert.Equal(t, 25, u.X)

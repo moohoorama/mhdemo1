@@ -39,7 +39,7 @@ func TestCoalitionArrivalAndControl(t *testing.T) {
 	moves := e.moves(boss)
 	assert.Empty(t, moves)
 	e.settle()
-	assert.Nil(t, e.unit("fangyue"))
+	assert.Nil(t, e.unit("mushun"))
 	// An occupied entry moves the reinforcement to a nearby free cell.
 	e.unit("guanyu").X, e.unit("guanyu").Y = 25, 7
 	r := summonCoalition(t, e)
@@ -51,7 +51,7 @@ func TestCoalitionArrivalAndControl(t *testing.T) {
 			assert.Equal(t, 1, u.Level)
 		}
 	}
-	assert.Equal(t, 9, aiCount)
+	assert.Equal(t, 8, aiCount)
 	for _, v := range r.Events {
 		if v.Kind == "speech" {
 			speechCount++
@@ -60,13 +60,13 @@ func TestCoalitionArrivalAndControl(t *testing.T) {
 			require.NotNil(t, v.Unit)
 		}
 	}
-	assert.Equal(t, 3, speechCount)
-	assert.NotEqual(t, content.Point{X: 25, Y: 7}, content.Point{X: e.unit("fangyue").X, Y: e.unit("fangyue").Y})
-	require.Empty(t, e.LegalActions("fangyue").Commands)
-	assertRejected(t, e, Command{Kind: "wait", Actor: "fangyue"})
+	assert.Equal(t, 2, speechCount)
+	assert.NotEqual(t, content.Point{X: 25, Y: 7}, content.Point{X: e.unit("mushun").X, Y: e.unit("mushun").Y})
+	require.Empty(t, e.LegalActions("mushun").Commands)
+	assertRejected(t, e, Command{Kind: "wait", Actor: "mushun"})
 	apply(t, e, Command{Kind: "end"})
 	assert.Equal(t, "support", e.state.Turn)
-	require.NotEmpty(t, e.LegalActions("fangyue").Commands)
+	require.NotEmpty(t, e.LegalActions("mushun").Commands)
 	require.Empty(t, e.LegalActions("guanyu").Commands)
 	restored, err := Restore(e.data, e.Snapshot())
 	require.NoError(t, err)
@@ -82,7 +82,7 @@ func TestCoalitionArrivalAndControl(t *testing.T) {
 	assert.Equal(t, 20, e.unit("lubu").Status["defense"].Value)
 }
 func TestCoalitionDuelsAndSimultaneousResponse(t *testing.T) {
-	for _, id := range []string{"fangyue", "mushun", "wuanguo"} {
+	for _, id := range []string{"mushun", "wuanguo"} {
 		t.Run(id, func(t *testing.T) {
 			e := hulaoBattle(t)
 			summonCoalition(t, e)

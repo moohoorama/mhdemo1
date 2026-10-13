@@ -11,15 +11,22 @@ import (
 func TestArrivedFightersStopWalking(t *testing.T) {
 	scripts, err := LoadScripts("../../assets/duels.json")
 	require.NoError(t, err)
-	for _, id := range []string{"hulao-fangyue", "hulao-mushun", "hulao-wuanguo"} {
+	for _, id := range []string{"hulao-mushun", "hulao-wuanguo"} {
 		t.Run(id, func(t *testing.T) {
 			story := scripts.Story(id, "defeat")
 			moving := at(story, "approach", .5)
-			ready := at(story, "close", 0)
+			arrived := 0
+			for i, b := range story.Beats {
+				if b.Kind == "approach" {
+					arrived = i + 1
+					break
+				}
+			}
+			ready := story.Sample(story.Start(arrived))
 			for side := range 2 {
 				assert.Equal(t, "walk", moving.Actors[side].Animation)
-				for _, local := range []float64{.1, 1, 2.3} {
-					waiting := at(story, "close", local)
+				for _, local := range []float64{.1, 1, 1.3} {
+					waiting := story.Sample(story.Start(arrived) + local)
 					assert.Equal(t, ready.Actors[side].Position, waiting.Actors[side].Position)
 					assert.Equal(t, "idle", waiting.Actors[side].Animation)
 				}

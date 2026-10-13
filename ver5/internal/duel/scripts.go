@@ -67,7 +67,7 @@ func (s Script) Validate() error {
 			joined = true
 		}
 		switch kind {
-		case "charge-ready", "engage", "press", "reinforcements", "retreat", "withdrawn", "yielding-block", "critical-dodge", "talk", "withdraw", "critical-block", "straight-chase", "advance", "approach", "close", "backstep", "crossing-charge", "turn", "hit", "block", "dodge", "critical", "backhit", "rest", "win", "draw", "escape", "catch", "escaped":
+		case "charge-ready", "engage", "press", "reinforcements", "retreat", "withdrawn", "yielding-block", "critical-dodge", "talk", "withdraw", "critical-block", "straight-chase", "advance", "approach", "close", "backstep", "crossing-charge", "slash-through", "turn", "hit", "block", "dodge", "critical", "backhit", "rest", "win", "draw", "escape", "catch", "escaped":
 		default:
 			return fmt.Errorf("unknown motion %q", b.Kind)
 		}

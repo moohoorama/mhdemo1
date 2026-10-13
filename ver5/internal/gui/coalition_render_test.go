@@ -100,7 +100,7 @@ func (p *coalitionRenderTest) Update() error {
 		snap := g.S.Engine.Snapshot()
 		snap.Turn = "support"
 		for i := range snap.Units {
-			if snap.Units[i].ID == "fangyue" {
+			if snap.Units[i].ID == "mushun" {
 				snap.Units[i].X, snap.Units[i].Y = 24, 4
 			}
 		}
@@ -112,7 +112,7 @@ func (p *coalitionRenderTest) Update() error {
 		}
 		before := g.S.Engine.Observe()
 		g.sync(before)
-		c := core.Command{Kind: "attack", Actor: "fangyue", Target: "lubu"}
+		c := core.Command{Kind: "attack", Actor: "mushun", Target: "lubu"}
 		r, err := g.S.Engine.Apply(c)
 		if err != nil {
 			p.err = err
