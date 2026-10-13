@@ -140,7 +140,8 @@ func (p *duelRenderTest) Draw(dst *ebiten.Image) {
 	g.Draw(dst)
 	if p.beat == 0 && p.sample == 0 {
 		length := view.Length()
-		for i, clock := range []float64{.3, duelview.Transition.PanTime, duelview.Transition.PanTime + .3, duelview.Transition.PanTime + .6, length - duelview.Transition.Intro() + .3} {
+		tr := duelview.Transition
+		for i, clock := range []float64{tr.PanTime / 2, tr.PanTime + tr.ZoomTime/3, tr.PanTime + tr.ZoomTime*2/3, tr.PanTime + tr.ZoomTime + tr.UITime/2, length - tr.PanTime - tr.ZoomTime/2} {
 			view.Clock = clock
 			g.Draw(dst)
 			p.save(dst, fmt.Sprintf("%s-%d-transition-%d.png", p.cases[p.index].duel.ID, p.index, i))
@@ -148,7 +149,7 @@ func (p *duelRenderTest) Draw(dst *ebiten.Image) {
 		// Retina windows render at device resolution; the transition must scale with it.
 		scale = 2
 		large := ebiten.NewImage(Width*2, Height*2)
-		view.Clock = duelview.Transition.PanTime + .3
+		view.Clock = duelview.Transition.PanTime + duelview.Transition.ZoomTime/2
 		g.Draw(large)
 		p.save(large, fmt.Sprintf("%s-%d-transition-2x.png", p.cases[p.index].duel.ID, p.index))
 		large.Deallocate()

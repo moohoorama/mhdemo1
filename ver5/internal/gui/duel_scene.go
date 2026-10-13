@@ -182,6 +182,7 @@ func (g *Game) updateDuelPreviewKeys() {
 		{ebiten.KeyQ, ebiten.KeyW, &t.ZoomFactor, 1.25, true},
 		{ebiten.KeyA, ebiten.KeyS, &t.PanTime, .1, false},
 		{ebiten.KeyZ, ebiten.KeyX, &t.ZoomTime, .1, false},
+		{ebiten.KeyT, ebiten.KeyG, &t.UITime, .1, false},
 		{ebiten.KeyE, ebiten.KeyD, &t.StartScale, 1.25, true},
 	} {
 		for i, key := range []ebiten.Key{k.down, k.up} {
@@ -219,10 +220,10 @@ func (g *Game) drawDuelPreviewInfo(dst *ebiten.Image) {
 	if g.previewPaused {
 		state = "정지"
 	}
-	pan, zoom := v.Phase()
+	pan, zoom, ui := v.Phase()
 	t := duelview.Transition
-	g.outlined(dst, fmt.Sprintf("%.2f/%.2fs  스크롤 %.2f 확대 %.2f  배속 %s   [P]정지 [1-4]속도 [←→]프레임 [R]다시 [Enter]건너뛰기", v.Clock, v.Length(), pan, zoom, state), 12, Height-58, 15)
-	g.outlined(dst, fmt.Sprintf("전투확대 %.2f [Q/W]  스크롤 %.2fs [A/S]  확대 %.2fs [Z/X]  일기토시작크기 %.3f [E/D]", t.ZoomFactor, t.PanTime, t.ZoomTime, t.StartScale), 12, Height-34, 15)
+	g.outlined(dst, fmt.Sprintf("%.2f/%.2fs  스크롤 %.2f 확대 %.2f UI %.2f  배속 %s   [P]정지 [1-4]속도 [←→]프레임 [R]다시 [Enter]건너뛰기", v.Clock, v.Length(), pan, zoom, ui, state), 12, Height-58, 15)
+	g.outlined(dst, fmt.Sprintf("전투확대 %.2f [Q/W]  스크롤 %.2fs [A/S]  확대 %.2fs [Z/X]  일기토UI %.2fs [T/G]  시작크기 %.3f [E/D]", t.ZoomFactor, t.PanTime, t.ZoomTime, t.UITime, t.StartScale), 12, Height-34, 15)
 }
 
 func (g *Game) updateDuelPreview() {
