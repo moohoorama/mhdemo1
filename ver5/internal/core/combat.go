@@ -58,6 +58,9 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 	h := float64(s.Hit)
 	switch s.Kind {
 	case content.KindPhysical:
+		if v.Status["guard"].Turns > 0 && !e.rangedAttack(u, v, s) {
+			return 0
+		}
 		if e.has(v, content.FxRangedImmune) && e.rangedAttack(u, v, s) {
 			return 0
 		}
@@ -365,6 +368,11 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 	start := len(e.events)
 	if s.Kind == content.KindPhysical {
 		e.physical(u, v, s, c)
+		delete(u.Status, "provoke")
+		if e.rangedAttack(u, v, s) {
+			delete(u.Status, "aim")
+			delete(u.Status, "snipe")
+		}
 	} else {
 		e.spell(u, v, s, c)
 	}
@@ -389,6 +397,12 @@ func (e *Engine) physical(u, v *Unit, s content.Skill, c Command) {
 	for _, q := range hit {
 		dealt[q.ID] = e.attackOn(u, q, s, blow{share: share[q.ID]})
 		total += dealt[q.ID]
+		if !e.rangedAttack(u, q, s) {
+			delete(q.Status, "guard")
+		}
+		if p := u.Status["provoke"]; p.Turns > 0 && dealt[q.ID] > 0 {
+			e.applyStatus(q, "defense", e.data.Rules.BuffTurns, -p.Value)
+		}
 	}
 	for _, id := range keys(e.unitIDs) {
 		w := e.unit(id)
@@ -460,13 +474,13 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 		case "refill":
 			recovered = min(e.stats(q).MaxMP-q.MP, int(s.Coeff))
 			q.MP += recovered
-		case "attack", "defense", "mind", "morale", "agility":
+		case "attack", "defense", "mind", "morale", "agility", "aim", "provoke", "disrupt":
 			p := R.BuffPercent
 			if s.Kind == content.KindStatus {
 				p = -p
 			}
 			e.applyStatus(q, s.Effect, turns, p)
-		case "speed", "range":
+		case "speed", "range", "snipe":
 			e.applyStatus(q, s.Effect, turns, int(s.Coeff))
 		default:
 			e.applyStatus(q, s.Effect, turns, 0)

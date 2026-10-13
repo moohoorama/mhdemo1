@@ -500,6 +500,36 @@
    "Desc": "",
    "Cost": 200,
    "Requires": []
+  },
+  "guard_t": {
+   "Name": "guard_t",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": []
+  },
+  "aim_t": {
+   "Name": "aim_t",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": []
+  },
+  "snipe_t": {
+   "Name": "snipe_t",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": []
+  },
+  "provoke_t": {
+   "Name": "provoke_t",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": []
+  },
+  "disrupt_t": {
+   "Name": "disrupt_t",
+   "Desc": "",
+   "Cost": 400,
+   "Requires": []
   }
  }
 }

@@ -288,6 +288,79 @@
    "Requires": [
     "arrow_t"
    ]
+  },
+  "guard_s": {
+   "Name": "Guard",
+   "Desc": "",
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 10,
+   "Hit": 100,
+   "Effect": "guard",
+   "Duration": 2,
+   "Requires": [
+    "guard_t"
+   ]
+  },
+  "aim_s": {
+   "Name": "Aim",
+   "Desc": "",
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 10,
+   "Hit": 100,
+   "Effect": "aim",
+   "Duration": 2,
+   "Requires": [
+    "aim_t"
+   ]
+  },
+  "snipe_s": {
+   "Name": "Snipe",
+   "Desc": "",
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 10,
+   "Hit": 100,
+   "Effect": "snipe",
+   "Coeff": 2,
+   "Duration": 2,
+   "Requires": [
+    "snipe_t"
+   ]
+  },
+  "provoke_s": {
+   "Name": "Provoke",
+   "Desc": "",
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 10,
+   "Hit": 100,
+   "Effect": "provoke",
+   "Duration": 2,
+   "Requires": [
+    "provoke_t"
+   ]
+  },
+  "disrupt_s": {
+   "Name": "Disrupt",
+   "Desc": "",
+   "Kind": "status",
+   "Mode": "melee",
+   "Shape": "single",
+   "Cost": 10,
+   "Hit": 100,
+   "Effect": "disrupt",
+   "Min": 1,
+   "Max": 1,
+   "Duration": 2,
+   "Requires": [
+    "disrupt_t"
+   ]
   }
  }
 }

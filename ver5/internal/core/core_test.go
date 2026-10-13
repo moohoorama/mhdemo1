@@ -743,3 +743,129 @@ func TestMagicCoefficientAddsSpellDamage(t *testing.T) {
 		t.Fatalf("damage %v, want %v", got, want)
 	}
 }
+
+func TestPreparedSkillsSetTheirStatuses(t *testing.T) {
+	e, _, _ := arena(t)
+	e.char("hero").Class = "archer"
+	e.char("hero").Equipment = map[string]string{}
+	with(e, "hero", "guard_t", "aim_t", "snipe_t", "provoke_t")
+	R := e.data.Rules
+	e.unit("hero").MP = 100
+	before := e.stats(e.unit("hero"))
+	_, hi := e.rangeFor(e.unit("hero"), e.basic())
+	for _, id := range []string{"guard_s", "aim_s", "snipe_s", "provoke_s"} {
+		resetActions(e.unit("hero"))
+		apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "hero", Skill: id})
+	}
+	h := e.unit("hero")
+	for _, id := range []string{"guard", "aim", "snipe", "provoke"} {
+		if h.Status[id].Turns != 2 {
+			t.Fatalf("%s status %+v", id, h.Status[id])
+		}
+	}
+	after := e.stats(h)
+	if after.Agility != percent(before.Agility, R.BuffPercent) || after.Morale != percent(before.Morale, R.BuffPercent) {
+		t.Fatalf("aim stats %+v -> %+v", before, after)
+	}
+	if _, now := e.rangeFor(h, e.basic()); now != hi+2 {
+		t.Fatalf("snipe range %d -> %d", hi, now)
+	}
+}
+func TestGuardBlocksMeleeWhollyAndIsSpent(t *testing.T) {
+	e, a, b := arena(t)
+	b.Status["guard"] = Status{Turns: 2}
+	if e.hitChance(a, b, e.basic()) != 0 {
+		t.Fatal("a guarded unit must not be hit in melee")
+	}
+	with(e, "hero", "twice")
+	hp := b.HP
+	r := apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
+	for _, ev := range r.Events {
+		if ev.Kind == "damage" && ev.Target == "boss" {
+			t.Fatal("a guarded unit took damage")
+		}
+	}
+	if b = e.unit("boss"); b.HP != hp || b.Status["guard"].Turns != 0 {
+		t.Fatalf("hp %d→%d guard %+v", hp, b.HP, b.Status["guard"])
+	}
+	if e.hitChance(e.unit("hero"), b, e.basic()) == 0 {
+		t.Fatal("the guard is spent")
+	}
+}
+func TestGuardDoesNotStopRangedAttacks(t *testing.T) {
+	e, a, b := arena(t)
+	e.char("hero").Class = "archer"
+	e.char("hero").Equipment = map[string]string{}
+	a.X = 3
+	b.Status["guard"] = Status{Turns: 2}
+	if e.hitChance(a, b, e.basic()) == 0 {
+		t.Fatal("guard stops melee only")
+	}
+}
+func TestAimAndSnipeAreSpentByTheNextRangedAction(t *testing.T) {
+	e, _, _ := arena(t)
+	e.char("hero").Class = "archer"
+	e.char("hero").Equipment = map[string]string{}
+	e.unit("hero").X = 3
+	e.unit("hero").Status["aim"] = Status{Turns: 2, Value: 20}
+	e.unit("hero").Status["snipe"] = Status{Turns: 2, Value: 2}
+	apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
+	if h := e.unit("hero"); h.Status["aim"].Turns != 0 || h.Status["snipe"].Turns != 0 {
+		t.Fatalf("still prepared: %+v", h.Status)
+	}
+	e, _, _ = arena(t)
+	e.unit("hero").Status["aim"] = Status{Turns: 2, Value: 20}
+	apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
+	if e.unit("hero").Status["aim"].Turns == 0 {
+		t.Fatal("a melee attack must not spend aim")
+	}
+}
+func TestProvokeLowersDefenseOnAHitAndIsSpentEitherWay(t *testing.T) {
+	e, _, _ := arena(t)
+	R := e.data.Rules
+	hit := false
+	for i := 0; i < 30; i++ {
+		h := e.unit("hero")
+		h.Status["provoke"] = Status{Turns: 2, Value: R.BuffPercent}
+		resetActions(h)
+		r := apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
+		if e.unit("hero").Status["provoke"].Turns != 0 {
+			t.Fatal("provoke must be spent by the attack")
+		}
+		for _, ev := range r.Events {
+			if ev.Kind == "damage" && ev.Target == "boss" && ev.Amount > 0 {
+				hit = true
+				if s := e.unit("boss").Status["defense"]; s.Value != -R.BuffPercent {
+					t.Fatalf("defense status %+v", s)
+				}
+			}
+		}
+		e.unit("hero").HP = e.stats(e.unit("hero")).MaxHP
+		e.unit("boss").HP = e.stats(e.unit("boss")).MaxHP
+		delete(e.unit("boss").Status, "defense")
+		e.state.Phase, e.state.Result, e.state.Learning = "battle", "", nil
+	}
+	if !hit {
+		t.Fatal("no attack hit in 30 tries")
+	}
+}
+func TestDisruptCutsAgilityAndMorale(t *testing.T) {
+	e, _, b := arena(t)
+	R := e.data.Rules
+	before := e.stats(b)
+	b.Status["disrupt"] = Status{Turns: 2, Value: -R.BuffPercent}
+	after := e.stats(b)
+	if after.Agility != percent(before.Agility, -R.BuffPercent) || after.Morale != percent(before.Morale, -R.BuffPercent) || after.Attack != before.Attack {
+		t.Fatalf("disrupt stats %+v -> %+v", before, after)
+	}
+	delete(b.Status, "disrupt")
+	with(e, "hero", "disrupt_t")
+	e.unit("hero").MP = 50
+	for i := 0; i < 30 && e.unit("boss").Status["disrupt"].Turns == 0; i++ {
+		resetActions(e.unit("hero"))
+		apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "boss", Skill: "disrupt_s"})
+	}
+	if s := e.unit("boss").Status["disrupt"]; s.Turns != 2 || s.Value != -R.BuffPercent {
+		t.Fatalf("disrupt status %+v", s)
+	}
+}

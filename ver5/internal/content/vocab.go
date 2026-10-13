@@ -106,16 +106,18 @@ var SkillEffects = map[string]bool{
 	"heal": true, "cure": true, "dispel": true, "steal": true, "eightfold": true, "counter": true,
 	"mind": true, "attack": true, "defense": true, "morale": true, "agility": true, "speed": true, "range": true,
 	"poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "refill": true,
+	"guard": true, "aim": true, "snipe": true, "provoke": true, "disrupt": true,
 }
 
 // Harmful statuses, ended by status immunity and cleansing.
-var Harmful = map[string]bool{"poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "weak": true}
+var Harmful = map[string]bool{"disrupt": true, "poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "weak": true}
 
 // Statuses lists every status id a unit can carry.
 var Statuses = map[string]bool{
 	"poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "weak": true,
 	"speed": true, "range": true, "counter": true, "eightfold": true,
 	"attack": true, "defense": true, "mind": true, "morale": true, "agility": true, "attack-down": true, "defense-down": true,
+	"guard": true, "aim": true, "snipe": true, "provoke": true, "disrupt": true,
 }
 
 // Class tags the engine reads.

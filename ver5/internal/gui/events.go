@@ -134,7 +134,8 @@ func factionName(f string) string {
 // statusLabels are the engine's status ids as the screen names them.
 var statusLabels = map[string]string{"speed": "신속", "range": "원시", "counter": "반격", "eightfold": "팔진",
 	"mind": "정신", "morale": "사기", "attack": "공격", "defense": "방어", "agility": "순발", "poison": "중독", "burn": "화상",
-	"confusion": "혼란", "seal": "봉책", "root": "속박", "disarm": "봉격", "weak": "약화", "attack-down": "공격↓", "defense-down": "방어↓"}
+	"confusion": "혼란", "seal": "봉책", "root": "속박", "disarm": "봉격", "weak": "약화", "attack-down": "공격↓", "defense-down": "방어↓",
+	"guard": "경계", "aim": "조준", "snipe": "저격", "provoke": "도발", "disrupt": "교란"}
 
 // percentStatus lists the statuses whose value is a signed percent.
 var percentStatus = map[string]bool{"attack": true, "defense": true, "mind": true, "morale": true, "agility": true}

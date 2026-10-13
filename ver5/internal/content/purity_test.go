@@ -30,7 +30,7 @@ func TestEngineSourceNamesNoGameContent(t *testing.T) {
 		engine[strings.TrimSuffix(k, ":")] = true
 	}
 	// Korean words the screens use as labels of engine vocabulary (statuses, the equipment tab) may coincide with data names.
-	for _, w := range []string{"장비", "신속", "원시", "반격", "혼란", "봉책", "봉격", "약화"} {
+	for _, w := range []string{"장비", "신속", "원시", "반격", "혼란", "봉책", "봉격", "약화", "경계", "조준", "저격", "도발", "교란"} {
 		engine[w] = true
 	}
 	banned := map[string]string{}

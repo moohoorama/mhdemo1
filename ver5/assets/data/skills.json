@@ -922,6 +922,79 @@
    "Requires": [
     "fire_arrow_art"
    ]
+  },
+  "guard": {
+   "Name": "경계",
+   "Desc": "다음 근접 물리 공격 1회를 완전히 피한다.",
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 18,
+   "Hit": 100,
+   "Effect": "guard",
+   "Duration": 2,
+   "Requires": [
+    "guard_prep"
+   ]
+  },
+  "aim": {
+   "Name": "조준",
+   "Desc": "다음 원거리 공격의 순발력·사기를 높인다.",
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 18,
+   "Hit": 100,
+   "Effect": "aim",
+   "Duration": 2,
+   "Requires": [
+    "aim_prep"
+   ]
+  },
+  "snipe": {
+   "Name": "저격",
+   "Desc": "다음 원거리 공격의 사거리가 2 늘어난다.",
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 18,
+   "Hit": 100,
+   "Effect": "snipe",
+   "Coeff": 2,
+   "Duration": 2,
+   "Requires": [
+    "snipe_prep"
+   ]
+  },
+  "provoke": {
+   "Name": "도발",
+   "Desc": "다음 물리 공격이 명중하면 대상의 방어력을 낮춘다.",
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 18,
+   "Hit": 100,
+   "Effect": "provoke",
+   "Duration": 2,
+   "Requires": [
+    "provoke_prep"
+   ]
+  },
+  "disrupt": {
+   "Name": "교란",
+   "Desc": "적 한 부대의 순발력과 사기를 2턴 낮춘다.",
+   "Kind": "status",
+   "Mode": "melee",
+   "Shape": "single",
+   "Cost": 30,
+   "Hit": 80,
+   "Effect": "disrupt",
+   "Min": 1,
+   "Max": 1,
+   "Duration": 2,
+   "Requires": [
+    "disrupt_prep"
+   ]
   }
  }
 }
