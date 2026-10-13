@@ -2,6 +2,7 @@ package gui
 
 import (
 	"image"
+	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/content"
@@ -28,6 +29,15 @@ func (g *Game) duelView(e core.Event) *duelview.View {
 			v.Fighters[i+2] = g.duelFighter(u.Def, u.Class, u.Color)
 		}
 	}
+	v.Anchor = func() (float64, float64) {
+		a, t := g.unitAt(e.Actor), g.unitAt(e.Target)
+		if a == nil || t == nil || g.field == nil {
+			return Width / 2, Height / 2
+		}
+		ax, ay := g.field.Center(a.u, a.v)
+		tx, ty := g.field.Center(t.u, t.v)
+		return g.toScreen((ax+tx)/2, (ay+ty)/2)
+	}
 	return v
 }
 
@@ -48,10 +58,10 @@ func (p *Player) SkipDuel() {
 	if p.Duel == nil {
 		return
 	}
-	p.Duel.Time = p.Duel.Story.Duration()
+	p.Duel.Finish()
 	// A duel is a replay barrier: it is the sole running action.
 	for _, r := range p.running {
-		r.left = 0
+		r.left = min(r.left, duelview.TransitionTime)
 	}
 }
 
@@ -77,7 +87,18 @@ func (g *Game) updateDuel() {
 }
 
 func (g *Game) drawDuel(dst *ebiten.Image) {
-	g.player.Duel.Draw(dst)
+	v := g.player.Duel
+	if v.Cover() < 1 {
+		if g.duelBattle == nil {
+			g.duelBattle = ebiten.NewImage(Width, Height)
+		}
+		g.duelBattle.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
+		g.play(g.duelBattle)
+		g.buttons, g.blocks = nil, nil
+		v.DrawOver(dst, g.duelBattle)
+		return
+	}
+	v.Draw(dst)
 	g.btn(dst, image.Rect(1000, 805, 1254, 839), "일기토 건너뛰기", g.player.SkipDuel)
 }
 

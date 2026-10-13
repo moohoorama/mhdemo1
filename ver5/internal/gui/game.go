@@ -32,6 +32,7 @@ import (
 const Width, Height = 1280, 850
 
 type Game struct {
+	duelBattle           *ebiten.Image
 	gallery              *duelGallery
 	editor               *mapEditor
 	editorReturn         *mapEditor

@@ -11,6 +11,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/content"
 	"srpg/internal/core"
+	"srpg/internal/duelview"
 	"srpg/internal/session"
 )
 
@@ -89,9 +90,9 @@ func (p *duelRenderTest) Update() error {
 		before := g.S.Engine.Snapshot()
 		if p.index%2 == 0 {
 			g.player.SkipDuel()
-			g.player.Update(.01)
+			g.player.Update(duelview.TransitionTime)
 		} else {
-			g.player.Update(g.player.Duel.Story.Duration())
+			g.player.Update(g.player.Duel.Length())
 		}
 		if g.player.Duel != nil {
 			return p.fail(fmt.Errorf("duel did not return to map"))
@@ -249,7 +250,18 @@ func (p *duelRenderTest) Draw(dst *ebiten.Image) {
 	duration := view.Story.Beats[p.beat].Duration
 	local := []float64{min(.2, duration/4), min(.57, duration/2), duration - .001}[p.sample]
 	view.Time = view.Story.Start(p.beat) + local
+	view.Clock = duelview.TransitionTime + view.Time/duelview.PlaybackSpeed
 	g.Draw(dst)
+	if p.beat == 0 && p.sample == 0 {
+		length := view.Length()
+		for i, clock := range []float64{.2, .4, .55, length - .55, length - .3} {
+			view.Clock = clock
+			g.Draw(dst)
+			p.save(dst, fmt.Sprintf("%s-%d-transition-%d.png", p.cases[p.index].duel.ID, p.index, i))
+		}
+		view.Clock = duelview.TransitionTime
+		g.Draw(dst)
+	}
 	// Verify shared renderer at twice the logical resolution too.
 	if p.beat == 0 && p.sample == 0 {
 		large := ebiten.NewImage(Width*2, Height*2)
@@ -261,10 +273,14 @@ func (p *duelRenderTest) Draw(dst *ebiten.Image) {
 		}
 		large.Deallocate()
 	}
+	p.save(dst, fmt.Sprintf("%s-%d-%02d-%d.png", p.cases[p.index].duel.ID, p.index, p.beat, p.sample))
+	p.drawn = true
+}
+
+func (p *duelRenderTest) save(dst *ebiten.Image, name string) {
 	img := image.NewRGBA(dst.Bounds())
 	dst.ReadPixels(img.Pix)
-	path := filepath.Join(p.out, fmt.Sprintf("%s-%d-%02d-%d.png", p.cases[p.index].duel.ID, p.index, p.beat, p.sample))
-	f, err := os.Create(path)
+	f, err := os.Create(filepath.Join(p.out, name))
 	if err == nil {
 		err = png.Encode(f, img)
 		closeErr := f.Close()
@@ -275,5 +291,4 @@ func (p *duelRenderTest) Draw(dst *ebiten.Image) {
 	if err != nil {
 		p.err = err
 	}
-	p.drawn = true
 }

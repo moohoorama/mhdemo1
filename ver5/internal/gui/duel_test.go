@@ -19,7 +19,7 @@ func TestDuelPlaybackAndSkip(t *testing.T) {
 			p.actions = []*replay.Action{{Actor: "ally"}}
 			p.done = make([]bool, 1)
 			p.running = []*running{{index: 0, i: -1, beats: []beat{
-				{view.Story.Duration() / duelview.PlaybackSpeed, func() { p.Duel = view }},
+				{view.Length(), func() { p.Duel = view }},
 				{blinkTime, func() { p.Duel = nil; aftermath = true; g.strike(nil, []core.Event{{Kind: "death", Actor: "enemy"}}) }},
 			}}}
 			p.Update(.01)
@@ -35,12 +35,16 @@ func TestDuelPlaybackAndSkip(t *testing.T) {
 				return
 			case "skip duel":
 				p.SkipDuel()
+				if view.Time != view.Story.Duration() || view.Cover() != 1 || aftermath {
+					t.Fatal("skip must keep the closing transition")
+				}
+				p.Update(duelview.TransitionTime)
 			case "finish":
-				p.Update(.5)
-				if view.Time != 1 || aftermath {
+				p.Update(duelview.TransitionTime)
+				if view.Time != 0 || view.Cover() != 1 || aftermath {
 					t.Fatal("wrong presentation clock")
 				}
-				p.Update(.5)
+				p.Update(view.Length() - duelview.TransitionTime - .01)
 			}
 			p.Update(.01)
 			if p.Duel != nil || !aftermath || !p.Busy() || g.vis["enemy"].shownHP != 0 || g.vis["enemy"].dying != 0 {
