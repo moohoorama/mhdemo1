@@ -244,6 +244,12 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			}
 		}
 	}
+	// Shade the out-of-battle ground only; scenery and units are drawn afterward.
+	if f.exterior != nil && !f.ShowExterior {
+		op := &ebiten.DrawImageOptions{}
+		f.renderOp(c, op)
+		c.DrawImage(f.exterior, op)
+	}
 	f.drawDeploymentGround()
 	for _, m := range marks {
 		x, y := f.mapCenter(float64(m.U), float64(m.V))
@@ -366,11 +372,6 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 				break
 			}
 		}
-	}
-	if f.exterior != nil && !f.ShowExterior {
-		op := &ebiten.DrawImageOptions{}
-		f.renderOp(c, op)
-		c.DrawImage(f.exterior, op)
 	}
 	for _, u := range units {
 		x, y := f.Center(u.u, u.v)

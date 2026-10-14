@@ -18,6 +18,14 @@ func (g *Game) busy() bool { return g.player.Busy() || g.sceneBusy() }
 // advance moves the clock, the replay and every unit's animation by one frame.
 func (g *Game) advance(dt float64) {
 	g.uiSeconds += dt
+	if g.zoomTo != g.zoomFrom && g.zoomT < .5 {
+		g.zoomT = math.Min(.5, g.zoomT+dt)
+		t := 1 - math.Pow(2, -g.zoomT*10)
+		if g.zoomT == .5 {
+			t = 1
+		}
+		g.zoom = g.zoomFrom + (g.zoomTo-g.zoomFrom)*t
+	}
 	dt *= float64(g.speed)
 	if g.duelPreview != nil {
 		dt *= g.previewRate
@@ -75,6 +83,7 @@ func (g *Game) ensureField(o core.Observation) {
 	}
 	g.field = NewField(g.assets, g.assets.Maps[o.Map.ID])
 	g.vis, g.scene, g.zoom = map[string]*unitVis{}, nil, 1
+	g.zoomFrom, g.zoomTo, g.zoomT = 1, 1, 0
 	size := g.field.Size()
 	g.camX, g.camY = float64(size.X)/2, float64(size.Y)/2
 	g.clearOrder()
@@ -122,7 +131,18 @@ func (g *Game) sync(o core.Observation) {
 }
 
 // zooms are the canvas scales the wheel steps through; 1 shows unit pixels 1:1.
-var zooms = []float64{.5, 1, 1.5, 2}
+var zooms = []float64{.5, 1, 2, 4}
+
+func (g *Game) setZoom(target float64) {
+	if target == g.zoom {
+		return
+	}
+	g.zoomFrom, g.zoomTo, g.zoomT = g.zoom, target, 0
+}
+
+func (g *Game) setZoomImmediate(target float64) {
+	g.zoom, g.zoomFrom, g.zoomTo, g.zoomT = target, target, target, .5
+}
 
 func (g *Game) toCanvas(x, y float64) (float64, float64) {
 	z := g.zoom
@@ -193,14 +213,18 @@ func (g *Game) camera() {
 			g.dragX, g.dragY = x, y
 		}
 	}
-	if _, wy := ebiten.Wheel(); wy != 0 && image.Pt(x, y).In(vp) && !g.overHUD(x, y) && !g.overHUD(x, y) {
+	if _, wy := ebiten.Wheel(); wy != 0 && image.Pt(x, y).In(vp) && !g.overHUD(x, y) && (g.zoomTo == g.zoomFrom || g.zoomT >= .5) {
+		current := g.zoom
+		if g.zoomT < .5 {
+			current = g.zoomTo
+		}
 		i := 0
 		for j, z := range zooms {
-			if z <= g.zoom {
+			if z <= current {
 				i = j
 			}
 		}
-		g.zoom = zooms[max(0, min(len(zooms)-1, i+int(math.Copysign(1, wy))))]
+		g.setZoom(zooms[max(0, min(len(zooms)-1, i+int(math.Copysign(1, wy))))])
 	}
 	size := g.field.Size()
 	g.camX = math.Max(0, math.Min(float64(size.X), g.camX))

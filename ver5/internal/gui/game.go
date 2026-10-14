@@ -59,6 +59,8 @@ type Game struct {
 	shakeT               float64
 	camX, camY           float64
 	zoom                 float64
+	zoomFrom, zoomTo     float64
+	zoomT                float64
 	speed                int
 	dragging, dragMoved  bool
 	dragX, dragY         int
@@ -129,7 +131,7 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 		return nil, err
 	}
 	g := &Game{S: s, font: source, seed: seed, verified: map[string]bool{}, slot: 1, auditDir: auditDir,
-		vis: map[string]*unitVis{}, zoom: 1, speed: 1, threats: map[string][]content.Point{}, diffs: map[string]string{},
+		vis: map[string]*unitVis{}, zoom: 1, zoomFrom: 1, zoomTo: 1, zoomT: .5, speed: 1, threats: map[string][]content.Point{}, diffs: map[string]string{},
 		battleXP: map[string]int{}, startLevel: map[string]int{}}
 	g.root = filepath.Dir(filepath.Dir(filepath.Dir(fontPath)))
 	g.player.g = g

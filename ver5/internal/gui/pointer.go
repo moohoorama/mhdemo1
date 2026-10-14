@@ -92,7 +92,7 @@ func (g *Game) updatePointer() {
 		e.cy -= pointer.dy / scale / e.zoom
 		e.clampCamera()
 	} else if g.field != nil && !g.popupPending() && !g.input && !g.overHUD(x, y) && x >= 0 && x < Width && y >= g.battleViewport().Min.Y && y < g.battleViewport().Max.Y {
-		g.zoom = max(.5, min(2, g.zoom*pointer.ratio))
+		g.setZoomImmediate(max(.5, min(4, g.zoom*pointer.ratio)))
 		g.camX -= pointer.dx / scale / g.zoom
 		g.camY -= pointer.dy / scale / g.zoom
 	}

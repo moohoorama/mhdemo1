@@ -39,7 +39,7 @@ func (g *Game) selectDeployment(id string) {
 	}
 	if g.unitView(o, id) != nil {
 		g.request(session.Request{Op: "command", Command: core.Command{Kind: "unplace", Actor: id}})
-		g.deploymentSelected = ""
+		g.deploymentSelected = id
 	} else if g.deploymentSelected == id {
 		g.deploymentSelected = ""
 	} else {
@@ -184,7 +184,7 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 	rect(dst, 0, float32(deploymentTop), Width, Height-deploymentTop, color.NRGBA{R: 28, G: 23, B: 20, A: 255})
 	rect(dst, 0, float32(deploymentTop), Width, 2, gold)
 	g.block(r)
-	hint := "장수를 고른 뒤 밝은 빈칸을 누르세요. 배치한 아군 클릭: 배치 해제 · Tab: 다음 장수 · 우클릭/Esc: 선택 취소"
+	hint := "장수를 고른 뒤 밝은 빈칸을 누르세요. 배치한 아군 클릭: 해제 후 재배치 · Tab: 다음 장수 · 우클릭/Esc: 선택 취소"
 	if g.hover.ok {
 		hint += fmt.Sprintf("   지형: %s", g.S.Data.Tiles[string(g.field.Tile(g.hover.x, g.hover.y))].Name)
 	}
@@ -199,7 +199,7 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 		}
 		state, tint := "미배치", muted
 		if g.unitView(o, id) != nil {
-			state, tint = "배치됨 · 클릭 시 해제", good
+			state, tint = "배치됨 · 클릭 시 재배치", good
 		}
 		if g.deploymentSelected == id {
 			state, tint = "선택 · 빈칸을 누르세요", gold
