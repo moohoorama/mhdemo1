@@ -10,6 +10,7 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import zipfile
 
@@ -32,6 +33,19 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=ROOT / "bin/android/srpg-ver5-debug.apk")
     args = parser.parse_args()
     sdk = args.sdk.expanduser().resolve()
+    env = dict(os.environ, ANDROID_HOME=str(sdk))
+    if not env.get("JAVA_HOME") and sys.platform == "darwin":
+        jdk = subprocess.run(["/usr/libexec/java_home", "-v", "17"],
+                             capture_output=True, text=True)
+        if jdk.returncode == 0:
+            env["JAVA_HOME"] = jdk.stdout.strip()
+    if env.get("JAVA_HOME"):
+        java_home = Path(env["JAVA_HOME"]).expanduser().resolve()
+        for tool in ("java", "javac", "keytool"):
+            if not (java_home / "bin" / tool).is_file():
+                parser.error(f"Missing JDK executable: {java_home / 'bin' / tool}")
+        env["JAVA_HOME"] = str(java_home)
+        env["PATH"] = str(java_home / "bin") + os.pathsep + env["PATH"]
     android_jar = sdk / f"platforms/android-{args.api}/android.jar"
     if not android_jar.is_file():
         parser.error(f"Install Android SDK Platform {args.api}: {android_jar}")
@@ -44,14 +58,15 @@ def main() -> None:
         if not (build_tools / tool).is_file():
             parser.error(f"Missing Android build tool: {tool}")
     for tool in ("go", "java", "javac", "keytool"):
-        if not shutil.which(tool):
+        if not shutil.which(tool, path=env["PATH"]):
             parser.error(f"Missing executable: {tool}")
 
     out = ROOT / "bin/android"
     tool_dir = out / "tools"
     tool_dir.mkdir(parents=True, exist_ok=True)
-    env = dict(os.environ, ANDROID_HOME=str(sdk), GOBIN=str(tool_dir))
+    env["GOBIN"] = str(tool_dir)
     env["PATH"] = str(tool_dir) + os.pathsep + env["PATH"]
+    run("javac", "-version", env=env)
     ebiten = re.search(r"github.com/hajimehoshi/ebiten/v2\s+(\S+)", (ROOT / "go.mod").read_text())
     gomobile = re.search(r"github.com/ebitengine/gomobile\s+(\S+)", (ROOT / "go.mod").read_text())
     assert ebiten and gomobile

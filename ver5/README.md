@@ -15,18 +15,26 @@ python3 tools/spritebuild/build.py         # tools/doteditor/units/*.yaml → as
 
 ## Android APK
 
-Go, Python 3, JDK, Android SDK Platform 33·Build-Tools·NDK를 설치한 뒤 실행한다.
+Go, Python 3, JDK 17, Android SDK Platform 33·Build-Tools·NDK를 설치한 뒤 실행한다.
 Android Studio/Gradle은 필요하지 않다. macOS의 기본 SDK 경로는
 `~/Library/Android/sdk`이고 다른 경로는 `--sdk` 또는 `ANDROID_HOME`으로 지정한다.
 
 ```sh
 cd ver5
-python3 tools/build_android.py
+make android
 # ARM64 휴대폰 전용으로 작게 빌드
-python3 tools/build_android.py --targets android/arm64
-# 연결된 기기에 설치
-adb install -r bin/android/srpg-ver5-debug.apk
+make android-arm64
+# 빌드한 APK를 연결된 기기에 설치
+make android-install
+# SDK 경로 지정
+make android ANDROID_SDK=/path/to/Android/sdk
 ```
+
+Python 스크립트를 직접 실행하려면 `python3 tools/build_android.py`를 사용한다.
+macOS에서는 `JAVA_HOME`이 없으면 설치된 JDK 17을 자동 선택한다.
+직접 지정하려면 `JAVA_HOME=$(/usr/libexec/java_home -v 17) make android`를 사용한다.
+빌드 스크립트는 Go 바인딩 생성부터 APK 서명까지 같은 JDK를 사용한다.
+JDK 25로 생성한 클래스는 Build-Tools 34의 D8에서 내부 오류가 발생할 수 있다.
 
 결과는 `bin/android/srpg-ver5-debug.apk`이며 ARM64 휴대폰과 x86_64 에뮬레이터를
 지원한다. 최소 Android 6.0(API 23), OpenGL ES 3.0, 가로 화면이다.
