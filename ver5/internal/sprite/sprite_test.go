@@ -243,8 +243,8 @@ func TestShadow(t *testing.T) {
 }
 
 func TestShadowMatchesPython(t *testing.T) {
-	want := golden(t, "infantry.shadow")
-	got := loadSheets(t)["infantry"].Shadow().Image
+	want := golden(t, "heavy_infantry.shadow")
+	got := loadSheets(t)["heavy_infantry"].Shadow().Image
 	if want.Bounds() != got.Bounds() || !bytes.Equal(want.Pix, got.Pix) {
 		t.Error("shadow differs from tools/spritebuild/shadows.py output")
 	}

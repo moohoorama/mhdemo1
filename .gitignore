@@ -4,3 +4,5 @@ __pycache__/
 *.pyc
 /ver5/bin/
 /ver5/reports/
+/_trash/
+/ver5/tools/doteditor/heroes/

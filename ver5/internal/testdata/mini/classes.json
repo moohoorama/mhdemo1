@@ -18,7 +18,7 @@
    ],
    "MPBase": 14,
    "RecoveryBase": 2,
-   "Sprite": "infantry",
+   "Sprite": "heavy_infantry",
    "Name": "Footman",
    "Tier": 0,
    "Promotes": [
@@ -48,7 +48,7 @@
    ],
    "MPBase": 14,
    "RecoveryBase": 2,
-   "Sprite": "infantry",
+   "Sprite": "heavy_infantry",
    "Name": "Guard",
    "Tier": 1,
    "Promotes": [],

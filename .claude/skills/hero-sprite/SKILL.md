@@ -24,7 +24,7 @@ Arguments: `<대상 명칭> <참고할 원본> <그릴 대상의 상태>` — e.
 Ask when an argument is missing, or when the state contradicts the base (e.g. "말 타고" with an infantry base).
 Several targets may be given at once, one triple each.
 
-## 1. Tools (`ver5/tools/doteditor/heroes/tools/`, run from there)
+## 1. Tools (`ver5/tools/doteditor/tools/`, run from there)
 
 ```
 python3 grid.py new <base> <id> <이름> [--noncombat --steps L,R]   # units/<id>.yaml from the base
@@ -64,7 +64,7 @@ Run them with the Agent tool; each prompt names the hero id, base, profile path 
 Artists follow `motion-artist.md`, reviewers follow `reviewer.md` (both in this skill folder). Tell every agent to
 keep its helper scripts in its own scratchpad subfolder — the scratchpad is shared and agents overwrite each other.
 
-1. **Profile** (`heroes/<id>/profile.md`): from the old sprite (`tools/spritetool/assets/ver2-units/<id>/`, look at
+1. **Profile** (`profile/<id>.md`): from the old sprite (`tools/spritetool/assets/ver2-units/<id>/`, look at
    the PNGs), the civilian sprite (`ver4-civilians/`), portraits (`ver5/assets/graphics/portraits/`), `tools/unit3d`
    head/beard/kit definitions and `ver5/docs/design.md`. Use the template in HERO_DESIGN.md §4.1, including the tag
    assignment table, weapon shape (which gaps are intended) and the per-direction visibility table.

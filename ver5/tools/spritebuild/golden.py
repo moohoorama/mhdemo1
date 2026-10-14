@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate internal/sprite/testdata/units/<id>.png (the sheet as the dot editor draws it) and infantry.shadow.png.
+"""Regenerate internal/sprite/testdata/units/<id>.png (the sheet as the dot editor draws it) and heavy_infantry.shadow.png.
 Needs Pillow and PyYAML."""
 from pathlib import Path
 
@@ -32,5 +32,5 @@ def render(path):
 OUT.mkdir(parents=True, exist_ok=True)
 for p in sorted(build.UNITS.glob('*.yaml')):
     render(p)
-sheet, *_ = shadows.unit_sheet(Image.open(OUT/'infantry.png').convert('RGBA'), (56, 46), (28, 38))
-sheet.save(OUT/'infantry.shadow.png')
+sheet, *_ = shadows.unit_sheet(Image.open(OUT/'heavy_infantry.png').convert('RGBA'), (56, 46), (28, 38))
+sheet.save(OUT/'heavy_infantry.shadow.png')

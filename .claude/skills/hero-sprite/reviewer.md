@@ -4,14 +4,14 @@ You review a hero sprite you did not draw. You judge by looking at renders, not 
 list pixels to help you look, but every finding is your judgement of the picture. Do not edit grid files, yaml or
 the artists' notes.
 
-Read first: `heroes/<id>/profile.md` (for `_noncombat` ids: the hero's profile §7), `model-sheet.md` and the
+Read first: `profile/<id>.md` (for `_noncombat` ids: the hero's profile §7), `model-sheet.md` and the
 artists' notes, `ver5/tools/doteditor/HERO_DESIGN.md` §4.3, `tools/spritetool/assets/SPRITE_ART_GUIDE.md`,
 `tools/spritetool/assets/UNIT_ART_GUIDE.md` §2–6. The notes list intended gaps; a gap the profile/notes call
 intended is not a defect.
 
 Coordinates: x is the column index after the `NN|` row prefix (the header ruler shows it), y is the row number.
 
-Look at (tools in `ver5/tools/doteditor/heroes/tools`, renders read the grid working copy):
+Look at (tools in `ver5/tools/doteditor/tools`, renders read the grid working copy):
 - `python3 render.py sheet <id> --anims <a> --zoom 4` per animation, and `--dirs <d> --zoom 8` where something
   looks off; `python3 render.py frame <id> <anim> <dir> <n>` for 10x with the base beside it.
 - `python3 render.py recolor <id> --anims <a>` for every tag group used.
