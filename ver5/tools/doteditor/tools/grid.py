@@ -2,7 +2,7 @@
 """Text-grid pen for hero dots: frames go out as one character per pixel and come back into units/<id>.yaml.
 
   grid.py new cavalry guanyu 관우                      # units/guanyu.yaml from the base (source_base = cavalry)
-  grid.py new infantry liubei_noncombat 유비 --noncombat --steps 1,3
+  grid.py new heavy_infantry liubei_noncombat 유비 --noncombat --steps 1,3
                                                        # NW·SW only: idle 1, walk 2 (base walk frames 1 and 3), action 1
   grid.py export liubei [--anim idle] [--dir SW] [--frame 0] [--force]
                                                        # -> heroes/liubei/grid/<anim>/<dir>-<n>.txt (keeps existing files)

@@ -64,7 +64,7 @@ header{flex-wrap:wrap}.edit-mode header{height:auto;min-height:70px;flex-shrink:
 @media(max-width:700px){.edit-mode .palette-dock{order:2}.palette-dock #palette{flex-basis:100%;width:100%}.palette-dock .tag-row{grid-template-columns:repeat(3,28px)}.palette-dock .tag-row button{height:28px}}
 </style></head>
 <body class="edit-mode">
-<header><div class="brand"><span class="logo">▦</span><div><h1>병종 도트 에디터</h1><p>MHDemo ver5 · PIXEL WORKSHOP</p></div></div><nav id="base-units" aria-label="기본형 선택"><button data-base="infantry">경보병</button><button data-base="cavalry">경기병</button></nav><div class="file-actions"><button onclick="window.open('preview.html')">▶ 동작 미리보기</button><button id="library-toggle">☷ 유닛 선택</button><button id="mode-toggle" class="active">도트 편집 모드</button><button id="fullscreen">⛶ 전체화면</button><button id="load">↥ YAML 불러오기</button><button id="save" class="primary" disabled>↧ YAML 저장</button><input id="file" type="file" accept=".yaml,.yml" hidden></div></header>
+<header><div class="brand"><span class="logo">▦</span><div><h1>병종 도트 에디터</h1><p>MHDemo ver5 · PIXEL WORKSHOP</p></div></div><nav id="base-units" aria-label="기본형 선택"><button data-base="heavy_infantry">중보병</button><button data-base="cavalry">경기병</button></nav><div class="file-actions"><button onclick="window.open('preview.html')">▶ 동작 미리보기</button><button id="library-toggle">☷ 유닛 선택</button><button id="mode-toggle" class="active">도트 편집 모드</button><button id="fullscreen">⛶ 전체화면</button><button id="load">↥ YAML 불러오기</button><button id="save" class="primary" disabled>↧ YAML 저장</button><input id="file" type="file" accept=".yaml,.yml" hidden></div></header>
 <main>
 <aside class="library panel"><div class="section-title">기본형 라이브러리 <span id="unit-count"></span></div><input id="search" type="search" placeholder="유닛 검색" aria-label="유닛 검색"><div id="units"></div><p class="hint">경보병 → 궁병·문관·창병·권사 / 경기병 → 기병 계열. 기본형을 복제하고 외형과 태그 색상을 편집하세요.</p></aside>
 <section class="workspace"><div class="selection panel"><div><span class="eyebrow">현재 편집 중</span><h2 id="name">유닛 로딩 중…</h2></div><div class="selects"><label>방향<select id="direction" disabled></select></label><label>동작<select id="action" disabled></select></label></div></div>
@@ -4213,9 +4213,9 @@ document.addEventListener('keydown',e=>{
 });
 window.addEventListener('beforeunload',e=>{if([...units.values()].some(u=>u.dirty)){e.preventDefault();e.returnValue='';}});
 function enable(){['direction','action','save','play','duration','png','sheet','variant','add-original'].forEach(id=>$(id).disabled=false);}
-const BASES=[['infantry','경보병'],['cavalry','경기병']];
+const BASES=[['heavy_infantry','중보병'],['cavalry','경기병']];
 BASES.forEach(([id,name])=>addUnitButton(id,{name}));referenceOptions();requestAnimationFrame(tick);
-chooseUnit('infantry').then(()=>{if(unit)enable();});
+chooseUnit('heavy_infantry').then(()=>{if(unit)enable();});
 
 // A material tag is stored independently from its rendered RGBA color.
 function buildTagPalette(){
@@ -4246,7 +4246,7 @@ function fillTagged(x,y){
     for(const j of [px>0?i-1:-1,px<w-1?i+1:-1,py>0?i-w:-1,py<h-1?i+w:-1])if(j>=0&&!seen[j]&&f.tags[j]===oldTag&&M.resolved(unit,f,j)===oldColor){seen[j]=1;stack.push(j);}
   }
 }
-function referenceOptions(){const selected=$('ref-unit').value||'infantry',all=new Map(BASES.map(([id,name])=>[id,{name}]));units.forEach((u,id)=>all.set(id,u));$('ref-unit').replaceChildren(...[...all].map(([id,u])=>new Option(u.name+(id.startsWith('civ_')?' · 평복':''),id)));$('ref-unit').value=all.has(selected)?selected:all.keys().next().value;updateReference();}
+function referenceOptions(){const selected=$('ref-unit').value||'heavy_infantry',all=new Map(BASES.map(([id,name])=>[id,{name}]));units.forEach((u,id)=>all.set(id,u));$('ref-unit').replaceChildren(...[...all].map(([id,u])=>new Option(u.name+(id.startsWith('civ_')?' · 평복':''),id)));$('ref-unit').value=all.has(selected)?selected:all.keys().next().value;updateReference();}
 async function updateReference(){
   const token=++refRequest;referenceUnit=null;$('add-layer').disabled=true;$('copy-frame').disabled=true;
   try{const u=await loadUnit($('ref-unit').value);if(token!==refRequest)return;referenceUnit=u;

@@ -5,7 +5,7 @@ description: Draws a unit-class (병종) dot sheet by modelling the soldier in 3
 
 # Class sprite by 3D conversion
 
-Used for 중보병 (`heavy_infantry`): the user asked for this route explicitly, so scripts here DO generate pixels.
+Used for 경보병 (`light_infantry`), 근위병 (`guards`) and the retired 중보병 draft (`backup_units/heavy_infantry.yaml`; the current `heavy_infantry` is the old hand-drawn 경보병): the user asked for this route explicitly, so scripts here DO generate pixels.
 This is the one exception to "dots are drawn by agents, scripts only do I/O" (hero-sprite, class-sprite); say so in
 the report. Anything the conversion gets wrong is fixed by hand (artist agent, row edits) afterwards.
 
@@ -16,11 +16,11 @@ the report. Anything the conversion gets wrong is fixed by hand (artist agent, r
    should be a tag colour must use the ramp keys listed in `grid3d.KEY2TAG`.
 2. **Quick preview first (idle frame 0, 8 directions).** Do not touch the repo: a scratch script in the scratchpad that
    imports `tools/unit3d` (`build.build_unit(key, build, head_set, False)`), adds the kit, and puts the base
-   class beside it, 6x nearest, like `heroes/heavy_infantry/preview/3d-idle0.png`. Show it, adjust (the user iterates:
+   class beside it, 6x nearest, like `heroes/light_infantry/preview/`. Show it, adjust (the user iterates:
    colours, slimmer body, cloak length, shield colour).
 3. **Tool setup.** `python3 grid.py new <base> <id> <name>`, `grid.py export <id>`, `grid.py export <base>` (reference
    grids). Add the kit to `grid3d.KITS` (`kit dict` + `decorate_<kit>(p)` that adds the extra meshes for pose `p`).
-4. **Convert.** `python3 grid3d.py <id> [--kit K] [--base infantry] [--anims ..] [--dirs ..]` (~2.5 min for everything;
+4. **Convert.** `python3 grid3d.py <id> [--kit K] [--base heavy_infantry] [--anims ..] [--dirs ..]` (~2.5 min for everything;
    run in the background). It renders all 6 animations × 8 directions × 4 frames, maps palette keys to tags
    (an unknown key aborts), pastes the base's head box (12 rows, found by the `#j#` plume) and effect pixels verbatim,
    applies `FIXES`, and writes `heroes/<id>/grid/...`. Then `grid.py import <id>`.
@@ -36,7 +36,7 @@ the report. Anything the conversion gets wrong is fixed by hand (artist agent, r
 7. **Report** viewer URL (`viewer.html?unit=<id>`), progress URL, the weak-spot list, and that scripts generated the pixels.
 
 ## Files
-- `ver5/tools/doteditor/tools/grid3d.py` — the converter (reproduces heavy_infantry exactly).
+- `ver5/tools/doteditor/tools/grid3d.py` — the converter (kits: heavy = retired 중보병 draft, guards, light).
 - `tools/unit3d/` — renderer, kits (`units.py`), poses, heads; see its `DESIGN.md`.
 - Working copies (`heroes/<id>/grid`, ignored by git) are regenerated with `grid.py export`; before step 4 run `python3 tools/grid.py export <base> --force` (heads/effects come from `heroes/<base>/grid`). Keep a copy of `units/<id>.yaml` before a big change.
 

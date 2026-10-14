@@ -38,7 +38,7 @@ tag_definitions:
 tag_colors: ['#f1f6f5ff', '#93a3afff', '#3f4a56ff', '#ebc08aff', '#cc9558ff', '#9a6538ff', '#6b5040ff', '#47342aff', '#2a1e19ff', '#5a8fd0ff', '#3567a6ff', '#1b3358ff', '#5b6070ff', '#363a48ff', '#1e2029ff', '#ed2342ff', '#ab1633ff', '#650d24ff', '#f3ead2ff', '#cdbf98ff', '#8a7c5cff', '#c4783cff', '#96522bff', '#663720ff', '#96542bff', '#663820ff', '#3d221dff', '#5a8fd0ff', '#3567a6ff', '#1b3358ff', '#000000ff', '#d4f3ffff', '#8cd5ffff', '#49adf0ff']
 comparison_layers: []
 unit:
-  source_base: infantry
+  source_base: heavy_infantry
   id: strategist
   name: 문사
   cell: [56, 46]

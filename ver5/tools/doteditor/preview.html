@@ -4028,7 +4028,7 @@ canvas{image-rendering:pixelated;display:block}
 <script>
 'use strict';
 const $=id=>document.getElementById(id),M=PixelModel;
-const BASES=[['infantry','경보병'],['cavalry','경기병']];
+const BASES=[['heavy_infantry','중보병'],['cavalry','경기병']];
 const labels={idle:'대기',walk:'걷기',attack:'공격',hit:'피격',exhausted:'탈진',block:'막기'};
 const LAYOUT=['NW','N','NE','W',null,'E','SW','S','SE'];
 const loaded=new Map();let unit=null,frame=0,elapsed=0,last=performance.now(),playing=true,cache=new Map();
@@ -4081,6 +4081,6 @@ $('file').onchange=async e=>{
     if(![...$('unit').options].some(o=>o.value===u.id))$('unit').append(new Option(u.name,u.id));
     $('unit').value=u.id;unit=u;build();status(f.name+' · '+u.name);}catch(err){status(err.message,true);}
 };
-load('infantry');requestAnimationFrame(tick);
+load('heavy_infantry');requestAnimationFrame(tick);
 </script>
 </body></html>

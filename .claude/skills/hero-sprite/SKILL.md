@@ -18,7 +18,7 @@ Arguments: `<대상 명칭> <참고할 원본> <그릴 대상의 상태>` — e.
 | Argument | Meaning | How it is resolved |
 |---|---|---|
 | 대상 명칭 | who is drawn | officer → key from `ver5/internal/gui/view.go` `officers` (유비 `liubei`, 관우 `guanyu`, 장비 `zhangfei`, 여포 `lubu`); not an officer (a unit type, an extra) → ask for the id |
-| 참고할 원본 | base sheet the frames start from | a unit in `ver5/tools/doteditor/units/*.yaml` by Korean name or id (경보병 `infantry`, 경기병 `cavalry`, …); not there → ask |
+| 참고할 원본 | base sheet the frames start from | a unit in `ver5/tools/doteditor/units/*.yaml` by Korean name or id (중보병 `heavy_infantry`, 경기병 `cavalry`, …); not there → ask |
 | 그릴 대상의 상태 | what the sprite shows | `비전투` (no weapon, scene use) → non-combat layout: NW·SW, idle + two steps + action, id `<id>_noncombat`; anything else (말 타고 창 든 장수, 활 든 궁병, …) → combat sheet with the base's rows/animations, id `<id>`. The text (mount, weapon, attack style) goes into the profile |
 
 Ask when an argument is missing, or when the state contradicts the base (e.g. "말 타고" with an infantry base).

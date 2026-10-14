@@ -37,8 +37,8 @@
    "Class": "heavy_infantry"
   },
   "promote_guards": {
-   "Name": "승급서(근위대)",
-   "Desc": "근위대(으)로 승급한다.",
+   "Name": "승급서(근위병)",
+   "Desc": "근위병(으)로 승급한다.",
    "Effect": "promote",
    "Class": "guards"
   },

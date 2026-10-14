@@ -38,7 +38,7 @@ tag_definitions:
 tag_colors: ['#f1f6f5ff', '#93a3afff', '#3f4a56ff', '#e2a061ff', '#c4783cff', '#96522bff', '#6b5040ff', '#47342aff', '#2a1e19ff', '#5a8fd0ff', '#3567a6ff', '#1b3358ff', '#b07a45ff', '#7a4f2cff', '#46291bff', '#c4ec7cff', '#93c452ff', '#5f8a34ff', '#ffd052ff', '#e69d23ff', '#ad6318ff', '#c4783cff', '#96522bff', '#663720ff', '#96542bff', '#663820ff', '#3d221dff', '#5a8fd0ff', '#3567a6ff', '#1b3358ff', '#000000ff', '#d4f3ffff', '#8cd5ffff', '#49adf0ff']
 comparison_layers: []
 unit:
-  source_base: infantry
+  source_base: heavy_infantry
   id: liubei
   name: 유비
   cell: [56, 46]

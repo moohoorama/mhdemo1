@@ -56,5 +56,6 @@ the owning artist.
    (confirm the paths with the user first; tracked files are recoverable with `git restore`).
 
 ## Open classes (as of 2026-10)
-흉적/의적 still use the infantry sprite; 중보병/근위대 share the 경보병 sprite (plan: draw 중보병 first — bigger shoulder
-pads, longer cuirass, cheek guards — then derive 근위대 from it); 무도가→권사→권성 have no class entry yet.
+경보병 `light_infantry` (leather, 3D conversion), 중보병 `heavy_infantry` (the old iron 경보병 sheet, also the base sheet of
+the others) and 근위병 `guards` each have their own sheet; 흉적/의적 use `bandit`; the retired 3D 중보병 draft is
+`backup_units/heavy_infantry.yaml`; 무도가→권사→권성 have no class entry yet.

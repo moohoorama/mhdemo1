@@ -21,7 +21,7 @@
    "MPBase": 14,
    "RecoveryBase": 2,
    "Tier": 0,
-   "Sprite": "infantry",
+   "Sprite": "light_infantry",
    "Pool": [
     "guard_prep",
     "fire",
@@ -52,7 +52,7 @@
    "MPBase": 20,
    "RecoveryBase": 2,
    "Tier": 1,
-   "Sprite": "infantry",
+   "Sprite": "heavy_infantry",
    "Pool": [
     "deputy_appoint",
     "assist",
@@ -63,7 +63,7 @@
    ]
   },
   "guards": {
-   "Name": "근위대",
+   "Name": "근위병",
    "Desc": "주군을 지키는 정예 보병.",
    "Terrain": "infantry",
    "Attack": "melee",
@@ -83,7 +83,7 @@
    "MPBase": 26,
    "RecoveryBase": 2,
    "Tier": 2,
-   "Sprite": "infantry",
+   "Sprite": "guards",
    "Pool": [
     "castle_defense",
     "ironwall",
@@ -504,7 +504,7 @@
    "MPBase": 20,
    "RecoveryBase": 2,
    "Tier": 1,
-   "Sprite": "infantry",
+   "Sprite": "bandit",
    "Skills": [
     "steal"
    ],
@@ -538,7 +538,7 @@
    "MPBase": 26,
    "RecoveryBase": 2,
    "Tier": 2,
-   "Sprite": "infantry",
+   "Sprite": "bandit",
    "Skills": [
     "steal"
    ],

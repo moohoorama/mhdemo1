@@ -159,7 +159,7 @@ function refresh(){if(pending)return;pending=true;requestAnimationFrame(()=>{pen
 async function listUnits(){
   try{const html=await (await fetch('units/')).text();
     return [...html.matchAll(/href="([A-Za-z0-9_-]+)\.yaml"/g)].map(m=>m[1]);}
-  catch{return ['infantry','cavalry'];}
+  catch{return ['heavy_infantry','cavalry'];}
 }
 
 async function load(id){

@@ -38,7 +38,7 @@ tag_definitions:
 tag_colors: ['#f1f6f5ff', '#93a3afff', '#3f4a56ff', '#c4883cff', '#965e2bff', '#663720ff', '#5a4636ff', '#33261fff', '#1a130fff', '#5a8fd0ff', '#3567a6ff', '#1b3358ff', '#5f6876ff', '#3a404cff', '#1f232aff', '#a8323aff', '#782029ff', '#481219ff', '#7a5636ff', '#4d3422ff', '#2a1c13ff', '#c4783cff', '#96522bff', '#663720ff', '#96542bff', '#663820ff', '#3d221dff', '#5a8fd0ff', '#3567a6ff', '#1b3358ff', '#000000ff', '#d4f3ffff', '#8cd5ffff', '#49adf0ff']
 comparison_layers: []
 unit:
-  source_base: infantry
+  source_base: heavy_infantry
   id: zhangfei_noncombat
   name: 장비
   cell: [56, 46]
