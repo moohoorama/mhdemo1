@@ -49,14 +49,9 @@ func unitStatusKeys(status map[string]core.Status) []string {
 	return keys
 }
 
-func statusBarOffset(u *unitVis) float64 {
-	if len(unitStatusKeys(u.status)) > 0 {
-		return 18
-	}
-	return 4
-}
+// HP and MP bars sit at a fixed spot below the unit; status pixels hang under them.
+const unitBarDrop = 4
 
-// Status pixels stay above the head, below the HP and MP bars.
 func (f *Field) drawUnitStatuses(u *unitVis, x, y, _ float64) {
 	if u.gone || !u.visible() || u.actor || u.shownHP <= 0 {
 		return
@@ -66,10 +61,10 @@ func (f *Field) drawUnitStatuses(u *unitVis, x, y, _ float64) {
 	if z <= 0 {
 		z = 1
 	}
-	rx, ry := f.renderPoint(x, y-u.top-statusBarOffset(u))
+	rx, ry := f.renderPoint(x, y+unitBarDrop)
 	for i, key := range keys {
 		cx := math.Round(rx) + float64(i*10-(len(keys)-1)*5)*z
-		drawStatusIcon(f.Canvas, f.A.StatusIcons[key], cx, math.Round(ry)+8*z, z)
+		drawStatusIcon(f.Canvas, f.A.StatusIcons[key], cx, math.Round(ry)+9*z, z)
 	}
 }
 

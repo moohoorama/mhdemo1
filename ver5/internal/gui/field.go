@@ -467,7 +467,7 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {
 	if u.shownHP <= 0 || u.actor {
 		return
 	}
-	rx, ry := f.renderPoint(x, y-u.top-statusBarOffset(u))
+	rx, ry := f.renderPoint(x, y+unitBarDrop)
 	z := float32(1)
 	if f.renderZoom > 0 {
 		z = float32(f.renderZoom)

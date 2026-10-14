@@ -69,8 +69,6 @@ func TestStatusPixelLayout(t *testing.T) {
 		"attack": {Turns: 2, Value: 15}, "defense": {Turns: 1, Value: -10},
 	}
 	check(t, unitStatusKeys(status), []string{"poison", "seal", "attack-up", "defense-down"})
-	check(t, statusBarOffset(&unitVis{status: status}), float64(18))
-	check(t, statusBarOffset(&unitVis{status: map[string]core.Status{"poison": {Turns: 0}}}), float64(4))
 }
 
 func TestStatusPixelAssets(t *testing.T) {
