@@ -28,7 +28,8 @@
     "first_aid"
    ],
    "Promotes": [
-    "heavy_infantry"
+    "heavy_infantry",
+    "pikeman"
    ]
   },
   "heavy_infantry": {
@@ -60,6 +61,34 @@
    ],
    "Promotes": [
     "guards"
+   ]
+  },
+  "pikeman": {
+   "Name": "장창병",
+   "Desc": "긴 창으로 두 칸 앞의 적까지 찌르는 중급 창병.",
+   "Terrain": "infantry",
+   "Attack": "melee",
+   "Weapon": "spear",
+   "Armor": "armor",
+   "Move": 4,
+   "Range": 2,
+   "Bonus": [
+    14,
+    12,
+    5,
+    9,
+    10,
+    24
+   ],
+   "HPFactor": 3,
+   "MPBase": 20,
+   "RecoveryBase": 2,
+   "Tier": 1,
+   "Sprite": "pikeman",
+   "Pool": [
+    "deputy_appoint",
+    "thrust_art",
+    "pierce"
    ]
   },
   "guards": {

@@ -32,13 +32,17 @@ LEATHER = U.BROWN
 BUCKLER = '#d7bc7c'  # light wood; its ramp keys A B C map to themeB
 U.RAMPS[BUCKLER] = 'ABCC'
 B.R.add_ramps(U.RAMPS)
-W, H = 56, 46
+W, H = 56, 46  # the base sheets' cell
+PAD = {'pike': 12}  # kit -> columns added on each side of the cell (the couched spear reaches past the 56 columns)
+EXTRA_ROWS = {'pike': 8}  # kit -> rows added below the cell (the spear lying toward the camera when exhausted, thrusting toward it)
+UP_ROWS = {'pike': 2}  # kit -> rows added above the cell (the spear thrust away from the camera); the pivot row moves down by this
 EFFECT = set('EFG123456')
 # renderer palette key -> grid tag (iron a b c, skin d e, faction j k l, themeA m n o, themeC s t u, outline #).
 # Each material uses its own keys, so the mapping is exact; unknown keys abort the run.
 KEY2TAG = {'0': '#', '1': 'c', '2': 'c', '3': 'b', '4': 'b', '5': 'a', '6': 'a', 'i': 'd', 'j': 'e',
            'f': 'o', 'g': 'n', 'h': 'm', 'k': 'u', 'l': 't', 'm': 's', 'W': 'l', 'X': 'l', 'Y': 'k', 'Z': 'j',
-           'A': 'r', 'B': 'q', 'C': 'p'}  # themeB: the 경보병 buckler
+           'A': 'r', 'B': 'q', 'C': 'p',
+           'b': 'r', 'c': 'q', 'd': 'p'}  # themeB: the 경보병 buckler, the 장창병 red spear tassel
 
 
 def round_shield(p, T):
@@ -85,7 +89,7 @@ def decorate_guards(p):
     decorate_body(p, tower_shield)
 
 
-def decorate_light(p):
+def decorate_light(p, buckler=True):
     """경보병: cloth body, leather cross straps / chest plate / belt / shin wraps, small buckler with iron studs."""
     T = U.transform(p)
     for i in range(2):
@@ -96,6 +100,8 @@ def decorate_light(p):
             m.rod(T([s*.3, y*.78, 1.5]), T([-s*.22, y, .98]), .04, LEATHER)
     m.ell(T([0, -.265, 1.24]), [.2, .06, .17], LEATHER)
     m.box(T([0, 0, .78]), [.62, .5, .09], LEATHER)
+    if not buckler:
+        return
     c = T(p['hands'][1]) + V([0, -.09, 0])
     m.ell(c, [.23, .07, .29], BUCKLER)
     m.ell(c + V([0, -.065, 0]), [.1, .055, .1], U.STEEL)
@@ -106,16 +112,89 @@ def decorate_light(p):
 # kit name -> (kit dict for units.KITS, decoration drawn after the base soldier)
 HEAVY_KIT = dict(cloth=U.BLUE, tabard=LEATHER, guard=U.STEEL, shield=False, weapon='sword')
 LIGHT_KIT = dict(cloth=U.BLUE, tabard=U.LIGHT_BLUE, guard=U.BLUE, shoulder=U.BLUE, shield=False, weapon='sword')
-KITS = {'heavy': (HEAVY_KIT, decorate_heavy), 'guards': (HEAVY_KIT, decorate_guards), 'light': (LIGHT_KIT, decorate_light)}
+PIKE_KIT = dict(LIGHT_KIT, weapon='spear')
+KITS = {'heavy': (HEAVY_KIT, decorate_heavy), 'guards': (HEAVY_KIT, decorate_guards), 'light': (LIGHT_KIT, decorate_light),
+        'pike': (PIKE_KIT, lambda p: decorate_light(p, buckler=False))}
+# 장창병: the cavalry's couched thrust (hand and spear direction of attacks.SPEAR['charge']) on the infantry thrust stance
+A.SWORD['pike'] = dict(name='창 찌르기', effect='pierce', frames=[
+    dict(hand=[-.48, .3, 1.2], blade=[0, -1, .12], lean=.1),
+    dict(hand=[-.45, .6, 1.3], blade=[0, -1, .2], lean=.3, bob=-.12, crouch=1),
+    dict(hand=[-.48, -1.1, 1.15], blade=[0, -1, 0], lean=-.42, bob=-.08, lunge=1.2),
+    dict(hand=[-.48, -.8, 1.15], blade=[0, -1, -.05], lean=-.24, bob=-.06, lunge=1)])
+# facing the camera or away from it the spear points along the view axis and shrinks to a stub: pitch it down (S) or up (N)
+# so it stays vertical on screen and shows its length
+A.SWORD['pike_s'] = dict(name='창 찌르기 (정면)', effect='pierce', frames=[
+    dict(hand=[-.48, .3, 1.2], blade=[0, -1, .12], lean=.1),
+    dict(hand=[-.45, .6, 1.3], blade=[0, -1, .2], lean=.3, bob=-.12, crouch=1),
+    dict(hand=[-.48, -1.1, 1.15], blade=[0, -.9, -.45], lean=-.42, bob=-.08, lunge=1.2),
+    dict(hand=[-.48, -.8, 1.15], blade=[0, -.9, -.45], lean=-.24, bob=-.06, lunge=1)])
+A.SWORD['pike_n'] = dict(name='창 찌르기 (후면)', effect='pierce', frames=[
+    dict(hand=[-.48, .3, 1.2], blade=[0, -1, .12], lean=.1),
+    dict(hand=[-.45, .6, 1.3], blade=[0, -1, .2], lean=.3, bob=-.12, crouch=1),
+    dict(hand=[-.48, -1.1, 1.15], blade=[0, -.9, .45], lean=-.42, bob=-.08, lunge=1.2),
+    dict(hand=[-.48, -.8, 1.15], blade=[0, -.9, .45], lean=-.24, bob=-.06, lunge=1)])
+# effects.py band colours -> (opaque grid char, tag id, legend name); translucent pixels take one of ALPHA_LEVELS
+EFFECT_RGB = {(212, 243, 255): ('E', 'effect1', '공격 효과1'), (140, 213, 255): ('F', 'effect2', '공격 효과2'),
+              (73, 173, 240): ('G', 'effect3', '공격 효과3')}
+ALPHA_LEVELS = (0x60, 0xa0, 0xd7)
+TRANSLUCENT_CHARS = '123456789*+=%&'
+ATTACK_STYLE = {'pike': 'pike'}  # kit -> style in A.SWORD (default: the infantry sheet's)
 # kit -> tag substitution inside the pasted head box (leather cap: iron a b c -> themeA m n o)
-HEAD_MAP = {'light': {'a': 'm', 'b': 'n', 'c': 'o', 'r': 'h'}}  # r: the base face's dark-red mark (themeB3) -> hair2; themeB stays the buckler's
+HEAD_MAP = {'light': {'a': 'm', 'b': 'n', 'c': 'o', 'r': 'h'}}
+HEAD_MAP['pike'] = HEAD_MAP['light']  # r: the base face's dark-red mark (themeB3) -> hair2; themeB stays the buckler's
 # (anim, dir, frame) -> [(row0, row1, col0, col1, replace_all)]: paste these base-sheet pixels (blade the 3D pose hides)
 BLADE_FIXES = {('attack', 'S', 1): [(9, 17, 13, 21, True), (17, 18, 13, 21, False)], ('attack', 'SW', 1): [(5, 14, 23, 30, True)]}
-FIXES = {(kit, *k): v for kit in KITS for k, v in BLADE_FIXES.items()}
+FIXES = {(kit, *k): v for kit in KITS if kit != 'pike' for k, v in BLADE_FIXES.items()}
 
 
 def read(path):
     return [l[3:] for l in path.read_text().split('\n') if re.match(r'^\d\d\|', l)]
+
+
+def stamp(img, out, dx, dy):
+    """Lay a 3D effect layer (RGBA, canvas coordinates) onto empty grid cells as effect tags."""
+    px = img.load()
+    for y in range(img.height):
+        for x in range(img.width):
+            r, g, b, al = px[x, y]
+            if al < 32 or (r, g, b) not in EFFECT_RGB:
+                continue
+            xx, yy = x + dx, y + dy
+            if not (0 <= xx < len(out[0]) and 0 <= yy < len(out)):
+                print('clipped effect', xx, yy)
+            elif out[yy][xx] == '.':
+                ch, tag, name = EFFECT_RGB[(r, g, b)]
+                level = min(ALPHA_LEVELS, key=lambda a: abs(a - al))
+                out[yy][xx] = ch if al > 0xe8 else ('t', tag, f'{level:02x}', name)
+
+
+def write_grid(path, out):
+    """Replace the pixel rows of a grid file; translucent effect cells get legend lines appended as needed."""
+    lines = path.read_text().split('\n')
+    table, used, last = {}, set(), -1
+    for i, l in enumerate(lines):
+        if re.match(r'; \S = ', l):
+            last, _ = i, used.add(l[2])
+            m = re.match(r'; \S = (effect\d) .*alpha ([0-9a-f]{2})$', l)
+            if m:
+                table[m.groups()] = l[2]
+    new = []
+
+    def char(cell):
+        if isinstance(cell, str):
+            return cell
+        if cell[1:3] not in table:
+            ch = next(c for c in TRANSLUCENT_CHARS if c not in used)
+            used.add(ch)
+            table[cell[1:3]] = ch
+            new.append(f'; {ch} = {cell[1]} {cell[3]} 반투명 alpha {cell[2]}')
+        return table[cell[1:3]]
+
+    for i, l in enumerate(lines):
+        if re.match(r'^\d\d\|', l):
+            lines[i] = l[:3] + ''.join(char(c) for c in out[int(l[:2])])
+    lines[last + 1:last + 1] = new
+    path.write_text('\n'.join(lines))
 
 
 def main():
@@ -127,8 +206,10 @@ def main():
     ap.add_argument('--dirs', default=','.join(B.DIRECTIONS))
     a = ap.parse_args()
     kit = a.kit
+    pad, up = PAD.get(kit, 0), UP_ROWS.get(kit, 0)
+    w, h = W + 2*pad, H + up + EXTRA_ROWS.get(kit, 0)
     U.KITS[kit], decorate = KITS[kit]
-    A.SELECTED[kit] = A.SELECTED['infantry']  # the 3D attack style of the base sheet (tools/unit3d's own 'infantry' unit)
+    A.SELECTED[kit] = ATTACK_STYLE.get(kit) or A.SELECTED['infantry']  # the 3D attack style of the base sheet (tools/unit3d's own 'infantry' unit)
     orig_soldier = U.soldier
 
     def soldier(p, k, weapon=True):
@@ -140,9 +221,29 @@ def main():
     U.soldier = soldier
     foot, block = U.foot_unit(kit), Bl.foot(kit)
 
+    view = {}
+    effects = []
+    if kit == 'pike':
+        pierce = A.pierce
+
+        def short_pierce(*args, **kw):  # the burst must fit the cell: a short cone and a small ring at the spear tip
+            out = pierce(*args, **kw)
+            for e in out:
+                if e['kind'] == 'cone':
+                    e.update(length=.55, width=.45)
+                elif e['kind'] == 'ring':
+                    e.update(center=e['center'] - e['axis']*.1, radius=.28)
+            return out
+
+        A.pierce = short_pierce
+        draw = B.E.draw
+        B.E.draw = lambda *args: effects.append(draw(*args)) or effects[-1]
+
     def build(row, f, style=None):
         if row == B.BLOCK:
             return block(f, Bl.SELECTED)
+        if kit == 'pike' and row == U.ATTACK and view['d'] in ('N', 'S'):
+            style = 'pike_' + view['d'].lower()
         return foot(row, f, style=style) if style else foot(row, f)
 
     captured = []
@@ -153,22 +254,24 @@ def main():
     plume = re.compile(r'#(?:j|jk|kj|jj)#')
     solid = lambda c: c != '.' and c not in EFFECT
     for d in a.dirs.split(','):
+        view['d'] = d
         captured.clear()
         B.frame(build, head, B.SPEC, d, 0, 0, lift=0)
         bottom = max(y for y, row in enumerate(captured[-1]) for c in row if c != '.')
-        dx, dy = 28 - B.SPEC['pivot'][0], 38 - bottom  # idle frame 0 puts the feet on row 38
+        dx, dy = 28 + pad - B.SPEC['pivot'][0], 38 + up - bottom  # idle frame 0 puts the feet on row 38
         for anim in a.anims.split(','):
             for n in range(4):
                 captured.clear()
+                effects.clear()
                 B.frame(build, head, B.SPEC, d, B.ANIMATIONS.index(anim), n, lift=0)
-                out = [['.'] * W for _ in range(H)]
+                out = [['.'] * w for _ in range(h)]
                 for y, row in enumerate(captured[-1]):
                     for x, c in enumerate(row):
                         if c == '.':
                             continue
                         if c not in KEY2TAG:
                             sys.exit(f'unknown palette key {c!r} in {anim} {d} {n}')
-                        if 0 <= x + dx < W and 0 <= y + dy < H:
+                        if 0 <= x + dx < w and 0 <= y + dy < h:
                             out[y + dy][x + dx] = KEY2TAG[c]
                         else:
                             print('clipped', anim, d, n, x + dx, y + dy)
@@ -178,22 +281,21 @@ def main():
                 for y in range(top, min(top + 12, H)):
                     for x in range(px - 7, px + 8):
                         if solid(ref[y][x]):
-                            out[y][x] = HEAD_MAP.get(kit, {}).get(ref[y][x], ref[y][x])
+                            out[y + up][x + pad] = HEAD_MAP.get(kit, {}).get(ref[y][x], ref[y][x])
                 for r0, r1, c0, c1, replace in FIXES.get((kit, anim, d, n), []):
                     for y in range(r0, r1):
                         for x in range(c0, c1):
-                            if solid(ref[y][x]) and (replace or out[y][x] == '.'):
-                                out[y][x] = ref[y][x]
+                            if solid(ref[y][x]) and (replace or out[y + up][x + pad] == '.'):
+                                out[y + up][x + pad] = ref[y][x]
                 for y in range(H):
                     for x in range(W):
-                        if ref[y][x] in EFFECT and out[y][x] == '.':
-                            out[y][x] = ref[y][x]
-                path = out_root / anim / f'{d}-{n}.txt'
-                lines = path.read_text().split('\n')
-                for i, l in enumerate(lines):
-                    if re.match(r'^\d\d\|', l):
-                        lines[i] = l[:3] + ''.join(out[int(l[:2])])
-                path.write_text('\n'.join(lines))
+                        if ref[y][x] in EFFECT and out[y + up][x + pad] == '.' and not (kit == 'pike' and anim == 'attack'):
+                            out[y + up][x + pad] = ref[y][x]
+                if kit == 'pike' and anim == 'attack':
+                    for under, over in effects:
+                        for layer in (over, under):
+                            stamp(layer, out, dx, dy)
+                write_grid(out_root / anim / f'{d}-{n}.txt', out)
         print(d, 'done', flush=True)
 
 
