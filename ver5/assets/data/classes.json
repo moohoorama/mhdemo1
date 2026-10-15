@@ -707,6 +707,65 @@
     "assist",
     "charge"
    ]
+  },
+  "brawler": {
+   "Name": "무도가",
+   "Desc": "맨주먹으로 싸우는 무술가.",
+   "Terrain": "infantry",
+   "Attack": "melee",
+   "Weapon": "fist",
+   "Armor": "robe",
+   "Move": 4,
+   "Range": 1,
+   "Bonus": [
+    13,
+    6,
+    4,
+    11,
+    10,
+    20
+   ],
+   "HPFactor": 3,
+   "MPBase": 14,
+   "RecoveryBase": 2,
+   "Tier": 0,
+   "Sprite": "brawler",
+   "Pool": [
+    "counter_art",
+    "composure",
+    "drain"
+   ],
+   "Promotes": [
+    "pugilist"
+   ]
+  },
+  "pugilist": {
+   "Name": "권사",
+   "Desc": "철 장갑을 낀 주먹으로 연타를 퍼붓는 무술가.",
+   "Terrain": "infantry",
+   "Attack": "melee",
+   "Weapon": "fist",
+   "Armor": "robe",
+   "Move": 4,
+   "Range": 1,
+   "Bonus": [
+    17,
+    9,
+    5,
+    14,
+    13,
+    28
+   ],
+   "HPFactor": 3,
+   "MPBase": 20,
+   "RecoveryBase": 2,
+   "Tier": 1,
+   "Sprite": "pugilist",
+   "Pool": [
+    "deputy_appoint",
+    "battle_fury",
+    "relentless"
+   ]
   }
  }
 }

@@ -120,12 +120,16 @@
     ]
    },
    {
-    "ID": "warrior",
-    "Name": "무인",
+    "ID": "brawler",
+    "Name": "무도가",
     "Classes": [
      {
-      "ID": "warrior",
-      "Name": "무인"
+      "ID": "brawler",
+      "Name": "무도가"
+     },
+     {
+      "ID": "pugilist",
+      "Name": "권사"
      }
     ]
    }
