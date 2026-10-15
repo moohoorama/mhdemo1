@@ -26,15 +26,18 @@ func (f *Field) eachSmall(fn func(int, int, byte, float64, float64)) {
 		}
 	}
 }
-func (f *Field) smallWall(x, y int) string {
+
+// smallBlock picks the raised-block sprite (wall or cliff) whose open faces look at the
+// neighbours outside the block.
+func (f *Field) smallBlock(x, y int) string {
+	t := f.small(x, y)
 	mask := 0
 	for i, d := range [][2]int{{-1, 0}, {0, -1}, {1, 0}, {0, 1}} {
-		t := f.small(x+d[0], y+d[1])
-		if t != 'c' && t != 'g' {
+		if !sameBlock(t, f.small(x+d[0], y+d[1])) {
 			mask |= 1 << i
 		}
 	}
-	return fmt.Sprintf("wall_%02d", mask)
+	return blockVariant(t, mask, x, y)
 }
 
 // Floors and bridges must be drawn after animated water so wet atlas fragments cannot cover them.
@@ -57,34 +60,13 @@ func (f *Field) makeNativeFloors() {
 
 func (f *Field) nativeObjects(items *[]drawItem) {
 	f.eachSmall(func(u, v int, t byte, x, y float64) {
-		var s Sprite
-		switch t {
-		case 'v':
-			s = f.A.Structures["village"]
-		case 's':
-			s = f.A.Structures["mountain"]
-		case 'c':
-			s = f.A.Structures[f.smallWall(u, v)]
-		case 'k':
-			s = f.A.Props[[]string{"tent", "tent_round"}[(u+v)&1]].Sprite
-		case 'g':
-			name := "gate_u"
-			if f.small(u, v-1) == 'c' || f.small(u, v+1) == 'c' {
-				name = "gate_v"
-			}
-			s = f.A.Props[name].Sprite
-		default:
+		if t != 'c' && t != 'h' {
 			return
 		}
-		if s.Image == nil {
-			return
-		}
-		if t == 'k' || t == 'g' {
-			*items = append(*items, drawItem{y: y * K, draw: func() { f.nativeProp(f.Canvas, s, x, y) }})
-		} else {
-			*items = append(*items, drawItem{y: y * K, rect: f.mapRect(s, x, y), draw: func() { f.blitMap(f.Canvas, s, x, y, nil) }})
-		}
+		s := f.A.Structures[f.smallBlock(u, v)]
+		*items = append(*items, drawItem{y: y * K, rect: f.mapRect(s, x, y), draw: func() { f.blitMap(f.Canvas, s, x, y, nil) }})
 	})
+	f.nativeSites(items)
 	// Preserve the number and native size of forest clusters, including exterior forests.
 	v := f.Map.Visual
 	for y := v[1] / 2; y < (v[1]+v[3])/2; y++ {
@@ -105,6 +87,51 @@ func (f *Field) nativeObjects(items *[]drawItem) {
 		}
 	}
 }
+
+// siteSprite names the strongpoint sprite of each one-cell site tile.
+var siteSprite = map[byte]string{'k': "camp", 'v': "village", 'o': "castle", 'g': "gate"}
+
+// nativeSites draws one strongpoint per game cell, at the characters' scale like the forests. A cell is a
+// site when most of its small tiles are; a gate turns to the castle wall line it sits in.
+func (f *Field) nativeSites(items *[]drawItem) {
+	cellHas := func(x, y int, t byte) int {
+		n := 0
+		for j := 0; j < 2; j++ {
+			for i := 0; i < 2; i++ {
+				if f.small(2*x+i, 2*y+j) == t {
+					n++
+				}
+			}
+		}
+		return n
+	}
+	v := f.Map.Visual
+	for y := v[1] / 2; y < (v[1]+v[3])/2; y++ {
+		for x := v[0] / 2; x < (v[0]+v[2])/2; x++ {
+			var site byte
+			best := 0
+			for _, t := range []byte{'k', 'v', 'o', 'g'} {
+				if n := cellHas(x, y, t); n > best {
+					site, best = t, n
+				}
+			}
+			if site == 0 {
+				continue
+			}
+			name := siteSprite[site]
+			if site == 'g' {
+				name = "gate_u"
+				if cellHas(x, y-1, 'c') > 0 || cellHas(x, y+1, 'c') > 0 {
+					name = "gate_v"
+				}
+			}
+			s := f.A.Sites[name]
+			px, py := f.Center(float64(x), float64(y))
+			*items = append(*items, drawItem{y: py - .1, rect: f.mapRect(s, px/K, py/K), draw: func() { f.blit(f.Canvas, s, px, py, nil) }})
+		}
+	}
+}
+
 func (f *Field) drawNativeWater(dst *ebiten.Image, ms float64) {
 	water := f.A.Animations["water"]
 	frame := water.Frames[int(ms/float64(water.MS))%len(water.Frames)]

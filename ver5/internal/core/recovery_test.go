@@ -94,7 +94,7 @@ func TestNextTurnRecoveryForMissingOrDeadUnit(t *testing.T) {
 	}
 }
 
-func TestCastleInteriorRestoresOnlyMP(t *testing.T) {
+func TestCastleInteriorHasNoTerrainRecovery(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	if err != nil {
 		t.Fatal(err)
@@ -106,7 +106,7 @@ func TestCastleInteriorRestoresOnlyMP(t *testing.T) {
 	u.HP -= 20
 	st := e.stats(u)
 	predicted := e.NextTurnRecovery(u.ID)
-	if predicted.TerrainHP || predicted.HP != 0 || predicted.MP != min(st.MaxMP, st.Recovery*2) {
+	if predicted.TerrainHP || predicted.HP != 0 || predicted.MP != min(st.MaxMP, st.Recovery) {
 		t.Fatalf("castle interior %+v", predicted)
 	}
 	apply(t, e, Command{Kind: "end"})

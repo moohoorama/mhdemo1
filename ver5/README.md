@@ -139,7 +139,8 @@ HP바→MP바→상태 아이콘 순서이며, 중독의 유닛 색조는 약하
 공격은 빨강, 방어는 파랑, 정신은 초록, 순발·사기는 노랑, 이동은 흰색이다.
 상태 원본·설정은 `../tools/spritetool/assets/ver5-status/`, 런타임은 `assets/graphics/status/`다.
 `uv run --with pillow python tools/build_status_icons.py`로 수제 픽셀 원본을 재빌드한다.
-성내는 병력 회복 없이 병법치 회복만 2배이며, 지형 정보에서 두 효과를 따로 표시한다.
+거점 회복은 주둔지·마을이 병력 10%·병법치 ×2, 관문·성이 병력 20%·병법치 ×3이며, 지형 정보에서 두 효과를 따로 표시한다.
+거점 그림은 `../tools/unit3d/sites.py`가 `assets/graphics/map/sites.png`로 굽는다(게임 칸 하나에 한 장, 관문은 성벽 줄 방향별 두 장).
 
 ```sh
 SRPG_RENDER_TEST=1 go test ./internal/gui -run TestRenderedEditorAndStatuses -count=1

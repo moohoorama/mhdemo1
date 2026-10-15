@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"math"
@@ -289,11 +290,8 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			}
 			x, y := f.mapCenter(float64(u), float64(v))
 			switch t {
-			case 'v', 's':
-				if t == 's' && !f.Map.Deformed {
-					break // scenario stages keep the big rocks
-				}
-				s := f.A.Structures[map[rune]string{'v': "village", 's': "mountain"}[t]]
+			case 'v':
+				s := f.A.Structures["village"]
 				items = append(items, drawItem{y: y*K - .1, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: f.mapRect(s, x, y)})
 			case 'f':
 				if !f.Map.Deformed {
@@ -304,8 +302,8 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 				b := s.Image.Bounds()
 				rx, ry := int(math.Round(cx-s.PivotX)), int(math.Round(cy-s.PivotY))
 				items = append(items, drawItem{y: cy - .1, draw: func() { f.blit(c, s, cx, cy, nil) }, rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy())})
-			case 'c':
-				s := f.A.Structures[wallName(f, u, v)]
+			case 'c', 'h':
+				s := f.A.Structures[blockSprite(f, u, v)]
 				items = append(items, drawItem{y: y * K, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: f.mapRect(s, x, y)})
 			case 'k': // 주둔지: a tent on its cell
 				s := f.A.Props[[]string{"tent", "tent_round"}[(u+v)%2]].Sprite
@@ -415,15 +413,28 @@ func (f *Field) bridgeName(u, v int) string {
 	return "bridge_u"
 }
 
-// wallName picks the wall sprite whose parapets face the cell's non-wall neighbours.
-func wallName(f *Field, u, v int) string {
+// sameBlock reports whether neighbour n continues the block of tile t. A gate is a ground-level
+// courtyard, so the wall blocks either side show their ends to it.
+func sameBlock(t, n byte) bool { return n == t }
+
+// blockSprite picks the wall or cliff sprite whose open faces look at the cell's outside neighbours.
+func blockSprite(f *Field, u, v int) string {
+	t := f.Tile(u, v)
 	mask := 0
 	for i, d := range []content.Point{{X: -1}, {Y: -1}, {X: 1}, {Y: 1}} { // nw, ne, se, sw
-		if t := f.Tile(u+d.X, v+d.Y); t != 'c' && t != 'g' {
+		if !sameBlock(t, f.Tile(u+d.X, v+d.Y)) {
 			mask |= 1 << i
 		}
 	}
-	return "wall_" + string(rune('0'+mask/10)) + string(rune('0'+mask%10))
+	return blockVariant(t, mask, u, v)
+}
+
+// blockVariant names the sprite; cliffs come in variants picked by position so long faces do not repeat.
+func blockVariant(t byte, mask, x, y int) string {
+	if t == 'h' {
+		return fmt.Sprintf("cliff_%02d_%d", mask, ((x*7+y*3)%3+3)%3)
+	}
+	return fmt.Sprintf("wall_%02d", mask)
 }
 
 func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {

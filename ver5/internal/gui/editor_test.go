@@ -2,6 +2,7 @@ package gui
 
 import (
 	"image"
+	"regexp"
 	"slices"
 	"strings"
 	"testing"
@@ -105,7 +106,7 @@ func TestTerrainWithoutUnitDoesNotClaimBlocked(t *testing.T) {
 	}
 	for tile := range d.Tiles {
 		text := strings.Join(terrainInfoLines(d, tile, "", ""), " ")
-		if strings.Contains(text, "진입 불가") || strings.Contains(text, "0%") {
+		if strings.Contains(text, "진입 불가") || regexp.MustCompile(`(^|[^0-9])0%`).MatchString(text) {
 			t.Fatal(text)
 		}
 	}
@@ -119,11 +120,15 @@ func TestTerrainRecoverySeparatesHPAndMP(t *testing.T) {
 	for _, family := range []string{"", d.Classes[d.Characters[d.Campaign.Roster[0]].Class].Terrain} {
 		t.Run(family, func(t *testing.T) {
 			lines := strings.Join(terrainInfoLines(d, "i", family, "보병"), "\n")
-			if !strings.Contains(lines, "병력 회복 없음") || !strings.Contains(lines, "병법치 회복 ×2") || strings.Contains(lines, "회복 지형") {
+			if !strings.Contains(lines, "지형 회복 효과 없음") {
 				t.Fatal(lines)
 			}
 			lines = strings.Join(terrainInfoLines(d, "v", family, "보병"), "\n")
-			if !strings.Contains(lines, "병력 회복 +8%") || !strings.Contains(lines, "병법치 회복 ×2") {
+			if !strings.Contains(lines, "병력 회복 +10%") || !strings.Contains(lines, "병법치 회복 ×2") {
+				t.Fatal(lines)
+			}
+			lines = strings.Join(terrainInfoLines(d, "o", family, "보병"), "\n")
+			if !strings.Contains(lines, "병력 회복 +20%") || !strings.Contains(lines, "병법치 회복 ×3") {
 				t.Fatal(lines)
 			}
 		})

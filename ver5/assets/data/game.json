@@ -189,13 +189,9 @@
    "Ambush": true,
    "Surface": 1
   },
-  "s": {
-   "Name": "산",
-   "Surface": 2
-  },
   "v": {
    "Name": "마을",
-   "RestHP": 8,
+   "RestHP": 10,
    "RestMP": 2,
    "Surface": 2
   },
@@ -205,8 +201,6 @@
   },
   "i": {
    "Name": "성내",
-   "Castle": true,
-   "RestMP": 2,
    "Surface": 2
   },
   "b": {
@@ -214,14 +208,28 @@
    "Surface": 0
   },
   "g": {
-   "Name": "성문",
+   "Name": "관문",
+   "Castle": true,
+   "RestHP": 20,
+   "RestMP": 3,
    "Surface": 2
   },
   "k": {
    "Name": "주둔지",
-   "RestHP": 8,
+   "RestHP": 10,
    "RestMP": 2,
-   "Surface": 1
+   "Surface": 2
+  },
+  "h": {
+   "Name": "절벽",
+   "Surface": 2
+  },
+  "o": {
+   "Name": "성",
+   "Castle": true,
+   "RestHP": 20,
+   "RestMP": 3,
+   "Surface": 2
   }
  }
 }

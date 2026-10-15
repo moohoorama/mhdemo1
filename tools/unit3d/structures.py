@@ -208,6 +208,16 @@ def wall(mask, height=.22, floor='dark'):
 
 
 RISE = 10   # castle wall cells stand this many pixels above the ground
+BRICK_W, BRICK_H = 8, 4  # wall bricks in screen pixels; every brick wall shares this grid
+
+
+def brick_joint(x, k):
+    """Whether screen column x, k px below the top of a RISE-high wall, is a mortar joint. The grid is
+    fixed to the ground and to screen x (mod BRICK_W from any cell centre), so every wall piece of every
+    cell lines up: horizontal joints every BRICK_H, vertical ones staggered half a brick per course."""
+    if k > 0 and k % BRICK_H == 0:
+        return True
+    return (x + BRICK_W//2*((k // BRICK_H) % 2)) % BRICK_W == 0
 PARAPET, MERLON = 3, 3  # parapet height and the extra height of each merlon (px)
 FACE = {'sw': ('4', '5', '3'), 'se': ('3', '4', '2')}  # stone, lit top course, joint
 
@@ -254,9 +264,7 @@ def castle(open_, tone='dark'):
         stone, lit, joint = FACE[side]
         for x, edge in edge_columns(side, cx, cy, RISE):
             for k in range(RISE + 1):
-                brick = ((x - cx) // 8 + k // 4) % 2  # stagger every course
-                c = joint if k % 4 == 0 and k else (joint if (x - cx) % 8 == 0 and brick else stone)
-                put(x, edge + k, c)
+                put(x, edge + k, lit if k == 0 else joint if brick_joint(x - cx, k) else stone)
             put(x, edge + RISE + 1, '0')
         parapet(side)
     lined = R.outline(g, (0, 0, CELL[0], CELL[1]))
@@ -267,6 +275,94 @@ def castle(open_, tone='dark'):
                 side = ('n' if dy < 0 else 's') + ('e' if dx > 0 else 'w')
                 if not open_[side] and abs(dy) > 1:
                     lined[y][x] = '.'
+                if dy > 0 and (x == cx - 17 and not open_['nw'] or x == cx + 16 and not open_['ne']):
+                    lined[y][x] = '.'  # the face runs on into the neighbour's: no seam
+    return Hd.to_img(lined)
+
+
+CLIFF_VARIANTS = 3
+CLIFF_RISE = 26  # cliff cells stand taller than walls: a sheer drop no unit can climb
+# Wasteland cliff: the top matches the map's 황무지 ground; the face is a light-to-dark earth ramp.
+CLIFF_TOP = ('ρ', 'σ', 'τ')  # ground, darker grit, pebble shadow
+CLIFF_RAMP = 'αβγδεζ'
+R.COLOR.update({'ρ': (0xbb, 0x9e, 0x6a), 'σ': (0xb1, 0x91, 0x5f), 'τ': (0xa6, 0x89, 0x58),
+                'α': (0xd8, 0xbd, 0x86), 'β': (0xb8, 0x98, 0x62), 'γ': (0x98, 0x79, 0x4b),
+                'δ': (0x78, 0x5d, 0x39), 'ε': (0x58, 0x43, 0x2a), 'ζ': (0x3a, 0x2b, 0x1c)})
+
+
+def noise(*k):
+    """Deterministic 0..1 hash so neighbouring cells repeat the same rock pattern."""
+    h = 0
+    for v in k:
+        h = (h*1000003 ^ (v & 0xffffffff)) & 0xffffffff
+    h = (h ^ (h >> 13))*0x5bd1e995 & 0xffffffff
+    return ((h ^ (h >> 15)) & 0xffff)/0xffff
+
+
+def cliff(open_, variant=0):
+    """Raised impassable wasteland plateau: dirt top lifted CLIFF_RISE px; on open front edges (sw, se) a
+    sheer face of rounded vertical rock ribs, bright at the brink and darkening toward the foot.
+    Back edges only get the outline, so a plateau reads as one block. Variants reshuffle the ribs so a
+    long cliff does not repeat every cell."""
+    cx, cy = PIVOT[0] + 1, PIVOT[1] + 1
+    g = [['.'] * CELL[0] for _ in range(CELL[1])]
+
+    def put(x, y, c):
+        if 0 <= x < CELL[0] and 0 <= y < CELL[1]:
+            g[y][x] = c
+
+    ground, grit, pebble = CLIFF_TOP
+    for y in range(CELL[1]):
+        for x in range(CELL[0]):
+            dx, dy = x + .5 - cx, y + .5 - cy
+            if abs(dx)/16 + abs(dy)/8 > 1:
+                continue
+            n = noise(x - cx, y - cy, variant)
+            put(x, y - CLIFF_RISE, pebble if n < .05 else grit if n < .2 else ground)
+    for side in ('sw', 'se'):
+        if not open_[side]:
+            continue
+        cols = list(edge_columns(side, cx, cy, CLIFF_RISE))
+        bumps = []  # (column, k, half width, half height): rounded rocks bulging out of the face
+        for r in range(-1, CLIFF_RISE//4 + 2):
+            a0 = -3 + (r % 2)*3 + int(noise(r, 1, variant)*3)
+            while a0 < len(cols) + 4:
+                rx, ry = 2 + noise(r, a0, 2, variant)*2, 2.5 + noise(r, a0, 3, variant)*2.5
+                bumps.append((a0, r*4 + (noise(r, a0, 4, variant) - .5)*3, rx, ry))
+                a0 += 3 + int(noise(r, a0, 5, variant)*4)
+        shade = 1 if side == 'se' else 0  # the se face turns away from the light
+        for a, (x, edge) in enumerate(cols):
+            brink = int(noise(x - cx, 7, variant)*3)  # the brink crumbles unevenly
+            for k in range(CLIFF_RISE + 1):
+                best, lit = -1, 0
+                for ba, bk, rx, ry in bumps:
+                    da, dk = (a + .5 - ba)/rx, (k + .5 - bk)/ry
+                    h = 1 - da*da - dk*dk
+                    if h > best:
+                        best, lit = h, da + dk
+                tone = .4 + k/CLIFF_RISE*3.2 + shade  # gradient: lit brink, dark foot
+                tone += lit*1.4  # each rock lit on its upper left
+                if best < .15:
+                    tone += 2  # crevice between rocks
+                c = CLIFF_RAMP[max(0, min(len(CLIFF_RAMP) - 1, int(tone)))]
+                if k <= brink:
+                    c = CLIFF_RAMP[0] if k == 0 else grit  # sunlit brink over the drop
+                elif k == brink + 1:
+                    c = CLIFF_RAMP[3 + shade]  # shadow under the brink
+                put(x, edge + k, c)
+            put(x, edge + CLIFF_RISE + 1, '0')
+    lined = R.outline(g, (0, 0, CELL[0], CELL[1]))
+    for y in range(CELL[1]):
+        for x in range(CELL[0]):
+            if lined[y][x] == '0' and g[y][x] == '.':
+                dx, dy = x + .5 - cx, y + .5 - (cy - CLIFF_RISE)
+                side = ('n' if dy < 0 else 's') + ('e' if dx > 0 else 'w')
+                if not open_[side] and abs(dy) > 1:
+                    lined[y][x] = '.'
+                if abs(dy) <= 1 and not all(open_[s] for s in (('nw', 'sw') if dx < 0 else ('ne', 'se'))):
+                    lined[y][x] = '.'  # corner pixel where plateau cells meet
+                if dy > 0 and (x == cx - 17 and not open_['nw'] or x == cx + 16 and not open_['ne']):
+                    lined[y][x] = '.'  # the face runs on into the neighbour's: no seam
     return Hd.to_img(lined)
 
 
@@ -325,21 +421,23 @@ SIDES = ['nw', 'ne', 'se', 'sw']  # wall mask bit i: the neighbour on SIDES[i] i
 
 
 def build():
-    """One sheet: village, interior floor, the 16 wall variants by open-edge mask, and the deformed
-    mountain cell battle maps draw instead of the big rocks (user pick, 2026-10-05). The battle-map
-    forest is drawn at the characters' pixel scale, so it lives in props.py (forest_0-3)."""
+    """One sheet: village, interior floor, the 16 wall variants by open-edge mask and the cliff variants.
+    The battle-map forest is drawn at the characters' pixel scale, so it lives in props.py (forest_0-3);
+    the one-cell strongpoints live in sites.py."""
     OUT.mkdir(parents=True, exist_ok=True)
     sprites = [('village', village(4)), ('floor', floor('light'))]
     sprites += [(f'wall_{mask:02d}', castle({s: bool(mask >> i & 1) for i, s in enumerate(SIDES)}))
                 for mask in range(16)]
-    sprites += [('mountain', mountain('stone'))]
+    sprites += [(f'cliff_{mask:02d}_{v}', cliff({s: bool(mask >> i & 1) for i, s in enumerate(SIDES)}, v))
+                for mask in range(16) for v in range(CLIFF_VARIANTS)]
     sheet = Image.new('RGBA', (CELL[0]*len(sprites), CELL[1]))
     for i, (_, im) in enumerate(sprites):
         sheet.alpha_composite(im, (i*CELL[0], 0))
     sheet.save(OUT / 'structures.png')
     meta = dict(version=1, image='structures.png', cell=list(CELL), pivot=[PIVOT[0] + 1, PIVOT[1] + 1],
-                pivot_note='cell centre of the map diamond (32x16)', rise=RISE,
-                wall_mask_sides=SIDES, layer=dict(village='object', floor='ground', wall='object', mountain='object'),
+                pivot_note='cell centre of the map diamond (32x16)', rise=RISE, cliff_rise=CLIFF_RISE, cliff_variants=CLIFF_VARIANTS,
+                wall_mask_sides=SIDES, layer=dict(village='object', floor='ground', wall='object',
+                                                  cliff='object'),
                 sprites={name: i for i, (name, _) in enumerate(sprites)})
     (OUT / 'structures.json').write_text(json.dumps(meta, indent=1) + '\n')
     print(OUT / 'structures.png')
@@ -525,71 +623,6 @@ def forest(kind='round'):
     size = .8 if kind == 'dense' else 1.0
     for (dx, dy), tree in sorted(FOREST_SPOTS[kind], key=lambda s: s[0][1]):
         t, (tx, ty) = mini_tree(tree, size)
-        im.alpha_composite(t, (cx + dx - tx, cy + dy - ty))
-    return im
-
-
-MOUNTAIN_KEYS = {  # lit face, base, shadow face, dark edge
-    'stone': ('5', '4', '3', '2'), 'earth': ('j', 'i', 'h', 'g'), 'green': ('J', 'I', 'H', 'G')}
-
-
-def mini_peak(w, h, kind='stone', snow=False):
-    """Deformed little mountain: a triangle with a lit left face and a shaded right face split at the
-    ridge, a darker band at the foot. Returns (image, pivot at the middle of the base)."""
-    lit, base, shade, dark = MOUNTAIN_KEYS[kind]
-    W, H = w + 2, h + 2
-    g = [['.'] * W for _ in range(H)]
-    cx = W//2
-    for y in range(1, h + 1):
-        t = y/h
-        half = max(0, int(round(t*w/2)))
-        ridge = cx + int(round((t - .5)*1.5))  # the ridge leans a little to the right going down
-        for x in range(cx - half, cx + half + 1):
-            if not 0 <= x < W:
-                continue
-            c = lit if x < ridge else shade
-            if y > h - 2:
-                c = base if x < ridge else dark
-            if snow and y <= max(2, h//4):
-                c = '6' if x < ridge else '5'
-            g[y][x] = c
-    edge = R.outline(g, (0, 0, W, H))
-    return Hd.to_img(edge), (cx, h + 1)
-
-
-def boulder(r=3, kind='stone'):
-    lit, base, shade, dark = MOUNTAIN_KEYS[kind]
-    W, H = 2*r + 3, 2*r + 2
-    g = [['.'] * W for _ in range(H)]
-    cx, cy = W/2, H/2
-    for y in range(H):
-        for x in range(W):
-            dx, dy = x + .5 - cx, (y + .5 - cy)*1.3
-            if dx*dx + dy*dy <= r*r:
-                d = dx + dy
-                g[y][x] = lit if d < -1.5 else base if d < 1 else shade
-    edge = R.outline(g, (0, 0, W, H))
-    return Hd.to_img(edge), (W//2, H - 1)
-
-
-MOUNTAIN_SPOTS = {  # (offset from the cell centre, maker)
-    'stone': [((0, -2), lambda: mini_peak(16, 15, 'stone', True)), ((-8, 3), lambda: mini_peak(12, 10, 'stone')),
-              ((8, 3), lambda: mini_peak(11, 9, 'stone'))],
-    'earth': [((-3, -2), lambda: mini_peak(16, 13, 'earth')), ((6, 0), lambda: mini_peak(13, 11, 'earth')),
-              ((-5, 4), lambda: mini_peak(10, 7, 'earth'))],
-    'green': [((0, -2), lambda: mini_peak(18, 12, 'green')), ((-8, 3), lambda: mini_peak(11, 7, 'green')),
-              ((7, 3), lambda: boulder(3, 'stone'))],
-    'rocks': [((-6, -3), lambda: boulder(4)), ((5, -3), lambda: boulder(3)), ((0, 0), lambda: boulder(4)),
-              ((-8, 3), lambda: boulder(3)), ((7, 3), lambda: boulder(4))],
-}
-
-
-def mountain(kind='stone'):
-    """A battle-map mountain cell: little peaks (or boulders) in a cluster, drawn back to front."""
-    im = Image.new('RGBA', CELL)
-    cx, cy = PIVOT[0] + 1, PIVOT[1] + 1
-    for (dx, dy), make in sorted(MOUNTAIN_SPOTS[kind], key=lambda s: s[0][1]):
-        t, (tx, ty) = make()
         im.alpha_composite(t, (cx + dx - tx, cy + dy - ty))
     return im
 
@@ -920,43 +953,6 @@ def forest3_candidates():
         sheet.alpha_composite(big.resize((bw*sc, bh*sc), Image.NEAREST), (X, Y + 40))
         d.text((X + 10, Y + 8), f'숲 {i + 1} · {FOREST3[kind]}', fill=(40, 36, 30), font=font)
     out = ROOT / 'output/ver4-forest-candidates-3.png'
-    sheet.convert('RGB').save(out)
-    print(out)
-
-
-def mountain_candidates():
-    """3 x 2 mountain blocks per candidate with the chosen forest, a village and an infantry unit."""
-    kinds = list(MOUNTAIN_SPOTS)
-    titles = {'stone': '회색 바위산 (눈 덮인 봉우리)', 'earth': '갈색 흙산', 'green': '초록 언덕 + 바위', 'rocks': '바위 무더기'}
-    sc, bw, bh = 4, 170, 110
-    sheet = Image.new('RGBA', (len(kinds)*bw*sc, bh*sc + 40), (236, 232, 220, 255))
-    d = ImageDraw.Draw(sheet)
-    font = ImageFont.truetype(FONT, 22)
-    unit = Image.open(ROOT / 'ver4/assets/graphics/units/infantry.png').crop((0, 3*46, 56, 4*46))
-    for i, kind in enumerate(kinds):
-        box = Image.new('RGBA', (bw, bh), (104, 150, 72, 255))
-        bd = ImageDraw.Draw(box)
-        ox, oy = 85, 22
-        items = []
-        for v in range(4):
-            for u in range(4):
-                x, y = ox + (u - v)*16, oy + (u + v + 1)*8
-                fill = (164, 142, 96, 255) if u < 3 and v < 2 else None
-                bd.polygon([(x, y - 8), (x + 16, y), (x, y + 8), (x - 16, y)], outline=(92, 136, 62), fill=fill)
-                if u < 3 and v < 2:
-                    items.append((y, mountain(kind), x, y))
-                elif v == 2 and u < 2:
-                    items.append((y, forest('mixed'), x, y))
-                elif (u, v) == (3, 2):
-                    items.append((y, village(4), x, y))
-        for y, im, x, yy in sorted(items, key=lambda t: t[0]):
-            box.alpha_composite(im, (x - PIVOT[0] - 1, yy - PIVOT[1] - 1))
-        big = box.resize((bw*2, bh*2), Image.NEAREST)
-        x, y = ox + (3 - 3)*16, oy + (3 + 3 + 1)*8
-        big.alpha_composite(unit, (x*2 - 28, y*2 - 38))
-        sheet.alpha_composite(big.resize((bw*sc, bh*sc), Image.NEAREST), (i*bw*sc, 40))
-        d.text((i*bw*sc + 10, 8), f'산 {i + 1} · {titles[kind]}', fill=(40, 36, 30), font=font)
-    out = ROOT / 'output/ver4-mountain-candidates.png'
     sheet.convert('RGB').save(out)
     print(out)
 

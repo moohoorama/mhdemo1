@@ -30,6 +30,7 @@ type Assets struct {
 	TileShadow    map[int]Sprite
 	Animations    map[string]TileAnimation
 	Structures    map[string]Sprite
+	Sites         map[string]Sprite // one-cell strongpoints (camp, village, castle, gates) at the characters' scale
 	Rise          int
 	Maps          map[string]*MapArt
 	Portraits     map[string]*ebiten.Image // Look.Portrait -> ink-wash portrait
@@ -67,7 +68,7 @@ type MapArt struct {
 	Native      bool
 	Visual      [4]int
 	SmallTiles  []string
-	Deformed    bool // battle map: forests and mountains drawn as deformed cells, like villages
+	Deformed    bool // battle map: forests drawn as deformed cells, like villages
 }
 
 // MapProp places a prop with its pivot at cell (U, V), fractions allowed. With U1, V1 it
@@ -141,6 +142,12 @@ func LoadAssets(dir string, font *text.GoTextFaceSource) (*Assets, error) {
 			Rise    int
 			Sprites map[string]int
 		}
+		Sites struct {
+			Image   string
+			Cell    [2]int
+			Pivot   [2]float64
+			Sprites map[string]int
+		}
 		Shadows struct {
 			Tileset struct {
 				Image   string
@@ -161,7 +168,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource) (*Assets, error) {
 		return nil, err
 	}
 	a := &Assets{Bubble: bubble, Duels: scripts, Tiles: map[int]Sprite{}, TileShadow: map[int]Sprite{},
-		Animations: map[string]TileAnimation{}, Structures: map[string]Sprite{}, Maps: map[string]*MapArt{},
+		Animations: map[string]TileAnimation{}, Structures: map[string]Sprite{}, Sites: map[string]Sprite{}, Maps: map[string]*MapArt{},
 		Rise: index.Structures.Rise, Portraits: map[string]*ebiten.Image{}, Props: map[string]Prop{}}
 	statusPixels, err := loadRGBA(filepath.Join(dir, "status", "icons.png"))
 	if err != nil {
@@ -216,6 +223,15 @@ func LoadAssets(dir string, font *text.GoTextFaceSource) (*Assets, error) {
 	for name, i := range index.Structures.Sprites {
 		a.Structures[name] = Sprite{stSheet.SubImage(image.Rect(i*w, 0, (i+1)*w, h)).(*ebiten.Image),
 			index.Structures.Pivot[0], index.Structures.Pivot[1]}
+	}
+	si, err := loadRGBA(filepath.Join(dir, index.Sites.Image))
+	if err != nil {
+		return nil, err
+	}
+	siSheet := ebiten.NewImageFromImage(si)
+	for name, i := range index.Sites.Sprites {
+		w, h := index.Sites.Cell[0], index.Sites.Cell[1]
+		a.Sites[name] = Sprite{siSheet.SubImage(image.Rect(i*w, 0, (i+1)*w, h)).(*ebiten.Image), index.Sites.Pivot[0], index.Sites.Pivot[1]}
 	}
 	if index.Props.Image != "" {
 		pr, err := loadRGBA(filepath.Join(dir, index.Props.Image))
