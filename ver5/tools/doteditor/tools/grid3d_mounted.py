@@ -119,7 +119,8 @@ def convert(a):
     load_units()
     build, heads = UNITS[a.unit]()
     vertical = a.unit in VERTICAL_SPEAR
-    unit, base = dots.load(a.id)['unit'], dots.load(a.base)['unit']
+    unit = dots.load(a.id)['unit']
+    base = unit if a.base == 'none' else dots.load(a.base)['unit']  # --base none: no effects pasted from a base sheet
     (w, h), (px, py) = unit['cell'], unit['pivot']
     ox, oy = px - base['pivot'][0], py - base['pivot'][1]  # base-sheet coordinates -> this sheet's
     captured, effects = [], []
@@ -152,11 +153,11 @@ def convert(a):
                             out[y + dy][x + dx] = KEY2TAG[c]
                         else:
                             print('clipped', anim, d, n, x + dx, y + dy)
-                if anim == 'attack':
+                if anim == 'attack' or a.base == 'none':
                     for under, over in effects:
                         for layer in (over, under):
                             G.stamp(layer, out, dx, dy)
-                else:
+                if anim != 'attack' and a.base != 'none':
                     ref = read(ref_root / anim / f'{d}-{n}.txt')
                     for y in range(bh):
                         for x in range(bw):
