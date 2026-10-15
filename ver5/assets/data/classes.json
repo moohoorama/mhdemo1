@@ -408,7 +408,7 @@
    "MPBase": 26,
    "RecoveryBase": 2,
    "Tier": 2,
-   "Sprite": "archer",
+   "Sprite": "repeating_crossbow",
    "MinRange": 2,
    "Pool": [
     "exhort",
@@ -466,7 +466,7 @@
    "MPBase": 28,
    "RecoveryBase": 5,
    "Tier": 0,
-   "Sprite": "strategist",
+   "Sprite": "scholar",
    "Pool": [
     "fire",
     "water",
@@ -568,7 +568,7 @@
    "MPBase": 34,
    "RecoveryBase": 5,
    "Tier": 1,
-   "Sprite": "strategist",
+   "Sprite": "sorcerer",
    "Pool": [
     "deputy_appoint",
     "exhort",
@@ -602,7 +602,7 @@
    "MPBase": 40,
    "RecoveryBase": 5,
    "Tier": 2,
-   "Sprite": "strategist",
+   "Sprite": "sorcerer",
    "Pool": [
     "exhort_boost",
     "eight_formation",
@@ -665,7 +665,7 @@
    "MPBase": 20,
    "RecoveryBase": 2,
    "Tier": 1,
-   "Sprite": "bandit",
+   "Sprite": "ruffian",
    "Skills": [
     "steal"
    ],
@@ -699,7 +699,7 @@
    "MPBase": 26,
    "RecoveryBase": 2,
    "Tier": 2,
-   "Sprite": "bandit",
+   "Sprite": "ruffian",
    "Skills": [
     "steal"
    ],
