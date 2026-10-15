@@ -40,6 +40,14 @@
       "Name": "중기병"
      },
      {
+      "ID": "horse_archer",
+      "Name": "궁기병"
+     },
+     {
+      "ID": "horse_crossbow",
+      "Name": "노기병"
+     },
+     {
       "ID": "royal_guard",
       "Name": "친위대"
      }
@@ -60,6 +68,10 @@
      {
       "ID": "repeating_crossbow",
       "Name": "연노병"
+     },
+     {
+      "ID": "catapult",
+      "Name": "발석거"
      }
     ]
    },

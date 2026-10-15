@@ -89,6 +89,40 @@
     "deputy_appoint",
     "thrust_art",
     "pierce"
+   ],
+   "Promotes": [
+    "chariot"
+   ]
+  },
+  "chariot": {
+   "Name": "전차대",
+   "Desc": "말이 끄는 수레 위에서 긴 창으로 찌르는 정예 창병.",
+   "Terrain": "cavalry",
+   "Attack": "melee",
+   "Weapon": "spear",
+   "Armor": "armor",
+   "Move": 6,
+   "Range": 2,
+   "Bonus": [
+    19,
+    14,
+    6,
+    10,
+    12,
+    29
+   ],
+   "HPFactor": 3,
+   "MPBase": 24,
+   "RecoveryBase": 2,
+   "Tier": 2,
+   "Sprite": "chariot",
+   "Pool": [
+    "siegecraft",
+    "valor",
+    "sweep_art"
+   ],
+   "Tags": [
+    "mounted"
    ]
   },
   "guards": {
@@ -140,7 +174,7 @@
    "MPBase": 12,
    "RecoveryBase": 2,
    "Tier": 0,
-   "Sprite": "cavalry",
+   "Sprite": "light_cavalry",
    "Pool": [
     "dash",
     "disrupt_prep",
@@ -151,7 +185,8 @@
     "light"
    ],
    "Promotes": [
-    "heavy_cavalry"
+    "heavy_cavalry",
+    "horse_archer"
    ]
   },
   "heavy_cavalry": {
@@ -175,7 +210,7 @@
    "MPBase": 18,
    "RecoveryBase": 2,
    "Tier": 1,
-   "Sprite": "cavalry",
+   "Sprite": "heavy_cavalry",
    "Pool": [
     "deputy_appoint",
     "thrust_art",
@@ -186,6 +221,73 @@
    ],
    "Promotes": [
     "royal_guard"
+   ]
+  },
+  "horse_archer": {
+   "Name": "궁기병",
+   "Desc": "말 위에서 활을 쏘는 중급 기병.",
+   "Terrain": "cavalry",
+   "Attack": "ranged",
+   "Weapon": "bow",
+   "Armor": "armor",
+   "Move": 5,
+   "Range": 3,
+   "Bonus": [
+    11,
+    8,
+    6,
+    13,
+    10,
+    21
+   ],
+   "HPFactor": 3,
+   "MPBase": 18,
+   "RecoveryBase": 2,
+   "Tier": 1,
+   "Sprite": "horse_archer",
+   "MinRange": 2,
+   "Pool": [
+    "deputy_appoint",
+    "white_horse",
+    "snipe_prep"
+   ],
+   "Tags": [
+    "mounted"
+   ],
+   "Promotes": [
+    "horse_crossbow"
+   ]
+  },
+  "horse_crossbow": {
+   "Name": "노기병",
+   "Desc": "말 위에서 석궁을 쏘는 정예 기병.",
+   "Terrain": "cavalry",
+   "Attack": "ranged",
+   "Weapon": "bow",
+   "Armor": "armor",
+   "Move": 6,
+   "Range": 4,
+   "Bonus": [
+    15,
+    11,
+    7,
+    16,
+    12,
+    26
+   ],
+   "HPFactor": 3,
+   "MPBase": 24,
+   "RecoveryBase": 2,
+   "Tier": 2,
+   "Sprite": "horse_crossbow",
+   "MinRange": 2,
+   "Pool": [
+    "white_horse",
+    "volley",
+    "reload_prep"
+   ],
+   "Tags": [
+    "mounted"
    ]
   },
   "royal_guard": {
@@ -209,7 +311,7 @@
    "MPBase": 24,
    "RecoveryBase": 2,
    "Tier": 2,
-   "Sprite": "cavalry",
+   "Sprite": "royal_guard",
    "Pool": [
     "gale",
     "charge",
@@ -272,7 +374,7 @@
    "MPBase": 20,
    "RecoveryBase": 2,
    "Tier": 1,
-   "Sprite": "archer",
+   "Sprite": "crossbow",
    "MinRange": 2,
    "Pool": [
     "deputy_appoint",
@@ -281,7 +383,8 @@
     "fire_arrow_art"
    ],
    "Promotes": [
-    "repeating_crossbow"
+    "repeating_crossbow",
+    "catapult"
    ]
   },
   "repeating_crossbow": {
@@ -311,6 +414,35 @@
     "exhort",
     "rapid_art",
     "penetrate_art"
+   ]
+  },
+  "catapult": {
+   "Name": "발석거",
+   "Desc": "돌을 멀리 던지는 공성 병기. 이동이 느리다.",
+   "Terrain": "archer",
+   "Attack": "ranged",
+   "Weapon": "bow",
+   "Armor": "armor",
+   "Move": 2,
+   "Range": 5,
+   "Bonus": [
+    17,
+    12,
+    6,
+    6,
+    9,
+    28
+   ],
+   "HPFactor": 3,
+   "MPBase": 26,
+   "RecoveryBase": 2,
+   "Tier": 2,
+   "Sprite": "catapult",
+   "MinRange": 2,
+   "Pool": [
+    "siegecraft",
+    "volley",
+    "far_sight"
    ]
   },
   "scholar": {
