@@ -41,25 +41,25 @@ func TestDeploymentCardsAndMap(t *testing.T) {
 		t.Fatal("placement was not immediate")
 	}
 	g.mapClick(1, 2)
-	if g.unitView(g.S.Engine.Observe(), "hero") != nil || g.deploymentSelected != "" {
-		t.Fatal("map unplacement failed")
+	if g.unitView(g.S.Engine.Observe(), "hero") != nil || g.deploymentSelected != "hero" {
+		t.Fatal("map click should unplace the ally and keep it selected")
 	}
-	g.selectDeployment("hero")
 	g.mapClick(1, 2)
+	if g.unitView(g.S.Engine.Observe(), "hero") == nil || g.deploymentSelected != "" {
+		t.Fatal("selected ally was not placed again")
+	}
 	g.selectDeployment("archer1")
 	g.mapClick(1, 2)
-	if g.unitView(g.S.Engine.Observe(), "hero") != nil {
-		t.Fatal("placed ally click should remove, never swap")
+	if g.unitView(g.S.Engine.Observe(), "hero") != nil || g.unitView(g.S.Engine.Observe(), "archer1") != nil || g.deploymentSelected != "hero" {
+		t.Fatal("placed ally click should unplace it, never swap")
 	}
-	g.selectDeployment("hero")
 	g.mapClick(1, 2)
 	g.selectDeployment("archer1")
 	g.mapClick(1, 3)
 	g.selectDeployment("archer1")
-	if g.unitView(g.S.Engine.Observe(), "archer1") != nil {
-		t.Fatal("placed card did not remove")
+	if g.unitView(g.S.Engine.Observe(), "archer1") != nil || g.deploymentSelected != "archer1" {
+		t.Fatal("placed card did not unplace and stay selected")
 	}
-	g.selectDeployment("archer1")
 	g.mapClick(1, 3)
 	g.finishDeployment()
 	if g.deploying() || !g.battleLogVisible() || g.battleViewport() != viewport || g.ord.actor != "" {
