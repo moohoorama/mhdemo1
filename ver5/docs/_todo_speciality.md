@@ -16,7 +16,7 @@ v2의 병종 이름과 실행 데이터의 id가 다르다. 이 문서는 실행
 | 경보병 → 중보병 → 근위병 | `light_infantry` → `heavy_infantry` → `guards` | 포함 |
 | 경기병 → 창기병 → 금위병 | `light_cavalry` → `heavy_cavalry`(중기병) → `royal_guard`(친위대) | 포함 |
 | 궁병 → 노병 → 연노병 | `archer` → `crossbow` → `repeating_crossbow` | 포함 |
-| 사마 계열(참모·군사·방술사·선술사) | `scholar` 외 | `부관임명`만 추가, 나머지 유지 |
+| 서생 계열(참모·군사·방술사·선술사) | `scholar` 외 | `부관임명`만 추가, 나머지 유지 |
 | 적병 계열 | `bandit` → `ruffian` → `outlaw` | 풀은 유지, 공유 특성의 비용 변화만 영향을 받는다 |
 | 장창병·전차대 | `pikeman` → `chariot` | 설계 당시 제외. 이후 데이터에 추가됨(13절 표) |
 | 궁기병 | `horse_archer` | 설계 당시 제외. 이후 데이터에 추가됨(13절 표) |
