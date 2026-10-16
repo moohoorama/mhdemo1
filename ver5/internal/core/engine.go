@@ -198,6 +198,7 @@ func (e *Engine) traits(c *Character) []string {
 		add(e.def(c).Traits)
 	}
 	add(c.Learned)
+	add(e.class(c).Traits)
 	for _, eq := range c.Equipment {
 		add(e.data.Equipment[eq].Traits)
 	}

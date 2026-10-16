@@ -83,6 +83,7 @@ type Class struct {
 	Bonus                           [6]float64
 	MPBase, RecoveryBase            int
 	Skills, Pool, Tags              []string
+	Traits                          []string // held while in this class (not learned, lost on class change)
 	Promotes                        []string
 	Tier                            int
 	Sprite                          string

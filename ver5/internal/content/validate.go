@@ -116,6 +116,11 @@ func (d *Data) Validate() error {
 				return fmt.Errorf("class %s: pool trait %s is not learnable", id, t)
 			}
 		}
+		for _, t := range c.Traits {
+			if d.Traits[t].Name == "" {
+				return fmt.Errorf("class %s: unknown trait %s", id, t)
+			}
+		}
 	}
 	for id, e := range d.Equipment {
 		if e.Name == "" || !in(e.Slot, "weapon", "armor", "accessory") {

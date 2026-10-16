@@ -271,6 +271,30 @@ func TestSplashAndPierce(t *testing.T) {
 		t.Fatalf("pierce %v %v", hit, share)
 	}
 }
+func TestClassTraits(t *testing.T) {
+	e, a, b := arena(t)
+	t1 := e.unit("troop#1")
+	t1.HP, t1.X, t1.Y = e.stats(t1).MaxHP, 6, 5
+	hero := e.char("hero")
+	cl := e.data.Classes[hero.Class]
+	cl.Traits = []string{"cross_t"}
+	e.data.Classes[hero.Class] = cl
+	if !e.hasTrait(hero, "cross_t") {
+		t.Fatal("class trait not held")
+	}
+	if hit, share := e.victims(a, b, e.basic()); len(hit) != 2 || share["troop#1"] != .75 {
+		t.Fatalf("class cross %v %v", hit, share)
+	}
+	for _, id := range e.learnable(hero) {
+		if id == "cross_t" {
+			t.Fatal("a class trait is offered for learning")
+		}
+	}
+	hero.Class = "rider"
+	if e.hasTrait(hero, "cross_t") {
+		t.Fatal("class trait kept after the class changed")
+	}
+}
 func answered(r Result, from, to string) bool {
 	for _, ev := range r.Events {
 		if (ev.Kind == "damage" || ev.Kind == "miss") && ev.Actor == from && ev.Target == to {
