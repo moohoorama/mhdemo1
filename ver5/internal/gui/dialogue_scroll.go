@@ -178,8 +178,10 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 			a.shownAt = g.uiSeconds
 		}
 	}
-	cx := scrollLeft + (scrollRod+1)*scrollPx + a.hw*scrollPx
-	g.drawScrollBody(dst, cx, scrollTop, a.hw)
+	// whole art pixels, so the left roller stays put while the scroll springs
+	hwArt := math.Round(a.hw)
+	cx := scrollLeft + (scrollRod+1)*scrollPx + hwArt*scrollPx
+	g.drawScrollBody(dst, cx, scrollTop, hwArt)
 
 	// the speaker's portrait fades and rises in beside the scroll
 	in := bezier(.2, .8, .2, 1, phase(g.uiSeconds-a.shownAt, 0, .3))
@@ -198,7 +200,7 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 		return
 	}
 	// text, clipped to the paper while the scroll still moves
-	hw := a.hw * scrollPx
+	hw := hwArt * scrollPx
 	clip := image.Rect(int((cx-hw)*scale), int(scrollTop*scale), int((cx+hw)*scale), int((scrollTop+scrollH)*scale))
 	sub := dst.SubImage(clip).(*ebiten.Image)
 	shown := wrapped
