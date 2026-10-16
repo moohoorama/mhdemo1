@@ -1,0 +1,993 @@
+<title>난세 UI 시안</title>
+<meta charset="utf-8">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Noto+Serif+KR:wght@500;700;900&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: 한 줄에 "무대(데모) + 설명" 두 칸, 좁으면 한 칸. 먹·주칠·금박의 어두운 단일 테마(게임 화면 그대로). */
+:root{
+  --ink:#0f0d0b; --lacquer:#1d1712; --lacquer2:#2a2019; --paper:#ece2c9; --paper-dim:#bdb197;
+  --cinnabar:#b8321f; --gold:#d6a957; --gold-dim:#7d6235; --jade:#6fbf8e; --rule:#3a2e24;
+  --f-display:"Noto Serif KR","Nanum Myeongjo",serif; --f-body:"Gowun Dodum","Apple SD Gothic Neo",sans-serif;
+  --f-brush:"Nanum Brush Script","Noto Serif KR",cursive;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--ink);color:var(--paper);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 80px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:56px}
+header{display:grid;gap:14px;max-width:46em}
+.eyebrow{font-family:var(--f-display);color:var(--gold);letter-spacing:.25em;font-size:12px}
+h1{font-family:var(--f-display);font-weight:900;font-size:clamp(32px,4.6vw,50px);line-height:1.15;margin:0;text-wrap:balance}
+h1 em{font-style:normal;color:var(--cinnabar)}
+header p{color:var(--paper-dim);margin:0}
+.changes{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px 24px;margin:6px 0 0;padding:0;list-style:none;font-size:14px;color:var(--paper-dim)}
+.changes b{color:var(--gold);font-family:var(--f-display);margin-right:6px}
+.changes s{color:#7a6c5a}
+
+.idea{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:28px;align-items:start;padding-top:28px;border-top:1px solid var(--rule)}
+@media (max-width:860px){.idea{grid-template-columns:1fr}}
+.idea h2{font-family:var(--f-display);font-weight:900;font-size:26px;line-height:1.25;margin:0 0 8px;text-wrap:balance}
+.num{font-family:var(--f-display);color:var(--cinnabar);font-weight:900;font-size:13px;letter-spacing:.2em;display:flex;gap:10px;align-items:center}
+.num .tagc{font-size:11px;letter-spacing:.05em;color:var(--gold);border:1px solid var(--gold-dim);padding:0 7px;border-radius:2px}
+.num .ok{font-size:11px;letter-spacing:.05em;color:var(--jade);border:1px solid #3f6b4f;padding:0 7px;border-radius:2px}
+.lede{color:var(--paper);margin:0 0 12px}
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0 0 14px;font-size:14px}
+dt{color:var(--gold);font-family:var(--f-display);font-weight:700;white-space:nowrap}
+dd{margin:0;color:var(--paper-dim)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:12px;padding:2px 9px;border:1px solid var(--gold-dim);border-radius:2px;color:var(--gold)}
+.chip.lo{border-color:#3f6b4f;color:var(--jade)}
+
+.stage{position:relative;aspect-ratio:16/10;max-width:100%;overflow:hidden;border-radius:4px;background:#14110e;border:1px solid var(--rule);isolation:isolate}
+.stage .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stage>canvas.full{position:absolute;inset:0;width:100%;height:100%}
+.replay{position:absolute;right:10px;bottom:10px;z-index:50;font:700 12px var(--f-display);color:var(--paper);background:rgba(20,15,12,.85);border:1px solid var(--gold-dim);padding:5px 12px;border-radius:2px;cursor:pointer}
+.replay:hover,.replay:focus-visible,.toggle button:focus-visible{border-color:var(--gold);color:var(--gold);outline:none}
+.toggle{position:absolute;left:10px;bottom:10px;z-index:50;display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.toggle span{font:700 11px var(--f-display);color:var(--paper-dim);background:rgba(20,15,12,.85);padding:5px 8px}
+.toggle button{font:700 12px var(--f-display);color:var(--paper-dim);background:rgba(20,15,12,.85);border:1px solid var(--rule);padding:5px 10px;cursor:pointer}
+.toggle button[aria-pressed="true"]{color:var(--gold);border-color:var(--gold)}
+canvas{display:block}
+
+/* 1 off-map tiles */
+#s1 canvas{position:absolute;inset:0;width:100%;height:100%}
+
+/* 2 turn */
+#s2 .dim{position:absolute;inset:0;background:rgba(8,6,4,0)}
+#s2 svg.strokes{position:absolute;inset:0;width:100%;height:100%}
+#s2 .turnTxt{position:absolute;left:0;right:0;top:33%;text-align:center;font-family:var(--f-brush);color:#f6eedb;font-size:clamp(46px,10vw,104px);line-height:1;text-shadow:0 3px 0 #000;clip-path:inset(0 100% 0 0)}
+#s2 .turnSub{position:absolute;left:0;right:0;top:57%;text-align:center;font-family:var(--f-display);font-weight:900;font-size:clamp(14px,2.4vw,24px);letter-spacing:.35em;opacity:0}
+#s2 .turnSub i{display:block;margin:8px auto 0;height:3px;width:0;background:currentColor;border-radius:2px}
+
+/* 3 top bar */
+#s3 .cam{position:absolute;left:0;top:0;width:250%;aspect-ratio:1.6;max-width:none;will-change:transform}
+#s3 .cam img,#s3 .cam svg{position:absolute;inset:0;width:100%;height:100%}
+#s3 .tag{cursor:pointer}
+#s3 .cursor{position:absolute;width:3%;z-index:20;opacity:0;left:0;top:0;pointer-events:none}
+#s3 .cap{position:absolute;left:10px;bottom:10px;z-index:30;font:700 12px var(--f-display);color:var(--paper);background:rgba(20,15,12,.85);border:1px solid var(--rule);padding:5px 10px;opacity:0}
+#s3 .bar{position:absolute;left:0;right:0;top:0;height:15%;background:
+  linear-gradient(rgba(255,220,170,.06),transparent 40%),
+  repeating-linear-gradient(90deg,rgba(0,0,0,.08) 0 2px,transparent 2px 7px),
+  linear-gradient(#3a2418,#1d120c);box-shadow:0 6px 16px rgba(0,0,0,.55);overflow:hidden}
+#s3 .bar::before,#s3 .bar::after{content:"";position:absolute;left:0;right:0;height:2px;background:var(--gold)}
+#s3 .bar::before{bottom:4px;opacity:.55;height:1px}#s3 .bar::after{bottom:0}
+#s3 .shine{position:absolute;top:0;bottom:0;width:18%;background:linear-gradient(100deg,transparent,rgba(255,230,180,.13),transparent);transform:translateX(-120%)}
+#s3 .cloud{position:absolute;left:.8%;top:2.4%;height:9.5%;aspect-ratio:1.6}
+#s3 .ttl{position:absolute;left:9%;top:2.2%;font-family:var(--f-display);font-weight:900;font-size:clamp(12px,2.1vw,21px);color:var(--paper);line-height:1.25}
+#s3 .ttl small{display:block;font-size:.52em;color:var(--gold);letter-spacing:.3em;font-weight:700}
+#s3 .turn{position:absolute;left:34%;top:1.6%;height:11.5%;aspect-ratio:1;border-radius:50%;background:radial-gradient(#4a3020,#1d120c);border:2px solid var(--gold);display:grid;place-items:center;text-align:center;font-family:var(--f-display);font-weight:900;color:var(--paper);font-size:clamp(11px,1.9vw,19px);line-height:1;perspective:200px;box-shadow:0 0 0 3px rgba(0,0,0,.35)}
+#s3 .turn small{display:block;font-size:.5em;color:var(--gold);margin-top:2px}
+#s3 .side{position:absolute;left:42%;top:4.2%;font-family:var(--f-display);font-weight:900;font-size:clamp(10px,1.5vw,15px);color:#9fe0a8;display:flex;align-items:center;gap:6px}
+#s3 .side i{width:.7em;height:.7em;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
+#s3 .scroll{position:absolute;left:55%;top:3.2%;height:8.5%;display:flex;align-items:center}
+#s3 .scroll .rod{width:5px;height:122%;background:linear-gradient(90deg,#4a2c18,#a8743f,#4a2c18);border-radius:3px;flex:none}
+#s3 .scroll .sheet{overflow:hidden;width:0;height:100%;background:linear-gradient(#efe4c8,#d9cba6);color:#2b1d12;font-size:clamp(8px,1.25vw,12px);white-space:nowrap;display:flex;align-items:center;font-family:var(--f-display);font-weight:700}
+#s3 .scroll .sheet span{padding:0 10px}
+#s3 .scroll .sheet b{color:var(--cinnabar)}
+#s3 .tags{position:absolute;right:2.5%;top:0;display:flex;gap:7px;height:24%}
+#s3 .tag{position:relative;width:clamp(18px,3.1vw,30px);transform-origin:50% 0}
+#s3 .tag::before{content:"";position:absolute;left:50%;top:0;width:1px;height:16%;background:#c79a55}
+#s3 .tag i{position:absolute;left:0;right:0;top:16%;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-style:normal;font-family:var(--f-display);font-weight:900;font-size:clamp(9px,1.45vw,14px);line-height:1.12;background:linear-gradient(90deg,#b88a4c,#dcb878 45%,#a77a3f);color:#2a1a0c;border:1px solid #f2d79e;border-radius:3px 3px 6px 6px;box-shadow:0 3px 4px rgba(0,0,0,.5);transition:background .4s,color .4s}
+#s3 .tag.used i{background:linear-gradient(90deg,#3a2c20,#4b3a2a 45%,#33271c);color:#7a6a55;border-color:#5a4836}
+#s3 .tag.cur i{box-shadow:0 0 0 2px var(--gold),0 0 12px rgba(214,169,87,.8)}
+
+/* 4 damage */
+#s4 .shake{position:absolute;inset:0}
+#s4 svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#s4 .dmg{position:absolute;font-family:var(--f-brush);font-size:clamp(34px,7vw,70px);line-height:1;color:#e8432b;-webkit-text-stroke:2px #1a0703;paint-order:stroke fill;text-shadow:0 3px 0 #1a0703;opacity:0;transform:translate(-50%,-50%);white-space:nowrap}
+#s4 .dmg.heal{color:#8fe3a8;-webkit-text-stroke-color:#0b2414;text-shadow:0 3px 0 #0b2414}
+#s4 .dmg small{font-size:.55em;margin-left:.15em;color:#ffd166}
+#s4 .hp{position:absolute;width:6.2%;height:2.6%;background:#0d0907;border:1px solid #000;box-shadow:0 1px 0 rgba(255,255,255,.12);padding:1px}
+#s4 .hp .t{position:relative;height:66%;background:#2a1712;overflow:hidden}
+#s4 .hp .t b,#s4 .hp .t i{position:absolute;left:0;top:0;bottom:0}
+#s4 .hp .t b{background:#f6ecdc}
+#s4 .hp .t i{background:linear-gradient(#ee6a4f,#a62c1b)}
+#s4 .hp.ally .t i{background:linear-gradient(#86de9b,#3b9a57)}
+#s4 .hp .t::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(25% - 1px),rgba(0,0,0,.55) calc(25% - 1px) 25%)}
+#s4 .hp .m{height:22%;margin-top:1px;background:#14202e}
+#s4 .hp .m u{display:block;height:100%;background:#5d9ad8}
+#s4 .flash{position:absolute;inset:0;background:#fff;opacity:0;mix-blend-mode:overlay}
+#s4 .ring{position:absolute;width:10%;aspect-ratio:1;border:3px solid #ffd166;border-radius:50%;transform:translate(-50%,-50%) scale(.2);opacity:0}
+
+/* 5 dialogue scroll */
+#s5 .bg{filter:brightness(.5)}
+#s5 canvas.full{image-rendering:pixelated}
+#s5 .por{position:absolute;left:3.5%;bottom:6%;width:23%;aspect-ratio:1;border:2px solid var(--gold-dim);box-shadow:0 0 0 3px #1a120c,0 6px 14px rgba(0,0,0,.6);background:#1a120c;opacity:0;z-index:3}
+#s5 .por img{width:100%;height:100%;object-fit:cover;display:block}
+#s5 .plate{position:absolute;left:31%;bottom:41.5%;z-index:4;padding:3px 14px 3px 12px;font-family:var(--f-display);font-weight:900;font-size:clamp(12px,1.9vw,18px);color:#fbeee0;background:linear-gradient(#a33a24,#7a2414);border:1px solid #e3a77f;border-radius:2px;box-shadow:0 2px 0 #3b0e07;opacity:0;white-space:nowrap}
+#s5 .plate small{font-weight:700;font-size:.68em;opacity:.8;margin-left:6px}
+#s5 .parts{position:absolute;inset:0;z-index:40;background:rgba(14,10,8,.95);display:grid;place-items:center;padding:16px}
+#s5 .parts[hidden]{display:none}
+#s5 .parts canvas{max-width:100%;height:auto}
+
+/* 6 command menu: every size in em so --ui scales the whole menu */
+#s6{--ui:1}
+#s6 .menus{position:absolute;left:41%;top:16%;display:flex;align-items:flex-start;gap:4px;font-size:calc(var(--ui) * clamp(10px,1.55vw,15px))}
+#s6 .panel{background:linear-gradient(#2b1d14,#1b120d);border:1px solid #0b0705;box-shadow:inset 0 0 0 1px var(--gold-dim),0 6px 14px rgba(0,0,0,.6);padding:.35em;font-family:var(--f-display);color:var(--paper);clip-path:inset(0 0 100% 0)}
+#s6 .main{width:6.6em}
+#s6 .sub{width:10.5em;margin-top:2.15em}
+#s6 .hd{font-size:.8em;color:var(--gold);padding:.15em .45em .4em;display:flex;justify-content:space-between;align-items:center;gap:.4em;border-bottom:1px solid #3d2c1f;margin-bottom:.2em}
+#s6 .hd .mp{flex:1;max-width:46%;height:.4em;background:#101722;border:1px solid #000}
+#s6 .hd .mp u{display:block;height:100%;width:77%;background:#5d9ad8}
+#s6 .row{position:relative;display:flex;align-items:center;gap:.45em;padding:.38em .55em;font-weight:700;overflow:hidden;border-radius:1px;isolation:isolate;min-height:2em}
+#s6 .row svg{width:1.05em;height:1.05em;flex:none}
+#s6 .row .k{margin-left:auto;font-size:.78em;color:var(--paper-dim);font-weight:500}
+#s6 .row::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(214,169,87,.38),rgba(214,169,87,.06));transform:scaleX(0);transform-origin:left;transition:transform .18s ease-out;z-index:-1}
+#s6 .row.on::before{transform:scaleX(1)}
+#s6 .row.on{color:#fff6dd}
+#s6 .row.on::after{content:"";position:absolute;left:0;top:15%;bottom:15%;width:3px;background:var(--gold)}
+#s6 .row.off{color:#77695a}
+#s6 .desc{font-size:.78em;color:var(--paper-dim);border-top:1px solid #3d2c1f;margin-top:.25em;padding:.4em .5em .15em;min-height:2.8em;font-family:var(--f-body);line-height:1.45}
+#s6 svg.tiles{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#s6 .cursor{position:absolute;width:3%;z-index:20;opacity:0;left:0;top:0}
+
+/* 7 letterbox duel cut-in */
+#s7 .bg{filter:brightness(.7)}
+#s7 .lb{position:absolute;left:0;right:0;height:31%;background:#060403;z-index:5}
+#s7 .lbT{top:0;transform:translateY(-100%)}#s7 .lbB{bottom:0;transform:translateY(100%)}
+#s7 .lb::after{content:"";position:absolute;left:0;right:0;height:2px;background:var(--gold);opacity:.8}
+#s7 .lbT::after{bottom:0}#s7 .lbB::after{top:0}
+#s7 .band{position:absolute;left:0;right:0;top:31%;bottom:31%;overflow:hidden;z-index:4;opacity:0;background:#1a0805}
+#s7 .band canvas{position:absolute;inset:0;width:100%;height:100%}
+/* one shared cut line: from (56%,top) to (44.8%,bottom). 관우 keeps the left side of it, 화웅 the right side. */
+#s7 .pane{position:absolute;top:0;bottom:0;overflow:hidden}
+#s7 .pane img{position:absolute;width:135%;top:-42%;max-width:none}
+#s7 .pL{left:0;width:56%;clip-path:polygon(0 0,100% 0,80% 100%,0 100%)}
+#s7 .pR{right:0;width:55.2%;clip-path:polygon(20.29% 0,100% 0,100% 100%,0 100%)}
+#s7 .pL img{left:-34%}#s7 .pR img{right:-34%}
+#s7 .pane::after{content:"";position:absolute;inset:0}
+#s7 .pL::after{background:linear-gradient(90deg,transparent 45%,rgba(0,0,0,.42)),linear-gradient(transparent 50%,rgba(0,0,0,.4))}
+#s7 .pR::after{background:linear-gradient(270deg,transparent 45%,rgba(0,0,0,.42)),linear-gradient(transparent 50%,rgba(0,0,0,.4))}
+#s7 .seam{position:absolute;inset:0;width:100%;height:100%;opacity:0;z-index:6;pointer-events:none}
+#s7 .nm{position:absolute;top:50%;font-family:var(--f-brush);font-size:clamp(40px,9.5vw,104px);line-height:1;color:#fff;opacity:0;z-index:7;white-space:nowrap}
+#s7 .nm small{position:absolute;top:-.3em;font-family:var(--f-display);font-weight:900;font-size:.14em;letter-spacing:.25em;white-space:nowrap}
+#s7 .nL{right:53%;text-shadow:0 0 18px rgba(80,220,120,.75),0 4px 0 #0b2414}
+#s7 .nL small{right:.1em;color:#9fe0a8}
+#s7 .nR{left:53%;text-shadow:0 0 18px rgba(255,90,50,.85),0 4px 0 #3b0e07}
+#s7 .nR small{left:.1em;color:#f0a08e}
+#s7 .flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:9}
+
+/* 9 intro */
+#s9 .bg{filter:brightness(.35) saturate(.7)}
+#s9 canvas.por{position:absolute;left:6%;top:9%;height:82%;aspect-ratio:1}
+#s9 .who{position:absolute;left:56%;top:22%;right:5%}
+#s9 .who .n{font-family:var(--f-brush);font-size:clamp(54px,11vw,118px);line-height:.9;color:#f6eedb;text-shadow:0 3px 0 #000;clip-path:inset(0 100% 0 0)}
+#s9 .who .z{font-family:var(--f-display);font-weight:700;color:var(--gold);font-size:clamp(11px,1.7vw,16px);letter-spacing:.2em;margin-top:6px;opacity:0}
+#s9 .who .b{font-family:var(--f-display);font-weight:500;color:var(--paper);font-size:clamp(10px,1.45vw,14px);line-height:1.7;margin-top:10px;max-width:24em;opacity:0}
+#s9 .who hr{border:0;height:2px;background:linear-gradient(90deg,var(--cinnabar),transparent);width:0;margin:10px 0 0}
+
+@media (prefers-reduced-motion:reduce){#s3 .shine{display:none}}
+footer{color:var(--paper-dim);font-size:13px;border-top:1px solid var(--rule);padding-top:20px}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">ver5 · GUI 개편 시안 · 3차</div>
+  <h1>추려 낸 <em>여덟 가지</em></h1>
+  <p>2차 의견을 반영했습니다. 3·4·9번은 그대로 두었고, 8번(죽간 전투 기록)은 뺐습니다. 다만 글자 색으로 피해·회복·장수 이름을 구분하는 방식은 지금 전투 로그에 그대로 쓰면 됩니다.</p>
+  <ul class="changes">
+    <li><b>1</b>지금 그리는 맵 밖 타일을 다듬기</li>
+    <li><b>2</b>먹방울을 빼고 붓질과 글자만</li>
+    <li><b>3·4</b>그대로</li>
+    <li><b>5</b>도트 부품으로 조립한 두루마리</li>
+    <li><b>6</b>메뉴 크기 설정(모바일용 크게)</li>
+    <li><b>7</b>사선으로 부딪히는 초상, 장수 이름을 크게</li>
+    <li><s><b>8</b>죽간 전투 기록</s> 뺌</li>
+    <li><b>9</b>그대로</li>
+  </ul>
+</header>
+
+<!-- 1 -->
+<section class="idea">
+  <div class="stage" id="s1">
+    <canvas id="c1"></canvas>
+    <div class="toggle" role="group" aria-label="비교"><button data-m="now" aria-pressed="false">지금</button><button data-m="new" aria-pressed="true">다듬은 뒤</button></div>
+  </div>
+  <div>
+    <div class="num">1 · 맵 밖 타일 <span class="tagc">수정</span></div>
+    <h2>맵 밖 타일에 깊이 주기</h2>
+    <p class="lede">맵 밖에도 이미 타일을 그리고 있으니, 그 타일만 다듬습니다. 지금은 한 가지 색으로만 깔려 있어서 화면이 비어 보입니다. <b>지금 / 다듬은 뒤</b>로 비교해 보세요.</p>
+    <dl>
+      <dt>타일</dt><dd>맵 안과 같은 풀 타일을 쓰되 채도와 밝기를 낮춥니다. 풀포기·돌·작은 숲을 드문드문 놓아 들판이 이어져 보이게 합니다</dd>
+      <dt>멀어짐</dt><dd>맵에서 멀수록 안개색으로 흐려지고 가장자리는 어두워집니다. 맵 경계에는 얇은 밝은 테를 둘러 싸울 수 있는 칸이 바로 보입니다</dd>
+      <dt>움직임</dt><dd>구름 그림자가 천천히 들판을 지나갑니다. 맵 안까지 지나가므로 화면 전체가 살아 있어 보입니다</dd>
+    </dl>
+    <div class="chips"><span class="chip lo">난이도 하</span><span class="chip">field_render.go 맵 밖 타일 단계만</span></div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="idea">
+  <div class="stage" id="s2">
+    <img class="bg" src="img/field.jpg" alt="">
+    <div class="dim"></div>
+    <svg class="strokes" viewBox="0 0 800 500" preserveAspectRatio="none" aria-hidden="true">
+      <defs><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".035 .5" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="22"/></filter></defs>
+      <path id="stroke" d="M-40 250 C 180 226, 520 272, 860 242" stroke="#0d0a08" stroke-width="150" fill="none" stroke-linecap="round" filter="url(#rough)"/>
+      <path id="stroke2" d="M-40 256 C 200 240, 560 262, 860 252" stroke="#3a120a" stroke-width="64" fill="none" stroke-linecap="round" filter="url(#rough)" opacity=".75"/>
+    </svg>
+    <div class="turnTxt" id="tt">제7턴</div>
+    <div class="turnSub" id="ts"><span id="tsTxt">황건군의 차례</span><i></i></div>
+    <button class="replay">다시 보기</button>
+  </div>
+  <div>
+    <div class="num">2 · 턴 전환 <span class="tagc">수정</span></div>
+    <h2>붓질 위에 써지는 턴</h2>
+    <p class="lede">먹방울을 뺐습니다. 굵은 붓질이 화면을 가로지르고, "제7턴"이 붓으로 쓰듯 왼쪽부터 써지고, 진영 이름 아래에 그 진영의 색으로 밑줄이 그어집니다.</p>
+    <dl>
+      <dt>시간</dt><dd>약 1.4초. 자동 진행 중에는 0.8초짜리 짧은 판</dd>
+      <dt>구현</dt><dd>붓질 PNG 한 장 + 붓글씨 숫자 시트. 글자는 왼쪽부터 자르는 사각형만 넓히면 됩니다</dd>
+    </dl>
+    <div class="chips"><span class="chip lo">난이도 하</span></div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="idea">
+  <div class="stage" id="s3">
+    <div class="cam" id="cam3"><img src="img/outside.jpg" alt=""><svg viewBox="0 0 1280 800" aria-hidden="true" id="mk3"></svg></div>
+    <div class="bar"><div class="shine"></div></div>
+    <svg class="cloud" viewBox="0 0 64 40" aria-hidden="true"><path d="M6 30 C2 22 10 14 18 18 C18 8 32 4 38 12 C44 6 58 10 56 20 C62 22 62 32 54 32 L10 32 Z" fill="none" stroke="#d6a957" stroke-width="2"/><path d="M24 26 c-4 0 -4 -6 0 -6 c3 0 3 4 0 4" fill="none" stroke="#d6a957" stroke-width="1.6"/><path d="M40 24 c4 0 4 -6 0 -6 c-3 0 -3 4 0 4" fill="none" stroke="#d6a957" stroke-width="1.6"/></svg>
+    <div class="ttl"><small>제1장</small>황건적의 난</div>
+    <div class="turn"><div id="turnN">7<small>/ 30</small></div></div>
+    <div class="side" id="side"><i></i><span>유비군 차례</span></div>
+    <div class="scroll"><div class="rod"></div><div class="sheet"><span><b>승리</b> 적군 전멸 · <b>패배</b> 유비 퇴각 / 30턴</span></div><div class="rod"></div></div>
+    <div class="tags">
+      <div class="tag" data-x="636" data-y="378"><i>유<br>비</i></div><div class="tag" data-x="721" data-y="359"><i>관<br>우</i></div><div class="tag" data-x="679" data-y="341"><i>장<br>비</i></div>
+    </div>
+    <svg class="cursor" id="cur3" viewBox="0 0 20 28" aria-hidden="true"><path d="M1 1 L1 23 L7 18 L11 27 L15 25 L11 16 L19 16 Z" fill="#fff" stroke="#000" stroke-width="1.6"/></svg>
+    <div class="cap" id="cap3"></div>
+    <button class="replay">다시 보기</button>
+  </div>
+  <div>
+    <div class="num">3 · 상단 바 <span class="tagc">카메라 추가</span></div>
+    <h2>옻칠 바, 이름패, 따라가는 카메라</h2>
+    <p class="lede">나뭇결 옻칠 바에 금테와 구름무늬, 턴 원패, 한글 세로 이름패. 승패 조건 두루마리는 <b>장 시작 때 한 번만</b> 펼쳐지고 그대로 남습니다. 지난 시안에서 계속 여닫힌 건 데모를 반복 재생해서 생긴 일입니다.</p>
+    <dl>
+      <dt>이름패</dt><dd>누르면 카메라가 그 장수를 화면 가운데로 옮기고 바로 선택합니다(이동 범위 표시). 행동을 마친 패는 어두워지며 흔들립니다. 무대 안 이름패를 직접 눌러 봐도 됩니다</dd>
+      <dt>적 차례</dt><dd>이번에 움직이는 적들(동시에 움직이는 무리)의 가운데 지점을 구하고, 그 지점에 가장 가까운 적에게 카메라를 맞춥니다. 무리가 바뀔 때만 카메라가 이동해서 화면이 덜 흔들립니다</dd>
+      <dt>많을 때</dt><dd>출전이 8명을 넘으면 남은 장수만 보이고 "+3"처럼 접습니다</dd>
+    </dl>
+    <div class="chips"><span class="chip">난이도 중</span></div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="idea">
+  <div class="stage" id="s4">
+    <div class="shake">
+      <img class="bg" src="img/field.jpg" alt="">
+      <svg viewBox="0 0 800 500" preserveAspectRatio="none" aria-hidden="true">
+        <path id="slash" d="M262 238 Q 292 262 324 300" stroke="#fffbe9" stroke-width="6" fill="none" stroke-linecap="round" opacity="0"/>
+        <path id="slash2" d="M256 248 Q 286 270 314 306" stroke="#ffcf7a" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>
+        <g id="ink"></g><g id="sparks"></g>
+      </svg>
+      <div class="hp" id="hpE" style="left:33.6%;top:60.6%"><div class="t"><b></b><i></i></div><div class="m"><u style="width:40%"></u></div></div>
+      <div class="hp ally" id="hpA" style="left:33.8%;top:47.4%"><div class="t"><b></b><i></i></div><div class="m"><u style="width:70%"></u></div></div>
+    </div>
+    <div class="ring" id="ring" style="left:36.5%;top:53%"></div>
+    <div class="dmg" id="dmg" style="left:37%;top:44%">402</div>
+    <div class="dmg heal" id="heal" style="left:37%;top:31%">+220</div>
+    <div class="flash" id="flash4"></div>
+    <button class="replay">다시 보기</button>
+  </div>
+  <div>
+    <div class="num">4 · 타격감 <span class="ok">확정</span></div>
+    <h2>붓글씨 피해 숫자와 체력 바</h2>
+    <p class="lede">붓글씨 숫자가 튀었다 가라앉고 먹물이 튑니다. 치명타는 "치명"과 금빛 고리, 회복은 초록 숫자와 오르는 빛.</p>
+    <dl>
+      <dt>체력 바</dt><dd>유닛 폭의 약 1.2배, 4칸 눈금, 빨간 칸이 먼저 깎이고 흰 잔상이 따라 줄어듦. 아래 얇은 줄은 병법치</dd>
+      <dt>겹침</dt><dd>같은 유닛 숫자는 위로 쌓고, 이웃 숫자와 겹치면 옆으로 비킴</dd>
+    </dl>
+    <div class="chips"><span class="chip lo">난이도 하</span></div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="idea">
+  <div class="stage" id="s5">
+    <img class="bg" src="img/field.jpg" alt="">
+    <canvas class="full" id="c5"></canvas>
+    <div class="por" id="por5"><img id="por5i" src="../../assets/graphics/portraits/guanyu.png" alt=""></div>
+    <div class="plate" id="plate5">관우<small>자 운장</small></div>
+    <div class="parts" id="parts5" hidden><canvas id="pc5"></canvas></div>
+    <div class="toggle"><button id="partsBtn" aria-pressed="false">부품 보기</button></div>
+    <button class="replay">다시 보기</button>
+  </div>
+  <div>
+    <div class="num">5 · 대화창 <span class="tagc">수정</span></div>
+    <h2>부품으로 조립한 두루마리</h2>
+    <p class="lede">부품 해상도를 두 배로 올렸습니다(축 꼭지의 둥근 금장, 축과 꼭지 사이 놋쇠 고리, 마름모 무늬 비단 띠, 섬유결 있는 종이). 펼칠 때는 빠르게 튀어 나가 살짝 넘쳤다가 자리 잡고, 접을 때는 점점 빨라지며 말려 들어갑니다. 대사 길이에 따라 폭이 바뀔 때도 같은 탄력을 씁니다.</p>
+    <dl>
+      <dt>부품</dt><dd>축(위·아래 꼭지 + 몸통 반복), 위·아래 비단 띠(가로 반복), 종이(가로·세로 반복), 축 옆 그늘. 말풍선처럼 반복 부분만 늘리면 어떤 크기든 됩니다. <b>부품 보기</b>로 확인할 수 있습니다</dd>
+      <dt>글씨</dt><dd>밝은 종이 위 진한 먹색, 글자 크기를 키웠습니다. 화자 이름은 주칠 명패</dd>
+    </dl>
+    <div class="chips"><span class="chip lo">난이도 하</span><span class="chip">상단 바 승패 두루마리와 같은 부품</span></div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="idea">
+  <div class="stage" id="s6">
+    <img class="bg" src="img/field.jpg" alt="">
+    <svg class="tiles" viewBox="0 0 800 500" preserveAspectRatio="none" aria-hidden="true" id="tiles6"></svg>
+    <div class="menus">
+      <div class="panel main" id="m6">
+        <div class="row"><svg viewBox="0 0 12 12"><path d="M2 10 L9 3 M8 2 L10 4 M3 7 L5 9" stroke="#e8d4a8" stroke-width="1.6" fill="none"/></svg>공격</div>
+        <div class="row"><svg viewBox="0 0 12 12"><rect x="2" y="2" width="8" height="8" rx="1" fill="none" stroke="#e8d4a8" stroke-width="1.4"/><path d="M4 5 H8 M4 7 H7" stroke="#e8d4a8" stroke-width="1.2"/></svg>병법<span class="k">▸</span></div>
+        <div class="row"><svg viewBox="0 0 12 12"><path d="M3 5 Q6 2 9 5 L9 10 L3 10 Z" fill="none" stroke="#e8d4a8" stroke-width="1.4"/><path d="M5 3 L7 3" stroke="#e8d4a8" stroke-width="1.4"/></svg>도구<span class="k">▸</span></div>
+        <div class="row"><svg viewBox="0 0 12 12"><path d="M3 2 H9 M3 10 H9 M4 2 Q4 6 6 6 Q8 6 8 2 M4 10 Q4 6 6 6 Q8 6 8 10" fill="none" stroke="#e8d4a8" stroke-width="1.2"/></svg>대기</div>
+      </div>
+      <div class="panel sub" id="sub6">
+        <div class="hd"><span>병법치 92 / 120</span><span class="mp"><u></u></span></div>
+        <div class="row" data-d="화염으로 적을 태운다. 사거리 1–4">초열<span class="k">50</span></div>
+        <div class="row" data-d="탁류로 적을 휩쓴다.">탁류<span class="k">60</span></div>
+        <div class="row" data-d="바위를 굴려 적을 친다.">낙석<span class="k">60</span></div>
+        <div class="row off" data-d="병법치가 모자랍니다">폭염<span class="k">100</span></div>
+        <div class="desc" id="desc6">화염으로 적을 태운다. 사거리 1–4</div>
+      </div>
+    </div>
+    <svg class="cursor" id="cur6" viewBox="0 0 20 28" aria-hidden="true"><path d="M1 1 L1 23 L7 18 L11 27 L15 25 L11 16 L19 16 Z" fill="#fff" stroke="#000" stroke-width="1.6"/></svg>
+    <div class="toggle" role="group" aria-label="UI 크기"><span>UI 크기</span><button data-s=".85" aria-pressed="false">작게</button><button data-s="1" aria-pressed="true">보통</button><button data-s="1.3" aria-pressed="false">크게</button><button data-s="1.6" aria-pressed="false">아주 크게</button></div>
+    <button class="replay">다시 보기</button>
+  </div>
+  <div>
+    <div class="num">6 · 명령 메뉴 <span class="tagc">크기 설정 추가</span></div>
+    <h2>사각 메뉴와 UI 크기 설정</h2>
+    <p class="lede">메뉴는 그대로 두고 크기 설정을 붙였습니다. 아래 <b>UI 크기</b> 버튼을 눌러 보세요. 글자·줄 높이·아이콘·하위 목록 간격이 함께 커져서 크게 해도 비율이 깨지지 않습니다.</p>
+    <dl>
+      <dt>설정</dt><dd>설정 창에 "UI 크기" 80–160% 단계 슬라이더. 모바일 첫 실행은 130%, PC는 100%. 저장 파일이 아니라 기기별 설정으로 둡니다</dd>
+      <dt>취소</dt><dd>네. 메뉴·하위 목록이 떠 있을 때 메뉴 밖 맵을 누르면 한 단계 취소입니다(지금 코드도 같음). 우클릭·Esc·안드로이드 뒤로 가기도 같습니다. 다만 지금은 공격 대상 고르는 단계에서 대상이 아닌 칸을 누르면 아무 일도 없는데, 이것도 취소로 맞추길 권합니다</dd>
+      <dt>범위</dt><dd>명령 메뉴, 하위 목록, 예측 창, 정보 카드, 상단 바, 대화창 글씨에 같은 배율. 맵 확대/축소와는 따로 움직입니다</dd>
+      <dt>구현</dt><dd>지금 skin.go의 <code>scale</code>(창 크기 맞춤) 위에 <code>uiScale</code>을 하나 더 곱합니다. 화면 밖으로 넘치면 메뉴를 유닛 반대쪽으로 붙입니다</dd>
+    </dl>
+    <div class="chips"><span class="chip lo">난이도 하</span><span class="chip">모바일 필수</span></div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="idea">
+  <div class="stage" id="s7">
+    <img class="bg" src="img/duel.jpg" alt="">
+    <div class="lb lbT" id="lbT"></div><div class="lb lbB" id="lbB"></div>
+    <div class="band" id="band7">
+      <canvas id="c7"></canvas>
+      <div class="pane pL" id="pL"><img src="../../assets/graphics/portraits/guanyu.png" alt=""></div>
+      <div class="pane pR" id="pR"><img src="../../assets/graphics/portraits/huaxiong.png" alt=""></div>
+      <svg class="seam" id="seam7" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line x1="56.224" y1="-2" x2="44.576" y2="102" stroke="#ffcf7a" stroke-width="2.4" opacity=".55"/><line x1="56.224" y1="-2" x2="44.576" y2="102" stroke="#fff" stroke-width=".7"/></svg>
+      <div class="nm nL" id="nL"><small>아군 장수</small>관우</div>
+      <div class="nm nR" id="nR"><small>적군 장수</small>화웅</div>
+    </div>
+    <div class="flash" id="flash7"></div>
+    <button class="replay">다시 보기</button>
+  </div>
+  <div>
+    <div class="num">7 · 일기토 컷인 <span class="tagc">수정</span></div>
+    <h2>사선으로 부딪히는 두 장수</h2>
+    <p class="lede">위아래 띠가 닫힌 뒤, 관우는 오른쪽이, 화웅은 왼쪽이 같은 사선으로 잘린 채 양쪽에서 달려와 잘린 면끼리 꼭 맞물립니다. (지난번엔 초상 그림이 칸보다 좁아서 사선 대신 그림의 세로 끝이 보였습니다.) 부딪히는 순간 이음매가 번쩍이고 화면이 흔들립니다. "일기토" 글자 대신 <b>관우</b>, <b>화웅</b> 이름을 그 붓글씨 크기로 하나씩 찍습니다.</p>
+    <dl>
+      <dt>색</dt><dd>아군 이름은 초록 빛, 적 이름은 붉은 빛(진영색). 이름 위 작은 글씨로 아군/적군 장수</dd>
+      <dt>구현</dt><dd>duel_scene.go 시작 약 1.8초. 초상 두 장을 사선 마스크로 자르고, 이름은 붓글씨 폰트를 글자 단위로 크게 그립니다</dd>
+    </dl>
+    <div class="chips"><span class="chip">난이도 중</span></div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="idea">
+  <div class="stage" id="s9">
+    <img class="bg" src="img/field.jpg" alt="">
+    <canvas class="por" id="c9" width="512" height="512"></canvas>
+    <div class="who">
+      <div class="n" id="n9">장비</div>
+      <div class="z" id="z9">자 익덕 · 유비의 의제</div>
+      <hr id="hr9">
+      <div class="b" id="b9">탁현의 푸줏간 주인. 호로관에서 여포와 맞서고 장판교에서 홀로 조조군을 꾸짖어 물리친 맹장. 술과 성급함이 흠이다.</div>
+    </div>
+    <button class="replay">다시 보기</button>
+  </div>
+  <div>
+    <div class="num">9 · 장수 첫 등장 <span class="ok">확정</span></div>
+    <h2>먹이 번지며 나타나는 장수</h2>
+    <p class="lede">장수가 처음 등장하거나 합류할 때, 수묵 초상이 먹이 스미듯 번지며 드러나고 이름이 붓으로 써진 뒤 자와 소개가 이어집니다.</p>
+    <dl>
+      <dt>문구</dt><dd>characters.json 소개문 그대로</dd>
+      <dt>구현</dt><dd>무작위로 커지는 원 여러 개로 만든 마스크로 초상을 잘라 그립니다. 장면 데이터에 "첫 등장" 단계 추가</dd>
+    </dl>
+    <div class="chips"><span class="chip lo">난이도 하</span></div>
+  </div>
+</section>
+
+<footer>
+  배경은 실제 게임 캡처(황건적의 난, 사수관 일기토), 초상은 수묵 담채 초상, 대사·소개·병법 이름과 설명은 게임 데이터입니다. 두루마리 부품은 브라우저에서 그린 도트 시안이고, 실제 부품은 도트 에디터에서 다시 그립니다.
+</footer>
+</div>
+
+<script>
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = (s, r = document) => r.querySelector(s);
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const anim = (el, kf, o) => el.animate(kf, Object.assign({ fill: 'forwards', easing: 'cubic-bezier(.2,.8,.2,1)' }, o)).finished.catch(() => {});
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const ease = t => 1 - Math.pow(1 - t, 3);
+
+function loop(stage, fn, gap = 1400) {
+  let gen = 0;
+  const start = async () => {
+    const my = ++gen;
+    stage.getAnimations({ subtree: true }).forEach(a => a.cancel());
+    try { await fn(() => my !== gen); } catch (e) { console.error(e); }
+    if (my === gen && !reduce) { await wait(gap); if (my === gen) start(); }
+  };
+  const b = $('.replay', stage); if (b) b.onclick = start;
+  new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && !stage.dataset.on) { stage.dataset.on = 1; start(); } }), { threshold: .3 }).observe(stage);
+  return start;
+}
+function fit(cv, dpr = devicePixelRatio) { const r = cv.getBoundingClientRect(); cv.width = Math.max(1, Math.round(r.width * dpr)); cv.height = Math.max(1, Math.round(r.height * dpr)); return r; }
+function rng(seed) { return () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }; }
+
+/* ================= 1. 맵 밖 타일 ================= */
+(() => {
+  const st = $('#s1'), cv = $('#c1'), ctx = cv.getContext('2d');
+  const img = new Image(); img.src = 'img/outside.jpg';
+  // playable area corners in outside.jpg (1280×800)
+  const MAP = [[588, 165], [1215, 480], [768, 702], [140, 388]];
+  let mode = 'new', W = 0, H = 0, tiles = null;
+  const t0 = performance.now();
+  const r0 = rng(5);
+  const shadows = Array.from({ length: 4 }, () => ({ x: r0(), y: .1 + r0() * .8, r: .16 + r0() * .1, v: .008 + r0() * .008 }));
+  const mapPath = (g, k, keep) => { if (!keep) g.beginPath(); MAP.forEach(([x, y], i) => (i ? g.lineTo : g.moveTo).call(g, x * k, y * k)); g.closePath(); };
+  function buildTiles() {
+    const c = document.createElement('canvas'); c.width = W; c.height = H; const g = c.getContext('2d');
+    const k = W / 1280, tw = 46 * k, th = 23 * k, r = rng(11);
+    g.fillStyle = '#34432a'; g.fillRect(0, 0, W, H);
+    const shades = ['#3a4c2c', '#3f522f', '#36472a', '#425631'];
+    for (let j = -2; j < H / th * 2 + 4; j++) for (let i = -2; i < W / tw + 3; i++) {
+      const x = i * tw + (j & 1 ? tw / 2 : 0), y = j * th / 2;
+      g.fillStyle = shades[Math.floor(r() * shades.length)];
+      g.beginPath(); g.moveTo(x, y - th / 2); g.lineTo(x + tw / 2, y); g.lineTo(x, y + th / 2); g.lineTo(x - tw / 2, y); g.fill();
+    }
+    const px = Math.max(1, Math.round(2 * k));
+    // tufts
+    for (let n = 0; n < 420; n++) {
+      const x = r() * W, y = r() * H;
+      g.fillStyle = r() < .5 ? '#22301a' : '#2a3a1f';
+      g.fillRect(x, y, px, px * 2); g.fillRect(x + px * 2, y - px, px, px * 3); g.fillRect(x + px * 4, y, px, px * 2);
+    }
+    // stones
+    for (let n = 0; n < 60; n++) { const x = r() * W, y = r() * H; g.fillStyle = '#5a5a4c'; g.fillRect(x, y, px * 3, px * 2); g.fillStyle = '#77776a'; g.fillRect(x, y, px * 2, px); }
+    // small groves
+    const groves = [[.08, .2], [.86, .14], [.93, .72], [.18, .86], [.55, .08], [.62, .95]];
+    groves.forEach(([gx, gy]) => {
+      for (let n = 0; n < 9; n++) {
+        const x = (gx + (r() - .5) * .07) * W, y = (gy + (r() - .5) * .06) * H, s = (10 + r() * 6) * k;
+        g.fillStyle = 'rgba(0,0,0,.25)'; g.beginPath(); g.ellipse(x + s * .4, y + s * .1, s * .7, s * .3, 0, 0, 7); g.fill();
+        g.fillStyle = '#1f2f1a'; g.beginPath(); g.moveTo(x, y - s * 2); g.lineTo(x + s * .7, y); g.lineTo(x - s * .7, y); g.fill();
+        g.fillStyle = '#2a3e22'; g.beginPath(); g.moveTo(x, y - s * 2); g.lineTo(x + s * .15, y - s * .2); g.lineTo(x - s * .7, y); g.fill();
+      }
+    });
+    return c;
+  }
+  function size() { fit(cv); W = cv.width; H = cv.height; tiles = null; }
+  function frame(now) {
+    if (!W) size();
+    const t = (now - t0) / 1000, k = W / 1280;
+    ctx.clearRect(0, 0, W, H);
+    if (img.complete) ctx.drawImage(img, 0, 0, W, H);
+    if (mode === 'new') {
+      if (!tiles) tiles = buildTiles();
+      ctx.save();
+      ctx.beginPath(); ctx.rect(0, 0, W, H); mapPath(ctx, k, true); ctx.clip('evenodd');
+      ctx.drawImage(tiles, 0, 0);
+      // fog falloff from the map centre
+      const cx = 680 * k, cy = 430 * k;
+      const fog = ctx.createRadialGradient(cx, cy, 300 * k, cx, cy, 820 * k);
+      fog.addColorStop(0, 'rgba(150,160,140,0)'); fog.addColorStop(.6, 'rgba(120,132,112,.35)'); fog.addColorStop(1, 'rgba(96,106,92,.85)');
+      ctx.fillStyle = fog; ctx.fillRect(0, 0, W, H);
+      const vg = ctx.createRadialGradient(cx, cy, 380 * k, cx, cy, 900 * k);
+      vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(10,14,8,.55)');
+      ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+      ctx.restore();
+      // board edge: dark drop outside, light rim on the edge
+      ctx.save(); mapPath(ctx, k);
+      ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 18 * k; ctx.shadowOffsetY = 6 * k;
+      ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = 3 * k; ctx.stroke(); ctx.restore();
+      mapPath(ctx, k); ctx.strokeStyle = `rgba(240,225,170,${.35 + Math.sin(t * 1.6) * .08})`; ctx.lineWidth = 1.5 * k; ctx.stroke();
+      // cloud shadows across everything
+      shadows.forEach(c => {
+        const x = ((c.x + t * c.v) % 1.5 - .25) * W, y = c.y * H, rr = c.r * W;
+        const g = ctx.createRadialGradient(x, y, 0, x, y, rr);
+        g.addColorStop(0, 'rgba(8,16,6,.28)'); g.addColorStop(1, 'rgba(8,16,6,0)');
+        ctx.save(); ctx.translate(x, y); ctx.scale(1, .5); ctx.translate(-x, -y); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, rr, 0, 7); ctx.fill(); ctx.restore();
+      });
+    }
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  addEventListener('resize', size);
+  img.onload = () => requestAnimationFrame(frame);
+  if (img.complete) requestAnimationFrame(frame);
+  st.querySelectorAll('.toggle button').forEach(b => b.onclick = () => {
+    mode = b.dataset.m; st.querySelectorAll('.toggle button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    if (reduce) requestAnimationFrame(frame);
+  });
+})();
+
+/* ================= 2. 턴 전환 ================= */
+(() => {
+  const st = $('#s2'); let ally = false;
+  const s1 = $('#stroke'), s2 = $('#stroke2'), L = 1000;
+  [s1, s2].forEach(s => { s.style.strokeDasharray = L; s.style.strokeDashoffset = L; });
+  loop(st, async () => {
+    ally = !ally;
+    const tt = $('#tt'), ts = $('#ts');
+    tt.textContent = ally ? '제8턴' : '제7턴';
+    $('#tsTxt').textContent = ally ? '유비군의 차례' : '황건군의 차례';
+    ts.style.color = ally ? '#8fd99c' : '#e8c04a';
+    const dim = $('.dim', st);
+    anim(dim, [{ background: 'rgba(8,6,4,0)' }, { background: 'rgba(8,6,4,.45)' }], { duration: 300 });
+    anim(s1, [{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 420, easing: 'cubic-bezier(.6,0,.2,1)' });
+    await wait(80);
+    anim(s2, [{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 420, easing: 'cubic-bezier(.6,0,.2,1)' });
+    await wait(300);
+    await anim(tt, [{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)' }], { duration: 520, easing: 'cubic-bezier(.4,.1,.3,1)' });
+    anim(ts, [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 300 });
+    anim($('i', ts), [{ width: '0' }, { width: '9em' }], { duration: 420, delay: 120 });
+    await wait(1300);
+    [tt, ts, s1, s2].forEach(e => anim(e, [{ opacity: getComputedStyle(e).opacity }, { opacity: 0 }], { duration: 350 }));
+    await anim(dim, [{ background: 'rgba(8,6,4,.45)' }, { background: 'rgba(8,6,4,0)' }], { duration: 400 });
+  });
+})();
+
+/* ================= 3. 상단 바 ================= */
+(() => {
+  const st = $('#s3'), cam = $('#cam3'), mk = $('#mk3'), cur = $('#cur3'), cap = $('#cap3'), NS = 'http://www.w3.org/2000/svg';
+  if (!reduce) setInterval(() => $('.shine', st).animate([{ transform: 'translateX(-120%)' }, { transform: 'translateX(650%)' }], { duration: 1600, easing: 'ease-in-out' }), 4200);
+  let turn = 7, opened = false, camT = null;
+  const el = (n, a) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); return e; };
+  const camAt = (x, y) => {
+    const W = st.clientWidth, H = st.clientHeight, cw = cam.offsetWidth, ch = cam.offsetHeight;
+    const tx = clamp(W / 2 - x / 1280 * cw, W - cw, 0), ty = clamp(H * .58 - y / 800 * ch, H - ch, 0);
+    return `translate(${tx}px,${ty}px)`;
+  };
+  const focus = (x, y, ms = 560) => {
+    const to = camAt(x, y), from = camT || to; camT = to; cam.style.transform = to;
+    return anim(cam, [{ transform: from }, { transform: to }], { duration: ms, easing: 'cubic-bezier(.45,0,.15,1)' });
+  };
+  const clearMk = () => { mk.innerHTML = ''; };
+  const select = (x, y) => {
+    clearMk();
+    for (let i = -2; i <= 2; i++) for (let j = -2; j <= 2; j++) {
+      const d = Math.abs(i) + Math.abs(j); if (d < 1 || d > 2) continue;
+      const cx = x + (i - j) * 22, cy = y + 14 + (i + j) * 11;
+      const t = el('path', { d: `M${cx} ${cy - 11} L${cx + 22} ${cy} L${cx} ${cy + 11} L${cx - 22} ${cy}Z`, fill: 'rgba(80,150,230,.35)', stroke: 'rgba(160,210,255,.8)', 'stroke-width': 1 });
+      mk.appendChild(t); t.style.transformOrigin = `${cx}px ${cy}px`;
+      anim(t, [{ opacity: 0, transform: 'scale(.3)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 240, delay: d * 70 });
+    }
+    const ring = el('ellipse', { cx: x, cy: y + 14, rx: 16, ry: 7, fill: 'none', stroke: '#d6a957', 'stroke-width': 2.2 });
+    mk.appendChild(ring); ring.style.transformOrigin = `${x}px ${y + 14}px`;
+    ring.animate([{ opacity: .4, transform: 'scale(.9)' }, { opacity: 1, transform: 'scale(1.12)' }], { duration: 600, iterations: Infinity, direction: 'alternate' });
+  };
+  const pick = (t) => { focus(+t.dataset.x, +t.dataset.y); select(+t.dataset.x, +t.dataset.y); st.querySelectorAll('.tag').forEach(x => x.classList.toggle('cur', x === t)); };
+  st.querySelectorAll('.tag').forEach(t => t.addEventListener('click', () => pick(t)));
+  const moveCur = (target) => {
+    const sr = st.getBoundingClientRect(), r = target.getBoundingClientRect();
+    const x = r.left - sr.left + r.width * .5, y = r.top - sr.top + r.height * .7;
+    const from = cur.style.transform || `translate(${sr.width * .7}px,${sr.height * .6}px)`;
+    cur.style.transform = `translate(${x}px,${y}px)`;
+    return anim(cur, [{ transform: from, opacity: 1 }, { transform: `translate(${x}px,${y}px)`, opacity: 1 }], { duration: 420, easing: 'ease-in-out' });
+  };
+  const say = (s) => { cap.textContent = s; anim(cap, [{ opacity: 0 }, { opacity: 1 }], { duration: 200 }); };
+  loop(st, async (stale) => {
+    const tags = [...st.querySelectorAll('.tag')], sheet = $('.sheet', st), n = $('#turnN'), side = $('#side');
+    tags.forEach(t => t.classList.remove('used', 'cur')); clearMk(); cap.style.opacity = 0; cur.style.opacity = 0; cur.style.transform = '';
+    camT = null; cam.style.transform = camAt(680, 430); camT = cam.style.transform;
+    n.innerHTML = `${turn}<small>/ 30</small>`;
+    side.style.color = '#9fe0a8'; $('span', side).textContent = '유비군 차례';
+    await anim(n, [{ transform: 'rotateX(90deg)' }, { transform: 'rotateX(0)' }], { duration: 380 });
+    // objectives unroll once per stage and stay
+    if (!opened) { await anim(sheet, [{ width: '0px' }, { width: sheet.scrollWidth + 'px' }], { duration: 700, easing: 'cubic-bezier(.3,.7,.2,1)' }); opened = true; }
+    sheet.style.width = sheet.scrollWidth + 'px';
+    await wait(300);
+    for (const t of tags) {
+      if (stale()) return;
+      await moveCur(t);
+      anim($('i', t), [{ transform: 'scale(1)' }, { transform: 'scale(.88)' }, { transform: 'scale(1)' }], { duration: 180 });
+      say(`${$('i', t).textContent} 이름패 → 가운데로 이동 · 선택`);
+      pick(t);
+      await wait(1300);
+      t.classList.remove('cur'); t.classList.add('used'); clearMk();
+      anim(t, [{ transform: 'rotate(0)' }, { transform: 'rotate(9deg)' }, { transform: 'rotate(-5deg)' }, { transform: 'rotate(2deg)' }, { transform: 'rotate(0)' }], { duration: 800, easing: 'ease-out' });
+      await wait(250);
+    }
+    anim(cur, [{ opacity: 1 }, { opacity: 0 }], { duration: 200 });
+    side.style.color = '#e8c04a'; $('span', side).textContent = '황건군 차례';
+    anim(side, [{ opacity: 0 }, { opacity: 1 }], { duration: 300 });
+    // enemy phase: rings on this wave's movers, centroid, focus the mover nearest to it
+    const movers = [[676, 393], [721, 414]];
+    const cx = movers.reduce((a, m) => a + m[0], 0) / movers.length, cy = movers.reduce((a, m) => a + m[1], 0) / movers.length;
+    clearMk();
+    movers.forEach(([x, y]) => { const r = el('ellipse', { cx: x, cy: y + 14, rx: 15, ry: 6.5, fill: 'none', stroke: '#ff7a5c', 'stroke-width': 2 }); mk.appendChild(r); r.style.transformOrigin = `${x}px ${y + 14}px`; r.animate([{ opacity: .3, transform: 'scale(.85)' }, { opacity: 1, transform: 'scale(1.15)' }], { duration: 500, iterations: Infinity, direction: 'alternate' }); });
+    const cross = el('g', { stroke: '#ffd166', 'stroke-width': 1.5 }); cross.append(el('line', { x1: cx - 6, y1: cy + 14, x2: cx + 6, y2: cy + 14 }), el('line', { x1: cx, y1: cy + 8, x2: cx, y2: cy + 20 })); mk.appendChild(cross);
+    say('적 2명 동시 이동 → 가운데 지점에 가장 가까운 적에 초점');
+    const near = movers.slice().sort((a, b) => Math.hypot(a[0] - cx, a[1] - cy) - Math.hypot(b[0] - cx, b[1] - cy))[0];
+    await wait(500);
+    await focus(near[0], near[1], 700);
+    await wait(1800);
+    clearMk(); anim(cap, [{ opacity: 1 }, { opacity: 0 }], { duration: 200 });
+    await anim(n, [{ transform: 'rotateX(0)' }, { transform: 'rotateX(-90deg)' }], { duration: 250, easing: 'ease-in' });
+    turn = turn === 7 ? 8 : 7;
+  }, 300);
+})();
+
+/* ================= 4. 타격 ================= */
+(() => {
+  const st = $('#s4'), NS = 'http://www.w3.org/2000/svg';
+  let crit = false;
+  loop(st, async () => {
+    crit = !crit;
+    const [eB, eI] = [$('#hpE b'), $('#hpE i')], [aB, aI] = [$('#hpA b'), $('#hpA i')];
+    [eB, eI].forEach(x => x.style.width = '78%'); [aB, aI].forEach(x => x.style.width = '36%');
+    const ink = $('#ink'), sparks = $('#sparks'); ink.innerHTML = ''; sparks.innerHTML = '';
+    const dmg = $('#dmg'); dmg.innerHTML = crit ? '587<small>치명</small>' : '402';
+    await wait(500);
+    const sl = $('#slash'), sl2 = $('#slash2');
+    [sl, sl2].forEach(s => s.style.strokeDasharray = 120);
+    const slashK = [{ opacity: 1, strokeDashoffset: 120 }, { opacity: 1, strokeDashoffset: 0, offset: .6 }, { opacity: 0, strokeDashoffset: -120 }];
+    anim(sl, slashK, { duration: 240, easing: 'linear' }); anim(sl2, slashK, { duration: 240, delay: 30, easing: 'linear' });
+    await wait(140);
+    anim($('#flash4'), [{ opacity: crit ? 1 : .7 }, { opacity: 0 }], { duration: 170 });
+    $('.shake', st).animate([{ transform: 'translate(0,0)' }, { transform: `translate(${crit ? -10 : -6}px,5px)` }, { transform: 'translate(7px,-4px)' }, { transform: 'translate(-3px,2px)' }, { transform: 'translate(0,0)' }], { duration: crit ? 320 : 220 });
+    if (crit) anim($('#ring'), [{ opacity: 1, transform: 'translate(-50%,-50%) scale(.2)' }, { opacity: 0, transform: 'translate(-50%,-50%) scale(2.2)' }], { duration: 500, easing: 'ease-out' });
+    for (let k = 0; k < 14; k++) {
+      const c = document.createElementNS(NS, 'circle');
+      const a = Math.random() * Math.PI * 2, d = 20 + Math.random() * 50;
+      c.setAttribute('cx', 292); c.setAttribute('cy', 272); c.setAttribute('r', 1.5 + Math.random() * 4.5); c.setAttribute('fill', '#120804');
+      ink.appendChild(c);
+      c.animate([{ transform: 'translate(0,0) scale(.3)', opacity: 1 }, { transform: `translate(${Math.cos(a) * d}px,${Math.sin(a) * d * .6 + 10}px) scale(1)`, opacity: .9, offset: .5 }, { transform: `translate(${Math.cos(a) * d * 1.1}px,${Math.sin(a) * d * .6 + 26}px) scale(1)`, opacity: 0 }], { duration: 850, easing: 'cubic-bezier(.2,.8,.3,1)', fill: 'forwards' });
+    }
+    anim(dmg, [{ opacity: 0, transform: 'translate(-50%,-50%) scale(2.2) rotate(-8deg)' }, { opacity: 1, transform: 'translate(-50%,-50%) scale(.9) rotate(-4deg)', offset: .35 }, { opacity: 1, transform: 'translate(-50%,-62%) scale(1) rotate(-4deg)', offset: .8 }, { opacity: 0, transform: 'translate(-50%,-110%) scale(1) rotate(-4deg)' }], { duration: 1500, easing: 'ease-out' });
+    const to = crit ? '8%' : '24%';
+    anim(eI, [{ width: '78%' }, { width: to }], { duration: 150 });
+    await wait(450);
+    await anim(eB, [{ width: '78%' }, { width: to }], { duration: 600, easing: 'ease-in-out' });
+    await wait(400);
+    for (let k = 0; k < 10; k++) {
+      const c = document.createElementNS(NS, 'rect');
+      c.setAttribute('x', 282 + Math.random() * 30); c.setAttribute('y', 205 + Math.random() * 25); c.setAttribute('width', 2.5); c.setAttribute('height', 8 + Math.random() * 12); c.setAttribute('fill', '#b9f5c9');
+      sparks.appendChild(c);
+      c.animate([{ transform: 'translateY(0)', opacity: 0 }, { opacity: 1, offset: .3 }, { transform: 'translateY(-70px)', opacity: 0 }], { duration: 1000, delay: k * 50, easing: 'ease-out', fill: 'forwards' });
+    }
+    anim($('#heal'), [{ opacity: 0, transform: 'translate(-50%,-20%) scale(.7)' }, { opacity: 1, transform: 'translate(-50%,-50%) scale(1.05)', offset: .3 }, { opacity: 1, transform: 'translate(-50%,-60%) scale(1)', offset: .8 }, { opacity: 0, transform: 'translate(-50%,-90%) scale(1)' }], { duration: 1500 });
+    anim(aB, [{ width: '36%' }, { width: '86%' }], { duration: 200 });
+    await anim(aI, [{ width: '36%' }, { width: '86%' }], { duration: 800, delay: 150, easing: 'ease-out' });
+    await wait(900);
+  }, 600);
+})();
+
+/* ================= 5. 두루마리 도트 부품 ================= */
+const Scroll = (() => {
+  const P = { paper: '#f3ead3', fiberL: '#fbf5e4', fiberD: '#e2d5b6', band: '#1f3436', band2: '#2b4547', band3: '#38585a', gold: '#d6aa55', goldL: '#f2d58c', goldDk: '#86652c',
+    rod: ['#1a0c04', '#341b0a', '#5a3216', '#8a5428', '#b67a42', '#d9a062', '#e8b878', '#c08648', '#8e5a2a', '#5e3618', '#38200c', '#1e1006'] };
+  const ROD = 12, KNOB = 8, BAND = 10;
+  const cache = new Map();
+  function rod(h) {
+    if (cache.has(h)) return cache.get(h);
+    const c = document.createElement('canvas'); c.width = ROD + 4; c.height = h + KNOB * 2; const g = c.getContext('2d');
+    for (let x = 0; x < ROD; x++) { g.fillStyle = P.rod[x]; g.fillRect(x + 2, KNOB - 1, 1, h + 2); }
+    // brass collars where the knob meets the rod
+    [KNOB - 2, h + KNOB].forEach(y => { g.fillStyle = P.goldDk; g.fillRect(2, y, ROD, 2); g.fillStyle = P.gold; g.fillRect(3, y, ROD - 3, 1); });
+    // knobs: rounded, lit from the left
+    const knob = (y, top) => {
+      const rows = top ? [[3, 10], [1, 14], [0, 16], [0, 16], [1, 14], [3, 10]] : [[3, 10], [1, 14], [0, 16], [0, 16], [1, 14], [3, 10]];
+      rows.forEach(([o, w], i) => {
+        for (let x = 0; x < w; x++) {
+          const t = x / (w - 1);
+          g.fillStyle = t < .2 ? P.goldL : t < .55 ? P.gold : t < .85 ? P.goldDk : '#4a3412';
+          g.fillRect(o + x, y + i, 1, 1);
+        }
+      });
+      g.fillStyle = '#fff4c8'; g.fillRect(4, y + 2, 2, 1);
+    };
+    knob(0, true); knob(h + KNOB + 2, false);
+    cache.set(h, c); return c;
+  }
+  function bandTile() { // 8 wide brocade strip
+    const c = document.createElement('canvas'); c.width = 8; c.height = BAND; const g = c.getContext('2d');
+    const px = (x, y, col) => { g.fillStyle = col; g.fillRect(x, y, 1, 1); };
+    g.fillStyle = P.band; g.fillRect(0, 0, 8, BAND);
+    g.fillStyle = P.goldDk; g.fillRect(0, 0, 8, 1); g.fillStyle = P.gold; g.fillRect(0, 1, 8, 1);
+    g.fillStyle = P.gold; g.fillRect(0, BAND - 2, 8, 1); g.fillStyle = P.goldDk; g.fillRect(0, BAND - 1, 8, 1);
+    // little diamond motif
+    [[3, 3], [2, 4], [4, 4], [3, 5], [1, 5], [5, 5], [2, 6], [4, 6], [3, 7]].forEach(([x, y]) => px(x + 1, y - 1, y === 5 && x === 3 ? P.goldL : P.gold));
+    px(0, 4, P.band3); px(7, 4, P.band3); px(0, 5, P.band2); px(7, 5, P.band2);
+    return c;
+  }
+  function paperTile() { // 24×24 with fibres
+    const c = document.createElement('canvas'); c.width = 24; c.height = 24; const g = c.getContext('2d'), r = rng(3);
+    g.fillStyle = P.paper; g.fillRect(0, 0, 24, 24);
+    for (let i = 0; i < 14; i++) { const x = Math.floor(r() * 24), y = Math.floor(r() * 24), l = 2 + Math.floor(r() * 3); g.fillStyle = r() < .5 ? P.fiberL : P.fiberD; g.fillRect(x, y, l, 1); }
+    for (let i = 0; i < 10; i++) { g.fillStyle = P.fiberD; g.fillRect(Math.floor(r() * 24), Math.floor(r() * 24), 1, 1); }
+    return c;
+  }
+  const bt = bandTile(), pt = paperTile();
+  function draw(g, cx, y0, hw, h, spin = 0) {
+    hw = Math.round(hw);
+    const x0 = cx - hw, w = hw * 2;
+    g.fillStyle = 'rgba(0,0,0,.42)'; g.fillRect(x0 + 3, y0 + 5, w, h);
+    if (w > 0) {
+      g.save(); g.translate(x0 % 24, 0); g.fillStyle = g.createPattern(pt, 'repeat'); g.fillRect(x0 - x0 % 24, y0, w, h); g.restore();
+      g.fillStyle = g.createPattern(bt, 'repeat-x');
+      g.save(); g.translate(0, y0); g.fillRect(x0, 0, w, BAND); g.restore();
+      g.save(); g.translate(0, y0 + h - BAND); g.fillRect(x0, 0, w, BAND); g.restore();
+      // curl shade next to each rod
+      for (let i = 0; i < 6 && i < hw; i++) { g.fillStyle = `rgba(110,80,35,${.28 - i * .045})`; g.fillRect(x0 + i, y0 + BAND, 1, h - BAND * 2); g.fillRect(x0 + w - 1 - i, y0 + BAND, 1, h - BAND * 2); }
+    }
+    const R = rod(h);
+    [x0 - ROD - 1, x0 + w - 3].forEach((x, side) => {
+      g.fillStyle = 'rgba(0,0,0,.45)'; g.fillRect(x + 4, y0 - KNOB + 6, ROD + 2, h + KNOB * 2);
+      g.drawImage(R, x, y0 - KNOB);
+      // wood grain that slides as the rod turns
+      g.fillStyle = 'rgba(25,12,4,.5)';
+      for (let y = 3; y < h - 3; y += 9) { const gx = ((Math.floor(y / 9) * 5 + (side ? -spin : spin)) % ROD + ROD) % ROD; g.fillRect(x + 2 + gx, y0 + y, 1, 4); }
+    });
+  }
+  return { draw, rod, bt, pt, P, ROD, KNOB, BAND };
+})();
+
+(() => {
+  const st = $('#s5'), cv = $('#c5'), ctx = cv.getContext('2d');
+  const lr = document.createElement('canvas'), lg = lr.getContext('2d');
+  let p = 3, W = 0, H = 0;
+  const size = () => { const r = fit(cv); W = r.width; H = r.height; p = Math.max(1, Math.round(W / 420)); lr.width = Math.ceil(W / p); lr.height = Math.ceil(H / p); };
+  size(); addEventListener('resize', size);
+  const lines = [
+    { img: '../../assets/graphics/portraits/guanyu.png', nm: '관우<small>자 운장</small>', t: ['형님, 화웅의 목은 술이 식기 전에', '베어 오겠습니다.'] },
+    { img: '../../assets/graphics/portraits/liubei.png', nm: '유비<small>자 현덕</small>', t: ['운장, 부디 몸조심하게.'] }
+  ];
+  const S = { hw: 0, spin: 0, text: [], typed: 0 };
+  const fs = () => Math.max(13, W / 33);
+  const geo = () => { const lw = lr.width, lh = lr.height; const left = Math.round(lw * .31), right = Math.round(lw * .955); return { left, right, y0: Math.round(lh * .6), h: Math.round(lh * .34) }; };
+  const hwFor = (txt) => {
+    const { left, right } = geo(); ctx.font = `700 ${fs()}px "Noto Serif KR", serif`;
+    const w = Math.max(...txt.map(t => ctx.measureText(t).width)) / p + 44;
+    return clamp(Math.ceil(w / 2), 50, Math.floor((right - left) / 2) - Scroll.ROD);
+  };
+  function render() {
+    const { left, y0, h } = geo();
+    lg.clearRect(0, 0, lr.width, lr.height);
+    const cx = left + Scroll.ROD + Math.round(S.hwMax || 0);
+    if (S.hw > .5) Scroll.draw(lg, cx, y0, S.hw, h, S.spin);
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.imageSmoothingEnabled = false; ctx.drawImage(lr, 0, 0, lr.width * p * devicePixelRatio, lr.height * p * devicePixelRatio);
+    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    if (S.text.length && S.typed) {
+      const size = fs(); let left2 = S.typed;
+      ctx.font = `700 ${size}px "Noto Serif KR", serif`; ctx.fillStyle = '#1d140c'; ctx.textBaseline = 'middle';
+      const tx = (cx - S.hw + 20) * p, ty = (y0 + Scroll.BAND + 12) * p + size * .7;
+      ctx.save(); ctx.beginPath(); ctx.rect((cx - S.hw) * p, 0, S.hw * 2 * p, H); ctx.clip();
+      S.text.forEach((ln, i) => { ctx.fillText(ln.slice(0, Math.max(0, left2)), tx, ty + i * size * 1.6); left2 -= ln.length; });
+      ctx.restore();
+    }
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+  // snappy: fast start, slight overshoot, settle (easeOutBack); closing accelerates in (easeInCubic)
+  const back = t => { const c1 = 1.5, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); };
+  const accel = t => t * t * t;
+  async function openTo(target, ms, fn = back) {
+    const from = S.hw, t0 = performance.now();
+    await new Promise(res => { const step = now => { const k = clamp((now - t0) / ms, 0, 1); S.hw = Math.max(0, from + (target - from) * fn(k)); S.spin = Math.floor(S.hw / 3); if (k < 1) requestAnimationFrame(step); else res(); }; requestAnimationFrame(step); });
+  }
+  loop(st, async (stale) => {
+    const por = $('#por5'), plate = $('#plate5');
+    S.hw = 0; S.text = []; S.typed = 0;
+    por.style.opacity = 0; plate.style.opacity = 0;
+    // scroll is anchored at its left rod beside the portrait: keep the centre fixed per open
+    S.hwMax = Math.max(...lines.map(L => hwFor(L.t)));
+    await wait(300);
+    for (const L of lines) {
+      if (stale()) return;
+      $('#por5i').src = L.img; plate.innerHTML = L.nm; S.text = L.t; S.typed = 0;
+      anim(por, [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 300 });
+      const target = hwFor(L.t);
+      await openTo(target, Math.min(520, Math.abs(target - S.hw) * 2.2 + 240));
+      anim(plate, [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 240 });
+      const total = L.t.join('').length;
+      for (let i = 1; i <= total; i++) { if (stale()) return; S.typed = i; await wait(48); }
+      await wait(1500);
+      S.typed = 0;
+      anim(plate, [{ opacity: 1 }, { opacity: 0 }], { duration: 160 });
+      await anim(por, [{ opacity: 1 }, { opacity: 0 }], { duration: 200 });
+    }
+    await openTo(0, 300, accel);
+  }, 700);
+
+  const btn = $('#partsBtn'), box = $('#parts5');
+  btn.onclick = () => {
+    const on = btn.getAttribute('aria-pressed') !== 'true'; btn.setAttribute('aria-pressed', on); box.hidden = !on;
+    if (!on) return;
+    const pc = $('#pc5'), z = 3, LW = 240, LH = 150;
+    pc.width = LW * z; pc.height = LH * z;
+    const g = pc.getContext('2d'); g.imageSmoothingEnabled = false;
+    const l = document.createElement('canvas'); l.width = LW; l.height = LH; const q = l.getContext('2d'); q.imageSmoothingEnabled = false;
+    const R = Scroll.rod(40), K = Scroll.KNOB;
+    q.drawImage(R, 8, 18);
+    q.drawImage(R, 0, 0, R.width, K, 34, 18, R.width, K);
+    q.drawImage(R, 0, K + 6, R.width, 3, 34, 30, R.width, 3);
+    q.drawImage(R, 0, R.height - K, R.width, K, 34, 37, R.width, K);
+    for (let i = 0; i < 3; i++) q.drawImage(Scroll.bt, 66 + i * 10, 22);
+    q.drawImage(Scroll.pt, 112, 18);
+    Scroll.draw(q, 120, 92, 92, 46, 0);
+    g.drawImage(l, 0, 0, pc.width, pc.height);
+    g.font = `700 ${z * 7}px "Gowun Dodum", sans-serif`; g.fillStyle = '#d6a957'; g.textBaseline = 'alphabetic';
+    g.fillText('축', 8 * z, 13 * z); g.fillText('꼭지·몸통·꼭지', 34 * z, 13 * z); g.fillText('비단 띠', 66 * z, 13 * z); g.fillText('종이', 112 * z, 13 * z);
+    g.fillText('조립: 몸통·띠·종이만 늘려 크기 결정', 8 * z, 78 * z);
+    g.fillStyle = '#bdb197'; g.font = `500 ${z * 6}px "Gowun Dodum", sans-serif`;
+    g.fillText('세로 반복', 34 * z, 58 * z); g.fillText('가로 반복', 66 * z, 42 * z); g.fillText('가로·세로 반복', 112 * z, 52 * z);
+  };
+})();
+
+/* ================= 6. 명령 메뉴 ================= */
+(() => {
+  const st = $('#s6'), m = $('#m6'), sub = $('#sub6'), cur = $('#cur6'), desc = $('#desc6'), tiles = $('#tiles6'), NS = 'http://www.w3.org/2000/svg';
+  const C = { x: 297, y: 232 };
+  const moveCur = (el, dx = .7, dy = .5) => {
+    const sr = st.getBoundingClientRect(), r = el.getBoundingClientRect();
+    const x = r.left - sr.left + r.width * dx, y = r.top - sr.top + r.height * dy;
+    const from = cur.style.transform || `translate(${sr.width * .9}px,${sr.height * .9}px)`;
+    cur.style.transform = `translate(${x}px,${y}px)`;
+    return anim(cur, [{ transform: from, opacity: 1 }, { transform: `translate(${x}px,${y}px)`, opacity: 1 }], { duration: 420, easing: 'ease-in-out' });
+  };
+  const openPanel = (pn) => {
+    anim(pn, [{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)' }], { duration: 220, easing: 'cubic-bezier(.2,.8,.3,1)' });
+    [...pn.querySelectorAll('.row,.hd,.desc')].forEach((r, i) => anim(r, [{ opacity: 0, transform: 'translateX(-10px)' }, { opacity: 1, transform: 'translateX(0)' }], { duration: 220, delay: 40 + i * 40 }));
+  };
+  const hl = (pn, row) => pn.querySelectorAll('.row').forEach(r => r.classList.toggle('on', r === row));
+  const start = loop(st, async (stale) => {
+    tiles.innerHTML = ''; tiles.style.opacity = 1; [m, sub].forEach(pn => { pn.style.clipPath = 'inset(0 0 100% 0)'; hl(pn, null); }); cur.style.opacity = 0; cur.style.transform = '';
+    const ring = document.createElementNS(NS, 'ellipse'); Object.entries({ cx: C.x, cy: C.y, rx: 24, ry: 11, fill: 'none', stroke: '#d6a957', 'stroke-width': 2.5 }).forEach(([k, v]) => ring.setAttribute(k, v)); tiles.appendChild(ring);
+    ring.style.transformOrigin = `${C.x}px ${C.y}px`; ring.animate([{ opacity: .4, transform: 'scale(.9)' }, { opacity: 1, transform: 'scale(1.1)' }], { duration: 600, iterations: Infinity, direction: 'alternate' });
+    await wait(400);
+    openPanel(m); await wait(500);
+    const rows = m.querySelectorAll('.row');
+    await moveCur(rows[0]); hl(m, rows[0]); await wait(400);
+    await moveCur(rows[1]); hl(m, rows[1]); await wait(150);
+    openPanel(sub); await wait(500);
+    const srows = sub.querySelectorAll('.row');
+    for (const i of [1, 3, 0]) { await moveCur(srows[i]); hl(sub, srows[i]); desc.textContent = srows[i].dataset.d; anim(desc, [{ opacity: .3 }, { opacity: 1 }], { duration: 200 }); await wait(650); if (stale()) return; }
+    await anim(srows[0], [{ filter: 'brightness(1)' }, { filter: 'brightness(2)' }, { filter: 'brightness(1)' }], { duration: 220 });
+    [sub, m].forEach((pn, i) => anim(pn, [{ clipPath: 'inset(0 0 0% 0)' }, { clipPath: 'inset(0 0 100% 0)' }], { duration: 200, delay: i * 80, easing: 'ease-in' }));
+    anim(cur, [{ opacity: 1 }, { opacity: 0 }], { duration: 200 });
+    await wait(300);
+    const out = [];
+    for (let i = -4; i <= 4; i++) for (let j = -4; j <= 4; j++) { const d = Math.abs(i) + Math.abs(j); if (d < 1 || d > 4) continue; out.push([C.x + (i - j) * 30, C.y + (i + j) * 15, d]); }
+    out.sort((a, b) => a[2] - b[2]).forEach(([x, y, d]) => {
+      const t = document.createElementNS(NS, 'path');
+      t.setAttribute('d', `M${x} ${y - 15} L${x + 30} ${y} L${x} ${y + 15} L${x - 30} ${y}Z`); t.setAttribute('fill', 'rgba(214,60,40,.32)'); t.setAttribute('stroke', 'rgba(255,140,110,.85)'); t.setAttribute('stroke-width', 1.1);
+      tiles.insertBefore(t, ring); t.style.transformOrigin = `${x}px ${y}px`;
+      anim(t, [{ opacity: 0, transform: 'scale(.2)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 280, delay: d * 110, easing: 'cubic-bezier(.2,1.4,.4,1)' });
+    });
+    await wait(2000);
+    await anim(tiles, [{ opacity: 1 }, { opacity: 0 }], { duration: 300 });
+  }, 500);
+  st.querySelectorAll('.toggle button').forEach(b => b.onclick = () => {
+    st.style.setProperty('--ui', b.dataset.s);
+    st.querySelectorAll('.toggle button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    start();
+  });
+})();
+
+/* ================= 7. 일기토 컷인 ================= */
+(() => {
+  const st = $('#s7'), cv = $('#c7'), ctx = cv.getContext('2d');
+  let lines = 0, running = false;
+  function frame() {
+    const W = cv.width, H = cv.height;
+    const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#1a0805'); g.addColorStop(.5, '#3a120a'); g.addColorStop(1, '#1a0805');
+    ctx.globalAlpha = .5; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1;
+    if (lines > 0) for (let i = 0; i < 30; i++) {
+      const y = Math.random() * H, len = W * (.2 + Math.random() * .4), x = Math.random() < .5 ? -10 : W - len + 10;
+      ctx.strokeStyle = `rgba(255,${150 + Math.random() * 80},90,${.18 + Math.random() * .25})`; ctx.lineWidth = 1 + Math.random() * 2.5;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + len, y); ctx.stroke();
+    }
+    if (running && !reduce) requestAnimationFrame(frame);
+  }
+  const shake = (el, a = 7, d = 200) => el.animate([{ transform: 'translate(0,0)' }, { transform: `translate(${-a}px,${a * .6}px)` }, { transform: `translate(${a * .8}px,${-a * .5}px)` }, { transform: 'translate(0,0)' }], { duration: d });
+  loop(st, async () => {
+    const lbT = $('#lbT'), lbB = $('#lbB'), band = $('#band7'), pL = $('#pL'), pR = $('#pR'), nL = $('#nL'), nR = $('#nR'), seam = $('#seam7'), fl = $('#flash7');
+    [pL, pR, nL, nR, seam].forEach(e => e.style.opacity = 0); band.style.opacity = 0; lines = 0;
+    await wait(500);
+    anim(lbT, [{ transform: 'translateY(-100%)' }, { transform: 'translateY(0)' }], { duration: 300, easing: 'cubic-bezier(.6,0,.2,1)' });
+    await anim(lbB, [{ transform: 'translateY(100%)' }, { transform: 'translateY(0)' }], { duration: 300, easing: 'cubic-bezier(.6,0,.2,1)' });
+    band.style.opacity = 1; fit(cv, 1); running = true; requestAnimationFrame(frame);
+    await anim(band, [{ clipPath: 'inset(50% 0 50% 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: 200 });
+    // both portraits charge in and collide on the diagonal
+    const charge = { duration: 340, easing: 'cubic-bezier(.55,0,.9,.6)' };
+    anim(pL, [{ opacity: 1, transform: 'translateX(-105%)' }, { opacity: 1, transform: 'translateX(0)' }], charge);
+    await anim(pR, [{ opacity: 1, transform: 'translateX(105%)' }, { opacity: 1, transform: 'translateX(0)' }], charge);
+    lines = 1;
+    anim(seam, [{ opacity: 1 }, { opacity: .35 }], { duration: 500 });
+    anim(fl, [{ opacity: .75 }, { opacity: 0 }], { duration: 180 });
+    shake(st, 9, 260);
+    anim(pL, [{ transform: 'translateX(0)' }, { transform: 'translateX(-2.5%)' }, { transform: 'translateX(0)' }], { duration: 260 });
+    anim(pR, [{ transform: 'translateX(0)' }, { transform: 'translateX(2.5%)' }, { transform: 'translateX(0)' }], { duration: 260 });
+    await wait(320);
+    const stamp = [{ opacity: 0, transform: 'translateY(-50%) scale(3)' }, { opacity: 1, transform: 'translateY(-50%) scale(.92)', offset: .7 }, { opacity: 1, transform: 'translateY(-50%) scale(1)' }];
+    nL.style.transformOrigin = '100% 50%'; nR.style.transformOrigin = '0 50%';
+    await anim(nL, stamp, { duration: 260, easing: 'ease-in' }); shake(band, 6, 180);
+    await wait(260);
+    await anim(nR, stamp, { duration: 260, easing: 'ease-in' }); shake(band, 6, 180);
+    anim($('img', pL), [{ transform: 'translateX(0)' }, { transform: 'translateX(3%)' }], { duration: 1400, easing: 'linear' });
+    anim($('img', pR), [{ transform: 'translateX(0)' }, { transform: 'translateX(-3%)' }], { duration: 1400, easing: 'linear' });
+    await wait(1300); lines = 0;
+    await anim(fl, [{ opacity: 0 }, { opacity: .9, offset: .3 }, { opacity: 0 }], { duration: 420 });
+    band.style.opacity = 0; running = false;
+    anim(lbT, [{ transform: 'translateY(0)' }, { transform: 'translateY(-100%)' }], { duration: 380, easing: 'cubic-bezier(.6,0,.2,1)' });
+    await anim(lbB, [{ transform: 'translateY(0)' }, { transform: 'translateY(100%)' }], { duration: 380, easing: 'cubic-bezier(.6,0,.2,1)' });
+    [pL, pR, nL, nR, seam, $('img', pL), $('img', pR)].forEach(e => e.getAnimations().forEach(a => a.cancel()));
+    await wait(600);
+  }, 500);
+})();
+
+/* ================= 9. 장수 첫 등장 ================= */
+(() => {
+  const st = $('#s9'), cv = $('#c9'), ctx = cv.getContext('2d');
+  const img = new Image(); img.src = '../../assets/graphics/portraits/zhangfei.png';
+  const mask = document.createElement('canvas'); mask.width = mask.height = 512; const mg = mask.getContext('2d');
+  const r = rng(77);
+  const blots = Array.from({ length: 70 }, (_, i) => ({ x: 256 + (r() - .5) * 300 * Math.min(1, i / 20 + .2), y: 270 + (r() - .5) * 300 * Math.min(1, i / 20 + .2), r: 30 + r() * 90, d: r() * .5 + (i / 70) * .4 }));
+  function draw(k) {
+    mg.clearRect(0, 0, 512, 512);
+    blots.forEach(b => {
+      const e = clamp((k - b.d) / .45, 0, 1); if (e <= 0) return;
+      const rr = b.r * ease(e);
+      const g = mg.createRadialGradient(b.x, b.y, rr * .55, b.x, b.y, rr);
+      g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+      mg.fillStyle = g; mg.beginPath(); mg.arc(b.x, b.y, rr, 0, 7); mg.fill();
+    });
+    ctx.clearRect(0, 0, 512, 512);
+    if (img.complete) ctx.drawImage(img, 0, 0, 512, 512);
+    ctx.globalCompositeOperation = 'destination-in'; ctx.drawImage(mask, 0, 0);
+    const v = ctx.createRadialGradient(256, 270, 150, 256, 270, 256); v.addColorStop(0, 'rgba(0,0,0,1)'); v.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = v; ctx.fillRect(0, 0, 512, 512);
+    ctx.globalCompositeOperation = 'source-over';
+  }
+  loop(st, async (stale) => {
+    const n = $('#n9'), z = $('#z9'), b = $('#b9'), hr = $('#hr9');
+    [z, b].forEach(e => e.style.opacity = 0); n.style.clipPath = 'inset(0 100% 0 0)'; hr.style.width = 0;
+    draw(0); await wait(400);
+    const t0 = performance.now(), dur = 2000;
+    await new Promise(res => { const step = now => { const k = clamp((now - t0) / dur, 0, 1); draw(k * 1.25); if (k < 1 && !stale()) requestAnimationFrame(step); else res(); }; requestAnimationFrame(step); });
+    await anim(n, [{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)' }], { duration: 600, easing: 'cubic-bezier(.4,.1,.3,1)' });
+    anim(z, [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 300 });
+    anim(hr, [{ width: '0' }, { width: '70%' }], { duration: 500, delay: 150 });
+    await wait(300);
+    await anim(b, [{ opacity: 0 }, { opacity: 1 }], { duration: 500 });
+    await wait(2600);
+    [n, z, b, hr].forEach(e => anim(e, [{ opacity: 1 }, { opacity: 0 }], { duration: 400 }));
+    await anim(cv, [{ opacity: 1 }, { opacity: 0 }], { duration: 500 });
+    cv.getAnimations().forEach(a => a.cancel()); [n, z, b, hr].forEach(e => e.getAnimations().forEach(a => a.cancel()));
+  }, 600);
+})();
+</script>
