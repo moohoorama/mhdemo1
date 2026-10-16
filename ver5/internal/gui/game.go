@@ -47,6 +47,7 @@ type Game struct {
 	deploymentSelected   string
 	deploymentScroll     int
 	uiSeconds            float64
+	textCache            map[string]*ebiten.Image // rendered text by key (ui_anim.go)
 	root                 string
 	assets               *Assets
 	field                *Field
@@ -60,6 +61,7 @@ type Game struct {
 	bannerT, clockMS     float64
 	shakeT               float64
 	camX, camY           float64
+	pan                  *camPan
 	zoom                 float64
 	zoomFrom, zoomTo     float64
 	zoomT                float64
@@ -75,6 +77,7 @@ type Game struct {
 	verifyDone           int
 	S                    *session.Session
 	font                 *text.GoTextFaceSource
+	brushFont, serifFont *text.GoTextFaceSource // display faces beside the body font
 	buttons              []button
 	blocks               []image.Rectangle
 	ord                  order
@@ -122,17 +125,29 @@ type Game struct {
 	auditDir             string
 }
 
-func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Game, error) {
-	f, err := os.Open(fontPath)
+func loadFont(path string) (*text.GoTextFaceSource, error) {
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
 	defer f.Close()
-	source, err := text.NewGoTextFaceSource(f)
+	return text.NewGoTextFaceSource(f)
+}
+
+func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Game, error) {
+	source, err := loadFont(fontPath)
 	if err != nil {
 		return nil, err
 	}
-	g := &Game{S: s, font: source, seed: seed, verified: map[string]bool{}, slot: 1, auditDir: auditDir,
+	brush, err := loadFont(filepath.Join(filepath.Dir(fontPath), "NanumBrushScript.ttf"))
+	if err != nil {
+		return nil, err
+	}
+	serif, err := loadFont(filepath.Join(filepath.Dir(fontPath), "NotoSerifKR.ttf"))
+	if err != nil {
+		return nil, err
+	}
+	g := &Game{S: s, font: source, brushFont: brush, serifFont: serif, seed: seed, verified: map[string]bool{}, slot: 1, auditDir: auditDir,
 		vis: map[string]*unitVis{}, zoom: 1, zoomFrom: 1, zoomTo: 1, zoomT: .5, speed: 1, threats: map[string][]content.Point{}, diffs: map[string]string{},
 		battleXP: map[string]int{}, startLevel: map[string]int{}}
 	g.root = filepath.Dir(filepath.Dir(filepath.Dir(fontPath)))

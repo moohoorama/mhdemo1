@@ -91,6 +91,35 @@ func (g *Game) face(size float64) *text.GoTextFace {
 	return f
 }
 
+// brush is the brush-script face for turn titles, damage numbers and officer names.
+func (g *Game) brush(size float64) *text.GoTextFace {
+	return &text.GoTextFace{Source: g.brushFont, Size: size}
+}
+
+// serif is the bold Myeongjo face for the top bar, scrolls and name tags.
+func (g *Game) serif(size float64, weight float32) *text.GoTextFace {
+	f := &text.GoTextFace{Source: g.serifFont, Size: size}
+	f.SetVariation(text.MustParseTag("wght"), weight)
+	return f
+}
+
+// write draws s in face f at layout (x, y); op may carry extra colour or transform.
+func write(dst *ebiten.Image, s string, f *text.GoTextFace, x, y float64, c color.Color) {
+	op := &text.DrawOptions{}
+	op.GeoM.Translate(x*scale, y*scale)
+	op.ColorScale.ScaleWithColor(c)
+	op.LineSpacing = f.Size * 1.45 * scale
+	sf := *f
+	sf.Size *= scale
+	text.Draw(dst, s, &sf, op)
+}
+
+// measure is the layout width of s in face f.
+func measure(s string, f *text.GoTextFace) float64 {
+	w, _ := text.Measure(s, f, f.Size*1.45)
+	return w
+}
+
 func (g *Game) label(dst *ebiten.Image, s string, x, y, size float64, c color.Color) {
 	op := &text.DrawOptions{}
 	op.GeoM.Translate(x*scale, y*scale)

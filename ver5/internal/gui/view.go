@@ -27,6 +27,7 @@ func (g *Game) advance(dt float64) {
 		}
 		g.zoom = g.zoomFrom + (g.zoomTo-g.zoomFrom)*t
 	}
+	g.advancePan(dt)
 	dt *= float64(g.speed)
 	if g.duelPreview != nil {
 		dt *= g.previewRate
@@ -85,6 +86,7 @@ func (g *Game) ensureField(o core.Observation) {
 	g.field = NewField(g.assets, g.assets.Maps[o.Map.ID])
 	g.vis, g.scene, g.zoom = map[string]*unitVis{}, nil, 1
 	g.zoomFrom, g.zoomTo, g.zoomT = 1, 1, 0
+	g.pan = nil
 	size := g.field.Size()
 	g.camX, g.camY = float64(size.X)/2, float64(size.Y)/2
 	g.clearOrder()
@@ -198,6 +200,9 @@ func (g *Game) camera() {
 	}
 	if mouseJustPressed(ebiten.MouseButtonRight) && image.Pt(x, y).In(vp) && !g.overHUD(x, y) && !g.dragging {
 		g.dragging, g.dragMoved, g.dragButton, g.dragX, g.dragY = true, false, ebiten.MouseButtonRight, x, y
+	}
+	if g.dragMoved || ebiten.IsKeyPressed(ebiten.KeyArrowLeft) || ebiten.IsKeyPressed(ebiten.KeyArrowRight) || ebiten.IsKeyPressed(ebiten.KeyArrowUp) || ebiten.IsKeyPressed(ebiten.KeyArrowDown) {
+		g.pan = nil // the player's own camera wins over a glide
 	}
 	if g.dragging {
 		if !mousePressed(g.dragButton) {
