@@ -35,6 +35,7 @@ type Assets struct {
 	Maps          map[string]*MapArt
 	Portraits     map[string]*ebiten.Image // Look.Portrait -> ink-wash portrait
 	Props         map[string]Prop
+	Projectiles   Projectiles // thrown stones and their landing dust
 }
 
 // Prop is scene art at the characters' pixel scale (not K times larger like map tiles).
@@ -295,6 +296,9 @@ func LoadAssets(dir string, font *text.GoTextFaceSource) (*Assets, error) {
 			art.Props = append(art.Props, mp)
 		}
 		a.Maps[m.ID] = art
+	}
+	if a.Projectiles, err = LoadProjectiles(dir); err != nil {
+		return nil, err
 	}
 	files, _ := filepath.Glob(filepath.Join(dir, "portraits", "*.png"))
 	for _, file := range files {

@@ -53,6 +53,9 @@ var buffTint = map[string]color.NRGBA{
 // effectKind is how an attack or skill looks.
 func (g *Game) effectKind(actor *unitVis, c core.Command) string {
 	if c.Kind == "attack" {
+		if actor != nil && actor.siege {
+			return "stone"
+		}
 		if actor != nil && actor.ranged {
 			return "arrow"
 		}
@@ -159,10 +162,14 @@ func (g *Game) spawn(kind string, from, to *unitVis, dur float64, tint color.NRG
 }
 
 // impact starts the effects at every unit an action's events reach, and shakes the
-// screen a little for heavy blows.
-func (g *Game) impact(kind string, actor *unitVis, events []core.Event, tint color.NRGBA) {
+// screen a little for heavy blows. A stone shakes it always and raises dust at every other
+// unit it reaches (its landing cell has the stone's own dust).
+func (g *Game) impact(kind string, actor, target *unitVis, events []core.Event, tint color.NRGBA) {
 	if kind == "arrow" {
 		kind = "slash"
+	}
+	if kind == "stone" {
+		g.shakeT = math.Max(g.shakeT, .22)
 	}
 	seen := map[string]bool{}
 	for _, e := range events {
@@ -178,6 +185,12 @@ func (g *Game) impact(kind string, actor *unitVis, events []core.Event, tint col
 			}
 			seen[e.Target] = true
 			t := g.unitAt(e.Target)
+			if kind == "stone" {
+				if t != nil && t != target {
+					g.dust(t)
+				}
+				continue
+			}
 			dur := map[string]float64{"slash": .55, "fire": 1.0, "water": .9, "heal": 1.1, "buff": 1.2, "debuff": 1.1}[kind]
 			g.spawn(kind, actor, t, dur, tint)
 			if e.Kind == "damage" && t != nil && e.Amount*5 >= t.maxHP {
@@ -186,6 +199,9 @@ func (g *Game) impact(kind string, actor *unitVis, events []core.Event, tint col
 		case "miss":
 			if t := g.unitAt(e.Target); t != nil && !seen[e.Target] {
 				seen[e.Target] = true
+				if kind == "stone" && t != target {
+					g.dust(t)
+				}
 				g.spawn("block", actor, t, .6, spark)
 			}
 		}
@@ -193,6 +209,14 @@ func (g *Game) impact(kind string, actor *unitVis, events []core.Event, tint col
 }
 
 func (g *Game) updateEffects(dt float64) {
+	lobs := g.lobs[:0]
+	for _, l := range g.lobs {
+		l.Update(dt)
+		if !l.Done(g.assets.Projectiles) {
+			lobs = append(lobs, l)
+		}
+	}
+	g.lobs = lobs
 	kept := g.effects[:0]
 	for _, e := range g.effects {
 		e.t += dt
@@ -254,6 +278,11 @@ func stroke(dst *ebiten.Image, x0, y0, x1, y1, w float32, c color.NRGBA, a float
 
 func (g *Game) drawEffects(dst *ebiten.Image) {
 	z := g.zoom
+	defer func() {
+		for _, l := range g.lobs {
+			l.Draw(dst, g.assets.Projectiles, g.toScreen, z)
+		}
+	}()
 	for _, e := range g.effects {
 		k := e.t / e.dur
 		x, y := g.field.Center(e.tu, e.tv)

@@ -50,6 +50,7 @@ type unitVis struct {
 	dying        float64 // < 0: alive
 	gone, greyed bool
 	ranged       bool
+	siege        bool // attacks are stones lobbed along an arc
 	inactive     bool
 	actor        bool // a scene actor: no HP bar, always rests standing
 	shownHP      int
@@ -479,6 +480,11 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 			start()
 		}
 	})
+	if kind == "stone" && target != nil && target != actor {
+		// leaves the bucket as attack frame 2 starts, and the blow lands with it
+		flight := g.lobFlight(actor, target)
+		add(flight, func() { g.throw(actor, target, flight) })
+	}
 	if kind == "arrow" && target != nil && target != actor {
 		// released on the third frame, it lands after its flight
 		flight := math.Max(.12, math.Hypot(target.u-actor.u, target.v-actor.v)*arrowSecPerCell)
@@ -495,7 +501,7 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	if crit {
 		wait = math.Max(wait, shakeTime*1.6)
 	}
-	add(wait, func() { g.impact(kind, actor, events, tint); g.strike(actor, events) })
+	add(wait, func() { g.impact(kind, actor, target, events, tint); g.strike(actor, events) })
 }
 
 func (g *Game) stepTo(u *unitVis, p content.Point) { g.walkTo(u, float64(p.X), float64(p.Y)) }

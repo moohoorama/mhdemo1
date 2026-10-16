@@ -123,4 +123,5 @@ var Statuses = map[string]bool{
 const (
 	TagMounted = "mounted" // rides: gains ranged attacks from FxMountedRange
 	TagLight   = "light"   // gains movement from FxLightMove
+	TagSiege   = "siege"   // a siege engine: the screens show its attacks as stones lobbed along an arc
 )

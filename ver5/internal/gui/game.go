@@ -53,6 +53,8 @@ type Game struct {
 	vis                  map[string]*unitVis
 	popups               []*popup
 	effects              []*effect
+	lobs                 []*Lob
+	releases             map[string]map[string][2]float64 // sprite id -> facing -> where its thrown stone leaves
 	player               Player
 	banner               string
 	bannerT, clockMS     float64

@@ -10,7 +10,7 @@ import (
 
 // Art is one sprite drawn with one palette: a row per facing, animations side by side.
 type Art struct {
-	Name        string
+	ID, Name    string
 	Pivot       [2]float64
 	ShadowPivot [2]float64
 	Animations  map[string]Animation
@@ -24,7 +24,7 @@ type Art struct {
 
 func newArt(s *Sheet, p Palette, shadow *ebiten.Image) *Art {
 	sd := s.Shadow()
-	a := &Art{Name: s.Name, Pivot: [2]float64{float64(s.Pivot[0]), float64(s.Pivot[1])},
+	a := &Art{ID: s.ID, Name: s.Name, Pivot: [2]float64{float64(s.Pivot[0]), float64(s.Pivot[1])},
 		ShadowPivot: [2]float64{float64(sd.Pivot[0]), float64(sd.Pivot[1])}, Animations: s.Animations,
 		cell: s.Cell, shadowCell: sd.Cell, rows: map[string]int{}, shadow: shadow}
 	for i, d := range s.Rows {
@@ -113,6 +113,9 @@ type Library struct {
 func NewLibrary(sheets map[string]*Sheet, shadowRGB color.RGBA) *Library {
 	return &Library{sheets: sheets, shadowRGB: shadowRGB, arts: map[string]*Art{}, shadows: map[string]*ebiten.Image{}}
 }
+
+// Sheet is the baked sheet of a sprite id; nil for an unknown one.
+func (l *Library) Sheet(id string) *Sheet { return l.sheets[id] }
 
 // Art is the sprite drawn with palette p over its defaults; nil for an unknown sprite id.
 func (l *Library) Art(id string, p Palette) *Art {

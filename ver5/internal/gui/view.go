@@ -4,6 +4,7 @@ import (
 	"image"
 	"image/color"
 	"math"
+	"slices"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/content"
@@ -292,6 +293,7 @@ func (g *Game) syncUnit(u core.UnitView, o core.Observation) {
 	v.inactive = o.Phase != "battle" || !u.ActsIn(o.Turn) || u.Done
 	v.greyed = u.Done && u.ActsIn(o.Turn) && o.Phase == "battle"
 	v.ranged = g.S.Data.Classes[u.Class].Attack == content.AttackRanged
+	v.siege = slices.Contains(g.S.Data.Classes[u.Class].Tags, content.TagSiege)
 	v.gone = u.HP <= 0
 	if !v.gone {
 		v.dying = -1

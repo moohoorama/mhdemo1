@@ -13,9 +13,11 @@ import (
 	"image/color"
 	"image/draw"
 	"image/png"
+	"maps"
 	"math"
 	"os"
 	"path/filepath"
+	"slices"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -59,7 +61,7 @@ type demo struct {
 
 func main() {
 	capture := flag.String("capture", "", "write PNG frames, a contact sheet and an arc overlay of the flights to this directory and exit")
-	mapID := flag.String("map", "B01", "battle map")
+	mapID := flag.String("map", "", "battle map id (default: the first one)")
 	zoom := flag.Float64("zoom", 2, "canvas scale")
 	sheet := flag.String("sheet", "assets/sprites/catapult.spr", "catapult sprite sheet")
 	launch := flag.String("launch", "start", "start or end: the stone flies from the start or the end of attack frame 2")
@@ -79,6 +81,13 @@ func setup(mapID string, zoom float64, sheetPath string, launchAtEnd bool) (*dem
 	data, err := content.Load("assets/data")
 	if err != nil {
 		return nil, err
+	}
+	if mapID == "" {
+		ids := slices.Sorted(maps.Keys(data.Maps))
+		if len(ids) == 0 {
+			return nil, fmt.Errorf("no battle maps")
+		}
+		mapID = ids[0]
 	}
 	doc := data.Maps[mapID]
 	if doc == nil {
@@ -107,7 +116,7 @@ func setup(mapID string, zoom float64, sheetPath string, launchAtEnd bool) (*dem
 	}
 	field := gui.NewField(assets, mapArt(doc, data))
 	field.ShowExterior = true
-	art := sprite.NewLibrary(map[string]*sprite.Sheet{"catapult": sheet}, shadowRGB).Art("catapult", nil)
+	art := sprite.NewLibrary(map[string]*sprite.Sheet{sheet.ID: sheet}, shadowRGB).Art(sheet.ID, nil)
 	ms := art.Animations["attack"].MS
 	n := releaseF
 	if launchAtEnd {

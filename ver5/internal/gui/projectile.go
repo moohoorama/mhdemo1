@@ -252,3 +252,71 @@ func shadowEllipse(dst *ebiten.Image, x, y, rx, ry float32, c color.NRGBA, a flo
 		fillPath(dst, &p, op)
 	}
 }
+
+// NewDust is a landing dust cloud alone, at canvas point (x, y), as if a stone of kind had
+// just hit there.
+func NewDust(kind string, x, y float64) *Lob {
+	return &Lob{Kind: kind, TX: x, TY: y, landed: true}
+}
+
+// releaseFrame is the attack frame in which a thrower's stone leaves its bucket.
+const releaseFrame = 2
+
+// release is where a unit's thrown stone leaves its sprite (offset from the pivot) in its facing.
+func (g *Game) release(u *unitVis) [2]float64 {
+	if g.releases == nil {
+		g.releases = map[string]map[string][2]float64{}
+	}
+	points, ok := g.releases[u.art.ID]
+	if !ok {
+		if s := g.assets.Lib.Sheet(u.art.ID); s != nil {
+			points = ReleasePoints(s, "attack", releaseFrame)
+		}
+		g.releases[u.art.ID] = points
+	}
+	if p, ok := points[u.dir]; ok {
+		return p
+	}
+	return [2]float64{0, -u.top}
+}
+
+// lobAt is the stone a thrower at (u, v) facing dir sends to the target cell's ground.
+func (g *Game) lobAt(thrower *unitVis, dir string, u, v float64, target *unitVis) *Lob {
+	keep := thrower.dir
+	thrower.dir = dir
+	r := g.release(thrower)
+	thrower.dir = keep
+	fx, fy := g.field.Center(u, v)
+	tx, ty := g.field.Center(target.u, target.v)
+	return NewLob("stone", fx+r[0], fy-thrower.lift, -r[1], tx, ty-target.lift)
+}
+
+// lobFlight is how long a stone from thrower to target will fly, judged before the throw
+// from where both stand when the action ends (the thrower may still walk there first).
+func (g *Game) lobFlight(thrower, target *unitVis) float64 {
+	u, v := thrower.u, thrower.v
+	for _, w := range g.player.final.UnitViews {
+		if w.ID == thrower.id {
+			u, v = float64(w.X), float64(w.Y)
+		}
+	}
+	dir := thrower.dir
+	if u != target.u || v != target.v {
+		dir = facing(target.u-u, target.v-v)
+	}
+	return g.lobAt(thrower, dir, u, v, target).Dur
+}
+
+// throw starts a stone's flight from the thrower's bucket; it lands after flight seconds,
+// when the blow's beat shows the hit.
+func (g *Game) throw(thrower, target *unitVis, flight float64) {
+	l := g.lobAt(thrower, thrower.dir, thrower.u, thrower.v, target)
+	l.Dur = flight
+	g.lobs = append(g.lobs, l)
+}
+
+// dust raises a stone's landing dust under a unit the blow reaches beside its landing cell.
+func (g *Game) dust(u *unitVis) {
+	x, y := g.field.Center(u.u, u.v)
+	g.lobs = append(g.lobs, NewDust("stone", x, y-u.lift))
+}
