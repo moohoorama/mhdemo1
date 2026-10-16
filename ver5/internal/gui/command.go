@@ -181,6 +181,8 @@ type menuItem struct {
 type entry struct {
 	menuItem
 	help string
+	icon string // line icon of a main command
+	note string // right-aligned: › for a sub-list, a cost or a count
 }
 
 // menuItems is the action menu: actions that are unavailable stay listed, greyed out.
@@ -209,10 +211,10 @@ func (g *Game) menuItems() []entry {
 		attack = fmt.Sprintf("무기로 공격합니다(사거리 %d–%d).\n정해진 상대와 맞붙으면 일기토가 벌어집니다.", lo, hi)
 	}
 	return []entry{
-		{menuItem{"공격", pick("attack")}, attack},
-		{menuItem{"병법 ›", sub("skill")}, "병법치를 써서 병법을 사용합니다."},
-		{menuItem{"도구 ›", sub("item")}, "군량·병법단 등 도구를 자신이나 인접 부대에 씁니다."},
-		{menuItem{"대기", func() { g.confirm(core.Command{Kind: "wait", Actor: g.ord.actor}) }}, "이번 턴 행동을 마칩니다."},
+		{menuItem{"공격", pick("attack")}, attack, "attack", ""},
+		{menuItem{"병법", sub("skill")}, "병법치를 써서 병법을 사용합니다.", "skill", "›"},
+		{menuItem{"도구", sub("item")}, "군량·병법단 등 도구를 자신이나 인접 부대에 씁니다.", "item", "›"},
+		{menuItem{"대기", func() { g.confirm(core.Command{Kind: "wait", Actor: g.ord.actor}) }}, "이번 턴 행동을 마칩니다.", "wait", ""},
 	}
 }
 
@@ -233,7 +235,6 @@ func (g *Game) subItems() []entry {
 		}
 		for _, id := range u.Skills {
 			s := g.S.Data.Skills[id]
-			label := fmt.Sprintf("%s  %d", s.Name, s.Cost)
 			var click func()
 			if ok[id] {
 				pick := core.Command{Kind: "skill", Skill: id}
@@ -245,7 +246,11 @@ func (g *Game) subItems() []entry {
 					g.ord.pick, g.ord.stage = pick, "target"
 				}
 			}
-			out = append(out, entry{menuItem{label, click}, g.skillHelp(id, u)})
+			help := g.skillHelp(id, u)
+			if click == nil && u.MP < s.Cost {
+				help = "병법치가 모자랍니다.\n" + help
+			}
+			out = append(out, entry{menuItem: menuItem{s.Name, click}, help: help, note: fmt.Sprint(s.Cost)})
 		}
 	case "item":
 		ok := map[string]bool{}
@@ -263,7 +268,7 @@ func (g *Game) subItems() []entry {
 			if ok[id] {
 				click = func() { g.ord.pick, g.ord.stage = pick, "target" }
 			}
-			out = append(out, entry{menuItem{fmt.Sprintf("%s ×%d", g.itemName(id), o.Inventory[id]), click}, g.itemHelp(id)})
+			out = append(out, entry{menuItem: menuItem{g.itemName(id), click}, help: g.itemHelp(id), note: fmt.Sprintf("×%d", o.Inventory[id])})
 		}
 	}
 	if len(out) == 0 {
@@ -284,40 +289,30 @@ func (g *Game) drawMenu(dst *ebiten.Image) {
 	cx, cy := g.field.Center(v.u, v.v)
 	sx, sy := g.toScreen(cx, cy-v.lift)
 	x := int(sx + 16*g.zoom)
+	key := g.ord.actor + "/" + g.ord.stage
+	g.menuAnim.touch(fmt.Sprintf("%s/%p", g.ord.actor, g.ord.move), g.uiSeconds)
 	help := ""
-	var helpAt image.Rectangle
-	draw := func(items []entry, x, y, w int, title string) image.Rectangle {
-		h := 14 + len(items)*30
-		if title != "" {
-			h += 22
-		}
-		x = max(8, min(Width-w-8, x))
-		y = max(48, min(Height-h-8, y))
-		r := image.Rect(x, y, x+w, y+h)
-		window(dst, r)
-		g.block(r)
-		top := y + 7
-		if title != "" {
-			g.label(dst, title, float64(x+12), float64(y+5), 13, gold)
-			top += 22
-		}
-		for i, it := range items {
-			b := image.Rect(x+7, top+i*30, x+w-7, top+i*30+28)
-			g.btn(dst, b, it.label, it.click)
-			if hovered(b) && it.help != "" {
-				help, helpAt = it.help, image.Rect(r.Max.X+6, b.Min.Y, r.Max.X+6, b.Min.Y)
-			}
-		}
-		return r
+	held := map[string]int{"skill": 1, "item": 2}[g.ord.sub]
+	if g.ord.stage != "sub" {
+		held = -1
 	}
-	r := draw(g.menuItems(), x, int(sy)-110, 128, g.name(g.ord.actor))
+	r := g.drawPanel(dst, panelSpec{items: g.menuItems(), x: x, y: int(sy) - 110, w: 112, gauge: -1, anim: &g.menuAnim, hoveredOut: &help, held: held})
 	if g.ord.stage == "sub" {
-		title := map[string]string{"skill": "병법 · 소모", "item": "도구"}[g.ord.sub]
-		draw(g.subItems(), r.Max.X+6, r.Min.Y+20, 178, title)
+		g.subAnim.touch(key+"/"+g.ord.sub, g.uiSeconds)
+		spec := panelSpec{items: g.subItems(), x: r.Max.X + 4, y: r.Min.Y + 32, w: 200, gauge: -1, descLines: 3, anim: &g.subAnim, held: -1}
+		if u := g.unitView(g.engine().Observe(), g.ord.actor); u != nil && g.ord.sub == "skill" {
+			spec.header = fmt.Sprintf("병법치 %d / %d", u.MP, u.Stats.MaxMP)
+			spec.gauge = float64(u.MP) / float64(max(1, u.Stats.MaxMP))
+		} else {
+			spec.header = "도구"
+		}
+		g.drawPanel(dst, spec)
+	} else {
+		g.subAnim = panelAnim{}
 	}
 	g.label(dst, "우클릭/Esc: 취소", float64(r.Min.X), float64(r.Max.Y+4), 12, muted)
-	if help != "" {
-		g.tooltip(dst, help, helpAt.Min.X, helpAt.Min.Y)
+	if help != "" && g.ord.stage == "menu" {
+		g.tooltip(dst, help, r.Max.X+6, r.Min.Y)
 	}
 }
 

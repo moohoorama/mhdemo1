@@ -1,0 +1,246 @@
+package gui
+
+import (
+	"image"
+	"image/color"
+	"strings"
+
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/vector"
+)
+
+// The command menu panels (docs/ui-mockup, idea 6): a lacquered list that unrolls from
+// the top with its rows sliding in, a gold bar that fills the hovered row from the left,
+// small icons on the main commands and, on a sub-list, a header and a description strip.
+const (
+	panelOpen  = .22 // the panel unrolls
+	rowSlide   = .22 // each row slides in
+	rowStagger = .04
+	rowSweep   = .18 // the hover bar fills
+	rowHeight  = 30
+	panelPad   = 5
+)
+
+var (
+	panelTop    = color.NRGBA{R: 43, G: 29, B: 20, A: 250}
+	panelBottom = color.NRGBA{R: 27, G: 18, B: 13, A: 250}
+	rowOn       = color.NRGBA{R: 255, G: 246, B: 221, A: 255}
+	rowOff      = color.NRGBA{R: 119, G: 105, B: 90, A: 255}
+)
+
+// panelAnim remembers when a panel opened and which row the pointer entered when.
+type panelAnim struct {
+	key      string
+	openedAt float64
+	hot      int
+	hotAt    float64
+}
+
+func (a *panelAnim) touch(key string, now float64) {
+	if a.key != key {
+		*a = panelAnim{key: key, openedAt: now, hot: -1}
+	}
+}
+
+type panelSpec struct {
+	items      []entry
+	header     string  // gold header line; empty for none
+	gauge      float64 // MP fraction shown in the header, < 0 for none
+	descLines  int     // reserved lines of the description strip; 0 for none
+	x, y, w    int
+	anim       *panelAnim
+	hoveredOut *string // receives the hovered row's help when there is no strip
+	held       int     // row kept lit while its sub-list is open, -1 for none
+}
+
+func (g *Game) panelHeight(p panelSpec) int {
+	h := panelPad*2 + len(p.items)*rowHeight
+	if p.header != "" {
+		h += 24
+	}
+	if p.descLines > 0 {
+		h += 10 + p.descLines*17
+	}
+	return h
+}
+
+// drawPanel draws a command panel and registers its rows as buttons.
+func (g *Game) drawPanel(dst *ebiten.Image, p panelSpec) image.Rectangle {
+	now := g.uiSeconds
+	t := now - p.anim.openedAt
+	h := g.panelHeight(p)
+	x := max(8, min(Width-p.w-8, p.x))
+	y := max(48, min(Height-h-8, p.y))
+	r := image.Rect(x, y, x+p.w, y+h)
+	g.block(r)
+	open := bezier(.2, .8, .3, 1, phase(t, 0, panelOpen))
+	clip := image.Rect(int(float64(x-4)*scale), int(float64(y-2)*scale), int(float64(x+p.w+8)*scale), int((float64(y)+float64(h)*open+8)*scale))
+	cd := dst.SubImage(clip).(*ebiten.Image)
+	fx, fy, fw, fh := float32(x), float32(y), float32(p.w), float32(h)
+	rect(cd, fx+3, fy+5, fw, fh, color.NRGBA{A: 110})
+	for i := float32(0); i < 8; i++ {
+		k := float64(i) / 7
+		c := color.NRGBA{R: uint8(float64(panelTop.R)*(1-k) + float64(panelBottom.R)*k), G: uint8(float64(panelTop.G)*(1-k) + float64(panelBottom.G)*k), B: uint8(float64(panelTop.B)*(1-k) + float64(panelBottom.B)*k), A: 250}
+		rect(cd, fx, fy+fh*i/8, fw, fh/8+1, c)
+	}
+	strokeRect(cd, fx+.5, fy+.5, fw-1, fh-1, 1, color.NRGBA{R: 11, G: 7, B: 5, A: 255})
+	strokeRect(cd, fx+1.5, fy+1.5, fw-3, fh-3, 1, goldDim)
+
+	slide := func(i int) (float64, uint8) {
+		k := bezier(.2, .8, .2, 1, phase(t, .04+float64(i)*rowStagger, rowSlide))
+		return -10 * (1 - k), uint8(255 * k)
+	}
+	top := y + panelPad
+	n := 0
+	if p.header != "" {
+		dx, a := slide(n)
+		n++
+		c := gold
+		c.A = a
+		g.label(cd, p.header, float64(x+11)+dx, float64(top+2), 12, c)
+		if p.gauge >= 0 {
+			gx, gw := float32(x)+fw-82+float32(dx), float32(68)
+			rect(cd, gx, float32(top+8), gw, 6, color.NRGBA{A: a})
+			rect(cd, gx+1, float32(top+9), gw-2, 4, color.NRGBA{R: 16, G: 23, B: 34, A: a})
+			rect(cd, gx+1, float32(top+9), (gw-2)*float32(min(1, p.gauge)), 4, color.NRGBA{R: 93, G: 154, B: 216, A: a})
+		}
+		rect(cd, float32(x+6), float32(top+21), fw-12, 1, color.NRGBA{R: 61, G: 44, B: 31, A: a})
+		top += 24
+	}
+	help := ""
+	for i, it := range p.items {
+		b := image.Rect(x+panelPad, top+i*rowHeight, x+p.w-panelPad, top+i*rowHeight+rowHeight-2)
+		hot := it.click != nil && hovered(b)
+		if i == p.held && !hot {
+			hot = true
+			if p.anim.hot != i {
+				p.anim.hot, p.anim.hotAt = i, now-rowSweep
+			}
+		}
+		if hovered(b) {
+			help = it.help
+		}
+		if hot && p.anim.hot != i {
+			p.anim.hot, p.anim.hotAt = i, now
+		} else if !hot && p.anim.hot == i && i != p.held {
+			p.anim.hot = -1
+		}
+		if it.click != nil {
+			g.buttons = append(g.buttons, button{b, it.label, it.click})
+		}
+		dx, a := slide(n)
+		n++
+		g.drawRow(cd, b, it, dx, a, hot, now-p.anim.hotAt)
+	}
+	if p.descLines > 0 {
+		dy := top + len(p.items)*rowHeight + 2
+		dx, a := slide(n)
+		rect(cd, float32(x+6), float32(dy), fw-12, 1, color.NRGBA{R: 61, G: 44, B: 31, A: a})
+		if help == "" && len(p.items) > 0 {
+			help = p.items[0].help
+		}
+		c := muted
+		c.A = a
+		g.label(cd, clampLines(wrap(help, 17), p.descLines), float64(x+11)+dx, float64(dy+6), 12, c)
+	} else if p.hoveredOut != nil && help != "" {
+		*p.hoveredOut = help
+	}
+	return r
+}
+
+func clampLines(s string, n int) string {
+	lines := strings.Split(s, "\n")
+	if len(lines) > n {
+		lines = lines[:n]
+	}
+	return strings.Join(lines, "\n")
+}
+
+// drawRow is one command row: hover bar, icon, label and the note on the right.
+func (g *Game) drawRow(dst *ebiten.Image, b image.Rectangle, it entry, dx float64, a uint8, hot bool, hotFor float64) {
+	x, y, w, h := float32(b.Min.X)+float32(dx), float32(b.Min.Y), float32(b.Dx()), float32(b.Dy())
+	if hot {
+		k := float32(bezier(0, 0, .58, 1, min(1, hotFor/rowSweep)))
+		for i := float32(0); i < 12; i++ {
+			s := i / 12
+			c := color.NRGBA{R: 214, G: 169, B: 87, A: uint8((97 - 82*s) * float32(a) / 255)}
+			rect(dst, x+w*k*s, y, w*k/12+1, h, c)
+		}
+		rect(dst, x, y+h*.15, 3, h*.7, color.NRGBA{R: gold.R, G: gold.G, B: gold.B, A: a})
+	}
+	fg := ink
+	switch {
+	case it.click == nil:
+		fg = rowOff
+	case hot:
+		fg = rowOn
+	}
+	fg.A = a
+	lx := float64(x) + 9
+	if it.icon != "" {
+		drawIcon(dst, it.icon, float32(lx), y+h/2-6, 12, fg)
+		lx += 19
+	}
+	g.label(dst, it.label, lx, float64(y)+(float64(h)-15*1.45)/2, 15, fg)
+	if it.note != "" {
+		nc := muted
+		if it.click == nil {
+			nc = rowOff
+		}
+		nc.A = a
+		g.label(dst, it.note, float64(x+w)-9-g.width(it.note, 12), float64(y)+(float64(h)-12*1.45)/2, 12, nc)
+	}
+}
+
+// drawIcon draws a 12-unit line icon at (x, y) sized s.
+func drawIcon(dst *ebiten.Image, name string, x, y, s float32, c color.NRGBA) {
+	k := s / 12
+	var p vector.Path
+	switch name {
+	case "attack": // sword
+		p.MoveTo(2, 10)
+		p.LineTo(9, 3)
+		p.MoveTo(8, 2)
+		p.LineTo(10, 4)
+		p.MoveTo(3, 7)
+		p.LineTo(5, 9)
+	case "skill": // book
+		p.MoveTo(2, 2)
+		p.LineTo(10, 2)
+		p.LineTo(10, 10)
+		p.LineTo(2, 10)
+		p.Close()
+		p.MoveTo(4, 5)
+		p.LineTo(8, 5)
+		p.MoveTo(4, 7)
+		p.LineTo(7, 7)
+	case "item": // pouch
+		p.MoveTo(3, 5)
+		p.QuadTo(6, 2, 9, 5)
+		p.LineTo(9, 10)
+		p.LineTo(3, 10)
+		p.Close()
+		p.MoveTo(5, 3)
+		p.LineTo(7, 3)
+	case "wait": // hourglass
+		p.MoveTo(3, 2)
+		p.LineTo(9, 2)
+		p.MoveTo(3, 10)
+		p.LineTo(9, 10)
+		p.MoveTo(4, 2)
+		p.QuadTo(4, 6, 6, 6)
+		p.QuadTo(8, 6, 8, 2)
+		p.MoveTo(4, 10)
+		p.QuadTo(4, 6, 6, 6)
+		p.QuadTo(8, 6, 8, 10)
+	}
+	var q vector.Path
+	op := &vector.AddPathOptions{}
+	op.GeoM.Scale(float64(k), float64(k))
+	op.GeoM.Translate(float64(x), float64(y))
+	q.AddPath(&p, op)
+	so := vector.StrokeOptions{Width: 1.4 * k, LineCap: vector.LineCapRound, LineJoin: vector.LineJoinRound}
+	do := &vector.DrawPathOptions{AntiAlias: true}
+	do.ColorScale.ScaleWithColor(c)
+	strokePath(dst, &q, so, do)
+}

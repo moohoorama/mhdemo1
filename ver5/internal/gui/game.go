@@ -84,6 +84,7 @@ type Game struct {
 	buttons              []button
 	blocks               []image.Rectangle
 	ord                  order
+	menuAnim, subAnim    panelAnim
 	hover                hoverCell
 	threatAll            bool
 	threats              map[string][]content.Point
