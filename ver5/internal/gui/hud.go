@@ -120,40 +120,6 @@ func (g *Game) pending(o core.Observation) (left, total int) {
 	return left, total
 }
 
-// topBar shows the battle, the objective and how many allies have yet to act.
-func (g *Game) topBar(dst *ebiten.Image, o core.Observation) {
-	r := image.Rect(0, 0, Width, 40)
-	rect(dst, 0, 0, Width, 40, color.NRGBA{R: 20, G: 14, B: 12, A: 225})
-	rect(dst, 0, 39, Width, 2, gold)
-	g.block(r)
-	st := g.stageInfo(o)
-	g.label(dst, st.name, 16, 8, 18, gold)
-	turn := color.NRGBA{R: 120, G: 180, B: 240, A: 255}
-	if o.Turn == "support" {
-		turn = good
-	}
-	if o.Turn == "enemy" {
-		turn = bad
-	}
-	x := 24 + g.width(st.name, 18)
-	turnText := fmt.Sprintf("%d턴", o.Round)
-	if st.turnLimit > 0 {
-		turnText = fmt.Sprintf("%d/%d턴", o.Round, st.turnLimit)
-	}
-	g.label(dst, turnText, x, 9, 16, ink)
-	g.label(dst, factionName(o.Turn)+" 진영", x+g.width(turnText, 16)+12, 9, 16, turn)
-	win, lose := g.objective(st)
-	g.label(dst, "승리  "+win+"     패배  "+lose, x+180, 11, 12, muted)
-	if o.Phase == "battle" {
-		left, total := g.pending(o)
-		g.label(dst, fmt.Sprintf("미행동 %d / %d", left, total), 905, 10, 15, ink)
-	}
-	if g.speed > 1 {
-		g.label(dst, fmt.Sprintf("재생 ×%d", g.speed), 1030, 10, 15, gold)
-	}
-	g.btn(dst, image.Rect(1176, 5, 1272, 34), "메뉴", func() { g.openOverlay("menu") })
-}
-
 // dock holds the battle-wide commands in the lower right corner.
 func (g *Game) dock(dst *ebiten.Image, o core.Observation) {
 	type entry struct {

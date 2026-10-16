@@ -92,6 +92,7 @@ type Game struct {
 	question, yes, no    string
 	answer               func()
 	endAsked             string // the battle turn whose "all allies ordered" prompt was shown
+	barAnim              topBarAnim
 	miniRect             image.Rectangle
 	traitOf              string
 	traitTop             int
