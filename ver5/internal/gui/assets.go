@@ -23,6 +23,7 @@ import (
 type Assets struct {
 	Duels         duel.Scripts
 	Bubble        *duelview.Bubble
+	Scroll        *scrollParts
 	groundPattern *ebiten.Image
 	StatusIcons   map[string]*ebiten.Image
 	Lib           *sprite.Library
@@ -122,6 +123,10 @@ func LoadAssets(dir string, font *text.GoTextFaceSource) (*Assets, error) {
 	if err != nil {
 		return nil, err
 	}
+	scroll, err := loadScrollParts(filepath.Join(dir, "ui", "scroll"))
+	if err != nil {
+		return nil, err
+	}
 	b, err := os.ReadFile(filepath.Join(dir, "index.json"))
 	if err != nil {
 		return nil, err
@@ -168,7 +173,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource) (*Assets, error) {
 	if err = json.Unmarshal(b, &index); err != nil {
 		return nil, err
 	}
-	a := &Assets{Bubble: bubble, Duels: scripts, Tiles: map[int]Sprite{}, TileShadow: map[int]Sprite{},
+	a := &Assets{Bubble: bubble, Scroll: scroll, Duels: scripts, Tiles: map[int]Sprite{}, TileShadow: map[int]Sprite{},
 		Animations: map[string]TileAnimation{}, Structures: map[string]Sprite{}, Sites: map[string]Sprite{}, Maps: map[string]*MapArt{},
 		Rise: index.Structures.Rise, Portraits: map[string]*ebiten.Image{}, Props: map[string]Prop{}}
 	statusPixels, err := loadRGBA(filepath.Join(dir, "status", "icons.png"))

@@ -74,6 +74,7 @@ type Game struct {
 	dragButton           ebiten.MouseButton
 	shownNode            string
 	lineIndex, lineStart int
+	scrollAnim           scrollAnim
 	Verify               bool
 	Shots                []int // capture the screen at these ticks while autoplaying, then quit
 	verified             map[string]bool
@@ -856,6 +857,9 @@ func (g *Game) title(dst *ebiten.Image) {
 
 func (g *Game) play(dst *ebiten.Image) {
 	o := g.S.Engine.Observe()
+	if o.Phase != "scenario" {
+		g.scrollAnim = scrollAnim{} // the next story opens a fresh scroll
+	}
 	switch o.Phase {
 	case "complete":
 		g.complete(dst, o)

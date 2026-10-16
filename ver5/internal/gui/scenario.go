@@ -100,15 +100,9 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 	lines := splitLines(o.Dialogue.Text)
 	l := lines[min(g.lineIndex, len(lines)-1)]
 	staged := g.enterScene(o)
-	if !staged {
-		for i, sp := range l.speakers { // no scene: speakers stand above the box
-			g.portrait(dst, sp, float64(60+i*190), 330, 180)
-		}
-	}
 	if o.Dialogue.Kind == "dialogue" {
 		g.buttons = append(g.buttons, button{image.Rect(0, 0, Width, Height), "", g.advanceDialogue})
 	}
-	r := image.Rect(40, 560, Width-40, 800)
 	if staged {
 		g.drawScene(dst, l.speakers)
 		if g.sceneBusy() { // the line waits for its beats
@@ -116,22 +110,9 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 			g.label(dst, "클릭: 넘기기", float64(Width-150), float64(Height-40), 13, muted)
 			return
 		}
-		r = image.Rect(40, 640, Width-40, 830)
 	}
-	window(dst, r)
 	text, done := g.shownText(l)
-	x := float64(r.Min.X + 36)
-	if staged && len(l.speakers) > 0 && g.portrait(dst, l.speakers[0], float64(r.Min.X+22), float64(r.Min.Y+24), 140) {
-		x = float64(r.Min.X + 190)
-	}
-	if len(l.speakers) > 0 {
-		name := strings.Join(l.speakers, "·")
-		w := g.width(name, 20) + 40
-		rect(dst, float32(r.Min.X+24), float32(r.Min.Y-16), float32(w), 34, color.NRGBA{R: 108, G: 30, B: 26, A: 255})
-		rect(dst, float32(r.Min.X+24), float32(r.Min.Y-16), float32(w), 2, gold)
-		g.label(dst, name, float64(r.Min.X+44), float64(r.Min.Y-13), 20, ink)
-	}
-	g.label(dst, wrap(text, 40), x, float64(r.Min.Y+34), 23, ink)
+	g.drawDialogue(dst, l, text, done, fmt.Sprintf("%s|%s|%d", strings.Join(l.speakers, "·"), o.Node, g.lineIndex))
 	if o.Dialogue.Kind == "choice" {
 		y := 380
 		box := image.Rect(Width/2-180, y-30, Width/2+180, y+20+len(o.Dialogue.Choices)*52)
@@ -142,9 +123,6 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 			y += 52
 		}
 		return
-	}
-	if done && g.ticks/30%2 == 0 {
-		g.label(dst, "▼", float64(r.Max.X-44), float64(r.Max.Y-40), 16, gold)
 	}
 }
 
