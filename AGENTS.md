@@ -19,3 +19,9 @@ new dot work goes through the dot editor (`hero-sprite` skill).
 Illustrations (officer portraits, event CGs, backgrounds, UI art) are not
 sprites: their sources live under `tools/illustrations/`. Read
 `tools/illustrations/README.md` first and keep the chosen ink-wash style.
+
+To check UI or on-screen output, capture it instead of guessing from code. `ver5/cmd/_uidemo-vm`
+plays a named UI demo (`ver5/internal/gui/uidemo_*.go`) headlessly and saves PNG frames and/or a
+60 fps MP4; run it from `ver5/` wrapped in `caffeinate -d -i`, e.g.
+`go run ./cmd/_uidemo-vm -ui dialogue -frames 300 -at 30,96 -mp4 reports/uidemo/dialogue.mp4`.
+Add a new demo file there when no existing demo shows the screen. `cmd/_uidemo` is the windowed version.
