@@ -172,6 +172,8 @@ type Player struct {
 	final   core.Observation
 	Duel    *duelview.View
 	Speech  []*battleBubble
+	// followed is the enemy group the camera last moved to (enemy_camera.go)
+	followed string
 }
 
 func (p *Player) Busy() bool { return len(p.waiting)+len(p.running) > 0 }
@@ -187,6 +189,7 @@ func (p *Player) Play(actions []*replay.Action, final core.Observation) {
 		p.waiting = append(p.waiting, i)
 	}
 	p.gap = stagger
+	p.followed = ""
 	if len(actions) == 0 {
 		p.g.sync(final)
 	}
@@ -210,6 +213,7 @@ func (p *Player) Update(dt float64) {
 			r := &running{index: i, beats: p.g.perform(p.actions[i]), i: -1}
 			p.running = append(p.running, r)
 			p.gap = 0
+			p.followMovers()
 			break
 		}
 	}
