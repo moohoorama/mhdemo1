@@ -1,0 +1,20 @@
+{
+  "origin": "top-left",
+  "frame_order": ["stone", "dust"],
+  "alpha": [0, 255],
+  "outline": "#000000",
+  "sprites": {
+    "stone": {
+      "cell": [9, 9], "anchor": [4, 4],
+      "timing": "4-frame tumble, a quarter turn clockwise per frame; the flight picks the frame from its spin",
+      "palette": {"m": "#9a9c98", "h": "#d4d4cc", "d": "#5c5e5c"}
+    },
+    "dust": {
+      "cell": [32, 20], "anchor": [16, 13],
+      "timing": "one shot at the impact point: a flat ring of dust clouds spreads and breaks up, a puff rises and thins, stone chips kick out",
+      "ms": [60, 70, 80, 90, 100, 110],
+      "palette": {"h": "#e6d8b0", "m": "#c9b285", "d": "#9c8460", "o": "#5e4a34",
+                  "a": "#d4d4cc", "b": "#9a9c98", "c": "#5c5e5c"}
+    }
+  }
+}
