@@ -22,11 +22,11 @@ BELT = '#3a2418'        # dark leather: ramp f f g g -> themeA3 / themeA2
 # other heads (2px tall, S/W rows 7-8, SW rows 8-9) so expressions and the anchor work unchanged.
 BALD = {
     'S': Hd.grid('.............', '.............', '....00000....', '..00jjjii00..',
-                 '.0jjjjjiiii0.', '.0jjjiiiiii0.', '.0iiiiiiiix0.', 'iiii0iii0iixx',
-                 'iiii0iii0iixx', '.0iiiiiiiix0.', '..0iiiiiix0..', '...0xxxxx0...'),
+                 '.0jjjjjiiii0.', '.0jjjiiiiii0.', '.0iiiiiiiix0.', '.0xi0iii0ix0.',
+                 '.0xi0iii0ix0.', '.0iiiiiiiix0.', '..0iiiiiix0..', '...0xxxxx0...'),
     'SW': Hd.grid('.............', '.............', '....00000....', '..00jjjii00..',
-                  '.0jjjjiiiix0.', '.0jjjiiiixx0.', '.0iiiiiiixx0.', '.0iiiiiiiixx0',
-                  '.0i0ii0iixix0', '.0i0ii0iixix0', '..0iiiiiixx0.', '...0iiiixx0..'),
+                  '.0jjjjiiiix0.', '.0jjjiiiixx0.', '.0iiiiiiixx0.', '.0iiiiiiixx0.',
+                  '.0i0ii0iixi0.', '.0i0ii0iixi0.', '..0iiiiiixx0.', '...0iiiixx0..'),
     'W': Hd.grid('.............', '.............', '.....00000...', '...00jjjii00.',
                  '..0jjjjiiixx0', '.0jjjiiiixxx0', '.0iiiiiiixxx0', '.0i0iiiixixx0',
                  '0ii0iiiixixx0', '.0iiiiiiixx0.', '..0iiiiixx0..', '...000000....'),
