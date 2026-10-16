@@ -155,27 +155,32 @@ def house(kind):
 FLOOR_KEYS = {'light': ('4', '5', '3'), 'dark': ('3', '4', '2')}  # stone, lit edge, joint
 
 
-def paving(tone, rows=2):
-    """Flat paving drawn as pixels: staggered stones on the cell diamond, joints along both axes.
-    Returns a CELL-sized key grid; (a, b) are map-space coordinates in [-.5, .5]."""
+STONE_PX = 16  # paving stones: 16 px along each screen axis of the map (a quarter cell edge)
+
+
+def paving_key(x, y, tone):
+    """Key of paving pixel (x, y), counted from a small-cell centre. Joints run along both map axes on
+    exact 2:1 pixel staircases (two pixels per row, so lines never break), every other row of stones
+    shifted half a stone; the lit edge is the pixel row next to each joint. Small-cell centres are 16 px
+    apart in p and q, so every cell's paving joins its neighbours'."""
     stone, lit, joint = FLOOR_KEYS[tone]
+    p, q = x + 2*y, 2*y - x
+    q += STONE_PX//2*((p // STONE_PX) % 2)
+    pa, qa = p % STONE_PX, q % STONE_PX
+    if pa < 2 or qa < 2:
+        return joint
+    return lit if pa == 2 or qa == 2 else stone
+
+
+def paving(tone):
+    """Flat paving on the cell diamond (a CELL-sized key grid)."""
     cx, cy = PIVOT[0] + 1, PIVOT[1] + 1  # cell centre in pixels (see SPRITE_PIVOT)
     g = [['.'] * CELL[0] for _ in range(CELL[1])]
     for y in range(CELL[1]):
         for x in range(CELL[0]):
             dx, dy = x + .5 - cx, y + .5 - cy
-            a, b = (dx/16 + dy/8)/2, (dy/8 - dx/16)/2
-            if abs(a) > .5 or abs(b) > .5:
-                continue
-            ra, rb = (a + .5)*rows, (b + .5)*rows
-            rb += .5*(int(ra) % 2)  # stagger every other row of stones
-            fa, fb = ra % 1, rb % 1
-            if fa < .09 or fb < .07:
-                g[y][x] = joint
-            elif fa < .2 or fb < .15:
-                g[y][x] = lit
-            else:
-                g[y][x] = stone
+            if abs(dx)/16 + abs(dy)/8 <= 1:
+                g[y][x] = paving_key(x - cx, y - cy, tone)
     return g
 
 
@@ -215,9 +220,12 @@ def brick_joint(x, k):
     """Whether screen column x, k px below the top of a RISE-high wall, is a mortar joint. The grid is
     fixed to the ground and to screen x (mod BRICK_W from any cell centre), so every wall piece of every
     cell lines up: horizontal joints every BRICK_H, vertical ones staggered half a brick per course."""
-    if k > 0 and k % BRICK_H == 0:
+    course = (k + 1) // BRICK_H  # joints at k = 3 and 7: three even courses on a RISE-high face
+    if (k + 1) % BRICK_H == 0:
         return True
-    return (x + BRICK_W//2*((k // BRICK_H) % 2)) % BRICK_W == 0
+    return (x + BRICK_W//2*(course % 2)) % BRICK_W == 0
+
+
 PARAPET, MERLON = 3, 3  # parapet height and the extra height of each merlon (px)
 FACE = {'sw': ('4', '5', '3'), 'se': ('3', '4', '2')}  # stone, lit top course, joint
 
@@ -246,13 +254,22 @@ def castle(open_, tone='dark'):
         if 0 <= x < CELL[0] and 0 <= y < CELL[1]:
             g[y][x] = c
 
+    def top_side(x, y):
+        """Pixel lies above the lifted top's front edges (on the paving or the sky), not on a face."""
+        dx, dy = x + .5 - cx, y + .5 - (cy - RISE)
+        return dy < 8 - abs(dx)/2
+
+    front = set()  # front parapet pixels: they stand against the paving, so they get their own outline
+
     def parapet(side):
         stone, lit, joint = FACE['sw' if side in ('sw', 'ne') else 'se']
         for x, y in edge_columns(side, cx, cy, RISE):
             merlon = (x - cx) % 8 < 4
             h = PARAPET + (MERLON if merlon else 0)
-            for k in range(1, h + 1):
+            for k in range(h + 1):  # from the edge row itself, so no gap is left beside the paving
                 put(x, y - k, lit if k == h else (joint if k == PARAPET and merlon else stone))
+                if side in ('sw', 'se'):
+                    front.add((x, y - k))
             put(x, y - h - 1, '0')
 
     for side in ('nw', 'ne'):  # back parapets first: the paving and front walls overlap them
@@ -265,8 +282,11 @@ def castle(open_, tone='dark'):
         for x, edge in edge_columns(side, cx, cy, RISE):
             for k in range(RISE + 1):
                 put(x, edge + k, lit if k == 0 else joint if brick_joint(x - cx, k) else stone)
-            put(x, edge + RISE + 1, '0')
         parapet(side)
+    for x, y in front:  # outline the merlons where they rise above the paving behind them
+        for nx, ny in ((x, y - 1), (x - 1, y), (x + 1, y)):
+            if (nx, ny) not in front and 0 <= nx < CELL[0] and 0 <= ny < CELL[1] and top_side(nx, ny):
+                g[ny][nx] = '0'
     lined = R.outline(g, (0, 0, CELL[0], CELL[1]))
     for y in range(CELL[1]):
         for x in range(CELL[0]):
@@ -275,6 +295,8 @@ def castle(open_, tone='dark'):
                 side = ('n' if dy < 0 else 's') + ('e' if dx > 0 else 'w')
                 if not open_[side] and abs(dy) > 1:
                     lined[y][x] = '.'
+                if abs(dy) <= 1 and not all(open_[s] for s in (('nw', 'sw') if dx < 0 else ('ne', 'se'))):
+                    lined[y][x] = '.'  # corner pixel where wall-top cells meet
                 if dy > 0 and (x == cx - 17 and not open_['nw'] or x == cx + 16 and not open_['ne']):
                     lined[y][x] = '.'  # the face runs on into the neighbour's: no seam
     return Hd.to_img(lined)
@@ -350,7 +372,6 @@ def cliff(open_, variant=0):
                 elif k == brink + 1:
                     c = CLIFF_RAMP[3 + shade]  # shadow under the brink
                 put(x, edge + k, c)
-            put(x, edge + CLIFF_RISE + 1, '0')
     lined = R.outline(g, (0, 0, CELL[0], CELL[1]))
     for y in range(CELL[1]):
         for x in range(CELL[0]):

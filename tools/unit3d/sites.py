@@ -15,6 +15,7 @@ from PIL import Image
 
 import base_model as m
 import props as P
+import render as R
 import structures as S
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -24,7 +25,14 @@ BX, BY = S.BACK  # the back corner is (BX/2, BY/2) in cell units
 CELL, PIVOT = (100, 110), (49, 76)
 STONE, STONE_DARK, WOOD, TILE, TILE_DARK = S.STONE, S.STONE_DARK, S.WOOD, S.TILE, S.TILE_DARK
 EARTH, EARTH_DARK = '#c49a5c', '#9c7444'
-S.R.add_ramps({EARTH: 'σρρρ', EARTH_DARK: 'γτττ'})  # the map's wasteland ground (structures.CLIFF_TOP)
+FLOOR = '#a9b2b9'  # paving: repainted by draw_bricked with structures.paving_key
+WALL = '#aab3ba'  # brick walls: stone colour, but bricked by draw_bricked like the castle wall blocks
+MARK = '#ff00ff'  # stand-in colours that find the wall and floor pixels in a second render
+MARK_FLOOR = '#00ffff'
+R.add_ramps({EARTH: 'σρρρ', EARTH_DARK: 'γτττ',  # the map's wasteland ground (structures.CLIFF_TOP)
+             WALL: R.RAMPS[STONE], FLOOR: R.RAMPS[STONE], MARK: 'εδβα', MARK_FLOOR: 'ζζζζ'})
+MARK_SIDES = 'εδ'  # wall side faces in the marker render; 'β' is the lit top
+DARKER = {'5': '4', '4': '3', '3': '2', '2': '1'}
 
 
 def edge(side, s, z=0.0, inset=0.0):
@@ -180,22 +188,14 @@ def thin_wall(side, h, thick):
     along_nw = side in ('nw', 'se')
     for t0, t1 in ((-.5, -DOOR), (DOOR, .5)):
         mid, ln = (t0 + t1)/2, t1 - t0
-        m.box(edge(side, mid, h/2, thick/2), V(thick, ln, h) if along_nw else V(ln, thick, h), STONE)
+        m.box(edge(side, mid, h/2, thick/2), V(thick, ln, h) if along_nw else V(ln, thick, h), WALL)
         battlements(side, h, .1, ends=(t0, t1), inset=thick/2, merlon=.055)
     gateway(side, h, thick)
 
 
-def brick_floor(n=6):
-    """Paved courtyard at ground level: stone bricks with dark joints."""
-    m.box(V(0, 0, .004), V(1, 1, .008), STONE_DARK)
-    for i in range(n):
-        for j in range(n):
-            off = .5/n*(i % 2)
-            x = -.5 + (j + .5)/n + off
-            if x > .5:
-                continue
-            y = -.5 + (i + .5)/n
-            m.box(V(x, y, .012), V(1/n - .02, 1/n - .02, .008), STONE)
+def brick_floor():
+    """Paved courtyard at ground level; draw_bricked lays the paving pattern of the castle floor on it."""
+    m.box(V(0, 0, .004), V(1, 1, .008), FLOOR)
 
 
 def earth_floor(n=8):
@@ -214,7 +214,7 @@ def castle():
         thin_wall(side, .32, .08)
     for k in ('back', 'left', 'right', 'front'):
         c = corner(k, .07)
-        m.box(c + V(0, 0, .25), V(.14, .14, .5), STONE)
+        m.box(c + V(0, 0, .25), V(.14, .14, .5), WALL)
         roof(c + V(0, 0, .5), .14, .14, 0, .14, TILE, TILE_DARK, .03)
     office(.3, .22, .22)
 
@@ -229,6 +229,46 @@ def gate(along):
     office(.3, .22, .22) if along == 'v' else office(.22, .3, .22)
 
 
+def draw_bricked():
+    """Render the cell, then repaint FLOOR with the castle paving (structures.paving_key) and the WALL
+    boxes like the castle wall blocks: one flat stone tone per face direction (no cast shadows), a lit top
+    course and the shared brick grid (structures.brick_joint).
+    Heights count from where each face meets the ground and columns from the cell centre, so the bricks
+    continue the wall blocks of neighbouring cells."""
+    render = S.camera(lambda meshes: R.render(meshes, S.VIEW, S.SCALE, cell=CELL, pivot=PIVOT))
+    keys = render(m.meshes)
+    bias, R.SHADOW_BIAS = R.SHADOW_BIAS, float('inf')  # the marker tones tell the face direction only
+    try:
+        mark = render([(v, {WALL: MARK, FLOOR: MARK_FLOOR}.get(c, c)) for v, c in m.meshes])
+    finally:
+        R.SHADOW_BIAS = bias
+    face = {'δ': S.FACE['sw'], 'ε': S.FACE['se']}  # stone, lit, joint
+    cx, cy = PIVOT[0] + 1, PIVOT[1] + 1
+    for y in range(CELL[1]):
+        for x in range(CELL[0]):
+            if mark[y][x] == 'ζ' and keys[y][x] != '0':  # counted from the small cell below the centre
+                keys[y][x] = S.paving_key(x - cx, y - cy - 8, 'light')
+    for x in range(CELL[0]):
+        y = 0
+        while y < CELL[1]:
+            if keys[y][x] == '0' or mark[y][x] not in face and mark[y][x] != 'β':
+                y += 1
+                continue
+            if mark[y][x] == 'β':  # wall top
+                keys[y][x] = '4'
+                y += 1
+                continue
+            end = y
+            while end + 1 < CELL[1] and mark[end + 1][x] == mark[y][x] and keys[end + 1][x] != '0':
+                end += 1
+            stone, lit, joint = face[mark[y][x]]
+            for yy in range(y, end + 1):
+                k = S.RISE - (end - yy)  # the bottom row of the face is k = RISE, as on a wall block
+                keys[yy][x] = lit if yy == y else joint if S.brick_joint(x - cx, k) else stone
+            y = end + 1
+    return S.Hd.to_img(keys)
+
+
 SITES = {'camp': camp, 'village': village, 'castle': castle, 'gate_u': lambda: gate('u'), 'gate_v': lambda: gate('v')}
 
 
@@ -239,7 +279,7 @@ def main():
         m.meshes = []
         make()
         P.stretch()
-        sheet.alpha_composite(P.draw(CELL, PIVOT), (i*CELL[0], 0))
+        sheet.alpha_composite(draw_bricked(), (i*CELL[0], 0))
     sheet.save(OUT / 'sites.png')
     meta = dict(version=1, image='sites.png', cell=list(CELL), pivot=[PIVOT[0] + 1, PIVOT[1] + 1],
                 pivot_note='cell centre of the 64x32 map diamond', sprites={k: i for i, k in enumerate(SITES)})

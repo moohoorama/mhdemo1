@@ -197,7 +197,7 @@
   },
   "c": {
    "Name": "성벽",
-   "Surface": 2
+   "Surface": 1
   },
   "i": {
    "Name": "성내",
@@ -212,7 +212,7 @@
    "Castle": true,
    "RestHP": 20,
    "RestMP": 3,
-   "Surface": 2
+   "Surface": 1
   },
   "k": {
    "Name": "주둔지",
@@ -229,7 +229,7 @@
    "Castle": true,
    "RestHP": 20,
    "RestMP": 3,
-   "Surface": 2
+   "Surface": 1
   }
  }
 }
