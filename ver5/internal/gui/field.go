@@ -483,43 +483,7 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {
 	if f.renderZoom > 0 {
 		z = float32(f.renderZoom)
 	}
-	top := float32(math.Round(ry))
-	bx := float32(math.Round(rx))
-	vector.FillRect(f.Canvas, bx-9*z, top, 18*z, 3*z, color.RGBA{20, 20, 24, 255}, false)
-	k := float32(u.shownHP) / float32(max(1, u.maxHP))
-	bar := color.RGBA{96, 214, 110, 255}
-	if k <= .25 {
-		bar = color.RGBA{226, 72, 60, 255}
-	} else if k <= .5 {
-		bar = color.RGBA{236, 184, 64, 255}
-	}
-	if f.deployment && !u.ally {
-		bar.R = uint8(float64(bar.R) * .45)
-		bar.G = uint8(float64(bar.G) * .45)
-		bar.B = uint8(float64(bar.B) * .45)
-	}
-	vector.FillRect(f.Canvas, bx-8*z, top+z, float32(math.Max(1, math.Round(float64(16*k*z)))), z, bar, false)
-	team := color.RGBA{86, 160, 236, 255}
-	if !u.ally {
-		team = color.RGBA{232, 84, 70, 255}
-	}
-	if f.deployment && !u.ally {
-		team.R = uint8(float64(team.R) * .45)
-		team.G = uint8(float64(team.G) * .45)
-		team.B = uint8(float64(team.B) * .45)
-	}
-	vector.FillRect(f.Canvas, bx-11*z, top, 2*z, 3*z, team, false)
-	vector.FillRect(f.Canvas, bx-9*z, top+4*z, 18*z, 3*z, color.RGBA{20, 20, 24, 255}, false)
-	mp := color.RGBA{85, 150, 255, 255}
-	if f.deployment && !u.ally {
-		mp.R = uint8(float64(mp.R) * .45)
-		mp.G = uint8(float64(mp.G) * .45)
-		mp.B = uint8(float64(mp.B) * .45)
-	}
-	mpWidth := float32(math.Round(float64(16*z) * float64(u.shownMP) / float64(max(1, u.maxMP))))
-	if u.shownMP > 0 {
-		vector.FillRect(f.Canvas, bx-8*z, top+5*z, max(z, min(16*z, mpWidth)), z, mp, false)
-	}
+	f.drawUnitBar(u, float32(math.Round(rx)), float32(math.Round(ry)), z)
 }
 
 // Bounds of the canvas, for the camera.

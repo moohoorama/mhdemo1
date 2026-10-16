@@ -60,6 +60,7 @@ type unitVis struct {
 	flash        float64
 	top          float64
 	status       map[string]core.Status
+	bar          barState
 }
 type walkState struct {
 	fu, fv, tu, tv, fl, tl, t float64
@@ -131,6 +132,7 @@ func (u *unitVis) update(dt float64) {
 	}
 	u.shakeT = math.Max(0, u.shakeT-dt)
 	u.flash = math.Max(0, u.flash-dt*4)
+	u.bar.update(float64(u.shownHP)/float64(max(1, u.maxHP)), dt)
 	if u.dying >= 0 {
 		u.dying += dt
 		u.gone = u.dying >= blinkTime
