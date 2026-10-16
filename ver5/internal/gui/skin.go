@@ -3,6 +3,7 @@ package gui
 import (
 	"image"
 	"image/color"
+	"math"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -36,29 +37,69 @@ type button struct {
 // drawn on the screen goes through the helpers below, which apply it.
 var scale = 1.0
 
+// uiZoom enlarges a block of UI about the layout point (uiOX, uiOY) on top of scale: the
+// player's UI size setting, applied by withUI around panels anchored to a unit.
+var uiZoom, uiOX, uiOY = 1.0, 0.0, 0.0
+
+func ux(x float32) float32 { return (x-float32(uiOX))*float32(uiZoom) + float32(uiOX) }
+func uy(y float32) float32 { return (y-float32(uiOY))*float32(uiZoom) + float32(uiOY) }
+
+// toLayout maps a rectangle drawn under uiZoom to the layout rectangle it covers.
+func toLayout(r image.Rectangle) image.Rectangle {
+	return image.Rect(int(ux(float32(r.Min.X))), int(uy(float32(r.Min.Y))), int(math.Ceil(float64(ux(float32(r.Max.X))))), int(math.Ceil(float64(uy(float32(r.Max.Y))))))
+}
+
+// withUI draws f with the UI size setting applied about layout point (x, y).
+func (g *Game) withUI(x, y float64, f func()) {
+	uiZoom, uiOX, uiOY = g.uiScale(), x, y
+	defer func() { uiZoom, uiOX, uiOY = 1, 0, 0 }()
+	f()
+}
+
+// uiScale is the player's UI size, or the platform default when unset.
+func (g *Game) uiScale() float64 {
+	if p := g.S.Settings.UIScale; p > 0 {
+		return float64(p) / 100
+	}
+	return float64(DefaultUIScale) / 100
+}
+
+// DefaultUIScale is the UI size in percent when the player has not chosen one; the
+// Android build raises it for small screens.
+var DefaultUIScale = 100
+
+// uiBounds is the layout span, under uiZoom, that stays on screen with margin m.
+func uiBounds(m int) image.Rectangle {
+	z := uiZoom
+	return image.Rect(int(uiOX+(float64(m)-uiOX)/z), int(uiOY+(float64(48)-uiOY)/z), int(uiOX+(float64(Width-m)-uiOX)/z), int(uiOY+(float64(Height-m)-uiOY)/z))
+}
+
 func rect(dst *ebiten.Image, x, y, w, h float32, c color.Color) {
-	s := float32(scale)
-	vector.FillRect(dst, x*s, y*s, w*s, h*s, c, false)
+	s, z := float32(scale), float32(uiZoom)
+	vector.FillRect(dst, ux(x)*s, uy(y)*s, w*z*s, h*z*s, c, false)
 }
 
 func strokeRect(dst *ebiten.Image, x, y, w, h, width float32, c color.Color) {
-	s := float32(scale)
-	vector.StrokeRect(dst, x*s, y*s, w*s, h*s, width*s, c, false)
+	s, z := float32(scale), float32(uiZoom)
+	vector.StrokeRect(dst, ux(x)*s, uy(y)*s, w*z*s, h*z*s, width*z*s, c, false)
 }
 
 func strokeLine(dst *ebiten.Image, x0, y0, x1, y1, width float32, c color.Color) {
 	s := float32(scale)
-	vector.StrokeLine(dst, x0*s, y0*s, x1*s, y1*s, width*s, c, true)
+	vector.StrokeLine(dst, ux(x0)*s, uy(y0)*s, ux(x1)*s, uy(y1)*s, width*float32(uiZoom)*s, c, true)
 }
 
 func fillCircle(dst *ebiten.Image, x, y, r float32, c color.Color) {
 	s := float32(scale)
-	vector.FillCircle(dst, x*s, y*s, r*s, c, true)
+	vector.FillCircle(dst, ux(x)*s, uy(y)*s, r*float32(uiZoom)*s, c, true)
 }
 
 func scaled(p *vector.Path) *vector.Path {
 	var q vector.Path
 	o := &vector.AddPathOptions{}
+	o.GeoM.Translate(-uiOX, -uiOY)
+	o.GeoM.Scale(uiZoom, uiZoom)
+	o.GeoM.Translate(uiOX, uiOY)
 	o.GeoM.Scale(scale, scale)
 	q.AddPath(p, o)
 	return &q
@@ -69,12 +110,15 @@ func fillPath(dst *ebiten.Image, p *vector.Path, op *vector.DrawPathOptions) {
 }
 
 func strokePath(dst *ebiten.Image, p *vector.Path, so vector.StrokeOptions, op *vector.DrawPathOptions) {
-	so.Width *= float32(scale)
+	so.Width *= float32(scale * uiZoom)
 	vector.StrokePath(dst, scaled(p), &so, op)
 }
 
 // drawScaled draws src with op's logical transform, then scales to device pixels.
 func drawScaled(dst, src *ebiten.Image, op *ebiten.DrawImageOptions) {
+	op.GeoM.Translate(-uiOX, -uiOY)
+	op.GeoM.Scale(uiZoom, uiZoom)
+	op.GeoM.Translate(uiOX, uiOY)
 	op.GeoM.Scale(scale, scale)
 	dst.DrawImage(src, op)
 }
@@ -106,11 +150,11 @@ func (g *Game) serif(size float64, weight float32) *text.GoTextFace {
 // write draws s in face f at layout (x, y); op may carry extra colour or transform.
 func write(dst *ebiten.Image, s string, f *text.GoTextFace, x, y float64, c color.Color) {
 	op := &text.DrawOptions{}
-	op.GeoM.Translate(x*scale, y*scale)
+	op.GeoM.Translate(float64(ux(float32(x)))*scale, float64(uy(float32(y)))*scale)
 	op.ColorScale.ScaleWithColor(c)
-	op.LineSpacing = f.Size * 1.45 * scale
+	op.LineSpacing = f.Size * 1.45 * scale * uiZoom
 	sf := *f
-	sf.Size *= scale
+	sf.Size *= scale * uiZoom
 	text.Draw(dst, s, &sf, op)
 }
 
@@ -122,11 +166,11 @@ func measure(s string, f *text.GoTextFace) float64 {
 
 func (g *Game) label(dst *ebiten.Image, s string, x, y, size float64, c color.Color) {
 	op := &text.DrawOptions{}
-	op.GeoM.Translate(x*scale, y*scale)
+	op.GeoM.Translate(float64(ux(float32(x)))*scale, float64(uy(float32(y)))*scale)
 	op.ColorScale.ScaleWithColor(c)
-	op.LineSpacing = size * 1.45 * scale
+	op.LineSpacing = size * 1.45 * scale * uiZoom
 	f := g.face(size)
-	f.Size *= scale
+	f.Size *= scale * uiZoom
 	text.Draw(dst, s, f, op)
 }
 
@@ -223,7 +267,7 @@ var cursorPos = func() (int, int) {
 
 func hovered(r image.Rectangle) bool {
 	x, y := cursorPos()
-	return image.Pt(x, y).In(r)
+	return image.Pt(x, y).In(toLayout(r))
 }
 
 // btn registers a clickable button; a nil click draws it disabled.
@@ -233,7 +277,7 @@ func (g *Game) btn(dst *ebiten.Image, r image.Rectangle, label string, click fun
 	if click == nil {
 		body, fg = color.NRGBA{R: 40, G: 34, B: 30, A: 235}, color.NRGBA{R: 138, G: 130, B: 118, A: 255}
 	} else {
-		g.buttons = append(g.buttons, button{r, label, click})
+		g.buttons = append(g.buttons, button{toLayout(r), label, click})
 		if hovered(r) {
 			body, rim = hoverC, gold
 		}
@@ -258,7 +302,7 @@ func (g *Game) arrow(dst *ebiten.Image, r image.Rectangle, up bool, click func()
 		strokeRect(dst, x+.5, y+.5, w-1, h-1, 1, color.NRGBA{R: 58, G: 48, B: 40, A: 255})
 		fg = color.NRGBA{R: 74, G: 66, B: 58, A: 255}
 	} else {
-		g.buttons = append(g.buttons, button{r, "", click})
+		g.buttons = append(g.buttons, button{toLayout(r), "", click})
 		body := lacquer2
 		if hovered(r) {
 			body = hoverC
@@ -292,7 +336,7 @@ func (g *Game) button(dst *ebiten.Image, label string, x, y, w int, f func()) {
 }
 
 // block keeps map clicks from passing through a HUD panel.
-func (g *Game) block(r image.Rectangle) { g.blocks = append(g.blocks, r) }
+func (g *Game) block(r image.Rectangle) { g.blocks = append(g.blocks, toLayout(r)) }
 
 func bar(dst *ebiten.Image, x, y, w, h float32, k float64, c color.Color) {
 	rect(dst, x, y, w, h, trough)
@@ -315,10 +359,11 @@ func (g *Game) tooltip(dst *ebiten.Image, s string, x, y int) {
 	s = wrap(s, 20)
 	lines := strings.Count(s, "\n") + 1
 	w, h := 300, 20+lines*20
-	if x+w > Width-8 {
-		x = max(8, x-w-330)
+	b := uiBounds(8)
+	if x+w > b.Max.X {
+		x = max(b.Min.X, x-w-330)
 	}
-	y = max(48, min(Height-h-8, y))
+	y = max(b.Min.Y, min(b.Max.Y-h, y))
 	r := image.Rect(x, y, x+w, y+h)
 	window(dst, r)
 	g.label(dst, s, float64(x+14), float64(y+9), 13, ink)

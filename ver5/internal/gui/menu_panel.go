@@ -69,12 +69,13 @@ func (g *Game) drawPanel(dst *ebiten.Image, p panelSpec) image.Rectangle {
 	now := g.uiSeconds
 	t := now - p.anim.openedAt
 	h := g.panelHeight(p)
-	x := max(8, min(Width-p.w-8, p.x))
-	y := max(48, min(Height-h-8, p.y))
+	bound := uiBounds(8)
+	x := max(bound.Min.X, min(bound.Max.X-p.w, p.x))
+	y := max(bound.Min.Y, min(bound.Max.Y-h, p.y))
 	r := image.Rect(x, y, x+p.w, y+h)
 	g.block(r)
 	open := bezier(.2, .8, .3, 1, phase(t, 0, panelOpen))
-	clip := image.Rect(int(float64(x-4)*scale), int(float64(y-2)*scale), int(float64(x+p.w+8)*scale), int((float64(y)+float64(h)*open+8)*scale))
+	clip := image.Rect(int(float64(ux(float32(x-4)))*scale), int(float64(uy(float32(y-2)))*scale), int(float64(ux(float32(x+p.w+8)))*scale), int(float64(uy(float32(float64(y)+float64(h)*open+8)))*scale))
 	cd := dst.SubImage(clip).(*ebiten.Image)
 	fx, fy, fw, fh := float32(x), float32(y), float32(p.w), float32(h)
 	rect(cd, fx+3, fy+5, fw, fh, color.NRGBA{A: 110})
@@ -126,7 +127,7 @@ func (g *Game) drawPanel(dst *ebiten.Image, p panelSpec) image.Rectangle {
 			p.anim.hot = -1
 		}
 		if it.click != nil {
-			g.buttons = append(g.buttons, button{b, it.label, it.click})
+			g.buttons = append(g.buttons, button{toLayout(b), it.label, it.click})
 		}
 		dx, a := slide(n)
 		n++

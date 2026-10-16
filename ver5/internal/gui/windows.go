@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"math"
 	"os"
 	"path/filepath"
 	"sort"
@@ -165,9 +166,14 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 				g.request(session.Request{Op: "settings", Settings: &v})
 			}},
 			{fmt.Sprintf("재생 속도: ×%d", g.speed), func() { g.speed = nextSpeed[g.speed] }},
+			{fmt.Sprintf("UI 크기: %.0f%%", g.uiScale()*100), func() {
+				v := g.S.Settings
+				v.UIScale = nextUIScale(int(math.Round(g.uiScale() * 100)))
+				g.request(session.Request{Op: "settings", Settings: &v})
+			}},
 		}
 		for i, it := range rows {
-			g.btn(dst, image.Rect(left, y+70+i*54, x+w-32, y+70+i*54+42), it.label, it.click)
+			g.btn(dst, image.Rect(left, y+70+i*48, x+w-32, y+70+i*48+40), it.label, it.click)
 		}
 		g.label(dst, "조작: 클릭 선택 · 우클릭/Esc 취소 · 드래그/화면 가장자리/화살표 화면 이동 · 휠 확대\n"+
 			"U 부대 일람 · T 위협 범위 · L 기록 · P 자동 진행 · E 진영 종료\n"+
@@ -409,4 +415,16 @@ func resultUnits(o core.Observation) []core.UnitView {
 		}
 	}
 	return units
+}
+
+// uiScales are the UI size steps the settings button cycles through.
+var uiScales = []int{80, 100, 115, 130, 145, 160}
+
+func nextUIScale(now int) int {
+	for _, s := range uiScales {
+		if s > now {
+			return s
+		}
+	}
+	return uiScales[0]
 }

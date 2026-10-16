@@ -27,6 +27,7 @@ func Start(root string) error {
 			startErr = err
 			return
 		}
+		gui.DefaultUIScale = 130 // phone screens: larger menus and windows by default
 		g, err := gui.New(s, filepath.Join(root, "runtime", "assets", "fonts", "NotoSansKR.ttf"), 1, "")
 		if err != nil {
 			startErr = err

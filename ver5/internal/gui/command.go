@@ -288,6 +288,10 @@ func (g *Game) drawMenu(dst *ebiten.Image) {
 	}
 	cx, cy := g.field.Center(v.u, v.v)
 	sx, sy := g.toScreen(cx, cy-v.lift)
+	g.withUI(sx, sy, func() { g.drawMenuAt(dst, sx, sy) })
+}
+
+func (g *Game) drawMenuAt(dst *ebiten.Image, sx, sy float64) {
 	x := int(sx + 16*g.zoom)
 	key := g.ord.actor + "/" + g.ord.stage
 	g.menuAnim.touch(fmt.Sprintf("%s/%p", g.ord.actor, g.ord.move), g.uiSeconds)
@@ -574,7 +578,12 @@ func (g *Game) forecast(dst *ebiten.Image) {
 	if !self {
 		h += sideHeight(t) + 8
 	}
-	r := g.besideTarget(o, t, w, h)
+	// place the enlarged window, then draw it at its top-left under the UI size
+	z := g.uiScale()
+	r := g.besideTarget(o, t, int(float64(w)*z), int(float64(h)*z))
+	uiZoom, uiOX, uiOY = z, float64(r.Min.X), float64(r.Min.Y)
+	defer func() { uiZoom, uiOX, uiOY = 1, 0, 0 }()
+	r = image.Rect(r.Min.X, r.Min.Y, r.Min.X+w, r.Min.Y+h)
 	title := map[string]string{"attack": "공격", "skill": g.skillName(c.Skill), "item": g.itemName(c.Item)}[c.Kind]
 	g.titled(dst, r, title)
 	x, y := r.Min.X+16, r.Min.Y+18

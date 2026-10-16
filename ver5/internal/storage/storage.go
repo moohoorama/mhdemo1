@@ -28,11 +28,12 @@ type Settings struct {
 	Color       bool   `json:"color"`
 	Detail      bool   `json:"detail"`
 	TextDelayMS int    `json:"text_delay_ms"`
+	UIScale     int    `json:"ui_scale,omitempty"` // percent; 0 is the platform default
 }
 
 func DefaultSettings() Settings { return Settings{AI: "auto", Detail: true} }
 func (s Settings) Validate() error {
-	if s.AI != "auto" && s.AI != "step" || s.TextDelayMS < 0 || s.TextDelayMS > 1000 {
+	if s.AI != "auto" && s.AI != "step" || s.TextDelayMS < 0 || s.TextDelayMS > 1000 || s.UIScale != 0 && (s.UIScale < 80 || s.UIScale > 160) {
 		return fmt.Errorf("InvalidSettings")
 	}
 	return nil
