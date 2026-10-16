@@ -3,7 +3,12 @@ around the arm, uprights and skid ends, iron fittings on the axle and counterwei
 
 Model space: front (the throwing direction) is -y, the engine stands on z = 0. The arm turns about the axle in the y-z
 plane: phi = 0 long end straight up, 90 forward horizontal, 180 straight down, 210 down at the rear (cocked), 385 swung
-over the top and up-forward (release). Everything is scaled by S so the engine stands about as tall as a foot soldier.
+over the top and up-forward (release), 418 = 58 stopped by the padded front bar. Everything is scaled by S so the
+engine stands about as tall as a foot soldier.
+
+The attack is a lever throw: cocked (bucket low behind the axle), the arm whipping up through 45 degrees behind, just
+past vertical (the stone leaves; the game's flying stone takes over from the bucket), then slammed into the stop bar
+with a small rebound and a shudder. The trail is a crescent along the circle the bucket sweeps about the axle.
 """
 import math
 
@@ -21,6 +26,8 @@ LONG, SHORT = 1.45, .62          # arm lengths either side of the axle
 WHEEL_R, WHEEL_X, AXLE_Y = .4, .68, .62
 SKID_X = .42
 DRUM = V([0, .85, .8])
+STOP_Y, STOP_Z, STOP_X = -.7, 2.44, .3   # front stop bar: posts on the skids, a padded crossbar the arm slams into
+COCKED, SWING, RELEASE, STOPPED = 205, 315, 375, 415   # attack arm angles (stopped = 418 against the bar, rebounded 3)
 
 
 def parts(fn):
@@ -95,6 +102,10 @@ def body(phi, spin=0, sway=0, stone='pan', rope=True, sag=0):
         m.ell(end + V([0, 0, .15]), [.17]*3, U.STEEL)
     elif stone == 'ground':
         m.ell([-.15, -1.2, .17], [.17]*3, U.STEEL)
+    for x in (-STOP_X, STOP_X):                                   # stop posts and the padded crossbar
+        m.rod([x, STOP_Y, .52], [x, STOP_Y, STOP_Z], .05, WOOD)
+    m.rod([-STOP_X - .05, STOP_Y, STOP_Z], [STOP_X + .05, STOP_Y, STOP_Z], .05, WOOD_DARK)
+    m.rod([-.14, STOP_Y, STOP_Z], [.14, STOP_Y, STOP_Z], .085, U.BLUE)
     for x in (-.3, .3):                                           # winch: posts, drum with a cloth wrap, crank
         m.rod([x, DRUM[1], .55], [x, DRUM[1], DRUM[2]], .05, WOOD)
     m.rod(DRUM + V([-.3, 0, 0]), DRUM + V([.3, 0, 0]), .12, WOOD_DARK)
@@ -120,12 +131,13 @@ def pose(row, f):
         p.update(phi=118 + 2*math.sin(ph), sway=.16*math.sin(ph))
     elif row == 1:                                                # walk: pushed forward, wheels turn, the frame rocks
         p.update(phi=124 + 2*math.sin(ph), spin=f*math.pi/6, shift=V([0, 0, [0, .03, 0, .03][f]]), sway=.2*math.sin(ph))
-    elif row == 2:                                                # attack: winch back, tension, release, follow through
-        p.update(phi=[205, 222, 385, 470][f], sway=[.05, .0, .35, -.2][f], rope=f < 2)
-        if f == 1:
-            p.update(shift=V([0, 0, -.03]), pitch=.03)
-        if f >= 2:
-            p.update(stone='flight' if f == 2 else 'none', pitch=[0, 0, -.07, -.03][f], shift=V([0, [0, 0, .06, .03][f], 0]))
+    elif row == 2:                                                # attack: cocked, whip up, release, slam into the bar
+        p.update(phi=[COCKED, SWING, RELEASE, STOPPED][f], sway=[.05, -.15, -.3, .3][f], rope=f == 0,
+                 stone='pan' if f < 2 else 'none')
+        if f == 0:                                                # held down by the winch: the frame squats a little
+            p.update(shift=V([0, 0, -.02]), pitch=.03)
+        if f == 3:                                                # the blow on the bar: the frame bucks forward
+            p.update(pitch=-.06, roll=.02, shift=V([0, -.05, .02]))
     elif row == 3:                                                # hit: shudders sideways, a wheel lifts, the cloth snaps
         p.update(phi=118 + [0, 4, -5, 2][f], roll=[0, .03, .13, .05][f], shift=V([[0, .05, -.04, .02][f], [0, .06, .12, .06][f], 0]),
                  sway=[0, .3, -.35, .15][f])
@@ -150,17 +162,33 @@ def transform(p):
     return tf
 
 
-def effects_for(row, f, end, tf):
-    if row != 2 or f < 2:
+def sweep(a, b, alpha, yaw=0, n=12):
+    """Crescent along the bucket's circle from arm angle a to b: thin at the tail, full at the bucket. Seen from the
+    front or the back that circle is edge-on (a straight line on screen), so yaw (degrees) turns the whole circle
+    about the upright through the axle, which shows it as an ellipse, and slides it back so it ends on the bucket."""
+    k = math.radians(yaw)
+    turn = lambda q: P + V([-(q - P)[1]*math.sin(k), (q - P)[1]*math.cos(k), (q - P)[2]])
+    pairs = []
+    for i in range(n + 1):
+        t = i / n
+        u = arm_dir(a + (b - a)*t)
+        pairs.append((turn(P + u*(LONG - .08 - .5*t)), turn(P + u*(LONG + .18))))
+    back = P + arm_dir(b)*(LONG + .18) - pairs[-1][1]
+    pairs = [(i + back, o + back) for i, o in pairs]
+    return dict(kind='arc', pairs=pairs, alpha=alpha, layer='under')
+
+
+def effects_for(row, f, end, tf, style=None):
+    if row != 2 or f == 0:
         return []
-    if f == 2:
-        d = V([0, -.75, .66])/np.linalg.norm([0, -.75, .66])
-        flight = end + d*.9
-        lines = [(tf(flight - d*.2 + o), tf(flight - d*1.6 + o)) for o in (V([.32, 0, 0]), V([-.32, 0, 0]), V([.18, 0, .3]), V([-.18, 0, .3]))]
-        return [dict(kind='lines', alpha=1, layer='under', segments=lines),
-                dict(kind='wedge', start=tf(end), end=tf(flight + d*1.0), width=.45, alpha=1, layer='under'),
-                dict(kind='ring', center=tf(V([0, 0, .3])), axis=V([0, 0, 1]), radius=1.15*S, alpha=1, layer='over')]
-    return [dict(kind='ring', center=tf(V([0, 0, .3])), axis=V([0, 0, 1]), radius=1.4*S, alpha=.45, layer='over')]
+    yaw = {'charge_n': 55, 'charge_s': 55}.get(style, 0)   # N and S views (M.FACING_STYLE)
+    arc = {1: sweep(COCKED + 25, SWING, .85, yaw), 2: sweep(SWING - 35, RELEASE, 1, yaw),
+           3: sweep(RELEASE, STOPPED + 3, .6, yaw)}[f]
+    arc['pairs'] = [(tf(i), tf(o)) for i, o in arc['pairs']]
+    if f < 3:
+        return [arc]
+    hit = V([0, STOP_Y, STOP_Z])                                  # the slam: a short ring where the arm meets the bar
+    return [arc, dict(kind='ring', center=tf(hit), axis=V([0, 1, 0]), radius=.32*S, alpha=.8, layer='over')]
 
 
 def catapult(row, f, style=None):
@@ -171,16 +199,13 @@ def catapult(row, f, style=None):
     def draw():
         nonlocal end
         end = body(p['phi'], p['spin'], p['sway'], p['stone'], p['rope'], p['sag'])
-        if p['stone'] == 'flight':
-            d = V([0, -.75, .66])/np.linalg.norm([0, -.75, .66])
-            m.ell(end + d*.9, [.17]*3, U.STEEL)
 
     faces = [(tf(v), c) for v, c in parts(draw)]
-    return U.result(faces, tf(V([0, 0, 2.3])), row, f, effects_for(row, f, end, tf))
+    return U.result(faces, tf(V([0, 0, 2.3])), row, f, effects_for(row, f, end, tf, style))
 
 
 def make():
     return catapult, Hd.heads({d: ['.'*13]*12 for d in Hd.IRON})  # body only: no head anywhere
 
 
-M.register('catapult', make)
+M.register('catapult', make, vertical_spear=True)  # no spear: only the N/S facing style for the attack trail
