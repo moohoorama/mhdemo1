@@ -194,7 +194,7 @@ def make():
                             weapon=None, robe=U.BLUE)
     R.add_ramps({WOOD: 'kllm', KNOT: 'kkll', CORD: 'kkkl', TRIM: '5566', S.GOURD: 'ABCC'})
     R.COLOR.update({'x': (42, 30, 25), 'y': (71, 52, 42)})
-    M.KEY2TAG.update(x='i', y='h', q='j', p='k')  # hair keys; the tired face's sweat drop -> faction light
+    M.KEY2TAG.update(x='i', y='h', **{M.MOUTH: 'h'})  # hair keys; mouth hair2 (themeB is the gourd)
 
     def build(row, f, style=None):
         return mystic(row, f)

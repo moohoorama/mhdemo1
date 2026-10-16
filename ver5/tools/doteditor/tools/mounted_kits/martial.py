@@ -66,5 +66,4 @@ def uniform(p, T):
 def setup():
     R.add_ramps({U.SKIN: 'xijj', TRIM: 'WWWW', BELT: 'ffgg'})
     R.COLOR['x'] = (150, 94, 43)  # preview colour of the dark skin key
-    # hemp -> themeC; skin j/i/x -> skin1/2/3; mouth -> themeB3; sweat drops -> effect2/3
-    M.KEY2TAG.update(S='s', T='t', U='u', j='d', i='e', x='f', b='r', q='F', p='G')
+    M.KEY2TAG.update(S='s', T='t', U='u', j='d', i='e', x='f')  # hemp -> themeC; skin j/i/x -> skin1/2/3

@@ -18,8 +18,8 @@ BLADE_EDGE, BLADE_MID, BLADE_SPINE = '#e5f4ff', '#9fb0bd', '#5a6470'
 PELT, PELT_LIGHT, STRIPE = '#c07a2a', '#e0a050', '#2a1a14'
 RAMPS = {BLADE_MID: '3445', BLADE_SPINE: '2223', PELT: 'kkll', PELT_LIGHT: 'klmm', STRIPE: 'ffff'}
 KIT = dict(cloth=U.HEMP, tabard=U.BROWN, guard=U.HEMP_DARK, shoulder=U.SKIN, arms=U.SKIN, shield=False, weapon='dadao')
-# render keys -> tags for this unit: hemp S T U, pelt k l m, head hair 7 8 9, sweat drop q p
-KEYS = dict(S='s', T='t', U='u', k='q', l='p', m='p', **{'7': 'i', '8': 'h', '9': 'g'}, q='a', p='b')
+# render keys -> tags for this unit: hemp S T U, pelt k l m, head hair 7 8 9 (the beard hides the mouth: see make)
+KEYS = dict(S='s', T='t', U='u', k='q', l='p', m='p', **{'7': 'i', '8': 'h', '9': 'g'})
 HAIR_KEYS = {'f': '8', 'g': '9', '1': '7'}                    # head grid: hair / beard -> the hair render keys
 
 # Heavy overhead chop: higher wind-up with the blade hanging far behind, a deeper lunge, both hands on the grip

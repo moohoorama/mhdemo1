@@ -142,6 +142,7 @@ HELM_TOPS = {
 
 def make():
     U.KITS[KIT] = dict(U.KITS['archer'])
+    M.KEY2TAG[M.MOUTH] = 'h'  # themeB is the pale wood: the mouth takes hair2
     A.BOW[KIT] = dict(name='연노', effect='streak', frames=[])
 
     def build(row, f, style=None):

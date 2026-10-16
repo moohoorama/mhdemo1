@@ -230,7 +230,7 @@ def make():
                               robe=U.BLUE)
     R.add_ramps({TUFT: '4556', TUFT_SHADE: '4455', TUFT_LIGHT: '5666', HANDLE: 'kllm', GOURD: 'ABCC'})
     R.COLOR.update({'x': (42, 30, 25), 'y': (71, 52, 42)})
-    M.KEY2TAG.update(x='i', y='h', q='j', p='k')  # hair keys; the tired face's sweat drop -> faction light
+    M.KEY2TAG.update(x='i', y='h', **{M.MOUTH: 'h'})  # hair keys; mouth hair2 (themeB is the gourd)
     U.WEAPON_COLORS.update({TUFT, TUFT_SHADE, TUFT_LIGHT, HANDLE})
 
     def build(row, f, style=None):

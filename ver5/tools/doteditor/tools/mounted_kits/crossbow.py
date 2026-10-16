@@ -133,6 +133,8 @@ def block(f):
 
 
 def make():
+    M.KEY2TAG[M.MOUTH] = 'h'  # themeB is the pale wood: the mouth takes hair2
+
     def build(row, f, style=None):
         return block(f) if row == B.BLOCK else crossbowman(row, f)
     return build, Hd.heads(Hd.HOOD, Hd.HOOD_CLOTH)

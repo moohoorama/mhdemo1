@@ -193,8 +193,7 @@ def block(f):
 
 def make():
     R.add_ramps({TROUSERS: 'UTSS', SCROLL: 'ABCC', CORD: '1234', COLLAR: '5566'})
-    M.KEY2TAG.update({'7': 'g', '8': 'h', '9': 'i', 'S': 's', 'T': 't', 'U': 'u',
-                      'p': 'F', 'q': 'E'})  # sweat drops of the tired face: effect colours, not horse tags
+    M.KEY2TAG.update({'7': 'g', '8': 'h', '9': 'i', 'S': 's', 'T': 't', 'U': 'u', M.MOUTH: 'h'})  # themeB: the scroll
     U.WEAPON_COLORS.add(SCROLL)  # the scroll is drawn over the stamped head where it passes in front of it
 
     def build(row, f, style=None):

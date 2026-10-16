@@ -2,6 +2,8 @@
 """3D cel-shaded render -> tag grid working copy for MOUNTED class sprites (rider on a horse, chariot).
 
   python3 grid3d_mounted.py <id> --unit light_cavalry [--base cavalry] [--anims ..] [--dirs ..]
+  python3 grid3d_mounted.py <id> --unit K --denoise          # also clean the shading noise (denoise.py), head kept
+  python3 grid3d_mounted.py <id> --unit K --denoise-only     # clean the existing grid files in place (no re-convert)
   python3 grid3d_mounted.py resize <id> LEFT RIGHT TOP BOTTOM     # grow the cell, pivot follows (negative shrinks)
 
 Same idea as grid3d.py (tools/unit3d renders, this file converts), but for units whose head is a real 3D-stamped
@@ -21,6 +23,7 @@ import sys
 from pathlib import Path
 
 import grid3d as G
+import denoise
 import dots
 
 if __name__ == '__main__':
@@ -36,8 +39,26 @@ R.add_ramps({COAT[0]: 'nopp', COAT[1]: 'qrrr', COAT[2]: '0sst', '#a91e2c': 'uuvw
 U.COATS['dot'] = COAT
 # the knight palette stops at 'r': placeholder render colours for the new keys (the dot tags decide the final colours)
 R.COLOR.update({'s': (61, 34, 29), 't': (102, 56, 32), 'u': (27, 51, 88), 'v': (53, 103, 166), 'w': (90, 143, 208)})
-# keys -> tags: horseSkin v w x, horseMane y z A, saddle B C D; 'b' is the face's mouth pixel (hair2)
-KEY2TAG = dict(G.KEY2TAG, n='x', o='w', p='v', q='w', r='v', s='A', t='z', u='D', v='C', w='B', b='h')
+# The face expression (heads.expression) draws the mouth with 'b' (red cloth shadow) and the tired sweat drop with
+# 'q' over 'p' (horse muzzle / coat keys here): re-key those pixels to private keys so they get their own tags.
+MOUTH, SWEAT = '<', {'q': '>', 'p': '^'}
+R.COLOR.update({MOUTH: (101, 13, 36), '>': (140, 213, 255), '^': (73, 173, 240)})
+# keys -> tags: horseSkin v w x, horseMane y z A, saddle B C D; mouth themeB3 (the 2D sheets' dark red; a kit whose
+# themeB is a material, e.g. a buckler or a gourd, maps MOUTH to hair2 instead), sweat effect2 over effect3
+KEY2TAG = dict(G.KEY2TAG, n='x', o='w', p='v', q='w', r='v', s='A', t='z', u='D', v='C', w='B', b='h',
+               **{MOUTH: 'r', '>': 'F', '^': 'G'})
+
+
+def _face_keys(expression):
+    face = {'b': MOUTH, **SWEAT}
+
+    def keyed(head, kind, skin, lid):
+        out = expression(head, kind, skin, lid)
+        return [''.join(face.get(c, c) if c != h else c for c, h in zip(row, src)) for row, src in zip(out, head)]
+    return keyed
+
+
+Hd.expression = _face_keys(Hd.expression)
 
 
 def register(name, make, vertical_spear=False):
@@ -128,6 +149,14 @@ def convert(a):
     Hd.to_img = lambda g: (captured.append([r[:] for r in g]), to_img(g))[1]
     draw = B.E.draw
     B.E.draw = lambda *args: effects.append(draw(*args)) or effects[-1]
+    head_px = []  # pixels the 2D head stamp changed (render coordinates): never denoised
+    stamp = Hd.stamp
+
+    def tracked_stamp(g, *args):
+        before = [r[:] for r in g]
+        stamp(g, *args)
+        head_px[:] = [(x, y) for y, (r0, r1) in enumerate(zip(before, g)) for x, (c0, c1) in enumerate(zip(r0, r1)) if c0 != c1]
+    Hd.stamp = tracked_stamp
     out_root, ref_root = dots.HEROES / a.id / 'grid', dots.HEROES / a.base / 'grid'
     bw, bh = base['cell']
     for d in a.dirs.split(','):
@@ -142,6 +171,14 @@ def convert(a):
                 effects.clear()
                 B.frame(build, heads, B.SPEC, d, B.ANIMATIONS.index(anim), n, lift=0,
                         style=FACING_STYLE.get(d) if vertical and anim == 'attack' else None)
+                path = out_root / anim / f'{d}-{n}.txt'
+                protect = [[False] * w for _ in range(h)]
+                for x, y in head_px:
+                    if 0 <= x + dx < w and 0 <= y + dy < h:
+                        protect[y + dy][x + dx] = True
+                if a.denoise_only:  # keep the grid file's pixels (hand fixes included), only clean them
+                    G.write_grid(path, denoise.clean(read(path), protect)[0])
+                    continue
                 out = [['.'] * w for _ in range(h)]
                 for y, row in enumerate(captured[-1]):
                     for x, c in enumerate(row):
@@ -163,7 +200,9 @@ def convert(a):
                         for x in range(bw):
                             if ref[y][x] in G.EFFECT and 0 <= x + ox < w and 0 <= y + oy < h and out[y + oy][x + ox] == '.':
                                 out[y + oy][x + ox] = ref[y][x]
-                G.write_grid(out_root / anim / f'{d}-{n}.txt', out)
+                if a.denoise:
+                    out = denoise.clean(out, protect)[0]
+                G.write_grid(path, out)
         print(d, 'done', flush=True)
 
 
@@ -180,6 +219,9 @@ def main():
     ap.add_argument('--base', default='cavalry')
     ap.add_argument('--anims', default=','.join(B.ANIMATIONS))
     ap.add_argument('--dirs', default=','.join(B.DIRECTIONS))
+    ap.add_argument('--denoise', action='store_true', help='clean the converted frames with denoise.clean (head kept)')
+    ap.add_argument('--denoise-only', action='store_true',
+                    help='render only to locate the head, then clean the existing grid files in place')
     convert(ap.parse_args())
 
 

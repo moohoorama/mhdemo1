@@ -188,7 +188,7 @@ def block(f):
 def make():
     U.KITS['grand_strategist'] = KIT
     R.add_ramps({TRIM: '5566', GOLD_BACK: 'kllm'})
-    M.KEY2TAG.update({'7': 'g', '8': 'h', '9': 'i', 'p': 'F', 'q': 'E'})  # hair keys; tired-face sweat -> effects
+    M.KEY2TAG.update({'7': 'g', '8': 'h', '9': 'i'})  # hair keys
     U.WEAPON_COLORS.add(GOLD)  # the ruyi (the only 3D gold) is drawn over the stamped head where it passes in front
 
     def build(row, f, style=None):

@@ -99,6 +99,7 @@ def crossbow_cavalry(orig):
 
 
 def make():
+    M.KEY2TAG[M.MOUTH] = 'h'  # themeB is the crossbow's pale wood: the mouth takes hair2
     cavalry = crossbow_cavalry(ORIG_CAVALRY)
     U.cavalry = cavalry  # blocks.rider calls units.cavalry
     block = Bl.rider(kit='rider', coat='dot', weapon='none')

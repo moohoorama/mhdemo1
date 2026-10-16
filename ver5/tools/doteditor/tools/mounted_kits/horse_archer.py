@@ -128,6 +128,7 @@ def archer_cavalry(orig):
 
 
 def make():
+    M.KEY2TAG[M.MOUTH] = 'h'  # themeB is the bow's pale wood: the mouth takes hair2
     cavalry = archer_cavalry(U.cavalry)
     U.cavalry = cavalry  # blocks.rider calls units.cavalry
     block = Bl.rider(kit='rider', coat='dot', weapon='none')

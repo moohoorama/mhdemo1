@@ -32,7 +32,8 @@ the report. Anything the conversion gets wrong is fixed by hand (artist agent, r
    - a head box misplaced when something sits above the plume (detected by the `#j#` pattern, so only a raised sleeve
      with the same pattern can fool it);
    - back-view cloak as one static rectangle (legs/walk invisible), cloak standing up in `exhausted` (seated pose);
-   - 3D shading is noisy at 1:1; needs an artist's clean-up pass (use class-sprite's motion-artist/reviewer).
+   - 3D shading is noisy at 1:1; `tools/denoise.py` (or `grid3d_mounted.py --denoise`) merges same-ramp specks and
+     1-px bumps safely, the rest needs an artist's clean-up pass (use class-sprite's motion-artist/reviewer).
 7. **Report** viewer URL (`viewer.html?unit=<id>`), progress URL, the weak-spot list, and that scripts generated the pixels.
 
 ## Files
