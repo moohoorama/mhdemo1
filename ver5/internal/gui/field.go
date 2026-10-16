@@ -45,6 +45,7 @@ type Field struct {
 	diamond                      *ebiten.Image
 	ShowExterior                 bool
 	exterior                     *ebiten.Image
+	outside                      outsideLayers
 }
 
 var maxBlend = ebiten.Blend{
@@ -111,6 +112,7 @@ func NewField(a *Assets, m *MapArt) *Field {
 	if m.Native {
 		f.makeNativeFloors()
 		f.makeExterior()
+		f.makeOutside()
 		f.nativeObjects(&f.nativeItems)
 	}
 	return f
@@ -250,6 +252,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		op := &ebiten.DrawImageOptions{}
 		f.renderOp(c, op)
 		c.DrawImage(f.exterior, op)
+		f.drawOutsideGround(clockMS)
 	}
 	f.drawDeploymentGround()
 	for _, m := range marks {
@@ -370,6 +373,9 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 				break
 			}
 		}
+	}
+	if !f.ShowExterior {
+		f.drawCloudShadows(clockMS)
 	}
 	for _, u := range units {
 		x, y := f.Center(u.u, u.v)
