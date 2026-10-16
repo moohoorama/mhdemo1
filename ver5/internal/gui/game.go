@@ -58,6 +58,7 @@ type Game struct {
 	releases             map[string]map[string][2]float64 // sprite id -> facing -> where its thrown stone leaves
 	player               Player
 	banner               string
+	turnBanner           *turnBanner
 	bannerT, clockMS     float64
 	shakeT               float64
 	camX, camY           float64
@@ -976,4 +977,5 @@ func (g *Game) battleHUD(dst *ebiten.Image, o core.Observation) {
 	g.brief(dst, o)
 	g.messages(dst)
 	g.drawBattleSpeech(dst)
+	g.drawTurnBanner(dst)
 }

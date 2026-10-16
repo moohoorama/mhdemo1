@@ -14,11 +14,14 @@ import (
 // viewport is the screen area of the battlefield: the whole window, HUD drawn over it.
 var viewport = image.Rect(0, 0, Width, Height)
 
-func (g *Game) busy() bool { return g.player.Busy() || g.sceneBusy() }
+// busy is true while something plays that the next command must wait for, the turn
+// banner included: the side to move only starts once its banner is done.
+func (g *Game) busy() bool { return g.player.Busy() || g.sceneBusy() || g.turnBanner != nil }
 
 // advance moves the clock, the replay and every unit's animation by one frame.
 func (g *Game) advance(dt float64) {
 	g.uiSeconds += dt
+	g.advanceTurnBanner(dt)
 	if g.zoomTo != g.zoomFrom && g.zoomT < .5 {
 		g.zoomT = math.Min(.5, g.zoomT+dt)
 		t := 1 - math.Pow(2, -g.zoomT*10)

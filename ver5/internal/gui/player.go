@@ -346,10 +346,7 @@ func (g *Game) perform(a *replay.Action) []beat {
 			for _, e := range events {
 				if e.Kind == "turn" {
 					turn := e
-					add(1.0, func() {
-						g.banner = fmt.Sprintf("%d턴 · %s 진영", turn.Amount, factionName(turn.Target))
-						g.bannerT = 1.4
-					})
+					add(1.0, func() { g.showTurn(turn.Amount, turn.Target) })
 				}
 			}
 		default:
