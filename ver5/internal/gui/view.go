@@ -61,12 +61,13 @@ func (g *Game) advance(dt float64) {
 	kept := g.popups[:0]
 	for _, p := range g.popups {
 		p.t += dt
-		if p.t < .9 {
+		if p.t < p.life() {
 			kept = append(kept, p)
 		}
 	}
 	g.popups = kept
 	g.bannerT = math.Max(0, g.bannerT-dt)
+	g.hitFlashT = math.Max(0, g.hitFlashT-dt)
 	if !g.busy() && g.S.Engine != nil {
 		o := g.S.Engine.Observe()
 		if o.Phase == "deployment" || o.Phase == "battle" || o.Phase == "result" {

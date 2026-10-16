@@ -142,7 +142,9 @@ type popup struct {
 	unit *unitVis
 	text string
 	t    float64
-	row  int // stacked above the unit's other fresh popups
+	row  int        // stacked above the unit's other fresh popups
+	kind numberKind // brush-written damage or heal number; zero for plain text
+	bits []spatter  // ink drops or light motes of a number
 }
 
 type beat struct {
@@ -568,10 +570,10 @@ func (g *Game) strike(attacker *unitVis, events []core.Event) {
 			t.shakeT, t.shakeAmp = shakeTime, 1
 			if crit[e.Target] {
 				t.shakeT, t.shakeAmp, t.flash = shakeTime*1.6, critShake, .5
-				g.say(t, fmt.Sprintf("치명타! HP -%d", e.Amount))
+				g.sayNumber(t, numberCrit, e.Amount)
 				continue
 			}
-			g.say(t, fmt.Sprintf("HP -%d", e.Amount))
+			g.sayNumber(t, numberDamage, e.Amount)
 		case "miss": // the target blocks: its block motion when the sprite has one, else a flinch
 			if t != nil {
 				if _, ok := t.art.Animations["block"]; ok {
@@ -588,11 +590,11 @@ func (g *Game) strike(attacker *unitVis, events []core.Event) {
 			if t != nil {
 				t.shownHP = min(t.maxHP, t.shownHP+e.Amount)
 			}
-			g.say(t, fmt.Sprintf("HP +%d", e.Amount))
+			g.sayNumber(t, numberHeal, e.Amount)
 		case "recover-hp":
 			if u := g.unitAt(e.Actor); u != nil {
 				u.shownHP = min(u.maxHP, u.shownHP+e.Amount)
-				g.say(u, fmt.Sprintf("HP +%d", e.Amount))
+				g.sayNumber(u, numberHeal, e.Amount)
 			}
 		case "recover-mp":
 			if u := g.unitAt(e.Actor); u != nil {

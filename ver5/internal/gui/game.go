@@ -61,6 +61,8 @@ type Game struct {
 	turnBanner           *turnBanner
 	bannerT, clockMS     float64
 	shakeT               float64
+	hitFlashT            float64
+	hitFlashCrit         bool
 	camX, camY           float64
 	pan                  *camPan
 	zoom                 float64
@@ -944,9 +946,15 @@ func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 	g.drawEffects(dst)
 	for _, p := range g.popups {
 		x, y := g.field.Center(p.unit.u, p.unit.v)
+		if p.kind != 0 {
+			sx, sy := g.toScreen(x+p.unit.shakeOffset(), y-p.unit.lift-p.unit.top-10-float64(p.row)*28/g.zoom)
+			g.drawNumber(dst, p, sx, sy)
+			continue
+		}
 		sx, sy := g.toScreen(x+p.unit.shakeOffset(), y-p.unit.lift-p.unit.top-10-p.t*16-float64(p.row)*18/g.zoom)
 		g.outlined(dst, p.text, sx-g.width(p.text, 16)/2, sy, 16)
 	}
+	g.drawHitFlash(dst)
 	return func() { g.camX, g.camY = g.camX+sx/g.zoom, g.camY+sy/g.zoom }
 }
 
