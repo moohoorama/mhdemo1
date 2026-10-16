@@ -55,6 +55,8 @@ type View struct {
 	Tint color.NRGBA
 	// Staged views follow the battle transition; others (the gallery) always show everything.
 	Staged bool
+	// Quiet hides the speech bubbles, while something plays over the duel's opening.
+	Quiet bool
 	// Focus is where the duelists meet, in battle canvas coordinates, for the camera.
 	Focus [2]float64
 	Time  float64
@@ -390,7 +392,7 @@ func bubbleTop(headY, footY, h float64) float64 {
 // drawUI is the duel's own interface: speech bubbles and fighter portraits.
 func (g *View) drawUI(dst *ebiten.Image, s duel.State) {
 	for i, a := range s.Actors {
-		if !a.Visible || a.Speech == "" {
+		if !a.Visible || a.Speech == "" || g.Quiet {
 			continue
 		}
 		x, footY := g.at(a.ScreenPosition())

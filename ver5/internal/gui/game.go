@@ -40,6 +40,8 @@ type Game struct {
 	duelMap, duelUI      *ebiten.Image
 	duelCam              [2]float64
 	duelCamHeld          bool
+	cutIn                duelCutIn
+	cutPanes             [2]*ebiten.Image
 	gallery              *duelGallery
 	editor               *mapEditor
 	editorReturn         *mapEditor

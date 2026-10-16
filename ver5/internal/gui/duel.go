@@ -56,6 +56,7 @@ func (p *Player) SkipDuel() {
 	if p.Duel == nil {
 		return
 	}
+	p.g.skipCutIn()
 	p.Duel.Finish()
 	// A duel is a replay barrier: it is the sole running action.
 	for _, r := range p.running {
@@ -86,6 +87,7 @@ func (g *Game) updateDuel() {
 
 func (g *Game) drawDuel(dst *ebiten.Image) {
 	v := g.player.Duel
+	v.Quiet = v.Staged && !(g.cutIn.view == v && g.cutIn.done) // no lines until the cut-in is over
 	pan, _, ui := v.Phase()
 	if !g.duelCamHeld {
 		g.duelCam, g.duelCamHeld = [2]float64{g.camX, g.camY}, true
@@ -112,6 +114,7 @@ func (g *Game) drawDuel(dst *ebiten.Image) {
 		return
 	}
 	v.Draw(dst)
+	g.drawCutIn(dst)
 	g.drawDuelPreviewInfo(dst)
 	if ui >= 1 {
 		g.btn(dst, image.Rect(1000, 805, 1254, 839), "일기토 건너뛰기", g.player.SkipDuel)

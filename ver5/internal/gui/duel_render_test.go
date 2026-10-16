@@ -91,7 +91,7 @@ func (p *duelRenderTest) Update() error {
 			g.player.SkipDuel()
 			g.player.Update(duelview.Transition.Intro())
 		} else {
-			g.player.Update(g.player.Duel.Length())
+			g.player.Update(g.player.Duel.Length() + cutInLength(g.player.Duel))
 		}
 		if g.player.Duel != nil {
 			return p.fail(fmt.Errorf("duel did not return to map"))

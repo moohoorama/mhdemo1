@@ -200,7 +200,7 @@ func (p *Player) Update(dt float64) {
 		return
 	}
 	if p.Duel != nil {
-		p.Duel.Advance(dt)
+		p.Duel.Advance(p.cutInStep(dt)) // the duel's clock waits for the cut-in
 	}
 	p.gap += dt
 	for k, i := range p.waiting {
@@ -343,7 +343,7 @@ func (g *Game) perform(a *replay.Action) []beat {
 			for _, e := range events {
 				if e.Kind == "duel" {
 					view := g.duelView(e)
-					add(view.Length(), func() { g.player.Duel = view })
+					add(view.Length()+cutInLength(view), func() { g.player.Duel = view })
 				}
 			}
 			ev := events
