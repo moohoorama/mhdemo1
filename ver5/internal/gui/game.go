@@ -701,14 +701,7 @@ func (g *Game) keys() {
 					next = ids[(i+1)%len(ids)]
 				}
 			}
-			g.selected = next
-			if u := g.unitView(o, next); u != nil && !g.busy() {
-				g.clearOrder()
-				if o.Turn == "ally" {
-					g.begin(*u)
-				}
-				g.focus(u.X, u.Y)
-			}
+			g.focusOfficer(next)
 		}
 	}
 }

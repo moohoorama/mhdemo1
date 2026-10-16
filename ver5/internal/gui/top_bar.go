@@ -223,7 +223,7 @@ func (g *Game) objectiveScroll(dst *ebiten.Image, x, y float32, win, lose string
 
 // nameTags hangs a wooden tag with each allied officer's name written top to bottom,
 // ending at right: light while the officer may act, dark once done (swinging as it
-// turns), ringed in gold while selected.
+// turns), ringed in gold while selected. Pressing a tag centres and selects the officer.
 func (g *Game) nameTags(dst *ebiten.Image, o core.Observation, right float32, now float64) {
 	ids := []string{}
 	for _, u := range o.UnitViews {
@@ -266,6 +266,8 @@ func (g *Game) nameTags(dst *ebiten.Image, o core.Observation, right float32, no
 		op.GeoM.Translate(float64(x+tagW/2)*scale, 0)
 		op.Filter = ebiten.FilterLinear
 		dst.DrawImage(img, op)
+		tag := id
+		g.buttons = append(g.buttons, button{image.Rect(int(x), 0, int(x+tagW), tagH), g.name(id), func() { g.focusOfficer(tag) }})
 		g.block(image.Rect(int(x), barH, int(x+tagW), tagH))
 		x += tagW + 6
 	}
