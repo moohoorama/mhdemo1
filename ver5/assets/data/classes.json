@@ -538,7 +538,7 @@
    "MPBase": 40,
    "RecoveryBase": 5,
    "Tier": 2,
-   "Sprite": "strategist",
+   "Sprite": "grand_strategist",
    "Pool": [
     "earth_spread",
     "hinder_boost",
@@ -602,7 +602,7 @@
    "MPBase": 40,
    "RecoveryBase": 5,
    "Tier": 2,
-   "Sprite": "sorcerer",
+   "Sprite": "mystic",
    "Pool": [
     "exhort_boost",
     "eight_formation",
@@ -699,7 +699,7 @@
    "MPBase": 26,
    "RecoveryBase": 2,
    "Tier": 2,
-   "Sprite": "ruffian",
+   "Sprite": "outlaw",
    "Skills": [
     "steal"
    ],
@@ -765,6 +765,37 @@
     "deputy_appoint",
     "battle_fury",
     "relentless"
+   ],
+   "Promotes": [
+    "fist_saint"
+   ]
+  },
+  "fist_saint": {
+   "Name": "권성",
+   "Desc": "사자 갑주를 두르고 장풍을 쏘는 권법의 달인.",
+   "Terrain": "infantry",
+   "Attack": "melee",
+   "Weapon": "fist",
+   "Armor": "robe",
+   "Move": 4,
+   "Range": 1,
+   "Bonus": [
+    22,
+    12,
+    6,
+    17,
+    16,
+    34
+   ],
+   "HPFactor": 3,
+   "MPBase": 26,
+   "RecoveryBase": 2,
+   "Tier": 2,
+   "Sprite": "fist_saint",
+   "Pool": [
+    "valor",
+    "cross_strike",
+    "diamond"
    ]
   }
  }
