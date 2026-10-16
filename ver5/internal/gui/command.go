@@ -156,6 +156,7 @@ func (g *Game) mapClick(x, y int) {
 				return
 			}
 		}
+		g.cancel() // a cell that is not a target steps back, like a click outside the menu
 		return
 	case "menu", "sub":
 		g.cancel()
