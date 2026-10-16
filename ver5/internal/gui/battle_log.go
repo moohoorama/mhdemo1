@@ -107,7 +107,7 @@ func (g *Game) drawBattleLog(dst *ebiten.Image) {
 	}
 	y := r.Max.Y - 10 - len(lines)*logLineHeight
 	for _, line := range lines {
-		g.label(dst, line, float64(r.Min.X+12), float64(y), 14, color.NRGBA{R: 240, G: 240, B: 240, A: 255})
+		g.logLine(dst, line, float64(r.Min.X+12), float64(y))
 		y += logLineHeight
 	}
 }
