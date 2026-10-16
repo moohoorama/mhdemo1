@@ -1,5 +1,5 @@
 {
- "about": "Scenario scenes (GUI only; not part of the rules content). maps: rules tiles like battle maps, exported to graphics/maps by tools/build_assets.py. Props: [name, x, y] (fractions allowed) or [name, x0, y0, x1, y1] to fill cells, names from tools/spritetool/assets/ver4-props/props.json. scenes: per dialogue node, the map, the cast [x, y, facing, faction, sprite] (placed when the map changes or when listed; names are the characters' display names from the data bundle; faction defaults to the character's Look.Faction; sprite picks any sprite id instead of the character's scene sprite: infantry (soldier, villager), cavalry (messenger), archer, strategist, or a battle sprite for a fight) and beats: for each speaker line of the node, groups of steps run before that line; steps in a group start together, the next group waits for them. Facings are the diagonals NW, NE, SW, SE only (scene sprites are drawn facing NW and SW; NE and SE are flipped). Steps: move [x, y] (fractions allowed), face DIR, play MOTION (action: a character's own pose, then back to idle; battle sprites: attack hit block exhausted), emote TEXT, wait SECONDS, effect petals|fire|none (fire at [x, y] given by at, else at the actor).",
+ "about": "Scenario scenes (GUI only; not part of the rules content). maps: rules tiles like battle maps, exported to graphics/maps by tools/build_assets.py. Props: [name, x, y] (fractions allowed) or [name, x0, y0, x1, y1] to fill cells, names from tools/spritetool/assets/ver4-props/props.json. scenes: per dialogue node, the map, the cast [x, y, facing, faction, sprite] (placed when the map changes or when listed; names are the characters' display names from the data bundle; faction defaults to the character's Look.Faction; sprite picks any sprite id instead of the character's scene sprite: infantry (soldier, villager), cavalry (messenger), archer, strategist, or a battle sprite for a fight) and beats: for each speaker line of the node, groups of steps run before that line; steps in a group start together, the next group waits for them. Facings are the diagonals NW, NE, SW, SE only (scene sprites are drawn facing NW and SW; NE and SE are flipped). Steps: move [x, y] (fractions allowed), face DIR, play MOTION (action: a character's own pose, then back to idle; battle sprites: attack hit block exhausted), emote TEXT, wait SECONDS, effect petals|fire|none (fire at [x, y] given by at, else at the actor), intro NAME (an officer's first appearance: ink-wash portrait, name and biography over the scene; the group waits, a click skips it).",
  "maps": [
   {"ID": "S_peach", "Name": "도원", "Width": 11, "Height": 9, "Tiles": [
    "ff.f.f.f.ff",
@@ -43,6 +43,8 @@
    "beats": [
     [[{"actor": "유비", "emote": "…"}, {"effect": "petals"}],
      [{"actor": "관우", "move": [4, 5]}, {"actor": "장비", "move": [6, 5]}],
+     [{"intro": "관우"}],
+     [{"intro": "장비"}],
      [{"actor": "관우", "face": "NE"}, {"actor": "장비", "face": "NW"}, {"actor": "유비", "face": "SW"}]],
     [[{"actor": "관우", "play": "action"}, {"actor": "장비", "play": "action"}]]
    ]},
@@ -55,6 +57,7 @@
    "cast": {"유비": [5, 4, "SE"], "관우": [4, 5, "SE"], "장비": [6, 3, "SE"], "간옹": [10, 7, "NW"]},
    "beats": [
     [[{"actor": "간옹", "move": [7, 5]}],
+     [{"intro": "간옹"}],
      [{"actor": "유비", "play": "action"}, {"actor": "간옹", "face": "NW"}],
      [{"actor": "간옹", "play": "action"}]]
    ]},
@@ -68,6 +71,7 @@
    "cast": {"유비": [5, 3, "SW"], "관우": [3, 4, "SE"], "장비": [7, 4, "SW"], "간옹": [6, 2, "SW"], "손건": [5, 8, "NW"]},
    "beats": [
     [[{"actor": "손건", "move": [5, 5]}],
+     [{"intro": "손건"}],
      [{"actor": "손건", "play": "action"}]],
     [[{"actor": "유비", "play": "action"}],
      [{"actor": "장비", "emote": "!"}, {"actor": "관우", "play": "action"}]]

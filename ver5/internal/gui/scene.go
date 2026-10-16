@@ -31,6 +31,7 @@ type sceneStep struct {
 	Play   string
 	Emote  string
 	Wait   float64
+	Intro  string    // an officer's first appearance (officer_intro.go); the group waits
 	Effect string    // petals or fire, until the scene changes; "none" clears them
 	At     []float64 // effect position [x, y] (fire); petals fall over the whole stage
 }
@@ -164,6 +165,7 @@ func (g *Game) startLine(i int) {
 func (g *Game) sceneBusy() bool { return g.scene != nil && g.scene.gi < len(g.scene.groups) }
 
 func (g *Game) updateScene(dt float64) {
+	g.advanceIntro(dt)
 	s := g.scene
 	if s == nil {
 		return
@@ -214,6 +216,10 @@ func (g *Game) startStep(st sceneStep) {
 	v := s.actors[st.Actor]
 	if st.Wait > 0 {
 		s.wait = math.Max(s.wait, st.Wait)
+	}
+	if st.Intro != "" {
+		g.startIntro(st.Intro)
+		s.wait = math.Max(s.wait, g.intro.length)
 	}
 	switch {
 	case st.Effect == "":
@@ -279,10 +285,18 @@ func scenePath(u, v, tu, tv float64) [][2]float64 {
 // skipBeats finishes the running beats at once: walkers arrive, motions end.
 func (g *Game) skipBeats() {
 	s := g.scene
+	if g.intro != nil && s != nil { // a click ends an officer's introduction only
+		g.intro, s.wait = nil, 0
+		return
+	}
 	for s != nil && g.sceneBusy() {
 		if !s.begun {
 			for _, st := range s.groups[s.gi] {
 				g.startStep(st)
+			}
+			if g.intro != nil { // skipping stops at an officer's first appearance
+				s.begun = true
+				return
 			}
 		}
 		for name, v := range s.actors {

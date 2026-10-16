@@ -120,6 +120,8 @@ type Game struct {
 	learn                []core.Learner    // learning windows open now, in order
 	learnPage            int
 	scene                *scene
+	intro                *officerIntro
+	introImg             introImages
 	battleXP, startLevel map[string]int
 	resultPage           int
 	slotInfo             map[string]string
@@ -251,7 +253,7 @@ func (g *Game) send(q session.Request) session.Response {
 		if g.field != nil {
 			g.field.dispose()
 		}
-		g.field, g.scene = nil, nil
+		g.field, g.scene, g.intro = nil, nil, nil
 		g.resetBattleLog()
 		g.resetDeployment()
 	}
@@ -867,6 +869,7 @@ func (g *Game) play(dst *ebiten.Image) {
 		g.complete(dst, o)
 	case "scenario":
 		g.scenario(dst, o)
+		g.drawIntro(dst)
 		g.btn(dst, image.Rect(1176, 12, 1268, 42), "메뉴", func() { g.openOverlay("menu") })
 	default:
 		g.battle(dst, o)

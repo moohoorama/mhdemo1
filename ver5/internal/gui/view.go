@@ -94,6 +94,7 @@ func (g *Game) ensureField(o core.Observation) {
 	size := g.field.Size()
 	g.camX, g.camY = float64(size.X)/2, float64(size.Y)/2
 	g.clearOrder()
+	g.intro = nil
 	g.selected = ""
 	g.battleXP, g.startLevel = map[string]int{}, map[string]int{}
 	g.resultPage = 0
