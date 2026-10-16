@@ -19,7 +19,7 @@ func main() {
 	name := flag.String("ui", "", "demo to play: "+strings.Join(gui.DemoNames(), ", "))
 	out := flag.String("out", "", "frame directory (default reports/uidemo/<ui>)")
 	frames := flag.Int("frames", 120, "frames to play (60 per second)")
-	every := flag.Int("every", 6, "save every n-th frame")
+	every := flag.Int("every", 6, "save every n-th frame; 0 saves none (vmhost guest)")
 	stage := flag.String("stage", "", "battle stage the demos play (default: the first)")
 	duel := flag.String("duel", "", "stage duel the duel demo plays (default: the first)")
 	flag.Parse()

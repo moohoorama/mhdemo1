@@ -1,0 +1,241 @@
+// Temporary tool: plays a cmd/_uidemo demo headlessly through Ebitengine's exp/vmhost and
+// captures it, with no visible window. The demo runs as a vmhost guest (built with the
+// ebitenginevmguest tag: no window, no GPU); this host replays its frames on a hidden window,
+// one tick per frame, faster than real time. Chosen frames are saved as PNG and every frame
+// can go to a 60 fps MP4 through ffmpeg.
+//
+//	go run ./cmd/_uidemo-vm -ui turn -frames 240 -mp4 reports/uidemo/turn.mp4
+//	go run ./cmd/_uidemo-vm -ui damage -frames 380 -at 39,51,69 -out reports/uidemo/damage
+//	go run ./cmd/_uidemo-vm -ui duel -frames 420 -every 30 -mp4 reports/uidemo/duel.mp4
+//
+// The host still opens a (hidden) GLFW window, so the display must be awake: wrap the run in
+// `caffeinate -d -i` when the machine may sleep.
+package main
+
+import (
+	"errors"
+	"flag"
+	"fmt"
+	"image"
+	"image/png"
+	"io"
+	"net"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strconv"
+	"strings"
+	"sync"
+	"time"
+
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/exp/vmhost"
+	"srpg/internal/gui"
+)
+
+var (
+	ui     = flag.String("ui", "", "demo to play (see cmd/_uidemo)")
+	frames = flag.Int("frames", 120, "frames to play, one game tick each (60 per second)")
+	stage  = flag.String("stage", "", "battle stage the demo plays (default: the first)")
+	duel   = flag.String("duel", "", "stage duel the duel demo plays (default: the first)")
+	out    = flag.String("out", "", "PNG directory (default reports/uidemo/<ui>)")
+	every  = flag.Int("every", 0, "save every n-th frame as PNG; 0 for none")
+	at     = flag.String("at", "", "comma-separated frames to save as PNG, e.g. 30,96,264")
+	mp4    = flag.String("mp4", "", "write every frame to this MP4 (needs ffmpeg)")
+	crf    = flag.Int("crf", 18, "x264 quality for -mp4: 0 is lossless, 18 is visually lossless")
+	half   = flag.Bool("half", false, "write the MP4 at half size (640×425)")
+)
+
+// host drives the demo guest from a hidden window: each frame it runs one guest tick, has
+// the guest render, composites the result into screen and hands the pixels to the sinks.
+type host struct {
+	guest   *vmhost.GuestSession
+	screen  *ebiten.Image
+	pixels  []byte
+	pngAt   map[int]bool
+	video   io.WriteCloser
+	writers sync.WaitGroup
+	frame   int
+	err     error
+}
+
+func (h *host) Update() error {
+	if h.screen == nil {
+		h.screen = ebiten.NewImage(gui.Width, gui.Height)
+		h.pixels = make([]byte, 4*gui.Width*gui.Height)
+		if err := h.guest.SetOutsideScreen(h.screen); err != nil {
+			return err
+		}
+	}
+	// a batch of frames per host frame keeps the run fast; each still gets its own tick
+	for range 8 {
+		if h.frame >= *frames {
+			return ebiten.Termination
+		}
+		h.guest.AdvanceTicks(1)
+		h.guest.AdvanceFrame()
+		if !h.guest.WaitFrame() {
+			return ebiten.Termination // the guest ended (its demo ran out) or failed; see Err
+		}
+		if !h.guest.CompositeFrame() {
+			return errors.New("compositing the guest frame failed")
+		}
+		h.screen.ReadPixels(h.pixels)
+		if h.video != nil {
+			if _, err := h.video.Write(h.pixels); err != nil {
+				return fmt.Errorf("writing frame %d to ffmpeg: %w", h.frame, err)
+			}
+		}
+		if h.pngAt[h.frame] || *every > 0 && h.frame%*every == 0 {
+			h.savePNG(h.frame, append([]byte(nil), h.pixels...))
+		}
+		h.frame++
+	}
+	return nil
+}
+
+// savePNG encodes a frame in the background; PNG compression is the slow part.
+func (h *host) savePNG(frame int, pix []byte) {
+	h.writers.Add(1)
+	go func() {
+		defer h.writers.Done()
+		img := &image.RGBA{Pix: pix, Stride: 4 * gui.Width, Rect: image.Rect(0, 0, gui.Width, gui.Height)}
+		f, err := os.Create(filepath.Join(*out, fmt.Sprintf("frame-%04d.png", frame)))
+		if err == nil {
+			err = png.Encode(f, img)
+			f.Close()
+		}
+		if err != nil {
+			h.err = err
+		}
+	}()
+}
+
+func (h *host) Draw(*ebiten.Image) {}
+
+func (h *host) Layout(w, h2 int) (int, int) { return w, h2 }
+
+func main() {
+	if err := run(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func run() error {
+	flag.Parse()
+	if *ui == "" {
+		return errors.New("choose a demo with -ui")
+	}
+	if *out == "" {
+		*out = filepath.Join("reports", "uidemo", *ui)
+	}
+	h := &host{pngAt: map[int]bool{}}
+	for _, s := range strings.Split(*at, ",") {
+		if n, err := strconv.Atoi(strings.TrimSpace(s)); err == nil {
+			h.pngAt[n] = true
+		}
+	}
+	if len(h.pngAt) > 0 || *every > 0 {
+		if err := os.MkdirAll(*out, 0755); err != nil {
+			return err
+		}
+	}
+
+	// a short temp dir keeps the unix socket path within macOS's limit
+	dir, err := os.MkdirTemp("", "uv")
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(dir)
+	ln, err := net.Listen("unix", filepath.Join(dir, "g.sock"))
+	if err != nil {
+		return err
+	}
+	defer ln.Close()
+	endpoint, err := vmhost.EndpointURLFromAddr(ln.Addr())
+	if err != nil {
+		return err
+	}
+
+	// the guest is the ordinary demo command, built so that RunGame connects here
+	guestBin := filepath.Join(dir, "guest")
+	build := exec.Command("go", "build", "-tags", "ebitenginevmguest", "-o", guestBin, "./cmd/_uidemo")
+	build.Stderr = os.Stderr
+	if err := build.Run(); err != nil {
+		return fmt.Errorf("building the guest: %w", err)
+	}
+	// one more frame than captured: the guest stops itself after its last frame
+	guestCmd := exec.Command(guestBin, "-ui", *ui, "-frames", strconv.Itoa(*frames+1), "-every", "0", "-stage", *stage, "-duel", *duel)
+	guestCmd.Env = append(os.Environ(), "EBITENGINE_VM_ENDPOINT="+endpoint)
+	guestCmd.Stdout, guestCmd.Stderr = os.Stderr, os.Stderr
+	if err := guestCmd.Start(); err != nil {
+		return fmt.Errorf("starting the guest: %w", err)
+	}
+	defer func() { _ = guestCmd.Process.Kill(); _ = guestCmd.Wait() }()
+
+	if dl, ok := ln.(interface{ SetDeadline(time.Time) error }); ok {
+		_ = dl.SetDeadline(time.Now().Add(60 * time.Second)) // loading the game data takes a while
+	}
+	conn, err := ln.Accept()
+	if err != nil {
+		return fmt.Errorf("waiting for the guest: %w", err)
+	}
+	_ = ln.Close()
+	h.guest, err = vmhost.NewGuestSession(conn, &vmhost.NewGuestSessionOptions{IdleTimeout: 60 * time.Second})
+	if err != nil {
+		return err
+	}
+
+	var ffmpeg *exec.Cmd
+	if *mp4 != "" {
+		if err := os.MkdirAll(filepath.Dir(*mp4), 0755); err != nil {
+			return err
+		}
+		args := []string{"-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgba",
+			"-s", fmt.Sprintf("%dx%d", gui.Width, gui.Height), "-r", "60", "-i", "-"}
+		if *half {
+			args = append(args, "-vf", "scale=640:-2:flags=area")
+		}
+		pix := "yuv420p"
+		if *crf == 0 {
+			pix = "yuv444p" // keep full colour detail when lossless
+		}
+		args = append(args, "-c:v", "libx264", "-crf", strconv.Itoa(*crf), "-pix_fmt", pix, "-movflags", "+faststart", *mp4)
+		ffmpeg = exec.Command("ffmpeg", args...)
+		ffmpeg.Stderr = os.Stderr
+		if h.video, err = ffmpeg.StdinPipe(); err != nil {
+			return err
+		}
+		if err := ffmpeg.Start(); err != nil {
+			return fmt.Errorf("starting ffmpeg: %w", err)
+		}
+	}
+
+	start := time.Now()
+	ebiten.SetWindowVisible(false)
+	runErr := ebiten.RunGame(h)
+	_ = h.guest.Close()
+	h.writers.Wait()
+	if h.video != nil {
+		h.video.Close()
+		if err := ffmpeg.Wait(); err != nil {
+			return fmt.Errorf("ffmpeg: %w", err)
+		}
+	}
+	if runErr != nil {
+		return runErr
+	}
+	if err := h.guest.Err(); err != nil && !errors.Is(err, ebiten.Termination) {
+		return fmt.Errorf("guest: %w", err)
+	}
+	if h.err != nil {
+		return h.err
+	}
+	fmt.Fprintf(os.Stderr, "%d frames in %.1fs", h.frame, time.Since(start).Seconds())
+	if *mp4 != "" {
+		fmt.Fprintf(os.Stderr, ", video %s", *mp4)
+	}
+	fmt.Fprintln(os.Stderr)
+	return nil
+}

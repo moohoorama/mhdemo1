@@ -51,7 +51,8 @@ func DemoNames() []string {
 }
 
 // NewDemo builds the game from the ver5 directory root and prepares demo name, which plays
-// in battle stage (and duel, for the duel demo).
+// in battle stage (and duel, for the duel demo). It saves every n-th frame to out; every <= 0
+// saves nothing, for a host that captures the frames itself (cmd/_uidemo-vm).
 func NewDemo(root, name, out, stage, duel string, frames, every int) (*Demo, error) {
 	setup, ok := demos[name]
 	if !ok {
@@ -73,8 +74,10 @@ func NewDemo(root, name, out, stage, duel string, frames, every int) (*Demo, err
 	if err != nil {
 		return nil, err
 	}
-	if err = os.MkdirAll(out, 0755); err != nil {
-		return nil, err
+	if every > 0 {
+		if err = os.MkdirAll(out, 0755); err != nil {
+			return nil, err
+		}
 	}
 	cursorPos = func() (int, int) { return -100, -100 }
 	if stage == "" && len(d.Stages) > 0 {
@@ -85,7 +88,7 @@ func NewDemo(root, name, out, stage, duel string, frames, every int) (*Demo, err
 			duel = st.Duels[0].ID
 		}
 	}
-	demo := &Demo{g: g, frames: frames, every: max(1, every), out: out, stepped: -1, stage: stage, duel: duel}
+	demo := &Demo{g: g, frames: frames, every: every, out: out, stepped: -1, stage: stage, duel: duel}
 	if err = setup(demo); err != nil {
 		return nil, err
 	}
@@ -169,7 +172,7 @@ func (d *Demo) Draw(dst *ebiten.Image) {
 	if d.overlay != nil {
 		d.overlay(dst)
 	}
-	if d.frame%d.every == 0 {
+	if d.every > 0 && d.frame%d.every == 0 {
 		img := image.NewRGBA(dst.Bounds())
 		dst.ReadPixels(img.Pix)
 		f, err := os.Create(filepath.Join(d.out, fmt.Sprintf("frame-%04d.png", d.frame)))

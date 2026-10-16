@@ -58,6 +58,10 @@ Ebitengine `text/v2`는 폰트를 주지 않고 TTF/OTF를 읽기만 한다. 지
 - 완료 조건: 데모 프레임을 시안의 같은 순간(헤드리스 Chrome 캡처)과 나란히 놓고 배치·색·타이밍이 같은지 본다.
   다르면 고치고 다시 뽑는다. 같아진 뒤에 커밋한다.
 - `_` 접두어라 `go build ./...`와 테스트 대상에서 빠진다(확인용 임시 도구 규칙).
+- 창 없이 뽑을 때는 `go run ./cmd/_uidemo-vm -ui <이름> -frames N [-at 30,96] [-every K] [-mp4 out.mp4]`.
+  Ebitengine `exp/vmhost`로 `_uidemo`를 게스트(창·GPU 없음)로 띄우고, 숨긴 호스트 창이 한 틱에 한 프레임씩
+  합성해 PNG와 60fps MP4(ffmpeg)로 남긴다. 실시간보다 빠르다. 호스트는 GLFW를 쓰므로 디스플레이가 깨어 있어야
+  한다(`caffeinate -d -i`).
 
 ## 하지 않는 것
 
