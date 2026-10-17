@@ -269,18 +269,22 @@ func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
 	}
 }
 
+// detailH is the selected unit's panel height: the gauges, the tab row and the hexagon of its
+// first tab. The other tabs page or scroll inside it.
+const detailH = 400
+
 // detailRect is the selected unit's panel: in the right column between the minimap and the
-// dock, or on a low screen the whole right column in place of the minimap.
+// dock, or on a low screen the right column below the hanging name tags in place of the minimap.
 func (g *Game) detailRect() image.Rectangle {
 	x := uiW - 12 - infoW
 	if lowScreen() {
-		return image.Rect(x, tagH+6, x+infoW, uiH-12) // below the hanging name tags
+		top := tagH + 6
+		return image.Rect(x, top, x+infoW, min(uiH-12, top+detailH))
 	}
 	y := g.miniRect.Max.Y + 10
-	return image.Rect(x, y, x+infoW, uiH-240)
+	return image.Rect(x, y, x+infoW, min(uiH-240, y+detailH))
 }
 
-// detailUnit is the unit the detail panel describes, or nil when it is hidden.
 func (g *Game) detailUnit(o core.Observation) *core.UnitView {
 	if g.selected == "" {
 		return nil
