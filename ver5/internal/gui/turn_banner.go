@@ -74,30 +74,33 @@ func (g *Game) drawTurnBanner(dst *ebiten.Image) {
 	}
 	fade := 1 - phase(b.t, turnHoldUntil, turnFade)
 	rect(dst, 0, 0, float32(uiW), float32(uiH), color.NRGBA{A: uint8(255 * .45 * phase(b.t, 0, turnDim) * fade)})
+	// laid out about the screen's middle, smaller on a low screen
+	z := min(1, float64(uiH)/Height)
+	at := func(y float64) float64 { return float64(uiH)/2 + (y-Height/2)*z }
 	// two ink bands sweep in from the left: black, then rust laid over its lower edge
-	sweep := func(at float64, y, h float32, c color.NRGBA, alpha float64) {
+	sweep := func(at float64, y, h float64, c color.NRGBA, alpha float64) {
 		k := bezier(.6, 0, .2, 1, phase(b.t, at, turnStroke))
 		c.A = uint8(float64(c.A) * alpha * fade)
-		sweepBand(dst, y, h, k, c)
+		sweepBand(dst, float32(y), float32(h), k, c)
 	}
-	sweep(0, 410, 24, color.NRGBA{R: 13, G: 10, B: 8, A: 255}, 1)
-	sweep(turnStroke2At, 422, 16, color.NRGBA{R: 58, G: 18, B: 10, A: 255}, .75)
+	sweep(0, at(410), 24*z, color.NRGBA{R: 13, G: 10, B: 8, A: 255}, 1)
+	sweep(turnStroke2At, at(422), 16*z, color.NRGBA{R: 58, G: 18, B: 10, A: 255}, .75)
 
 	title := fmt.Sprintf("제%d턴", b.round)
-	face := g.brush(204)
+	face := g.brush(204 * z)
 	k := bezier(.4, .1, .3, 1, phase(b.t, turnWriteAt, turnWrite))
 	img := g.textImage(title, face, color.NRGBA{R: 246, G: 238, B: 219, A: 255}, 6)
-	drawReveal(dst, img, float64(uiW)/2-measure(title, face)/2, 282, k, fade)
+	drawReveal(dst, img, float64(uiW)/2-measure(title, face)/2, at(282), k, fade)
 
 	side := g.turnSide(b.faction)
 	c := turnColor(b.faction)
 	s := phase(b.t, turnSubAt, turnSub)
-	sf := g.serif(46, 900)
+	sf := g.serif(46*z, 900)
 	sw := spacedWidth(side, sf, .35)
 	c.A = uint8(255 * s * fade)
-	writeSpaced(dst, side, sf, float64(uiW)/2-sw/2, 492+15*(1-s), .35, c)
-	lw := 415 * bezier(.2, .8, .2, 1, phase(b.t, turnLineAt, turnLine))
-	rect(dst, float32(float64(uiW)/2-lw/2), 582, float32(lw), 6, c)
+	writeSpaced(dst, side, sf, float64(uiW)/2-sw/2, at(492+15*(1-s)), .35, c)
+	lw := 415 * z * bezier(.2, .8, .2, 1, phase(b.t, turnLineAt, turnLine))
+	rect(dst, float32(float64(uiW)/2-lw/2), float32(at(582)), float32(lw), float32(6*z), c)
 }
 
 // sweepBand draws the left fraction k of a full-width band, its head feathered.

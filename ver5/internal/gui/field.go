@@ -227,11 +227,14 @@ func (f *Field) mapRect(s Sprite, x, y float64) image.Rectangle {
 	return image.Rect(rx, ry, rx+int(float64(b.Dx())*k), ry+int(float64(b.Dy())*k))
 }
 
+// fieldGround is the colour around a map, beyond its margin.
+var fieldGround = color.RGBA{30, 38, 46, 255}
+
 // Draw renders the field and returns nothing; units come from the replay's visual state.
 func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	c := f.Canvas
 	f.sceneryLayer = false
-	c.Fill(color.RGBA{30, 38, 46, 255})
+	c.Fill(fieldGround)
 	water := f.A.Animations["water"]
 	if f.Map.Native && f.renderZoom > 0 {
 		f.renderBackground(c)

@@ -139,32 +139,33 @@ func (g *Game) drawIntro(dst *ebiten.Image) {
 	op.ColorScale.ScaleAlpha(float32(out))
 	drawScaled(dst, tex.canvas, op)
 
-	// name, courtesy name, rule and biography to the right
+	// name, courtesy name, rule and biography to the right, smaller on a low screen
 	x, y := .56*float64(uiW), .22*float64(uiH)
+	textScale := min(1, float64(uiH)/Height)
 	nameAt := introDelay // the text runs alongside the portrait
 	if t >= nameAt {
-		face := g.brush(228)
+		face := g.brush(228 * textScale)
 		name := g.name(in.ref)
 		img := g.textImage(name, face, color.NRGBA{R: 246, G: 238, B: 219, A: 255}, 6)
-		drawReveal(dst, img, x, y-40, bezier(.4, .1, .3, 1, phase(t, nameAt, introName)), out)
+		drawReveal(dst, img, x, y-40*textScale, bezier(.4, .1, .3, 1, phase(t, nameAt, introName)), out)
 	}
 	if in.court != "" {
 		ck := bezier(.2, .8, .2, 1, phase(t, nameAt+introCourt, introCourt))
 		cc := gold
 		cc.A = uint8(255 * ck * out)
-		writeSpaced(dst, in.court, g.serif(31, 700), x, y+225+12*(1-ck), .2, cc)
+		writeSpaced(dst, in.court, g.serif(31*textScale, 700), x, y+(225+12*(1-ck))*textScale, .2, cc)
 	}
 	rw := (float64(uiW)*.95 - x) * .7 * bezier(.2, .8, .2, 1, phase(t, nameAt+introCourt, introRule))
 	for i := 0; i < 20; i++ {
 		f := float64(i) / 20
 		c := color.NRGBA{R: 184, G: 50, B: 31, A: uint8(255 * (1 - f) * out)}
-		rect(dst, float32(x+rw*f), float32(y+290), float32(rw/20+1), 4, c)
+		rect(dst, float32(x+rw*f), float32(y+290*textScale), float32(rw/20+1), 4, c)
 	}
 	typed := int((t - nameAt - introBioAt) * introTyping)
 	if typed > 0 {
 		bc := ink
 		bc.A = uint8(255 * out)
-		g.label(dst, prefixLines(wrapWidth(in.bio, g.face(26), float64(uiW)*.95-x), typed), x, y+316, 26, bc)
+		g.label(dst, prefixLines(wrapWidth(in.bio, g.face(26*textScale), float64(uiW)*.95-x), typed), x, y+316*textScale, 26*textScale, bc)
 	}
 }
 

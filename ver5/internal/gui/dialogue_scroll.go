@@ -16,18 +16,26 @@ import (
 // bands and paper. Its left roller stays beside the portrait and its width follows the
 // line: it springs open to the right with a slight overshoot and resizes the same way.
 const (
-	scrollPx    = 4.0 // layout pixels per art pixel
-	scrollRod   = 12  // art pixels
-	scrollKnob  = 8
-	scrollBand  = 10
-	scrollTop   = 565.0 // layout y of the paper's top
-	scrollH     = 250.0 // layout height of the paper
-	scrollLeft  = 312.0 // the scroll's left roller sits here, right of the portrait
-	scrollRight = 1250.0
-	scrollFont  = 34.0
-	portraitW   = 260.0
-	scrollPad   = 20 // art pixels between the paper's edge and the text
+	scrollPx   = 4.0 // layout pixels per art pixel
+	scrollRod  = 12  // art pixels
+	scrollKnob = 8
+	scrollBand = 10
+	scrollFont = 34.0
+	portraitW  = 260.0
+	scrollPad  = 20 // art pixels between the paper's edge and the text
 )
+
+// scrollBox is where the dialogue goes on the UI canvas: the paper's top and height, the
+// left roller's x (right of the portrait), the paper's right limit, the portrait's size and
+// the text size. A low screen gets a lower scroll, a smaller portrait and smaller text.
+type scrollBox struct{ top, h, left, right, portrait, font float64 }
+
+func dialogueBox() scrollBox {
+	h := max(190, min(250, math.Round(float64(uiH)*.32)))
+	p := min(portraitW, h+10)
+	return scrollBox{top: float64(uiH) - 35 - h, h: h, left: 36 + p + 16, right: float64(uiW) - 30, portrait: p,
+		font: scrollFont * max(.8, h/250)}
+}
 
 // scrollParts are the scroll's images, one art pixel per image pixel.
 type scrollParts struct {
@@ -91,8 +99,8 @@ func (a *scrollAnim) advance(dt float64) {
 func (a *scrollAnim) open() bool { return a.t >= a.dur && !a.closing }
 
 // drawScrollBody draws the open scroll with paper from cx-hw to cx+hw (layout x of the
-// centre, half width in art pixels) and the paper's top at y.
-func (g *Game) drawScrollBody(dst *ebiten.Image, cx, y, hw float64) {
+// centre, half width in art pixels), the paper's top at y and h high.
+func (g *Game) drawScrollBody(dst *ebiten.Image, cx, y, h, hw float64) {
 	p := g.assets.Scroll
 	if p == nil {
 		return
@@ -100,7 +108,6 @@ func (g *Game) drawScrollBody(dst *ebiten.Image, cx, y, hw float64) {
 	hw = math.Round(hw)
 	w := hw * 2 * scrollPx
 	x0 := cx - hw*scrollPx
-	h := scrollH
 	tile := func(img *ebiten.Image, x, y, w, h float64) {
 		iw, ih := float64(img.Bounds().Dx())*scrollPx, float64(img.Bounds().Dy())*scrollPx
 		for ty := 0.0; ty < h; ty += ih {
@@ -160,8 +167,9 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 	a := &g.scrollAnim
 	a.advance(g.uiSeconds - a.clock)
 	a.clock = g.uiSeconds
-	f := g.serif(scrollFont, 700)
-	area := scrollRight - scrollLeft - 2*(scrollRod+scrollPad)*scrollPx
+	b := dialogueBox()
+	f := g.serif(b.font, 700)
+	area := b.right - b.left - 2*(scrollRod+scrollPad)*scrollPx
 	wrapped := wrapWidth(l.text, f, area)
 	if a.key != key {
 		lines := strings.Split(wrapped, "\n")
@@ -170,7 +178,7 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 			widest = max(widest, measure(s, f))
 		}
 		target := math.Ceil((widest/scrollPx + 2*scrollPad) / 2)
-		target = max(60, min(target, (scrollRight-scrollLeft)/scrollPx/2-scrollRod-1))
+		target = max(60, min(target, (b.right-b.left)/scrollPx/2-scrollRod-1))
 		a.speakerChanged = a.key == "" || strings.Join(l.speakers, "·") != strings.SplitN(a.key, "|", 2)[0]
 		a.key = key
 		a.retarget(target)
@@ -180,14 +188,14 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 	}
 	// whole art pixels, so the left roller stays put while the scroll springs
 	hwArt := math.Round(a.hw)
-	cx := scrollLeft + (scrollRod+1)*scrollPx + hwArt*scrollPx
-	g.drawScrollBody(dst, cx, scrollTop, hwArt)
+	cx := b.left + (scrollRod+1)*scrollPx + hwArt*scrollPx
+	g.drawScrollBody(dst, cx, b.top, b.h, hwArt)
 
 	// the speaker's portrait fades and rises in beside the scroll
 	in := bezier(.2, .8, .2, 1, phase(g.uiSeconds-a.shownAt, 0, .3))
 	if len(l.speakers) > 0 {
-		size := portraitW
-		px, py := 36.0, scrollTop+scrollH-size+8*(1-in)
+		size := b.portrait
+		px, py := 36.0, b.top+b.h-size+8*(1-in)
 		if _, c, ok := g.character(l.speakers[0]); ok {
 			if src := g.assets.Portraits[c.Look.Portrait]; src != nil {
 				rect(dst, float32(px-5), float32(py-5), float32(size+10), float32(size+10), color.NRGBA{R: 26, G: 18, B: 12, A: uint8(255 * in)})
@@ -201,14 +209,14 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 	}
 	// text, clipped to the paper while the scroll still moves
 	hw := hwArt * scrollPx
-	clip := image.Rect(int((cx-hw)*drawPx), int(scrollTop*drawPx), int((cx+hw)*drawPx), int((scrollTop+scrollH)*drawPx))
+	clip := image.Rect(int((cx-hw)*drawPx), int(b.top*drawPx), int((cx+hw)*drawPx), int((b.top+b.h)*drawPx))
 	sub := dst.SubImage(clip).(*ebiten.Image)
 	shown := wrapped
 	if !done {
 		shown = prefixLines(wrapped, len([]rune(text)))
 	}
 	tx := cx - hw + scrollPad*scrollPx
-	write(sub, shown, f, tx, scrollTop+scrollBand*scrollPx+12, color.NRGBA{R: 29, G: 20, B: 12, A: 255})
+	write(sub, shown, f, tx, b.top+scrollBand*scrollPx+12, color.NRGBA{R: 29, G: 20, B: 12, A: 255})
 
 	if len(l.speakers) > 0 {
 		pk := bezier(.2, .8, .2, 1, phase(g.uiSeconds-a.shownAt-a.dur, 0, .24))
@@ -225,7 +233,7 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 		if sub != "" {
 			w += measure(sub, sf) + 8
 		}
-		x, y := cx-hw+8, scrollTop-scrollKnob*scrollPx-10+6*(1-pk)
+		x, y := cx-hw+8, b.top-scrollKnob*scrollPx-10+6*(1-pk)
 		al := uint8(255 * pk)
 		rect(dst, float32(x+2), float32(y+3), float32(w), 34, color.NRGBA{R: 59, G: 14, B: 7, A: al})
 		for i := float32(0); i < 4; i++ {
@@ -240,6 +248,6 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 	}
 	if done && a.open() {
 		bob := 3 * math.Sin(g.uiSeconds*7)
-		g.label(dst, "▼", cx+hw-scrollPad*scrollPx, scrollTop+scrollH-scrollBand*scrollPx-30+bob, 16, color.NRGBA{R: 184, G: 50, B: 31, A: 255})
+		g.label(dst, "▼", cx+hw-scrollPad*scrollPx, b.top+b.h-scrollBand*scrollPx-30+bob, 16, color.NRGBA{R: 184, G: 50, B: 31, A: 255})
 	}
 }

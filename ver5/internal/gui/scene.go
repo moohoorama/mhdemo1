@@ -343,6 +343,7 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	op.GeoM.Translate(float64(vp.Min.X+vp.Dx()/2), float64(vp.Min.Y+vp.Dy()/2))
 	op.Filter = ebiten.FilterPixelated
 	inWorld(func() {
+		rect(dst, 0, 0, float32(worldW), float32(worldH), fieldGround) // a wide screen sees past the canvas
 		drawScaled(dst, g.field.Canvas, op)
 		g.drawSceneEffects(dst)
 	})
