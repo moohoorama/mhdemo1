@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/color"
 	"image/png"
+	"math"
 	"os"
 	"path/filepath"
 	"sort"
@@ -33,6 +34,20 @@ type Demo struct {
 	// stage and duel are the data ids the demos play; the engine never names content, so
 	// cmd/_uidemo passes them in
 	stage, duel string
+	// letterbox holds the 1280×850-aspect frame when the demo screen has another shape, the
+	// way Ebitengine fits the game into a window
+	letterbox *ebiten.Image
+}
+
+// DemoOptions say which demo to play and how. Frames go to Out every Every frames; Every <= 0
+// saves nothing, for a host that captures the frames itself (cmd/_uidemo-vm). UIScale is the
+// UI size setting in percent; 0 keeps the default.
+type DemoOptions struct {
+	Name, Out   string
+	Stage, Duel string
+	Frames      int
+	Every       int
+	UIScale     int
 }
 
 // demos are the UI pieces cmd/_uidemo can show, by name.
@@ -50,10 +65,10 @@ func DemoNames() []string {
 	return out
 }
 
-// NewDemo builds the game from the ver5 directory root and prepares demo name, which plays
-// in battle stage (and duel, for the duel demo). It saves every n-th frame to out; every <= 0
-// saves nothing, for a host that captures the frames itself (cmd/_uidemo-vm).
-func NewDemo(root, name, out, stage, duel string, frames, every int) (*Demo, error) {
+// NewDemo builds the game from the ver5 directory root and prepares the demo, which plays in
+// battle o.Stage (and o.Duel, for the duel demo).
+func NewDemo(root string, o DemoOptions) (*Demo, error) {
+	name, out, stage, duel, frames, every := o.Name, o.Out, o.Stage, o.Duel, o.Frames, o.Every
 	setup, ok := demos[name]
 	if !ok {
 		return nil, fmt.Errorf("unknown demo %q (have %v)", name, DemoNames())
@@ -91,6 +106,9 @@ func NewDemo(root, name, out, stage, duel string, frames, every int) (*Demo, err
 	demo := &Demo{g: g, frames: frames, every: every, out: out, stepped: -1, stage: stage, duel: duel}
 	if err = setup(demo); err != nil {
 		return nil, err
+	}
+	if o.UIScale > 0 {
+		g.S.Settings.UIScale = o.UIScale
 	}
 	return demo, nil
 }
@@ -138,9 +156,10 @@ func (d *Demo) look(id string) {
 	}
 }
 
-func (d *Demo) Layout(int, int) (int, int) {
-	scale = 1
-	return Width, Height
+// Layout takes the screen as given, so a host can play the demo at a phone's size.
+func (d *Demo) Layout(w, h int) (int, int) {
+	scale = min(float64(w)/Width, float64(h)/Height)
+	return w, h
 }
 
 func (d *Demo) Update() error {
@@ -168,9 +187,23 @@ func (d *Demo) Draw(dst *ebiten.Image) {
 	if d.saved {
 		return
 	}
-	d.g.Draw(dst)
+	frame := dst
+	if fw, fh := int(math.Ceil(Width*scale)), int(math.Ceil(Height*scale)); fw != dst.Bounds().Dx() || fh != dst.Bounds().Dy() {
+		if d.letterbox == nil || d.letterbox.Bounds().Dx() != fw || d.letterbox.Bounds().Dy() != fh {
+			d.letterbox = ebiten.NewImage(fw, fh)
+		}
+		d.letterbox.Clear()
+		frame = d.letterbox
+	}
+	d.g.Draw(frame)
 	if d.overlay != nil {
-		d.overlay(dst)
+		d.overlay(frame)
+	}
+	if frame != dst {
+		dst.Fill(color.Black)
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(float64(dst.Bounds().Dx()-frame.Bounds().Dx())/2, float64(dst.Bounds().Dy()-frame.Bounds().Dy())/2)
+		dst.DrawImage(frame, op)
 	}
 	if d.every > 0 && d.frame%d.every == 0 {
 		img := image.NewRGBA(dst.Bounds())

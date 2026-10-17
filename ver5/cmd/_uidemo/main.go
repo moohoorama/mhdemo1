@@ -22,16 +22,24 @@ func main() {
 	every := flag.Int("every", 6, "save every n-th frame; 0 saves none (vmhost guest)")
 	stage := flag.String("stage", "", "battle stage the demos play (default: the first)")
 	duel := flag.String("duel", "", "stage duel the duel demo plays (default: the first)")
+	size := flag.String("size", "1280x850", "window size in device pixels, e.g. 2400x1080 for a phone")
+	uiScale := flag.Int("uiscale", 0, "UI size setting in percent (80-160); 0 keeps the default")
 	flag.Parse()
+	var w, h int
+	if _, err := fmt.Sscanf(*size, "%dx%d", &w, &h); err != nil {
+		fmt.Fprintln(os.Stderr, "bad -size:", err)
+		os.Exit(2)
+	}
 	if *out == "" {
 		*out = "reports/uidemo/" + *name
 	}
-	d, err := gui.NewDemo(".", *name, *out, *stage, *duel, *frames, *every)
+	d, err := gui.NewDemo(".", gui.DemoOptions{Name: *name, Out: *out, Stage: *stage, Duel: *duel,
+		Frames: *frames, Every: *every, UIScale: *uiScale})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
-	ebiten.SetWindowSize(gui.Width, gui.Height)
+	ebiten.SetWindowSize(w, h)
 	ebiten.SetWindowTitle("uidemo " + *name)
 	if err = ebiten.RunGame(d); err != nil {
 		fmt.Fprintln(os.Stderr, err)

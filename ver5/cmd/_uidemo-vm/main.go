@@ -7,6 +7,12 @@
 //	go run ./cmd/_uidemo-vm -ui turn -frames 240 -mp4 reports/uidemo/turn.mp4
 //	go run ./cmd/_uidemo-vm -ui damage -frames 380 -at 39,51,69 -out reports/uidemo/damage
 //	go run ./cmd/_uidemo-vm -ui duel -frames 420 -every 30 -mp4 reports/uidemo/duel.mp4
+//	go run ./cmd/_uidemo-vm -ui uiscale -frames 760 -size 2400x1080 -uiscale 160 -at 380,720
+//	go run ./cmd/_uidemo-vm -ui uiscale -frames 760 -sheet -at 260,380,720
+//
+// -sheet plays the demo once per reference screen (phone landscape at 130% and 160%, a 4:3
+// tablet, the desktop window; see docs/plans/PLAN_ui-scale-ppi.md) and puts each -at frame
+// of all four side by side in <out>/sheet-NNNN.png.
 //
 // The host still opens a (hidden) GLFW window, so the display must be awake: wrap the run in
 // `caffeinate -d -i` when the machine may sleep.
@@ -30,7 +36,6 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/exp/vmhost"
-	"srpg/internal/gui"
 )
 
 var (
@@ -43,13 +48,29 @@ var (
 	at     = flag.String("at", "", "comma-separated frames to save as PNG, e.g. 30,96,264")
 	mp4    = flag.String("mp4", "", "write every frame to this MP4 (needs ffmpeg)")
 	crf    = flag.Int("crf", 18, "x264 quality for -mp4: 0 is lossless, 18 is visually lossless")
-	half   = flag.Bool("half", false, "write the MP4 at half size (640×425)")
+	half   = flag.Bool("half", false, "write the MP4 at half size")
+	size   = flag.String("size", "1280x850", "screen size in device pixels, e.g. 2400x1080 for a phone")
+	uiPct  = flag.Int("uiscale", 0, "UI size setting in percent (80-160); 0 keeps the default")
+	sheet  = flag.Bool("sheet", false, "capture the -at frames on every reference screen into one sheet each")
 )
+
+// screens are the reference screens -sheet plays on.
+var screens = []struct {
+	name    string
+	w, h    int
+	uiScale int
+}{
+	{"phone 130%", 2400, 1080, 130},
+	{"phone 160%", 2400, 1080, 160},
+	{"tablet 4:3 130%", 2048, 1536, 130},
+	{"desktop 100%", 1280, 850, 100},
+}
 
 // host drives the demo guest from a hidden window: each frame it runs one guest tick, has
 // the guest render, composites the result into screen and hands the pixels to the sinks.
 type host struct {
 	guest   *vmhost.GuestSession
+	w, h    int
 	screen  *ebiten.Image
 	pixels  []byte
 	pngAt   map[int]bool
@@ -61,8 +82,8 @@ type host struct {
 
 func (h *host) Update() error {
 	if h.screen == nil {
-		h.screen = ebiten.NewImage(gui.Width, gui.Height)
-		h.pixels = make([]byte, 4*gui.Width*gui.Height)
+		h.screen = ebiten.NewImage(h.w, h.h)
+		h.pixels = make([]byte, 4*h.w*h.h)
 		if err := h.guest.SetOutsideScreen(h.screen); err != nil {
 			return err
 		}
@@ -99,7 +120,7 @@ func (h *host) savePNG(frame int, pix []byte) {
 	h.writers.Add(1)
 	go func() {
 		defer h.writers.Done()
-		img := &image.RGBA{Pix: pix, Stride: 4 * gui.Width, Rect: image.Rect(0, 0, gui.Width, gui.Height)}
+		img := &image.RGBA{Pix: pix, Stride: 4 * h.w, Rect: image.Rect(0, 0, h.w, h.h)}
 		f, err := os.Create(filepath.Join(*out, fmt.Sprintf("frame-%04d.png", frame)))
 		if err == nil {
 			err = png.Encode(f, img)
@@ -114,6 +135,17 @@ func (h *host) savePNG(frame int, pix []byte) {
 func (h *host) Draw(*ebiten.Image) {}
 
 func (h *host) Layout(w, h2 int) (int, int) { return w, h2 }
+
+// atFrames are the frame numbers in -at.
+func atFrames() []int {
+	var out []int
+	for _, s := range strings.Split(*at, ",") {
+		if n, err := strconv.Atoi(strings.TrimSpace(s)); err == nil {
+			out = append(out, n)
+		}
+	}
+	return out
+}
 
 func main() {
 	if err := run(); err != nil {
@@ -130,11 +162,15 @@ func run() error {
 	if *out == "" {
 		*out = filepath.Join("reports", "uidemo", *ui)
 	}
+	if *sheet {
+		return runSheet()
+	}
 	h := &host{pngAt: map[int]bool{}}
-	for _, s := range strings.Split(*at, ",") {
-		if n, err := strconv.Atoi(strings.TrimSpace(s)); err == nil {
-			h.pngAt[n] = true
-		}
+	if _, err := fmt.Sscanf(*size, "%dx%d", &h.w, &h.h); err != nil {
+		return fmt.Errorf("bad -size %q: %w", *size, err)
+	}
+	for _, n := range atFrames() {
+		h.pngAt[n] = true
 	}
 	if len(h.pngAt) > 0 || *every > 0 {
 		if err := os.MkdirAll(*out, 0755); err != nil {
@@ -166,7 +202,8 @@ func run() error {
 		return fmt.Errorf("building the guest: %w", err)
 	}
 	// one more frame than captured: the guest stops itself after its last frame
-	guestCmd := exec.Command(guestBin, "-ui", *ui, "-frames", strconv.Itoa(*frames+1), "-every", "0", "-stage", *stage, "-duel", *duel)
+	guestCmd := exec.Command(guestBin, "-ui", *ui, "-frames", strconv.Itoa(*frames+1), "-every", "0", "-stage", *stage, "-duel", *duel,
+		"-size", *size, "-uiscale", strconv.Itoa(*uiPct))
 	guestCmd.Env = append(os.Environ(), "EBITENGINE_VM_ENDPOINT="+endpoint)
 	guestCmd.Stdout, guestCmd.Stderr = os.Stderr, os.Stderr
 	if err := guestCmd.Start(); err != nil {
@@ -193,9 +230,9 @@ func run() error {
 			return err
 		}
 		args := []string{"-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgba",
-			"-s", fmt.Sprintf("%dx%d", gui.Width, gui.Height), "-r", "60", "-i", "-"}
+			"-s", fmt.Sprintf("%dx%d", h.w, h.h), "-r", "60", "-i", "-"}
 		if *half {
-			args = append(args, "-vf", "scale=640:-2:flags=area")
+			args = append(args, "-vf", "scale=iw/2:-2:flags=area")
 		}
 		pix := "yuv420p"
 		if *crf == 0 {

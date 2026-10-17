@@ -24,4 +24,6 @@ To check UI or on-screen output, capture it instead of guessing from code. `ver5
 plays a named UI demo (`ver5/internal/gui/uidemo_*.go`) headlessly and saves PNG frames and/or a
 60 fps MP4; run it from `ver5/` wrapped in `caffeinate -d -i`, e.g.
 `go run ./cmd/_uidemo-vm -ui dialogue -frames 300 -at 30,96 -mp4 reports/uidemo/dialogue.mp4`.
+`-size 2400x1080 -uiscale 160` plays it on a phone-sized screen, and `-sheet -at 260,380,720` puts the
+same frames from the four reference screens (docs/plans/PLAN_ui-scale-ppi.md) on one image.
 Add a new demo file there when no existing demo shows the screen. `cmd/_uidemo` is the windowed version.
