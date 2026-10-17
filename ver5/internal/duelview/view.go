@@ -8,7 +8,6 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/colorm"
-	"github.com/hajimehoshi/ebiten/v2/text/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 	"srpg/internal/duel"
 	"srpg/internal/sprite"
@@ -31,21 +30,13 @@ var Transition = Params{PanTime: .6, ZoomTime: .5, UITime: .4, ZoomFactor: 5, St
 
 func (p Params) Intro() float64 { return p.PanTime + p.ZoomTime + p.UITime }
 
-var (
-	ink  = color.NRGBA{239, 226, 195, 255}
-	gold = color.NRGBA{219, 177, 96, 255}
-	blue = color.NRGBA{91, 174, 216, 255}
-	red  = color.NRGBA{221, 99, 79, 255}
-)
-
 type Fighter struct {
-	Name, Class string
+	Name        string
 	Art, Troops *sprite.Art
 	Portrait    *ebiten.Image
 }
 
 type View struct {
-	Font     *text.GoTextFaceSource
 	Bubble   *Bubble
 	Fighters [4]Fighter
 	Story    duel.Story
@@ -169,19 +160,6 @@ func box(dst *ebiten.Image, x, y, w, h float64, c color.Color) {
 func line(dst *ebiten.Image, x, y, x1, y1, w float64, c color.Color) {
 	vector.StrokeLine(dst, float32(x), float32(y), float32(x1), float32(y1), float32(w), c, true)
 }
-func (g *View) label(dst *ebiten.Image, s string, x, y, size float64, c color.Color) {
-	g.labelWeight(dst, s, x, y, size, c, 400)
-}
-
-func (g *View) labelWeight(dst *ebiten.Image, s string, x, y, size float64, c color.Color, weight float32) {
-	f := &text.GoTextFace{Source: g.Font, Size: size}
-	f.SetVariation(text.MustParseTag("wght"), weight)
-	op := &text.DrawOptions{}
-	op.GeoM.Translate(x, y)
-	op.ColorScale.ScaleWithColor(c)
-	op.LineSpacing = size * 1.45
-	text.Draw(dst, s, f, op)
-}
 
 // at mirrors a default-axis (ally upper left, enemy lower right) arena point onto Axis.
 func (g *View) at(x, y float64) (float64, float64) {
@@ -235,30 +213,6 @@ func drawUnit(dst *ebiten.Image, u unitDraw, shadow bool) {
 	}
 	cm.Scale(1, 1, 1, 1-u.fade)
 	colorm.DrawImage(dst, im, cm, op)
-}
-
-func (g *View) portrait(dst *ebiten.Image, i int, x, y float64) {
-	f := g.Fighters[i]
-	c := blue
-	if i == 1 {
-		c = red
-	}
-	box(dst, x, y, 326, 128, color.NRGBA{27, 30, 31, 245})
-	box(dst, x, y, 3, 128, c)
-	if f.Portrait == nil {
-		g.labelWeight(dst, f.Name, x+132, y+38, 28, ink, 800)
-		g.label(dst, f.Class, x+132, y+84, 16, gold)
-		return
-	}
-	b := f.Portrait.Bounds()
-	op := &ebiten.DrawImageOptions{}
-	k := 112 / float64(max(b.Dx(), b.Dy()))
-	op.GeoM.Scale(k, k)
-	op.GeoM.Translate(x+8+(112-float64(b.Dx())*k)/2, y+8)
-	dst.DrawImage(f.Portrait, op)
-	g.label(dst, []string{"아군 장수", "적군 장수"}[i], x+132, y+12, 14, c)
-	g.labelWeight(dst, f.Name, x+132, y+38, 28, ink, 800)
-	g.label(dst, f.Class, x+132, y+84, 16, gold)
 }
 
 func (g *View) Draw(dst *ebiten.Image) {
@@ -406,7 +360,7 @@ func bubbleTop(headY, footY, h float64) float64 {
 	return max(margin, min(bottomLimit-h, top))
 }
 
-// drawUI is the duel's own interface: speech bubbles and fighter portraits.
+// drawUI is the duel's own interface: the fighters' speech bubbles.
 func (g *View) drawUI(dst *ebiten.Image, s duel.State) {
 	for i, a := range s.Actors {
 		if !a.Visible || a.Speech == "" || g.Quiet {
@@ -419,14 +373,4 @@ func (g *View) drawUI(dst *ebiten.Image, s duel.State) {
 		y := bubbleTop(headY-g.oy, footY-g.oy, h) + g.oy
 		g.Bubble.DrawText(dst, g.Fighters[i].Name, a.Speech, x, y, 1)
 	}
-	// the fighters' cards in opposite corners of the canvas
-	allyX, allyY, enemyX, enemyY := 24.0, 70.0, float64(g.cw)-350, float64(g.ch)-186
-	if g.flipX() {
-		allyX, enemyX = enemyX, allyX
-	}
-	if g.flipY() {
-		allyY, enemyY = enemyY, allyY
-	}
-	g.portrait(dst, 0, allyX, allyY)
-	g.portrait(dst, 1, enemyX, enemyY)
 }

@@ -11,7 +11,7 @@ import (
 )
 
 func (g *Game) duelView(e core.Event) *duelview.View {
-	v := &duelview.View{Bubble: g.assets.Bubble, Font: g.font, Story: g.assets.Duels.Story(e.DuelID, e.Outcome)}
+	v := &duelview.View{Bubble: g.assets.Bubble, Story: g.assets.Duels.Story(e.DuelID, e.Outcome)}
 	for i, id := range []string{e.Actor, e.Target} {
 		u := g.unitView(g.player.final, id)
 		if u == nil {
@@ -117,11 +117,7 @@ func (g *Game) drawDuel(dst *ebiten.Image) {
 	g.drawCutIn(dst)
 	g.drawDuelPreviewInfo(dst)
 	if ui >= 1 {
-		skip := image.Rect(uiW-280, uiH-45, uiW-26, uiH-11)
-		if lowScreen() { // the fighters' cards fill the corners
-			skip = image.Rect(uiW/2-127, uiH-45, uiW/2+127, uiH-11)
-		}
-		g.btn(dst, skip, "일기토 건너뛰기", g.player.SkipDuel)
+		g.btn(dst, image.Rect(uiW-280, uiH-45, uiW-26, uiH-11), "일기토 건너뛰기", g.player.SkipDuel)
 	}
 }
 
@@ -145,5 +141,5 @@ func (g *Game) groundTint() color.NRGBA {
 func (g *Game) duelFighter(id, classID, faction string) duelview.Fighter {
 	c := g.S.Data.Characters[id]
 	class := g.S.Data.Classes[classID]
-	return duelview.Fighter{Name: c.Name, Class: class.Name, Art: g.battleClassArt(id, classID, faction), Troops: g.art(class.Sprite, faction, content.Look{}), Portrait: g.assets.Portraits[c.Look.Portrait]}
+	return duelview.Fighter{Name: c.Name, Art: g.battleClassArt(id, classID, faction), Troops: g.art(class.Sprite, faction, content.Look{}), Portrait: g.assets.Portraits[c.Look.Portrait]}
 }
