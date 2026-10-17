@@ -287,7 +287,7 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 		start := min(e.page*18, len(ids))
 		for j, id := range ids[start:min(start+18, len(ids))] {
 			x, y := 182+j%6*150, 346+j/6*105
-			g.portrait(dst, id, float64(x+42), float64(y), 60)
+			g.portrait(dst, id, "", float64(x+42), float64(y), 60)
 			used := false
 			for _, sp := range append(append([]content.Spawn{}, e.doc.Stage.Enemies...), e.doc.Stage.Party...) {
 				used = used || sp.Character == id

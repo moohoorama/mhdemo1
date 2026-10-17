@@ -27,7 +27,7 @@ func (g *Game) drawLearning(dst *ebiten.Image) {
 func (g *Game) learningWindow(dst *ebiten.Image, l core.Learner) {
 	r := image.Rect(uiW/2-380, 80, uiW/2+380, 780)
 	g.titled(dst, r, "특성 학습")
-	g.portrait(dst, l.ID, float64(r.Min.X+32), float64(r.Min.Y+44), 80)
+	g.portrait(dst, l.ID, "", float64(r.Min.X+32), float64(r.Min.Y+44), 80)
 	g.label(dst, l.Name, float64(r.Min.X+132), float64(r.Min.Y+46), 26, gold)
 	g.label(dst, fmt.Sprintf("남은 특성치 %d", l.Points), float64(r.Min.X+132), float64(r.Min.Y+84), 17, ink)
 	if len(g.learn) > 1 {

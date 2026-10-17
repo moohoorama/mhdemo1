@@ -22,6 +22,7 @@
    "RecoveryBase": 2,
    "Tier": 0,
    "Sprite": "light_infantry",
+   "Portrait": "light_infantry",
    "Pool": [
     "guard_prep",
     "fire",
@@ -54,6 +55,7 @@
    "RecoveryBase": 2,
    "Tier": 1,
    "Sprite": "heavy_infantry",
+   "Portrait": "heavy_infantry",
    "Pool": [
     "deputy_appoint",
     "assist",
@@ -85,6 +87,7 @@
    "RecoveryBase": 2,
    "Tier": 1,
    "Sprite": "pikeman",
+   "Portrait": "pikeman",
    "Pool": [
     "deputy_appoint",
     "thrust_art",
@@ -116,6 +119,7 @@
    "RecoveryBase": 2,
    "Tier": 2,
    "Sprite": "chariot",
+   "Portrait": "chariot",
    "Pool": [
     "siegecraft",
     "valor",
@@ -147,6 +151,7 @@
    "RecoveryBase": 2,
    "Tier": 2,
    "Sprite": "guards",
+   "Portrait": "guards",
    "Pool": [
     "castle_defense",
     "ironwall",
@@ -175,6 +180,7 @@
    "RecoveryBase": 2,
    "Tier": 0,
    "Sprite": "light_cavalry",
+   "Portrait": "light_cavalry",
    "Pool": [
     "dash",
     "disrupt_prep",
@@ -211,6 +217,7 @@
    "RecoveryBase": 2,
    "Tier": 1,
    "Sprite": "heavy_cavalry",
+   "Portrait": "heavy_cavalry",
    "Pool": [
     "deputy_appoint",
     "thrust_art",
@@ -245,6 +252,7 @@
    "RecoveryBase": 2,
    "Tier": 1,
    "Sprite": "horse_archer",
+   "Portrait": "horse_archer",
    "MinRange": 2,
    "Pool": [
     "deputy_appoint",
@@ -280,6 +288,7 @@
    "RecoveryBase": 2,
    "Tier": 2,
    "Sprite": "horse_crossbow",
+   "Portrait": "horse_crossbow",
    "MinRange": 2,
    "Pool": [
     "white_horse",
@@ -312,6 +321,7 @@
    "RecoveryBase": 2,
    "Tier": 2,
    "Sprite": "royal_guard",
+   "Portrait": "royal_guard",
    "Pool": [
     "gale",
     "charge",
@@ -343,6 +353,7 @@
    "RecoveryBase": 2,
    "Tier": 0,
    "Sprite": "archer",
+   "Portrait": "archer",
    "MinRange": 2,
    "Pool": [
     "relief",
@@ -375,6 +386,7 @@
    "RecoveryBase": 2,
    "Tier": 1,
    "Sprite": "crossbow",
+   "Portrait": "crossbow",
    "MinRange": 2,
    "Pool": [
     "deputy_appoint",
@@ -409,6 +421,7 @@
    "RecoveryBase": 2,
    "Tier": 2,
    "Sprite": "repeating_crossbow",
+   "Portrait": "repeating_crossbow",
    "MinRange": 2,
    "Pool": [
     "exhort",
@@ -438,6 +451,7 @@
    "RecoveryBase": 2,
    "Tier": 2,
    "Sprite": "catapult",
+   "Portrait": "catapult",
    "MinRange": 2,
    "Pool": [
     "siegecraft",
@@ -473,6 +487,7 @@
    "RecoveryBase": 5,
    "Tier": 0,
    "Sprite": "scholar",
+   "Portrait": "scholar",
    "Pool": [
     "fire",
     "water",
@@ -508,6 +523,7 @@
    "RecoveryBase": 5,
    "Tier": 1,
    "Sprite": "strategist",
+   "Portrait": "staff_officer",
    "Pool": [
     "deputy_appoint",
     "earth",
@@ -545,6 +561,7 @@
    "RecoveryBase": 5,
    "Tier": 2,
    "Sprite": "grand_strategist",
+   "Portrait": "strategist",
    "Pool": [
     "earth_spread",
     "hinder_boost",
@@ -575,6 +592,7 @@
    "RecoveryBase": 5,
    "Tier": 1,
    "Sprite": "sorcerer",
+   "Portrait": "sorcerer",
    "Pool": [
     "deputy_appoint",
     "exhort",
@@ -609,6 +627,7 @@
    "RecoveryBase": 5,
    "Tier": 2,
    "Sprite": "mystic",
+   "Portrait": "mystic",
    "Pool": [
     "exhort_boost",
     "eight_formation",
@@ -638,6 +657,7 @@
    "RecoveryBase": 2,
    "Tier": 0,
    "Sprite": "bandit",
+   "Portrait": "bandit",
    "Skills": [
     "steal"
    ],
@@ -672,6 +692,7 @@
    "RecoveryBase": 2,
    "Tier": 1,
    "Sprite": "ruffian",
+   "Portrait": "ruffian",
    "Skills": [
     "steal"
    ],
@@ -706,6 +727,7 @@
    "RecoveryBase": 2,
    "Tier": 2,
    "Sprite": "outlaw",
+   "Portrait": "outlaw",
    "Skills": [
     "steal"
    ],
@@ -736,6 +758,7 @@
    "RecoveryBase": 2,
    "Tier": 0,
    "Sprite": "brawler",
+   "Portrait": "brawler",
    "Pool": [
     "counter_art",
     "composure",
@@ -767,6 +790,7 @@
    "RecoveryBase": 2,
    "Tier": 1,
    "Sprite": "pugilist",
+   "Portrait": "pugilist",
    "Pool": [
     "deputy_appoint",
     "battle_fury",
@@ -798,6 +822,7 @@
    "RecoveryBase": 2,
    "Tier": 2,
    "Sprite": "fist_saint",
+   "Portrait": "fist_saint",
    "Pool": [
     "valor",
     "cross_strike",

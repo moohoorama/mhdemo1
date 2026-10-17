@@ -211,7 +211,6 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 		}
 		window(clip, card)
 		strokeRect(clip, float32(card.Min.X), float32(card.Min.Y), float32(card.Dx()), float32(card.Dy()), 2, tint)
-		g.portrait(clip, id, float64(x+10), float64(cards.Min.Y+10), 54)
 		cl := ""
 		level := 0
 		for _, c := range o.Characters {
@@ -219,6 +218,7 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 				cl, level = c.Class, c.Level
 			}
 		}
+		g.portrait(clip, id, cl, float64(x+10), float64(cards.Min.Y+10), 54)
 		g.label(clip, g.name(id), float64(x+74), float64(cards.Min.Y+10), 17, ink)
 		g.label(clip, fmt.Sprintf("Lv%d", level), float64(x+74), float64(cards.Min.Y+38), 13, muted)
 		g.label(clip, g.className(cl), float64(x+10), float64(cards.Min.Y+72), 13, ink)

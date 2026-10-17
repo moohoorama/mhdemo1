@@ -87,6 +87,7 @@ type Class struct {
 	Promotes                        []string
 	Tier                            int
 	Sprite                          string
+	Portrait                        string // stands in for officers without a portrait of their own
 	pool                            []string
 }
 type Colors []string

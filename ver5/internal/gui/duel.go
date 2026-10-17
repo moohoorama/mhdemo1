@@ -141,5 +141,5 @@ func (g *Game) groundTint() color.NRGBA {
 func (g *Game) duelFighter(id, classID, faction string) duelview.Fighter {
 	c := g.S.Data.Characters[id]
 	class := g.S.Data.Classes[classID]
-	return duelview.Fighter{Name: c.Name, Art: g.battleClassArt(id, classID, faction), Troops: g.art(class.Sprite, faction, content.Look{}), Portrait: g.assets.Portraits[c.Look.Portrait]}
+	return duelview.Fighter{Name: c.Name, Art: g.battleClassArt(id, classID, faction), Troops: g.art(class.Sprite, faction, content.Look{}), Portrait: g.portraitArt(c, classID)}
 }

@@ -315,7 +315,7 @@ func (g *Game) modalWindow(dst *ebiten.Image, m *modal) {
 		l := m.level
 		r := image.Rect(uiW/2-250, 200, uiW/2+250, 540)
 		g.titled(dst, r, "레벨 업")
-		g.portrait(dst, l.id, float64(r.Min.X+32), 236, 110)
+		g.portrait(dst, l.id, "", float64(r.Min.X+32), 236, 110)
 		g.label(dst, g.name(l.id), float64(r.Min.X+164), 232, 26, gold)
 		g.label(dst, fmt.Sprintf("Lv %d  →  Lv %d", l.from, l.to), float64(r.Min.X+164), 274, 20, ink)
 		g.label(dst, fmt.Sprintf("특성치 +%d", 100*(l.to-l.from)), float64(r.Min.X+164), 306, 15, good)
@@ -393,7 +393,7 @@ func (g *Game) resultWindow(dst *ebiten.Image, o core.Observation) {
 	start := g.resultPage * 5
 	for i, u := range allies[start:min(start+5, len(allies))] {
 		y := 222 + i*76
-		g.portrait(dst, u.ID, float64(r.Min.X+40), float64(y), 60)
+		g.portrait(dst, u.ID, u.Class, float64(r.Min.X+40), float64(y), 60)
 		g.label(dst, u.Name, float64(r.Min.X+116), float64(y), 19, ink)
 		lv := fmt.Sprintf("Lv %d", u.Level)
 		if from, ok := g.startLevel[u.ID]; ok && from < u.Level {

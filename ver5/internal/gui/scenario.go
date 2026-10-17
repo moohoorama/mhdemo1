@@ -168,7 +168,7 @@ func (g *Game) preparation(dst *ebiten.Image, o core.Observation) {
 			toggle = func() { g.toggleDeploy(o, officer.ID) }
 		}
 		g.btn(dst, image.Rect(row.Max.X-96, y+22, row.Max.X-12, y+54), mark, toggle)
-		g.portrait(dst, of.ID, float64(row.Min.X+14), float64(y+8), 60)
+		g.portrait(dst, of.ID, of.Class, float64(row.Min.X+14), float64(y+8), 60)
 		c := ink
 		if of.Dead {
 			c = muted
@@ -223,7 +223,7 @@ func (g *Game) officerDetail(dst *ebiten.Image, o core.Observation, r image.Rect
 		return
 	}
 	x, y := float64(r.Min.X), float64(r.Min.Y)
-	g.portrait(dst, of.ID, x, y, 120)
+	g.portrait(dst, of.ID, of.Class, x, y, 120)
 	g.label(dst, g.name(of.ID), x+140, y, 28, gold)
 	g.label(dst, fmt.Sprintf("%s · Lv%d", g.className(of.Class), of.Level), x+140, y+42, 17, ink)
 	progress := core.ExperienceProgress(of.XP)

@@ -108,6 +108,22 @@ Square 1:1 image, plain dark navy background, no text, no watermark, no border.
 - 전체 비교: `output/portraits-c1-all.png`
 - 참조 이미지를 넘길 때 `codex exec -i`가 프롬프트까지 이미지 경로로 먹는 문제가 있었다. 스킬 스크립트에서 프롬프트 앞에 `--`를 넣어 고쳤다(2026-10-05).
 
+## 병종 초상 (2026-10-17)
+
+병종마다 이름 없는 병사 초상을 하나씩 둔다. 개인 초상이 없는 장수(목순, 무안국 등)와 일반 부대(`troop_*`)는 지금 병종의 초상을 쓴다.
+
+- **연결**: `classes.json`의 병종마다 `"Portrait": "<병종키>"`가 있다. GUI의 `portraitArt`는 장수의 `Look.Portrait`를 먼저 쓴다. 없으면 지금 병종의 `Portrait`를 쓴다. 전직한 장수는 바뀐 병종의 초상이 나온다.
+- **그리는 법**: 장수 시트와 같은 `portrait_sheet.sh`로 6명씩 그렸다. 인물 문장 앞에는 공통 문장을 붙였다. 유명 장수가 아닌 평범한 얼굴로 그리고, 옷은 진영 색 없이 삼베·가죽·쇠 같은 중립색으로 한다. 어느 군에 붙어도 어색하지 않게 하려는 것이다. 장비와 투구는 병종 도트에 맞췄다.
+- **시트와 병종 키**
+  - G-troops-foot: light_infantry, heavy_infantry, pikeman, guards, chariot, catapult
+  - H-troops-horse: light_cavalry, heavy_cavalry, horse_archer, horse_crossbow, royal_guard, archer
+  - I-troops-ranged-civil: crossbow, repeating_crossbow, scholar, staff_officer, strategist, sorcerer
+  - J-troops-wild: mystic, bandit, ruffian, outlaw, brawler, pugilist
+  - fist_saint: 25번째라 단독으로 그리고 496px로 줄였다.
+- 자르기는 장수 시트와 같다(3×2, 가장자리 8px). 게임용은 256px로 줄여 `ver5/assets/graphics/portraits/<병종키>.png`에 둔다.
+- **새 병종을 추가할 때**: 같은 공통 문장으로 초상을 그린다. 그다음 `classes.json`에 `Portrait`를 적는다.
+- 실제 프롬프트는 [`portraits/sheets/prompts.md`](portraits/sheets/prompts.md)의 "병종 초상"에 있다.
+
 ## 남은 일
 
 - 유비는 `style-samples/4-ink-wash.png`를 그대로 쓴다(포즈가 다른 새 버전이 필요하면 따로 만든다).

@@ -7,7 +7,21 @@ import (
 
 	"srpg/internal/content"
 	"srpg/internal/sprite"
+
+	"github.com/hajimehoshi/ebiten/v2"
 )
+
+// portraitArt is the character's own portrait, or else that of the class it serves as (its
+// own class when class is empty).
+func (g *Game) portraitArt(c content.Character, class string) *ebiten.Image {
+	if src := g.assets.Portraits[c.Look.Portrait]; src != nil {
+		return src
+	}
+	if class == "" {
+		class = c.Class
+	}
+	return g.assets.Portraits[g.S.Data.Classes[class].Portrait]
+}
 
 // character finds a character definition by id, troop id (<template>#<n>) or display name.
 func (g *Game) character(ref string) (string, content.Character, bool) {

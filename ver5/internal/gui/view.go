@@ -274,17 +274,17 @@ func blit(dst, src *ebiten.Image, x, y, w, h float64, tint color.Color) {
 	drawScaled(dst, src, op)
 }
 
-// portrait draws a framed portrait of a character (id, display name or troop id); someone
-// without one shows only the name plate the caller draws.
-func (g *Game) portrait(dst *ebiten.Image, ref string, x, y, size float64) bool {
+// portrait draws a framed portrait of a character (id, display name or troop id) serving as
+// class (its own class when empty); someone with no portrait shows only the name plate the
+// caller draws.
+func (g *Game) portrait(dst *ebiten.Image, ref, class string, x, y, size float64) {
 	_, c, ok := g.character(ref)
-	src := g.assets.Portraits[c.Look.Portrait]
+	src := g.portraitArt(c, class)
 	if !ok || src == nil {
-		return false
+		return
 	}
 	blit(dst, src, x, y, size, size, nil)
 	strokeRect(dst, float32(x-2), float32(y-2), float32(size+4), float32(size+4), 2, gold)
-	return true
 }
 
 func (g *Game) syncUnit(u core.UnitView, o core.Observation) {

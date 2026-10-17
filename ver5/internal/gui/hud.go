@@ -313,7 +313,7 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 	x, y, w, h := r.Min.X, r.Min.Y, r.Dx(), r.Dy()
 	window(dst, r)
 	g.block(r)
-	g.portrait(dst, u.ID, float64(x+14), float64(y+14), 56)
+	g.portrait(dst, u.ID, u.Class, float64(x+14), float64(y+14), 56)
 	g.label(dst, u.Name, float64(x+82), float64(y+10), 19, teamColor(u))
 	g.label(dst, fmt.Sprintf("%s  Lv%d", g.className(u.Class), u.Level), float64(x+82), float64(y+40), 13, ink)
 	state := ""

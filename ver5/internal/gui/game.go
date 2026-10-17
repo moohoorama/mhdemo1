@@ -870,7 +870,7 @@ func (g *Game) title(dst *ebiten.Image) {
 func (g *Game) titleMenu(dst *ebiten.Image) {
 	g.label(dst, g.S.Data.Title, 96, 70, 64, gold)
 	for i, id := range g.S.Data.Campaign.Roster[:min(3, len(g.S.Data.Campaign.Roster))] {
-		g.portrait(dst, id, float64(650+i*190), float64(205+i%2*50), 170)
+		g.portrait(dst, id, "", float64(650+i*190), float64(205+i%2*50), 170)
 	}
 	names := make([]string, len(g.S.Data.Stages))
 	for i, st := range g.S.Data.Stages {
@@ -925,7 +925,7 @@ func (g *Game) completeWindow(dst *ebiten.Image, o core.Observation) {
 	g.centered(dst, fmt.Sprintf("%d번의 싸움을 마쳤습니다.", len(g.S.Data.Stages)), float64(uiW/2), 276, 19, ink)
 	y := 336
 	for _, c := range g.roster(o)[:min(4, len(g.roster(o)))] {
-		g.portrait(dst, c.ID, float64(r.Min.X+80), float64(y), 48)
+		g.portrait(dst, c.ID, c.Class, float64(r.Min.X+80), float64(y), 48)
 		g.label(dst, fmt.Sprintf("%s   Lv%d   %s", g.name(c.ID), c.Level, g.className(c.Class)), float64(r.Min.X+148), float64(y+12), 19, ink)
 		y += 62
 	}
