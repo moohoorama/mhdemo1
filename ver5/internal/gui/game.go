@@ -39,110 +39,113 @@ type Game struct {
 	previewPaused   bool
 	duelMap, duelUI *ebiten.Image
 	// fixedCanvas holds a fixed-layout screen (map editor, duel gallery) before it is centred
-	fixedCanvas          *ebiten.Image
-	frames               map[image.Point]*ebiten.Image // inFrame's images, by size
-	windows              map[string]*windowAnim        // popup windows opening, open or closing
-	shown                []*windowAnim                 // windows laid out this frame, in order
-	duelCam              [2]float64
-	duelCamHeld          bool
-	cutIn                duelCutIn
-	cutPanes             [2]*ebiten.Image
-	gallery              *duelGallery
-	editor               *mapEditor
-	editorReturn         *mapEditor
-	editorSession        *session.Session
-	deploymentSelected   string
-	deploymentScroll     int
-	uiSeconds            float64
-	textCache            map[string]*ebiten.Image // rendered text by key (ui_anim.go)
-	root                 string
-	assets               *Assets
-	field                *Field
-	vis                  map[string]*unitVis
-	popups               []*popup
-	effects              []*effect
-	lobs                 []*Lob
-	releases             map[string]map[string][2]float64 // sprite id -> facing -> where its thrown stone leaves
-	player               Player
-	banner               string
-	turnBanner           *turnBanner
-	bannerT, clockMS     float64
-	shakeT               float64
-	hitFlashT            float64
-	hitFlashCrit         bool
-	camX, camY           float64
-	pan                  *camPan
-	zoom                 float64
-	zoomFrom, zoomTo     float64
-	zoomT                float64
-	speed                int
-	dragging, dragMoved  bool
-	dragX, dragY         int
-	dragButton           ebiten.MouseButton
-	shownNode            string
-	lineIndex, lineStart int
-	scrollAnim           scrollAnim
-	Verify               bool
-	Shots                []int // capture the screen at these ticks while autoplaying, then quit
-	verified             map[string]bool
-	verifyDone           int
-	S                    *session.Session
-	font                 *text.GoTextFaceSource
-	brushFont, serifFont *text.GoTextFaceSource // display faces beside the body font
-	buttons              []button
-	blocks               []image.Rectangle
-	ord                  order
-	menuAnim, subAnim    panelAnim
-	hover                hoverCell
-	threatAll            bool
-	threats              map[string][]content.Point
-	diffs                map[string]string
-	question, yes, no    string
-	answer               func()
-	endAsked             string          // the battle turn whose "all allies ordered" prompt was shown
-	hudRect, hudBody     image.Rectangle // the HUD panel and its content as last drawn
-	hudShown             string          // the tab it showed
-	hudBase, hudPeek     string          // the tab chosen by hand; the one looked at while an officer is selected
-	unitFilter           string          // the unit list: ally, enemy or all ("" is ally)
-	unitKind, unitTop    int             // its view and the first row shown
-	unitOrder            unitSort
-	hudTurn, hudBefore   string // the side that moved last, and the tab to return to after the enemy's turn
-	traitOf              string
-	traitTop             int
-	detailTab            int
-	detailPage           int
-	toasts               []*toast
-	history              []string
-	logPending           []string
-	logStage             string
-	logThumbDragging     bool
-	logThumbOffset       int
-	logHeight, logScroll int
-	logDragging          bool
-	logDragOffset        int
-	recoveryEngine       *core.Engine
-	recoveryRevision     uint64
-	recoveryID           string
-	recovery             core.RecoveryPreview
-	modals               []*modal
-	scenes               *sceneFile
-	names                map[string]string // display name -> character id
-	learn                []core.Learner    // learning windows open now, in order
-	learnPage            int
-	scene                *scene
-	intro                *officerIntro
-	introImg             introImages
-	battleXP, startLevel map[string]int
-	resultPage           int
-	slotInfo             map[string]string
-	selected, overlay    string
-	notice, entry        string
-	page, slot, ticks    int
-	input, autoplay      bool
-	capture              bool
-	seed                 uint64
-	log                  *os.File
-	auditDir             string
+	fixedCanvas               *ebiten.Image
+	frames                    map[image.Point]*ebiten.Image // inFrame's images, by size
+	windows                   map[string]*windowAnim        // popup windows opening, open or closing
+	shown                     []*windowAnim                 // windows laid out this frame, in order
+	duelCam                   [2]float64
+	duelCamHeld               bool
+	cutIn                     duelCutIn
+	cutPanes                  [2]*ebiten.Image
+	gallery                   *duelGallery
+	editor                    *mapEditor
+	editorReturn              *mapEditor
+	editorSession             *session.Session
+	deploymentSelected        string
+	deploymentScroll          int
+	uiSeconds                 float64
+	textCache                 map[string]*ebiten.Image // rendered text by key (ui_anim.go)
+	root                      string
+	assets                    *Assets
+	field                     *Field
+	vis                       map[string]*unitVis
+	popups                    []*popup
+	effects                   []*effect
+	lobs                      []*Lob
+	releases                  map[string]map[string][2]float64 // sprite id -> facing -> where its thrown stone leaves
+	player                    Player
+	banner                    string
+	turnBanner                *turnBanner
+	bannerT, clockMS          float64
+	shakeT                    float64
+	hitFlashT                 float64
+	hitFlashCrit              bool
+	camX, camY                float64
+	pan                       *camPan
+	zoom                      float64
+	zoomFrom, zoomTo          float64
+	zoomT                     float64
+	speed                     int
+	dragging, dragMoved       bool
+	dragX, dragY              int
+	dragButton                ebiten.MouseButton
+	shownNode                 string
+	lineIndex, lineStart      int
+	scrollAnim                scrollAnim
+	Verify                    bool
+	Shots                     []int // capture the screen at these ticks while autoplaying, then quit
+	verified                  map[string]bool
+	verifyDone                int
+	S                         *session.Session
+	font                      *text.GoTextFaceSource
+	brushFont, serifFont      *text.GoTextFaceSource // display faces beside the body font
+	buttons                   []button
+	blocks                    []image.Rectangle
+	ord                       order
+	menuAnim, subAnim         panelAnim
+	hover                     hoverCell
+	threatAll                 bool
+	threats                   map[string][]content.Point
+	diffs                     map[string]string
+	question, yes, no         string
+	answer                    func()
+	endAsked                  string          // the battle turn whose "all allies ordered" prompt was shown
+	hudRect, hudBody          image.Rectangle // the HUD panel and its content as last drawn
+	hudFolded, hudAnimated    bool            // the panel shows its head only; it has been drawn before
+	hudH, hudAlpha, hudAnimAt float64         // its drawn height and opacity, and when they last eased
+	hudLayer                  *ebiten.Image   // where it is drawn while faded
+	hudShown                  string          // the tab it showed
+	hudBase, hudPeek          string          // the tab chosen by hand; the one looked at while an officer is selected
+	unitFilter                string          // the unit list: ally, enemy or all ("" is ally)
+	unitKind, unitTop         int             // its view and the first row shown
+	unitOrder                 unitSort
+	hudTurn, hudBefore        string // the side that moved last, and the tab to return to after the enemy's turn
+	traitOf                   string
+	traitTop                  int
+	detailTab                 int
+	detailPage                int
+	toasts                    []*toast
+	history                   []string
+	logPending                []string
+	logStage                  string
+	logThumbDragging          bool
+	logThumbOffset            int
+	logHeight, logScroll      int
+	logDragging               bool
+	logDragOffset             int
+	recoveryEngine            *core.Engine
+	recoveryRevision          uint64
+	recoveryID                string
+	recovery                  core.RecoveryPreview
+	modals                    []*modal
+	scenes                    *sceneFile
+	names                     map[string]string // display name -> character id
+	learn                     []core.Learner    // learning windows open now, in order
+	learnPage                 int
+	scene                     *scene
+	intro                     *officerIntro
+	introImg                  introImages
+	battleXP, startLevel      map[string]int
+	resultPage                int
+	slotInfo                  map[string]string
+	selected, overlay         string
+	notice, entry             string
+	page, slot, ticks         int
+	input, autoplay           bool
+	capture                   bool
+	seed                      uint64
+	log                       *os.File
+	auditDir                  string
 }
 
 func loadFont(path string) (*text.GoTextFaceSource, error) {

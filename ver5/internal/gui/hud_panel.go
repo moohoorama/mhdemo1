@@ -80,7 +80,11 @@ func (g *Game) hudBodyHeight(tab string, o core.Observation, room int) int {
 	return int(h) + 40
 }
 
-// battleHUDPanel draws the panel and registers its buttons.
+// hudFadeAlpha is how opaque the panel stays while the pointer is away from it.
+const hudFadeAlpha = .55
+
+// battleHUDPanel draws the panel and registers its buttons. Its height eases to the tab's,
+// it folds to the head and the tabs, and it fades while the pointer is elsewhere.
 func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 	g.hudFollowTurn(o)
 	tab := g.hudCurrent(o)
@@ -90,26 +94,70 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 	}
 	x, y := uiW-12-infoW, hudTop()
 	room := uiH - 8 - y - head - hudTabsH
-	h := min(head+hudTabsH+g.hudBodyHeight(tab, o, room), uiH-8-y)
+	bodyH := 0
+	if !g.hudFolded {
+		bodyH = g.hudBodyHeight(tab, o, room)
+	}
+	h := min(head+hudTabsH+bodyH, uiH-8-y)
 	r := image.Rect(x, y, x+infoW, y+h)
-	g.hudRect, g.hudShown = r, tab
-	g.hudBody = image.Rect(x, y+head+hudTabsH, x+infoW, y+h)
-	window(dst, r)
+	g.hudRect, g.hudShown, g.hudBody = r, tab, image.Rect(x, y+head+hudTabsH, x+infoW, y+h)
+	if g.hudFolded {
+		g.hudShown, g.hudBody = "", image.Rectangle{}
+	}
+
+	now := g.uiSeconds
+	k := 1.0
+	if g.hudAnimated {
+		k = min(1, (now-g.hudAnimAt)*16)
+	}
+	g.hudH += (float64(h) - g.hudH) * k
+	if !g.hudAnimated || abs(int(g.hudH*2)-h*2) < 1 {
+		g.hudH = float64(h)
+	}
+	target := 1.0
+	if cx, cy := cursorPos(); !image.Pt(cx, cy).In(r) && !g.logDragging && !g.logThumbDragging {
+		target = hudFadeAlpha
+	}
+	if !g.hudAnimated {
+		g.hudAlpha = 1
+	}
+	g.hudAlpha += (target - g.hudAlpha) * k
+	g.hudAnimated, g.hudAnimAt = true, now
+
+	shown := image.Rect(x, y, x+infoW, y+int(g.hudH+.5))
+	clip := image.Rect(int(float64(x-2)*drawPx+drawOX), int(float64(y-2)*drawPx+drawOY), int(float64(x+infoW+8)*drawPx+drawOX), int(float64(shown.Max.Y+8)*drawPx+drawOY))
+	canvas := dst
+	faded := g.hudAlpha < .995
+	if faded {
+		if g.hudLayer == nil || g.hudLayer.Bounds().Size() != dst.Bounds().Size() {
+			g.hudLayer = ebiten.NewImage(dst.Bounds().Dx(), dst.Bounds().Dy())
+		}
+		g.hudLayer.Clear()
+		canvas = g.hudLayer
+	}
+	cd := canvas.SubImage(clip.Intersect(canvas.Bounds())).(*ebiten.Image)
+	window(cd, shown)
 	g.block(r)
-	g.hudHead(dst, o, r)
-	g.hudTabRow(dst, o, tab, x, y+head)
-	switch tab {
+	g.hudHead(cd, o, r)
+	g.hudTabRow(cd, o, tab, x, y+head)
+	switch g.hudShown {
 	case "log":
-		g.drawBattleLog(dst)
+		g.drawBattleLog(cd)
 	case "units":
-		g.hudUnits(dst, o, g.hudBody)
+		g.hudUnits(cd, o, g.hudBody)
 	case "misc":
-		g.hudMisc(dst, g.hudBody)
+		g.hudMisc(cd, g.hudBody)
 	case "unit":
-		g.detail(dst, o)
-	default:
+		g.detail(cd, o)
+	case "minimap":
 		w, mh := g.miniSize()
-		g.drawMinimap(dst, o, float64(g.hudBody.Min.X)+(infoW-w)/2, float64(g.hudBody.Min.Y)+(float64(g.hudBody.Dy())-mh)/2)
+		g.drawMinimap(cd, o, float64(g.hudBody.Min.X)+(infoW-w)/2, float64(g.hudBody.Min.Y)+(float64(g.hudBody.Dy())-mh)/2)
+	}
+	if faded {
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(float64(cd.Bounds().Min.X), float64(cd.Bounds().Min.Y))
+		op.ColorScale.ScaleAlpha(float32(g.hudAlpha))
+		dst.DrawImage(cd, op)
 	}
 }
 
@@ -128,12 +176,11 @@ func (g *Game) hudHead(dst *ebiten.Image, o core.Observation, r image.Rectangle)
 	if st := g.stageInfo(o); st.turnLimit > 0 {
 		turn = fmt.Sprintf("%d/%d턴", o.Round, st.turnLimit)
 	}
-	glow := c
-	glow.A = 70
-	fillCircle(dst, float32(r.Min.X+18), float32(r.Min.Y+hudHeaderH/2), 7, glow)
-	fillCircle(dst, float32(r.Min.X+18), float32(r.Min.Y+hudHeaderH/2), 4, c)
-	g.label(dst, side, float64(r.Min.X+32), float64(r.Min.Y+8), 15, c)
-	g.label(dst, turn, float64(r.Min.X+32)+g.width(side, 15)+10, float64(r.Min.Y+10), 13, muted)
+	fold := image.Rect(r.Min.X+8, r.Min.Y+6, r.Min.X+32, r.Min.Y+hudHeaderH-6)
+	g.btn(dst, fold, "", func() { g.hudFolded = !g.hudFolded })
+	g.sortMark(dst, float32(fold.Min.X+fold.Dx()/2), float32(fold.Min.Y+fold.Dy()/2), !g.hudFolded, gold)
+	g.label(dst, side, float64(r.Min.X+42), float64(r.Min.Y+8), 15, c)
+	g.label(dst, turn, float64(r.Min.X+42)+g.width(side, 15)+8, float64(r.Min.Y+10), 13, muted)
 
 	idle := !g.busy() && o.Phase == "battle"
 	var end func()
@@ -164,18 +211,18 @@ func (g *Game) hudTabRow(dst *ebiten.Image, o core.Observation, shown string, x,
 		bx := x + 10 + i*w
 		var click func()
 		switch {
-		case id == shown:
+		case id == shown && !g.hudFolded:
 		case id == "unit":
 			if selected {
-				click = func() { g.hudPeek = "" }
+				click = func() { g.hudPeek, g.hudFolded = "", false }
 			}
 		case selected:
-			click = func() { g.hudPeek = id }
+			click = func() { g.hudPeek, g.hudFolded = id, false }
 		default:
-			click = func() { g.hudBase = id }
+			click = func() { g.hudBase, g.hudFolded = id, false }
 		}
 		g.btn(dst, image.Rect(bx, y+2, bx+w-2, y+hudTabsH-2), t.title, click)
-		if id == shown {
+		if id == shown && !g.hudFolded {
 			rect(dst, float32(bx), float32(y+hudTabsH-4), float32(w-2), 2, gold)
 		}
 	}
