@@ -32,8 +32,6 @@ func demoPopups(d *Demo) error {
 			if err := d.battle(d.stage); err != nil {
 				d.err = err
 			}
-		case 150:
-			open("units")
 		case 210:
 			open("load")
 		case 270:

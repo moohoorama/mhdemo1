@@ -99,12 +99,14 @@ type Game struct {
 	diffs                map[string]string
 	question, yes, no    string
 	answer               func()
-	endAsked             string // the battle turn whose "all allies ordered" prompt was shown
-	barAnim              topBarAnim
+	endAsked             string          // the battle turn whose "all allies ordered" prompt was shown
 	hudRect, hudBody     image.Rectangle // the HUD panel and its content as last drawn
 	hudShown             string          // the tab it showed
 	hudBase, hudPeek     string          // the tab chosen by hand; the one looked at while an officer is selected
-	hudTurn, hudBefore   string          // the side that moved last, and the tab to return to after the enemy's turn
+	unitFilter           string          // the unit list: ally, enemy or all ("" is ally)
+	unitKind, unitTop    int             // its view and the first row shown
+	unitOrder            unitSort
+	hudTurn, hudBefore   string // the side that moved last, and the tab to return to after the enemy's turn
 	traitOf              string
 	traitTop             int
 	detailTab            int
@@ -550,7 +552,7 @@ func (g *Game) Update() error {
 		g.updateDuel()
 		return nil
 	}
-	logInput := g.updateBattleLog()
+	logInput := g.updateBattleLog() || g.updateUnitList()
 	g.updateDeploymentPanel()
 	g.updateHover()
 	g.keys()
@@ -984,7 +986,9 @@ func (g *Game) battleHUD(dst *ebiten.Image, o core.Observation) {
 		g.messages(dst)
 		return
 	}
-	g.topBar(dst, o)
+	if g.speed > 1 {
+		g.label(dst, fmt.Sprintf("재생 ×%d", g.speed), 14, 12, 13, gold)
+	}
 	g.battleHUDPanel(dst, o)
 	g.terrainPanel(dst, o)
 	g.drawMenu(dst)

@@ -602,7 +602,7 @@ func (g *Game) drawMinimap(dst *ebiten.Image, o core.Observation, x0, y0 float64
 		mx, my := ToMap(cx, cy)
 		return float32(ox + (mx-g.field.OriginX)/16*s), float32(y0 + (my-g.field.OriginY)/16*s)
 	}
-	ax, ay := toMini(0, 40*uiPx/worldPx) // below the top bar
+	ax, ay := toMini(0, 0)
 	vp := g.battleViewport()
 	bx, by := toMini(float64(vp.Max.X), float64(vp.Max.Y))
 	ax, ay = max(ax, float32(x0)), max(ay, float32(y0))

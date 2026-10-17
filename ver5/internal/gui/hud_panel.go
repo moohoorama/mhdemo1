@@ -19,12 +19,15 @@ const (
 	hudAIRowH  = 34
 )
 
-// hudTop is the panel's top edge: under the name tags that hang from the top bar.
-func hudTop() int { return tagH + 6 }
+// hudTop is the panel's top edge.
+func hudTop() int { return 8 }
+
+// menuButtonRect is the menu button in the top right corner of the screens without the panel.
+func menuButtonRect() image.Rectangle { return image.Rect(uiW-104, 6, uiW-8, 35) }
 
 type hudTab struct{ id, title string }
 
-var hudTabs = []hudTab{{"minimap", "미니맵"}, {"log", "기록"}, {"misc", "기타"}, {"unit", "장수"}}
+var hudTabs = []hudTab{{"minimap", "미니맵"}, {"log", "기록"}, {"units", "일람"}, {"misc", "기타"}, {"unit", "장수"}}
 
 // hudManualAI reports whether the enemy's turn waits for the player to advance it.
 func (g *Game) hudManualAI(o core.Observation) bool {
@@ -62,8 +65,10 @@ func (g *Game) hudCurrent(o core.Observation) string {
 }
 
 // hudBodyHeight is the content height of a tab.
-func (g *Game) hudBodyHeight(tab string) int {
+func (g *Game) hudBodyHeight(tab string, o core.Observation, room int) int {
 	switch tab {
+	case "units":
+		return g.unitListHeight(o, room)
 	case "log":
 		return g.logBodyHeight()
 	case "misc":
@@ -84,7 +89,8 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 		head += hudAIRowH
 	}
 	x, y := uiW-12-infoW, hudTop()
-	h := min(head+hudTabsH+g.hudBodyHeight(tab), uiH-8-y)
+	room := uiH - 8 - y - head - hudTabsH
+	h := min(head+hudTabsH+g.hudBodyHeight(tab, o, room), uiH-8-y)
 	r := image.Rect(x, y, x+infoW, y+h)
 	g.hudRect, g.hudShown = r, tab
 	g.hudBody = image.Rect(x, y+head+hudTabsH, x+infoW, y+h)
@@ -95,6 +101,8 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 	switch tab {
 	case "log":
 		g.drawBattleLog(dst)
+	case "units":
+		g.hudUnits(dst, o, g.hudBody)
 	case "misc":
 		g.hudMisc(dst, g.hudBody)
 	case "unit":

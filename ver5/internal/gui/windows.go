@@ -16,7 +16,7 @@ import (
 )
 
 var overlayTitles = map[string]string{"menu": "메뉴", "save": "저장", "load": "불러오기", "settings": "설정",
-	"confirm": "확인", "units": "부대 일람", "log": "전투 기록", "equipment": "장비", "deputy": "부관"}
+	"confirm": "확인", "equipment": "장비", "deputy": "부관"}
 
 func (g *Game) popupPending() bool {
 	return g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 ||
@@ -68,8 +68,6 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 	switch g.overlay {
 	case "confirm":
 		w, h = 480, 210
-	case "units", "log":
-		w, h = 860, 640
 	case "save":
 		w, h = 640, 480
 	case "load":
@@ -181,74 +179,8 @@ func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
 		g.label(dst, "조작: 클릭 선택 · 우클릭/Esc 취소 · 드래그/화면 가장자리/화살표 화면 이동 · 휠 확대\n"+
 			"Space 추천 한 명령 · F 재생 속도 · Enter 재생 건너뛰기 · F5/F9 저장/불러오기",
 			float64(left), float64(y+300), 13, muted)
-	case "units":
-		g.unitList(dst, x, y, w, h)
-	case "log":
-		lines := g.history
-		if len(lines) > 26 {
-			lines = lines[len(lines)-26:]
-		}
-		g.label(dst, strings.Join(lines, "\n"), float64(left), float64(y+56), 14, ink)
 	case "equipment", "deputy":
 		g.equipmentWindow(dst, x, y, w, h)
-	}
-}
-
-func (g *Game) unitList(dst *ebiten.Image, x, y, w, h int) {
-	o := g.S.Engine.Observe()
-	tabs := []string{"아군", "적군"}
-	for i, t := range tabs {
-		tab := i
-		label := t
-		if g.page == i {
-			label = "▶ " + t
-		}
-		g.btn(dst, image.Rect(x+32+i*130, y+40, x+152+i*130, y+68), label, func() { g.page = tab })
-	}
-	faction := []string{"ally", "enemy"}[min(g.page, 1)]
-	cols := []int{40, 160, 256, 296, 478, 560, 640}
-	for i, h := range []string{"이름", "병종", "Lv", "병력", "병법치", "위치", "상태"} {
-		g.label(dst, h, float64(x+cols[i]), float64(y+80), 13, muted)
-	}
-	for i, u := range unitsByFaction(o, faction) {
-		if i >= 16 {
-			break
-		}
-		row := y + 104 + i*31
-		unit := u
-		state := ""
-		switch {
-		case u.HP <= 0:
-			state = "퇴각"
-		case u.Done:
-			state = "행동 완료"
-		}
-		for _, k := range sorted(u.Status) {
-			state += " " + statusLabels[k]
-		}
-		r := image.Rect(x+28, row-2, x+w-28, row+27)
-		var click func()
-		if u.HP > 0 {
-			click = func() {
-				g.overlay = ""
-				g.selected = unit.ID
-				g.focus(unit.X, unit.Y)
-			}
-		}
-		g.btn(dst, r, "", click)
-		c := ink
-		if u.HP <= 0 {
-			c = muted
-		}
-		g.label(dst, u.Name, float64(x+40), float64(row+3), 14, c)
-		g.label(dst, g.className(u.Class), float64(x+160), float64(row+3), 14, c)
-		g.label(dst, fmt.Sprint(u.Level), float64(x+256), float64(row+3), 14, c)
-		k := float64(u.HP) / float64(max(1, u.Stats.MaxHP))
-		bar(dst, float32(x+296), float32(row+10), 110, 8, k, hpColor(k))
-		g.label(dst, fmt.Sprintf("%d", u.HP), float64(x+414), float64(row+3), 13, c)
-		g.label(dst, fmt.Sprintf("%d/%d", u.MP, u.Stats.MaxMP), float64(x+478), float64(row+3), 13, c)
-		g.label(dst, fmt.Sprintf("(%d,%d)", u.X, u.Y), float64(x+560), float64(row+3), 13, c)
-		g.label(dst, state, float64(x+640), float64(row+3), 13, gold)
 	}
 }
 
