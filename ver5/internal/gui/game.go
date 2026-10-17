@@ -101,7 +101,10 @@ type Game struct {
 	answer               func()
 	endAsked             string // the battle turn whose "all allies ordered" prompt was shown
 	barAnim              topBarAnim
-	miniRect             image.Rectangle
+	hudRect, hudBody     image.Rectangle // the HUD panel and its content as last drawn
+	hudShown             string          // the tab it showed
+	hudBase, hudPeek     string          // the tab chosen by hand; the one looked at while an officer is selected
+	hudTurn, hudBefore   string          // the side that moved last, and the tab to return to after the enemy's turn
 	traitOf              string
 	traitTop             int
 	detailTab            int
@@ -648,18 +651,12 @@ func (g *Game) keys() {
 		return
 	}
 	if len(g.learn) > 0 {
-		if pressed(ebiten.KeyP) {
-			g.autoplay = !g.autoplay
-		}
 		return
 	}
 	o := g.S.Engine.Observe()
 	dialogue := o.Phase == "scenario" && o.Dialogue.Kind == "dialogue"
 	if pressed(ebiten.KeyGraveAccent) {
 		g.input, g.entry = true, ""
-	}
-	if pressed(ebiten.KeyP) {
-		g.autoplay = !g.autoplay
 	}
 	if pressed(ebiten.KeySpace) {
 		if dialogue {
@@ -680,39 +677,6 @@ func (g *Game) keys() {
 	}
 	if o.Phase == "deployment" {
 		g.deploymentKeys()
-		return
-	}
-	if o.Phase != "battle" {
-		return
-	}
-	if pressed(ebiten.KeyU) {
-		g.openOverlay("units")
-	}
-	if pressed(ebiten.KeyL) {
-		g.openOverlay("log")
-	}
-	if pressed(ebiten.KeyT) {
-		g.threatAll = !g.threatAll
-	}
-	if pressed(ebiten.KeyE) && o.Turn == "ally" && !g.busy() {
-		g.endPhase()
-	}
-	if pressed(ebiten.KeyTab) {
-		ids := []string{}
-		for _, u := range o.UnitViews {
-			if u.Faction == "ally" && !u.AI && u.HP > 0 && !u.Done {
-				ids = append(ids, u.ID)
-			}
-		}
-		if len(ids) > 0 {
-			next := ids[0]
-			for i, id := range ids {
-				if id == g.selected {
-					next = ids[(i+1)%len(ids)]
-				}
-			}
-			g.focusOfficer(next)
-		}
 	}
 }
 
@@ -1006,6 +970,7 @@ func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 }
 
 func (g *Game) battleHUD(dst *ebiten.Image, o core.Observation) {
+	g.hudRect = image.Rectangle{}
 	if g.bannerT > 0 {
 		w := g.width(g.banner, 30)
 		rect(dst, float32(float64(uiW)/2-w/2-30), 300, float32(w+60), 58, color.NRGBA{R: 40, G: 14, B: 10, A: 200})
@@ -1020,13 +985,8 @@ func (g *Game) battleHUD(dst *ebiten.Image, o core.Observation) {
 		return
 	}
 	g.topBar(dst, o)
-	g.minimap(dst, o)
-	g.detail(dst, o)
+	g.battleHUDPanel(dst, o)
 	g.terrainPanel(dst, o)
-	g.drawBattleLog(dst)
-	if o.Phase == "battle" {
-		g.dock(dst, o)
-	}
 	g.drawMenu(dst)
 	g.forecast(dst)
 	g.brief(dst, o)

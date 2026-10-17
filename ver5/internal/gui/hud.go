@@ -119,68 +119,9 @@ func (g *Game) pending(o core.Observation) (left, total int) {
 	return left, total
 }
 
-// dockW is the width of the dock's buttons.
-const dockW = 148
-
-// infoW is the width of the right column on a low screen, which holds the minimap or the
-// selected unit's panel.
+// infoW is the width of the HUD panel in the right column.
 const infoW = 320
 
-// lowScreen reports whether the UI canvas is too low to stack the minimap, the selected
-// unit's panel and the dock in the right column (a landscape phone, or a large UI size).
-func lowScreen() bool { return uiH < 830 }
-
-// dockRight is the dock's right edge: the screen's, or on a low screen the right column's.
-func dockRight() int {
-	if lowScreen() {
-		return uiW - 12 - infoW - 8
-	}
-	return uiW - 4
-}
-
-// dockLeft is the dock's left edge.
-func dockLeft() int { return dockRight() - dockW - 16 }
-
-// dock holds the battle-wide commands in the lower right corner.
-func (g *Game) dock(dst *ebiten.Image, o core.Observation) {
-	type entry struct {
-		label string
-		click func()
-	}
-	idle := !g.busy() && o.Phase == "battle"
-	entries := []entry{
-		{"부대 일람 U", func() { g.openOverlay("units") }},
-		{"위협 범위 T" + map[bool]string{true: " ●", false: ""}[g.threatAll], func() { g.threatAll = !g.threatAll }},
-		{"기록 L", func() { g.openOverlay("log") }},
-		{"자동 진행 P" + map[bool]string{true: " ●", false: ""}[g.autoplay], func() { g.autoplay = !g.autoplay }},
-	}
-	if o.Turn == "ally" {
-		var end func()
-		if idle {
-			end = g.endPhase
-		}
-		entries = append(entries, entry{"진영 종료 E", end})
-	} else if o.Turn == "enemy" && g.S.Settings.AI != "auto" {
-		var one, all func()
-		if idle {
-			one = func() { g.request(session.Request{Op: "ai"}) }
-			all = g.resolvePhase
-		}
-		entries = append(entries, entry{"적 한 명령", one}, entry{"적 진영 진행", all})
-	}
-	w, h := dockW, 30
-	right := dockRight()
-	x := right - w - 8
-	y := uiH - 12 - len(entries)*(h+4) - 12
-	r := image.Rect(x-8, y-8, right, uiH-4)
-	window(dst, r)
-	g.block(r)
-	for i, e := range entries {
-		g.btn(dst, image.Rect(x, y+i*(h+4), x+w-4, y+i*(h+4)+h), e.label, e.click)
-	}
-}
-
-// endPhase ends the allied phase, asking first when some allies have not acted.
 func (g *Game) endPhase() {
 	if g.popupPending() {
 		return
@@ -273,17 +214,8 @@ func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
 // first tab. The other tabs page or scroll inside it.
 const detailH = 400
 
-// detailRect is the selected unit's panel: in the right column between the minimap and the
-// dock, or on a low screen the right column below the hanging name tags in place of the minimap.
-func (g *Game) detailRect() image.Rectangle {
-	x := uiW - 12 - infoW
-	if lowScreen() {
-		top := tagH + 6
-		return image.Rect(x, top, x+infoW, min(uiH-12, top+detailH))
-	}
-	y := g.miniRect.Max.Y + 10
-	return image.Rect(x, y, x+infoW, min(uiH-240, y+detailH))
-}
+// detailRect is where the HUD panel shows the selected unit.
+func (g *Game) detailRect() image.Rectangle { return g.hudBody }
 
 func (g *Game) detailUnit(o core.Observation) *core.UnitView {
 	if g.selected == "" {
@@ -315,8 +247,6 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 	}
 	r := g.detailRect()
 	x, y, w, h := r.Min.X, r.Min.Y, r.Dx(), r.Dy()
-	window(dst, r)
-	g.block(r)
 	g.portrait(dst, u.ID, u.Class, float64(x+14), float64(y+14), 56)
 	g.label(dst, u.Name, float64(x+82), float64(y+10), 19, teamColor(u))
 	g.label(dst, fmt.Sprintf("%s  Lv%d", g.className(u.Class), u.Level), float64(x+82), float64(y+40), 13, ink)
@@ -601,7 +531,7 @@ func (g *Game) terrainPanel(dst *ebiten.Image, o core.Observation) {
 	}
 	lines := terrainInfoLines(g.S.Data, string(tile), family, class)
 	w, h := 238, 44+len(lines)*19
-	x, y := 12, g.battleLogRect().Min.Y-8-h
+	x, y := 12, uiH-12-h
 	window(dst, image.Rect(x, y, x+w, y+h))
 	g.label(dst, fmt.Sprintf("%s  (%d,%d)", g.S.Data.Tiles[string(tile)].Name, g.hover.x, g.hover.y), float64(x+14), float64(y+10), 16, gold)
 	g.label(dst, strings.Join(lines, "\n"), float64(x+14), float64(y+36), 13, ink)
@@ -613,31 +543,46 @@ var miniColors = map[byte]color.NRGBA{
 	'b': {150, 100, 60, 255}, 'g': {110, 110, 118, 255}, 'k': {196, 120, 70, 255}, 'h': {132, 108, 72, 255},
 }
 
-const miniScale = 4.0 // minimap pixels per half cell width
+// miniScale is the largest number of minimap pixels per half cell width; a wide map shrinks
+// to fit the panel.
+const miniScale = 4.0
 
-// minimap shows the whole field, unit dots and the visible area; a click moves the camera.
-func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
-	if lowScreen() && g.detailUnit(o) != nil {
-		g.miniRect = image.Rectangle{} // the unit's panel has the column
-		return
-	}
+func (g *Game) miniPx() float64 {
 	m := g.field.Map
-	w := float64(m.W+m.H) * miniScale
-	h := w / 2
-	x0 := float64(uiW) - 12 - w - 14
-	y0 := 52.0
+	return min(miniScale, float64(infoW-28)/float64(m.W+m.H))
+}
+
+// miniSize is the minimap's width and height.
+func (g *Game) miniSize() (w, h float64) {
+	m := g.field.Map
+	w = float64(m.W+m.H) * g.miniPx()
+	return w, w / 2
+}
+
+// minimap shows the whole field, unit dots and the visible area in a window of its own;
+// deployment has no panel.
+func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
+	w, h := g.miniSize()
+	x0, y0 := float64(uiW)-12-w-14, 52.0
+	window(dst, image.Rect(int(x0)-10, int(y0)-10, int(x0+w)+10, int(y0+h)+10))
+	g.drawMinimap(dst, o, x0, y0)
+}
+
+// drawMinimap draws the minimap with its top left corner at (x0, y0); a click moves the camera.
+func (g *Game) drawMinimap(dst *ebiten.Image, o core.Observation, x0, y0 float64) {
+	m := g.field.Map
+	s := g.miniPx()
+	w, h := g.miniSize()
 	r := image.Rect(int(x0)-10, int(y0)-10, int(x0+w)+10, int(y0+h)+10)
-	g.miniRect = r
-	window(dst, r)
-	ox := x0 + float64(m.H)*miniScale
+	ox := x0 + float64(m.H)*s
 	at := func(u, v float64) (float32, float32) {
-		return float32(ox + (u-v)*miniScale), float32(y0 + (u+v)*miniScale/2)
+		return float32(ox + (u-v)*s), float32(y0 + (u+v)*s/2)
 	}
 	for v, row := range m.Tiles {
 		for u := range row {
 			px, py := at(float64(u), float64(v))
 			c := miniColors[row[u]]
-			rect(dst, px, py, float32(miniScale*2), float32(miniScale), c)
+			rect(dst, px, py, float32(s*2), float32(s), c)
 		}
 	}
 	for _, u := range o.UnitViews {
@@ -649,13 +594,13 @@ func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
 			c = color.NRGBA{R: 240, G: 80, B: 64, A: 255}
 		}
 		px, py := at(float64(u.X), float64(u.Y))
-		fillCircle(dst, px+float32(miniScale), py+float32(miniScale/2), 2.5, c)
+		fillCircle(dst, px+float32(s), py+float32(s/2), 2.5, c)
 	}
 	// visible area: screen corners → canvas → minimap (both are linear in the iso projection)
 	toMini := func(sx, sy float64) (float32, float32) {
 		cx, cy := g.toCanvas(sx, sy)
 		mx, my := ToMap(cx, cy)
-		return float32(ox + (mx-g.field.OriginX)/16*miniScale), float32(y0 + (my-g.field.OriginY)/16*miniScale)
+		return float32(ox + (mx-g.field.OriginX)/16*s), float32(y0 + (my-g.field.OriginY)/16*s)
 	}
 	ax, ay := toMini(0, 40*uiPx/worldPx) // below the top bar
 	vp := g.battleViewport()
@@ -667,8 +612,8 @@ func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
 	}
 	g.addButton(r, "", func() {
 		mx, my := cursorPos()
-		g.camX = ((float64(mx)-ox)/miniScale*16 + g.field.OriginX) * K
-		g.camY = ((float64(my)-y0)/miniScale*16 + g.field.OriginY) * K
+		g.camX = ((float64(mx)-ox)/s*16 + g.field.OriginX) * K
+		g.camY = ((float64(my)-y0)/s*16 + g.field.OriginY) * K
 	})
 	g.block(r)
 }

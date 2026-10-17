@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"image"
 	"testing"
 
 	"srpg/internal/content"
@@ -86,22 +87,18 @@ func TestBattleLogRetainsRecentRecords(t *testing.T) {
 }
 
 func TestBattleLogHeight(t *testing.T) {
+	most := uiH - hudTop() - hudHeaderH - hudTabsH - 12
 	for _, tc := range []struct {
 		name         string
-		height, rows int
+		height, want int
 	}{
-		{"default", 0, 7},
-		{"smallest", 80, 1},
-		{"largest", 440, 18},
-		{"clamp small", 20, 1},
-		{"clamp large", 800, 18},
+		{"default", 0, 260},
+		{"smallest", 120, 120},
+		{"clamp small", 20, 120},
+		{"clamp large", 5000, most},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			g := &Game{logHeight: tc.height}
-			r := g.battleLogRect()
-			check(t, (r.Dy()-40)/logLineHeight, tc.rows)
-			check(t, r.Min.X, 12)
-			check(t, r.Max.Y, Height-12)
+			check(t, (&Game{logHeight: tc.height}).logBodyHeight(), tc.want)
 		})
 	}
 }
@@ -126,7 +123,7 @@ func TestBattleLogQueueAndStageChange(t *testing.T) {
 }
 
 func TestBattleLogScrollbar(t *testing.T) {
-	r := (&Game{}).battleLogRect()
+	r := image.Rect(0, 0, infoW, 300)
 	track, thumb := logScrollbar(r, 100, 7, 0)
 	check(t, thumb.Max.Y, track.Max.Y)
 	check(t, logScrollAt(track.Min.Y, track, thumb.Dy(), 93), 93)

@@ -65,11 +65,11 @@ func (g *Game) panelHeight(p panelSpec) int {
 }
 
 // panelBounds is where command panels must stay: on screen below the top bar, and left of
-// the selected unit's panel when that fills a low screen's right column.
+// the HUD panel.
 func (g *Game) panelBounds() image.Rectangle {
 	b := uiBounds(8)
-	if lowScreen() && g.S.Engine != nil && g.detailUnit(g.S.Engine.Observe()) != nil {
-		b.Max.X = g.detailRect().Min.X - 8
+	if !g.hudRect.Empty() {
+		b.Max.X = g.hudRect.Min.X - 8
 	}
 	return b
 }

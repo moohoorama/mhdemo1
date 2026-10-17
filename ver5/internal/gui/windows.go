@@ -179,7 +179,6 @@ func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
 			g.btn(dst, image.Rect(left, y+70+i*48, x+w-32, y+70+i*48+40), it.label, it.click)
 		}
 		g.label(dst, "조작: 클릭 선택 · 우클릭/Esc 취소 · 드래그/화면 가장자리/화살표 화면 이동 · 휠 확대\n"+
-			"U 부대 일람 · T 위협 범위 · L 기록 · P 자동 진행 · E 진영 종료\n"+
 			"Space 추천 한 명령 · F 재생 속도 · Enter 재생 건너뛰기 · F5/F9 저장/불러오기",
 			float64(left), float64(y+300), 13, muted)
 	case "units":

@@ -13,13 +13,22 @@ import (
 
 const logLineHeight = 22
 
-func (g *Game) battleLogRect() image.Rectangle {
+// logGrip is the strip along the log's lower edge that drags its height.
+const logGrip = 18
+
+// logWrap is how many characters of a record fit a line of the panel.
+const logWrap = 19
+
+// battleLogRect is the HUD panel's content while it shows the log.
+func (g *Game) battleLogRect() image.Rectangle { return g.hudBody }
+
+// logBodyHeight is the log tab's content height, which the player drags.
+func (g *Game) logBodyHeight() int {
 	h := g.logHeight
 	if h == 0 {
-		h = 200
+		h = 260
 	}
-	right := min(492, dockLeft()-8)
-	return image.Rect(12, uiH-12-max(80, min(440, uiH-60, h)), right, uiH-12)
+	return max(120, min(h, uiH-hudTop()-hudHeaderH-hudTabsH-12))
 }
 
 func (g *Game) battleLogVisible() bool {
@@ -32,7 +41,7 @@ func (g *Game) battleLogVisible() bool {
 
 // updateBattleLog consumes mouse input before the map camera and selection.
 func (g *Game) updateBattleLog() bool {
-	if !g.battleLogVisible() || g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 || g.input {
+	if !g.battleLogVisible() || g.hudShown != "log" || g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 || g.input {
 		g.logDragging = false
 		g.logThumbDragging = false
 		return false
@@ -40,20 +49,20 @@ func (g *Game) updateBattleLog() bool {
 	x, y := cursorPos()
 	r := g.battleLogRect()
 	inside := image.Pt(x, y).In(r)
-	if inside && y < r.Min.Y+28 && mouseJustPressed(ebiten.MouseButtonLeft) && !g.dragging {
+	if inside && y >= r.Max.Y-logGrip && mouseJustPressed(ebiten.MouseButtonLeft) && !g.dragging {
 		g.logDragging = true
-		g.logDragOffset = y - r.Min.Y
+		g.logDragOffset = r.Max.Y - y
 	}
 	if g.logDragging {
 		if mousePressed(ebiten.MouseButtonLeft) {
-			g.logHeight = max(80, min(440, r.Max.Y-y+g.logDragOffset))
+			g.logHeight = y + g.logDragOffset - r.Min.Y
 		} else {
 			g.logDragging = false
 		}
 		return true
 	}
 	lines := g.battleLogLines()
-	rows := (r.Dy() - 40) / logLineHeight
+	rows := (r.Dy() - 12 - logGrip) / logLineHeight
 	maxScroll := max(0, len(lines)-rows)
 	track, thumb := logScrollbar(r, len(lines), rows, g.logScroll)
 	if inside && maxScroll > 0 && image.Pt(x, y).In(track) && mouseJustPressed(ebiten.MouseButtonLeft) && !g.dragging {
@@ -92,13 +101,8 @@ func (g *Game) drawBattleLog(dst *ebiten.Image) {
 	}
 	r := g.battleLogRect()
 	g.block(r)
-	rect(dst, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy()), color.NRGBA{A: 175})
-	rect(dst, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), 28, color.NRGBA{A: 100})
-	strokeRect(dst, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy()), 1, color.NRGBA{R: 180, G: 170, B: 150, A: 140})
-	g.label(dst, "전투 로그", float64(r.Min.X+12), float64(r.Min.Y+4), 14, gold)
-	g.label(dst, "상단: 높이 조절 · 스크롤바: 이전 기록", float64(r.Min.X+126), float64(r.Min.Y+6), 12, color.NRGBA{R: 210, G: 210, B: 210, A: 255})
 	lines := g.battleLogLines()
-	rows := (r.Dy() - 40) / logLineHeight
+	rows := (r.Dy() - 12 - logGrip) / logLineHeight
 	track, thumb := logScrollbar(r, len(lines), rows, g.logScroll)
 	rect(dst, float32(track.Min.X), float32(track.Min.Y), float32(track.Dx()), float32(track.Dy()), color.NRGBA{R: 90, G: 90, B: 90, A: 150})
 	rect(dst, float32(thumb.Min.X), float32(thumb.Min.Y), float32(thumb.Dx()), float32(thumb.Dy()), color.NRGBA{R: 185, G: 170, B: 135, A: 220})
@@ -106,11 +110,13 @@ func (g *Game) drawBattleLog(dst *ebiten.Image) {
 	if len(lines) == 0 {
 		lines = []string{"전투 행동과 결과가 여기에 기록됩니다."}
 	}
-	y := r.Max.Y - 10 - len(lines)*logLineHeight
+	y := r.Max.Y - logGrip - 6 - len(lines)*logLineHeight
 	for _, line := range lines {
 		g.logLine(dst, line, float64(r.Min.X+12), float64(y))
 		y += logLineHeight
 	}
+	grip := image.Rect(r.Min.X+r.Dx()/2-18, r.Max.Y-logGrip+6, r.Min.X+r.Dx()/2+18, r.Max.Y-logGrip+9)
+	rect(dst, float32(grip.Min.X), float32(grip.Min.Y), float32(grip.Dx()), 3, goldDim)
 }
 
 func (g *Game) logCommand(c core.Command, events []core.Event) {
@@ -213,7 +219,7 @@ func (g *Game) publishBattleLog() {
 	g.logPending[0] = ""
 	g.logPending = g.logPending[1:]
 	if g.logScroll > 0 {
-		g.logScroll += len(strings.Split(wrap(entry, 32), "\n"))
+		g.logScroll += len(strings.Split(wrap(entry, logWrap), "\n"))
 	}
 	g.history = append(g.history, entry)
 	if len(g.history) > 300 {
@@ -224,13 +230,13 @@ func (g *Game) publishBattleLog() {
 func (g *Game) battleLogLines() []string {
 	lines := []string{}
 	for _, entry := range g.history {
-		lines = append(lines, strings.Split(wrap(entry, 32), "\n")...)
+		lines = append(lines, strings.Split(wrap(entry, logWrap), "\n")...)
 	}
 	return lines
 }
 
 func logScrollbar(r image.Rectangle, total, rows, scroll int) (image.Rectangle, image.Rectangle) {
-	track := image.Rect(r.Max.X-18, r.Min.Y+34, r.Max.X-6, r.Max.Y-10)
+	track := image.Rect(r.Max.X-18, r.Min.Y+8, r.Max.X-6, r.Max.Y-logGrip-2)
 	height := track.Dy()
 	if total > rows {
 		height = max(18, track.Dy()*rows/total)
