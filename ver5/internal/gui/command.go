@@ -53,7 +53,8 @@ func (g *Game) begin(u core.UnitView) {
 	}
 }
 
-// cancel steps the order back one stage (right click or Esc).
+// cancel steps the order back one stage (right click or Esc); dropping the order also
+// deselects the actor, as deselecting any other unit does.
 func (g *Game) cancel() bool {
 	switch g.ord.stage {
 	case "target", "sub":
@@ -62,12 +63,14 @@ func (g *Game) cancel() bool {
 		u := g.unitView(g.S.Engine.Observe(), g.ord.actor)
 		if g.ord.move == nil && u != nil && u.Moved {
 			g.clearOrder()
+			g.selected = ""
 			return true
 		}
 		g.ord.sandbox, g.ord.move, g.ord.stage = nil, nil, "move"
 		g.player.Skip()
 	case "move":
 		g.clearOrder()
+		g.selected = ""
 	default:
 		return false
 	}
