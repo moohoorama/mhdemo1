@@ -40,6 +40,7 @@ type Game struct {
 	duelMap, duelUI *ebiten.Image
 	// fixedCanvas holds a fixed-layout screen (map editor, duel gallery) before it is centred
 	fixedCanvas          *ebiten.Image
+	frames               map[image.Point]*ebiten.Image // inFrame\'s images, by size
 	duelCam              [2]float64
 	duelCamHeld          bool
 	cutIn                duelCutIn
@@ -858,6 +859,11 @@ func (g *Game) title(dst *ebiten.Image) {
 		k := float64(i) / float64(uiH)
 		rect(dst, 0, float32(i), float32(uiW), 10, color.NRGBA{R: uint8(48 - 30*k), G: uint8(30 - 18*k), B: uint8(24 - 12*k), A: 255})
 	}
+	g.inFrame(dst, Width, Height, image.Rect(0, 0, Width, Height), 0, g.titleMenu)
+}
+
+// titleMenu is the title screen's content, laid out on the Width×Height design.
+func (g *Game) titleMenu(dst *ebiten.Image) {
 	g.label(dst, g.S.Data.Title, 96, 70, 64, gold)
 	for i, id := range g.S.Data.Campaign.Roster[:min(3, len(g.S.Data.Campaign.Roster))] {
 		g.portrait(dst, id, float64(650+i*190), float64(205+i%2*50), 170)
@@ -904,6 +910,11 @@ func (g *Game) play(dst *ebiten.Image) {
 
 func (g *Game) complete(dst *ebiten.Image, o core.Observation) {
 	g.backdrop(dst, o)
+	g.inDesign(dst, image.Rect(Width/2-320, 180, Width/2+320, 620), func(dst *ebiten.Image) { g.completeWindow(dst, o) })
+}
+
+// completeWindow is the campaign's closing window, laid out on the Width×Height design.
+func (g *Game) completeWindow(dst *ebiten.Image, o core.Observation) {
 	r := image.Rect(uiW/2-320, 180, uiW/2+320, 620)
 	g.titled(dst, r, "완료")
 	g.centered(dst, g.S.Data.Stages[o.Stage].Name+" 완료", float64(uiW/2), 220, 34, gold)

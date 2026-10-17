@@ -294,7 +294,7 @@ func (g *Game) nameTags(dst *ebiten.Image, o core.Observation, ids []string, ext
 		op.Filter = ebiten.FilterLinear
 		dst.DrawImage(img, op)
 		tag := id
-		g.buttons = append(g.buttons, button{image.Rect(int(x), 0, int(x+tagW), tagH), g.name(id), func() { g.focusOfficer(tag) }})
+		g.addButton(image.Rect(int(x), 0, int(x+tagW), tagH), g.name(id), func() { g.focusOfficer(tag) })
 		g.block(image.Rect(int(x), barH, int(x+tagW), tagH))
 		x += tagW + 6
 	}

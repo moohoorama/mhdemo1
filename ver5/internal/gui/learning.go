@@ -20,7 +20,12 @@ func (g *Game) drawLearning(dst *ebiten.Image) {
 	l := g.learn[0]
 	rect(dst, 0, 0, float32(uiW), float32(uiH), color.NRGBA{A: 150})
 	g.buttons, g.blocks = nil, nil
-	g.buttons = append(g.buttons, button{image.Rect(0, 0, uiW, uiH), "", func() {}})
+	g.addButton(image.Rect(0, 0, uiW, uiH), "", func() {})
+	g.inDesign(dst, image.Rect(Width/2-380, 80, Width/2+380, 780), func(dst *ebiten.Image) { g.learningWindow(dst, l) })
+}
+
+// learningWindow draws the learning window, laid out on the Width×Height design.
+func (g *Game) learningWindow(dst *ebiten.Image, l core.Learner) {
 	r := image.Rect(uiW/2-380, 80, uiW/2+380, 780)
 	g.titled(dst, r, "특성 학습")
 	g.portrait(dst, l.ID, float64(r.Min.X+32), float64(r.Min.Y+44), 80)

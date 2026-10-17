@@ -223,7 +223,7 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 		g.label(clip, fmt.Sprintf("Lv%d", level), float64(x+74), float64(cards.Min.Y+38), 13, muted)
 		g.label(clip, g.className(cl), float64(x+10), float64(cards.Min.Y+72), 13, ink)
 		g.label(clip, state, float64(x+10), float64(cards.Max.Y-24), 12, tint)
-		g.buttons = append(g.buttons, button{rect: card.Intersect(cards), click: func() { g.selectDeployment(id) }})
+		g.addButton(card.Intersect(cards), "", func() { g.selectDeployment(id) })
 	}
 	g.btn(dst, image.Rect(8, cards.Min.Y+32, 40, cards.Min.Y+66), "‹", func() { g.scrollDeployment(-deploymentCardWidth) })
 	g.btn(dst, image.Rect(uiW-40, cards.Min.Y+32, uiW-8, cards.Min.Y+66), "›", func() { g.scrollDeployment(deploymentCardWidth) })

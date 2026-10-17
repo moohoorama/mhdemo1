@@ -137,7 +137,7 @@ func (g *Game) drawPanel(dst *ebiten.Image, p panelSpec) image.Rectangle {
 			p.anim.hot = -1
 		}
 		if it.click != nil {
-			g.buttons = append(g.buttons, button{b, it.label, it.click})
+			g.addButton(b, it.label, it.click)
 		}
 		dx, a := slide(n)
 		n++

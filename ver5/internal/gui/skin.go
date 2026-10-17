@@ -57,6 +57,78 @@ func setUnits(w, h, base, ui float64) {
 // fixedAt is where the fixed Width×Height canvas sits in the window, in device pixels.
 var fixedAt image.Point
 
+// A frame is a fixed-size piece of UI — a window, or a screen laid out for a w×h design —
+// drawn on its own image, centred, and shrunk when the screen is too small for it. While
+// one is drawn, uiPx, uiW and uiH describe the frame's design, drawOX/drawOY shift the
+// helpers so the design's box lands on the image, frameAt is where the image sits on the
+// screen in device pixels, frameMin the box's corner and framePx the uiPx outside, where
+// clicks are tested.
+var (
+	drawOX, drawOY float64
+	frameAt        image.Point
+	frameMin       image.Point
+	framePx        float64
+)
+
+// inFrame draws box, a part of a w×h design, on dst where it would fall in the design
+// centred on the screen, kept on screen, and shrunk to stay margin UI px from the edges.
+func (g *Game) inFrame(dst *ebiten.Image, w, h int, box image.Rectangle, margin int, draw func(dst *ebiten.Image)) {
+	s := min(1, float64(uiW-2*margin)/float64(box.Dx()), float64(uiH-2*margin)/float64(box.Dy()))
+	fw, fh := int(math.Ceil(float64(box.Dx())*uiPx*s)), int(math.Ceil(float64(box.Dy())*uiPx*s))
+	key := image.Pt(fw, fh)
+	img := g.frames[key]
+	if img == nil {
+		if g.frames == nil {
+			g.frames = map[image.Point]*ebiten.Image{}
+		}
+		img = ebiten.NewImage(fw, fh)
+		g.frames[key] = img
+	}
+	img.Clear()
+	// where the box falls in the design centred on dst, moved only as far as it must to fit
+	dw, dh := dst.Bounds().Dx(), dst.Bounds().Dy()
+	at := image.Pt((dw-fw)/2, (dh-fh)/2)
+	if s == 1 {
+		at.X = max(0, min(dw-fw, int((float64(dw)-float64(w)*uiPx)/2+float64(box.Min.X)*uiPx)))
+		at.Y = max(0, min(dh-fh, int((float64(dh)-float64(h)*uiPx)/2+float64(box.Min.Y)*uiPx)))
+	}
+	oldPx, oldW, oldH := uiPx, uiW, uiH
+	framePx, frameAt, frameMin = uiPx, at, box.Min
+	uiPx *= s
+	drawPx, uiW, uiH = uiPx, w, h
+	drawOX, drawOY = -float64(box.Min.X)*uiPx, -float64(box.Min.Y)*uiPx
+	draw(img)
+	uiPx, drawPx, uiW, uiH = oldPx, oldPx, oldW, oldH
+	drawOX, drawOY = 0, 0
+	framePx, frameAt, frameMin = 0, image.Point{}, image.Point{}
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(at.X), float64(at.Y))
+	dst.DrawImage(img, op)
+}
+
+// inDesign draws box, a window on the Width×Height design, as a frame with room around it
+// for a title plate and shadow.
+func (g *Game) inDesign(dst *ebiten.Image, box image.Rectangle, draw func(dst *ebiten.Image)) {
+	g.inFrame(dst, Width, Height, box.Inset(-24), 0, draw)
+}
+
+// unframed maps a rectangle in the frame being drawn to UI px on the screen.
+func unframed(r image.Rectangle) image.Rectangle {
+	if framePx == 0 {
+		return r
+	}
+	f := func(p image.Point) image.Point {
+		p = p.Sub(frameMin)
+		return image.Pt(int(math.Round((float64(p.X)*uiPx+float64(frameAt.X))/framePx)), int(math.Round((float64(p.Y)*uiPx+float64(frameAt.Y))/framePx)))
+	}
+	return image.Rectangle{f(r.Min), f(r.Max)}
+}
+
+// addButton registers a clickable area drawn this frame.
+func (g *Game) addButton(r image.Rectangle, label string, click func()) {
+	g.buttons = append(g.buttons, button{unframed(r), label, click})
+}
+
 // fit picks the units for a w×h device-pixel window. A world px is as large as fits the
 // Width×Height design in the window, so the design is never cut off and a window of another
 // shape just shows more of the field and spreads the UI to its edges. The map editor and the
@@ -111,29 +183,30 @@ var DefaultUIScale = 100
 func uiBounds(m int) image.Rectangle { return image.Rect(m, 48, uiW-m, uiH-m) }
 
 func rect(dst *ebiten.Image, x, y, w, h float32, c color.Color) {
-	s := float32(drawPx)
-	vector.FillRect(dst, x*s, y*s, w*s, h*s, c, false)
+	s, ox, oy := float32(drawPx), float32(drawOX), float32(drawOY)
+	vector.FillRect(dst, x*s+ox, y*s+oy, w*s, h*s, c, false)
 }
 
 func strokeRect(dst *ebiten.Image, x, y, w, h, width float32, c color.Color) {
-	s := float32(drawPx)
-	vector.StrokeRect(dst, x*s, y*s, w*s, h*s, width*s, c, false)
+	s, ox, oy := float32(drawPx), float32(drawOX), float32(drawOY)
+	vector.StrokeRect(dst, x*s+ox, y*s+oy, w*s, h*s, width*s, c, false)
 }
 
 func strokeLine(dst *ebiten.Image, x0, y0, x1, y1, width float32, c color.Color) {
-	s := float32(drawPx)
-	vector.StrokeLine(dst, x0*s, y0*s, x1*s, y1*s, width*s, c, true)
+	s, ox, oy := float32(drawPx), float32(drawOX), float32(drawOY)
+	vector.StrokeLine(dst, x0*s+ox, y0*s+oy, x1*s+ox, y1*s+oy, width*s, c, true)
 }
 
 func fillCircle(dst *ebiten.Image, x, y, r float32, c color.Color) {
-	s := float32(drawPx)
-	vector.FillCircle(dst, x*s, y*s, r*s, c, true)
+	s, ox, oy := float32(drawPx), float32(drawOX), float32(drawOY)
+	vector.FillCircle(dst, x*s+ox, y*s+oy, r*s, c, true)
 }
 
 func scaled(p *vector.Path) *vector.Path {
 	var q vector.Path
 	o := &vector.AddPathOptions{}
 	o.GeoM.Scale(drawPx, drawPx)
+	o.GeoM.Translate(drawOX, drawOY)
 	q.AddPath(p, o)
 	return &q
 }
@@ -150,6 +223,7 @@ func strokePath(dst *ebiten.Image, p *vector.Path, so vector.StrokeOptions, op *
 // drawScaled draws src with op's logical transform, then scales to device pixels.
 func drawScaled(dst, src *ebiten.Image, op *ebiten.DrawImageOptions) {
 	op.GeoM.Scale(drawPx, drawPx)
+	op.GeoM.Translate(drawOX, drawOY)
 	dst.DrawImage(src, op)
 }
 
@@ -180,7 +254,7 @@ func (g *Game) serif(size float64, weight float32) *text.GoTextFace {
 // write draws s in face f at layout (x, y); op may carry extra colour or transform.
 func write(dst *ebiten.Image, s string, f *text.GoTextFace, x, y float64, c color.Color) {
 	op := &text.DrawOptions{}
-	op.GeoM.Translate(x*drawPx, y*drawPx)
+	op.GeoM.Translate(x*drawPx+drawOX, y*drawPx+drawOY)
 	op.ColorScale.ScaleWithColor(c)
 	op.LineSpacing = f.Size * 1.45 * drawPx
 	sf := *f
@@ -196,7 +270,7 @@ func measure(s string, f *text.GoTextFace) float64 {
 
 func (g *Game) label(dst *ebiten.Image, s string, x, y, size float64, c color.Color) {
 	op := &text.DrawOptions{}
-	op.GeoM.Translate(x*drawPx, y*drawPx)
+	op.GeoM.Translate(x*drawPx+drawOX, y*drawPx+drawOY)
 	op.ColorScale.ScaleWithColor(c)
 	op.LineSpacing = size * 1.45 * drawPx
 	f := g.face(size)
@@ -292,7 +366,7 @@ var cursorPos = func() (int, int) {
 	if pointer.used {
 		x, y = pointer.x, pointer.y
 	}
-	return int(float64(x-fixedAt.X) / uiPx), int(float64(y-fixedAt.Y) / uiPx)
+	return int(float64(x-fixedAt.X-frameAt.X)/uiPx) + frameMin.X, int(float64(y-fixedAt.Y-frameAt.Y)/uiPx) + frameMin.Y
 }
 
 func hovered(r image.Rectangle) bool {
@@ -307,7 +381,7 @@ func (g *Game) btn(dst *ebiten.Image, r image.Rectangle, label string, click fun
 	if click == nil {
 		body, fg = color.NRGBA{R: 40, G: 34, B: 30, A: 235}, color.NRGBA{R: 138, G: 130, B: 118, A: 255}
 	} else {
-		g.buttons = append(g.buttons, button{r, label, click})
+		g.addButton(r, label, click)
 		if hovered(r) {
 			body, rim = hoverC, gold
 		}
@@ -332,7 +406,7 @@ func (g *Game) arrow(dst *ebiten.Image, r image.Rectangle, up bool, click func()
 		strokeRect(dst, x+.5, y+.5, w-1, h-1, 1, color.NRGBA{R: 58, G: 48, B: 40, A: 255})
 		fg = color.NRGBA{R: 74, G: 66, B: 58, A: 255}
 	} else {
-		g.buttons = append(g.buttons, button{r, "", click})
+		g.addButton(r, "", click)
 		body := lacquer2
 		if hovered(r) {
 			body = hoverC
@@ -366,7 +440,7 @@ func (g *Game) button(dst *ebiten.Image, label string, x, y, w int, f func()) {
 }
 
 // block keeps map clicks from passing through a HUD panel.
-func (g *Game) block(r image.Rectangle) { g.blocks = append(g.blocks, r) }
+func (g *Game) block(r image.Rectangle) { g.blocks = append(g.blocks, unframed(r)) }
 
 func bar(dst *ebiten.Image, x, y, w, h float32, k float64, c color.Color) {
 	rect(dst, x, y, w, h, trough)

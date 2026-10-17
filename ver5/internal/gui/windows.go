@@ -79,6 +79,11 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 	case "equipment", "deputy":
 		w, h = 640, 560
 	}
+	// the window in a frame with room for its title plate and shadow
+	g.inFrame(dst, w+40, h+40, image.Rect(0, 0, w+40, h+40), 0, func(dst *ebiten.Image) { g.overlayWindow(dst, w, h) })
+}
+
+func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
 	x, y := uiW/2-w/2, uiH/2-h/2
 	r := image.Rect(x, y, x+w, y+h)
 	g.titled(dst, r, overlayTitles[g.overlay])
@@ -285,7 +290,17 @@ func (g *Game) drawModal(dst *ebiten.Image) {
 	m := g.modals[0]
 	rect(dst, 0, 0, float32(uiW), float32(uiH), color.NRGBA{A: 110})
 	g.buttons, g.blocks = nil, nil
-	g.buttons = append(g.buttons, button{image.Rect(0, 0, uiW, uiH), "", g.closeModal})
+	g.addButton(image.Rect(0, 0, uiW, uiH), "", g.closeModal)
+	box := map[string]image.Rectangle{
+		"objective": image.Rect(Width/2-260, 230, Width/2+260, 470),
+		"levelup":   image.Rect(Width/2-250, 200, Width/2+250, 540),
+		"trait":     image.Rect(Width/2-300, 220, Width/2+300, 560),
+	}[m.kind]
+	g.inDesign(dst, box, func(dst *ebiten.Image) { g.modalWindow(dst, m) })
+}
+
+// modalWindow draws a modal laid out on the Width×Height design.
+func (g *Game) modalWindow(dst *ebiten.Image, m *modal) {
 	switch m.kind {
 	case "objective":
 		o := g.S.Engine.Observe()
@@ -343,6 +358,15 @@ func (g *Game) closeModal() {
 func (g *Game) result(dst *ebiten.Image, o core.Observation) {
 	g.buttons, g.blocks = nil, nil
 	rect(dst, 0, 0, float32(uiW), float32(uiH), color.NRGBA{A: 120})
+	box := image.Rect(Width/2-330, 130, Width/2+330, 760)
+	if o.Result != "victory" {
+		box = image.Rect(Width/2-280, 250, Width/2+280, 560)
+	}
+	g.inDesign(dst, box, func(dst *ebiten.Image) { g.resultWindow(dst, o) })
+}
+
+// resultWindow draws the result window, laid out on the Width×Height design.
+func (g *Game) resultWindow(dst *ebiten.Image, o core.Observation) {
 	st := g.stageInfo(o)
 	r := image.Rect(uiW/2-330, 130, uiW/2+330, 760)
 	if o.Result != "victory" {

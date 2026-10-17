@@ -661,11 +661,11 @@ func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
 	if bx > ax && by > ay {
 		strokeRect(dst, ax, ay, bx-ax, by-ay, 1, ink)
 	}
-	g.buttons = append(g.buttons, button{r, "", func() {
+	g.addButton(r, "", func() {
 		mx, my := cursorPos()
 		g.camX = ((float64(mx)-ox)/miniScale*16 + g.field.OriginX) * K
 		g.camY = ((float64(my)-y0)/miniScale*16 + g.field.OriginY) * K
-	}})
+	})
 	g.block(r)
 }
 

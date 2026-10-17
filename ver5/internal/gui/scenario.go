@@ -94,14 +94,14 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 		}
 	}
 	if o.Dialogue.Kind == "preparation" {
-		g.preparation(dst, o)
+		g.inFrame(dst, Width, Height, image.Rect(0, 0, Width, Height), 0, func(dst *ebiten.Image) { g.preparation(dst, o) })
 		return
 	}
 	lines := splitLines(o.Dialogue.Text)
 	l := lines[min(g.lineIndex, len(lines)-1)]
 	staged := g.enterScene(o)
 	if o.Dialogue.Kind == "dialogue" {
-		g.buttons = append(g.buttons, button{image.Rect(0, 0, uiW, uiH), "", g.advanceDialogue})
+		g.addButton(image.Rect(0, 0, uiW, uiH), "", g.advanceDialogue)
 	}
 	if staged {
 		g.drawScene(dst, l.speakers)
@@ -114,7 +114,7 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 	text, done := g.shownText(l)
 	g.drawDialogue(dst, l, text, done, fmt.Sprintf("%s|%s|%d", strings.Join(l.speakers, "·"), o.Node, g.lineIndex))
 	if o.Dialogue.Kind == "choice" {
-		y := 380
+		y := uiH/2 - 45
 		box := image.Rect(uiW/2-180, y-30, uiW/2+180, y+20+len(o.Dialogue.Choices)*52)
 		g.titled(dst, box, "선택")
 		for _, option := range sorted(o.Dialogue.Choices) {
