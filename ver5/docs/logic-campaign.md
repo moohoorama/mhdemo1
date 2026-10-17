@@ -1,0 +1,106 @@
+# 캠페인 진행
+
+범위: 시나리오 노드를 따라가는 캠페인 흐름, 출전 준비·부관·배치, 전투 결과 이후의 이어하기, 재도전 체크포인트, 인벤토리·창고, 보상, 자동 저장 시점.
+기준은 `internal/core/engine.go`·`deployment.go`·`formation.go`·`api.go`, `internal/session/session.go`, `assets/data/game.json`의 `Campaign`과 `script.json`이며, 값이 다르면 코드와 이 데이터를 따른다.
+
+노드·스테이지의 JSON 필드는 [data-scenario-node.md](data-scenario-node.md), 전투 중 이벤트와 승패는 [logic-battle-event.md](logic-battle-event.md), 아이템·장비는 [data-item.md](data-item.md), 저장 파일 형식은 [system-save.md](system-save.md), 성장(경험치·특성 학습)은 [logic-growth.md](logic-growth.md)를 본다.
+아직 구현하지 않은 진행 구조(회의장, 장면 노드 등)는 [todo/engine.md](todo/engine.md)에 있다.
+
+## 1. 단계
+
+상태의 `Phase`는 다음 다섯 값이다.
+
+| Phase | 의미 |
+|---|---|
+| `scenario` | 현재 `Node`(대화·선택·출전 준비)를 진행한다. |
+| `deployment` | 전투 지도에서 출전 장수를 배치한다. |
+| `battle` | 진영 차례 전투. |
+| `result` | 전투 결과(`Result`가 `victory` 또는 `defeat`)를 보여 준다. |
+| `complete` | 캠페인이 끝났다. |
+
+새 게임은 `Campaign.Start` 노드에서 `scenario` 단계로 시작한다. 시작 로스터(`Campaign.Roster`)는 모두 인물로 만들어지고, 시작 출전 명단은 `Campaign.Deployment`, 시작 인벤토리는 `Campaign.Inventory`다. 값은 `assets/data/game.json`을 본다.
+
+## 2. 노드 종류
+
+노드는 `Kind`로 동작이 갈린다. 노드로 들어올 때(`enter`) 엔진이 하는 일은 다음과 같다.
+
+| Kind | 들어올 때 | 넘어가는 법 |
+|---|---|---|
+| `dialogue` | 멈춘다. | `next` 명령으로 `Next` 노드로 간다. |
+| `choice` | 멈춘다. | `choose` 명령에 `Option`(선택지 이름)을 주면 `Choices`가 가리키는 노드로 간다. 없는 이름이면 `InvalidOption`. |
+| `preparation` | `Stage`에 적은 스테이지를 현재 스테이지로 정하고 멈춘다. | 출전 준비 명령(3절)과 `start`. |
+| `join` | 처음 한 번만 `Character`를 인물로 만들고 출전 명단 끝에 더한다. | 멈추지 않고 `Next`로 이어진다. |
+| `grant` | 처음 한 번만 `Item`을 `Count`개 준다. | 멈추지 않고 `Next`로 이어진다. |
+
+- `join`과 `grant`는 `Event` 키(`Executed`)로 한 번만 실행된다. 이미 실행된 키면 건너뛰고 `Next`로 간다. 실행하면 `join` 또는 `grant` 이벤트가 나간다.
+- `grant`의 `Item`이 장비 ID이면 창고(`Warehouse`)에, 아니면 인벤토리(`Inventory`)에 들어간다.
+- `Next`는 비어 있어도 되지만 기본값(배열의 다음 노드)은 없다. 비어 있는 `dialogue`·`join`·`grant`에서 `Next`로 가면 현재 노드가 비어 진행할 수 없다. 현재 데이터는 모든 흐름 노드에 `Next`를 둔다.
+- 노드의 순서는 의미가 없고 `ID`로만 이어진다.
+
+학습 창(`Learning`)이 열려 있는 동안에는 `learn`·`learn_close` 외의 모든 명령이 `LearningPending`으로 거부된다.
+
+## 3. 출전 준비
+
+`preparation` 노드에서만 다음 명령이 가능하다(그 밖에는 `WrongPhase`).
+
+- `deploy`: 출전 명단을 정한다. 1명 이상 `Stage.Limit`명 이하이고, 중복이 없고, 플레이어블 인물이며, 전사하지 않았고, 부관이 아니어야 한다. 군주(`Lord`) 인물이 로스터에 있으면 반드시 포함해야 한다. 어기면 `InvalidDeployment`.
+- `equip`·`unequip`: 창고와 장수의 장비 칸 사이에서 장비를 옮긴다([data-item.md](data-item.md)).
+- `deputy`·`undeputy`: 부관 임명·해임. 임명하면 부관의 장비가 창고로 가고, 부관은 출전 명단에서 빠진다. 부관의 효과는 [logic-traits.md](logic-traits.md)를 본다.
+- `start`: 출전한다(4절).
+
+## 4. 출전과 배치
+
+`start`는 다음을 한 번에 한다.
+
+1. 임시 인물(적, 병사, 아군 AI)을 모두 지운다. 이름 있는 인물의 상태는 유지한다.
+2. 이 시점의 상태를 체크포인트로 저장한다(`State.Checkpoint`, 6절).
+3. 단계를 `deployment`, 차례를 `ally`, 라운드를 1로 하고 결과를 지운다.
+4. 스테이지의 `Party`(고정 아군)와 `Enemies`를 지도에 놓는다. `Party`에 이름 있는 장수가 있는데 그가 출전 명단에도 있으면 `InvalidDeployment`.
+
+출전 명단의 장수는 아직 지도에 없다. 플레이어가 `Stage.Allies`의 칸에 한 명씩 놓는다.
+
+- `place`(`Actor`, `X`, `Y`): 출전 명단의 장수를 놓는다. 칸은 `Allies`에 있고, 비어 있고, 그 장수의 병종이 설 수 있는 지형(비용 > 0)이어야 한다. 아니면 `InvalidPlacement`. 이미 놓였으면 `AlreadyPlaced`. 놓인 장수는 병력 최대, 병법 0으로 시작한다.
+- `unplace`: 놓은 장수를 거둔다. 고정 아군은 대상이 아니다(출전 명단에 없으므로 `InvalidActor`).
+- `deployment_finish`: 출전 명단 전원이 놓였고 살아 있어야 한다(아니면 `DeploymentIncomplete`). 단계를 `battle`로 바꾸고 `deployment_finish` 이벤트를 낸다.
+- `DeploymentPlan`: 남은 장수에게 칸을 최대한 겹치지 않게 배정하는 명령열을 만든다(자동 진행용). 자리가 모자라면 `NoDeploymentSpace`.
+
+`Allies` 칸 수는 `Limit` 이상이어야 로드된다([data-scenario-node.md](data-scenario-node.md)).
+
+## 5. 전투 뒤
+
+- 승리하면 `Phase`가 `result`가 되고 `continue` 명령을 기다린다. `continue`는 전투 상태(유닛, 임시 인물, 체크포인트, 학습 창, 라운드)를 지운다. 그다음 `Stage.Next`가 비어 있으면 `complete` 단계가 되고, 있으면 `scenario` 단계에서 그 노드로 가서 `enter`를 돌린다. 이때 전사한 인물은 출전 명단에서 빠진다.
+- 패배하면 `Phase`가 `result`이고 `continue`는 거부된다. `Retry`만 가능하다(6절).
+- 전사(`Dead`)는 일기토 결과 `death`로만 생긴다([logic-duel.md](logic-duel.md)). 전사한 장수의 장비는 창고로 돌아가고 부관은 풀린다. 전투에서 병력이 0이 된 일반 퇴각은 전사가 아니라 다음 출전에 다시 나온다.
+- 승리 보상(`Stage.Reward`)은 인벤토리에 더해진다. 7절을 본다.
+
+현재 데이터의 흐름은 `script.json`의 노드와 각 `maps/<ID>.json`의 `Stage.Next`를 따라가면 알 수 있다. 마지막 스테이지는 `Next`가 없어 캠페인이 끝난다.
+
+## 6. 재도전 체크포인트
+
+`start` 때 저장한 체크포인트는 `scenario` 단계, 출전 준비 노드, 같은 스테이지 상태다. 인벤토리, 창고, 장비, 부관, 출전 명단, `Executed`가 모두 출전 직전 값이다.
+
+- `Retry`는 `Phase == "result"`, `Result == "defeat"`, 체크포인트가 있을 때만 된다(아니면 `WrongPhase`). 체크포인트를 복원하고 `Revision`만 현재보다 1 늘린다.
+- 복원되면 출전 준비 화면으로 돌아가므로 편성·장비를 바꿔 다시 출전할 수 있다. 그 전투에서 번 경험치와 쓴 아이템, 일어난 이벤트·일기토는 모두 되돌아간다.
+- 체크포인트는 중첩되지 않는다. 체크포인트 안의 체크포인트는 `CorruptCheckpoint`로 거부된다.
+- 세션에서는 `retry` 명령이 `StaleRevision` 검사를 거치고 상태를 변경됨(`Dirty`)으로 표시한다. 재도전 자체는 자동 저장을 쓰지 않는다.
+
+## 7. 인벤토리와 창고
+
+두 주머니는 서로 다른 종류를 담는다.
+
+- `Inventory`: 아이템(`items.json`) ID별 개수. 아군이 쓰는 소모품과 승급서는 모두 이 공용 주머니에서 쓴다. 적 유닛은 자기 `Items`를 따로 가진다(`Rules.EnemyStock`).
+- `Warehouse`: 장비(`equipment.json`) ID별 개수. 장착하지 않은 장비를 둔다.
+
+보상과 부여는 다음과 같이 들어간다.
+
+- `Stage.Reward`는 모두 `Inventory`에 더해진다. 키는 아이템 ID여야 하며, 로드 검증은 이 키를 검사하지 않지만 장비 ID 등 잘못된 키가 들어가면 그 상태를 `Restore`할 때 `CorruptSave`가 된다.
+- `grant` 노드는 2절대로 아이템·장비에 따라 주머니를 나눈다.
+- 보상은 승리한 스테이지당 한 번이다(`Executed["reward-<스테이지ID>"]`).
+
+`Restore`는 `Inventory`의 키가 `Items`에, `Warehouse`의 키가 `Equipment`에 있고 개수가 0 이상인지 확인한다.
+
+## 8. 자동 저장
+
+세션(`internal/session`)이 `Apply`의 결과 이벤트를 보고 자동 저장한다. `deployment_finish` 이벤트 또는 `turn` 이벤트 중 아군 차례 시작(`Target == "ally"`)이 있고, 그때 `Phase`가 `battle`일 때 한 번 저장한다. 이동·공격·지원·적군 차례에는 저장하지 않는다.
+
+슬롯은 `auto1`~`auto4` 네 개를 1→2→3→4→1로 돌며 덮어쓴다. 다음 슬롯은 각 파일의 순번(`sequence`) 최댓값으로 정하므로 게임을 다시 실행하거나 옛 저장을 불러와도 순서가 이어진다. 수동 슬롯 `1`~`10`과 독립이다. 쓰기에 실패하면 `autosave-failed` 이벤트가 결과에 덧붙고 회전은 변하지 않는다. 파일 형식과 불러오기는 [system-save.md](system-save.md)가 기준이다.

@@ -11,7 +11,7 @@
 //	go run ./cmd/_uidemo-vm -ui uiscale -frames 760 -sheet -at 260,380,720
 //
 // -sheet plays the demo once per reference screen (phone landscape at 130% and 160%, a 4:3
-// tablet, the desktop window; see docs/plans/PLAN_ui-scale-ppi.md) and puts each -at frame
+// tablet, the desktop window; see docs_old/plans/PLAN_ui-scale-ppi.md) and puts each -at frame
 // of all four side by side in <out>/sheet-NNNN.png.
 //
 // The host still opens a (hidden) GLFW window, so the display must be awake: wrap the run in

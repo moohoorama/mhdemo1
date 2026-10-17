@@ -3,7 +3,7 @@
 Read `ver5/README.md` before modifying this repository. The game lives in `ver5/`.
 
 Sprites the game reads are `ver5/assets/sprites/*.spr`, built from the dot editor YAML
-(`ver5/tools/doteditor/units/*.yaml` via `ver5/tools/spritebuild/build.py`; see `ver5/docs/sprite-binary.md`).
+(`ver5/tools/doteditor/units/*.yaml` via `ver5/tools/spritebuild/build.py`; see `ver5/docs/presentation-sprite.md`).
 Do not add project-specific sprite transformations to `tools/spritetool`. Keep runtime
 assets under `ver5/assets/` and source artwork under `tools/spritetool/assets/`.
 
@@ -25,7 +25,7 @@ plays a named UI demo (`ver5/internal/gui/uidemo_*.go`) headlessly and saves PNG
 60 fps MP4; run it from `ver5/` wrapped in `caffeinate -d -i`, e.g.
 `go run ./cmd/_uidemo-vm -ui dialogue -frames 300 -at 30,96 -mp4 reports/uidemo/dialogue.mp4`.
 `-size 2400x1080 -uiscale 160` plays it on a phone-sized screen, and `-sheet -at 260,380,720` puts the
-same frames from the four reference screens (docs/plans/PLAN_ui-scale-ppi.md) on one image. Demos that
+same frames from the four reference screens (docs_old/plans/PLAN_ui-scale-ppi.md) on one image. Demos that
 cover whole screens: `uiscale` (story, battle HUD), `popups` (title, windows, modals, preparation),
 `deploy`, `duel`, `editor`.
 Add a new demo file there when no existing demo shows the screen. `cmd/_uidemo` is the windowed version.

@@ -423,7 +423,7 @@ go test ./internal/mapedit/... -bench Benchmark -benchtime 1000x -benchmem
 ### 단일 문서 및 편집 조작 보강 (사용자 요청)
 
 - `assets/data/maps/<ID>.json` 한 벌만 저장한다. 전투 대타일 자료와 그림은 로드 시 메모리에서 만든다.
-  별도 preview/check/mapbuild 명령, 중복 맵 자료, 초안 내보내기는 제거한다. 구조는 `docs/maps.md`에 정리한다.
+  별도 preview/check/mapbuild 명령, 중복 맵 자료, 초안 내보내기는 제거한다. 구조는 `docs/data-map.md`에 정리한다.
 - 브러시 크기는 소타일 기준 1×1, 2×2, 4×4, 8×8이다. 드래그 한 번을 한 번에 취소하고 그림 영역 밖은 칠하지 않는다.
 - 특성 목록은 해당 장수의 기본 보유 특성과 현재 병종·장비의 부여 특성으로 제한한다.
   특성을 가리키면 설명을 표시하고 병종·장비 부여 특성은 선택 해제할 수 없도록 구분한다.

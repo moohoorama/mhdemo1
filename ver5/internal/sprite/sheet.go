@@ -1,4 +1,4 @@
-// Package sprite loads baked .spr sheets (see docs/sprite-binary.md) and renders them with per-group colours.
+// Package sprite loads baked .spr sheets (see docs/presentation-sprite.md) and renders them with per-group colours.
 package sprite
 
 import (

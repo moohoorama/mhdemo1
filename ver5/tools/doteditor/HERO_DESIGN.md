@@ -58,7 +58,7 @@
 ### 4.1 특징 추출 → `profile/<id>.md`
 
 - 자료: 기존 전투 도트(`tools/spritetool/assets/ver2-units/<id>/`), 평복 도트(`ver4-civilians/`), 초상(`tools/illustrations/`),
-  `tools/unit3d`의 머리·수염 정의, `docs/design.md`의 장수 설명.
+  `tools/unit3d`의 머리·수염 정의, `docs/data-character.md`의 장수 설명.
 - 기록 항목:
   - 색과 태그 배정: 부위마다 진영색 / 테마 A·B·C / 고정 재질
   - 옷과 갑옷, 신체 특징(귀, 수염, 얼굴색), 모자·관·투구

@@ -9,7 +9,7 @@ description: 이 프로젝트의 전투 중 일기토를 이야기와 장수 성
 
 ## 시작할 때 읽을 것
 
-프로젝트 루트를 기준으로 `README.md`, `docs/duel-animation.md`, 해당 스테이지의 `assets/data/maps/<ID>.json`과 `assets/duels.json`을 읽는다. 이야기 근거는 해당 내용이 있는 `docs/scenario.md`·`docs/script-c1.md`에서 확인한다. 사용자에게서 전개를 받았다면 그것을 구현 기준으로 삼는다. 엔진 승패는 `internal/core/formation.go`, 동작은 `internal/duel/timeline.go`, 검증은 `internal/duel/scripts.go`, 화면은 `internal/duelview/`, 재생과 건너뛰기는 `internal/gui/player.go`·`internal/gui/duel.go`다.
+프로젝트 루트를 기준으로 `README.md`, `docs/presentation-duel.md`, 해당 스테이지의 `assets/data/maps/<ID>.json`과 `assets/duels.json`을 읽는다. 이야기 근거는 해당 내용이 있는 `docs/scenario.md`·`docs/script-c1.md`에서 확인한다. 사용자에게서 전개를 받았다면 그것을 구현 기준으로 삼는다. 엔진 승패는 `internal/core/formation.go`, 동작은 `internal/duel/timeline.go`, 검증은 `internal/duel/scripts.go`, 화면은 `internal/duelview/`, 재생과 건너뛰기는 `internal/gui/player.go`·`internal/gui/duel.go`다.
 
 ## 예제보다 이야기를 우선
 

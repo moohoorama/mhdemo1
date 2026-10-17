@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bake the dot editor's units/*.yaml into assets/sprites/<id>.spr (format: docs/sprite-binary.md).
+"""Bake the dot editor's units/*.yaml into assets/sprites/<id>.spr (format: docs/presentation-sprite.md).
 
   python3 build.py                  # all units/*.yaml
   python3 build.py units/liubei.yaml

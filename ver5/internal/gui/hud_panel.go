@@ -9,7 +9,7 @@ import (
 	"srpg/internal/session"
 )
 
-// The battle HUD's one panel in the upper right corner (docs/plans/PLAN_hud-panel.md): a head
+// The battle HUD's one panel in the upper right corner (docs_old/plans/PLAN_hud-panel.md): a head
 // line with the side to move and the end-of-phase button, a row of tabs, and the tab's content,
 // which sets the panel's height. Selecting an officer shows the unit tab; letting go returns to
 // the tab chosen by hand, and the enemy's turn shows the log.

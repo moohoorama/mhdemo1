@@ -26,7 +26,7 @@ Scenes live in `assets/scenes.json`, not here.
 
 ## Officer biographies
 
-`Character.Biography` is optional display text for the battle detail panel’s fourth tab. Named officers use the biographies in `docs/officers.md`; coalition officers added for the scenario describe their in-game story. Soldier templates can omit it.
+`Character.Biography` is optional display text for the battle detail panel’s fourth tab. Named officers use the biographies in `docs/data-character.md`; coalition officers added for the scenario describe their in-game story. Soldier templates can omit it.
 
 ## Trait rules
 
@@ -51,7 +51,7 @@ Class and equipment grants still apply. Officers must be unique; soldier templat
 Class changes must remain in the same family, and equipment must fit the resulting class and slots.
 
 The GUI saves exactly one map document. The game reads that same file; see
-[the map format](../../docs/maps.md). Defense XP is controlled by `Rules.ExpDefenseShare`.
+[the map format](../../docs/data-map.md). Defense XP is controlled by `Rules.ExpDefenseShare`.
 
 ## Battle events and allied AI
 
@@ -59,6 +59,6 @@ The GUI saves exactly one map document. The game reads that same file; see
 
 `Stage.Events` defines one-shot events with a stage-local `ID`. `Trigger: "boss-alone"` fires while the boss survives and all other enemies are gone. `Trigger: "duel"` fires after any ID listed in `Duels` resolves. `Spawns` contains allied AI spawns; occupied entry cells use the closest usable free cell. `Dialogue` is an ordered array of groups of `{Actor, Text}` lines. Lines in the same group appear simultaneously in battlefield speech bubbles. Executed events and spawned units survive save/load.
 
-Equipment can grant `retreat_sweep` (damage share for one additional strike on foes in the defeated target’s surrounding eight cells), `counter_always` (a counter against every physical attack in reach), and `turn_defense` (defense percentage renewed at the start of each own phase). The effects follow the wearer’s faction. Additional sweep blows do not cascade.
+Equipment can grant `retreat_sweep` (after the wearer defeats a foe, one normal attack on every living foe within the wearer’s basic attack range), `counter_always` (a counter against every physical attack in reach), and `turn_defense` (defense percentage renewed at the start of each own phase). The effects follow the wearer’s faction. Additional sweep blows do not cascade.
 
 `Stage.TurnLimit` sets the battle round deadline. Zero or omitted means unlimited. A positive value allows the entire final round (including the enemy phase); entering the next allied round loses the battle. B01–B03 currently use 30 rounds.

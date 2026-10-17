@@ -12,7 +12,7 @@ import (
 	"srpg/internal/core"
 )
 
-// The unit list tab (docs/plans/PLAN_hud-panel.md): one row per unit, two lines tall. The
+// The unit list tab (docs_old/plans/PLAN_hud-panel.md): one row per unit, two lines tall. The
 // left cell is the unit's name and class; the right cells are a 3×2 grid whose values depend
 // on the view (basics, unit stats, biography, equipment). A cell's header sorts by it.
 const (
