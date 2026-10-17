@@ -11,7 +11,7 @@ import (
 )
 
 func (g *Game) duelView(e core.Event) *duelview.View {
-	v := &duelview.View{Bubble: g.assets.Bubble, Story: g.assets.Duels.Story(e.DuelID, e.Outcome)}
+	v := &duelview.View{Bubble: g.assets.Bubble, Story: g.assets.Duels.Story(e.DuelID, e.Outcome), Decor: g.duelDecor()}
 	for i, id := range []string{e.Actor, e.Target} {
 		u := g.unitView(g.player.final, id)
 		if u == nil {
@@ -118,6 +118,9 @@ func (g *Game) drawDuel(dst *ebiten.Image) {
 	g.drawDuelPreviewInfo(dst)
 	if ui >= 1 {
 		g.btn(dst, image.Rect(uiW-280, uiH-45, uiW-26, uiH-11), "일기토 건너뛰기", g.player.SkipDuel)
+	}
+	if v.Staged && !v.Quiet && ui >= 1 {
+		g.drawDuelCards(dst, v)
 	}
 }
 

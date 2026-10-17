@@ -46,6 +46,8 @@ type View struct {
 	Tint color.NRGBA
 	// Staged views follow the battle transition; others (the gallery) always show everything.
 	Staged bool
+	// Decor is the arena's scenery; nil leaves the ground bare.
+	Decor *Decor
 	// Quiet hides the speech bubbles, while something plays over the duel's opening.
 	Quiet bool
 	// Focus is where the duelists meet, in battle canvas coordinates, for the camera.
@@ -194,9 +196,32 @@ type unitDraw struct {
 	x, y      float64
 	fade      float64
 	gray      float64
+	// prop draws a scenery image at scale in place of art; hue turns its colours.
+	prop  *Sprite
+	scale float64
+	hue   float64
+}
+
+func drawProp(dst *ebiten.Image, u unitDraw) {
+	op := &colorm.DrawImageOptions{}
+	op.GeoM.Translate(-u.prop.PivotX, -u.prop.PivotY)
+	op.GeoM.Scale(u.scale, u.scale)
+	op.GeoM.Translate(u.x, u.y)
+	var cm colorm.ColorM
+	if u.hue != 0 {
+		cm.ChangeHSV(u.hue, 1, 1)
+	}
+	cm.Scale(1, 1, 1, 1-u.fade)
+	colorm.DrawImage(dst, u.prop.Image, cm, op)
 }
 
 func drawUnit(dst *ebiten.Image, u unitDraw, shadow bool) {
+	if u.prop != nil {
+		if !shadow {
+			drawProp(dst, u)
+		}
+		return
+	}
 	pivot := u.art.Pivot
 	im := u.art.Frame(u.dir, u.anim, u.frame)
 	if shadow {
@@ -267,6 +292,11 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 		line(dst, x, y, x+7, y+2, 1, speck)
 	}
 	var units []unitDraw
+	if g.Decor != nil {
+		for _, u := range g.ground() {
+			drawProp(dst, u)
+		}
+	}
 	for side := range 2 {
 		dir := "SE"
 		if side == 1 {
@@ -283,6 +313,10 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 				}
 				x, y = g.at(x, y)
 				if x < -120 || x > float64(g.cw)+120 || y < -160 || y > float64(g.ch)+160 {
+					continue
+				}
+				if g.Decor != nil && flagCell(col, rank) {
+					units = append(units, g.flag(side, col, rank, x, y))
 					continue
 				}
 				art := g.Fighters[side].Troops
@@ -311,7 +345,7 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 		if a.Hold >= 0 {
 			frame = min(a.Hold, art.Animations[a.Animation].Frames-1)
 		}
-		units = append(units, unitDraw{art, g.facing(a.Facing), a.Animation, frame, x, y, a.Fade, a.Gray})
+		units = append(units, unitDraw{art: art, dir: g.facing(a.Facing), anim: a.Animation, frame: frame, x: x, y: y, fade: a.Fade, gray: a.Gray})
 	}
 	sort.SliceStable(units, func(i, j int) bool { return units[i].y < units[j].y })
 	for _, u := range units {
@@ -342,6 +376,11 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 			line(dst, x+math.Cos(a)*8, y+math.Sin(a)*8, x+math.Cos(a)*r, y+math.Sin(a)*r, 2+s.Impact*3, c)
 		}
 		vector.StrokeCircle(dst, float32(x), float32(y), float32(r*(1-s.Impact)+8), 2, c, true)
+		if g.Decor != nil {
+			if u, ok := g.burst(x, y+58, s.Impact, s.Critical); ok {
+				drawUnit(dst, u, false)
+			}
+		}
 	}
 	if s.Flash > 0 {
 		box(dst, 0, 0, float64(g.cw), float64(g.ch), color.NRGBA{255, 255, 245, uint8(s.Flash * 225)})
