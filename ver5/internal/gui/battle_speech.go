@@ -41,7 +41,7 @@ func (g *Game) drawBattleSpeech(dst *ebiten.Image) {
 		x, y = worldToUI(g.toScreen(x, y-u.lift-u.top))
 		bw, bh := g.assets.Bubble.Size(bubble.name, bubble.text)
 		w, h := int(bw), int(bh)
-		px, py := max(16, min(Width-w-16, int(x)-32)), max(62, min(Height-h-190, int(y)-h-10))
+		px, py := max(16, min(uiW-w-16, int(x)-32)), max(62, min(uiH-h-190, int(y)-h-10))
 		r := image.Rect(px, py, px+w, py+h)
 		for _, other := range placed {
 			if r.Overlaps(other) {

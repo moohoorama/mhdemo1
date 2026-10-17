@@ -196,7 +196,7 @@ func (p *editorRenderTest) Update() error {
 		g.ensureField(g.S.Engine.Observe())
 		g.modals = nil
 	case 6:
-		cursorPos = func() (int, int) { return 120, deploymentTop + 65 }
+		cursorPos = func() (int, int) { return 120, deploymentTop() + 65 }
 		g.leftClick()
 		cursorPos = func() (int, int) { return 0, 0 }
 		if g.deploymentSelected == "" || len(g.deploymentMarks()) == 0 {
@@ -319,7 +319,7 @@ func (p *editorRenderTest) Draw(dst *ebiten.Image) {
 			}
 			icon.Deallocate()
 		}
-		drawPx = 2
+		setUnits(Width*2, Height*2, 2, 1)
 		high := ebiten.NewImage(Width*2, Height*2)
 		p.g.Draw(high)
 		highImg := image.NewRGBA(high.Bounds())
@@ -333,7 +333,7 @@ func (p *editorRenderTest) Draw(dst *ebiten.Image) {
 			p.err = err
 		}
 		high.Deallocate()
-		drawPx = 1
+		setUnits(Width, Height, 1, 1)
 		gallery := ebiten.NewImage(372, 156)
 		gallery.Fill(color.NRGBA{R: 40, G: 45, B: 50, A: 255})
 		for i, kind := range []string{"attack", "defense", "agility", "mind", "morale", "speed"} {

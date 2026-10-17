@@ -18,10 +18,10 @@ const learnRows = 7
 // accepts input until the window is closed.
 func (g *Game) drawLearning(dst *ebiten.Image) {
 	l := g.learn[0]
-	rect(dst, 0, 0, Width, Height, color.NRGBA{A: 150})
+	rect(dst, 0, 0, float32(uiW), float32(uiH), color.NRGBA{A: 150})
 	g.buttons, g.blocks = nil, nil
-	g.buttons = append(g.buttons, button{image.Rect(0, 0, Width, Height), "", func() {}})
-	r := image.Rect(Width/2-380, 80, Width/2+380, 780)
+	g.buttons = append(g.buttons, button{image.Rect(0, 0, uiW, uiH), "", func() {}})
+	r := image.Rect(uiW/2-380, 80, uiW/2+380, 780)
 	g.titled(dst, r, "특성 학습")
 	g.portrait(dst, l.ID, float64(r.Min.X+32), float64(r.Min.Y+44), 80)
 	g.label(dst, l.Name, float64(r.Min.X+132), float64(r.Min.Y+46), 26, gold)

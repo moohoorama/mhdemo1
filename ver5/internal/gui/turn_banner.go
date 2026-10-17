@@ -73,7 +73,7 @@ func (g *Game) drawTurnBanner(dst *ebiten.Image) {
 		return
 	}
 	fade := 1 - phase(b.t, turnHoldUntil, turnFade)
-	rect(dst, 0, 0, Width, Height, color.NRGBA{A: uint8(255 * .45 * phase(b.t, 0, turnDim) * fade)})
+	rect(dst, 0, 0, float32(uiW), float32(uiH), color.NRGBA{A: uint8(255 * .45 * phase(b.t, 0, turnDim) * fade)})
 	// two ink bands sweep in from the left: black, then rust laid over its lower edge
 	sweep := func(at float64, y, h float32, c color.NRGBA, alpha float64) {
 		k := bezier(.6, 0, .2, 1, phase(b.t, at, turnStroke))
@@ -87,7 +87,7 @@ func (g *Game) drawTurnBanner(dst *ebiten.Image) {
 	face := g.brush(204)
 	k := bezier(.4, .1, .3, 1, phase(b.t, turnWriteAt, turnWrite))
 	img := g.textImage(title, face, color.NRGBA{R: 246, G: 238, B: 219, A: 255}, 6)
-	drawReveal(dst, img, Width/2-measure(title, face)/2, 282, k, fade)
+	drawReveal(dst, img, float64(uiW)/2-measure(title, face)/2, 282, k, fade)
 
 	side := g.turnSide(b.faction)
 	c := turnColor(b.faction)
@@ -95,17 +95,17 @@ func (g *Game) drawTurnBanner(dst *ebiten.Image) {
 	sf := g.serif(46, 900)
 	sw := spacedWidth(side, sf, .35)
 	c.A = uint8(255 * s * fade)
-	writeSpaced(dst, side, sf, Width/2-sw/2, 492+15*(1-s), .35, c)
+	writeSpaced(dst, side, sf, float64(uiW)/2-sw/2, 492+15*(1-s), .35, c)
 	lw := 415 * bezier(.2, .8, .2, 1, phase(b.t, turnLineAt, turnLine))
-	rect(dst, float32(Width/2-lw/2), 582, float32(lw), 6, c)
+	rect(dst, float32(float64(uiW)/2-lw/2), 582, float32(lw), 6, c)
 }
 
 // sweepBand draws the left fraction k of a full-width band, its head feathered.
 func sweepBand(dst *ebiten.Image, y, h float32, k float64, c color.NRGBA) {
 	const feather = 40
-	edge := float32(k) * (Width + feather)
+	edge := float32(k) * (float32(uiW) + feather)
 	rect(dst, 0, y, max(0, edge-feather), h, c)
-	for x := max(0, edge-feather); x < min(Width, edge); x += 4 {
+	for x := max(0, edge-feather); x < min(float32(uiW), edge); x += 4 {
 		a := c
 		a.A = uint8(float32(c.A) * (1 - (x-(edge-feather))/feather))
 		rect(dst, x, y, 4, h, a)

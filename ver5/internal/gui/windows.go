@@ -64,7 +64,7 @@ type levelUp struct {
 }
 
 func (g *Game) drawOverlay(dst *ebiten.Image) {
-	rect(dst, 0, 0, Width, Height, color.NRGBA{A: 150})
+	rect(dst, 0, 0, float32(uiW), float32(uiH), color.NRGBA{A: 150})
 	g.buttons, g.blocks = nil, nil
 	w, h := 560, 440
 	switch g.overlay {
@@ -79,7 +79,7 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 	case "equipment", "deputy":
 		w, h = 640, 560
 	}
-	x, y := Width/2-w/2, Height/2-h/2
+	x, y := uiW/2-w/2, uiH/2-h/2
 	r := image.Rect(x, y, x+w, y+h)
 	g.titled(dst, r, overlayTitles[g.overlay])
 	g.btn(dst, image.Rect(x+w-96, y+16, x+w-18, y+44), "닫기", func() { g.overlay = "" })
@@ -283,25 +283,25 @@ func (g *Game) readSlots() map[string]string {
 // drawModal draws the first queued modal; any click closes it.
 func (g *Game) drawModal(dst *ebiten.Image) {
 	m := g.modals[0]
-	rect(dst, 0, 0, Width, Height, color.NRGBA{A: 110})
+	rect(dst, 0, 0, float32(uiW), float32(uiH), color.NRGBA{A: 110})
 	g.buttons, g.blocks = nil, nil
-	g.buttons = append(g.buttons, button{image.Rect(0, 0, Width, Height), "", g.closeModal})
+	g.buttons = append(g.buttons, button{image.Rect(0, 0, uiW, uiH), "", g.closeModal})
 	switch m.kind {
 	case "objective":
 		o := g.S.Engine.Observe()
 		st := g.stageInfo(o)
 		win, lose := g.objective(st)
-		r := image.Rect(Width/2-260, 230, Width/2+260, 470)
+		r := image.Rect(uiW/2-260, 230, uiW/2+260, 470)
 		g.titled(dst, r, "전투 목표")
-		g.centered(dst, st.name, float64(Width/2), 262, 30, gold)
+		g.centered(dst, st.name, float64(uiW/2), 262, 30, gold)
 		g.label(dst, "승리 조건", float64(r.Min.X+48), 326, 16, muted)
 		g.label(dst, win, float64(r.Min.X+160), 324, 19, ink)
 		g.label(dst, "패배 조건", float64(r.Min.X+48), 362, 16, muted)
 		g.label(dst, lose, float64(r.Min.X+160), 360, 19, ink)
-		g.centered(dst, "클릭하여 시작", float64(Width/2), 424, 13, muted)
+		g.centered(dst, "클릭하여 시작", float64(uiW/2), 424, 13, muted)
 	case "levelup":
 		l := m.level
-		r := image.Rect(Width/2-250, 200, Width/2+250, 540)
+		r := image.Rect(uiW/2-250, 200, uiW/2+250, 540)
 		g.titled(dst, r, "레벨 업")
 		g.portrait(dst, l.id, float64(r.Min.X+32), 236, 110)
 		g.label(dst, g.name(l.id), float64(r.Min.X+164), 232, 26, gold)
@@ -320,16 +320,16 @@ func (g *Game) drawModal(dst *ebiten.Image) {
 				g.label(dst, fmt.Sprintf("+%d", b-a), px+130, py, 15, good)
 			}
 		}
-		g.centered(dst, "클릭하여 계속", float64(Width/2), 512, 13, muted)
+		g.centered(dst, "클릭하여 계속", float64(uiW/2), 512, 13, muted)
 	case "trait":
-		r := image.Rect(Width/2-300, 220, Width/2+300, 560)
+		r := image.Rect(uiW/2-300, 220, uiW/2+300, 560)
 		g.titled(dst, r, "특성")
-		g.centered(dst, g.traitName(m.trait), float64(Width/2), 252, 34, gold)
+		g.centered(dst, g.traitName(m.trait), float64(uiW/2), 252, 34, gold)
 		if t, ok := g.S.Data.Traits[m.trait]; ok {
-			g.centered(dst, fmt.Sprintf("습득 특성치 %d", t.Cost), float64(Width/2), 304, 14, muted)
+			g.centered(dst, fmt.Sprintf("습득 특성치 %d", t.Cost), float64(uiW/2), 304, 14, muted)
 		}
 		g.label(dst, wrap(g.traitDesc(m.trait), 34), float64(r.Min.X+48), 342, 18, ink)
-		g.centered(dst, "클릭하여 닫기", float64(Width/2), float64(r.Max.Y-36), 13, muted)
+		g.centered(dst, "클릭하여 닫기", float64(uiW/2), float64(r.Max.Y-36), 13, muted)
 	}
 }
 
@@ -342,25 +342,25 @@ func (g *Game) closeModal() {
 // result is the end-of-battle window.
 func (g *Game) result(dst *ebiten.Image, o core.Observation) {
 	g.buttons, g.blocks = nil, nil
-	rect(dst, 0, 0, Width, Height, color.NRGBA{A: 120})
+	rect(dst, 0, 0, float32(uiW), float32(uiH), color.NRGBA{A: 120})
 	st := g.stageInfo(o)
-	r := image.Rect(Width/2-330, 130, Width/2+330, 760)
+	r := image.Rect(uiW/2-330, 130, uiW/2+330, 760)
 	if o.Result != "victory" {
-		r = image.Rect(Width/2-280, 250, Width/2+280, 560)
+		r = image.Rect(uiW/2-280, 250, uiW/2+280, 560)
 		g.titled(dst, r, "패배")
-		g.centered(dst, st.name, float64(Width/2), 290, 28, bad)
+		g.centered(dst, st.name, float64(uiW/2), 290, 28, bad)
 		reason := g.lordName() + " 퇴각 또는 아군 전멸"
 		if st.turnLimit > 0 && o.Round > st.turnLimit {
 			reason = fmt.Sprintf("%d턴 제한 초과", st.turnLimit)
 		}
-		g.centered(dst, reason, float64(Width/2), 346, 19, ink)
+		g.centered(dst, reason, float64(uiW/2), 346, 19, ink)
 		g.btn(dst, image.Rect(r.Min.X+40, 420, r.Max.X-40, 456), "출전 준비부터 재도전", func() { g.request(session.Request{Op: "retry"}) })
 		g.btn(dst, image.Rect(r.Min.X+40, 466, r.Min.X+260, 502), "불러오기", func() { g.openOverlay("load") })
 		g.btn(dst, image.Rect(r.Max.X-260, 466, r.Max.X-40, 502), "시작 메뉴", func() { g.request(session.Request{Op: "title"}) })
 		return
 	}
 	g.titled(dst, r, "승리")
-	g.centered(dst, st.name+" 승리", float64(Width/2), 160, 30, gold)
+	g.centered(dst, st.name+" 승리", float64(uiW/2), 160, 30, gold)
 	allies := resultUnits(o)
 	best, bestXP := "", 0
 	for _, u := range allies {
@@ -388,7 +388,7 @@ func (g *Game) result(dst *ebiten.Image, o core.Observation) {
 	}
 	if pages > 1 {
 		g.btn(dst, image.Rect(r.Min.X+40, 604, r.Min.X+140, 636), "이전", func() { g.resultPage = max(0, g.resultPage-1) })
-		g.centered(dst, fmt.Sprintf("%d / %d", g.resultPage+1, pages), float64(Width/2), 610, 14, muted)
+		g.centered(dst, fmt.Sprintf("%d / %d", g.resultPage+1, pages), float64(uiW/2), 610, 14, muted)
 		g.btn(dst, image.Rect(r.Max.X-140, 604, r.Max.X-40, 636), "다음", func() { g.resultPage = min(pages-1, g.resultPage+1) })
 	}
 	rewards := []string{}

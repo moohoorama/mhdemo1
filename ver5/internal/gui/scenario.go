@@ -77,9 +77,9 @@ func (g *Game) advanceDialogue() {
 }
 
 func (g *Game) backdrop(dst *ebiten.Image, o core.Observation) {
-	for i := 0; i < Height; i += 10 {
-		k := float64(i) / Height
-		rect(dst, 0, float32(i), Width, 10, color.NRGBA{R: uint8(36 - 20*k), G: uint8(28 - 14*k), B: uint8(26 - 10*k), A: 255})
+	for i := 0; i < uiH; i += 10 {
+		k := float64(i) / float64(uiH)
+		rect(dst, 0, float32(i), float32(uiW), 10, color.NRGBA{R: uint8(36 - 20*k), G: uint8(28 - 14*k), B: uint8(26 - 10*k), A: 255})
 	}
 	g.label(dst, fmt.Sprintf("제 %d 장", o.Stage+1), 60, 40, 22, gold)
 	g.label(dst, g.S.Data.Stages[o.Stage].Name, 60, 74, 16, muted)
@@ -101,13 +101,13 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 	l := lines[min(g.lineIndex, len(lines)-1)]
 	staged := g.enterScene(o)
 	if o.Dialogue.Kind == "dialogue" {
-		g.buttons = append(g.buttons, button{image.Rect(0, 0, Width, Height), "", g.advanceDialogue})
+		g.buttons = append(g.buttons, button{image.Rect(0, 0, uiW, uiH), "", g.advanceDialogue})
 	}
 	if staged {
 		g.drawScene(dst, l.speakers)
 		if g.sceneBusy() { // the line waits for its beats
 			g.lineStart = g.ticks
-			g.label(dst, "클릭: 넘기기", float64(Width-150), float64(Height-40), 13, muted)
+			g.label(dst, "클릭: 넘기기", float64(uiW-150), float64(uiH-40), 13, muted)
 			return
 		}
 	}
@@ -115,7 +115,7 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 	g.drawDialogue(dst, l, text, done, fmt.Sprintf("%s|%s|%d", strings.Join(l.speakers, "·"), o.Node, g.lineIndex))
 	if o.Dialogue.Kind == "choice" {
 		y := 380
-		box := image.Rect(Width/2-180, y-30, Width/2+180, y+20+len(o.Dialogue.Choices)*52)
+		box := image.Rect(uiW/2-180, y-30, uiW/2+180, y+20+len(o.Dialogue.Choices)*52)
 		g.titled(dst, box, "선택")
 		for _, option := range sorted(o.Dialogue.Choices) {
 			key := option
@@ -144,7 +144,7 @@ func (g *Game) preparation(dst *ebiten.Image, o core.Observation) {
 		g.selected = roster[0].ID
 	}
 	limit := g.S.Data.Stages[o.Stage].Limit
-	r := image.Rect(40, 120, Width-40, 810)
+	r := image.Rect(40, 120, uiW-40, 810)
 	g.titled(dst, r, "출전 준비 · "+g.S.Data.Stages[o.Stage].Name)
 	g.label(dst, fmt.Sprintf("출전 %d / %d", len(o.Deployment), limit), float64(r.Min.X+32), float64(r.Min.Y+26), 17, gold)
 	deployed := map[string]bool{}

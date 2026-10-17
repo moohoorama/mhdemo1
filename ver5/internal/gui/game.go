@@ -756,8 +756,7 @@ func (g *Game) Layout(w, h int) (int, int) {
 // LayoutF renders at the window's device resolution, keeping the Width×Height aspect.
 func (g *Game) LayoutF(w, h float64) (float64, float64) {
 	d := ebiten.Monitor().DeviceScaleFactor()
-	setUnits(w*d, h*d)
-	return Width * uiPx, Height * uiPx
+	return g.fit(w*d, h*d)
 }
 
 func (g *Game) Draw(dst *ebiten.Image) {
@@ -803,8 +802,8 @@ func (g *Game) Draw(dst *ebiten.Image) {
 		g.drawLearning(dst)
 	}
 	if g.input {
-		rect(dst, 0, Height-40, Width, 40, color.NRGBA{A: 220})
-		g.label(dst, "> "+g.entry+"_", 16, Height-34, 18, gold)
+		rect(dst, 0, float32(uiH-40), float32(uiW), 40, color.NRGBA{A: 220})
+		g.label(dst, "> "+g.entry+"_", 16, float64(uiH-34), 18, gold)
 	}
 	if g.capture {
 		g.capture = false
@@ -831,9 +830,9 @@ func (g *Game) screenshot(dst *ebiten.Image) {
 }
 
 func (g *Game) title(dst *ebiten.Image) {
-	for i := 0; i < Height; i += 10 {
-		k := float64(i) / Height
-		rect(dst, 0, float32(i), Width, 10, color.NRGBA{R: uint8(48 - 30*k), G: uint8(30 - 18*k), B: uint8(24 - 12*k), A: 255})
+	for i := 0; i < uiH; i += 10 {
+		k := float64(i) / float64(uiH)
+		rect(dst, 0, float32(i), float32(uiW), 10, color.NRGBA{R: uint8(48 - 30*k), G: uint8(30 - 18*k), B: uint8(24 - 12*k), A: 255})
 	}
 	g.label(dst, g.S.Data.Title, 96, 70, 64, gold)
 	for i, id := range g.S.Data.Campaign.Roster[:min(3, len(g.S.Data.Campaign.Roster))] {
@@ -881,10 +880,10 @@ func (g *Game) play(dst *ebiten.Image) {
 
 func (g *Game) complete(dst *ebiten.Image, o core.Observation) {
 	g.backdrop(dst, o)
-	r := image.Rect(Width/2-320, 180, Width/2+320, 620)
+	r := image.Rect(uiW/2-320, 180, uiW/2+320, 620)
 	g.titled(dst, r, "완료")
-	g.centered(dst, g.S.Data.Stages[o.Stage].Name+" 완료", float64(Width/2), 220, 34, gold)
-	g.centered(dst, fmt.Sprintf("%d번의 싸움을 마쳤습니다.", len(g.S.Data.Stages)), float64(Width/2), 276, 19, ink)
+	g.centered(dst, g.S.Data.Stages[o.Stage].Name+" 완료", float64(uiW/2), 220, 34, gold)
+	g.centered(dst, fmt.Sprintf("%d번의 싸움을 마쳤습니다.", len(g.S.Data.Stages)), float64(uiW/2), 276, 19, ink)
 	y := 336
 	for _, c := range g.roster(o)[:min(4, len(g.roster(o)))] {
 		g.portrait(dst, c.ID, float64(r.Min.X+80), float64(y), 48)
@@ -970,10 +969,10 @@ func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 func (g *Game) battleHUD(dst *ebiten.Image, o core.Observation) {
 	if g.bannerT > 0 {
 		w := g.width(g.banner, 30)
-		rect(dst, float32(Width/2-w/2-30), 300, float32(w+60), 58, color.NRGBA{R: 40, G: 14, B: 10, A: 200})
-		rect(dst, float32(Width/2-w/2-30), 300, float32(w+60), 2, gold)
-		rect(dst, float32(Width/2-w/2-30), 356, float32(w+60), 2, gold)
-		g.label(dst, g.banner, float64(Width/2)-w/2, 308, 30, gold)
+		rect(dst, float32(float64(uiW)/2-w/2-30), 300, float32(w+60), 58, color.NRGBA{R: 40, G: 14, B: 10, A: 200})
+		rect(dst, float32(float64(uiW)/2-w/2-30), 300, float32(w+60), 2, gold)
+		rect(dst, float32(float64(uiW)/2-w/2-30), 356, float32(w+60), 2, gold)
+		g.label(dst, g.banner, float64(uiW/2)-w/2, 308, 30, gold)
 	}
 	if o.Phase == "deployment" {
 		g.drawDeployment(dst, o)

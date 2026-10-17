@@ -289,7 +289,7 @@ func (g *Game) drawMenu(dst *ebiten.Image) {
 	}
 	cx, cy := g.field.Center(v.u, v.v)
 	sx, sy := worldToUI(g.toScreen(cx, cy-v.lift))
-	g.withUI(sx, sy, func() { g.drawMenuAt(dst, sx, sy) })
+	g.drawMenuAt(dst, sx, sy)
 }
 
 func (g *Game) drawMenuAt(dst *ebiten.Image, sx, sy float64) {
@@ -579,12 +579,7 @@ func (g *Game) forecast(dst *ebiten.Image) {
 	if !self {
 		h += sideHeight(t) + 8
 	}
-	// place the enlarged window, then draw it at its top-left under the UI size
-	z := g.uiScale()
-	r := g.besideTarget(o, t, int(float64(w)*z), int(float64(h)*z))
-	uiZoom, uiOX, uiOY = z, float64(r.Min.X), float64(r.Min.Y)
-	defer func() { uiZoom, uiOX, uiOY = 1, 0, 0 }()
-	r = image.Rect(r.Min.X, r.Min.Y, r.Min.X+w, r.Min.Y+h)
+	r := g.besideTarget(o, t, w, h)
 	title := map[string]string{"attack": "공격", "skill": g.skillName(c.Skill), "item": g.itemName(c.Item)}[c.Kind]
 	g.titled(dst, r, title)
 	x, y := r.Min.X+16, r.Min.Y+18
@@ -721,7 +716,7 @@ func (g *Game) besideTarget(o core.Observation, t *core.UnitView, w, h int) imag
 			boxes = append(boxes, g.unitBox(v))
 		}
 	}
-	tb := image.Rect(Width/2, Height/2, Width/2, Height/2)
+	tb := image.Rect(uiW/2, uiH/2, uiW/2, uiH/2)
 	if v := g.vis[t.ID]; v != nil {
 		tb = g.unitBox(v)
 	}
@@ -740,11 +735,11 @@ func (g *Game) besideTarget(o core.Observation, t *core.UnitView, w, h int) imag
 		if !hud {
 			avoid = append(append([]image.Rectangle{}, boxes...), g.blocks...)
 		}
-		for dy := 0; dy <= Height; dy += 24 {
+		for dy := 0; dy <= uiH; dy += 24 {
 			for _, y := range []int{mid - dy, mid + dy} {
-				y = max(48, min(Height-h-8, y))
+				y = max(48, min(uiH-h-8, y))
 				for _, x := range []int{tb.Max.X + gap, tb.Min.X - gap - w} {
-					if r := image.Rect(x, y, x+w, y+h); x >= 8 && x+w <= Width-8 && clear(r, avoid) {
+					if r := image.Rect(x, y, x+w, y+h); x >= 8 && x+w <= uiW-8 && clear(r, avoid) {
 						return r
 					}
 				}
@@ -752,11 +747,11 @@ func (g *Game) besideTarget(o core.Observation, t *core.UnitView, w, h int) imag
 		}
 	}
 	x := tb.Max.X + gap
-	if x+w > Width-8 {
+	if x+w > uiW-8 {
 		x = tb.Min.X - gap - w
 	}
-	x = max(8, min(Width-w-8, x))
-	y := max(48, min(Height-h-8, mid))
+	x = max(8, min(uiW-w-8, x))
+	y := max(48, min(uiH-h-8, mid))
 	return image.Rect(x, y, x+w, y+h)
 }
 

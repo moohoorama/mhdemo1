@@ -386,8 +386,8 @@ func (g *Game) drawSceneEffects(dst *ebiten.Image) {
 			for i := 0; i < 48; i++ {
 				k := float64(i)
 				fall, drift := 34+11*math.Mod(k*7.3, 5), 26+9*math.Mod(k*3.1, 4)
-				x := math.Mod(k*97.13+drift*e.t+12*math.Sin(e.t*1.3+k), Width+40) - 20
-				y := math.Mod(k*61.7+fall*e.t, Height+40) - 20
+				x := math.Mod(k*97.13+drift*e.t+12*math.Sin(e.t*1.3+k), float64(worldW)+40) - 20
+				y := math.Mod(k*61.7+fall*e.t, float64(worldH)+40) - 20
 				w := 2.5 + float32(math.Abs(math.Sin(e.t*3+k)))*2 // tumbling
 				c := petalColors[i%len(petalColors)]
 				rect(dst, float32(x), float32(y), w*z, 1.6*z, c)

@@ -44,7 +44,7 @@ func (g *Game) topBar(dst *ebiten.Image, o core.Observation) {
 	if a.round != o.Round {
 		a.round, a.flippedAt = o.Round, now
 	}
-	r := image.Rect(0, 0, Width, barH)
+	r := image.Rect(0, 0, uiW, barH)
 	g.block(r)
 	drawBarWood(dst, now)
 	drawCloudMark(dst, 10, 9, 38)
@@ -103,21 +103,21 @@ func (g *Game) topBar(dst *ebiten.Image, o core.Observation) {
 func drawBarWood(dst *ebiten.Image, now float64) {
 	for i := 0; i < 8; i++ {
 		k := float64(i) / 7
-		rect(dst, 0, float32(i*barH/8), Width, barH/8+1, color.NRGBA{R: uint8(58 - 29*k), G: uint8(36 - 18*k), B: uint8(24 - 12*k), A: 255})
+		rect(dst, 0, float32(i*barH/8), float32(uiW), barH/8+1, color.NRGBA{R: uint8(58 - 29*k), G: uint8(36 - 18*k), B: uint8(24 - 12*k), A: 255})
 	}
-	for x := float32(0); x < Width; x += 7 {
+	for x := float32(0); x < float32(uiW); x += 7 {
 		rect(dst, x, 0, 2, barH, color.NRGBA{A: 20})
 	}
-	rect(dst, 0, 0, Width, barH*.4, color.NRGBA{R: 255, G: 220, B: 170, A: 10})
+	rect(dst, 0, 0, float32(uiW), barH*.4, color.NRGBA{R: 255, G: 220, B: 170, A: 10})
 	for i := float32(0); i < 6; i++ {
-		rect(dst, 0, barH+i, Width, 1, color.NRGBA{A: uint8(90 - i*15)})
+		rect(dst, 0, barH+i, float32(uiW), 1, color.NRGBA{A: uint8(90 - i*15)})
 	}
-	rect(dst, 0, barH-5, Width, 1, color.NRGBA{R: gold.R, G: gold.G, B: gold.B, A: 140})
-	rect(dst, 0, barH-2, Width, 2, gold)
+	rect(dst, 0, barH-5, float32(uiW), 1, color.NRGBA{R: gold.R, G: gold.G, B: gold.B, A: 140})
+	rect(dst, 0, barH-2, float32(uiW), 2, gold)
 	t := math.Mod(now, barShineGap)
 	if t < barShine {
 		k := bezier(.42, 0, .58, 1, t/barShine)
-		x := float32(-.2*Width + k*1.4*Width)
+		x := float32((-.2 + k*1.4) * float64(uiW))
 		for i := float32(0); i < 12; i++ {
 			s := float32(math.Sin(float64(i/11) * math.Pi))
 			rect(dst, x+i*19, 0, 19, barH-2, color.NRGBA{R: 255, G: 230, B: 180, A: uint8(34 * s)})

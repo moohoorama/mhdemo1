@@ -2,6 +2,7 @@ package gui
 
 import (
 	"fmt"
+	"image"
 	"math"
 	"srpg/internal/core"
 	"srpg/internal/session"
@@ -24,7 +25,7 @@ func deploymentController(t *testing.T) *Game {
 }
 func TestDeploymentCardsAndMap(t *testing.T) {
 	g := deploymentController(t)
-	if g.battleLogVisible() || g.battleViewport().Max.Y != deploymentTop {
+	if g.battleLogVisible() || g.battleViewport().Max.Y != deploymentTop() {
 		t.Fatal("battle HUD remained")
 	}
 	g.selectDeployment("hero")
@@ -62,7 +63,7 @@ func TestDeploymentCardsAndMap(t *testing.T) {
 	}
 	g.mapClick(1, 3)
 	g.finishDeployment()
-	if g.deploying() || !g.battleLogVisible() || g.battleViewport() != viewport || g.ord.actor != "" {
+	if g.deploying() || !g.battleLogVisible() || g.battleViewport() != image.Rect(0, 0, worldW, worldH) || g.ord.actor != "" {
 		t.Fatal("battle HUD not restored")
 	}
 }

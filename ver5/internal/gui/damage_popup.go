@@ -233,5 +233,5 @@ func (g *Game) drawHitFlash(dst *ebiten.Image) {
 	if g.hitFlashCrit {
 		a = .32
 	}
-	rect(dst, 0, 0, Width, Height, color.NRGBA{R: 255, G: 255, B: 255, A: uint8(255 * a * g.hitFlashT / hitFlash)})
+	rect(dst, 0, 0, float32(uiW), float32(uiH), color.NRGBA{R: 255, G: 255, B: 255, A: uint8(255 * a * g.hitFlashT / hitFlash)})
 }

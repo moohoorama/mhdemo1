@@ -11,9 +11,6 @@ import (
 	"srpg/internal/core"
 )
 
-// viewport is the screen area of the battlefield: the whole window, HUD drawn over it.
-var viewport = image.Rect(0, 0, Width, Height)
-
 // busy is true while something plays that the next command must wait for, the turn
 // banner included: the side to move only starts once its banner is done.
 func (g *Game) busy() bool { return g.player.Busy() || g.sceneBusy() || g.turnBanner != nil }

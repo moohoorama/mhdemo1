@@ -107,7 +107,7 @@ func (g *Game) drawIntro(dst *ebiten.Image) {
 	}
 	t := in.t
 	out := 1 - phase(t, in.length-introFade, introFade)
-	rect(dst, 0, 0, Width, Height, color.NRGBA{R: 6, G: 5, B: 4, A: uint8(170 * min(1, t/.3) * out)})
+	rect(dst, 0, 0, float32(uiW), float32(uiH), color.NRGBA{R: 6, G: 5, B: 4, A: uint8(170 * min(1, t/.3) * out)})
 
 	// the portrait seeps in where the ink blots have spread
 	tex := g.introTextures()
@@ -132,15 +132,15 @@ func (g *Game) drawIntro(dst *ebiten.Image) {
 	}
 	tex.canvas.DrawImage(tex.mask, &ebiten.DrawImageOptions{Blend: ebiten.BlendDestinationIn})
 	tex.canvas.DrawImage(tex.edge, &ebiten.DrawImageOptions{Blend: ebiten.BlendDestinationIn})
-	size := .82 * Height
+	size := .82 * float64(uiH)
 	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
 	op.GeoM.Scale(size/introTex, size/introTex)
-	op.GeoM.Translate(.06*Width, .09*Height)
+	op.GeoM.Translate(.06*float64(uiW), .09*float64(uiH))
 	op.ColorScale.ScaleAlpha(float32(out))
 	drawScaled(dst, tex.canvas, op)
 
 	// name, courtesy name, rule and biography to the right
-	x, y := .56*float64(Width), .22*float64(Height)
+	x, y := .56*float64(uiW), .22*float64(uiH)
 	nameAt := introDelay // the text runs alongside the portrait
 	if t >= nameAt {
 		face := g.brush(228)
@@ -154,7 +154,7 @@ func (g *Game) drawIntro(dst *ebiten.Image) {
 		cc.A = uint8(255 * ck * out)
 		writeSpaced(dst, in.court, g.serif(31, 700), x, y+225+12*(1-ck), .2, cc)
 	}
-	rw := (float64(Width)*.95 - x) * .7 * bezier(.2, .8, .2, 1, phase(t, nameAt+introCourt, introRule))
+	rw := (float64(uiW)*.95 - x) * .7 * bezier(.2, .8, .2, 1, phase(t, nameAt+introCourt, introRule))
 	for i := 0; i < 20; i++ {
 		f := float64(i) / 20
 		c := color.NRGBA{R: 184, G: 50, B: 31, A: uint8(255 * (1 - f) * out)}
@@ -164,7 +164,7 @@ func (g *Game) drawIntro(dst *ebiten.Image) {
 	if typed > 0 {
 		bc := ink
 		bc.A = uint8(255 * out)
-		g.label(dst, prefixLines(wrapWidth(in.bio, g.face(26), float64(Width)*.95-x), typed), x, y+316, 26, bc)
+		g.label(dst, prefixLines(wrapWidth(in.bio, g.face(26), float64(uiW)*.95-x), typed), x, y+316, 26, bc)
 	}
 }
 

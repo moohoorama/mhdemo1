@@ -11,15 +11,20 @@ import (
 	"srpg/internal/session"
 )
 
-const deploymentTop = Height * 3 / 4
+// deploymentBar is the height of the deployment cards along the bottom, in UI px.
+const deploymentBar = Height / 4
+
+// deploymentTop is the top of the deployment cards, in UI px.
+func deploymentTop() int { return uiH - deploymentBar }
+
 const deploymentCardWidth = 172
 
 func (g *Game) deploying() bool { return g.S != nil && g.S.Engine != nil && g.S.Engine.Deploying() }
 func (g *Game) battleViewport() image.Rectangle {
 	if g.deploying() {
-		return image.Rect(0, 0, Width, deploymentTop)
+		return image.Rect(0, 0, worldW, int(float64(deploymentTop())*uiPx/worldPx))
 	}
-	return viewport
+	return image.Rect(0, 0, worldW, worldH) // the whole window, HUD drawn over it
 }
 func deploymentPulse(seconds float64) float64 { return .12 + .18*(math.Sin(2*math.Pi*seconds)+1)/2 }
 func (g *Game) resetDeployment() {
@@ -118,7 +123,7 @@ func (g *Game) drawDeploymentPreview(o core.Observation) {
 	}
 }
 func (g *Game) deploymentCardsRect() image.Rectangle {
-	return image.Rect(48, deploymentTop+48, Width-48, Height-52)
+	return image.Rect(48, deploymentTop()+48, uiW-48, uiH-52)
 }
 func (g *Game) scrollDeployment(delta int) {
 	if !g.deploying() {
@@ -132,7 +137,7 @@ func (g *Game) updateDeploymentPanel() bool {
 		return false
 	}
 	x, y := cursorPos()
-	if y < deploymentTop {
+	if y < deploymentTop() {
 		return false
 	}
 	if mouseJustPressed(ebiten.MouseButtonRight) {
@@ -141,7 +146,7 @@ func (g *Game) updateDeploymentPanel() bool {
 	if wx, wy := ebiten.Wheel(); wx != 0 || wy != 0 {
 		g.scrollDeployment(int(-(wx + wy) * 70))
 	}
-	return x >= 0 && x < Width
+	return x >= 0 && x < uiW
 }
 func (g *Game) deploymentKeys() {
 	pressed := keyJustPressed
@@ -176,19 +181,19 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 			placed++
 		}
 	}
-	rect(dst, 0, 0, Width, 40, color.NRGBA{R: 20, G: 14, B: 12, A: 240})
-	g.block(image.Rect(0, 0, Width, 40))
+	rect(dst, 0, 0, float32(uiW), 40, color.NRGBA{R: 20, G: 14, B: 12, A: 240})
+	g.block(image.Rect(0, 0, uiW, 40))
 	g.label(dst, fmt.Sprintf("아군 배치 · %s   배치 %d / %d", o.Map.Name, placed, len(o.Deployment)), 16, 8, 18, gold)
 	g.btn(dst, image.Rect(1176, 5, 1272, 34), "메뉴", func() { g.openOverlay("menu") })
-	r := image.Rect(0, deploymentTop, Width, Height)
-	rect(dst, 0, float32(deploymentTop), Width, Height-deploymentTop, color.NRGBA{R: 28, G: 23, B: 20, A: 255})
-	rect(dst, 0, float32(deploymentTop), Width, 2, gold)
+	r := image.Rect(0, deploymentTop(), uiW, uiH)
+	rect(dst, 0, float32(deploymentTop()), float32(uiW), float32(uiH-deploymentTop()), color.NRGBA{R: 28, G: 23, B: 20, A: 255})
+	rect(dst, 0, float32(deploymentTop()), float32(uiW), 2, gold)
 	g.block(r)
 	hint := "장수를 고른 뒤 밝은 빈칸을 누르세요. 배치한 아군 클릭: 해제 후 재배치 · Tab: 다음 장수 · 우클릭/Esc: 선택 취소"
 	if g.hover.ok {
 		hint += fmt.Sprintf("   지형: %s", g.S.Data.Tiles[string(g.field.Tile(g.hover.x, g.hover.y))].Name)
 	}
-	g.label(dst, hint, 16, float64(deploymentTop+12), 14, ink)
+	g.label(dst, hint, 16, float64(deploymentTop()+12), 14, ink)
 	cards := g.deploymentCardsRect()
 	clip := dst.SubImage(image.Rect(int(float64(cards.Min.X)*drawPx), int(float64(cards.Min.Y)*drawPx), int(float64(cards.Max.X)*drawPx), int(float64(cards.Max.Y)*drawPx))).(*ebiten.Image)
 	for i, id := range o.Deployment {
@@ -221,14 +226,14 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 		g.buttons = append(g.buttons, button{rect: card.Intersect(cards), click: func() { g.selectDeployment(id) }})
 	}
 	g.btn(dst, image.Rect(8, cards.Min.Y+32, 40, cards.Min.Y+66), "‹", func() { g.scrollDeployment(-deploymentCardWidth) })
-	g.btn(dst, image.Rect(Width-40, cards.Min.Y+32, Width-8, cards.Min.Y+66), "›", func() { g.scrollDeployment(deploymentCardWidth) })
+	g.btn(dst, image.Rect(uiW-40, cards.Min.Y+32, uiW-8, cards.Min.Y+66), "›", func() { g.scrollDeployment(deploymentCardWidth) })
 	var finish func()
 	if placed == len(o.Deployment) {
 		finish = g.finishDeployment
 	}
-	g.btn(dst, image.Rect(Width-180, Height-42, Width-16, Height-8), "전투 시작 Enter", finish)
-	g.label(dst, fmt.Sprintf("배치 %d / %d", placed, len(o.Deployment)), 16, Height-34, 16, gold)
+	g.btn(dst, image.Rect(uiW-180, uiH-42, uiW-16, uiH-8), "전투 시작 Enter", finish)
+	g.label(dst, fmt.Sprintf("배치 %d / %d", placed, len(o.Deployment)), 16, float64(uiH-34), 16, gold)
 	if g.editorReturn != nil {
-		g.btn(dst, image.Rect(Width-336, Height-42, Width-192, Height-8), "에디터로 돌아가기", g.endEditorTrial)
+		g.btn(dst, image.Rect(uiW-336, uiH-42, uiW-192, uiH-8), "에디터로 돌아가기", g.endEditorTrial)
 	}
 }

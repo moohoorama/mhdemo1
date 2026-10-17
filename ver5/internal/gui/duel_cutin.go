@@ -97,7 +97,7 @@ func (g *Game) drawCutIn(dst *ebiten.Image) {
 	}
 	t := c.t
 	charge, clash, stampL, stampR, _, flash, open, _ := cutTimes()
-	W, H := float64(Width), float64(Height)
+	W, H := float64(uiW), float64(uiH)
 	bar := cutBarFrac * H
 	top, bandH := bar, H-2*bar
 
@@ -153,7 +153,7 @@ func (g *Game) drawCutPanes(dst *ebiten.Image, v *duelview.View, t, top, bandH, 
 	if t < charge {
 		return
 	}
-	W := float64(Width)
+	W := float64(uiW)
 	ck := bezier(.55, 0, .9, .6, phase(t, charge, cutCharge))
 	recoil := keyframe(phase(t, clash, .26), []float64{0, .5, 1}, []float64{0, .025, 0})
 	drift := phase(t, clash+cutClash+cutStamp*2+cutBetween, 1.4) * .03
@@ -252,7 +252,7 @@ func (g *Game) cutPane(side int, portrait *ebiten.Image, pw, ph, drift float64) 
 
 // drawCutNames stamps the two names in brush script either side of the cut.
 func (g *Game) drawCutNames(dst *ebiten.Image, v *duelview.View, t, top, bandH, stampL, stampR float64) {
-	W := float64(Width)
+	W := float64(uiW)
 	f := g.brush(cutNameSize)
 	label := g.serif(cutNameSize*.14, 900)
 	shake := cutShake(t, stampL+cutStamp, .18, 6) + cutShake(t, stampR+cutStamp, .18, 6)

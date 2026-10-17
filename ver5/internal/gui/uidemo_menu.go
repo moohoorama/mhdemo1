@@ -73,7 +73,7 @@ func demoMenu(d *Demo) error {
 			}
 			n := 0
 			for _, b := range g.buttons {
-				if b.rect.Min.X > right && b.rect.Max.X < Width-160 {
+				if b.rect.Min.X > right && b.rect.Max.X < uiW-160 {
 					if n == (f-150)/40 {
 						c := b.rect.Min.Add(image.Pt(b.rect.Dx()*7/10, b.rect.Dy()/2))
 						cursorPos = func() (int, int) { return c.X, c.Y }

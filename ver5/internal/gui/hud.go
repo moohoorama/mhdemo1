@@ -147,9 +147,9 @@ func (g *Game) dock(dst *ebiten.Image, o core.Observation) {
 		entries = append(entries, entry{"적 한 명령", one}, entry{"적 진영 진행", all})
 	}
 	w, h := 148, 30
-	x := Width - w - 12
-	y := Height - 12 - len(entries)*(h+4) - 12
-	r := image.Rect(x-8, y-8, Width-4, Height-4)
+	x := uiW - w - 12
+	y := uiH - 12 - len(entries)*(h+4) - 12
+	r := image.Rect(x-8, y-8, uiW-4, uiH-4)
 	window(dst, r)
 	g.block(r)
 	for i, e := range entries {
@@ -225,10 +225,10 @@ func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
 	}
 	x, y := cursorPos()
 	x += 22
-	if x+w > Width-8 {
+	if x+w > uiW-8 {
 		x -= w + 44
 	}
-	y = max(48, min(Height-h-8, y-h/2))
+	y = max(48, min(uiH-h-8, y-h/2))
 	window(dst, image.Rect(x, y, x+w, y+h))
 	g.label(dst, u.Name, float64(x+14), float64(y+9), 15, teamColor(u))
 	g.label(dst, fmt.Sprintf("Lv%d", u.Level), float64(x+22)+g.width(u.Name, 15), float64(y+12), 12, ink)
@@ -265,8 +265,8 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 		g.detailTab, g.detailPage = 0, 0
 	}
 	const w = 320
-	x, y := Width-12-w, g.miniRect.Max.Y+10
-	h := Height - 240 - y
+	x, y := uiW-12-w, g.miniRect.Max.Y+10
+	h := uiH - 240 - y
 	r := image.Rect(x, y, x+w, y+h)
 	window(dst, r)
 	g.block(r)
@@ -573,7 +573,7 @@ func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
 	m := g.field.Map
 	w := float64(m.W+m.H) * miniScale
 	h := w / 2
-	x0 := float64(Width) - 12 - w - 14
+	x0 := float64(uiW) - 12 - w - 14
 	y0 := 52.0
 	r := image.Rect(int(x0)-10, int(y0)-10, int(x0+w)+10, int(y0+h)+10)
 	g.miniRect = r
@@ -631,11 +631,11 @@ func (g *Game) messages(dst *ebiten.Image) {
 	for _, t := range g.toasts {
 		a := min(1, (toastTime-t.t)*2)
 		w := g.width(t.text, 16)
-		rect(dst, float32(Width/2-w/2-14), float32(y), float32(w+28), 28, color.NRGBA{A: uint8(150 * a)})
+		rect(dst, float32(float64(uiW)/2-w/2-14), float32(y), float32(w+28), 28, color.NRGBA{A: uint8(150 * a)})
 		c := color.NRGBA{}
 		r, gg, b, _ := t.col.RGBA()
 		c.R, c.G, c.B, c.A = uint8(r>>8), uint8(gg>>8), uint8(b>>8), uint8(255*a)
-		g.label(dst, t.text, float64(Width/2)-w/2, y+3, 16, c)
+		g.label(dst, t.text, float64(uiW/2)-w/2, y+3, 16, c)
 		y += 32
 	}
 }
