@@ -5,7 +5,6 @@ import (
 	"image"
 	"image/color"
 	"image/png"
-	"math"
 	"os"
 	"path/filepath"
 	"sort"
@@ -34,9 +33,6 @@ type Demo struct {
 	// stage and duel are the data ids the demos play; the engine never names content, so
 	// cmd/_uidemo passes them in
 	stage, duel string
-	// letterbox holds the 1280×850-aspect frame when the demo screen has another shape, the
-	// way Ebitengine fits the game into a window
-	letterbox *ebiten.Image
 }
 
 // DemoOptions say which demo to play and how. Frames go to Out every Every frames; Every <= 0
@@ -187,23 +183,9 @@ func (d *Demo) Draw(dst *ebiten.Image) {
 	if d.saved {
 		return
 	}
-	frame := dst
-	if fw, fh := int(math.Ceil(Width*worldPx)), int(math.Ceil(Height*worldPx)); fw != dst.Bounds().Dx() || fh != dst.Bounds().Dy() {
-		if d.letterbox == nil || d.letterbox.Bounds().Dx() != fw || d.letterbox.Bounds().Dy() != fh {
-			d.letterbox = ebiten.NewImage(fw, fh)
-		}
-		d.letterbox.Clear()
-		frame = d.letterbox
-	}
-	d.g.Draw(frame)
+	d.g.Draw(dst)
 	if d.overlay != nil {
-		d.overlay(frame)
-	}
-	if frame != dst {
-		dst.Fill(color.Black)
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(float64(dst.Bounds().Dx()-frame.Bounds().Dx())/2, float64(dst.Bounds().Dy()-frame.Bounds().Dy())/2)
-		dst.DrawImage(frame, op)
+		d.overlay(dst)
 	}
 	if d.every > 0 && d.frame%d.every == 0 {
 		img := image.NewRGBA(dst.Bounds())

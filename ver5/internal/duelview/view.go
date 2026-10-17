@@ -111,7 +111,7 @@ func (g *View) Cover() float64 {
 func (g *View) Compose(dst, battle, battleUI *ebiten.Image) {
 	pan, zoom, ui := g.Phase()
 	w, h := float64(dst.Bounds().Dx()), float64(dst.Bounds().Dy())
-	s := w / width
+	s := min(w/width, h/height)
 	if g.canvas == nil {
 		g.canvas = ebiten.NewImage(width, height)
 	}
@@ -252,8 +252,13 @@ func (g *View) Draw(dst *ebiten.Image) {
 		g.canvas = ebiten.NewImage(width, height)
 	}
 	g.render(g.canvas, ui)
+	// keep the arena's shape on any screen: as large as fits, centred, the rest in its ground
+	w, h := float64(dst.Bounds().Dx()), float64(dst.Bounds().Dy())
+	s := min(w/width, h/height)
+	dst.Fill(color.NRGBA{21, 27, 30, 255})
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Scale(float64(dst.Bounds().Dx())/width, float64(dst.Bounds().Dy())/height)
+	op.GeoM.Scale(s, s)
+	op.GeoM.Translate((w-width*s)/2, (h-height*s)/2)
 	dst.DrawImage(g.canvas, op)
 }
 

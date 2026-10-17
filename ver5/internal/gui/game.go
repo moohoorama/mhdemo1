@@ -32,12 +32,14 @@ import (
 const Width, Height = 1280, 850
 
 type Game struct {
-	layer                int
-	duelPreview          func() error
-	previewIdle          int
-	previewRate          float64
-	previewPaused        bool
-	duelMap, duelUI      *ebiten.Image
+	layer           int
+	duelPreview     func() error
+	previewIdle     int
+	previewRate     float64
+	previewPaused   bool
+	duelMap, duelUI *ebiten.Image
+	// fixedCanvas holds a fixed-layout screen (map editor, duel gallery) before it is centred
+	fixedCanvas          *ebiten.Image
 	duelCam              [2]float64
 	duelCamHeld          bool
 	cutIn                duelCutIn
@@ -753,13 +755,35 @@ func (g *Game) Layout(w, h int) (int, int) {
 	return int(math.Ceil(lw)), int(math.Ceil(lh))
 }
 
-// LayoutF renders at the window's device resolution, keeping the Width×Height aspect.
+// LayoutF renders the whole window at its device resolution.
 func (g *Game) LayoutF(w, h float64) (float64, float64) {
 	d := ebiten.Monitor().DeviceScaleFactor()
-	return g.fit(w*d, h*d)
+	g.fit(w*d, h*d)
+	return w * d, h * d
 }
 
+// Draw draws the frame; a fixed-layout screen goes to its own canvas, centred in the window.
 func (g *Game) Draw(dst *ebiten.Image) {
+	if !g.fixedLayout() {
+		g.drawFrame(dst)
+		return
+	}
+	w, h := int(math.Ceil(Width*uiPx)), int(math.Ceil(Height*uiPx))
+	if g.fixedCanvas == nil || g.fixedCanvas.Bounds().Dx() != w || g.fixedCanvas.Bounds().Dy() != h {
+		if g.fixedCanvas != nil {
+			g.fixedCanvas.Deallocate()
+		}
+		g.fixedCanvas = ebiten.NewImage(w, h)
+	}
+	g.fixedCanvas.Clear()
+	g.drawFrame(g.fixedCanvas)
+	dst.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(fixedAt.X), float64(fixedAt.Y))
+	dst.DrawImage(g.fixedCanvas, op)
+}
+
+func (g *Game) drawFrame(dst *ebiten.Image) {
 	if g.gallery != nil {
 		dst.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
 		g.buttons, g.blocks = nil, nil

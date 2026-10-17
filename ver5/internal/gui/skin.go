@@ -54,16 +54,22 @@ func setUnits(w, h, base, ui float64) {
 	worldW, worldH = int(math.Ceil(w/worldPx)), int(math.Ceil(h/worldPx))
 }
 
-// fit picks the units for a w×h device-pixel window and returns the frame to draw. The
-// map editor and the duel gallery keep their fixed Width×Height layout at UI size 100%.
-func (g *Game) fit(w, h float64) (float64, float64) {
+// fixedAt is where the fixed Width×Height canvas sits in the window, in device pixels.
+var fixedAt image.Point
+
+// fit picks the units for a w×h device-pixel window. A world px is as large as fits the
+// Width×Height design in the window, so the design is never cut off and a window of another
+// shape just shows more of the field and spreads the UI to its edges. The map editor and the
+// duel gallery keep their fixed Width×Height layout, centred, at UI size 100%.
+func (g *Game) fit(w, h float64) {
 	base := min(w/Width, h/Height)
-	ui := g.uiScale()
+	fixedAt = image.Point{}
 	if g.fixedLayout() {
-		ui = 1
+		fixedAt = image.Pt(int((w-Width*base)/2), int((h-Height*base)/2))
+		setUnits(Width*base, Height*base, base, 1)
+		return
 	}
-	setUnits(Width*base, Height*base, base, ui)
-	return Width * base, Height * base
+	setUnits(w, h, base, g.uiScale())
 }
 
 // fixedLayout reports whether the screen is one laid out on a fixed Width×Height canvas.
@@ -286,7 +292,7 @@ var cursorPos = func() (int, int) {
 	if pointer.used {
 		x, y = pointer.x, pointer.y
 	}
-	return int(float64(x) / uiPx), int(float64(y) / uiPx)
+	return int(float64(x-fixedAt.X) / uiPx), int(float64(y-fixedAt.Y) / uiPx)
 }
 
 func hovered(r image.Rectangle) bool {

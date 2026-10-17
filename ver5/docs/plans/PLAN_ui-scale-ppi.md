@@ -41,7 +41,7 @@
 |---|---|---|---|---|
 | 폰 기준 | 2400×1080 | 130% (안드로이드 기본) | 1453×654 | 모든 배치가 겹침 없이 들어가야 하는 기준 |
 | 폰 최대 | 2400×1080 | 160% | 1180×531 | 가장 좁은 경우. 여기까지 겹치지 않아야 한다 |
-| 4:3 태블릿 | 2048×1536 | 130% | 1089×817 | 폭이 좁은 가로 화면 |
+| 4:3 태블릿 | 2048×1536 | 130% | 984×738 | 폭이 좁은 가로 화면 |
 | 데스크톱 | 1280×850 | 100% | 1280×850 | 지금 모습과 같아야 한다 |
 
 폰 가로 화면은 **높이가 낮고(531–654) 폭은 넉넉하다(1180–1453).** 그래서 위아래로 쌓는 요소(상단 바, 상세 패널,
@@ -55,23 +55,24 @@ dock, 전투 기록, 대화 두루마리)를 낮은 높이에 맞추는 게 이 
 | 공간 | 단위 | 크기 | 누가 쓰나 |
 |---|---|---|---|
 | 기기 | 기기 픽셀 | 창·화면 그대로 | `Layout`, 터치·마우스 원시값 |
-| 월드 화면 | 월드 px (`worldUnit` 기기 픽셀) | `vw × vh` | 맵 타일·유닛·이펙트·카메라 |
-| UI | UI px (`uiUnit` 기기 픽셀) | `uw × uh` | HUD, 창, 대화, 배너, 맵에 붙는 UI |
+| 월드 화면 | 월드 px (`worldPx` 기기 픽셀) | `worldW × worldH` | 맵 타일·유닛·이펙트·카메라 |
+| UI | UI px (`uiPx` 기기 픽셀) | `uiW × uiH` | HUD, 창, 대화, 배너, 맵에 붙는 UI |
 
 ```
-base      = min(devW, devH) / 850          // 짧은 변 기준: 가로 화면이면 높이 850이 기준
-worldUnit = base
-uiUnit    = base × uiScale                 // uiScale = 설정 % / 100
-vw, vh    = devW / worldUnit, devH / worldUnit
-uw, uh    = devW / uiUnit,    devH / uiUnit
+base           = min(devW / 1280, devH / 850)   // 1280×850 설계가 창 안에 다 들어가는 크기
+worldPx        = base
+uiPx           = base × uiScale                 // uiScale = 설정 % / 100
+worldW, worldH = devW / worldPx, devH / worldPx
+uiW, uiH       = devW / uiPx,    devH / uiPx
 ```
 
-- **짧은 변 기준**으로 정한다. 지금 1280×850 창에서는 `base = 1`이라 100%가 지금 모습과 같다. 1920×1080 모니터는
-  1511×850, 2400×1080 폰은 1889×850, 세로 1080×2400 폰은 850×1889가 된다. 긴 변 쪽은 더 많이 보일 뿐
-  찌그러지지 않는다.
+- **설계 크기가 창에 다 들어가는 배율**을 기준으로 한다(skin.go `fit`). 지금 1280×850 창에서는 `base = 1`이라
+  100%가 지금 모습과 같다. 100%에서 캔버스는 언제나 1280×850 이상이고, 남는 쪽(넓은 폰은 가로, 4:3 태블릿은 세로)은
+  더 많이 보일 뿐 찌그러지지 않는다. 처음에는 짧은 변 기준(`min(devW, devH) / 850`)으로 적었지만, 그러면 4:3
+  태블릿 100% 캔버스가 1133 폭으로 설계보다 좁아져서 바꿨다.
 - `Layout`이 창 크기를 그대로 돌려줘서 레터박스가 없어진다. 맵은 화면을 꽉 채우고 넓은 화면에서는 더 넓은 범위를 보여 준다.
 - 진짜 물리 PPI(인치당 픽셀)는 Ebiten이 주지 않는다. 안드로이드에서 `DisplayMetrics.xdpi`로 받아 `base`를 보정하는
-  건 나중 단계(7)로 미룬다. 지금은 `DefaultUIScale = 130`이 그 역할을 한다.
+  건 나중 단계(6)로 미룬다. 지금은 `DefaultUIScale = 130`이 그 역할을 한다.
 
 ### 맵에 붙는 UI
 
@@ -79,7 +80,7 @@ uw, uh    = devW / uiUnit,    devH / uiUnit
 
 ```
 p := g.toScreen(cell)            // 월드 화면 px
-q := worldToUI(p)                // × worldUnit / uiUnit
+q := worldToUI(p)                // × worldPx / uiPx
 // q를 기준점으로 UI 공간에서 그린다
 ```
 
@@ -93,13 +94,13 @@ UI 단위로 그려지니 필요 없다.
 
 ### 그리기 도우미
 
-- 전역 `scale` 하나를 `uiUnit`, `worldUnit` 둘로 나눈다.
+- 전역 `scale` 하나를 `uiPx`, `worldPx` 둘로 나누고, 그리기 도우미는 지금 그리는 공간의 `drawPx`를 쓴다(`inWorld` 안에서만 `worldPx`).
 - `rect`, `strokeRect`, `write`, `label`, `drawScaled`, `fillPath` 등 `skin.go`의 도우미는 **UI 공간 전용**이 된다
-  (`× uiUnit`).
-- 맵 쪽은 `field_render.go`의 캔버스 확대와 `game.go:941–948`의 비네이티브 맵 그리기에서만 `worldUnit`을 쓴다.
+  (`× uiPx`).
+- 맵 쪽은 `field_render.go`의 캔버스 확대와 `game.go:941–948`의 비네이티브 맵 그리기에서만 `worldPx`을 쓴다.
   맵이 UI 도우미를 빌려 쓰는 곳(커서 마름모 `hud.go:59`, 투사체, 화면 번쩍임)은 `worldRect` 같은 월드용 도우미 몇
   개로 옮긴다. 개수가 적어서 따로 둔다.
-- 캐시 키에 `scale`이 들어간 곳은 `uiUnit`으로 바꾼다: `damage_popup.go:114`(숫자 글자), `duel_cutin.go:305`(빛나는
+- 캐시 키에 `scale`이 들어간 곳은 `uiPx`으로 바꾼다: `damage_popup.go:114`(숫자 글자), `duel_cutin.go:305`(빛나는
   글자), `top_bar.go:278`(이름패), 그리고 `*scale`로 직접 계산하는 SubImage 잘라내기(`dialogue_scroll.go:204`,
   `deployment.go:193`, `menu_panel.go:78`).
 
@@ -107,7 +108,7 @@ UI 단위로 그려지니 필요 없다.
 
 - `Width`/`Height` 상수는 **설계 기준 크기(1280×850)** 로만 남긴다. 고정 캔버스를 쓰는 편집기와 일기토 장면,
   그리고 "기준 크기에서 이만큼" 같은 상한 계산에만 쓴다.
-- UI 코드는 `g.ui.W`, `g.ui.H`(지금 프레임의 UI 캔버스 크기)를 쓴다. `LayoutF`에서 매 프레임 갱신한다.
+- UI 코드는 `uiW`, `uiH`(지금 프레임의 UI 캔버스 크기)를 쓴다. `LayoutF`에서 매 프레임 갱신한다.
 - 기준점 도우미를 둔다. 많지 않게 한다.
 
 ```go
@@ -119,8 +120,8 @@ func (s uiCanvas) short() bool // 낮은 화면: uh < 700 (폰 가로)
 
 ### 입력
 
-- `cursorPos()`는 UI 공간 좌표를 돌려준다(`/ uiUnit`). 버튼·`block`·`hovered`가 모두 UI 공간이라 그대로 맞는다.
-- 맵 칸 찾기(`updateHover`, `mapRelease`)는 `cursorWorld()`(`/ worldUnit`)를 쓴다. "HUD 위인가"(`overHUD`)는 UI
+- `cursorPos()`는 UI 공간 좌표를 돌려준다(`/ uiPx`). 버튼·`block`·`hovered`가 모두 UI 공간이라 그대로 맞는다.
+- 맵 칸 찾기(`updateHover`, `mapRelease`)는 `cursorWorld()`(`/ worldPx`)를 쓴다. "HUD 위인가"(`overHUD`)는 UI
   좌표로 따로 확인한다.
 - 카메라 끌기·가장자리 스크롤·두 손가락 확대(`pointer.go:91–97`)는 월드 단위로 나눈다.
 - 미니맵(`hud.go:607–623`)은 UI 안에 있지만 월드를 가리키므로 클릭 → 월드 변환을 한 군데에 모은다.
@@ -167,10 +168,10 @@ func (s uiCanvas) short() bool // 낮은 화면: uh < 700 (폰 가로)
 1. **검증 도구**: `_uidemo-vm`에 `-size 2400x1080`과 `-uiscale 160` 플래그를 넣는다. 지금은 화면이 1280×850 고정이다.
    "기준 화면" 네 가지를 한 장에 모아 보는 `-sheet` 출력도 넣는다. `uiscale` 데모가 전장 HUD 전체(dock·상단 바·상세·기록)와
    대화 장면을 지나가게 고친다.
-2. **단위 분리**: `scale`을 `uiUnit`/`worldUnit`으로 나누고, 월드용 도우미와 `cursorWorld()`를 만든다. 아직
-   `uiUnit == worldUnit`, 캔버스는 1280×850 고정이라 화면은 그대로다.
-3. **UI 배율을 단위로**: `uiUnit = base × uiScale`. `withUI`/`uiZoom`을 없애고 명령 메뉴·공격 예측·피해 숫자·
-   말풍선을 "맵에 붙는 UI" 방식으로 옮긴다. `Width`/`Height`를 쓰는 UI 코드를 `g.ui.W/H`로 바꾼다. 이 단계에서
+2. **단위 분리**: `scale`을 `uiPx`/`worldPx`으로 나누고, 월드용 도우미와 `cursorWorld()`를 만든다. 아직
+   `uiPx == worldPx`, 캔버스는 1280×850 고정이라 화면은 그대로다.
+3. **UI 배율을 단위로**: `uiPx = base × uiScale`. `withUI`/`uiZoom`을 없애고 명령 메뉴·공격 예측·피해 숫자·
+   말풍선을 "맵에 붙는 UI" 방식으로 옮긴다. `Width`/`Height`를 쓰는 UI 코드를 `uiW`/`uiH`로 바꾼다. 이 단계에서
    160%에서도 모든 UI가 커진다. 아직 좁은 화면에서는 겹친다.
 4. **레터박스 없애기**: `Layout`이 창 크기를 그대로 돌려준다. 짧은 변 기준 `base`, 맵 뷰포트가 화면 전체.
    편집기와 일기토 장면은 고정 캔버스로 그린다. 1920×1080, 2400×1080 캡처로 확인한다.
@@ -181,7 +182,7 @@ func (s uiCanvas) short() bool // 낮은 화면: uh < 700 (폰 가로)
 
 ## 테스트
 
-위치를 확인하는 테스트는 `g.ui` 크기를 넣어 다시 쓴다.
+위치를 확인하는 테스트는 `uiW`·`uiH`를 넣어 다시 쓴다.
 
 - `battle_log_test.go:88–138` (`Min.X == 12`, `Max.Y == Height-12`)
 - `unit_tabs_render_test.go:91–114` (`Width-320`, `Height-240`)
@@ -211,7 +212,7 @@ func (s uiCanvas) short() bool // 낮은 화면: uh < 700 (폰 가로)
 - 위쪽은 맵, 아래쪽은 조작·정보 영역. 지금 화면 여기저기 흩어진 상세 패널, dock, 명령 메뉴, 전투 기록을 아래
   영역에 모은다(탭이나 한 줄 버튼 묶음).
 - 대화 두루마리와 장수 첫 등장도 아래 영역 안에서 보여 준다.
-- 이 계획의 단위·기준점 구조(`uiUnit`, `g.ui`, 기준점 도우미, 맵에 붙는 UI)는 세로에서도 그대로 쓴다. 세로는
+- 이 계획의 단위·기준점 구조(`uiPx`, `uiW`·`uiH`, 기준점 도우미, 맵에 붙는 UI)는 세로에서도 그대로 쓴다. 세로는
   `uh > uw`일 때 고르는 **배치 함수 묶음** 하나를 더 두는 것으로 한다. 그래서 이 계획에서 배치 코드를 요소마다
   "크기 계산 → 그리기"로 나눠 두면, 세로는 크기 계산 쪽만 새로 쓰면 된다.
 - 안드로이드 `screenOrientation`을 `sensorLandscape`에서 `fullSensor`로 바꾸는 것도 그때 한다.
