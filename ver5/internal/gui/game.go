@@ -40,7 +40,9 @@ type Game struct {
 	duelMap, duelUI *ebiten.Image
 	// fixedCanvas holds a fixed-layout screen (map editor, duel gallery) before it is centred
 	fixedCanvas          *ebiten.Image
-	frames               map[image.Point]*ebiten.Image // inFrame\'s images, by size
+	frames               map[image.Point]*ebiten.Image // inFrame's images, by size
+	windows              map[string]*windowAnim        // popup windows opening, open or closing
+	shown                []*windowAnim                 // windows laid out this frame, in order
 	duelCam              [2]float64
 	duelCamHeld          bool
 	cutIn                duelCutIn
@@ -802,6 +804,7 @@ func (g *Game) drawFrame(dst *ebiten.Image) {
 	g.buttons, g.blocks = nil, nil
 	if g.player.Duel != nil {
 		g.drawDuel(dst)
+		g.showWindows(dst) // a window open when the duel began closes over it
 		if g.capture {
 			g.capture = false
 			g.screenshot(dst)
@@ -826,6 +829,7 @@ func (g *Game) drawFrame(dst *ebiten.Image) {
 	} else if len(g.learn) > 0 && !g.busy() {
 		g.drawLearning(dst)
 	}
+	g.showWindows(dst)
 	if g.input {
 		rect(dst, 0, float32(uiH-40), float32(uiW), 40, color.NRGBA{A: 220})
 		g.label(dst, "> "+g.entry+"_", 16, float64(uiH-34), 18, gold)

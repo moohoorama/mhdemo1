@@ -18,10 +18,9 @@ const learnRows = 7
 // accepts input until the window is closed.
 func (g *Game) drawLearning(dst *ebiten.Image) {
 	l := g.learn[0]
-	rect(dst, 0, 0, float32(uiW), float32(uiH), color.NRGBA{A: 150})
 	g.buttons, g.blocks = nil, nil
 	g.addButton(image.Rect(0, 0, uiW, uiH), "", func() {})
-	g.inDesign(dst, image.Rect(Width/2-380, 80, Width/2+380, 780), func(dst *ebiten.Image) { g.learningWindow(dst, l) })
+	g.popup(dst, "learn:"+l.ID, 150, Width, Height, image.Rect(Width/2-380, 80, Width/2+380, 780).Inset(-24), func(dst *ebiten.Image) { g.learningWindow(dst, l) })
 }
 
 // learningWindow draws the learning window, laid out on the Width×Height design.

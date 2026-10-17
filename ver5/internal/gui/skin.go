@@ -73,16 +73,35 @@ var (
 // inFrame draws box, a part of a w×h design, on dst where it would fall in the design
 // centred on the screen, kept on screen, and shrunk to stay margin UI px from the edges.
 func (g *Game) inFrame(dst *ebiten.Image, w, h int, box image.Rectangle, margin int, draw func(dst *ebiten.Image)) {
+	if g.frames == nil {
+		g.frames = map[image.Point]*ebiten.Image{}
+	}
+	img, at := g.renderFrame(dst, w, h, box, margin, nil, draw)
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(at.X), float64(at.Y))
+	dst.DrawImage(img, op)
+}
+
+// renderFrame draws the frame inFrame describes on an image of its own — *keep, made or
+// remade to size, or else one shared by size — and returns it with where it goes on dst.
+func (g *Game) renderFrame(dst *ebiten.Image, w, h int, box image.Rectangle, margin int, keep **ebiten.Image, draw func(dst *ebiten.Image)) (*ebiten.Image, image.Point) {
 	s := min(1, float64(uiW-2*margin)/float64(box.Dx()), float64(uiH-2*margin)/float64(box.Dy()))
 	fw, fh := int(math.Ceil(float64(box.Dx())*uiPx*s)), int(math.Ceil(float64(box.Dy())*uiPx*s))
-	key := image.Pt(fw, fh)
-	img := g.frames[key]
-	if img == nil {
-		if g.frames == nil {
-			g.frames = map[image.Point]*ebiten.Image{}
+	var img *ebiten.Image
+	if keep != nil {
+		if *keep == nil || (*keep).Bounds().Dx() != fw || (*keep).Bounds().Dy() != fh {
+			if *keep != nil {
+				(*keep).Deallocate()
+			}
+			*keep = ebiten.NewImage(fw, fh)
 		}
-		img = ebiten.NewImage(fw, fh)
-		g.frames[key] = img
+		img = *keep
+	} else {
+		key := image.Pt(fw, fh)
+		if img = g.frames[key]; img == nil {
+			img = ebiten.NewImage(fw, fh)
+			g.frames[key] = img
+		}
 	}
 	img.Clear()
 	// where the box falls in the design centred on dst, moved only as far as it must to fit
@@ -101,9 +120,7 @@ func (g *Game) inFrame(dst *ebiten.Image, w, h int, box image.Rectangle, margin 
 	uiPx, drawPx, uiW, uiH = oldPx, oldPx, oldW, oldH
 	drawOX, drawOY = 0, 0
 	framePx, frameAt, frameMin = 0, image.Point{}, image.Point{}
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(at.X), float64(at.Y))
-	dst.DrawImage(img, op)
+	return img, at
 }
 
 // inDesign draws box, a window on the Width×Height design, as a frame with room around it
