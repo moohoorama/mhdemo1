@@ -49,10 +49,11 @@ func (g *Game) askWith(message, yes, no string, ok func()) bool {
 
 // modal is a window shown after a replay, closed with a click.
 type modal struct {
-	kind  string // objective, levelup, trait
-	level levelUp
-	trait string
-	t     float64
+	kind   string // objective, levelup, trait
+	manual bool   // an objective opened from the panel rather than at the battle's start
+	level  levelUp
+	trait  string
+	t      float64
 }
 
 type levelUp struct {
@@ -220,7 +221,7 @@ func (g *Game) drawModal(dst *ebiten.Image) {
 	g.buttons, g.blocks = nil, nil
 	g.addButton(image.Rect(0, 0, uiW, uiH), "", g.closeModal)
 	box := map[string]image.Rectangle{
-		"objective": image.Rect(Width/2-260, 230, Width/2+260, 470),
+		"objective": g.objectiveBox(Width),
 		"levelup":   image.Rect(Width/2-250, 200, Width/2+250, 540),
 		"trait":     image.Rect(Width/2-300, 220, Width/2+300, 560),
 	}[m.kind]
@@ -234,14 +235,37 @@ func (g *Game) modalWindow(dst *ebiten.Image, m *modal) {
 		o := g.S.Engine.Observe()
 		st := g.stageInfo(o)
 		win, lose := g.objective(st)
-		r := image.Rect(uiW/2-260, 230, uiW/2+260, 470)
-		g.titled(dst, r, "전투 목표")
-		g.centered(dst, st.name, float64(uiW/2), 262, 30, gold)
-		g.label(dst, "승리 조건", float64(r.Min.X+48), 326, 16, muted)
-		g.label(dst, win, float64(r.Min.X+160), 324, 19, ink)
-		g.label(dst, "패배 조건", float64(r.Min.X+48), 362, 16, muted)
-		g.label(dst, lose, float64(r.Min.X+160), 360, 19, ink)
-		g.centered(dst, "클릭하여 시작", float64(uiW/2), 424, 13, muted)
+		r := g.objectiveBox(uiW)
+		g.titled(dst, r, "작전 개요")
+		g.centered(dst, st.name, float64(uiW/2), float64(r.Min.Y+32), 30, gold)
+		row := func(i int, name, v string) {
+			y := float64(r.Min.Y + 96 + i*36)
+			g.label(dst, name, float64(r.Min.X+48), y+2, 16, muted)
+			g.label(dst, v, float64(r.Min.X+160), y, 19, ink)
+		}
+		row(0, "승리 조건", win)
+		row(1, "패배 조건", lose)
+		turn := fmt.Sprintf("%d턴째 · 제한 없음", o.Round)
+		if st.turnLimit > 0 {
+			turn = fmt.Sprintf("%d턴째 · %d턴까지", o.Round, st.turnLimit)
+		}
+		row(2, "턴", turn)
+		duels := g.objectiveDuels(o)
+		if len(duels) == 0 {
+			row(3, "일기토", "없음")
+		}
+		for i, d := range duels {
+			name := ""
+			if i == 0 {
+				name = "일기토"
+			}
+			row(3+i, name, d)
+		}
+		hint := "클릭하여 시작"
+		if m.manual {
+			hint = "클릭하여 닫기"
+		}
+		g.centered(dst, hint, float64(uiW/2), float64(r.Max.Y-34), 13, muted)
 	case "levelup":
 		l := m.level
 		r := image.Rect(uiW/2-250, 200, uiW/2+250, 540)
@@ -378,4 +402,27 @@ func nextUIScale(now int) int {
 		}
 	}
 	return uiScales[0]
+}
+
+// objectiveDuels names the stage's duels as "ally 대 enemy", the rest counted.
+func (g *Game) objectiveDuels(o core.Observation) []string {
+	out := []string{}
+	for _, d := range g.S.Data.Stages[o.Stage].Duels {
+		if len(out) == 3 {
+			out = append(out, fmt.Sprintf("외 %d건", len(g.S.Data.Stages[o.Stage].Duels)-3))
+			break
+		}
+		out = append(out, g.name(d.Ally)+" 대 "+g.name(d.Enemy))
+	}
+	return out
+}
+
+// objectiveBox is the objective window, as tall as its rows need.
+func (g *Game) objectiveBox(w int) image.Rectangle {
+	rows := 4
+	if g.S.Engine != nil {
+		rows = 3 + max(1, len(g.objectiveDuels(g.S.Engine.Observe())))
+	}
+	h := 96 + rows*36 + 56
+	return image.Rect(w/2-260, 330-h/2, w/2+260, 330+h/2)
 }

@@ -195,7 +195,7 @@ func (g *Game) hudMisc(dst *ebiten.Image, r image.Rectangle) {
 	}{
 		{"위협 범위" + mark(g.threatAll), func() { g.threatAll = !g.threatAll }},
 		{"자동 진행" + mark(g.autoplay), func() { g.autoplay = !g.autoplay }},
-		{"작전 개요", func() { g.modals = append(g.modals, &modal{kind: "objective"}) }},
+		{"작전 개요", func() { g.modals = append(g.modals, &modal{kind: "objective", manual: true}) }},
 		{"메뉴", func() { g.openOverlay("menu") }},
 	}
 	for i, it := range items {

@@ -8,7 +8,7 @@ func init() { demos["hudpanel"] = demoHUDPanel }
 // (100) sorted by orders (130), its stats view by attack (160), the biography view of all
 // units (200) and the other tab (240), an officer selected (280) with its tabs, a peek at the
 // minimap while selected (400), back to the base tab on letting go (440), the brief card over a
-// unit (480) and over bare ground (520), and the enemy's turn (560).
+// unit (480) and over bare ground (520), the objective window (600), and the enemy's turn (700).
 func demoHUDPanel(d *Demo) error {
 	if err := d.battle(d.stage); err != nil {
 		return err
@@ -61,7 +61,11 @@ func demoHUDPanel(d *Demo) error {
 			at(u.X, u.Y)
 		case 520:
 			at(u.X, u.Y+3)
-		case 560:
+		case 600:
+			g.modals = []*modal{{kind: "objective", manual: true}}
+		case 660:
+			g.modals = nil
+		case 700:
 			cursorPos, g.hover = func() (int, int) { return -100, -100 }, hoverCell{}
 			g.S.Engine.Apply(core.Command{Kind: "end"})
 		}
