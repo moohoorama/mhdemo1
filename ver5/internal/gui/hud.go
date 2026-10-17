@@ -176,38 +176,54 @@ func teamColor(u *core.UnitView) color.NRGBA {
 	return color.NRGBA{R: 120, G: 180, B: 240, A: 255}
 }
 
-// brief is the small card right of the cursor while it rests on a unit. While a target
-// is being picked the forecast takes its place.
+// brief is the small card right of the cursor while it rests on a cell: the unit on it, if
+// any, then the terrain. While a target is being picked the forecast takes its place.
 func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
-	u := g.hoveredUnit(o)
-	if u == nil || g.ord.stage == "target" {
+	if !g.hover.ok || g.ord.stage == "target" {
 		return
 	}
-	w, h := 214, 82
-	if u.Faction == "ally" {
-		h += 16
+	u := g.hoveredUnit(o)
+	family, class := "", "병종"
+	if iu := g.infoUnit(o); iu != nil {
+		c := g.S.Data.Classes[iu.Class]
+		family, class = c.Terrain, c.Name
 	}
+	tile := string(g.field.Tile(g.hover.x, g.hover.y))
+	lines := terrainInfoLines(g.S.Data, tile, family, class)
+	w, uh := 226, 0
+	if u != nil {
+		uh = 74
+		if u.Faction == "ally" {
+			uh += 16
+		}
+	}
+	h := uh + 40 + len(lines)*16
 	x, y := cursorPos()
 	x += 22
 	if x+w > uiW-8 {
 		x -= w + 44
 	}
-	y = max(48, min(uiH-h-8, y-h/2))
+	y = max(8, min(uiH-h-8, y-h/2))
 	window(dst, image.Rect(x, y, x+w, y+h))
-	g.label(dst, u.Name, float64(x+14), float64(y+9), 15, teamColor(u))
-	g.label(dst, fmt.Sprintf("Lv%d", u.Level), float64(x+22)+g.width(u.Name, 15), float64(y+12), 12, ink)
-	row := func(i int, name string, now, maxV int, k float64, c color.Color) {
-		ry := float64(y + 36 + i*16)
-		g.label(dst, name, float64(x+14), ry-4, 11, muted)
-		bar(dst, float32(x+60), float32(ry), 90, 7, k, c)
-		g.label(dst, fmt.Sprintf("%d/%d", now, maxV), float64(x+156), ry-4, 11, ink)
+	if u != nil {
+		g.label(dst, u.Name, float64(x+14), float64(y+9), 15, teamColor(u))
+		g.label(dst, fmt.Sprintf("Lv%d", u.Level), float64(x+22)+g.width(u.Name, 15), float64(y+12), 12, ink)
+		row := func(i int, name string, now, maxV int, k float64, c color.Color) {
+			ry := float64(y + 36 + i*16)
+			g.label(dst, name, float64(x+14), ry-4, 11, muted)
+			bar(dst, float32(x+60), float32(ry), 100, 7, k, c)
+			g.label(dst, fmt.Sprintf("%d/%d", now, maxV), float64(x+166), ry-4, 11, ink)
+		}
+		k := float64(u.HP) / float64(max(1, u.Stats.MaxHP))
+		row(0, "병력", u.HP, u.Stats.MaxHP, k, hpColor(k))
+		row(1, "병법치", u.MP, u.Stats.MaxMP, float64(u.MP)/float64(max(1, u.Stats.MaxMP)), mpC)
+		if u.Faction == "ally" {
+			row(2, "경험치", int(u.XPProgress), 100, u.XPProgress/100, xpC)
+		}
+		rect(dst, float32(x+12), float32(y+uh-2), float32(w-24), 1, goldDim)
 	}
-	k := float64(u.HP) / float64(max(1, u.Stats.MaxHP))
-	row(0, "병력", u.HP, u.Stats.MaxHP, k, hpColor(k))
-	row(1, "병법치", u.MP, u.Stats.MaxMP, float64(u.MP)/float64(max(1, u.Stats.MaxMP)), mpC)
-	if u.Faction == "ally" {
-		row(2, "경험치", int(u.XPProgress), 100, u.XPProgress/100, xpC)
-	}
+	g.label(dst, fmt.Sprintf("%s  (%d,%d)", g.S.Data.Tiles[tile].Name, g.hover.x, g.hover.y), float64(x+14), float64(y+uh+8), 14, gold)
+	g.label(dst, strings.Join(lines, "\n"), float64(x+14), float64(y+uh+28), 12, ink)
 }
 
 // detailH is the selected unit's panel height: the gauges, the tab row and the hexagon of its
@@ -516,25 +532,6 @@ func (g *Game) statHexagon(dst *ebiten.Image, o core.Observation, u *core.UnitVi
 		window(dst, image.Rect(tx, ty, tx+tw, ty+th))
 		g.label(dst, strings.Join(tip, "\n"), float64(tx+14), float64(ty+7), 12, ink)
 	}
-}
-
-// terrainPanel names the hovered cell and what it does for the described unit's family.
-func (g *Game) terrainPanel(dst *ebiten.Image, o core.Observation) {
-	if !g.hover.ok {
-		return
-	}
-	tile := g.field.Tile(g.hover.x, g.hover.y)
-	family, class := "", "병종"
-	if u := g.infoUnit(o); u != nil {
-		c := g.S.Data.Classes[u.Class]
-		family, class = c.Terrain, c.Name
-	}
-	lines := terrainInfoLines(g.S.Data, string(tile), family, class)
-	w, h := 238, 44+len(lines)*19
-	x, y := 12, uiH-12-h
-	window(dst, image.Rect(x, y, x+w, y+h))
-	g.label(dst, fmt.Sprintf("%s  (%d,%d)", g.S.Data.Tiles[string(tile)].Name, g.hover.x, g.hover.y), float64(x+14), float64(y+10), 16, gold)
-	g.label(dst, strings.Join(lines, "\n"), float64(x+14), float64(y+36), 13, ink)
 }
 
 var miniColors = map[byte]color.NRGBA{

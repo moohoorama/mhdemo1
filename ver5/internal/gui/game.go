@@ -990,7 +990,6 @@ func (g *Game) battleHUD(dst *ebiten.Image, o core.Observation) {
 		g.label(dst, fmt.Sprintf("재생 ×%d", g.speed), 14, 12, 13, gold)
 	}
 	g.battleHUDPanel(dst, o)
-	g.terrainPanel(dst, o)
 	g.drawMenu(dst)
 	g.forecast(dst)
 	g.brief(dst, o)
