@@ -313,7 +313,7 @@ func (g *Game) syncUnit(u core.UnitView, o core.Observation) {
 	v.gone = u.HP <= 0
 	if !v.gone {
 		v.dying = -1
-		if v.anim == "idle" || v.anim == "exhausted" {
+		if v.anim == "idle" || v.anim == "exhausted" || v.anim == "walk" {
 			v.anim = v.rest()
 		}
 	}
