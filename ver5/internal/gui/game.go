@@ -815,7 +815,7 @@ func (g *Game) drawFrame(dst *ebiten.Image) {
 		g.play(dst)
 	}
 	if g.editorReturn != nil && !g.deploying() {
-		g.btn(dst, image.Rect(1050, 12, 1266, 44), "에디터로 돌아가기", g.endEditorTrial)
+		g.btn(dst, image.Rect(uiW-230, 12, uiW-14, 44), "에디터로 돌아가기", g.endEditorTrial)
 	}
 
 	if g.overlay != "" {
@@ -893,7 +893,7 @@ func (g *Game) play(dst *ebiten.Image) {
 	case "scenario":
 		g.scenario(dst, o)
 		g.drawIntro(dst)
-		g.btn(dst, image.Rect(1176, 12, 1268, 42), "메뉴", func() { g.openOverlay("menu") })
+		g.btn(dst, menuButtonRect(), "메뉴", func() { g.openOverlay("menu") })
 	default:
 		g.battle(dst, o)
 		if o.Phase == "result" && !g.busy() {

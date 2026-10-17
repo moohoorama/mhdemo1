@@ -119,6 +119,28 @@ func (g *Game) pending(o core.Observation) (left, total int) {
 	return left, total
 }
 
+// dockW is the width of the dock's buttons.
+const dockW = 148
+
+// infoW is the width of the right column on a low screen, which holds the minimap or the
+// selected unit's panel.
+const infoW = 320
+
+// lowScreen reports whether the UI canvas is too low to stack the minimap, the selected
+// unit's panel and the dock in the right column (a landscape phone, or a large UI size).
+func lowScreen() bool { return uiH < 830 }
+
+// dockRight is the dock's right edge: the screen's, or on a low screen the right column's.
+func dockRight() int {
+	if lowScreen() {
+		return uiW - 12 - infoW - 8
+	}
+	return uiW - 4
+}
+
+// dockLeft is the dock's left edge.
+func dockLeft() int { return dockRight() - dockW - 16 }
+
 // dock holds the battle-wide commands in the lower right corner.
 func (g *Game) dock(dst *ebiten.Image, o core.Observation) {
 	type entry struct {
@@ -146,10 +168,11 @@ func (g *Game) dock(dst *ebiten.Image, o core.Observation) {
 		}
 		entries = append(entries, entry{"적 한 명령", one}, entry{"적 진영 진행", all})
 	}
-	w, h := 148, 30
-	x := uiW - w - 12
+	w, h := dockW, 30
+	right := dockRight()
+	x := right - w - 8
 	y := uiH - 12 - len(entries)*(h+4) - 12
-	r := image.Rect(x-8, y-8, uiW-4, uiH-4)
+	r := image.Rect(x-8, y-8, right, uiH-4)
 	window(dst, r)
 	g.block(r)
 	for i, e := range entries {
@@ -246,28 +269,48 @@ func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
 	}
 }
 
+// detailRect is the selected unit's panel: in the right column between the minimap and the
+// dock, or on a low screen the whole right column in place of the minimap.
+func (g *Game) detailRect() image.Rectangle {
+	x := uiW - 12 - infoW
+	if lowScreen() {
+		return image.Rect(x, tagH+6, x+infoW, uiH-12) // below the hanging name tags
+	}
+	y := g.miniRect.Max.Y + 10
+	return image.Rect(x, y, x+infoW, uiH-240)
+}
+
+// detailUnit is the unit the detail panel describes, or nil when it is hidden.
+func (g *Game) detailUnit(o core.Observation) *core.UnitView {
+	if g.selected == "" {
+		return nil
+	}
+	if g.ord.sandbox != nil {
+		o = g.ord.sandbox.Observe()
+	}
+	if u := g.unitView(o, g.selected); u != nil && u.HP > 0 {
+		return u
+	}
+	return nil
+}
+
 // detail describes the selected unit under the minimap: gauges, a hexagon of its unit
 // stats against the battle's best, and its owned or learnable traits; a trait opens its
 // explanation in the middle of the screen.
 func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
-	if g.selected == "" {
+	u := g.detailUnit(o)
+	if u == nil {
 		return
 	}
 	if g.ord.sandbox != nil {
 		o = g.ord.sandbox.Observe()
 	}
-	u := g.unitView(o, g.selected)
-	if u == nil || u.HP <= 0 {
-		return
-	}
 	if g.traitOf != u.ID {
 		g.traitOf, g.traitTop = u.ID, 0
 		g.detailTab, g.detailPage = 0, 0
 	}
-	const w = 320
-	x, y := uiW-12-w, g.miniRect.Max.Y+10
-	h := uiH - 240 - y
-	r := image.Rect(x, y, x+w, y+h)
+	r := g.detailRect()
+	x, y, w, h := r.Min.X, r.Min.Y, r.Dx(), r.Dy()
 	window(dst, r)
 	g.block(r)
 	g.portrait(dst, u.ID, float64(x+14), float64(y+14), 56)
@@ -570,6 +613,10 @@ const miniScale = 4.0 // minimap pixels per half cell width
 
 // minimap shows the whole field, unit dots and the visible area; a click moves the camera.
 func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
+	if lowScreen() && g.detailUnit(o) != nil {
+		g.miniRect = image.Rectangle{} // the unit's panel has the column
+		return
+	}
 	m := g.field.Map
 	w := float64(m.W+m.H) * miniScale
 	h := w / 2

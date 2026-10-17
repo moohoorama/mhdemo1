@@ -86,18 +86,33 @@ func (g *Game) topBar(dst *ebiten.Image, o core.Observation) {
 	fillCircle(dst, 453, float32(barH/2), 4, sc)
 	write(dst, side, g.serif(14, 900), 463, 11, sc)
 
-	// objectives on a small scroll, unrolled once at the start of the battle
-	win, lose := g.objective(st)
-	g.objectiveScroll(dst, 580, 7, win, lose, bezier(.3, .7, .2, 1, phase(now-a.openedAt, .3, scrollUnroll)))
-
+	// from the right edge: the menu button, then the name tags hanging left of it
+	menu := menuButtonRect()
+	tagsRight := float32(menu.Min.X - 36)
+	var ids []string
+	extra := 0
 	if o.Phase == "battle" {
-		g.nameTags(dst, o, 1140, now)
+		ids, extra = g.tagIDs(o)
 	}
+	tagsLeft := tagsRight - float32(len(ids))*(tagW+6)
+	if extra > 0 {
+		tagsLeft -= 24
+	}
+
+	// objectives on a small scroll, unrolled once at the start of the battle; on two lines
+	// when one would run under the name tags
+	win, lose := g.objective(st)
+	g.objectiveScroll(dst, 580, 7, tagsLeft-12-580, win, lose, bezier(.3, .7, .2, 1, phase(now-a.openedAt, .3, scrollUnroll)))
+
+	g.nameTags(dst, o, ids, extra, tagsRight, now)
 	if g.speed > 1 {
-		g.label(dst, fmt.Sprintf("재생 ×%d", g.speed), 1030, 48, 13, gold)
+		g.label(dst, fmt.Sprintf("재생 ×%d", g.speed), float64(uiW-250), 48, 13, gold)
 	}
-	g.btn(dst, image.Rect(1176, 6, 1272, 35), "메뉴", func() { g.openOverlay("menu") })
+	g.btn(dst, menu, "메뉴", func() { g.openOverlay("menu") })
 }
+
+// menuButtonRect is the menu button in the top right corner, shared by every screen.
+func menuButtonRect() image.Rectangle { return image.Rect(uiW-104, 6, uiW-8, 35) }
 
 // drawBarWood is the bar itself: lacquer, grain, gold trim, shadow and a passing glint.
 func drawBarWood(dst *ebiten.Image, now float64) {
@@ -180,13 +195,19 @@ func strokeEllipse(dst *ebiten.Image, x, y, rx, ry, w float32, c color.Color) {
 }
 
 // objectiveScroll draws the win and loss conditions on parchment between two rods, the
-// left fraction k of it unrolled.
-func (g *Game) objectiveScroll(dst *ebiten.Image, x, y float32, win, lose string, k float64) {
+// left fraction k of it unrolled. Wider than room, they go on two lines in a smaller face.
+func (g *Game) objectiveScroll(dst *ebiten.Image, x, y, room float32, win, lose string, k float64) {
 	f := g.serif(12, 700)
-	parts := [][2]string{{"승리 ", ""}, {win, ""}, {"  ·  패배 ", ""}, {lose, ""}}
+	lines := [][]string{{"승리 ", win, "  ·  패배 ", lose}}
+	textY := []float64{5}
 	full := float32(20)
-	for _, p := range parts {
-		full += float32(measure(p[0], f))
+	for _, p := range lines[0] {
+		full += float32(measure(p, f))
+	}
+	if full > room {
+		f = g.serif(10, 700)
+		lines, textY = [][]string{{"승리 ", win}, {"패배 ", lose}}, []float64{-1, 12}
+		full = 20 + float32(max(measure("승리 "+win, f), measure("패배 "+lose, f)))
 	}
 	w := full * float32(k)
 	h := float32(barH - 14)
@@ -207,31 +228,30 @@ func (g *Game) objectiveScroll(dst *ebiten.Image, x, y float32, win, lose string
 			rect(dst, x+5, y+h*i/4, w, h/4+1, color.NRGBA{R: uint8(239 - 22*k), G: uint8(228 - 25*k), B: uint8(200 - 34*k), A: 255})
 		}
 		sub := dst.SubImage(image.Rect(int(float64(x+5)*drawPx), 0, int(float64(x+5+w)*drawPx), int(float64(barH)*drawPx))).(*ebiten.Image)
-		tx := float64(x + 15)
-		for i, p := range parts {
-			c := color.NRGBA{R: 43, G: 29, B: 18, A: 255}
-			if i%2 == 0 {
-				c = color.NRGBA{R: 184, G: 50, B: 31, A: 255}
+		for l, parts := range lines {
+			tx := float64(x + 15)
+			for i, p := range parts {
+				c := color.NRGBA{R: 43, G: 29, B: 18, A: 255}
+				if i%2 == 0 {
+					c = color.NRGBA{R: 184, G: 50, B: 31, A: 255}
+				}
+				write(sub, p, f, tx, float64(y)+textY[l], c)
+				tx += measure(p, f)
 			}
-			write(sub, p[0], f, tx, float64(y)+5, c)
-			tx += measure(p[0], f)
 		}
 	}
 	rod(x)
 	rod(x + 5 + w)
 }
 
-// nameTags hangs a wooden tag with each allied officer's name written top to bottom,
-// ending at right: light while the officer may act, dark once done (swinging as it
-// turns), ringed in gold while selected. Pressing a tag centres and selects the officer.
-func (g *Game) nameTags(dst *ebiten.Image, o core.Observation, right float32, now float64) {
-	ids := []string{}
+// tagIDs are the officers who get a name tag, at most maxTags with those still to act
+// first, and how many more there are.
+func (g *Game) tagIDs(o core.Observation) (ids []string, extra int) {
 	for _, u := range o.UnitViews {
 		if u.Faction == "ally" && !u.AI && u.HP > 0 {
 			ids = append(ids, u.ID)
 		}
 	}
-	extra := 0
 	if len(ids) > maxTags {
 		left := []string{}
 		for _, id := range ids {
@@ -242,6 +262,13 @@ func (g *Game) nameTags(dst *ebiten.Image, o core.Observation, right float32, no
 		extra = len(ids) - min(len(left), maxTags)
 		ids = left[:min(len(left), maxTags)]
 	}
+	return ids, extra
+}
+
+// nameTags hangs a wooden tag with each officer's name written top to bottom, ending at
+// right: light while the officer may act, dark once done (swinging as it turns), ringed in
+// gold while selected. Pressing a tag centres and selects the officer.
+func (g *Game) nameTags(dst *ebiten.Image, o core.Observation, ids []string, extra int, right float32, now float64) {
 	x := right - float32(len(ids))*(tagW+6)
 	if extra > 0 {
 		g.label(dst, fmt.Sprintf("+%d", extra), float64(x)-24, 12, 13, gold)

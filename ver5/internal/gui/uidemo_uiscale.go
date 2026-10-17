@@ -9,7 +9,7 @@ const uiScaleBattleAt = 480
 
 // demoUIScale walks the screens a UI size change has to fit, for cmd/_uidemo-vm -uiscale and
 // -sheet: a new game's opening (장비's first-appearance card around frame 260, the dialogue
-// scroll around 380), then from frame 480 the battle HUD (top bar, dock, log, minimap) with
+// scroll around 380), then from frame 480 the battle HUD (top bar, dock, log, minimap, detail panel) with
 // the command menu and its skill list open (around 720).
 func demoUIScale(d *Demo) error {
 	g := d.g
@@ -32,6 +32,9 @@ func demoUIScale(d *Demo) error {
 			menu(0)
 		default:
 			menu(f - uiScaleBattleAt)
+			if f == uiScaleBattleAt+21 {
+				g.selected = g.ord.actor // the detail panel too
+			}
 		}
 	}
 	d.step = step

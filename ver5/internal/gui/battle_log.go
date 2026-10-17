@@ -18,7 +18,8 @@ func (g *Game) battleLogRect() image.Rectangle {
 	if h == 0 {
 		h = 200
 	}
-	return image.Rect(12, uiH-12-max(80, min(440, h)), 492, uiH-12)
+	right := min(492, dockLeft()-8)
+	return image.Rect(12, uiH-12-max(80, min(440, uiH-60, h)), right, uiH-12)
 }
 
 func (g *Game) battleLogVisible() bool {

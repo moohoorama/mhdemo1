@@ -184,7 +184,7 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 	rect(dst, 0, 0, float32(uiW), 40, color.NRGBA{R: 20, G: 14, B: 12, A: 240})
 	g.block(image.Rect(0, 0, uiW, 40))
 	g.label(dst, fmt.Sprintf("아군 배치 · %s   배치 %d / %d", o.Map.Name, placed, len(o.Deployment)), 16, 8, 18, gold)
-	g.btn(dst, image.Rect(1176, 5, 1272, 34), "메뉴", func() { g.openOverlay("menu") })
+	g.btn(dst, menuButtonRect(), "메뉴", func() { g.openOverlay("menu") })
 	r := image.Rect(0, deploymentTop(), uiW, uiH)
 	rect(dst, 0, float32(deploymentTop()), float32(uiW), float32(uiH-deploymentTop()), color.NRGBA{R: 28, G: 23, B: 20, A: 255})
 	rect(dst, 0, float32(deploymentTop()), float32(uiW), 2, gold)

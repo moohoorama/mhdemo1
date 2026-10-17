@@ -64,12 +64,22 @@ func (g *Game) panelHeight(p panelSpec) int {
 	return h
 }
 
+// panelBounds is where command panels must stay: on screen below the top bar, and left of
+// the selected unit's panel when that fills a low screen's right column.
+func (g *Game) panelBounds() image.Rectangle {
+	b := uiBounds(8)
+	if lowScreen() && g.S.Engine != nil && g.detailUnit(g.S.Engine.Observe()) != nil {
+		b.Max.X = g.detailRect().Min.X - 8
+	}
+	return b
+}
+
 // drawPanel draws a command panel and registers its rows as buttons.
 func (g *Game) drawPanel(dst *ebiten.Image, p panelSpec) image.Rectangle {
 	now := g.uiSeconds
 	t := now - p.anim.openedAt
 	h := g.panelHeight(p)
-	bound := uiBounds(8)
+	bound := g.panelBounds()
 	x := max(bound.Min.X, min(bound.Max.X-p.w, p.x))
 	y := max(bound.Min.Y, min(bound.Max.Y-h, p.y))
 	r := image.Rect(x, y, x+p.w, y+h)

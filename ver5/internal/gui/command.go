@@ -305,6 +305,9 @@ func (g *Game) drawMenuAt(dst *ebiten.Image, sx, sy float64) {
 	if g.ord.stage == "sub" {
 		g.subAnim.touch(key+"/"+g.ord.sub, g.uiSeconds)
 		spec := panelSpec{items: g.subItems(), x: r.Max.X + 4, y: r.Min.Y + 32, w: 200, gauge: -1, descLines: 3, anim: &g.subAnim, held: -1}
+		if spec.x+spec.w > g.panelBounds().Max.X {
+			spec.x = r.Min.X - 4 - spec.w // no room on the right: open to the left
+		}
 		if u := g.unitView(g.engine().Observe(), g.ord.actor); u != nil && g.ord.sub == "skill" {
 			spec.header = fmt.Sprintf("병법치 %d / %d", u.MP, u.Stats.MaxMP)
 			spec.gauge = float64(u.MP) / float64(max(1, u.Stats.MaxMP))
