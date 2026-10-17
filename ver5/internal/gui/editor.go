@@ -799,7 +799,7 @@ func (g *Game) drawEditor(dst *ebiten.Image) {
 		op.GeoM.Translate(-e.cx, -e.cy)
 		op.GeoM.Scale(e.zoom, e.zoom)
 		op.GeoM.Translate(float64(editorViewport.Min.X+editorViewport.Dx()/2), float64(editorViewport.Min.Y+editorViewport.Dy()/2))
-		sub := dst.SubImage(image.Rect(int(float64(editorViewport.Min.X)*scale), int(float64(editorViewport.Min.Y)*scale), int(float64(editorViewport.Max.X)*scale), int(float64(editorViewport.Max.Y)*scale))).(*ebiten.Image)
+		sub := dst.SubImage(image.Rect(int(float64(editorViewport.Min.X)*drawPx), int(float64(editorViewport.Min.Y)*drawPx), int(float64(editorViewport.Max.X)*drawPx), int(float64(editorViewport.Max.Y)*drawPx))).(*ebiten.Image)
 		op = &ebiten.DrawImageOptions{}
 		op.GeoM.Translate(float64(editorViewport.Min.X), float64(editorViewport.Min.Y))
 		drawScaled(sub, e.field.Canvas, op)

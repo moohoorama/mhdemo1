@@ -288,7 +288,7 @@ func (g *Game) drawMenu(dst *ebiten.Image) {
 		return
 	}
 	cx, cy := g.field.Center(v.u, v.v)
-	sx, sy := g.toScreen(cx, cy-v.lift)
+	sx, sy := worldToUI(g.toScreen(cx, cy-v.lift))
 	g.withUI(sx, sy, func() { g.drawMenuAt(dst, sx, sy) })
 }
 
@@ -703,12 +703,13 @@ func (g *Game) gauge(dst *ebiten.Image, x, y int, name string, now, normal, crit
 	g.label(dst, s, float64(bx+bw+8), float64(y-3), 12, col)
 }
 
-// unitBox is the screen area a unit's sprite covers.
+// unitBox is the area a unit's sprite covers on screen, in UI px.
 func (g *Game) unitBox(v *unitVis) image.Rectangle {
 	cx, cy := g.field.Center(v.u, v.v)
-	sx, sy := g.toScreen(cx, cy-v.lift)
-	half, top := 16*K*g.zoom, (v.top+8)*g.zoom
-	return image.Rect(int(sx-half), int(sy-top), int(sx+half), int(sy+8*K*g.zoom))
+	sx, sy := worldToUI(g.toScreen(cx, cy-v.lift))
+	k := g.zoom * worldPx / uiPx
+	half, top := 16*K*k, (v.top+8)*k
+	return image.Rect(int(sx-half), int(sy-top), int(sx+half), int(sy+8*K*k))
 }
 
 // besideTarget places a w×h panel to the right of the target, else to its left, moving

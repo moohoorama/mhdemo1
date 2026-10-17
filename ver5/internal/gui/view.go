@@ -187,23 +187,25 @@ func (g *Game) camera() {
 		g.camY += step
 	}
 	x, y := cursorPos()
+	wx, wy := cursorWorld()
+	onMap := g.onMap()
 	// the window's edge scrolls too (not while a screenshot run drives the game)
 	const edge = 8
-	if !pointer.used && len(g.Shots) == 0 && !g.dragging && ebiten.IsFocused() && image.Pt(x, y).In(vp) && !g.overHUD(x, y) {
+	if !pointer.used && len(g.Shots) == 0 && !g.dragging && ebiten.IsFocused() && onMap {
 		switch {
-		case x < edge:
+		case wx < float64(vp.Min.X)+edge:
 			g.camX -= step
-		case x >= Width-edge:
+		case wx >= float64(vp.Max.X)-edge:
 			g.camX += step
 		}
 		switch {
-		case y < edge:
+		case wy < float64(vp.Min.Y)+edge:
 			g.camY -= step
-		case y >= vp.Max.Y-edge:
+		case wy >= float64(vp.Max.Y)-edge:
 			g.camY += step
 		}
 	}
-	if mouseJustPressed(ebiten.MouseButtonRight) && image.Pt(x, y).In(vp) && !g.overHUD(x, y) && !g.dragging {
+	if mouseJustPressed(ebiten.MouseButtonRight) && onMap && !g.dragging {
 		g.dragging, g.dragMoved, g.dragButton, g.dragX, g.dragY = true, false, ebiten.MouseButtonRight, x, y
 	}
 	if g.dragMoved || ebiten.IsKeyPressed(ebiten.KeyArrowLeft) || ebiten.IsKeyPressed(ebiten.KeyArrowRight) || ebiten.IsKeyPressed(ebiten.KeyArrowUp) || ebiten.IsKeyPressed(ebiten.KeyArrowDown) {
@@ -219,12 +221,12 @@ func (g *Game) camera() {
 			}
 		} else if g.dragMoved || abs(x-g.dragX)+abs(y-g.dragY) > 4 {
 			g.dragMoved = true
-			g.camX -= float64(x-g.dragX) / g.zoom
-			g.camY -= float64(y-g.dragY) / g.zoom
+			g.camX -= float64(x-g.dragX) * uiPx / worldPx / g.zoom
+			g.camY -= float64(y-g.dragY) * uiPx / worldPx / g.zoom
 			g.dragX, g.dragY = x, y
 		}
 	}
-	if _, wy := ebiten.Wheel(); wy != 0 && image.Pt(x, y).In(vp) && !g.overHUD(x, y) && (g.zoomTo == g.zoomFrom || g.zoomT >= .5) {
+	if _, wheel := ebiten.Wheel(); wheel != 0 && onMap && (g.zoomTo == g.zoomFrom || g.zoomT >= .5) {
 		current := g.zoom
 		if g.zoomT < .5 {
 			current = g.zoomTo
@@ -235,11 +237,18 @@ func (g *Game) camera() {
 				i = j
 			}
 		}
-		g.setZoom(zooms[max(0, min(len(zooms)-1, i+int(math.Copysign(1, wy))))])
+		g.setZoom(zooms[max(0, min(len(zooms)-1, i+int(math.Copysign(1, wheel))))])
 	}
 	size := g.field.Size()
 	g.camX = math.Max(0, math.Min(float64(size.X), g.camX))
 	g.camY = math.Max(0, math.Min(float64(size.Y), g.camY))
+}
+
+// onMap reports whether the cursor is over the battlefield and not over a HUD panel.
+func (g *Game) onMap() bool {
+	x, y := cursorPos()
+	wx, wy := cursorWorld()
+	return !g.overHUD(x, y) && image.Pt(int(wx), int(wy)).In(g.battleViewport())
 }
 
 func (g *Game) overHUD(x, y int) bool {

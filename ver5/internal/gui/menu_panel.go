@@ -75,7 +75,7 @@ func (g *Game) drawPanel(dst *ebiten.Image, p panelSpec) image.Rectangle {
 	r := image.Rect(x, y, x+p.w, y+h)
 	g.block(r)
 	open := bezier(.2, .8, .3, 1, phase(t, 0, panelOpen))
-	clip := image.Rect(int(float64(ux(float32(x-4)))*scale), int(float64(uy(float32(y-2)))*scale), int(float64(ux(float32(x+p.w+8)))*scale), int(float64(uy(float32(float64(y)+float64(h)*open+8)))*scale))
+	clip := image.Rect(int(float64(ux(float32(x-4)))*drawPx), int(float64(uy(float32(y-2)))*drawPx), int(float64(ux(float32(x+p.w+8)))*drawPx), int(float64(uy(float32(float64(y)+float64(h)*open+8)))*drawPx))
 	cd := dst.SubImage(clip).(*ebiten.Image)
 	fx, fy, fw, fh := float32(x), float32(y), float32(p.w), float32(h)
 	rect(cd, fx+3, fy+5, fw, fh, color.NRGBA{A: 110})

@@ -201,7 +201,7 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 	}
 	// text, clipped to the paper while the scroll still moves
 	hw := hwArt * scrollPx
-	clip := image.Rect(int((cx-hw)*scale), int(scrollTop*scale), int((cx+hw)*scale), int((scrollTop+scrollH)*scale))
+	clip := image.Rect(int((cx-hw)*drawPx), int(scrollTop*drawPx), int((cx+hw)*drawPx), int((scrollTop+scrollH)*drawPx))
 	sub := dst.SubImage(clip).(*ebiten.Image)
 	shown := wrapped
 	if !done {

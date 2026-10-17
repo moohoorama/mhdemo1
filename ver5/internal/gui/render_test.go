@@ -289,10 +289,10 @@ func (p *editorRenderTest) Draw(dst *ebiten.Image) {
 		p.err = err
 	}
 	if p.step == 4 {
-		oldScale := scale
+		oldScale := drawPx
 		var baseline []byte
 		for _, factor := range []float64{1, 2} {
-			scale = factor
+			drawPx = factor
 			icon := ebiten.NewImage(40, 32)
 			drawStatusIcon(icon, p.g.assets.StatusIcons["attack-up"], 16, 8, 1)
 			pix := make([]byte, 40*32*4)
@@ -319,7 +319,7 @@ func (p *editorRenderTest) Draw(dst *ebiten.Image) {
 			}
 			icon.Deallocate()
 		}
-		scale = 2
+		drawPx = 2
 		high := ebiten.NewImage(Width*2, Height*2)
 		p.g.Draw(high)
 		highImg := image.NewRGBA(high.Bounds())
@@ -333,7 +333,7 @@ func (p *editorRenderTest) Draw(dst *ebiten.Image) {
 			p.err = err
 		}
 		high.Deallocate()
-		scale = 1
+		drawPx = 1
 		gallery := ebiten.NewImage(372, 156)
 		gallery.Fill(color.NRGBA{R: 40, G: 45, B: 50, A: 255})
 		for i, kind := range []string{"attack", "defense", "agility", "mind", "morale", "speed"} {
@@ -361,7 +361,7 @@ func (p *editorRenderTest) Draw(dst *ebiten.Image) {
 		if err := p.statusPixelPreview(); err != nil {
 			p.err = err
 		}
-		scale = oldScale
+		drawPx = oldScale
 	}
 	if p.step == 0 {
 		p.water = img

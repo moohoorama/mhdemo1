@@ -44,11 +44,10 @@ func (g *Game) updateHover() {
 	if g.field == nil || g.popupPending() {
 		return
 	}
-	x, y := cursorPos()
-	if g.overHUD(x, y) || !image.Pt(x, y).In(g.battleViewport()) {
+	if !g.onMap() {
 		return
 	}
-	cx, cy := g.toCanvas(float64(x), float64(y))
+	cx, cy := g.toCanvas(cursorWorld())
 	mx, my := g.field.Cell(cx, cy)
 	if g.field.Inside(mx, my) {
 		g.hover = hoverCell{mx, my, true}
@@ -607,7 +606,7 @@ func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
 		mx, my := ToMap(cx, cy)
 		return float32(ox + (mx-g.field.OriginX)/16*miniScale), float32(y0 + (my-g.field.OriginY)/16*miniScale)
 	}
-	ax, ay := toMini(0, 40)
+	ax, ay := toMini(0, 40*uiPx/worldPx) // below the top bar
 	vp := g.battleViewport()
 	bx, by := toMini(float64(vp.Max.X), float64(vp.Max.Y))
 	ax, ay = max(ax, float32(x0)), max(ay, float32(y0))

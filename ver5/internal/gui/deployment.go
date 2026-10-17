@@ -190,7 +190,7 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 	}
 	g.label(dst, hint, 16, float64(deploymentTop+12), 14, ink)
 	cards := g.deploymentCardsRect()
-	clip := dst.SubImage(image.Rect(int(float64(cards.Min.X)*scale), int(float64(cards.Min.Y)*scale), int(float64(cards.Max.X)*scale), int(float64(cards.Max.Y)*scale))).(*ebiten.Image)
+	clip := dst.SubImage(image.Rect(int(float64(cards.Min.X)*drawPx), int(float64(cards.Min.Y)*drawPx), int(float64(cards.Max.X)*drawPx), int(float64(cards.Max.Y)*drawPx))).(*ebiten.Image)
 	for i, id := range o.Deployment {
 		x := cards.Min.X + i*deploymentCardWidth - g.deploymentScroll
 		card := image.Rect(x, cards.Min.Y, x+deploymentCardWidth-10, cards.Max.Y)

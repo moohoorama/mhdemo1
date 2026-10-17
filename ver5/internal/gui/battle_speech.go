@@ -38,7 +38,7 @@ func (g *Game) drawBattleSpeech(dst *ebiten.Image) {
 			continue
 		}
 		x, y := g.field.Center(u.u, u.v)
-		x, y = g.toScreen(x, y-u.lift-u.top)
+		x, y = worldToUI(g.toScreen(x, y-u.lift-u.top))
 		bw, bh := g.assets.Bubble.Size(bubble.name, bubble.text)
 		w, h := int(bw), int(bh)
 		px, py := max(16, min(Width-w-16, int(x)-32)), max(62, min(Height-h-190, int(y)-h-10))
@@ -55,6 +55,6 @@ func (g *Game) drawBattleSpeech(dst *ebiten.Image) {
 		}
 
 		placed = append(placed, r)
-		g.assets.Bubble.DrawText(dst, bubble.name, bubble.text, float64(px), float64(py), scale)
+		g.assets.Bubble.DrawText(dst, bubble.name, bubble.text, float64(px), float64(py), drawPx)
 	}
 }

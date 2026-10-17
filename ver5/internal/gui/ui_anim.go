@@ -84,11 +84,11 @@ func (g *Game) textImage(s string, f *text.GoTextFace, c color.Color, shadow flo
 	w := int(math.Ceil(measure(s, f))) + 8
 	h := int(math.Ceil(f.Size*1.45 + shadow + 4))
 	im := ebiten.NewImage(w, h)
-	old := scale
-	scale = 1
+	old := drawPx
+	drawPx = 1
 	write(im, s, f, 0, shadow, color.Black)
 	write(im, s, f, 0, 0, c)
-	scale = old
+	drawPx = old
 	g.textCache[key] = im
 	return im
 }

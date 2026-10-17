@@ -339,10 +339,13 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-g.camX, -g.camY)
 	op.GeoM.Scale(g.zoom, g.zoom)
-	op.GeoM.Translate(float64(Width/2), float64(Height/2))
+	vp := g.battleViewport()
+	op.GeoM.Translate(float64(vp.Min.X+vp.Dx()/2), float64(vp.Min.Y+vp.Dy()/2))
 	op.Filter = ebiten.FilterPixelated
-	drawScaled(dst, g.field.Canvas, op)
-	g.drawSceneEffects(dst)
+	inWorld(func() {
+		drawScaled(dst, g.field.Canvas, op)
+		g.drawSceneEffects(dst)
+	})
 	for name := range talking {
 		if v := s.actors[name]; v != nil {
 			g.bubble(dst, v, "", true)
@@ -362,9 +365,9 @@ func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) 
 		mark = strings.Repeat("•", 1+int(g.clockMS/300)%3)
 	}
 	x, y := g.field.Center(v.u, v.v)
-	sx, sy := g.toScreen(x, y-v.lift-v.top)
+	sx, sy := worldToUI(g.toScreen(x, y-v.lift-v.top))
 	_, h := g.assets.Bubble.Size("", mark)
-	g.assets.Bubble.DrawText(dst, "", mark, sx-28, sy-h, scale)
+	g.assets.Bubble.DrawText(dst, "", mark, sx-28, sy-h, drawPx)
 }
 
 var (

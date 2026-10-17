@@ -727,7 +727,7 @@ func (g *Game) leftClick() {
 	if o := g.S.Engine.Observe(); o.Phase != "battle" && o.Phase != "deployment" {
 		return
 	}
-	if g.overHUD(x, y) || !image.Pt(x, y).In(g.battleViewport()) {
+	if !g.onMap() {
 		return
 	}
 	g.dragging, g.dragMoved, g.dragButton, g.dragX, g.dragY = true, false, ebiten.MouseButtonLeft, x, y
@@ -738,8 +738,7 @@ func (g *Game) mapRelease() {
 	if g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 || g.S.Engine == nil || g.field == nil || g.busy() {
 		return
 	}
-	x, y := cursorPos()
-	if !image.Pt(x, y).In(g.battleViewport()) || g.overHUD(x, y) {
+	if !g.onMap() {
 		return
 	}
 	if g.hover.ok {
@@ -756,8 +755,9 @@ func (g *Game) Layout(w, h int) (int, int) {
 
 // LayoutF renders at the window's device resolution, keeping the Width×Height aspect.
 func (g *Game) LayoutF(w, h float64) (float64, float64) {
-	scale = min(w/Width, h/Height) * ebiten.Monitor().DeviceScaleFactor()
-	return Width * scale, Height * scale
+	d := ebiten.Monitor().DeviceScaleFactor()
+	setUnits(w*d, h*d)
+	return Width * uiPx, Height * uiPx
 }
 
 func (g *Game) Draw(dst *ebiten.Image) {
@@ -932,7 +932,9 @@ func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 	g.field.Draw(g.clockMS, units, g.marks(o))
 	g.drawDeploymentPreview(o)
 	if g.field.Map.Native && g.shakeT > 0 {
-		g.field.background(dst, vp, g.zoom, -g.camX*g.zoom+Width/2, -g.camY*g.zoom+Height/2, false)
+		inWorld(func() {
+			g.field.background(dst, vp, g.zoom, -g.camX*g.zoom+float64(vp.Min.X+vp.Dx()/2), -g.camY*g.zoom+float64(vp.Min.Y+vp.Dy()/2), false)
+		})
 	}
 	sx, sy := g.shake()
 	g.camX, g.camY = g.camX-sx/g.zoom, g.camY-sy/g.zoom
@@ -945,17 +947,20 @@ func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 		op.GeoM.Translate(sx, sy)
 	}
 	op.Filter = ebiten.FilterPixelated
-	drawScaled(dst, g.field.Canvas, op)
-	g.cursor(dst)
-	g.drawEffects(dst)
+	inWorld(func() {
+		drawScaled(dst, g.field.Canvas, op)
+		g.cursor(dst)
+		g.drawEffects(dst)
+	})
+	// popups stand over their unit but are UI: the UI size enlarges them on top of the zoom
 	for _, p := range g.popups {
 		x, y := g.field.Center(p.unit.u, p.unit.v)
 		if p.kind != 0 {
-			sx, sy := g.toScreen(x+p.unit.shakeOffset(), y-p.unit.lift-p.unit.top-10-float64(p.row)*28/g.zoom)
+			sx, sy := worldToUI(g.toScreen(x+p.unit.shakeOffset(), y-p.unit.lift-p.unit.top-10-float64(p.row)*28/g.zoom))
 			g.drawNumber(dst, p, sx, sy)
 			continue
 		}
-		sx, sy := g.toScreen(x+p.unit.shakeOffset(), y-p.unit.lift-p.unit.top-10-p.t*16-float64(p.row)*18/g.zoom)
+		sx, sy := worldToUI(g.toScreen(x+p.unit.shakeOffset(), y-p.unit.lift-p.unit.top-10-p.t*16-float64(p.row)*18/g.zoom))
 		g.outlined(dst, p.text, sx-g.width(p.text, 16)/2, sy, 16)
 	}
 	g.drawHitFlash(dst)

@@ -206,7 +206,7 @@ func (g *Game) objectiveScroll(dst *ebiten.Image, x, y float32, win, lose string
 			k := i / 3
 			rect(dst, x+5, y+h*i/4, w, h/4+1, color.NRGBA{R: uint8(239 - 22*k), G: uint8(228 - 25*k), B: uint8(200 - 34*k), A: 255})
 		}
-		sub := dst.SubImage(image.Rect(int(float64(x+5)*scale), 0, int(float64(x+5+w)*scale), int(float64(barH)*scale))).(*ebiten.Image)
+		sub := dst.SubImage(image.Rect(int(float64(x+5)*drawPx), 0, int(float64(x+5+w)*drawPx), int(float64(barH)*drawPx))).(*ebiten.Image)
 		tx := float64(x + 15)
 		for i, p := range parts {
 			c := color.NRGBA{R: 43, G: 29, B: 18, A: 255}
@@ -263,7 +263,7 @@ func (g *Game) nameTags(dst *ebiten.Image, o core.Observation, right float32, no
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Translate(-float64(img.Bounds().Dx())/2, 0)
 		op.GeoM.Rotate(swing * math.Pi / 180)
-		op.GeoM.Translate(float64(x+tagW/2)*scale, 0)
+		op.GeoM.Translate(float64(x+tagW/2)*drawPx, 0)
 		op.Filter = ebiten.FilterLinear
 		dst.DrawImage(img, op)
 		tag := id
@@ -275,7 +275,7 @@ func (g *Game) nameTags(dst *ebiten.Image, o core.Observation, right float32, no
 
 // tagImage renders one name tag (string, body, vertical name) at device resolution.
 func (g *Game) tagImage(name string, done, lit bool) *ebiten.Image {
-	key := fmt.Sprint("tag", name, done, lit, scale)
+	key := fmt.Sprint("tag", name, done, lit, drawPx)
 	if im, ok := g.textCache[key]; ok {
 		return im
 	}
@@ -283,9 +283,9 @@ func (g *Game) tagImage(name string, done, lit bool) *ebiten.Image {
 		g.textCache = map[string]*ebiten.Image{}
 	}
 	pad := 4
-	im := ebiten.NewImage(int(float64(tagW+pad*2)*scale), int(float64(tagH+pad)*scale))
-	old := scale
-	defer func() { scale = old }()
+	im := ebiten.NewImage(int(float64(tagW+pad*2)*drawPx), int(float64(tagH+pad)*drawPx))
+	old := drawPx
+	defer func() { drawPx = old }()
 	s := float32(old)
 	draw := func(x, y, w, h float32, c color.Color) {
 		vector.FillRect(im, (x+float32(pad))*s, y*s, w*s, h*s, c, false)
@@ -306,7 +306,7 @@ func (g *Game) tagImage(name string, done, lit bool) *ebiten.Image {
 	draw(1, 13, 4, tagH-14, side)
 	draw(tagW-5, 13, 4, tagH-14, side)
 	draw(2, tagH-2, tagW-4, 2, color.NRGBA{A: 90})
-	scale = old
+	drawPx = old
 	f := g.serif(13, 900)
 	runes := []rune(name)
 	lh := 17.0

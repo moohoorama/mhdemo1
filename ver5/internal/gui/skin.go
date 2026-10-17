@@ -33,11 +33,42 @@ type button struct {
 	click func()
 }
 
-// scale maps the fixed Width×Height layout onto the window's device pixels. Everything
-// drawn on the screen goes through the helpers below, which apply it.
-var scale = 1.0
+// Screen coordinates are in one of two spaces, each uniform (the same in x and y):
+//   - UI px, uiPx device pixels each: HUD, windows, dialogue, banners. The player's UI size
+//     setting changes uiPx, so every piece of UI grows together.
+//   - world px, worldPx device pixels each: the battlefield on screen (tiles, units,
+//     effects), which the camera zoom scales on top.
+//
+// The helpers below draw in the space drawPx names: uiPx, except inside inWorld.
+var uiPx, worldPx, drawPx = 1.0, 1.0, 1.0
 
-// uiZoom enlarges a block of UI about the layout point (uiOX, uiOY) on top of scale: the
+// setUnits fits the Width×Height layout to a w×h device-pixel screen.
+func setUnits(w, h float64) {
+	uiPx = min(w/Width, h/Height)
+	worldPx, drawPx = uiPx, uiPx
+}
+
+// inWorld draws f in world px.
+func inWorld(f func()) {
+	drawPx = worldPx
+	defer func() { drawPx = uiPx }()
+	f()
+}
+
+// worldToUI maps a point on the battlefield's screen to UI px, for UI anchored to it.
+func worldToUI(x, y float64) (float64, float64) {
+	k := worldPx / uiPx
+	return x * k, y * k
+}
+
+// cursorWorld is the cursor in world px, for picking map cells.
+func cursorWorld() (float64, float64) {
+	x, y := cursorPos()
+	k := uiPx / worldPx
+	return float64(x) * k, float64(y) * k
+}
+
+// uiZoom enlarges a block of UI about the layout point (uiOX, uiOY) on top of drawPx: the
 // player's UI size setting, applied by withUI around panels anchored to a unit.
 var uiZoom, uiOX, uiOY = 1.0, 0.0, 0.0
 
@@ -75,22 +106,22 @@ func uiBounds(m int) image.Rectangle {
 }
 
 func rect(dst *ebiten.Image, x, y, w, h float32, c color.Color) {
-	s, z := float32(scale), float32(uiZoom)
+	s, z := float32(drawPx), float32(uiZoom)
 	vector.FillRect(dst, ux(x)*s, uy(y)*s, w*z*s, h*z*s, c, false)
 }
 
 func strokeRect(dst *ebiten.Image, x, y, w, h, width float32, c color.Color) {
-	s, z := float32(scale), float32(uiZoom)
+	s, z := float32(drawPx), float32(uiZoom)
 	vector.StrokeRect(dst, ux(x)*s, uy(y)*s, w*z*s, h*z*s, width*z*s, c, false)
 }
 
 func strokeLine(dst *ebiten.Image, x0, y0, x1, y1, width float32, c color.Color) {
-	s := float32(scale)
+	s := float32(drawPx)
 	vector.StrokeLine(dst, ux(x0)*s, uy(y0)*s, ux(x1)*s, uy(y1)*s, width*float32(uiZoom)*s, c, true)
 }
 
 func fillCircle(dst *ebiten.Image, x, y, r float32, c color.Color) {
-	s := float32(scale)
+	s := float32(drawPx)
 	vector.FillCircle(dst, ux(x)*s, uy(y)*s, r*float32(uiZoom)*s, c, true)
 }
 
@@ -100,7 +131,7 @@ func scaled(p *vector.Path) *vector.Path {
 	o.GeoM.Translate(-uiOX, -uiOY)
 	o.GeoM.Scale(uiZoom, uiZoom)
 	o.GeoM.Translate(uiOX, uiOY)
-	o.GeoM.Scale(scale, scale)
+	o.GeoM.Scale(drawPx, drawPx)
 	q.AddPath(p, o)
 	return &q
 }
@@ -110,7 +141,7 @@ func fillPath(dst *ebiten.Image, p *vector.Path, op *vector.DrawPathOptions) {
 }
 
 func strokePath(dst *ebiten.Image, p *vector.Path, so vector.StrokeOptions, op *vector.DrawPathOptions) {
-	so.Width *= float32(scale * uiZoom)
+	so.Width *= float32(drawPx * uiZoom)
 	vector.StrokePath(dst, scaled(p), &so, op)
 }
 
@@ -119,7 +150,7 @@ func drawScaled(dst, src *ebiten.Image, op *ebiten.DrawImageOptions) {
 	op.GeoM.Translate(-uiOX, -uiOY)
 	op.GeoM.Scale(uiZoom, uiZoom)
 	op.GeoM.Translate(uiOX, uiOY)
-	op.GeoM.Scale(scale, scale)
+	op.GeoM.Scale(drawPx, drawPx)
 	dst.DrawImage(src, op)
 }
 
@@ -150,11 +181,11 @@ func (g *Game) serif(size float64, weight float32) *text.GoTextFace {
 // write draws s in face f at layout (x, y); op may carry extra colour or transform.
 func write(dst *ebiten.Image, s string, f *text.GoTextFace, x, y float64, c color.Color) {
 	op := &text.DrawOptions{}
-	op.GeoM.Translate(float64(ux(float32(x)))*scale, float64(uy(float32(y)))*scale)
+	op.GeoM.Translate(float64(ux(float32(x)))*drawPx, float64(uy(float32(y)))*drawPx)
 	op.ColorScale.ScaleWithColor(c)
-	op.LineSpacing = f.Size * 1.45 * scale * uiZoom
+	op.LineSpacing = f.Size * 1.45 * drawPx * uiZoom
 	sf := *f
-	sf.Size *= scale * uiZoom
+	sf.Size *= drawPx * uiZoom
 	text.Draw(dst, s, &sf, op)
 }
 
@@ -166,19 +197,19 @@ func measure(s string, f *text.GoTextFace) float64 {
 
 func (g *Game) label(dst *ebiten.Image, s string, x, y, size float64, c color.Color) {
 	op := &text.DrawOptions{}
-	op.GeoM.Translate(float64(ux(float32(x)))*scale, float64(uy(float32(y)))*scale)
+	op.GeoM.Translate(float64(ux(float32(x)))*drawPx, float64(uy(float32(y)))*drawPx)
 	op.ColorScale.ScaleWithColor(c)
-	op.LineSpacing = size * 1.45 * scale * uiZoom
+	op.LineSpacing = size * 1.45 * drawPx * uiZoom
 	f := g.face(size)
-	f.Size *= scale * uiZoom
+	f.Size *= drawPx * uiZoom
 	text.Draw(dst, s, f, op)
 }
 
 func (g *Game) width(s string, size float64) float64 {
 	f := g.face(size)
-	f.Size *= scale
-	w, _ := text.Measure(s, f, size*1.45*scale)
-	return w / scale
+	f.Size *= drawPx
+	w, _ := text.Measure(s, f, size*1.45*drawPx)
+	return w / drawPx
 }
 
 // centered draws s with its centre at x.
@@ -256,13 +287,13 @@ func (g *Game) titled(dst *ebiten.Image, r image.Rectangle, title string) {
 	g.label(dst, title, float64(x)+18, float64(r.Min.Y)-11, 17, ink)
 }
 
-// cursorPos is the mouse position in layout coordinates; screenshot drivers replace it.
+// cursorPos is the mouse position in UI px; screenshot drivers replace it.
 var cursorPos = func() (int, int) {
 	x, y := ebiten.CursorPosition()
 	if pointer.used {
 		x, y = pointer.x, pointer.y
 	}
-	return int(float64(x) / scale), int(float64(y) / scale)
+	return int(float64(x) / uiPx), int(float64(y) / uiPx)
 }
 
 func hovered(r image.Rectangle) bool {

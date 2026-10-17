@@ -117,7 +117,7 @@ func (g *Game) drawCutIn(dst *ebiten.Image) {
 			c := color.NRGBA{R: uint8(26 + 32*(1-d)*.5), G: uint8(8 + 10*(1-d)*.5), B: uint8(5 + 5*(1-d)*.5), A: 255}
 			rect(dst, 0, float32(top+bandH*s), float32(W), float32(bandH/15+1), c)
 		}
-		band := dst.SubImage(image.Rect(0, int(y0*scale), int(W*scale), int(y1*scale))).(*ebiten.Image)
+		band := dst.SubImage(image.Rect(0, int(y0*drawPx), int(W*drawPx), int(y1*drawPx))).(*ebiten.Image)
 		g.drawCutPanes(band, v, t, top, bandH, charge, clash)
 		g.drawCutNames(band, v, t, top, bandH, stampL, stampR)
 	}
@@ -178,7 +178,7 @@ func (g *Game) drawCutPanes(dst *ebiten.Image, v *duelview.View, t, top, bandH, 
 			r = -r
 		}
 		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate((x+off+r+shake)*scale, (top+shake*.6)*scale)
+		op.GeoM.Translate((x+off+r+shake)*drawPx, (top+shake*.6)*drawPx)
 		dst.DrawImage(img, op)
 	}
 	// the shared cut, lit at the impact
@@ -197,7 +197,7 @@ func (g *Game) drawCutPanes(dst *ebiten.Image, v *duelview.View, t, top, bandH, 
 // cutPane renders one officer's pane: the portrait filling it, shaded toward the cut and
 // the bottom, with the cut-away triangle removed.
 func (g *Game) cutPane(side int, portrait *ebiten.Image, pw, ph, drift float64) *ebiten.Image {
-	w, h := int(math.Ceil(pw*scale)), int(math.Ceil(ph*scale))
+	w, h := int(math.Ceil(pw*drawPx)), int(math.Ceil(ph*drawPx))
 	if g.cutPanes[side] == nil || g.cutPanes[side].Bounds().Dx() != w || g.cutPanes[side].Bounds().Dy() != h {
 		g.cutPanes[side] = ebiten.NewImage(w, h)
 	}
@@ -206,7 +206,7 @@ func (g *Game) cutPane(side int, portrait *ebiten.Image, pw, ph, drift float64) 
 	if portrait != nil {
 		iw := pw * 1.35
 		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
-		op.GeoM.Scale(iw*scale/float64(portrait.Bounds().Dx()), iw*scale/float64(portrait.Bounds().Dy()))
+		op.GeoM.Scale(iw*drawPx/float64(portrait.Bounds().Dx()), iw*drawPx/float64(portrait.Bounds().Dy()))
 		x := -.34 * pw
 		if side == 1 {
 			x = pw - iw + .34*pw
@@ -215,23 +215,23 @@ func (g *Game) cutPane(side int, portrait *ebiten.Image, pw, ph, drift float64) 
 		if side == 1 {
 			d = -d
 		}
-		op.GeoM.Translate((x+d)*scale, -.42*ph*scale)
+		op.GeoM.Translate((x+d)*drawPx, -.42*ph*drawPx)
 		im.DrawImage(portrait, op)
 	} else {
 		im.Fill(color.NRGBA{R: 40, G: 26, B: 20, A: 255})
 	}
-	s := float32(scale)
+	s := float32(drawPx)
 	// darken toward the cut and toward the bottom with two stretched ramps
 	ramp := cutRamp()
 	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
-	op.GeoM.Scale(pw*scale/64, ph*scale)
+	op.GeoM.Scale(pw*drawPx/64, ph*drawPx)
 	if side == 1 {
 		op.GeoM.Scale(-1, 1)
-		op.GeoM.Translate(pw*scale, 0)
+		op.GeoM.Translate(pw*drawPx, 0)
 	}
 	im.DrawImage(ramp[0], op)
 	op = &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
-	op.GeoM.Scale(pw*scale, ph*scale/64)
+	op.GeoM.Scale(pw*drawPx, ph*drawPx/64)
 	im.DrawImage(ramp[1], op)
 	var cut vector.Path
 	if side == 0 {
@@ -271,7 +271,7 @@ func (g *Game) drawCutNames(dst *ebiten.Image, v *duelview.View, t, top, bandH, 
 			tag, tc = "적군 장수", color.NRGBA{R: 240, G: 160, B: 142, A: 255}
 		}
 		img := g.glowText(name, f, glow, rim)
-		w, h := float64(img.Bounds().Dx())/scale, float64(img.Bounds().Dy())/scale
+		w, h := float64(img.Bounds().Dx())/drawPx, float64(img.Bounds().Dy())/drawPx
 		// the ally's name ends just left of the screen's middle, the enemy's starts right of it
 		anchorX := W * .47
 		if side == 1 {
@@ -283,9 +283,9 @@ func (g *Game) drawCutNames(dst *ebiten.Image, v *duelview.View, t, top, bandH, 
 		if side == 1 {
 			ox = 0
 		}
-		op.GeoM.Translate(-ox*scale, -h/2*scale)
+		op.GeoM.Translate(-ox*drawPx, -h/2*drawPx)
 		op.GeoM.Scale(sc, sc)
-		op.GeoM.Translate((anchorX+shake)*scale, cy*scale)
+		op.GeoM.Translate((anchorX+shake)*drawPx, cy*drawPx)
 		op.ColorScale.ScaleAlpha(float32(min(1, k/.7)))
 		dst.DrawImage(img, op)
 		if k >= 1 {
@@ -302,7 +302,7 @@ func (g *Game) drawCutNames(dst *ebiten.Image, v *duelview.View, t, top, bandH, 
 // glowText renders s in white with a soft coloured glow and a dark drop below it, at
 // device resolution.
 func (g *Game) glowText(s string, f *text.GoTextFace, glow, rim color.NRGBA) *ebiten.Image {
-	key := fmt.Sprint("glow", s, f.Size, glow, scale)
+	key := fmt.Sprint("glow", s, f.Size, glow, drawPx)
 	if im, ok := g.textCache[key]; ok {
 		return im
 	}
@@ -310,15 +310,15 @@ func (g *Game) glowText(s string, f *text.GoTextFace, glow, rim color.NRGBA) *eb
 		g.textCache = map[string]*ebiten.Image{}
 	}
 	pad := 24.0
-	w := int(math.Ceil((measure(s, f) + 2*pad) * scale))
-	h := int(math.Ceil((f.Size*1.15 + 2*pad) * scale))
+	w := int(math.Ceil((measure(s, f) + 2*pad) * drawPx))
+	h := int(math.Ceil((f.Size*1.15 + 2*pad) * drawPx))
 	im := ebiten.NewImage(w, h)
 	draw := func(dx, dy float64, c color.Color) {
 		op := &text.DrawOptions{}
-		op.GeoM.Translate((pad+dx)*scale, (pad-f.Size*.1+dy)*scale)
+		op.GeoM.Translate((pad+dx)*drawPx, (pad-f.Size*.1+dy)*drawPx)
 		op.ColorScale.ScaleWithColor(c)
 		sf := *f
-		sf.Size *= scale
+		sf.Size *= drawPx
 		text.Draw(im, s, &sf, op)
 	}
 	for r := 18.0; r > 2; r -= 4 { // the glow: rings of faint copies

@@ -77,7 +77,7 @@ func (g *Game) drawNumber(dst *ebiten.Image, p *popup, x, y float64) {
 			k := bezier(0, 0, .58, 1, min(1, t/.5))
 			c := color.NRGBA{R: 255, G: 209, B: 102, A: uint8(255 * (1 - k))}
 			r := float32(20 * z * (.2 + 2*k))
-			vector.StrokeCircle(dst, float32(x*scale), float32((y+18*z)*scale), r*float32(scale), float32(1.8*z*scale), c, true)
+			vector.StrokeCircle(dst, float32(x*drawPx), float32((y+18*z)*drawPx), r*float32(drawPx), float32(1.8*z*drawPx), c, true)
 		}
 		k := bezier(0, 0, .58, 1, min(1, t/numberLife))
 		at := []float64{0, .35, .8, 1}
@@ -90,8 +90,8 @@ func (g *Game) drawNumber(dst *ebiten.Image, p *popup, x, y float64) {
 		g.drawNumberImage(dst, img, x, y+(9+dy*numberSize)*z, sc, rot, op)
 		if p.kind == numberCrit {
 			small := g.numberImageFace("치명", g.brush(numberSize*.55*z), color.NRGBA{R: 255, G: 209, B: 102, A: 255}, color.NRGBA{R: 26, G: 7, B: 3, A: 255}, z)
-			w := float64(img.Bounds().Dx()) / scale
-			g.drawNumberImage(dst, small, x+(w/2+float64(small.Bounds().Dx())/scale/2)*sc*.92, y+(9+dy*numberSize+numberSize*.12)*z, sc, rot, op)
+			w := float64(img.Bounds().Dx()) / drawPx
+			g.drawNumberImage(dst, small, x+(w/2+float64(small.Bounds().Dx())/drawPx/2)*sc*.92, y+(9+dy*numberSize+numberSize*.12)*z, sc, rot, op)
 		}
 	case numberHeal:
 		g.drawMotes(dst, p, x, y+33*z, t, z)
@@ -111,7 +111,7 @@ func (g *Game) numberImage(s string, fill, rim color.NRGBA, z float64) *ebiten.I
 
 // numberImageFace renders s with a dark rim and a drop shadow at device resolution.
 func (g *Game) numberImageFace(s string, f *text.GoTextFace, fill, rim color.NRGBA, z float64) *ebiten.Image {
-	key := fmt.Sprint("num", s, f.Size, fill, scale)
+	key := fmt.Sprint("num", s, f.Size, fill, drawPx)
 	if im, ok := g.textCache[key]; ok {
 		return im
 	}
@@ -119,15 +119,15 @@ func (g *Game) numberImageFace(s string, f *text.GoTextFace, fill, rim color.NRG
 		g.textCache = map[string]*ebiten.Image{}
 	}
 	pad := 4 * z
-	w := int(math.Ceil((measure(s, f) + pad*2) * scale))
-	h := int(math.Ceil((f.Size*1.2 + pad*2) * scale))
+	w := int(math.Ceil((measure(s, f) + pad*2) * drawPx))
+	h := int(math.Ceil((f.Size*1.2 + pad*2) * drawPx))
 	im := ebiten.NewImage(w, h)
 	draw := func(dx, dy float64, c color.Color) {
 		op := &text.DrawOptions{}
-		op.GeoM.Translate((pad+dx)*scale, (pad-f.Size*.12+dy)*scale)
+		op.GeoM.Translate((pad+dx)*drawPx, (pad-f.Size*.12+dy)*drawPx)
 		op.ColorScale.ScaleWithColor(c)
 		sf := *f
-		sf.Size *= scale
+		sf.Size *= drawPx
 		text.Draw(im, s, &sf, op)
 	}
 	r := 1.2 * z
@@ -151,7 +151,7 @@ func (g *Game) drawNumberImage(dst, img *ebiten.Image, x, y, sc, deg, alpha floa
 	op.GeoM.Translate(-w/2, -h/2)
 	op.GeoM.Scale(sc, sc)
 	op.GeoM.Rotate(deg * math.Pi / 180)
-	op.GeoM.Translate(x*scale, y*scale)
+	op.GeoM.Translate(x*drawPx, y*drawPx)
 	op.ColorScale.ScaleAlpha(float32(alpha))
 	op.Filter = ebiten.FilterLinear
 	dst.DrawImage(img, op)
@@ -178,12 +178,12 @@ func (g *Game) drawSlash(dst *ebiten.Image, x, y, t, z float64) {
 		}
 		var path vector.Path
 		x0, y0 := seg(tail)
-		path.MoveTo(float32(x0*scale), float32(y0*scale))
+		path.MoveTo(float32(x0*drawPx), float32(y0*drawPx))
 		for u := tail; u <= head; u += .05 {
 			px, py := seg(u)
-			path.LineTo(float32(px*scale), float32(py*scale))
+			path.LineTo(float32(px*drawPx), float32(py*drawPx))
 		}
-		so := &vector.StrokeOptions{Width: float32(s.w * z * scale), LineCap: vector.LineCapRound, LineJoin: vector.LineJoinRound}
+		so := &vector.StrokeOptions{Width: float32(s.w * z * drawPx), LineCap: vector.LineCapRound, LineJoin: vector.LineJoinRound}
 		op := &vector.DrawPathOptions{AntiAlias: true}
 		op.ColorScale.ScaleWithColor(s.c)
 		vector.StrokePath(dst, &path, so, op)
@@ -204,7 +204,7 @@ func (g *Game) drawSpatter(dst *ebiten.Image, p *popup, x, y, t, z float64) {
 		sc := keyframe(k, []float64{0, .5, 1}, []float64{.3, 1, 1})
 		a := keyframe(k, []float64{0, .5, 1}, []float64{1, .9, 0})
 		r := (.75 + b.r*2.25) * sc * z
-		vector.FillCircle(dst, float32((x+px*z)*scale), float32((y+py*z)*scale), float32(r*scale), color.NRGBA{R: 18, G: 8, B: 4, A: uint8(255 * a)}, true)
+		vector.FillCircle(dst, float32((x+px*z)*drawPx), float32((y+py*z)*drawPx), float32(r*drawPx), color.NRGBA{R: 18, G: 8, B: 4, A: uint8(255 * a)}, true)
 	}
 }
 

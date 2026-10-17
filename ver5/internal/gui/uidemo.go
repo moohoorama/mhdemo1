@@ -158,7 +158,7 @@ func (d *Demo) look(id string) {
 
 // Layout takes the screen as given, so a host can play the demo at a phone's size.
 func (d *Demo) Layout(w, h int) (int, int) {
-	scale = min(float64(w)/Width, float64(h)/Height)
+	setUnits(float64(w), float64(h))
 	return w, h
 }
 
@@ -188,7 +188,7 @@ func (d *Demo) Draw(dst *ebiten.Image) {
 		return
 	}
 	frame := dst
-	if fw, fh := int(math.Ceil(Width*scale)), int(math.Ceil(Height*scale)); fw != dst.Bounds().Dx() || fh != dst.Bounds().Dy() {
+	if fw, fh := int(math.Ceil(Width*uiPx)), int(math.Ceil(Height*uiPx)); fw != dst.Bounds().Dx() || fh != dst.Bounds().Dy() {
 		if d.letterbox == nil || d.letterbox.Bounds().Dx() != fw || d.letterbox.Bounds().Dy() != fh {
 			d.letterbox = ebiten.NewImage(fw, fh)
 		}

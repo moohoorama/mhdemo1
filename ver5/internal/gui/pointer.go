@@ -88,12 +88,12 @@ func (g *Game) updatePointer() {
 			return
 		}
 		e.zoom = max(.1, min(3, e.zoom*pointer.ratio))
-		e.cx -= pointer.dx / scale / e.zoom
-		e.cy -= pointer.dy / scale / e.zoom
+		e.cx -= pointer.dx / uiPx / e.zoom
+		e.cy -= pointer.dy / uiPx / e.zoom
 		e.clampCamera()
-	} else if g.field != nil && !g.popupPending() && !g.input && !g.overHUD(x, y) && x >= 0 && x < Width && y >= g.battleViewport().Min.Y && y < g.battleViewport().Max.Y {
+	} else if g.field != nil && !g.popupPending() && !g.input && g.onMap() {
 		g.setZoomImmediate(max(.5, min(4, g.zoom*pointer.ratio)))
-		g.camX -= pointer.dx / scale / g.zoom
-		g.camY -= pointer.dy / scale / g.zoom
+		g.camX -= pointer.dx / worldPx / g.zoom
+		g.camY -= pointer.dy / worldPx / g.zoom
 	}
 }
