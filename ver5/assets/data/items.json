@@ -1,22 +1,40 @@
 {
  "Items": {
-  "small_food": {
-   "Name": "소군량",
+  "bean": {
+   "Name": "콩",
    "Desc": "병력을 220 회복한다.",
    "Effect": "hp",
    "Amount": 220
   },
-  "medium_food": {
-   "Name": "중군량",
+  "barley": {
+   "Name": "보리",
    "Desc": "병력을 700 회복한다.",
    "Effect": "hp",
    "Amount": 700
   },
-  "small_scroll": {
-   "Name": "소병법단",
-   "Desc": "병법치를 15 회복한다.",
+  "rice": {
+   "Name": "쌀",
+   "Desc": "병력을 2200 회복한다.",
+   "Effect": "hp",
+   "Amount": 2200
+  },
+  "liquor": {
+   "Name": "술",
+   "Desc": "병법치를 30 회복한다.",
    "Effect": "mp",
-   "Amount": 15
+   "Amount": 30
+  },
+  "fine_liquor": {
+   "Name": "특급주",
+   "Desc": "병법치를 60 회복한다.",
+   "Effect": "mp",
+   "Amount": 60
+  },
+  "baijiu": {
+   "Name": "빼갈",
+   "Desc": "병법치를 120 회복한다.",
+   "Effect": "mp",
+   "Amount": 120
   },
   "promote_heavy_cavalry": {
    "Name": "승급서(중기병)",

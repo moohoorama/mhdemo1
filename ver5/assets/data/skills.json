@@ -51,7 +51,7 @@
    "Cost": 24,
    "Hit": 90,
    "Effect": "steal",
-   "Item": "small_food",
+   "Item": "bean",
    "Min": 1,
    "Coeff": 0.7
   },

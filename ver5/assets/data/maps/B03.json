@@ -1279,9 +1279,9 @@
    }
   ],
   "Reward": {
-   "medium_food": 1,
-   "small_food": 8,
-   "small_scroll": 4
+   "barley": 1,
+   "bean": 8,
+   "liquor": 4
   },
   "Duels": [
    {

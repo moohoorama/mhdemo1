@@ -624,8 +624,8 @@
    }
   ],
   "Reward": {
-   "small_food": 8,
-   "small_scroll": 4
+   "bean": 8,
+   "liquor": 4
   },
   "Duels": [
    {

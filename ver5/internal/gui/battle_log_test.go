@@ -36,9 +36,9 @@ func TestBattleLogCommand(t *testing.T) {
 		{"counter stance", core.Command{Kind: "skill", Actor: "liubei", Target: "liubei", Skill: "counter"}, []core.Event{
 			{Kind: "effect", Actor: "liubei", Target: "liubei"},
 		}, []string{"유비 → 유비: 반격 사용", "유비 → 유비: 반격 태세 적용"}},
-		{"MP item", core.Command{Kind: "item", Actor: "liubei", Target: "liubei", Item: "small_scroll"}, []core.Event{
+		{"MP item", core.Command{Kind: "item", Actor: "liubei", Target: "liubei", Item: "liquor"}, []core.Event{
 			{Kind: "item", Actor: "liubei", Target: "liubei", Amount: 2},
-		}, []string{"유비 → 유비: 소병법단 사용", "유비 → 유비: 병법치 +2"}},
+		}, []string{"유비 → 유비: 술 사용", "유비 → 유비: 병법치 +2"}},
 		{"wait without events", core.Command{Kind: "wait", Actor: "liubei"}, nil, []string{"유비: 대기"}},
 	}
 	for _, tc := range cases {
