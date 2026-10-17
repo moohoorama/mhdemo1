@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 // The dialogue box is a hand scroll put together from pixel parts like the speech bubble
@@ -48,11 +47,11 @@ func loadScrollParts(dir string) (*scrollParts, error) {
 		name string
 		dst  **ebiten.Image
 	}{{"rod-top", &p.rodTop}, {"rod", &p.rod}, {"rod-bottom", &p.rodBottom}, {"band", &p.band}, {"paper", &p.paper}} {
-		im, _, err := ebitenutil.NewImageFromFile(filepath.Join(dir, f.name+".png"))
+		im, err := loadRGBA(filepath.Join(dir, f.name+".png"))
 		if err != nil {
 			return nil, err
 		}
-		*f.dst = im
+		*f.dst = ebiten.NewImageFromImage(im)
 	}
 	return p, nil
 }
