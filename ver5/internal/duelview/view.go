@@ -64,6 +64,27 @@ type View struct {
 	Clock   float64
 	canvas  *ebiten.Image
 	uiLayer *ebiten.Image
+	// cw×ch is the arena canvas: the width×height design at (ox, oy) in its middle, widened
+	// or deepened to the screen's shape so a screen of another shape sees more ground
+	cw, ch int
+	ox, oy float64
+}
+
+// fit shapes the arena canvas for a w×h screen and returns its images, cw×ch.
+func (g *View) fit(w, h int) (canvas, uiLayer *ebiten.Image) {
+	g.cw, g.ch = width, int(math.Round(width*float64(h)/float64(w)))
+	if w*height > h*width {
+		g.cw, g.ch = int(math.Round(height*float64(w)/float64(h))), height
+	}
+	g.ox, g.oy = float64(g.cw-width)/2, float64(g.ch-height)/2
+	if g.canvas == nil || g.canvas.Bounds().Dx() != g.cw || g.canvas.Bounds().Dy() != g.ch {
+		if g.canvas != nil {
+			g.canvas.Deallocate()
+			g.uiLayer.Deallocate()
+		}
+		g.canvas, g.uiLayer = ebiten.NewImage(g.cw, g.ch), ebiten.NewImage(g.cw, g.ch)
+	}
+	return g.canvas, g.uiLayer
 }
 
 // Length is the real duration of the whole presentation, transitions included.
@@ -111,11 +132,9 @@ func (g *View) Cover() float64 {
 func (g *View) Compose(dst, battle, battleUI *ebiten.Image) {
 	pan, zoom, ui := g.Phase()
 	w, h := float64(dst.Bounds().Dx()), float64(dst.Bounds().Dy())
-	s := min(w/width, h/height)
-	if g.canvas == nil {
-		g.canvas = ebiten.NewImage(width, height)
-	}
-	g.render(g.canvas, ui)
+	canvas, _ := g.fit(dst.Bounds().Dx(), dst.Bounds().Dy())
+	s := w / float64(g.cw)
+	g.render(canvas, ui)
 	k := math.Pow(max(1, Transition.ZoomFactor), zoom)
 	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterNearest}
 	op.GeoM.Translate(-w/2, -h/2)
@@ -130,11 +149,11 @@ func (g *View) Compose(dst, battle, battleUI *ebiten.Image) {
 	// Zoom is geometric so growth reads as steady rather than bursting at the end.
 	k = math.Pow(Transition.StartScale, 1-zoom) * s
 	op = &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
-	op.GeoM.Translate(-width/2, -height/2)
+	op.GeoM.Translate(-float64(g.cw)/2, -float64(g.ch)/2)
 	op.GeoM.Scale(k, k)
 	op.GeoM.Translate(w/2, h/2)
 	op.ColorScale.ScaleAlpha(float32(smooth(zoom)))
-	dst.DrawImage(g.canvas, op)
+	dst.DrawImage(canvas, op)
 }
 
 func shade(c color.NRGBA, k float64) color.NRGBA {
@@ -172,7 +191,7 @@ func (g *View) at(x, y float64) (float64, float64) {
 	if g.flipY() {
 		y = 880 - y
 	}
-	return x, y
+	return x + g.ox, y + g.oy
 }
 
 func (g *View) flipX() bool { return strings.HasSuffix(g.Axis, "W") }
@@ -244,22 +263,15 @@ func (g *View) portrait(dst *ebiten.Image, i int, x, y float64) {
 
 func (g *View) Draw(dst *ebiten.Image) {
 	_, _, ui := g.Phase()
-	if dst.Bounds().Dx() == width && dst.Bounds().Dy() == height {
+	canvas, _ := g.fit(dst.Bounds().Dx(), dst.Bounds().Dy())
+	if dst.Bounds().Dx() == g.cw && dst.Bounds().Dy() == g.ch {
 		g.render(dst, ui)
 		return
 	}
-	if g.canvas == nil {
-		g.canvas = ebiten.NewImage(width, height)
-	}
-	g.render(g.canvas, ui)
-	// keep the arena's shape on any screen: as large as fits, centred, the rest in its ground
-	w, h := float64(dst.Bounds().Dx()), float64(dst.Bounds().Dy())
-	s := min(w/width, h/height)
-	dst.Fill(color.NRGBA{21, 27, 30, 255})
+	g.render(canvas, ui)
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Scale(s, s)
-	op.GeoM.Translate((w-width*s)/2, (h-height*s)/2)
-	dst.DrawImage(g.canvas, op)
+	op.GeoM.Scale(float64(dst.Bounds().Dx())/float64(g.cw), float64(dst.Bounds().Dy())/float64(g.ch))
+	dst.DrawImage(canvas, op)
 }
 
 // render draws the battlefield, then the duel's UI at the given opacity.
@@ -269,8 +281,8 @@ func (g *View) render(dst *ebiten.Image, ui float64) {
 	case ui >= 1:
 		g.drawUI(dst, s)
 	case ui > 0:
-		if g.uiLayer == nil {
-			g.uiLayer = ebiten.NewImage(width, height)
+		if g.uiLayer == nil || g.uiLayer.Bounds() != dst.Bounds() {
+			g.fit(dst.Bounds().Dx(), dst.Bounds().Dy())
 		}
 		g.uiLayer.Clear()
 		g.drawUI(g.uiLayer, s)
@@ -291,13 +303,13 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 		speck = shade(g.Tint, 1.35)
 		speck.A = 55
 	}
-	for y := 0; y < height; y += 4 {
-		k := max(0, min(1, float64(y-160)/550))
-		box(dst, 0, float64(y), width, 4, color.NRGBA{lerp8(far.R, near.R, k), lerp8(far.G, near.G, k), lerp8(far.B, near.B, k), 255})
+	for y := 0; y < g.ch; y += 4 {
+		k := max(0, min(1, (float64(y)-g.oy-160)/550))
+		box(dst, 0, float64(y), float64(g.cw), 4, color.NRGBA{lerp8(far.R, near.R, k), lerp8(far.G, near.G, k), lerp8(far.B, near.B, k), 255})
 	}
-	for i := range 160 {
-		x := float64((i * 197) % 1280)
-		y := float64((i * 113) % height)
+	for i := range 160 * g.cw * g.ch / (width * height) {
+		x := float64((i * 197) % g.cw)
+		y := float64((i * 113) % g.ch)
 		line(dst, x, y, x+7, y+2, 1, speck)
 	}
 	var units []unitDraw
@@ -316,7 +328,7 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 					y = 880 - y
 				}
 				x, y = g.at(x, y)
-				if x < -120 || x > width+120 || y < -160 || y > height+160 {
+				if x < -120 || x > float64(g.cw)+120 || y < -160 || y > float64(g.ch)+160 {
 					continue
 				}
 				art := g.Fighters[side].Troops
@@ -378,7 +390,7 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 		vector.StrokeCircle(dst, float32(x), float32(y), float32(r*(1-s.Impact)+8), 2, c, true)
 	}
 	if s.Flash > 0 {
-		box(dst, 0, 0, width, height, color.NRGBA{255, 255, 245, uint8(s.Flash * 225)})
+		box(dst, 0, 0, float64(g.cw), float64(g.ch), color.NRGBA{255, 255, 245, uint8(s.Flash * 225)})
 	}
 	return s
 }
@@ -403,11 +415,12 @@ func (g *View) drawUI(dst *ebiten.Image, s duel.State) {
 		x, footY := g.at(a.ScreenPosition())
 		headY := footY - g.Fighters[i].Art.TopOffset()*3
 		w, h := g.Bubble.Size(g.Fighters[i].Name, a.Speech)
-		x = max(12, min(width-w-12, x-28))
-		y := bubbleTop(headY, footY, h)
+		x = max(12, min(float64(g.cw)-w-12, x-28))
+		y := bubbleTop(headY-g.oy, footY-g.oy, h) + g.oy
 		g.Bubble.DrawText(dst, g.Fighters[i].Name, a.Speech, x, y, 1)
 	}
-	allyX, allyY, enemyX, enemyY := 24.0, 70.0, 930.0, 664.0
+	// the fighters' cards in opposite corners of the canvas
+	allyX, allyY, enemyX, enemyY := 24.0, 70.0, float64(g.cw)-350, float64(g.ch)-186
 	if g.flipX() {
 		allyX, enemyX = enemyX, allyX
 	}

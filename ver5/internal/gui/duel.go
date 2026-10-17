@@ -117,7 +117,11 @@ func (g *Game) drawDuel(dst *ebiten.Image) {
 	g.drawCutIn(dst)
 	g.drawDuelPreviewInfo(dst)
 	if ui >= 1 {
-		g.btn(dst, image.Rect(1000, 805, 1254, 839), "일기토 건너뛰기", g.player.SkipDuel)
+		skip := image.Rect(uiW-280, uiH-45, uiW-26, uiH-11)
+		if lowScreen() { // the fighters' cards fill the corners
+			skip = image.Rect(uiW/2-127, uiH-45, uiW/2+127, uiH-11)
+		}
+		g.btn(dst, skip, "일기토 건너뛰기", g.player.SkipDuel)
 	}
 }
 
