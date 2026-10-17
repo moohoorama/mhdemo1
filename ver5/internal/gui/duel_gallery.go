@@ -37,7 +37,7 @@ func (g *Game) OpenDuel(id, captureDir string, debug bool) error {
 			if d.ID != id {
 				continue
 			}
-			v := &duelview.View{Bubble: g.assets.Bubble, Story: g.assets.Duels.Story(id, d.Outcome)}
+			v := &duelview.View{Bubble: g.assets.Bubble, Story: g.assets.Duels.Story(id, d.Outcome), Decor: g.duelDecor()}
 			ids := append([]string{d.Ally, d.Enemy}, g.assets.Duels[id].Supports...)
 			for i, actor := range ids {
 				c, ok := g.S.Data.Characters[actor]

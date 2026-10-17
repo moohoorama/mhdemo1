@@ -179,7 +179,7 @@ func teamColor(u *core.UnitView) color.NRGBA {
 // brief is the small card right of the cursor while it rests on a cell: the unit on it, if
 // any, then the terrain. While a target is being picked the forecast takes its place.
 func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
-	if !g.hover.ok || g.ord.stage == "target" {
+	if !g.hover.ok || g.ord.stage == "target" || g.ord.stage == "menu" || g.ord.stage == "sub" {
 		return
 	}
 	u := g.hoveredUnit(o)

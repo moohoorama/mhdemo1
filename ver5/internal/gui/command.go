@@ -24,6 +24,7 @@ type order struct {
 	move    *core.Command
 	sub     string       // skill, item
 	pick    core.Command // the chosen action, Target unset
+	armed   hoverCell    // touch: the cell tapped once, waiting for a second tap
 }
 
 // engine is where the order's options are computed: the sandbox after a tentative move.
@@ -58,7 +59,7 @@ func (g *Game) begin(u core.UnitView) {
 func (g *Game) cancel() bool {
 	switch g.ord.stage {
 	case "target", "sub":
-		g.ord.stage, g.ord.sub = "menu", ""
+		g.ord.stage, g.ord.sub, g.ord.armed = "menu", "", hoverCell{}
 	case "menu":
 		u := g.unitView(g.S.Engine.Observe(), g.ord.actor)
 		if g.ord.move == nil && u != nil && u.Moved {
@@ -92,7 +93,7 @@ func (g *Game) tentative(x, y int) {
 	}
 	a := replay.New(g.S.Engine.Observe(), c.Actor)
 	a.Add(c, r.Events)
-	g.ord.sandbox, g.ord.move, g.ord.stage = sb, &c, "menu"
+	g.ord.sandbox, g.ord.move, g.ord.stage, g.ord.armed = sb, &c, "menu", hoverCell{}
 	g.player.Play([]*replay.Action{a}, sb.Observe())
 }
 
@@ -123,6 +124,16 @@ func (g *Game) options(pick core.Command) []core.Command {
 	return out
 }
 
+// arm makes a touch tap on a destination or target only mark it: it reports whether this
+// tap was the first, the second on the same cell being the one that commands.
+func (g *Game) arm(x, y int) bool {
+	if !pointer.used || g.ord.armed == (hoverCell{x, y, true}) {
+		return false
+	}
+	g.ord.armed = hoverCell{x, y, true}
+	return true
+}
+
 // mapClick handles a left click on the battlefield cell (x, y).
 func (g *Game) mapClick(x, y int) {
 	o := g.S.Engine.Observe()
@@ -148,6 +159,9 @@ func (g *Game) mapClick(x, y int) {
 	case "move":
 		for _, c := range g.S.Engine.LegalActions(g.ord.actor).Commands {
 			if c.Kind == "move" && c.X == x && c.Y == y {
+				if g.arm(x, y) {
+					return
+				}
 				g.tentative(x, y)
 				return
 			}
@@ -155,6 +169,9 @@ func (g *Game) mapClick(x, y int) {
 	case "target":
 		for _, c := range g.options(g.ord.pick) {
 			if t := g.unitView(g.engine().Observe(), c.Target); t != nil && t.X == x && t.Y == y {
+				if g.arm(x, y) {
+					return
+				}
 				g.confirm(c)
 				return
 			}
@@ -329,6 +346,14 @@ func (g *Game) drawMenuAt(dst *ebiten.Image, sx, sy float64) {
 
 // marks are the cells tinted on the field for the current order or selection.
 func (g *Game) marks(o core.Observation) []Highlight {
+	out := g.orderMarks(o)
+	if a := g.ord.armed; a.ok && (g.ord.stage == "move" || g.ord.stage == "target") {
+		out = append(out, Highlight{a.x, a.y, color.RGBA{255, 235, 140, 170}})
+	}
+	return out
+}
+
+func (g *Game) orderMarks(o core.Observation) []Highlight {
 	if o.Phase == "deployment" {
 		return g.deploymentMarks()
 	}

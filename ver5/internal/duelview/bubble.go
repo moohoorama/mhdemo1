@@ -2,6 +2,7 @@ package duelview
 
 import (
 	"fmt"
+	"math"
 	"image/color"
 	"image/png"
 	"os"
@@ -27,7 +28,10 @@ const (
 	bubbleCacheMax = 64
 )
 
-type bubbleKey struct{ name, body string }
+type bubbleKey struct {
+	name, body string
+	r          int
+}
 
 // Bubble draws speech balloons: a 9-slice frame of PNG pieces with a bold name line above
 // the wrapped body. Rendered balloons are cached by text, so a balloon that stays on
@@ -72,8 +76,22 @@ func (b *Bubble) DrawText(dst *ebiten.Image, name, body string, x, y, scale floa
 	dst.DrawImage(b.image(name, body), op)
 }
 
-func (b *Bubble) image(name, body string) *ebiten.Image {
-	key := bubbleKey{name, body}
+// DrawSharp draws the balloon with its top-left corner at (x, y) on a screen where one design
+// pixel is scale device pixels: the text is rasterised at that size instead of being
+// stretched from the design size.
+func (b *Bubble) DrawSharp(dst *ebiten.Image, name, body string, x, y, scale, alpha float64) {
+	r := max(1, min(4, int(math.Ceil(scale))))
+	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
+	op.GeoM.Scale(scale/float64(r), scale/float64(r))
+	op.GeoM.Translate(x, y)
+	op.ColorScale.ScaleAlpha(float32(alpha))
+	dst.DrawImage(b.imageAt(name, body, r), op)
+}
+
+func (b *Bubble) image(name, body string) *ebiten.Image { return b.imageAt(name, body, 1) }
+
+func (b *Bubble) imageAt(name, body string, r int) *ebiten.Image {
+	key := bubbleKey{name, body, r}
 	if im, ok := b.cache[key]; ok {
 		return im
 	}
@@ -83,7 +101,7 @@ func (b *Bubble) image(name, body string) *ebiten.Image {
 			delete(b.cache, k)
 		}
 	}
-	im := b.render(name, body)
+	im := b.render(name, body, r)
 	b.cache[key] = im
 	return im
 }
@@ -94,7 +112,7 @@ func (b *Bubble) face(size float64, weight float32) *text.GoTextFace {
 	return f
 }
 
-func (b *Bubble) render(name, body string) *ebiten.Image {
+func (b *Bubble) render(name, body string, r int) *ebiten.Image {
 	bodyFace, nameFace := b.face(bubbleBodySize, 400), b.face(bubbleNameSize, 800)
 	body = wrapText(body, bodyFace, bubbleMaxText)
 	textW, textH := text.Measure(body, bodyFace, bubbleSpacing)
@@ -112,18 +130,30 @@ func (b *Bubble) render(name, body string) *ebiten.Image {
 	if name == "" { // a mark or dots sits in the middle
 		textLeft = (w - textW) / 2
 	}
-	im := ebiten.NewImage(int(w+0.999), int(h+bubbleTailH+0.999))
-	b.draw(im, 0, 0, w, h)
+	iw, ih := int(w+0.999), int(h+bubbleTailH+0.999)
+	im := ebiten.NewImage(iw*r, ih*r)
+	if r == 1 {
+		b.draw(im, 0, 0, w, h)
+	} else {
+		frame := ebiten.NewImage(iw, ih)
+		b.draw(frame, 0, 0, w, h)
+		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
+		op.GeoM.Scale(float64(r), float64(r))
+		im.DrawImage(frame, op)
+		frame.Deallocate()
+		bodyFace, nameFace = b.face(bubbleBodySize*float64(r), 400), b.face(bubbleNameSize*float64(r), 800)
+	}
+	k := float64(r)
 	ink := color.NRGBA{40, 37, 34, 255}
 	if name != "" {
 		op := &text.DrawOptions{}
-		op.GeoM.Translate(bubblePadX, bubblePadTop)
+		op.GeoM.Translate(bubblePadX*k, bubblePadTop*k)
 		op.ColorScale.ScaleWithColor(ink)
 		text.Draw(im, name, nameFace, op)
 	}
 	op := &text.DrawOptions{}
-	op.LineSpacing = bubbleSpacing
-	op.GeoM.Translate(textLeft, textTop)
+	op.LineSpacing = bubbleSpacing * k
+	op.GeoM.Translate(textLeft*k, textTop*k)
 	op.ColorScale.ScaleWithColor(ink)
 	text.Draw(im, body, bodyFace, op)
 	return im

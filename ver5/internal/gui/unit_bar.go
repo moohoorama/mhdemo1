@@ -2,6 +2,7 @@ package gui
 
 import (
 	"image/color"
+	"math"
 
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
@@ -40,7 +41,8 @@ func (b *barState) update(target, dt float64) {
 			b.trailRate = (b.trail - target) / barShrink
 			b.hold, b.lag = barHold, 0
 		case target > b.fill:
-			b.trailRate = (target - b.trail) / barLead
+			b.trailRate = math.Abs(target-b.trail) / barLead
+			b.hold = 0
 			b.fillRate = (target - b.fill) / barRise
 			b.lag = barRiseLag
 		}

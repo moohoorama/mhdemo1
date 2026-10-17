@@ -40,7 +40,8 @@ func (g *Game) drawBattleSpeech(dst *ebiten.Image) {
 		x, y := g.field.Center(u.u, u.v)
 		x, y = worldToUI(g.toScreen(x, y-u.lift-u.top))
 		bw, bh := g.assets.Bubble.Size(bubble.name, bubble.text)
-		w, h := int(bw), int(bh)
+		k := 1 / smallScreen()
+		w, h := int(bw*k), int(bh*k)
 		px, py := max(16, min(uiW-w-16, int(x)-32)), max(62, min(uiH-h-190, int(y)-h-10))
 		r := image.Rect(px, py, px+w, py+h)
 		for _, other := range placed {
@@ -55,6 +56,6 @@ func (g *Game) drawBattleSpeech(dst *ebiten.Image) {
 		}
 
 		placed = append(placed, r)
-		g.assets.Bubble.DrawText(dst, bubble.name, bubble.text, float64(px), float64(py), drawPx)
+		g.assets.Bubble.DrawSharp(dst, bubble.name, bubble.text, float64(px)*drawPx, float64(py)*drawPx, drawPx*k, 1)
 	}
 }

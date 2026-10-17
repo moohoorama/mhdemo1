@@ -52,30 +52,36 @@ const (
 	cardPad      = 20
 )
 
+// smallScreen is the share of the design height a short (phone) screen has: the cards
+// shrink by it and the speech bubbles grow by its inverse.
+func smallScreen() float64 { return min(1, float64(uiH)/Height) }
+
 func (g *Game) drawDuelCards(dst *ebiten.Image, v *duelview.View) {
-	w, h := 2*cardW+cardGap+2*cardPad, cardH+2*cardPad
-	x, y := uiW/2-w/2, uiH-h-48
+	s := smallScreen()
+	cw, ch, gap, pad := int(cardW*s), int(cardH*s), int(cardGap*s), int(cardPad*s)
+	w, h := 2*cw+gap+2*pad, ch+2*pad
+	x, y := uiW/2-w/2, uiH-h-int(48*s)
 	box := image.Rect(x-24, y-24, x+w+24, y+h+24)
 	g.popup(dst, "duel:cards", 0, uiW, uiH, box, func(dst *ebiten.Image) {
 		window(dst, image.Rect(x, y, x+w, y+h))
 		for side := range 2 {
-			g.duelCard(dst, v.Fighters[side], side, x+cardPad+side*(cardW+cardGap), y+cardPad)
+			g.duelCard(dst, v.Fighters[side], side, x+pad+side*(cw+gap), y+pad, cw, ch, s)
 		}
 	})
 }
 
-func (g *Game) duelCard(dst *ebiten.Image, f duelview.Fighter, side, x, y int) {
+func (g *Game) duelCard(dst *ebiten.Image, f duelview.Fighter, side, x, y, cw, ch int, s float64) {
 	tag, c := "아군 장수", good
 	if side == 1 {
 		tag, c = "적군 장수", bad
 	}
-	rect(dst, float32(x), float32(y), cardW, cardH, trough)
-	rect(dst, float32(x), float32(y), 3, cardH, c)
+	rect(dst, float32(x), float32(y), float32(cw), float32(ch), trough)
+	rect(dst, float32(x), float32(y), 3, float32(ch), c)
 	if f.Portrait != nil {
-		blit(dst, f.Portrait, float64(x+8), float64(y+8), cardH-16, cardH-16, nil)
-		strokeRect(dst, float32(x+7), float32(y+7), cardH-14, cardH-14, 1, goldDim)
+		blit(dst, f.Portrait, float64(x+8), float64(y+8), float64(ch-16), float64(ch-16), nil)
+		strokeRect(dst, float32(x+7), float32(y+7), float32(ch-14), float32(ch-14), 1, goldDim)
 	}
-	tx := float64(x + cardH + 4)
-	g.label(dst, tag, tx, float64(y+18), 14, c)
-	write(dst, f.Name, g.serif(32, 800), tx, float64(y+46), ink)
+	tx := float64(x + ch + 4)
+	g.label(dst, tag, tx, float64(y)+18*s, 14*s, c)
+	write(dst, f.Name, g.serif(32*s, 800), tx, float64(y)+46*s, ink)
 }

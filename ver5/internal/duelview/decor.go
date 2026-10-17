@@ -1,6 +1,11 @@
 package duelview
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	"image"
+	"math"
+
+	"github.com/hajimehoshi/ebiten/v2"
+)
 
 // Sprite is an image whose pivot lands on the drawing position.
 type Sprite struct {
@@ -18,6 +23,8 @@ type Decor struct {
 	Flag   Sprite
 	Dust   []Sprite
 	DustMS []float64
+
+	waves map[*Sprite]*[flagFrames]Sprite
 }
 
 const (
@@ -64,7 +71,7 @@ func (g *View) ground() []unitDraw {
 var flags = []struct {
 	col, rank int
 	command   bool
-}{{-8, 1, false}, {8, 1, false}, {0, 2, true}}
+}{{-16, 1, false}, {-8, 1, false}, {8, 1, false}, {16, 1, false}, {0, 2, true}, {0, 5, true}}
 
 func flagCell(col, rank int) bool {
 	for _, f := range flags {
@@ -122,9 +129,46 @@ func (g *View) flag(side, col, rank int, x, y float64) unitDraw {
 			s = &d.Flag
 		}
 	}
-	u := unitDraw{prop: s, scale: 3, x: x, y: y}
+	frame := (int(g.Clock*1000/flagMS) + int(hash(col, rank, side)>>4)) % flagFrames
+	u := unitDraw{prop: &d.wave(s)[frame], scale: 3, x: x, y: y}
 	if side == 0 {
 		u.hue = 2.1
 	}
 	return u
+}
+
+const (
+	flagFrames = 4
+	flagMS     = 170.0
+	flagPole   = 3 // columns of the pole, which stay put
+	flagLift   = 2 // rows added on top for the cloth to rise into
+)
+
+// wave is s's flutter: flagFrames copies in which each column of the cloth, more the
+// farther it is from the pole, is lifted or dropped a pixel or two along a travelling wave.
+func (d *Decor) wave(s *Sprite) *[flagFrames]Sprite {
+	if w, ok := d.waves[s]; ok {
+		return w
+	}
+	if d.waves == nil {
+		d.waves = map[*Sprite]*[flagFrames]Sprite{}
+	}
+	b := s.Image.Bounds()
+	var out [flagFrames]Sprite
+	for f := range out {
+		im := ebiten.NewImage(b.Dx(), b.Dy()+2*flagLift)
+		for x := 0; x < b.Dx(); x++ {
+			dy := 0.0
+			if x >= flagPole {
+				amp := min(1.6, float64(x-flagPole+1)*.4)
+				dy = math.Round(amp * math.Sin(2*math.Pi*float64(f)/flagFrames-float64(x)*.9))
+			}
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Translate(float64(x), flagLift+dy)
+			im.DrawImage(s.Image.SubImage(image.Rect(b.Min.X+x, b.Min.Y, b.Min.X+x+1, b.Max.Y)).(*ebiten.Image), op)
+		}
+		out[f] = Sprite{Image: im, PivotX: s.PivotX, PivotY: s.PivotY + flagLift}
+	}
+	d.waves[s] = &out
+	return &out
 }

@@ -30,7 +30,7 @@ const (
 	cutBarFrac  = .31 // each bar's height as a fraction of the screen
 	cutPaneL    = .56 // the ally pane's width; the cut runs to 80% of it at the bottom
 	cutPaneR    = .552
-	cutNameSize = 200.0
+	cutNameSize = 200.0 // at the design height; smaller screens shrink it with the band
 )
 
 type duelCutIn struct {
@@ -204,18 +204,18 @@ func (g *Game) cutPane(side int, portrait *ebiten.Image, pw, ph, drift float64) 
 	im := g.cutPanes[side]
 	im.Clear()
 	if portrait != nil {
-		iw := pw * 1.35
+		iw := pw * 1.07 // just wider than the pane so the drift never bares an edge
 		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
 		op.GeoM.Scale(iw*drawPx/float64(portrait.Bounds().Dx()), iw*drawPx/float64(portrait.Bounds().Dy()))
-		x := -.34 * pw
-		if side == 1 {
-			x = pw - iw + .34*pw
-		}
 		d := drift * pw
 		if side == 1 {
 			d = -d
 		}
-		op.GeoM.Translate((x+d)*drawPx, -.42*ph*drawPx)
+		x := -.035 * pw
+		if side == 1 {
+			x = pw - iw + .035*pw
+		}
+		op.GeoM.Translate((x+d)*drawPx, (ph/2-.38*iw)*drawPx)
 		im.DrawImage(portrait, op)
 	} else {
 		im.Fill(color.NRGBA{R: 40, G: 26, B: 20, A: 255})
@@ -253,8 +253,9 @@ func (g *Game) cutPane(side int, portrait *ebiten.Image, pw, ph, drift float64) 
 // drawCutNames stamps the two names in brush script either side of the cut.
 func (g *Game) drawCutNames(dst *ebiten.Image, v *duelview.View, t, top, bandH, stampL, stampR float64) {
 	W := float64(uiW)
-	f := g.brush(cutNameSize)
-	label := g.serif(cutNameSize*.14, 900)
+	size := min(cutNameSize, bandH*.62)
+	f := g.brush(size)
+	label := g.serif(size*.14, 900)
 	shake := cutShake(t, stampL+cutStamp, .18, 6) + cutShake(t, stampR+cutStamp, .18, 6)
 	for side, at := range []float64{stampL, stampR} {
 		if t < at {
@@ -272,29 +273,21 @@ func (g *Game) drawCutNames(dst *ebiten.Image, v *duelview.View, t, top, bandH, 
 		}
 		img := g.glowText(name, f, glow, rim)
 		w, h := float64(img.Bounds().Dx())/drawPx, float64(img.Bounds().Dy())/drawPx
-		// the ally's name ends just left of the screen's middle, the enemy's starts right of it
-		anchorX := W * .47
+		// each name is centred on the visible part of its own portrait
+		anchorX := W * .25
 		if side == 1 {
-			anchorX = W * .53
+			anchorX = W * .76
 		}
 		cy := top + bandH/2 + shake
 		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
-		ox := w
-		if side == 1 {
-			ox = 0
-		}
-		op.GeoM.Translate(-ox*drawPx, -h/2*drawPx)
+		op.GeoM.Translate(-w/2*drawPx, -h/2*drawPx)
 		op.GeoM.Scale(sc, sc)
 		op.GeoM.Translate((anchorX+shake)*drawPx, cy*drawPx)
 		op.ColorScale.ScaleAlpha(float32(min(1, k/.7)))
 		dst.DrawImage(img, op)
 		if k >= 1 {
 			tw := spacedWidth(tag, label, .25)
-			tx := anchorX - tw - 4
-			if side == 1 {
-				tx = anchorX + 4
-			}
-			writeSpaced(dst, tag, label, tx+shake, cy-cutNameSize*.78, .25, tc)
+			writeSpaced(dst, tag, label, anchorX-tw/2+shake, cy-size*.78, .25, tc)
 		}
 	}
 }

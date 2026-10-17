@@ -48,6 +48,9 @@ type View struct {
 	Staged bool
 	// Decor is the arena's scenery; nil leaves the ground bare.
 	Decor *Decor
+	// BubbleScale enlarges the speech bubbles (0 is 1), for screens where they read small.
+	BubbleScale float64
+
 	// Quiet hides the speech bubbles, while something plays over the duel's opening.
 	Quiet bool
 	// Focus is where the duelists meet, in battle canvas coordinates, for the camera.
@@ -127,7 +130,7 @@ func (g *View) Compose(dst, battle, battleUI *ebiten.Image) {
 	w, h := float64(dst.Bounds().Dx()), float64(dst.Bounds().Dy())
 	canvas, _ := g.fit(dst.Bounds().Dx(), dst.Bounds().Dy())
 	s := w / float64(g.cw)
-	g.render(canvas, ui)
+	g.render(canvas, ui, true)
 	k := math.Pow(max(1, Transition.ZoomFactor), zoom)
 	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterNearest}
 	op.GeoM.Translate(-w/2, -h/2)
@@ -244,31 +247,36 @@ func (g *View) Draw(dst *ebiten.Image) {
 	_, _, ui := g.Phase()
 	canvas, _ := g.fit(dst.Bounds().Dx(), dst.Bounds().Dy())
 	if dst.Bounds().Dx() == g.cw && dst.Bounds().Dy() == g.ch {
-		g.render(dst, ui)
+		g.render(dst, ui, true)
 		return
 	}
-	g.render(canvas, ui)
+	s := g.render(canvas, ui, false)
+	sc := float64(dst.Bounds().Dx()) / float64(g.cw)
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Scale(float64(dst.Bounds().Dx())/float64(g.cw), float64(dst.Bounds().Dy())/float64(g.ch))
+	op.GeoM.Scale(sc, float64(dst.Bounds().Dy())/float64(g.ch))
 	dst.DrawImage(canvas, op)
+	g.drawBubbles(dst, s, sc, ui, true)
 }
 
-// render draws the battlefield, then the duel's UI at the given opacity.
-func (g *View) render(dst *ebiten.Image, ui float64) {
+// render draws the battlefield, then, when inCanvas, the duel's UI at the given opacity.
+// Without it the caller draws the speech bubbles itself, at the screen's resolution.
+func (g *View) render(dst *ebiten.Image, ui float64, inCanvas bool) duel.State {
 	s := g.draw(dst)
 	switch {
+	case !inCanvas:
 	case ui >= 1:
-		g.drawUI(dst, s)
+		g.drawBubbles(dst, s, 1, 1, false)
 	case ui > 0:
 		if g.uiLayer == nil || g.uiLayer.Bounds() != dst.Bounds() {
 			g.fit(dst.Bounds().Dx(), dst.Bounds().Dy())
 		}
 		g.uiLayer.Clear()
-		g.drawUI(g.uiLayer, s)
+		g.drawBubbles(g.uiLayer, s, 1, 1, false)
 		op := &ebiten.DrawImageOptions{}
 		op.ColorScale.ScaleAlpha(float32(ui))
 		dst.DrawImage(g.uiLayer, op)
 	}
+	return s
 }
 
 func (g *View) draw(dst *ebiten.Image) duel.State {
@@ -399,17 +407,27 @@ func bubbleTop(headY, footY, h float64) float64 {
 	return max(margin, min(bottomLimit-h, top))
 }
 
-// drawUI is the duel's own interface: the fighters' speech bubbles.
-func (g *View) drawUI(dst *ebiten.Image, s duel.State) {
+// drawBubbles draws the fighters' speech bubbles; sc is device pixels per canvas pixel and
+// sharp draws the text at that resolution instead of at the canvas's.
+func (g *View) drawBubbles(dst *ebiten.Image, s duel.State, sc, alpha float64, sharp bool) {
+	if alpha <= 0 {
+		return
+	}
 	for i, a := range s.Actors {
 		if !a.Visible || a.Speech == "" || g.Quiet {
 			continue
 		}
 		x, footY := g.at(a.ScreenPosition())
 		headY := footY - g.Fighters[i].Art.TopOffset()*3
+		k := max(1, g.BubbleScale)
 		w, h := g.Bubble.Size(g.Fighters[i].Name, a.Speech)
+		w, h = w*k, h*k
 		x = max(12, min(float64(g.cw)-w-12, x-28))
 		y := bubbleTop(headY-g.oy, footY-g.oy, h) + g.oy
-		g.Bubble.DrawText(dst, g.Fighters[i].Name, a.Speech, x, y, 1)
+		if sharp {
+			g.Bubble.DrawSharp(dst, g.Fighters[i].Name, a.Speech, x*sc, y*sc, sc*k, alpha)
+		} else {
+			g.Bubble.DrawText(dst, g.Fighters[i].Name, a.Speech, x/k, y/k, k) // DrawText scales its position too
+		}
 	}
 }

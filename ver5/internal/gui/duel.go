@@ -12,6 +12,9 @@ import (
 
 func (g *Game) duelView(e core.Event) *duelview.View {
 	v := &duelview.View{Bubble: g.assets.Bubble, Story: g.assets.Duels.Story(e.DuelID, e.Outcome), Decor: g.duelDecor()}
+	if s := smallScreen(); s < 1 {
+		v.BubbleScale = 2
+	}
 	for i, id := range []string{e.Actor, e.Target} {
 		u := g.unitView(g.player.final, id)
 		if u == nil {
