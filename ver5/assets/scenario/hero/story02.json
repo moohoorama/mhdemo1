@@ -1,38 +1,286 @@
 {
  "Nodes": [
   {
-   "ID": "join",
-   "Kind": "join",
-   "Event": "join-jianyong",
-   "Next": "joined",
-   "Character": "jianyong"
+   "ID": "c02-start",
+   "Kind": "scene",
+   "Place": "하북 · 관군 진영"
   },
   {
-   "ID": "joined",
-   "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "나도 백성을 위한 싸움에 힘을 보태겠소.",
-   "Next": "coalition"
-  },
-  {
-   "ID": "coalition",
+   "ID": "c02-01",
    "Kind": "narrate",
-   "Text": "동탁 타도군 일어나다.",
-   "Next": "coalition_2"
+   "Text": "초겨울, 황건의 깃발이 불타고 있다. 전란이 끝난 들판에 군사들이 짐을 꾸린다. 전령이 말을 몰아 유비 앞에 멈춘다."
   },
   {
-   "ID": "coalition_2",
+   "ID": "c02-02",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "기도위 조조 공께서 보내신 서신이옵니다."
+  },
+  {
+   "ID": "c02-03",
+   "Kind": "narrate",
+   "Text": "유비가 서신을 편다."
+  },
+  {
+   "ID": "c02-04",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "현덕 공. 노 중랑장께서 황문 좌풍의 모함을 입어 함거에 실려 낙양으로 압송되셨소."
+  },
+  {
+   "ID": "c02-05",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "영천에서 공이 보여준 의기를 나는 잊지 않았소. 낙양으로 오시오. 노 공을 위해 함께 할 일이 있소."
+  },
+  {
+   "ID": "c02-06",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "스승님을 함거에 실었단 말이오? 그 환관 놈을 내가……!"
+  },
+  {
+   "ID": "c02-07",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "연합군과 함께 사수관으로 나아갑시다.",
-   "Next": "prep2"
+   "Text": "낙양으로 간다."
   },
   {
-   "ID": "prep2",
-   "Kind": "battle",
-   "Text": "사수관 — 출전 준비",
-   "Stage": "B02",
-   "Next": "sword"
+   "ID": "c02-08",
+   "Kind": "scene",
+   "Place": "낙양으로 가는 길"
+  },
+  {
+   "ID": "c02-09",
+   "Kind": "narrate",
+   "Text": "해 지는 관도. 맞은편에서 한 무리의 기병이 다가온다. 앞선 이는 조조다. 갑옷에 먼지가 가득하다."
+  },
+  {
+   "ID": "c02-10",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "맹덕 공! 낙양에 계셔야 할 분이 어찌 이 길에 계십니까."
+  },
+  {
+   "ID": "c02-11",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "……현덕, 낙양에 갈 처지가 아니게 되었소."
+  },
+  {
+   "ID": "c02-12",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "무슨 말씀이십니까."
+  },
+  {
+   "ID": "c02-13",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "황제께서 붕어하셨소."
+  },
+  {
+   "ID": "c02-14",
+   "Kind": "narrate",
+   "Text": "유비가 말을 잃는다. 피로 물든 궁궐, 쓰러진 하진, 칼을 든 원소의 군사, 낙양으로 들어오는 서량 기병이 조조의 말 위로 겹쳐 보인다."
+  },
+  {
+   "ID": "c02-15",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "어린 태자를 두고 대장군 하진과 십상시가 서로 칼을 겨누었소. 하진은 궁중에서 환관들 손에 죽었고, 원본초가 군사를 몰고 들어가 환관을 모조리 베었소. 궁궐이 피로 씻겼지."
+  },
+  {
+   "ID": "c02-16",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "그 틈에 서량의 동탁이 군사를 끌고 들어왔소. ……이제 낙양의 주인은 동탁이오."
+  },
+  {
+   "ID": "c02-17",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "노 스승께서는……."
+  },
+  {
+   "ID": "c02-18",
+   "Kind": "narrate",
+   "Text": "조조가 고개를 떨군다."
+  },
+  {
+   "ID": "c02-19",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "노 공의 죄를 벗기려 백방으로 뛰었으나, 이 조모의 힘이 부족했소."
+  },
+  {
+   "ID": "c02-20",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "노 공은 벼슬을 잃으셨고, 동탁이 들어온 뒤에는 황제를 갈아 치우는 데 홀로 맞서다 낙양에서 쫓겨나셨다 들었소. ……나는 그 어느 것도 막지 못했소."
+  },
+  {
+   "ID": "c02-21",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "동탁이 내게도 벼슬을 내렸으나, 받지 않고 나오는 길이오."
+  },
+  {
+   "ID": "c02-22",
+   "Kind": "narrate",
+   "Text": "조조가 고삐를 고쳐 쥔다."
+  },
+  {
+   "ID": "c02-23",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "고향 패국으로 가서 군사를 모을 것이오. 천하가 어지러워질 때 백성을 지킬 칼이 있어야 하지 않겠소. 현덕, 함께 가지 않겠소?"
+  },
+  {
+   "ID": "c02-24",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "가겠습니다."
+  },
+  {
+   "ID": "c02-25",
+   "Kind": "scene",
+   "Place": "낙양 · 궁궐 옥좌 앞"
+  },
+  {
+   "ID": "c02-26",
+   "Kind": "narrate",
+   "Text": "어린 헌제가 옥좌에 앉아 있다. 그 곁에 거구의 동탁이 칼자루에 손을 얹고 섰다. 대신들이 고개를 숙인 채 숨을 죽인다."
+  },
+  {
+   "ID": "c02-27",
+   "Kind": "say",
+   "Speaker": "dongzhuo",
+   "Text": "폐하, 이 동탁이 곁에 있는 한 천하는 태평하옵니다. ……그렇지 않사옵니까?"
+  },
+  {
+   "ID": "c02-28",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "……그, 그렇소."
+  },
+  {
+   "ID": "c02-29",
+   "Kind": "say",
+   "Speaker": "dongzhuo",
+   "Text": "(크게 웃으며) 들었느냐! 폐하께서 그렇다 하시는구나!"
+  },
+  {
+   "ID": "c02-30",
+   "Kind": "narrate",
+   "Text": "조조의 격문이 천하에 돌았다. 동쪽의 제후들이 동탁을 치러 일어났다."
+  },
+  {
+   "ID": "c02-31",
+   "Kind": "scene",
+   "Place": "반동탁 연합 · 맹주의 막사"
+  },
+  {
+   "ID": "c02-32",
+   "Kind": "narrate",
+   "Text": "긴 탁자 상석에 원소가 앉아 있다. 조조, 공융, 도겸, 교모, 원술, 손견이 차례로 들어와 자리를 잡는다. 마지막으로 유비가 관우·장비를 뒤에 거느리고 막사에 들어선다."
+  },
+  {
+   "ID": "c02-33",
+   "Kind": "say",
+   "Speaker": "yuanshu",
+   "Text": "거기 들어오는 자는 누구냐. 어느 고을을 맡고 있으며 관직은 무엇이냐."
+  },
+  {
+   "ID": "c02-34",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "탁현의 유비 현덕이라 합니다. 지금은 맡은 직이 없습니다."
+  },
+  {
+   "ID": "c02-35",
+   "Kind": "say",
+   "Speaker": "yuanshu",
+   "Text": "(탁자를 내리치며) 직도 없는 자가 감히 제후들의 자리에 발을 들여? 여기가 저잣거리인 줄 아느냐!"
+  },
+  {
+   "ID": "c02-36",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "공로 공, 진정하시오. 세상이 어지러워 현덕에게 맞는 자리가 없었을 뿐이오."
+  },
+  {
+   "ID": "c02-37",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "이 사람의 됨됨이는 이 조맹덕이 보장하겠소."
+  },
+  {
+   "ID": "c02-38",
+   "Kind": "say",
+   "Speaker": "sunjian",
+   "Text": "나도 한마디 보태겠소. 영천 장사성에서 도적의 북쪽 진을 처음 깨뜨린 것이 이 사람이었소."
+  },
+  {
+   "ID": "c02-39",
+   "Kind": "say",
+   "Speaker": "yuanshu",
+   "Text": "……쯧."
+  },
+  {
+   "ID": "c02-40",
+   "Kind": "narrate",
+   "Text": "원술이 물러나 자리에 앉는다."
+  },
+  {
+   "ID": "c02-41",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "그만들 하시오. 선봉은 장사태수 손견이 맡고, 군량은 후장군 원술 공이 대도록 하시오."
+  },
+  {
+   "ID": "c02-42",
+   "Kind": "say",
+   "Speaker": "sunjian",
+   "Text": "사수관은 이 손문대가 열겠소."
+  },
+  {
+   "ID": "c02-43",
+   "Kind": "narrate",
+   "Text": "원술이 말없이 손견의 등을 바라본다."
+  },
+  {
+   "ID": "c02-44",
+   "Kind": "scene",
+   "Place": "반동탁 연합 · 맹주의 막사, 며칠 뒤 밤"
+  },
+  {
+   "ID": "c02-45",
+   "Kind": "narrate",
+   "Text": "제후들이 술잔을 기울이고 있다. 전령이 뛰어든다."
+  },
+  {
+   "ID": "c02-46",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "급보요! 손견 장군의 군이 사수관 앞에서 위태롭다 하옵니다!"
+  },
+  {
+   "ID": "c02-47",
+   "Kind": "narrate",
+   "Text": "막사가 술렁인다. 원술은 잔을 내려놓지 않은 채 시선을 피한다."
+  },
+  {
+   "ID": "c02-48",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "현덕."
+  },
+  {
+   "ID": "c02-49",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "가겠습니다."
   }
  ]
 }

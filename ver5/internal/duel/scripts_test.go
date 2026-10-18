@@ -16,10 +16,17 @@ func TestCampaignScripts(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	early, err := earlyScripts()
+	if err != nil {
+		t.Fatal(err)
+	}
 	seen := map[string]bool{}
 	count := 0
 	for _, stage := range data.Stages {
 		for _, d := range stage.Duels {
+			if len(d.Beats) == 0 {
+				continue // staged by the default timeline
+			}
 			count++
 			t.Run(d.ID, func(t *testing.T) {
 				script, ok := scripts[d.ID]
@@ -51,20 +58,20 @@ func TestCampaignScripts(t *testing.T) {
 	t.Run("short fights end on the killing blow", func(t *testing.T) {
 		for _, id := range []string{"B01-duel-1", "B01-duel-2"} {
 			strikes := 0
-			for _, b := range scripts[id].Beats {
+			for _, b := range early[id].Beats {
 				switch b.Kind {
 				case "hit", "block", "dodge", "crossing-charge", "critical", "backhit":
 					strikes++
 				}
 			}
-			beats := scripts[id].Beats
+			beats := early[id].Beats
 			if strikes < 3 || beats[len(beats)-2].Kind != "critical" {
 				t.Fatalf("%s has %d exchanges or does not end on a critical blow", id, strikes)
 			}
 		}
 	})
 	t.Run("Dengmao confronts Zhang Fei before the first exchange", func(t *testing.T) {
-		story := scripts.Story("B01-duel-1", "victory")
+		story := early.Story("B01-duel-1", "victory")
 		var strike, killing int
 		for i, b := range story.Beats {
 			if isStrike(b.Kind) && strike == 0 {
@@ -89,7 +96,7 @@ func TestCampaignScripts(t *testing.T) {
 		}
 	})
 	t.Run("long evenly matched duel", func(t *testing.T) {
-		if scripts.Story("hulao-zhang-fei", "victory").Duration() <= 2*scripts.Story("B01-duel-1", "victory").Duration() {
+		if brotherStory(scripts, "").Duration() <= 2*early.Story("B01-duel-1", "victory").Duration() {
 			t.Fatal("draw should be a long duel")
 		}
 	})
@@ -195,9 +202,9 @@ func TestThreeBrothersAgainstOne(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, id := range []string{"hulao-zhang-fei", "hulao-guan-yu", "hulao-liu-bei"} {
+	for _, id := range []string{"zhangfei", "guanyu", "liubei"} { // who moved first
 		t.Run(id, func(t *testing.T) {
-			story := scripts.Story(id, "victory")
+			story := brotherStory(scripts, id)
 			var arrival int
 			for i, b := range story.Beats {
 				if b.Kind == "reinforcements" {
@@ -205,7 +212,7 @@ func TestThreeBrothersAgainstOne(t *testing.T) {
 					break
 				}
 			}
-			if arrival == 0 || len(scripts[id].Supports) != 2 {
+			if arrival == 0 || len(scripts["hulao-brothers"].Supports) != 2 {
 				t.Fatal("missing brothers")
 			}
 			before := story.Sample(story.Start(arrival) - .01)
@@ -306,14 +313,14 @@ func TestThreeBrothersAgainstOne(t *testing.T) {
 		})
 	}
 	t.Run("heavy strike is evaded without hitting", func(t *testing.T) {
-		s := scripts.Story("hulao-guan-yu", "victory")
+		s := brotherStory(scripts, "guanyu")
 		r := at(s, "critical-dodge", .65)
 		if !r.Critical || r.Flash <= 0 || r.Impact != 0 || r.Actors[1].Animation != "walk" || r.Actors[1].Position <= at(s, "critical-dodge", .55).Actors[1].Position {
 			t.Fatalf("heavy evasion: %+v", r)
 		}
 	})
 	t.Run("Liu Bei yields while blocking", func(t *testing.T) {
-		s := scripts.Story("hulao-liu-bei", "victory")
+		s := brotherStory(scripts, "liubei")
 		before := at(s, "yielding-block", .55)
 		after := at(s, "yielding-block", 1.1)
 		if after.Actors[0].Animation != "block" || after.Actors[0].Position >= before.Actors[0].Position {
@@ -321,7 +328,7 @@ func TestThreeBrothersAgainstOne(t *testing.T) {
 		}
 	})
 	t.Run("Zhang Fei holds his ground", func(t *testing.T) {
-		s := scripts.Story("hulao-zhang-fei", "victory")
+		s := brotherStory(scripts, "")
 		for i, b := range s.Beats {
 			if b.Kind == "press" {
 				break

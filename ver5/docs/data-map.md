@@ -17,6 +17,16 @@ GUI는 content가 읽은 문서로 그림을 만들며, 같은 파일을 에디�
 시험 전투와 실행 취소는 유지한다. 재로드·캠페인·그림 생성·저장 실패는 Go 테스트로 검증한다.
 테스트용 최소 콘텐츠의 단순 Stage JSON은 테스트 픽스처로만 유지한다.
 
+## 글자 배치로 맵 만들기
+
+`tools/mapgen/mapgen.py`가 글자 배치 파일(한 줄에 한 행, 한 글자가 한 칸)에서 맵 문서(`maps/mapNN.json`)를 만든다. 1~9장 맵의 원본은 `tools/mapgen/layouts/hero/`의 글자 배치다(한 글자는 `Tiles`의 글자: `.` `d` `~` `f` `v` `c` `i` `b` `g` `k` `h` `o` `F` `W`).
+
+```sh
+python3 tools/mapgen/mapgen.py tools/mapgen/layouts/hero/map03.txt assets/scenario/hero/maps/map03.json
+```
+
+전투 영역 바깥은 가장자리 칸을 이어 채우고(맵 에디터의 가져오기와 같다) 장식·소품은 비어 있으니 필요하면 에디터에서 더한다. 임시 확인 도구 `go run ./cmd/_m8check [-scenario 이름] [-stage B03] [-v]`는 시나리오를 로드해 검증하고 각 스테이지를 AI가 양쪽을 맡아 돌려 발동한 이벤트와 결과를 보여 준다.
+
 ## 필드
 
 - `Version`: 문서 버전(1).

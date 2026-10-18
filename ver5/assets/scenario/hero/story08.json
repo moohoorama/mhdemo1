@@ -1,0 +1,81 @@
+{
+ "Nodes": [
+  {
+   "ID": "c08-start",
+   "Kind": "scene",
+   "Place": "거록 · 들판"
+  },
+  {
+   "ID": "c08-n1",
+   "Kind": "narrate",
+   "Text": "계교로 가는 길을 원소군의 진이 가로막고 있다. 깃발에 '顔' 자가 보인다."
+  },
+  {
+   "ID": "c08-s1",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "하필 계교로 가는 길목을 안량이 막았네. 돌아가면 사흘이 늦어."
+  },
+  {
+   "ID": "c08-s2",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "사흘이면 공손 형님이 버티지 못한다. 뚫고 간다."
+  },
+  {
+   "ID": "c08-s3",
+   "Kind": "say",
+   "Speaker": "fangong",
+   "Text": "장군, 양옆 언덕이 너무 조용합니다. 조심하십시오."
+  },
+  {
+   "ID": "c08-battle",
+   "Kind": "battle",
+   "Stage": "B08",
+   "Text": "거록 — 출전 준비"
+  },
+  {
+   "ID": "c08-br",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-julu-clear"
+     ],
+     "Next": "c08-clear"
+    }
+   ],
+   "Else": "c08-pass"
+  },
+  {
+   "ID": "c08-clear",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "안량도 장합도 물러갔네. 이만하면 원소도 우리를 얕보지 못하겠구먼."
+  },
+  {
+   "ID": "c08-clear2",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "서두르자. 계교는 지척이다.",
+   "Next": "c08-end"
+  },
+  {
+   "ID": "c08-pass",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "길은 뚫었네만, 안량과 장합이 아직 멀쩡하니 뒤가 마음에 걸리는구먼."
+  },
+  {
+   "ID": "c08-pass2",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "지금은 계교가 먼저다. 가자."
+  },
+  {
+   "ID": "c08-end",
+   "Kind": "narrate",
+   "Text": "유비군은 거록의 진을 뚫고 계교로 길을 재촉했다."
+  }
+ ]
+}

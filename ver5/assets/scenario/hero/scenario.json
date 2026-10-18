@@ -1,5 +1,5 @@
 {
- "Start": "oath",
+ "Start": "c01-start",
  "Roster": [
   "liubei",
   "guanyu",
@@ -26,6 +26,30 @@
   {
    "ID": "03",
    "File": "story03.json"
+  },
+  {
+   "ID": "04",
+   "File": "story04.json"
+  },
+  {
+   "ID": "05",
+   "File": "story05.json"
+  },
+  {
+   "ID": "06",
+   "File": "story06.json"
+  },
+  {
+   "ID": "07",
+   "File": "story07.json"
+  },
+  {
+   "ID": "08",
+   "File": "story08.json"
+  },
+  {
+   "ID": "09",
+   "File": "story09.json"
   }
  ]
 }

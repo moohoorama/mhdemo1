@@ -37,53 +37,5 @@
    "Props": [["tent_round", 5, 1.1], ["tent", 2.2, 1.6], ["tent", 8.4, 1.4], ["banner", 3.6, 2.3], ["banner", 6.5, 2.2],
              ["command_flag", 6.3, 1.2]]}
  ],
- "scenes": {
-  "oath": {"map": "S_peach",
-   "cast": {"유비": [5, 3, "SW"], "관우": [2, 7, "NE"], "장비": [8, 7, "NW"]},
-   "beats": [
-    [[{"actor": "유비", "emote": "…"}, {"effect": "petals"}],
-     [{"actor": "관우", "move": [4, 5]}, {"actor": "장비", "move": [6, 5]}],
-     [{"intro": "관우"}],
-     [{"intro": "장비"}],
-     [{"actor": "관우", "face": "NE"}, {"actor": "장비", "face": "NW"}, {"actor": "유비", "face": "SW"}]]
-   ]},
-  "oath_2": {"map": "S_peach",
-   "beats": [
-    [[{"actor": "관우", "play": "action"}, {"actor": "장비", "play": "action"}]]
-   ]},
-  "oath_choice": {"map": "S_peach",
-   "beats": [
-    [[{"actor": "유비", "play": "action"}, {"actor": "관우", "play": "action"}, {"actor": "장비", "play": "action"}],
-     [{"actor": "장비", "emote": "♪"}]]
-   ]},
-  "joined": {"map": "S_village",
-   "cast": {"유비": [5, 4, "SE"], "관우": [4, 5, "SE"], "장비": [6, 3, "SE"], "간옹": [10, 7, "NW"]},
-   "beats": [
-    [[{"actor": "간옹", "move": [7, 5]}],
-     [{"intro": "간옹"}],
-     [{"actor": "유비", "play": "action"}, {"actor": "간옹", "face": "NW"}],
-     [{"actor": "간옹", "play": "action"}]]
-   ]},
-  "coalition": {"map": "S_camp",
-   "cast": {"유비": [5, 3, "SW"], "관우": [3, 5, "NE"], "장비": [7, 5, "NW"], "간옹": [5, 6, "NW"]},
-   "beats": [
-    [[{"actor": "유비", "move": [5, 4]}]]
-   ]},
-  "coalition_2": {"map": "S_camp",
-   "beats": [
-    [[{"actor": "관우", "play": "action"}, {"actor": "장비", "play": "action"}, {"actor": "간옹", "play": "action"}]]
-   ]},
-  "chase": {"map": "S_camp",
-   "cast": {"유비": [5, 3, "SW"], "관우": [3, 4, "SE"], "장비": [7, 4, "SW"], "간옹": [6, 2, "SW"], "손건": [5, 8, "NW"]},
-   "beats": [
-    [[{"actor": "손건", "move": [5, 5]}],
-     [{"intro": "손건"}],
-     [{"actor": "손건", "play": "action"}]]
-   ]},
-  "chase_2": {"map": "S_camp",
-   "beats": [
-    [[{"actor": "유비", "play": "action"}],
-     [{"actor": "장비", "emote": "!"}, {"actor": "관우", "play": "action"}]]
-   ]}
- }
+ "scenes": {}
 }

@@ -44,7 +44,7 @@ func (d *Data) ScenarioDir(root string) string {
 	return filepath.Join(root, "assets", "scenario", d.ScenarioID)
 }
 
-func (d *Data) loadScenario(dir string, h hash.Hash) error {
+func (d *Data) loadScenario(dir, want string, h hash.Hash) error {
 	root, err := ScenarioRoot(dir)
 	if err != nil {
 		return err
@@ -67,6 +67,17 @@ func (d *Data) loadScenario(dir string, h hash.Hash) error {
 		return fmt.Errorf("scenario.json: %v", err)
 	}
 	ref := index.Scenarios[0]
+	if want != "" {
+		found := false
+		for _, r := range index.Scenarios {
+			if r.ID == want {
+				ref, found = r, true
+			}
+		}
+		if !found {
+			return fmt.Errorf("no scenario %q", want)
+		}
+	}
 	scenarioDir := filepath.Join(root, filepath.Dir(ref.Path))
 	if b, err = read(filepath.Join(root, ref.Path)); err != nil {
 		return err

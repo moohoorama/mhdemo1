@@ -2,6 +2,7 @@ package duel
 
 import (
 	"math"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -64,10 +65,14 @@ func TestRushNeverBacksAway(t *testing.T) {
 func TestCampaignMixesStandingAndRushAttacks(t *testing.T) {
 	scripts, err := loadScripts()
 	require.NoError(t, err)
-	for _, id := range []string{"sishui-guan-yu", "hulao-zhang-fei", "hulao-guan-yu", "hulao-liu-bei"} {
+	for _, id := range []string{"sishui-guan-yu", "brothers-zhangfei", "brothers-guanyu", "brothers-liubei"} {
 		t.Run(id, func(t *testing.T) {
 			standing, rushing := 0, 0
-			for _, beat := range scripts.Story(id, "victory").Beats {
+			story := scripts.Story(id, "victory")
+			if first, ok := strings.CutPrefix(id, "brothers-"); ok {
+				story = brotherStory(scripts, first)
+			}
+			for _, beat := range story.Beats {
 				if !isStrike(beat.Kind) {
 					continue
 				}

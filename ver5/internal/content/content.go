@@ -393,11 +393,14 @@ type Data struct {
 	Nodes          []Node
 }
 
-// Load reads the data bundle under dir (every top-level json file holds sections of Data) and the
-// first scenario under the scenario folder next to it (or inside it): the campaign start, the
-// chapters' story nodes, and the stage files with their maps. Names are free; a section may be
-// split across files.
-func Load(dir string) (*Data, error) {
+// Load reads the bundle with the first scenario of the scenario folder; see LoadScenario.
+func Load(dir string) (*Data, error) { return LoadScenario(dir, "") }
+
+// LoadScenario reads the data bundle under dir (every top-level json file holds sections of Data) and the
+// scenario of that id (the first when id is empty) under the scenario folder next to it (or inside
+// it): the campaign start, the chapters' story nodes, and the stage files with their maps. Names
+// are free; a section may be split across files.
+func LoadScenario(dir, id string) (*Data, error) {
 	var d Data
 	h := sha256.New()
 	var files []string
@@ -425,7 +428,7 @@ func Load(dir string) (*Data, error) {
 			return nil, fmt.Errorf("%s: %w", p, err)
 		}
 	}
-	if err = d.loadScenario(dir, h); err != nil {
+	if err = d.loadScenario(dir, id, h); err != nil {
 		return nil, err
 	}
 	d.Hash = fmt.Sprintf("%x", h.Sum(nil))

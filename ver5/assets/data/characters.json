@@ -445,7 +445,8 @@
      "heavy_cavalry:sword": "zhaoyun_sword",
      "royal_guard:sword": "zhaoyun_sword"
     }
-   }
+   },
+   "Playable": true
   },
   "gongsunzan": {
    "Name": "공손찬",
@@ -986,6 +987,66 @@
    ],
    "Look": {
     "Faction": "yuan"
+   }
+  },
+  "troop_commoner_man": {
+   "Name": "민중(남)",
+   "Class": "light_infantry",
+   "Stats": [
+    20,
+    10,
+    10,
+    20,
+    30,
+    10
+   ],
+   "Level": 1,
+   "Template": true,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [],
+   "Look": {
+    "Sprite": "commoner_man"
+   }
+  },
+  "troop_commoner_woman": {
+   "Name": "민중(여)",
+   "Class": "light_infantry",
+   "Stats": [
+    20,
+    10,
+    10,
+    20,
+    30,
+    10
+   ],
+   "Level": 1,
+   "Template": true,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [],
+   "Look": {
+    "Sprite": "commoner_woman"
+   }
+  },
+  "troop_commoner_elder": {
+   "Name": "민중(노인)",
+   "Class": "light_infantry",
+   "Stats": [
+    20,
+    10,
+    10,
+    20,
+    30,
+    10
+   ],
+   "Level": 1,
+   "Template": true,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [],
+   "Look": {
+    "Sprite": "commoner_elder"
    }
   }
  }

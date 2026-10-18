@@ -1,0 +1,771 @@
+{
+ "ID": "B05",
+ "Name": "변수 추격전",
+ "Width": 0,
+ "Height": 0,
+ "Max": 3,
+ "Required": [
+  "liubei",
+  "guanyu",
+  "zhangfei"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "flag:flag-b05-lubu",
+    "at:liubei:1",
+    "at:caocao:1"
+   ],
+   "Text": "여포가 나타난 뒤 유비와 조조가 모두 동쪽 끝에 도달"
+  }
+ ],
+ "Defeat": [
+  {
+   "If": [
+    "defeated:caocao"
+   ],
+   "Text": "조조 퇴각"
+  }
+ ],
+ "Sub": [
+  {
+   "ID": "generals",
+   "Text": "조조군 장수(조조·하후돈·하후연·조인·조홍) 전원 생존",
+   "If": [
+    "alive:caocao",
+    "alive:xiahoudun",
+    "alive:xiahouyuan",
+    "alive:caoren",
+    "alive:caohong"
+   ],
+   "Flag": "flag-bianshui-generals"
+  }
+ ],
+ "TurnLimit": 16,
+ "Tiles": null,
+ "Map": "map05.json",
+ "Allies": [
+  {
+   "X": 22,
+   "Y": 4
+  },
+  {
+   "X": 22,
+   "Y": 5
+  },
+  {
+   "X": 22,
+   "Y": 6
+  },
+  {
+   "X": 22,
+   "Y": 7
+  },
+  {
+   "X": 23,
+   "Y": 4
+  },
+  {
+   "X": 23,
+   "Y": 5
+  },
+  {
+   "X": 23,
+   "Y": 6
+  },
+  {
+   "X": 23,
+   "Y": 7
+  }
+ ],
+ "Party": [
+  {
+   "Character": "caocao",
+   "X": 14,
+   "Y": 5,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "xiahoudun",
+   "X": 14,
+   "Y": 6,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "xiahouyuan",
+   "X": 13,
+   "Y": 4,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "caoren",
+   "X": 13,
+   "Y": 7,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "caohong",
+   "X": 15,
+   "Y": 5,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 4,
+   "Level": 6,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 6,
+   "Level": 6,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "troop_archer",
+   "X": 16,
+   "Y": 5,
+   "Level": 6,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "troop_archer",
+   "X": 16,
+   "Y": 6,
+   "Level": 6,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 4,
+   "Level": 6,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 7,
+   "Level": 6,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "xurong",
+   "X": 17,
+   "Y": 3,
+   "Level": 8,
+   "Facing": "SW",
+   "Group": "ambush",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 3,
+   "Level": 5,
+   "Facing": "SW",
+   "Group": "ambush",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 16,
+   "Y": 3,
+   "Level": 5,
+   "Facing": "SW",
+   "Group": "ambush",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 18,
+   "Y": 3,
+   "Level": 5,
+   "Facing": "SW",
+   "Group": "ambush",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 19,
+   "Y": 3,
+   "Level": 5,
+   "Facing": "SW",
+   "Group": "ambush",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 14,
+   "Y": 8,
+   "Level": 5,
+   "Facing": "NW",
+   "Group": "ambush",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 8,
+   "Level": 5,
+   "Facing": "NW",
+   "Group": "ambush",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 16,
+   "Y": 8,
+   "Level": 5,
+   "Facing": "NW",
+   "Group": "ambush",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 17,
+   "Y": 8,
+   "Level": 5,
+   "Facing": "NW",
+   "Group": "ambush",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 18,
+   "Y": 8,
+   "Level": 5,
+   "Facing": "NW",
+   "Group": "ambush",
+   "Policy": "hold"
+  }
+ ],
+ "Reward": {
+  "bean": 8,
+  "liquor": 4
+ },
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 25,
+    "Y": 3,
+    "W": 3,
+    "H": 6
+   },
+   "Name": "연합 진영 방향",
+   "Description": "시작과 퇴각의 지점. 유비와 조조가 닿아야 하는 동쪽 끝"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "ambush",
+   "If": [
+    "round>=2"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "ambush"
+     ],
+     "Policy": "assault"
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "xurong",
+       "Text": "조조, 기다리고 있었다! 한 놈도 살려 보내지 마라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caocao",
+       "Text": "나왔구나. 현덕, 지금이오!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "lords-arrive",
+   "If": [
+    "round>=2"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "yuanshu",
+       "X": 25,
+       "Y": 5,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "qiaomao",
+       "X": 25,
+       "Y": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "hanfu",
+       "X": 25,
+       "Y": 6,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "gongzhou",
+       "X": 25,
+       "Y": 7,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 26,
+       "Y": 4,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 26,
+       "Y": 5,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 26,
+       "Y": 6,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 26,
+       "Y": 7,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 27,
+       "Y": 4,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 27,
+       "Y": 5,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 27,
+       "Y": 6,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 27,
+       "Y": 3,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 27,
+       "Y": 8,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 26,
+       "Y": 3,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshu",
+       "Text": "약조대로 왔소, 맹덕. 허나 이 원공로가 오지 않았으면 그대들은 이 숲에서 모두 죽었을 것이오."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshu",
+       "Text": "공은 우리 몫으로 적어 두시오. (유비를 보며) 직도 없는 자까지 끼어 있구먼."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "형님, 저놈 먼저 베고 싶슈!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "lubu-appears",
+   "If": [
+    "any:[defeated:xurong, round>=6]"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "lubu",
+       "X": 1,
+       "Y": 5,
+       "Level": 20,
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 1,
+       "Y": 4,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 1,
+       "Y": 6,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 2,
+       "Y": 4,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 2,
+       "Y": 6,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 5,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 2,
+       "Y": 5,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 4,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 6,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      }
+     ]
+    },
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-b05-lubu": 1
+     }
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "lubu",
+       "Text": "호로관의 그 촌놈들이로구나. 이번엔 놓치지 않는다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshu",
+       "Text": "저, 저건 여포가 아니냐……! 전군 물러나라! 어서!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "lords"
+     ],
+     "Policy": "flee",
+     "Goal": {
+      "X": 27,
+      "Y": 1
+     }
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "wei"
+     ],
+     "Policy": "march",
+     "Goal": {
+      "X": 26,
+      "Y": 6
+     }
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "형님, 저놈들 여포 얼굴도 안 보이는 거리에서 내빼고 있슈!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caocao",
+       "Text": "……우리만으로는 여포를 막을 수 없소. 물러나야 하오. 내가 뒤를 끊겠소."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "맹덕 공이 남으시면 안 됩니다. 함께 물러납시다!"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "Faction": "dong"
+}

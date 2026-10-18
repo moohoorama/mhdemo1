@@ -1,0 +1,615 @@
+{
+ "Characters": {
+  "bocai": {
+   "Name": "파재",
+   "Biography": "황건적 장수. 영천에서 관군을 포위해 한때 황보숭·주준을 곤경에 몰았으나 화공에 무너진다.",
+   "Class": "light_infantry",
+   "Stats": [
+    72,
+    76,
+    48,
+    58,
+    50,
+    52
+   ],
+   "Level": 5,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "turban"
+   }
+  },
+  "zhangliang": {
+   "Name": "장량",
+   "Biography": "황건적 장수. 장각의 아우로 영천에서 방화를 명한다.",
+   "Class": "scholar",
+   "Stats": [
+    66,
+    40,
+    78,
+    60,
+    52,
+    55
+   ],
+   "Level": 4,
+   "Traits": [
+    "fire"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "turban"
+   }
+  },
+  "zhangbao": {
+   "Name": "장보",
+   "Biography": "황건적 장수. 장각의 아우로 장량과 함께 본진 뒤를 지킨다.",
+   "Class": "bandit",
+   "Stats": [
+    64,
+    60,
+    50,
+    56,
+    50,
+    54
+   ],
+   "Level": 4,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "turban"
+   }
+  },
+  "luzhi": {
+   "Name": "노식",
+   "Biography": "한의 중랑장. 유비의 스승으로 황건 토벌을 이끌다 모함을 받아 압송된다.",
+   "Class": "light_infantry",
+   "Stats": [
+    84,
+    70,
+    80,
+    62,
+    60,
+    86
+   ],
+   "Level": 9,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han"
+   }
+  },
+  "huangfusong": {
+   "Name": "황보숭",
+   "Biography": "한의 중랑장. 영천에서 화공으로 황건을 무찌르고 유비에게 병서를 건넨다.",
+   "Class": "light_infantry",
+   "Stats": [
+    90,
+    66,
+    88,
+    72,
+    74,
+    80
+   ],
+   "Level": 9,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han"
+   }
+  },
+  "zhujun": {
+   "Name": "주준",
+   "Biography": "한의 중랑장. 황보숭과 함께 영천에서 황건을 친다.",
+   "Class": "light_infantry",
+   "Stats": [
+    86,
+    68,
+    76,
+    66,
+    70,
+    72
+   ],
+   "Level": 8,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han"
+   }
+  },
+  "xufu": {
+   "Name": "서복",
+   "Biography": "영천의 마을을 지키는 젊은 사내. 훗날 서서라 불린다.",
+   "Class": "light_infantry",
+   "Stats": [
+    60,
+    64,
+    72,
+    66,
+    55,
+    68
+   ],
+   "Level": 2,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han"
+   }
+  },
+  "chengpu": {
+   "Name": "정보",
+   "Biography": "손견의 오른팔. 사수관에서 화웅에게 쫓기는 손견을 지킨다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    78,
+    82,
+    60,
+    70,
+    62,
+    68
+   ],
+   "Level": 7,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Faction": "wu"
+   }
+  },
+  "huanggai": {
+   "Name": "황개",
+   "Biography": "손견을 따르는 노장. 몸을 아끼지 않는 충직한 사람.",
+   "Class": "light_infantry",
+   "Stats": [
+    76,
+    80,
+    56,
+    62,
+    60,
+    64
+   ],
+   "Level": 7,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wu"
+   }
+  },
+  "handang": {
+   "Name": "한당",
+   "Biography": "손견을 따르는 장수. 활을 잘 쏜다.",
+   "Class": "archer",
+   "Stats": [
+    68,
+    74,
+    50,
+    68,
+    58,
+    56
+   ],
+   "Level": 6,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wu"
+   }
+  },
+  "caocen": {
+   "Name": "조잠",
+   "Biography": "동탁군 장수. 서량 병사를 이끌고 사수관 앞에서 손견군을 몰아붙인다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    62,
+    72,
+    36,
+    56,
+    46,
+    40
+   ],
+   "Level": 5,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Faction": "dong"
+   }
+  },
+  "lisu": {
+   "Name": "이숙",
+   "Biography": "동탁의 부하. 말솜씨로 여포를 동탁에게 데려온 책사이자 장수.",
+   "Class": "light_cavalry",
+   "Stats": [
+    64,
+    58,
+    72,
+    62,
+    52,
+    54
+   ],
+   "Level": 5,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "dong"
+   }
+  },
+  "xurong": {
+   "Name": "서영",
+   "Biography": "동탁군 장수. 변수에서 복병으로 조조를 쫓는다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    78,
+    86,
+    46,
+    72,
+    56,
+    52
+   ],
+   "Level": 8,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Faction": "dong"
+   }
+  },
+  "xiahoudun": {
+   "Name": "하후돈",
+   "Biography": "조조의 족제. 외눈의 맹장으로 조조군의 선봉을 맡는다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    86,
+    93,
+    52,
+    80,
+    70,
+    70
+   ],
+   "Level": 9,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "xiahouyuan": {
+   "Name": "하후연",
+   "Biography": "조조의 족제. 날랜 기마로 이름이 높다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    82,
+    90,
+    50,
+    88,
+    65,
+    62
+   ],
+   "Level": 8,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "caoren": {
+   "Name": "조인",
+   "Biography": "조조의 족제. 굳세고 침착한 장수.",
+   "Class": "light_cavalry",
+   "Stats": [
+    85,
+    84,
+    52,
+    66,
+    68,
+    65
+   ],
+   "Level": 8,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "caohong": {
+   "Name": "조홍",
+   "Biography": "조조의 족제. 조조를 위해 목숨을 내놓는 충성스러운 장수.",
+   "Class": "light_infantry",
+   "Stats": [
+    80,
+    82,
+    50,
+    70,
+    70,
+    62
+   ],
+   "Level": 8,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "qiaomao": {
+   "Name": "교모",
+   "Biography": "연맹에 가담한 동군 태수. 변수에서 조조를 따르지 않고 물러난다.",
+   "Class": "light_infantry",
+   "Stats": [
+    56,
+    50,
+    50,
+    48,
+    50,
+    52
+   ],
+   "Level": 4,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "yuan"
+   }
+  },
+  "hanfu": {
+   "Name": "한복",
+   "Biography": "기주목. 연합의 군량을 대지만 몸을 사린다.",
+   "Class": "light_infantry",
+   "Stats": [
+    54,
+    46,
+    52,
+    50,
+    48,
+    50
+   ],
+   "Level": 4,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "yuan"
+   }
+  },
+  "gongzhou": {
+   "Name": "공주",
+   "Biography": "연맹에 가담한 제후. 변수에서 원술과 함께 물러난다.",
+   "Class": "light_infantry",
+   "Stats": [
+    52,
+    48,
+    48,
+    46,
+    48,
+    46
+   ],
+   "Level": 3,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "yuan"
+   }
+  },
+  "fangong": {
+   "Name": "번궁",
+   "Biography": "영걸전의 번궁. 신도성에서 유비에게 항복해 따르는 기병.",
+   "Class": "light_cavalry",
+   "Stats": [
+    62,
+    72,
+    32,
+    62,
+    42,
+    48
+   ],
+   "Level": 3,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "shu",
+    "Portrait": "fangong"
+   },
+   "Playable": true
+  },
+  "quyi": {
+   "Name": "국의",
+   "Biography": "원소군 장수. 쇠뇌 노병대를 숨겨 두었다가 백마의종을 쏘는 지휘관.",
+   "Class": "crossbow",
+   "Stats": [
+    85,
+    70,
+    52,
+    70,
+    60,
+    55
+   ],
+   "Level": 9,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "yuan",
+    "Portrait": "quyi"
+   }
+  },
+  "chenzhen": {
+   "Name": "진진",
+   "Biography": "원소군 장수. 국의와 함께 쇠뇌 부대를 맡는다.",
+   "Class": "crossbow",
+   "Stats": [
+    68,
+    64,
+    48,
+    62,
+    52,
+    50
+   ],
+   "Level": 7,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "yuan"
+   }
+  },
+  "tiankai": {
+   "Name": "전해",
+   "Biography": "공손찬의 부장. 백마의종을 이끌고 위기에 몰린 공손찬을 구하러 달려온다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    66,
+    70,
+    46,
+    62,
+    52,
+    56
+   ],
+   "Level": 5,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Faction": "gongsun"
+   }
+  },
+  "messenger": {
+   "Name": "전령",
+   "Biography": "급한 소식을 전하는 전령.",
+   "Class": "light_infantry",
+   "Stats": [
+    40,
+    36,
+    30,
+    50,
+    40,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han"
+   },
+   "Template": true
+  },
+  "soldier": {
+   "Name": "병사",
+   "Biography": "이름 없는 병사.",
+   "Class": "light_infantry",
+   "Stats": [
+    44,
+    42,
+    28,
+    40,
+    40,
+    38
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han"
+   },
+   "Template": true
+  }
+ }
+}

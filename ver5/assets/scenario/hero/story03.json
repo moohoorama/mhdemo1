@@ -1,32 +1,208 @@
 {
  "Nodes": [
   {
-   "ID": "sword",
+   "ID": "c03-start",
+   "Kind": "scene",
+   "Place": "사수관 · 동쪽 들판"
+  },
+  {
+   "ID": "c03-n1",
+   "Kind": "narrate",
+   "Text": "해 질 무렵, 손견군이 동쪽으로 물러나고 있다. 병사들은 창을 지팡이 삼아 걷고, 말들은 고개를 떨군다."
+  },
+  {
+   "ID": "c03-s1",
+   "Kind": "say",
+   "Speaker": "sunjian",
+   "Text": "군량이 끊긴 지 열흘이다. 굶주린 병사로 어찌 싸우란 말이냐……. 원공로, 네 이놈."
+  },
+  {
+   "ID": "c03-s2",
+   "Kind": "say",
+   "Speaker": "huanggai",
+   "Text": "주공! 서쪽에서 서량 기병이 따라붙습니다!"
+  },
+  {
+   "ID": "c03-n2",
+   "Kind": "narrate",
+   "Text": "서쪽 지평선에 '華' 자 깃발이 오른다."
+  },
+  {
+   "ID": "c03-s3",
+   "Kind": "say",
+   "Speaker": "huaxiong",
+   "Text": "강동의 호랑이도 굶으면 고양이로구나! 한 놈도 살려 보내지 마라!"
+  },
+  {
+   "ID": "c03-n3",
+   "Kind": "narrate",
+   "Text": "동쪽에서 말발굽 소리가 울린다. 유비군이 나타나 손견 곁으로 달려온다."
+  },
+  {
+   "ID": "c03-s4",
+   "Kind": "say",
+   "Speaker": "sunjian",
+   "Text": "현덕인가!"
+  },
+  {
+   "ID": "c03-s5",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "장군, 동쪽 길은 비어 있습니다. 저희가 뒤를 막을 테니 어서 빠지십시오."
+  },
+  {
+   "ID": "c03-s6",
+   "Kind": "say",
+   "Speaker": "sunjian",
+   "Text": "병사들이 굶어 발이 느리오. 그대들이 버텨 주어야 하오."
+  },
+  {
+   "ID": "c03-s7",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "운장, 익덕. 장군의 군사가 다 빠져나갈 때까지 한 걸음도 물러서지 마라."
+  },
+  {
+   "ID": "c03-battle",
+   "Kind": "battle",
+   "Text": "사수관 — 출전 준비",
+   "Stage": "B03"
+  },
+  {
+   "ID": "c03-camp",
+   "Kind": "scene",
+   "Place": "반동탁 연합 · 맹주의 막사"
+  },
+  {
+   "ID": "c03-n4",
+   "Kind": "narrate",
+   "Text": "손견군이 돌아와 진영이 어수선하다. 전령이 뛰어든다."
+  },
+  {
+   "ID": "c03-s8",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "화웅이 영채 앞까지 와서 싸움을 돋웁니다! 낮에 저를 막은 수염 긴 장수를 내놓으라 외치고 있사옵니다!"
+  },
+  {
+   "ID": "c03-s9",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "유섭·반봉 두 장군이 나갔다가 연달아 그 칼에 쓰러졌사옵니다!"
+  },
+  {
+   "ID": "c03-n5",
+   "Kind": "narrate",
+   "Text": "제후들이 서로 눈치만 본다. 관우가 앞으로 나선다."
+  },
+  {
+   "ID": "c03-s10",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "소장이 나가 화웅의 목을 베어 오겠습니다."
+  },
+  {
+   "ID": "c03-s11",
+   "Kind": "say",
+   "Speaker": "yuanshu",
+   "Text": "직도 없는 자의 아우 따위가 감히! 제후들을 우습게 보는 것이냐. 이 자를 끌어내라!"
+  },
+  {
+   "ID": "c03-s12",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "공로 공, 저 사람의 풍채를 보시오. 범상한 자가 아니오."
+  },
+  {
+   "ID": "c03-s13",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "지고 돌아오면 그때 꾸짖어도 늦지 않소."
+  },
+  {
+   "ID": "c03-n6",
+   "Kind": "narrate",
+   "Text": "조조가 데운 술을 따라 관우에게 내민다."
+  },
+  {
+   "ID": "c03-s14",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "운장, 이 술을 들고 가시오."
+  },
+  {
+   "ID": "c03-s15",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "술은 잠시 두시오. 곧 돌아오겠소."
+  },
+  {
+   "ID": "c03-n7",
+   "Kind": "narrate",
+   "Text": "막사 밖에서 북소리와 함성이 한 차례 울리고, 곧 잦아든다."
+  },
+  {
+   "ID": "c03-n8",
+   "Kind": "narrate",
+   "Text": "관우가 화웅의 목을 들고 들어와 땅에 던진다. 조조가 잔을 들어 본다. 술에서 아직 김이 오른다."
+  },
+  {
+   "ID": "c03-n9",
+   "Kind": "narrate",
+   "Text": "원술은 얼굴이 붉어진 채 말없이 고개를 돌린다."
+  },
+  {
+   "ID": "c03-n10",
+   "Kind": "narrate",
+   "Text": "손견이 붕대를 감은 채 유비 앞에 와서 고개를 숙인다."
+  },
+  {
+   "ID": "c03-s16",
+   "Kind": "say",
+   "Speaker": "sunjian",
+   "Text": "현덕, 손문대가 이 빚은 반드시 갚겠소."
+  },
+  {
+   "ID": "c03-s17",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "갚으실 것 없습니다. 장군께서 살아 계시니 그걸로 되었습니다."
+  },
+  {
+   "ID": "c03-gift-branch",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-sunjian-alive"
+     ],
+     "Next": "c03-gift-n"
+    }
+   ],
+   "Else": "c03-after"
+  },
+  {
+   "ID": "c03-gift-n",
+   "Kind": "narrate",
+   "Text": "손견이 허리에서 칼을 풀어 유비에게 건넨다."
+  },
+  {
+   "ID": "c03-gift-s",
+   "Kind": "say",
+   "Speaker": "sunjian",
+   "Text": "고정도요. 오늘 내 목숨을 지켜 준 이들에게 주는 것이니 사양하지 마시오."
+  },
+  {
+   "ID": "c03-gift",
    "Kind": "grant",
    "Item": "gujeong_blade",
    "Count": 1,
-   "Event": "grant-gujeong_blade",
-   "Next": "chase"
+   "Event": "grant-gujeong_blade"
   },
   {
-   "ID": "chase",
-   "Kind": "say",
-   "Speaker": "sunqian",
-   "Text": "이 고정도를 받아 주십시오.",
-   "Next": "chase_2"
-  },
-  {
-   "ID": "chase_2",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "감사하오. 이제 호로관으로 추격합시다.",
-   "Next": "prep3"
-  },
-  {
-   "ID": "prep3",
-   "Kind": "battle",
-   "Text": "호로관 — 출전 준비. 고정도는 창고에서 직접 장착한다.",
-   "Stage": "B03"
+   "ID": "c03-after",
+   "Kind": "narrate",
+   "Text": "손견이 고개를 들고 원술 쪽을 한 번 돌아본다. 눈빛이 차갑다."
   }
  ]
 }

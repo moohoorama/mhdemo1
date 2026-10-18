@@ -2,7 +2,7 @@
  "Scenarios": [
   {
    "ID": "hero",
-   "Name": "유비전",
+   "Name": "유비전: 한실중흥",
    "Path": "hero/scenario.json"
   }
  ]

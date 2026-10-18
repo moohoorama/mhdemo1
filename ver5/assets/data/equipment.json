@@ -294,6 +294,23 @@
    "Traits": [
     "diamond_guard"
    ]
+  },
+  "fire_manual": {
+   "Name": "화계서",
+   "Desc": "황보숭이 건넨 병서. 화계 책략을 쓰게 한다.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Bonus": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "fire"
+   ]
   }
  }
 }

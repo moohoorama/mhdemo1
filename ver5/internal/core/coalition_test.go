@@ -12,7 +12,7 @@ func hulaoBattle(t *testing.T) *Engine {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 	for _, n := range d.Nodes {
-		if n.Kind == "battle" && n.Stage == "B03" {
+		if n.Kind == "battle" && n.Stage == "B04" {
 			d.Campaign.Start = n.ID
 			break
 		}
@@ -60,7 +60,7 @@ func TestCoalitionArrivalAndControl(t *testing.T) {
 			require.NotNil(t, v.Unit)
 		}
 	}
-	assert.Equal(t, 2, speechCount)
+	assert.Equal(t, 4, speechCount, "the boss steps forward, then the three coalition lines")
 	assert.NotEqual(t, content.Point{X: 25, Y: 7}, content.Point{X: e.unit("mushun").X, Y: e.unit("mushun").Y})
 	require.Empty(t, e.LegalActions("mushun").Commands)
 	assertRejected(t, e, Command{Kind: "wait", Actor: "mushun"})

@@ -7,6 +7,11 @@
 
 ## 2026-10-18
 
+### 시나리오 1~9장을 데이터로 만들고 옛 캠페인을 교체함
+- 도원결의·사수관·호로관 세 판짜리 옛 캠페인을 지우고 `conceptual_scenario.md`의 1~9장(영천~계교)을 스토리 9장·스테이지 7개·맵 7개로 만듦. 맵은 글자 배치에서 생성(`tools/mapgen`). 새 인물 26명(`characters_story.json`)과 화계서(`fire_manual`)를 더함. 책략 「화계」 보상은 부목표 플래그를 전투 뒤 `branch`가 읽고 `grant`로 장비를 주는 방식이라 새 노드 종류 없이 해결함. 일기토 연출은 새로 쓴 것 대부분이 기본 연출이고 호로관·사수관의 것만 옛 연출을 이어씀.
+- 호로관의 삼영전을 일기토 하나(`hulao-brothers`)와 `Variants`(먼저 맞닿은 장수)로 합침 — 일기토가 인접하는 순간 자동으로 벌어져 셋으로 나눠 두면 셋이 따로 벌어질 수 있어서.
+- 영향: `assets/scenario/hero/`, `assets/data/characters_story.json`, `internal/core/campaign_content_test.go`, `tools/mapgen/`, `docs/todo/data.md`
+
 ### 전투 연출용 이벤트 동작(`buff`·`join`·`move`·`cutscene`·`duel`)을 둠
 - 전투 도중 능력치 보정(손견군 약화)·조작 가능한 인물의 합류(조운)·이동력과 무관한 여럿 동시 이동(백마의종)·전투 위의 연출(`cutscene`: 묶음별로 동시/순차, 병력·병법은 바꾸지 않고 끝 위치만 남김)·인접하지 않은 일기토를 지금 치르기. 연출은 전투 화면 위에서 기존 병종 동작(`attack` `hit` `block` `exhausted`)으로 하고 새 스프라이트가 필요 없음. 일기토를 명령 종류와 상관없이 앞 동작 뒤에 보이도록 재생을 고침(자동 일기토가 이동 뒤에 나오도록).
 - 영향: `internal/core/battle_events.go`, `internal/gui/player.go`·`cutscene.go`, `docs/logic-battle-event.md`·`presentation-replay.md`

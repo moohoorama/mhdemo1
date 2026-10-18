@@ -1,0 +1,375 @@
+{
+ "ID": "B07",
+ "Name": "신도성 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 4,
+ "Required": [
+  "liubei",
+  "guanyu",
+  "zhangfei",
+  "jianyong"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "defeated:chunyuqiong"
+   ],
+   "Text": "순우경 퇴각"
+  }
+ ],
+ "Defeat": [
+  {
+   "If": [
+    "defeated:fangong"
+   ],
+   "Text": "번궁 퇴각"
+  },
+  {
+   "If": [
+    "at:enemy:1"
+   ],
+   "Text": "성 안이 점령당함"
+  }
+ ],
+ "TurnLimit": 15,
+ "Map": "map07.json",
+ "Tiles": null,
+ "Allies": [
+  {
+   "X": 21,
+   "Y": 0
+  },
+  {
+   "X": 22,
+   "Y": 1
+  },
+  {
+   "X": 20,
+   "Y": 0
+  },
+  {
+   "X": 21,
+   "Y": 1
+  },
+  {
+   "X": 22,
+   "Y": 2
+  },
+  {
+   "X": 20,
+   "Y": 2
+  }
+ ],
+ "Party": [
+  {
+   "Character": "fangong",
+   "X": 3,
+   "Y": 5,
+   "Level": 3,
+   "AI": true,
+   "Policy": "hold",
+   "Facing": "SE"
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "chunyuqiong",
+   "X": 14,
+   "Y": 6,
+   "Facing": "NW",
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   },
+   "Group": "chunyu"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 4,
+   "Level": 4,
+   "Group": "main",
+   "Facing": "NW",
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 5,
+   "Level": 4,
+   "Group": "main",
+   "Facing": "NW",
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 7,
+   "Level": 4,
+   "Group": "main",
+   "Facing": "NW",
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 8,
+   "Level": 4,
+   "Group": "main",
+   "Facing": "NW",
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
+  },
+  {
+   "Character": "troop_archer",
+   "X": 13,
+   "Y": 5,
+   "Level": 4,
+   "Group": "main",
+   "Facing": "NW",
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
+  },
+  {
+   "Character": "troop_archer",
+   "X": 13,
+   "Y": 7,
+   "Level": 4,
+   "Group": "main",
+   "Facing": "NW",
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
+  },
+  {
+   "Character": "troop_footman",
+   "X": 13,
+   "Y": 4,
+   "Level": 4,
+   "Group": "main",
+   "Facing": "NW",
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
+  },
+  {
+   "Character": "troop_footman",
+   "X": 13,
+   "Y": 8,
+   "Level": 4,
+   "Group": "main",
+   "Facing": "NW",
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
+  }
+ ],
+ "Faction": "yuan",
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 2,
+    "Y": 4,
+    "W": 4,
+    "H": 4
+   },
+   "Name": "성 안",
+   "Description": "적이 들어서면 성이 점령당하는 성 안 지점"
+  }
+ ],
+ "Duels": [
+  {
+   "ID": "xindu-zhang-fei",
+   "Ally": "zhangfei",
+   "Enemy": "chunyuqiong",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "장비가 순우경을 물리쳤다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "도발",
+     "Speech": "연인 장익덕이다! 술은 저승에서 마셔라!",
+     "Side": 0,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "당황",
+     "Speech": "이, 이놈이……!",
+     "Side": 1,
+     "Duration": 2.5
+    },
+    {
+     "Kind": "win",
+     "Side": 0,
+     "Duration": 1
+    }
+   ]
+  }
+ ],
+ "Events": [
+  {
+   "ID": "opening",
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "chunyuqiong",
+       "Text": "성문이 곧 부서진다! 오늘 밤은 신도성에서 술을 마신다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "fangong",
+       "Text": "원군이다! 조금만 더 버텨라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "flank-arrives",
+   "If": [
+    "round>=3"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_cavalry",
+       "X": 14,
+       "Y": 11,
+       "Level": 4,
+       "Group": "flank",
+       "Facing": "SW",
+       "Policy": "march",
+       "Goal": {
+        "X": 6,
+        "Y": 11
+       },
+       "Faction": "yuan",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 15,
+       "Y": 11,
+       "Level": 4,
+       "Group": "flank",
+       "Facing": "SW",
+       "Policy": "march",
+       "Goal": {
+        "X": 6,
+        "Y": 11
+       },
+       "Faction": "yuan",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 12,
+       "Y": 11,
+       "Level": 4,
+       "Group": "flank",
+       "Facing": "SW",
+       "Policy": "march",
+       "Goal": {
+        "X": 6,
+        "Y": 11
+       },
+       "Faction": "yuan",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 13,
+       "Y": 11,
+       "Level": 4,
+       "Group": "flank",
+       "Facing": "SW",
+       "Policy": "march",
+       "Goal": {
+        "X": 6,
+        "Y": 11
+       },
+       "Faction": "yuan",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 11,
+       "Y": 11,
+       "Level": 4,
+       "Group": "flank",
+       "Facing": "SW",
+       "Policy": "march",
+       "Goal": {
+        "X": 6,
+        "Y": 11
+       },
+       "Faction": "yuan",
+       "Side": "enemy"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "fangong",
+       "Text": "남문으로도 적이 옵니다! 이쪽은 병사가 모자라오!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "운장, 남문을 맡아라. 익덕과 나는 동문의 순우경을 친다."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "Reward": {
+  "bean": 6,
+  "barley": 2,
+  "liquor": 2
+ }
+}

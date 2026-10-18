@@ -1,0 +1,114 @@
+{
+ "Nodes": [
+  {
+   "ID": "c07-start",
+   "Kind": "scene",
+   "Place": "하북으로 가는 길"
+  },
+  {
+   "ID": "c07-02",
+   "Kind": "narrate",
+   "Text": "먼지를 일으키며 한 사내가 말을 몰아 온다."
+  },
+  {
+   "ID": "c07-03",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "현덕! 탁현에서 기다리다 목이 빠지는 줄 알았네."
+  },
+  {
+   "ID": "c07-04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "헌화! 자네가 어찌 여기에."
+  },
+  {
+   "ID": "c07-05",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "반가운 얼굴만 들고 온 게 아닐세. 공손 장군의 서신이네."
+  },
+  {
+   "ID": "c07-06",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "계교에서 원본초와 맞붙었는데 형세가 좋지 않다고, 노 선생 문하의 정을 봐서 구해 달라 하시네."
+  },
+  {
+   "ID": "c07-07",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "원본초는 공손 장군이 쳐들어온다는 소문을 흘려 한복을 겁주고 기주를 얻었다더군. 이번엔 그 공손 장군을 치는 거지."
+  },
+  {
+   "ID": "c07-08",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "계교라면 남쪽으로 한참입니다. 가는 길에 신도와 거록을 지나야 합니다."
+  },
+  {
+   "ID": "c07-09",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "그런데 신도가 지금 원소군에 에워싸여 있다더군. 성주 번궁이 공손 장군 편이라 홀로 버티고 있다지."
+  },
+  {
+   "ID": "c07-10",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그냥 지나칠 수는 없다. 신도부터 간다."
+  },
+  {
+   "ID": "c07-11",
+   "Kind": "join",
+   "Character": "jianyong",
+   "Event": "join-jianyong"
+  },
+  {
+   "ID": "c07-12",
+   "Kind": "battle",
+   "Stage": "B07",
+   "Text": "신도 — 출전 준비"
+  },
+  {
+   "ID": "c07-13",
+   "Kind": "scene",
+   "Place": "신도성 안"
+  },
+  {
+   "ID": "c07-14",
+   "Kind": "narrate",
+   "Text": "부서진 성문 곁에서 병사들이 숨을 고른다. 번궁이 유비 앞에 와서 무릎을 꿇는다."
+  },
+  {
+   "ID": "c07-15",
+   "Kind": "say",
+   "Speaker": "fangong",
+   "Text": "장군이 아니었으면 신도는 원본초의 것이 되었을 것이오. 공손 장군을 구하러 가신다 들었소."
+  },
+  {
+   "ID": "c07-16",
+   "Kind": "say",
+   "Speaker": "fangong",
+   "Text": "성은 부장에게 맡기고, 소장도 함께 가겠소."
+  },
+  {
+   "ID": "c07-17",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "성주께서 성을 두고 어찌……."
+  },
+  {
+   "ID": "c07-18",
+   "Kind": "say",
+   "Speaker": "fangong",
+   "Text": "성은 장군께서 지켜 주셨소. 이제 소장의 창은 장군의 것이오."
+  },
+  {
+   "ID": "c07-19",
+   "Kind": "join",
+   "Character": "fangong",
+   "Event": "join-fangong"
+  }
+ ]
+}

@@ -1,0 +1,280 @@
+{
+ "ID": "B08",
+ "Name": "거록 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 5,
+ "Required": [
+  "liubei",
+  "guanyu",
+  "zhangfei"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "at:liubei:2"
+   ],
+   "Text": "유비가 남서쪽 주둔지에 도달"
+  }
+ ],
+ "TurnLimit": 18,
+ "Tiles": null,
+ "Allies": [
+  {
+   "X": 1,
+   "Y": 1
+  },
+  {
+   "X": 2,
+   "Y": 1
+  },
+  {
+   "X": 3,
+   "Y": 1
+  },
+  {
+   "X": 4,
+   "Y": 1
+  },
+  {
+   "X": 1,
+   "Y": 2
+  },
+  {
+   "X": 2,
+   "Y": 2
+  },
+  {
+   "X": 3,
+   "Y": 2
+  },
+  {
+   "X": 4,
+   "Y": 2
+  },
+  {
+   "X": 1,
+   "Y": 3
+  },
+  {
+   "X": 2,
+   "Y": 3
+  },
+  {
+   "X": 3,
+   "Y": 3
+  },
+  {
+   "X": 4,
+   "Y": 3
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "yanliang",
+   "X": 4,
+   "Y": 12,
+   "Facing": "NE",
+   "DuelFirst": true,
+   "Group": "yan"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 3,
+   "Y": 11,
+   "Level": 5,
+   "Group": "yan",
+   "Facing": "SW",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 5,
+   "Y": 11,
+   "Level": 6,
+   "Group": "yan",
+   "Facing": "SW",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 2,
+   "Y": 12,
+   "Level": 6,
+   "Group": "yan",
+   "Facing": "SW",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 6,
+   "Y": 12,
+   "Level": 6,
+   "Group": "yan",
+   "Facing": "SW",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 3,
+   "Y": 13,
+   "Level": 6,
+   "Group": "yan",
+   "Facing": "SW",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 5,
+   "Y": 13,
+   "Level": 6,
+   "Group": "yan",
+   "Facing": "SW",
+   "Policy": "hold"
+  }
+ ],
+ "Reward": {
+  "bean": 8,
+  "liquor": 3
+ },
+ "Sub": [
+  {
+   "ID": "julu-clear",
+   "Text": "안량과 장합을 모두 물리친다",
+   "If": [
+    "defeated:yanliang",
+    "defeated:zhanghe"
+   ],
+   "Flag": "flag-julu-clear"
+  }
+ ],
+ "Duels": [
+  {
+   "ID": "julu-zhangfei-yanliang",
+   "Ally": "zhangfei",
+   "Enemy": "yanliang",
+   "Outcome": "draw",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "장비와 안량이 승부를 내지 못하고 안량이 물러났다."
+  }
+ ],
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 3,
+    "Y": 5,
+    "W": 4,
+    "H": 2
+   },
+   "Name": "길 굽이",
+   "Description": "언덕 사이로 길이 휘어지는 곳. 장합의 복병이 숨어 있다."
+  },
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 2,
+    "Y": 14,
+    "W": 3,
+    "H": 1
+   },
+   "Name": "주둔지",
+   "Description": "아군의 목표 주둔지"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "zhanghe-ambush",
+   "If": [
+    "any:[at:ally:1, round>=2]"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "zhanghe",
+       "X": 13,
+       "Y": 5,
+       "Facing": "SW",
+       "Group": "ambush",
+       "Policy": "assault",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 10,
+       "Y": 5,
+       "Level": 4,
+       "Group": "ambush",
+       "Facing": "SW",
+       "Policy": "assault",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 11,
+       "Y": 6,
+       "Level": 4,
+       "Group": "ambush",
+       "Facing": "SW",
+       "Policy": "assault",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 14,
+       "Y": 6,
+       "Level": 4,
+       "Group": "ambush",
+       "Facing": "SW",
+       "Policy": "assault",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 12,
+       "Y": 5,
+       "Level": 4,
+       "Group": "ambush",
+       "Facing": "SW",
+       "Policy": "assault",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 14,
+       "Y": 5,
+       "Level": 4,
+       "Group": "ambush",
+       "Facing": "SW",
+       "Policy": "assault",
+       "Side": "enemy"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhanghe",
+       "Text": "걸려들었구나! 에워싸라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "jianyong",
+       "Text": "번 장군 말이 맞았구먼!"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "Faction": "yuan",
+ "Map": "map08.json"
+}

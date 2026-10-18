@@ -1,33 +1,170 @@
 {
  "Nodes": [
   {
-   "ID": "oath",
+   "ID": "c01-start",
+   "Kind": "scene",
+   "Place": "광종 · 노식의 진영"
+  },
+  {
+   "ID": "c01-01",
+   "Kind": "say",
+   "Speaker": "luzhi",
+   "Text": "현덕, 영천이 급하다. 황보숭 장군이 장사성에서 적장 파재에게 겹겹이 에워싸였다 한다."
+  },
+  {
+   "ID": "c01-02",
+   "Kind": "say",
+   "Speaker": "luzhi",
+   "Text": "내 군사 천을 줄 터이니 가서 구하라."
+  },
+  {
+   "ID": "c01-03",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "백성을 지키기 위해 함께 뜻을 세웁시다.",
-   "Next": "oath_2"
+   "Text": "스승님의 명, 받들겠습니다."
   },
   {
-   "ID": "oath_2",
+   "ID": "c01-04",
    "Kind": "say",
-   "Speaker": "guanyu·zhangfei",
-   "Text": "생사를 함께하겠습니다.",
-   "Next": "oath_choice"
+   "Speaker": "luzhi",
+   "Text": "그리고 공을 세우거든 군보에 내 이름은 빼라. 요사이 조정에는 공보다 뇌물이 먼저 닿는 법이다."
   },
   {
-   "ID": "oath_choice",
-   "Kind": "choice",
-   "Text": "도원결의: 의용군을 일으킨다.",
-   "Choices": {
-    "결의": "prep1"
-   }
+   "ID": "c01-hill",
+   "Kind": "scene",
+   "Place": "영천 · 장사성 북쪽 언덕"
   },
   {
-   "ID": "prep1",
+   "ID": "c01-05",
+   "Kind": "narrate",
+   "Text": "작은 성을 황건의 화톳불 수천 개가 둘러쌌다. 진영은 키 큰 풀밭 한가운데 세워져 있다."
+  },
+  {
+   "ID": "c01-06",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형님, 천 명으로 저 개미 떼를 어찌 뚫는단 말이유."
+  },
+  {
+   "ID": "c01-07",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "성을 에워싼 진 가운데 북쪽 진영이 가장 얇습니다. 저곳을 뚫으면 성 안과 길이 통합니다."
+  },
+  {
+   "ID": "c01-08",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "북쪽 진영을 친다. 성 안의 황보 장군께서 우리 깃발을 보시면 반드시 호응해 나오실 것이오."
+  },
+  {
+   "ID": "c01-battle",
    "Kind": "battle",
-   "Text": "황건적의 난 — 출전 준비",
    "Stage": "B01",
-   "Next": "join"
+   "Text": "영천 — 출전 준비"
+  },
+  {
+   "ID": "c01-dawn",
+   "Kind": "scene",
+   "Place": "영천 · 장사성 밖 관군 진영"
+  },
+  {
+   "ID": "c01-09",
+   "Kind": "narrate",
+   "Text": "연기가 걷힌다. 붉은 깃발의 기병 몇이 진영으로 들어온다. 앞선 장수는 눈매가 가늘고 수염이 길다."
+  },
+  {
+   "ID": "c01-10",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "(작은 소리로) 형님, 저자가 오색봉으로 건석의 숙부를 때려죽였다는 그 조맹덕이유."
+  },
+  {
+   "ID": "c01-11",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "탁현의 유현덕이시오? 기도위 조맹덕이오. 북쪽 진을 처음 깨뜨린 것이 공의 군사라 들었소."
+  },
+  {
+   "ID": "c01-12",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "수급은 나눕시다. 조정에 올릴 공이니."
+  },
+  {
+   "ID": "c01-13",
+   "Kind": "say",
+   "Speaker": "soldier",
+   "Text": "남은 불이 마을 쪽으로 번진다! 물을 길어 오라!"
+  },
+  {
+   "ID": "c01-14",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "미안하오. 잠시 급한 일이 있소."
+  },
+  {
+   "ID": "c01-15",
+   "Kind": "narrate",
+   "Text": "유비가 말소리가 난 쪽으로 걸어 나가 모습을 감춘다. 관우와 장비가 뒤따른다."
+  },
+  {
+   "ID": "c01-16",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "……호오."
+  },
+  {
+   "ID": "c01-check",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-yingchuan-village"
+     ],
+     "Next": "c01-village"
+    }
+   ],
+   "Else": "c01-end"
+  },
+  {
+   "ID": "c01-village",
+   "Kind": "scene",
+   "Place": "영천 · 장사 외곽 마을"
+  },
+  {
+   "ID": "c01-17",
+   "Kind": "narrate",
+   "Text": "불 끈 자리에 재가 흩어져 있다. 황보숭이 말을 몰아 다가와 병서 한 권을 내민다."
+  },
+  {
+   "ID": "c01-18",
+   "Kind": "say",
+   "Speaker": "huangfusong",
+   "Text": "불을 놓는 자는 많으나, 불을 막아 본 자는 드물다."
+  },
+  {
+   "ID": "c01-19",
+   "Kind": "say",
+   "Speaker": "huangfusong",
+   "Text": "불을 막아 본 자라야 불을 바로 쓸 줄 아는 법이지. 받게."
+  },
+  {
+   "ID": "c01-grant",
+   "Kind": "grant",
+   "Item": "fire_manual",
+   "Count": 1,
+   "Event": "grant-fire_manual"
+  },
+  {
+   "ID": "c01-20",
+   "Kind": "narrate",
+   "Text": "마을을 지키던 서복이 유비를 바라보다 고개를 숙이고 돌아선다."
+  },
+  {
+   "ID": "c01-end",
+   "Kind": "narrate",
+   "Text": "영천의 밤이 밝았다."
   }
  ]
 }
