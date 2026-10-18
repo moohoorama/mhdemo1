@@ -102,7 +102,7 @@ func setup(mapID string, zoom float64, sheetPath string, launchAtEnd bool) (*dem
 	if err != nil {
 		return nil, err
 	}
-	assets, err := gui.LoadAssets("assets/graphics", font)
+	assets, err := gui.LoadAssets("assets/graphics", font, data)
 	if err != nil {
 		return nil, err
 	}

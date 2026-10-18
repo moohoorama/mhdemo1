@@ -9,7 +9,7 @@ description: 이 프로젝트의 전투 중 일기토를 이야기와 장수 성
 
 ## 시작할 때 읽을 것
 
-프로젝트 루트를 기준으로 `README.md`, `docs/presentation-duel.md`, 해당 스테이지의 `assets/scenario/<시나리오>/stageNN.json`과 `assets/duels.json`을 읽는다. 이야기 근거는 해당 내용이 있는 `docs/scenario.md`·`docs/script-c1.md`에서 확인한다. 사용자에게서 전개를 받았다면 그것을 구현 기준으로 삼는다. 엔진 승패는 `internal/core/formation.go`, 동작은 `internal/duel/timeline.go`, 검증은 `internal/duel/scripts.go`, 화면은 `internal/duelview/`, 재생과 건너뛰기는 `internal/gui/player.go`·`internal/gui/duel.go`다.
+프로젝트 루트를 기준으로 `README.md`, `docs/presentation-duel.md`, 해당 스테이지의 `assets/scenario/<시나리오>/stageNN.json`(`Duels` 항목 안에 규칙과 연출이 함께 있다)을 읽는다. 이야기 근거는 해당 내용이 있는 `docs/scenario.md`·`docs/script-c1.md`에서 확인한다. 사용자에게서 전개를 받았다면 그것을 구현 기준으로 삼는다. 엔진 승패는 `internal/core/formation.go`, 동작은 `internal/duel/timeline.go`, 검증은 `internal/duel/scripts.go`, 화면은 `internal/duelview/`, 재생과 건너뛰기는 `internal/gui/player.go`·`internal/gui/duel.go`다.
 
 ## 예제보다 이야기를 우선
 
@@ -25,7 +25,7 @@ description: 이 프로젝트의 전투 중 일기토를 이야기와 장수 성
 
 ## 데이터와 규칙
 
-`assets/duels.json`의 키는 스테이지 일기토 ID다. `Outcome`은 엔진 이벤트의 승패와 맞춘다. `Beats`에는 동작, 저작용 `Title`, 대사, `Side`와 시간을 기록한다. `Supports`는 합류할 두 장수의 콘텐츠 ID를 기록한다. `Side` 2·3은 지원군이며 `reinforcements` 이후 대사·방어되는 공격·회피되는 공격에 참여할 수 있다. `Side`는 0=아군, 1=적군이며 공격 동작에서는 공격자를 의미한다. 기존 `block`·`dodge`의 `Speech`는 방어자에게 표시된다. 의도한 화자를 확인하고 필요하면 별도 대사 구간이나 표현 필드를 추가한다.
+일기토의 연출은 스테이지 파일 `Duels[]` 항목의 `Beats`(그리고 선공자별 `Variants`)에 있다. `Outcome`은 엔진 이벤트의 승패이고 같은 항목의 결과(`AllyResult`·`EnemyResult`)와 맞아야 한다. 일기토는 두 장수가 인접하는 순간 벌어진다. `Beats`에는 동작, 저작용 `Title`, 대사, `Side`와 시간을 기록한다. `Supports`는 합류할 두 장수의 콘텐츠 ID를 기록한다. `Side` 2·3은 지원군이며 `reinforcements` 이후 대사·방어되는 공격·회피되는 공격에 참여할 수 있다. `Side`는 0=아군, 1=적군이며 공격 동작에서는 공격자를 의미한다. 기존 `block`·`dodge`의 `Speech`는 방어자에게 표시된다. 의도한 화자를 확인하고 필요하면 별도 대사 구간이나 표현 필드를 추가한다.
 
 연출은 규칙 상태나 난수를 바꾸지 않는다. 사망·퇴각을 바꾸라는 요청이 있으면 해당 맵의 `AllyResult`·`EnemyResult`도 함께 맞춘다. 요청 없이 연출만으로 규칙 결과를 바꾸지 않는다. 맵 데이터가 바뀌면 콘텐츠 해시와 기존 저장 자료 호환에 영향을 준다. 일기토 종료·건너뛰기 후 후속 이벤트를 유지한다.
 

@@ -6,7 +6,7 @@
 
 ## 이야기 데이터
 
-`assets/duels.json`의 키는 스테이지 일기토 ID다. `Outcome`은 맵과 일치하고 `Beats`는 `Kind`·저작용 `Title`·`Speech`·`Side`·`Duration`으로 구성한다. `Supports`는 합류할 두 장수의 콘텐츠 ID다. 0=주역 아군, 1=적군, 2·3=지원군이다. 지원군은 합류 전 보이지 않으며 이후 대사와 공방에 참여한다. `block`·`dodge`·`yielding-block`·`critical-dodge`의 대사는 방어자에게, `critical-block`의 대사는 공격자에게 표시한다.
+일기토의 연출은 스테이지 파일의 `Stage.Duels` 항목 안(`Beats`·`Supports`·`Variants`)에 있고, `Outcome`·결과는 같은 항목의 규칙 필드다(`duel.FromData`가 모아 검증한다). 일기토는 두 장수가 인접하는 순간 자동으로 벌어지고, `Variants`는 먼저 이동해 맞닿은 장수(`First`)에 따라 고른다. `Beats`는 `Kind`·저작용 `Title`·`Speech`·`Side`·`Duration`으로 구성한다. `Supports`는 합류할 두 장수의 콘텐츠 ID다. 0=주역 아군, 1=적군, 2·3=지원군이다. 지원군은 합류 전 보이지 않으며 이후 대사와 공방에 참여한다. `block`·`dodge`·`yielding-block`·`critical-dodge`의 대사는 방어자에게, `critical-block`의 대사는 공격자에게 표시한다.
 
 | ID | 전개 |
 |---|---|

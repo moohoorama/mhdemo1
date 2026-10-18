@@ -146,12 +146,16 @@ assets/scenario/
 | `Outcome` | 아군 기준 결과 표시. `victory`, `defeat`, `draw` 중 하나. |
 | `AllyResult`, `EnemyResult` | 각 쪽의 결과. `stay`, `retreat`, `death` 중 하나. |
 | `Text` | 일기토 로그에 남는 글. |
+| `Supports` | 연출에서 도중에 합류하는 두 장수의 인물 ID(선택). 둘이어야 한다. |
+| `Beats` | 연출 장면 목록(선택). 없으면 기본 타임라인이 `Outcome`대로 보인다. |
+| `Variants` | `[{First, Beats}]`(선택). `First`(먼저 이동해 맞닿은 장수)에 따라 `Beats` 대신 쓰는 연출. `First`는 유일하고 비어 있지 않다. |
 
-연출 자료(`assets/duels.json`)와 이 기록은 별개다. 이 기록이 규칙 결과를 정한다([presentation-duel.md](presentation-duel.md)).
+`Beats`의 장면은 `Kind`(동작)·`Title`(쓰는 사람을 위한 메모)·`Speech`(대사)·`Side`(0 아군, 1 적, 2·3 지원군)·`Duration`(초)이다. 동작 어휘와 규칙은 `internal/duel`의 `Script.Validate`가 로드 때 검증한다(GUI가 자산을 읽을 때, 그리고 테스트에서). 마지막 장면이 `Outcome`과 어긋나면 오류다. 연출은 규칙 결과를 바꾸지 않는다([presentation-duel.md](presentation-duel.md)).
 
 ```json
 {"ID": "hulao-mushun", "Ally": "mushun", "Enemy": "lubu", "Outcome": "defeat", "AllyResult": "death",
- "EnemyResult": "stay", "Text": "목순이 여포에게 패하고 전사했다."}
+ "EnemyResult": "stay", "Text": "목순이 여포에게 패하고 전사했다.",
+ "Beats": [{"Kind": "talk", "Title": "도발", "Speech": "네가 여포냐?", "Side": 0, "Duration": 3.2}, {"Kind": "win", "Side": 1, "Duration": 1}]}
 ```
 
 ## 6. 구역(`Stage.Areas`)

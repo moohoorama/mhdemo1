@@ -9,7 +9,7 @@ import (
 )
 
 func TestArrivedFightersStopWalking(t *testing.T) {
-	scripts, err := LoadScripts("../../assets/duels.json")
+	scripts, err := loadScripts()
 	require.NoError(t, err)
 	for _, id := range []string{"hulao-mushun", "hulao-wuanguo"} {
 		t.Run(id, func(t *testing.T) {
@@ -45,7 +45,7 @@ func TestArrivedFightersStopWalking(t *testing.T) {
 }
 
 func TestEveryExchangeConnectsAtWeaponRange(t *testing.T) {
-	scripts, err := LoadScripts("../../assets/duels.json")
+	scripts, err := loadScripts()
 	require.NoError(t, err)
 	stories := map[string]Story{}
 	for id, script := range scripts {

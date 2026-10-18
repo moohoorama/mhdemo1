@@ -188,8 +188,29 @@ type Spawn struct {
 	Level             int    `json:",omitempty"` // overrides the character's level
 	Faction           string `json:",omitempty"` // overrides the stage's and the character's faction color
 }
+
+// Beat is one step of a duel's staging: Kind names the motion, Side who acts (0 the ally, 1 the
+// enemy, 2 and 3 the supports), Speech what is said and Duration how long it lasts in seconds.
+// Title is a note for whoever writes the duel.
+type Beat struct {
+	Kind, Title, Speech string
+	Side                int
+	Duration            float64
+}
+
+// DuelVariant is the staging used when First is the officer who moved to meet the other.
+type DuelVariant struct {
+	First string
+	Beats []Beat
+}
+
+// Duel is a pending fight between two officers: it starts when they stand next to each other,
+// its result is fixed here and Beats (with Supports who join in) stage it.
 type Duel struct {
 	ID, Ally, Enemy, Outcome, AllyResult, EnemyResult, Text string
+	Supports                                                []string      `json:",omitempty"`
+	Beats                                                   []Beat        `json:",omitempty"`
+	Variants                                                []DuelVariant `json:",omitempty"`
 }
 type Speech struct{ Actor, Text string }
 

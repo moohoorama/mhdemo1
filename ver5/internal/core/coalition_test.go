@@ -90,7 +90,7 @@ func TestCoalitionDuelsAndSimultaneousResponse(t *testing.T) {
 			u := e.unit(id)
 			boss := e.unit("lubu")
 			u.X, u.Y = boss.X-1, boss.Y
-			r := apply(t, e, Command{Kind: "attack", Actor: id, Target: "lubu"})
+			r := apply(t, e, Command{Kind: "wait", Actor: id}) // standing next to the partner starts the duel
 			assert.Zero(t, e.unit(id).HP)
 			assert.Equal(t, id != "wuanguo", e.char(id).Dead)
 			assert.Positive(t, e.unit("lubu").HP)

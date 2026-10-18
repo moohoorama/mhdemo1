@@ -97,6 +97,7 @@ type Event struct {
 	Unit                      *Unit            `json:",omitempty"`
 	DuelID                    string           `json:",omitempty"`
 	Outcome                   string           `json:",omitempty"`
+	First                     string           `json:",omitempty"` // duel: the officer who moved to meet the other
 	Kind, Actor, Target, Text string
 	Amount                    int
 	Path                      []content.Point `json:",omitempty"` // move: cells walked, both ends included

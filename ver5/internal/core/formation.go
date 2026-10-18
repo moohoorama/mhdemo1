@@ -107,16 +107,6 @@ func (e *Engine) promote(u *Unit, c Command, it content.Item) error {
 	return nil
 }
 
-// duelFor is the stage duel an attack sets off: the two characters of a pending duel meet
-// when either attacks the other at close range with a weapon (영걸전 style). The duel
-// replaces the attack.
-func (e *Engine) duelFor(u, v *Unit, s content.Skill) (content.Duel, bool) {
-	if v == nil || u.HP <= 0 || v.HP <= 0 || s.Kind != content.KindPhysical || dist(u.X, u.Y, v.X, v.Y) > 1 {
-		return content.Duel{}, false
-	}
-	return e.pendingDuel(u, v)
-}
-
 // pendingDuel is the stage duel still waiting between two living units of opposite sides, wherever they stand.
 func (e *Engine) pendingDuel(u, v *Unit) (content.Duel, bool) {
 	if u == nil || v == nil || u.HP <= 0 || v.HP <= 0 || u.Faction == v.Faction {
@@ -137,29 +127,58 @@ func (e *Engine) DuelPending(a, b string) bool {
 	return ok
 }
 
-// DuelFor reports whether the attack c would set off a stage duel.
-func (e *Engine) DuelFor(c Command) bool {
-	u, v := e.unit(c.Actor), e.unit(c.Target)
-	if u == nil {
-		return false
+// DuelAt is the stage duel the unit would set off by standing at (x, y): a pending duel whose
+// other officer is alive, on the other side and next to that cell. Empty when there is none.
+func (e *Engine) DuelAt(id string, x, y int) string {
+	u := e.unit(id)
+	if u == nil || u.HP <= 0 || e.state.Phase != "battle" {
+		return ""
 	}
-	s, err := e.skillDef(c)
-	if err != nil {
-		return false
+	for _, d := range e.data.Stages[e.state.Stage].Duels {
+		other := d.Ally
+		if d.Ally == u.Character {
+			other = d.Enemy
+		} else if d.Enemy != u.Character {
+			continue
+		}
+		if v := e.unit(other); v != nil && v.HP > 0 && v.Faction != u.Faction && dist(x, y, v.X, v.Y) <= 1 && !e.state.Executed["duel-"+d.ID] {
+			return d.ID
+		}
 	}
-	_, ok := e.duelFor(u, v, s)
-	return ok
+	return ""
 }
 
-// duel resolves a stage duel in place of the attacker's action. The event names the
-// ally first whichever side attacked.
-func (e *Engine) duel(attacker, defender *Unit, d content.Duel) {
-	ally, enemy := attacker, defender
-	if ally.Faction != "ally" {
-		ally, enemy = defender, attacker
+// autoDuels holds every pending stage duel whose two officers stand next to each other. It runs
+// at each settle(), so a duel starts as soon as they meet, whatever brought them together (a move,
+// a spawn, the start of the battle). One duel can change who stands where, so the stage's duels
+// are looked at again after each.
+func (e *Engine) autoDuels() {
+	duels := e.data.Stages[e.state.Stage].Duels
+	for again := true; again; {
+		again = false
+		for _, d := range duels {
+			a, b := e.unit(d.Ally), e.unit(d.Enemy)
+			if a == nil || b == nil || a.HP <= 0 || b.HP <= 0 || a.Faction == b.Faction || dist(a.X, a.Y, b.X, b.Y) > 1 || e.state.Executed["duel-"+d.ID] {
+				continue
+			}
+			e.duel(a, b, d)
+			again = true
+			break
+		}
+	}
+}
+
+// duel resolves a stage duel between the two officers. The event names the ally first and
+// the one who moved to meet the other (if the command was one of theirs) as First; that
+// officer's action for the turn ends.
+func (e *Engine) duel(ally, enemy *Unit, d content.Duel) {
+	first := ""
+	var mover *Unit
+	if m := e.unit(e.lastActor); m == ally || m == enemy {
+		mover, first = m, m.ID
 	}
 	e.state.Executed["duel-"+d.ID] = true
-	e.events = append(e.events, Event{Kind: "duel", DuelID: d.ID, Outcome: d.Outcome, Actor: ally.ID, Target: enemy.ID, Text: d.Text + " [" + d.Outcome + "]"})
+	e.events = append(e.events, Event{Kind: "duel", DuelID: d.ID, Outcome: d.Outcome, Actor: ally.ID, Target: enemy.ID, First: first, Text: d.Text + " [" + d.Outcome + "]"})
 	outcome := func(q *Unit, result string) {
 		if result == "retreat" || result == "death" {
 			q.HP = 0
@@ -187,7 +206,9 @@ func (e *Engine) duel(attacker, defender *Unit, d content.Duel) {
 	if enemy.HP == 0 && ally.HP > 0 {
 		e.retreatSweep(ally, enemy, false)
 	}
-	attacker.Attacked = true
+	if mover != nil {
+		mover.Moved, mover.Acted, mover.Attacked, mover.Done = true, true, true, true
+	}
 	if ally.HP > 0 && !ally.AI {
 		e.xp(ally.Character, XPPerLevel)
 	}

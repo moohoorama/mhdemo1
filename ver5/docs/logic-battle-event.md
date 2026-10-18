@@ -112,13 +112,9 @@
 
 ## 6. 일기토 발동
 
-일기토는 `Stage.Duels`에 적은 `Ally`/`Enemy` 쌍이 서로를 근접(맨해튼 거리 1)에서 물리 기술로 공격할 때 일어난다. 공격 방향은 어느 쪽이든 되고, 일기토가 그 공격을 대신한다. 조건은 다음과 같다.
+일기토는 `Stage.Duels`에 적은 `Ally`/`Enemy` 쌍이 서로 인접한 상태가 되면 `settle()`의 첫 단계에서 자동으로 일어난다([logic-duel.md](logic-duel.md) 1절). 이벤트(5절)는 그 뒤에 검사되므로 `duel:ID` 조건 이벤트는 일기토가 끝난 같은 `settle()`에서 발동한다.
 
-- 두 유닛 모두 살아 있고 진영이 다르다.
-- 공격이 물리(`physical`) 종류다.
-- 아직 치르지 않았다(`Executed["duel-<ID>"]`).
-
-일기토를 치르면 위 `Executed` 키가 참이 되고, `Duel`의 결과(`AllyResult`·`EnemyResult`)가 곧바로 적용되며(`stay`, `retreat`, `death`), `duel` 이벤트가 나간다. 이벤트의 `Actor`는 항상 아군 쪽이다. 이어지는 퇴각 후속 효과와 경험치 규칙은 [logic-duel.md](logic-duel.md)에 있다. `duel` 트리거 이벤트는 이 일기토가 끝난 같은 `settle()`에서 발동한다.
+일기토를 치르면 `Executed["duel-<ID>"]`가 참이 되고, `Duel`의 결과(`AllyResult`·`EnemyResult`)가 곧바로 적용되며(`stay`, `retreat`, `death`), `duel` 이벤트가 나간다. 이벤트의 `Actor`는 항상 아군 쪽이고 `First`는 이동해서 맞닿은 장수다. 이어지는 퇴각 후속 효과와 경험치 규칙은 [logic-duel.md](logic-duel.md)에 있다.
 
 ## 7. 저장과 복원
 

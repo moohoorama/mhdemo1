@@ -8,7 +8,7 @@ import (
 )
 
 func TestCampaignScripts(t *testing.T) {
-	scripts, err := LoadScripts("../../assets/duels.json")
+	scripts, err := loadScripts()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -191,7 +191,7 @@ func TestSingleAdvance(t *testing.T) {
 }
 
 func TestThreeBrothersAgainstOne(t *testing.T) {
-	scripts, err := LoadScripts("../../assets/duels.json")
+	scripts, err := loadScripts()
 	if err != nil {
 		t.Fatal(err)
 	}

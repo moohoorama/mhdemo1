@@ -162,6 +162,10 @@ func (g *Game) mapClick(x, y int) {
 				if g.arm(x, y) {
 					return
 				}
+				if g.S.Engine.DuelAt(g.ord.actor, x, y) != "" {
+					g.askWith("그 자리에 서면 일기토가 벌어집니다.\n이동하시겠습니까?", "이동", "취소", func() { g.moveIntoDuel(c) })
+					return
+				}
 				g.tentative(x, y)
 				return
 			}
@@ -573,21 +577,13 @@ func (g *Game) forecast(dst *ebiten.Image) {
 		return
 	}
 	a, t := g.unitView(o, c.Actor), g.unitView(o, c.Target)
-	duel := e.DuelFor(*c)
-	counter := 0
+	counter := e.CounterDamage(*c) * 2 / 3 // CounterDamage's maximum includes the critical blow
 	dmg := p.MaxDamage
-	if !duel {
-		counter = e.CounterDamage(*c) * 2 / 3 // CounterDamage's maximum includes the critical blow
-		if c.Kind == "attack" || c.Kind == "skill" && g.S.Data.Skills[c.Skill].Kind == "physical" {
-			dmg = p.MaxDamage * 2 / 3 // Preview's maximum includes the critical blow
-		}
-	} else {
-		dmg, p.MaxDamage, p.Cost, p.Healing, p.MPRecovery, p.XP, p.CritXP = 0, 0, 0, 0, 0, 0, 0
+	if c.Kind == "attack" || c.Kind == "skill" && g.S.Data.Skills[c.Skill].Kind == "physical" {
+		dmg = p.MaxDamage * 2 / 3 // Preview's maximum includes the critical blow
 	}
 	lines := []string{}
 	switch {
-	case duel:
-		lines = append(lines, "일기토 발생! 공격 대신 일기토 결과가 적용됩니다.")
 	case dmg >= t.HP:
 		lines = append(lines, "격파!")
 	case p.MaxDamage >= t.HP:
@@ -630,18 +626,16 @@ func (g *Game) forecast(dst *ebiten.Image) {
 		y = g.side(dst, t, x, y+8, sideChange{hp: [2]int{p.Healing - dmg, p.Healing - p.MaxDamage}, mp: p.MPRecovery})
 	}
 	rect(dst, float32(x), float32(y+3), float32(w-32), 1, goldDim)
-	if !duel {
-		odds := fmt.Sprintf("명중 %.0f%%", p.Hit)
-		if c.Kind == "item" {
-			odds = "효과 확정"
-		} else if p.Crit > 0 {
-			odds += fmt.Sprintf("     치명 %.0f%%", p.Crit)
-		}
-		if p.Double > 0 {
-			odds += fmt.Sprintf("     2회 %.0f%%", p.Double)
-		}
-		g.label(dst, odds, float64(x), float64(y+8), 16, gold)
+	odds := fmt.Sprintf("명중 %.0f%%", p.Hit)
+	if c.Kind == "item" {
+		odds = "효과 확정"
+	} else if p.Crit > 0 {
+		odds += fmt.Sprintf("     치명 %.0f%%", p.Crit)
 	}
+	if p.Double > 0 {
+		odds += fmt.Sprintf("     2회 %.0f%%", p.Double)
+	}
+	g.label(dst, odds, float64(x), float64(y+8), 16, gold)
 	g.label(dst, strings.Join(lines, "\n"), float64(x), float64(y+34), 12, ink)
 }
 
@@ -792,4 +786,10 @@ func names(g *Game, ids []string) []string {
 		out[i] = g.name(id)
 	}
 	return out
+}
+
+// moveIntoDuel sends the move that starts a duel at once: a tentative move could not show it.
+func (g *Game) moveIntoDuel(c core.Command) {
+	g.clearOrder()
+	g.send(session.Request{Op: "command", Command: c})
 }

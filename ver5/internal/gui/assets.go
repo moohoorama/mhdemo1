@@ -14,6 +14,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
+	"srpg/internal/content"
 	"srpg/internal/duel"
 	"srpg/internal/duelview"
 	"srpg/internal/sprite"
@@ -114,8 +115,8 @@ func shadowed(im *image.RGBA, c color.RGBA) *ebiten.Image {
 	return ebiten.NewImageFromImage(im)
 }
 
-func LoadAssets(dir string, font *text.GoTextFaceSource) (*Assets, error) {
-	scripts, err := duel.LoadScripts(filepath.Join(dir, "..", "duels.json"))
+func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*Assets, error) {
+	scripts, err := duel.FromData(data)
 	if err != nil {
 		return nil, err
 	}

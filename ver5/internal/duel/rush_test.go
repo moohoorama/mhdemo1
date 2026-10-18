@@ -62,7 +62,7 @@ func TestRushNeverBacksAway(t *testing.T) {
 }
 
 func TestCampaignMixesStandingAndRushAttacks(t *testing.T) {
-	scripts, err := LoadScripts("../../assets/duels.json")
+	scripts, err := loadScripts()
 	require.NoError(t, err)
 	for _, id := range []string{"sishui-guan-yu", "hulao-zhang-fei", "hulao-guan-yu", "hulao-liu-bei"} {
 		t.Run(id, func(t *testing.T) {

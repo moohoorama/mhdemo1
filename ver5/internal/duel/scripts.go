@@ -1,10 +1,10 @@
 package duel
 
 import (
-	"encoding/json"
 	"fmt"
 	"math"
-	"os"
+
+	"srpg/internal/content"
 )
 
 // Script describes presentation only; Outcome must match the resolved battle event.
@@ -12,22 +12,64 @@ type Script struct {
 	Outcome  string
 	Supports []string
 	Beats    []Beat
+	Variants map[string][]Beat // by the officer who moved to meet the other
 }
 
 type Scripts map[string]Script
 
-func LoadScripts(path string) (Scripts, error) {
-	b, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
+// checkResults keeps the staging from contradicting the fixed result: a fighter who is shown
+// leaving the field must have the result retreat, and one who is shown beaten must not stay
+// untouched while the other falls.
+func checkResults(d content.Duel, beats []Beat) error {
+	last := beats[len(beats)-1]
+	if last.Kind != "escaped" && last.Kind != "withdrawn" {
+		return nil
 	}
-	var scripts Scripts
-	if err := json.Unmarshal(b, &scripts); err != nil {
-		return nil, fmt.Errorf("duel scripts: %w", err)
+	result := d.AllyResult
+	if last.Side == 1 {
+		result = d.EnemyResult
 	}
-	for id, script := range scripts {
-		if err := script.Validate(); err != nil {
-			return nil, fmt.Errorf("duel %s: %w", id, err)
+	if result != "retreat" {
+		return fmt.Errorf("the staging ends with side %d leaving the field but its result is %q", last.Side, result)
+	}
+	return nil
+}
+
+func beatsOf(list []content.Beat) []Beat {
+	out := make([]Beat, len(list))
+	for i, b := range list {
+		out[i] = Beat(b)
+	}
+	return out
+}
+
+// FromData collects the staging of every duel the stages hold; duels without beats are staged by
+// the default timeline.
+func FromData(d *content.Data) (Scripts, error) {
+	scripts := Scripts{}
+	for _, st := range d.Stages {
+		for _, du := range st.Duels {
+			if len(du.Beats) == 0 {
+				continue
+			}
+			script := Script{Outcome: du.Outcome, Supports: du.Supports, Beats: beatsOf(du.Beats)}
+			if err := script.Validate(); err != nil {
+				return nil, fmt.Errorf("duel %s: %w", du.ID, err)
+			}
+			if err := checkResults(du, script.Beats); err != nil {
+				return nil, fmt.Errorf("duel %s: %w", du.ID, err)
+			}
+			for _, v := range du.Variants {
+				alt := Script{Outcome: du.Outcome, Supports: du.Supports, Beats: beatsOf(v.Beats)}
+				if _, dup := script.Variants[v.First]; dup || v.First == "" || alt.Validate() != nil {
+					return nil, fmt.Errorf("duel %s: variant %q", du.ID, v.First)
+				}
+				if script.Variants == nil {
+					script.Variants = map[string][]Beat{}
+				}
+				script.Variants[v.First] = alt.Beats
+			}
+			scripts[du.ID] = script
 		}
 	}
 	return scripts, nil
@@ -85,8 +127,14 @@ func (s Script) Validate() error {
 	return nil
 }
 
-func (s Scripts) Story(id, outcome string) Story {
+func (s Scripts) Story(id, outcome string) Story { return s.StoryFor(id, outcome, "") }
+
+// StoryFor is the staging of a duel that first was started by moving first (an officer id, or none).
+func (s Scripts) StoryFor(id, outcome, first string) Story {
 	if script, ok := s[id]; ok && script.Outcome == outcome {
+		if beats, ok := script.Variants[first]; ok {
+			return prepareStory(beats)
+		}
 		return prepareStory(script.Beats)
 	}
 	ending := 0

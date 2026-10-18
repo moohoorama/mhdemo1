@@ -382,10 +382,6 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 	if err != nil {
 		return err
 	}
-	if d, ok := e.duelFor(u, v, s); ok {
-		e.duel(u, v, d)
-		return nil
-	}
 	if n := e.cost(u, s); n > 0 {
 		hp, _ := e.payable(u, n)
 		u.MP = max(0, u.MP-n)

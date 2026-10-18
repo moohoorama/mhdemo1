@@ -19,6 +19,7 @@ type Engine struct {
 	charIDs, unitIDs map[string]ecs.Entity
 	events           []Event
 	turnStarted      string // the faction whose turn this command began, for turnstart conditions
+	lastActor        string // who the command in progress is for, so a duel knows who moved to meet whom
 }
 
 func copyOf[T any](v T) T { b, _ := json.Marshal(v); var c T; _ = json.Unmarshal(b, &c); return c }
@@ -143,6 +144,7 @@ func (e *Engine) Apply(c Command) (r Result, err error) {
 		}
 	}()
 	t := fromState(e.data, e.Snapshot())
+	t.lastActor = c.Actor
 	if err = t.execute(c); err != nil {
 		return Result{}, err
 	}
@@ -621,6 +623,7 @@ func (e *Engine) settle() {
 		e.emit("turn-limit", "", "", limit)
 		return
 	}
+	e.autoDuels()
 	e.battleEvents()
 	stage := e.data.Stages[e.state.Stage]
 	alive := map[string]bool{}

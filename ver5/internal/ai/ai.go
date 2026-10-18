@@ -39,13 +39,6 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 		s := -1.0
 		switch c.Kind {
 		case "attack", "skill":
-			if e.DuelFor(c) {
-				if !duels {
-					continue
-				}
-				s = 2000
-				break
-			}
 			if duels && me.DuelFirst && e.DuelPending(me.ID, c.Target) {
 				continue // a duel partner is met in the duel, not shot or struck from afar
 			}
@@ -108,6 +101,9 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 				s = -5
 			}
 		case "move":
+			if !duels && e.DuelAt(me.ID, c.X, c.Y) != "" {
+				continue // moving next to a duel partner would start the duel
+			}
 			if duels && me.DuelFirst {
 				for _, v := range o.UnitViews {
 					if e.DuelPending(me.ID, v.ID) && distance(c.X, c.Y, v.X, v.Y) == 1 {

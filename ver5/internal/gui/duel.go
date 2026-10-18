@@ -11,7 +11,7 @@ import (
 )
 
 func (g *Game) duelView(e core.Event) *duelview.View {
-	v := &duelview.View{Bubble: g.assets.Bubble, Story: g.assets.Duels.Story(e.DuelID, e.Outcome), Decor: g.duelDecor()}
+	v := &duelview.View{Bubble: g.assets.Bubble, Story: g.assets.Duels.StoryFor(e.DuelID, e.Outcome, e.First), Decor: g.duelDecor()}
 	if s := smallScreen(); s < 1 {
 		v.BubbleScale = 2
 	}
