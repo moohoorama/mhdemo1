@@ -27,7 +27,7 @@ func coalitionDuels(t *testing.T, tweak func(*content.Data)) {
 		tweak(d)
 	}
 	for _, n := range d.Nodes {
-		if n.Kind == "preparation" && n.Stage == "B03" {
+		if n.Kind == "battle" && n.Stage == "B03" {
 			d.Campaign.Start = n.ID
 			break
 		}

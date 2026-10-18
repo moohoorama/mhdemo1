@@ -23,9 +23,9 @@ type Engine struct {
 func copyOf[T any](v T) T { b, _ := json.Marshal(v); var c T; _ = json.Unmarshal(b, &c); return c }
 func New(d *content.Data, seed uint64) *Engine {
 	c := d.Campaign
-	s := State{Format: 2, AI: AIPolicyVersion, Difficulty: "normal", Core: CoreVersion, Rules: RulesVersion, Content: d.Version, ContentHash: d.Hash,
+	s := State{Format: 3, AI: AIPolicyVersion, Difficulty: "normal", Core: CoreVersion, Rules: RulesVersion, Content: d.Version, ContentHash: d.Hash,
 		Seed: seed, RNG: seed, Phase: "scenario", Node: c.Start, Inventory: copyOf(c.Inventory), Warehouse: map[string]int{},
-		Deployment: append([]string{}, c.Deployment...), Executed: map[string]bool{}}
+		Deployment: append([]string{}, c.Deployment...), Executed: map[string]bool{}, Flags: map[string]int{}, Choices: map[string]string{}}
 	if s.Inventory == nil {
 		s.Inventory = map[string]int{}
 	}
@@ -286,13 +286,38 @@ func (e *Engine) skills(c *Character) []string {
 }
 
 // enter runs what a scenario node does on arrival: a preparation picks its stage, join and grant act once.
+// enter runs the story from the current node up to the next one that waits for the player (or the end).
 func (e *Engine) enter() {
 	for {
+		if e.state.Node == "" {
+			e.state.Phase = "complete"
+			return
+		}
 		n := e.data.Node(e.state.Node)
 		switch n.Kind {
-		case "preparation":
+		case "battle":
 			e.state.Stage = e.data.StageIndex(n.Stage)
 			return
+		case "scene":
+			e.state.Place = n.Place
+			e.state.Node = e.data.After(n.ID)
+		case "set":
+			for k, v := range n.Flags {
+				e.state.Flags[k] = v
+			}
+			e.state.Node = e.data.After(n.ID)
+		case "branch":
+			next := n.Else
+			for _, c := range n.Cases {
+				if e.holdsAll(c.If) {
+					next = c.Next
+					break
+				}
+			}
+			if next == "" {
+				next = e.data.After(n.ID)
+			}
+			e.state.Node = next
 		case "join", "grant":
 			if !e.state.Executed[n.Event] {
 				if n.Kind == "join" {
@@ -307,6 +332,9 @@ func (e *Engine) enter() {
 				e.emit(n.Kind, "", n.Character+n.Item, n.Count)
 			}
 			e.state.Node = e.data.After(n.ID)
+		case "end":
+			e.state.Phase, e.state.Node = "complete", ""
+			return
 		default:
 			return
 		}
@@ -322,13 +350,14 @@ func (e *Engine) execute(c Command) error {
 			return fail("WrongPhase")
 		}
 		n := e.data.Node(e.state.Node)
-		if c.Kind == "next" && n.Kind == "dialogue" {
+		if c.Kind == "next" && (n.Kind == "say" || n.Kind == "narrate") {
 			e.state.Node = e.data.After(n.ID)
 		} else if c.Kind == "choose" && n.Kind == "choice" {
 			v, ok := n.Choices[c.Option]
 			if !ok {
 				return fail("InvalidOption")
 			}
+			e.state.Choices[n.ID] = c.Option
 			e.state.Node = v
 		} else {
 			return fail("WrongPhase")
@@ -421,7 +450,7 @@ func (e *Engine) execute(c Command) error {
 	return fail("UnknownCommand")
 }
 func (e *Engine) prepare(c Command) error {
-	if e.state.Phase != "scenario" || e.data.Node(e.state.Node).Kind != "preparation" {
+	if e.state.Phase != "scenario" || e.data.Node(e.state.Node).Kind != "battle" {
 		return fail("WrongPhase")
 	}
 	if c.Kind == "deputy" || c.Kind == "undeputy" {
@@ -616,6 +645,7 @@ func (e *Engine) settle() {
 		return
 	}
 	e.state.Result = "victory"
+	e.state.Executed["won-"+stage.ID] = true
 	key := "reward-" + stage.ID
 	if !e.state.Executed[key] {
 		for item, n := range stage.Reward {

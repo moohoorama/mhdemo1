@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"srpg/internal/content"
 	"srpg/internal/core"
 )
 
@@ -19,6 +20,25 @@ type line struct {
 }
 
 var speakerMark = regexp.MustCompile(`(?:^|\s)([가-힣]{1,4}(?:·[가-힣]{1,4})*):\s*`)
+
+// isTalk is a story node the player pages through: a line of speech or narration.
+func isTalk(kind string) bool { return kind == "say" || kind == "narrate" }
+
+// nodeLines is what the node shows: a say node is one line by its speakers, a narrate node one line
+// without a speaker; other nodes (choices, the sortie screen) keep marking speakers inside their text.
+func (g *Game) nodeLines(n content.Node) []line {
+	switch n.Kind {
+	case "say":
+		names := []string{}
+		for _, id := range strings.Split(n.Speaker, "·") {
+			names = append(names, g.S.Data.Characters[id].Name)
+		}
+		return []line{{speakers: names, text: n.Text}}
+	case "narrate":
+		return []line{{text: n.Text}}
+	}
+	return splitLines(n.Text)
+}
 
 func splitLines(s string) []line {
 	marks := speakerMark.FindAllStringSubmatchIndex(s, -1)
@@ -52,7 +72,7 @@ func (g *Game) shownText(l line) (string, bool) {
 // advanceDialogue finishes typing, then shows the next speaker, then the next node.
 func (g *Game) advanceDialogue() {
 	o := g.S.Engine.Observe()
-	if o.Phase != "scenario" || o.Dialogue.Kind != "dialogue" {
+	if o.Phase != "scenario" || !isTalk(o.Dialogue.Kind) {
 		return
 	}
 	if g.sceneBusy() {
@@ -62,7 +82,7 @@ func (g *Game) advanceDialogue() {
 	if g.busy() {
 		return
 	}
-	lines := splitLines(o.Dialogue.Text)
+	lines := g.nodeLines(o.Dialogue)
 	if _, done := g.shownText(lines[min(g.lineIndex, len(lines)-1)]); !done {
 		g.lineStart = -1 << 30
 		return
@@ -81,8 +101,10 @@ func (g *Game) backdrop(dst *ebiten.Image, o core.Observation) {
 		k := float64(i) / float64(uiH)
 		rect(dst, 0, float32(i), float32(uiW), 10, color.NRGBA{R: uint8(36 - 20*k), G: uint8(28 - 14*k), B: uint8(26 - 10*k), A: 255})
 	}
-	g.label(dst, fmt.Sprintf("제 %d 장", o.Stage+1), 60, 40, 22, gold)
-	g.label(dst, g.S.Data.Stages[o.Stage].Name, 60, 74, 16, muted)
+	if i := g.S.Data.ChapterIndex(o.Node); i >= 0 {
+		g.label(dst, fmt.Sprintf("제 %d 장", i+1), 60, 40, 22, gold)
+	}
+	g.label(dst, o.Place, 60, 74, 16, muted)
 }
 
 func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
@@ -93,14 +115,14 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 			g.scene.node = ""
 		}
 	}
-	if o.Dialogue.Kind == "preparation" {
+	if o.Dialogue.Kind == "battle" {
 		g.inFrame(dst, Width, Height, image.Rect(0, 0, Width, Height), 0, func(dst *ebiten.Image) { g.preparation(dst, o) })
 		return
 	}
-	lines := splitLines(o.Dialogue.Text)
+	lines := g.nodeLines(o.Dialogue)
 	l := lines[min(g.lineIndex, len(lines)-1)]
 	staged := g.enterScene(o)
-	if o.Dialogue.Kind == "dialogue" {
+	if isTalk(o.Dialogue.Kind) {
 		g.addButton(image.Rect(0, 0, uiW, uiH), "", g.advanceDialogue)
 	}
 	if staged {

@@ -20,7 +20,7 @@ func TestRenderedUnitTabs(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 	for _, n := range d.Nodes {
-		if n.Kind == "preparation" && n.Stage == d.Stages[0].ID {
+		if n.Kind == "battle" && n.Stage == d.Stages[0].ID {
 			d.Campaign.Start = n.ID
 			break
 		}

@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"srpg/internal/content"
+	"srpg/internal/session"
 	"srpg/internal/sprite"
 )
 
@@ -33,6 +34,24 @@ func TestSplitLines(t *testing.T) {
 				t.Fatalf("got %+v, want %+v", got, c.want)
 			}
 		})
+	}
+}
+
+func TestNodeLinesBySpeakerFieldNotByText(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{S: &session.Session{Data: d}}
+	say := g.nodeLines(content.Node{Kind: "say", Speaker: "guanyu·zhangfei", Text: "생사를 함께하겠습니다. 유비: 이것은 화자 표시가 아닙니다."})
+	if want := []line{{speakers: []string{"관우", "장비"}, text: "생사를 함께하겠습니다. 유비: 이것은 화자 표시가 아닙니다."}}; !reflect.DeepEqual(say, want) {
+		t.Fatalf("say: %+v", say)
+	}
+	if got := g.nodeLines(content.Node{Kind: "narrate", Text: "동탁 타도군 일어나다."}); !reflect.DeepEqual(got, []line{{text: "동탁 타도군 일어나다."}}) {
+		t.Fatalf("narrate: %+v", got)
+	}
+	if got := g.nodeLines(content.Node{Kind: "choice", Text: "도원결의: 의용군을 일으킨다."}); !reflect.DeepEqual(got, []line{{speakers: []string{"도원결의"}, text: "의용군을 일으킨다."}}) {
+		t.Fatalf("choice: %+v", got)
 	}
 }
 

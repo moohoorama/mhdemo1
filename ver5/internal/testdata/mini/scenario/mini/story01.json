@@ -2,9 +2,10 @@
  "Nodes": [
   {
    "ID": "intro",
-   "Kind": "dialogue",
+   "Kind": "say",
    "Text": "Hello",
-   "Next": "pick"
+   "Next": "pick",
+   "Speaker": "hero"
   },
   {
    "ID": "pick",
@@ -16,7 +17,7 @@
   },
   {
    "ID": "prep1",
-   "Kind": "preparation",
+   "Kind": "battle",
    "Text": "Prepare",
    "Stage": "S1",
    "Next": "after1"
@@ -38,7 +39,7 @@
   },
   {
    "ID": "prep2",
-   "Kind": "preparation",
+   "Kind": "battle",
    "Text": "Prepare 2",
    "Stage": "S2"
   }

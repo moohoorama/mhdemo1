@@ -212,8 +212,18 @@ type Stage struct {
 	Map                             string  `json:",omitempty"` // map document under maps/ that supplies the tiles; none means Tiles is inline
 	Faction                         string  `json:",omitempty"` // color of this stage's enemies without a faction of their own
 }
+// NodeCase is one arm of a branch node: the first whose conditions all hold is taken.
+type NodeCase struct {
+	If   []string
+	Next string
+}
 type Node struct {
 	ID, Kind, Text, Next, Event, Character, Item, Stage string
+	Speaker                                             string `json:",omitempty"` // say: character ids joined by ·
+	Place                                               string `json:",omitempty"` // scene: where the story is now
+	Else                                                string `json:",omitempty"` // branch: where no case matched; none means the next node
+	Cases                                               []NodeCase `json:",omitempty"`
+	Flags                                               map[string]int `json:",omitempty"` // set: flag values to store
 	Count                                               int
 	Choices                                             map[string]string
 }

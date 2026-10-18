@@ -19,7 +19,7 @@ func TestEngineSourceNamesNoGameContent(t *testing.T) {
 		t.Fatal(err)
 	}
 	engine := map[string]bool{"ally": true, "enemy": true, "fire": true, "water": true, "earth": true, "weapon": true, "armor": true, "accessory": true,
-		"dialogue": true, "choice": true, "preparation": true, "join": true, "grant": true}
+		"say": true, "narrate": true, "scene": true, "branch": true, "set": true, "end": true, "choice": true, "battle": true, "join": true, "grant": true}
 	for k := range Statuses {
 		engine[k] = true
 	}

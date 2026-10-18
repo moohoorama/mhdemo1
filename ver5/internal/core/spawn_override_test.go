@@ -60,7 +60,7 @@ func TestEditedBattleSaveRestore(t *testing.T) {
 				c = Command{Kind: "choose", Option: k}
 				break
 			}
-		case "preparation":
+		case "battle":
 			c.Kind = "start"
 		}
 		if _, err = e.Apply(c); err != nil {

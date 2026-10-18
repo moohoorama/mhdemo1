@@ -26,22 +26,29 @@
 
 | Kind | 들어올 때 | 넘어가는 법 |
 |---|---|---|
-| `dialogue` | 멈춘다. | `next` 명령으로 `Next` 노드로 간다. |
-| `choice` | 멈춘다. | `choose` 명령에 `Option`(선택지 이름)을 주면 `Choices`가 가리키는 노드로 간다. 없는 이름이면 `InvalidOption`. |
-| `preparation` | `Stage`에 적은 스테이지를 현재 스테이지로 정하고 멈춘다. | 출전 준비 명령(3절)과 `start`. |
+| `say` | 멈춘다. | `next` 명령으로 `Next`(없으면 기본 순서)로 간다. `Speaker`(인물 ID, 여럿이면 `·`)의 한 줄. |
+| `narrate` | 멈춘다. | `next`. 화자 없는 해설 한 줄. |
+| `choice` | 멈춘다. | `choose` 명령에 `Option`(선택지 이름)을 주면 `Choices`가 가리키는 노드로 가고, 고른 선택지를 `Choices[노드]`에 기록한다. 없는 이름이면 `InvalidOption`. |
+| `battle` | `Stage`에 적은 스테이지를 현재 스테이지로 정하고 멈춘다. | 출전 준비 명령(3절)과 `start`. 이긴 뒤에는 이 노드의 `Next`(기본 순서)로 간다. |
+| `scene` | `Place`를 `State.Place`에 적는다. | 멈추지 않고 이어진다. |
+| `set` | `Flags`의 값을 `State.Flags`에 적는다. | 멈추지 않고 이어진다. |
+| `branch` | `Cases`를 순서대로 보아 `If` 조건이 모두 참인 첫 칸의 `Next`로 가고, 없으면 `Else`, 그것도 없으면 기본 순서. | 멈추지 않는다. |
+| `end` | 캠페인을 끝낸다(`complete`). | — |
 | `join` | 처음 한 번만 `Character`를 인물로 만들고 출전 명단 끝에 더한다. | 멈추지 않고 `Next`로 이어진다. |
 | `grant` | 처음 한 번만 `Item`을 `Count`개 준다. | 멈추지 않고 `Next`로 이어진다. |
 
 - `join`과 `grant`는 `Event` 키(`Executed`)로 한 번만 실행된다. 이미 실행된 키면 건너뛰고 `Next`로 간다. 실행하면 `join` 또는 `grant` 이벤트가 나간다.
+- 분기 조건 문자열은 `flag:키`(값 1 이상), `flag:키>=N`, `alive:인물`, `dead:인물`, `party:인물`(살아 있는 플레이어블 로스터), `choice:노드=옵션`, `won:스테이지`이고 앞에 `!`를 붙이면 부정이다. 모두 참이어야 참(AND)이다.
+- 멈추지 않는 노드로만 이루어진 고리(`branch` 포함)는 로드 오류다.
 - `grant`의 `Item`이 장비 ID이면 창고(`Warehouse`)에, 아니면 인벤토리(`Inventory`)에 들어간다.
-- `Next`가 비어 있으면 같은 장 파일의 다음 노드로, 장의 마지막이면 다음 장의 첫 노드로 간다. 마지막 장의 끝이면 더 갈 노드가 없다(`After`). `preparation` 노드는 `Next`가 승리한 뒤의 행선지이고, 없으면 같은 규칙이다.
+- `Next`가 비어 있으면 같은 장 파일의 다음 노드로, 장의 마지막이면 다음 장의 첫 노드로 간다. 마지막 장의 끝이면 더 갈 노드가 없다(`After`). `battle` 노드는 `Next`가 승리한 뒤의 행선지이고, 없으면 같은 규칙이다.
 - 장 안의 노드 순서가 기본 진행 순서다. 분기(`choice`)나 `Next`가 가리키는 노드는 순서와 무관하다.
 
 학습 창(`Learning`)이 열려 있는 동안에는 `learn`·`learn_close` 외의 모든 명령이 `LearningPending`으로 거부된다.
 
 ## 3. 출전 준비
 
-`preparation` 노드에서만 다음 명령이 가능하다(그 밖에는 `WrongPhase`).
+`battle` 노드에서만 다음 명령이 가능하다(그 밖에는 `WrongPhase`).
 
 - `deploy`: 출전 명단을 정한다. 1명 이상 `Stage.Limit`명 이하이고, 중복이 없고, 플레이어블 인물이며, 전사하지 않았고, 부관이 아니어야 한다. 군주(`Lord`) 인물이 로스터에 있으면 반드시 포함해야 한다. 어기면 `InvalidDeployment`.
 - `equip`·`unequip`: 창고와 장수의 장비 칸 사이에서 장비를 옮긴다([data-item.md](data-item.md)).
@@ -68,7 +75,7 @@
 
 ## 5. 전투 뒤
 
-- 승리하면 `Phase`가 `result`가 되고 `continue` 명령을 기다린다. `continue`는 전투 상태(유닛, 임시 인물, 체크포인트, 학습 창, 라운드)를 지운다. 그다음 출전 노드(`preparation`)의 다음 노드(`After`)가 없으면 `complete` 단계가 되고, 있으면 `scenario` 단계에서 그 노드로 가서 `enter`를 돌린다. 이때 전사한 인물은 출전 명단에서 빠진다.
+- 승리하면 `Phase`가 `result`가 되고 `continue` 명령을 기다린다. `continue`는 전투 상태(유닛, 임시 인물, 체크포인트, 학습 창, 라운드)를 지운다. 그다음 출전 노드(`battle`)의 다음 노드(`After`)가 없으면 `complete` 단계가 되고, 있으면 `scenario` 단계에서 그 노드로 가서 `enter`를 돌린다. 이때 전사한 인물은 출전 명단에서 빠진다.
 - 패배하면 `Phase`가 `result`이고 `continue`는 거부된다. `Retry`만 가능하다(6절).
 - 전사(`Dead`)는 일기토 결과 `death`로만 생긴다([logic-duel.md](logic-duel.md)). 전사한 장수의 장비는 창고로 돌아가고 부관은 풀린다. 전투에서 병력이 0이 된 일반 퇴각은 전사가 아니라 다음 출전에 다시 나온다.
 - 승리 보상(`Stage.Reward`)은 인벤토리에 더해진다. 7절을 본다.

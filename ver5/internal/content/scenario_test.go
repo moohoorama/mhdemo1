@@ -79,3 +79,78 @@ func TestStageFileNames(t *testing.T) {
 	assert.Equal(t, "map12.json", MapFileName("B12"))
 	assert.Equal(t, "stageS1.json"[:5]+"1.json", StageFileName("S1"))
 }
+
+func TestParseCond(t *testing.T) {
+	for in, want := range map[string]Cond{
+		"flag:oath":      {Op: "flag", Arg: "oath", N: 1},
+		"!flag:oath>=3":  {Not: true, Op: "flag", Arg: "oath", N: 3},
+		"alive:liubei":   {Op: "alive", Arg: "liubei", N: 1},
+		"dead:x":         {Op: "dead", Arg: "x", N: 1},
+		"party:x":        {Op: "party", Arg: "x", N: 1},
+		"won:B01":        {Op: "won", Arg: "B01", N: 1},
+		"choice:pick=결의": {Op: "choice", Arg: "pick", Arg2: "결의", N: 1},
+	} {
+		got, err := ParseCond(in)
+		require.NoError(t, err, in)
+		assert.Equal(t, want, got, in)
+	}
+	for _, bad := range []string{"", "flag", "flag:", "unknown:x", "flag:x>=y", "flag:>=2", "choice:pick", "choice:=a"} {
+		_, err := ParseCond(bad)
+		assert.Error(t, err, bad)
+	}
+}
+
+func TestLoadRejectsBadStoryNodes(t *testing.T) {
+	for name, nodes := range map[string]string{
+		"unknown speaker":   `{"ID":"a","Kind":"say","Speaker":"nobody","Text":"x"}`,
+		"say without text":  `{"ID":"a","Kind":"say","Speaker":"hero"}`,
+		"narrate speaker":   `{"ID":"a","Kind":"narrate","Speaker":"hero","Text":"x"}`,
+		"scene no place":    `{"ID":"a","Kind":"scene"}`,
+		"set no flags":      `{"ID":"a","Kind":"set"}`,
+		"branch no cases":   `{"ID":"a","Kind":"branch"}`,
+		"branch bad cond":   `{"ID":"a","Kind":"branch","Cases":[{"If":["flag"],"Next":"a"}]}`,
+		"branch bad target": `{"ID":"a","Kind":"branch","Cases":[{"If":["flag:x"],"Next":"zz"}]}`,
+		"branch ref":        `{"ID":"a","Kind":"branch","Cases":[{"If":["alive:nobody"],"Next":"a"}]}`,
+		"unknown kind":      `{"ID":"a","Kind":"dialogue","Text":"x"}`,
+		"loop without wait": `{"ID":"a","Kind":"set","Flags":{"x":1},"Next":"b"},{"ID":"b","Kind":"scene","Place":"p","Next":"a"}`,
+		"branch loop":       `{"ID":"a","Kind":"branch","Cases":[{"If":["flag:x"],"Next":"a"}],"Else":"a"}`,
+	} {
+		t.Run(name, func(t *testing.T) {
+			dir := filepath.Join(t.TempDir(), "mini")
+			copyTree(t, "../testdata/mini", dir)
+			story := `{"Nodes":[` + nodes + `,{"ID":"intro","Kind":"narrate","Text":"x"}]}`
+			scenario := filepath.Join(dir, "scenario", "mini")
+			require.NoError(t, os.WriteFile(filepath.Join(scenario, "story01.json"), []byte(story), 0644))
+			p := filepath.Join(scenario, "scenario.json")
+			b, err := os.ReadFile(p)
+			require.NoError(t, err)
+			start := strings.Replace(string(b), `"Start": "intro"`, `"Start": "a"`, 1)
+			require.NoError(t, os.WriteFile(p, []byte(start), 0644))
+			_, err = Load(dir)
+			assert.Error(t, err)
+		})
+	}
+}
+
+func TestLoadAcceptsEveryStoryNodeKind(t *testing.T) {
+	dir := filepath.Join(t.TempDir(), "mini")
+	copyTree(t, "../testdata/mini", dir)
+	story := `{"Nodes":[
+ {"ID":"a","Kind":"scene","Place":"p"},
+ {"ID":"b","Kind":"say","Speaker":"hero·archer1","Text":"x"},
+ {"ID":"c","Kind":"narrate","Text":"x"},
+ {"ID":"d","Kind":"set","Flags":{"f":1}},
+ {"ID":"e","Kind":"branch","Cases":[{"If":["flag:f","alive:hero"],"Next":"g"}],"Else":"g"},
+ {"ID":"g","Kind":"choice","Text":"x","Choices":{"go":"h"}},
+ {"ID":"h","Kind":"narrate","Text":"x"},
+ {"ID":"i","Kind":"branch","Cases":[{"If":["choice:g=go","!won:S1"],"Next":"j"}]},
+ {"ID":"j","Kind":"end"}]}`
+	scenario := filepath.Join(dir, "scenario", "mini")
+	require.NoError(t, os.WriteFile(filepath.Join(scenario, "story01.json"), []byte(story), 0644))
+	p := filepath.Join(scenario, "scenario.json")
+	b, err := os.ReadFile(p)
+	require.NoError(t, err)
+	require.NoError(t, os.WriteFile(p, []byte(strings.Replace(string(b), `"Start": "intro"`, `"Start": "a"`, 1)), 0644))
+	_, err = Load(dir)
+	require.NoError(t, err)
+}

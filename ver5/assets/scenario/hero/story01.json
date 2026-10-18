@@ -2,8 +2,16 @@
  "Nodes": [
   {
    "ID": "oath",
-   "Kind": "dialogue",
-   "Text": "유비: 백성을 지키기 위해 함께 뜻을 세웁시다. 관우·장비: 생사를 함께하겠습니다.",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "백성을 지키기 위해 함께 뜻을 세웁시다.",
+   "Next": "oath_2"
+  },
+  {
+   "ID": "oath_2",
+   "Kind": "say",
+   "Speaker": "guanyu·zhangfei",
+   "Text": "생사를 함께하겠습니다.",
    "Next": "oath_choice"
   },
   {
@@ -16,7 +24,7 @@
   },
   {
    "ID": "prep1",
-   "Kind": "preparation",
+   "Kind": "battle",
    "Text": "황건적의 난 — 출전 준비",
    "Stage": "B01",
    "Next": "join"

@@ -24,30 +24,18 @@
 
 ## 2. 데이터
 
-### 2.1 노드 (`script.json`)
+### 2.1 노드 (장 파일)
 
-모든 노드는 `ID`, `Kind`, `Next`를 가진다. `Next`가 없으면 배열의 다음 노드.
+구현된 노드(`say` `narrate` `scene` `set` `branch` `choice` `battle` `join` `grant` `end`, 조건 `flag` `alive` `dead` `party` `choice` `won`)와 플래그는 [data-scenario-node.md](../data-scenario-node.md)와 [logic-campaign.md](../logic-campaign.md)가 설명한다. 아직 없는 것:
 
 | Kind | 필드 | 동작 | 대기 |
 |---|---|---|---|
-| `scene` | `Stage`(scenes.json 무대), `Place`, `Title`(선택) | 장소를 바꾼다 | 아니오 |
-| `say` | `Speaker`, `Face`(선택), `Text`, `Beats`(선택) | 대사 한 줄. 초상은 장수 ID로 찾는다 | 예 |
-| `narrate` | `Text`, `Style`(자막/편지) | 내레이션 | 예 |
-| `choice` | `Text`, `Options`: `[{Label, Next, Set}]` | 선택지(드물게) | 예 |
-| `branch` | `Cases`: `[{If, Next}]`, `Else` | 조건 분기 | 아니오 |
-| `set` | `Flags` | 플래그 설정 | 아니오 |
-| `join` / `leave` | `Character`, `Event`, `Keep` | 합류 / 이탈(12의 조운) | 아니오 |
-| `grant` | `Item`, `Count`, `Provisions`, `Event` | 지급 | 아니오 |
+| `leave` | `Character`, `Event`, `Keep` | 이탈(12의 조운) | 아니오 |
 | `camp` | `Camp`(회의장 ID) | 회의장을 연다. 출진하면 `Battle`로 간다 | 예 |
-| `battle` | `Stage`, `Win`, `Lose`(선택) | 회의장 없이 바로 전투 | 예 |
-| `end` | `Ending` | 종료 | 예 |
 
-기존 `dialogue`는 `say` 연속으로, `preparation`은 `camp`로 대체한다. 이벤트 키(`Event`)는 지금처럼 한 번만 실행한다(`State.Executed`).
+조건에 `food>=N`(군량)을 더한다. 장 사이의 분기(`Chapters`의 `Next` 조건)는 노드 조건 문법을 그대로 쓰기로 하고 아직 두지 않았다.
 
-**조건 `If`**: 문자열 배열, 모두 참이어야 참(AND).
-`flag:키`, `!flag:키`, `flag:키>=N`, `alive:장수`, `dead:장수`, `party:장수`, `choice:노드=옵션`, `won:스테이지`, `food>=N`.
-
-**플래그**: `State.Flags map[string]int`, 키는 `flag-<주제>-<내용>`. 전투 중 정해진 플래그는 승리가 확정될 때 반영하고 패배하면 버린다.
+**플래그**: `State.Flags map[string]int`(구현됨), 키는 `flag-<주제>-<내용>`. 전투 중 정해진 플래그는 승리가 확정될 때 반영하고 패배하면 버린다(전투 중 `flag` 동작은 M3에서).
 v1이 쓰는 플래그: 서복 생존, 거록 완승, 제갈현 생존, 서주 유민, 의대조 서명.
 
 ### 2.2 전투 이벤트와 트리거

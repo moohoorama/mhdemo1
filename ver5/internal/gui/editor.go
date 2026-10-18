@@ -627,7 +627,7 @@ func (g *Game) editorTrial() {
 		d.Stages[i] = st
 	}
 	node := "editor_trial"
-	d.Nodes = append(d.Nodes, content.Node{ID: node, Kind: "preparation", Stage: st.ID})
+	d.Nodes = append(d.Nodes, content.Node{ID: node, Kind: "battle", Stage: st.ID})
 	d.Campaign.Start = node
 	for _, id := range sorted(d.Characters) {
 		c := d.Characters[id]

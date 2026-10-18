@@ -171,10 +171,10 @@ func (e *Engine) SetXPPct(pct int) { e.state.XPPct = pct }
 func Restore(d *content.Data, s State) (*Engine, error) { return restore(d, copyOf(s), true) }
 func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	R := d.Rules
-	if s.AI != AIPolicyVersion || s.Difficulty != "normal" || s.Format != 2 || s.Core != CoreVersion || s.Rules != RulesVersion || s.Content != d.Version || s.ContentHash != d.Hash {
+	if s.AI != AIPolicyVersion || s.Difficulty != "normal" || s.Format != 3 || s.Core != CoreVersion || s.Rules != RulesVersion || s.Content != d.Version || s.ContentHash != d.Hash {
 		return nil, fail("IncompatibleSave")
 	}
-	if s.Stage < 0 || s.Stage >= len(d.Stages) || s.Inventory == nil || s.Warehouse == nil || s.Executed == nil {
+	if s.Stage < 0 || s.Stage >= len(d.Stages) || s.Inventory == nil || s.Warehouse == nil || s.Executed == nil || s.Flags == nil || s.Choices == nil {
 		return nil, fail("CorruptSave")
 	}
 	if !contains([]string{"scenario", "deployment", "battle", "result", "complete"}, s.Phase) {
@@ -182,7 +182,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	}
 	if s.Phase == "scenario" {
 		n := d.Node(s.Node)
-		if !contains([]string{"dialogue", "choice", "preparation"}, n.Kind) || n.Kind == "preparation" && d.StageIndex(n.Stage) != s.Stage {
+		if !content.Waiting(n.Kind) || n.Kind == "battle" && d.StageIndex(n.Stage) != s.Stage {
 			return nil, fail("CorruptSave")
 		}
 	}
@@ -260,7 +260,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 		}
 	}
 	if s.Checkpoint != nil {
-		if !checkpoint || s.Checkpoint.Checkpoint != nil || s.Checkpoint.Phase != "scenario" || s.Checkpoint.Stage != s.Stage || d.Node(s.Checkpoint.Node).Kind != "preparation" {
+		if !checkpoint || s.Checkpoint.Checkpoint != nil || s.Checkpoint.Phase != "scenario" || s.Checkpoint.Stage != s.Stage || d.Node(s.Checkpoint.Node).Kind != "battle" {
 			return nil, fail("CorruptCheckpoint")
 		}
 		if _, err := restore(d, *s.Checkpoint, false); err != nil {

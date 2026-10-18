@@ -44,7 +44,7 @@ type State struct {
 	AI, Difficulty                    string
 	Revision                          uint64
 	Seed, RNG                         uint64
-	Phase, Node, Turn, Result         string
+	Phase, Node, Turn, Result, Place  string
 	Stage, Round                      int
 	Characters                        []Character
 	Units                             []Unit
@@ -52,6 +52,8 @@ type State struct {
 	Warehouse                         map[string]int
 	Deployment                        []string
 	Executed                          map[string]bool
+	Flags                             map[string]int    // story flags set by set nodes
+	Choices                           map[string]string // choice node -> the option taken
 	DamagePct, XPPct                  int      `json:",omitempty"` // damage dealt and experience gained in percent; 0 is 100
 	Learning                          []string // characters whose learning window is open, in order
 	Checkpoint                        *State   `json:",omitempty"`

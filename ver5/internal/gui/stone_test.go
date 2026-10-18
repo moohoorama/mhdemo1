@@ -33,7 +33,7 @@ func stoneGame(t *testing.T) (*Game, *unitVis, *unitVis, *unitVis, core.Observat
 	}
 	require.NotEmpty(t, siege, "no siege class in the data")
 	for _, n := range d.Nodes {
-		if n.Kind == "preparation" && n.Stage != "" {
+		if n.Kind == "battle" && n.Stage != "" {
 			d.Campaign.Start = n.ID
 			break
 		}

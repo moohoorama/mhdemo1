@@ -230,6 +230,9 @@ func (d *Data) Validate() error {
 		}
 		chapters[ch.ID] = true
 	}
+	if err := d.checkNodeLoops(nodes); err != nil {
+		return err
+	}
 	for _, n := range nodes {
 		if n.Next != "" && nodes[n.Next].ID == "" {
 			return fmt.Errorf("node %s next %s", n.ID, n.Next)
@@ -240,10 +243,51 @@ func (d *Data) Validate() error {
 			}
 		}
 		switch n.Kind {
-		case "preparation":
+		case "battle":
 			if d.StageIndex(n.Stage) < 0 {
 				return fmt.Errorf("node %s stage %s", n.ID, n.Stage)
 			}
+		case "say":
+			if n.Text == "" || n.Speaker == "" {
+				return fmt.Errorf("node %s: say needs a speaker and text", n.ID)
+			}
+			for _, id := range strings.Split(n.Speaker, "·") {
+				if !d.Has(id) {
+					return fmt.Errorf("node %s speaker %s", n.ID, id)
+				}
+			}
+		case "narrate":
+			if n.Text == "" || n.Speaker != "" {
+				return fmt.Errorf("node %s: narrate needs text and no speaker", n.ID)
+			}
+		case "scene":
+			if n.Place == "" {
+				return fmt.Errorf("node %s: scene needs a place", n.ID)
+			}
+		case "set":
+			if len(n.Flags) == 0 {
+				return fmt.Errorf("node %s: set needs flags", n.ID)
+			}
+			for k := range n.Flags {
+				if k == "" {
+					return fmt.Errorf("node %s: empty flag name", n.ID)
+				}
+			}
+		case "branch":
+			if len(n.Cases) == 0 || n.Else != "" && nodes[n.Else].ID == "" {
+				return fmt.Errorf("node %s: branch", n.ID)
+			}
+			for _, c := range n.Cases {
+				if len(c.If) == 0 || nodes[c.Next].ID == "" {
+					return fmt.Errorf("node %s: branch case %q", n.ID, c.Next)
+				}
+				for _, cond := range c.If {
+					if err := d.validateCond(cond); err != nil {
+						return fmt.Errorf("node %s: %w", n.ID, err)
+					}
+				}
+			}
+		case "end":
 		case "join":
 			if !d.Characters[n.Character].Playable {
 				return fmt.Errorf("node %s joins %s", n.ID, n.Character)
@@ -254,7 +298,7 @@ func (d *Data) Validate() error {
 					return fmt.Errorf("node %s grants %s", n.ID, n.Item)
 				}
 			}
-		case "dialogue", "choice":
+		case "choice":
 		default:
 			return fmt.Errorf("node %s kind %s", n.ID, n.Kind)
 		}
@@ -330,6 +374,48 @@ func (d *Data) Validate() error {
 				return fmt.Errorf("ally spawn")
 			}
 			seen[p] = true
+		}
+	}
+	return nil
+}
+
+// checkNodeLoops rejects a cycle made only of nodes that never wait for the player.
+func (d *Data) checkNodeLoops(nodes map[string]Node) error {
+	next := func(n Node) []string {
+		if n.Kind != "branch" {
+			return []string{d.After(n.ID)}
+		}
+		out := []string{}
+		for _, c := range n.Cases {
+			out = append(out, c.Next)
+		}
+		if n.Else != "" {
+			return append(out, n.Else)
+		}
+		return append(out, d.After(n.ID))
+	}
+	state := map[string]int{} // 1 on the path, 2 done
+	var visit func(id string) error
+	visit = func(id string) error {
+		n := nodes[id]
+		if n.ID == "" || Waiting(n.Kind) || state[id] == 2 {
+			return nil
+		}
+		if state[id] == 1 {
+			return fmt.Errorf("node %s loops without waiting", id)
+		}
+		state[id] = 1
+		for _, to := range next(n) {
+			if err := visit(to); err != nil {
+				return err
+			}
+		}
+		state[id] = 2
+		return nil
+	}
+	for _, id := range sortedKeys(nodes) {
+		if err := visit(id); err != nil {
+			return err
 		}
 	}
 	return nil

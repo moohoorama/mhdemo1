@@ -421,14 +421,14 @@ func (g *Game) assist() {
 	o := g.S.Engine.Observe()
 	if o.Phase == "scenario" {
 		switch o.Dialogue.Kind {
-		case "dialogue":
+		case "say", "narrate":
 			g.command(core.Command{Kind: "next"})
 		case "choice":
 			for _, key := range sorted(o.Dialogue.Choices) {
 				g.command(core.Command{Kind: "choose", Option: key})
 				break
 			}
-		case "preparation":
+		case "battle":
 			g.command(core.Command{Kind: "start"})
 		}
 		return
@@ -657,7 +657,7 @@ func (g *Game) keys() {
 		return
 	}
 	o := g.S.Engine.Observe()
-	dialogue := o.Phase == "scenario" && o.Dialogue.Kind == "dialogue"
+	dialogue := o.Phase == "scenario" && isTalk(o.Dialogue.Kind)
 	if pressed(ebiten.KeyGraveAccent) {
 		g.input, g.entry = true, ""
 	}

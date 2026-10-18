@@ -15,7 +15,7 @@ func moveGame(t *testing.T) (*Game, core.UnitView, core.Command) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 	for _, n := range d.Nodes {
-		if n.Kind == "preparation" && n.Stage != "" {
+		if n.Kind == "battle" && n.Stage != "" {
 			d.Campaign.Start = n.ID
 			break
 		}

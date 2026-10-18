@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"sort"
+	"srpg/internal/content"
 	"srpg/internal/core"
 	"srpg/internal/session"
 	"strconv"
@@ -137,7 +138,11 @@ func show(s *session.Session, out io.Writer) {
 	switch o.Phase {
 	case "scenario":
 		fmt.Fprintln(out)
-		for _, r := range o.Dialogue.Text {
+		text := o.Dialogue.Text
+		if o.Dialogue.Kind == "say" {
+			text = speakerNames(s.Engine.Data(), o.Dialogue.Speaker) + ": " + text
+		}
+		for _, r := range text {
 			fmt.Fprint(out, string(r))
 			if s.Settings.TextDelayMS > 0 {
 				time.Sleep(time.Duration(s.Settings.TextDelayMS) * time.Millisecond)
@@ -152,7 +157,7 @@ func show(s *session.Session, out io.Writer) {
 			sort.Strings(options)
 			fmt.Fprintln(out, "선택: choose", strings.Join(options, " | "))
 		}
-		if o.Dialogue.Kind == "preparation" {
+		if o.Dialogue.Kind == "battle" {
 			fmt.Fprintln(out, "편성:", o.Deployment, "창고:", o.Warehouse, "→ start")
 		}
 	case "deployment":
@@ -405,4 +410,12 @@ func RunHuman(s *session.Session, in io.Reader, out io.Writer, seed uint64) erro
 		return err
 	}
 	return nil
+}
+
+func speakerNames(d *content.Data, speaker string) string {
+	names := []string{}
+	for _, id := range strings.Split(speaker, "·") {
+		names = append(names, d.Characters[id].Name)
+	}
+	return strings.Join(names, "·")
 }
