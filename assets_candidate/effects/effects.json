@@ -1,0 +1,84 @@
+{
+ "flame_t": {
+  "file": "effects/flame_t.png",
+  "frame": [
+   10,
+   18
+  ],
+  "frames": 6,
+  "ms": 110,
+  "pivot": [
+   5,
+   15
+  ],
+  "note": "battle map: one narrow tongue, ~1/2 tile tall; 3-5 per 32x16 cell in an ellipse, 8-12 on a 2x2 site"
+ },
+ "flame_t_small": {
+  "file": "effects/flame_t_small.png",
+  "frame": [
+   7,
+   11
+  ],
+  "frames": 6,
+  "ms": 110,
+  "pivot": [
+   3,
+   8
+  ],
+  "note": "battle map: a small tongue for gaps and for embers on ruins"
+ },
+ "flame": {
+  "file": "effects/flame.png",
+  "frame": [
+   14,
+   26
+  ],
+  "frames": 6,
+  "ms": 110,
+  "pivot": [
+   7,
+   23
+  ],
+  "note": "a narrow translucent tongue; stand 3-6 of them on a tile, spread in an ellipse twice as wide as it is deep, with different frame offsets"
+ },
+ "flame_small": {
+  "file": "effects/flame_small.png",
+  "frame": [
+   10,
+   17
+  ],
+  "frames": 6,
+  "ms": 110,
+  "pivot": [
+   5,
+   14
+  ],
+  "note": "a smaller tongue for the gaps between the big ones and for embers on ruins"
+ },
+ "smoke_t": {
+  "file": "effects/smoke_t.png",
+  "frame": [
+   16,
+   16
+  ],
+  "frames": 8,
+  "pivot": [
+   8,
+   8
+  ],
+  "note": "battle map smoke particle, rises ~12px/s"
+ },
+ "smoke": {
+  "file": "effects/smoke.png",
+  "frame": [
+   28,
+   28
+  ],
+  "frames": 8,
+  "pivot": [
+   14,
+   14
+  ],
+  "note": "one particle's life, frame 0 -> 7: grows and fades; emitter spawns one every ~250ms and moves it up ~22px/s with a slight drift"
+ }
+}

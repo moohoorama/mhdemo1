@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>후보 타일 시연</title>
+<style>
+:root{--bg:#f4efe6;--panel:#fffaf0;--ink:#2a2118;--muted:#6f6454;--line:#d9ccb4;--accent:#9a2f22;--accent-ink:#fff;--stage:#1d241c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171310;--panel:#211b16;--ink:#efe6d6;--muted:#a69a86;--line:#3a3128;--accent:#d8644f;--accent-ink:#1a110d;--stage:#0f130e}}
+:root[data-theme="dark"]{--bg:#171310;--panel:#211b16;--ink:#efe6d6;--muted:#a69a86;--line:#3a3128;--accent:#d8644f;--accent-ink:#1a110d;--stage:#0f130e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+main{max-width:1080px;margin:0 auto;padding:20px 16px 56px}
+h1{font-size:22px;margin:0 0 4px}
+h2{font-size:17px;margin:32px 0 8px}
+p.lede{margin:0 0 16px;color:var(--muted)}
+.tabs,.states{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+button{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 14px;cursor:pointer;min-height:38px}
+button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.stage{background:var(--stage);border:1px solid var(--line);border-radius:10px;padding:8px;overflow:hidden}
+canvas{display:block;width:100%;height:auto;image-rendering:pixelated;margin:0 auto}
+.note{color:var(--muted);font-size:13px;margin:8px 0 0}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:8px 0}
+.row label{color:var(--muted);font-size:13px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center}
+.card canvas{width:auto;margin:0 auto 4px;background:#3d5a30;border-radius:4px}
+.card b{display:block;font-size:12px;word-break:break-all;font-weight:600}
+.card span{font-size:11px;color:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+td,th{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+@media (max-width:560px){h1{font-size:19px}}
+</style>
+</head>
+<body>
+<main>
+  <h1>후보 타일·효과 시연</h1>
+  <p class="lede">게임의 기존 타일·소품·유닛 도트 위에 <code>assets_candidate/</code>의 후보 그림을 얹어 본 화면입니다. 모든 그림은 픽셀 그대로(정수 배율) 그려지며, 불·연기는 그림 파일 프레임을 돌린 것입니다.</p>
+
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <div class="states" id="states"></div>
+  <div class="stage"><canvas id="cv"></canvas></div>
+  <div class="row">
+    <button id="play" aria-pressed="false">자동 재생</button>
+    <label>확대 <select id="zoom"><option>2</option><option selected>3</option><option>4</option></select>배</label>
+  </div>
+  <p class="note" id="desc"></p>
+
+  <h2>후보 목록</h2>
+  <div class="gallery" id="gallery"></div>
+
+  <h2>울타리 자동 이음 (16종)</h2>
+  <p class="note">타일 사방 중 이웃 울타리가 있는 쪽으로 가로대가 뻗습니다. 비트 순서는 성벽과 같은 <code>nw, ne, se, sw</code>(0~3)입니다.</p>
+  <div class="gallery" id="fences"></div>
+</main>
+<script>
+/*DATA*/
+const $=s=>document.querySelector(s);
+const IM={};
+const loaded=Promise.all(Object.entries(DATA.imgs).map(([k,u])=>new Promise(r=>{const i=new Image();i.onload=r;i.src=u;IM[k]=i;})));
+
+// ---- sprite lookups: {img,x,y,w,h,px,py} ----
+const ts=i=>{const s=DATA.tileset[i];return{img:IM.tileset,x:s[0],y:s[1],w:s[2],h:s[3],px:s[4],py:s[5]};};
+const st=n=>{const i=DATA.structures.sprites[n],c=DATA.structures.cell,p=DATA.structures.pivot;return{img:IM.structures,x:i*c[0],y:0,w:c[0],h:c[1],px:p[0],py:p[1]};};
+const pr=n=>{const s=DATA.props[n];return{img:IM.props,x:s.rect[0],y:s.rect[1],w:s.rect[2],h:s.rect[3],px:s.pivot[0],py:s.pivot[1]};};
+const sitespr=n=>{const i=DATA.sites.sprites[n],c=DATA.sites.cell,p=DATA.sites.pivot;return{img:IM.sites,x:i*c[0],y:0,w:c[0],h:c[1],px:p[0],py:p[1]};};
+const cd=n=>{const s=DATA.cand[n];return{img:IM['c:'+n],x:0,y:0,w:s.size[0],h:s.size[1],px:s.pivot[0],py:s.pivot[1]};};
+function put(c,s,x,y,k=1){c.drawImage(s.img,s.x,s.y,s.w,s.h,Math.round(x-s.px*k),Math.round(y-s.py*k),s.w*k,s.h*k);}
+
+// ---- geometry: tile (u,v) -> screen; a tile is a 32x16 diamond, tile centres at (+.5,+.5) ----
+const scr=(u,v)=>[(u-v)*16,(u+v)*8];
+const hash=(a,b,c=0)=>{let h=(a*73856093)^(b*19349663)^(c*83492791);h=(h^(h>>>13))*1274126177;return((h^(h>>>16))>>>0)/4294967296;};
+
+// ---- units ----
+const FACE={u:[1,0,'SE'],v:[0,1,'SW'],U:[-1,0,'NW'],V:[0,-1,'NE']};
+class Unit{
+  constructor(id,path,o={}){this.id=id;this.path=path;this.i=0;this.u=path[0][0];this.v=path[0][1];this.face=o.face||'SE';this.speed=o.speed||1.6;this.loop=!!o.loop;this.wait=o.wait||0;this.stopAt=o.stopAt;this.t0=o.t0||0;this.age=0;}
+  step(dt){
+    this.age+=dt;
+    if(this.age<this.wait||this.i>=this.path.length-1){this.moving=false;return;}
+    const a=this.path[this.i+1];let dx=a[0]-this.u,dy=a[1]-this.v,d=Math.hypot(dx,dy);
+    if(this.stopAt&&this.stopAt(this)){this.moving=false;return;}
+    const s=this.speed*dt;
+    this.moving=true;
+    if(Math.abs(dx)>Math.abs(dy))this.face=dx>0?'SE':'NW';else this.face=dy>0?'SW':'NE';
+    if(d<=s){this.u=a[0];this.v=a[1];this.i++;if(this.i>=this.path.length-1)this.moving=false;}
+    else{this.u+=dx/d*s;this.v+=dy/d*s;}
+  }
+  draw(c,t){
+    const U=DATA.units[this.id],[cw,ch]=U.cell;
+    const rows=U.rows;let face=this.face;
+    if(!rows.includes(face)){face={NE:'NW',SE:'SW',N:'NE',S:'SW'}[face]||rows[0];}
+    const anim=U.animations.find(a=>a.name===(this.moving?'walk':'idle'))||U.animations[0];
+    const ms=anim.ms.length?anim.ms:[200];let tot=ms.reduce((a,b)=>a+b,0),tt=(t*1000+this.age*7)%tot,f=0;
+    while(f<anim.frames-1&&tt>=ms[Math.min(f,ms.length-1)]){tt-=ms[Math.min(f,ms.length-1)];f++;}
+    const [x,y]=scr(this.u+.5,this.v+.5);
+    c.drawImage(IM['u:'+this.id],(anim.first+f)*cw,rows.indexOf(face)*ch,cw,ch,Math.round(x-U.pivot[0]),Math.round(y-U.pivot[1]),cw,ch);
+  }
+  get y(){return scr(this.u+.5,this.v+.5)[1];}
+}
+
+// ---- fire and smoke ----
+function flame(c,t,x,y,kind,seed){const F=DATA.fx[kind],n=F.frames,f=Math.floor(t*1000/F.ms+seed*2)%n;c.drawImage(IM['fx:'+kind],f*F.frame[0],0,F.frame[0],F.frame[1],Math.round(x-F.pivot[0]),Math.round(y-F.pivot[1]),F.frame[0],F.frame[1]);}
+// a fire on one spot: tongues spread over an ellipse twice as wide as deep (the iso ground), big and small ones mixed; tile=true uses the battle-map size
+function fire(list,x,y,n,spread,seed,tile,oy){for(let i=0;i<n;i++){const a=i/n*Math.PI*2+seed*1.7,r=spread*(i%2?.9:.45+(i%3)*.15);list.push({x:x+Math.cos(a)*r,y:y+Math.sin(a)*r*.5,kind:(tile?'flame_t':'flame')+(i%2?'_small':''),seed:seed*3+i,oy});}}
+let parts=[];
+function smokeStep(dt,em){for(const e of em){e.acc=(e.acc||0)+dt*e.rate;while(e.acc>=1){e.acc--;parts.push({x:e.x+(Math.random()-.5)*e.spread,y:e.y,age:0,life:2.4+Math.random(),dx:(Math.random()-.3)*5,t:!!e.tile});}}
+  for(const p of parts){p.age+=dt;p.y-=(p.t?12:22)*dt;p.x+=p.dx*dt;}parts=parts.filter(p=>p.age<p.life);}
+function smokeDraw(c){for(const p of parts){const key=p.t?'smoke_t':'smoke',S=DATA.fx[key],f=Math.min(7,Math.floor(p.age/p.life*8));c.drawImage(IM['fx:'+key],f*S.frame[0],0,S.frame[0],S.frame[1],Math.round(p.x-S.pivot[0]),Math.round(p.y-S.pivot[1]),S.frame[0],S.frame[1]);}}
+
+// ---- ground ----
+// the map's own tiles inside its bounds; outside them the scene's rule (gen) continues, so the canvas has no empty corners
+function chAt(sc,u,v){
+  if(u>=0&&v>=0&&u<sc.w&&v<sc.h)return{ch:sc.tiles[v][u],dy:0};
+  if(sc.outer){const r=sc.outer(u,v);if(r==null)return null;return typeof r==='string'?{ch:r,dy:0}:{ch:r.ch,dy:r.dy||0};}
+  return{ch:sc.tiles.gen?sc.tiles.gen(u,v):'.',dy:0};}
+function canvasSize(sc){return[(sc.w+sc.h)*16+32,(sc.w+sc.h)*8+110];}
+function visTile(u,v,sc,pad=40){const[x,y]=scr(u,v),[W,H]=canvasSize(sc);const X=x+sc.h*16+16,Y=y+70;return X>-pad&&X<W+pad&&Y>-pad&&Y<H+pad;}
+const EXT=30;
+function ground(c,sc,t){
+  for(let v=-EXT;v<sc.h+EXT;v++)for(let u=-EXT;u<sc.w+EXT;u++){
+    if(!visTile(u,v,sc))continue;
+    const r=chAt(sc,u,v);if(!r)continue;const{ch,dy}=r,[x,y]=scr(u,v);
+    for(const[dx,sy]of[[0,0],[8,4],[-8,4],[0,8]]){
+      let id=23;
+      if(ch==='d')id=8;
+      if(ch==='~')id=DATA.water.frames[(((Math.floor(t*1000/DATA.water.ms+(u+v))%8)+8)%8)];
+      put(c,ts(id),x+dx,y+sy+dy);
+    }
+  }
+  for(let v=-EXT;v<sc.h+EXT;v++)for(let u=-EXT;u<sc.w+EXT;u++){
+    if(!visTile(u,v,sc))continue;
+    const r=chAt(sc,u,v);if(!r||r.ch!=='.'||hash(u,v,1)>.55)continue;
+    const nm='grass_'+Math.floor(hash(u,v,2)*4),a=DATA.anims[nm],[x,y]=scr(u+.3+hash(u,v,3)*.4,v+.3+hash(u,v,4)*.4);
+    put(c,ts(a.frames[(((Math.floor(t*1000/(a.ms/a.frames.length)+u*3+v)%a.frames.length)+a.frames.length)%a.frames.length)]),x,y+r.dy);
+  }
+}
+// scattered oaks round the map so the border is not bare
+function addBorder(model,sc){if(!sc.border)return;
+  for(let v=-EXT;v<sc.h+EXT;v++)for(let u=-EXT;u<sc.w+EXT;u++){
+    if(u>=0&&v>=0&&u<sc.w&&v<sc.h)continue;if(!visTile(u,v,sc,70))continue;
+    const r=chAt(sc,u,v);if(!r||r.ch!=='.'||hash(u,v,77)>=sc.border||(sc.borderOk&&!sc.borderOk(u,v)))continue;
+    const k=Math.floor(hash(u,v,78)*3),sp=ts(DATA.anims['tree_'+k].frames[0]),[x,y]=scr(u+.5,v+.5);
+    model.items.push({y,draw:c=>put(c,sp,x,y)});}}
+// sky: a gradient behind the ground, for scenes whose far side is open
+function drawSky(c,kind,W,H){
+  const g=c.createLinearGradient(0,0,0,H);
+  const P={day:['#79b6e6','#bfe0f4','#e6f1f6'],night:['#060a22','#121c4c','#26346e'],dusk:['#c8704c','#f0a470','#f8d8a8']}[kind];
+  g.addColorStop(0,P[0]);g.addColorStop(.55,P[1]);g.addColorStop(1,P[2]);c.fillStyle=g;c.fillRect(0,0,W,H);
+  if(kind==='night'){c.fillStyle='#e8ecff';for(let i=0;i<70;i++){const x=hash(i,3,5)*W,y=hash(i,9,6)*H*.7;c.fillRect(Math.floor(x),Math.floor(y),1,1);}c.fillStyle='#f4f0d8';c.beginPath();c.arc(W*.78,H*.18,9,0,6.3);c.fill();c.fillStyle='#121c4c';c.beginPath();c.arc(W*.78+4,H*.18-2,8,0,6.3);c.fill();}
+  else{c.fillStyle='rgba(255,255,255,.75)';for(let i=0;i<7;i++){const x=hash(i,1,2)*W,y=hash(i,4,3)*H*.5;for(let k=0;k<4;k++)c.fillRect(Math.floor(x+k*7),Math.floor(y+(k%2)*2),14-k,3);}}
+}
+const wallMask=(sc,u,v)=>{const ch=sc.tiles[v][u];let m=0;[[-1,0],[0,-1],[1,0],[0,1]].forEach((d,i)=>{const a=sc.tiles[v+d[1]]?.[u+d[0]];if(a!==ch)m|=1<<i;});return m;};
+
+// ---- scenes: each returns {items:[{y,draw}], flames:[], smoke:[], units:[], under:[draw fns after ground]} for a state ----
+const tileC=(u,v)=>scr(u+.5,v+.5);
+const R=(n,f)=>Array.from({length:n},(_,i)=>f(i));
+function fenceRing(x0,y0,x1,y1,gaps){const set=new Set();for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)if((x===x0||x===x1||y===y0||y===y1)&&!gaps.some(g=>g[0]===x&&g[1]===y))set.add(x+','+y);return set;}
+function fenceMask(set,x,y){let m=0;[[-1,0],[0,-1],[1,0],[0,1]].forEach((d,i)=>{if(set.has((x+d[0])+','+(y+d[1])))m|=1<<i;});return m;}
+
+const SCENES={
+village:{
+  name:'시나리오 마을 방화',w:11,h:9,
+  tiles:['...........','...........','...........','...........','...d.......','...d.......','...dd......','....ddd....','......ddd..'],
+  states:['평화(울타리)','불길','잿더미','불길(밤)'],
+  desc:'시나리오 장면용(실제 크기): 허리 높이 울타리가 두른 마을 → 불길과 연기 → 불탄 집·불탄 주막·마른 나무·그을음. 주막과 큰 나무는 장면 전용입니다.',
+  build(s0){
+    const night=s0===3,s=night?1:s0;
+    const items=[],flames=[],smoke=[],under=[],units=[];
+    const fence=fenceRing(1,1,5,5,[[3,5],[4,5]]);
+    const huts=[[2,2],[4,2],[2,4],[4,4]];
+    const trees=[[8,0,'oak',0],[9,3,'oak',1],[0,7,'oak',2],[7,6,'oak',1],[10,1,'pine',0],[0,0,'pine',2],[9,7,'pine',3]];
+    const burnt=s===2;
+    fence.forEach(k=>{const[x,y]=k.split(',').map(Number),m=fenceMask(fence,x,y),[sx,sy]=tileC(x,y);const sp=cd('sfence_'+String(m).padStart(2,'0'));
+      items.push({y:sy,draw:c=>put(c,sp,sx,sy)});
+      if(s===1&&(x*7+y*3)%5===0)fire(flames,sx,sy-4,2,3,x+y);});
+    huts.forEach(([x,y],i)=>{const[sx,sy]=tileC(x,y);const sp=burnt?cd('burnt_hut'):st('village');
+      items.push({y:sy,draw:c=>put(c,sp,sx,sy)});
+      if(s===1){fire(flames,sx,sy-5,5,11,i);smoke.push({x:sx,y:sy-30,rate:3.2,spread:12});}
+      if(burnt){fire(flames,sx,sy-3,2,4,i+9);smoke.push({x:sx,y:sy-18,rate:.9,spread:8});}});
+    {const[sx,sy]=scr(7.6,1.6),sp=burnt?cd('burnt_tavern'):pr('tavern');items.push({y:sy,draw:c=>put(c,sp,sx,sy)});
+     if(s===1){fire(flames,sx-2,sy-16,8,18,3);fire(flames,sx+4,sy-30,4,8,7);smoke.push({x:sx,y:sy-48,rate:4,spread:18});}
+     if(burnt){fire(flames,sx+2,sy-10,3,6,2);smoke.push({x:sx,y:sy-30,rate:1.1,spread:10});}}
+    {const[sx,sy]=scr(3.2,2.6+4.2);const sp=pr('notice_board');items.push({y:sy,draw:c=>put(c,sp,sx,sy)});}
+    trees.forEach(([x,y,kind,vr])=>{const[sx,sy]=tileC(x,y);let sp;
+      if(kind==='oak')sp=burnt||s===1&&vr===1?(burnt?cd('burnt_oak_'+vr):ts(DATA.anims['tree_'+vr].frames[0])):ts(DATA.anims['tree_'+vr].frames[0]);
+      else sp=burnt?cd('burnt_forest_'+vr):pr('forest_'+vr);
+      items.push({y:sy,draw:c=>put(c,sp,sx,sy)});
+      if(s===1&&(vr===1||kind==='pine')){fire(flames,sx,sy-12,4,6,x);smoke.push({x:sx,y:sy-40,rate:2,spread:10});}
+      if(burnt&&kind==='oak')smoke.push({x:sx,y:sy-14,rate:.5,spread:4});});
+    if(s>=1){for(let v=0;v<9;v++)for(let u=0;u<11;u++){const dist=Math.min(...huts.map(h=>Math.hypot(h[0]-u,h[1]-v)),Math.hypot(7-u,1-v),Math.hypot(u-8,v-0)*1.2);
+      let lvl=0;if(s===1)lvl=dist<2.2?1:0;else lvl=dist<1.6?3:dist<3?2:dist<4.5?1:0;
+      if(lvl){const[sx,sy]=tileC(u,v);under.push(c=>put(c,cd('ash_'+lvl+'_'+Math.floor(hash(u,v,9)*3)),sx,sy));}}}
+    if(s===0)units.push(new Unit('bandit',[[0,7],[2,7],[4,7],[4,6]],{speed:1.4,face:'SE'}),new Unit('liubei_noncombat',[[6,4],[6,4]],{face:'SW'}));
+    if(s===1)units.push(new Unit('bandit',[[4,6],[4,6]],{face:'NE'}),new Unit('bandit',[[6,5],[6,5]],{face:'NW'}),new Unit('bandit',[[3,6],[3,6]],{face:'NE'}));
+    if(s===2)units.push(new Unit('bandit',[[4,6],[6,7],[9,8],[11,9]],{speed:1.2,face:'SE'}),new Unit('bandit',[[3,6],[5,7],[8,8],[11,9]],{speed:1.2,face:'SE',wait:.6}));
+    return{items,flames,smoke,under,units,night};
+  }},
+battle:{
+  name:'전투맵 화공',w:16,h:12,zoom:2,
+  tiles:R(12,v=>R(16,u=>(u-v===4||u-v===5)?'d':'.').join('')),
+  states:['평화','불길','잿더미','불길(밤)'],
+  desc:'전투맵 크기(데포르메)로 본 마을·주둔지·숲의 화공. 이 크기에서는 불길도 칸의 절반 높이의 좁은 불꽃 여러 개로 놓고, 울타리는 무릎 아래로 낮춥니다. 바닥 그을음은 칸 단위 반투명 덧씌움입니다.',
+  build(s0){
+    const night=s0===3,s=night?1:s0,burnt=s===2;
+    const items=[],flames=[],smoke=[],under=[],units=[];
+    const G=(gx,gy)=>scr(2*gx+1,2*gy+1);
+    const spots=[];
+    {const[x,y]=G(2,2);const sp=burnt?cd('burnt_village'):sitespr('village');items.push({y,draw:c=>put(c,sp,x,y)});spots.push([5,5]);
+      if(s===1){fire(flames,x,y-10,14,26,1,true,y+1);fire(flames,x-4,y-20,7,12,5,true,y+1);smoke.push({x,y:y-26,rate:2.4,spread:16,tile:true});}
+      if(burnt){fire(flames,x,y-5,3,12,2,true,y+1);smoke.push({x,y:y-16,rate:.8,spread:10,tile:true});}}
+    {const[x,y]=G(5,4);const sp=burnt?cd('burnt_camp'):sitespr('camp');items.push({y,draw:c=>put(c,sp,x,y)});spots.push([11,9]);
+      if(s===1){fire(flames,x,y-8,11,22,3,true,y+1);fire(flames,x,y-16,5,10,6,true,y+1);smoke.push({x,y:y-24,rate:2,spread:14,tile:true});}
+      if(burnt){fire(flames,x,y-5,2,10,4,true,y+1);smoke.push({x,y:y-14,rate:.6,spread:8,tile:true});}}
+    [[5,1,0],[6,2,1],[0,4,2],[1,0,3],[7,4,0],[4,0,2],[6,5,3],[0,2,1]].forEach(([gx,gy,n],i)=>{const[x,y]=G(gx,gy);const sp=burnt?cd('burnt_forest_'+n):pr('forest_'+n);items.push({y,draw:c=>put(c,sp,x,y)});
+      const near=Math.hypot(gx-2,gy-2)<4.2||Math.hypot(gx-5,gy-4)<2.6;spots.push([2*gx+1,2*gy+1]);
+      if(s===1&&near){fire(flames,x,y-10,8,14,i+7,true,y+1);fire(flames,x,y-20,4,7,i+3,true,y+1);smoke.push({x,y:y-24,rate:1.2,spread:8,tile:true});}
+      if(burnt&&near)smoke.push({x,y:y-12,rate:.35,spread:5,tile:true});});
+    const fence=fenceRing(8,6,13,11,[[10,11],[11,11]]);
+    fence.forEach(k=>{const[x,y]=k.split(',').map(Number),m=fenceMask(fence,x,y),[sx,sy]=tileC(x,y);const sp=cd('fence_'+String(m).padStart(2,'0'));items.push({y:sy-3,draw:c=>put(c,sp,sx,sy)});});
+    if(s>=1){for(let v=0;v<12;v++)for(let u=0;u<16;u++){const d=Math.min(...spots.map(p=>Math.hypot(p[0]-u-.5,p[1]-v-.5)));
+      let lvl=0;if(s===1)lvl=d<2.6?1:0;else lvl=d<2.4?3:d<4?2:d<5.5?1:0;
+      if(lvl&&hash(u,v,5)<.9){const[sx,sy]=tileC(u,v);under.push(c=>put(c,cd('ash_'+lvl+'_'+Math.floor(hash(u,v,9)*3)),sx,sy));}}}
+    if(s===0)units.push(new Unit('light_infantry',[[0,7],[4,7],[6,7],[8,4]],{speed:1.5,face:'SE'}),new Unit('light_infantry',[[1,8],[5,8],[7,8],[9,5]],{speed:1.5,face:'SE',wait:.5}));
+    if(s===1)units.push(new Unit('bandit',[[8,3],[8,3]],{face:'NW'}),new Unit('bandit',[[7,6],[7,6]],{face:'NW'}),new Unit('light_infantry',[[2,9],[2,9]],{face:'NE'}));
+    if(s===2)units.push(new Unit('light_infantry',[[2,9],[3,8],[5,8],[7,7]],{speed:1.3,face:'NE'}),new Unit('light_infantry',[[3,9],[4,9],[6,8],[8,7]],{speed:1.3,face:'NE',wait:.6}));
+    return{items,flames,smoke,under,units,night};
+  }},
+gate:{
+  name:'성문 A(기둥 문루)',w:11,h:9,
+  tiles:R(9,()=>'...........'),
+  states:['닫힌 관문','열린 관문'],
+  desc:'성벽 사이 한 칸을 채우는 새 성문(전투맵 크기). 기둥 네 개가 높은 지붕을 받쳐 기병이 말을 타고 지나갈 높이이고, 앞뒤 끝에 문이 하나씩 달려 있습니다. 열리면 문이 안쪽으로 젖혀져 양옆 성벽에 붙고, 닫히면 두 문이 통로를 막습니다. 주둔할 수 있는 관문 타일(2×2칸)과는 다른 타일입니다.',
+  build(s){
+    const items=[],units=[],flames=[],smoke=[],under=[];const T=this.tiles;
+    const wall=(u,v)=>v===4&&u!==5;
+    const sc={tiles:R(9,v=>R(11,u=>wall(u,v)?'c':'.').join('')),w:11,h:9};
+    for(let u=0;u<11;u++){const[sx,sy]=tileC(u,4);if(u===5){const m=s===0?'closed':'open';
+      under.push(c=>put(c,cd('gate_floor_u'),sx,sy));
+      items.push({y:sy-3,draw:c=>put(c,cd('gate_'+m+'_u_back'),sx,sy)},{y:sy+3,draw:c=>put(c,cd('gate_'+m+'_u_front'),sx,sy)},{y:sy+5,draw:c=>put(c,cd('gate_roof_u'),sx,sy)});continue;}
+      const sp=cd('wall_clean_'+String(wallMask(sc,u,4)).padStart(2,'0'));items.push({y:sy,draw:c=>put(c,sp,sx,sy)});}
+    const th=s===0?[[5,9],[5,5.9]]:[[5,9],[5,5.9],[5,3],[5,0.5]];
+    units.push(new Unit('light_cavalry',th,{speed:2.2,face:'NE'}),new Unit('light_infantry',s===0?[[4,9],[4,6.4]]:[[4,9],[4,6.4],[5,5.4],[5,3.4],[5,1]],{speed:1.8,face:'NE',wait:.3}),new Unit('light_infantry',s===0?[[6,9],[6,6.4]]:[[6,9],[6,6.4],[5,5.2],[5,3.6],[5,1.5]],{speed:1.8,face:'NE',wait:.6}));
+    return{items,flames,smoke,under,units};
+  }},
+tent:{
+  name:'군막 내부',w:8,h:8,
+  tiles:R(8,()=>'........'),
+  states:['낮','밤(화로 불빛)'],
+  desc:'기존 군막 바닥·벽·기둥에 후보 화로(불길 프레임을 올림)와 작전 지도 탁자를 더한 실내. 밤에는 화염 둘레만 밝게 합니다.',
+  noGround:true,
+  build(s){
+    const items=[],flames=[],smoke=[],under=[],units=[];
+    for(let by=0;by<4;by++)for(let bx=0;bx<4;bx++){const[x,y]=scr(bx*2+1,by*2+1);under.push(c=>put(c,pr('floor_tent'),x,y));}
+    for(let i=0;i<8;i+=2){const[x,y]=scr(0,i),[x2,y2]=scr(i,0);items.push({y:y-1,draw:c=>put(c,pr('wall_canvas_nw'),x,y)},{y:y2-1,draw:c=>put(c,pr('wall_canvas_ne'),x2,y2)});}
+    for(const[u,v]of[[0,0],[8,0],[0,8]]){const[x,y]=scr(u,v);items.push({y:y,draw:c=>put(c,pr('pillar_red'),x,y)});}
+    {const[x,y]=scr(2.2,2.2);items.push({y,draw:c=>put(c,pr('dais'),x,y)});}
+    {const[x,y]=scr(4.6,4.6);items.push({y,draw:c=>put(c,cd('map_table'),x,y)});}
+    for(const[u,v,sd]of[[1.6,6.4,1],[6.4,1.6,2]]){const[x,y]=scr(u,v);items.push({y,draw:c=>put(c,cd('brazier'),x,y)});flames.push({x:x,y:y-16,kind:'flame_small',seed:sd},{x:x-3,y:y-15,kind:'flame',seed:sd+3});smoke.push({x,y:y-26,rate:.5,spread:3});}
+    for(const[u,v]of[[3.6,.6],[.6,3.6]]){const[x,y]=scr(u,v);items.push({y,draw:c=>put(c,pr('banner'),x,y)});}
+    units.push(new Unit('liubei_noncombat',[[2,1.6],[2,1.6]],{face:'SE'}),new Unit('guanyu_noncombat',[[4.2,3.2],[4.2,3.2]],{face:'SE'}));
+    return{items,flames,smoke,under,units,night:s===1};
+  }},
+bridge:{
+  name:'다리 파괴',w:11,h:9,
+  tiles:R(9,()=>'.....~.....'),
+  states:['온전한 다리','손상','파괴'],
+  desc:'같은 다리 그림에서 구멍 난 손상본과 양끝 토막만 남는 파괴본. 파괴되면 그 칸은 물이 드러나 통행 불가가 되고, 이벤트가 타일을 바꿉니다.',
+  build(s){
+    const items=[],flames=[],smoke=[],under=[],units=[];
+    const[sx,sy]=scr(5.5,4.5),nm=['bridge_u','bridge_u_damaged','bridge_u_broken'][s];
+    under.push(c=>put(c,s===0?pr('bridge_u'):cd(nm),sx,sy));
+    if(s===2)for(const[u,v]of[[5,4]]){}
+    if(s===0)units.push(new Unit('light_infantry',[[0,4],[10.5,4]],{speed:1.7,face:'SE'}));
+    if(s===1)units.push(new Unit('light_infantry',[[0,4],[4.4,4],[6.6,4],[10.5,4]],{speed:1.2,face:'SE'}));
+    if(s===2){units.push(new Unit('light_infantry',[[0,4],[4.2,4]],{speed:1.7,face:'SE'}),new Unit('bandit',[[10.5,4],[6.9,4]],{speed:1.7,face:'NW'}));
+      const A=scr(5.05,4.5),B=scr(5.95,4.5);fire(flames,A[0],A[1]-1,4,5,1,true);fire(flames,B[0],B[1]-1,4,5,3,true);smoke.push({x:A[0],y:A[1]-10,rate:1,spread:4,tile:true},{x:B[0],y:B[1]-10,rate:1,spread:4,tile:true});}
+    return{items,flames,smoke,under,units};
+  }},
+};
+
+SCENES.gatehouse={name:'성문 C(낮은 문루)',w:11,h:9,tiles:R(9,()=>'...........'),states:['닫힘','열림(성문이 사라짐)'],
+  desc:'주변 성벽과 같은 높이로 낮춘 한 칸짜리 문루. 닫혀 있을 때는 성벽 줄의 일부처럼 서 있고, 열리면 성문 그림이 사라져 성벽 사이가 그대로 뚫린 길이 됩니다. 성벽은 칸 이음새의 세로선을 지운 그림입니다.',
+  build(s){const items=[],flames=[],smoke=[],under=[],units=[];
+    const sc={tiles:R(9,v=>R(11,u=>(v===4&&u!==5)?'c':'.').join('')),w:11,h:9};
+    for(let u=0;u<11;u++){const[sx,sy]=tileC(u,4);if(u===5){if(s===0){const sp=cd('gatehouse_closed_u');items.push({y:sy,draw:c=>put(c,sp,sx,sy)});}else under.push(c=>put(c,cd('gatehouse_floor_u'),sx,sy));continue;}
+      const sp=cd('wall_clean_'+String(wallMask(sc,u,4)).padStart(2,'0'));items.push({y:sy,draw:c=>put(c,sp,sx,sy)});}
+    const th=s===0?[[5,9],[5,5.9]]:[[5,9],[5,0.5]];
+    units.push(new Unit('light_cavalry',th,{speed:2.2,face:'NE'}),new Unit('light_infantry',s===0?[[4,9],[4,6.4]]:[[4,9],[4,6.4],[5,5.4],[5,1]],{speed:1.8,face:'NE',wait:.3}),new Unit('light_infantry',s===0?[[6,9],[6,6.4]]:[[6,9],[6,6.4],[5,5.2],[5,1.5]],{speed:1.8,face:'NE',wait:.6}));
+    return{items,flames,smoke,under,units};}};
+
+
+// ---- scenario scenes: real-scale rooms and places composed from the game's props and the candidates ----
+const SP=n=>DATA.cand[n]?cd(n):pr(n);
+const put1=(items,n,u,v,dy=0)=>{const[x,y]=scr(u,v),sp=SP(n);items.push({y:y+dy,draw:c=>put(c,sp,x,y)});};
+function room(n,floor,wall,pillar){const items=[],under=[];
+  for(let by=0;by<n/2;by++)for(let bx=0;bx<n/2;bx++){const[x,y]=scr(bx*2+1,by*2+1);const sp=SP(floor);under.push(c=>put(c,sp,x,y));}
+  for(let i=0;i<n;i+=2){const[x,y]=scr(0,i),[x2,y2]=scr(i,0);const a=SP(wall+'_nw'),b=SP(wall+'_ne');items.push({y:y-1,draw:c=>put(c,a,x,y)},{y:y2-1,draw:c=>put(c,b,x2,y2)});}
+  for(const[u,v]of[[0,0],[n,0],[0,n]]){const[x,y]=scr(u,v),sp=SP(pillar);items.push({y,draw:c=>put(c,sp,x,y)});}
+  return{items,under};}
+// the castle's own paving: the battle map's 성내 floor tile, with a paved avenue ('u'/'v' = its direction) where avenue(u,v) says so
+function innerFloor(under,me,pred,avenue){for(let v=-EXT;v<EXT;v++)for(let u=-EXT;u<EXT;u++){if(!visTile(u,v,me,60)||!pred(u,v))continue;const[x,y]=tileC(u,v),av=avenue&&avenue(u,v),sp=av?cd('avenue_'+av):st('floor');under.push(c=>put(c,sp,x,y));}}
+// the battle map's own wall tiles on an open grid: isWall(u,v) says where the wall stands, the seam-free wall_clean piece is picked by the neighbours
+function oldWalls(items,me,isWall){for(let v=-EXT;v<EXT;v++)for(let u=-EXT;u<EXT;u++){if(!isWall(u,v)||!visTile(u,v,me,70))continue;let m=0;[[-1,0],[0,-1],[1,0],[0,1]].forEach((d,i)=>{if(!isWall(u+d[0],v+d[1]))m|=1<<i;});const[sx,sy]=tileC(u,v),sp=cd('wall_clean_'+String(m).padStart(2,'0'));items.push({y:sy,draw:c=>put(c,sp,sx,sy)});}}
+const fig=(id,u,v,face)=>new Unit(id,[[u,v],[u,v]],{face});
+function outdoor(name,w,h,tiles,states,desc,build,extra){return Object.assign({name,w,h,tiles,states,desc,build},extra||{});}
+const G=(w,h,f)=>{const a=R(h,v=>R(w,u=>f(u,v)).join(''));a.gen=f;return a;};
+
+SCENES.road=outdoor('장면 · 길',14,10,G(14,10,(u,v)=>(v===4||v===5)?'d':'.'),['낮','해 질 무렵'],
+  '낙양으로 가는 길 같은 야외 장면. 일행이 길을 따라 걷다가 마주 오는 기병 일행을 만납니다(조조를 만나는 장면). 해 질 무렵은 같은 맵에 색만 입힙니다.',
+  function(s){const items=[],units=[];
+    [[2.5,3.4],[11,6.6]].forEach(([u,v])=>put1(items,'milestone',u,v));
+    [[2,1.5,0],[11.5,2,1],[5,8.5,2],[12.5,8,1],[0.8,7.5,2],[8,0.8,0],[1,0.8,1]].forEach(([u,v,k])=>{const[x,y]=scr(u,v),sp=ts(DATA.anims['tree_'+k].frames[0]);items.push({y,draw:c=>put(c,sp,x,y)});});
+    [[6,2.4,'rock_medium'],[3.4,7.4,'rock_small'],[9.5,7.6,'rock_large']].forEach(([u,v,k])=>{const[x,y]=scr(u,v),sp=ts(DATA.anims[k].frames[0]);items.push({y,draw:c=>put(c,sp,x,y)});});
+    // the party walks +u along the road; a rider with two escorts comes the other way and they stop face to face
+    const meet=(a)=>false;
+    units.push(new Unit('liubei_noncombat',[[0,4],[6.1,4]],{speed:1.2,face:'SE'}),new Unit('guanyu_noncombat',[[0,5],[5.4,5]],{speed:1.2,face:'SE',wait:.2}),new Unit('light_infantry',[[-1,4],[5,4]],{speed:1.2,face:'SE',wait:.5}),
+      new Unit('light_cavalry',[[13,4],[7.4,4]],{speed:1.5,face:'NW'}),new Unit('light_infantry',[[14,5],[8.4,5]],{speed:1.5,face:'NW',wait:.2}),new Unit('light_infantry',[[15,4],[9.4,4]],{speed:1.5,face:'NW',wait:.4}));
+    return{items,flames:[],smoke:[],under:[],units,tint:s?'rgb(255,196,150)':null};});
+
+SCENES.hill=outdoor('장면 · 언덕',12,10,G(12,10,(u,v)=>(u<=1||v<=1)?'h':(u+v>=18?'d':'.')),['낮','밤(횃불)'],
+  '진영 밖 언덕. 게임의 절벽 블록을 뒷면에 두르고, 벼랑 끝에 인물이 서서 아래를 내려다봅니다.',
+  function(s){const items=[],units=[],lights=[],flames=[];
+    const sc={tiles:G(12,10,(u,v)=>(u<=1||v<=1)?'h':'.'),w:12,h:10};
+    for(let v=0;v<10;v++)for(let u=0;u<12;u++){if(sc.tiles[v][u]!=='h')continue;const m=wallMask(sc,u,v),nm='cliff_'+String(m).padStart(2,'0')+'_'+(((u*7+v*3)%3+3)%3);const[x,y]=tileC(u,v),sp=st(nm);items.push({y,draw:c=>put(c,sp,x,y)});}
+    [[4,3.5,0],[8,5,1],[6,8,2]].forEach(([u,v,k])=>{const[x,y]=scr(u,v),sp=ts(DATA.anims['tree_'+k].frames[0]);items.push({y,draw:c=>put(c,sp,x,y)});});
+    [[3.4,3.4],[6.5,2.6]].forEach(([u,v])=>put1(items,'milestone',u,v));
+    [[9,2.5],[10,3.5]].forEach(([u,v],i)=>put1(items,'forest_'+i,u,v));
+    if(s){const[x,y]=scr(5.5,5.5);flames.push(...(()=>{const a=[];fire(a,x,y-4,4,5,2);return a;})());lights.push({x,y:y-8,r:60});}
+    units.push(fig('liubei_noncombat',4.5,4.5,'NW'),fig('guanyu_noncombat',5.5,5.2,'NW'),fig('light_infantry',5,6.3,'NW'));
+    return{items,flames,smoke:[],under:[],units,night:!!s,lights};});
+
+SCENES.camp=outdoor('장면 · 진영',12,10,G(12,10,(u,v)=>(u>=5&&u<=6)?'d':'.'),['낮','밤(모닥불)'],
+  '연합군·관군 진영 같은 야외 장면. 총대장 막사가 길 끝에 서고, 막사가 길 양옆으로 한 줄씩 늘어섭니다. 가운데에 모닥불. 밤에는 모닥불 둘레만 밝습니다.',
+  function(s){const items=[],units=[],lights=[],flames=[],smoke=[];
+    [['tent_round',6,1.4],['command_flag',4.6,1.6],['command_flag',7.4,1.6],['tent',2.6,3],['tent',2.6,5.6],['tent',2.6,8.2],['tent',9.4,3],['tent',9.4,5.6],['tent',9.4,8.2],['banner',4.2,4.2],['banner',7.8,4.2],['banner',4.2,7],['banner',7.8,7]].forEach(([n,u,v])=>put1(items,n,u,v));
+    {const[x,y]=scr(6,6);fire(flames,x,y-3,6,7,9);smoke.push({x,y:y-18,rate:1.2,spread:5});lights.push({x,y:y-8,r:s?70:0});}
+    units.push(fig('liubei_noncombat',5,6.8,'NE'),fig('guanyu_noncombat',7,6.8,'NW'),fig('light_infantry',6,7.8,'NE'),new Unit('light_infantry',[[5.6,10],[5.6,8.6]],{speed:1.2,face:'NE'}));
+    return{items,flames,smoke,under:[],units,night:!!s,lights:s?lights:[]};});
+
+SCENES.castleOut=outdoor('장면 · 성 밖',14,10,G(14,10,(u,v)=>(v===4||v===5)?'~':((u>=6&&u<=7&&v>=6)?'d':'.')),['성문 닫힘','성문 열림'],
+  '성 밖에서 본 성(영천 장사성 밖, 하비 성 밖). 장면용 큰 성벽(3D 모델)이 화면 끝까지 이어지고, 앞에 해자(두 칸 폭)와 다리 한 칸, 통로가 두 칸인 성문 누각이 있습니다. 성문은 가로로 반씩 둘로 나뉘어, 왼쪽 반은 병사보다 먼저, 오른쪽 반(지붕 포함)은 병사 다음에 그립니다. 그래서 통로로 들어선 병사가 오른쪽 기둥 뒤로 가려지며 지나갑니다.',
+  function(s){const items=[],units=[],under=[];const me=SCENES.castleOut;
+    innerFloor(under,me,(u,v)=>v<3,(u,v)=>(u===6||u===7)?'v':null);
+    for(const r of[-2.6,-7.6,-12.6])for(const u of[2.4,11.6])if(visTile(u,r,me,120))put1(items,'hall_u',u,r);
+    for(const v of[0.4,-3.4,-7.2,-11])for(const u of[5.2,8.8])if(visTile(u,v,me,90))put1(items,v===0.4?'banner':'lantern',u,v);
+    for(let u=-EXT;u<EXT;u++){if(!visTile(u,3,me,70)||(u>=5&&u<=8))continue;const[sx,sy]=tileC(u,3),sp=cd('swall_u');items.push({y:sy,draw:c=>put(c,sp,sx,sy)});}
+    {const[gx,gy]=scr(7,3.5),m=s===0?'closed':'open',first=cd('sgate_'+m+'_first_u'),second=cd('sgate_'+m+'_second_u');
+      under.push(c=>{for(const u of[6,7]){const[x,y]=tileC(u,3);put(c,cd('avenue_v'),x,y);}});
+      items.push({y:gy-30,draw:c=>put(c,first,gx,gy)},{y:scr(9.5,3.5)[1]-1,draw:c=>put(c,second,gx,gy)});}
+    {const[bx,by]=scr(7,5);under.push(c=>put(c,pr('bridge_v'),bx,by));}
+    [['banner',3,6.8],['banner',11,6.8]].forEach(([n,u,v])=>put1(items,n,u,v));
+    units.push(new Unit('light_cavalry',s?[[6.6,11],[6.6,-3]]:[[6.6,11],[6.6,6.8]],{speed:1.5,face:'NE'}),new Unit('liubei_noncombat',s?[[7.4,12],[7.4,-3]]:[[7.4,12],[7.4,7.6]],{speed:1.4,face:'NE',wait:.5}),new Unit('guanyu_noncombat',s?[[6.6,13],[6.6,-3]]:[[6.6,13],[6.6,8.6]],{speed:1.4,face:'NE',wait:.9}));
+    return{items,flames:[],smoke:[],under,units};},{border:.08,borderOk:(u,v)=>v>6});
+
+SCENES.courtyard=outdoor('장면 · 성 안',12,10,G(12,10,()=>'.'),['낮','저녁'],
+  '성 안 마당(신도성·북해성·고성 안). 성내 돌바닥이 화면 끝까지 이어지고, 기존 전투맵 성벽 너머 오른쪽 위는 하늘입니다. 관청(3D 모델)이 성벽 앞에 서서 큰길 끝을 마주 봅니다.',
+  function(s){const items=[],units=[],under=[];const me=SCENES.courtyard;
+    innerFloor(under,me,(u,v)=>u>=0&&v>=0,(u,v)=>(u===5||u===6)&&v>=3?'v':null);
+    oldWalls(items,me,(u,v)=>(u===0&&v>=0)||(v===0&&u>=0));
+    put1(items,'hall_u',6,2.4);
+    [['banner',3,3.6],['banner',9,3.6],['incense',5.6,4.4],['lantern',4,5],['lantern',8,5],['lantern',4,8],['lantern',8,8]].forEach(([n,u,v])=>put1(items,n,u,v));
+    units.push(fig('liubei_noncombat',5.6,6,'NE'),fig('guanyu_noncombat',6.4,6.6,'NE'),fig('light_infantry',3.6,5.6,'SE'),fig('light_infantry',3.6,7,'SE'),fig('light_infantry',8.4,5.6,'NW'),fig('light_infantry',8.4,7,'NW'));
+    return{items,flames:[],smoke:[],under,units,sky:s?'dusk':'day',tint:s?'rgb(255,226,196)':null};},{noGround:true});
+
+SCENES.rampart=outdoor('장면 · 성루',10,10,G(10,10,()=>'.'),['낮','밤(횃불)'],
+  '성루(성벽 위: 고성 북문, 북해성). 성내 돌바닥이 화면 끝까지 이어지고 오른쪽 위 가장자리에만 기존 전투맵 성벽이 한 줄 있어, 그 너머 하늘(낮·밤)이 보이며 성벽 위에 선 느낌이 납니다.',
+  function(s){const items=[],units=[],under=[],flames=[],lights=[],smoke=[];const me=SCENES.rampart;
+    innerFloor(under,me,(u,v)=>v>=0);
+    oldWalls(items,me,(u,v)=>v===0);
+    [['banner',2.6,1.6],['command_flag',7.4,1.6],['lantern',4.6,1.8],['lantern',9.2,1.8],['lantern',0.8,1.8],['lantern',-2.6,1.8],['lantern',-6.2,1.8],['incense',5,5]].forEach(([n,u,v])=>put1(items,n,u,v));
+    units.push(fig('guanyu_noncombat',3.6,3.2,'NE'),fig('liubei_noncombat',5.2,3.2,'NE'),fig('light_infantry',6.8,3.4,'NE'),fig('light_infantry',2,5.6,'NE'));
+    if(s)for(const u of [4.6,9.2,0.8,-2.6,-6.2]){const[x,y]=scr(u,1.8);lights.push({x,y:y-26,r:44});}
+    return{items,flames,smoke,under,units,sky:s?'night':'day',night:!!s,lights};},{noGround:true});
+
+SCENES.office=outdoor('장면 · 관아',8,8,G(8,8,()=>'.'),['낮','밤(등불)'],
+  '관아·관저·누각 실내(도겸·여포의 관아, 조조의 관저). 모든 배치를 방의 두 축(오른쪽 아래·왼쪽 아래 대각선)에 맞췄습니다: 오른쪽 위 벽 가운데에 단상, 그 앞에 서안, 단상에서 왼쪽 아래로 이어지는 길 양옆에 신하들이 마주 서고, 병풍은 각각 벽에 붙입니다.',
+  function(s){const r=room(8,'floor_wood','wall_plaster','pillar_wood');const items=r.items,under=r.under,units=[],lights=[];
+    put1(items,'throne_u',4,1);
+    put1(items,'desk',4,3.2);
+    put1(items,'screen_v',0.9,5);put1(items,'screen_u',1.5,0.9);put1(items,'screen_u',7,0.9);
+    [['table_wine',2.4,4.4],['table_wine',5.6,4.4],['banner',0.7,2.6],['lantern',1,7.2],['lantern',7,7.2]].forEach(([n,u,v])=>put1(items,n,u,v));
+    units.push(fig('liubei_noncombat',4,1.8,'SW'),fig('guanyu_noncombat',4,5.6,'NE'),fig('light_infantry',2.4,5.4,'SE'),fig('light_infantry',2.4,6.6,'SE'),fig('light_infantry',5.6,5.4,'NW'),fig('light_infantry',5.6,6.6,'NW'));
+    if(s)for(const[u,v]of[[1,7.2],[7,7.2]]){const[x,y]=scr(u,v);lights.push({x,y:y-28,r:56});}
+    return{items,flames:[],smoke:[],under,units,night:!!s,lights};},{noGround:true});
+
+SCENES.palace=outdoor('장면 · 궁궐',10,10,G(10,10,()=>'.'),['낮','밤(등불)'],
+  '궁궐 실내(낙양·허도). 옥좌가 오른쪽 위 벽 한가운데에 서고, 붉은 융단이 왼쪽 아래 입구까지 이어지며, 융단 양옆으로 기둥과 신하가 줄지어 마주 섭니다. 벽에는 휘장.',
+  function(s){const r=room(10,'floor_palace','wall_lacquer','pillar_red');const items=r.items,under=r.under,units=[],lights=[];
+    for(const v of[3,5,7,9]){const[x,y]=scr(5,v);under.push(c=>put(c,pr('floor_carpet'),x,y));}
+    for(let i=0;i<10;i+=2){const[x,y]=scr(0,i),[x2,y2]=scr(i,0);const a=cd('curtain_nw'),b=cd('curtain_ne');items.push({y:y-.5,draw:c=>put(c,a,x,y)},{y:y2-.5,draw:c=>put(c,b,x2,y2)});}
+    put1(items,'throne_u',5,1);
+    for(const v of[3.4,6.2,9])for(const u of[2.2,7.8])put1(items,'pillar_red',u,v);
+    put1(items,'incense',4.1,3.0);put1(items,'incense',5.9,3.0);
+    units.push(fig('liubei_noncombat',5,1.8,'SW'),fig('guanyu_noncombat',5,8.8,'NE'),
+      ...[3.8,5.2,6.6].flatMap(v=>[fig('light_infantry',3.6,v,'SE'),fig('light_infantry',6.4,v,'NW')]));
+    if(s)for(const[u,v]of[[4.1,3.0],[5.9,3.0]]){const[x,y]=scr(u,v);lights.push({x,y:y-12,r:50});}
+    return{items,flames:[],smoke:[],under,units,night:!!s,lights};},{noGround:true});
+
+SCENES.house=outdoor('장면 · 동승의 집(밤)',6,6,G(6,6,()=>'.'),['밤'],
+  '동승의 집(허도, 밤). 마루 방에 침상, 서안, 병풍, 등롱. 등롱 둘레만 밝은 밤 장면입니다.',
+  function(s){const r=room(6,'floor_wood','wall_plaster','pillar_wood');const items=r.items,under=r.under,units=[],lights=[];
+    put1(items,'bed',1.6,2.4);put1(items,'desk',4,1.2);put1(items,'screen_v',0.9,4.6);put1(items,'screen_u',2.4,0.9);
+    put1(items,'lantern',3.2,3.6);put1(items,'lantern',1,1);
+    units.push(fig('liubei_noncombat',3.6,4.2,'NW'),fig('guanyu_noncombat',4.4,3.2,'SW'));
+    for(const[u,v]of[[3.2,3.6],[1,1]]){const[x,y]=scr(u,v);lights.push({x,y:y-26,r:52});}
+    return{items,flames:[],smoke:[],under,units,night:true,lights};},{noGround:true});
+
+SCENES.garden=outdoor('장면 · 조조의 후원',12,10,G(12,10,(u,v)=>((u-8.8)**2/4.4+(v-7.4)**2/2.4<1)?'~':(((u===5||u===6)&&v>=6)?'d':'.')),['낮','저녁'],
+  '조조의 후원(허도). 화면 한가운데 정자, 그 앞에서 입구까지 돌길이 이어지고, 오른쪽 아래에 연못, 둘레에 매화와 정원석을 둡니다. 소품은 3D 모델로 만든 것입니다.',
+  function(s){const items=[],units=[];
+    put1(items,'pavilion',6,5);
+    [[2.5,2.2],[9.6,2.4],[2.2,7.6],[10.6,5.2],[6.2,0.9],[3.6,9.3]].forEach(([u,v])=>put1(items,'plum_tree',u,v));
+    [[8.2,5.8],[10,9],[1.8,4.8],[10.8,1.8],[3.4,3.8],[7.6,9.4]].forEach(([u,v])=>put1(items,'taihu_rock',u,v));
+    [[4.2,7.6],[7.8,6.2]].forEach(([u,v])=>put1(items,'lantern',u,v));
+    units.push(new Unit('liubei_noncombat',[[5.5,10.2],[5.5,7.4]],{speed:1.1,face:'NE'}),fig('guanyu_noncombat',5.4,6.2,'SW'));
+    return{items,flames:[],smoke:[],under:[],units,tint:s?'rgb(255,200,160)':null};},{border:.08});
+
+Object.assign(SCENES.road,{border:.08});Object.assign(SCENES.camp,{border:.08});
+Object.assign(SCENES.hill,{outer:(u,v)=>(u<0||v<0)?{ch:'d',dy:-26}:(u>=12||v>=10?'.':'.')});
+
+// ---- player ----
+let cur='village',state=0,model=null,zoom=3,t=0,last=0,auto=false,autoT=0;
+const cv=$('#cv'),ctx=cv.getContext('2d');
+function rebuild(){const sc=SCENES[cur];parts=[];model=sc.build(state);addBorder(model,sc);for(let i=0;i<90;i++)smokeStep(1/30,model.smoke);$('#desc').textContent=sc.desc;
+  document.querySelectorAll('#states button').forEach((b,i)=>b.setAttribute('aria-pressed',i===state));}
+function setScene(k){cur=k;state=0;zoom=SCENES[k].zoom||3;$('#zoom').value=zoom;document.querySelectorAll('#tabs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===k));
+  $('#states').innerHTML='';SCENES[k].states.forEach((n,i)=>{const b=document.createElement('button');b.textContent=n;b.onclick=()=>{state=i;rebuild();};$('#states').appendChild(b);});rebuild();size();}
+function size(){const sc=SCENES[cur];const[W,H]=canvasSize(sc);cv.width=W*zoom;cv.height=H*zoom;cv.style.maxWidth=W*zoom+'px';}
+function frame(ts){const dt=Math.min(.05,(ts-last)/1000||0);last=ts;t+=dt;
+  if(auto){autoT+=dt;if(autoT>4.5){autoT=0;state=(state+1)%SCENES[cur].states.length;rebuild();}}
+  const sc=SCENES[cur];const W=cv.width/zoom;
+  ctx.setTransform(zoom,0,0,zoom,0,0);ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,W,cv.height/zoom);
+  if(model.sky)drawSky(ctx,model.sky,W,cv.height/zoom);
+  ctx.translate(Math.round(sc.h*16+16),70);
+  if(!sc.noGround)ground(ctx,model.tiles?{...sc,tiles:model.tiles}:sc,t);
+  model.under.forEach(f=>f(ctx));
+  model.units.forEach(u=>u.step(dt));
+  smokeStep(dt,model.smoke);
+  const list=[...model.items.map(i=>({y:i.y,draw:i.draw})),...model.units.map(u=>({y:u.y,draw:c=>u.draw(c,t)})),...model.flames.map(f=>({y:f.oy!==undefined?f.oy:f.y+3,draw:c=>flame(c,t,f.x,f.y,f.kind,f.seed)}))];
+  list.sort((a,b)=>a.y-b.y).forEach(i=>i.draw(ctx));
+  smokeDraw(ctx);
+  if(model.tint){ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.globalCompositeOperation='multiply';ctx.fillStyle=model.tint;ctx.fillRect(0,0,cv.width,cv.height);ctx.restore();}
+  if(model.night){night(ctx,model,W);}
+  requestAnimationFrame(frame);}
+let nm=null;
+function night(c,model,W){const w=cv.width,h=cv.height;if(!nm||nm.width!==w){nm=document.createElement('canvas');nm.width=w;nm.height=h;}
+  const m=nm.getContext('2d');m.setTransform(1,0,0,1,0,0);m.globalCompositeOperation='source-over';m.clearRect(0,0,w,h);m.fillStyle='rgba(8,12,36,.62)';m.fillRect(0,0,w,h);
+  m.globalCompositeOperation='destination-out';
+  const sc=SCENES[cur],ox=Math.round(sc.h*16+16),oy=70;
+  for(const l of model.lights||[]){const x=(l.x+ox)*zoom,y=(l.y+oy)*zoom,r=(l.r||44)*zoom,g=m.createRadialGradient(x,y,2,x,y,r);g.addColorStop(0,'rgba(0,0,0,.95)');g.addColorStop(1,'rgba(0,0,0,0)');m.fillStyle=g;m.fillRect(x-r,y-r,2*r,2*r);}
+  for(const f of model.flames){const x=(f.x+ox)*zoom,y=(f.y-8+oy)*zoom,r=(f.kind.includes('_t')?30:46)*zoom,g=m.createRadialGradient(x,y,2,x,y,r);g.addColorStop(0,'rgba(0,0,0,.95)');g.addColorStop(1,'rgba(0,0,0,0)');m.fillStyle=g;m.fillRect(x-r,y-r,2*r,2*r);}
+  c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(nm,0,0);c.restore();}
+
+// ---- gallery ----
+function card(name,sp,meta){const d=document.createElement('div');d.className='card';const c=document.createElement('canvas');const k=3;c.width=sp.w*k;c.height=sp.h*k;const x=c.getContext('2d');x.imageSmoothingEnabled=false;x.drawImage(sp.img,sp.x,sp.y,sp.w,sp.h,0,0,sp.w*k,sp.h*k);d.appendChild(c);d.insertAdjacentHTML('beforeend','<b>'+name+'</b><span>'+meta+'</span>');return d;}
+function fxCard(name,key,n){const F=DATA.fx[key],d=document.createElement('div');d.className='card';const c=document.createElement('canvas');c.width=F.frame[0]*3;c.height=F.frame[1]*3;const x=c.getContext('2d');x.imageSmoothingEnabled=false;d.appendChild(c);d.insertAdjacentHTML('beforeend','<b>'+name+'</b><span>'+F.frames+'프레임 · '+F.frame.join('×')+'</span>');
+  setInterval(()=>{const f=Math.floor(performance.now()/(F.ms||250))%F.frames;x.clearRect(0,0,c.width,c.height);x.drawImage(IM['fx:'+key],f*F.frame[0],0,F.frame[0],F.frame[1],0,0,c.width,c.height);},60);return d;}
+loaded.then(()=>{
+  $('#tabs').innerHTML='';Object.entries(SCENES).forEach(([k,s])=>{const b=document.createElement('button');b.textContent=s.name;b.dataset.k=k;b.onclick=()=>setScene(k);$('#tabs').appendChild(b);});
+  $('#zoom').onchange=e=>{zoom=+e.target.value;size();};
+  $('#play').onclick=e=>{auto=!auto;autoT=0;e.target.setAttribute('aria-pressed',auto);};
+  const G=$('#gallery');
+  G.appendChild(fxCard('flame (불길)','flame'));G.appendChild(fxCard('smoke (연기)','smoke'));
+  const kinds={gate:'성문',burnt:'불탄 것',ash:'그을음',bridge:'다리'};
+  Object.entries(DATA.cand).filter(([n])=>!n.startsWith('fence')&&!/^ash_[123]_[12]$/.test(n)).forEach(([n,s])=>G.appendChild(card(n,cd(n),s.layer+' · '+s.size.join('×'))));
+  const F=$('#fences');for(let m=0;m<16;m++)F.appendChild(card('fence_'+String(m).padStart(2,'0'),cd('fence_'+String(m).padStart(2,'0')),'mask '+m.toString(2).padStart(4,'0')));
+  const q=new URLSearchParams(location.hash.slice(1));setScene(q.get('scene')||'village');if(q.get('state')){state=+q.get('state');rebuild();}if(q.get('ff')){for(let i=0;i<+q.get('ff')*30;i++)model.units.forEach(u=>u.step(1/30));}requestAnimationFrame(frame);
+});
+</script>
+</body>
+</html>

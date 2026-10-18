@@ -1,0 +1,1895 @@
+{
+ "note": "pivot = ground point the sprite stands on; layer = ground (under units) or object (sorted with units)",
+ "sprites": {
+  "burnt_forest_0": {
+   "file": "tiles/burnt_forest_0.png",
+   "size": [
+    56,
+    39
+   ],
+   "pivot": [
+    26,
+    26
+   ],
+   "layer": "object"
+  },
+  "burnt_forest_1": {
+   "file": "tiles/burnt_forest_1.png",
+   "size": [
+    58,
+    39
+   ],
+   "pivot": [
+    30,
+    26
+   ],
+   "layer": "object"
+  },
+  "burnt_forest_2": {
+   "file": "tiles/burnt_forest_2.png",
+   "size": [
+    60,
+    40
+   ],
+   "pivot": [
+    31,
+    27
+   ],
+   "layer": "object"
+  },
+  "burnt_forest_3": {
+   "file": "tiles/burnt_forest_3.png",
+   "size": [
+    54,
+    39
+   ],
+   "pivot": [
+    27,
+    27
+   ],
+   "layer": "object"
+  },
+  "burnt_oak_0": {
+   "file": "tiles/burnt_oak_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    20,
+    44
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "note": "scenario scenes only (the battle map uses pines)"
+  },
+  "burnt_oak_1": {
+   "file": "tiles/burnt_oak_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    20,
+    44
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "note": "scenario scenes only (the battle map uses pines)"
+  },
+  "burnt_oak_2": {
+   "file": "tiles/burnt_oak_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    20,
+    44
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "note": "scenario scenes only (the battle map uses pines)"
+  },
+  "burnt_hut": {
+   "file": "tiles/burnt_hut.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "note": "from the structures.png hay-hut cell; scenario scenes"
+  },
+  "burnt_village": {
+   "file": "tiles/burnt_village.png",
+   "size": [
+    100,
+    110
+   ],
+   "pivot": [
+    50,
+    77
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "note": "from the battle map's village site (100x110, 2x2 cells)"
+  },
+  "burnt_camp": {
+   "file": "tiles/burnt_camp.png",
+   "size": [
+    100,
+    110
+   ],
+   "pivot": [
+    50,
+    77
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "note": "from the camp site"
+  },
+  "burnt_tavern": {
+   "file": "tiles/burnt_tavern.png",
+   "size": [
+    74,
+    75
+   ],
+   "pivot": [
+    39,
+    58
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "note": "scenario scenes only"
+  },
+  "ash_1_0": {
+   "file": "tiles/ash_1_0.png",
+   "size": [
+    32,
+    16
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "level": 1
+  },
+  "ash_1_1": {
+   "file": "tiles/ash_1_1.png",
+   "size": [
+    32,
+    16
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "level": 1
+  },
+  "ash_1_2": {
+   "file": "tiles/ash_1_2.png",
+   "size": [
+    32,
+    16
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "level": 1
+  },
+  "ash_2_0": {
+   "file": "tiles/ash_2_0.png",
+   "size": [
+    32,
+    16
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "level": 2
+  },
+  "ash_2_1": {
+   "file": "tiles/ash_2_1.png",
+   "size": [
+    32,
+    16
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "level": 2
+  },
+  "ash_2_2": {
+   "file": "tiles/ash_2_2.png",
+   "size": [
+    32,
+    16
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "level": 2
+  },
+  "ash_3_0": {
+   "file": "tiles/ash_3_0.png",
+   "size": [
+    32,
+    16
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "level": 3
+  },
+  "ash_3_1": {
+   "file": "tiles/ash_3_1.png",
+   "size": [
+    32,
+    16
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "level": 3
+  },
+  "ash_3_2": {
+   "file": "tiles/ash_3_2.png",
+   "size": [
+    32,
+    16
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "level": 3
+  },
+  "fence_00": {
+   "file": "tiles/fence_00.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 0,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_00": {
+   "file": "tiles/sfence_00.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 0,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_01": {
+   "file": "tiles/fence_01.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 1,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_01": {
+   "file": "tiles/sfence_01.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 1,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_02": {
+   "file": "tiles/fence_02.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 2,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_02": {
+   "file": "tiles/sfence_02.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 2,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_03": {
+   "file": "tiles/fence_03.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 3,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_03": {
+   "file": "tiles/sfence_03.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 3,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_04": {
+   "file": "tiles/fence_04.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 4,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_04": {
+   "file": "tiles/sfence_04.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 4,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_05": {
+   "file": "tiles/fence_05.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 5,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_05": {
+   "file": "tiles/sfence_05.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 5,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_06": {
+   "file": "tiles/fence_06.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 6,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_06": {
+   "file": "tiles/sfence_06.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 6,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_07": {
+   "file": "tiles/fence_07.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 7,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_07": {
+   "file": "tiles/sfence_07.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 7,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_08": {
+   "file": "tiles/fence_08.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 8,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_08": {
+   "file": "tiles/sfence_08.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 8,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_09": {
+   "file": "tiles/fence_09.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 9,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_09": {
+   "file": "tiles/sfence_09.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 9,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_10": {
+   "file": "tiles/fence_10.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 10,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_10": {
+   "file": "tiles/sfence_10.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 10,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_11": {
+   "file": "tiles/fence_11.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 11,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_11": {
+   "file": "tiles/sfence_11.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 11,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_12": {
+   "file": "tiles/fence_12.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 12,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_12": {
+   "file": "tiles/sfence_12.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 12,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_13": {
+   "file": "tiles/fence_13.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 13,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_13": {
+   "file": "tiles/sfence_13.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 13,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_14": {
+   "file": "tiles/fence_14.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 14,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_14": {
+   "file": "tiles/sfence_14.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 14,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "fence_15": {
+   "file": "tiles/fence_15.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 15,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "battle",
+   "note": "low fence for the deformed battle map"
+  },
+  "sfence_15": {
+   "file": "tiles/sfence_15.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "mask": 15,
+   "sides_bits": [
+    "nw",
+    "ne",
+    "se",
+    "sw"
+   ],
+   "scale": "scene",
+   "note": "waist-high fence for scenario scenes"
+  },
+  "bridge_u_damaged": {
+   "file": "tiles/bridge_u_damaged.png",
+   "size": [
+    63,
+    34
+   ],
+   "pivot": [
+    32,
+    17
+   ],
+   "layer": "ground"
+  },
+  "bridge_u_broken": {
+   "file": "tiles/bridge_u_broken.png",
+   "size": [
+    63,
+    34
+   ],
+   "pivot": [
+    32,
+    17
+   ],
+   "layer": "ground"
+  },
+  "bridge_v_damaged": {
+   "file": "tiles/bridge_v_damaged.png",
+   "size": [
+    63,
+    34
+   ],
+   "pivot": [
+    32,
+    17
+   ],
+   "layer": "ground"
+  },
+  "bridge_v_broken": {
+   "file": "tiles/bridge_v_broken.png",
+   "size": [
+    63,
+    34
+   ],
+   "pivot": [
+    32,
+    17
+   ],
+   "layer": "ground"
+  },
+  "brazier": {
+   "file": "tiles/brazier.png",
+   "size": [
+    28,
+    28
+   ],
+   "pivot": [
+    14,
+    24
+   ],
+   "layer": "object",
+   "flame_anchor": [
+    14,
+    11
+   ],
+   "note": "draw one flame (k=1) at the anchor"
+  },
+  "map_table": {
+   "file": "tiles/map_table.png",
+   "size": [
+    48,
+    36
+   ],
+   "pivot": [
+    24,
+    20
+   ],
+   "layer": "object"
+  },
+  "gate_floor_u": {
+   "file": "tiles/gate_floor_u.png",
+   "size": [
+    48,
+    64
+   ],
+   "pivot": [
+    25,
+    55
+   ],
+   "layer": "ground",
+   "scale": "battle"
+  },
+  "gate_roof_u": {
+   "file": "tiles/gate_roof_u.png",
+   "size": [
+    48,
+    64
+   ],
+   "pivot": [
+    25,
+    55
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "sort_dy": 5,
+   "note": "draw after units standing in the gate tile"
+  },
+  "gate_open_u_back": {
+   "file": "tiles/gate_open_u_back.png",
+   "size": [
+    48,
+    64
+   ],
+   "pivot": [
+    25,
+    55
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "sort_dy": -3,
+   "blocks": false,
+   "note": "one of the two door frames; draw with sort y offset sort_dy"
+  },
+  "gate_open_u_front": {
+   "file": "tiles/gate_open_u_front.png",
+   "size": [
+    48,
+    64
+   ],
+   "pivot": [
+    25,
+    55
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "sort_dy": 3,
+   "blocks": false,
+   "note": "one of the two door frames; draw with sort y offset sort_dy"
+  },
+  "gate_closed_u_back": {
+   "file": "tiles/gate_closed_u_back.png",
+   "size": [
+    48,
+    64
+   ],
+   "pivot": [
+    25,
+    55
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "sort_dy": -3,
+   "blocks": true,
+   "note": "one of the two door frames; draw with sort y offset sort_dy"
+  },
+  "gate_closed_u_front": {
+   "file": "tiles/gate_closed_u_front.png",
+   "size": [
+    48,
+    64
+   ],
+   "pivot": [
+    25,
+    55
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "sort_dy": 3,
+   "blocks": true,
+   "note": "one of the two door frames; draw with sort y offset sort_dy"
+  },
+  "gate_floor_v": {
+   "file": "tiles/gate_floor_v.png",
+   "size": [
+    48,
+    64
+   ],
+   "pivot": [
+    25,
+    55
+   ],
+   "layer": "ground",
+   "scale": "battle"
+  },
+  "gate_roof_v": {
+   "file": "tiles/gate_roof_v.png",
+   "size": [
+    48,
+    64
+   ],
+   "pivot": [
+    25,
+    55
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "sort_dy": 5,
+   "note": "draw after units standing in the gate tile"
+  },
+  "gate_open_v_back": {
+   "file": "tiles/gate_open_v_back.png",
+   "size": [
+    48,
+    64
+   ],
+   "pivot": [
+    25,
+    55
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "sort_dy": -3,
+   "blocks": false,
+   "note": "one of the two door frames; draw with sort y offset sort_dy"
+  },
+  "gate_open_v_front": {
+   "file": "tiles/gate_open_v_front.png",
+   "size": [
+    48,
+    64
+   ],
+   "pivot": [
+    25,
+    55
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "sort_dy": 3,
+   "blocks": false,
+   "note": "one of the two door frames; draw with sort y offset sort_dy"
+  },
+  "gate_closed_v_back": {
+   "file": "tiles/gate_closed_v_back.png",
+   "size": [
+    48,
+    64
+   ],
+   "pivot": [
+    25,
+    55
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "sort_dy": -3,
+   "blocks": true,
+   "note": "one of the two door frames; draw with sort y offset sort_dy"
+  },
+  "gate_closed_v_front": {
+   "file": "tiles/gate_closed_v_front.png",
+   "size": [
+    48,
+    64
+   ],
+   "pivot": [
+    25,
+    55
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "sort_dy": 3,
+   "blocks": true,
+   "note": "one of the two door frames; draw with sort y offset sort_dy"
+  },
+  "gatehouse_closed_u": {
+   "file": "tiles/gatehouse_closed_u.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "note": "one wall cell, as high as the walls (it is the wall block); when the gate opens it simply disappears (gatehouse_floor_* stays)"
+  },
+  "gatehouse_floor_u": {
+   "file": "tiles/gatehouse_floor_u.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "ground",
+   "scale": "battle"
+  },
+  "gatehouse_closed_v": {
+   "file": "tiles/gatehouse_closed_v.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "note": "one wall cell, as high as the walls (it is the wall block); when the gate opens it simply disappears (gatehouse_floor_* stays)"
+  },
+  "gatehouse_floor_v": {
+   "file": "tiles/gatehouse_floor_v.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "ground",
+   "scale": "battle"
+  },
+  "wall_clean_00": {
+   "file": "tiles/wall_clean_00.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 0,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_01": {
+   "file": "tiles/wall_clean_01.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 1,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_02": {
+   "file": "tiles/wall_clean_02.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 2,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_03": {
+   "file": "tiles/wall_clean_03.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 3,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_04": {
+   "file": "tiles/wall_clean_04.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 4,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_05": {
+   "file": "tiles/wall_clean_05.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 5,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_06": {
+   "file": "tiles/wall_clean_06.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 6,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_07": {
+   "file": "tiles/wall_clean_07.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 7,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_08": {
+   "file": "tiles/wall_clean_08.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 8,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_09": {
+   "file": "tiles/wall_clean_09.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 9,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_10": {
+   "file": "tiles/wall_clean_10.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 10,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_11": {
+   "file": "tiles/wall_clean_11.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 11,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_12": {
+   "file": "tiles/wall_clean_12.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 12,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_13": {
+   "file": "tiles/wall_clean_13.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 13,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_14": {
+   "file": "tiles/wall_clean_14.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 14,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "wall_clean_15": {
+   "file": "tiles/wall_clean_15.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "mask": 15,
+   "note": "the game's wall cell without the joint seams"
+  },
+  "screen_u": {
+   "file": "tiles/screen_u.png",
+   "size": [
+    50,
+    56
+   ],
+   "pivot": [
+    25,
+    44
+   ],
+   "layer": "object",
+   "scale": "scene"
+  },
+  "stairs_u": {
+   "file": "tiles/stairs_u.png",
+   "size": [
+    48,
+    36
+   ],
+   "pivot": [
+    24,
+    32
+   ],
+   "layer": "object",
+   "scale": "scene"
+  },
+  "screen_v": {
+   "file": "tiles/screen_v.png",
+   "size": [
+    50,
+    56
+   ],
+   "pivot": [
+    25,
+    44
+   ],
+   "layer": "object",
+   "scale": "scene"
+  },
+  "stairs_v": {
+   "file": "tiles/stairs_v.png",
+   "size": [
+    48,
+    36
+   ],
+   "pivot": [
+    24,
+    32
+   ],
+   "layer": "object",
+   "scale": "scene"
+  },
+  "bed": {
+   "file": "tiles/bed.png",
+   "size": [
+    52,
+    40
+   ],
+   "pivot": [
+    26,
+    34
+   ],
+   "layer": "object",
+   "scale": "scene"
+  },
+  "lantern": {
+   "file": "tiles/lantern.png",
+   "size": [
+    16,
+    36
+   ],
+   "pivot": [
+    8,
+    35
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "glow": [
+    8,
+    8
+   ]
+  },
+  "curtain_nw": {
+   "file": "tiles/curtain_nw.png",
+   "size": [
+    37,
+    50
+   ],
+   "pivot": [
+    34,
+    48
+   ],
+   "layer": "object",
+   "scale": "scene"
+  },
+  "curtain_ne": {
+   "file": "tiles/curtain_ne.png",
+   "size": [
+    37,
+    50
+   ],
+   "pivot": [
+    4,
+    48
+   ],
+   "layer": "object",
+   "scale": "scene"
+  },
+  "milestone": {
+   "file": "tiles/milestone.png",
+   "size": [
+    14,
+    24
+   ],
+   "pivot": [
+    7,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene"
+  },
+  "incense": {
+   "file": "tiles/incense.png",
+   "size": [
+    24,
+    28
+   ],
+   "pivot": [
+    12,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene"
+  },
+  "avenue_u": {
+   "file": "tiles/avenue_u.png",
+   "size": [
+    32,
+    16
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "scale": "scene"
+  },
+  "avenue_v": {
+   "file": "tiles/avenue_v.png",
+   "size": [
+    32,
+    16
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "scale": "scene"
+  },
+  "throne_u": {
+   "file": "tiles/throne_u.png",
+   "size": [
+    88,
+    112
+   ],
+   "pivot": [
+    44,
+    84
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "cells": "3x2"
+  },
+  "throne_v": {
+   "file": "tiles/throne_v.png",
+   "size": [
+    88,
+    112
+   ],
+   "pivot": [
+    44,
+    84
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "cells": "3x2"
+  },
+  "hall_u": {
+   "file": "tiles/hall_u.png",
+   "size": [
+    97,
+    78
+   ],
+   "pivot": [
+    50,
+    56
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  },
+  "plum_tree": {
+   "file": "tiles/plum_tree.png",
+   "size": [
+    66,
+    60
+   ],
+   "pivot": [
+    33,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  },
+  "taihu_rock": {
+   "file": "tiles/taihu_rock.png",
+   "size": [
+    31,
+    47
+   ],
+   "pivot": [
+    17,
+    40
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  },
+  "pavilion": {
+   "file": "tiles/pavilion.png",
+   "size": [
+    95,
+    72
+   ],
+   "pivot": [
+    48,
+    52
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  },
+  "hall_v": {
+   "file": "tiles/hall_v.png",
+   "size": [
+    97,
+    78
+   ],
+   "pivot": [
+    48,
+    56
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  },
+  "swall_u": {
+   "file": "tiles/swall_u.png",
+   "size": [
+    16,
+    93
+   ],
+   "pivot": [
+    16,
+    83
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  },
+  "swall_v": {
+   "file": "tiles/swall_v.png",
+   "size": [
+    16,
+    93
+   ],
+   "pivot": [
+    0,
+    84
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  },
+  "sgate_closed_first_u": {
+   "file": "tiles/sgate_closed_first_u.png",
+   "size": [
+    36,
+    97
+   ],
+   "pivot": [
+    43,
+    93
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  },
+  "sgate_closed_second_u": {
+   "file": "tiles/sgate_closed_second_u.png",
+   "size": [
+    100,
+    138
+   ],
+   "pivot": [
+    51,
+    117
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  },
+  "sgate_closed_first_v": {
+   "file": "tiles/sgate_closed_first_v.png",
+   "size": [
+    36,
+    97
+   ],
+   "pivot": [
+    -6,
+    93
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  },
+  "sgate_closed_second_v": {
+   "file": "tiles/sgate_closed_second_v.png",
+   "size": [
+    100,
+    138
+   ],
+   "pivot": [
+    50,
+    117
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  },
+  "sgate_open_first_u": {
+   "file": "tiles/sgate_open_first_u.png",
+   "size": [
+    37,
+    90
+   ],
+   "pivot": [
+    43,
+    93
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  },
+  "sgate_open_second_u": {
+   "file": "tiles/sgate_open_second_u.png",
+   "size": [
+    100,
+    138
+   ],
+   "pivot": [
+    51,
+    117
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  },
+  "sgate_open_first_v": {
+   "file": "tiles/sgate_open_first_v.png",
+   "size": [
+    37,
+    90
+   ],
+   "pivot": [
+    -5,
+    93
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  },
+  "sgate_open_second_v": {
+   "file": "tiles/sgate_open_second_v.png",
+   "size": [
+    100,
+    138
+   ],
+   "pivot": [
+    50,
+    117
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer"
+  }
+ }
+}
