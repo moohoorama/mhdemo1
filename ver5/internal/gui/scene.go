@@ -9,6 +9,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/core"
+	"srpg/internal/duelview"
 	"srpg/internal/sprite"
 )
 
@@ -368,7 +369,7 @@ func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) 
 	x, y := g.field.Center(v.u, v.v)
 	sx, sy := worldToUI(g.toScreen(x, y-v.lift-v.top))
 	_, h := g.assets.Bubble.Size("", mark)
-	g.assets.Bubble.DrawText(dst, "", mark, sx-28, sy-h, drawPx)
+	g.assets.Bubble.DrawText(dst, "", mark, duelview.Tail{}, sx-28, sy-h, drawPx)
 }
 
 var (

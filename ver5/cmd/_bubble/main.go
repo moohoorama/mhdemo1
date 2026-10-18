@@ -61,12 +61,14 @@ func (g *game) Draw(screen *ebiten.Image) {
 	g.done = true
 	screen.Fill(color.NRGBA{196, 170, 120, 255})
 	x, y, rowH := 20.0, 20.0, 0.0
-	for _, s := range samples {
+	for i, s := range samples {
 		w, h := g.b.Size(s.name, s.body)
+		tails := []duelview.Tail{{}, {X: w - 40}, {X: w / 2, Up: true}}
+		tail := tails[i%len(tails)]
 		if x+w > 1580 {
 			x, y, rowH = 20, y+rowH+24, 0
 		}
-		g.b.DrawText(screen, s.name, s.body, x, y, 1)
+		g.b.DrawText(screen, s.name, s.body, tail, x, y, 1)
 		x += w + 24
 		rowH = max(rowH, h)
 	}

@@ -255,7 +255,6 @@ func (g *Game) drawCutNames(dst *ebiten.Image, v *duelview.View, t, top, bandH, 
 	W := float64(uiW)
 	size := min(cutNameSize, bandH*.62)
 	f := g.brush(size)
-	label := g.serif(size*.14, 900)
 	shake := cutShake(t, stampL+cutStamp, .18, 6) + cutShake(t, stampR+cutStamp, .18, 6)
 	for side, at := range []float64{stampL, stampR} {
 		if t < at {
@@ -266,10 +265,8 @@ func (g *Game) drawCutNames(dst *ebiten.Image, v *duelview.View, t, top, bandH, 
 		name := v.Fighters[side].Name
 		glow := color.NRGBA{R: 80, G: 220, B: 120, A: 255}
 		rim := color.NRGBA{R: 11, G: 36, B: 20, A: 255}
-		tag, tc := "아군 장수", color.NRGBA{R: 159, G: 224, B: 168, A: 255}
 		if side == 1 {
 			glow, rim = color.NRGBA{R: 255, G: 90, B: 50, A: 255}, color.NRGBA{R: 59, G: 14, B: 7, A: 255}
-			tag, tc = "적군 장수", color.NRGBA{R: 240, G: 160, B: 142, A: 255}
 		}
 		img := g.glowText(name, f, glow, rim)
 		w, h := float64(img.Bounds().Dx())/drawPx, float64(img.Bounds().Dy())/drawPx
@@ -285,10 +282,6 @@ func (g *Game) drawCutNames(dst *ebiten.Image, v *duelview.View, t, top, bandH, 
 		op.GeoM.Translate((anchorX+shake)*drawPx, cy*drawPx)
 		op.ColorScale.ScaleAlpha(float32(min(1, k/.7)))
 		dst.DrawImage(img, op)
-		if k >= 1 {
-			tw := spacedWidth(tag, label, .25)
-			writeSpaced(dst, tag, label, anchorX-tw/2+shake, cy-size*.78, .25, tc)
-		}
 	}
 }
 

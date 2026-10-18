@@ -2,9 +2,9 @@ package duelview
 
 import (
 	"fmt"
-	"math"
 	"image/color"
 	"image/png"
+	"math"
 	"os"
 	"path/filepath"
 	"strings"
@@ -28,9 +28,27 @@ const (
 	bubbleCacheMax = 64
 )
 
+// Tail is where a balloon's pointer sits: X is the tip's distance from the balloon's left
+// edge in design pixels (0 is the default beside the lower-left corner), and Up puts the
+// pointer on the top edge for a balloon that hangs below its speaker.
+type Tail struct {
+	X  float64
+	Up bool
+}
+
+const tailHalf = 12.0
+
+func (t Tail) tipX(w float64) float64 {
+	if t.X == 0 {
+		return bubbleCorner + tailHalf
+	}
+	return max(bubbleCorner+tailHalf, min(w-bubbleCorner-tailHalf, math.Round(t.X/4)*4))
+}
+
 type bubbleKey struct {
 	name, body string
 	r          int
+	tail       Tail
 }
 
 // Bubble draws speech balloons: a 9-slice frame of PNG pieces with a bold name line above
@@ -60,8 +78,7 @@ func LoadBubble(dir string, font *text.GoTextFaceSource) (*Bubble, error) {
 	return b, nil
 }
 
-// Size is the balloon's pixel size including its tail; the tail tip is at the bottom,
-// bubbleCorner+12 from the left.
+// Size is the balloon's pixel size including its tail, which adds bubbleTailH above or below.
 func (b *Bubble) Size(name, body string) (w, h float64) {
 	im := b.image(name, body)
 	return float64(im.Bounds().Dx()), float64(im.Bounds().Dy())
@@ -69,29 +86,29 @@ func (b *Bubble) Size(name, body string) (w, h float64) {
 
 // DrawText draws the balloon with its top-left corner at (x, y), enlarged by scale. A blank
 // name leaves out the name line.
-func (b *Bubble) DrawText(dst *ebiten.Image, name, body string, x, y, scale float64) {
+func (b *Bubble) DrawText(dst *ebiten.Image, name, body string, tail Tail, x, y, scale float64) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(x, y)
 	op.GeoM.Scale(scale, scale)
-	dst.DrawImage(b.image(name, body), op)
+	dst.DrawImage(b.imageAt(name, body, 1, tail), op)
 }
 
 // DrawSharp draws the balloon with its top-left corner at (x, y) on a screen where one design
 // pixel is scale device pixels: the text is rasterised at that size instead of being
 // stretched from the design size.
-func (b *Bubble) DrawSharp(dst *ebiten.Image, name, body string, x, y, scale, alpha float64) {
+func (b *Bubble) DrawSharp(dst *ebiten.Image, name, body string, tail Tail, x, y, scale, alpha float64) {
 	r := max(1, min(4, int(math.Ceil(scale))))
 	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
 	op.GeoM.Scale(scale/float64(r), scale/float64(r))
 	op.GeoM.Translate(x, y)
 	op.ColorScale.ScaleAlpha(float32(alpha))
-	dst.DrawImage(b.imageAt(name, body, r), op)
+	dst.DrawImage(b.imageAt(name, body, r, tail), op)
 }
 
-func (b *Bubble) image(name, body string) *ebiten.Image { return b.imageAt(name, body, 1) }
+func (b *Bubble) image(name, body string) *ebiten.Image { return b.imageAt(name, body, 1, Tail{}) }
 
-func (b *Bubble) imageAt(name, body string, r int) *ebiten.Image {
-	key := bubbleKey{name, body, r}
+func (b *Bubble) imageAt(name, body string, r int, tail Tail) *ebiten.Image {
+	key := bubbleKey{name, body, r, tail}
 	if im, ok := b.cache[key]; ok {
 		return im
 	}
@@ -101,7 +118,7 @@ func (b *Bubble) imageAt(name, body string, r int) *ebiten.Image {
 			delete(b.cache, k)
 		}
 	}
-	im := b.render(name, body, r)
+	im := b.render(name, body, r, tail)
 	b.cache[key] = im
 	return im
 }
@@ -112,11 +129,15 @@ func (b *Bubble) face(size float64, weight float32) *text.GoTextFace {
 	return f
 }
 
-func (b *Bubble) render(name, body string, r int) *ebiten.Image {
+func (b *Bubble) render(name, body string, r int, tail Tail) *ebiten.Image {
 	bodyFace, nameFace := b.face(bubbleBodySize, 400), b.face(bubbleNameSize, 800)
 	body = wrapText(body, bodyFace, bubbleMaxText)
 	textW, textH := text.Measure(body, bodyFace, bubbleSpacing)
 	textTop, textLeft := bubblePadTop, bubblePadX
+	var top float64 // the body's offset below the image top, where an upward tail sits
+	if tail.Up {
+		top = bubbleTailH
+	}
 	if name != "" {
 		nameW, _ := text.Measure(name, nameFace, bubbleNameSize*1.45)
 		textW = max(textW, nameW)
@@ -130,13 +151,15 @@ func (b *Bubble) render(name, body string, r int) *ebiten.Image {
 	if name == "" { // a mark or dots sits in the middle
 		textLeft = (w - textW) / 2
 	}
+	textTop += top
+	tipX := tail.tipX(w)
 	iw, ih := int(w+0.999), int(h+bubbleTailH+0.999)
 	im := ebiten.NewImage(iw*r, ih*r)
 	if r == 1 {
-		b.draw(im, 0, 0, w, h)
+		b.draw(im, 0, top, w, h, tipX, tail.Up)
 	} else {
 		frame := ebiten.NewImage(iw, ih)
-		b.draw(frame, 0, 0, w, h)
+		b.draw(frame, 0, top, w, h, tipX, tail.Up)
 		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
 		op.GeoM.Scale(float64(r), float64(r))
 		im.DrawImage(frame, op)
@@ -147,7 +170,7 @@ func (b *Bubble) render(name, body string, r int) *ebiten.Image {
 	ink := color.NRGBA{40, 37, 34, 255}
 	if name != "" {
 		op := &text.DrawOptions{}
-		op.GeoM.Translate(bubblePadX*k, bubblePadTop*k)
+		op.GeoM.Translate(bubblePadX*k, (bubblePadTop+top)*k)
 		op.ColorScale.ScaleWithColor(ink)
 		text.Draw(im, name, nameFace, op)
 	}
@@ -199,7 +222,16 @@ func (b *Bubble) piece(dst *ebiten.Image, name string, x, y, w, h float64) {
 	dst.DrawImage(im, op)
 }
 
-func (b *Bubble) draw(dst *ebiten.Image, x, y, w, h float64) {
+func (b *Bubble) pieceFlipped(dst *ebiten.Image, name string, x, y, w, h float64) {
+	im := b.pieces[name]
+	bounds := im.Bounds()
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Scale(w/float64(bounds.Dx()), -h/float64(bounds.Dy()))
+	op.GeoM.Translate(x, y+h)
+	dst.DrawImage(im, op)
+}
+
+func (b *Bubble) draw(dst *ebiten.Image, x, y, w, h, tipX float64, up bool) {
 	const c = 16.0
 	b.piece(dst, "center", x+c, y+c, w-2*c, h-2*c)
 	b.piece(dst, "top", x+c, y, w-2*c, c)
@@ -210,6 +242,10 @@ func (b *Bubble) draw(dst *ebiten.Image, x, y, w, h float64) {
 	b.piece(dst, "top-right", x+w-c, y, c, c)
 	b.piece(dst, "bottom-left", x, y+h-c, c, c)
 	b.piece(dst, "bottom-right", x+w-c, y+h-c, c, c)
-	// The tail replaces the border directly beside the lower-left corner.
-	b.piece(dst, "tail", x+c, y+h-2, 24, 20)
+	// The tail replaces the border where the tip points at the speaker.
+	if up {
+		b.pieceFlipped(dst, "tail", x+tipX-tailHalf, y-bubbleTailH+2, 2*tailHalf, bubbleTailH)
+		return
+	}
+	b.piece(dst, "tail", x+tipX-tailHalf, y+h-2, 2*tailHalf, bubbleTailH)
 }

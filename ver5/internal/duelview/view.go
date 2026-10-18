@@ -397,14 +397,15 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 }
 
 // bubbleTop places a bubble of height h above the head at headY. Near the top edge it moves
-// below the feet instead of being pushed down over the fighter.
-func bubbleTop(headY, footY, h float64) float64 {
+// below the feet instead of being pushed down over the fighter; below reports that, and the
+// bubble then points up at the fighter.
+func bubbleTop(headY, footY, h float64) (top float64, below bool) {
 	const margin, bottomLimit = 12, 610
-	top := headY - h
+	top = headY - h
 	if top < margin {
-		top = footY + 18
+		top, below = footY+6, true
 	}
-	return max(margin, min(bottomLimit-h, top))
+	return max(margin, min(bottomLimit-h, top)), below
 }
 
 // drawBubbles draws the fighters' speech bubbles; sc is device pixels per canvas pixel and
@@ -422,12 +423,15 @@ func (g *View) drawBubbles(dst *ebiten.Image, s duel.State, sc, alpha float64, s
 		k := max(1, g.BubbleScale)
 		w, h := g.Bubble.Size(g.Fighters[i].Name, a.Speech)
 		w, h = w*k, h*k
-		x = max(12, min(float64(g.cw)-w-12, x-28))
-		y := bubbleTop(headY-g.oy, footY-g.oy, h) + g.oy
+		fx := x
+		x = max(12, min(float64(g.cw)-w-12, x-28*k))
+		y, below := bubbleTop(headY-g.oy, footY-g.oy, h)
+		y += g.oy
+		tail := Tail{X: (fx - x) / k, Up: below}
 		if sharp {
-			g.Bubble.DrawSharp(dst, g.Fighters[i].Name, a.Speech, x*sc, y*sc, sc*k, alpha)
+			g.Bubble.DrawSharp(dst, g.Fighters[i].Name, a.Speech, tail, x*sc, y*sc, sc*k, alpha)
 		} else {
-			g.Bubble.DrawText(dst, g.Fighters[i].Name, a.Speech, x/k, y/k, k) // DrawText scales its position too
+			g.Bubble.DrawText(dst, g.Fighters[i].Name, a.Speech, tail, x/k, y/k, k) // DrawText scales its position too
 		}
 	}
 }

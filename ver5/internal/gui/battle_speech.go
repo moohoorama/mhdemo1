@@ -5,6 +5,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/content"
+	"srpg/internal/duelview"
 )
 
 type battleBubble struct{ actor, name, text string }
@@ -40,7 +41,7 @@ func (g *Game) drawBattleSpeech(dst *ebiten.Image) {
 		x, y := g.field.Center(u.u, u.v)
 		x, y = worldToUI(g.toScreen(x, y-u.lift-u.top))
 		bw, bh := g.assets.Bubble.Size(bubble.name, bubble.text)
-		k := 1 / smallScreen()
+		k := 2.0 / 3 / smallScreen()
 		w, h := int(bw*k), int(bh*k)
 		px, py := max(16, min(uiW-w-16, int(x)-32)), max(62, min(uiH-h-190, int(y)-h-10))
 		r := image.Rect(px, py, px+w, py+h)
@@ -56,6 +57,6 @@ func (g *Game) drawBattleSpeech(dst *ebiten.Image) {
 		}
 
 		placed = append(placed, r)
-		g.assets.Bubble.DrawSharp(dst, bubble.name, bubble.text, float64(px)*drawPx, float64(py)*drawPx, drawPx*k, 1)
+		g.assets.Bubble.DrawSharp(dst, bubble.name, bubble.text, duelview.Tail{}, float64(px)*drawPx, float64(py)*drawPx, drawPx*k, 1)
 	}
 }

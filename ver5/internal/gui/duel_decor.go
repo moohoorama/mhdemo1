@@ -71,9 +71,9 @@ func (g *Game) drawDuelCards(dst *ebiten.Image, v *duelview.View) {
 }
 
 func (g *Game) duelCard(dst *ebiten.Image, f duelview.Fighter, side, x, y, cw, ch int, s float64) {
-	tag, c := "아군 장수", good
+	c := good
 	if side == 1 {
-		tag, c = "적군 장수", bad
+		c = bad
 	}
 	rect(dst, float32(x), float32(y), float32(cw), float32(ch), trough)
 	rect(dst, float32(x), float32(y), 3, float32(ch), c)
@@ -82,6 +82,5 @@ func (g *Game) duelCard(dst *ebiten.Image, f duelview.Fighter, side, x, y, cw, c
 		strokeRect(dst, float32(x+7), float32(y+7), float32(ch-14), float32(ch-14), 1, goldDim)
 	}
 	tx := float64(x + ch + 4)
-	g.label(dst, tag, tx, float64(y)+18*s, 14*s, c)
-	write(dst, f.Name, g.serif(32*s, 800), tx, float64(y)+46*s, ink)
+	write(dst, f.Name, g.serif(32*s, 800), tx, float64(y)+float64(ch)/2+11*s, ink)
 }
