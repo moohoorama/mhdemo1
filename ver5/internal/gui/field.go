@@ -303,11 +303,11 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 				if !f.Map.Deformed {
 					break // scenario stages keep the big trees
 				}
-				s := f.A.Props["forest_"+string(rune('0'+(u*7+v*3)%4))].Sprite // pines at the characters' scale
+				s := f.A.Props["forest_"+string(rune('0'+(u*7+v*3)%4))].Sprite // pines at the characters' scale, drawn after a unit on the cell so it stands among the trees
 				cx, cy := x*K, y*K
 				b := s.Image.Bounds()
 				rx, ry := int(math.Round(cx-s.PivotX)), int(math.Round(cy-s.PivotY))
-				items = append(items, drawItem{y: cy - .1, draw: func() { f.blit(c, s, cx, cy, nil) }, rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy())})
+				items = append(items, drawItem{y: cy + .1, draw: func() { f.blit(c, s, cx, cy, nil) }, rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy())})
 			case 'c', 'h':
 				s := f.A.Structures[blockSprite(f, u, v)]
 				items = append(items, drawItem{y: y * K, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: f.mapRect(s, x, y)})

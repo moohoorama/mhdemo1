@@ -83,7 +83,7 @@ func (f *Field) nativeObjects(items *[]drawItem) {
 			}
 			s := f.A.Props[fmt.Sprintf("forest_%d", ((x*7+y*3)%4+4)%4)].Sprite
 			px, py := f.Center(float64(x), float64(y))
-			*items = append(*items, drawItem{y: py - .1, rect: f.mapRect(s, px/K, py/K), draw: func() { f.blit(f.Canvas, s, px, py, nil) }})
+			*items = append(*items, drawItem{y: py + .1, rect: f.mapRect(s, px/K, py/K), draw: func() { f.blit(f.Canvas, s, px, py, nil) }})
 		}
 	}
 }

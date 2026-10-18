@@ -435,7 +435,7 @@
   "catapult": {
    "Name": "발석거",
    "Desc": "돌을 포물선으로 멀리 던져 떨어진 자리 주변까지 친다. 이동이 느리다.",
-   "Terrain": "archer",
+   "Terrain": "machine",
    "Attack": "ranged",
    "Weapon": "bow",
    "Armor": "armor",

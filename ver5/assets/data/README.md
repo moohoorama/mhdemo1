@@ -8,7 +8,7 @@ Scenes live in `assets/scenes.json`, not here.
 | File | Section |
 |---|---|
 | `game.json` | Title, Version, Rules, Campaign, Factions (3 shades: light, mid, dark), Tiles legend |
-| `terrain.json` | Terrain tables per movement group: `cavalry infantry archer scholar bandit` |
+| `terrain.json` | Terrain tables per movement group: `cavalry infantry archer machine scholar bandit` (`machine` = catapult) |
 | `classes.json` | Classes (Tier/Promotes chain, Grants = given traits, Pool = learnable traits of that tier, Skills = given skills) |
 | `characters.json` | Officers and `Template: true` soldier templates (`troop_*`) |
 | `traits.json`, `skills.json` | Trait effects (vocab.go keys) and skills; spells and special moves open through `Requires` traits |
