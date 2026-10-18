@@ -232,12 +232,34 @@ type Action struct {
 	Spawns  []Spawn        `json:",omitempty"`
 	Targets []string       `json:",omitempty"`
 	Flags   map[string]int `json:",omitempty"`
+	Stat    string         `json:",omitempty"` // buff: attack, defense, mind, morale, agility (percent) or speed, range (cells)
+	Value   int            `json:",omitempty"` // buff: how much, negative for a debuff
+	Moves   []Move         `json:",omitempty"` // move: who goes where, all at once
+	Steps   [][]Step       `json:",omitempty"` // cutscene: groups of steps; a group's steps run together, the next group waits for them
+	Duel    string         `json:",omitempty"` // duel: the stage duel to hold now, wherever its officers stand
 	Area    int            `json:",omitempty"` // terrain: the area whose cells change
 	Tile    string         `json:",omitempty"` // terrain: the tile they become
 	Turns   int            `json:",omitempty"` // terrain: for how many rounds; none is for good
 	Policy  string         `json:",omitempty"` // ai: the new policy of the Targets
 	Goal    *Point         `json:",omitempty"` // ai: its goal cell, for march and flee
 }
+
+// Move sends a unit (or each unit of a group, to cells around To) somewhere, ignoring move range and terrain cost.
+type Move struct {
+	Unit string
+	To   Point
+}
+
+// Step is one thing that happens in a cutscene: Unit moves to To (a group fills the cells around it),
+// plays Motion (attack, hit, block, exhausted), turns to Facing, says Text, or the scene waits Seconds.
+type Step struct {
+	Kind, Unit, Motion, Facing, Text string
+	To                               *Point  `json:",omitempty"`
+	Seconds                          float64 `json:",omitempty"`
+}
+
+// BuffStats are the stats a buff can change; speed and range count cells, the rest percent.
+var BuffStats = []string{"attack", "defense", "mind", "morale", "agility", "speed", "range"}
 
 // Policies are the behaviours an AI-driven unit can be given: hold stands its ground and strikes what
 // comes within reach, assault always advances, march goes for a cell fighting what it meets, and

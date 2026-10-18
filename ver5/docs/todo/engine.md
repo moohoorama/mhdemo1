@@ -40,19 +40,15 @@ v1이 쓰는 플래그: 서복 생존, 거록 완승, 제갈현 생존, 서주 �
 
 ### 2.2 전투 이벤트와 트리거
 
-구현됨: `If`/`Do` 형식, `Repeat`, 검사 시점(`settle()`마다, 최대 8번 연쇄), 조건 `round` `turnstart` `defeated` `alldefeated` `alive` `at` `allat` `adjacent` `hp` `duel` `flag` `choice` `won` `any`/`!`, 동작 `say` `spawn`(`Side`·`Group`) `remove` `flag`, 구역 `Areas`. 동작과 형식은 [logic-battle-event.md](../logic-battle-event.md) 5절과 [data-scenario-node.md](../data-scenario-node.md) 6~7절이 기준이다.
+구현됨: `If`/`Do` 형식, `Repeat`, 검사 시점(`settle()`마다, 최대 8번 연쇄), 조건 `round` `turnstart` `defeated` `alldefeated` `alive` `at` `allat` `adjacent` `hp` `duel` `flag` `choice` `won` `any`/`!`, 동작 `say` `spawn`(`Side`·`Group`) `join` `remove` `ai` `terrain` `buff` `move` `cutscene` `duel` `flag`, 구역 `Areas`. 동작과 형식은 [logic-battle-event.md](../logic-battle-event.md) 5절과 [data-scenario-node.md](../data-scenario-node.md) 6~7절이 기준이다.
 
 아직 없는 동작:
 
 | Kind | 효과 | 쓰는 곳 |
 |---|---|---|
-| `join` | 조작 가능한 아군 편입 | 9·18의 조운 |
-| `move` | 연출 이동(경로 비용 무시, 여러 부대 동시) | 3의 합류, 9의 백마의종 |
 | `defect` | 진영 전환 | 15의 송헌·후성 |
-| `buff` | 버프·디버프 `Stat`, `Pct`, `Turns`(0=전투 끝까지) | 3의 손견군(HP 60%·이동력 저하) |
 | `stall` | N턴 행동 불가 | 20의 허저 |
 | `objective` | 승패 조건 교체, 표시 문구 변경 | 17의 2단계 |
-| `cutscene` | 단계 목록(`move`(동시 여럿) `play`(병종 동작) `face` `say` `wait`). 그룹 단위로 동시 시작, 그룹이 끝나야 다음 그룹. HP·MP는 바뀌지 않고 끝 위치만 남는다 | 9의 오프닝, 14의 하후돈 |
 | `win` / `lose` | 즉시 확정 | — |
 
 ### 2.3 승패와 부목표

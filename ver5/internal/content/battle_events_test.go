@@ -252,3 +252,66 @@ func TestLoadChecksTerrainActions(t *testing.T) {
 		t.Run(name, func(t *testing.T) { assert.Error(t, loadWithStage(t, setup(do))) })
 	}
 }
+
+func TestLoadChecksSceneActions(t *testing.T) {
+	spawn := func(extra ...any) map[string]any {
+		return obj(append([]any{"Character", "sage", "X", 2, "Y", 2}, extra...)...)
+	}
+	event := func(do ...any) func(map[string]any) {
+		return func(st map[string]any) { st["Events"] = objs(obj("ID", "e", "Do", do)) }
+	}
+	act := func(kv ...any) map[string]any { return obj(kv...) }
+	step := func(kv ...any) map[string]any { return obj(kv...) }
+	at := obj("X", 3, "Y", 3)
+	good := event(
+		act("Kind", "buff", "Targets", objs("boss"), "Stat", "speed", "Value", -2),
+		act("Kind", "buff", "Targets", objs("ally"), "Stat", "attack", "Value", 20, "Turns", 4),
+		act("Kind", "join", "Spawns", objs(spawn())),
+		act("Kind", "move", "Moves", objs(obj("Unit", "boss", "To", at), obj("Unit", "hero", "To", at))),
+		act("Kind", "duel", "Duel", "none-needed"),
+	)
+	assert.Error(t, loadWithStage(t, good), "the stage has no such duel")
+	assert.NoError(t, loadWithStage(t, event(
+		act("Kind", "buff", "Targets", objs("boss"), "Stat", "speed", "Value", -2),
+		act("Kind", "join", "Spawns", objs(spawn())),
+		act("Kind", "move", "Moves", objs(obj("Unit", "boss", "To", at))),
+		act("Kind", "cutscene", "Steps", objs(
+			objs(step("Kind", "move", "Unit", "boss", "To", at), step("Kind", "play", "Unit", "hero", "Motion", "attack")),
+			objs(step("Kind", "say", "Unit", "hero", "Text", "간다"), step("Kind", "face", "Unit", "boss", "Facing", "NE")),
+			objs(step("Kind", "wait", "Seconds", 1.5)))))))
+	bad := map[string]func(map[string]any){
+		"buff unknown stat":    event(act("Kind", "buff", "Targets", objs("boss"), "Stat", "luck", "Value", 5)),
+		"buff no value":        event(act("Kind", "buff", "Targets", objs("boss"), "Stat", "attack")),
+		"buff huge value":      event(act("Kind", "buff", "Targets", objs("boss"), "Stat", "attack", "Value", 500)),
+		"buff negative turns":  event(act("Kind", "buff", "Targets", objs("boss"), "Stat", "attack", "Value", 5, "Turns", -1)),
+		"buff unknown target":  event(act("Kind", "buff", "Targets", objs("ghost"), "Stat", "attack", "Value", 5)),
+		"buff no target":       event(act("Kind", "buff", "Stat", "attack", "Value", 5)),
+		"join nobody":          event(act("Kind", "join")),
+		"join an enemy":        event(act("Kind", "join", "Spawns", objs(spawn("Character", "boss")))),
+		"join the lord":        event(act("Kind", "join", "Spawns", objs(spawn("Character", "hero")))),
+		"join as AI":           event(act("Kind", "join", "Spawns", objs(spawn("AI", true)))),
+		"join with a policy":   event(act("Kind", "join", "Spawns", objs(spawn("Policy", "hold")))),
+		"join off the map":     event(act("Kind", "join", "Spawns", objs(spawn("X", 99)))),
+		"join twice":           event(act("Kind", "join", "Spawns", objs(spawn(), spawn("X", 3)))),
+		"move nobody":          event(act("Kind", "move")),
+		"move unknown unit":    event(act("Kind", "move", "Moves", objs(obj("Unit", "ghost", "To", at)))),
+		"move off the map":     event(act("Kind", "move", "Moves", objs(obj("Unit", "boss", "To", obj("X", 99, "Y", 0))))),
+		"empty cutscene":       event(act("Kind", "cutscene")),
+		"empty group":          event(act("Kind", "cutscene", "Steps", objs(objs()))),
+		"step unknown kind":    event(act("Kind", "cutscene", "Steps", objs(objs(step("Kind", "dance", "Unit", "boss"))))),
+		"step unknown unit":    event(act("Kind", "cutscene", "Steps", objs(objs(step("Kind", "face", "Unit", "ghost", "Facing", "NE"))))),
+		"step move no cell":    event(act("Kind", "cutscene", "Steps", objs(objs(step("Kind", "move", "Unit", "boss"))))),
+		"step play no motion":  event(act("Kind", "cutscene", "Steps", objs(objs(step("Kind", "play", "Unit", "boss", "Motion", "dance"))))),
+		"step face bad dir":    event(act("Kind", "cutscene", "Steps", objs(objs(step("Kind", "face", "Unit", "boss", "Facing", "N"))))),
+		"step say no text":     event(act("Kind", "cutscene", "Steps", objs(objs(step("Kind", "say", "Unit", "boss"))))),
+		"step wait no seconds": event(act("Kind", "cutscene", "Steps", objs(objs(step("Kind", "wait"))))),
+		"duel unknown":         event(act("Kind", "duel", "Duel", "nope")),
+		"repeat join": func(st map[string]any) {
+			event(act("Kind", "join", "Spawns", objs(spawn())))(st)
+			st["Events"].([]any)[0].(map[string]any)["Repeat"] = true
+		},
+	}
+	for name, edit := range bad {
+		t.Run(name, func(t *testing.T) { assert.Error(t, loadWithStage(t, edit)) })
+	}
+}

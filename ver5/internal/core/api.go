@@ -375,7 +375,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 			return nil, fail("CorruptSave")
 		}
 		for id, v := range u.Status {
-			if !content.Statuses[id] || v.Turns < 1 || v.Turns > 10 || abs(v.Value) > 100 || (v.Source != "" && !ids[v.Source] && e.unit(v.Source) == nil) {
+			if !content.Statuses[id] || v.Turns < 1 || v.Turns > 99 || abs(v.Value) > 100 || (v.Source != "" && !ids[v.Source] && e.unit(v.Source) == nil) {
 				return nil, fail("CorruptSave")
 			}
 		}

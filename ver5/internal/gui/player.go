@@ -273,13 +273,7 @@ func (g *Game) perform(a *replay.Action) []beat {
 	for _, s := range steps {
 		c, events := s.Command, s.Events
 		actor := g.unitAt(c.Actor)
-		kind := c.Kind
-		for _, e := range events {
-			if e.Kind == "duel" { // an attack that set off a stage duel shows the duel instead
-				kind = "duel"
-			}
-		}
-		switch kind {
+		switch c.Kind {
 		case "move":
 			for _, e := range events {
 				if e.Kind != "move" || actor == nil {
@@ -341,15 +335,6 @@ func (g *Game) perform(a *replay.Action) []beat {
 			})
 		case "learn":
 			add(.6, func() { g.say(actor, "학습: "+g.traitName(c.Trait)) })
-		case "duel":
-			for _, e := range events {
-				if e.Kind == "duel" {
-					view := g.duelView(e)
-					add(view.Length()+cutInLength(view), func() { g.player.Duel = view })
-				}
-			}
-			ev := events
-			add(blinkTime, func() { g.player.Duel = nil; g.strike(nil, ev) })
 		case "end":
 			ev := events
 			add(0, func() { g.strike(nil, ev) })
@@ -362,8 +347,29 @@ func (g *Game) perform(a *replay.Action) []beat {
 		default:
 			add(.1, func() {})
 		}
+		// forced moves (an event action) walk together, and a cutscene plays its groups of steps
+		var walks []timedFn
+		for _, e := range events {
+			if e.Kind == "move" && (c.Kind != "move" || e.Actor != c.Actor) {
+				walks = append(walks, g.walkTimeline(e.Actor, e.Path, 0)...)
+			}
+		}
+		if len(walks) > 0 {
+			addTimeline(add, walks, timelineEnd(walks))
+		}
+		for _, e := range events {
+			if e.Kind == "duel" { // a stage duel: its meeting is shown after whatever brought the two together
+				view := g.duelView(e)
+				ev := events
+				add(view.Length()+cutInLength(view), func() { g.player.Duel = view })
+				add(blinkTime, func() { g.player.Duel = nil; g.strike(nil, ev) })
+			}
+		}
 		for _, e := range events {
 			switch e.Kind {
+			case "cutscene":
+				entries, total := g.cutsceneTimeline(e.Cutscene)
+				addTimeline(add, entries, total)
 			case "unit-arrival":
 				event := e
 				add(.15, func() {

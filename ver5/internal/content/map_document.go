@@ -167,6 +167,15 @@ func (d *MapDocument) Compile() Stage {
 				shift(st.Events[i].Do[j].Spawns[k].Goal)
 			}
 			shift(st.Events[i].Do[j].Goal)
+			for k := range st.Events[i].Do[j].Moves {
+				st.Events[i].Do[j].Moves[k].To.X -= d.Play.X
+				st.Events[i].Do[j].Moves[k].To.Y -= d.Play.Y
+			}
+			for _, group := range st.Events[i].Do[j].Steps {
+				for k := range group {
+					shift(group[k].To)
+				}
+			}
 		}
 	}
 	for i := range st.Areas {

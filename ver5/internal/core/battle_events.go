@@ -49,7 +49,7 @@ func (e *Engine) fireEvent(stage content.Stage, ev content.BattleEvent) bool {
 func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 	var spawns []content.Spawn
 	for _, a := range ev.Do {
-		if a.Kind == "spawn" {
+		if a.Kind == "spawn" || a.Kind == "join" {
 			spawns = append(spawns, a.Spawns...)
 		}
 	}
@@ -71,6 +71,48 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 				u := e.spawn(sp.Character, sp.Character, side, p.X, p.Y, sp)
 				snapshot := copyOf(*u)
 				e.events = append(e.events, Event{Kind: "unit-arrival", Actor: u.ID, Unit: &snapshot})
+			}
+		case "join":
+			for _, sp := range a.Spawns {
+				p := placements[next]
+				next++
+				if o := e.char(sp.Character); e.unit(sp.Character) != nil || o != nil && o.Dead {
+					continue // already on the map, or fallen
+				}
+				u := e.spawn(sp.Character, sp.Character, "ally", p.X, p.Y, sp)
+				snapshot := copyOf(*u)
+				e.events = append(e.events, Event{Kind: "unit-arrival", Actor: u.ID, Unit: &snapshot})
+			}
+		case "buff":
+			turns := a.Turns
+			if turns == 0 {
+				turns = 99 // for the rest of the battle
+			}
+			for _, t := range a.Targets {
+				for _, u := range e.matching(t) {
+					if u.HP > 0 {
+						e.applyStatus(u, a.Stat, turns, a.Value)
+					}
+				}
+			}
+		case "move":
+			for _, mv := range a.Moves {
+				for _, u := range e.matching(mv.Unit) {
+					if path := e.shift(u, mv.To); path != nil {
+						e.events = append(e.events, Event{Kind: "move", Actor: u.ID, Path: path})
+					}
+				}
+			}
+		case "cutscene":
+			e.playCutscene(a.Steps)
+		case "duel":
+			for _, d := range stage.Duels {
+				if d.ID != a.Duel || e.state.Executed["duel-"+d.ID] {
+					continue
+				}
+				if x, y := e.unit(d.Ally), e.unit(d.Enemy); x != nil && y != nil && x.HP > 0 && y.HP > 0 && x.Faction != y.Faction {
+					e.duel(x, y, d)
+				}
 			}
 		case "say":
 			speech := []content.Speech{}
@@ -200,4 +242,80 @@ func (e *Engine) ageTerrain() {
 		kept = append(kept, o)
 	}
 	e.state.TileOverrides = kept
+}
+
+// shift puts the unit on the free cell nearest to a point, whatever its move range or the cost of the
+// ground between; it returns the cells it passes through (a straight walk), or nil if it cannot stand anywhere.
+func (e *Engine) shift(u *Unit, to content.Point) []content.Point {
+	stage := e.data.Stages[e.state.Stage]
+	best, score := content.Point{X: -1, Y: -1}, stage.Width+stage.Height+1
+	for y := 0; y < stage.Height; y++ {
+		for x := 0; x < stage.Width; x++ {
+			if o := e.occupied(x, y); (o != nil && o != u) || e.terrain(u, x, y).Cost <= 0 {
+				continue
+			}
+			if n := dist(x, y, to.X, to.Y); n < score {
+				best, score = content.Point{X: x, Y: y}, n
+			}
+		}
+	}
+	if best.X < 0 {
+		return nil
+	}
+	path := straightPath(content.Point{X: u.X, Y: u.Y}, best)
+	u.X, u.Y = best.X, best.Y
+	return path
+}
+
+// straightPath lists the cells from one point to another, along x first and then y, both ends included.
+func straightPath(from, to content.Point) []content.Point {
+	path := []content.Point{from}
+	for from.X != to.X {
+		from.X += sign(to.X - from.X)
+		path = append(path, from)
+	}
+	for from.Y != to.Y {
+		from.Y += sign(to.Y - from.Y)
+		path = append(path, from)
+	}
+	return path
+}
+
+// playCutscene applies a cutscene's end state (positions and facings; hit points and the rest stay
+// as they are) and sends the replay what it came to, step by step. Steps about units that are not on
+// the field are left out.
+func (e *Engine) playCutscene(groups [][]content.Step) {
+	var out [][]CutStep
+	for _, group := range groups {
+		var steps []CutStep
+		for _, st := range group {
+			for _, u := range e.matching(st.Unit) {
+				if u.HP <= 0 && st.Kind != "wait" {
+					continue
+				}
+				switch st.Kind {
+				case "move":
+					if path := e.shift(u, *st.To); path != nil {
+						steps = append(steps, CutStep{Kind: "move", Unit: u.ID, Path: path})
+					}
+				case "play":
+					steps = append(steps, CutStep{Kind: "play", Unit: u.ID, Motion: st.Motion, Seconds: st.Seconds})
+				case "face":
+					u.Facing = st.Facing
+					steps = append(steps, CutStep{Kind: "face", Unit: u.ID, Facing: st.Facing})
+				case "say":
+					steps = append(steps, CutStep{Kind: "say", Unit: u.ID, Text: st.Text})
+				}
+			}
+			if st.Kind == "wait" {
+				steps = append(steps, CutStep{Kind: "wait", Seconds: st.Seconds})
+			}
+		}
+		if len(steps) > 0 {
+			out = append(out, steps)
+		}
+	}
+	if len(out) > 0 {
+		e.events = append(e.events, Event{Kind: "cutscene", Cutscene: out})
+	}
 }

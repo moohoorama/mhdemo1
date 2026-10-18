@@ -22,8 +22,12 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 			targets[id] = true
 		}
 	}
+	placed := map[string]bool{} // named officers some spawn puts on the map
 	note := func(sp Spawn) {
 		actors[sp.Character] = true
+		if !d.Characters[sp.Character].Template {
+			placed[sp.Character] = true
+		}
 		if !d.Characters[sp.Character].Template {
 			targets[sp.Character] = true
 		}
@@ -51,6 +55,21 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 		ids[event.ID] = true
 		for _, a := range event.Do {
 			switch a.Kind {
+			case "join":
+				if event.Repeat || len(a.Spawns) == 0 {
+					return nil, fmt.Errorf("battle event %s: join without officers", event.ID)
+				}
+				for _, sp := range a.Spawns {
+					c := d.Characters[sp.Character]
+					if err := d.ValidateSpawn(sp); err != nil {
+						return nil, err
+					}
+					if !c.Playable || c.Lord || c.Template || sp.AI || sp.Side != "" || sp.Policy != "" || sp.X < 0 || sp.Y < 0 || sp.X >= s.Width || sp.Y >= s.Height || placed[sp.Character] {
+						return nil, fmt.Errorf("battle event %s: join %s", event.ID, sp.Character)
+					}
+					allies[sp.Character] = true
+					note(sp)
+				}
 			case "spawn":
 				if event.Repeat || len(a.Spawns) == 0 {
 					return nil, fmt.Errorf("battle event %s: spawn without units", event.ID)
@@ -87,6 +106,27 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 				if _, ok := d.Tiles[a.Tile]; !ok || !areas[a.Area] || a.Turns < 0 {
 					return nil, fmt.Errorf("battle event %s: terrain action", event.ID)
 				}
+			case "buff":
+				if !contains(BuffStats, a.Stat) || a.Value == 0 || a.Value < -100 || a.Value > 100 || a.Turns < 0 || a.Turns > 99 || len(a.Targets) == 0 {
+					return nil, fmt.Errorf("battle event %s: buff action", event.ID)
+				}
+			case "move":
+				if len(a.Moves) == 0 {
+					return nil, fmt.Errorf("battle event %s: move without units", event.ID)
+				}
+				for _, mv := range a.Moves {
+					if mv.To.X < 0 || mv.To.Y < 0 || mv.To.X >= s.Width || mv.To.Y >= s.Height {
+						return nil, fmt.Errorf("battle event %s: move %s off the map", event.ID, mv.Unit)
+					}
+				}
+			case "cutscene":
+				if len(a.Steps) == 0 {
+					return nil, fmt.Errorf("battle event %s: empty cutscene", event.ID)
+				}
+			case "duel":
+				if !duels[a.Duel] {
+					return nil, fmt.Errorf("battle event %s: no duel %q", event.ID, a.Duel)
+				}
 			case "say", "remove", "flag":
 			default:
 				return nil, fmt.Errorf("battle event %s: action %q", event.ID, a.Kind)
@@ -116,7 +156,17 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 					}
 					seen[line.Actor] = true
 				}
-			case "remove", "ai":
+			case "move":
+				for _, mv := range a.Moves {
+					if !refs.targets[mv.Unit] {
+						return nil, fmt.Errorf("battle event %s: move %s", event.ID, mv.Unit)
+					}
+				}
+			case "cutscene":
+				if err := validateCutscene(s, event.ID, a.Steps, refs); err != nil {
+					return nil, err
+				}
+			case "remove", "ai", "buff":
 				if len(a.Targets) == 0 {
 					return nil, fmt.Errorf("battle event %s: %s without targets", event.ID, a.Kind)
 				}
@@ -188,6 +238,36 @@ func (d *Data) validateObjectives(s Stage, refs *battleRefs) error {
 		for item, n := range o.Reward {
 			if _, ok := d.Items[item]; !ok || n < 1 {
 				return fmt.Errorf("stage %s: objective %s reward %s", s.ID, o.ID, item)
+			}
+		}
+	}
+	return nil
+}
+
+// validateCutscene checks a cutscene's steps: who they name, where they go and how long they wait.
+func validateCutscene(s Stage, event string, groups [][]Step, refs *battleRefs) error {
+	for _, group := range groups {
+		if len(group) == 0 {
+			return fmt.Errorf("battle event %s: empty cutscene group", event)
+		}
+		for _, st := range group {
+			ok := true
+			switch st.Kind {
+			case "move":
+				ok = refs.targets[st.Unit] && st.To != nil && st.To.X >= 0 && st.To.Y >= 0 && st.To.X < s.Width && st.To.Y < s.Height
+			case "play":
+				ok = refs.targets[st.Unit] && contains([]string{"attack", "hit", "block", "exhausted", "idle"}, st.Motion)
+			case "face":
+				ok = refs.targets[st.Unit] && in(st.Facing, "NE", "SE", "SW", "NW")
+			case "say":
+				ok = refs.targets[st.Unit] && st.Text != ""
+			case "wait":
+				ok = st.Seconds > 0 && st.Seconds <= 30
+			default:
+				ok = false
+			}
+			if !ok {
+				return fmt.Errorf("battle event %s: cutscene step %q %q", event, st.Kind, st.Unit)
 			}
 		}
 	}

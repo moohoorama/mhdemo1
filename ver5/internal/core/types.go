@@ -63,6 +63,15 @@ type State struct {
 	Learning                          []string          // characters whose learning window is open, in order
 	Checkpoint                        *State            `json:",omitempty"`
 }
+
+// CutStep is one step of a played cutscene as the replay shows it: a move comes with the cells
+// walked, and a group of units has been told apart into one step per unit.
+type CutStep struct {
+	Kind, Unit, Motion, Facing, Text string
+	Path                             []content.Point `json:",omitempty"`
+	Seconds                          float64         `json:",omitempty"`
+}
+
 // TileOverride makes a stage cell another tile (fire on grass) until it runs out.
 type TileOverride struct {
 	X, Y  int
@@ -103,6 +112,7 @@ type Command struct {
 }
 type Event struct {
 	Speech                    []content.Speech `json:",omitempty"`
+	Cutscene                  [][]CutStep      `json:",omitempty"` // cutscene: what the groups of steps came to, for the replay
 	Unit                      *Unit            `json:",omitempty"`
 	DuelID                    string           `json:",omitempty"`
 	Outcome                   string           `json:",omitempty"`

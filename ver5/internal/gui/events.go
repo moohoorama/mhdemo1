@@ -25,7 +25,7 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		return a + " 요극 발동", false
 	case "followup-start":
 		return fmt.Sprintf("%s → %s: 요극 추가 공격", a, t), false
-	case "followup-end":
+	case "followup-end", "cutscene", "terrain":
 		return "", false
 	case "turn-limit":
 		return fmt.Sprintf("%d턴 제한 초과: 패배", e.Amount), true
