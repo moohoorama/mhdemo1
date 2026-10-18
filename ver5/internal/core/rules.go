@@ -8,6 +8,7 @@ import (
 
 func clamp(v, lo, hi float64) float64 { return math.Max(lo, math.Min(hi, v)) }
 func dist(x, y, a, b int) int         { return abs(x-a) + abs(y-b) }
+func adjacent(x, y, a, b int) bool    { return abs(x-a) <= 1 && abs(y-b) <= 1 }
 func abs(n int) int {
 	if n < 0 {
 		return -n
@@ -230,6 +231,14 @@ func (e *Engine) weaponType(u *Unit) string {
 	return e.data.Equipment[e.char(u.Character).Equipment["weapon"]].Type
 }
 func (e *Engine) mounted(u *Unit) bool { return contains(e.unitClass(u).Tags, content.TagMounted) }
+
+// shootClass is the class whose look a mounted unit takes when its basic attack shoots from range (FxMountedRange), or "".
+func (e *Engine) shootClass(u *Unit) string {
+	if !e.mounted(u) || e.fx(u, content.FxMountedRange) <= 0 {
+		return ""
+	}
+	return e.unitClass(u).Shoot
+}
 
 // canRange and canMelee tell which attack modes the unit's class and traits allow.
 func (e *Engine) canRange(u *Unit) bool {

@@ -1,6 +1,10 @@
 package core
 
-import "testing"
+import (
+	"testing"
+
+	"srpg/internal/content"
+)
 
 func TestAssistFollowsAnAlliesAttack(t *testing.T) {
 	e, _, _ := arena(t)
@@ -128,5 +132,85 @@ func TestStatusImmunityAndCleanse(t *testing.T) {
 	e.endFaction() // enemy turn starts: cleanse
 	if e.unit("boss").Status["poison"].Turns != 0 {
 		t.Fatal("cleanse")
+	}
+}
+func TestMountedRangeShootsFromBeyondTheEightCells(t *testing.T) {
+	e, _, _ := arena(t)
+	e.char("archer1").Class = "rider"
+	e.char("archer1").Equipment = map[string]string{}
+	u, v := e.unit("archer1"), e.unit("boss")
+	if e.shootClass(u) != "" {
+		t.Fatal("a rider without mounted_range has a shoot look")
+	}
+	with(e, "archer1", "steed")
+	if e.shootClass(u) != "archer" {
+		t.Fatalf("shoot class %q", e.shootClass(u))
+	}
+	for _, uv := range e.Observe().UnitViews {
+		if uv.ID == "archer1" && uv.Shoot != "archer" {
+			t.Fatalf("view shoot %q", uv.Shoot)
+		}
+	}
+	for _, c := range []struct {
+		dx, dy int
+		want   bool
+	}{{1, 0, false}, {1, 1, false}, {2, 0, true}, {2, 1, true}, {0, 2, true}} {
+		u.X, u.Y, v.X, v.Y = 5, 5, 5+c.dx, 5+c.dy
+		if got := e.rangedAttack(u, v, e.basic()); got != c.want {
+			t.Errorf("target at (%d,%d): ranged %v, want %v", c.dx, c.dy, got, c.want)
+		}
+	}
+}
+func TestSweepArcStrikesTheFiveCellsAhead(t *testing.T) {
+	// the front cell and two each side around the attacker: on the screen NE covers NW N NE E SE, E covers N NE E SE S
+	for _, c := range []struct {
+		front string
+		dx    int
+		dy    int
+		arc   []string // compass names of the ring cells that take the share, front excluded
+	}{
+		{"NE", 0, -1, []string{"N", "NW", "E", "SE"}},
+		{"SW", 0, 1, []string{"SE", "S", "W", "NW"}},
+		{"E", 1, -1, []string{"N", "NE", "SE", "S"}},
+	} {
+		t.Run(c.front, func(t *testing.T) {
+			e, hero, boss := arena(t)
+			with(e, "hero", "sweeper")
+			hero.X, hero.Y = 8, 8
+			boss.X, boss.Y = 8+c.dx, 8+c.dy
+			names := map[string]content.Point{"N": {X: -1, Y: -1}, "NE": {Y: -1}, "E": {X: 1, Y: -1}, "SE": {X: 1}, "S": {X: 1, Y: 1}, "SW": {Y: 1}, "W": {X: -1, Y: 1}, "NW": {X: -1}}
+			sp := content.Spawn{Character: "troop", Level: 1}
+			cells := map[string]*Unit{}
+			for name, p := range names {
+				if name != c.front {
+					cells[name] = e.spawn(sp.Character, sp.Character, "enemy", 8+p.X, 8+p.Y, sp)
+				}
+			}
+			out, share := e.victims(hero, boss, e.basic())
+			if share[boss.ID] != 1 || len(out) != 1+len(c.arc) {
+				t.Fatalf("victims %d, target share %v", len(out), share[boss.ID])
+			}
+			for _, name := range c.arc {
+				if share[cells[name].ID] != .5 {
+					t.Errorf("%s of a %s strike: share %v, want .5", name, c.front, share[cells[name].ID])
+				}
+			}
+		})
+	}
+	e, hero, boss := arena(t)
+	with(e, "hero", "sweeper")
+	hero.X, hero.Y, boss.X, boss.Y = 8, 8, 8, 10 // two cells away: no arc, nothing beside the target is hit either
+	beside := e.spawn("troop", "troop", "enemy", 7, 8, content.Spawn{Character: "troop", Level: 1})
+	if _, share := e.victims(hero, boss, e.basic()); share[beside.ID] != 0 {
+		t.Fatal("the arc reached from a distance")
+	}
+}
+func TestEvadeLowersTheHitChanceOfPhysicalAttacks(t *testing.T) {
+	e, hero, boss := arena(t)
+	base := e.hitChance(boss, hero, e.basic())
+	with(e, "hero", "evader")
+	got := e.hitChance(boss, hero, e.basic())
+	if base <= e.data.Rules.HitFloor+15 || got != base-15 {
+		t.Fatalf("hit chance %v -> %v, want %v", base, got, base-15)
 	}
 }

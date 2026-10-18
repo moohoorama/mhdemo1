@@ -49,12 +49,12 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	return out
 }
 
-// rangedAttack tells whether the blow comes from a distance: by an archer's weapon or at range 2 and beyond.
+// rangedAttack tells whether the blow comes from a distance: by an archer's weapon or from beyond the eight cells around the target.
 func (e *Engine) rangedAttack(u, v *Unit, s content.Skill) bool {
 	if s.Mode == content.ModeRanged {
 		return true
 	}
-	return s.Mode == content.ModeAny && (e.unitClass(u).Attack == content.AttackRanged || dist(u.X, u.Y, v.X, v.Y) > 1)
+	return s.Mode == content.ModeAny && (e.unitClass(u).Attack == content.AttackRanged || !adjacent(u.X, u.Y, v.X, v.Y))
 }
 func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 	R := e.data.Rules
@@ -67,7 +67,7 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 		if e.has(v, content.FxRangedImmune) && e.rangedAttack(u, v, s) {
 			return 0
 		}
-		h += curve(e.ratio(e.stats(u).Agility, e.stats(v).Agility), R.HitCurve) - float64(R.BasicAttack.Hit)
+		h += curve(e.ratio(e.stats(u).Agility, e.stats(v).Agility), R.HitCurve) - float64(R.BasicAttack.Hit) - e.fx(v, content.FxEvade)
 		return clamp(h, R.HitFloor, R.HitCeil)
 	case content.KindMagic, content.KindStatus:
 		if e.has(v, content.FxDispel) && e.stats(v).Mind > e.stats(u).Mind {
@@ -294,6 +294,11 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 			}
 		}
 	}
+	if k := e.fx(u, content.FxSweepArc); k > 0 && adjacent(u.X, u.Y, v.X, v.Y) && !e.rangedAttack(u, v, s) {
+		for _, d := range arcAhead(sign(v.X-u.X), sign(v.Y-u.Y)) {
+			add(e.occupied(u.X+d.X, u.Y+d.Y), k)
+		}
+	}
 	k := e.fx(u, content.FxPierce)
 	if s.Pierce > 0 {
 		k = math.Max(k, s.Pierce+e.fx(u, content.FxPierceBoost))
@@ -308,6 +313,23 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 		add(e.occupied(v.X+dx, v.Y+dy), k)
 	}
 	return
+}
+
+// ring is the eight cells around a unit in compass order on the screen: N NE E SE S SW W NW.
+var ring = [8]content.Point{{X: -1, Y: -1}, {Y: -1}, {X: 1, Y: -1}, {X: 1}, {X: 1, Y: 1}, {Y: 1}, {X: -1, Y: 1}, {X: -1}}
+
+// arcAhead is the five cells of the ring ahead of a strike toward (dx, dy): that cell and two to each side of it.
+func arcAhead(dx, dy int) []content.Point {
+	for i, p := range ring {
+		if p.X == dx && p.Y == dy {
+			out := make([]content.Point, 0, 5)
+			for k := -2; k <= 2; k++ {
+				out = append(out, ring[(i+k+8)%8])
+			}
+			return out
+		}
+	}
+	return nil
 }
 
 // targets are the units a skill reaches, by its shape: those of the opposite side for harm, the caster's side for help.

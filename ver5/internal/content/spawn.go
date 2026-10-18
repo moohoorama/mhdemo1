@@ -9,6 +9,34 @@ func (d *Data) ClassFamily(id string) string {
 	}
 	return c.Terrain
 }
+
+// Carries reports whether a class holding the traits can wield the equipment. Weapons and armor must match the
+// class's types; a weapon type may also come from a trait's FxWield.
+func (d *Data) Carries(cl Class, traits []string, eq Equipment) bool {
+	switch eq.Slot {
+	case "weapon":
+		if eq.Type == cl.Weapon {
+			return true
+		}
+		for _, t := range traits {
+			if d.Traits[t].Effects[FxWield+eq.Type] != 0 {
+				return true
+			}
+		}
+		return false
+	case "armor":
+		return eq.Type == cl.Armor
+	}
+	return true
+}
+
+// SpawnTraits are the traits a spawn starts with: its own list, else its character's.
+func (d *Data) SpawnTraits(s Spawn) []string {
+	if s.Traits != nil {
+		return *s.Traits
+	}
+	return d.Characters[s.Character].Traits
+}
 func (d *Data) ValidateSpawn(s Spawn) error {
 	c, ok := d.Characters[s.Character]
 	if !ok {
@@ -42,7 +70,7 @@ func (d *Data) ValidateSpawn(s Spawn) error {
 		cl := d.Classes[class]
 		for _, id := range *s.Equipment {
 			eq, ok := d.Equipment[id]
-			if !ok || slots[eq.Slot] || eq.Slot == "weapon" && eq.Type != cl.Weapon || eq.Slot == "armor" && eq.Type != cl.Armor {
+			if !ok || slots[eq.Slot] || !d.Carries(cl, d.SpawnTraits(s), eq) {
 				return fmt.Errorf("장비 호환/슬롯 오류 %s", id)
 			}
 			slots[eq.Slot] = true

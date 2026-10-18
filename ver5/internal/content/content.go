@@ -88,6 +88,7 @@ type Class struct {
 	Promotes                        []string
 	Tier                            int
 	Sprite                          string
+	Shoot                           string // class whose look a unit takes when FxMountedRange lets it shoot from range
 	Portrait                        string // stands in for officers without a portrait of their own
 	pool                            []string
 }
@@ -104,8 +105,9 @@ func (c *Colors) UnmarshalJSON(b []byte) error {
 
 // Look is how a character is drawn.
 type Look struct {
-	Sprite   string // battle sprite; the class's when empty
-	Scene    string // non-combat sprite for scenes; Sprite when empty
+	Sprite   string            // battle sprite for any class Sprites does not name; the class's when empty
+	Sprites  map[string]string `json:",omitempty"` // class id, or class id:weapon type -> battle sprite while the character serves in that class (with that weapon)
+	Scene    string            // non-combat sprite for scenes; Sprite when empty
 	Portrait string
 	Faction  string
 	Palette  map[string]Colors // tag group -> one base colour or three shades
@@ -161,6 +163,7 @@ type Terrain struct {
 type Point struct{ X, Y int }
 type Spawn struct {
 	AI, Guard         bool      `json:",omitempty"`
+	DuelFirst         bool      `json:",omitempty"` // the AI seeks a pending duel partner before anything else
 	Class, Facing     string    `json:",omitempty"`
 	HP, MP            *int      `json:",omitempty"`
 	Traits, Equipment *[]string `json:",omitempty"`

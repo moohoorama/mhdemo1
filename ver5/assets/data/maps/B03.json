@@ -1229,6 +1229,7 @@
     "X": 25,
     "Y": 4,
     "Guard": true,
+    "DuelFirst": true,
     "Facing": "NW"
    },
    {
@@ -1342,6 +1343,7 @@
       "Y": 7,
       "Level": 1,
       "AI": true,
+      "DuelFirst": true,
       "Faction": "yuan",
       "Facing": "NE"
      },
@@ -1351,6 +1353,7 @@
       "Y": 8,
       "Level": 1,
       "AI": true,
+      "DuelFirst": true,
       "Faction": "yuan",
       "Facing": "NE"
      },

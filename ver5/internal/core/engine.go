@@ -120,7 +120,7 @@ func (e *Engine) Observe() Observation {
 	}
 	for _, u := range s.Units {
 		c := e.char(u.Character)
-		o.UnitViews = append(o.UnitViews, UnitView{Unit: u, Name: e.name(c), Class: c.Class, Def: c.Def, Level: c.Level, XP: c.XP, XPRequired: XPPerLevel,
+		o.UnitViews = append(o.UnitViews, UnitView{Unit: u, Name: e.name(c), Class: c.Class, Def: c.Def, Shoot: e.shootClass(&u), Weapon: e.weaponType(&u), Level: c.Level, XP: c.XP, XPRequired: XPPerLevel,
 			XPProgress: ExperienceProgress(c.XP), Stats: e.stats(&u), Attributes: attributes(e.attributes(c)), Points: c.Points,
 			Traits: e.traits(c), Skills: e.skills(c)})
 	}
@@ -515,10 +515,9 @@ func (e *Engine) prepare(c Command) error {
 	return nil
 }
 
-// carries reports whether the character's class can wield the equipment.
+// carries reports whether the character's class and traits allow wielding the equipment.
 func (e *Engine) carries(o *Character, eq content.Equipment) bool {
-	cl := e.class(o)
-	return !(eq.Slot == "weapon" && eq.Type != cl.Weapon || eq.Slot == "armor" && eq.Type != cl.Armor)
+	return e.data.Carries(e.class(o), e.traits(o), eq)
 }
 
 // spawn puts a unit on the map. A template definition gets a numbered character of its own;
@@ -561,7 +560,7 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	if sp.Faction != "" {
 		color = sp.Faction
 	}
-	u := Unit{AI: sp.AI, Guard: sp.Guard, ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
+	u := Unit{AI: sp.AI, Guard: sp.Guard, DuelFirst: sp.DuelFirst, ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
 	if side == "enemy" {
 		for item, n := range e.data.Rules.EnemyStock {
 			u.Items[item] = n
@@ -651,5 +650,5 @@ func SpawnPreview(d *content.Data, sp content.Spawn) UnitView {
 	e := fromState(d, State{Difficulty: "normal", Stage: -1})
 	u := e.spawn(sp.Character, sp.Character, "enemy", sp.X, sp.Y, sp)
 	c := e.char(u.Character)
-	return UnitView{Unit: *u, Name: e.name(c), Class: c.Class, Def: c.Def, Level: c.Level, Stats: e.stats(u), Traits: e.traits(c), Skills: e.skills(c)}
+	return UnitView{Unit: *u, Name: e.name(c), Class: c.Class, Def: c.Def, Shoot: e.shootClass(u), Weapon: e.weaponType(u), Level: c.Level, Stats: e.stats(u), Traits: e.traits(c), Skills: e.skills(c)}
 }

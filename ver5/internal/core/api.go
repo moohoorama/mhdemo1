@@ -217,10 +217,14 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 			}
 			learned[t] = true
 		}
+		held := def.Traits
+		if o.TraitsOverride != nil {
+			held = *o.TraitsOverride
+		}
+		held = append(append([]string{}, held...), o.Learned...)
 		for slot, eq := range o.Equipment {
 			v, ok := d.Equipment[eq]
-			c := d.Classes[o.Class]
-			if !ok || v.Slot != slot || slot == "weapon" && v.Type != c.Weapon || slot == "armor" && v.Type != c.Armor {
+			if !ok || v.Slot != slot || !d.Carries(d.Classes[o.Class], held, v) {
 				return nil, fail("CorruptSave")
 			}
 		}
@@ -326,10 +330,10 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 			if u.Guard && (u.X != base.X || u.Y != base.Y) {
 				return nil, fail("CorruptSave")
 			}
-			if u.AI != base.AI || u.Guard != base.Guard {
+			if u.AI != base.AI || u.Guard != base.Guard || u.DuelFirst != base.DuelFirst {
 				return nil, fail("CorruptSave")
 			}
-		} else if u.AI || u.Guard {
+		} else if u.AI || u.Guard || u.DuelFirst {
 			return nil, fail("CorruptSave")
 		}
 		if u.Facing != "" && !contains([]string{"N", "NE", "E", "SE", "S", "SW", "W", "NW"}, u.Facing) {

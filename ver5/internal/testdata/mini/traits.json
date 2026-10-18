@@ -530,6 +530,33 @@
    "Desc": "",
    "Cost": 400,
    "Requires": []
+  },
+  "lancer": {
+   "Name": "Lancer",
+   "Desc": "",
+   "Cost": 0,
+   "Requires": [],
+   "Effects": {
+    "wield:lance": 1
+   }
+  },
+  "sweeper": {
+   "Name": "Sweeper",
+   "Desc": "",
+   "Cost": 0,
+   "Requires": [],
+   "Effects": {
+    "sweep_arc": 0.5
+   }
+  },
+  "evader": {
+   "Name": "Evader",
+   "Desc": "",
+   "Cost": 0,
+   "Requires": [],
+   "Effects": {
+    "evade": 15
+   }
   }
  }
 }

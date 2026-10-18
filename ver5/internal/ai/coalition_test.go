@@ -8,9 +8,24 @@ import (
 	"testing"
 )
 
-func TestCoalitionAIReachesGuardAndTriggersDuels(t *testing.T) {
+func TestCoalitionAIReachesGuardAndTriggersDuels(t *testing.T) { coalitionDuels(t, nil) }
+
+// A boss who can shoot from range (the white horse) still waits for his duel partners: his duel-first setting
+// keeps him from picking them off at a distance before they reach him.
+func TestDuelFirstBossDoesNotShootHisPartners(t *testing.T) {
+	coalitionDuels(t, func(d *content.Data) {
+		lubu := d.Characters["lubu"]
+		lubu.Traits = append(lubu.Traits, "white_horse")
+		d.Characters["lubu"] = lubu
+	})
+}
+
+func coalitionDuels(t *testing.T, tweak func(*content.Data)) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
+	if tweak != nil {
+		tweak(d)
+	}
 	for _, n := range d.Nodes {
 		if n.Kind == "preparation" && n.Stage == "B03" {
 			d.Campaign.Start = n.ID

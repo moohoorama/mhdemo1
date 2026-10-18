@@ -121,6 +121,9 @@ func (d *Data) Validate() error {
 				return fmt.Errorf("class %s: unknown trait %s", id, t)
 			}
 		}
+		if s, ok := d.Classes[c.Shoot]; c.Shoot != "" && (!ok || s.Attack != AttackRanged) {
+			return fmt.Errorf("class %s: shoot form %s is not a ranged class", id, c.Shoot)
+		}
 	}
 	for id, e := range d.Equipment {
 		if e.Name == "" || !in(e.Slot, "weapon", "armor", "accessory") {
@@ -178,8 +181,14 @@ func (d *Data) Validate() error {
 		}
 		for _, eq := range c.Equipment {
 			e, ok := d.Equipment[eq]
-			if !ok || (e.Slot == "weapon" && e.Type != cl.Weapon) || (e.Slot == "armor" && e.Type != cl.Armor) {
+			if !ok || !d.Carries(cl, c.Traits, e) {
 				return fmt.Errorf("equipment %s on %s", eq, id)
+			}
+		}
+		for key := range c.Look.Sprites {
+			class, weapon, hasWeapon := strings.Cut(key, ":")
+			if _, ok := d.Classes[class]; !ok || hasWeapon && weapon == "" {
+				return fmt.Errorf("character %s: sprite for unknown class %s", id, key)
 			}
 		}
 		if f := c.Look.Faction; f != "" {

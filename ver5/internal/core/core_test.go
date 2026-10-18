@@ -152,6 +152,9 @@ func TestEquipmentRules(t *testing.T) {
 	assertRejected(t, e, Command{Kind: "equip", Actor: "hero", Item: "short_bow"}) // wrong weapon type
 	e.state.Warehouse["spear"] = 1
 	assertRejected(t, e, Command{Kind: "equip", Actor: "hero", Item: "spear"})
+	with(e, "hero", "lancer") // wield:lance lets a blade class carry a lance, but not other types
+	apply(t, e, Command{Kind: "equip", Actor: "hero", Item: "spear"})
+	assertRejected(t, e, Command{Kind: "equip", Actor: "hero", Item: "short_bow"})
 }
 func TestMovementTraitsAndRiders(t *testing.T) {
 	e, a, _ := arena(t)

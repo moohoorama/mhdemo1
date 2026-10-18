@@ -45,6 +45,9 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 				s = 2000
 				break
 			}
+			if duels && me.DuelFirst && e.DuelPending(me.ID, c.Target) {
+				continue // a duel partner is met in the duel, not shot or struck from afar
+			}
 			p, err := e.Preview(c)
 			if err != nil {
 				continue
@@ -104,6 +107,16 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 				s = -5
 			}
 		case "move":
+			if duels && me.DuelFirst {
+				for _, v := range o.UnitViews {
+					if e.DuelPending(me.ID, v.ID) && distance(c.X, c.Y, v.X, v.Y) == 1 {
+						s = 1500 // a cell where the duel can start comes before anything else
+					}
+				}
+				if s > 0 {
+					break
+				}
+			}
 			if walk == nil {
 				walk = walking(e, o, me)
 			}

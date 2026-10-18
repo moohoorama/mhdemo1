@@ -3,7 +3,7 @@ package core
 import "srpg/internal/content"
 
 const CoreVersion = "2"
-const AIPolicyVersion = "greedy-7"
+const AIPolicyVersion = "greedy-8"
 const RulesVersion = "rules-13"
 
 // Character is a persistent record: a party member, or a troop made for one battle (Temp).
@@ -22,7 +22,7 @@ type Status struct {
 	Source       string
 }
 type Unit struct {
-	AI, Guard                            bool `json:",omitempty"`
+	AI, Guard, DuelFirst                 bool `json:",omitempty"`
 	ID, Character, Faction, Color        string
 	Facing                               string `json:",omitempty"`
 	X, Y, HP, MP                         int
@@ -60,6 +60,8 @@ type Stats struct{ Attack, Defense, Mind, Agility, Morale, MaxHP, MaxMP, Recover
 type UnitView struct {
 	Unit
 	Name, Class, Def      string
+	Shoot                 string `json:",omitempty"` // class whose look it takes when its attack shoots from range
+	Weapon                string `json:",omitempty"` // type of the equipped weapon
 	Level, XP, XPRequired int
 	XPProgress            float64
 	Stats                 Stats

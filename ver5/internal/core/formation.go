@@ -114,13 +114,27 @@ func (e *Engine) duelFor(u, v *Unit, s content.Skill) (content.Duel, bool) {
 	if v == nil || u.HP <= 0 || v.HP <= 0 || s.Kind != content.KindPhysical || dist(u.X, u.Y, v.X, v.Y) > 1 {
 		return content.Duel{}, false
 	}
+	return e.pendingDuel(u, v)
+}
+
+// pendingDuel is the stage duel still waiting between two living units of opposite sides, wherever they stand.
+func (e *Engine) pendingDuel(u, v *Unit) (content.Duel, bool) {
+	if u == nil || v == nil || u.HP <= 0 || v.HP <= 0 || u.Faction == v.Faction {
+		return content.Duel{}, false
+	}
 	for _, d := range e.data.Stages[e.state.Stage].Duels {
 		pair := d.Ally == u.Character && d.Enemy == v.Character || d.Enemy == u.Character && d.Ally == v.Character
-		if pair && u.Faction != v.Faction && !e.state.Executed["duel-"+d.ID] {
+		if pair && !e.state.Executed["duel-"+d.ID] {
 			return d, true
 		}
 	}
 	return content.Duel{}, false
+}
+
+// DuelPending reports whether a stage duel is still waiting between the two units, wherever they stand.
+func (e *Engine) DuelPending(a, b string) bool {
+	_, ok := e.pendingDuel(e.unit(a), e.unit(b))
+	return ok
 }
 
 // DuelFor reports whether the attack c would set off a stage duel.
