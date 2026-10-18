@@ -1,5 +1,5 @@
 """Candidate tiles and effects for fire, ruin, fences and bridges. Run: python3 gen_all.py"""
-import json, math, random
+import json, math, random, zlib
 from common import *
 from PIL import Image, ImageDraw
 
@@ -185,7 +185,7 @@ def bridge_variant(name, kind):
     im, pv = prop(name)
     px = im.load()
     w, h = im.size
-    rnd = random.Random(hash((name, kind)) & 0xffff)
+    rnd = random.Random(zlib.crc32((name + kind).encode()))
     ax = (2, 1) if name.endswith("_u") else (2, -1)  # the span's long direction on screen
     norm = math.hypot(*ax)
     for y in range(h):

@@ -1890,6 +1890,48 @@
    "layer": "object",
    "scale": "scene",
    "made": "3D model + unit3d cel renderer"
+  },
+  "cover_bush_0": {
+   "file": "tiles/cover_bush_0.png",
+   "size": [
+    32,
+    19
+   ],
+   "pivot": [
+    16,
+    16
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "note": "drawn over a unit's feet on a forest tile"
+  },
+  "cover_bush_1": {
+   "file": "tiles/cover_bush_1.png",
+   "size": [
+    38,
+    22
+   ],
+   "pivot": [
+    19,
+    19
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "note": "drawn over a unit's feet on a forest tile"
+  },
+  "cover_bush_2": {
+   "file": "tiles/cover_bush_2.png",
+   "size": [
+    26,
+    16
+   ],
+   "pivot": [
+    13,
+    13
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "note": "drawn over a unit's feet on a forest tile"
   }
  }
 }

@@ -94,7 +94,10 @@ class Unit{
     const ms=anim.ms.length?anim.ms:[200];let tot=ms.reduce((a,b)=>a+b,0),tt=(t*1000+this.age*7)%tot,f=0;
     while(f<anim.frames-1&&tt>=ms[Math.min(f,ms.length-1)]){tt-=ms[Math.min(f,ms.length-1)];f++;}
     const [x,y]=scr(this.u+.5,this.v+.5);
-    c.drawImage(IM['u:'+this.id],(anim.first+f)*cw,rows.indexOf(face)*ch,cw,ch,Math.round(x-U.pivot[0]),Math.round(y-U.pivot[1]),cw,ch);
+    const sx=(anim.first+f)*cw,sy=rows.indexOf(face)*ch,dx=Math.round(x-U.pivot[0]),dy=Math.round(y-U.pivot[1]);
+    if(this.tintFn)this.tint=this.tintFn();
+    if(this.tint){const oc=Unit.tmp||(Unit.tmp=document.createElement('canvas'));oc.width=cw;oc.height=ch;const o=oc.getContext('2d');o.clearRect(0,0,cw,ch);o.drawImage(IM['u:'+this.id],sx,sy,cw,ch,0,0,cw,ch);o.globalCompositeOperation='source-atop';o.fillStyle=this.tint;o.fillRect(0,0,cw,ch);c.drawImage(oc,dx,dy);}
+    else c.drawImage(IM['u:'+this.id],sx,sy,cw,ch,dx,dy,cw,ch);
   }
   get y(){return scr(this.u+.5,this.v+.5)[1];}
 }
@@ -279,6 +282,25 @@ bridge:{
   }},
 };
 
+// ---- a unit standing in a forest: the game today, and ideas for showing it is hidden among the trees ----
+SCENES.forestCover={name:'숲 속 병력',w:10,h:8,zoom:3,tiles:R(8,()=>R(10,()=>'.').join('')),
+  states:['현재(그대로)','① 발치 덤불','② 나무 사이(반투명)','③ 그늘 + 덤불'],
+  desc:'숲 칸에 선 병력. 현재는 병력이 자기 칸의 나무 앞에 온전히 서서(위 칸 병력과 풀밭의 병력이 똑같이 보임) 숲에 들어갔다는 느낌이 없습니다. 나무 뒤로 가려지는 때는 칸 중심 뒤쪽에 설 때뿐이고, 그때는 반투명으로 비칩니다. ① 숲 칸에서는 발치 높이의 덤불을 병력 앞에 얹어 다리를 가립니다. ② 숲의 나무를 병력 앞에 그려 나무 사이에 선 것처럼 하고, 가려진 부분은 지금 게임의 규칙대로 반투명으로 비춥니다. ③ ①에 더해 병력을 짙은 녹색으로 물들이고 숲 바닥에 나뭇잎 그늘을 깝니다. 위쪽 줄 병력은 풀밭에서 숲 칸으로 걸어 들어갑니다.',
+  build(s){const items=[],units=[],under=[],flames=[],smoke=[];
+    const G=(gx,gy)=>scr(2*gx+1,2*gy+1);
+    const forests=[[1,1],[2,1],[3,2],[1,3],[2,3]];
+    const inF=(u,v)=>forests.some(([gx,gy])=>Math.floor(u/2)===gx&&Math.floor(v/2)===gy);
+    forests.forEach(([gx,gy])=>{const[x,y]=G(gx,gy),sp=pr('forest_'+((gx*7+gy*3)%4)),key=y-.1+(s===2?.2:0);
+      if(s===3)under.push(c=>{c.save();c.fillStyle='rgba(20,40,20,.22)';for(let k=0;k<7;k++){const a=hash(gx,gy,k)*6.28,r=6+hash(gx,gy,k+9)*18;c.beginPath();c.ellipse(x+Math.cos(a)*r*1.3,y+Math.sin(a)*r*.6,5+hash(k,gx,gy)*5,2+hash(k,gy,gx)*3,0,0,6.3);c.fill();}c.restore();});
+      items.push({y:key,draw:c=>put(c,sp,x,y)});
+      // a unit that the trees stand in front of shows through at half opacity, as in the game
+      items.push({yf:()=>key+.01,draw:c=>{for(const u of units){const[ux]=scr(u.u+.5,u.v+.5);if(u.y<key&&Math.abs(ux-x)<30&&key-u.y<22){c.save();c.globalAlpha=.5;u.draw(c,performance.now()/1000);c.restore();}}}});});
+    [['light_infantry',2.5,6.5,'SE'],['bandit',6.5,4.5,'NW'],['light_cavalry',4.5,6.5,'NE'],['light_infantry',8.5,4.5,'SW']].forEach(([id,u,v,face])=>units.push(new Unit(id,[[u,v],[u,v]],{face})));
+    units.push(new Unit('light_infantry',[[.5,2.5],[8.5,2.5]],{speed:1.1,face:'SE'}));
+    if(s>=1&&s!==2)units.forEach(u=>items.push({yf:()=>u.y+.5,draw:c=>{if(!inF(u.u,u.v))return;const[x,y]=scr(u.u+.5,u.v+.5);put(c,cd('cover_bush_'+(Math.floor(u.u*2+u.v)%3)),x,y+1);}}));
+    if(s===3)units.forEach(u=>u.tintFn=()=>inF(u.u,u.v)?'rgba(30,70,40,.4)':null);
+    return{items,flames,smoke,under,units};}};
+
 SCENES.gatehouse={name:'성문 C(낮은 문루)',w:11,h:9,tiles:R(9,()=>'...........'),states:['닫힘','열림(성문이 사라짐)'],
   desc:'주변 성벽과 같은 높이로 낮춘 한 칸짜리 문루. 닫혀 있을 때는 성벽 줄의 일부처럼 서 있고, 열리면 성문 그림이 사라져 성벽 사이가 그대로 뚫린 길이 됩니다. 성벽은 칸 이음새의 세로선을 지운 그림입니다.',
   build(s){const items=[],flames=[],smoke=[],under=[],units=[];
@@ -437,7 +459,7 @@ function frame(ts){const dt=Math.min(.05,(ts-last)/1000||0);last=ts;t+=dt;
   model.under.forEach(f=>f(ctx));
   model.units.forEach(u=>u.step(dt));
   smokeStep(dt,model.smoke);
-  const list=[...model.items.map(i=>({y:i.y,draw:i.draw})),...model.units.map(u=>({y:u.y,draw:c=>u.draw(c,t)})),...model.flames.map(f=>({y:f.oy!==undefined?f.oy:f.y+3,draw:c=>flame(c,t,f.x,f.y,f.kind,f.seed)}))];
+  const list=[...model.items.map(i=>({y:i.yf?i.yf():i.y,draw:i.draw})),...model.units.map(u=>({y:u.y,draw:c=>u.draw(c,t)})),...model.flames.map(f=>({y:f.oy!==undefined?f.oy:f.y+3,draw:c=>flame(c,t,f.x,f.y,f.kind,f.seed)}))];
   list.sort((a,b)=>a.y-b.y).forEach(i=>i.draw(ctx));
   smokeDraw(ctx);
   if(model.tint){ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.globalCompositeOperation='multiply';ctx.fillStyle=model.tint;ctx.fillRect(0,0,cv.width,cv.height);ctx.restore();}
