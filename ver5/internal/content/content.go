@@ -218,22 +218,65 @@ type BattleEvent struct {
 	If     []string `json:",omitempty"`
 	Do     []Action
 }
+
+// Goal is one way to win or lose a battle: all of If hold. Text is what the briefing says.
+type Goal struct {
+	If   []string
+	Text string
+}
+
+// Objective is a bonus goal judged when the battle is won: if its If holds then, the player gets
+// Reward and the story flag Flag.
+type Objective struct {
+	ID, Text, Flag string
+	If             []string
+	Reward         map[string]int `json:",omitempty"`
+}
+
+// VictoryTargets are the units a victory goal asks to defeat (defeated:X), whom the AI goes after.
+func (s Stage) VictoryTargets() []string {
+	var out []string
+	for _, g := range s.Victory {
+		for _, cond := range g.If {
+			if id, ok := strings.CutPrefix(cond, "defeated:"); ok {
+				out = append(out, id)
+			}
+		}
+	}
+	return out
+}
+
+// RoutVictory reports whether routing every enemy wins the battle.
+func (s Stage) RoutVictory() bool {
+	for _, g := range s.Victory {
+		for _, cond := range g.If {
+			if cond == "alldefeated:enemy" {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 type Stage struct {
-	TurnLimit                       int           `json:",omitempty"`
-	Events                          []BattleEvent `json:",omitempty"`
-	Areas                           []Area        `json:",omitempty"`
-	ID, Name, Boss                  string
-	Width, Height, Limit, Threshold int
-	Tiles                           []string
-	Allies                          []Point
-	Enemies                         []Spawn
-	Reward                          map[string]int
-	Duels                           []Duel
-	Goal                            string  `json:",omitempty"` // "rout": a skirmish won by routing the other side
-	Party                           []Spawn `json:",omitempty"` // a skirmish's allies
-	Charge                          bool    `json:",omitempty"` // the enemy marches on the allies from the first turn
-	Map                             string  `json:",omitempty"` // map document under maps/ that supplies the tiles; none means Tiles is inline
-	Faction                         string  `json:",omitempty"` // color of this stage's enemies without a faction of their own
+	TurnLimit          int           `json:",omitempty"`
+	Events             []BattleEvent `json:",omitempty"`
+	Areas              []Area        `json:",omitempty"`
+	ID, Name           string
+	Width, Height, Max int         // Max is how many officers may sortie
+	Required           []string    `json:",omitempty"` // officers who must sortie, if the player has them
+	Victory            []Goal      // the battle is won when any goal holds
+	Defeat             []Goal      `json:",omitempty"` // extra ways to lose; the fall of the lord or of every ally always loses
+	Sub                []Objective `json:",omitempty"` // bonus objectives judged at the victory
+	Tiles              []string
+	Allies             []Point
+	Enemies            []Spawn
+	Reward             map[string]int
+	Duels              []Duel
+	Party              []Spawn `json:",omitempty"` // a skirmish's allies
+	Charge             bool    `json:",omitempty"` // the enemy marches on the allies from the first turn
+	Map                string  `json:",omitempty"` // map document under maps/ that supplies the tiles; none means Tiles is inline
+	Faction            string  `json:",omitempty"` // color of this stage's enemies without a faction of their own
 }
 
 // NodeCase is one arm of a branch node: the first whose conditions all hold is taken.

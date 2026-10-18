@@ -1,11 +1,17 @@
 {
  "ID": "S2",
  "Name": "Stage 2",
- "Boss": "boss",
  "Width": 12,
  "Height": 8,
- "Limit": 2,
- "Threshold": 0,
+ "Max": 2,
+ "Victory": [
+  {
+   "If": [
+    "defeated:boss"
+   ],
+   "Text": "Boss 격파"
+  }
+ ],
  "Tiles": [
   "............",
   "..ff....i...",

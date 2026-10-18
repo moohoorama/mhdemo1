@@ -258,33 +258,46 @@ func (g *Game) modalWindow(dst *ebiten.Image, m *modal) {
 	switch m.kind {
 	case "objective":
 		o := g.S.Engine.Observe()
-		st := g.stageInfo(o)
-		win, lose := g.objective(st)
+		st := g.S.Data.Stages[o.Stage]
+		brief := g.objective(o)
 		r := g.objectiveBox(uiW)
 		g.titled(dst, r, "작전 개요")
-		g.centered(dst, st.name, float64(uiW/2), float64(r.Min.Y+32), 30, gold)
+		g.centered(dst, st.Name, float64(uiW/2), float64(r.Min.Y+32), 30, gold)
 		row := func(i int, name, v string) {
 			y := float64(r.Min.Y + 96 + i*36)
 			g.label(dst, name, float64(r.Min.X+48), y+2, 16, muted)
 			g.label(dst, v, float64(r.Min.X+160), y, 19, ink)
 		}
-		row(0, "승리 조건", win)
-		row(1, "패배 조건", lose)
-		turn := fmt.Sprintf("%d턴째 · 제한 없음", o.Round)
-		if st.turnLimit > 0 {
-			turn = fmt.Sprintf("%d턴째 · %d턴까지", o.Round, st.turnLimit)
+		row(0, "승리 조건", brief.win)
+		row(1, "패배 조건", brief.lose)
+		n := 2
+		for i, sub := range brief.subs {
+			name, mark := "", ""
+			if i == 0 {
+				name = "부목표"
+			}
+			if sub.done {
+				mark = " (달성)"
+			}
+			row(n, name, sub.text+mark)
+			n++
 		}
-		row(2, "턴", turn)
+		turn := fmt.Sprintf("%d턴째 · 제한 없음", o.Round)
+		if st.TurnLimit > 0 {
+			turn = fmt.Sprintf("%d턴째 · %d턴까지", o.Round, st.TurnLimit)
+		}
+		row(n, "턴", turn)
+		n++
 		duels := g.objectiveDuels(o)
 		if len(duels) == 0 {
-			row(3, "일기토", "없음")
+			row(n, "일기토", "없음")
 		}
 		for i, d := range duels {
 			name := ""
 			if i == 0 {
 				name = "일기토"
 			}
-			row(3+i, name, d)
+			row(n+i, name, d)
 		}
 		hint := "클릭하여 시작"
 		if m.manual {
@@ -343,15 +356,15 @@ func (g *Game) result(dst *ebiten.Image, o core.Observation) {
 
 // resultWindow draws the result window, laid out on the Width×Height design.
 func (g *Game) resultWindow(dst *ebiten.Image, o core.Observation) {
-	st := g.stageInfo(o)
+	st := g.S.Data.Stages[o.Stage]
 	r := image.Rect(uiW/2-330, 130, uiW/2+330, 760)
 	if o.Result != "victory" {
 		r = image.Rect(uiW/2-280, 250, uiW/2+280, 560)
 		g.titled(dst, r, "패배")
-		g.centered(dst, st.name, float64(uiW/2), 290, 28, bad)
+		g.centered(dst, st.Name, float64(uiW/2), 290, 28, bad)
 		reason := g.lordName() + " 퇴각 또는 아군 전멸"
-		if st.turnLimit > 0 && o.Round > st.turnLimit {
-			reason = fmt.Sprintf("%d턴 제한 초과", st.turnLimit)
+		if st.TurnLimit > 0 && o.Round > st.TurnLimit {
+			reason = fmt.Sprintf("%d턴 제한 초과", st.TurnLimit)
 		}
 		g.centered(dst, reason, float64(uiW/2), 346, 19, ink)
 		g.btn(dst, image.Rect(r.Min.X+40, 420, r.Max.X-40, 456), "출전 준비부터 재도전", func() { g.request(session.Request{Op: "retry"}) })
@@ -360,7 +373,7 @@ func (g *Game) resultWindow(dst *ebiten.Image, o core.Observation) {
 		return
 	}
 	g.titled(dst, r, "승리")
-	g.centered(dst, st.name+" 승리", float64(uiW/2), 160, 30, gold)
+	g.centered(dst, st.Name+" 승리", float64(uiW/2), 160, 30, gold)
 	allies := resultUnits(o)
 	best, bestXP := "", 0
 	for _, u := range allies {
@@ -455,7 +468,8 @@ func (g *Game) objectiveDuels(o core.Observation) []string {
 func (g *Game) objectiveBox(w int) image.Rectangle {
 	rows := 4
 	if g.S.Engine != nil {
-		rows = 3 + max(1, len(g.objectiveDuels(g.S.Engine.Observe())))
+		o := g.S.Engine.Observe()
+		rows = 3 + len(g.S.Data.Stages[o.Stage].Sub) + max(1, len(g.objectiveDuels(o)))
 	}
 	h := 96 + rows*36 + 56
 	return image.Rect(w/2-260, 330-h/2, w/2+260, 330+h/2)

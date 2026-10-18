@@ -318,12 +318,17 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 	}
 	if kind == "scenario" {
 		st := &e.doc.Stage
-		g.btn(dst, image.Rect(200, 184, 1020, 224), "승리 조건: "+map[string]string{"rout": "적군 전멸", "": "보스 격파"}[st.Goal], func() {
+		rout := st.RoutVictory()
+		bossID := ""
+		if targets := st.VictoryTargets(); len(targets) > 0 {
+			bossID = targets[0]
+		}
+		g.btn(dst, image.Rect(200, 184, 1020, 224), "승리 조건: "+map[bool]string{true: "적군 전멸", false: "보스 격파"}[rout], func() {
 			e.history.Push(e.doc)
-			if st.Goal == "rout" {
-				st.Goal = ""
+			if rout {
+				st.Victory = bossVictory(g, bossID)
 			} else {
-				st.Goal = "rout"
+				st.Victory = routVictory()
 			}
 			e.dirty = true
 		})
@@ -333,15 +338,15 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 				choices = append(choices, s.Character)
 			}
 		}
-		g.btn(dst, image.Rect(200, 238, 1020, 278), "보스: "+g.name(st.Boss), func() {
+		g.btn(dst, image.Rect(200, 238, 1020, 278), "보스: "+g.name(bossID), func() {
 			e.history.Push(e.doc)
 			n := 0
 			for i, id := range choices {
-				if id == st.Boss {
+				if id == bossID {
 					n = i + 1
 				}
 			}
-			st.Boss = choices[n%len(choices)]
+			st.Victory = bossVictory(g, choices[n%len(choices)])
 			e.dirty = true
 		})
 		for i, event := range st.Duels {
@@ -520,4 +525,15 @@ func editorOfficers(data *content.Data, family, class, army, query string) []str
 		}
 	}
 	return ids
+}
+
+func routVictory() []content.Goal {
+	return []content.Goal{{If: []string{"alldefeated:enemy"}, Text: "적군 전멸"}}
+}
+
+func bossVictory(g *Game, boss string) []content.Goal {
+	if boss == "" {
+		return []content.Goal{{If: []string{"alldefeated:enemy"}, Text: "적군 전멸"}}
+	}
+	return []content.Goal{{If: []string{"defeated:" + boss}, Text: g.name(boss) + " 격파"}}
 }

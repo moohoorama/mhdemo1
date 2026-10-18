@@ -176,8 +176,8 @@ func (g *Game) hudHead(dst *ebiten.Image, o core.Observation, r image.Rectangle)
 	}
 	c := turnColor(o.Turn)
 	turn := fmt.Sprintf("%d턴", o.Round)
-	if st := g.stageInfo(o); st.turnLimit > 0 {
-		turn = fmt.Sprintf("%d/%d턴", o.Round, st.turnLimit)
+	if st := g.S.Data.Stages[o.Stage]; st.TurnLimit > 0 {
+		turn = fmt.Sprintf("%d/%d턴", o.Round, st.TurnLimit)
 	}
 	fold := image.Rect(r.Min.X+8, r.Min.Y+6, r.Min.X+32, r.Min.Y+hudHeaderH-6)
 	g.btn(dst, fold, "", func() { g.hudFolded = !g.hudFolded })

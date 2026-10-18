@@ -7,6 +7,11 @@
 
 ## 2026-10-18
 
+### 승패를 목표 목록으로 바꾸고 부목표와 필수 출전을 둠
+- `Boss`·`Threshold`·`Goal`·`Limit`를 없애고 스테이지가 `Victory`·`Defeat`(`[{If, Text}]`)·`Sub`·`Required`·`Max`를 가지게 함. 목표의 조건은 전투 이벤트 조건 문자열을 그대로 써서 도달(`at`/`allat`)·점령(`at:enemy:구역`)·전멸(`alldefeated:enemy`)·버티기(`round>=N`)에 별도 어휘를 만들지 않음. 군주 퇴각과 아군 전멸은 `Defeat`와 무관하게 늘 패배. `TurnLimit`은 "마지막 라운드까지 이길 수 있다"는 규칙이 달라 그대로 둠.
+- 부목표는 승리 순간 판정해 보상과 이야기 플래그를 줌. 책략 습득 같은 보상은 플래그를 읽는 전투 뒤 노드가 맡음.
+- 영향: `internal/core/engine.go`, `internal/content/battle_events.go`, `internal/gui/hud.go`·`windows.go`, `docs/logic-battle-event.md`·`data-scenario-node.md`
+
 ### 전투 이벤트를 조건과 동작(`If`/`Do`)으로 통합함
 - 옛 `Trigger`(`boss-alone`·`duel`)와 `Spawns`·`Dialogue` 필드를 없애고, 이벤트가 상태 조건(`round` `turnstart` `defeated` `at` `adjacent` `hp` `duel` `flag` `any` …)과 동작(`say` `spawn` `remove` `flag`)을 갖게 함. 스폰에 `Group`·`Side`, 스테이지에 번호 붙은 `Areas`. 시점 필드 없이 `turnstart:진영` 조건으로 "한 차례를 버텼다"를 표현하고, 전투 중 `flag`는 승리 때 합쳐지는 `PendingFlags`에 적음. 반복 이벤트(`Repeat`)는 조건이 거짓에서 참이 될 때만 발동하고 `spawn`은 쓰지 못하게 함 — 저장 검증이 이벤트 스폰을 기준으로 삼기 때문.
 - 영향: `internal/core/battle_events.go`·`cond.go`, `internal/content/battle_events.go`·`cond.go`, `docs/logic-battle-event.md`·`data-scenario-node.md`

@@ -50,7 +50,7 @@
 
 `battle` 노드에서만 다음 명령이 가능하다(그 밖에는 `WrongPhase`).
 
-- `deploy`: 출전 명단을 정한다. 1명 이상 `Stage.Limit`명 이하이고, 중복이 없고, 플레이어블 인물이며, 전사하지 않았고, 부관이 아니어야 한다. 군주(`Lord`) 인물이 로스터에 있으면 반드시 포함해야 한다. 어기면 `InvalidDeployment`.
+- `deploy`: 출전 명단을 정한다. 1명 이상 `Stage.Max`명 이하이고, `Stage.Required` 중 출전할 수 있는 인물을 모두 포함하고, 중복이 없고, 플레이어블 인물이며, 전사하지 않았고, 부관이 아니어야 한다. 군주(`Lord`) 인물이 로스터에 있으면 반드시 포함해야 한다. 어기면 `InvalidDeployment`.
 - `equip`·`unequip`: 창고와 장수의 장비 칸 사이에서 장비를 옮긴다([data-item.md](data-item.md)).
 - `deputy`·`undeputy`: 부관 임명·해임. 임명하면 부관의 장비가 창고로 가고, 부관은 출전 명단에서 빠진다. 부관의 효과는 [logic-traits.md](logic-traits.md)를 본다.
 - `start`: 출전한다(4절).
@@ -71,7 +71,7 @@
 - `deployment_finish`: 출전 명단 전원이 놓였고 살아 있어야 한다(아니면 `DeploymentIncomplete`). 단계를 `battle`로 바꾸고 `deployment_finish` 이벤트를 낸다.
 - `DeploymentPlan`: 남은 장수에게 칸을 최대한 겹치지 않게 배정하는 명령열을 만든다(자동 진행용). 자리가 모자라면 `NoDeploymentSpace`.
 
-`Allies` 칸 수는 `Limit` 이상이어야 로드된다([data-scenario-node.md](data-scenario-node.md)).
+`Allies` 칸 수는 `Max` 이상이어야 로드된다([data-scenario-node.md](data-scenario-node.md)). 스테이지의 `Required`(필수 출전)에 든 인물은 출전 준비에 들어서면 출전 명단에 자동으로 들어가고(전사했거나 부관이면 건너뜀) 명단에서 뺄 수 없다. `deploy`·`start`는 명단이 `Max`를 넘거나 필수 인물이 빠지면 `InvalidDeployment`다.
 
 ## 5. 전투 뒤
 

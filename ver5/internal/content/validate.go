@@ -305,7 +305,7 @@ func (d *Data) Validate() error {
 	}
 	duelIDs, stageIDs := map[string]bool{}, map[string]bool{}
 	for _, s := range d.Stages {
-		if stageIDs[s.ID] || s.Width < 4 || s.Height < 4 || len(s.Tiles) != s.Height || len(s.Allies) < s.Limit || s.TurnLimit < 0 {
+		if stageIDs[s.ID] || s.Width < 4 || s.Height < 4 || len(s.Tiles) != s.Height || s.Max < 1 || len(s.Allies) < s.Max || s.TurnLimit < 0 {
 			return fmt.Errorf("map %s", s.ID)
 		}
 		stageIDs[s.ID] = true
@@ -315,7 +315,6 @@ func (d *Data) Validate() error {
 			}
 		}
 		seen := map[Point]bool{}
-		boss := false
 		for _, row := range s.Tiles {
 			if len(row) != s.Width {
 				return fmt.Errorf("row %s", s.ID)
@@ -348,7 +347,6 @@ func (d *Data) Validate() error {
 					}
 				}
 				seen[p] = true
-				boss = boss || e.Character == s.Boss
 			}
 		}
 		eventAllies, err := d.validateBattleEvents(s)
@@ -365,9 +363,6 @@ func (d *Data) Validate() error {
 				return fmt.Errorf("duel %s", event.ID)
 			}
 			duelIDs[event.ID] = true
-		}
-		if !boss && s.Goal != "rout" {
-			return fmt.Errorf("boss %s", s.ID)
 		}
 		for _, p := range s.Allies {
 			if p.X < 0 || p.Y < 0 || p.X >= s.Width || p.Y >= s.Height || seen[p] {

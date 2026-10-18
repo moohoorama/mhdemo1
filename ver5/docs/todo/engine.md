@@ -59,18 +59,12 @@ v1이 쓰는 플래그: 서복 생존, 거록 완승, 제갈현 생존, 서주 �
 
 ### 2.3 승패와 부목표
 
-```json
-"Victory": [{"Kind": "reach", "Unit": "liubei", "Area": 1, "FromRound": 6}],
-"Defeat":  [{"Kind": "defeat", "Unit": "liubei"}, {"Kind": "occupied", "Area": 2, "By": "enemy"}],
-"Sub":     [{"ID": "village-saved", "If": {"Kind": "defeatAll", "Group": "arsonists"},
-             "Reward": {"skill": "…"}, "Flag": "flag-…"}]
-```
+구현됨: `Victory`·`Defeat`·`Sub` 목록(조건은 전투 이벤트 조건 문자열 `If`), `Required`·`Max`, 브리핑 창의 목표 표시. 형식과 동작은 [data-scenario-node.md](../data-scenario-node.md) 3절과 [logic-battle-event.md](../logic-battle-event.md) 3절이 기준이다. 옛 `Boss`/`Threshold`/`Goal`/`Limit`는 없어졌다.
 
-- `Victory`와 `Defeat`는 목록. 하나라도 성립하면 확정, 같은 명령에서 둘 다 성립하면 패배가 우선. 지금의 `Boss`/`Threshold`/`Goal`은 이 목록의 `hp`·`annihilate` 조건으로 대체한다.
-- 조건 종류: `defeat`(퇴각 또는 사망), `defeatAll`(그룹), `hp`, `reach`(`Unit` 또는 `All`: 목록 전원이 도달), `occupied`(적이 지점 점령), `survive`(N라운드), `annihilate`, `flag`.
-- 한정어: `FromRound`(그 라운드부터 유효). 이벤트의 `objective` 동작이 목록을 교체해 단계 변경을 표현한다.
-- **부목표 `Sub`**: 승리가 확정되는 순간 판정한다. 달성하면 보상·플래그가 붙는다. 표시는 전투 중 목표 창에 문구와 달성 여부를 한 줄씩 보인다(UI 추가는 이것 하나).
-- **보상 `Reward`**: 지금의 아이템 맵에 예약 키 `provisions`(군량)를 둔다. 책략·특성 습득과 장수 합류는 부목표·이벤트 `grant`/`join`으로 준다.
+아직 없는 것:
+- 이벤트의 `objective` 동작(승패 조건 교체, 17의 2단계).
+- 보상으로 책략·특성 습득과 장수 합류: 부목표의 `Flag`를 전투 뒤 `branch` 노드가 읽고 `grant`·`join` 노드로 준다. 책략 습득 노드는 아직 없다.
+- 군량 `provisions`(§3), 출전 3단계의 정원·증원(§3).
 
 ### 2.4 NPC와 진영
 

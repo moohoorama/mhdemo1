@@ -1,12 +1,18 @@
 {
  "ID": "B03",
  "Name": "호로관 전투",
- "Boss": "lubu",
  "Width": 0,
  "Height": 0,
- "Limit": 4,
+ "Max": 4,
+ "Victory": [
+  {
+   "If": [
+    "any:[hp:lubu<41, defeated:lubu]"
+   ],
+   "Text": "여포 병력 40% 이하"
+  }
+ ],
  "TurnLimit": 30,
- "Threshold": 40,
  "Tiles": null,
  "Allies": [
   {

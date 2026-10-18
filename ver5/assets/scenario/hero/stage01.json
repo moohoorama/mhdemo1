@@ -1,12 +1,32 @@
 {
  "ID": "B01",
  "Name": "황건적의 난",
- "Boss": "chengyuanzhi",
  "Width": 0,
  "Height": 0,
- "Limit": 3,
+ "Max": 3,
+ "Victory": [
+  {
+   "If": [
+    "alldefeated:enemy"
+   ],
+   "Text": "적군 전멸"
+  }
+ ],
+ "Sub": [
+  {
+   "ID": "duels",
+   "Text": "두 일기토에서 모두 이긴다",
+   "Flag": "flag-b01-duels",
+   "If": [
+    "duel:B01-duel-1",
+    "duel:B01-duel-2"
+   ],
+   "Reward": {
+    "liquor": 1
+   }
+  }
+ ],
  "TurnLimit": 30,
- "Threshold": 0,
  "Tiles": null,
  "Allies": [
   {
@@ -114,7 +134,6 @@
    "Text": "정원지: 등무의 원수를 갚겠다! 관우: 그 목, 내가 거두겠다. 관우가 청룡도 한 번에 정원지를 베어 넘겼다."
   }
  ],
- "Goal": "rout",
  "Charge": true,
  "Faction": "turban",
  "Map": "map01.json"

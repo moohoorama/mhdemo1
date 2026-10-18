@@ -1,12 +1,18 @@
 {
  "ID": "B02",
  "Name": "사수관 전투",
- "Boss": "huaxiong",
  "Width": 0,
  "Height": 0,
- "Limit": 4,
+ "Max": 4,
+ "Victory": [
+  {
+   "If": [
+    "defeated:huaxiong"
+   ],
+   "Text": "화웅 격파"
+  }
+ ],
  "TurnLimit": 30,
- "Threshold": 0,
  "Tiles": null,
  "Allies": [
   {

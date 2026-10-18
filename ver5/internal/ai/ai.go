@@ -3,6 +3,7 @@ package ai
 
 import (
 	"fmt"
+	"slices"
 	"srpg/internal/content"
 	"srpg/internal/core"
 )
@@ -53,7 +54,7 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 				continue
 			}
 			s = float64(p.MaxDamage)*p.Hit/100 - float64(p.Cost)*.3
-			if me.Faction == "ally" && c.Target == o.Map.Boss {
+			if me.Faction == "ally" && slices.Contains(o.Map.VictoryTargets(), c.Target) {
 				s *= 2
 			}
 			if s <= 0 {
@@ -121,7 +122,7 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 				walk = walking(e, o, me)
 			}
 			nearest, old := far(walk, c.X, c.Y), far(walk, me.X, me.Y)
-			if me.Faction == "enemy" && old > 5 && o.Map.Goal != "rout" && !o.Map.Charge {
+			if me.Faction == "enemy" && old > 5 && !o.Map.RoutVictory() && !o.Map.Charge {
 				s = -5
 				break
 			}

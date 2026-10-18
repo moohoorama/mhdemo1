@@ -2,8 +2,8 @@ package content
 
 import "fmt"
 
-// validateBattleEvents checks a stage's areas and events and returns the characters its events
-// spawn on the allies' side.
+// validateBattleEvents checks a stage's areas, events and objectives and returns the characters
+// its events spawn on the allies' side.
 func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 	areas := map[int]bool{}
 	for _, a := range s.Areas {
@@ -15,7 +15,7 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 	}
 	allies := map[string]bool{}
 	actors := map[string]bool{}
-	targets := map[string]bool{}
+	targets := map[string]bool{"ally": true, "enemy": true} // every unit of a side
 	for id, c := range d.Characters {
 		if c.Playable {
 			actors[id] = true
@@ -29,6 +29,11 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 		}
 		if sp.Group != "" {
 			targets[sp.Group] = true
+		}
+	}
+	for _, sp := range append(append([]Spawn{}, s.Party...), s.Enemies...) {
+		if sp.Group == "ally" || sp.Group == "enemy" || sp.Group == "support" {
+			return nil, fmt.Errorf("group name %q is reserved", sp.Group)
 		}
 	}
 	for _, sp := range append(append([]Spawn{}, s.Party...), s.Enemies...) {
@@ -78,6 +83,9 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 		}
 	}
 	refs := &battleRefs{targets: targets, areas: areas, duels: duels}
+	if err := d.validateObjectives(s, refs); err != nil {
+		return nil, err
+	}
 	for _, event := range s.Events {
 		for _, cond := range event.If {
 			if err := d.validateCond(cond, refs); err != nil {
@@ -119,4 +127,58 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 		}
 	}
 	return allies, nil
+}
+
+// validateObjectives checks who must sortie and the victory, defeat and bonus goals.
+func (d *Data) validateObjectives(s Stage, refs *battleRefs) error {
+	seen := map[string]bool{}
+	for _, id := range s.Required {
+		if !d.Characters[id].Playable || seen[id] {
+			return fmt.Errorf("stage %s: required officer %s", s.ID, id)
+		}
+		seen[id] = true
+	}
+	if len(s.Required) > s.Max {
+		return fmt.Errorf("stage %s: %d required officers for %d places", s.ID, len(s.Required), s.Max)
+	}
+	if len(s.Victory) == 0 {
+		return fmt.Errorf("stage %s: no victory goal", s.ID)
+	}
+	goals := func(kind string, list []Goal, needText bool) error {
+		for _, g := range list {
+			if len(g.If) == 0 || needText && g.Text == "" {
+				return fmt.Errorf("stage %s: %s goal %q", s.ID, kind, g.Text)
+			}
+			for _, cond := range g.If {
+				if err := d.validateCond(cond, refs); err != nil {
+					return fmt.Errorf("stage %s: %s goal: %w", s.ID, kind, err)
+				}
+			}
+		}
+		return nil
+	}
+	if err := goals("victory", s.Victory, true); err != nil {
+		return err
+	}
+	if err := goals("defeat", s.Defeat, false); err != nil {
+		return err
+	}
+	ids := map[string]bool{}
+	for _, o := range s.Sub {
+		if o.ID == "" || ids[o.ID] || o.Text == "" || len(o.If) == 0 {
+			return fmt.Errorf("stage %s: objective %q", s.ID, o.ID)
+		}
+		ids[o.ID] = true
+		for _, cond := range o.If {
+			if err := d.validateCond(cond, refs); err != nil {
+				return fmt.Errorf("stage %s: objective %s: %w", s.ID, o.ID, err)
+			}
+		}
+		for item, n := range o.Reward {
+			if _, ok := d.Items[item]; !ok || n < 1 {
+				return fmt.Errorf("stage %s: objective %s reward %s", s.ID, o.ID, item)
+			}
+		}
+	}
+	return nil
 }

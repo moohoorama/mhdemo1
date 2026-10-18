@@ -123,3 +123,40 @@ func TestStoryNodesRefuseBattleConditions(t *testing.T) {
 		assert.Error(t, d.validateCond(cond, nil), cond)
 	}
 }
+
+func TestLoadRejectsBadObjectives(t *testing.T) {
+	win := obj("If", objs("defeated:boss"), "Text", "boss")
+	cases := map[string]func(map[string]any){
+		"no victory":            func(st map[string]any) { st["Victory"] = objs() },
+		"victory without if":    func(st map[string]any) { st["Victory"] = objs(obj("Text", "x")) },
+		"victory without text":  func(st map[string]any) { st["Victory"] = objs(obj("If", objs("defeated:boss"))) },
+		"victory unknown unit":  func(st map[string]any) { st["Victory"] = objs(obj("If", objs("defeated:ghost"), "Text", "x")) },
+		"victory story cond":    func(st map[string]any) { st["Victory"] = objs(obj("If", objs("dead:boss"), "Text", "x")) },
+		"defeat without if":     func(st map[string]any) { st["Defeat"] = objs(obj("Text", "x")) },
+		"defeat unknown area":   func(st map[string]any) { st["Defeat"] = objs(obj("If", objs("at:enemy:5"), "Text", "x")) },
+		"required unknown":      func(st map[string]any) { st["Required"] = objs("ghost") },
+		"required duplicate":    func(st map[string]any) { st["Required"] = objs("hero", "hero") },
+		"required not playable": func(st map[string]any) { st["Required"] = objs("boss") },
+		"too many required":     func(st map[string]any) { st["Required"] = objs("hero", "archer1", "sage") },
+		"no sortie places":      func(st map[string]any) { st["Max"] = 0 },
+		"objective duplicate": func(st map[string]any) {
+			o := obj("ID", "a", "Text", "t", "If", objs("alive:hero"))
+			st["Sub"] = objs(o, o)
+		},
+		"objective without text": func(st map[string]any) { st["Sub"] = objs(obj("ID", "a", "If", objs("alive:hero"))) },
+		"objective without if":   func(st map[string]any) { st["Sub"] = objs(obj("ID", "a", "Text", "t")) },
+		"objective unknown reward": func(st map[string]any) {
+			st["Sub"] = objs(obj("ID", "a", "Text", "t", "If", objs("alive:hero"), "Reward", obj("gold", 1)))
+		},
+		"reserved group name": func(st map[string]any) { st["Enemies"].([]any)[1].(map[string]any)["Group"] = "enemy" },
+	}
+	for name, edit := range cases {
+		t.Run(name, func(t *testing.T) { assert.Error(t, loadWithStage(t, edit)) })
+	}
+	assert.NoError(t, loadWithStage(t, func(st map[string]any) {
+		st["Victory"] = objs(win, obj("If", objs("alldefeated:enemy", "round>=2"), "Text", "rout"))
+		st["Defeat"] = objs(obj("If", objs("alldefeated:ally")))
+		st["Required"] = objs("hero")
+		st["Sub"] = objs(obj("ID", "a", "Text", "t", "If", objs("alive:hero"), "Flag", "flag-x", "Reward", obj("tonic", 1)))
+	}))
+}

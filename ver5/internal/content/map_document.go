@@ -206,8 +206,8 @@ func (d *MapDocument) Validate(data *Data) error {
 	}
 	copy := cloneMap(*data)
 	st := d.Compile()
-	if len(st.Allies) < st.Limit {
-		return fmt.Errorf("아군 배치 칸 %d개: 최소 %d개가 필요합니다", len(st.Allies), st.Limit)
+	if len(st.Allies) < st.Max {
+		return fmt.Errorf("아군 배치 칸 %d개: 최소 %d개가 필요합니다", len(st.Allies), st.Max)
 	}
 	if len(st.Enemies) == 0 {
 		return fmt.Errorf("적 병력을 배치하세요")
@@ -215,9 +215,6 @@ func (d *MapDocument) Validate(data *Data) error {
 	enemy := map[string]bool{}
 	for _, sp := range st.Enemies {
 		enemy[sp.Character] = true
-	}
-	if st.Goal != "rout" && !enemy[st.Boss] {
-		return fmt.Errorf("보스가 없습니다: 승리 조건에서 보스를 지정하세요")
 	}
 	for _, event := range st.Duels {
 		if !enemy[event.Enemy] {

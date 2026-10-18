@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/color"
 	"regexp"
+	"slices"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -165,7 +166,8 @@ func (g *Game) preparation(dst *ebiten.Image, o core.Observation) {
 	if !containsID(roster, g.selected) && len(roster) > 0 {
 		g.selected = roster[0].ID
 	}
-	limit := g.S.Data.Stages[o.Stage].Limit
+	stage := g.S.Data.Stages[o.Stage]
+	limit := stage.Max
 	r := image.Rect(40, 120, uiW-40, 810)
 	g.titled(dst, r, "출전 준비 · "+g.S.Data.Stages[o.Stage].Name)
 	g.label(dst, fmt.Sprintf("출전 %d / %d", len(o.Deployment), limit), float64(r.Min.X+32), float64(r.Min.Y+26), 17, gold)
@@ -186,8 +188,11 @@ func (g *Game) preparation(dst *ebiten.Image, o core.Observation) {
 			mark = "출전 ✓"
 		}
 		var toggle func()
-		if !of.Dead && !g.S.Data.Characters[of.Def].Lord {
+		required := slices.Contains(stage.Required, of.ID)
+		if !of.Dead && !g.S.Data.Characters[of.Def].Lord && !required {
 			toggle = func() { g.toggleDeploy(o, officer.ID) }
+		} else if required && deployed[of.ID] {
+			mark = "필수"
 		}
 		g.btn(dst, image.Rect(row.Max.X-96, y+22, row.Max.X-12, y+54), mark, toggle)
 		g.portrait(dst, of.ID, of.Class, float64(row.Min.X+14), float64(y+8), 60)

@@ -235,7 +235,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 		}
 	}
 	deploy := map[string]bool{}
-	if len(s.Deployment) < 1 || len(s.Deployment) > d.Stages[s.Stage].Limit && s.Phase != "scenario" {
+	if len(s.Deployment) < 1 || len(s.Deployment) > d.Stages[s.Stage].Max && s.Phase != "scenario" {
 		return nil, fail("CorruptSave")
 	}
 	for _, id := range s.Deployment {
@@ -372,7 +372,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 		}
 	}
 	if s.Phase == "deployment" || s.Phase == "battle" || s.Phase == "result" {
-		if s.Round < 1 || !contains([]string{"ally", "support", "enemy"}, s.Turn) || stage.Goal != "rout" && !seen[stage.Boss] || s.Checkpoint == nil {
+		if s.Round < 1 || !contains([]string{"ally", "support", "enemy"}, s.Turn) || s.Checkpoint == nil {
 			return nil, fail("CorruptSave")
 		}
 		for id := range deploy {

@@ -25,11 +25,12 @@ func (e *Engine) flag(name string) int {
 	return e.state.Flags[name]
 }
 
-// matching are the units a condition or action names: the unit with that id, or every unit of that group.
+// matching are the units a condition or action names: the unit with that id, every unit of that
+// group, or every unit of a side ("ally", "enemy").
 func (e *Engine) matching(target string) []*Unit {
 	var out []*Unit
 	for _, id := range keys(e.unitIDs) {
-		if u := e.unit(id); u.ID == target || u.Group == target {
+		if u := e.unit(id); u.ID == target || u.Group == target || u.Faction == target {
 			out = append(out, u)
 		}
 	}

@@ -72,19 +72,37 @@ func (g *Game) cursor(dst *ebiten.Image) {
 	}
 }
 
-func (g *Game) objective(st *coreStage) (win, lose string) {
-	lose = g.lordName() + " 퇴각"
-	if st.turnLimit > 0 {
-		lose += fmt.Sprintf(" / %d턴 초과", st.turnLimit)
+// briefing is what the briefing window says about a battle: how it is won and lost, and the bonus goals.
+type briefing struct {
+	win, lose string
+	subs      []briefSub
+}
+type briefSub struct {
+	text string
+	done bool
+}
+
+func (g *Game) objective(o core.Observation) briefing {
+	st := g.S.Data.Stages[o.Stage]
+	wins := []string{}
+	for _, goal := range st.Victory {
+		wins = append(wins, goal.Text)
 	}
-	if st.goal == "rout" {
-		return "적군 전멸", lose
+	lose := []string{g.lordName() + " 퇴각"}
+	for _, goal := range st.Defeat {
+		if goal.Text != "" {
+			lose = append(lose, goal.Text)
+		}
 	}
-	win = st.boss + " 격파"
-	if st.threshold > 0 {
-		win = fmt.Sprintf("%s 병력 %d%% 이하", st.boss, st.threshold)
+	if st.TurnLimit > 0 {
+		lose = append(lose, fmt.Sprintf("%d턴 초과", st.TurnLimit))
 	}
-	return win, lose
+	b := briefing{win: strings.Join(wins, " 또는 "), lose: strings.Join(lose, " / ")}
+	done := g.S.Engine.SubDone()
+	for i, sub := range st.Sub {
+		b.subs = append(b.subs, briefSub{sub.Text, i < len(done) && done[i]})
+	}
+	return b
 }
 
 // lordName is the first lord of the starting roster, whose fall loses a battle.
@@ -95,16 +113,6 @@ func (g *Game) lordName() string {
 		}
 	}
 	return "아군 지휘관"
-}
-
-type coreStage struct {
-	name, boss, goal     string
-	threshold, turnLimit int
-}
-
-func (g *Game) stageInfo(o core.Observation) *coreStage {
-	st := g.S.Data.Stages[o.Stage]
-	return &coreStage{st.Name, g.name(st.Boss), st.Goal, st.Threshold, st.TurnLimit}
 }
 
 func (g *Game) pending(o core.Observation) (left, total int) {

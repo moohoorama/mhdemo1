@@ -2,6 +2,7 @@ package gui
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/duelview"
@@ -35,7 +36,7 @@ func (g *Game) startDuelScene(stage int, duel content.Duel, enemyAttacks bool) e
 	if !g.S.Data.Characters[duel.Ally].Playable {
 		snap := e.Snapshot()
 		for i := range snap.Units {
-			if snap.Units[i].Faction == "enemy" && snap.Units[i].ID != g.S.Data.Stages[stage].Boss {
+			if snap.Units[i].Faction == "enemy" && !slices.Contains(g.S.Data.Stages[stage].VictoryTargets(), snap.Units[i].ID) {
 				snap.Units[i].HP = 0
 			}
 		}

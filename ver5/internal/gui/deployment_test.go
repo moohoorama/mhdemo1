@@ -150,7 +150,7 @@ func TestDeploymentLoadAndPanel(t *testing.T) {
 func TestLongDeploymentList(t *testing.T) {
 	g := deploymentController(t)
 	snap := g.S.Engine.Snapshot()
-	g.S.Data.Stages[snap.Stage].Limit = 20
+	g.S.Data.Stages[snap.Stage].Max = 20
 	for i := 0; i < 10; i++ {
 		id := fmt.Sprintf("reserve%d", i)
 		def := g.S.Data.Characters["archer1"]

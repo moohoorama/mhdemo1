@@ -79,9 +79,11 @@ assets/scenario/
 |---|---|
 | `ID` | 스테이지 ID. 유일해야 한다. 노드 `Stage`가 이 값을 가리킨다. |
 | `Name` | 표시 이름. |
-| `Boss` | 보스 인물 ID. `Goal`이 `rout`이 아니면 `Enemies`나 `Party`에 그 인물의 스폰이 있어야 한다. |
-| `Limit` | 출전 인원 상한. `Allies` 칸 수가 이 값 이상이어야 한다. |
-| `Threshold` | 보스 승리 기준. 보스 병력이 최대의 이 퍼센트 이하이면 승리(0이면 퇴각·전사). |
+| `Max` | 출전 인원 상한. 1 이상이고 `Allies`(배치 칸)가 이 값 이상이어야 한다. |
+| `Required` | 반드시 출전해야 하는 인물 ID(선택). 플레이어블이고 중복이 없어야 하며 `Max` 이하여야 한다. |
+| `Victory` | 승리 목표 `[{If, Text}]`. 하나라도 있어야 하고 `Text`는 필수. 하나의 `If`가 모두 참이면 승리([logic-battle-event.md](logic-battle-event.md) 3절). |
+| `Defeat` | 추가 패배 목표 `[{If, Text}]`(선택, `Text`는 선택). 군주의 퇴각과 아군 전멸은 늘 패배다. |
+| `Sub` | 부목표 `[{ID, Text, If, Flag, Reward}]`(선택). `ID`는 유일, `Text`·`If` 필수, `Reward`는 아이템 ID → 1 이상 개수. |
 | `TurnLimit` | 0 이상. 0이면 무제한([logic-battle-event.md](logic-battle-event.md)). |
 | `Allies` | 출전 장수를 놓을 수 있는 칸 `{X, Y}` 목록. |
 | `Enemies` | 적 스폰 목록. 비어 있을 수 없다(맵 문서 검증). |
@@ -90,7 +92,6 @@ assets/scenario/
 | `Duels` | 일기토 목록(5절). |
 | `Areas` | 번호 붙은 구역 목록(6절). |
 | `Events` | 전투 이벤트 목록(7절). |
-| `Goal` | `"rout"`이면 적 전멸이 승리 조건(선택). |
 | `Charge` | 참이면 적이 첫 턴부터 아군 쪽으로 진군한다(선택). AI 동작은 `internal/ai/ai.go`가 기준이다. |
 | `Faction` | 자기 `Faction`이 없는 적 스폰의 진영색. `Factions`에 있어야 한다. |
 
@@ -98,10 +99,12 @@ assets/scenario/
 
 - 스폰(`Enemies`, `Party`)은 4절의 스폰 규칙을 통과해야 한다. 이름 있는 인물(템플릿이 아닌)은 두 목록을 통틀어 한 번만 나올 수 있고, 인물이 정의에 있어야 하며, 좌표가 영역 안이고, 다른 스폰·`Allies` 칸과 겹치지 않아야 한다.
 - `Allies`의 칸은 영역 안이어야 하고 서로 또는 스폰과 겹치지 않아야 한다. 맵 문서 검증은 로스터의 병종 중 하나는 설 수 있는 지형이어야 한다고 더 요구한다.
-- 보스 승리 스테이지(`Goal`이 `rout`이 아님)는 `Boss`가 스폰에 있어야 하고, 맵 문서 검증은 보스가 `Enemies`에 있어야 한다고 요구한다.
+- `Victory`·`Defeat`·`Sub`의 조건은 전투 이벤트 조건(logic-battle-event.md 5.1절)이고 참조(유닛·그룹·구역·일기토)는 로드 때 검증한다. 대상 `enemy`·`ally`는 그 진영 전체이고, 스폰의 `Group` 이름으로 `ally`·`enemy`·`support`는 쓸 수 없다.
 
 ```json
-{"ID": "B02", "Name": "사수관 전투", "Boss": "huaxiong", "Limit": 4, "TurnLimit": 30, "Threshold": 0,
+{"ID": "B02", "Name": "사수관 전투", "Max": 4, "TurnLimit": 30,
+ "Victory": [{"If": ["defeated:huaxiong"], "Text": "화웅 격파"}],
+ "Sub": [{"ID": "duels", "Text": "두 일기토에서 모두 이긴다", "If": ["duel:a", "duel:b"], "Flag": "flag-b02-duels", "Reward": {"liquor": 1}}],
  "Reward": {"bean": 8, "liquor": 4}, "Faction": "dong", "Map": "map02.json"}
 ```
 

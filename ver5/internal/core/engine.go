@@ -298,6 +298,7 @@ func (e *Engine) enter() {
 		switch n.Kind {
 		case "battle":
 			e.state.Stage = e.data.StageIndex(n.Stage)
+			e.fitSortie(e.data.Stages[e.state.Stage])
 			return
 		case "scene":
 			e.state.Place = n.Place
@@ -459,7 +460,7 @@ func (e *Engine) prepare(c Command) error {
 	}
 	if c.Kind == "deploy" {
 		s := e.data.Stages[e.state.Stage]
-		if len(c.Deployment) < 1 || len(c.Deployment) > s.Limit {
+		if len(c.Deployment) < 1 || len(c.Deployment) > s.Max || !e.requiredIn(s, c.Deployment) {
 			return fail("InvalidDeployment")
 		}
 		seen := map[string]bool{}
@@ -511,7 +512,7 @@ func (e *Engine) prepare(c Command) error {
 	if c.Kind != "start" {
 		return fail("UnknownCommand")
 	}
-	if len(e.state.Deployment) < 1 || len(e.state.Deployment) > e.data.Stages[e.state.Stage].Limit {
+	if st := e.data.Stages[e.state.Stage]; len(e.state.Deployment) < 1 || len(e.state.Deployment) > st.Max || !e.requiredIn(st, e.state.Deployment) {
 		return fail("InvalidDeployment")
 	}
 	// Remove prior transient units and enemies from the preparation checkpoint.
@@ -632,11 +633,8 @@ func (e *Engine) settle() {
 			loss = true // the campaign is lost with its lord
 		}
 	}
-	loss, win := loss || !alive["ally"], !alive["enemy"]
-	if stage.Goal != "rout" {
-		boss := e.unit(stage.Boss)
-		win = boss.HP*100 <= e.stats(boss).MaxHP*stage.Threshold
-	}
+	loss = loss || !alive["ally"] || e.anyGoal(stage.Defeat)
+	win := e.anyGoal(stage.Victory)
 	if !loss && !win {
 		return
 	}
@@ -654,11 +652,48 @@ func (e *Engine) settle() {
 		}
 		e.state.Executed[key] = true
 	}
+	for _, o := range stage.Sub {
+		if key := "sub-" + stage.ID + "-" + o.ID; !e.state.Executed[key] && e.holdsIn(o.If, true) {
+			e.state.Executed[key] = true
+			for item, n := range o.Reward {
+				e.state.Inventory[item] += n
+			}
+			if o.Flag != "" {
+				if e.state.PendingFlags == nil {
+					e.state.PendingFlags = map[string]int{}
+				}
+				e.state.PendingFlags[o.Flag] = 1
+			}
+			e.emit("objective", "", o.ID, 0)
+		}
+	}
 	for k, v := range e.state.PendingFlags {
 		e.state.Flags[k] = v
 	}
 	e.state.PendingFlags = nil
 	e.emit("victory", "", stage.ID, 0)
+}
+
+// anyGoal reports whether one of the goals holds: all conditions of a goal must.
+func (e *Engine) anyGoal(goals []content.Goal) bool {
+	for _, g := range goals {
+		if e.holdsIn(g.If, true) {
+			return true
+		}
+	}
+	return false
+}
+
+// SubDone tells for each bonus objective of the current stage whether it holds right now.
+func (e *Engine) SubDone() []bool {
+	if e.state.Stage < 0 || e.state.Stage >= len(e.data.Stages) {
+		return nil
+	}
+	var out []bool
+	for _, o := range e.data.Stages[e.state.Stage].Sub {
+		out = append(out, e.state.Executed["sub-"+e.data.Stages[e.state.Stage].ID+"-"+o.ID] || e.state.Phase == "battle" && e.holdsIn(o.If, true))
+	}
+	return out
 }
 
 // Campaign transitions retire transient units and the previous retry checkpoint.
@@ -687,4 +722,26 @@ func SpawnPreview(d *content.Data, sp content.Spawn) UnitView {
 	u := e.spawn(sp.Character, sp.Character, "enemy", sp.X, sp.Y, sp)
 	c := e.char(u.Character)
 	return UnitView{Unit: *u, Name: e.name(c), Class: c.Class, Def: c.Def, Shoot: e.shootClass(u), Weapon: e.weaponType(u), Level: c.Level, Stats: e.stats(u), Traits: e.traits(c), Skills: e.skills(c)}
+}
+
+// requiredIn reports whether the sortie holds every officer the stage requires who is able to go.
+func (e *Engine) requiredIn(s content.Stage, sortie []string) bool {
+	for _, id := range s.Required {
+		if o := e.char(id); o != nil && !o.Dead && !e.isDeputy(id) && !contains(sortie, id) {
+			return false
+		}
+	}
+	return true
+}
+
+// fitSortie puts the officers a stage requires into the sortie; the player trims the rest to fit.
+func (e *Engine) fitSortie(s content.Stage) {
+	ids := append([]string{}, e.state.Deployment...)
+	for i := len(s.Required) - 1; i >= 0; i-- {
+		id := s.Required[i]
+		if o := e.char(id); o != nil && !o.Dead && !e.isDeputy(id) && !contains(ids, id) {
+			ids = append([]string{id}, ids...)
+		}
+	}
+	e.state.Deployment = ids
 }

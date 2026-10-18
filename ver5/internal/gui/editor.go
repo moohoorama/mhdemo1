@@ -648,7 +648,7 @@ func (g *Game) editorTrial() {
 			}
 		}
 	}
-	d.Campaign.Deployment = d.Campaign.Roster[:min(st.Limit, len(d.Campaign.Roster))]
+	d.Campaign.Deployment = d.Campaign.Roster[:min(st.Max, len(d.Campaign.Roster))]
 	trialDir, err := os.MkdirTemp("", "srpg-editor-trial-")
 	if err != nil {
 		e.message = err.Error()
