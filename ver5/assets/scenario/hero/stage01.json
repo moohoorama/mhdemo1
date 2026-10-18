@@ -142,6 +142,15 @@
    "Facing": "SW"
   },
   {
+   "Character": "dengmao",
+   "X": 5,
+   "Y": 3,
+   "Level": 3,
+   "Facing": "SW",
+   "Group": "northcamp",
+   "DuelFirst": true
+  },
+  {
    "Character": "troop_turban",
    "X": 12,
    "Y": 5,
@@ -303,7 +312,7 @@
      "Lines": [
       {
        "Actor": "zhangfei",
-       "Text": "형님, 우리 말고도 원군이 또 있었구먼유!"
+       "Text": "형, 우리 말고도 원군이 또 있었구먼유!"
       }
      ]
     }
@@ -482,7 +491,208 @@
      ]
     }
    ]
+  },
+  {
+   "ID": "chengyuanzhi-comes",
+   "If": [
+    "any:[duel:yingchuan-zhangfei-dengmao, defeated:dengmao]"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "chengyuanzhi",
+       "X": 3,
+       "Y": 3,
+       "Level": 4,
+       "Facing": "SW",
+       "Policy": "assault",
+       "DuelFirst": true,
+       "Side": "enemy"
+      }
+     ]
+    }
+   ]
   }
  ],
- "Faction": "turban"
+ "Faction": "turban",
+ "Duels": [
+  {
+   "ID": "yingchuan-zhangfei-dengmao",
+   "Ally": "zhangfei",
+   "Enemy": "dengmao",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "death",
+   "Text": "등무: 어디서 굴러온 촌놈이냐! 장비: 연인 장익덕이 여기 있다! 장비가 장팔사모로 등무를 단번에 꿰뚫었다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "등무의 조롱",
+     "Speech": "어디서 굴러온 촌놈이냐! 내 칼 아래 쓰러진 자가 한둘이 아니다!",
+     "Side": 1,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비의 호통",
+     "Speech": "연인 장익덕이 여기 있슈! 목 씻고 기다리랑께!",
+     "Side": 0,
+     "Duration": 2.9
+    },
+    {
+     "Kind": "approach",
+     "Title": "등무도 기세등등하게 중앙으로 나서다",
+     "Speech": "덤벼라!",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "중앙에서 정면으로 대치하다",
+     "Speech": "네놈의 사모쯤이야 이 칼로 부러뜨려 주마!",
+     "Side": 1,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "block",
+     "Title": "등무가 먼저 칼을 휘둘러 들어가다",
+     "Speech": "간지럽구먼!",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "hit",
+     "Title": "장비가 칼날을 쳐내고 반격하다",
+     "Speech": "어딜 베려고 그러는겨!",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "등무가 당황하다",
+     "Speech": "이… 이놈이 제법이구나!",
+     "Side": 1,
+     "Duration": 1.9
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "성난 등무가 돌진하며 거듭 베다",
+     "Speech": "흥, 어림없슈!",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "등무가 두려움을 느끼다",
+     "Speech": "(이 괴력은 무엇이란 말이냐…!)",
+     "Side": 1,
+     "Duration": 2.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 마무리를 선언하다",
+     "Speech": "이제 내 차례여! 이 장팔사모 맛 좀 보랑께!",
+     "Side": 0,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "critical",
+     "Title": "장팔사모의 일격",
+     "Speech": "으라아앗!",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "win",
+     "Title": "장비가 한 합에 등무를 꿰뚫다",
+     "Speech": "다음은 누구여! 어서 나와 보랑께!",
+     "Side": 0,
+     "Duration": 2.5
+    }
+   ]
+  },
+  {
+   "ID": "yingchuan-guanyu-chengyuanzhi",
+   "Ally": "guanyu",
+   "Enemy": "chengyuanzhi",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "death",
+   "Text": "정원지: 등무의 원수를 갚겠다! 관우: 그 목, 내가 거두겠다. 관우가 청룡도 한 번에 정원지를 베어 넘겼다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "정원지의 복수 선언",
+     "Speech": "등무가 네놈들 손에 죽었다 들었다! 이 정원지가 원수를 갚겠다!",
+     "Side": 1,
+     "Duration": 3.5
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우의 차분한 응답",
+     "Speech": "그 목, 내가 거두겠다. 청룡도가 오래 굶었다.",
+     "Side": 0,
+     "Duration": 2.9
+    },
+    {
+     "Kind": "advance",
+     "Title": "정원지가 성난 기세로 돌진",
+     "Speech": "죽어라!",
+     "Side": 1,
+     "Duration": 0.7
+    },
+    {
+     "Kind": "block",
+     "Title": "정원지가 연달아 칼을 휘두르다",
+     "Speech": "서두르는구나.",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 칼날을 가볍게 흘리다",
+     "Speech": "칼끝이 흔들리는군.",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "정원지의 초조함",
+     "Speech": "(이놈… 어찌 이리 꿈쩍도 않느냐!)",
+     "Side": 1,
+     "Duration": 2.4
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "정원지가 이를 악물고 마지막으로 돌진하다",
+     "Speech": "복수를 입에 담기엔 힘이 부족하다.",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 청룡도를 고쳐 쥐다",
+     "Speech": "이제 끝내자.",
+     "Side": 0,
+     "Duration": 1.4
+    },
+    {
+     "Kind": "critical",
+     "Title": "관우가 돌진을 받아 청룡도를 휘두르다",
+     "Speech": "하앗!",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "win",
+     "Title": "관우가 한 칼에 정원지를 베다",
+     "Speech": "적장은 쓰러졌다.",
+     "Side": 0,
+     "Duration": 2.5
+    }
+   ]
+  }
+ ]
 }

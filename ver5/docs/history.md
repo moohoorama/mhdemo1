@@ -7,8 +7,22 @@
 
 ## 2026-10-18
 
+### 1~9장 일기토를 이야기와 성격에 맞춰 다시 씀
+- `assets/scenario/hero/stage01.json`: 영천에 등무(북쪽 진영)와 정원지(등무가 쓰러지면 등장)를 놓고 옛 캠페인의 두 일기토(장비·관우 승, 둘 다 전사)를 되살림 — 새 시나리오로 옮기며 빠졌던 연의 1회의 두 장면이라서. 정원지의 "등무가 죽었다" 대사가 맞도록 등장 순서를 이벤트로 묶음
+- `assets/scenario/hero/stage04.json`: 변수에 여포 대 하후돈(하후돈 열세·퇴각)과 여포 대 장비(무승부, 장비가 호로관보다 수세에 몰리지만 버팀)를 더하고 여포에 `DuelFirst`, 부목표를 "조조 생존"으로 줄이고 승리를 "유비만 동쪽 끝에 도달", 패배에서 조조 퇴각을 뺌 — 하후돈이 퇴각하면 "조조군 장수 전원 생존"을 못 이루고, 조조 퇴각이 패배면 "조조 생존"이 늘 참이라서
+- `assets/scenario/hero/stage05·06·07.json`: 신도성 순우경(술기운·코 복선), 거록 안량(결과를 무승부에서 장비 압승으로 바꾸고 관우 대 화웅 정도의 격차), 계교 문추(조운을 언급한 오기, 장비 승)의 `Beats`를 새로 씀. 계교 오프닝은 컷신 근사를 버리고 일기토 공손찬 대 문추(무승부, 둘 다 생존)를 `duel` 동작으로 치르게 함
+- `internal/content/battle_events.go`, `validate.go`, `map_document.go`: 일기토의 아군은 `Party`에 있어도, 적은 이벤트가 `Side: "enemy"`로 만들어도 되게 풂 — 하후돈·공손찬(처음부터 있는 NPC)과 여포·정원지(이벤트 등장)를 일기토에 쓰려고
+- `internal/core/campaign_content_test.go`: 이벤트로 나타난 호위병을 치워 일기토 상대 옆자리를 비움
+- `docs/data-speech-style.md`: 장비는 형들을 `형`(관우는 `형님`)으로 부르고 방언은 살짝만, 하후돈·순우경·안량·문추·공손찬 말투와 여포의 `애꾸` 호칭을 더함
+- 영향: `docs/conceptual_scenario.md`, `data-scenario-node.md`, `todo/data.md`
+
+### 스테이지 번호를 1부터 이어서 다시 매김
+- `assets/scenario/hero/stage03~09.json`·`maps/map03~09.json`·`tools/mapgen/layouts/hero/map03~09.txt`: 이야기 번호(1·3·4·5·7·8·9)를 따르던 이름과 ID를 `B01~B07`·`stage01~07`·`map01~07`로 바꿈, 전투 노드(`story03·04·05·07·08·09`)의 `Stage`와 변수 추격전의 `flag-b05-lubu`를 `flag-b04-lubu`로 맞춤 — 스테이지 2가 없는 번호 구멍을 없애려고(스토리 번호는 그대로)
+- `internal/*/coalition_test.go`·`gui/*_render_test.go`·`core/campaign_content_test.go`·`cmd/_m8check`·`docs/data-map.md`: 새 ID에 맞춤
+- 영향: 옛 저장은 `ContentHash`로 어차피 거부됨
+
 ### 시나리오 1~9장을 데이터로 만들고 옛 캠페인을 교체함
-- 도원결의·사수관·호로관 세 판짜리 옛 캠페인을 지우고 `conceptual_scenario.md`의 1~9장(영천~계교)을 스토리 9장·스테이지 7개·맵 7개로 만듦. 맵은 글자 배치에서 생성(`tools/mapgen`). 새 인물 26명(`characters_story.json`)과 화계서(`fire_manual`)를 더함. 책략 「화계」 보상은 부목표 플래그를 전투 뒤 `branch`가 읽고 `grant`로 장비를 주는 방식이라 새 노드 종류 없이 해결함. 일기토 연출은 새로 쓴 것 대부분이 기본 연출이고 호로관·사수관의 것만 옛 연출을 이어씀.
+- 도원결의·사수관·호로관 세 판짜리 옛 캠페인을 지우고 `conceptual_scenario.md`의 1~9장(영천~계교)을 장 9개·스테이지 7개·맵 7개로 만듦. 맵은 글자 배치에서 생성(`tools/mapgen`). 새 인물 26명(`characters_story.json`)과 화계서(`fire_manual`)를 더함. 책략 「화계」 보상은 부목표 플래그를 전투 뒤 `branch`가 읽고 `grant`로 장비를 주는 방식이라 새 노드 종류 없이 해결함. 일기토 연출은 새로 쓴 것 대부분이 기본 연출이고 호로관·사수관의 것만 옛 연출을 이어씀.
 - 호로관의 삼영전을 일기토 하나(`hulao-brothers`)와 `Variants`(먼저 맞닿은 장수)로 합침 — 일기토가 인접하는 순간 자동으로 벌어져 셋으로 나눠 두면 셋이 따로 벌어질 수 있어서.
 - 영향: `assets/scenario/hero/`, `assets/data/characters_story.json`, `internal/core/campaign_content_test.go`, `tools/mapgen/`, `docs/todo/data.md`
 
@@ -222,8 +236,8 @@
 - 불길(진입 불가)과 불붙은 땅(배율 0.8, 차례를 맞으면 최대 병력의 20% 손실). 지나가기만 하면 피해가 없다. 불이 붙는 것은 `terrain` 동작이 타일을 바꾸는 것으로만 일어난다.
 - 영향: `todo/engine.md` 2.6
 
-### 전투 없는 장은 스테이지가 아니라 스토리
-- 2 낙양, 6 산조, 12 서주 계승, 16 허도, 24 삼고초려는 노드 시퀀스로만 이루어진 스토리다. 전투 중 이벤트와 구별한다.
+### 스테이지는 전투, 스토리는 장면·대사
+- 스테이지는 전투이고 스토리는 장면·대사 노드의 흐름이다. 전투 앞뒤의 장면(1 영천의 노식 대사 등)도 스토리이고, 2 낙양, 6 산조, 12 서주 계승, 16 허도, 24 삼고초려는 스토리만 있는 번호다("전투 없는 장"이라는 별도 범주는 없다). 전투 중 이벤트와 구별한다.
 - 영향: `conceptual_scenario.md`, `todo/engine.md`, `todo/data.md`
 
 ### 호로관의 연합 장수는 목순으로 통일

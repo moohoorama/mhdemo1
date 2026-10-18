@@ -141,8 +141,8 @@ assets/scenario/
 | 필드 | 뜻 |
 |---|---|
 | `ID` | 비어 있지 않고 모든 스테이지를 통틀어 유일. `Executed["duel-<ID>"]`의 키가 된다. |
-| `Ally` | 아군 인물 ID. `Playable`이거나 이 스테이지 이벤트가 만드는 아군이어야 한다. |
-| `Enemy` | 적 인물 ID. `Enemies`에 있어야 한다. |
+| `Ally` | 아군 인물 ID. `Playable`이거나 `Party`에 있거나 이 스테이지 이벤트가 만드는 아군이어야 한다. |
+| `Enemy` | 적 인물 ID. `Enemies`에 있거나 이 스테이지 이벤트가 `Side: "enemy"`로 만드는 인물이어야 한다. |
 | `Outcome` | 아군 기준 결과 표시. `victory`, `defeat`, `draw` 중 하나. |
 | `AllyResult`, `EnemyResult` | 각 쪽의 결과. `stay`, `retreat`, `death` 중 하나. |
 | `Text` | 일기토 로그에 남는 글. |

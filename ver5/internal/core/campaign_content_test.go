@@ -127,7 +127,7 @@ func executed(e *Engine, key string) bool { return e.state.Executed[key] }
 
 func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, true)
-	assert.Equal(t, []string{"B01", "B03", "B04", "B05", "B07", "B08", "B09"}, fought)
+	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07"}, fought)
 	assert.Equal(t, 1, e.state.Flags["flag-yingchuan-village"])
 	assert.Equal(t, 1, e.state.Flags["flag-xufu-alive"])
 	assert.Equal(t, 1, e.state.Flags["flag-sunjian-alive"])
@@ -139,8 +139,8 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	for _, id := range []string{"jianyong", "fangong", "zhaoyun"} {
 		assert.NotNil(t, e.char(id), id+" joins the party")
 	}
-	assert.True(t, executed(e, "battle-B09-vanguard-clear"), "a clean win at Julu eases the vanguard at Jiejiao")
-	assert.False(t, executed(e, "battle-B09-vanguard-strong"))
+	assert.True(t, executed(e, "battle-B07-vanguard-clear"), "a clean win at Julu eases the vanguard at Jiejiao")
+	assert.False(t, executed(e, "battle-B07-vanguard-strong"))
 }
 
 func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
@@ -149,8 +149,8 @@ func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
 	assert.Zero(t, e.state.Flags["flag-yingchuan-village"])
 	assert.Zero(t, e.state.Flags["flag-julu-clear"])
 	assert.Zero(t, e.state.Warehouse["fire_manual"], "the manual stays with its giver")
-	assert.True(t, executed(e, "battle-B09-vanguard-strong"), "the vanguard at Jiejiao is the hard one")
-	assert.False(t, executed(e, "battle-B09-vanguard-clear"))
+	assert.True(t, executed(e, "battle-B07-vanguard-strong"), "the vanguard at Jiejiao is the hard one")
+	assert.False(t, executed(e, "battle-B07-vanguard-clear"))
 }
 
 func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
@@ -190,6 +190,11 @@ func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
 				require.NotNil(t, b, "the enemy of the duel never reaches the field")
 				if a.HP <= 0 || b.HP <= 0 || e.state.Executed["duel-"+duel.ID] {
 					t.Skip("the duel already happened on its own")
+				}
+				for _, id := range keys(e.unitIDs) {
+					if u := e.unit(id); u.Faction == "enemy" && u.Character != duel.Enemy {
+						u.HP = 0
+					}
 				}
 				placed := false
 				for _, off := range [][2]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}} {

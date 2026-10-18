@@ -3,17 +3,18 @@ package content
 import "fmt"
 
 // validateBattleEvents checks a stage's areas, events and objectives and returns the characters
-// its events spawn on the allies' side.
-func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
+// its events spawn on the allies' side and on the enemy side.
+func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, error) {
 	areas := map[int]bool{}
 	for _, a := range s.Areas {
 		r := a.Rect
 		if a.ID < 1 || areas[a.ID] || a.Name == "" || r.W < 1 || r.H < 1 || r.X+r.W <= 0 || r.Y+r.H <= 0 || r.X >= s.Width || r.Y >= s.Height {
-			return nil, fmt.Errorf("area %d", a.ID)
+			return nil, nil, fmt.Errorf("area %d", a.ID)
 		}
 		areas[a.ID] = true
 	}
 	allies := map[string]bool{}
+	enemies := map[string]bool{}
 	actors := map[string]bool{}
 	targets := map[string]bool{"ally": true, "enemy": true} // every unit of a side
 	for id, c := range d.Characters {
@@ -37,7 +38,7 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 	}
 	for _, sp := range append(append([]Spawn{}, s.Party...), s.Enemies...) {
 		if sp.Group == "ally" || sp.Group == "enemy" || sp.Group == "support" {
-			return nil, fmt.Errorf("group name %q is reserved", sp.Group)
+			return nil, nil, fmt.Errorf("group name %q is reserved", sp.Group)
 		}
 	}
 	for _, sp := range append(append([]Spawn{}, s.Party...), s.Enemies...) {
@@ -50,144 +51,146 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 	ids := map[string]bool{}
 	for _, event := range s.Events {
 		if event.ID == "" || ids[event.ID] || len(event.Do) == 0 {
-			return nil, fmt.Errorf("battle event %s", event.ID)
+			return nil, nil, fmt.Errorf("battle event %s", event.ID)
 		}
 		ids[event.ID] = true
 		for _, a := range event.Do {
 			switch a.Kind {
 			case "join":
 				if event.Repeat || len(a.Spawns) == 0 {
-					return nil, fmt.Errorf("battle event %s: join without officers", event.ID)
+					return nil, nil, fmt.Errorf("battle event %s: join without officers", event.ID)
 				}
 				for _, sp := range a.Spawns {
 					c := d.Characters[sp.Character]
 					if err := d.ValidateSpawn(sp); err != nil {
-						return nil, err
+						return nil, nil, err
 					}
 					if !c.Playable || c.Lord || c.Template || sp.AI || sp.Side != "" || sp.Policy != "" || sp.X < 0 || sp.Y < 0 || sp.X >= s.Width || sp.Y >= s.Height || placed[sp.Character] {
-						return nil, fmt.Errorf("battle event %s: join %s", event.ID, sp.Character)
+						return nil, nil, fmt.Errorf("battle event %s: join %s", event.ID, sp.Character)
 					}
 					allies[sp.Character] = true
 					note(sp)
 				}
 			case "spawn":
 				if event.Repeat || len(a.Spawns) == 0 {
-					return nil, fmt.Errorf("battle event %s: spawn without units", event.ID)
+					return nil, nil, fmt.Errorf("battle event %s: spawn without units", event.ID)
 				}
 				for _, sp := range a.Spawns {
 					if err := d.ValidateSpawn(sp); err != nil {
-						return nil, err
+						return nil, nil, err
 					}
 					enemy := sp.Side == "enemy"
 					if !ValidPolicy(sp.Policy, sp.Goal, s.Width, s.Height) {
-						return nil, fmt.Errorf("battle event spawn %s: policy", sp.Character)
+						return nil, nil, fmt.Errorf("battle event spawn %s: policy", sp.Character)
 					}
 					if sp.Side != "" && sp.Side != "ally" && !enemy || !enemy && !sp.AI || sp.X < 0 || sp.Y < 0 || sp.X >= s.Width || sp.Y >= s.Height || d.Characters[sp.Character].Playable || d.Characters[sp.Character].Lord {
-						return nil, fmt.Errorf("battle event spawn %s", sp.Character)
+						return nil, nil, fmt.Errorf("battle event spawn %s", sp.Character)
 					}
 					if sp.Faction != "" {
 						if _, ok := d.Factions[sp.Faction]; !ok {
-							return nil, fmt.Errorf("battle event faction %s", sp.Faction)
+							return nil, nil, fmt.Errorf("battle event faction %s", sp.Faction)
 						}
 					}
 					if !d.Characters[sp.Character].Template && actors[sp.Character] {
-						return nil, fmt.Errorf("duplicate event officer %s", sp.Character)
+						return nil, nil, fmt.Errorf("duplicate event officer %s", sp.Character)
 					}
-					if !enemy {
+					if enemy {
+						enemies[sp.Character] = true
+					} else {
 						allies[sp.Character] = true
 					}
 					note(sp)
 				}
 			case "ai":
 				if a.Policy == "" || len(a.Targets) == 0 || !ValidPolicy(a.Policy, a.Goal, s.Width, s.Height) {
-					return nil, fmt.Errorf("battle event %s: ai action", event.ID)
+					return nil, nil, fmt.Errorf("battle event %s: ai action", event.ID)
 				}
 			case "terrain":
 				if _, ok := d.Tiles[a.Tile]; !ok || !areas[a.Area] || a.Turns < 0 {
-					return nil, fmt.Errorf("battle event %s: terrain action", event.ID)
+					return nil, nil, fmt.Errorf("battle event %s: terrain action", event.ID)
 				}
 			case "buff":
 				if !contains(BuffStats, a.Stat) || a.Value == 0 || a.Value < -100 || a.Value > 100 || a.Turns < 0 || a.Turns > 99 || len(a.Targets) == 0 {
-					return nil, fmt.Errorf("battle event %s: buff action", event.ID)
+					return nil, nil, fmt.Errorf("battle event %s: buff action", event.ID)
 				}
 			case "move":
 				if len(a.Moves) == 0 {
-					return nil, fmt.Errorf("battle event %s: move without units", event.ID)
+					return nil, nil, fmt.Errorf("battle event %s: move without units", event.ID)
 				}
 				for _, mv := range a.Moves {
 					if mv.To.X < 0 || mv.To.Y < 0 || mv.To.X >= s.Width || mv.To.Y >= s.Height {
-						return nil, fmt.Errorf("battle event %s: move %s off the map", event.ID, mv.Unit)
+						return nil, nil, fmt.Errorf("battle event %s: move %s off the map", event.ID, mv.Unit)
 					}
 				}
 			case "cutscene":
 				if len(a.Steps) == 0 {
-					return nil, fmt.Errorf("battle event %s: empty cutscene", event.ID)
+					return nil, nil, fmt.Errorf("battle event %s: empty cutscene", event.ID)
 				}
 			case "duel":
 				if !duels[a.Duel] {
-					return nil, fmt.Errorf("battle event %s: no duel %q", event.ID, a.Duel)
+					return nil, nil, fmt.Errorf("battle event %s: no duel %q", event.ID, a.Duel)
 				}
 			case "say", "remove", "flag":
 			default:
-				return nil, fmt.Errorf("battle event %s: action %q", event.ID, a.Kind)
+				return nil, nil, fmt.Errorf("battle event %s: action %q", event.ID, a.Kind)
 			}
 		}
 	}
 	refs := &battleRefs{targets: targets, areas: areas, duels: duels}
 	if err := d.validateObjectives(s, refs); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	for _, event := range s.Events {
 		for _, cond := range event.If {
 			if err := d.validateCond(cond, refs); err != nil {
-				return nil, fmt.Errorf("battle event %s: %w", event.ID, err)
+				return nil, nil, fmt.Errorf("battle event %s: %w", event.ID, err)
 			}
 		}
 		for _, a := range event.Do {
 			switch a.Kind {
 			case "say":
 				if len(a.Lines) == 0 {
-					return nil, fmt.Errorf("empty battle dialogue %s", event.ID)
+					return nil, nil, fmt.Errorf("empty battle dialogue %s", event.ID)
 				}
 				seen := map[string]bool{}
 				for _, line := range a.Lines {
 					if !actors[line.Actor] || line.Text == "" || seen[line.Actor] {
-						return nil, fmt.Errorf("battle dialogue %s", event.ID)
+						return nil, nil, fmt.Errorf("battle dialogue %s", event.ID)
 					}
 					seen[line.Actor] = true
 				}
 			case "move":
 				for _, mv := range a.Moves {
 					if !refs.targets[mv.Unit] {
-						return nil, fmt.Errorf("battle event %s: move %s", event.ID, mv.Unit)
+						return nil, nil, fmt.Errorf("battle event %s: move %s", event.ID, mv.Unit)
 					}
 				}
 			case "cutscene":
 				if err := validateCutscene(s, event.ID, a.Steps, refs); err != nil {
-					return nil, err
+					return nil, nil, err
 				}
 			case "remove", "ai", "buff":
 				if len(a.Targets) == 0 {
-					return nil, fmt.Errorf("battle event %s: %s without targets", event.ID, a.Kind)
+					return nil, nil, fmt.Errorf("battle event %s: %s without targets", event.ID, a.Kind)
 				}
 				for _, t := range a.Targets {
 					if !refs.targets[t] {
-						return nil, fmt.Errorf("battle event %s: %s %s", event.ID, a.Kind, t)
+						return nil, nil, fmt.Errorf("battle event %s: %s %s", event.ID, a.Kind, t)
 					}
 				}
 			case "flag":
 				if len(a.Flags) == 0 {
-					return nil, fmt.Errorf("battle event %s: flag without flags", event.ID)
+					return nil, nil, fmt.Errorf("battle event %s: flag without flags", event.ID)
 				}
 				for k := range a.Flags {
 					if k == "" {
-						return nil, fmt.Errorf("battle event %s: empty flag name", event.ID)
+						return nil, nil, fmt.Errorf("battle event %s: empty flag name", event.ID)
 					}
 				}
 			}
 		}
 	}
-	return allies, nil
+	return allies, enemies, nil
 }
 
 // validateObjectives checks who must sortie and the victory, defeat and bonus goals.

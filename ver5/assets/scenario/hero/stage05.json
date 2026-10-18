@@ -1,374 +1,344 @@
 {
  "ID": "B05",
- "Name": "변수 추격전",
+ "Name": "신도성 전투",
  "Width": 0,
  "Height": 0,
- "Max": 3,
+ "Max": 4,
  "Required": [
   "liubei",
   "guanyu",
-  "zhangfei"
+  "zhangfei",
+  "jianyong"
  ],
  "Victory": [
   {
    "If": [
-    "flag:flag-b05-lubu",
-    "at:liubei:1",
-    "at:caocao:1"
+    "defeated:chunyuqiong"
    ],
-   "Text": "여포가 나타난 뒤 유비와 조조가 모두 동쪽 끝에 도달"
+   "Text": "순우경 퇴각"
   }
  ],
  "Defeat": [
   {
    "If": [
-    "defeated:caocao"
+    "defeated:fangong"
    ],
-   "Text": "조조 퇴각"
-  }
- ],
- "Sub": [
+   "Text": "번궁 퇴각"
+  },
   {
-   "ID": "generals",
-   "Text": "조조군 장수(조조·하후돈·하후연·조인·조홍) 전원 생존",
    "If": [
-    "alive:caocao",
-    "alive:xiahoudun",
-    "alive:xiahouyuan",
-    "alive:caoren",
-    "alive:caohong"
+    "at:enemy:1"
    ],
-   "Flag": "flag-bianshui-generals"
+   "Text": "성 안이 점령당함"
   }
  ],
- "TurnLimit": 16,
- "Tiles": null,
+ "TurnLimit": 15,
  "Map": "map05.json",
+ "Tiles": null,
  "Allies": [
   {
-   "X": 22,
-   "Y": 4
+   "X": 21,
+   "Y": 0
   },
   {
    "X": 22,
-   "Y": 5
+   "Y": 1
+  },
+  {
+   "X": 20,
+   "Y": 0
+  },
+  {
+   "X": 21,
+   "Y": 1
   },
   {
    "X": 22,
-   "Y": 6
+   "Y": 2
   },
   {
-   "X": 22,
-   "Y": 7
-  },
-  {
-   "X": 23,
-   "Y": 4
-  },
-  {
-   "X": 23,
-   "Y": 5
-  },
-  {
-   "X": 23,
-   "Y": 6
-  },
-  {
-   "X": 23,
-   "Y": 7
+   "X": 20,
+   "Y": 2
   }
  ],
  "Party": [
   {
-   "Character": "caocao",
-   "X": 14,
+   "Character": "fangong",
+   "X": 3,
    "Y": 5,
-   "Facing": "NW",
+   "Level": 3,
    "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "march",
-   "Goal": {
-    "X": 11,
-    "Y": 5
-   }
-  },
-  {
-   "Character": "xiahoudun",
-   "X": 14,
-   "Y": 6,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "march",
-   "Goal": {
-    "X": 11,
-    "Y": 5
-   }
-  },
-  {
-   "Character": "xiahouyuan",
-   "X": 13,
-   "Y": 4,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "march",
-   "Goal": {
-    "X": 11,
-    "Y": 5
-   }
-  },
-  {
-   "Character": "caoren",
-   "X": 13,
-   "Y": 7,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "march",
-   "Goal": {
-    "X": 11,
-    "Y": 5
-   }
-  },
-  {
-   "Character": "caohong",
-   "X": 15,
-   "Y": 5,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "march",
-   "Goal": {
-    "X": 11,
-    "Y": 5
-   }
-  },
-  {
-   "Character": "troop_footman",
-   "X": 15,
-   "Y": 4,
-   "Level": 6,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "march",
-   "Goal": {
-    "X": 11,
-    "Y": 5
-   }
-  },
-  {
-   "Character": "troop_footman",
-   "X": 15,
-   "Y": 6,
-   "Level": 6,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "march",
-   "Goal": {
-    "X": 11,
-    "Y": 5
-   }
-  },
-  {
-   "Character": "troop_archer",
-   "X": 16,
-   "Y": 5,
-   "Level": 6,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "march",
-   "Goal": {
-    "X": 11,
-    "Y": 5
-   }
-  },
-  {
-   "Character": "troop_archer",
-   "X": 16,
-   "Y": 6,
-   "Level": 6,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "march",
-   "Goal": {
-    "X": 11,
-    "Y": 5
-   }
-  },
-  {
-   "Character": "troop_footman",
-   "X": 16,
-   "Y": 4,
-   "Level": 6,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "march",
-   "Goal": {
-    "X": 11,
-    "Y": 5
-   }
-  },
-  {
-   "Character": "troop_footman",
-   "X": 16,
-   "Y": 7,
-   "Level": 6,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "march",
-   "Goal": {
-    "X": 11,
-    "Y": 5
-   }
+   "Policy": "hold",
+   "Facing": "SE"
   }
  ],
  "Enemies": [
   {
-   "Character": "xurong",
-   "X": 17,
-   "Y": 3,
-   "Level": 8,
-   "Facing": "SW",
-   "Group": "ambush",
-   "Policy": "hold"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 15,
-   "Y": 3,
-   "Level": 5,
-   "Facing": "SW",
-   "Group": "ambush",
-   "Policy": "hold"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 16,
-   "Y": 3,
-   "Level": 5,
-   "Facing": "SW",
-   "Group": "ambush",
-   "Policy": "hold"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 18,
-   "Y": 3,
-   "Level": 5,
-   "Facing": "SW",
-   "Group": "ambush",
-   "Policy": "hold"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 19,
-   "Y": 3,
-   "Level": 5,
-   "Facing": "SW",
-   "Group": "ambush",
-   "Policy": "hold"
-  },
-  {
-   "Character": "troop_cavalry",
+   "Character": "chunyuqiong",
    "X": 14,
-   "Y": 8,
-   "Level": 5,
+   "Y": 6,
    "Facing": "NW",
-   "Group": "ambush",
-   "Policy": "hold"
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   },
+   "Group": "chunyu"
   },
   {
    "Character": "troop_footman",
-   "X": 15,
-   "Y": 8,
-   "Level": 5,
+   "X": 12,
+   "Y": 4,
+   "Level": 4,
+   "Group": "main",
    "Facing": "NW",
-   "Group": "ambush",
-   "Policy": "hold"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 16,
-   "Y": 8,
-   "Level": 5,
-   "Facing": "NW",
-   "Group": "ambush",
-   "Policy": "hold"
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
   },
   {
    "Character": "troop_footman",
-   "X": 17,
-   "Y": 8,
-   "Level": 5,
+   "X": 12,
+   "Y": 5,
+   "Level": 4,
+   "Group": "main",
    "Facing": "NW",
-   "Group": "ambush",
-   "Policy": "hold"
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 7,
+   "Level": 4,
+   "Group": "main",
+   "Facing": "NW",
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 8,
+   "Level": 4,
+   "Group": "main",
+   "Facing": "NW",
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
   },
   {
    "Character": "troop_archer",
-   "X": 18,
-   "Y": 8,
-   "Level": 5,
+   "X": 13,
+   "Y": 5,
+   "Level": 4,
+   "Group": "main",
    "Facing": "NW",
-   "Group": "ambush",
-   "Policy": "hold"
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
+  },
+  {
+   "Character": "troop_archer",
+   "X": 13,
+   "Y": 7,
+   "Level": 4,
+   "Group": "main",
+   "Facing": "NW",
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
+  },
+  {
+   "Character": "troop_footman",
+   "X": 13,
+   "Y": 4,
+   "Level": 4,
+   "Group": "main",
+   "Facing": "NW",
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
+  },
+  {
+   "Character": "troop_footman",
+   "X": 13,
+   "Y": 8,
+   "Level": 4,
+   "Group": "main",
+   "Facing": "NW",
+   "Policy": "march",
+   "Goal": {
+    "X": 10,
+    "Y": 6
+   }
   }
  ],
- "Reward": {
-  "bean": 8,
-  "liquor": 4
- },
+ "Faction": "yuan",
  "Areas": [
   {
    "ID": 1,
    "Rect": {
-    "X": 25,
-    "Y": 3,
-    "W": 3,
-    "H": 6
+    "X": 2,
+    "Y": 4,
+    "W": 4,
+    "H": 4
    },
-   "Name": "연합 진영 방향",
-   "Description": "시작과 퇴각의 지점. 유비와 조조가 닿아야 하는 동쪽 끝"
+   "Name": "성 안",
+   "Description": "적이 들어서면 성이 점령당하는 성 안 지점"
+  }
+ ],
+ "Duels": [
+  {
+   "ID": "xindu-zhang-fei",
+   "Ally": "zhangfei",
+   "Enemy": "chunyuqiong",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "장비가 술에 취한 순우경을 몰아붙이자 순우경이 물러났다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "장비의 도발",
+     "Speech": "연인 장익덕이다! 술은 저승에서 마셔라!",
+     "Side": 0,
+     "Duration": 2.5
+    },
+    {
+     "Kind": "talk",
+     "Title": "순우경이 당황하다",
+     "Speech": "이, 이놈이……! 한창 기분 좋을 때 어디서 굴러온 촌놈이냐!",
+     "Side": 1,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 술로 받아치다",
+     "Speech": "술이믄 이 장익덕이 모를까 보냐! 한 잔 걸치고 싸워도 네놈보단 낫겄다!",
+     "Side": 0,
+     "Duration": 3.9
+    },
+    {
+     "Kind": "approach",
+     "Title": "순우경이 비틀비틀 칼을 들고 나서다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "순우경이 허세를 부리다",
+     "Speech": "내 칼맛이 술보다 독하다! 받아라!",
+     "Side": 1,
+     "Duration": 2.3
+    },
+    {
+     "Kind": "block",
+     "Title": "순우경의 칼을 장비가 가볍게 막다",
+     "Speech": "간지럽구먼. 술이 덜 깼나 보우?",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "순우경의 칼이 허공을 가르다",
+     "Speech": "어딜 베는겨, 헛손질이잖여!",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "순우경이 휘청이며 돌진하다",
+     "Speech": "비틀거리지 말고 똑바로 와 보랑께!",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "순우경의 눈이 풀리다",
+     "Speech": "(술기운인지… 이놈이 둘로 보인다……)",
+     "Side": 1,
+     "Duration": 2.5
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 마무리를 선언하다",
+     "Speech": "이제 내 차례여! 취한 놈은 곱게 재워 줘야지!",
+     "Side": 0,
+     "Duration": 2.9
+    },
+    {
+     "Kind": "critical",
+     "Title": "장비의 창끝이 순우경의 코끝을 스치다",
+     "Speech": "으라앗!",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "talk",
+     "Title": "순우경이 술기운에서 깨다",
+     "Speech": "(코끝이 서늘하다……! 술이 확 깼다!)",
+     "Side": 1,
+     "Duration": 2.5
+    },
+    {
+     "Kind": "talk",
+     "Title": "순우경이 도망을 결심하다",
+     "Speech": "이, 이놈이……! 성문은 나중에다! 물러난다!",
+     "Side": 1,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "retreat",
+     "Title": "순우경이 직선으로 아군 대열 속으로 달아나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 뒤에서 소리치다",
+     "Speech": "어딜 가는겨! 술값은 내고 가야지!",
+     "Side": 0,
+     "Duration": 2.3
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "순우경이 대열 속으로 사라지다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    }
+   ]
   }
  ],
  "Events": [
   {
-   "ID": "ambush",
-   "If": [
-    "round>=2"
-   ],
+   "ID": "opening",
    "Do": [
-    {
-     "Kind": "ai",
-     "Targets": [
-      "ambush"
-     ],
-     "Policy": "assault"
-    },
     {
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "xurong",
-       "Text": "조조, 기다리고 있었다! 한 놈도 살려 보내지 마라!"
+       "Actor": "chunyuqiong",
+       "Text": "성문이 곧 부서진다! 오늘 밤은 신도성에서 술을 마신다!"
       }
      ]
     },
@@ -376,171 +346,96 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "caocao",
-       "Text": "나왔구나. 현덕, 지금이오!"
+       "Actor": "fangong",
+       "Text": "원군이다! 조금만 더 버텨라!"
       }
      ]
     }
    ]
   },
   {
-   "ID": "lords-arrive",
+   "ID": "flank-arrives",
    "If": [
-    "round>=2"
+    "round>=3"
    ],
    "Do": [
     {
      "Kind": "spawn",
      "Spawns": [
       {
-       "Character": "yuanshu",
-       "X": 25,
-       "Y": 5,
-       "Facing": "NW",
-       "AI": true,
+       "Character": "troop_cavalry",
+       "X": 14,
+       "Y": 11,
+       "Level": 4,
+       "Group": "flank",
+       "Facing": "SW",
+       "Policy": "march",
+       "Goal": {
+        "X": 6,
+        "Y": 11
+       },
        "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
+       "Side": "enemy"
       },
       {
-       "Character": "qiaomao",
-       "X": 25,
-       "Y": 4,
-       "Facing": "NW",
-       "AI": true,
+       "Character": "troop_cavalry",
+       "X": 15,
+       "Y": 11,
+       "Level": 4,
+       "Group": "flank",
+       "Facing": "SW",
+       "Policy": "march",
+       "Goal": {
+        "X": 6,
+        "Y": 11
+       },
        "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
-      },
-      {
-       "Character": "hanfu",
-       "X": 25,
-       "Y": 6,
-       "Facing": "NW",
-       "AI": true,
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
-      },
-      {
-       "Character": "gongzhou",
-       "X": 25,
-       "Y": 7,
-       "Facing": "NW",
-       "AI": true,
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
+       "Side": "enemy"
       },
       {
        "Character": "troop_footman",
-       "X": 26,
-       "Y": 4,
+       "X": 12,
+       "Y": 11,
        "Level": 4,
-       "Facing": "NW",
-       "AI": true,
+       "Group": "flank",
+       "Facing": "SW",
+       "Policy": "march",
+       "Goal": {
+        "X": 6,
+        "Y": 11
+       },
        "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
+       "Side": "enemy"
       },
       {
        "Character": "troop_footman",
-       "X": 26,
-       "Y": 5,
+       "X": 13,
+       "Y": 11,
        "Level": 4,
-       "Facing": "NW",
-       "AI": true,
+       "Group": "flank",
+       "Facing": "SW",
+       "Policy": "march",
+       "Goal": {
+        "X": 6,
+        "Y": 11
+       },
        "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 26,
-       "Y": 6,
-       "Level": 4,
-       "Facing": "NW",
-       "AI": true,
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 26,
-       "Y": 7,
-       "Level": 4,
-       "Facing": "NW",
-       "AI": true,
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
+       "Side": "enemy"
       },
       {
        "Character": "troop_archer",
-       "X": 27,
-       "Y": 4,
+       "X": 11,
+       "Y": 11,
        "Level": 4,
-       "Facing": "NW",
-       "AI": true,
+       "Group": "flank",
+       "Facing": "SW",
+       "Policy": "march",
+       "Goal": {
+        "X": 6,
+        "Y": 11
+       },
        "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
-      },
-      {
-       "Character": "troop_archer",
-       "X": 27,
-       "Y": 5,
-       "Level": 4,
-       "Facing": "NW",
-       "AI": true,
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
-      },
-      {
-       "Character": "troop_archer",
-       "X": 27,
-       "Y": 6,
-       "Level": 4,
-       "Facing": "NW",
-       "AI": true,
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 27,
-       "Y": 3,
-       "Level": 4,
-       "Facing": "NW",
-       "AI": true,
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 27,
-       "Y": 8,
-       "Level": 4,
-       "Facing": "NW",
-       "AI": true,
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
-      },
-      {
-       "Character": "troop_archer",
-       "X": 26,
-       "Y": 3,
-       "Level": 4,
-       "Facing": "NW",
-       "AI": true,
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
+       "Side": "enemy"
       }
      ]
     },
@@ -548,210 +443,8 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "yuanshu",
-       "Text": "약조대로 왔소, 맹덕. 허나 이 원공로가 오지 않았으면 그대들은 이 숲에서 모두 죽었을 것이오."
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "yuanshu",
-       "Text": "공은 우리 몫으로 적어 두시오. (유비를 보며) 직도 없는 자까지 끼어 있구먼."
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "zhangfei",
-       "Text": "형님, 저놈 먼저 베고 싶슈!"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "lubu-appears",
-   "If": [
-    "any:[defeated:xurong, round>=6]"
-   ],
-   "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "lubu",
-       "X": 1,
-       "Y": 5,
-       "Level": 20,
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 1,
-       "Y": 4,
-       "Level": 10,
-       "Class": "light_cavalry",
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 1,
-       "Y": 6,
-       "Level": 10,
-       "Class": "light_cavalry",
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 2,
-       "Y": 4,
-       "Level": 10,
-       "Class": "light_cavalry",
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 2,
-       "Y": 6,
-       "Level": 10,
-       "Class": "light_cavalry",
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 0,
-       "Y": 5,
-       "Level": 10,
-       "Class": "light_cavalry",
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 2,
-       "Y": 5,
-       "Level": 10,
-       "Class": "light_cavalry",
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 0,
-       "Y": 4,
-       "Level": 10,
-       "Class": "light_cavalry",
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 0,
-       "Y": 6,
-       "Level": 10,
-       "Class": "light_cavalry",
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
-       "Faction": "dong"
-      }
-     ]
-    },
-    {
-     "Kind": "flag",
-     "Flags": {
-      "flag-b05-lubu": 1
-     }
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "lubu",
-       "Text": "호로관의 그 촌놈들이로구나. 이번엔 놓치지 않는다!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "yuanshu",
-       "Text": "저, 저건 여포가 아니냐……! 전군 물러나라! 어서!"
-      }
-     ]
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "lords"
-     ],
-     "Policy": "flee",
-     "Goal": {
-      "X": 27,
-      "Y": 1
-     }
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "wei"
-     ],
-     "Policy": "march",
-     "Goal": {
-      "X": 26,
-      "Y": 6
-     }
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "zhangfei",
-       "Text": "형님, 저놈들 여포 얼굴도 안 보이는 거리에서 내빼고 있슈!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "caocao",
-       "Text": "……우리만으로는 여포를 막을 수 없소. 물러나야 하오. 내가 뒤를 끊겠소."
+       "Actor": "fangong",
+       "Text": "남문으로도 적이 옵니다! 이쪽은 병사가 모자라오!"
       }
      ]
     },
@@ -760,12 +453,16 @@
      "Lines": [
       {
        "Actor": "liubei",
-       "Text": "맹덕 공이 남으시면 안 됩니다. 함께 물러납시다!"
+       "Text": "운장, 남문을 맡아라. 익덕과 나는 동문의 순우경을 친다."
       }
      ]
     }
    ]
   }
  ],
- "Faction": "dong"
+ "Reward": {
+  "bean": 6,
+  "barley": 2,
+  "liquor": 2
+ }
 }

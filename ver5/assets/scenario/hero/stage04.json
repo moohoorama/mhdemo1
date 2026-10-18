@@ -1,10 +1,8 @@
 {
  "ID": "B04",
- "Name": "호로관 전투",
+ "Name": "변수 추격전",
  "Width": 0,
  "Height": 0,
- "Tiles": null,
- "Map": "map04.json",
  "Max": 3,
  "Required": [
   "liubei",
@@ -14,1503 +12,522 @@
  "Victory": [
   {
    "If": [
-    "defeated:lubu"
+    "flag:flag-b04-lubu",
+    "at:liubei:1"
    ],
-   "Text": "여포를 물리쳐 퇴각시킨다"
+   "Text": "여포가 나타난 뒤 유비가 동쪽 끝에 도달"
   }
  ],
- "TurnLimit": 30,
+ "Sub": [
+  {
+   "ID": "generals",
+   "Text": "조조 생존",
+   "If": [
+    "alive:caocao"
+   ],
+   "Flag": "flag-bianshui-generals"
+  }
+ ],
+ "TurnLimit": 16,
+ "Tiles": null,
+ "Map": "map04.json",
  "Allies": [
   {
-   "X": 13,
-   "Y": 13
+   "X": 22,
+   "Y": 4
   },
   {
+   "X": 22,
+   "Y": 5
+  },
+  {
+   "X": 22,
+   "Y": 6
+  },
+  {
+   "X": 22,
+   "Y": 7
+  },
+  {
+   "X": 23,
+   "Y": 4
+  },
+  {
+   "X": 23,
+   "Y": 5
+  },
+  {
+   "X": 23,
+   "Y": 6
+  },
+  {
+   "X": 23,
+   "Y": 7
+  }
+ ],
+ "Party": [
+  {
+   "Character": "caocao",
    "X": 14,
-   "Y": 13
+   "Y": 5,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
   },
   {
+   "Character": "xiahoudun",
+   "X": 14,
+   "Y": 6,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "xiahouyuan",
+   "X": 13,
+   "Y": 4,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "caoren",
+   "X": 13,
+   "Y": 7,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "caohong",
    "X": 15,
-   "Y": 13
+   "Y": 5,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
   },
   {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 4,
+   "Level": 6,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 6,
+   "Level": 6,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
+  },
+  {
+   "Character": "troop_archer",
    "X": 16,
-   "Y": 13
+   "Y": 5,
+   "Level": 6,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
   },
   {
-   "X": 12,
-   "Y": 13
+   "Character": "troop_archer",
+   "X": 16,
+   "Y": 6,
+   "Level": 6,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
   },
   {
-   "X": 11,
-   "Y": 13
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 4,
+   "Level": 6,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
   },
   {
-   "X": 17,
-   "Y": 13
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 7,
+   "Level": 6,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "wei",
+   "Group": "wei",
+   "Policy": "march",
+   "Goal": {
+    "X": 11,
+    "Y": 5
+   }
   }
  ],
  "Enemies": [
   {
-   "Character": "lubu",
-   "X": 14,
-   "Y": 2,
-   "Level": 14,
-   "DuelFirst": true,
+   "Character": "xurong",
+   "X": 17,
+   "Y": 3,
+   "Level": 8,
    "Facing": "SW",
+   "Group": "ambush",
    "Policy": "hold"
   },
   {
-   "Character": "liru",
-   "X": 12,
-   "Y": 5,
-   "Group": "guard",
-   "Facing": "SW"
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 3,
+   "Level": 5,
+   "Facing": "SW",
+   "Group": "ambush",
+   "Policy": "hold"
   },
   {
-   "Character": "lijue",
+   "Character": "troop_archer",
    "X": 16,
-   "Y": 5,
-   "Group": "guard",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 10,
-   "Y": 6,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 14,
-   "Y": 6,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
+   "Y": 3,
+   "Level": 5,
+   "Facing": "SW",
+   "Group": "ambush",
+   "Policy": "hold"
   },
   {
    "Character": "troop_footman",
    "X": 18,
-   "Y": 6,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
+   "Y": 3,
+   "Level": 5,
+   "Facing": "SW",
+   "Group": "ambush",
+   "Policy": "hold"
   },
   {
-   "Character": "troop_footman",
-   "X": 12,
-   "Y": 7,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 16,
-   "Y": 7,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 9,
-   "Y": 5,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_archer",
+   "Character": "troop_cavalry",
    "X": 19,
-   "Y": 5,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
+   "Y": 3,
+   "Level": 5,
+   "Facing": "SW",
+   "Group": "ambush",
+   "Policy": "hold"
   },
   {
-   "Character": "troop_archer",
-   "X": 13,
-   "Y": 4,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
+   "Character": "troop_cavalry",
+   "X": 14,
+   "Y": 8,
+   "Level": 5,
+   "Facing": "NW",
+   "Group": "ambush",
+   "Policy": "hold"
   },
   {
-   "Character": "troop_archer",
+   "Character": "troop_footman",
    "X": 15,
-   "Y": 4,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
+   "Y": 8,
+   "Level": 5,
+   "Facing": "NW",
+   "Group": "ambush",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 16,
+   "Y": 8,
+   "Level": 5,
+   "Facing": "NW",
+   "Group": "ambush",
+   "Policy": "hold"
   },
   {
    "Character": "troop_footman",
-   "X": 7,
-   "Y": 7,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
+   "X": 17,
+   "Y": 8,
+   "Level": 5,
+   "Facing": "NW",
+   "Group": "ambush",
+   "Policy": "hold"
   },
   {
-   "Character": "troop_footman",
-   "X": 21,
-   "Y": 7,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
+   "Character": "troop_archer",
+   "X": 18,
+   "Y": 8,
+   "Level": 5,
+   "Facing": "NW",
+   "Group": "ambush",
+   "Policy": "hold"
   }
  ],
  "Reward": {
-  "barley": 1,
   "bean": 8,
   "liquor": 4
  },
- "Duels": [
+ "Areas": [
   {
-   "ID": "hulao-brothers",
-   "Ally": "zhangfei",
-   "Enemy": "lubu",
-   "Outcome": "victory",
-   "AllyResult": "stay",
-   "EnemyResult": "retreat",
-   "Text": "세 형제가 합세하자 여포가 퇴각했다.",
-   "Supports": [
-    "guanyu",
-    "liubei"
-   ],
-   "Beats": [
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "여포! 연인 장익덕이 상대해 주겠슈! 목 길게 빼고 기다리랑께!",
-     "Side": 0,
-     "Duration": 3.5
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "시끄러운 놈이로군. 네 사모가 입만큼 매운지 보자.",
-     "Side": 1,
-     "Duration": 3.0
-    },
-    {
-     "Kind": "approach",
-     "Title": "approach",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "rush-block",
-     "Title": "장비가 먼저 치고 들어가다",
-     "Speech": "가소롭군!",
-     "Side": 0,
-     "Duration": 1.1
-    },
-    {
-     "Kind": "block",
-     "Title": "여포가 화극으로 맞받다",
-     "Speech": "겨우 이 정도여!",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "block",
-     "Title": "장비가 장팔사모를 휘두르다",
-     "Speech": "제법이로군.",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "critical-block",
-     "Title": "장비가 힘을 실어 내려치다",
-     "Speech": "으라앗!",
-     "Side": 0,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "(이 괴력… 보통내기가 아니다.)",
-     "Side": 1,
-     "Duration": 2.2
-    },
-    {
-     "Kind": "rush-critical-block",
-     "Title": "여포가 화극을 휘두르며 돌진하다",
-     "Speech": "이것도 받아 보아라!",
-     "Side": 1,
-     "Duration": 1.25
-    },
-    {
-     "Kind": "block",
-     "Title": "장비가 맞받아치다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "block",
-     "Title": "여포가 연달아 찌르다",
-     "Speech": "어림없슈!",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "block",
-     "Title": "장비가 창으로 화극을 걷어내다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "block",
-     "Title": "여포의 화극이 장비의 어깨를 스치려다 막히다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "이놈… 내 공격에도 밀리지 않는군!",
-     "Side": 1,
-     "Duration": 2.3
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "아직 멀었슈! 더 덤벼 보랑께!",
-     "Side": 0,
-     "Duration": 2.2
-    },
-    {
-     "Kind": "critical-block",
-     "Title": "여포가 강하게 내리치다",
-     "Speech": "하앗!",
-     "Side": 1,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "rush-critical-block",
-     "Title": "장비가 다시 전진하며 강하게 맞받아치다",
-     "Speech": "이 몸의 사모를 받아 보랑께!",
-     "Side": 0,
-     "Duration": 1.25
-    },
-    {
-     "Kind": "block",
-     "Title": "여포가 반격하다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "block",
-     "Title": "장비가 창을 휘두르다",
-     "Speech": "…끈질기군.",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "삼백 합이라도 상대해 주겠슈!",
-     "Side": 0,
-     "Duration": 2.1
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "삼백 합? 네놈의 숨이 먼저 끊어지게 해 주마.",
-     "Side": 1,
-     "Duration": 2.9
-    },
-    {
-     "Kind": "block",
-     "Title": "장비가 호통과 함께 찌르다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "block",
-     "Title": "여포가 화극으로 받아넘기다",
-     "Speech": "흥, 간지럽구먼!",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "rush-block",
-     "Title": "여포가 몸을 낮추고 파고들다",
-     "Speech": "힘이 겨우 그것뿐이여!",
-     "Side": 1,
-     "Duration": 1.1
-    },
-    {
-     "Kind": "critical-block",
-     "Title": "장비가 맞서 창을 휘두르다",
-     "Speech": "이 괴물 같은 자식!",
-     "Side": 0,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "block",
-     "Title": "여포가 화극을 돌려 치다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "block",
-     "Title": "장비가 한 발도 물러서지 않고 맞받다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "하하하! 이거여! 이런 놈이랑 싸워 보고 싶었던겨!",
-     "Side": 0,
-     "Duration": 3.0
-    },
-    {
-     "Kind": "critical-block",
-     "Title": "여포가 눈빛을 바꾸며 강타하다",
-     "Speech": "건방진 놈!",
-     "Side": 1,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "block",
-     "Title": "장비가 화극을 비껴내다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "press",
-     "Title": "여포가 압박하며 좌상단으로 대치를 밀어붙이다",
-     "Speech": "물러서라!",
-     "Side": 1,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "reinforcements",
-     "Title": "좌하단과 우상단에서 두 형제가 합류해 여포를 포위하다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.8
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "익덕, 홀로 싸우게 두지 않겠다.",
-     "Side": 2,
-     "Duration": 2.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "삼형제가 함께 상대하겠소!",
-     "Side": 3,
-     "Duration": 2.0
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "형~ 왔슈! 기다리고 있었슈!",
-     "Side": 0,
-     "Duration": 2.1
-    },
-    {
-     "Kind": "block",
-     "Title": "합류한 관우가 측면에서 베다",
-     "Speech": "흥, 한 놈 더 늘었군!",
-     "Side": 2,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "block",
-     "Title": "유비도 반대편에서 쌍검을 휘두르다",
-     "Speech": "",
-     "Side": 3,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "(셋이라… 성가시군.)",
-     "Side": 1,
-     "Duration": 1.8
-    },
-    {
-     "Kind": "advance",
-     "Title": "세 형제가 여포를 압박하다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 0.7
-    },
-    {
-     "Kind": "block",
-     "Title": "장비가 정면에서 찌르다",
-     "Speech": "으윽… 이 괴력!",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "critical-block",
-     "Title": "관우가 측면에서 강하게 내려치다",
-     "Speech": "하앗!",
-     "Side": 2,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "block",
-     "Title": "유비가 반대편에서 파고들다",
-     "Speech": "",
-     "Side": 3,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "block",
-     "Title": "여포가 세 방향을 한꺼번에 쳐내다",
-     "Speech": "형님들이 계시는디 겁날 게 뭐 있슈!",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "block",
-     "Title": "관우가 다시 틈을 노리다",
-     "Speech": "",
-     "Side": 2,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "셋을 한꺼번에 상대하기는 무리다!",
-     "Side": 1,
-     "Duration": 2.2
-    },
-    {
-     "Kind": "retreat",
-     "Title": "여포가 본진 대열 속으로 직선 퇴각하다",
-     "Speech": "물러난다!",
-     "Side": 1,
-     "Duration": 3.0
-    },
-    {
-     "Kind": "withdrawn",
-     "Title": "세 형제 앞에서 여포가 퇴각하다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 1.1
-    }
-   ],
-   "Variants": [
-    {
-     "First": "guanyu",
-     "Beats": [
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "여포, 관운장이 상대해 주마. 방천화극이 명성만큼인지 보겠다.",
-       "Side": 0,
-       "Duration": 3.4
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "수염 긴 놈이 입만 살았군. 와 보아라.",
-       "Side": 1,
-       "Duration": 2.5
-      },
-      {
-       "Kind": "approach",
-       "Title": "approach",
-       "Speech": "",
-       "Side": 0,
-       "Duration": 1.2
-      },
-      {
-       "Kind": "rush-critical-block",
-       "Title": "관우가 첫 합부터 전진하며 강공하다",
-       "Speech": "받아라!",
-       "Side": 0,
-       "Duration": 1.25
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "(이 일격… 생각보다 무겁군!)",
-       "Side": 1,
-       "Duration": 2.2
-      },
-      {
-       "Kind": "block",
-       "Title": "여포가 반격하다",
-       "Speech": "그 정도냐.",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "block",
-       "Title": "여포가 한 번 더 몰아치다",
-       "Speech": "",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "(호흡은 읽었다.)",
-       "Side": 0,
-       "Duration": 1.6
-      },
-      {
-       "Kind": "block",
-       "Title": "관우가 청룡도를 휘두르다",
-       "Speech": "음!",
-       "Side": 0,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "block",
-       "Title": "여포가 화극으로 쳐내다",
-       "Speech": "",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "이름값은 하는군. 허나 내 화극은 아직 시작도 안 했다!",
-       "Side": 1,
-       "Duration": 3.2
-      },
-      {
-       "Kind": "rush-block",
-       "Title": "여포가 돌진하며 찌르다",
-       "Speech": "무겁지만 느리구나.",
-       "Side": 1,
-       "Duration": 1.1
-      },
-      {
-       "Kind": "critical-block",
-       "Title": "여포가 강하게 내리치다",
-       "Speech": "이걸 막다니!",
-       "Side": 1,
-       "Duration": 1.2
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "틈이 보이는군.",
-       "Side": 0,
-       "Duration": 1.5
-      },
-      {
-       "Kind": "rush-critical-dodge",
-       "Title": "틈을 찌른 관우의 전진 강공을 여포가 피해내다",
-       "Speech": "이 속도는…!",
-       "Side": 0,
-       "Duration": 1.3
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "(이 일격! 받아내면 안 되겠군.)",
-       "Side": 1,
-       "Duration": 2.3
-      },
-      {
-       "Kind": "block",
-       "Title": "여포가 반격하다",
-       "Speech": "",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "dodge",
-       "Title": "관우가 고개를 젖혀 화극을 피하다",
-       "Speech": "느리다.",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "block",
-       "Title": "여포가 다시 찌르다",
-       "Speech": "",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "block",
-       "Title": "관우가 반격하다",
-       "Speech": "",
-       "Side": 0,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "dodge",
-       "Title": "여포가 물러서며 피하다",
-       "Speech": "하!",
-       "Side": 0,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "하하, 재미있구나! 천하에 이만한 자가 있었다니!",
-       "Side": 1,
-       "Duration": 2.9
-      },
-      {
-       "Kind": "block",
-       "Title": "여포가 화극을 휘두르다",
-       "Speech": "",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "웃을 때가 아니다.",
-       "Side": 0,
-       "Duration": 1.6
-      },
-      {
-       "Kind": "rush-dodge",
-       "Title": "관우가 몸을 던지듯 돌진하자 여포가 물러서다",
-       "Speech": "그 정도 속도로!",
-       "Side": 0,
-       "Duration": 1.15
-      },
-      {
-       "Kind": "block",
-       "Title": "여포가 재빨리 응수하다",
-       "Speech": "",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "critical-dodge",
-       "Title": "관우가 온 힘을 실어 베지만 여포가 피하다",
-       "Speech": "큭… 아슬아슬했군!",
-       "Side": 0,
-       "Duration": 1.3
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "건방진 수염 같으니! 이번엔 내가 밀어붙이겠다!",
-       "Side": 1,
-       "Duration": 2.9
-      },
-      {
-       "Kind": "press",
-       "Title": "여포가 압박하며 좌상단으로 대치를 밀어붙이다",
-       "Speech": "물러서라!",
-       "Side": 1,
-       "Duration": 1.2
-      },
-      {
-       "Kind": "reinforcements",
-       "Title": "좌하단과 우상단에서 두 형제가 합류해 여포를 포위하다",
-       "Speech": "",
-       "Side": 0,
-       "Duration": 1.8
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "형님~ 혼자서만 재밌게 놀면 섭섭하쥬!",
-       "Side": 2,
-       "Duration": 2.5
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "운장, 우리가 함께하오!",
-       "Side": 3,
-       "Duration": 1.9
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "형님. 익덕. 오셨습니까.",
-       "Side": 0,
-       "Duration": 2.0
-      },
-      {
-       "Kind": "block",
-       "Title": "합류한 장비가 사모를 내지르다",
-       "Speech": "큭, 이 괴력은!",
-       "Side": 2,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "block",
-       "Title": "유비도 반대편에서 쌍검을 휘두르다",
-       "Speech": "",
-       "Side": 3,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "(셋이라… 성가시군.)",
-       "Side": 1,
-       "Duration": 1.8
-      },
-      {
-       "Kind": "advance",
-       "Title": "세 형제가 여포를 압박하다",
-       "Speech": "",
-       "Side": 0,
-       "Duration": 0.7
-      },
-      {
-       "Kind": "critical-block",
-       "Title": "관우가 정면에서 강하게 내려치다",
-       "Speech": "하앗!",
-       "Side": 0,
-       "Duration": 1.2
-      },
-      {
-       "Kind": "block",
-       "Title": "장비가 측면에서 파고들다",
-       "Speech": "",
-       "Side": 2,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "block",
-       "Title": "유비가 반대편에서 쌍검을 휘두르다",
-       "Speech": "",
-       "Side": 3,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "이놈들이 감히!",
-       "Side": 1,
-       "Duration": 1.5
-      },
-      {
-       "Kind": "block",
-       "Title": "여포가 세 방향을 한꺼번에 쳐내다",
-       "Speech": "여포, 네 화극도 예전 같지 않군.",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "block",
-       "Title": "장비가 다시 한 번 달려들다",
-       "Speech": "",
-       "Side": 2,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "셋을 한꺼번에 상대하기는 무리다!",
-       "Side": 1,
-       "Duration": 2.2
-      },
-      {
-       "Kind": "retreat",
-       "Title": "여포가 본진 대열 속으로 직선 퇴각하다",
-       "Speech": "물러난다!",
-       "Side": 1,
-       "Duration": 3.0
-      },
-      {
-       "Kind": "withdrawn",
-       "Title": "세 형제 앞에서 여포가 퇴각하다",
-       "Speech": "",
-       "Side": 1,
-       "Duration": 1.1
-      }
-     ]
-    },
-    {
-     "First": "liubei",
-     "Beats": [
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "유비 현덕이 상대하겠소! 내 아우들을 건드리지 마시오!",
-       "Side": 0,
-       "Duration": 3.1
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "네가 얼마나 버티는지 보자.",
-       "Side": 1,
-       "Duration": 2.0
-      },
-      {
-       "Kind": "approach",
-       "Title": "approach",
-       "Speech": "",
-       "Side": 0,
-       "Duration": 1.2
-      },
-      {
-       "Kind": "rush-yielding-block",
-       "Title": "여포가 치고 들어오자 유비가 막으며 밀리다",
-       "Speech": "크윽…!",
-       "Side": 1,
-       "Duration": 1.2
-      },
-      {
-       "Kind": "dodge",
-       "Title": "유비가 화극을 피해 물러서다",
-       "Speech": "아슬아슬했소!",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "yielding-block",
-       "Title": "유비가 막지만 또 밀리다",
-       "Speech": "크윽!",
-       "Side": 1,
-       "Duration": 1.2
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "여기서 물러설 수는 없소!",
-       "Side": 0,
-       "Duration": 2.0
-      },
-      {
-       "Kind": "dodge",
-       "Title": "유비가 쌍고검으로 반격하지만 여포가 가볍게 피하다",
-       "Speech": "느리군.",
-       "Side": 0,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "block",
-       "Title": "여포가 곧바로 되받아치다",
-       "Speech": "아직이오!",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "인덕이니 뭐니 하는 자가 검은 무디구나.",
-       "Side": 1,
-       "Duration": 2.5
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "검이 무딘 것은… 맞소. 그러나 버티는 것은 자신 있소.",
-       "Side": 0,
-       "Duration": 3.2
-      },
-      {
-       "Kind": "block",
-       "Title": "여포의 연격을 유비가 간신히 받아내다",
-       "Speech": "으윽!",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "rush-critical-block",
-       "Title": "여포의 전진 강공을 유비가 간신히 막아내다",
-       "Speech": "이것도 막겠느냐!",
-       "Side": 1,
-       "Duration": 1.25
-      },
-      {
-       "Kind": "yielding-block",
-       "Title": "유비가 몸을 낮춰 충격을 받아내다",
-       "Speech": "으… 으윽!",
-       "Side": 1,
-       "Duration": 1.2
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "질긴 놈이군… 아직도 버티다니!",
-       "Side": 1,
-       "Duration": 2.2
-      },
-      {
-       "Kind": "dodge",
-       "Title": "유비가 틈을 노려 일격을 날리지만 여포가 피하다",
-       "Speech": "하! 어딜 노리느냐!",
-       "Side": 0,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "block",
-       "Title": "여포가 화극으로 쳐내다",
-       "Speech": "",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "block",
-       "Title": "유비가 쌍검으로 막아 내다",
-       "Speech": "",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "(조금만 더… 조금만 더 버티면…)",
-       "Side": 0,
-       "Duration": 2.3
-      },
-      {
-       "Kind": "yielding-block",
-       "Title": "유비가 막으며 또 밀리다",
-       "Speech": "크윽!",
-       "Side": 1,
-       "Duration": 1.2
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "이쯤 되면 오히려 감탄스럽군. 허나 여기까지다!",
-       "Side": 1,
-       "Duration": 2.9
-      },
-      {
-       "Kind": "block",
-       "Title": "여포의 압박을 버티다",
-       "Speech": "",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "끝까지… 끝까지 버텨 보겠소!",
-       "Side": 0,
-       "Duration": 2.1
-      },
-      {
-       "Kind": "block",
-       "Title": "여포가 마지막 일격을 가하다",
-       "Speech": "크윽…!",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "reinforcements",
-       "Title": "좌하단과 우상단에서 두 형제가 합류해 여포를 포위하다",
-       "Speech": "",
-       "Side": 0,
-       "Duration": 1.8
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "형님, 잘 버티셨습니다.",
-       "Side": 2,
-       "Duration": 1.9
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "이제부터는 우리 차례유!",
-       "Side": 3,
-       "Duration": 1.9
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "아우들… 기다리고 있었소!",
-       "Side": 0,
-       "Duration": 2.0
-      },
-      {
-       "Kind": "block",
-       "Title": "합류한 관우가 베어 들어가다",
-       "Speech": "흥, 한 놈 더 늘었군!",
-       "Side": 2,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "block",
-       "Title": "장비가 사모를 내지르다",
-       "Speech": "",
-       "Side": 3,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "(셋이라… 성가시군.)",
-       "Side": 1,
-       "Duration": 1.8
-      },
-      {
-       "Kind": "advance",
-       "Title": "세 형제가 여포를 압박하다",
-       "Speech": "",
-       "Side": 0,
-       "Duration": 0.7
-      },
-      {
-       "Kind": "critical-block",
-       "Title": "관우가 측면에서 강하게 내려치다",
-       "Speech": "하앗!",
-       "Side": 2,
-       "Duration": 1.2
-      },
-      {
-       "Kind": "block",
-       "Title": "장비가 반대편에서 찌르다",
-       "Speech": "",
-       "Side": 3,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "block",
-       "Title": "유비도 쌍고검으로 가세하다",
-       "Speech": "",
-       "Side": 0,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "형제가 모이면 천하에 못 이길 자가 없소!",
-       "Side": 0,
-       "Duration": 2.6
-      },
-      {
-       "Kind": "block",
-       "Title": "관우가 다시 틈을 노리다",
-       "Speech": "",
-       "Side": 2,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "block",
-       "Title": "장비가 호통을 치며 달려들다",
-       "Speech": "",
-       "Side": 3,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "이놈들이 감히!",
-       "Side": 1,
-       "Duration": 1.5
-      },
-      {
-       "Kind": "block",
-       "Title": "여포가 세 방향을 한꺼번에 쳐내다",
-       "Speech": "",
-       "Side": 1,
-       "Duration": 1.05
-      },
-      {
-       "Kind": "talk",
-       "Title": "대사",
-       "Speech": "셋을 한꺼번에 상대하기는 무리다!",
-       "Side": 1,
-       "Duration": 2.2
-      },
-      {
-       "Kind": "retreat",
-       "Title": "여포가 본진 대열 속으로 직선 퇴각하다",
-       "Speech": "물러난다!",
-       "Side": 1,
-       "Duration": 3.0
-      },
-      {
-       "Kind": "withdrawn",
-       "Title": "세 형제 앞에서 여포가 퇴각하다",
-       "Speech": "",
-       "Side": 1,
-       "Duration": 1.1
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "hulao-mushun",
-   "Ally": "mushun",
-   "Enemy": "lubu",
-   "Outcome": "defeat",
-   "AllyResult": "death",
-   "EnemyResult": "stay",
-   "Text": "목순이 여포에게 패하고 전사했다.",
-   "Beats": [
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "네가 여포냐? 이 목순이 네 목을 거두어 공을 세우겠다!",
-     "Side": 0,
-     "Duration": 3.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "또 한 마리가 제 발로 걸어오는군.",
-     "Side": 1,
-     "Duration": 2.3
-    },
-    {
-     "Kind": "approach",
-     "Title": "목순의 성급한 도전",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "받아라! 단숨에 끝내주마!",
-     "Side": 0,
-     "Duration": 2.0
-    },
-    {
-     "Kind": "dodge",
-     "Title": "목순이 마구 찔러 대고 여포가 가볍게 물러나다",
-     "Speech": "느리구나.",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "rush-dodge",
-     "Title": "목순이 돌진하며 찌르지만 여포가 몸을 비키다",
-     "Speech": "어디를 노리느냐.",
-     "Side": 0,
-     "Duration": 1.15
-    },
-    {
-     "Kind": "dodge",
-     "Title": "목순의 창이 허공을 가르다",
-     "Speech": "하품이 나는군.",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "이놈! 왜 맞서지 않느냐! 도망만 칠 셈이냐!",
-     "Side": 0,
-     "Duration": 2.8
-    },
-    {
-     "Kind": "rush-dodge",
-     "Title": "목순이 이성을 잃고 달려들다",
-     "Speech": "그게 전부냐?",
-     "Side": 0,
-     "Duration": 1.15
-    },
-    {
-     "Kind": "dodge",
-     "Title": "여포가 한 걸음씩 물러나며 피하다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "다 보았다. 이제 끝내주마.",
-     "Side": 1,
-     "Duration": 2.0
-    },
-    {
-     "Kind": "slash-through",
-     "Title": "여포가 달려들며 베고 목순의 등 뒤에 서다",
-     "Speech": "한 번이면 족하다.",
-     "Side": 1,
-     "Duration": 1.5
-    },
-    {
-     "Kind": "win",
-     "Title": "목순 전사",
-     "Speech": "또 나설 자가 있느냐!",
-     "Side": 1,
-     "Duration": 2.5
-    }
-   ]
-  },
-  {
-   "ID": "hulao-wuanguo",
-   "Ally": "wuanguo",
-   "Enemy": "lubu",
-   "Outcome": "defeat",
-   "AllyResult": "retreat",
-   "EnemyResult": "stay",
-   "Text": "무안국이 여포에게 패하고 달아났다.",
-   "Beats": [
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "그 위세도 여기까지다! 이 무안국이 상대해 주마!",
-     "Side": 0,
-     "Duration": 2.9
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "무안국이라… 창 한 자루로 나를 쓰러뜨리겠다는 거냐?",
-     "Side": 1,
-     "Duration": 3.1
-    },
-    {
-     "Kind": "approach",
-     "Title": "무안국의 도전",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "이 창 맛을 보아라!",
-     "Side": 0,
-     "Duration": 1.7
-    },
-    {
-     "Kind": "block",
-     "Title": "무안국이 창을 내지르다",
-     "Speech": "그게 전력이냐? 가볍구나.",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "block",
-     "Title": "다시 창을 휘두르다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "critical-block",
-     "Title": "무안국이 온 힘으로 내리치다",
-     "Speech": "으라아앗!",
-     "Side": 0,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "공명에 눈이 멀어 제 분수를 모르는구나.",
-     "Side": 1,
-     "Duration": 2.5
-    },
-    {
-     "Kind": "block",
-     "Title": "여포가 처음으로 화극을 휘두르다",
-     "Speech": "크윽…",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "yielding-block",
-     "Title": "무안국이 막지만 밀리다",
-     "Speech": "으윽!",
-     "Side": 1,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "아직… 끝나지 않았다!",
-     "Side": 0,
-     "Duration": 1.8
-    },
-    {
-     "Kind": "block",
-     "Title": "무안국이 필사적으로 창을 휘두르다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "yielding-block",
-     "Title": "여포의 화극에 무안국이 크게 밀리다",
-     "Speech": "으아악!",
-     "Side": 1,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "critical",
-     "Title": "여포의 일격이 무안국의 팔을 베다",
-     "Speech": "여기까지다.",
-     "Side": 1,
-     "Duration": 1.3
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "아직도 서 있다니… 질긴 놈이군.",
-     "Side": 1,
-     "Duration": 2.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "(팔이… 도저히 당해낼 수 없구나!)",
-     "Side": 0,
-     "Duration": 2.4
-    },
-    {
-     "Kind": "retreat",
-     "Title": "직선으로 달아나 아군 대열 속으로 사라지다",
-     "Speech": "물러나라!",
-     "Side": 0,
-     "Duration": 3.0
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "쫓을 가치도 없군!",
-     "Side": 1,
-     "Duration": 1.6
-    },
-    {
-     "Kind": "withdrawn",
-     "Title": "무안국이 대열 속으로 사라지다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.1
-    }
-   ]
+   "ID": 1,
+   "Rect": {
+    "X": 25,
+    "Y": 3,
+    "W": 3,
+    "H": 6
+   },
+   "Name": "연합 진영 방향",
+   "Description": "시작과 퇴각의 지점. 유비가 닿아야 하는 동쪽 끝"
   }
  ],
- "Faction": "dong",
  "Events": [
   {
-   "ID": "lubu-advance",
+   "ID": "ambush",
    "If": [
-    "alive:lubu",
-    "alldefeated:guard"
+    "round>=2"
    ],
    "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "ambush"
+     ],
+     "Policy": "assault"
+    },
     {
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "lubu",
-       "Text": "이각과 이유를 걷어낸 것이 고작 촌놈 셋이란 말이냐. 좋다, 이 여봉선이 직접 상대해 주마!"
+       "Actor": "xurong",
+       "Text": "조조, 기다리고 있었다! 한 놈도 살려 보내지 마라!"
       }
      ]
     },
     {
-     "Kind": "ai",
-     "Targets": [
-      "lubu"
-     ],
-     "Policy": "assault"
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caocao",
+       "Text": "나왔구나. 현덕, 지금이오!"
+      }
+     ]
     }
    ]
   },
   {
-   "ID": "coalition-arrival",
+   "ID": "lords-arrive",
    "If": [
-    "alive:lubu",
-    "alldefeated:guard"
+    "round>=2"
    ],
    "Do": [
     {
      "Kind": "spawn",
      "Spawns": [
       {
-       "Character": "mushun",
+       "Character": "yuanshu",
        "X": 25,
-       "Y": 7,
-       "Level": 1,
+       "Y": 5,
+       "Facing": "NW",
        "AI": true,
-       "DuelFirst": true,
        "Faction": "yuan",
-       "Facing": "NW"
+       "Group": "lords",
+       "Side": "ally"
       },
       {
-       "Character": "wuanguo",
+       "Character": "qiaomao",
        "X": 25,
-       "Y": 8,
-       "Level": 1,
+       "Y": 4,
+       "Facing": "NW",
        "AI": true,
-       "DuelFirst": true,
        "Faction": "yuan",
-       "Facing": "NW"
+       "Group": "lords",
+       "Side": "ally"
       },
       {
-       "Character": "troop_footman",
-       "X": 24,
+       "Character": "hanfu",
+       "X": 25,
        "Y": 6,
-       "Level": 1,
-       "Class": "light_infantry",
+       "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
-       "Facing": "NW"
+       "Group": "lords",
+       "Side": "ally"
       },
       {
-       "Character": "troop_footman",
-       "X": 24,
+       "Character": "gongzhou",
+       "X": 25,
        "Y": 7,
-       "Level": 1,
-       "Class": "light_infantry",
+       "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
-       "Facing": "NW"
+       "Group": "lords",
+       "Side": "ally"
       },
       {
        "Character": "troop_footman",
-       "X": 24,
-       "Y": 8,
-       "Level": 1,
-       "Class": "light_infantry",
+       "X": 26,
+       "Y": 4,
+       "Level": 4,
+       "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
-       "Facing": "NW"
+       "Group": "lords",
+       "Side": "ally"
       },
       {
        "Character": "troop_footman",
-       "X": 24,
-       "Y": 9,
-       "Level": 1,
-       "Class": "light_infantry",
+       "X": 26,
+       "Y": 5,
+       "Level": 4,
+       "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
-       "Facing": "NW"
+       "Group": "lords",
+       "Side": "ally"
       },
       {
        "Character": "troop_footman",
        "X": 26,
        "Y": 6,
-       "Level": 1,
-       "Class": "light_infantry",
+       "Level": 4,
+       "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
-       "Facing": "NW"
+       "Group": "lords",
+       "Side": "ally"
       },
       {
        "Character": "troop_footman",
        "X": 26,
-       "Y": 9,
-       "Level": 1,
-       "Class": "light_infantry",
+       "Y": 7,
+       "Level": 4,
+       "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
-       "Facing": "NW"
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 27,
+       "Y": 4,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 27,
+       "Y": 5,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 27,
+       "Y": 6,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 27,
+       "Y": 3,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 27,
+       "Y": 8,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 26,
+       "Y": 3,
+       "Level": 4,
+       "Facing": "NW",
+       "AI": true,
+       "Faction": "yuan",
+       "Group": "lords",
+       "Side": "ally"
       }
      ]
     },
@@ -1518,8 +535,8 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "wuanguo",
-       "Text": "길은 이미 열렸다! 남은 건 여포 하나뿐이다!"
+       "Actor": "yuanshu",
+       "Text": "약조대로 왔소, 맹덕. 허나 이 원공로가 오지 않았으면 그대들은 이 숲에서 모두 죽었을 것이오."
       }
      ]
     },
@@ -1527,34 +544,8 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "mushun",
-       "Text": "여포의 목은 내 것이다!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "lubu",
-       "Text": "줄을 지어 죽으러 오는구나."
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "brothers-challenge",
-   "If": [
-    "any:[duel:hulao-mushun, duel:hulao-wuanguo]"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "liubei",
-       "Text": "인중여포! 역시 강하군. 병사들의 피해가 없도록 우리들이 일기토로 상대해야겠어."
+       "Actor": "yuanshu",
+       "Text": "공은 우리 몫으로 적어 두시오. (유비를 보며) 직도 없는 자까지 끼어 있구먼."
       }
      ]
     },
@@ -1563,13 +554,508 @@
      "Lines": [
       {
        "Actor": "zhangfei",
-       "Text": "좋았어, 형! 그럼 나에게 맡겨주슈!"
-      },
-      {
-       "Actor": "guanyu",
-       "Text": "제가 상대해보겠습니다, 형님"
+       "Text": "형, 저놈 먼저 베고 싶슈!"
       }
      ]
+    }
+   ]
+  },
+  {
+   "ID": "lubu-appears",
+   "If": [
+    "any:[defeated:xurong, round>=6]"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "lubu",
+       "X": 1,
+       "Y": 5,
+       "Level": 20,
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong",
+       "DuelFirst": true
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 1,
+       "Y": 4,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 1,
+       "Y": 6,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 2,
+       "Y": 4,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 2,
+       "Y": 6,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 5,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 2,
+       "Y": 5,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 4,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 6,
+       "Level": 10,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      }
+     ]
+    },
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-b04-lubu": 1
+     }
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "lubu",
+       "Text": "호로관의 그 촌놈들이로구나. 이번엔 놓치지 않는다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshu",
+       "Text": "저, 저건 여포가 아니냐……! 전군 물러나라! 어서!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "lords"
+     ],
+     "Policy": "flee",
+     "Goal": {
+      "X": 27,
+      "Y": 1
+     }
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "wei"
+     ],
+     "Policy": "march",
+     "Goal": {
+      "X": 26,
+      "Y": 6
+     }
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "형, 저놈들 여포 얼굴도 안 보이는 거리에서 내빼고 있슈!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caocao",
+       "Text": "……우리만으로는 여포를 막을 수 없소. 물러나야 하오. 내가 뒤를 끊겠소."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "맹덕 공이 남으시면 안 됩니다. 함께 물러납시다!"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "Faction": "dong",
+ "Duels": [
+  {
+   "ID": "bianshui-xiahoudun-lubu",
+   "Ally": "xiahoudun",
+   "Enemy": "lubu",
+   "Outcome": "defeat",
+   "AllyResult": "retreat",
+   "EnemyResult": "stay",
+   "Text": "하후돈이 여포를 막아섰으나 밀려 조조를 위해 물러났다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "하후돈이 여포의 앞을 막아서다",
+     "Speech": "맹덕 형님의 뒤는 이 하후원양이 막는다! 서라, 여포!",
+     "Side": 0,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "여포의 멸시",
+     "Speech": "애꾸 하나가 길을 막는군. 비켜라, 베기 전에.",
+     "Side": 1,
+     "Duration": 2.9
+    },
+    {
+     "Kind": "talk",
+     "Title": "하후돈의 받아침",
+     "Speech": "애꾸든 뭐든 이 창은 한쪽 눈으로 충분하다!",
+     "Side": 0,
+     "Duration": 2.7
+    },
+    {
+     "Kind": "approach",
+     "Title": "하후돈이 먼저 달려들다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "하후돈의 창을 여포가 받아내다",
+     "Speech": "제법이군.",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "하후돈이 돌진하며 거듭 찌르다",
+     "Speech": "그 기세는 인정해 주마.",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "block",
+     "Title": "여포가 처음으로 화극을 휘두르다",
+     "Speech": "큭…! 이 정도로 쓰러질 줄 아느냐!",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "하후돈이 막지만 밀리다",
+     "Speech": "으윽!",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "여포가 비꼬다",
+     "Speech": "방금 그 기세는 어디 갔느냐, 애꾸.",
+     "Side": 1,
+     "Duration": 2.4
+    },
+    {
+     "Kind": "block",
+     "Title": "하후돈이 반격하나 여포가 받아내다",
+     "Speech": "느리다.",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "여포가 몸을 비켜 피하다",
+     "Speech": "어디를 노리느냐.",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "하후돈이 격차를 느끼다",
+     "Speech": "(이 괴물… 내 창이 닿지 않는다!)",
+     "Side": 0,
+     "Duration": 2.4
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "여포의 화극에 하후돈이 크게 밀리다",
+     "Speech": "크윽…!",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical",
+     "Title": "여포의 일격이 하후돈의 어깨를 스치다",
+     "Speech": "여기까지다.",
+     "Side": 1,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "talk",
+     "Title": "여포가 물러나라 이르다",
+     "Speech": "눈 하나로 충분하다더니, 하나 더 잃기 전에 꺼져라.",
+     "Side": 1,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "하후돈이 조조를 위해 물러나기로 하다",
+     "Speech": "……물러난다! 병사들을 수습해 맹덕 형님께 간다!",
+     "Side": 0,
+     "Duration": 2.9
+    },
+    {
+     "Kind": "retreat",
+     "Title": "하후돈이 직선으로 아군 대열 속으로 물러나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "talk",
+     "Title": "여포가 쫓지 않고 앞을 보다",
+     "Speech": "남은 건 조조 하나다.",
+     "Side": 1,
+     "Duration": 1.8
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "하후돈이 대열 속으로 사라지다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    }
+   ]
+  },
+  {
+   "ID": "bianshui-zhangfei-lubu",
+   "Ally": "zhangfei",
+   "Enemy": "lubu",
+   "Outcome": "draw",
+   "AllyResult": "stay",
+   "EnemyResult": "stay",
+   "Text": "장비가 수세에 몰리면서도 버텨 여포와 승부를 내지 못했다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "여포가 장비를 알아보다",
+     "Speech": "호로관에서 셋이 몰려와서야 물러나게 한 검은 놈이군. 이번엔 혼자냐.",
+     "Side": 1,
+     "Duration": 3.8
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 길을 막다",
+     "Speech": "형들은 먼저 갔슈! 이번엔 이 장익덕이 혼자서 상대해 주랑께!",
+     "Side": 0,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "approach",
+     "Title": "여포가 말을 몰아 다가오다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 여포의 첫 공격을 받아내다",
+     "Speech": "이 정도쯤이야!",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "여포가 거듭 몰아치다",
+     "Speech": "크윽, 팔이 저리구먼!",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "여포가 돌진하며 몰아붙이다",
+     "Speech": "이 자식, 호로관 때보다 매섭구먼!",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "여포가 혼자임을 짚다",
+     "Speech": "그때는 네 형들이 곁에 있었지. 지금은 너 하나다.",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장비가 막지만 밀리다",
+     "Speech": "으윽…!",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 버틸 이유를 되새기다",
+     "Speech": "(큰일이여… 그래도 형들이 갈 시간만 벌면 되는겨!)",
+     "Side": 0,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "dodge",
+     "Title": "장비가 간신히 몸을 비키다",
+     "Speech": "하마터면…!",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical-dodge",
+     "Title": "여포의 강공을 장비가 아슬아슬하게 피하다",
+     "Speech": "휴, 아슬아슬했구먼!",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장비가 또 밀리다",
+     "Speech": "크윽… 아직 안 졌슈!",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "press",
+     "Title": "여포가 한 걸음씩 밀어붙이다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "여포가 의아해하다",
+     "Speech": "쓰러질 때가 지났는데 아직도 서 있군.",
+     "Side": 1,
+     "Duration": 2.5
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "여포의 일격을 장비가 온 힘으로 막아내다",
+     "Speech": "이 일격을 막다니!",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 숨을 몰아쉬다",
+     "Speech": "헉, 헉… 아직 안 끝났슈!",
+     "Side": 0,
+     "Duration": 2.0
+    },
+    {
+     "Kind": "hit",
+     "Title": "장비가 틈을 찔러 한 방 먹이다",
+     "Speech": "으라앗!",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "여포가 속으로 놀라다",
+     "Speech": "(이놈, 밀리면서도 눈빛이 죽질 않는다…)",
+     "Side": 1,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "talk",
+     "Title": "여포가 승부를 미루다",
+     "Speech": "조조를 놓칠 수는 없다. 이 승부는 다음으로 미뤄 주마.",
+     "Side": 1,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 받아치다",
+     "Speech": "누가 미뤄 달랬슈! 다음엔 끝장 보랑께!",
+     "Side": 0,
+     "Duration": 2.5
+    },
+    {
+     "Kind": "draw",
+     "Title": "두 장수가 승부를 내지 못하고 물러서다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 2.5
     }
    ]
   }

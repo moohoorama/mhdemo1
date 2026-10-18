@@ -25,7 +25,7 @@ func TestRenderedHulaoCoalition(t *testing.T) {
 	require.NoError(t, err)
 	defer g.Close()
 	g.editor = &mapEditor{level: 1, facing: "NW", selected: -1, zoom: 1, brushSize: 4}
-	g.editorOpen(d.StageIndex("B04"))
+	g.editorOpen(d.StageIndex("B03"))
 	g.editorTrial()
 	require.NotNil(t, g.editorReturn)
 	e := g.S.Engine

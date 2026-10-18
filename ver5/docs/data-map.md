@@ -2,7 +2,7 @@
 
 맵별로 `assets/scenario/<시나리오>/maps/mapNN.json`(지형)과 그 맵을 쓰는 `stageNN.json`(스테이지 규칙·배치) 두 파일을 게임과 에디터가 함께 사용한다.
 소타일·대타일 판정 이력·외곽·장식 정보는 맵 파일에, 배치·승리 조건·보상·일기토 같은 스테이지 정보는 스테이지 파일에 저장한다. 에디터는 이 둘을 한 문서(`MapDocument`)로 읽고 함께 저장한다.
-스테이지 ID(`B01`)에서 영문 접두어를 뗀 번호가 파일 이름이다(`stage01.json`, `map01.json`). 스테이지 파일의 `Map`이 맵 파일 이름을 가리킨다.
+스테이지 ID(`B01`)에서 영문 접두어를 뗀 번호가 파일 이름이다(`stage01.json`, `map01.json`). 스테이지 번호는 전투만 1부터 이어서 매기므로 이야기 번호와 다르다(2 사수관 = `B02`, 이야기 3번). 스테이지 파일의 `Map`이 맵 파일 이름을 가리킨다.
 전투 시작에 사용할 정규화된 대타일 Stage와 GUI 그림 자료는 로드 시 메모리에서 만든다.
 전투맵의 별도 stages/ 자료와 graphics/maps/ 자료, tools/mapeditor/maps/ 원본은 유지하지 않는다.
 
@@ -22,10 +22,10 @@ GUI는 content가 읽은 문서로 그림을 만들며, 같은 파일을 에디�
 `tools/mapgen/mapgen.py`가 글자 배치 파일(한 줄에 한 행, 한 글자가 한 칸)에서 맵 문서(`maps/mapNN.json`)를 만든다. 1~9장 맵의 원본은 `tools/mapgen/layouts/hero/`의 글자 배치다(한 글자는 `Tiles`의 글자: `.` `d` `~` `f` `v` `c` `i` `b` `g` `k` `h` `o` `F` `W`).
 
 ```sh
-python3 tools/mapgen/mapgen.py tools/mapgen/layouts/hero/map03.txt assets/scenario/hero/maps/map03.json
+python3 tools/mapgen/mapgen.py tools/mapgen/layouts/hero/map02.txt assets/scenario/hero/maps/map02.json
 ```
 
-전투 영역 바깥은 가장자리 칸을 이어 채우고(맵 에디터의 가져오기와 같다) 장식·소품은 비어 있으니 필요하면 에디터에서 더한다. 임시 확인 도구 `go run ./cmd/_m8check [-scenario 이름] [-stage B03] [-v]`는 시나리오를 로드해 검증하고 각 스테이지를 AI가 양쪽을 맡아 돌려 발동한 이벤트와 결과를 보여 준다.
+전투 영역 바깥은 가장자리 칸을 이어 채우고(맵 에디터의 가져오기와 같다) 장식·소품은 비어 있으니 필요하면 에디터에서 더한다. 임시 확인 도구 `go run ./cmd/_m8check [-scenario 이름] [-stage B02] [-v]`는 시나리오를 로드해 검증하고 각 스테이지를 AI가 양쪽을 맡아 돌려 발동한 이벤트와 결과를 보여 준다.
 
 ## 필드
 

@@ -234,6 +234,15 @@ func (d *MapDocument) Validate(data *Data) error {
 	for _, sp := range st.Enemies {
 		enemy[sp.Character] = true
 	}
+	for _, event := range st.Events {
+		for _, a := range event.Do {
+			for _, sp := range a.Spawns {
+				if a.Kind == "spawn" && sp.Side == "enemy" {
+					enemy[sp.Character] = true
+				}
+			}
+		}
+	}
 	for _, event := range st.Duels {
 		if !enemy[event.Enemy] {
 			return fmt.Errorf("일기토 %s의 적 장수가 없습니다: 일기토를 수정하거나 삭제하세요", event.ID)

@@ -12,7 +12,7 @@ func hulaoBattle(t *testing.T) *Engine {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 	for _, n := range d.Nodes {
-		if n.Kind == "battle" && n.Stage == "B04" {
+		if n.Kind == "battle" && n.Stage == "B03" {
 			d.Campaign.Start = n.ID
 			break
 		}
