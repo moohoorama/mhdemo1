@@ -91,6 +91,8 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 					}
 				}
 			}
+		case "terrain":
+			e.changeTerrain(stage, a)
 		case "ai":
 			for _, t := range a.Targets {
 				for _, u := range e.matching(t) {
@@ -126,7 +128,7 @@ func (e *Engine) placeSpawns(stage content.Stage, spawns []content.Spawn) ([]con
 		for y := 0; y < stage.Height; y++ {
 			for x := 0; x < stage.Width; x++ {
 				p := content.Point{X: x, Y: y}
-				if reserved[p] || e.occupied(x, y) != nil || e.data.Terrain[e.data.Classes[class].Terrain][string(stage.Tiles[y][x])].Cost <= 0 {
+				if reserved[p] || e.occupied(x, y) != nil || e.data.Terrain[e.data.Classes[class].Terrain][e.tile(x, y)].Cost <= 0 {
 					continue
 				}
 				if n := dist(x, y, sp.X, sp.Y); n < score {
@@ -160,4 +162,42 @@ func (e *Engine) retreatSweep(u, fallen *Unit, derived bool) {
 		e.physical(u, v, e.basic(), Command{Kind: "attack", Actor: u.ID, Target: v.ID})
 		e.emit("followup-end", u.ID, v.ID, 0)
 	}
+}
+
+// changeTerrain makes every cell of the action's area the action's tile, replacing an earlier change.
+func (e *Engine) changeTerrain(stage content.Stage, a content.Action) {
+	for _, area := range stage.Areas {
+		if area.ID != a.Area {
+			continue
+		}
+		for y := max(0, area.Rect.Y); y < min(stage.Height, area.Rect.Y+area.Rect.H); y++ {
+			for x := max(0, area.Rect.X); x < min(stage.Width, area.Rect.X+area.Rect.W); x++ {
+				kept := e.state.TileOverrides[:0:0]
+				for _, o := range e.state.TileOverrides {
+					if o.X != x || o.Y != y {
+						kept = append(kept, o)
+					}
+				}
+				e.state.TileOverrides = kept
+				if string(stage.Tiles[y][x]) != a.Tile {
+					e.state.TileOverrides = append(e.state.TileOverrides, TileOverride{X: x, Y: y, Tile: a.Tile, Turns: a.Turns})
+				}
+			}
+		}
+		e.emit("terrain", "", a.Tile, a.Area)
+	}
+}
+
+// ageTerrain counts a round off every temporary change; the ones that run out go back to the stage's tile.
+func (e *Engine) ageTerrain() {
+	kept := e.state.TileOverrides[:0:0]
+	for _, o := range e.state.TileOverrides {
+		if o.Turns > 0 {
+			if o.Turns--; o.Turns == 0 {
+				continue
+			}
+		}
+		kept = append(kept, o)
+	}
+	e.state.TileOverrides = kept
 }

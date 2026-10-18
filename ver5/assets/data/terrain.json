@@ -48,6 +48,14 @@
    "o": {
     "Factor": 1.2,
     "Cost": 1
+   },
+   "F": {
+    "Factor": 0.8,
+    "Cost": 1
+   },
+   "W": {
+    "Factor": 1,
+    "Cost": 0
    }
   },
   "infantry": {
@@ -98,6 +106,14 @@
    "o": {
     "Factor": 1.2,
     "Cost": 1
+   },
+   "F": {
+    "Factor": 0.8,
+    "Cost": 1
+   },
+   "W": {
+    "Factor": 1,
+    "Cost": 0
    }
   },
   "archer": {
@@ -148,6 +164,14 @@
    "o": {
     "Factor": 1.2,
     "Cost": 1
+   },
+   "F": {
+    "Factor": 0.8,
+    "Cost": 1
+   },
+   "W": {
+    "Factor": 1,
+    "Cost": 0
    }
   },
   "scholar": {
@@ -198,6 +222,14 @@
    "o": {
     "Factor": 1.2,
     "Cost": 1
+   },
+   "F": {
+    "Factor": 0.8,
+    "Cost": 1
+   },
+   "W": {
+    "Factor": 1,
+    "Cost": 0
    }
   },
   "bandit": {
@@ -248,6 +280,14 @@
    "o": {
     "Factor": 1.2,
     "Cost": 1
+   },
+   "F": {
+    "Factor": 0.8,
+    "Cost": 1
+   },
+   "W": {
+    "Factor": 1,
+    "Cost": 0
    }
   }
  }

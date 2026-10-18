@@ -628,6 +628,7 @@ func (e *Engine) endFaction() {
 	} else {
 		e.state.Turn = "ally"
 		e.state.Round++
+		e.ageTerrain()
 	}
 	starting := e.state.Turn
 	e.turnStarted = starting
@@ -651,6 +652,9 @@ func (e *Engine) endFaction() {
 		if u.Status["burn"].Turns > 0 {
 			e.dot(u, "burn", st.MaxHP*R.BurnPercent/100)
 		}
+		if t := e.tileAt(u.X, u.Y); t.RestHP < 0 {
+			e.dot(u, "terrain", st.MaxHP*-t.RestHP/100) // the ground itself hurts: standing in fire
+		}
 		if u.HP <= 0 {
 			continue
 		}
@@ -658,7 +662,9 @@ func (e *Engine) endFaction() {
 		r := int(float64(st.Recovery) * (1 + e.fx(u, content.FxManaRegen)))
 		heal := func(n int) { u.HP = min(st.MaxHP, u.HP+e.healAmount(u, float64(n))) }
 		t := e.tileAt(u.X, u.Y)
-		heal(st.MaxHP * t.RestHP / 100)
+		if t.RestHP > 0 {
+			heal(st.MaxHP * t.RestHP / 100)
+		}
 		if t.RestMP > 0 {
 			r *= t.RestMP
 		}

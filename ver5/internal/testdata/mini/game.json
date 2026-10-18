@@ -118,6 +118,15 @@
    "Name": "village",
    "RestHP": 8,
    "RestMP": 2
+  },
+  "F": {
+   "Name": "불붙은 땅",
+   "RestHP": -20,
+   "Surface": 2
+  },
+  "W": {
+   "Name": "불길",
+   "Surface": 2
   }
  }
 }

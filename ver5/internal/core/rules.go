@@ -75,6 +75,11 @@ func (e *Engine) tile(x, y int) string {
 	if x < 0 || y < 0 || x >= s.Width || y >= s.Height {
 		return e.data.Rules.EdgeTile
 	}
+	for _, o := range e.state.TileOverrides {
+		if o.X == x && o.Y == y {
+			return o.Tile
+		}
+	}
 	return string(s.Tiles[y][x])
 }
 func (e *Engine) tileAt(x, y int) content.Tile { return e.data.Tiles[e.tile(x, y)] }

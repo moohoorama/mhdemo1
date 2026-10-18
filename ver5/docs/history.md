@@ -7,6 +7,10 @@
 
 ## 2026-10-18
 
+### 불을 타일 두 종류와 `terrain` 동작으로 표현함
+- 불붙은 땅(`F`: 모든 병종 배율 0.8, 자기 차례가 시작될 때 선 병력은 최대 병력의 20%를 잃음, 지나가기만 하면 피해 없음)과 불길(`W`: 진입 불가). 불이 붙는 것은 이벤트 `terrain` 동작이 칸의 타일을 바꾸는 것으로만 일어나고, 변경은 상태에 저장되며 `Turns`로 꺼지게 할 수 있음(병법이 나중에 같은 수단을 쓸 수 있게). 불이 번지는 규칙은 두지 않음.
+- 영향: `internal/core/battle_events.go`·`combat.go`·`rules.go`, `internal/gui/fire.go`, `assets/data/game.json`·`terrain.json`
+
 ### 유닛 행동 정책(`hold`·`assault`·`march`·`flee`)과 `ai` 동작을 둠
 - 스폰의 `Guard`(제자리)와 스테이지 `Charge`(적이 처음부터 진군)를 유닛별 `Policy`로 바꾸고 `march`(목표 칸으로 가며 교전)·`flee`(목표 칸으로 달아나 맵을 떠남)를 더함. 이벤트 `ai` 동작이 정책을 바꿈. `charge`라는 이름은 데이터의 특성 ID와 겹쳐 엔진 소스에 못 써서 `assault`로 했고, `flee`가 맵을 떠나는 것은 AI가 아니라 엔진 규칙(`retreat`)이라 `defeated` 조건으로 볼 수 있음. 정책을 이벤트가 바꿀 수 있어 저장 검증은 정책의 모양만 봄.
 - 영향: `internal/ai/ai.go`, `internal/core/engine.go`·`battle_events.go`, `docs/logic-battle-event.md`·`data-scenario-node.md`

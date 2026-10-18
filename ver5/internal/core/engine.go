@@ -118,6 +118,9 @@ func (e *Engine) Observe() Observation {
 	o := Observation{State: s, Dialogue: copyOf(e.data.Node(s.Node))}
 	if s.Phase == "deployment" || s.Phase == "battle" || s.Phase == "result" {
 		m := copyOf(e.data.Stages[s.Stage])
+		for _, t := range s.TileOverrides {
+			m.Tiles[t.Y] = m.Tiles[t.Y][:t.X] + t.Tile + m.Tiles[t.Y][t.X+1:]
+		}
 		o.Map = &m
 	}
 	for _, u := range s.Units {
@@ -707,6 +710,7 @@ func (e *Engine) clearBattle() {
 	s.Checkpoint = nil
 	s.Learning = nil
 	s.PendingFlags = nil
+	s.TileOverrides = nil
 	s.Round = 0
 	s.Turn = ""
 	s.Result = ""

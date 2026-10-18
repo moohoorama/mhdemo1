@@ -397,23 +397,30 @@ func (g *Game) drawSceneEffects(dst *ebiten.Image) {
 		case "fire":
 			x, y := g.field.Center(e.u, e.v)
 			sx, sy := g.toScreen(x, y)
-			glow(dst, float32(sx), float32(sy)-8*z, 22*z, flameColors[1], .7+.2*math.Sin(e.t*9))
-			for i := 0; i < 14; i++ {
-				k := float64(i)
-				life := math.Mod(e.t*1.6+k*.37, 1) // 0 at the base, 1 burnt out at the top
-				px := float32(sx) + float32(math.Sin(k*2.4)*7+math.Sin(e.t*5+k)*2*(life))*z
-				py := float32(sy) - float32(life*26)*z
-				r := float32((1-life)*4.5+1) * z
-				c := flameColors[min(2, int(life*3))]
-				fillCircle(dst, px, py, r, with8(c, 1-life*.6))
-			}
-			for i := 0; i < 5; i++ { // smoke
-				k := float64(i)
-				life := math.Mod(e.t*.5+k*.2, 1)
-				px := float32(sx) + float32(math.Sin(k*1.7+e.t)*6)*z
-				py := float32(sy) - float32(26+life*30)*z
-				fillCircle(dst, px, py, float32(3+life*6)*z, color.NRGBA{R: 60, G: 56, B: 52, A: uint8(110 * (1 - life))})
-			}
+			flames(dst, float32(sx), float32(sy), e.t, z, 1)
 		}
+	}
+}
+
+// flames draws fire standing on one spot: a glow, sparks rising from it and smoke above. size
+// scales how big the blaze is (1 is a campfire).
+func flames(dst *ebiten.Image, sx, sy float32, t float64, z, size float32) {
+	z *= size
+	glow(dst, sx, sy-8*z, 22*z, flameColors[1], .7+.2*math.Sin(t*9))
+	for i := 0; i < 14; i++ {
+		k := float64(i)
+		life := math.Mod(t*1.6+k*.37, 1) // 0 at the base, 1 burnt out at the top
+		px := sx + float32(math.Sin(k*2.4)*7+math.Sin(t*5+k)*2*(life))*z
+		py := sy - float32(life*26)*z
+		r := float32((1-life)*4.5+1) * z
+		c := flameColors[min(2, int(life*3))]
+		fillCircle(dst, px, py, r, with8(c, 1-life*.6))
+	}
+	for i := 0; i < 5; i++ { // smoke
+		k := float64(i)
+		life := math.Mod(t*.5+k*.2, 1)
+		px := sx + float32(math.Sin(k*1.7+t)*6)*z
+		py := sy - float32(26+life*30)*z
+		fillCircle(dst, px, py, float32(3+life*6)*z, color.NRGBA{R: 60, G: 56, B: 52, A: uint8(110 * (1 - life))})
 	}
 }

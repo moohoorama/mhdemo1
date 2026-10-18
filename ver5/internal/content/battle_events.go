@@ -83,6 +83,10 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 				if a.Policy == "" || len(a.Targets) == 0 || !ValidPolicy(a.Policy, a.Goal, s.Width, s.Height) {
 					return nil, fmt.Errorf("battle event %s: ai action", event.ID)
 				}
+			case "terrain":
+				if _, ok := d.Tiles[a.Tile]; !ok || !areas[a.Area] || a.Turns < 0 {
+					return nil, fmt.Errorf("battle event %s: terrain action", event.ID)
+				}
 			case "say", "remove", "flag":
 			default:
 				return nil, fmt.Errorf("battle event %s: action %q", event.ID, a.Kind)

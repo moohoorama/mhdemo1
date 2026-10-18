@@ -232,6 +232,9 @@ type Action struct {
 	Spawns  []Spawn        `json:",omitempty"`
 	Targets []string       `json:",omitempty"`
 	Flags   map[string]int `json:",omitempty"`
+	Area    int            `json:",omitempty"` // terrain: the area whose cells change
+	Tile    string         `json:",omitempty"` // terrain: the tile they become
+	Turns   int            `json:",omitempty"` // terrain: for how many rounds; none is for good
 	Policy  string         `json:",omitempty"` // ai: the new policy of the Targets
 	Goal    *Point         `json:",omitempty"` // ai: its goal cell, for march and flee
 }

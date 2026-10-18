@@ -955,6 +955,7 @@ func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 	inWorld(func() {
 		drawScaled(dst, g.field.Canvas, op)
 		g.cursor(dst)
+		g.drawFlames(dst, o)
 		g.drawEffects(dst)
 	})
 	// popups stand over their unit but are UI: the UI size enlarges them on top of the zoom

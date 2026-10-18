@@ -174,6 +174,20 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	if s.AI != AIPolicyVersion || s.Difficulty != "normal" || s.Format != 3 || s.Core != CoreVersion || s.Rules != RulesVersion || s.Content != d.Version || s.ContentHash != d.Hash {
 		return nil, fail("IncompatibleSave")
 	}
+	for i, t := range s.TileOverrides {
+		if s.Stage < 0 || s.Stage >= len(d.Stages) {
+			break
+		}
+		st := d.Stages[s.Stage]
+		if _, ok := d.Tiles[t.Tile]; !ok || t.X < 0 || t.Y < 0 || t.X >= st.Width || t.Y >= st.Height || t.Turns < 0 || len(t.Tile) != 1 {
+			return nil, fail("CorruptSave")
+		}
+		for _, o := range s.TileOverrides[:i] {
+			if o.X == t.X && o.Y == t.Y {
+				return nil, fail("CorruptSave")
+			}
+		}
+	}
 	if s.Stage < 0 || s.Stage >= len(d.Stages) || s.Inventory == nil || s.Warehouse == nil || s.Executed == nil || s.Flags == nil || s.Choices == nil {
 		return nil, fail("CorruptSave")
 	}

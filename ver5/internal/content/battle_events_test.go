@@ -228,3 +228,27 @@ func TestValidPolicyChecksPolicyAgainstGoal(t *testing.T) {
 		assert.Equal(t, c.want, ValidPolicy(c.policy, c.goal, 12, 8), name)
 	}
 }
+
+func TestLoadChecksTerrainActions(t *testing.T) {
+	area := obj("ID", 1, "Rect", obj("X", 5, "Y", 6, "W", 2, "H", 1), "Name", "grass")
+	terrain := func(extra ...any) map[string]any {
+		return obj(append([]any{"ID", "e", "Do", objs(obj("Kind", "terrain", "Area", 1, "Tile", "F"))}, extra...)...)
+	}
+	setup := func(do map[string]any) func(map[string]any) {
+		return func(st map[string]any) { st["Areas"] = objs(area); st["Events"] = objs(do) }
+	}
+	action := func(kv ...any) map[string]any {
+		return obj("ID", "e", "Do", objs(obj(append([]any{"Kind", "terrain"}, kv...)...)))
+	}
+	assert.NoError(t, loadWithStage(t, setup(terrain())))
+	assert.NoError(t, loadWithStage(t, setup(action("Area", 1, "Tile", "W", "Turns", 3))))
+	for name, do := range map[string]map[string]any{
+		"unknown tile":  action("Area", 1, "Tile", "?"),
+		"no tile":       action("Area", 1),
+		"unknown area":  action("Area", 7, "Tile", "F"),
+		"no area":       action("Tile", "F"),
+		"negative turn": action("Area", 1, "Tile", "F", "Turns", -1),
+	} {
+		t.Run(name, func(t *testing.T) { assert.Error(t, loadWithStage(t, setup(do))) })
+	}
+}
