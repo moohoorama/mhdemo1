@@ -156,7 +156,11 @@ func TestCharacterArt(t *testing.T) {
 		t.Fatal(err)
 	}
 	for id, c := range d.Characters {
-		for _, s := range []string{c.Look.Sprite, c.Look.Scene} {
+		sprites := []string{c.Look.Sprite, c.Look.Scene}
+		for _, s := range c.Look.Sprites {
+			sprites = append(sprites, s)
+		}
+		for _, s := range sprites {
 			if s != "" {
 				if sheets[s] == nil {
 					t.Errorf("%s: unknown sprite %q", id, s)

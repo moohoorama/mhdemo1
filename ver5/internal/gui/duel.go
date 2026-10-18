@@ -20,16 +20,16 @@ func (g *Game) duelView(e core.Event) *duelview.View {
 		if u == nil {
 			continue
 		}
-		v.Fighters[i] = g.duelFighter(u.Def, u.Class, u.Color)
+		v.Fighters[i] = g.duelFighter(u.Def, u.Class, u.Weapon, u.Color)
 	}
 	if a, t := g.unitView(g.player.final, e.Actor), g.unitView(g.player.final, e.Target); a != nil && t != nil {
 		v.Axis = duelAxis(t.X-a.X, t.Y-a.Y)
 	}
 	for i, id := range g.assets.Duels[e.DuelID].Supports {
 		c := g.S.Data.Characters[id]
-		v.Fighters[i+2] = g.duelFighter(id, c.Class, c.Look.Faction)
+		v.Fighters[i+2] = g.duelFighter(id, c.Class, g.startingWeapon(c), c.Look.Faction)
 		if u := g.unitView(g.player.final, id); u != nil {
-			v.Fighters[i+2] = g.duelFighter(u.Def, u.Class, u.Color)
+			v.Fighters[i+2] = g.duelFighter(u.Def, u.Class, u.Weapon, u.Color)
 		}
 	}
 	if a, t := g.unitView(g.player.final, e.Actor), g.unitView(g.player.final, e.Target); a != nil && t != nil && g.field != nil {
@@ -144,8 +144,8 @@ func (g *Game) groundTint() color.NRGBA {
 	return color.NRGBA{uint8(r / a * 255), uint8(gr / a * 255), uint8(bl / a * 255), 255}
 }
 
-func (g *Game) duelFighter(id, classID, faction string) duelview.Fighter {
+func (g *Game) duelFighter(id, classID, weapon, faction string) duelview.Fighter {
 	c := g.S.Data.Characters[id]
 	class := g.S.Data.Classes[classID]
-	return duelview.Fighter{Name: c.Name, Art: g.battleClassArt(id, classID, faction), Troops: g.art(class.Sprite, faction, content.Look{}), Portrait: g.portraitArt(c, classID)}
+	return duelview.Fighter{Name: c.Name, Art: g.battleClassArt(id, classID, weapon, faction), Troops: g.art(class.Sprite, faction, content.Look{}), Portrait: g.portraitArt(c, classID)}
 }

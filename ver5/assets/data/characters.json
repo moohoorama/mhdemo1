@@ -313,31 +313,13 @@
     "diamond_armor"
    ],
    "Look": {
-    "Sprite": "cavalry",
+    "Sprite": "lubu",
+    "Sprites": {
+     "light_cavalry": "lubu",
+     "horse_archer": "lubu_bow"
+    },
     "Portrait": "lubu",
-    "Faction": "dong",
-    "Palette": {
-     "iron": [
-      "#6a6a78",
-      "#3a3a46",
-      "#1a1a22"
-     ],
-     "themeA": [
-      "#d04848",
-      "#9a2424",
-      "#5a1010"
-     ],
-     "horseSkin": [
-      "#e06050",
-      "#b03020",
-      "#741a10"
-     ],
-     "horseMane": [
-      "#901818",
-      "#601010",
-      "#300808"
-     ]
-    }
+    "Faction": "dong"
    }
   },
   "liru": {
@@ -446,7 +428,9 @@
     90
    ],
    "Level": 8,
-   "Traits": [],
+   "Traits": [
+    "versatile"
+   ],
    "Learn": [],
    "Equipment": [
     "iron_spear",
@@ -455,12 +439,11 @@
    "Look": {
     "Portrait": "zhaoyun",
     "Faction": "gongsun",
-    "Palette": {
-     "horseSkin": [
-      "#ffffff",
-      "#e8e8ec",
-      "#b0b0b8"
-     ]
+    "Sprite": "zhaoyun",
+    "Sprites": {
+     "light_cavalry:sword": "zhaoyun_sword",
+     "heavy_cavalry:sword": "zhaoyun_sword",
+     "royal_guard:sword": "zhaoyun_sword"
     }
    }
   },
@@ -541,13 +524,7 @@
    "Look": {
     "Portrait": "yuanshao",
     "Faction": "yuan",
-    "Palette": {
-     "themeA": [
-      "#f0d860",
-      "#d0b030",
-      "#8a7410"
-     ]
-    }
+    "Sprite": "yuanshao"
    }
   },
   "wenchou": {
@@ -742,7 +719,32 @@
    ],
    "Look": {
     "Portrait": "yuanshu",
-    "Faction": "yuan"
+    "Faction": "yuan",
+    "Sprite": "yuanshu"
+   }
+  },
+  "sunjian": {
+   "Name": "손견",
+   "Biography": "강동의 호랑이. 반동탁 연합의 선봉으로 사수관에서 화웅에게 패했으나 낙양에 먼저 들어가 옥새를 얻었다. 훗날 유표를 치다 현산에서 전사한다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    94,
+    91,
+    76,
+    85,
+    70,
+    92
+   ],
+   "Level": 10,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wu",
+    "Sprite": "sunjian"
    }
   },
   "caocao": {
@@ -759,16 +761,44 @@
    ],
    "Level": 14,
    "Traits": [
-    "civil_martial"
+    "civil_martial",
+    "versatile"
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "yitian_sword",
     "leather_armor"
    ],
    "Look": {
     "Portrait": "caocao",
-    "Faction": "wei"
+    "Faction": "wei",
+    "Sprite": "caocao",
+    "Sprites": {
+     "light_cavalry:sword": "caocao_sword",
+     "heavy_cavalry:sword": "caocao_sword",
+     "royal_guard:sword": "caocao_sword"
+    }
+   }
+  },
+  "xiandi": {
+   "Name": "헌제",
+   "Biography": "후한의 마지막 황제 유협. 어린 나이에 동탁에게 옹립되어 겁박당하고, 이각·곽사의 난을 거쳐 조조에게 맞이되어 허도에 머문다. 황숙 유비를 만나 의대조에 서명하지만, 훗날 조비에게 선양한다.",
+   "Class": "light_infantry",
+   "Stats": [
+    28,
+    14,
+    72,
+    33,
+    40,
+    78
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [],
+   "Look": {
+    "Scene": "xiandi_noncombat",
+    "Faction": "han"
    }
   },
   "dongzhuo": {

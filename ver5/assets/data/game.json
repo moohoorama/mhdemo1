@@ -154,6 +154,14 @@
     "#938a27"
    ]
   },
+  "han": {
+   "Name": "한 황실",
+   "Colors": [
+    "#ffd85a",
+    "#e0a81e",
+    "#9a6a10"
+   ]
+  },
   "barbarian": {
    "Name": "이민족",
    "Colors": [

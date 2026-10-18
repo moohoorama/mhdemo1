@@ -112,7 +112,7 @@ func (g *Game) drawDeploymentPreview(o core.Observation) {
 		if ch.ID != c.Actor {
 			continue
 		}
-		art := g.battleClassArt(ch.Def, ch.Class, g.S.Data.Characters[ch.Def].Look.Faction)
+		art := g.battleClassArt(ch.Def, ch.Class, g.S.Data.Equipment[ch.Equipment["weapon"]].Type, g.S.Data.Characters[ch.Def].Look.Faction)
 		if art == nil {
 			return
 		}

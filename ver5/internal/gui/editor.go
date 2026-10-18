@@ -532,7 +532,7 @@ func (g *Game) editorStamp(p image.Point, erase bool) {
 	cl := g.S.Data.Classes[class]
 	for _, id := range c.Equipment {
 		eq := g.S.Data.Equipment[id]
-		if eq.Slot == "weapon" && eq.Type != cl.Weapon || eq.Slot == "armor" && eq.Type != cl.Armor {
+		if !g.S.Data.Carries(cl, c.Traits, eq) {
 			continue
 		}
 		equipment = append(equipment, id)
@@ -835,7 +835,7 @@ func (g *Game) editorUnits() []*unitVis {
 		if i < len(e.doc.Stage.Enemies) {
 			v = g.editorPreview(sp)
 		}
-		art := g.battleClassArt(v.Def, v.Class, v.Color)
+		art := g.battleClassArt(v.Def, v.Class, v.Weapon, v.Color)
 		if art == nil {
 			continue
 		}

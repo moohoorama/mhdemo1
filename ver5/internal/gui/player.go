@@ -50,6 +50,8 @@ type unitVis struct {
 	dying        float64 // < 0: alive
 	gone, greyed bool
 	ranged       bool
+	shoot        *sprite.Art // the look it shoots from range in (mounted_range), nil when it has none
+	shootClass   string
 	siege        bool // attacks are stones lobbed along an arc
 	inactive     bool
 	actor        bool // a scene actor: no HP bar, always rests standing
@@ -456,10 +458,18 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	gather := float64(ms[0]+ms[1]) / 1000
 	follow := float64(ms[2]+ms[3])/1000 + .25
 	kind := g.effectKind(actor, c)
+	shooting := g.shootsFromRange(actor, target, c)
+	if shooting && kind == "slash" {
+		kind = "arrow"
+	}
+	look := actor.art
 	tint := buffTint[g.S.Data.Skills[c.Skill].Effect]
 	start := func() {
 		if target != nil && target != actor {
 			actor.face(target.u, target.v)
+		}
+		if shooting {
+			actor.art = actor.shoot
 		}
 		actor.play("attack")
 		if c.Kind == "skill" {
@@ -506,7 +516,30 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	if crit {
 		wait = math.Max(wait, shakeTime*1.6)
 	}
-	add(wait, func() { g.impact(kind, actor, target, events, tint); g.strike(actor, events) })
+	add(wait, func() {
+		actor.art = look
+		g.impact(kind, actor, target, events, tint)
+		g.strike(actor, events)
+	})
+}
+
+// shootsFromRange tells whether the basic attack is a shot in the actor's shoot look: it has one and the
+// target stands beyond the eight cells around it, judged where both stand when the action ends.
+func (g *Game) shootsFromRange(actor, target *unitVis, c core.Command) bool {
+	if actor == nil || target == nil || actor == target || actor.shoot == nil || c.Kind != "attack" {
+		return false
+	}
+	cell := func(v *unitVis) (int, int) {
+		for _, w := range g.player.final.UnitViews {
+			if w.ID == v.id {
+				return w.X, w.Y
+			}
+		}
+		return int(math.Round(v.u)), int(math.Round(v.v))
+	}
+	ax, ay := cell(actor)
+	tx, ty := cell(target)
+	return math.Abs(float64(ax-tx)) > 1 || math.Abs(float64(ay-ty)) > 1
 }
 
 func (g *Game) stepTo(u *unitVis, p content.Point) { g.walkTo(u, float64(p.X), float64(p.Y)) }

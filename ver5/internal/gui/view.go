@@ -297,7 +297,7 @@ func (g *Game) syncUnit(u core.UnitView, o core.Observation) {
 		if u.Facing != "" {
 			dir = u.Facing
 		}
-		art := g.battleClassArt(u.Def, u.Class, u.Color)
+		art := g.battleClassArt(u.Def, u.Class, u.Weapon, u.Color)
 		v = &unitVis{id: u.ID, ally: u.Faction == "ally", art: art, dir: dir, anim: "idle", dying: -1, top: art.TopOffset()}
 		g.vis[u.ID] = v
 	}
@@ -309,6 +309,12 @@ func (g *Game) syncUnit(u core.UnitView, o core.Observation) {
 	v.inactive = o.Phase != "battle" || !u.ActsIn(o.Turn) || u.Done
 	v.greyed = u.Done && u.ActsIn(o.Turn) && o.Phase == "battle"
 	v.ranged = g.S.Data.Classes[u.Class].Attack == content.AttackRanged
+	if v.shootClass != u.Shoot {
+		v.shootClass, v.shoot = u.Shoot, nil
+		if u.Shoot != "" {
+			v.shoot = g.shootArt(u.Def, u.Shoot, u.Color)
+		}
+	}
 	v.siege = slices.Contains(g.S.Data.Classes[u.Class].Tags, content.TagSiege)
 	v.gone = u.HP <= 0
 	if !v.gone {

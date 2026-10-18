@@ -69,7 +69,8 @@ beat = 단계 그룹의 배열, 단계 그룹 = 단계의 배열
 
 ## 장면 스프라이트
 
-- 배우의 스프라이트는 `cast`의 스프라이트 ID, 캐릭터의 `Look.Scene`, `Look.Sprite`, 병종의 스프라이트 순으로 처음 있는 것이다(`sceneArt`).
+- 배우의 스프라이트는 `cast`의 스프라이트 ID, 캐릭터의 `Look.Scene`, `Look.Sprites[병종]`, `Look.Sprite`, 병종의 스프라이트 순으로 처음 있는 것이다(`sceneArt`).
+- 전투 스프라이트는 `Look.Sprites[병종:무기 종류]`, `Look.Sprites[병종]`, `Look.Sprite`, 병종의 스프라이트 순이다(`battleClassArt`). `Look.Sprites`는 병종 ID(또는 `병종:장착 무기 종류`, 예: `light_cavalry:sword`) → 스프라이트 ID 표라서 병종이 바뀌거나 무기를 바꿔 들면 보이는 모습도 바뀐다(무기 종류는 `UnitView.Weapon`). 조조와 조운은 창이면 `Look.Sprite`, 검이면 `caocao_sword`·`zhaoyun_sword`다. 병종에 `Shoot`가 있고 백마 같은 `mounted_range`가 있는 유닛이 대상의 주변 8칸 밖을 기본 공격하면, 공격 동안 `Look.Sprites[Shoot 병종]`(없으면 그 병종의 스프라이트)로 바뀌어 활을 쏘고 화살이 날아간다(`shootArt`, `shootsFromRange`).
   유비·관우·장비는 `Look.Scene`이 `<id>_noncombat`이다.
 - 비전투 스프라이트는 NW·SW 두 방향만 그린다. NE·SE는 `.spr`를 만들 때 NW·SW를 좌우 반전한 행으로 이미 들어 있고 런타임은 반전하지 않는다.
   동작은 `idle`·`walk`(대기·왼발·대기·오른발)·`action` 하나다. 형식과 빌드는 [presentation-sprite.md](presentation-sprite.md)에 있다.

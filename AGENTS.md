@@ -29,3 +29,6 @@ same frames from the four reference screens (docs_old/plans/PLAN_ui-scale-ppi.md
 cover whole screens: `uiscale` (story, battle HUD), `popups` (title, windows, modals, preparation),
 `deploy`, `duel`, `editor`.
 Add a new demo file there when no existing demo shows the screen. `cmd/_uidemo` is the windowed version.
+
+Every time you change something, record it in `ver5/docs/history.md`. Each entry lists the changed
+file name, what was changed, and the intent (or reason): `파일이름: 수정내역 — 의도`.

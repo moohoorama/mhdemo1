@@ -111,7 +111,7 @@ func (g *Game) editorFacingButton(dst *ebiten.Image, r image.Rectangle, sp conte
 		return
 	}
 	v := g.editorPreview(sp)
-	art := g.battleClassArt(v.Def, v.Class, v.Color)
+	art := g.battleClassArt(v.Def, v.Class, v.Weapon, v.Color)
 	if art == nil {
 		return
 	}
@@ -370,7 +370,7 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 						cl := data.Classes[c.ID]
 						for _, id := range *s.Equipment {
 							v := data.Equipment[id]
-							if v.Slot == "weapon" && v.Type != cl.Weapon || v.Slot == "armor" && v.Type != cl.Armor {
+							if !data.Carries(cl, data.SpawnTraits(*s), v) {
 								continue
 							}
 							eq = append(eq, id)
@@ -400,7 +400,7 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 		cl := data.Classes[class]
 		for _, id := range sorted(data.Equipment) {
 			v := data.Equipment[id]
-			if v.Slot == "weapon" && v.Type != cl.Weapon || v.Slot == "armor" && v.Type != cl.Armor {
+			if !data.Carries(cl, data.SpawnTraits(*s), v) {
 				continue
 			}
 			ids = append(ids, id)

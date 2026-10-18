@@ -87,13 +87,44 @@ func (g *Game) art(id, faction string, look content.Look) *sprite.Art {
 
 // battleArt is the character's battle sprite, or its class's.
 func (g *Game) battleArt(def, faction string) *sprite.Art {
-	return g.battleClassArt(def, g.S.Data.Characters[def].Class, faction)
+	c := g.S.Data.Characters[def]
+	return g.battleClassArt(def, c.Class, g.startingWeapon(c), faction)
 }
 
-func (g *Game) battleClassArt(def, class, faction string) *sprite.Art {
+// startingWeapon is the type of the weapon a character's definition equips.
+func (g *Game) startingWeapon(c content.Character) string {
+	for _, id := range c.Equipment {
+		if e := g.S.Data.Equipment[id]; e.Slot == "weapon" {
+			return e.Type
+		}
+	}
+	return ""
+}
+
+// battleClassArt is the sprite of a character serving in class with a weapon of the given type: its entry for
+// that class and weapon, for the class, the character's default sprite, or else the class's own.
+func (g *Game) battleClassArt(def, class, weapon, faction string) *sprite.Art {
 	c := g.S.Data.Characters[def]
-	if a := g.art(c.Look.Sprite, faction, c.Look); a != nil {
-		return a
+	ids := []string{c.Look.Sprites[class], c.Look.Sprite}
+	if weapon != "" {
+		ids = append([]string{c.Look.Sprites[class+":"+weapon]}, ids...)
+	}
+	for _, id := range ids {
+		if a := g.art(id, faction, c.Look); id != "" && a != nil {
+			return a
+		}
+	}
+	return g.art(g.S.Data.Classes[class].Sprite, faction, c.Look)
+}
+
+// shootArt is the look a unit takes while shooting from range: the character's sprite for the
+// shoot class, else that class's own (never the sprite the character carries into every class).
+func (g *Game) shootArt(def, class, faction string) *sprite.Art {
+	c := g.S.Data.Characters[def]
+	if id := c.Look.Sprites[class]; id != "" {
+		if a := g.art(id, faction, c.Look); a != nil {
+			return a
+		}
 	}
 	return g.art(g.S.Data.Classes[class].Sprite, faction, c.Look)
 }
@@ -102,7 +133,7 @@ func (g *Game) battleClassArt(def, class, faction string) *sprite.Art {
 // character's scene sprite, battle sprite or class sprite.
 func (g *Game) sceneArt(def, pick, faction string) *sprite.Art {
 	c := g.S.Data.Characters[def]
-	for _, id := range []string{pick, c.Look.Scene, c.Look.Sprite, g.S.Data.Classes[c.Class].Sprite} {
+	for _, id := range []string{pick, c.Look.Scene, c.Look.Sprites[c.Class], c.Look.Sprite, g.S.Data.Classes[c.Class].Sprite} {
 		if a := g.art(id, faction, c.Look); id != "" && a != nil {
 			return a
 		}

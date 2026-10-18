@@ -60,7 +60,7 @@ func (g *Game) OpenDuel(id, captureDir string, debug bool) error {
 						}
 					}
 				}
-				v.Fighters[i] = g.duelFighter(actor, c.Class, faction)
+				v.Fighters[i] = g.duelFighter(actor, c.Class, g.startingWeapon(c), faction)
 			}
 			gallery.id, gallery.view = id, v
 			if captureDir != "" {

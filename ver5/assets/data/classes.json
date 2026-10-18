@@ -180,6 +180,7 @@
    "RecoveryBase": 2,
    "Tier": 0,
    "Sprite": "light_cavalry",
+   "Shoot": "horse_archer",
    "Portrait": "light_cavalry",
    "Pool": [
     "dash",
@@ -217,6 +218,7 @@
    "RecoveryBase": 2,
    "Tier": 1,
    "Sprite": "heavy_cavalry",
+   "Shoot": "horse_archer",
    "Portrait": "heavy_cavalry",
    "Pool": [
     "deputy_appoint",
@@ -321,6 +323,7 @@
    "RecoveryBase": 2,
    "Tier": 2,
    "Sprite": "royal_guard",
+   "Shoot": "horse_archer",
    "Portrait": "royal_guard",
    "Pool": [
     "gale",

@@ -264,10 +264,10 @@
   },
   "white_horse": {
    "Name": "백마",
-   "Desc": "기병이면 사거리 1~2의 원거리 공격이 가능. 경기병은 이동력 +1.",
+   "Desc": "기병이면 사거리 1~3의 원거리 공격(궁기병의 사거리)이 가능하다. 떨어진 적에게는 활을 쏜다. 경기병은 이동력 +1.",
    "Cost": 500,
    "Effects": {
-    "mounted_range": 2,
+    "mounted_range": 3,
     "light_move": 1
    }
   },
@@ -542,6 +542,22 @@
     "retreat_sweep": 1
    }
   },
+  "qinggang_edge": {
+   "Name": "청공",
+   "Desc": "철도 진흙처럼 벤다. 앞을 치면 앞 칸과 양옆 둘씩, 공격자를 둘러싼 5칸의 적도 50% 피해를 받는다.",
+   "Cost": 0,
+   "Effects": {
+    "sweep_arc": 0.5
+   }
+  },
+  "heaven_blade": {
+   "Name": "의천",
+   "Desc": "하늘에 기댄 검. 적의 물리 공격 명중률이 15%p 낮아진다.",
+   "Cost": 0,
+   "Effects": {
+    "evade": 15
+   }
+  },
   "red_hare_counter": {
    "Name": "마중적토",
    "Desc": "이동력 +2. 사거리 안의 물리 공격에 100% 반격.",
@@ -565,6 +581,15 @@
    "Cost": 1000,
    "Effects": {
     "blend_bonus": 1
+   }
+  },
+  "versatile": {
+   "Name": "다재다능",
+   "Desc": "병종의 무기에 더해 검과 창을 모두 장착할 수 있다.",
+   "Cost": 0,
+   "Effects": {
+    "wield:spear": 1,
+    "wield:sword": 1
    }
   },
   "deputy_appoint": {
