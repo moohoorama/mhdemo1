@@ -32,6 +32,7 @@ func (e *Engine) deployCommand(c Command) error {
 			return fail("DeploymentIncomplete")
 		}
 		e.state.Phase = "battle"
+		e.turnStarted = "ally"
 		e.emit("deployment_finish", "", "", 0)
 		return nil
 	}

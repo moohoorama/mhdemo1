@@ -6,26 +6,42 @@ import (
 	"strings"
 )
 
-// Cond is one parsed condition string of a node (flag:x, !alive:liubei, choice:oath=결의, ...).
+// Cond is one parsed condition string (flag:x, !alive:liubei, round>=3, any:[a, b], ...).
 type Cond struct {
 	Not       bool
 	Op        string
 	Arg, Arg2 string
 	N         int
+	Any       []Cond
 }
 
-// NodeConds are the condition operators story nodes may use.
-var nodeConds = map[string]bool{"flag": true, "alive": true, "dead": true, "party": true, "choice": true, "won": true}
+// Story nodes may use storyConds; battle events may use battleConds.
+var storyConds = map[string]bool{"flag": true, "alive": true, "dead": true, "party": true, "choice": true, "won": true}
+var battleConds = map[string]bool{"flag": true, "choice": true, "won": true, "round": true, "turnstart": true, "defeated": true,
+	"alldefeated": true, "alive": true, "at": true, "allat": true, "adjacent": true, "hp": true, "duel": true, "any": true}
 
-// ParseCond reads "!?op:arg", where flag takes an optional ">=N" (default 1) and choice takes "node=option".
+var turnNames = []string{"ally", "support", "enemy"}
+
+// ParseCond reads "!?op:args". The forms are flag:key[>=N], alive|dead|party|defeated|alldefeated:X,
+// choice:node=option, won:stage, round>=N, turnstart:faction, at|allat:X:area, adjacent:A:B,
+// hp:X<N, duel:id and any:[cond, cond]. A leading ! negates.
 func ParseCond(s string) (Cond, error) {
+	bad := func() (Cond, error) { return Cond{}, fmt.Errorf("condition %q", s) }
 	c := Cond{N: 1}
 	if strings.HasPrefix(s, "!") {
 		c.Not, s = true, s[1:]
 	}
+	if n, ok := strings.CutPrefix(s, "round>="); ok {
+		v, err := strconv.Atoi(n)
+		if err != nil || v < 1 {
+			return bad()
+		}
+		c.Op, c.N = "round", v
+		return c, nil
+	}
 	op, arg, ok := strings.Cut(s, ":")
-	if !ok || arg == "" || !nodeConds[op] {
-		return Cond{}, fmt.Errorf("condition %q", s)
+	if !ok || arg == "" || !storyConds[op] && !battleConds[op] {
+		return bad()
 	}
 	c.Op, c.Arg = op, arg
 	switch op {
@@ -33,31 +49,97 @@ func ParseCond(s string) (Cond, error) {
 		if name, n, ok := strings.Cut(arg, ">="); ok {
 			v, err := strconv.Atoi(n)
 			if err != nil || name == "" {
-				return Cond{}, fmt.Errorf("condition %q", s)
+				return bad()
 			}
 			c.Arg, c.N = name, v
 		}
 	case "choice":
 		node, option, ok := strings.Cut(arg, "=")
 		if !ok || node == "" || option == "" {
-			return Cond{}, fmt.Errorf("condition %q", s)
+			return bad()
 		}
 		c.Arg, c.Arg2 = node, option
+	case "turnstart":
+		if !contains(turnNames, arg) {
+			return bad()
+		}
+	case "at", "allat":
+		who, area, ok := strings.Cut(arg, ":")
+		id, err := strconv.Atoi(area)
+		if !ok || who == "" || err != nil || id < 1 {
+			return bad()
+		}
+		c.Arg, c.Arg2, c.N = who, area, id
+	case "adjacent":
+		a, b, ok := strings.Cut(arg, ":")
+		if !ok || a == "" || b == "" {
+			return bad()
+		}
+		c.Arg, c.Arg2 = a, b
+	case "hp":
+		who, n, ok := strings.Cut(arg, "<")
+		v, err := strconv.Atoi(n)
+		if !ok || who == "" || err != nil || v < 1 || v > 100 {
+			return bad()
+		}
+		c.Arg, c.N = who, v
+	case "any":
+		inner, ok := strings.CutSuffix(strings.TrimPrefix(arg, "["), "]")
+		if !ok || !strings.HasPrefix(arg, "[") {
+			return bad()
+		}
+		for _, part := range strings.Split(inner, ",") {
+			sub, err := ParseCond(strings.TrimSpace(part))
+			if err != nil || sub.Op == "any" {
+				return bad()
+			}
+			c.Any = append(c.Any, sub)
+		}
 	}
 	return c, nil
 }
 
-// validateCond checks the references of a condition against the data.
-func (d *Data) validateCond(s string) error {
+func contains(list []string, v string) bool {
+	for _, s := range list {
+		if s == v {
+			return true
+		}
+	}
+	return false
+}
+
+// battleRefs is what a stage's battle conditions may point at.
+type battleRefs struct {
+	targets map[string]bool // unit ids and group names
+	areas   map[int]bool
+	duels   map[string]bool
+}
+
+// validateCond checks one condition string: story nodes pass refs nil, battle events the stage's refs.
+func (d *Data) validateCond(s string, refs *battleRefs) error {
 	c, err := ParseCond(s)
 	if err != nil {
 		return err
 	}
+	return d.validateParsed(s, c, refs)
+}
+
+func (d *Data) validateParsed(s string, c Cond, refs *battleRefs) error {
+	if refs == nil && !storyConds[c.Op] || refs != nil && !battleConds[c.Op] {
+		return fmt.Errorf("condition %q is not allowed here", s)
+	}
+	target := func(id string) error {
+		if refs != nil && !refs.targets[id] {
+			return fmt.Errorf("condition %q: no unit or group %s", s, id)
+		}
+		return nil
+	}
 	switch c.Op {
 	case "alive", "dead", "party":
-		if !d.Has(c.Arg) {
+		if refs == nil && !d.Has(c.Arg) {
 			return fmt.Errorf("condition %q: no character %s", s, c.Arg)
 		}
+		return target(c.Arg)
 	case "choice":
 		n := d.Node(c.Arg)
 		if _, ok := n.Choices[c.Arg2]; n.Kind != "choice" || !ok {
@@ -66,6 +148,28 @@ func (d *Data) validateCond(s string) error {
 	case "won":
 		if d.StageIndex(c.Arg) < 0 {
 			return fmt.Errorf("condition %q: no stage %s", s, c.Arg)
+		}
+	case "defeated", "alldefeated", "hp":
+		return target(c.Arg)
+	case "adjacent":
+		if err := target(c.Arg); err != nil {
+			return err
+		}
+		return target(c.Arg2)
+	case "at", "allat":
+		if !refs.areas[c.N] {
+			return fmt.Errorf("condition %q: no area %d", s, c.N)
+		}
+		return target(c.Arg)
+	case "duel":
+		if !refs.duels[c.Arg] {
+			return fmt.Errorf("condition %q: no duel %s", s, c.Arg)
+		}
+	case "any":
+		for _, sub := range c.Any {
+			if err := d.validateParsed(s, sub, refs); err != nil {
+				return err
+			}
 		}
 	}
 	return nil

@@ -24,6 +24,7 @@ type Status struct {
 type Unit struct {
 	AI, Guard, DuelFirst                 bool `json:",omitempty"`
 	ID, Character, Faction, Color        string
+	Group                                string `json:",omitempty"`
 	Facing                               string `json:",omitempty"`
 	X, Y, HP, MP                         int
 	Moved, Acted, Attacked, Done, Spared bool
@@ -53,10 +54,11 @@ type State struct {
 	Deployment                        []string
 	Executed                          map[string]bool
 	Flags                             map[string]int    // story flags set by set nodes
+	PendingFlags                      map[string]int    `json:",omitempty"` // flags a battle sets; they join Flags when it is won
 	Choices                           map[string]string // choice node -> the option taken
-	DamagePct, XPPct                  int      `json:",omitempty"` // damage dealt and experience gained in percent; 0 is 100
-	Learning                          []string // characters whose learning window is open, in order
-	Checkpoint                        *State   `json:",omitempty"`
+	DamagePct, XPPct                  int               `json:",omitempty"` // damage dealt and experience gained in percent; 0 is 100
+	Learning                          []string          // characters whose learning window is open, in order
+	Checkpoint                        *State            `json:",omitempty"`
 }
 type Stats struct{ Attack, Defense, Mind, Agility, Morale, MaxHP, MaxMP, Recovery int }
 type UnitView struct {

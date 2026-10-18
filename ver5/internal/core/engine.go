@@ -18,6 +18,7 @@ type Engine struct {
 	units            *ecs.Map1[Unit]
 	charIDs, unitIDs map[string]ecs.Entity
 	events           []Event
+	turnStarted      string // the faction whose turn this command began, for turnstart conditions
 }
 
 func copyOf[T any](v T) T { b, _ := json.Marshal(v); var c T; _ = json.Unmarshal(b, &c); return c }
@@ -589,7 +590,7 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	if sp.Faction != "" {
 		color = sp.Faction
 	}
-	u := Unit{AI: sp.AI, Guard: sp.Guard, DuelFirst: sp.DuelFirst, ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
+	u := Unit{AI: sp.AI, Guard: sp.Guard, DuelFirst: sp.DuelFirst, Group: sp.Group, ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
 	if side == "enemy" {
 		for item, n := range e.data.Rules.EnemyStock {
 			u.Items[item] = n
@@ -653,6 +654,10 @@ func (e *Engine) settle() {
 		}
 		e.state.Executed[key] = true
 	}
+	for k, v := range e.state.PendingFlags {
+		e.state.Flags[k] = v
+	}
+	e.state.PendingFlags = nil
 	e.emit("victory", "", stage.ID, 0)
 }
 
@@ -662,6 +667,7 @@ func (e *Engine) clearBattle() {
 	s.Units = nil
 	s.Checkpoint = nil
 	s.Learning = nil
+	s.PendingFlags = nil
 	s.Round = 0
 	s.Turn = ""
 	s.Result = ""

@@ -54,48 +54,56 @@
   {
    "Character": "liru",
    "X": 17,
-   "Y": 2
+   "Y": 2,
+   "Group": "guard"
   },
   {
    "Character": "lijue",
    "X": 14,
-   "Y": 5
+   "Y": 5,
+   "Group": "guard"
   },
   {
    "Character": "troop_footman",
    "X": 8,
    "Y": 3,
-   "Level": 6
+   "Level": 6,
+   "Group": "guard"
   },
   {
    "Character": "troop_archer",
    "X": 9,
    "Y": 5,
-   "Level": 6
+   "Level": 6,
+   "Group": "guard"
   },
   {
    "Character": "troop_footman",
    "X": 14,
    "Y": 2,
-   "Level": 6
+   "Level": 6,
+   "Group": "guard"
   },
   {
    "Character": "troop_archer",
    "X": 15,
    "Y": 4,
-   "Level": 6
+   "Level": 6,
+   "Group": "guard"
   },
   {
    "Character": "troop_footman",
    "X": 16,
    "Y": 3,
-   "Level": 6
+   "Level": 6,
+   "Group": "guard"
   },
   {
    "Character": "troop_archer",
    "X": 17,
    "Y": 5,
-   "Level": 6
+   "Level": 6,
+   "Group": "guard"
   }
  ],
  "Reward": {
@@ -154,128 +162,144 @@
  "Events": [
   {
    "ID": "coalition-arrival",
-   "Trigger": "boss-alone",
-   "Spawns": [
-    {
-     "Character": "mushun",
-     "X": 24,
-     "Y": 7,
-     "Level": 1,
-     "AI": true,
-     "DuelFirst": true,
-     "Faction": "yuan",
-     "Facing": "NE"
-    },
-    {
-     "Character": "wuanguo",
-     "X": 25,
-     "Y": 8,
-     "Level": 1,
-     "AI": true,
-     "DuelFirst": true,
-     "Faction": "yuan",
-     "Facing": "NE"
-    },
-    {
-     "Character": "troop_footman",
-     "X": 23,
-     "Y": 7,
-     "Level": 1,
-     "Class": "light_infantry",
-     "AI": true,
-     "Faction": "yuan",
-     "Facing": "NE"
-    },
-    {
-     "Character": "troop_footman",
-     "X": 23,
-     "Y": 8,
-     "Level": 1,
-     "Class": "light_infantry",
-     "AI": true,
-     "Faction": "yuan",
-     "Facing": "NE"
-    },
-    {
-     "Character": "troop_footman",
-     "X": 24,
-     "Y": 8,
-     "Level": 1,
-     "Class": "light_infantry",
-     "AI": true,
-     "Faction": "yuan",
-     "Facing": "NE"
-    },
-    {
-     "Character": "troop_footman",
-     "X": 23,
-     "Y": 9,
-     "Level": 1,
-     "Class": "light_infantry",
-     "AI": true,
-     "Faction": "yuan",
-     "Facing": "NE"
-    },
-    {
-     "Character": "troop_footman",
-     "X": 24,
-     "Y": 9,
-     "Level": 1,
-     "Class": "light_infantry",
-     "AI": true,
-     "Faction": "yuan",
-     "Facing": "NE"
-    },
-    {
-     "Character": "troop_footman",
-     "X": 25,
-     "Y": 9,
-     "Level": 1,
-     "Class": "light_infantry",
-     "AI": true,
-     "Faction": "yuan",
-     "Facing": "NE"
-    }
+   "If": [
+    "alive:lubu",
+    "alldefeated:guard"
    ],
-   "Dialogue": [
-    [
-     {
-      "Actor": "mushun",
-      "Text": "지금이 기회다! 여포를 무찌르고 공을 세우자!"
-     }
-    ],
-    [
-     {
-      "Actor": "wuanguo",
-      "Text": "병사들은 따라오라! 관을 함락한 공은 우리가 차지하겠다!"
-     }
-    ]
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "mushun",
+       "X": 24,
+       "Y": 7,
+       "Level": 1,
+       "AI": true,
+       "DuelFirst": true,
+       "Faction": "yuan",
+       "Facing": "NE"
+      },
+      {
+       "Character": "wuanguo",
+       "X": 25,
+       "Y": 8,
+       "Level": 1,
+       "AI": true,
+       "DuelFirst": true,
+       "Faction": "yuan",
+       "Facing": "NE"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 23,
+       "Y": 7,
+       "Level": 1,
+       "Class": "light_infantry",
+       "AI": true,
+       "Faction": "yuan",
+       "Facing": "NE"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 23,
+       "Y": 8,
+       "Level": 1,
+       "Class": "light_infantry",
+       "AI": true,
+       "Faction": "yuan",
+       "Facing": "NE"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 24,
+       "Y": 8,
+       "Level": 1,
+       "Class": "light_infantry",
+       "AI": true,
+       "Faction": "yuan",
+       "Facing": "NE"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 23,
+       "Y": 9,
+       "Level": 1,
+       "Class": "light_infantry",
+       "AI": true,
+       "Faction": "yuan",
+       "Facing": "NE"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 24,
+       "Y": 9,
+       "Level": 1,
+       "Class": "light_infantry",
+       "AI": true,
+       "Faction": "yuan",
+       "Facing": "NE"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 25,
+       "Y": 9,
+       "Level": 1,
+       "Class": "light_infantry",
+       "AI": true,
+       "Faction": "yuan",
+       "Facing": "NE"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "mushun",
+       "Text": "지금이 기회다! 여포를 무찌르고 공을 세우자!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "wuanguo",
+       "Text": "병사들은 따라오라! 관을 함락한 공은 우리가 차지하겠다!"
+      }
+     ]
+    }
    ]
   },
   {
    "ID": "brothers-challenge",
-   "Trigger": "duel",
-   "Duels": [
-    "hulao-mushun",
-    "hulao-wuanguo"
+   "If": [
+    "any:[duel:hulao-mushun, duel:hulao-wuanguo]"
    ],
-   "Dialogue": [
-    [
-     {
-      "Actor": "liubei",
-      "Text": "인중여포! 역시 강하군. 병사들의 피해가 없도록 우리들이 일기토로 상대해야겠어."
-     }
-    ],
-    [
-     {
-      "Actor": "zhangfei",
-      "Text": "좋았어, 형! 그럼 나에게 맡겨주슈!"
-     },
-     {
-      "Actor": "guanyu",
-      "Text": "제가 상대해보겠습니다, 형님"
-     }
-    ]
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "인중여포! 역시 강하군. 병사들의 피해가 없도록 우리들이 일기토로 상대해야겠어."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "좋았어, 형! 그럼 나에게 맡겨주슈!"
+      },
+      {
+       "Actor": "guanyu",
+       "Text": "제가 상대해보겠습니다, 형님"
+      }
+     ]
+    }
    ]
   }
  ],

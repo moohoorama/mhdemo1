@@ -315,10 +315,16 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 		if s.Phase != "deployment" {
 			for _, event := range stage.Events {
 				if s.Executed["battle-"+stage.ID+"-"+event.ID] {
-					for _, sp := range event.Spawns {
-						u := expected.spawn(sp.Character, sp.Character, "ally", sp.X, sp.Y, sp)
-						fixed[u.ID] = "ally"
-						fixedUnits[u.ID] = copyOf(*u)
+					for _, a := range event.Do {
+						for _, sp := range a.Spawns {
+							side := "ally"
+							if sp.Side == "enemy" {
+								side = "enemy"
+							}
+							u := expected.spawn(sp.Character, sp.Character, side, sp.X, sp.Y, sp)
+							fixed[u.ID] = side
+							fixedUnits[u.ID] = copyOf(*u)
+						}
 					}
 				}
 			}

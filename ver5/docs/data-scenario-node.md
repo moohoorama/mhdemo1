@@ -87,8 +87,9 @@ assets/scenario/
 | `Enemies` | 적 스폰 목록. 비어 있을 수 없다(맵 문서 검증). |
 | `Party` | 처음부터 지도에 있는 고정 아군 스폰 목록(선택). |
 | `Reward` | 승리 보상. 아이템 ID → 개수. 인벤토리로 들어간다. |
-| `Duels` | 일기토 목록(4절). |
-| `Events` | 전투 이벤트 목록(5절). |
+| `Duels` | 일기토 목록(5절). |
+| `Areas` | 번호 붙은 구역 목록(6절). |
+| `Events` | 전투 이벤트 목록(7절). |
 | `Goal` | `"rout"`이면 적 전멸이 승리 조건(선택). |
 | `Charge` | 참이면 적이 첫 턴부터 아군 쪽으로 진군한다(선택). AI 동작은 `internal/ai/ai.go`가 기준이다. |
 | `Faction` | 자기 `Faction`이 없는 적 스폰의 진영색. `Factions`에 있어야 한다. |
@@ -121,6 +122,8 @@ assets/scenario/
 | `Faction` | 진영색 덮어쓰기. `Factions`에 있어야 한다. 우선순위는 스폰 > 스테이지 `Faction`(적만) > 인물의 `Look.Faction`. |
 | `AI` | 아군 스폰을 `support` 차례에 자동 행동하는 AI 유닛으로 만든다. |
 | `Guard` | 제자리에서 움직이지 못한다. |
+| `Group` | 같은 이름을 가진 스폰을 이벤트 조건·`remove`가 한꺼번에 가리킨다(이름 있는 인물은 인물 ID로도 가리킬 수 있다). |
+| `Side` | 이벤트가 만드는 스폰만: `ally`(기본, AI 아군) 또는 `enemy`. |
 | `DuelFirst` | AI가 아직 안 치른 일기토 상대를 먼저 찾는다. 이동 범위 안에 상대와 맞닿을 칸이 있으면 그 칸으로 먼저 가고, 상대를 맞닿기 전에는 멀리서 쏘거나 치지 않는다. |
 
 `Traits`·`Equipment` 검증은 다음과 같다. 특성은 모두 정의에 있어야 한다. 장비는 모두 정의에 있고, 같은 칸(`Slot`)에 둘 이상 없으며, 무기·방어구는 결과 병종의 `Weapon`·`Armor` 형식과 맞아야 한다. 덮어쓴 특성이 `Requires`로 요구하는 선행 특성은 (덮어쓴 특성 + 장비가 주는 특성) 안에 있어야 한다. 병력·병법 최대치는 엔진이 계산하며 저장하지 않는다.
@@ -148,22 +151,36 @@ assets/scenario/
  "EnemyResult": "stay", "Text": "목순이 여포에게 패하고 전사했다."}
 ```
 
-## 6. 전투 이벤트 기록(`Stage.Events`)
+## 6. 구역(`Stage.Areas`)
+
+| 필드 | 뜻 |
+|---|---|
+| `ID` | 1 이상의 정수, 스테이지 안에서 유일. 이벤트·조건이 이 번호로 가리킨다. |
+| `Rect` | `{X, Y, W, H}` 맵 문서(월드) 좌표. 폭·높이는 1 이상이고 전투 영역과 조금이라도 겹쳐야 한다. 로드할 때 전투 영역 원점을 뺀다. |
+| `Name` | 비어 있을 수 없다. 사람이 보는 이름. |
+| `Description` | 사람이 보는 설명(선택). |
+
+```json
+{"ID": 3, "Rect": {"X": 20, "Y": 8, "W": 3, "H": 3}, "Name": "마을 입구", "Description": "방화병이 불을 붙이러 오는 점화 지점"}
+```
+
+## 7. 전투 이벤트 기록(`Stage.Events`)
 
 | 필드 | 뜻 |
 |---|---|
 | `ID` | 비어 있지 않고 스테이지 안에서 유일. |
-| `Trigger` | `boss-alone` 또는 `duel`. |
-| `Duels` | `duel` 트리거에서 필수. 이 스테이지 `Duels`에 있는 ID만 쓴다. |
-| `Spawns` | 합류시킬 아군 AI 스폰 목록. |
-| `Dialogue` | 대사 묶음의 배열. 묶음은 `{Actor, Text}` 줄의 배열. |
+| `Repeat` | 참이면 조건이 거짓에서 참이 될 때마다 실행(선택). `spawn`은 쓸 수 없다. |
+| `If` | 조건 문자열 배열(선택). 비어 있으면 전투가 시작되는 첫 `settle()`에 실행된다. 조건은 [logic-battle-event.md](logic-battle-event.md) 5.1. |
+| `Do` | 동작 배열(비어 있을 수 없음). `say`(`Lines`) `spawn`(`Spawns`) `remove`(`Targets`) `flag`(`Flags`). 모르는 `Kind`는 로드 오류. |
 
-`Spawns` 검증은 일반 스폰 규칙에 더해 다음을 요구한다. `AI`가 참이고, 좌표가 영역 안이며, 인물이 `Playable`도 `Lord`도 아니고, 이름 있는 인물은 이 스테이지의 다른 스폰·이전 이벤트 스폰·플레이어블 인물과 겹치지 않는다. `Faction`은 있다면 `Factions`에 있어야 한다.
+`spawn`의 스폰은 일반 스폰 규칙에 더해 다음을 요구한다. `Side`는 비어 있거나 `ally`/`enemy`이고, `ally`이면 `AI`가 참이며, 좌표가 영역 안이고, 인물이 `Playable`도 `Lord`도 아니고, 이름 있는 인물은 이 스테이지의 다른 스폰·이전 이벤트 스폰·플레이어블 인물과 겹치지 않는다. `Faction`은 있다면 `Factions`에 있어야 한다. 스폰의 `Group`은 조건과 `remove`가 가리킬 수 있는 이름이 된다.
 
-`Dialogue` 검증은 다음과 같다. 묶음이 비어 있을 수 없고, 줄의 `Text`가 비어 있을 수 없으며, 한 묶음에 같은 `Actor`가 둘 있을 수 없다. `Actor`는 플레이어블 인물, 이 스테이지의 `Enemies`·`Party` 인물, 이 스테이지 이벤트가 만드는 인물 중 하나여야 한다.
+`say` 검증은 다음과 같다. `Lines`가 비어 있을 수 없고, 줄의 `Text`가 비어 있을 수 없으며, 한 줄에 같은 `Actor`가 둘 있을 수 없다. `Actor`는 플레이어블 인물, 이 스테이지의 `Enemies`·`Party` 인물, 이 스테이지 이벤트가 만드는 인물 중 하나여야 한다. `remove`의 `Targets`는 유닛 ID나 그룹이어야 하고, `flag`의 `Flags`는 비어 있을 수 없다.
 
 ```json
-{"ID": "brothers-challenge", "Trigger": "duel", "Duels": ["hulao-mushun", "hulao-wuanguo"],
- "Dialogue": [[{"Actor": "liubei", "Text": "인중여포! 역시 강하군. 병사들의 피해가 없도록 우리들이 일기토로 상대해야겠어."}],
-              [{"Actor": "zhangfei", "Text": "좋았어, 형! 그럼 나에게 맡겨주슈!"}, {"Actor": "guanyu", "Text": "제가 상대해보겠습니다, 형님"}]]}
-```
+{"ID": "brothers-challenge", "If": ["any:[duel:hulao-mushun, duel:hulao-wuanguo]"],
+ "Do": [{"Kind": "say", "Lines": [{"Actor": "liubei", "Text": "인중여포! 역시 강하군."}]},
+        {"Kind": "say", "Lines": [{"Actor": "zhangfei", "Text": "좋았어, 형!"}, {"Actor": "guanyu", "Text": "제가 상대해보겠습니다."}]}]}
+{"ID": "coalition-arrival", "If": ["alive:lubu", "alldefeated:guard"],
+ "Do": [{"Kind": "spawn", "Spawns": [{"Character": "mushun", "X": 24, "Y": 7, "AI": true, "DuelFirst": true, "Faction": "yuan"}]},
+        {"Kind": "say", "Lines": [{"Actor": "mushun", "Text": "지금이 기회다!"}]}]}

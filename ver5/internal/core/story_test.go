@@ -89,7 +89,7 @@ func TestConditionsReadChoicesCharactersAndVictories(t *testing.T) {
 	require.NoError(t, err)
 	holds, err := content.ParseCond("won:S1")
 	require.NoError(t, err)
-	assert.True(t, r.holds(holds))
+	assert.True(t, r.holds(holds, false))
 }
 
 func TestStoryStateSurvivesSaveAndRestore(t *testing.T) {

@@ -634,6 +634,7 @@ func (e *Engine) endFaction() {
 		e.state.Round++
 	}
 	starting := e.state.Turn
+	e.turnStarted = starting
 	// what each unit holds after damage over time, so the regeneration below can be reported
 	hp, mp := map[string]int{}, map[string]int{}
 	for _, id := range keys(e.unitIDs) {

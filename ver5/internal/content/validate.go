@@ -282,7 +282,7 @@ func (d *Data) Validate() error {
 					return fmt.Errorf("node %s: branch case %q", n.ID, c.Next)
 				}
 				for _, cond := range c.If {
-					if err := d.validateCond(cond); err != nil {
+					if err := d.validateCond(cond, nil); err != nil {
 						return fmt.Errorf("node %s: %w", n.ID, err)
 					}
 				}

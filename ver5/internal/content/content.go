@@ -179,6 +179,8 @@ type Spawn struct {
 	AI, Guard         bool      `json:",omitempty"`
 	DuelFirst         bool      `json:",omitempty"` // the AI seeks a pending duel partner before anything else
 	Class, Facing     string    `json:",omitempty"`
+	Group             string    `json:",omitempty"` // name events use to address this spawn with others
+	Side              string    `json:",omitempty"` // event spawns only: "ally" (an AI ally, the default) or "enemy"
 	HP, MP            *int      `json:",omitempty"`
 	Traits, Equipment *[]string `json:",omitempty"`
 	Character         string
@@ -190,15 +192,36 @@ type Duel struct {
 	ID, Ally, Enemy, Outcome, AllyResult, EnemyResult, Text string
 }
 type Speech struct{ Actor, Text string }
+
+// Area is a numbered rectangle of the stage that events and objectives point at by id; Name and
+// Description are for people reading the data.
+type Area struct {
+	ID                int
+	Rect              MapRect
+	Name, Description string
+}
+
+// Action is one effect of a battle event. Kind picks the fields that matter: say (Lines: the
+// speakers shown together), spawn (Spawns), remove (Targets leave the map), flag (Flags).
+type Action struct {
+	Kind    string
+	Lines   []Speech       `json:",omitempty"`
+	Spawns  []Spawn        `json:",omitempty"`
+	Targets []string       `json:",omitempty"`
+	Flags   map[string]int `json:",omitempty"`
+}
+
+// BattleEvent runs its Do once (or each time its If turns true again when Repeat) as soon as all of If hold.
 type BattleEvent struct {
-	ID, Trigger string
-	Duels       []string   `json:",omitempty"`
-	Spawns      []Spawn    `json:",omitempty"`
-	Dialogue    [][]Speech `json:",omitempty"`
+	ID     string
+	Repeat bool     `json:",omitempty"`
+	If     []string `json:",omitempty"`
+	Do     []Action
 }
 type Stage struct {
 	TurnLimit                       int           `json:",omitempty"`
 	Events                          []BattleEvent `json:",omitempty"`
+	Areas                           []Area        `json:",omitempty"`
 	ID, Name, Boss                  string
 	Width, Height, Limit, Threshold int
 	Tiles                           []string
@@ -212,6 +235,7 @@ type Stage struct {
 	Map                             string  `json:",omitempty"` // map document under maps/ that supplies the tiles; none means Tiles is inline
 	Faction                         string  `json:",omitempty"` // color of this stage's enemies without a faction of their own
 }
+
 // NodeCase is one arm of a branch node: the first whose conditions all hold is taken.
 type NodeCase struct {
 	If   []string
@@ -219,10 +243,10 @@ type NodeCase struct {
 }
 type Node struct {
 	ID, Kind, Text, Next, Event, Character, Item, Stage string
-	Speaker                                             string `json:",omitempty"` // say: character ids joined by ·
-	Place                                               string `json:",omitempty"` // scene: where the story is now
-	Else                                                string `json:",omitempty"` // branch: where no case matched; none means the next node
-	Cases                                               []NodeCase `json:",omitempty"`
+	Speaker                                             string         `json:",omitempty"` // say: character ids joined by ·
+	Place                                               string         `json:",omitempty"` // scene: where the story is now
+	Else                                                string         `json:",omitempty"` // branch: where no case matched; none means the next node
+	Cases                                               []NodeCase     `json:",omitempty"`
 	Flags                                               map[string]int `json:",omitempty"` // set: flag values to store
 	Count                                               int
 	Choices                                             map[string]string

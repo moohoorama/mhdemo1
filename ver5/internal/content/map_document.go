@@ -153,10 +153,16 @@ func (d *MapDocument) Compile() Stage {
 		}
 	}
 	for i := range st.Events {
-		for j := range st.Events[i].Spawns {
-			st.Events[i].Spawns[j].X -= d.Play.X
-			st.Events[i].Spawns[j].Y -= d.Play.Y
+		for j := range st.Events[i].Do {
+			for k := range st.Events[i].Do[j].Spawns {
+				st.Events[i].Do[j].Spawns[k].X -= d.Play.X
+				st.Events[i].Do[j].Spawns[k].Y -= d.Play.Y
+			}
 		}
+	}
+	for i := range st.Areas {
+		st.Areas[i].Rect.X -= d.Play.X
+		st.Areas[i].Rect.Y -= d.Play.Y
 	}
 	return st
 }

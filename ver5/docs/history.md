@@ -7,6 +7,10 @@
 
 ## 2026-10-18
 
+### 전투 이벤트를 조건과 동작(`If`/`Do`)으로 통합함
+- 옛 `Trigger`(`boss-alone`·`duel`)와 `Spawns`·`Dialogue` 필드를 없애고, 이벤트가 상태 조건(`round` `turnstart` `defeated` `at` `adjacent` `hp` `duel` `flag` `any` …)과 동작(`say` `spawn` `remove` `flag`)을 갖게 함. 스폰에 `Group`·`Side`, 스테이지에 번호 붙은 `Areas`. 시점 필드 없이 `turnstart:진영` 조건으로 "한 차례를 버텼다"를 표현하고, 전투 중 `flag`는 승리 때 합쳐지는 `PendingFlags`에 적음. 반복 이벤트(`Repeat`)는 조건이 거짓에서 참이 될 때만 발동하고 `spawn`은 쓰지 못하게 함 — 저장 검증이 이벤트 스폰을 기준으로 삼기 때문.
+- 영향: `internal/core/battle_events.go`·`cond.go`, `internal/content/battle_events.go`·`cond.go`, `docs/logic-battle-event.md`·`data-scenario-node.md`
+
 ### 시나리오를 `assets/scenario/`로 옮기고 장 파일과 스테이지·맵 파일로 나눔
 - `assets/data/script.json`·`maps/B0x.json`을 `assets/scenario/<시나리오>/`의 `scenario.json`(`Campaign`+`Chapters`)·`storyNN.json`(장의 노드)·`stageNN.json`(스테이지)·`maps/mapNN.json`(지형)으로 나눔 — 장 흐름이 한 곳에서 보이고, 큰 `Cells`가 사람이 고치는 스테이지 규칙과 섞여 diff를 해치지 않게. 스테이지 ID는 그대로(`B01`)이고 파일은 접두어를 뗀 번호. `Stage.Next`는 없애고 노드 `Next`와 장 순서(`Data.After`)가 대신함. 옛 데이터와 같은 시드의 AI 완주 상태 해시가 같음을 확인.
 - 영향: `internal/content/scenario.go`, `internal/mapedit/store.go`, `docs/data-scenario-node.md`·`logic-campaign.md`·`data-map.md`
