@@ -174,7 +174,6 @@ type Spawn struct {
 }
 type Duel struct {
 	ID, Ally, Enemy, Outcome, AllyResult, EnemyResult, Text string
-	AttackDown, DefenseDown                                 int `json:",omitempty"` // an ally win cuts every enemy's attack or defense by this percent for the battle
 }
 type Speech struct{ Actor, Text string }
 type BattleEvent struct {

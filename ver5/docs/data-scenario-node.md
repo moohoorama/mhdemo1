@@ -115,7 +115,6 @@ JSON은 `DisallowUnknownFields`로 읽으므로 이 문서에 없는 키는 로�
 | `Outcome` | 아군 기준 결과 표시. `victory`, `defeat`, `draw` 중 하나. |
 | `AllyResult`, `EnemyResult` | 각 쪽의 결과. `stay`, `retreat`, `death` 중 하나. |
 | `Text` | 일기토 로그에 남는 글. |
-| `AttackDown`, `DefenseDown` | 0~90. 아군 승리(`Outcome: victory`) 때 모든 살아 있는 적의 공격·방어를 이 퍼센트만큼 전투 내내 깎는다(선택). |
 
 연출 자료(`assets/duels.json`)와 이 기록은 별개다. 이 기록이 규칙 결과를 정한다([presentation-duel.md](presentation-duel.md)).
 

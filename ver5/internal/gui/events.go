@@ -72,10 +72,6 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		return fmt.Sprintf("%s 승급: %s", a, g.className(e.Target)), true
 	case "duel":
 		return fmt.Sprintf("일기토  %s VS %s", a, t), true
-	case "defense-down":
-		return fmt.Sprintf("적의 진형이 흐트러졌다! 적 전체 방어 −%d%%", e.Amount), true
-	case "attack-down":
-		return fmt.Sprintf("적이 전의를 잃었다! 적 전체 공격 −%d%%", e.Amount), true
 	case "victory":
 		return "승리!", true
 	case "turn":
@@ -134,7 +130,7 @@ func factionName(f string) string {
 // statusLabels are the engine's status ids as the screen names them.
 var statusLabels = map[string]string{"speed": "신속", "range": "원시", "counter": "반격", "eightfold": "팔진",
 	"mind": "정신", "morale": "사기", "attack": "공격", "defense": "방어", "agility": "순발", "poison": "중독", "burn": "화상",
-	"confusion": "혼란", "seal": "봉책", "root": "속박", "disarm": "봉격", "weak": "약화", "attack-down": "공격↓", "defense-down": "방어↓",
+	"confusion": "혼란", "seal": "봉책", "root": "속박", "disarm": "봉격", "weak": "약화",
 	"guard": "경계", "aim": "조준", "snipe": "저격", "provoke": "도발", "disrupt": "교란"}
 
 // percentStatus lists the statuses whose value is a signed percent.

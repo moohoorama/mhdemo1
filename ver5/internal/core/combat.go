@@ -608,8 +608,8 @@ func (e *Engine) endFaction() {
 		}
 		for _, k := range keys(u.Status) {
 			s := u.Status[k]
-			if k == "counter" || k == "attack-down" || k == "defense-down" {
-				continue // counter ends on its own; the duel debuffs last the battle
+			if k == "counter" {
+				continue // counter ends on its own
 			}
 			s.Turns--
 			if s.Turns <= 0 {

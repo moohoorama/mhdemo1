@@ -90,7 +90,7 @@
 - 공격이 물리(`physical`) 종류다.
 - 아직 치르지 않았다(`Executed["duel-<ID>"]`).
 
-일기토를 치르면 위 `Executed` 키가 참이 되고, `Duel`의 결과(`AllyResult`·`EnemyResult`)가 곧바로 적용되며(`stay`, `retreat`, `death`), `duel` 이벤트가 나간다. 이벤트의 `Actor`는 항상 아군 쪽이다. 이어지는 퇴각 후속 효과, 경험치, `AttackDown`/`DefenseDown` 디버프 같은 규칙은 [logic-duel.md](logic-duel.md)에 있다. `duel` 트리거 이벤트는 이 일기토가 끝난 같은 `settle()`에서 발동한다.
+일기토를 치르면 위 `Executed` 키가 참이 되고, `Duel`의 결과(`AllyResult`·`EnemyResult`)가 곧바로 적용되며(`stay`, `retreat`, `death`), `duel` 이벤트가 나간다. 이벤트의 `Actor`는 항상 아군 쪽이다. 이어지는 퇴각 후속 효과와 경험치 규칙은 [logic-duel.md](logic-duel.md)에 있다. `duel` 트리거 이벤트는 이 일기토가 끝난 같은 `settle()`에서 발동한다.
 
 ## 7. 저장과 복원
 

@@ -2,7 +2,6 @@ package gui
 
 import (
 	"math"
-	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/core"
@@ -15,17 +14,16 @@ type statusIcon struct {
 
 func unitStatusIcons(status map[string]core.Status) []statusIcon {
 	icons := []statusIcon{}
-	for _, id := range []string{"attack", "attack-down", "defense", "defense-down", "agility", "mind", "morale", "speed", "range", "counter", "eightfold", "weak"} {
+	for _, id := range []string{"attack", "defense", "agility", "mind", "morale", "speed", "range", "counter", "eightfold", "weak"} {
 		s := status[id]
 		if s.Turns <= 0 {
 			continue
 		}
-		kind := strings.TrimSuffix(id, "-down")
-		down := s.Value < 0 || strings.HasSuffix(id, "-down") || id == "weak"
+		down := s.Value < 0 || id == "weak"
 		if s.Value == 0 && id != "counter" && id != "eightfold" && id != "weak" {
 			continue
 		}
-		icons = append(icons, statusIcon{kind: kind, down: down})
+		icons = append(icons, statusIcon{kind: id, down: down})
 	}
 	return icons
 }

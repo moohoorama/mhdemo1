@@ -68,8 +68,6 @@ func (e *Engine) stats(u *Unit) Stats {
 	}
 	v[3] = max(1, percent(v[3], u.Status["disrupt"].Value))
 	v[4] = max(1, percent(v[4], u.Status["disrupt"].Value))
-	v[0] = max(1, percent(v[0], -u.Status["attack-down"].Value))
-	v[1] = max(1, percent(v[1], -u.Status["defense-down"].Value))
 	return Stats{v[0], v[1], v[2], v[3], v[4], v[5], int(float64(c.MPBase) + R.ManaMaxFactor*R.StatNumerator/(R.StatDenominator-a[0])), int(float64(c.RecoveryBase) + R.ManaRecoveryFactor*R.StatNumerator/(R.StatDenominator-a[2]))}
 }
 func (e *Engine) tile(x, y int) string {

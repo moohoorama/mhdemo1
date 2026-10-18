@@ -187,20 +187,6 @@ func (e *Engine) duel(attacker, defender *Unit, d content.Duel) {
 	if enemy.HP == 0 && ally.HP > 0 {
 		e.retreatSweep(ally, enemy, false)
 	}
-	for _, down := range []struct {
-		status string
-		n      int
-	}{{"attack-down", d.AttackDown}, {"defense-down", d.DefenseDown}} {
-		if d.Outcome != "victory" || down.n == 0 {
-			continue
-		}
-		for _, id := range keys(e.unitIDs) {
-			if q := e.unit(id); q.Faction == "enemy" && q.HP > 0 {
-				q.Status[down.status] = Status{Turns: 1, Value: min(90, q.Status[down.status].Value+down.n)}
-			}
-		}
-		e.emit(down.status, ally.ID, "", down.n)
-	}
 	attacker.Attacked = true
 	if ally.HP > 0 && !ally.AI {
 		e.xp(ally.Character, XPPerLevel)

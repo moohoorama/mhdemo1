@@ -635,8 +635,7 @@
     "Outcome": "victory",
     "AllyResult": "stay",
     "EnemyResult": "death",
-    "Text": "등무: 어디서 굴러온 촌놈이냐! 장비: 연인 장익덕이 여기 있다! 장비가 장팔사모로 등무를 단번에 꿰뚫었다.",
-    "DefenseDown": 20
+    "Text": "등무: 어디서 굴러온 촌놈이냐! 장비: 연인 장익덕이 여기 있다! 장비가 장팔사모로 등무를 단번에 꿰뚫었다."
    },
    {
     "ID": "B01-duel-2",
@@ -645,8 +644,7 @@
     "Outcome": "victory",
     "AllyResult": "stay",
     "EnemyResult": "death",
-    "Text": "정원지: 등무의 원수를 갚겠다! 관우: 그 목, 내가 거두겠다. 관우가 청룡도 한 번에 정원지를 베어 넘겼다.",
-    "AttackDown": 20
+    "Text": "정원지: 등무의 원수를 갚겠다! 관우: 그 목, 내가 거두겠다. 관우가 청룡도 한 번에 정원지를 베어 넘겼다."
    }
   ],
   "Goal": "rout",

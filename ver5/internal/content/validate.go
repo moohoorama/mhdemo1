@@ -312,8 +312,7 @@ func (d *Data) Validate() error {
 			for _, sp := range s.Enemies {
 				enemy = enemy || sp.Character == event.Enemy
 			}
-			if event.ID == "" || duelIDs[event.ID] || !enemy || (!d.Characters[event.Ally].Playable && !eventAllies[event.Ally]) || event.AttackDown < 0 || event.AttackDown > 90 ||
-				event.DefenseDown < 0 || event.DefenseDown > 90 || !in(event.Outcome, "victory", "defeat", "draw") ||
+			if event.ID == "" || duelIDs[event.ID] || !enemy || (!d.Characters[event.Ally].Playable && !eventAllies[event.Ally]) || !in(event.Outcome, "victory", "defeat", "draw") ||
 				!in(event.AllyResult, "stay", "retreat", "death") || !in(event.EnemyResult, "stay", "retreat", "death") {
 				return fmt.Errorf("duel %s", event.ID)
 			}

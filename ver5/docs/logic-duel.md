@@ -19,9 +19,8 @@
 
 | 필드 | 의미 |
 |---|---|
-| `Outcome` | 아군 기준 승·패·무승부. 연출과 `AttackDown`·`DefenseDown` 적용 여부를 정한다 |
+| `Outcome` | 아군 기준 승·패·무승부. 연출을 정한다 |
 | `AllyResult`·`EnemyResult` | 각 장수의 결과. `stay`(잔류), `retreat`(퇴각), `death`(영구 사망) |
-| `AttackDown`·`DefenseDown` | `Outcome`이 `victory`일 때 살아 있는 적 전원의 공격력 또는 방어력을 이 비율만큼 깎는다. 이미 있으면 더하며 최대 90%이고 전투가 끝날 때까지 간다 |
 | `Text` | 전투 로그에 남는 문장 |
 
 - 퇴각·사망한 쪽은 병력이 0이 된다. 살아남은 쪽에 퇴각 추격 특성이 있으면 추격이 발동한다.
