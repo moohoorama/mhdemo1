@@ -10,7 +10,6 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 
 	"srpg/internal/content"
-	"srpg/internal/mapedit"
 )
 
 func (g *Game) editorToolbar(dst *ebiten.Image) {
@@ -25,7 +24,7 @@ func (g *Game) editorToolbar(dst *ebiten.Image) {
 			}
 			i, id := i, id
 			x := 152 + (i-e.brushOffset)*96
-			label := g.S.Data.Tiles[id].Name
+			label := brushName(g.S.Data, id)
 			if i < len(editorKeyNames) {
 				label = string(editorKeyNames[i]) + " " + label
 			}
@@ -41,7 +40,7 @@ func (g *Game) editorToolbar(dst *ebiten.Image) {
 			}
 			g.btn(dst, image.Rect(152+i*86, 764, 232+i*86, 795), label, func() { e.brushSize = n })
 		}
-		g.label(dst, "소타일 크기 · 좌드래그: 칠하기 / 우클릭: 가져오기", 510, 773, 14, muted)
+		g.label(dst, "붓 크기(칸) · 좌드래그: 칠하기 / 우클릭: 가져오기", 510, 773, 14, muted)
 		return
 	}
 	g.btn(dst, image.Rect(152, 708, 284, 738), "아군 배치 칸", func() { e.ally = true })
@@ -135,35 +134,24 @@ func (g *Game) editorDetail(dst *ebiten.Image) {
 	d := g.S.Data
 	x, y := cursorPos()
 	if image.Pt(x, y).In(editorViewport) {
-		p := e.smallAt(x, y)
-		u, v := mapedit.FloorHalf(p.X), mapedit.FloorHalf(p.Y)
-		g.label(dst, fmt.Sprintf("대 (%d,%d) · 소 (%d,%d)", u, v, p.X, p.Y), 1018, 82, 14, muted)
-		g.label(dst, "소타일: "+d.Tiles[e.doc.Small(p.X, p.Y)].Name, 1018, 108, 17, ink)
-		g.label(dst, "게임 지형: "+d.Tiles[e.doc.Tile(u, v)].Name, 1018, 136, 18, gold)
-		counts := map[string]int{}
-		for j := 0; j < 2; j++ {
-			for i := 0; i < 2; i++ {
-				counts[e.doc.Small(u*2+i, v*2+j)]++
+		p := e.cellAt(x, y)
+		c := e.doc.Cell(p.X, p.Y)
+		layerName := func(name string, ok bool) string {
+			if !ok {
+				return "없음"
 			}
+			return name
 		}
-		parts := []string{}
-		maxCount, n := 0, 0
-		for _, t := range sorted(counts) {
-			parts = append(parts, fmt.Sprintf("%s %d", d.Tiles[t].Name, counts[t]))
-			if counts[t] > maxCount {
-				maxCount, n = counts[t], 1
-			} else if counts[t] == maxCount {
-				n++
-			}
-		}
-		g.label(dst, wrap(strings.Join(parts, " / "), 18), 1018, 169, 14, muted)
-		if n > 1 {
-			g.label(dst, "동률: 기존 판정 유지", 1018, 208, 14, gold)
-		}
-		if !e.doc.Play.Contains(u, v) {
+		st, hasStructure := d.Structures[string(c.Structure)]
+		sn, hasState := d.States[string(c.State)]
+		g.label(dst, fmt.Sprintf("칸 (%d,%d)", p.X, p.Y), 1018, 82, 14, muted)
+		g.label(dst, "땅: "+d.Grounds[string(c.Ground)].Name, 1018, 108, 17, ink)
+		g.label(dst, "구조물: "+layerName(st.Name, hasStructure), 1018, 136, 17, ink)
+		g.label(dst, "상태: "+layerName(sn.Name, hasState), 1018, 164, 17, ink)
+		if !e.doc.Play.Contains(p.X, p.Y) {
 			g.label(dst, "외곽 · 병력 배치 불가", 1018, 230, 15, bad)
 		} else {
-			t := d.Tiles[e.doc.Tile(u, v)]
+			t := d.Props(c)
 			g.label(dst, fmt.Sprintf("지형 회복 HP %d%% / MP ×%d", t.RestHP, max(1, t.RestMP)), 1018, 230, 13, muted)
 		}
 	}
@@ -536,4 +524,22 @@ func bossVictory(g *Game, boss string) []content.Goal {
 		return []content.Goal{{If: []string{"alldefeated:enemy"}, Text: "적군 전멸"}}
 	}
 	return []content.Goal{{If: []string{"defeated:" + boss}, Text: g.name(boss) + " 격파"}}
+}
+
+// brushName is what a brush paints: a layer and a glyph, or "none" for a structure or state brush.
+func brushName(d *content.Data, brush string) string {
+	glyph := string(brush[1])
+	switch brush[0] {
+	case content.LayerGround:
+		return d.Grounds[glyph].Name
+	case content.LayerStructure:
+		if glyph == string(content.NoLayer) {
+			return "구조물 없음"
+		}
+		return d.Structures[glyph].Name
+	}
+	if glyph == string(content.NoLayer) {
+		return "상태 없음"
+	}
+	return d.States[glyph].Name
 }

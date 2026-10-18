@@ -196,8 +196,8 @@ func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
 		c := g.S.Data.Classes[iu.Class]
 		family, class = c.Terrain, c.Name
 	}
-	tile := string(g.field.Tile(g.hover.x, g.hover.y))
-	lines := terrainInfoLines(g.S.Data, tile, family, class)
+	cell := g.engine().Cell(g.hover.x, g.hover.y)
+	lines := terrainInfoLines(g.S.Data, cell, family, class)
 	w, uh := 226, 0
 	if u != nil {
 		uh = 74
@@ -230,7 +230,7 @@ func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
 		}
 		rect(dst, float32(x+12), float32(y+uh-2), float32(w-24), 1, goldDim)
 	}
-	g.label(dst, fmt.Sprintf("%s  (%d,%d)", g.S.Data.Tiles[tile].Name, g.hover.x, g.hover.y), float64(x+14), float64(y+uh+8), 14, gold)
+	g.label(dst, fmt.Sprintf("%s  (%d,%d)", g.S.Data.CellName(cell), g.hover.x, g.hover.y), float64(x+14), float64(y+uh+8), 14, gold)
 	g.label(dst, strings.Join(lines, "\n"), float64(x+14), float64(y+uh+28), 12, ink)
 }
 
@@ -662,13 +662,13 @@ func (g *Game) unitRecovery(id string, revision uint64) core.RecoveryPreview {
 	return g.recovery
 }
 
-func terrainInfoLines(data *content.Data, tile, family, class string) []string {
-	d := data.Tiles[tile]
+func terrainInfoLines(data *content.Data, cell content.Cell, family, class string) []string {
+	d := data.Props(cell)
 	var lines []string
 	if family == "" {
 		lines = []string{"이동·보정: 유닛 선택 시 표시"}
 	} else {
-		t := data.Terrain[family][tile]
+		t := data.Move(family, cell)
 		move := "진입 불가"
 		if t.Cost > 0 {
 			move = fmt.Sprintf("이동 비용 %d", t.Cost)
@@ -677,6 +677,8 @@ func terrainInfoLines(data *content.Data, tile, family, class string) []string {
 	}
 	if d.RestHP > 0 {
 		lines = append(lines, fmt.Sprintf("병력 회복 +%d%%", d.RestHP))
+	} else if d.RestHP < 0 {
+		lines = append(lines, fmt.Sprintf("차례 시작 병력 -%d%%", -d.RestHP))
 	} else if d.RestMP > 1 {
 		lines = append(lines, "병력 회복 없음")
 	}

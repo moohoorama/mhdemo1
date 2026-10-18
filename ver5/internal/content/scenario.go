@@ -166,12 +166,12 @@ func (d *Data) After(id string) string {
 
 // mapFile is a map document as stored in maps/: everything but the Stage, which has its own file.
 type mapFile struct {
-	Decorations     [][4]any
-	Props           [][]any
-	Version         int
-	Play, Visual    MapRect
-	Cells, Resolved map[string]string
-	Default         string
+	Decorations  [][4]any
+	Props        [][]any
+	Version      int
+	Play, Visual MapRect
+	Cells        map[string]string
+	Default      string
 }
 
 func DecodeMapFile(b []byte) (*MapDocument, error) {
@@ -179,7 +179,7 @@ func DecodeMapFile(b []byte) (*MapDocument, error) {
 	if err := strictDecode(b, &f); err != nil {
 		return nil, err
 	}
-	doc := &MapDocument{Decorations: f.Decorations, Props: f.Props, Version: f.Version, Play: f.Play, Visual: f.Visual, Cells: f.Cells, Resolved: f.Resolved, Default: f.Default}
+	doc := &MapDocument{Decorations: f.Decorations, Props: f.Props, Version: f.Version, Play: f.Play, Visual: f.Visual, Cells: f.Cells, Default: f.Default}
 	if err := doc.ValidateShape(); err != nil {
 		return nil, err
 	}
@@ -197,6 +197,6 @@ func (d *MapDocument) EncodeFiles() (stage, mapDoc []byte, err error) {
 	if stage, err = json.MarshalIndent(s, "", " "); err != nil {
 		return
 	}
-	mapDoc, err = json.MarshalIndent(mapFile{d.Decorations, d.Props, d.Version, d.Play, d.Visual, d.Cells, d.Resolved, d.Default}, "", " ")
+	mapDoc, err = json.MarshalIndent(mapFile{d.Decorations, d.Props, d.Version, d.Play, d.Visual, d.Cells, d.Default}, "", " ")
 	return
 }

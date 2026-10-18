@@ -401,7 +401,7 @@
     {
      "Kind": "terrain",
      "Area": 1,
-     "Tile": "F",
+     "State": "F",
      "Turns": 4
     },
     {
@@ -458,7 +458,7 @@
     {
      "Kind": "terrain",
      "Area": 3,
-     "Tile": "F"
+     "State": "e"
     },
     {
      "Kind": "flag",

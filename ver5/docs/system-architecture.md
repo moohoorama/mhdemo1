@@ -62,7 +62,7 @@ internal/
 `content.Load(dir)`는 폴더 아래 모든 `.json`을 이름순으로 읽는다(`DisallowUnknownFields`).
 
 - 최상위 파일은 `content.Data`의 한 부분씩(`game`·`classes`·`characters`·`skills`·`traits`·`equipment`·`items`·`terrain`·`script`·`mapeditor`)이고 한 부분을 여러 파일로 쪼개도 된다.
-- `maps/<ID>.json`은 맵 문서 한 벌이다. 로드할 때 문서를 전투 `Stage`로 컴파일한다(대타일 판정·좌표 정규화). 형식은 [data-map.md](data-map.md)다.
+- `maps/<ID>.json`은 맵 문서 한 벌이다. 로드할 때 문서를 전투 `Stage`로 컴파일한다(좌표 정규화). 형식은 [data-map.md](data-map.md)다.
   `stages/*.json`은 단순 스테이지 정의로, 테스트·사용자 묶음에서 쓴다.
 - 읽은 모든 파일의 경로와 바이트로 해시(`Data.Hash`)를 만든다. 이어서 참조(병종 승급 사슬, 학습 풀)를 잇고 검증한다. 검증에 실패하면 로드가 실패한다.
 - 데이터 필드의 뜻은 `assets/data/README.md`와 [data-character.md](data-character.md)·[logic-traits.md](logic-traits.md)에 있다.

@@ -94,7 +94,7 @@ func (e *Engine) critForced(u, v *Unit, s content.Skill) bool {
 		return e.has(u, content.FxSpellCrit) || e.fx(u, content.FxCritElement+s.Element) > 0
 	}
 	return e.has(u, content.FxCritAlways) || e.has(u, content.FxCritWeaker) && e.might(u) > e.might(v) ||
-		e.has(u, content.FxCritAmbush) && e.tileAt(u.X, u.Y).Ambush
+		e.has(u, content.FxCritAmbush) && e.CellProps(u.X, u.Y).Ambush
 }
 
 // critChance is the chance in percent that a physical blow lands critically; 100 when forced.
@@ -652,7 +652,7 @@ func (e *Engine) endFaction() {
 		if u.Status["burn"].Turns > 0 {
 			e.dot(u, "burn", st.MaxHP*R.BurnPercent/100)
 		}
-		if t := e.tileAt(u.X, u.Y); t.RestHP < 0 {
+		if t := e.CellProps(u.X, u.Y); t.RestHP < 0 {
 			e.dot(u, "terrain", st.MaxHP*-t.RestHP/100) // the ground itself hurts: standing in fire
 		}
 		if u.HP <= 0 {
@@ -661,7 +661,7 @@ func (e *Engine) endFaction() {
 		hp[id], mp[id] = u.HP, u.MP
 		r := int(float64(st.Recovery) * (1 + e.fx(u, content.FxManaRegen)))
 		heal := func(n int) { u.HP = min(st.MaxHP, u.HP+e.healAmount(u, float64(n))) }
-		t := e.tileAt(u.X, u.Y)
+		t := e.CellProps(u.X, u.Y)
 		if t.RestHP > 0 {
 			heal(st.MaxHP * t.RestHP / 100)
 		}

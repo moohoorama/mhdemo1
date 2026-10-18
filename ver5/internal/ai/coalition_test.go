@@ -61,7 +61,7 @@ func coalitionDuels(t *testing.T, tweak func(*content.Data)) {
 		if u.AI {
 			assert.Greater(t, u.X, boss.X, "the coalition comes in from the east")
 			assert.Equal(t, "NW", u.Facing)
-			assert.Positive(t, d.Terrain[d.Classes[u.Class].Terrain][string(e.Observe().Map.Tiles[u.Y][u.X])].Cost)
+			assert.Positive(t, d.Move(d.Classes[u.Class].Terrain, e.Observe().Map.Cell(u.X, u.Y)).Cost)
 		}
 	}
 	duels := map[string]bool{}

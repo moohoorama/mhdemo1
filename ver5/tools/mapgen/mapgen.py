@@ -3,10 +3,17 @@
 
     python3 tools/mapgen/mapgen.py layout.txt assets/scenario/hero/maps/map01.json
 
-The layout is plain text: one row per line, one game tile glyph per cell (see `Tiles` in
-assets/data/game.json: . grass, d wasteland, ~ water, f forest, v village, c wall, i castle floor,
-b bridge, g gate, k camp, h cliff, o castle, F burning ground, W wall of flames). Blank lines and
-lines starting with # are ignored. All rows must have the same length (the map's width).
+The layout is plain text: one row per line, one cell per three characters, cells separated by
+spaces: ground, structure, state (see Grounds, Structures and States in assets/data/game.json).
+    ground     g grass, d wasteland, w water, c wall, i castle floor, h cliff
+    structure  - none, t tree, v village, k camp, o castle, p gate, b bridge
+    state      - none, e embers, F flames, s soot
+A structure stands only on the grounds its Structures entry lists (a gate on castle floor, a bridge
+on water). `g-- gt- dv-` is grass, a tree on grass and a village on wasteland. Blank lines and lines
+starting with # are ignored. All rows must have the same number of cells (the map's width).
+
+A row without spaces is the older one-character form (. d ~ f v c i b g k h o); each character is
+read as the cell the layouts of chapters 1-9 meant by it (LEGACY below).
 
 Outside the play area the picture runs on with the edge cells (as the map editor's import does), and
 the document has no decorations or props. Decorations can be added later in the map editor.
@@ -14,31 +21,29 @@ the document has no decorations or props. Decorations can be added later in the 
 import json
 import sys
 
+LEGACY = {".": "g--", "d": "d--", "~": "w--", "f": "gt-", "v": "dv-", "k": "dk-", "c": "c--", "i": "i--",
+          "b": "wb-", "g": "ip-", "o": "go-", "h": "h--"}
+
 
 def make(rows, pad=4):
     h, w = len(rows), len(rows[0])
     assert all(len(r) == w for r in rows), "rows differ in length"
     assert 4 <= w <= 64 and 4 <= h <= 64, "a map is 4..64 cells each way"
 
-    def tile(x, y):
+    def cell(x, y):
         return rows[max(0, min(h - 1, y))][max(0, min(w - 1, x))]
 
-    cells, resolved = {}, {}
+    cells = {}
     for y in range(-pad, h + pad):
         for x in range(-pad, w + pad):
-            t = tile(x, y)
-            resolved[f"{x},{y}"] = t
-            for j in range(2):
-                for i in range(2):
-                    cells[f"{2 * x + i},{2 * y + j}"] = t
+            cells[f"{x},{y}"] = cell(x, y)
     return {
         "Decorations": [],
         "Props": [],
-        "Version": 1,
+        "Version": 2,
         "Play": {"X": 0, "Y": 0, "W": w, "H": h},
         "Visual": {"X": -pad, "Y": -pad, "W": w + 2 * pad, "H": h + 2 * pad},
         "Cells": cells,
-        "Resolved": resolved,
         "Default": rows[0][0],
     }
 
@@ -46,8 +51,11 @@ def make(rows, pad=4):
 def read(path):
     rows = []
     for line in open(path, encoding="utf-8").read().splitlines():
-        if line.strip() and not line.lstrip().startswith("#"):
-            rows.append(line.rstrip("\n"))
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        tokens = line.split() if " " in line.strip() else [LEGACY[c] for c in line.strip()]
+        assert all(len(t) == 3 for t in tokens), f"a cell is three characters: {line}"
+        rows.append(tokens)
     return rows
 
 

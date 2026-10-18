@@ -8,31 +8,64 @@ import (
 	"srpg/internal/content"
 )
 
-func TestTerrainHistory(t *testing.T) {
-	st := content.Stage{ID: "test", Width: 4, Height: 4, Tiles: []string{"....", "....", "....", "...."}}
-	d := Import(st)
-	d.Paint(0, 0, "~")
-	d.Paint(1, 0, "~")
-	if d.Tile(0, 0) != "." {
-		t.Fatal("tie changed existing terrain")
+const grass = "g--g--g--g--"
+
+func grassStage(extra func(*content.Stage)) content.Stage {
+	st := content.Stage{ID: "test", Width: 4, Height: 4, Tiles: []string{grass, grass, grass, grass}}
+	if extra != nil {
+		extra(&st)
 	}
-	d.Paint(0, 1, "~")
-	if d.Tile(0, 0) != "~" {
-		t.Fatal("majority did not change")
+	return st
+}
+
+func testData(t *testing.T) *content.Data {
+	t.Helper()
+	data, err := content.Load("../../assets/data")
+	if err != nil {
+		t.Fatal(err)
 	}
-	d.Paint(0, 1, ".")
-	if d.Tile(0, 0) != "~" {
-		t.Fatal("tie lost water history")
+	return data
+}
+
+func TestPaintLayersFollowWhatStandsOnWhat(t *testing.T) {
+	data := testData(t)
+	d := Import(grassStage(nil))
+	if !d.Paint(data, 0, 0, content.LayerGround, 'w') || d.Cell(0, 0).String() != "w--" {
+		t.Fatal("ground not painted")
+	}
+	if d.Paint(data, 0, 0, content.LayerStructure, 't') || d.Cell(0, 0).String() != "w--" {
+		t.Fatal("a tree stood on water")
+	}
+	if !d.Paint(data, 0, 0, content.LayerStructure, 'b') || d.Cell(0, 0).String() != "wb-" {
+		t.Fatal("no bridge on water")
+	}
+	if !d.Paint(data, 1, 0, content.LayerStructure, 'v') || d.Cell(1, 0).String() != "gv-" {
+		t.Fatal("no village on grass")
+	}
+	if !d.Paint(data, 1, 0, content.LayerGround, 'w') || d.Cell(1, 0).String() != "w--" {
+		t.Fatal("water kept a village")
+	}
+	if d.Paint(data, 2, 0, content.LayerStructure, 'p') {
+		t.Fatal("a gate stood on grass")
+	}
+	d.Paint(data, 2, 0, content.LayerState, 'e')
+	if d.Cell(2, 0).String() != "g-e" {
+		t.Fatal("state not painted")
+	}
+	if d.Paint(data, 2, 0, content.LayerState, 'x') {
+		t.Fatal("unknown state painted")
 	}
 	b, _ := json.Marshal(d)
 	var loaded Document
-	json.Unmarshal(b, &loaded)
-	if loaded.Tile(0, 0) != "~" {
-		t.Fatal("load lost history")
+	if err := json.Unmarshal(b, &loaded); err != nil {
+		t.Fatal(err)
+	}
+	if loaded.Cell(0, 0).String() != "wb-" || loaded.Cell(2, 0).String() != "g-e" {
+		t.Fatal("load lost cells")
 	}
 }
 func TestResizeKeepsWorldPositions(t *testing.T) {
-	d := Import(content.Stage{ID: "test", Width: 4, Height: 4, Tiles: []string{"....", "....", "....", "...."}, Enemies: []content.Spawn{{Character: "x", X: 1, Y: 1}}})
+	d := Import(grassStage(func(st *content.Stage) { st.Enemies = []content.Spawn{{Character: "x", X: 1, Y: 1}} }))
 	if err := d.Resize(Rect{X: -2, Y: -1, W: 6, H: 5}); err != nil {
 		t.Fatal(err)
 	}
@@ -52,24 +85,23 @@ func TestNegativeCell(t *testing.T) {
 }
 
 func TestHistoryRestoresTerrainAndSpawns(t *testing.T) {
-	d := Import(content.Stage{ID: "test", Width: 4, Height: 4, Tiles: []string{"....", "....", "....", "...."}, Enemies: []content.Spawn{{Character: "x", X: 0, Y: 0}}})
+	data := testData(t)
+	d := Import(grassStage(func(st *content.Stage) { st.Enemies = []content.Spawn{{Character: "x", X: 0, Y: 0}} }))
 	var h History
 	h.Push(d)
-	d.Paint(0, 0, "~")
-	d.Paint(1, 0, "~")
-	d.Paint(0, 1, "~")
+	d.Paint(data, 0, 0, content.LayerGround, 'w')
 	d.Resize(Rect{X: 1, Y: 1, W: 4, H: 4})
-	if !h.Undo(&d) || d.Tile(0, 0) != "." || len(d.Stage.Enemies) != 1 {
+	if !h.Undo(&d) || d.Cell(0, 0).String() != "g--" || len(d.Stage.Enemies) != 1 {
 		t.Fatal("undo lost state")
 	}
-	if !h.Redo(&d) || d.Tile(0, 0) != "~" || len(d.Stage.Enemies) != 0 {
+	if !h.Redo(&d) || d.Cell(0, 0).String() != "w--" || len(d.Stage.Enemies) != 0 {
 		t.Fatal("redo lost state")
 	}
 }
 func TestFourCorners(t *testing.T) {
 	for _, r := range []Rect{{X: -1, Y: -1, W: 5, H: 5}, {X: 0, Y: -1, W: 5, H: 5}, {X: 0, Y: 0, W: 5, H: 5}, {X: -1, Y: 0, W: 5, H: 5}} {
 		t.Run(Key(r.X, r.Y), func(t *testing.T) {
-			d := Import(content.Stage{ID: "test", Width: 4, Height: 4, Tiles: []string{"....", "....", "....", "...."}, Allies: []content.Point{{X: 1, Y: 1}}})
+			d := Import(grassStage(func(st *content.Stage) { st.Allies = []content.Point{{X: 1, Y: 1}} }))
 			if err := d.Resize(r); err != nil {
 				t.Fatal(err)
 			}
@@ -82,41 +114,17 @@ func TestFourCorners(t *testing.T) {
 	}
 }
 
-func TestPluralityAndFourWayTie(t *testing.T) {
-	d := Import(content.Stage{ID: "test", Width: 4, Height: 4, Tiles: []string{"....", "....", "....", "...."}})
-	d.Paint(0, 0, "~")
-	d.Paint(1, 0, "~")
-	d.Paint(0, 1, ":")
-	if d.Tile(0, 0) != "~" {
-		t.Fatal("2:1:1 failed to resolve to plurality")
-	}
-	d.Paint(1, 0, "f")
-	if d.Tile(0, 0) != "~" {
-		t.Fatal("four-way tie lost previous terrain")
-	}
-	b, err := json.Marshal(d)
-	if err != nil {
-		t.Fatal(err)
-	}
-	var loaded Document
-	if err := json.Unmarshal(b, &loaded); err != nil {
-		t.Fatal(err)
-	}
-	if loaded.Tile(0, 0) != "~" {
-		t.Fatal("four-way tie not persisted")
-	}
-}
-
 func TestBrushSizesAndUndo(t *testing.T) {
+	data := testData(t)
 	for _, n := range []int{1, 2, 4, 8} {
 		t.Run(string(rune('0'+n)), func(t *testing.T) {
-			d := Import(content.Stage{ID: "test", Width: 4, Height: 4, Tiles: []string{"....", "....", "....", "...."}})
+			d := Import(grassStage(nil))
 			var h History
 			h.Push(d)
-			d.PaintSquare(0, 0, n, "~")
+			d.PaintSquare(data, 0, 0, n, content.LayerGround, 'w')
 			count := 0
-			for _, tile := range d.Cells {
-				if tile == "~" {
+			for _, c := range d.Cells {
+				if c == "w--" {
 					count++
 				}
 			}
@@ -126,19 +134,19 @@ func TestBrushSizesAndUndo(t *testing.T) {
 			if !h.Undo(&d) {
 				t.Fatal("undo failed")
 			}
-			for _, tile := range d.Cells {
-				if tile != "." {
+			for _, c := range d.Cells {
+				if c != "g--" {
 					t.Fatal("undo left brush marks")
 				}
 			}
-			d.PaintSquare(d.Visual.X*2, d.Visual.Y*2, n, "~")
-			for key, tile := range d.Cells {
-				if tile == "~" {
+			d.PaintSquare(data, d.Visual.X, d.Visual.Y, n, content.LayerGround, 'w')
+			for key, c := range d.Cells {
+				if c == "w--" {
 					var x, y int
 					if _, err := fmt.Sscanf(key, "%d,%d", &x, &y); err != nil {
 						t.Fatal(err)
 					}
-					if !d.Visual.Contains(FloorHalf(x), FloorHalf(y)) {
+					if !d.Visual.Contains(x, y) {
 						t.Fatal("brush escaped visual bounds")
 					}
 				}

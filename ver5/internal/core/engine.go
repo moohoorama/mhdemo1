@@ -25,7 +25,7 @@ type Engine struct {
 func copyOf[T any](v T) T { b, _ := json.Marshal(v); var c T; _ = json.Unmarshal(b, &c); return c }
 func New(d *content.Data, seed uint64) *Engine {
 	c := d.Campaign
-	s := State{Format: 3, AI: AIPolicyVersion, Difficulty: "normal", Core: CoreVersion, Rules: RulesVersion, Content: d.Version, ContentHash: d.Hash,
+	s := State{Format: 4, AI: AIPolicyVersion, Difficulty: "normal", Core: CoreVersion, Rules: RulesVersion, Content: d.Version, ContentHash: d.Hash,
 		Seed: seed, RNG: seed, Phase: "scenario", Node: c.Start, Inventory: copyOf(c.Inventory), Warehouse: map[string]int{},
 		Deployment: append([]string{}, c.Deployment...), Executed: map[string]bool{}, Flags: map[string]int{}, Choices: map[string]string{}}
 	if s.Inventory == nil {
@@ -118,8 +118,9 @@ func (e *Engine) Observe() Observation {
 	o := Observation{State: s, Dialogue: copyOf(e.data.Node(s.Node))}
 	if s.Phase == "deployment" || s.Phase == "battle" || s.Phase == "result" {
 		m := copyOf(e.data.Stages[s.Stage])
-		for _, t := range s.TileOverrides {
-			m.Tiles[t.Y] = m.Tiles[t.Y][:t.X] + t.Tile + m.Tiles[t.Y][t.X+1:]
+		for _, t := range s.TileStates {
+			at := t.X*content.CellWidth + content.CellWidth - 1
+			m.Tiles[t.Y] = m.Tiles[t.Y][:at] + t.State + m.Tiles[t.Y][at+1:]
 		}
 		o.Map = &m
 	}
@@ -710,7 +711,7 @@ func (e *Engine) clearBattle() {
 	s.Checkpoint = nil
 	s.Learning = nil
 	s.PendingFlags = nil
-	s.TileOverrides = nil
+	s.TileStates = nil
 	s.Round = 0
 	s.Turn = ""
 	s.Result = ""

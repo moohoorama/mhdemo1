@@ -95,8 +95,9 @@ func TestDeploymentFixedPartyAndTerrain(t *testing.T) {
 func TestDeploymentMatchingAvoidsGreedyTrap(t *testing.T) {
 	e := deployment(t)
 	// The archer can enter this terrain, while the hero cannot.
-	e.data.Terrain[e.data.Classes[e.char("hero").Class].Terrain]["i"] = content.Terrain{Cost: 0}
-	e.data.Stages[0].Tiles[2] = "..i........."
+	zero := 0
+	e.data.Terrain[e.data.Classes[e.char("hero").Class].Terrain].Ground["i"] = content.TerrainRule{Cost: &zero}
+	setCell(e, 2, 2, "i--")
 	e.data.Stages[0].Allies = []content.Point{{X: 1, Y: 2}, {X: 2, Y: 2}}
 	finishDeployment(t, e)
 	if e.unit("hero").X != 1 || e.unit("archer1").X != 2 {

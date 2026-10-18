@@ -191,7 +191,7 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 	g.block(r)
 	hint := "장수를 고른 뒤 밝은 빈칸을 누르세요. 배치한 아군 클릭: 해제 후 재배치 · Tab: 다음 장수 · 우클릭/Esc: 선택 취소"
 	if g.hover.ok {
-		hint += fmt.Sprintf("   지형: %s", g.S.Data.Tiles[string(g.field.Tile(g.hover.x, g.hover.y))].Name)
+		hint += fmt.Sprintf("   지형: %s", g.S.Data.CellName(g.engine().Cell(g.hover.x, g.hover.y)))
 	}
 	g.label(dst, hint, 16, float64(deploymentTop()+12), 14, ink)
 	cards := g.deploymentCardsRect()

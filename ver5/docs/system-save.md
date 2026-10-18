@@ -55,10 +55,10 @@
 
 | 항목 | 값(지금) | 정의 위치 |
 |---|---|---|
-| 상태 형식 `Format` | 2 | `core/engine.go` |
+| 상태 형식 `Format` | 4 | `core/engine.go` |
 | 코어 `Core` | `2` | `core.CoreVersion` |
-| 규칙 `Rules` | `rules-13` | `core.RulesVersion` |
-| AI 정책 `AI` | `greedy-8` | `core.AIPolicyVersion` |
+| 규칙 `Rules` | `rules-14` | `core.RulesVersion` |
+| AI 정책 `AI` | `greedy-9` | `core.AIPolicyVersion` |
 | 난이도 | `normal` | 고정 |
 | 콘텐츠 버전 `Content` | `ver5-1` | `assets/data/game.json`의 `Version` |
 | 콘텐츠 해시 `ContentHash` | SHA-256 | `content.Load` |

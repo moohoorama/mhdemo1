@@ -1,7 +1,6 @@
 package core
 
 import (
-	"srpg/internal/content"
 	"testing"
 )
 
@@ -30,10 +29,7 @@ func TestNextTurnRecoveryMatchesTurnStart(t *testing.T) {
 			e.state.Turn = tc.turn
 			with(e, hero.ID, tc.traits...)
 			if tc.terrain {
-				tileID := e.tile(hero.X, hero.Y)
-				tile := e.data.Tiles[tileID]
-				tile.RestHP, tile.RestMP = 8, 2
-				e.data.Tiles[tileID] = tile
+				setCell(e, hero.X, hero.Y, "gv-")
 			}
 			if tc.aura {
 				ally := e.unit("archer1")
@@ -95,12 +91,8 @@ func TestNextTurnRecoveryForMissingOrDeadUnit(t *testing.T) {
 }
 
 func TestCastleInteriorHasNoTerrainRecovery(t *testing.T) {
-	d, err := content.Load("../../assets/data")
-	if err != nil {
-		t.Fatal(err)
-	}
 	e := battle(t)
-	e.data.Tiles["i"] = d.Tiles["i"]
+	setCell(e, 8, 1, "i--")
 	u := e.unit("hero")
 	u.X, u.Y = 8, 1
 	u.HP -= 20

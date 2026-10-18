@@ -73,7 +73,7 @@
   "EnemyStock": {
    "bean": 1
   },
-  "EdgeTile": "~",
+  "EdgeTile": "w--",
   "ExpDefenseShare": 0.5,
   "PhysicalLevelScale": 20,
   "MagicLevelScale": 10,
@@ -162,75 +162,95 @@
    ]
   }
  },
- "Tiles": {
-  ".": {
-   "Name": "평지",
+ "Grounds": {
+  "g": {
+   "Name": "초원",
+   "Glyph": ".",
    "Surface": 1
   },
   "d": {
    "Name": "황무지",
+   "Glyph": "d",
    "Surface": 2
   },
-  "~": {
+  "w": {
    "Name": "물",
-   "Water": true,
-   "Surface": 0
-  },
-  "f": {
-   "Name": "숲",
-   "Ambush": true,
-   "Surface": 1
-  },
-  "v": {
-   "Name": "마을",
-   "RestHP": 10,
-   "RestMP": 2,
-   "Surface": 2
+   "Glyph": "~",
+   "Surface": 0,
+   "Water": true
   },
   "c": {
    "Name": "성벽",
+   "Glyph": "c",
    "Surface": 1
   },
   "i": {
    "Name": "성내",
-   "Surface": 2
-  },
-  "b": {
-   "Name": "다리",
-   "Surface": 0
-  },
-  "g": {
-   "Name": "관문",
-   "Castle": true,
-   "RestHP": 20,
-   "RestMP": 3,
-   "Surface": 1
-  },
-  "k": {
-   "Name": "주둔지",
-   "RestHP": 10,
-   "RestMP": 2,
+   "Glyph": "i",
    "Surface": 2
   },
   "h": {
    "Name": "절벽",
+   "Glyph": "h",
    "Surface": 2
+  }
+ },
+ "Structures": {
+  "t": {
+   "Name": "나무",
+   "Glyph": "f",
+   "Grounds": "gd",
+   "Ambush": true
+  },
+  "v": {
+   "Name": "마을",
+   "Glyph": "v",
+   "Grounds": "gdi",
+   "RestHP": 10,
+   "RestMP": 2
+  },
+  "k": {
+   "Name": "주둔지",
+   "Glyph": "k",
+   "Grounds": "gdi",
+   "RestHP": 10,
+   "RestMP": 2
   },
   "o": {
    "Name": "성",
+   "Glyph": "o",
+   "Grounds": "gi",
    "Castle": true,
    "RestHP": 20,
-   "RestMP": 3,
-   "Surface": 1
+   "RestMP": 3
+  },
+  "p": {
+   "Name": "관문",
+   "Glyph": "g",
+   "Grounds": "i",
+   "Castle": true,
+   "RestHP": 20,
+   "RestMP": 3
+  },
+  "b": {
+   "Name": "다리",
+   "Glyph": "b",
+   "Grounds": "w"
+  }
+ },
+ "States": {
+  "e": {
+   "Name": "불씨",
+   "Blaze": 0.8,
+   "RestHP": -20
   },
   "F": {
-   "Name": "불붙은 땅",
-   "RestHP": -20,
-   "Surface": 2
+   "Name": "화염",
+   "Blaze": 1.4,
+   "Then": "s"
   },
-  "W": {
-   "Name": "불길",
-   "Surface": 2
+  "s": {
+   "Name": "그을음"
   }
  }
 }

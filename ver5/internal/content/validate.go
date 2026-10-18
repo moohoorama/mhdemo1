@@ -21,23 +21,11 @@ func (d *Data) Validate() error {
 		r.BasicAttack.Kind != KindPhysical || r.ExpGrowth <= 0 || r.DeputyDivisor <= 0 {
 		return fmt.Errorf("rules incomplete")
 	}
-	if len(d.Classes) == 0 || len(d.Characters) == 0 || len(d.Terrain) == 0 || len(d.Tiles) == 0 || len(d.Stages) == 0 || len(d.Nodes) == 0 {
+	if len(d.Classes) == 0 || len(d.Characters) == 0 || len(d.Terrain) == 0 || len(d.Grounds) == 0 || len(d.Stages) == 0 || len(d.Nodes) == 0 {
 		return fmt.Errorf("missing content definitions")
 	}
-	if _, ok := d.Tiles[r.EdgeTile]; !ok {
-		return fmt.Errorf("edge tile %q", r.EdgeTile)
-	}
-	for group, table := range d.Terrain {
-		for tile := range d.Tiles {
-			if _, ok := table[tile]; !ok {
-				return fmt.Errorf("terrain %s lacks tile %s", group, tile)
-			}
-		}
-		for tile := range table {
-			if _, ok := d.Tiles[tile]; !ok {
-				return fmt.Errorf("terrain %s: unknown tile %s", group, tile)
-			}
-		}
+	if why := d.validateTerrain(); why != "" {
+		return fmt.Errorf("%s", why)
 	}
 	for id, f := range d.Factions {
 		if len(f.Colors) != 3 {
@@ -316,12 +304,12 @@ func (d *Data) Validate() error {
 		}
 		seen := map[Point]bool{}
 		for _, row := range s.Tiles {
-			if len(row) != s.Width {
+			if len(row) != s.Width*CellWidth {
 				return fmt.Errorf("row %s", s.ID)
 			}
-			for _, v := range row {
-				if _, ok := d.Tiles[string(v)]; !ok {
-					return fmt.Errorf("stage %s: tile %c", s.ID, v)
+			for x := 0; x < s.Width; x++ {
+				if why := d.ValidCell(Cell{row[x*CellWidth], row[x*CellWidth+1], row[x*CellWidth+2]}); why != "" {
+					return fmt.Errorf("stage %s: %s", s.ID, why)
 				}
 			}
 		}

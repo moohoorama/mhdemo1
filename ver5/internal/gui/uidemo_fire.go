@@ -20,15 +20,21 @@ func demoFire(d *Demo) error {
 			x, y = u.X, u.Y
 		}
 	}
+	stage := g.S.Engine.Data().Stages[snap.Stage]
+	light := func(x, y int, state string) {
+		if x >= 0 && y >= 0 && x < stage.Width && y < stage.Height {
+			snap.TileStates = append(snap.TileStates, core.TileState{X: x, Y: y, State: state})
+		}
+	}
 	for dx := 2; dx <= 4; dx++ {
 		for dy := -1; dy <= 1; dy++ {
-			snap.TileOverrides = append(snap.TileOverrides, core.TileOverride{X: x + dx, Y: y + dy, Tile: "F"})
+			light(x+dx, y+dy, "e")
 		}
 	}
 	for dy := -2; dy <= 2; dy++ {
-		snap.TileOverrides = append(snap.TileOverrides, core.TileOverride{X: x + 5, Y: y + dy, Tile: "W"})
+		light(x+5, y+dy, "F")
 	}
-	e, err := core.Restore(g.S.Data, snap)
+	e, err := core.Restore(g.S.Engine.Data(), snap)
 	if err != nil {
 		return err
 	}

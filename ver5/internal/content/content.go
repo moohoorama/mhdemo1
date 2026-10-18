@@ -51,7 +51,7 @@ type Rules struct {
 	DeputyDivisor         int   // also the percent scale of charm
 	PromoteLevels         []int // minimum level to promote from tier i
 	EnemyStock            map[string]int
-	EdgeTile              string // what lies beyond the map's edge
+	EdgeTile              string // the cell (ground, structure, state) that lies beyond the map's edge
 	AuraHeal              int
 }
 type Campaign struct {
@@ -80,15 +80,6 @@ type Faction struct {
 	Colors []string // light, middle, dark
 }
 
-// Tile describes one map glyph.
-type Tile struct {
-	Name           string
-	Surface        int  `json:",omitempty"`
-	Water          bool // beyond it lies the map edge; spells that need water look for it beside the caster or target
-	Ambush         bool
-	Castle         bool
-	RestHP, RestMP int // percent of max HP restored at turn start; multiplier of spell point regeneration (0 = 1)
-}
 type Class struct {
 	Name, Desc                      string
 	Family                          string `json:",omitempty"`
@@ -170,6 +161,8 @@ type Skill struct {
 	MagicCoeff    float64 // a physical skill also deals spell damage at this coefficient
 	Deprecated    bool
 }
+
+// Terrain is what a class pays and gets standing on a cell, after its layers are put together.
 type Terrain struct {
 	Factor float64
 	Cost   int
@@ -238,8 +231,8 @@ type Action struct {
 	Steps   [][]Step       `json:",omitempty"` // cutscene: groups of steps; a group's steps run together, the next group waits for them
 	Duel    string         `json:",omitempty"` // duel: the stage duel to hold now, wherever its officers stand
 	Area    int            `json:",omitempty"` // terrain: the area whose cells change
-	Tile    string         `json:",omitempty"` // terrain: the tile they become
-	Turns   int            `json:",omitempty"` // terrain: for how many rounds; none is for good
+	State   string         `json:",omitempty"` // terrain: the state they get; NoLayer clears it
+	Turns   int            `json:",omitempty"` // terrain: for how many rounds; none is for good (the state then turns into its Then)
 	Policy  string         `json:",omitempty"` // ai: the new policy of the Targets
 	Goal    *Point         `json:",omitempty"` // ai: its goal cell, for march and flee
 }
@@ -380,8 +373,10 @@ type Data struct {
 	ScenarioID     string    `json:",omitempty"`
 	Chapters       []Chapter `json:",omitempty"`
 	Factions       map[string]Faction
-	Tiles          map[string]Tile
-	Terrain        map[string]map[string]Terrain
+	Grounds        map[string]Ground
+	Structures     map[string]Structure
+	States         map[string]State
+	Terrain        map[string]TerrainSet
 	Classes        map[string]Class
 	Characters     map[string]Character
 	Equipment      map[string]Equipment

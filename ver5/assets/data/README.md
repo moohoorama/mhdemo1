@@ -7,14 +7,14 @@ Scenes live in `assets/scenes.json`, not here.
 
 | File | Section |
 |---|---|
-| `game.json` | Title, Version, Rules, Campaign, Factions (3 shades: light, mid, dark), Tiles legend |
-| `terrain.json` | Terrain tables per movement group: `cavalry infantry archer machine scholar bandit` (`machine` = catapult) |
+| `game.json` | Title, Version, Rules, Campaign, Factions (3 shades: light, mid, dark), `Grounds` / `Structures` / `States` legends (one glyph each; `Glyph` is the map-art character) |
+| `terrain.json` | Terrain rules per movement group (`cavalry infantry archer machine scholar bandit`; `machine` = catapult), per layer: `Ground`, `Structure`, `State`. A layer lists `Factor`/`Cost` only where it says one; the topmost layer that does wins |
 | `classes.json` | Classes (Tier/Promotes chain, Grants = given traits, Pool = learnable traits of that tier, Skills = given skills) |
 | `characters.json` | Officers and `Template: true` soldier templates (`troop_*`) |
 | `traits.json`, `skills.json` | Trait effects (vocab.go keys) and skills; spells and special moves open through `Requires` traits |
 | `equipment.json`, `items.json` | Equipment (slots weapon/armor/accessory) and items (`hp`/`mp`/`promote`) |
 | `script.json` | Scenario nodes |
-| `maps/*.json` | Shared editor/game map: small tiles, resolved terrain, exterior, spawns, rewards, duels, `Next` node |
+| `maps/*.json` | Shared editor/game map: cells of three layers (ground, structure, state), exterior, spawns, rewards, duels, `Next` node |
 
 ## Id conventions
 
@@ -40,7 +40,7 @@ Scenes live in `assets/scenes.json`, not here.
 
 `mapeditor.json` defines terrain brush order, class families (including disabled choices),
 army tabs and officer-to-army membership. These labels remain content data, separate from faction colors.
-`Tiles.Surface` selects the ground atlas surface (0 water, 1 grass, 2 wasteland).
+`Grounds.Surface` selects the ground atlas surface (0 water, 1 grass, 2 wasteland).
 `Class.Family`, when present, overrides the movement group used for editor family selection.
 
 Stage spawns can override `Class`, `Level`, `Facing` (`NE SE SW NW`),

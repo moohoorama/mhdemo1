@@ -170,7 +170,7 @@ func (e *Engine) placeSpawns(stage content.Stage, spawns []content.Spawn) ([]con
 		for y := 0; y < stage.Height; y++ {
 			for x := 0; x < stage.Width; x++ {
 				p := content.Point{X: x, Y: y}
-				if reserved[p] || e.occupied(x, y) != nil || e.data.Terrain[e.data.Classes[class].Terrain][e.tile(x, y)].Cost <= 0 {
+				if reserved[p] || e.occupied(x, y) != nil || e.data.Move(e.data.Classes[class].Terrain, e.Cell(x, y)).Cost <= 0 {
 					continue
 				}
 				if n := dist(x, y, sp.X, sp.Y); n < score {
@@ -206,7 +206,7 @@ func (e *Engine) retreatSweep(u, fallen *Unit, derived bool) {
 	}
 }
 
-// changeTerrain makes every cell of the action's area the action's tile, replacing an earlier change.
+// changeTerrain puts the action's state on every cell of its area, replacing an earlier one.
 func (e *Engine) changeTerrain(stage content.Stage, a content.Action) {
 	for _, area := range stage.Areas {
 		if area.ID != a.Area {
@@ -214,34 +214,50 @@ func (e *Engine) changeTerrain(stage content.Stage, a content.Action) {
 		}
 		for y := max(0, area.Rect.Y); y < min(stage.Height, area.Rect.Y+area.Rect.H); y++ {
 			for x := max(0, area.Rect.X); x < min(stage.Width, area.Rect.X+area.Rect.W); x++ {
-				kept := e.state.TileOverrides[:0:0]
-				for _, o := range e.state.TileOverrides {
-					if o.X != x || o.Y != y {
-						kept = append(kept, o)
-					}
-				}
-				e.state.TileOverrides = kept
-				if string(stage.Tiles[y][x]) != a.Tile {
-					e.state.TileOverrides = append(e.state.TileOverrides, TileOverride{X: x, Y: y, Tile: a.Tile, Turns: a.Turns})
-				}
+				e.setState(stage, x, y, a.State, a.Turns)
 			}
 		}
-		e.emit("terrain", "", a.Tile, a.Area)
+		e.emit("terrain", "", a.State, a.Area)
 	}
 }
 
-// ageTerrain counts a round off every temporary change; the ones that run out go back to the stage's tile.
+// setState gives a cell a state for turns rounds (0: for good). A state the stage gave the cell
+// itself needs no entry.
+func (e *Engine) setState(stage content.Stage, x, y int, state string, turns int) {
+	kept := e.state.TileStates[:0:0]
+	for _, o := range e.state.TileStates {
+		if o.X != x || o.Y != y {
+			kept = append(kept, o)
+		}
+	}
+	e.state.TileStates = kept
+	if string(stage.Cell(x, y).State) != state || turns > 0 {
+		e.state.TileStates = append(e.state.TileStates, TileState{X: x, Y: y, State: state, Turns: turns})
+	}
+}
+
+// ageTerrain counts a round off every temporary state; the ones that run out turn into what the data says.
 func (e *Engine) ageTerrain() {
-	kept := e.state.TileOverrides[:0:0]
-	for _, o := range e.state.TileOverrides {
+	stage := e.data.Stages[e.state.Stage]
+	var done []TileState
+	kept := e.state.TileStates[:0:0]
+	for _, o := range e.state.TileStates {
 		if o.Turns > 0 {
 			if o.Turns--; o.Turns == 0 {
+				done = append(done, o)
 				continue
 			}
 		}
 		kept = append(kept, o)
 	}
-	e.state.TileOverrides = kept
+	e.state.TileStates = kept
+	for _, o := range done {
+		next := e.data.States[o.State].Then
+		if next == "" {
+			next = string(content.NoLayer)
+		}
+		e.setState(stage, o.X, o.Y, next, 0)
+	}
 }
 
 // shift puts the unit on the free cell nearest to a point, whatever its move range or the cost of the

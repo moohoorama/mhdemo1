@@ -20,7 +20,7 @@ func (d *MapDocument) Graphics(data *Data) MapArt {
 	st := d.Compile()
 	v := d.Visual
 	vx, vy := (v.X-d.Play.X)*2, (v.Y-d.Play.Y)*2
-	a := MapArt{Ground: make([]Fragment, 0, v.W*v.H*16), ID: st.ID, Name: st.Name, Size: [2]int{st.Width, st.Height}, Tiles: st.Tiles, Native: true, Deformed: true, Visual: [4]int{vx, vy, v.W * 2, v.H * 2}, Props: [][]any{}, Decorations: [][4]any{}}
+	a := MapArt{Ground: make([]Fragment, 0, v.W*v.H*16), ID: st.ID, Name: st.Name, Size: [2]int{st.Width, st.Height}, Native: true, Deformed: true, Visual: [4]int{vx, vy, v.W * 2, v.H * 2}, Props: [][]any{}, Decorations: [][4]any{}}
 	for _, deco := range d.Decorations {
 		deco[0] = numeric(deco[0]) - float64((d.Play.X-d.Play.Y)*16)
 		deco[1] = numeric(deco[1]) - float64((d.Play.X+d.Play.Y)*8)
@@ -42,16 +42,22 @@ func (d *MapDocument) Graphics(data *Data) MapArt {
 	for y := 0; y < v.H*2; y++ {
 		row := ""
 		for x := 0; x < v.W*2; x++ {
-			row += d.Small(v.X*2+x, v.Y*2+y)
+			row += string(data.Glyph(d.Cell(FloorHalf(v.X*2+x), FloorHalf(v.Y*2+y))))
 		}
 		a.SmallTiles = append(a.SmallTiles, row)
+	}
+	for y := d.Play.Y; y < d.Play.Y+d.Play.H; y++ {
+		row := ""
+		for x := d.Play.X; x < d.Play.X+d.Play.W; x++ {
+			row += string(data.Glyph(d.Cell(x, y)))
+		}
+		a.Tiles = append(a.Tiles, row)
 	}
 	vertex := func(sx, sy, kind int) bool {
 		for y := FloorHalf(sy - 1); y <= FloorHalf(sy); y++ {
 			for x := FloorHalf(sx - 1); x <= FloorHalf(sx); x++ {
 				if x >= vx && y >= vy && x < vx+v.W*2 && y < vy+v.H*2 {
-					t := a.SmallTiles[y-vy][x-vx]
-					if data.Tiles[string(t)].Surface >= kind {
+					if data.Grounds[string(d.Cell(FloorHalf(v.X*2+x-vx), FloorHalf(v.Y*2+y-vy)).Ground)].Surface >= kind {
 						return true
 					}
 				}

@@ -3,16 +3,21 @@ package gui
 import (
 	"testing"
 
+	"srpg/internal/content"
 	"srpg/internal/core"
 )
 
-func TestFireCellsAreBurningGroundAndFlameWalls(t *testing.T) {
-	o := core.Observation{State: core.State{TileOverrides: []core.TileOverride{{X: 1, Y: 2, Tile: "F"}, {X: 3, Y: 4, Tile: "W"}, {X: 5, Y: 6, Tile: "d"}}}}
-	cells, sizes := fireCells(o)
-	if len(cells) != 2 || cells[0].X != 1 || cells[1].X != 3 {
+func TestFireCellsAreEmbersAndFlames(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	if err != nil {
+		t.Fatal(err)
+	}
+	st := content.Stage{Width: 3, Height: 1, Tiles: []string{"g-eg-Fg-s"}}
+	cells := fireCells(d, core.Observation{Map: &st})
+	if len(cells) != 2 || cells[0].X != 0 || cells[1].X != 1 {
 		t.Fatalf("cells: %+v", cells)
 	}
-	if sizes[1] <= sizes[0] {
-		t.Fatalf("a wall of flames stands taller than burning ground: %v", sizes)
+	if cells[1].Size <= cells[0].Size {
+		t.Fatalf("flames stand taller than embers: %+v", cells)
 	}
 }

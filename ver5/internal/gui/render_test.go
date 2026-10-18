@@ -98,10 +98,10 @@ func (p *editorRenderTest) Update() error {
 	case 0:
 		g.editor = &mapEditor{level: 1, facing: "NW", selected: -1, zoom: 1, brushSize: 4}
 		g.editorOpen(0)
-		g.editor.doc.PaintSquare(16, 8, 4, "~")
+		g.editor.doc.PaintSquare(g.S.Data, 8, 4, 2, content.LayerGround, 'w')
 		g.editorRebuild(false)
 	case 1:
-		g.editor.doc.PaintSquare(16, 8, 4, "b")
+		g.editor.doc.PaintSquare(g.S.Data, 8, 4, 2, content.LayerStructure, 'b')
 		g.editorRebuild(false)
 	case 2:
 		g.editor.popup = "officers"
@@ -251,7 +251,13 @@ func (p *editorRenderTest) Update() error {
 		g.S.Engine = restored
 		g.request(session.Request{Op: "command", Command: core.Command{Kind: "start"}})
 		st := g.S.Data.Stages[g.S.Engine.Observe().Stage]
-		legacy := &MapArt{ID: st.ID, W: st.Width, H: st.Height, Tiles: st.Tiles, Deformed: true, Bounds: image.Rect(-st.Height*16, -16, st.Width*16, (st.Width+st.Height)*8)}
+		glyphs := make([]string, st.Height)
+		for y := range glyphs {
+			for x := 0; x < st.Width; x++ {
+				glyphs[y] += string(g.S.Data.Glyph(st.Cell(x, y)))
+			}
+		}
+		legacy := &MapArt{ID: st.ID, W: st.Width, H: st.Height, Tiles: glyphs, Deformed: true, Bounds: image.Rect(-st.Height*16, -16, st.Width*16, (st.Width+st.Height)*8)}
 		for y := 0; y < st.Height; y++ {
 			for x := 0; x < st.Width; x++ {
 				for _, xy := range [][2]int{{0, 0}, {8, 4}, {-8, 4}, {0, 8}} {

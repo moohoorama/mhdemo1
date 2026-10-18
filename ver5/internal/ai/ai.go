@@ -221,7 +221,7 @@ func hold(e *core.Engine, o core.Observation, me *core.UnitView, x, y int, threa
 	case lord(e, *me) && n >= 2, n >= 3:
 		s -= 8 * float64(n-1)
 	}
-	if me.HP*100 < me.Stats.MaxHP*60 && (o.Map.Tiles[y][x] == 'k' || o.Map.Tiles[y][x] == 'v') {
+	if me.HP*100 < me.Stats.MaxHP*60 && e.CellProps(x, y).RestHP > 0 {
 		s += 6
 	}
 	return s

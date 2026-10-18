@@ -171,18 +171,18 @@ func (e *Engine) SetXPPct(pct int) { e.state.XPPct = pct }
 func Restore(d *content.Data, s State) (*Engine, error) { return restore(d, copyOf(s), true) }
 func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	R := d.Rules
-	if s.AI != AIPolicyVersion || s.Difficulty != "normal" || s.Format != 3 || s.Core != CoreVersion || s.Rules != RulesVersion || s.Content != d.Version || s.ContentHash != d.Hash {
+	if s.AI != AIPolicyVersion || s.Difficulty != "normal" || s.Format != 4 || s.Core != CoreVersion || s.Rules != RulesVersion || s.Content != d.Version || s.ContentHash != d.Hash {
 		return nil, fail("IncompatibleSave")
 	}
-	for i, t := range s.TileOverrides {
+	for i, t := range s.TileStates {
 		if s.Stage < 0 || s.Stage >= len(d.Stages) {
 			break
 		}
 		st := d.Stages[s.Stage]
-		if _, ok := d.Tiles[t.Tile]; !ok || t.X < 0 || t.Y < 0 || t.X >= st.Width || t.Y >= st.Height || t.Turns < 0 || len(t.Tile) != 1 {
+		if _, ok := d.States[t.State]; !ok && t.State != string(content.NoLayer) || t.X < 0 || t.Y < 0 || t.X >= st.Width || t.Y >= st.Height || t.Turns < 0 {
 			return nil, fail("CorruptSave")
 		}
-		for _, o := range s.TileOverrides[:i] {
+		for _, o := range s.TileStates[:i] {
 			if o.X == t.X && o.Y == t.Y {
 				return nil, fail("CorruptSave")
 			}
@@ -359,7 +359,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 		if u.Facing != "" && !contains([]string{"N", "NE", "E", "SE", "S", "SW", "W", "NW"}, u.Facing) {
 			return nil, fail("CorruptSave")
 		}
-		if ids[u.ID] || u.ID != u.Character || !seen[u.Character] || u.Status == nil || u.Items == nil || !contains([]string{"ally", "enemy"}, u.Faction) || u.Faction == "ally" && !deploy[u.ID] && fixed[u.ID] != "ally" || u.X < 0 || u.Y < 0 || u.X >= stage.Width || u.Y >= stage.Height || e.tileAt(u.X, u.Y).Water {
+		if ids[u.ID] || u.ID != u.Character || !seen[u.Character] || u.Status == nil || u.Items == nil || !contains([]string{"ally", "enemy"}, u.Faction) || u.Faction == "ally" && !deploy[u.ID] && fixed[u.ID] != "ally" || u.X < 0 || u.Y < 0 || u.X >= stage.Width || u.Y >= stage.Height || e.openWater(u.X, u.Y) {
 			return nil, fail("CorruptSave")
 		}
 		ids[u.ID] = true

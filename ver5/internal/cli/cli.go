@@ -205,10 +205,17 @@ func Map(o core.Observation, out io.Writer) {
 			glyph[[2]int{u.X, u.Y}] = g
 		}
 	}
-	for y, row := range o.Map.Tiles {
+	for y := 0; y < o.Map.Height; y++ {
 		fmt.Fprintf(out, "%2d ", y)
-		for x, v := range row {
-			g := string(v)
+		for x := 0; x < o.Map.Width; x++ {
+			c := o.Map.Cell(x, y)
+			g := string(c.Ground)
+			if c.Structure != content.NoLayer {
+				g = string(c.Structure)
+			}
+			if c.State != content.NoLayer {
+				g = "*"
+			}
 			if t, ok := glyph[[2]int{x, y}]; ok {
 				g = t
 			}

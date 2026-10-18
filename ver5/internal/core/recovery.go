@@ -13,7 +13,7 @@ func (e *Engine) NextTurnRecovery(id string) RecoveryPreview {
 	if e.state.Phase != "battle" || u == nil || u.HP <= 0 {
 		return RecoveryPreview{}
 	}
-	out := RecoveryPreview{TerrainHP: e.tileAt(u.X, u.Y).RestHP > 0}
+	out := RecoveryPreview{TerrainHP: e.CellProps(u.X, u.Y).RestHP != 0}
 	t := fromState(e.data, e.Snapshot())
 	// At most three phases separate two starts of the same controller.
 	for i := 0; i < 3; i++ {

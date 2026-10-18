@@ -45,7 +45,7 @@ type mapEditor struct {
 	rightPending, rightMoved                   bool
 	rightStart, rightLast                      image.Point
 	lastX, lastY                               int
-	lastSmall                                  image.Point
+	lastCell                                   image.Point
 	corner                                     int
 	resizing                                   bool
 	proposed                                   mapedit.Rect
@@ -148,10 +148,10 @@ func (e *mapEditor) canvas(x, y int) (float64, float64) {
 func (e *mapEditor) screen(x, y float64) (float64, float64) {
 	return (x-e.cx)*e.zoom + float64(editorViewport.Min.X+editorViewport.Dx()/2), (y-e.cy)*e.zoom + float64(editorViewport.Min.Y+editorViewport.Dy()/2)
 }
-func (e *mapEditor) smallAt(x, y int) image.Point {
+func (e *mapEditor) cellAt(x, y int) image.Point {
 	px, py := e.canvas(x, y)
 	a, b := (px/K-e.field.OriginX)/16, (py/K-e.field.OriginY)/8
-	return image.Pt(int(math.Floor(a+b))+e.doc.Play.X*2, int(math.Floor(b-a))+e.doc.Play.Y*2)
+	return image.Pt(int(math.Floor((a+b)/2))+e.doc.Play.X, int(math.Floor((b-a)/2))+e.doc.Play.Y)
 }
 func (e *mapEditor) cornerAt(r mapedit.Rect, i int) (float64, float64) {
 	u, v := r.X, r.Y
@@ -340,10 +340,12 @@ func (g *Game) updateEditor() error {
 			}
 		} else {
 			if !e.rightMoved && image.Pt(x, y).In(editorViewport) {
-				p := e.smallAt(x, y)
+				p := e.cellAt(x, y)
 				if e.tab == 0 {
+					layer, c := g.S.Data.MapEditor.Brushes[e.brush][0], e.doc.Cell(p.X, p.Y)
+					glyph := map[byte]byte{content.LayerGround: c.Ground, content.LayerStructure: c.Structure, content.LayerState: c.State}[layer]
 					for i, t := range g.S.Data.MapEditor.Brushes {
-						if t == e.doc.Small(p.X, p.Y) {
+						if t[0] == layer && t[1] == glyph {
 							e.brush = i
 						}
 					}
@@ -393,8 +395,8 @@ func (g *Game) updateEditor() error {
 	if !image.Pt(x, y).In(editorViewport) {
 		return nil
 	}
-	point := e.smallAt(x, y)
-	big := image.Pt(mapedit.FloorHalf(point.X), mapedit.FloorHalf(point.Y))
+	point := e.cellAt(x, y)
+	big := point
 	if left {
 		if e.tab == 1 && left && !e.ally {
 			for i, sp := range e.doc.Stage.Enemies {
@@ -409,27 +411,28 @@ func (g *Game) updateEditor() error {
 		}
 		e.history.Push(e.doc)
 		e.stroke = true
-		e.lastSmall = point
+		e.lastCell = point
 		g.editorStamp(point, false)
 	}
-	if e.stroke && point != e.lastSmall {
-		dx, dy := point.X-e.lastSmall.X, point.Y-e.lastSmall.Y
+	if e.stroke && point != e.lastCell {
+		dx, dy := point.X-e.lastCell.X, point.Y-e.lastCell.Y
 		n := max(abs(dx), abs(dy))
 		for i := 1; i <= n; i++ {
-			p := image.Pt(e.lastSmall.X+dx*i/n, e.lastSmall.Y+dy*i/n)
+			p := image.Pt(e.lastCell.X+dx*i/n, e.lastCell.Y+dy*i/n)
 			g.editorStamp(p, false)
 		}
-		e.lastSmall = point
+		e.lastCell = point
 	}
 	return nil
 }
 func (g *Game) editorStamp(p image.Point, erase bool) {
 	e := g.editor
 	d := e.doc
-	x, y := mapedit.FloorHalf(p.X), mapedit.FloorHalf(p.Y)
+	x, y := p.X, p.Y
 	if e.tab == 0 {
 		if d.Visual.Contains(x, y) {
-			d.PaintSquare(p.X, p.Y, max(1, e.brushSize), g.S.Data.MapEditor.Brushes[e.brush])
+			b := g.S.Data.MapEditor.Brushes[e.brush]
+			d.PaintSquare(g.S.Data, x, y, max(1, e.brushSize), b[0], b[1])
 			g.editorChanged()
 		}
 		return
@@ -452,7 +455,7 @@ func (g *Game) editorStamp(p image.Point, erase bool) {
 			usable := false
 			for _, id := range g.S.Data.Campaign.Roster {
 				class := g.S.Data.Classes[g.S.Data.Characters[id].Class]
-				usable = usable || g.S.Data.Terrain[class.Terrain][d.Tile(x, y)].Cost > 0
+				usable = usable || g.S.Data.Move(class.Terrain, d.Cell(x, y)).Cost > 0
 			}
 			if !usable {
 				e.message = "아군이 배치할 수 없는 지형입니다"
@@ -877,16 +880,13 @@ func (g *Game) editorGrid(dst *ebiten.Image) {
 	if !image.Pt(x, y).In(editorViewport) {
 		return
 	}
-	p := e.smallAt(x, y)
-	u, v := mapedit.FloorHalf(p.X), mapedit.FloorHalf(p.Y)
-	g.editorDiamond(dst, float64(u), float64(v), 32, 16, mpC)
-	g.editorDiamond(dst, (float64(p.X)+.5)/2-.5, (float64(p.Y)+.5)/2-.5, 16, 8, gold)
+	p := e.cellAt(x, y)
+	g.editorDiamond(dst, float64(p.X), float64(p.Y), 32, 16, mpC)
 	if e.tab == 0 && e.brushSize > 1 {
 		n := e.brushSize
-		sx, sy := p.X-(n-1)/2, p.Y-(n-1)/2
-		g.editorDiamond(dst, (float64(sx)+float64(n)/2)/2-.5, (float64(sy)+float64(n)/2)/2-.5, float64(16*n), float64(8*n), good)
+		g.editorDiamond(dst, float64(p.X-(n-1)/2)+float64(n-1)/2, float64(p.Y-(n-1)/2)+float64(n-1)/2, float64(32*n), float64(16*n), good)
 	}
-	g.outlined(dst, g.S.Data.Tiles[e.doc.Small(p.X, p.Y)].Name+"("+g.S.Data.Tiles[e.doc.Tile(u, v)].Name+")", float64(x+18), float64(y+14), 15)
+	g.outlined(dst, g.S.Data.CellName(e.doc.Cell(p.X, p.Y)), float64(x+18), float64(y+14), 15)
 }
 
 func (g *Game) editorPreview(sp content.Spawn) core.UnitView {

@@ -106,7 +106,7 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 					return nil, nil, fmt.Errorf("battle event %s: ai action", event.ID)
 				}
 			case "terrain":
-				if _, ok := d.Tiles[a.Tile]; !ok || !areas[a.Area] || a.Turns < 0 {
+				if _, ok := d.States[a.State]; !ok && a.State != string(NoLayer) || !areas[a.Area] || a.Turns < 0 {
 					return nil, nil, fmt.Errorf("battle event %s: terrain action", event.ID)
 				}
 			case "buff":

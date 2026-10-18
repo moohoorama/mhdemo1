@@ -1,14 +1,14 @@
-hhhhhhhhhhhhhiihhhhhhhhhhhhh
-hhhhhhhhcccccggccccchhhhhhhh
-hhhhhhhf............hfhhhhhh
-hhhhhf................hfhhhh
-hhhf.......k.....k......hfhh
-hf........................hf
-........dd.........dd.......
-............................
-.....ff..............ff.....
-....k........dd........k....
-..........f.......f.........
-...f....................f...
-............................
-..ddddd.....................
+h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- i-- i-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h--
+h-- h-- h-- h-- h-- h-- h-- h-- c-- c-- c-- c-- c-- ip- ip- c-- c-- c-- c-- c-- h-- h-- h-- h-- h-- h-- h-- h--
+h-- h-- h-- h-- h-- h-- h-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- gt- h-- h-- h-- h-- h-- h--
+h-- h-- h-- h-- h-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- gt- h-- h-- h-- h--
+h-- h-- h-- gt- g-- g-- g-- g-- g-- g-- g-- dk- g-- g-- g-- g-- g-- dk- g-- g-- g-- g-- g-- g-- h-- gt- h-- h--
+h-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- gt-
+g-- g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- g--
+g-- g-- g-- g-- dk- g-- g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g-- g-- dk- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- d-- d-- d-- d-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--

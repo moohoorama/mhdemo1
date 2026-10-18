@@ -16,8 +16,7 @@ func TestSaveRoundTrip(t *testing.T) {
 	}
 	root := t.TempDir()
 	d := Import(data.Stages[0])
-	d.Paint(16, 8, "~")
-	d.Paint(17, 8, "~")
+	d.Paint(data, 8, 4, content.LayerGround, 'w')
 	if err := Save(root, d, data); err != nil {
 		t.Fatal(err)
 	}
@@ -25,11 +24,11 @@ func TestSaveRoundTrip(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if loaded.Tile(8, 4) != "." || loaded.Small(16, 8) != "~" {
+	if loaded.Cell(8, 4).String() != "w--" {
 		t.Fatal("history not persisted")
 	}
 	art := loaded.Graphics(data)
-	if art.ID != "B01" || !art.Native || art.Tiles[4][8] != '.' || len(art.Ground) != d.Visual.W*d.Visual.H*16 {
+	if art.ID != "B01" || !art.Native || art.Tiles[4][8] != '~' || len(art.Ground) != d.Visual.W*d.Visual.H*16 {
 		t.Fatal("graphics mismatched")
 	}
 	// Failed validation must leave the sole saved map unchanged.
@@ -132,8 +131,7 @@ func TestOneDocumentFeedsCampaignAndGraphics(t *testing.T) {
 	if err := doc.Resize(Rect{X: -2, Y: -1, W: doc.Play.W + 2, H: doc.Play.H + 1}); err != nil {
 		t.Fatal(err)
 	}
-	doc.Paint(16, 8, "~")
-	doc.Paint(17, 8, "~")
+	doc.Paint(data, 8, 4, content.LayerGround, 'w')
 	hp, mp := 17, 0
 	doc.Stage.Enemies[0].HP = &hp
 	doc.Stage.Enemies[0].MP = &mp
@@ -147,7 +145,7 @@ func TestOneDocumentFeedsCampaignAndGraphics(t *testing.T) {
 	}
 	loaded := fresh.Maps[doc.Stage.ID]
 	st := fresh.Stages[fresh.StageIndex(doc.Stage.ID)]
-	if loaded.Small(16, 8) != "~" || st.Tiles[5][10] != '.' {
+	if loaded.Cell(8, 4).String() != "w--" || st.Cell(10, 5).String() != "w--" {
 		t.Fatal("document and campaign differ")
 	}
 	if st.Enemies[0].X != doc.Stage.Enemies[0].X+2 || st.Enemies[0].Y != doc.Stage.Enemies[0].Y+1 || st.Enemies[0].Facing != "SW" {
@@ -160,7 +158,7 @@ func TestOneDocumentFeedsCampaignAndGraphics(t *testing.T) {
 		t.Fatal("content hash did not change")
 	}
 	art := loaded.Graphics(fresh)
-	if art.Tiles[5][10] != '.' || art.SmallTiles[8-doc.Play.Y*2-art.Visual[1]][16-doc.Play.X*2-art.Visual[0]] != '~' {
+	if art.Tiles[5][10] != '~' || art.SmallTiles[8-doc.Play.Y*2-art.Visual[1]][16-doc.Play.X*2-art.Visual[0]] != '~' {
 		t.Fatal("graphics not derived from the same source")
 	}
 	for _, path := range []string{"assets/data/stages", "assets/graphics/maps", "tools/mapeditor"} {

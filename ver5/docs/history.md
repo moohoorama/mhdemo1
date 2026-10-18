@@ -7,6 +7,26 @@
 
 ## 2026-10-18
 
+### 지형을 땅·구조물·상태 세 층으로 나눔
+- 결정: 한 칸(대타일)이 규칙의 근간이고 `{땅, 구조물, 상태}`다. 소타일은 그림을 매끈하게 하는 표현이라 저장하지 않고 땅을 2×2로 펼쳐 그림 쪽에서 만든다(1~7장 맵의 소타일은 전부 2×2로 균일해서 잃는 정보가 없었다). 우선순위는 땅 < 구조물 < 상태이고, 이동 비용·배율·회복은 값을 말하는 가장 위층이 이기며 `Water`·`Castle`·`Ambush`는 어느 층이든 가지면 참인 조건이다. 글자 하나가 땅·구조물·상태를 한꺼번에 나타내 마을·숲 위에 불을 붙일 수 없고 그을음을 더할 수 없던 한계를 풀려고
+- 결정: 구조물은 놓을 수 있는 땅이 정해져 있다(관문은 성내, 다리는 물, 나무는 초원·황무지, 마을·주둔지는 초원·황무지·성내, 성은 초원·성내). 성벽·절벽은 구조물이 없다. 불씨(영구, 배율 0.8, 차례 시작 병력 -20%, 비용은 아래층)와 화염(진입 불가, 라운드마다 줄어 끝나면 그을음)과 그을음(규칙 효과 없음)이 상태이며 이벤트로만 생긴다. 구조물을 없애는 `Burns`는 두지 않는다
+- `assets/data/game.json`: `Tiles`를 `Grounds`·`Structures`·`States`로 나누고 `EdgeTile`을 3글자(`w--`)로 바꿈 — 위 결정
+- `assets/data/terrain.json`: 병종군마다 `Ground`·`Structure`·`State` 표로 바꿈. 값을 말하는 칸만 적음 — 위층이 정의하면 이기고 아니면 아래층을 따르게
+- `assets/data/mapeditor.json`: 브러시를 층+글자 두 글자(`gg`·`st`·`ee`…)로 바꿈 — 브러시가 자기 층만 칠하게
+- `assets/scenario/hero/maps/map01~07.json`, `tools/mapgen/layouts/hero/*.txt`: 3글자 칸 형식(`MapVersion` 2)으로 다시 만듦. 옛 `Resolved` 글자와 칸마다 대조해 모두 같음을 확인함. 관문 4칸(맵 1·3·5)은 땅이 초원에서 성내로 바뀜
+- `assets/scenario/hero/stage01.json`: `terrain` 동작의 `Tile`을 `State`로 바꿈 — 황건적이 놓는 불(4라운드)은 화염 `F`, 마을이 타는 불은 불씨 `e`
+- `tools/mapgen/mapgen.py`: 공백으로 구분한 3글자 칸을 받고 한 글자 옛 표기는 별칭으로 풂 — 새 형식, 옛 배치 호환
+- `internal/content/terrain.go`(새): `Ground`·`Structure`·`State`·`Cell`과 합성 조회(`Move`·`Props`·`CellName`·`Glyph`·`ValidCell`) — 규칙 합성을 한 곳에 둠
+- `internal/content/content.go`, `validate.go`, `battle_events.go`: `Tile`·`Tiles`를 새 표로, 동작 `Tile` → `State`, 표 검증 — 새 형식
+- `internal/content/map_document.go`, `map_graphics.go`, `scenario.go`: 3글자 `Cells`, 층별 `Paint`(구조물이 설 수 있는 땅만, 땅을 바꾸면 설 수 없는 구조물은 지움), `Resolved`·다수결·소타일 저장 제거, 그림용 소타일과 글자 행은 칸에서 만듦 — 소타일은 표현
+- `internal/core/*.go`: `Cell`·`CellProps`로 합친 칸을 읽고, `TileOverrides`를 `TileStates`(상태만, 끝나면 `Then`)로 바꿈, `Format` 4·`rules-14`, 물 위 배치 금지는 구조물 없는 물만, `NextTurnRecovery`의 불 피해 표시(`RestHP != 0`) — 상태 규칙
+- `internal/ai/ai.go`: 회복 칸 선호를 글자 비교(`k`·`v`)에서 `RestHP > 0`으로 바꿈, `AIPolicyVersion` `greedy-9` — 성·관문도 회복 칸이라서(주석이 원래 "village or castle floor"라 했다)
+- `internal/gui/*.go`: 불꽃을 상태의 `Blaze`로, 정보창을 칸 기준으로(불 피해 줄 `차례 시작 병력 -N%` 추가), 에디터를 칸 단위 칠하기·층별 브러시·세 층 표시로 바꿈, `uidemo_fire`의 복원 오류(맵 밖 칸) 고침
+- `internal/cli/cli.go`: 지도 출력이 칸의 구조물/땅 글자와 상태(`*`)를 보임
+- `internal/testdata/mini/*`, 각 패키지 시험: 새 형식으로 옮기고 합성·상태 흐름·구조물 검증 시험(`content/terrain_test.go`, `core/fire_test.go`)을 더함
+- `docs/data-map.md`, `logic-combat.md`, `logic-battle-event.md`, `data-scenario-node.md`, `tools-editor.md`, `system-save.md`, `system-architecture.md`, `todo/engine.md`, `assets/data/README.md`: 현재 동작으로 고침 — 문서가 코드와 맞게
+- 영향: 이전 저장은 모두 호환되지 않는다. 숲 비용(다른 세션의 미커밋 변경)은 그대로 옮겼다
+
 ### 숲을 지나갈 수 있게 하고 병력이 나무 사이에 서도록 그림
 - `assets/data/terrain.json`: 숲(`f`)의 비용을 0에서 보병·궁병·서생·적병 그룹 1, 기병 그룹 2로 바꿈. 발석거는 궁병 그룹에 묶여 있어서 `machine` 그룹을 새로 만들고(궁병 표 복사, 숲 비용 2·배율 1.1) `classes.json`의 `catapult`가 쓰게 함. 그룹 이름은 `siege`로 하려다 엔진 소스에 게임 내용을 쓰지 않는 시험(`purity_test`)이 병종 태그 `siege`와 겹쳐 막아서 `machine`으로 함
 - `internal/gui/field.go`·`field_native.go`: 숲 그림의 깊이값을 칸 중심보다 0.1 뒤로 옮겨 숲 칸의 병력보다 나중에 그림 — `assets_candidate`의 "숲 속 병력" 시연 중 ② 나무 사이(반투명)를 고름. 가려진 부분의 반투명은 기존 규칙

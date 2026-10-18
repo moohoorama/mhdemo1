@@ -70,21 +70,33 @@ func (e *Engine) stats(u *Unit) Stats {
 	v[4] = max(1, percent(v[4], u.Status["disrupt"].Value))
 	return Stats{v[0], v[1], v[2], v[3], v[4], v[5], int(float64(c.MPBase) + R.ManaMaxFactor*R.StatNumerator/(R.StatDenominator-a[0])), int(float64(c.RecoveryBase) + R.ManaRecoveryFactor*R.StatNumerator/(R.StatDenominator-a[2]))}
 }
-func (e *Engine) tile(x, y int) string {
+
+// Cell is the cell at (x, y) with the state an event put on it; beyond the map's edge it is the edge cell.
+func (e *Engine) Cell(x, y int) content.Cell {
 	s := e.data.Stages[e.state.Stage]
 	if x < 0 || y < 0 || x >= s.Width || y >= s.Height {
-		return e.data.Rules.EdgeTile
+		c, _ := content.ParseCell(e.data.Rules.EdgeTile)
+		return c
 	}
-	for _, o := range e.state.TileOverrides {
+	c := s.Cell(x, y)
+	for _, o := range e.state.TileStates {
 		if o.X == x && o.Y == y {
-			return o.Tile
+			c.State = o.State[0]
 		}
 	}
-	return string(s.Tiles[y][x])
+	return c
 }
-func (e *Engine) tileAt(x, y int) content.Tile { return e.data.Tiles[e.tile(x, y)] }
+
+// openWater reports whether the cell is water nothing bridges: nobody stands there.
+func (e *Engine) openWater(x, y int) bool {
+	c := e.Cell(x, y)
+	return c.Structure == content.NoLayer && e.data.Grounds[string(c.Ground)].Water
+}
+
+// CellProps is what the cell at (x, y) does besides costing steps: recovery, water, ambush, castle.
+func (e *Engine) CellProps(x, y int) content.CellProps { return e.data.Props(e.Cell(x, y)) }
 func (e *Engine) terrain(u *Unit, x, y int) content.Terrain {
-	t := e.data.Terrain[e.unitClass(u).Terrain][e.tile(x, y)]
+	t := e.data.Move(e.unitClass(u).Terrain, e.Cell(x, y))
 	if e.has(u, content.FxIgnoreMoveCost) && t.Cost > 0 {
 		t.Cost = 1
 	}
@@ -286,7 +298,7 @@ func (e *Engine) inRange(u, v *Unit, s content.Skill) bool {
 // waterNear reports whether a water tile touches (x, y).
 func (e *Engine) waterNear(x, y int) bool {
 	for _, p := range []content.Point{{X: 1}, {X: -1}, {Y: 1}, {Y: -1}} {
-		if e.tileAt(x+p.X, y+p.Y).Water {
+		if e.CellProps(x+p.X, y+p.Y).Water {
 			return true
 		}
 	}

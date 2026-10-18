@@ -3,8 +3,8 @@ package core
 import "srpg/internal/content"
 
 const CoreVersion = "2"
-const AIPolicyVersion = "greedy-8"
-const RulesVersion = "rules-13"
+const AIPolicyVersion = "greedy-9"
+const RulesVersion = "rules-14"
 
 // Character is a persistent record: a party member, or a troop made for one battle (Temp).
 type Character struct {
@@ -57,7 +57,7 @@ type State struct {
 	Executed                          map[string]bool
 	Flags                             map[string]int    // story flags set by set nodes
 	PendingFlags                      map[string]int    `json:",omitempty"` // flags a battle sets; they join Flags when it is won
-	TileOverrides                     []TileOverride    `json:",omitempty"` // cells an event changed, for Turns more rounds (0: for good)
+	TileStates                        []TileState       `json:",omitempty"` // states an event put on cells, for Turns more rounds (0: for good)
 	Choices                           map[string]string // choice node -> the option taken
 	DamagePct, XPPct                  int               `json:",omitempty"` // damage dealt and experience gained in percent; 0 is 100
 	Learning                          []string          // characters whose learning window is open, in order
@@ -72,10 +72,11 @@ type CutStep struct {
 	Seconds                          float64         `json:",omitempty"`
 }
 
-// TileOverride makes a stage cell another tile (fire on grass) until it runs out.
-type TileOverride struct {
+// TileState is the state an event put on a cell (fire on grass) until it runs out. A cell without one
+// has the state its stage gave it; NoLayer clears that.
+type TileState struct {
 	X, Y  int
-	Tile  string
+	State string
 	Turns int
 }
 type Stats struct{ Attack, Defense, Mind, Agility, Morale, MaxHP, MaxMP, Recovery int }
