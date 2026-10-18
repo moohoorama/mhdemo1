@@ -160,6 +160,14 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 	}
 	return p, nil
 }
+
+// SetDamagePct scales the damage of every blow to pct percent; the setting travels with snapshots,
+// so previews and trial copies deal the same damage.
+func (e *Engine) SetDamagePct(pct int) { e.state.DamagePct = pct }
+
+// SetXPPct scales the experience every battle action earns to pct percent.
+func (e *Engine) SetXPPct(pct int) { e.state.XPPct = pct }
+
 func Restore(d *content.Data, s State) (*Engine, error) { return restore(d, copyOf(s), true) }
 func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	R := d.Rules

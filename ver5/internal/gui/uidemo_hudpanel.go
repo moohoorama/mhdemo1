@@ -5,8 +5,8 @@ import "srpg/internal/core"
 func init() { demos["hudpanel"] = demoHUDPanel }
 
 // demoHUDPanel walks the battle HUD panel: the minimap (frame 20), the log (60), the unit list
-// (100) sorted by orders (130), its stats view by attack (160), the biography view of all
-// units (200) and the other tab (240), an officer selected (280) with its tabs, a peek at the
+// (100) sorted by orders (130), all units by troops (160), the roster window (190) with its stats view
+// by attack (205) and the biography view of all units (220), and the other tab (240), an officer selected (280) with its tabs, a peek at the
 // minimap while selected (400), back to the base tab on letting go (440), the brief card over a
 // unit (480) and over bare ground (520), the objective window (600), the panel opaque under the pointer (700), folded (740), faded again and unfolded (800), and the enemy's turn (860).
 func demoHUDPanel(d *Demo) error {
@@ -39,11 +39,17 @@ func demoHUDPanel(d *Demo) error {
 		case 100:
 			g.hudBase = "units"
 		case 130:
-			g.unitOrder = g.unitOrder.cycle("order").cycle("order")
+			g.unitsList.order = unitSort{"order", 2}
 		case 160:
-			g.unitKind, g.unitOrder = 1, unitSort{"attack", 2}
-		case 200:
-			g.unitKind, g.unitFilter, g.unitOrder = 2, "all", unitSort{"attr무력", 2}
+			g.unitsList.filter, g.unitsList.order = "all", unitSort{"hp", 2}
+		case 190:
+			g.overlay = "roster"
+		case 205:
+			g.rosterList.kind, g.rosterList.order = 1, unitSort{"attack", 2}
+		case 220:
+			g.rosterList.kind, g.rosterList.filter, g.rosterList.order = 2, "all", unitSort{"attr무력", 2}
+		case 235:
+			g.overlay = ""
 		case 240:
 			g.hudBase = "misc"
 		case 280:

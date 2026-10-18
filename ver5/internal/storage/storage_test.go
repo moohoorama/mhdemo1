@@ -2,6 +2,7 @@ package storage
 
 import (
 	"fmt"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -95,4 +96,23 @@ func TestSettingsIndependent(t *testing.T) {
 	if read != v {
 		t.Fatal("invalid setting replaced current")
 	}
+}
+
+func TestDamagePctSetting(t *testing.T) {
+	v := DefaultSettings()
+	assert.Equal(t, 80, v.DamageScale())
+	for _, p := range ScalePcts {
+		v.DamagePct = p
+		assert.NoError(t, v.Validate())
+		assert.Equal(t, p, v.DamageScale())
+	}
+	v.DamagePct = 40
+	assert.Error(t, v.Validate())
+
+	x := DefaultSettings()
+	assert.Equal(t, 80, x.XPScale())
+	x.XPPct = 90
+	assert.NoError(t, x.Validate())
+	x.XPPct = 50
+	assert.Error(t, x.Validate())
 }

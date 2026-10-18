@@ -27,7 +27,7 @@ func menuButtonRect() image.Rectangle { return image.Rect(uiW-104, 6, uiW-8, 35)
 
 type hudTab struct{ id, title string }
 
-var hudTabs = []hudTab{{"minimap", "미니맵"}, {"log", "기록"}, {"units", "일람"}, {"misc", "기타"}, {"unit", "장수"}}
+var hudTabs = []hudTab{{"minimap", "미니맵"}, {"unit", "장수"}, {"units", "일람"}, {"log", "기록"}, {"misc", "기타"}}
 
 // hudManualAI reports whether the enemy's turn waits for the player to advance it.
 func (g *Game) hudManualAI(o core.Observation) bool {
@@ -53,7 +53,7 @@ func (g *Game) hudFollowTurn(o core.Observation) {
 func (g *Game) hudCurrent(o core.Observation) string {
 	if g.detailUnit(o) == nil {
 		g.hudPeek = ""
-		if g.hudBase == "" || g.hudBase == "unit" {
+		if g.hudBase == "" {
 			return "minimap"
 		}
 		return g.hudBase
@@ -72,7 +72,7 @@ func (g *Game) hudBodyHeight(tab string, o core.Observation, room int) int {
 	case "log":
 		return g.logBodyHeight()
 	case "misc":
-		return 4*40 + 20
+		return 5*40 + 20
 	case "unit":
 		return detailH
 	}
@@ -148,6 +148,9 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 	case "misc":
 		g.hudMisc(cd, g.hudBody)
 	case "unit":
+		if g.detailUnit(o) == nil {
+			g.label(cd, "선택한 장수가 없습니다.", float64(g.hudBody.Min.X+14), float64(g.hudBody.Min.Y+16), 14, muted)
+		}
 		g.detail(cd, o)
 	case "minimap":
 		w, mh := g.miniSize()
@@ -201,7 +204,7 @@ func (g *Game) hudHead(dst *ebiten.Image, o core.Observation, r image.Rectangle)
 	}
 }
 
-// hudTabRow draws the tabs: the unit tab lights up with a selection, and a click on another
+// hudTabRow draws the tabs: the unit tab is always there and shows itself with a selection, and a click on another
 // tab while one is selected only peeks at it.
 func (g *Game) hudTabRow(dst *ebiten.Image, o core.Observation, shown string, x, y int) {
 	selected := g.detailUnit(o) != nil
@@ -212,10 +215,8 @@ func (g *Game) hudTabRow(dst *ebiten.Image, o core.Observation, shown string, x,
 		var click func()
 		switch {
 		case id == shown && !g.hudFolded:
-		case id == "unit":
-			if selected {
-				click = func() { g.hudPeek, g.hudFolded = "", false }
-			}
+		case id == "unit" && selected:
+			click = func() { g.hudPeek, g.hudFolded = "", false }
 		case selected:
 			click = func() { g.hudPeek, g.hudFolded = id, false }
 		default:
@@ -243,6 +244,7 @@ func (g *Game) hudMisc(dst *ebiten.Image, r image.Rectangle) {
 		{"위협 범위" + mark(g.threatAll), func() { g.threatAll = !g.threatAll }},
 		{"자동 진행" + mark(g.autoplay), func() { g.autoplay = !g.autoplay }},
 		{"작전 개요", func() { g.modals = append(g.modals, &modal{kind: "objective", manual: true}) }},
+		{"병력일람", func() { g.openOverlay("roster") }},
 		{"메뉴", func() { g.openOverlay("menu") }},
 	}
 	for i, it := range items {

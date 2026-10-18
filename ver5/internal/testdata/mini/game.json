@@ -48,6 +48,7 @@
   },
   "CritMultiplier": 1.5,
   "CounterShare": 0.7,
+  "DoubleShare": 0.7,
   "PoisonPercent": 5,
   "BurnPercent": 4,
   "BuffPercent": 20,

@@ -86,7 +86,7 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		return fmt.Sprintf("%s ×%d 획득", g.itemName(e.Target), e.Amount), true
 	case "deputy":
 		return fmt.Sprintf("%s 부관: %s", a, t), false
-	case "attack-hit", "spell-hit":
+	case "attack-hit", "spell-hit", "deployment_finish":
 		return "", false
 	}
 	if e.Text != "" {

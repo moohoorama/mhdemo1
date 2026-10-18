@@ -43,6 +43,9 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	if s.MagicCoeff > 0 {
 		out += math.Max(1, float64(a.Mind-b.Mind)+level*R.MagicLevelScale) * s.MagicCoeff
 	}
+	if p := e.state.DamagePct; p > 0 && p != 100 {
+		out = math.Max(1, out*float64(p)/100)
+	}
 	return out
 }
 
@@ -207,7 +210,11 @@ func (e *Engine) attackOn(u, v *Unit, s content.Skill, b blow) int {
 		if i == 1 {
 			e.emit("double", u.ID, v.ID, 0)
 		}
-		n, hit := e.strike(u, v, s, b)
+		blow := b
+		if i == 1 {
+			blow.share *= e.data.Rules.DoubleShare
+		}
+		n, hit := e.strike(u, v, s, blow)
 		total += n
 		if !hit && !b.derived {
 			e.riposte(v, u)
@@ -246,7 +253,11 @@ func (e *Engine) counterBack(u, v *Unit) {
 		if i > 0 {
 			e.emit("double", v.ID, u.ID, 0)
 		}
-		n, _ := e.strike(v, u, e.basic(), blow{share: R.CounterShare, derived: true})
+		k := R.CounterShare
+		if i > 0 {
+			k *= R.DoubleShare
+		}
+		n, _ := e.strike(v, u, e.basic(), blow{share: k, derived: true})
 		e.leech(v, n)
 	}
 }
@@ -391,6 +402,7 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 	}
 	return nil
 }
+
 func (e *Engine) physical(u, v *Unit, s content.Skill, c Command) {
 	hit, share := e.victims(u, v, s)
 	dealt, total := map[string]int{}, 0

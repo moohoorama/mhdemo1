@@ -413,6 +413,35 @@ func (g *Game) btn(dst *ebiten.Image, r image.Rectangle, label string, click fun
 	g.label(dst, label, float64(x)+10, float64(y)+(float64(h)-size*1.45)/2, size, fg)
 }
 
+// choiceBtn is a button of a group of which one is chosen: the chosen one is pressed in, gold
+// and does nothing, the others are raised buttons. Labels are centred.
+func (g *Game) choiceBtn(dst *ebiten.Image, r image.Rectangle, label string, on bool, click func()) {
+	x, y, w, h := float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy())
+	body, rim, fg := lacquer2, goldDim, ink
+	switch {
+	case on:
+		body, rim, fg = color.NRGBA{R: 26, G: 19, B: 15, A: 255}, gold, gold
+	case click != nil:
+		g.addButton(r, label, click)
+		if hovered(r) {
+			body, rim = hoverC, gold
+		}
+	}
+	rect(dst, x, y, w, h, body)
+	strokeRect(dst, x+.5, y+.5, w-1, h-1, 1, rim)
+	if on {
+		rect(dst, x+1, y+1, w-2, 3, color.NRGBA{A: 150})
+	} else {
+		rect(dst, x+1, y+1, w-2, 1, color.NRGBA{R: 255, G: 255, B: 255, A: 28})
+	}
+	size := 15.0
+	ty := float64(y) + (float64(h)-size*1.45)/2
+	if on {
+		ty++
+	}
+	g.label(dst, label, float64(x)+(float64(w)-g.width(label, size))/2, ty, size, fg)
+}
+
 // arrow is a scroll button: raised with a white mark while it can scroll, flat and dark
 // (and not clickable) when it cannot.
 func (g *Game) arrow(dst *ebiten.Image, r image.Rectangle, up bool, click func()) {

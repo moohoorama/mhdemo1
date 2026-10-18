@@ -52,6 +52,7 @@ type State struct {
 	Warehouse                         map[string]int
 	Deployment                        []string
 	Executed                          map[string]bool
+	DamagePct, XPPct                  int      `json:",omitempty"` // damage dealt and experience gained in percent; 0 is 100
 	Learning                          []string // characters whose learning window is open, in order
 	Checkpoint                        *State   `json:",omitempty"`
 }

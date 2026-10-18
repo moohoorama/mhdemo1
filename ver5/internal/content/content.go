@@ -32,6 +32,7 @@ type Rules struct {
 	Crit, Double          Chance
 	CritMultiplier        float64
 	CounterShare          float64 // a counter deals this share of a normal blow
+	DoubleShare           float64 // a second strike deals this share of a normal blow
 	PoisonPercent         int
 	BurnPercent           int
 	BuffPercent           int     // the size of an attack/defense/morale/agility buff or debuff

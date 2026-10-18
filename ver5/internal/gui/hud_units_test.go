@@ -9,12 +9,12 @@ import (
 
 func TestUnitSortCycle(t *testing.T) {
 	s := unitSort{}.cycle("hp")
-	assert.Equal(t, unitSort{"hp", 1}, s)
-	s = s.cycle("hp")
 	assert.Equal(t, unitSort{"hp", 2}, s)
 	s = s.cycle("hp")
+	assert.Equal(t, unitSort{"hp", 1}, s)
+	s = s.cycle("hp")
 	assert.Equal(t, unitSort{}, s)
-	assert.Equal(t, unitSort{"mp", 1}, unitSort{"hp", 2}.cycle("mp"))
+	assert.Equal(t, unitSort{"mp", 2}, unitSort{"hp", 1}.cycle("mp"))
 }
 
 func TestUnitListRows(t *testing.T) {
@@ -26,30 +26,31 @@ func TestUnitListRows(t *testing.T) {
 	o := core.Observation{UnitViews: []core.UnitView{
 		unit("a", "ally", 10, 3), unit("b", "ally", 0, 9), unit("c", "ally", 10, 5), unit("d", "enemy", 10, 7),
 	}}
-	ids := func(g *Game) []string {
+	cells := unitViewKinds[0].cells
+	ids := func(l *unitList) []string {
 		out := []string{}
-		for _, u := range g.unitListRows(o) {
+		for _, u := range (&Game{}).unitListRows(o, l, cells) {
 			out = append(out, u.ID)
 		}
 		return out
 	}
 	t.Run("filters and keeps the retired last", func(t *testing.T) {
-		assert.Equal(t, []string{"a", "c", "b"}, ids(&Game{}))
-		assert.Equal(t, []string{"d"}, ids(&Game{unitFilter: "enemy"}))
-		assert.Equal(t, []string{"a", "c", "d", "b"}, ids(&Game{unitFilter: "all"}))
+		assert.Equal(t, []string{"a", "c", "b"}, ids(&unitList{}))
+		assert.Equal(t, []string{"d"}, ids(&unitList{filter: "enemy"}))
+		assert.Equal(t, []string{"a", "c", "d", "b"}, ids(&unitList{filter: "all"}))
 	})
 	t.Run("sorts by a cell", func(t *testing.T) {
-		g := &Game{unitFilter: "all", unitOrder: unitSort{"level", 2}}
-		assert.Equal(t, []string{"d", "c", "a", "b"}, ids(g))
-		g.unitOrder.dir = 1
-		assert.Equal(t, []string{"a", "c", "d", "b"}, ids(g))
+		l := &unitList{filter: "all", order: unitSort{"level", 2}}
+		assert.Equal(t, []string{"d", "c", "a", "b"}, ids(l))
+		l.order.dir = 1
+		assert.Equal(t, []string{"a", "c", "d", "b"}, ids(l))
 	})
 	t.Run("drops a sort the view does not show", func(t *testing.T) {
-		g := &Game{unitKind: 1, unitOrder: unitSort{"level", 2}}
-		g.unitSortKnown()
-		assert.Equal(t, unitSort{}, g.unitOrder)
-		g.unitOrder = unitSort{"name", 1}
-		g.unitSortKnown()
-		assert.Equal(t, unitSort{"name", 1}, g.unitOrder)
+		l := &unitList{order: unitSort{"level", 2}}
+		l.unitSortKnown(unitPanelTable.cells)
+		assert.Equal(t, unitSort{}, l.order)
+		l.order = unitSort{"name", 1}
+		l.unitSortKnown(unitPanelTable.cells)
+		assert.Equal(t, unitSort{"name", 1}, l.order)
 	})
 }

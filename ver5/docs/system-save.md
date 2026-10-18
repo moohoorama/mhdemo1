@@ -4,7 +4,7 @@
 기준: 값이 다르면 `internal/storage/storage.go`, `internal/session/session.go`, `internal/core/api.go`(`Restore`)·`core/types.go`(`State`, 버전 상수)를 따른다.
 
 저장하는 것은 규칙 엔진의 상태(`core.State`)뿐이다. 카메라·창·연출·선택 상태는 저장하지 않고 불러온 뒤 화면이 상태에서 다시 만든다.
-설정(AI 진행·기록 상세·대사 속도·UI 크기)은 `settings.json`에 따로 있고 세이브에 섞이지 않는다.
+설정(AI 진행·기록 상세·대사 속도·UI 크기·데미지 배율)은 `settings.json`에 따로 있고 세이브에 섞이지 않는다.
 화면의 저장·불러오기 창은 [presentation-ui.md](presentation-ui.md), 구조는 [system-architecture.md](system-architecture.md)에 있다.
 
 ## 슬롯

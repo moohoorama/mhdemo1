@@ -27,6 +27,9 @@ func (e *Engine) actionXPAmount(u, v *Unit, spell, defeated bool) int {
 	a, b := e.char(u.Character), e.char(v.Character)
 	factor := clamp(1+R.ExpLevelStep*float64(b.Level-a.Level), R.ExpMinFactor, R.ExpMaxFactor)
 	n := R.ExpAction * XPPerLevel / 100 * factor * math.Pow(R.ExpGrowth, float64(b.Level-a.Level))
+	if p := e.state.XPPct; p > 0 {
+		n *= float64(p) / 100
+	}
 	if spell {
 		n *= R.ExpSpell
 	}
@@ -45,7 +48,11 @@ func (e *Engine) defenseXP(v, u *Unit, spell bool) {
 
 // supportXP is what an ally earns per target of a landed support spell.
 func (e *Engine) supportXP(u *Unit) int {
-	return max(1, XPPerLevel*e.data.Rules.ExpSupportPercent/100)
+	n := XPPerLevel * e.data.Rules.ExpSupportPercent / 100
+	if p := e.state.XPPct; p > 0 {
+		n = n * p / 100
+	}
+	return max(1, n)
 }
 func (e *Engine) xp(id string, n int) {
 	R := e.data.Rules

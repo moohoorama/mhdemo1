@@ -106,10 +106,8 @@ type Game struct {
 	hudLayer                  *ebiten.Image   // where it is drawn while faded
 	hudShown                  string          // the tab it showed
 	hudBase, hudPeek          string          // the tab chosen by hand; the one looked at while an officer is selected
-	unitFilter                string          // the unit list: ally, enemy or all ("" is ally)
-	unitKind, unitTop         int             // its view and the first row shown
-	unitOrder                 unitSort
-	hudTurn, hudBefore        string // the side that moved last, and the tab to return to after the enemy's turn
+	unitsList, rosterList     unitList        // the HUD tab's unit list and the roster window's
+	hudTurn, hudBefore        string          // the side that moved last, and the tab to return to after the enemy's turn
 	traitOf                   string
 	traitTop                  int
 	detailTab                 int

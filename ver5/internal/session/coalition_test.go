@@ -42,6 +42,8 @@ func TestSupportPhaseIsAlwaysAutomaticAndRejectsPlayerCommands(t *testing.T) {
 	require.NoError(t, err)
 	_, err = s.Engine.Apply(core.Command{Kind: "end"})
 	require.NoError(t, err)
+	s.Engine.SetDamagePct(s.Settings.DamageScale()) // a request syncs the settings into the state
+	s.Engine.SetXPPct(s.Settings.XPScale())
 	before := snapshot(s)
 	rev := s.Engine.Observe().Revision
 	r := s.Handle(Request{Op: "command", Revision: &rev, Command: core.Command{Kind: "wait", Actor: "mushun"}})

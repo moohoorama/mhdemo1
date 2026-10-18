@@ -3,6 +3,7 @@ package session
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"path/filepath"
 	"srpg/internal/ai"
@@ -317,4 +318,20 @@ func TestEnemyTurnLearning(t *testing.T) {
 			})
 		}
 	}
+}
+
+func TestDamagePctSettingReachesEngine(t *testing.T) {
+	s := setup(t)
+	request(t, s, Request{Op: "new", Seed: 1})
+	v := s.Settings
+	v.DamagePct = 60
+	request(t, s, Request{Op: "settings", Settings: &v})
+	assert.Equal(t, 60, s.Engine.Snapshot().DamagePct)
+	v.DamagePct = 0
+	request(t, s, Request{Op: "settings", Settings: &v})
+	assert.Equal(t, 80, s.Engine.Snapshot().DamagePct)
+	assert.Equal(t, 80, s.Engine.Snapshot().XPPct)
+	v.XPPct = 100
+	request(t, s, Request{Op: "settings", Settings: &v})
+	assert.Equal(t, 100, s.Engine.Snapshot().XPPct)
 }

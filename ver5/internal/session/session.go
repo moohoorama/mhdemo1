@@ -59,6 +59,8 @@ func (s *Session) Handle(q Request) Response {
 	r.Screen = s.Screen
 	r.Settings = s.Settings
 	if s.Engine != nil {
+		s.Engine.SetDamagePct(s.Settings.DamageScale())
+		s.Engine.SetXPPct(s.Settings.XPScale())
 		o := s.Engine.Observe()
 		r.Observation = &o
 	}

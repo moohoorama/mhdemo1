@@ -76,7 +76,7 @@
    "Kind": "magic",
    "Mode": "any",
    "Shape": "single",
-   "Cost": 50,
+   "Cost": 40,
    "Hit": 110,
    "Element": "fire",
    "Min": 1,

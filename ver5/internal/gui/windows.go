@@ -16,7 +16,7 @@ import (
 )
 
 var overlayTitles = map[string]string{"menu": "메뉴", "save": "저장", "load": "불러오기", "settings": "설정",
-	"confirm": "확인", "equipment": "장비", "deputy": "부관"}
+	"confirm": "확인", "equipment": "장비", "deputy": "부관", "roster": "병력일람"}
 
 func (g *Game) popupPending() bool {
 	return g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 ||
@@ -75,6 +75,10 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 		w, h = 760, 660
 	case "equipment", "deputy":
 		w, h = 640, 560
+	case "settings":
+		w, h = 640, 604
+	case "roster":
+		w, h = uiW-100, uiH-90
 	}
 	// the window in a frame with room for its title plate and shadow
 	g.popup(dst, "overlay:"+g.overlay, 150, w+40, h+40, image.Rect(0, 0, w+40, h+40), func(dst *ebiten.Image) { g.overlayWindow(dst, w, h) })
@@ -151,37 +155,58 @@ func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
 		}
 	case "settings":
 		s := g.S.Settings
-		rows := []menuItem{
-			{"적 AI: " + map[string]string{"auto": "자동 진행", "step": "한 명령씩"}[s.AI], func() {
+		set := func(change func(v *storage.Settings)) func() {
+			return func() {
 				v := g.S.Settings
-				v.AI = map[string]string{"auto": "step", "step": "auto"}[v.AI]
+				change(&v)
 				g.request(session.Request{Op: "settings", Settings: &v})
+			}
+		}
+		speeds, scales, damages, xps := []choice{}, []choice{}, []choice{}, []choice{}
+		for _, n := range []int{1, 2, 4, 8} {
+			n := n
+			speeds = append(speeds, choice{fmt.Sprintf("×%d", n), g.speed == n, func() { g.speed = n }})
+		}
+		for _, n := range uiScales {
+			n := n
+			scales = append(scales, choice{fmt.Sprintf("%d%%", n), int(math.Round(g.uiScale()*100)) == n, set(func(v *storage.Settings) { v.UIScale = n })})
+		}
+		for _, n := range storage.ScalePcts {
+			n := n
+			damages = append(damages, choice{fmt.Sprintf("%d%%", n), s.DamageScale() == n, set(func(v *storage.Settings) { v.DamagePct = n })})
+			xps = append(xps, choice{fmt.Sprintf("%d%%", n), s.XPScale() == n, set(func(v *storage.Settings) { v.XPPct = n })})
+		}
+		rows := []struct {
+			title string
+			opts  []choice
+		}{
+			{"적 AI", []choice{
+				{"자동 진행", s.AI == "auto", set(func(v *storage.Settings) { v.AI = "auto" })},
+				{"한 명령씩", s.AI == "step", set(func(v *storage.Settings) { v.AI = "step" })},
 			}},
-			{"전투 기록: " + map[bool]string{true: "상세", false: "주요 사건만"}[s.Detail], func() {
-				v := g.S.Settings
-				v.Detail = !v.Detail
-				g.request(session.Request{Op: "settings", Settings: &v})
+			{"전투 기록", []choice{
+				{"상세", s.Detail, set(func(v *storage.Settings) { v.Detail = true })},
+				{"주요 사건만", !s.Detail, set(func(v *storage.Settings) { v.Detail = false })},
 			}},
-			{"대사 속도: " + map[bool]string{true: "즉시", false: "한 글자씩"}[s.TextDelayMS == 0], func() {
-				v := g.S.Settings
-				v.TextDelayMS = map[bool]int{true: 20, false: 0}[v.TextDelayMS == 0]
-				g.request(session.Request{Op: "settings", Settings: &v})
+			{"대사 속도", []choice{
+				{"즉시", s.TextDelayMS == 0, set(func(v *storage.Settings) { v.TextDelayMS = 0 })},
+				{"한 글자씩", s.TextDelayMS != 0, set(func(v *storage.Settings) { v.TextDelayMS = 20 })},
 			}},
-			{fmt.Sprintf("재생 속도: ×%d", g.speed), func() { g.speed = nextSpeed[g.speed] }},
-			{fmt.Sprintf("UI 크기: %.0f%%", g.uiScale()*100), func() {
-				v := g.S.Settings
-				v.UIScale = nextUIScale(int(math.Round(g.uiScale() * 100)))
-				g.request(session.Request{Op: "settings", Settings: &v})
-			}},
+			{"재생 속도", speeds},
+			{"UI 크기", scales},
+			{"데미지 배율", damages},
+			{"경험치 배율", xps},
 		}
 		for i, it := range rows {
-			g.btn(dst, image.Rect(left, y+70+i*48, x+w-32, y+70+i*48+40), it.label, it.click)
+			g.choiceRow(dst, left, y+64+i*64, x+w-32-left, it.title, it.opts)
 		}
 		g.label(dst, "조작: 클릭 선택 · 우클릭/Esc 취소 · 드래그/화면 가장자리/화살표 화면 이동 · 휠 확대\n"+
 			"Space 추천 한 명령 · F 재생 속도 · Enter 재생 건너뛰기 · F5/F9 저장/불러오기",
-			float64(left), float64(y+300), 13, muted)
+			float64(left), float64(y+64+len(rows)*64+4), 13, muted)
 	case "equipment", "deputy":
 		g.equipmentWindow(dst, x, y, w, h)
+	case "roster":
+		g.rosterWindow(dst, x, y, w, h)
 	}
 }
 
@@ -392,16 +417,25 @@ func resultUnits(o core.Observation) []core.UnitView {
 	return units
 }
 
-// uiScales are the UI size steps the settings button cycles through.
+// uiScales are the UI size steps the settings window offers.
 var uiScales = []int{80, 100, 115, 130, 145, 160}
 
-func nextUIScale(now int) int {
-	for _, s := range uiScales {
-		if s > now {
-			return s
-		}
+// choice is one button of a choiceRow; the one that is on stays pressed.
+type choice struct {
+	label string
+	on    bool
+	click func()
+}
+
+// choiceRow draws a setting's name with its choices as a row of buttons below it that share
+// the width w.
+func (g *Game) choiceRow(dst *ebiten.Image, x, y, w int, title string, opts []choice) {
+	g.label(dst, title, float64(x), float64(y), 14, muted)
+	bw := (w - (len(opts)-1)*6) / len(opts)
+	for i, o := range opts {
+		bx := x + i*(bw+6)
+		g.choiceBtn(dst, image.Rect(bx, y+24, bx+bw, y+56), o.label, o.on, o.click)
 	}
-	return uiScales[0]
 }
 
 // objectiveDuels names the stage's duels as "ally 대 enemy", the rest counted.
