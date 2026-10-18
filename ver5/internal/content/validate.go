@@ -338,7 +338,7 @@ func (d *Data) Validate() error {
 					officers[e.Character] = true
 				}
 				p := Point{e.X, e.Y}
-				if !d.Has(e.Character) || e.X < 0 || e.Y < 0 || e.X >= s.Width || e.Y >= s.Height || seen[p] || e.Level < 0 || e.Level > r.MaxLevel {
+				if !d.Has(e.Character) || e.X < 0 || e.Y < 0 || e.X >= s.Width || e.Y >= s.Height || seen[p] || e.Level < 0 || e.Level > r.MaxLevel || !ValidPolicy(e.Policy, e.Goal, s.Width, s.Height) {
 					return fmt.Errorf("stage %s spawn %s", s.ID, e.Character)
 				}
 				if e.Faction != "" {

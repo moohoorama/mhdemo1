@@ -249,3 +249,35 @@ func TestSpawnAndRemoveByGroup(t *testing.T) {
 	assert.Zero(t, groups["guards"], "removed from the map")
 	assert.False(t, fired(e, "flee"))
 }
+
+func TestAnEventChangesAUnitsPolicyAndTheSaveStillLoads(t *testing.T) {
+	goal := content.Point{X: 10, Y: 7}
+	e := battleWith(t, func(s *content.Stage) {
+		s.Events = []content.BattleEvent{{ID: "turn", Do: []content.Action{{Kind: "ai", Targets: []string{"boss"}, Policy: "march", Goal: &goal}}}}
+	})
+	u := e.unit("boss")
+	require.Equal(t, "march", u.Policy)
+	require.Equal(t, &goal, u.Goal)
+	assert.NotSame(t, &goal, u.Goal, "the unit has its own copy")
+	r, err := Restore(e.Data(), e.Snapshot())
+	require.NoError(t, err)
+	assert.Equal(t, "march", r.unit("boss").Policy)
+
+	snap := e.Snapshot()
+	for i := range snap.Units {
+		if snap.Units[i].ID == "boss" {
+			snap.Units[i].Goal = nil
+		}
+	}
+	_, err = Restore(e.Data(), snap)
+	assert.Error(t, err, "a marching unit needs its goal")
+}
+
+func TestAFleeingUnitLeavesWhenItStandsOnItsGoal(t *testing.T) {
+	goal := content.Point{X: 10, Y: 3}
+	e := battleWith(t, func(s *content.Stage) {
+		s.Enemies[2].Policy, s.Enemies[2].Goal = "flee", &goal // troop #2 starts at (10,3): already there
+	})
+	assert.Zero(t, e.unit("troop#2").HP)
+	assert.Positive(t, e.unit("troop#1").HP)
+}

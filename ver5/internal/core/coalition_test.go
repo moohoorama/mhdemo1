@@ -35,7 +35,7 @@ func summonCoalition(t *testing.T, e *Engine) Result {
 func TestCoalitionArrivalAndControl(t *testing.T) {
 	e := hulaoBattle(t)
 	boss := e.unit("lubu")
-	assert.True(t, boss.Guard)
+	assert.Equal(t, "hold", boss.Policy)
 	moves := e.moves(boss)
 	assert.Empty(t, moves)
 	e.settle()

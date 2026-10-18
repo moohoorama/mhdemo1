@@ -176,7 +176,9 @@ type Terrain struct {
 }
 type Point struct{ X, Y int }
 type Spawn struct {
-	AI, Guard         bool      `json:",omitempty"`
+	AI                bool      `json:",omitempty"`
+	Policy            string    `json:",omitempty"` // how the unit behaves: hold, assault, march, flee; none is the default advance
+	Goal              *Point    `json:",omitempty"` // march and flee: the cell the unit makes for
 	DuelFirst         bool      `json:",omitempty"` // the AI seeks a pending duel partner before anything else
 	Class, Facing     string    `json:",omitempty"`
 	Group             string    `json:",omitempty"` // name events use to address this spawn with others
@@ -230,6 +232,24 @@ type Action struct {
 	Spawns  []Spawn        `json:",omitempty"`
 	Targets []string       `json:",omitempty"`
 	Flags   map[string]int `json:",omitempty"`
+	Policy  string         `json:",omitempty"` // ai: the new policy of the Targets
+	Goal    *Point         `json:",omitempty"` // ai: its goal cell, for march and flee
+}
+
+// Policies are the behaviours an AI-driven unit can be given: hold stands its ground and strikes what
+// comes within reach, assault always advances, march goes for a cell fighting what it meets, and
+// flee goes for a cell without fighting and leaves the field when it gets there.
+var Policies = []string{"hold", "assault", "march", "flee"}
+
+// ValidPolicy checks a policy and its goal against each other; the goal's cell must lie inside w×h.
+func ValidPolicy(policy string, goal *Point, w, h int) bool {
+	if policy != "" && !contains(Policies, policy) {
+		return false
+	}
+	if policy == "march" || policy == "flee" {
+		return goal != nil && goal.X >= 0 && goal.Y >= 0 && goal.X < w && goal.Y < h
+	}
+	return goal == nil
 }
 
 // BattleEvent runs its Do once (or each time its If turns true again when Repeat) as soon as all of If hold.
@@ -295,7 +315,6 @@ type Stage struct {
 	Reward             map[string]int
 	Duels              []Duel
 	Party              []Spawn `json:",omitempty"` // a skirmish's allies
-	Charge             bool    `json:",omitempty"` // the enemy marches on the allies from the first turn
 	Map                string  `json:",omitempty"` // map document under maps/ that supplies the tiles; none means Tiles is inline
 	Faction            string  `json:",omitempty"` // color of this stage's enemies without a faction of their own
 }

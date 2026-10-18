@@ -14,7 +14,7 @@ func autosaveBattle(t *testing.T) *Session {
 	t.Helper()
 	s := setup(t)
 	for i := range s.Data.Stages[0].Enemies {
-		s.Data.Stages[0].Enemies[i].Guard = true
+		s.Data.Stages[0].Enemies[i].Policy = "hold"
 	}
 	request(t, s, Request{Op: "new", Seed: 3})
 	for _, c := range []core.Command{{Kind: "next"}, {Kind: "choose", Option: "go"}, {Kind: "start"}, {Kind: "place", Actor: "hero", X: 1, Y: 2}, {Kind: "place", Actor: "archer1", X: 1, Y: 3}} {
@@ -119,9 +119,9 @@ func TestAutosaveFailureKeepsAppliedCommand(t *testing.T) {
 
 func TestSupportPhaseDoesNotRotateAutosave(t *testing.T) {
 	s := setup(t)
-	s.Data.Stages[0].Party = []content.Spawn{{Character: "troop", X: 1, Y: 4, AI: true, Guard: true, Level: 1}}
+	s.Data.Stages[0].Party = []content.Spawn{{Character: "troop", X: 1, Y: 4, AI: true, Policy: "hold", Level: 1}}
 	for i := range s.Data.Stages[0].Enemies {
-		s.Data.Stages[0].Enemies[i].Guard = true
+		s.Data.Stages[0].Enemies[i].Policy = "hold"
 	}
 	request(t, s, Request{Op: "new", Seed: 3})
 	for _, c := range []core.Command{{Kind: "next"}, {Kind: "choose", Option: "go"}, {Kind: "start"}, {Kind: "place", Actor: "hero", X: 1, Y: 2}, {Kind: "place", Actor: "archer1", X: 1, Y: 3}, {Kind: "deployment_finish"}, {Kind: "end"}} {

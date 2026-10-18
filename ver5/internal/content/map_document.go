@@ -146,10 +146,17 @@ func (d *MapDocument) Compile() Stage {
 		st.Allies[i].X -= d.Play.X
 		st.Allies[i].Y -= d.Play.Y
 	}
+	shift := func(p *Point) {
+		if p != nil {
+			p.X -= d.Play.X
+			p.Y -= d.Play.Y
+		}
+	}
 	for _, list := range [][]Spawn{st.Enemies, st.Party} {
 		for i := range list {
 			list[i].X -= d.Play.X
 			list[i].Y -= d.Play.Y
+			shift(list[i].Goal)
 		}
 	}
 	for i := range st.Events {
@@ -157,7 +164,9 @@ func (d *MapDocument) Compile() Stage {
 			for k := range st.Events[i].Do[j].Spawns {
 				st.Events[i].Do[j].Spawns[k].X -= d.Play.X
 				st.Events[i].Do[j].Spawns[k].Y -= d.Play.Y
+				shift(st.Events[i].Do[j].Spawns[k].Goal)
 			}
+			shift(st.Events[i].Do[j].Goal)
 		}
 	}
 	for i := range st.Areas {

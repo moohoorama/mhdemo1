@@ -33,12 +33,16 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 	}
 	best := options[0]
 	score := -1e9
-	var walk map[content.Point]int
+	var walk, goal map[content.Point]int
 	var threat map[content.Point]int
+	charging := assaulting(o)
 	for _, c := range options {
 		s := -1.0
 		switch c.Kind {
 		case "attack", "skill":
+			if me.Policy == "flee" {
+				continue // a fleeing unit only runs
+			}
 			if duels && me.DuelFirst && e.DuelPending(me.ID, c.Target) {
 				continue // a duel partner is met in the duel, not shot or struck from afar
 			}
@@ -114,11 +118,18 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 					break
 				}
 			}
+			if (me.Policy == "march" || me.Policy == "flee") && me.Goal != nil {
+				if goal == nil {
+					goal = walkingFrom(e, o, me, []content.Point{*me.Goal})
+				}
+				s = float64(far(goal, me.X, me.Y)-far(goal, c.X, c.Y))*3 - .1
+				break
+			}
 			if walk == nil {
 				walk = walking(e, o, me)
 			}
 			nearest, old := far(walk, c.X, c.Y), far(walk, me.X, me.Y)
-			if me.Faction == "enemy" && old > 5 && !o.Map.RoutVictory() && !o.Map.Charge {
+			if me.Faction == "enemy" && old > 5 && !o.Map.RoutVictory() && me.Policy != "assault" {
 				s = -5
 				break
 			}
@@ -127,11 +138,11 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 			if lord(e, *me) {
 				s -= 1
 			}
-			if me.Faction == "ally" && (o.Map.Charge || lord(e, *me)) {
+			if me.Faction == "ally" && (charging || lord(e, *me)) {
 				if threat == nil {
 					threat = threatened(e, o, me.Faction)
 				}
-				if o.Map.Charge {
+				if charging {
 					s += hold(e, o, me, c.X, c.Y, threat)
 				} else if n := threat[content.Point{X: c.X, Y: c.Y}]; n >= 2 || n == 1 && me.HP*100 < me.Stats.MaxHP*70 {
 					s -= 10 * float64(n) // the lord's retreat loses the battle
@@ -219,14 +230,33 @@ func hold(e *core.Engine, o core.Observation, me *core.UnitView, x, y int, threa
 // walking is how far each cell is from the nearest opposing unit, walking around
 // what me cannot enter (water, trees, walls) at its terrain costs.
 func walking(e *core.Engine, o core.Observation, me *core.UnitView) map[content.Point]int {
-	dist := map[content.Point]int{}
-	queue := []content.Point{}
+	var seeds []content.Point
 	for _, v := range o.UnitViews {
 		if v.Faction != me.Faction && v.HP > 0 {
-			p := content.Point{X: v.X, Y: v.Y}
-			dist[p] = 0
-			queue = append(queue, p)
+			seeds = append(seeds, content.Point{X: v.X, Y: v.Y})
 		}
+	}
+	return walkingFrom(e, o, me, seeds)
+}
+
+// assaulting reports whether an enemy unit is told to assault, which makes the allies' AI mind the
+// ground it advances over (hold).
+func assaulting(o core.Observation) bool {
+	for _, v := range o.UnitViews {
+		if v.Faction == "enemy" && v.HP > 0 && v.Policy == "assault" {
+			return true
+		}
+	}
+	return false
+}
+
+// walkingFrom is how far each cell is from the nearest seed cell, walking as me would.
+func walkingFrom(e *core.Engine, o core.Observation, me *core.UnitView, seeds []content.Point) map[content.Point]int {
+	dist := map[content.Point]int{}
+	queue := []content.Point{}
+	for _, p := range seeds {
+		dist[p] = 0
+		queue = append(queue, p)
 	}
 	// costs are small integers, so a relaxing FIFO search settles quickly
 	for len(queue) > 0 {

@@ -593,7 +593,7 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	if sp.Faction != "" {
 		color = sp.Faction
 	}
-	u := Unit{AI: sp.AI, Guard: sp.Guard, DuelFirst: sp.DuelFirst, Group: sp.Group, ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
+	u := Unit{AI: sp.AI, Policy: sp.Policy, Goal: copyGoal(sp.Goal), DuelFirst: sp.DuelFirst, Group: sp.Group, ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
 	if side == "enemy" {
 		for item, n := range e.data.Rules.EnemyStock {
 			u.Items[item] = n
@@ -623,6 +623,7 @@ func (e *Engine) settle() {
 		e.emit("turn-limit", "", "", limit)
 		return
 	}
+	e.leaveByFlight()
 	e.autoDuels()
 	e.battleEvents()
 	stage := e.data.Stages[e.state.Stage]
@@ -747,4 +748,22 @@ func (e *Engine) fitSortie(s content.Stage) {
 		}
 	}
 	e.state.Deployment = ids
+}
+
+func copyGoal(p *content.Point) *content.Point {
+	if p == nil {
+		return nil
+	}
+	q := *p
+	return &q
+}
+
+// fleeing units that have reached their goal leave the field, as if retreated.
+func (e *Engine) leaveByFlight() {
+	for _, id := range keys(e.unitIDs) {
+		if u := e.unit(id); u.HP > 0 && u.Policy == "flee" && u.Goal != nil && u.X == u.Goal.X && u.Y == u.Goal.Y {
+			u.HP = 0
+			e.emit("retreat", u.ID, "", 0)
+		}
+	}
 }

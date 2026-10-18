@@ -7,6 +7,10 @@
 
 ## 2026-10-18
 
+### 유닛 행동 정책(`hold`·`assault`·`march`·`flee`)과 `ai` 동작을 둠
+- 스폰의 `Guard`(제자리)와 스테이지 `Charge`(적이 처음부터 진군)를 유닛별 `Policy`로 바꾸고 `march`(목표 칸으로 가며 교전)·`flee`(목표 칸으로 달아나 맵을 떠남)를 더함. 이벤트 `ai` 동작이 정책을 바꿈. `charge`라는 이름은 데이터의 특성 ID와 겹쳐 엔진 소스에 못 써서 `assault`로 했고, `flee`가 맵을 떠나는 것은 AI가 아니라 엔진 규칙(`retreat`)이라 `defeated` 조건으로 볼 수 있음. 정책을 이벤트가 바꿀 수 있어 저장 검증은 정책의 모양만 봄.
+- 영향: `internal/ai/ai.go`, `internal/core/engine.go`·`battle_events.go`, `docs/logic-battle-event.md`·`data-scenario-node.md`
+
 ### 일기토를 인접하는 순간 자동으로 벌이고 연출을 스테이지 파일에 합침
 - 공격이 일기토로 바뀌던 방식을 없애고, 지정한 두 장수가 인접한 상태가 되면(이동·소환·개전 어느 경우든) `settle()`의 첫 단계에서 벌어지게 함. 결과는 지금처럼 데이터로 고정. 미리보기 이동에서는 일기토를 보일 수 없어서 일기토가 벌어지는 칸으로 이동할 때 확인 창을 한 번 거침(`DuelAt`). 이동해서 맞닿은 장수(`First`)에 따라 연출 변형(`Variants`)을 고름.
 - `assets/duels.json`을 없애고 연출(`Beats`·`Supports`)을 스테이지 파일의 일기토 항목에 합침 — 규칙 결과와 연출이 한 곳에 있어 어긋나지 않게. 연출의 마지막 장면이 `Outcome`과, 떠나는 장수의 결과(`retreat`)와 맞는지 로드 때 확인함.

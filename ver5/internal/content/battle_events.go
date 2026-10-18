@@ -60,6 +60,9 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 						return nil, err
 					}
 					enemy := sp.Side == "enemy"
+					if !ValidPolicy(sp.Policy, sp.Goal, s.Width, s.Height) {
+						return nil, fmt.Errorf("battle event spawn %s: policy", sp.Character)
+					}
 					if sp.Side != "" && sp.Side != "ally" && !enemy || !enemy && !sp.AI || sp.X < 0 || sp.Y < 0 || sp.X >= s.Width || sp.Y >= s.Height || d.Characters[sp.Character].Playable || d.Characters[sp.Character].Lord {
 						return nil, fmt.Errorf("battle event spawn %s", sp.Character)
 					}
@@ -75,6 +78,10 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 						allies[sp.Character] = true
 					}
 					note(sp)
+				}
+			case "ai":
+				if a.Policy == "" || len(a.Targets) == 0 || !ValidPolicy(a.Policy, a.Goal, s.Width, s.Height) {
+					return nil, fmt.Errorf("battle event %s: ai action", event.ID)
 				}
 			case "say", "remove", "flag":
 			default:
@@ -105,13 +112,13 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, error) {
 					}
 					seen[line.Actor] = true
 				}
-			case "remove":
+			case "remove", "ai":
 				if len(a.Targets) == 0 {
-					return nil, fmt.Errorf("battle event %s: remove without targets", event.ID)
+					return nil, fmt.Errorf("battle event %s: %s without targets", event.ID, a.Kind)
 				}
 				for _, t := range a.Targets {
 					if !refs.targets[t] {
-						return nil, fmt.Errorf("battle event %s: remove %s", event.ID, t)
+						return nil, fmt.Errorf("battle event %s: %s %s", event.ID, a.Kind, t)
 					}
 				}
 			case "flag":

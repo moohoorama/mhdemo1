@@ -91,6 +91,14 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 					}
 				}
 			}
+		case "ai":
+			for _, t := range a.Targets {
+				for _, u := range e.matching(t) {
+					if u.HP > 0 {
+						u.Policy, u.Goal = a.Policy, copyGoal(a.Goal)
+					}
+				}
+			}
 		case "flag":
 			if e.state.PendingFlags == nil {
 				e.state.PendingFlags = map[string]int{}

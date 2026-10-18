@@ -92,7 +92,6 @@ assets/scenario/
 | `Duels` | 일기토 목록(5절). |
 | `Areas` | 번호 붙은 구역 목록(6절). |
 | `Events` | 전투 이벤트 목록(7절). |
-| `Charge` | 참이면 적이 첫 턴부터 아군 쪽으로 진군한다(선택). AI 동작은 `internal/ai/ai.go`가 기준이다. |
 | `Faction` | 자기 `Faction`이 없는 적 스폰의 진영색. `Factions`에 있어야 한다. |
 
 검증은 다음과 같다.
@@ -124,7 +123,8 @@ assets/scenario/
 | `Equipment` | 장비 목록 덮어쓰기. 생략·빈 배열의 뜻은 `Traits`와 같다. |
 | `Faction` | 진영색 덮어쓰기. `Factions`에 있어야 한다. 우선순위는 스폰 > 스테이지 `Faction`(적만) > 인물의 `Look.Faction`. |
 | `AI` | 아군 스폰을 `support` 차례에 자동 행동하는 AI 유닛으로 만든다. |
-| `Guard` | 제자리에서 움직이지 못한다. |
+| `Policy` | 행동 정책 `hold` `assault` `march` `flee`(선택). 뜻은 logic-battle-event.md 5.4절. |
+| `Goal` | `march`·`flee`의 목표 칸 `{X, Y}`(맵 문서 좌표, 로드할 때 원점을 뺀다). 다른 정책에는 쓰지 않는다. |
 | `Group` | 같은 이름을 가진 스폰을 이벤트 조건·`remove`가 한꺼번에 가리킨다(이름 있는 인물은 인물 ID로도 가리킬 수 있다). |
 | `Side` | 이벤트가 만드는 스폰만: `ally`(기본, AI 아군) 또는 `enemy`. |
 | `DuelFirst` | AI가 아직 안 치른 일기토 상대를 먼저 찾는다. 이동 범위 안에 상대와 맞닿을 칸이 있으면 그 칸으로 먼저 가고, 상대를 맞닿기 전에는 멀리서 쏘거나 치지 않는다. |
@@ -178,11 +178,11 @@ assets/scenario/
 | `ID` | 비어 있지 않고 스테이지 안에서 유일. |
 | `Repeat` | 참이면 조건이 거짓에서 참이 될 때마다 실행(선택). `spawn`은 쓸 수 없다. |
 | `If` | 조건 문자열 배열(선택). 비어 있으면 전투가 시작되는 첫 `settle()`에 실행된다. 조건은 [logic-battle-event.md](logic-battle-event.md) 5.1. |
-| `Do` | 동작 배열(비어 있을 수 없음). `say`(`Lines`) `spawn`(`Spawns`) `remove`(`Targets`) `flag`(`Flags`). 모르는 `Kind`는 로드 오류. |
+| `Do` | 동작 배열(비어 있을 수 없음). `say`(`Lines`) `spawn`(`Spawns`) `remove`(`Targets`) `ai`(`Targets`·`Policy`·`Goal`) `flag`(`Flags`). 모르는 `Kind`는 로드 오류. |
 
 `spawn`의 스폰은 일반 스폰 규칙에 더해 다음을 요구한다. `Side`는 비어 있거나 `ally`/`enemy`이고, `ally`이면 `AI`가 참이며, 좌표가 영역 안이고, 인물이 `Playable`도 `Lord`도 아니고, 이름 있는 인물은 이 스테이지의 다른 스폰·이전 이벤트 스폰·플레이어블 인물과 겹치지 않는다. `Faction`은 있다면 `Factions`에 있어야 한다. 스폰의 `Group`은 조건과 `remove`가 가리킬 수 있는 이름이 된다.
 
-`say` 검증은 다음과 같다. `Lines`가 비어 있을 수 없고, 줄의 `Text`가 비어 있을 수 없으며, 한 줄에 같은 `Actor`가 둘 있을 수 없다. `Actor`는 플레이어블 인물, 이 스테이지의 `Enemies`·`Party` 인물, 이 스테이지 이벤트가 만드는 인물 중 하나여야 한다. `remove`의 `Targets`는 유닛 ID나 그룹이어야 하고, `flag`의 `Flags`는 비어 있을 수 없다.
+`say` 검증은 다음과 같다. `Lines`가 비어 있을 수 없고, 줄의 `Text`가 비어 있을 수 없으며, 한 줄에 같은 `Actor`가 둘 있을 수 없다. `Actor`는 플레이어블 인물, 이 스테이지의 `Enemies`·`Party` 인물, 이 스테이지 이벤트가 만드는 인물 중 하나여야 한다. `remove`·`ai`의 `Targets`는 유닛 ID나 그룹이어야 하고, `ai`의 `Policy`는 필수이며 `Goal`은 정책에 맞아야 하고, `flag`의 `Flags`는 비어 있을 수 없다.
 
 ```json
 {"ID": "brothers-challenge", "If": ["any:[duel:hulao-mushun, duel:hulao-wuanguo]"],

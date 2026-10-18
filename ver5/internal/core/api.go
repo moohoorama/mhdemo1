@@ -333,14 +333,14 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 
 	for _, u := range s.Units {
 		if base, ok := fixedUnits[u.ID]; ok {
-			if u.Guard && (u.X != base.X || u.Y != base.Y) {
+			if u.AI != base.AI || u.DuelFirst != base.DuelFirst {
 				return nil, fail("CorruptSave")
 			}
-			if u.AI != base.AI || u.Guard != base.Guard || u.DuelFirst != base.DuelFirst {
-				return nil, fail("CorruptSave")
-			}
-		} else if u.AI || u.Guard || u.DuelFirst {
+		} else if u.AI || u.DuelFirst {
 			return nil, fail("CorruptSave")
+		}
+		if !content.ValidPolicy(u.Policy, u.Goal, stage.Width, stage.Height) {
+			return nil, fail("CorruptSave") // an event may change a unit's policy, so only its shape is checked
 		}
 		if u.Facing != "" && !contains([]string{"N", "NE", "E", "SE", "S", "SW", "W", "NW"}, u.Facing) {
 			return nil, fail("CorruptSave")

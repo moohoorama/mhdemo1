@@ -22,7 +22,9 @@ type Status struct {
 	Source       string
 }
 type Unit struct {
-	AI, Guard, DuelFirst                 bool `json:",omitempty"`
+	AI, DuelFirst                        bool           `json:",omitempty"`
+	Policy                               string         `json:",omitempty"` // hold, assault, march or flee; none is the default advance
+	Goal                                 *content.Point `json:",omitempty"` // the cell a marching or fleeing unit makes for
 	ID, Character, Faction, Color        string
 	Group                                string `json:",omitempty"`
 	Facing                               string `json:",omitempty"`

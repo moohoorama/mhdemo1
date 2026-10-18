@@ -64,7 +64,7 @@ func (g *Game) startDuelScene(stage int, duel content.Duel, enemyAttacks bool) e
 	}
 	st := g.S.Data.Stages[stage]
 	placed := false
-	if snap.Units[ei].Guard {
+	if snap.Units[ei].Policy == "hold" {
 		snap.Units[ai].X, snap.Units[ai].Y = snap.Units[ei].X-1, snap.Units[ei].Y
 		placed = true
 	}

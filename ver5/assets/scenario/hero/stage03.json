@@ -53,9 +53,9 @@
    "Character": "lubu",
    "X": 25,
    "Y": 4,
-   "Guard": true,
    "DuelFirst": true,
-   "Facing": "NW"
+   "Facing": "NW",
+   "Policy": "hold"
   },
   {
    "Character": "liru",

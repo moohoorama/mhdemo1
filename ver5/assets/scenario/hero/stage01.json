@@ -82,32 +82,38 @@
   {
    "Character": "chengyuanzhi",
    "X": 10,
-   "Y": 5
+   "Y": 5,
+   "Policy": "assault"
   },
   {
    "Character": "dengmao",
    "X": 10,
-   "Y": 2
+   "Y": 2,
+   "Policy": "assault"
   },
   {
    "Character": "troop_turban",
    "X": 11,
-   "Y": 1
+   "Y": 1,
+   "Policy": "assault"
   },
   {
    "Character": "troop_turban",
    "X": 12,
-   "Y": 3
+   "Y": 3,
+   "Policy": "assault"
   },
   {
    "Character": "troop_turban",
    "X": 12,
-   "Y": 5
+   "Y": 5,
+   "Policy": "assault"
   },
   {
    "Character": "troop_turban",
    "X": 12,
-   "Y": 7
+   "Y": 7,
+   "Policy": "assault"
   }
  ],
  "Reward": {
@@ -292,7 +298,6 @@
    ]
   }
  ],
- "Charge": true,
  "Faction": "turban",
  "Map": "map01.json"
 }

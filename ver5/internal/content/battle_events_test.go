@@ -160,3 +160,71 @@ func TestLoadRejectsBadObjectives(t *testing.T) {
 		st["Sub"] = objs(obj("ID", "a", "Text", "t", "If", objs("alive:hero"), "Flag", "flag-x", "Reward", obj("tonic", 1)))
 	}))
 }
+
+func TestLoadChecksPoliciesAndAIActions(t *testing.T) {
+	spawn := func(extra ...any) map[string]any {
+		return obj(append([]any{"Character", "troop", "X", 1, "Y", 1, "AI", true}, extra...)...)
+	}
+	ai := func(extra ...any) map[string]any {
+		return obj("ID", "e", "Do", objs(obj(append([]any{"Kind", "ai", "Targets", objs("boss")}, extra...)...)))
+	}
+	bad := map[string]func(map[string]any){
+		"unknown policy":     func(st map[string]any) { st["Enemies"].([]any)[1].(map[string]any)["Policy"] = "dance" },
+		"march without goal": func(st map[string]any) { st["Enemies"].([]any)[1].(map[string]any)["Policy"] = "march" },
+		"goal off the map": func(st map[string]any) {
+			p := st["Enemies"].([]any)[1].(map[string]any)
+			p["Policy"], p["Goal"] = "flee", obj("X", 99, "Y", 0)
+		},
+		"hold with a goal": func(st map[string]any) {
+			p := st["Enemies"].([]any)[1].(map[string]any)
+			p["Policy"], p["Goal"] = "hold", obj("X", 1, "Y", 1)
+		},
+		"goal without policy": func(st map[string]any) { st["Enemies"].([]any)[1].(map[string]any)["Goal"] = obj("X", 1, "Y", 1) },
+		"event spawn bad policy": func(st map[string]any) {
+			st["Events"] = objs(obj("ID", "e", "Do", objs(obj("Kind", "spawn", "Spawns", objs(spawn("Policy", "march"))))))
+		},
+		"ai without policy": func(st map[string]any) { st["Events"] = objs(ai()) },
+		"ai unknown target": func(st map[string]any) {
+			st["Events"] = objs(obj("ID", "e", "Do", objs(obj("Kind", "ai", "Targets", objs("ghost"), "Policy", "hold"))))
+		},
+		"ai without targets": func(st map[string]any) {
+			st["Events"] = objs(obj("ID", "e", "Do", objs(obj("Kind", "ai", "Policy", "hold"))))
+		},
+		"ai march without goal": func(st map[string]any) { st["Events"] = objs(ai("Policy", "march")) },
+		"ai goal off the map":   func(st map[string]any) { st["Events"] = objs(ai("Policy", "flee", "Goal", obj("X", -1, "Y", 0))) },
+	}
+	for name, edit := range bad {
+		t.Run(name, func(t *testing.T) { assert.Error(t, loadWithStage(t, edit)) })
+	}
+	assert.NoError(t, loadWithStage(t, func(st map[string]any) {
+		p := st["Enemies"].([]any)[1].(map[string]any)
+		p["Policy"], p["Goal"] = "march", obj("X", 2, "Y", 2)
+		st["Enemies"].([]any)[2].(map[string]any)["Policy"] = "assault"
+		st["Events"] = objs(
+			obj("ID", "a", "Do", objs(obj("Kind", "ai", "Targets", objs("boss"), "Policy", "flee", "Goal", obj("X", 0, "Y", 0)))),
+			obj("ID", "b", "Do", objs(obj("Kind", "ai", "Targets", objs("boss"), "Policy", "hold"))),
+			obj("ID", "c", "Do", objs(obj("Kind", "spawn", "Spawns", objs(spawn("Policy", "assault", "Side", "enemy"))))))
+	}))
+}
+
+func TestValidPolicyChecksPolicyAgainstGoal(t *testing.T) {
+	inside, outside := &Point{X: 3, Y: 3}, &Point{X: 12, Y: 3}
+	for name, c := range map[string]struct {
+		policy string
+		goal   *Point
+		want   bool
+	}{
+		"default":             {"", nil, true},
+		"hold":                {"hold", nil, true},
+		"assault":             {"assault", nil, true},
+		"march to a cell":     {"march", inside, true},
+		"flee to a cell":      {"flee", inside, true},
+		"march needs a goal":  {"march", nil, false},
+		"goal off the map":    {"flee", outside, false},
+		"hold has no goal":    {"hold", inside, false},
+		"goal needs a policy": {"", inside, false},
+		"unknown policy":      {"charge", nil, false},
+	} {
+		assert.Equal(t, c.want, ValidPolicy(c.policy, c.goal, 12, 8), name)
+	}
+}
