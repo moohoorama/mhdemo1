@@ -79,22 +79,6 @@
   "ManaMaxFactor": 8,
   "ManaRecoveryFactor": 1.5
  },
- "Campaign": {
-  "Start": "intro",
-  "Roster": [
-   "hero",
-   "archer1"
-  ],
-  "Deployment": [
-   "hero",
-   "archer1"
-  ],
-  "Inventory": {
-   "ration": 5,
-   "tonic": 2,
-   "promo_guard": 1
-  }
- },
  "Factions": {
   "blue": {
    "Name": "Blue",

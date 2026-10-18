@@ -1,0 +1,9 @@
+{
+ "Scenarios": [
+  {
+   "ID": "mini",
+   "Name": "mini",
+   "Path": "mini/scenario.json"
+  }
+ ]
+}

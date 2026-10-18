@@ -8,14 +8,14 @@
 
 ## 원칙
 
-엔진(`internal/`)에는 인물·병종·아이템·스킬·특성의 이름과 ID가 하나도 없다. 게임 내용은 모두 `assets/data/`의 데이터 묶음이다.
+엔진(`internal/`)에는 인물·병종·아이템·스킬·특성의 이름과 ID가 하나도 없다. 게임 내용은 모두 `assets/data/`의 데이터 묶음과 `assets/scenario/`의 시나리오(장·스테이지·맵)다.
 데이터는 이름을 자유롭게 짓고 엔진이 아는 어휘(`internal/content/vocab.go`: 특성 효과 키, 스킬 종류·모드·모양·효과, 상태, 병종 태그, 아이템 효과)만 조합한다.
 새 어휘가 필요하면 엔진 코드를 고친다. 데이터 쪽 이름이 코드에 없다는 증거로 `internal/testdata/mini`(다른 게임의 최소 데이터 묶음)가 엔진·로더·저장·CLI·AI·세션 테스트를 돌린다.
 
 - 화면 연출(장면·일기토 대본·초상·스프라이트)은 데이터 묶음 밖의 GUI 자산이다: `assets/scenes.json`, `assets/duels.json`, `assets/graphics/`, `assets/sprites/`, `assets/fonts/`.
   이것들은 콘텐츠 해시에 들어가지 않고 규칙에 영향을 주지 않는다. 일기토 대본의 결과는 규칙이 정한 결과와 같아야 한다.
 - 규칙은 연출 시간에 따라 바뀌지 않는다. 화면은 이미 확정된 결과를 재생할 뿐이다.
-- 데이터 묶음 위치는 `-content`(기본 `assets/data`), 화면 자산 위치는 글꼴 파일 경로 기준(`<assets>/fonts/NotoSansKR.ttf`의 상위 `assets/`)이다.
+- 데이터 묶음 위치는 `-content`(기본 `assets/data`)이고 시나리오는 그 옆의 `assets/scenario/`(또는 안의 `scenario/`)에서 함께 읽는다, 화면 자산 위치는 글꼴 파일 경로 기준(`<assets>/fonts/NotoSansKR.ttf`의 상위 `assets/`)이다.
 
 ## 패키지
 

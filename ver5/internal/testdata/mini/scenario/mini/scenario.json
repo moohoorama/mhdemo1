@@ -1,0 +1,22 @@
+{
+ "Start": "intro",
+ "Roster": [
+  "hero",
+  "archer1"
+ ],
+ "Deployment": [
+  "hero",
+  "archer1"
+ ],
+ "Inventory": {
+  "ration": 5,
+  "tonic": 2,
+  "promo_guard": 1
+ },
+ "Chapters": [
+  {
+   "ID": "01",
+   "File": "story01.json"
+  }
+ ]
+}

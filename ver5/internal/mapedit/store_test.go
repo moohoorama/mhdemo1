@@ -21,7 +21,7 @@ func TestSaveRoundTrip(t *testing.T) {
 	if err := Save(root, d, data); err != nil {
 		t.Fatal(err)
 	}
-	loaded, err := Load(filepath.Join(root, "assets/data/maps/B01.json"))
+	loaded, err := Load(filepath.Join(root, "assets/scenario/hero/stage01.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -33,7 +33,7 @@ func TestSaveRoundTrip(t *testing.T) {
 		t.Fatal("graphics mismatched")
 	}
 	// Failed validation must leave the sole saved map unchanged.
-	before, err := os.ReadFile(filepath.Join(root, "assets/data/maps/B01.json"))
+	before, err := os.ReadFile(filepath.Join(root, "assets/scenario/hero/maps/map01.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -41,7 +41,7 @@ func TestSaveRoundTrip(t *testing.T) {
 	if Save(root, d, data) == nil {
 		t.Fatal("invalid map accepted")
 	}
-	after, err := os.ReadFile(filepath.Join(root, "assets/data/maps/B01.json"))
+	after, err := os.ReadFile(filepath.Join(root, "assets/scenario/hero/maps/map01.json"))
 	if err != nil || string(before) != string(after) {
 		t.Fatal("failure changed map")
 	}
@@ -101,30 +101,32 @@ func TestOneDocumentFeedsCampaignAndGraphics(t *testing.T) {
 		t.Fatal(err)
 	}
 	root := t.TempDir()
-	source := "../../assets/data"
-	err = filepath.WalkDir(source, func(path string, entry os.DirEntry, err error) error {
+	for _, name := range []string{"data", "scenario"} {
+		source := filepath.Join("../../assets", name)
+		err = filepath.WalkDir(source, func(path string, entry os.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			if entry.IsDir() {
+				return nil
+			}
+			relative, err := filepath.Rel(source, path)
+			if err != nil {
+				return err
+			}
+			b, err := os.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			dest := filepath.Join(root, "assets", name, relative)
+			if err := os.MkdirAll(filepath.Dir(dest), 0755); err != nil {
+				return err
+			}
+			return os.WriteFile(dest, b, 0644)
+		})
 		if err != nil {
-			return err
+			t.Fatal(err)
 		}
-		if entry.IsDir() {
-			return nil
-		}
-		relative, err := filepath.Rel(source, path)
-		if err != nil {
-			return err
-		}
-		b, err := os.ReadFile(path)
-		if err != nil {
-			return err
-		}
-		dest := filepath.Join(root, "assets/data", relative)
-		if err := os.MkdirAll(filepath.Dir(dest), 0755); err != nil {
-			return err
-		}
-		return os.WriteFile(dest, b, 0644)
-	})
-	if err != nil {
-		t.Fatal(err)
 	}
 	doc := Clone(*data.Maps[data.Stages[0].ID])
 	if err := doc.Resize(Rect{X: -2, Y: -1, W: doc.Play.W + 2, H: doc.Play.H + 1}); err != nil {

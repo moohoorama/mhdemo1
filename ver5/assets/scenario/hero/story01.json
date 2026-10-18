@@ -1,0 +1,25 @@
+{
+ "Nodes": [
+  {
+   "ID": "oath",
+   "Kind": "dialogue",
+   "Text": "유비: 백성을 지키기 위해 함께 뜻을 세웁시다. 관우·장비: 생사를 함께하겠습니다.",
+   "Next": "oath_choice"
+  },
+  {
+   "ID": "oath_choice",
+   "Kind": "choice",
+   "Text": "도원결의: 의용군을 일으킨다.",
+   "Choices": {
+    "결의": "prep1"
+   }
+  },
+  {
+   "ID": "prep1",
+   "Kind": "preparation",
+   "Text": "황건적의 난 — 출전 준비",
+   "Stage": "B01",
+   "Next": "join"
+  }
+ ]
+}

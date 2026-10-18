@@ -27,6 +27,8 @@ type MapDocument struct {
 	Play, Visual    MapRect
 	Cells, Resolved map[string]string
 	Default         string
+	StageFile       string `json:",omitempty"` // file names the document was loaded from; empty for a new one
+	MapFile         string `json:",omitempty"`
 }
 
 func cloneMap[T any](v T) T {

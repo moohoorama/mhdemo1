@@ -186,7 +186,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 			return nil, fail("CorruptSave")
 		}
 	}
-	if s.Phase == "complete" && d.Stages[s.Stage].Next != "" {
+	if s.Phase == "complete" && s.Node != "" {
 		return nil, fail("CorruptSave")
 	}
 	seen := map[string]bool{}

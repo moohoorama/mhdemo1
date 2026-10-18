@@ -80,23 +80,6 @@
   "ManaMaxFactor": 8,
   "ManaRecoveryFactor": 1.5
  },
- "Campaign": {
-  "Start": "oath",
-  "Roster": [
-   "liubei",
-   "guanyu",
-   "zhangfei"
-  ],
-  "Deployment": [
-   "liubei",
-   "guanyu",
-   "zhangfei"
-  ],
-  "Inventory": {
-   "bean": 18,
-   "liquor": 8
-  }
- },
  "Factions": {
   "wei": {
    "Name": "위",

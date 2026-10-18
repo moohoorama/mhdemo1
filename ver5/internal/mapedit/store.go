@@ -1,6 +1,7 @@
 package mapedit
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -14,22 +15,31 @@ import (
 var idPattern = regexp.MustCompile(`^[A-Za-z0-9_-]+$`)
 var saveMu sync.Mutex
 
-func Load(path string) (*Document, error) {
-	b, err := os.ReadFile(path)
+// Load reads a stage file and the map document it points to.
+func Load(stagePath string) (*Document, error) {
+	b, err := os.ReadFile(stagePath)
 	if err != nil {
 		return nil, err
 	}
-	var d Document
-	if err := json.Unmarshal(b, &d); err != nil {
+	var st content.Stage
+	dec := json.NewDecoder(bytes.NewReader(b))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&st); err != nil {
 		return nil, err
 	}
-	if err := d.ValidateShape(); err != nil {
+	mb, err := os.ReadFile(filepath.Join(filepath.Dir(stagePath), "maps", st.Map))
+	if err != nil {
 		return nil, err
 	}
-	return &d, nil
+	d, err := content.DecodeMapFile(mb)
+	if err != nil {
+		return nil, err
+	}
+	d.Stage, d.StageFile, d.MapFile = st, filepath.Base(stagePath), st.Map
+	return d, nil
 }
 
-// Save replaces the one document used by both the editor and the game.
+// Save replaces the stage file and the map file used by both the editor and the game.
 func Save(root string, d *Document, data *content.Data) error {
 	saveMu.Lock()
 	defer saveMu.Unlock()
@@ -40,13 +50,24 @@ func Save(root string, d *Document, data *content.Data) error {
 		return err
 	}
 	source := Clone(*d)
-	source.Stage.Tiles = nil
-	source.Stage.Width, source.Stage.Height = 0, 0
-	b, err := json.MarshalIndent(source, "", " ")
+	if source.StageFile == "" {
+		source.StageFile = content.StageFileName(d.Stage.ID)
+	}
+	if source.MapFile == "" {
+		source.MapFile = content.MapFileName(d.Stage.ID)
+	}
+	stage, mapDoc, err := source.EncodeFiles()
 	if err != nil {
 		return err
 	}
-	path := filepath.Join(root, "assets/data/maps", d.Stage.ID+".json")
+	dir := data.ScenarioDir(root)
+	if err := writeFile(filepath.Join(dir, "maps", source.MapFile), mapDoc); err != nil {
+		return err
+	}
+	return writeFile(filepath.Join(dir, source.StageFile), stage)
+}
+
+func writeFile(path string, b []byte) error {
 	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
 		return err
 	}
@@ -55,15 +76,16 @@ func Save(root string, d *Document, data *content.Data) error {
 		return err
 	}
 	defer os.Remove(f.Name())
-	if err = f.Chmod(0644); err == nil {
-		_, err = f.Write(append(b, '\n'))
+	var err2 error
+	if err2 = f.Chmod(0644); err2 == nil {
+		_, err2 = f.Write(append(b, '\n'))
 	}
-	if err == nil {
-		err = f.Sync()
+	if err2 == nil {
+		err2 = f.Sync()
 	}
 	closeErr := f.Close()
-	if err != nil {
-		return err
+	if err2 != nil {
+		return err2
 	}
 	if closeErr != nil {
 		return closeErr

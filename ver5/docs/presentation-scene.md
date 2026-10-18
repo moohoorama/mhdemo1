@@ -4,7 +4,7 @@
 기준: 값이 다르면 `internal/gui/scene.go`·`scenario.go`·`officer_intro.go`·`dialogue_scroll.go`와 `assets/scenes.json`을 따른다.
 
 장면은 GUI 전용 연출이다. 규칙·저장·콘텐츠 해시에 들어가지 않는다(`assets/scenes.json`은 `assets/data/` 밖이라 해시에 포함되지 않는다).
-노드의 종류·흐름(`dialogue`·`choice`·`preparation`·`join`·`grant`)은 `assets/data/script.json`이 정하고 엔진이 처리한다.
+노드의 종류·흐름(`dialogue`·`choice`·`preparation`·`join`·`grant`)은 `assets/scenario/<시나리오>/storyNN.json`이 정하고 엔진이 처리한다.
 장면은 그 위에 화면만 얹는다. 일러스트를 만드는 방법은 `tools/illustrations/README.md`를 본다.
 
 ## 화면 구성

@@ -1,7 +1,7 @@
 # 캠페인 진행
 
 범위: 시나리오 노드를 따라가는 캠페인 흐름, 출전 준비·부관·배치, 전투 결과 이후의 이어하기, 재도전 체크포인트, 인벤토리·창고, 보상, 자동 저장 시점.
-기준은 `internal/core/engine.go`·`deployment.go`·`formation.go`·`api.go`, `internal/session/session.go`, `assets/data/game.json`의 `Campaign`과 `script.json`이며, 값이 다르면 코드와 이 데이터를 따른다.
+기준은 `internal/core/engine.go`·`deployment.go`·`formation.go`·`api.go`, `internal/session/session.go`, `assets/scenario/<시나리오>/scenario.json`(`Campaign`·`Chapters`)과 장 파일(`storyNN.json`)이며, 값이 다르면 코드와 이 데이터를 따른다.
 
 노드·스테이지의 JSON 필드는 [data-scenario-node.md](data-scenario-node.md), 전투 중 이벤트와 승패는 [logic-battle-event.md](logic-battle-event.md), 아이템·장비는 [data-item.md](data-item.md), 저장 파일 형식은 [system-save.md](system-save.md), 성장(경험치·특성 학습)은 [logic-growth.md](logic-growth.md)를 본다.
 아직 구현하지 않은 진행 구조(회의장, 장면 노드 등)는 [todo/engine.md](todo/engine.md)에 있다.
@@ -18,7 +18,7 @@
 | `result` | 전투 결과(`Result`가 `victory` 또는 `defeat`)를 보여 준다. |
 | `complete` | 캠페인이 끝났다. |
 
-새 게임은 `Campaign.Start` 노드에서 `scenario` 단계로 시작한다. 시작 로스터(`Campaign.Roster`)는 모두 인물로 만들어지고, 시작 출전 명단은 `Campaign.Deployment`, 시작 인벤토리는 `Campaign.Inventory`다. 값은 `assets/data/game.json`을 본다.
+새 게임은 `Campaign.Start` 노드에서 `scenario` 단계로 시작한다. 시작 로스터(`Campaign.Roster`)는 모두 인물로 만들어지고, 시작 출전 명단은 `Campaign.Deployment`, 시작 인벤토리는 `Campaign.Inventory`다. 값은 시나리오 파일(`assets/scenario/<시나리오>/scenario.json`)을 본다.
 
 ## 2. 노드 종류
 
@@ -34,8 +34,8 @@
 
 - `join`과 `grant`는 `Event` 키(`Executed`)로 한 번만 실행된다. 이미 실행된 키면 건너뛰고 `Next`로 간다. 실행하면 `join` 또는 `grant` 이벤트가 나간다.
 - `grant`의 `Item`이 장비 ID이면 창고(`Warehouse`)에, 아니면 인벤토리(`Inventory`)에 들어간다.
-- `Next`는 비어 있어도 되지만 기본값(배열의 다음 노드)은 없다. 비어 있는 `dialogue`·`join`·`grant`에서 `Next`로 가면 현재 노드가 비어 진행할 수 없다. 현재 데이터는 모든 흐름 노드에 `Next`를 둔다.
-- 노드의 순서는 의미가 없고 `ID`로만 이어진다.
+- `Next`가 비어 있으면 같은 장 파일의 다음 노드로, 장의 마지막이면 다음 장의 첫 노드로 간다. 마지막 장의 끝이면 더 갈 노드가 없다(`After`). `preparation` 노드는 `Next`가 승리한 뒤의 행선지이고, 없으면 같은 규칙이다.
+- 장 안의 노드 순서가 기본 진행 순서다. 분기(`choice`)나 `Next`가 가리키는 노드는 순서와 무관하다.
 
 학습 창(`Learning`)이 열려 있는 동안에는 `learn`·`learn_close` 외의 모든 명령이 `LearningPending`으로 거부된다.
 
@@ -68,12 +68,12 @@
 
 ## 5. 전투 뒤
 
-- 승리하면 `Phase`가 `result`가 되고 `continue` 명령을 기다린다. `continue`는 전투 상태(유닛, 임시 인물, 체크포인트, 학습 창, 라운드)를 지운다. 그다음 `Stage.Next`가 비어 있으면 `complete` 단계가 되고, 있으면 `scenario` 단계에서 그 노드로 가서 `enter`를 돌린다. 이때 전사한 인물은 출전 명단에서 빠진다.
+- 승리하면 `Phase`가 `result`가 되고 `continue` 명령을 기다린다. `continue`는 전투 상태(유닛, 임시 인물, 체크포인트, 학습 창, 라운드)를 지운다. 그다음 출전 노드(`preparation`)의 다음 노드(`After`)가 없으면 `complete` 단계가 되고, 있으면 `scenario` 단계에서 그 노드로 가서 `enter`를 돌린다. 이때 전사한 인물은 출전 명단에서 빠진다.
 - 패배하면 `Phase`가 `result`이고 `continue`는 거부된다. `Retry`만 가능하다(6절).
 - 전사(`Dead`)는 일기토 결과 `death`로만 생긴다([logic-duel.md](logic-duel.md)). 전사한 장수의 장비는 창고로 돌아가고 부관은 풀린다. 전투에서 병력이 0이 된 일반 퇴각은 전사가 아니라 다음 출전에 다시 나온다.
 - 승리 보상(`Stage.Reward`)은 인벤토리에 더해진다. 7절을 본다.
 
-현재 데이터의 흐름은 `script.json`의 노드와 각 `maps/<ID>.json`의 `Stage.Next`를 따라가면 알 수 있다. 마지막 스테이지는 `Next`가 없어 캠페인이 끝난다.
+현재 데이터의 흐름은 시나리오 파일의 `Chapters`와 장 파일의 노드를 따라가면 알 수 있다. 마지막 장의 마지막 노드 뒤에서 캠페인이 끝난다.
 
 ## 6. 재도전 체크포인트
 

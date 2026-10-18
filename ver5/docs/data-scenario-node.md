@@ -1,14 +1,31 @@
 # 시나리오·스테이지 자료 형식
 
-범위: `script.json`의 노드, `game.json`의 `Campaign`, 맵 문서 안의 `Stage`(스폰·이벤트·일기토 기록)의 JSON 필드와 로드 검증 규칙.
-기준은 `internal/content/content.go`(구조체), `internal/content/validate.go`·`battle_events.go`·`spawn.go`(검증)이고, 값이 다르면 코드와 `assets/data/`를 따른다.
+범위: 시나리오 폴더(`assets/scenario/`)의 시나리오 파일(`Campaign`·`Chapters`), 장 파일의 노드, 스테이지 파일의 `Stage`(스폰·이벤트·일기토 기록)의 JSON 필드와 로드 검증 규칙.
+기준은 `internal/content/content.go`(구조체), `internal/content/scenario.go`(로더), `internal/content/validate.go`·`battle_events.go`·`spawn.go`(검증)이고, 값이 다르면 코드와 `assets/scenario/`를 따른다.
 
 동작은 [logic-campaign.md](logic-campaign.md)(노드·배치·재도전), [logic-battle-event.md](logic-battle-event.md)(이벤트·승패), [logic-duel.md](logic-duel.md)(일기토)가 설명한다.
-맵 문서(`maps/<ID>.json`)의 지형·그림 영역·좌표계는 [data-map.md](data-map.md)를 본다. 이 문서는 그 안의 `Stage` 객체만 다룬다.
+맵 문서(`maps/mapNN.json`)의 지형·그림 영역·좌표계는 [data-map.md](data-map.md)를 본다. 이 문서는 스테이지 파일의 `Stage` 객체만 다룬다.
 
 JSON은 `DisallowUnknownFields`로 읽으므로 이 문서에 없는 키는 로드 오류다. 필드 이름은 파스칼 케이스다. 인물·아이템·병종 이름은 `assets/data/README.md`의 ID 규칙(영어 스네이크 케이스)을 따르고, 한글은 `Name`·`Desc`·`Text`와 선택지 이름에만 쓴다.
 
-## 1. 캠페인(`game.json`의 `Campaign`)
+## 0. 파일 구성
+
+```
+assets/data/                 공용 데이터 묶음(인물·병종·아이템·규칙…)
+assets/scenario/
+  scenario.json              {"Scenarios":[{"ID","Name","Path"}]} — 게임은 첫 항목을 연다
+  <시나리오>/
+    scenario.json            시작 상태(Campaign 필드)와 Chapters
+    storyNN.json             장 하나의 노드 배열 {"Nodes":[…]}
+    stageNN.json             스테이지 규칙·배치 (Map이 맵 파일을 가리킴, 없으면 Tiles를 직접 가짐)
+    maps/mapNN.json          지형 문서
+```
+
+- 로더(`content.Load(<data 폴더>)`)는 데이터 묶음과, 그 옆(`../scenario`) 또는 안(`scenario/`)의 시나리오 폴더를 함께 읽는다. 해시에는 두 쪽의 모든 파일이 들어간다.
+- 장(`Chapters`)은 `{ID, File}`의 배열이고 순서가 진행 순서다. 장 파일의 노드는 파일 안 배열 순서가 의미를 가진다.
+- 스테이지 파일은 `stage*.json`이면 모두 읽는다. 스테이지 ID는 시나리오를 통틀어 유일해야 한다.
+
+## 1. 캠페인(시나리오 파일)
 
 | 필드 | 뜻 |
 |---|---|
@@ -16,10 +33,9 @@ JSON은 `DisallowUnknownFields`로 읽으므로 이 문서에 없는 키는 로�
 | `Roster` | 처음부터 가진 인물 ID. 모두 `Playable`이어야 한다. |
 | `Deployment` | 처음 출전 명단. 모두 `Playable`이어야 한다. |
 | `Inventory` | 처음 인벤토리. 키는 `items.json`에 있는 아이템, 개수는 0 이상. |
+| `Chapters` | `[{"ID","File"}]`. 장 ID는 유일, 파일은 비어 있지 않은 노드 배열. |
 
-값은 `assets/data/game.json`을 본다.
-
-## 2. 노드(`script.json`)
+## 2. 노드(장 파일)
 
 파일은 `{"Nodes": [...]}` 하나다. 모든 노드는 같은 필드 집합을 쓰고, `Kind`에 따라 일부만 의미가 있다.
 
@@ -28,7 +44,7 @@ JSON은 `DisallowUnknownFields`로 읽으므로 이 문서에 없는 키는 로�
 | `ID` | 모두 | 비어 있지 않고 유일해야 한다. |
 | `Kind` | 모두 | `dialogue`, `choice`, `preparation`, `join`, `grant` 중 하나. 다른 값은 로드 오류. |
 | `Text` | `dialogue`, `choice`, `preparation` | 화면에 보이는 글. |
-| `Next` | `dialogue`, `join`, `grant` | 다음 노드 ID. 비어 있지 않으면 노드에 있어야 한다. 기본값은 없다. |
+| `Next` | `dialogue`, `join`, `grant`, `preparation` | 다음 노드 ID. 비어 있지 않으면 노드에 있어야 한다. 비어 있으면 아래의 기본 순서를 따른다. |
 | `Choices` | `choice` | 선택지 이름 → 노드 ID. 가리키는 노드가 모두 있어야 한다. |
 | `Stage` | `preparation` | 출전할 스테이지 ID. 스테이지에 있어야 한다. |
 | `Character` | `join` | 합류하는 인물 ID. `Playable`이어야 한다. |
@@ -36,7 +52,7 @@ JSON은 `DisallowUnknownFields`로 읽으므로 이 문서에 없는 키는 로�
 | `Count` | `grant` | 개수. |
 | `Event` | `join`, `grant` | 한 번만 실행하기 위한 `Executed` 키. 규칙은 `join-<인물ID>`, `grant-<아이템ID>`. |
 
-`preparation` 노드의 출전 뒤 행선지는 노드가 아니라 스테이지의 `Next`가 정한다.
+다음 노드는 노드의 `Next`가 정하고, 비어 있으면 같은 장 파일의 다음 노드, 장의 마지막이면 다음 장의 첫 노드, 마지막 장의 끝이면 캠페인이 끝난다. `preparation` 노드의 `Next`는 그 스테이지에서 이긴 뒤의 행선지다.
 
 ```json
 {"ID": "oath_choice", "Kind": "choice", "Text": "도원결의: 의용군을 일으킨다.", "Choices": {"결의": "prep1"}}
@@ -45,9 +61,9 @@ JSON은 `DisallowUnknownFields`로 읽으므로 이 문서에 없는 키는 로�
 {"ID": "sword", "Kind": "grant", "Item": "gujeong_blade", "Count": 1, "Event": "grant-gujeong_blade", "Next": "chase"}
 ```
 
-## 3. 스테이지(`maps/<ID>.json`의 `Stage`)
+## 3. 스테이지(`stageNN.json`)
 
-`Width`·`Height`·`Tiles`는 맵 문서에서 만들어지는 값이라 `Stage` 객체에는 적지 않는다. 아래 좌표는 모두 맵 문서(월드) 좌표이고, 로드할 때 전투 영역 원점을 빼서 전투 좌표로 바뀐다([data-map.md](data-map.md)).
+`Map`(맵 파일 이름, `maps/` 아래)이 있으면 `Width`·`Height`·`Tiles`는 맵 문서에서 만들어지는 값이라 적지 않는다. `Map`이 없는 스테이지(테스트 픽스처)는 `Tiles`를 직접 적는다. 아래 좌표는 모두 맵 문서(월드) 좌표이고, 로드할 때 전투 영역 원점을 빼서 전투 좌표로 바뀐다([data-map.md](data-map.md)).
 
 | 필드 | 뜻 |
 |---|---|
@@ -65,7 +81,6 @@ JSON은 `DisallowUnknownFields`로 읽으므로 이 문서에 없는 키는 로�
 | `Events` | 전투 이벤트 목록(5절). |
 | `Goal` | `"rout"`이면 적 전멸이 승리 조건(선택). |
 | `Charge` | 참이면 적이 첫 턴부터 아군 쪽으로 진군한다(선택). AI 동작은 `internal/ai/ai.go`가 기준이다. |
-| `Next` | 승리 뒤 갈 노드 ID. 비어 있으면 캠페인이 끝난다. 값이 있으면 노드에 있어야 한다. |
 | `Faction` | 자기 `Faction`이 없는 적 스폰의 진영색. `Factions`에 있어야 한다. |
 
 검증은 다음과 같다.
@@ -76,7 +91,7 @@ JSON은 `DisallowUnknownFields`로 읽으므로 이 문서에 없는 키는 로�
 
 ```json
 {"ID": "B02", "Name": "사수관 전투", "Boss": "huaxiong", "Limit": 4, "TurnLimit": 30, "Threshold": 0,
- "Reward": {"bean": 8, "liquor": 4}, "Next": "sword", "Faction": "dong"}
+ "Reward": {"bean": 8, "liquor": 4}, "Faction": "dong", "Map": "map02.json"}
 ```
 
 ## 4. 스폰(`Spawn`)

@@ -1,0 +1,30 @@
+{
+ "Nodes": [
+  {
+   "ID": "join",
+   "Kind": "join",
+   "Event": "join-jianyong",
+   "Next": "joined",
+   "Character": "jianyong"
+  },
+  {
+   "ID": "joined",
+   "Kind": "dialogue",
+   "Text": "간옹: 나도 백성을 위한 싸움에 힘을 보태겠소.",
+   "Next": "coalition"
+  },
+  {
+   "ID": "coalition",
+   "Kind": "dialogue",
+   "Text": "동탁 타도군 일어나다. 유비: 연합군과 함께 사수관으로 나아갑시다.",
+   "Next": "prep2"
+  },
+  {
+   "ID": "prep2",
+   "Kind": "preparation",
+   "Text": "사수관 — 출전 준비",
+   "Stage": "B02",
+   "Next": "sword"
+  }
+ ]
+}

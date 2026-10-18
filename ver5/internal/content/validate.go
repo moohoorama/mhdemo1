@@ -223,6 +223,13 @@ func (d *Data) Validate() error {
 	if nodes[c.Start].ID == "" {
 		return fmt.Errorf("campaign start %q", c.Start)
 	}
+	chapters := map[string]bool{}
+	for _, ch := range d.Chapters {
+		if ch.ID == "" || ch.File == "" || chapters[ch.ID] || len(ch.Nodes) == 0 {
+			return fmt.Errorf("chapter %q", ch.ID)
+		}
+		chapters[ch.ID] = true
+	}
 	for _, n := range nodes {
 		if n.Next != "" && nodes[n.Next].ID == "" {
 			return fmt.Errorf("node %s next %s", n.ID, n.Next)
@@ -258,9 +265,6 @@ func (d *Data) Validate() error {
 			return fmt.Errorf("map %s", s.ID)
 		}
 		stageIDs[s.ID] = true
-		if s.Next != "" && nodes[s.Next].ID == "" {
-			return fmt.Errorf("stage %s next %s", s.ID, s.Next)
-		}
 		if s.Faction != "" {
 			if _, ok := d.Factions[s.Faction]; !ok {
 				return fmt.Errorf("stage %s faction %s", s.ID, s.Faction)

@@ -306,7 +306,7 @@ func (e *Engine) enter() {
 				e.state.Executed[n.Event] = true
 				e.emit(n.Kind, "", n.Character+n.Item, n.Count)
 			}
-			e.state.Node = n.Next
+			e.state.Node = e.data.After(n.ID)
 		default:
 			return
 		}
@@ -323,7 +323,7 @@ func (e *Engine) execute(c Command) error {
 		}
 		n := e.data.Node(e.state.Node)
 		if c.Kind == "next" && n.Kind == "dialogue" {
-			e.state.Node = n.Next
+			e.state.Node = e.data.After(n.ID)
 		} else if c.Kind == "choose" && n.Kind == "choice" {
 			v, ok := n.Choices[c.Option]
 			if !ok {
@@ -339,7 +339,7 @@ func (e *Engine) execute(c Command) error {
 		if e.state.Phase != "result" || e.state.Result != "victory" {
 			return fail("WrongPhase")
 		}
-		next := e.data.Stages[e.state.Stage].Next
+		next := e.data.After(e.state.Node)
 		e.clearBattle()
 		if next == "" {
 			e.state.Phase = "complete"

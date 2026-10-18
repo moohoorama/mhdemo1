@@ -18,7 +18,8 @@
    "ID": "prep1",
    "Kind": "preparation",
    "Text": "Prepare",
-   "Stage": "S1"
+   "Stage": "S1",
+   "Next": "after1"
   },
   {
    "ID": "after1",

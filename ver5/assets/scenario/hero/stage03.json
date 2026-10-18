@@ -1,0 +1,283 @@
+{
+ "ID": "B03",
+ "Name": "호로관 전투",
+ "Boss": "lubu",
+ "Width": 0,
+ "Height": 0,
+ "Limit": 4,
+ "TurnLimit": 30,
+ "Threshold": 40,
+ "Tiles": null,
+ "Allies": [
+  {
+   "X": 2,
+   "Y": 3
+  },
+  {
+   "X": 2,
+   "Y": 4
+  },
+  {
+   "X": 1,
+   "Y": 3
+  },
+  {
+   "X": 1,
+   "Y": 4
+  },
+  {
+   "X": 3,
+   "Y": 3
+  },
+  {
+   "X": 3,
+   "Y": 4
+  },
+  {
+   "X": 2,
+   "Y": 2
+  },
+  {
+   "X": 2,
+   "Y": 5
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "lubu",
+   "X": 25,
+   "Y": 4,
+   "Guard": true,
+   "DuelFirst": true,
+   "Facing": "NW"
+  },
+  {
+   "Character": "liru",
+   "X": 17,
+   "Y": 2
+  },
+  {
+   "Character": "lijue",
+   "X": 14,
+   "Y": 5
+  },
+  {
+   "Character": "troop_footman",
+   "X": 8,
+   "Y": 3,
+   "Level": 6
+  },
+  {
+   "Character": "troop_archer",
+   "X": 9,
+   "Y": 5,
+   "Level": 6
+  },
+  {
+   "Character": "troop_footman",
+   "X": 14,
+   "Y": 2,
+   "Level": 6
+  },
+  {
+   "Character": "troop_archer",
+   "X": 15,
+   "Y": 4,
+   "Level": 6
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 3,
+   "Level": 6
+  },
+  {
+   "Character": "troop_archer",
+   "X": 17,
+   "Y": 5,
+   "Level": 6
+  }
+ ],
+ "Reward": {
+  "barley": 1,
+  "bean": 8,
+  "liquor": 4
+ },
+ "Duels": [
+  {
+   "ID": "hulao-zhang-fei",
+   "Ally": "zhangfei",
+   "Enemy": "lubu",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "세 형제가 합세하자 여포가 퇴각했다."
+  },
+  {
+   "ID": "hulao-guan-yu",
+   "Ally": "guanyu",
+   "Enemy": "lubu",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "세 형제가 합세하자 여포가 퇴각했다."
+  },
+  {
+   "ID": "hulao-liu-bei",
+   "Ally": "liubei",
+   "Enemy": "lubu",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "세 형제가 합세하자 여포가 퇴각했다."
+  },
+  {
+   "ID": "hulao-mushun",
+   "Ally": "mushun",
+   "Enemy": "lubu",
+   "Outcome": "defeat",
+   "AllyResult": "death",
+   "EnemyResult": "stay",
+   "Text": "목순이 여포에게 패하고 전사했다."
+  },
+  {
+   "ID": "hulao-wuanguo",
+   "Ally": "wuanguo",
+   "Enemy": "lubu",
+   "Outcome": "defeat",
+   "AllyResult": "retreat",
+   "EnemyResult": "stay",
+   "Text": "무안국이 여포에게 패하고 달아났다."
+  }
+ ],
+ "Faction": "dong",
+ "Events": [
+  {
+   "ID": "coalition-arrival",
+   "Trigger": "boss-alone",
+   "Spawns": [
+    {
+     "Character": "mushun",
+     "X": 24,
+     "Y": 7,
+     "Level": 1,
+     "AI": true,
+     "DuelFirst": true,
+     "Faction": "yuan",
+     "Facing": "NE"
+    },
+    {
+     "Character": "wuanguo",
+     "X": 25,
+     "Y": 8,
+     "Level": 1,
+     "AI": true,
+     "DuelFirst": true,
+     "Faction": "yuan",
+     "Facing": "NE"
+    },
+    {
+     "Character": "troop_footman",
+     "X": 23,
+     "Y": 7,
+     "Level": 1,
+     "Class": "light_infantry",
+     "AI": true,
+     "Faction": "yuan",
+     "Facing": "NE"
+    },
+    {
+     "Character": "troop_footman",
+     "X": 23,
+     "Y": 8,
+     "Level": 1,
+     "Class": "light_infantry",
+     "AI": true,
+     "Faction": "yuan",
+     "Facing": "NE"
+    },
+    {
+     "Character": "troop_footman",
+     "X": 24,
+     "Y": 8,
+     "Level": 1,
+     "Class": "light_infantry",
+     "AI": true,
+     "Faction": "yuan",
+     "Facing": "NE"
+    },
+    {
+     "Character": "troop_footman",
+     "X": 23,
+     "Y": 9,
+     "Level": 1,
+     "Class": "light_infantry",
+     "AI": true,
+     "Faction": "yuan",
+     "Facing": "NE"
+    },
+    {
+     "Character": "troop_footman",
+     "X": 24,
+     "Y": 9,
+     "Level": 1,
+     "Class": "light_infantry",
+     "AI": true,
+     "Faction": "yuan",
+     "Facing": "NE"
+    },
+    {
+     "Character": "troop_footman",
+     "X": 25,
+     "Y": 9,
+     "Level": 1,
+     "Class": "light_infantry",
+     "AI": true,
+     "Faction": "yuan",
+     "Facing": "NE"
+    }
+   ],
+   "Dialogue": [
+    [
+     {
+      "Actor": "mushun",
+      "Text": "지금이 기회다! 여포를 무찌르고 공을 세우자!"
+     }
+    ],
+    [
+     {
+      "Actor": "wuanguo",
+      "Text": "병사들은 따라오라! 관을 함락한 공은 우리가 차지하겠다!"
+     }
+    ]
+   ]
+  },
+  {
+   "ID": "brothers-challenge",
+   "Trigger": "duel",
+   "Duels": [
+    "hulao-mushun",
+    "hulao-wuanguo"
+   ],
+   "Dialogue": [
+    [
+     {
+      "Actor": "liubei",
+      "Text": "인중여포! 역시 강하군. 병사들의 피해가 없도록 우리들이 일기토로 상대해야겠어."
+     }
+    ],
+    [
+     {
+      "Actor": "zhangfei",
+      "Text": "좋았어, 형! 그럼 나에게 맡겨주슈!"
+     },
+     {
+      "Actor": "guanyu",
+      "Text": "제가 상대해보겠습니다, 형님"
+     }
+    ]
+   ]
+  }
+ ],
+ "Map": "map03.json"
+}

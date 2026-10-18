@@ -1,7 +1,6 @@
 package content
 
 import (
-	"bytes"
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
@@ -60,6 +59,21 @@ type Campaign struct {
 	Roster     []string
 	Deployment []string
 	Inventory  map[string]int
+}
+
+// Chapter is one story file of the scenario, in play order. Nodes lists the ids the file holds.
+type Chapter struct {
+	ID, File string
+	Nodes    []string `json:",omitempty"`
+}
+
+// ScenarioRef is one entry of assets/scenario/scenario.json.
+type ScenarioRef struct{ ID, Name, Path string }
+
+// ScenarioFile is a scenario's own file: where the campaign starts and the chapters in order.
+type ScenarioFile struct {
+	Campaign
+	Chapters []Chapter
 }
 type Faction struct {
 	Name   string
@@ -195,7 +209,7 @@ type Stage struct {
 	Goal                            string  `json:",omitempty"` // "rout": a skirmish won by routing the other side
 	Party                           []Spawn `json:",omitempty"` // a skirmish's allies
 	Charge                          bool    `json:",omitempty"` // the enemy marches on the allies from the first turn
-	Next                            string  `json:",omitempty"` // scenario node after a victory; none ends the campaign
+	Map                             string  `json:",omitempty"` // map document under maps/ that supplies the tiles; none means Tiles is inline
 	Faction                         string  `json:",omitempty"` // color of this stage's enemies without a faction of their own
 }
 type Node struct {
@@ -221,6 +235,8 @@ type Data struct {
 	Hash           string `json:"-"`
 	Rules          Rules
 	Campaign       Campaign
+	ScenarioID     string    `json:",omitempty"`
+	Chapters       []Chapter `json:",omitempty"`
 	Factions       map[string]Faction
 	Tiles          map[string]Tile
 	Terrain        map[string]map[string]Terrain
@@ -235,13 +251,18 @@ type Data struct {
 	Nodes          []Node
 }
 
-// Load reads every JSON file under dir: files at the top hold sections of Data, files under
-// stages/ one Stage each. Names are free; a section may be split across files.
+// Load reads the data bundle under dir (every top-level json file holds sections of Data) and the
+// first scenario under the scenario folder next to it (or inside it): the campaign start, the
+// chapters' story nodes, and the stage files with their maps. Names are free; a section may be
+// split across files.
 func Load(dir string) (*Data, error) {
 	var d Data
 	h := sha256.New()
 	var files []string
 	err := filepath.WalkDir(dir, func(p string, e os.DirEntry, err error) error {
+		if err == nil && e.IsDir() && p != dir && e.Name() == "scenario" {
+			return filepath.SkipDir
+		}
 		if err == nil && !e.IsDir() && strings.HasSuffix(p, ".json") {
 			files = append(files, p)
 		}
@@ -258,33 +279,12 @@ func Load(dir string) (*Data, error) {
 		}
 		h.Write([]byte(filepath.ToSlash(p[len(dir):])))
 		h.Write(b)
-		dec := json.NewDecoder(bytes.NewReader(b))
-		dec.DisallowUnknownFields()
-		if filepath.Base(filepath.Dir(p)) == "maps" {
-			var doc MapDocument
-			if err = dec.Decode(&doc); err != nil {
-				return nil, fmt.Errorf("%s: %w", p, err)
-			}
-			if err = doc.ValidateShape(); err != nil {
-				return nil, fmt.Errorf("%s: %w", p, err)
-			}
-			if d.Maps == nil {
-				d.Maps = map[string]*MapDocument{}
-			}
-			if _, exists := d.Maps[doc.Stage.ID]; exists {
-				return nil, fmt.Errorf("duplicate map %s", doc.Stage.ID)
-			}
-			d.Maps[doc.Stage.ID] = &doc
-			d.Stages = append(d.Stages, doc.Compile())
-		} else if filepath.Base(filepath.Dir(p)) == "stages" {
-			var s Stage
-			if err = dec.Decode(&s); err != nil {
-				return nil, fmt.Errorf("%s: %w", p, err)
-			}
-			d.Stages = append(d.Stages, s)
-		} else if err = dec.Decode(&d); err != nil {
+		if err = strictDecode(b, &d); err != nil {
 			return nil, fmt.Errorf("%s: %w", p, err)
 		}
+	}
+	if err = d.loadScenario(dir, h); err != nil {
+		return nil, err
 	}
 	d.Hash = fmt.Sprintf("%x", h.Sum(nil))
 	d.link()

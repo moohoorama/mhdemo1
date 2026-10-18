@@ -1,0 +1,9 @@
+{
+ "Scenarios": [
+  {
+   "ID": "hero",
+   "Name": "유비전",
+   "Path": "hero/scenario.json"
+  }
+ ]
+}
