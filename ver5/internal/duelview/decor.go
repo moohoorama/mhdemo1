@@ -13,16 +13,19 @@ type Sprite struct {
 	PivotX, PivotY float64
 }
 
-// Decor is the arena's scenery, drawn from the game's own image files: rocks and swaying
-// grass scattered over the ground, flags behind each army, and dust that bursts where the
-// duelists' weapons meet. A nil Decor leaves the arena bare.
+// Decor is the arena's scenery, drawn from the game's own image files: rocks, swaying grass
+// and flecks scattered over the ground, flags behind each army, and the flash and dust where
+// the duelists' weapons meet. A nil Decor leaves the arena bare.
 type Decor struct {
-	Rocks  []Sprite
-	Grass  [][]Sprite // each tuft's animation frames
-	Banner Sprite
-	Flag   Sprite
-	Dust   []Sprite
-	DustMS []float64
+	Rocks     []Sprite
+	Grass     [][]Sprite // each tuft's animation frames
+	Speck     Sprite     // a fleck of the ground, white, tinted by the ground's colour
+	Banner    Sprite
+	Flag      Sprite
+	Dust      []Sprite
+	DustMS    []float64
+	Clash     []Sprite // the flash of a clash, by how far it has faded
+	ClashCrit []Sprite
 
 	waves map[*Sprite]*[flagFrames]Sprite
 }

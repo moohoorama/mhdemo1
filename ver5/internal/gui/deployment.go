@@ -209,7 +209,7 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 		if g.deploymentSelected == id {
 			state, tint = "선택 · 빈칸을 누르세요", gold
 		}
-		window(clip, card)
+		g.window(clip, card)
 		strokeRect(clip, float32(card.Min.X), float32(card.Min.Y), float32(card.Dx()), float32(card.Dy()), 2, tint)
 		cl := ""
 		level := 0

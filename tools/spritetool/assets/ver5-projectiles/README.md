@@ -11,8 +11,11 @@
   납작한(가로:세로 2:1) 먼지 구름 고리가 퍼지며 끊어지고, 가운데 뭉치가 솟으며 흩어지고, 돌 조각
   세 개가 튄다. `h`/`m`/`d` 흙먼지 세 톤, `o`는 앞 세 프레임의 구름 아랫단 그림자선, `a`/`b`/`c`는
   돌과 같은 회색 조각이다. 반투명 없이 구름 덩이를 줄이고 떼어 내는 것으로 사라지게 한다.
+- `shadow`: 날아가는 돌의 지면 그림자. 11×5 셀, 앵커 (5, 2)가 돌 바로 아래 지면, 세 프레임은 재생이 아니라
+  크기 단계다(0 낮게 뜬 돌의 큰 그림자, 2 높이 뜬 돌의 작은 그림자). `c` 진한 속, `r` 옅은 테두리.
+  반투명은 런타임이 높이에 따라 0.6~0.35로 준다.
 - 알파는 0/255만 쓰며 확대는 최근접이다.
 
-ver5 디렉터리에서 `uv run --with pillow python tools/build_projectiles.py`로
+ver5 디렉터리에서 `uv run --with pillow python tools/build_effects.py`로 (`ver5-fx`와 함께)
 `assets/graphics/effects/projectiles.png`와 `projectiles.json`을 만든다.
-궤적과 지면 그림자(반투명 벡터 타원)는 `internal/gui/projectile.go`의 코드이고, 시연은 `go run ./cmd/_trebuchet`이다.
+궤적과 그림자 프레임·투명도 선택은 `internal/gui/projectile.go`의 코드이고, 시연은 `go run ./cmd/_trebuchet`이다.

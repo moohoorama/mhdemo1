@@ -11,7 +11,7 @@ import (
 )
 
 // The ground outside the battle area (docs/ui-mockup, idea 1): the same grass, darker and
-// strewn with tufts, stones and small groves, fading into fog away from the map; a shadow
+// strewn with tufts, stones and small groves (map/outside.png), fading into fog away from the map; a shadow
 // and a pale rim along the map's edge; cloud shadows drifting over everything. Distances
 // are world pixels (zoom 1).
 const (
@@ -62,33 +62,22 @@ func (f *Field) makeOutside() {
 	o.rad = math.Hypot(corners[0][0]-corners[2][0], corners[0][1]-corners[2][1]) / 2
 	o.decor = ebiten.NewImage(w, h)
 	r := rand.New(rand.NewPCG(uint64(f.Map.W*131+f.Map.H), 7))
-	px := func(x, y, w, h float64, c color.NRGBA) {
-		vector.FillRect(o.decor, float32(x), float32(y), float32(w), float32(h), c, false)
+	put := func(name string, frame int, x, y float64) {
+		sh := f.A.Outside[name]
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(math.Round(x-sh.Anchor[0]), math.Round(y-sh.Anchor[1]))
+		o.decor.DrawImage(sh.Frames[frame], op)
 	}
 	area := float64(w * h)
 	o.tiles = outsideTiles(r)
 	for range int(area * .00012) { // stones
-		x, y := r.Float64()*float64(w), r.Float64()*float64(h)
-		px(x, y, 3, 2, color.NRGBA{R: 90, G: 90, B: 76, A: 255})
-		px(x, y, 2, 1, color.NRGBA{R: 119, G: 119, B: 106, A: 255})
+		put("stone", 0, r.Float64()*float64(w), r.Float64()*float64(h))
 	}
-	for range max(4, int(area/90000)) { // small groves of dark pines
+	for range max(4, int(area/90000)) { // small groves of dark pines, the pine frames sized 7 to 11
 		gx, gy := r.Float64()*float64(w), r.Float64()*float64(h)
 		for range 9 {
 			x, y, s := gx+(r.Float64()-.5)*64, gy+(r.Float64()-.5)*34, 7+r.Float64()*4
-			vector.FillCircle(o.decor, float32(x+s*.4), float32(y+s*.1), float32(s*.7), color.NRGBA{A: 60}, true)
-			var p vector.Path
-			p.MoveTo(float32(x), float32(y-s*2))
-			p.LineTo(float32(x+s*.7), float32(y))
-			p.LineTo(float32(x-s*.7), float32(y))
-			p.Close()
-			vector.FillPath(o.decor, &p, nil, &vector.DrawPathOptions{ColorScale: colorScaleOf(color.NRGBA{R: 31, G: 47, B: 26, A: 255})})
-			var q vector.Path
-			q.MoveTo(float32(x), float32(y-s*2))
-			q.LineTo(float32(x+s*.15), float32(y-s*.2))
-			q.LineTo(float32(x-s*.7), float32(y))
-			q.Close()
-			vector.FillPath(o.decor, &q, nil, &vector.DrawPathOptions{ColorScale: colorScaleOf(color.NRGBA{R: 42, G: 62, B: 34, A: 255})})
+			put("pine", int(math.Round(s))-7, x, y)
 		}
 	}
 	// nothing outside-only may show over the battle area
@@ -141,12 +130,6 @@ func outsideTiles(r *rand.Rand) *ebiten.Image {
 		}
 	}
 	return ebiten.NewImageFromImage(img)
-}
-
-func colorScaleOf(c color.NRGBA) ebiten.ColorScale {
-	var s ebiten.ColorScale
-	s.ScaleWithColor(c)
-	return s
 }
 
 // ramp is the mockup's two-stop gradient: 0 inside lo, 35% of top at 60% of the way,

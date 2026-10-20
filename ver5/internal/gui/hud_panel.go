@@ -136,7 +136,7 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 		canvas = g.hudLayer
 	}
 	cd := canvas.SubImage(clip.Intersect(canvas.Bounds())).(*ebiten.Image)
-	window(cd, shown)
+	g.window(cd, shown)
 	g.block(r)
 	g.hudHead(cd, o, r)
 	g.hudTabRow(cd, o, tab, x, y+head)

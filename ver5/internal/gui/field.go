@@ -26,8 +26,6 @@ type Field struct {
 	deployment                   bool
 	sceneryLayer                 bool
 	deploymentCells              []content.Point
-	deploymentMask               *ebiten.Image
-	deploymentMaskKey            string
 	worldSize                    image.Point
 	renderZoom, renderX, renderY float64
 	DrawBounds                   image.Rectangle
@@ -42,10 +40,10 @@ type Field struct {
 	clip                         *ebiten.Image    // opaque where there is ground
 	shadows                      *ebiten.Image
 	Canvas                       *ebiten.Image
-	diamond                      *ebiten.Image
 	ShowExterior                 bool
 	exterior                     *ebiten.Image
 	outside                      outsideLayers
+	looks                        map[image.Point]string // the look of the state on a cell, by cell
 }
 
 var maxBlend = ebiten.Blend{
@@ -57,7 +55,7 @@ var maxBlend = ebiten.Blend{
 func NewField(a *Assets, m *MapArt) *Field {
 	w, h := (m.Bounds.Dx()+2*margin)*K, (m.Bounds.Dy()+2*margin)*K
 	f := &Field{worldSize: image.Pt(w, h), A: a, Map: m, OriginX: float64(margin - m.Bounds.Min.X), OriginY: float64(margin - m.Bounds.Min.Y),
-		clip: ebiten.NewImage(w, h), shadows: ebiten.NewImage(w, h), Canvas: ebiten.NewImage(w, h)}
+		clip: ebiten.NewImage(w, h), shadows: ebiten.NewImage(w, h), Canvas: ebiten.NewImage(w, h), ShowExterior: m.Scene}
 	water := a.Animations["water"].Frames
 	for i := range f.ground {
 		if m.Native && i > 0 {
@@ -65,7 +63,7 @@ func NewField(a *Assets, m *MapArt) *Field {
 			continue
 		}
 		g := ebiten.NewImage(w, h)
-		if m.Native {
+		if m.Native && !m.Scene {
 			f.fillGround(g)
 		}
 		for _, t := range m.Ground {
@@ -104,11 +102,6 @@ func NewField(a *Assets, m *MapArt) *Field {
 		f.ground[i] = g
 	}
 	f.clip.DrawImage(f.ground[0], nil)
-	f.diamond = ebiten.NewImage(32, 16)
-	for y := 0; y < 16; y++ {
-		half := 16 - int(math.Abs(float64(y)+.5-8)*2)
-		vector.FillRect(f.diamond, float32(16-half), float32(y), float32(2*half), 1, color.White, false)
-	}
 	if m.Native {
 		f.makeNativeFloors()
 		f.makeExterior()
@@ -159,6 +152,21 @@ func (f *Field) Cell(x, y float64) (int, int) {
 // ToMap converts canvas pixels to map pixels.
 func ToMap(x, y float64) (float64, float64) { return x / K, y / K }
 
+// cellPath adds the ground diamond of cell (u, v), raised by lift canvas pixels, to p in render
+// pixels.
+func (f *Field) cellPath(p *vector.Path, u, v int, lift float64) {
+	x, y := f.Center(float64(u), float64(v))
+	for i, d := range [][2]float64{{0, -16}, {32, 0}, {0, 16}, {-32, 0}} {
+		rx, ry := f.renderPoint(x+d[0], y+d[1]-lift)
+		if i == 0 {
+			p.MoveTo(float32(rx), float32(ry))
+		} else {
+			p.LineTo(float32(rx), float32(ry))
+		}
+	}
+	p.Close()
+}
+
 func (f *Field) Inside(u, v int) bool { return u >= 0 && v >= 0 && u < f.Map.W && v < f.Map.H }
 
 func (f *Field) Tile(u, v int) byte {
@@ -170,7 +178,7 @@ func (f *Field) Tile(u, v int) byte {
 
 // Lift is how many canvas pixels a cell's surface stands above the ground (castle walls).
 func (f *Field) Lift(u, v int) float64 {
-	if f.Tile(u, v) == 'c' {
+	if t := f.Tile(u, v); t == 'c' || t == 'm' {
 		return float64(f.A.Rise) * f.artScale()
 	}
 	return 0
@@ -201,6 +209,16 @@ func (f *Field) blitMap(dst *ebiten.Image, s Sprite, x, y float64, op *ebiten.Dr
 	k := f.artScale()
 	op.GeoM.Scale(k, k)
 	op.GeoM.Translate(math.Round(x*K-s.PivotX*k), math.Round(y*K-s.PivotY*k))
+	f.renderOp(dst, op)
+	dst.DrawImage(s.Image, op)
+}
+
+// blitK draws a prop k times its size, its pivot on (x, y) of the canvas.
+func (f *Field) blitK(dst *ebiten.Image, s Sprite, x, y, k float64) {
+	op := &ebiten.DrawImageOptions{}
+	f.shadeScenery(dst, op, x, y)
+	op.GeoM.Scale(k, k)
+	op.GeoM.Translate(math.Round(x-s.PivotX*k), math.Round(y-s.PivotY*k))
 	f.renderOp(dst, op)
 	dst.DrawImage(s.Image, op)
 }
@@ -257,16 +275,26 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		c.DrawImage(f.exterior, op)
 		f.drawOutsideGround(clockMS)
 	}
+	if f.Map.Native {
+		f.drawStateGround(c)
+	}
 	f.drawDeploymentGround()
+	// highlights of one colour share a path, so neighbouring cells meet without seams
+	paths := map[color.RGBA]*vector.Path{}
+	var colors []color.RGBA
 	for _, m := range marks {
-		x, y := f.mapCenter(float64(m.U), float64(m.V))
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(x-16, y-8-f.Lift(m.U, m.V)/K)
-		op.GeoM.Scale(K, K)
-		a := float32(m.Color.A) / 255 // Highlight colors are straight alpha
-		op.ColorScale.Scale(float32(m.Color.R)/255*a, float32(m.Color.G)/255*a, float32(m.Color.B)/255*a, a)
-		f.renderOp(c, op)
-		c.DrawImage(f.diamond, op)
+		p := paths[m.Color]
+		if p == nil {
+			p = &vector.Path{}
+			paths[m.Color] = p
+			colors = append(colors, m.Color)
+		}
+		f.cellPath(p, m.U, m.V, f.Lift(m.U, m.V))
+	}
+	for _, col := range colors {
+		op := &vector.DrawPathOptions{}
+		op.ColorScale.ScaleWithColor(color.NRGBA(col)) // Highlight colors are straight alpha
+		vector.FillPath(c, paths[col], nil, op)
 	}
 	f.shadows.Clear()
 	items := []drawItem{}
@@ -283,7 +311,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		items = append(items, drawItem{y: y * K, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: f.mapRect(s, x, y)})
 	}
 	if f.Map.Native {
-		for _, it := range f.nativeItems {
+		for _, it := range append(append([]drawItem{}, f.nativeItems...), f.stateItems(clockMS)...) {
 			if f.DrawBounds.Empty() || it.rect.Empty() || it.rect.Overlaps(f.DrawBounds) {
 				items = append(items, it)
 			}
@@ -424,7 +452,7 @@ func (f *Field) bridgeName(u, v int) string {
 
 // sameBlock reports whether neighbour n continues the block of tile t. A gate is a ground-level
 // courtyard, so the wall blocks either side show their ends to it.
-func sameBlock(t, n byte) bool { return n == t }
+func sameBlock(t, n byte) bool { return n == t || t == 'c' && n == 'm' || t == 'm' && n == 'c' }
 
 // blockSprite picks the wall or cliff sprite whose open faces look at the cell's outside neighbours.
 func blockSprite(f *Field, u, v int) string {

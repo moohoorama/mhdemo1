@@ -109,7 +109,7 @@ func artFromDocument(d *mapedit.Document, data *content.Data) *MapArt {
 func (f *Field) dispose() {
 	seen := map[*ebiten.Image]bool{}
 	o := f.outside
-	for _, im := range append(f.ground[:], f.Canvas, f.clip, f.shadows, f.diamond, f.exterior, f.deploymentMask, o.decor, o.tiles, o.layer, o.holeFog, o.holeVig, o.cloud) {
+	for _, im := range append(f.ground[:], f.Canvas, f.clip, f.shadows, f.exterior, o.decor, o.tiles, o.layer, o.holeFog, o.holeVig, o.cloud) {
 		if im != nil && !seen[im] {
 			im.Deallocate()
 			seen[im] = true
@@ -130,6 +130,7 @@ func (g *Game) editorRebuild(fit bool) {
 	}
 	e.field = NewField(g.assets, artFromDocument(e.doc, g.S.Data))
 	e.field.ShowExterior = showExterior
+	e.field.SetLooks(Looks(g.S.Data, &content.Stage{Width: e.doc.Play.W, Height: e.doc.Play.H, Tiles: e.doc.Compile().Tiles}))
 	e.rebuild = false
 	e.unitsKey = ""
 	if fit {
@@ -808,7 +809,7 @@ func (g *Game) drawEditor(dst *ebiten.Image) {
 		drawScaled(sub, e.field.Canvas, op)
 		g.editorGrid(dst)
 	}
-	window(dst, image.Rect(1004, 64, 1266, 688))
+	g.window(dst, image.Rect(1004, 64, 1266, 688))
 	g.editorDetail(dst)
 	g.editorToolbar(dst)
 	g.label(dst, e.message, 24, Height-29, 15, bad)

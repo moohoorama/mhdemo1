@@ -40,7 +40,7 @@ var targets = [][2]int{{2, 0}, {0, 3}, {-4, 0}, {0, -5}, {3, 2}, {-2, -3}, {5, 0
 type demo struct {
 	field    *gui.Field
 	art      *sprite.Art
-	proj     gui.Projectiles
+	proj     gui.Shots
 	release  map[string][2]float64
 	launchAt float64 // seconds into the attack animation when the stone leaves
 
@@ -106,7 +106,7 @@ func setup(mapID string, zoom float64, sheetPath string, launchAtEnd bool) (*dem
 	if err != nil {
 		return nil, err
 	}
-	proj, err := gui.LoadProjectiles("assets/graphics")
+	proj, err := gui.LoadShots("assets/graphics", "effects/projectiles")
 	if err != nil {
 		return nil, err
 	}

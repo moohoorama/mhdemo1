@@ -21,6 +21,12 @@ import (
 )
 
 // Assets mirrors assets/graphics/index.json (built by tools/build_assets.py).
+type propEntry struct {
+	Rect  [4]int
+	Pivot [2]float64
+	Layer string
+}
+
 type Assets struct {
 	Duels         duel.Scripts
 	Bubble        *duelview.Bubble
@@ -37,7 +43,17 @@ type Assets struct {
 	Maps          map[string]*MapArt
 	Portraits     map[string]*ebiten.Image // Look.Portrait -> ink-wash portrait
 	Props         map[string]Prop
-	Projectiles   Projectiles // thrown stones and their landing dust
+	Projectiles   Shots                 // thrown stones, their shadows and their landing dust
+	FX            Shots                 // effects and their particles
+	Outside       Shots                 // pines and stones outside the battle area
+	UI            Shots                 // UI pictures: window frame, marks, icons, unit bar
+	Flames        map[string]FrameStrip // flame tongues and smoke puffs by name
+}
+
+// FrameStrip is an animation whose frames are all the same size, drawn with one pivot.
+type FrameStrip struct {
+	Frames []Sprite
+	MS     int // per frame; 0 for a strip stepped by something else (smoke ages)
 }
 
 // Prop is scene art at the characters' pixel scale (not K times larger like map tiles).
@@ -72,6 +88,7 @@ type MapArt struct {
 	Visual      [4]int
 	SmallTiles  []string
 	Deformed    bool // battle map: forests drawn as deformed cells, like villages
+	Scene       bool // a scenario scene: drawn without the shaded exterior, to the edge of its picture
 }
 
 // MapProp places a prop with its pivot at cell (U, V), fractions allowed. With U1, V1 it
@@ -164,11 +181,18 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		ShadowRGB [3]uint8 `json:"shadow_rgb"`
 		Props     struct {
 			Image   string
-			Sprites map[string]struct {
-				Rect  [4]int
-				Pivot [2]float64
-				Layer string
-			}
+			Sprites map[string]propEntry
+		}
+		Extra struct { // pictures of assets_candidate, packed by tools/build_extra.py; read as props
+			Image   string
+			Sprites map[string]propEntry
+		}
+		Effects map[string]struct {
+			Image  string
+			Frame  [2]int
+			Frames int
+			MS     int
+			Pivot  [2]float64
 		}
 	}
 	if err = json.Unmarshal(b, &index); err != nil {
@@ -240,16 +264,42 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		w, h := index.Sites.Cell[0], index.Sites.Cell[1]
 		a.Sites[name] = Sprite{siSheet.SubImage(image.Rect(i*w, 0, (i+1)*w, h)).(*ebiten.Image), index.Sites.Pivot[0], index.Sites.Pivot[1]}
 	}
-	if index.Props.Image != "" {
-		pr, err := loadRGBA(filepath.Join(dir, index.Props.Image))
+	for _, sheet := range []struct {
+		Image   string
+		Sprites map[string]propEntry
+	}{{index.Props.Image, index.Props.Sprites}, {index.Extra.Image, index.Extra.Sprites}} {
+		if sheet.Image == "" {
+			continue
+		}
+		pr, err := loadRGBA(filepath.Join(dir, sheet.Image))
 		if err != nil {
 			return nil, err
 		}
 		prSheet := ebiten.NewImageFromImage(pr)
-		for name, p := range index.Props.Sprites {
+		for name, p := range sheet.Sprites {
 			r := image.Rect(p.Rect[0], p.Rect[1], p.Rect[0]+p.Rect[2], p.Rect[1]+p.Rect[3])
 			a.Props[name] = Prop{Sprite{prSheet.SubImage(r).(*ebiten.Image), p.Pivot[0], p.Pivot[1]}, p.Layer == "ground"}
 		}
+	}
+	// the walls of the battle map are the clean ones: no seam where one wall cell meets the next
+	for i := 0; i < 16; i++ {
+		if clean, ok := a.Props[fmt.Sprintf("wall_clean_%02d", i)]; ok {
+			a.Structures[fmt.Sprintf("wall_%02d", i)] = clean.Sprite
+		}
+	}
+	a.Flames = map[string]FrameStrip{}
+	for name, e := range index.Effects {
+		im, err := loadRGBA(filepath.Join(dir, e.Image))
+		if err != nil {
+			return nil, err
+		}
+		sheet := ebiten.NewImageFromImage(im)
+		strip := FrameStrip{MS: e.MS}
+		for i := 0; i < e.Frames; i++ {
+			r := image.Rect(i*e.Frame[0], 0, (i+1)*e.Frame[0], e.Frame[1])
+			strip.Frames = append(strip.Frames, Sprite{sheet.SubImage(r).(*ebiten.Image), e.Pivot[0], e.Pivot[1]})
+		}
+		a.Flames[name] = strip
 	}
 	for _, path := range index.Maps {
 		b, err := os.ReadFile(filepath.Join(dir, path))
@@ -265,11 +315,16 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			Decorations [][4]json.RawMessage
 			Props       [][]json.RawMessage
 			Deformed    bool
+			Native      bool
+			Scene       bool
+			Visual      [4]int
+			SmallTiles  []string `json:"small_tiles"`
 		}
 		if err = json.Unmarshal(b, &m); err != nil {
 			return nil, fmt.Errorf("%s: %w", path, err)
 		}
 		art := &MapArt{ID: m.ID, Name: m.Name, W: m.Size[0], H: m.Size[1], Tiles: m.Tiles, Deformed: m.Deformed,
+			Native: m.Native, Scene: m.Scene, Visual: m.Visual, SmallTiles: m.SmallTiles,
 			Bounds: image.Rect(m.Bounds[0], m.Bounds[1], m.Bounds[2], m.Bounds[3])}
 		for _, g := range m.Ground {
 			var t GroundTile
@@ -303,7 +358,16 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		}
 		a.Maps[m.ID] = art
 	}
-	if a.Projectiles, err = LoadProjectiles(dir); err != nil {
+	if a.Projectiles, err = LoadShots(dir, "effects/projectiles"); err != nil {
+		return nil, err
+	}
+	if a.FX, err = LoadShots(dir, "effects/fx"); err != nil {
+		return nil, err
+	}
+	if a.Outside, err = LoadShots(dir, "map/outside"); err != nil {
+		return nil, err
+	}
+	if a.UI, err = LoadShots(dir, "ui/ui"); err != nil {
 		return nil, err
 	}
 	files, _ := filepath.Glob(filepath.Join(dir, "portraits", "*.png"))

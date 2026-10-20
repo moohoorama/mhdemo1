@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 // The command menu panels (docs/ui-mockup, idea 6): a lacquered list that unrolls from
@@ -189,7 +188,7 @@ func (g *Game) drawRow(dst *ebiten.Image, b image.Rectangle, it entry, dx float6
 	fg.A = a
 	lx := float64(x) + 9
 	if it.icon != "" {
-		drawIcon(dst, it.icon, float32(lx), y+h/2-6, 12, fg)
+		g.drawIcon(dst, it.icon, float32(lx), y+h/2-6, 12, fg)
 		lx += 19
 	}
 	g.label(dst, it.label, lx, float64(y)+(float64(h)-15*1.45)/2, 15, fg)
@@ -203,55 +202,12 @@ func (g *Game) drawRow(dst *ebiten.Image, b image.Rectangle, it entry, dx float6
 	}
 }
 
-// drawIcon draws a 12-unit line icon at (x, y) sized s.
-func drawIcon(dst *ebiten.Image, name string, x, y, s float32, c color.NRGBA) {
-	k := s / 12
-	var p vector.Path
-	switch name {
-	case "attack": // sword
-		p.MoveTo(2, 10)
-		p.LineTo(9, 3)
-		p.MoveTo(8, 2)
-		p.LineTo(10, 4)
-		p.MoveTo(3, 7)
-		p.LineTo(5, 9)
-	case "skill": // book
-		p.MoveTo(2, 2)
-		p.LineTo(10, 2)
-		p.LineTo(10, 10)
-		p.LineTo(2, 10)
-		p.Close()
-		p.MoveTo(4, 5)
-		p.LineTo(8, 5)
-		p.MoveTo(4, 7)
-		p.LineTo(7, 7)
-	case "item": // pouch
-		p.MoveTo(3, 5)
-		p.QuadTo(6, 2, 9, 5)
-		p.LineTo(9, 10)
-		p.LineTo(3, 10)
-		p.Close()
-		p.MoveTo(5, 3)
-		p.LineTo(7, 3)
-	case "wait": // hourglass
-		p.MoveTo(3, 2)
-		p.LineTo(9, 2)
-		p.MoveTo(3, 10)
-		p.LineTo(9, 10)
-		p.MoveTo(4, 2)
-		p.QuadTo(4, 6, 6, 6)
-		p.QuadTo(8, 6, 8, 2)
-		p.MoveTo(4, 10)
-		p.QuadTo(4, 6, 6, 6)
-		p.QuadTo(8, 6, 8, 10)
+// menuIcons are the command menu's icons in the UI sheet's order.
+var menuIcons = map[string]int{"attack": 0, "skill": 1, "item": 2, "wait": 3}
+
+// drawIcon draws a 12-unit icon at (x, y) sized s.
+func (g *Game) drawIcon(dst *ebiten.Image, name string, x, y, s float32, c color.NRGBA) {
+	if i, ok := menuIcons[name]; ok {
+		g.drawUI(dst, "icon", i, float64(x), float64(y), float64(s)/12, c)
 	}
-	var q vector.Path
-	op := &vector.AddPathOptions{}
-	op.GeoM.Scale(float64(k), float64(k))
-	op.GeoM.Translate(float64(x), float64(y))
-	q.AddPath(&p, op)
-	so := vector.StrokeOptions{Width: 1.4 * k, LineCap: vector.LineCapRound, LineJoin: vector.LineJoinRound}
-	do := &vector.DrawPathOptions{AntiAlias: true}
-	do.ColorScale.ScaleWithColor(c)
-	strokePath(dst, &q, so, do)
 }

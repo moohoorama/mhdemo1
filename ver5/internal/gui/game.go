@@ -845,7 +845,7 @@ func (g *Game) titleMenu(dst *ebiten.Image) {
 	}
 	g.label(dst, strings.Join(names, " → "), 104, 214, 16, muted)
 	r := image.Rect(96, 290, 420, 680)
-	window(dst, r)
+	g.window(dst, r)
 	items := []menuItem{
 		{"새로 시작", func() { g.request(session.Request{Op: "new", Seed: g.seed}); g.overlay = "" }},
 		{"불러오기", func() { g.openOverlay("load") }},
@@ -934,6 +934,7 @@ func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 	g.field.prepareRender(g.zoom, g.camX-hw, g.camY-hh, vp.Dx(), vp.Dy())
 	g.field.DrawBounds = image.Rect(int(g.camX-hw)-64, int(g.camY-hh)-96, int(g.camX+hw)+64, int(g.camY+hh)+96)
 	g.field.setDeployment(o.Phase == "deployment", o.Map.Allies)
+	g.field.SetLooks(LooksOf(g.S.Data, o))
 	g.field.Draw(g.clockMS, units, g.marks(o))
 	g.drawDeploymentPreview(o)
 	if g.field.Map.Native && g.shakeT > 0 {
@@ -955,7 +956,6 @@ func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 	inWorld(func() {
 		drawScaled(dst, g.field.Canvas, op)
 		g.cursor(dst)
-		g.drawFlames(dst, o)
 		g.drawEffects(dst)
 	})
 	// popups stand over their unit but are UI: the UI size enlarges them on top of the zoom

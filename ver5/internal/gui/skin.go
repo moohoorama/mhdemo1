@@ -345,28 +345,40 @@ func with(name string) string {
 	return name + "와"
 }
 
-// window draws the shared frame: lacquered body, gold double rim and corner studs.
-func window(dst *ebiten.Image, r image.Rectangle) {
+// window draws the shared frame: the lacquered body with a top-lit wash, under the UI sheet's
+// gold double rim and corner studs sliced nine ways.
+func (g *Game) window(dst *ebiten.Image, r image.Rectangle) {
 	x, y, w, h := float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy())
 	rect(dst, x+3, y+4, w, h, color.NRGBA{A: 90})
 	rect(dst, x, y, w, h, lacquer)
-	// a soft top-lit gradient
-	for i := float32(0); i < 8; i++ {
-		band := (h - 8) / 16
-		rect(dst, x+4, y+4+i*band, w-8, band, color.NRGBA{R: 255, G: 210, B: 160, A: uint8(14 - i*1.7)})
-	}
-	strokeRect(dst, x+.5, y+.5, w-1, h-1, 1, color.NRGBA{R: 12, G: 8, B: 6, A: 255})
-	strokeRect(dst, x+2, y+2, w-4, h-4, 2, gold)
-	strokeRect(dst, x+6, y+6, w-12, h-12, 1, goldDim)
-	for _, c := range [][2]float32{{x + 2, y + 2}, {x + w - 8, y + 2}, {x + 2, y + h - 8}, {x + w - 8, y + h - 8}} {
-		rect(dst, c[0], c[1], 6, 6, gold)
-		rect(dst, c[0]+2, c[1]+2, 2, 2, lacquer)
+	op := &ebiten.DrawImageOptions{} // the wash: eight bands, each 1/16 of the body high
+	op.GeoM.Scale(float64(w-8), float64(h-8)/16)
+	op.GeoM.Translate(float64(x+4), float64(y+4))
+	drawScaled(dst, g.assets.UI["window_glow"].Frames[0], op)
+	nineSlice(dst, g.assets.UI["window_rim"].Frames[0], 8, r)
+}
+
+// nineSlice stretches UI picture im (one art pixel per UI pixel) over r: its corner UI px
+// corners keep their size while the edges and the middle stretch, nearest sampled like the
+// solid rectangles of the rest of the UI.
+func nineSlice(dst, im *ebiten.Image, corner int, r image.Rectangle) {
+	b, c := im.Bounds(), corner
+	src := [4][2]int{{b.Min.X, b.Min.Y}, {b.Min.X + c, b.Min.Y + c}, {b.Max.X - c, b.Max.Y - c}, {b.Max.X, b.Max.Y}}
+	to := [4][2]int{{r.Min.X, r.Min.Y}, {r.Min.X + corner, r.Min.Y + corner}, {r.Max.X - corner, r.Max.Y - corner}, {r.Max.X, r.Max.Y}}
+	for i := range 3 {
+		for j := range 3 {
+			part := im.SubImage(image.Rect(src[i][0], src[j][1], src[i+1][0], src[j+1][1])).(*ebiten.Image)
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Scale(float64(to[i+1][0]-to[i][0])/float64(src[i+1][0]-src[i][0]), float64(to[j+1][1]-to[j][1])/float64(src[j+1][1]-src[j][1]))
+			op.GeoM.Translate(float64(to[i][0]), float64(to[j][1]))
+			drawScaled(dst, part, op)
+		}
 	}
 }
 
 // titled draws a window with a title plate on its top edge.
 func (g *Game) titled(dst *ebiten.Image, r image.Rectangle, title string) {
-	window(dst, r)
+	g.window(dst, r)
 	if title == "" {
 		return
 	}
@@ -446,7 +458,7 @@ func (g *Game) choiceBtn(dst *ebiten.Image, r image.Rectangle, label string, on 
 // (and not clickable) when it cannot.
 func (g *Game) arrow(dst *ebiten.Image, r image.Rectangle, up bool, click func()) {
 	x, y, w, h := float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy())
-	fg := color.Color(color.White)
+	fg := white
 	if click == nil {
 		rect(dst, x, y, w, h, color.NRGBA{R: 30, G: 24, B: 20, A: 235})
 		strokeRect(dst, x+.5, y+.5, w-1, h-1, 1, color.NRGBA{R: 58, G: 48, B: 40, A: 255})
@@ -463,21 +475,11 @@ func (g *Game) arrow(dst *ebiten.Image, r image.Rectangle, up bool, click func()
 		rect(dst, x, y+h-2, w, 2, color.NRGBA{A: 200})
 		rect(dst, x+w-2, y, 2, h, color.NRGBA{A: 200})
 	}
-	var p vector.Path
-	cx, cy := x+w/2, y+h/2
+	frame := 1
 	if up {
-		p.MoveTo(cx-7, cy+4)
-		p.LineTo(cx+7, cy+4)
-		p.LineTo(cx, cy-4)
-	} else {
-		p.MoveTo(cx-7, cy-4)
-		p.LineTo(cx+7, cy-4)
-		p.LineTo(cx, cy+4)
+		frame = 0
 	}
-	p.Close()
-	op := &vector.DrawPathOptions{AntiAlias: true}
-	op.ColorScale.ScaleWithColor(fg)
-	fillPath(dst, &p, op)
+	g.drawUI(dst, "scroll_mark", frame, float64(x+w/2), float64(y+h/2), 1, fg)
 }
 
 // button keeps the older x, y, width form.
@@ -515,6 +517,6 @@ func (g *Game) tooltip(dst *ebiten.Image, s string, x, y int) {
 	}
 	y = max(b.Min.Y, min(b.Max.Y-h, y))
 	r := image.Rect(x, y, x+w, y+h)
-	window(dst, r)
+	g.window(dst, r)
 	g.label(dst, s, float64(x+14), float64(y+9), 13, ink)
 }

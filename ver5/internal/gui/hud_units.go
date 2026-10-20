@@ -8,7 +8,6 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 	"srpg/internal/core"
 )
 
@@ -329,21 +328,12 @@ func (g *Game) unitHeader(dst *ebiten.Image, l *unitList, key, label string, r i
 
 // sortMark is a small triangle centred on (cx, cy): its tip up for ascending, down for
 // descending.
-func (g *Game) sortMark(dst *ebiten.Image, cx, cy float32, up bool, c color.Color) {
-	var p vector.Path
+func (g *Game) sortMark(dst *ebiten.Image, cx, cy float32, up bool, c color.NRGBA) {
+	frame := 1
 	if up {
-		p.MoveTo(cx-4, cy+3)
-		p.LineTo(cx+4, cy+3)
-		p.LineTo(cx, cy-3)
-	} else {
-		p.MoveTo(cx-4, cy-3)
-		p.LineTo(cx+4, cy-3)
-		p.LineTo(cx, cy+3)
+		frame = 0
 	}
-	p.Close()
-	op := &vector.DrawPathOptions{AntiAlias: true}
-	op.ColorScale.ScaleWithColor(c)
-	fillPath(dst, &p, op)
+	g.drawUI(dst, "sort_mark", frame, float64(cx), float64(cy), 1, c)
 }
 
 // boldFace is the sans face at the weight used for the values a list is sorted by.
@@ -356,12 +346,10 @@ func (g *Game) boldFace(size float64) *text.GoTextFace {
 // unitRow draws one unit's row and registers its click.
 func (g *Game) unitRow(dst *ebiten.Image, o core.Observation, l *unitList, t unitTable, u *core.UnitView, x, y int) {
 	r := image.Rect(x, y, x+t.width(), y+t.rowH)
-	var click func()
 	if u.HP > 0 {
 		id := u.ID
-		click = func() { t.pick(id) }
+		g.addButton(r, u.Name, func() { t.pick(id) })
 	}
-	g.addButton(r, u.Name, click)
 	dim := u.HP <= 0 || u.Faction == "ally" && !u.AI && !unitOrderable(o, u)
 	ink2 := ink
 	if dim {
@@ -370,7 +358,7 @@ func (g *Game) unitRow(dst *ebiten.Image, o core.Observation, l *unitList, t uni
 	switch {
 	case g.selected == u.ID:
 		strokeRect(dst, float32(r.Min.X), float32(r.Min.Y+1), float32(r.Dx()-2), float32(r.Dy()-2), 1.5, gold)
-	case hovered(r) && click != nil:
+	case hovered(r) && u.HP > 0:
 		rect(dst, float32(r.Min.X), float32(r.Min.Y+1), float32(r.Dx()-2), float32(r.Dy()-2), color.NRGBA{R: 255, G: 255, B: 255, A: 16})
 	}
 	rect(dst, float32(r.Min.X), float32(r.Max.Y-1), float32(r.Dx()-2), 1, color.NRGBA{R: 255, G: 255, B: 255, A: 14})

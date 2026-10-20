@@ -8,9 +8,22 @@
 ```sh
 python3 tools/spritebuild/build.py     # tools/doteditor/units/*.yaml → assets/sprites/*.spr (형식: presentation-sprite.md)
 uv run --with pillow python tools/build_status_icons.py   # 상태 아이콘 수제 픽셀 원본 → assets/graphics/status/
+uv run --with pillow python tools/build_effects.py        # 수제 픽셀 원본 → assets/graphics/{effects/projectiles,effects/fx(+_light),map/outside,ui/ui}.png, .json
 ```
 
+```sh
+python3 tools/build_extra.py                                   # ../assets_candidate 그림 → assets/graphics/map/extra.png, effects/*.png (index.json의 extra, effects)
+node tools/scene_maps/export.mjs > /tmp/scenes_draws.json      # 후보 viewer의 장면을 돌려 어떤 그림이 어디에 놓이는지 뽑는다
+python3 tools/scene_maps/build.py /tmp/scenes_draws.json       # → assets/graphics/maps/S_*.json 와 index.json의 maps
+python3 tools/scene_maps/wire_story.py                         # 이야기의 장소(Place)별로 assets/scenes.json의 scenes에 맵을 붙인다
+```
+
+- `build_extra.py`는 후보의 성벽(이음새 없는 `wall_clean_*`, 게임의 `wall_*`를 대신한다)·성문 C·울타리·그을음·불탄 구조물·다리 손상·장면 소품과 불·연기 줄을 게임 그림 묶음으로 옮긴다. 옛 기둥 성문(`gate_*`)과 숲 속 덤불 시안은 넣지 않는다. 불·연기 줄은 `Assets.Flames`, 그림은 `Assets.Props`로 읽힌다.
+- 장면 맵은 viewer의 JS 장면 정의에서 뽑아 만든다. 원리와 빠지는 것(유닛·불꽃·하늘·밤 색)은 `tools/scene_maps/build.py` 위쪽 설명과 [presentation-scene.md](presentation-scene.md)에 있다.
 - 상태 아이콘 원본·설정은 `../tools/spritetool/assets/ver5-status/`, 런타임은 `assets/graphics/status/`다.
+- 수제 픽셀 원본은 `../tools/spritetool/assets/`의 `ver5-projectiles/`(돌·그림자·흙먼지), `ver5-fx/`(책략·전투·피격·장면 효과, 일기토 섬광, 입자), `ver5-outside/`(맵 밖 소나무·돌), `ver5-ui/`(창 테두리, 표시·아이콘, HP바 부품, 두루마리 무늬)다. 스프라이트는 레이어 묶음이고, 레이어는 아스키 격자(`pixels.json`, 팔레트 색) 또는 `gen.py` 함수가 그리는 부드러운 반투명 그림이다. 레이어마다 투명도(하나 또는 프레임별)와 합성(`normal`/`lighter`)이 있어 빌더가 보통 시트와 빛 시트(`_light.png`, 게임이 더하기 합성으로 겹침)로 나눠 굽는다. 각 원본의 `seed.py`는 격자 첫 판을 뽑는 도구(공용 도구 `tools/pixelgrid.py`)로, 다시 돌리면 손질이 지워진다. 런타임은 `Assets.Projectiles`·`FX`·`Outside`·`UI`(`internal/gui/shots.go`).
+- UI 그림은 그림 4px이 UI 1px이고 부드럽게 축소한다(아이콘·삼각 표시, 이웃 그림이 섞이지 않게 둘레 8px 투명 여백). 단, 창 테두리는 그림 1px이 UI 1px이고 최근접으로 9조각 늘려 단색 사각형처럼 또렷하다. HP바 부품은 게임 화소로 맵 위에 그린다.
+- `cmd/_uidemo-vm`은 기본 크기(1280×850)에서 UI를 절반 해상도 버퍼에 그린 뒤 2배로 키운다. 1px 선을 비교할 때는 `-size 2560x1700`으로 찍는다.
 - 거점 그림은 `../tools/unit3d/sites.py`가 `assets/graphics/map/sites.png`로 굽는다(게임 칸 하나에 한 장, 관문은 성벽 줄 방향별 두 장).
 
 ## Android APK

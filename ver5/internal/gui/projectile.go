@@ -1,90 +1,12 @@
 package gui
 
 import (
-	"encoding/json"
-	"image"
 	"image/color"
 	"math"
-	"os"
-	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 	"srpg/internal/sprite"
 )
-
-// Projectiles is the hand-drawn projectile sheet, assets/graphics/effects/projectiles.{png,json}
-// (built by tools/build_projectiles.py): the flying stone and its landing dust, at the
-// characters' pixel scale.
-type Projectiles map[string]Shot
-
-// Shot is one projectile sprite: its frames, the anchor (sprite pixels) that lands on the
-// drawing position, and per-frame milliseconds for a one-shot animation.
-type Shot struct {
-	Anchor [2]float64
-	Frames []*ebiten.Image
-	MS     []int
-}
-
-func LoadProjectiles(dir string) (Projectiles, error) {
-	b, err := os.ReadFile(filepath.Join(dir, "effects", "projectiles.json"))
-	if err != nil {
-		return nil, err
-	}
-	var index map[string]struct {
-		Anchor [2]float64
-		Frames [][4]int
-		MS     []int
-	}
-	if err := json.Unmarshal(b, &index); err != nil {
-		return nil, err
-	}
-	pix, err := loadRGBA(filepath.Join(dir, "effects", "projectiles.png"))
-	if err != nil {
-		return nil, err
-	}
-	sheet := ebiten.NewImageFromImage(pix)
-	p := Projectiles{}
-	for name, s := range index {
-		shot := Shot{Anchor: s.Anchor, MS: s.MS}
-		for _, r := range s.Frames {
-			shot.Frames = append(shot.Frames, sheet.SubImage(image.Rect(r[0], r[1], r[0]+r[2], r[1]+r[3])).(*ebiten.Image))
-		}
-		p[name] = shot
-	}
-	return p, nil
-}
-
-// frameAt is the frame of a one-shot animation t seconds in, or -1 once it has finished.
-func (s Shot) frameAt(t float64) int {
-	ms := t * 1000
-	for i, d := range s.MS {
-		if ms < float64(d) {
-			return i
-		}
-		ms -= float64(d)
-	}
-	return -1
-}
-
-// length is a one-shot animation's duration in seconds.
-func (s Shot) length() float64 {
-	total := 0
-	for _, d := range s.MS {
-		total += d
-	}
-	return float64(total) / 1000
-}
-
-// draw blits frame i with its anchor at canvas point (x, y), snapped to the canvas pixel grid
-// so the dots stay crisp at any zoom.
-func (s Shot) draw(dst *ebiten.Image, i int, x, y float64, toScreen func(x, y float64) (float64, float64), zoom float64) {
-	px, py := toScreen(math.Round(x-s.Anchor[0]), math.Round(y-s.Anchor[1]))
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Scale(zoom, zoom)
-	op.GeoM.Translate(math.Round(px), math.Round(py))
-	drawScaled(dst, s.Frames[i], op)
-}
 
 // ReleasePoints finds where a thrown stone leaves a siege engine in every facing: the tip of the
 // throwing arm (its bucket, or a stone drawn in it) in one frame of an animation, taken as the
@@ -187,9 +109,9 @@ func (l *Lob) Pos() (x, y, h float64) {
 func (l *Lob) Landed() bool { return l.landed }
 
 // Done is true once the landing dust has played, given the sheet it is drawn from.
-func (l *Lob) Done(p Projectiles) bool { return l.T >= l.Dur+p.dust(l.Kind).length() }
+func (l *Lob) Done(p Shots) bool { return l.T >= l.Dur+p.dust(l.Kind).length() }
 
-func (p Projectiles) dust(kind string) Shot {
+func (p Shots) dust(kind string) Shot {
 	if s, ok := p[kind+"-dust"]; ok {
 		return s
 	}
@@ -209,7 +131,7 @@ func (l *Lob) Update(dt float64) {
 
 // Draw paints the shadow and the stone, then the landing dust. toScreen maps field canvas
 // pixels to logical screen pixels (Game.toScreen) and zoom is the canvas scale.
-func (l *Lob) Draw(dst *ebiten.Image, p Projectiles, toScreen func(x, y float64) (float64, float64), zoom float64) {
+func (l *Lob) Draw(dst *ebiten.Image, p Shots, toScreen func(x, y float64) (float64, float64), zoom float64) {
 	if l.landed {
 		d := p.dust(l.Kind)
 		if i := d.frameAt(l.T - l.Dur); i >= 0 {
@@ -219,37 +141,13 @@ func (l *Lob) Draw(dst *ebiten.Image, p Projectiles, toScreen func(x, y float64)
 	}
 	gx, gy, h := l.at(math.Min(1, l.T/l.Dur))
 	k := h / math.Max(1, l.maxH)
-	sx, sy := toScreen(gx, gy)
-	rx := (5 - 2*k) * zoom
-	shadowEllipse(dst, float32(sx), float32(sy), float32(rx), float32(rx*.5), color.NRGBA{20, 16, 12, 255}, .6-.25*k)
+	if sh := p["shadow"]; len(sh.Frames) > 0 {
+		sh.drawAlpha(dst, min(len(sh.Frames)-1, int(k*float64(len(sh.Frames)))), gx, gy, toScreen, zoom, .6-.25*k)
+	}
 	stone := p[l.Kind]
 	if n := len(stone.Frames); n > 0 {
 		i := int(l.T/lobFrameTime) * l.spinDir
 		stone.draw(dst, (i%n+n)%n, gx, gy-h, toScreen, zoom)
-	}
-}
-
-func ellipsePath(p *vector.Path, x, y, rx, ry float32) {
-	for i := 0; i <= 24; i++ {
-		t := float64(i) / 24 * 2 * math.Pi
-		px, py := x+rx*float32(math.Cos(t)), y+ry*float32(math.Sin(t))
-		if i == 0 {
-			p.MoveTo(px, py)
-		} else {
-			p.LineTo(px, py)
-		}
-	}
-	p.Close()
-}
-
-// shadowEllipse fills a soft flat shadow (a darker core inside a faint rim).
-func shadowEllipse(dst *ebiten.Image, x, y, rx, ry float32, c color.NRGBA, a float64) {
-	for i, k := range []float32{1, .6} {
-		var p vector.Path
-		ellipsePath(&p, x, y, rx*k, ry*k)
-		op := &vector.DrawPathOptions{AntiAlias: true}
-		op.ColorScale.ScaleWithColor(with8(c, a*[]float64{.55, .6}[i]))
-		fillPath(dst, &p, op)
 	}
 }
 

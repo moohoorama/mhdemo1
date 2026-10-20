@@ -134,6 +134,9 @@ func (g *Game) enterScene(o core.Observation) bool {
 		x, y := g.field.Center(v.u, v.v)
 		cx, cy = cx+x/float64(len(s.actors)), cy+y/float64(len(s.actors))
 	}
+	if len(s.actors) == 0 { // a scene without a cast looks at the middle of its map
+		cx, cy = g.field.Center(float64(g.field.Map.W)/2-.5, float64(g.field.Map.H)/2-.5)
+	}
 	g.camX, g.camY = cx, cy-20
 	g.startLine(0)
 	return true
@@ -372,16 +375,12 @@ func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) 
 	g.assets.Bubble.DrawText(dst, "", mark, duelview.Tail{}, sx-28, sy-h, drawPx)
 }
 
-var (
-	petalColors = []color.NRGBA{{R: 242, G: 167, B: 184, A: 255}, {R: 255, G: 214, B: 222, A: 255}, {R: 215, G: 119, B: 144, A: 255}}
-	flameColors = []color.NRGBA{{R: 255, G: 232, B: 154, A: 255}, {R: 255, G: 160, B: 50, A: 255}, {R: 214, G: 64, B: 40, A: 255}}
-)
+var petalColors = []color.NRGBA{{R: 242, G: 167, B: 184, A: 255}, {R: 255, G: 214, B: 222, A: 255}, {R: 215, G: 119, B: 144, A: 255}}
 
 // drawSceneEffects draws the stage effects: peach petals drifting across the whole screen,
 // and fires burning at map positions. Particles are pure functions of the effect's age, so
 // skipping beats or replaying a line shows the same thing.
 func (g *Game) drawSceneEffects(dst *ebiten.Image) {
-	z := float32(g.zoom)
 	for _, e := range g.scene.effects {
 		switch e.kind {
 		case "petals":
@@ -390,37 +389,48 @@ func (g *Game) drawSceneEffects(dst *ebiten.Image) {
 				fall, drift := 34+11*math.Mod(k*7.3, 5), 26+9*math.Mod(k*3.1, 4)
 				x := math.Mod(k*97.13+drift*e.t+12*math.Sin(e.t*1.3+k), float64(worldW)+40) - 20
 				y := math.Mod(k*61.7+fall*e.t, float64(worldH)+40) - 20
-				w := 2.5 + float32(math.Abs(math.Sin(e.t*3+k)))*2 // tumbling
-				c := petalColors[i%len(petalColors)]
-				rect(dst, float32(x), float32(y), w*z, 1.6*z, c)
+				w := math.Abs(math.Sin(e.t*3 + k)) // tumbling: the petal frames are 2, 3 and 4 wide
+				g.screenFX(dst, "petal", min(2, int(w*3)), x, y, 0, 0, petalColors[i%len(petalColors)], 1)
 			}
 		case "fire":
 			x, y := g.field.Center(e.u, e.v)
-			sx, sy := g.toScreen(x, y)
-			flames(dst, float32(sx), float32(sy), e.t, z, 1)
+			g.flames(dst, x, y, e.t)
 		}
 	}
 }
 
-// flames draws fire standing on one spot: a glow, sparks rising from it and smoke above. size
-// scales how big the blaze is (1 is a campfire).
-func flames(dst *ebiten.Image, sx, sy float32, t float64, z, size float32) {
-	z *= size
-	glow(dst, sx, sy-8*z, 22*z, flameColors[1], .7+.2*math.Sin(t*9))
-	for i := 0; i < 14; i++ {
-		k := float64(i)
-		life := math.Mod(t*1.6+k*.37, 1) // 0 at the base, 1 burnt out at the top
-		px := sx + float32(math.Sin(k*2.4)*7+math.Sin(t*5+k)*2*(life))*z
-		py := sy - float32(life*26)*z
-		r := float32((1-life)*4.5+1) * z
-		c := flameColors[min(2, int(life*3))]
-		fillCircle(dst, px, py, r, with8(c, 1-life*.6))
+// flames draws a campfire standing on canvas point (x, y): a flickering glow, the scene's flame
+// tongues in a small ring and smoke puffs rising above.
+func (g *Game) flames(dst *ebiten.Image, x, y, t float64) {
+	z := g.zoom
+	glow := g.assets.FX["campfire_glow"]
+	glow.drawAlpha(dst, 0, x, y-8, g.toScreen, z, .7+.2*math.Sin(t*9))
+	big, small := g.assets.Flames["flame"], g.assets.Flames["flame_small"]
+	for i, spot := range [][3]float64{{-6, -2, 0}, {6, -2, 0}, {0, -3, 1}, {-3, 2, 1}, {4, 2, 1}} { // back ones first
+		strip := big
+		if spot[2] == 0 {
+			strip = small
+		}
+		if len(strip.Frames) > 0 {
+			f := strip.Frames[(int(t*1000/float64(strip.MS))+i*2)%len(strip.Frames)]
+			g.drawCanvasSprite(dst, f, x+spot[0], y+spot[1], 1)
+		}
 	}
-	for i := 0; i < 5; i++ { // smoke
-		k := float64(i)
-		life := math.Mod(t*.5+k*.2, 1)
-		px := sx + float32(math.Sin(k*1.7+t)*6)*z
-		py := sy - float32(26+life*30)*z
-		fillCircle(dst, px, py, float32(3+life*6)*z, color.NRGBA{R: 60, G: 56, B: 52, A: uint8(110 * (1 - life))})
+	smoke := g.assets.Flames["smoke"]
+	for i := 0; i < 2 && len(smoke.Frames) > 0; i++ {
+		life := math.Mod(t*.5+float64(i)*.5, 1)
+		f := smoke.Frames[min(len(smoke.Frames)-1, int(life*float64(len(smoke.Frames))))]
+		g.drawCanvasSprite(dst, f, x+math.Sin(float64(i)*1.7+t)*6, y-26-life*30, 1)
 	}
+}
+
+// drawCanvasSprite draws s with its pivot at canvas point (x, y) at the camera's zoom and opacity a,
+// snapped to the canvas pixel grid.
+func (g *Game) drawCanvasSprite(dst *ebiten.Image, s Sprite, x, y, a float64) {
+	px, py := g.toScreen(math.Round(x-s.PivotX), math.Round(y-s.PivotY))
+	op := &ebiten.DrawImageOptions{}
+	op.ColorScale.ScaleAlpha(float32(a))
+	op.GeoM.Scale(g.zoom, g.zoom)
+	op.GeoM.Translate(math.Round(px), math.Round(py))
+	drawScaled(dst, s.Image, op)
 }

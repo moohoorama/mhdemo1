@@ -11,6 +11,7 @@ import (
 
 	"srpg/internal/content"
 	"srpg/internal/core"
+	"srpg/internal/mapedit"
 	"srpg/internal/session"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -110,10 +111,16 @@ func NewDemo(root string, o DemoOptions) (*Demo, error) {
 }
 
 // battle opens stage id straight into its first battle turn, allies deployed by plan.
-func (d *Demo) battle(id string) error {
+func (d *Demo) battle(id string) error { return d.battleWith(id, nil) }
+
+// battleWith is battle on a copy of the stage's map that tweak has changed first.
+func (d *Demo) battleWith(id string, tweak func(*mapedit.Document)) error {
 	g := d.g
 	g.editor = &mapEditor{level: 1, facing: "NW", selected: -1, zoom: 1, brushSize: 4}
 	g.editorOpen(g.S.Data.StageIndex(id))
+	if tweak != nil {
+		tweak(g.editor.doc)
+	}
 	g.editorTrial()
 	e := g.S.Engine
 	if _, err := e.Apply(core.Command{Kind: "start"}); err != nil {

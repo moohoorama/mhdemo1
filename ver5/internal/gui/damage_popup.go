@@ -8,7 +8,6 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 // Damage and heal numbers are brush-written (docs/ui-mockup, idea 4): the number jumps in
@@ -71,13 +70,11 @@ func (g *Game) drawNumber(dst *ebiten.Image, p *popup, x, y float64) {
 	t := p.t
 	switch p.kind {
 	case numberDamage, numberCrit:
-		g.drawSlash(dst, x, y+34*z, t, z)
-		g.drawSpatter(dst, p, x, y+35*z, t, z)
-		if p.kind == numberCrit {
-			k := bezier(0, 0, .58, 1, min(1, t/.5))
-			c := color.NRGBA{R: 255, G: 209, B: 102, A: uint8(255 * (1 - k))}
-			r := float32(20 * z * (.2 + 2*k))
-			vector.StrokeCircle(dst, float32(x*drawPx), float32((y+18*z)*drawPx), r*float32(drawPx), float32(1.8*z*drawPx), c, true)
+		g.drawSlash(dst, x, y+34*z, t)
+		g.drawSpatter(dst, p, x, y+35*z, t)
+		if p.kind == numberCrit && t < .5 {
+			ring := g.assets.FX["crit_ring"]
+			g.screenFX(dst, "crit_ring", ring.frameOver(bezier(0, 0, .58, 1, t/.5)), x, y, 0, 18, white, 1)
 		}
 		k := bezier(0, 0, .58, 1, min(1, t/numberLife))
 		at := []float64{0, .35, .8, 1}
@@ -94,7 +91,7 @@ func (g *Game) drawNumber(dst *ebiten.Image, p *popup, x, y float64) {
 			g.drawNumberImage(dst, small, x+(w/2+float64(small.Bounds().Dx())/drawPx/2)*sc*.92, y+(9+dy*numberSize+numberSize*.12)*z, sc, rot, op)
 		}
 	case numberHeal:
-		g.drawMotes(dst, p, x, y+33*z, t, z)
+		g.drawMotes(dst, p, x, y+33*z, t)
 		k := bezier(.2, .8, .2, 1, min(1, t/numberLife))
 		at := []float64{0, .3, .8, 1}
 		op := keyframe(k, at, []float64{0, 1, 1, 0})
@@ -158,40 +155,15 @@ func (g *Game) drawNumberImage(dst, img *ebiten.Image, x, y, sc, deg, alpha floa
 }
 
 // drawSlash is the white and gold cut across the target in the first quarter second.
-func (g *Game) drawSlash(dst *ebiten.Image, x, y, t, z float64) {
-	for _, s := range []struct {
-		dx, w float64
-		c     color.NRGBA
-		delay float64
-	}{{0, 3, color.NRGBA{R: 255, G: 251, B: 233, A: 255}, 0}, {-3, 1.25, color.NRGBA{R: 255, G: 207, B: 122, A: 255}, .03}} {
-		k := (t - s.delay) / .24
-		if k <= 0 || k >= 1 {
-			continue
-		}
-		head := min(1, k/.6)
-		tail := max(0, (k-.6)/.4)
-		seg := func(u float64) (float64, float64) { // quadratic from upper left to lower right
-			ax, ay, cx, cy, bx, by := -15.0, -17.0, 0.0, -5.0, 16.0, 14.0
-			px := (1-u)*(1-u)*ax + 2*(1-u)*u*cx + u*u*bx
-			py := (1-u)*(1-u)*ay + 2*(1-u)*u*cy + u*u*by
-			return x + (px+s.dx)*z, y + py*z
-		}
-		var path vector.Path
-		x0, y0 := seg(tail)
-		path.MoveTo(float32(x0*drawPx), float32(y0*drawPx))
-		for u := tail; u <= head; u += .05 {
-			px, py := seg(u)
-			path.LineTo(float32(px*drawPx), float32(py*drawPx))
-		}
-		so := &vector.StrokeOptions{Width: float32(s.w * z * drawPx), LineCap: vector.LineCapRound, LineJoin: vector.LineJoinRound}
-		op := &vector.DrawPathOptions{AntiAlias: true}
-		op.ColorScale.ScaleWithColor(s.c)
-		vector.StrokePath(dst, &path, so, op)
+func (g *Game) drawSlash(dst *ebiten.Image, x, y, t float64) {
+	cut := g.assets.FX["hit_slash"]
+	if k := t / .27; k < 1 {
+		g.screenFX(dst, "hit_slash", cut.frameOver(k), x, y, 0, 0, white, 1)
 	}
 }
 
 // drawSpatter flings ink drops out from the hit point and lets them fall and fade.
-func (g *Game) drawSpatter(dst *ebiten.Image, p *popup, x, y, t, z float64) {
+func (g *Game) drawSpatter(dst *ebiten.Image, p *popup, x, y, t float64) {
 	k := bezier(.2, .8, .3, 1, min(1, t/.85))
 	if k >= 1 {
 		return
@@ -203,13 +175,13 @@ func (g *Game) drawSpatter(dst *ebiten.Image, p *popup, x, y, t, z float64) {
 		py := keyframe(k, []float64{0, .5, 1}, []float64{0, cy + 5, cy + 13})
 		sc := keyframe(k, []float64{0, .5, 1}, []float64{.3, 1, 1})
 		a := keyframe(k, []float64{0, .5, 1}, []float64{1, .9, 0})
-		r := (.75 + b.r*2.25) * sc * z
-		vector.FillCircle(dst, float32((x+px*z)*drawPx), float32((y+py*z)*drawPx), float32(r*drawPx), color.NRGBA{R: 18, G: 8, B: 4, A: uint8(255 * a)}, true)
+		r := (.75 + b.r*2.25) * sc // the drop frames run from radius 1 to 3 by halves
+		g.screenFX(dst, "ink", max(0, min(4, int(math.Round((r-1)*2)))), x, y, px, py, white, a)
 	}
 }
 
 // drawMotes are the pale green streaks rising around a healed unit.
-func (g *Game) drawMotes(dst *ebiten.Image, p *popup, x, y, t, z float64) {
+func (g *Game) drawMotes(dst *ebiten.Image, p *popup, x, y, t float64) {
 	for i, b := range p.bits {
 		k := (t - float64(i)*.05) / 1
 		if k <= 0 || k >= 1 {
@@ -217,10 +189,8 @@ func (g *Game) drawMotes(dst *ebiten.Image, p *popup, x, y, t, z float64) {
 		}
 		e := bezier(0, 0, .58, 1, k)
 		a := keyframe(e, []float64{0, .3, 1}, []float64{0, 1, 0})
-		mx := x + (b.angle/(2*math.Pi)*15-7.5)*z
-		my := y + (b.dist*12-35*e)*z
-		h := (4 + b.r*6) * z
-		rect(dst, float32(mx), float32(my), float32(1.25*z), float32(h), color.NRGBA{R: 185, G: 245, B: 201, A: uint8(255 * a)})
+		length := int(math.Round(b.r * 3)) // the streak frames are 4, 6, 8 and 10 pixels long
+		g.screenFX(dst, "heal_streak", min(3, length), x, y, b.angle/(2*math.Pi)*15-7.5, b.dist*12-35*e, white, a)
 	}
 }
 

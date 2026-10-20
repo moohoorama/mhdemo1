@@ -8,6 +8,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
+	"srpg/internal/content"
 )
 
 func (f *Field) small(x, y int) byte {
@@ -53,20 +54,25 @@ func (f *Field) makeNativeFloors() {
 				name = "bridge_v"
 			}
 			s := f.A.Props[name].Sprite
-			f.nativeGround = append(f.nativeGround, drawItem{rect: f.mapRect(s, px, py), draw: func() { f.nativeProp(f.Canvas, s, px, py) }})
+			at := image.Pt(content.FloorHalf(x), content.FloorHalf(y))
+			f.nativeGround = append(f.nativeGround, drawItem{rect: f.mapRect(s, px, py), draw: func() { f.nativeProp(f.Canvas, f.bridgeSprite(name, at, s), px, py) }})
 		}
 	})
 }
 
 func (f *Field) nativeObjects(items *[]drawItem) {
 	f.eachSmall(func(u, v int, t byte, x, y float64) {
-		if t != 'c' && t != 'h' {
+		if t != 'c' && t != 'h' && t != 'm' {
 			return
 		}
 		s := f.A.Structures[f.smallBlock(u, v)]
+		if t == 'm' {
+			s = f.gateSprite(u, v, s)
+		}
 		*items = append(*items, drawItem{y: y * K, rect: f.mapRect(s, x, y), draw: func() { f.blitMap(f.Canvas, s, x, y, nil) }})
 	})
 	f.nativeSites(items)
+	f.nativeFences(items)
 	// Preserve the number and native size of forest clusters, including exterior forests.
 	v := f.Map.Visual
 	for y := v[1] / 2; y < (v[1]+v[3])/2; y++ {
@@ -81,15 +87,26 @@ func (f *Field) nativeObjects(items *[]drawItem) {
 			if !forest {
 				continue
 			}
-			s := f.A.Props[fmt.Sprintf("forest_%d", ((x*7+y*3)%4+4)%4)].Sprite
+			n := ((x*7+y*3)%4 + 4) % 4
+			s := f.A.Props[fmt.Sprintf("forest_%d", n)].Sprite
 			px, py := f.Center(float64(x), float64(y))
-			*items = append(*items, drawItem{y: py + .1, rect: f.mapRect(s, px/K, py/K), draw: func() { f.blit(f.Canvas, s, px, py, nil) }})
+			at := image.Pt(x, y)
+			*items = append(*items, drawItem{y: py + .1, rect: f.mapRect(s, px/K, py/K), draw: func() {
+				if burnt, ok := f.A.Props[fmt.Sprintf("burnt_forest_%d", n)]; ok && f.look(at.X, at.Y) == "soot" {
+					f.blit(f.Canvas, burnt.Sprite, px, py, nil)
+					return
+				}
+				f.blit(f.Canvas, s, px, py, nil)
+			}})
 		}
 	}
 }
 
 // siteSprite names the strongpoint sprite of each one-cell site tile.
 var siteSprite = map[byte]string{'k': "camp", 'v': "village", 'o': "castle", 'g': "gate"}
+
+// burntSite names the picture a site burns down to; the castle and the gate do not burn.
+var burntSite = map[byte]string{'k': "burnt_camp", 'v': "burnt_village"}
 
 // nativeSites draws one strongpoint per game cell, at the characters' scale like the forests. A cell is a
 // site when most of its small tiles are; a gate turns to the castle wall line it sits in.
@@ -127,7 +144,14 @@ func (f *Field) nativeSites(items *[]drawItem) {
 			}
 			s := f.A.Sites[name]
 			px, py := f.Center(float64(x), float64(y))
-			*items = append(*items, drawItem{y: py - .1, rect: f.mapRect(s, px/K, py/K), draw: func() { f.blit(f.Canvas, s, px, py, nil) }})
+			at := image.Pt(x, y)
+			*items = append(*items, drawItem{y: py - .1, rect: f.mapRect(s, px/K, py/K), draw: func() {
+				if burnt, ok := f.A.Props[burntSite[site]]; ok && f.look(at.X, at.Y) == "soot" {
+					f.blit(f.Canvas, burnt.Sprite, px, py, nil)
+					return
+				}
+				f.blit(f.Canvas, s, px, py, nil)
+			}})
 		}
 	}
 }
@@ -218,6 +242,58 @@ func (f *Field) background(dst *ebiten.Image, r image.Rectangle, z, ox, oy float
 				op.ColorScale.Scale(.45, .45, .45, 1)
 			}
 			drawScaled(dst, p, op)
+		}
+	}
+}
+
+// bridgeSprite is the bridge a cell shows: whole, damaged or broken by its state.
+func (f *Field) bridgeSprite(name string, at image.Point, whole Sprite) Sprite {
+	switch f.look(at.X, at.Y) {
+	case "damaged", "broken":
+		if p, ok := f.A.Props[name+"_"+f.look(at.X, at.Y)]; ok {
+			return p.Sprite
+		}
+	}
+	return whole
+}
+
+// gateSprite is the closed gate house of a gate cell, turned along the wall line it stands in; a wall block when
+// the art has none.
+func (f *Field) gateSprite(u, v int, wall Sprite) Sprite {
+	isWall := func(t byte) bool { return t == 'c' || t == 'm' }
+	name := "gatehouse_closed_v"
+	if isWall(f.small(u-1, v)) || isWall(f.small(u+1, v)) {
+		name = "gatehouse_closed_u"
+	}
+	if p, ok := f.A.Props[name]; ok {
+		return p.Sprite
+	}
+	return wall
+}
+
+// nativeFences puts a fence on each fenced game cell, joined to the fences next to it. A fence picture is drawn for
+// the map's own cell size, so it is drawn at twice its size on the half-cell lattice's game cells.
+func (f *Field) nativeFences(items *[]drawItem) {
+	v := f.Map.Visual
+	fence := func(x, y int) bool { return f.small(2*x, 2*y) == 'z' }
+	for y := v[1] / 2; y < (v[1]+v[3])/2; y++ {
+		for x := v[0] / 2; x < (v[0]+v[2])/2; x++ {
+			if !fence(x, y) {
+				continue
+			}
+			mask := 0
+			for i, d := range [][2]int{{-1, 0}, {0, -1}, {1, 0}, {0, 1}} { // nw, ne, se, sw
+				if fence(x+d[0], y+d[1]) {
+					mask |= 1 << i
+				}
+			}
+			s, ok := f.A.Props[fmt.Sprintf("fence_%02d", mask)]
+			if !ok {
+				continue
+			}
+			px, py := f.Center(float64(x), float64(y))
+			sprite := s.Sprite
+			*items = append(*items, drawItem{y: py, rect: image.Rect(int(px)-44, int(py)-80, int(px)+44, int(py)+20), draw: func() { f.blitK(f.Canvas, sprite, px, py, 2) }})
 		}
 	}
 }

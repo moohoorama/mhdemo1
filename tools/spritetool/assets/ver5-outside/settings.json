@@ -1,0 +1,56 @@
+{
+  "origin": "top-left",
+  "frame_order": [
+    "pine",
+    "stone"
+  ],
+  "outline": "#000000",
+  "sprites": {
+    "pine": {
+      "cell": [
+        20,
+        24
+      ],
+      "anchor": [
+        8,
+        22
+      ],
+      "frames": 5,
+      "timing": "a small dark pine outside the battle area at canvas scale, frame = size (7 to 11); the anchor is its foot",
+      "layers": {
+        "shadow": {
+          "alpha": 0.24,
+          "palette": {
+            "s": "#000000"
+          }
+        },
+        "tree": {
+          "palette": {
+            "d": "#1f2f1a",
+            "l": "#2a3e22"
+          }
+        }
+      }
+    },
+    "stone": {
+      "cell": [
+        3,
+        2
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "a pebble outside the battle area",
+      "layers": {
+        "stone": {
+          "palette": {
+            "d": "#5a5a4c",
+            "l": "#77776a"
+          }
+        }
+      }
+    }
+  }
+}

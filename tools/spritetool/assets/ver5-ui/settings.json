@@ -1,0 +1,258 @@
+{
+  "origin": "top-left",
+  "frame_order": [
+    "window_rim",
+    "window_glow",
+    "sort_mark",
+    "scroll_mark",
+    "icon",
+    "bar_frame",
+    "bar_fill",
+    "bar_trail",
+    "bar_ticks",
+    "bar_mp",
+    "scroll_curl",
+    "scroll_grain"
+  ],
+  "outline": "#000000",
+  "sprites": {
+    "window_rim": {
+      "cell": [
+        17,
+        17
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "the frame of every window on a 17x17 UI px window at one art px per UI px (crisp edges at any UI scale, like the solid rectangles it replaces); the game slices it 9 ways (corners 8 UI px) over the lacquer body",
+      "layers": {
+        "rim": {
+          "palette": {
+            "k": "#0c0806",
+            "g": "#e2b65d",
+            "d": "#846834",
+            "l": "#2c1e18"
+          }
+        }
+      }
+    },
+    "window_glow": {
+      "cell": [
+        1,
+        8
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "eight bands of the window's top-lit wash, one per row; the game stretches each over the body's width and 1/16 of its height",
+      "layers": {
+        "wash": {
+          "gen": "window_glow"
+        }
+      }
+    },
+    "sort_mark": {
+      "cell": [
+        48,
+        40
+      ],
+      "anchor": [
+        24,
+        20
+      ],
+      "frames": 2,
+      "timing": "a small triangle, up then down, white and tinted; marks a list's sort and the HUD's fold; an 8 px clear margin keeps the smooth downscale from picking up the neighbouring frames",
+      "layers": {
+        "mark": {
+          "palette": {
+            "w": "#ffffff"
+          }
+        }
+      }
+    },
+    "scroll_mark": {
+      "cell": [
+        72,
+        48
+      ],
+      "anchor": [
+        36,
+        24
+      ],
+      "frames": 2,
+      "timing": "a scroll button's triangle, up then down, white and tinted; an 8 px clear margin keeps the smooth downscale from picking up the neighbouring frames",
+      "layers": {
+        "mark": {
+          "palette": {
+            "w": "#ffffff"
+          }
+        }
+      }
+    },
+    "icon": {
+      "cell": [
+        64,
+        64
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "frames": 4,
+      "timing": "the command menu's icons (attack, skill, item, wait) on a 12 UI px square, white and tinted; an 8 px clear margin keeps the smooth downscale from picking up the neighbouring frames",
+      "layers": {
+        "icon": {
+          "palette": {
+            "w": "#ffffff"
+          }
+        }
+      }
+    },
+    "bar_frame": {
+      "cell": [
+        26,
+        9
+      ],
+      "anchor": [
+        1,
+        1
+      ],
+      "frames": 1,
+      "timing": "the unit bar's case at game pixels (drawn on the field, not at UI scale); the anchor is the bar's top left inside the edge",
+      "layers": {
+        "case": {
+          "palette": {
+            "k": "#000000",
+            "b": "#0d0907",
+            "h": "#302824",
+            "t": "#2a1712",
+            "m": "#14202e"
+          }
+        }
+      }
+    },
+    "bar_fill": {
+      "cell": [
+        22,
+        3
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 2,
+      "timing": "the HP fill, enemy then ally: a lit top row, a middle row between, and the darker bottom; the game shows as much of its width as the unit has HP",
+      "layers": {
+        "fill": {
+          "palette": {
+            "h": "#ee6a4f",
+            "l": "#a62c1b",
+            "H": "#86de9b",
+            "L": "#3b9a57",
+            "m": "#ca4935",
+            "M": "#61bc79"
+          }
+        }
+      }
+    },
+    "bar_trail": {
+      "cell": [
+        22,
+        3
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "the white trail behind the HP fill after a hit or ahead of it on a heal",
+      "layers": {
+        "trail": {
+          "palette": {
+            "w": "#f6ecdc"
+          }
+        }
+      }
+    },
+    "bar_ticks": {
+      "cell": [
+        22,
+        3
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "the quarter ticks over the HP fill",
+      "layers": {
+        "ticks": {
+          "alpha": 0.55,
+          "palette": {
+            "k": "#000000"
+          }
+        }
+      }
+    },
+    "bar_mp": {
+      "cell": [
+        22,
+        1
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "the MP line's fill",
+      "layers": {
+        "mp": {
+          "palette": {
+            "m": "#5d9ad8"
+          }
+        }
+      }
+    },
+    "scroll_curl": {
+      "cell": [
+        6,
+        1
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "the dialogue paper's shading toward its left roller at the scroll's art scale; the game stretches it down the paper and mirrors it for the right",
+      "layers": {
+        "curl": {
+          "gen": "scroll_curl"
+        }
+      }
+    },
+    "scroll_grain": {
+      "cell": [
+        1,
+        4
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "a mark of wood grain on a scroll roller",
+      "layers": {
+        "grain": {
+          "alpha": 0.5,
+          "palette": {
+            "g": "#190c04"
+          }
+        }
+      }
+    }
+  }
+}

@@ -14,7 +14,7 @@ import (
 
 func (g *Game) editorToolbar(dst *ebiten.Image) {
 	e := g.editor
-	window(dst, image.Rect(16, 700, 1266, 811))
+	g.window(dst, image.Rect(16, 700, 1266, 811))
 	g.btn(dst, image.Rect(24, 710, 142, 746), "타일 [Tab]", func() { e.tab = 0 })
 	g.btn(dst, image.Rect(24, 751, 142, 790), "병력 [Tab]", func() { e.tab = 1 })
 	if e.tab == 0 {

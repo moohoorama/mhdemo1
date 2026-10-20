@@ -126,10 +126,19 @@ func (g *Game) drawScrollBody(dst *ebiten.Image, cx, y, h, hw float64) {
 		band := scrollBand * scrollPx
 		tile(p.band, x0, y, w, band)
 		tile(p.band, x0, y+h-band, w, band)
-		for i := 0; i < 6 && float64(i) < hw; i++ { // the paper curls toward each roller
-			c := color.NRGBA{R: 110, G: 80, B: 35, A: uint8(255 * (.28 - float64(i)*.045))}
-			rect(dst, float32(x0+float64(i)*scrollPx), float32(y+band), scrollPx, float32(h-2*band), c)
-			rect(dst, float32(x0+w-float64(i+1)*scrollPx), float32(y+band), scrollPx, float32(h-2*band), c)
+		curl := g.assets.UI["scroll_curl"].Frames[0] // the paper curls toward each roller
+		cb := curl.Bounds()
+		curl = curl.SubImage(image.Rect(cb.Min.X, cb.Min.Y, cb.Min.X+int(min(float64(cb.Dx()), hw)), cb.Max.Y)).(*ebiten.Image)
+		for _, mirror := range []bool{false, true} {
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Scale(scrollPx, h-2*band)
+			at := x0
+			if mirror {
+				op.GeoM.Scale(-1, 1)
+				at = x0 + w
+			}
+			op.GeoM.Translate(at, y+band)
+			drawScaled(dst, curl, op)
 		}
 	}
 	spin := int(hw / 3)
@@ -153,9 +162,13 @@ func (g *Game) drawScrollBody(dst *ebiten.Image, cx, y, h, hw float64) {
 		if side == 1 {
 			dir = -1
 		}
+		grain := g.assets.UI["scroll_grain"].Frames[0]
 		for gy := 3.0; gy < h/scrollPx-3; gy += 9 {
 			gx := ((int(gy/9)*5+dir*spin)%scrollRod + scrollRod) % scrollRod
-			rect(dst, float32(rx+float64(2+gx)*scrollPx), float32(y+gy*scrollPx), scrollPx, 4*scrollPx, color.NRGBA{R: 25, G: 12, B: 4, A: 128})
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Scale(scrollPx, scrollPx)
+			op.GeoM.Translate(rx+float64(2+gx)*scrollPx, y+gy*scrollPx)
+			drawScaled(dst, grain, op)
 		}
 	}
 }

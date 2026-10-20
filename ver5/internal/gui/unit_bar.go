@@ -1,10 +1,10 @@
 package gui
 
 import (
-	"image/color"
+	"image"
 	"math"
 
-	"github.com/hajimehoshi/ebiten/v2/vector"
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 // The unit bar (docs/ui-mockup, idea 4): about 1.2 sprite widths, HP split into four
@@ -69,46 +69,41 @@ func (b *barState) update(target, dt float64) {
 	b.trail = max(b.trail, b.fill)
 }
 
-func dimmed(c color.RGBA, on bool) color.RGBA {
-	if on {
-		c.R, c.G, c.B = uint8(float64(c.R)*.45), uint8(float64(c.G)*.45), uint8(float64(c.B)*.45)
-	}
-	return c
-}
-
-// drawUnitBar draws u's bar centred on canvas point (x, top).
+// drawUnitBar draws u's bar centred on canvas point (x, top) from the UI sheet's bar parts, each
+// cut to the share it shows; z is the canvas pixels per game pixel.
 func (f *Field) drawUnitBar(u *unitVis, x, top, z float32) {
-	dim := f.deployment && !u.ally
-	fill := func(x0, y0, w, h float32, c color.RGBA) {
-		if w > 0 && h > 0 {
-			vector.FillRect(f.Canvas, x0, y0, w, h, dimmed(c, dim), false)
+	l := float64(x - barWidth*z/2)
+	part := func(name string, frame int, share float64, at, y float64) {
+		s := f.A.UI[name]
+		im := s.Frames[frame]
+		b := im.Bounds()
+		w := int(math.Round(float64(b.Dx()) * share))
+		if w <= 0 {
+			return
 		}
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(-s.Anchor[0], -s.Anchor[1])
+		op.GeoM.Scale(float64(z), float64(z))
+		op.GeoM.Translate(at, y)
+		if f.deployment && !u.ally {
+			op.ColorScale.Scale(.45, .45, .45, 1)
+		}
+		f.Canvas.DrawImage(im.SubImage(image.Rect(b.Min.X, b.Min.Y, b.Min.X+w, b.Max.Y)).(*ebiten.Image), op)
 	}
-	w, h := barWidth*z, barHeight*z
-	l := x - w/2
-	fill(l-z, top-z, w+2*z, h+2*z, color.RGBA{0, 0, 0, 255})
-	fill(l, top, w, h, color.RGBA{13, 9, 7, 255})
-	fill(l, top, w, z, color.RGBA{48, 40, 36, 255})
-	in := w - 2*z
-	ty, th := top+z, 3*z
-	fill(l+z, ty, in, th, color.RGBA{42, 23, 18, 255})
-	fill(l+z, ty, in*float32(u.bar.trail), th, color.RGBA{246, 236, 220, 255})
-	hi, lo := color.RGBA{238, 106, 79, 255}, color.RGBA{166, 44, 27, 255}
-	if u.ally {
-		hi, lo = color.RGBA{134, 222, 155, 255}, color.RGBA{59, 154, 87, 255}
-	}
-	fw := in * float32(u.bar.fill)
+	y, in := float64(top), l+float64(z) // the case's top left inside its edge, and the HP trough's left
+	part("bar_frame", 0, 1, l, y)
+	part("bar_trail", 0, u.bar.trail, in, y+float64(z))
+	fill := u.bar.fill
 	if u.shownHP > 0 {
-		fw = max(z, fw)
+		fill = max(fill, 1/float64(barWidth-2)) // never less than a pixel while the unit lives
 	}
-	fill(l+z, ty, fw, th*.5, hi)
-	fill(l+z, ty+th*.5, fw, th*.5, lo)
-	for i := 1; i < 4; i++ {
-		fill(l+z+in*float32(i)/4-z*.5, ty, max(1, z*.5), th, color.RGBA{0, 0, 0, 140})
+	side := 0
+	if u.ally {
+		side = 1
 	}
-	my := ty + th + z
-	fill(l+z, my, in, z, color.RGBA{20, 32, 46, 255})
+	part("bar_fill", side, fill, in, y+float64(z))
+	part("bar_ticks", 0, 1, in, y+float64(z))
 	if u.shownMP > 0 {
-		fill(l+z, my, max(z, in*float32(u.shownMP)/float32(max(1, u.maxMP))), z, color.RGBA{93, 154, 216, 255})
+		part("bar_mp", 0, max(1/float64(barWidth-2), float64(u.shownMP)/float64(max(1, u.maxMP))), in, y+5*float64(z))
 	}
 }

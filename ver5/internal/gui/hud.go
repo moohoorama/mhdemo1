@@ -212,7 +212,7 @@ func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
 		x -= w + 44
 	}
 	y = max(8, min(uiH-h-8, y-h/2))
-	window(dst, image.Rect(x, y, x+w, y+h))
+	g.window(dst, image.Rect(x, y, x+w, y+h))
 	if u != nil {
 		g.label(dst, u.Name, float64(x+14), float64(y+9), 15, teamColor(u))
 		g.label(dst, fmt.Sprintf("Lv%d", u.Level), float64(x+22)+g.width(u.Name, 15), float64(y+12), 12, ink)
@@ -537,7 +537,7 @@ func (g *Game) statHexagon(dst *ebiten.Image, o core.Observation, u *core.UnitVi
 	if hovered(area) {
 		tw, th := 270, 14+len(tip)*19
 		tx, ty := int(cx-radius)-110-tw, int(cy)-th/2
-		window(dst, image.Rect(tx, ty, tx+tw, ty+th))
+		g.window(dst, image.Rect(tx, ty, tx+tw, ty+th))
 		g.label(dst, strings.Join(tip, "\n"), float64(tx+14), float64(ty+7), 12, ink)
 	}
 }
@@ -569,7 +569,7 @@ func (g *Game) miniSize() (w, h float64) {
 func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
 	w, h := g.miniSize()
 	x0, y0 := float64(uiW)-12-w-14, 52.0
-	window(dst, image.Rect(int(x0)-10, int(y0)-10, int(x0+w)+10, int(y0+h)+10))
+	g.window(dst, image.Rect(int(x0)-10, int(y0)-10, int(x0+w)+10, int(y0+h)+10))
 	g.drawMinimap(dst, o, x0, y0)
 }
 

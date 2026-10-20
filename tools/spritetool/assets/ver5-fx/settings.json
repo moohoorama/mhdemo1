@@ -1,0 +1,983 @@
+{
+  "origin": "top-left",
+  "frame_order": [
+    "heal",
+    "heal_mote",
+    "water",
+    "water_drop",
+    "fire",
+    "ember",
+    "buff",
+    "buff_arrow",
+    "buff_dot",
+    "debuff",
+    "debuff_arrow",
+    "slash",
+    "critical",
+    "critical_wave",
+    "block",
+    "arrow",
+    "spark",
+    "hit_slash",
+    "ink",
+    "crit_ring",
+    "heal_streak",
+    "campfire_glow",
+    "petal",
+    "clash",
+    "clash_crit",
+    "speck"
+  ],
+  "outline": "#000000",
+  "sprites": {
+    "heal": {
+      "cell": [
+        36,
+        56
+      ],
+      "anchor": [
+        18,
+        48
+      ],
+      "frames": 10,
+      "timing": "played once over the effect's duration (1.1 s): a ring swells and shrinks at the feet while a pillar of light shoots up and fades",
+      "layers": {
+        "pillar": {
+          "blend": "lighter",
+          "alpha": [
+            1.0,
+            0.98,
+            0.94,
+            0.88,
+            0.8,
+            0.7,
+            0.58,
+            0.44,
+            0.28,
+            0.1
+          ],
+          "palette": {
+            "a": "#2d4d2d",
+            "b": "#69b369",
+            "c": "#c3ffc3"
+          }
+        },
+        "ring": {
+          "blend": "lighter",
+          "alpha": [
+            0.25,
+            0.73,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0.73,
+            0.25
+          ],
+          "palette": {
+            "r": "#96ff96",
+            "d": "#4a9a5a"
+          }
+        },
+        "inner": {
+          "blend": "lighter",
+          "alpha": [
+            0.09,
+            0.27,
+            0.42,
+            0.53,
+            0.59,
+            0.59,
+            0.53,
+            0.42,
+            0.27,
+            0.09
+          ],
+          "palette": {
+            "w": "#fff8dc"
+          }
+        }
+      }
+    },
+    "heal_mote": {
+      "cell": [
+        5,
+        5
+      ],
+      "anchor": [
+        2,
+        2
+      ],
+      "frames": 1,
+      "timing": "a rising particle; the game fades it out",
+      "layers": {
+        "mote": {
+          "blend": "lighter",
+          "palette": {
+            "m": "#96ff96",
+            "w": "#f0fff0"
+          }
+        }
+      }
+    },
+    "water": {
+      "cell": [
+        56,
+        48
+      ],
+      "anchor": [
+        28,
+        40
+      ],
+      "frames": 9,
+      "timing": "played once over the effect's duration (0.9 s): a column of water bursts up and falls in the first half while two ripples spread and a soft spray hangs at the base",
+      "layers": {
+        "mist": {
+          "blend": "normal",
+          "gen": "water_mist"
+        },
+        "ripple": {
+          "blend": "lighter",
+          "alpha": [
+            0.94,
+            0.83,
+            0.72,
+            0.61,
+            0.5,
+            0.39,
+            0.28,
+            0.17,
+            0.06
+          ],
+          "palette": {
+            "r": "#8cd2ff"
+          }
+        },
+        "ripple2": {
+          "blend": "lighter",
+          "alpha": [
+            0.76,
+            0.67,
+            0.58,
+            0.49,
+            0.4,
+            0.31,
+            0.22,
+            0.13,
+            0.04
+          ],
+          "palette": {
+            "r": "#e6f8ff"
+          }
+        },
+        "column": {
+          "blend": "lighter",
+          "alpha": 0.6,
+          "palette": {
+            "b": "#4696e6",
+            "c": "#8cd2ff",
+            "w": "#e6f8ff"
+          }
+        }
+      }
+    },
+    "water_drop": {
+      "cell": [
+        3,
+        3
+      ],
+      "anchor": [
+        1,
+        1
+      ],
+      "frames": 3,
+      "timing": "a flung drop, one frame per shade; the game fades it out",
+      "layers": {
+        "drop": {
+          "blend": "lighter",
+          "palette": {
+            "a": "#e6f8ff",
+            "b": "#8cd2ff",
+            "c": "#4696e6",
+            "w": "#ffffff"
+          }
+        }
+      }
+    },
+    "fire": {
+      "cell": [
+        64,
+        72
+      ],
+      "anchor": [
+        32,
+        62
+      ],
+      "frames": 10,
+      "timing": "played once over the effect's duration (1.0 s): a white-hot burst, then flame tongues catch round the feet, blaze and die under a heat glow while a scorched ring spreads",
+      "layers": {
+        "glow": {
+          "blend": "lighter",
+          "gen": "fire_glow",
+          "alpha": [
+            1,
+            1,
+            1,
+            0.98,
+            0.83,
+            0.67,
+            0.52,
+            0.38,
+            0.23,
+            0.08
+          ]
+        },
+        "scorch": {
+          "blend": "lighter",
+          "alpha": [
+            1,
+            1,
+            0.98,
+            0.85,
+            0.72,
+            0.58,
+            0.45,
+            0.33,
+            0.2,
+            0.07
+          ],
+          "palette": {
+            "s": "#ec5a28",
+            "d": "#963c1e"
+          }
+        },
+        "tongues": {
+          "blend": "normal",
+          "gen": "fire_tongues",
+          "alpha": [
+            0.3,
+            0.9,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0.88,
+            0.53,
+            0.18
+          ]
+        },
+        "flash": {
+          "blend": "lighter",
+          "gen": "fire_flash"
+        }
+      }
+    },
+    "ember": {
+      "cell": [
+        2,
+        2
+      ],
+      "anchor": [
+        1,
+        1
+      ],
+      "frames": 3,
+      "timing": "a rising ember or spark, one frame per shade; the game fades it out",
+      "layers": {
+        "ember": {
+          "blend": "lighter",
+          "palette": {
+            "a": "#ffec8c",
+            "b": "#ffaa3c",
+            "c": "#ec5a28"
+          }
+        }
+      }
+    },
+    "buff": {
+      "cell": [
+        36,
+        56
+      ],
+      "anchor": [
+        18,
+        48
+      ],
+      "frames": 12,
+      "timing": "played once over the effect's duration (1.2 s), like heal; drawn white and tinted by the buff's colour in the game",
+      "layers": {
+        "pillar": {
+          "blend": "lighter",
+          "alpha": [
+            1.0,
+            0.98,
+            0.96,
+            0.91,
+            0.86,
+            0.79,
+            0.71,
+            0.61,
+            0.5,
+            0.37,
+            0.23,
+            0.08
+          ],
+          "palette": {
+            "a": "#4d4d4d",
+            "b": "#b3b3b3",
+            "c": "#ffffff"
+          }
+        },
+        "ring": {
+          "blend": "lighter",
+          "alpha": [
+            0.21,
+            0.61,
+            0.97,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0.97,
+            0.61,
+            0.21
+          ],
+          "palette": {
+            "r": "#ffffff"
+          }
+        },
+        "inner": {
+          "blend": "lighter",
+          "alpha": [
+            0.08,
+            0.23,
+            0.37,
+            0.48,
+            0.55,
+            0.59,
+            0.59,
+            0.55,
+            0.48,
+            0.37,
+            0.23,
+            0.08
+          ],
+          "palette": {
+            "w": "#ffffff"
+          }
+        }
+      }
+    },
+    "buff_arrow": {
+      "cell": [
+        5,
+        6
+      ],
+      "anchor": [
+        2,
+        3
+      ],
+      "frames": 1,
+      "timing": "a rising arrow, white, tinted and faded by the game",
+      "layers": {
+        "arrow": {
+          "blend": "lighter",
+          "palette": {
+            "w": "#ffffff",
+            "g": "#b3b3b3"
+          }
+        }
+      }
+    },
+    "buff_dot": {
+      "cell": [
+        3,
+        3
+      ],
+      "anchor": [
+        1,
+        1
+      ],
+      "frames": 1,
+      "timing": "a rising mote, white, tinted and faded by the game",
+      "layers": {
+        "dot": {
+          "blend": "lighter",
+          "palette": {
+            "w": "#ffffff",
+            "g": "#808080"
+          }
+        }
+      }
+    },
+    "debuff": {
+      "cell": [
+        40,
+        48
+      ],
+      "anchor": [
+        20,
+        40
+      ],
+      "frames": 11,
+      "timing": "played once over the effect's duration (1.1 s): six motes circle the chest, closing in and fading, over a shrinking ring",
+      "layers": {
+        "ring": {
+          "blend": "normal",
+          "alpha": [
+            0.76,
+            0.69,
+            0.62,
+            0.55,
+            0.47,
+            0.4,
+            0.33,
+            0.25,
+            0.18,
+            0.11,
+            0.04
+          ],
+          "palette": {
+            "r": "#ba6eff"
+          }
+        },
+        "orbit": {
+          "blend": "normal",
+          "alpha": [
+            0.95,
+            0.86,
+            0.77,
+            0.68,
+            0.59,
+            0.5,
+            0.41,
+            0.32,
+            0.23,
+            0.14,
+            0.05
+          ],
+          "palette": {
+            "p": "#ba6eff",
+            "w": "#ecd8ff"
+          }
+        }
+      }
+    },
+    "debuff_arrow": {
+      "cell": [
+        5,
+        6
+      ],
+      "anchor": [
+        2,
+        3
+      ],
+      "frames": 1,
+      "timing": "a sinking arrow; the game fades it out",
+      "layers": {
+        "arrow": {
+          "blend": "normal",
+          "palette": {
+            "p": "#ba6eff",
+            "w": "#ecd8ff"
+          }
+        }
+      }
+    },
+    "slash": {
+      "cell": [
+        40,
+        40
+      ],
+      "anchor": [
+        20,
+        20
+      ],
+      "frames": 10,
+      "timing": "played once over the blow (0.55 s), anchored at the target's chest: two crossing crescents are drawn on in the first half under a fading glow",
+      "layers": {
+        "glow": {
+          "blend": "lighter",
+          "gen": "slash_glow"
+        },
+        "arc": {
+          "blend": "lighter",
+          "alpha": [
+            0.95,
+            0.85,
+            0.75,
+            0.65,
+            0.55,
+            0.45,
+            0.35,
+            0.25,
+            0.15,
+            0.05
+          ],
+          "palette": {
+            "w": "#fff8dc",
+            "y": "#ffd66e"
+          }
+        }
+      }
+    },
+    "critical": {
+      "cell": [
+        192,
+        128
+      ],
+      "anchor": [
+        96,
+        64
+      ],
+      "frames": 8,
+      "timing": "played once over 0.7 s, anchored at the chest: a white burst in the first third and eight rays flying out",
+      "layers": {
+        "glow": {
+          "blend": "lighter",
+          "gen": "critical_glow"
+        },
+        "rays": {
+          "blend": "lighter",
+          "alpha": [
+            0.94,
+            0.81,
+            0.69,
+            0.56,
+            0.44,
+            0.31,
+            0.19,
+            0.06
+          ],
+          "palette": {
+            "w": "#fff8dc",
+            "y": "#ffd66e"
+          }
+        }
+      }
+    },
+    "critical_wave": {
+      "cell": [
+        112,
+        56
+      ],
+      "anchor": [
+        56,
+        28
+      ],
+      "frames": 8,
+      "timing": "the critical's shockwave on the ground at the target's feet, played with it",
+      "layers": {
+        "outer": {
+          "blend": "lighter",
+          "alpha": [
+            0.94,
+            0.81,
+            0.69,
+            0.56,
+            0.44,
+            0.31,
+            0.19,
+            0.06
+          ],
+          "palette": {
+            "y": "#ffd66e"
+          }
+        },
+        "inner": {
+          "blend": "lighter",
+          "alpha": [
+            0.75,
+            0.65,
+            0.55,
+            0.45,
+            0.35,
+            0.25,
+            0.15,
+            0.05
+          ],
+          "palette": {
+            "w": "#fff8dc"
+          }
+        }
+      }
+    },
+    "block": {
+      "cell": [
+        56,
+        48
+      ],
+      "anchor": [
+        20,
+        24
+      ],
+      "frames": 12,
+      "timing": "played once over 0.6 s, anchored at the chest, facing a blow from the right (the game mirrors it): a hex shield pops up, flashes and ripples where it is struck, then flickers out",
+      "layers": {
+        "pane": {
+          "blend": "lighter",
+          "alpha": [
+            0.28,
+            0.28,
+            0.28,
+            0.28,
+            0.28,
+            0.28,
+            0.13,
+            0.19,
+            0.08,
+            0.11,
+            0.04,
+            0.02
+          ],
+          "palette": {
+            "f": "#82d2ff"
+          }
+        },
+        "hex": {
+          "blend": "lighter",
+          "alpha": [
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.49,
+            0.23,
+            0.34,
+            0.15,
+            0.19,
+            0.06,
+            0.04
+          ],
+          "palette": {
+            "h": "#82d2ff"
+          }
+        },
+        "rim": {
+          "blend": "lighter",
+          "alpha": [
+            0.9,
+            0.9,
+            0.9,
+            0.9,
+            0.9,
+            0.89,
+            0.41,
+            0.61,
+            0.26,
+            0.34,
+            0.11,
+            0.07
+          ],
+          "palette": {
+            "r": "#dcf5ff"
+          }
+        },
+        "ripple": {
+          "blend": "lighter",
+          "alpha": [
+            0.82,
+            0.68,
+            0.52,
+            0.38,
+            0.23,
+            0.08,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "palette": {
+            "p": "#c8f0ff"
+          }
+        },
+        "ripple2": {
+          "blend": "lighter",
+          "alpha": [
+            0,
+            0.59,
+            0.49,
+            0.39,
+            0.29,
+            0.19,
+            0.09,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "palette": {
+            "p": "#c8f0ff"
+          }
+        },
+        "flash": {
+          "blend": "lighter",
+          "gen": "block_flash"
+        }
+      }
+    },
+    "arrow": {
+      "cell": [
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        24
+      ],
+      "frames": 16,
+      "timing": "not animated: frame j flies at j x 22.5 degrees (0 east, clockwise on screen); the anchor is the tip",
+      "layers": {
+        "trail": {
+          "blend": "lighter",
+          "palette": {
+            "1": "#47463e",
+            "2": "#36342e",
+            "3": "#24231f",
+            "4": "#12110f"
+          }
+        },
+        "body": {
+          "blend": "normal",
+          "palette": {
+            "s": "#c8a064",
+            "f": "#f0f0f0",
+            "h": "#fff8dc"
+          }
+        }
+      }
+    },
+    "spark": {
+      "cell": [
+        2,
+        2
+      ],
+      "anchor": [
+        1,
+        1
+      ],
+      "frames": 1,
+      "timing": "a flying spark, white, tinted and faded by the game",
+      "layers": {
+        "spark": {
+          "palette": {
+            "w": "#ffffff"
+          }
+        }
+      }
+    },
+    "hit_slash": {
+      "cell": [
+        40,
+        36
+      ],
+      "anchor": [
+        21,
+        19
+      ],
+      "frames": 9,
+      "timing": "the first 0.27 s of a hit's number: a white cut from upper left to lower right with a thin gold one 0.03 s behind, each drawn on and wiped off",
+      "layers": {
+        "cut": {
+          "palette": {
+            "w": "#fffbe9",
+            "g": "#ffcf7a"
+          }
+        }
+      }
+    },
+    "ink": {
+      "cell": [
+        7,
+        7
+      ],
+      "anchor": [
+        3,
+        3
+      ],
+      "frames": 5,
+      "timing": "an ink drop flung from a hit, one frame per size (radius 1 to 3); the game grows, moves and fades it",
+      "layers": {
+        "drop": {
+          "palette": {
+            "k": "#120804"
+          }
+        }
+      }
+    },
+    "crit_ring": {
+      "cell": [
+        92,
+        92
+      ],
+      "anchor": [
+        45,
+        45
+      ],
+      "frames": 10,
+      "timing": "a critical hit's gold ring over its first 0.5 s, frame by the eased spread; fades as it grows",
+      "layers": {
+        "ring": {
+          "alpha": [
+            0.95,
+            0.85,
+            0.75,
+            0.65,
+            0.55,
+            0.45,
+            0.35,
+            0.25,
+            0.15,
+            0.05
+          ],
+          "palette": {
+            "y": "#ffd166"
+          }
+        }
+      }
+    },
+    "heal_streak": {
+      "cell": [
+        1,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 4,
+      "timing": "a pale green streak rising round a healed unit's number, one frame per length (4, 6, 8, 10); the anchor is its top",
+      "layers": {
+        "streak": {
+          "palette": {
+            "w": "#e6fff0",
+            "g": "#b9f5c9"
+          }
+        }
+      }
+    },
+    "campfire_glow": {
+      "cell": [
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        24
+      ],
+      "frames": 1,
+      "timing": "a scene fire's glow, centred 8 px above the fire; the game flickers its opacity",
+      "layers": {
+        "glow": {
+          "blend": "lighter",
+          "gen": "campfire_glow"
+        }
+      }
+    },
+    "petal": {
+      "cell": [
+        4,
+        2
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 3,
+      "timing": "a tumbling peach petal, white and tinted by the game; frames are its width as it turns (2, 3, 4)",
+      "layers": {
+        "petal": {
+          "palette": {
+            "w": "#ffffff"
+          }
+        }
+      }
+    },
+    "clash": {
+      "cell": [
+        28,
+        28
+      ],
+      "anchor": [
+        14,
+        14
+      ],
+      "frames": 8,
+      "timing": "where duelling weapons meet, drawn at the arena's scenery scale (3); frame j is j/8 of the way from the blow to its end",
+      "layers": {
+        "burst": {
+          "alpha": [
+            0.94,
+            0.81,
+            0.69,
+            0.56,
+            0.44,
+            0.31,
+            0.19,
+            0.06
+          ],
+          "palette": {
+            "y": "#ffdb88"
+          }
+        }
+      }
+    },
+    "clash_crit": {
+      "cell": [
+        72,
+        72
+      ],
+      "anchor": [
+        36,
+        36
+      ],
+      "frames": 8,
+      "timing": "clash for a critical blow: the same rays reaching three times as far",
+      "layers": {
+        "burst": {
+          "alpha": [
+            0.94,
+            0.81,
+            0.69,
+            0.56,
+            0.44,
+            0.31,
+            0.19,
+            0.06
+          ],
+          "palette": {
+            "y": "#ffdb88"
+          }
+        }
+      }
+    },
+    "speck": {
+      "cell": [
+        2,
+        1
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "a fleck on the duel ground, white, tinted by the arena's ground colour",
+      "layers": {
+        "speck": {
+          "palette": {
+            "w": "#ffffff"
+          }
+        }
+      }
+    }
+  }
+}

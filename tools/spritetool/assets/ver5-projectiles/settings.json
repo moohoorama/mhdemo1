@@ -1,6 +1,6 @@
 {
   "origin": "top-left",
-  "frame_order": ["stone", "dust"],
+  "frame_order": ["stone", "dust", "shadow"],
   "alpha": [0, 255],
   "outline": "#000000",
   "sprites": {
@@ -15,6 +15,11 @@
       "ms": [60, 70, 80, 90, 100, 110],
       "palette": {"h": "#e6d8b0", "m": "#c9b285", "d": "#9c8460", "o": "#5e4a34",
                   "a": "#d4d4cc", "b": "#9a9c98", "c": "#5c5e5c"}
+    },
+    "shadow": {
+      "cell": [11, 5], "anchor": [5, 2],
+      "timing": "not animated: the flight picks the frame from the stone's height (0 lowest); its opacity is set in code",
+      "palette": {"c": "#14100c", "r": "#3a3026"}
     }
   }
 }

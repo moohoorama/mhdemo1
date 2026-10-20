@@ -162,9 +162,6 @@ func lerp8(a, b uint8, k float64) uint8 { return uint8(float64(a) + (float64(b)-
 func box(dst *ebiten.Image, x, y, w, h float64, c color.Color) {
 	vector.FillRect(dst, float32(x), float32(y), float32(w), float32(h), c, false)
 }
-func line(dst *ebiten.Image, x, y, x1, y1, w float64, c color.Color) {
-	vector.StrokeLine(dst, float32(x), float32(y), float32(x1), float32(y1), float32(w), c, true)
-}
 
 // at mirrors a default-axis (ally upper left, enemy lower right) arena point onto Axis.
 func (g *View) at(x, y float64) (float64, float64) {
@@ -203,6 +200,7 @@ type unitDraw struct {
 	prop  *Sprite
 	scale float64
 	hue   float64
+	tint  color.NRGBA // multiplies a prop's colours when set
 }
 
 func drawProp(dst *ebiten.Image, u unitDraw) {
@@ -213,6 +211,9 @@ func drawProp(dst *ebiten.Image, u unitDraw) {
 	var cm colorm.ColorM
 	if u.hue != 0 {
 		cm.ChangeHSV(u.hue, 1, 1)
+	}
+	if u.tint.A > 0 {
+		cm.Scale(float64(u.tint.R)/255, float64(u.tint.G)/255, float64(u.tint.B)/255, float64(u.tint.A)/255)
 	}
 	cm.Scale(1, 1, 1, 1-u.fade)
 	colorm.DrawImage(dst, u.prop.Image, cm, op)
@@ -294,10 +295,12 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 		k := max(0, min(1, (float64(y)-g.oy-160)/550))
 		box(dst, 0, float64(y), float64(g.cw), 4, color.NRGBA{lerp8(far.R, near.R, k), lerp8(far.G, near.G, k), lerp8(far.B, near.B, k), 255})
 	}
-	for i := range 160 * g.cw * g.ch / (width * height) {
-		x := float64((i * 197) % g.cw)
-		y := float64((i * 113) % g.ch)
-		line(dst, x, y, x+7, y+2, 1, speck)
+	if g.Decor != nil && g.Decor.Speck.Image != nil {
+		for i := range 160 * g.cw * g.ch / (width * height) {
+			x := float64((i * 197) % g.cw)
+			y := float64((i * 113) % g.ch)
+			drawProp(dst, unitDraw{prop: &g.Decor.Speck, scale: decorScale, x: x, y: y, tint: speck})
+		}
 	}
 	var units []unitDraw
 	if g.Decor != nil {
@@ -373,27 +376,32 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 		x -= lane * .45
 		y += lane * .89
 		x, y = g.at(x, y)
-		y -= 58
-		r := 36.0
-		if s.Critical {
-			r = 100
-		}
-		c := color.NRGBA{255, 219, 136, uint8(255 * s.Impact)}
-		for i := range 12 {
-			a := float64(i) * math.Pi / 6
-			line(dst, x+math.Cos(a)*8, y+math.Sin(a)*8, x+math.Cos(a)*r, y+math.Sin(a)*r, 2+s.Impact*3, c)
-		}
-		vector.StrokeCircle(dst, float32(x), float32(y), float32(r*(1-s.Impact)+8), 2, c, true)
-		if g.Decor != nil {
-			if u, ok := g.burst(x, y+58, s.Impact, s.Critical); ok {
-				drawUnit(dst, u, false)
-			}
-		}
+		g.Clash(dst, x, y-58, s.Impact, s.Critical)
 	}
 	if s.Flash > 0 {
 		box(dst, 0, 0, float64(g.cw), float64(g.ch), color.NRGBA{255, 255, 245, uint8(s.Flash * 225)})
 	}
 	return s
+}
+
+// Clash is the flash where the duellists' weapons meet at (x, y), impact going from 1 to 0: the
+// decor's rays (wider on a critical) and the dust the blow kicks up.
+func (g *View) Clash(dst *ebiten.Image, x, y, impact float64, critical bool) {
+	d := g.Decor
+	if d == nil {
+		return
+	}
+	frames := d.Clash
+	if critical {
+		frames = d.ClashCrit
+	}
+	if n := len(frames); n > 0 {
+		f := min(n-1, int((1-impact)*float64(n)))
+		drawProp(dst, unitDraw{prop: &frames[f], scale: decorScale, x: x, y: y})
+	}
+	if u, ok := g.burst(x, y+58, impact, critical); ok {
+		drawUnit(dst, u, false)
+	}
 }
 
 // bubbleTop places a bubble of height h above the head at headY. Near the top edge it moves

@@ -7,8 +7,9 @@ import (
 	"srpg/internal/duelview"
 )
 
-// duelDecor gathers the duel arena's scenery from the map's own image files: the tileset's
-// rocks and grass, the props' banners and the projectile sheet's dust.
+// duelDecor gathers the duel arena's scenery from the game's own image files: the tileset's
+// rocks and grass, the props' banners, the projectile sheet's dust and the fx sheet's clash
+// and ground flecks.
 func (g *Game) duelDecor() *duelview.Decor {
 	a := g.assets
 	tile := func(id int) duelview.Sprite {
@@ -35,6 +36,18 @@ func (g *Game) duelDecor() *duelview.Decor {
 	for name, dst := range map[string]*duelview.Sprite{"banner": &d.Banner, "command_flag": &d.Flag} {
 		p := a.Props[name]
 		*dst = duelview.Sprite{Image: p.Image, PivotX: p.PivotX, PivotY: p.PivotY}
+	}
+	shot := func(name string) []duelview.Sprite {
+		var out []duelview.Sprite
+		s := a.FX[name]
+		for _, f := range s.Frames {
+			out = append(out, duelview.Sprite{Image: f, PivotX: s.Anchor[0], PivotY: s.Anchor[1]})
+		}
+		return out
+	}
+	d.Clash, d.ClashCrit = shot("clash"), shot("clash_crit")
+	if s := shot("speck"); len(s) > 0 {
+		d.Speck = s[0]
 	}
 	dust := a.Projectiles["dust"]
 	for i, f := range dust.Frames {
@@ -63,7 +76,7 @@ func (g *Game) drawDuelCards(dst *ebiten.Image, v *duelview.View) {
 	x, y := uiW/2-w/2, uiH-h-int(48*s)
 	box := image.Rect(x-24, y-24, x+w+24, y+h+24)
 	g.popup(dst, "duel:cards", 0, uiW, uiH, box, func(dst *ebiten.Image) {
-		window(dst, image.Rect(x, y, x+w, y+h))
+		g.window(dst, image.Rect(x, y, x+w, y+h))
 		for side := range 2 {
 			g.duelCard(dst, v.Fighters[side], side, x+pad+side*(cw+gap), y+pad, cw, ch, s)
 		}
