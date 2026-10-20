@@ -25,10 +25,14 @@ type Structure struct {
 }
 
 // State lies over a cell and is put there by events. Then is the state it turns into when its rounds
-// run out (none: the cell is clear again); Blaze is the size of the fire drawn on it.
+// run out (none: the cell is clear again). On, when given, lists the structure glyphs it can lie over
+// (a damaged bridge); none means any cell. Look names how the picture shows it ("ember", "flame",
+// "soot", "damaged", "broken"); Blaze is the size of the fire drawn on it.
 type State struct {
 	Name   string
 	Then   string  `json:",omitempty"`
+	On     string  `json:",omitempty"`
+	Look   string  `json:",omitempty"`
 	Blaze  float64 `json:",omitempty"`
 	RestHP *int    `json:",omitempty"`
 }
@@ -150,8 +154,12 @@ func (d *Data) ValidCell(c Cell) string {
 		}
 	}
 	if c.State != NoLayer {
-		if _, ok := d.States[string(c.State)]; !ok {
+		s, ok := d.States[string(c.State)]
+		if !ok {
 			return "unknown state " + string(c.State)
+		}
+		if s.On != "" && !strings.Contains(s.On, string(c.Structure)) {
+			return s.Name + " cannot lie over " + string(c.Structure)
 		}
 	}
 	return ""
@@ -187,6 +195,11 @@ func (d *Data) validateTerrain() string {
 		}
 		if _, ok := d.States[s.Then]; s.Then != "" && !ok {
 			return "state " + k + " turns into unknown state " + s.Then
+		}
+		for _, st := range s.On {
+			if _, ok := d.Structures[string(st)]; !ok {
+				return "state " + k + " lies over unknown structure " + string(st)
+			}
 		}
 	}
 	if c, ok := ParseCell(d.Rules.EdgeTile); !ok || d.ValidCell(c) != "" || c.State != NoLayer {

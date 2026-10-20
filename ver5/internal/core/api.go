@@ -65,10 +65,7 @@ func (e *Engine) LegalActions(actor string) Options {
 		}
 	}
 	if !u.Acted {
-		stock := u.Items
-		if u.Faction == "ally" {
-			stock = e.state.Inventory
-		}
+		stock := e.stock(u)
 		for _, item := range keys(stock) {
 			if stock[item] < 1 {
 				continue

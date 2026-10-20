@@ -5,9 +5,9 @@
 
 The layout is plain text: one row per line, one cell per three characters, cells separated by
 spaces: ground, structure, state (see Grounds, Structures and States in assets/data/game.json).
-    ground     g grass, d wasteland, w water, c wall, i castle floor, h cliff
-    structure  - none, t tree, v village, k camp, o castle, p gate, b bridge
-    state      - none, e embers, F flames, s soot
+    ground     g grass, d wasteland, w water, c wall, m gate wall, i castle floor, h cliff
+    structure  - none, t tree, v village, k camp, o castle, p gate, b bridge, z fence
+    state      - none, e embers, F flames, s soot, d damaged bridge, x broken bridge
 A structure stands only on the grounds its Structures entry lists (a gate on castle floor, a bridge
 on water). `g-- gt- dv-` is grass, a tree on grass and a village on wasteland. Blank lines and lines
 starting with # are ignored. All rows must have the same number of cells (the map's width).

@@ -129,7 +129,11 @@
    ],
    "Look": {
     "Portrait": "jianyong",
-    "Faction": "shu"
+    "Faction": "shu",
+    "Palette": {
+     "themeA": "#d8d0a0",
+     "themeC": "#c8a030"
+    }
    }
   },
   "chengyuanzhi": {
@@ -154,7 +158,11 @@
    ],
    "Look": {
     "Portrait": "chengyuanzhi",
-    "Faction": "turban"
+    "Faction": "turban",
+    "Palette": {
+     "themeC": "#4a3a2a",
+     "hair": "#d8d8d8"
+    }
    }
   },
   "dengmao": {
@@ -179,7 +187,11 @@
    ],
    "Look": {
     "Portrait": "dengmao",
-    "Faction": "turban"
+    "Faction": "turban",
+    "Palette": {
+     "themeC": "#2a5a3a",
+     "themeA": "#c03030"
+    }
    }
   },
   "zhangjiao": {
@@ -412,7 +424,12 @@
    ],
    "Look": {
     "Portrait": "sunqian",
-    "Faction": "shu"
+    "Faction": "shu",
+    "Palette": {
+     "hair": "#2a2a2a",
+     "themeC": "#2a6a4a",
+     "themeA": "#c8b050"
+    }
    }
   },
   "zhaoyun": {
@@ -500,7 +517,11 @@
    ],
    "Look": {
     "Portrait": "yangang",
-    "Faction": "gongsun"
+    "Faction": "gongsun",
+    "Palette": {
+     "horseSkin": "#2e2a28",
+     "saddle": "#e0e0e0"
+    }
    }
   },
   "yuanshao": {
@@ -549,7 +570,12 @@
    ],
    "Look": {
     "Portrait": "wenchou",
-    "Faction": "yuan"
+    "Faction": "yuan",
+    "Palette": {
+     "horseSkin": "#18181c",
+     "saddle": "#c0a020",
+     "iron": "#e0c060"
+    }
    }
   },
   "yanliang": {
@@ -573,7 +599,12 @@
    ],
    "Look": {
     "Portrait": "yanliang",
-    "Faction": "yuan"
+    "Faction": "yuan",
+    "Palette": {
+     "horseSkin": "#e8e4dc",
+     "saddle": "#a02020",
+     "iron": "#d0a030"
+    }
    }
   },
   "zhanghe": {
@@ -597,7 +628,11 @@
    ],
    "Look": {
     "Portrait": "zhanghe",
-    "Faction": "yuan"
+    "Faction": "yuan",
+    "Palette": {
+     "horseSkin": "#8a8e98",
+     "saddle": "#302a20"
+    }
    }
   },
   "chunyuqiong": {
@@ -621,7 +656,11 @@
    ],
    "Look": {
     "Portrait": "chunyuqiong",
-    "Faction": "yuan"
+    "Faction": "yuan",
+    "Palette": {
+     "themeA": "#a02828",
+     "iron": "#d0a030"
+    }
    }
   },
   "gaolan": {
@@ -645,7 +684,11 @@
    ],
    "Look": {
     "Portrait": "gaolan",
-    "Faction": "yuan"
+    "Faction": "yuan",
+    "Palette": {
+     "themeA": "#1e1e24",
+     "iron": "#c0c0cc"
+    }
    }
   },
   "tianfeng": {
@@ -672,7 +715,12 @@
    ],
    "Look": {
     "Portrait": "tianfeng",
-    "Faction": "yuan"
+    "Faction": "yuan",
+    "Palette": {
+     "hair": "#e0e0e0",
+     "themeC": "#8a7a3a",
+     "iron": "#d0a030"
+    }
    }
   },
   "shenpei": {
@@ -696,7 +744,11 @@
    ],
    "Look": {
     "Portrait": "shenpei",
-    "Faction": "yuan"
+    "Faction": "yuan",
+    "Palette": {
+     "themeA": "#e8e8e8",
+     "themeB": "#5070a0"
+    }
    }
   },
   "yuanshu": {
@@ -745,7 +797,8 @@
    ],
    "Look": {
     "Faction": "wu",
-    "Sprite": "sunjian"
+    "Sprite": "sunjian",
+    "Portrait": "sunjian"
    }
   },
   "caocao": {
@@ -799,7 +852,13 @@
    "Equipment": [],
    "Look": {
     "Scene": "xiandi_noncombat",
-    "Faction": "han"
+    "Faction": "han",
+    "Palette": {
+     "themeA": "#222228",
+     "themeB": "#e0b830",
+     "iron": "#e8c040"
+    },
+    "Portrait": "xiandi"
    }
   },
   "dongzhuo": {
@@ -963,7 +1022,11 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "yuan"
+    "Faction": "yuan",
+    "Palette": {
+     "horseSkin": "#5a3020",
+     "saddle": "#8a8a30"
+    }
    }
   },
   "wuanguo": {
@@ -986,7 +1049,11 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "yuan"
+    "Faction": "yuan",
+    "Palette": {
+     "horseSkin": "#a09078",
+     "saddle": "#404060"
+    }
    }
   },
   "troop_commoner_man": {

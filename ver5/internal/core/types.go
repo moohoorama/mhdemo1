@@ -34,6 +34,9 @@ type Unit struct {
 	Items                                map[string]int
 }
 
+// NPC reports whether the unit keeps its own items instead of drawing on the party Inventory.
+func (u Unit) NPC() bool { return u.Faction != "ally" || u.AI }
+
 func (u Unit) ActsIn(turn string) bool {
 	if u.AI && u.Faction == "ally" {
 		return turn == "support"

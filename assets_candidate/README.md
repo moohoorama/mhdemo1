@@ -1,6 +1,6 @@
 # assets_candidate
 
-게임에 넣기 전에 눈으로 보고 고르기 위한 후보 그림. 게임(`ver5/assets`)은 건드리지 않는다. 마음에 든 것만 `ver5/assets/graphics/`로 옮기고 `index.json`에 등록한다.
+게임에 넣기 전에 눈으로 보고 고르기 위한 후보 그림. 이 폴더의 그림은 원본이고, 게임이 읽는 것은 `ver5/assets/graphics/`다. `python3 ver5/tools/build_extra.py`가 옛 기둥 성문(`gate_*`)과 숲 속 덤불(`cover_bush_*`)을 뺀 나머지를 `graphics/map/extra.png`로 묶고 불·연기 줄을 `graphics/effects/`로 옮긴다(2026-10). 장면 14개는 `ver5/tools/scene_maps/`가 `graphics/maps/S_*.json`으로 만든다.
 
 ## 열어 보기
 

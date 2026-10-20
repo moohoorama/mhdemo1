@@ -598,8 +598,12 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 		color = sp.Faction
 	}
 	u := Unit{AI: sp.AI, Policy: sp.Policy, Goal: copyGoal(sp.Goal), DuelFirst: sp.DuelFirst, Group: sp.Group, ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
-	if side == "enemy" {
-		for item, n := range e.data.Rules.EnemyStock {
+	npcStock := e.data.Rules.EnemyStock
+	if side == "ally" {
+		npcStock = e.data.Rules.AllyStock
+	}
+	if u.NPC() {
+		for item, n := range npcStock {
 			u.Items[item] = n
 		}
 	}

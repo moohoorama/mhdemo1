@@ -184,6 +184,8 @@ caffeinate -d -i go run ./cmd/_uidemo-vm -ui uiscale -frames 760 -sheet -at 260,
 - `-sheet`는 기준 화면 넷(폰 2400×1080 130%·160%, 4:3 태블릿 2048×1536 130%, 데스크톱 1280×850 100%)에서 같은 프레임을 찍어 한 장에 놓는다.
   UI를 고친 뒤 이 네 화면에서 겹침이 없는지 본다.
 - 데모: `uiscale`(이야기와 전투 HUD, 폰 배율 확인), `popups`(타이틀·창·모달·출전 준비), `hudpanel`(패널 탭), `menu`(명령 메뉴),
-  `damage`, `turn`, `dialogue`, `intro`, `deploy`, `duel`, `editor`, `enemycam`, `outside`(맵 밖 지형), `fonts`.
+  `damage`, `turn`, `dialogue`, `intro`, `deploy`, `duel`, `editor`, `enemycam`, `outside`(맵 밖 지형), `fonts`,
+  `fire`(불씨·화염 칸), `mapfx`(1장 맵에 성문·울타리·불타는 숲·마을·성벽, 그을음, 다리 온전·손상·파괴를 그려 넣고 카메라가 60프레임씩 돌며 보인다. `-frames 360 -at 30,90,150,210,270,330`),
+  `scenemap`(장면 맵 하나를 장면 카메라 배율로 보인다. `-stage S_castle_out`처럼 맵 ID를 준다).
 - 맞는 데모가 없으면 `internal/gui/uidemo_<이름>.go`를 추가해 `init()`에서 `demos["이름"]`에 등록한다. `cmd/_uidemo`는 같은 데모를 창으로 띄운다.
 - 실제 게임 창에서는 `F12`가 현재 프레임을 `reports/gui/screen-NNNNNN.png`로 저장한다(`-audit <dir>`로 위치 변경, `-shots 600,1200`은 자동 진행 중 그 틱에 저장).

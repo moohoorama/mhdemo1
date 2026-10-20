@@ -73,6 +73,9 @@
   "EnemyStock": {
    "ration": 1
   },
+  "AllyStock": {
+   "ration": 1
+  },
   "EdgeTile": "w--",
   "PhysicalLevelScale": 20,
   "MagicLevelScale": 10,
@@ -135,6 +138,11 @@
    "Grounds": "g",
    "RestHP": 8,
    "RestMP": 2
+  },
+  "b": {
+   "Name": "bridge",
+   "Glyph": "b",
+   "Grounds": "w"
   }
  },
  "States": {
@@ -150,6 +158,16 @@
   },
   "s": {
    "Name": "soot"
+  },
+  "d": {
+   "Name": "damaged",
+   "On": "b",
+   "Look": "damaged"
+  },
+  "x": {
+   "Name": "broken",
+   "On": "b",
+   "Look": "broken"
   }
  }
 }

@@ -1357,6 +1357,1510 @@
  "maps": [
   "maps/S_camp.json",
   "maps/S_peach.json",
-  "maps/S_village.json"
- ]
+  "maps/S_village.json",
+  "maps/S_vil_peace.json",
+  "maps/S_vil_burnt.json",
+  "maps/S_tent.json",
+  "maps/S_road.json",
+  "maps/S_hill.json",
+  "maps/S_army_camp.json",
+  "maps/S_castle_out.json",
+  "maps/S_castle_out_open.json",
+  "maps/S_courtyard.json",
+  "maps/S_rampart.json",
+  "maps/S_office.json",
+  "maps/S_palace.json",
+  "maps/S_house.json",
+  "maps/S_garden.json"
+ ],
+ "extra": {
+  "version": 1,
+  "image": "map/extra.png",
+  "sprites": {
+   "ash_1_0": {
+    "rect": [
+     721,
+     316,
+     32,
+     16
+    ],
+    "pivot": [
+     16,
+     8
+    ],
+    "layer": "ground"
+   },
+   "ash_1_1": {
+    "rect": [
+     754,
+     316,
+     32,
+     16
+    ],
+    "pivot": [
+     16,
+     8
+    ],
+    "layer": "ground"
+   },
+   "ash_1_2": {
+    "rect": [
+     787,
+     316,
+     32,
+     16
+    ],
+    "pivot": [
+     16,
+     8
+    ],
+    "layer": "ground"
+   },
+   "ash_2_0": {
+    "rect": [
+     820,
+     316,
+     32,
+     16
+    ],
+    "pivot": [
+     16,
+     8
+    ],
+    "layer": "ground"
+   },
+   "ash_2_1": {
+    "rect": [
+     853,
+     316,
+     32,
+     16
+    ],
+    "pivot": [
+     16,
+     8
+    ],
+    "layer": "ground"
+   },
+   "ash_2_2": {
+    "rect": [
+     886,
+     316,
+     32,
+     16
+    ],
+    "pivot": [
+     16,
+     8
+    ],
+    "layer": "ground"
+   },
+   "ash_3_0": {
+    "rect": [
+     919,
+     316,
+     32,
+     16
+    ],
+    "pivot": [
+     16,
+     8
+    ],
+    "layer": "ground"
+   },
+   "ash_3_1": {
+    "rect": [
+     952,
+     316,
+     32,
+     16
+    ],
+    "pivot": [
+     16,
+     8
+    ],
+    "layer": "ground"
+   },
+   "ash_3_2": {
+    "rect": [
+     985,
+     316,
+     32,
+     16
+    ],
+    "pivot": [
+     16,
+     8
+    ],
+    "layer": "ground"
+   },
+   "avenue_u": {
+    "rect": [
+     0,
+     357,
+     32,
+     16
+    ],
+    "pivot": [
+     16,
+     8
+    ],
+    "layer": "ground"
+   },
+   "avenue_v": {
+    "rect": [
+     33,
+     357,
+     32,
+     16
+    ],
+    "pivot": [
+     16,
+     8
+    ],
+    "layer": "ground"
+   },
+   "bed": {
+    "rect": [
+     934,
+     267,
+     52,
+     40
+    ],
+    "pivot": [
+     26,
+     34
+    ],
+    "layer": "object"
+   },
+   "brazier": {
+    "rect": [
+     652,
+     316,
+     28,
+     28
+    ],
+    "pivot": [
+     14,
+     24
+    ],
+    "layer": "object"
+   },
+   "bridge_u_broken": {
+    "rect": [
+     396,
+     316,
+     63,
+     34
+    ],
+    "pivot": [
+     32,
+     17
+    ],
+    "layer": "ground"
+   },
+   "bridge_u_damaged": {
+    "rect": [
+     460,
+     316,
+     63,
+     34
+    ],
+    "pivot": [
+     32,
+     17
+    ],
+    "layer": "ground"
+   },
+   "bridge_v_broken": {
+    "rect": [
+     524,
+     316,
+     63,
+     34
+    ],
+    "pivot": [
+     32,
+     17
+    ],
+    "layer": "ground"
+   },
+   "bridge_v_damaged": {
+    "rect": [
+     588,
+     316,
+     63,
+     34
+    ],
+    "pivot": [
+     32,
+     17
+    ],
+    "layer": "ground"
+   },
+   "burnt_camp": {
+    "rect": [
+     582,
+     0,
+     100,
+     110
+    ],
+    "pivot": [
+     50,
+     77
+    ],
+    "layer": "object"
+   },
+   "burnt_forest_0": {
+    "rect": [
+     61,
+     316,
+     56,
+     39
+    ],
+    "pivot": [
+     26,
+     26
+    ],
+    "layer": "object"
+   },
+   "burnt_forest_1": {
+    "rect": [
+     118,
+     316,
+     58,
+     39
+    ],
+    "pivot": [
+     30,
+     26
+    ],
+    "layer": "object"
+   },
+   "burnt_forest_2": {
+    "rect": [
+     0,
+     316,
+     60,
+     40
+    ],
+    "pivot": [
+     31,
+     27
+    ],
+    "layer": "object"
+   },
+   "burnt_forest_3": {
+    "rect": [
+     177,
+     316,
+     54,
+     39
+    ],
+    "pivot": [
+     27,
+     27
+    ],
+    "layer": "object"
+   },
+   "burnt_hut": {
+    "rect": [
+     612,
+     139,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "burnt_oak_0": {
+    "rect": [
+     653,
+     139,
+     40,
+     48
+    ],
+    "pivot": [
+     20,
+     44
+    ],
+    "layer": "object"
+   },
+   "burnt_oak_1": {
+    "rect": [
+     694,
+     139,
+     40,
+     48
+    ],
+    "pivot": [
+     20,
+     44
+    ],
+    "layer": "object"
+   },
+   "burnt_oak_2": {
+    "rect": [
+     735,
+     139,
+     40,
+     48
+    ],
+    "pivot": [
+     20,
+     44
+    ],
+    "layer": "object"
+   },
+   "burnt_tavern": {
+    "rect": [
+     196,
+     139,
+     74,
+     75
+    ],
+    "pivot": [
+     39,
+     58
+    ],
+    "layer": "object"
+   },
+   "burnt_village": {
+    "rect": [
+     683,
+     0,
+     100,
+     110
+    ],
+    "pivot": [
+     50,
+     77
+    ],
+    "layer": "object"
+   },
+   "curtain_ne": {
+    "rect": [
+     536,
+     139,
+     37,
+     50
+    ],
+    "pivot": [
+     4,
+     48
+    ],
+    "layer": "object"
+   },
+   "curtain_nw": {
+    "rect": [
+     574,
+     139,
+     37,
+     50
+    ],
+    "pivot": [
+     34,
+     48
+    ],
+    "layer": "object"
+   },
+   "fence_00": {
+    "rect": [
+     776,
+     139,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_01": {
+    "rect": [
+     817,
+     139,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_02": {
+    "rect": [
+     858,
+     139,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_03": {
+    "rect": [
+     899,
+     139,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_04": {
+    "rect": [
+     940,
+     139,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_05": {
+    "rect": [
+     981,
+     139,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_06": {
+    "rect": [
+     0,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_07": {
+    "rect": [
+     41,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_08": {
+    "rect": [
+     82,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_09": {
+    "rect": [
+     123,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_10": {
+    "rect": [
+     164,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_11": {
+    "rect": [
+     205,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_12": {
+    "rect": [
+     246,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_13": {
+    "rect": [
+     287,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_14": {
+    "rect": [
+     328,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "fence_15": {
+    "rect": [
+     369,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "gatehouse_closed_u": {
+    "rect": [
+     410,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "gatehouse_closed_v": {
+    "rect": [
+     451,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "gatehouse_floor_u": {
+    "rect": [
+     492,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "ground"
+   },
+   "gatehouse_floor_v": {
+    "rect": [
+     533,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "ground"
+   },
+   "hall_u": {
+    "rect": [
+     0,
+     139,
+     97,
+     78
+    ],
+    "pivot": [
+     50,
+     56
+    ],
+    "layer": "object"
+   },
+   "hall_v": {
+    "rect": [
+     98,
+     139,
+     97,
+     78
+    ],
+    "pivot": [
+     48,
+     56
+    ],
+    "layer": "object"
+   },
+   "incense": {
+    "rect": [
+     681,
+     316,
+     24,
+     28
+    ],
+    "pivot": [
+     12,
+     26
+    ],
+    "layer": "object"
+   },
+   "lantern": {
+    "rect": [
+     232,
+     316,
+     16,
+     36
+    ],
+    "pivot": [
+     8,
+     35
+    ],
+    "layer": "object"
+   },
+   "map_table": {
+    "rect": [
+     249,
+     316,
+     48,
+     36
+    ],
+    "pivot": [
+     24,
+     20
+    ],
+    "layer": "object"
+   },
+   "milestone": {
+    "rect": [
+     706,
+     316,
+     14,
+     24
+    ],
+    "pivot": [
+     7,
+     22
+    ],
+    "layer": "object"
+   },
+   "pavilion": {
+    "rect": [
+     271,
+     139,
+     95,
+     72
+    ],
+    "pivot": [
+     48,
+     52
+    ],
+    "layer": "object"
+   },
+   "plum_tree": {
+    "rect": [
+     367,
+     139,
+     66,
+     60
+    ],
+    "pivot": [
+     33,
+     55
+    ],
+    "layer": "object"
+   },
+   "screen_u": {
+    "rect": [
+     434,
+     139,
+     50,
+     56
+    ],
+    "pivot": [
+     25,
+     44
+    ],
+    "layer": "object"
+   },
+   "screen_v": {
+    "rect": [
+     485,
+     139,
+     50,
+     56
+    ],
+    "pivot": [
+     25,
+     44
+    ],
+    "layer": "object"
+   },
+   "sfence_00": {
+    "rect": [
+     615,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_01": {
+    "rect": [
+     656,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_02": {
+    "rect": [
+     697,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_03": {
+    "rect": [
+     738,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_04": {
+    "rect": [
+     779,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_05": {
+    "rect": [
+     820,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_06": {
+    "rect": [
+     861,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_07": {
+    "rect": [
+     902,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_08": {
+    "rect": [
+     943,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_09": {
+    "rect": [
+     984,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_10": {
+    "rect": [
+     0,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_11": {
+    "rect": [
+     41,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_12": {
+    "rect": [
+     82,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_13": {
+    "rect": [
+     123,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_14": {
+    "rect": [
+     164,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sfence_15": {
+    "rect": [
+     205,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_first_u": {
+    "rect": [
+     784,
+     0,
+     36,
+     97
+    ],
+    "pivot": [
+     43,
+     93
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_first_v": {
+    "rect": [
+     821,
+     0,
+     36,
+     97
+    ],
+    "pivot": [
+     -6,
+     93
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_second_u": {
+    "rect": [
+     0,
+     0,
+     100,
+     138
+    ],
+    "pivot": [
+     51,
+     117
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_second_v": {
+    "rect": [
+     101,
+     0,
+     100,
+     138
+    ],
+    "pivot": [
+     50,
+     117
+    ],
+    "layer": "object"
+   },
+   "sgate_open_first_u": {
+    "rect": [
+     892,
+     0,
+     37,
+     90
+    ],
+    "pivot": [
+     43,
+     93
+    ],
+    "layer": "object"
+   },
+   "sgate_open_first_v": {
+    "rect": [
+     930,
+     0,
+     37,
+     90
+    ],
+    "pivot": [
+     -5,
+     93
+    ],
+    "layer": "object"
+   },
+   "sgate_open_second_u": {
+    "rect": [
+     202,
+     0,
+     100,
+     138
+    ],
+    "pivot": [
+     51,
+     117
+    ],
+    "layer": "object"
+   },
+   "sgate_open_second_v": {
+    "rect": [
+     303,
+     0,
+     100,
+     138
+    ],
+    "pivot": [
+     50,
+     117
+    ],
+    "layer": "object"
+   },
+   "stairs_u": {
+    "rect": [
+     298,
+     316,
+     48,
+     36
+    ],
+    "pivot": [
+     24,
+     32
+    ],
+    "layer": "object"
+   },
+   "stairs_v": {
+    "rect": [
+     347,
+     316,
+     48,
+     36
+    ],
+    "pivot": [
+     24,
+     32
+    ],
+    "layer": "object"
+   },
+   "swall_u": {
+    "rect": [
+     858,
+     0,
+     16,
+     93
+    ],
+    "pivot": [
+     16,
+     83
+    ],
+    "layer": "object"
+   },
+   "swall_v": {
+    "rect": [
+     875,
+     0,
+     16,
+     93
+    ],
+    "pivot": [
+     0,
+     84
+    ],
+    "layer": "object"
+   },
+   "taihu_rock": {
+    "rect": [
+     902,
+     267,
+     31,
+     47
+    ],
+    "pivot": [
+     17,
+     40
+    ],
+    "layer": "object"
+   },
+   "throne_u": {
+    "rect": [
+     404,
+     0,
+     88,
+     112
+    ],
+    "pivot": [
+     44,
+     84
+    ],
+    "layer": "object"
+   },
+   "throne_v": {
+    "rect": [
+     493,
+     0,
+     88,
+     112
+    ],
+    "pivot": [
+     44,
+     84
+    ],
+    "layer": "object"
+   },
+   "wall_clean_00": {
+    "rect": [
+     246,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_01": {
+    "rect": [
+     287,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_02": {
+    "rect": [
+     328,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_03": {
+    "rect": [
+     369,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_04": {
+    "rect": [
+     410,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_05": {
+    "rect": [
+     451,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_06": {
+    "rect": [
+     492,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_07": {
+    "rect": [
+     533,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_08": {
+    "rect": [
+     574,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_09": {
+    "rect": [
+     615,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_10": {
+    "rect": [
+     656,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_11": {
+    "rect": [
+     697,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_12": {
+    "rect": [
+     738,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_13": {
+    "rect": [
+     779,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_14": {
+    "rect": [
+     820,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "wall_clean_15": {
+    "rect": [
+     861,
+     267,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   },
+   "hut": {
+    "rect": [
+     574,
+     218,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     39
+    ],
+    "layer": "object"
+   }
+  }
+ },
+ "effects": {
+  "flame_t": {
+   "image": "effects/flame_t.png",
+   "frame": [
+    10,
+    18
+   ],
+   "frames": 6,
+   "ms": 110,
+   "pivot": [
+    5,
+    15
+   ]
+  },
+  "flame_t_small": {
+   "image": "effects/flame_t_small.png",
+   "frame": [
+    7,
+    11
+   ],
+   "frames": 6,
+   "ms": 110,
+   "pivot": [
+    3,
+    8
+   ]
+  },
+  "flame": {
+   "image": "effects/flame.png",
+   "frame": [
+    14,
+    26
+   ],
+   "frames": 6,
+   "ms": 110,
+   "pivot": [
+    7,
+    23
+   ]
+  },
+  "flame_small": {
+   "image": "effects/flame_small.png",
+   "frame": [
+    10,
+    17
+   ],
+   "frames": 6,
+   "ms": 110,
+   "pivot": [
+    5,
+    14
+   ]
+  },
+  "smoke_t": {
+   "image": "effects/smoke_t.png",
+   "frame": [
+    16,
+    16
+   ],
+   "frames": 8,
+   "ms": 0,
+   "pivot": [
+    8,
+    8
+   ]
+  },
+  "smoke": {
+   "image": "effects/smoke.png",
+   "frame": [
+    28,
+    28
+   ],
+   "frames": 8,
+   "ms": 0,
+   "pivot": [
+    14,
+    14
+   ]
+  }
+ }
 }

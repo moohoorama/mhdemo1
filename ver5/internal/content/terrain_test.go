@@ -66,6 +66,8 @@ func TestWhatStandsOnWhat(t *testing.T) {
 		"ip-": true, "gp-": false, "cp-": false,
 		"wb-": true, "gb-": false,
 		"g-e": true, "g-F": true, "g-s": true, "g-x": false, "x--": false, "gx-": false,
+		"m--": true, "mt-": false, "mz-": false, "gz-": true, "dz-": true, "iz-": true, "wz-": false, "cz-": false,
+		"wbd": true, "wbx": true, "gbd": false, "g-d": false, "gvx": false, "gtd": false,
 	} {
 		assert.Equal(t, ok, d.ValidCell(cell(s)) == "", s)
 	}
@@ -87,4 +89,19 @@ func TestEveryRealMapCellIsValidAndDrawsTheOldGlyph(t *testing.T) {
 			}
 		}
 	}
+}
+
+func TestGatesFencesAndBrokenBridgesBlockTheWay(t *testing.T) {
+	d := loadReal(t)
+	foot := d.Classes[d.Characters[d.Campaign.Roster[0]].Class].Terrain
+	cav := d.Classes["light_cavalry"].Terrain
+	for _, g := range []string{foot, cav} {
+		assert.Zero(t, d.Move(g, cell("m--")).Cost, "a gate wall")
+		assert.Zero(t, d.Move(g, cell("gz-")).Cost, "a fence")
+		assert.Zero(t, d.Move(g, cell("wbx")).Cost, "a broken bridge")
+		assert.Positive(t, d.Move(g, cell("wb-")).Cost, "a whole bridge")
+		assert.Positive(t, d.Move(g, cell("wbd")).Cost, "a damaged bridge can still be crossed")
+	}
+	assert.Equal(t, 2, d.Move(foot, cell("wbd")).Cost, "...slowly")
+	assert.True(t, d.Props(cell("wbx")).Water, "a broken bridge lies over water")
 }

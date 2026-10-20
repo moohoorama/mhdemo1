@@ -185,9 +185,11 @@ func (d *Data) Validate() error {
 			}
 		}
 	}
-	for item, n := range r.EnemyStock {
-		if _, ok := d.Items[item]; !ok || n < 0 {
-			return fmt.Errorf("enemy stock %s", item)
+	for _, stock := range []map[string]int{r.EnemyStock, r.AllyStock} {
+		for item, n := range stock {
+			if _, ok := d.Items[item]; !ok || n < 0 {
+				return fmt.Errorf("npc stock %s", item)
+			}
 		}
 	}
 	c := d.Campaign

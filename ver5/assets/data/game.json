@@ -73,6 +73,9 @@
   "EnemyStock": {
    "bean": 1
   },
+  "AllyStock": {
+   "bean": 1
+  },
   "EdgeTile": "w--",
   "ExpDefenseShare": 0.5,
   "PhysicalLevelScale": 20,
@@ -193,6 +196,11 @@
    "Name": "절벽",
    "Glyph": "h",
    "Surface": 2
+  },
+  "m": {
+   "Name": "성문",
+   "Glyph": "m",
+   "Surface": 1
   }
  },
  "Structures": {
@@ -236,21 +244,39 @@
    "Name": "다리",
    "Glyph": "b",
    "Grounds": "w"
+  },
+  "z": {
+   "Name": "울타리",
+   "Glyph": "z",
+   "Grounds": "gdi"
   }
  },
  "States": {
   "e": {
    "Name": "불씨",
+   "Look": "ember",
    "Blaze": 0.8,
    "RestHP": -20
   },
   "F": {
    "Name": "화염",
+   "Look": "flame",
    "Blaze": 1.4,
    "Then": "s"
   },
   "s": {
-   "Name": "그을음"
+   "Name": "그을음",
+   "Look": "soot"
+  },
+  "d": {
+   "Name": "손상",
+   "On": "b",
+   "Look": "damaged"
+  },
+  "x": {
+   "Name": "파괴",
+   "On": "b",
+   "Look": "broken"
   }
  }
 }

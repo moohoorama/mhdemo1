@@ -455,11 +455,7 @@ func (e *Engine) physical(u, v *Unit, s content.Skill, c Command) {
 		}
 		if s.Effect == "steal" && q.Items[s.Item] > 0 && e.rand(100) < 30 {
 			q.Items[s.Item]--
-			if u.Faction == "ally" {
-				e.state.Inventory[s.Item]++
-			} else {
-				u.Items[s.Item]++
-			}
+			e.stock(u)[s.Item]++
 		}
 	}
 	e.leech(u, total)
@@ -563,10 +559,7 @@ func (e *Engine) useItem(u *Unit, c Command) error {
 	if v == nil || v.HP <= 0 || v.Faction != u.Faction || dist(u.X, u.Y, v.X, v.Y) > 1 {
 		return fail("InvalidTarget")
 	}
-	stock := u.Items
-	if u.Faction == "ally" {
-		stock = e.state.Inventory
-	}
+	stock := e.stock(u)
 	if stock[c.Item] < 1 {
 		return fail("MissingItem")
 	}
@@ -731,4 +724,12 @@ func (e *Engine) dot(v *Unit, id string, n int) {
 	if v.HP == 0 {
 		e.emit("retreat", v.ID, "", 0)
 	}
+}
+
+// stock is the item pouch the unit draws from: its own for NPCs, the party's for player units.
+func (e *Engine) stock(u *Unit) map[string]int {
+	if u.NPC() {
+		return u.Items
+	}
+	return e.state.Inventory
 }

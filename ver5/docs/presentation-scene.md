@@ -37,9 +37,24 @@ scenes.<노드 ID> = {
 beat = 단계 그룹의 배열, 단계 그룹 = 단계의 배열
 ```
 
-- `map`: `assets/graphics/index.json`의 `maps`에 등록된 그림 데이터의 ID다(지금 `S_peach`·`S_village`·`S_camp`, 파일은 `assets/graphics/maps/S_*.json`).
+- `map`: `assets/graphics/index.json`의 `maps`에 등록된 그림 데이터의 ID다(`assets/graphics/maps/S_*.json`). 처음 셋 `S_peach`(도원)·`S_village`(탁현 마을)·`S_camp`(군막)은 칸 하나가 큰 칸인 옛 형식이고, 아래 14개는 전투맵과 같은 "네이티브" 형식이다.
   `scenes.json`의 `maps`에 같은 맵의 칸·소품 원본이 적혀 있으나 런타임은 읽지 않는다. 새 장면 맵은 `graphics/maps/`에 파일을 두고 `index.json`에 올린다.
-  맵 파일은 칸(`tiles`)·지면(`ground`)·장식(`decorations`)·소품(`props`)을 가지며 소품은 `[이름, u, v]`(소수 가능) 또는 `[이름, u0, v0, u1, v1]`(칸 채우기)다.
+  옛 형식의 맵 파일은 칸(`tiles`)·지면(`ground`)·장식(`decorations`)·소품(`props`)을 가지며 소품은 `[이름, u, v]`(소수 가능) 또는 `[이름, u0, v0, u1, v1]`(칸 채우기)다.
+
+  | 맵 ID | 장면 | 맵 ID | 장면 |
+  |---|---|---|---|
+  | `S_vil_peace` | 마을(울타리가 둘러친 집·주막) | `S_vil_burnt` | 불탄 마을(불탄 집·주막·나무, 그을음) |
+  | `S_tent` | 군막 내부 | `S_army_camp` | 진영(막사 열) |
+  | `S_road` | 길 | `S_hill` | 언덕(절벽 뒤) |
+  | `S_castle_out` | 성 밖, 성문 닫힘(해자·큰 성벽·성문 누각) | `S_castle_out_open` | 성 밖, 성문 열림 |
+  | `S_courtyard` | 성 안 마당 | `S_rampart` | 성루 |
+  | `S_office` | 관아 | `S_palace` | 궁궐 |
+  | `S_house` | 동승의 집 | `S_garden` | 조조의 후원 |
+
+  네이티브 장면 맵(`"native": true, "scene": true`)은 `tools/scene_maps/`가 후보 viewer의 장면에서 만든다. 후보 그림의 한 칸(32×16)이 게임의 소타일(`small_tiles`: 바닥·성벽·절벽 글자)이고 게임 칸은 그 2×2다.
+  소품과 장식은 그림 픽셀을 그대로 두고 칸 좌표(소수)로 놓는다. 외곽을 어둡게 칠하지 않고(`scene`) 그림이 끝나는 곳까지 그린다. 만들 때 뺀 것: 유닛(등장인물은 `cast`로 놓는다), 불꽃·연기(`effect: fire`), 하늘, 밤·저녁 색과 불빛(렌더러에 없다).
+  성 밖(`S_castle_out*`)처럼 한 장면이 상태에 따라 달라지면 상태마다 맵을 둔다(성문 닫힘·열림).
+  이야기에 붙이는 일은 `tools/scene_maps/wire_story.py`가 한다. `scene` 노드의 장소(`Place`)를 맵에 대응시켜(표는 그 스크립트의 `PLACES`: 막사 → `S_tent`, 진영·영채 → `S_army_camp`, 언덕 → `S_hill`, 외곽 마을 → `S_vil_peace`, 길·들판 → `S_road`, 궁궐 → `S_palace`, 신도성 안 → `S_courtyard`) 그 뒤 다음 `scene` 노드까지의 `scene`·`say`·`narrate`·`choice` 노드마다 `scenes`에 항목을 만든다. 항목은 `map`과 `cast`를 갖는다. `cast`는 그 구간(다음 `scene` 노드·전투 전까지)에서 대사를 하는 인물(최대 6명)을 맵의 소품에서 가장 먼 빈 땅에 `u`축 한 줄로 세우고 서로 마주 보게 한 것이며, 구간의 모든 노드가 같은 자리를 쓴다. `beats`는 비어 있다(이미 적은 `beats`는 그대로 둔다). 인물이 대사 줄이 아니라 이야기에 이름만 나오면 세우지 않는다. 배우가 없는 장면의 카메라는 맵 가운데를 본다. 인물의 장면 스프라이트(`Look.Scene`)가 없으면 병종 스프라이트로 선다.
 - `cast`: 키는 캐릭터 표시 이름(데이터 묶음의 `Name`)이다. 값의 앞 세 칸 `x, y, 방향`은 필수다. 방향은 대각선 `NW`·`NE`·`SW`·`SE`뿐이다.
   `진영`을 생략하면 캐릭터의 `Look.Faction` 색을 쓴다. `스프라이트`는 캐릭터의 장면 스프라이트 대신 쓸 스프라이트 ID다(병사·촌민·전령 등 엑스트라나 전투 스프라이트).
   배우는 같은 맵을 쓰는 연속 노드 사이에서 위치가 유지되며, 목록에 다시 적으면 그 자리로 놓인다. 맵이 바뀌면 배우가 새로 만들어진다.

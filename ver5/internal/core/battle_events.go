@@ -214,11 +214,19 @@ func (e *Engine) changeTerrain(stage content.Stage, a content.Action) {
 		}
 		for y := max(0, area.Rect.Y); y < min(stage.Height, area.Rect.Y+area.Rect.H); y++ {
 			for x := max(0, area.Rect.X); x < min(stage.Width, area.Rect.X+area.Rect.W); x++ {
-				e.setState(stage, x, y, a.State, a.Turns)
+				if e.data.ValidCell(withState(e.Cell(x, y), a.State)) == "" {
+					e.setState(stage, x, y, a.State, a.Turns)
+				}
 			}
 		}
 		e.emit("terrain", "", a.State, a.Area)
 	}
+}
+
+// withState is the cell with the state put on it.
+func withState(c content.Cell, state string) content.Cell {
+	c.State = state[0]
+	return c
 }
 
 // setState gives a cell a state for turns rounds (0: for good). A state the stage gave the cell

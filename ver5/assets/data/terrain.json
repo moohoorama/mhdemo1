@@ -25,6 +25,10 @@
     "h": {
      "Factor": 1,
      "Cost": 0
+    },
+    "m": {
+     "Factor": 0.9,
+     "Cost": 0
     }
    },
    "Structure": {
@@ -51,6 +55,9 @@
     "b": {
      "Factor": 1.1,
      "Cost": 1
+    },
+    "z": {
+     "Cost": 0
     }
    },
    "State": {
@@ -58,6 +65,12 @@
      "Factor": 0.8
     },
     "F": {
+     "Cost": 0
+    },
+    "d": {
+     "Cost": 2
+    },
+    "x": {
      "Cost": 0
     }
    }
@@ -87,6 +100,10 @@
     "h": {
      "Factor": 1,
      "Cost": 0
+    },
+    "m": {
+     "Factor": 1.2,
+     "Cost": 0
     }
    },
    "Structure": {
@@ -113,6 +130,9 @@
     "b": {
      "Factor": 1,
      "Cost": 1
+    },
+    "z": {
+     "Cost": 0
     }
    },
    "State": {
@@ -120,6 +140,12 @@
      "Factor": 0.8
     },
     "F": {
+     "Cost": 0
+    },
+    "d": {
+     "Cost": 2
+    },
+    "x": {
      "Cost": 0
     }
    }
@@ -149,6 +175,10 @@
     "h": {
      "Factor": 1,
      "Cost": 0
+    },
+    "m": {
+     "Factor": 1.1,
+     "Cost": 0
     }
    },
    "Structure": {
@@ -175,6 +205,9 @@
     "b": {
      "Factor": 1,
      "Cost": 1
+    },
+    "z": {
+     "Cost": 0
     }
    },
    "State": {
@@ -182,6 +215,12 @@
      "Factor": 0.8
     },
     "F": {
+     "Cost": 0
+    },
+    "d": {
+     "Cost": 2
+    },
+    "x": {
      "Cost": 0
     }
    }
@@ -211,6 +250,10 @@
     "h": {
      "Factor": 1,
      "Cost": 0
+    },
+    "m": {
+     "Factor": 1,
+     "Cost": 0
     }
    },
    "Structure": {
@@ -237,6 +280,9 @@
     "b": {
      "Factor": 1,
      "Cost": 1
+    },
+    "z": {
+     "Cost": 0
     }
    },
    "State": {
@@ -244,6 +290,12 @@
      "Factor": 0.8
     },
     "F": {
+     "Cost": 0
+    },
+    "d": {
+     "Cost": 2
+    },
+    "x": {
      "Cost": 0
     }
    }
@@ -273,6 +325,10 @@
     "h": {
      "Factor": 1,
      "Cost": 0
+    },
+    "m": {
+     "Factor": 0.8,
+     "Cost": 0
     }
    },
    "Structure": {
@@ -299,6 +355,9 @@
     "b": {
      "Factor": 1,
      "Cost": 1
+    },
+    "z": {
+     "Cost": 0
     }
    },
    "State": {
@@ -306,6 +365,12 @@
      "Factor": 0.8
     },
     "F": {
+     "Cost": 0
+    },
+    "d": {
+     "Cost": 2
+    },
+    "x": {
      "Cost": 0
     }
    }
@@ -335,6 +400,10 @@
     "h": {
      "Factor": 1,
      "Cost": 0
+    },
+    "m": {
+     "Factor": 1.1,
+     "Cost": 0
     }
    },
    "Structure": {
@@ -361,6 +430,9 @@
     "b": {
      "Factor": 1,
      "Cost": 1
+    },
+    "z": {
+     "Cost": 0
     }
    },
    "State": {
@@ -368,6 +440,12 @@
      "Factor": 0.8
     },
     "F": {
+     "Cost": 0
+    },
+    "d": {
+     "Cost": 2
+    },
+    "x": {
      "Cost": 0
     }
    }

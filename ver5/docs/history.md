@@ -7,6 +7,21 @@
 
 ## 2026-10-18
 
+### 후보 그림을 게임에 연결: 성문·울타리·불·그을음·다리 손상, 장면 맵 14개
+- 결정: 후보 그림(`assets_candidate/`) 중 옛 기둥 성문 A(`gate_*`)와 숲 속 덤불 시안은 넣지 않는다. 성문 C는 "진입 불가 성문 타일"로, 성벽 줄의 한 칸을 대신하는 새 땅 `m`(성문)으로 둔다(구조물이 아니라 땅인 까닭: 성벽 위에는 구조물이 없다는 규칙을 지키고, 방향은 이웃 성벽이 정한다). 울타리는 구조물 `z`(진입 불가), 다리의 손상·파괴는 `On: "b"`인 상태 `d`·`x`로 둔다(이벤트로 다리를 끊을 수 있다)
+- `tools/build_extra.py`(새): 후보 그림 108장(+ 짚집 `hut`)을 `assets/graphics/map/extra.png` 한 장으로 묶고 불·연기 줄 6개를 `graphics/effects/`로 옮겨 `index.json`의 `extra`·`effects`에 올림 — 게임이 후보를 바로 읽게
+- `assets/graphics/index.json`, `internal/gui/assets.go`: `extra`를 소품으로, `effects`를 `Assets.Flames`로 읽고 `wall_clean_NN`을 전투맵 성벽(`wall_NN`)으로 대신 씀(이음새 눈금 없는 성벽) — 성벽이 이어진 줄이 깨끗이 보이게
+- `assets/data/game.json`, `terrain.json`, `mapeditor.json`: 땅 `m` 성문, 구조물 `z` 울타리, 상태 `d` 손상·`x` 파괴(`On`, `Look`)와 병종군별 비용(성문·울타리·파괴 0, 손상 2) — 위 결정
+- `internal/content/terrain.go`, `internal/core/battle_events.go`: 상태의 `On`·`Look`, `terrain` 동작이 놓을 수 없는 칸(다리가 아닌 칸의 손상)을 건너뜀 — 풀밭에 다리 파괴가 놓이지 않게
+- `internal/gui/field_state.go`(새), `field_native.go`, `field.go`: 칸의 상태 모양(`Looks`)을 필드에 알려 불씨·화염은 후보 불꽃 줄과 연기, 그을음은 바닥 덧씌움·불탄 마을·주둔지·숲으로, 다리는 손상·파괴 그림으로 그리고 성문은 성문 누각, 울타리는 이웃과 이은 울타리(칸 두 배 크기)로 그림. 옛 절차 불꽃(`fire.go`)은 지움 — 그림 불꽃으로 바꿨고 둘이 겹치지 않게
+- `internal/gui/uidemo_mapfx.go`, `uidemo_scenemap.go`(새), `uidemo.go`: 데모 `mapfx`(전투맵 새 요소 모음)·`scenemap`(장면 맵 보기), `battle`이 맵을 바꾼 채 시작하는 `battleWith`, `uidemo_fire.go`가 맵 밖 칸에 불을 놓아 `CorruptSave`가 나던 것을 고침
+- `tools/scene_maps/export.mjs`, `build.py`(새): 후보 viewer의 JS 장면을 Node로 돌려 그림 배치를 뽑아 장면 맵 14개(`graphics/maps/S_vil_*`·`S_tent`·`S_road`·`S_hill`·`S_army_camp`·`S_castle_out*`·`S_courtyard`·`S_rampart`·`S_office`·`S_palace`·`S_house`·`S_garden`)를 만듦 — 시나리오에서 `scenes.json`의 `map`으로 쓰게. 후보의 한 칸이 게임 소타일과 같은 크기라 네이티브 맵으로 만들어 그림 픽셀을 그대로 둠. 유닛·불꽃·하늘·밤 색은 뺌
+- `internal/gui/assets.go`, `field.go`: 맵 파일의 `native`·`visual`·`small_tiles`·`scene`을 읽고 `scene` 맵은 외곽 그늘·바닥 무늬 채움 없이 그림 — 장면 맵이 끝나는 곳까지만 그려지게
+- `tools/scene_maps/wire_story.py`(새), `assets/scenes.json`: 이야기의 `scene` 노드 장소 22곳을 맵에 대응시켜 대화 노드 235개를 장면 맵 위에 올리고 그 구간에서 말하는 인물을 맵의 빈 땅에 마주 보게 세움(배우, 비트는 비워 둠) — 장면 맵을 만들어 두기만 하고 `scenes`가 비어 있어 게임에서 하나도 안 쓰이던 것을 고침
+- `internal/gui/scene.go`: 배우가 없는 장면의 카메라를 맵 가운데로 — 배우 평균 위치를 쓰던 계산이 배우 없이는 맵 모서리를 비추어서
+- 시험: `content/terrain_test.go`(성문·울타리·다리 상태), `core/fire_test.go`(다리 상태는 다리에만), `gui/field_state_test.go`·`scene_maps_test.go`(그림 로드, 장면 맵 14개 로드·그리기)
+- 영향: 이전 저장은 `Rules` 변경 없이도 콘텐츠 해시가 달라 호환되지 않는다
+
 ### 지형을 땅·구조물·상태 세 층으로 나눔
 - 결정: 한 칸(대타일)이 규칙의 근간이고 `{땅, 구조물, 상태}`다. 소타일은 그림을 매끈하게 하는 표현이라 저장하지 않고 땅을 2×2로 펼쳐 그림 쪽에서 만든다(1~7장 맵의 소타일은 전부 2×2로 균일해서 잃는 정보가 없었다). 우선순위는 땅 < 구조물 < 상태이고, 이동 비용·배율·회복은 값을 말하는 가장 위층이 이기며 `Water`·`Castle`·`Ambush`는 어느 층이든 가지면 참인 조건이다. 글자 하나가 땅·구조물·상태를 한꺼번에 나타내 마을·숲 위에 불을 붙일 수 없고 그을음을 더할 수 없던 한계를 풀려고
 - 결정: 구조물은 놓을 수 있는 땅이 정해져 있다(관문은 성내, 다리는 물, 나무는 초원·황무지, 마을·주둔지는 초원·황무지·성내, 성은 초원·성내). 성벽·절벽은 구조물이 없다. 불씨(영구, 배율 0.8, 차례 시작 병력 -20%, 비용은 아래층)와 화염(진입 불가, 라운드마다 줄어 끝나면 그을음)과 그을음(규칙 효과 없음)이 상태이며 이벤트로만 생긴다. 구조물을 없애는 `Burns`는 두지 않는다
@@ -27,12 +42,6 @@
 - `docs/data-map.md`, `logic-combat.md`, `logic-battle-event.md`, `data-scenario-node.md`, `tools-editor.md`, `system-save.md`, `system-architecture.md`, `todo/engine.md`, `assets/data/README.md`: 현재 동작으로 고침 — 문서가 코드와 맞게
 - 영향: 이전 저장은 모두 호환되지 않는다. 숲 비용(다른 세션의 미커밋 변경)은 그대로 옮겼다
 
-### 숲을 지나갈 수 있게 하고 병력이 나무 사이에 서도록 그림
-- `assets/data/terrain.json`: 숲(`f`)의 비용을 0에서 보병·궁병·서생·적병 그룹 1, 기병 그룹 2로 바꿈. 발석거는 궁병 그룹에 묶여 있어서 `machine` 그룹을 새로 만들고(궁병 표 복사, 숲 비용 2·배율 1.1) `classes.json`의 `catapult`가 쓰게 함. 그룹 이름은 `siege`로 하려다 엔진 소스에 게임 내용을 쓰지 않는 시험(`purity_test`)이 병종 태그 `siege`와 겹쳐 막아서 `machine`으로 함
-- `internal/gui/field.go`·`field_native.go`: 숲 그림의 깊이값을 칸 중심보다 0.1 뒤로 옮겨 숲 칸의 병력보다 나중에 그림 — `assets_candidate`의 "숲 속 병력" 시연 중 ② 나무 사이(반투명)를 고름. 가려진 부분의 반투명은 기존 규칙
-- `internal/content/forest_terrain_test.go`: 숲 비용이 병종 태그(`mounted`·`siege`)와 맞는지 시험
-- 영향: 숲 비율이 높은 맵 2·4·6은 길이 크게 열림. 매복·스테이지 설계는 아직 안 맞춰 봄
-
 ### 1~9장 일기토를 이야기와 성격에 맞춰 다시 씀
 - `assets/scenario/hero/stage01.json`: 영천에 등무(북쪽 진영)와 정원지(등무가 쓰러지면 등장)를 놓고 옛 캠페인의 두 일기토(장비·관우 승, 둘 다 전사)를 되살림 — 새 시나리오로 옮기며 빠졌던 연의 1회의 두 장면이라서. 정원지의 "등무가 죽었다" 대사가 맞도록 등장 순서를 이벤트로 묶음
 - `assets/scenario/hero/stage04.json`: 변수에 여포 대 하후돈(하후돈 열세·퇴각)과 여포 대 장비(무승부, 장비가 호로관보다 수세에 몰리지만 버팀)를 더하고 여포에 `DuelFirst`, 부목표를 "조조 생존"으로 줄이고 승리를 "유비만 동쪽 끝에 도달", 패배에서 조조 퇴각을 뺌 — 하후돈이 퇴각하면 "조조군 장수 전원 생존"을 못 이루고, 조조 퇴각이 패배면 "조조 생존"이 늘 참이라서
@@ -41,6 +50,12 @@
 - `internal/core/campaign_content_test.go`: 이벤트로 나타난 호위병을 치워 일기토 상대 옆자리를 비움
 - `docs/data-speech-style.md`: 장비는 형들을 `형`(관우는 `형님`)으로 부르고 방언은 살짝만, 하후돈·순우경·안량·문추·공손찬 말투와 여포의 `애꾸` 호칭을 더함
 - 영향: `docs/conceptual_scenario.md`, `data-scenario-node.md`, `todo/data.md`
+
+### 숲을 지나갈 수 있게 하고 병력이 나무 사이에 서도록 그림
+- `assets/data/terrain.json`: 숲(`f`)의 비용을 0에서 보병·궁병·서생·적병 그룹 1, 기병 그룹 2로 바꿈. 발석거는 궁병 그룹에 묶여 있어서 `machine` 그룹을 새로 만들고(궁병 표 복사, 숲 비용 2·배율 1.1) `classes.json`의 `catapult`가 쓰게 함. 그룹 이름은 `siege`로 하려다 엔진 소스에 게임 내용을 쓰지 않는 시험(`purity_test`)이 병종 태그 `siege`와 겹쳐 막아서 `machine`으로 함
+- `internal/gui/field.go`·`field_native.go`: 숲 그림의 깊이값을 칸 중심보다 0.1 뒤로 옮겨 숲 칸의 병력보다 나중에 그림 — `assets_candidate`의 "숲 속 병력" 시연 중 ② 나무 사이(반투명)를 고름. 가려진 부분의 반투명은 기존 규칙
+- `internal/content/forest_terrain_test.go`: 숲 비용이 병종 태그(`mounted`·`siege`)와 맞는지 시험
+- 영향: 숲 비율이 높은 맵 2·4·6은 길이 크게 열림. 매복·스테이지 설계는 아직 안 맞춰 봄
 
 ### 스테이지 번호를 1부터 이어서 다시 매김
 - `assets/scenario/hero/stage03~09.json`·`maps/map03~09.json`·`tools/mapgen/layouts/hero/map03~09.txt`: 이야기 번호(1·3·4·5·7·8·9)를 따르던 이름과 ID를 `B01~B07`·`stage01~07`·`map01~07`로 바꿈, 전투 노드(`story03·04·05·07·08·09`)의 `Stage`와 변수 추격전의 `flag-b05-lubu`를 `flag-b04-lubu`로 맞춤 — 스테이지 2가 없는 번호 구멍을 없애려고(스토리 번호는 그대로)
@@ -77,6 +92,13 @@
 ### 전투 이벤트를 조건과 동작(`If`/`Do`)으로 통합함
 - 옛 `Trigger`(`boss-alone`·`duel`)와 `Spawns`·`Dialogue` 필드를 없애고, 이벤트가 상태 조건(`round` `turnstart` `defeated` `at` `adjacent` `hp` `duel` `flag` `any` …)과 동작(`say` `spawn` `remove` `flag`)을 갖게 함. 스폰에 `Group`·`Side`, 스테이지에 번호 붙은 `Areas`. 시점 필드 없이 `turnstart:진영` 조건으로 "한 차례를 버텼다"를 표현하고, 전투 중 `flag`는 승리 때 합쳐지는 `PendingFlags`에 적음. 반복 이벤트(`Repeat`)는 조건이 거짓에서 참이 될 때만 발동하고 `spawn`은 쓰지 못하게 함 — 저장 검증이 이벤트 스폰을 기준으로 삼기 때문.
 - 영향: `internal/core/battle_events.go`·`cond.go`, `internal/content/battle_events.go`·`cond.go`, `docs/logic-battle-event.md`·`data-scenario-node.md`
+
+### 민중 도트 3종(남자·여자·노인) 추가
+- `tools/doteditor/tools/mounted_kits/commoners.py`(신규): 서생 몸체에 베 튜닉·바지/치마·맨발·등짐을 입힌 무기 없는 민중 키트 3종(`commoner_man`·`commoner_woman`·`commoner_elder`). 남자는 수건 두른 상투, 여자는 쪽머리 없이 어깨까지 내려오는 머리, 노인은 회색 줄무늬 백발에 흰 수염과 지팡이 — 진영색을 쓰지 않아 스테이지 진영에 물들지 않게 하고, 셋을 한눈에 구분하려고
+- `tools/doteditor/units/commoner_{man,woman,elder}.yaml`(신규): idle·walk·hit·exhausted·block 변환 결과(attack 없음)와 태그 색 — 비전투 시트도 같은 파일을 쓰려고
+- 결정: 아이 손잡기·업기와 할머니는 뺌 — 아이가 5px 기둥처럼 읽혀 어색했고 할머니는 여자와 구분이 안 돼서
+- `assets/sprites/commoner_{man,woman,elder}.spr`, `internal/sprite/testdata/units/commoner_*.png`(신규): 위 도트를 빌드한 결과와 비교용 PNG — 스프라이트 시험이 .spr마다 PNG를 요구해서
+- `assets/data/characters.json`: 템플릿 캐릭터 `troop_commoner_man`·`troop_commoner_woman`·`troop_commoner_elder`(민중, 경보병 병종, 맨손)를 추가 — 스테이지·장면에서 `Character`로 바로 세울 수 있게
 
 ### 시나리오를 `assets/scenario/`로 옮기고 장 파일과 스테이지·맵 파일로 나눔
 - `assets/data/script.json`·`maps/B0x.json`을 `assets/scenario/<시나리오>/`의 `scenario.json`(`Campaign`+`Chapters`)·`storyNN.json`(장의 노드)·`stageNN.json`(스테이지)·`maps/mapNN.json`(지형)으로 나눔 — 장 흐름이 한 곳에서 보이고, 큰 `Cells`가 사람이 고치는 스테이지 규칙과 섞여 diff를 해치지 않게. 스테이지 ID는 그대로(`B01`)이고 파일은 접두어를 뗀 번호. `Stage.Next`는 없애고 노드 `Next`와 장 순서(`Data.After`)가 대신함. 옛 데이터와 같은 시드의 AI 완주 상태 해시가 같음을 확인.

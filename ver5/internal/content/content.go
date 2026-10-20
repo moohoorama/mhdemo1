@@ -51,6 +51,7 @@ type Rules struct {
 	DeputyDivisor         int   // also the percent scale of charm
 	PromoteLevels         []int // minimum level to promote from tier i
 	EnemyStock            map[string]int
+	AllyStock             map[string]int
 	EdgeTile              string // the cell (ground, structure, state) that lies beyond the map's edge
 	AuraHeal              int
 }

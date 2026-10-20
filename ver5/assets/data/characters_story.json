@@ -20,7 +20,11 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "turban"
+    "Faction": "turban",
+    "Palette": {
+     "themeA": "#6a2a2a",
+     "iron": "#c8a040"
+    }
    }
   },
   "zhangliang": {
@@ -45,7 +49,11 @@
     "plain_clothes"
    ],
    "Look": {
-    "Faction": "turban"
+    "Faction": "turban",
+    "Palette": {
+     "themeC": "#7a2a1a",
+     "iron": "#e8d8a0"
+    }
    }
   },
   "zhangbao": {
@@ -68,7 +76,12 @@
     "plain_clothes"
    ],
    "Look": {
-    "Faction": "turban"
+    "Faction": "turban",
+    "Palette": {
+     "themeC": "#8a2a20",
+     "hair": "#2a2a2a",
+     "themeA": "#d0a030"
+    }
    }
   },
   "luzhi": {
@@ -91,7 +104,12 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "han"
+    "Faction": "han",
+    "Palette": {
+     "themeA": "#2b2b33",
+     "iron": "#e0c060"
+    },
+    "Portrait": "luzhi"
    }
   },
   "huangfusong": {
@@ -114,7 +132,13 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "han"
+    "Faction": "han",
+    "Palette": {
+     "themeA": "#7a1f1f",
+     "themeB": "#d0a030",
+     "iron": "#e8e8f0"
+    },
+    "Portrait": "huangfusong"
    }
   },
   "zhujun": {
@@ -137,7 +161,11 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "han"
+    "Faction": "han",
+    "Palette": {
+     "themeA": "#3a5a3a",
+     "themeB": "#d0a030"
+    }
    }
   },
   "xufu": {
@@ -160,7 +188,10 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "han"
+    "Faction": "han",
+    "Palette": {
+     "themeA": "#e8e0c8"
+    }
    }
   },
   "chengpu": {
@@ -184,7 +215,11 @@
     "war_horse"
    ],
    "Look": {
-    "Faction": "wu"
+    "Faction": "wu",
+    "Palette": {
+     "horseSkin": "#a8402a",
+     "saddle": "#e8d060"
+    }
    }
   },
   "huanggai": {
@@ -207,7 +242,12 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "wu"
+    "Faction": "wu",
+    "Palette": {
+     "themeA": "#2a1c14",
+     "iron": "#8a8a94"
+    },
+    "Portrait": "huanggai"
    }
   },
   "handang": {
@@ -230,7 +270,11 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "wu"
+    "Faction": "wu",
+    "Palette": {
+     "themeA": "#202020",
+     "themeC": "#a02020"
+    }
    }
   },
   "caocen": {
@@ -254,7 +298,11 @@
     "war_horse"
    ],
    "Look": {
-    "Faction": "dong"
+    "Faction": "dong",
+    "Palette": {
+     "horseSkin": "#2a2a30",
+     "saddle": "#8a3030"
+    }
    }
   },
   "lisu": {
@@ -277,7 +325,11 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "dong"
+    "Faction": "dong",
+    "Palette": {
+     "horseSkin": "#9a9aa0",
+     "saddle": "#5a3a70"
+    }
    }
   },
   "xurong": {
@@ -301,7 +353,11 @@
     "war_horse"
    ],
    "Look": {
-    "Faction": "dong"
+    "Faction": "dong",
+    "Palette": {
+     "horseSkin": "#3a2a22",
+     "saddle": "#c8c8d0"
+    }
    }
   },
   "xiahoudun": {
@@ -325,7 +381,12 @@
     "war_horse"
    ],
    "Look": {
-    "Faction": "wei"
+    "Faction": "wei",
+    "Palette": {
+     "horseSkin": "#202026",
+     "saddle": "#d03030",
+     "iron": "#e0c060"
+    }
    }
   },
   "xiahouyuan": {
@@ -349,7 +410,12 @@
     "war_horse"
    ],
    "Look": {
-    "Faction": "wei"
+    "Faction": "wei",
+    "Palette": {
+     "horseSkin": "#b0502a",
+     "saddle": "#3a6fd0",
+     "iron": "#e0c060"
+    }
    }
   },
   "caoren": {
@@ -372,7 +438,11 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "wei"
+    "Faction": "wei",
+    "Palette": {
+     "horseSkin": "#b8b8c0",
+     "saddle": "#1a2a50"
+    }
    }
   },
   "caohong": {
@@ -395,7 +465,11 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "wei"
+    "Faction": "wei",
+    "Palette": {
+     "themeA": "#4a2a60",
+     "iron": "#e0c060"
+    }
    }
   },
   "qiaomao": {
@@ -418,7 +492,10 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "yuan"
+    "Faction": "yuan",
+    "Palette": {
+     "themeA": "#6a8a3a"
+    }
    }
   },
   "hanfu": {
@@ -441,7 +518,11 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "yuan"
+    "Faction": "yuan",
+    "Palette": {
+     "themeA": "#d8d0b0",
+     "themeB": "#c03030"
+    }
    }
   },
   "gongzhou": {
@@ -464,13 +545,16 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "yuan"
+    "Faction": "yuan",
+    "Palette": {
+     "themeA": "#8a5a9a"
+    }
    }
   },
   "fangong": {
    "Name": "번궁",
-   "Biography": "영걸전의 번궁. 신도성에서 유비에게 항복해 따르는 기병.",
-   "Class": "light_cavalry",
+   "Biography": "영걸전의 번궁. 신도성에서 유비에게 항복해 따르는 무도가.",
+   "Class": "brawler",
    "Stats": [
     62,
     72,
@@ -483,8 +567,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
-    "leather_armor"
+    "plain_clothes"
    ],
    "Look": {
     "Faction": "shu",
@@ -513,7 +596,11 @@
    ],
    "Look": {
     "Faction": "yuan",
-    "Portrait": "quyi"
+    "Portrait": "quyi",
+    "Palette": {
+     "iron": "#d0a030",
+     "themeA": "#a02020"
+    }
    }
   },
   "chenzhen": {
@@ -536,7 +623,12 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "yuan"
+    "Faction": "yuan",
+    "Palette": {
+     "iron": "#40404a",
+     "themeA": "#5a8a3a"
+    },
+    "Portrait": "chenzhen"
    }
   },
   "tiankai": {
@@ -560,7 +652,11 @@
     "war_horse"
    ],
    "Look": {
-    "Faction": "gongsun"
+    "Faction": "gongsun",
+    "Palette": {
+     "horseSkin": "#d8d8dc",
+     "saddle": "#c04040"
+    }
    }
   },
   "messenger": {
