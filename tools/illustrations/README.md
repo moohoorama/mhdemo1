@@ -105,8 +105,13 @@ Square 1:1 image, plain dark navy background, no text, no watermark, no border.
   - D-yuan2-lords 원소군 2 + 연합 제후: chunyuqiong, quyi, gaolan, caocao, yuanshu, gongsunzan
   - E-dong 동탁군: dongzhuo, liru, lubu, huaxiong, lijue, huzhen
   - F-gongsun-turban 공손찬군 + 황건: zhaoyun, yangang, zhangjiao, chengyuanzhi, dengmao, turban_soldier
+  - K-others 시나리오 보강: sunjian, huangfusong, luzhi, huanggai, xiandi, chenzhen (헌제는 도트 조형 기준: 관과 금장 흑포. 손견은 시트 칸이 해적 같고 늙어 보여 따로 다시 그렸다 — 아래 프롬프트)
 - 전체 비교: `output/portraits-c1-all.png`
 - 참조 이미지를 넘길 때 `codex exec -i`가 프롬프트까지 이미지 경로로 먹는 문제가 있었다. 스킬 스크립트에서 프롬프트 앞에 `--`를 넣어 고쳤다(2026-10-05).
+
+### 손견 재작업 (2026-10-18)
+
+시트 칸(붉은 두건·웃음)은 "해적 같고 나이 들어 보인다"는 평으로 버렸다. 한 장으로 다시 그렸다: 서른다섯, 각진 턱, 곧은 눈썹, 단정한 수염, 두건 없이 쇠 관을 쓴 상투, 검은 철갑에 진홍 장식, 두 손을 곧게 세운 검 위에 얹은 자세, 안개 낀 강과 전함. 프롬프트 전문은 `portraits/sheets/prompts.md`.
 
 ## 병종 초상 (2026-10-17)
 
