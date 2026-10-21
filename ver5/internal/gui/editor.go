@@ -109,7 +109,7 @@ func artFromDocument(d *mapedit.Document, data *content.Data) *MapArt {
 func (f *Field) dispose() {
 	seen := map[*ebiten.Image]bool{}
 	o := f.outside
-	for _, im := range append(f.ground[:], f.Canvas, f.clip, f.shadows, f.exterior, o.decor, o.tiles, o.layer, o.holeFog, o.holeVig, o.cloud) {
+	for _, im := range append(f.ground[:], f.Canvas, f.clip, f.shadows, f.exterior, f.decor, f.treeShadow, f.cliffTop, o.decor, o.tiles, o.layer, o.holeFog, o.holeVig, o.cloud) {
 		if im != nil && !seen[im] {
 			im.Deallocate()
 			seen[im] = true

@@ -44,6 +44,11 @@ type Field struct {
 	exterior                     *ebiten.Image
 	outside                      outsideLayers
 	looks                        map[image.Point]string // the look of the state on a cell, by cell
+	decor                        *ebiten.Image          // baked ground decoration, see makeScenery
+	treeShadow                   *ebiten.Image          // tree shadows while the field is built, then folded into decor
+	cliffTop                     *ebiten.Image          // baked decoration of the cliff tops, drawn with each cliff block
+	waterFX                      []waterFX
+	clockMS                      float64
 }
 
 var maxBlend = ebiten.Blend{
@@ -106,7 +111,13 @@ func NewField(a *Assets, m *MapArt) *Field {
 		f.makeNativeFloors()
 		f.makeExterior()
 		f.makeOutside()
+		if a.Scenery != nil {
+			f.makeScenery()
+		}
 		f.nativeObjects(&f.nativeItems)
+		if f.treeShadow != nil {
+			f.finishScenery()
+		}
 	}
 	return f
 }
@@ -252,6 +263,7 @@ var fieldGround = color.RGBA{30, 38, 46, 255}
 func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	c := f.Canvas
 	f.sceneryLayer = false
+	f.clockMS = clockMS
 	c.Fill(fieldGround)
 	water := f.A.Animations["water"]
 	if f.Map.Native && f.renderZoom > 0 {
@@ -266,6 +278,10 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			if f.DrawBounds.Empty() || it.rect.Overlaps(f.DrawBounds) {
 				it.draw()
 			}
+		}
+		if f.decor != nil {
+			f.drawBaked(c, f.decor)
+			f.drawWaterFX()
 		}
 	}
 	// Shade the out-of-battle ground only; scenery and units are drawn afterward.

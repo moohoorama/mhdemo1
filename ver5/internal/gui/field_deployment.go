@@ -17,8 +17,14 @@ func (f *Field) deploymentBright(x, y float64) bool {
 	return containsCell(f.deploymentCells, u, v)
 }
 func (f *Field) shadeScenery(dst *ebiten.Image, op *ebiten.DrawImageOptions, x, y float64) {
-	if f.deployment && f.sceneryLayer && dst == f.Canvas && !f.deploymentBright(x, y) {
+	if !f.sceneryLayer || dst != f.Canvas {
+		return
+	}
+	if f.deployment && !f.deploymentBright(x, y) {
 		op.ColorScale.Scale(.45, .45, .45, 1)
+	}
+	if m := f.exteriorShade(x, y); m < 1 {
+		op.ColorScale.Scale(float32(m), float32(m), float32(m), 1)
 	}
 }
 

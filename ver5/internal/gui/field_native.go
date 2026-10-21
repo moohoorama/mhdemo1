@@ -69,10 +69,20 @@ func (f *Field) nativeObjects(items *[]drawItem) {
 		if t == 'm' {
 			s = f.gateSprite(u, v, s)
 		}
-		*items = append(*items, drawItem{y: y * K, rect: f.mapRect(s, x, y), draw: func() { f.blitMap(f.Canvas, s, x, y, nil) }})
+		top := t == 'h'
+		*items = append(*items, drawItem{y: y * K, rect: f.mapRect(s, x, y), draw: func() {
+			f.blitMap(f.Canvas, s, x, y, nil)
+			if top {
+				f.drawCliffTop(x*K, y*K)
+			}
+		}})
 	})
 	f.nativeSites(items)
 	f.nativeFences(items)
+	if f.A.Scenery != nil {
+		f.nativeForest(items)
+		return
+	}
 	// Preserve the number and native size of forest clusters, including exterior forests.
 	v := f.Map.Visual
 	for y := v[1] / 2; y < (v[1]+v[3])/2; y++ {
@@ -145,12 +155,18 @@ func (f *Field) nativeSites(items *[]drawItem) {
 			s := f.A.Sites[name]
 			px, py := f.Center(float64(x), float64(y))
 			at := image.Pt(x, y)
+			still := func() { f.blit(f.Canvas, s, px, py, nil) }
+			if f.A.Scenery != nil {
+				if life, ok := f.A.Scenery.sites[name]; ok {
+					still = func() { f.drawSite(s, life, px, py, x, y) }
+				}
+			}
 			*items = append(*items, drawItem{y: py - .1, rect: f.mapRect(s, px/K, py/K), draw: func() {
 				if burnt, ok := f.A.Props[burntSite[site]]; ok && f.look(at.X, at.Y) == "soot" {
 					f.blit(f.Canvas, burnt.Sprite, px, py, nil)
 					return
 				}
-				f.blit(f.Canvas, s, px, py, nil)
+				still()
 			}})
 		}
 	}

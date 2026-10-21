@@ -40,9 +40,11 @@ type Assets struct {
 	Structures    map[string]Sprite
 	Sites         map[string]Sprite // one-cell strongpoints (camp, village, castle, gates) at the characters' scale
 	Rise          int
+	CliffRise     int // how far a cliff block's top stands above its ground cell
 	Maps          map[string]*MapArt
 	Portraits     map[string]*ebiten.Image // Look.Portrait -> ink-wash portrait
 	Props         map[string]Prop
+	Scenery       *Scenery              // ground decoration and pines; nil when graphics/map/scenery.json is absent
 	Projectiles   Shots                 // thrown stones, their shadows and their landing dust
 	FX            Shots                 // effects and their particles
 	Outside       Shots                 // pines and stones outside the battle area
@@ -160,11 +162,12 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		}
 		Maps       []string // narrative map artwork; battle maps come from content documents
 		Structures struct {
-			Image   string
-			Cell    [2]int
-			Pivot   [2]float64
-			Rise    int
-			Sprites map[string]int
+			Image     string
+			Cell      [2]int
+			Pivot     [2]float64
+			Rise      int
+			CliffRise int `json:"cliff_rise"`
+			Sprites   map[string]int
 		}
 		Sites struct {
 			Image   string
@@ -200,7 +203,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 	}
 	a := &Assets{Bubble: bubble, Scroll: scroll, Duels: scripts, Tiles: map[int]Sprite{}, TileShadow: map[int]Sprite{},
 		Animations: map[string]TileAnimation{}, Structures: map[string]Sprite{}, Sites: map[string]Sprite{}, Maps: map[string]*MapArt{},
-		Rise: index.Structures.Rise, Portraits: map[string]*ebiten.Image{}, Props: map[string]Prop{}}
+		Rise: index.Structures.Rise, CliffRise: index.Structures.CliffRise, Portraits: map[string]*ebiten.Image{}, Props: map[string]Prop{}}
 	statusPixels, err := loadRGBA(filepath.Join(dir, "status", "icons.png"))
 	if err != nil {
 		return nil, err
@@ -357,6 +360,9 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			art.Props = append(art.Props, mp)
 		}
 		a.Maps[m.ID] = art
+	}
+	if a.Scenery, err = loadScenery(dir); err != nil {
+		return nil, err
 	}
 	if a.Projectiles, err = LoadShots(dir, "effects/projectiles"); err != nil {
 		return nil, err

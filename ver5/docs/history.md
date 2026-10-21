@@ -337,3 +337,20 @@
 - `internal/duelview/decor.go`: 일기토 진영의 깃발을 3개에서 6개(군기 4·지휘 깃발 2)로 늘리고, 기존 `banner`/`command_flag` 그림을 열 단위로 물결치게 비튼 4프레임 애니메이션(`wave`, 170ms)을 런타임에 만들어 씀 — 새 그림 없이 펄럭임을 내려고. 깃발마다 위상이 달라 같이 움직이지 않음.
 - `internal/gui/duel.go`: 낮은 화면의 일기토 말풍선 배율 1.6→2 — 대사가 아직 작다는 의견.
 - `internal/gui/duel_gallery.go`: 메뉴의 일기토 모드 뷰어에도 `Decor: g.duelDecor()`를 넘김 — 깃발·바위·풀이 없는 빈 경기장이었고, 깃발 펄럭임이 전투 중 일기토에만 보였음.
+
+## 2026-10-21 전투맵 배경 장식과 숲 변형
+- `internal/gui/field_scenery.go`(신규): 장식 정의(`scenery.json`) 로더, 맵 ID·좌표 해시와 값 잡음으로 소타일마다 풀포기·꽃·자갈·얼룩(황무지·성내·숲 바닥은 각자의 세트)을 정해 한 장에 굽는 `makeScenery`, 숲 칸마다 소나무 4~8그루를 변형·위치·위상을 달리해 놓는 `nativeForest`(그루마다 깊이 정렬, 프레임 4장 흔들림, 그림자는 장식 층에 같이 구움), 보이는 부분만 그리는 `drawBaked` — 땅 타일은 그대로 두고 그 위 장식만 늘려 이음새가 드러나지 않게 하고, 같은 소나무 묶음이 격자로 반복되던 숲을 없애려고. 장식 위치는 저장하지 않고 계산한다.
+- `internal/gui/field.go`: `Field`에 `decor`·`treeShadow`·`clockMS` 추가, `NewField`가 `makeScenery`/`finishScenery`를 부르고 `Draw`가 땅·바닥 다음에 장식 층을 그림 — 성내 바닥이 장식을 덮지 않게 바닥 뒤에 그림.
+- `internal/gui/field_native.go`: `nativeObjects`가 장식 자료가 있으면 `nativeForest`를 쓰고 없으면 예전 `forest_N` 묶음 그대로 — 자료가 없어도 게임이 도는 안전장치.
+- `internal/gui/assets.go`: `Assets.Scenery`와 `loadScenery` 호출 추가(`graphics/map/scenery.json`이 없으면 nil).
+- `internal/gui/editor.go`: `dispose`가 `decor`·`treeShadow`도 해제.
+- `internal/gui/uidemo_scenery.go`(신규): `scenery` 데모 — 환경변수 `SCENERY_TOUR`의 칸 좌표·배율 목록대로 카메라를 30프레임마다 옮김 — 전후 그림을 같은 카메라로 뽑으려고.
+- `assets/graphics/map/scenery.png`, `scenery.json`(신규): `assets_candidate/tools/gen_scenery.py --install`이 만든 장식·소나무 10종×4프레임·그림자 도장과 놓는 밀도.
+- `assets_candidate/tools/gen_scenery.py`(신규): 장식(외곽선 없음, 땅과 가까운 톤, 반투명)과 소나무(기존 숲의 외곽선·팔레트, 원뿔 더미를 왼쪽 빛으로 래스터화, 흔들림 4프레임)를 만듦.
+- `tools/mapshots/shots.py`, `compare.py`(신규): 맵 지형에서 촬영 지점을 골라 창 없이 `cmd/_uidemo-vm`으로 PNG·GIF를 뽑고 전후 비교 HTML을 만듦 — 눈으로 확인하는 반복을 프로그램으로 하려고.
+- `internal/gui/field_scenery.go`: 물(`sceneWater`: 물가 거품 줄기·갈대, 물 안쪽 연잎, 깊이 얼룩, 반짝임·잔물결 반복 효과 `waterFX`/`drawWaterFX`), 절벽 윗면(`cliffTop`: 윗면 높이 `cliff_rise`만큼 올려 구워 절벽 블록과 같은 깊이 순서로 `drawCliffTop`), 구조물 생기(`siteLife`/`drawSite`: 주둔지 깃발 천을 지운 그림 위에 펄럭임 4프레임, 마을 일부 칸 지붕의 연기, 성 망루 깃발; 위상은 나무와 같은 바람) 추가 — 물과 절벽 윗면이 평평한 단색으로 남아 있었고 구조물은 정지해 있었음.
+- `internal/gui/field_native.go`: 절벽 블록 그리기에 윗면 장식 추가, 구조물이 `siteLife`가 있으면 `drawSite`로 그림.
+- `internal/gui/assets.go`: `Assets.CliffRise`(index.json `cliff_rise`) 읽기.
+- `assets_candidate/tools/gen_scenery.py`, `assets/graphics/map/scenery.{png,json}`: 물·절벽 윗면 소재와 주둔지 깃발·성 깃발·연기 프레임, `sites`·`anim` 설명 추가, 절벽 금 밀도 조정.
+- `tools/mapshots/shots.py`, `compare.py`: 절벽·주둔지·마을·성 촬영 지점과 GIF 종류(`--gifkind`) 추가.
+- `internal/gui/field_deployment.go`, `field_outside.go`: `shadeScenery`가 전투 영역 밖에 선 물체(나무·절벽·성벽·구조물)를 `exteriorShade`로 어둡게 함(영역 안은 그대로, 밖은 `exteriorDim` 0.55에 비네트 곡선으로 멀수록 더 어둡게, 발 밑 칸 기준이라 경계의 나무가 반으로 갈리지 않음) — 바닥만 어두워서 숲과 절벽이 떠 보였음. 배치 화면의 기존 어둡게 하기와 함께 쓰며 편집기의 외곽 어둡게 보기 전환도 따른다.

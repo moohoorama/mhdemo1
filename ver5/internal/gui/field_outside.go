@@ -244,6 +244,23 @@ func (f *Field) drawOutsideGround(clockMS float64) {
 	vector.StrokePath(c, outline, &vector.StrokeOptions{Width: float32(math.Max(1, 1.1*z))}, rop)
 }
 
+// exteriorDim is how bright scenery just outside the battle area stays, like the ground there.
+const exteriorDim = .55
+
+// exteriorShade is the brightness factor for scenery standing at canvas position (x, y), its foot: the whole
+// sprite takes it, so a tree on the border is not cut in two by the edge. Scenery inside the battle area is
+// untouched; outside it is dimmed like the ground, darker toward the edge of the picture (the vignette's curve).
+func (f *Field) exteriorShade(x, y float64) float64 {
+	if f.exterior == nil || f.ShowExterior {
+		return 1
+	}
+	if u, v := f.Cell(x, y); f.Inside(u, v) {
+		return 1
+	}
+	o := &f.outside
+	return exteriorDim * (1 - ramp(math.Hypot(x-o.cx, y-o.cy), vignetteInner, vignetteOuter, vignetteMax))
+}
+
 // renderOutline is the battle area's border in canvas pixels.
 func (f *Field) renderOutline() *vector.Path {
 	var p vector.Path
