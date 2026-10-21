@@ -1,0 +1,33 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3D 모델 보기</title>
+<style>html,body{margin:0;height:100%;background:#2b2d31;color:#ddd;font:14px sans-serif}#bar{position:fixed;top:8px;left:8px;background:#0008;padding:6px 10px;border-radius:6px}canvas{display:block}</style></head><body>
+<div id="bar"><b id="t"></b> · 드래그 회전 · 휠 확대 · <label><input type="checkbox" id="spin" checked> 자동 회전</label> · <label><input type="checkbox" id="hd"> 임시 구</label> · 방향 <b id="dir"></b><br><small>머리는 방향별 2D 도트를 카메라 각도에 맞춰 붙인 것 (게임과 같은 방식)</small></div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+const unit=new URLSearchParams(location.search).get('unit')||'caocao';
+document.getElementById('t').textContent=unit;
+const d=await (await fetch('heroes/model3d/'+unit+'.json')).json();
+const r=new THREE.WebGLRenderer({antialias:true});r.setSize(innerWidth,innerHeight);document.body.appendChild(r.domElement);
+const s=new THREE.Scene();s.background=new THREE.Color(0x2b2d31);
+const cam=new THREE.PerspectiveCamera(35,innerWidth/innerHeight,.1,50);cam.up.set(0,0,1);cam.position.set(3.4,-4.6,2.8);
+const c=new OrbitControls(cam,r.domElement);c.target.set(0,0,1.15);c.autoRotate=true;c.autoRotateSpeed=2;
+s.add(new THREE.AmbientLight(0xffffff,.55));const l=new THREE.DirectionalLight(0xffffff,1.1);l.position.set(-2,-3,5);s.add(l);
+const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(d.pos,3));g.setAttribute('color',new THREE.Float32BufferAttribute(d.col,3));g.computeVertexNormals();
+s.add(new THREE.Mesh(g,new THREE.MeshLambertMaterial({vertexColors:true,flatShading:true,side:THREE.DoubleSide})));
+const h=new THREE.Mesh(new THREE.SphereGeometry(.2,16,12),new THREE.MeshLambertMaterial({color:0xefb15c}));h.position.set(...d.head);h.visible=false;s.add(h);
+const tex={},bb={};
+for(const [k,v] of Object.entries(d.heads)){const t=new THREE.TextureLoader().load('data:image/png;base64,'+v.png);t.magFilter=t.minFilter=THREE.NearestFilter;t.colorSpace=THREE.SRGBColorSpace;tex[k]=t;}
+const first=Object.keys(d.heads)[0],hw=d.heads[first].w/d.scale,hh=d.heads[first].h/d.scale;
+const sp=new THREE.Mesh(new THREE.PlaneGeometry(hw,hh),new THREE.MeshBasicMaterial({map:tex[first],transparent:true,alphaTest:.5,depthTest:false,side:THREE.DoubleSide}));sp.renderOrder=10;s.add(sp);
+const off=[(d.heads[first].w/2-d.anchor[0])/d.scale,(d.anchor[1]-d.heads[first].h/2)/d.scale];
+const f=new THREE.Mesh(new THREE.CircleGeometry(1.2,48),new THREE.MeshBasicMaterial({color:0x3a3d44}));s.add(f);
+document.getElementById('spin').onchange=e=>c.autoRotate=e.target.checked;document.getElementById('hd').onchange=e=>{h.visible=e.target.checked;sp.visible=!e.target.checked};
+addEventListener('resize',()=>{r.setSize(innerWidth,innerHeight);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()});
+function face(){const v=new THREE.Vector3().subVectors(cam.position,c.target);const n=Math.hypot(v.x,v.y)||1;let best=first,bd=-9;
+for(const [k,e] of Object.entries(d.heads)){const m=Math.hypot(e.t[0],e.t[1])||1;const dp=(e.t[0]*v.x+e.t[1]*v.y)/(m*n);if(dp>bd){bd=dp;best=k}}
+sp.material.map=tex[best];sp.quaternion.copy(cam.quaternion);const right=new THREE.Vector3(1,0,0).applyQuaternion(cam.quaternion),up=new THREE.Vector3(0,1,0).applyQuaternion(cam.quaternion);
+sp.position.set(...d.head).addScaledVector(right,off[0]).addScaledVector(up,off[1]);document.getElementById('dir').textContent=best}
+(function a(){c.update();face();r.render(s,cam);requestAnimationFrame(a)})();
+</script></body></html>

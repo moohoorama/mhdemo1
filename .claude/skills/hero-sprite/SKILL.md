@@ -24,6 +24,24 @@ Arguments: `<대상 명칭> <참고할 원본> <그릴 대상의 상태>` — e.
 Ask when an argument is missing, or when the state contradicts the base (e.g. "말 타고" with an infantry base).
 Several targets may be given at once, one triple each.
 
+### Non-combat (`비전투`) goes through the 3D route, not agent drawing
+
+The user rejected agent-drawn non-combat sheets (flat boxes, wrong head and clothes, a leaning pose that is not a
+diagonal view) and chose the 3D conversion (2026-10-20). Scripts generate the pixels here; say so in the report.
+1. The look comes from the officer's **battle sprite** (head, headgear, plume, cloak and its exact tag colours from
+   `units/<battle>.yaml`) or, where one exists, the user's pick in `tools/unit3d/civilian.py` (`SELECTED`; Cao Cao is
+   `caocao3` #2). Never invent a look from the portrait.
+2. Add/adjust the entry in `ver5/tools/doteditor/tools/civ3d.py` (`LOOKS`, `BATTLE`, `NAME`), then
+   `python3 civ3d.py <key>`. It builds `units/<key>_noncombat.yaml` (NW·SW idle, two strides, the salute as the action)
+   and imports it. The 3D walk swings arms against the legs (`civilian.walk_arms`).
+3. Check with `render.py sheet <id> --anims idle,walk,action --dirs NW,SW`, the viewer, and the 3D model
+   (`python3 model3d.py <key>`, then `model3d.html?unit=<key>` on the doteditor server). Show the user all four
+   directions (NE·SE are the mirrors). Fix what the conversion gets wrong by hand.
+4. Apply: `python3 ../spritebuild/build.py units/<id>.yaml`, `Look.Scene` in `assets/data/characters.json`; officers on
+   horseback without a sheet of their own stand in their class's `Scene` (`infantry_noncombat`). Goldens:
+   `internal/sprite/testdata/units/<id>.png` (see docs/presentation-sprite.md). No commit unless asked.
+The agent-drawing steps below remain for combat sheets.
+
 ## 1. Tools (`ver5/tools/doteditor/tools/`, run from there)
 
 ```

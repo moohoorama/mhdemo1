@@ -94,6 +94,7 @@ type Class struct {
 	Promotes                        []string
 	Tier                            int
 	Sprite                          string
+	Scene                           string `json:",omitempty"` // non-combat sprite for scenes of officers in this class that have none of their own
 	Shoot                           string // class whose look a unit takes when FxMountedRange lets it shoot from range
 	Portrait                        string // stands in for officers without a portrait of their own
 	pool                            []string

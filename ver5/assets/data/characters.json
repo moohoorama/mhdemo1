@@ -459,6 +459,7 @@
     "Sprite": "zhaoyun",
     "Sprites": {
      "light_cavalry:sword": "zhaoyun_sword",
+     "Scene": "zhaoyun_noncombat",
      "heavy_cavalry:sword": "zhaoyun_sword",
      "royal_guard:sword": "zhaoyun_sword"
     }
@@ -546,7 +547,8 @@
    "Look": {
     "Portrait": "yuanshao",
     "Faction": "yuan",
-    "Sprite": "yuanshao"
+    "Sprite": "yuanshao",
+     "Scene": "yuanshao_noncombat"
    }
   },
   "wenchou": {
@@ -800,6 +802,7 @@
     "Sprite": "sunjian",
     "Portrait": "sunjian"
    }
+     "Scene": "sunjian_noncombat",
   },
   "caocao": {
    "Name": "조조",
@@ -829,6 +832,7 @@
     "Sprite": "caocao",
     "Sprites": {
      "light_cavalry:sword": "caocao_sword",
+     "Scene": "caocao_noncombat",
      "heavy_cavalry:sword": "caocao_sword",
      "royal_guard:sword": "caocao_sword"
     }
@@ -885,6 +889,7 @@
     "Faction": "dong",
     "Palette": {
      "themeA": [
+     "Scene": "dongzhuo_noncombat",
       "#7a5a9a",
       "#523470",
       "#2e1a44"

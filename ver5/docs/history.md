@@ -354,3 +354,9 @@
 - `assets_candidate/tools/gen_scenery.py`, `assets/graphics/map/scenery.{png,json}`: 물·절벽 윗면 소재와 주둔지 깃발·성 깃발·연기 프레임, `sites`·`anim` 설명 추가, 절벽 금 밀도 조정.
 - `tools/mapshots/shots.py`, `compare.py`: 절벽·주둔지·마을·성 촬영 지점과 GIF 종류(`--gifkind`) 추가.
 - `internal/gui/field_deployment.go`, `field_outside.go`: `shadeScenery`가 전투 영역 밖에 선 물체(나무·절벽·성벽·구조물)를 `exteriorShade`로 어둡게 함(영역 안은 그대로, 밖은 `exteriorDim` 0.55에 비네트 곡선으로 멀수록 더 어둡게, 발 밑 칸 기준이라 경계의 나무가 반으로 갈리지 않음) — 바닥만 어두워서 숲과 절벽이 떠 보였음. 배치 화면의 기존 어둡게 하기와 함께 쓰며 편집기의 외곽 어둡게 보기 전환도 따른다.
+- `tools/doteditor/units/{caocao,sunjian,yuanshao,zhaoyun,dongzhuo,infantry}_noncombat.yaml`, `assets/sprites/*_noncombat.spr`, `internal/sprite/testdata/units/*_noncombat.png`: 조조·손견·원소·조운·동탁의 장면용 비무장 도트와 일반 보병 시트를 새로 빌드 — 장면에서 기병 장수만 말을 타고 나와 어색했음. 에이전트가 손으로 그린 초안은 원본 스프라이트와 달라 버리고, `tools/unit3d`의 평복 3D 모델을 도트로 변환하는 방식으로 만들었다.
+- `tools/doteditor/tools/civ3d.py`, `model3d.py`, `model3d.html`: 3D 평복 모델에서 `<id>_noncombat`을 만드는 도구와 3D 모델 뷰어(머리는 방향별 2D 도트를 붙임).
+- `tools/unit3d/civilian.py`: 평복 걷기에서 팔이 무기 든 병사 자세로 파닥거리던 것을 앞발과 같은 쪽 팔이 뒤로 가는 팔 흔들기(`walk_arms`)로 바꿈.
+- `assets/data/characters.json`: 조조·손견·원소·조운·동탁의 `Look.Scene`을 `<id>_noncombat`으로 연결.
+- `assets/data/classes.json`, `internal/content/content.go`, `internal/gui/look.go`: 병종에 `Scene` 필드를 추가하고 기마 병종(경기병·중기병·궁기병·노기병·친위대·전차)에 `infantry_noncombat`을 지정, `sceneArt`가 캐릭터 `Look.Scene` 다음에 병종 `Scene`을 쓰게 함 — 장면용 시트가 없는 공손찬·화웅 같은 기병 장수가 걸어서 서도록.
+- `assets/data/characters_story.json`: 번궁을 경기병에서 무도가(`brawler`)로 바꾸고 장비를 평복으로, 말 팔레트를 뺌 — 사용자 요청.

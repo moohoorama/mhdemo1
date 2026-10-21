@@ -211,13 +211,23 @@ def scene_pose(name, f):
     return p, k
 
 
+def walk_arms(p):
+    """Arms swing against the legs: the arm on the side of the forward foot goes back, the other forward."""
+    for i, side in enumerate((-1, 1)):
+        y = p['feet'][i][1]
+        p['hands'][i] = [side*.5, REST['hands'][i][1] - y, 1.0 + .15*y]
+        p['elbows'][i] = [side*.52, REST['elbows'][i][1] - y*.5, 1.15]
+
+
 def scene_unit(walk_build, kit):
     """Builder for the scene sheet: idle and walk from the soldier, then the scene motions."""
     def build(row, f, style=None):
         name = ANIMATIONS[row]
         if name in ('idle', 'walk'):
             p = U.pose(row, f)
-            p.update(copy.deepcopy(REST)) if name == 'idle' else None
+            p.update(copy.deepcopy(REST))
+            if name == 'walk':
+                walk_arms(p)
             p['bob'] = [0, .02, 0, -.01][f] if name == 'idle' else p['bob']
         elif name == 'exhausted':
             p = U.pose(EXHAUSTED, f)

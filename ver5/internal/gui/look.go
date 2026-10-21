@@ -130,10 +130,12 @@ func (g *Game) shootArt(def, class, faction string) *sprite.Art {
 }
 
 // sceneArt is the sprite a character stands on a scene in: the cast's own pick, else the
-// character's scene sprite, battle sprite or class sprite.
+// character's scene sprite, the scene sprite of its class (an officer on foot instead of a horseman), battle sprite
+// or class sprite.
 func (g *Game) sceneArt(def, pick, faction string) *sprite.Art {
 	c := g.S.Data.Characters[def]
-	for _, id := range []string{pick, c.Look.Scene, c.Look.Sprites[c.Class], c.Look.Sprite, g.S.Data.Classes[c.Class].Sprite} {
+	class := g.S.Data.Classes[c.Class]
+	for _, id := range []string{pick, c.Look.Scene, class.Scene, c.Look.Sprites[c.Class], c.Look.Sprite, class.Sprite} {
 		if a := g.art(id, faction, c.Look); id != "" && a != nil {
 			return a
 		}
