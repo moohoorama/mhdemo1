@@ -31,6 +31,12 @@ the report. Anything the conversion gets wrong is fixed by hand (artist agent, r
      (`(anim, dir, n): [(row0, row1, col0, col1, replace_all)]`);
    - a head box misplaced when something sits above the plume (detected by the `#j#` pattern, so only a raised sleeve
      with the same pattern can fool it);
+   - **the pasted head box carries the base sheet's old weapon** (iron pixels and their outline inside the 12×15 box):
+     two blades in N, a blade cut at the neck in SE. Drop iron tags and outline pixels that touch only iron from the
+     box, and redraw blade pixels that lie in front of the head (`build.weapon_over_head`'s depth test); the converter
+     does neither by default. Draw the attack trail from the 3D render too (capture `B.E.draw`, `stamp`), not from the
+     base sheet. A weaponless-arm class (no shield) also needs its own idle/walk arms (hang at the sides): the
+     infantry stance bends the elbow outward 90° to hold a shield and reads as an L / hand at the elbow from N and SE;
    - back-view cloak as one static rectangle (legs/walk invisible), cloak standing up in `exhausted` (seated pose);
    - 3D shading is noisy at 1:1; `tools/denoise.py` (or `grid3d_mounted.py --denoise`) merges same-ramp specks and
      1-px bumps safely, the rest needs an artist's clean-up pass (use class-sprite's motion-artist/reviewer).

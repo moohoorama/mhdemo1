@@ -360,3 +360,5 @@
 - `assets/data/characters.json`: 조조·손견·원소·조운·동탁의 `Look.Scene`을 `<id>_noncombat`으로 연결.
 - `assets/data/classes.json`, `internal/content/content.go`, `internal/gui/look.go`: 병종에 `Scene` 필드를 추가하고 기마 병종(경기병·중기병·궁기병·노기병·친위대·전차)에 `infantry_noncombat`을 지정, `sceneArt`가 캐릭터 `Look.Scene` 다음에 병종 `Scene`을 쓰게 함 — 장면용 시트가 없는 공손찬·화웅 같은 기병 장수가 걸어서 서도록.
 - `assets/data/characters_story.json`: 번궁을 경기병에서 무도가(`brawler`)로 바꾸고 장비를 평복으로, 말 팔레트를 뺌 — 사용자 요청.
+- `tools/doteditor/units/bandit.yaml`, `assets/sprites/bandit.spr`, `internal/sprite/testdata/units/bandit.png`: 적병 시트를 3D 변환으로 다시 만듦 — 기존 시트는 경보병 기본형에서 방패만 지워서 팔이 방패·칼 든 자세 그대로(팔꿈치가 바깥으로 꺾인 L자, 걷기에서 팔이 안 움직임)이고 칼 궤적이 칼과 어긋났음. 머리는 기존 손그림 머리를 유지한다.
+- `tools/doteditor/tools/grid3d.py`: `--kit bandit` 추가(맨팔 삼베옷, 허리띠, 칼, 방패 없음) — 방패 없는 병종은 양팔을 몸 옆에 내리고 칼 든 손을 허리에 두는 자세(`relaxed_pose`)를 쓰고, 걷기에서 빈 팔이 다리와 반대로 흔들린다. 머리 상자를 기존 시트에서 복사할 때 상자 안의 옛 칼 픽셀과 칼에만 붙은 외곽선을 빼고(칼이 두 자루로 보이고 목에서 잘리던 원인), 머리 앞에 있는 3D 칼 픽셀은 머리 위에 다시 그림(`front_weapon`), 공격 궤적은 기존 시트에서 붙이지 않고 3D 칼 경로로 생성(`TRAILS`), 정면(S)·후면(N) 내려베기는 칼이 점이 되므로 몸 앞을 가로지르는 베기(`overhead_s`)와 칼 납작한 면을 카메라 쪽으로 돌리는 처리(`face_camera`)를 씀, 궤적 폭을 1.3→1.1로 줄여 칸 밖으로 잘리던 것을 없앰.
