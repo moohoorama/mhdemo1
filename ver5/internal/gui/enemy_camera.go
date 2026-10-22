@@ -9,7 +9,7 @@ import (
 	"srpg/internal/replay"
 )
 
-// followMovers points the camera at the enemy phase as it plays (docs/ui-mockup, idea 3):
+// followMovers points the camera at an AI army's turn (enemy or allied) as it plays (docs/ui-mockup, idea 3):
 // of the enemy actions running together, the one whose cell is nearest the middle of all
 // of them. The camera only moves when that group changes, so it does not wander while
 // the same units act.
@@ -20,7 +20,7 @@ func (p *Player) followMovers() {
 	for _, r := range p.running {
 		a := p.actions[r.index]
 		u := g.unitView(p.final, a.Actor)
-		if u == nil || u.Faction != "enemy" {
+		if u == nil || u.Faction != "enemy" && !u.AI {
 			continue
 		}
 		ids = append(ids, a.Actor)

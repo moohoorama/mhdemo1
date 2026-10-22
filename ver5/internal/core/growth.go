@@ -46,13 +46,18 @@ func (e *Engine) defenseXP(v, u *Unit, spell bool) {
 	}
 }
 
-// supportXP is what an ally earns per target of a landed support spell.
-func (e *Engine) supportXP(u *Unit) int {
-	n := XPPerLevel * e.data.Rules.ExpSupportPercent / 100
+// supportXP is what an ally earns per target of a landed support spell (a heal, a buff): the support
+// share of a level, corrected by the target's level against the caster's as an action's experience is,
+// so helping a stronger officer teaches more.
+func (e *Engine) supportXP(u, q *Unit) int {
+	R := e.data.Rules
+	diff := float64(e.char(q.Character).Level - e.char(u.Character).Level)
+	factor := clamp(1+R.ExpLevelStep*diff, R.ExpMinFactor, R.ExpMaxFactor)
+	n := float64(XPPerLevel*R.ExpSupportPercent/100) * factor * math.Pow(R.ExpGrowth, diff)
 	if p := e.state.XPPct; p > 0 {
-		n = n * p / 100
+		n *= float64(p) / 100
 	}
-	return max(1, n)
+	return max(1, int(math.Round(n)))
 }
 func (e *Engine) xp(id string, n int) {
 	R := e.data.Rules
@@ -122,4 +127,13 @@ func (e *Engine) learn(c Command) error {
 		e.state.Learning = append(e.state.Learning[:i], e.state.Learning[i+1:]...)
 	}
 	return nil
+}
+
+// raiseTo lifts an officer who joins below the level the story has reached, with the trait points the
+// missing levels would have brought.
+func (e *Engine) raiseTo(o *Character, level int) {
+	if n := level - o.Level; n > 0 {
+		o.Level = level
+		o.Points += n * e.data.Rules.PointsPerLevel
+	}
 }

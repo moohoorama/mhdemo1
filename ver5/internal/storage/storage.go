@@ -28,10 +28,12 @@ type Settings struct {
 	AI          string `json:"ai"`
 	Color       bool   `json:"color"`
 	Detail      bool   `json:"detail"`
-	TextDelayMS int    `json:"text_delay_ms"`
-	UIScale     int    `json:"ui_scale,omitempty"`   // percent; 0 is the platform default
-	DamagePct   int    `json:"damage_pct,omitempty"` // damage dealt in percent; 0 is DefaultScalePct
-	XPPct       int    `json:"xp_pct,omitempty"`     // experience gained in percent; 0 is DefaultScalePct
+	TextDelayMS int    `json:"text_delay_ms"`          // the CLI's pause after each letter
+	InstantText bool   `json:"instant_text,omitempty"` // the GUI shows lines whole instead of letter by letter
+	UIScale     int    `json:"ui_scale,omitempty"`     // percent; 0 is the platform default
+	DamagePct   int    `json:"damage_pct,omitempty"`   // damage dealt in percent; 0 is DefaultScalePct
+	XPPct       int    `json:"xp_pct,omitempty"`       // experience gained in percent; 0 is DefaultScalePct
+	CounterAll  bool   `json:"counter_all"`            // every unit strikes back at half damage; on until the player turns it off
 }
 
 // ScalePcts are the percents the player may choose for the damage and experience scales.
@@ -56,7 +58,7 @@ func (s Settings) XPScale() int {
 	return s.XPPct
 }
 
-func DefaultSettings() Settings { return Settings{AI: "auto", Detail: true} }
+func DefaultSettings() Settings { return Settings{AI: "auto", Detail: true, CounterAll: true} }
 func (s Settings) Validate() error {
 	if s.AI != "auto" && s.AI != "step" || s.TextDelayMS < 0 || s.TextDelayMS > 1000 || s.UIScale != 0 && (s.UIScale < 80 || s.UIScale > 160) || s.DamagePct != 0 && !slices.Contains(ScalePcts, s.DamagePct) || s.XPPct != 0 && !slices.Contains(ScalePcts, s.XPPct) {
 		return fmt.Errorf("InvalidSettings")

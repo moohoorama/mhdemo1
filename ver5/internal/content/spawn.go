@@ -1,6 +1,9 @@
 package content
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 func (d *Data) ClassFamily(id string) string {
 	c := d.Classes[id]
@@ -37,6 +40,37 @@ func (d *Data) SpawnTraits(s Spawn) []string {
 	}
 	return d.Characters[s.Character].Traits
 }
+
+// StageLevel is the level the order-th battle of the story is fought at: the player's officers are
+// expected there, and the stage's spawns are ranked from it. Zero when the rules set no stage level.
+func (r Rules) StageLevel(order int) int {
+	if r.StageLevelBase == 0 {
+		return 0
+	}
+	return r.StageLevelBase + r.StageLevelStep*(max(order, 1)-1)
+}
+
+// SpawnLevel is the level a spawn enters the order-th battle at: the stage level plus its rank's
+// lead, or its own Level or its character's where the rules set no stage level.
+func (d *Data) SpawnLevel(order int, s Spawn) int {
+	base := d.Rules.StageLevel(order)
+	if base == 0 {
+		if s.Level > 0 {
+			return s.Level
+		}
+		return d.Characters[s.Character].Level
+	}
+	rank := s.Rank
+	if rank == "" {
+		rank = "officer"
+		if d.Characters[s.Character].Template {
+			rank = "troop"
+		}
+	}
+	lead := (d.Rules.RankLead[rank] + s.Shift) * float64(base+d.Rules.StatLevelBase)
+	return min(max(base+int(math.Round(lead)), 1), d.Rules.MaxLevel)
+}
+
 func (d *Data) ValidateSpawn(s Spawn) error {
 	c, ok := d.Characters[s.Character]
 	if !ok {
@@ -51,6 +85,12 @@ func (d *Data) ValidateSpawn(s Spawn) error {
 	}
 	if s.Level < 0 || s.Level > d.Rules.MaxLevel {
 		return fmt.Errorf("레벨 범위 오류")
+	}
+	if d.Rules.StageLevelBase > 0 && s.Level > 0 {
+		return fmt.Errorf("%s: 레벨은 스테이지 순번과 직급(Rank)으로 정한다", s.Character)
+	}
+	if _, ok := d.Rules.RankLead[s.Rank]; s.Rank != "" && !ok {
+		return fmt.Errorf("%s: 알 수 없는 직급 %s", s.Character, s.Rank)
 	}
 	if s.Facing != "" && !in(s.Facing, "NE", "SE", "SW", "NW") {
 		return fmt.Errorf("방향 오류")

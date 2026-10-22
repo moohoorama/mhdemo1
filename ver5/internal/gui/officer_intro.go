@@ -125,7 +125,7 @@ func (g *Game) drawIntro(dst *ebiten.Image) {
 		tex.mask.DrawImage(tex.disc, op)
 	}
 	tex.canvas.Clear()
-	if src := g.portraitArt(c, ""); src != nil {
+	if src := g.storyPortrait(c); src != nil {
 		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
 		op.GeoM.Scale(introTex/float64(src.Bounds().Dx()), introTex/float64(src.Bounds().Dy()))
 		tex.canvas.DrawImage(src, op)

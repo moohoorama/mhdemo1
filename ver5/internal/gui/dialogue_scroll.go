@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"srpg/internal/content"
 )
 
 // The dialogue box is a hand scroll put together from pixel parts like the speech bubble
@@ -15,12 +16,12 @@ import (
 // bands and paper. Its left roller stays beside the portrait and its width follows the
 // line: it springs open to the right with a slight overshoot and resizes the same way.
 const (
-	scrollPx   = 4.0 // layout pixels per art pixel
+	scrollPx   = 3.0 // layout pixels per art pixel
 	scrollRod  = 12  // art pixels
 	scrollKnob = 8
 	scrollBand = 10
-	scrollFont = 34.0
-	portraitW  = 260.0
+	scrollFont = 26.0
+	portraitW  = 200.0
 	scrollPad  = 20 // art pixels between the paper's edge and the text
 )
 
@@ -30,10 +31,10 @@ const (
 type scrollBox struct{ top, h, left, right, portrait, font float64 }
 
 func dialogueBox() scrollBox {
-	h := max(190, min(250, math.Round(float64(uiH)*.32)))
+	h := max(150, min(190, math.Round(float64(uiH)*.24)))
 	p := min(portraitW, h+10)
-	return scrollBox{top: float64(uiH) - 35 - h, h: h, left: 36 + p + 16, right: float64(uiW) - 30, portrait: p,
-		font: scrollFont * max(.8, h/250)}
+	return scrollBox{top: float64(uiH) - 30 - h, h: h, left: 36 + p + 16, right: float64(uiW) - 30, portrait: p,
+		font: scrollFont * max(.85, h/190)}
 }
 
 // scrollParts are the scroll's images, one art pixel per image pixel.
@@ -173,6 +174,15 @@ func (g *Game) drawScrollBody(dst *ebiten.Image, cx, y, h, hw float64) {
 	}
 }
 
+// storyPortrait is the character's own illustration. The story shows no face for troops or for
+// officers who have none, rather than their class's stand-in.
+func (g *Game) storyPortrait(c content.Character) *ebiten.Image {
+	if c.Template {
+		return nil
+	}
+	return g.assets.Portraits[c.Look.Portrait]
+}
+
 // drawDialogue draws one line of dialogue in the scroll with the speaker's portrait and
 // name plate; key identifies the line so the scroll springs to its width when it changes.
 func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, key string) {
@@ -209,7 +219,7 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 		size := b.portrait
 		px, py := 36.0, b.top+b.h-size+8*(1-in)
 		if _, c, ok := g.character(l.speakers[0]); ok {
-			if src := g.portraitArt(c, ""); src != nil {
+			if src := g.storyPortrait(c); src != nil {
 				rect(dst, float32(px-5), float32(py-5), float32(size+10), float32(size+10), color.NRGBA{R: 26, G: 18, B: 12, A: uint8(255 * in)})
 				blit(dst, src, px, py, size, size, color.NRGBA{R: 255, G: 255, B: 255, A: uint8(255 * in)})
 				strokeRect(dst, float32(px-2), float32(py-2), float32(size+4), float32(size+4), 2, color.NRGBA{R: goldDim.R, G: goldDim.G, B: goldDim.B, A: uint8(255 * in)})
@@ -233,33 +243,33 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 	if len(l.speakers) > 0 {
 		pk := bezier(.2, .8, .2, 1, phase(g.uiSeconds-a.shownAt-a.dur, 0, .24))
 		name := strings.Join(l.speakers, "·")
-		nf := g.serif(20, 900)
+		nf := g.serif(17, 900)
 		sub := ""
 		if len(l.speakers) == 1 {
 			if z := g.courtesy(l.speakers[0]); z != "" {
 				sub = "자 " + z
 			}
 		}
-		sf := g.serif(14, 700)
-		w := measure(name, nf) + 30
+		sf := g.serif(12, 700)
+		w := measure(name, nf) + 26
 		if sub != "" {
-			w += measure(sub, sf) + 8
+			w += measure(sub, sf) + 7
 		}
 		x, y := cx-hw+8, b.top-scrollKnob*scrollPx-10+6*(1-pk)
 		al := uint8(255 * pk)
-		rect(dst, float32(x+2), float32(y+3), float32(w), 34, color.NRGBA{R: 59, G: 14, B: 7, A: al})
+		rect(dst, float32(x+2), float32(y+3), float32(w), 28, color.NRGBA{R: 59, G: 14, B: 7, A: al})
 		for i := float32(0); i < 4; i++ {
 			k := float64(i) / 3
-			rect(dst, float32(x), float32(y)+i*8.5, float32(w), 9, color.NRGBA{R: uint8(163 - 41*k), G: uint8(58 - 22*k), B: uint8(36 - 16*k), A: al})
+			rect(dst, float32(x), float32(y)+i*7, float32(w), 7.5, color.NRGBA{R: uint8(163 - 41*k), G: uint8(58 - 22*k), B: uint8(36 - 16*k), A: al})
 		}
-		strokeRect(dst, float32(x)+.5, float32(y)+.5, float32(w)-1, 33, 1, color.NRGBA{R: 227, G: 167, B: 127, A: al})
-		write(dst, name, nf, x+14, y+2, color.NRGBA{R: 251, G: 238, B: 224, A: al})
+		strokeRect(dst, float32(x)+.5, float32(y)+.5, float32(w)-1, 27, 1, color.NRGBA{R: 227, G: 167, B: 127, A: al})
+		write(dst, name, nf, x+12, y+2, color.NRGBA{R: 251, G: 238, B: 224, A: al})
 		if sub != "" {
-			write(dst, sub, sf, x+14+measure(name, nf)+8, y+8, color.NRGBA{R: 251, G: 238, B: 224, A: uint8(float64(al) * .8)})
+			write(dst, sub, sf, x+12+measure(name, nf)+7, y+7, color.NRGBA{R: 251, G: 238, B: 224, A: uint8(float64(al) * .8)})
 		}
 	}
 	if done && a.open() {
 		bob := 3 * math.Sin(g.uiSeconds*7)
-		g.label(dst, "▼", cx+hw-scrollPad*scrollPx, b.top+b.h-scrollBand*scrollPx-30+bob, 16, color.NRGBA{R: 184, G: 50, B: 31, A: 255})
+		g.label(dst, "▼", cx+hw-scrollPad*scrollPx, b.top+b.h-scrollBand*scrollPx-26+bob, 13, color.NRGBA{R: 184, G: 50, B: 31, A: 255})
 	}
 }

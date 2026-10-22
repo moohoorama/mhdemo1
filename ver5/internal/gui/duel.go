@@ -3,6 +3,7 @@ package gui
 import (
 	"image"
 	"image/color"
+	"slices"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/content"
@@ -11,28 +12,49 @@ import (
 )
 
 func (g *Game) duelView(e core.Event) *duelview.View {
-	v := &duelview.View{Bubble: g.assets.Bubble, Story: g.assets.Duels.StoryFor(e.DuelID, e.Outcome, e.First), Decor: g.duelDecor()}
+	// the officer who opens the duel stands in front: a support who met the enemy first, or one who
+	// fights it because the duel's ally has left; the ally then joins in that support's place
+	ally := e.Actor
+	for _, d := range g.S.Data.Stages[g.player.final.Stage].Duels {
+		if d.ID == e.DuelID {
+			ally = d.Ally
+		}
+	}
+	supports := append([]string(nil), g.assets.Duels[e.DuelID].Supports...)
+	lead, key := e.Actor, e.First
+	if slices.Contains(supports, e.First) {
+		lead = e.First
+	}
+	if lead != ally {
+		key = lead
+		for i, id := range supports {
+			if id == lead {
+				supports[i] = ally
+			}
+		}
+	}
+	v := &duelview.View{Bubble: g.assets.Bubble, Story: g.assets.Duels.StoryFor(e.DuelID, e.Outcome, key), Decor: g.duelDecor()}
 	if s := smallScreen(); s < 1 {
 		v.BubbleScale = 2
 	}
-	for i, id := range []string{e.Actor, e.Target} {
+	for i, id := range []string{lead, e.Target} {
 		u := g.unitView(g.player.final, id)
 		if u == nil {
 			continue
 		}
 		v.Fighters[i] = g.duelFighter(u.Def, u.Class, u.Weapon, u.Color)
 	}
-	if a, t := g.unitView(g.player.final, e.Actor), g.unitView(g.player.final, e.Target); a != nil && t != nil {
+	if a, t := g.unitView(g.player.final, lead), g.unitView(g.player.final, e.Target); a != nil && t != nil {
 		v.Axis = duelAxis(t.X-a.X, t.Y-a.Y)
 	}
-	for i, id := range g.assets.Duels[e.DuelID].Supports {
+	for i, id := range supports {
 		c := g.S.Data.Characters[id]
 		v.Fighters[i+2] = g.duelFighter(id, c.Class, g.startingWeapon(c), c.Look.Faction)
 		if u := g.unitView(g.player.final, id); u != nil {
 			v.Fighters[i+2] = g.duelFighter(u.Def, u.Class, u.Weapon, u.Color)
 		}
 	}
-	if a, t := g.unitView(g.player.final, e.Actor), g.unitView(g.player.final, e.Target); a != nil && t != nil && g.field != nil {
+	if a, t := g.unitView(g.player.final, lead), g.unitView(g.player.final, e.Target); a != nil && t != nil && g.field != nil {
 		v.Staged = true
 		v.Tint = g.groundTint()
 		ax, ay := g.field.Center(float64(a.X), float64(a.Y))

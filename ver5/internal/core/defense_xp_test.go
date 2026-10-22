@@ -1,8 +1,10 @@
 package core
 
 import (
-	"srpg/internal/content"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"srpg/internal/content"
 )
 
 func TestIncomingStrikeAwardsExperience(t *testing.T) {
@@ -70,4 +72,16 @@ func TestEnemyReceivesNoDefenseExperience(t *testing.T) {
 			t.Fatal("enemy gained XP")
 		}
 	}
+}
+
+func TestSupportXPFollowsTheTargetsLevel(t *testing.T) {
+	e := battleWith(t, func(*content.Stage) {})
+	hero, archer := e.unit("hero"), e.unit("archer1")
+	e.char(hero.Character).Level, e.char(archer.Character).Level = 5, 5
+	even := e.supportXP(hero, archer)
+	assert.Equal(t, XPPerLevel*e.data.Rules.ExpSupportPercent/100, even, "the support share at equal levels")
+	e.char(archer.Character).Level = 8
+	assert.Greater(t, e.supportXP(hero, archer), even, "helping a stronger officer teaches more")
+	e.char(archer.Character).Level = 2
+	assert.Less(t, e.supportXP(hero, archer), even, "helping a weaker one teaches less")
 }

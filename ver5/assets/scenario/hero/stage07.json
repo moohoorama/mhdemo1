@@ -90,23 +90,23 @@
    "Character": "troop_cavalry",
    "X": 5,
    "Y": 3,
-   "Level": 5,
    "Faction": "gongsun",
    "AI": true,
    "Group": "tianjun",
    "Facing": "SE",
-   "Class": "light_cavalry"
+   "Class": "light_cavalry",
+   "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
    "X": 5,
    "Y": 5,
-   "Level": 5,
    "Faction": "gongsun",
    "AI": true,
    "Group": "tianjun",
    "Facing": "SE",
-   "Class": "light_cavalry"
+   "Class": "light_cavalry",
+   "Shift": -0.07
   },
   {
    "Character": "yangang",
@@ -121,67 +121,67 @@
    "Character": "troop_cavalry",
    "X": 11,
    "Y": 4,
-   "Level": 6,
    "Faction": "gongsun",
    "AI": true,
    "Group": "baima",
    "Facing": "SE",
-   "Class": "light_cavalry"
+   "Class": "light_cavalry",
+   "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
    "X": 12,
    "Y": 4,
-   "Level": 6,
    "Faction": "gongsun",
    "AI": true,
    "Group": "baima",
    "Facing": "SE",
-   "Class": "light_cavalry"
+   "Class": "light_cavalry",
+   "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
    "X": 14,
    "Y": 4,
-   "Level": 6,
    "Faction": "gongsun",
    "AI": true,
    "Group": "baima",
    "Facing": "SE",
-   "Class": "light_cavalry"
+   "Class": "light_cavalry",
+   "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
    "X": 15,
    "Y": 4,
-   "Level": 6,
    "Faction": "gongsun",
    "AI": true,
    "Group": "baima",
    "Facing": "SE",
-   "Class": "light_cavalry"
+   "Class": "light_cavalry",
+   "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
    "X": 11,
    "Y": 3,
-   "Level": 6,
    "Faction": "gongsun",
    "AI": true,
    "Group": "baima-heavy",
    "Facing": "SE",
-   "Class": "heavy_cavalry"
+   "Class": "heavy_cavalry",
+   "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
    "X": 15,
    "Y": 3,
-   "Level": 6,
    "Faction": "gongsun",
    "AI": true,
    "Group": "baima-heavy",
    "Facing": "SE",
-   "Class": "heavy_cavalry"
+   "Class": "heavy_cavalry",
+   "Shift": -0.07
   }
  ],
  "Enemies": [
@@ -206,7 +206,8 @@
    "Y": 13,
    "Policy": "hold",
    "Faction": "yuan",
-   "Facing": "NW"
+   "Facing": "NW",
+   "Rank": "commander"
   },
   {
    "Character": "tianfeng",
@@ -220,97 +221,97 @@
    "Character": "troop_cavalry",
    "X": 13,
    "Y": 10,
-   "Level": 7,
    "Faction": "yuan",
    "Group": "wen-cav",
    "Facing": "NW",
-   "Class": "light_cavalry"
+   "Class": "light_cavalry",
+   "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
    "X": 15,
    "Y": 10,
-   "Level": 7,
    "Faction": "yuan",
    "Group": "wen-cav",
    "Facing": "NW",
-   "Class": "light_cavalry"
+   "Class": "light_cavalry",
+   "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
    "X": 16,
    "Y": 11,
-   "Level": 7,
    "Faction": "yuan",
    "Group": "wen-cav",
    "Facing": "NW",
-   "Class": "light_cavalry"
+   "Class": "light_cavalry",
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
    "X": 12,
    "Y": 8,
-   "Level": 7,
    "Faction": "yuan",
    "Policy": "hold",
    "Group": "ambush",
    "Facing": "NE",
-   "Class": "crossbow"
+   "Class": "crossbow",
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
    "X": 12,
    "Y": 9,
-   "Level": 7,
    "Faction": "yuan",
    "Policy": "hold",
    "Group": "ambush",
    "Facing": "NE",
-   "Class": "crossbow"
+   "Class": "crossbow",
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
    "X": 15,
    "Y": 8,
-   "Level": 7,
    "Faction": "yuan",
    "Policy": "hold",
    "Group": "ambush",
    "Facing": "NE",
-   "Class": "crossbow"
+   "Class": "crossbow",
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
    "X": 15,
    "Y": 9,
-   "Level": 7,
    "Faction": "yuan",
    "Policy": "hold",
    "Group": "ambush",
    "Facing": "NE",
-   "Class": "crossbow"
+   "Class": "crossbow",
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 12,
    "Y": 12,
-   "Level": 6,
    "Faction": "yuan",
    "Policy": "hold",
    "Group": "yuan-guard",
    "Facing": "NW",
-   "Class": "light_infantry"
+   "Class": "light_infantry",
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 14,
    "Y": 12,
-   "Level": 6,
    "Faction": "yuan",
    "Policy": "hold",
    "Group": "yuan-guard",
    "Facing": "NW",
-   "Class": "light_infantry"
+   "Class": "light_infantry",
+   "Shift": -0.07
   }
  ],
  "Duels": [
@@ -354,7 +355,7 @@
     {
      "Kind": "rush-block",
      "Title": "문추가 돌진하며 찌르다",
-     "Speech": "오냐, 와 보랑께!",
+     "Speech": "오냐, 와 봐유!",
      "Side": 1,
      "Duration": 1.1
     },
@@ -954,12 +955,12 @@
        "Character": "troop_footman",
        "X": 18,
        "Y": 11,
-       "Level": 5,
        "Faction": "yuan",
        "Group": "vanguard",
        "Facing": "NW",
        "Class": "light_infantry",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Shift": -0.07
       }
      ]
     }
@@ -996,23 +997,23 @@
        "Character": "troop_footman",
        "X": 9,
        "Y": 12,
-       "Level": 6,
        "Faction": "yuan",
        "Group": "vanguard",
        "Facing": "NE",
        "Class": "light_infantry",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Shift": -0.07
       },
       {
        "Character": "troop_footman",
        "X": 19,
        "Y": 12,
-       "Level": 6,
        "Faction": "yuan",
        "Group": "vanguard",
        "Facing": "NW",
        "Class": "light_infantry",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Shift": -0.07
       }
      ]
     }
@@ -1024,6 +1025,28 @@
     "round>=2"
    ],
    "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "공손찬을 놓친 것은 아쉽소만, 실로 통쾌하구려. 원호의 계책이 백마의종을 꺾었소."
+      },
+      {
+       "Actor": "tianfeng",
+       "Text": "주공, 저들에게 원군이 왔습니다. 다리를 굳게 지키고 저들이 지치기를 기다리십시오."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "(웃으며) 백마의종이라는 이름도 허명이었소. 이 기세를 놓칠 수는 없지. 전군, 총공격하라!"
+      }
+     ]
+    },
     {
      "Kind": "ai",
      "Targets": [
@@ -1097,5 +1120,21 @@
   "liquor": 4
  },
  "Faction": "yuan",
- "Map": "map07.json"
+ "Map": "map07.json",
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "gongsun",
+   "Name": "공손찬군",
+   "Ally": true
+  },
+  {
+   "Faction": "yuan",
+   "Name": "원소군"
+  }
+ ]
 }

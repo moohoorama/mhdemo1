@@ -136,6 +136,15 @@ func (d *Data) loadScenario(dir, want string, h hash.Hash) error {
 		d.Maps[s.ID] = doc
 		d.Stages = append(d.Stages, doc.Compile())
 	}
+	order := map[string]int{}
+	for _, n := range d.Nodes {
+		if n.Kind == "battle" && order[n.Stage] == 0 {
+			order[n.Stage] = len(order) + 1
+		}
+	}
+	for i := range d.Stages {
+		d.Stages[i].Order = order[d.Stages[i].ID]
+	}
 	return nil
 }
 

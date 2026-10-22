@@ -69,13 +69,31 @@ func (g *Game) editorToolbar(dst *ebiten.Image) {
 		}
 		g.btn(dst, image.Rect(x, 748, x+118, 778), label, fn)
 	}
-	g.btn(dst, image.Rect(1020, 748, 1064, 780), "−", func() { e.level = max(1, e.level-1) })
-	g.label(dst, fmt.Sprintf("LV %d", e.level), 1070, 755, 16, ink)
-	g.btn(dst, image.Rect(1130, 748, 1172, 780), "+", func() { e.level = min(g.S.Data.Rules.MaxLevel, e.level+1) })
+	if g.S.Data.Rules.StageLevelBase > 0 {
+		g.btn(dst, image.Rect(1020, 748, 1172, 780), editorRankNames[e.rank], func() { e.rank = nextRank(e.rank) })
+	} else {
+		g.btn(dst, image.Rect(1020, 748, 1064, 780), "−", func() { e.level = max(1, e.level-1) })
+		g.label(dst, fmt.Sprintf("LV %d", e.level), 1070, 755, 16, ink)
+		g.btn(dst, image.Rect(1130, 748, 1172, 780), "+", func() { e.level = min(g.S.Data.Rules.MaxLevel, e.level+1) })
+	}
 	g.editorFacingButton(dst, image.Rect(1180, 742, 1256, 800), g.editorBrushSpawn(), func() { e.facing = nextFacing(e.facing) })
 }
 
 var editorFacings = []string{"NE", "SE", "SW", "NW"}
+
+// editorRanks are the ranks a spawn cycles through when the rules set a stage level; none is the
+// character's default (troop for a template, officer for a named one).
+var editorRanks = []string{"", "troop", "officer", "commander", "boss"}
+var editorRankNames = map[string]string{"": "직급 기본", "troop": "병졸", "officer": "장수", "commander": "대장", "boss": "거물"}
+
+func nextRank(rank string) string {
+	for i, r := range editorRanks {
+		if r == rank {
+			return editorRanks[(i+1)%len(editorRanks)]
+		}
+	}
+	return ""
+}
 
 func nextFacing(dir string) string {
 	for i, d := range editorFacings {
@@ -100,7 +118,7 @@ func (g *Game) editorBrushSpawn() content.Spawn {
 			}
 		}
 	}
-	return content.Spawn{Character: id, Class: class, Level: e.level, Facing: e.facing}
+	return g.editorRanked(content.Spawn{Character: id, Class: class, Facing: e.facing})
 }
 
 func (g *Game) editorFacingButton(dst *ebiten.Image, r image.Rectangle, sp content.Spawn, click func()) {
@@ -169,9 +187,13 @@ func (g *Game) editorDetail(dst *ebiten.Image) {
 		class = c.Class
 	}
 	g.btn(dst, image.Rect(1018, 340, 1252, 372), d.Classes[class].Name+" · 병종 변경", func() { e.popup = "classes"; e.page = 0 })
-	g.btn(dst, image.Rect(1018, 382, 1148, 412), fmt.Sprintf("LV %d", editorLevel(c.Level, s.Level)), func() { e.editing = "level"; e.entry = fmt.Sprint(editorLevel(c.Level, s.Level)) })
-	g.editorFacingButton(dst, image.Rect(1156, 378, 1252, 418), *s, func() { s.Facing = nextFacing(s.Facing) })
 	v := g.editorPreview(*s)
+	if d.Rules.StageLevelBase > 0 {
+		g.btn(dst, image.Rect(1018, 382, 1148, 412), fmt.Sprintf("%s · LV %d", editorRankNames[s.Rank], v.Level), func() { s.Rank = nextRank(s.Rank) })
+	} else {
+		g.btn(dst, image.Rect(1018, 382, 1148, 412), fmt.Sprintf("LV %d", editorLevel(c.Level, s.Level)), func() { e.editing = "level"; e.entry = fmt.Sprint(editorLevel(c.Level, s.Level)) })
+	}
+	g.editorFacingButton(dst, image.Rect(1156, 378, 1252, 418), *s, func() { s.Facing = nextFacing(s.Facing) })
 	hp, mp := v.HP, v.MP
 	if s.HP != nil {
 		hp = *s.HP

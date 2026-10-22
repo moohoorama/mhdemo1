@@ -2,6 +2,7 @@ package gui
 
 import (
 	"fmt"
+	"image"
 	"math"
 
 	"srpg/internal/content"
@@ -20,6 +21,8 @@ const (
 	chargeTime      = .75 // seconds a unit gathers itself, whitening, before a critical blow
 	shakeHz         = 11.0
 	blinkTime       = 1.2
+	leaveTime       = 1.0 // seconds a unit takes to walk off the battle area when it leaves by flight
+	leaveCells      = 1.5 // how far past its cell it walks out
 	arrowSecPerCell = .07 // an arrow's flight time per cell of distance
 )
 
@@ -45,16 +48,18 @@ type unitVis struct {
 	shakeSign    float64
 	shakeT       float64
 	shakeAmp     float64
-	charge       float64 // 0..1: how white the sprite is drawn while gathering a critical blow
-	charging     bool    // holds the first attack frame and whitens
-	dying        float64 // < 0: alive
+	charge       float64    // 0..1: how white the sprite is drawn while gathering a critical blow
+	charging     bool       // holds the first attack frame and whitens
+	dying        float64    // < 0: alive
+	leave        *walkState // walking off the battle area, fading out; t runs to leaveTime
 	gone, greyed bool
 	ranged       bool
 	shoot        *sprite.Art // the look it shoots from range in (mounted_range), nil when it has none
 	shootClass   string
 	siege        bool // attacks are stones lobbed along an arc
 	inactive     bool
-	actor        bool // a scene actor: no HP bar, always rests standing
+	actor        bool   // a scene actor: no HP bar, rests standing or in its pose
+	pose         string // a scene actor's resting motion (sit, lie …); "" stands
 	shownHP      int
 	shownMP      int
 	maxMP        int
@@ -87,6 +92,9 @@ func (u *unitVis) play(anim string) {
 func (u *unitVis) rest() string {
 	if !u.actor && u.shownHP*2 <= u.maxHP {
 		return "exhausted"
+	}
+	if _, ok := u.art.Animations[u.pose]; ok && u.actor {
+		return u.pose
 	}
 	return "idle"
 }
@@ -139,6 +147,20 @@ func (u *unitVis) update(dt float64) {
 		u.dying += dt
 		u.gone = u.dying >= blinkTime
 	}
+	if l := u.leave; l != nil && !u.gone {
+		l.t = math.Min(leaveTime, l.t+dt)
+		k := l.t / leaveTime
+		u.u, u.v = l.fu+(l.tu-l.fu)*k, l.fv+(l.tv-l.fv)*k
+		u.gone = l.t >= leaveTime
+	}
+}
+
+// leaving is how far u has walked off the battle area, 0..1; 0 when it is not leaving.
+func (u *unitVis) leaving() float64 {
+	if u.leave == nil {
+		return 0
+	}
+	return u.leave.t / leaveTime
 }
 
 // popup is floating text over a unit (damage, healing, names of skills).
@@ -172,8 +194,14 @@ type Player struct {
 	running []*running
 	gap     float64
 	final   core.Observation
-	Duel    *duelview.View
-	Speech  []*battleBubble
+	// looks are the cells' states shown while a replay runs: those of the field before it, changed
+	// by each terrain event when the replay reaches it, so a fire starts when its cutscene says so
+	looks  map[image.Point]string
+	Duel   *duelview.View
+	Speech []*battleBubble
+	Fading []*battleBubble // lines done with, fading out
+	// nextLine asks the replay to move on from the line on screen (a click once it is all out)
+	nextLine bool
 	// followed is the enemy group the camera last moved to (enemy_camera.go)
 	followed string
 }
@@ -182,7 +210,7 @@ func (p *Player) Busy() bool { return len(p.waiting)+len(p.running) > 0 }
 
 // Play queues actions; final is the observation after all of them (synced at the end).
 func (p *Player) Play(actions []*replay.Action, final core.Observation) {
-	p.Speech = nil
+	p.g.dropSpeech()
 	p.actions, p.final = actions, final
 	p.done = make([]bool, len(actions))
 	p.waiting = p.waiting[:0]
@@ -192,9 +220,12 @@ func (p *Player) Play(actions []*replay.Action, final core.Observation) {
 	}
 	p.gap = stagger
 	p.followed = ""
+	p.looks = nil
 	if len(actions) == 0 {
 		p.g.sync(final)
+		return
 	}
+	p.looks = p.g.shownLooks(final)
 }
 
 func (p *Player) Update(dt float64) {
@@ -219,6 +250,18 @@ func (p *Player) Update(dt float64) {
 			break
 		}
 	}
+	if p.nextLine {
+		p.nextLine = false
+		walking := false
+		for _, v := range p.g.vis {
+			walking = walking || v.walk != nil
+		}
+		if !walking { // the line on screen is cut short; a walk under way is not
+			for _, r := range p.running {
+				r.left = min(r.left, 0)
+			}
+		}
+	}
 	for _, r := range p.running {
 		r.left -= dt
 		for r.left <= 0 && r.i < len(r.beats) {
@@ -235,7 +278,7 @@ func (p *Player) Update(dt float64) {
 			p.done[r.index] = true
 			id := p.actions[r.index].Actor
 			if v, u := p.g.unitAt(id), p.g.unitView(p.final, id); v != nil && u != nil {
-				v.inactive = p.final.Phase != "battle" || !u.ActsIn(p.final.Turn) || u.Done
+				v.inactive = p.final.Phase != "battle" || !u.ActsIn(p.final.Turn, p.final.Army) || u.Done
 			}
 		} else {
 			kept = append(kept, r)
@@ -244,7 +287,8 @@ func (p *Player) Update(dt float64) {
 	p.running = kept
 	if !p.Busy() {
 		p.Duel = nil
-		p.Speech = nil
+		p.g.dropSpeech()
+		p.looks = nil
 		p.g.sync(p.final)
 	}
 }
@@ -255,7 +299,8 @@ func (p *Player) Skip() {
 		return
 	}
 	p.waiting, p.running, p.Duel = nil, nil, nil
-	p.Speech = nil
+	p.g.dropSpeech()
+	p.looks = nil
 	p.g.popups = nil
 	p.g.sync(p.final)
 }
@@ -341,7 +386,7 @@ func (g *Game) perform(a *replay.Action) []beat {
 			for _, e := range events {
 				if e.Kind == "turn" {
 					turn := e
-					add(1.0, func() { g.showTurn(turn.Amount, turn.Target) })
+					add(1.0, func() { g.showTurn(turn.Amount, turn.Target, turn.Text) })
 				}
 			}
 		default:
@@ -358,6 +403,12 @@ func (g *Game) perform(a *replay.Action) []beat {
 			addTimeline(add, walks, timelineEnd(walks))
 		}
 		for _, e := range events {
+			if u := g.unitAt(e.Actor); e.Kind == "retreat" && e.Text == "flight" && u != nil {
+				dir := heading(e.Actor, events)
+				add(leaveTime, func() { g.leaveField(u, dir) })
+			}
+		}
+		for _, e := range events {
 			if e.Kind == "duel" { // a stage duel: its meeting is shown after whatever brought the two together
 				view := g.duelView(e)
 				ev := events
@@ -365,16 +416,63 @@ func (g *Game) perform(a *replay.Action) []beat {
 				add(blinkTime, func() { g.player.Duel = nil; g.strike(nil, ev) })
 			}
 		}
-		for _, e := range events {
+		// the camera goes first to where a run of arrivals or of terrain changes happens, so the
+		// player sees an army come in or a fire start instead of a screen that seems to wait
+		looking := ""
+		look := func(kind string, x, y int) {
+			if looking != kind {
+				looking = kind
+				add(panTime, func() { g.panToCell(x, y) })
+			}
+		}
+		for i, e := range events {
+			if e.Kind != "terrain" && e.Kind != "unit-arrival" {
+				looking = ""
+			}
 			switch e.Kind {
+			case "status":
+				// an event's stat change on many units at once shows on all of them together
+				if i > 0 && events[i-1].Kind == "status" && events[i-1].Text == e.Text {
+					continue
+				}
+				var run []core.Event
+				for _, f := range events[i:] {
+					if f.Kind != "status" || f.Text != e.Text {
+						break
+					}
+					run = append(run, f)
+				}
+				add(1.2, func() {
+					for _, f := range run {
+						t := g.unitAt(f.Target)
+						kind, tint := "debuff", spark
+						if f.Amount > 0 {
+							kind, tint = "buff", healC
+						}
+						g.spawn(kind, nil, t, 1.1, tint)
+						g.say(t, fmt.Sprintf("%s %+d%%", statusLabels[f.Text], f.Amount))
+					}
+				})
 			case "cutscene":
 				entries, total := g.cutsceneTimeline(e.Cutscene)
 				addTimeline(add, entries, total)
+			case "terrain":
+				event := e
+				if x, y, ok := g.areaCenter(e.Amount); ok {
+					look("terrain", x, y)
+				}
+				add(.4, func() { g.changeLooks(event) })
 			case "unit-arrival":
 				event := e
+				if e.Unit != nil {
+					look("arrival", e.Unit.X, e.Unit.Y)
+				}
 				add(.15, func() {
 					if event.Unit == nil {
 						return
+					}
+					if line, _ := g.eventText(event); line != "" {
+						g.logPending = append(g.logPending, line)
 					}
 					if final := g.unitView(g.player.final, event.Actor); final != nil {
 						view := *final
@@ -383,13 +481,15 @@ func (g *Game) perform(a *replay.Action) []beat {
 					}
 				})
 			case "speech":
-				lines := e.Speech
-				duration := 3.0
-				for _, line := range lines {
-					duration = max(duration, 1.5+float64(len([]rune(line.Text)))*.09)
+				// the lines are said one after another, each in its own bubble
+				for _, line := range e.Speech {
+					lines := []content.Speech{line}
+					add(max(2.4, 1.5+float64(len([]rune(line.Text)))*.09), func() {
+						g.showBattleSpeech(lines)
+						g.logPending = append(g.logPending, g.name(line.Actor)+": "+line.Text)
+					})
 				}
-				add(duration, func() { g.showBattleSpeech(lines) })
-				add(0, func() { g.player.Speech = nil })
+				add(0, func() { g.dropSpeech() })
 			}
 		}
 		for _, e := range events {
@@ -404,12 +504,13 @@ func (g *Game) perform(a *replay.Action) []beat {
 	return beats
 }
 
-// splitFollowups preserves the completed original exchange before each extra attack.
+// splitFollowups preserves the completed original exchange before each extra attack and each next
+// target of a skill that strikes them one by one.
 func splitFollowups(c core.Command, events []core.Event) []replay.Step {
 	steps := []replay.Step{{Command: c}}
 	for _, e := range events {
 		switch e.Kind {
-		case "followup-start":
+		case "followup-start", "next-strike":
 			steps = append(steps, replay.Step{Command: core.Command{Kind: "attack", Actor: e.Actor, Target: e.Target}})
 		case "followup-end":
 		default:
@@ -548,6 +649,37 @@ func (g *Game) shootsFromRange(actor, target *unitVis, c core.Command) bool {
 	return math.Abs(float64(ax-tx)) > 1 || math.Abs(float64(ay-ty)) > 1
 }
 
+// heading is the direction of id's last step among events, zero when it did not walk.
+func heading(id string, events []core.Event) image.Point {
+	for i := len(events) - 1; i >= 0; i-- {
+		if e := events[i]; e.Kind == "move" && e.Actor == id && len(e.Path) > 1 {
+			a, b := e.Path[len(e.Path)-2], e.Path[len(e.Path)-1]
+			return image.Pt(b.X-a.X, b.Y-a.Y)
+		}
+	}
+	return image.Point{}
+}
+
+// leaveField walks u off the battle area across the nearest edge (the way it was heading when it
+// stands on a corner), darkening like the ground there and fading out; off the edge it fades in place.
+func (g *Game) leaveField(u *unitVis, dir image.Point) {
+	cu, cv := int(math.Round(u.u)), int(math.Round(u.v))
+	out := func(d image.Point) bool { return d != (image.Point{}) && !g.field.Inside(cu+d.X, cv+d.Y) }
+	var d image.Point
+	for _, c := range []image.Point{dir, {1, 0}, {0, 1}, {-1, 0}, {0, -1}} {
+		if out(c) {
+			d = c
+			break
+		}
+	}
+	tu, tv := u.u+float64(d.X)*leaveCells, u.v+float64(d.Y)*leaveCells
+	u.shownHP = 0
+	u.walk = nil
+	u.face(tu, tv)
+	u.play("walk")
+	u.leave = &walkState{fu: u.u, fv: u.v, tu: tu, tv: tv}
+}
+
 func (g *Game) stepTo(u *unitVis, p content.Point) { g.walkTo(u, float64(p.X), float64(p.Y)) }
 
 // walkTo starts one walking step to a (fractional) cell position.
@@ -653,7 +785,7 @@ func (g *Game) strike(attacker *unitVis, events []core.Event) {
 				t.flash = .3
 			}
 		case "retreat", "death":
-			if u := g.unitAt(e.Actor); u != nil {
+			if u := g.unitAt(e.Actor); u != nil && e.Text != "flight" {
 				u.shownHP = 0
 				u.dying = 0
 			}

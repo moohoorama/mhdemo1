@@ -5,7 +5,211 @@
 
 ---
 
+## 2026-10-22 도주 유닛의 전장 이탈 연출
+
+결정 · 도주 유닛은 목표 칸에 닿는 즉시 전장 밖으로 걸어 나가며 어두워지고 사라진다 · 이유: 사용자 "동탁 추격전에서 원술을 비롯 동맹군이 후퇴하는게 매우 어색. 병력이 타일 한곳에 겹쳐서 배치되는 증상" — 이동 재생이 같은 명령의 `retreat` 이벤트를 무시해 퇴각한 유닛이 목표 칸에 그대로 보이고, 다음 유닛이 그 칸으로 걸어 들어가 겹쳤다 · 영향받는 문서: presentation-replay.md
+- `internal/core/engine.go`: `leaveByFlight`의 `retreat` 이벤트에 `Text: "flight"` — 화면이 쓰러짐과 이탈을 구분하게
+- `internal/gui/player.go`: `unitVis.leave`·`leaving`, `leaveField`(가장 가까운 가장자리 바깥으로 1.5칸, 모서리면 걸어온 방향 `heading`), `perform`이 어떤 명령이든 `flight` 퇴각에 이탈 박자를 깔고 `strike`는 깜빡임을 하지 않는다
+- `internal/gui/field.go`, `field_outside.go`: 이탈 중인 유닛은 `edgeShade`(가장자리를 넘은 첫 칸에 걸쳐 바깥 땅 밝기 `exteriorDim`까지)로 어둡게, 진행의 제곱으로 투명하게, 그림자도 함께 옅게
+- `internal/gui/view.go`: `syncUnit`이 살아 있는 유닛의 `leave`를 지운다
+- `internal/gui/uidemo_flee.go`(새): AI 아군 넷을 동쪽 끝 목표로 도주시키는 데모(`-ui flee -stage B04`)
+
+## 2026-10-22 전원 반격 기본 켬, _balance가 게임 기본 설정으로 측정
+
+결정 · 전원 반격을 기본으로 켠다 · 이유: 사용자 "전원반격 모드를 기본으로 하자" · 영향받는 문서: logic-combat.md, presentation-ui.md, system-architecture.md, stage_lv_balance.md
+- `internal/storage/storage.go`: `DefaultSettings().CounterAll = true`, `counter_all`의 `omitempty`를 빼서 끈 값이 저장되게(키가 없는 예전 설정 파일은 기본값 켬으로 읽힘)
+- `internal/storage/storage_test.go`: 예전 설정 파일은 켬, 끈 값은 끈 채로 저장
+- `internal/session/coalition_test.go`: 요청 전 설정을 엔진에 옮기는 줄에 `SetCounterAll`
+- `cmd/_balance`: `-damage`(기본 80)·`-xp`(기본 80)·`-counter`(기본 켬)로 게임 기본 설정과 같은 조건에서 재고, `-offset`으로 주력 레벨을 L에서 띄워 레벨별로 잰다. 전에는 데미지·경험치 100%, 반격 끔으로 쟀다
+- `internal/core/engine.go`, `battle_events.go`: 합류 보정(`raiseTo`)을 `spawn` 안에서 빼 이벤트 `join`과 이야기 `join` 노드에서만 — `spawn`에 두었더니 출전할 때마다 모든 주력이 L까지 올라갔다. `internal/core/story_test.go`: 출전 때는 올리지 않는다
+
+## 2026-10-22 스테이지 레벨을 순번·직급으로 계산
+
+결정 · 스테이지 파일에서 절대 레벨을 없애고, 엔진이 스테이지 순번(이야기 속 몇 번째 전투인지)의 기준 레벨 L = 3 + 2(n − 1)에 직급 몫을 더해 계산한다. 직급 몫은 레벨 차가 아니라 `(L + 10)`에 대한 비율이다. 합류 장수는 합류할 때 L까지 올린다 · 이유: 사용자 "아군 레벨 10인데 여포가 20, 간옹은 2로 합류, 번궁은 레벨 12인데 3으로 합류", "현재의 스테이지를 기록해두고 그거에 맞춰 강제로 보정", "lv1과 5는 엄청난 차이지만 lv50과 55는 차이가 적지 않아?" — 능력치·피해가 `(레벨 + 10)`에 비례해서 같은 +5가 Lv3에서 38%, Lv50에서 8%다 · 영향받는 문서: stage_lv_balance.md, data-scenario-node.md, logic-growth.md, AGENTS.md
+- `internal/content/content.go`, `spawn.go`, `scenario.go`, `validate.go`: `Rules.StageLevelBase`·`StageLevelStep`·`RankLead`, 스폰 `Rank`·`Shift`, 로드 때 `battle` 노드 순서로 `Stage.Order`, `StageLevel`·`SpawnLevel`·`StageOrder`·`NextBattleOrder`. 스테이지 레벨을 쓰는 규칙에서 스폰 `Level`은 검증 실패(시험용 mini 묶음은 규칙이 없어 예전처럼 `Level`)
+- `internal/core/engine.go`, `growth.go`: 임시 인물(적·템플릿·AI)은 `SpawnLevel`, 합류하는 플레이 장수는 `raiseTo`로 L까지 올리고 오른 레벨마다 특성치 100. 이야기 `join` 노드는 다음 전투의 L. `SpawnPreview`가 스테이지 ID를 받는다
+- `assets/data/game.json`: `StageLevelBase` 3, `StageLevelStep` 2, `RankLead` troop 0 · officer 0.08 · commander 0.15 · boss 0.30(B03 여포 12를 그대로 두는 값)
+- `assets/scenario/hero/stage01~07.json`: `Level`을 모두 지우고 `Rank`·`Shift`로. B01~B03은 계산 결과가 예전 레벨과 같다. B04~B07은 정책 레벨로 올라간다(B04 여포 20 → 15, 서영 8 → 12, 복병 5 → 8, 조조군·제후군 장수 11; B05 순우경 14, 병력 10, 번궁 13; B06 안량 16, 장합 15, 병력 11; B07 원소 19, 장수 17, 병력 13)
+- `assets/data/characters.json`, `characters_story.json`: 간옹·조운·번궁 `Points`를 정의 레벨에 맞춰 `100 × (레벨 − 1)` — 합류 보정 뒤 주력과 같은 특성치(간옹 Lv11 1000, 번궁 Lv13 1200, 조운 Lv15 1400)
+- `internal/gui/editor.go`, `editor_ui.go`: 맵 편집기의 `LV ±`를 직급 순환 버튼으로(선택한 병력은 `장수 · LV 17`처럼 계산된 레벨도 보임)
+- `cmd/_balance`: 주력 레벨을 `Rules.StageLevel`로(`-base`·`-step` 플래그 삭제)
+- `internal/content/stage_level_test.go`(새), `internal/core/story_test.go`, `spawn_override_test.go`: 순번·직급 계산, 절대 레벨 거부, 간옹 합류 Lv11·특성치 1000
+
+## 2026-10-22 장비 아이콘 19종 모두 그림에서 변환
+
+- `tools/spritetool/assets/ver5-ui/sources/item_*.png`(16장 새), `settings.json`(`"source"`, 칼·창 `"solid": .35`, 활 .2), `pixels.json`, `assets/graphics/ui/ui.{png,json}`: 무기·말·장신구도 codex 그림에서 변환 — 사용자 "다 같은 방식으로. 이제 아이템 도트는 이런 식으로 하자"
+- `tools/pixelize_icon.py`: 그림의 짙은 선을 외곽선 `k`로 세고, 칸의 4분의 1을 덮는 색이 이를 이김(가는 활시위·칼날이 외곽선에 묻히던 것), 짙은 선뿐인 듬성한 칸은 비움(활 안쪽이 검게 메워지던 것), 칠할 덮임 비율 `"solid"` — 칸 절반 미만인 칼날이 지워지던 것. 내부 선이 살아 갑옷도 또렷해짐
+- `tools/spritetool/assets/ver5-ui/README.md`: 장비 도트는 손으로 찍지 않고 이 방식으로
+- `.claude/skills/item-icon/SKILL.md`(새): 이 과정(이름·팔레트 → codex 그림 → 512px 원본 → 변환 → 확인 → 게임 캡처)을 스킬로 — 사용자 "스킬로 등록했어?"
+
+## 2026-10-22 갑옷 아이콘을 그림에서 도트로 변환
+
+결정 · 장비 아이콘이 손 도트로 각지고 무거우면, codex로 그린 그림을 팔레트 도트로 변환한다 · 이유: 사용자 "갑옷류·보조류가 너무 각져", 손 도트 재작업도 "나아지긴 했지만 별로", 사용자 제안 "지금 그린 거 주면서 codex로 그리고, 축소·지정한 색으로 색을 줄인 후(색이 많으면 그라데이션이 부드러워 도트처럼 안 보이니) 외곽선" → 결과 "훨씬 좋아" · 영향받는 문서: tools/spritetool/assets/ver5-ui/README.md
+- `tools/pixelize_icon.py`(새): 마젠타 빼기 → 30도트 맞춤 → 큰 그림에서 픽셀마다 팔레트 색(Lab) → 칸마다 최다 색 → 외톨이 점 정리 → 1px 외곽선 → `pixels.json`. 평균 내어 줄이면 강철 위 붉은 끈이 흙탕색이 되고, 줄인 뒤 색을 줄이면 질감이 얼룩이 되어서 이 순서로
+- `tools/spritetool/assets/ver5-ui/sources/item_{leather,robe,diamond}.png`(새, codex 그림 512px), `settings.json`(`"source"`), `pixels.json`, `assets/graphics/ui/ui.{png,json}`: 갑옷 3종을 3/4 각도의 둥근 실루엣으로. 가죽갑옷·금강갑은 섬세한 그림이 줄이면 얼룩져 "32x32 도트 아이콘, 큰 덩어리, 3단 명암"으로 다시 그림
+- 장신구 4종(지도·병법입문·화계서·옥쇄)은 손 도트를 기울이고 둥글게 다시 그림
+- `internal/gui/equipment_window.go`: 창고에 입은 것과 같은 장비가 또 있으면 `착용 중` 행이 두 번 나오던 것 — 입은 장비는 한 번만. `equipment_window_test.go`: `TestPickerListsTheWornPieceOnce`
+- `internal/gui/uidemo_equip.go`: `EQUIP_SLOT`(기본 `weapon`)으로 고르기 창의 칸을 고름
+
+## 2026-10-22 특성 분류 아이콘(책략·전법·특기 × 효과 색)
+
+결정 · 특성 아이콘을 특성마다 그리지 않고, 모양 3종(책략 두루마리·전법 교차한 무기·특기 메달)을 효과 색 7종(공격 빨강·회복 흰색·강화 초록·약화 검정·방어 파랑·이동 노랑·책략술 보라)으로 물들인다 · 이유: 사용자 "책략, 전법, 특기로 분류해 단색 아이콘… 공격은 빨간색, 회복은 흰색, 버프는 초록색, 디버프는 검은색", 초록이 31개로 몰려 방어·이동·책략술 색을 더함. `병법`은 책략과 무기 기술을 함께 부르는 명령 이름이라 무기 기술 쪽 분류는 `전법`(공격력으로 적을 치는 기술), 늘 적용되는 특성은 `특기`로 · 영향받는 문서: logic-traits.md, presentation-ui.md
+- `assets/data/traits.json`, `internal/testdata/mini/traits.json`, `internal/content/content.go`, `validate.go`: 특성 `Kind`(`strategy`·`tactic`·`talent`)·`Tone`(`attack`·`heal`·`buff`·`debuff`·`guard`·`move`·`craft`), 없거나 모르는 값이면 검증 실패. 대비·경계는 책략이지만 `guard`, 교란은 디버프 책략, 도발은 전법, 화신은 책략술
+- `internal/gui/trait_icon.go`(새): 아이콘 그리기(약화의 검정은 옅은 테를 둘러 어두운 창에서 보이게), 기술은 종류로 모양·색을 정함
+- `internal/gui/equipment_window.go`: 장비 특성 표식을 분류 아이콘으로, 배울 수 있는 특성은 이름 뒤 `배움`, 설명 창 제목 `특기 · 방어` 식. 메달 `trait_badge`(첫 글자) 폐기
+- `internal/gui/hud.go`(특성 탭), `windows.go`(특성 모달), `learning.go`(학습 창), `scenario.go`(출전 준비 습득 특성): 특성 이름 앞에 아이콘
+- `tools/spritetool/assets/ver5-ui/{settings,pixels}.json`, `README.md`, `assets/graphics/ui/ui.{png,json}`: `trait_strategy`·`trait_tactic`·`trait_talent`(26×26 회색 도트, 에이전트가 그리고 7색으로 검수)
+- `internal/gui/equipment_window_test.go`: 모든 특성의 분류 아이콘과 색이 있는지
+
+## 2026-10-22 장비 아이콘과 장비 창 개편
+
+결정 · 장비 창을 명령 목록(`해제 철검`, `장착 청공검 ×1`, 페이지 넘김)에서 칸 카드 + 고르기 팝업으로 바꾸고, 장비마다 아이콘을 둔다 · 이유: 사용자 "장수가 장착하는 장비의 아이콘이 있어야함", "무기·방어구·보조 셋만 나오고 각 장비의 능력치·특성, 특성 아이콘을 누르면 설명… 장비를 누르면 목록 팝업, 고른 뒤 확인/취소… 스크롤" · 영향받는 문서: presentation-ui.md, data-item.md
+- `internal/gui/equipment_window.go`(새): 무기·방어구·장신구 카드(아이콘·이름·그 장수에게 더하는 능력치·특성 표식), 카드를 누르면 뜨는 고르기 팝업(장비 벗기·착용 중·장착 가능·병종에 안 맞는 장비 순, 지금 장비와 견준 변화, 휠·끌기 스크롤, 확인/취소), 특성 표식을 누르면 뜨는 설명 창, 전투 HUD 장비 탭(`detailEquipment`) — 능력치는 게임 사본에 해제·장착을 적용해 계산(`itemEffect`, 캐시)해 장비 `Bonus`(성장 배율)가 아니라 실제 오르는 수치를 보이려고
+- `internal/gui/scenario.go`: 출전 준비 상세의 장비 줄에 아이콘, 옛 `equipmentWindow`는 부관 전용 `deputyWindow`로
+- `internal/gui/windows.go`, `game.go`: 장비 창 크기, 고르기·설명 창을 장비 창 위에 그림, `Esc`가 설명 → 고르기 → 장비 창 순으로 닫음, `updateEquipPicker` 입력
+- `internal/gui/hud.go`: 장비 탭을 글 목록에서 아이콘·특성 표식으로
+- `internal/gui/events.go`: `IncompatibleEquipment`·`MissingEquipment`·`InvalidActor` 한국어 문구 — 고르기 목록에 사유로 보이므로
+- `internal/content/content.go`, `assets/data/equipment.json`: 장비 `Icon` 필드, 19종 모두 자기 그림
+- `tools/spritetool/assets/ver5-ui/{settings,pixels}.json`, `seed.py`, `README.md`, `assets/graphics/ui/ui.{png,json}`: 장비 아이콘 19종(36×36 수제 도트, 에이전트가 그리고 x8·x2·x1로 검수)
+- `tools/build_effects.py`: 스프라이트 `"dot": k` — 칸보다 k배 작은 격자를 최근접으로 키워 굽기(도트 아이콘을 UI 4배 그림 규격에 맞추려고)
+- `internal/gui/uidemo_equip.go`(새): 데모 `equip`, `internal/gui/equipment_window_test.go`: 모든 장비 아이콘이 시트에 있는지
+
+## 2026-10-21 설정에 전원 반격 옵션
+
+- `internal/storage/storage.go`: `Settings.CounterAll`(`counter_all`, 기본 끔) — 사용자 요청 "100% 확률로 모든 캐릭터가 데미지 배율 50%로 반격, 설정에서 켜고 끄기"
+- `internal/core/types.go`, `api.go`, `combat.go`: `State.CounterAll`·`SetCounterAll`, 켜면 반격 태세·특성이 없는 유닛도 사거리 안의 물리 공격에 일반 공격 ×0.5(`counterAllShare`)로 한 번 반격(연타 판정 없음). 태세·특성 반격은 기존 규칙(×0.7, 연타) 그대로. `CounterDamage` 예측도 같은 비율 — 데미지 배율처럼 엔진 상태에 실어 예측·시험 복사본·AI가 같은 규칙을 쓰게
+- `internal/session/session.go`: 요청마다 설정을 엔진으로 동기화
+- `internal/gui/windows.go`: 설정 창에 `전원 반격` 켜기/끄기 줄, 창 높이 604 → 668
+- `internal/cli/play.go`: CLI 설정 화면에 같은 토글
+- `internal/core/core_test.go`: `TestCounterAllAnswersEveryAttack`
+
+## 2026-10-22 장면 사람·소품 손질(사용자 검수 반영)
+
+- `../tools/unit3d/scene_props3d.py`(새), `tools/scene_maps/scene_props.py`, `tools/scene_maps/pixel_props.py`(삭제), `../assets_candidate/tiles/*`, `assets/graphics/map/extra.png`, `assets/graphics/index.json`: 장면 소품 14종(병기가·갑옷대·촛대·녹각·망루·방패 벽·거적·피 묻은 천·약탕관·부러진 창·쓰러진 깃발·솥·군량 자루·술독)을 손으로 찍은 정면 그림에서 3D 모델 렌더(소품 카메라·셀 셰이딩·외곽선, 손 리터칭 표 `RETOUCH`)로 바꿈. 망루는 사람 키에 맞춰 줄이고 초가 지붕을 세움, 솥·약탕관은 위가 열린 그릇(`bowl`)과 납작한 원통(`disc`) — 사용자 "2d 판대기 같아서 별로, 3d modeling 후 리터칭". 새·반짝임은 `scene_props.py`로 옮김
+- `../tools/unit3d/scene_people.py`(`throne`, `POSE_KEY_TAGS`, `POSE_COLORS`), `tools/doteditor/tools/civ3d.py`(`sheet_head`, `to_tags`), `assets/sprites/xiandi_noncombat.spr`, `internal/sprite/testdata/units/xiandi_noncombat.png`: 헌제 옥좌를 사람보다 높은 등받이·금 장식 관·팔걸이·디딤단으로 키우고, 나무는 시트가 안 쓰는 말 색 칸에 붉은 옻칠로(헌제 팔레트가 themeA를 검게, themeB를 금색으로 바꾸므로). 시트 머리는 맨 윗 픽셀 대신 렌더된 머리 픽셀 위에 붙여 등받이에 머리가 가거나 얼굴이 둘 되던 것을 고침. 안 쓰던 `POSE_TAG_SWAP`은 지움 — 사용자 "헌제옥좌에 앉아있는거 같지가 않아"
+- `../tools/unit3d/scene_people.py`, `assets/scenes/ch05.json`, `docs/presentation-scene.md`: 부축 2인(`helped_noncombat`)을 없앰(시트·스프라이트·비교 PNG 삭제, 5장 패잔병 장면에서 뺌) — 사용자 "부축은 그냥 없애죠". `tools/doteditor/heroes/helped_noncombat/` 작업 폴더는 남아 있다
+- `AGENTS.md`: 장면 데이터 위치를 `assets/scenes/chNN.json`으로(옛 `scenes.json`이 남아 있었다)
+- `internal/gui/field.go`(`propShadow`, `eachProp`이 소품 이름을 넘김): 이야기 장면 맵의 서 있는 소품마다 부드러운 땅 그림자(벽·휘장·병풍 제외), 소품보다 조금 넓게 오른쪽 아래로 — 사용자 "소품에도 그림자가 필요". 처음엔 너비의 70%로 소품 밑에 가려 안 보였다
+- `tools/doteditor/tools/robe_colors.py`(새), `units/official_{crimson,purple,blue,green}_noncombat.yaml`, `assets/sprites/*.spr`, 비교 PNG, `assets/scenes/ch02.json`: 품계별 조복(삼공 진홍·구경 자주·대부 청·낭관 녹, 원로 검정)과 궁궐에서 옥좌에 가까울수록 높은 품계 — 사용자 "중신들이 계급별로 색이 다르잖아, 황제와 가까울수록 계급이 높다"
+- `../tools/unit3d/scene_people.py`, `tools/doteditor/tools/civ3d.py`(`turned`): 눕기와 들것 위 부상병은 3D 작은 머리 대신 시트의 2D 머리를 옆으로 눕혀 찍고 흰 붕대, 부축은 둘 사이를 벌리고 부상병이 허리 숙여 어깨에 팔을 걸침 — 사용자 "머리가 안 보여", "오른쪽 아래 사람이 왼쪽 위 사람을 들고 가는 느낌"
+- 같은 파일, `assets/scenes/ch09.json`: 엎드린 강노병을 빼고(`crossbow_prone_noncombat`의 시트·스프라이트·비교 PNG 삭제) 계교 방패 벽 뒤에는 선 강노병 — 사용자 "끔찍해, 누운 표현은 생략". `tools/doteditor/heroes/crossbow_prone_noncombat/` 작업 폴더는 남아 있다
+- 같은 파일(`POSE_KITS`): 유비 앉기를 녹색 외투(시트 theme B) + 진영색 안옷으로 다시 그림 — 진영색 칸을 통째로 녹색으로 바꿔 외투가 사라져 보였다. 사용자가 본 관우(잿빛)·헌제(면류관 없음)는 고치기 전 첫 시도를 페이지에 올린 것이었다
+- `tools/scene_maps/backdrops.py`: 원경을 다시 그림(구름, 세 겹 능선의 햇빛·그늘 면과 안개, 나무 실루엣, 관문·성벽의 망루·처마·깃발, 불타는 낙양의 두 겹 지붕·불규칙한 불길과 연기·불티) — 사용자 "전경은 좀 부족해"
+- `tools/scene_maps/pixel_props.py`: 새 그림을 9×4로 키움(5×3은 화면에서 안 보였다). `internal/gui/scene.go`: 회상 색을 바랜 잿빛 갈색으로(노을과 구분되지 않았다)
+
+## 2026-10-22 장면을 채우는 사람·자세·소품·맵·원경
+
+결정 · 이야기 장면에는 앉은 자세를 그린다(2026-10-05의 "앉기 빼기"는 전투 모드 이야기였다) · 이유: 사용자 확인 · 영향받는 문서: presentation-scene.md
+- `internal/scenes/scenes.go`, `internal/gui/scene.go`, `player.go`(`unitVis.pose`·`rest`): 쉬는 자세 `Pose`(배우·단계), 보초 왕복 `Patrol`, 웅성거림 `Chatter`, 장면 `Backdrop`, 시간대 `memory`(회상), 효과 `birds`·`glint`, 장면이 열릴 때 0.5초 암전 — 사용자 "인물 나와서 대사만", "진영인데 병사가 너무 안 보인다", 거록 매복의 복선
+- `internal/gui/field_night.go`(`night.flat`), `assets.go`(`Backdrops`): 회상은 불빛 없이 고른 색, 원경 그림 읽기
+- `internal/gui/field.go`: 이야기 장면 맵은 캔버스를 바닥색으로 채우지 않고 비움 — 채우면 그 뒤에 깐 원경이 가려졌다(그림 밖의 색은 장면 화면이 같은 바닥색으로 먼저 칠한다)
+- `tools/scene_maps/scene_format.py`: `Backdrop`을 쓰고, 모르는 장면 키가 있으면 멈춤 — 처음엔 `Backdrop`을 조용히 버려 원경이 사라졌다
+- `internal/gui/scenario_test.go`: 자세 이름이 그 배우 시트에 있는지 검사(오타면 그냥 서 있어 눈에 안 띄므로)
+- `../tools/unit3d/scene_people.py`(새), `tools/doteditor/tools/civ3d.py`, `grid.py`(`poses`), `tools/spritebuild/build.py`(비전투 시트의 임의 동작): 3D 변환으로 문관(진현관·넓은 소매·홀, 조복은 진영색)·중신(검은 조복)·환관·부상병(누움·기대 앉음)·부축 2인·들것 3인·엎드린 강노병, 원술·공손찬 평복 시트, 장수 시트에 `sit`(헌제는 `throne`)만 덧붙임(다른 프레임은 다시 그리지 않음; 유비는 진영색 칸을 녹색 칸으로, 관우·헌제는 시트의 머리를 붙임) — 사용자 "신하가 신하 같은 모습이 아니다", "누워 있는 병사", 막사의 제후가 서 있기만 한 것. 픽셀은 스크립트가 만들었다
+- `tools/doteditor/units/*_noncombat.yaml`(새 9·자세 추가 10), `light_cavalry_white.yaml`(새, 말 색만 흰색), `assets/sprites/*.spr`, `internal/sprite/testdata/units/*.png`: 위 시트와 비교용 PNG
+- `assets/data/characters.json`: 원술·공손찬 `Look.Scene` — 회의·막사 장면에서 평복으로 앉게
+- `tools/scene_maps/pixel_props.py`(새), `scene_props.py`, `../assets_candidate/tiles/*`, `assets/graphics/map/extra.png`·`index.json`: 병기가·갑옷대·촛대·녹각·망루·방패 벽·거적·피 묻은 천·약탕관·부러진 창·쓰러진 깃발·솥·금빛 병풍, 새·반짝임 그림
+- `tools/scene_maps/compose.py`: 맹주의 막사 12×8(상석·좌석 8·수행 장수 자리), 장수의 군막·원술의 사치 막사(6×5), 계교 강과 다리, 거록 협곡 길목, 굶주린 진영, 포위된 성루의 부상병 자리, 궁궐의 옥좌 상자를 금빛 병풍·촛대로 — 사용자 "막사가 너무 작다", "거록 길목", "전풍과 매복을 논하는 장면"
+- `tools/scene_maps/backdrops.py`(새), `assets/graphics/backdrops/*.png`: 원경 먼 산·관문·성벽·불타는 낙양
+- `assets/scenes/ch01~09.json`: 위를 장면에 적용 — 궁궐(옥좌의 헌제, 동탁 곁 이유, 읍하다 동탁이 웃자 부복하는 문관들, 환관), 맹주의 막사 넷(앉은 제후와 뒤에 선 하후돈·정보·안량·문추, 웅성거림), 원술의 사치 막사, 손견의 굶주린 진영(거적의 부상병, 사수관 성벽 원경), 포위된 성루(누운 부상병, 신음, 오가는 보초), 패잔병 귀환(들것·부축), 공손찬의 군막(침상 곁에 앉은 공손찬), 거록 협곡(새 떼와 창끝 반짝임 뒤 번궁의 경고), 계교 다리(방패 벽 뒤 엎드린 강노병, 건너편 백마), 낙양 길 회상(`memory`), 원경
+- `docs/presentation-scene.md`, `tools-build.md`, `.claude/skills/scene-staging/SKILL.md`, `check_scenes.py`: 위 형식·맵·사람·자세, 바닥 소품은 서 있을 수 있음
+
+## 2026-10-21 장면 연출 개편(장면별 데이터·새 비트·새 맵), 전투와 이야기의 어긋남 수정
+
+### 장면
+결정 · 장면 데이터를 노드별 `assets/scenes.json`에서 장(章)별 `assets/scenes/chNN.json`의 장면(구간)별 항목으로 바꾼다 · 이유: 노드 238개가 같은 배우를 복사해 들고 있어 배우가 걸어간 자리·불이 노드마다 초기화되고(불이 한 줄 만에 꺼짐), 자동 배치(0.8칸 한 줄)가 겹침·바닥 밖·엉뚱한 인물 구성을 만들었다 · 영향받는 문서: presentation-scene.md, tools-build.md, system-architecture.md, system-save.md
+- `internal/scenes/scenes.go`(새 패키지): 장면 파일 읽기, 노드 → 장면 색인, 엑스트라 키(`병사#2`) — GUI와 CLI가 같은 읽기를 쓰게
+- `internal/gui/scene.go`: 장면 안에서는 배우 자리·효과·시간대를 노드가 바뀌어도 유지, 중간 노드로 들어오면 앞 노드 비트를 한 번에 맞춤(`settleNode`). 새 단계 `Enter`·`Exit`·`Speed`·`After`·`Look`·`Say`(맵 위 말풍선)·`Shake`·`Cam`/`CamAt`·`Zoom`·`Time`·`Sprite`·`Prop`, 효과 `smallfire`·`smoke`·`steam`, 화자가 말할 때 주변 배우가 화자 쪽으로 돌아봄(`faceSpeaker`, `Hold`로 막음), 엑스트라 대기 동작 어긋남 — 사용자 "인물 나와서 대사만 하는 경우가 대부분… 이동·액션·뒤돌아보기·말풍선", "불 모양이 있었다가도 갑자기 사라져"
+- `internal/gui/field_night.go`: 밤 어둠의 색(`night.color`, 노을·새벽은 옅게)과 장면의 소수 칸 불빛(`night.fires`) — 장면의 `Time`이 전투맵 밤 렌더를 그대로 쓰게
+- `internal/gui/game.go`, `internal/cli/scenes.go`: `scenes.Load(assets/scenes)`로 읽기. CLI는 장면이 바뀔 때 배우를 새로 세우고 노드의 비트(등장·이동·퇴장·말풍선)를 글로 보임
+- `internal/gui/scenario_test.go`, `scene_maps_test.go`, `officer_intro_test.go`: 새 형식 검사(배우 이름·스프라이트·진영·단계 이름·소품·비트 노드가 장면에 속함)
+- `assets/scenes/ch01~04.json`: 1~4장을 콘티대로 다시 연출(황건 진영 밤 술판과 꺼지지 않는 불, 포위된 성루의 수비병·성 밖 화톳불, 새벽 진영에 말 타고 들어오는 조조·하후돈·하후연과 지나가는 손견·황개, 관우·장비와 함께인 유비, 낙양 길의 조조 기병, 대신이 두 줄로 선 궁궐, 상석·좌석·입구가 있는 맹주의 막사, 사수관 들판에서 멀리 나타나는 화웅과 동쪽에서 달려오는 유비군, 관우의 출진·북소리·귀환) — 사용자 지적(동탁·헌제만 있는 궁궐, 조조·유비 단둘, 병사 없는 진영, 겹침, 2~4장 반동탁 연합 장면)
+- `assets/scenes/ch05~09.json`: 5~9장도 같은 방법으로 연출(산조 원소의 막사를 `S_council` 밤 술자리로, 공손찬의 막사를 `S_tent`로, 조조의 영채·패잔병 귀환, 하북 길에 말 타고 오는 간옹, 신도성 안의 병사들, 거록 길목의 안량 진과 양옆 매복, 계교 원소가 언덕에서 다리 건너 백마를 내려다봄). 산조 언덕의 '붉은 서쪽 하늘'은 하늘에 뜬 불 대신 노을(`dusk`)과 먼 연기로
+- `assets/scenes.json`: 삭제. 런타임이 읽지 않던 옛 형식 맵 원본(`maps`)도 함께 지움(맵 파일 `S_peach`·`S_village`·`S_camp`는 그대로)
+- `tools/scene_maps/compose.py`(새): viewer에 없는 방 `S_council`(9×6 맹주의 막사), `S_hall`(7×9 궁궐 전각)과 변형 `S_turban_camp`(누런 깃발·술독·군량), `S_rampart_siege`(군량·화로·깃발) — 4×4 막사·5×5 궁궐에는 제후 회의·대신 줄이 들어가지 않고, 황건 진영이 관군 붉은 깃발 맵을 쓰던 문제
+- `tools/scene_maps/scene_props.py`(새), `../assets_candidate/tiles/{banner_yellow,command_flag_yellow,grain_sack,wine_jar}.png`, `tiles.json`, `assets/graphics/map/extra.png`, `index.json`: 누런 깃발(붉은 깃발 색만 바꿈)·군량 자루·술독(아스키 픽셀) — 새 그림은 대체할 것이 없는 소품만
+- `tools/scene_maps/wire_story.py`: 장면이 없는 구간에 빈 장면(맵·노드)만 만들고 연출한 장면은 건드리지 않음(전에는 모든 노드의 배우를 자동 한 줄 배치로 덮어씀). 장소 표에 새 맵 반영
+- `tools/scene_maps/scene_format.py`(새): 장면 파일 줄 배치(배우 하나, 비트 그룹 하나가 한 줄) — 비트 diff가 읽히게
+- `tools/subset_fonts.py`: 글자 수집에 `assets/scenario`, `assets/scenes` 포함(전에는 이야기 파일이 빠져 있었다)
+- `.claude/skills/scene-staging/check_scenes.py`: 새 형식, 비트를 차례로 재생하며 그룹마다 겹침·바닥·소품 검사, 야외 맵은 그림 범위까지 설 수 있음
+
+### 전투와 이야기
+- `story02.json`, `assets/scenes/ch02.json`: 급보 앞에 두 장면 추가 — 남양 원술의 막사(손견이 호진을 벴다는 첩보에 "늑대를 쫓고 범을 들이는 꼴"이라며 군량 수레를 막음), 사수관 앞 손견의 진영 밤(군량이 끊긴 지 열흘, 그날 밤 서량 기병의 야습, 동쪽으로 퇴각) — 사용자 "손견이 왜 화웅이랑 싸우게 되었는지, 왜 위기에 빠졌는지 설명이 없다". 연의 5회의 원술 참소·군량 단절
+- `story03.json`, `stage02.json`, `assets/scenes/ch03.json`: 3장 들판 대화(손견 퇴각·황개의 경고·화웅의 외침·유비 도착·작전)를 B02 첫 차례 컷신(`field-meeting`)으로 옮기고, 전투 전 이야기는 유비가 서쪽의 패잔병을 보고 서두르는 두 줄만 남김 — 사용자 "전투씬 첫부분이랑 똑같다, 그 대사는 전투씬 처음에 나오는 게 맞다"
+- `stage02.json`: 사수관 관우 대 화웅 일기토를 화웅 퇴각으로(`EnemyResult: retreat`, 기획서 대사 "수염 긴 놈, 죽기 전에 이름이나 대라!" / "이 원한은 잊지 않겠다!") — 일기토에서 화웅이 죽고도 막사 장면에서 다시 관우에게 베이던 이중 사망, 일기토가 막사 장면의 "소장이 나가 화웅의 목을…"을 미리 쓰던 중복. 기획서는 처음부터 퇴각이었다. 시험 `internal/duel/scripts_test.go`도 "화웅이 막히고 달아난다"로(퇴각 걸음, 관우는 제자리, 쓰러지지 않고 사라짐)
+- `story09.json`, `stage07.json`: 전투 전 원소 장면을 다리 앞 매복을 자신하는 대화로 바꾸고, "공손찬을 놓쳤다·백마의종을 꺾었다·원군이 왔다" 자축과 총공격 명령은 B07 2라운드 `all-out` 이벤트의 전장 대사로 옮김 — 개전 컷신이 보여 주기 전에 결과를 말하던 순서 뒤집힘 · 영향받는 문서: conceptual_scenario.md(구현 메모)
+- `story09.json`, `conceptual_scenario.md`: 공손찬 "포로는 돌려보내지" → "사자는 돌려보내지"(잡은 포로가 없고 돌려보낼 사람은 사자 진진)
+- `story02.json`, `conceptual_scenario.md`: 손견 "도적의 북쪽 진" → "남쪽 진"(1장은 북쪽이 강, 유비가 불 놓은 곳은 남쪽)
+- `story05.json`: 의천검 `grant`를 조조가 칼을 건네는 지문·대사 뒤로(획득 표시가 먼저 뜨던 순서)
+- `stage01.json`: 파재·유비의 부르는 대사가 일기토 첫 줄과 겹치지 않게("불을 놓은 놈, 썩 나와라!" → "썩 나와라!", "탁현의 유비가 여기 있다!" → "그대의 상대는 나다!"), 장비 일기토 첫 줄이 돌격 컷신의 "연인 장익덕이 여기 있다"를 되풀이하지 않게
+- `stage01·03·04·05·06·07.json`: 장비 일기토 대사의 "~랑께"를 이야기 말씨 "~유·~슈"로 — 화면마다 다른 지방 말을 쓰던 것
+
+## 2026-10-21 장면(scene) 용어, 장면 캡처 데모
+
+- `AGENTS.md`: 이야기 화면에서 전투 사이에 보이는 장면 맵·배우·엑스트라·비트·카메라를 "장면(scene)"이라 부른다고 적음 — 사용자 "스토리 영역을 구성하는 모습을 장면, scene이라고 칭한다"
+- `internal/gui/uidemo_scenenode.go`, `uidemo.go`(`Demo.replace`): `-ui scenenode -stage <노드,...>`가 지정한 이야기 노드의 장면을 줄마다 재생 — 장면 개선안을 실제 화면 캡처로 비교하려고. 엔진에 노드로 건너뛰는 길이 없어 관찰값의 노드만 바꿔 그린다
+- `.claude/skills/scene-staging/SKILL.md`, `check_scenes.py`: 장면 연출 스킬(이야기를 감독처럼 읽기 → 맵 고르기 → 콘티 → scenes.json → 배치 검사 → scenenode 캡처)과 배치 검사 스크립트(배우 1칸 미만·바닥 밖·소품 위·맵 밖). 지금 데이터에서 714건 — 사용자 "다음에 스토리 할 때도 비슷한 기조로 할 수 있도록"
+- `.claude/skills/scene-staging/SKILL.md`: 장면 앞뒤 전투의 이벤트·일기토 대사를 이야기와 이어 읽고 중복·순서·생사·지급 순서·말투를 맞추는 단계 추가 — 사용자 "전투 시의 스토리랑 장면에서의 스토리랑 안 맞는다"(B02 화웅 이중 사망, 9장 순서 뒤집힘 등)
+
 ## 2026-10-20
+
+### 유비 대 파재 일기토, 지원 병법 경험치 레벨 보정
+- `stage01.json`: 유비 대 파재 일기토(파재 퇴각) 추가, 파재 `DuelFirst` — 사용자 제안. 일기토 경험치가 관우·장비에게만 가서 유비가 기준 레벨보다 처지던 문제(B01 유비 +1.0 → +2.0)
+- `internal/core/growth.go`(`supportXP(u, q)`), `api.go`, `combat.go`: 회복·버프 경험치에 행동 경험치와 같은 레벨차 보정(대상 레벨 − 시전자 레벨) — 사용자 "아군 레벨이 높으면 보정해 경험치도 높여줬으면" · 시험: `core/defense_xp_test.go` · 영향받는 문서: logic-growth.md
+- 서툰 AI 캠페인 시험은 5판 중 3판 승(기준 4판 미달). stage_lv_balance.md 3.2에 원인을 적음
+
+### 일기토 이동, 전장 대사 넘기기, B02 손견군, B03 샛길
+- `internal/gui/command.go`: 일기토 상대 옆 칸을 고르면 확인 창 없이 바로 이동하고 걸음과 일기토를 재생(`moveIntoDuel`이 `request`로) — 사용자 "일기토 메시지가 떴는데 정작 일기토는 없었어", "팝업 지워죠". 원인: 확인 뒤 명령만 보내고(`send`) 재생하지 않아 엔진에선 일기토가 났지만 화면엔 안 보였다
+- `internal/ai/ai.go`: `DuelFirst`는 이번 차례에 닿는 일기토 칸이 있을 때만 그리로, 아니면 평소대로 — 사용자 "일기토 위해 무작정 달려오는 거 이상해" · 영향받는 문서: logic-battle-event.md 5.4, data-scenario-node.md
+- `internal/gui/battle_speech.go`, `player.go`, `cutscene.go`: 전장 대사는 클릭하면 빨리, 다 나온 뒤 클릭하면 다음 줄로. 끝난 말풍선은 1초에 걸쳐 흐려짐(`dropSpeech`, `Player.Fading`, `nextLine`) — 사용자 요청 · 영향받는 문서: presentation-replay.md
+- `stage02.json`, `story03.json`: 손견군이 퇴각(`march`)하지 않고 함께 싸움, 대사도 그렇게. 화웅 공세 3 → 6라운드 — 사용자 요청
+- `characters.json`: 이각을 경보병으로(자기 그림 없이 경기병 병종 그림을 쓰던 장수, 이동이 길어 달려오던 문제) — 사용자 제안
+- `tools/mapgen/layouts/hero/map03.txt`, `stage03.json`: 호로관 15×26, 동쪽 샛길. 이유 무리는 관 앞을 지키다 이각이 쓰러지면 출진, 전진 병력이 전멸하면 목순·무안국이 샛길로 우회해 나타나고 여포는 다음 라운드에 진격(`lubu-ready`), 동맹군 일기토 뒤 유비·장비·관우 대사 교체 — 사용자 요청 · 영향받는 문서: logic-battle-event.md 8절, conceptual_scenario.md 4장
+
+### 진영별 차례, 등장 카메라, 재생 시점의 기록
+- 결정: 차례를 플레이어의 군 → 아군 편 AI 진영 하나씩 → 적 진영 하나씩으로. 진영은 스테이지 `Armies`(진영색, 이름, 플레이어 편 여부)로 정한다 · 이유: 사용자 "조조&손견&황보숭군이 동시에 움직이면 동맹군을 포커싱해도 움직임이 안 들어옴, 진영색도 그럴싸하게" · 영향받는 문서: logic-battle-event.md 1절, data-scenario-node.md, presentation-ui.md
+- `internal/content`(`Stage.Armies`, 검증), `internal/core`(`State.Army`, `Unit.ActsIn(turn, army)`, `armyOrder`·`nextArmy`, `turn` 이벤트 `Text`), `internal/session`(`ResolvePhase`는 한 진영), `internal/ai`, `assets/scenario/hero/stage01~07.json`(`Armies`): 위 결정의 구현. `Army`가 빈 AI 차례(옛 저장·시험)는 그 편 전체
+- `internal/gui/turn_banner.go`, `hud_panel.go`: 차례 배너와 HUD 머리를 진영 이름·진영색으로(황보숭군의 차례, 조조군의 차례)
+- `internal/gui/enemy_camera.go`: AI 진영 카메라를 동맹군 차례에도 — 사용자 "동맹군이 움직이는 것도 자동으로 포커싱"
+- `internal/gui/player.go`(`perform`), `field_state.go`(`areaCenter`): 병력 등장·지형 변화가 이어지면 그 장면 전에 카메라가 먼저 그곳으로 — 사용자 "병력이 나오는 걸 몰라서 화면이 멈춰 있는 줄"
+- `internal/gui/battle_log.go`, `player.go`, `cutscene.go`: 대사·병력 등장 기록을 재생이 그 장면에 닿을 때 씀 — 사용자 "조조가 나오지 않았는데 조조 대사가 일람에 찍힘"
+- `stage01.json`: 컷신에서 유비가 남쪽 울타리 통로 앞(17,21)까지 나아감, 출격 5라운드 / `stage02.json`: 화웅만 나서고 이숙은 관문을 지킴 — 진영별 차례로 B01이 짧아지며 유비 성장이 다시 처져서(단순 AI 캠페인 시험: 5판 중 4판 이상 승, stage_lv_balance.md 기준과 맞춤)
+
+### 레벨 정책, 텍스트 CLI, B01·B03 다시 짜기
+- 결정: 스테이지 레벨 정책 — 주력은 스테이지 n에 3 + 2×(n − 1), 적 병사 L 또는 L − 1, 적 장수 L + 1, 총대장 L + 2~3(거물 L + 5까지), 동맹 장수 L + 1. 한꺼번에 붙는 적 수와 무리 나누기까지 정했다 · 이유: 사용자 기획 · 영향받는 문서: stage_lv_balance.md(새), AGENTS.md(스테이지 편집 지침)
+- 결정: B01 이야기를 플레이어 조작 없이 이벤트로 끝까지(등장 → 작전 대화 → 관우·장비가 울타리로 가서 불 → 번짐 → 조조·손견 → 출격 → 퇴각). 등무·정원지 일기토는 그대로 살림 · 이유: 사용자 "a~f까지는 조작이 아니라 이벤트로", 옛 B01 일기토 살리기 · 영향받는 문서: logic-battle-event.md 8절, conceptual_scenario.md 1장
+- 결정: 가장 가까운 적만 치는 서툰 플레이어(`ai.RushNext`)로 B01~B03을 이기게 · 이유: 사용자 "단순 AI로 3스테이지 정도는 쉽게" · 시험: `ai/rush_test.go`(시드 1~5, 성장 이어받음)
+- `assets/data/characters.json`, `internal/content`(`Character.Points`), `internal/core/engine.go`: 유관장 Lv3·특성치 200으로 시작 — 사용자 제안
+- `tools/mapgen/layouts/hero/map01.txt`, `stage01.json`: 26×26으로 넓혀 성과 울타리 사이 띠를 여섯 칸으로, 울타리마다 통로 두세 곳(사용자: 울타리가 좁아 동맹군이 의미 없음). 울타리 불은 꺼지지 않고(사용자: 화공이 너무 빨리 꺼짐) 진영 안에 불씨(차례 시작 시 병력 20% 손실)를 군데군데. 불이 난 진영은 사기·순발·방어 약화(사용자 제안). 레벨은 정책대로(조조 Lv14 등 동맹 장수 Lv4로), 조조·손견군은 장수를 앞줄에 세운 세 줄 진형(사용자: 삼각형으로 빼곡함). 불에 쫓긴 남쪽 병사 셋이 유관장에게 덤벼 유비도 싸울 상대가 생김, 출격은 4라운드
+- `tools/mapgen/layouts/hero/map03.txt`, `stage03.json`: 호로관을 좁고 긴 골짜기(11×26)로, 서량 전진 병력을 선봉·이각·이유 세 무리로 나눠 `react`로 길목에 세움. 여포가 나서면 이유 무리는 관으로 물러남 — 사용자 제안(맵을 좁고 길게, 닿으면 공격, 이야기 이벤트)
+- `stage02.json`: 정책 레벨에 서량 기병 셋(L − 1) 돌격, 보병 넷(L − 2) 화웅 곁 대기 — 측정해서 정함(stage_lv_balance.md 3.2)
+- `internal/content/content.go`, `internal/ai/ai.go`: 정책 `react` — 이동+사거리 안에 상대가 들어올 때만 움직여 친다. `AIPolicyVersion` `greedy-10` · 영향받는 문서: logic-battle-event.md 5.4, data-scenario-node.md, system-save.md
+- `internal/ai/ai.go`: `DuelFirst` 장수는 일기토 상대가 살아 있는 동안 상대 쪽으로만 걷고 아무도 치지 않음 — 화웅이 관우 대신 유비를 쳐서 군주가 퇴각하던 문제
+- `internal/core/formation.go`: 일기토의 `Supports`가 맞닿아도 일기토가 벌어지고, 주역이 퇴각했으면 첫 지원군이 대신 치름 — 호로관의 관우·유비 선공 연출이 데이터에만 있던 문제, 장비가 먼저 퇴각하면 여포를 이길 길이 없던 문제 · 영향받는 문서: presentation-duel.md, data-scenario-node.md
+- `internal/gui/duel.go`: 먼저 나선 장수를 일기토 화면 앞에 세우고 주역은 지원군 자리로 — 변형 연출의 대사와 그림이 어긋나던 문제(전부터 있던 것)
+- `internal/gui/game.go`(`replayOpening`), `view.go`: 전투를 연 명령(출전·배치 완료)이 낸 첫 차례 이벤트도 재생하고, 첫 작전 개요 창을 닫을 때까지 재생을 멈춤 — 사용자 "불이 붙는 걸로 시작하는 게 아니라 모션이 있어야지". 원인은 이 경우 GUI가 재생 없이 끝 상태를 바로 그리던 것 · 영향받는 문서: presentation-replay.md
+- `internal/gui/view.go`, `game.go`(`briefed`): 첫 차례 재생이 기다리는 작전 개요 창은 재생이 남아 있어도 그리고 클릭으로 닫게 함 — 사용자 "1스테이지 전투 시작하면 아무것도 안 하고 가만히 있음". 창은 재생이 끝나야 그려지고, 재생은 창이 닫히길 기다려 서로 멈춰 있었다. 앞서 확인 데모가 창을 코드로 닫아서 놓쳤고, 이번엔 창이 등록한 클릭 버튼을 눌러 확인함
+- `internal/gui/player.go`, `field_state.go`: 재생 중 지형 상태는 재생 전 모습을 들고 있다가 `terrain` 이벤트 차례에 바꿈, 전투 대사 여러 줄은 한 줄씩 — 사용자: 조조·하후돈, 손견·정보가 동시에 말함
+- `internal/gui/field_night.go`: 밤에 유닛 둘레도 밝힘 — 사용자: 너무 어두워 누가 있는지 모름 · 영향받는 문서: presentation-ui.md 밤
+- `internal/gui/dialogue_scroll.go`, `officer_intro.go`: 이야기(대화창·장수 첫 등장)는 인물 자신의 일러스트만, 병사·일러스트 없는 장수는 얼굴 없음(`storyPortrait`) — 사용자 요청 · 영향받는 문서: presentation-scene.md 초상
+- `internal/cli/play.go`·`ascii.go`·`scenes.go`(새), `cmd/srpg-cli`: 번호 메뉴로 하는 텍스트 플레이. 장면·전투를 칸당 네 칸 글자 지도로, 대상은 번호와 능력치·예상 피해로. `-slot`으로 실행 사이를 이어 감 — 사용자 요청(에이전트가 창 없이 배치·이야기·난이도를 확인) · 영향받는 문서: system-architecture.md
+- `cmd/_balance`(새, 임시): 정책 레벨로 스테이지를 시드마다 돌려 승률·성장·퇴각을 냄. `internal/ai/rush.go`(새): 서툰 플레이어 AI
+- `.claude/skills/stage-debug`(새): 수치(`_balance`) → 텍스트 플레이(`srpg-cli`) → 화면 캡처 세 단계 스테이지 점검 스킬 — 사용자 요청, 직접 써 보고 등록
+
+### B01을 "포위를 불로 뚫는 밤"으로 다시 짬
+- 결정: 장사성을 맵 가운데 두고 남·서·동 세 진영이 에워싼 밤(북쪽은 강)으로 바꾸고, 유관장의 화공 → 조조·손견의 화공 → 성문 출격 → 황건 붕괴를 이벤트로 잇는다. 마을·서복(서서 복선)은 뺀다 · 이유: 사용자 기획. 옛 B01은 성이 서쪽 끝에 있어 포위가 보이지 않았고 마을 구도와 이야기가 따로 놀았다(약탈대 구도도 사용자가 어색하다고 봄) · 영향받는 문서: conceptual_scenario.md 1장, logic-battle-event.md 8절, logic-campaign.md 4절, data-map.md, data-scenario-node.md, presentation-ui.md(밤)
+- `internal/content`(`Stage.Forced`·`Night`·`Lights`, `State.Grounds`), `internal/core/engine.go`, `deployment.go`: 강제 출전은 `start`가 `DeploymentPlan`대로 놓고 전투로 들어감, 전투 중의 `DeploymentPlan`은 빈 명령열(호출처 20여 곳이 그대로 동작) — 사용자: 강제출전 유관장, 배치 없이
+- `assets/data/game.json`·`terrain.json`: 상태 `O` 열린 성문(성문 땅에만, 비용 1) — 땅을 바꾸지 않고 상태만으로 성문을 열려고. 맨 위 층이 비용을 정하는 규칙 덕에 엔진 변경 없이 지나갈 수 있다. 탄 울타리는 울타리 비용 0이 그대로라 못 지나간다(사용자 결정)
+- `internal/gui/field_night.go`(새), `field.go`, `field_native.go`: 밤 어둠과 불·횃불 빛, 밤에는 HP 막대를 어둠 위에, 열린 성문은 문루 없이 바닥(`gatehouse_floor_*`)
+- `assets/scenario/hero/maps/map01.json`(`tools/mapgen/layouts/hero/map01.txt`), `stage01.json`, `story01.json`, `assets/scenes.json`, `characters_story.json`: 새 맵(20×20)과 이벤트, 성루·황건 진영 장면, 병서는 늘 받음, 조무 추가·서복 삭제. 승리는 붕괴 플래그와 파재 격파 — 파재가 진입로 가까이 있어 불을 놓기 전에 끝나 버리지 않게
+- 시험: `core/deployment_test.go`(강제 출전), `core/campaign_content_test.go`(`TestChangsheSiegeUnfolds`: 불 → 번짐 → 조조·손견 → 출격·퇴각 → 승리)
+
+### 대화창을 줄이고 대사를 한 글자씩
+- `internal/gui/dialogue_scroll.go`: 두루마리 도트 배율 4→3, 글자 34→26, 높이 UI 24%(150~190), 초상 최대 200, 이름패도 함께 줄임 — 사용자: 대화창과 글씨가 너무 크다
+- `internal/storage/storage.go`, `gui/scenario.go`, `gui/windows.go`: 게임 화면용 `InstantText`(기본 꺼짐)를 새로 두고 대사를 45ms에 한 글자씩. `TextDelayMS`는 CLI의 글자 사이 대기로만 남김 — 사용자: 글씨가 팍 뜨지 말고 말하듯 한 글자씩. 저장된 설정의 `text_delay_ms: 0`이 기본값으로 쓰여 있어 기본값만 바꿔서는 반영되지 않아 새 항목으로 뺐다
+- `internal/gui/scenario.go`, `game.go`: 줄 시작 시각을 게임 틱 대신 UI 초(`lineAt`)로 — 말풍선과 같은 시계를 쓰고, 틱을 올리지 않는 데모에서도 찍히게
+- `internal/gui/scenario.go`(`typing`, `hurry`), `battle_speech.go`(`rushSpeech`), `game.go`: 찍히는 중에 클릭하면 남은 글자를 8배 빠르게(장면 대사는 한 번 더 누르면 다 나옴) — 사용자: 아무 데나 클릭하면 8배쯤 빨리. 한 번에 채우던 것보다 말하는 느낌을 남기려고
+- `internal/duelview/bubble.go`(`DrawTyped`), `gui/battle_speech.go`: 전투맵 말풍선도 한 글자씩, 크기는 전체 문장에 맞춰 고정. 일기토 말풍선은 그대로 한 번에 — 사용자: 일기토는 실시간·급박한 연출이라 예외
 
 ### 벡터로 그리던 그림을 수제 픽셀 시트로
 - 결정: 그림 역할을 하는 것(효과·입자·아이콘·장식 테두리·무늬·맵 장식)은 수제 픽셀 시트로 그리고, 맵 칸 도형·능력치 육각형·단색 채우기·단순 테두리·글자는 벡터로 둔다 · 이유: 도트 유닛 사이에서 안티앨리어싱된 매끈한 도형이 화풍이 따로 놀았다. 칸 마스크는 마름모 PNG로 찍어 봤으나 소수 배율에서 경계가 들쭉날쭉해(이미지 확대의 한계) 화면 해상도로 칠하는 도형으로 되돌렸다 · 영향받는 문서: tools-build.md, 각 원본 README
@@ -337,6 +541,14 @@
 - `internal/duelview/decor.go`: 일기토 진영의 깃발을 3개에서 6개(군기 4·지휘 깃발 2)로 늘리고, 기존 `banner`/`command_flag` 그림을 열 단위로 물결치게 비튼 4프레임 애니메이션(`wave`, 170ms)을 런타임에 만들어 씀 — 새 그림 없이 펄럭임을 내려고. 깃발마다 위상이 달라 같이 움직이지 않음.
 - `internal/gui/duel.go`: 낮은 화면의 일기토 말풍선 배율 1.6→2 — 대사가 아직 작다는 의견.
 - `internal/gui/duel_gallery.go`: 메뉴의 일기토 모드 뷰어에도 `Decor: g.duelDecor()`를 넘김 — 깃발·바위·풀이 없는 빈 경기장이었고, 깃발 펄럭임이 전투 중 일기토에만 보였음.
+- `tools/doteditor/units/{caocao,sunjian,yuanshao,zhaoyun,dongzhuo,infantry}_noncombat.yaml`, `assets/sprites/*_noncombat.spr`, `internal/sprite/testdata/units/*_noncombat.png`: 조조·손견·원소·조운·동탁의 장면용 비무장 도트와 일반 보병 시트를 새로 빌드 — 장면에서 기병 장수만 말을 타고 나와 어색했음. 에이전트가 손으로 그린 초안은 원본 스프라이트와 달라 버리고, `tools/unit3d`의 평복 3D 모델을 도트로 변환하는 방식으로 만들었다.
+- `tools/doteditor/tools/civ3d.py`, `model3d.py`, `model3d.html`: 3D 평복 모델에서 `<id>_noncombat`을 만드는 도구와 3D 모델 뷰어(머리는 방향별 2D 도트를 붙임).
+- `tools/unit3d/civilian.py`: 평복 걷기에서 팔이 무기 든 병사 자세로 파닥거리던 것을 앞발과 같은 쪽 팔이 뒤로 가는 팔 흔들기(`walk_arms`)로 바꿈.
+- `assets/data/characters.json`: 조조·손견·원소·조운·동탁의 `Look.Scene`을 `<id>_noncombat`으로 연결.
+- `assets/data/classes.json`, `internal/content/content.go`, `internal/gui/look.go`: 병종에 `Scene` 필드를 추가하고 기마 병종(경기병·중기병·궁기병·노기병·친위대·전차)에 `infantry_noncombat`을 지정, `sceneArt`가 캐릭터 `Look.Scene` 다음에 병종 `Scene`을 쓰게 함 — 장면용 시트가 없는 공손찬·화웅 같은 기병 장수가 걸어서 서도록.
+- `assets/data/characters_story.json`: 번궁을 경기병에서 무도가(`brawler`)로 바꾸고 장비를 평복으로, 말 팔레트를 뺌 — 사용자 요청.
+- `tools/doteditor/units/bandit.yaml`, `assets/sprites/bandit.spr`, `internal/sprite/testdata/units/bandit.png`: 적병 시트를 3D 변환으로 다시 만듦 — 기존 시트는 경보병 기본형에서 방패만 지워서 팔이 방패·칼 든 자세 그대로(팔꿈치가 바깥으로 꺾인 L자, 걷기에서 팔이 안 움직임)이고 칼 궤적이 칼과 어긋났음. 머리는 기존 손그림 머리를 유지한다.
+- `tools/doteditor/tools/grid3d.py`: `--kit bandit` 추가(맨팔 삼베옷, 허리띠, 칼, 방패 없음) — 방패 없는 병종은 양팔을 몸 옆에 내리고 칼 든 손을 허리에 두는 자세(`relaxed_pose`)를 쓰고, 걷기에서 빈 팔이 다리와 반대로 흔들린다. 머리 상자를 기존 시트에서 복사할 때 상자 안의 옛 칼 픽셀과 칼에만 붙은 외곽선을 빼고(칼이 두 자루로 보이고 목에서 잘리던 원인), 머리 앞에 있는 3D 칼 픽셀은 머리 위에 다시 그림(`front_weapon`), 공격 궤적은 기존 시트에서 붙이지 않고 3D 칼 경로로 생성(`TRAILS`), 정면(S)·후면(N) 내려베기는 칼이 점이 되므로 몸 앞을 가로지르는 베기(`overhead_s`)와 칼 납작한 면을 카메라 쪽으로 돌리는 처리(`face_camera`)를 씀, 궤적 폭을 1.3→1.1로 줄여 칸 밖으로 잘리던 것을 없앰.
 
 ## 2026-10-21 전투맵 배경 장식과 숲 변형
 - `internal/gui/field_scenery.go`(신규): 장식 정의(`scenery.json`) 로더, 맵 ID·좌표 해시와 값 잡음으로 소타일마다 풀포기·꽃·자갈·얼룩(황무지·성내·숲 바닥은 각자의 세트)을 정해 한 장에 굽는 `makeScenery`, 숲 칸마다 소나무 4~8그루를 변형·위치·위상을 달리해 놓는 `nativeForest`(그루마다 깊이 정렬, 프레임 4장 흔들림, 그림자는 장식 층에 같이 구움), 보이는 부분만 그리는 `drawBaked` — 땅 타일은 그대로 두고 그 위 장식만 늘려 이음새가 드러나지 않게 하고, 같은 소나무 묶음이 격자로 반복되던 숲을 없애려고. 장식 위치는 저장하지 않고 계산한다.
@@ -354,11 +566,16 @@
 - `assets_candidate/tools/gen_scenery.py`, `assets/graphics/map/scenery.{png,json}`: 물·절벽 윗면 소재와 주둔지 깃발·성 깃발·연기 프레임, `sites`·`anim` 설명 추가, 절벽 금 밀도 조정.
 - `tools/mapshots/shots.py`, `compare.py`: 절벽·주둔지·마을·성 촬영 지점과 GIF 종류(`--gifkind`) 추가.
 - `internal/gui/field_deployment.go`, `field_outside.go`: `shadeScenery`가 전투 영역 밖에 선 물체(나무·절벽·성벽·구조물)를 `exteriorShade`로 어둡게 함(영역 안은 그대로, 밖은 `exteriorDim` 0.55에 비네트 곡선으로 멀수록 더 어둡게, 발 밑 칸 기준이라 경계의 나무가 반으로 갈리지 않음) — 바닥만 어두워서 숲과 절벽이 떠 보였음. 배치 화면의 기존 어둡게 하기와 함께 쓰며 편집기의 외곽 어둡게 보기 전환도 따른다.
-- `tools/doteditor/units/{caocao,sunjian,yuanshao,zhaoyun,dongzhuo,infantry}_noncombat.yaml`, `assets/sprites/*_noncombat.spr`, `internal/sprite/testdata/units/*_noncombat.png`: 조조·손견·원소·조운·동탁의 장면용 비무장 도트와 일반 보병 시트를 새로 빌드 — 장면에서 기병 장수만 말을 타고 나와 어색했음. 에이전트가 손으로 그린 초안은 원본 스프라이트와 달라 버리고, `tools/unit3d`의 평복 3D 모델을 도트로 변환하는 방식으로 만들었다.
-- `tools/doteditor/tools/civ3d.py`, `model3d.py`, `model3d.html`: 3D 평복 모델에서 `<id>_noncombat`을 만드는 도구와 3D 모델 뷰어(머리는 방향별 2D 도트를 붙임).
-- `tools/unit3d/civilian.py`: 평복 걷기에서 팔이 무기 든 병사 자세로 파닥거리던 것을 앞발과 같은 쪽 팔이 뒤로 가는 팔 흔들기(`walk_arms`)로 바꿈.
-- `assets/data/characters.json`: 조조·손견·원소·조운·동탁의 `Look.Scene`을 `<id>_noncombat`으로 연결.
-- `assets/data/classes.json`, `internal/content/content.go`, `internal/gui/look.go`: 병종에 `Scene` 필드를 추가하고 기마 병종(경기병·중기병·궁기병·노기병·친위대·전차)에 `infantry_noncombat`을 지정, `sceneArt`가 캐릭터 `Look.Scene` 다음에 병종 `Scene`을 쓰게 함 — 장면용 시트가 없는 공손찬·화웅 같은 기병 장수가 걸어서 서도록.
-- `assets/data/characters_story.json`: 번궁을 경기병에서 무도가(`brawler`)로 바꾸고 장비를 평복으로, 말 팔레트를 뺌 — 사용자 요청.
-- `tools/doteditor/units/bandit.yaml`, `assets/sprites/bandit.spr`, `internal/sprite/testdata/units/bandit.png`: 적병 시트를 3D 변환으로 다시 만듦 — 기존 시트는 경보병 기본형에서 방패만 지워서 팔이 방패·칼 든 자세 그대로(팔꿈치가 바깥으로 꺾인 L자, 걷기에서 팔이 안 움직임)이고 칼 궤적이 칼과 어긋났음. 머리는 기존 손그림 머리를 유지한다.
-- `tools/doteditor/tools/grid3d.py`: `--kit bandit` 추가(맨팔 삼베옷, 허리띠, 칼, 방패 없음) — 방패 없는 병종은 양팔을 몸 옆에 내리고 칼 든 손을 허리에 두는 자세(`relaxed_pose`)를 쓰고, 걷기에서 빈 팔이 다리와 반대로 흔들린다. 머리 상자를 기존 시트에서 복사할 때 상자 안의 옛 칼 픽셀과 칼에만 붙은 외곽선을 빼고(칼이 두 자루로 보이고 목에서 잘리던 원인), 머리 앞에 있는 3D 칼 픽셀은 머리 위에 다시 그림(`front_weapon`), 공격 궤적은 기존 시트에서 붙이지 않고 3D 칼 경로로 생성(`TRAILS`), 정면(S)·후면(N) 내려베기는 칼이 점이 되므로 몸 앞을 가로지르는 베기(`overhead_s`)와 칼 납작한 면을 카메라 쪽으로 돌리는 처리(`face_camera`)를 씀, 궤적 폭을 1.3→1.1로 줄여 칸 밖으로 잘리던 것을 없앰.
+
+## 2026-10-21 B01 장사의 밤 다시 짜기
+
+- `assets/scenario/hero/stage01.json`: 정원지를 처음부터 남쪽 진영에 둠(옛 `chengyuanzhi-comes` 스폰 삭제). 오프닝을 이벤트 하나로 — 유관장 화공 → 숲에 숨기 → 황건 당황 → 남쪽 병사가 바깥·안쪽으로 뛰쳐나옴 → 유관장 급습 → 파재 돌격 명령 → 조조군·손견군 화공 → 황보숭 출성 → 파재가 사방을 돌아보고 당황 → 황건 전원 공격·방어 −20%. 정원지·파재는 앞 장수 일기토 뒤 차례로 출진, 파재 병력 70% 아래면 유비와 일기토. 옛 불 번짐·측면 화공·도주 이벤트와 `b01-routed` 플래그 삭제, 승리는 파재 격파 — 사용자가 정한 진행 순서대로, 일반병 → 등무 → 정원지 → 파재 순으로 자연스럽게 만나게.
+- `tools/mapgen/layouts/hero/map01.txt`, `assets/scenario/hero/maps/map01.json`: 26×26 → 32×32. 성, 두 칸 띠, 안쪽 울타리(성을 가둠), 다섯 칸 황건 진영 띠(주둔지 12곳 여섯 칸 간격, 황무지 조각), 바깥 울타리, 바깥 네 칸(남쪽 숲, 북쪽 강). 울타리 틈은 모두 두 칸 — 울타리 사이 길이 한 칸이라 너무 좁았음.
+- `internal/core/battle_events.go`: `shift`(동작·컷신 `move`)의 길을 직선에서 걸을 수 있는 땅의 최단 길(`walk`, 다른 유닛 무시, 길 없으면 직선)로 — 컷신에서 병사가 울타리를 뚫고 걸어 나갔음. `buff` 동작이 대상마다 `status` 이벤트를 냄 — 이벤트 디버프가 화면에 아무것도 안 보였음.
+- `internal/gui/player.go`, `internal/gui/events.go`: 이어진 같은 능력치 `status` 이벤트를 한 박자에 모든 대상 위 버프·디버프 효과와 "공격 -20%" 수치로 보임, 기록 줄은 내지 않음.
+- `internal/cli/play.go`: `status` 이벤트를 능력치·값마다 한 줄(대상 이름 나열)로 출력.
+- `internal/core/campaign_content_test.go`: `TestChangsheSiegeUnfolds`를 새 흐름(세 곳 화공, 성문, 병사 뛰쳐나옴, 디버프, 정원지·파재 차례 출진)으로.
+- `docs/conceptual_scenario.md`, `docs/logic-battle-event.md`: B01 전투 중 흐름, `buff`의 `status` 이벤트, 컷신 길 찾기.
+- 측정(10 시드): rush 10/10(6.0라운드, 관우 +2.6 · 유비 +2.3 · 장비 +2.3), ai 10/10(7.3라운드, 관우 +2.8 · 유비 +1.4 · 장비 +2.3, 장비 퇴각 2). 남쪽 바깥 병사를 여섯에서 넷으로 줄임 — 관우가 +3.1로 기준을 넘고 퇴각했음.
+
+- `assets/scenario/hero/story01.json`: `c01-05` 서술을 두 겹 울타리 진형으로 — 새 맵과 맞춤.

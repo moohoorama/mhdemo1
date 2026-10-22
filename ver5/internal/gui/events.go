@@ -25,7 +25,7 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		return a + " 요극 발동", false
 	case "followup-start":
 		return fmt.Sprintf("%s → %s: 요극 추가 공격", a, t), false
-	case "followup-end", "cutscene", "terrain":
+	case "followup-end", "next-strike", "cutscene", "terrain", "status":
 		return "", false
 	case "turn-limit":
 		return fmt.Sprintf("%d턴 제한 초과: 패배", e.Amount), true
@@ -75,7 +75,7 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 	case "victory":
 		return "승리!", true
 	case "turn":
-		return fmt.Sprintf("%d턴 · %s 진영", e.Amount, factionName(e.Target)), false
+		return fmt.Sprintf("%d턴 · %s 차례", e.Amount, g.armyName(e.Target, e.Text)), false
 	case "join":
 		return g.name(e.Target) + " 합류", true
 	case "grant":
@@ -131,7 +131,7 @@ func factionName(f string) string {
 var statusLabels = map[string]string{"speed": "신속", "range": "원시", "counter": "반격", "eightfold": "팔진",
 	"mind": "정신", "morale": "사기", "attack": "공격", "defense": "방어", "agility": "순발", "poison": "중독", "burn": "화상",
 	"confusion": "혼란", "seal": "봉책", "root": "속박", "disarm": "봉격", "weak": "약화",
-	"guard": "경계", "aim": "조준", "snipe": "저격", "provoke": "도발", "disrupt": "교란"}
+	"guard": "경계", "disrupt": "교란"}
 
 // percentStatus lists the statuses whose value is a signed percent.
 var percentStatus = map[string]bool{"attack": true, "defense": true, "mind": true, "morale": true, "agility": true}
@@ -156,6 +156,8 @@ var errorNames = map[string]string{
 	"AlreadyPlaced": "이미 배치된 장수입니다", "NoDeploymentSpace": "모든 장수를 배치할 수 있는 빈칸이 없습니다",
 	"InvalidSlot": "슬롯이 올바르지 않습니다", "NoGame": "진행 중인 게임이 없습니다",
 	"IncompatibleSave": "호환되지 않는 저장입니다", "CorruptSave": "저장 파일이 손상되었습니다",
+	"IncompatibleEquipment": "이 병종은 쓸 수 없는 장비입니다", "MissingEquipment": "창고에 없는 장비입니다",
+	"InvalidActor": "장비를 바꿀 수 없는 장수입니다",
 }
 
 func errorText(err error) string {

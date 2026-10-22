@@ -66,7 +66,6 @@
    "Character": "fangong",
    "X": 3,
    "Y": 5,
-   "Level": 3,
    "AI": true,
    "Policy": "hold",
    "Facing": "SE"
@@ -83,111 +82,112 @@
     "X": 10,
     "Y": 6
    },
-   "Group": "chunyu"
+   "Group": "chunyu",
+   "Rank": "commander"
   },
   {
    "Character": "troop_footman",
    "X": 12,
    "Y": 4,
-   "Level": 4,
    "Group": "main",
    "Facing": "NW",
    "Policy": "march",
    "Goal": {
     "X": 10,
     "Y": 6
-   }
+   },
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 12,
    "Y": 5,
-   "Level": 4,
    "Group": "main",
    "Facing": "NW",
    "Policy": "march",
    "Goal": {
     "X": 10,
     "Y": 6
-   }
+   },
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 12,
    "Y": 7,
-   "Level": 4,
    "Group": "main",
    "Facing": "NW",
    "Policy": "march",
    "Goal": {
     "X": 10,
     "Y": 6
-   }
+   },
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 12,
    "Y": 8,
-   "Level": 4,
    "Group": "main",
    "Facing": "NW",
    "Policy": "march",
    "Goal": {
     "X": 10,
     "Y": 6
-   }
+   },
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
    "X": 13,
    "Y": 5,
-   "Level": 4,
    "Group": "main",
    "Facing": "NW",
    "Policy": "march",
    "Goal": {
     "X": 10,
     "Y": 6
-   }
+   },
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
    "X": 13,
    "Y": 7,
-   "Level": 4,
    "Group": "main",
    "Facing": "NW",
    "Policy": "march",
    "Goal": {
     "X": 10,
     "Y": 6
-   }
+   },
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 13,
    "Y": 4,
-   "Level": 4,
    "Group": "main",
    "Facing": "NW",
    "Policy": "march",
    "Goal": {
     "X": 10,
     "Y": 6
-   }
+   },
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 13,
    "Y": 8,
-   "Level": 4,
    "Group": "main",
    "Facing": "NW",
    "Policy": "march",
    "Goal": {
     "X": 10,
     "Y": 6
-   }
+   },
+   "Shift": -0.07
   }
  ],
  "Faction": "yuan",
@@ -266,7 +266,7 @@
     {
      "Kind": "rush-block",
      "Title": "순우경이 휘청이며 돌진하다",
-     "Speech": "비틀거리지 말고 똑바로 와 보랑께!",
+     "Speech": "비틀거리지 말고 똑바로 와 보슈!",
      "Side": 1,
      "Duration": 1.1
     },
@@ -366,7 +366,6 @@
        "Character": "troop_cavalry",
        "X": 14,
        "Y": 11,
-       "Level": 4,
        "Group": "flank",
        "Facing": "SW",
        "Policy": "march",
@@ -375,13 +374,13 @@
         "Y": 11
        },
        "Faction": "yuan",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Shift": -0.07
       },
       {
        "Character": "troop_cavalry",
        "X": 15,
        "Y": 11,
-       "Level": 4,
        "Group": "flank",
        "Facing": "SW",
        "Policy": "march",
@@ -390,13 +389,13 @@
         "Y": 11
        },
        "Faction": "yuan",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Shift": -0.07
       },
       {
        "Character": "troop_footman",
        "X": 12,
        "Y": 11,
-       "Level": 4,
        "Group": "flank",
        "Facing": "SW",
        "Policy": "march",
@@ -405,13 +404,13 @@
         "Y": 11
        },
        "Faction": "yuan",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Shift": -0.07
       },
       {
        "Character": "troop_footman",
        "X": 13,
        "Y": 11,
-       "Level": 4,
        "Group": "flank",
        "Facing": "SW",
        "Policy": "march",
@@ -420,13 +419,13 @@
         "Y": 11
        },
        "Faction": "yuan",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Shift": -0.07
       },
       {
        "Character": "troop_archer",
        "X": 11,
        "Y": 11,
-       "Level": 4,
        "Group": "flank",
        "Facing": "SW",
        "Policy": "march",
@@ -435,7 +434,8 @@
         "Y": 11
        },
        "Faction": "yuan",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Shift": -0.07
       }
      ]
     },
@@ -464,5 +464,16 @@
   "bean": 6,
   "barley": 2,
   "liquor": 2
- }
+ },
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "yuan",
+   "Name": "원소군"
+  }
+ ]
 }

@@ -28,6 +28,7 @@ func (g *Game) openOverlay(name string) bool {
 		return false
 	}
 	g.overlay, g.page = name, 0
+	g.equip = equipState{}
 	g.autoplay = false
 	if name == "save" || name == "load" {
 		g.slotInfo = g.readSlots()
@@ -73,15 +74,23 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 		w, h = 640, 480
 	case "load":
 		w, h = 760, 660
-	case "equipment", "deputy":
+	case "equipment":
+		w, h = 760, 80+3*(equipCardH+14)+10
+	case "deputy":
 		w, h = 640, 560
 	case "settings":
-		w, h = 640, 604
+		w, h = 640, 668
 	case "roster":
 		w, h = uiW-100, uiH-90
 	}
 	// the window in a frame with room for its title plate and shadow
 	g.popup(dst, "overlay:"+g.overlay, 150, w+40, h+40, image.Rect(0, 0, w+40, h+40), func(dst *ebiten.Image) { g.overlayWindow(dst, w, h) })
+	if g.overlay == "equipment" && g.equip.slot != "" {
+		g.drawEquipPicker(dst)
+	}
+	if g.overlay == "equipment" && g.equip.info.id != "" {
+		g.drawEquipInfo(dst)
+	}
 }
 
 func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
@@ -189,13 +198,17 @@ func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
 				{"주요 사건만", !s.Detail, set(func(v *storage.Settings) { v.Detail = false })},
 			}},
 			{"대사 속도", []choice{
-				{"즉시", s.TextDelayMS == 0, set(func(v *storage.Settings) { v.TextDelayMS = 0 })},
-				{"한 글자씩", s.TextDelayMS != 0, set(func(v *storage.Settings) { v.TextDelayMS = 20 })},
+				{"한 글자씩", !s.InstantText, set(func(v *storage.Settings) { v.InstantText = false })},
+				{"즉시", s.InstantText, set(func(v *storage.Settings) { v.InstantText = true })},
 			}},
 			{"재생 속도", speeds},
 			{"UI 크기", scales},
 			{"데미지 배율", damages},
 			{"경험치 배율", xps},
+			{"전원 반격", []choice{
+				{"켜기", s.CounterAll, set(func(v *storage.Settings) { v.CounterAll = true })},
+				{"끄기", !s.CounterAll, set(func(v *storage.Settings) { v.CounterAll = false })},
+			}},
 		}
 		for i, it := range rows {
 			g.choiceRow(dst, left, y+64+i*64, x+w-32-left, it.title, it.opts)
@@ -203,8 +216,10 @@ func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
 		g.label(dst, "조작: 클릭 선택 · 우클릭/Esc 취소 · 드래그/화면 가장자리/화살표 화면 이동 · 휠 확대\n"+
 			"Space 추천 한 명령 · F 재생 속도 · Enter 재생 건너뛰기 · F5/F9 저장/불러오기",
 			float64(left), float64(y+64+len(rows)*64+4), 13, muted)
-	case "equipment", "deputy":
+	case "equipment":
 		g.equipmentWindow(dst, x, y, w, h)
+	case "deputy":
+		g.deputyWindow(dst, x, y, w, h)
 	case "roster":
 		g.rosterWindow(dst, x, y, w, h)
 	}
@@ -329,9 +344,12 @@ func (g *Game) modalWindow(dst *ebiten.Image, m *modal) {
 	case "trait":
 		r := image.Rect(uiW/2-300, 220, uiW/2+300, 560)
 		g.titled(dst, r, "특성")
-		g.centered(dst, g.traitName(m.trait), float64(uiW/2), 252, 34, gold)
+		name := g.traitName(m.trait)
+		nx := float64(uiW/2) - (g.width(name, 34)+52)/2
+		g.traitIconOf(dst, m.trait, nx, 256, 40)
+		g.label(dst, name, nx+52, 252, 34, gold)
 		if t, ok := g.S.Data.Traits[m.trait]; ok {
-			g.centered(dst, fmt.Sprintf("습득 특성치 %d", t.Cost), float64(uiW/2), 304, 14, muted)
+			g.centered(dst, fmt.Sprintf("%s · 습득 특성치 %d", g.traitKindName(m.trait), t.Cost), float64(uiW/2), 304, 14, muted)
 		}
 		g.label(dst, wrap(g.traitDesc(m.trait), 34), float64(r.Min.X+48), 342, 18, ink)
 		g.centered(dst, "클릭하여 닫기", float64(uiW/2), float64(r.Max.Y-36), 13, muted)

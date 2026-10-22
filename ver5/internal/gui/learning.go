@@ -55,7 +55,9 @@ func (g *Game) learningWindow(dst *ebiten.Image, l core.Learner) {
 			c = muted
 		}
 		g.btn(dst, row, "", click)
-		g.label(dst, t.Name, float64(row.Min.X+14), float64(row.Min.Y+6), 18, c)
+		g.traitIconOf(dst, id, float64(row.Min.X+14), float64(row.Min.Y+7), 24)
+		g.label(dst, t.Name, float64(row.Min.X+46), float64(row.Min.Y+6), 18, c)
+		g.label(dst, g.traitKindName(id), float64(row.Min.X+54)+g.width(t.Name, 18), float64(row.Min.Y+10), 13, muted)
 		cost := fmt.Sprintf("특성치 %d", t.Cost)
 		g.label(dst, cost, float64(row.Max.X-14)-g.width(cost, 15), float64(row.Min.Y+8), 15, c)
 		desc := t.Desc

@@ -45,20 +45,18 @@ func TestJSONLines(t *testing.T) {
 		t.Fatal("quit")
 	}
 }
-func TestHumanMenusSettingsAndSave(t *testing.T) {
+func TestHumanPlaysByNumbers(t *testing.T) {
 	s := game(t)
 	var out bytes.Buffer
-	input := "3\nsettings ai step\n1\nnext\nchoose go\nsave 1\nsave 1\ny\nmenu\nresume\nstart\nplace hero 1 2\nplace archer1 1 3\ndeployment_finish\nmove hero 3 3\nend\nai\nsave 2\nload 1\nquit\n"
-	if err := RunHuman(s, strings.NewReader(input), &out, 1); err != nil {
+	// start, page the line, take the choice, sortie, deploy, pick Arrow, move it, wait, end the turn
+	input := "1\n\n1\n1\n1\n1\n1\n3,2\n2\n2\nq\n"
+	if err := RunHuman(s, "../testdata/mini", strings.NewReader(input), &out, 1); err != nil {
 		t.Fatal(err)
 	}
-	for _, text := range []string{"1. 시작하기", "Hello", "Prepare", "덮어쓸까요", "enemy", "계속하기"} {
+	for _, text := range []string{"(1) 시작하기", "Hero: Hello", "출전 준비", "우리 차례", "bos!", "✓ (3,2)로 이동", "적군 차례"} {
 		if !strings.Contains(out.String(), text) {
-			t.Fatal("missing UI", text)
+			t.Fatalf("missing %q in\n%s", text, out.String())
 		}
-	}
-	if !s.Store.Exists("1") || !s.Store.Exists("2") || s.Settings.AI != "step" {
-		t.Fatal("save/settings")
 	}
 }
 func TestParseRejectsMalformedMoves(t *testing.T) {

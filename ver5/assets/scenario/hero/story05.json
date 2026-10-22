@@ -82,17 +82,10 @@
      "If": [
       "flag:flag-bianshui-generals"
      ],
-     "Next": "c05-grant"
+     "Next": "c05-narr-3"
     }
    ],
    "Else": "c05-end"
-  },
-  {
-   "ID": "c05-grant",
-   "Kind": "grant",
-   "Item": "yitian_sword",
-   "Count": 1,
-   "Event": "grant-yitian_sword"
   },
   {
    "ID": "c05-narr-3",
@@ -116,6 +109,13 @@
    "Kind": "say",
    "Speaker": "liubei",
    "Text": "……받겠습니다."
+  },
+  {
+   "ID": "c05-grant",
+   "Kind": "grant",
+   "Item": "yitian_sword",
+   "Count": 1,
+   "Event": "grant-yitian_sword"
   },
   {
    "ID": "c05-end",

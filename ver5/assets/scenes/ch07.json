@@ -1,0 +1,93 @@
+{
+ "Scenes": {
+  "c07-start": {
+   "Map": "S_road",
+   "Nodes": ["c07-start", "c07-02", "c07-03", "c07-04", "c07-05", "c07-06", "c07-07", "c07-08", "c07-09", "c07-10"],
+   "Cast": {
+    "유비": {"At": [1.0, 2.2], "Face": "SE"},
+    "관우": {"At": [0.0, 1.5], "Face": "SE"},
+    "장비": {"At": [0.0, 2.9], "Face": "SE"},
+    "의용병#1": {"At": [-1.2, 1.6], "Face": "SE", "Sprite": "light_infantry", "Faction": "shu"},
+    "의용병#2": {"At": [-1.2, 2.9], "Face": "SE", "Sprite": "pikeman", "Faction": "shu"},
+    "의용병#3": {"At": [-2.3, 2.2], "Face": "SE", "Sprite": "light_infantry", "Faction": "shu"},
+    "간옹": {"At": [12.0, 2.2], "Face": "NW", "Off": true, "Sprite": "light_cavalry"}
+   },
+   "Beats": {
+    "c07-02": [
+     [
+      [{"Actor": "유비", "Move": [2.4, 2.2], "Speed": 0.8}, {"Actor": "관우", "Move": [1.4, 1.5], "Speed": 0.8}, {"Actor": "장비", "Move": [1.4, 2.9], "Speed": 0.8}, {"Actor": "의용병#1", "Move": [0.2, 1.6], "Speed": 0.8}, {"Actor": "의용병#2", "Move": [0.2, 2.9], "Speed": 0.8}, {"Actor": "의용병#3", "Move": [-0.9, 2.2], "Speed": 0.8}],
+      [{"CamAt": [4.5, 2.2]}, {"Actor": "간옹", "Enter": [12.0, 2.2], "Move": [4.4, 2.2], "Speed": 2}, {"Actor": "장비", "Emote": "?", "After": 0.8}, {"Actor": "관우", "Face": "SE", "After": 0.8}]
+     ]
+    ],
+    "c07-03": [
+     [
+      [{"Actor": "간옹", "Sprite": "archer"}, {"Actor": "간옹", "Move": [3.5, 2.2]}],
+      [{"Actor": "유비", "Emote": "!"}]
+     ]
+    ],
+    "c07-05": [
+     [
+      [{"Actor": "간옹", "Play": "attack"}]
+     ]
+    ],
+    "c07-07": [
+     [
+      [{"Actor": "장비", "Emote": "!"}]
+     ]
+    ],
+    "c07-08": [
+     [
+      [{"Actor": "관우", "Look": "SE"}]
+     ]
+    ],
+    "c07-09": [
+     [
+      [{"Actor": "유비", "Emote": "…"}]
+     ]
+    ],
+    "c07-10": [
+     [
+      [{"Actor": "유비", "Face": "SE"}, {"Actor": "관우", "Face": "SE", "After": 0.2}, {"Actor": "장비", "Face": "SE", "After": 0.3}]
+     ]
+    ]
+   }
+  },
+  "c07-13": {
+   "Map": "S_courtyard",
+   "Time": "dusk",
+   "Nodes": ["c07-13", "c07-14", "c07-15", "c07-16", "c07-17", "c07-18"],
+   "Ambient": [{"Effect": "smoke", "At": [1.8, 10.2]}, {"Effect": "smoke", "At": [3.4, 10.8]}, {"Effect": "smoke", "At": [0.6, 11.4]}],
+   "Cast": {
+    "번궁": {"At": [2.5, 2.7], "Face": "SW", "Sprite": "brawler"},
+    "유비": {"At": [2.5, 6.0], "Face": "NE"},
+    "관우": {"At": [1.6, 6.8], "Face": "NE"},
+    "장비": {"At": [3.4, 6.8], "Face": "NE"},
+    "간옹": {"At": [2.5, 7.7], "Face": "NE"},
+    "신도병#1": {"At": [0.9, 5.0], "Face": "SE", "Sprite": "light_infantry", "Faction": "gongsun"},
+    "신도병#2": {"At": [4.1, 5.2], "Face": "SW", "Sprite": "pikeman", "Faction": "gongsun"},
+    "병사#1": {"At": [1.0, 8.8], "Face": "NE", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#2": {"At": [3.9, 8.7], "Face": "NE", "Sprite": "pikeman", "Faction": "shu"}
+   },
+   "Beats": {
+    "c07-14": [
+     [
+      [{"Actor": "신도병#1", "Play": "exhausted"}, {"Actor": "병사#1", "Play": "exhausted", "After": 0.3}, {"Actor": "병사#2", "Play": "exhausted", "After": 0.6}, {"Actor": "신도병#2", "Play": "exhausted", "After": 0.9}],
+      [{"Actor": "번궁", "Move": [2.5, 4.9]}],
+      [{"Actor": "번궁", "Play": "exhausted"}]
+     ]
+    ],
+    "c07-17": [
+     [
+      [{"Actor": "유비", "Play": "action"}]
+     ]
+    ],
+    "c07-18": [
+     [
+      [{"Actor": "번궁", "Emote": "!"}],
+      [{"Actor": "장비", "Look": "NW"}, {"Actor": "관우", "Look": "NE", "After": 0.3}]
+     ]
+    ]
+   }
+  }
+ }
+}

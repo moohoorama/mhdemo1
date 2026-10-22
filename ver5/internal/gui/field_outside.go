@@ -261,6 +261,16 @@ func (f *Field) exteriorShade(x, y float64) float64 {
 	return exteriorDim * (1 - ramp(math.Hypot(x-o.cx, y-o.cy), vignetteInner, vignetteOuter, vignetteMax))
 }
 
+// edgeShade is the brightness of a unit at fractional cell (u, v) walking off the battle area: 1 inside,
+// falling smoothly to the ground's exteriorDim over the first cell past the edge.
+func (f *Field) edgeShade(u, v float64) float64 {
+	if f.exterior == nil || f.ShowExterior {
+		return 1
+	}
+	d := max(-.5-u, -.5-v, u-(float64(f.Map.W)-.5), v-(float64(f.Map.H)-.5))
+	return 1 - (1-exteriorDim)*math.Min(1, math.Max(0, d))
+}
+
 // renderOutline is the battle area's border in canvas pixels.
 func (f *Field) renderOutline() *vector.Path {
 	var p vector.Path

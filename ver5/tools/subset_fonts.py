@@ -2,7 +2,7 @@
 """Subset the display fonts to the Hangul the game can show.
 
 Keeps KS X 1001 Hangul (2,350 syllables), ASCII, the punctuation the UI uses and every
-character found in assets/data and assets/scenes.json, so story text never falls back.
+character found in assets/data, assets/scenario and assets/scenes, so story text never falls back.
 
 Sources (OFL, Google Fonts):
   https://github.com/google/fonts/raw/main/ofl/nanumbrushscript/NanumBrushScript-Regular.ttf
@@ -29,7 +29,7 @@ def charset():
             except UnicodeDecodeError:
                 pass
     chars.update("·…‘’“”→←↑↓▸▾▼▲×—–「」『』〈〉《》※○●◆◇■□★☆%")
-    for path in list((ROOT / "assets" / "data").rglob("*.json")) + [ROOT / "assets" / "scenes.json"]:
+    for path in [p for d in ("data", "scenario", "scenes") for p in (ROOT / "assets" / d).rglob("*.json")]:
         chars.update(c for c in path.read_text(encoding="utf-8") if ord(c) >= 0x20)
     return "".join(sorted(chars))
 

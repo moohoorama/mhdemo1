@@ -41,14 +41,14 @@ func TestCoalitionArrivalAndControl(t *testing.T) {
 	e.settle()
 	assert.Nil(t, e.unit("mushun"))
 	// An occupied entry moves the reinforcement to a nearby free cell.
-	e.unit("guanyu").X, e.unit("guanyu").Y = 25, 7
+	e.unit("guanyu").X, e.unit("guanyu").Y = 11, 4
 	r := summonCoalition(t, e)
 	aiCount, speechCount := 0, 0
 	for _, u := range e.Observe().UnitViews {
 		if u.AI {
 			aiCount++
 			assert.Equal(t, "ally", u.Faction)
-			assert.Equal(t, 1, u.Level)
+			assert.Equal(t, map[bool]int{true: 8, false: 7}[!e.data.Characters[u.Def].Template], u.Level, "allied officers one level over the policy level 7, their soldiers at it")
 		}
 	}
 	assert.Equal(t, 8, aiCount)
@@ -60,8 +60,8 @@ func TestCoalitionArrivalAndControl(t *testing.T) {
 			require.NotNil(t, v.Unit)
 		}
 	}
-	assert.Equal(t, 4, speechCount, "the boss steps forward, then the three coalition lines")
-	assert.NotEqual(t, content.Point{X: 25, Y: 7}, content.Point{X: e.unit("mushun").X, Y: e.unit("mushun").Y})
+	assert.Equal(t, 1, speechCount, "the coalition comes round by the side road, and Lü Bu answers")
+	assert.NotEqual(t, content.Point{X: 11, Y: 4}, content.Point{X: e.unit("mushun").X, Y: e.unit("mushun").Y})
 	require.Empty(t, e.LegalActions("mushun").Commands)
 	assertRejected(t, e, Command{Kind: "wait", Actor: "mushun"})
 	apply(t, e, Command{Kind: "end"})
@@ -105,10 +105,11 @@ func TestCoalitionDuelsAndSimultaneousResponse(t *testing.T) {
 				}
 			}
 			assert.Equal(t, 1, duels)
-			require.Len(t, talks, 2)
-			require.Len(t, talks[1].Speech, 2)
-			assert.Equal(t, "zhangfei", talks[1].Speech[0].Actor)
-			assert.Equal(t, "guanyu", talks[1].Speech[1].Actor)
+			require.Len(t, talks, 1)
+			require.Len(t, talks[0].Speech, 3)
+			assert.Equal(t, "liubei", talks[0].Speech[0].Actor)
+			assert.Equal(t, "zhangfei", talks[0].Speech[1].Actor)
+			assert.Equal(t, "guanyu", talks[0].Speech[2].Actor)
 			e.events = nil
 			e.battleEvents()
 			assert.Empty(t, e.events)
@@ -173,9 +174,9 @@ func TestEquipmentTraitsWorkForEitherFaction(t *testing.T) {
 			}
 			assert.True(t, counter)
 			attacker.Status = map[string]Status{}
-			e.state.Turn = "ally"
+			e.state.Turn, e.state.Army = "ally", ""
 			if side == "ally" {
-				e.state.Turn = "enemy"
+				e.state.Turn, e.state.Army = "enemy", farther.Color // the last enemy army ends its turn
 			}
 			e.endFaction()
 			assert.Equal(t, 20, attacker.Status["defense"].Value)

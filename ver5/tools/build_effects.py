@@ -7,6 +7,8 @@ source's gen.py draws per frame. Each layer has an opacity (one number, or one p
 blend: "normal" layers are flattened into <name>.png, "lighter" (additive) ones into
 <name>_light.png, which the game draws with additive blending over the first. A sprite with no
 "layers" is one opaque normal layer whose frames are plain grids (the projectile sheet's form).
+A sprite with "dot": k has grids k times smaller than its cell, each letter a k×k block (dot art
+for the UI's four-pixels-per-UI-pixel scale).
 """
 import importlib.util
 import json
@@ -96,7 +98,8 @@ def build(source, name):
                 else:
                     grid = frame if isinstance(frame, list) else frame[lname]
                     palette = {"o": settings["outline"], **layer["palette"]}
-                    im = grid_image(grid, palette, w, h, f"{sprite} frame {i} {lname}")
+                    k = s.get("dot", 1)
+                    im = grid_image(grid, palette, w // k, h // k, f"{sprite} frame {i} {lname}").resize((w, h), Image.NEAREST)
                 im = faded(im, opacity(layer, i))
                 if layer.get("blend", "normal") == "lighter":
                     add(light, im)

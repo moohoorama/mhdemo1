@@ -167,3 +167,29 @@ func TestDeploymentRejectsCorruptPlacement(t *testing.T) {
 		})
 	}
 }
+
+func TestForcedSortie(t *testing.T) {
+	d := data(t)
+	for i := range d.Stages {
+		d.Stages[i].Forced = true
+	}
+	e := New(d, 17)
+	apply(t, e, Command{Kind: "next"})
+	apply(t, e, Command{Kind: "choose", Option: "go"})
+	r := apply(t, e, Command{Kind: "start"})
+	finished := false
+	for _, ev := range r.Events {
+		finished = finished || ev.Kind == "deployment_finish"
+	}
+	if e.Deploying() || e.state.Phase != "battle" || !finished {
+		t.Fatal("a forced sortie goes straight to battle")
+	}
+	for _, id := range e.state.Deployment {
+		if u := e.unit(id); u == nil || !containsPoint(e.data.Stages[e.state.Stage].Allies, content.Point{X: u.X, Y: u.Y}) {
+			t.Fatalf("%s is not on an ally cell", id)
+		}
+	}
+	if _, err := Restore(d, e.Snapshot()); err != nil {
+		t.Fatal(err)
+	}
+}

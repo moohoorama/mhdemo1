@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"math"
 	"regexp"
 	"slices"
 	"strings"
@@ -60,17 +61,53 @@ func splitLines(s string) []line {
 	return out
 }
 
+// letterMS is how long each letter of a line takes to come out, at a speaking pace; a click
+// hurries the rest rushFactor times as fast.
+const (
+	letterMS   = 45
+	rushFactor = 8
+)
+
+// typing is a line coming out letter by letter from start (UI seconds), hurried from rush on
+// (+Inf until the player clicks).
+type typing struct{ start, rush float64 }
+
+func startTyping(now float64) typing { return typing{start: now, rush: math.Inf(1)} }
+
+// typedAll is a typing that is already out.
+var typedAll = typing{start: math.Inf(-1), rush: math.Inf(1)}
+
+// letters is how many letters of an n-letter line are out at now; all of them at once when
+// the player turned typing off.
+func (g *Game) letters(t typing, n int, now float64) int {
+	if g.S.Settings.InstantText {
+		return n
+	}
+	s := now - t.start
+	if now > t.rush {
+		s = t.rush - t.start + (now-t.rush)*rushFactor
+	}
+	return max(0, min(n, int(s*1000/letterMS)))
+}
+
+// hurry speeds up the rest of a line, or shows it whole if it is already hurried.
+func (t *typing) hurry(now float64) {
+	if math.IsInf(t.rush, 1) {
+		t.rush = now
+	} else {
+		*t = typedAll
+	}
+}
+
 // shownText is the typed-out part of the current line.
 func (g *Game) shownText(l line) (string, bool) {
 	r := []rune(l.text)
-	if g.S.Settings.TextDelayMS <= 0 {
-		return l.text, true
-	}
-	n := min(len(r), (g.ticks-g.lineStart)*1000/(60*g.S.Settings.TextDelayMS))
+	n := g.letters(g.lineTyping, len(r), g.uiSeconds)
 	return string(r[:n]), n == len(r)
 }
 
-// advanceDialogue finishes typing, then shows the next speaker, then the next node.
+// advanceDialogue hurries the typing (a second click finishes it), then shows the next speaker,
+// then the next node.
 func (g *Game) advanceDialogue() {
 	o := g.S.Engine.Observe()
 	if o.Phase != "scenario" || !isTalk(o.Dialogue.Kind) {
@@ -85,12 +122,12 @@ func (g *Game) advanceDialogue() {
 	}
 	lines := g.nodeLines(o.Dialogue)
 	if _, done := g.shownText(lines[min(g.lineIndex, len(lines)-1)]); !done {
-		g.lineStart = -1 << 30
+		g.lineTyping.hurry(g.uiSeconds)
 		return
 	}
 	if g.lineIndex+1 < len(lines) {
 		g.lineIndex++
-		g.lineStart = g.ticks
+		g.lineTyping = startTyping(g.uiSeconds)
 		g.startLine(g.lineIndex)
 		return
 	}
@@ -111,7 +148,7 @@ func (g *Game) backdrop(dst *ebiten.Image, o core.Observation) {
 func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 	g.backdrop(dst, o)
 	if g.shownNode != o.Node {
-		g.shownNode, g.lineIndex, g.lineStart = o.Node, 0, g.ticks
+		g.shownNode, g.lineIndex, g.lineTyping = o.Node, 0, startTyping(g.uiSeconds)
 		if g.scene != nil {
 			g.scene.node = ""
 		}
@@ -129,7 +166,7 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 	if staged {
 		g.drawScene(dst, l.speakers)
 		if g.sceneBusy() { // the line waits for its beats
-			g.lineStart = g.ticks
+			g.lineTyping = startTyping(g.uiSeconds)
 			g.label(dst, "클릭: 넘기기", float64(uiW-150), float64(uiH-40), 13, muted)
 			return
 		}
@@ -265,25 +302,34 @@ func (g *Game) officerDetail(dst *ebiten.Image, o core.Observation, r image.Rect
 		}
 	}
 	g.label(dst, "장비", x, y+262, 16, gold)
-	ey := y + 290
-	for _, slot := range []string{"weapon", "armor", "accessory"} {
-		name := "—"
+	ey := y + 292
+	for _, slot := range equipSlots {
+		g.label(dst, slotNames[slot], x, ey+6, 15, muted)
 		if item, ok := of.Equipment[slot]; ok {
-			name = g.itemName(item)
+			g.itemIcon(dst, g.S.Data.Equipment[item].Icon, x+80, ey, 1, false)
+			g.label(dst, g.itemName(item), x+124, ey+6, 15, ink)
+		} else {
+			g.itemIcon(dst, slotIcons[slot], x+80, ey, 1, true)
+			g.label(dst, "—", x+124, ey+6, 15, muted)
 		}
-		g.label(dst, map[string]string{"weapon": "무기", "armor": "방어구", "accessory": "장신구"}[slot], x, ey, 15, muted)
-		g.label(dst, name, x+80, ey, 15, ink)
-		ey += 28
+		ey += 42
 	}
-	learned := make([]string, len(of.Learned))
-	for i, t := range of.Learned {
-		learned[i] = g.traitName(t)
+	g.label(dst, "습득 특성", x, ey+8, 13, muted)
+	if len(of.Learned) == 0 {
+		g.label(dst, "—", x+80, ey+8, 13, muted)
 	}
-	traits := strings.Join(learned, " · ")
-	if traits == "" {
-		traits = "—"
+	cx, cy := x+80, ey+6
+	for _, t := range of.Learned {
+		id := t
+		if w := traitIconSize + 20 + g.width(g.traitName(id), 14); cx+w > float64(r.Max.X) && cx > x+80 {
+			cx, cy = x+80, cy+30
+		}
+		cx = g.chip(dst, equipChip{"trait", id}, cx, cy, func() {
+			if !g.popupPending() {
+				g.modals = append(g.modals, &modal{kind: "trait", trait: id})
+			}
+		}) + 14
 	}
-	g.label(dst, wrap("습득 특성  "+traits, 40), x, ey+8, 13, muted)
 	var deputy func()
 	if !of.Dead && g.S.Engine.CanDeputize(of.ID) {
 		deputy = func() { g.openOverlay("deputy") }
@@ -292,37 +338,17 @@ func (g *Game) officerDetail(dst *ebiten.Image, o core.Observation, r image.Rect
 	g.btn(dst, image.Rect(r.Min.X+216, r.Max.Y-44, r.Min.X+416, r.Max.Y-8), "부관 지정", deputy)
 }
 
-// equipmentWindow lists equip/unequip (or deputy) commands with the stat change each makes.
-func (g *Game) equipmentWindow(dst *ebiten.Image, x, y, w, h int) {
+// deputyWindow lists the deputy commands with the stat change each makes.
+func (g *Game) deputyWindow(dst *ebiten.Image, x, y, w, h int) {
 	if g.S.Engine == nil {
 		return
 	}
 	o := g.S.Engine.Observe()
-	cmds, labels := []core.Command{}, []string{}
-	if g.overlay == "equipment" {
-		for _, of := range o.Characters {
-			if of.ID == g.selected {
-				for _, slot := range sorted(of.Equipment) {
-					item := of.Equipment[slot]
-					cmds = append(cmds, core.Command{Kind: "unequip", Actor: g.selected, Item: item})
-					labels = append(labels, "해제  "+g.itemName(item))
-				}
-			}
-		}
-		for _, item := range sorted(o.Warehouse) {
-			if o.Warehouse[item] > 0 {
-				cmds = append(cmds, core.Command{Kind: "equip", Actor: g.selected, Item: item})
-				labels = append(labels, fmt.Sprintf("장착  %s ×%d", g.itemName(item), o.Warehouse[item]))
-			}
-		}
-	} else {
-		cmds = append(cmds, core.Command{Kind: "undeputy", Actor: g.selected})
-		labels = append(labels, "부관 해제")
-		for _, of := range g.roster(o) {
-			if of.ID != g.selected {
-				cmds = append(cmds, core.Command{Kind: "deputy", Actor: g.selected, Target: of.ID})
-				labels = append(labels, "임명  "+g.name(of.ID))
-			}
+	cmds, labels := []core.Command{{Kind: "undeputy", Actor: g.selected}}, []string{"부관 해제"}
+	for _, of := range g.roster(o) {
+		if of.ID != g.selected {
+			cmds = append(cmds, core.Command{Kind: "deputy", Actor: g.selected, Target: of.ID})
+			labels = append(labels, "임명  "+g.name(of.ID))
 		}
 	}
 	g.label(dst, g.name(g.selected)+" — 항목에 마우스를 올리면 능력치 변화를 봅니다.", float64(x+32), float64(y+52), 14, muted)

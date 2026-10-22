@@ -3,6 +3,8 @@
   "valor": {
    "Name": "용장",
    "Desc": "자신보다 무력이 낮은 대상을 공격하면 반드시 치명타.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 900,
    "Effects": {
     "crit_vs_weaker": 1
@@ -11,6 +13,8 @@
   "relentless": {
    "Name": "연전",
    "Desc": "2회 공격 확률이 100%.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 900,
    "Effects": {
     "double_always": 1
@@ -19,6 +23,8 @@
   "warlord": {
    "Name": "신장",
    "Desc": "자신보다 무력이 낮은 대상을 공격하면 반드시 치명타, 2회 공격 확률 100%.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 1500,
    "Requires": [
     "valor",
@@ -32,6 +38,8 @@
   "battle_fury": {
    "Name": "투신",
    "Desc": "자신보다 무력이 낮은 적에게 공격받고 그 적이 공격범위 안이면 반드시 반격(2회).",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 1400,
    "Effects": {
     "counter_force": 1
@@ -40,6 +48,8 @@
   "assist": {
    "Name": "협동",
    "Desc": "자기 차례에 공격범위 안의 적이 아군의 물리 공격을 받으면 같은 대상을 50% 피해로 추가 공격.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 1000,
    "Effects": {
     "assist": 0.5
@@ -48,6 +58,8 @@
   "ambush_crit": {
    "Name": "기습",
    "Desc": "숲에 있으면 물리 공격이 반드시 치명타.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 400,
    "Effects": {
     "crit_ambush": 1
@@ -56,11 +68,15 @@
   "volley": {
    "Name": "난사",
    "Desc": "난사 병법 사용 가능. 공격범위 안의 모든 적을 쏜다(원거리 전용).",
+   "Kind": "tactic",
+   "Tone": "attack",
    "Cost": 1200
   },
   "cross_strike": {
    "Name": "사방격",
    "Desc": "물리 공격이 십자 범위가 된다. 주변 칸의 적은 75% 피해.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 600,
    "Effects": {
     "splash_cross": 0.75
@@ -69,6 +85,8 @@
   "square_strike": {
    "Name": "팔방격",
    "Desc": "물리 공격이 3×3 범위가 된다. 주변 칸의 적은 75% 피해.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 1000,
    "Requires": [
     "cross_strike"
@@ -80,6 +98,8 @@
   "siegecraft": {
    "Name": "공성",
    "Desc": "대상의 지형 방어 보정을 무시한다.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 1500,
    "Effects": {
     "ignore_terrain": 1
@@ -88,6 +108,8 @@
   "resolve_strike": {
    "Name": "회심",
    "Desc": "일반 공격과 공격 책략이 반드시 치명타. 옥쇄 전용.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 0,
    "Effects": {
     "crit_always": 1,
@@ -97,6 +119,8 @@
   "half_cost": {
    "Name": "백출",
    "Desc": "병법치 소모가 절반.",
+   "Kind": "talent",
+   "Tone": "craft",
    "Cost": 800,
    "Effects": {
     "cost_half": 1
@@ -105,6 +129,8 @@
   "deadly": {
    "Name": "필살",
    "Desc": "물리 공격이 반드시 치명타.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 1500,
    "Effects": {
     "crit_always": 1
@@ -113,6 +139,8 @@
   "pierce": {
    "Name": "찔러공격",
    "Desc": "대상 뒤의 적도 75% 피해를 받는다.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 600,
    "Effects": {
     "pierce": 0.75
@@ -121,6 +149,8 @@
   "venom": {
    "Name": "독공",
    "Desc": "물리 공격이 명중하면 독을 건다.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 300,
    "Effects": {
     "poison_on_hit": 1
@@ -129,6 +159,8 @@
   "drain": {
    "Name": "심공",
    "Desc": "준 피해의 25%만큼 병력을 회복한다.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 500,
    "Effects": {
     "life_steal": 0.25
@@ -137,6 +169,8 @@
   "composure": {
    "Name": "침착",
    "Desc": "자기 차례가 돌아오면 모든 상태이상이 풀린다.",
+   "Kind": "talent",
+   "Tone": "guard",
    "Cost": 300,
    "Effects": {
     "cleanse": 1
@@ -145,6 +179,8 @@
   "intimidate": {
    "Name": "위압",
    "Desc": "물리 공격이 빗나가도 피해의 절반이 들어간다.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 0,
    "Effects": {
     "miss_half": 0.5
@@ -153,16 +189,22 @@
   "counter_art": {
    "Name": "반격술",
    "Desc": "반격 병법 사용 가능.",
+   "Kind": "strategy",
+   "Tone": "buff",
    "Cost": 300
   },
   "sweep_art": {
    "Name": "무쌍술",
    "Desc": "무쌍 병법 사용 가능. 공격범위 안의 모든 적을 벤다.",
+   "Kind": "tactic",
+   "Tone": "attack",
    "Cost": 800
   },
   "ironwall": {
    "Name": "철벽",
    "Desc": "한 번의 피격에서 최대 병력 10%를 넘는 피해는 절반만 받는다.",
+   "Kind": "talent",
+   "Tone": "guard",
    "Cost": 1200,
    "Effects": {
     "bulwark": 0.1
@@ -171,6 +213,8 @@
   "diamond": {
    "Name": "금강",
    "Desc": "치명타로 판정된 공격을 막아낸다.",
+   "Kind": "talent",
+   "Tone": "guard",
    "Cost": 1000,
    "Effects": {
     "crit_immune": 1
@@ -179,6 +223,8 @@
   "missile_immunity": {
    "Name": "간접공격면역",
    "Desc": "적의 원거리 공격이 명중하지 않는다.",
+   "Kind": "talent",
+   "Tone": "guard",
    "Cost": 700,
    "Effects": {
     "ranged_immune": 1
@@ -187,6 +233,8 @@
   "return_fire": {
    "Name": "응사",
    "Desc": "적의 물리 공격이 빗나가면 70% 피해로 되받아친다.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 700,
    "Effects": {
     "riposte": 0.7
@@ -195,6 +243,8 @@
   "spell_reflect": {
    "Name": "반계",
    "Desc": "공격 책략을 받으면 같은 책략을 시전자에게 되돌린다.",
+   "Kind": "talent",
+   "Tone": "guard",
    "Cost": 1200,
    "Effects": {
     "reflect": 1
@@ -203,6 +253,8 @@
   "castle_defense": {
    "Name": "수성",
    "Desc": "성에 있으면 매 턴 방어력 버프를 건다.",
+   "Kind": "talent",
+   "Tone": "guard",
    "Cost": 1000,
    "Effects": {
     "fortify": 20
@@ -214,6 +266,8 @@
   "dash": {
    "Name": "기마술",
    "Desc": "이동력 +1.",
+   "Kind": "talent",
+   "Tone": "move",
    "Cost": 1000,
    "Effects": {
     "move": 1
@@ -222,6 +276,8 @@
   "gale": {
    "Name": "질풍",
    "Desc": "이동력 +2(질주와 합쳐 +3).",
+   "Kind": "talent",
+   "Tone": "move",
    "Cost": 1200,
    "Requires": [
     "dash"
@@ -233,6 +289,8 @@
   "rough_terrain": {
    "Name": "험지이동",
    "Desc": "지형에 따른 이동력 저하가 없다.",
+   "Kind": "talent",
+   "Tone": "move",
    "Cost": 400,
    "Effects": {
     "ignore_move_cost": 1
@@ -241,6 +299,8 @@
   "charge": {
    "Name": "돌격",
    "Desc": "적의 견제(ZOC)에 막히지 않고 이동한다.",
+   "Kind": "talent",
+   "Tone": "move",
    "Cost": 1200,
    "Effects": {
     "ignore_zoc": 1
@@ -249,6 +309,8 @@
   "swiftness": {
    "Name": "신속",
    "Desc": "매 턴 자신에게 이동력 +2 버프를 건다.",
+   "Kind": "talent",
+   "Tone": "move",
    "Cost": 500,
    "Effects": {
     "haste": 2
@@ -257,6 +319,8 @@
   "far_sight": {
    "Name": "원시",
    "Desc": "매 턴 자신에게 사거리 +1 버프를 건다.",
+   "Kind": "talent",
+   "Tone": "move",
    "Cost": 400,
    "Effects": {
     "far_sight": 1
@@ -265,6 +329,8 @@
   "white_horse": {
    "Name": "백마",
    "Desc": "기병이면 사거리 1~3의 원거리 공격(궁기병의 사거리)이 가능하다. 떨어진 적에게는 활을 쏜다. 경기병은 이동력 +1.",
+   "Kind": "talent",
+   "Tone": "move",
    "Cost": 500,
    "Effects": {
     "mounted_range": 3,
@@ -274,6 +340,8 @@
   "cunning": {
    "Name": "귀모",
    "Desc": "책략 사거리 +3.",
+   "Kind": "talent",
+   "Tone": "craft",
    "Cost": 600,
    "Effects": {
     "spell_range": 3
@@ -282,6 +350,8 @@
   "feint": {
    "Name": "허실",
    "Desc": "자신보다 지력이 낮은 부대에게 모든 책략이 반드시 성공.",
+   "Kind": "talent",
+   "Tone": "craft",
    "Cost": 800,
    "Effects": {
     "spell_sure": 1
@@ -290,6 +360,8 @@
   "deep_scheme": {
    "Name": "심모",
    "Desc": "성공한 책략이 반드시 치명타.",
+   "Kind": "talent",
+   "Tone": "craft",
    "Cost": 1200,
    "Effects": {
     "spell_crit": 1
@@ -298,6 +370,8 @@
   "chain": {
    "Name": "연환",
    "Desc": "공격 책략이 인접한 무작위 한 명에게 한 번 더 적용된다.",
+   "Kind": "talent",
+   "Tone": "craft",
    "Cost": 1200,
    "Effects": {
     "chain": 1
@@ -306,11 +380,15 @@
   "eight_formation": {
    "Name": "팔진도",
    "Desc": "팔진도 병법 사용 가능. 아군 한 명의 단일 책략이 3×3 범위가 된다.",
+   "Kind": "strategy",
+   "Tone": "buff",
    "Cost": 1000
   },
   "fire_god": {
    "Name": "화신",
    "Desc": "화염계 책략이 반드시 성공하고 반드시 치명타.",
+   "Kind": "talent",
+   "Tone": "craft",
    "Cost": 1500,
    "Requires": [
     "fire"
@@ -323,6 +401,8 @@
   "insight": {
    "Name": "간파",
    "Desc": "자신보다 지력이 낮은 시전자의 책략이 듣지 않는다.",
+   "Kind": "talent",
+   "Tone": "guard",
    "Cost": 1000,
    "Effects": {
     "dispel": 1
@@ -331,6 +411,8 @@
   "discipline": {
    "Name": "군율",
    "Desc": "해로운 상태이상 책략에 걸리지 않는다.",
+   "Kind": "talent",
+   "Tone": "guard",
    "Cost": 500,
    "Effects": {
     "status_immune": 1
@@ -339,6 +421,8 @@
   "medicine": {
    "Name": "의술",
    "Desc": "모든 병력 회복량 +100%.",
+   "Kind": "talent",
+   "Tone": "heal",
    "Cost": 500,
    "Effects": {
     "heal_bonus": 1
@@ -347,6 +431,8 @@
   "benevolence": {
    "Name": "인덕",
    "Desc": "자기 차례 시작에 인접 아군이 최대 병력의 10%를 회복한다.",
+   "Kind": "talent",
+   "Tone": "heal",
    "Cost": 700,
    "Effects": {
     "aura_heal": 0.1
@@ -355,6 +441,8 @@
   "employment": {
    "Name": "용인술",
    "Desc": "부관 능력치를 항상 110%로 반영한다.",
+   "Kind": "talent",
+   "Tone": "buff",
    "Cost": 1000,
    "Requires": [
     "benevolence"
@@ -366,6 +454,8 @@
   "supply": {
    "Name": "보급",
    "Desc": "쓴 아이템이 인접 아군 한 명에게도 적용된다.",
+   "Kind": "talent",
+   "Tone": "buff",
    "Cost": 500,
    "Effects": {
     "item_share": 1
@@ -374,6 +464,8 @@
   "focus": {
    "Name": "집중",
    "Desc": "병법치 회복량이 2배.",
+   "Kind": "talent",
+   "Tone": "heal",
    "Cost": 400,
    "Effects": {
     "mana_regen": 1
@@ -382,6 +474,8 @@
   "blood_pay": {
    "Name": "고육",
    "Desc": "병법치가 모자라면 모자란 양의 10배만큼 병력으로 대신 낸다.",
+   "Kind": "talent",
+   "Tone": "craft",
    "Cost": 1000,
    "Effects": {
     "blood_cost": 10
@@ -390,6 +484,8 @@
   "vitality": {
    "Name": "양생",
    "Desc": "자기 차례 시작에 최대 병력의 10%를 회복한다.",
+   "Kind": "talent",
+   "Tone": "heal",
    "Cost": 500,
    "Effects": {
     "regen": 0.1
@@ -398,6 +494,8 @@
   "lasting": {
    "Name": "장구",
    "Desc": "자신이 건 2턴 이상 버프의 지속이 1턴 늘어난다.",
+   "Kind": "talent",
+   "Tone": "craft",
    "Cost": 600,
    "Effects": {
     "buff_extend": 1
@@ -406,6 +504,8 @@
   "fortune": {
    "Name": "호운",
    "Desc": "전투 중 처음 쓰러질 때 병력 1로 버틴다.",
+   "Kind": "talent",
+   "Tone": "guard",
    "Cost": 600,
    "Effects": {
     "last_stand": 1
@@ -414,41 +514,57 @@
   "fire": {
    "Name": "화계",
    "Desc": "화염계 책략을 쓴다.",
+   "Kind": "strategy",
+   "Tone": "attack",
    "Cost": 700
   },
   "water": {
    "Name": "수계",
    "Desc": "수계 책략을 쓴다.",
+   "Kind": "strategy",
+   "Tone": "attack",
    "Cost": 600
   },
   "earth": {
    "Name": "지계",
    "Desc": "토지계 책략을 쓴다.",
+   "Kind": "strategy",
+   "Tone": "attack",
    "Cost": 600
   },
   "relief": {
    "Name": "구휼",
    "Desc": "회복계 책략을 쓴다.",
+   "Kind": "strategy",
+   "Tone": "heal",
    "Cost": 500
   },
   "exhort": {
    "Name": "독려",
    "Desc": "버프계 책략을 쓴다.",
+   "Kind": "strategy",
+   "Tone": "buff",
    "Cost": 1200
   },
   "hinder": {
    "Name": "견제",
    "Desc": "디버프계 책략을 쓴다.",
+   "Kind": "strategy",
+   "Tone": "debuff",
    "Cost": 600
   },
   "stratagem": {
    "Name": "계략",
    "Desc": "방해계 책략을 쓴다.",
+   "Kind": "strategy",
+   "Tone": "debuff",
    "Cost": 700
   },
   "fire_boost": {
    "Name": "화계강화",
    "Desc": "화계 책략의 강한 갈래를 연다.",
+   "Kind": "strategy",
+   "Tone": "attack",
    "Cost": 500,
    "Requires": [
     "fire"
@@ -457,6 +573,8 @@
   "fire_spread": {
    "Name": "화계확산",
    "Desc": "화계 책략의 범위 갈래를 연다. 강화와 함께 있으면 최상위 책략이 열린다.",
+   "Kind": "strategy",
+   "Tone": "attack",
    "Cost": 700,
    "Requires": [
     "fire"
@@ -465,6 +583,8 @@
   "water_boost": {
    "Name": "수계강화",
    "Desc": "수계 책략의 강한 갈래를 연다.",
+   "Kind": "strategy",
+   "Tone": "attack",
    "Cost": 500,
    "Requires": [
     "water"
@@ -473,6 +593,8 @@
   "water_spread": {
    "Name": "수계확산",
    "Desc": "수계 책략의 범위 갈래를 연다. 강화와 함께 있으면 최상위 책략이 열린다.",
+   "Kind": "strategy",
+   "Tone": "attack",
    "Cost": 700,
    "Requires": [
     "water"
@@ -481,6 +603,8 @@
   "earth_boost": {
    "Name": "지계강화",
    "Desc": "지계 책략의 강한 갈래를 연다.",
+   "Kind": "strategy",
+   "Tone": "attack",
    "Cost": 500,
    "Requires": [
     "earth"
@@ -489,6 +613,8 @@
   "earth_spread": {
    "Name": "지계확산",
    "Desc": "지계 책략의 범위 갈래를 연다. 강화와 함께 있으면 최상위 책략이 열린다.",
+   "Kind": "strategy",
+   "Tone": "attack",
    "Cost": 700,
    "Requires": [
     "earth"
@@ -497,6 +623,8 @@
   "relief_boost": {
    "Name": "구휼강화",
    "Desc": "구휼 책략의 강한 갈래를 연다.",
+   "Kind": "strategy",
+   "Tone": "heal",
    "Cost": 500,
    "Requires": [
     "relief"
@@ -505,6 +633,8 @@
   "relief_spread": {
    "Name": "구휼확산",
    "Desc": "구휼 책략의 범위 갈래를 연다. 강화와 함께 있으면 최상위 책략이 열린다.",
+   "Kind": "strategy",
+   "Tone": "heal",
    "Cost": 700,
    "Requires": [
     "relief"
@@ -513,6 +643,8 @@
   "exhort_boost": {
    "Name": "독려강화",
    "Desc": "독려 계통의 상위 책략을 연다.",
+   "Kind": "strategy",
+   "Tone": "buff",
    "Cost": 700,
    "Requires": [
     "exhort"
@@ -521,6 +653,8 @@
   "hinder_boost": {
    "Name": "견제강화",
    "Desc": "견제 계통의 상위 책략을 연다.",
+   "Kind": "strategy",
+   "Tone": "debuff",
    "Cost": 700,
    "Requires": [
     "hinder"
@@ -529,6 +663,8 @@
   "stratagem_boost": {
    "Name": "계략강화",
    "Desc": "계략 계통의 상위 책략을 연다.",
+   "Kind": "strategy",
+   "Tone": "debuff",
    "Cost": 700,
    "Requires": [
     "stratagem"
@@ -536,7 +672,9 @@
   },
   "halberd_sweep": {
    "Name": "요극",
-   "Desc": "적 퇴각 후 일반 공격 사거리 내의 다른 적을 차례로 공격한다. 2회 공격·반격 등 일반 공방을 적용하며 요극은 연쇄하지 않는다.",
+   "Desc": "적 퇴각 후 일반 공격 사거리 내에서 체력이 가장 낮은 적 1기를 공격한다. 그 적도 퇴각하면 다시 1기를 공격한다. 2회 공격·반격 등 일반 공방을 적용한다.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 0,
    "Effects": {
     "retreat_sweep": 1
@@ -545,6 +683,8 @@
   "qinggang_edge": {
    "Name": "청공",
    "Desc": "철도 진흙처럼 벤다. 앞을 치면 앞 칸과 양옆 둘씩, 공격자를 둘러싼 5칸의 적도 50% 피해를 받는다.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 0,
    "Effects": {
     "sweep_arc": 0.5
@@ -553,6 +693,8 @@
   "heaven_blade": {
    "Name": "의천",
    "Desc": "하늘에 기댄 검. 적의 물리 공격 명중률이 15%p 낮아진다.",
+   "Kind": "talent",
+   "Tone": "guard",
    "Cost": 0,
    "Effects": {
     "evade": 15
@@ -561,6 +703,8 @@
   "red_hare_counter": {
    "Name": "마중적토",
    "Desc": "이동력 +2. 사거리 안의 물리 공격에 100% 반격.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 0,
    "Effects": {
     "move": 2,
@@ -570,6 +714,8 @@
   "diamond_guard": {
    "Name": "금강갑",
    "Desc": "전투 시작과 매 자기 차례 방어력 20% 강화.",
+   "Kind": "talent",
+   "Tone": "guard",
    "Cost": 0,
    "Effects": {
     "turn_defense": 20
@@ -578,6 +724,8 @@
   "civil_martial": {
    "Name": "문무겸비",
    "Desc": "병종의 공격력·정신력 보너스 중 낮은 쪽이 둘의 평균으로 오른다.",
+   "Kind": "talent",
+   "Tone": "buff",
    "Cost": 1000,
    "Effects": {
     "blend_bonus": 1
@@ -586,6 +734,8 @@
   "versatile": {
    "Name": "다재다능",
    "Desc": "병종의 무기에 더해 검과 창을 모두 장착할 수 있다.",
+   "Kind": "talent",
+   "Tone": "buff",
    "Cost": 0,
    "Effects": {
     "wield:spear": 1,
@@ -595,6 +745,8 @@
   "deputy_appoint": {
    "Name": "부관임명",
    "Desc": "부관을 둘 수 있다. 부관의 능력치와 특성이 주장을 돕는다.",
+   "Kind": "talent",
+   "Tone": "buff",
    "Cost": 800,
    "Effects": {
     "deputy_appoint": 1
@@ -603,11 +755,15 @@
   "first_aid": {
    "Name": "응급처치",
    "Desc": "응급처치 병법 사용 가능. 자신의 병력을 회복한다.",
+   "Kind": "strategy",
+   "Tone": "heal",
    "Cost": 1000
   },
   "brace_prep": {
    "Name": "대비",
    "Desc": "대비 병법 사용 가능. 자신의 방어력을 높인다.",
+   "Kind": "strategy",
+   "Tone": "guard",
    "Cost": 800,
    "Requires": [
     "guard_prep"
@@ -616,16 +772,22 @@
   "reload_prep": {
    "Name": "장전",
    "Desc": "장전 병법 사용 가능. 자신의 공격력을 높인다.",
+   "Kind": "strategy",
+   "Tone": "buff",
    "Cost": 1000
   },
   "thrust_art": {
    "Name": "찌르기",
    "Desc": "찌르기 병법 사용 가능. 창으로 목표 뒤의 적까지 꿰뚫는다.",
+   "Kind": "tactic",
+   "Tone": "attack",
    "Cost": 700
   },
   "breakthrough": {
    "Name": "돌파",
    "Desc": "병법의 관통 피해가 25%p 늘어난다.",
+   "Kind": "talent",
+   "Tone": "attack",
    "Cost": 1000,
    "Requires": [
     "thrust_art"
@@ -637,6 +799,8 @@
   "chain_thrust_art": {
    "Name": "연속찌르기",
    "Desc": "연속찌르기 병법 사용 가능. 창으로 두 번 찌르고 뒤의 적까지 꿰뚫는다.",
+   "Kind": "tactic",
+   "Tone": "attack",
    "Cost": 1500,
    "Requires": [
     "breakthrough"
@@ -645,16 +809,22 @@
   "fire_arrow_art": {
    "Name": "화시",
    "Desc": "화시 병법 사용 가능. 물리와 정신력 기반 화염 피해를 함께 준다.",
+   "Kind": "tactic",
+   "Tone": "attack",
    "Cost": 900
   },
   "rapid_art": {
    "Name": "연발",
    "Desc": "연발 병법 사용 가능. 원거리 공격을 두 번 한다.",
+   "Kind": "tactic",
+   "Tone": "attack",
    "Cost": 1000
   },
   "penetrate_art": {
    "Name": "관통",
    "Desc": "관통 병법 사용 가능. 원거리 공격이 목표 뒤의 적까지 닿는다.",
+   "Kind": "tactic",
+   "Tone": "attack",
    "Cost": 1500,
    "Requires": [
     "snipe_prep"
@@ -663,26 +833,36 @@
   "guard_prep": {
    "Name": "경계",
    "Desc": "경계 병법 사용 가능. 다음 근접 물리 공격 1회를 완전히 피한다.",
+   "Kind": "strategy",
+   "Tone": "guard",
    "Cost": 500
   },
   "aim_prep": {
    "Name": "조준",
-   "Desc": "조준 병법 사용 가능. 다음 원거리 공격의 순발력·사기를 높인다.",
+   "Desc": "조준 병법 사용 가능. 순발력·사기를 높여 겨누어 쏜다.",
+   "Kind": "tactic",
+   "Tone": "attack",
    "Cost": 1000
   },
   "snipe_prep": {
    "Name": "저격",
-   "Desc": "저격 병법 사용 가능. 다음 원거리 공격의 사거리가 2 늘어난다.",
+   "Desc": "저격 병법 사용 가능. 사거리가 2 늘어난 원거리 공격을 한다.",
+   "Kind": "tactic",
+   "Tone": "attack",
    "Cost": 700
   },
   "provoke_prep": {
    "Name": "도발",
-   "Desc": "도발 병법 사용 가능. 다음 물리 공격이 명중하면 대상의 방어력을 낮춘다.",
+   "Desc": "도발 병법 사용 가능. 명중하면 대상의 방어력을 낮추는 공격을 한다.",
+   "Kind": "tactic",
+   "Tone": "attack",
    "Cost": 500
   },
   "disrupt_prep": {
    "Name": "교란",
    "Desc": "교란 병법 사용 가능. 적 한 부대의 순발력과 사기를 낮춘다.",
+   "Kind": "strategy",
+   "Tone": "debuff",
    "Cost": 700
   }
  }

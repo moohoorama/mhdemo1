@@ -22,145 +22,114 @@
  "TurnLimit": 30,
  "Allies": [
   {
-   "X": 13,
-   "Y": 13
+   "X": 5,
+   "Y": 24
   },
   {
-   "X": 14,
-   "Y": 13
+   "X": 4,
+   "Y": 24
   },
   {
-   "X": 15,
-   "Y": 13
+   "X": 6,
+   "Y": 24
   },
   {
-   "X": 16,
-   "Y": 13
+   "X": 5,
+   "Y": 25
   },
   {
-   "X": 12,
-   "Y": 13
+   "X": 4,
+   "Y": 25
   },
   {
-   "X": 11,
-   "Y": 13
+   "X": 6,
+   "Y": 25
   },
   {
-   "X": 17,
-   "Y": 13
+   "X": 3,
+   "Y": 24
   }
  ],
  "Enemies": [
   {
    "Character": "lubu",
-   "X": 14,
+   "X": 5,
    "Y": 2,
-   "Level": 14,
    "DuelFirst": true,
    "Facing": "SW",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Rank": "boss"
   },
   {
-   "Character": "liru",
-   "X": 12,
-   "Y": 5,
-   "Group": "guard",
-   "Facing": "SW"
+   "Character": "troop_footman",
+   "X": 4,
+   "Y": 18,
+   "Facing": "SW",
+   "Group": "vanguard",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 6,
+   "Y": 18,
+   "Facing": "SW",
+   "Group": "vanguard",
+   "Policy": "react",
+   "Shift": -0.07
   },
   {
    "Character": "lijue",
-   "X": 16,
-   "Y": 5,
-   "Group": "guard",
-   "Facing": "SW"
+   "X": 5,
+   "Y": 12,
+   "Facing": "SW",
+   "Group": "center",
+   "Policy": "react"
   },
   {
    "Character": "troop_footman",
-   "X": 10,
+   "X": 4,
+   "Y": 13,
+   "Facing": "SW",
+   "Group": "center",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "liru",
+   "X": 5,
    "Y": 6,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
+   "Facing": "SW",
+   "Group": "rear",
+   "Policy": "hold",
+   "Shift": -0.08
   },
   {
-   "Character": "troop_footman",
-   "X": 14,
+   "Character": "troop_archer",
+   "X": 4,
    "Y": 6,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
+   "Facing": "SW",
+   "Group": "rear",
+   "Policy": "hold",
+   "Shift": -0.12
   },
   {
-   "Character": "troop_footman",
-   "X": 18,
+   "Character": "troop_archer",
+   "X": 6,
    "Y": 6,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
+   "Facing": "SW",
+   "Group": "rear",
+   "Policy": "hold",
+   "Shift": -0.12
   },
   {
    "Character": "troop_footman",
-   "X": 12,
+   "X": 5,
    "Y": 7,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 16,
-   "Y": 7,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 9,
-   "Y": 5,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 19,
-   "Y": 5,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 13,
-   "Y": 4,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 15,
-   "Y": 4,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 7,
-   "Y": 7,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 21,
-   "Y": 7,
-   "Level": 2,
-   "Group": "guard",
-   "Facing": "SW"
+   "Facing": "SW",
+   "Group": "rear",
+   "Policy": "hold",
+   "Shift": -0.12
   }
  ],
  "Reward": {
@@ -185,7 +154,7 @@
     {
      "Kind": "talk",
      "Title": "대사",
-     "Speech": "여포! 연인 장익덕이 상대해 주겠슈! 목 길게 빼고 기다리랑께!",
+     "Speech": "여포! 연인 장익덕이 상대해 주겠슈! 목 길게 빼고 기다리슈!",
      "Side": 0,
      "Duration": 3.5
     },
@@ -283,7 +252,7 @@
     {
      "Kind": "talk",
      "Title": "대사",
-     "Speech": "아직 멀었슈! 더 덤벼 보랑께!",
+     "Speech": "아직 멀었슈! 더 덤벼 보슈!",
      "Side": 0,
      "Duration": 2.2
     },
@@ -297,7 +266,7 @@
     {
      "Kind": "rush-critical-block",
      "Title": "장비가 다시 전진하며 강하게 맞받아치다",
-     "Speech": "이 몸의 사모를 받아 보랑께!",
+     "Speech": "이 몸의 사모를 받아 보슈!",
      "Side": 0,
      "Duration": 1.25
     },
@@ -1398,25 +1367,41 @@
  "Faction": "dong",
  "Events": [
   {
-   "ID": "lubu-advance",
+   "ID": "lijue-wakes",
    "If": [
-    "alive:lubu",
-    "alldefeated:guard"
+    "alldefeated:vanguard"
    ],
    "Do": [
     {
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "lubu",
-       "Text": "이각과 이유를 걷어낸 것이 고작 촌놈 셋이란 말이냐. 좋다, 이 여봉선이 직접 상대해 주마!"
+       "Actor": "lijue",
+       "Text": "선봉이 무너졌다고? 고작 촌놈 셋에게! 길목에서 막아라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "liru-volley",
+   "If": [
+    "defeated:lijue"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liru",
+       "Text": "이각이 당했다니……. 궁수대, 나를 따르라! 저 촌놈들을 관 앞에서 막는다!"
       }
      ]
     },
     {
      "Kind": "ai",
      "Targets": [
-      "lubu"
+      "rear"
      ],
      "Policy": "assault"
     }
@@ -1426,7 +1411,9 @@
    "ID": "coalition-arrival",
    "If": [
     "alive:lubu",
-    "alldefeated:guard"
+    "alldefeated:vanguard",
+    "alldefeated:center",
+    "alldefeated:rear"
    ],
    "Do": [
     {
@@ -1434,83 +1421,75 @@
      "Spawns": [
       {
        "Character": "mushun",
-       "X": 25,
-       "Y": 7,
-       "Level": 1,
+       "X": 11,
+       "Y": 4,
        "AI": true,
        "DuelFirst": true,
        "Faction": "yuan",
-       "Facing": "NW"
+       "Facing": "NE"
       },
       {
        "Character": "wuanguo",
-       "X": 25,
-       "Y": 8,
-       "Level": 1,
+       "X": 12,
+       "Y": 4,
        "AI": true,
        "DuelFirst": true,
        "Faction": "yuan",
-       "Facing": "NW"
+       "Facing": "NE"
       },
       {
        "Character": "troop_footman",
-       "X": 24,
+       "X": 11,
+       "Y": 5,
+       "Class": "light_infantry",
+       "AI": true,
+       "Faction": "yuan",
+       "Facing": "NE"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 12,
+       "Y": 5,
+       "Class": "light_infantry",
+       "AI": true,
+       "Faction": "yuan",
+       "Facing": "NE"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 13,
+       "Y": 5,
+       "Class": "light_infantry",
+       "AI": true,
+       "Faction": "yuan",
+       "Facing": "NE"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 11,
        "Y": 6,
-       "Level": 1,
        "Class": "light_infantry",
        "AI": true,
        "Faction": "yuan",
-       "Facing": "NW"
+       "Facing": "NE"
       },
       {
        "Character": "troop_footman",
-       "X": 24,
-       "Y": 7,
-       "Level": 1,
-       "Class": "light_infantry",
-       "AI": true,
-       "Faction": "yuan",
-       "Facing": "NW"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 24,
-       "Y": 8,
-       "Level": 1,
-       "Class": "light_infantry",
-       "AI": true,
-       "Faction": "yuan",
-       "Facing": "NW"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 24,
-       "Y": 9,
-       "Level": 1,
-       "Class": "light_infantry",
-       "AI": true,
-       "Faction": "yuan",
-       "Facing": "NW"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 26,
+       "X": 12,
        "Y": 6,
-       "Level": 1,
        "Class": "light_infantry",
        "AI": true,
        "Faction": "yuan",
-       "Facing": "NW"
+       "Facing": "NE"
       },
       {
        "Character": "troop_footman",
-       "X": 26,
-       "Y": 9,
-       "Level": 1,
+       "X": 13,
+       "Y": 6,
        "Class": "light_infantry",
        "AI": true,
        "Faction": "yuan",
-       "Facing": "NW"
+       "Facing": "NE"
       }
      ]
     },
@@ -1519,27 +1498,64 @@
      "Lines": [
       {
        "Actor": "wuanguo",
-       "Text": "길은 이미 열렸다! 남은 건 여포 하나뿐이다!"
+       "Text": "샛길로 돌아 나왔다! 여포의 옆구리를 찔러라!"
+      },
+      {
+       "Actor": "mushun",
+       "Text": "여포의 목은 내 것이다!"
+      },
+      {
+       "Actor": "lubu",
+       "Text": "쥐새끼들이 샛길로 기어 왔구나. 좋다, 이 여봉선이 직접 나가 주마!"
       }
      ]
     },
     {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "mushun",
-       "Text": "여포의 목은 내 것이다!"
-      }
-     ]
-    },
+     "Kind": "flag",
+     "Flags": {
+      "b03-coalition": 1
+     }
+    }
+   ]
+  },
+  {
+   "ID": "lubu-ready",
+   "If": [
+    "flag:b03-coalition",
+    "turnstart:ally"
+   ],
+   "Do": [
+    {
+     "Kind": "flag",
+     "Flags": {
+      "b03-lubu": 1
+     }
+    }
+   ]
+  },
+  {
+   "ID": "lubu-advance",
+   "If": [
+    "alive:lubu",
+    "flag:b03-lubu",
+    "turnstart:enemy"
+   ],
+   "Do": [
     {
      "Kind": "say",
      "Lines": [
       {
        "Actor": "lubu",
-       "Text": "줄을 지어 죽으러 오는구나."
+       "Text": "적토야, 가자!"
       }
      ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "lubu"
+     ],
+     "Policy": "assault"
     }
    ]
   },
@@ -1554,24 +1570,35 @@
      "Lines": [
       {
        "Actor": "liubei",
-       "Text": "인중여포! 역시 강하군. 병사들의 피해가 없도록 우리들이 일기토로 상대해야겠어."
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
+       "Text": "여포……. 역시 강하군."
+      },
       {
        "Actor": "zhangfei",
-       "Text": "좋았어, 형! 그럼 나에게 맡겨주슈!"
+       "Text": "형님, 걱정 마슈! 저 세 성 가진 종놈의 목은 이 장비가 따 오리다!"
       },
       {
        "Actor": "guanyu",
-       "Text": "제가 상대해보겠습니다, 형님"
+       "Text": "익덕, 혼자 공을 세우려 들지 마라. 관운장의 청룡도도 녹슬지 않았다."
       }
      ]
     }
    ]
+  }
+ ],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "yuan",
+   "Name": "연합군",
+   "Ally": true
+  },
+  {
+   "Faction": "dong",
+   "Name": "동탁군"
   }
  ]
 }

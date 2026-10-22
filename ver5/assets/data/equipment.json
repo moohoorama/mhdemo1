@@ -5,6 +5,7 @@
    "Desc": "평범한 쇠 검.",
    "Slot": "weapon",
    "Type": "sword",
+   "Icon": "sword",
    "Bonus": [
     1,
     0,
@@ -19,6 +20,7 @@
    "Desc": "평범한 쇠 창.",
    "Slot": "weapon",
    "Type": "spear",
+   "Icon": "spear",
    "Bonus": [
     1,
     0,
@@ -33,6 +35,7 @@
    "Desc": "짧은 활.",
    "Slot": "weapon",
    "Type": "bow",
+   "Icon": "bow",
    "Bonus": [
     1,
     0,
@@ -47,6 +50,7 @@
    "Desc": "대나무 부채.",
    "Slot": "weapon",
    "Type": "fan",
+   "Icon": "fan",
    "Bonus": [
     0,
     0,
@@ -61,6 +65,7 @@
    "Desc": "싸움터에서 수습한 명검. 위압을 준다.",
    "Slot": "weapon",
    "Type": "sword",
+   "Icon": "dao",
    "Bonus": [
     3,
     0,
@@ -78,6 +83,7 @@
    "Desc": "조조가 아끼던 보검. 철을 진흙처럼 벤다. 청공: 앞을 치면 앞 칸과 양옆 둘씩 5칸의 적도 50% 피해를 받는다.",
    "Slot": "weapon",
    "Type": "sword",
+   "Icon": "qinggang",
    "Bonus": [
     3,
     0,
@@ -95,6 +101,7 @@
    "Desc": "조조의 보검. 의천: 적의 물리 공격 명중률이 15%p 낮아진다.",
    "Slot": "weapon",
    "Type": "sword",
+   "Icon": "yitian",
    "Bonus": [
     4,
     0,
@@ -112,6 +119,7 @@
    "Desc": "질긴 가죽 갑옷.",
    "Slot": "armor",
    "Type": "armor",
+   "Icon": "leather",
    "Bonus": [
     0,
     1,
@@ -126,6 +134,7 @@
    "Desc": "평범한 옷.",
    "Slot": "armor",
    "Type": "robe",
+   "Icon": "robe",
    "Bonus": [
     0,
     1,
@@ -140,6 +149,7 @@
    "Desc": "잘 길들인 말.",
    "Slot": "accessory",
    "Type": "any",
+   "Icon": "horse",
    "Bonus": [
     0,
     0,
@@ -157,6 +167,7 @@
    "Desc": "군량을 담은 주머니.",
    "Slot": "accessory",
    "Type": "any",
+   "Icon": "ration",
    "Bonus": [
     0,
     0,
@@ -174,6 +185,7 @@
    "Desc": "지형을 적은 지도.",
    "Slot": "accessory",
    "Type": "any",
+   "Icon": "map",
    "Bonus": [
     0,
     0,
@@ -191,6 +203,7 @@
    "Desc": "약을 담은 주머니. 구휼 책략을 쓰게 한다.",
    "Slot": "accessory",
    "Type": "any",
+   "Icon": "medicine",
    "Bonus": [
     0,
     0,
@@ -211,6 +224,7 @@
    "Desc": "병법 입문서. 독려 책략을 쓰게 한다.",
    "Slot": "accessory",
    "Type": "any",
+   "Icon": "primer",
    "Bonus": [
     0,
     0,
@@ -232,6 +246,7 @@
    "Desc": "전국새. 반드시 치명타를 낸다.",
    "Slot": "accessory",
    "Type": "any",
+   "Icon": "seal",
    "Bonus": [
     0,
     0,
@@ -246,9 +261,10 @@
   },
   "fangtian_halberd": {
    "Name": "방천화극",
-   "Desc": "요극: 적을 퇴각시키면 일반 공격 사거리 내의 다른 적을 차례로 공격한다.",
+   "Desc": "요극: 적을 퇴각시키면 일반 공격 사거리 내의 적 1기를 공격하고, 그 적도 퇴각하면 이어서 공격한다.",
    "Slot": "weapon",
    "Type": "spear",
+   "Icon": "halberd",
    "Bonus": [
     3,
     0,
@@ -266,6 +282,7 @@
    "Desc": "이동력 +2. 마중적토: 사거리 안의 물리 공격에 반드시 반격한다.",
    "Slot": "accessory",
    "Type": "any",
+   "Icon": "redhare",
    "Bonus": [
     0,
     0,
@@ -283,6 +300,7 @@
    "Desc": "매 자기 차례 방어력 20% 강화.",
    "Slot": "armor",
    "Type": "armor",
+   "Icon": "diamond",
    "Bonus": [
     0,
     2,
@@ -300,6 +318,7 @@
    "Desc": "황보숭이 건넨 병서. 화계 책략을 쓰게 한다.",
    "Slot": "accessory",
    "Type": "any",
+   "Icon": "firebook",
    "Bonus": [
     0,
     0,

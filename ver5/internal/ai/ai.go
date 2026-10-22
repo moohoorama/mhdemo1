@@ -31,6 +31,9 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 	if len(options) == 0 {
 		return core.Command{}, fmt.Errorf("NoLegalActions")
 	}
+	if me.Policy == "react" && !inReach(e, o, me) {
+		return core.Command{Kind: "wait", Actor: actor}, nil
+	}
 	best := options[0]
 	score := -1e9
 	var walk, goal map[content.Point]int
@@ -129,7 +132,7 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 				walk = walking(e, o, me)
 			}
 			nearest, old := far(walk, c.X, c.Y), far(walk, me.X, me.Y)
-			if me.Faction == "enemy" && old > 5 && !o.Map.RoutVictory() && me.Policy != "assault" {
+			if me.Faction == "enemy" && old > 5 && !o.Map.RoutVictory() && me.Policy != "assault" && me.Policy != "react" {
 				s = -5
 				break
 			}
@@ -159,6 +162,22 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 	}
 	return best, nil
 }
+
+// inReach reports whether an opposing unit stands where me could strike it this turn (its move
+// and then its reach), which is when a react unit leaves its post.
+func inReach(e *core.Engine, o core.Observation, me *core.UnitView) bool {
+	reach := map[content.Point]bool{}
+	for _, p := range e.Threat(me.ID) {
+		reach[p] = true
+	}
+	for _, v := range o.UnitViews {
+		if v.HP > 0 && v.Faction != me.Faction && reach[content.Point{X: v.X, Y: v.Y}] {
+			return true
+		}
+	}
+	return false
+}
+
 func lord(e *core.Engine, v core.UnitView) bool {
 	return v.Faction == "ally" && e.Data().Characters[v.Def].Lord
 }
@@ -325,7 +344,7 @@ func NextWithDuels(e *core.Engine, duels bool) (core.Command, error) {
 		return chooseLearning(e, o), nil
 	}
 	for _, u := range o.UnitViews {
-		if u.ActsIn(o.Turn) && u.HP > 0 && !u.Done {
+		if u.ActsIn(o.Turn, o.Army) && u.HP > 0 && !u.Done {
 			return ChooseWithDuels(e, u.ID, duels)
 		}
 	}

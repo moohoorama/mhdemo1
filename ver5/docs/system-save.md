@@ -58,13 +58,13 @@
 | 상태 형식 `Format` | 4 | `core/engine.go` |
 | 코어 `Core` | `2` | `core.CoreVersion` |
 | 규칙 `Rules` | `rules-14` | `core.RulesVersion` |
-| AI 정책 `AI` | `greedy-9` | `core.AIPolicyVersion` |
+| AI 정책 `AI` | `greedy-10` | `core.AIPolicyVersion` |
 | 난이도 | `normal` | 고정 |
 | 콘텐츠 버전 `Content` | `ver5-1` | `assets/data/game.json`의 `Version` |
 | 콘텐츠 해시 `ContentHash` | SHA-256 | `content.Load` |
 
 - 콘텐츠 해시는 `assets/data/` 아래 모든 `.json`(맵 문서 포함)을 경로 순으로 정렬해 파일 경로와 바이트를 이어 해시한 값이다. 글자 하나만 바뀌어도, 맵 에디터로 저장해도
-  이전 세이브는 모두 호환되지 않는다. `assets/scenes.json`·그림·스프라이트는 해시에 들어가지 않으므로 바꿔도 세이브는 유효하다.
+  이전 세이브는 모두 호환되지 않는다. `assets/scenes/`·그림·스프라이트는 해시에 들어가지 않으므로 바꿔도 세이브는 유효하다.
 - 규칙 계산이 달라지는 코드 변경은 `RulesVersion`을 올린다. AI 선택이 달라지면 `AIPolicyVersion`을 올린다. 올리지 않으면 같은 세이브가 다른 결과로 이어진다.
 - 호환이 맞아도 `Restore`는 내용을 검증한다: 단계·노드 종류, 인물·병종·장비·특성 참조, 레벨·경험치 범위, 출전 명단, 유닛 위치와 중복, 고정 배치,
   승패 조건에 필요한 보스, 체크포인트의 모양. 어긋나면 `CorruptSave`·`CorruptCheckpoint`(`저장 파일이 손상되었습니다`)다.

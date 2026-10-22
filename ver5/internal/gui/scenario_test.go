@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"srpg/internal/content"
+	"srpg/internal/scenes"
 	"srpg/internal/session"
 	"srpg/internal/sprite"
 )
@@ -71,9 +72,9 @@ func TestWrapAndParticle(t *testing.T) {
 }
 
 func TestScenesData(t *testing.T) {
-	f := loadScenes("../../assets/scenes.json")
-	if f == nil {
-		t.Fatal("assets/scenes.json does not load")
+	book, err := scenes.Load("../../assets/scenes")
+	if err != nil {
+		t.Fatal(err)
 	}
 	d, err := content.Load("../../assets/data")
 	if err != nil {
@@ -88,75 +89,100 @@ func TestScenesData(t *testing.T) {
 		t.Fatal(err)
 	}
 	var index struct {
-		Props struct{ Sprites map[string]json.RawMessage }
+		Props, Extra struct{ Sprites map[string]json.RawMessage }
 	}
 	if err := json.Unmarshal(b, &index); err != nil {
 		t.Fatal(err)
 	}
-	raw, err := os.ReadFile("../../assets/scenes.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	var maps struct {
-		Maps []struct {
-			ID    string
-			Props [][]any
-		}
-	}
-	if err := json.Unmarshal(raw, &maps); err != nil {
-		t.Fatal(err)
-	}
-	for _, m := range maps.Maps {
-		for _, p := range m.Props {
-			if name, _ := p[0].(string); index.Props.Sprites[name] == nil || (len(p) != 3 && len(p) != 5) {
-				t.Errorf("%s: prop %v: unknown name or not [name, x, y] / [name, x0, y0, x1, y1]", m.ID, p)
-			}
-		}
-	}
 	names := nameIndex(d)
 	diagonal := map[string]bool{"NW": true, "NE": true, "SW": true, "SE": true}
-	for node, def := range f.Scenes {
-		t.Run(node, func(t *testing.T) {
-			spriteOf := map[string]string{}
-			for name, at := range def.Cast {
-				if len(at) < 3 {
-					t.Errorf("%s: cast %v needs [x, y, facing]", name, at)
-					continue
+	times := map[string]bool{"": true, "day": true, "dusk": true, "night": true, "dawn": true, "memory": true}
+	effects := map[string]bool{"": true, "none": true, "petals": true, "fire": true, "smallfire": true, "smoke": true, "steam": true, "birds": true, "glint": true}
+	for id, def := range book.Scenes {
+		t.Run(id, func(t *testing.T) {
+			if !times[def.Time] {
+				t.Errorf("time %q", def.Time)
+			}
+			for key, a := range def.Cast {
+				if len(a.At) != 2 || !diagonal[a.Face] {
+					t.Errorf("%s: needs At [u, v] and a diagonal Face, has %v %q", key, a.At, a.Face)
 				}
-				if dir, _ := at[2].(string); !diagonal[dir] {
-					t.Errorf("%s: facing %v is not a diagonal", name, at[2])
-				}
-				if len(at) > 3 {
-					if fa, _ := at[3].(string); fa != "" {
-						if _, ok := d.Factions[fa]; !ok {
-							t.Errorf("%s: unknown faction %q", name, fa)
-						}
+				if a.Faction != "" {
+					if _, ok := d.Factions[a.Faction]; !ok {
+						t.Errorf("%s: unknown faction %q", key, a.Faction)
 					}
 				}
-				pick := ""
-				if len(at) > 4 {
-					pick, _ = at[4].(string)
-					if sheets[pick] == nil {
-						t.Errorf("%s: unknown sprite %q", name, pick)
+				if a.Sprite != "" && sheets[a.Sprite] == nil {
+					t.Errorf("%s: unknown sprite %q", key, a.Sprite)
+				}
+				if _, ok := names[scenes.Base(key)]; !ok && a.Sprite == "" {
+					t.Errorf("%s: not a character name and no sprite given", key)
+				}
+			}
+			// the sheet an actor stands in, as sceneArt picks it, so a pose names a motion the sheet has
+			sheetOf := func(key, pick string) *sprite.Sheet {
+				c := d.Characters[names[scenes.Base(key)]]
+				class := d.Classes[c.Class]
+				for _, id := range []string{pick, c.Look.Scene, class.Scene, c.Look.Sprites[c.Class], c.Look.Sprite, class.Sprite} {
+					if id != "" && sheets[id] != nil {
+						return sheets[id]
 					}
 				}
-				id, ok := names[name]
-				if !ok && pick == "" {
-					t.Errorf("%s: not a character name and no sprite given", name)
+				return nil
+			}
+			pose := func(key, pick, name string) {
+				if name == "" || name == "idle" {
+					return
 				}
-				c := d.Characters[id]
-				for _, s := range []string{pick, c.Look.Scene, c.Look.Sprite, d.Classes[c.Class].Sprite} {
-					if s != "" {
-						spriteOf[name] = s
-						break
+				if sh := sheetOf(key, pick); sh == nil || sh.Animations[name].Frames == 0 {
+					t.Errorf("%s: pose %q is not a motion of its sprite", key, name)
+				}
+			}
+			for key, a := range def.Cast {
+				pose(key, a.Sprite, a.Pose)
+			}
+			inScene := map[string]bool{}
+			for _, n := range def.Nodes {
+				inScene[n] = true
+			}
+			check := func(st scenes.Step) {
+				if st.Pose != "" {
+					pose(st.Actor, def.Cast[st.Actor].Sprite, st.Pose)
+				}
+				if st.Actor != "" {
+					if _, ok := def.Cast[st.Actor]; !ok {
+						t.Errorf("step for %q, who is not in the cast", st.Actor)
+					}
+				}
+				for _, dir := range []string{st.Face, st.Look} {
+					if dir != "" && !diagonal[dir] {
+						t.Errorf("%s: %q is not a diagonal", st.Actor, dir)
+					}
+				}
+				if !effects[st.Effect] || !times[st.Time] {
+					t.Errorf("%s: effect %q or time %q", st.Actor, st.Effect, st.Time)
+				}
+				if st.Sprite != "" && sheets[st.Sprite] == nil {
+					t.Errorf("%s: unknown sprite %q", st.Actor, st.Sprite)
+				}
+				if len(st.Prop) > 0 {
+					name, _ := st.Prop[0].(string)
+					if index.Props.Sprites[name] == nil && index.Extra.Sprites[name] == nil || len(st.Prop) != 1 && len(st.Prop) != 3 {
+						t.Errorf("prop %v: unknown name or not [name, u, v] / [name]", st.Prop)
 					}
 				}
 			}
-			for _, line := range def.Beats {
-				for _, group := range line {
-					for _, st := range group {
-						if st.Face != "" && !diagonal[st.Face] {
-							t.Errorf("%s: face %q is not a diagonal", st.Actor, st.Face)
+			for _, st := range def.Ambient {
+				check(st)
+			}
+			for node, lines := range def.Beats {
+				if !inScene[node] {
+					t.Errorf("beats for %s, which is not one of the scene's nodes", node)
+				}
+				for _, line := range lines {
+					for _, group := range line {
+						for _, st := range group {
+							check(st)
 						}
 					}
 				}

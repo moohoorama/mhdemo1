@@ -12,7 +12,8 @@
     87,
     99
    ],
-   "Level": 1,
+   "Level": 3,
+   "Points": 200,
    "Lord": true,
    "Playable": true,
    "Traits": [],
@@ -45,7 +46,8 @@
     85,
     92
    ],
-   "Level": 1,
+   "Level": 3,
+   "Points": 200,
    "Playable": true,
    "Traits": [],
    "Learn": [
@@ -79,7 +81,8 @@
     72,
     74
    ],
-   "Level": 1,
+   "Level": 3,
+   "Points": 200,
    "Playable": true,
    "Traits": [],
    "Learn": [
@@ -114,6 +117,7 @@
     96
    ],
    "Level": 2,
+   "Points": 100,
    "Playable": true,
    "Traits": [],
    "Learn": [
@@ -372,7 +376,7 @@
   "lijue": {
    "Name": "이각",
    "Biography": "동탁의 부장. 동탁이 죽자 가후의 계책으로 곽사와 함께 장안을 쳐 왕윤을 죽이고 조정을 장악한다. 곽사와 다투다 몰락한다.",
-   "Class": "light_cavalry",
+   "Class": "light_infantry",
    "Stats": [
     71,
     78,
@@ -385,9 +389,8 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
-    "leather_armor",
-    "war_horse"
+    "iron_sword",
+    "leather_armor"
    ],
    "Look": {
     "Portrait": "lijue",
@@ -445,6 +448,7 @@
     90
    ],
    "Level": 8,
+   "Points": 700,
    "Traits": [
     "versatile"
    ],
@@ -457,9 +461,9 @@
     "Portrait": "zhaoyun",
     "Faction": "gongsun",
     "Sprite": "zhaoyun",
+     "Scene": "zhaoyun_noncombat",
     "Sprites": {
      "light_cavalry:sword": "zhaoyun_sword",
-     "Scene": "zhaoyun_noncombat",
      "heavy_cavalry:sword": "zhaoyun_sword",
      "royal_guard:sword": "zhaoyun_sword"
     }
@@ -487,6 +491,7 @@
    ],
    "Look": {
     "Portrait": "gongsunzan",
+    "Scene": "gongsunzan_noncombat",
     "Faction": "gongsun",
     "Palette": {
      "horseSkin": [
@@ -775,7 +780,8 @@
    "Look": {
     "Portrait": "yuanshu",
     "Faction": "yuan",
-    "Sprite": "yuanshu"
+    "Sprite": "yuanshu",
+    "Scene": "yuanshu_noncombat"
    }
   },
   "sunjian": {
@@ -800,9 +806,9 @@
    "Look": {
     "Faction": "wu",
     "Sprite": "sunjian",
+     "Scene": "sunjian_noncombat",
     "Portrait": "sunjian"
    }
-     "Scene": "sunjian_noncombat",
   },
   "caocao": {
    "Name": "조조",
@@ -830,9 +836,9 @@
     "Portrait": "caocao",
     "Faction": "wei",
     "Sprite": "caocao",
+     "Scene": "caocao_noncombat",
     "Sprites": {
      "light_cavalry:sword": "caocao_sword",
-     "Scene": "caocao_noncombat",
      "heavy_cavalry:sword": "caocao_sword",
      "royal_guard:sword": "caocao_sword"
     }
@@ -887,9 +893,9 @@
    "Look": {
     "Portrait": "dongzhuo",
     "Faction": "dong",
+     "Scene": "dongzhuo_noncombat",
     "Palette": {
      "themeA": [
-     "Scene": "dongzhuo_noncombat",
       "#7a5a9a",
       "#523470",
       "#2e1a44"

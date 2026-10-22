@@ -62,8 +62,12 @@ func (e *Engine) deployCommand(c Command) error {
 }
 
 // DeploymentPlan assigns all remaining officers before returning any commands.
-// Reassigning an earlier match avoids trapping a unit with fewer usable terrains.
+// Reassigning an earlier match avoids trapping a unit with fewer usable terrains. A battle already
+// under way (a forced sortie places its officers itself) has nothing left to place.
 func (e *Engine) DeploymentPlan() ([]Command, error) {
+	if e.state.Phase == "battle" {
+		return nil, nil
+	}
 	if !e.Deploying() {
 		return nil, fail("WrongPhase")
 	}

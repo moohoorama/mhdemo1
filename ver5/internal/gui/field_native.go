@@ -66,15 +66,24 @@ func (f *Field) nativeObjects(items *[]drawItem) {
 			return
 		}
 		s := f.A.Structures[f.smallBlock(u, v)]
-		if t == 'm' {
-			s = f.gateSprite(u, v, s)
+		if t != 'm' {
+			top := t == 'h'
+			*items = append(*items, drawItem{y: y * K, rect: f.mapRect(s, x, y), draw: func() {
+				f.blitMap(f.Canvas, s, x, y, nil)
+				if top {
+					f.drawCliffTop(x*K, y*K)
+				}
+			}})
+			return
 		}
-		top := t == 'h'
-		*items = append(*items, drawItem{y: y * K, rect: f.mapRect(s, x, y), draw: func() {
-			f.blitMap(f.Canvas, s, x, y, nil)
-			if top {
-				f.drawCliffTop(x*K, y*K)
+		closed, open := f.gateSprite(u, v, s, "closed"), f.gateSprite(u, v, s, "floor")
+		cell := image.Pt(floorDiv(u, 2), floorDiv(v, 2))
+		*items = append(*items, drawItem{y: y * K, rect: f.mapRect(closed, x, y), draw: func() {
+			if f.look(cell.X, cell.Y) == "open" { // the gatehouse is gone and the way through the wall lies open
+				f.blitMap(f.Canvas, open, x, y, nil)
+				return
 			}
+			f.blitMap(f.Canvas, closed, x, y, nil)
 		}})
 	})
 	f.nativeSites(items)
@@ -275,11 +284,13 @@ func (f *Field) bridgeSprite(name string, at image.Point, whole Sprite) Sprite {
 
 // gateSprite is the closed gate house of a gate cell, turned along the wall line it stands in; a wall block when
 // the art has none.
-func (f *Field) gateSprite(u, v int, wall Sprite) Sprite {
+// gateSprite is the gatehouse of small tile (u, v) in a picture set ("closed", or "floor" for the
+// open gate), turned to the wall line it sits in.
+func (f *Field) gateSprite(u, v int, wall Sprite, set string) Sprite {
 	isWall := func(t byte) bool { return t == 'c' || t == 'm' }
-	name := "gatehouse_closed_v"
+	name := "gatehouse_" + set + "_v"
 	if isWall(f.small(u-1, v)) || isWall(f.small(u+1, v)) {
-		name = "gatehouse_closed_u"
+		name = "gatehouse_" + set + "_u"
 	}
 	if p, ok := f.A.Props[name]; ok {
 		return p.Sprite
@@ -312,4 +323,13 @@ func (f *Field) nativeFences(items *[]drawItem) {
 			*items = append(*items, drawItem{y: py, rect: image.Rect(int(px)-44, int(py)-80, int(px)+44, int(py)+20), draw: func() { f.blitK(f.Canvas, sprite, px, py, 2) }})
 		}
 	}
+}
+
+// floorDiv is a / b rounded down, so small tiles left of or above the origin fall in the right cell.
+func floorDiv(a, b int) int {
+	q := a / b
+	if a%b != 0 && (a < 0) != (b < 0) {
+		q--
+	}
+	return q
 }

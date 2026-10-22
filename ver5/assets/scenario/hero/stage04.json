@@ -140,7 +140,6 @@
    "Character": "troop_footman",
    "X": 15,
    "Y": 4,
-   "Level": 6,
    "Facing": "NW",
    "AI": true,
    "Faction": "wei",
@@ -149,13 +148,13 @@
    "Goal": {
     "X": 11,
     "Y": 5
-   }
+   },
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 15,
    "Y": 6,
-   "Level": 6,
    "Facing": "NW",
    "AI": true,
    "Faction": "wei",
@@ -164,13 +163,13 @@
    "Goal": {
     "X": 11,
     "Y": 5
-   }
+   },
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
    "X": 16,
    "Y": 5,
-   "Level": 6,
    "Facing": "NW",
    "AI": true,
    "Faction": "wei",
@@ -179,13 +178,13 @@
    "Goal": {
     "X": 11,
     "Y": 5
-   }
+   },
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
    "X": 16,
    "Y": 6,
-   "Level": 6,
    "Facing": "NW",
    "AI": true,
    "Faction": "wei",
@@ -194,13 +193,13 @@
    "Goal": {
     "X": 11,
     "Y": 5
-   }
+   },
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 16,
    "Y": 4,
-   "Level": 6,
    "Facing": "NW",
    "AI": true,
    "Faction": "wei",
@@ -209,13 +208,13 @@
    "Goal": {
     "X": 11,
     "Y": 5
-   }
+   },
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 16,
    "Y": 7,
-   "Level": 6,
    "Facing": "NW",
    "AI": true,
    "Faction": "wei",
@@ -224,7 +223,8 @@
    "Goal": {
     "X": 11,
     "Y": 5
-   }
+   },
+   "Shift": -0.07
   }
  ],
  "Enemies": [
@@ -232,91 +232,91 @@
    "Character": "xurong",
    "X": 17,
    "Y": 3,
-   "Level": 8,
    "Facing": "SW",
    "Group": "ambush",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Rank": "commander"
   },
   {
    "Character": "troop_footman",
    "X": 15,
    "Y": 3,
-   "Level": 5,
    "Facing": "SW",
    "Group": "ambush",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
    "X": 16,
    "Y": 3,
-   "Level": 5,
    "Facing": "SW",
    "Group": "ambush",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 18,
    "Y": 3,
-   "Level": 5,
    "Facing": "SW",
    "Group": "ambush",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
    "X": 19,
    "Y": 3,
-   "Level": 5,
    "Facing": "SW",
    "Group": "ambush",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
    "X": 14,
    "Y": 8,
-   "Level": 5,
    "Facing": "NW",
    "Group": "ambush",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 15,
    "Y": 8,
-   "Level": 5,
    "Facing": "NW",
    "Group": "ambush",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
    "X": 16,
    "Y": 8,
-   "Level": 5,
    "Facing": "NW",
    "Group": "ambush",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 17,
    "Y": 8,
-   "Level": 5,
    "Facing": "NW",
    "Group": "ambush",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
    "X": 18,
    "Y": 8,
-   "Level": 5,
    "Facing": "NW",
    "Group": "ambush",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   }
  ],
  "Reward": {
@@ -423,111 +423,111 @@
        "Character": "troop_footman",
        "X": 26,
        "Y": 4,
-       "Level": 4,
        "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
        "Group": "lords",
-       "Side": "ally"
+       "Side": "ally",
+       "Shift": -0.07
       },
       {
        "Character": "troop_footman",
        "X": 26,
        "Y": 5,
-       "Level": 4,
        "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
        "Group": "lords",
-       "Side": "ally"
+       "Side": "ally",
+       "Shift": -0.07
       },
       {
        "Character": "troop_footman",
        "X": 26,
        "Y": 6,
-       "Level": 4,
        "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
        "Group": "lords",
-       "Side": "ally"
+       "Side": "ally",
+       "Shift": -0.07
       },
       {
        "Character": "troop_footman",
        "X": 26,
        "Y": 7,
-       "Level": 4,
        "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
        "Group": "lords",
-       "Side": "ally"
+       "Side": "ally",
+       "Shift": -0.07
       },
       {
        "Character": "troop_archer",
        "X": 27,
        "Y": 4,
-       "Level": 4,
        "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
        "Group": "lords",
-       "Side": "ally"
+       "Side": "ally",
+       "Shift": -0.07
       },
       {
        "Character": "troop_archer",
        "X": 27,
        "Y": 5,
-       "Level": 4,
        "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
        "Group": "lords",
-       "Side": "ally"
+       "Side": "ally",
+       "Shift": -0.07
       },
       {
        "Character": "troop_archer",
        "X": 27,
        "Y": 6,
-       "Level": 4,
        "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
        "Group": "lords",
-       "Side": "ally"
+       "Side": "ally",
+       "Shift": -0.07
       },
       {
        "Character": "troop_footman",
        "X": 27,
        "Y": 3,
-       "Level": 4,
        "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
        "Group": "lords",
-       "Side": "ally"
+       "Side": "ally",
+       "Shift": -0.07
       },
       {
        "Character": "troop_footman",
        "X": 27,
        "Y": 8,
-       "Level": 4,
        "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
        "Group": "lords",
-       "Side": "ally"
+       "Side": "ally",
+       "Shift": -0.07
       },
       {
        "Character": "troop_archer",
        "X": 26,
        "Y": 3,
-       "Level": 4,
        "Facing": "NW",
        "AI": true,
        "Faction": "yuan",
        "Group": "lords",
-       "Side": "ally"
+       "Side": "ally",
+       "Shift": -0.07
       }
      ]
     },
@@ -573,19 +573,18 @@
        "Character": "lubu",
        "X": 1,
        "Y": 5,
-       "Level": 20,
        "Facing": "SE",
        "Group": "lubu",
        "Policy": "assault",
        "Side": "enemy",
        "Faction": "dong",
-       "DuelFirst": true
+       "DuelFirst": true,
+       "Rank": "boss"
       },
       {
        "Character": "troop_cavalry",
        "X": 1,
        "Y": 4,
-       "Level": 10,
        "Class": "light_cavalry",
        "Facing": "SE",
        "Group": "lubu",
@@ -597,7 +596,6 @@
        "Character": "troop_cavalry",
        "X": 1,
        "Y": 6,
-       "Level": 10,
        "Class": "light_cavalry",
        "Facing": "SE",
        "Group": "lubu",
@@ -609,7 +607,6 @@
        "Character": "troop_cavalry",
        "X": 2,
        "Y": 4,
-       "Level": 10,
        "Class": "light_cavalry",
        "Facing": "SE",
        "Group": "lubu",
@@ -621,7 +618,6 @@
        "Character": "troop_cavalry",
        "X": 2,
        "Y": 6,
-       "Level": 10,
        "Class": "light_cavalry",
        "Facing": "SE",
        "Group": "lubu",
@@ -633,7 +629,6 @@
        "Character": "troop_cavalry",
        "X": 0,
        "Y": 5,
-       "Level": 10,
        "Class": "light_cavalry",
        "Facing": "SE",
        "Group": "lubu",
@@ -645,7 +640,6 @@
        "Character": "troop_cavalry",
        "X": 2,
        "Y": 5,
-       "Level": 10,
        "Class": "light_cavalry",
        "Facing": "SE",
        "Group": "lubu",
@@ -657,7 +651,6 @@
        "Character": "troop_cavalry",
        "X": 0,
        "Y": 4,
-       "Level": 10,
        "Class": "light_cavalry",
        "Facing": "SE",
        "Group": "lubu",
@@ -669,7 +662,6 @@
        "Character": "troop_cavalry",
        "X": 0,
        "Y": 6,
-       "Level": 10,
        "Class": "light_cavalry",
        "Facing": "SE",
        "Group": "lubu",
@@ -920,7 +912,7 @@
     {
      "Kind": "talk",
      "Title": "장비가 길을 막다",
-     "Speech": "형들은 먼저 갔슈! 이번엔 이 장익덕이 혼자서 상대해 주랑께!",
+     "Speech": "형들은 먼저 갔슈! 이번엔 이 장익덕이 혼자서 상대해 주겠슈!",
      "Side": 0,
      "Duration": 3.4
     },
@@ -1046,7 +1038,7 @@
     {
      "Kind": "talk",
      "Title": "장비가 받아치다",
-     "Speech": "누가 미뤄 달랬슈! 다음엔 끝장 보랑께!",
+     "Speech": "누가 미뤄 달랬슈! 다음엔 끝장을 보겠슈!",
      "Side": 0,
      "Duration": 2.5
     },
@@ -1058,6 +1050,27 @@
      "Duration": 2.5
     }
    ]
+  }
+ ],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "wei",
+   "Name": "조조군",
+   "Ally": true
+  },
+  {
+   "Faction": "yuan",
+   "Name": "제후 연합군",
+   "Ally": true
+  },
+  {
+   "Faction": "dong",
+   "Name": "동탁군"
   }
  ]
 }

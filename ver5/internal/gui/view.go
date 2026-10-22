@@ -15,6 +15,12 @@ import (
 // banner included: the side to move only starts once its banner is done.
 func (g *Game) busy() bool { return g.player.Busy() || g.sceneBusy() || g.turnBanner != nil }
 
+// briefed reports whether the battle's opening replay is waiting for its first briefing to be read:
+// the briefing is shown and answered then, though a replay is pending.
+func (g *Game) briefed() bool {
+	return len(g.modals) > 0 && g.modals[0].kind == "objective" && !g.modals[0].manual && g.player.Busy()
+}
+
 // advance moves the clock, the replay and every unit's animation by one frame.
 func (g *Game) advance(dt float64) {
 	g.uiSeconds += dt
@@ -36,7 +42,11 @@ func (g *Game) advance(dt float64) {
 		}
 	}
 	g.clockMS += dt * 1000
-	g.player.Update(dt)
+	if g.briefed() {
+		g.player.Update(0) // the battle's opening waits until its briefing is read
+	} else {
+		g.player.Update(dt)
+	}
 	for _, u := range g.vis {
 		u.update(dt)
 	}
@@ -51,7 +61,7 @@ func (g *Game) advance(dt float64) {
 	}
 	g.toasts = keptToasts
 	for _, m := range g.modals[:min(1, len(g.modals))] {
-		if !g.busy() {
+		if !g.busy() || g.briefed() {
 			m.t += dt / float64(g.speed)
 		}
 	}
@@ -306,8 +316,8 @@ func (g *Game) syncUnit(u core.UnitView, o core.Observation) {
 	v.shownHP, v.maxHP = u.HP, u.Stats.MaxHP
 	v.shownMP, v.maxMP = u.MP, u.Stats.MaxMP
 	v.status = u.Status
-	v.inactive = o.Phase != "battle" || !u.ActsIn(o.Turn) || u.Done
-	v.greyed = u.Done && u.ActsIn(o.Turn) && o.Phase == "battle"
+	v.inactive = o.Phase != "battle" || !u.ActsIn(o.Turn, o.Army) || u.Done
+	v.greyed = u.Done && u.ActsIn(o.Turn, o.Army) && o.Phase == "battle"
 	v.ranged = g.S.Data.Classes[u.Class].Attack == content.AttackRanged
 	if v.shootClass != u.Shoot {
 		v.shootClass, v.shoot = u.Shoot, nil
@@ -318,7 +328,7 @@ func (g *Game) syncUnit(u core.UnitView, o core.Observation) {
 	v.siege = slices.Contains(g.S.Data.Classes[u.Class].Tags, content.TagSiege)
 	v.gone = u.HP <= 0
 	if !v.gone {
-		v.dying = -1
+		v.dying, v.leave = -1, nil
 		if v.anim == "idle" || v.anim == "exhausted" || v.anim == "walk" {
 			v.anim = v.rest()
 		}

@@ -35,6 +35,7 @@ type mapEditor struct {
 	ally, officer                              bool
 	pick                                       string
 	level                                      int
+	rank                                       string
 	facing                                     string
 	selected                                   int
 	draft                                      *content.Spawn
@@ -109,7 +110,7 @@ func artFromDocument(d *mapedit.Document, data *content.Data) *MapArt {
 func (f *Field) dispose() {
 	seen := map[*ebiten.Image]bool{}
 	o := f.outside
-	for _, im := range append(f.ground[:], f.Canvas, f.clip, f.shadows, f.exterior, f.decor, f.treeShadow, f.cliffTop, o.decor, o.tiles, o.layer, o.holeFog, o.holeVig, o.cloud) {
+	for _, im := range append(f.ground[:], f.Canvas, f.clip, f.shadows, f.exterior, f.night.dark, f.night.light, f.decor, f.treeShadow, f.cliffTop, o.decor, o.tiles, o.layer, o.holeFog, o.holeVig, o.cloud) {
 		if im != nil && !seen[im] {
 			im.Deallocate()
 			seen[im] = true
@@ -541,13 +542,23 @@ func (g *Game) editorStamp(p image.Point, erase bool) {
 		}
 		equipment = append(equipment, id)
 	}
-	sp := content.Spawn{Character: pick, X: x, Y: y, Class: class, Level: e.level, Facing: e.facing, Equipment: &equipment}
+	sp := g.editorRanked(content.Spawn{Character: pick, X: x, Y: y, Class: class, Facing: e.facing, Equipment: &equipment})
 	d.Stage.Enemies = append(d.Stage.Enemies, sp)
 	e.selected = len(d.Stage.Enemies) - 1
 	s := mapedit.Clone(sp)
 	e.draft = &s
 	e.dirty = true
 	e.message = "배치됨: " + c.Name
+}
+
+// editorRanked gives a new spawn the brush's rank, or its level where the rules set no stage level.
+func (g *Game) editorRanked(sp content.Spawn) content.Spawn {
+	if g.S.Data.Rules.StageLevelBase > 0 {
+		sp.Rank = g.editor.rank
+	} else {
+		sp.Level = g.editor.level
+	}
+	return sp
 }
 func (g *Game) editorClass() string {
 	e := g.editor
@@ -835,7 +846,7 @@ func (g *Game) editorUnits() []*unitVis {
 		if g.S.Data.ValidateSpawn(sp) != nil {
 			continue
 		}
-		v := core.SpawnPreview(g.S.Data, sp)
+		v := core.SpawnPreview(g.S.Data, e.doc.Stage.ID, sp)
 		if i < len(e.doc.Stage.Enemies) {
 			v = g.editorPreview(sp)
 		}
@@ -903,7 +914,7 @@ func (g *Game) editorPreview(sp content.Spawn) core.UnitView {
 	if v, ok := e.previews[key]; ok {
 		return v
 	}
-	v := core.SpawnPreview(g.S.Data, sp)
+	v := core.SpawnPreview(g.S.Data, e.doc.Stage.ID, sp)
 	if len(e.previews) > 256 {
 		e.previews = map[string]core.UnitView{}
 	}

@@ -61,6 +61,7 @@ func (s *Session) Handle(q Request) Response {
 	if s.Engine != nil {
 		s.Engine.SetDamagePct(s.Settings.DamageScale())
 		s.Engine.SetXPPct(s.Settings.XPScale())
+		s.Engine.SetCounterAll(s.Settings.CounterAll)
 		o := s.Engine.Observe()
 		r.Observation = &o
 	}
@@ -263,7 +264,7 @@ func (s *Session) AdvanceEnemies() ([]core.Event, error) {
 	return out, fmt.Errorf("AILimit")
 }
 
-// ResolvePhase runs the current AI faction's whole phase through the core, one command at
+// ResolvePhase runs the current AI army's whole turn through the core, one command at
 // a time exactly as AdvanceEnemies does, and returns the actions for claim replay.
 // It pauses for player learning; the replay only shows the returned state.
 // Commands use the same turn-start autosave path as manual play.
@@ -271,7 +272,7 @@ func (s *Session) ResolvePhase() ([]*replay.Action, error) {
 	if s.Engine == nil {
 		return nil, fmt.Errorf("NoGame")
 	}
-	turn := s.Engine.Observe().Turn
+	turn, army := s.Engine.Observe().Turn, s.Engine.Observe().Army
 	actions := []*replay.Action{}
 	deadline := time.Now().Add(10 * time.Second)
 	for i := 0; ; i++ {
@@ -282,7 +283,7 @@ func (s *Session) ResolvePhase() ([]*replay.Action, error) {
 			return actions, fmt.Errorf("AITimeLimit")
 		}
 		o := s.Engine.Observe()
-		if o.Phase != "battle" || o.Turn != turn || len(o.Learning) > 0 {
+		if o.Phase != "battle" || o.Turn != turn || o.Army != army || len(o.Learning) > 0 {
 			break
 		}
 		c, err := ai.Next(s.Engine)

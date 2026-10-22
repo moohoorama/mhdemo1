@@ -50,6 +50,9 @@ type Rules struct {
 	DeputyWeight          int   // deputy attribute blend: ratio = (own charm*DeputyWeight + deputy charm) / DeputyDivisor
 	DeputyDivisor         int   // also the percent scale of charm
 	PromoteLevels         []int // minimum level to promote from tier i
+	StageLevelBase        int   // the n-th battle of the story is fought at StageLevelBase + StageLevelStep×(n−1); 0 leaves spawns at their characters' levels
+	StageLevelStep        int
+	RankLead              map[string]float64 // a rank's lead over the stage level, as a share of (stage level + StatLevelBase) so it means the same strength at any level
 	EnemyStock            map[string]int
 	AllyStock             map[string]int
 	EdgeTile              string // the cell (ground, structure, state) that lies beyond the map's edge
@@ -123,12 +126,14 @@ type Character struct {
 	Name, Class, Biography   string
 	Stats                    [6]int
 	Level                    int
+	Points                   int `json:",omitempty"` // trait points the character starts with
 	Lord, Playable, Template bool
 	Traits, Learn, Equipment []string
 	Look                     Look
 }
 type Equipment struct {
 	Name, Desc, Slot, Type string
+	Icon                   string // the UI sheet's item_<Icon> picture
 	Bonus                  [6]float64
 	Traits, Learn, Skills  []string
 }
@@ -140,7 +145,9 @@ type Item struct {
 }
 type Trait struct {
 	Name, Desc string
-	Cost       int // learning cost; 0 = given only
+	Kind       string // strategy (책략), tactic (전법) or talent (특기): the icon's shape
+	Tone       string // attack, heal, buff, debuff, guard, move or craft: the icon's colour
+	Cost       int    // learning cost; 0 = given only
 	Requires   []string
 	Effects    map[string]float64
 }
@@ -160,6 +167,8 @@ type Skill struct {
 	Weapon        string  // the weapon type that must be equipped
 	Pierce        float64 // share of damage the enemy behind the target takes
 	Strikes       int     // 2 makes every use strike twice
+	Each          bool    // strikes every target with an attack of its own, one after another
+	Reach         int     // cells the skill adds to the attacker's range
 	MagicCoeff    float64 // a physical skill also deals spell damage at this coefficient
 	Deprecated    bool
 }
@@ -182,8 +191,10 @@ type Spawn struct {
 	Traits, Equipment *[]string `json:",omitempty"`
 	Character         string
 	X, Y              int
-	Level             int    `json:",omitempty"` // overrides the character's level
-	Faction           string `json:",omitempty"` // overrides the stage's and the character's faction color
+	Level             int     `json:",omitempty"` // overrides the character's level; only where Rules set no stage level
+	Rank              string  `json:",omitempty"` // with a stage level: troop, officer, commander or boss; none is troop for a template, officer for a named one
+	Shift             float64 `json:",omitempty"` // added to the rank's lead: -0.07 for a crowd one level under at the start
+	Faction           string  `json:",omitempty"` // overrides the stage's and the character's faction color
 }
 
 // Beat is one step of a duel's staging: Kind names the motion, Side who acts (0 the ally, 1 the
@@ -257,9 +268,10 @@ type Step struct {
 var BuffStats = []string{"attack", "defense", "mind", "morale", "agility", "speed", "range"}
 
 // Policies are the behaviours an AI-driven unit can be given: hold stands its ground and strikes what
-// comes within reach, assault always advances, march goes for a cell fighting what it meets, and
-// flee goes for a cell without fighting and leaves the field when it gets there.
-var Policies = []string{"hold", "assault", "march", "flee"}
+// comes within reach, react stands until an opponent is within its move and reach and then goes for
+// it, assault always advances, march goes for a cell fighting what it meets, and flee goes for a cell
+// without fighting and leaves the field when it gets there.
+var Policies = []string{"hold", "react", "assault", "march", "flee"}
 
 // ValidPolicy checks a policy and its goal against each other; the goal's cell must lie inside w×h.
 func ValidPolicy(policy string, goal *Point, w, h int) bool {
@@ -324,6 +336,7 @@ type Stage struct {
 	Events             []BattleEvent `json:",omitempty"`
 	Areas              []Area        `json:",omitempty"`
 	ID, Name           string
+	Order              int         `json:"-"` // which battle of the story this is, from 1; 0 when no battle node leads here
 	Width, Height, Max int         // Max is how many officers may sortie
 	Required           []string    `json:",omitempty"` // officers who must sortie, if the player has them
 	Victory            []Goal      // the battle is won when any goal holds
@@ -337,6 +350,18 @@ type Stage struct {
 	Party              []Spawn `json:",omitempty"` // a skirmish's allies
 	Map                string  `json:",omitempty"` // map document under maps/ that supplies the tiles; none means Tiles is inline
 	Faction            string  `json:",omitempty"` // color of this stage's enemies without a faction of their own
+	Forced             bool    `json:",omitempty"` // the officers sortie straight onto the Allies cells in order: no deployment screen
+	Night              bool    `json:",omitempty"` // the battle is drawn at night, lit only round fires and Lights
+	Lights             []Point `json:",omitempty"` // cells that light the night around them (torches)
+	Armies             []Army  `json:",omitempty"` // the stage's armies in turn order; colors not listed follow in order of appearance
+}
+
+// Army is one side's force in a stage, by its faction color: the player's army moves first, then
+// each AI army on the player's side (Ally) in this order, then each enemy army. Name is what the turn
+// is called on screen (유비군, 조조군, 황건군).
+type Army struct {
+	Faction, Name string
+	Ally          bool `json:",omitempty"`
 }
 
 // NodeCase is one arm of a branch node: the first whose conditions all hold is taken.
@@ -500,6 +525,25 @@ func (d *Data) StageIndex(id string) int {
 		}
 	}
 	return -1
+}
+
+// StageOrder is which battle of the story the stage with the given id is, from 1; 0 when none.
+func (d *Data) StageOrder(id string) int {
+	if i := d.StageIndex(id); i >= 0 {
+		return d.Stages[i].Order
+	}
+	return 0
+}
+
+// NextBattleOrder is the order of the first battle the story reaches after node id; 0 when none follows.
+func (d *Data) NextBattleOrder(id string) int {
+	for seen := map[string]bool{}; id != "" && !seen[id]; id = d.After(id) {
+		seen[id] = true
+		if n := d.Node(id); n.Kind == "battle" {
+			return d.StageOrder(n.Stage)
+		}
+	}
+	return 0
 }
 
 // Spawns lists a spawn's character definition.

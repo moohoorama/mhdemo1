@@ -177,3 +177,31 @@ func TestRetryAfterDefeatReturnsToTheSortieNotTheScenesBefore(t *testing.T) {
 	assert.Equal(t, "scenario", o.Phase)
 	assert.Equal(t, "fight", o.Node)
 }
+
+func TestJoiningOfficerCatchesUpWithTheStory(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	d.Campaign.Start = "c07-11"
+	e := New(d, 1)
+	apply(t, e, Command{Kind: "start"})
+	o := e.char("jianyong")
+	require.NotNil(t, o)
+	assert.Equal(t, 11, o.Level, "the level of Xindu, the next battle")
+	assert.Equal(t, 1000, o.Points, "100 per level like the brothers")
+}
+
+func TestOfficersBelowTheStageLevelAreNotRaisedAtTheSortie(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	for _, n := range d.Nodes {
+		if n.Kind == "battle" && n.Stage == "B03" {
+			d.Campaign.Start = n.ID
+		}
+	}
+	e := New(d, 1)
+	e.char("liubei").Level = 1
+	apply(t, e, Command{Kind: "start"})
+	finishDeployment(t, e)
+	require.NotNil(t, e.unit("liubei"))
+	assert.Equal(t, 1, e.char("liubei").Level)
+}

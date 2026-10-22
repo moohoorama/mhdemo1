@@ -26,15 +26,17 @@ type Structure struct {
 
 // State lies over a cell and is put there by events. Then is the state it turns into when its rounds
 // run out (none: the cell is clear again). On, when given, lists the structure glyphs it can lie over
-// (a damaged bridge); none means any cell. Look names how the picture shows it ("ember", "flame",
-// "soot", "damaged", "broken"); Blaze is the size of the fire drawn on it.
+// (a damaged bridge), and Grounds the grounds (an open gate); none means any cell. Look names how the
+// picture shows it ("ember", "flame", "soot", "damaged", "broken", "open"); Blaze is the size of the
+// fire drawn on it.
 type State struct {
-	Name   string
-	Then   string  `json:",omitempty"`
-	On     string  `json:",omitempty"`
-	Look   string  `json:",omitempty"`
-	Blaze  float64 `json:",omitempty"`
-	RestHP *int    `json:",omitempty"`
+	Name    string
+	Then    string  `json:",omitempty"`
+	On      string  `json:",omitempty"`
+	Grounds string  `json:",omitempty"`
+	Look    string  `json:",omitempty"`
+	Blaze   float64 `json:",omitempty"`
+	RestHP  *int    `json:",omitempty"`
 }
 
 // TerrainRule is what one layer says about the cost and the strength of a class. A value left out is
@@ -161,6 +163,9 @@ func (d *Data) ValidCell(c Cell) string {
 		if s.On != "" && !strings.Contains(s.On, string(c.Structure)) {
 			return s.Name + " cannot lie over " + string(c.Structure)
 		}
+		if s.Grounds != "" && !strings.Contains(s.Grounds, string(c.Ground)) {
+			return s.Name + " cannot lie over " + d.Grounds[string(c.Ground)].Name
+		}
 	}
 	return ""
 }
@@ -199,6 +204,11 @@ func (d *Data) validateTerrain() string {
 		for _, st := range s.On {
 			if _, ok := d.Structures[string(st)]; !ok {
 				return "state " + k + " lies over unknown structure " + string(st)
+			}
+		}
+		for _, g := range s.Grounds {
+			if _, ok := d.Grounds[string(g)]; !ok {
+				return "state " + k + " lies over unknown ground " + string(g)
 			}
 		}
 	}

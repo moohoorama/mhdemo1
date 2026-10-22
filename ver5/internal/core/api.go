@@ -39,7 +39,7 @@ func (e *Engine) LegalActions(actor string) Options {
 		return out
 	}
 	u := e.unit(actor)
-	if e.state.Phase != "battle" || u == nil || u.HP <= 0 || !u.ActsIn(e.state.Turn) || u.Done {
+	if e.state.Phase != "battle" || u == nil || u.HP <= 0 || !u.ActsIn(e.state.Turn, e.state.Army) || u.Done {
 		return out
 	}
 	out.Commands = append(out.Commands, Command{Kind: "wait", Actor: actor})
@@ -91,7 +91,7 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 	if e.state.Phase != "battle" || u == nil || u.HP <= 0 {
 		return Preview{}, fail("InvalidActor")
 	}
-	if !u.ActsIn(e.state.Turn) {
+	if !u.ActsIn(e.state.Turn, e.state.Army) {
 		return Preview{}, fail("NotYourTurn")
 	}
 	if u.Done {
@@ -120,8 +120,8 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 	p := Preview{Cost: e.cost(u, s), Hit: e.hitChance(u, v, s), Effect: s.Effect}
 	phys := s.Kind == content.KindPhysical
 	if phys {
-		p.Crit = e.critChance(u, v)
-		p.Double = e.doubleChance(u, v)
+		p.Crit = e.critChance(u, v, s)
+		p.Double = e.doubleChance(u, v, s)
 	}
 	var hit []*Unit
 	share := map[string]float64{}
@@ -151,8 +151,8 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 			p.XP += e.actionXPAmount(u, q, c.Kind == "skill", normal >= q.HP)
 			p.CritXP += e.actionXPAmount(u, q, c.Kind == "skill", crit >= q.HP)
 		} else if u.Faction == "ally" && (s.Effect != "heal" || heal > 0) {
-			p.XP += e.supportXP(u)
-			p.CritXP += e.supportXP(u)
+			p.XP += e.supportXP(u, q)
+			p.CritXP += e.supportXP(u, q)
 		}
 	}
 	return p, nil
@@ -161,6 +161,10 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 // SetDamagePct scales the damage of every blow to pct percent; the setting travels with snapshots,
 // so previews and trial copies deal the same damage.
 func (e *Engine) SetDamagePct(pct int) { e.state.DamagePct = pct }
+
+// SetCounterAll makes every unit strike back at a physical attacker in its reach, at counterAllShare
+// of a normal blow, besides the counters stances and traits give.
+func (e *Engine) SetCounterAll(on bool) { e.state.CounterAll = on }
 
 // SetXPPct scales the experience every battle action earns to pct percent.
 func (e *Engine) SetXPPct(pct int) { e.state.XPPct = pct }
@@ -449,14 +453,18 @@ func (e *Engine) CounterDamage(c Command) int {
 		return 0
 	}
 	forced := e.has(v, content.FxCounterForce) && e.might(u) < e.might(v)
+	share := e.data.Rules.CounterShare
 	if v.Status["counter"].Turns == 0 && !forced && !e.has(v, content.FxCounterAlways) {
-		return 0
+		if !e.state.CounterAll {
+			return 0
+		}
+		share = counterAllShare
 	}
 	s, err := e.skillDef(c)
 	if err != nil || s.Kind != content.KindPhysical || !e.inRange(v, u, e.basic()) {
 		return 0
 	}
-	n := int(math.Floor(e.damage(v, u, e.basic()) * e.data.Rules.CritMultiplier * e.data.Rules.CounterShare))
+	n := int(math.Floor(e.damage(v, u, e.basic()) * e.data.Rules.CritMultiplier * share))
 	if forced {
 		n *= 2
 	}

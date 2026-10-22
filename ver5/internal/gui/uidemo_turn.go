@@ -10,9 +10,9 @@ func demoTurn(d *Demo) error {
 	d.step = func(f int) {
 		switch f {
 		case 6:
-			d.g.showTurn(8, "ally")
+			d.g.showTurn(8, "ally", "")
 		case 180:
-			d.g.showTurn(7, "enemy")
+			d.g.showTurn(7, "enemy", "")
 		}
 	}
 	return nil

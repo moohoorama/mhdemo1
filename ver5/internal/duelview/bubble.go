@@ -47,6 +47,7 @@ func (t Tail) tipX(w float64) float64 {
 
 type bubbleKey struct {
 	name, body string
+	shown      int
 	r          int
 	tail       Tail
 }
@@ -90,25 +91,31 @@ func (b *Bubble) DrawText(dst *ebiten.Image, name, body string, tail Tail, x, y,
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(x, y)
 	op.GeoM.Scale(scale, scale)
-	dst.DrawImage(b.imageAt(name, body, 1, tail), op)
+	dst.DrawImage(b.imageAt(name, body, -1, 1, tail), op)
 }
 
 // DrawSharp draws the balloon with its top-left corner at (x, y) on a screen where one design
 // pixel is scale device pixels: the text is rasterised at that size instead of being
 // stretched from the design size.
 func (b *Bubble) DrawSharp(dst *ebiten.Image, name, body string, tail Tail, x, y, scale, alpha float64) {
+	b.DrawTyped(dst, name, body, -1, tail, x, y, scale, alpha)
+}
+
+// DrawTyped is DrawSharp with only the first shown letters of body out (all of them when shown is
+// negative), the bubble already sized for the whole line so it does not grow as the letters come.
+func (b *Bubble) DrawTyped(dst *ebiten.Image, name, body string, shown int, tail Tail, x, y, scale, alpha float64) {
 	r := max(1, min(4, int(math.Ceil(scale))))
 	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
 	op.GeoM.Scale(scale/float64(r), scale/float64(r))
 	op.GeoM.Translate(x, y)
 	op.ColorScale.ScaleAlpha(float32(alpha))
-	dst.DrawImage(b.imageAt(name, body, r, tail), op)
+	dst.DrawImage(b.imageAt(name, body, shown, r, tail), op)
 }
 
-func (b *Bubble) image(name, body string) *ebiten.Image { return b.imageAt(name, body, 1, Tail{}) }
+func (b *Bubble) image(name, body string) *ebiten.Image { return b.imageAt(name, body, -1, 1, Tail{}) }
 
-func (b *Bubble) imageAt(name, body string, r int, tail Tail) *ebiten.Image {
-	key := bubbleKey{name, body, r, tail}
+func (b *Bubble) imageAt(name, body string, shown, r int, tail Tail) *ebiten.Image {
+	key := bubbleKey{name, body, shown, r, tail}
 	if im, ok := b.cache[key]; ok {
 		return im
 	}
@@ -118,7 +125,7 @@ func (b *Bubble) imageAt(name, body string, r int, tail Tail) *ebiten.Image {
 			delete(b.cache, k)
 		}
 	}
-	im := b.render(name, body, r, tail)
+	im := b.render(name, body, shown, r, tail)
 	b.cache[key] = im
 	return im
 }
@@ -129,7 +136,7 @@ func (b *Bubble) face(size float64, weight float32) *text.GoTextFace {
 	return f
 }
 
-func (b *Bubble) render(name, body string, r int, tail Tail) *ebiten.Image {
+func (b *Bubble) render(name, body string, shown, r int, tail Tail) *ebiten.Image {
 	bodyFace, nameFace := b.face(bubbleBodySize, 400), b.face(bubbleNameSize, 800)
 	body = wrapText(body, bodyFace, bubbleMaxText)
 	textW, textH := text.Measure(body, bodyFace, bubbleSpacing)
@@ -178,8 +185,24 @@ func (b *Bubble) render(name, body string, r int, tail Tail) *ebiten.Image {
 	op.LineSpacing = bubbleSpacing * k
 	op.GeoM.Translate(textLeft*k, textTop*k)
 	op.ColorScale.ScaleWithColor(ink)
-	text.Draw(im, body, bodyFace, op)
+	text.Draw(im, typed(body, shown), bodyFace, op)
 	return im
+}
+
+// typed is the first n letters of s with its line breaks (all of s when n is negative).
+func typed(s string, n int) string {
+	if n < 0 {
+		return s
+	}
+	for i, c := range s {
+		if c != '\n' {
+			if n == 0 {
+				return s[:i]
+			}
+			n--
+		}
+	}
+	return s
 }
 
 // wrapText breaks s into lines no wider than maxW, preferring spaces; explicit newlines are kept.

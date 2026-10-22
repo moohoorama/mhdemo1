@@ -15,7 +15,14 @@ uv run --with pillow python tools/build_effects.py        # 수제 픽셀 원본
 python3 tools/build_extra.py                                   # ../assets_candidate 그림 → assets/graphics/map/extra.png, effects/*.png (index.json의 extra, effects)
 node tools/scene_maps/export.mjs > /tmp/scenes_draws.json      # 후보 viewer의 장면을 돌려 어떤 그림이 어디에 놓이는지 뽑는다
 python3 tools/scene_maps/build.py /tmp/scenes_draws.json       # → assets/graphics/maps/S_*.json 와 index.json의 maps
-python3 tools/scene_maps/wire_story.py                         # 이야기의 장소(Place)별로 assets/scenes.json의 scenes에 맵을 붙인다
+python3 tools/scene_maps/compose.py                            # viewer에 없는 방(S_council, S_hall, S_tent_mid, S_tent_lux), 야외(S_bridge, S_pass), 변형(S_turban_camp, S_rampart_siege, S_army_camp_hungry)
+python3 tools/scene_maps/backdrops.py                          # 장면 원경 → assets/graphics/backdrops/*.png (index.json의 backdrops)
+python3 tools/scene_maps/scene_props.py                        # 색만 바꾼 장면 그림(누런 깃발, 금빛 병풍)과 새·반짝임 → ../assets_candidate/tiles
+python3 ../tools/unit3d/scene_props3d.py                        # 3D 모델 장면 소품 14종 → ../assets_candidate/tiles (--review: 옛 그림과 비교; 그 뒤 build_extra.py)
+python3 tools/doteditor/tools/civ3d.py official wounded …       # 장면 사람 시트(3D 변환, tools/unit3d/scene_people.py)
+python3 tools/doteditor/tools/civ3d.py --poses liubei …        # 기존 비전투 시트에 sit·throne 같은 자세 칸만 덧붙임(다른 칸은 그대로)
+python3 tools/scene_maps/wire_story.py                         # 장면이 없는 이야기 구간에 assets/scenes/chNN.json의 빈 장면(맵·노드)을 만든다
+python3 tools/scene_maps/scene_format.py                       # assets/scenes/*.json 줄 배치를 맞춘다
 ```
 
 - `build_extra.py`는 후보의 성벽(이음새 없는 `wall_clean_*`, 게임의 `wall_*`를 대신한다)·성문 C·울타리·그을음·불탄 구조물·다리 손상·장면 소품과 불·연기 줄을 게임 그림 묶음으로 옮긴다. 옛 기둥 성문(`gate_*`)과 숲 속 덤불 시안은 넣지 않는다. 불·연기 줄은 `Assets.Flames`, 그림은 `Assets.Props`로 읽힌다.

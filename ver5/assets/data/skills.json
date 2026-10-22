@@ -2,10 +2,11 @@
  "Skills": {
   "sweep": {
    "Name": "무쌍",
-   "Desc": "공격범위 안의 모든 적을 벤다.",
+   "Desc": "공격범위 안의 적을 하나씩 차례로 벤다. 적마다 따로 공격하고 반격받는다.",
    "Kind": "physical",
    "Mode": "melee",
    "Shape": "all",
+   "Each": true,
    "Cost": 54,
    "Hit": 90,
    "Min": 1,
@@ -939,43 +940,45 @@
   },
   "aim": {
    "Name": "조준",
-   "Desc": "다음 원거리 공격의 순발력·사기를 높인다.",
-   "Kind": "buff",
-   "Mode": "self",
+   "Desc": "겨누어 쏜다. 이 공격은 순발력·사기가 높아져 명중·치명·연타가 잘 난다.",
+   "Kind": "physical",
+   "Mode": "ranged",
    "Shape": "single",
    "Cost": 18,
-   "Hit": 100,
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
    "Effect": "aim",
-   "Duration": 2,
    "Requires": [
     "aim_prep"
    ]
   },
   "snipe": {
    "Name": "저격",
-   "Desc": "다음 원거리 공격의 사거리가 2 늘어난다.",
-   "Kind": "buff",
-   "Mode": "self",
+   "Desc": "사거리가 2 늘어난 원거리 공격을 한다.",
+   "Kind": "physical",
+   "Mode": "ranged",
    "Shape": "single",
    "Cost": 18,
-   "Hit": 100,
-   "Effect": "snipe",
-   "Coeff": 2,
-   "Duration": 2,
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
+   "Reach": 2,
    "Requires": [
     "snipe_prep"
    ]
   },
   "provoke": {
    "Name": "도발",
-   "Desc": "다음 물리 공격이 명중하면 대상의 방어력을 낮춘다.",
-   "Kind": "buff",
-   "Mode": "self",
+   "Desc": "공격이 명중하면 대상의 방어력을 낮춘다.",
+   "Kind": "physical",
+   "Mode": "any",
    "Shape": "single",
    "Cost": 18,
-   "Hit": 100,
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
    "Effect": "provoke",
-   "Duration": 2,
    "Requires": [
     "provoke_prep"
    ]

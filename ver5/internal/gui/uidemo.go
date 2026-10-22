@@ -30,6 +30,7 @@ type Demo struct {
 	step          func(frame int) // optional per-frame hook, run before the game advances
 	stepped       int
 	overlay       func(dst *ebiten.Image)
+	replace       bool // the overlay draws the whole screen; the game's own screen is skipped
 	err           error
 	// stage and duel are the data ids the demos play; the engine never names content, so
 	// cmd/_uidemo passes them in
@@ -190,7 +191,9 @@ func (d *Demo) Draw(dst *ebiten.Image) {
 	if d.saved {
 		return
 	}
-	d.g.Draw(dst)
+	if !d.replace {
+		d.g.Draw(dst)
+	}
 	if d.overlay != nil {
 		d.overlay(dst)
 	}

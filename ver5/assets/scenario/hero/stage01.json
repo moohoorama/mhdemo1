@@ -14,7 +14,7 @@
    "If": [
     "defeated:bocai"
    ],
-   "Text": "파재 격파"
+   "Text": "파재를 격파(퇴각 포함)"
   }
  ],
  "Defeat": [
@@ -27,198 +27,310 @@
  ],
  "Sub": [
   {
-   "ID": "save-village",
-   "Text": "방화병이 마을에 불을 붙이기 전에 모두 격파",
+   "ID": "duels",
+   "Text": "장비가 등무를, 관우가 정원지를 일기토로 벤다",
    "If": [
-    "alldefeated:arsonists",
-    "!flag:flag-village-burned"
-   ],
-   "Flag": "flag-yingchuan-village"
-  },
-  {
-   "ID": "xufu-alive",
-   "Text": "서복을 살려 둔다",
-   "If": [
-    "alive:xufu"
-   ],
-   "Flag": "flag-xufu-alive"
+    "duel:yingchuan-zhangfei-dengmao",
+    "duel:yingchuan-guanyu-chengyuanzhi"
+   ]
   }
  ],
- "TurnLimit": 20,
+ "TurnLimit": 15,
  "Tiles": null,
  "Map": "map01.json",
  "Allies": [
   {
-   "X": 10,
-   "Y": 1
+   "X": 30,
+   "Y": 30
   },
   {
-   "X": 11,
-   "Y": 1
+   "X": 29,
+   "Y": 31
   },
   {
-   "X": 12,
-   "Y": 1
-  },
-  {
-   "X": 13,
-   "Y": 1
-  },
-  {
-   "X": 10,
-   "Y": 2
-  },
-  {
-   "X": 11,
-   "Y": 2
-  },
-  {
-   "X": 12,
-   "Y": 2
-  },
-  {
-   "X": 13,
-   "Y": 2
+   "X": 31,
+   "Y": 29
   }
  ],
  "Enemies": [
   {
-   "Character": "bocai",
-   "X": 14,
-   "Y": 6,
-   "Facing": "SW",
-   "Group": "maincamp"
-  },
-  {
-   "Character": "zhangliang",
-   "X": 18,
-   "Y": 4,
-   "Facing": "SW"
-  },
-  {
-   "Character": "zhangbao",
-   "X": 19,
-   "Y": 6,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_turban",
-   "X": 3,
-   "Y": 2,
-   "Level": 2,
-   "Group": "northcamp",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_turban",
-   "X": 5,
-   "Y": 2,
-   "Level": 2,
-   "Group": "northcamp",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_turban",
-   "X": 7,
-   "Y": 2,
-   "Level": 2,
-   "Group": "northcamp",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_turban",
-   "X": 4,
-   "Y": 3,
-   "Level": 2,
-   "Group": "northcamp",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_turban",
-   "X": 6,
-   "Y": 3,
-   "Level": 2,
-   "Group": "northcamp",
-   "Facing": "SW"
-  },
-  {
    "Character": "dengmao",
-   "X": 5,
-   "Y": 3,
-   "Level": 3,
-   "Facing": "SW",
-   "Group": "northcamp",
+   "X": 25,
+   "Y": 23,
+   "Facing": "SE",
+   "Group": "southcamp",
    "DuelFirst": true
   },
   {
-   "Character": "troop_turban",
-   "X": 12,
-   "Y": 5,
-   "Level": 3,
-   "Group": "maincamp",
-   "Facing": "SW"
+   "Character": "chengyuanzhi",
+   "X": 23,
+   "Y": 24,
+   "Facing": "SW",
+   "Group": "southcamp",
+   "Policy": "hold",
+   "DuelFirst": true
+  },
+  {
+   "Character": "bocai",
+   "X": 22,
+   "Y": 22,
+   "Facing": "SE",
+   "Group": "southcamp",
+   "Policy": "hold",
+   "DuelFirst": true,
+   "Rank": "commander"
   },
   {
    "Character": "troop_turban",
-   "X": 14,
-   "Y": 4,
-   "Level": 3,
-   "Group": "maincamp",
-   "Facing": "SW"
+   "X": 26,
+   "Y": 23,
+   "Facing": "SE",
+   "Group": "so1",
+   "Shift": -0.07
   },
   {
    "Character": "troop_turban",
-   "X": 16,
-   "Y": 5,
-   "Level": 3,
-   "Group": "maincamp",
-   "Facing": "SW"
+   "X": 26,
+   "Y": 24,
+   "Facing": "SE",
+   "Group": "so2",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 23,
+   "Y": 26,
+   "Facing": "SW",
+   "Group": "so3",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 24,
+   "Y": 26,
+   "Facing": "SW",
+   "Group": "so4",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 22,
+   "Y": 17,
+   "Facing": "NW",
+   "Group": "si1",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 23,
+   "Y": 18,
+   "Facing": "NW",
+   "Group": "si2",
+   "Shift": -0.07
   },
   {
    "Character": "troop_turban",
    "X": 17,
-   "Y": 7,
-   "Level": 3,
-   "Group": "maincamp",
-   "Facing": "SW"
+   "Y": 22,
+   "Facing": "NE",
+   "Group": "si3",
+   "Shift": -0.07
   },
   {
    "Character": "troop_turban",
-   "X": 12,
+   "X": 18,
+   "Y": 23,
+   "Facing": "NE",
+   "Group": "si4",
+   "Shift": -0.07
+  },
+  {
+   "Character": "zhangbao",
+   "X": 24,
    "Y": 7,
-   "Level": 3,
-   "Group": "maincamp",
-   "Facing": "SW"
+   "Facing": "NE",
+   "Group": "eastcamp"
+  },
+  {
+   "Character": "troop_turban",
+   "X": 23,
+   "Y": 6,
+   "Facing": "NE",
+   "Group": "eastcamp",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 25,
+   "Y": 8,
+   "Facing": "NE",
+   "Group": "eastcamp",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 25,
+   "Y": 6,
+   "Facing": "NE",
+   "Group": "eastcamp",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 23,
+   "Y": 9,
+   "Facing": "NE",
+   "Group": "eastcamp",
+   "Shift": -0.07
+  },
+  {
+   "Character": "zhangliang",
+   "X": 7,
+   "Y": 24,
+   "Facing": "SW",
+   "Group": "westcamp"
+  },
+  {
+   "Character": "troop_turban",
+   "X": 6,
+   "Y": 23,
+   "Facing": "SW",
+   "Group": "westcamp",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 8,
+   "Y": 25,
+   "Facing": "SW",
+   "Group": "westcamp",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 6,
+   "Y": 25,
+   "Facing": "SW",
+   "Group": "westcamp",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 9,
+   "Y": 23,
+   "Facing": "SW",
+   "Group": "westcamp",
+   "Shift": -0.07
   }
  ],
  "Party": [
   {
    "Character": "huangfusong",
-   "X": 4,
-   "Y": 6,
+   "X": 17,
+   "Y": 15,
+   "Facing": "SE",
+   "Group": "garrison",
    "AI": true,
    "Policy": "hold",
-   "Faction": "han",
-   "Facing": "NE"
+   "Faction": "han"
   },
   {
    "Character": "zhujun",
-   "X": 4,
-   "Y": 7,
+   "X": 15,
+   "Y": 17,
+   "Facing": "SW",
+   "Group": "garrison",
    "AI": true,
    "Policy": "hold",
-   "Faction": "han",
-   "Facing": "NE"
+   "Faction": "han"
   },
   {
-   "Character": "xufu",
-   "X": 15,
-   "Y": 11,
+   "Character": "soldier",
+   "X": 17,
+   "Y": 14,
+   "Facing": "SE",
+   "Group": "garrison",
    "AI": true,
    "Policy": "hold",
-   "Group": "village",
    "Faction": "han",
-   "Facing": "NW"
+   "Shift": -0.07
+  },
+  {
+   "Character": "soldier",
+   "X": 17,
+   "Y": 16,
+   "Facing": "SE",
+   "Group": "garrison",
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "soldier",
+   "X": 16,
+   "Y": 15,
+   "Facing": "SE",
+   "Group": "garrison",
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "soldier",
+   "X": 14,
+   "Y": 17,
+   "Facing": "SW",
+   "Group": "garrison",
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "soldier",
+   "X": 16,
+   "Y": 17,
+   "Facing": "SW",
+   "Group": "garrison",
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "soldier",
+   "X": 15,
+   "Y": 16,
+   "Facing": "SW",
+   "Group": "garrison",
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "soldier",
+   "X": 14,
+   "Y": 14,
+   "Facing": "SE",
+   "Group": "garrison",
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "soldier",
+   "X": 16,
+   "Y": 16,
+   "Facing": "SE",
+   "Group": "garrison",
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "han",
+   "Shift": -0.07
   }
  ],
  "Reward": {
@@ -229,130 +341,754 @@
   {
    "ID": 1,
    "Rect": {
-    "X": 7,
-    "Y": 4,
-    "W": 6,
-    "H": 6
+    "X": 27,
+    "Y": 25,
+    "W": 1,
+    "H": 3
    },
-   "Name": "서쪽 풀밭",
-   "Description": "본진과 장사성 사이의 키 큰 풀밭"
+   "Name": "남쪽 모퉁이 울타리",
+   "Description": "유비가 불을 놓는 울타리"
   },
   {
    "ID": 2,
    "Rect": {
-    "X": 14,
-    "Y": 9,
-    "W": 3,
+    "X": 25,
+    "Y": 27,
+    "W": 2,
     "H": 1
    },
-   "Name": "점화 지점",
-   "Description": "방화병이 마을에 불을 붙이러 오는 곳"
+   "Name": "남쪽 모퉁이 울타리",
+   "Description": "유비가 불을 놓는 울타리"
   },
   {
    "ID": 3,
    "Rect": {
-    "X": 14,
-    "Y": 10,
-    "W": 3,
+    "X": 27,
+    "Y": 17,
+    "W": 1,
+    "H": 6
+   },
+   "Name": "남동 울타리",
+   "Description": "장비가 불을 놓는 울타리"
+  },
+  {
+   "ID": 4,
+   "Rect": {
+    "X": 17,
+    "Y": 27,
+    "W": 6,
+    "H": 1
+   },
+   "Name": "남서 울타리",
+   "Description": "관우가 불을 놓는 울타리"
+  },
+  {
+   "ID": 5,
+   "Rect": {
+    "X": 27,
+    "Y": 4,
+    "W": 1,
     "H": 3
    },
-   "Name": "마을",
-   "Description": "서복이 지키는 우물가 마을"
+   "Name": "동쪽 모퉁이 울타리",
+   "Description": "조조의 화공"
+  },
+  {
+   "ID": 6,
+   "Rect": {
+    "X": 25,
+    "Y": 4,
+    "W": 2,
+    "H": 1
+   },
+   "Name": "동쪽 모퉁이 울타리",
+   "Description": "조조의 화공"
+  },
+  {
+   "ID": 7,
+   "Rect": {
+    "X": 27,
+    "Y": 9,
+    "W": 1,
+    "H": 6
+   },
+   "Name": "동남 울타리",
+   "Description": "조조의 화공"
+  },
+  {
+   "ID": 8,
+   "Rect": {
+    "X": 17,
+    "Y": 4,
+    "W": 6,
+    "H": 1
+   },
+   "Name": "동북 울타리",
+   "Description": "조조의 화공"
+  },
+  {
+   "ID": 9,
+   "Rect": {
+    "X": 4,
+    "Y": 27,
+    "W": 3,
+    "H": 1
+   },
+   "Name": "서쪽 모퉁이 울타리",
+   "Description": "손견의 화공"
+  },
+  {
+   "ID": 10,
+   "Rect": {
+    "X": 4,
+    "Y": 25,
+    "W": 1,
+    "H": 2
+   },
+   "Name": "서쪽 모퉁이 울타리",
+   "Description": "손견의 화공"
+  },
+  {
+   "ID": 11,
+   "Rect": {
+    "X": 9,
+    "Y": 27,
+    "W": 6,
+    "H": 1
+   },
+   "Name": "서남 울타리",
+   "Description": "손견의 화공"
+  },
+  {
+   "ID": 12,
+   "Rect": {
+    "X": 4,
+    "Y": 17,
+    "W": 1,
+    "H": 6
+   },
+   "Name": "서북 울타리",
+   "Description": "손견의 화공"
+  },
+  {
+   "ID": 13,
+   "Rect": {
+    "X": 18,
+    "Y": 15,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "동남 성문",
+   "Description": "장사성 동남쪽 성문"
+  },
+  {
+   "ID": 14,
+   "Rect": {
+    "X": 15,
+    "Y": 18,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "서남 성문",
+   "Description": "장사성 서남쪽 성문"
   }
  ],
  "Events": [
   {
-   "ID": "sunjian-arrives",
-   "If": [
-    "round>=2"
-   ],
+   "ID": "night-raid",
    "Do": [
     {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "sunjian",
-       "X": 0,
-       "Y": 12,
-       "AI": true,
-       "Policy": "march",
-       "Goal": {
-        "X": 13,
-        "Y": 7
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "say",
+        "Unit": "liubei",
+        "Text": "운장은 남서쪽, 익덕은 남동쪽 울타리를 맡아라. 나는 모퉁이에 불을 놓겠다."
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "liubei",
+        "To": {
+         "X": 28,
+         "Y": 26
+        }
        },
-       "Faction": "wu",
-       "Facing": "NE"
+       {
+        "Kind": "move",
+        "Unit": "guanyu",
+        "To": {
+         "X": 20,
+         "Y": 28
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "zhangfei",
+        "To": {
+         "X": 28,
+         "Y": 20
+        }
+       }
+      ],
+      [
+       {
+        "Kind": "face",
+        "Unit": "liubei",
+        "Facing": "NW"
+       },
+       {
+        "Kind": "face",
+        "Unit": "guanyu",
+        "Facing": "NE"
+       },
+       {
+        "Kind": "face",
+        "Unit": "zhangfei",
+        "Facing": "NW"
+       },
+       {
+        "Kind": "play",
+        "Unit": "liubei",
+        "Motion": "attack"
+       },
+       {
+        "Kind": "play",
+        "Unit": "guanyu",
+        "Motion": "attack"
+       },
+       {
+        "Kind": "play",
+        "Unit": "zhangfei",
+        "Motion": "attack"
+       },
+       {
+        "Kind": "wait",
+        "Seconds": 0.6
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "terrain",
+     "Area": 1,
+     "State": "F"
+    },
+    {
+     "Kind": "terrain",
+     "Area": 2,
+     "State": "F"
+    },
+    {
+     "Kind": "terrain",
+     "Area": 3,
+     "State": "F"
+    },
+    {
+     "Kind": "terrain",
+     "Area": 4,
+     "State": "F"
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "say",
+        "Unit": "liubei",
+        "Text": "불이 붙었다! 모두 숲으로 물러나 몸을 숨겨라."
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "liubei",
+        "To": {
+         "X": 30,
+         "Y": 30
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "guanyu",
+        "To": {
+         "X": 29,
+         "Y": 31
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "zhangfei",
+        "To": {
+         "X": 31,
+         "Y": 29
+        }
+       }
+      ],
+      [
+       {
+        "Kind": "face",
+        "Unit": "liubei",
+        "Facing": "NW"
+       },
+       {
+        "Kind": "face",
+        "Unit": "guanyu",
+        "Facing": "NE"
+       },
+       {
+        "Kind": "face",
+        "Unit": "zhangfei",
+        "Facing": "NW"
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "guanyu",
+       "Text": "불길에 놀란 적이 뛰쳐나오면 그때 칩시다."
       },
       {
-       "Character": "chengpu",
-       "X": 1,
-       "Y": 11,
-       "AI": true,
-       "Policy": "march",
-       "Goal": {
-        "X": 13,
-        "Y": 7
-       },
-       "Faction": "wu",
-       "Facing": "NE"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "sunjian",
-       "Text": "오군의 손문대가 왔다! 황보 장군을 구하라!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
        "Actor": "zhangfei",
-       "Text": "형, 우리 말고도 원군이 또 있었구먼유!"
+       "Text": "흐흐, 도둑놈들 엉덩이에 불이 붙었구먼!"
       }
      ]
-    }
-   ]
-  },
-  {
-   "ID": "caocao-arrives",
-   "If": [
-    "any:[alldefeated:northcamp,round>=4]"
-   ],
-   "Do": [
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "dengmao",
+       "Text": "불, 불이다! 울타리에 불이 붙었다!"
+      },
+      {
+       "Actor": "chengyuanzhi",
+       "Text": "물을 길어 와라! 어서 불을 꺼라!"
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "say",
+        "Unit": "so2",
+        "Text": "뜨, 뜨거워! 진영 밖으로 나가자!"
+       },
+       {
+        "Kind": "say",
+        "Unit": "si1",
+        "Text": "성 쪽으로 피해라!"
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "so1",
+        "To": {
+         "X": 29,
+         "Y": 22
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "so2",
+        "To": {
+         "X": 29,
+         "Y": 24
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "so3",
+        "To": {
+         "X": 22,
+         "Y": 29
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "so4",
+        "To": {
+         "X": 24,
+         "Y": 29
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "si1",
+        "To": {
+         "X": 20,
+         "Y": 17
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "si2",
+        "To": {
+         "X": 19,
+         "Y": 18
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "si3",
+        "To": {
+         "X": 17,
+         "Y": 20
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "si4",
+        "To": {
+         "X": 18,
+         "Y": 19
+        }
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "say",
+        "Unit": "liubei",
+        "Text": "지금이다! 불길에 놀란 적을 쳐라!"
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "zhangfei",
+        "To": {
+         "X": 30,
+         "Y": 24
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "guanyu",
+        "To": {
+         "X": 24,
+         "Y": 30
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "liubei",
+        "To": {
+         "X": 29,
+         "Y": 26
+        }
+       }
+      ],
+      [
+       {
+        "Kind": "face",
+        "Unit": "zhangfei",
+        "Facing": "NE"
+       },
+       {
+        "Kind": "face",
+        "Unit": "guanyu",
+        "Facing": "NW"
+       },
+       {
+        "Kind": "face",
+        "Unit": "liubei",
+        "Facing": "NE"
+       },
+       {
+        "Kind": "play",
+        "Unit": "zhangfei",
+        "Motion": "attack"
+       },
+       {
+        "Kind": "play",
+        "Unit": "guanyu",
+        "Motion": "attack"
+       }
+      ],
+      [
+       {
+        "Kind": "play",
+        "Unit": "so2",
+        "Motion": "hit"
+       },
+       {
+        "Kind": "play",
+        "Unit": "so4",
+        "Motion": "hit"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "zhangfei",
+        "Text": "연인 장익덕이 여기 있다! 덤벼라!"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "guanyu",
+        "Text": "도적들아, 청룡도를 받아라."
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "bocai",
+       "Text": "불을 지른 게 저 녀석들이구나! 겨우 몇 놈뿐이다, 모두 공격하라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "so1",
+      "so2",
+      "so3",
+      "so4",
+      "si1",
+      "si2",
+      "si3",
+      "si4"
+     ],
+     "Policy": "assault"
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "dengmao"
+     ],
+     "Policy": "march",
+     "Goal": {
+      "X": 28,
+      "Y": 23
+     }
+    },
     {
      "Kind": "spawn",
      "Spawns": [
       {
        "Character": "caocao",
-       "X": 21,
-       "Y": 6,
+       "X": 29,
+       "Y": 2,
        "AI": true,
-       "Policy": "march",
-       "Goal": {
-        "X": 15,
-        "Y": 7
-       },
        "Faction": "wei",
-       "Facing": "SW"
+       "Facing": "SW",
+       "Group": "wei"
       },
       {
        "Character": "xiahoudun",
-       "X": 20,
-       "Y": 6,
+       "X": 28,
+       "Y": 1,
        "AI": true,
-       "Policy": "march",
-       "Goal": {
-        "X": 15,
-        "Y": 7
-       },
        "Faction": "wei",
-       "Facing": "SW"
+       "Facing": "SW",
+       "Group": "wei"
+      },
+      {
+       "Character": "xiahouyuan",
+       "X": 30,
+       "Y": 3,
+       "AI": true,
+       "Faction": "wei",
+       "Facing": "SW",
+       "Group": "wei"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 27,
+       "Y": 1,
+       "AI": true,
+       "Faction": "wei",
+       "Facing": "SW",
+       "Group": "wei"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 29,
+       "Y": 1,
+       "AI": true,
+       "Faction": "wei",
+       "Facing": "SW",
+       "Group": "wei"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 30,
+       "Y": 2,
+       "AI": true,
+       "Faction": "wei",
+       "Facing": "SW",
+       "Group": "wei"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 28,
+       "Y": 0,
+       "AI": true,
+       "Faction": "wei",
+       "Facing": "SW",
+       "Group": "wei"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 30,
+       "Y": 0,
+       "AI": true,
+       "Faction": "wei",
+       "Facing": "SW",
+       "Group": "wei"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 31,
+       "Y": 2,
+       "AI": true,
+       "Faction": "wei",
+       "Facing": "SW",
+       "Group": "wei"
       }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "say",
+        "Unit": "caocao",
+        "Text": "남쪽에 불길이 올랐다. 지금이다, 동쪽 울타리에도 불을 놓아라!"
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "xiahoudun",
+        "To": {
+         "X": 20,
+         "Y": 3
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "xiahouyuan",
+        "To": {
+         "X": 28,
+         "Y": 11
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "caocao",
+        "To": {
+         "X": 28,
+         "Y": 4
+        }
+       }
+      ],
+      [
+       {
+        "Kind": "face",
+        "Unit": "xiahoudun",
+        "Facing": "SW"
+       },
+       {
+        "Kind": "face",
+        "Unit": "xiahouyuan",
+        "Facing": "NW"
+       },
+       {
+        "Kind": "face",
+        "Unit": "caocao",
+        "Facing": "NW"
+       },
+       {
+        "Kind": "play",
+        "Unit": "xiahoudun",
+        "Motion": "attack"
+       },
+       {
+        "Kind": "play",
+        "Unit": "xiahouyuan",
+        "Motion": "attack"
+       },
+       {
+        "Kind": "play",
+        "Unit": "caocao",
+        "Motion": "attack"
+       },
+       {
+        "Kind": "wait",
+        "Seconds": 0.6
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "terrain",
+     "Area": 5,
+     "State": "F"
+    },
+    {
+     "Kind": "terrain",
+     "Area": 6,
+     "State": "F"
+    },
+    {
+     "Kind": "terrain",
+     "Area": 7,
+     "State": "F"
+    },
+    {
+     "Kind": "terrain",
+     "Area": 8,
+     "State": "F"
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "move",
+        "Unit": "xiahoudun",
+        "To": {
+         "X": 21,
+         "Y": 1
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "xiahouyuan",
+        "To": {
+         "X": 30,
+         "Y": 10
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "caocao",
+        "To": {
+         "X": 29,
+         "Y": 3
+        }
+       }
+      ]
      ]
     },
     {
@@ -360,158 +1096,487 @@
      "Lines": [
       {
        "Actor": "caocao",
-       "Text": "기도위 조맹덕이 왔다! 도적은 한 놈도 다리를 건너지 못하게 하라!"
+       "Text": "허어, 우리 말고도 화공을 생각한 자가 있었군."
+      },
+      {
+       "Actor": "xiahoudun",
+       "Text": "남쪽 깃발을 보니 의병인 듯합니다. 우리도 뒤질 수 없지요!"
       }
      ]
+    },
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "sunjian",
+       "X": 2,
+       "Y": 29,
+       "AI": true,
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
+       "Character": "chengpu",
+       "X": 1,
+       "Y": 28,
+       "AI": true,
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
+       "Character": "huanggai",
+       "X": 3,
+       "Y": 30,
+       "AI": true,
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
+       "Character": "zumao",
+       "X": 0,
+       "Y": 27,
+       "AI": true,
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 1,
+       "Y": 29,
+       "AI": true,
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 2,
+       "Y": 30,
+       "AI": true,
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 1,
+       "Y": 30,
+       "AI": true,
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 0,
+       "Y": 29,
+       "AI": true,
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 0,
+       "Y": 30,
+       "AI": true,
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 2,
+       "Y": 31,
+       "AI": true,
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "say",
+        "Unit": "sunjian",
+        "Text": "불길이 먼저 올랐구나. 서쪽도 태워라!"
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "huanggai",
+        "To": {
+         "X": 3,
+         "Y": 20
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "chengpu",
+        "To": {
+         "X": 11,
+         "Y": 28
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "sunjian",
+        "To": {
+         "X": 4,
+         "Y": 28
+        }
+       }
+      ],
+      [
+       {
+        "Kind": "face",
+        "Unit": "huanggai",
+        "Facing": "NW"
+       },
+       {
+        "Kind": "face",
+        "Unit": "chengpu",
+        "Facing": "NE"
+       },
+       {
+        "Kind": "face",
+        "Unit": "sunjian",
+        "Facing": "NE"
+       },
+       {
+        "Kind": "play",
+        "Unit": "huanggai",
+        "Motion": "attack"
+       },
+       {
+        "Kind": "play",
+        "Unit": "chengpu",
+        "Motion": "attack"
+       },
+       {
+        "Kind": "play",
+        "Unit": "sunjian",
+        "Motion": "attack"
+       },
+       {
+        "Kind": "wait",
+        "Seconds": 0.6
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "terrain",
+     "Area": 9,
+     "State": "F"
+    },
+    {
+     "Kind": "terrain",
+     "Area": 10,
+     "State": "F"
+    },
+    {
+     "Kind": "terrain",
+     "Area": 11,
+     "State": "F"
+    },
+    {
+     "Kind": "terrain",
+     "Area": 12,
+     "State": "F"
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "move",
+        "Unit": "huanggai",
+        "To": {
+         "X": 1,
+         "Y": 21
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "chengpu",
+        "To": {
+         "X": 10,
+         "Y": 30
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "sunjian",
+        "To": {
+         "X": 3,
+         "Y": 29
+        }
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "sunjian",
+       "Text": "누군지는 몰라도 배짱 좋은 자들이다."
+      },
+      {
+       "Actor": "huanggai",
+       "Text": "주공, 이 불길이면 도적들이 오래 버티지 못합니다!"
+      }
+     ]
+    },
+    {
+     "Kind": "terrain",
+     "Area": 13,
+     "State": "O"
+    },
+    {
+     "Kind": "terrain",
+     "Area": 14,
+     "State": "O"
     },
     {
      "Kind": "say",
      "Lines": [
       {
        "Actor": "huangfusong",
-       "Text": "원군이 셋이나 왔구나! 성문을 열어라!"
+       "Text": "사방에서 불길이 오른다! 원군이다, 성문을 열어라!"
+      },
+      {
+       "Actor": "zhujun",
+       "Text": "전군, 나를 따르라! 도적을 하나도 놓치지 마라!"
       }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "move",
+        "Unit": "huangfusong",
+        "To": {
+         "X": 20,
+         "Y": 15
+        }
+       },
+       {
+        "Kind": "move",
+        "Unit": "zhujun",
+        "To": {
+         "X": 15,
+         "Y": 20
+        }
+       }
+      ]
      ]
     },
     {
      "Kind": "ai",
      "Targets": [
-      "huangfusong",
-      "zhujun"
+      "garrison"
+     ],
+     "Policy": "march",
+     "Goal": {
+      "X": 20,
+      "Y": 20
+     }
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "face",
+        "Unit": "bocai",
+        "Facing": "NE"
+       },
+       {
+        "Kind": "wait",
+        "Seconds": 0.7
+       }
+      ],
+      [
+       {
+        "Kind": "face",
+        "Unit": "bocai",
+        "Facing": "SW"
+       },
+       {
+        "Kind": "wait",
+        "Seconds": 0.7
+       }
+      ],
+      [
+       {
+        "Kind": "face",
+        "Unit": "bocai",
+        "Facing": "SE"
+       },
+       {
+        "Kind": "wait",
+        "Seconds": 0.7
+       }
+      ],
+      [
+       {
+        "Kind": "face",
+        "Unit": "bocai",
+        "Facing": "NW"
+       },
+       {
+        "Kind": "wait",
+        "Seconds": 0.9
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "bocai",
+       "Text": "동쪽에도…… 서쪽에도…… 남쪽에도! 성문까지 열렸다! 우, 우리가 에워싸였단 말이냐!"
+      }
+     ]
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "southcamp",
+      "so1",
+      "so2",
+      "so3",
+      "so4",
+      "si1",
+      "si2",
+      "si3",
+      "si4",
+      "eastcamp",
+      "westcamp"
+     ],
+     "Stat": "attack",
+     "Value": -20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "southcamp",
+      "so1",
+      "so2",
+      "so3",
+      "so4",
+      "si1",
+      "si2",
+      "si3",
+      "si4",
+      "eastcamp",
+      "westcamp"
+     ],
+     "Stat": "defense",
+     "Value": -20
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "eastcamp",
+      "westcamp"
      ],
      "Policy": "assault"
     }
    ]
   },
   {
-   "ID": "zhangliang-fire",
-   "If": [
-    "any:[alldefeated:northcamp,round>=4]"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "zhangliang",
-       "Text": "관군이 사방에서 몰려온다……. 풀숲에 불을 질러라! 불길로 놈들의 발을 묶고 빠져나간다!"
-      }
-     ]
-    },
-    {
-     "Kind": "terrain",
-     "Area": 1,
-     "State": "F",
-     "Turns": 4
-    },
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "troop_turban",
-       "X": 18,
-       "Y": 6,
-       "Level": 3,
-       "Group": "arsonists",
-       "Policy": "march",
-       "Goal": {
-        "X": 15,
-        "Y": 9
-       },
-       "Facing": "SW",
-       "Side": "enemy"
-      },
-      {
-       "Character": "troop_turban",
-       "X": 18,
-       "Y": 8,
-       "Level": 3,
-       "Group": "arsonists",
-       "Policy": "march",
-       "Goal": {
-        "X": 15,
-        "Y": 9
-       },
-       "Facing": "SW",
-       "Side": "enemy"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "liubei",
-       "Text": "바람이 마을 쪽으로 분다. 불씨를 든 자들을 막아라!"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "village-burns",
-   "If": [
-    "turnstart:enemy",
-    "at:arsonists:2"
-   ],
-   "Do": [
-    {
-     "Kind": "terrain",
-     "Area": 3,
-     "State": "e"
-    },
-    {
-     "Kind": "flag",
-     "Flags": {
-      "flag-village-burned": 1
-     }
-    }
-   ]
-  },
-  {
-   "ID": "zhangs-retreat",
-   "If": [
-    "hp:bocai<51"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "zhangliang",
-       "Text": "파재가 버티지 못한다. 남쪽 샛길로 물러난다!"
-      }
-     ]
-    },
-    {
-     "Kind": "remove",
-     "Targets": [
-      "zhangliang",
-      "zhangbao"
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "chengyuanzhi-comes",
+   "ID": "chengyuanzhi-sorties",
    "If": [
     "any:[duel:yingchuan-zhangfei-dengmao, defeated:dengmao]"
    ],
    "Do": [
     {
-     "Kind": "spawn",
-     "Spawns": [
+     "Kind": "say",
+     "Lines": [
       {
-       "Character": "chengyuanzhi",
-       "X": 3,
-       "Y": 3,
-       "Level": 4,
-       "Facing": "SW",
-       "Policy": "assault",
-       "DuelFirst": true,
-       "Side": "enemy"
+       "Actor": "chengyuanzhi",
+       "Text": "등무가 당했다고? 이놈들, 내가 직접 나가 주마!"
       }
      ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "chengyuanzhi"
+     ],
+     "Policy": "march",
+     "Goal": {
+      "X": 23,
+      "Y": 28
+     }
+    }
+   ]
+  },
+  {
+   "ID": "bocai-sorties",
+   "If": [
+    "any:[duel:yingchuan-guanyu-chengyuanzhi, defeated:chengyuanzhi]"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "bocai",
+       "Text": "등무도 정원지도……! 이 파재가 상대해 주마!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "bocai"
+     ],
+     "Policy": "march",
+     "Goal": {
+      "X": 25,
+      "Y": 28
+     }
+    }
+   ]
+  },
+  {
+   "ID": "bocai-calls-liubei",
+   "If": [
+    "hp:bocai<70",
+    "alive:liubei"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "bocai",
+       "Text": "네놈들 두목은 어디 있느냐! 썩 나와라!"
+      },
+      {
+       "Actor": "liubei",
+       "Text": "그대의 상대는 나다!"
+      }
+     ]
+    },
+    {
+     "Kind": "duel",
+     "Duel": "yingchuan-liubei-bocai"
     }
    ]
   }
@@ -537,7 +1602,7 @@
     {
      "Kind": "talk",
      "Title": "장비의 호통",
-     "Speech": "연인 장익덕이 여기 있슈! 목 씻고 기다리랑께!",
+     "Speech": "촌놈 맛 좀 보여 주겠슈! 목이나 씻고 기다리슈!",
      "Side": 0,
      "Duration": 2.9
     },
@@ -593,7 +1658,7 @@
     {
      "Kind": "talk",
      "Title": "장비가 마무리를 선언하다",
-     "Speech": "이제 내 차례여! 이 장팔사모 맛 좀 보랑께!",
+     "Speech": "이제 내 차례여! 이 장팔사모 맛 좀 보슈!",
      "Side": 0,
      "Duration": 2.8
     },
@@ -607,7 +1672,7 @@
     {
      "Kind": "win",
      "Title": "장비가 한 합에 등무를 꿰뚫다",
-     "Speech": "다음은 누구여! 어서 나와 보랑께!",
+     "Speech": "다음은 누구여! 어서 나와 보슈!",
      "Side": 0,
      "Duration": 2.5
     }
@@ -693,6 +1758,187 @@
      "Duration": 2.5
     }
    ]
+  },
+  {
+   "ID": "yingchuan-liubei-bocai",
+   "Ally": "liubei",
+   "Enemy": "bocai",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "파재: 네놈이 불을 놓은 놈이냐! 유비: 탁현의 유비 현덕이다. 유비가 쌍고검으로 파재를 몰아내자 파재가 달아났다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "파재의 분노",
+     "Speech": "네놈이 불을 놓은 놈이냐! 내 진영을 이 꼴로 만들다니!",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "talk",
+     "Title": "유비의 일갈",
+     "Speech": "탁현의 유비 현덕이다. 백성을 노략질한 죄, 오늘 갚게 하겠다.",
+     "Side": 0,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "approach",
+     "Title": "파재가 칼을 들고 달려들다",
+     "Speech": "죽어라, 촌놈!",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "파재의 첫 칼을 유비가 막다",
+     "Speech": "이 정도로는!",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "hit",
+     "Title": "유비가 쌍고검으로 되받아치다",
+     "Speech": "물러서라!",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "파재가 당황하다",
+     "Speech": "이, 이놈이 제법이구나……!",
+     "Side": 1,
+     "Duration": 2.2
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "파재가 돌진하며 베다",
+     "Speech": "어림없다!",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "유비가 파재를 꾸짖다",
+     "Speech": "그대의 칼에는 의가 없다.",
+     "Side": 0,
+     "Duration": 2.2
+    },
+    {
+     "Kind": "critical",
+     "Title": "유비의 일격",
+     "Speech": "하앗!",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "talk",
+     "Title": "파재가 겁에 질리다",
+     "Speech": "(불길에, 이놈까지……!) 물러나라, 물러나!",
+     "Side": 1,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "retreat",
+     "Title": "파재가 진영 뒤로 달아나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "파재가 불길 속으로 사라지다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    }
+   ]
+  }
+ ],
+ "Forced": true,
+ "Night": true,
+ "Lights": [
+  {
+   "X": 24,
+   "Y": 24
+  },
+  {
+   "X": 24,
+   "Y": 7
+  },
+  {
+   "X": 7,
+   "Y": 24
+  },
+  {
+   "X": 7,
+   "Y": 7
+  },
+  {
+   "X": 24,
+   "Y": 13
+  },
+  {
+   "X": 24,
+   "Y": 18
+  },
+  {
+   "X": 13,
+   "Y": 24
+  },
+  {
+   "X": 18,
+   "Y": 24
+  },
+  {
+   "X": 7,
+   "Y": 13
+  },
+  {
+   "X": 7,
+   "Y": 18
+  },
+  {
+   "X": 13,
+   "Y": 7
+  },
+  {
+   "X": 18,
+   "Y": 7
+  },
+  {
+   "X": 18,
+   "Y": 15
+  },
+  {
+   "X": 15,
+   "Y": 18
+  }
+ ],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "wei",
+   "Name": "조조군",
+   "Ally": true
+  },
+  {
+   "Faction": "wu",
+   "Name": "손견군",
+   "Ally": true
+  },
+  {
+   "Faction": "han",
+   "Name": "황보숭군",
+   "Ally": true
+  },
+  {
+   "Faction": "turban",
+   "Name": "황건군"
   }
  ]
 }

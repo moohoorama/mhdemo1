@@ -54,7 +54,7 @@ func TestSceneMapsLoadAndDraw(t *testing.T) {
 	}
 }
 
-// Every dialogue node of the scenario stands on a scene map (tools/scene_maps/wire_story.py), and the maps exist.
+// Every dialogue node of the scenario stands in a scene (assets/scenes/*.json), and the scenes' maps exist.
 func TestScenarioNodesAreStaged(t *testing.T) {
 	d, err := NewDemo("../..", DemoOptions{Name: "mapfx"})
 	if err != nil {
@@ -63,7 +63,7 @@ func TestScenarioNodesAreStaged(t *testing.T) {
 	data := d.g.S.Data
 	scenes := d.g.scenes
 	if scenes == nil {
-		t.Fatal("scenes.json does not load")
+		t.Fatal("assets/scenes does not load")
 	}
 	for id, def := range scenes.Scenes {
 		if d.g.assets.Maps[def.Map] == nil {
@@ -79,7 +79,7 @@ func TestScenarioNodesAreStaged(t *testing.T) {
 			continue
 		case "say", "narrate", "choice":
 			if placed {
-				if _, ok := scenes.Scenes[n.ID]; !ok {
+				if def, _ := scenes.For(n.ID); def == nil {
 					t.Errorf("node %s has a place but no scene", n.ID)
 				}
 			}

@@ -1932,6 +1932,282 @@
    "layer": "object",
    "scale": "battle",
    "note": "drawn over a unit's feet on a forest tile"
+  },
+  "banner_yellow": {
+   "file": "tiles/banner_yellow.png",
+   "size": [
+    10,
+    56
+   ],
+   "pivot": [
+    3,
+    54
+   ],
+   "layer": "object"
+  },
+  "command_flag_yellow": {
+   "file": "tiles/command_flag_yellow.png",
+   "size": [
+    15,
+    56
+   ],
+   "pivot": [
+    3,
+    54
+   ],
+   "layer": "object"
+  },
+  "grain_sack": {
+   "file": "tiles/grain_sack.png",
+   "size": [
+    11,
+    16
+   ],
+   "pivot": [
+    6,
+    14
+   ],
+   "layer": "object"
+  },
+  "wine_jar": {
+   "file": "tiles/wine_jar.png",
+   "size": [
+    11,
+    19
+   ],
+   "pivot": [
+    6,
+    16
+   ],
+   "layer": "object"
+  },
+  "screen_gold": {
+   "file": "tiles/screen_gold.png",
+   "size": [
+    50,
+    56
+   ],
+   "pivot": [
+    25,
+    44
+   ],
+   "layer": "object"
+  },
+  "weapon_rack": {
+   "file": "tiles/weapon_rack.png",
+   "size": [
+    25,
+    47
+   ],
+   "pivot": [
+    13,
+    41
+   ],
+   "layer": "object"
+  },
+  "armor_stand": {
+   "file": "tiles/armor_stand.png",
+   "size": [
+    21,
+    43
+   ],
+   "pivot": [
+    11,
+    38
+   ],
+   "layer": "object"
+  },
+  "candle_stand": {
+   "file": "tiles/candle_stand.png",
+   "size": [
+    10,
+    36
+   ],
+   "pivot": [
+    5,
+    34
+   ],
+   "layer": "object"
+  },
+  "antler_barrier": {
+   "file": "tiles/antler_barrier.png",
+   "size": [
+    42,
+    34
+   ],
+   "pivot": [
+    21,
+    24
+   ],
+   "layer": "object"
+  },
+  "watchtower": {
+   "file": "tiles/watchtower.png",
+   "size": [
+    47,
+    95
+   ],
+   "pivot": [
+    24,
+    84
+   ],
+   "layer": "object"
+  },
+  "shield_wall": {
+   "file": "tiles/shield_wall.png",
+   "size": [
+    36,
+    46
+   ],
+   "pivot": [
+    19,
+    34
+   ],
+   "layer": "object"
+  },
+  "bloody_cloth": {
+   "file": "tiles/bloody_cloth.png",
+   "size": [
+    13,
+    11
+   ],
+   "pivot": [
+    7,
+    5
+   ],
+   "layer": "ground"
+  },
+  "medicine_pot": {
+   "file": "tiles/medicine_pot.png",
+   "size": [
+    13,
+    18
+   ],
+   "pivot": [
+    7,
+    14
+   ],
+   "layer": "object"
+  },
+  "broken_spear": {
+   "file": "tiles/broken_spear.png",
+   "size": [
+    22,
+    18
+   ],
+   "pivot": [
+    12,
+    9
+   ],
+   "layer": "ground"
+  },
+  "fallen_flag": {
+   "file": "tiles/fallen_flag.png",
+   "size": [
+    30,
+    16
+   ],
+   "pivot": [
+    18,
+    9
+   ],
+   "layer": "ground"
+  },
+  "cauldron": {
+   "file": "tiles/cauldron.png",
+   "size": [
+    19,
+    21
+   ],
+   "pivot": [
+    10,
+    17
+   ],
+   "layer": "object"
+  },
+  "straw_mat": {
+   "file": "tiles/straw_mat.png",
+   "size": [
+    33,
+    18
+   ],
+   "pivot": [
+    17,
+    9
+   ],
+   "layer": "ground"
+  },
+  "bird_0": {
+   "file": "tiles/bird_0.png",
+   "size": [
+    9,
+    4
+   ],
+   "pivot": [
+    4,
+    2
+   ],
+   "layer": "object"
+  },
+  "bird_1": {
+   "file": "tiles/bird_1.png",
+   "size": [
+    9,
+    4
+   ],
+   "pivot": [
+    4,
+    2
+   ],
+   "layer": "object"
+  },
+  "bird_2": {
+   "file": "tiles/bird_2.png",
+   "size": [
+    9,
+    4
+   ],
+   "pivot": [
+    4,
+    2
+   ],
+   "layer": "object"
+  },
+  "glint_0": {
+   "file": "tiles/glint_0.png",
+   "size": [
+    3,
+    3
+   ],
+   "pivot": [
+    1,
+    1
+   ],
+   "layer": "object"
+  },
+  "glint_1": {
+   "file": "tiles/glint_1.png",
+   "size": [
+    5,
+    5
+   ],
+   "pivot": [
+    2,
+    2
+   ],
+   "layer": "object"
+  },
+  "glint_2": {
+   "file": "tiles/glint_2.png",
+   "size": [
+    3,
+    3
+   ],
+   "pivot": [
+    1,
+    1
+   ],
+   "layer": "object"
   }
  }
 }

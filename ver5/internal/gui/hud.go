@@ -278,7 +278,7 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 	switch {
 	case u.AI:
 		state = "동맹군 · AI"
-	case !u.ActsIn(o.Turn):
+	case !u.ActsIn(o.Turn, o.Army):
 	case u.Done:
 		state = "행동 완료"
 	case u.Moved:
@@ -335,27 +335,7 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 	case 1:
 		g.detailTraits(dst, body, u.Traits)
 	case 2:
-		lines := []string{}
-		for _, c := range o.Characters {
-			if c.ID != u.Character {
-				continue
-			}
-			for _, slot := range []string{"weapon", "armor", "accessory"} {
-				eq, ok := g.S.Data.Equipment[c.Equipment[slot]]
-				name := map[string]string{"weapon": "무기", "armor": "방어구", "accessory": "장신구"}[slot]
-				if !ok {
-					lines = append(lines, name+" · 없음", "")
-					continue
-				}
-				lines = append(lines, name+" · "+eq.Name, eq.Desc)
-				for _, id := range eq.Traits {
-					lines = append(lines, g.traitName(id)+": "+g.traitDesc(id))
-				}
-				lines = append(lines, "")
-			}
-			break
-		}
-		g.detailText(dst, body, strings.Join(lines, "\n"))
+		g.detailEquipment(dst, o, u.Character, body)
 	case 3:
 		for i, name := range []string{"통솔", "무력", "지력", "민첩", "운", "매력"} {
 			g.label(dst, fmt.Sprintf("%s  %d", name, u.Attributes[i]), float64(body.Min.X+i%2*144), float64(body.Min.Y+i/2*24), 14, ink)
@@ -386,11 +366,14 @@ func (g *Game) detailTraits(dst *ebiten.Image, r image.Rectangle, traits []strin
 	y += arrowH + 2
 	for i := 0; i < min(rows, len(traits)); i++ {
 		id := traits[g.traitTop+i]
-		g.btn(dst, image.Rect(r.Min.X, y+i*rowH, r.Max.X, y+(i+1)*rowH-2), g.traitName(id), func() {
+		row := image.Rect(r.Min.X, y+i*rowH, r.Max.X, y+(i+1)*rowH-2)
+		g.btn(dst, row, "", func() {
 			if !g.popupPending() {
 				g.modals = append(g.modals, &modal{kind: "trait", trait: id})
 			}
 		})
+		g.traitIconOf(dst, id, float64(row.Min.X+4), float64(row.Min.Y+3), 20)
+		g.label(dst, g.traitName(id), float64(row.Min.X+30), float64(row.Min.Y+3), 13, ink)
 	}
 	if len(traits) == 0 {
 		g.label(dst, "(없음)", float64(r.Min.X+8), float64(y+4), 13, muted)

@@ -106,7 +106,7 @@ func (e *Engine) addCharacter(id, def string) *Character {
 		return c
 	}
 	d := e.data.Characters[def]
-	c := Character{ID: id, Def: def, Class: d.Class, Level: d.Level, Temp: d.Template, Equipment: map[string]string{}, Learned: []string{}}
+	c := Character{ID: id, Def: def, Class: d.Class, Level: d.Level, Points: d.Points, Temp: d.Template, Equipment: map[string]string{}, Learned: []string{}}
 	for _, eq := range d.Equipment {
 		c.Equipment[e.data.Equipment[eq].Slot] = eq
 	}
@@ -329,7 +329,7 @@ func (e *Engine) enter() {
 		case "join", "grant":
 			if !e.state.Executed[n.Event] {
 				if n.Kind == "join" {
-					e.addCharacter(n.Character, n.Character)
+					e.raiseTo(e.addCharacter(n.Character, n.Character), e.data.Rules.StageLevel(e.data.NextBattleOrder(n.ID)))
 					e.state.Deployment = append(e.state.Deployment, n.Character)
 				} else if _, ok := e.data.Equipment[n.Item]; ok {
 					e.state.Warehouse[n.Item] += n.Count
@@ -414,7 +414,7 @@ func (e *Engine) execute(c Command) error {
 	if u == nil || u.HP <= 0 {
 		return fail("InvalidActor")
 	}
-	if !u.ActsIn(e.state.Turn) {
+	if !u.ActsIn(e.state.Turn, e.state.Army) {
 		return fail("NotYourTurn")
 	}
 	if u.Done {
@@ -549,12 +549,31 @@ func (e *Engine) prepare(c Command) error {
 	for _, sp := range stage.Enemies {
 		e.spawn(sp.Character, sp.Character, "enemy", sp.X, sp.Y, sp)
 	}
+	if stage.Forced { // the officers march straight onto their cells and the battle begins
+		plan, err := e.DeploymentPlan()
+		if err != nil {
+			return err
+		}
+		for _, c := range plan {
+			if err := e.deployCommand(c); err != nil {
+				return err
+			}
+		}
+	}
 	return nil
 }
 
 // carries reports whether the character's class and traits allow wielding the equipment.
 func (e *Engine) carries(o *Character, eq content.Equipment) bool {
 	return e.data.Carries(e.class(o), e.traits(o), eq)
+}
+
+// stageOrder is which battle of the story the current stage is, from 1.
+func (e *Engine) stageOrder() int {
+	if e.state.Stage < 0 || e.state.Stage >= len(e.data.Stages) {
+		return 0
+	}
+	return e.data.Stages[e.state.Stage].Order
 }
 
 // spawn puts a unit on the map. A template definition gets a numbered character of its own;
@@ -573,8 +592,8 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 		c.Temp = true
 		c.Placement = true
 	}
-	if sp.Level > 0 {
-		c.Level = sp.Level
+	if c.Temp || sp.Level > 0 {
+		c.Level = e.data.SpawnLevel(e.stageOrder(), sp)
 	}
 	if sp.Class != "" {
 		c.Class = sp.Class
@@ -730,10 +749,11 @@ func (e *Engine) clearBattle() {
 }
 
 // SpawnPreview uses the battle initialization path for editor stat previews.
-func SpawnPreview(d *content.Data, sp content.Spawn) UnitView {
+func SpawnPreview(d *content.Data, stage string, sp content.Spawn) UnitView {
 	e := fromState(d, State{Difficulty: "normal", Stage: -1})
 	u := e.spawn(sp.Character, sp.Character, "enemy", sp.X, sp.Y, sp)
 	c := e.char(u.Character)
+	c.Level = d.SpawnLevel(d.StageOrder(stage), sp)
 	return UnitView{Unit: *u, Name: e.name(c), Class: c.Class, Def: c.Def, Shoot: e.shootClass(u), Weapon: e.weaponType(u), Level: c.Level, Stats: e.stats(u), Traits: e.traits(c), Skills: e.skills(c)}
 }
 
@@ -767,12 +787,13 @@ func copyGoal(p *content.Point) *content.Point {
 	return &q
 }
 
-// fleeing units that have reached their goal leave the field, as if retreated.
+// fleeing units that have reached their goal leave the field, as if retreated; the event's Text "flight"
+// tells the screen they walk off instead of falling.
 func (e *Engine) leaveByFlight() {
 	for _, id := range keys(e.unitIDs) {
 		if u := e.unit(id); u.HP > 0 && u.Policy == "flee" && u.Goal != nil && u.X == u.Goal.X && u.Y == u.Goal.Y {
 			u.HP = 0
-			e.emit("retreat", u.ID, "", 0)
+			e.events = append(e.events, Event{Kind: "retreat", Actor: u.ID, Text: "flight"})
 		}
 	}
 }

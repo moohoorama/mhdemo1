@@ -19,7 +19,7 @@ func (e *Engine) NextTurnRecovery(id string) RecoveryPreview {
 	for i := 0; i < 3; i++ {
 		t.events = nil
 		t.endFaction()
-		if u.ActsIn(t.state.Turn) {
+		if u.ActsIn(t.state.Turn, t.state.Army) {
 			break
 		}
 	}

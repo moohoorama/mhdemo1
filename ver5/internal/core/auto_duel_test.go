@@ -99,3 +99,31 @@ func TestARangedAttackOnTheDuelPartnerIsNoDuel(t *testing.T) {
 	}
 	t.Skip("the archer cannot reach the boss from here")
 }
+
+func TestASupportMeetingTheEnemyStartsTheDuel(t *testing.T) {
+	e := battleWith(t, func(s *content.Stage) {
+		neverWon(s)
+		s.Duels[0].Supports = []string{"archer1", "nobody"}
+		s.Enemies[0].X, s.Enemies[0].Y = 4, 3
+	})
+	assert.Equal(t, "D", e.DuelAt("archer1", 3, 3), "the archer joins the hero's duel")
+	r := applyOK(t, e, Command{Kind: "move", Actor: "archer1", X: 3, Y: 3})
+	duels := duelsIn(r)
+	require.Len(t, duels, 1)
+	assert.Equal(t, "archer1", duels[0].First, "the staging opens with the support who met the boss")
+	assert.Equal(t, "hero", duels[0].Actor, "the duel is still the hero's")
+	assert.True(t, e.unit("archer1").Done)
+}
+
+func TestASupportFightsTheDuelWhenItsAllyHasLeft(t *testing.T) {
+	e := battleWith(t, func(s *content.Stage) {
+		neverWon(s)
+		s.Duels[0].Supports = []string{"archer1", "nobody"}
+		s.Enemies[0].X, s.Enemies[0].Y = 4, 3
+	})
+	e.unit("hero").HP = 0
+	r := applyOK(t, e, Command{Kind: "move", Actor: "archer1", X: 3, Y: 3})
+	duels := duelsIn(r)
+	require.Len(t, duels, 1)
+	assert.Equal(t, "archer1", duels[0].Actor, "the support stands in for the hero")
+}

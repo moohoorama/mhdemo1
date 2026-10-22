@@ -61,7 +61,7 @@ func play(d *content.Data, st content.Stage, rounds int, seed uint64, verbose bo
 		return
 	}
 	for _, c := range plan {
-		if _, err = e.Apply(c); err != nil {
+		if _, err := e.Apply(c); err != nil {
 			fmt.Println("   deployment:", err)
 			return
 		}

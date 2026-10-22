@@ -14,7 +14,7 @@ func TestSpawnOverrides(t *testing.T) {
 	hp, mp := 10, 0
 	eq := []string{}
 	traits := []string{}
-	sp := content.Spawn{Character: "troop_cavalry", Class: "heavy_cavalry", Level: 20, Facing: "SW", HP: &hp, MP: &mp, Equipment: &eq, Traits: &traits}
+	sp := content.Spawn{Character: "troop_cavalry", Class: "heavy_cavalry", Rank: "boss", Facing: "SW", HP: &hp, MP: &mp, Equipment: &eq, Traits: &traits}
 	if err = d.ValidateSpawn(sp); err != nil {
 		t.Fatal(err)
 	}
@@ -24,7 +24,7 @@ func TestSpawnOverrides(t *testing.T) {
 	if a.HP != 10 || a.MP != 0 || a.Facing != "SW" || e.char(a.Character).Class != "heavy_cavalry" || a.ID == other.ID || e.char(other.Character).Class != "light_cavalry" {
 		t.Fatalf("overrides %+v / %+v", a, other)
 	}
-	preview := SpawnPreview(d, sp)
+	preview := SpawnPreview(d, "B01", sp)
 	if preview.Stats != e.stats(a) || preview.HP != a.HP {
 		t.Fatal("preview differs")
 	}

@@ -26,6 +26,7 @@ import (
 	"srpg/internal/content"
 	"srpg/internal/core"
 	"srpg/internal/replay"
+	"srpg/internal/scenes"
 	"srpg/internal/session"
 )
 
@@ -80,7 +81,8 @@ type Game struct {
 	dragX, dragY              int
 	dragButton                ebiten.MouseButton
 	shownNode                 string
-	lineIndex, lineStart      int
+	lineIndex                 int
+	lineTyping                typing // how the current line is coming out
 	scrollAnim                scrollAnim
 	Verify                    bool
 	Shots                     []int // capture the screen at these ticks while autoplaying, then quit
@@ -97,6 +99,8 @@ type Game struct {
 	threatAll                 bool
 	threats                   map[string][]content.Point
 	diffs                     map[string]string
+	itemEffects               map[string]itemEffect // itemEffect results by revision, officer, slot and piece
+	equip                     equipState
 	question, yes, no         string
 	answer                    func()
 	endAsked                  string          // the battle turn whose "all allies ordered" prompt was shown
@@ -126,7 +130,7 @@ type Game struct {
 	recoveryID                string
 	recovery                  core.RecoveryPreview
 	modals                    []*modal
-	scenes                    *sceneFile
+	scenes                    *scenes.Book
 	names                     map[string]string // display name -> character id
 	learn                     []core.Learner    // learning windows open now, in order
 	learnPage                 int
@@ -169,12 +173,12 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 		return nil, err
 	}
 	g := &Game{S: s, font: source, brushFont: brush, serifFont: serif, seed: seed, verified: map[string]bool{}, slot: 1, auditDir: auditDir,
-		vis: map[string]*unitVis{}, zoom: 1, zoomFrom: 1, zoomTo: 1, zoomT: .5, speed: 1, threats: map[string][]content.Point{}, diffs: map[string]string{},
+		vis: map[string]*unitVis{}, zoom: 1, zoomFrom: 1, zoomTo: 1, zoomT: .5, speed: 1, threats: map[string][]content.Point{}, diffs: map[string]string{}, itemEffects: map[string]itemEffect{},
 		battleXP: map[string]int{}, startLevel: map[string]int{}}
 	g.root = filepath.Dir(filepath.Dir(filepath.Dir(fontPath)))
 	g.player.g = g
 	g.names = nameIndex(s.Data)
-	g.scenes = loadScenes(filepath.Join(filepath.Dir(fontPath), "..", "scenes.json"))
+	g.scenes, _ = scenes.Load(filepath.Join(filepath.Dir(fontPath), "..", "scenes"))
 	g.assets, err = LoadAssets(filepath.Join(filepath.Dir(fontPath), "..", "graphics"), source, s.Data)
 	if err != nil {
 		return nil, err
@@ -311,7 +315,52 @@ func (g *Game) request(q session.Request) session.Response {
 		}
 		g.sync(g.S.Engine.Observe())
 	}
+	if r.OK && before != nil && before.Phase != "battle" && q.Op == "command" && g.S.Engine.Observe().Phase == "battle" {
+		g.replayOpening(q.Command, r.Events)
+	}
 	return r
+}
+
+// replayOpening plays what the battle's first turn brought with it (a cutscene, a fire, lines) when
+// the command that began the battle (start, the last deployment) also set it off: the units stand
+// where their first walk begins, and the replay takes them from there.
+func (g *Game) replayOpening(c core.Command, events []core.Event) {
+	final := g.S.Engine.Observe()
+	shown := false
+	for _, e := range events {
+		switch e.Kind {
+		case "cutscene", "move", "speech", "terrain", "duel", "unit-arrival":
+			shown = true
+		}
+	}
+	if !shown || g.assets.Maps[final.Map.ID] == nil {
+		return
+	}
+	g.ensureField(final)
+	g.sync(final)
+	moved := map[string]bool{}
+	rewind := func(id string, path []content.Point) {
+		if v := g.vis[id]; v != nil && len(path) > 0 && !moved[id] {
+			moved[id] = true
+			v.u, v.v = float64(path[0].X), float64(path[0].Y)
+			v.lift = g.field.Lift(path[0].X, path[0].Y)
+		}
+	}
+	for _, e := range events {
+		switch e.Kind {
+		case "move":
+			rewind(e.Actor, e.Path)
+		case "cutscene":
+			for _, group := range e.Cutscene {
+				for _, st := range group {
+					if st.Kind == "move" {
+						rewind(st.Unit, st.Path)
+					}
+				}
+			}
+		}
+	}
+	g.replayOne(final, c, events)
 }
 
 // record turns events into log lines, announcements, level-up windows and battle XP.
@@ -553,7 +602,7 @@ func (g *Game) Update() error {
 		g.updateDuel()
 		return nil
 	}
-	logInput := g.updateBattleLog() || g.updateUnitList()
+	logInput := g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker()
 	g.updateDeploymentPanel()
 	g.updateHover()
 	g.keys()
@@ -631,6 +680,10 @@ func (g *Game) keys() {
 	}
 	if pressed(ebiten.KeyEscape) {
 		switch {
+		case g.equip.info.id != "":
+			g.equip.info = equipChip{}
+		case g.equip.slot != "":
+			g.equip.slot = ""
 		case g.overlay != "":
 			g.overlay = ""
 		case len(g.modals) > 0:
@@ -686,6 +739,7 @@ func (g *Game) keys() {
 // leftClick presses a button at once; on the battlefield it waits for the release, since
 // holding the button and dragging scrolls the map instead (camera).
 func (g *Game) leftClick() {
+	g.rushSpeech()
 	x, y := cursorPos()
 	for i := len(g.buttons) - 1; i >= 0; i-- {
 		if b := g.buttons[i]; image.Pt(x, y).In(b.rect) {
@@ -791,7 +845,7 @@ func (g *Game) drawFrame(dst *ebiten.Image) {
 
 	if g.overlay != "" {
 		g.drawOverlay(dst)
-	} else if len(g.modals) > 0 && !g.busy() && g.S.Engine != nil {
+	} else if len(g.modals) > 0 && (!g.busy() || g.briefed()) && g.S.Engine != nil {
 		g.drawModal(dst)
 	} else if len(g.learn) > 0 && !g.busy() {
 		g.drawLearning(dst)
@@ -934,7 +988,12 @@ func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 	g.field.prepareRender(g.zoom, g.camX-hw, g.camY-hh, vp.Dx(), vp.Dy())
 	g.field.DrawBounds = image.Rect(int(g.camX-hw)-64, int(g.camY-hh)-96, int(g.camX+hw)+64, int(g.camY+hh)+96)
 	g.field.setDeployment(o.Phase == "deployment", o.Map.Allies)
-	g.field.SetLooks(LooksOf(g.S.Data, o))
+	if g.player.looks != nil {
+		g.field.SetLooks(g.player.looks)
+	} else {
+		g.field.SetLooks(LooksOf(g.S.Data, o))
+	}
+	g.field.setNight(o.Map.Night, lightCells(o.Map.Lights))
 	g.field.Draw(g.clockMS, units, g.marks(o))
 	g.drawDeploymentPreview(o)
 	if g.field.Map.Native && g.shakeT > 0 {

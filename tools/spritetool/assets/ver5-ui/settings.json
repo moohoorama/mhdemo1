@@ -6,6 +6,28 @@
     "sort_mark",
     "scroll_mark",
     "icon",
+    "trait_strategy",
+    "trait_tactic",
+    "trait_talent",
+    "item_bow",
+    "item_dao",
+    "item_diamond",
+    "item_fan",
+    "item_firebook",
+    "item_halberd",
+    "item_horse",
+    "item_leather",
+    "item_map",
+    "item_medicine",
+    "item_primer",
+    "item_qinggang",
+    "item_ration",
+    "item_redhare",
+    "item_robe",
+    "item_seal",
+    "item_spear",
+    "item_sword",
+    "item_yitian",
     "bar_frame",
     "bar_fill",
     "bar_trail",
@@ -250,6 +272,687 @@
           "alpha": 0.5,
           "palette": {
             "g": "#190c04"
+          }
+        }
+      }
+    },
+    "item_bow": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_bow.png",
+      "solid": 0.2,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "D": "#4a2c18",
+            "w": "#7a4a26",
+            "W": "#a8703c",
+            "V": "#cf9b5e",
+            "g": "#2e1f1a",
+            "G": "#5a3a2e",
+            "s": "#e6dcc2",
+            "a": "#8a6a44",
+            "A": "#c09a68",
+            "i": "#5a5f66",
+            "I": "#a9b0b6",
+            "f": "#e8e2d4",
+            "F": "#a8342c"
+          }
+        }
+      }
+    },
+    "item_dao": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_dao.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "d": "#4f555b",
+            "b": "#868d93",
+            "l": "#bcc2c6",
+            "h": "#eef1f2",
+            "Y": "#6b4a14",
+            "y": "#a87a22",
+            "o": "#d6aa45",
+            "O": "#f2d78a",
+            "g": "#3a2016",
+            "G": "#6a3826"
+          }
+        }
+      }
+    },
+    "item_diamond": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_diamond.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#e2e8ea",
+            "a": "#aeb7bc",
+            "b": "#848e95",
+            "c": "#5a636a",
+            "d": "#383e44",
+            "Y": "#fff2b0",
+            "G": "#e2b94c",
+            "g": "#b0852a",
+            "o": "#6e4f18",
+            "r": "#b0352c",
+            "R": "#6a1a16"
+          }
+        }
+      }
+    },
+    "item_fan": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_fan.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "p": "#efe3c4",
+            "P": "#cdbd98",
+            "Q": "#a99a78",
+            "b": "#7a5a2c",
+            "B": "#b08c50",
+            "c": "#dcc184",
+            "j": "#5f8a74",
+            "J": "#9cc4ac",
+            "y": "#d6aa45",
+            "O": "#f2d78a"
+          }
+        }
+      }
+    },
+    "item_firebook": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_firebook.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "A": "#b4483a",
+            "B": "#8a2c24",
+            "C": "#621c18",
+            "Z": "#46140f",
+            "p": "#e6dcc0",
+            "q": "#b8aa88",
+            "t": "#d8a890",
+            "f": "#cc4a26",
+            "o": "#ee8c2e",
+            "y": "#f8d458",
+            "w": "#fff4b8"
+          }
+        }
+      }
+    },
+    "item_halberd": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_halberd.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "d": "#4f555b",
+            "b": "#868d93",
+            "l": "#bcc2c6",
+            "h": "#eef1f2",
+            "X": "#5a1612",
+            "Z": "#8e2c22",
+            "y": "#a87a22",
+            "o": "#d6aa45",
+            "O": "#f2d78a",
+            "R": "#74201a",
+            "r": "#b83c2e",
+            "q": "#e07a5e"
+          }
+        }
+      }
+    },
+    "item_horse": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_horse.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#bf7c42",
+            "a": "#9a5c2c",
+            "b": "#7a4320",
+            "c": "#5a3016",
+            "d": "#3a1d0c",
+            "z": "#4a3428",
+            "m": "#221a16",
+            "n": "#3e322c",
+            "e": "#0c0806",
+            "w": "#d8c8b0",
+            "s": "#2c1a10",
+            "i": "#c8c6bc"
+          }
+        }
+      }
+    },
+    "item_leather": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_leather.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#c99a5e",
+            "a": "#a8743f",
+            "b": "#85552e",
+            "c": "#643c20",
+            "d": "#3e2414",
+            "n": "#5a3a26",
+            "s": "#2c1c12",
+            "g": "#9c7a3a",
+            "G": "#d4b46e"
+          }
+        }
+      }
+    },
+    "item_map": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_map.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "p": "#eadbb0",
+            "q": "#d0b986",
+            "o": "#a08658",
+            "u": "#c58c52",
+            "w": "#8e5c36",
+            "v": "#5a381e",
+            "b": "#4878a8",
+            "l": "#8cb6d4",
+            "g": "#5d8848",
+            "h": "#8a6a42",
+            "r": "#b4362a"
+          }
+        }
+      }
+    },
+    "item_medicine": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_medicine.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "a": "#9cae7a",
+            "b": "#748a5a",
+            "c": "#4f6340",
+            "e": "#e6c274",
+            "f": "#c4923e",
+            "h": "#8a5e26",
+            "i": "#a6cc62",
+            "j": "#5f8f34",
+            "r": "#a8382a"
+          }
+        }
+      }
+    },
+    "item_primer": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_primer.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "A": "#5a78a8",
+            "B": "#38507e",
+            "C": "#26385e",
+            "Z": "#1c2844",
+            "p": "#e6dcc0",
+            "q": "#b8aa88",
+            "t": "#c9bc98"
+          }
+        }
+      }
+    },
+    "item_qinggang": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_qinggang.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "d": "#2e4a63",
+            "b": "#557c99",
+            "l": "#8db4cc",
+            "h": "#d8eef7",
+            "y": "#a87a22",
+            "o": "#d6aa45",
+            "O": "#f2d78a",
+            "g": "#22305a",
+            "G": "#3e5a92",
+            "t": "#2a4f86",
+            "T": "#4f7fb8",
+            "U": "#8fb5de"
+          }
+        }
+      }
+    },
+    "item_ration": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_ration.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "a": "#dcc292",
+            "b": "#b9986a",
+            "c": "#8f7048",
+            "d": "#62492e",
+            "r": "#8a5c2c",
+            "s": "#4e321a",
+            "y": "#eedc94",
+            "z": "#c6a650",
+            "w": "#8a6c30"
+          }
+        }
+      }
+    },
+    "item_redhare": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_redhare.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#da5c34",
+            "a": "#b93c1c",
+            "b": "#8e2a12",
+            "c": "#6c1f0c",
+            "d": "#401208",
+            "z": "#5a2418",
+            "m": "#2a0e0a",
+            "n": "#6a1c12",
+            "e": "#0c0604",
+            "w": "#f0dcc0",
+            "s": "#2a1208",
+            "G": "#e8c050",
+            "g": "#a87c26"
+          }
+        }
+      }
+    },
+    "item_robe": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_robe.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#aab4b6",
+            "a": "#8a979c",
+            "b": "#6b7880",
+            "c": "#515c64",
+            "d": "#3a424a",
+            "w": "#d3c8ac",
+            "v": "#b0a387",
+            "u": "#857a63",
+            "Q": "#b08e62",
+            "q": "#977552",
+            "s": "#765838",
+            "r": "#56402a"
+          }
+        }
+      }
+    },
+    "item_seal": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_seal.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "a": "#c8ecc0",
+            "b": "#86c894",
+            "c": "#4f9c6c",
+            "d": "#2f6c4c",
+            "e": "#1b4432",
+            "g": "#f4d676",
+            "h": "#b4862e",
+            "r": "#c43a2c",
+            "s": "#7a1c16"
+          }
+        }
+      }
+    },
+    "item_spear": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_spear.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "w": "#6b4426",
+            "W": "#9a6a3c",
+            "d": "#4b5157",
+            "b": "#7f868c",
+            "l": "#b3b9bd",
+            "h": "#e4e8e9",
+            "R": "#6e1c18",
+            "r": "#a4302a",
+            "q": "#d0604a"
+          }
+        }
+      }
+    },
+    "item_sword": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_sword.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "d": "#4b5157",
+            "b": "#7f868c",
+            "l": "#b3b9bd",
+            "h": "#e4e8e9",
+            "g": "#3a2416",
+            "G": "#634130",
+            "m": "#3e3a36",
+            "n": "#6e6861",
+            "N": "#9a928a"
+          }
+        }
+      }
+    },
+    "item_yitian": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_yitian.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "d": "#5b6168",
+            "b": "#9aa1a7",
+            "l": "#cfd4d7",
+            "h": "#f4f6f6",
+            "H": "#ffffff",
+            "y": "#a87a22",
+            "o": "#d6aa45",
+            "O": "#f2d78a",
+            "j": "#2f6b4a",
+            "J": "#5fa77a",
+            "g": "#4a1e16",
+            "R": "#74201a",
+            "r": "#b83c2e",
+            "q": "#e07a5e",
+            "G": "#7a3324"
+          }
+        }
+      }
+    },
+    "trait_strategy": {
+      "cell": [
+        104,
+        104
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "frames": 1,
+      "timing": "a trait kind's icon (책략 scroll, 전법 crossed weapons, 특기 medallion), 26x26 dot art at 4 art px per dot (22 UI px inside a 2-dot clear margin), in greys with a dark outline; the game tints it by the trait's tone",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#140e0a",
+            "w": "#ffffff",
+            "l": "#d4d4d4",
+            "m": "#a8a8a8",
+            "d": "#767676"
+          }
+        }
+      }
+    },
+    "trait_tactic": {
+      "cell": [
+        104,
+        104
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "frames": 1,
+      "timing": "a trait kind's icon (책략 scroll, 전법 crossed weapons, 특기 medallion), 26x26 dot art at 4 art px per dot (22 UI px inside a 2-dot clear margin), in greys with a dark outline; the game tints it by the trait's tone",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#140e0a",
+            "w": "#ffffff",
+            "l": "#d4d4d4",
+            "m": "#a8a8a8",
+            "d": "#767676"
+          }
+        }
+      }
+    },
+    "trait_talent": {
+      "cell": [
+        104,
+        104
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "frames": 1,
+      "timing": "a trait kind's icon (책략 scroll, 전법 crossed weapons, 특기 medallion), 26x26 dot art at 4 art px per dot (22 UI px inside a 2-dot clear margin), in greys with a dark outline; the game tints it by the trait's tone",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#140e0a",
+            "w": "#ffffff",
+            "l": "#d4d4d4",
+            "m": "#a8a8a8",
+            "d": "#767676"
           }
         }
       }

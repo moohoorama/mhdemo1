@@ -44,12 +44,13 @@ type Assets struct {
 	Maps          map[string]*MapArt
 	Portraits     map[string]*ebiten.Image // Look.Portrait -> ink-wash portrait
 	Props         map[string]Prop
-	Scenery       *Scenery              // ground decoration and pines; nil when graphics/map/scenery.json is absent
-	Projectiles   Shots                 // thrown stones, their shadows and their landing dust
-	FX            Shots                 // effects and their particles
-	Outside       Shots                 // pines and stones outside the battle area
-	UI            Shots                 // UI pictures: window frame, marks, icons, unit bar
-	Flames        map[string]FrameStrip // flame tongues and smoke puffs by name
+	Scenery       *Scenery                 // ground decoration and pines; nil when graphics/map/scenery.json is absent
+	Projectiles   Shots                    // thrown stones, their shadows and their landing dust
+	FX            Shots                    // effects and their particles
+	Outside       Shots                    // pines and stones outside the battle area
+	UI            Shots                    // UI pictures: window frame, marks, icons, unit bar
+	Flames        map[string]FrameStrip    // flame tongues and smoke puffs by name
+	Backdrops     map[string]*ebiten.Image // far pictures behind outdoor scene maps (index.json "backdrops")
 }
 
 // FrameStrip is an animation whose frames are all the same size, drawn with one pivot.
@@ -190,7 +191,8 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			Image   string
 			Sprites map[string]propEntry
 		}
-		Effects map[string]struct {
+		Backdrops map[string]string
+		Effects   map[string]struct {
 			Image  string
 			Frame  [2]int
 			Frames int
@@ -303,6 +305,14 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			strip.Frames = append(strip.Frames, Sprite{sheet.SubImage(r).(*ebiten.Image), e.Pivot[0], e.Pivot[1]})
 		}
 		a.Flames[name] = strip
+	}
+	a.Backdrops = map[string]*ebiten.Image{}
+	for name, path := range index.Backdrops {
+		im, err := loadRGBA(filepath.Join(dir, path))
+		if err != nil {
+			return nil, err
+		}
+		a.Backdrops[name] = ebiten.NewImageFromImage(im)
 	}
 	for _, path := range index.Maps {
 		b, err := os.ReadFile(filepath.Join(dir, path))

@@ -137,6 +137,9 @@ func (g *Game) logCommand(c core.Command, events []core.Event) {
 		lines = append(lines, a+": 대기")
 	}
 	for _, e := range events {
+		if e.Kind == "speech" || e.Kind == "unit-arrival" {
+			continue // written when the replay reaches them (perform), not before they are seen
+		}
 		line, _ := g.eventText(e)
 		switch e.Kind {
 		case "effect":

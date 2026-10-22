@@ -1,0 +1,154 @@
+{
+ "Scenes": {
+  "c06-start": {
+   "Map": "S_council",
+   "Time": "night",
+   "Nodes": ["c06-start", "c06-01", "c06-02", "c06-03", "c06-04", "c06-05", "c06-06", "c06-07", "c06-08", "c06-09", "c06-10"],
+   "Ambient": [{"Effect": "smallfire", "At": [1.4, 0.5]}, {"Effect": "smallfire", "At": [1.4, 6.6]}, {"Effect": "smallfire", "At": [9.6, 0.5]}, {"Effect": "smallfire", "At": [9.6, 6.6]}, {"Actor": "악공#1", "Chatter": "♪|♪♪"}],
+   "Cast": {
+    "원소": {"At": [0.75, 3.5], "Face": "SE", "Hold": true, "Pose": "sit"},
+    "안량": {"At": [1.2, 2.4], "Face": "SE"},
+    "문추": {"At": [1.2, 4.6], "Face": "SE"},
+    "호위#1": {"At": [11.3, 1.9], "Face": "NW", "Sprite": "guards", "Faction": "yuan"},
+    "호위#2": {"At": [11.3, 5.1], "Face": "NW", "Sprite": "guards", "Faction": "yuan"},
+    "교모": {"At": [2.6, 1.5], "Face": "SW", "Pose": "sit", "Sprite": "official_noncombat", "Faction": "yuan"},
+    "한복": {"At": [4.4, 1.5], "Face": "SW", "Pose": "sit", "Sprite": "official_noncombat", "Faction": "yuan"},
+    "원술": {"At": [2.6, 5.5], "Face": "NE", "Pose": "sit"},
+    "공주": {"At": [4.4, 5.5], "Face": "NE", "Pose": "sit", "Sprite": "official_noncombat", "Faction": "yuan"},
+    "악공#1": {"At": [9.4, 1.4], "Face": "NW", "Sprite": "commoner_man", "Faction": "yuan"},
+    "환관#1": {"At": [6.2, 0.5], "Face": "SW", "Sprite": "eunuch_noncombat", "Faction": "yuan"},
+    "조조": {"At": [11.8, 3.5], "Face": "NW", "Off": true}
+   },
+   "Beats": {
+    "c06-01": [
+     [
+      [{"Actor": "교모", "Play": "action", "After": 0.2}, {"Actor": "원술", "Play": "action", "After": 0.5}, {"Actor": "한복", "Play": "action", "After": 0.8}],
+      [{"Actor": "조조", "Enter": [11.8, 3.5], "Move": [7.2, 3.5], "Speed": 0.8}, {"Actor": "공주", "Look": "SE", "After": 0.6}],
+      [{"Actor": "조조", "Face": "NW"}]
+     ]
+    ],
+    "c06-02": [
+     [
+      [{"Actor": "원소", "Play": "action"}]
+     ]
+    ],
+    "c06-03": [
+     [
+      [{"Actor": "조조", "Move": [5.6, 3.5]}]
+     ]
+    ],
+    "c06-04": [
+     [
+      [{"Actor": "조조", "Face": "NW", "Play": "action"}],
+      [{"Prop": ["map_table", 4.4, 3.5]}]
+     ]
+    ],
+    "c06-05": [
+     [
+      [{"Actor": "조조", "Look": "NE"}]
+     ]
+    ],
+    "c06-06": [
+     [
+      [{"Actor": "조조", "Face": "SW"}]
+     ]
+    ],
+    "c06-07": [
+     [
+      [{"Actor": "악공#1", "Chatter": "-"}, {"Actor": "교모", "Look": "SW"}, {"Actor": "원술", "Look": "NE", "After": 0.3}, {"Actor": "한복", "Look": "SW", "After": 0.6}, {"Actor": "공주", "Look": "NE", "After": 0.9}],
+      [{"Wait": 0.5}]
+     ]
+    ],
+    "c06-08": [
+     [
+      [{"Actor": "원술", "Play": "action"}]
+     ]
+    ],
+    "c06-10": [
+     [
+      [{"Actor": "악공#1", "Chatter": "♪|♪♪"}, {"Actor": "교모", "Play": "action", "After": 0.4}],
+      [{"Actor": "조조", "Face": "NW"}, {"Wait": 1.2}],
+      [{"Actor": "조조", "Move": [11.8, 3.5], "Exit": true, "Speed": 0.7}]
+     ]
+    ]
+   }
+  },
+  "c06-11": {
+   "Map": "S_hill",
+   "Time": "dusk",
+   "Backdrop": "burning_city",
+   "Nodes": ["c06-11", "c06-12", "c06-13", "c06-14", "c06-15", "c06-16", "c06-17", "c06-18", "c06-19", "c06-20", "c06-21", "c06-22", "c06-23", "c06-24", "c06-25", "c06-26", "c06-27", "c06-28", "c06-29"],
+   "Ambient": [{"Effect": "smoke", "At": [-4.0, -6.0]}, {"Effect": "smoke", "At": [-2.5, -6.6]}, {"Effect": "smoke", "At": [-5.4, -4.6]}, {"Effect": "smoke", "At": [-1.2, -7.4]}, {"Effect": "smallfire", "At": [4.6, 2.2]}, {"Effect": "smallfire", "At": [6.4, 2.6]}, {"Effect": "smallfire", "At": [5.6, 3.9]}, {"Effect": "smallfire", "At": [7.4, 4.8]}],
+   "Cast": {
+    "조조": {"At": [2.5, -1.0], "Face": "NW"},
+    "유비": {"At": [8.0, -1.0], "Face": "NW", "Off": true},
+    "관우": {"At": [1.8, 4.0], "Face": "NE"},
+    "장비": {"At": [2.9, 4.4], "Face": "NE"}
+   },
+   "Beats": {
+    "c06-12": [
+     [
+      [{"CamAt": [0.5, -2.2]}],
+      [{"Wait": 0.6}],
+      [{"CamAt": [3.0, -0.8]}],
+      [{"Actor": "유비", "Enter": [8.0, -1.0], "Move": [3.6, -0.9], "Speed": 0.8}],
+      [{"Actor": "유비", "Face": "NW"}]
+     ]
+    ],
+    "c06-14": [
+     [
+      [{"Actor": "조조", "Look": "SW"}]
+     ]
+    ],
+    "c06-17": [
+     [
+      [{"Actor": "조조", "Face": "NW"}, {"Actor": "조조", "Emote": "…"}]
+     ]
+    ],
+    "c06-20": [
+     [
+      [{"Actor": "조조", "Face": "NW"}],
+      [{"CamAt": [0.0, -3.4]}],
+      [{"Wait": 0.8}],
+      [{"CamAt": [3.0, -0.8]}]
+     ]
+    ],
+    "c06-21": [
+     [
+      [{"Actor": "조조", "Face": "NW"}]
+     ]
+    ],
+    "c06-22": [
+     [
+      [{"Actor": "유비", "Emote": "…"}]
+     ]
+    ],
+    "c06-24": [
+     [
+      [{"Actor": "조조", "Move": [-0.6, 1.0], "Speed": 0.7}],
+      [{"Actor": "조조", "Face": "SE"}]
+     ]
+    ],
+    "c06-26": [
+     [
+      [{"CamAt": [0.8, 3.0]}],
+      [{"Actor": "조조", "Move": [-0.6, 9.5], "Exit": true, "Speed": 0.7}, {"Actor": "관우", "Face": "NW", "After": 0.8}, {"Actor": "장비", "Face": "NW", "After": 1.0}],
+      [{"Actor": "장비", "Look": "SW"}]
+     ]
+    ],
+    "c06-28": [
+     [
+      [{"Actor": "관우", "Face": "SW"}]
+     ]
+    ],
+    "c06-29": [
+     [
+      [{"Actor": "유비", "Move": [3.6, -0.4]}],
+      [{"Actor": "유비", "Face": "SW"}],
+      [{"CamAt": [2.6, 1.6]}]
+     ]
+    ]
+   }
+  }
+ }
+}

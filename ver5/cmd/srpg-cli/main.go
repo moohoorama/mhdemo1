@@ -15,6 +15,7 @@ func main() {
 	data := flag.String("data", "", "save directory")
 	seed := flag.Uint64("seed", 1, "new campaign seed")
 	jsonMode := flag.Bool("json", false, "JSON Lines protocol")
+	slot := flag.String("slot", "", "manual save slot (1~10): loaded at start when it exists, saved when the input ends; lets a script play a few moves per run")
 	flag.Parse()
 	d, err := content.Load(*path)
 	if err != nil {
@@ -34,7 +35,17 @@ func main() {
 	if *jsonMode {
 		err = cli.RunJSON(s, os.Stdin, os.Stdout)
 	} else {
-		err = cli.RunHuman(s, os.Stdin, os.Stdout, *seed)
+		if *slot != "" && s.Store.Exists(*slot) {
+			if r := s.Handle(session.Request{Op: "load", Slot: *slot}); !r.OK {
+				fatal(fmt.Errorf("load %s: %s", *slot, r.Error))
+			}
+		}
+		err = cli.RunHuman(s, *path, os.Stdin, os.Stdout, *seed)
+		if *slot != "" && s.Engine != nil {
+			if r := s.Handle(session.Request{Op: "save", Slot: *slot, Overwrite: true}); !r.OK {
+				fatal(fmt.Errorf("save %s: %s", *slot, r.Error))
+			}
+		}
 	}
 	if err != nil {
 		fatal(err)

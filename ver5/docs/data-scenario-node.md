@@ -93,6 +93,10 @@ assets/scenario/
 | `Areas` | 번호 붙은 구역 목록(6절). |
 | `Events` | 전투 이벤트 목록(7절). |
 | `Faction` | 자기 `Faction`이 없는 적 스폰의 진영색. `Factions`에 있어야 한다. |
+| `Forced` | 참이면 강제 출전이다. 출전하면 배치 화면 없이 출전 명단을 `Allies` 칸에 놓고 곧바로 전투가 시작된다([logic-campaign.md](logic-campaign.md) 4절). |
+| `Night` | 참이면 밤 전투로 그린다(그림만, 규칙에는 영향 없음, [presentation-ui.md](presentation-ui.md)의 밤). |
+| `Lights` | 밤에 둘레를 밝히는 칸 `{X, Y}`(횃불) 목록(선택). 영역 안이어야 한다. |
+| `Armies` | 진영 목록(선택): `{Faction, Name, Ally}`. `Faction`은 진영색 ID, `Name`은 화면에 보이는 이름(유비군·조조군·황건군), `Ally`는 플레이어 편인지. 목록 순서가 AI 진영의 차례 순서다. 플레이어 편 진영의 색을 입은 적 유닛이 있으면 로드 오류. |
 
 검증은 다음과 같다.
 
@@ -115,7 +119,9 @@ assets/scenario/
 |---|---|
 | `Character` | 인물 정의 ID(필수). 템플릿이면 임시 인물이 번호를 붙여 만들어진다. |
 | `X`, `Y` | 칸 좌표(필수). |
-| `Level` | 0이면 인물의 레벨, 아니면 덮어쓴다. 0 이상 `Rules.MaxLevel` 이하. |
+| `Rank` | 직급 `troop`(병졸) `officer`(장수) `commander`(대장) `boss`(거물). 생략하면 템플릿은 `troop`, 이름 있는 인물은 `officer`. 레벨은 스테이지 순번에서 계산한다([stage_lv_balance.md](stage_lv_balance.md) 1절). |
+| `Shift` | 직급 몫에 더하는 비율(선택). 대군이라 한 레벨 낮게 둘 때 −0.07, 두 레벨이면 −0.12. |
+| `Level` | `Rules.StageLevelBase`가 0인 규칙(시험용 묶음)에서만: 0이면 인물의 레벨, 아니면 덮어쓴다. 스테이지 레벨을 쓰는 규칙에서는 검증 실패. |
 | `Class` | 병종 덮어쓰기. 인물 병종과 같은 계열(`Class.Family`, 없으면 `Terrain`)이어야 한다. |
 | `Facing` | 처음 방향. `NE`, `SE`, `SW`, `NW` 중 하나. |
 | `HP`, `MP` | 처음 값. 생략하면 병력은 최대, 병법은 0. 최대치로 잘리고 `HP`는 1 이상, `MP`는 0 이상이어야 한다. |
@@ -123,17 +129,18 @@ assets/scenario/
 | `Equipment` | 장비 목록 덮어쓰기. 생략·빈 배열의 뜻은 `Traits`와 같다. |
 | `Faction` | 진영색 덮어쓰기. `Factions`에 있어야 한다. 우선순위는 스폰 > 스테이지 `Faction`(적만) > 인물의 `Look.Faction`. |
 | `AI` | 아군 스폰을 `support` 차례에 자동 행동하는 AI 유닛으로 만든다. |
-| `Policy` | 행동 정책 `hold` `assault` `march` `flee`(선택). 뜻은 logic-battle-event.md 5.4절. |
+| `Policy` | 행동 정책 `hold` `react` `assault` `march` `flee`(선택). 뜻은 logic-battle-event.md 5.4절. |
 | `Goal` | `march`·`flee`의 목표 칸 `{X, Y}`(맵 문서 좌표, 로드할 때 원점을 뺀다). 다른 정책에는 쓰지 않는다. |
 | `Group` | 같은 이름을 가진 스폰을 이벤트 조건·`remove`가 한꺼번에 가리킨다(이름 있는 인물은 인물 ID로도 가리킬 수 있다). |
 | `Side` | 이벤트가 만드는 스폰만: `ally`(기본, AI 아군) 또는 `enemy`. |
-| `DuelFirst` | AI가 아직 안 치른 일기토 상대를 먼저 찾는다. 이동 범위 안에 상대와 맞닿을 칸이 있으면 그 칸으로 먼저 가고, 상대를 맞닿기 전에는 멀리서 쏘거나 치지 않는다. |
+| `DuelFirst` | 이번 차례에 아직 안 치른 일기토 상대와 맞닿을 칸에 닿으면 AI가 그 칸으로 먼저 간다. 닿지 않으면 평소대로 움직이고, 상대를 멀리서 치지는 않는다. |
 
 `Traits`·`Equipment` 검증은 다음과 같다. 특성은 모두 정의에 있어야 한다. 장비는 모두 정의에 있고, 같은 칸(`Slot`)에 둘 이상 없으며, 무기·방어구는 결과 병종의 `Weapon`·`Armor` 형식과 맞아야 한다. 덮어쓴 특성이 `Requires`로 요구하는 선행 특성은 (덮어쓴 특성 + 장비가 주는 특성) 안에 있어야 한다. 병력·병법 최대치는 엔진이 계산하며 저장하지 않는다.
 
 ```json
-{"Character": "mushun", "X": 24, "Y": 7, "Level": 1, "AI": true, "Faction": "yuan", "Facing": "NE"}
-{"Character": "troop_footman", "X": 23, "Y": 7, "Level": 1, "Class": "light_infantry", "AI": true, "Faction": "yuan", "Facing": "NE"}
+{"Character": "mushun", "X": 24, "Y": 7, "AI": true, "Faction": "yuan", "Facing": "NE"}
+{"Character": "troop_footman", "X": 23, "Y": 7, "Shift": -0.07, "Class": "light_infantry", "Faction": "yuan", "Facing": "NE"}
+{"Character": "lubu", "X": 12, "Y": 3, "Rank": "boss", "Policy": "hold"}
 ```
 
 ## 5. 일기토 기록(`Stage.Duels`)
@@ -146,7 +153,7 @@ assets/scenario/
 | `Outcome` | 아군 기준 결과 표시. `victory`, `defeat`, `draw` 중 하나. |
 | `AllyResult`, `EnemyResult` | 각 쪽의 결과. `stay`, `retreat`, `death` 중 하나. |
 | `Text` | 일기토 로그에 남는 글. |
-| `Supports` | 연출에서 도중에 합류하는 두 장수의 인물 ID(선택). 둘이어야 한다. |
+| `Supports` | 연출에서 도중에 합류하는 두 장수의 인물 ID(선택). 둘이어야 한다. 이들이 `Enemy`와 맞닿아도 일기토가 벌어진다. `Ally`가 퇴각했으면 살아 있는 첫 지원군이 대신 치른다. |
 | `Beats` | 연출 장면 목록(선택). 없으면 기본 타임라인이 `Outcome`대로 보인다. |
 | `Variants` | `[{First, Beats}]`(선택). `First`(먼저 이동해 맞닿은 장수)에 따라 `Beats` 대신 쓰는 연출. `First`는 유일하고 비어 있지 않다. |
 

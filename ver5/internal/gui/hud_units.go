@@ -88,7 +88,7 @@ func countCell(key, label string, get func(*core.UnitView) int) unitCell {
 
 // unitOrderable reports whether the player may still give the unit an order this turn.
 func unitOrderable(o core.Observation, u *core.UnitView) bool {
-	return u.Faction == "ally" && !u.AI && u.HP > 0 && !u.Done && u.ActsIn(o.Turn)
+	return u.Faction == "ally" && !u.AI && u.HP > 0 && !u.Done && u.ActsIn(o.Turn, o.Army)
 }
 
 var (

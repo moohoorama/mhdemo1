@@ -12,6 +12,7 @@ import (
 type turnBanner struct {
 	round   int
 	faction string
+	army    string // the AI army whose turn it is (a faction color); empty for the player's
 	t       float64
 }
 
@@ -31,8 +32,8 @@ const (
 	turnLength    = turnHoldUntil + turnFade
 )
 
-func (g *Game) showTurn(round int, faction string) {
-	g.turnBanner = &turnBanner{round: round, faction: faction}
+func (g *Game) showTurn(round int, faction, army string) {
+	g.turnBanner = &turnBanner{round: round, faction: faction, army: army}
 }
 
 // advanceTurnBanner runs on real time; fast replay plays it twice as fast.
@@ -50,11 +51,41 @@ func (g *Game) advanceTurnBanner(dt float64) {
 }
 
 // turnSide is the side to move as the banner names it.
-func (g *Game) turnSide(faction string) string {
+func (g *Game) turnSide(faction, army string) string {
+	return g.armyName(faction, army) + "의 차례"
+}
+
+// armyName is what an army is called: the player's after its lord, an AI army by the stage's Armies
+// (유비군, 조조군, 황건군), else by its faction color (위군), else by its side (동맹군, 적군).
+func (g *Game) armyName(faction, army string) string {
 	if faction == "ally" {
-		return g.lordName() + "군의 차례"
+		return g.lordName() + "군"
 	}
-	return factionName(faction) + "의 차례"
+	if g.S != nil && g.S.Engine != nil {
+		if st := g.S.Engine.Observe().Map; st != nil {
+			for _, a := range st.Armies {
+				if a.Faction == army {
+					return a.Name
+				}
+			}
+		}
+		if f, ok := g.S.Data.Factions[army]; ok && f.Name != "" {
+			return f.Name + "군"
+		}
+	}
+	return factionName(faction)
+}
+
+// armyColor is the color the turn is written in: the AI army's own faction color when it has one.
+func (g *Game) armyColor(faction, army string) color.NRGBA {
+	if g.S != nil {
+		if f, ok := g.S.Data.Factions[army]; ok && len(f.Colors) > 0 && faction != "ally" {
+			if c := colorsOf(f.Colors[:1]); len(c) == 1 {
+				return color.NRGBA{R: c[0].R, G: c[0].G, B: c[0].B, A: 255}
+			}
+		}
+	}
+	return turnColor(faction)
 }
 
 func turnColor(faction string) color.NRGBA {
@@ -92,8 +123,8 @@ func (g *Game) drawTurnBanner(dst *ebiten.Image) {
 	img := g.textImage(title, face, color.NRGBA{R: 246, G: 238, B: 219, A: 255}, 6)
 	drawReveal(dst, img, float64(uiW)/2-measure(title, face)/2, at(282), k, fade)
 
-	side := g.turnSide(b.faction)
-	c := turnColor(b.faction)
+	side := g.turnSide(b.faction, b.army)
+	c := g.armyColor(b.faction, b.army)
 	s := phase(b.t, turnSubAt, turnSub)
 	sf := g.serif(46*z, 900)
 	sw := spacedWidth(side, sf, .35)

@@ -306,13 +306,14 @@
   "aim_s": {
    "Name": "Aim",
    "Desc": "",
-   "Kind": "buff",
-   "Mode": "self",
+   "Kind": "physical",
+   "Mode": "ranged",
    "Shape": "single",
    "Cost": 10,
-   "Hit": 100,
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
    "Effect": "aim",
-   "Duration": 2,
    "Requires": [
     "aim_t"
    ]
@@ -320,14 +321,14 @@
   "snipe_s": {
    "Name": "Snipe",
    "Desc": "",
-   "Kind": "buff",
-   "Mode": "self",
+   "Kind": "physical",
+   "Mode": "ranged",
    "Shape": "single",
    "Cost": 10,
-   "Hit": 100,
-   "Effect": "snipe",
-   "Coeff": 2,
-   "Duration": 2,
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
+   "Reach": 2,
    "Requires": [
     "snipe_t"
    ]
@@ -335,13 +336,14 @@
   "provoke_s": {
    "Name": "Provoke",
    "Desc": "",
-   "Kind": "buff",
-   "Mode": "self",
+   "Kind": "physical",
+   "Mode": "any",
    "Shape": "single",
    "Cost": 10,
-   "Hit": 100,
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
    "Effect": "provoke",
-   "Duration": 2,
    "Requires": [
     "provoke_t"
    ]

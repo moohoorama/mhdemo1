@@ -6,6 +6,7 @@ import (
 	"image/color"
 	"math"
 	"sort"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/colorm"
@@ -43,6 +44,7 @@ type Field struct {
 	ShowExterior                 bool
 	exterior                     *ebiten.Image
 	outside                      outsideLayers
+	night                        nightLayers
 	looks                        map[image.Point]string // the look of the state on a cell, by cell
 	decor                        *ebiten.Image          // baked ground decoration, see makeScenery
 	treeShadow                   *ebiten.Image          // tree shadows while the field is built, then folded into decor
@@ -103,7 +105,7 @@ func NewField(a *Assets, m *MapArt) *Field {
 				}
 			}
 		}
-		f.eachProp(true, func(s Sprite, x, y float64) { f.blit(g, s, x, y, nil) })
+		f.eachProp(true, func(_ string, s Sprite, x, y float64) { f.blit(g, s, x, y, nil) })
 		f.ground[i] = g
 	}
 	f.clip.DrawImage(f.ground[0], nil)
@@ -124,7 +126,7 @@ func NewField(a *Assets, m *MapArt) *Field {
 
 // eachProp calls fn with every placed prop of one layer at its canvas position; fills repeat
 // the prop on every cell of their range.
-func (f *Field) eachProp(ground bool, fn func(s Sprite, x, y float64)) {
+func (f *Field) eachProp(ground bool, fn func(name string, s Sprite, x, y float64)) {
 	for _, p := range f.Map.Props {
 		pr, ok := f.A.Props[p.Name]
 		if !ok || pr.Ground != ground {
@@ -132,13 +134,13 @@ func (f *Field) eachProp(ground bool, fn func(s Sprite, x, y float64)) {
 		}
 		if !p.Fill {
 			x, y := f.Center(p.U, p.V)
-			fn(pr.Sprite, x, y)
+			fn(p.Name, pr.Sprite, x, y)
 			continue
 		}
 		for v := p.V; v <= p.V1; v++ {
 			for u := p.U; u <= p.U1; u++ {
 				x, y := f.Center(u, v)
-				fn(pr.Sprite, x, y)
+				fn(p.Name, pr.Sprite, x, y)
 			}
 		}
 	}
@@ -256,6 +258,31 @@ func (f *Field) mapRect(s Sprite, x, y float64) image.Rectangle {
 	return image.Rect(rx, ry, rx+int(float64(b.Dx())*k), ry+int(float64(b.Dy())*k))
 }
 
+// propShadows are the soft ground shadows under a story scene's standing props, by width bucket.
+var propShadows = map[int]Sprite{}
+
+// propShadow is an oval shadow for a prop w pixels wide: a little wider than the prop, half as deep, darkest in
+// the middle like the units' shadows, cast down to the right of the prop's foot (light from the upper left).
+func propShadow(w int) Sprite {
+	sw := max(12, min(72, w+6)) / 4 * 4
+	if s, ok := propShadows[sw]; ok {
+		return s
+	}
+	sh := sw / 2
+	img := image.NewNRGBA(image.Rect(0, 0, sw, sh))
+	for y := range sh {
+		for x := range sw {
+			dx, dy := (float64(x)+.5)/float64(sw)*2-1, (float64(y)+.5)/float64(sh)*2-1
+			if d := dx*dx + dy*dy; d < 1 {
+				img.SetNRGBA(x, y, color.NRGBA{R: 18, G: 26, B: 14, A: uint8(170 * (1 - d*d))})
+			}
+		}
+	}
+	s := Sprite{ebiten.NewImageFromImage(img), float64(sw)/2 - 3, float64(sh)/2 - 2}
+	propShadows[sw] = s
+	return s
+}
+
 // fieldGround is the colour around a map, beyond its margin.
 var fieldGround = color.RGBA{30, 38, 46, 255}
 
@@ -264,7 +291,11 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	c := f.Canvas
 	f.sceneryLayer = false
 	f.clockMS = clockMS
-	c.Fill(fieldGround)
+	if f.Map.Scene {
+		c.Clear() // a story scene: what lies past the picture is the scene's backdrop (or the ground colour)
+	} else {
+		c.Fill(fieldGround)
+	}
 	water := f.A.Animations["water"]
 	if f.Map.Native && f.renderZoom > 0 {
 		f.renderBackground(c)
@@ -370,10 +401,13 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			}
 		}
 	}
-	f.eachProp(false, func(s Sprite, x, y float64) {
+	f.eachProp(false, func(name string, s Sprite, x, y float64) {
 		b := s.Image.Bounds()
 		rx, ry := int(math.Round(x-s.PivotX)), int(math.Round(y-s.PivotY))
 		items = append(items, drawItem{y: y, draw: func() { f.blit(c, s, x, y, nil) }, rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy())})
+		if f.Map.Scene && !strings.HasPrefix(name, "wall_") && !strings.HasPrefix(name, "curtain_") && !strings.HasPrefix(name, "screen_") {
+			f.blit(f.shadows, propShadow(b.Dx()), x, y, &ebiten.DrawImageOptions{Blend: maxBlend})
+		}
 	})
 	for _, u := range units {
 		if u.gone {
@@ -384,7 +418,9 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		lift := u.lift
 		if u.visible() {
 			sh := Sprite{u.art.Shadow(u.dir, u.anim, u.frame()), u.art.ShadowPivot[0], u.art.ShadowPivot[1]}
-			f.blit(f.shadows, sh, x, y-lift, &ebiten.DrawImageOptions{Blend: maxBlend})
+			sop := &ebiten.DrawImageOptions{Blend: maxBlend}
+			sop.ColorScale.ScaleAlpha(float32(1 - u.leaving()))
+			f.blit(f.shadows, sh, x, y-lift, sop)
 		}
 		unit := u
 		b := u.art.Frame(u.dir, u.anim, u.frame()).Bounds()
@@ -424,8 +460,12 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	if !f.ShowExterior {
 		f.drawCloudShadows(clockMS)
 	}
+	f.drawNight(clockMS, units)
 	for _, u := range units {
 		x, y := f.Center(u.u, u.v)
+		if f.night.on && !u.gone && u.visible() {
+			f.unitBar(u, x+u.shakeOffset(), y-u.lift)
+		}
 		f.drawUnitStatuses(u, x+u.shakeOffset(), y-u.lift, clockMS)
 	}
 }
@@ -514,6 +554,11 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {
 		k := float32(1 + u.flash*1.6)
 		op.ColorScale.Scale(k, k, k, 1)
 	}
+	if k := u.leaving(); k > 0 {
+		b := float32(f.edgeShade(u.u, u.v))
+		op.ColorScale.Scale(b, b, b, 1)
+		op.ColorScale.ScaleAlpha(float32(1 - k*k))
+	}
 	s := Sprite{u.art.Frame(u.dir, u.anim, u.frame()), u.art.Pivot[0], u.art.Pivot[1]}
 	f.blit(f.Canvas, s, x, y, op)
 	if u.charge > 0 && !ghost { // gathering a critical blow: a white silhouette fades in over the sprite
@@ -528,6 +573,13 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {
 		}
 		colorm.DrawImage(f.Canvas, s.Image, cm, wop)
 	}
+	if !f.night.on { // at night the bars go over the dark, after everything else
+		f.unitBar(u, x, y)
+	}
+}
+
+// unitBar draws u's bar under its feet at canvas point (x, y).
+func (f *Field) unitBar(u *unitVis, x, y float64) {
 	if u.shownHP <= 0 || u.actor {
 		return
 	}

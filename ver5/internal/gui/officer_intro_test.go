@@ -3,13 +3,15 @@ package gui
 import (
 	"testing"
 
+	"srpg/internal/scenes"
+
 	"github.com/stretchr/testify/assert"
 )
 
 func TestSkipStopsAtIntroduction(t *testing.T) {
 	g := battleController(t)
 	g.scene = &scene{actors: map[string]*unitVis{}, paths: map[string][][2]float64{}, plays: map[string]string{}, emotes: map[string]*emote{},
-		groups: [][]sceneStep{{{Wait: 1}}, {{Intro: "관우"}}, {{Wait: 1}}}}
+		groups: [][]scenes.Step{{{Wait: 1}}, {{Intro: "관우"}}, {{Wait: 1}}}}
 	g.skipBeats()
 	assert.NotNil(t, g.intro, "a skip plays up to the introduction")
 	assert.Equal(t, 1, g.scene.gi)

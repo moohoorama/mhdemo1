@@ -1,6 +1,8 @@
 package core
 
 import (
+	"slices"
+
 	"srpg/internal/content"
 )
 
@@ -113,8 +115,8 @@ func (e *Engine) pendingDuel(u, v *Unit) (content.Duel, bool) {
 		return content.Duel{}, false
 	}
 	for _, d := range e.data.Stages[e.state.Stage].Duels {
-		pair := d.Ally == u.Character && d.Enemy == v.Character || d.Enemy == u.Character && d.Ally == v.Character
-		if pair && !e.state.Executed["duel-"+d.ID] {
+		pair := duelist(d, u.Character) && d.Enemy == v.Character || d.Enemy == u.Character && duelist(d, v.Character)
+		if pair && !e.state.Executed["duel-"+d.ID] && e.duelAlly(d) != nil {
 			return d, true
 		}
 	}
@@ -135,35 +137,61 @@ func (e *Engine) DuelAt(id string, x, y int) string {
 		return ""
 	}
 	for _, d := range e.data.Stages[e.state.Stage].Duels {
-		other := d.Ally
-		if d.Ally == u.Character {
-			other = d.Enemy
-		} else if d.Enemy != u.Character {
+		others := []string{d.Enemy}
+		if d.Enemy == u.Character {
+			others = append([]string{d.Ally}, d.Supports...)
+		} else if !duelist(d, u.Character) {
 			continue
 		}
-		if v := e.unit(other); v != nil && v.HP > 0 && v.Faction != u.Faction && dist(x, y, v.X, v.Y) <= 1 && !e.state.Executed["duel-"+d.ID] {
-			return d.ID
+		for _, other := range others {
+			if v := e.unit(other); v != nil && v.HP > 0 && v.Faction != u.Faction && dist(x, y, v.X, v.Y) <= 1 && !e.state.Executed["duel-"+d.ID] && e.duelAlly(d) != nil {
+				return d.ID
+			}
 		}
 	}
 	return ""
 }
 
-// autoDuels holds every pending stage duel whose two officers stand next to each other. It runs
-// at each settle(), so a duel starts as soon as they meet, whatever brought them together (a move,
-// a spawn, the start of the battle). One duel can change who stands where, so the stage's duels
+// duelist reports whether the character starts the duel on the ally side by meeting its enemy:
+// the duel's ally or one of the supports who join it.
+func duelist(d content.Duel, character string) bool {
+	return d.Ally == character || slices.Contains(d.Supports, character)
+}
+
+// duelAlly is the officer who fights the duel on the ally side, whoever on his side met the enemy:
+// the duel's ally, or when he has left the field the first of its supports still on it.
+func (e *Engine) duelAlly(d content.Duel) *Unit {
+	for _, id := range append([]string{d.Ally}, d.Supports...) {
+		if a := e.unit(id); a != nil && a.HP > 0 {
+			return a
+		}
+	}
+	return nil
+}
+
+// autoDuels holds every pending stage duel whose enemy stands next to its ally or one of its
+// supports. It runs at each settle(), so a duel starts as soon as they meet, whatever brought them
+// together (a move, a spawn, the start of the battle). One duel can change who stands where, so the stage's duels
 // are looked at again after each.
 func (e *Engine) autoDuels() {
 	duels := e.data.Stages[e.state.Stage].Duels
 	for again := true; again; {
 		again = false
 		for _, d := range duels {
-			a, b := e.unit(d.Ally), e.unit(d.Enemy)
-			if a == nil || b == nil || a.HP <= 0 || b.HP <= 0 || a.Faction == b.Faction || dist(a.X, a.Y, b.X, b.Y) > 1 || e.state.Executed["duel-"+d.ID] {
+			a, b := e.duelAlly(d), e.unit(d.Enemy)
+			if a == nil || b == nil || b.HP <= 0 || a.Faction == b.Faction || e.state.Executed["duel-"+d.ID] {
 				continue
 			}
-			e.duel(a, b, d)
-			again = true
-			break
+			for _, id := range append([]string{d.Ally}, d.Supports...) {
+				if m := e.unit(id); m != nil && m.HP > 0 && m.Faction == a.Faction && dist(m.X, m.Y, b.X, b.Y) <= 1 {
+					e.duel(a, b, d)
+					again = true
+					break
+				}
+			}
+			if again {
+				break
+			}
 		}
 	}
 }
@@ -174,7 +202,7 @@ func (e *Engine) autoDuels() {
 func (e *Engine) duel(ally, enemy *Unit, d content.Duel) {
 	first := ""
 	var mover *Unit
-	if m := e.unit(e.lastActor); m == ally || m == enemy {
+	if m := e.unit(e.lastActor); m == ally || m == enemy || m != nil && slices.Contains(d.Supports, m.Character) {
 		mover, first = m, m.ID
 	}
 	e.state.Executed["duel-"+d.ID] = true

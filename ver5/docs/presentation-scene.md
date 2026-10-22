@@ -1,9 +1,9 @@
 # 이야기 장면
 
 범위: 대화 노드가 전투 밖에서 보여 주는 장면의 구성(장면 맵·배우·비트), 장면 스프라이트, 초상, 장수 첫 등장, 대화창, 출전 준비 화면.
-기준: 값이 다르면 `internal/gui/scene.go`·`scenario.go`·`officer_intro.go`·`dialogue_scroll.go`와 `assets/scenes.json`을 따른다.
+기준: 값이 다르면 `internal/scenes`, `internal/gui/scene.go`·`scenario.go`·`officer_intro.go`·`dialogue_scroll.go`와 `assets/scenes/`를 따른다.
 
-장면은 GUI 전용 연출이다. 규칙·저장·콘텐츠 해시에 들어가지 않는다(`assets/scenes.json`은 `assets/data/` 밖이라 해시에 포함되지 않는다).
+장면은 GUI 전용 연출이다. 규칙·저장·콘텐츠 해시에 들어가지 않는다(`assets/scenes/`는 `assets/data/` 밖이라 해시에 포함되지 않는다).
 노드의 종류·흐름(`say`·`narrate`·`scene`·`set`·`branch`·`choice`·`battle`·`join`·`grant`·`end`)은 `assets/scenario/<시나리오>/storyNN.json`이 정하고 엔진이 처리한다.
 장면은 그 위에 화면만 얹는다. 일러스트를 만드는 방법은 `tools/illustrations/README.md`를 본다.
 
@@ -12,7 +12,7 @@
 `scenario` 단계의 화면은 노드 종류에 따라 갈린다.
 
 - `battle` 노드: 출전 준비 화면(아래 절).
-- `say`·`narrate`·`choice` 노드: 배경 위에 대화창을 놓는다. 노드 ID가 `scenes.json`의 `scenes`에 있고 그 맵 그림이 있으면 장면 맵이 배경이고,
+- `say`·`narrate`·`choice` 노드: 배경 위에 대화창을 놓는다. 노드가 어느 장면(`assets/scenes/`)의 `Nodes`에 있고 그 맵 그림이 있으면 장면 맵이 배경이고,
   없으면 어두운 세로 그라데이션에 왼쪽 위에 `제 N 장`과 스테이지 이름이 뜬다.
 - 오른쪽 위에 `메뉴` 버튼이 있다.
 - 진행 입력은 화면 아무 곳 클릭, `Enter`, `Space`다. 순서는 (1) 비트 재생 중이면 비트를 건너뜀 (2) 글자가 찍히는 중이면 한 줄 전부 표시
@@ -22,81 +22,131 @@
 
 `say` 노드는 한 줄이다. 화자는 `Speaker`(인물 ID, 여럿이면 `·`)이고 화면은 그 인물의 표시 이름으로 초상·이름표·장면 배우를 붙인다(`nodeLines`). `narrate`는 화자 없는 한 줄이다.
 `choice`·`battle` 노드의 `Text`는 한 문자열이고 화면이 `이름:`(한글 1~4자) 표지로 나눠 한 줄씩 보인다(`splitLines`, `도원결의: 의용군을 일으킨다.`처럼 제목 띠에 쓴다).
-글자는 설정의 `대사 속도`에 따라 즉시 나오거나 한 글자씩(20ms 간격 설정) 찍힌다.
+글자는 기본으로 한 글자씩(45ms 간격, 말하는 속도) 찍히고, 설정의 `대사 속도`를 `즉시`로 하면 한 번에 나온다(`InstantText`). 전투맵 말풍선도 같은 설정을 따르며, 말풍선 크기는 처음부터 전체 문장에 맞춰 두고 글자만 채운다. 일기토 말풍선은 급박한 실시간 연출이라 설정과 상관없이 한 번에 뜬다. 찍히는 도중 화면 아무 곳이나 누르면 남은 글자가 8배 빨리 찍힌다(장면 대사는 그래도 찍히는 중에 한 번 더 누르면 다 나오고, 다 나온 뒤 누르면 다음 줄로 넘어간다). 전투맵에서는 클릭이 원래 동작(버튼·맵)도 그대로 한다.
 
-## `assets/scenes.json`
+## 장면 데이터 `assets/scenes/chNN.json`
 
-최상위 키는 `about`(설명 글), `maps`, `scenes`다. 게임이 읽는 것은 `scenes`뿐이다(`loadScenes`가 `scenes`만 해석한다).
+장(章)마다 파일 하나다. `internal/scenes`가 읽고 GUI(`internal/gui/scene.go`)가 재생하며 CLI(`internal/cli/scenes.go`)가 글자 지도로 보인다.
+한 노드가 두 장면에 들어 있으면 읽기 오류다. 줄 배치는 `tools/scene_maps/scene_format.py`가 맞춘다(배우 하나, 비트 그룹 하나가 한 줄).
 
 ```
-scenes.<노드 ID> = {
-  "map":   장면 맵 ID,
-  "cast":  { "<표시 이름>": [x, y, "방향", "진영"?, "스프라이트"?] },
-  "beats": [ 이 노드의 첫 줄 앞의 비트, 둘째 줄 앞의 비트, ... ]   (say·narrate 노드는 한 줄이라 비트가 하나)
-}
-beat = 단계 그룹의 배열, 단계 그룹 = 단계의 배열
+"Scenes": { "<장면 ID>": {
+  "Map":     장면 맵 ID,
+  "Time":    "" | "dusk" | "night" | "dawn" | "memory",
+  "Backdrop": 원경 ID (야외 맵 뒤 하늘·먼 산·관문·불타는 성),
+  "Nodes":   [이 장면에서 보이는 노드 ID, 차례대로],
+  "Ambient": [장면이 열릴 때 한 번 하는 단계 (불·연기)],
+  "Cast":    { "<키>": {"At": [u, v], "Face": "SE", "Faction"?, "Sprite"?, "Off"?, "Hold"?, "Pose"?} },
+  "Beats":   { "<노드 ID>": [ 첫 줄 앞의 그룹들, 둘째 줄 앞의 그룹들, ... ] }
+}}
+그룹 = 단계의 배열
 ```
 
-- `map`: `assets/graphics/index.json`의 `maps`에 등록된 그림 데이터의 ID다(`assets/graphics/maps/S_*.json`). 처음 셋 `S_peach`(도원)·`S_village`(탁현 마을)·`S_camp`(군막)은 칸 하나가 큰 칸인 옛 형식이고, 아래 14개는 전투맵과 같은 "네이티브" 형식이다.
-  `scenes.json`의 `maps`에 같은 맵의 칸·소품 원본이 적혀 있으나 런타임은 읽지 않는다. 새 장면 맵은 `graphics/maps/`에 파일을 두고 `index.json`에 올린다.
-  옛 형식의 맵 파일은 칸(`tiles`)·지면(`ground`)·장식(`decorations`)·소품(`props`)을 가지며 소품은 `[이름, u, v]`(소수 가능) 또는 `[이름, u0, v0, u1, v1]`(칸 채우기)다.
+- **장면**은 `scene` 노드부터 다음 `scene` 노드나 전투 노드 앞까지의 한 구간이다. 장면 ID는 그 첫 노드 ID다.
+  배우는 장면이 열릴 때 `Cast` 자리에 서고, 그 뒤로는 비트가 옮긴 자리를 노드가 바뀌어도 지킨다. 효과도 장면이 끝날 때까지 남는다.
+  장면 중간 노드로 들어오면(불러오기) 앞 노드들의 비트가 남긴 자리·효과를 한 번에 맞춘 뒤 시작한다(`settleNode`).
+- `Cast` 키는 인물의 표시 이름이다. `#`이 들어간 키(`병사#2`, `대신#4`)는 **엑스트라**다. 대사가 없고 화자 쪽으로 저절로 돌아보지 않으며,
+  `#` 앞부분이 인물 이름이면 그 인물의 모습을, 아니면 `Sprite`가 필요하다. 엑스트라의 대기 동작은 시점을 어긋나게 시작한다.
+  `Face`는 대각선 `NW`·`NE`·`SW`·`SE`다(`SE` = +u 화면 오른쪽 아래, `SW` = +v 왼쪽 아래, `NW` = −u, `NE` = −v).
+  `Faction`을 생략하면 인물의 `Look.Faction`. `Sprite`는 인물의 장면 스프라이트 대신 쓸 스프라이트 ID(말 탄 장수는 전투 시트, 병사는 병종 시트).
+  `Off`는 무대 밖에서 시작해 `Enter`로 들어온다. `Hold`는 화자 쪽으로 저절로 돌아보지 않는다(성 밖을 보는 장수, 옥좌의 황제).
+  `Pose`는 서 있는 대신 쉬는 동작이다(`sit` 의자에 앉음, `throne` 옥좌, `bow` 읍, `prostrate` 부복, `lie` 누움, `sitground` 땅에 기대 앉음).
+  동작(`Play`)이나 걷기가 끝나면 이 자세로 돌아간다. 그 배우의 시트에 있는 동작만 쓴다(시험이 확인한다).
+- `Beats[노드][i]`는 그 노드의 i번째 화자 줄 앞에 재생할 그룹들이다. 한 그룹의 단계는 함께 시작하고(`After`만큼 늦출 수 있다),
+  걷기·한 번 동작·말풍선·`Wait`가 다 끝나야 다음 그룹이 시작한다. 비트가 끝나야 그 줄이 나온다. 클릭하면 남은 비트를 끝 상태로 건너뛴다(장수 첫 등장에서 멈춘다).
+- 화자 줄이 나오면 화자가 한 번 `action`을 하고 점 풍선이 뜨며, 화자 둘레 5칸 안의 이름 있는 배우가 화자 쪽으로 돌아보고 화자는 가장 가까운 배우를 본다.
+  `Hold`인 배우, 이 노드의 비트가 `Face`·`Look`·`Move`로 움직인 배우는 그대로 둔다.
 
-  | 맵 ID | 장면 | 맵 ID | 장면 |
-  |---|---|---|---|
-  | `S_vil_peace` | 마을(울타리가 둘러친 집·주막) | `S_vil_burnt` | 불탄 마을(불탄 집·주막·나무, 그을음) |
-  | `S_tent` | 군막 내부 | `S_army_camp` | 진영(막사 열) |
-  | `S_road` | 길 | `S_hill` | 언덕(절벽 뒤) |
-  | `S_castle_out` | 성 밖, 성문 닫힘(해자·큰 성벽·성문 누각) | `S_castle_out_open` | 성 밖, 성문 열림 |
-  | `S_courtyard` | 성 안 마당 | `S_rampart` | 성루 |
-  | `S_office` | 관아 | `S_palace` | 궁궐 |
-  | `S_house` | 동승의 집 | `S_garden` | 조조의 후원 |
-
-  네이티브 장면 맵(`"native": true, "scene": true`)은 `tools/scene_maps/`가 후보 viewer의 장면에서 만든다. 후보 그림의 한 칸(32×16)이 게임의 소타일(`small_tiles`: 바닥·성벽·절벽 글자)이고 게임 칸은 그 2×2다.
-  소품과 장식은 그림 픽셀을 그대로 두고 칸 좌표(소수)로 놓는다. 외곽을 어둡게 칠하지 않고(`scene`) 그림이 끝나는 곳까지 그린다. 만들 때 뺀 것: 유닛(등장인물은 `cast`로 놓는다), 불꽃·연기(`effect: fire`), 하늘, 밤·저녁 색과 불빛(렌더러에 없다).
-  성 밖(`S_castle_out*`)처럼 한 장면이 상태에 따라 달라지면 상태마다 맵을 둔다(성문 닫힘·열림).
-  이야기에 붙이는 일은 `tools/scene_maps/wire_story.py`가 한다. `scene` 노드의 장소(`Place`)를 맵에 대응시켜(표는 그 스크립트의 `PLACES`: 막사 → `S_tent`, 진영·영채 → `S_army_camp`, 언덕 → `S_hill`, 외곽 마을 → `S_vil_peace`, 길·들판 → `S_road`, 궁궐 → `S_palace`, 신도성 안 → `S_courtyard`) 그 뒤 다음 `scene` 노드까지의 `scene`·`say`·`narrate`·`choice` 노드마다 `scenes`에 항목을 만든다. 항목은 `map`과 `cast`를 갖는다. `cast`는 그 구간(다음 `scene` 노드·전투 전까지)에서 대사를 하는 인물(최대 6명)을 맵의 소품에서 가장 먼 빈 땅에 `u`축 한 줄로 세우고 서로 마주 보게 한 것이며, 구간의 모든 노드가 같은 자리를 쓴다. `beats`는 비어 있다(이미 적은 `beats`는 그대로 둔다). 인물이 대사 줄이 아니라 이야기에 이름만 나오면 세우지 않는다. 배우가 없는 장면의 카메라는 맵 가운데를 본다. 인물의 장면 스프라이트(`Look.Scene`)가 없으면 병종 스프라이트로 선다.
-- `cast`: 키는 캐릭터 표시 이름(데이터 묶음의 `Name`)이다. 값의 앞 세 칸 `x, y, 방향`은 필수다. 방향은 대각선 `NW`·`NE`·`SW`·`SE`뿐이다.
-  `진영`을 생략하면 캐릭터의 `Look.Faction` 색을 쓴다. `스프라이트`는 캐릭터의 장면 스프라이트 대신 쓸 스프라이트 ID다(병사·촌민·전령 등 엑스트라나 전투 스프라이트).
-  배우는 같은 맵을 쓰는 연속 노드 사이에서 위치가 유지되며, 목록에 다시 적으면 그 자리로 놓인다. 맵이 바뀌면 배우가 새로 만들어진다.
-- `beats[i]`는 이 노드의 i번째 화자 줄이 나오기 전에 재생할 단계 그룹들이다. 한 그룹의 단계는 동시에 시작하고, 모든 배우의 걷기·동작이 끝나야 다음 그룹이 시작한다.
-  비트가 끝나야 그 줄이 나온다. 줄 수보다 `beats`가 짧으면 남는 줄은 비트가 없다.
-
-단계의 필드는 다음과 같다.
-
-| 필드 | 뜻 |
+| 단계 필드 | 뜻 |
 |---|---|
-| `actor` | 단계를 받을 배우(표시 이름). 효과·`intro`·`wait`는 생략 가능 |
-| `move: [x, y]` | 그 칸으로 걷는다. 소수 가능. 먼저 u축, 다음 v축으로 한 칸씩 곧게 걷는다 |
-| `face` | 방향 전환(`NW`·`NE`·`SW`·`SE`) |
-| `play` | 동작 이름. 한 번 재생하고 `idle`로 돌아간다. 장면 스프라이트는 `action`이고 전투 스프라이트는 `attack`·`hit`·`block`·`exhausted` |
-| `emote` | 머리 위 풍선 글자(`…`, `♪`, `!` 등) 1.4초 |
-| `wait` | 초 단위로 그룹을 붙잡아 둔다 |
-| `effect` | `petals`(복사꽃잎이 화면 전체에 흩날림), `fire`(`at: [x, y]`가 있으면 그 칸, 없으면 배우 자리에서 불꽃·연기), `none`(지움). 장면이 바뀔 때까지 계속된다 |
-| `intro` | 장수 첫 등장(아래). 그룹이 끝나기를 기다린다. 클릭하면 등장만 건너뛴다 |
+| `Actor` | 받을 배우(`Cast` 키). 무대 효과·카메라·`Wait`는 없어도 된다 |
+| `Move: [u, v]` | 걷는다. u축 먼저, 다음 v축으로 한 칸씩 곧게. 소수 가능 |
+| `Enter: [u, v]` | 그 자리에 나타난 뒤 `Move`로 걷는다(`Off` 배우의 등장). 가장자리에서 들어오게 둔다 |
+| `Exit` | 걷기가 끝나면 무대에서 사라진다 |
+| `Speed` | 걷는 빠르기 배수(2 달림, .6 지친 걸음). 동작도 같이 빨라진다 |
+| `After` | 그룹 시작 뒤 몇 초 늦게 시작(줄줄이 들어오는 무리) |
+| `Face` | 방향을 바꾼다 |
+| `Look` | 0.9초 그쪽을 봤다가 원래 방향으로 돌아온다 |
+| `Play` | 동작 한 번. 장면 스프라이트는 `action`, 전투 스프라이트는 `attack`·`hit`·`block`·`exhausted`(무릎 꿇기·지침) |
+| `Emote` | 머리 위 풍선 글자(`!`, `…`, `?`, `♪`) 1.4초 |
+| `Say` | 맵 위 말풍선 한마디(대화창 없이). 그룹이 기다린다. 엑스트라의 함성·웅성거림, 멀리서 외치는 말 |
+| `Wait` | 초 단위로 그룹을 붙잡는다 |
+| `Intro` | 장수 첫 등장(아래) |
+| `Effect` (+`At`) | `fire`(모닥불), `smallfire`(화로·먼 화톳불), `smoke`, `steam`(김), `petals`(화면 전체 꽃잎), `birds`(숲에서 새 떼가 날아오름, 3초), `glint`(창끝 반짝임 세 번), `none`(모두 지움). `At`이 없으면 배우 자리 |
+| `Shake` | 화면 흔들림(초) |
+| `Cam` / `CamAt: [u, v]` | 카메라가 그 배우·칸으로 부드럽게 옮긴다. 장면이 열릴 때는 이름 있는 배우들의 가운데를 본다 |
+| `Zoom` | 카메라 배율(정수만: 도트가 고르게 보이게). 기본 2 |
+| `Time` | `day`·`dusk`·`night`·`dawn`·`memory`(회상: 고르게 바랜 갈색)로 바꾼다 |
+| `Sprite` | 배우의 모습을 바꾼다(말에서 내림: `caocao` → `caocao_noncombat`) |
+| `Prop: [이름, u, v]` / `[이름]` | 맵 소품을 놓는다 / 치운다(배우 위에 그려지므로 바닥 소품은 맵에 둔다) |
+| `Pose` | 쉬는 자세를 바꾼다. `idle`이면 다시 선다 |
+| `Patrol: [u, v]` | 지금 자리와 그 칸 사이를 계속 오간다(보초). 비트를 붙잡지 않고, `Move`가 오면 멈춘다 |
+| `Chatter` | 이따금 머리 위에 짧은 말풍선을 띄운다(`"웅성웅성|…"`, `|`로 여러 개). `"-"`이면 그친다. 비트를 붙잡지 않는다 |
 
-옛 동작 이름 `salute`·`toast`·`surprise`·`nod`·`talk`·`exhausted`는 스프라이트에 `action`이 있으면 `action`으로 재생한다(`motion`). 스프라이트에 없는 동작이면 `idle`로 남는다.
-비트를 건너뛰면(클릭) 걷던 배우는 도착 지점으로 가고 동작은 끝난다. 건너뛰기는 장수 첫 등장에서 멈추고 한 번 더 눌러야 넘어간다.
+옛 동작 이름 `salute`·`toast`·`surprise`·`nod`·`talk`·`exhausted`는 스프라이트에 그 동작이 없고 `action`이 있으면 `action`으로 재생한다(`motion`).
 
-### 장면 연출
+### 시간대
 
-- 카메라는 배우들의 가운데에 줌 2배로 놓인다. 화자가 나오고 비트가 끝나면 그 화자가 한 번 `action`을 취하고 머리 위에 점 풍선(`•` 1~3개가 돈다)이 뜬다.
-- 장면은 전투 필드와 같은 렌더러(`Field`)로 그린다. 창이 넓어 캔버스 밖이 보이면 바닥색으로 채운다.
+`Time`이 `night`이면 전투맵의 밤(`field_night.go`)과 같은 어둠을 덮고 불(`fire`·`smallfire` 효과)과 배우 자리만 밝힌다. `dusk`·`dawn`은 같은 방식의 옅은 노을·새벽 색, `memory`는 불빛 없이 고른 갈색이다.
+장면이 바뀔 때는 0.5초 동안 검은 화면에서 밝아진다.
+이야기 장면 맵의 서 있는 소품(벽·휘장·병풍 빼고)에는 엔진이 소품 너비만 한 부드러운 땅 그림자를 오른쪽 아래로 비켜 깐다(`propShadow`, 유닛 그림자와 같은 층).
+
+### 원경
+
+`Backdrop`은 `assets/graphics/backdrops/<ID>.png`(index.json의 `backdrops`)를 화면 위쪽 42%에 화면 폭으로 늘여 맵 뒤에 깐다. 밤·노을이면 그만큼 어둡게 한다.
+`mountains`(하늘과 먼 산), `pass`(골짜기를 막은 관문), `city_wall`(가까운 성벽과 문루), `burning_city`(불타는 낙양과 연기)가 있고 `tools/scene_maps/backdrops.py`가 그린다. 실내 맵에는 쓰지 않는다.
+이야기 장면 맵(`scene`)은 그림 밖을 칠하지 않고 비워 두므로 원경은 맵 그림이 화면 안에서 끝나는 곳(강·협곡·성루)에서 보이고, 숲이 화면 끝까지 그려진 진영에서는 가려진다. 원경 아래는 그 그림 맨 아래 색으로 이어 칠한다.
+
+### 장면 맵
+
+`Map`은 `assets/graphics/index.json`의 `maps`에 있는 그림 데이터 ID다(`assets/graphics/maps/S_*.json`, 전투맵과 같은 "네이티브" 형식).
+칸 좌표는 게임 칸이고, 서 있을 수 있는 곳은 소타일 글자 `.`·`d`·`i`다(벽 `c`, 절벽 `h`는 안 된다). 야외 맵은 `size`보다 그림(`visual`)이 훨씬 넓어 그 안 어디든 설 수 있다.
+
+| 맵 ID | 장면 | 맵 ID | 장면 |
+|---|---|---|---|
+| `S_vil_peace` | 마을(울타리가 둘러친 집·주막) | `S_vil_burnt` | 불탄 마을 |
+| `S_tent` | 작은 군막(4×4) | `S_council` | 맹주의 막사(12×8): 왼쪽 벽 상석(0.75, 3.5), 좌석 v=1.5·5.5 × u=2.6·4.4·6.2·8.0(앞에 낮은 탁자), 수행 장수는 좌석 뒤 v=0.5·6.5, 입구는 오른쪽 아래(u≈11.8) |
+| `S_tent_mid` | 장수의 군막(6×5): 침상·병기가·갑옷대·지도 탁자 | `S_tent_lux` | 원술의 막사(6×5): 금빛 병풍 앞 상석, 붉은 깔개, 술상·촛대·술독 |
+| `S_army_camp` | 진영(막사 두 줄, 가운데 u≈2.5로 v를 따라 길) | `S_turban_camp` | 황건 진영(누런 깃발, 술독·군량 자루) |
+| `S_army_camp_hungry` | 굶주리거나 패한 진영: 거적 위 부상병 자리, 식은 솥, 부러진 창·쓰러진 깃발 | `S_bridge` | 계교(12×10): 강이 u를 따라 v≈4.5~6, 가운데(u≈6) 나무다리, 가까운 둑에 방패 벽(v≈6.4)·망루 |
+| `S_pass` | 거록 길목(12×8): 양옆 절벽(v<1.5, v≥6.5) 사이 길(v≈4), 오른쪽에 녹각·문·망루·막사 | | |
+| `S_road` | 길(v≈2.0~2.5로 u를 따라 −8~14) | `S_hill` | 언덕(위쪽 v<0이 언덕 위, 아래가 들판) |
+| `S_castle_out` | 성 밖, 성문 닫힘 | `S_castle_out_open` | 성 밖, 성문 열림 |
+| `S_courtyard` | 성 안 마당 | `S_rampart` | 성루(위쪽이 성가퀴) |
+| `S_rampart_siege` | 포위된 성루(군량 자루·화로·깃발 더) | `S_office` | 관아 |
+| `S_palace` | 작은 궁궐(5×5) | `S_hall` | 궁궐 옥좌 앞(7×9): 금빛 병풍과 촛대 앞 황제 자리(3, 0.75; 옥좌는 헌제 시트의 `throne` 자세에 있다), 붉은 길 u=3, 대신 줄 u=2·4 |
+| `S_house` | 동승의 집 | `S_garden` | 조조의 후원 |
+
+- 옛 형식 `S_peach`·`S_village`·`S_camp`는 칸 하나가 큰 칸이다.
+- 후보 viewer(`assets_candidate/tools/viewer_template.html`)의 장면은 `tools/scene_maps/export.mjs`·`build.py`가 맵으로 만든다.
+  viewer에 없는 방과 맵 변형은 `tools/scene_maps/compose.py`가 만든다(방은 소품을 칸마다 놓고, 변형은 기존 맵의 소품을 바꾸거나 더한다).
+  장면용 소품은 3D로 모델링해 렌더한다: `../tools/unit3d/scene_props3d.py`가 병기가·갑옷대·촛대·녹각·망루·방패 벽·거적·피 묻은 천·약탕관·부러진 창·쓰러진 깃발·솥·군량 자루·술독을 소품 카메라(한 칸 32×16, 30도)와 셀 셰이딩으로 그리고, 렌더가 잃는 몇 픽셀은 `RETOUCH` 표로 손질한다(`--review`는 옛 그림과 나란히 4배 비교). 색칠만 바꾼 것(누런 깃발, 금빛 병풍)과 효과용 새·반짝임은 `tools/scene_maps/scene_props.py`. 둘 다 `assets_candidate/tiles`에 쓰고 `tools/build_extra.py`가 묶는다. 새 소품도 정면 판자 그림 대신 이 3D 모듈에 모델로 더한다.
+- 맵 그림에서 뺀 것: 유닛(배우로 세운다), 불꽃·연기(효과), 하늘, 밤 색과 불빛(장면의 `Time`).
+
+### 연출하기
+
+장면을 새로 잡거나 고칠 때는 `.claude/skills/scene-staging/SKILL.md`를 따른다: 이야기와 앞뒤 전투 대사를 이어 읽고, 있어야 할 사람(지문의 인물, 수행 장수, 병사·대신)과
+들고 나는 때를 적고, 인원에 맞는 맵을 고르고, 역할로 세운다(상석·좌우 자리·입구·적은 맞은편 멀리). `check_scenes.py`가 겹침(1칸 미만)·바닥 밖·소품 위를 잡고,
+`go run ./cmd/_uidemo-vm -ui scenenode -stage <노드,...>`로 실제 화면을 본다.
+새 노드를 이야기에 붙일 때 `tools/scene_maps/wire_story.py`는 장면이 없는 구간에 맵·노드 목록만 있는 빈 장면을 만들고, 이미 있는 장면은 건드리지 않는다.
 
 ## 장면 스프라이트
 
 - 배우의 스프라이트는 `cast`의 스프라이트 ID, 캐릭터의 `Look.Scene`, 병종의 `Scene`, `Look.Sprites[병종]`, `Look.Sprite`, 병종의 스프라이트 순으로 처음 있는 것이다(`sceneArt`). 기마 병종(`light_cavalry` 등)의 `Scene`은 `infantry_noncombat`이라, 장면용 시트가 없는 기병 장수는 말 대신 걸어서 선다.
 - 전투 스프라이트는 `Look.Sprites[병종:무기 종류]`, `Look.Sprites[병종]`, `Look.Sprite`, 병종의 스프라이트 순이다(`battleClassArt`). `Look.Sprites`는 병종 ID(또는 `병종:장착 무기 종류`, 예: `light_cavalry:sword`) → 스프라이트 ID 표라서 병종이 바뀌거나 무기를 바꿔 들면 보이는 모습도 바뀐다(무기 종류는 `UnitView.Weapon`). 조조와 조운은 창이면 `Look.Sprite`, 검이면 `caocao_sword`·`zhaoyun_sword`다. 병종에 `Shoot`가 있고 백마 같은 `mounted_range`가 있는 유닛이 대상의 주변 8칸 밖을 기본 공격하면, 공격 동안 `Look.Sprites[Shoot 병종]`(없으면 그 병종의 스프라이트)로 바뀌어 활을 쏘고 화살이 날아간다(`shootArt`, `shootsFromRange`).
   유비·관우·장비·조조·손견·원소·조운·동탁은 `Look.Scene`이 `<id>_noncombat`이다.
+- 장면 사람(비전투 시트, `tools/doteditor/tools/civ3d.py` + `tools/unit3d/scene_people.py`의 3D 모델을 변환): `official_noncombat`(문관, 조복이 진영색: 제후의 문관), 품계별 조복 `official_crimson`(삼공)·`official_purple`(구경)·`official_blue`(대부)·`official_green`(낭관)`_noncombat`(`tools/doteditor/tools/robe_colors.py`가 진영색 칸을 theme B로 옮겨 만든다; 궁궐에서는 옥좌에 가까울수록 높은 품계), `official_black_noncombat`(검은 조복의 원로), `eunuch_noncombat`(환관), `wounded_noncombat`(부상병: 대기·걷기·`lie`·`sitground`), `stretcher_noncombat`(들것과 두 사람), `yuanshu_noncombat`·`gongsunzan_noncombat`(원술·공손찬 평복), `light_cavalry_white`(백마 기병, 경기병의 말만 흰색).
+  장수 시트에 덧붙인 자세: 조조·손견·원소·조운·동탁·유비·관우·장비·원술·공손찬·일반 보병 `sit`, 일반 보병 `sitground`, 헌제 `throne`. 문관·중신 `bow`·`prostrate`·`sit`, 환관 `bow`·`prostrate`.
 - 비전투 스프라이트는 NW·SW 두 방향만 그린다. NE·SE는 `.spr`를 만들 때 NW·SW를 좌우 반전한 행으로 이미 들어 있고 런타임은 반전하지 않는다.
-  동작은 `idle`·`walk`(대기·왼발·대기·오른발)·`action` 하나다. 형식과 빌드는 [presentation-sprite.md](presentation-sprite.md)에 있다.
+  동작은 `idle`·`walk`(대기·왼발·대기·오른발)·`action` 하나와, 시트에 따라 한 프레임짜리 자세(`sit`·`throne`·`bow`·`prostrate`·`lie`·`sitground`)다. 자세 칸은 `grid.py poses <id> <자세…>`가 덧붙인다. 형식과 빌드는 [presentation-sprite.md](presentation-sprite.md)에 있다.
 - 방향이 대각선이 아니면 가까운 행을 쓴다: `N`→`NW`, `E`→`SE`, `S`→`SW`, `W`→`SW`.
 - 진영색·옷색은 캐릭터 데이터(`Look.Faction`, `Look.Palette`)와 진영 표(`Factions`)가 정한다([data-character.md](data-character.md)).
 
 ## 초상
 
 - 초상 파일은 `assets/graphics/portraits/<키>.png`(256×256)이고 파일 이름(확장자 뺀 것)이 키다. 키는 캐릭터의 `Look.Portrait`다.
-- 그 키의 파일이 없으면 캐릭터의 병종에 적힌 `Portrait` 키의 파일을 쓴다(`portraitArt`). 둘 다 없으면 초상 없이 이름판만 그린다.
-- 초상은 대화창·출전 준비·장수 첫 등장·일기토 컷인·결과 창·배치 카드·타이틀(출전 명단 앞 셋)에 쓴다. 장수 탭의 초상도 같다.
+- 이야기(대화창·장수 첫 등장)는 그 인물만의 일러스트만 쓴다(`storyPortrait`). 병사 템플릿(`Template`)과 일러스트가 없는 장수는 얼굴 없이 이름판만 그린다. 대화창 왼쪽 초상 자리는 비워 둬 화자가 바뀌어도 두루마리가 움직이지 않는다.
+- 그 밖의 화면(출전 준비·일기토 컷인·결과 창·배치 카드·타이틀·장수 탭)은 키의 파일이 없으면 병종에 적힌 `Portrait` 키의 파일을 쓴다(`portraitArt`). 둘 다 없으면 초상 없이 그린다.
 - 원본과 화풍(수묵 담채)은 `tools/illustrations/README.md`가 기준이고, `tools/build_assets.py`가 256×256으로 줄여 이 폴더에 넣는다.
 
 ## 장수 첫 등장
@@ -114,7 +164,7 @@ beat = 단계 그룹의 배열, 단계 그룹 = 단계의 배열
 
 대사는 손으로 만든 두루마리 창에 보인다(도트 부품은 `assets/graphics/ui/scroll/`의 `rod-top`·`rod`·`rod-bottom`·`band`·`paper`).
 
-- 위치는 화면 아래다. 높이는 UI 높이의 32%(190~250), 초상은 높이에 맞춰 최대 260이고 두루마리 왼쪽에 선다. 낮은 화면에서는 두루마리·초상·글자가 같이 작아진다.
+- 위치는 화면 아래다. 높이는 UI 높이의 24%(150~190), 초상은 높이에 맞춰 최대 200이고 두루마리 왼쪽에 선다. 도트 1px이 UI 3px이고 글자는 26(낮은 화면에서 85%까지). 낮은 화면에서는 두루마리·초상·글자가 같이 작아진다.
 - 종이 폭은 대사 길이에 맞춰 늘고 줄며(최대는 오른쪽 가장자리 30px 앞), 줄이 바뀔 때 오른쪽으로 튕기듯 열리고 닫을 때는 빠르게 접힌다.
   왼쪽 축은 초상 옆에 고정된다.
 - 첫 번째 화자의 초상이 위로 떠오르며 나타난다. 화자가 여럿이어도 초상은 첫 화자만 보이고 이름판에는 `관우·장비`처럼 모두 적힌다.

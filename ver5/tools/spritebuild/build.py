@@ -20,8 +20,9 @@ LOADER = getattr(yaml, 'CSafeLoader', yaml.SafeLoader)
 
 
 def expand_noncombat(doc):
-    """<hero>_noncombat holds NW·SW idle, two walk steps and one action. NE·SE are mirrored rows (cell widened
-    to be symmetric about the pivot) and walk becomes idle, left, idle, right. Tags are mirrored with the pixels."""
+    """<hero>_noncombat holds NW·SW idle, two walk steps, one action and any one-frame poses (sit, bow, lie …).
+    NE·SE are mirrored rows (cell widened to be symmetric about the pivot) and walk becomes idle, left, idle,
+    right. Tags are mirrored with the pixels."""
     u = doc['unit']
     (w, h), (px, py) = u['cell'], u['pivot']
     half = max(px, w - px)
@@ -29,9 +30,11 @@ def expand_noncombat(doc):
     src = {(f['direction'], f['animation'], f['frame']): ([pad(r) for r in f['pixels']], [pad(r) for r in f['tags']])
            for f in doc['frames']}
     walk = u['animations']['walk']['ms']
-    plan = {'idle': [('idle', 0)], 'walk': [('idle', 0), ('walk', 0), ('idle', 0), ('walk', 1)], 'action': [('action', 0)]}
-    ms = {'idle': u['animations']['idle']['ms'], 'walk': [walk[0], walk[0], walk[1], walk[1]],
-          'action': u['animations']['action']['ms']}
+    order = sorted(u['animations'], key=lambda n: u['animations'][n]['first_column'])
+    plan = {n: [(n, i) for i in range(u['animations'][n]['frames'])] for n in order}
+    plan['walk'] = [('idle', 0), ('walk', 0), ('idle', 0), ('walk', 1)]
+    ms = {n: u['animations'][n]['ms'] for n in order}
+    ms['walk'] = [walk[0], walk[0], walk[1], walk[1]]
     frames, anims, col = [], {}, 0
     for name, cells in plan.items():
         anims[name] = dict(first_column=col, frames=len(cells), ms=ms[name], loop=u['animations'][name]['loop'])

@@ -187,11 +187,11 @@ func TestMovementTraitsAndRiders(t *testing.T) {
 }
 func TestForcedCriticalsAndImmunity(t *testing.T) {
 	e, a, b := arena(t)
-	if e.critChance(a, b) >= 100 {
+	if e.critChance(a, b, e.basic()) >= 100 {
 		t.Fatal("crit should be random by default")
 	}
 	with(e, "hero", "crit_t")
-	if e.critChance(a, b) != 100 {
+	if e.critChance(a, b, e.basic()) != 100 {
 		t.Fatal("crit_always")
 	}
 	with(e, "boss", "gold")
@@ -324,6 +324,21 @@ func TestCounterStanceAndForcedCounter(t *testing.T) {
 	with(e3, "boss", "counter_t")
 	if r := apply(t, e3, Command{Kind: "attack", Actor: "hero", Target: "boss"}); !answered(r, "boss", "hero") {
 		t.Fatal("forced counter against a weaker attacker")
+	}
+}
+func TestCounterAllAnswersEveryAttack(t *testing.T) {
+	c := Command{Kind: "attack", Actor: "hero", Target: "boss"}
+	e, _, _ := arena(t)
+	e.SetCounterAll(true)
+	if r := apply(t, e, c); !answered(r, "boss", "hero") {
+		t.Fatal("counter-all answers with no stance")
+	}
+	e2, _, _ := arena(t)
+	e2.SetCounterAll(true)
+	half := e2.CounterDamage(c)
+	e2.unit("boss").Status["counter"] = Status{Turns: 2}
+	if stance := e2.CounterDamage(c); half == 0 || half >= stance {
+		t.Fatalf("counter-all preview %d should be below the stance's %d", half, stance)
 	}
 }
 func TestRiposteAnswersEveryMiss(t *testing.T) {
@@ -771,31 +786,13 @@ func TestMagicCoefficientAddsSpellDamage(t *testing.T) {
 	}
 }
 
-func TestPreparedSkillsSetTheirStatuses(t *testing.T) {
+func TestGuardSkillSetsItsStatus(t *testing.T) {
 	e, _, _ := arena(t)
-	e.char("hero").Class = "archer"
-	e.char("hero").Equipment = map[string]string{}
-	with(e, "hero", "guard_t", "aim_t", "snipe_t", "provoke_t")
-	R := e.data.Rules
+	with(e, "hero", "guard_t")
 	e.unit("hero").MP = 100
-	before := e.stats(e.unit("hero"))
-	_, hi := e.rangeFor(e.unit("hero"), e.basic())
-	for _, id := range []string{"guard_s", "aim_s", "snipe_s", "provoke_s"} {
-		resetActions(e.unit("hero"))
-		apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "hero", Skill: id})
-	}
-	h := e.unit("hero")
-	for _, id := range []string{"guard", "aim", "snipe", "provoke"} {
-		if h.Status[id].Turns != 2 {
-			t.Fatalf("%s status %+v", id, h.Status[id])
-		}
-	}
-	after := e.stats(h)
-	if after.Agility != percent(before.Agility, R.BuffPercent) || after.Morale != percent(before.Morale, R.BuffPercent) {
-		t.Fatalf("aim stats %+v -> %+v", before, after)
-	}
-	if _, now := e.rangeFor(h, e.basic()); now != hi+2 {
-		t.Fatalf("snipe range %d -> %d", hi, now)
+	apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "hero", Skill: "guard_s"})
+	if g := e.unit("hero").Status["guard"]; g.Turns != 2 {
+		t.Fatalf("guard status %+v", g)
 	}
 }
 func TestGuardBlocksMeleeWhollyAndIsSpent(t *testing.T) {
@@ -829,36 +826,53 @@ func TestGuardDoesNotStopRangedAttacks(t *testing.T) {
 		t.Fatal("guard stops melee only")
 	}
 }
-func TestAimAndSnipeAreSpentByTheNextRangedAction(t *testing.T) {
-	e, _, _ := arena(t)
-	e.char("hero").Class = "archer"
-	e.char("hero").Equipment = map[string]string{}
-	e.unit("hero").X = 3
-	e.unit("hero").Status["aim"] = Status{Turns: 2, Value: 20}
-	e.unit("hero").Status["snipe"] = Status{Turns: 2, Value: 2}
-	apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
-	if h := e.unit("hero"); h.Status["aim"].Turns != 0 || h.Status["snipe"].Turns != 0 {
-		t.Fatalf("still prepared: %+v", h.Status)
+func TestAimAndSnipeAreShots(t *testing.T) {
+	archer := func(t *testing.T) (*Engine, *Unit, *Unit) {
+		e, a, b := arena(t)
+		e.char("hero").Class = "archer"
+		e.char("hero").Equipment = map[string]string{}
+		with(e, "hero", "aim_t", "snipe_t")
+		a.X, a.MP = 3, 100
+		return e, a, b
 	}
-	e, _, _ = arena(t)
-	e.unit("hero").Status["aim"] = Status{Turns: 2, Value: 20}
-	apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
-	if e.unit("hero").Status["aim"].Turns == 0 {
-		t.Fatal("a melee attack must not spend aim")
+	e, a, b := archer(t)
+	aim, R := e.data.Skills["aim_s"], e.data.Rules
+	if st := e.attackStats(a, aim); st.Agility != percent(e.stats(a).Agility, R.BuffPercent) || st.Morale != percent(e.stats(a).Morale, R.BuffPercent) {
+		t.Fatalf("aimed stats %+v", st)
 	}
+	if e.critChance(a, b, aim) <= e.critChance(a, b, e.basic()) || e.doubleChance(a, b, aim) <= e.doubleChance(a, b, e.basic()) {
+		t.Fatal("an aimed shot must crit and double more often")
+	}
+	r := apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "boss", Skill: "aim_s"})
+	struck := false
+	for _, ev := range r.Events {
+		struck = struck || (ev.Kind == "damage" || ev.Kind == "miss") && ev.Target == "boss"
+	}
+	if !struck || !e.unit("hero").Acted {
+		t.Fatal("aim is a shot that ends the action")
+	}
+
+	e, a, b = archer(t)
+	_, hi := e.rangeFor(a, e.basic())
+	if _, now := e.rangeFor(a, e.data.Skills["snipe_s"]); now != hi+2 {
+		t.Fatalf("snipe range %d -> %d", hi, now)
+	}
+	a.X = b.X - (hi + 2)
+	if e.inRange(a, b, e.basic()) || !e.inRange(a, b, e.data.Skills["snipe_s"]) {
+		t.Fatal("snipe reaches two cells beyond the basic attack")
+	}
+	apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "boss", Skill: "snipe_s"})
 }
-func TestProvokeLowersDefenseOnAHitAndIsSpentEitherWay(t *testing.T) {
+func TestProvokeLowersDefenseOnAHit(t *testing.T) {
 	e, _, _ := arena(t)
+	with(e, "hero", "provoke_t")
 	R := e.data.Rules
 	hit := false
 	for i := 0; i < 30; i++ {
 		h := e.unit("hero")
-		h.Status["provoke"] = Status{Turns: 2, Value: R.BuffPercent}
+		h.MP = 100
 		resetActions(h)
-		r := apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
-		if e.unit("hero").Status["provoke"].Turns != 0 {
-			t.Fatal("provoke must be spent by the attack")
-		}
+		r := apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "boss", Skill: "provoke_s"})
 		for _, ev := range r.Events {
 			if ev.Kind == "damage" && ev.Target == "boss" && ev.Amount > 0 {
 				hit = true
@@ -873,7 +887,7 @@ func TestProvokeLowersDefenseOnAHitAndIsSpentEitherWay(t *testing.T) {
 		e.state.Phase, e.state.Result, e.state.Learning = "battle", "", nil
 	}
 	if !hit {
-		t.Fatal("no attack hit in 30 tries")
+		t.Fatal("no provoking attack hit in 30 tries")
 	}
 }
 func TestDisruptCutsAgilityAndMorale(t *testing.T) {

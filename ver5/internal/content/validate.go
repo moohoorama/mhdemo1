@@ -21,6 +21,11 @@ func (d *Data) Validate() error {
 		r.BasicAttack.Kind != KindPhysical || r.ExpGrowth <= 0 || r.DeputyDivisor <= 0 {
 		return fmt.Errorf("rules incomplete")
 	}
+	_, troop := r.RankLead["troop"]
+	_, officer := r.RankLead["officer"]
+	if r.StageLevelBase > 0 && (r.StageLevelStep < 0 || !troop || !officer) {
+		return fmt.Errorf("rules: a stage level needs a step and the troop and officer ranks")
+	}
 	if len(d.Classes) == 0 || len(d.Characters) == 0 || len(d.Terrain) == 0 || len(d.Grounds) == 0 || len(d.Stages) == 0 || len(d.Nodes) == 0 {
 		return fmt.Errorf("missing content definitions")
 	}
@@ -35,6 +40,9 @@ func (d *Data) Validate() error {
 	for id, t := range d.Traits {
 		if t.Name == "" || t.Cost < 0 {
 			return fmt.Errorf("trait %s", id)
+		}
+		if !in(t.Kind, "strategy", "tactic", "talent") || !in(t.Tone, "attack", "heal", "buff", "debuff", "guard", "move", "craft") {
+			return fmt.Errorf("trait %s: kind %q or tone %q", id, t.Kind, t.Tone)
 		}
 		for k := range t.Effects {
 			if !TraitEffects[k] && !(strings.Contains(k, ":") && TraitEffects[k[:strings.Index(k, ":")+1]]) {
@@ -69,7 +77,7 @@ func (d *Data) Validate() error {
 	for id, s := range d.Skills {
 		if s.Name == "" || !in(s.Kind, KindPhysical, KindMagic, KindStatus, KindBuff, KindHeal) || !in(s.Mode, ModeMelee, ModeRanged, ModeSelf, ModeAny) ||
 			!in(s.Shape, ShapeSingle, ShapeCross, ShapeSquare, ShapeLine, ShapeAll) || s.Cost < 0 || s.Hit < 0 || s.Min < 0 || s.Max < 0 ||
-			s.Shape == ShapeLine && s.Length < 1 || s.Strikes < 0 || s.Strikes > 2 || s.Pierce < 0 || s.Pierce > 1 || s.Pierce > 0 && s.Shape != ShapeSingle || s.MagicCoeff < 0 || s.MagicCoeff > 0 && s.Kind != KindPhysical || s.Effect != "" && !SkillEffects[s.Effect] || s.Kind != KindPhysical && s.Kind != KindMagic && s.Effect == "" {
+			s.Shape == ShapeLine && s.Length < 1 || s.Strikes < 0 || s.Strikes > 2 || s.Reach < 0 || (s.Effect == "aim" || s.Effect == "provoke") && s.Kind != KindPhysical || s.Each && (s.Kind != KindPhysical || s.Shape == ShapeSingle) || s.Pierce < 0 || s.Pierce > 1 || s.Pierce > 0 && s.Shape != ShapeSingle || s.MagicCoeff < 0 || s.MagicCoeff > 0 && s.Kind != KindPhysical || s.Effect != "" && !SkillEffects[s.Effect] || s.Kind != KindPhysical && s.Kind != KindMagic && s.Effect == "" {
 			return fmt.Errorf("skill %s", id)
 		}
 		for _, t := range s.Requires {
@@ -149,7 +157,7 @@ func (d *Data) Validate() error {
 	}
 	for id, c := range d.Characters {
 		cl, ok := d.Classes[c.Class]
-		if !ok || c.Name == "" || c.Level < 1 || c.Level > r.MaxLevel || c.Lord && !c.Playable || c.Template && (c.Lord || c.Playable) {
+		if !ok || c.Name == "" || c.Level < 1 || c.Level > r.MaxLevel || c.Points < 0 || c.Lord && !c.Playable || c.Template && (c.Lord || c.Playable) {
 			return fmt.Errorf("character %s", id)
 		}
 		for _, s := range c.Stats {
@@ -362,6 +370,32 @@ func (d *Data) Validate() error {
 				return fmt.Errorf("ally spawn")
 			}
 			seen[p] = true
+		}
+		for _, p := range s.Lights {
+			if p.X < 0 || p.Y < 0 || p.X >= s.Width || p.Y >= s.Height {
+				return fmt.Errorf("stage %s light %d,%d", s.ID, p.X, p.Y)
+			}
+		}
+		armies := map[string]bool{}
+		allied := map[string]bool{}
+		for _, a := range s.Armies {
+			if _, ok := d.Factions[a.Faction]; !ok || armies[a.Faction] || a.Name == "" {
+				return fmt.Errorf("stage %s army %q", s.ID, a.Faction)
+			}
+			armies[a.Faction], allied[a.Faction] = true, a.Ally
+		}
+		// an army is on one side: no enemy wears the color of an army on the player's side
+		for _, e := range s.Enemies {
+			color := e.Faction
+			if color == "" {
+				color = d.Characters[e.Character].Look.Faction
+			}
+			if color == "" {
+				color = s.Faction
+			}
+			if armies[color] && allied[color] {
+				return fmt.Errorf("stage %s: enemy %s in the allied army %s", s.ID, e.Character, color)
+			}
 		}
 	}
 	return nil

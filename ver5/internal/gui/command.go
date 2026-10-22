@@ -163,7 +163,7 @@ func (g *Game) mapClick(x, y int) {
 					return
 				}
 				if g.S.Engine.DuelAt(g.ord.actor, x, y) != "" {
-					g.askWith("그 자리에 서면 일기토가 벌어집니다.\n이동하시겠습니까?", "이동", "취소", func() { g.moveIntoDuel(c) })
+					g.moveIntoDuel(c) // a stage duel starts as soon as the two meet: no preview, no question
 					return
 				}
 				g.tentative(x, y)
@@ -788,8 +788,9 @@ func names(g *Game, ids []string) []string {
 	return out
 }
 
-// moveIntoDuel sends the move that starts a duel at once: a tentative move could not show it.
+// moveIntoDuel sends the move that starts a duel at once (a tentative move could not show it) and
+// replays the walk and the duel, which a plain move has already shown as its preview.
 func (g *Game) moveIntoDuel(c core.Command) {
 	g.clearOrder()
-	g.send(session.Request{Op: "command", Command: c})
+	g.request(session.Request{Op: "command", Command: c})
 }

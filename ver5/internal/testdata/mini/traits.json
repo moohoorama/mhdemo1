@@ -2,6 +2,8 @@
  "Traits": {
   "fire": {
    "Name": "Fire",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 0,
    "Requires": [],
@@ -9,6 +11,8 @@
   },
   "mercy": {
    "Name": "Mercy",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 0,
    "Requires": [],
@@ -16,6 +20,8 @@
   },
   "fire_up": {
    "Name": "Fire Up",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [
@@ -25,6 +31,8 @@
   },
   "stance_art": {
    "Name": "Stance Art",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 200,
    "Requires": [],
@@ -32,6 +40,8 @@
   },
   "sweep_art": {
    "Name": "Sweep Art",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 800,
    "Requires": [],
@@ -39,6 +49,8 @@
   },
   "bulwark_t": {
    "Name": "Bulwark",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 500,
    "Requires": [],
@@ -48,6 +60,8 @@
   },
   "lucky_t": {
    "Name": "Lucky",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -55,6 +69,8 @@
   },
   "crit_t": {
    "Name": "Crit",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": [],
@@ -64,6 +80,8 @@
   },
   "weak_crit": {
    "Name": "Duelist",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": [],
@@ -73,6 +91,8 @@
   },
   "deputy_t": {
    "Name": "Appoint",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": [],
@@ -82,6 +102,8 @@
   },
   "blend_t": {
    "Name": "Blend",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": [],
@@ -91,6 +113,8 @@
   },
   "twice": {
    "Name": "Twice",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": [],
@@ -100,6 +124,8 @@
   },
   "poison_t": {
    "Name": "Venom",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -109,6 +135,8 @@
   },
   "leech_t": {
    "Name": "Leech",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -118,6 +146,8 @@
   },
   "awe": {
    "Name": "Awe",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -127,6 +157,8 @@
   },
   "assist_t": {
    "Name": "Assist",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -136,6 +168,8 @@
   },
   "cross_t": {
    "Name": "Cross",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -145,6 +179,8 @@
   },
   "square_t": {
    "Name": "Square",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [
@@ -156,6 +192,8 @@
   },
   "pierce_t": {
    "Name": "Pierce",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 0,
    "Requires": [],
@@ -165,6 +203,8 @@
   },
   "counter_t": {
    "Name": "Counter",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -174,6 +214,8 @@
   },
   "gold": {
    "Name": "Gold",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -183,6 +225,8 @@
   },
   "shield": {
    "Name": "Shield",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -192,6 +236,8 @@
   },
   "riposte_t": {
    "Name": "Riposte",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -201,6 +247,8 @@
   },
   "reflect_t": {
    "Name": "Reflect",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -210,6 +258,8 @@
   },
   "fort": {
    "Name": "Fort",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -219,6 +269,8 @@
   },
   "dash": {
    "Name": "Dash",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -228,6 +280,8 @@
   },
   "gale": {
    "Name": "Gale",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [
@@ -239,6 +293,8 @@
   },
   "rough": {
    "Name": "Rough",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -248,6 +304,8 @@
   },
   "charge_t": {
    "Name": "Charge",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -257,6 +315,8 @@
   },
   "haste_t": {
    "Name": "Haste",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -266,6 +326,8 @@
   },
   "sight_t": {
    "Name": "Sight",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -275,6 +337,8 @@
   },
   "steed": {
    "Name": "Steed",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -285,6 +349,8 @@
   },
   "reach": {
    "Name": "Reach",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -294,6 +360,8 @@
   },
   "sure_t": {
    "Name": "Sure",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -303,6 +371,8 @@
   },
   "deep": {
    "Name": "Deep",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -312,6 +382,8 @@
   },
   "chain_t": {
    "Name": "Chain",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -321,6 +393,8 @@
   },
   "firestorm": {
    "Name": "Firestorm",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -331,6 +405,8 @@
   },
   "see": {
    "Name": "See",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -340,6 +416,8 @@
   },
   "calm": {
    "Name": "Calm",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -350,6 +428,8 @@
   },
   "heal_t": {
    "Name": "Heal+",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -359,6 +439,8 @@
   },
   "aura_t": {
    "Name": "Aura",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -368,6 +450,8 @@
   },
   "lead": {
    "Name": "Lead",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -377,6 +461,8 @@
   },
   "share": {
    "Name": "Share",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -386,6 +472,8 @@
   },
   "focus": {
    "Name": "Focus",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -395,6 +483,8 @@
   },
   "blood": {
    "Name": "Blood",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -404,6 +494,8 @@
   },
   "regen_t": {
    "Name": "Regen",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -413,6 +505,8 @@
   },
   "extend": {
    "Name": "Extend",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -422,6 +516,8 @@
   },
   "last": {
    "Name": "Last",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -431,6 +527,8 @@
   },
   "half": {
    "Name": "Half",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -440,6 +538,8 @@
   },
   "ambush_t": {
    "Name": "Ambush",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -449,6 +549,8 @@
   },
   "siege": {
    "Name": "Siege",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 300,
    "Requires": [],
@@ -458,36 +560,48 @@
   },
   "aid_t": {
    "Name": "Aid",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": []
   },
   "brace_t": {
    "Name": "Brace",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": []
   },
   "thrust_t": {
    "Name": "Thrust",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": []
   },
   "rapid_t": {
    "Name": "Rapid",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": []
   },
   "arrow_t": {
    "Name": "Arrow",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": []
   },
   "boost_t": {
    "Name": "Boost",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": [],
@@ -497,42 +611,56 @@
   },
   "far_t": {
    "Name": "Far",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 200,
    "Requires": []
   },
   "guard_t": {
    "Name": "guard_t",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": []
   },
   "aim_t": {
    "Name": "aim_t",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": []
   },
   "snipe_t": {
    "Name": "snipe_t",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": []
   },
   "provoke_t": {
    "Name": "provoke_t",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": []
   },
   "disrupt_t": {
    "Name": "disrupt_t",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 400,
    "Requires": []
   },
   "lancer": {
    "Name": "Lancer",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 0,
    "Requires": [],
@@ -542,6 +670,8 @@
   },
   "sweeper": {
    "Name": "Sweeper",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 0,
    "Requires": [],
@@ -551,6 +681,8 @@
   },
   "evader": {
    "Name": "Evader",
+   "Kind": "talent",
+   "Tone": "buff",
    "Desc": "",
    "Cost": 0,
    "Requires": [],

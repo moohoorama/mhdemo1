@@ -168,32 +168,6 @@
     }
    }
   },
-  "xufu": {
-   "Name": "서복",
-   "Biography": "영천의 마을을 지키는 젊은 사내. 훗날 서서라 불린다.",
-   "Class": "light_infantry",
-   "Stats": [
-    60,
-    64,
-    72,
-    66,
-    55,
-    68
-   ],
-   "Level": 2,
-   "Traits": [],
-   "Learn": [],
-   "Equipment": [
-    "iron_sword",
-    "leather_armor"
-   ],
-   "Look": {
-    "Faction": "han",
-    "Palette": {
-     "themeA": "#e8e0c8"
-    }
-   }
-  },
   "chengpu": {
    "Name": "정보",
    "Biography": "손견의 오른팔. 사수관에서 화웅에게 쫓기는 손견을 지킨다.",
@@ -564,6 +538,7 @@
     48
    ],
    "Level": 3,
+   "Points": 200,
    "Traits": [],
    "Learn": [],
    "Equipment": [
@@ -706,6 +681,33 @@
     "Faction": "han"
    },
    "Template": true
+  },
+  "zumao": {
+   "Name": "조무",
+   "Biography": "손견의 부장. 주공의 붉은 두건을 대신 써서라도 주공을 지키겠다는 충직한 사내.",
+   "Class": "light_cavalry",
+   "Stats": [
+    64,
+    74,
+    42,
+    70,
+    60,
+    58
+   ],
+   "Level": 6,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Faction": "wu",
+    "Palette": {
+     "themeA": "#7a2a1a"
+    }
+   }
   }
  }
 }

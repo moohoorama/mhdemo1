@@ -81,8 +81,11 @@ func (g *Game) cutsceneTimeline(groups [][]core.CutStep) (entries []timedFn, tot
 				lines := []content.Speech{{Actor: st.Unit, Text: st.Text}}
 				length = max(2, 1.5+float64(len([]rune(st.Text)))*.09)
 				entries = append(entries,
-					timedFn{total, func() { g.showBattleSpeech(lines) }},
-					timedFn{total + length, func() { g.player.Speech = nil }})
+					timedFn{total, func() {
+						g.showBattleSpeech(lines)
+						g.logPending = append(g.logPending, g.name(st.Unit)+": "+st.Text)
+					}},
+					timedFn{total + length, func() { g.dropSpeech() }})
 			case "wait":
 				length = st.Seconds
 			}

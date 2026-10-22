@@ -3,7 +3,7 @@ package core
 import "srpg/internal/content"
 
 const CoreVersion = "2"
-const AIPolicyVersion = "greedy-9"
+const AIPolicyVersion = "greedy-10"
 const RulesVersion = "rules-14"
 
 // Character is a persistent record: a party member, or a troop made for one battle (Temp).
@@ -37,11 +37,13 @@ type Unit struct {
 // NPC reports whether the unit keeps its own items instead of drawing on the party Inventory.
 func (u Unit) NPC() bool { return u.Faction != "ally" || u.AI }
 
-func (u Unit) ActsIn(turn string) bool {
+// ActsIn reports whether the unit moves in the turn: the player's units in the ally turn, an AI ally in
+// the support turn of its army, an enemy in the enemy turn of its army. An empty army is the whole side.
+func (u Unit) ActsIn(turn, army string) bool {
 	if u.AI && u.Faction == "ally" {
-		return turn == "support"
+		return turn == "support" && (army == "" || u.Color == army)
 	}
-	return u.Faction == turn
+	return u.Faction == turn && (turn == "ally" || army == "" || u.Color == army)
 }
 
 type State struct {
@@ -51,6 +53,7 @@ type State struct {
 	Revision                          uint64
 	Seed, RNG                         uint64
 	Phase, Node, Turn, Result, Place  string
+	Army                              string `json:",omitempty"` // in an AI turn (support, enemy): the faction color of the army moving now
 	Stage, Round                      int
 	Characters                        []Character
 	Units                             []Unit
@@ -63,6 +66,7 @@ type State struct {
 	TileStates                        []TileState       `json:",omitempty"` // states an event put on cells, for Turns more rounds (0: for good)
 	Choices                           map[string]string // choice node -> the option taken
 	DamagePct, XPPct                  int               `json:",omitempty"` // damage dealt and experience gained in percent; 0 is 100
+	CounterAll                        bool              `json:",omitempty"` // every unit strikes back at a physical attacker in reach
 	Learning                          []string          // characters whose learning window is open, in order
 	Checkpoint                        *State            `json:",omitempty"`
 }

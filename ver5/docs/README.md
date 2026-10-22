@@ -29,6 +29,7 @@
 |---|---|
 | [logic-combat.md](logic-combat.md) | 전투 흐름, 능력치, 피해·명중, 병법·MP, 버프, 지형 |
 | [logic-growth.md](logic-growth.md) | 경험치, 레벨, 승급, 부관 |
+| [stage_lv_balance.md](stage_lv_balance.md) | 스테이지 레벨 정책, 적 수, 재는 법 |
 | [logic-traits.md](logic-traits.md) | 특성과 책략 |
 | [logic-duel.md](logic-duel.md) | 일기토 규칙 |
 | [logic-battle-event.md](logic-battle-event.md) | 전투 이벤트와 승패 판정 |
@@ -49,7 +50,7 @@
 | 문서 | 내용 |
 |---|---|
 | [presentation-ui.md](presentation-ui.md) | 전장 HUD, 조작, 배치 화면, 화면 확인 방법 |
-| [presentation-scene.md](presentation-scene.md) | 장면 연출, 초상, scenes.json |
+| [presentation-scene.md](presentation-scene.md) | 장면 연출, 초상, assets/scenes |
 | [presentation-duel.md](presentation-duel.md) | 일기토 연출 |
 | [presentation-sprite.md](presentation-sprite.md) | `.spr` 형식과 태그 색 |
 | [presentation-replay.md](presentation-replay.md) | 클레임 리플레이: 규칙은 턴제, 화면은 동시 재생 |

@@ -32,6 +32,65 @@ func Looks(data *content.Data, m *content.Stage) map[image.Point]string {
 	return out
 }
 
+// shownLooks are the looks the field shows now, when it shows final's battle map; else those the
+// stage starts with.
+func (g *Game) shownLooks(final core.Observation) map[image.Point]string {
+	if g == nil || g.S == nil || final.Map == nil {
+		return nil
+	}
+	out := map[image.Point]string{}
+	if g.field != nil && g.field.Map != nil && g.field.Map.ID == final.Map.ID && g.field.looks != nil {
+		for p, l := range g.field.looks {
+			out[p] = l
+		}
+		return out
+	}
+	stage := g.S.Data.Stages[final.Stage]
+	for p, l := range Looks(g.S.Data, &stage) {
+		out[p] = l
+	}
+	return out
+}
+
+// areaCenter is the middle cell of a stage area of the battle being replayed.
+func (g *Game) areaCenter(id int) (int, int, bool) {
+	if m := g.player.final.Map; m != nil {
+		for _, a := range m.Areas {
+			if a.ID == id {
+				return a.Rect.X + a.Rect.W/2, a.Rect.Y + a.Rect.H/2, true
+			}
+		}
+	}
+	return 0, 0, false
+}
+
+// changeLooks applies one terrain event (a state put on an area) to the looks a replay holds.
+func (g *Game) changeLooks(e core.Event) {
+	looks := g.player.looks
+	o := g.player.final
+	if looks == nil || o.Map == nil {
+		return
+	}
+	look := g.S.Data.States[e.Target].Look
+	for _, a := range o.Map.Areas {
+		if a.ID != e.Amount {
+			continue
+		}
+		for y := a.Rect.Y; y < a.Rect.Y+a.Rect.H; y++ {
+			for x := a.Rect.X; x < a.Rect.X+a.Rect.W; x++ {
+				if x < 0 || y < 0 || x >= o.Map.Width || y >= o.Map.Height {
+					continue
+				}
+				if look == "" {
+					delete(looks, image.Pt(x, y))
+				} else {
+					looks[image.Pt(x, y)] = look
+				}
+			}
+		}
+	}
+}
+
 // LooksOf is Looks of an observation.
 func LooksOf(data *content.Data, o core.Observation) map[image.Point]string {
 	return Looks(data, o.Map)

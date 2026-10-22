@@ -63,9 +63,6 @@ func (e *Engine) stats(u *Unit) Stats {
 	v[2] = max(1, percent(v[2], u.Status["mind"].Value))
 	v[3] = max(1, percent(v[3], u.Status["agility"].Value))
 	v[4] = max(1, percent(v[4], u.Status["morale"].Value))
-	if aim := u.Status["aim"]; aim.Turns > 0 {
-		v[3], v[4] = percent(v[3], aim.Value), percent(v[4], aim.Value)
-	}
 	v[3] = max(1, percent(v[3], u.Status["disrupt"].Value))
 	v[4] = max(1, percent(v[4], u.Status["disrupt"].Value))
 	return Stats{v[0], v[1], v[2], v[3], v[4], v[5], int(float64(c.MPBase) + R.ManaMaxFactor*R.StatNumerator/(R.StatDenominator-a[0])), int(float64(c.RecoveryBase) + R.ManaRecoveryFactor*R.StatNumerator/(R.StatDenominator-a[2]))}
@@ -275,10 +272,7 @@ func (e *Engine) rangeFor(u *Unit, s content.Skill) (int, int) {
 			lo = max(lo, cl.MinRange)
 		}
 	}
-	hi += u.Status["range"].Value
-	if s.Kind == content.KindPhysical && e.rangedSkill(u, s) {
-		hi += u.Status["snipe"].Value
-	}
+	hi += u.Status["range"].Value + s.Reach
 	if s.Kind != content.KindPhysical {
 		hi += int(e.fx(u, content.FxSpellRange))
 	}

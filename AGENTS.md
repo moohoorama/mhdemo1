@@ -30,5 +30,19 @@ cover whole screens: `uiscale` (story, battle HUD), `popups` (title, windows, mo
 `deploy`, `duel`, `editor`.
 Add a new demo file there when no existing demo shows the screen. `cmd/_uidemo` is the windowed version.
 
+A **scene** (장면) is what the story screen shows between battles: the scene map, the cast and extras standing
+on it, their beats (walks, turns, motions, emotes, bubbles, effects) and the camera, for one stretch of story
+nodes (`ver5/assets/scenes/chNN.json`, `ver5/docs/presentation-scene.md`). Say "scene" for this, not for a story node,
+a battle map or an event CG. `go run ./cmd/_uidemo-vm -ui scenenode -stage c01-t1,c01-t2` plays the given story
+nodes' scenes line by line for capture.
+
+When you add or edit a stage (`ver5/assets/scenario/*/stageNN.json`, its map or its story nodes), read
+`ver5/docs/stage_lv_balance.md` first and set the ranks and the enemy count by it: stage files never hold
+levels — each spawn has a `Rank` (troop, officer, commander, boss) and an optional `Shift`, and the engine
+computes the level from the stage's place in the story (3 + 2×(n − 1)) with a lead that is a share of
+strength, not a fixed number of levels. Joining officers are raised to the stage level. Then measure with `go run ./cmd/_balance`,
+play it through `go run ./cmd/srpg-cli -slot 9` (numbered menus, letter maps; the slot carries the game
+between runs) to check the placement and the order of the story, and only then capture the GUI.
+
 Every time you change something, record it in `ver5/docs/history.md`. Each entry lists the changed
 file name, what was changed, and the intent (or reason): `파일이름: 수정내역 — 의도`.

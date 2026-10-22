@@ -1,14 +1,27 @@
-h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- i-- i-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h--
-h-- h-- h-- h-- h-- h-- h-- h-- c-- c-- c-- c-- c-- ip- ip- c-- c-- c-- c-- c-- h-- h-- h-- h-- h-- h-- h-- h--
-h-- h-- h-- h-- h-- h-- h-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- gt- h-- h-- h-- h-- h-- h--
-h-- h-- h-- h-- h-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- gt- h-- h-- h-- h--
-h-- h-- h-- gt- g-- g-- g-- g-- g-- g-- g-- dk- g-- g-- g-- g-- g-- dk- g-- g-- g-- g-- g-- g-- h-- gt- h-- h--
-h-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- gt-
-g-- g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- g--
-g-- g-- g-- g-- dk- g-- g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g-- g-- dk- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- d-- d-- d-- d-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+# B03 호로관 전투: 관문으로 오르는 좁고 긴 골짜기와 동쪽 샛길 (15x26)
+h-- h-- h-- h-- h-- i-- h-- h-- h-- h-- h-- h-- h-- h-- h--
+h-- h-- c-- c-- c-- ip- c-- c-- c-- h-- h-- h-- h-- h-- h--
+h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- h-- h-- h-- h--
+h-- g-- dk- g-- g-- d-- g-- gt- dk- g-- d-- g-- d-- g-- h--
+h-- gt- g-- g-- g-- d-- g-- g-- g-- g-- d-- g-- d-- g-- h--
+h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- d-- g-- h--
+h-- g-- g-- g-- g-- g-- g-- g-- g-- gt- h-- g-- d-- g-- h--
+h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- g-- d-- g-- h--
+h-- h-- h-- g-- g-- g-- g-- g-- h-- h-- h-- g-- d-- g-- h--
+h-- h-- h-- g-- g-- g-- g-- g-- h-- h-- h-- gt- d-- g-- h--
+h-- g-- g-- g-- d-- g-- g-- g-- g-- g-- h-- g-- d-- g-- h--
+h-- gt- g-- g-- g-- g-- g-- g-- dk- g-- h-- g-- d-- g-- h--
+h-- g-- g-- g-- g-- g-- g-- g-- g-- gt- h-- g-- d-- g-- h--
+h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- g-- d-- gt- h--
+h-- h-- h-- h-- g-- g-- g-- h-- h-- h-- h-- g-- d-- g-- h--
+h-- h-- h-- h-- g-- g-- g-- h-- h-- h-- h-- g-- d-- g-- h--
+h-- g-- g-- g-- g-- g-- d-- g-- g-- g-- h-- g-- d-- g-- h--
+h-- g-- dk- g-- g-- g-- g-- g-- g-- g-- h-- gt- d-- g-- h--
+h-- g-- g-- g-- g-- g-- g-- g-- gt- g-- h-- g-- d-- g-- h--
+h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- g-- d-- g-- h--
+h-- h-- h-- g-- g-- g-- g-- g-- h-- h-- h-- g-- d-- g-- h--
+h-- g-- g-- g-- g-- d-- g-- g-- g-- g-- h-- g-- d-- gt- h--
+h-- g-- g-- gt- g-- d-- g-- g-- g-- g-- h-- g-- d-- g-- h--
+h-- gt- g-- g-- g-- g-- g-- g-- g-- g-- h-- g-- d-- g-- h--
+h-- g-- g-- g-- g-- g-- g-- g-- g-- gt- h-- gt- d-- g-- h--
+h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- g-- d-- g-- h--

@@ -8,6 +8,7 @@
                                                        # -> heroes/liubei/grid/<anim>/<dir>-<n>.txt (keeps existing files)
   grid.py import liubei                                # every grid file back into units/liubei.yaml
   grid.py colors guanyu themeA1=#5fae5a themeA2=#3d8a45 themeA3=#24573a
+  grid.py poses liubei_noncombat sit bow               # noncombat: add one-frame motions (a copy of idle to draw over)
 
 Each grid file starts with ';' comment lines (frame, cell, pivot, legend, column ruler); pixel lines are 'NN|<row>'.
 """
@@ -59,6 +60,34 @@ def cmd_new(a):
                            'action': dict(first_column=3, frames=1, ms=[800], loop=False)}
     dots.with_alpha(doc)
     print('wrote', dots.save(doc))
+
+
+LOOPING = {'sit', 'throne', 'lie', 'sitground', 'prostrate'}  # poses held while the scene goes on
+
+
+def add_poses(doc, poses):
+    """Append one-frame motions to a noncombat sheet (NW and SW copies of idle); existing ones are kept."""
+    u = doc['unit']
+    col = max(a['first_column'] + a['frames'] for a in u['animations'].values())
+    added = []
+    for name in poses:
+        if name in u['animations']:
+            continue
+        u['animations'][name] = dict(first_column=col, frames=1, ms=[400 if name in LOOPING else 900], loop=name in LOOPING)
+        col += 1
+        for d in ('NW', 'SW'):
+            f = copy.deepcopy(dots.frame(doc, 'idle', d, 0))
+            f.update(animation=name, frame=0)
+            doc['frames'].append(f)
+        added.append(name)
+    return added
+
+
+def cmd_poses(a):
+    doc = dots.with_alpha(dots.load(a.id))
+    if not a.id.endswith('_noncombat'):
+        raise SystemExit('poses are for noncombat sheets')
+    print('added', add_poses(doc, a.poses), '->', dots.save(doc))
 
 
 def cmd_export(a):
@@ -121,8 +150,10 @@ def main():
     sub.add_parser('import').add_argument('id')
     c = sub.add_parser('colors')
     c.add_argument('id'), c.add_argument('pairs', nargs='+')
+    q = sub.add_parser('poses')
+    q.add_argument('id'), q.add_argument('poses', nargs='+')
     a = p.parse_args()
-    {'new': cmd_new, 'export': cmd_export, 'import': cmd_import, 'colors': cmd_colors}[a.cmd](a)
+    {'new': cmd_new, 'export': cmd_export, 'import': cmd_import, 'colors': cmd_colors, 'poses': cmd_poses}[a.cmd](a)
 
 
 if __name__ == '__main__':

@@ -75,7 +75,7 @@ func TestEditorTraitChoicesBelongToOfficer(t *testing.T) {
 		}
 		removed := []string{}
 		base.Traits = &removed
-		v := core.SpawnPreview(d, base)
+		v := core.SpawnPreview(d, "", base)
 		for _, trait := range v.Traits {
 			if !slices.Contains(owned, trait) {
 				t.Fatal("unowned grant")

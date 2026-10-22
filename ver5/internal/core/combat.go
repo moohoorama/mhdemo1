@@ -2,6 +2,8 @@ package core
 
 import (
 	"math"
+	"slices"
+
 	"srpg/internal/content"
 )
 
@@ -67,7 +69,7 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 		if e.has(v, content.FxRangedImmune) && e.rangedAttack(u, v, s) {
 			return 0
 		}
-		h += curve(e.ratio(e.stats(u).Agility, e.stats(v).Agility), R.HitCurve) - float64(R.BasicAttack.Hit) - e.fx(v, content.FxEvade)
+		h += curve(e.ratio(e.attackStats(u, s).Agility, e.stats(v).Agility), R.HitCurve) - float64(R.BasicAttack.Hit) - e.fx(v, content.FxEvade)
 		return clamp(h, R.HitFloor, R.HitCeil)
 	case content.KindMagic, content.KindStatus:
 		if e.has(v, content.FxDispel) && e.stats(v).Mind > e.stats(u).Mind {
@@ -98,19 +100,29 @@ func (e *Engine) critForced(u, v *Unit, s content.Skill) bool {
 }
 
 // critChance is the chance in percent that a physical blow lands critically; 100 when forced.
-func (e *Engine) critChance(u, v *Unit) float64 {
+func (e *Engine) critChance(u, v *Unit, s content.Skill) float64 {
 	if e.critForced(u, v, e.basic()) {
 		return 100
 	}
-	return chance(e.data.Rules.Crit, e.ratio(e.stats(u).Morale, e.stats(v).Morale))
+	return chance(e.data.Rules.Crit, e.ratio(e.attackStats(u, s).Morale, e.stats(v).Morale))
 }
 
 // doubleChance is the chance in percent that a physical skill strikes the target twice.
-func (e *Engine) doubleChance(u, v *Unit) float64 {
+func (e *Engine) doubleChance(u, v *Unit, s content.Skill) float64 {
 	if e.has(u, content.FxDoubleAlways) {
 		return 100
 	}
-	return chance(e.data.Rules.Double, e.ratio(e.stats(u).Agility, e.stats(v).Agility))
+	return chance(e.data.Rules.Double, e.ratio(e.attackStats(u, s).Agility, e.stats(v).Agility))
+}
+
+// attackStats are the attacker's stats for a blow of the skill: an aimed shot raises agility and morale.
+func (e *Engine) attackStats(u *Unit, s content.Skill) Stats {
+	st := e.stats(u)
+	if s.Effect == "aim" {
+		p := e.data.Rules.BuffPercent
+		st.Agility, st.Morale = percent(st.Agility, p), percent(st.Morale, p)
+	}
+	return st
 }
 
 // applyStatus puts a status on v. A stat percentage replaces an opposite one and otherwise keeps the stronger.
@@ -159,7 +171,7 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool) {
 	if hit {
 		crit = e.critForced(u, v, s)
 		if phys && !crit {
-			crit = float64(e.rand(100)) < e.critChance(u, v)
+			crit = float64(e.rand(100)) < e.critChance(u, v, s)
 		}
 		if crit && phys && e.has(v, content.FxCritImmune) {
 			hit, crit = false, false
@@ -201,26 +213,36 @@ func (e *Engine) leech(u *Unit, dealt int) {
 	}
 }
 
-// attackOn is one physical attack on one target: the second strike is rolled before the first lands,
-// and a miss lets a riposting target strike back.
-func (e *Engine) attackOn(u, v *Unit, s content.Skill, b blow) int {
-	double := float64(e.rand(100)) < e.doubleChance(u, v) || s.Strikes > 1
-	total := 0
-	for i := 0; i < 1+btoi(double) && u.HP > 0 && v.HP > 0; i++ {
-		if i == 1 {
-			e.emit("double", u.ID, v.ID, 0)
-		}
-		blow := b
-		if i == 1 {
-			blow.share *= e.data.Rules.DoubleShare
-		}
-		n, hit := e.strike(u, v, s, blow)
-		total += n
-		if !hit && !b.derived {
-			e.riposte(v, u)
+// attackOn is one physical attack on its victims. Whether it strikes twice is rolled once, against the
+// target the attack was aimed at, and holds for every victim; all take the first strike before any takes
+// the second, so a splash lands with the first swing. A miss lets a riposting victim strike back.
+func (e *Engine) attackOn(u, aim *Unit, vs []*Unit, s content.Skill, share map[string]float64, derived bool) map[string]int {
+	var again []*Unit
+	if float64(e.rand(100)) < e.doubleChance(u, aim, s) || s.Strikes > 1 {
+		again = vs
+	}
+	dealt := map[string]int{}
+	for i, round := range [][]*Unit{vs, again} {
+		for _, v := range round {
+			if u.HP <= 0 {
+				return dealt
+			}
+			if v.HP <= 0 {
+				continue
+			}
+			b := blow{share: share[v.ID], derived: derived}
+			if i == 1 {
+				e.emit("double", u.ID, v.ID, 0)
+				b.share *= e.data.Rules.DoubleShare
+			}
+			n, hit := e.strike(u, v, s, b)
+			dealt[v.ID] += n
+			if !hit && !derived {
+				e.riposte(v, u)
+			}
 		}
 	}
-	return total
+	return dealt
 }
 func btoi(b bool) int {
 	if b {
@@ -237,18 +259,26 @@ func (e *Engine) riposte(v, u *Unit) {
 	}
 }
 
+// counterAllShare is the share of a normal blow the counter-all setting strikes back with.
+const counterAllShare = 0.5
+
 // counterBack is the target's counter-attack after it took u's physical action: from a counter stance,
 // or by force against a weaker attacker. Its strikes are rolled for a second one like any attack.
+// Without either, the counter-all setting returns one blow at counterAllShare.
 func (e *Engine) counterBack(u, v *Unit) {
-	if v.HP <= 0 || u.HP <= 0 {
+	if v.HP <= 0 || u.HP <= 0 || !e.inRange(v, u, e.basic()) {
 		return
 	}
 	forced := e.has(v, content.FxCounterForce) && e.might(u) < e.might(v)
-	if v.Status["counter"].Turns == 0 && !forced && !e.has(v, content.FxCounterAlways) || !e.inRange(v, u, e.basic()) {
+	if v.Status["counter"].Turns == 0 && !forced && !e.has(v, content.FxCounterAlways) {
+		if e.state.CounterAll {
+			n, _ := e.strike(v, u, e.basic(), blow{share: counterAllShare, derived: true})
+			e.leech(v, n)
+		}
 		return
 	}
 	R := e.data.Rules
-	double := forced || float64(e.rand(100)) < e.doubleChance(v, u)
+	double := forced || float64(e.rand(100)) < e.doubleChance(v, u, e.basic())
 	for i := 0; i < 1+btoi(double) && u.HP > 0; i++ {
 		if i > 0 {
 			e.emit("double", v.ID, u.ID, 0)
@@ -397,11 +427,6 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 	start := len(e.events)
 	if s.Kind == content.KindPhysical {
 		e.physical(u, v, s, c)
-		delete(u.Status, "provoke")
-		if e.rangedAttack(u, v, s) {
-			delete(u.Status, "aim")
-			delete(u.Status, "snipe")
-		}
 	} else {
 		e.spell(u, v, s, c)
 	}
@@ -421,30 +446,60 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 	return nil
 }
 
+// physical resolves a physical action: one attack on all its victims, or, for a skill that strikes each
+// target on its own, an attack with its own exchange on each of them in turn, the aimed one first.
 func (e *Engine) physical(u, v *Unit, s content.Skill, c Command) {
 	hit, share := e.victims(u, v, s)
-	dealt, total := map[string]int{}, 0
+	if !s.Each {
+		e.exchange(u, v, hit, share, s, c)
+		return
+	}
+	slices.SortStableFunc(hit, func(a, b *Unit) int { return btoi(b == v) - btoi(a == v) })
+	for i, q := range hit {
+		if u.HP <= 0 {
+			return
+		}
+		if q.HP <= 0 {
+			continue
+		}
+		if i > 0 {
+			e.emit("next-strike", u.ID, q.ID, 0)
+		}
+		e.exchange(u, q, []*Unit{q}, map[string]float64{q.ID: share[q.ID]}, s, c)
+	}
+}
+
+// exchange is one attack on its victims with what answers it: allies' assists and the victims' counters.
+func (e *Engine) exchange(u, v *Unit, hit []*Unit, share map[string]float64, s content.Skill, c Command) {
+	dealt, total := e.attackOn(u, v, hit, s, share, false), 0
 	for _, q := range hit {
-		dealt[q.ID] = e.attackOn(u, q, s, blow{share: share[q.ID]})
 		total += dealt[q.ID]
 		if !e.rangedAttack(u, q, s) {
 			delete(q.Status, "guard")
 		}
-		if p := u.Status["provoke"]; p.Turns > 0 && dealt[q.ID] > 0 {
-			e.applyStatus(q, "defense", e.data.Rules.BuffTurns, -p.Value)
+		if s.Effect == "provoke" && dealt[q.ID] > 0 {
+			e.applyStatus(q, "defense", e.data.Rules.BuffTurns, -e.data.Rules.BuffPercent)
 		}
 	}
 	for _, id := range keys(e.unitIDs) {
 		w := e.unit(id)
 		k := e.fx(w, content.FxAssist)
-		if k == 0 || w.ID == u.ID || w.HP <= 0 || w.Faction != u.Faction || !u.ActsIn(e.state.Turn) {
+		if k == 0 || w.ID == u.ID || w.HP <= 0 || w.Faction != u.Faction || !u.ActsIn(e.state.Turn, e.state.Army) {
 			continue
 		}
+		var reach []*Unit
+		shares := map[string]float64{}
 		for _, q := range hit {
 			if q.HP > 0 && e.inRange(w, q, e.basic()) {
-				n := e.attackOn(w, q, e.basic(), blow{share: k, derived: true})
-				e.leech(w, n)
+				reach = append(reach, q)
+				shares[q.ID] = k
 			}
+		}
+		if len(reach) == 0 {
+			continue
+		}
+		for _, n := range e.attackOn(w, v, reach, e.basic(), shares, true) {
+			e.leech(w, n)
 		}
 	}
 	for _, q := range hit {
@@ -500,13 +555,13 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 		case "refill":
 			recovered = min(e.stats(q).MaxMP-q.MP, int(s.Coeff))
 			q.MP += recovered
-		case "attack", "defense", "mind", "morale", "agility", "aim", "provoke", "disrupt":
+		case "attack", "defense", "mind", "morale", "agility", "disrupt":
 			p := R.BuffPercent
 			if s.Kind == content.KindStatus {
 				p = -p
 			}
 			e.applyStatus(q, s.Effect, turns, p)
-		case "speed", "range", "snipe":
+		case "speed", "range":
 			e.applyStatus(q, s.Effect, turns, int(s.Coeff))
 		default:
 			e.applyStatus(q, s.Effect, turns, 0)
@@ -514,7 +569,7 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 		e.emit("effect", u.ID, q.ID, recovered)
 		// Support spells provide training too. Full-health healing does not.
 		if u.Faction == "ally" && (s.Effect != "heal" || useful) {
-			e.xp(u.Character, e.supportXP(u))
+			e.xp(u.Character, e.supportXP(u, q))
 		}
 	}
 	for _, q := range e.targets(u, v, s) {
@@ -587,12 +642,62 @@ func (e *Engine) useItem(u *Unit, c Command) error {
 	}
 	return nil
 }
-func (e *Engine) endFaction() {
-	R := e.data.Rules
-	ending := e.state.Turn
+
+// armyOrder lists the armies (faction colors) of a turn's side in the order they move: the stage's
+// Armies first, then any other color in the order its first unit appears. alive tells which still
+// have a unit on the field.
+func (e *Engine) armyOrder(turn string) (order []string, alive map[string]bool) {
+	alive = map[string]bool{}
+	seen := map[string]bool{}
+	var found []string
 	for _, id := range keys(e.unitIDs) {
 		u := e.unit(id)
-		if !u.ActsIn(ending) {
+		if !u.ActsIn(turn, "") {
+			continue
+		}
+		if !seen[u.Color] {
+			seen[u.Color] = true
+			found = append(found, u.Color)
+		}
+		if u.HP > 0 {
+			alive[u.Color] = true
+		}
+	}
+	for _, a := range e.data.Stages[e.state.Stage].Armies {
+		if seen[a.Faction] {
+			order = append(order, a.Faction)
+			delete(seen, a.Faction)
+		}
+	}
+	for _, c := range found {
+		if seen[c] {
+			order = append(order, c)
+		}
+	}
+	return order, alive
+}
+
+// nextArmy is the first army of the side after the one given ("" for the first) that still has a unit.
+func (e *Engine) nextArmy(turn, after string) (string, bool) {
+	order, alive := e.armyOrder(turn)
+	passed := after == ""
+	for _, a := range order {
+		if passed && alive[a] {
+			return a, true
+		}
+		if a == after {
+			passed = true
+		}
+	}
+	return "", false
+}
+
+func (e *Engine) endFaction() {
+	R := e.data.Rules
+	ending, endingArmy := e.state.Turn, e.state.Army
+	for _, id := range keys(e.unitIDs) {
+		u := e.unit(id)
+		if !u.ActsIn(ending, endingArmy) {
 			continue
 		}
 		for _, k := range keys(u.Status) {
@@ -608,28 +713,37 @@ func (e *Engine) endFaction() {
 			}
 		}
 	}
-	if ending == "ally" {
-		e.state.Turn = "enemy"
-		for _, id := range keys(e.unitIDs) {
-			if u := e.unit(id); u.AI && u.Faction == "ally" && u.HP > 0 {
-				e.state.Turn = "support"
-				break
-			}
+	// the player's army, then each allied AI army, then each enemy army, one at a time; an AI turn
+	// without an army (a save from before armies) was the whole side
+	next := func(turn, after string) bool {
+		if turn == ending && after == "" {
+			return false
 		}
-	} else if ending == "support" {
-		e.state.Turn = "enemy"
-	} else {
-		e.state.Turn = "ally"
+		if a, ok := e.nextArmy(turn, after); ok {
+			e.state.Turn, e.state.Army = turn, a
+			return true
+		}
+		return false
+	}
+	switch {
+	case ending == "ally" && (next("support", "") || next("enemy", "")):
+	case ending == "support" && (next("support", endingArmy) || next("enemy", "")):
+	case ending == "enemy" && next("enemy", endingArmy):
+	default:
+		e.state.Turn, e.state.Army = "ally", ""
 		e.state.Round++
 		e.ageTerrain()
 	}
 	starting := e.state.Turn
-	e.turnStarted = starting
+	e.turnStarted = ""
+	if starting != ending {
+		e.turnStarted = starting // turnstart conditions hold when a side begins, not for each of its armies
+	}
 	// what each unit holds after damage over time, so the regeneration below can be reported
 	hp, mp := map[string]int{}, map[string]int{}
 	for _, id := range keys(e.unitIDs) {
 		u := e.unit(id)
-		if u.HP <= 0 || !u.ActsIn(starting) {
+		if u.HP <= 0 || !u.ActsIn(starting, e.state.Army) {
 			continue
 		}
 		if e.has(u, content.FxCleanse) {
@@ -685,7 +799,7 @@ func (e *Engine) endFaction() {
 	// Auras are deduplicated per recipient, independent of component iteration order.
 	for _, id := range keys(e.unitIDs) {
 		v := e.unit(id)
-		if !v.ActsIn(starting) || v.HP <= 0 {
+		if !v.ActsIn(starting, e.state.Army) || v.HP <= 0 {
 			continue
 		}
 		for _, aid := range keys(e.unitIDs) {
@@ -706,6 +820,7 @@ func (e *Engine) endFaction() {
 		}
 	}
 	e.emit("turn", "", starting, e.state.Round)
+	e.events[len(e.events)-1].Text = e.state.Army
 }
 func (e *Engine) dot(v *Unit, id string, n int) {
 	if v.HP <= 0 {

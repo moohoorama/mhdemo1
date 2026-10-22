@@ -167,14 +167,8 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 // hudHead is the side to move with the turn, the end-of-phase button, and on the enemy's turn
 // that waits for the player the buttons that advance it.
 func (g *Game) hudHead(dst *ebiten.Image, o core.Observation, r image.Rectangle) {
-	side := g.lordName() + "군 차례"
-	switch o.Turn {
-	case "enemy":
-		side = "적군 차례"
-	case "support":
-		side = "동맹군 차례"
-	}
-	c := turnColor(o.Turn)
+	side := g.armyName(o.Turn, o.Army) + " 차례"
+	c := g.armyColor(o.Turn, o.Army)
 	turn := fmt.Sprintf("%d턴", o.Round)
 	if st := g.S.Data.Stages[o.Stage]; st.TurnLimit > 0 {
 		turn = fmt.Sprintf("%d/%d턴", o.Round, st.TurnLimit)

@@ -76,61 +76,62 @@
    "Y": 12,
    "Facing": "NE",
    "DuelFirst": true,
-   "Group": "yan"
+   "Group": "yan",
+   "Rank": "commander"
   },
   {
    "Character": "troop_footman",
    "X": 3,
    "Y": 11,
-   "Level": 5,
    "Group": "yan",
    "Facing": "SW",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 5,
    "Y": 11,
-   "Level": 6,
    "Group": "yan",
    "Facing": "SW",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 2,
    "Y": 12,
-   "Level": 6,
    "Group": "yan",
    "Facing": "SW",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
    "X": 6,
    "Y": 12,
-   "Level": 6,
    "Group": "yan",
    "Facing": "SW",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
    "X": 3,
    "Y": 13,
-   "Level": 6,
    "Group": "yan",
    "Facing": "SW",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
    "X": 5,
    "Y": 13,
-   "Level": 6,
    "Group": "yan",
    "Facing": "SW",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Shift": -0.07
   }
  ],
  "Reward": {
@@ -161,7 +162,7 @@
     {
      "Kind": "talk",
      "Title": "장비의 호통",
-     "Speech": "네놈이 안량이냐! 길을 비키랑께!",
+     "Speech": "네놈이 안량이냐! 썩 길을 비켜라!",
      "Side": 0,
      "Duration": 2.2
     },
@@ -294,7 +295,7 @@
     {
      "Kind": "talk",
      "Title": "장비가 뒤에서 소리치다",
-     "Speech": "어딜 가는겨! 다음엔 길 막지 말랑께!",
+     "Speech": "어딜 가는겨! 다음엔 길 막지 말어!",
      "Side": 0,
      "Duration": 2.5
     },
@@ -355,51 +356,51 @@
        "Character": "troop_cavalry",
        "X": 10,
        "Y": 5,
-       "Level": 4,
        "Group": "ambush",
        "Facing": "SW",
        "Policy": "assault",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Shift": -0.07
       },
       {
        "Character": "troop_archer",
        "X": 11,
        "Y": 6,
-       "Level": 4,
        "Group": "ambush",
        "Facing": "SW",
        "Policy": "assault",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Shift": -0.07
       },
       {
        "Character": "troop_archer",
        "X": 14,
        "Y": 6,
-       "Level": 4,
        "Group": "ambush",
        "Facing": "SW",
        "Policy": "assault",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Shift": -0.07
       },
       {
        "Character": "troop_footman",
        "X": 12,
        "Y": 5,
-       "Level": 4,
        "Group": "ambush",
        "Facing": "SW",
        "Policy": "assault",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Shift": -0.07
       },
       {
        "Character": "troop_footman",
        "X": 14,
        "Y": 5,
-       "Level": 4,
        "Group": "ambush",
        "Facing": "SW",
        "Policy": "assault",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Shift": -0.07
       }
      ]
     },
@@ -425,5 +426,16 @@
   }
  ],
  "Faction": "yuan",
- "Map": "map06.json"
+ "Map": "map06.json",
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "yuan",
+   "Name": "원소군"
+  }
+ ]
 }

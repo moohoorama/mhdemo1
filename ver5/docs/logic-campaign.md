@@ -66,6 +66,8 @@
 
 출전 명단의 장수는 아직 지도에 없다. 플레이어가 `Stage.Allies`의 칸에 한 명씩 놓는다.
 
+`Stage.Forced`(강제 출전)이면 `start`가 이어서 `DeploymentPlan`대로 장수를 놓고 `deployment_finish`까지 처리한다. 출전 준비(장비)는 그대로 있고 배치 화면만 없다. 이미 전투가 시작된 뒤의 `DeploymentPlan`은 빈 명령열이다.
+
 - `place`(`Actor`, `X`, `Y`): 출전 명단의 장수를 놓는다. 칸은 `Allies`에 있고, 비어 있고, 그 장수의 병종이 설 수 있는 지형(비용 > 0)이어야 한다. 아니면 `InvalidPlacement`. 이미 놓였으면 `AlreadyPlaced`. 놓인 장수는 병력 최대, 병법 0으로 시작한다.
 - `unplace`: 놓은 장수를 거둔다. 고정 아군은 대상이 아니다(출전 명단에 없으므로 `InvalidActor`).
 - `deployment_finish`: 출전 명단 전원이 놓였고 살아 있어야 한다(아니면 `DeploymentIncomplete`). 단계를 `battle`로 바꾸고 `deployment_finish` 이벤트를 낸다.

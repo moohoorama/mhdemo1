@@ -1,6 +1,10 @@
 package core
 
-import "srpg/internal/content"
+import (
+	"slices"
+
+	"srpg/internal/content"
+)
 
 // eventPasses bounds how often one settle() sweeps the events: an event can make a later (or an
 // earlier) one true, but a chain longer than this stops until the next command.
@@ -80,6 +84,7 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 					continue // already on the map, or fallen
 				}
 				u := e.spawn(sp.Character, sp.Character, "ally", p.X, p.Y, sp)
+				e.raiseTo(e.char(u.Character), e.data.Rules.StageLevel(e.stageOrder()))
 				snapshot := copyOf(*u)
 				e.events = append(e.events, Event{Kind: "unit-arrival", Actor: u.ID, Unit: &snapshot})
 			}
@@ -92,6 +97,7 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 				for _, u := range e.matching(t) {
 					if u.HP > 0 {
 						e.applyStatus(u, a.Stat, turns, a.Value)
+						e.events = append(e.events, Event{Kind: "status", Target: u.ID, Text: a.Stat, Amount: a.Value})
 					}
 				}
 			}
@@ -187,22 +193,30 @@ func (e *Engine) placeSpawns(stage content.Stage, spawns []content.Spawn) ([]con
 	return placements, true
 }
 
+// retreatSweep is the halberd's answer to a retreat: one more attack at the weakest foe in reach, and
+// another each time that foe retreats too.
 func (e *Engine) retreatSweep(u, fallen *Unit, derived bool) {
 	if derived || u == nil || fallen == nil || u.HP <= 0 || u.Faction == fallen.Faction || !e.has(u, content.FxRetreatSweep) {
 		return
 	}
 	e.emit("retreat-sweep", u.ID, fallen.ID, 0)
-	for _, id := range keys(e.unitIDs) {
-		v := e.unit(id)
-		if u.HP <= 0 {
-			break
+	for u.HP > 0 {
+		var v *Unit
+		for _, id := range keys(e.unitIDs) {
+			q := e.unit(id)
+			if q.HP > 0 && q.Faction != u.Faction && e.inRange(u, q, e.basic()) && (v == nil || q.HP < v.HP) {
+				v = q
+			}
 		}
-		if v.HP <= 0 || v.Faction == u.Faction || v.ID == fallen.ID || !e.inRange(u, v, e.basic()) {
-			continue
+		if v == nil {
+			return
 		}
 		e.emit("followup-start", u.ID, v.ID, 0)
 		e.physical(u, v, e.basic(), Command{Kind: "attack", Actor: u.ID, Target: v.ID})
 		e.emit("followup-end", u.ID, v.ID, 0)
+		if v.HP > 0 {
+			return
+		}
 	}
 }
 
@@ -269,7 +283,7 @@ func (e *Engine) ageTerrain() {
 }
 
 // shift puts the unit on the free cell nearest to a point, whatever its move range or the cost of the
-// ground between; it returns the cells it passes through (a straight walk), or nil if it cannot stand anywhere.
+// ground between; it returns the cells it passes through, or nil if it cannot stand anywhere.
 func (e *Engine) shift(u *Unit, to content.Point) []content.Point {
 	stage := e.data.Stages[e.state.Stage]
 	best, score := content.Point{X: -1, Y: -1}, stage.Width+stage.Height+1
@@ -286,8 +300,40 @@ func (e *Engine) shift(u *Unit, to content.Point) []content.Point {
 	if best.X < 0 {
 		return nil
 	}
-	path := straightPath(content.Point{X: u.X, Y: u.Y}, best)
+	path := e.walk(u, best)
 	u.X, u.Y = best.X, best.Y
+	return path
+}
+
+// walk is the shortest way to a cell over ground the unit can walk, other units aside (a forced move
+// goes round fences and walls through their gaps), or a straight walk when no way leads there.
+func (e *Engine) walk(u *Unit, to content.Point) []content.Point {
+	stage := e.data.Stages[e.state.Stage]
+	from := content.Point{X: u.X, Y: u.Y}
+	prev := map[content.Point]content.Point{from: from}
+	for todo := []content.Point{from}; len(todo) > 0 && to != from; todo = todo[1:] {
+		p := todo[0]
+		if p == to {
+			break
+		}
+		for _, d := range []content.Point{{X: 0, Y: -1}, {X: -1, Y: 0}, {X: 1, Y: 0}, {X: 0, Y: 1}} {
+			q := content.Point{X: p.X + d.X, Y: p.Y + d.Y}
+			if _, seen := prev[q]; seen || q.X < 0 || q.Y < 0 || q.X >= stage.Width || q.Y >= stage.Height || e.terrain(u, q.X, q.Y).Cost <= 0 {
+				continue
+			}
+			prev[q] = p
+			todo = append(todo, q)
+		}
+	}
+	if _, ok := prev[to]; !ok {
+		return straightPath(from, to)
+	}
+	path := []content.Point{to}
+	for p := to; p != from; {
+		p = prev[p]
+		path = append(path, p)
+	}
+	slices.Reverse(path)
 	return path
 }
 

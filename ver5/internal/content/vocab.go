@@ -103,12 +103,12 @@ const (
 	ItemPromote = "promote"
 )
 
-// Skill effects: a heal's kind, or the status a buff or status skill applies.
+// Skill effects: a heal's kind, the status a buff or status skill applies, or what a physical skill adds to its blow.
 var SkillEffects = map[string]bool{
 	"heal": true, "cure": true, "dispel": true, "steal": true, "eightfold": true, "counter": true,
 	"mind": true, "attack": true, "defense": true, "morale": true, "agility": true, "speed": true, "range": true,
 	"poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "refill": true,
-	"guard": true, "aim": true, "snipe": true, "provoke": true, "disrupt": true,
+	"guard": true, "aim": true, "provoke": true, "disrupt": true,
 }
 
 // Harmful statuses, ended by status immunity and cleansing.
@@ -119,7 +119,7 @@ var Statuses = map[string]bool{
 	"poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "weak": true,
 	"speed": true, "range": true, "counter": true, "eightfold": true,
 	"attack": true, "defense": true, "mind": true, "morale": true, "agility": true,
-	"guard": true, "aim": true, "snipe": true, "provoke": true, "disrupt": true,
+	"guard": true, "disrupt": true,
 }
 
 // Class tags the engine reads.

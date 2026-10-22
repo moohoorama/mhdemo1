@@ -40,16 +40,16 @@ func demoMapFX(d *Demo) error {
 		}
 		paint(2, 4, state, 'F') // fire on the wall
 		paint(5, 4, state, 'e')
-		for _, y := range []int{2, 8, 11} { // three bridges over the river
-			paint(21, y, ground, 'w')
-			paint(22, y, ground, 'w')
-			paint(21, y, structure, 'b')
-			paint(22, y, structure, 'b')
+		for _, y := range []int{2, 8, 11} { // three bridges over a river dug for them
+			paint(17, y, ground, 'w')
+			paint(18, y, ground, 'w')
+			paint(17, y, structure, 'b')
+			paint(18, y, structure, 'b')
 		}
-		paint(21, 8, state, 'd')
-		paint(22, 8, state, 'd')
-		paint(21, 11, state, 'x')
-		paint(22, 11, state, 'x')
+		paint(17, 8, state, 'd')
+		paint(18, 8, state, 'd')
+		paint(17, 11, state, 'x')
+		paint(18, 11, state, 'x')
 	})
 	if err != nil {
 		return err
@@ -57,7 +57,7 @@ func demoMapFX(d *Demo) error {
 	g := d.g
 	// the camera visits each group of features for 60 frames: the overview, the gates, the burning forest, the
 	// village, the wall fire, the bridges
-	sights := [][3]float64{{11, 7, 1.4}, {3, 6, 3}, {1, 1, 3}, {15, 11, 3}, {4, 4, 3}, {21.5, 7, 2.2}}
+	sights := [][3]float64{{11, 7, 1.4}, {3, 6, 3}, {1, 1, 3}, {15, 11, 3}, {4, 4, 3}, {17.5, 7, 2.2}}
 	d.step = func(frame int) {
 		at := sights[min(frame/60, len(sights)-1)]
 		g.zoom = at[2]

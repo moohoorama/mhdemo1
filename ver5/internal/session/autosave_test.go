@@ -64,7 +64,7 @@ func TestAutosaveAtAlliedRoundStarts(t *testing.T) {
 				assert.Equal(t, round, state.Round)
 				assert.Equal(t, "ally", state.Turn)
 				for _, u := range state.Units {
-					if u.ActsIn(state.Turn) {
+					if u.ActsIn(state.Turn, state.Army) {
 						assert.False(t, u.Done)
 						assert.False(t, u.Acted)
 						assert.False(t, u.Moved)
