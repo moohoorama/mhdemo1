@@ -68,11 +68,11 @@ func TestHoldStandsStillAndStrikesWhatComesNear(t *testing.T) {
 	assert.Equal(t, [2]int{start.X, start.Y}, [2]int{unit(e, "boss").X, unit(e, "boss").Y})
 }
 
-func TestAssaultAdvancesFromTheFirstTurnWhereTheDefaultWaits(t *testing.T) {
-	idle := battle(t, func(s *content.Stage) {})
+func TestAssaultAdvancesFromTheFirstTurnWhereReactWaits(t *testing.T) {
+	idle := battle(t, func(s *content.Stage) { s.Enemies[0].Policy = "react" })
 	enemyTurn(t, idle)
 	first := unit(idle, "boss")
-	assert.Equal(t, [2]int{9, 2}, [2]int{first.X, first.Y}, "far from the heroes the default enemy waits")
+	assert.Equal(t, [2]int{9, 2}, [2]int{first.X, first.Y}, "out of its reach a reacting enemy waits")
 
 	rush := battle(t, func(s *content.Stage) { s.Enemies[0].Policy = "assault" })
 	enemyTurn(t, rush)
@@ -151,4 +151,67 @@ func TestAnAIEventChangesTheNextTurnsBehaviour(t *testing.T) {
 	b := unit(e, "boss")
 	assert.Equal(t, "march", b.Policy)
 	assert.Equal(t, [2]int{10, 7}, [2]int{b.X, b.Y}, "from round 2 it marches to the corner instead")
+}
+
+func TestAnArcherShootsFromTheFullReachOfItsBow(t *testing.T) {
+	e := battle(t, func(s *content.Stage) {
+		s.Enemies[0].X, s.Enemies[0].Policy, s.Enemies[0].Class = 6, "assault", "archer"
+	})
+	shot := false
+	for _, ev := range enemyTurn(t, e) {
+		shot = shot || ev.Kind == "damage" && ev.Actor == "boss"
+	}
+	b := unit(e, "boss")
+	near := 99
+	for _, id := range []string{"hero", "archer1"} {
+		h := unit(e, id)
+		near = min(near, distance(b.X, b.Y, h.X, h.Y))
+	}
+	assert.True(t, shot)
+	assert.Equal(t, 3, near, "it stops at the far end of its range, not beside the heroes where it could not shoot")
+}
+
+func TestAnAssaultingAllyWalksIntoTheReachOfAnAssaultingEnemy(t *testing.T) {
+	e := battle(t, func(s *content.Stage) {
+		s.Enemies[0].Policy = "assault"
+		s.Party = []content.Spawn{{Character: "troop", X: 4, Y: 6, AI: true, Policy: "assault"}}
+	})
+	ally := ""
+	for _, u := range e.Observe().UnitViews {
+		if u.AI && u.Faction == "ally" {
+			ally = u.ID
+		}
+	}
+	require.NotEmpty(t, ally)
+	_, err := e.Apply(core.Command{Kind: "end"})
+	require.NoError(t, err)
+	for i := 0; e.Observe().Turn == "support" && i < 20; i++ {
+		c, err := Next(e)
+		require.NoError(t, err)
+		_, err = e.Apply(c)
+		require.NoError(t, err)
+	}
+	a, b := unit(e, ally), unit(e, "boss")
+	assert.Equal(t, 5, distance(a.X, a.Y, b.X, b.Y), "it closes in as far as it can instead of waiting outside the enemy's reach")
+}
+
+func TestFleeToAnAreaLeavesByTheNearestCellAndCountsAsFled(t *testing.T) {
+	e := battle(t, func(s *content.Stage) {
+		s.Areas = append(s.Areas, content.Area{ID: 9, Rect: content.MapRect{X: 11, Y: 0, W: 1, H: 8}, Name: "east edge"})
+		for _, i := range []int{0, 1} {
+			s.Enemies[i].Policy, s.Enemies[i].GoalArea = "flee", 9
+		}
+		s.Events = []content.BattleEvent{{ID: "away", If: []string{"fled:boss"}, Do: []content.Action{{Kind: "flag", Flags: map[string]int{"boss-away": 1}}}}}
+	})
+	for i := 0; i < 3; i++ {
+		enemyTurn(t, e)
+	}
+	boss, troop := unit(e, "boss"), unit(e, "troop#1")
+	require.NotNil(t, troop)
+	assert.Zero(t, boss.HP)
+	assert.Zero(t, troop.HP)
+	assert.Equal(t, [2]int{11, 2}, [2]int{boss.X, boss.Y}, "each leaves by the edge cell nearest to it")
+	assert.Equal(t, [2]int{11, 4}, [2]int{troop.X, troop.Y})
+	s := e.Snapshot()
+	assert.Equal(t, 1, s.Flags["boss-away"]+s.PendingFlags["boss-away"])
 }

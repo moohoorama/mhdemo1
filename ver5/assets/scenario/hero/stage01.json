@@ -59,6 +59,7 @@
    "Y": 23,
    "Facing": "SE",
    "Group": "southcamp",
+   "Policy": "react",
    "DuelFirst": true
   },
   {
@@ -86,6 +87,7 @@
    "Y": 23,
    "Facing": "SE",
    "Group": "so1",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -94,6 +96,7 @@
    "Y": 24,
    "Facing": "SE",
    "Group": "so2",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -102,6 +105,7 @@
    "Y": 26,
    "Facing": "SW",
    "Group": "so3",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -110,6 +114,7 @@
    "Y": 26,
    "Facing": "SW",
    "Group": "so4",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -118,6 +123,7 @@
    "Y": 17,
    "Facing": "NW",
    "Group": "si1",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -126,6 +132,7 @@
    "Y": 18,
    "Facing": "NW",
    "Group": "si2",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -134,6 +141,7 @@
    "Y": 22,
    "Facing": "NE",
    "Group": "si3",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -142,6 +150,7 @@
    "Y": 23,
    "Facing": "NE",
    "Group": "si4",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -149,7 +158,8 @@
    "X": 24,
    "Y": 7,
    "Facing": "NE",
-   "Group": "eastcamp"
+   "Group": "eastcamp",
+   "Policy": "react"
   },
   {
    "Character": "troop_turban",
@@ -157,6 +167,7 @@
    "Y": 6,
    "Facing": "NE",
    "Group": "eastcamp",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -165,6 +176,7 @@
    "Y": 8,
    "Facing": "NE",
    "Group": "eastcamp",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -173,6 +185,7 @@
    "Y": 6,
    "Facing": "NE",
    "Group": "eastcamp",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -181,6 +194,7 @@
    "Y": 9,
    "Facing": "NE",
    "Group": "eastcamp",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -188,7 +202,8 @@
    "X": 7,
    "Y": 24,
    "Facing": "SW",
-   "Group": "westcamp"
+   "Group": "westcamp",
+   "Policy": "react"
   },
   {
    "Character": "troop_turban",
@@ -196,6 +211,7 @@
    "Y": 23,
    "Facing": "SW",
    "Group": "westcamp",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -204,6 +220,7 @@
    "Y": 25,
    "Facing": "SW",
    "Group": "westcamp",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -212,6 +229,7 @@
    "Y": 25,
    "Facing": "SW",
    "Group": "westcamp",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -220,6 +238,7 @@
    "Y": 23,
    "Facing": "SW",
    "Group": "westcamp",
+   "Policy": "react",
    "Shift": -0.07
   }
  ],
@@ -888,6 +907,7 @@
        "X": 29,
        "Y": 2,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wei",
        "Facing": "SW",
        "Group": "wei"
@@ -897,6 +917,7 @@
        "X": 28,
        "Y": 1,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wei",
        "Facing": "SW",
        "Group": "wei"
@@ -906,6 +927,7 @@
        "X": 30,
        "Y": 3,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wei",
        "Facing": "SW",
        "Group": "wei"
@@ -915,6 +937,7 @@
        "X": 27,
        "Y": 1,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wei",
        "Facing": "SW",
        "Group": "wei"
@@ -924,6 +947,7 @@
        "X": 29,
        "Y": 1,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wei",
        "Facing": "SW",
        "Group": "wei"
@@ -933,6 +957,7 @@
        "X": 30,
        "Y": 2,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wei",
        "Facing": "SW",
        "Group": "wei"
@@ -942,6 +967,7 @@
        "X": 28,
        "Y": 0,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wei",
        "Facing": "SW",
        "Group": "wei"
@@ -951,6 +977,7 @@
        "X": 30,
        "Y": 0,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wei",
        "Facing": "SW",
        "Group": "wei"
@@ -960,6 +987,7 @@
        "X": 31,
        "Y": 2,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wei",
        "Facing": "SW",
        "Group": "wei"
@@ -1112,6 +1140,7 @@
        "X": 2,
        "Y": 29,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wu",
        "Facing": "NE",
        "Group": "wu"
@@ -1121,6 +1150,7 @@
        "X": 1,
        "Y": 28,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wu",
        "Facing": "NE",
        "Group": "wu"
@@ -1130,6 +1160,7 @@
        "X": 3,
        "Y": 30,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wu",
        "Facing": "NE",
        "Group": "wu"
@@ -1139,6 +1170,7 @@
        "X": 0,
        "Y": 27,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wu",
        "Facing": "NE",
        "Group": "wu"
@@ -1148,6 +1180,7 @@
        "X": 1,
        "Y": 29,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wu",
        "Facing": "NE",
        "Group": "wu"
@@ -1157,6 +1190,7 @@
        "X": 2,
        "Y": 30,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wu",
        "Facing": "NE",
        "Group": "wu"
@@ -1166,6 +1200,7 @@
        "X": 1,
        "Y": 30,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wu",
        "Facing": "NE",
        "Group": "wu"
@@ -1175,6 +1210,7 @@
        "X": 0,
        "Y": 29,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wu",
        "Facing": "NE",
        "Group": "wu"
@@ -1184,6 +1220,7 @@
        "X": 0,
        "Y": 30,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wu",
        "Facing": "NE",
        "Group": "wu"
@@ -1193,6 +1230,7 @@
        "X": 2,
        "Y": 31,
        "AI": true,
+       "Policy": "assault",
        "Faction": "wu",
        "Facing": "NE",
        "Group": "wu"

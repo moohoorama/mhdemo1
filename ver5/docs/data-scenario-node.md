@@ -129,8 +129,9 @@ assets/scenario/
 | `Equipment` | 장비 목록 덮어쓰기. 생략·빈 배열의 뜻은 `Traits`와 같다. |
 | `Faction` | 진영색 덮어쓰기. `Factions`에 있어야 한다. 우선순위는 스폰 > 스테이지 `Faction`(적만) > 인물의 `Look.Faction`. |
 | `AI` | 아군 스폰을 `support` 차례에 자동 행동하는 AI 유닛으로 만든다. |
-| `Policy` | 행동 정책 `hold` `react` `assault` `march` `flee`(선택). 뜻은 logic-battle-event.md 5.4절. |
+| `Policy` | 행동 정책 `hold` `react` `assault` `march` `flee`. 적 스폰과 `AI` 아군 스폰은 반드시 하나를 고른다(플레이어 유닛만 비운다). 뜻은 logic-battle-event.md 5.4절. |
 | `Goal` | `march`·`flee`의 목표 칸 `{X, Y}`(맵 문서 좌표, 로드할 때 원점을 뺀다). 다른 정책에는 쓰지 않는다. |
+| `GoalArea` | `Goal` 대신 `march`·`flee`의 목표 영역 번호(`Areas`). 그 영역의 아무 칸이 목표다. |
 | `Group` | 같은 이름을 가진 스폰을 이벤트 조건·`remove`가 한꺼번에 가리킨다(이름 있는 인물은 인물 ID로도 가리킬 수 있다). |
 | `Side` | 이벤트가 만드는 스폰만: `ally`(기본, AI 아군) 또는 `enemy`. |
 | `DuelFirst` | 이번 차례에 아직 안 치른 일기토 상대와 맞닿을 칸에 닿으면 AI가 그 칸으로 먼저 간다. 닿지 않으면 평소대로 움직이고, 상대를 멀리서 치지는 않는다. |

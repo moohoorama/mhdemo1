@@ -40,17 +40,20 @@
   {
    "Character": "boss",
    "X": 9,
-   "Y": 2
+   "Y": 2,
+   "Policy": "react"
   },
   {
    "Character": "troop",
    "X": 9,
-   "Y": 4
+   "Y": 4,
+   "Policy": "react"
   },
   {
    "Character": "troop",
    "X": 10,
    "Y": 3,
+   "Policy": "react",
    "Level": 5
   }
  ],

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/mlange-42/ark/ecs"
+	"slices"
 	"sort"
 	"srpg/internal/content"
 	"strconv"
@@ -616,7 +617,7 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	if sp.Faction != "" {
 		color = sp.Faction
 	}
-	u := Unit{AI: sp.AI, Policy: sp.Policy, Goal: copyGoal(sp.Goal), DuelFirst: sp.DuelFirst, Group: sp.Group, ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
+	u := Unit{AI: sp.AI, Policy: sp.Policy, Goal: copyGoal(sp.Goal), GoalArea: sp.GoalArea, DuelFirst: sp.DuelFirst, Group: sp.Group, ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
 	npcStock := e.data.Rules.EnemyStock
 	if side == "ally" {
 		npcStock = e.data.Rules.AllyStock
@@ -788,12 +789,16 @@ func copyGoal(p *content.Point) *content.Point {
 }
 
 // fleeing units that have reached their goal leave the field, as if retreated; the event's Text "flight"
-// tells the screen they walk off instead of falling.
+// tells the screen they walk off instead of falling, and the fled condition remembers they got away.
 func (e *Engine) leaveByFlight() {
+	stage := e.data.Stages[e.state.Stage]
 	for _, id := range keys(e.unitIDs) {
-		if u := e.unit(id); u.HP > 0 && u.Policy == "flee" && u.Goal != nil && u.X == u.Goal.X && u.Y == u.Goal.Y {
-			u.HP = 0
-			e.events = append(e.events, Event{Kind: "retreat", Actor: u.ID, Text: "flight"})
+		u := e.unit(id)
+		if u.HP <= 0 || u.Policy != "flee" || !slices.Contains(stage.GoalCells(u.Goal, u.GoalArea), content.Point{X: u.X, Y: u.Y}) {
+			continue
 		}
+		u.HP = 0
+		e.state.Executed["fled-"+stage.ID+"-"+u.ID] = true
+		e.events = append(e.events, Event{Kind: "retreat", Actor: u.ID, Text: "flight"})
 	}
 }

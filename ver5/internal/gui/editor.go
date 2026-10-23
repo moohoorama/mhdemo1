@@ -542,7 +542,7 @@ func (g *Game) editorStamp(p image.Point, erase bool) {
 		}
 		equipment = append(equipment, id)
 	}
-	sp := g.editorRanked(content.Spawn{Character: pick, X: x, Y: y, Class: class, Facing: e.facing, Equipment: &equipment})
+	sp := g.editorRanked(content.Spawn{Character: pick, X: x, Y: y, Class: class, Facing: e.facing, Equipment: &equipment, Policy: "react"})
 	d.Stage.Enemies = append(d.Stage.Enemies, sp)
 	e.selected = len(d.Stage.Enemies) - 1
 	s := mapedit.Clone(sp)

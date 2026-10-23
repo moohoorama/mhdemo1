@@ -354,7 +354,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 		} else if u.AI || u.DuelFirst {
 			return nil, fail("CorruptSave")
 		}
-		if !content.ValidPolicy(u.Policy, u.Goal, stage.Width, stage.Height) {
+		if !stage.ValidPolicy(u.Policy, u.Goal, u.GoalArea) {
 			return nil, fail("CorruptSave") // an event may change a unit's policy, so only its shape is checked
 		}
 		if u.Facing != "" && !contains([]string{"N", "NE", "E", "SE", "S", "SW", "W", "NW"}, u.Facing) {

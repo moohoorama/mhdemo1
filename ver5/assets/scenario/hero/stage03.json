@@ -1424,6 +1424,7 @@
        "X": 11,
        "Y": 4,
        "AI": true,
+       "Policy": "assault",
        "DuelFirst": true,
        "Faction": "yuan",
        "Facing": "NE"
@@ -1433,6 +1434,7 @@
        "X": 12,
        "Y": 4,
        "AI": true,
+       "Policy": "assault",
        "DuelFirst": true,
        "Faction": "yuan",
        "Facing": "NE"
@@ -1443,6 +1445,7 @@
        "Y": 5,
        "Class": "light_infantry",
        "AI": true,
+       "Policy": "assault",
        "Faction": "yuan",
        "Facing": "NE"
       },
@@ -1452,6 +1455,7 @@
        "Y": 5,
        "Class": "light_infantry",
        "AI": true,
+       "Policy": "assault",
        "Faction": "yuan",
        "Facing": "NE"
       },
@@ -1461,6 +1465,7 @@
        "Y": 5,
        "Class": "light_infantry",
        "AI": true,
+       "Policy": "assault",
        "Faction": "yuan",
        "Facing": "NE"
       },
@@ -1470,6 +1475,7 @@
        "Y": 6,
        "Class": "light_infantry",
        "AI": true,
+       "Policy": "assault",
        "Faction": "yuan",
        "Facing": "NE"
       },
@@ -1479,6 +1485,7 @@
        "Y": 6,
        "Class": "light_infantry",
        "AI": true,
+       "Policy": "assault",
        "Faction": "yuan",
        "Facing": "NE"
       },
@@ -1488,6 +1495,7 @@
        "Y": 6,
        "Class": "light_infantry",
        "AI": true,
+       "Policy": "assault",
        "Faction": "yuan",
        "Facing": "NE"
       }

@@ -220,7 +220,9 @@ func (g *Game) editorDetail(dst *ebiten.Image) {
 		e.page = 0
 	})
 	g.btn(dst, image.Rect(1018, 596, 1132, 632), "적용", g.editorApply)
-	g.btn(dst, image.Rect(1140, 596, 1252, 632), "초기화", func() { e.draft = &content.Spawn{Character: s.Character, X: s.X, Y: s.Y, Facing: "NW"} })
+	g.btn(dst, image.Rect(1140, 596, 1252, 632), "초기화", func() {
+		e.draft = &content.Spawn{Character: s.Character, X: s.X, Y: s.Y, Facing: "NW", Policy: s.Policy, Goal: s.Goal, GoalArea: s.GoalArea}
+	})
 }
 func (g *Game) editorPopup(dst *ebiten.Image) {
 	e := g.editor

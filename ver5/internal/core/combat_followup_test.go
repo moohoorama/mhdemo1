@@ -198,3 +198,71 @@ func TestTurnLimitBoundary(t *testing.T) {
 		assert.Equal(t, "victory", e.state.Result)
 	})
 }
+
+func TestDerivedAttacksKeepStrikeTraits(t *testing.T) {
+	// the boss's cross reaches archer1 above the hero; troop#1 stands right of the boss
+	setup := func(t *testing.T) (*Engine, *Unit, *Unit) {
+		e, a, b := arena(t)
+		w, t1 := e.unit("archer1"), e.unit("troop#1")
+		w.X, w.Y, t1.X, t1.Y = 5, 5, 7, 6
+		a.HP, b.HP, w.HP, t1.HP = 10000, 10000, 10000, 10000
+		e.data.Rules.HitFloor, e.data.Rules.HitCeil = 100, 100
+		return e, a, b
+	}
+	struck := func(e *Engine, by string) (targets []string, doubled bool) {
+		for _, ev := range e.events {
+			if ev.Kind == "damage" && ev.Actor == by {
+				targets = append(targets, ev.Target)
+			}
+			doubled = doubled || ev.Kind == "double" && ev.Actor == by
+		}
+		return
+	}
+	t.Run("counter-all", func(t *testing.T) {
+		e, a, b := setup(t)
+		e.SetCounterAll(true)
+		with(e, "boss", "cross_t", "twice")
+		e.events = nil
+		require.NoError(t, e.useSkill(a, Command{Kind: "attack", Actor: a.ID, Target: b.ID}))
+		got, doubled := struck(e, b.ID)
+		assert.Contains(t, got, "archer1")
+		assert.True(t, doubled)
+	})
+	t.Run("riposte", func(t *testing.T) {
+		e, a, b := setup(t)
+		with(e, "boss", "riposte_t", "cross_t", "twice")
+		b.Status["guard"] = Status{Turns: 1}
+		e.events = nil
+		require.NoError(t, e.useSkill(a, Command{Kind: "attack", Actor: a.ID, Target: b.ID}))
+		got, doubled := struck(e, b.ID)
+		assert.Contains(t, got, "archer1")
+		assert.True(t, doubled)
+	})
+	t.Run("assist", func(t *testing.T) {
+		e, a, b := setup(t)
+		w := e.unit("archer1")
+		w.X, w.Y = 6, 5
+		e.char("archer1").Class = "rider"
+		e.char("archer1").Equipment = map[string]string{}
+		with(e, "archer1", "assist_t", "cross_t", "twice")
+		e.events = nil
+		require.NoError(t, e.useSkill(a, Command{Kind: "attack", Actor: a.ID, Target: b.ID}))
+		got, doubled := struck(e, w.ID)
+		assert.Contains(t, got, "troop#1")
+		assert.True(t, doubled)
+	})
+	t.Run("no assist on a counter", func(t *testing.T) {
+		e, _, b := setup(t)
+		e.SetCounterAll(true)
+		w := e.unit("archer1")
+		e.char("archer1").Class = "rider"
+		e.char("archer1").Equipment = map[string]string{}
+		with(e, "archer1", "assist_t")
+		w.X, w.Y = 6, 5
+		e.state.Turn = "enemy"
+		e.events = nil
+		require.NoError(t, e.useSkill(b, Command{Kind: "attack", Actor: b.ID, Target: "hero"}))
+		got, _ := struck(e, w.ID)
+		assert.Empty(t, got)
+	})
+}

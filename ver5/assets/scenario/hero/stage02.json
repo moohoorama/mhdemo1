@@ -159,6 +159,7 @@
    "HP": 840,
    "Facing": "SW",
    "AI": true,
+   "Policy": "react",
    "Faction": "wu"
   },
   {
@@ -168,6 +169,7 @@
    "HP": 628,
    "Facing": "SW",
    "AI": true,
+   "Policy": "react",
    "Faction": "wu"
   },
   {
@@ -177,6 +179,7 @@
    "HP": 742,
    "Facing": "SW",
    "AI": true,
+   "Policy": "react",
    "Faction": "wu"
   },
   {
@@ -186,6 +189,7 @@
    "HP": 568,
    "Facing": "SW",
    "AI": true,
+   "Policy": "react",
    "Faction": "wu"
   }
  ],

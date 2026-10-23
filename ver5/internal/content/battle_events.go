@@ -80,7 +80,7 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 						return nil, nil, err
 					}
 					enemy := sp.Side == "enemy"
-					if !ValidPolicy(sp.Policy, sp.Goal, s.Width, s.Height) {
+					if sp.Policy == "" || !s.ValidPolicy(sp.Policy, sp.Goal, sp.GoalArea) {
 						return nil, nil, fmt.Errorf("battle event spawn %s: policy", sp.Character)
 					}
 					if sp.Side != "" && sp.Side != "ally" && !enemy || !enemy && !sp.AI || sp.X < 0 || sp.Y < 0 || sp.X >= s.Width || sp.Y >= s.Height || d.Characters[sp.Character].Playable || d.Characters[sp.Character].Lord {
@@ -102,7 +102,7 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 					note(sp)
 				}
 			case "ai":
-				if a.Policy == "" || len(a.Targets) == 0 || !ValidPolicy(a.Policy, a.Goal, s.Width, s.Height) {
+				if a.Policy == "" || len(a.Targets) == 0 || !s.ValidPolicy(a.Policy, a.Goal, a.GoalArea) {
 					return nil, nil, fmt.Errorf("battle event %s: ai action", event.ID)
 				}
 			case "terrain":

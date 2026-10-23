@@ -5,6 +5,29 @@
 
 ---
 
+## 2026-10-23 영역 도주 목표와 `fled` 조건, B04 조조 퇴각 부목표
+
+결정 · `march`·`flee`의 목표로 칸 대신 영역(`GoalArea`)을 줄 수 있고, `fled:X` 조건이 맵 밖으로 빠져나간 유닛을 쓰러진 유닛과 구분한다. B04의 조조군은 여포가 나타나면 `march` 대신 `flee`로 동남쪽 가장자리 전체(영역 2)로 빠져나가고, 부목표는 "조조가 동남쪽 끝으로 무사히 빠져나간다"(`fled:caocao`) · 이유: 사용자 "변수 추격전의 조조도 이상해. 여포 나타나면 도망가야 할거 같은데, 여포랑 싸우고있어", "조조가 성공적으로 동쪽에서 맵 바깥으로 퇴각하는걸 부목표로", "동맹군이 후퇴할때 특정 한 타일로 퇴각 … 동남쪽 전반을 길~게 다 퇴각지점으로 … 아니면 대군이 뭉쳐서 가버리거든" — `march`는 가는 길에 칠 수 있으면 치므로 따라잡은 여포 기병과 싸웠고, `flee`로 빠져나가면 HP 0이라 `alive:caocao`가 거짓이 됐다. 제후군 14명은 (27,1) 한 칸, 조조군은 (26,6) 한 칸을 향해 줄을 섰다 · 영향받는 문서: logic-battle-event.md 4·5절, data-scenario-node.md, conceptual_scenario.md 5장
+- `internal/content/content.go`: `Spawn.GoalArea`·`Action.GoalArea`, `ValidPolicy`를 `Stage.ValidPolicy(policy, goal, area)`로(칸·영역 중 하나만, 전투 영역 안에 칸이 있어야), `Stage.GoalCells`
+- `internal/content/cond.go`, `internal/core/cond.go`: `fled:X` — `Executed["fled-<스테이지>-<유닛>"]`
+- `internal/core/engine.go`: `leaveByFlight`가 목표 칸들 중 어디서든 이탈하고 `fled` 기록을 남김; `types.go`·`battle_events.go`: `Unit.GoalArea`를 스폰·`ai` 동작에서 옮김
+- `internal/ai/ai.go`: 목표 길 찾기의 씨앗을 `GoalCells` 전부로, 같은 거리면 덜 걷는 칸(−0.01×걸음) — 동점에서 첫 후보로 돌아가던 것
+- `assets/scenario/hero/stage04.json`: 영역 2 "동남쪽 끝"(x=27 열 전체), `lubu-appears`의 `lords`·`wei`를 `flee`·`GoalArea: 2`로, 부목표 `generals`를 `fled:caocao`로
+- `internal/gui/uidemo_flee.go`: 데모 도주 목표를 영역 2로; `cmd/_balance`: `-show`가 도주 이탈의 칸을 찍음
+- 확인: `_balance -stage B04 -show` 제후군·조조군 15명 넘게 (27,2)~(27,8)에 흩어져 이탈, 조조 8라운드 (27,4); `-ui flee -stage B04` 캡처에서 조홍 (27,2)·조인 (27,3)·일반 부대1 (27,4)로 각자 걸어 나감
+
+## 2026-10-23 AI 정책: "없음" 폐지, 아군 사리기 폐지, 사거리 끝에서 치기
+
+결정 · 적과 AI 아군은 `hold`·`react`·`assault`·`march`·`flee` 중 하나를 반드시 갖고, 적의 `assault`를 보고 아군 AI 전체가 사리던 `charging`을 없애며, 다가가는 이동은 칠 수 있는 칸 중 상대와 가장 먼 칸을 고른다 · 이유: 사용자 "stage1 전투에서 손견, 조조군의 움직임이 이상해. 적에게 달려들지 않고 자기 자리에서 밍기적" — 황건 남쪽 병사가 `assault`라 맵 전체의 아군 AI가 "칠 수 없는데 적 사거리 안인 칸 −40"으로 사거리 바로 밖에서 멈췄다(srpg-cli 5턴 동안 조조군이 북동 모서리에서 맴돎). 사리기가 내 정책이 아니라 맵 어딘가의 적 정책으로 켜졌고, 사리기가 우연히 가려 주던 궁병(최소 사거리 2)이 적 바로 옆에 붙어 못 쏘는 문제도 드러났다("궁병이 달라붙어서 공격 못하는 정책은 없어야"). "없음"은 `react`와 거의 같아(보병은 깨는 거리가 5 대 5) 스토리 상황에 맞춰 둘 중 하나로 고르게 했다 · 영향받는 문서: logic-battle-event.md 5.4, data-scenario-node.md
+- `internal/ai/ai.go`: `hold()`·`assaulting()`·적 기본 5걸음 대기를 지우고 `approach()`(칠 수 있는 칸은 40 + 가장 가까운 상대와의 거리, 최소 사거리 안쪽 칸 −5, 아니면 걸어서 다가간 칸당 3); 군주의 위험 칸 감점을 10×n에서 50×n으로 — 사격 칸 점수(40+)에 묻히지 않게
+- `internal/core/types.go`: `AIPolicyVersion` greedy-11
+- `internal/content/validate.go`, `battle_events.go`: 적 스폰·`AI` 아군 스폰·이벤트 `spawn`에 정책 필수
+- `internal/gui/editor.go`, `editor_ui.go`: 에디터가 새로 놓는 적은 `react`, 초기화는 정책·목표를 유지
+- `assets/scenario/hero/stage01·02·03·04·06·07.json`: B01 황건 진영 `react`(잠든 진영, 개전 이벤트가 바꿈)·조조군·손견군 `assault`, B02 굶주린 손견군 `react`, B03 목순·무안국 `assault`, B04 제후군 `assault`, B06 안량 `react`, B07 문추·국의·선봉 `react`(2라운드에 `assault`)·공손찬군 `react`(다리 북쪽을 지킴)
+- `internal/testdata/mini/scenario/mini/stage01·02.json`: 적에 `react`(예전 기본처럼 기다림)
+- `internal/ai/policy_test.go`: 궁병이 사거리 끝(3)에서 쏘는 시험, `assault` 아군이 돌격해 오는 적의 사거리에 들어가는 시험 — 예전 코드에서는 각각 거리 1·8
+- 밸런스(10시드, 이전 → 이후): rush B01 9→8, B02 10→9, B03 8→8, B05 0→1 / ai B01 10→10, B02 10→10, B03 9→9, B05 1→0. B04 이후 0승과 `TestRushWinsTheFirstStages` 2/5(B03 패배)는 이전부터 같다
+
 ## 2026-10-22 도주 유닛의 전장 이탈 연출
 
 결정 · 도주 유닛은 목표 칸에 닿는 즉시 전장 밖으로 걸어 나가며 어두워지고 사라진다 · 이유: 사용자 "동탁 추격전에서 원술을 비롯 동맹군이 후퇴하는게 매우 어색. 병력이 타일 한곳에 겹쳐서 배치되는 증상" — 이동 재생이 같은 명령의 `retreat` 이벤트를 무시해 퇴각한 유닛이 목표 칸에 그대로 보이고, 다음 유닛이 그 칸으로 걸어 들어가 겹쳤다 · 영향받는 문서: presentation-replay.md

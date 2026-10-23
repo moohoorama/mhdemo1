@@ -141,7 +141,15 @@ func play(d *content.Data, i, level int, seed uint64, player string, damage, xp 
 		check(err)
 		for _, ev := range r.Events {
 			if show && (ev.Kind == "retreat" || ev.Kind == "death" || ev.Kind == "duel" || ev.Kind == "speech" || ev.Kind == "damage" || ev.Kind == "critical") {
-				fmt.Printf("    r%d %s %s %s%s %d\n", e.Observe().Round, ev.Kind, ev.Actor, ev.Target, ev.DuelID, ev.Amount)
+				fmt.Printf("    r%d %s %s %s%s %d", e.Observe().Round, ev.Kind, ev.Actor, ev.Target, ev.DuelID, ev.Amount)
+				if ev.Text == "flight" {
+					for _, u := range e.Observe().UnitViews {
+						if u.ID == ev.Actor {
+							fmt.Printf(" flight at (%d,%d)", u.X, u.Y)
+						}
+					}
+				}
+				fmt.Println()
 			}
 			if ev.Kind == "retreat" || ev.Kind == "death" {
 				for _, u := range e.Observe().UnitViews {

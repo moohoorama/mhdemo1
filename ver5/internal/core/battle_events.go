@@ -145,7 +145,7 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 			for _, t := range a.Targets {
 				for _, u := range e.matching(t) {
 					if u.HP > 0 {
-						u.Policy, u.Goal = a.Policy, copyGoal(a.Goal)
+						u.Policy, u.Goal, u.GoalArea = a.Policy, copyGoal(a.Goal), a.GoalArea
 					}
 				}
 			}

@@ -18,13 +18,13 @@ type Cond struct {
 // Story nodes may use storyConds; battle events may use battleConds.
 var storyConds = map[string]bool{"flag": true, "alive": true, "dead": true, "party": true, "choice": true, "won": true}
 var battleConds = map[string]bool{"flag": true, "choice": true, "won": true, "round": true, "turnstart": true, "defeated": true,
-	"alldefeated": true, "alive": true, "at": true, "allat": true, "adjacent": true, "hp": true, "duel": true, "any": true}
+	"alldefeated": true, "alive": true, "at": true, "allat": true, "adjacent": true, "hp": true, "duel": true, "fled": true, "any": true}
 
 var turnNames = []string{"ally", "support", "enemy"}
 
 // ParseCond reads "!?op:args". The forms are flag:key[>=N], alive|dead|party|defeated|alldefeated:X,
 // choice:node=option, won:stage, round>=N, turnstart:faction, at|allat:X:area, adjacent:A:B,
-// hp:X<N, duel:id and any:[cond, cond]. A leading ! negates.
+// hp:X<N, duel:id, fled:X (left the field by flight) and any:[cond, cond]. A leading ! negates.
 func ParseCond(s string) (Cond, error) {
 	bad := func() (Cond, error) { return Cond{}, fmt.Errorf("condition %q", s) }
 	c := Cond{N: 1}
@@ -149,7 +149,7 @@ func (d *Data) validateParsed(s string, c Cond, refs *battleRefs) error {
 		if d.StageIndex(c.Arg) < 0 {
 			return fmt.Errorf("condition %q: no stage %s", s, c.Arg)
 		}
-	case "defeated", "alldefeated", "hp":
+	case "defeated", "alldefeated", "hp", "fled":
 		return target(c.Arg)
 	case "adjacent":
 		if err := target(c.Arg); err != nil {

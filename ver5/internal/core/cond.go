@@ -120,6 +120,13 @@ func (e *Engine) holds(c content.Cond, battle bool) bool {
 		return false
 	case "duel":
 		return e.state.Executed["duel-"+c.Arg]
+	case "fled":
+		for _, u := range e.matching(c.Arg) {
+			if e.state.Executed["fled-"+e.data.Stages[e.state.Stage].ID+"-"+u.ID] {
+				return true
+			}
+		}
+		return false
 	case "any":
 		for _, sub := range c.Any {
 			if e.holds(sub, battle) != sub.Not {

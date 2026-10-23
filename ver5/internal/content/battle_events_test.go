@@ -209,23 +209,30 @@ func TestLoadChecksPoliciesAndAIActions(t *testing.T) {
 
 func TestValidPolicyChecksPolicyAgainstGoal(t *testing.T) {
 	inside, outside := &Point{X: 3, Y: 3}, &Point{X: 12, Y: 3}
+	st := Stage{Width: 12, Height: 8, Areas: []Area{{ID: 1, Rect: MapRect{X: 11, Y: 0, W: 1, H: 8}}, {ID: 2, Rect: MapRect{X: 20, Y: 0, W: 1, H: 8}}}}
 	for name, c := range map[string]struct {
 		policy string
 		goal   *Point
+		area   int
 		want   bool
 	}{
-		"default":             {"", nil, true},
-		"hold":                {"hold", nil, true},
-		"assault":             {"assault", nil, true},
-		"march to a cell":     {"march", inside, true},
-		"flee to a cell":      {"flee", inside, true},
-		"march needs a goal":  {"march", nil, false},
-		"goal off the map":    {"flee", outside, false},
-		"hold has no goal":    {"hold", inside, false},
-		"goal needs a policy": {"", inside, false},
-		"unknown policy":      {"charge", nil, false},
+		"default":               {"", nil, 0, true},
+		"hold":                  {"hold", nil, 0, true},
+		"assault":               {"assault", nil, 0, true},
+		"march to a cell":       {"march", inside, 0, true},
+		"flee to a cell":        {"flee", inside, 0, true},
+		"flee to an area":       {"flee", nil, 1, true},
+		"march needs a goal":    {"march", nil, 0, false},
+		"goal off the map":      {"flee", outside, 0, false},
+		"area off the map":      {"flee", nil, 2, false},
+		"no such area":          {"march", nil, 3, false},
+		"a cell or an area":     {"flee", inside, 1, false},
+		"hold has no goal":      {"hold", inside, 0, false},
+		"hold has no goal area": {"hold", nil, 1, false},
+		"goal needs a policy":   {"", inside, 0, false},
+		"unknown policy":        {"charge", nil, 0, false},
 	} {
-		assert.Equal(t, c.want, ValidPolicy(c.policy, c.goal, 12, 8), name)
+		assert.Equal(t, c.want, st.ValidPolicy(c.policy, c.goal, c.area), name)
 	}
 }
 

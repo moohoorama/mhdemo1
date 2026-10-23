@@ -214,11 +214,12 @@ func (e *Engine) leech(u *Unit, dealt int) {
 }
 
 // attackOn is one physical attack on its victims. Whether it strikes twice is rolled once, against the
-// target the attack was aimed at, and holds for every victim; all take the first strike before any takes
-// the second, so a splash lands with the first swing. A miss lets a riposting victim strike back.
-func (e *Engine) attackOn(u, aim *Unit, vs []*Unit, s content.Skill, share map[string]float64, derived bool) map[string]int {
+// target the attack was aimed at, and holds for every victim unless twice forces it; all take the first
+// strike before any takes the second, so a splash lands with the first swing. A miss lets a riposting
+// victim strike back.
+func (e *Engine) attackOn(u, aim *Unit, vs []*Unit, s content.Skill, share map[string]float64, derived, twice bool) map[string]int {
 	var again []*Unit
-	if float64(e.rand(100)) < e.doubleChance(u, aim, s) || s.Strikes > 1 {
+	if twice || float64(e.rand(100)) < e.doubleChance(u, aim, s) || s.Strikes > 1 {
 		again = vs
 	}
 	dealt := map[string]int{}
@@ -251,11 +252,30 @@ func btoi(b bool) int {
 	return 0
 }
 
+// strikeBack is a basic attack set off by another one (a counter, assist or riposte) at share k of a
+// normal blow. It is aimed at the first of aims and also hits the rest, each widened by u's area traits,
+// and strikes twice like any attack of u's, or surely when twice is set. u heals by what it deals.
+func (e *Engine) strikeBack(u *Unit, aims []*Unit, k float64, twice bool) {
+	var vs []*Unit
+	share := map[string]float64{}
+	for _, aim := range aims {
+		hit, sh := e.victims(u, aim, e.basic())
+		for _, q := range hit {
+			if share[q.ID] == 0 {
+				vs = append(vs, q)
+			}
+			share[q.ID] = math.Max(share[q.ID], sh[q.ID]*k)
+		}
+	}
+	for _, n := range e.attackOn(u, aims[0], vs, e.basic(), share, true, twice) {
+		e.leech(u, n)
+	}
+}
+
 // riposte is the defender's answer to a missed blow, from anywhere.
 func (e *Engine) riposte(v, u *Unit) {
 	if k := e.fx(v, content.FxRiposte); k > 0 && v.HP > 0 && u.HP > 0 {
-		n, _ := e.strike(v, u, e.basic(), blow{share: k, derived: true})
-		e.leech(v, n)
+		e.strikeBack(v, []*Unit{u}, k, false)
 	}
 }
 
@@ -263,33 +283,21 @@ func (e *Engine) riposte(v, u *Unit) {
 const counterAllShare = 0.5
 
 // counterBack is the target's counter-attack after it took u's physical action: from a counter stance,
-// or by force against a weaker attacker. Its strikes are rolled for a second one like any attack.
-// Without either, the counter-all setting returns one blow at counterAllShare.
+// or by force against a weaker attacker, which surely strikes twice. Without either, the counter-all
+// setting strikes back at counterAllShare.
 func (e *Engine) counterBack(u, v *Unit) {
 	if v.HP <= 0 || u.HP <= 0 || !e.inRange(v, u, e.basic()) {
 		return
 	}
 	forced := e.has(v, content.FxCounterForce) && e.might(u) < e.might(v)
+	k := e.data.Rules.CounterShare
 	if v.Status["counter"].Turns == 0 && !forced && !e.has(v, content.FxCounterAlways) {
-		if e.state.CounterAll {
-			n, _ := e.strike(v, u, e.basic(), blow{share: counterAllShare, derived: true})
-			e.leech(v, n)
+		if !e.state.CounterAll {
+			return
 		}
-		return
+		k = counterAllShare
 	}
-	R := e.data.Rules
-	double := forced || float64(e.rand(100)) < e.doubleChance(v, u, e.basic())
-	for i := 0; i < 1+btoi(double) && u.HP > 0; i++ {
-		if i > 0 {
-			e.emit("double", v.ID, u.ID, 0)
-		}
-		k := R.CounterShare
-		if i > 0 {
-			k *= R.DoubleShare
-		}
-		n, _ := e.strike(v, u, e.basic(), blow{share: k, derived: true})
-		e.leech(v, n)
-	}
+	e.strikeBack(v, []*Unit{u}, k, forced)
 }
 
 // victims are the units a physical action strikes with the share of full damage each takes.
@@ -471,7 +479,7 @@ func (e *Engine) physical(u, v *Unit, s content.Skill, c Command) {
 
 // exchange is one attack on its victims with what answers it: allies' assists and the victims' counters.
 func (e *Engine) exchange(u, v *Unit, hit []*Unit, share map[string]float64, s content.Skill, c Command) {
-	dealt, total := e.attackOn(u, v, hit, s, share, false), 0
+	dealt, total := e.attackOn(u, v, hit, s, share, false, false), 0
 	for _, q := range hit {
 		total += dealt[q.ID]
 		if !e.rangedAttack(u, q, s) {
@@ -488,19 +496,16 @@ func (e *Engine) exchange(u, v *Unit, hit []*Unit, share map[string]float64, s c
 			continue
 		}
 		var reach []*Unit
-		shares := map[string]float64{}
 		for _, q := range hit {
 			if q.HP > 0 && e.inRange(w, q, e.basic()) {
 				reach = append(reach, q)
-				shares[q.ID] = k
 			}
 		}
 		if len(reach) == 0 {
 			continue
 		}
-		for _, n := range e.attackOn(w, v, reach, e.basic(), shares, true) {
-			e.leech(w, n)
-		}
+		slices.SortStableFunc(reach, func(a, b *Unit) int { return btoi(b == v) - btoi(a == v) })
+		e.strikeBack(w, reach, k, false)
 	}
 	for _, q := range hit {
 		e.counterBack(u, q)

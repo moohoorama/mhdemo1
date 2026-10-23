@@ -83,6 +83,7 @@
    "X": 5,
    "Y": 4,
    "AI": true,
+   "Policy": "react",
    "Faction": "gongsun",
    "Facing": "SE"
   },
@@ -92,6 +93,7 @@
    "Y": 3,
    "Faction": "gongsun",
    "AI": true,
+   "Policy": "react",
    "Group": "tianjun",
    "Facing": "SE",
    "Class": "light_cavalry",
@@ -103,6 +105,7 @@
    "Y": 5,
    "Faction": "gongsun",
    "AI": true,
+   "Policy": "react",
    "Group": "tianjun",
    "Facing": "SE",
    "Class": "light_cavalry",
@@ -113,6 +116,7 @@
    "X": 13,
    "Y": 3,
    "AI": true,
+   "Policy": "react",
    "Faction": "gongsun",
    "Facing": "SE",
    "HP": 400
@@ -123,6 +127,7 @@
    "Y": 4,
    "Faction": "gongsun",
    "AI": true,
+   "Policy": "react",
    "Group": "baima",
    "Facing": "SE",
    "Class": "light_cavalry",
@@ -134,6 +139,7 @@
    "Y": 4,
    "Faction": "gongsun",
    "AI": true,
+   "Policy": "react",
    "Group": "baima",
    "Facing": "SE",
    "Class": "light_cavalry",
@@ -145,6 +151,7 @@
    "Y": 4,
    "Faction": "gongsun",
    "AI": true,
+   "Policy": "react",
    "Group": "baima",
    "Facing": "SE",
    "Class": "light_cavalry",
@@ -156,6 +163,7 @@
    "Y": 4,
    "Faction": "gongsun",
    "AI": true,
+   "Policy": "react",
    "Group": "baima",
    "Facing": "SE",
    "Class": "light_cavalry",
@@ -167,6 +175,7 @@
    "Y": 3,
    "Faction": "gongsun",
    "AI": true,
+   "Policy": "react",
    "Group": "baima-heavy",
    "Facing": "SE",
    "Class": "heavy_cavalry",
@@ -178,6 +187,7 @@
    "Y": 3,
    "Faction": "gongsun",
    "AI": true,
+   "Policy": "react",
    "Group": "baima-heavy",
    "Facing": "SE",
    "Class": "heavy_cavalry",
@@ -191,14 +201,16 @@
    "Y": 11,
    "DuelFirst": true,
    "Faction": "yuan",
-   "Facing": "NW"
+   "Facing": "NW",
+   "Policy": "react"
   },
   {
    "Character": "quyi",
    "X": 11,
    "Y": 10,
    "Faction": "yuan",
-   "Facing": "NE"
+   "Facing": "NE",
+   "Policy": "react"
   },
   {
    "Character": "yuanshao",
@@ -223,6 +235,7 @@
    "Y": 10,
    "Faction": "yuan",
    "Group": "wen-cav",
+   "Policy": "react",
    "Facing": "NW",
    "Class": "light_cavalry",
    "Shift": -0.07
@@ -233,6 +246,7 @@
    "Y": 10,
    "Faction": "yuan",
    "Group": "wen-cav",
+   "Policy": "react",
    "Facing": "NW",
    "Class": "light_cavalry",
    "Shift": -0.07
@@ -243,6 +257,7 @@
    "Y": 11,
    "Faction": "yuan",
    "Group": "wen-cav",
+   "Policy": "react",
    "Facing": "NW",
    "Class": "light_cavalry",
    "Shift": -0.07
@@ -947,6 +962,7 @@
        "X": 10,
        "Y": 11,
        "Group": "vanguard",
+       "Policy": "react",
        "Faction": "yuan",
        "Facing": "NE",
        "Side": "enemy"
@@ -957,6 +973,7 @@
        "Y": 11,
        "Faction": "yuan",
        "Group": "vanguard",
+       "Policy": "react",
        "Facing": "NW",
        "Class": "light_infantry",
        "Side": "enemy",
@@ -980,6 +997,7 @@
        "X": 10,
        "Y": 11,
        "Group": "vanguard",
+       "Policy": "react",
        "Faction": "yuan",
        "Facing": "NE",
        "Side": "enemy"
@@ -989,6 +1007,7 @@
        "X": 18,
        "Y": 11,
        "Group": "vanguard",
+       "Policy": "react",
        "Faction": "yuan",
        "Facing": "NW",
        "Side": "enemy"
@@ -999,6 +1018,7 @@
        "Y": 12,
        "Faction": "yuan",
        "Group": "vanguard",
+       "Policy": "react",
        "Facing": "NE",
        "Class": "light_infantry",
        "Side": "enemy",
@@ -1010,6 +1030,7 @@
        "Y": 12,
        "Faction": "yuan",
        "Group": "vanguard",
+       "Policy": "react",
        "Facing": "NW",
        "Class": "light_infantry",
        "Side": "enemy",

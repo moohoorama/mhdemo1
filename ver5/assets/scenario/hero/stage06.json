@@ -77,6 +77,7 @@
    "Facing": "NE",
    "DuelFirst": true,
    "Group": "yan",
+   "Policy": "react",
    "Rank": "commander"
   },
   {

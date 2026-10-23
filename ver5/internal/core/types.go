@@ -3,7 +3,7 @@ package core
 import "srpg/internal/content"
 
 const CoreVersion = "2"
-const AIPolicyVersion = "greedy-10"
+const AIPolicyVersion = "greedy-11"
 const RulesVersion = "rules-14"
 
 // Character is a persistent record: a party member, or a troop made for one battle (Temp).
@@ -23,8 +23,9 @@ type Status struct {
 }
 type Unit struct {
 	AI, DuelFirst                        bool           `json:",omitempty"`
-	Policy                               string         `json:",omitempty"` // hold, assault, march or flee; none is the default advance
+	Policy                               string         `json:",omitempty"` // hold, react, assault, march or flee; none only on a player unit
 	Goal                                 *content.Point `json:",omitempty"` // the cell a marching or fleeing unit makes for
+	GoalArea                             int            `json:",omitempty"` // or, instead, the stage area whose nearest cell it makes for
 	ID, Character, Faction, Color        string
 	Group                                string `json:",omitempty"`
 	Facing                               string `json:",omitempty"`

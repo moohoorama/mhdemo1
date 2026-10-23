@@ -25,6 +25,11 @@ func force(t *testing.T, e *Engine, c content.Cond) {
 		e.state.Round = max(e.state.Round, c.N)
 	case "duel":
 		e.state.Executed["duel-"+c.Arg] = true
+	case "fled":
+		for _, u := range e.matching(c.Arg) {
+			u.HP = 0
+			e.state.Executed["fled-"+e.data.Stages[e.state.Stage].ID+"-"+u.ID] = true
+		}
 	case "flag":
 		if e.state.PendingFlags == nil {
 			e.state.PendingFlags = map[string]int{}

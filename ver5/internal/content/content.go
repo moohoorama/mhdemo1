@@ -181,8 +181,9 @@ type Terrain struct {
 type Point struct{ X, Y int }
 type Spawn struct {
 	AI                bool      `json:",omitempty"`
-	Policy            string    `json:",omitempty"` // how the unit behaves: hold, assault, march, flee; none is the default advance
+	Policy            string    `json:",omitempty"` // how the unit behaves: hold, react, assault, march, flee; every AI-driven unit has one
 	Goal              *Point    `json:",omitempty"` // march and flee: the cell the unit makes for
+	GoalArea          int       `json:",omitempty"` // march and flee instead of Goal: any cell of this stage area, the nearest one
 	DuelFirst         bool      `json:",omitempty"` // the AI seeks a pending duel partner before anything else
 	Class, Facing     string    `json:",omitempty"`
 	Group             string    `json:",omitempty"` // name events use to address this spawn with others
@@ -233,21 +234,22 @@ type Area struct {
 // Action is one effect of a battle event. Kind picks the fields that matter: say (Lines: the
 // speakers shown together), spawn (Spawns), remove (Targets leave the map), flag (Flags).
 type Action struct {
-	Kind    string
-	Lines   []Speech       `json:",omitempty"`
-	Spawns  []Spawn        `json:",omitempty"`
-	Targets []string       `json:",omitempty"`
-	Flags   map[string]int `json:",omitempty"`
-	Stat    string         `json:",omitempty"` // buff: attack, defense, mind, morale, agility (percent) or speed, range (cells)
-	Value   int            `json:",omitempty"` // buff: how much, negative for a debuff
-	Moves   []Move         `json:",omitempty"` // move: who goes where, all at once
-	Steps   [][]Step       `json:",omitempty"` // cutscene: groups of steps; a group's steps run together, the next group waits for them
-	Duel    string         `json:",omitempty"` // duel: the stage duel to hold now, wherever its officers stand
-	Area    int            `json:",omitempty"` // terrain: the area whose cells change
-	State   string         `json:",omitempty"` // terrain: the state they get; NoLayer clears it
-	Turns   int            `json:",omitempty"` // terrain: for how many rounds; none is for good (the state then turns into its Then)
-	Policy  string         `json:",omitempty"` // ai: the new policy of the Targets
-	Goal    *Point         `json:",omitempty"` // ai: its goal cell, for march and flee
+	Kind     string
+	Lines    []Speech       `json:",omitempty"`
+	Spawns   []Spawn        `json:",omitempty"`
+	Targets  []string       `json:",omitempty"`
+	Flags    map[string]int `json:",omitempty"`
+	Stat     string         `json:",omitempty"` // buff: attack, defense, mind, morale, agility (percent) or speed, range (cells)
+	Value    int            `json:",omitempty"` // buff: how much, negative for a debuff
+	Moves    []Move         `json:",omitempty"` // move: who goes where, all at once
+	Steps    [][]Step       `json:",omitempty"` // cutscene: groups of steps; a group's steps run together, the next group waits for them
+	Duel     string         `json:",omitempty"` // duel: the stage duel to hold now, wherever its officers stand
+	Area     int            `json:",omitempty"` // terrain: the area whose cells change
+	State    string         `json:",omitempty"` // terrain: the state they get; NoLayer clears it
+	Turns    int            `json:",omitempty"` // terrain: for how many rounds; none is for good (the state then turns into its Then)
+	Policy   string         `json:",omitempty"` // ai: the new policy of the Targets
+	Goal     *Point         `json:",omitempty"` // ai: its goal cell, for march and flee
+	GoalArea int            `json:",omitempty"` // ai: instead of Goal, any cell of this area
 }
 
 // Move sends a unit (or each unit of a group, to cells around To) somewhere, ignoring move range and terrain cost.
@@ -273,15 +275,39 @@ var BuffStats = []string{"attack", "defense", "mind", "morale", "agility", "spee
 // without fighting and leaves the field when it gets there.
 var Policies = []string{"hold", "react", "assault", "march", "flee"}
 
-// ValidPolicy checks a policy and its goal against each other; the goal's cell must lie inside w×h.
-func ValidPolicy(policy string, goal *Point, w, h int) bool {
+// ValidPolicy checks a policy and its goal against each other: march and flee take either a goal cell
+// inside the stage or one of its areas with a cell inside, the other policies neither.
+func (s Stage) ValidPolicy(policy string, goal *Point, area int) bool {
 	if policy != "" && !contains(Policies, policy) {
 		return false
 	}
 	if policy == "march" || policy == "flee" {
-		return goal != nil && goal.X >= 0 && goal.Y >= 0 && goal.X < w && goal.Y < h
+		return (goal == nil) != (area == 0) && len(s.GoalCells(goal, area)) > 0
 	}
-	return goal == nil
+	return goal == nil && area == 0
+}
+
+// GoalCells are the cells a marching or fleeing unit makes for: its goal cell, or every cell of its
+// goal area inside the stage.
+func (s Stage) GoalCells(goal *Point, area int) []Point {
+	var out []Point
+	if goal != nil {
+		if goal.X >= 0 && goal.Y >= 0 && goal.X < s.Width && goal.Y < s.Height {
+			out = append(out, *goal)
+		}
+		return out
+	}
+	for _, a := range s.Areas {
+		if a.ID != area {
+			continue
+		}
+		for y := max(0, a.Rect.Y); y < min(s.Height, a.Rect.Y+a.Rect.H); y++ {
+			for x := max(0, a.Rect.X); x < min(s.Width, a.Rect.X+a.Rect.W); x++ {
+				out = append(out, Point{X: x, Y: y})
+			}
+		}
+	}
+	return out
 }
 
 // BattleEvent runs its Do once (or each time its If turns true again when Repeat) as soon as all of If hold.

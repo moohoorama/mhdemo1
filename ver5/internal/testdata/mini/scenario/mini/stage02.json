@@ -40,7 +40,8 @@
   {
    "Character": "boss",
    "X": 9,
-   "Y": 2
+   "Y": 2,
+   "Policy": "react"
   }
  ],
  "Reward": {

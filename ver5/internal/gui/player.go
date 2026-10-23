@@ -351,13 +351,20 @@ func (g *Game) perform(a *replay.Action) []beat {
 				if back == nil {
 					continue
 				}
+				aim := actor
+				for _, e := range k.events {
+					if e.Kind == "damage" || e.Kind == "miss" {
+						aim = g.unitAt(e.Target)
+						break
+					}
+				}
 				add(.15, func() {})
 				for _, part := range splitDouble(k.events) {
 					crit := false
 					for _, e := range part {
 						crit = crit || e.Kind == "critical"
 					}
-					g.swing(add, back, actor, core.Command{Kind: "attack"}, part, crit)
+					g.swing(add, back, aim, core.Command{Kind: "attack"}, part, crit)
 				}
 			}
 		case "item":
@@ -527,17 +534,21 @@ type counter struct {
 	events []core.Event
 }
 
-// splitCounters separates the counter-attacks from an attack's events. A counter is a
-// blow (critical, damage, miss) by someone other than the actor, with the actor's retreat
-// it may cause; each one is shown as its own swing after the attack lands.
+// splitCounters separates the counter-attacks (and assists) from an attack's events. A counter is a
+// blow (critical, damage, miss) by someone other than the actor, with the retreats its blows
+// cause; each one is shown as its own swing after the attack lands.
 func splitCounters(actor string, events []core.Event) ([]core.Event, []counter) {
 	blow, counters := []core.Event{}, []counter{}
+	struck := map[string]string{}
 	for _, e := range events {
+		if e.Kind == "damage" {
+			struck[e.Target] = e.Actor
+		}
 		back := e.Actor != actor && e.Actor != "" && (e.Kind == "critical" || e.Kind == "damage" || e.Kind == "miss" || e.Kind == "double")
 		switch {
 		case back && (len(counters) == 0 || counters[len(counters)-1].by != e.Actor):
 			counters = append(counters, counter{by: e.Actor, events: []core.Event{e}})
-		case back || e.Kind == "retreat" && e.Actor == actor && len(counters) > 0:
+		case back || e.Kind == "retreat" && len(counters) > 0 && struck[e.Actor] == counters[len(counters)-1].by:
 			k := &counters[len(counters)-1]
 			k.events = append(k.events, e)
 		default:

@@ -324,8 +324,11 @@ func (d *Data) Validate() error {
 			}
 		}
 		officers := map[string]bool{}
-		for _, side := range [][]Spawn{s.Enemies, s.Party} {
+		for i, side := range [][]Spawn{s.Enemies, s.Party} {
 			for _, e := range side {
+				if (i == 0 || e.AI) && e.Policy == "" {
+					return fmt.Errorf("stage %s spawn %s: an AI-driven unit needs a policy", s.ID, e.Character)
+				}
 				if err := d.ValidateSpawn(e); err != nil {
 					return fmt.Errorf("stage %s: %w", s.ID, err)
 				}
@@ -336,7 +339,7 @@ func (d *Data) Validate() error {
 					officers[e.Character] = true
 				}
 				p := Point{e.X, e.Y}
-				if !d.Has(e.Character) || e.X < 0 || e.Y < 0 || e.X >= s.Width || e.Y >= s.Height || seen[p] || e.Level < 0 || e.Level > r.MaxLevel || !ValidPolicy(e.Policy, e.Goal, s.Width, s.Height) {
+				if !d.Has(e.Character) || e.X < 0 || e.Y < 0 || e.X >= s.Width || e.Y >= s.Height || seen[p] || e.Level < 0 || e.Level > r.MaxLevel || !s.ValidPolicy(e.Policy, e.Goal, e.GoalArea) {
 					return fmt.Errorf("stage %s spawn %s", s.ID, e.Character)
 				}
 				if e.Faction != "" {
