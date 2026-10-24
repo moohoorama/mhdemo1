@@ -392,10 +392,11 @@ func (w *view) walls() ([]Piece, error) {
 			name   string // a wall piece's family, or a gate
 			slice  int
 			mirror int
+			gate   int // a slice's gate point along the line
 		}
 		pieces := map[int][]laid{}
 		for t := t0; t <= t1; t++ {
-			pieces[t] = []laid{{line.Family, -1, -1}}
+			pieces[t] = []laid{{line.Family, -1, -1, 0}}
 		}
 		for gi, ob := range w.m.Objects {
 			if !w.c.isGate(ob.Name) {
@@ -415,7 +416,7 @@ func (w *view) walls() ([]Piece, error) {
 			}
 			for k, s := range slices {
 				t := gt + round(2**s.GateOffset)
-				l := laid{ob.Name, k, k}
+				l := laid{ob.Name, k, k, gt}
 				for m, o := range slices {
 					if *o.GateOffset == -*s.GateOffset {
 						l.mirror = m
@@ -448,6 +449,14 @@ func (w *view) walls() ([]Piece, error) {
 			}
 			u, v := w.rot(ou, ov)
 			x, y := center(u, v)
+			// a post's edge sharing the tile of a wall piece: the nearer of the two is drawn last, so the wall
+			// running on toward the camera covers the post's foot and the post covers the wall going away
+			if ls := pieces[t]; len(ls) == 2 && ls[0].slice < 0 {
+				gu, gv := w.rot(tile(ls[1].gate))
+				if u+v > gu+gv {
+					ls[0], ls[1] = ls[1], ls[0]
+				}
+			}
 			for _, l := range pieces[t] {
 				name := family[turned]
 				if l.slice >= 0 {
