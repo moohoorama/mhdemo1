@@ -97,7 +97,7 @@ func (g *Game) enterScene(o core.Observation) bool {
 	if g.scene != nil && g.scene.node == o.Node {
 		return true
 	}
-	if g.scene == nil || g.scene.def != def || g.field == nil || g.field.Map.ID != def.Map {
+	if (g.scene == nil || g.scene.def != def || g.field == nil || g.field.Map.ID != def.Map) && !g.adoptScene(def) {
 		g.openScene(def)
 		for _, n := range def.Nodes[:at] {
 			g.settleNode(n)
@@ -117,17 +117,10 @@ func (g *Game) openScene(def *scenes.Scene) {
 		emotes: map[string]*emote{}, looks: map[string]*look{}, fade: 1, patrol: map[string]*patrol{}, chatter: map[string]*chatterLine{}}
 	g.scene = s
 	for key, a := range def.Cast {
-		art := g.actorArt(key, a.Sprite, a.Faction)
-		if art == nil || len(a.At) != 2 {
-			continue
+		if v := g.castActor(key, a); v != nil {
+			s.actors[key] = v
+			s.extra[key], s.hold[key] = scenes.Extra(key), a.Hold
 		}
-		v := &unitVis{id: key, ally: true, dir: a.Face, anim: "idle", dying: -1, shownHP: 1, maxHP: 1, actor: true, art: art, top: art.TopOffset(), pose: a.Pose}
-		v.play(v.rest())
-		v.animT = float64(len(key)*37%100) / 100 // extras do not all nod at once
-		v.u, v.v, v.gone = a.At[0], a.At[1], a.Off
-		v.lift = g.field.Lift(int(v.u), int(v.v))
-		s.actors[key] = v
-		s.extra[key], s.hold[key] = scenes.Extra(key), a.Hold
 	}
 	g.setSceneTime(def.Time)
 	for _, st := range def.Ambient {
@@ -136,6 +129,20 @@ func (g *Game) openScene(def *scenes.Scene) {
 	g.zoom = 2
 	s.camU, s.camV = g.castCentre()
 	g.camX, g.camY = g.sceneCam()
+}
+
+// castActor is a cast member standing where the cast puts it; nil without a place or a sprite.
+func (g *Game) castActor(key string, a scenes.Actor) *unitVis {
+	art := g.actorArt(key, a.Sprite, a.Faction)
+	if art == nil || len(a.At) != 2 {
+		return nil
+	}
+	v := &unitVis{id: key, ally: true, dir: a.Face, anim: "idle", dying: -1, shownHP: 1, maxHP: 1, actor: true, art: art, top: art.TopOffset(), pose: a.Pose}
+	v.play(v.rest())
+	v.animT = float64(len(key)*37%100) / 100 // extras do not all nod at once
+	v.u, v.v, v.gone = a.At[0], a.At[1], a.Off
+	v.lift = g.field.Lift(int(v.u), int(v.v))
+	return v
 }
 
 // castCentre is the middle of the named actors on the stage, or of the map when there are none.

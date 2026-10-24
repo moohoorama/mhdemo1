@@ -147,6 +147,10 @@ func (g *Game) backdrop(dst *ebiten.Image, o core.Observation) {
 }
 
 func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
+	if o.Dialogue.Kind == "explore" {
+		g.drawExplore(dst, o)
+		return
+	}
 	g.backdrop(dst, o)
 	if g.shownNode != o.Node {
 		g.shownNode, g.lineIndex, g.lineTyping = o.Node, 0, startTyping(g.uiSeconds)

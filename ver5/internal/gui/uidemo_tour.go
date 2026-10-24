@@ -55,7 +55,7 @@ func (g *Game) demoTourAct(act string) error {
 	kind, arg, _ := strings.Cut(act, ":")
 	switch kind {
 	case "grid":
-		w.grid = !w.grid
+		w.show = !w.show
 		return nil
 	case "exit":
 		for _, e := range w.t.Areas[w.area].Exits {

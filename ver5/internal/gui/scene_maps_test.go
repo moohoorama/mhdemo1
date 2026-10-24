@@ -189,7 +189,7 @@ func TestTourAreas(t *testing.T) {
 		t.Run(id, func(t *testing.T) {
 			g.enterTourArea(id, "")
 			for _, e := range a.Exits {
-				assert.NotNil(t, g.tour.path(g.tourHeroTile(), g.tour.nearestOpen(e.At)), "exit %s cannot be reached", e.Name)
+				assert.NotNil(t, g.tour.grid.path(g.actorTile(g.tour.hero), g.tour.grid.nearestOpen(e.At)), "exit %s cannot be reached", e.Name)
 			}
 		})
 	}

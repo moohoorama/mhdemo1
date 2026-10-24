@@ -74,10 +74,13 @@ func (e *Engine) OpenExits() []bool {
 	}
 	var out []bool
 	for _, x := range e.area().Exits {
-		out = append(out, e.holdsAll(x.If))
+		out = append(out, e.ExitOpen(x))
 	}
 	return out
 }
+
+// ExitOpen reports whether an exit of the walk is open now.
+func (e *Engine) ExitOpen(x content.ExploreExit) bool { return e.holdsAll(x.If) }
 
 func (e *Engine) visitor(key string) (Visitor, bool) {
 	for _, v := range e.Visitors() {

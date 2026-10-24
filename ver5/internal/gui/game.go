@@ -135,8 +135,9 @@ type Game struct {
 	learn                     []core.Learner    // learning windows open now, in order
 	learnPage                 int
 	scene                     *scene
-	town                      *townWalk // the town walk (town.go), outside the story
-	tour                      *tourWalk // the walk round the format 2 scene maps (tour.go, cmd/_town2)
+	tour                      *tourWalk    // the walk round the format 2 scene maps (tour.go, cmd/_town2)
+	explore                   *exploreWalk // the story's walk between battles (explore.go)
+	shopFrom                  string       // the person of the walk whose shop is open
 	intro                     *officerIntro
 	introImg                  introImages
 	battleXP, startLevel      map[string]int
@@ -481,6 +482,10 @@ func (g *Game) assist() {
 			}
 		case "battle":
 			g.command(core.Command{Kind: "start"})
+		case "explore":
+			if plan := g.S.Engine.ExploreNext(); len(plan) > 0 {
+				g.command(plan[0])
+			}
 		}
 		return
 	}
@@ -559,9 +564,6 @@ func (g *Game) Update() error {
 	if g.editor != nil {
 		return g.updateEditor()
 	}
-	if g.town != nil {
-		return g.updateTown()
-	}
 	if g.tour != nil {
 		return g.updateTour()
 	}
@@ -609,6 +611,12 @@ func (g *Game) Update() error {
 	if g.player.Duel != nil {
 		g.updateDuel()
 		return nil
+	}
+	if g.exploring() {
+		g.updateExplore()
+		if !g.popupPending() {
+			g.exploreInput()
+		}
 	}
 	logInput := g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker()
 	g.updateDeploymentPanel()
@@ -758,6 +766,10 @@ func (g *Game) leftClick() {
 	if g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 || g.S.Screen != "playing" || g.S.Engine == nil || g.field == nil || g.dragging {
 		return
 	}
+	if g.exploring() {
+		g.exploreClick(g.toCanvas(cursorWorld()))
+		return
+	}
 	if o := g.S.Engine.Observe(); o.Phase != "battle" && o.Phase != "deployment" {
 		return
 	}
@@ -842,8 +854,6 @@ func (g *Game) drawFrame(dst *ebiten.Image) {
 	}
 	if g.editor != nil {
 		g.drawEditor(dst)
-	} else if g.town != nil {
-		g.drawTown(dst)
 	} else if g.tour != nil {
 		g.drawTour(dst)
 	} else if g.S.Screen == "title" || g.S.Engine == nil {

@@ -16,7 +16,7 @@ import (
 )
 
 var overlayTitles = map[string]string{"menu": "메뉴", "save": "저장", "load": "불러오기", "settings": "설정",
-	"confirm": "확인", "equipment": "장비", "deputy": "부관", "roster": "병력일람"}
+	"confirm": "확인", "equipment": "장비", "deputy": "부관", "roster": "병력일람", "shop": "상점", "party": "부대"}
 
 func (g *Game) popupPending() bool {
 	return g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 ||
@@ -82,6 +82,10 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 		w, h = 640, 668
 	case "roster":
 		w, h = uiW-100, uiH-90
+	case "shop":
+		w, h = 820, 640
+	case "party":
+		w, h = 1100, 720
 	}
 	// the window in a frame with room for its title plate and shadow
 	g.popup(dst, "overlay:"+g.overlay, 150, w+40, h+40, image.Rect(0, 0, w+40, h+40), func(dst *ebiten.Image) { g.overlayWindow(dst, w, h) })
@@ -222,6 +226,10 @@ func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
 		g.deputyWindow(dst, x, y, w, h)
 	case "roster":
 		g.rosterWindow(dst, x, y, w, h)
+	case "shop":
+		g.shopWindow(dst, x, y, w, h)
+	case "party":
+		g.partyWindow(dst, x, y, w, h)
 	}
 }
 
