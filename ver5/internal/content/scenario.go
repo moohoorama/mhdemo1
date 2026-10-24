@@ -91,15 +91,36 @@ func (d *Data) loadScenario(dir, want string, h hash.Hash) error {
 		if b, err = read(filepath.Join(scenarioDir, c.File)); err != nil {
 			return err
 		}
-		var story struct{ Nodes []Node }
+		var story struct{ Nodes, Events []Node }
 		if err = strictDecode(b, &story); err != nil {
 			return fmt.Errorf("%s: %w", c.File, err)
 		}
 		for _, n := range story.Nodes {
 			c.Nodes = append(c.Nodes, n.ID)
 		}
+		for _, n := range story.Events {
+			c.Events = append(c.Events, n.ID)
+		}
 		d.Chapters = append(d.Chapters, c)
-		d.Nodes = append(d.Nodes, story.Nodes...)
+		d.Nodes = append(append(d.Nodes, story.Nodes...), story.Events...)
+	}
+	explores, err := filepath.Glob(filepath.Join(scenarioDir, "explore*.json"))
+	if err != nil {
+		return err
+	}
+	sort.Strings(explores)
+	for _, p := range explores {
+		if b, err = read(p); err != nil {
+			return err
+		}
+		x := &Explore{}
+		if err = strictDecode(b, x); err != nil {
+			return fmt.Errorf("%s: %w", filepath.Base(p), err)
+		}
+		if d.Explores == nil {
+			d.Explores = map[string]*Explore{}
+		}
+		d.Explores[strings.TrimSuffix(filepath.Base(p), ".json")] = x
 	}
 	stages, err := filepath.Glob(filepath.Join(scenarioDir, "stage*.json"))
 	if err != nil {
@@ -149,12 +170,18 @@ func (d *Data) loadScenario(dir, want string, h hash.Hash) error {
 }
 
 // After is the node that follows id: its own Next, else the next node of its chapter, else the
-// first node of the next chapter. Empty when the story ends.
+// first node of the next chapter. Empty when the story ends. An event node is followed by the next event node of
+// its chapter, and by none at the end of them.
 func (d *Data) After(id string) string {
 	if n := d.Node(id); n.Next != "" {
 		return n.Next
 	}
 	for i, c := range d.Chapters {
+		for j, v := range c.Events {
+			if v == id && j+1 < len(c.Events) {
+				return c.Events[j+1]
+			}
+		}
 		for j, v := range c.Nodes {
 			if v != id {
 				continue

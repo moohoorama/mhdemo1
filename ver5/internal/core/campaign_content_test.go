@@ -116,6 +116,12 @@ func playCampaign(t *testing.T, bonus bool) (*Engine, []string) {
 			}
 			sort.Strings(options)
 			applyOK(t, e, Command{Kind: "choose", Option: options[0]})
+		case e.Walking():
+			plan := e.ExploreNext()
+			require.NotEmpty(t, plan, "the walk at %s is stuck in %s", o.Node, o.Spot.Area)
+			for _, c := range plan {
+				applyOK(t, e, c)
+			}
 		case o.Phase == "scenario" && o.Dialogue.Kind == "battle":
 			fought = append(fought, d.Stages[o.Stage].ID)
 			winStage(t, e, bonus)

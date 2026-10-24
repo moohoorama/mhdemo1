@@ -26,9 +26,9 @@ type Engine struct {
 func copyOf[T any](v T) T { b, _ := json.Marshal(v); var c T; _ = json.Unmarshal(b, &c); return c }
 func New(d *content.Data, seed uint64) *Engine {
 	c := d.Campaign
-	s := State{Format: 4, AI: AIPolicyVersion, Difficulty: "normal", Core: CoreVersion, Rules: RulesVersion, Content: d.Version, ContentHash: d.Hash,
+	s := State{Format: 5, AI: AIPolicyVersion, Difficulty: "normal", Core: CoreVersion, Rules: RulesVersion, Content: d.Version, ContentHash: d.Hash,
 		Seed: seed, RNG: seed, Phase: "scenario", Node: c.Start, Inventory: copyOf(c.Inventory), Warehouse: map[string]int{},
-		Deployment: append([]string{}, c.Deployment...), Executed: map[string]bool{}, Flags: map[string]int{}, Choices: map[string]string{}}
+		Deployment: append([]string{}, c.Deployment...), Executed: map[string]bool{}, Flags: map[string]int{}, Choices: map[string]string{}, Money: c.Money}
 	if s.Inventory == nil {
 		s.Inventory = map[string]int{}
 	}
@@ -332,15 +332,30 @@ func (e *Engine) enter() {
 				if n.Kind == "join" {
 					e.raiseTo(e.addCharacter(n.Character, n.Character), e.data.Rules.StageLevel(e.data.NextBattleOrder(n.ID)))
 					e.state.Deployment = append(e.state.Deployment, n.Character)
-				} else if _, ok := e.data.Equipment[n.Item]; ok {
-					e.state.Warehouse[n.Item] += n.Count
 				} else {
-					e.state.Inventory[n.Item] += n.Count
+					e.gain(n.Item, n.Count)
 				}
 				e.state.Executed[n.Event] = true
 				e.emit(n.Kind, "", n.Character+n.Item, n.Count)
 			}
 			e.state.Node = e.data.After(n.ID)
+		case "explore":
+			if e.state.Explore != n.ID {
+				x := e.data.Explores[n.Explore]
+				e.state.Explore, e.state.Spot = n.ID, x.Start
+			}
+			return
+		case "back":
+			if n.Area != "" {
+				e.state.Spot = e.data.Explores[e.data.Node(e.state.Explore).Explore].Arrival(n.Area, "")
+				if n.At != nil {
+					e.state.Spot.At = *n.At
+				}
+				if n.Face != "" {
+					e.state.Spot.Face = n.Face
+				}
+			}
+			e.state.Node = e.state.Explore
 		case "end":
 			e.state.Phase, e.state.Node = "complete", ""
 			return
@@ -397,6 +412,8 @@ func (e *Engine) execute(c Command) error {
 		return nil
 	case "equip", "unequip", "deploy", "start", "deputy", "undeputy":
 		return e.prepare(c)
+	case "walk", "talk", "sortie", "buy", "sell":
+		return e.explore(c)
 	case "learn", "learn_close":
 		return e.learn(c)
 	case "place", "unplace", "deployment_finish":
@@ -459,7 +476,8 @@ func (e *Engine) execute(c Command) error {
 	return fail("UnknownCommand")
 }
 func (e *Engine) prepare(c Command) error {
-	if e.state.Phase != "scenario" || e.data.Node(e.state.Node).Kind != "battle" {
+	kind := e.data.Node(e.state.Node).Kind
+	if e.state.Phase != "scenario" || kind != "battle" && (kind != "explore" || c.Kind == "deploy" || c.Kind == "start") {
 		return fail("WrongPhase")
 	}
 	if c.Kind == "deputy" || c.Kind == "undeputy" {
@@ -680,7 +698,7 @@ func (e *Engine) settle() {
 	key := "reward-" + stage.ID
 	if !e.state.Executed[key] {
 		for item, n := range stage.Reward {
-			e.state.Inventory[item] += n
+			e.gain(item, n)
 		}
 		e.state.Executed[key] = true
 	}
@@ -688,7 +706,7 @@ func (e *Engine) settle() {
 		if key := "sub-" + stage.ID + "-" + o.ID; !e.state.Executed[key] && e.holdsIn(o.If, true) {
 			e.state.Executed[key] = true
 			for item, n := range o.Reward {
-				e.state.Inventory[item] += n
+				e.gain(item, n)
 			}
 			if o.Flag != "" {
 				if e.state.PendingFlags == nil {

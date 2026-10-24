@@ -211,6 +211,9 @@ func (d *Data) Validate() error {
 			return fmt.Errorf("campaign item %s", id)
 		}
 	}
+	if c.Money < 0 {
+		return fmt.Errorf("campaign money %d", c.Money)
+	}
 	nodes := map[string]Node{}
 	for _, n := range d.Nodes {
 		if n.ID == "" || nodes[n.ID].ID != "" {
@@ -291,15 +294,16 @@ func (d *Data) Validate() error {
 				return fmt.Errorf("node %s joins %s", n.ID, n.Character)
 			}
 		case "grant":
-			if _, ok := d.Items[n.Item]; !ok {
-				if _, ok = d.Equipment[n.Item]; !ok {
-					return fmt.Errorf("node %s grants %s", n.ID, n.Item)
-				}
+			if !d.Gainable(n.Item) {
+				return fmt.Errorf("node %s grants %s", n.ID, n.Item)
 			}
-		case "choice":
+		case "choice", "explore", "back":
 		default:
 			return fmt.Errorf("node %s kind %s", n.ID, n.Kind)
 		}
+	}
+	if err := d.validateExplores(nodes); err != nil {
+		return err
 	}
 	duelIDs, stageIDs := map[string]bool{}, map[string]bool{}
 	for _, s := range d.Stages {
@@ -307,6 +311,11 @@ func (d *Data) Validate() error {
 			return fmt.Errorf("map %s", s.ID)
 		}
 		stageIDs[s.ID] = true
+		for item, n := range s.Reward {
+			if !d.Gainable(item) || n < 1 {
+				return fmt.Errorf("stage %s reward %s", s.ID, item)
+			}
+		}
 		if s.Faction != "" {
 			if _, ok := d.Factions[s.Faction]; !ok {
 				return fmt.Errorf("stage %s faction %s", s.ID, s.Faction)

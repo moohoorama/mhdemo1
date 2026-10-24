@@ -223,6 +223,8 @@ func (p *player) storyScreen(o core.Observation) {
 		for _, k := range keys {
 			p.add(k, func() { p.command(core.Command{Kind: "choose", Option: k}) })
 		}
+	case "explore":
+		p.exploreScreen(o)
 	case "battle":
 		var names []string
 		for _, id := range o.Deployment {

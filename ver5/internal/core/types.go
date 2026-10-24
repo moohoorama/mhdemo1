@@ -60,6 +60,9 @@ type State struct {
 	Units                             []Unit
 	Inventory                         map[string]int
 	Warehouse                         map[string]int
+	Money                             int
+	Explore                           string       `json:",omitempty"` // the explore node the hero walks, while there or in one of its events
+	Spot                              content.Spot `json:",omitempty"` // where the hero stands in it
 	Deployment                        []string
 	Executed                          map[string]bool
 	Flags                             map[string]int    // story flags set by set nodes
@@ -117,6 +120,7 @@ type Observation struct {
 type Command struct {
 	Kind, Actor, Target, Skill, Item, Trait, Option string
 	X, Y                                            int
+	Count                                           int `json:",omitempty"` // buy, sell: how many
 	Deployment                                      []string
 }
 type Event struct {

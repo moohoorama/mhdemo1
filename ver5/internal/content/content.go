@@ -63,12 +63,15 @@ type Campaign struct {
 	Roster     []string
 	Deployment []string
 	Inventory  map[string]int
+	Money      int
 }
 
-// Chapter is one story file of the scenario, in play order. Nodes lists the ids the file holds.
+// Chapter is one story file of the scenario, in play order. Nodes lists the ids of the story's flow; Events
+// those of the explore events, which the story reaches only by talking to someone (each ends with a back node).
 type Chapter struct {
 	ID, File string
 	Nodes    []string `json:",omitempty"`
+	Events   []string `json:",omitempty"`
 }
 
 // ScenarioRef is one entry of assets/scenario/scenario.json.
@@ -134,6 +137,7 @@ type Character struct {
 type Equipment struct {
 	Name, Desc, Slot, Type string
 	Icon                   string // the UI sheet's item_<Icon> picture
+	Price                  int    `json:",omitempty"` // what a shop asks in money; it buys it back for half
 	Bonus                  [6]float64
 	Traits, Learn, Skills  []string
 }
@@ -142,6 +146,7 @@ type Item struct {
 	Effect     string
 	Amount     int
 	Class      string // the class a promotion item makes
+	Price      int    `json:",omitempty"` // what a shop asks in money; it buys it back for half
 }
 type Trait struct {
 	Name, Desc string
@@ -404,6 +409,10 @@ type Node struct {
 	Flags                                               map[string]int `json:",omitempty"` // set: flag values to store
 	Count                                               int
 	Choices                                             map[string]string
+	Explore                                             string  `json:",omitempty"` // explore: the explore file the hero walks
+	Area                                                string  `json:",omitempty"` // back: the area the hero stands in afterwards; where he talked when empty
+	At                                                  *[2]int `json:",omitempty"` // back: his small tile there
+	Face                                                string  `json:",omitempty"` // back: the way he faces there
 }
 type EditorChoice struct{ ID, Name string }
 type EditorFamily struct {
@@ -437,6 +446,8 @@ type Data struct {
 	Skills         map[string]Skill
 	Traits         map[string]Trait
 	Maps           map[string]*MapDocument `json:"-"`
+	Shops          map[string]Shop
+	Explores       map[string]*Explore `json:"-"` // explore file name without .json -> its areas
 	Stages         []Stage
 	Nodes          []Node
 }

@@ -1,0 +1,30 @@
+{
+ "Shops": {
+  "weapons": {
+   "Name": "무기점",
+   "Items": [
+    "iron_sword",
+    "iron_spear",
+    "short_bow",
+    "bamboo_fan",
+    "leather_armor",
+    "plain_clothes"
+   ]
+  },
+  "tools": {
+   "Name": "도구점",
+   "Items": [
+    "war_horse",
+    "ration_bag",
+    "route_map"
+   ]
+  },
+  "tavern": {
+   "Name": "주점",
+   "Items": [
+    "bean",
+    "liquor"
+   ]
+  }
+ }
+}

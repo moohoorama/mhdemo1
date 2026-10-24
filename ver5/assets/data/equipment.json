@@ -6,6 +6,7 @@
    "Slot": "weapon",
    "Type": "sword",
    "Icon": "sword",
+   "Price": 300,
    "Bonus": [
     1,
     0,
@@ -21,6 +22,7 @@
    "Slot": "weapon",
    "Type": "spear",
    "Icon": "spear",
+   "Price": 300,
    "Bonus": [
     1,
     0,
@@ -36,6 +38,7 @@
    "Slot": "weapon",
    "Type": "bow",
    "Icon": "bow",
+   "Price": 300,
    "Bonus": [
     1,
     0,
@@ -51,6 +54,7 @@
    "Slot": "weapon",
    "Type": "fan",
    "Icon": "fan",
+   "Price": 300,
    "Bonus": [
     0,
     0,
@@ -120,6 +124,7 @@
    "Slot": "armor",
    "Type": "armor",
    "Icon": "leather",
+   "Price": 250,
    "Bonus": [
     0,
     1,
@@ -135,6 +140,7 @@
    "Slot": "armor",
    "Type": "robe",
    "Icon": "robe",
+   "Price": 150,
    "Bonus": [
     0,
     1,
@@ -150,6 +156,7 @@
    "Slot": "accessory",
    "Type": "any",
    "Icon": "horse",
+   "Price": 400,
    "Bonus": [
     0,
     0,
@@ -168,6 +175,7 @@
    "Slot": "accessory",
    "Type": "any",
    "Icon": "ration",
+   "Price": 300,
    "Bonus": [
     0,
     0,
@@ -186,6 +194,7 @@
    "Slot": "accessory",
    "Type": "any",
    "Icon": "map",
+   "Price": 300,
    "Bonus": [
     0,
     0,

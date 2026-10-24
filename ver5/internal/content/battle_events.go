@@ -239,7 +239,7 @@ func (d *Data) validateObjectives(s Stage, refs *battleRefs) error {
 			}
 		}
 		for item, n := range o.Reward {
-			if _, ok := d.Items[item]; !ok || n < 1 {
+			if !d.Gainable(item) || n < 1 {
 				return fmt.Errorf("stage %s: objective %s reward %s", s.ID, o.ID, item)
 			}
 		}

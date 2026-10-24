@@ -14,6 +14,7 @@
   "bean": 18,
   "liquor": 8
  },
+ "Money": 1000,
  "Chapters": [
   {
    "ID": "01",

@@ -172,7 +172,7 @@ func (e *Engine) SetXPPct(pct int) { e.state.XPPct = pct }
 func Restore(d *content.Data, s State) (*Engine, error) { return restore(d, copyOf(s), true) }
 func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	R := d.Rules
-	if s.AI != AIPolicyVersion || s.Difficulty != "normal" || s.Format != 4 || s.Core != CoreVersion || s.Rules != RulesVersion || s.Content != d.Version || s.ContentHash != d.Hash {
+	if s.AI != AIPolicyVersion || s.Difficulty != "normal" || s.Format != 5 || s.Core != CoreVersion || s.Rules != RulesVersion || s.Content != d.Version || s.ContentHash != d.Hash {
 		return nil, fail("IncompatibleSave")
 	}
 	for i, t := range s.TileStates {
@@ -197,9 +197,12 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	}
 	if s.Phase == "scenario" {
 		n := d.Node(s.Node)
-		if !content.Waiting(n.Kind) || n.Kind == "battle" && d.StageIndex(n.Stage) != s.Stage {
+		if !content.Waiting(n.Kind) || n.Kind == "battle" && d.StageIndex(n.Stage) != s.Stage || n.Kind == "explore" && s.Explore != n.ID {
 			return nil, fail("CorruptSave")
 		}
+	}
+	if s.Money < 0 || s.Explore != "" && (s.Phase != "scenario" || d.Node(s.Explore).Kind != "explore" || d.Explores[d.Node(s.Explore).Explore].Areas[s.Spot.Area] == nil) {
+		return nil, fail("CorruptSave")
 	}
 	if s.Phase == "complete" && s.Node != "" {
 		return nil, fail("CorruptSave")

@@ -2,6 +2,7 @@ package content
 
 import (
 	"fmt"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -175,15 +176,15 @@ func (d *Data) validateParsed(s string, c Cond, refs *battleRefs) error {
 	return nil
 }
 
-// Waiting reports whether a node stops the story for the player (say, narrate, choice, battle).
+// Waiting reports whether a node stops the story for the player (say, narrate, choice, battle, explore).
 func Waiting(kind string) bool {
-	return kind == "say" || kind == "narrate" || kind == "choice" || kind == "battle"
+	return kind == "say" || kind == "narrate" || kind == "choice" || kind == "battle" || kind == "explore"
 }
 
 // ChapterIndex is the position of the chapter holding the node, or -1.
 func (d *Data) ChapterIndex(node string) int {
 	for i, c := range d.Chapters {
-		for _, id := range c.Nodes {
+		for _, id := range slices.Concat(c.Nodes, c.Events) {
 			if id == node {
 				return i
 			}
