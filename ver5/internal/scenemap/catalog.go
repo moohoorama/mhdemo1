@@ -32,6 +32,16 @@ type Sprite struct {
 	GateOffset *float64 // a gatehouse slice: game cells along its wall from the gate's point
 }
 
+// WallFamily is how a wall line is drawn: a block on each small tile of it, and on each side (_mu, _mv, _pu, _pv:
+// toward -u, -v, +u, +v in the view) of a block no wall or gate tile touches, a parapet. Under a wall or gate tile
+// lies its shadow on the ground in front, out of each open front side (_pu, _pv) and past the front corner when
+// both are open (_pc).
+type WallFamily struct {
+	Block   string `json:"block"`
+	Parapet string `json:"parapet"`
+	Shade   string `json:"shade"`
+}
+
 // Rules is scene.json.
 type Rules struct {
 	Surfaces map[string]int `json:"surfaces"`
@@ -50,9 +60,9 @@ type Rules struct {
 		Foot  string `json:"foot"`
 		Rim   string `json:"rim"`
 	} `json:"heights"`
-	Walls        map[string]map[string]string `json:"walls"`
-	Gates        map[string]string            `json:"gates"`        // a gate object -> its slices (<slices>_<axis>_<k>)
-	GatePassage  [2]int                       `json:"gate_passage"` // the small tiles of a gate's passage, from its point
+	Walls        map[string]WallFamily `json:"walls"`
+	Gates        map[string]string     `json:"gates"`        // a gate object -> its slices (<slices>_<axis>_<k>)
+	GatePassage  [2]int                `json:"gate_passage"` // the small tiles of a gate's passage, from its point
 	CornerShadow struct {
 		Sprite string `json:"sprite"`
 		Offset [2]int `json:"offset"`

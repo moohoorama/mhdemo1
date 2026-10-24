@@ -6170,83 +6170,55 @@
    "made": "scene wall piece standing on a cliff top (tall_cliff.py)",
    "shadow": false
   },
-  "swall2_u": {
-   "file": "tiles/swall2_u.png",
-   "size": [
-    34,
-    91
-   ],
-   "pivot": [
-    17,
-    82
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)"
-  },
-  "swall2_v": {
-   "file": "tiles/swall2_v.png",
-   "size": [
-    34,
-    91
-   ],
-   "pivot": [
-    18,
-    82
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)"
-  },
   "sgate2_closed_u_0": {
    "file": "tiles/sgate2_closed_u_0.png",
    "size": [
-    40,
-    114
+    31,
+    92
    ],
    "pivot": [
-    19,
-    103
+    17,
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -2.5
   },
   "sgate2_closed_u_1": {
    "file": "tiles/sgate2_closed_u_1.png",
    "size": [
-    32,
-    89
+    31,
+    92
    ],
    "pivot": [
     17,
-    79
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -2.0
   },
   "sgate2_closed_u_2": {
    "file": "tiles/sgate2_closed_u_2.png",
    "size": [
-    20,
-    99
+    25,
+    92
    ],
    "pivot": [
     17,
-    89
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -1.5
   },
   "sgate2_closed_u_3": {
    "file": "tiles/sgate2_closed_u_3.png",
    "size": [
-    33,
+    25,
     116
    ],
    "pivot": [
@@ -6255,149 +6227,14 @@
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -1.0
   },
   "sgate2_closed_u_4": {
    "file": "tiles/sgate2_closed_u_4.png",
    "size": [
-    26,
-    120
-   ],
-   "pivot": [
-    17,
+    25,
     112
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
-   "gate_offset": -0.5
-  },
-  "sgate2_closed_u_5": {
-   "file": "tiles/sgate2_closed_u_5.png",
-   "size": [
-    27,
-    120
-   ],
-   "pivot": [
-    17,
-    113
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
-   "gate_offset": 0.0
-  },
-  "sgate2_closed_u_6": {
-   "file": "tiles/sgate2_closed_u_6.png",
-   "size": [
-    32,
-    120
-   ],
-   "pivot": [
-    17,
-    113
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
-   "gate_offset": 0.5
-  },
-  "sgate2_closed_u_7": {
-   "file": "tiles/sgate2_closed_u_7.png",
-   "size": [
-    32,
-    110
-   ],
-   "pivot": [
-    17,
-    104
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
-   "gate_offset": 1.0
-  },
-  "sgate2_closed_u_8": {
-   "file": "tiles/sgate2_closed_u_8.png",
-   "size": [
-    17,
-    83
-   ],
-   "pivot": [
-    17,
-    77
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
-   "gate_offset": 1.5
-  },
-  "sgate2_closed_u_9": {
-   "file": "tiles/sgate2_closed_u_9.png",
-   "size": [
-    36,
-    114
-   ],
-   "pivot": [
-    18,
-    109
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
-   "gate_offset": 2.0
-  },
-  "sgate2_closed_v_0": {
-   "file": "tiles/sgate2_closed_v_0.png",
-   "size": [
-    36,
-    114
-   ],
-   "pivot": [
-    18,
-    103
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
-   "gate_offset": -2.5
-  },
-  "sgate2_closed_v_1": {
-   "file": "tiles/sgate2_closed_v_1.png",
-   "size": [
-    32,
-    90
-   ],
-   "pivot": [
-    16,
-    80
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
-   "gate_offset": -2.0
-  },
-  "sgate2_closed_v_2": {
-   "file": "tiles/sgate2_closed_v_2.png",
-   "size": [
-    19,
-    99
-   ],
-   "pivot": [
-    3,
-    89
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
-   "gate_offset": -1.5
-  },
-  "sgate2_closed_v_3": {
-   "file": "tiles/sgate2_closed_v_3.png",
-   "size": [
-    33,
-    116
    ],
    "pivot": [
     17,
@@ -6405,148 +6242,283 @@
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
+   "gate_offset": -0.5
+  },
+  "sgate2_closed_u_5": {
+   "file": "tiles/sgate2_closed_u_5.png",
+   "size": [
+    25,
+    108
+   ],
+   "pivot": [
+    17,
+    107
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
+   "gate_offset": 0.0
+  },
+  "sgate2_closed_u_6": {
+   "file": "tiles/sgate2_closed_u_6.png",
+   "size": [
+    33,
+    117
+   ],
+   "pivot": [
+    17,
+    108
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
+   "gate_offset": 0.5
+  },
+  "sgate2_closed_u_7": {
+   "file": "tiles/sgate2_closed_u_7.png",
+   "size": [
+    31,
+    92
+   ],
+   "pivot": [
+    17,
+    83
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
+   "gate_offset": 1.0
+  },
+  "sgate2_closed_u_8": {
+   "file": "tiles/sgate2_closed_u_8.png",
+   "size": [
+    31,
+    92
+   ],
+   "pivot": [
+    17,
+    83
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
+   "gate_offset": 1.5
+  },
+  "sgate2_closed_u_9": {
+   "file": "tiles/sgate2_closed_u_9.png",
+   "size": [
+    34,
+    92
+   ],
+   "pivot": [
+    17,
+    83
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
+   "gate_offset": 2.0
+  },
+  "sgate2_closed_v_0": {
+   "file": "tiles/sgate2_closed_v_0.png",
+   "size": [
+    31,
+    92
+   ],
+   "pivot": [
+    14,
+    83
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
+   "gate_offset": -2.5
+  },
+  "sgate2_closed_v_1": {
+   "file": "tiles/sgate2_closed_v_1.png",
+   "size": [
+    31,
+    92
+   ],
+   "pivot": [
+    14,
+    83
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
+   "gate_offset": -2.0
+  },
+  "sgate2_closed_v_2": {
+   "file": "tiles/sgate2_closed_v_2.png",
+   "size": [
+    25,
+    92
+   ],
+   "pivot": [
+    8,
+    83
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
+   "gate_offset": -1.5
+  },
+  "sgate2_closed_v_3": {
+   "file": "tiles/sgate2_closed_v_3.png",
+   "size": [
+    25,
+    116
+   ],
+   "pivot": [
+    8,
+    107
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -1.0
   },
   "sgate2_closed_v_4": {
    "file": "tiles/sgate2_closed_v_4.png",
    "size": [
-    24,
-    121
+    25,
+    112
    ],
    "pivot": [
     8,
-    113
+    107
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -0.5
   },
   "sgate2_closed_v_5": {
    "file": "tiles/sgate2_closed_v_5.png",
    "size": [
     25,
-    121
+    108
    ],
    "pivot": [
-    9,
-    114
+    8,
+    107
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 0.0
   },
   "sgate2_closed_v_6": {
    "file": "tiles/sgate2_closed_v_6.png",
    "size": [
-    31,
-    121
+    33,
+    117
    ],
    "pivot": [
-    15,
-    114
+    16,
+    108
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 0.5
   },
   "sgate2_closed_v_7": {
    "file": "tiles/sgate2_closed_v_7.png",
    "size": [
-    32,
-    110
+    31,
+    92
    ],
    "pivot": [
-    16,
-    105
+    14,
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 1.0
   },
   "sgate2_closed_v_8": {
    "file": "tiles/sgate2_closed_v_8.png",
    "size": [
-    20,
-    83
+    31,
+    92
    ],
    "pivot": [
-    1,
-    77
+    14,
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 1.5
   },
   "sgate2_closed_v_9": {
    "file": "tiles/sgate2_closed_v_9.png",
    "size": [
-    36,
-    114
+    34,
+    92
    ],
    "pivot": [
-    19,
-    109
+    17,
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 2.0
   },
   "sgate2_open_u_0": {
    "file": "tiles/sgate2_open_u_0.png",
    "size": [
-    40,
-    114
+    31,
+    92
    ],
    "pivot": [
-    19,
-    103
+    17,
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -2.5
   },
   "sgate2_open_u_1": {
    "file": "tiles/sgate2_open_u_1.png",
    "size": [
-    32,
-    89
+    31,
+    92
    ],
    "pivot": [
     17,
-    79
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -2.0
   },
   "sgate2_open_u_2": {
    "file": "tiles/sgate2_open_u_2.png",
    "size": [
-    20,
-    99
+    25,
+    92
    ],
    "pivot": [
     17,
-    89
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -1.5
   },
   "sgate2_open_u_3": {
    "file": "tiles/sgate2_open_u_3.png",
    "size": [
-    27,
+    25,
     116
    ],
    "pivot": [
@@ -6555,142 +6527,142 @@
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -1.0
   },
   "sgate2_open_u_4": {
    "file": "tiles/sgate2_open_u_4.png",
    "size": [
-    26,
-    112
+    25,
+    115
    ],
    "pivot": [
     17,
-    112
+    107
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -0.5
   },
   "sgate2_open_u_5": {
    "file": "tiles/sgate2_open_u_5.png",
    "size": [
-    27,
-    120
+    25,
+    114
    ],
    "pivot": [
     17,
-    113
+    107
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 0.0
   },
   "sgate2_open_u_6": {
    "file": "tiles/sgate2_open_u_6.png",
    "size": [
-    32,
-    120
+    33,
+    117
    ],
    "pivot": [
     17,
-    113
+    108
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 0.5
   },
   "sgate2_open_u_7": {
    "file": "tiles/sgate2_open_u_7.png",
    "size": [
-    32,
-    110
+    31,
+    92
    ],
    "pivot": [
     17,
-    104
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 1.0
   },
   "sgate2_open_u_8": {
    "file": "tiles/sgate2_open_u_8.png",
    "size": [
-    17,
-    83
+    31,
+    92
    ],
    "pivot": [
     17,
-    77
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 1.5
   },
   "sgate2_open_u_9": {
    "file": "tiles/sgate2_open_u_9.png",
    "size": [
-    36,
-    114
+    34,
+    92
    ],
    "pivot": [
-    18,
-    109
+    17,
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 2.0
   },
   "sgate2_open_v_0": {
    "file": "tiles/sgate2_open_v_0.png",
    "size": [
-    36,
-    114
+    31,
+    92
    ],
    "pivot": [
-    18,
-    103
+    14,
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -2.5
   },
   "sgate2_open_v_1": {
    "file": "tiles/sgate2_open_v_1.png",
    "size": [
-    32,
-    90
+    31,
+    92
    ],
    "pivot": [
-    16,
-    80
+    14,
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -2.0
   },
   "sgate2_open_v_2": {
    "file": "tiles/sgate2_open_v_2.png",
    "size": [
-    19,
-    99
+    25,
+    92
    ],
    "pivot": [
-    3,
-    89
+    8,
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -1.5
   },
   "sgate2_open_v_3": {
@@ -6700,103 +6672,215 @@
     116
    ],
    "pivot": [
-    9,
+    8,
     107
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -1.0
   },
   "sgate2_open_v_4": {
    "file": "tiles/sgate2_open_v_4.png",
    "size": [
-    24,
-    114
+    25,
+    115
    ],
    "pivot": [
     8,
-    113
+    107
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": -0.5
   },
   "sgate2_open_v_5": {
    "file": "tiles/sgate2_open_v_5.png",
    "size": [
     25,
-    121
+    114
    ],
    "pivot": [
-    9,
-    114
+    8,
+    107
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 0.0
   },
   "sgate2_open_v_6": {
    "file": "tiles/sgate2_open_v_6.png",
    "size": [
-    31,
-    121
+    33,
+    117
    ],
    "pivot": [
-    15,
-    114
+    16,
+    108
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 0.5
   },
   "sgate2_open_v_7": {
    "file": "tiles/sgate2_open_v_7.png",
    "size": [
-    32,
-    110
+    31,
+    92
    ],
    "pivot": [
-    16,
-    105
+    14,
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 1.0
   },
   "sgate2_open_v_8": {
    "file": "tiles/sgate2_open_v_8.png",
    "size": [
-    20,
-    83
+    31,
+    92
    ],
    "pivot": [
-    1,
-    77
+    14,
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 1.5
   },
   "sgate2_open_v_9": {
    "file": "tiles/sgate2_open_v_9.png",
    "size": [
-    36,
-    114
+    34,
+    92
    ],
    "pivot": [
-    19,
-    109
+    17,
+    83
    ],
    "layer": "object",
    "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)",
    "gate_offset": 2.0
+  },
+  "swall2": {
+   "file": "tiles/swall2.png",
+   "size": [
+    32,
+    84
+   ],
+   "pivot": [
+    16,
+    75
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)"
+  },
+  "sparapet_pu": {
+   "file": "tiles/sparapet_pu.png",
+   "size": [
+    20,
+    18
+   ],
+   "pivot": [
+    3,
+    76
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)"
+  },
+  "sparapet_mu": {
+   "file": "tiles/sparapet_mu.png",
+   "size": [
+    20,
+    83
+   ],
+   "pivot": [
+    17,
+    83
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)"
+  },
+  "sparapet_pv": {
+   "file": "tiles/sparapet_pv.png",
+   "size": [
+    20,
+    18
+   ],
+   "pivot": [
+    17,
+    76
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)"
+  },
+  "sparapet_mv": {
+   "file": "tiles/sparapet_mv.png",
+   "size": [
+    20,
+    83
+   ],
+   "pivot": [
+    3,
+    83
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)"
+  },
+  "swall2_shade_pu": {
+   "file": "tiles/swall2_shade_pu.png",
+   "size": [
+    24,
+    13
+   ],
+   "pivot": [
+    -1,
+    0
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)"
+  },
+  "swall2_shade_pv": {
+   "file": "tiles/swall2_shade_pv.png",
+   "size": [
+    24,
+    13
+   ],
+   "pivot": [
+    25,
+    0
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)"
+  },
+  "swall2_shade_pc": {
+   "file": "tiles/swall2_shade_pc.png",
+   "size": [
+    18,
+    10
+   ],
+   "pivot": [
+    9,
+    -8
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)"
   }
  }
 }

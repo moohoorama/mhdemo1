@@ -6,7 +6,6 @@ import (
 	"math"
 	"sort"
 	"strconv"
-	"strings"
 )
 
 // Draw is one picture of a plan, in canvas pixels from the map's origin.
@@ -367,9 +366,17 @@ func (w *view) blocks() (blocks []Piece, feet []Draw, err error) {
 
 // walls lays each wall line one block per small tile, and sets the gates standing on it into it: a gate is a run of
 // slices along the line, one per small tile (index.json gate_offset), each in place of the wall block where it
-// stands. A piece on a tile higher than the line's foot is inside the rise and is not drawn.
+// stands. A piece on a tile higher than the line's foot is inside the rise and is not drawn. A block takes a parapet
+// on each side, in the view, that no other wall or gate tile touches: the sides behind (-u, -v) before those in
+// front, so lines meet at corners and run on through junctions without their parapets crossing. Every tile first
+// lays its shadow on the ground out of its open front sides (WallFamily).
 func (w *view) walls() ([]Piece, error) {
-	var out []Piece
+	type tile struct {
+		at   [2]int // original small tile
+		name string // the gate slice, or "" for a block
+		fam  WallFamily
+	}
+	laidAt := map[[2]int]tile{} // by view tile
 	seated := map[int]bool{}
 	for _, line := range w.m.Walls {
 		family, ok := w.c.Rules.Walls[line.Family]
@@ -381,14 +388,14 @@ func (w *view) walls() ([]Piece, error) {
 			axis, fixed, t0, t1 = "v", line.From[0], line.From[1], line.To[1]
 		}
 		t0, t1 = min(t0, t1), max(t0, t1)
-		tile := func(t int) (int, int) {
+		at := func(t int) (int, int) {
 			if axis == "u" {
 				return t, fixed
 			}
 			return fixed, t
 		}
 		type laid struct {
-			gate   string // "" for a wall piece; else the gate's slices
+			gate   string // "" for a wall block; else the gate's slices
 			slice  int
 			mirror int // the slice in its place when the turn runs the gate the other way along the line
 		}
@@ -417,12 +424,7 @@ func (w *view) walls() ([]Piece, error) {
 				pieces[gt+round(2**s.GateOffset)] = laid{gate, k, len(slices) - 1 - k}
 			}
 		}
-		var ts []int
-		for t := range pieces {
-			ts = append(ts, t)
-		}
-		sort.Ints(ts)
-		fu, fv := tile(t0)
+		fu, fv := at(t0)
 		foot := w.m.Step(fu, fv)
 		turned := axis
 		if w.turn%2 == 1 {
@@ -430,15 +432,13 @@ func (w *view) walls() ([]Piece, error) {
 		}
 		// a gate's slices run the other way along the line when the turn reverses its direction on screen
 		reverse := axis == "v" && w.turn >= 2 || axis == "u" && (w.turn == 1 || w.turn == 2)
-		for _, t := range ts {
-			ou, ov := tile(t)
+		for t, l := range pieces {
+			ou, ov := at(t)
 			if w.m.Step(ou, ov) > foot {
 				continue
 			}
 			u, v := w.rot(ou, ov)
-			x, y := center(u, v)
-			l := pieces[t]
-			name := family[turned]
+			name := ""
 			if l.gate != "" {
 				k := l.slice
 				if reverse {
@@ -446,13 +446,10 @@ func (w *view) walls() ([]Piece, error) {
 				}
 				name = fmt.Sprintf("%s_%s_%d", l.gate, turned, k)
 			}
-			sp, ok := w.c.Sprites[name]
-			if !ok {
-				return nil, fmt.Errorf("%s: no picture %s", w.m.ID, name)
+			if prev, ok := laidAt[[2]int{u, v}]; ok && (prev.name != "" || name == "") {
+				continue // where lines cross, one block; a gate slice before a block
 			}
-			out = append(out, Piece{Key: Key{Box: [4]float64{float64(u), float64(v), float64(u + 1), float64(v + 1)},
-				Rank: RankWall, X: float64(x)}, Name: name, At: [2]int{ou, ov}, Anchor: [2]float64{float64(x), float64(y)},
-				Draws: []Draw{{Kind: DrawSprite, Name: name, X: x - sp.Pivot[0], Y: y - sp.Pivot[1]}}})
+			laidAt[[2]int{u, v}] = tile{[2]int{ou, ov}, name, family}
 		}
 	}
 	for i, ob := range w.m.Objects {
@@ -460,6 +457,52 @@ func (w *view) walls() ([]Piece, error) {
 			return nil, fmt.Errorf("%s: gate %s at (%d, %d) stands on no wall line", w.m.ID, ob.Name, ob.U, ob.V)
 		}
 	}
+	var out []Piece
+	for vt, l := range laidAt {
+		u, v := vt[0], vt[1]
+		x, y := center(u, v)
+		_, closedU := laidAt[[2]int{u + 1, v}]
+		_, closedV := laidAt[[2]int{u, v + 1}]
+		var names []string
+		for _, sh := range []struct {
+			open   bool
+			suffix string
+		}{{!closedU, "_pu"}, {!closedV, "_pv"}, {!closedU && !closedV, "_pc"}} {
+			if sh.open && l.fam.Shade != "" {
+				names = append(names, l.fam.Shade+sh.suffix)
+			}
+		}
+		if l.name != "" {
+			names = append(names, l.name)
+		} else {
+			names = append(names, l.fam.Block)
+			for _, side := range []struct {
+				du, dv int
+				suffix string
+			}{{-1, 0, "_mu"}, {0, -1, "_mv"}, {1, 0, "_pu"}, {0, 1, "_pv"}} {
+				if _, ok := laidAt[[2]int{u + side.du, v + side.dv}]; !ok {
+					names = append(names, l.fam.Parapet+side.suffix)
+				}
+			}
+		}
+		name := l.name
+		if name == "" {
+			name = l.fam.Block
+		}
+		p := Piece{Key: Key{Box: [4]float64{float64(u), float64(v), float64(u + 1), float64(v + 1)}, Rank: RankWall,
+			X: float64(x)}, Name: name, At: l.at, Anchor: [2]float64{float64(x), float64(y)}}
+		for _, name := range names {
+			sp, ok := w.c.Sprites[name]
+			if !ok {
+				return nil, fmt.Errorf("%s: no picture %s", w.m.ID, name)
+			}
+			p.Draws = append(p.Draws, Draw{Kind: DrawSprite, Name: name, X: x - sp.Pivot[0], Y: y - sp.Pivot[1]})
+		}
+		out = append(out, p)
+	}
+	sort.Slice(out, func(a, b int) bool {
+		return out[a].At[0] < out[b].At[0] || out[a].At[0] == out[b].At[0] && out[a].At[1] < out[b].At[1]
+	})
 	return out, nil
 }
 
@@ -528,6 +571,12 @@ func (w *view) cornerShadows(pieces []Piece) error {
 		height int
 	}
 	se, sw := map[[2]int]face{}, map[[2]int]face{}
+	wall := map[[2]int]bool{}
+	for _, p := range pieces {
+		if p.Rank == RankWall {
+			wall[[2]int{int(p.Box[0]), int(p.Box[1])}] = true
+		}
+	}
 	for i, p := range pieces {
 		u, v := int(p.Box[0]), int(p.Box[1])
 		switch p.Rank {
@@ -549,11 +598,10 @@ func (w *view) cornerShadows(pieces []Piece) error {
 			}
 		case RankWall:
 			sp := w.c.Sprites[p.Name]
-			along := w.wallAxis(p.Name)
-			switch along {
-			case "v":
+			if !wall[[2]int{u + 1, v}] {
 				se[[2]int{u, v}] = face{i, sp.Pivot[1]}
-			case "u":
+			}
+			if !wall[[2]int{u, v + 1}] {
 				sw[[2]int{u, v}] = face{i, sp.Pivot[1]}
 			}
 		}
@@ -580,23 +628,6 @@ func (w *view) cornerShadows(pieces []Piece) error {
 		}
 	}
 	return nil
-}
-
-// wallAxis is the axis a wall piece or gate slice picture runs along in the view ("" for other pictures).
-func (w *view) wallAxis(name string) string {
-	for _, fam := range w.c.Rules.Walls {
-		for axis, n := range fam {
-			if n == name {
-				return axis
-			}
-		}
-	}
-	for _, g := range w.c.Rules.Gates {
-		if rest, ok := strings.CutPrefix(name, g+"_"); ok && len(rest) > 1 {
-			return rest[:1]
-		}
-	}
-	return ""
 }
 
 // decoration is the ground decoration (Scenery.Decorate) over the whole grid, scattered by the map's own small

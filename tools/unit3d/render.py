@@ -133,12 +133,9 @@ def light_basis(light):
     return light, r, np.cross(light, r)
 
 
-def render(faces, direction, scale, cell=(48, 48), pivot=(24, 38), ss=4, depths=None, owner=None, owners=None):
+def render(faces, direction, scale, cell=(48, 48), pivot=(24, 38), ss=4, depths=None):
     """Return a cell-sized grid of palette keys ('.' transparent).
-    depths: if a list, the per-pixel depth toward the viewer (model units, NaN where empty) is appended.
-    owner: a function of model-space points (an N x 3 array) giving each an int (which part of the model it belongs
-    to); with owners, a list, the per-pixel owner of what the pixel shows (-1 where empty) is appended. An outline
-    pixel takes the owner of a neighbour it outlines."""
+    depths: if a list, the per-pixel depth toward the viewer (model units, NaN where empty) is appended."""
     faces = prepare(faces)
     t, r, u = view(AZIMUTH[direction])
     light = LIGHT[0]*r + LIGHT[1]*u + LIGHT[2]*t
@@ -174,13 +171,6 @@ def render(faces, direction, scale, cell=(48, 48), pivot=(24, 38), ss=4, depths=
     mat = np.where(hit, np.array([material[c] for _, _, c in faces] + [0])[ids], -1)
     key = np.where(hit, mat*4 + tone, -1)
 
-    own = None
-    if owner is not None:
-        inside = world - 1e-3*t  # a hair behind the visible surface, inside its solid: a face on a boundary goes with its own part
-        own = np.where(hit, np.asarray(owner(inside.reshape(-1, 3))).reshape(hit.shape), -1)
-    owned = np.full((cell[1], cell[0]), -1, np.int64)
-    if owners is not None:
-        owners.append(owned)
     out = [['.'] * cell[0] for _ in range(cell[1])]
     depth = np.full((cell[1], cell[0]), np.nan)
     blocks = hit.reshape(cell[1], ss, cell[0], ss).any(axis=(1, 3))
@@ -201,17 +191,7 @@ def render(faces, direction, scale, cell=(48, 48), pivot=(24, 38), ss=4, depths=
             ramp = RAMPS.get(color) or nearest_key(color)*4
             out[y][x] = ramp[best % 4]
             depth[y, x] = zbuf[y*ss:(y+1)*ss, x*ss:(x+1)*ss].ravel()[block == best].mean()
-            if own is not None:
-                owned[y, x] = np.bincount(own[y*ss:(y+1)*ss, x*ss:(x+1)*ss].ravel()[block == best] + 1).argmax() - 1
-    out = outline(contour(out, depth, box), box)
-    if own is not None:
-        for y in range(box[1], box[3]):
-            for x in range(box[0], box[2]):
-                if out[y][x] != '.' and owned[y, x] < 0:
-                    near = [owned[y+dy, x+dx] for dy, dx in N4 if 0 <= y+dy < cell[1] and 0 <= x+dx < cell[0] and owned[y+dy, x+dx] >= 0]
-                    if near:
-                        owned[y, x] = max(set(near), key=near.count)
-    return out
+    return outline(contour(out, depth, box), box)
 
 
 N4 = ((1, 0), (-1, 0), (0, 1), (0, -1))

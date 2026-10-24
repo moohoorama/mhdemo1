@@ -12,7 +12,7 @@
  "heights": {
   "2": {"lift": 146, "faces": "tcliff", "foot": "cfoot", "rim": "#4a3a25"}
  },
- "walls": {"swall": {"u": "swall2_u", "v": "swall2_v"}},
+ "walls": {"swall": {"block": "swall2", "parapet": "sparapet", "shade": "swall2_shade"}},
  "gates": {"sgate_open": "sgate2_open", "sgate_closed": "sgate2_closed"},
  "gate_passage": [-1, 0],
  "corner_shadow": {"sprite": "jshade", "offset": [-16, 2]},

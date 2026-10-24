@@ -21,14 +21,6 @@ BRICK, BRICK_D, BRICK_L = '#b4bcc2', '#767f87', '#d2d8dc'
 GATE_STONE = '#9aa3aa'
 R.add_ramps({BRICK: '3455', BRICK_D: '2344', BRICK_L: '4566', GATE_STONE: '3445'})
 H, T = 3.2, 1.0    # wall height and thickness (a whole cell, flush with the gate), in model units (one unit = one small cell edge; an officer is 1.5 high)
-# the block kit (models2) keeps every part inside its own small cell: the scene rules sort a wall by its cells, so a
-# part standing out over the next cell would be drawn in that cell's order, in front of or behind the wrong things
-FLUSH = False
-
-
-def ledge(w):
-    """how far a ledge stands out past the wall's face: none in the block kit"""
-    return 0 if FLUSH else w
 
 
 def courses(x0, x1, y, z0, z1, along="x"):
@@ -56,15 +48,9 @@ def merlons(y, z0, thick=.2, base=.26, h=.6):
 
 def wall_body(tall=H):
     m.box(V(0, 0, tall / 2), V(1.0, T, tall), BRICK)
-    m.box(V(0, 0, .12), V(1.0, T + ledge(.08), .24), BRICK_D)         # plinth
+    m.box(V(0, 0, .12), V(1.0, T + .08, .24), BRICK_D)              # plinth
     courses(-.5, .5, -T / 2 - .025, .24, tall - .2)
-    m.box(V(0, 0, tall - .08), V(1.0, T + ledge(.14), .16), BRICK_D)   # the corbel course under the parapets
-
-
-def parapets():
-    """the block kit's parapets: low merlons along both edges of the walkway, so its top shows the whole small cell"""
-    for y in (-T / 2 + .08, T / 2 - .08):
-        merlons(y, H, thick=.16, base=.18, h=.34)
+    m.box(V(0, 0, tall - .08), V(1.0, T + .14, .16), BRICK_D)        # the corbel course under the parapets
 
 
 def strip():
@@ -104,7 +90,7 @@ def gate(closed):
     for sx in (-1, 1):
         cx = sx * (W2 / 2 - PIER / 2)
         gb(cx, -D / 2, D / 2, 0, H, PIER, GATE_STONE)
-        gb(cx, -D / 2 - ledge(.04), D / 2 + ledge(.04), 0, .24, PIER + ledge(.06), BRICK_D)
+        gb(cx, -D / 2 - .04, D / 2 + .04, 0, .24, PIER + .06, BRICK_D)
         for z in (.5, .8, 1.1, 1.4, 1.7, 2.0, 2.3, 2.6, 2.9):
             gb(cx, -D / 2 - .05, -D / 2, z - .025, z + .025, PIER, BRICK_D)
     gb(0, -D / 2, D / 2, PH, H, OPEN + .02, GATE_STONE)             # the lintel block over the passage
@@ -132,7 +118,8 @@ def gate(closed):
     for sx in (-1, 1):
         wing(sx)
         post(sx * (W2 / 2 + WING + POST / 2))
-    G3.hip_roof(-W2 / 2 - .25, W2 / 2 + .25, -D / 2 - ledge(.3), D / 2 + ledge(.25), sz + 1.32, .85, G3.TILE_R, G3.TILE_D)
+    if True:
+        G3.hip_roof(-W2 / 2 - .25, W2 / 2 + .25, -D / 2 - .3, D / 2 + .25, sz + 1.32, .85, G3.TILE_R, G3.TILE_D)
     return list(m.meshes)
 
 
@@ -142,8 +129,8 @@ def wing(sx):
     x0, x1 = sorted((sx * W2 / 2, sx * (W2 / 2 + WING)))
     cx, L = (x0 + x1) / 2, x1 - x0
     gb(cx, -T / 2, T / 2, 0, H, L, BRICK)
-    gb(cx, -T / 2 - ledge(.04), T / 2 + ledge(.04), 0, .24, L, BRICK_D)
-    gb(cx, -T / 2 - ledge(.07), T / 2 + ledge(.07), H - .16, H, L, BRICK_D)
+    gb(cx, -T / 2 - .04, T / 2 + .04, 0, .24, L, BRICK_D)
+    gb(cx, -T / 2 - .07, T / 2 + .07, H - .16, H, L, BRICK_D)
     k, z = 0, .54
     while z < H - .25:  # mortar courses with staggered joints
         gb(cx, -T / 2 - .05, -T / 2, z - .025, z + .025, L, BRICK_D)
@@ -152,12 +139,6 @@ def wing(sx):
         z += .3
         k += 1
     for c in np.arange(x0 + .5, x1, 1.0):  # one merlon per small cell, like the wall pieces
-        if FLUSH:  # the block kit's low merlons on both edges (parapets)
-            for y in (-T / 2 + .08, T / 2 - .08):
-                gb(c, y - .08, y + .08, H, H + .18, 1.0, BRICK)
-                gb(c, y - .08, y + .08, H + .18, H + .52, .56, BRICK_L)
-                gb(c, y - .08, y + .08, H + .52, H + .58, .56, BRICK_D)
-            continue
         y = -T / 2 + .1
         gb(c, y - .1, y + .1, H, H + .26, 1.0, BRICK)
         gb(c, y - .1, y + .1, H + .26, H + .86, .56, BRICK_L)
@@ -169,15 +150,14 @@ def wing(sx):
 def post(cx):
     """the thick post that closes a wing: a stone pier standing proud of the wall front and back and above its
     parapet, plinth and capstone, a lantern slot"""
-    t = T + ledge(.4)  # the block kit's post is a tower of its own small cell, as thick as the wall
-    top = H + (1.4 if FLUSH else .7)  # in the block kit it rises well over the parapets, so the wall before it hides only its foot
-    gb(cx, -t / 2, t / 2, 0, top, POST, GATE_STONE)
-    gb(cx, -t / 2 - ledge(.05), t / 2 + ledge(.05), 0, .3, POST + ledge(.1), BRICK_D)
-    gb(cx, -t / 2 - ledge(.08), t / 2 + ledge(.08), top, top + .16, POST + ledge(.16), BRICK_D)
-    gb(cx, -t / 2 - ledge(.04), t / 2 + ledge(.04), top + .16, top + .3, POST - .1, BRICK_L)
-    for z in np.arange(.7, top - .3, .4):
+    t = T + .4
+    gb(cx, -t / 2, t / 2, 0, H + .7, POST, GATE_STONE)
+    gb(cx, -t / 2 - .05, t / 2 + .05, 0, .3, POST + .1, BRICK_D)
+    gb(cx, -t / 2 - .08, t / 2 + .08, H + .7, H + .86, POST + .16, BRICK_D)
+    gb(cx, -t / 2 - .04, t / 2 + .04, H + .86, H + 1.0, POST - .1, BRICK_L)
+    for z in (.7, 1.1, 1.5, 1.9, 2.3, 2.7, 3.1):
         gb(cx, -t / 2 - .05, -t / 2, z - .025, z + .025, POST, BRICK_D)
-    gb(cx, -t / 2 - .06, -t / 2, top - .9, top - .4, .14, P.INK)
+    gb(cx, -t / 2 - .06, -t / 2, H - .2, H + .3, .14, P.INK)
 
 
 def mirror():
@@ -262,144 +242,7 @@ def write():
         print(n, e["size"], e["pivot"])
 
 
-# ---- the block kit: a wall piece is a whole small cell of wall (its front, its walkway and both parapets), a gate
-# is ten small cells of it; each picture is cut out of a longer render by which cell owns each pixel (render's owner)
-
-import heads as Hd
-
-BLOCK_CELL, BLOCK_PIVOT = (96, 140), (48, 120)
-GATE_CELL, GATE_PIVOT = (360, 240), (180, 190)
-GATE_TILES = 10  # the gate model runs over x in [-5, 5): the tower, a wing and a post either side
-
-
-def owned_draw(cell, pivot, owner):
-    """the model drawn whole, and which part owns each pixel (owner of model-space points; -1 for none)"""
-    own = []
-    im = Hd.to_img(R.render(m.meshes, S.VIEW, S.SCALE, cell=cell, pivot=pivot, owner=owner, owners=own))
-    im.pivot = (pivot[0] + 1, pivot[1] + 1)
-    return im, own[0]
-
-
-def keep(im, own, k):
-    """the pixels of im owned by k, trimmed; the pivot moves with the crop"""
-    a = np.array(im)
-    a[own != k] = 0
-    part = Image.fromarray(a)
-    x0, y0, x1, y1 = part.getbbox()
-    return part.crop((x0, y0, x1, y1)), (im.pivot[0] - x0, im.pivot[1] - y0)
-
-
-def along(orient):
-    """the model coordinate along the wall: x for _u, and for _v (the model mirrored by mirror()) -y"""
-    return (lambda p: p[:, 0]) if orient == "u" else (lambda p: -p[:, 1])
-
-
-def block(orient):
-    """one small cell of wall: the cell drawn alone (its whole shape, so the end of a line shows its end face), less
-    the outline it would cast on the neighbour behind it in a line; where three in a row show it, their colours (no
-    outline at the joints)"""
-    def model(row):
-        m.meshes = []
-        wall_body()
-        parapets()
-        if row:
-            strip()
-        if orient == "v":
-            mirror()
-    t = along(orient)
-    model(True)
-    row, own = owned_draw(BLOCK_CELL, BLOCK_PIVOT, lambda p: np.floor(t(p) + .5).astype(int) + 1)
-    model(False)
-    alone = P.draw(BLOCK_CELL, BLOCK_PIVOT)
-    a, r = np.array(alone), np.array(row)
-    ink = np.all(a[..., :3] == R.COLOR['0'], axis=-1)
-    a[own == 1] = r[own == 1]
-    a[(own == 0) & ink] = 0  # its outline over the neighbour behind, which in a line is drawn first
-    im = Image.fromarray(a)
-    im.pivot = row.pivot
-    x0, y0, x1, y1 = im.getbbox()
-    return im.crop((x0, y0, x1, y1)), (im.pivot[0] - x0, im.pivot[1] - y0)
-
-
-def gate_tiles(closed, orient):
-    """the gate's ten slices, slice j the pixels of the small cell x in [j - 5, j - 4): a slice stands on its own cell
-    of the wall line, gate_offset game cells from the gate's point (the cell just past the middle of the arch)"""
-    gate(closed)
-    tower = list(m.meshes)
-    m.meshes = []  # a wall block on either side, drawn with the gate so its ends meet them without an outline
-    wall_body()
-    parapets()
-    wall = list(m.meshes)
-    m.meshes = tower + [(np.asarray(v) + [dx, 0, 0], c) for dx in (-GATE_TILES / 2 - .5, GATE_TILES / 2 + .5) for v, c in wall]
-    if orient == "v":
-        mirror()
-    t = along(orient)
-
-    def owner(p):
-        j = np.floor(t(p)).astype(int) + GATE_TILES // 2
-        return np.where((j >= 0) & (j < GATE_TILES), j, GATE_TILES)  # the blocks beside: their own part, left out
-
-    im, own = owned_draw(GATE_CELL, GATE_PIVOT, owner)
-    # the outline between the gate's end and a block beside it is drawn by neither the block (its outline over the
-    # cell behind it is left out) nor that block's part here: the gate's end cell takes it
-    ink = np.all(np.array(im)[..., :3] == R.COLOR['0'], axis=-1)
-    for y, x in zip(*np.nonzero(ink & (own == GATE_TILES))):
-        near = [own[y + dy, x + dx] for dy, dx in R.N4 if 0 <= y + dy < own.shape[0] and 0 <= x + dx < own.shape[1]]
-        mine = [k for k in near if 0 <= k < GATE_TILES]
-        if mine:
-            own[y, x] = max(set(mine), key=mine.count)
-    out = []
-    for j in range(GATE_TILES):
-        part, (px, py) = keep(im, own, j)
-        rel = j - 5
-        dx = 16 * (rel + .5) if orient == "u" else -16 * (rel + .5)  # the slice's cell centre from the gate's model origin
-        out.append((part, (int(round(px + dx)), int(round(py + 8 * (rel + .5)))), rel / 2))
-    return out
-
-
-def models2():
-    global FLUSH
-    FLUSH = True
-    out = {}
-    for orient in ("u", "v"):
-        out["swall2_" + orient] = block(orient)
-    for state, closed in (("closed", True), ("open", False)):
-        for orient in ("u", "v"):
-            for j, (im, pv, off) in enumerate(gate_tiles(closed, orient)):
-                out["sgate2_%s_%s_%d" % (state, orient, j)] = (im, pv, off)
-    FLUSH = False
-    return out
-
-
-def write2():
-    """save the block kit into ../tiles and update only its entries of tiles.json"""
-    import json
-    tiles = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "tiles")
-    made = {}
-    for name, (im, pv, *off) in models2().items():
-        im.save(os.path.join(tiles, name + ".png"))
-        made[name] = dict(file="tiles/%s.png" % name, size=list(im.size), pivot=list(pv), layer="object", scale="scene",
-                          made="3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)")
-        if off:
-            made[name]["gate_offset"] = off[0]
-    path = os.path.join(tiles, "tiles.json")
-    man = json.load(open(path))
-    man["sprites"].update(made)
-    json.dump(man, open(path, "w"), ensure_ascii=False, indent=1)
-    open(path, "a").write("\n")
-    for n, e in made.items():
-        print(n, e["size"], e["pivot"], e.get("gate_offset", ""))
-
-
-if __name__ == "__main__" and sys.argv[1:] == ["--write2"]:
-    write2()
-elif __name__ == "__main__" and sys.argv[1:2] == ["--preview2"]:
-    # python3 gen_3d_castle.py --preview2 OUT_DIR: the block kit's pictures, and each gate put back together
-    out = sys.argv[2]
-    for name, (im, pv, *off) in models2().items():
-        im.save(os.path.join(out, name + ".png"))
-        print(name, im.size, pv, off)
-elif __name__ == "__main__" and sys.argv[1:] == ["--write"]:
+if __name__ == "__main__" and sys.argv[1:] == ["--write"]:
     write()
 elif __name__ == "__main__":
     # preview: python3 gen_3d_castle.py OUT_DIR writes every model's trimmed picture there

@@ -74,15 +74,20 @@ func TestCheckpoint(t *testing.T) {
 		p, err := Build(m, c, Options{})
 		require.NoError(t, err)
 		at := map[string][2]int{}
+		blocks := map[[2]int]bool{}
 		for _, s := range p.Solid {
 			if _, ok := at[s.Name]; !ok {
 				at[s.Name] = s.At
+			}
+			if s.Name == "swall2" {
+				blocks[s.At] = true
 			}
 		}
 		assert.Equal(t, [2]int{17, 4}, at["sgate2_open_v_0"])
 		assert.Equal(t, [2]int{17, 9}, at["sgate2_open_v_5"])
 		assert.Equal(t, [2]int{17, 13}, at["sgate2_open_v_9"])
-		assert.Equal(t, [2]int{17, 2}, at["swall2_v"])
+		assert.True(t, blocks[[2]int{17, 2}])
+		assert.False(t, blocks[[2]int{17, 9}])
 	})
 	t.Run("corner shadow on the far cliff right of the wall, only while that face shows", func(t *testing.T) {
 		shadows := func(turn int) []Draw {
@@ -99,8 +104,8 @@ func TestCheckpoint(t *testing.T) {
 			return out
 		}
 		got := shadows(0)
-		require.Len(t, got, 5)
-		assert.Equal(t, Draw{Kind: DrawSprite, Name: "jshade_80_0", X: 256, Y: 162 - 80}, got[0], "the old map's place")
+		require.Len(t, got, 4)
+		assert.Equal(t, Draw{Kind: DrawSprite, Name: "jshade_72_0", X: 256, Y: 162 - 72}, got[0], "as high as the wall block")
 		assert.Empty(t, shadows(1), "turned a quarter, the wall runs along u: no face along v throws one")
 	})
 	t.Run("every turn builds", func(t *testing.T) {
@@ -108,6 +113,33 @@ func TestCheckpoint(t *testing.T) {
 			_, err := Build(m, c, Options{Turn: turn, Decor: true})
 			assert.NoError(t, err)
 		}
+	})
+}
+
+func TestParapets(t *testing.T) {
+	m, c := load(t, "S_castle_town")
+	draws := func(turn int) map[[2]int][]string {
+		p, err := Build(m, c, Options{Turn: turn})
+		require.NoError(t, err)
+		out := map[[2]int][]string{}
+		for _, s := range p.Solid {
+			if s.Name == "swall2" {
+				for _, d := range s.Draws {
+					out[s.At] = append(out[s.At], d.Name)
+				}
+			}
+		}
+		return out
+	}
+	t.Run("on the sides no wall tile touches, behind first, over the shadow out of the open front sides", func(t *testing.T) {
+		got := draws(0)
+		assert.Equal(t, []string{"swall2", "sparapet_mu", "sparapet_mv"}, got[[2]int{-1, -1}], "the outer corner")
+		assert.Equal(t, []string{"swall2_shade_pv", "swall2", "sparapet_mv", "sparapet_pv"}, got[[2]int{5, -1}], "along u")
+		assert.Equal(t, []string{"swall2_shade_pu", "swall2", "sparapet_mu", "sparapet_pu"}, got[[2]int{-1, 20}], "along v")
+		assert.Equal(t, []string{"swall2_shade_pu", "swall2_shade_pv", "swall2_shade_pc", "swall2", "sparapet_mv", "sparapet_pu", "sparapet_pv"}, got[[2]int{32, -1}], "the line's end")
+	})
+	t.Run("sides are taken in the view", func(t *testing.T) {
+		assert.Equal(t, []string{"swall2_shade_pu", "swall2", "sparapet_mu", "sparapet_pu"}, draws(1)[[2]int{5, -1}], "turned a quarter, the u line runs along v")
 	})
 }
 
