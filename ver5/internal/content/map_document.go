@@ -196,6 +196,7 @@ func (d *MapDocument) Validate(data *Data) error {
 		}
 	}
 	copy := cloneMap(*data)
+	copy.Explores = data.Explores // not in the bundle's JSON
 	st := d.Compile()
 	if len(st.Allies) < st.Max {
 		return fmt.Errorf("아군 배치 칸 %d개: 최소 %d개가 필요합니다", len(st.Allies), st.Max)

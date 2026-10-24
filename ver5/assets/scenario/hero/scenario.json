@@ -1,5 +1,5 @@
 {
- "Start": "c02-start",
+ "Start": "c01-walk",
  "Roster": [
   "liubei",
   "guanyu",
@@ -16,6 +16,10 @@
  },
  "Money": 1000,
  "Chapters": [
+  {
+   "ID": "01",
+   "File": "story01.json"
+  },
   {
    "ID": "02",
    "File": "story02.json"

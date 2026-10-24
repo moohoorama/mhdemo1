@@ -138,7 +138,7 @@ func executed(e *Engine, key string) bool { return e.state.Executed[key] }
 
 func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, true)
-	assert.Equal(t, []string{"B02", "B05", "B06", "B07", "B08", "B09", "B10"}, fought)
+	assert.Equal(t, []string{"B01", "B02", "B05", "B06", "B07", "B08", "B09", "B10"}, fought)
 	assert.Equal(t, 1, e.state.Flags["flag-sunjian-alive"])
 	assert.Equal(t, 1, e.state.Flags["flag-bianshui-generals"])
 	assert.Equal(t, 1, e.state.Flags["flag-julu-clear"])
@@ -154,7 +154,7 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 
 func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, false)
-	assert.Len(t, fought, 7)
+	assert.Len(t, fought, 8)
 	assert.Zero(t, e.state.Flags["flag-julu-clear"])
 	assert.Positive(t, e.state.Warehouse["fire_manual"], "Huangfu Song hands the manual to whoever broke the siege by fire")
 	assert.True(t, executed(e, "battle-B10-vanguard-strong"), "the vanguard at Jiejiao is the hard one")
@@ -248,20 +248,16 @@ func TestChangsheSiegeUnfolds(t *testing.T) {
 	assert.NotNil(t, e.unit("zumao"))
 	assert.GreaterOrEqual(t, e.matching("so1")[0].X, 28, "the soldiers by the outer fence ran out south")
 	assert.LessOrEqual(t, e.matching("si1")[0].X, 20, "the soldiers by the inner fence ran in toward the castle")
-	for _, id := range []string{"bocai", "dengmao", "zhangbao"} {
+	for _, id := range []string{"bocai", "zhangbao"} {
 		assert.Equal(t, -20, e.unit(id).Status["attack"].Value, "the turbans lose heart when they see they are surrounded")
 		assert.Equal(t, -20, e.unit(id).Status["defense"].Value)
 	}
 	assert.Equal(t, "march", e.unit("huangfusong").Policy)
-	assert.Equal(t, "march", e.unit("dengmao").Policy, "Deng Mao comes out first")
-	assert.Equal(t, "hold", e.unit("chengyuanzhi").Policy)
-	e.unit("dengmao").HP = 0
-	applyOK(t, e, Command{Kind: "end"})
-	assert.Equal(t, "march", e.unit("chengyuanzhi").Policy, "Cheng Yuanzhi comes out once Deng Mao falls")
 	assert.Equal(t, "hold", e.unit("bocai").Policy)
-	e.unit("chengyuanzhi").HP = 0
-	applyOK(t, e, Command{Kind: "end"})
-	assert.Equal(t, "march", e.unit("bocai").Policy, "Bo Cai comes out last")
+	for e.state.Round < 5 {
+		applyOK(t, e, Command{Kind: "end"})
+	}
+	assert.Equal(t, "march", e.unit("bocai").Policy, "Bo Cai comes out in the fifth round")
 	e.unit("bocai").HP = 0
 	applyOK(t, e, Command{Kind: "end"})
 	assert.Equal(t, "victory", e.Observe().Result)

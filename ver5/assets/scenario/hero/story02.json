@@ -1,33 +1,9 @@
 {
  "Nodes": [
   {
-   "ID": "c02-start",
-   "Kind": "scene",
-   "Place": "광종 · 노식의 진영"
-  },
-  {
-   "ID": "c02-01",
-   "Kind": "say",
-   "Speaker": "luzhi",
-   "Text": "현덕, 영천이 급하다. 황보숭 장군이 장사성에서 적장 파재에게 겹겹이 에워싸였다 한다."
-  },
-  {
-   "ID": "c02-02",
-   "Kind": "say",
-   "Speaker": "luzhi",
-   "Text": "내 군사 천을 줄 터이니 가서 구하라."
-  },
-  {
-   "ID": "c02-03",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "스승님의 명, 받들겠습니다."
-  },
-  {
-   "ID": "c02-04",
-   "Kind": "say",
-   "Speaker": "luzhi",
-   "Text": "그리고 공을 세우거든 군보에 내 이름은 빼라. 요사이 조정에는 공보다 뇌물이 먼저 닿는 법이다."
+   "ID": "c02-walk",
+   "Kind": "explore",
+   "Explore": "explore02"
   },
   {
    "ID": "c02-castle",
@@ -170,6 +146,127 @@
    "ID": "c02-end",
    "Kind": "narrate",
    "Text": "영천의 밤이 밝았다."
+  }
+ ],
+ "Events": [
+  {
+   "ID": "c02-e-zoujing",
+   "Kind": "scene",
+   "Place": "탁군 · 관청"
+  },
+  {
+   "ID": "c02-z1",
+   "Kind": "say",
+   "Speaker": "zoujing",
+   "Text": "유현덕. 그대들이 도적의 등을 치지 않았다면 탁군은 그날 무너졌을 것이오."
+  },
+  {
+   "ID": "c02-z2",
+   "Kind": "say",
+   "Speaker": "zoujing",
+   "Text": "태수 유언 공께서 크게 기뻐하시며, 같은 유씨 종친이니 벼슬을 내리겠다 하시오."
+  },
+  {
+   "ID": "c02-z3",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "과분하신 말씀입니다. 하오나 하북에서 장각과 싸우시는 스승 노식 공께 가 보려 합니다."
+  },
+  {
+   "ID": "c02-z4",
+   "Kind": "say",
+   "Speaker": "zoujing",
+   "Text": "노 중랑장이라면 광종에서 장각의 성을 에워싸고 계시오. 태수께는 내가 그리 아뢰리다."
+  },
+  {
+   "ID": "c02-z5",
+   "Kind": "set",
+   "Flags": {
+    "c02-thanked": 1
+   }
+  },
+  {
+   "ID": "c02-z6",
+   "Kind": "back"
+  },
+  {
+   "ID": "c02-e-luzhi",
+   "Kind": "scene",
+   "Place": "광종 · 노식의 진영"
+  },
+  {
+   "ID": "c02-l1",
+   "Kind": "narrate",
+   "Text": "석 달째 장각의 성을 에워싼 진영. 병사들이 해자 옆에서 존다."
+  },
+  {
+   "ID": "c02-l2",
+   "Kind": "say",
+   "Speaker": "luzhi",
+   "Text": "왔느냐. 밥은 먹었느냐."
+  },
+  {
+   "ID": "c02-l3",
+   "Kind": "narrate",
+   "Text": "휘장 너머로 비단옷의 황문 좌풍이 시종을 거느리고 지나간다. 사흘째 진영을 돌며 장수들 막사에 오래 앉았다 간다."
+  },
+  {
+   "ID": "c02-l4",
+   "Kind": "say",
+   "Speaker": "luzhi",
+   "Text": "저자가 무엇을 바라는지 안다. 그러니 주지 않는다."
+  },
+  {
+   "ID": "c02-l5",
+   "Kind": "narrate",
+   "Text": "영천에서 급보가 닿는다. 황보숭이 파재의 황건 수만에게 장사성에 갇혔다."
+  },
+  {
+   "ID": "c02-l6",
+   "Kind": "say",
+   "Speaker": "luzhi",
+   "Text": "천 명을 떼어 주마. 천 명이면 적다. 그러니 네가 가는 것이다."
+  },
+  {
+   "ID": "c02-l7",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "스승님의 명, 받들겠습니다."
+  },
+  {
+   "ID": "c02-l8",
+   "Kind": "say",
+   "Speaker": "luzhi",
+   "Text": "그리고 공을 세우거든 군보에 내 이름은 빼라. 요사이 조정에는 공보다 뇌물이 먼저 닿는 법이다."
+  },
+  {
+   "ID": "c02-l9",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "천 명으로 수만을 워치케……."
+  },
+  {
+   "ID": "c02-l10",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "익덕."
+  },
+  {
+   "ID": "c02-l11",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "가 보면 안다."
+  },
+  {
+   "ID": "c02-l12",
+   "Kind": "set",
+   "Flags": {
+    "c02-orders": 1
+   }
+  },
+  {
+   "ID": "c02-l13",
+   "Kind": "back"
   }
  ]
 }

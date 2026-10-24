@@ -1406,7 +1406,10 @@
   "maps/S_weapon_shop2.json",
   "maps/S_tool_shop2.json",
   "maps/S_mansion2.json",
-  "maps/S_tavern2.json"
+  "maps/S_tavern2.json",
+  "maps/S_peach_grove2.json",
+  "maps/S_army_camp2.json",
+  "maps/S_militia_camp.json"
  ],
  "extra": {
   "version": 1,

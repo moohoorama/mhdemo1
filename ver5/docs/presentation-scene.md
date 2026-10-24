@@ -36,7 +36,7 @@
   "Backdrop": 원경 ID (야외 맵 뒤 하늘·먼 산·관문·불타는 성),
   "Nodes":   [이 장면에서 보이는 노드 ID, 차례대로],
   "Ambient": [장면이 열릴 때 한 번 하는 단계 (불·연기)],
-  "Cast":    { "<키>": {"At": [u, v], "Face": "SE", "Faction"?, "Sprite"?, "Off"?, "Hold"?, "Pose"?} },
+  "Cast":    { "<키>": {"At": [u, v], "Face": "SE", "Faction"?, "Sprite"?, "Off"?, "Hold"?, "Pose"?, "Stay"?} },
   "Beats":   { "<노드 ID>": [ 첫 줄 앞의 그룹들, 둘째 줄 앞의 그룹들, ... ] }
 }}
 그룹 = 단계의 배열
@@ -50,6 +50,7 @@
   `Face`는 대각선 `NW`·`NE`·`SW`·`SE`다(`SE` = +u 화면 오른쪽 아래, `SW` = +v 왼쪽 아래, `NW` = −u, `NE` = −v).
   `Faction`을 생략하면 인물의 `Look.Faction`. `Sprite`는 인물의 장면 스프라이트 대신 쓸 스프라이트 ID(말 탄 장수는 전투 시트, 병사는 병종 시트).
   `Off`는 무대 밖에서 시작해 `Enter`로 들어온다. `Hold`는 화자 쪽으로 저절로 돌아보지 않는다(성 밖을 보는 장수, 옥좌의 황제).
+  `Stay`는 탐험 지역 맵에서 여는 이벤트에서만 쓴다: 탐험에서 서 있던 자리·방향 그대로 서고 `At`·`Face`를 적지 않는다([presentation-explore.md](presentation-explore.md)).
   `Pose`는 서 있는 대신 쉬는 동작이다(`sit` 의자에 앉음, `throne` 옥좌, `bow` 읍, `prostrate` 부복, `lie` 누움, `sitground` 땅에 기대 앉음).
   동작(`Play`)이나 걷기가 끝나면 이 자세로 돌아간다. 그 배우의 시트에 있는 동작만 쓴다(시험이 확인한다).
 - `Beats[노드][i]`는 그 노드의 i번째 화자 줄 앞에 재생할 그룹들이다. 한 그룹의 단계는 함께 시작하고(`After`만큼 늦출 수 있다),

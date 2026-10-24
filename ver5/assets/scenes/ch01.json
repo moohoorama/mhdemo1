@@ -1,0 +1,306 @@
+{
+ "Scenes": {
+  "c01-e-notice": {
+   "Map": "S_zhuo2",
+   "Nodes": [
+    "c01-e-notice",
+    "c01-n1",
+    "c01-n2",
+    "c01-n3"
+   ],
+   "Cast": {
+    "유비": {
+     "Stay": true
+    },
+    "장비": {
+     "Stay": true
+    }
+   },
+   "Beats": {
+    "c01-n1": [
+     [
+      [
+       {
+        "Actor": "장비",
+        "Play": "action"
+       }
+      ]
+     ]
+    ],
+    "c01-n3": [
+     [
+      [
+       {
+        "Actor": "장비",
+        "Play": "action"
+       }
+      ]
+     ]
+    ]
+   }
+  },
+  "c01-e-tavern": {
+   "Map": "S_tavern2",
+   "Time": "dusk",
+   "Nodes": [
+    "c01-e-tavern",
+    "c01-t1",
+    "c01-t2",
+    "c01-t3",
+    "c01-t4",
+    "c01-t5",
+    "c01-t6",
+    "c01-t7",
+    "c01-t8",
+    "c01-t9",
+    "c01-t10",
+    "c01-t11"
+   ],
+   "Cast": {
+    "유비": {
+     "Stay": true
+    },
+    "관우": {
+     "Stay": true
+    },
+    "장비": {
+     "Stay": true
+    }
+   },
+   "Beats": {
+    "c01-t4": [
+     [
+      [
+       {
+        "Actor": "관우",
+        "Play": "action"
+       }
+      ]
+     ]
+    ],
+    "c01-t7": [
+     [
+      [
+       {
+        "Actor": "장비",
+        "Play": "action"
+       }
+      ]
+     ]
+    ],
+    "c01-t8": [
+     [
+      [
+       {
+        "Actor": "관우",
+        "Emote": "…"
+       }
+      ]
+     ]
+    ],
+    "c01-t10": [
+     [
+      [
+       {
+        "Actor": "장비",
+        "Move": [
+         6.25,
+         4.25
+        ],
+        "Exit": true
+       }
+      ],
+      [
+       {
+        "Actor": "관우",
+        "Look": "SE"
+       }
+      ]
+     ]
+    ]
+   }
+  },
+  "c01-e-oath": {
+   "Map": "S_peach_grove2",
+   "Nodes": [
+    "c01-e-oath",
+    "c01-o1",
+    "c01-o2",
+    "c01-o3",
+    "c01-o4",
+    "c01-o5",
+    "c01-o6",
+    "c01-o7",
+    "c01-o8",
+    "c01-o9",
+    "c01-o10",
+    "c01-o11"
+   ],
+   "Cast": {
+    "유비": {
+     "Stay": true
+    },
+    "관우": {
+     "Stay": true
+    },
+    "장비": {
+     "Stay": true
+    }
+   },
+   "Ambient": [
+    {
+     "Effect": "petals",
+     "At": [
+      4.75,
+      3.75
+     ]
+    }
+   ],
+   "Beats": {
+    "c01-o2": [
+     [
+      [
+       {
+        "Actor": "관우",
+        "Play": "action"
+       }
+      ]
+     ]
+    ],
+    "c01-o5": [
+     [
+      [
+       {
+        "Actor": "관우",
+        "Emote": "…"
+       }
+      ]
+     ]
+    ],
+    "c01-o6": [
+     [
+      [
+       {
+        "Effect": "smoke",
+        "At": [
+         3.75,
+         2.75
+        ]
+       }
+      ]
+     ]
+    ],
+    "c01-o7": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Play": "action"
+       },
+       {
+        "Actor": "관우",
+        "Play": "action",
+        "After": 0.15
+       },
+       {
+        "Actor": "장비",
+        "Play": "action",
+        "After": 0.3
+       }
+      ]
+     ]
+    ],
+    "c01-o9": [
+     [
+      [
+       {
+        "Actor": "장비",
+        "Emote": "?"
+       }
+      ]
+     ]
+    ],
+    "c01-o11": [
+     [
+      [
+       {
+        "Effect": "petals",
+        "At": [
+         4.75,
+         4.25
+        ]
+       }
+      ]
+     ]
+    ]
+   }
+  },
+  "c01-sortie": {
+   "Map": "S_militia_camp",
+   "Nodes": [
+    "c01-sortie",
+    "c01-s1",
+    "c01-s2",
+    "c01-s3",
+    "c01-s4"
+   ],
+   "Cast": {
+    "정찰병#1": {
+     "At": [
+      2.75,
+      4.75
+     ],
+     "Face": "NW",
+     "Sprite": "light_infantry",
+     "Faction": "shu",
+     "Off": true
+    },
+    "유비": {
+     "Stay": true
+    },
+    "관우": {
+     "Stay": true
+    },
+    "장비": {
+     "Stay": true
+    }
+   },
+   "Beats": {
+    "c01-s2": [
+     [
+      [
+       {
+        "Actor": "정찰병#1",
+        "Enter": [
+         2.75,
+         4.75
+        ],
+        "Move": [
+         2.75,
+         3.25
+        ],
+        "Speed": 2
+       }
+      ],
+      [
+       {
+        "Actor": "장비",
+        "Look": "SE"
+       }
+      ]
+     ]
+    ],
+    "c01-s3": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Play": "action"
+       }
+      ]
+     ]
+    ]
+   }
+  }
+ }
+}

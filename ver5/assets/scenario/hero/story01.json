@@ -1,0 +1,241 @@
+{
+ "Nodes": [
+  {
+   "ID": "c01-walk",
+   "Kind": "explore",
+   "Explore": "explore01"
+  },
+  {
+   "ID": "c01-sortie",
+   "Kind": "scene",
+   "Place": "탁현 · 의병 주둔지"
+  },
+  {
+   "ID": "c01-s1",
+   "Kind": "narrate",
+   "Text": "장비의 숲을 판 돈으로 모은 의병 오백. 대장장이가 벼려 준 청룡도와 장팔사모, 유비의 쌍고검."
+  },
+  {
+   "ID": "c01-s2",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형님! 정찰 나간 놈이 달려와유. 황건이 탁군성을 에워쌌대유!"
+  },
+  {
+   "ID": "c01-s3",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "성 앞의 놈들은 모두 성만 보고 있겠구나. 대흥산을 넘어 등 뒤로 간다."
+  },
+  {
+   "ID": "c01-s4",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "가시지요, 형님."
+  },
+  {
+   "ID": "c01-battle",
+   "Kind": "battle",
+   "Stage": "B01"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "c01-e-notice",
+   "Kind": "scene",
+   "Place": "탁현 · 거리"
+  },
+  {
+   "ID": "c01-n1",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형님! 이 방문 보셨슈? 유주 태수가 의병을 모은대유."
+  },
+  {
+   "ID": "c01-n2",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "보았다. 운장은 어디 있느냐?"
+  },
+  {
+   "ID": "c01-n3",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "운장 형님이야 주점 구석에서 혼자 잔 기울이고 있겄쥬. 가 봅시다!"
+  },
+  {
+   "ID": "c01-n4",
+   "Kind": "set",
+   "Flags": {
+    "c01-met": 1
+   }
+  },
+  {
+   "ID": "c01-n5",
+   "Kind": "back"
+  },
+  {
+   "ID": "c01-e-tavern",
+   "Kind": "scene",
+   "Place": "탁현 · 장비의 주점"
+  },
+  {
+   "ID": "c01-t1",
+   "Kind": "narrate",
+   "Text": "해 질 녘. 주점 손님들이 유주태수 유언이 의병을 모은다는 이야기로 떠들썩하다."
+  },
+  {
+   "ID": "c01-t2",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "나는 병졸로라도 의병에 가겠소."
+  },
+  {
+   "ID": "c01-t3",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "말도 없고 무섭게 생긴 형이 잘도 병사 되겄수다. 졸병들이 형 얼굴 보고 먼저 도망가유."
+  },
+  {
+   "ID": "c01-t4",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "익덕!"
+  },
+  {
+   "ID": "c01-t5",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "운장, 익덕 말이 영 틀린 것도 아니다. 너는 병졸로 갈 사람이 아니야."
+  },
+  {
+   "ID": "c01-t6",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "이참에 셋이 모은 걸 털어 우리가 직접 의병을 일으키자."
+  },
+  {
+   "ID": "c01-t7",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "그럼 지가 말 몇 필하고 칼 몇 자루는 대유. 형님이 대장 하셔유."
+  },
+  {
+   "ID": "c01-t8",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "……좋소."
+  },
+  {
+   "ID": "c01-t9",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "집 뒤 복숭아 숲을 팔면 꽤 될 거유. 팔기 전에 꽃이 한창이니께, 거기서 술 한번 같이 해유! 지가 먼저 가서 차려 놓겄슈."
+  },
+  {
+   "ID": "c01-t10",
+   "Kind": "narrate",
+   "Text": "그 숲은 장비의 부친 대부터 내려온 땅이다. 남은 두 사람은 잠시 말이 없다."
+  },
+  {
+   "ID": "c01-t11",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "저 녀석, 제 고향을 판다는 말을 술상 차린다는 말처럼 하네."
+  },
+  {
+   "ID": "c01-t12",
+   "Kind": "set",
+   "Flags": {
+    "c01-tavern": 1
+   }
+  },
+  {
+   "ID": "c01-t13",
+   "Kind": "back"
+  },
+  {
+   "ID": "c01-e-oath",
+   "Kind": "scene",
+   "Place": "탁현 · 장비 집 뒤 복숭아 숲"
+  },
+  {
+   "ID": "c01-o1",
+   "Kind": "narrate",
+   "Text": "꽃이 만발한 숲 아래 술상. 술이 몇 순배 돌자 관우가 잔을 내려놓는다."
+  },
+  {
+   "ID": "c01-o2",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "내일부터는 현덕을 주공이라 부르겠소. 군에는 위아래가 있어야 하오."
+  },
+  {
+   "ID": "c01-o3",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "그럼 지는 뭐라 불러유? 주공? 아이고, 입에 안 붙는디."
+  },
+  {
+   "ID": "c01-o4",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "운장, 주인과 종은 이득이 다하면 갈라선다. 나는 너희랑 그렇게 되기 싫다. 주공 말고, 형제로 하자."
+  },
+  {
+   "ID": "c01-o5",
+   "Kind": "narrate",
+   "Text": "관우가 오래 유비를 본다. 그러고는 고개를 끄덕인다. 위아래는 생기되, 종은 없다."
+  },
+  {
+   "ID": "c01-o6",
+   "Kind": "narrate",
+   "Text": "향을 피우고 하늘과 땅에 고한다."
+  },
+  {
+   "ID": "c01-o7",
+   "Kind": "say",
+   "Speaker": "liubei·guanyu·zhangfei",
+   "Text": "같은 날 태어나지 못했으나, 같은 날 죽기를 바라나이다!"
+  },
+  {
+   "ID": "c01-o8",
+   "Kind": "narrate",
+   "Text": "맏이는 유비, 둘째는 관우."
+  },
+  {
+   "ID": "c01-o9",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "그럼 지가 막내유? 술은 지가 제일 잘 마시는디."
+  },
+  {
+   "ID": "c01-o10",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "익덕."
+  },
+  {
+   "ID": "c01-o11",
+   "Kind": "narrate",
+   "Text": "셋이 웃는다. 꽃잎이 술잔에 떨어진다."
+  },
+  {
+   "ID": "c01-o12",
+   "Kind": "set",
+   "Flags": {
+    "c01-oath": 1
+   }
+  },
+  {
+   "ID": "c01-o13",
+   "Kind": "back",
+   "Area": "zhuo",
+   "At": [
+    1,
+    11
+   ],
+   "Face": "SE"
+  }
+ ]
+}

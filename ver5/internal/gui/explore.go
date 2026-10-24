@@ -119,7 +119,7 @@ func (g *Game) layOutExplore(o core.Observation) {
 }
 
 // adoptScene stages an event on the walk's own stage when the event's scene is set on the area's map: whoever the
-// event's cast does not place stays where the walk left them, the others are put where the cast says.
+// cast marks Stay (or leaves out) stays where the walk left them, the others are put where the cast says.
 func (g *Game) adoptScene(def *scenes.Scene) bool {
 	s := g.scene
 	if g.explore == nil || s == nil || !strings.HasPrefix(s.def.ID, "explore:") || g.field.Map.ID != def.Map {
@@ -127,13 +127,16 @@ func (g *Game) adoptScene(def *scenes.Scene) bool {
 	}
 	s.def, s.held = def, map[string]bool{}
 	for key := range s.actors {
-		if _, cast := def.Cast[key]; !cast {
+		if a, cast := def.Cast[key]; !cast || a.Stay {
 			delete(s.patrol, key)
 			s.paths[key] = nil
 		}
 	}
 	for key, a := range def.Cast {
 		v := s.actors[key]
+		if a.Stay {
+			continue
+		}
 		if v == nil {
 			if v = g.castActor(key, a); v == nil {
 				continue
@@ -159,6 +162,21 @@ func (g *Game) adoptScene(def *scenes.Scene) bool {
 	for _, st := range def.Ambient {
 		g.startStep(st)
 	}
+	return true
+}
+
+// layOutWalkFor lays out the walk's area first when an event set on it is entered without it (a loaded game);
+// false when the story is in no walk on that map.
+func (g *Game) layOutWalkFor(def *scenes.Scene) bool {
+	x := g.S.Engine.ExploreFile()
+	if x == nil {
+		return false
+	}
+	o := g.S.Engine.Observe()
+	if x.Areas[o.Spot.Area].Map != def.Map {
+		return false
+	}
+	g.layOutExplore(o)
 	return true
 }
 
@@ -216,7 +234,8 @@ func (g *Game) blockPeople() {
 }
 
 // moveWalkers sends the people who walk about on their next leg once they have stood a while: a patroller to the
-// next point of its round, a wanderer to some open small tile within its reach.
+// next point of its round, a wanderer to some open small tile within its reach; one who stays plays its motion
+// again now and then.
 func (g *Game) moveWalkers(dt float64) {
 	w := g.explore
 	s := g.scene
@@ -224,10 +243,17 @@ func (g *Game) moveWalkers(dt float64) {
 	for _, key := range slices.Sorted(maps.Keys(w.people)) {
 		p := a.People[w.people[key]]
 		v := s.actors[key]
-		if p.Move == nil || v == nil || v.walk != nil || len(s.paths[key]) > 0 || key == w.talkTo || (w.aim != nil && w.aim.person == key) {
+		if v == nil || v.walk != nil || len(s.paths[key]) > 0 || key == w.talkTo || (w.aim != nil && w.aim.person == key) {
 			continue
 		}
 		if w.rest[key] -= dt; w.rest[key] > 0 {
+			continue
+		}
+		if p.Move == nil {
+			if p.Play != "" {
+				g.startStep(scenes.Step{Actor: key, Play: p.Play})
+				w.rest[key] = 2 + w.rng.Float64()
+			}
 			continue
 		}
 		from := g.actorTile(key)

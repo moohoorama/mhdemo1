@@ -97,7 +97,7 @@ func (g *Game) enterScene(o core.Observation) bool {
 	if g.scene != nil && g.scene.node == o.Node {
 		return true
 	}
-	if (g.scene == nil || g.scene.def != def || g.field == nil || g.field.Map.ID != def.Map) && !g.adoptScene(def) {
+	if (g.scene == nil || g.scene.def != def || g.field == nil || g.field.Map.ID != def.Map) && !g.adoptScene(def) && !(g.layOutWalkFor(def) && g.adoptScene(def)) {
 		g.openScene(def)
 		for _, n := range def.Nodes[:at] {
 			g.settleNode(n)

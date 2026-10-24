@@ -5,6 +5,24 @@
 
 ---
 
+## 2026-10-24 탐험 모드와 1부 1~2장 (계획 2026_10_24_explore_mode)
+
+- 결정: 전투 사이의 이야기를 유비가 걸어 다니는 탐험으로 진행한다. 사람에게 말을 걸면 이벤트(기존 장면 연출), 심복에게 말을 걸면 출진, 무기점·도구점·주점은 실제 상점, 재화는 "돈" · 사용자가 영걸전처럼 마을·주둔지·진영을 돌며 이야기를 보고 싶어 함(1부 계획의 "엔진 신규 기능 없음"을 바꿈) · `presentation-explore.md`, `plan/2026_10_24_explore_mode.md`.
+- 결정: 이벤트 뒤 사람의 자리는 저장하지 않고 늘 플래그로 다시 세운다 · 저장은 지역·유비의 칸·방향·돈·플래그만으로 되게 · `presentation-explore.md`.
+- `internal/content/explore.go`(새 파일)·`content.go`·`scenario.go`·`validate.go`: 탐험 파일 `exploreNN.json`, 노드 `explore`·`back`, 스토리 파일의 `Events` 목록(흐름 밖 노드, 이벤트끼리만 이어짐), 상점 `Shops`, `Price`, `Campaign.Money`, 보상·지급의 `money`. 이벤트가 모든 갈래에서 `back`으로 끝나는지 검사.
+- `internal/core/explore.go`(새 파일)·`engine.go`·`api.go`·`types.go`: `State.Money`·`Explore`·`Spot`, 명령 `walk`·`talk`·`sortie`·`buy`·`sell`, `Visitors`·`OpenExits`·`ExploreNext`(완주 시험·자동 진행). 탐험 중에도 장비·부관 변경. 저장 형식 5(옛 저장은 받지 않음). 보상 장비는 창고로.
+- `internal/cli/explore.go`(새 파일)·`cli.go`·`play.go`: 탐험 번호 메뉴와 상점.
+- `internal/gui/explore.go`·`shop.go`·`walkmap.go`(새 파일), `tour.go`·`scene.go`·`scenario.go`·`game.go`·`windows.go`: 탐험 화면(사람의 순찰·배회·모션, 대화, 출진 확인, 이벤트는 같은 무대에서 이어받기 `adoptScene`, 상점·부대 창), 작은 칸 걷기는 둘러보기와 한 코드. `internal/scenes`: 배역의 `Stay`.
+- `cmd/_town`, `internal/town`, `internal/gui/town.go`·`uidemo_town.go`, `assets/towns/zhuo.json` 삭제 — 옛 마을 데모(사용자 결정).
+- 장·전투 번호를 1부 최종 번호로: 이야기 1→2, 2→3, 3→5 … 9→11, 전투 B01→B02, B02→B05 … B07→B10. 1·3·4장과 B01·B03·B04는 탁군·단양·팽성 자리.
+- `assets/scenario/hero/explore01.json`·`explore02.json`·`story01.json`(새 파일), `story02.json`, `assets/scenes/ch01.json`(새 파일)·`ch02.json`: 1장(방문 앞 장비 → 주점 → 복숭아 숲 결의 → 의병 주둔지 출진)과 2장(관청 추정 → 노식의 진영 → 출진). 노식 진영 첫 장면은 이벤트로 옮김.
+- `assets/scenario/hero/stage01.json`·`maps/map01.json`(새 파일), `tools/mapgen/layouts/hero/map01.txt`(초안에서 옮김): 탁군 전투. 정원지·등무와 두 일기토를 영천에서 옮김. 3턴에 등무 조가 성문에서 돌아서 본진 쪽으로.
+- `assets/scenario/hero/stage02.json`: 영천에서 정원지·등무·두 일기토·`chengyuanzhi-sorties`·부목표를 뺌, 파재 출격은 5라운드. 보상에 돈.
+- `assets/data/characters_story.json`: 추정, 좌풍. `assets/data/shops.json`(새 파일), `equipment.json`·`items.json`의 `Price`, `scenario.json`의 `Money`.
+- `assets/graphics/maps/S_peach_grove2.json`·`S_army_camp2.json`(형식 2 사본), `S_militia_camp.json`(새 파일, 진영 사본에서 막사를 줄이고 무기대·모닥불): 탐험 지역.
+- `cmd/_walkmap`(새 임시 도구), `internal/gui/uidemo_explore.go`(`-ui explore`), `internal/gui/explore_test.go`.
+- 앞에 전투가 하나 들어와 뒤 전투의 스테이지 레벨이 한 단계씩 올랐다(시험 기대값 갱신). 9장 이후 난이도는 다시 볼 일.
+
 ## 2026-10-24 성문 통로 안쪽 면을 어둡게
 
 - `../assets_candidate/tools/gen_pixel_castle.py`: 아치 어깨의 면 중 줄 방향을 보는 면(통로 안쪽)과 통로 옆벽 전체를 통로 색으로 — 열린 문에서 아치 위 어깨 면만 바깥 벽돌색으로 밝게 남아 어색하던 것(사용자 지적). 성벽 바깥면에 보이는 어깨는 돌 그대로. 성문 조각 40장, `map/extra.png`·`index.json` 다시 묶음.

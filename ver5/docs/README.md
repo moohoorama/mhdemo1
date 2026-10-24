@@ -51,7 +51,7 @@
 |---|---|
 | [presentation-ui.md](presentation-ui.md) | 전장 HUD, 조작, 배치 화면, 화면 확인 방법 |
 | [presentation-scene.md](presentation-scene.md) | 장면 연출, 초상, assets/scenes |
-| [presentation-town.md](presentation-town.md) | 마을 걷기 데모: 클릭 이동·대화·출입, assets/towns |
+| [presentation-explore.md](presentation-explore.md) | 탐험: 전투 사이에 걷기·대화·이벤트·상점·출진, exploreNN.json, 형식 2 둘러보기 |
 | [presentation-duel.md](presentation-duel.md) | 일기토 연출 |
 | [presentation-sprite.md](presentation-sprite.md) | `.spr` 형식과 태그 색 |
 | [presentation-replay.md](presentation-replay.md) | 클레임 리플레이: 규칙은 턴제, 화면은 동시 재생 |

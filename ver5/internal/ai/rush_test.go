@@ -34,6 +34,10 @@ func rushCampaign(t *testing.T, seed uint64, stages int) (*core.Engine, map[stri
 		switch {
 		case o.Phase == "scenario" && (o.Dialogue.Kind == "say" || o.Dialogue.Kind == "narrate"):
 			apply(core.Command{Kind: "next"})
+		case e.Walking():
+			for _, c := range e.ExploreNext() {
+				apply(c)
+			}
 		case o.Phase == "scenario" && o.Dialogue.Kind == "choice":
 			options := []string{}
 			for k := range o.Dialogue.Choices {
@@ -78,13 +82,13 @@ func TestRushWinsTheFirstStages(t *testing.T) {
 	wins := 0
 	for seed := uint64(1); seed <= 5; seed++ {
 		e, results := rushCampaign(t, seed, 3)
-		if results["B02"] == "victory" && results["B05"] == "victory" && results["B06"] == "victory" {
+		if results["B01"] == "victory" && results["B02"] == "victory" && results["B05"] == "victory" {
 			wins++
 		} else {
 			t.Logf("seed %d: %v", seed, results)
 		}
 		executed := e.Snapshot().Executed
-		for _, k := range []string{"battle-B02-night-raid", "battle-B02-chengyuanzhi-sorties", "duel-yingchuan-liubei-bocai"} {
+		for _, k := range []string{"battle-B02-night-raid", "duel-yingchuan-liubei-bocai"} {
 			assert.True(t, executed[k], "seed %d: %s", seed, k)
 		}
 	}

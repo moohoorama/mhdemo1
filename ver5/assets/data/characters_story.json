@@ -708,6 +708,54 @@
      "themeA": "#7a2a1a"
     }
    }
+  },
+  "zoujing": {
+   "Name": "추정",
+   "Biography": "유주의 교위. 태수 유언의 명으로 탁군을 지키며 의병을 모은다.",
+   "Class": "light_infantry",
+   "Stats": [
+    70,
+    62,
+    58,
+    60,
+    55,
+    64
+   ],
+   "Level": 5,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "zoujing_noncombat",
+    "Portrait": "zoujing"
+   }
+  },
+  "zuofeng": {
+   "Name": "좌풍",
+   "Biography": "십상시의 사람인 황문. 노식의 진영을 돌며 뇌물을 바라다 얻지 못하자 노식을 모함한다.",
+   "Class": "light_infantry",
+   "Stats": [
+    30,
+    40,
+    60,
+    30,
+    20,
+    40
+   ],
+   "Level": 3,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "eunuch_noncombat"
+   }
   }
  }
 }

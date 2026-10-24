@@ -38,9 +38,10 @@ func (e *Engine) ExploreFile() *content.Explore {
 
 func (e *Engine) area() *content.ExploreArea { return e.ExploreFile().Areas[e.state.Spot.Area] }
 
-// Visitors are the people standing in the hero's area now, by key.
+// Visitors are the people standing in the hero's area now, by key: also during one of the walk's events, where
+// nobody can be talked to.
 func (e *Engine) Visitors() []Visitor {
-	if !e.Walking() {
+	if e.state.Explore == "" || e.state.Phase != "scenario" {
 		return nil
 	}
 	a := e.area()

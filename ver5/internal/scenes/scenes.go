@@ -53,6 +53,7 @@ type Actor struct {
 	Off     bool   // starts off the stage, until a step Enters it
 	Hold    bool   // never turns by itself toward whoever speaks
 	Pose    string // the motion it rests in (sit, lie, kneel …) instead of standing idle
+	Stay    bool   // on an explore walk's own stage: stands where the walk left it, with no At or Face of its own
 }
 
 // Scene is one stretch of story nodes staged on one map.

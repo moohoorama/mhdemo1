@@ -1,0 +1,565 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "office",
+  "At": [
+   7,
+   7
+  ],
+  "Face": "NE"
+ },
+ "Areas": {
+  "zhuo": {
+   "Map": "S_zhuo2",
+   "Name": "탁현",
+   "At": [
+    7,
+    11
+   ],
+   "Exits": [
+    {
+     "Name": "관청",
+     "At": [
+      13,
+      5
+     ],
+     "Object": [
+      13,
+      3
+     ],
+     "To": "office"
+    },
+    {
+     "Name": "무기점",
+     "At": [
+      19,
+      9
+     ],
+     "Object": [
+      19,
+      7
+     ],
+     "To": "weapons"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      11,
+      15
+     ],
+     "Object": [
+      9,
+      15
+     ],
+     "To": "tavern"
+    },
+    {
+     "Name": "도구점",
+     "At": [
+      21,
+      19
+     ],
+     "Object": [
+      21,
+      17
+     ],
+     "To": "tools"
+    },
+    {
+     "Name": "노식의 진영으로",
+     "At": [
+      -1,
+      11
+     ],
+     "To": "luzhi",
+     "If": [
+      "flag:c02-thanked"
+     ],
+     "Shut": [
+      [
+       "",
+       "추정 교위에게 먼저 인사를 드리고 가자."
+      ]
+     ]
+    }
+   ],
+   "People": {
+    "관병": {
+     "At": [
+      11,
+      7
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "han",
+     "Talk": [
+      [
+       "관병",
+       "의병 대장 나리시군요! 그날 산에서 내려오시는 걸 성벽 위에서 다 보았습니다."
+      ]
+     ]
+    },
+    "백성": {
+     "At": [
+      19,
+      15
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "han",
+     "Talk": [
+      [
+       "백성",
+       "정원지 목을 벤 장수가 수염 긴 분이라지요? 아이들이 벌써 노래를 지어 부릅디다."
+      ]
+     ]
+    },
+    "아낙": {
+     "At": [
+      5,
+      13
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_woman",
+     "Faction": "han",
+     "Move": {
+      "Wander": 3
+     },
+     "Talk": [
+      [
+       "아낙",
+       "베 한 필 값이 쌀 한 말이라오. 난리 통에 모든 게 비싸졌어요."
+      ]
+     ]
+    },
+    "노인": {
+     "At": [
+      15,
+      11
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_elder",
+     "Faction": "han",
+     "Move": {
+      "Patrol": [
+       [
+        21,
+        11
+       ]
+      ]
+     },
+     "Chatter": "에구, 허리야|세상이 어찌 되려나",
+     "Talk": [
+      [
+       "노인",
+       "유씨 댁 아들이 도적을 쳐냈다니, 누상촌이 다 들썩이네."
+      ],
+      [
+       "liubei",
+       "어르신, 백성들이 버텨 준 덕입니다."
+      ]
+     ]
+    }
+   },
+   "Signs": [
+    {
+     "Name": "방문",
+     "At": [
+      3,
+      9
+     ],
+     "Talk": [
+      [
+       "",
+       "유주 태수 유언이 의병을 모집한다는 방문이 붙어 있다. 황건적을 칠 용사는 관청으로 오라 한다."
+      ]
+     ]
+    },
+    {
+     "Name": "우물",
+     "At": [
+      17,
+      15
+     ],
+     "Talk": [
+      [
+       "",
+       "맑은 물이 찰랑인다. 고을 사람들이 모두 이 우물을 쓴다."
+      ]
+     ]
+    },
+    {
+     "Name": "저택",
+     "At": [
+      5,
+      5
+     ],
+     "Talk": [
+      [
+       "",
+       "큰 저택이다. 대문이 굳게 닫혀 있다."
+      ]
+     ]
+    }
+   ]
+  },
+  "office": {
+   "Map": "S_zhuo_office2",
+   "Name": "관청",
+   "Zoom": 3,
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "zhuo"
+    }
+   ],
+   "People": {
+    "추정": {
+     "At": [
+      11,
+      5
+     ],
+     "Face": "SW",
+     "Event": [
+      {
+       "If": [
+        "!flag:c02-thanked"
+       ],
+       "Node": "c02-e-zoujing"
+      }
+     ],
+     "Talk": [
+      [
+       "zoujing",
+       "노 중랑장께 안부 전해 주시오. 탁군은 그대들의 은혜를 잊지 않을 것이오."
+      ]
+     ]
+    },
+    "관우@office": {
+     "At": [
+      7,
+      9
+     ],
+     "Face": "NE",
+     "If": [
+      "!flag:c02-thanked"
+     ],
+     "Talk": [
+      [
+       "guanyu",
+       "추정 교위가 형님을 기다리고 있습니다."
+      ]
+     ]
+    },
+    "장비@office": {
+     "At": [
+      9,
+      9
+     ],
+     "Face": "NE",
+     "If": [
+      "!flag:c02-thanked"
+     ],
+     "Talk": [
+      [
+       "zhangfei",
+       "관청은 숨 막혀유. 얼른 인사하고 나가유."
+      ]
+     ]
+    },
+    "관병#1": {
+     "At": [
+      3,
+      5
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    },
+    "관병#2": {
+     "At": [
+      13,
+      5
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    }
+   }
+  },
+  "weapons": {
+   "Map": "S_weapon_shop2",
+   "Name": "무기점",
+   "Zoom": 3,
+   "At": [
+    6,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "zhuo"
+    }
+   ],
+   "People": {
+    "대장장이": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "han",
+     "Shop": "weapons"
+    }
+   }
+  },
+  "tools": {
+   "Map": "S_tool_shop2",
+   "Name": "도구점",
+   "Zoom": 3,
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "zhuo"
+    }
+   ],
+   "People": {
+    "상인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "wei",
+     "Shop": "tools"
+    },
+    "아낙": {
+     "At": [
+      7,
+      7
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_woman",
+     "Faction": "han",
+     "Talk": [
+      [
+       "아낙",
+       "피난 보따리를 싸 두려고요. 소금이랑 약초를 사러 왔어요."
+      ]
+     ]
+    }
+   }
+  },
+  "tavern": {
+   "Map": "S_tavern2",
+   "Name": "주점",
+   "Zoom": 3,
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "zhuo"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "han",
+     "Shop": "tavern"
+    },
+    "손님": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "han",
+     "Chatter": "한 잔 더!|크으, 좋다",
+     "Talk": [
+      [
+       "손님",
+       "장씨네 복숭아밭 판 돈이 헛돈이 아니었구먼! 자, 의병 대장께 한 잔!"
+      ]
+     ]
+    }
+   }
+  },
+  "luzhi": {
+   "Map": "S_army_camp2",
+   "Name": "광종 · 노식의 진영",
+   "At": [
+    6,
+    9
+   ],
+   "Exits": [
+    {
+     "Name": "탁군으로",
+     "At": [
+      6,
+      10
+     ],
+     "To": "zhuo"
+    }
+   ],
+   "People": {
+    "노식": {
+     "At": [
+      6,
+      3
+     ],
+     "Face": "SE",
+     "Event": [
+      {
+       "If": [
+        "!flag:c02-orders"
+       ],
+       "Node": "c02-e-luzhi"
+      }
+     ],
+     "Talk": [
+      [
+       "luzhi",
+       "영천이 급하다. 어서 가거라."
+      ]
+     ]
+    },
+    "좌풍": {
+     "At": [
+      9,
+      6
+     ],
+     "Face": "SW",
+     "If": [
+      "!flag:c02-orders"
+     ],
+     "Move": {
+      "Patrol": [
+       [
+        9,
+        9
+       ],
+       [
+        3,
+        9
+       ]
+      ]
+     },
+     "Talk": [
+      [
+       "zuofeng",
+       "흥, 중랑장의 제자라고? 스승을 닮아 눈치가 없겠구먼."
+      ]
+     ]
+    },
+    "병사#1": {
+     "At": [
+      3,
+      4
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "han",
+     "Chatter": "하아암……|석 달째 이러고 있으니"
+    },
+    "병사#2": {
+     "At": [
+      10,
+      7
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "han",
+     "Chatter": "졸리다……"
+    },
+    "병사": {
+     "At": [
+      4,
+      8
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "han",
+     "Talk": [
+      [
+       "병사",
+       "장각이 성문을 걸어 잠근 지 석 달이오. 해자 옆에서 졸다 보면 하루가 가지요."
+      ]
+     ]
+    },
+    "관우@luzhi": {
+     "At": [
+      5,
+      8
+     ],
+     "Face": "NE",
+     "If": [
+      "flag:c02-thanked"
+     ],
+     "Sortie": {
+      "If": [
+       "flag:c02-orders"
+      ],
+      "Ask": "형님, 영천으로 가는 군사 천의 채비가 끝났습니다. 출진하시겠습니까?"
+     },
+     "Talk": [
+      [
+       "guanyu",
+       "노 중랑장께 먼저 인사를 드리시지요."
+      ]
+     ]
+    },
+    "장비@luzhi": {
+     "At": [
+      7,
+      8
+     ],
+     "Face": "NW",
+     "If": [
+      "flag:c02-thanked"
+     ],
+     "Talk": [
+      [
+       "zhangfei",
+       "관군 놈들 다 졸고 있구먼유. 이래서 언제 장각을 잡는대유?"
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

@@ -20,7 +20,7 @@ func TestSaveRoundTrip(t *testing.T) {
 	if err := Save(root, d, data); err != nil {
 		t.Fatal(err)
 	}
-	loaded, err := Load(filepath.Join(root, "assets/scenario/hero/stage02.json"))
+	loaded, err := Load(filepath.Join(root, "assets/scenario/hero/stage01.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -28,11 +28,11 @@ func TestSaveRoundTrip(t *testing.T) {
 		t.Fatal("history not persisted")
 	}
 	art := loaded.Graphics(data)
-	if art.ID != "B02" || !art.Native || art.Tiles[4][8] != '~' || len(art.Ground) != d.Visual.W*d.Visual.H*16 {
+	if art.ID != "B01" || !art.Native || art.Tiles[4][8] != '~' || len(art.Ground) != d.Visual.W*d.Visual.H*16 {
 		t.Fatal("graphics mismatched")
 	}
 	// Failed validation must leave the sole saved map unchanged.
-	before, err := os.ReadFile(filepath.Join(root, "assets/scenario/hero/maps/map02.json"))
+	before, err := os.ReadFile(filepath.Join(root, "assets/scenario/hero/maps/map01.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -40,7 +40,7 @@ func TestSaveRoundTrip(t *testing.T) {
 	if Save(root, d, data) == nil {
 		t.Fatal("invalid map accepted")
 	}
-	after, err := os.ReadFile(filepath.Join(root, "assets/scenario/hero/maps/map02.json"))
+	after, err := os.ReadFile(filepath.Join(root, "assets/scenario/hero/maps/map01.json"))
 	if err != nil || string(before) != string(after) {
 		t.Fatal("failure changed map")
 	}

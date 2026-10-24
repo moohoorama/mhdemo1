@@ -24,7 +24,7 @@ func TestSpawnOverrides(t *testing.T) {
 	if a.HP != 10 || a.MP != 0 || a.Facing != "SW" || e.char(a.Character).Class != "heavy_cavalry" || a.ID == other.ID || e.char(other.Character).Class != "light_cavalry" {
 		t.Fatalf("overrides %+v / %+v", a, other)
 	}
-	preview := SpawnPreview(d, "B02", sp)
+	preview := SpawnPreview(d, d.Stages[0].ID, sp)
 	if preview.Stats != e.stats(a) || preview.HP != a.HP {
 		t.Fatal("preview differs")
 	}
@@ -50,6 +50,14 @@ func TestEditedBattleSaveRestore(t *testing.T) {
 		}
 		if e.Deploying() {
 			finishDeployment(t, e)
+			continue
+		}
+		if e.Walking() {
+			for _, c := range e.ExploreNext() {
+				if _, err = e.Apply(c); err != nil {
+					t.Fatal(err)
+				}
+			}
 			continue
 		}
 		o := e.Observe()

@@ -48,7 +48,7 @@ func TestCoalitionArrivalAndControl(t *testing.T) {
 		if u.AI {
 			aiCount++
 			assert.Equal(t, "ally", u.Faction)
-			assert.Equal(t, map[bool]int{true: 8, false: 7}[!e.data.Characters[u.Def].Template], u.Level, "allied officers one level over the policy level 7, their soldiers at it")
+			assert.Equal(t, map[bool]int{true: 11, false: 9}[!e.data.Characters[u.Def].Template], u.Level, "allied officers over the policy level 9 by their rank lead, their soldiers at it")
 		}
 	}
 	assert.Equal(t, 8, aiCount)
