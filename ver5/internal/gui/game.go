@@ -135,6 +135,7 @@ type Game struct {
 	learn                     []core.Learner    // learning windows open now, in order
 	learnPage                 int
 	scene                     *scene
+	town                      *townWalk // the town walk (town.go), outside the story
 	intro                     *officerIntro
 	introImg                  introImages
 	battleXP, startLevel      map[string]int
@@ -557,6 +558,9 @@ func (g *Game) Update() error {
 	if g.editor != nil {
 		return g.updateEditor()
 	}
+	if g.town != nil {
+		return g.updateTown()
+	}
 	g.advance(1.0 / 60)
 	g.syncBattleLogStage()
 	g.learn = nil
@@ -834,6 +838,8 @@ func (g *Game) drawFrame(dst *ebiten.Image) {
 	}
 	if g.editor != nil {
 		g.drawEditor(dst)
+	} else if g.town != nil {
+		g.drawTown(dst)
 	} else if g.S.Screen == "title" || g.S.Engine == nil {
 		g.title(dst)
 	} else {

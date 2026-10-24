@@ -1380,7 +1380,21 @@
   "maps/S_tent_lux.json",
   "maps/S_bridge.json",
   "maps/S_pass.json",
-  "maps/S_army_camp_hungry.json"
+  "maps/S_army_camp_hungry.json",
+  "maps/S_tavern.json",
+  "maps/S_inn.json",
+  "maps/S_peach_grove.json",
+  "maps/S_castle_town.json",
+  "maps/S_jail_street.json",
+  "maps/S_market.json",
+  "maps/S_checkpoint.json",
+  "maps/S_castle_town_burnt.json",
+  "maps/S_checkpoint_closed.json",
+  "maps/S_zhuo.json",
+  "maps/S_zhuo_office.json",
+  "maps/S_weapon_shop.json",
+  "maps/S_tool_shop.json",
+  "maps/S_mansion.json"
  ],
  "extra": {
   "version": 1,
@@ -1388,8 +1402,8 @@
   "sprites": {
    "antler_barrier": {
     "rect": [
-     545,
-     316,
+     489,
+     1029,
      42,
      34
     ],
@@ -1401,8 +1415,8 @@
    },
    "armor_stand": {
     "rect": [
-     63,
-     316,
+     886,
+     980,
      21,
      43
     ],
@@ -1414,8 +1428,8 @@
    },
    "ash_1_0": {
     "rect": [
-     0,
-     364,
+     502,
+     1070,
      32,
      16
     ],
@@ -1427,8 +1441,8 @@
    },
    "ash_1_1": {
     "rect": [
-     33,
-     364,
+     535,
+     1070,
      32,
      16
     ],
@@ -1440,8 +1454,8 @@
    },
    "ash_1_2": {
     "rect": [
-     66,
-     364,
+     568,
+     1070,
      32,
      16
     ],
@@ -1453,8 +1467,8 @@
    },
    "ash_2_0": {
     "rect": [
-     99,
-     364,
+     601,
+     1070,
      32,
      16
     ],
@@ -1466,8 +1480,8 @@
    },
    "ash_2_1": {
     "rect": [
-     132,
-     364,
+     634,
+     1070,
      32,
      16
     ],
@@ -1479,8 +1493,8 @@
    },
    "ash_2_2": {
     "rect": [
-     165,
-     364,
+     667,
+     1070,
      32,
      16
     ],
@@ -1492,8 +1506,8 @@
    },
    "ash_3_0": {
     "rect": [
-     198,
-     364,
+     700,
+     1070,
      32,
      16
     ],
@@ -1505,8 +1519,8 @@
    },
    "ash_3_1": {
     "rect": [
-     231,
-     364,
+     733,
+     1070,
      32,
      16
     ],
@@ -1518,8 +1532,8 @@
    },
    "ash_3_2": {
     "rect": [
-     264,
-     364,
+     766,
+     1070,
      32,
      16
     ],
@@ -1531,8 +1545,8 @@
    },
    "avenue_u": {
     "rect": [
-     297,
-     364,
+     799,
+     1070,
      32,
      16
     ],
@@ -1544,8 +1558,8 @@
    },
    "avenue_v": {
     "rect": [
-     330,
-     364,
+     832,
+     1070,
      32,
      16
     ],
@@ -1557,8 +1571,8 @@
    },
    "banner_yellow": {
     "rect": [
-     434,
-     139,
+     0,
+     776,
      10,
      56
     ],
@@ -1570,8 +1584,8 @@
    },
    "bed": {
     "rect": [
-     85,
-     316,
+     908,
+     980,
      52,
      40
     ],
@@ -1581,10 +1595,23 @@
     ],
     "layer": "object"
    },
+   "bench": {
+    "rect": [
+     15,
+     1070,
+     27,
+     23
+    ],
+    "pivot": [
+     14,
+     16
+    ],
+    "layer": "object"
+   },
    "bird_0": {
     "rect": [
-     426,
-     364,
+     994,
+     1070,
      9,
      4
     ],
@@ -1596,8 +1623,8 @@
    },
    "bird_1": {
     "rect": [
-     436,
-     364,
+     1004,
+     1070,
      9,
      4
     ],
@@ -1609,8 +1636,8 @@
    },
    "bird_2": {
     "rect": [
-     446,
-     364,
+     1014,
+     1070,
      9,
      4
     ],
@@ -1622,8 +1649,8 @@
    },
    "bloody_cloth": {
     "rect": [
-     406,
-     364,
+     958,
+     1070,
      13,
      11
     ],
@@ -1635,8 +1662,8 @@
    },
    "brazier": {
     "rect": [
-     844,
-     316,
+     889,
+     1029,
      28,
      28
     ],
@@ -1648,8 +1675,8 @@
    },
    "bridge_u_broken": {
     "rect": [
-     588,
-     316,
+     532,
+     1029,
      63,
      34
     ],
@@ -1661,8 +1688,8 @@
    },
    "bridge_u_damaged": {
     "rect": [
-     652,
-     316,
+     596,
+     1029,
      63,
      34
     ],
@@ -1674,8 +1701,8 @@
    },
    "bridge_v_broken": {
     "rect": [
-     716,
-     316,
+     660,
+     1029,
      63,
      34
     ],
@@ -1687,8 +1714,8 @@
    },
    "bridge_v_damaged": {
     "rect": [
-     780,
-     316,
+     724,
+     1029,
      63,
      34
     ],
@@ -1700,8 +1727,8 @@
    },
    "broken_spear": {
     "rect": [
-     945,
-     316,
+     327,
+     1070,
      22,
      18
     ],
@@ -1713,8 +1740,8 @@
    },
    "burnt_camp": {
     "rect": [
-     582,
-     0,
+     169,
+     487,
      100,
      110
     ],
@@ -1726,8 +1753,8 @@
    },
    "burnt_forest_0": {
     "rect": [
-     199,
-     316,
+     68,
+     1029,
      56,
      39
     ],
@@ -1739,8 +1766,8 @@
    },
    "burnt_forest_1": {
     "rect": [
-     256,
-     316,
+     125,
+     1029,
      58,
      39
     ],
@@ -1752,8 +1779,8 @@
    },
    "burnt_forest_2": {
     "rect": [
-     138,
-     316,
+     961,
+     980,
      60,
      40
     ],
@@ -1765,8 +1792,8 @@
    },
    "burnt_forest_3": {
     "rect": [
-     315,
-     316,
+     184,
+     1029,
      54,
      39
     ],
@@ -1778,8 +1805,8 @@
    },
    "burnt_hut": {
     "rect": [
-     690,
-     139,
+     388,
+     776,
      40,
      48
     ],
@@ -1791,8 +1818,8 @@
    },
    "burnt_oak_0": {
     "rect": [
-     731,
-     139,
+     429,
+     776,
      40,
      48
     ],
@@ -1804,8 +1831,8 @@
    },
    "burnt_oak_1": {
     "rect": [
-     772,
-     139,
+     470,
+     776,
      40,
      48
     ],
@@ -1817,8 +1844,8 @@
    },
    "burnt_oak_2": {
     "rect": [
-     813,
-     139,
+     511,
+     776,
      40,
      48
     ],
@@ -1830,8 +1857,8 @@
    },
    "burnt_tavern": {
     "rect": [
-     196,
-     139,
+     237,
+     697,
      74,
      75
     ],
@@ -1843,8 +1870,8 @@
    },
    "burnt_village": {
     "rect": [
-     683,
-     0,
+     270,
+     487,
      100,
      110
     ],
@@ -1854,10 +1881,23 @@
     ],
     "layer": "object"
    },
+   "campfire": {
+    "rect": [
+     416,
+     1070,
+     29,
+     17
+    ],
+    "pivot": [
+     15,
+     10
+    ],
+    "layer": "object"
+   },
    "candle_stand": {
     "rect": [
-     370,
-     316,
+     263,
+     1029,
      10,
      36
     ],
@@ -1869,8 +1909,8 @@
    },
    "cauldron": {
     "rect": [
-     913,
-     316,
+     204,
+     1070,
      19,
      21
     ],
@@ -1880,10 +1920,38 @@
     ],
     "layer": "object"
    },
+   "cfoot_se": {
+    "rect": [
+     350,
+     1070,
+     17,
+     18
+    ],
+    "pivot": [
+     0,
+     0
+    ],
+    "layer": "ground",
+    "shadow": false
+   },
+   "cfoot_sw": {
+    "rect": [
+     908,
+     1070,
+     17,
+     14
+    ],
+    "pivot": [
+     16,
+     0
+    ],
+    "layer": "ground",
+    "shadow": false
+   },
    "command_flag_yellow": {
     "rect": [
-     445,
-     139,
+     11,
+     776,
      15,
      56
     ],
@@ -1893,10 +1961,23 @@
     ],
     "layer": "object"
    },
+   "counter": {
+    "rect": [
+     792,
+     980,
+     42,
+     45
+    ],
+    "pivot": [
+     22,
+     35
+    ],
+    "layer": "object"
+   },
    "curtain_ne": {
     "rect": [
-     614,
-     139,
+     282,
+     776,
      37,
      50
     ],
@@ -1908,8 +1989,8 @@
    },
    "curtain_nw": {
     "rect": [
-     652,
-     139,
+     320,
+     776,
      37,
      50
     ],
@@ -1921,8 +2002,8 @@
    },
    "fallen_flag": {
     "rect": [
-     363,
-     364,
+     865,
+     1070,
      30,
      16
     ],
@@ -1932,10 +2013,23 @@
     ],
     "layer": "ground"
    },
+   "fallen_petals": {
+    "rect": [
+     261,
+     1070,
+     37,
+     20
+    ],
+    "pivot": [
+     20,
+     10
+    ],
+    "layer": "ground"
+   },
    "fence_00": {
     "rect": [
-     854,
-     139,
+     552,
+     776,
      40,
      48
     ],
@@ -1947,8 +2041,8 @@
    },
    "fence_01": {
     "rect": [
-     895,
-     139,
+     593,
+     776,
      40,
      48
     ],
@@ -1960,8 +2054,8 @@
    },
    "fence_02": {
     "rect": [
-     936,
-     139,
+     634,
+     776,
      40,
      48
     ],
@@ -1973,8 +2067,8 @@
    },
    "fence_03": {
     "rect": [
-     977,
-     139,
+     675,
+     776,
      40,
      48
     ],
@@ -1986,8 +2080,8 @@
    },
    "fence_04": {
     "rect": [
-     0,
-     218,
+     716,
+     776,
      40,
      48
     ],
@@ -1999,8 +2093,8 @@
    },
    "fence_05": {
     "rect": [
-     41,
-     218,
+     757,
+     776,
      40,
      48
     ],
@@ -2012,8 +2106,8 @@
    },
    "fence_06": {
     "rect": [
-     82,
-     218,
+     798,
+     776,
      40,
      48
     ],
@@ -2025,8 +2119,8 @@
    },
    "fence_07": {
     "rect": [
-     123,
-     218,
+     839,
+     776,
      40,
      48
     ],
@@ -2038,8 +2132,8 @@
    },
    "fence_08": {
     "rect": [
-     164,
-     218,
+     880,
+     776,
      40,
      48
     ],
@@ -2051,8 +2145,8 @@
    },
    "fence_09": {
     "rect": [
-     205,
-     218,
+     921,
+     776,
      40,
      48
     ],
@@ -2064,8 +2158,8 @@
    },
    "fence_10": {
     "rect": [
-     246,
-     218,
+     962,
+     776,
      40,
      48
     ],
@@ -2077,8 +2171,8 @@
    },
    "fence_11": {
     "rect": [
-     287,
-     218,
+     0,
+     833,
      40,
      48
     ],
@@ -2090,8 +2184,8 @@
    },
    "fence_12": {
     "rect": [
-     328,
-     218,
+     41,
+     833,
      40,
      48
     ],
@@ -2103,8 +2197,8 @@
    },
    "fence_13": {
     "rect": [
-     369,
-     218,
+     82,
+     833,
      40,
      48
     ],
@@ -2116,8 +2210,8 @@
    },
    "fence_14": {
     "rect": [
-     410,
-     218,
+     123,
+     833,
      40,
      48
     ],
@@ -2129,8 +2223,8 @@
    },
    "fence_15": {
     "rect": [
-     451,
-     218,
+     164,
+     833,
      40,
      48
     ],
@@ -2140,10 +2234,36 @@
     ],
     "layer": "object"
    },
+   "flagstones_0": {
+    "rect": [
+     43,
+     1070,
+     35,
+     23
+    ],
+    "pivot": [
+     16,
+     12
+    ],
+    "layer": "ground"
+   },
+   "flagstones_1": {
+    "rect": [
+     224,
+     1070,
+     36,
+     21
+    ],
+    "pivot": [
+     18,
+     11
+    ],
+    "layer": "ground"
+   },
    "gatehouse_closed_u": {
     "rect": [
-     492,
-     218,
+     205,
+     833,
      40,
      48
     ],
@@ -2155,8 +2275,8 @@
    },
    "gatehouse_closed_v": {
     "rect": [
-     533,
-     218,
+     246,
+     833,
      40,
      48
     ],
@@ -2168,8 +2288,8 @@
    },
    "gatehouse_floor_u": {
     "rect": [
-     574,
-     218,
+     287,
+     833,
      40,
      48
     ],
@@ -2181,8 +2301,8 @@
    },
    "gatehouse_floor_v": {
     "rect": [
-     615,
-     218,
+     328,
+     833,
      40,
      48
     ],
@@ -2194,8 +2314,8 @@
    },
    "glint_0": {
     "rect": [
-     456,
-     364,
+     0,
+     1095,
      3,
      3
     ],
@@ -2207,8 +2327,8 @@
    },
    "glint_1": {
     "rect": [
-     420,
-     364,
+     988,
+     1070,
      5,
      5
     ],
@@ -2220,8 +2340,8 @@
    },
    "glint_2": {
     "rect": [
-     460,
-     364,
+     4,
+     1095,
      3,
      3
     ],
@@ -2233,8 +2353,8 @@
    },
    "grain_sack": {
     "rect": [
-     394,
-     364,
+     896,
+     1070,
      11,
      16
     ],
@@ -2246,8 +2366,8 @@
    },
    "hall_u": {
     "rect": [
-     0,
-     139,
+     803,
+     600,
      97,
      78
     ],
@@ -2259,8 +2379,8 @@
    },
    "hall_v": {
     "rect": [
-     98,
-     139,
+     901,
+     600,
      97,
      78
     ],
@@ -2270,10 +2390,75 @@
     ],
     "layer": "object"
    },
+   "house_burnt": {
+    "rect": [
+     595,
+     697,
+     65,
+     71
+    ],
+    "pivot": [
+     33,
+     54
+    ],
+    "layer": "object"
+   },
+   "house_thatch": {
+    "rect": [
+     312,
+     697,
+     67,
+     75
+    ],
+    "pivot": [
+     35,
+     58
+    ],
+    "layer": "object"
+   },
+   "house_thatch_x": {
+    "rect": [
+     380,
+     697,
+     67,
+     75
+    ],
+    "pivot": [
+     33,
+     58
+    ],
+    "layer": "object"
+   },
+   "house_tile": {
+    "rect": [
+     67,
+     697,
+     67,
+     77
+    ],
+    "pivot": [
+     35,
+     60
+    ],
+    "layer": "object"
+   },
+   "house_tile_x": {
+    "rect": [
+     135,
+     697,
+     67,
+     77
+    ],
+    "pivot": [
+     33,
+     60
+    ],
+    "layer": "object"
+   },
    "incense": {
     "rect": [
-     873,
-     316,
+     918,
+     1029,
      24,
      28
     ],
@@ -2283,10 +2468,1354 @@
     ],
     "layer": "object"
    },
+   "jshade_104_0": {
+    "rect": [
+     842,
+     338,
+     16,
+     112
+    ],
+    "pivot": [
+     0,
+     104
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_104_1": {
+    "rect": [
+     268,
+     600,
+     16,
+     92
+    ],
+    "pivot": [
+     0,
+     84
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_104_2": {
+    "rect": [
+     448,
+     697,
+     16,
+     72
+    ],
+    "pivot": [
+     0,
+     64
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_104_3": {
+    "rect": [
+     231,
+     776,
+     16,
+     52
+    ],
+    "pivot": [
+     0,
+     44
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_104_4": {
+    "rect": [
+     821,
+     1029,
+     16,
+     32
+    ],
+    "pivot": [
+     0,
+     24
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_104_5": {
+    "rect": [
+     972,
+     1070,
+     3,
+     6
+    ],
+    "pivot": [
+     0,
+     4
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_112_0": {
+    "rect": [
+     605,
+     338,
+     16,
+     120
+    ],
+    "pivot": [
+     0,
+     112
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_112_1": {
+    "rect": [
+     790,
+     487,
+     16,
+     100
+    ],
+    "pivot": [
+     0,
+     92
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_112_2": {
+    "rect": [
+     752,
+     600,
+     16,
+     80
+    ],
+    "pivot": [
+     0,
+     72
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_112_3": {
+    "rect": [
+     898,
+     697,
+     16,
+     60
+    ],
+    "pivot": [
+     0,
+     52
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_112_4": {
+    "rect": [
+     0,
+     1029,
+     16,
+     40
+    ],
+    "pivot": [
+     0,
+     32
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_112_5": {
+    "rect": [
+     446,
+     1070,
+     10,
+     17
+    ],
+    "pivot": [
+     0,
+     12
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_120_0": {
+    "rect": [
+     248,
+     338,
+     16,
+     128
+    ],
+    "pivot": [
+     0,
+     120
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_120_1": {
+    "rect": [
+     405,
+     487,
+     16,
+     108
+    ],
+    "pivot": [
+     0,
+     100
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_120_2": {
+    "rect": [
+     551,
+     600,
+     16,
+     88
+    ],
+    "pivot": [
+     0,
+     80
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_120_3": {
+    "rect": [
+     661,
+     697,
+     16,
+     68
+    ],
+    "pivot": [
+     0,
+     60
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_120_4": {
+    "rect": [
+     410,
+     833,
+     16,
+     48
+    ],
+    "pivot": [
+     0,
+     40
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_120_5": {
+    "rect": [
+     943,
+     1029,
+     16,
+     28
+    ],
+    "pivot": [
+     0,
+     20
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_120_6": {
+    "rect": [
+     8,
+     1095,
+     1,
+     1
+    ],
+    "pivot": [
+     0,
+     0
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_128_0": {
+    "rect": [
+     121,
+     338,
+     16,
+     136
+    ],
+    "pivot": [
+     0,
+     128
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_128_1": {
+    "rect": [
+     673,
+     338,
+     16,
+     116
+    ],
+    "pivot": [
+     0,
+     108
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_128_2": {
+    "rect": [
+     856,
+     487,
+     16,
+     96
+    ],
+    "pivot": [
+     0,
+     88
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_128_3": {
+    "rect": [
+     203,
+     697,
+     16,
+     76
+    ],
+    "pivot": [
+     0,
+     68
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_128_4": {
+    "rect": [
+     27,
+     776,
+     16,
+     56
+    ],
+    "pivot": [
+     0,
+     48
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_128_5": {
+    "rect": [
+     274,
+     1029,
+     16,
+     36
+    ],
+    "pivot": [
+     0,
+     28
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_128_6": {
+    "rect": [
+     926,
+     1070,
+     7,
+     12
+    ],
+    "pivot": [
+     0,
+     8
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_136_0": {
+    "rect": [
+     17,
+     338,
+     16,
+     144
+    ],
+    "pivot": [
+     0,
+     136
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_136_1": {
+    "rect": [
+     384,
+     338,
+     16,
+     124
+    ],
+    "pivot": [
+     0,
+     116
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_136_2": {
+    "rect": [
+     541,
+     487,
+     16,
+     104
+    ],
+    "pivot": [
+     0,
+     96
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_136_3": {
+    "rect": [
+     638,
+     600,
+     16,
+     84
+    ],
+    "pivot": [
+     0,
+     76
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_136_4": {
+    "rect": [
+     847,
+     697,
+     16,
+     64
+    ],
+    "pivot": [
+     0,
+     56
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_136_5": {
+    "rect": [
+     835,
+     980,
+     16,
+     44
+    ],
+    "pivot": [
+     0,
+     36
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_136_6": {
+    "rect": [
+     79,
+     1070,
+     13,
+     23
+    ],
+    "pivot": [
+     0,
+     16
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_144_0": {
+    "rect": [
+     1001,
+     169,
+     16,
+     152
+    ],
+    "pivot": [
+     0,
+     144
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_144_1": {
+    "rect": [
+     138,
+     338,
+     16,
+     132
+    ],
+    "pivot": [
+     0,
+     124
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_144_2": {
+    "rect": [
+     859,
+     338,
+     16,
+     112
+    ],
+    "pivot": [
+     0,
+     104
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_144_3": {
+    "rect": [
+     285,
+     600,
+     16,
+     92
+    ],
+    "pivot": [
+     0,
+     84
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_144_4": {
+    "rect": [
+     465,
+     697,
+     16,
+     72
+    ],
+    "pivot": [
+     0,
+     64
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_144_5": {
+    "rect": [
+     248,
+     776,
+     16,
+     52
+    ],
+    "pivot": [
+     0,
+     44
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_144_6": {
+    "rect": [
+     838,
+     1029,
+     16,
+     32
+    ],
+    "pivot": [
+     0,
+     24
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_144_7": {
+    "rect": [
+     976,
+     1070,
+     3,
+     6
+    ],
+    "pivot": [
+     0,
+     4
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_152_0": {
+    "rect": [
+     984,
+     169,
+     16,
+     160
+    ],
+    "pivot": [
+     0,
+     152
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_152_1": {
+    "rect": [
+     34,
+     338,
+     16,
+     140
+    ],
+    "pivot": [
+     0,
+     132
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_152_2": {
+    "rect": [
+     622,
+     338,
+     16,
+     120
+    ],
+    "pivot": [
+     0,
+     112
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_152_3": {
+    "rect": [
+     807,
+     487,
+     16,
+     100
+    ],
+    "pivot": [
+     0,
+     92
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_152_4": {
+    "rect": [
+     769,
+     600,
+     16,
+     80
+    ],
+    "pivot": [
+     0,
+     72
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_152_5": {
+    "rect": [
+     915,
+     697,
+     16,
+     60
+    ],
+    "pivot": [
+     0,
+     52
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_152_6": {
+    "rect": [
+     17,
+     1029,
+     16,
+     40
+    ],
+    "pivot": [
+     0,
+     32
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_152_7": {
+    "rect": [
+     457,
+     1070,
+     10,
+     17
+    ],
+    "pivot": [
+     0,
+     12
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_160_0": {
+    "rect": [
+     0,
+     0,
+     16,
+     168
+    ],
+    "pivot": [
+     0,
+     160
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_160_1": {
+    "rect": [
+     0,
+     338,
+     16,
+     148
+    ],
+    "pivot": [
+     0,
+     140
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_160_2": {
+    "rect": [
+     265,
+     338,
+     16,
+     128
+    ],
+    "pivot": [
+     0,
+     120
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_160_3": {
+    "rect": [
+     422,
+     487,
+     16,
+     108
+    ],
+    "pivot": [
+     0,
+     100
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_160_4": {
+    "rect": [
+     568,
+     600,
+     16,
+     88
+    ],
+    "pivot": [
+     0,
+     80
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_160_5": {
+    "rect": [
+     678,
+     697,
+     16,
+     68
+    ],
+    "pivot": [
+     0,
+     60
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_160_6": {
+    "rect": [
+     427,
+     833,
+     16,
+     48
+    ],
+    "pivot": [
+     0,
+     40
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_160_7": {
+    "rect": [
+     960,
+     1029,
+     16,
+     28
+    ],
+    "pivot": [
+     0,
+     20
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_160_8": {
+    "rect": [
+     10,
+     1095,
+     1,
+     1
+    ],
+    "pivot": [
+     0,
+     0
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_16_0": {
+    "rect": [
+     93,
+     1070,
+     13,
+     23
+    ],
+    "pivot": [
+     0,
+     16
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_24_0": {
+    "rect": [
+     855,
+     1029,
+     16,
+     32
+    ],
+    "pivot": [
+     0,
+     24
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_24_1": {
+    "rect": [
+     980,
+     1070,
+     3,
+     6
+    ],
+    "pivot": [
+     0,
+     4
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_32_0": {
+    "rect": [
+     34,
+     1029,
+     16,
+     40
+    ],
+    "pivot": [
+     0,
+     32
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_32_1": {
+    "rect": [
+     468,
+     1070,
+     10,
+     17
+    ],
+    "pivot": [
+     0,
+     12
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_40_0": {
+    "rect": [
+     444,
+     833,
+     16,
+     48
+    ],
+    "pivot": [
+     0,
+     40
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_40_1": {
+    "rect": [
+     977,
+     1029,
+     16,
+     28
+    ],
+    "pivot": [
+     0,
+     20
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_40_2": {
+    "rect": [
+     12,
+     1095,
+     1,
+     1
+    ],
+    "pivot": [
+     0,
+     0
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_48_0": {
+    "rect": [
+     44,
+     776,
+     16,
+     56
+    ],
+    "pivot": [
+     0,
+     48
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_48_1": {
+    "rect": [
+     291,
+     1029,
+     16,
+     36
+    ],
+    "pivot": [
+     0,
+     28
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_48_2": {
+    "rect": [
+     934,
+     1070,
+     7,
+     12
+    ],
+    "pivot": [
+     0,
+     8
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_56_0": {
+    "rect": [
+     864,
+     697,
+     16,
+     64
+    ],
+    "pivot": [
+     0,
+     56
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_56_1": {
+    "rect": [
+     852,
+     980,
+     16,
+     44
+    ],
+    "pivot": [
+     0,
+     36
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_56_2": {
+    "rect": [
+     107,
+     1070,
+     13,
+     23
+    ],
+    "pivot": [
+     0,
+     16
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_64_0": {
+    "rect": [
+     482,
+     697,
+     16,
+     72
+    ],
+    "pivot": [
+     0,
+     64
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_64_1": {
+    "rect": [
+     265,
+     776,
+     16,
+     52
+    ],
+    "pivot": [
+     0,
+     44
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_64_2": {
+    "rect": [
+     872,
+     1029,
+     16,
+     32
+    ],
+    "pivot": [
+     0,
+     24
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_64_3": {
+    "rect": [
+     984,
+     1070,
+     3,
+     6
+    ],
+    "pivot": [
+     0,
+     4
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_72_0": {
+    "rect": [
+     786,
+     600,
+     16,
+     80
+    ],
+    "pivot": [
+     0,
+     72
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_72_1": {
+    "rect": [
+     932,
+     697,
+     16,
+     60
+    ],
+    "pivot": [
+     0,
+     52
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_72_2": {
+    "rect": [
+     51,
+     1029,
+     16,
+     40
+    ],
+    "pivot": [
+     0,
+     32
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_72_3": {
+    "rect": [
+     479,
+     1070,
+     10,
+     17
+    ],
+    "pivot": [
+     0,
+     12
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_80_0": {
+    "rect": [
+     585,
+     600,
+     16,
+     88
+    ],
+    "pivot": [
+     0,
+     80
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_80_1": {
+    "rect": [
+     695,
+     697,
+     16,
+     68
+    ],
+    "pivot": [
+     0,
+     60
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_80_2": {
+    "rect": [
+     461,
+     833,
+     16,
+     48
+    ],
+    "pivot": [
+     0,
+     40
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_80_3": {
+    "rect": [
+     994,
+     1029,
+     16,
+     28
+    ],
+    "pivot": [
+     0,
+     20
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_80_4": {
+    "rect": [
+     14,
+     1095,
+     1,
+     1
+    ],
+    "pivot": [
+     0,
+     0
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_88_0": {
+    "rect": [
+     873,
+     487,
+     16,
+     96
+    ],
+    "pivot": [
+     0,
+     88
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_88_1": {
+    "rect": [
+     220,
+     697,
+     16,
+     76
+    ],
+    "pivot": [
+     0,
+     68
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_88_2": {
+    "rect": [
+     61,
+     776,
+     16,
+     56
+    ],
+    "pivot": [
+     0,
+     48
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_88_3": {
+    "rect": [
+     308,
+     1029,
+     16,
+     36
+    ],
+    "pivot": [
+     0,
+     28
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_88_4": {
+    "rect": [
+     942,
+     1070,
+     7,
+     12
+    ],
+    "pivot": [
+     0,
+     8
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_8_0": {
+    "rect": [
+     950,
+     1070,
+     7,
+     12
+    ],
+    "pivot": [
+     0,
+     8
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_96_0": {
+    "rect": [
+     558,
+     487,
+     16,
+     104
+    ],
+    "pivot": [
+     0,
+     96
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_96_1": {
+    "rect": [
+     655,
+     600,
+     16,
+     84
+    ],
+    "pivot": [
+     0,
+     76
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_96_2": {
+    "rect": [
+     881,
+     697,
+     16,
+     64
+    ],
+    "pivot": [
+     0,
+     56
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_96_3": {
+    "rect": [
+     869,
+     980,
+     16,
+     44
+    ],
+    "pivot": [
+     0,
+     36
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "jshade_96_4": {
+    "rect": [
+     121,
+     1070,
+     13,
+     23
+    ],
+    "pivot": [
+     0,
+     16
+    ],
+    "layer": "object",
+    "shadow": false
+   },
    "lantern": {
     "rect": [
-     381,
-     316,
+     325,
+     1029,
      16,
      36
     ],
@@ -2296,10 +3825,682 @@
     ],
     "layer": "object"
    },
+   "lcliff_00_0": {
+    "rect": [
+     478,
+     833,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_00_1": {
+    "rect": [
+     519,
+     833,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_00_2": {
+    "rect": [
+     560,
+     833,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_01_0": {
+    "rect": [
+     601,
+     833,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_01_1": {
+    "rect": [
+     642,
+     833,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_01_2": {
+    "rect": [
+     683,
+     833,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_02_0": {
+    "rect": [
+     724,
+     833,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_02_1": {
+    "rect": [
+     765,
+     833,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_02_2": {
+    "rect": [
+     806,
+     833,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_03_0": {
+    "rect": [
+     847,
+     833,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_03_1": {
+    "rect": [
+     888,
+     833,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_03_2": {
+    "rect": [
+     929,
+     833,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_04_0": {
+    "rect": [
+     970,
+     833,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_04_1": {
+    "rect": [
+     0,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_04_2": {
+    "rect": [
+     41,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_05_0": {
+    "rect": [
+     82,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_05_1": {
+    "rect": [
+     123,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_05_2": {
+    "rect": [
+     164,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_06_0": {
+    "rect": [
+     205,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_06_1": {
+    "rect": [
+     246,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_06_2": {
+    "rect": [
+     287,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_07_0": {
+    "rect": [
+     328,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_07_1": {
+    "rect": [
+     369,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_07_2": {
+    "rect": [
+     410,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_08_0": {
+    "rect": [
+     451,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_08_1": {
+    "rect": [
+     492,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_08_2": {
+    "rect": [
+     533,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_09_0": {
+    "rect": [
+     574,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_09_1": {
+    "rect": [
+     615,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_09_2": {
+    "rect": [
+     656,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_10_0": {
+    "rect": [
+     697,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_10_1": {
+    "rect": [
+     738,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_10_2": {
+    "rect": [
+     779,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_11_0": {
+    "rect": [
+     820,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_11_1": {
+    "rect": [
+     861,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_11_2": {
+    "rect": [
+     902,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_12_0": {
+    "rect": [
+     943,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_12_1": {
+    "rect": [
+     984,
+     882,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_12_2": {
+    "rect": [
+     0,
+     931,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_13_0": {
+    "rect": [
+     41,
+     931,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_13_1": {
+    "rect": [
+     82,
+     931,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_13_2": {
+    "rect": [
+     123,
+     931,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_14_0": {
+    "rect": [
+     164,
+     931,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_14_1": {
+    "rect": [
+     205,
+     931,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_14_2": {
+    "rect": [
+     246,
+     931,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_15_0": {
+    "rect": [
+     287,
+     931,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_15_1": {
+    "rect": [
+     328,
+     931,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "lcliff_15_2": {
+    "rect": [
+     369,
+     931,
+     40,
+     48
+    ],
+    "pivot": [
+     21,
+     55
+    ],
+    "layer": "object",
+    "shadow": false
+   },
    "map_table": {
     "rect": [
-     398,
-     316,
+     342,
+     1029,
      48,
      36
     ],
@@ -2309,10 +4510,49 @@
     ],
     "layer": "object"
    },
+   "market_stall": {
+    "rect": [
+     712,
+     697,
+     44,
+     68
+    ],
+    "pivot": [
+     22,
+     57
+    ],
+    "layer": "object"
+   },
+   "market_stall_cloth": {
+    "rect": [
+     757,
+     697,
+     44,
+     68
+    ],
+    "pivot": [
+     22,
+     57
+    ],
+    "layer": "object"
+   },
+   "market_stall_jar": {
+    "rect": [
+     802,
+     697,
+     44,
+     68
+    ],
+    "pivot": [
+     22,
+     57
+    ],
+    "layer": "object"
+   },
    "medicine_pot": {
     "rect": [
-     968,
-     316,
+     368,
+     1070,
      13,
      18
     ],
@@ -2324,8 +4564,8 @@
    },
    "milestone": {
     "rect": [
-     898,
-     316,
+     0,
+     1070,
      14,
      24
     ],
@@ -2335,10 +4575,23 @@
     ],
     "layer": "object"
    },
+   "notice_post": {
+    "rect": [
+     358,
+     776,
+     29,
+     50
+    ],
+    "pivot": [
+     16,
+     44
+    ],
+    "layer": "object"
+   },
    "pavilion": {
     "rect": [
-     271,
-     139,
+     499,
+     697,
      95,
      72
     ],
@@ -2348,10 +4601,49 @@
     ],
     "layer": "object"
    },
+   "peach_bloom_0": {
+    "rect": [
+     890,
+     487,
+     93,
+     96
+    ],
+    "pivot": [
+     56,
+     91
+    ],
+    "layer": "object"
+   },
+   "peach_bloom_1": {
+    "rect": [
+     109,
+     600,
+     90,
+     93
+    ],
+    "pivot": [
+     49,
+     88
+    ],
+    "layer": "object"
+   },
+   "peach_bloom_2": {
+    "rect": [
+     302,
+     600,
+     91,
+     92
+    ],
+    "pivot": [
+     35,
+     87
+    ],
+    "layer": "object"
+   },
    "plum_tree": {
     "rect": [
-     367,
-     139,
+     949,
+     697,
      66,
      60
     ],
@@ -2361,10 +4653,23 @@
     ],
     "layer": "object"
    },
+   "prison_cart": {
+    "rect": [
+     0,
+     697,
+     66,
+     78
+    ],
+    "pivot": [
+     27,
+     60
+    ],
+    "layer": "object"
+   },
    "screen_gold": {
     "rect": [
-     461,
-     139,
+     78,
+     776,
      50,
      56
     ],
@@ -2376,8 +4681,8 @@
    },
    "screen_u": {
     "rect": [
-     512,
-     139,
+     129,
+     776,
      50,
      56
     ],
@@ -2389,8 +4694,8 @@
    },
    "screen_v": {
     "rect": [
-     563,
-     139,
+     180,
+     776,
      50,
      56
     ],
@@ -2402,8 +4707,8 @@
    },
    "sfence_00": {
     "rect": [
-     697,
-     218,
+     410,
+     931,
      40,
      48
     ],
@@ -2415,8 +4720,8 @@
    },
    "sfence_01": {
     "rect": [
-     738,
-     218,
+     451,
+     931,
      40,
      48
     ],
@@ -2428,8 +4733,8 @@
    },
    "sfence_02": {
     "rect": [
-     779,
-     218,
+     492,
+     931,
      40,
      48
     ],
@@ -2441,8 +4746,8 @@
    },
    "sfence_03": {
     "rect": [
-     820,
-     218,
+     533,
+     931,
      40,
      48
     ],
@@ -2454,8 +4759,8 @@
    },
    "sfence_04": {
     "rect": [
-     861,
-     218,
+     574,
+     931,
      40,
      48
     ],
@@ -2467,8 +4772,8 @@
    },
    "sfence_05": {
     "rect": [
-     902,
-     218,
+     615,
+     931,
      40,
      48
     ],
@@ -2480,8 +4785,8 @@
    },
    "sfence_06": {
     "rect": [
-     943,
-     218,
+     656,
+     931,
      40,
      48
     ],
@@ -2493,8 +4798,8 @@
    },
    "sfence_07": {
     "rect": [
-     984,
-     218,
+     697,
+     931,
      40,
      48
     ],
@@ -2506,8 +4811,8 @@
    },
    "sfence_08": {
     "rect": [
-     0,
-     267,
+     738,
+     931,
      40,
      48
     ],
@@ -2519,8 +4824,8 @@
    },
    "sfence_09": {
     "rect": [
-     41,
-     267,
+     779,
+     931,
      40,
      48
     ],
@@ -2532,8 +4837,8 @@
    },
    "sfence_10": {
     "rect": [
-     82,
-     267,
+     820,
+     931,
      40,
      48
     ],
@@ -2545,8 +4850,8 @@
    },
    "sfence_11": {
     "rect": [
-     123,
-     267,
+     861,
+     931,
      40,
      48
     ],
@@ -2558,8 +4863,8 @@
    },
    "sfence_12": {
     "rect": [
-     164,
-     267,
+     902,
+     931,
      40,
      48
     ],
@@ -2571,8 +4876,8 @@
    },
    "sfence_13": {
     "rect": [
-     205,
-     267,
+     943,
+     931,
      40,
      48
     ],
@@ -2584,8 +4889,8 @@
    },
    "sfence_14": {
     "rect": [
-     246,
-     267,
+     984,
+     931,
      40,
      48
     ],
@@ -2597,8 +4902,8 @@
    },
    "sfence_15": {
     "rect": [
-     287,
-     267,
+     0,
+     980,
      40,
      48
     ],
@@ -2608,114 +4913,634 @@
     ],
     "layer": "object"
    },
-   "sgate_closed_first_u": {
+   "sgate_closed_u_0": {
     "rect": [
-     784,
+     984,
+     487,
+     15,
+     96
+    ],
+    "pivot": [
+     15,
+     83
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_u_1": {
+    "rect": [
+     439,
+     487,
+     16,
+     107
+    ],
+    "pivot": [
+     16,
+     97
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_u_10": {
+    "rect": [
+     575,
+     487,
+     16,
+     104
+    ],
+    "pivot": [
+     16,
+     97
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_u_11": {
+    "rect": [
+     1000,
+     487,
+     14,
+     96
+    ],
+    "pivot": [
+     16,
+     103
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_u_2": {
+    "rect": [
+     808,
+     338,
+     16,
+     113
+    ],
+    "pivot": [
+     16,
+     103
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_u_3": {
+    "rect": [
+     507,
+     487,
+     16,
+     105
+    ],
+    "pivot": [
+     16,
+     95
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_u_4": {
+    "rect": [
+     639,
+     338,
+     16,
+     117
+    ],
+    "pivot": [
+     16,
+     109
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_u_5": {
+    "rect": [
+     503,
+     338,
+     16,
+     123
+    ],
+    "pivot": [
+     16,
+     115
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_u_6": {
+    "rect": [
+     282,
+     338,
+     16,
+     125
+    ],
+    "pivot": [
+     16,
+     115
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_u_7": {
+    "rect": [
+     299,
+     338,
+     16,
+     125
+    ],
+    "pivot": [
+     16,
+     115
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_u_8": {
+    "rect": [
+     537,
+     338,
+     16,
+     122
+    ],
+    "pivot": [
+     16,
+     112
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_u_9": {
+    "rect": [
+     401,
+     338,
+     16,
+     124
+    ],
+    "pivot": [
+     16,
+     111
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_v_0": {
+    "rect": [
+     31,
+     600,
+     14,
+     95
+    ],
+    "pivot": [
      0,
-     36,
+     82
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_v_1": {
+    "rect": [
+     473,
+     487,
+     16,
+     106
+    ],
+    "pivot": [
+     0,
+     97
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_v_10": {
+    "rect": [
+     592,
+     487,
+     16,
+     104
+    ],
+    "pivot": [
+     0,
+     97
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_v_11": {
+    "rect": [
+     824,
+     487,
+     15,
      97
     ],
     "pivot": [
-     43,
-     93
+     -1,
+     103
     ],
     "layer": "object"
    },
-   "sgate_closed_first_v": {
+   "sgate_closed_v_2": {
     "rect": [
-     821,
+     876,
+     338,
+     16,
+     112
+    ],
+    "pivot": [
      0,
-     36,
+     103
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_v_3": {
+    "rect": [
+     609,
+     487,
+     16,
+     104
+    ],
+    "pivot": [
+     0,
+     95
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_v_4": {
+    "rect": [
+     656,
+     338,
+     16,
+     117
+    ],
+    "pivot": [
+     0,
+     109
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_v_5": {
+    "rect": [
+     520,
+     338,
+     16,
+     123
+    ],
+    "pivot": [
+     0,
+     115
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_v_6": {
+    "rect": [
+     418,
+     338,
+     16,
+     124
+    ],
+    "pivot": [
+     0,
+     115
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_v_7": {
+    "rect": [
+     435,
+     338,
+     16,
+     124
+    ],
+    "pivot": [
+     0,
+     115
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_v_8": {
+    "rect": [
+     554,
+     338,
+     16,
+     122
+    ],
+    "pivot": [
+     0,
+     113
+    ],
+    "layer": "object"
+   },
+   "sgate_closed_v_9": {
+    "rect": [
+     316,
+     338,
+     16,
+     125
+    ],
+    "pivot": [
+     0,
+     112
+    ],
+    "layer": "object"
+   },
+   "sgate_open_u_0": {
+    "rect": [
+     0,
+     600,
+     15,
+     96
+    ],
+    "pivot": [
+     15,
+     83
+    ],
+    "layer": "object"
+   },
+   "sgate_open_u_1": {
+    "rect": [
+     456,
+     487,
+     16,
+     107
+    ],
+    "pivot": [
+     16,
+     97
+    ],
+    "layer": "object"
+   },
+   "sgate_open_u_10": {
+    "rect": [
+     626,
+     487,
+     16,
+     104
+    ],
+    "pivot": [
+     16,
+     97
+    ],
+    "layer": "object"
+   },
+   "sgate_open_u_11": {
+    "rect": [
+     16,
+     600,
+     14,
+     96
+    ],
+    "pivot": [
+     16,
+     103
+    ],
+    "layer": "object"
+   },
+   "sgate_open_u_2": {
+    "rect": [
+     825,
+     338,
+     16,
+     113
+    ],
+    "pivot": [
+     16,
+     103
+    ],
+    "layer": "object"
+   },
+   "sgate_open_u_3": {
+    "rect": [
+     524,
+     487,
+     16,
+     105
+    ],
+    "pivot": [
+     16,
+     95
+    ],
+    "layer": "object"
+   },
+   "sgate_open_u_4": {
+    "rect": [
+     774,
+     338,
+     16,
+     114
+    ],
+    "pivot": [
+     16,
+     109
+    ],
+    "layer": "object"
+   },
+   "sgate_open_u_5": {
+    "rect": [
+     388,
+     487,
+     16,
+     109
+    ],
+    "pivot": [
+     16,
+     115
+    ],
+    "layer": "object"
+   },
+   "sgate_open_u_6": {
+    "rect": [
+     333,
+     338,
+     16,
+     125
+    ],
+    "pivot": [
+     16,
+     115
+    ],
+    "layer": "object"
+   },
+   "sgate_open_u_7": {
+    "rect": [
+     350,
+     338,
+     16,
+     125
+    ],
+    "pivot": [
+     16,
+     115
+    ],
+    "layer": "object"
+   },
+   "sgate_open_u_8": {
+    "rect": [
+     571,
+     338,
+     16,
+     122
+    ],
+    "pivot": [
+     16,
+     112
+    ],
+    "layer": "object"
+   },
+   "sgate_open_u_9": {
+    "rect": [
+     452,
+     338,
+     16,
+     124
+    ],
+    "pivot": [
+     16,
+     111
+    ],
+    "layer": "object"
+   },
+   "sgate_open_v_0": {
+    "rect": [
+     46,
+     600,
+     14,
+     95
+    ],
+    "pivot": [
+     0,
+     82
+    ],
+    "layer": "object"
+   },
+   "sgate_open_v_1": {
+    "rect": [
+     490,
+     487,
+     16,
+     106
+    ],
+    "pivot": [
+     0,
+     97
+    ],
+    "layer": "object"
+   },
+   "sgate_open_v_10": {
+    "rect": [
+     643,
+     487,
+     16,
+     104
+    ],
+    "pivot": [
+     0,
+     97
+    ],
+    "layer": "object"
+   },
+   "sgate_open_v_11": {
+    "rect": [
+     840,
+     487,
+     15,
      97
     ],
     "pivot": [
-     -6,
-     93
+     -1,
+     103
     ],
     "layer": "object"
    },
-   "sgate_closed_second_u": {
+   "sgate_open_v_2": {
     "rect": [
-     0,
-     0,
-     100,
-     138
+     893,
+     338,
+     16,
+     112
     ],
     "pivot": [
-     51,
-     117
+     0,
+     103
     ],
     "layer": "object"
    },
-   "sgate_closed_second_v": {
+   "sgate_open_v_3": {
     "rect": [
-     101,
-     0,
-     100,
-     138
+     660,
+     487,
+     16,
+     104
     ],
     "pivot": [
-     50,
-     117
+     0,
+     95
     ],
     "layer": "object"
    },
-   "sgate_open_first_u": {
+   "sgate_open_v_4": {
     "rect": [
-     940,
-     0,
-     37,
-     90
+     791,
+     338,
+     16,
+     114
     ],
     "pivot": [
-     43,
-     93
+     0,
+     109
     ],
     "layer": "object"
    },
-   "sgate_open_first_v": {
+   "sgate_open_v_5": {
     "rect": [
-     978,
-     0,
-     37,
-     90
+     371,
+     487,
+     16,
+     110
     ],
     "pivot": [
-     -5,
-     93
+     0,
+     115
     ],
     "layer": "object"
    },
-   "sgate_open_second_u": {
+   "sgate_open_v_6": {
     "rect": [
-     202,
-     0,
-     100,
-     138
+     469,
+     338,
+     16,
+     124
     ],
     "pivot": [
-     51,
-     117
+     0,
+     115
     ],
     "layer": "object"
    },
-   "sgate_open_second_v": {
+   "sgate_open_v_7": {
     "rect": [
-     303,
-     0,
-     100,
-     138
+     486,
+     338,
+     16,
+     124
     ],
     "pivot": [
-     50,
-     117
+     0,
+     115
+    ],
+    "layer": "object"
+   },
+   "sgate_open_v_8": {
+    "rect": [
+     588,
+     338,
+     16,
+     122
+    ],
+    "pivot": [
+     0,
+     113
+    ],
+    "layer": "object"
+   },
+   "sgate_open_v_9": {
+    "rect": [
+     367,
+     338,
+     16,
+     125
+    ],
+    "pivot": [
+     0,
+     112
     ],
     "layer": "object"
    },
    "shield_wall": {
     "rect": [
-     26,
-     316,
+     755,
+     980,
      36,
      46
     ],
@@ -2725,10 +5550,23 @@
     ],
     "layer": "object"
    },
+   "soup_stove": {
+    "rect": [
+     788,
+     1029,
+     32,
+     34
+    ],
+    "pivot": [
+     18,
+     27
+    ],
+    "layer": "object"
+   },
    "stairs_u": {
     "rect": [
-     447,
-     316,
+     391,
+     1029,
      48,
      36
     ],
@@ -2740,8 +5578,8 @@
    },
    "stairs_v": {
     "rect": [
-     496,
-     316,
+     440,
+     1029,
      48,
      36
     ],
@@ -2753,8 +5591,8 @@
    },
    "straw_mat": {
     "rect": [
-     982,
-     316,
+     382,
+     1070,
      33,
      18
     ],
@@ -2764,10 +5602,153 @@
     ],
     "layer": "ground"
    },
+   "stree_broad_0": {
+    "rect": [
+     690,
+     338,
+     83,
+     115
+    ],
+    "pivot": [
+     43,
+     109
+    ],
+    "layer": "object"
+   },
+   "stree_broad_1": {
+    "rect": [
+     89,
+     487,
+     79,
+     111
+    ],
+    "pivot": [
+     48,
+     105
+    ],
+    "layer": "object"
+   },
+   "stree_bush_0": {
+    "rect": [
+     172,
+     1070,
+     31,
+     22
+    ],
+    "pivot": [
+     18,
+     16
+    ],
+    "layer": "object"
+   },
+   "stree_bush_1": {
+    "rect": [
+     135,
+     1070,
+     36,
+     23
+    ],
+    "pivot": [
+     16,
+     14
+    ],
+    "layer": "object"
+   },
+   "stree_dead": {
+    "rect": [
+     602,
+     600,
+     35,
+     86
+    ],
+    "pivot": [
+     17,
+     80
+    ],
+    "layer": "object"
+   },
+   "stree_old": {
+    "rect": [
+     677,
+     487,
+     112,
+     102
+    ],
+    "pivot": [
+     54,
+     89
+    ],
+    "layer": "object"
+   },
+   "stree_pine_0": {
+    "rect": [
+     155,
+     338,
+     92,
+     130
+    ],
+    "pivot": [
+     35,
+     124
+    ],
+    "layer": "object"
+   },
+   "stree_pine_1": {
+    "rect": [
+     51,
+     338,
+     69,
+     140
+    ],
+    "pivot": [
+     42,
+     134
+    ],
+    "layer": "object"
+   },
+   "stree_plum_0": {
+    "rect": [
+     672,
+     600,
+     79,
+     82
+    ],
+    "pivot": [
+     45,
+     77
+    ],
+    "layer": "object"
+   },
+   "stree_plum_1": {
+    "rect": [
+     467,
+     600,
+     83,
+     89
+    ],
+    "pivot": [
+     42,
+     84
+    ],
+    "layer": "object"
+   },
+   "stree_willow": {
+    "rect": [
+     394,
+     600,
+     72,
+     91
+    ],
+    "pivot": [
+     32,
+     85
+    ],
+    "layer": "object"
+   },
    "swall_u": {
     "rect": [
-     906,
-     0,
+     200,
+     600,
      16,
      93
     ],
@@ -2777,10 +5758,24 @@
     ],
     "layer": "object"
    },
+   "swall_u_up": {
+    "rect": [
+     217,
+     600,
+     16,
+     93
+    ],
+    "pivot": [
+     16,
+     109
+    ],
+    "layer": "object",
+    "shadow": false
+   },
    "swall_v": {
     "rect": [
-     923,
-     0,
+     234,
+     600,
      16,
      93
     ],
@@ -2790,10 +5785,24 @@
     ],
     "layer": "object"
    },
+   "swall_v_up": {
+    "rect": [
+     251,
+     600,
+     16,
+     93
+    ],
+    "pivot": [
+     0,
+     110
+    ],
+    "layer": "object",
+    "shadow": false
+   },
    "taihu_rock": {
     "rect": [
-     984,
-     267,
+     697,
+     980,
      31,
      47
     ],
@@ -2803,10 +5812,682 @@
     ],
     "layer": "object"
    },
+   "tcliff_00_0": {
+    "rect": [
+     17,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_00_1": {
+    "rect": [
+     58,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_00_2": {
+    "rect": [
+     99,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_01_0": {
+    "rect": [
+     140,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_01_1": {
+    "rect": [
+     181,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_01_2": {
+    "rect": [
+     222,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_02_0": {
+    "rect": [
+     263,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_02_1": {
+    "rect": [
+     304,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_02_2": {
+    "rect": [
+     345,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_03_0": {
+    "rect": [
+     386,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_03_1": {
+    "rect": [
+     427,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_03_2": {
+    "rect": [
+     468,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_04_0": {
+    "rect": [
+     509,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_04_1": {
+    "rect": [
+     550,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_04_2": {
+    "rect": [
+     591,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_05_0": {
+    "rect": [
+     632,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_05_1": {
+    "rect": [
+     673,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_05_2": {
+    "rect": [
+     714,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_06_0": {
+    "rect": [
+     755,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_06_1": {
+    "rect": [
+     796,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_06_2": {
+    "rect": [
+     837,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_07_0": {
+    "rect": [
+     878,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_07_1": {
+    "rect": [
+     919,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_07_2": {
+    "rect": [
+     960,
+     0,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_08_0": {
+    "rect": [
+     0,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_08_1": {
+    "rect": [
+     41,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_08_2": {
+    "rect": [
+     82,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_09_0": {
+    "rect": [
+     123,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_09_1": {
+    "rect": [
+     164,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_09_2": {
+    "rect": [
+     205,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_10_0": {
+    "rect": [
+     246,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_10_1": {
+    "rect": [
+     287,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_10_2": {
+    "rect": [
+     328,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_11_0": {
+    "rect": [
+     369,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_11_1": {
+    "rect": [
+     410,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_11_2": {
+    "rect": [
+     451,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_12_0": {
+    "rect": [
+     492,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_12_1": {
+    "rect": [
+     533,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_12_2": {
+    "rect": [
+     574,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_13_0": {
+    "rect": [
+     615,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_13_1": {
+    "rect": [
+     656,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_13_2": {
+    "rect": [
+     697,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_14_0": {
+    "rect": [
+     738,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_14_1": {
+    "rect": [
+     779,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_14_2": {
+    "rect": [
+     820,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_15_0": {
+    "rect": [
+     861,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_15_1": {
+    "rect": [
+     902,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
+   "tcliff_15_2": {
+    "rect": [
+     943,
+     169,
+     40,
+     168
+    ],
+    "pivot": [
+     21,
+     159
+    ],
+    "layer": "object",
+    "shadow": false
+   },
    "throne_u": {
     "rect": [
-     404,
-     0,
+     910,
+     338,
      88,
      112
     ],
@@ -2818,8 +6499,8 @@
    },
    "throne_v": {
     "rect": [
-     493,
      0,
+     487,
      88,
      112
     ],
@@ -2831,8 +6512,8 @@
    },
    "wall_clean_00": {
     "rect": [
-     328,
-     267,
+     41,
+     980,
      40,
      48
     ],
@@ -2844,8 +6525,8 @@
    },
    "wall_clean_01": {
     "rect": [
-     369,
-     267,
+     82,
+     980,
      40,
      48
     ],
@@ -2857,8 +6538,8 @@
    },
    "wall_clean_02": {
     "rect": [
-     410,
-     267,
+     123,
+     980,
      40,
      48
     ],
@@ -2870,8 +6551,8 @@
    },
    "wall_clean_03": {
     "rect": [
-     451,
-     267,
+     164,
+     980,
      40,
      48
     ],
@@ -2883,8 +6564,8 @@
    },
    "wall_clean_04": {
     "rect": [
-     492,
-     267,
+     205,
+     980,
      40,
      48
     ],
@@ -2896,8 +6577,8 @@
    },
    "wall_clean_05": {
     "rect": [
-     533,
-     267,
+     246,
+     980,
      40,
      48
     ],
@@ -2909,8 +6590,8 @@
    },
    "wall_clean_06": {
     "rect": [
-     574,
-     267,
+     287,
+     980,
      40,
      48
     ],
@@ -2922,8 +6603,8 @@
    },
    "wall_clean_07": {
     "rect": [
-     615,
-     267,
+     328,
+     980,
      40,
      48
     ],
@@ -2935,8 +6616,8 @@
    },
    "wall_clean_08": {
     "rect": [
-     656,
-     267,
+     369,
+     980,
      40,
      48
     ],
@@ -2948,8 +6629,8 @@
    },
    "wall_clean_09": {
     "rect": [
-     697,
-     267,
+     410,
+     980,
      40,
      48
     ],
@@ -2961,8 +6642,8 @@
    },
    "wall_clean_10": {
     "rect": [
-     738,
-     267,
+     451,
+     980,
      40,
      48
     ],
@@ -2974,8 +6655,8 @@
    },
    "wall_clean_11": {
     "rect": [
-     779,
-     267,
+     492,
+     980,
      40,
      48
     ],
@@ -2987,8 +6668,8 @@
    },
    "wall_clean_12": {
     "rect": [
-     820,
-     267,
+     533,
+     980,
      40,
      48
     ],
@@ -3000,8 +6681,8 @@
    },
    "wall_clean_13": {
     "rect": [
-     861,
-     267,
+     574,
+     980,
      40,
      48
     ],
@@ -3013,8 +6694,8 @@
    },
    "wall_clean_14": {
     "rect": [
-     902,
-     267,
+     615,
+     980,
      40,
      48
     ],
@@ -3026,8 +6707,8 @@
    },
    "wall_clean_15": {
     "rect": [
-     943,
-     267,
+     656,
+     980,
      40,
      48
     ],
@@ -3039,8 +6720,8 @@
    },
    "watchtower": {
     "rect": [
-     858,
-     0,
+     61,
+     600,
      47,
      95
     ],
@@ -3050,10 +6731,36 @@
     ],
     "layer": "object"
    },
+   "water_bucket": {
+    "rect": [
+     490,
+     1070,
+     11,
+     17
+    ],
+    "pivot": [
+     6,
+     14
+    ],
+    "layer": "object"
+   },
+   "water_jar": {
+    "rect": [
+     299,
+     1070,
+     15,
+     20
+    ],
+    "pivot": [
+     8,
+     17
+    ],
+    "layer": "object"
+   },
    "weapon_rack": {
     "rect": [
-     0,
-     316,
+     729,
+     980,
      25,
      47
     ],
@@ -3063,10 +6770,23 @@
     ],
     "layer": "object"
    },
+   "well": {
+    "rect": [
+     239,
+     1029,
+     23,
+     38
+    ],
+    "pivot": [
+     12,
+     32
+    ],
+    "layer": "object"
+   },
    "wine_jar": {
     "rect": [
-     933,
-     316,
+     315,
+     1070,
      11,
      19
     ],
@@ -3078,8 +6798,8 @@
    },
    "hut": {
     "rect": [
-     656,
-     218,
+     369,
+     833,
      40,
      48
     ],

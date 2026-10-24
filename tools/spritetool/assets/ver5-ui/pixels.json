@@ -1451,5 +1451,47 @@
     ".........................."
    ]
   }
+ ],
+ "item_jueying": [
+  {
+   "icon": [
+    "....................................",
+    "....................................",
+    "....................................",
+    "...............k....................",
+    "..............kkkkkk................",
+    "...........kkkekkcbkkkk.............",
+    ".........kkkccackdkkkkdkk...........",
+    "........kkkkkkcddeckkckcck..........",
+    ".....kkkkkkabckddecccckkcck.........",
+    "....kkdkccbbcceekkkkccawcck.........",
+    ".....kkdddddckkkkcceecebdwkk........",
+    "....kkkkkkkkkkkkhbbckkcbbwwk........",
+    "...kkckkkkkkkkaabbcehdeehcwwk.......",
+    "....kkkbbkkddaabbcecbkcekkwwck......",
+    ".....kkkkkddbabcceaaiecceeewkk......",
+    ".....kkckkdbbbccekheeiccccccwk......",
+    "....kdcckcbbbcceekhcbicccbccwwk.....",
+    "...kedkkccbccceeeeecbchccbcccwkk....",
+    "...kkkkdcccbbceeekeccchheecccwak....",
+    "....kkddccbbceeedkkeeceaaeddiwwkk...",
+    "...kkddccbbbceeddkkkeeeaakeaebwwk...",
+    "...kddcbhhbcceedkkkkkkkakkcebbbwkk..",
+    "..kkdcchhhbceeddkkk..kkkkkkcckawkk..",
+    "..kedccbbbcceedddkk....kkkkdckcikk..",
+    "...kddeccbbeekddkk.......keeecdhk...",
+    "...kkeeeccbcekddkk........keaddkk...",
+    "....kkkeecccckkkkk.........kkkkk....",
+    ".....kkkeecccekkk...........k.......",
+    "......kkkeeccekkk...................",
+    ".......kkkeeccekk...................",
+    ".........kkeeeek....................",
+    "...........kkkk.....................",
+    "....................................",
+    "....................................",
+    "....................................",
+    "...................................."
+   ]
+  }
  ]
 }

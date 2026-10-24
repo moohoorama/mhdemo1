@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -231,11 +232,20 @@ func (f *Field) makeScenery() {
 		}
 		slices.Sort(groupNames[surface])
 	}
+	floored := map[[2]int]bool{} // a story room's boards, mats and carpets lie over plain ground: no grass under them
+	for _, p := range f.Map.Props {
+		if strings.HasPrefix(p.Name, "floor_") && !p.Fill {
+			u, v := int(math.Round(p.U*2)), int(math.Round(p.V*2))
+			for _, d := range [][2]int{{0, 0}, {1, 0}, {0, 1}, {1, 1}} {
+				floored[[2]int{u + d[0], v + d[1]}] = true
+			}
+		}
+	}
 	for y := range 2 * f.Map.H {
 		for x := range 2 * f.Map.W {
 			t := f.small(x, y)
 			surface := sceneSurface(t)
-			if surface == "" {
+			if surface == "" || floored[[2]int{x, y}] {
 				continue
 			}
 			if surface != "forest" && surface != "cliff" && surface != "water" {

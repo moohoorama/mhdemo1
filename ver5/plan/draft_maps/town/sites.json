@@ -1,0 +1,23 @@
+{
+ "version": 1,
+ "image": "sites.png",
+ "cell": [
+  100,
+  110
+ ],
+ "pivot": [
+  50,
+  77
+ ],
+ "pivot_note": "cell centre of the 64x32 map diamond",
+ "sprites": {
+  "camp": 0,
+  "village": 1,
+  "castle": 2,
+  "gate_u": 3,
+  "gate_v": 4,
+  "town_a": 5,
+  "town_b": 6,
+  "town_c": 7
+ }
+}

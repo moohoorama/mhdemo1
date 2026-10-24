@@ -1,8 +1,10 @@
 """A scenario-scale castle kit modelled in 3D (unit3d cel renderer): the battle map's walls are deformed and low, so the scenes get their own:
   swall_{u,v}        a tall plain wall with a crenellated top, one small cell long (seamless along its run)
-  sgate_{closed,open}_{first,second}_{u,v}  a gate tower four cells wide with a two-cell passage a column can walk through, doors, an upper
-                     storey with a tiled roof; cut in two across its run: the first half (up the screen) is drawn before the units, the second (with
-                     the roof) after them, so a unit in the passage stands behind the second half's pier
+  sgate_{closed,open}_{u,v}_{k}  a gate tower four cells wide with a two-cell passage a column can walk through, doors, an upper storey
+                     with a tiled roof, and on each side a short run of the plain wall (two cells) closed by a thick post; cut into upright
+                     slices one small cell wide like the wall pieces, cut down the middle of the arch, slice k standing gate_offset cells along
+                     the wall from the gate's point (tiles.json), so in a wall each slice takes a wall piece's place and sorts by depth like it,
+                     and a man in the passage stands between the back half and the front half
 _u: the piece runs along u (the wall's long face looks SW); _v: along v (looks SE). Pivot: the ground centre of the piece."""
 import math, os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "tools", "unit3d"))
@@ -68,6 +70,7 @@ def wall():
 
 
 W2, D, PIER, PH = 4.0, 1.0, 1.0, 2.5                                # gate: width, depth, pier width, passage height
+WING, POST = 2.0, 1.0   # each side of the tower: a run of wall (one game cell) and a thick post (half a cell) closing it
 OPEN = W2 - 2 * PIER
 HALF = {}
 
@@ -79,12 +82,11 @@ def gb(cx, y0, y1, z0, z1, wx, color):
         m.box(V((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2), V(x1 - x0, y1 - y0, z1 - z0), color)
 
 
-def gate(closed, part):
-    """a gate tower along x: a passage along y with a stepped arch, a plastered upper storey with dark windows and a tiled hip roof.
-    part: "first" (x < 0, up the screen), "second" (x >= 0, with the roof) or "all"; the halves only tell which pixels of the whole belong
-    where (see models), so the cut leaves no outline"""
+def gate(closed):
+    """a gate tower along x: a passage along y with a stepped arch, a plastered upper storey with dark windows and a tiled hip roof, a
+    wing of plain wall and a thick post on either side"""
     m.meshes = []
-    HALF["x"] = {"first": (-9.0, 0.0), "second": (0.0, 9.0), "all": (-9.0, 9.0)}[part]
+    HALF["x"] = (-99.0, 99.0)
     for sx in (-1, 1):
         cx = sx * (W2 / 2 - PIER / 2)
         gb(cx, -D / 2, D / 2, 0, H, PIER, GATE_STONE)
@@ -113,9 +115,49 @@ def gate(closed, part):
     for sx in (-2, -1, 0, 1, 2):
         gb(sx * .9, yf - .03, yf, sz, sz + 1.3, .09, P.LACQUER)
     gb(0, -D / 2, D / 2, sz - .03, sz + .03, W2, BRICK_D)
-    if part != "first":
+    for sx in (-1, 1):
+        wing(sx)
+        post(sx * (W2 / 2 + WING + POST / 2))
+    if True:
         G3.hip_roof(-W2 / 2 - .25, W2 / 2 + .25, -D / 2 - .3, D / 2 + .25, sz + 1.32, .85, G3.TILE_R, G3.TILE_D)
     return list(m.meshes)
+
+
+def wing(sx):
+    """a short run of the plain wall against the tower on side sx: the wall's own body, mortar, corbel course and
+    parapets, so the wall laid behind meets it in kind wherever it is cut"""
+    x0, x1 = sorted((sx * W2 / 2, sx * (W2 / 2 + WING)))
+    cx, L = (x0 + x1) / 2, x1 - x0
+    gb(cx, -T / 2, T / 2, 0, H, L, BRICK)
+    gb(cx, -T / 2 - .04, T / 2 + .04, 0, .24, L, BRICK_D)
+    gb(cx, -T / 2 - .07, T / 2 + .07, H - .16, H, L, BRICK_D)
+    k, z = 0, .54
+    while z < H - .25:  # mortar courses with staggered joints
+        gb(cx, -T / 2 - .05, -T / 2, z - .025, z + .025, L, BRICK_D)
+        for jx in np.arange(x0 + (.25 if k % 2 else .5), x1 - .01, .5):
+            gb(jx, -T / 2 - .05, -T / 2, z - .3, z, .05, BRICK_D)
+        z += .3
+        k += 1
+    for c in np.arange(x0 + .5, x1, 1.0):  # one merlon per small cell, like the wall pieces
+        y = -T / 2 + .1
+        gb(c, y - .1, y + .1, H, H + .26, 1.0, BRICK)
+        gb(c, y - .1, y + .1, H + .26, H + .86, .56, BRICK_L)
+        gb(c, y - .1, y + .1, H + .86, H + .92, .56, BRICK_D)
+        gb(c, y - .105, y - .1, H + .4, H + .68, .07, P.INK)
+        gb(c, T / 2 - .15, T / 2 - .01, H, H + .22, 1.0, BRICK)
+
+
+def post(cx):
+    """the thick post that closes a wing: a stone pier standing proud of the wall front and back and above its
+    parapet, plinth and capstone, a lantern slot"""
+    t = T + .4
+    gb(cx, -t / 2, t / 2, 0, H + .7, POST, GATE_STONE)
+    gb(cx, -t / 2 - .05, t / 2 + .05, 0, .3, POST + .1, BRICK_D)
+    gb(cx, -t / 2 - .08, t / 2 + .08, H + .7, H + .86, POST + .16, BRICK_D)
+    gb(cx, -t / 2 - .04, t / 2 + .04, H + .86, H + 1.0, POST - .1, BRICK_L)
+    for z in (.7, 1.1, 1.5, 1.9, 2.3, 2.7, 3.1):
+        gb(cx, -t / 2 - .05, -t / 2, z - .025, z + .025, POST, BRICK_D)
+    gb(cx, -t / 2 - .06, -t / 2, H - .2, H + .3, .14, P.INK)
 
 
 def mirror():
@@ -137,45 +179,75 @@ def models():
     im = P.draw((80, 130), (40, 112))
     out["swall_v"] = crop_strip(im, im.pivot, "v")
     for state, closed in (("closed", True), ("open", False)):
-        parts = {p: gate(closed, p) for p in ("all", "first", "second")}
         for orient in ("u", "v"):
-            ims = {}
-            for k, meshes in parts.items():
-                m.meshes = meshes
-                if orient == "v":
-                    mirror()
-                ims[k] = P.draw((170, 210), (85, 170))
-            for k, im in split_halves(ims).items():
-                out["sgate_%s_%s_%s" % (state, k, orient)] = (im, ims["all"].pivot)
+            gate(closed)
+            if orient == "v":
+                mirror()
+            whole = P.draw((340, 230), (170, 180))
+            for k, (im, pv, off) in enumerate(slices(whole, whole.pivot, orient)):
+                out["sgate_%s_%s_%d" % (state, orient, k)] = (im, pv, off)
     return out
 
 
-def split_halves(ims):
-    """cut the whole gate's picture into the two halves' pixels: where the second half (nearer the camera) has a pixel it owns it, the
-    first half owns the rest of its own; so the halves join without an outline at the cut"""
-    whole = ims["all"]
-    A = np.asarray(ims["first"])[:, :, 3] > 0
-    B = np.asarray(ims["second"])[:, :, 3] > 0
-    res = {}
-    for k, own in (("first", A & ~B), ("second", B)):
-        arr = np.asarray(whole).copy()
-        arr[~own] = 0
-        im = Image.fromarray(arr)
-        res[k] = im
-    return res
+def slices(im, pivot, orient):
+    """cut the whole gate into half-cell upright slices the size of the wall pieces, each with its own ground point on the wall line
+    (offset cells along the wall from the gate's point), so every slice sorts by depth exactly like the wall piece whose place it takes.
+    The cut between slices 0 and 0.5 runs down the middle of the arch: the back half of the gate (smaller u or v, up the screen) sorts
+    before a man walking through the passage, the front half (the lintel's near half, the near pier, wing and post) after him."""
+    px, py = pivot
+    out = []
+    for k in range(-7, 9):
+        off = k * .5
+        x = px + 32 * off if orient == "u" else px - 32 * off  # the slice's ground point on screen (along u right, along v left)
+        y = py + 16 * off
+        x0 = int(round(x - 16 if orient == "u" else x))
+        part = im.crop((x0, 0, x0 + 16, im.height))
+        if part.getbbox() is None:
+            continue
+        out.append((part, (int(round(x)) - x0, int(round(y))), off))
+    return out
 
 
 def run():
     import gen_all
-    for name, (im, pv) in models().items():
+    for name, (im, pv, *_) in models().items():
         t, p = G3.trimmed(im, pv)
         gen_all.save("tiles", name, t, p, "object", scale="scene", made="3D model + unit3d cel renderer")
 
 
-if __name__ == "__main__":
+def write():
+    """save the castle kit into ../tiles and update only its own entries of tiles.json (gen_all.py rewrites the whole
+    manifest; this leaves everyone else's entries alone)"""
+    import json
+    tiles = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "tiles")
+    made = {}
+    for name, (im, pv, *off) in models().items():
+        t, p = G3.trimmed(im, pv)
+        t.save(os.path.join(tiles, name + ".png"))
+        made[name] = dict(file="tiles/%s.png" % name, size=list(t.size), pivot=list(p), layer="object", scale="scene",
+                          made="3D model + unit3d cel renderer")
+        if off:
+            made[name]["gate_offset"] = off[0]  # cells along the wall from the gate's point
+    path = os.path.join(tiles, "tiles.json")
+    man = json.load(open(path))
+    for old in [n for n in man["sprites"] if n.startswith(("sgate_post_", "sgate_open_", "sgate_closed_")) and n not in made]:
+        del man["sprites"][old]  # the whole-gate halves and the far post the slices replace
+        f = os.path.join(tiles, old + ".png")
+        if os.path.exists(f):
+            os.remove(f)
+    man["sprites"].update(made)
+    json.dump(man, open(path, "w"), ensure_ascii=False, indent=1)
+    open(path, "a").write("\n")
+    for n, e in made.items():
+        print(n, e["size"], e["pivot"])
+
+
+if __name__ == "__main__" and sys.argv[1:] == ["--write"]:
+    write()
+elif __name__ == "__main__":
     # preview: python3 gen_3d_castle.py OUT_DIR writes every model's trimmed picture there
     out = sys.argv[1]
-    for name, (im, pv) in models().items():
+    for name, (im, pv, *off) in models().items():
         t, p = G3.trimmed(im, pv)
-        print(name, t.size, p)
+        print(name, t.size, p, off)
         t.save(os.path.join(out, "cs_" + name + ".png"))

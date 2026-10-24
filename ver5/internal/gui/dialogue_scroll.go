@@ -218,12 +218,14 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 	if len(l.speakers) > 0 {
 		size := b.portrait
 		px, py := 36.0, b.top+b.h-size+8*(1-in)
-		if _, c, ok := g.character(l.speakers[0]); ok {
-			if src := g.storyPortrait(c); src != nil {
-				rect(dst, float32(px-5), float32(py-5), float32(size+10), float32(size+10), color.NRGBA{R: 26, G: 18, B: 12, A: uint8(255 * in)})
-				blit(dst, src, px, py, size, size, color.NRGBA{R: 255, G: 255, B: 255, A: uint8(255 * in)})
-				strokeRect(dst, float32(px-2), float32(py-2), float32(size+4), float32(size+4), 2, color.NRGBA{R: goldDim.R, G: goldDim.G, B: goldDim.B, A: uint8(255 * in)})
-			}
+		src := g.assets.Portraits[l.portrait]
+		if _, c, ok := g.character(l.speakers[0]); ok && l.portrait == "" {
+			src = g.storyPortrait(c)
+		}
+		if src != nil {
+			rect(dst, float32(px-5), float32(py-5), float32(size+10), float32(size+10), color.NRGBA{R: 26, G: 18, B: 12, A: uint8(255 * in)})
+			blit(dst, src, px, py, size, size, color.NRGBA{R: 255, G: 255, B: 255, A: uint8(255 * in)})
+			strokeRect(dst, float32(px-2), float32(py-2), float32(size+4), float32(size+4), 2, color.NRGBA{R: goldDim.R, G: goldDim.G, B: goldDim.B, A: uint8(255 * in)})
 		}
 	}
 	if !a.open() && a.speakerChanged {

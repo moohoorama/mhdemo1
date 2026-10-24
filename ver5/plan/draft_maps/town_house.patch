@@ -1,0 +1,145 @@
+--- a/ver5/internal/content/map_graphics.go
++++ b/ver5/internal/content/map_graphics.go
+@@ -13,6 +13,8 @@
+ 	Native      bool       `json:"native"`
+ 	Visual      [4]int     `json:"visual"`
+ 	SmallTiles  []string   `json:"small_tiles"`
++	// SmallGrounds is the ground letter under each small tile (a 마을 on castle floor draws as a town house).
++	SmallGrounds []string `json:"small_grounds"`
+ }
+ 
+ // Graphics preserves the existing tile atlas contract on the finer half-cell lattice.
+@@ -40,11 +42,14 @@
+ 	}
+ 	a.Bounds = [4]int{(vx-(vy+v.H*2))*8 - 24, (vx+vy)*4 - 48, ((vx+v.W*2)-vy)*8 + 24, (vx+vy+v.W*2+v.H*2)*4 + 24}
+ 	for y := 0; y < v.H*2; y++ {
+-		row := ""
++		row, ground := "", ""
+ 		for x := 0; x < v.W*2; x++ {
+-			row += string(data.Glyph(d.Cell(FloorHalf(v.X*2+x), FloorHalf(v.Y*2+y))))
++			c := d.Cell(FloorHalf(v.X*2+x), FloorHalf(v.Y*2+y))
++			row += string(data.Glyph(c))
++			ground += string(c.Ground)
+ 		}
+ 		a.SmallTiles = append(a.SmallTiles, row)
++		a.SmallGrounds = append(a.SmallGrounds, ground)
+ 	}
+ 	for y := d.Play.Y; y < d.Play.Y+d.Play.H; y++ {
+ 		row := ""
+--- a/ver5/internal/gui/assets.go
++++ b/ver5/internal/gui/assets.go
+@@ -80,18 +80,19 @@
+ // MapArt is a battle map's draw data in map pixels: cell (u, v) has its centre at
+ // ((u - v) * 16, (u + v + 1) * 8).
+ type MapArt struct {
+-	ID, Name    string
+-	W, H        int
+-	Tiles       []string
+-	Bounds      image.Rectangle
+-	Ground      []GroundTile
+-	Decorations []Decoration
+-	Props       []MapProp
+-	Native      bool
+-	Visual      [4]int
+-	SmallTiles  []string
+-	Deformed    bool // battle map: forests drawn as deformed cells, like villages
+-	Scene       bool // a scenario scene: drawn without the shaded exterior, to the edge of its picture
++	ID, Name     string
++	W, H         int
++	Tiles        []string
++	Bounds       image.Rectangle
++	Ground       []GroundTile
++	Decorations  []Decoration
++	Props        []MapProp
++	Native       bool
++	Visual       [4]int
++	SmallTiles   []string
++	SmallGrounds []string // ground letter under each small tile; empty for prebuilt scene maps
++	Deformed     bool     // battle map: forests drawn as deformed cells, like villages
++	Scene        bool     // a scenario scene: drawn without the shaded exterior, to the edge of its picture
+ }
+ 
+ // MapProp places a prop with its pivot at cell (U, V), fractions allowed. With U1, V1 it
+@@ -320,24 +321,25 @@
+ 			return nil, err
+ 		}
+ 		var m struct {
+-			ID, Name    string
+-			Size        [2]int
+-			Tiles       []string
+-			Bounds      [4]int
+-			Ground      [][3]json.RawMessage
+-			Decorations [][4]json.RawMessage
+-			Props       [][]json.RawMessage
+-			Deformed    bool
+-			Native      bool
+-			Scene       bool
+-			Visual      [4]int
+-			SmallTiles  []string `json:"small_tiles"`
++			ID, Name     string
++			Size         [2]int
++			Tiles        []string
++			Bounds       [4]int
++			Ground       [][3]json.RawMessage
++			Decorations  [][4]json.RawMessage
++			Props        [][]json.RawMessage
++			Deformed     bool
++			Native       bool
++			Scene        bool
++			Visual       [4]int
++			SmallTiles   []string `json:"small_tiles"`
++			SmallGrounds []string `json:"small_grounds"`
+ 		}
+ 		if err = json.Unmarshal(b, &m); err != nil {
+ 			return nil, fmt.Errorf("%s: %w", path, err)
+ 		}
+ 		art := &MapArt{ID: m.ID, Name: m.Name, W: m.Size[0], H: m.Size[1], Tiles: m.Tiles, Deformed: m.Deformed,
+-			Native: m.Native, Scene: m.Scene, Visual: m.Visual, SmallTiles: m.SmallTiles,
++			Native: m.Native, Scene: m.Scene, Visual: m.Visual, SmallTiles: m.SmallTiles, SmallGrounds: m.SmallGrounds,
+ 			Bounds: image.Rect(m.Bounds[0], m.Bounds[1], m.Bounds[2], m.Bounds[3])}
+ 		for _, g := range m.Ground {
+ 			var t GroundTile
+--- a/ver5/internal/gui/editor.go
++++ b/ver5/internal/gui/editor.go
+@@ -78,7 +78,7 @@
+ }
+ func artFromDocument(d *mapedit.Document, data *content.Data) *MapArt {
+ 	a := d.Graphics(data)
+-	m := &MapArt{ID: a.ID, Name: a.Name, W: a.Size[0], H: a.Size[1], Tiles: a.Tiles, Bounds: image.Rect(a.Bounds[0], a.Bounds[1], a.Bounds[2], a.Bounds[3]), Native: true, Deformed: true, Visual: a.Visual, SmallTiles: a.SmallTiles}
++	m := &MapArt{ID: a.ID, Name: a.Name, W: a.Size[0], H: a.Size[1], Tiles: a.Tiles, Bounds: image.Rect(a.Bounds[0], a.Bounds[1], a.Bounds[2], a.Bounds[3]), Native: true, Deformed: true, Visual: a.Visual, SmallTiles: a.SmallTiles, SmallGrounds: a.SmallGrounds}
+ 	num := func(v any) float64 {
+ 		switch n := v.(type) {
+ 		case int:
+--- a/ver5/internal/gui/field_native.go
++++ b/ver5/internal/gui/field_native.go
+@@ -124,6 +124,18 @@
+ // siteSprite names the strongpoint sprite of each one-cell site tile.
+ var siteSprite = map[byte]string{'k': "camp", 'v': "village", 'o': "castle", 'g': "gate"}
+ 
++// townSites are the pictures of a 마을 standing on castle floor: city houses, one picked per cell.
++var townSites = []string{"town_a", "town_b", "town_c"}
++
++// smallGround is the ground letter under a small tile, 0 when the map does not say.
++func (f *Field) smallGround(x, y int) byte {
++	v := f.Map.Visual
++	if x < v[0] || y < v[1] || x >= v[0]+v[2] || y >= v[1]+v[3] || len(f.Map.SmallGrounds) == 0 {
++		return 0
++	}
++	return f.Map.SmallGrounds[y-v[1]][x-v[0]]
++}
++
+ // burntSite names the picture a site burns down to; the castle and the gate do not burn.
+ var burntSite = map[byte]string{'k': "burnt_camp", 'v': "burnt_village"}
+ 
+@@ -155,6 +167,11 @@
+ 				continue
+ 			}
+ 			name := siteSprite[site]
++			if site == 'v' && f.smallGround(2*x, 2*y) == 'i' {
++				if t := townSites[((x*7+y*13)%3+3)%3]; f.A.Sites[t].Image != nil {
++					name = t
++				}
++			}
+ 			if site == 'g' {
+ 				name = "gate_u"
+ 				if cellHas(x, y-1, 'c') > 0 || cellHas(x, y+1, 'c') > 0 {

@@ -593,6 +593,13 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 			v.play("action")
 		}
 	}
+	g.field.beatShadows = g.field.beatShadows[:0]
+	for _, p := range s.props {
+		if pr, ok := g.assets.Props[p.name]; ok && !pr.Ground && !pr.NoShadow {
+			x, y := g.field.Center(p.u, p.v)
+			g.field.beatShadows = append(g.field.beatShadows, beatShadow{x, y, pr.Sprite.Image.Bounds().Dx()})
+		}
+	}
 	g.field.Draw(g.clockMS, actors, nil)
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-g.camX, -g.camY)

@@ -21,6 +21,7 @@
     "hit_slash",
     "ink",
     "crit_ring",
+    "click_ring",
     "heal_streak",
     "campfire_glow",
     "petal",
@@ -841,6 +842,36 @@
           ],
           "palette": {
             "y": "#ffd166"
+          }
+        }
+      }
+    },
+    "click_ring": {
+      "cell": [
+        48,
+        26
+      ],
+      "anchor": [
+        24,
+        13
+      ],
+      "frames": 8,
+      "timing": "a click on the town's ground: a gold ring spreads round the tile the hero walks to and fades, over 0.6 s, frame by the eased spread",
+      "layers": {
+        "ring": {
+          "alpha": [
+            1,
+            1,
+            0.92,
+            0.8,
+            0.66,
+            0.5,
+            0.34,
+            0.18
+          ],
+          "palette": {
+            "y": "#ffd166",
+            "o": "#a8741e"
           }
         }
       }

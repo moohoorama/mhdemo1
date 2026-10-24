@@ -239,7 +239,7 @@
    ]
   ]
  },
- "item_leather": {
+ "item_jueying": {
   "anchor": [
    8,
    8
@@ -253,7 +253,7 @@
    ]
   ]
  },
- "item_map": {
+ "item_leather": {
   "anchor": [
    8,
    8
@@ -267,7 +267,7 @@
    ]
   ]
  },
- "item_medicine": {
+ "item_map": {
   "anchor": [
    8,
    8
@@ -281,7 +281,7 @@
    ]
   ]
  },
- "item_primer": {
+ "item_medicine": {
   "anchor": [
    8,
    8
@@ -295,7 +295,7 @@
    ]
   ]
  },
- "item_qinggang": {
+ "item_primer": {
   "anchor": [
    8,
    8
@@ -309,7 +309,7 @@
    ]
   ]
  },
- "item_ration": {
+ "item_qinggang": {
   "anchor": [
    8,
    8
@@ -323,7 +323,7 @@
    ]
   ]
  },
- "item_redhare": {
+ "item_ration": {
   "anchor": [
    8,
    8
@@ -337,7 +337,7 @@
    ]
   ]
  },
- "item_robe": {
+ "item_redhare": {
   "anchor": [
    8,
    8
@@ -351,7 +351,7 @@
    ]
   ]
  },
- "item_seal": {
+ "item_robe": {
   "anchor": [
    8,
    8
@@ -365,7 +365,7 @@
    ]
   ]
  },
- "item_spear": {
+ "item_seal": {
   "anchor": [
    8,
    8
@@ -379,7 +379,7 @@
    ]
   ]
  },
- "item_sword": {
+ "item_spear": {
   "anchor": [
    8,
    8
@@ -393,7 +393,7 @@
    ]
   ]
  },
- "item_yitian": {
+ "item_sword": {
   "anchor": [
    8,
    8
@@ -407,6 +407,20 @@
    ]
   ]
  },
+ "item_yitian": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    3225,
+    144,
+    144
+   ]
+  ]
+ },
  "bar_frame": {
   "anchor": [
    1,
@@ -415,7 +429,7 @@
   "frames": [
    [
     0,
-    3225,
+    3369,
     26,
     9
    ]
@@ -429,13 +443,13 @@
   "frames": [
    [
     0,
-    3234,
+    3378,
     22,
     3
    ],
    [
     22,
-    3234,
+    3378,
     22,
     3
    ]
@@ -449,7 +463,7 @@
   "frames": [
    [
     0,
-    3237,
+    3381,
     22,
     3
    ]
@@ -463,7 +477,7 @@
   "frames": [
    [
     0,
-    3240,
+    3384,
     22,
     3
    ]
@@ -477,7 +491,7 @@
   "frames": [
    [
     0,
-    3243,
+    3387,
     22,
     1
    ]
@@ -491,7 +505,7 @@
   "frames": [
    [
     0,
-    3244,
+    3388,
     6,
     1
    ]
@@ -505,7 +519,7 @@
   "frames": [
    [
     0,
-    3245,
+    3389,
     1,
     4
    ]

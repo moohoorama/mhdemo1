@@ -264,6 +264,21 @@ def crit_ring(s):
     return frames
 
 
+def click_ring(s):
+    """The gold ring a click on the town's ground throws out round the tile the hero walks to: a flat iso ring,
+    frame j at j/n of its eased spread, a bright rim over a deeper gold edge so it reads on sand and grass."""
+    w, h = s["cell"]
+    cx, cy = s["anchor"]
+    frames = []
+    for k in ks(s["frames"]):
+        g = Grid(w, h)
+        rx = 5 + 16 * (1 - (1 - k) ** 2)
+        g.ellipse(cx, cy, rx + .9, 1.2, "o")
+        g.ellipse(cx, cy, rx, 1.4, "y")
+        frames.append({"ring": g.lines()})
+    return frames
+
+
 def heal_streak(s):
     """Rising heal streaks by length, 4 to 10 pixels, the top pixel brightest."""
     w, h = s["cell"]

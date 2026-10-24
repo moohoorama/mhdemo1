@@ -1,0 +1,30 @@
+# B03 단양 (초안, 24x24): 북쪽 모퉁이 산자락 아래 마을. 목책(9행·9열)이 남쪽 두 면을 막고, 어귀는 남동 목책 가운데 (9,5~6) 두 칸.
+# 마을 안 (1~8,1~8): 민가(v)와 밭. 뒤는 절벽이라 어귀로만 드나든다.
+# 서쪽 고갯길: 20행 길(절벽 18행·22~23행 사이) → (9,19)에서 북동으로 꺾여 10~11열을 따라 어귀 앞 (10,6)까지. 아군 시작 (0~3,19~21).
+# 고갯길 출구 매복 숲: (7~9,16~18), (7~10,21~23).
+# 동쪽 계곡 길: 2행 개울(북쪽 절벽 밑), 3~4행 길, 0~1행·5~6행 절벽. 도겸 3턴 등장 (21~23,3~4).
+# 황건 두목 진영: 남쪽 모퉁이 주둔지 하나 (20,20)와 짓밟힌 땅, 북쪽을 보는 목책 17행·17열. 두목 (20,20). 마을 = (1,1) 8x8.
+h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h--
+h-- h-- h-- gt- g-- g-- g-- g-- g-- gz- g-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h--
+h-- h-- g-- d-- g-- gv- g-- g-- d-- gz- g-- g-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+h-- g-- d-- gv- g-- g-- g-- gv- g-- gz- g-- d-- g-- d-- d-- g-- d-- d-- g-- d-- d-- g-- d-- d--
+h-- gt- g-- g-- d-- g-- gv- g-- g-- gz- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- gt- g--
+h-- g-- gv- g-- g-- gv- g-- g-- g-- g-- g-- g-- g-- g-- g-- h-- h-- h-- h-- h-- h-- h-- h-- h--
+h-- g-- g-- g-- gv- g-- gv- g-- g-- g-- d-- g-- g-- g-- g-- gt- gt- h-- h-- h-- h-- h-- h-- h--
+h-- g-- g-- gv- g-- g-- g-- d-- g-- gz- d-- gt- g-- g-- g-- g-- gt- gt- gt- g-- gt- gt- g-- gt-
+h-- g-- d-- g-- g-- g-- g-- g-- g-- gz- g-- d-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g--
+h-- gz- gz- gz- gz- gz- gz- gz- gz- gz- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+h-- gt- gt- gt- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g-- g--
+h-- h-- gt- gt- gt- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- d-- g-- g-- g-- g-- d-- g-- g-- g--
+h-- h-- gt- gt- gt- gt- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt-
+h-- h-- h-- h-- gt- gt- gt- g-- d-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- gt-
+h-- h-- h-- h-- h-- h-- gt- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g--
+h-- h-- h-- h-- h-- h-- gt- gt- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+h-- h-- h-- h-- h-- h-- gt- gt- gt- gt- g-- d-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g--
+h-- h-- h-- h-- h-- h-- gt- gt- gt- gt- d-- g-- g-- g-- g-- g-- g-- gz- gz- g-- g-- gz- gz- g--
+h-- h-- h-- h-- h-- h-- h-- gt- gt- g-- d-- g-- d-- g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- d-- g-- g-- g-- gz- g-- d-- d-- d-- g-- g--
+d-- d-- d-- d-- d-- d-- d-- d-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- dk- d-- d-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- d-- d-- d-- g-- g--
+h-- h-- h-- h-- h-- h-- g-- gt- gt- gt- gt- g-- g-- g-- gt- g-- g-- g-- g-- g-- d-- g-- g-- g--
+h-- h-- h-- h-- h-- h-- h-- gt- gt- gt- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--

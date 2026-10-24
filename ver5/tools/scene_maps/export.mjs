@@ -9,7 +9,10 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const cand = path.join(root, 'assets_candidate');
 const gfx = JSON.parse(fs.readFileSync(path.join(root, 'ver5/assets/graphics/index.json'), 'utf8'));
-const tiles = JSON.parse(fs.readFileSync(path.join(cand, 'tiles/tiles.json'), 'utf8')).sprites;
+// a picture the viewer names but the candidate set no longer has (the old whole-gate halves, now cut into slices)
+// still gets recorded by name; build.py turns it into what the game draws
+const tiles = new Proxy(JSON.parse(fs.readFileSync(path.join(cand, 'tiles/tiles.json'), 'utf8')).sprites,
+  { get: (t, n) => t[n] ?? (String(n).startsWith('sgate_') ? { size: [0, 0], pivot: [0, 0] } : undefined) });
 const fx = JSON.parse(fs.readFileSync(path.join(cand, 'effects/effects.json'), 'utf8'));
 
 const DATA = {

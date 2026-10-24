@@ -22,9 +22,10 @@ import (
 
 // Assets mirrors assets/graphics/index.json (built by tools/build_assets.py).
 type propEntry struct {
-	Rect  [4]int
-	Pivot [2]float64
-	Layer string
+	Rect   [4]int
+	Pivot  [2]float64
+	Layer  string
+	Shadow *bool // false: no ground shadow under it in a story scene (shadows and overlays, cliffs); unset is true
 }
 
 type Assets struct {
@@ -63,7 +64,8 @@ type FrameStrip struct {
 // Ground props (floors, bridges) are baked into the ground; the rest are depth sorted.
 type Prop struct {
 	Sprite
-	Ground bool
+	Ground   bool
+	NoShadow bool // a story scene lays no ground shadow under it (index.json "shadow": false)
 }
 
 // Sprite is an image whose pivot lands on the drawing position.
@@ -87,9 +89,13 @@ type MapArt struct {
 	Ground      []GroundTile
 	Decorations []Decoration
 	Props       []MapProp
+	Faces       []MapFace
 	Native      bool
 	Visual      [4]int
 	SmallTiles  []string
+	Highland    []string
+	SmallSnap   bool
+	CliffRepeat bool
 	Deformed    bool // battle map: forests drawn as deformed cells, like villages
 	Scene       bool // a scenario scene: drawn without the shaded exterior, to the edge of its picture
 }
@@ -100,6 +106,14 @@ type MapProp struct {
 	Name         string
 	U, V, U1, V1 float64
 	Fill         bool
+}
+
+// MapFace attaches a picture to one edge of a small ground tile; offsets use canvas pixels.
+type MapFace struct {
+	Name   string
+	U, V   int
+	Side   string
+	DX, DY int
 }
 type GroundTile struct {
 	X, Y   int
@@ -283,7 +297,8 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		prSheet := ebiten.NewImageFromImage(pr)
 		for name, p := range sheet.Sprites {
 			r := image.Rect(p.Rect[0], p.Rect[1], p.Rect[0]+p.Rect[2], p.Rect[1]+p.Rect[3])
-			a.Props[name] = Prop{Sprite{prSheet.SubImage(r).(*ebiten.Image), p.Pivot[0], p.Pivot[1]}, p.Layer == "ground"}
+			a.Props[name] = Prop{Sprite{prSheet.SubImage(r).(*ebiten.Image), p.Pivot[0], p.Pivot[1]}, p.Layer == "ground",
+				p.Shadow != nil && !*p.Shadow}
 		}
 	}
 	// the walls of the battle map are the clean ones: no seam where one wall cell meets the next
@@ -327,17 +342,23 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			Ground      [][3]json.RawMessage
 			Decorations [][4]json.RawMessage
 			Props       [][]json.RawMessage
+			SmallProps  [][]json.RawMessage `json:"small_props"`
+			SmallFaces  [][]json.RawMessage `json:"small_faces"`
 			Deformed    bool
 			Native      bool
 			Scene       bool
 			Visual      [4]int
 			SmallTiles  []string `json:"small_tiles"`
+			Highland    []string `json:"highland"`
+			SmallSnap   bool     `json:"small_snap"`
+			CliffRepeat bool     `json:"cliff_repeat"`
 		}
 		if err = json.Unmarshal(b, &m); err != nil {
 			return nil, fmt.Errorf("%s: %w", path, err)
 		}
 		art := &MapArt{ID: m.ID, Name: m.Name, W: m.Size[0], H: m.Size[1], Tiles: m.Tiles, Deformed: m.Deformed,
-			Native: m.Native, Scene: m.Scene, Visual: m.Visual, SmallTiles: m.SmallTiles,
+			Native: m.Native, Scene: m.Scene, Visual: m.Visual, SmallTiles: m.SmallTiles, Highland: m.Highland,
+			SmallSnap: m.SmallSnap, CliffRepeat: m.CliffRepeat,
 			Bounds: image.Rect(m.Bounds[0], m.Bounds[1], m.Bounds[2], m.Bounds[3])}
 		for _, g := range m.Ground {
 			var t GroundTile
@@ -368,6 +389,60 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 				_ = json.Unmarshal(p[4], &mp.V1)
 			}
 			art.Props = append(art.Props, mp)
+		}
+		if len(m.Props) > 0 && len(m.SmallProps) > 0 {
+			return nil, fmt.Errorf("%s: props and small_props cannot both be set", path)
+		}
+		for _, p := range m.SmallProps {
+			if len(p) != 3 && len(p) != 5 {
+				return nil, fmt.Errorf("%s: small prop needs [name, U, V] or [name, U, V, dx, dy]", path)
+			}
+			var name string
+			var u, v, dx, dy int
+			for i, target := range []any{&name, &u, &v} {
+				if err := json.Unmarshal(p[i], target); err != nil {
+					return nil, fmt.Errorf("%s: small prop coordinate: %w", path, err)
+				}
+			}
+			if len(p) == 5 {
+				if err := json.Unmarshal(p[3], &dx); err != nil {
+					return nil, fmt.Errorf("%s: small prop dx: %w", path, err)
+				}
+				if err := json.Unmarshal(p[4], &dy); err != nil {
+					return nil, fmt.Errorf("%s: small prop dy: %w", path, err)
+				}
+			}
+			if m.SmallSnap && !strings.HasPrefix(name, "tcliff_") && !strings.HasPrefix(name, "lcliff_") {
+				dx, dy = 0, 0
+			}
+			art.Props = append(art.Props, MapProp{
+				Name: name,
+				U:    (float64(u)-.5)/2 + float64(dx)/64 + float64(dy)/32,
+				V:    (float64(v)-.5)/2 - float64(dx)/64 + float64(dy)/32,
+			})
+		}
+		for _, p := range m.SmallFaces {
+			if len(p) != 4 && len(p) != 6 {
+				return nil, fmt.Errorf("%s: small face needs [name, U, V, side] or [name, U, V, side, dx, dy]", path)
+			}
+			var face MapFace
+			for i, target := range []any{&face.Name, &face.U, &face.V, &face.Side} {
+				if err := json.Unmarshal(p[i], target); err != nil {
+					return nil, fmt.Errorf("%s: small face coordinate: %w", path, err)
+				}
+			}
+			if face.Side != "SW" && face.Side != "SE" && face.Side != "NW" && face.Side != "NE" {
+				return nil, fmt.Errorf("%s: invalid small face side %q", path, face.Side)
+			}
+			if len(p) == 6 {
+				if err := json.Unmarshal(p[4], &face.DX); err != nil {
+					return nil, fmt.Errorf("%s: small face dx: %w", path, err)
+				}
+				if err := json.Unmarshal(p[5], &face.DY); err != nil {
+					return nil, fmt.Errorf("%s: small face dy: %w", path, err)
+				}
+			}
+			art.Faces = append(art.Faces, face)
 		}
 		a.Maps[m.ID] = art
 	}

@@ -19,6 +19,7 @@ import (
 type line struct {
 	speakers []string
 	text     string
+	portrait string // portrait key for a speaker who is no character (a town's smith); "" finds the character's
 }
 
 var speakerMark = regexp.MustCompile(`(?:^|\s)([가-힣]{1,4}(?:·[가-힣]{1,4})*):\s*`)

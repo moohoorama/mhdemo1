@@ -1,0 +1,259 @@
+{
+ "note": "Scene trees painted by codex (codex-image skill) from their 3D render (tools/unit3d/scene_props3d.py, upscaled nearest on flat magenta, the render as the only reference) and turned into dots by ver5/tools/pixelize_tree.py. source: the painting, 512 px; palette: the 3D render's colours (the darkest is the outline); the other keys are pixelize_tree.py's knobs; prompt: what codex was asked.",
+ "trees": {
+  "stree_pine_0": {
+   "source": "sources/stree_pine_0.png",
+   "palette": [
+    "#22301a",
+    "#405826",
+    "#0b101b",
+    "#3d211d",
+    "#8e3326",
+    "#688630"
+   ],
+   "penalty": {
+    "#688630": 8
+   },
+   "prompt": "Pixel art tree for an isometric ancient-China strategy RPG (a single game prop), in the style of a hand-made 16-bit SNES / GBA era sprite. The attached reference is a crude 3D render of the tree: use it ONLY for the silhouette outline, overall size in the frame, trunk position and lean, branch layout and light direction (light from the upper left). The reference shows the exact render. Do NOT copy its rendering: no ball-shaped clumps, no dimples or holes on top of the clumps, no plastic shading. Repaint it the way a skilled pixel artist would: an old East Asian red pine: the leaning reddish-brown trunk bending upward, bare low down, with visible bark plates; flat horizontal layered pads of needles on the side branches, each pad a flat cloud with a bright lit top rim, a needle-tufted fringe along its lower edge and a dark underside. Few large leaf masses with clear readable shapes and lightly scalloped / tufted edges, each mass shaded in 3 flat tones (lit upper-left band, mid, dark underside) with a few highlight pixels, dark pockets between masses, a 1-pixel very dark outline around the silhouette, no texture noise, no dithering, no gradients, no anti-aliasing. Crisp big square pixels at about the reference's pixel size. Colours: needles #22301a shadow, #405826 mid, #688630 lit tops; bark #3d211d shadow, #8e3326 lit. No ground, no cast shadow, no grass under it. Background: perfectly flat solid magenta #FF00FF everywhere outside the tree. Nothing in the tree may be magenta or purple. No text, no watermark."
+  },
+  "stree_pine_1": {
+   "source": "sources/stree_pine_1.png",
+   "palette": [
+    "#22301a",
+    "#405826",
+    "#0b101b",
+    "#3d211d",
+    "#688630",
+    "#8e3326"
+   ],
+   "penalty": {
+    "#688630": 8
+   },
+   "bark": [
+    "#3d211d",
+    "#8e3326"
+   ],
+   "inner": "#22301a",
+   "prompt": "Pixel art tree for an isometric ancient-China strategy RPG (a single game prop), in the style of a hand-made 16-bit SNES / GBA era sprite. The attached reference is a crude 3D render of it: use it ONLY for the silhouette outline, overall size in the frame, trunk position and lean, branch layout and light direction (light from the upper left). The reference shows the exact render. Do NOT copy its rendering: no ball-shaped clumps, no dimples or holes on top of the clumps, no plastic shading. Repaint it the way a skilled pixel artist would: a tall slender old East Asian red pine: the reddish-brown trunk rising and bending, bare low down, with visible bark plates; flat horizontal layered pads of needles on short side branches up its height, each pad a flat cloud mostly in the dark and mid greens with only a thin lit top rim, a needle-tufted fringe along its lower edge and a dark underside. Few large leaf masses with clear readable shapes and lightly scalloped / tufted edges, each mass shaded in 3 flat tones (lit upper-left band, mid, dark underside) with a few highlight pixels, dark pockets between masses, a 1-pixel very dark outline around the silhouette, no texture noise, no dithering, no gradients, no anti-aliasing. Crisp big square pixels at about the reference's pixel size. Colours: needles #22301a shadow, #405826 mid, #688630 only on the lit top rims (sparingly); bark #3d211d shadow, #8e3326 lit. No ground, no cast shadow, no grass under it. Background: perfectly flat solid magenta #FF00FF everywhere outside the tree. Nothing in it may be magenta or purple. No text, no watermark."
+  },
+  "stree_broad_0": {
+   "source": "sources/stree_broad_0.png",
+   "palette": [
+    "#22301a",
+    "#405826",
+    "#688630",
+    "#0b101b",
+    "#98b242",
+    "#3d211d",
+    "#ccd668",
+    "#663720"
+   ],
+   "prompt": "Pixel art tree for an isometric ancient-China strategy RPG (a single game prop), in the style of a hand-made 16-bit SNES / GBA era sprite. The attached reference is a crude 3D render of the tree: use it ONLY for the silhouette outline, overall size in the frame, trunk position and lean, branch layout and light direction (light from the upper left). The reference shows the exact render. Do NOT copy its rendering: no ball-shaped clumps, no dimples or holes on top of the clumps, no plastic shading. Repaint it the way a skilled pixel artist would: a broadleaf deciduous tree: a straight dark-brown trunk, a full rounded crown made of a few big overlapping leaf masses with leafy scalloped edges, lit yellow-green on the upper left, deep green in the lower right. Few large leaf masses with clear readable shapes and lightly scalloped / tufted edges, each mass shaded in 3 flat tones (lit upper-left band, mid, dark underside) with a few highlight pixels, dark pockets between masses, a 1-pixel very dark outline around the silhouette, no texture noise, no dithering, no gradients, no anti-aliasing. Crisp big square pixels at about the reference's pixel size. Colours: greens #22301a, #405826, #688630, #98b242, highlight #ccd668; bark #3d211d and #663720. No ground, no cast shadow, no grass under it. Background: perfectly flat solid magenta #FF00FF everywhere outside the tree. Nothing in the tree may be magenta or purple. No text, no watermark."
+  },
+  "stree_broad_1": {
+   "source": "sources/stree_broad_1.png",
+   "palette": [
+    "#405826",
+    "#22301a",
+    "#688630",
+    "#0b101b",
+    "#3d211d",
+    "#98b242",
+    "#663720",
+    "#ccd668"
+   ],
+   "bark": [
+    "#3d211d",
+    "#663720"
+   ],
+   "inner": "#22301a",
+   "prompt": "Pixel art tree for an isometric ancient-China strategy RPG (a single game prop), in the style of a hand-made 16-bit SNES / GBA era sprite. The attached reference is a crude 3D render of it: use it ONLY for the silhouette outline, overall size in the frame, trunk position and lean, branch layout and light direction (light from the upper left). The reference shows the exact render. Do NOT copy its rendering: no ball-shaped clumps, no dimples or holes on top of the clumps, no plastic shading. Repaint it the way a skilled pixel artist would: a broadleaf deciduous tree: a straight dark-brown trunk, a full rounded crown made of a few big overlapping leaf masses with leafy scalloped edges, lit yellow-green on the upper left, deep green in the lower right. Few large leaf masses with clear readable shapes and lightly scalloped / tufted edges, each mass shaded in 3 flat tones (lit upper-left band, mid, dark underside) with a few highlight pixels, dark pockets between masses, a 1-pixel very dark outline around the silhouette, no texture noise, no dithering, no gradients, no anti-aliasing. Crisp big square pixels at about the reference's pixel size. Colours: greens #22301a, #405826, #688630, #98b242, highlight #ccd668; bark #3d211d and #663720. No ground, no cast shadow, no grass under it. Background: perfectly flat solid magenta #FF00FF everywhere outside the tree. Nothing in it may be magenta or purple. No text, no watermark."
+  },
+  "stree_willow": {
+   "source": "sources/stree_willow.png",
+   "palette": [
+    "#0b101b",
+    "#688630",
+    "#98b242",
+    "#22301a",
+    "#ccd668",
+    "#405826",
+    "#3d211d",
+    "#663720"
+   ],
+   "dark": 0.15,
+   "bark": [
+    "#3d211d",
+    "#663720"
+   ],
+   "inner": "#405826",
+   "prompt": "Pixel art tree for an isometric ancient-China strategy RPG (a single game prop), in the style of a hand-made 16-bit SNES / GBA era sprite. The attached reference is a crude 3D render of it: use it ONLY for the silhouette outline, overall size in the frame, trunk position and lean, branch layout and light direction (light from the upper left). The reference shows the exact render. Do NOT copy its rendering: no ball-shaped clumps, no dimples or holes on top of the clumps, no plastic shading. Repaint it the way a skilled pixel artist would: a weeping willow: a short leaning trunk, a small soft crown, and about eight to ten thick drooping fronds hanging nearly to the ground. Draw every frond THICK and bold: 4 to 6 pixels wide at the reference's pixel size, slightly curved, tapering only at the tip, with leafy notched edges, a lit left side and a dark right side, and clear dark gaps between the fronds showing the trunk. Few large leaf masses with clear readable shapes and lightly scalloped / tufted edges, each mass shaded in 3 flat tones (lit upper-left band, mid, dark underside) with a few highlight pixels, dark pockets between masses, a 1-pixel very dark outline around the silhouette, no texture noise, no dithering, no gradients, no anti-aliasing. Crisp big square pixels at about the reference's pixel size. Colours: pale yellow-greens #405826, #688630, #98b242, highlight #ccd668; bark #3d211d and #663720. No ground, no cast shadow, no grass under it. Background: perfectly flat solid magenta #FF00FF everywhere outside the tree. Nothing in it may be magenta or purple. No text, no watermark."
+  },
+  "stree_old": {
+   "source": "sources/stree_old.png",
+   "palette": [
+    "#405826",
+    "#6c583c",
+    "#22301a",
+    "#0b101b",
+    "#688630",
+    "#a89266",
+    "#98b242",
+    "#d9c698"
+   ],
+   "prompt": "Pixel art tree for an isometric ancient-China strategy RPG (a single game prop), in the style of a hand-made 16-bit SNES / GBA era sprite. The attached reference is a crude 3D render of the tree: use it ONLY for the silhouette outline, overall size in the frame, trunk position and lean, branch layout and light direction (light from the upper left). The reference shows the exact render. Do NOT copy its rendering: no ball-shaped clumps, no dimples or holes on top of the clumps, no plastic shading. Repaint it the way a skilled pixel artist would: an ancient gnarled village zelkova: a very thick twisted grey-brown trunk with buttress roots at the foot and knots, wide crooked limbs, one dead bare limb sticking up, a broad but broken crown of a few dark green leaf masses. Few large leaf masses with clear readable shapes and lightly scalloped / tufted edges, each mass shaded in 3 flat tones (lit upper-left band, mid, dark underside) with a few highlight pixels, dark pockets between masses, a 1-pixel very dark outline around the silhouette, no texture noise, no dithering, no gradients, no anti-aliasing. Crisp big square pixels at about the reference's pixel size. Colours: bark #3d2a1d deep shadow, #6c583c mid, #a89266 lit, #d9c698 highlight; leaves #22301a, #405826, #688630. No ground, no cast shadow, no grass under it. Background: perfectly flat solid magenta #FF00FF everywhere outside the tree. Nothing in the tree may be magenta or purple. No text, no watermark."
+  },
+  "stree_dead": {
+   "source": "sources/stree_dead.png",
+   "palette": [
+    "#0b101b",
+    "#221e20",
+    "#3a3230",
+    "#3d211d",
+    "#50382c",
+    "#6a4e3a"
+   ],
+   "prompt": "Pixel art burnt dead tree for an isometric ancient-China strategy RPG (a single game prop), in the style of a hand-made 16-bit SNES / GBA era sprite. The attached reference is a crude 3D render of it: use it ONLY for the silhouette outline, overall size in the frame, trunk position and lean, branch layout and light direction (light from the upper left). The reference shows the exact render. Do NOT copy its rendering: no ball-shaped clumps, no dimples or holes on top of the clumps, no plastic shading. Repaint it the way a skilled pixel artist would: a tree killed by fire: a charred trunk and a few bare broken limbs, no leaves. The charcoal wood must still read against its near-black outline: shade it with dark grey-brown tones, lit warm grey-brown along the upper-left edges, and a few cracked bark lines. a 1-pixel very dark outline around the silhouette, no texture noise, no dithering, no gradients, no anti-aliasing. Crisp big square pixels at about the reference's pixel size. Colours: charcoal #221e20 shadow, #3a3230 mid, #50382c and #6a4e3a lit edges, burnt bark #3d211d; outline #0b101b. No ground, no cast shadow, no grass under it. Background: perfectly flat solid magenta #FF00FF everywhere outside the burnt dead tree. Nothing in it may be magenta or purple. No text, no watermark."
+  },
+  "stree_bush_0": {
+   "source": "sources/stree_bush_0.png",
+   "palette": [
+    "#22301a",
+    "#405826",
+    "#0b101b",
+    "#98b242",
+    "#688630",
+    "#ccd668"
+   ],
+   "prompt": "Pixel art bush for an isometric ancient-China strategy RPG (a single game prop), in the style of a hand-made 16-bit SNES / GBA era sprite. The attached reference is a crude 3D render of it: use it ONLY for the silhouette outline, overall size in the frame, trunk position and lean, branch layout and light direction (light from the upper left). The reference shows the exact render. Do NOT copy its rendering: no ball-shaped clumps, no dimples or holes on top of the clumps, no plastic shading. Repaint it the way a skilled pixel artist would: a low clump of shrubs, knee high: three or four big rounded leafy masses with scalloped edges, lit yellow-green on the upper left, deep green in the lower right. Very simple, it is a tiny sprite. Few large leaf masses with clear readable shapes and lightly scalloped / tufted edges, each mass shaded in 3 flat tones (lit upper-left band, mid, dark underside) with a few highlight pixels, dark pockets between masses, a 1-pixel very dark outline around the silhouette, no texture noise, no dithering, no gradients, no anti-aliasing. Crisp big square pixels at about the reference's pixel size. Colours: greens #22301a, #405826, #688630, #98b242, highlight #ccd668. No ground, no cast shadow, no grass under it. Background: perfectly flat solid magenta #FF00FF everywhere outside the bush. Nothing in it may be magenta or purple. No text, no watermark."
+  },
+  "stree_bush_1": {
+   "source": "sources/stree_bush_1.png",
+   "palette": [
+    "#405826",
+    "#22301a",
+    "#0b101b",
+    "#688630",
+    "#98b242",
+    "#ccd668"
+   ],
+   "prompt": "Pixel art bush for an isometric ancient-China strategy RPG (a single game prop), in the style of a hand-made 16-bit SNES / GBA era sprite. The attached reference is a crude 3D render of it: use it ONLY for the silhouette outline, overall size in the frame, trunk position and lean, branch layout and light direction (light from the upper left). The reference shows the exact render. Do NOT copy its rendering: no ball-shaped clumps, no dimples or holes on top of the clumps, no plastic shading. Repaint it the way a skilled pixel artist would: a low clump of shrubs, knee high: three or four big rounded leafy masses with scalloped edges, lit yellow-green on the upper left, deep green in the lower right. Very simple, it is a tiny sprite. Few large leaf masses with clear readable shapes and lightly scalloped / tufted edges, each mass shaded in 3 flat tones (lit upper-left band, mid, dark underside) with a few highlight pixels, dark pockets between masses, a 1-pixel very dark outline around the silhouette, no texture noise, no dithering, no gradients, no anti-aliasing. Crisp big square pixels at about the reference's pixel size. Colours: greens #22301a, #405826, #688630, #98b242, highlight #ccd668. No ground, no cast shadow, no grass under it. Background: perfectly flat solid magenta #FF00FF everywhere outside the bush. Nothing in it may be magenta or purple. No text, no watermark."
+  },
+  "stree_plum_0": {
+   "source": "sources/stree_plum_0.png",
+   "palette": [
+    "#ffd6de",
+    "#c4d2d9",
+    "#0b101b",
+    "#f1f6f5",
+    "#3d211d",
+    "#d77790",
+    "#f2a7b8",
+    "#663720",
+    "#963e5c"
+   ],
+   "dark": 0.18,
+   "bark": [
+    "#3d211d",
+    "#663720"
+   ],
+   "foot": true,
+   "inner": "#c4d2d9",
+   "prompt": "Pixel art tree for an isometric ancient-China strategy RPG (a single game prop), in the style of a hand-made 16-bit SNES / GBA era sprite. The attached reference is a crude 3D render of it: use it ONLY for the silhouette outline, overall size in the frame, trunk position and lean, branch layout and light direction (light from the upper left). The reference shows the exact render. Do NOT copy its rendering: no ball-shaped clumps, no dimples or holes on top of the clumps, no plastic shading. Repaint it the way a skilled pixel artist would: an old plum tree (maehwa) in full white blossom with a pink blush: a crooked dark-brown trunk forking low into a few limbs, a wide crown of blossom masses. Few large fluffy blossom masses (clouds of tiny flowers with scalloped edges, not balls), each shaded in 3 flat tones (lit upper-left, mid, deep shadowed underside), and clearly visible deep dark grooves and pockets between the masses so every mass reads separately, a 1-pixel very dark outline around the silhouette, no texture noise, no dithering, no gradients, no anti-aliasing. Crisp big square pixels at about the reference's pixel size. Colours: white plum blossom: #c4d2d9 cool shadow and grooves, #f1f6f5 white, #ffd6de and #f2a7b8 pink blush, a few #d77790 flower centres; bark #3d211d and #663720. No ground, no cast shadow, no grass under it. Background: perfectly flat solid magenta #FF00FF everywhere outside the tree. Nothing in it may be magenta or purple. No text, no watermark."
+  },
+  "stree_plum_1": {
+   "source": "sources/stree_plum_1.png",
+   "palette": [
+    "#ffd6de",
+    "#c4d2d9",
+    "#0b101b",
+    "#f1f6f5",
+    "#3d211d",
+    "#f2a7b8",
+    "#d77790",
+    "#663720",
+    "#963e5c"
+   ],
+   "dark": 0.18,
+   "bark": [
+    "#3d211d",
+    "#663720"
+   ],
+   "foot": true,
+   "inner": "#c4d2d9",
+   "prompt": "Pixel art tree for an isometric ancient-China strategy RPG (a single game prop), in the style of a hand-made 16-bit SNES / GBA era sprite. The attached reference is a crude 3D render of it: use it ONLY for the silhouette outline, overall size in the frame, trunk position and lean, branch layout and light direction (light from the upper left). The reference shows the exact render. Do NOT copy its rendering: no ball-shaped clumps, no dimples or holes on top of the clumps, no plastic shading. Repaint it the way a skilled pixel artist would: an old plum tree (maehwa) in full white blossom with a pink blush: a crooked dark-brown trunk forking low into a few limbs, a wide crown of blossom masses. Few large fluffy blossom masses (clouds of tiny flowers with scalloped edges, not balls), each shaded in 3 flat tones (lit upper-left, mid, deep shadowed underside), and clearly visible deep dark grooves and pockets between the masses so every mass reads separately, a 1-pixel very dark outline around the silhouette, no texture noise, no dithering, no gradients, no anti-aliasing. Crisp big square pixels at about the reference's pixel size. Colours: white plum blossom: #c4d2d9 cool shadow and grooves, #f1f6f5 white, #ffd6de and #f2a7b8 pink blush, a few #d77790 flower centres; bark #3d211d and #663720. No ground, no cast shadow, no grass under it. Background: perfectly flat solid magenta #FF00FF everywhere outside the tree. Nothing in it may be magenta or purple. No text, no watermark."
+  },
+  "peach_bloom_0": {
+   "source": "sources/peach_bloom_0.png",
+   "palette": [
+    "#d77790",
+    "#f2a7b8",
+    "#0b101b",
+    "#ffd6de",
+    "#3d211d",
+    "#963e5c",
+    "#663720",
+    "#3f8a4a"
+   ],
+   "dark": 0.12,
+   "bark": [
+    "#3d211d",
+    "#663720"
+   ],
+   "foot": true,
+   "inner": "#963e5c",
+   "penalty": {
+    "#963e5c": -8
+   },
+   "prompt": "Pixel art tree for an isometric ancient-China strategy RPG (a single game prop), in the style of a hand-made 16-bit SNES / GBA era sprite. The attached reference is a crude 3D render of it: use it ONLY for the silhouette outline, overall size in the frame, trunk position and lean, branch layout and light direction (light from the upper left). The reference shows the exact render. Do NOT copy its rendering: no ball-shaped clumps, no dimples or holes on top of the clumps, no plastic shading. Repaint it the way a skilled pixel artist would: a peach tree in full blossom: a crooked dark-brown trunk forking low into a few limbs, a wide crown of pink blossom masses, small green new leaves peeking out. Few large fluffy blossom masses (clouds of tiny flowers with scalloped edges, not balls), each shaded in 3 flat tones (lit upper-left, mid, deep shadowed underside), and clearly visible deep dark grooves and pockets between the masses so every mass reads separately, a 1-pixel very dark outline around the silhouette, no texture noise, no dithering, no gradients, no anti-aliasing. Crisp big square pixels at about the reference's pixel size. Colours: blossom #963e5c deep shadow and grooves, #d77790 mid, #f2a7b8 light, #ffd6de highlight; bark #3d211d and #663720; leaves #3f8a4a. No ground, no cast shadow, no grass under it. Background: perfectly flat solid magenta #FF00FF everywhere outside the tree. Nothing in it may be magenta or purple. No text, no watermark."
+  },
+  "peach_bloom_1": {
+   "source": "sources/peach_bloom_1.png",
+   "palette": [
+    "#d77790",
+    "#f2a7b8",
+    "#0b101b",
+    "#ffd6de",
+    "#3d211d",
+    "#963e5c",
+    "#663720",
+    "#3f8a4a"
+   ],
+   "dark": 0.12,
+   "bark": [
+    "#3d211d",
+    "#663720"
+   ],
+   "foot": true,
+   "inner": "#963e5c",
+   "penalty": {
+    "#963e5c": -8
+   },
+   "prompt": "Pixel art tree for an isometric ancient-China strategy RPG (a single game prop), in the style of a hand-made 16-bit SNES / GBA era sprite. The attached reference is a crude 3D render of it: use it ONLY for the silhouette outline, overall size in the frame, trunk position and lean, branch layout and light direction (light from the upper left). The reference shows the exact render. Do NOT copy its rendering: no ball-shaped clumps, no dimples or holes on top of the clumps, no plastic shading. Repaint it the way a skilled pixel artist would: a peach tree in full blossom: a crooked dark-brown trunk forking low into a few limbs, a wide crown of pink blossom masses, small green new leaves peeking out. Few large fluffy blossom masses (clouds of tiny flowers with scalloped edges, not balls), each shaded in 3 flat tones (lit upper-left, mid, deep shadowed underside), and clearly visible deep dark grooves and pockets between the masses so every mass reads separately, a 1-pixel very dark outline around the silhouette, no texture noise, no dithering, no gradients, no anti-aliasing. Crisp big square pixels at about the reference's pixel size. Colours: blossom #963e5c deep shadow and grooves, #d77790 mid, #f2a7b8 light, #ffd6de highlight; bark #3d211d and #663720; leaves #3f8a4a. No ground, no cast shadow, no grass under it. Background: perfectly flat solid magenta #FF00FF everywhere outside the tree. Nothing in it may be magenta or purple. No text, no watermark."
+  },
+  "peach_bloom_2": {
+   "source": "sources/peach_bloom_2.png",
+   "palette": [
+    "#d77790",
+    "#f2a7b8",
+    "#0b101b",
+    "#ffd6de",
+    "#3d211d",
+    "#963e5c",
+    "#663720",
+    "#3f8a4a"
+   ],
+   "dark": 0.12,
+   "bark": [
+    "#3d211d",
+    "#663720"
+   ],
+   "foot": true,
+   "inner": "#963e5c",
+   "penalty": {
+    "#963e5c": -8
+   },
+   "prompt": "Pixel art tree for an isometric ancient-China strategy RPG (a single game prop), in the style of a hand-made 16-bit SNES / GBA era sprite. The attached reference is a crude 3D render of it: use it ONLY for the silhouette outline, overall size in the frame, trunk position and lean, branch layout and light direction (light from the upper left). The reference shows the exact render. Do NOT copy its rendering: no ball-shaped clumps, no dimples or holes on top of the clumps, no plastic shading. Repaint it the way a skilled pixel artist would: a peach tree in full blossom: a crooked dark-brown trunk forking low into a few limbs, a wide crown of pink blossom masses, small green new leaves peeking out. Few large fluffy blossom masses (clouds of tiny flowers with scalloped edges, not balls), each shaded in 3 flat tones (lit upper-left, mid, deep shadowed underside), and clearly visible deep dark grooves and pockets between the masses so every mass reads separately, a 1-pixel very dark outline around the silhouette, no texture noise, no dithering, no gradients, no anti-aliasing. Crisp big square pixels at about the reference's pixel size. Colours: blossom #963e5c deep shadow and grooves, #d77790 mid, #f2a7b8 light, #ffd6de highlight; bark #3d211d and #663720; leaves #3f8a4a. No ground, no cast shadow, no grass under it. Background: perfectly flat solid magenta #FF00FF everywhere outside the tree. Nothing in it may be magenta or purple. No text, no watermark."
+  }
+ }
+}

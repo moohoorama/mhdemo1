@@ -51,6 +51,7 @@
 |---|---|
 | [presentation-ui.md](presentation-ui.md) | 전장 HUD, 조작, 배치 화면, 화면 확인 방법 |
 | [presentation-scene.md](presentation-scene.md) | 장면 연출, 초상, assets/scenes |
+| [presentation-town.md](presentation-town.md) | 마을 걷기 데모: 클릭 이동·대화·출입, assets/towns |
 | [presentation-duel.md](presentation-duel.md) | 일기토 연출 |
 | [presentation-sprite.md](presentation-sprite.md) | `.spr` 형식과 태그 색 |
 | [presentation-replay.md](presentation-replay.md) | 클레임 리플레이: 규칙은 턴제, 화면은 동시 재생 |
@@ -61,6 +62,7 @@
 | 문서 | 내용 |
 |---|---|
 | [tools-editor.md](tools-editor.md) | 맵 에디터, 도트 에디터 |
+| [tools-scene-viewer.md](tools-scene-viewer.md) | 모든 장면 맵을 같은 기준으로 보는 브라우저 뷰어 |
 | [tools-build.md](tools-build.md) | 에셋 빌드 명령, Android 빌드 |
 | [system-architecture.md](system-architecture.md) | 패키지 구조, 데이터 번들, 결정성 |
 | [system-save.md](system-save.md) | 저장, 자동 저장, 호환 |

@@ -17,6 +17,7 @@ BATTLE (whose tag colours it takes) and a NAME. Then `python3 ../spritebuild/bui
 and set `Look.Scene` in assets/data/characters.json (docs/presentation-sprite.md). A mounted class without a scene
 sprite of its own stands in `Scene` of its class (classes.json).
 """
+import copy
 import re
 import subprocess
 import sys
@@ -70,6 +71,160 @@ LOOKS = {
 for _key in ('yuanshu', 'gongsunzan', 'liubei', 'guanyu', 'zhangfei'):  # the user's civilian picks (civilian.SELECTED)
     LOOKS[_key] = chosen(_key, _key)
 LOOKS.update(SP.LOOKS)
+
+
+# ---- story part 1 cast (2026-10-23) ---------------------------------------------------------------------------
+
+def shades(hex_color):
+    """light, base, dark like the game's sprite.Shades: a character's Look.Palette colour as the sheet's own tags."""
+    rgb = [int(hex_color[i:i + 2], 16) for i in (1, 3, 5)]
+    mix = lambda to, n: '#' + ''.join(f'{(v*(100 - n) + to*n)//100:02x}' for v in rgb)  # noqa: E731
+    return [mix(255, 30), hex_color, mix(0, 30)]
+
+
+def tags(group, colors):
+    return [f'{group}{i + 1}={c}' for i, c in enumerate(colors)]
+
+
+def bearded(grids, kind, key):
+    """Hd.beard with the beard in a hair key (h light, g mid, f dark), so the sheet's hair tags colour it: in the
+    iron keys a palette that gilds iron (노식, 하후돈) would gild the beard too."""
+    out = {}
+    for d, rows in grids.items():
+        new = Hd.beard(rows, 'ij', kind)
+        out[d] = [''.join(key if c == '1' and (y >= len(rows) or rows[y][x] != '1') else c for x, c in enumerate(r))
+                  for y, r in enumerate(new)]
+    return out
+
+
+NO_PLUME = {d: Hd.recolor(r, {'b': '2', 'c': '3', 'd': '3'}) for d, r in Hd.IRON.items()}  # a plain knob on top
+WHITE_BAND = {'k': '4', 'l': '5', 'm': '6'}  # the topknot band in plain white cloth
+_soldier = U.soldier
+
+
+def soldier(p, kit, weapon=True):
+    """units.soldier, plus an apron (kit 'apron': its colour) hanging from the sash to the knees with a bib."""
+    faces, head = _soldier(p, kit, weapon)
+    apron = U.KITS[kit].get('apron')
+    if apron:
+        T = U.transform(p)
+        U.m.box(T([0, -.3, .7]), [.58, .05, .62], apron)
+        U.m.box(T([0, -.29, 1.2]), [.36, .04, .32], apron)
+    return U.m.meshes, head
+
+
+U.soldier = soldier
+
+
+def work(look, name, pose):
+    """A look with one more row, name: a work motion drawn by pose(kit) -> (pose, extra meshes(T, p))."""
+    build, head = look
+    rows = build.rows + [name]
+
+    def b(row, f, style=None):
+        if rows[row] != name:
+            return build(row, f, style)
+        p, extra = pose()
+        faces, h = U.soldier(p, build.kit, weapon=False)
+        extra(U.transform(p), p)
+        return U.result(U.m.meshes, h, 0, f)
+    b.rows, b.kit = rows, build.kit
+    return b, head
+
+
+def rest_pose(**hands):
+    p = U.pose(0, 0)
+    p.update(copy.deepcopy(C.REST))
+    p.update(hands)
+    return p
+
+
+def hammer():
+    """The smith's hammer raised beside the head, the other hand holding the tongs forward."""
+    p = rest_pose(hands=[[-.62, -.22, 1.82], [.3, -.5, 1.05]], elbows=[[-.66, -.05, 1.5], [.5, -.2, 1.15]])
+    p['lean'] = .06
+
+    def extra(T, p):
+        h = T(p['hands'][0])
+        U.m.rod(h + [0, .02, -.1], h + [-.04, .1, .36], .05, U.SHAFT)
+        U.m.box(h + [-.04, .12, .4], [.22, .36, .2], U.STEEL)
+        t = T(p['hands'][1])
+        U.m.rod(t, t + [0, -.42, -.12], .035, C.DARK)
+    return p, extra
+
+
+def serve():
+    """A bowl of soup held out in both hands."""
+    p = rest_pose(hands=[[-.17, -.55, 1.2], [.17, -.55, 1.2]], elbows=[[-.46, -.25, 1.15], [.46, -.25, 1.15]])
+
+    def extra(T, p):
+        c = (T(p['hands'][0]) + T(p['hands'][1])) / 2 + U.V([0, -.04, .08])
+        U.m.ell(c, [.24, .24, .11], SP.STOOL)
+        U.m.ell(c + U.V([0, 0, .07]), [.19, .19, .03], SP.IVORY)
+    return p, extra
+
+
+GREY = tags('hair', ['#d6d4ce', '#9e9c96', '#605e5a'])
+WHITE_HAIR = tags('hair', ['#f0eee8', '#c2c0ba', '#7c7a76'])
+STORY = {
+    # 노식: the light infantry helmet (its themeA leather, black by his palette) with the team plume, a long white
+    # beard; the battle sheet's faction tunic under a black (themeA) robe
+    'luzhi': ('노식', scene('luzhi', 1, Hd.heads(bearded(Hd.IRON, 'long', 'h'), Hd.PLUME),
+                          cloth=U.BLUE, robe=LEATHER, guard=LEATHER, tabard=U.BLUE),
+              'light_infantry', WHITE_HAIR + tags('themeA', shades('#2b2b33')) + tags('iron', shades('#e0c060'))),
+    # 황보숭: the same helmet (dark red by his palette), black goatee, dark red coat, silver shoulders, gold belt
+    'huangfusong': ('황보숭', scene('huangfusong', 1, Hd.heads(bearded(Hd.IRON, 'goatee', 'g'), Hd.PLUME),
+                                  cloth=LEATHER, guard=U.STEEL, tabard=U.RED),
+                    'light_infantry', HAIR + tags('themeA', shades('#7a1f1f')) + tags('themeB', shades('#d0a030'))
+                    + tags('iron', shades('#e8e8f0'))),
+    # 하후돈: the light cavalry hood in the team colour, bristling beard, team tunic, gilded shoulders (his iron),
+    # red sash (his saddle red)
+    'xiahoudun': ('하후돈', scene('xiahoudun', 1, Hd.heads(bearded(Hd.HOOD, 'bristle', 'g'), Hd.HOOD_CLOTH),
+                                cloth=U.BLUE, guard=U.STEEL, tabard=U.RED),
+                  'light_cavalry', HAIR + tags('iron', shades('#e0c060')) + tags('themeB', shades('#d03030'))),
+    # lords and officials, told apart by the robe (themeB) colour: 유언 purple with a gold belt (imperial clansman,
+    # governor), 도겸 crimson, 공융 dark green with a white collar
+    'liuyan': ('유언', scene('liuyan', 1, Hd.heads(bearded(L.CAP, 'long', 'h')),
+                           cloth=U.RED, robe=U.RED, guard=U.RED, tabard=U.GOLD),
+               'light_infantry', WHITE_HAIR + tags('themeB', ['#9a72b4', '#6a4386', '#3e2452'])),
+    'taoqian': ('도겸', scene('taoqian', 1, Hd.heads(bearded(SP.JINXIAN, 'long', 'g'), crest=2),
+                            cloth=U.RED, robe=U.RED, guard=U.RED, tabard=U.GOLD),
+                'light_infantry', GREY + tags('themeB', ['#d0605a', '#a03434', '#621e22'])),
+    'kongrong': ('공융', scene('kongrong', 1, Hd.heads(bearded(SP.JINXIAN, 'long', 'g'), crest=2),
+                             cloth=U.RED, robe=U.RED, guard=L.WHITE, tabard=U.BLACK),
+                 'light_infantry', HAIR + tags('themeB', ['#5f9a68', '#356b42', '#1e4228'])),
+    # 추정: a Han commandant, iron helmet with the team plume, team tunic, steel shoulders, leather belt
+    'zoujing': ('추정', scene('zoujing', 1, Hd.heads(bearded(Hd.IRON, 'goatee', 'g'), Hd.PLUME),
+                            cloth=U.BLUE, guard=U.STEEL, tabard=LEATHER),
+                'light_infantry', HAIR),
+    # 고순: plain militia armour, an iron helmet without plume, leather over a drab coat, no beard
+    'gaoshun': ('고순', scene('gaoshun', 1, Hd.heads(NO_PLUME), cloth=U.RED, guard=LEATHER, tabard=LEATHER),
+                'light_infantry', HAIR + tags('themeB', ['#8c8272', '#5e574c', '#3a352e'])
+                + tags('themeA', ['#9a6a42', '#6c4528', '#442a18'])),
+    # extras (aprons in a theme colour of their own: themeC)
+    'jailer': ('옥졸', scene('jailer', 1, Hd.heads(L.CAP), cloth=U.RED, guard=LEATHER, tabard=U.GOLD),
+               'light_infantry', HAIR + tags('themeB', ['#76808c', '#4e5660', '#30353c'])
+               + tags('themeC', ['#d0503c', '#a0302a', '#6a1e1e'])),
+    # 국밥집 주인: an unbleached cotton apron over a brown-grey coat
+    'innkeeper': ('국밥집 주인', work(scene('innkeeper', 1, Hd.heads(Hd.HAIR), cloth=U.RED, guard=U.RED, tabard=LEATHER,
+                                       apron=U.GOLD), 'serve', serve),
+                  'light_infantry', HAIR + tags('themeB', ['#a08a6c', '#76624a', '#4e4030'])
+                  + tags('themeC', ['#efe3bf', '#d6c495', '#a8936a'])),
+    # 대장장이: a tan leather apron, darker leather shoulders and boots, bare arms
+    'blacksmith': ('대장장이', work(scene('blacksmith', 1, Hd.heads(bearded(Hd.TOPKNOT, 'bristle', 'g'), WHITE_BAND),
+                                      cloth=U.RED, guard=LEATHER, tabard=LEATHER, arms=U.SKIN, apron=U.GOLD),
+                                'hammer', hammer),
+                   'light_infantry', HAIR + tags('themeB', ['#7e7468', '#544c44', '#34302c'])
+                   + tags('themeC', ['#c49a64', '#946c40', '#624426'])),
+}
+STORY_POSES = {k: ['sit'] for k in ('luzhi', 'huangfusong', 'xiahoudun', 'liuyan', 'taoqian', 'kongrong', 'zoujing',
+                                     'gaoshun')}
+ACTION = {'jailer': ('talk', 1), 'innkeeper': ('serve', 0), 'blacksmith': ('hammer', 0)}  # else the salute
+for _key, (_name, _look, _battle, _colors) in STORY.items():
+    LOOKS[_key] = _look
+# 유비: in shu his green coat (themeB) and the team robe and sash were one green; gold shoulders and a leather belt as
+# on his battle sheet (2026-10-23)
+U.KITS[LOOKS['liubei'][0].kit].update(shoulder=U.GOLD, tabard=LEATHER)
 BATTLE = {'caocao': 'caocao', 'sunjian': 'sunjian', 'yuanshao': 'yuanshao', 'zhaoyun': 'zhaoyun', 'dongzhuo': 'light_cavalry', 'infantry': 'light_infantry',
           'yuanshu': 'yuanshu', 'gongsunzan': 'light_cavalry', 'liubei': 'liubei', 'guanyu': 'guanyu', 'zhangfei': 'zhangfei'}
 BATTLE.update({k: 'light_infantry' for k in SP.LOOKS})
@@ -77,6 +232,10 @@ NAME = {'caocao': '조조', 'sunjian': '손견', 'yuanshao': '원소', 'zhaoyun'
         'yuanshu': '원술', 'gongsunzan': '공손찬', 'liubei': '유비', 'guanyu': '관우', 'zhangfei': '장비', **SP.NAMES}
 EXTRA_COLORS = {'dongzhuo': HAIR + ['themeA1=#7a5a9a', 'themeA2=#523470', 'themeA3=#2e1a44'], 'infantry': HAIR,
                 **{k: HAIR for k in SP.LOOKS}}
+for _key, (_name, _look, _battle, _colors) in STORY.items():
+    BATTLE[_key], NAME[_key], EXTRA_COLORS[_key] = _battle, _name, _colors
+# 노식·황보숭: their light infantry helmet is the battle sheet's leather (themeA), not iron
+HEAD_TAGS = {k: {'1': 'o', '2': 'o', '3': 'n', '4': 'm', '5': 'm'} for k in ('luzhi', 'huangfusong')}
 # (3D animation, direction, 3D frame) -> (sheet animation, frame); walk steps are the two stride frames
 FRAMES = [('idle', 'NW', 0, 'idle', 0), ('idle', 'SW', 0, 'idle', 0),
           ('walk', 'NW', 0, 'walk', 0), ('walk', 'NW', 2, 'walk', 1), ('walk', 'SW', 0, 'walk', 0), ('walk', 'SW', 2, 'walk', 1),
@@ -127,9 +286,9 @@ def sheet_head(uid, d, out, under):
                 out[ny + y][nx + x] = c
 
 
-def to_tags(full, body, dx, dy, colors, unmapped, posed_unit):
+def to_tags(full, body, dx, dy, colors, unmapped, posed_unit, unit=None):
     """A rendered frame as tag characters, moved by (dx, dy): head pixels (where it differs from the headless body
-    render) by HEADMAP, the rest by BODY. posed_unit: that unit's pose key tags come first."""
+    render) by HEADMAP (unit's HEAD_TAGS first), the rest by BODY. posed_unit: that unit's pose key tags come first."""
     out = [['.']*W for _ in range(H)]
     for y, row in enumerate(full):
         for x, c in enumerate(row):
@@ -137,6 +296,8 @@ def to_tags(full, body, dx, dy, colors, unmapped, posed_unit):
                 continue
             table = BODY if body[y][x] == c else HEADMAP
             tag = SP.POSE_KEY_TAGS.get(posed_unit, {}).get(c) or table.get(c)
+            if table is HEADMAP:
+                tag = HEAD_TAGS.get(unit, {}).get(c, tag)
             if tag is None:
                 tag = unmapped[c, table is HEADMAP] = nearest(c, colors)
             if 0 <= x + dx < W and 0 <= y + dy < H:
@@ -148,7 +309,7 @@ def make(unit, only_poses=False):
     """The whole sheet from the 3D look, or with only_poses just the scene poses added to an existing sheet."""
     uid = f'{unit}_noncombat'
     build, head = LOOKS[unit]
-    poses = SP.SHEET_POSES.get(unit) or SP.OFFICER_POSES.get(unit, [])
+    poses = SP.SHEET_POSES.get(unit) or SP.OFFICER_POSES.get(unit) or STORY_POSES.get(unit, [])
     if not only_poses:
         grid('new', 'light_infantry', uid, NAME[unit], '--noncombat')
         doc = dots.with_alpha(dots.load(uid))
@@ -169,6 +330,9 @@ def make(unit, only_poses=False):
     rows = getattr(build, 'rows', C.ANIMATIONS)
     draw = getattr(build, 'frame', B.frame)
     frames = [] if only_poses else list(FRAMES)
+    if unit in ACTION:  # a work motion instead of the salute
+        frames = [(ACTION[unit][0], d, ACTION[unit][1], oa, on) if oa == 'action' else (a, d, n, oa, on)
+                  for a, d, n, oa, on in frames]
     frames += [(pose, d, 0, pose, 0) for pose in poses for d in ('NW', 'SW')]
     blank = Hd.heads({d: ['.'*13]*12 for d in Hd.IRON})
     captured, to_img = [], Hd.to_img
@@ -185,7 +349,7 @@ def make(unit, only_poses=False):
         own = SP.turned(head) if anim in SP.TURNED_HEAD else head
         full, body = render(anim, d, n, own), render(anim, d, n, blank)
         dx, dy = 28 - B.SPEC['pivot'][0], 38 - ground[d]
-        out, under = to_tags(full, body, dx, dy, colors, unmapped, unit if out_anim in poses else None), None
+        out, under = to_tags(full, body, dx, dy, colors, unmapped, unit if out_anim in poses else None, unit), None
         if out_anim in poses and unit in SP.POSE_SHEET_HEAD:
             under = to_tags(body, body, dx, dy, colors, unmapped, unit)
             sheet_head(uid, d, out, under)

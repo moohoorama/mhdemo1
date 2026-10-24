@@ -46,6 +46,8 @@ def main():
         sheet.paste(ims[n], place[n])
         w, h = ims[n].size
         sprites[n] = {'rect': [*place[n], w, h], 'pivot': tiles[n]['pivot'], 'layer': tiles[n]['layer']}
+        if tiles[n].get('shadow') is False:  # no ground shadow under it in a story scene (shadows, overlays, cliffs)
+            sprites[n]['shadow'] = False
     sheet.save(GFX / 'map/extra.png', optimize=True)
 
     effects = json.load(open(CAND / 'effects/effects.json'))

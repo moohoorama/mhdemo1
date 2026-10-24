@@ -16,6 +16,7 @@
     "item_firebook",
     "item_halberd",
     "item_horse",
+    "item_jueying",
     "item_leather",
     "item_map",
     "item_medicine",
@@ -501,6 +502,36 @@
             "w": "#d8c8b0",
             "s": "#2c1a10",
             "i": "#c8c6bc"
+          }
+        }
+      }
+    },
+    "item_jueying": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_jueying.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#0a0a0e",
+            "h": "#a4b4c9",
+            "a": "#6c7e9c",
+            "b": "#445472",
+            "c": "#2a3342",
+            "d": "#1a1f28",
+            "e": "#0c0d10",
+            "w": "#eef0f4",
+            "i": "#c0c6d0",
+            "r": "#7a4626"
           }
         }
       }

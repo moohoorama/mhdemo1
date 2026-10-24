@@ -1779,118 +1779,6 @@
    "scale": "scene",
    "made": "3D model + unit3d cel renderer"
   },
-  "sgate_closed_first_u": {
-   "file": "tiles/sgate_closed_first_u.png",
-   "size": [
-    36,
-    97
-   ],
-   "pivot": [
-    43,
-    93
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer"
-  },
-  "sgate_closed_second_u": {
-   "file": "tiles/sgate_closed_second_u.png",
-   "size": [
-    100,
-    138
-   ],
-   "pivot": [
-    51,
-    117
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer"
-  },
-  "sgate_closed_first_v": {
-   "file": "tiles/sgate_closed_first_v.png",
-   "size": [
-    36,
-    97
-   ],
-   "pivot": [
-    -6,
-    93
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer"
-  },
-  "sgate_closed_second_v": {
-   "file": "tiles/sgate_closed_second_v.png",
-   "size": [
-    100,
-    138
-   ],
-   "pivot": [
-    50,
-    117
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer"
-  },
-  "sgate_open_first_u": {
-   "file": "tiles/sgate_open_first_u.png",
-   "size": [
-    37,
-    90
-   ],
-   "pivot": [
-    43,
-    93
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer"
-  },
-  "sgate_open_second_u": {
-   "file": "tiles/sgate_open_second_u.png",
-   "size": [
-    100,
-    138
-   ],
-   "pivot": [
-    51,
-    117
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer"
-  },
-  "sgate_open_first_v": {
-   "file": "tiles/sgate_open_first_v.png",
-   "size": [
-    37,
-    90
-   ],
-   "pivot": [
-    -5,
-    93
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer"
-  },
-  "sgate_open_second_v": {
-   "file": "tiles/sgate_open_second_v.png",
-   "size": [
-    100,
-    138
-   ],
-   "pivot": [
-    50,
-    117
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer"
-  },
   "cover_bush_0": {
    "file": "tiles/cover_bush_0.png",
    "size": [
@@ -2208,6 +2096,4074 @@
     1
    ],
    "layer": "object"
+  },
+  "prison_cart": {
+   "file": "tiles/prison_cart.png",
+   "size": [
+    66,
+    78
+   ],
+   "pivot": [
+    27,
+    60
+   ],
+   "layer": "object"
+  },
+  "water_bucket": {
+   "file": "tiles/water_bucket.png",
+   "size": [
+    11,
+    17
+   ],
+   "pivot": [
+    6,
+    14
+   ],
+   "layer": "object"
+  },
+  "water_jar": {
+   "file": "tiles/water_jar.png",
+   "size": [
+    15,
+    20
+   ],
+   "pivot": [
+    8,
+    17
+   ],
+   "layer": "object"
+  },
+  "campfire": {
+   "file": "tiles/campfire.png",
+   "size": [
+    29,
+    17
+   ],
+   "pivot": [
+    15,
+    10
+   ],
+   "layer": "object"
+  },
+  "notice_post": {
+   "file": "tiles/notice_post.png",
+   "size": [
+    29,
+    50
+   ],
+   "pivot": [
+    16,
+    44
+   ],
+   "layer": "object"
+  },
+  "peach_bloom_0": {
+   "file": "tiles/peach_bloom_0.png",
+   "size": [
+    93,
+    96
+   ],
+   "pivot": [
+    56,
+    91
+   ],
+   "layer": "object"
+  },
+  "peach_bloom_1": {
+   "file": "tiles/peach_bloom_1.png",
+   "size": [
+    90,
+    93
+   ],
+   "pivot": [
+    49,
+    88
+   ],
+   "layer": "object"
+  },
+  "peach_bloom_2": {
+   "file": "tiles/peach_bloom_2.png",
+   "size": [
+    91,
+    92
+   ],
+   "pivot": [
+    35,
+    87
+   ],
+   "layer": "object"
+  },
+  "fallen_petals": {
+   "file": "tiles/fallen_petals.png",
+   "size": [
+    37,
+    20
+   ],
+   "pivot": [
+    20,
+    10
+   ],
+   "layer": "ground"
+  },
+  "market_stall": {
+   "file": "tiles/market_stall.png",
+   "size": [
+    44,
+    68
+   ],
+   "pivot": [
+    22,
+    57
+   ],
+   "layer": "object"
+  },
+  "market_stall_cloth": {
+   "file": "tiles/market_stall_cloth.png",
+   "size": [
+    44,
+    68
+   ],
+   "pivot": [
+    22,
+    57
+   ],
+   "layer": "object"
+  },
+  "market_stall_jar": {
+   "file": "tiles/market_stall_jar.png",
+   "size": [
+    44,
+    68
+   ],
+   "pivot": [
+    22,
+    57
+   ],
+   "layer": "object"
+  },
+  "soup_stove": {
+   "file": "tiles/soup_stove.png",
+   "size": [
+    32,
+    34
+   ],
+   "pivot": [
+    18,
+    27
+   ],
+   "layer": "object"
+  },
+  "bench": {
+   "file": "tiles/bench.png",
+   "size": [
+    27,
+    23
+   ],
+   "pivot": [
+    14,
+    16
+   ],
+   "layer": "object"
+  },
+  "counter": {
+   "file": "tiles/counter.png",
+   "size": [
+    42,
+    45
+   ],
+   "pivot": [
+    22,
+    35
+   ],
+   "layer": "object"
+  },
+  "house_tile": {
+   "file": "tiles/house_tile.png",
+   "size": [
+    67,
+    77
+   ],
+   "pivot": [
+    35,
+    60
+   ],
+   "layer": "object"
+  },
+  "house_thatch": {
+   "file": "tiles/house_thatch.png",
+   "size": [
+    67,
+    75
+   ],
+   "pivot": [
+    35,
+    58
+   ],
+   "layer": "object"
+  },
+  "house_burnt": {
+   "file": "tiles/house_burnt.png",
+   "size": [
+    65,
+    71
+   ],
+   "pivot": [
+    33,
+    54
+   ],
+   "layer": "object"
+  },
+  "house_tile_x": {
+   "file": "tiles/house_tile_x.png",
+   "size": [
+    67,
+    77
+   ],
+   "pivot": [
+    33,
+    60
+   ],
+   "layer": "object"
+  },
+  "house_thatch_x": {
+   "file": "tiles/house_thatch_x.png",
+   "size": [
+    67,
+    75
+   ],
+   "pivot": [
+    33,
+    58
+   ],
+   "layer": "object"
+  },
+  "stree_pine_0": {
+   "file": "tiles/stree_pine_0.png",
+   "size": [
+    92,
+    130
+   ],
+   "pivot": [
+    35,
+    124
+   ],
+   "layer": "object"
+  },
+  "stree_pine_1": {
+   "file": "tiles/stree_pine_1.png",
+   "size": [
+    69,
+    140
+   ],
+   "pivot": [
+    42,
+    134
+   ],
+   "layer": "object"
+  },
+  "stree_broad_0": {
+   "file": "tiles/stree_broad_0.png",
+   "size": [
+    83,
+    115
+   ],
+   "pivot": [
+    43,
+    109
+   ],
+   "layer": "object"
+  },
+  "stree_broad_1": {
+   "file": "tiles/stree_broad_1.png",
+   "size": [
+    79,
+    111
+   ],
+   "pivot": [
+    48,
+    105
+   ],
+   "layer": "object"
+  },
+  "stree_willow": {
+   "file": "tiles/stree_willow.png",
+   "size": [
+    72,
+    91
+   ],
+   "pivot": [
+    32,
+    85
+   ],
+   "layer": "object"
+  },
+  "stree_old": {
+   "file": "tiles/stree_old.png",
+   "size": [
+    112,
+    102
+   ],
+   "pivot": [
+    54,
+    89
+   ],
+   "layer": "object"
+  },
+  "stree_dead": {
+   "file": "tiles/stree_dead.png",
+   "size": [
+    35,
+    86
+   ],
+   "pivot": [
+    17,
+    80
+   ],
+   "layer": "object"
+  },
+  "stree_bush_0": {
+   "file": "tiles/stree_bush_0.png",
+   "size": [
+    31,
+    22
+   ],
+   "pivot": [
+    18,
+    16
+   ],
+   "layer": "object"
+  },
+  "stree_bush_1": {
+   "file": "tiles/stree_bush_1.png",
+   "size": [
+    36,
+    23
+   ],
+   "pivot": [
+    16,
+    14
+   ],
+   "layer": "object"
+  },
+  "stree_plum_0": {
+   "file": "tiles/stree_plum_0.png",
+   "size": [
+    79,
+    82
+   ],
+   "pivot": [
+    45,
+    77
+   ],
+   "layer": "object"
+  },
+  "stree_plum_1": {
+   "file": "tiles/stree_plum_1.png",
+   "size": [
+    83,
+    89
+   ],
+   "pivot": [
+    42,
+    84
+   ],
+   "layer": "object"
+  },
+  "flagstones_0": {
+   "file": "tiles/flagstones_0.png",
+   "size": [
+    35,
+    23
+   ],
+   "pivot": [
+    16,
+    12
+   ],
+   "layer": "ground"
+  },
+  "flagstones_1": {
+   "file": "tiles/flagstones_1.png",
+   "size": [
+    36,
+    21
+   ],
+   "pivot": [
+    18,
+    11
+   ],
+   "layer": "ground"
+  },
+  "well": {
+   "file": "tiles/well.png",
+   "size": [
+    23,
+    38
+   ],
+   "pivot": [
+    12,
+    32
+   ],
+   "layer": "object"
+  },
+  "sgate_closed_u_0": {
+   "file": "tiles/sgate_closed_u_0.png",
+   "size": [
+    15,
+    96
+   ],
+   "pivot": [
+    15,
+    83
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -2.5
+  },
+  "sgate_closed_u_1": {
+   "file": "tiles/sgate_closed_u_1.png",
+   "size": [
+    16,
+    107
+   ],
+   "pivot": [
+    16,
+    97
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -2.0
+  },
+  "sgate_closed_u_2": {
+   "file": "tiles/sgate_closed_u_2.png",
+   "size": [
+    16,
+    113
+   ],
+   "pivot": [
+    16,
+    103
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -1.5
+  },
+  "sgate_closed_u_3": {
+   "file": "tiles/sgate_closed_u_3.png",
+   "size": [
+    16,
+    105
+   ],
+   "pivot": [
+    16,
+    95
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -1.0
+  },
+  "sgate_closed_u_4": {
+   "file": "tiles/sgate_closed_u_4.png",
+   "size": [
+    16,
+    117
+   ],
+   "pivot": [
+    16,
+    109
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -0.5
+  },
+  "sgate_closed_u_5": {
+   "file": "tiles/sgate_closed_u_5.png",
+   "size": [
+    16,
+    123
+   ],
+   "pivot": [
+    16,
+    115
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 0.0
+  },
+  "sgate_closed_u_6": {
+   "file": "tiles/sgate_closed_u_6.png",
+   "size": [
+    16,
+    125
+   ],
+   "pivot": [
+    16,
+    115
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 0.5
+  },
+  "sgate_closed_u_7": {
+   "file": "tiles/sgate_closed_u_7.png",
+   "size": [
+    16,
+    125
+   ],
+   "pivot": [
+    16,
+    115
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 1.0
+  },
+  "sgate_closed_u_8": {
+   "file": "tiles/sgate_closed_u_8.png",
+   "size": [
+    16,
+    122
+   ],
+   "pivot": [
+    16,
+    112
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 1.5
+  },
+  "sgate_closed_u_9": {
+   "file": "tiles/sgate_closed_u_9.png",
+   "size": [
+    16,
+    124
+   ],
+   "pivot": [
+    16,
+    111
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 2.0
+  },
+  "sgate_closed_u_10": {
+   "file": "tiles/sgate_closed_u_10.png",
+   "size": [
+    16,
+    104
+   ],
+   "pivot": [
+    16,
+    97
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 2.5
+  },
+  "sgate_closed_u_11": {
+   "file": "tiles/sgate_closed_u_11.png",
+   "size": [
+    14,
+    96
+   ],
+   "pivot": [
+    16,
+    103
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 3.0
+  },
+  "sgate_closed_v_0": {
+   "file": "tiles/sgate_closed_v_0.png",
+   "size": [
+    14,
+    95
+   ],
+   "pivot": [
+    0,
+    82
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -2.5
+  },
+  "sgate_closed_v_1": {
+   "file": "tiles/sgate_closed_v_1.png",
+   "size": [
+    16,
+    106
+   ],
+   "pivot": [
+    0,
+    97
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -2.0
+  },
+  "sgate_closed_v_2": {
+   "file": "tiles/sgate_closed_v_2.png",
+   "size": [
+    16,
+    112
+   ],
+   "pivot": [
+    0,
+    103
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -1.5
+  },
+  "sgate_closed_v_3": {
+   "file": "tiles/sgate_closed_v_3.png",
+   "size": [
+    16,
+    104
+   ],
+   "pivot": [
+    0,
+    95
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -1.0
+  },
+  "sgate_closed_v_4": {
+   "file": "tiles/sgate_closed_v_4.png",
+   "size": [
+    16,
+    117
+   ],
+   "pivot": [
+    0,
+    109
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -0.5
+  },
+  "sgate_closed_v_5": {
+   "file": "tiles/sgate_closed_v_5.png",
+   "size": [
+    16,
+    123
+   ],
+   "pivot": [
+    0,
+    115
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 0.0
+  },
+  "sgate_closed_v_6": {
+   "file": "tiles/sgate_closed_v_6.png",
+   "size": [
+    16,
+    124
+   ],
+   "pivot": [
+    0,
+    115
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 0.5
+  },
+  "sgate_closed_v_7": {
+   "file": "tiles/sgate_closed_v_7.png",
+   "size": [
+    16,
+    124
+   ],
+   "pivot": [
+    0,
+    115
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 1.0
+  },
+  "sgate_closed_v_8": {
+   "file": "tiles/sgate_closed_v_8.png",
+   "size": [
+    16,
+    122
+   ],
+   "pivot": [
+    0,
+    113
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 1.5
+  },
+  "sgate_closed_v_9": {
+   "file": "tiles/sgate_closed_v_9.png",
+   "size": [
+    16,
+    125
+   ],
+   "pivot": [
+    0,
+    112
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 2.0
+  },
+  "sgate_closed_v_10": {
+   "file": "tiles/sgate_closed_v_10.png",
+   "size": [
+    16,
+    104
+   ],
+   "pivot": [
+    0,
+    97
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 2.5
+  },
+  "sgate_closed_v_11": {
+   "file": "tiles/sgate_closed_v_11.png",
+   "size": [
+    15,
+    97
+   ],
+   "pivot": [
+    -1,
+    103
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 3.0
+  },
+  "sgate_open_u_0": {
+   "file": "tiles/sgate_open_u_0.png",
+   "size": [
+    15,
+    96
+   ],
+   "pivot": [
+    15,
+    83
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -2.5
+  },
+  "sgate_open_u_1": {
+   "file": "tiles/sgate_open_u_1.png",
+   "size": [
+    16,
+    107
+   ],
+   "pivot": [
+    16,
+    97
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -2.0
+  },
+  "sgate_open_u_2": {
+   "file": "tiles/sgate_open_u_2.png",
+   "size": [
+    16,
+    113
+   ],
+   "pivot": [
+    16,
+    103
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -1.5
+  },
+  "sgate_open_u_3": {
+   "file": "tiles/sgate_open_u_3.png",
+   "size": [
+    16,
+    105
+   ],
+   "pivot": [
+    16,
+    95
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -1.0
+  },
+  "sgate_open_u_4": {
+   "file": "tiles/sgate_open_u_4.png",
+   "size": [
+    16,
+    114
+   ],
+   "pivot": [
+    16,
+    109
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -0.5
+  },
+  "sgate_open_u_5": {
+   "file": "tiles/sgate_open_u_5.png",
+   "size": [
+    16,
+    109
+   ],
+   "pivot": [
+    16,
+    115
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 0.0
+  },
+  "sgate_open_u_6": {
+   "file": "tiles/sgate_open_u_6.png",
+   "size": [
+    16,
+    125
+   ],
+   "pivot": [
+    16,
+    115
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 0.5
+  },
+  "sgate_open_u_7": {
+   "file": "tiles/sgate_open_u_7.png",
+   "size": [
+    16,
+    125
+   ],
+   "pivot": [
+    16,
+    115
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 1.0
+  },
+  "sgate_open_u_8": {
+   "file": "tiles/sgate_open_u_8.png",
+   "size": [
+    16,
+    122
+   ],
+   "pivot": [
+    16,
+    112
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 1.5
+  },
+  "sgate_open_u_9": {
+   "file": "tiles/sgate_open_u_9.png",
+   "size": [
+    16,
+    124
+   ],
+   "pivot": [
+    16,
+    111
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 2.0
+  },
+  "sgate_open_u_10": {
+   "file": "tiles/sgate_open_u_10.png",
+   "size": [
+    16,
+    104
+   ],
+   "pivot": [
+    16,
+    97
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 2.5
+  },
+  "sgate_open_u_11": {
+   "file": "tiles/sgate_open_u_11.png",
+   "size": [
+    14,
+    96
+   ],
+   "pivot": [
+    16,
+    103
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 3.0
+  },
+  "sgate_open_v_0": {
+   "file": "tiles/sgate_open_v_0.png",
+   "size": [
+    14,
+    95
+   ],
+   "pivot": [
+    0,
+    82
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -2.5
+  },
+  "sgate_open_v_1": {
+   "file": "tiles/sgate_open_v_1.png",
+   "size": [
+    16,
+    106
+   ],
+   "pivot": [
+    0,
+    97
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -2.0
+  },
+  "sgate_open_v_2": {
+   "file": "tiles/sgate_open_v_2.png",
+   "size": [
+    16,
+    112
+   ],
+   "pivot": [
+    0,
+    103
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -1.5
+  },
+  "sgate_open_v_3": {
+   "file": "tiles/sgate_open_v_3.png",
+   "size": [
+    16,
+    104
+   ],
+   "pivot": [
+    0,
+    95
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -1.0
+  },
+  "sgate_open_v_4": {
+   "file": "tiles/sgate_open_v_4.png",
+   "size": [
+    16,
+    114
+   ],
+   "pivot": [
+    0,
+    109
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": -0.5
+  },
+  "sgate_open_v_5": {
+   "file": "tiles/sgate_open_v_5.png",
+   "size": [
+    16,
+    110
+   ],
+   "pivot": [
+    0,
+    115
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 0.0
+  },
+  "sgate_open_v_6": {
+   "file": "tiles/sgate_open_v_6.png",
+   "size": [
+    16,
+    124
+   ],
+   "pivot": [
+    0,
+    115
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 0.5
+  },
+  "sgate_open_v_7": {
+   "file": "tiles/sgate_open_v_7.png",
+   "size": [
+    16,
+    124
+   ],
+   "pivot": [
+    0,
+    115
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 1.0
+  },
+  "sgate_open_v_8": {
+   "file": "tiles/sgate_open_v_8.png",
+   "size": [
+    16,
+    122
+   ],
+   "pivot": [
+    0,
+    113
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 1.5
+  },
+  "sgate_open_v_9": {
+   "file": "tiles/sgate_open_v_9.png",
+   "size": [
+    16,
+    125
+   ],
+   "pivot": [
+    0,
+    112
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 2.0
+  },
+  "sgate_open_v_10": {
+   "file": "tiles/sgate_open_v_10.png",
+   "size": [
+    16,
+    104
+   ],
+   "pivot": [
+    0,
+    97
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 2.5
+  },
+  "sgate_open_v_11": {
+   "file": "tiles/sgate_open_v_11.png",
+   "size": [
+    15,
+    97
+   ],
+   "pivot": [
+    -1,
+    103
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer",
+   "gate_offset": 3.0
+  },
+  "tcliff_00_0": {
+   "file": "tiles/tcliff_00_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_00_1": {
+   "file": "tiles/tcliff_00_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_00_2": {
+   "file": "tiles/tcliff_00_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_01_0": {
+   "file": "tiles/tcliff_01_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_01_1": {
+   "file": "tiles/tcliff_01_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_01_2": {
+   "file": "tiles/tcliff_01_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_02_0": {
+   "file": "tiles/tcliff_02_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_02_1": {
+   "file": "tiles/tcliff_02_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_02_2": {
+   "file": "tiles/tcliff_02_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_03_0": {
+   "file": "tiles/tcliff_03_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_03_1": {
+   "file": "tiles/tcliff_03_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_03_2": {
+   "file": "tiles/tcliff_03_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_04_0": {
+   "file": "tiles/tcliff_04_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_04_1": {
+   "file": "tiles/tcliff_04_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_04_2": {
+   "file": "tiles/tcliff_04_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_05_0": {
+   "file": "tiles/tcliff_05_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_05_1": {
+   "file": "tiles/tcliff_05_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_05_2": {
+   "file": "tiles/tcliff_05_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_06_0": {
+   "file": "tiles/tcliff_06_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_06_1": {
+   "file": "tiles/tcliff_06_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_06_2": {
+   "file": "tiles/tcliff_06_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_07_0": {
+   "file": "tiles/tcliff_07_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_07_1": {
+   "file": "tiles/tcliff_07_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_07_2": {
+   "file": "tiles/tcliff_07_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_08_0": {
+   "file": "tiles/tcliff_08_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_08_1": {
+   "file": "tiles/tcliff_08_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_08_2": {
+   "file": "tiles/tcliff_08_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_09_0": {
+   "file": "tiles/tcliff_09_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_09_1": {
+   "file": "tiles/tcliff_09_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_09_2": {
+   "file": "tiles/tcliff_09_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_10_0": {
+   "file": "tiles/tcliff_10_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_10_1": {
+   "file": "tiles/tcliff_10_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_10_2": {
+   "file": "tiles/tcliff_10_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_11_0": {
+   "file": "tiles/tcliff_11_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_11_1": {
+   "file": "tiles/tcliff_11_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_11_2": {
+   "file": "tiles/tcliff_11_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_12_0": {
+   "file": "tiles/tcliff_12_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_12_1": {
+   "file": "tiles/tcliff_12_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_12_2": {
+   "file": "tiles/tcliff_12_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_13_0": {
+   "file": "tiles/tcliff_13_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_13_1": {
+   "file": "tiles/tcliff_13_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_13_2": {
+   "file": "tiles/tcliff_13_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_14_0": {
+   "file": "tiles/tcliff_14_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_14_1": {
+   "file": "tiles/tcliff_14_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_14_2": {
+   "file": "tiles/tcliff_14_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_15_0": {
+   "file": "tiles/tcliff_15_0.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_15_1": {
+   "file": "tiles/tcliff_15_1.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "tcliff_15_2": {
+   "file": "tiles/tcliff_15_2.png",
+   "size": [
+    40,
+    168
+   ],
+   "pivot": [
+    21,
+    159
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, face rows stacked (tall_cliff.py)",
+   "shadow": false
+  },
+  "jshade_8_0": {
+   "file": "tiles/jshade_8_0.png",
+   "size": [
+    7,
+    12
+   ],
+   "pivot": [
+    0,
+    8
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_16_0": {
+   "file": "tiles/jshade_16_0.png",
+   "size": [
+    13,
+    23
+   ],
+   "pivot": [
+    0,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_24_0": {
+   "file": "tiles/jshade_24_0.png",
+   "size": [
+    16,
+    32
+   ],
+   "pivot": [
+    0,
+    24
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_24_1": {
+   "file": "tiles/jshade_24_1.png",
+   "size": [
+    3,
+    6
+   ],
+   "pivot": [
+    0,
+    4
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_32_0": {
+   "file": "tiles/jshade_32_0.png",
+   "size": [
+    16,
+    40
+   ],
+   "pivot": [
+    0,
+    32
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_32_1": {
+   "file": "tiles/jshade_32_1.png",
+   "size": [
+    10,
+    17
+   ],
+   "pivot": [
+    0,
+    12
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_40_0": {
+   "file": "tiles/jshade_40_0.png",
+   "size": [
+    16,
+    48
+   ],
+   "pivot": [
+    0,
+    40
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_40_1": {
+   "file": "tiles/jshade_40_1.png",
+   "size": [
+    16,
+    28
+   ],
+   "pivot": [
+    0,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_40_2": {
+   "file": "tiles/jshade_40_2.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_48_0": {
+   "file": "tiles/jshade_48_0.png",
+   "size": [
+    16,
+    56
+   ],
+   "pivot": [
+    0,
+    48
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_48_1": {
+   "file": "tiles/jshade_48_1.png",
+   "size": [
+    16,
+    36
+   ],
+   "pivot": [
+    0,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_48_2": {
+   "file": "tiles/jshade_48_2.png",
+   "size": [
+    7,
+    12
+   ],
+   "pivot": [
+    0,
+    8
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_56_0": {
+   "file": "tiles/jshade_56_0.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    56
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_56_1": {
+   "file": "tiles/jshade_56_1.png",
+   "size": [
+    16,
+    44
+   ],
+   "pivot": [
+    0,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_56_2": {
+   "file": "tiles/jshade_56_2.png",
+   "size": [
+    13,
+    23
+   ],
+   "pivot": [
+    0,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_64_0": {
+   "file": "tiles/jshade_64_0.png",
+   "size": [
+    16,
+    72
+   ],
+   "pivot": [
+    0,
+    64
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_64_1": {
+   "file": "tiles/jshade_64_1.png",
+   "size": [
+    16,
+    52
+   ],
+   "pivot": [
+    0,
+    44
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_64_2": {
+   "file": "tiles/jshade_64_2.png",
+   "size": [
+    16,
+    32
+   ],
+   "pivot": [
+    0,
+    24
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_64_3": {
+   "file": "tiles/jshade_64_3.png",
+   "size": [
+    3,
+    6
+   ],
+   "pivot": [
+    0,
+    4
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_72_0": {
+   "file": "tiles/jshade_72_0.png",
+   "size": [
+    16,
+    80
+   ],
+   "pivot": [
+    0,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_72_1": {
+   "file": "tiles/jshade_72_1.png",
+   "size": [
+    16,
+    60
+   ],
+   "pivot": [
+    0,
+    52
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_72_2": {
+   "file": "tiles/jshade_72_2.png",
+   "size": [
+    16,
+    40
+   ],
+   "pivot": [
+    0,
+    32
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_72_3": {
+   "file": "tiles/jshade_72_3.png",
+   "size": [
+    10,
+    17
+   ],
+   "pivot": [
+    0,
+    12
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_80_0": {
+   "file": "tiles/jshade_80_0.png",
+   "size": [
+    16,
+    88
+   ],
+   "pivot": [
+    0,
+    80
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_80_1": {
+   "file": "tiles/jshade_80_1.png",
+   "size": [
+    16,
+    68
+   ],
+   "pivot": [
+    0,
+    60
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_80_2": {
+   "file": "tiles/jshade_80_2.png",
+   "size": [
+    16,
+    48
+   ],
+   "pivot": [
+    0,
+    40
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_80_3": {
+   "file": "tiles/jshade_80_3.png",
+   "size": [
+    16,
+    28
+   ],
+   "pivot": [
+    0,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_80_4": {
+   "file": "tiles/jshade_80_4.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_88_0": {
+   "file": "tiles/jshade_88_0.png",
+   "size": [
+    16,
+    96
+   ],
+   "pivot": [
+    0,
+    88
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_88_1": {
+   "file": "tiles/jshade_88_1.png",
+   "size": [
+    16,
+    76
+   ],
+   "pivot": [
+    0,
+    68
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_88_2": {
+   "file": "tiles/jshade_88_2.png",
+   "size": [
+    16,
+    56
+   ],
+   "pivot": [
+    0,
+    48
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_88_3": {
+   "file": "tiles/jshade_88_3.png",
+   "size": [
+    16,
+    36
+   ],
+   "pivot": [
+    0,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_88_4": {
+   "file": "tiles/jshade_88_4.png",
+   "size": [
+    7,
+    12
+   ],
+   "pivot": [
+    0,
+    8
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_96_0": {
+   "file": "tiles/jshade_96_0.png",
+   "size": [
+    16,
+    104
+   ],
+   "pivot": [
+    0,
+    96
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_96_1": {
+   "file": "tiles/jshade_96_1.png",
+   "size": [
+    16,
+    84
+   ],
+   "pivot": [
+    0,
+    76
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_96_2": {
+   "file": "tiles/jshade_96_2.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    56
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_96_3": {
+   "file": "tiles/jshade_96_3.png",
+   "size": [
+    16,
+    44
+   ],
+   "pivot": [
+    0,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_96_4": {
+   "file": "tiles/jshade_96_4.png",
+   "size": [
+    13,
+    23
+   ],
+   "pivot": [
+    0,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_104_0": {
+   "file": "tiles/jshade_104_0.png",
+   "size": [
+    16,
+    112
+   ],
+   "pivot": [
+    0,
+    104
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_104_1": {
+   "file": "tiles/jshade_104_1.png",
+   "size": [
+    16,
+    92
+   ],
+   "pivot": [
+    0,
+    84
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_104_2": {
+   "file": "tiles/jshade_104_2.png",
+   "size": [
+    16,
+    72
+   ],
+   "pivot": [
+    0,
+    64
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_104_3": {
+   "file": "tiles/jshade_104_3.png",
+   "size": [
+    16,
+    52
+   ],
+   "pivot": [
+    0,
+    44
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_104_4": {
+   "file": "tiles/jshade_104_4.png",
+   "size": [
+    16,
+    32
+   ],
+   "pivot": [
+    0,
+    24
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_104_5": {
+   "file": "tiles/jshade_104_5.png",
+   "size": [
+    3,
+    6
+   ],
+   "pivot": [
+    0,
+    4
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_112_0": {
+   "file": "tiles/jshade_112_0.png",
+   "size": [
+    16,
+    120
+   ],
+   "pivot": [
+    0,
+    112
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_112_1": {
+   "file": "tiles/jshade_112_1.png",
+   "size": [
+    16,
+    100
+   ],
+   "pivot": [
+    0,
+    92
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_112_2": {
+   "file": "tiles/jshade_112_2.png",
+   "size": [
+    16,
+    80
+   ],
+   "pivot": [
+    0,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_112_3": {
+   "file": "tiles/jshade_112_3.png",
+   "size": [
+    16,
+    60
+   ],
+   "pivot": [
+    0,
+    52
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_112_4": {
+   "file": "tiles/jshade_112_4.png",
+   "size": [
+    16,
+    40
+   ],
+   "pivot": [
+    0,
+    32
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_112_5": {
+   "file": "tiles/jshade_112_5.png",
+   "size": [
+    10,
+    17
+   ],
+   "pivot": [
+    0,
+    12
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_120_0": {
+   "file": "tiles/jshade_120_0.png",
+   "size": [
+    16,
+    128
+   ],
+   "pivot": [
+    0,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_120_1": {
+   "file": "tiles/jshade_120_1.png",
+   "size": [
+    16,
+    108
+   ],
+   "pivot": [
+    0,
+    100
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_120_2": {
+   "file": "tiles/jshade_120_2.png",
+   "size": [
+    16,
+    88
+   ],
+   "pivot": [
+    0,
+    80
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_120_3": {
+   "file": "tiles/jshade_120_3.png",
+   "size": [
+    16,
+    68
+   ],
+   "pivot": [
+    0,
+    60
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_120_4": {
+   "file": "tiles/jshade_120_4.png",
+   "size": [
+    16,
+    48
+   ],
+   "pivot": [
+    0,
+    40
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_120_5": {
+   "file": "tiles/jshade_120_5.png",
+   "size": [
+    16,
+    28
+   ],
+   "pivot": [
+    0,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_120_6": {
+   "file": "tiles/jshade_120_6.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_128_0": {
+   "file": "tiles/jshade_128_0.png",
+   "size": [
+    16,
+    136
+   ],
+   "pivot": [
+    0,
+    128
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_128_1": {
+   "file": "tiles/jshade_128_1.png",
+   "size": [
+    16,
+    116
+   ],
+   "pivot": [
+    0,
+    108
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_128_2": {
+   "file": "tiles/jshade_128_2.png",
+   "size": [
+    16,
+    96
+   ],
+   "pivot": [
+    0,
+    88
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_128_3": {
+   "file": "tiles/jshade_128_3.png",
+   "size": [
+    16,
+    76
+   ],
+   "pivot": [
+    0,
+    68
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_128_4": {
+   "file": "tiles/jshade_128_4.png",
+   "size": [
+    16,
+    56
+   ],
+   "pivot": [
+    0,
+    48
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_128_5": {
+   "file": "tiles/jshade_128_5.png",
+   "size": [
+    16,
+    36
+   ],
+   "pivot": [
+    0,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_128_6": {
+   "file": "tiles/jshade_128_6.png",
+   "size": [
+    7,
+    12
+   ],
+   "pivot": [
+    0,
+    8
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_136_0": {
+   "file": "tiles/jshade_136_0.png",
+   "size": [
+    16,
+    144
+   ],
+   "pivot": [
+    0,
+    136
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_136_1": {
+   "file": "tiles/jshade_136_1.png",
+   "size": [
+    16,
+    124
+   ],
+   "pivot": [
+    0,
+    116
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_136_2": {
+   "file": "tiles/jshade_136_2.png",
+   "size": [
+    16,
+    104
+   ],
+   "pivot": [
+    0,
+    96
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_136_3": {
+   "file": "tiles/jshade_136_3.png",
+   "size": [
+    16,
+    84
+   ],
+   "pivot": [
+    0,
+    76
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_136_4": {
+   "file": "tiles/jshade_136_4.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    56
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_136_5": {
+   "file": "tiles/jshade_136_5.png",
+   "size": [
+    16,
+    44
+   ],
+   "pivot": [
+    0,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_136_6": {
+   "file": "tiles/jshade_136_6.png",
+   "size": [
+    13,
+    23
+   ],
+   "pivot": [
+    0,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_144_0": {
+   "file": "tiles/jshade_144_0.png",
+   "size": [
+    16,
+    152
+   ],
+   "pivot": [
+    0,
+    144
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_144_1": {
+   "file": "tiles/jshade_144_1.png",
+   "size": [
+    16,
+    132
+   ],
+   "pivot": [
+    0,
+    124
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_144_2": {
+   "file": "tiles/jshade_144_2.png",
+   "size": [
+    16,
+    112
+   ],
+   "pivot": [
+    0,
+    104
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_144_3": {
+   "file": "tiles/jshade_144_3.png",
+   "size": [
+    16,
+    92
+   ],
+   "pivot": [
+    0,
+    84
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_144_4": {
+   "file": "tiles/jshade_144_4.png",
+   "size": [
+    16,
+    72
+   ],
+   "pivot": [
+    0,
+    64
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_144_5": {
+   "file": "tiles/jshade_144_5.png",
+   "size": [
+    16,
+    52
+   ],
+   "pivot": [
+    0,
+    44
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_144_6": {
+   "file": "tiles/jshade_144_6.png",
+   "size": [
+    16,
+    32
+   ],
+   "pivot": [
+    0,
+    24
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_144_7": {
+   "file": "tiles/jshade_144_7.png",
+   "size": [
+    3,
+    6
+   ],
+   "pivot": [
+    0,
+    4
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_152_0": {
+   "file": "tiles/jshade_152_0.png",
+   "size": [
+    16,
+    160
+   ],
+   "pivot": [
+    0,
+    152
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_152_1": {
+   "file": "tiles/jshade_152_1.png",
+   "size": [
+    16,
+    140
+   ],
+   "pivot": [
+    0,
+    132
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_152_2": {
+   "file": "tiles/jshade_152_2.png",
+   "size": [
+    16,
+    120
+   ],
+   "pivot": [
+    0,
+    112
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_152_3": {
+   "file": "tiles/jshade_152_3.png",
+   "size": [
+    16,
+    100
+   ],
+   "pivot": [
+    0,
+    92
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_152_4": {
+   "file": "tiles/jshade_152_4.png",
+   "size": [
+    16,
+    80
+   ],
+   "pivot": [
+    0,
+    72
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_152_5": {
+   "file": "tiles/jshade_152_5.png",
+   "size": [
+    16,
+    60
+   ],
+   "pivot": [
+    0,
+    52
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_152_6": {
+   "file": "tiles/jshade_152_6.png",
+   "size": [
+    16,
+    40
+   ],
+   "pivot": [
+    0,
+    32
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_152_7": {
+   "file": "tiles/jshade_152_7.png",
+   "size": [
+    10,
+    17
+   ],
+   "pivot": [
+    0,
+    12
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_160_0": {
+   "file": "tiles/jshade_160_0.png",
+   "size": [
+    16,
+    168
+   ],
+   "pivot": [
+    0,
+    160
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_160_1": {
+   "file": "tiles/jshade_160_1.png",
+   "size": [
+    16,
+    148
+   ],
+   "pivot": [
+    0,
+    140
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_160_2": {
+   "file": "tiles/jshade_160_2.png",
+   "size": [
+    16,
+    128
+   ],
+   "pivot": [
+    0,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_160_3": {
+   "file": "tiles/jshade_160_3.png",
+   "size": [
+    16,
+    108
+   ],
+   "pivot": [
+    0,
+    100
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_160_4": {
+   "file": "tiles/jshade_160_4.png",
+   "size": [
+    16,
+    88
+   ],
+   "pivot": [
+    0,
+    80
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_160_5": {
+   "file": "tiles/jshade_160_5.png",
+   "size": [
+    16,
+    68
+   ],
+   "pivot": [
+    0,
+    60
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_160_6": {
+   "file": "tiles/jshade_160_6.png",
+   "size": [
+    16,
+    48
+   ],
+   "pivot": [
+    0,
+    40
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_160_7": {
+   "file": "tiles/jshade_160_7.png",
+   "size": [
+    16,
+    28
+   ],
+   "pivot": [
+    0,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "jshade_160_8": {
+   "file": "tiles/jshade_160_8.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "cfoot_sw": {
+   "file": "tiles/cfoot_sw.png",
+   "size": [
+    17,
+    14
+   ],
+   "pivot": [
+    16,
+    0
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "cfoot_se": {
+   "file": "tiles/cfoot_se.png",
+   "size": [
+    17,
+    18
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "alpha-only shadow (join_overlay.py)",
+   "shadow": false
+  },
+  "lcliff_00_0": {
+   "file": "tiles/lcliff_00_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_00_1": {
+   "file": "tiles/lcliff_00_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_00_2": {
+   "file": "tiles/lcliff_00_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_01_0": {
+   "file": "tiles/lcliff_01_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_01_1": {
+   "file": "tiles/lcliff_01_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_01_2": {
+   "file": "tiles/lcliff_01_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_02_0": {
+   "file": "tiles/lcliff_02_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_02_1": {
+   "file": "tiles/lcliff_02_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_02_2": {
+   "file": "tiles/lcliff_02_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_03_0": {
+   "file": "tiles/lcliff_03_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_03_1": {
+   "file": "tiles/lcliff_03_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_03_2": {
+   "file": "tiles/lcliff_03_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_04_0": {
+   "file": "tiles/lcliff_04_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_04_1": {
+   "file": "tiles/lcliff_04_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_04_2": {
+   "file": "tiles/lcliff_04_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_05_0": {
+   "file": "tiles/lcliff_05_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_05_1": {
+   "file": "tiles/lcliff_05_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_05_2": {
+   "file": "tiles/lcliff_05_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_06_0": {
+   "file": "tiles/lcliff_06_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_06_1": {
+   "file": "tiles/lcliff_06_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_06_2": {
+   "file": "tiles/lcliff_06_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_07_0": {
+   "file": "tiles/lcliff_07_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_07_1": {
+   "file": "tiles/lcliff_07_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_07_2": {
+   "file": "tiles/lcliff_07_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_08_0": {
+   "file": "tiles/lcliff_08_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_08_1": {
+   "file": "tiles/lcliff_08_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_08_2": {
+   "file": "tiles/lcliff_08_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_09_0": {
+   "file": "tiles/lcliff_09_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_09_1": {
+   "file": "tiles/lcliff_09_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_09_2": {
+   "file": "tiles/lcliff_09_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_10_0": {
+   "file": "tiles/lcliff_10_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_10_1": {
+   "file": "tiles/lcliff_10_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_10_2": {
+   "file": "tiles/lcliff_10_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_11_0": {
+   "file": "tiles/lcliff_11_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_11_1": {
+   "file": "tiles/lcliff_11_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_11_2": {
+   "file": "tiles/lcliff_11_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_12_0": {
+   "file": "tiles/lcliff_12_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_12_1": {
+   "file": "tiles/lcliff_12_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_12_2": {
+   "file": "tiles/lcliff_12_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_13_0": {
+   "file": "tiles/lcliff_13_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_13_1": {
+   "file": "tiles/lcliff_13_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_13_2": {
+   "file": "tiles/lcliff_13_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_14_0": {
+   "file": "tiles/lcliff_14_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_14_1": {
+   "file": "tiles/lcliff_14_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_14_2": {
+   "file": "tiles/lcliff_14_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_15_0": {
+   "file": "tiles/lcliff_15_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_15_1": {
+   "file": "tiles/lcliff_15_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "lcliff_15_2": {
+   "file": "tiles/lcliff_15_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    55
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block, sorted later (tall_cliff.py)",
+   "shadow": false
+  },
+  "swall_u_up": {
+   "file": "tiles/swall_u_up.png",
+   "size": [
+    16,
+    93
+   ],
+   "pivot": [
+    16,
+    109
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "scene wall piece standing on a cliff top (tall_cliff.py)",
+   "shadow": false
+  },
+  "swall_v_up": {
+   "file": "tiles/swall_v_up.png",
+   "size": [
+    16,
+    93
+   ],
+   "pivot": [
+    0,
+    110
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "scene wall piece standing on a cliff top (tall_cliff.py)",
+   "shadow": false
   }
  }
 }

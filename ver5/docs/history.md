@@ -5,6 +5,256 @@
 
 ---
 
+## 2026-10-24 공통 장면 맵 뷰어
+
+- `cmd/_scene/main.go`: `S_` 장면 맵 40개와 게임 그림 자료를 제공하는 로컬 뷰어 서버 추가 — 관문 외 장면도 같은 화면에서 고르기 위해.
+- `cmd/_scene/static/index.html`·`style.css`·`viewer.js`: 바닥·장식·소품을 공통 순서로 그리고 배율·스크롤·회전·바닥 기준 커서와 하이라이트를 제공; 자유 소품은 작은 칸 중심, 면 소품은 피벗 보정, 높은 절벽은 한 번 출력 — 확정한 관문 그리기 규칙을 비교 스위치 없이 여러 장면에 적용하기 위해.
+- `docs/tools-scene-viewer.md`: 실행법과 기존 `props` 장면의 좌표 처리 범위를 설명 — 맵 자료 형식에 따른 화면 의미를 기록하기 위해.
+- `docs/README.md`: 공통 장면 맵 뷰어 문서 연결 — 도구를 찾기 쉽게 하기 위해.
+- `docs/history.md`: 변경 파일과 이유를 기록 — 공통 뷰어 추가 이력을 남기기 위해.
+
+## 2026-10-24 관문 장면 기본 배치 확정
+
+- `assets/graphics/maps/S_checkpoint.json`·`S_checkpoint_closed.json`: `small_snap: true`, `cliff_repeat: false`를 저장 — 자유 소품을 작은 칸 중심에 놓고 절벽을 한 번만 그리기 위해.
+- `tools/scene_maps/compose.py`: 관문 맵을 다시 생성해도 같은 기본 설정을 기록 — 재생성 후 장면 출력이 달라지지 않게 하기 위해.
+- `internal/gui/assets.go`·`field.go`: 맵의 두 설정을 읽어 자유 소품 위치와 절벽 출력 횟수에 적용 — 실제 장면이 선택한 배치를 사용하게 하기 위해.
+- `internal/gui/scene_maps_test.go`: 관문 두 상태의 설정과 소품 좌표를 검사하고 절벽 한 번 그리기 벤치마크를 기록 — 장면 출력 회귀를 확인하기 위해.
+- `docs/S_checkpoint.html`: 기본 선택을 `끄기`·`반올림 O`·`작은 칸 기준`으로 맞추고 장면 설정을 표시 — 비교 화면의 첫 상태를 실제 장면과 일치시키기 위해.
+- `docs/scene-tile-faces.md`·`presentation-scene.md`: 관문 장면의 배치 설정과 절벽 출력 횟수를 설명 — 자료와 출력 규칙을 분명히 하기 위해.
+- `docs/history.md`: 변경 파일과 이유를 기록 — 관문 장면 기본 설정의 이력을 남기기 위해.
+
+
+## 2026-10-24 관문 회전 시 바닥·절벽 논리 좌표 정렬
+
+- `docs/S_checkpoint.html`: 바닥 조각의 위 꼭짓점 대신 조각 중심을 소품과 같은 논리 좌표계에서 회전하고 다시 꼭짓점으로 변환 — 90°·180°·270°에서 바닥과 절벽이 대각선 격자만큼 어긋나던 문제를 해결하기 위해.
+- `docs/scene-tile-faces.md`: 바닥 조각 중심을 기준으로 하는 회전 공식을 기록 — 각 회전 방향에서 바닥 2×2조각과 면 소품의 중심을 일치시키기 위해.
+- `docs/history.md`: 회전 좌표 수정 이력 기록 — 관문 뷰어의 기준 좌표 변경을 추적하기 위해.
+
+## 2026-10-24 관문 절벽 겹그리기 비교 스위치
+
+- `docs/S_checkpoint.html`: 높은 절벽 그림을 현재처럼 두 번 그리거나 원래 위치에 한 번만 그리는 버튼을 추가하고 커서 하이라이트도 선택에 맞춰 변경 — 모서리의 중복 천장·벽면 원인을 화면에서 비교하기 위해.
+- `docs/history.md`: 비교 스위치 변경 이력을 기록 — 관문 뷰어의 진단 기능을 추적하기 위해.
+
+## 2026-10-24 관문 바닥 기준 포인팅과 절벽 윗면 높이
+
+- `docs/S_checkpoint.html`: 커서 칸을 천장·벽 높이와 무관하게 원래 바닥 평면으로 역투영하고 벽 픽셀은 별도 표시; 절벽 그림의 윗부분을 이어 그려 146px 천장과 맞춤 — 높은 천장 때문에 아래 칸을 가리킬 수 없던 문제와 윗면의 높이 차이를 해결하기 위해.
+- `internal/gui/field.go`: 관문 고지대 천장을 146px 올리고 높은 절벽의 윗부분을 8px 이어 그리되 밑동은 유지 — 게임 화면에서도 천장·절벽 높이와 접지를 맞추기 위해.
+- `docs/scene-tile-faces.md`: 바닥 기준 포인팅과 천장·절벽의 픽셀 높이 및 이음 방식을 기록 — 좌표와 높이의 의미를 분명히 하기 위해.
+- `docs/history.md`: 변경 파일과 이유를 기록 — 관문 렌더링 수정 이력을 남기기 위해.
+
+## 2026-10-24 관문 벽면 위 커서 선택 복구
+
+- `docs/S_checkpoint.html`: 바닥·천장뿐 아니라 실제 그려진 절벽·성벽·소품의 불투명 픽셀을 커서로 선택하고 해당 칸의 면과 천장을 함께 하이라이트; 파일에서 직접 열어도 동작하도록 그림의 작은 불투명 비트 마스크를 문서에 포함 — 벽 그림 위에서 선택이 끊기던 문제를 해결하기 위해.
+- `docs/history.md`: 벽면 선택 복구 이유를 기록 — 뷰어의 진단 동작 변경을 추적하기 위해.
+
+## 2026-10-24 관문 바닥 타일 하이라이트
+
+- `docs/S_checkpoint.html`: 그려진 바닥 조각의 순서를 이용해 커서 아래 실제 지면·고지대 천장 칸을 고르고, 해당 칸의 바닥을 소품과 같은 2초 주기로 흰색 펄스 표시 — 높아진 천장의 위치와 바닥·벽 이음을 눈으로 확인하기 위해.
+- `docs/history.md`: 바닥 선택과 하이라이트 변경 이유를 기록 — 관문 뷰어의 진단 기능 이력을 남기기 위해.
+
+## 2026-10-24 관문 고지대 천장과 뒤쪽 경계선
+
+- `tools/scene_maps/compose.py`: 절벽을 흙 지형으로 바꾸기 전에 작은 칸별 고지대 여부를 `highland`에 보존 — 벽이 없는 내부 칸에도 천장을 그리기 위해.
+- `assets/graphics/maps/S_checkpoint.json`·`S_checkpoint_closed.json`: 두 문 상태에 같은 고지대 행을 저장 — 천장 판정과 절벽 면 판정을 분리하기 위해.
+- `internal/gui/assets.go`·`field.go`: 고지대 천장을 실제 절벽 윗면 높이에 출력하고 같은 화면 깊이의 조각을 미리 묶으며 0°의 NW·NE 노출 면에 얇은 선을 그림 — 낮은 이웃만 벽을 갖게 하면서 매 프레임 그리기 비용을 줄이기 위해.
+- `internal/gui/scene_maps_test.go`: 내부 천장·낮은 이웃·닫힌 문 자료를 검사하고 그리기 비용을 측정 — 경계 규칙과 성능을 확인하기 위해.
+- `docs/S_checkpoint.html`: 네 회전의 고지대 천장과 뒤쪽 외곽선을 표시하고 배치 순서 설명을 갱신 — 각 방향의 지형을 직접 확인하기 위해.
+- `docs/scene-tile-faces.md`·`presentation-scene.md`: 천장과 벽의 독립 규칙 및 높이·정렬 방식을 기록 — 장면 맵 자료 의미를 명확히 하기 위해.
+- `docs/history.md`: 변경 파일과 이유를 기록 — 고지대 표현 결정의 경위를 남기기 위해.
+
+## 2026-10-24 관문 고지대의 원본 노출 면과 회전 표시
+
+- `tools/scene_maps/compose.py`: 고지대 네 이웃과 그림 범위 밖을 비교해 원본 NW·NE·SE·SW 면을 기록하고 앞쪽 면의 강제 뒤집기를 제거 — 같은 고지대 사이에 벽이 생기지 않고 90° 왼쪽 및 270° 모서리의 면을 정확히 돌리기 위해.
+- `assets/graphics/maps/S_checkpoint.json`·`S_checkpoint_closed.json`: 두 문 상태의 절벽 마스크를 원본 고지대 이웃 관계로 재생성하고 새 동쪽 절벽 발치 그림자를 저장 — `(-18,n)`과 `(41,15)`를 포함한 네 경계를 같은 규칙으로 정의하기 위해.
+- `internal/gui/field.go`·`scene_maps_test.go`: 기본 0° 카메라에서 화면을 등진 절벽 면을 생략하고 경계·모서리 자료를 검사 — 높은 바닥 위에 뒷면 외곽선이 나타나지 않게 하기 위해.
+- `docs/S_checkpoint.html`: 내장 맵과 회전별 면·발치 그림자 선택을 갱신하고 반대 방향 그림이 없는 모서리 그림자를 숨기며 실제 바닥 범위를 명시 — 90°·270° 비교와 좌표 확인을 정확하게 하기 위해.
+- `docs/scene-tile-faces.md`·`presentation-scene.md`: 고지대와 노출 면의 구분 및 회전 규칙 설명 — 절벽 타일의 의미를 배치·렌더 문서에 반영하기 위해.
+- `docs/history.md`: 고지대 면 판정 변경 이력 기록 — 파일별 수정 이유를 남기기 위해.
+
+## 2026-10-24 관문 절벽의 남동쪽·남서쪽 끝과 윗면 경계
+
+- `tools/scene_maps/compose.py`: 맵 동쪽·남쪽 바깥을 열린 공간으로 판정해 `SE`·`SW` 절벽 면을 만들고 면이 없는 내부 절벽 그림을 생략 — 바깥 모서리의 암벽을 채우고 높은 바닥의 불필요한 외곽선을 없애기 위해.
+- `assets/graphics/maps/S_checkpoint.json`·`S_checkpoint_closed.json`: `(41,n)`, `(n,33)`의 절벽 면과 `(41,33)` 두 면 모서리를 저장하고 내부 `tcliff_00_*`을 제거 — 두 문 상태에서 같은 지형 경계를 표시하기 위해.
+- `docs/S_checkpoint.html`: 갱신한 맵 데이터와 절벽 끝 설명을 반영하고 회전 시 화면을 등진 외곽 면을 숨김 — 네 방향 뷰어에서 바깥 경계를 선 조각 없이 확인하기 위해.
+- `internal/gui/scene_maps_test.go`: 동쪽·남쪽 면, 모서리, 내부 윗면 생략을 검사 — 절벽 끝이 다시 비거나 외곽선이 생기지 않게 하기 위해.
+- `docs/scene-tile-faces.md`: 외곽 면과 내부 바닥의 구분 기록 — 작은 칸 면 배치 규칙을 명확히 하기 위해.
+- `docs/history.md`: 절벽 경계 변경 이력 기록 — 파일별 수정 이유를 남기기 위해.
+
+## 2026-10-24 관문 앞쪽 절벽의 장면 높이 복원
+
+- `tools/scene_maps/compose.py`: 앞쪽 절벽을 높은 그림으로 바꾸고 원래 바닥 접점과 `NE` 면 소유를 유지 — 관문 앞 절벽을 뒤쪽과 같은 장면 높이로 표시하기 위해.
+- `assets/graphics/maps/S_checkpoint.json`·`S_checkpoint_closed.json`: 두 문 상태의 앞쪽 절벽 이름과 피벗 보정을 높은 그림에 맞게 갱신 — 게임에서도 절벽이 관문 앞을 실제 높이로 가리게 하기 위해.
+- `docs/S_checkpoint.html`: 내장 맵과 회전별 절벽 그림 선택을 갱신하고 자연스러운 가림을 유지 — 네 각도에서 같은 높이의 절벽을 검토하기 위해.
+- `internal/gui/scene_maps_test.go`: 앞쪽 절벽의 그림·소유 면·바닥 보정을 확인 — 낮은 절벽으로 되돌아가지 않게 하기 위해.
+- `docs/scene-tile-faces.md`·`presentation-scene.md`: 앞뒤 절벽 높이와 가림 규칙 설명 수정 — 자료 형식과 장면 문서를 현재 배치에 맞추기 위해.
+- `docs/history.md`: 절벽 높이 변경 이력 기록 — 파일별 수정 이유를 남기기 위해.
+
+## 2026-10-24 관문 회전 화면의 절벽 접점과 성문 끝 정리
+
+- `docs/S_checkpoint.html`: 낮은 절벽의 늦은 그리기 보정을 회전 후 화면 좌표에 적용하고 180°·270°에서는 앞뒤 절벽의 높이를 화면 방향에 맞춰 바꾸며 반대편 그림이 없는 성문 끝 조각을 숨김 — `(17,15)` 주변 절벽이 두 칸 아래로 밀리고 관문 오른쪽이 깨져 보이던 문제를 바로잡기 위해.
+- `docs/history.md`: 회전 화면 수정 내역 기록 — 파일별 수정 이유를 남기기 위해.
+
+## 2026-10-24 관문 절벽·성벽·그림자의 작은 칸 면 배치
+
+- `docs/scene-tile-faces.md`: 작은 바닥 칸의 SW·SE·NW·NE 면 좌표, 면별 그림 소유 관계와 관문 확인 기준 기록 — 구조물과 그림자의 위치를 바닥 칸에 명시적으로 연결하기 위해.
+- `tools/scene_maps/compose.py`: 절벽의 열린 면·성벽·성문·접촉 그림자·삼각형 그림자를 `small_faces`로 내보냄 — 구조물과 그림자의 소속 칸·면을 명시하기 위해.
+- `tools/scene_maps/tall_cliff.py`·`assets_candidate/tiles/tcliff_*.png`: 높은 절벽 생성에서 잘리던 밑단 10px를 복구하고 기준점은 유지 — 절벽 아래 타일의 이음새를 온전히 그리기 위해.
+- `assets/graphics/map/extra.png`: 복구한 높은 절벽 그림만 기존 아틀라스 칸에 다시 채움 — 게임 런타임과 HTML에 같은 절벽 그림을 사용하기 위해.
+- `assets/graphics/maps/S_checkpoint.json`·`S_checkpoint_closed.json`: 두 문 상태에 200개의 면 배치 항목을 저장하고 삼각형 그림자를 `(18~22,1)`의 SW 면에 귀속 — 게임과 뷰어가 같은 면 자료를 읽게 하기 위해.
+- `internal/gui/assets.go`·`field.go`·`scene_maps_test.go`: 면 항목을 읽어 칸의 면 중심에서 렌더하고 관문·절벽·그림자 소유 칸을 확인 — 런타임에 면 배치 규칙을 적용하기 위해.
+- `docs/S_checkpoint.html`: 면 배치를 읽고 반올림·회전·마우스 강조에서 소속 면을 표시 — 관문 이음새를 작은 칸과 면별로 살펴보기 위해.
+- `docs/scene-small-grid-trial.md`·`presentation-scene.md`: `small_faces` 자료 형식과 관문 적용 범위 설명 — 장면 맵 문서를 실제 배치 방식에 맞추기 위해.
+- `docs/history.md`: 작은 칸 면 배치 변경 이력 기록 — 파일별 수정 이유를 남기기 위해.
+
+## 2026-10-24 관문 해설 화면의 절벽 높이·좌표·회전 비교
+
+- `docs/S_checkpoint.html`: 절벽 그림을 픽셀 단위로 올리는 슬라이더, 커서의 원본 작은 칸·논리 좌표 표시, 0°·90°·180°·270° 회전과 방향별 바닥 경계·절벽·성벽·성문 그림 전환 추가 — 절벽 높이와 사방 배치를 한 화면에서 검토하기 위해.
+- `docs/history.md`: 관문 해설 화면 조작 기능의 변경 이유 기록 — 문서 변경 이력을 남기기 위해.
+
+## 2026-10-24 관문 성벽의 바닥 정렬과 남서쪽 끝 조정
+
+- `tools/scene_maps/compose.py`: 성벽·성문 중심을 작은 바닥 칸에 맞게 8px 올리고 앞쪽 언덕 턱에서 성벽 줄을 끝내며 작은 격자 보정 기준을 바닥 칸 중심으로 바꿈 — 관문과 성벽의 이음 및 정수 배치 기준을 바로잡기 위해.
+- `assets/graphics/maps/S_checkpoint.json`·`S_checkpoint_closed.json`: 두 문 상태의 성벽·성문·모서리 그림자 기준점을 옮기고 언덕까지 이어지던 성벽 20조각을 제거하며 기존 소품의 화면 위치를 새 보정값으로 보존 — 실제 장면 배치를 생성 설정에 맞추기 위해.
+- `internal/gui/assets.go`: `small_props` 정수 칸을 바닥 작은 칸 중심에서 읽도록 변경 — 반올림 배치가 바닥에서 반 칸 아래로 밀리지 않게 하기 위해.
+- `internal/gui/scene_maps_test.go`: 두 문 상태의 새 위치와 성벽 끝 범위를 확인 — 관문 배치가 다시 어긋나지 않게 하기 위해.
+- `docs/S_checkpoint.html`: 바뀐 맵 데이터를 다시 넣고 바닥 칸 중심 기준의 반올림 배치 및 관문 위치 설명을 갱신 — 전체 맵 뷰어가 게임 배치와 일치하게 하기 위해.
+- `docs/scene-small-grid-trial.md`: 작은 격자 중심의 변환식을 바닥 칸 중심으로 수정 — 좌표 자료 형식을 정확히 설명하기 위해.
+- `docs/presentation-scene.md`: 관문 좌표와 언덕 앞 성벽 끝을 갱신 — 장면 배치 규칙을 현재 맵에 맞추기 위해.
+- `docs/history.md`: 관문 정렬 변경 기록 — 수정 이유를 남기기 위해.
+
+## 2026-10-24 관문 장면의 작은 배치 격자 시도
+
+- `docs/scene-small-grid-trial.md`: 관문 두 맵의 정수 작은 칸·픽셀 보정 형식과 확인 기준 기록 — 논리 칸의 2×2 격자를 소품 배치에도 적용하기 위해.
+- `tools/scene_maps/compose.py`: 관문 소품을 `small_props`로 변환해 내보내는 단계 추가 — 절벽·성문 조각을 정수 작은 칸에 배치하고 기존 픽셀 위치를 보존하기 위해.
+- `assets/graphics/maps/S_checkpoint.json`·`S_checkpoint_closed.json`: 2,456개 소품을 작은 칸 정수 좌표와 픽셀 보정으로 저장 — 관문 두 상태에서 새 배치 형식을 시험하기 위해.
+- `internal/gui/assets.go`·`scene_maps_test.go`: `small_props`를 기존 소품 좌표로 읽고 관문의 절벽·성문·일반 소품 위치를 확인 — 새 형식과 기존 장면 맵을 함께 읽기 위해.
+- `docs/S_checkpoint.html`: 작은 칸 위치의 소품을 표시하고 인물의 2×2 점유 범위를 마우스 강조에 표시 — 배치 격자를 전체 맵에서 살펴보기 위해.
+- `docs/S_checkpoint.html`: 반올림 O에서도 작은 칸 `(U,V)`를 유지하고 픽셀 보정만 제거 — 이웃 절벽 조각이 큰 칸 정수화 때문에 같은 위치로 합쳐지던 비교 화면을 바로잡기 위해.
+- `docs/presentation-scene.md`: 관문 맵의 `small_props` 형식과 시도 범위 설명 — 장면 맵의 현재 자료 형식을 명확히 하기 위해.
+- `docs/history.md`: 작은 배치 격자 시도 변경 이력 기록 — 파일별 변경 이유를 남기기 위해.
+
+## 2026-10-24 관문 맵 렌더링 해설
+
+- `docs/S_checkpoint.html`: `S_checkpoint.json`의 바닥·장식·소품을 게임 타일과 소품 그림으로 단계별 재구성하고 좌표·깊이 정렬 방식을 설명 — 관문 맵의 완성 모습과 그리는 과정을 한 문서에서 확인하기 위해.
+- `docs/S_checkpoint.html`: 망루·게시판의 원래 소수 좌표와 정수 칸 반올림 배치를 같은 배경에서 확대 비교 — 좌표를 정수로 바꿀 때 소품이 실제로 얼마나 이동하는지 보여 주기 위해.
+- `docs/S_checkpoint.html`: 부분 확대 비교를 스크롤 가능한 전체 맵 뷰어로 바꾸고 ×1·×2·×4·×8 배율, 전체 소품 좌표 반올림 전환, 마우스를 올린 칸의 소품을 2초 주기 사인 곡선으로 하얗게 강조하는 기능 추가 — 관문 전체의 이음새와 칸별 배치를 직접 탐색하기 위해.
+- `docs/history.md`: 관문 맵 해설 HTML 추가 기록 — 문서 변경 이력을 남기기 위해.
+
+## 2026-10-24 마을 걷기의 클릭 고리를 도트 시트로, 바닥에
+
+결정 · 누른 타일에 퍼지는 고리를 화면 위 벡터 선 대신 알파 있는 도트 시트(`click_ring`, 금빛 고리 한 겹)로 그리고, 맵 바닥 층에 깐다 · 이유: 사용자 제안("알파값 있는 스프라이트로 애니메이션"), 금빛 한 겹·바닥으로 정함. 효과는 픽셀 시트, 벡터는 맵 칸 도형만이라는 기준과도 맞다 · 영향받는 문서: presentation-town.md, ver5-fx README
+- `../tools/spritetool/assets/ver5-fx/seed.py`·`settings.json`·`pixels.json`: `click_ring` 48×26, 8프레임, 감속 퍼짐, 프레임별 알파 1 → 0.18, 밝은 금 `#ffd166` 위 짙은 금 `#a8741e` 테두리
+- `assets/graphics/effects/fx.*`: fx 시트만 다시 구움(`build_effects.py`의 다른 시트는 건드리지 않음)
+- `internal/gui/field.go`: `groundMarks` — 그림자 위·서 있는 것 아래에 까는 그림
+- `internal/gui/town.go`: 벡터 고리(`strokeEllipse`)를 지우고 `click_ring` 프레임을 누른 타일 가운데 바닥에
+
+## 2026-10-24 장수 초상 화풍 시안 롤백
+
+- `tools/illustrations/portraits/painted/*`: 유화풍 장수 초상 후보와 프롬프트를 제거 — 기존 수묵 담채 초상을 유지하기 위해
+- `tools/illustrations/portraits/sheets/{watercolor-six-rough,watercolor-six-broad-brush,crayon-six}*`: 수채·과슈·크레파스 6인 시트와 프롬프트를 제거 — 화풍 시안을 롤백하기 위해
+- `ver5/docs/history.md`: 시안 추가 기록을 롤백 기록으로 정리 — 삭제된 파일을 현행 제작물로 오해하지 않도록
+
+## 2026-10-24 소품 그림자 끄기 속성, 관문 앞쪽 기둥과 앞 절벽 잇기
+
+결정 · 장면 소품 밑에 엔진이 까는 타원 땅 그림자는 이름 접두어 대신 index.json(`extra`) 항목의 `"shadow": false`로 끈다. 관문 앞 절벽은 반 칸 늦게 그려지는 같은 절벽 그림으로 깔아 성문 앞쪽 기둥 밑동을 덮게 한다 · 이유: 사용자 "삼각형 그림자와 밑동 띠 밑에 동그란 그림자가 또 깔린다", "성문 앞쪽 끝과 앞쪽 절벽이 끊어져 있다". 앞 절벽을 v≥8로 물린 뒤로 기둥과 절벽 사이에 땅이 보였고, v≥7.5에 두면 기둥 조각이 절벽 턱보다 늦게 그려져 턱 위로 삐져나왔다 · 영향받는 문서: presentation-scene.md
+- `internal/gui/assets.go`: `propEntry.Shadow`, `Prop.NoShadow`; `field.go`는 `tcliff_` 접두어 예외 대신 `NoShadow`를 봄; `scene.go`의 비트 소품 그림자도 같음
+- `tools/build_extra.py`: tiles.json의 `shadow: false`를 index.json에 옮김; `tall_cliff.py`·`join_overlay.py`의 그림에 `shadow: false`
+- `tools/scene_maps/tall_cliff.py`: `lcliff_<mask>_<variant>`(원래 높이, 기준점 16px 아래); `compose.tall_cliffs(..., kind='lcliff')`는 기준점을 반 칸 뒤로 옮겨 놓아 그림은 제자리, 그리기 순서만 반 칸 늦음. `S_checkpoint`의 앞 절벽(v≥7.5) 전체에 적용
+
+## 2026-10-24 모서리 그림자를 삼각형으로, 절벽 밑동 그림자, 관문 양쪽을 절벽에 붙임
+
+결정 · 해를 서북서에 두고, 안쪽 모서리에서 왼쪽 면이 오른쪽 면에 드리우는 그림자를 또렷한 직선 경계의 반투명 삼각형으로 그린다. 절벽이 바닥과 만나는 곳에는 밑동 그림자 띠를 깐다. 관문의 양 끝이 절벽에 닿게 성문과 길을 반 칸 옮긴다 · 이유: 사용자 "디더링하는 식이 아니라 알파값을 가진 걸로", "그림자가 절벽에 삼각형처럼", "관문 왼쪽이 절벽과 떨어져 있어", "절벽과 바닥 사이 그림자가 없으니 좀 어색해". 엔진(패킹·로더·그리기)은 부분 알파를 그대로 살린다. 점무늬는 앞 판 덧그림이 밑동 기울기를 열마다 반올림하고 알파를 열마다 바꿔 생긴 것이었다 · 영향받는 문서: presentation-scene.md, tools-build.md
+- `tools/scene_maps/join_overlay.py`: 다시 씀. `jshade_<높이>_<j>`(삼각형, 반 칸 조각), `cfoot_sw`·`cfoot_se`(바닥 층). 앞 판의 `join_*` 80장은 지움
+- `tools/scene_maps/compose.py`: `corner_shadow`, `wall_corners`(앞 판 `join_overlays` 대신), `cliff_feet`. `S_checkpoint`는 성문 (8.5, 4.5), 길 v≈4~5, 성벽 v 1.0~7.25, 앞 절벽 v≥8. 앞 절벽을 v≥7.5에 두면 성문 앞쪽 기둥의 왼쪽 조각이 절벽 턱 위로 삐져 나왔다. `S_castle_town`·`_burnt` 뒤쪽 성벽 모서리에 모서리 그림자를 넣음
+
+## 2026-10-24 이음 덧그림: 구조물이 높은 면에 붙는 자리의 외곽선과 그림자
+
+결정 · 구조물과 절벽이 붙는 세로 이음선에는 알파만으로 된 덧그림을 얹어 외곽선과 그림자를 준다. 그림 색이 없으므로 어떤 구조물·면 조합에도 쓸 수 있다. 외곽선은 픽셀로 찍고, 부드러운 알파는 파이썬으로 계산한다 · 이유: 사용자 "성벽이랑 절벽이랑 이어지는 부분에 외곽선을 주고 그림자도 있었으면 해. 다만 이게 타일로써 범용적으로 쓸 수 있게끔 알파값이었으면 좋겠어" · 영향받는 문서: presentation-scene.md, tools-build.md
+- `tools/scene_maps/join_overlay.py`(새): 이음선 1px 외곽선, 오른쪽 면 그림자(16px 폭, 이음에서·위로 갈수록 옅음, 면 축의 밑동 기울기를 따름), 맨 아래 단의 접촉 그림자. 면 축 조합 uu·uv·vu·vv × 8px 단 20개 = 80장
+- `tools/scene_maps/compose.py`: `join_overlays` — 성벽·성문 줄의 뒤쪽 끝 너머 반 칸이 절벽이면, 끝 조각의 가장자리 열(그림의 알파에서 밑동·꼭대기를 잼)에 끝 조각 높이만큼 단을 쌓음. `S_checkpoint`(+닫힌 판)에 적용
+- 시험 합성(맵은 바꾸지 않음): u 방향 성벽 끝이 왼쪽 절벽에 닿는 경우, 집이 높은 절벽 앞에 선 경우
+
+## 2026-10-24 관문 양옆 절벽: 전투 맵 절벽을 높게 쌓아서
+
+결정 · 관문 너머 절벽은 전투 맵 절벽 칸의 그림을 그대로 쓰고 바위 면 행만 열두 단 더 쌓아 관문 지붕보다 조금 높게 한다. 길 이쪽 절벽은 한 단 그대로 둔다 · 이유: 처음에 3D 블록아웃을 참고로 codex가 그린 절벽을 도트로 바꿔 썼는데, 사용자가 "안 어울린다"며 기존 절벽을 수직으로 더 쌓으라고 했다(그 그림과 도구 `gen_3d_cliff.py`·`pixelize_cliff.py`·`sources/cliffs.json`은 지웠다). 3D 렌더만 쓴 절벽은 가는 띠 무늬와 밋밋한 옆면이 어설퍼서 처음부터 쓰지 않았다 · 영향받는 문서: presentation-scene.md, tools-build.md
+- `tools/scene_maps/tall_cliff.py`(새): 48개 블록(16 모양 × 3 변형) → `tcliff_<mask>_<variant>`, 바위 면 행 21~31을 단마다 다음 변형에서 가져와 쌓음
+- `tools/scene_maps/compose.py`: `tall_cliffs`(엔진의 blockSprite·blockVariant와 같은 규칙으로 모양·변형을 고름, 그림 밖은 절벽이 이어진다고 봄); `S_checkpoint`는 v<1 절벽을 높이고 여백을 9칸으로(절벽 끝이 땅 모서리에서 세로로 잘려 보이던 것이 화면 밖으로 감)
+- `internal/gui/field.go`: `tcliff_` 소품에는 타원 땅 그림자를 깔지 않음
+- 같은 높은 절벽이 어울릴 맵(바꾸지 않음): `S_pass`(거록 협곡)
+
+## 2026-10-23 마을 걷기를 아이소메트리 타일 이동으로
+
+결정 · 마을 걷기를 타일 단위로 바꾼다. 지역은 게임 칸 격자이고 타일마다 걸을 수 있는지 정해지며(소타일·소품 발자국·사람), 유비는 A*로 찾은 길을 따라 타일 중심에서 타일 중심으로 우하·좌상·좌하·우상 네 방향으로만 한 칸씩 걷는다 · 이유: 사용자가 "맵은 타일 위에 배치되고, 그 타일로 이동 가능/불가가 나뉘고, A*로 길을 찾아 네 방향으로 움직이게"를 요청함 · 영향받는 문서: presentation-town.md
+- `internal/gui/town.go`: ¼칸 격자·직선 줄이기를 지우고 `tile`·`tileMap`(타일 판정)·A*(네 이웃, 맨해튼 길잡이)·`nearestReachable`로; 사람·표지는 맞닿은 네 타일로 감; 커서·누른 타일·`F3`을 타일 마름모로 그림
+- `internal/gui/scene.go`·`player.go`: 앞서 넣은 `even`·`walkState.dur`(고른 걸음)를 되돌림 — 타일 걸음은 한 칸씩이라 장면 걸음 그대로
+- `tools/scene_maps/zhuo.py`: 거리의 건물·소품을 타일 중심으로 다시 놓고, 저택 문과 뒷길을 막던 관사 등롱을 빼고, 우물 모퉁이를 넓힘
+- `assets/towns/zhuo.json`: 시작·사람·표지·문 자리를 타일 위로, 노인은 큰길 동쪽(7~10)을 오감
+- 타일 보기는 `F3` 대신 `R` 키·오른쪽 클릭(사용자 요청). 누른 자리 표시는 마름모 대신 처음의 퍼지는 고리를 누른 타일 가운데에(사용자가 고리가 좋았다고 함)
+- `internal/gui/town_test.go`: 타일로 닿는지, `TestTilePath`(네 방향 걸음, 막힌 목표, 가장 가까운 타일)
+
+## 2026-10-23 마을 걷기 데모: 탁군
+
+결정 · 이야기 밖에서 유비가 탁군을 걸어 다니는 데모를 장면 화면(`scene.go`) 위에 얹는다. 지역 하나가 비트 없는 장면 하나, 사람은 배역, 유비는 경로를 걷는 배우 하나다. 클릭한 땅으로 걷고, 사람을 누르면 그 앞까지 가서 대화창으로 이야기하고, 건물을 누르면 문 앞까지 가서 그 건물 안으로 들어간다 · 이유: 사용자가 지금 로직·데이터로 RPG처럼 유비가 돌아다니는 탁군(주점·관사·무기점·도구점·저택)을 요청함 · 영향받는 문서: presentation-town.md(새), README.md
+- `internal/town/town.go`(새): 마을 파일(지역·사람·표지·문·소품 발자국) 읽기, 문이 이어진 지역에 돌아오는 문이 있는지 검사
+- `internal/gui/town.go`(새): 걷기 모드 — ¼칸 격자 최단 길 찾기와 곧은 다리 줄이기, 사람·건물 그림·표지·땅 클릭 판정, 대화(장면과 같은 두루마리), 문 지나기(어두워졌다 밝아짐), 건물 이름판·커서 이름, `F3` 격자 보기
+- `internal/gui/game.go`: `town` 필드, `Update`·`drawFrame`이 걷기 모드로 갈림
+- `internal/gui/scene.go`: `even` — 이 배우의 걸음은 길이만큼 시간이 걸림(유비가 짧은 걸음에 느려지지 않게). 이야기 장면은 그대로
+- `internal/gui/player.go`: `walkState.dur` — 걸음 시간(0이면 `stepTime`)
+- `internal/gui/scenario.go`·`dialogue_scroll.go`: `line.portrait` — 인물 데이터가 없는 사람(유언·추정·장세평·소쌍)의 초상 키
+- `assets/towns/zhuo.json`(새): 거리·주점·관사·무기점·도구점·저택과 장비·관우·유언·추정·대장장이·상인·장세평·소쌍·백성들의 대사
+- `tools/scene_maps/zhuo.py`(새): `S_zhuo`(12×10 성 안 거리)·`S_zhuo_office`·`S_weapon_shop`·`S_tool_shop`·`S_mansion`을 `compose.py`의 `room`·`outdoor`로 만들고 이 다섯 맵만 씀(다른 맵은 건드리지 않음). 문은 거리 쪽 면으로 돌림(`house_*` +v, `house_*_x` +u). 성문 형식이 바뀌면 다시 돌리면 따라감
+- `assets/graphics/maps/S_zhuo.json`·`S_zhuo_office.json`·`S_weapon_shop.json`·`S_tool_shop.json`·`S_mansion.json`(새), `assets/graphics/index.json`: 맵 목록에 다섯 맵 추가
+- `cmd/_town`(새): 창으로 걷기. `internal/gui/uidemo_town.go`(새): `-ui town -stage "person:장비,door:주점,…"`으로 클릭을 화면 좌표로 흉내 내 캡처
+- `internal/gui/town_test.go`(새): 모든 지역에서 각 입구로부터 문·표지·말하는 사람에 닿는지
+- 소품 축척: 소품 카메라 한 칸(모델 1)이 게임 칸 반이라 민가 발자국은 u 1.1·v 0.75칸. 장세평·소쌍은 장면 시트가 없어 문관 시트(`official_black_noncombat`·`official_noncombat`)를 빌림
+
+## 2026-10-23 성문을 아치 가운데에서 갈라 반 칸 조각으로: 성벽과 같은 깊이 순서
+
+결정 · 넓은 성문 그림을 성벽 조각과 같은 반 칸 폭 세로 조각으로 자르고, 각 조각이 자기 땅 위 기준점을 가진 채 그 자리의 성벽 조각을 대신한다 · 이유: 사용자 "쿼터뷰이므로 항상 Y좌표상 위쪽(뒤쪽)에 있는 것을 먼저 찍고 아래쪽을 나중에 찍어야 하는데, 아래쪽 성벽을 찍은 뒤 성문을 찍어서 성문이 이상하게 튀어나온 듯이 보인다" — 다섯 칸 폭 그림 한 장이 성문 점 하나로 정렬되니 앞쪽 성벽과 뒤쪽 성벽의 순서를 한꺼번에 맞출 수 없었다. 날개 자리 성벽 걷어내기와 따로 뗀 먼 쪽 기둥(`sgate_post_*`)은 이 문제를 가린 예외였으므로 없앤다 · 영향받는 문서: presentation-scene.md
+- `../assets_candidate/tools/gen_3d_castle.py`: 성문 전체(양쪽 날개·기둥 포함)를 한 번 그려 `slices()`로 반 칸 조각 13장(`sgate_<state>_<axis>_<k>`, `gate_offset`)으로 자름; 옛 두 쪽 그림(`_first`·`_second`)과 `sgate_post_*`는 tiles.json과 파일에서 지움
+- `tools/scene_maps/build.py`: `seat_gates`는 성벽 줄을 반 칸씩 깔고 성문 조각으로 그 자리를 바꾸기만 함(옛 viewer 맵의 `_first` 표시도 성문 점으로 읽음); 성문 점이 없는 그림 이름 검사에서 `sgate_`를 뺌
+- `tools/scene_maps/compose.py`: `gate()`는 성문 점 하나만 적음; 관문의 가까운 절벽을 반 칸 물림(기둥 밑동이 절벽 그림에 덮여 깨지던 것)
+- 사용자 추가 지시 "아치형 문의 중앙을 기준으로 좌우를 나눠서 … 좌상 쪽 반을 먼저 찍고, 성문을 지나가는 병력을 찍은 뒤, 우하 쪽 반을 찍어야 한다": 조각 경계를 아치 가운데에 맞춤(`gate_offset`이 0.5의 배수). `seat_gates`는 성벽 줄의 반 칸 격자를 성문에 맞춰 깔아, 성문이 맵이 정한 자리(길·다리 위)에 그대로 서게 함. 열린 문 통로 안을 막던 어두운 판과 바닥판은 앞쪽 반에 들어가 통로를 지나는 사람을 덮었으므로 뺌(이제 성벽이 성문 뒤로 이어지지 않으니 필요 없음)
+- 성 안 민가의 성벽 모서리를 두 줄 모두 −0.25부터(−0.75부터면 바깥 모서리 위로 여장이 삐죽 나옴)
+- `tools/scene_maps/export.mjs`: viewer가 이름만 남은 옛 성문 그림(`sgate_*_first/second`)을 찾아도 멈추지 않게
+- 확인: 옥문 앞 거리와 관문에서 성문 앞·문 안·뒤, 날개·기둥 앞뒤에 엑스트라를 세운 게임 화면(앞은 위에, 뒤는 반투명으로 가려짐), 팽성(u)·관문(v)·성 안 민가(v) 성문을 병사 둘이 걸어 지나가는 프레임
+
+## 2026-10-23 장면 나무를 codex 그림 → 도트 변환으로
+
+결정 · 장면 나무 14종(소나무 2·활엽수 2·버드나무·고목·불탄 나무·덤불 2·매화 2·복숭아 3)을 3D 렌더 대신, 그 렌더를 참고로 codex가 손도트처럼 다시 그린 그림을 도트로 바꾼 것으로 쓴다(아이템 아이콘과 같은 길). 크기·피벗·팔레트는 3D 렌더 그대로라 심는 자리·그림자는 바뀌지 않는다 · 이유: 사용자가 3D 나무의 의도·실루엣·배치는 좋지만 "어설프게 렌더한 3D 모델" 같다고 했고, 5종 시험을 "매우 좋다, 완전 합격"이라 함 · 영향받는 문서: presentation-scene.md 나무, tools-build.md
+- `tools/pixelize_tree.py`(새): 마젠타 키 → 나무로 자르기 → 캔버스(1px 테두리 뺀 크기)로 늘림 → Lab 팔레트 스냅 → 6×6 블록 투표 → 외톨이 정리 → 1px 외곽선. `penalty`·`dark`·`bark`/`foot`/`speck`/`inner` 값
+- `../assets_candidate/tiles/sources/`(새): 나무별 codex 그림 512px와 `trees.json`(그림·3D 렌더 팔레트·변환 값·codex 요청문)
+- `../assets_candidate/tiles/stree_*.png`·`peach_bloom_*.png`: 변환한 도트로 교체(크기·피벗 그대로, tiles.json 손대지 않음)
+- `../tools/unit3d/scene_props3d.py`: 인자 없이 돌려도 `trees.json`에 있는 나무는 덮어쓰지 않음, `--3d`는 그 렌더를 `output/scene-props3d/`에 참고용으로 씀
+- 요청문: 참고를 "같은 실루엣으로"라고만 하면 codex가 3D 공 덩이·구멍까지 베껴 변환해도 그대로였다. "참고는 실루엣·크기·빛 방향만, 공·구멍 베끼지 말 것, 16비트 손도트처럼"으로 바꾸고서 됨. 버드나무는 가닥을 굵게(4~6px), 소나무는 밝은 잎을 덜(`penalty`), 복숭아·매화는 덩이 사이 어두운 홈(`dark` .12~.18, 복숭아는 그늘색 `penalty` −8)
+- 확인: 나무 쓰는 장면 맵 18개를 `_uidemo-vm -ui scenefile`로 찍어 봄, `check_scenes.py` 0건, `go test ./internal/gui -run 'TestScenesData|TestScenarioNodesAreStaged|TestSceneMap'` 통과
+
+## 2026-10-23 넓은 성문: 날개와 기둥이 붙은 성문을 끊지 않은 성벽 위에
+
+결정 · 장면용 성문 그림에 문루 양옆으로 성벽과 같은 날개(한 칸)와 굵은 기둥을 붙이고, 성벽은 성문 자리에서 끊지 않고 깐 뒤 성문을 그 위에 놓는다. 손으로 적던 성벽 틈(gap) 인자는 없앤다 · 이유: 사용자가 `S_castle_town` 성문 옆 빈틈, `S_jail_street` 성문 옆 어긋남, `S_castle_town_burnt` 성벽 끝 끊김을 찾았다. 틈 숫자를 맵마다 손으로 적어 반 칸씩 어긋났고(조각 하나가 반 칸이라 틈이 남거나 성벽 끝면·뒤 바닥이 비침), 성벽은 땅 끝보다 앞에서 끝났다 · 영향받는 문서: presentation-scene.md
+- `../assets_candidate/tools/gen_3d_castle.py`: 성문에 `wing`(성벽 몸체·벽돌 줄·처마·여장)과 `post`(굵은 돌기둥) 추가, 열린 문 통로 안쪽을 어둡게 채움, 먼 쪽 기둥은 `sgate_post_u/v` 그림으로 따로; `--write`가 자기 항목만 tiles.json에 고쳐 씀(gen_all.py는 tiles.json 전체를 다시 씀)
+- `tools/scene_maps/build.py`: `seat_gates` — 성벽 줄을 반 칸씩 메우고, 성문보다 뒤에 그려질 날개 자리 조각을 걷고, 먼 쪽 기둥을 놓음. viewer 맵(`S_castle_out`·`S_castle_out_open`)과 compose 맵 모두 이 함수를 거침
+- `tools/scene_maps/compose.py`: `wall_u`·`wall_v`에서 gap 인자 삭제, 새 맵의 성벽을 여백 끝까지(`TOWN_M`·`JAIL_M`), 관문 성문을 길 가운데(8.5, 4.0)로 옮기고 수비 진지를 성벽 뒤로
+- 확인: 성문을 반 칸 안에서 0·0.1·0.25·0.4·0.5칸 어긋나게 놓은 그리기 시험(u·v, 열림·닫힘)에서 이음이 모두 맞음. 성문과 같은 높이의 조각이 동점으로 성문 위에 그려지던 것을 함께 고침
+
+## 2026-10-23 장면 나무를 실제 크기 3D 나무로, 새 맵의 성문을 장면용으로, 성 안 땅 섞기
+
+결정 · 장면 맵의 나무를 모두 장면용 3D 나무(`stree_*`, 사람 키의 2~3.5배)로 다시 심고, 새 맵의 성문·성벽은 `S_castle_out`의 장면용 성벽·성문(`swall_*`, `sgate_*`)으로, 성 안 맵 땅은 포석 길·흙길·황무지·풀밭을 섞는다. `S_vil_peace`·`S_vil_burnt`의 "미니 집"(전투 맵 마을 칸 그림 `hut`, 작은 둥근 초가 묶음)은 장면 민가로 바꾼다 · 이유: 사용자 "나무가 사람에 비해 너무 작아", "전투 맵용 성문", "S_jail_street 땅이 밋밋", "미니 집 크기가 안 맞아" · 영향받는 문서: presentation-scene.md 장면 맵 표·나무·상석과 방향
+- `../tools/unit3d/scene_props3d.py`: 소나무 2·활엽수 2·버드나무·고목·불탄 나무·덤불 2·매화 2, 복숭아나무를 두 배 크기로, 포석 조각 2·우물
+- `tools/scene_maps/trees.py`(새): 나무 자리 솎기와 배우 자리 지키기(배우 1.2칸 안·앞을 가리는 나무는 덤불로 바꾸거나 뺌)
+- `tools/scene_maps/build.py`: viewer의 타일 나무·숲·매화·불탄 나무를 `trees.plant`로, 물가는 버드나무; `OPEN`(연출 전 맵에서 사람이 설 곳); `HOUSES`
+- `tools/scene_maps/compose.py`: `wall_u`·`wall_v`·`gate`·`avenue`·`blobs`; `S_castle_town`·`S_jail_street`·`S_checkpoint`의 전투용 문(`gate_u`)·성벽 칸(`c`)을 장면용 성벽·성문으로; 변형 `S_checkpoint_closed`; 나무를 종 이름으로
+- 바뀐 기존 맵(나무): `S_army_camp`·`S_turban_camp`·`S_army_camp_hungry`·`S_road`·`S_hill`·`S_castle_out`·`S_castle_out_open`·`S_garden`·`S_bridge`·`S_pass`·`S_vil_peace`·`S_vil_burnt`(+ 집). 배치 검사 `check_scenes.py`는 바꾸기 전과 같이 0건
+
+## 2026-10-23 1부 새 이야기의 장면 맵과 소품
+
+결정 · 1부(도원결의~동탁 추격전) 장면에 없던 곳을 새 장면 맵 8개로 만들고, 소품은 3D로 모델링해 더한다. 탁군성·궁궐·단양·팽성·맹주 막사는 기존 맵(`S_office`·`S_palace`·`S_vil_peace`·`S_castle_out_open`·`S_council`)을 다시 쓴다 · 이유: `story_2026_10_23.md`, `plan/2026_10_23_story_impl.md` 6.3~6.4, 사용자 규칙(소품은 3D 모델 후 리터칭, 재사용 우선) · 영향받는 문서: presentation-scene.md 장면 맵 표·소품, tools-build.md
+- `../tools/unit3d/scene_props3d.py`: 함거·물통·물동이·모닥불·방문 게시판·복숭아나무 3종·떨어진 꽃잎·노점 3종·국밥 솥·걸상·계산대·민가 5종; `--review`가 새 소품(옛 그림 없음)과 이름 고르기·`--out`을 받음; 방문의 수배 얼굴은 `RETOUCH` — 바퀴는 disc()가 세로축만 돌아 따로 짬, 함거 창살은 보는 쪽 두 면만(네 면이면 외곽선이 붙어 갇힌 사람이 안 보임)
+- `tools/scene_maps/compose.py`: `S_tavern`·`S_inn`(방), `S_peach_grove`·`S_castle_town`·`S_jail_street`·`S_market`·`S_checkpoint`(야외, `margin`으로 땅이 화면 끝까지), 변형 `S_castle_town_burnt`; `room(pillar=)`, `outdoor(margin=)`, `scatter()`; 변형이 같은 실행에서 만든 맵을 바탕으로 쓸 수 있게
+- `internal/gui/field_scenery.go`: `floor_*` 소품이 덮은 칸에는 풀·돌 장식을 뿌리지 않음 — 방 맵(`S_council`·`S_tent_lux` 등)의 마루·깔개 위에 풀이 돋던 것
+- `internal/gui/field.go`, `scene.go`: 비트의 `Prop`으로 놓은 서 있는 소품에도 땅 그림자(`beatShadows`) — 함거 등
+- `internal/gui/uidemo_scenefile.go`: `-ui scenefile -stage <장면 JSON>`이 이야기 노드 없이 장면 파일 하나를 열어(Cast·Ambient) 새 맵을 게임 화면으로 확인
+
 ## 2026-10-23 영역 도주 목표와 `fled` 조건, B04 조조 퇴각 부목표
 
 결정 · `march`·`flee`의 목표로 칸 대신 영역(`GoalArea`)을 줄 수 있고, `fled:X` 조건이 맵 밖으로 빠져나간 유닛을 쓰러진 유닛과 구분한다. B04의 조조군은 여포가 나타나면 `march` 대신 `flee`로 동남쪽 가장자리 전체(영역 2)로 빠져나가고, 부목표는 "조조가 동남쪽 끝으로 무사히 빠져나간다"(`fled:caocao`) · 이유: 사용자 "변수 추격전의 조조도 이상해. 여포 나타나면 도망가야 할거 같은데, 여포랑 싸우고있어", "조조가 성공적으로 동쪽에서 맵 바깥으로 퇴각하는걸 부목표로", "동맹군이 후퇴할때 특정 한 타일로 퇴각 … 동남쪽 전반을 길~게 다 퇴각지점으로 … 아니면 대군이 뭉쳐서 가버리거든" — `march`는 가는 길에 칠 수 있으면 치므로 따라잡은 여포 기병과 싸웠고, `flee`로 빠져나가면 HP 0이라 `alive:caocao`가 거짓이 됐다. 제후군 14명은 (27,1) 한 칸, 조조군은 (26,6) 한 칸을 향해 줄을 섰다 · 영향받는 문서: logic-battle-event.md 4·5절, data-scenario-node.md, conceptual_scenario.md 5장

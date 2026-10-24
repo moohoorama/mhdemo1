@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>장면 맵</title>
+<link rel="stylesheet" href="/style.css">
+<header>
+  <div><h1>장면 맵</h1><p>게임 장면의 바닥·장식·소품·벽면을 같은 기준으로 살펴봅니다.</p></div>
+  <label>장면 <select id="scene"></select></label>
+</header>
+<main>
+  <section class="toolbar">
+    <div class="group" aria-label="그리기 단계"><button data-step="0">바닥</button><button data-step="1">장식</button><button data-step="2" aria-pressed="true">전체</button></div>
+    <div class="group" aria-label="배율"><button data-zoom="1" aria-pressed="true">×1</button><button data-zoom="2">×2</button><button data-zoom="4">×4</button><button data-zoom="8">×8</button></div>
+    <div class="group" aria-label="회전"><button data-turn="0" aria-pressed="true">0°</button><button data-turn="1">90°</button><button data-turn="2">180°</button><button data-turn="3">270°</button></div>
+  </section>
+  <section id="viewport" aria-label="장면 맵 그림"><div id="surface"><canvas id="map"></canvas><canvas id="hover"></canvas></div></section>
+  <footer><span id="info">불러오는 중…</span><span id="cursor">커서 좌표: —</span></footer>
+</main>
+<script src="/viewer.js" defer></script>
+</html>
