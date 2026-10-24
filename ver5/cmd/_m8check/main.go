@@ -2,7 +2,7 @@
 // stages and plays each one with the AI on both sides to see how its events and goals behave.
 //
 //	go run ./cmd/_m8check -scenario hero                  every stage
-//	go run ./cmd/_m8check -scenario hero -stage B02 -v   one stage, every event fired
+//	go run ./cmd/_m8check -scenario hero -stage B05 -v   one stage, every event fired
 package main
 
 import (

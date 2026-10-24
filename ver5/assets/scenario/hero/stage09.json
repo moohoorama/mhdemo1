@@ -1,0 +1,442 @@
+{
+ "ID": "B09",
+ "Name": "거록 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 5,
+ "Required": [
+  "liubei",
+  "guanyu",
+  "zhangfei"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "at:liubei:2"
+   ],
+   "Text": "유비가 남서쪽 주둔지에 도달"
+  }
+ ],
+ "TurnLimit": 18,
+ "Tiles": null,
+ "Allies": [
+  {
+   "X": 1,
+   "Y": 1
+  },
+  {
+   "X": 2,
+   "Y": 1
+  },
+  {
+   "X": 3,
+   "Y": 1
+  },
+  {
+   "X": 4,
+   "Y": 1
+  },
+  {
+   "X": 1,
+   "Y": 2
+  },
+  {
+   "X": 2,
+   "Y": 2
+  },
+  {
+   "X": 3,
+   "Y": 2
+  },
+  {
+   "X": 4,
+   "Y": 2
+  },
+  {
+   "X": 1,
+   "Y": 3
+  },
+  {
+   "X": 2,
+   "Y": 3
+  },
+  {
+   "X": 3,
+   "Y": 3
+  },
+  {
+   "X": 4,
+   "Y": 3
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "yanliang",
+   "X": 4,
+   "Y": 12,
+   "Facing": "NE",
+   "DuelFirst": true,
+   "Group": "yan",
+   "Policy": "react",
+   "Rank": "commander"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 3,
+   "Y": 11,
+   "Group": "yan",
+   "Facing": "SW",
+   "Policy": "hold",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 5,
+   "Y": 11,
+   "Group": "yan",
+   "Facing": "SW",
+   "Policy": "hold",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 2,
+   "Y": 12,
+   "Group": "yan",
+   "Facing": "SW",
+   "Policy": "hold",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 6,
+   "Y": 12,
+   "Group": "yan",
+   "Facing": "SW",
+   "Policy": "hold",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_archer",
+   "X": 3,
+   "Y": 13,
+   "Group": "yan",
+   "Facing": "SW",
+   "Policy": "hold",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_archer",
+   "X": 5,
+   "Y": 13,
+   "Group": "yan",
+   "Facing": "SW",
+   "Policy": "hold",
+   "Shift": -0.07
+  }
+ ],
+ "Reward": {
+  "bean": 8,
+  "liquor": 3
+ },
+ "Sub": [
+  {
+   "ID": "julu-clear",
+   "Text": "안량과 장합을 모두 물리친다",
+   "If": [
+    "defeated:yanliang",
+    "defeated:zhanghe"
+   ],
+   "Flag": "flag-julu-clear"
+  }
+ ],
+ "Duels": [
+  {
+   "ID": "julu-zhangfei-yanliang",
+   "Ally": "zhangfei",
+   "Enemy": "yanliang",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "장비가 안량을 압도하자 안량이 물러났다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "장비의 호통",
+     "Speech": "네놈이 안량이냐! 썩 길을 비켜라!",
+     "Side": 0,
+     "Duration": 2.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "안량의 자신만만한 응수",
+     "Speech": "애송이가 겁도 없구나. 하북 안량의 창을 받아 보겠느냐.",
+     "Side": 1,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "approach",
+     "Title": "안량이 말을 몰아 다가오다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "안량이 기세를 올리다",
+     "Speech": "받아라!",
+     "Side": 1,
+     "Duration": 1.6
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 안량의 첫 공격을 가볍게 막다",
+     "Speech": "간지럽구먼.",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "안량이 거듭 찔러 오다",
+     "Speech": "그게 다여?",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "안량이 돌진하며 몰아치다",
+     "Speech": "하북 명장이라더니 시시하구먼.",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "안량이 당황하다",
+     "Speech": "(한 번도 막힌 적 없는 내 창이 어찌……)",
+     "Side": 1,
+     "Duration": 2.7
+    },
+    {
+     "Kind": "block",
+     "Title": "안량이 이를 악물고 찌르다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "안량이 온 힘으로 내리찍지만 장비가 받아내다",
+     "Speech": "이것이 하북의 창이다!",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비의 기세가 오르다",
+     "Speech": "하하! 이거여! 이런 놈이랑 싸워 보고 싶었던겨!",
+     "Side": 0,
+     "Duration": 2.9
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "안량이 마지막으로 돌진하다",
+     "Speech": "아직도 힘이 남았구먼!",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 반격을 선언하다",
+     "Speech": "이제 내 차례여! 사모 맛 좀 봐라!",
+     "Side": 0,
+     "Duration": 2.4
+    },
+    {
+     "Kind": "critical",
+     "Title": "장비의 일격이 안량을 흔들다",
+     "Speech": "으라앗!",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "press",
+     "Title": "장비가 전진하고 안량이 뒷걸음질하다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "안량이 막지만 밀리다",
+     "Speech": "크윽…!",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "안량이 거듭 밀리다",
+     "Speech": "으윽!",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "안량이 물러나기로 하다",
+     "Speech": "……제법이군. 오늘은 여기까지다.",
+     "Side": 1,
+     "Duration": 2.2
+    },
+    {
+     "Kind": "retreat",
+     "Title": "안량이 직선으로 아군 대열 속으로 물러나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 뒤에서 소리치다",
+     "Speech": "어딜 가는겨! 다음엔 길 막지 말어!",
+     "Side": 0,
+     "Duration": 2.5
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "안량이 대열 속으로 사라지다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    }
+   ]
+  }
+ ],
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 3,
+    "Y": 5,
+    "W": 4,
+    "H": 2
+   },
+   "Name": "길 굽이",
+   "Description": "언덕 사이로 길이 휘어지는 곳. 장합의 복병이 숨어 있다."
+  },
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 2,
+    "Y": 14,
+    "W": 3,
+    "H": 1
+   },
+   "Name": "주둔지",
+   "Description": "아군의 목표 주둔지"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "zhanghe-ambush",
+   "If": [
+    "any:[at:ally:1, round>=2]"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "zhanghe",
+       "X": 13,
+       "Y": 5,
+       "Facing": "SW",
+       "Group": "ambush",
+       "Policy": "assault",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 10,
+       "Y": 5,
+       "Group": "ambush",
+       "Facing": "SW",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_archer",
+       "X": 11,
+       "Y": 6,
+       "Group": "ambush",
+       "Facing": "SW",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_archer",
+       "X": 14,
+       "Y": 6,
+       "Group": "ambush",
+       "Facing": "SW",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_footman",
+       "X": 12,
+       "Y": 5,
+       "Group": "ambush",
+       "Facing": "SW",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_footman",
+       "X": 14,
+       "Y": 5,
+       "Group": "ambush",
+       "Facing": "SW",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Shift": -0.07
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhanghe",
+       "Text": "걸려들었구나! 에워싸라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "jianyong",
+       "Text": "번 장군 말이 맞았구먼!"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "Faction": "yuan",
+ "Map": "map09.json",
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "yuan",
+   "Name": "원소군"
+  }
+ ]
+}

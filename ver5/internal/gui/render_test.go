@@ -403,7 +403,7 @@ func (p *editorRenderTest) Draw(dst *ebiten.Image) {
 			}
 			start := time.Now()
 			allocs := testing.AllocsPerRun(100, func() { g.field.Draw(0, units, marks); g.field.Canvas.ReadPixels(pixels) })
-			fmt.Printf("Field.Draw native B01 1.5x 1280x637 deployment=%t: %.0f ns/frame, %.0f allocs/frame (100 draws plus warmup, GPU readback included)\n", enabled, float64(time.Since(start).Nanoseconds())/101, allocs)
+			fmt.Printf("Field.Draw native B02 1.5x 1280x637 deployment=%t: %.0f ns/frame, %.0f allocs/frame (100 draws plus warmup, GPU readback included)\n", enabled, float64(time.Since(start).Nanoseconds())/101, allocs)
 		}
 	}
 	p.drawn = true

@@ -1,0 +1,204 @@
+{
+ "Scenes": {
+  "c11-start": {
+   "Map": "S_bridge",
+   "Backdrop": "mountains",
+   "Nodes": ["c11-start", "c11-02", "c11-03", "c11-04", "c11-05", "c11-06", "c11-07"],
+   "Cast": {
+    "원소": {"At": [7.3, 8.4], "Face": "NE"},
+    "전풍": {"At": [6.3, 9.0], "Face": "NE"},
+    "국의": {"At": [6.0, 7.3], "Face": "NE"},
+    "호위#1": {"At": [8.6, 9.4], "Face": "NW", "Sprite": "guards", "Faction": "yuan"},
+    "호위#2": {"At": [5.0, 9.6], "Face": "NE", "Sprite": "guards", "Faction": "yuan"},
+    "노병#1": {"At": [2.6, 7.2], "Face": "NE", "Sprite": "crossbow", "Faction": "yuan"},
+    "노병#2": {"At": [4.6, 7.2], "Face": "NE", "Sprite": "crossbow", "Faction": "yuan"},
+    "노병#3": {"At": [8.1, 7.2], "Face": "NE", "Sprite": "crossbow", "Faction": "yuan"},
+    "노병#4": {"At": [10.1, 7.2], "Face": "NE", "Sprite": "crossbow", "Faction": "yuan"},
+    "백마기#1": {"At": [3.0, 3.2], "Face": "SW", "Sprite": "light_cavalry_white", "Faction": "gongsun"},
+    "백마기#2": {"At": [4.4, 2.6], "Face": "SW", "Sprite": "light_cavalry_white", "Faction": "gongsun"},
+    "백마기#3": {"At": [7.6, 2.7], "Face": "SW", "Sprite": "light_cavalry_white", "Faction": "gongsun"},
+    "백마기#4": {"At": [9.0, 3.3], "Face": "SW", "Sprite": "light_cavalry_white", "Faction": "gongsun"},
+    "전령#1": {"At": [0.6, 9.6], "Face": "SE", "Sprite": "light_infantry", "Off": true, "Faction": "yuan"}
+   },
+   "Beats": {
+    "c11-02": [
+     [
+      [{"CamAt": [6.0, 3.0]}],
+      [{"Wait": 0.6}],
+      [{"CamAt": [6.6, 7.6]}]
+     ]
+    ],
+    "c11-03": [
+     [
+      [{"Actor": "원소", "Look": "NE"}]
+     ]
+    ],
+    "c11-04": [
+     [
+      [{"Actor": "전풍", "Play": "action"}, {"CamAt": [4.6, 6.8]}],
+      [{"Wait": 0.4}]
+     ]
+    ],
+    "c11-05": [
+     [
+      [{"CamAt": [6.0, 5.2]}],
+      [{"Wait": 0.4}],
+      [{"CamAt": [6.6, 7.8]}]
+     ]
+    ],
+    "c11-06": [
+     [
+      [{"Actor": "원소", "Play": "action"}]
+     ]
+    ],
+    "c11-07": [
+     [
+      [{"Actor": "전령#1", "Enter": [0.6, 9.6], "Move": [5.2, 8.4], "Speed": 1.8}],
+      [{"Actor": "전령#1", "Face": "NE", "Play": "exhausted"}],
+      [{"Actor": "국의", "Face": "SW"}]
+     ]
+    ]
+   }
+  },
+  "c11-08": {
+   "Map": "S_tent_mid",
+   "Time": "dusk",
+   "Nodes": ["c11-08", "c11-09", "c11-10", "c11-11", "c11-12", "c11-13", "c11-14", "c11-15", "c11-16", "c11-17", "c11-18", "c11-19", "c11-20", "c11-21", "c11-22", "c11-23", "c11-24", "c11-25", "c11-26", "c11-27"],
+   "Ambient": [{"Effect": "smallfire", "At": [0.3, 2.7]}, {"Effect": "smallfire", "At": [2.7, 0.3]}],
+   "Cast": {
+    "공손찬": {"At": [1.6, 3.4], "Face": "SE", "Pose": "sit"},
+    "유비": {"At": [2.8, 3.2], "Face": "NW"},
+    "관우": {"At": [3.4, 4.2], "Face": "NW"},
+    "장비": {"At": [2.0, 4.4], "Face": "NE"},
+    "병사": {"At": [5.8, 2.5], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "gongsun"},
+    "진진": {"At": [5.8, 2.5], "Face": "NW", "Off": true, "Sprite": "scholar"}
+   },
+   "Beats": {
+    "c11-09": [
+     [
+      [{"Actor": "병사", "Enter": [5.8, 2.5], "Move": [4.2, 2.4]}],
+      [{"Actor": "병사", "Face": "NW", "Play": "exhausted"}]
+     ]
+    ],
+    "c11-11": [
+     [
+      [{"Actor": "병사", "Move": [5.8, 2.5], "Exit": true}],
+      [{"Actor": "진진", "Enter": [5.8, 2.5], "Move": [4.2, 2.4], "Speed": 0.8}],
+      [{"Actor": "진진", "Face": "NW", "Play": "exhausted"}]
+     ]
+    ],
+    "c11-14": [
+     [
+      [{"Actor": "공손찬", "Play": "action"}],
+      [{"Wait": 0.6}],
+      [{"Actor": "공손찬", "Emote": "…"}]
+     ]
+    ],
+    "c11-16": [
+     [
+      [{"Actor": "유비", "Look": "NE"}, {"Actor": "장비", "Look": "SE", "After": 0.3}],
+      [{"Wait": 0.6}]
+     ]
+    ],
+    "c11-18": [
+     [
+      [{"Actor": "공손찬", "Pose": "idle"}],
+      [{"Actor": "공손찬", "Sprite": "light_infantry"}],
+      [{"Actor": "공손찬", "Face": "SE", "Play": "attack", "Shake": 0.3}],
+      [{"Actor": "진진", "Emote": "!"}, {"Actor": "장비", "Emote": "!", "After": 0.2}]
+     ]
+    ],
+    "c11-20": [
+     [
+      [{"Actor": "진진", "Play": "hit"}]
+     ]
+    ],
+    "c11-21": [
+     [
+      [{"Actor": "유비", "Move": [3.2, 2.6], "Speed": 1.4}],
+      [{"Actor": "유비", "Face": "NW"}]
+     ]
+    ],
+    "c11-22": [
+     [
+      [{"Actor": "유비", "Face": "NW"}]
+     ]
+    ],
+    "c11-24": [
+     [
+      [{"Actor": "유비", "Look": "SE"}]
+     ]
+    ],
+    "c11-25": [
+     [
+      [{"Actor": "관우", "Move": [4.4, 3.4]}],
+      [{"Actor": "관우", "Face": "NW"}]
+     ]
+    ],
+    "c11-27": [
+     [
+      [{"Actor": "진진", "Move": [5.8, 4.6], "Exit": true}, {"Actor": "관우", "Move": [5.8, 3.8], "Exit": true, "After": 0.6}],
+      [{"Actor": "공손찬", "Play": "attack"}, {"Actor": "공손찬", "Emote": "!"}]
+     ]
+    ]
+   }
+  },
+  "c11-28": {
+   "Map": "S_army_camp",
+   "Backdrop": "mountains",
+   "Nodes": ["c11-28", "c11-29", "c11-30", "c11-31", "c11-32", "c11-33", "c11-34", "c11-35", "c11-36", "c11-37", "c11-38", "c11-39"],
+   "Cast": {
+    "공손찬": {"At": [2.0, 1.2], "Face": "SW"},
+    "전해": {"At": [1.3, 0.4], "Face": "SE"},
+    "조운": {"At": [3.0, 1.0], "Face": "SW"},
+    "유비": {"At": [2.4, 2.8], "Face": "NE"},
+    "관우": {"At": [1.9, 3.8], "Face": "NE"},
+    "장비": {"At": [3.1, 3.9], "Face": "NE"},
+    "간옹": {"At": [1.0, 4.9], "Face": "NE"},
+    "번궁": {"At": [4.0, 4.9], "Face": "NE"},
+    "백마기#1": {"At": [-0.6, 1.8], "Face": "SE", "Sprite": "light_cavalry", "Faction": "gongsun"},
+    "백마기#2": {"At": [-0.6, 3.2], "Face": "SE", "Sprite": "light_cavalry", "Faction": "gongsun"},
+    "백마기#3": {"At": [5.6, 1.6], "Face": "SW", "Sprite": "light_cavalry", "Faction": "gongsun"}
+   },
+   "Beats": {
+    "c11-29": [
+     [
+      [{"Actor": "공손찬", "Play": "action"}]
+     ]
+    ],
+    "c11-32": [
+     [
+      [{"Actor": "공손찬", "Look": "NW"}],
+      [{"Actor": "전해", "Play": "action"}]
+     ]
+    ],
+    "c11-33": [
+     [
+      [{"Actor": "유비", "Play": "action"}]
+     ]
+    ],
+    "c11-34": [
+     [
+      [{"Actor": "공손찬", "Face": "SE"}]
+     ]
+    ],
+    "c11-35": [
+     [
+      [{"Actor": "공손찬", "Face": "SE"}]
+     ]
+    ],
+    "c11-37": [
+     [
+      [{"Actor": "조운", "Move": [2.9, 1.8]}],
+      [{"Actor": "조운", "Face": "SW", "Play": "action"}]
+     ]
+    ],
+    "c11-39": [
+     [
+      [{"Actor": "유비", "Play": "action"}]
+     ]
+    ]
+   }
+  }
+ }
+}

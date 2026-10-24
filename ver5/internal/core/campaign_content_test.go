@@ -138,7 +138,7 @@ func executed(e *Engine, key string) bool { return e.state.Executed[key] }
 
 func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, true)
-	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07"}, fought)
+	assert.Equal(t, []string{"B02", "B05", "B06", "B07", "B08", "B09", "B10"}, fought)
 	assert.Equal(t, 1, e.state.Flags["flag-sunjian-alive"])
 	assert.Equal(t, 1, e.state.Flags["flag-bianshui-generals"])
 	assert.Equal(t, 1, e.state.Flags["flag-julu-clear"])
@@ -148,8 +148,8 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	for _, id := range []string{"jianyong", "fangong", "zhaoyun"} {
 		assert.NotNil(t, e.char(id), id+" joins the party")
 	}
-	assert.True(t, executed(e, "battle-B07-vanguard-clear"), "a clean win at Julu eases the vanguard at Jiejiao")
-	assert.False(t, executed(e, "battle-B07-vanguard-strong"))
+	assert.True(t, executed(e, "battle-B10-vanguard-clear"), "a clean win at Julu eases the vanguard at Jiejiao")
+	assert.False(t, executed(e, "battle-B10-vanguard-strong"))
 }
 
 func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
@@ -157,8 +157,8 @@ func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
 	assert.Len(t, fought, 7)
 	assert.Zero(t, e.state.Flags["flag-julu-clear"])
 	assert.Positive(t, e.state.Warehouse["fire_manual"], "Huangfu Song hands the manual to whoever broke the siege by fire")
-	assert.True(t, executed(e, "battle-B07-vanguard-strong"), "the vanguard at Jiejiao is the hard one")
-	assert.False(t, executed(e, "battle-B07-vanguard-clear"))
+	assert.True(t, executed(e, "battle-B10-vanguard-strong"), "the vanguard at Jiejiao is the hard one")
+	assert.False(t, executed(e, "battle-B10-vanguard-clear"))
 }
 
 func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
@@ -228,18 +228,18 @@ func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
 	}
 }
 
-// TestChangsheSiegeUnfolds plays the B01 story beat by beat with no move by the player: the
+// TestChangsheSiegeUnfolds plays the B02 story beat by beat with no move by the player: the
 // brothers set the south fences alight, the fire spreads, Cao Cao and Sun Jian fire the other
 // camps, the gates open and the Yellow Turbans run, and the battle is won once Bo Cai falls.
 func TestChangsheSiegeUnfolds(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 	dd := *d
-	dd.Campaign.Start = "c01-battle"
+	dd.Campaign.Start = "c02-battle"
 	e := New(&dd, 3)
 	applyOK(t, e, Command{Kind: "start"})
 	require.Equal(t, "battle", e.state.Phase, "the brothers sortie with no deployment screen")
-	require.True(t, executed(e, "battle-B01-night-raid"), "the whole night attack plays before the first turn")
+	require.True(t, executed(e, "battle-B02-night-raid"), "the whole night attack plays before the first turn")
 	assert.Equal(t, byte('F'), e.Cell(27, 26).State, "the south corner of the outer fence burns")
 	assert.Equal(t, byte('F'), e.Cell(26, 4).State, "Cao Cao fires the east corner")
 	assert.Equal(t, byte('F'), e.Cell(4, 26).State, "Sun Jian fires the west corner")

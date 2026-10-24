@@ -3,124 +3,160 @@
   {
    "ID": "c05-start",
    "Kind": "scene",
-   "Place": "낙양 동쪽 · 조조의 영채"
+   "Place": "사수관 · 동쪽 들판"
   },
   {
-   "ID": "c05-narr-1",
+   "ID": "c05-n1",
    "Kind": "narrate",
-   "Text": "서쪽 하늘이 붉다. 낙양이 타고 있다. 조조가 지도를 펼쳐 놓고 유비와 마주 섰다."
+   "Text": "사수관으로 가는 길. 해가 기울 무렵, 서쪽에서 흙먼지를 일으키며 패잔병들이 몰려온다. 깃발에 '손' 자가 보인다."
   },
   {
-   "ID": "c05-01",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "동탁은 천자와 백성 수십만을 끌고 가오. 걸음이 느릴 수밖에 없소."
-  },
-  {
-   "ID": "c05-02",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "지금 쫓으면 반드시 따라잡을 수 있소."
-  },
-  {
-   "ID": "c05-03",
+   "ID": "c05-s1",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "동탁도 그것을 알 터이니, 길목에 군사를 숨겨 두었을 것입니다."
-  },
-  {
-   "ID": "c05-04",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "그래서 내가 선봉으로 나가 복병을 끌어내겠소. 복병이 드러나면 현덕이 뒤에서 들이치시오."
-  },
-  {
-   "ID": "c05-05",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "제후들도 우리 뒤를 받치기로 약조했소."
-  },
-  {
-   "ID": "c05-06",
-   "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "그 제후 놈들이 정말 올지 모르겠슈."
-  },
-  {
-   "ID": "c05-07",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "(웃으며) 올 것이오. 이번만큼은 그들도 체면이 있으니."
+   "Text": "손 장군의 군사다. 뒤에 서량 기병이 붙었다. 서두르자!"
   },
   {
    "ID": "c05-battle",
    "Kind": "battle",
-   "Stage": "B04",
-   "Text": "변수 — 출전 준비"
+   "Text": "사수관 — 출전 준비",
+   "Stage": "B05"
   },
   {
-   "ID": "c05-scene-2",
+   "ID": "c05-camp",
    "Kind": "scene",
-   "Place": "변수 동쪽 · 연합 진영 근처"
+   "Place": "반동탁 연합 · 맹주의 막사"
   },
   {
-   "ID": "c05-narr-2",
+   "ID": "c05-n4",
    "Kind": "narrate",
-   "Text": "안개 속으로 패잔병들이 걸어 들어온다. 조조의 어깨에 화살 자국이 있다."
+   "Text": "손견군이 돌아와 진영이 어수선하다. 전령이 뛰어든다."
   },
   {
-   "ID": "c05-11",
+   "ID": "c05-s8",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "화웅이 영채 앞까지 와서 싸움을 돋웁니다! 낮에 저를 막은 수염 긴 장수를 내놓으라 외치고 있사옵니다!"
+  },
+  {
+   "ID": "c05-s9",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "유섭·반봉 두 장군이 나갔다가 연달아 그 칼에 쓰러졌사옵니다!"
+  },
+  {
+   "ID": "c05-n5",
+   "Kind": "narrate",
+   "Text": "제후들이 서로 눈치만 본다. 관우가 앞으로 나선다."
+  },
+  {
+   "ID": "c05-s10",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "소장이 나가 화웅의 목을 베어 오겠습니다."
+  },
+  {
+   "ID": "c05-s11",
+   "Kind": "say",
+   "Speaker": "yuanshu",
+   "Text": "직도 없는 자의 아우 따위가 감히! 제후들을 우습게 보는 것이냐. 이 자를 끌어내라!"
+  },
+  {
+   "ID": "c05-s12",
    "Kind": "say",
    "Speaker": "caocao",
-   "Text": "현덕, 공이 아니었으면 나는 저 숲에 누웠을 것이오."
+   "Text": "공로 공, 저 사람의 풍채를 보시오. 범상한 자가 아니오."
   },
   {
-   "ID": "c05-gift-check",
+   "ID": "c05-s13",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "지고 돌아오면 그때 꾸짖어도 늦지 않소."
+  },
+  {
+   "ID": "c05-n6",
+   "Kind": "narrate",
+   "Text": "조조가 데운 술을 따라 관우에게 내민다."
+  },
+  {
+   "ID": "c05-s14",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "운장, 이 술을 들고 가시오."
+  },
+  {
+   "ID": "c05-s15",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "술은 잠시 두시오. 곧 돌아오겠소."
+  },
+  {
+   "ID": "c05-n7",
+   "Kind": "narrate",
+   "Text": "막사 밖에서 북소리와 함성이 한 차례 울리고, 곧 잦아든다."
+  },
+  {
+   "ID": "c05-n8",
+   "Kind": "narrate",
+   "Text": "관우가 화웅의 목을 들고 들어와 땅에 던진다. 조조가 잔을 들어 본다. 술에서 아직 김이 오른다."
+  },
+  {
+   "ID": "c05-n9",
+   "Kind": "narrate",
+   "Text": "원술은 얼굴이 붉어진 채 말없이 고개를 돌린다."
+  },
+  {
+   "ID": "c05-n10",
+   "Kind": "narrate",
+   "Text": "손견이 붕대를 감은 채 유비 앞에 와서 고개를 숙인다."
+  },
+  {
+   "ID": "c05-s16",
+   "Kind": "say",
+   "Speaker": "sunjian",
+   "Text": "현덕, 손문대가 이 빚은 반드시 갚겠소."
+  },
+  {
+   "ID": "c05-s17",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "갚으실 것 없습니다. 장군께서 살아 계시니 그걸로 되었습니다."
+  },
+  {
+   "ID": "c05-gift-branch",
    "Kind": "branch",
    "Cases": [
     {
      "If": [
-      "flag:flag-bianshui-generals"
+      "flag:flag-sunjian-alive"
      ],
-     "Next": "c05-narr-3"
+     "Next": "c05-gift-n"
     }
    ],
-   "Else": "c05-end"
+   "Else": "c05-after"
   },
   {
-   "ID": "c05-narr-3",
+   "ID": "c05-gift-n",
    "Kind": "narrate",
-   "Text": "조조가 허리에서 칼 한 자루를 풀어 유비에게 내민다."
+   "Text": "손견이 허리에서 칼을 풀어 유비에게 건넨다."
   },
   {
-   "ID": "c05-12",
+   "ID": "c05-gift-s",
    "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "의천검이오. 내가 아끼는 두 자루 칼 가운데 하나지."
+   "Speaker": "sunjian",
+   "Text": "고정도요. 오늘 내 목숨을 지켜 준 이들에게 주는 것이니 사양하지 마시오."
   },
   {
-   "ID": "c05-13",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "오늘 내 목숨을 건져 준 사람에게 주는 것이니 사양하지 마시오."
-  },
-  {
-   "ID": "c05-14",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "……받겠습니다."
-  },
-  {
-   "ID": "c05-grant",
+   "ID": "c05-gift",
    "Kind": "grant",
-   "Item": "yitian_sword",
+   "Item": "gujeong_blade",
    "Count": 1,
-   "Event": "grant-yitian_sword"
+   "Event": "grant-gujeong_blade"
   },
   {
-   "ID": "c05-end",
+   "ID": "c05-after",
    "Kind": "narrate",
-   "Text": "연합 진영의 깃발이 새벽 안개 사이로 흐릿하게 보였다."
+   "Text": "손견이 고개를 들고 원술 쪽을 한 번 돌아본다. 눈빛이 차갑다."
   }
  ]
 }

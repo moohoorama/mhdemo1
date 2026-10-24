@@ -8,7 +8,7 @@ import (
 func init() { demos["flee"] = demoFlee }
 
 // demoFlee turns four AI allies into fleeing units a few cells from the east edge and plays their
-// turn (-stage B04 has AI allies and the edge as its area 2): each walks to the edge cell nearest to it
+// turn (-stage B07 has AI allies and the edge as its area 2): each walks to the edge cell nearest to it
 // and walks off the battle area, darkening and fading.
 func demoFlee(d *Demo) error {
 	if err := d.battle(d.stage); err != nil {

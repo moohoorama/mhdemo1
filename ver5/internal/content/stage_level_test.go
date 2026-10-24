@@ -10,11 +10,11 @@ import (
 func TestStageLevelFollowsTheStoryOrder(t *testing.T) {
 	d, err := Load("../../assets/data")
 	require.NoError(t, err)
-	for i, id := range []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07"} {
+	for i, id := range []string{"B02", "B05", "B06", "B07", "B08", "B09", "B10"} {
 		assert.Equal(t, i+1, d.StageOrder(id), id)
 		assert.Equal(t, 3+2*i, d.Rules.StageLevel(d.StageOrder(id)), id)
 	}
-	assert.Equal(t, 5, d.NextBattleOrder("c07-11"), "Jian Yong joins before Xindu")
+	assert.Equal(t, 5, d.NextBattleOrder("c09-11"), "Jian Yong joins before Xindu")
 }
 
 func TestRankLeadKeepsItsShareOfStrength(t *testing.T) {

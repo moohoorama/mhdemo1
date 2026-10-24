@@ -3,112 +3,124 @@
   {
    "ID": "c07-start",
    "Kind": "scene",
-   "Place": "하북으로 가는 길"
+   "Place": "낙양 동쪽 · 조조의 영채"
+  },
+  {
+   "ID": "c07-narr-1",
+   "Kind": "narrate",
+   "Text": "서쪽 하늘이 붉다. 낙양이 타고 있다. 조조가 지도를 펼쳐 놓고 유비와 마주 섰다."
+  },
+  {
+   "ID": "c07-01",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "동탁은 천자와 백성 수십만을 끌고 가오. 걸음이 느릴 수밖에 없소."
   },
   {
    "ID": "c07-02",
-   "Kind": "narrate",
-   "Text": "먼지를 일으키며 한 사내가 말을 몰아 온다."
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "지금 쫓으면 반드시 따라잡을 수 있소."
   },
   {
    "ID": "c07-03",
    "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "현덕! 탁현에서 기다리다 목이 빠지는 줄 알았네."
+   "Speaker": "liubei",
+   "Text": "동탁도 그것을 알 터이니, 길목에 군사를 숨겨 두었을 것입니다."
   },
   {
    "ID": "c07-04",
    "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "헌화! 자네가 어찌 여기에."
+   "Speaker": "caocao",
+   "Text": "그래서 내가 선봉으로 나가 복병을 끌어내겠소. 복병이 드러나면 현덕이 뒤에서 들이치시오."
   },
   {
    "ID": "c07-05",
    "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "반가운 얼굴만 들고 온 게 아닐세. 공손 장군의 서신이네."
+   "Speaker": "caocao",
+   "Text": "제후들도 우리 뒤를 받치기로 약조했소."
   },
   {
    "ID": "c07-06",
    "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "계교에서 원본초와 맞붙었는데 형세가 좋지 않다고, 노 선생 문하의 정을 봐서 구해 달라 하시네."
+   "Speaker": "zhangfei",
+   "Text": "그 제후 놈들이 정말 올지 모르겠슈."
   },
   {
    "ID": "c07-07",
    "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "원본초는 공손 장군이 쳐들어온다는 소문을 흘려 한복을 겁주고 기주를 얻었다더군. 이번엔 그 공손 장군을 치는 거지."
+   "Speaker": "caocao",
+   "Text": "(웃으며) 올 것이오. 이번만큼은 그들도 체면이 있으니."
   },
   {
-   "ID": "c07-08",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "계교라면 남쪽으로 한참입니다. 가는 길에 신도와 거록을 지나야 합니다."
+   "ID": "c07-battle",
+   "Kind": "battle",
+   "Stage": "B07",
+   "Text": "변수 — 출전 준비"
   },
   {
-   "ID": "c07-09",
-   "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "그런데 신도가 지금 원소군에 에워싸여 있다더군. 성주 번궁이 공손 장군 편이라 홀로 버티고 있다지."
+   "ID": "c07-scene-2",
+   "Kind": "scene",
+   "Place": "변수 동쪽 · 연합 진영 근처"
   },
   {
-   "ID": "c07-10",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "그냥 지나칠 수는 없다. 신도부터 간다."
+   "ID": "c07-narr-2",
+   "Kind": "narrate",
+   "Text": "안개 속으로 패잔병들이 걸어 들어온다. 조조의 어깨에 화살 자국이 있다."
   },
   {
    "ID": "c07-11",
-   "Kind": "join",
-   "Character": "jianyong",
-   "Event": "join-jianyong"
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "현덕, 공이 아니었으면 나는 저 숲에 누웠을 것이오."
+  },
+  {
+   "ID": "c07-gift-check",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-bianshui-generals"
+     ],
+     "Next": "c07-narr-3"
+    }
+   ],
+   "Else": "c07-end"
+  },
+  {
+   "ID": "c07-narr-3",
+   "Kind": "narrate",
+   "Text": "조조가 허리에서 칼 한 자루를 풀어 유비에게 내민다."
   },
   {
    "ID": "c07-12",
-   "Kind": "battle",
-   "Stage": "B05",
-   "Text": "신도 — 출전 준비"
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "의천검이오. 내가 아끼는 두 자루 칼 가운데 하나지."
   },
   {
    "ID": "c07-13",
-   "Kind": "scene",
-   "Place": "신도성 안"
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "오늘 내 목숨을 건져 준 사람에게 주는 것이니 사양하지 마시오."
   },
   {
    "ID": "c07-14",
-   "Kind": "narrate",
-   "Text": "부서진 성문 곁에서 병사들이 숨을 고른다. 번궁이 유비 앞에 와서 무릎을 꿇는다."
-  },
-  {
-   "ID": "c07-15",
-   "Kind": "say",
-   "Speaker": "fangong",
-   "Text": "장군이 아니었으면 신도는 원본초의 것이 되었을 것이오. 공손 장군을 구하러 가신다 들었소."
-  },
-  {
-   "ID": "c07-16",
-   "Kind": "say",
-   "Speaker": "fangong",
-   "Text": "성은 부장에게 맡기고, 소장도 함께 가겠소."
-  },
-  {
-   "ID": "c07-17",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "성주께서 성을 두고 어찌……."
+   "Text": "……받겠습니다."
   },
   {
-   "ID": "c07-18",
-   "Kind": "say",
-   "Speaker": "fangong",
-   "Text": "성은 장군께서 지켜 주셨소. 이제 소장의 창은 장군의 것이오."
+   "ID": "c07-grant",
+   "Kind": "grant",
+   "Item": "yitian_sword",
+   "Count": 1,
+   "Event": "grant-yitian_sword"
   },
   {
-   "ID": "c07-19",
-   "Kind": "join",
-   "Character": "fangong",
-   "Event": "join-fangong"
+   "ID": "c07-end",
+   "Kind": "narrate",
+   "Text": "연합 진영의 깃발이 새벽 안개 사이로 흐릿하게 보였다."
   }
  ]
 }

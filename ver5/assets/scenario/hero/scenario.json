@@ -1,5 +1,5 @@
 {
- "Start": "c01-start",
+ "Start": "c02-start",
  "Roster": [
   "liubei",
   "guanyu",
@@ -17,20 +17,12 @@
  "Money": 1000,
  "Chapters": [
   {
-   "ID": "01",
-   "File": "story01.json"
-  },
-  {
    "ID": "02",
    "File": "story02.json"
   },
   {
    "ID": "03",
    "File": "story03.json"
-  },
-  {
-   "ID": "04",
-   "File": "story04.json"
   },
   {
    "ID": "05",
@@ -51,6 +43,14 @@
   {
    "ID": "09",
    "File": "story09.json"
+  },
+  {
+   "ID": "10",
+   "File": "story10.json"
+  },
+  {
+   "ID": "11",
+   "File": "story11.json"
   }
  ]
 }

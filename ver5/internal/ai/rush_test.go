@@ -72,19 +72,19 @@ func rushCampaign(t *testing.T, seed uint64, stages int) (*core.Engine, map[stri
 }
 
 // TestRushWinsTheFirstStages: a player who only charges the nearest enemy still gets through the
-// first three stages in at least four games of five (docs/stage_lv_balance.md), and B01's story plays
+// first three stages in at least four games of five (docs/stage_lv_balance.md), and B02's story plays
 // out by itself in every game.
 func TestRushWinsTheFirstStages(t *testing.T) {
 	wins := 0
 	for seed := uint64(1); seed <= 5; seed++ {
 		e, results := rushCampaign(t, seed, 3)
-		if results["B01"] == "victory" && results["B02"] == "victory" && results["B03"] == "victory" {
+		if results["B02"] == "victory" && results["B05"] == "victory" && results["B06"] == "victory" {
 			wins++
 		} else {
 			t.Logf("seed %d: %v", seed, results)
 		}
 		executed := e.Snapshot().Executed
-		for _, k := range []string{"battle-B01-night-raid", "battle-B01-chengyuanzhi-sorties", "duel-yingchuan-liubei-bocai"} {
+		for _, k := range []string{"battle-B02-night-raid", "battle-B02-chengyuanzhi-sorties", "duel-yingchuan-liubei-bocai"} {
 			assert.True(t, executed[k], "seed %d: %s", seed, k)
 		}
 	}

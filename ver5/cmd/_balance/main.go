@@ -3,7 +3,7 @@
 // seeds and reports the win rate, the rounds and the levels the officers gained.
 //
 //	go run ./cmd/_balance                       every stage, careless player (rush)
-//	go run ./cmd/_balance -stage B01 -player ai -seeds 10
+//	go run ./cmd/_balance -stage B02 -player ai -seeds 10
 package main
 
 import (

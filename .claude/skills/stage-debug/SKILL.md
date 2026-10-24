@@ -15,7 +15,7 @@ with the evidence (numbers, CLI excerpts, frames).
 go run ./cmd/_balance -stage B03 -seeds 10              # careless player: nearest enemy only
 go run ./cmd/_balance -stage B03 -seeds 10 -player ai   # the game's own AI
 go run ./cmd/_balance -stage B03 -seeds 1 -show         # unit numbers at the start + retreats/duels/damage per round
-go test ./internal/ai -run Rush -v                      # B01→B03 with growth carried over (the real campaign)
+go test ./internal/ai -run Rush -v                      # the first three battles with growth carried over (the real campaign)
 ```
 
 - It starts the player's officers at the policy level 3 + 2×(n − 1). Targets: rush ≥ 4/5 on the first three stages,

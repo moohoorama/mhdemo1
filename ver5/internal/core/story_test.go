@@ -181,7 +181,7 @@ func TestRetryAfterDefeatReturnsToTheSortieNotTheScenesBefore(t *testing.T) {
 func TestJoiningOfficerCatchesUpWithTheStory(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
-	d.Campaign.Start = "c07-11"
+	d.Campaign.Start = "c09-11"
 	e := New(d, 1)
 	apply(t, e, Command{Kind: "start"})
 	o := e.char("jianyong")
@@ -194,7 +194,7 @@ func TestOfficersBelowTheStageLevelAreNotRaisedAtTheSortie(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 	for _, n := range d.Nodes {
-		if n.Kind == "battle" && n.Stage == "B03" {
+		if n.Kind == "battle" && n.Stage == "B06" {
 			d.Campaign.Start = n.ID
 		}
 	}

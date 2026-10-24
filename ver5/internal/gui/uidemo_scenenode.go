@@ -10,7 +10,7 @@ import (
 
 func init() { demos["scenenode"] = demoSceneNode }
 
-// demoSceneNode plays story nodes as the story screen shows them (-stage c01-t1,c01-t2,...):
+// demoSceneNode plays story nodes as the story screen shows them (-stage c02-t1,c02-t2,...):
 // each node's scene and lines, the next line 120 frames after the beats before a line have played out.
 func demoSceneNode(d *Demo) error {
 	g := d.g

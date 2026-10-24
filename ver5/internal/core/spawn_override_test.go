@@ -24,7 +24,7 @@ func TestSpawnOverrides(t *testing.T) {
 	if a.HP != 10 || a.MP != 0 || a.Facing != "SW" || e.char(a.Character).Class != "heavy_cavalry" || a.ID == other.ID || e.char(other.Character).Class != "light_cavalry" {
 		t.Fatalf("overrides %+v / %+v", a, other)
 	}
-	preview := SpawnPreview(d, "B01", sp)
+	preview := SpawnPreview(d, "B02", sp)
 	if preview.Stats != e.stats(a) || preview.HP != a.HP {
 		t.Fatal("preview differs")
 	}

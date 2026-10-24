@@ -16,7 +16,7 @@ Read first:
   prostrate, eunuchs, wounded lying or slumped, helper pairs, stretchers, prone crossbowmen, white horses; officers
   that sit, the emperor on his throne). Use only those. When the story needs something they cannot show, write it down as an engine request
   in the report; do not fake it with something that reads wrong.
-- `assets/scenes/ch01.json`–`ch04.json` as worked examples (a council, a court, arrivals on a road, a night camp).
+- `assets/scenes/ch02.json`, `ch03.json`, `ch05.json`, `ch06.json` as worked examples (a council, a court, arrivals on a road, a night camp).
 - The stretch's story nodes in `assets/scenario/hero/storyNN.json` and its part of `docs/conceptual_scenario.md`.
 - Reuse battle sprites, motions and terrain; draw new art only where nothing fits (scholar/strategist sprites stand in
   for court officials, class sprites for soldiers and riders, `bandit` for Yellow Turbans).
