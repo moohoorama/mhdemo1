@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"slices"
 	"strconv"
 )
 
@@ -52,7 +51,8 @@ type Rules struct {
 		Rim   string `json:"rim"`
 	} `json:"heights"`
 	Walls        map[string]map[string]string `json:"walls"`
-	Gates        []string                     `json:"gates"`
+	Gates        map[string]string            `json:"gates"`        // a gate object -> its slices (<slices>_<axis>_<k>)
+	GatePassage  [2]int                       `json:"gate_passage"` // the small tiles of a gate's passage, from its point
 	CornerShadow struct {
 		Sprite string `json:"sprite"`
 		Offset [2]int `json:"offset"`
@@ -150,7 +150,10 @@ func (c *Catalog) surface(g byte) int {
 	return 1
 }
 
-func (c *Catalog) isGate(name string) bool { return slices.Contains(c.Rules.Gates, name) }
+func (c *Catalog) isGate(name string) bool {
+	_, ok := c.Rules.Gates[name]
+	return ok
+}
 
 // footprint is the ground an object covers, from its anchor: [du, dv, w, d] in small tiles.
 func (c *Catalog) footprint(name string) [4]float64 {

@@ -365,10 +365,9 @@ func (w *view) blocks() (blocks []Piece, feet []Draw, err error) {
 	return blocks, feet, nil
 }
 
-// walls lays each wall line one piece per small tile, and sets the gates standing on it into it: a gate is a run of
-// slices along the line (index.json gate_offset), each in place of the wall piece where it stands, or drawn after it
-// when the slice is narrower than a tile (a post's edge). A piece on a tile higher than the line's foot is inside
-// the rise and is not drawn.
+// walls lays each wall line one block per small tile, and sets the gates standing on it into it: a gate is a run of
+// slices along the line, one per small tile (index.json gate_offset), each in place of the wall block where it
+// stands. A piece on a tile higher than the line's foot is inside the rise and is not drawn.
 func (w *view) walls() ([]Piece, error) {
 	var out []Piece
 	seated := map[int]bool{}
@@ -389,14 +388,13 @@ func (w *view) walls() ([]Piece, error) {
 			return fixed, t
 		}
 		type laid struct {
-			name   string // a wall piece's family, or a gate
+			gate   string // "" for a wall piece; else the gate's slices
 			slice  int
-			mirror int
-			gate   int // a slice's gate point along the line
+			mirror int // the slice in its place when the turn runs the gate the other way along the line
 		}
-		pieces := map[int][]laid{}
+		pieces := map[int]laid{}
 		for t := t0; t <= t1; t++ {
-			pieces[t] = []laid{{line.Family, -1, -1, 0}}
+			pieces[t] = laid{}
 		}
 		for gi, ob := range w.m.Objects {
 			if !w.c.isGate(ob.Name) {
@@ -410,23 +408,13 @@ func (w *view) walls() ([]Piece, error) {
 				continue
 			}
 			seated[gi] = true
-			slices := w.c.gateSlices(ob.Name, axis)
+			gate := w.c.Rules.Gates[ob.Name]
+			slices := w.c.gateSlices(gate, axis)
 			if len(slices) == 0 {
-				return nil, fmt.Errorf("%s: no slices of gate %s along %s", w.m.ID, ob.Name, axis)
+				return nil, fmt.Errorf("%s: no slices of gate %s along %s", w.m.ID, gate, axis)
 			}
 			for k, s := range slices {
-				t := gt + round(2**s.GateOffset)
-				l := laid{ob.Name, k, k, gt}
-				for m, o := range slices {
-					if *o.GateOffset == -*s.GateOffset {
-						l.mirror = m
-					}
-				}
-				if s.Rect[2] < 16 {
-					pieces[t] = append(pieces[t][:min(1, len(pieces[t]))], l)
-				} else {
-					pieces[t] = []laid{l}
-				}
+				pieces[gt+round(2**s.GateOffset)] = laid{gate, k, len(slices) - 1 - k}
 			}
 		}
 		var ts []int
@@ -449,31 +437,22 @@ func (w *view) walls() ([]Piece, error) {
 			}
 			u, v := w.rot(ou, ov)
 			x, y := center(u, v)
-			// a post's edge sharing the tile of a wall piece: the nearer of the two is drawn last, so the wall
-			// running on toward the camera covers the post's foot and the post covers the wall going away
-			if ls := pieces[t]; len(ls) == 2 && ls[0].slice < 0 {
-				gu, gv := w.rot(tile(ls[1].gate))
-				if u+v > gu+gv {
-					ls[0], ls[1] = ls[1], ls[0]
+			l := pieces[t]
+			name := family[turned]
+			if l.gate != "" {
+				k := l.slice
+				if reverse {
+					k = l.mirror
 				}
+				name = fmt.Sprintf("%s_%s_%d", l.gate, turned, k)
 			}
-			for _, l := range pieces[t] {
-				name := family[turned]
-				if l.slice >= 0 {
-					k := l.slice
-					if reverse {
-						k = l.mirror
-					}
-					name = fmt.Sprintf("%s_%s_%d", l.name, turned, k)
-				}
-				sp, ok := w.c.Sprites[name]
-				if !ok {
-					return nil, fmt.Errorf("%s: no picture %s", w.m.ID, name)
-				}
-				out = append(out, Piece{Key: Key{Box: [4]float64{float64(u), float64(v), float64(u + 1), float64(v + 1)},
-					Rank: RankWall, X: float64(x)}, Name: name, At: [2]int{ou, ov}, Anchor: [2]float64{float64(x), float64(y)},
-					Draws: []Draw{{Kind: DrawSprite, Name: name, X: x - sp.Pivot[0], Y: y - sp.Pivot[1]}}})
+			sp, ok := w.c.Sprites[name]
+			if !ok {
+				return nil, fmt.Errorf("%s: no picture %s", w.m.ID, name)
 			}
+			out = append(out, Piece{Key: Key{Box: [4]float64{float64(u), float64(v), float64(u + 1), float64(v + 1)},
+				Rank: RankWall, X: float64(x)}, Name: name, At: [2]int{ou, ov}, Anchor: [2]float64{float64(x), float64(y)},
+				Draws: []Draw{{Kind: DrawSprite, Name: name, X: x - sp.Pivot[0], Y: y - sp.Pivot[1]}}})
 		}
 	}
 	for i, ob := range w.m.Objects {

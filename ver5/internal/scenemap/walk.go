@@ -20,8 +20,8 @@ func (w *Walk) Open(u, v int) bool {
 
 // Walkable marks the small tiles a person can walk: on ground whose glyph is walkable (scene.json "walkable") at
 // height 0; not under a standing object, which covers the tiles its footprint overlaps by half a tile (or half its
-// own size, when smaller) along both axes; not on a wall line, except through a gate's passage, the tiles within a
-// small tile of the gate's point.
+// own size, when smaller) along both axes; not on a wall line, except through a gate's passage (scene.json
+// gate_passage: the small tiles from the gate's point along the line).
 func Walkable(m *Map, c *Catalog) *Walk {
 	w := &Walk{Origin: m.Origin, W: m.W(), H: m.H(), open: make([]bool, m.W()*m.H())}
 	set := func(u, v int, open bool) {
@@ -69,7 +69,7 @@ func Walkable(m *Map, c *Catalog) *Walk {
 				continue
 			}
 			if alongU && ob.V == line.From[1] || !alongU && ob.U == line.From[0] {
-				for d := -1; d <= 1; d++ {
+				for d := c.Rules.GatePassage[0]; d <= c.Rules.GatePassage[1]; d++ {
 					if alongU {
 						set(ob.U+d, ob.V, m.Step(ob.U+d, ob.V) == 0)
 					} else {

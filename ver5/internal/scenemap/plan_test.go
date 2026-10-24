@@ -70,7 +70,7 @@ func TestOrder(t *testing.T) {
 
 func TestCheckpoint(t *testing.T) {
 	m, c := load(t, "S_checkpoint")
-	t.Run("the gate takes the wall's place and its edge post inside the ridge is not drawn", func(t *testing.T) {
+	t.Run("the gate's slices take the wall blocks' places, one per small tile", func(t *testing.T) {
 		p, err := Build(m, c, Options{})
 		require.NoError(t, err)
 		at := map[string][2]int{}
@@ -79,9 +79,10 @@ func TestCheckpoint(t *testing.T) {
 				at[s.Name] = s.At
 			}
 		}
-		assert.Equal(t, [2]int{17, 9}, at["sgate_open_v_5"])
-		assert.NotContains(t, at, "sgate_open_v_11")
-		assert.Equal(t, [2]int{17, 2}, at["swall_v"])
+		assert.Equal(t, [2]int{17, 4}, at["sgate2_open_v_0"])
+		assert.Equal(t, [2]int{17, 9}, at["sgate2_open_v_5"])
+		assert.Equal(t, [2]int{17, 13}, at["sgate2_open_v_9"])
+		assert.Equal(t, [2]int{17, 2}, at["swall2_v"])
 	})
 	t.Run("corner shadow on the far cliff right of the wall, only while that face shows", func(t *testing.T) {
 		shadows := func(turn int) []Draw {

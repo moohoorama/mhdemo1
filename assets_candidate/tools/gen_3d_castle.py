@@ -242,7 +242,122 @@ def write():
         print(n, e["size"], e["pivot"])
 
 
-if __name__ == "__main__" and sys.argv[1:] == ["--write"]:
+# ---- the block kit: a wall piece is a whole small cell of wall (its front, its walkway and both parapets), a gate
+# is ten small cells of it; each picture is cut out of a longer render by which cell owns each pixel (render's owner)
+
+import heads as Hd
+
+BLOCK_CELL, BLOCK_PIVOT = (96, 140), (48, 120)
+GATE_CELL, GATE_PIVOT = (360, 240), (180, 190)
+GATE_TILES = 10  # the gate model runs over x in [-5, 5): the tower, a wing and a post either side
+
+
+def owned_draw(cell, pivot, owner):
+    """the model drawn whole, and which part owns each pixel (owner of model-space points; -1 for none)"""
+    own = []
+    im = Hd.to_img(R.render(m.meshes, S.VIEW, S.SCALE, cell=cell, pivot=pivot, owner=owner, owners=own))
+    im.pivot = (pivot[0] + 1, pivot[1] + 1)
+    return im, own[0]
+
+
+def keep(im, own, k):
+    """the pixels of im owned by k, trimmed; the pivot moves with the crop"""
+    a = np.array(im)
+    a[own != k] = 0
+    part = Image.fromarray(a)
+    x0, y0, x1, y1 = part.getbbox()
+    return part.crop((x0, y0, x1, y1)), (im.pivot[0] - x0, im.pivot[1] - y0)
+
+
+def along(orient):
+    """the model coordinate along the wall: x for _u, and for _v (the model mirrored by mirror()) -y"""
+    return (lambda p: p[:, 0]) if orient == "u" else (lambda p: -p[:, 1])
+
+
+def block(orient):
+    """one small cell of wall: the cell drawn alone (its whole shape, so the end of a line shows its end face), less
+    the outline it would cast on the neighbour behind it in a line; where three in a row show it, their colours (no
+    outline at the joints)"""
+    def model(row):
+        m.meshes = []
+        wall_body()
+        merlons(-T / 2 + .1, H)
+        merlons(T / 2 - .08, H, thick=.14, base=.22, h=0)
+        if row:
+            strip()
+        if orient == "v":
+            mirror()
+    t = along(orient)
+    model(True)
+    row, own = owned_draw(BLOCK_CELL, BLOCK_PIVOT, lambda p: np.floor(t(p) + .5).astype(int) + 1)
+    model(False)
+    alone = P.draw(BLOCK_CELL, BLOCK_PIVOT)
+    a, r = np.array(alone), np.array(row)
+    a[own == 1] = r[own == 1]
+    a[own == 0] = 0  # the neighbour behind: in a line it is drawn first and this cell must not outline it
+    im = Image.fromarray(a)
+    im.pivot = row.pivot
+    x0, y0, x1, y1 = im.getbbox()
+    return im.crop((x0, y0, x1, y1)), (im.pivot[0] - x0, im.pivot[1] - y0)
+
+
+def gate_tiles(closed, orient):
+    """the gate's ten slices, slice j the pixels of the small cell x in [j - 5, j - 4): a slice stands on its own cell
+    of the wall line, gate_offset game cells from the gate's point (the cell just past the middle of the arch)"""
+    gate(closed)
+    if orient == "v":
+        mirror()
+    t = along(orient)
+    im, own = owned_draw(GATE_CELL, GATE_PIVOT, lambda p: np.clip(np.floor(t(p)).astype(int) + 5, 0, GATE_TILES - 1))
+    out = []
+    for j in range(GATE_TILES):
+        part, (px, py) = keep(im, own, j)
+        rel = j - 5
+        dx = 16 * (rel + .5) if orient == "u" else -16 * (rel + .5)  # the slice's cell centre from the gate's model origin
+        out.append((part, (int(round(px + dx)), int(round(py + 8 * (rel + .5)))), rel / 2))
+    return out
+
+
+def models2():
+    out = {}
+    for orient in ("u", "v"):
+        out["swall2_" + orient] = block(orient)
+    for state, closed in (("closed", True), ("open", False)):
+        for orient in ("u", "v"):
+            for j, (im, pv, off) in enumerate(gate_tiles(closed, orient)):
+                out["sgate2_%s_%s_%d" % (state, orient, j)] = (im, pv, off)
+    return out
+
+
+def write2():
+    """save the block kit into ../tiles and update only its entries of tiles.json"""
+    import json
+    tiles = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "tiles")
+    made = {}
+    for name, (im, pv, *off) in models2().items():
+        im.save(os.path.join(tiles, name + ".png"))
+        made[name] = dict(file="tiles/%s.png" % name, size=list(im.size), pivot=list(pv), layer="object", scale="scene",
+                          made="3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)")
+        if off:
+            made[name]["gate_offset"] = off[0]
+    path = os.path.join(tiles, "tiles.json")
+    man = json.load(open(path))
+    man["sprites"].update(made)
+    json.dump(man, open(path, "w"), ensure_ascii=False, indent=1)
+    open(path, "a").write("\n")
+    for n, e in made.items():
+        print(n, e["size"], e["pivot"], e.get("gate_offset", ""))
+
+
+if __name__ == "__main__" and sys.argv[1:] == ["--write2"]:
+    write2()
+elif __name__ == "__main__" and sys.argv[1:2] == ["--preview2"]:
+    # python3 gen_3d_castle.py --preview2 OUT_DIR: the block kit's pictures, and each gate put back together
+    out = sys.argv[2]
+    for name, (im, pv, *off) in models2().items():
+        im.save(os.path.join(out, name + ".png"))
+        print(name, im.size, pv, off)
+elif __name__ == "__main__" and sys.argv[1:] == ["--write"]:
     write()
 elif __name__ == "__main__":
     # preview: python3 gen_3d_castle.py OUT_DIR writes every model's trimmed picture there

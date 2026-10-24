@@ -5,6 +5,15 @@
 
 ---
 
+## 2026-10-24 장면 성벽·성문을 3D로 다시 (형식 2)
+
+- 결정: 형식 2 맵의 성벽은 작은 칸 하나를 통째로 그린 블록, 성문은 작은 칸 10개를 칸마다 나눈 조각으로 바꾼다 · 옛 성벽 그림은 앞면 16px 띠만 잘라 써서 걷는 길과 뒤쪽이 잘려 얇게(성가퀴가 붙은 듯) 보였고, 성문 기둥이 칸 밖으로 넘쳐 이어지는 성벽과의 앞뒤가 어색했다(사용자 지적) · `presentation-scene.md`.
+- `../tools/unit3d/render.py`: `render(..., owner=, owners=)` — 모델 좌표로 각 픽셀을 차지한 부분을 알려 준다(기존 호출은 그대로) — 그림을 칸 단위로 나누기 위해.
+- `../assets_candidate/tools/gen_3d_castle.py`: 블록 키트(`--write2`, `--preview2`): `swall2_u`·`swall2_v`, `sgate2_{open,closed}_{u,v}_{0..9}`. 높이 3.2·두께 1칸·성문 구조는 옛 것과 같다. `../assets_candidate/tiles/tiles.json`과 새 그림 44장, `build_extra.py`로 `map/extra.png`·`index.json`을 다시 묶음.
+- `internal/scenemap/plan.go`·`catalog.go`·`walk.go`, `assets/graphics/scene.json`: 성문 조각은 모두 그 칸 성벽 블록을 대신한다(가장자리 조각 예외와 앞뒤 비교 삭제), 회전 시 조각 순서는 뒤집기, `gates`는 물체 이름 → 조각 이름, 통로 칸은 `gate_passage`.
+- `assets/graphics/maps/S_castle_town.json`: u 방향 성벽 줄을 뒤 모서리 칸(−1, −1)부터 — 두꺼운 성벽에서 모서리가 비지 않게.
+- `internal/scenemap/plan_test.go`, `internal/gui/scene_maps_test.go`: 새 그림 이름과 성문 조각 자리.
+
 ## 2026-10-24 성문 앞쪽 기둥과 성벽의 앞뒤
 
 - `internal/scenemap/plan.go`: 성문 가장자리 조각(기둥 끝)과 성벽 조각이 한 칸에 있으면 깊이로 순서를 정한다: 그 칸이 성문 중심보다 가까우면 성벽을 나중에 — 성 안 민가·탁군처럼 성문 앞쪽(화면 왼쪽 아래)으로 성벽이 이어지는 곳에서 성문 기둥이 더 가까운 성벽 위에 그려지던 것. 옛 `seat_gates`의 "가장자리 조각은 성벽 조각 뒤에" 규칙은 뒤쪽 끝에만 맞았다. 성 안 민가 비교 차이 14,391 → 15,198픽셀(의도).
