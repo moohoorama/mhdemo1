@@ -152,10 +152,14 @@ def gate(closed, L):
     t0, t1 = 3, 7
     out = [Body(L.box(0, t0 + 1, 0, 1, 0, WALL_H), stone_paint), Body(L.box(t1 - 1, GATE_TILES, 0, 1, 0, WALL_H), stone_paint),
            Body(L.box(t0 + 1, t1 - 1, 0, 1, PASS_H, WALL_H), stone_paint)]
+    def shoulder(f, u, v, z, s, h):
+        """stone on the wall's face, the passage's dark on the faces looking along the line (inside the arch)"""
+        return passage_paint(f, u, v, z, s, h) if f.endswith(L.o) else stone_paint(f, u, v, z, s, h)
+
     for w, dz in ((.25, 6), (.125, 12)):   # the arch's shoulders, a step at a time
-        out += [Body(L.box(t0 + 1, t0 + 1 + w, 0, 1, PASS_H - dz, PASS_H), stone_paint),
-                Body(L.box(t1 - 1 - w, t1 - 1, 0, 1, PASS_H - dz, PASS_H), stone_paint)]
-    out.append(Body(L.box(t0 + 1, t0 + 1 + 1e-3, 0, 1, 0, PASS_H - 12), passage_paint))
+        out += [Body(L.box(t0 + 1, t0 + 1 + w, 0, 1, PASS_H - dz, PASS_H), shoulder),
+                Body(L.box(t1 - 1 - w, t1 - 1, 0, 1, PASS_H - dz, PASS_H), shoulder)]
+    out.append(Body(L.box(t0 + 1, t0 + 1 + 1e-3, 0, 1, 0, PASS_H), passage_paint))
     if closed:
         out.append(Body(L.box(t0 + 1, t1 - 1, .45, .55, 0, PASS_H - 1), door_paint))
     for j in range(GATE_TILES):
