@@ -5,6 +5,16 @@
 
 ---
 
+## 2026-10-24 형식 2 둘러보기 데모 `cmd/_town2`
+
+- `cmd/_town2/main.go`·`internal/gui/tour.go`·`uidemo_tour.go`·`game.go`(새 파일·연결): 유비가 형식 2 장면 맵을 작은 칸 단위로 걸어 다니고, 출구(이름판·건물·출구 자리)를 누르면 다음 맵으로 가는 데모 — 새 규칙으로 그린 맵을 직접 걸으며 보기 위해. 사람·대사는 없다.
+- `internal/scenemap/walk.go`(새 파일), `assets/graphics/scene.json`(`walkable`): 걸을 수 있는 작은 칸을 땅 글자·높이·물체 footprint·성벽 줄(성문 통로는 열림)로 정하는 규칙 — 마을 파일의 `Footprints`·`Ground` 목록 같은 따로 둔 데이터 없이 맵 규칙에서 바로 정하기 위해.
+- `assets/towns/tour2.json`(새 파일): 탁군 사본 6곳·관문·성 안 민가·군막과 출구.
+- `assets/graphics/maps/S_zhuo2.json` 외 5개(새 파일), `index.json`: 옛 탁군 맵의 형식 2 사본 — 원본과 `cmd/_town`을 그대로 두기 위해.
+- `tools/scene_maps/scene_v2.py`: `--copy <접미어>`로 사본을 만들고 `index.json`의 `maps`에 올린다.
+- `internal/scenemap/plan_test.go`(`TestWalkable`), `internal/gui/scene_maps_test.go`(`TestTourAreas`): 관문의 길·절벽·성벽·성문 통로·망루 아래, 둘러보기 지역마다 출구에 닿는지.
+- `docs/presentation-town.md`: 둘러보기 사용법과 데이터.
+
 ## 2026-10-24 장면 렌더링 규칙과 장면 맵 형식 2 (계획 2026_10_24_scene_render 1~3단계)
 
 - 결정: 장면 맵의 그리기 규칙을 Go 패키지 `internal/scenemap` 한 곳에 두고, 뷰어(`cmd/_scene`)와 게임(`internal/gui`)이 같은 그리기 목록을 쓴다 · 계획은 뷰어(JS)와 게임(Go)에 같게 두 번 구현하고 비교 시험으로 맞추는 것이었으나, 한 곳에 두면 어긋날 일이 없다 · `presentation-scene.md`, `tools-scene-viewer.md`.

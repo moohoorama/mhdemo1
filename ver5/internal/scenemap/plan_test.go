@@ -123,3 +123,25 @@ func TestTentFloors(t *testing.T) {
 	}
 	assert.Equal(t, 30, floors)
 }
+
+func TestWalkable(t *testing.T) {
+	m, c := load(t, "S_checkpoint")
+	w := Walkable(m, c)
+	for _, tc := range []struct {
+		name string
+		u, v int
+		open bool
+	}{
+		{"the road east of the wall", 20, 9, true},
+		{"the far cliff", 20, 0, false},
+		{"the near ridge", 20, 16, false},
+		{"the wall line", 17, 3, false},
+		{"the gate's passage", 17, 9, true},
+		{"the gate's wing", 17, 12, false},
+		{"under the watchtower", 14, 4, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			assert.Equal(t, tc.open, w.Open(tc.u, tc.v))
+		})
+	}
+}

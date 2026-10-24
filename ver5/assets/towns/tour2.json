@@ -1,0 +1,29 @@
+{
+ "Name": "형식 2 둘러보기",
+ "Hero": "liubei",
+ "Start": "zhuo",
+ "Areas": {
+  "zhuo": {"Map": "S_zhuo2", "Name": "탁군 성 안", "At": [7, 11], "Exits": [
+   {"Name": "관사", "At": [13, 5], "Object": [13, 3], "To": "office"},
+   {"Name": "저택", "At": [7, 5], "Object": [5, 5], "To": "mansion"},
+   {"Name": "무기점", "At": [19, 9], "Object": [19, 7], "To": "weapons"},
+   {"Name": "주점", "At": [11, 15], "Object": [9, 15], "To": "tavern"},
+   {"Name": "도구점", "At": [21, 19], "Object": [21, 17], "To": "tools"},
+   {"Name": "관문으로", "At": [-1, 11], "To": "checkpoint"}
+  ]},
+  "office": {"Map": "S_zhuo_office2", "Name": "관사", "Zoom": 3, "At": [7, 7], "Exits": [{"Name": "거리로", "At": [13, 9], "To": "zhuo"}]},
+  "weapons": {"Map": "S_weapon_shop2", "Name": "무기점", "Zoom": 3, "At": [6, 6], "Exits": [{"Name": "거리로", "At": [11, 7], "To": "zhuo"}]},
+  "tools": {"Map": "S_tool_shop2", "Name": "도구점", "Zoom": 3, "At": [6, 7], "Exits": [{"Name": "거리로", "At": [11, 7], "To": "zhuo"}]},
+  "mansion": {"Map": "S_mansion2", "Name": "저택", "Zoom": 3, "At": [8, 8], "Exits": [{"Name": "거리로", "At": [15, 9], "To": "zhuo"}]},
+  "tavern": {"Map": "S_tavern2", "Name": "주점", "Zoom": 3, "At": [7, 7], "Exits": [{"Name": "거리로", "At": [13, 9], "To": "zhuo"}]},
+  "checkpoint": {"Map": "S_checkpoint", "Name": "관문", "At": [20, 9], "Exits": [
+   {"Name": "탁군으로", "At": [14, 9], "To": "zhuo"},
+   {"Name": "성 안 민가로", "At": [23, 9], "To": "town"}
+  ]},
+  "town": {"Map": "S_castle_town", "Name": "성 안 민가", "At": [9, 7], "Exits": [
+   {"Name": "관문으로", "At": [0, 7], "To": "checkpoint"},
+   {"Name": "군막", "At": [16, 18], "Object": [16, 16], "To": "tent"}
+  ]},
+  "tent": {"Map": "S_tent_mid", "Name": "장수의 군막", "Zoom": 3, "At": [6, 6], "Exits": [{"Name": "밖으로", "At": [11, 9], "To": "town"}]}
+ }
+}

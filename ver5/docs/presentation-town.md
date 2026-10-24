@@ -58,3 +58,14 @@
 
 거리의 건물(타일): 관사 `hall_u`(6, 1)·문 (6, 2), 저택 `hall_v`(2, 2)·문 (3, 2)와 매화 뜰, 무기점 `house_tile`(9, 3)·문 (9, 4), 주점 `house_thatch_x`(4, 7)·문 (5, 7), 도구점 `house_tile`(10, 8)·문 (10, 9), 잠긴 민가 (11, 1)·(1, 8).
 맵은 `tools/scene_maps/zhuo.py`가 `compose.py`의 `room`·`outdoor`로 만들고 이 다섯 맵만 쓴다.
+
+## 형식 2 둘러보기 `cmd/_town2` (데모)
+
+형식 2 장면 맵이 어떻게 그려지는지 걸어 다니며 보는 데모다. `go run ./cmd/_town2`(창), `go run ./cmd/_uidemo-vm -ui tour`(캡처, `-stage "walk:U:V,exit:이름,grid"`로 동선을 줄 수 있다).
+사람·대사는 없고 유비 혼자 걷는다. 그리기는 게임의 형식 2 경로(`internal/scenemap`) 그대로다.
+
+- 걷기는 **작은 칸**(게임 칸의 반) 단위로, u·v 네 방향 A*다. 한 걸음은 장면 걸음의 반 거리를 두 배 빠르기로 걷는다.
+- 걸을 수 있는 작은 칸은 규칙 패키지의 `scenemap.Walkable`이 정한다: 땅 글자가 `scene.json`의 `walkable`(`.diTWPC`)이고 높이 0이며, 서 있는 물체의 footprint가 두 축 모두 반 칸(물체가 그보다 작으면 제 크기의 반) 이상 덮지 않고, 성벽 줄이 아닌 칸(성문 점 앞뒤 한 칸씩은 통로로 열림). `R`·오른쪽 클릭은 막힌 칸(붉게)과 출구(푸르게)를 보인다.
+- 출구의 이름판·출구 자리(앞뒤 한 칸)·출구가 달린 건물 그림을 누르면 출구까지 걸어가 어두워진 뒤 다음 지역으로 간다. 도착하면 그 지역에서 온 곳으로 돌아가는 출구 자리에 선다(없으면 지역의 `At`).
+- 데이터 `assets/towns/tour2.json`: `{"Name", "Hero", "Start", "Areas": {"<id>": {"Map", "Name", "Zoom"?, "At": [U, V], "Exits": [{"Name", "At": [U, V], "Object"?: [U, V](건물 물체의 작은 칸), "To"}]}}}`. 좌표는 모두 작은 칸이다.
+- 지역: 탁군 거리와 실내 다섯(`S_zhuo2`·`S_zhuo_office2`·`S_weapon_shop2`·`S_tool_shop2`·`S_mansion2`·`S_tavern2`: 옛 탁군 맵을 `scene_v2.py --copy 2`로 옮긴 사본, 원본과 `cmd/_town`은 그대로), 관문 `S_checkpoint`, 성 안 민가 `S_castle_town`, 군막 `S_tent_mid`. 탁군 서문 → 관문 → 성 안 민가 → (민가) 군막으로 이어진다.

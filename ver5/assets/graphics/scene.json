@@ -1,5 +1,6 @@
 {
  "note": "Rules of the scene maps (docs/presentation-scene.md, internal/scenemap): what a ground glyph, a height step, a wall line and a gate are drawn with, and the footprint of the objects that cover more than one small tile. Footprints are [du, dv, w, d] in small tiles from the object's anchor (its pivot's ground point); objects not listed cover the one small tile round their anchor.",
+ "walkable": ".diTWPC",
  "surfaces": {".": 1, "d": 2, "~": 0, "c": 1, "h": 2, "i": 2, "b": 0, "v": 2, "k": 2, "f": 1, "o": 1, "g": 1},
  "floors": {
   "i": {"sprite": "floor", "sheet": "structures", "tile": true},

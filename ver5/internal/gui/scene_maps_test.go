@@ -177,3 +177,20 @@ func TestScenarioNodesAreStaged(t *testing.T) {
 		}
 	}
 }
+
+// The format 2 tour (cmd/_town2) opens on every area and every exit's spot can be reached from where the hero stands
+// on arriving.
+func TestTourAreas(t *testing.T) {
+	d, err := NewDemo("../..", DemoOptions{Name: "mapfx"})
+	require.NoError(t, err)
+	g := d.g
+	require.NoError(t, g.OpenTour("../../assets/towns/tour2.json"))
+	for id, a := range g.tour.t.Areas {
+		t.Run(id, func(t *testing.T) {
+			g.enterTourArea(id, "")
+			for _, e := range a.Exits {
+				assert.NotNil(t, g.tour.path(g.tourHeroTile(), g.tour.nearestOpen(e.At)), "exit %s cannot be reached", e.Name)
+			}
+		})
+	}
+}

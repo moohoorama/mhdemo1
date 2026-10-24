@@ -3,6 +3,7 @@
 
   python3 ver5/tools/scene_maps/scene_v2.py S_tent_mid S_castle_town                    # the map files as they are
   python3 ver5/tools/scene_maps/scene_v2.py --rev scene-render-base S_checkpoint        # the maps of a git revision
+  python3 ver5/tools/scene_maps/scene_v2.py --copy 2 S_zhuo                               # a format 2 copy S_zhuo2 beside the old map
 
 An old map stored the picture: every ground piece, cliff face, foot and corner shadow and grass tuft. Format 2 keeps
 what was decided by hand and lets the rules make the rest:
@@ -117,16 +118,28 @@ def write(art, path):
 
 def main():
     args = sys.argv[1:]
-    rev = None
-    if args[:1] == ['--rev']:
-        rev, args = args[1], args[2:]
+    rev, copy = None, ''
+    while args[:1] in (['--rev'], ['--copy']):
+        if args[0] == '--rev':
+            rev = args[1]
+        else:
+            copy = args[1]
+        args = args[2:]
     index = json.load(open(GFX / 'index.json'))
     sprites = {**index['props']['sprites'], **index['extra']['sprites']}
     floors = {f['sprite']: g for g, f in json.load(open(GFX / 'scene.json'))['floors'].items()}
     for map_id in args:
         art = convert(load(map_id, rev), sprites, floors)
-        path = GFX / 'maps' / f'{map_id}.json'
+        art['id'] = map_id + copy
+        if copy:
+            art['name'] += ' (형식 2 사본)'
+        path = GFX / 'maps' / f'{art["id"]}.json'
         write(art, path)
+        rel = f'maps/{art["id"]}.json'
+        if rel not in index['maps']:  # the game loads the maps listed here
+            index['maps'].append(rel)
+            json.dump(index, open(GFX / 'index.json', 'w'), ensure_ascii=False, indent=1)
+            open(GFX / 'index.json', 'a').write('\n')
         print(map_id, path.stat().st_size, 'bytes,', len(art['objects']), 'objects,', len(art.get('walls', [])), 'walls')
 
 

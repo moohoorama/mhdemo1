@@ -36,6 +36,7 @@ type Sprite struct {
 // Rules is scene.json.
 type Rules struct {
 	Surfaces map[string]int `json:"surfaces"`
+	Walkable string         `json:"walkable"` // the ground glyphs a person can walk on
 	// Floors are the glyphs drawn with a floor picture: by default one per game cell in place of the ground, over
 	// its diamond filled with Edge; Tile floors (paving) one per small tile over the ground.
 	Floors map[string]struct {
