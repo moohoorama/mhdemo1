@@ -6173,7 +6173,21 @@
   "swall2_u": {
    "file": "tiles/swall2_u.png",
    "size": [
-    36,
+    34,
+    91
+   ],
+   "pivot": [
+    17,
+    82
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)"
+  },
+  "swall2_v": {
+   "file": "tiles/swall2_v.png",
+   "size": [
+    34,
     91
    ],
    "pivot": [
@@ -6184,29 +6198,15 @@
    "scale": "scene",
    "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)"
   },
-  "swall2_v": {
-   "file": "tiles/swall2_v.png",
-   "size": [
-    35,
-    92
-   ],
-   "pivot": [
-    19,
-    83
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "3D model + unit3d cel renderer, cut by owning cell (gen_3d_castle.py)"
-  },
   "sgate2_closed_u_0": {
    "file": "tiles/sgate2_closed_u_0.png",
    "size": [
-    44,
-    104
+    40,
+    114
    ],
    "pivot": [
-    23,
-    91
+    19,
+    103
    ],
    "layer": "object",
    "scale": "scene",
@@ -6216,12 +6216,12 @@
   "sgate2_closed_u_1": {
    "file": "tiles/sgate2_closed_u_1.png",
    "size": [
-    27,
-    100
+    32,
+    89
    ],
    "pivot": [
-    21,
-    89
+    17,
+    79
    ],
    "layer": "object",
    "scale": "scene",
@@ -6231,12 +6231,12 @@
   "sgate2_closed_u_2": {
    "file": "tiles/sgate2_closed_u_2.png",
    "size": [
-    19,
-    98
+    20,
+    99
    ],
    "pivot": [
     17,
-    88
+    89
    ],
    "layer": "object",
    "scale": "scene",
@@ -6246,11 +6246,11 @@
   "sgate2_closed_u_3": {
    "file": "tiles/sgate2_closed_u_3.png",
    "size": [
-    31,
+    33,
     116
    ],
    "pivot": [
-    22,
+    17,
     107
    ],
    "layer": "object",
@@ -6261,11 +6261,11 @@
   "sgate2_closed_u_4": {
    "file": "tiles/sgate2_closed_u_4.png",
    "size": [
-    30,
+    26,
     120
    ],
    "pivot": [
-    22,
+    17,
     112
    ],
    "layer": "object",
@@ -6276,11 +6276,11 @@
   "sgate2_closed_u_5": {
    "file": "tiles/sgate2_closed_u_5.png",
    "size": [
-    31,
-    121
+    27,
+    120
    ],
    "pivot": [
-    22,
+    17,
     113
    ],
    "layer": "object",
@@ -6291,11 +6291,11 @@
   "sgate2_closed_u_6": {
    "file": "tiles/sgate2_closed_u_6.png",
    "size": [
-    39,
-    121
+    32,
+    120
    ],
    "pivot": [
-    22,
+    17,
     113
    ],
    "layer": "object",
@@ -6306,12 +6306,12 @@
   "sgate2_closed_u_7": {
    "file": "tiles/sgate2_closed_u_7.png",
    "size": [
-    31,
-    113
+    32,
+    110
    ],
    "pivot": [
-    22,
-    106
+    17,
+    104
    ],
    "layer": "object",
    "scale": "scene",
@@ -6321,12 +6321,12 @@
   "sgate2_closed_u_8": {
    "file": "tiles/sgate2_closed_u_8.png",
    "size": [
-    18,
-    94
+    17,
+    83
    ],
    "pivot": [
     17,
-    86
+    77
    ],
    "layer": "object",
    "scale": "scene",
@@ -6336,12 +6336,12 @@
   "sgate2_closed_u_9": {
    "file": "tiles/sgate2_closed_u_9.png",
    "size": [
-    43,
-    105
+    36,
+    114
    ],
    "pivot": [
-    21,
-    97
+    18,
+    109
    ],
    "layer": "object",
    "scale": "scene",
@@ -6351,12 +6351,12 @@
   "sgate2_closed_v_0": {
    "file": "tiles/sgate2_closed_v_0.png",
    "size": [
-    43,
-    104
+    36,
+    114
    ],
    "pivot": [
-    21,
-    91
+    18,
+    103
    ],
    "layer": "object",
    "scale": "scene",
@@ -6366,12 +6366,12 @@
   "sgate2_closed_v_1": {
    "file": "tiles/sgate2_closed_v_1.png",
    "size": [
-    27,
-    101
+    32,
+    90
    ],
    "pivot": [
-    7,
-    90
+    16,
+    80
    ],
    "layer": "object",
    "scale": "scene",
@@ -6382,11 +6382,11 @@
    "file": "tiles/sgate2_closed_v_2.png",
    "size": [
     19,
-    98
+    99
    ],
    "pivot": [
     3,
-    88
+    89
    ],
    "layer": "object",
    "scale": "scene",
@@ -6396,11 +6396,11 @@
   "sgate2_closed_v_3": {
    "file": "tiles/sgate2_closed_v_3.png",
    "size": [
-    29,
+    33,
     116
    ],
    "pivot": [
-    8,
+    17,
     107
    ],
    "layer": "object",
@@ -6411,7 +6411,7 @@
   "sgate2_closed_v_4": {
    "file": "tiles/sgate2_closed_v_4.png",
    "size": [
-    29,
+    24,
     121
    ],
    "pivot": [
@@ -6426,11 +6426,11 @@
   "sgate2_closed_v_5": {
    "file": "tiles/sgate2_closed_v_5.png",
    "size": [
-    29,
-    122
+    25,
+    121
    ],
    "pivot": [
-    8,
+    9,
     114
    ],
    "layer": "object",
@@ -6441,11 +6441,11 @@
   "sgate2_closed_v_6": {
    "file": "tiles/sgate2_closed_v_6.png",
    "size": [
-    38,
-    122
+    31,
+    121
    ],
    "pivot": [
-    17,
+    15,
     114
    ],
    "layer": "object",
@@ -6456,12 +6456,12 @@
   "sgate2_closed_v_7": {
    "file": "tiles/sgate2_closed_v_7.png",
    "size": [
-    31,
-    113
+    32,
+    110
    ],
    "pivot": [
-    10,
-    107
+    16,
+    105
    ],
    "layer": "object",
    "scale": "scene",
@@ -6471,12 +6471,12 @@
   "sgate2_closed_v_8": {
    "file": "tiles/sgate2_closed_v_8.png",
    "size": [
-    19,
-    94
+    20,
+    83
    ],
    "pivot": [
     1,
-    86
+    77
    ],
    "layer": "object",
    "scale": "scene",
@@ -6486,12 +6486,12 @@
   "sgate2_closed_v_9": {
    "file": "tiles/sgate2_closed_v_9.png",
    "size": [
-    43,
-    105
+    36,
+    114
    ],
    "pivot": [
-    23,
-    97
+    19,
+    109
    ],
    "layer": "object",
    "scale": "scene",
@@ -6501,12 +6501,12 @@
   "sgate2_open_u_0": {
    "file": "tiles/sgate2_open_u_0.png",
    "size": [
-    44,
-    104
+    40,
+    114
    ],
    "pivot": [
-    23,
-    91
+    19,
+    103
    ],
    "layer": "object",
    "scale": "scene",
@@ -6516,12 +6516,12 @@
   "sgate2_open_u_1": {
    "file": "tiles/sgate2_open_u_1.png",
    "size": [
-    27,
-    100
+    32,
+    89
    ],
    "pivot": [
-    21,
-    89
+    17,
+    79
    ],
    "layer": "object",
    "scale": "scene",
@@ -6531,12 +6531,12 @@
   "sgate2_open_u_2": {
    "file": "tiles/sgate2_open_u_2.png",
    "size": [
-    19,
-    98
+    20,
+    99
    ],
    "pivot": [
     17,
-    88
+    89
    ],
    "layer": "object",
    "scale": "scene",
@@ -6546,11 +6546,11 @@
   "sgate2_open_u_3": {
    "file": "tiles/sgate2_open_u_3.png",
    "size": [
-    31,
+    27,
     116
    ],
    "pivot": [
-    22,
+    17,
     107
    ],
    "layer": "object",
@@ -6561,11 +6561,11 @@
   "sgate2_open_u_4": {
    "file": "tiles/sgate2_open_u_4.png",
    "size": [
-    30,
-    114
+    26,
+    112
    ],
    "pivot": [
-    22,
+    17,
     112
    ],
    "layer": "object",
@@ -6576,11 +6576,11 @@
   "sgate2_open_u_5": {
    "file": "tiles/sgate2_open_u_5.png",
    "size": [
-    31,
-    121
+    27,
+    120
    ],
    "pivot": [
-    22,
+    17,
     113
    ],
    "layer": "object",
@@ -6591,11 +6591,11 @@
   "sgate2_open_u_6": {
    "file": "tiles/sgate2_open_u_6.png",
    "size": [
-    39,
-    121
+    32,
+    120
    ],
    "pivot": [
-    22,
+    17,
     113
    ],
    "layer": "object",
@@ -6606,12 +6606,12 @@
   "sgate2_open_u_7": {
    "file": "tiles/sgate2_open_u_7.png",
    "size": [
-    31,
-    113
+    32,
+    110
    ],
    "pivot": [
-    22,
-    106
+    17,
+    104
    ],
    "layer": "object",
    "scale": "scene",
@@ -6621,12 +6621,12 @@
   "sgate2_open_u_8": {
    "file": "tiles/sgate2_open_u_8.png",
    "size": [
-    18,
-    94
+    17,
+    83
    ],
    "pivot": [
     17,
-    86
+    77
    ],
    "layer": "object",
    "scale": "scene",
@@ -6636,12 +6636,12 @@
   "sgate2_open_u_9": {
    "file": "tiles/sgate2_open_u_9.png",
    "size": [
-    43,
-    105
+    36,
+    114
    ],
    "pivot": [
-    21,
-    97
+    18,
+    109
    ],
    "layer": "object",
    "scale": "scene",
@@ -6651,12 +6651,12 @@
   "sgate2_open_v_0": {
    "file": "tiles/sgate2_open_v_0.png",
    "size": [
-    43,
-    104
+    36,
+    114
    ],
    "pivot": [
-    21,
-    91
+    18,
+    103
    ],
    "layer": "object",
    "scale": "scene",
@@ -6666,12 +6666,12 @@
   "sgate2_open_v_1": {
    "file": "tiles/sgate2_open_v_1.png",
    "size": [
-    27,
-    101
+    32,
+    90
    ],
    "pivot": [
-    7,
-    90
+    16,
+    80
    ],
    "layer": "object",
    "scale": "scene",
@@ -6682,11 +6682,11 @@
    "file": "tiles/sgate2_open_v_2.png",
    "size": [
     19,
-    98
+    99
    ],
    "pivot": [
     3,
-    88
+    89
    ],
    "layer": "object",
    "scale": "scene",
@@ -6696,11 +6696,11 @@
   "sgate2_open_v_3": {
    "file": "tiles/sgate2_open_v_3.png",
    "size": [
-    29,
+    25,
     116
    ],
    "pivot": [
-    8,
+    9,
     107
    ],
    "layer": "object",
@@ -6711,8 +6711,8 @@
   "sgate2_open_v_4": {
    "file": "tiles/sgate2_open_v_4.png",
    "size": [
-    29,
-    115
+    24,
+    114
    ],
    "pivot": [
     8,
@@ -6726,11 +6726,11 @@
   "sgate2_open_v_5": {
    "file": "tiles/sgate2_open_v_5.png",
    "size": [
-    29,
-    122
+    25,
+    121
    ],
    "pivot": [
-    8,
+    9,
     114
    ],
    "layer": "object",
@@ -6741,11 +6741,11 @@
   "sgate2_open_v_6": {
    "file": "tiles/sgate2_open_v_6.png",
    "size": [
-    38,
-    122
+    31,
+    121
    ],
    "pivot": [
-    17,
+    15,
     114
    ],
    "layer": "object",
@@ -6756,12 +6756,12 @@
   "sgate2_open_v_7": {
    "file": "tiles/sgate2_open_v_7.png",
    "size": [
-    31,
-    113
+    32,
+    110
    ],
    "pivot": [
-    10,
-    107
+    16,
+    105
    ],
    "layer": "object",
    "scale": "scene",
@@ -6771,12 +6771,12 @@
   "sgate2_open_v_8": {
    "file": "tiles/sgate2_open_v_8.png",
    "size": [
-    19,
-    94
+    20,
+    83
    ],
    "pivot": [
     1,
-    86
+    77
    ],
    "layer": "object",
    "scale": "scene",
@@ -6786,12 +6786,12 @@
   "sgate2_open_v_9": {
    "file": "tiles/sgate2_open_v_9.png",
    "size": [
-    43,
-    105
+    36,
+    114
    ],
    "pivot": [
-    23,
-    97
+    19,
+    109
    ],
    "layer": "object",
    "scale": "scene",

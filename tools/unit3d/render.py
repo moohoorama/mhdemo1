@@ -176,7 +176,8 @@ def render(faces, direction, scale, cell=(48, 48), pivot=(24, 38), ss=4, depths=
 
     own = None
     if owner is not None:
-        own = np.where(hit, np.asarray(owner(world.reshape(-1, 3))).reshape(hit.shape), -1)
+        inside = world - 1e-3*t  # a hair behind the visible surface, inside its solid: a face on a boundary goes with its own part
+        own = np.where(hit, np.asarray(owner(inside.reshape(-1, 3))).reshape(hit.shape), -1)
     owned = np.full((cell[1], cell[0]), -1, np.int64)
     if owners is not None:
         owners.append(owned)
