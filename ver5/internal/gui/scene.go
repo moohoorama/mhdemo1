@@ -547,8 +547,9 @@ func (g *Game) skipBeats() {
 	}
 }
 
-// faceSpeaker turns the named actors near a speaker toward them, and the speaker toward the nearest of them,
-// unless the cast holds them or this node's beats already turned them.
+// faceSpeaker turns the named actors of the cast near a speaker toward them, and the speaker toward the nearest of
+// them, unless the cast holds them or this node's beats already turned them. People of a walk who stand by an event
+// without being in its cast take no part.
 func (g *Game) faceSpeaker(name string) {
 	s := g.scene
 	sp := s.actors[name]
@@ -561,7 +562,7 @@ func (g *Game) faceSpeaker(name string) {
 	var near *unitVis
 	best := 5.0
 	for key, v := range s.actors {
-		if v == sp || v.gone || s.extra[key] {
+		if _, cast := s.def.Cast[key]; v == sp || v.gone || s.extra[key] || !cast {
 			continue
 		}
 		d := math.Hypot(v.u-sp.u, v.v-sp.v)

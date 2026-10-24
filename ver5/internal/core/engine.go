@@ -343,6 +343,10 @@ func (e *Engine) enter() {
 			if e.state.Explore != n.ID {
 				x := e.data.Explores[n.Explore]
 				e.state.Explore, e.state.Spot = n.ID, x.Start
+				if n.Opening != "" {
+					e.state.Node = n.Opening
+					continue
+				}
 			}
 			return
 		case "back":

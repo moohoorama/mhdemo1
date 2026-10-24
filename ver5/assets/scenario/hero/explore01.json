@@ -3,10 +3,10 @@
  "Start": {
   "Area": "zhuo",
   "At": [
-   7,
-   11
+   5,
+   9
   ],
-  "Face": "SE"
+  "Face": "NW"
  },
  "Areas": {
   "zhuo": {
@@ -96,21 +96,6 @@
     }
    ],
    "People": {
-    "장비": {
-     "At": [
-      5,
-      9
-     ],
-     "Face": "NW",
-     "If": [
-      "!flag:c01-met"
-     ],
-     "Event": [
-      {
-       "Node": "c01-e-notice"
-      }
-     ]
-    },
     "관병": {
      "At": [
       11,
@@ -149,8 +134,8 @@
     },
     "백성": {
      "At": [
-      19,
-      15
+      17,
+      11
      ],
      "Face": "NW",
      "Sprite": "commoner_man",
@@ -167,8 +152,8 @@
     },
     "백성@after": {
      "At": [
-      19,
-      15
+      17,
+      11
      ],
      "Face": "NW",
      "Sprite": "commoner_man",
@@ -185,14 +170,14 @@
     },
     "아낙": {
      "At": [
-      5,
-      13
+      7,
+      12
      ],
      "Face": "NW",
      "Sprite": "commoner_woman",
      "Faction": "han",
      "Move": {
-      "Wander": 3
+      "Wander": 2
      },
      "Talk": [
       [
@@ -427,10 +412,10 @@
    "People": {
     "관우": {
      "At": [
-      5,
+      7,
       3
      ],
-     "Face": "NW",
+     "Face": "SW",
      "Pose": "sit",
      "If": [
       "!flag:c01-tavern"
@@ -452,7 +437,7 @@
     },
     "장비@tavern": {
      "At": [
-      7,
+      9,
       5
      ],
      "Face": "NW",
@@ -479,10 +464,10 @@
     },
     "손님": {
      "At": [
-      9,
-      5
+      5,
+      8
      ],
-     "Face": "NW",
+     "Face": "SE",
      "Sprite": "commoner_man",
      "Faction": "han",
      "Chatter": "한 잔 더!|크으, 좋다",
@@ -592,11 +577,11 @@
      ],
      "Face": "SE",
      "Play": "action",
-     "Chatter": "허리 펴라!|창 똑바로 들어!|한 번 더!",
+     "Chatter": "허리 펴라!|칼끝 똑바로!|한 번 더!",
      "Talk": [
       [
        "zhangfei",
-       "이놈들 아직 창 잡는 법도 몰라유. 그래도 기세 하나는 좋구먼유!"
+       "이놈들 아직 칼 잡는 법도 몰라유. 그래도 기세 하나는 좋구먼유!"
       ]
      ]
     },

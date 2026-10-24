@@ -216,6 +216,11 @@ func (d *Data) validateExplores(nodes map[string]Node) error {
 			if d.Explores[n.Explore] == nil {
 				return fmt.Errorf("node %s explores %q", n.ID, n.Explore)
 			}
+			if n.Opening != "" {
+				if err := d.endsWithBack(n.Opening, nodes); err != nil {
+					return fmt.Errorf("node %s opening: %w", n.ID, err)
+				}
+			}
 		case "back":
 			if n.Area == "" && (n.At != nil || n.Face != "") || n.Face != "" && !faces[n.Face] {
 				return fmt.Errorf("node %s: back", n.ID)

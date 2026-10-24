@@ -410,6 +410,7 @@ type Node struct {
 	Count                                               int
 	Choices                                             map[string]string
 	Explore                                             string  `json:",omitempty"` // explore: the explore file the hero walks
+	Opening                                             string  `json:",omitempty"` // explore: the event that plays as the walk first opens
 	Area                                                string  `json:",omitempty"` // back: the area the hero stands in afterwards; where he talked when empty
 	At                                                  *[2]int `json:",omitempty"` // back: his small tile there
 	Face                                                string  `json:",omitempty"` // back: the way he faces there

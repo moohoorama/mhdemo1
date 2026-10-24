@@ -74,8 +74,12 @@ func (g *Game) layOutExplore(o core.Observation) {
 	x := e.ExploreFile()
 	a := x.Areas[o.Spot.Area]
 	before := ""
+	var left *unitVis // the hero as the event before left him, on this map
 	if g.field != nil {
 		before = g.field.Map.ID
+		if g.scene != nil && before == a.Map {
+			left = g.scene.actors[g.S.Data.Characters[x.Hero].Name]
+		}
 	}
 	w := &exploreWalk{engine: e, node: o.Node, area: o.Spot.Area, hero: g.S.Data.Characters[x.Hero].Name, people: map[string]string{},
 		homes: map[string]string{}, rest: map[string]float64{}, leg: map[string]int{}, markT: math.Inf(1), rng: rand.New(rand.NewPCG(7, 11))}
@@ -111,7 +115,16 @@ func (g *Game) layOutExplore(o core.Observation) {
 		g.zoom = math.Round(a.Zoom)
 	}
 	s := g.scene
-	s.camU, s.camV = s.actors[w.hero].u, s.actors[w.hero].v
+	hero := s.actors[w.hero]
+	if left != nil && !left.gone && (left.u != hero.u || left.v != hero.v) { // he stays where the event walked him
+		hero.u, hero.v, hero.dir = left.u, left.v, left.dir
+		w.walked = true
+	}
+	if t := g.actorTile(w.hero); !w.grid.walk.Open(t[0], t[1]) { // an event may have left him where nobody walks
+		hero.u, hero.v = w.grid.nearestOpen(t).cell()
+		w.walked = true
+	}
+	s.camU, s.camV = hero.u, hero.v
 	g.camX, g.camY = g.sceneCam()
 	if before == a.Map {
 		s.fade = 0 // back from an event on this stage

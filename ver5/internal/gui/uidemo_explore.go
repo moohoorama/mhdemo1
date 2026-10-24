@@ -14,7 +14,7 @@ func init() { demos["explore"] = demoExplore }
 
 // demoExploreRoute is the walk the explore demo takes when -stage names none: chapter 1 from the street to the
 // sortie.
-const demoExploreRoute = "talk:장비,exit:주점,talk:관우,exit:거리로,exit:성문 밖,talk:장비,exit:의병 주둔지,talk:관우"
+const demoExploreRoute = "exit:주점,talk:관우,exit:거리로,exit:성문 밖,talk:장비,exit:의병 주둔지,talk:관우"
 
 // demoExplore plays a new game's story walk as clicks would (-stage "start:Node,talk:Name,exit:Name,sign:Name,
 // walk:U:V,grid,shop:Name,buy:Item"; start, first, begins the story at that node): each step is clicked once the hero has stood still for half a second; lines page by

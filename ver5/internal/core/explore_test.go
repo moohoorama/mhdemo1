@@ -103,6 +103,21 @@ func TestWalkTalkEventAndSortie(t *testing.T) {
 	assert.Empty(t, o.Explore)
 }
 
+func TestOpeningPlaysOnceAsTheWalkOpens(t *testing.T) {
+	e := walkEngine(t)
+	d := e.Data()
+	d.Nodes[0].Opening = "oath"
+	require.NoError(t, d.Validate())
+	e = New(d, 1)
+	assert.Equal(t, "oath-1", e.Observe().Node, "the opening plays first")
+	next(t, e)
+	o := e.Observe()
+	assert.Equal(t, "walk", o.Node)
+	assert.Equal(t, "grove", o.Spot.Area, "where the opening's back puts the hero")
+	applyOK(t, e, Command{Kind: "walk", Option: "street", X: 0, Y: 9, Target: "NW"})
+	assert.Equal(t, "walk", e.Observe().Node, "it does not play again")
+}
+
 func TestShopBuysAndSellsForHalf(t *testing.T) {
 	e := walkEngine(t)
 	applyOK(t, e, Command{Kind: "buy", Target: "상인", Item: "tonic", Count: 2})

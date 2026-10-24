@@ -3,7 +3,8 @@
   {
    "ID": "c01-walk",
    "Kind": "explore",
-   "Explore": "explore01"
+   "Explore": "explore01",
+   "Opening": "c01-e-notice"
   },
   {
    "ID": "c01-sortie",
@@ -62,6 +63,11 @@
    "Kind": "say",
    "Speaker": "zhangfei",
    "Text": "운장 형님이야 주점 구석에서 혼자 잔 기울이고 있겄쥬. 가 봅시다!"
+  },
+  {
+   "ID": "c01-n3b",
+   "Kind": "narrate",
+   "Text": "장비가 주점 쪽으로 성큼성큼 걸어간다."
   },
   {
    "ID": "c01-n4",
@@ -142,6 +148,11 @@
    "Kind": "say",
    "Speaker": "liubei",
    "Text": "저 녀석, 제 고향을 판다는 말을 술상 차린다는 말처럼 하네."
+  },
+  {
+   "ID": "c01-t11b",
+   "Kind": "narrate",
+   "Text": "관우가 잔을 비우고 일어나 장비를 따라 나선다."
   },
   {
    "ID": "c01-t12",
