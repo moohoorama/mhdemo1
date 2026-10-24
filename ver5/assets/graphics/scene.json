@@ -1,0 +1,29 @@
+{
+ "note": "Rules of the scene maps (docs/presentation-scene.md, internal/scenemap): what a ground glyph, a height step, a wall line and a gate are drawn with, and the footprint of the objects that cover more than one small tile. Footprints are [du, dv, w, d] in small tiles from the object's anchor (its pivot's ground point); objects not listed cover the one small tile round their anchor.",
+ "surfaces": {".": 1, "d": 2, "~": 0, "c": 1, "h": 2, "i": 2, "b": 0, "v": 2, "k": 2, "f": 1, "o": 1, "g": 1},
+ "floors": {
+  "i": {"sprite": "floor", "sheet": "structures", "tile": true},
+  "T": {"sprite": "floor_tent", "edge": "#6c583c"},
+  "W": {"sprite": "floor_wood", "edge": "#663720"},
+  "P": {"sprite": "floor_palace", "edge": "#222b38"},
+  "C": {"sprite": "floor_carpet", "edge": "#650d24"}
+ },
+ "heights": {
+  "2": {"lift": 146, "faces": "tcliff", "foot": "cfoot", "rim": "#4a3a25"}
+ },
+ "walls": {"swall": {"u": "swall_u", "v": "swall_v"}},
+ "gates": ["sgate_open", "sgate_closed"],
+ "corner_shadow": {"sprite": "jshade", "offset": [-16, 2]},
+ "footprints": {
+  "wall_canvas_nw": [-1, 0, 0.5, 2], "wall_canvas_ne": [0, -1, 2, 0.5],
+  "wall_plaster_nw": [-1, 0, 0.5, 2], "wall_plaster_ne": [0, -1, 2, 0.5],
+  "wall_lacquer_nw": [-1, 0, 0.5, 2], "wall_lacquer_ne": [0, -1, 2, 0.5],
+  "curtain_nw": [-1, 0, 0.5, 2], "curtain_ne": [0, -1, 2, 0.5],
+  "hall_u": [-2, -1, 4, 2], "hall_v": [-1, -2, 2, 4],
+  "house_tile": [-1, -1, 2, 2], "house_tile_x": [-1, -1, 2, 2], "house_thatch": [-1, -1, 2, 2],
+  "house_thatch_x": [-1, -1, 2, 2], "house_burnt": [-1, -1, 2, 2], "tavern": [-1, -1, 2, 2],
+  "watchtower": [-0.75, -0.75, 1.5, 1.5], "tent": [-0.75, -0.75, 1.5, 1.5], "tent_round": [-0.75, -0.75, 1.5, 1.5],
+  "bed": [-0.75, -0.75, 1.5, 1.5], "map_table": [-0.75, -0.75, 1.5, 1.5], "market_stall": [-0.75, -0.75, 1.5, 1.5],
+  "market_stall_cloth": [-0.75, -0.75, 1.5, 1.5], "market_stall_jar": [-0.75, -0.75, 1.5, 1.5]
+ }
+}

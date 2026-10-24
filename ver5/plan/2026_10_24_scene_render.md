@@ -121,3 +121,11 @@
   - 절벽 밑동 그림자 `cfoot`은 기존 데이터에서 뒤쪽 절벽에만 있다. 바깥 칸에는 그리지 않으면 동쪽 끝(U=41)의 띠 20개만 달라진다.
 - 모서리 그림자 위치는 `compose.py`가 그림 가장자리 열을 재서 정해, 관문과 성 안 민가가 세로로 1px 다르다. 같은 그림을 내려면 이 측정을 옮기거나 새 형식에 그림자 위치를 적어야 한다.
 - `cmd/_scene`은 시작 시점에 git에 없던 폴더다. 백업 커밋에 함께 넣는다.
+
+## 8. 진행 (2026-10-24)
+
+- 1~3단계를 시험 맵 셋(`S_checkpoint`·`S_tent_mid`·`S_castle_town`)으로 마쳤다. 규칙은 계획과 달리 Go 패키지 `internal/scenemap` 한 곳에 두고 뷰어 서버와 게임이 같은 목록을 쓴다(뷰어는 목록을 받아 그리기만 한다). 그래서 3단계의 "그리기 목록 비교"는 게임 Field가 패키지 목록을 그대로 담는지 보는 시험(`TestScenePlanInField`)이 됐다.
+- 규칙 데이터는 `index.json`이 아니라 새 파일 `assets/graphics/scene.json`에 두었다(`index.json`은 여러 도구가 생성하는 그림 목록이라). 성문 조각 위치와 그림자 여부만 `index.json`으로 넘긴다.
+- 장식은 게임이 전투 맵에 쓰던 바닥 장식(`map/scenery.png`)을 패키지로 옮겨 같이 쓴다. 옛 장면 맵의 풀 포기 좌표 목록(`decorations`)은 쓰지 않는다.
+- 비교 결과와 남은 차이의 이유: 진행 페이지 https://claude.ai/artifact/HKcK91uRsmXzwNpqerkKEs, `docs/history.md` 같은 날짜 항목.
+- 4단계에 남은 일: 나머지 37개 맵 변환(`tools/scene_maps/scene_v2.py`), 낮은 절벽(높이 1, 전투 맵 절벽 칸)·성벽 칸 `c`·다리 `b`·물 반짝임(형식 2 계획에 아직 없음) 규칙, `build.py`·`compose.py`·`zhuo.py`를 형식 2로, `legacy.js`와 게임의 옛 장면 맵 경로(`small_props`·`small_faces`·`highland`·`lcliff_` 등) 삭제, 관문 그리기 비용(높은 땅 블록이 많을 때 프레임 약 1ms) 줄이기.

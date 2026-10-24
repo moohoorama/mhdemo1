@@ -5,6 +5,25 @@
 
 ---
 
+## 2026-10-24 장면 렌더링 규칙과 장면 맵 형식 2 (계획 2026_10_24_scene_render 1~3단계)
+
+- 결정: 장면 맵의 그리기 규칙을 Go 패키지 `internal/scenemap` 한 곳에 두고, 뷰어(`cmd/_scene`)와 게임(`internal/gui`)이 같은 그리기 목록을 쓴다 · 계획은 뷰어(JS)와 게임(Go)에 같게 두 번 구현하고 비교 시험으로 맞추는 것이었으나, 한 곳에 두면 어긋날 일이 없다 · `presentation-scene.md`, `tools-scene-viewer.md`.
+- `internal/scenemap/format.go`·`catalog.go`·`plan.go`·`order.go`: 형식 2(땅 글자·높이·물체·성벽 줄)를 읽어 평면층 → 입체층 순서의 그리기 목록을 만든다. 바닥은 입체층을 덮지 않고, 입체층은 footprint 앞 모서리·높이·종류·화면 x로, 여러 칸 물체는 footprint 앞뒤로 정렬한다. 높은 땅 블록·성문 조각·모서리 그림자·절벽 밑동 띠를 규칙으로 고르고, 회전은 데이터를 돌린 뒤 같은 규칙을 쓴다 — 맵마다 붙던 예외(앞 절벽을 반 칸 늦게 그리기, 성벽 `_up`, 회전 시 성문 조각·그림자 숨김)를 없애기 위해.
+- `internal/scenemap/scenery.go`, `internal/gui/field_scenery.go`: 바닥 장식(풀·꽃·돌·물가)의 흩뿌리기 계산을 패키지로 옮겨 전투 맵·장면 맵(게임)·뷰어가 같은 함수를 쓴다 — 장면 맵 장식을 뷰어와 게임이 같게 그리기 위해. 전투 맵의 결과는 그대로다.
+- `assets/graphics/scene.json`(새 파일): 땅 글자의 이음 성질, 실내 바닥 글자(`T`·`W`·`P`·`C`)와 포석 `i`, 높이 단계 2(높은 절벽), 성벽 계열, 성문, 모서리 그림자 위치, 여러 칸 물체의 footprint — 물체·규칙 정보를 맵이 아니라 목록에 두기 위해.
+- `assets/graphics/maps/S_checkpoint.json`·`S_tent_mid.json`·`S_castle_town.json`: 형식 2로 옮김(197KB→7.4KB, 8KB→1KB, 114KB→4KB) — 시험 맵 셋. `S_checkpoint_closed`·`S_castle_town_burnt`는 아직 옛 형식.
+- `tools/scene_maps/scene_v2.py`(새 파일): 옛 맵(파일 또는 git 판)을 형식 2로 옮김. 물체 위치는 옛 뷰어가 그리던 픽셀에 맞춰 반올림한다 — 4단계에서 나머지 맵에도 쓰기 위해.
+- `tools/scene_maps/build.py`: `floor_half`가 음수 짝수를 한 칸 틀리게 내림하던 버그 수정 — 맵 바깥 가장자리에 물 테두리가 생기던 원인.
+- `tools/scene_maps/compose.py`: 이미 형식 2인 맵은 덮어쓰지 않음 — 4단계에서 도구를 형식 2로 바꾸기 전까지 시험 맵을 지키기 위해.
+- `tools/build_extra.py`, `assets/graphics/index.json`: 성문 조각의 `gate_offset`을 넘김. `../assets_candidate/tiles/tiles.json`(휘장·병풍)과 `../tools/unit3d/props.py`·`index.json`(방 벽 `wall_*`)에 `"shadow": false` — 그림자를 이름으로 거르던 게임 코드의 예외를 데이터로 옮기기 위해.
+- `internal/gui/field_scene.go`(새 파일)·`field.go`·`assets.go`·`editor.go`: 형식 2 맵은 평면층을 한 번 구워 두고, 입체층 조각(여러 그림인 블록은 미리 한 장으로 합침)을 사람과 함께 `scenemap.Order`로 정렬해 그린다. 높은 땅 위의 사람은 그 높이만큼 올린다. 물체 그림자의 `wall_`·`curtain_`·`screen_` 이름 예외를 지움 — 뷰어와 같은 그림을 내기 위해.
+- `internal/gui/scene_maps_test.go`: 옛 관문 형식 시험을 지우고, 게임 Field의 입체층 목록이 규칙 패키지 목록과 같은지·관문 성벽 앞뒤의 사람 순서를 시험. 관문 그리기 벤치마크: 맵 전체 1.25ms, 1280×720 화면 약 1.0ms(옛 형식 0.65ms; 높은 땅 2,340칸이 각자 정렬되는 비용) — 성능 기록.
+- `internal/scenemap/plan_test.go`(새 파일): 회전, 정렬, 성문 조각, 모서리 그림자, 실내 바닥 시험.
+- `internal/cli/scenes.go`, `../.claude/skills/scene-staging/check_scenes.py`: 형식 2 맵을 읽음(실내 바닥 글자는 설 수 있는 곳) — 텍스트판 장면 지도와 배치 검사가 계속 돌게 하기 위해. 배치 검사 0건.
+- `cmd/_scene/main.go`·`static/viewer.js`·`index.html`·`style.css`·`legacy.js`(새 파일): 형식 2는 규칙 목록으로 그리고, 층 단계·새 규칙/기존/비교 보기·장식·footprint·정렬 번호 표시를 더함. 옛 형식은 옛 코드(`legacy.js`)로 그대로 — 기존 데이터와 픽셀로 비교하기 위해. 비교 기준은 태그 `scene-render-base`(백업 커밋 46282a6).
+- 비교 결과(장식 없이, 0°): 관문 6,922·군막 6,423·성 안 민가 14,391픽셀이 다르고, 모두 이유가 있다: 바닥이 덮던 물체 발치·절벽 밑동 띠, 마루 틈의 풀, 옛 `floor_half` 버그의 가장자리 물 테두리, 맵 바깥에 지던 밑동 띠, 포석, 모서리 그림자 세로 1px(두 맵의 옛 위치가 서로 달랐다), 윗면 외곽선 끝 반투명 픽셀. 회전하면 미세 위치를 정수 픽셀로 적은 탓에 소품이 1px 밀리는 곳이 있다.
+- `docs/presentation-scene.md`·`tools-scene-viewer.md`·`tools-build.md`: 형식 2와 그리기 규칙, 뷰어 사용법, 변환 도구.
+
 ## 2026-10-24 공통 장면 맵 뷰어
 
 - `cmd/_scene/main.go`: `S_` 장면 맵 40개와 게임 그림 자료를 제공하는 로컬 뷰어 서버 추가 — 관문 외 장면도 같은 화면에서 고르기 위해.

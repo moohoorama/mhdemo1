@@ -48,6 +48,8 @@ def main():
         sprites[n] = {'rect': [*place[n], w, h], 'pivot': tiles[n]['pivot'], 'layer': tiles[n]['layer']}
         if tiles[n].get('shadow') is False:  # no ground shadow under it in a story scene (shadows, overlays, cliffs)
             sprites[n]['shadow'] = False
+        if 'gate_offset' in tiles[n]:  # a scene gatehouse slice: game cells along its wall from the gate's point
+            sprites[n]['gate_offset'] = tiles[n]['gate_offset']
     sheet.save(GFX / 'map/extra.png', optimize=True)
 
     effects = json.load(open(CAND / 'effects/effects.json'))

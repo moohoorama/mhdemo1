@@ -1504,7 +1504,8 @@
     44
    ],
    "layer": "object",
-   "scale": "scene"
+   "scale": "scene",
+   "shadow": false
   },
   "stairs_u": {
    "file": "tiles/stairs_u.png",
@@ -1530,7 +1531,8 @@
     44
    ],
    "layer": "object",
-   "scale": "scene"
+   "scale": "scene",
+   "shadow": false
   },
   "stairs_v": {
    "file": "tiles/stairs_v.png",
@@ -1586,7 +1588,8 @@
     48
    ],
    "layer": "object",
-   "scale": "scene"
+   "scale": "scene",
+   "shadow": false
   },
   "curtain_ne": {
    "file": "tiles/curtain_ne.png",
@@ -1599,7 +1602,8 @@
     48
    ],
    "layer": "object",
-   "scale": "scene"
+   "scale": "scene",
+   "shadow": false
   },
   "milestone": {
    "file": "tiles/milestone.png",
@@ -1879,7 +1883,8 @@
     25,
     44
    ],
-   "layer": "object"
+   "layer": "object",
+   "shadow": false
   },
   "weapon_rack": {
    "file": "tiles/weapon_rack.png",

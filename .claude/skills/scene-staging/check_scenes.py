@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3] / 'ver5'
-FREE_GLYPHS = '.di'
+FREE_GLYPHS = '.diTWPC'  # ground, paving and the format 2 floors (assets/graphics/scene.json)
 NOT_STANDING = ('floor', 'avenue', 'ash', 'carpet', 'wall', 'curtain', 'bridge', 'dais', 'throne', 'straw_mat',
                 'bloody_cloth', 'broken_spear', 'fallen_flag')  # under, behind or seating the feet
 MIN_GAP = 1.0   # cells between two actors' feet; closer than this the iso sprites overlap
@@ -22,6 +22,11 @@ PROP_GAP = 0.45  # cells from a standing prop's anchor
 def load_map(cache, map_id):
     if map_id not in cache:
         art = json.load(open(ROOT / 'assets/graphics/maps' / f'{map_id}.json'))
+        if art.get('format') == 2:  # objects stand dx, dy canvas pixels from their small tile's centre
+            ground = art['ground']
+            art = {'visual': [*art['origin'], len(ground[0]), len(ground)], 'small_tiles': ground,
+                   'props': [[n, (U - .5) / 2 + dx / 64 + dy / 32, (V - .5) / 2 - dx / 64 + dy / 32]
+                             for n, U, V, *d in art['objects'] for dx, dy in [d or (0, 0)]]}
         props = [(p[0], p[1], p[2]) for p in art.get('props', []) if len(p) == 3 and not p[0].startswith(NOT_STANDING)]
         cache[map_id] = (art, props)
     return cache[map_id]

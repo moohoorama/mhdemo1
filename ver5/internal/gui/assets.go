@@ -17,6 +17,7 @@ import (
 	"srpg/internal/content"
 	"srpg/internal/duel"
 	"srpg/internal/duelview"
+	"srpg/internal/scenemap"
 	"srpg/internal/sprite"
 )
 
@@ -46,6 +47,8 @@ type Assets struct {
 	Portraits     map[string]*ebiten.Image // Look.Portrait -> ink-wash portrait
 	Props         map[string]Prop
 	Scenery       *Scenery                 // ground decoration and pines; nil when graphics/map/scenery.json is absent
+	diamonds      map[string]*ebiten.Image // game cell diamonds by colour (field_scene.go)
+	SceneRules    *scenemap.Catalog        // the scene map rules (internal/scenemap) and the decoration's scatter
 	Projectiles   Shots                    // thrown stones, their shadows and their landing dust
 	FX            Shots                    // effects and their particles
 	Outside       Shots                    // pines and stones outside the battle area
@@ -97,7 +100,10 @@ type MapArt struct {
 	SmallSnap   bool
 	CliffRepeat bool
 	Deformed    bool // battle map: forests drawn as deformed cells, like villages
-	Scene       bool // a scenario scene: drawn without the shaded exterior, to the edge of its picture
+	// SceneMap is set for a scene map of format 2, drawn by internal/scenemap's rules (field_scene.go); the fields
+	// above it are filled from it for the code that reads any map (size, grid, glyphs).
+	SceneMap *scenemap.Map
+	Scene    bool // a scenario scene: drawn without the shaded exterior, to the edge of its picture
 }
 
 // MapProp places a prop with its pivot at cell (U, V), fractions allowed. With U1, V1 it
@@ -329,10 +335,22 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		}
 		a.Backdrops[name] = ebiten.NewImageFromImage(im)
 	}
+	if a.SceneRules, err = scenemap.LoadCatalog(dir); err != nil {
+		return nil, err
+	}
 	for _, path := range index.Maps {
 		b, err := os.ReadFile(filepath.Join(dir, path))
 		if err != nil {
 			return nil, err
+		}
+		if sm, ok, err := scenemap.Parse(b); err != nil {
+			return nil, fmt.Errorf("%s: %w", path, err)
+		} else if ok {
+			if _, err := scenemap.Build(sm, a.SceneRules, scenemap.Options{Decor: true}); err != nil {
+				return nil, fmt.Errorf("%s: %w", path, err)
+			}
+			a.Maps[sm.ID] = sceneMapArt(sm)
+			continue
 		}
 		var m struct {
 			ID, Name    string
@@ -470,6 +488,21 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		a.Portraits[strings.TrimSuffix(filepath.Base(file), ".png")] = ebiten.NewImageFromImage(im)
 	}
 	return a, nil
+}
+
+// sceneMapArt fills the common map fields from a format 2 scene map.
+func sceneMapArt(m *scenemap.Map) *MapArt {
+	b := m.Bounds()
+	art := &MapArt{ID: m.ID, Name: m.Name, W: m.Size[0], H: m.Size[1], Native: true, Scene: true, SceneMap: m,
+		Visual: [4]int{m.Origin[0], m.Origin[1], m.W(), m.H()}, SmallTiles: m.Ground, Bounds: image.Rect(b[0], b[1], b[2], b[3])}
+	for v := range m.Size[1] {
+		row := make([]byte, m.Size[0])
+		for u := range row {
+			row[u] = m.Glyph(2*u, 2*v)
+		}
+		art.Tiles = append(art.Tiles, string(row))
+	}
+	return art
 }
 
 // TileFrame is the sprite id of a tileset animation at a clock time.

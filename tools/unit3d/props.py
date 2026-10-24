@@ -498,6 +498,8 @@ def build():
     for name, layer, im, (px, py) in items:
         sheet.alpha_composite(im, (x, 0))
         sprites[name] = dict(rect=[x, 0, im.width, im.height], pivot=[px, py], layer=layer)
+        if name.startswith('wall_'):  # a room's wall lays no ground shadow in a story scene
+            sprites[name]['shadow'] = False
         x += im.width + 1
     sheet.save(OUT / 'props.png')
     meta = dict(version=1, image='props.png', pivot_note='footprint centre on the ground (cell centre for one-cell props)',

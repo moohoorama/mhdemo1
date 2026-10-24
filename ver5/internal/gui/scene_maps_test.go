@@ -1,145 +1,85 @@
 package gui
 
 import (
+	"image"
 	"path/filepath"
 	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"srpg/internal/scenemap"
 )
 
-func TestCheckpointSmallGridProps(t *testing.T) {
+// A format 2 scene map is drawn from the same plan the scene viewer draws (cmd/_scene): the field keeps the plan's
+// standing pieces in the plan's order, with the same pictures, and sorts people in among them by the same rule.
+func TestScenePlanInField(t *testing.T) {
 	d, err := NewDemo("../..", DemoOptions{Name: "mapfx"})
 	require.NoError(t, err)
-	art := d.g.assets.Maps["S_checkpoint"]
-	require.NotNil(t, art)
-	require.NotEmpty(t, art.Props)
-	assert.True(t, art.SmallSnap)
-	assert.False(t, art.CliffRepeat)
-	for _, tc := range []struct {
-		name string
-		u, v float64
-	}{
-		{"watchtower", 6.75, 1.75},
-		{"notice_post", 9.75, 5.25},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			for _, p := range art.Props {
-				if p.Name == tc.name {
-					assert.InDelta(t, tc.u, p.U, .02)
-					assert.InDelta(t, tc.v, p.V, .02)
-					return
-				}
+	a := d.g.assets
+	for _, id := range []string{"S_checkpoint", "S_tent_mid", "S_castle_town"} {
+		t.Run(id, func(t *testing.T) {
+			art := a.Maps[id]
+			require.NotNil(t, art.SceneMap, "%s is format 2", id)
+			plan, err := scenemap.Build(art.SceneMap, a.SceneRules, scenemap.Options{Decor: true})
+			require.NoError(t, err)
+			f := NewField(a, art)
+			defer f.dispose()
+			require.Len(t, f.scenePieces, len(plan.Solid))
+			for i, p := range plan.Solid {
+				assert.Equal(t, p.Name, f.scenePieces[i].Name)
+				assert.Equal(t, p.Draws, f.scenePieces[i].Draws)
 			}
-			t.Fatalf("missing prop %q", tc.name)
 		})
 	}
-	for _, face := range art.Faces {
-		if strings.HasPrefix(face.Name, "swall_v") {
-			assert.LessOrEqual(t, face.V, 14, "wall reaches beyond the near hillside")
-			assert.Equal(t, "SW", face.Side)
-		}
-		if strings.HasPrefix(face.Name, "tcliff_") && face.U == 17 && face.V == 16 {
-			t.Fatal("adjacent highland tiles must not have a wall between them")
-		}
-	}
-	for _, tc := range []struct {
-		name   string
-		u, v   int
-		side   string
-		dx, dy int
-	}{
-		{"tcliff_08_2", 17, 1, "SW", 8, -4},
-		{"tcliff_02_2", 17, 15, "NE", -8, 4},
-		{"tcliff_01_0", -18, 16, "NW", 8, 4},
-		{"tcliff_04_2", 41, 16, "SE", -8, -4},
-		{"tcliff_08_0", 0, 33, "SW", 8, -4},
-		{"cfoot_se", 41, 1, "SE", -8, -4},
-		{"sgate_open_v_5", 17, 9, "SW", 8, -4},
-		{"jshade_80_0", 18, 1, "SW", -8, -2},
-		{"jshade_80_1", 19, 1, "SW", -8, -2},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			for _, face := range art.Faces {
-				if face.Name == tc.name && face.U == tc.u && face.V == tc.v {
-					assert.Equal(t, tc.side, face.Side)
-					assert.Equal(t, tc.dx, face.DX)
-					assert.Equal(t, tc.dy, face.DY)
-					return
-				}
+	t.Run("people behind the checkpoint wall go before it, people at the gate after it", func(t *testing.T) {
+		f := NewField(a, a.Maps["S_checkpoint"])
+		defer f.dispose()
+		var items []drawItem
+		wall := -1
+		for _, it := range f.sceneItems() {
+			if wall < 0 && f.scenePieces[len(items)].Name == "swall_v" {
+				wall = len(items)
 			}
-			t.Fatalf("missing face %q at (%d,%d)", tc.name, tc.u, tc.v)
-		})
-	}
-	cornerFound := false
-	nearCornerFound := false
-	for _, p := range art.Props {
-		assert.NotContains(t, p.Name, "tcliff_00_", "interior soil needs no cliff-top outline")
-		if p.Name == "tcliff_12_2" && p.U == 20.25 && p.V == 16.25 {
-			cornerFound = true
+			items = append(items, it)
 		}
-		if p.Name == "tcliff_06_2" && p.U == 20.25 && p.V == 7.25 {
-			nearCornerFound = true
+		require.GreaterOrEqual(t, wall, 0)
+		person := func(u, v float64) drawItem {
+			x, y := f.Center(u, v)
+			r := image.Rect(int(x)-12, int(y)-60, int(x)+12, int(y)+4)
+			k := f.sceneKey(x, y, 0, scenemap.RankPerson, r)
+			return drawItem{y: y, kind: 1, rect: r, key: &k}
 		}
-	}
-	assert.True(t, cornerFound, "east and south faces should meet at (41,33)")
-	assert.True(t, nearCornerFound, "NE and SE faces should meet at (41,15)")
-	assert.True(t, hiddenCliffFace("tcliff_02_2"), "the back face should not draw at 0 degrees")
-	assert.False(t, hiddenCliffFace("tcliff_06_2"), "the southeast face should draw at 0 degrees")
-	f := NewField(d.g.assets, art)
-	assert.True(t, f.highlandAt(17, 16), "an interior highland tile has a ceiling even without an open wall")
-	assert.True(t, f.highlandAt(17, 15))
-	assert.False(t, f.highlandAt(17, 14))
-	assert.NotEmpty(t, f.ceilingItems)
-	foundShadow := false
-	f.eachProp(false, func(name string, _ Sprite, x, y float64) {
-		if name == "jshade_80_0" {
-			assert.InDelta(t, f.OriginX*K+256, x, .01)
-			assert.InDelta(t, f.OriginY*K+162, y, .01)
-			foundShadow = true
+		behind, front := person(7.6, 1.2), person(9.0, 1.4)
+		items = append(items, behind, front)
+		order := map[*scenemap.Key]int{}
+		for i, it := range f.orderScene(items) {
+			order[it.key] = i
 		}
+		assert.Less(t, order[behind.key], order[items[wall].key])
+		assert.Greater(t, order[front.key], order[items[wall].key])
 	})
-	assert.True(t, foundShadow, "missing rendered corner shadow")
-	f.dispose()
-	closed := d.g.assets.Maps["S_checkpoint_closed"]
-	require.NotNil(t, closed)
-	assert.True(t, closed.SmallSnap)
-	assert.False(t, closed.CliffRepeat)
-	assert.Equal(t, art.Highland, closed.Highland)
-	assert.Len(t, closed.Props, len(art.Props))
-	assert.Len(t, closed.Faces, len(art.Faces))
-	for _, face := range closed.Faces {
-		if face.Name == "sgate_closed_v_5" {
-			assert.Equal(t, 17, face.U)
-			assert.Equal(t, 9, face.V)
-			assert.Equal(t, "SW", face.Side)
-			return
-		}
-	}
-	t.Fatal("missing closed gate")
 }
 
-// BenchmarkCheckpointFieldDraw/baseline-8          1000     341573 ns/op   607341 B/op   3112 allocs/op # Apple M2
-// BenchmarkCheckpointFieldDraw/raised_ceiling-8    1000     652868 ns/op   961217 B/op   4724 allocs/op # ceiling and extended cliff top
-// BenchmarkCheckpointFieldDraw/one_cliff-8         1000     635701 ns/op   877065 B/op   4253 allocs/op # small-grid snap, one cliff draw
+// BenchmarkCheckpointFieldDraw-8           1000   341573 ns/op   607341 B/op   3112 allocs/op # old format, no ceiling
+// BenchmarkCheckpointFieldDraw-8           1000   652868 ns/op   961217 B/op   4724 allocs/op # old format with the ceiling
+// BenchmarkCheckpointFieldDraw/whole-8      200  3893275 ns/op  6993350 B/op  36011 allocs/op # format 2, every picture drawn
+// BenchmarkCheckpointFieldDraw/whole-8      200  1247460 ns/op  2759721 B/op  13840 allocs/op # format 2, blocks drawn once
+// BenchmarkCheckpointFieldDraw/screen-8     300  1014017 ns/op  2150758 B/op  10006 allocs/op # format 2, a 1280x720 view
 func BenchmarkCheckpointFieldDraw(b *testing.B) {
 	d, err := NewDemo("../..", DemoOptions{Name: "mapfx"})
 	if err != nil {
 		b.Fatal(err)
 	}
+	f := NewField(d.g.assets, d.g.assets.Maps["S_checkpoint"])
+	defer f.dispose()
 	for _, tc := range []struct {
-		name    string
-		ceiling bool
-	}{{"baseline", false}, {"raised_ceiling", true}} {
+		name string
+		view image.Rectangle
+	}{{"whole", image.Rectangle{}}, {"screen", image.Rect(0, 0, 1280, 720)}} {
 		b.Run(tc.name, func(b *testing.B) {
-			art := *d.g.assets.Maps["S_checkpoint"]
-			if !tc.ceiling {
-				art.Highland = nil
-			}
-			f := NewField(d.g.assets, &art)
-			defer f.dispose()
-			b.ResetTimer()
+			x, y := f.Center(6, 4) // the gate, as the scene camera looks at it
+			f.DrawBounds = tc.view.Add(image.Pt(int(x)-tc.view.Dx()/2, int(y)-tc.view.Dy()/2))
 			for i := 0; i < b.N; i++ {
 				f.Draw(0, nil, nil)
 			}
@@ -184,6 +124,11 @@ func TestSceneMapsLoadAndDraw(t *testing.T) {
 		for _, face := range art.Faces {
 			if _, ok := a.Props[face.Name]; !ok {
 				t.Errorf("%s: no face picture %q", id, face.Name)
+			}
+		}
+		if art.SceneMap != nil {
+			if _, err := scenemap.Build(art.SceneMap, a.SceneRules, scenemap.Options{Decor: true}); err != nil {
+				t.Errorf("%s: %v", id, err)
 			}
 		}
 		for _, dec := range art.Decorations {

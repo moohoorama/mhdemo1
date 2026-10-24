@@ -15,3 +15,4 @@ button[aria-pressed="true"] { color: #14201b; background: #c1dfab; border-color:
 canvas { display: block; image-rendering: pixelated; }
 #hover { position: absolute; inset: 0; pointer-events: none; }
 footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 9px 12px; background: #262e2b; font-size: .88rem; }
+button:disabled { opacity: .45; cursor: default; }

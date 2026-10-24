@@ -575,11 +575,15 @@ def main():
                 warnings.append(f'{map_id}: no picture {p[0]}')
         out.append((map_id, art))
     for map_id, art in out:
+        path = GFX / 'maps' / f'{map_id}.json'
+        if path.exists() and json.load(open(path)).get('format') == 2:
+            print(map_id, 'is format 2 (scene_v2.py): left as it is')  # variants of it are still made from it above
+            continue
         if map_id in ('S_checkpoint', 'S_checkpoint_closed'):
             art = small_tile_faces(small_grid_props(art))
             art['small_snap'] = True
             art['cliff_repeat'] = False
-        json.dump(art, open(GFX / 'maps' / f'{map_id}.json', 'w'), ensure_ascii=False, separators=(',', ':'))
+        json.dump(art, open(path, 'w'), ensure_ascii=False, separators=(',', ':'))
         rel = f'maps/{map_id}.json'
         if rel not in index['maps']:
             index['maps'].append(rel)

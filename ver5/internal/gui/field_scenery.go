@@ -3,15 +3,14 @@ package gui
 import (
 	"encoding/json"
 	"fmt"
-	"hash/fnv"
 	"image"
 	"math"
 	"os"
 	"path/filepath"
-	"slices"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"srpg/internal/scenemap"
 )
 
 // Scenery is the soft ground decoration and the pine art that make battle maps vary (graphics/map/scenery.png,
@@ -20,10 +19,8 @@ import (
 // the ink outline of everything that matters in a battle; decoration has none.
 type Scenery struct {
 	sprites map[string]Sprite
-	groups  map[string][]string
-	scatter map[string]map[string]float64 // surface -> group -> expected stamps per small tile
-	anim    map[string][]Sprite           // looping effects: frames in order
-	sites   map[string]siteLife           // by strongpoint sprite name (camp, village, castle)
+	anim    map[string][]Sprite // looping effects: frames in order
+	sites   map[string]siteLife // by strongpoint sprite name (camp, village, castle)
 	pines   []pineArt
 }
 
@@ -66,10 +63,8 @@ func loadScenery(dir string) (*Scenery, error) {
 			Rect  [4]int
 			Pivot [2]float64
 		}
-		Groups  map[string][]string
-		Scatter map[string]map[string]float64
-		Anim    map[string][]string
-		Sites   map[string]struct {
+		Anim  map[string][]string
+		Sites map[string]struct {
 			Base     string
 			Overlays []struct {
 				Anim   string
@@ -93,7 +88,7 @@ func loadScenery(dir string) (*Scenery, error) {
 		return nil, err
 	}
 	sheet := ebiten.NewImageFromImage(pixels)
-	s := &Scenery{sprites: map[string]Sprite{}, groups: meta.Groups, scatter: meta.Scatter, anim: map[string][]Sprite{}}
+	s := &Scenery{sprites: map[string]Sprite{}, anim: map[string][]Sprite{}}
 	for name, v := range meta.Sprites {
 		r := image.Rect(v.Rect[0], v.Rect[1], v.Rect[0]+v.Rect[2], v.Rect[1]+v.Rect[3])
 		s.sprites[name] = Sprite{sheet.SubImage(r).(*ebiten.Image), v.Pivot[0], v.Pivot[1]}
@@ -128,39 +123,6 @@ func loadScenery(dir string) (*Scenery, error) {
 	return s, nil
 }
 
-// sceneSeed makes the hash streams of one map differ from another's.
-type sceneSeed uint32
-
-func newSceneSeed(id string) sceneSeed {
-	h := fnv.New32a()
-	h.Write([]byte(id))
-	return sceneSeed(h.Sum32())
-}
-
-func (s sceneSeed) hash(a, b, c int) uint32 {
-	h := uint32(s) ^ uint32(a)*0x9E3779B1 ^ uint32(b)*0x85EBCA6B ^ uint32(c)*0xC2B2AE35
-	h ^= h >> 16
-	h *= 0x7feb352d
-	h ^= h >> 15
-	h *= 0x846ca68b
-	h ^= h >> 16
-	return h
-}
-
-// unit is a hash stream value in [0, 1).
-func (s sceneSeed) unit(a, b, c int) float64 { return float64(s.hash(a, b, c)>>8) / (1 << 24) }
-
-// noise is smooth value noise in [0, 1): neighbouring places get alike values, so decoration gathers in patches.
-func (s sceneSeed) noise(x, y float64) float64 {
-	ix, iy := math.Floor(x), math.Floor(y)
-	fx, fy := x-ix, y-iy
-	fx, fy = fx*fx*(3-2*fx), fy*fy*(3-2*fy)
-	at := func(dx, dy int) float64 { return s.unit(int(ix)+dx, int(iy)+dy, 77) }
-	top := at(0, 0)*(1-fx) + at(1, 0)*fx
-	bottom := at(0, 1)*(1-fx) + at(1, 1)*fx
-	return top*(1-fy) + bottom*fy
-}
-
 // pick chooses an index by weights from a unit value.
 func pick(weights []float64, u float64) int {
 	total := 0.0
@@ -177,62 +139,14 @@ func pick(weights []float64, u float64) int {
 	return len(weights) - 1
 }
 
-// sceneSurface names the decoration set a small tile's glyph takes. Everything that is not open ground gets none.
-func sceneSurface(t byte) string {
-	switch t {
-	case '.':
-		return "grass"
-	case 'd':
-		return "waste"
-	case 'i':
-		return "floor"
-	case 'f':
-		return "forest"
-	case 'h':
-		return "cliff"
-	case '~':
-		return "water"
-	}
-	return ""
-}
-
-// sceneUnderlay lists the groups drawn first (big soft patches); the rest lie over them.
-var sceneUnderlay = map[string]bool{"patch": true, "tone": true, "stain": true, "shade": true}
-
-// sceneClumped lists the groups that gather in a few places instead of spreading evenly.
-var sceneClumped = map[string]bool{"flower": true, "mushroom": true, "bush": true}
-
-// sceneKeepOff lists the glyphs ground decoration stays a tile away from: water, walls, cliffs, bridges and the
-// strongpoints, whose edges and sprites decoration would run into.
-const sceneKeepOff = "~chbvkog"
-
-// makeScenery bakes the ground decoration into one picture, drawn once per frame over the ground and floors; the
-// cliff tops go into a second picture drawn with their blocks.
+// makeScenery bakes the ground decoration (scenemap.Scenery.Decorate) into one picture, drawn once per frame over
+// the ground and floors; the cliff tops go into a second picture drawn with their blocks.
 // Tree shadows are collected apart while the trees are placed and folded into it by finishScenery.
 func (f *Field) makeScenery() {
-	sc := f.A.Scenery
 	w, h := f.Canvas.Bounds().Dx(), f.Canvas.Bounds().Dy()
 	f.decor = ebiten.NewImage(w, h)
 	f.treeShadow = ebiten.NewImage(w, h)
-	seed := newSceneSeed(f.Map.ID)
-	type stamp struct {
-		s     Sprite
-		x, y  float64
-		layer int
-		top   bool // on a cliff top: drawn with the cliff block instead of with the ground
-	}
-	var stamps []stamp
-	add := func(name string, x, y float64, layer int, top bool) {
-		stamps = append(stamps, stamp{sc.sprites[name], x, y, layer, top})
-	}
-	groupNames := map[string][]string{} // surface -> sorted groups, so the hash streams are stable
-	for surface, groups := range sc.scatter {
-		for g := range groups {
-			groupNames[surface] = append(groupNames[surface], g)
-		}
-		slices.Sort(groupNames[surface])
-	}
-	floored := map[[2]int]bool{} // a story room's boards, mats and carpets lie over plain ground: no grass under them
+	floored := map[[2]int]bool{} // an old room map's boards, mats and carpets lie over plain ground: no grass under them
 	for _, p := range f.Map.Props {
 		if strings.HasPrefix(p.Name, "floor_") && !p.Fill {
 			u, v := int(math.Round(p.U*2)), int(math.Round(p.V*2))
@@ -241,169 +155,43 @@ func (f *Field) makeScenery() {
 			}
 		}
 	}
-	for y := range 2 * f.Map.H {
-		for x := range 2 * f.Map.W {
-			t := f.small(x, y)
-			surface := sceneSurface(t)
-			if surface == "" || floored[[2]int{x, y}] {
-				continue
-			}
-			if surface != "forest" && surface != "cliff" && surface != "water" {
-				blocked := false
-				for _, d := range [][2]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}} {
-					blocked = blocked || slices.Contains([]byte(sceneKeepOff), f.small(x+d[0], y+d[1]))
-				}
-				if blocked {
-					continue
-				}
-			}
-			mx, my := f.mapCenter((float64(x)+.5)/2-.5, (float64(y)+.5)/2-.5)
-			cx, cy := mx*K, my*K
-			if surface == "water" {
-				f.sceneWater(seed, x, y, cx, cy, func(name string, x, y float64, layer int) { add(name, x, y, layer, false) })
-				continue
-			}
-			spread, top := .8, false
-			if surface == "cliff" {
-				spread, top = .6, true
-				cy -= float64(f.A.CliffRise)
-			}
-			patch := seed.noise(float64(x)/5, float64(y)/5)
-			for gi, g := range groupNames[surface] {
-				names := sc.groups[surface+"."+g]
-				if len(names) == 0 {
-					continue
-				}
-				mod := .4 + 1.2*patch
-				if sceneClumped[g] {
-					mod = 3 * patch * patch
-				}
-				lambda := sc.scatter[surface][g] * mod
-				n := int(lambda)
-				if seed.unit(x, y, 100+gi) < lambda-float64(n) {
-					n++
-				}
-				for k := range n {
-					a := (seed.unit(x, y, 200+gi*8+k)*2 - 1) * spread
-					b := (seed.unit(x, y, 300+gi*8+k)*2 - 1) * spread
-					name := names[seed.hash(x, y, 400+gi*8+k)%uint32(len(names))]
-					layer := 1
-					if sceneUnderlay[g] {
-						layer = 0
-					}
-					add(name, cx+(a-b)*8, cy+(a+b)*4, layer, top)
-				}
-			}
+	glyph := func(x, y int) byte {
+		if floored[[2]int{x, y}] {
+			return 0
 		}
+		return f.small(x, y)
 	}
-	slices.SortStableFunc(stamps, func(p, q stamp) int {
-		if p.layer != q.layer {
-			return p.layer - q.layer
-		}
-		return int(math.Round(p.y - q.y))
-	})
+	stamps, ripples := f.A.SceneRules.Scenery.Decorate(f.Map.ID, glyph, 0, 0, 2*f.Map.W, 2*f.Map.H, func(x, y int) (float64, float64) {
+		mx, my := f.mapCenter((float64(x)+.5)/2-.5, (float64(y)+.5)/2-.5)
+		return mx * K, my * K
+	}, float64(f.A.CliffRise))
+	f.waterFX = ripples
 	for _, st := range stamps {
+		s := f.A.Scenery.sprites[st.Name]
 		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(math.Round(st.x-st.s.PivotX), math.Round(st.y-st.s.PivotY))
+		op.GeoM.Translate(math.Round(st.X-s.PivotX), math.Round(st.Y-s.PivotY))
 		dst := f.decor
-		if st.top {
+		if st.Top {
 			if f.cliffTop == nil {
 				f.cliffTop = ebiten.NewImage(w, h)
 			}
 			dst = f.cliffTop
 		}
-		dst.DrawImage(st.s.Image, op)
+		dst.DrawImage(s.Image, op)
 	}
-}
-
-// waterFX is a looping effect on the water (a twinkle, a ripple) at a canvas position.
-type waterFX struct {
-	x, y  float64
-	kind  string
-	phase int
-	lag   float64
 }
 
 // sceneFXMS is how long one frame of each looping water effect shows.
 var sceneFXMS = map[string]float64{"glint": 260, "ripple": 380}
 
-// sceneWater decorates one water small tile: foam along the edges that meet land, reeds in the shallows there,
-// lily pads and tone patches (deeper, shallower) elsewhere, and the looping twinkles and ripples. Tiles beside a
-// bridge are left alone.
-func (f *Field) sceneWater(seed sceneSeed, x, y int, cx, cy float64, add func(name string, x, y float64, layer int)) {
-	sc := f.A.Scenery
-	nb := [4]byte{f.small(x+1, y), f.small(x-1, y), f.small(x, y+1), f.small(x, y-1)} // SE, NW, SW, NE
-	if slices.Contains(nb[:], 'b') {
-		return
-	}
-	sp := sc.scatter["water"]
-	patch := seed.noise(float64(x)/5, float64(y)/5)
-	roll := func(lambda float64, salt int) int {
-		n := int(lambda)
-		if seed.unit(x, y, salt) < lambda-float64(n) {
-			n++
-		}
-		return n
-	}
-	name := func(group string, salt int) string {
-		names := sc.groups["water."+group]
-		return names[seed.hash(x, y, salt)%uint32(len(names))]
-	}
-	mids := [4][2]float64{{8, 4}, {-8, -4}, {-8, 4}, {8, -4}} // where the edge to each neighbour lies from the centre
-	var land []int
-	for i, g := range nb {
-		if g == '~' {
-			continue
-		}
-		land = append(land, i)
-		group, dir := "foam_up", [2]float64{8, -4}
-		if i >= 2 {
-			group, dir = "foam_down", [2]float64{8, 4}
-		}
-		for k, p := range [2]float64{sp["foam"], sp["foam2"]} {
-			if seed.unit(x, y, 500+i*4+k) < p {
-				t := (seed.unit(x, y, 520+i*4+k)*2 - 1) * .6
-				add(name(group, 540+i*4+k), cx+mids[i][0]*.72+t*dir[0], cy+mids[i][1]*.72+t*dir[1], 1)
-			}
-		}
-	}
-	spot := func(salt int, spread float64) (float64, float64) {
-		a := (seed.unit(x, y, salt)*2 - 1) * spread
-		b := (seed.unit(x, y, salt+1)*2 - 1) * spread
-		return cx + (a-b)*8, cy + (a+b)*4
-	}
-	if len(land) > 0 {
-		for k := range roll(sp["reed"]*3*patch*patch, 600) {
-			i := land[int(seed.hash(x, y, 610+k)%uint32(len(land)))]
-			t := (seed.unit(x, y, 620+k)*2 - 1) * .5
-			add(name("reed", 630+k), cx+mids[i][0]*.62+t*8, cy+mids[i][1]*.62+t*(-4+8*float64(i/2)), 1)
-		}
-	} else {
-		for k := range roll(sp["lily"]*3*patch*patch, 650) {
-			px, py := spot(660+2*k, .7)
-			add(name("lily", 670+k), px, py, 1)
-		}
-	}
-	for k := range roll(sp["tone"]*(.4+1.2*patch), 680) {
-		px, py := spot(690+2*k, .8)
-		add(name("tone", 700+k), px, py, 0)
-	}
-	for _, kind := range []string{"glint", "ripple"} {
-		for k := range roll(sp[kind], 710+len(kind)) {
-			px, py := spot(720+2*k+len(kind)*10, .85)
-			f.waterFX = append(f.waterFX, waterFX{px, py, kind, int(seed.hash(x, y, 740+k) % 4), float64(seed.hash(x, y, 750+k) % 400)})
-		}
-	}
-}
-
 // drawWaterFX draws the looping twinkles and ripples that are in view over the water.
 func (f *Field) drawWaterFX() {
 	for _, e := range f.waterFX {
-		if !f.DrawBounds.Empty() && !image.Pt(int(e.x), int(e.y)).In(f.DrawBounds) {
+		if !f.DrawBounds.Empty() && !image.Pt(int(e.X), int(e.Y)).In(f.DrawBounds) {
 			continue
 		}
-		frames := f.A.Scenery.anim[e.kind]
-		f.blit(f.Canvas, frames[(int((f.clockMS+e.lag)/sceneFXMS[e.kind])+e.phase)%len(frames)], e.x, e.y, nil)
+		frames := f.A.Scenery.anim[e.Kind]
+		f.blit(f.Canvas, frames[(int((f.clockMS+e.Lag)/sceneFXMS[e.Kind])+e.Phase)%len(frames)], e.X, e.Y, nil)
 	}
 }
 
@@ -427,7 +215,7 @@ func (f *Field) drawCliffTop(cx, cy float64) {
 // burnt forest picture instead of its pines.
 func (f *Field) nativeForest(items *[]drawItem) {
 	sc := f.A.Scenery
-	seed := newSceneSeed(f.Map.ID)
+	seed := scenemap.NewSeed(f.Map.ID)
 	v := f.Map.Visual
 	forest := func(x, y int) bool {
 		for j := range 2 {
@@ -453,13 +241,13 @@ func (f *Field) nativeForest(items *[]drawItem) {
 				}
 			}
 			edge := 1 - float64(near)/8
-			count := 4 + int(math.Round(3*(1-edge))) + int(seed.hash(x, y, 1)%2)
+			count := 4 + int(math.Round(3*(1-edge))) + int(seed.Hash(x, y, 1)%2)
 			slots := [9][2]float64{}
 			for i := range slots {
 				slots[i] = [2]float64{float64(i%3-1) * .55, float64(i/3-1) * .55}
 			}
 			for i := len(slots) - 1; i > 0; i-- {
-				j := int(seed.hash(x, y, 10+i) % uint32(i+1))
+				j := int(seed.Hash(x, y, 10+i) % uint32(i+1))
 				slots[i], slots[j] = slots[j], slots[i]
 			}
 			cx, cy := f.Center(float64(x), float64(y))
@@ -472,16 +260,16 @@ func (f *Field) nativeForest(items *[]drawItem) {
 				}})
 			}
 			for i := range min(count, len(slots)) {
-				a := slots[i][0] + (seed.unit(x, y, 20+i)-.5)*.4
-				b := slots[i][1] + (seed.unit(x, y, 40+i)-.5)*.4
+				a := slots[i][0] + (seed.Unit(x, y, 20+i)-.5)*.4
+				b := slots[i][1] + (seed.Unit(x, y, 40+i)-.5)*.4
 				px, py := cx+(a-b)*16, cy+(a+b)*8
 				weights := make([]float64, len(sc.pines))
 				for k, p := range sc.pines {
 					weights[k] = p.weight[0]*(1-edge) + p.weight[1]*edge
 				}
-				pine := sc.pines[pick(weights, seed.unit(x, y, 60+i))]
+				pine := sc.pines[pick(weights, seed.Unit(x, y, 60+i))]
 				phase := int(math.Floor(px*.012 + py*.006))
-				lag := float64(seed.hash(x, y, 80+i) % uint32(swayMS)) // so the trees do not all change frame at the same instant
+				lag := float64(seed.Hash(x, y, 80+i) % uint32(swayMS)) // so the trees do not all change frame at the same instant
 				s0 := pine.frames[0]
 				b0 := s0.Image.Bounds()
 				rx, ry := int(math.Round(px-s0.PivotX)), int(math.Round(py-s0.PivotY))
@@ -527,11 +315,11 @@ func (f *Field) drawSite(still Sprite, life siteLife, x, y float64, u, v int) {
 		still = *life.base
 	}
 	f.blit(f.Canvas, still, x, y, nil)
-	seed := newSceneSeed(f.Map.ID)
+	seed := scenemap.NewSeed(f.Map.ID)
 	// the same wind as the trees: the phase moves across the map, with a little spread
-	wave := math.Floor(x*.012+y*.006) + float64(seed.hash(u, v, 9)%120)/60
+	wave := math.Floor(x*.012+y*.006) + float64(seed.Hash(u, v, 9)%120)/60
 	for i, o := range life.overlays {
-		if o.chance > 0 && seed.unit(u, v, 11+i) >= o.chance {
+		if o.chance > 0 && seed.Unit(u, v, 11+i) >= o.chance {
 			continue
 		}
 		frames := o.frames

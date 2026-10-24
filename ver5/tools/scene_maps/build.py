@@ -120,7 +120,7 @@ def seat_gates(props):
 
 
 def floor_half(x):
-    return (x - 1) // 2 if x < 0 else x // 2
+    return x // 2
 
 
 def ground_layers(dry, soil):

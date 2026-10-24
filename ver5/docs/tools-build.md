@@ -16,6 +16,7 @@ python3 tools/build_extra.py                                   # ../assets_candi
 node tools/scene_maps/export.mjs > /tmp/scenes_draws.json      # 후보 viewer의 장면을 돌려 어떤 그림이 어디에 놓이는지 뽑는다
 python3 tools/scene_maps/build.py /tmp/scenes_draws.json       # → assets/graphics/maps/S_*.json 와 index.json의 maps
 python3 tools/scene_maps/compose.py                            # viewer에 없는 방(S_council, S_hall, S_tent_mid, S_tent_lux, S_tavern, S_inn), 야외(S_bridge, S_pass, S_peach_grove, S_castle_town, S_jail_street, S_market, S_checkpoint), 변형(S_turban_camp, S_rampart_siege, S_army_camp_hungry, S_castle_town_burnt)
+python3 tools/scene_maps/scene_v2.py [--rev REV] S_id ...     # 옛 장면 맵 → 형식 2(땅 글자·높이·물체·성벽 줄). compose.py는 이미 형식 2인 맵을 덮어쓰지 않는다
 python3 tools/scene_maps/backdrops.py                          # 장면 원경 → assets/graphics/backdrops/*.png (index.json의 backdrops)
 python3 tools/scene_maps/scene_props.py                        # 색만 바꾼 장면 그림(누런 깃발, 금빛 병풍)과 새·반짝임 → ../assets_candidate/tiles
 python3 tools/scene_maps/join_overlay.py                       # 알파만 쓴 그림자: 모서리 삼각형 jshade_*, 절벽 밑동 cfoot_* → ../assets_candidate/tiles

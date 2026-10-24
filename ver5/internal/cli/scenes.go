@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"srpg/internal/content"
+	"srpg/internal/scenemap"
 	"srpg/internal/scenes"
 )
 
@@ -43,14 +44,41 @@ func loadScenes(contentDir string) *sceneBook {
 			continue
 		}
 		var m sceneMap
-		if raw, err := os.ReadFile(filepath.Join(root, "graphics", "maps", def.Map+".json")); err == nil && json.Unmarshal(raw, &m) == nil {
+		raw, err := os.ReadFile(filepath.Join(root, "graphics", "maps", def.Map+".json"))
+		if err != nil {
+			continue
+		}
+		if sm, ok, err := scenemap.Parse(raw); ok && err == nil {
+			b.maps[def.Map] = sceneMapOf(sm)
+		} else if json.Unmarshal(raw, &m) == nil {
 			b.maps[def.Map] = m
 		}
 	}
 	return b
 }
 
-var sceneGlyph = map[byte]string{'.': "   ", 'd': " . ", '~': "~~~", 'c': "###", 'h': "^^^", 'i': " _ ", 'v': "VIL", 'f': "TRE", 's': " : "}
+// sceneMapOf reads a format 2 scene map the way the text map shows one: a glyph per game cell, objects by game cell.
+func sceneMapOf(m *scenemap.Map) sceneMap {
+	out := sceneMap{Name: m.Name, Size: m.Size}
+	for v := range m.Size[1] {
+		row := make([]byte, m.Size[0])
+		for u := range row {
+			row[u] = m.Glyph(2*u, 2*v)
+		}
+		out.Tiles = append(out.Tiles, string(row))
+	}
+	for _, o := range m.Objects {
+		u := (float64(o.U)-.5)/2 + float64(o.DX)/64 + float64(o.DY)/32
+		v := (float64(o.V)-.5)/2 - float64(o.DX)/64 + float64(o.DY)/32
+		p, _ := json.Marshal([]any{o.Name, u, v})
+		var raw []json.RawMessage
+		_ = json.Unmarshal(p, &raw)
+		out.Props = append(out.Props, raw)
+	}
+	return out
+}
+
+var sceneGlyph = map[byte]string{'.': "   ", 'd': " . ", '~': "~~~", 'c': "###", 'h': "^^^", 'i': " _ ", 'v': "VIL", 'f': "TRE", 's': " : ", 'T': " = ", 'W': " = ", 'P': " = ", 'C': " = "}
 
 // stage is what the CLI remembers of the running scene: which scene and where its cast stands.
 type stage struct {

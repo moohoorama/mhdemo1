@@ -13,6 +13,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/colorm"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 	"srpg/internal/content"
+	"srpg/internal/scenemap"
 )
 
 const margin = 48 // map pixels around the map bounds (sprites reach past the ground)
@@ -51,7 +52,8 @@ type Field struct {
 	decor                        *ebiten.Image          // baked ground decoration, see makeScenery
 	treeShadow                   *ebiten.Image          // tree shadows while the field is built, then folded into decor
 	cliffTop                     *ebiten.Image          // baked decoration of the cliff tops, drawn with each cliff block
-	waterFX                      []waterFX
+	waterFX                      []scenemap.Ripple
+	scenePieces                  []scenePiece // a format 2 scene map's standing layer, see makeScenePlan
 	clockMS                      float64
 
 	// beatShadows are the ground shadows of the props a story scene's beats put down (canvas point, prop width):
@@ -72,6 +74,12 @@ func NewField(a *Assets, m *MapArt) *Field {
 	w, h := (m.Bounds.Dx()+2*margin)*K, (m.Bounds.Dy()+2*margin)*K
 	f := &Field{worldSize: image.Pt(w, h), A: a, Map: m, OriginX: float64(margin - m.Bounds.Min.X), OriginY: float64(margin - m.Bounds.Min.Y),
 		clip: ebiten.NewImage(w, h), shadows: ebiten.NewImage(w, h), Canvas: ebiten.NewImage(w, h), ShowExterior: m.Scene}
+	if m.SceneMap != nil {
+		if err := f.makeScenePlan(); err != nil {
+			panic(err) // the map loaded, so its plan builds: LoadAssets builds every format 2 map once
+		}
+		return f
+	}
 	water := a.Animations["water"].Frames
 	for i := range f.ground {
 		if m.Native && i > 0 {
@@ -366,6 +374,7 @@ type drawItem struct {
 	draw  func()
 	rect  image.Rectangle // canvas area the sprite's image covers
 	ghost func()          // units: redraw at half opacity when scenery drawn later covers it
+	key   *scenemap.Key   // a format 2 scene map's sort key; nil: made from y and rect (orderScene)
 }
 
 // mapRect is the canvas area blitMap covers with s at map position (x, y).
@@ -490,6 +499,9 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		}
 		items = append(items, drawItem{y: y * K, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: f.mapRect(s, x, y)})
 	}
+	if f.Map.SceneMap != nil {
+		items = append(items, f.sceneItems()...)
+	}
 	if f.Map.Native {
 		for _, it := range append(append([]drawItem{}, f.nativeItems...), f.stateItems(clockMS)...) {
 			if f.DrawBounds.Empty() || it.rect.Empty() || it.rect.Overlaps(f.DrawBounds) {
@@ -548,7 +560,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 				f.blit(c, s, x, y-8, nil)
 			}
 		}, rect: image.Rect(rx, top, rx+b.Dx(), ry+b.Dy())})
-		if f.Map.Scene && !f.A.Props[name].NoShadow && !strings.HasPrefix(name, "wall_") && !strings.HasPrefix(name, "curtain_") && !strings.HasPrefix(name, "screen_") {
+		if f.Map.Scene && !f.A.Props[name].NoShadow {
 			f.blit(f.shadows, propShadow(b.Dx()), x, y, &ebiten.DrawImageOptions{Blend: maxBlend})
 		}
 	})
@@ -561,7 +573,8 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		}
 		x, y := f.Center(u.u, u.v)
 		x += u.shakeOffset()
-		lift := u.lift
+		ground := f.groundLift(u.u, u.v)
+		lift := u.lift + ground
 		if u.visible() {
 			sh := Sprite{u.art.Shadow(u.dir, u.anim, u.frame()), u.art.ShadowPivot[0], u.art.ShadowPivot[1]}
 			sop := &ebiten.DrawImageOptions{Blend: maxBlend}
@@ -571,8 +584,13 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		unit := u
 		b := u.art.Frame(u.dir, u.anim, u.frame()).Bounds()
 		rx, ry := int(math.Round(x-u.art.Pivot[0])), int(math.Round(y-lift-u.art.Pivot[1]))
-		items = append(items, drawItem{y: y, kind: 1, draw: func() { f.drawUnit(unit, x, y-lift, false) },
-			rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy()), ghost: func() { f.drawUnit(unit, x, y-lift, true) }})
+		it := drawItem{y: y, kind: 1, draw: func() { f.drawUnit(unit, x, y-lift, false) },
+			rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy()), ghost: func() { f.drawUnit(unit, x, y-lift, true) }}
+		if f.Map.SceneMap != nil {
+			k := f.sceneKey(x, y, ground, scenemap.RankPerson, it.rect)
+			it.key = &k
+		}
+		items = append(items, it)
 	}
 	// one layer so overlapping shadows do not darken each other, kept on the ground
 	clipOp := &ebiten.DrawImageOptions{Blend: ebiten.BlendDestinationIn}
@@ -582,12 +600,16 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	for _, m := range f.groundMarks {
 		f.blit(c, m.s, m.x, m.y, nil)
 	}
-	sort.SliceStable(items, func(i, j int) bool {
-		if items[i].y != items[j].y {
-			return items[i].y < items[j].y
-		}
-		return items[i].kind < items[j].kind
-	})
+	if f.Map.SceneMap != nil {
+		items = f.orderScene(items)
+	} else {
+		sort.SliceStable(items, func(i, j int) bool {
+			if items[i].y != items[j].y {
+				return items[i].y < items[j].y
+			}
+			return items[i].kind < items[j].kind
+		})
+	}
 	for _, it := range items {
 		f.sceneryLayer = it.kind == 0
 		it.draw()
