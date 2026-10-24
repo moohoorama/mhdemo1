@@ -42,10 +42,10 @@
  "Enemies": [
   {
    "Character": "chengyuanzhi",
-   "X": 11,
-   "Y": 11,
+   "X": 18,
+   "Y": 13,
    "Facing": "SE",
-   "Group": "main",
+   "Group": "gate",
    "Policy": "hold",
    "DuelFirst": true,
    "Rank": "commander"
@@ -70,10 +70,10 @@
   },
   {
    "Character": "dengmao",
-   "X": 18,
-   "Y": 13,
+   "X": 11,
+   "Y": 11,
    "Facing": "SE",
-   "Group": "gate",
+   "Group": "main",
    "Policy": "hold",
    "DuelFirst": true
   },
@@ -175,28 +175,6 @@
    "Policy": "hold",
    "Faction": "han",
    "Shift": -0.07
-  },
-  {
-   "Character": "soldier",
-   "X": 5,
-   "Y": 5,
-   "Facing": "SE",
-   "Group": "militia",
-   "AI": true,
-   "Policy": "assault",
-   "Faction": "shu",
-   "Shift": -0.07
-  },
-  {
-   "Character": "soldier",
-   "X": 6,
-   "Y": 4,
-   "Facing": "SE",
-   "Group": "militia",
-   "AI": true,
-   "Policy": "assault",
-   "Faction": "shu",
-   "Shift": -0.07
   }
  ],
  "Reward": {
@@ -240,17 +218,17 @@
    ]
   },
   {
-   "ID": "dengmao-turns",
+   "ID": "gate-turns",
    "If": [
     "round>=3",
-    "alive:dengmao"
+    "alive:chengyuanzhi"
    ],
    "Do": [
     {
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "dengmao",
+       "Actor": "chengyuanzhi",
        "Text": "뒤에서 웬 놈들이냐! 성문은 나중이다, 돌아서라!"
       }
      ]
@@ -279,16 +257,20 @@
      "Lines": [
       {
        "Actor": "chengyuanzhi",
-       "Text": "등무가 당했다고? 이놈들, 내가 직접 나가 주마!"
+       "Text": "등무가 당했다고? 이놈들, 내가 직접 상대해 주마!"
       }
      ]
     },
     {
      "Kind": "ai",
      "Targets": [
-      "chengyuanzhi"
+      "gate"
      ],
-     "Policy": "assault"
+     "Policy": "march",
+     "Goal": {
+      "X": 12,
+      "Y": 11
+     }
     }
    ]
   }

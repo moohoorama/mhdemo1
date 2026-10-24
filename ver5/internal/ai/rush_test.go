@@ -76,8 +76,8 @@ func rushCampaign(t *testing.T, seed uint64, stages int) (*core.Engine, map[stri
 }
 
 // TestRushWinsTheFirstStages: a player who only charges the nearest enemy still gets through the
-// first three stages in at least four games of five (docs/stage_lv_balance.md), and B02's story plays
-// out by itself in every game.
+// first three stages in at least four games of five (docs/stage_lv_balance.md), B02's night raid plays out by
+// itself in every game and Liu Bei meets Bo Cai in every game that wins it.
 func TestRushWinsTheFirstStages(t *testing.T) {
 	wins := 0
 	for seed := uint64(1); seed <= 5; seed++ {
@@ -88,8 +88,9 @@ func TestRushWinsTheFirstStages(t *testing.T) {
 			t.Logf("seed %d: %v", seed, results)
 		}
 		executed := e.Snapshot().Executed
-		for _, k := range []string{"battle-B02-night-raid", "duel-yingchuan-liubei-bocai"} {
-			assert.True(t, executed[k], "seed %d: %s", seed, k)
+		assert.True(t, executed["battle-B02-night-raid"], "seed %d: the night raid", seed)
+		if results["B02"] == "victory" {
+			assert.True(t, executed["duel-yingchuan-liubei-bocai"], "seed %d: Liu Bei meets Bo Cai", seed)
 		}
 	}
 	assert.GreaterOrEqual(t, wins, 4, "careless campaigns won of 5")

@@ -317,7 +317,7 @@ func (f *Field) Tile(u, v int) byte {
 
 // Lift is how many canvas pixels a cell's surface stands above the ground (castle walls).
 func (f *Field) Lift(u, v int) float64 {
-	if t := f.Tile(u, v); t == 'c' || t == 'm' {
+	if t := f.Tile(u, v); t == 'c' || t == 'm' && f.look(u, v) != "open" {
 		return float64(f.A.Rise) * f.artScale()
 	}
 	return 0

@@ -28,13 +28,22 @@ func (f *Field) eachSmall(fn func(int, int, byte, float64, float64)) {
 	}
 }
 
+// shown is small tile (x, y) as it stands now: an open gate is castle floor.
+func (f *Field) shown(x, y int) byte {
+	t := f.small(x, y)
+	if t == 'm' && f.look(floorDiv(x, 2), floorDiv(y, 2)) == "open" {
+		return 'i'
+	}
+	return t
+}
+
 // smallBlock picks the raised-block sprite (wall or cliff) whose open faces look at the
-// neighbours outside the block.
+// neighbours outside the block, an open gate's floor among them.
 func (f *Field) smallBlock(x, y int) string {
 	t := f.small(x, y)
 	mask := 0
 	for i, d := range [][2]int{{-1, 0}, {0, -1}, {1, 0}, {0, 1}} {
-		if !sameBlock(t, f.small(x+d[0], y+d[1])) {
+		if !sameBlock(t, f.shown(x+d[0], y+d[1])) {
 			mask |= 1 << i
 		}
 	}
@@ -44,9 +53,13 @@ func (f *Field) smallBlock(x, y int) string {
 // Floors and bridges must be drawn after animated water so wet atlas fragments cannot cover them.
 func (f *Field) makeNativeFloors() {
 	f.eachSmall(func(x, y int, t byte, px, py float64) {
-		if t == 'i' {
+		if t == 'i' || t == 'm' {
 			s := f.A.Structures["floor"]
-			f.nativeGround = append(f.nativeGround, drawItem{rect: f.mapRect(s, px, py), draw: func() { f.blitMap(f.Canvas, s, px, py, nil) }})
+			f.nativeGround = append(f.nativeGround, drawItem{rect: f.mapRect(s, px, py), draw: func() {
+				if f.shown(x, y) == 'i' { // a gate shows its floor once open
+					f.blitMap(f.Canvas, s, px, py, nil)
+				}
+			}})
 		}
 		if t == 'b' {
 			name := "bridge_u"
@@ -69,21 +82,18 @@ func (f *Field) nativeObjects(items *[]drawItem) {
 		if t != 'm' {
 			top := t == 'h'
 			*items = append(*items, drawItem{y: y * K, rect: f.mapRect(s, x, y), draw: func() {
-				f.blitMap(f.Canvas, s, x, y, nil)
+				f.blitMap(f.Canvas, f.A.Structures[f.smallBlock(u, v)], x, y, nil) // its ends show once a gate beside it opens
 				if top {
 					f.drawCliffTop(x*K, y*K)
 				}
 			}})
 			return
 		}
-		closed, open := f.gateSprite(u, v, s, "closed"), f.gateSprite(u, v, s, "floor")
-		cell := image.Pt(floorDiv(u, 2), floorDiv(v, 2))
+		closed := f.gateSprite(u, v, s, "closed")
 		*items = append(*items, drawItem{y: y * K, rect: f.mapRect(closed, x, y), draw: func() {
-			if f.look(cell.X, cell.Y) == "open" { // the gatehouse is gone and the way through the wall lies open
-				f.blitMap(f.Canvas, open, x, y, nil)
-				return
+			if f.shown(u, v) == 'm' { // an open gate is drawn as the castle floor it has become
+				f.blitMap(f.Canvas, closed, x, y, nil)
 			}
-			f.blitMap(f.Canvas, closed, x, y, nil)
 		}})
 	})
 	f.nativeSites(items)
@@ -282,10 +292,7 @@ func (f *Field) bridgeSprite(name string, at image.Point, whole Sprite) Sprite {
 	return whole
 }
 
-// gateSprite is the closed gate house of a gate cell, turned along the wall line it stands in; a wall block when
-// the art has none.
-// gateSprite is the gatehouse of small tile (u, v) in a picture set ("closed", or "floor" for the
-// open gate), turned to the wall line it sits in.
+// gateSprite is the gatehouse of small tile (u, v) in a picture set ("closed"), turned to the wall line it sits in.
 func (f *Field) gateSprite(u, v int, wall Sprite, set string) Sprite {
 	isWall := func(t byte) bool { return t == 'c' || t == 'm' }
 	name := "gatehouse_" + set + "_v"
