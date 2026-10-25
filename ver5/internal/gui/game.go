@@ -83,7 +83,7 @@ type Game struct {
 	shownNode                 string
 	lineIndex                 int
 	lineTyping                typing // how the current line is coming out
-	scrollAnim                scrollAnim
+	dialogueAnim              dialogueAnim
 	Verify                    bool
 	Shots                     []int // capture the screen at these ticks while autoplaying, then quit
 	verified                  map[string]bool
@@ -901,10 +901,18 @@ func (g *Game) screenshot(dst *ebiten.Image) {
 	}
 }
 
+// title is the start screen: the dragon pattern drifting slowly, darker toward the edges,
+// under the menu.
 func (g *Game) title(dst *ebiten.Image) {
-	for i := 0; i < uiH; i += 10 {
-		k := float64(i) / float64(uiH)
-		rect(dst, 0, float32(i), float32(uiW), 10, color.NRGBA{R: uint8(48 - 30*k), G: uint8(30 - 18*k), B: uint8(24 - 12*k), A: 255})
+	drift := g.uiSeconds * 7
+	g.drawDragon(dst, 0, 0, float64(uiW), float64(uiH), drift, drift, dragonTeal)
+	for i := float32(1); i <= 20; i++ {
+		t := i * 12
+		shade := color.NRGBA{A: 8}
+		rect(dst, 0, 0, float32(uiW), t, shade)
+		rect(dst, 0, float32(uiH)-t, float32(uiW), t, shade)
+		rect(dst, 0, 0, t, float32(uiH), shade)
+		rect(dst, float32(uiW)-t, 0, t, float32(uiH), shade)
 	}
 	g.inFrame(dst, Width, Height, image.Rect(0, 0, Width, Height), 0, g.titleMenu)
 }
@@ -938,7 +946,7 @@ func (g *Game) titleMenu(dst *ebiten.Image) {
 func (g *Game) play(dst *ebiten.Image) {
 	o := g.S.Engine.Observe()
 	if o.Phase != "scenario" {
-		g.scrollAnim = scrollAnim{} // the next story opens a fresh scroll
+		g.dialogueAnim = dialogueAnim{} // the next story opens a fresh box
 	}
 	switch o.Phase {
 	case "complete":

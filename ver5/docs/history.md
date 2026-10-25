@@ -5,6 +5,14 @@
 
 ---
 
+## 2026-10-25 용무늬 대화창과 타이틀
+
+- 결정: 대나무 두루마리 대화창을 용무늬 배경 + 검은 테두리 상자로 바꾸고, 첫 화자의 진영색으로 물들인다 · 사용자 요청(HTML 시안 확인 후). 진영색은 또렷이 갈릴 필요 없는 장식 · `presentation-scene.md` 대화창.
+- 결정: 진영마다 그림을 미리 만들지 않고 회색조 한 장에 색 배율 · 파일 하나로 끝나고 진영이 늘어도 할 일이 없으며 화자가 바뀔 때 색을 넘기기 쉽다. 원본(1254px)을 1/4로 줄여 75KB.
+- `internal/gui/dialogue_box.go`(`dialogue_scroll.go`에서 이름 바꿈): 두루마리 부품 대신 `drawDragon`(한 사각형에 `AddressRepeat` — 타일을 여러 장 찍으면 선형 필터가 가장자리에서 투명을 읽어 이음선이 보였다), `factionTint`, 검은 테두리·펼침 끝 막대, 밝은 글자, 초상·이름패 검은 테두리. `scrollAnim`→`dialogueAnim`(쓰지 않던 닫힘 동작 삭제).
+- `internal/gui/game.go`: 타이틀 배경을 용무늬로(천천히 흐름, 가장자리 어둡게). `internal/gui/assets.go`: `Assets.Scroll`→`Dragon`. `internal/gui/uidemo_title.go`(새 파일): `-ui title`.
+- `assets/graphics/ui/dragon.png`·`tools/ui/dragon_tile.py`(새 파일). `assets/graphics/ui/scroll/`·`tools/ui/scroll_parts.py` 삭제. UI 시트의 `scroll_curl`·`scroll_grain`은 이제 쓰지 않는다(`../tools/spritetool/assets/ver5-ui`에 남아 있음).
+
 ## 2026-10-24 탐험 모드와 1부 1~2장 (계획 2026_10_24_explore_mode)
 
 - 결정: 전투 사이의 이야기를 유비가 걸어 다니는 탐험으로 진행한다. 사람에게 말을 걸면 이벤트(기존 장면 연출), 심복에게 말을 걸면 출진, 무기점·도구점·주점은 실제 상점, 재화는 "돈" · 사용자가 영걸전처럼 마을·주둔지·진영을 돌며 이야기를 보고 싶어 함(1부 계획의 "엔진 신규 기능 없음"을 바꿈) · `presentation-explore.md`, `plan/2026_10_24_explore_mode.md`.

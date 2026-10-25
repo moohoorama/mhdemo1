@@ -32,7 +32,7 @@ type propEntry struct {
 type Assets struct {
 	Duels         duel.Scripts
 	Bubble        *duelview.Bubble
-	Scroll        *scrollParts
+	Dragon        *ebiten.Image // grey dragon pattern of the title and the dialogue box
 	groundPattern *ebiten.Image
 	StatusIcons   map[string]*ebiten.Image
 	Lib           *sprite.Library
@@ -164,7 +164,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 	if err != nil {
 		return nil, err
 	}
-	scroll, err := loadScrollParts(filepath.Join(dir, "ui", "scroll"))
+	dragon, err := loadRGBA(filepath.Join(dir, "ui", "dragon.png"))
 	if err != nil {
 		return nil, err
 	}
@@ -223,7 +223,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 	if err = json.Unmarshal(b, &index); err != nil {
 		return nil, err
 	}
-	a := &Assets{Bubble: bubble, Scroll: scroll, Duels: scripts, Tiles: map[int]Sprite{}, TileShadow: map[int]Sprite{},
+	a := &Assets{Bubble: bubble, Dragon: ebiten.NewImageFromImage(dragon), Duels: scripts, Tiles: map[int]Sprite{}, TileShadow: map[int]Sprite{},
 		Animations: map[string]TileAnimation{}, Structures: map[string]Sprite{}, Sites: map[string]Sprite{}, Maps: map[string]*MapArt{},
 		Rise: index.Structures.Rise, CliffRise: index.Structures.CliffRise, Portraits: map[string]*ebiten.Image{}, Props: map[string]Prop{}}
 	statusPixels, err := loadRGBA(filepath.Join(dir, "status", "icons.png"))

@@ -442,7 +442,7 @@ func (g *Game) startExploreTalk(with string, talk []content.Line) {
 		w.talk = append(w.talk, line{speakers: []string{name}, text: l[1], portrait: g.explorePortrait(name)})
 	}
 	g.lineTyping = startTyping(g.uiSeconds)
-	g.scrollAnim = scrollAnim{}
+	g.dialogueAnim = dialogueAnim{}
 	g.scene.spoke, g.scene.held = map[string]bool{}, map[string]bool{w.hero: true, with: true}
 }
 

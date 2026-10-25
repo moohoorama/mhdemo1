@@ -16,6 +16,7 @@
   기본값은 데스크톱 100%, Android 130%(`gui.DefaultUIScale`)다. 한 번에 모든 UI가 같이 커진다.
 - 맵 위 한 점에 붙는 UI(명령 메뉴, 공격 예측, 피해 숫자, 말풍선)는 위치를 월드 좌표에서 따와 `worldToUI`로 UI 공간에 옮겨 그린다.
 - 창·타이틀·출전 준비·결과처럼 1280×850 설계로 짠 화면은 `inFrame`/`popup`이 한 장에 그린 뒤 가운데에 놓고, 화면이 작으면 줄인다.
+- 타이틀 배경은 대화창과 같은 용무늬(`dragon.png`, 청록)가 대각선으로 천천히 흐르고 가장자리가 어둡다.
 - 맵 에디터와 일기토 감상 화면은 1280×850 고정 캔버스를 가운데에 그리고 UI 100%로 고정한다(`fixedLayout`).
 - 글꼴은 `assets/fonts/`의 `NotoSansKR`(UI 글자), `NanumBrushScript`(피해 숫자·턴 배너·첫 등장 이름의 붓글씨), `NotoSerifKR`(대화창·턴 배너 부제)다.
 - 입력은 마우스·터치 공용이다. 한 손가락은 클릭·드래그, 두 손가락은 지도 이동·핀치 확대(`pointer.go`), Android 뒤로 가기는 `Esc`와 같다.
@@ -202,7 +203,7 @@ caffeinate -d -i go run ./cmd/_uidemo-vm -ui uiscale -frames 760 -sheet -at 260,
   기본 출력은 `reports/uidemo/<ui>`다.
 - `-sheet`는 기준 화면 넷(폰 2400×1080 130%·160%, 4:3 태블릿 2048×1536 130%, 데스크톱 1280×850 100%)에서 같은 프레임을 찍어 한 장에 놓는다.
   UI를 고친 뒤 이 네 화면에서 겹침이 없는지 본다.
-- 데모: `uiscale`(이야기와 전투 HUD, 폰 배율 확인), `popups`(타이틀·창·모달·출전 준비), `equip`(장비 창·고르기·특성 설명, `-frames 335 -at 100,160,200,240,280,330`), `hudpanel`(패널 탭), `menu`(명령 메뉴),
+- 데모: `uiscale`(이야기와 전투 HUD, 폰 배율 확인), `popups`(타이틀·창·모달·출전 준비), `title`(타이틀 화면에 머묾), `equip`(장비 창·고르기·특성 설명, `-frames 335 -at 100,160,200,240,280,330`), `hudpanel`(패널 탭), `menu`(명령 메뉴),
   `damage`, `turn`, `dialogue`, `intro`, `deploy`, `duel`, `editor`, `enemycam`, `outside`(맵 밖 지형), `fonts`,
   `fire`(불씨·화염 칸), `mapfx`(1장 맵에 성문·울타리·불타는 숲·마을·성벽, 그을음, 다리 온전·손상·파괴를 그려 넣고 카메라가 60프레임씩 돌며 보인다. `-frames 360 -at 30,90,150,210,270,330`),
   `scenemap`(장면 맵 하나를 장면 카메라 배율로 보인다. `-stage S_castle_out`처럼 맵 ID를 준다).
