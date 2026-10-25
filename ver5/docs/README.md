@@ -52,6 +52,7 @@
 |---|---|
 | [presentation-ui.md](presentation-ui.md) | 전장 HUD, 조작, 배치 화면, 화면 확인 방법 |
 | [presentation-scene.md](presentation-scene.md) | 장면 연출, 초상, assets/scenes |
+| [presentation-facing.md](presentation-facing.md) | 인물이 바라보는 방향: 전투 시작 방향(전투 목표), 이벤트 이동 뒤 방향, 출진 칸 순서, 점검 순서 |
 | [presentation-explore.md](presentation-explore.md) | 탐험: 전투 사이에 걷기·대화·이벤트·상점·출진, exploreNN.json, 형식 2 둘러보기 |
 | [presentation-duel.md](presentation-duel.md) | 일기토 연출 |
 | [presentation-sprite.md](presentation-sprite.md) | `.spr` 형식과 태그 색 |

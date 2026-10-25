@@ -1155,3 +1155,21 @@
 - `docs/ui-mockup/story-ui-proposal.md`: 게임 반영 설계와 적용 범위 기록 — 시안에서 구현으로 옮긴 기준을 남기려고.
 - `docs/ui-mockup/story-ui-proposal.html`: 게임 반영 상태를 안내 문구에 반영 — 시안의 이전 문구가 현재 상태를 잘못 설명하지 않게 하려고.
 - `docs/presentation-scene.md`: 대사창·나레이션 문양과 배치, 문구 검사를 현행 동작으로 갱신 — 작성 문서가 게임 화면과 일치하게 하려고.
+
+## 2026-10-25 인물이 바라보는 방향: 전투 목표 쪽 시작, 이벤트 이동의 끝 방향
+
+- `internal/core/facing.go`: 방향이 없는 스폰을 전투 목표 쪽으로 돌리는 `faceObjective` 추가(행군·퇴각은 목표 칸, 아군은 승리 조건의 대상·구역, 적은 패배 조건의 대상·구역, 없으면 가장 가까운 상대; 출진 장수는 출진 칸 가운데에서, 그룹은 무리 가운데에서 본다) — 출진 칸에 방향이 없으면 모두 `SE`로 서서 탁군에서 유관장이 적을 등지고 등장했고, 도망 전투도 있어 "적 쪽"이 아니라 목표 쪽이어야 해서.
+- `internal/core/engine.go`, `internal/core/deployment.go`, `internal/core/battle_events.go`: 스테이지 시작·출진 배치·이벤트 `spawn`/`join` 때 `faceObjective`를 부름 — 처음 놓일 때 한 번 정하려고.
+- `internal/core/deployment.go`: `DeploymentPlan`이 빈 칸을 먼저 채우고 막힐 때만 앞 사람을 밀어냄 — 늘 첫 칸부터 빼앗아 출진 순서와 칸 순서가 거꾸로 되어 유비·장비 자리가 바뀌었다.
+- `internal/core/battle_events.go`: `moveTogether` 추가, `move` 동작과 컷신 한 묶음의 `move`를 함께 출발시켜 동료가 비울 칸을 빈 칸으로 보고, 끝 방향(`Facing`, 없으면 마지막 걸음)을 `Unit.Facing`에 남기고 이벤트·컷신 단계로 보냄 — 앞사람 자리를 목표로 쓰면 옆으로 비켜 서고, 이동 뒤 방향이 길 찾기에 맡겨지고 불러오면 사라졌다.
+- `internal/content/content.go`, `internal/content/battle_events.go`: `Toward`(두 칸 사이 대각선 방향, 같으면 x축) 추가, `Move`에 `Facing` 추가, `Move.Facing`·컷신 `move`의 `Facing` 검증 — 이동 끝 방향을 이벤트가 정하게 하려고.
+- `internal/core/types.go`: `Event.Facing`(move의 끝 방향) 추가 — 화면이 끝 방향을 받게 하려고.
+- `internal/gui/cutscene.go`, `internal/gui/player.go`, `internal/gui/view.go`: 걷기가 끝나면 받은 방향으로 서고, 규칙 상태의 방향이 바뀌면 화면 유닛도 돌아섬 — 엔진이 정한 방향을 화면이 따르게 하려고.
+- `assets/scenario/hero/stage01.json`: 시작 컷신에서 관우 (6,6)·유비 (6,7)·장비 (9,7)로 곧장 앞(`NE`)으로 나서고 `Facing: NE` — 옛 끝 위치(밸런스 그대로)에 교차 없이 적을 보며 서게.
+- `assets/scenario/hero/stage02.json`: `Allies` 순서를 옛 실제 배정(유비 (31,29), 관우 (29,31), 장비 (30,30))대로 바꿈 — 배정 순서를 고쳐도 영천 컷신 31개가 전제한 자리가 그대로이게.
+- `internal/testdata/mini/scenario/mini/stage01.json`: `Allies` 앞 두 칸 순서를 바꿈 — 옛 배정을 전제한 테스트들이 같은 자리를 쓰게.
+- `internal/core/facing_test.go`: 시작 방향(승리 대상·도달 구역·적·적힌 방향), 출진 칸 순서, 컷신 이동의 함께 출발과 끝 방향 테스트.
+- `internal/gui/uidemo_opening.go`: `opening` 데모 추가(이야기에서 출전한 것처럼 스테이지를 시작해 배치·시작 컷신 재생) — 시작 방향을 게임 화면으로 확인하려고.
+- `cmd/_facecheck/main.go`: 스테이지별 시작 위치·방향과 컷신 이동 경로·끝 방향을 찍는 임시 도구.
+- `docs/presentation-facing.md`: 방향이 왜 중요한지(탁군 사례), 시작 방향 규칙, 이벤트 이동 뒤 방향, 출진 칸 순서, 점검 순서 문서 추가 — 이벤트·장면에서 방향을 기본값에 맡기지 않게.
+- `../AGENTS.md`, `docs/README.md`, `docs/story-writing.md`, `docs/logic-battle-event.md`, `docs/data-scenario-node.md`: 방향 문서로 이어 주고 `move`의 `Facing`·함께 출발·생략 시 목표 쪽 방향을 적음.

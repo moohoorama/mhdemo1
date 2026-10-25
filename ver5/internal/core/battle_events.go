@@ -73,6 +73,7 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 					side = "enemy"
 				}
 				u := e.spawn(sp.Character, sp.Character, side, p.X, p.Y, sp)
+				e.faceObjective(u, nil)
 				snapshot := copyOf(*u)
 				e.events = append(e.events, Event{Kind: "unit-arrival", Actor: u.ID, Unit: &snapshot})
 			}
@@ -84,6 +85,7 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 					continue // already on the map, or fallen
 				}
 				u := e.spawn(sp.Character, sp.Character, "ally", p.X, p.Y, sp)
+				e.faceObjective(u, nil)
 				e.raiseTo(e.char(u.Character), e.data.Rules.StageLevel(e.stageOrder()))
 				snapshot := copyOf(*u)
 				e.events = append(e.events, Event{Kind: "unit-arrival", Actor: u.ID, Unit: &snapshot})
@@ -102,12 +104,8 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 				}
 			}
 		case "move":
-			for _, mv := range a.Moves {
-				for _, u := range e.matching(mv.Unit) {
-					if path := e.shift(u, mv.To); path != nil {
-						e.events = append(e.events, Event{Kind: "move", Actor: u.ID, Path: path})
-					}
-				}
+			for _, m := range e.moveTogether(a.Moves) {
+				e.events = append(e.events, Event{Kind: "move", Actor: m.u.ID, Path: m.path, Facing: m.facing})
 			}
 		case "cutscene":
 			e.playCutscene(a.Steps)
@@ -282,14 +280,65 @@ func (e *Engine) ageTerrain() {
 	}
 }
 
+// shifted is where a forced move took a unit: the cells it walked and the way it faces there.
+type shifted struct {
+	u      *Unit
+	path   []content.Point
+	facing string
+}
+
+// moveTogether carries out forced moves that start at once. The cells the other movers still stand
+// on count as free, since they are leaving them, so a line can step forward into itself. Each mover
+// ends turned to its move's facing, or the way its last step went when the move names none.
+func (e *Engine) moveTogether(moves []content.Move) []shifted {
+	type order struct {
+		u  *Unit
+		mv content.Move
+	}
+	var orders []order
+	leaving := map[*Unit]bool{}
+	for _, mv := range moves {
+		for _, u := range e.matching(mv.Unit) {
+			if u.HP > 0 {
+				orders = append(orders, order{u, mv})
+				leaving[u] = true
+			}
+		}
+	}
+	var out []shifted
+	for _, o := range orders {
+		delete(leaving, o.u)
+		path := e.shift(o.u, o.mv.To, leaving)
+		if path == nil {
+			continue
+		}
+		facing := o.mv.Facing
+		if facing == "" && len(path) > 1 {
+			facing = content.Toward(path[len(path)-2], path[len(path)-1])
+		}
+		if facing != "" {
+			o.u.Facing = facing
+		}
+		out = append(out, shifted{o.u, path, facing})
+	}
+	return out
+}
+
 // shift puts the unit on the free cell nearest to a point, whatever its move range or the cost of the
-// ground between; it returns the cells it passes through, or nil if it cannot stand anywhere.
-func (e *Engine) shift(u *Unit, to content.Point) []content.Point {
+// ground between; units in leaving do not hold their cells. It returns the cells it passes through,
+// or nil if it cannot stand anywhere.
+func (e *Engine) shift(u *Unit, to content.Point, leaving map[*Unit]bool) []content.Point {
 	stage := e.data.Stages[e.state.Stage]
+	held := map[content.Point]bool{}
+	for _, id := range keys(e.unitIDs) {
+		if o := e.unit(id); o != u && o.HP > 0 && !leaving[o] {
+			held[content.Point{X: o.X, Y: o.Y}] = true
+		}
+	}
 	best, score := content.Point{X: -1, Y: -1}, stage.Width+stage.Height+1
 	for y := 0; y < stage.Height; y++ {
 		for x := 0; x < stage.Width; x++ {
-			if o := e.occupied(x, y); (o != nil && o != u) || e.terrain(u, x, y).Cost <= 0 {
+			if held[content.Point{X: x, Y: y}] || e.terrain(u, x, y).Cost <= 0 {
 				continue
 			}
 			if n := dist(x, y, to.X, to.Y); n < score {
@@ -353,10 +402,20 @@ func straightPath(from, to content.Point) []content.Point {
 
 // playCutscene applies a cutscene's end state (positions and facings; hit points and the rest stay
 // as they are) and sends the replay what it came to, step by step. Steps about units that are not on
-// the field are left out.
+// the field are left out; a group's moves are carried out together.
 func (e *Engine) playCutscene(groups [][]content.Step) {
 	var out [][]CutStep
 	for _, group := range groups {
+		var moves []content.Move
+		for _, st := range group {
+			if st.Kind == "move" {
+				moves = append(moves, content.Move{Unit: st.Unit, To: *st.To, Facing: st.Facing})
+			}
+		}
+		moved := map[*Unit]shifted{}
+		for _, m := range e.moveTogether(moves) {
+			moved[m.u] = m
+		}
 		var steps []CutStep
 		for _, st := range group {
 			for _, u := range e.matching(st.Unit) {
@@ -365,8 +424,8 @@ func (e *Engine) playCutscene(groups [][]content.Step) {
 				}
 				switch st.Kind {
 				case "move":
-					if path := e.shift(u, *st.To); path != nil {
-						steps = append(steps, CutStep{Kind: "move", Unit: u.ID, Path: path})
+					if m, ok := moved[u]; ok {
+						steps = append(steps, CutStep{Kind: "move", Unit: u.ID, Path: m.path, Facing: m.facing})
 					}
 				case "play":
 					steps = append(steps, CutStep{Kind: "play", Unit: u.ID, Motion: st.Motion, Seconds: st.Seconds})

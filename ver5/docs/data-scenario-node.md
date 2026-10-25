@@ -123,7 +123,7 @@ assets/scenario/
 | `Shift` | 직급 몫에 더하는 비율(선택). 대군이라 한 레벨 낮게 둘 때 −0.07, 두 레벨이면 −0.12. |
 | `Level` | `Rules.StageLevelBase`가 0인 규칙(시험용 묶음)에서만: 0이면 인물의 레벨, 아니면 덮어쓴다. 스테이지 레벨을 쓰는 규칙에서는 검증 실패. |
 | `Class` | 병종 덮어쓰기. 인물 병종과 같은 계열(`Class.Family`, 없으면 `Terrain`)이어야 한다. |
-| `Facing` | 처음 방향. `NE`, `SE`, `SW`, `NW` 중 하나. |
+| `Facing` | 처음 방향. `NE`, `SE`, `SW`, `NW` 중 하나. 생략하면 엔진이 전투 목표 쪽으로 돌린다([presentation-facing.md](presentation-facing.md) 3절). |
 | `HP`, `MP` | 처음 값. 생략하면 병력은 최대, 병법은 0. 최대치로 잘리고 `HP`는 1 이상, `MP`는 0 이상이어야 한다. |
 | `Traits` | 특성 목록 덮어쓰기. 생략하면 인물 정의를 쓰고, 빈 배열이면 비운다. 병종·장비가 주는 특성은 그대로 붙는다. |
 | `Equipment` | 장비 목록 덮어쓰기. 생략·빈 배열의 뜻은 `Traits`와 같다. |
@@ -190,7 +190,7 @@ assets/scenario/
 
 `spawn`의 스폰은 일반 스폰 규칙에 더해 다음을 요구한다. `Side`는 비어 있거나 `ally`/`enemy`이고, `ally`이면 `AI`가 참이며, 좌표가 영역 안이고, 인물이 `Playable`도 `Lord`도 아니고, 이름 있는 인물은 이 스테이지의 다른 스폰·이전 이벤트 스폰·플레이어블 인물과 겹치지 않는다. `Faction`은 있다면 `Factions`에 있어야 한다. 스폰의 `Group`은 조건과 `remove`가 가리킬 수 있는 이름이 된다.
 
-`say` 검증은 다음과 같다. `Lines`가 비어 있을 수 없고, 줄의 `Text`가 비어 있을 수 없으며, 한 줄에 같은 `Actor`가 둘 있을 수 없다. `Actor`는 플레이어블 인물, 이 스테이지의 `Enemies`·`Party` 인물, 이 스테이지 이벤트가 만드는 인물 중 하나여야 한다. `remove`·`ai`의 `Targets`는 유닛 ID나 그룹이어야 하고, `ai`의 `Policy`는 필수이며 `Goal`은 정책에 맞아야 하고, `join`은 반복 이벤트에 쓸 수 없고 스폰이 `Playable`이며 군주가 아니고 `AI`·`Side`·`Policy`가 없고 맵 안이며 이 스테이지의 다른 스폰에 없는 인물이어야 한다. `buff`는 `Stat`이 `attack` `defense` `mind` `morale` `agility` `speed` `range` 중 하나, `Value`가 0이 아닌 -100~100, `Turns`가 0~99이고 대상이 있어야 한다. `move`의 `Moves`는 비어 있을 수 없고 `Unit`은 유닛·그룹, `To`는 맵 안이어야 한다. `cutscene`의 `Steps`는 비어 있지 않은 묶음들이고, 단계는 `move`(`Unit`·`To`) `play`(`Unit`·`Motion`) `face`(`Unit`·`Facing`: NE SE SW NW) `say`(`Unit`·`Text`) `wait`(`Seconds` 0 초과 30 이하)이며 `Unit`은 유닛·그룹이다. `duel`의 `Duel`은 이 스테이지의 일기토 ID여야 한다. `terrain`의 `Area`는 이 스테이지의 구역이고 `State`는 `game.json`의 `States`에 있는 글자이거나 `-`이며 `Turns`는 0 이상이어야 하고, `flag`의 `Flags`는 비어 있을 수 없다.
+`say` 검증은 다음과 같다. `Lines`가 비어 있을 수 없고, 줄의 `Text`가 비어 있을 수 없으며, 한 줄에 같은 `Actor`가 둘 있을 수 없다. `Actor`는 플레이어블 인물, 이 스테이지의 `Enemies`·`Party` 인물, 이 스테이지 이벤트가 만드는 인물 중 하나여야 한다. `remove`·`ai`의 `Targets`는 유닛 ID나 그룹이어야 하고, `ai`의 `Policy`는 필수이며 `Goal`은 정책에 맞아야 하고, `join`은 반복 이벤트에 쓸 수 없고 스폰이 `Playable`이며 군주가 아니고 `AI`·`Side`·`Policy`가 없고 맵 안이며 이 스테이지의 다른 스폰에 없는 인물이어야 한다. `buff`는 `Stat`이 `attack` `defense` `mind` `morale` `agility` `speed` `range` 중 하나, `Value`가 0이 아닌 -100~100, `Turns`가 0~99이고 대상이 있어야 한다. `move`의 `Moves`는 비어 있을 수 없고 `Unit`은 유닛·그룹, `To`는 맵 안, `Facing`(선택)은 NE SE SW NW여야 한다. `cutscene`의 `Steps`는 비어 있지 않은 묶음들이고, 단계는 `move`(`Unit`·`To`·`Facing` 선택) `play`(`Unit`·`Motion`) `face`(`Unit`·`Facing`: NE SE SW NW) `say`(`Unit`·`Text`) `wait`(`Seconds` 0 초과 30 이하)이며 `Unit`은 유닛·그룹이다. `duel`의 `Duel`은 이 스테이지의 일기토 ID여야 한다. `terrain`의 `Area`는 이 스테이지의 구역이고 `State`는 `game.json`의 `States`에 있는 글자이거나 `-`이며 `Turns`는 0 이상이어야 하고, `flag`의 `Flags`는 비어 있을 수 없다.
 
 ```json
 {"ID": "brothers-challenge", "If": ["any:[duel:hulao-mushun, duel:hulao-wuanguo]"],

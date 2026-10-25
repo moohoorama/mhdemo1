@@ -225,16 +225,18 @@
         "Unit": "liubei",
         "To": {
          "X": 6,
-         "Y": 8
-        }
+         "Y": 7
+        },
+        "Facing": "NE"
        },
        {
         "Kind": "move",
         "Unit": "guanyu",
         "To": {
          "X": 6,
-         "Y": 7
-        }
+         "Y": 6
+        },
+        "Facing": "NE"
        },
        {
         "Kind": "move",
@@ -242,7 +244,8 @@
         "To": {
          "X": 9,
          "Y": 7
-        }
+        },
+        "Facing": "NE"
        }
       ],
       [

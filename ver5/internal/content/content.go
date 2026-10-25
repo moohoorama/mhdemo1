@@ -185,6 +185,24 @@ type Terrain struct {
 	Cost   int
 }
 type Point struct{ X, Y int }
+
+// Toward is the facing (NE, SE, SW, NW) of someone at from looking at to: on screen map +x runs to
+// the lower right (SE) and +y to the lower left (SW). The longer axis wins, the x axis on a tie
+// (docs/story-writing.md).
+func Toward(from, to Point) string {
+	dx, dy := to.X-from.X, to.Y-from.Y
+	switch {
+	case max(dx, -dx) >= max(dy, -dy) && dx > 0:
+		return "SE"
+	case max(dx, -dx) >= max(dy, -dy) && dx < 0:
+		return "NW"
+	case dy > 0:
+		return "SW"
+	default:
+		return "NE"
+	}
+}
+
 type Spawn struct {
 	AI                bool      `json:",omitempty"`
 	Policy            string    `json:",omitempty"` // how the unit behaves: hold, react, assault, march, flee; every AI-driven unit has one
@@ -258,14 +276,16 @@ type Action struct {
 	GoalArea int            `json:",omitempty"` // ai: instead of Goal, any cell of this area
 }
 
-// Move sends a unit (or each unit of a group, to cells around To) somewhere, ignoring move range and terrain cost.
+// Move sends a unit (or each unit of a group, to cells around To) somewhere, ignoring move range and
+// terrain cost, and turns it to Facing there (none: the way its last step went).
 type Move struct {
-	Unit string
-	To   Point
+	Unit   string
+	To     Point
+	Facing string `json:",omitempty"`
 }
 
-// Step is one thing that happens in a cutscene: Unit moves to To (a group fills the cells around it),
-// plays Motion (attack, hit, block, exhausted), turns to Facing, says Text, or the scene waits Seconds.
+// Step is one thing that happens in a cutscene: Unit moves to To (a group fills the cells around it)
+// and turns to Facing there (none: the way its last step went), plays Motion (attack, hit, block, exhausted), turns to Facing, says Text, or the scene waits Seconds.
 type Step struct {
 	Kind, Unit, Motion, Facing, Text string
 	To                               *Point  `json:",omitempty"`

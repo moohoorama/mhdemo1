@@ -311,6 +311,12 @@ func (g *Game) syncUnit(u core.UnitView, o core.Observation) {
 		v = &unitVis{id: u.ID, ally: u.Faction == "ally", art: art, dir: dir, anim: "idle", dying: -1, top: art.TopOffset()}
 		g.vis[u.ID] = v
 	}
+	if u.Facing != v.facing {
+		v.facing = u.Facing
+		if u.Facing != "" {
+			v.dir = u.Facing
+		}
+	}
 	v.u, v.v, v.walk = float64(u.X), float64(u.Y), nil
 	v.lift = g.field.Lift(u.X, u.Y)
 	v.shownHP, v.maxHP = u.HP, u.Stats.MaxHP

@@ -56,7 +56,7 @@ func (e *Engine) deployCommand(c Command) error {
 		return fail("InvalidPlacement")
 	}
 	// Deployment has no resource-changing commands: every placement starts at full HP, zero MP.
-	e.spawn(c.Actor, e.char(c.Actor).Def, "ally", c.X, c.Y, content.Spawn{})
+	e.faceObjective(e.spawn(c.Actor, e.char(c.Actor).Def, "ally", c.X, c.Y, content.Spawn{}), e.data.Stages[e.state.Stage].Allies)
 	e.emit("place", c.Actor, "", 0)
 	return nil
 }
@@ -75,15 +75,17 @@ func (e *Engine) DeploymentPlan() ([]Command, error) {
 	owner := map[int]string{}
 	var assign func(string, map[int]bool) bool
 	assign = func(id string, seen map[int]bool) bool {
-		for i, p := range cells {
-			if seen[i] || !e.deploymentCell(id, p) {
-				continue
-			}
-			seen[i] = true
-			old := owner[i]
-			if old == "" || assign(old, seen) {
-				owner[i] = id
-				return true
+		for _, free := range []bool{true, false} { // a free cell first, so the officers keep the cells' order
+			for i, p := range cells {
+				if seen[i] || (owner[i] == "") != free || !e.deploymentCell(id, p) {
+					continue
+				}
+				seen[i] = true
+				old := owner[i]
+				if old == "" || assign(old, seen) {
+					owner[i] = id
+					return true
+				}
 			}
 		}
 		return false

@@ -38,10 +38,11 @@ func timelineEnd(entries []timedFn) float64 {
 	return end + stepTime
 }
 
-// walkTimeline has a unit walk a path cell by cell from the moment start, then stand at rest.
-func (g *Game) walkTimeline(id string, path []content.Point, start float64) []timedFn {
+// walkTimeline has a unit walk a path cell by cell from the moment start, then stand at rest turned
+// to facing (none: the way its last step went).
+func (g *Game) walkTimeline(id string, path []content.Point, facing string, start float64) []timedFn {
 	v := g.unitAt(id)
-	if v == nil || len(path) < 2 {
+	if v == nil || len(path) < 1 {
 		return nil
 	}
 	var out []timedFn
@@ -49,7 +50,12 @@ func (g *Game) walkTimeline(id string, path []content.Point, start float64) []ti
 		cell := cell
 		out = append(out, timedFn{start + float64(i)*stepTime, func() { g.stepTo(v, cell) }})
 	}
-	out = append(out, timedFn{start + float64(len(path)-1)*stepTime, func() { v.play(v.rest()) }})
+	out = append(out, timedFn{start + float64(len(path)-1)*stepTime, func() {
+		if facing != "" {
+			v.dir = facing
+		}
+		v.play(v.rest())
+	}})
 	return out
 }
 
@@ -64,7 +70,7 @@ func (g *Game) cutsceneTimeline(groups [][]core.CutStep) (entries []timedFn, tot
 			length := 0.0
 			switch st.Kind {
 			case "move":
-				entries = append(entries, g.walkTimeline(st.Unit, st.Path, total)...)
+				entries = append(entries, g.walkTimeline(st.Unit, st.Path, st.Facing, total)...)
 				length = float64(max(0, len(st.Path)-1)) * stepTime
 			case "play":
 				if v != nil {

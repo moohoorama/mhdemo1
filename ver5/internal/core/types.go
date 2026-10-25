@@ -133,6 +133,7 @@ type Event struct {
 	Kind, Actor, Target, Text string
 	Amount                    int
 	Path                      []content.Point `json:",omitempty"` // move: cells walked, both ends included
+	Facing                    string          `json:",omitempty"` // move: the way the unit faces when it gets there
 }
 type Result struct {
 	Revision uint64

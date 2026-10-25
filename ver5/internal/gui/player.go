@@ -43,6 +43,7 @@ type unitVis struct {
 	art          *sprite.Art
 	u, v, lift   float64
 	dir, anim    string
+	facing       string // the facing the rules state last gave; a change turns the unit to it
 	animT        float64
 	walk         *walkState
 	shakeSign    float64
@@ -413,7 +414,7 @@ func (g *Game) perform(a *replay.Action) []beat {
 		var walks []timedFn
 		for _, e := range events {
 			if e.Kind == "move" && (c.Kind != "move" || e.Actor != c.Actor) {
-				walks = append(walks, g.walkTimeline(e.Actor, e.Path, 0)...)
+				walks = append(walks, g.walkTimeline(e.Actor, e.Path, e.Facing, 0)...)
 			}
 		}
 		if len(walks) > 0 {

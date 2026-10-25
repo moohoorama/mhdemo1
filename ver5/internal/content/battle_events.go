@@ -121,6 +121,9 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 					if mv.To.X < 0 || mv.To.Y < 0 || mv.To.X >= s.Width || mv.To.Y >= s.Height {
 						return nil, nil, fmt.Errorf("battle event %s: move %s off the map", event.ID, mv.Unit)
 					}
+					if mv.Facing != "" && !in(mv.Facing, "NE", "SE", "SW", "NW") {
+						return nil, nil, fmt.Errorf("battle event %s: move %s facing %q", event.ID, mv.Unit, mv.Facing)
+					}
 				}
 			case "cutscene":
 				if len(a.Steps) == 0 {
@@ -257,7 +260,8 @@ func validateCutscene(s Stage, event string, groups [][]Step, refs *battleRefs) 
 			ok := true
 			switch st.Kind {
 			case "move":
-				ok = refs.targets[st.Unit] && st.To != nil && st.To.X >= 0 && st.To.Y >= 0 && st.To.X < s.Width && st.To.Y < s.Height
+				ok = refs.targets[st.Unit] && st.To != nil && st.To.X >= 0 && st.To.Y >= 0 && st.To.X < s.Width && st.To.Y < s.Height &&
+					(st.Facing == "" || in(st.Facing, "NE", "SE", "SW", "NW"))
 			case "play":
 				ok = refs.targets[st.Unit] && contains([]string{"attack", "hit", "block", "exhausted", "idle"}, st.Motion)
 			case "face":

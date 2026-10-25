@@ -572,6 +572,9 @@ func (e *Engine) prepare(c Command) error {
 	for _, sp := range stage.Enemies {
 		e.spawn(sp.Character, sp.Character, "enemy", sp.X, sp.Y, sp)
 	}
+	for _, id := range keys(e.unitIDs) {
+		e.faceObjective(e.unit(id), nil)
+	}
 	if stage.Forced { // the officers march straight onto their cells and the battle begins
 		plan, err := e.DeploymentPlan()
 		if err != nil {

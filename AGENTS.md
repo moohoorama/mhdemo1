@@ -42,6 +42,11 @@ standing shown before it is claimed, actions over explanations), the staging rul
 drafts side by side in an html page, the user picks, then data, then a game capture). Per-officer speech is in
 `ver5/docs/data-speech-style.md`.
 
+Where every person looks matters as much as where they stand: facing is read before any line is. Whenever you
+write or change a battle event, a cutscene, a scene, a stage's placement or its opening, decide each person's facing
+with their position — the engine turns an unset battle spawn toward its side's objective, and every event move should
+name the `Facing` it ends with — and check it on a game capture. Read `ver5/docs/presentation-facing.md` first.
+
 When you add or edit a stage (`ver5/assets/scenario/*/stageNN.json`, its map or its story nodes), read
 `ver5/docs/stage_lv_balance.md` first and set the ranks and the enemy count by it: stage files never hold
 levels — each spawn has a `Rank` (troop, officer, commander, boss) and an optional `Shift`, and the engine
