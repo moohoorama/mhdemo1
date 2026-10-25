@@ -5,6 +5,22 @@
 
 ---
 
+## 2026-10-25 나무 움직임 두 가지 비교 시안
+
+- `docs/tree-motion-experiments-plan.md`: 표면 법선 햇살과 ⅓ 진폭 잎 움직임의 비교 범위 기록 — 두 방식을 분리해 검토하기 위해.
+- `tools/tree_motion_experiments.py`: 활엽수 법선 맵·햇살 4프레임과 버드나무 0.04 진폭 3D·도트 렌더 추가 — 위치와 기둥을 고정한 약한 변화량을 비교하기 위해.
+- `tools/spritetool/assets/tree-motion-experiments/README.md`, `stree_broad_0/normal-map.png`, `stree_broad_0/sunlight-sheet.png`, `stree_willow/reference-3d.png`, `stree_willow/dot-sheet.png`: 실험 설정과 결과 원화 추가 — 재생성과 시각 검토를 위해.
+- `docs/tree-motion-experiments.html`: 원본·법선·햇살 변화와 버드나무의 기존·약한 흔들림을 250ms로 비교하는 페이지 추가 — 게임 적용 전에 두 시안을 검토하기 위해.
+
+## 2026-10-25 장면 나무 전체 4프레임 산들바람 시안
+
+- `docs/tree-sway-all-plan.md`: 잎·꽃이 있는 13개 변형을 4프레임·250ms로 만드는 범위와 검수 기준 기록 — 나무마다 같은 제작 규칙을 적용하기 위해.
+- `tools/render_scene_tree_sway.py`: 기존 3D 모델의 줄기·가지 면을 고정하고 잎·꽃 면만 네 자세로 렌더 — 기둥이 흔들리지 않는 공통 참조를 만들기 위해.
+- `tools/prepare_scene_tree_sway.py`: 원화 시트를 나무별 원본 캔버스·뿌리 기준점·팔레트로 도트화하고 줄기 색 픽셀을 고정 — 네 프레임의 배치와 화풍을 맞추기 위해.
+- `tools/spritetool/assets/scene-tree-sway/README.md`: 대상·프레임 설정·제작 명령·원화 생성 요청 기록 — 시안의 출처와 재생성 방법을 남기기 위해.
+- `tools/spritetool/assets/scene-tree-sway/stree_pine_0`, `stree_pine_1`, `stree_broad_0`, `stree_broad_1`, `stree_willow`, `stree_old`, `stree_bush_0`, `stree_bush_1`, `stree_plum_0`, `stree_plum_1`, `peach_bloom_0`, `peach_bloom_1`, `peach_bloom_2`의 `reference-3d.png`·`painted-sheet.png`·`dot-sheet.png`: 13개 장면 나무의 3D 참조·원화·최종 도트 시트 추가 — 모든 잎나무를 같은 4프레임 방식으로 비교하기 위해.
+- `docs/tree-sway-all-preview.html`: 13개 나무의 원본·250ms 애니메이션·3D 참조·네 프레임과 불탄 나무 정지 그림을 보여주는 HTML 추가 — 게임 적용 전에 한 화면에서 검토하기 위해.
+
 ## 2026-10-25 줄거리 문서를 fullstory.md 하나로
 
 - `docs/fullstory.md`: 사용자의 원안 「한실중흥 설정과 시놉시스」에 구현된 1~2장, 1부 대본(3~7장), 구현 계획의 결정(화웅 사망, 목순 유지, 장료 추가, 7장 허리끈 장면 삭제, 화계서 무조건 지급)을 합침 — 여기저기 흩어진 줄거리 문서를 한 기준으로 모으기 위해.
@@ -14,6 +30,72 @@
 - `story_2026_10_23.md`, `docs/conceptual_scenario.md`, `../scenario_v1.txt`: 삭제(내용은 git 기록에 남음). 링크는 `docs/README.md`, `design.md`, `data-character.md`, `story-writing.md`, `todo/*.md`, `plan/*.md`, scene-staging·stage-debug 스킬에서 `fullstory.md`로 바꿈.
 - `assets/scenario/hero/stage02.json`, `stage06.json`: 일기토 문구의 "쌍고검으로"를 "검으로" — 유비는 쌍고검을 받은 적이 없으므로.
 
+## 2026-10-25 복숭아나무 줄기 고정, 꽃·잎만 흔들림
+
+- `docs/tree-sway-plan.md`: 줄기·가지 고정과 꽃·잎 움직임으로 시안 기준 수정 — 나무 기둥이 흔들리는 이전 결과를 바로잡기 위해.
+- `tools/render_peach_sway.py`, `tools/spritetool/assets/scene-peach-sway/reference-3d.png`: 갈색 줄기·가지의 3D 면은 그대로 두고 꽃·잎 면만 여덟 자세로 렌더 — 줄기 움직임을 없애기 위해.
+- `tools/spritetool/assets/scene-peach-sway/painted-sheet.png`, `README.md`: 새 3D 자세를 바탕으로 꽃 표현을 다시 그리고 중간 원화의 역할과 프레임 규칙 기록 — 3D의 둥근 꽃 모양을 최종 도트에 남기지 않기 위해.
+- `tools/prepare_peach_sway.py`, `tools/spritetool/assets/scene-peach-sway/dot-sheet.png`: 원화 칸을 뿌리 기준으로 정렬해 팔레트·외곽선 처리하고 줄기·가지 픽셀을 첫 프레임으로 통일 — 최종 도트에서도 나무 몸통을 고정하기 위해.
+- `docs/tree-sway-preview.html`: 원화 중간 화면을 빼고 기존 나무·고정 줄기 3D·최종 도트만 비교 — 실제 검토 대상인 꽃·잎 움직임에 집중하기 위해.
+
+## 2026-10-25 복숭아나무 3D 자세 기반 8프레임 시안
+
+- `docs/tree-sway-plan.md`: 3D 자세·한 장 원화·팔레트 처리·HTML 검수 순서를 기록 — 시안 제작 범위와 기준을 분명히 하기 위해.
+- `tools/render_peach_sway.py`: 기존 복숭아나무 모델의 가지를 여덟 자세로 굽혀 같은 카메라와 뿌리 자리에서 렌더 — 픽셀 이동 대신 실제 모델의 움직임을 참조하기 위해.
+- `tools/spritetool/assets/scene-peach-sway/README.md`, `reference-3d.png`, `painted-sheet.png`, `dot-sheet.png`: 프레임 설정과 3D 참조·다시 그린 원화·팔레트 적용 도트 시트 추가 — 제작 경로를 보존하고 비교하기 위해.
+- `tools/pixelize_tree.py`: 입력 이미지와 고정된 프레임 범위를 받도록 확장 — 여덟 칸에 기존 팔레트·외곽선 처리를 동일하게 적용하기 위해.
+- `tools/prepare_peach_sway.py`: 원화 시트를 뿌리 기준으로 정렬한 뒤 93×96 도트 시트로 변환 — 프레임마다 크기와 기준점이 흔들리지 않게 하기 위해.
+- `docs/tree-sway-preview.html`: 기존 그림·3D 자세·다시 그린 원화·최종 도트를 나란히 재생하고 여덟 프레임을 보여줌 — 게임 적용 전에 움직임과 그림체를 검토하기 위해.
+
+## 2026-10-25 영천 전투까지의 유비 인물 초상 후보
+
+- `tools/illustrations/portraits/story-preview/guanyu-early-portrait.png`, `zhangfei-early-portrait.png`, `caocao-early-portrait.png`, `xiahoudun-early-portrait.png`: 관우·장비·조조·하후돈의 초기 인물 초상 후보 추가 — 유비와 같은 시점의 성격을 얼굴과 태도로 비교하기 위해.
+- `tools/illustrations/portraits/story-preview/early-portraits.prompts.md`: 네 인물의 묘사와 공통 수채화 프롬프트 기록 — 후보를 재생성하거나 수정할 수 있도록.
+- `tools/illustrations/portraits/story-preview/liubei-early-portrait.png`: 짚신 장수 출신 의병장의 온화함과 걱정, 조용한 결단을 얼굴과 자세로 표현한 초상 후보 추가 — 1~2장의 인물상에 맞추기 위해.
+- `tools/illustrations/portraits/story-preview/liubei-early-portrait.prompt.md`: 줄거리에서 뽑은 인상과 사용한 수채화 프롬프트 기록 — 초상을 재생성하거나 수정할 수 있도록.
+
+## 2026-10-25 계교 전투 원소의 일반 퇴각
+
+- `docs/plan-yuanshao-retreat.md`: 자동 퇴각 삭제 범위와 확인 방법 기록 — 원소 격파 승리 경로를 분명히 하기 위해.
+- `assets/scenario/hero/stage10.json`: 인접하거나 병력이 절반 아래로 내려가면 원소를 즉시 제거하던 `yuanshao-retreat` 이벤트 삭제 — 원소의 병력이 0이 되었을 때 일반 퇴각으로 승리하도록 함.
+- `internal/core/campaign_content_test.go`: 실제 계교 전투에서 원소가 인접·병력 49%에도 남고, 병력 0에서 승리하는 회귀 시험 추가 — 자동 퇴각이 다시 들어오지 않게 함.
+
+## 2026-10-25 영천 일기토의 거리와 대사 순서
+
+- `docs/plan-yingchuan-duel.md`: 강제 일기토 원인, 수정 범위와 확인 방법을 기록 — 전투 데이터와 화면 재생을 함께 고치기 위해.
+- `assets/scenario/hero/stage02.json`: 파재 체력만으로 유비를 불러 일기토를 강제하는 이벤트를 제거 — 유비가 파재와 인접할 때만 기존 자동 일기토가 시작되게 함.
+- `internal/gui/player.go`: 일기토 재생을 이벤트 순서에 놓고 일기토 결과를 종료 뒤에 적용 — 같은 행동의 대사가 일기토 뒤에 나오거나 파재가 일기토 전에 사라지던 오류 수정.
+- `internal/gui/duel_scene.go`: 공격 연출 뒤 일기토 화면이 열릴 때까지 미리보기가 기다림 — 순서를 바로잡은 재생 방식에 맞춤.
+- `internal/gui/duel_render_test.go`: `SRPG_DUEL_ID`로 특정 일기토만 캡처 가능 — 영천 연출을 독립적으로 확인하기 위해.
+- `internal/core/campaign_content_test.go`: 관우가 파재를 공격하고 유비가 떨어져 있는 영천 배치를 검사 — 먼 거리의 유비 일기토 재발 방지.
+
+## 2026-10-25 안드로이드 업데이트 뒤 옛 스테이지 파일 정리
+
+- `android/src/com/orca/srpg/ver5/MainActivity.java`: 새 런타임 압축을 푼 뒤 압축에 없는 옛 파일을 런타임 폴더에서 제거 — 업데이트 후 남은 B03 스테이지가 여포의 옛 `Level` 값으로 시작을 막지 않게 함. 저장 파일은 별도 `saves` 폴더에 둔다.
+- `docs/history.md`: 안드로이드 런타임 파일 정리 변경을 기록 — 업데이트 오류의 원인과 수정 의도를 남김.
+
+## 2026-10-25 전투맵 배치 그림과 ascii-layout 스킬
+
+- 결정: 장면뿐 아니라 전투맵 유닛 배치도 한 칸 3글자 그림으로 뽑고 고쳐서 되돌린다. 순서는 스킬 `ascii-layout`으로 묶는다 · 앞으로 배치 작업에 이 방식을 쓰기로(사용자 결정) · `data-map.md` 유닛 배치 그림, `presentation-scene.md`.
+- `tools/mapgen/stage_ascii.py`(새 파일): `dump`·`load`. 지형 글자는 srpg-cli를 따르되 빈 땅은 `...`. 장수 코드는 `scene_ascii.py`의 `OFFICER`를 같이 쓴다. 평범한 들여쓰기 JSON이 아닌 스테이지 파일은 다시 쓰지 않는다.
+- `tools/mapgen/layouts/hero/stage01.txt`~`stage10.txt`(새 파일): 지금 배치 그림.
+- `tools/scene_maps/scene_ascii.py`: 같은 장수가 여럿일 때 코드 예비 후보(`Xu1`…).
+- `../.claude/skills/ascii-layout/SKILL.md`(새 파일).
+
+## 2026-10-25 스토리 장면 전부 정수 칸, 아스키 배치 그림
+
+- 결정: 2장·3장 이후 모든 스토리 장면의 사람 위치와 카메라를 정수 칸으로 옮긴다. 겹치거나 막힌 사람은 가장 가까운 빈 정수 칸으로 · 정수 칸 규칙을 옛 장에도(사용자 결정. 전후 비교에서 앉은 사람이 의자·옥좌에서 벗어나는 것을 보고도 우선 전부 바꾸고 고칠 곳은 그림으로 고치기로) · `presentation-scene.md`.
+- 결정: 장면 배치를 한 칸 3글자 아스키 그림으로 뽑고, 그 그림을 고쳐 다시 넣는다 · 사용자 제안(조조 `Cao`, 탁자 `Tbl`, 벽 `###`). JSON 좌표보다 한눈에 보고 고치기 쉽다. 그림은 첫 무대(배역 자리)만 고치고 걸음은 주석으로 보인다.
+- `tools/scene_maps/scene_ascii.py`(새 파일): `whole`·`dump`·`load`. 서 있는 물체 목록은 `check_scenes.py`와 같게.
+- `assets/scenes/ch02.json`·`ch03`·`ch05`~`ch11.json`: 정수 칸. 반올림한 칸이 막혀 옆으로 옮긴 곳이 88곳(회의 장면 제후들, 누운 부상병 등). `assets/scenes/ascii/*.txt`(새 파일 32개): 2장·3장 이후 장면 그림. 1장은 다른 작업이 진행 중이라 그대로.
+- `../.claude/skills/scene-staging/check_scenes.py`: 자리 없는 배역(`Stay`, 탐험에서 이어받는 사람)을 건너뛴다 — 1·2장 탐험 이벤트 장면에서 멈췄다.
+
+## 2026-10-25 성문 앞 화로, 스토리 장면은 정수 칸
+
+- 결정: 스토리 장면의 위치는 1칸 단위 정수로만 잡는다 · 반 칸씩 옮겨 겹침을 피하는 배치를 사용자가 원하지 않음(사용자 결정) · `presentation-scene.md` 장면 맵.
+- 결정: 성문 장면의 화톳불은 땅 위에 뜬 불 대신 화로 소품 위의 불로 · 땅 위의 불이 소나무 꼭대기에 붙어 보였다(사용자 제안).
+- `tools/scene_maps/build.py`(`EXTRA`), `assets/graphics/maps/S_castle_out_open.json`: 다리 앞 길 양쪽 (2, 3)·(4, 3)에 화로. 맵 소품이라 사람과 앞뒤가 맞게 그려진다(장면 `Prop`은 사람 위에 그려진다).
+- `assets/scenes/ch02.json`: `c02-night`·`c02-gate`·`c02-camp-empty`의 모든 위치를 정수 칸으로. 황보숭은 두 화로 사이 (3, 3)에 선다 — (3, 4)이면 왼쪽 화로와 화면 같은 줄이라 불이 머리 위에 겹쳤다. 진영 맵은 막사·깃발이 소수 자리에 있어 비어 있는 정수 칸을 검사로 찾아 썼다.
 
 ## 2026-10-25 장면의 등장·퇴장을 서서히, 성문 앞 다리, 파재 전사
 
@@ -1002,3 +1084,55 @@
 - 측정(10 시드): rush 10/10(6.0라운드, 관우 +2.6 · 유비 +2.3 · 장비 +2.3), ai 10/10(7.3라운드, 관우 +2.8 · 유비 +1.4 · 장비 +2.3, 장비 퇴각 2). 남쪽 바깥 병사를 여섯에서 넷으로 줄임 — 관우가 +3.1로 기준을 넘고 퇴각했음.
 
 - `assets/scenario/hero/story01.json`: `c01-05` 서술을 두 겹 울타리 진형으로 — 새 맵과 맞춤.
+
+## 2026-10-25 중국 전통 문양 타일 시안
+
+- `tools/illustrations/ui/tile-patterns/README.md`: 시안 범위, 재생성 방법, 세 이미지의 생성 프롬프트 기록 — 그림의 출처와 제작 의도를 남기려고.
+- `tools/illustrations/ui/tile-patterns/ruyi-cloud.png`, `leiwen.png`, `shou.png`: 여의운문·뇌문·수자문 원본 3종 생성 — 먹빛 청록 배경의 전통 문양 후보를 비교하려고.
+- `tools/illustrations/ui/tile-patterns/build_tiles.go`: 가장자리 혼합과 수자문 대칭 반복 처리 추가 — 반복 경계에서 문양이 끊기지 않게 하려고.
+- `tools/illustrations/ui/tile-patterns/ruyi-cloud-tile.png`, `leiwen-tile.png`, `shou-tile.png`: 반복용 이미지 3종 생성 — HTML과 이후 배경 시안에 바로 쓰려고.
+- `tools/illustrations/ui/tile-patterns/preview.html`: 세 문양의 반복 보기, 크기·경계선·원본 비교·PNG 저장 기능 추가 — 넓은 화면에서 이음새와 밀도를 확인하려고.
+
+## 2026-10-25 전통 문양 타일 대비 조정
+
+- `tools/illustrations/ui/tile-patterns/build_tiles.go`: 여의운문·수자문 대비를 원본의 70%, 뇌문을 17%로 낮추고 뇌문의 평균색을 어둡게 조정 — 뇌문이 다른 두 배경보다 튀지 않게 하려고.
+- `tools/illustrations/ui/tile-patterns/ruyi-cloud-tile.png`, `leiwen-tile.png`, `shou-tile.png`: 조정한 대비로 반복용 PNG 재생성 — 세 배경을 더 은은하게 보이게 하려고.
+- `tools/illustrations/ui/tile-patterns/README.md`: 대비 계수와 최종 명암 편차 기록 — 시안을 다시 만들 때 같은 톤을 유지하려고.
+
+## 2026-10-25 전통 문양 대비 미리보기 조절
+
+- `tools/illustrations/ui/tile-patterns/preview.html`: 문양마다 독립적인 0~150% 대비 슬라이더, 선택값 표시·브라우저 저장, 화면 명암만 바꾸는 필터 추가 — 사용자가 세 문양의 원하는 대비를 직접 정하려고.
+- `tools/illustrations/ui/tile-patterns/README.md`: 슬라이더 값은 PNG에 반영하기 전 미리보기 설정임을 기록 — 선택값을 받은 뒤 최종 타일을 다시 만들려고.
+
+## 2026-10-25 전통 문양 대비 확정
+
+- `tools/illustrations/ui/tile-patterns/build_tiles.go`: 여의운문·수자문 대비를 이전 시안의 80%로 낮추고 뇌문은 유지 — 사용자가 고른 명암을 최종 타일에 반영하려고.
+- `tools/illustrations/ui/tile-patterns/ruyi-cloud-tile.png`, `shou-tile.png`: 대비를 낮춘 반복용 PNG 재생성 — 선택한 모습을 파일로 저장하려고.
+- `tools/illustrations/ui/tile-patterns/preview.html`: 대비 슬라이더 저장 키를 새 기준으로 바꿈 — 이전 80% 선택값이 새 PNG에 중복 적용되지 않게 하려고.
+- `tools/illustrations/ui/tile-patterns/README.md`: 확정된 대비 계수와 명암 편차 기록 — 시안의 재생성 기준을 남기려고.
+
+## 2026-10-25 대사·나레이션·중앙 창 시안
+
+- `docs/ui-mockup/story-ui-proposal.md`: 화면별 문양·나레이션 동작·문구 검사의 범위와 구현 전 확인점 기록 — HTML 시안을 게임 변경과 구분해 검토하려고.
+- `docs/ui-mockup/img/story-ui-scene.png`: 현재 게임의 장면 화면 캡처 추가 — 시안을 실제 장면 위에서 판단하려고.
+- `docs/ui-mockup/story-ui-proposal.html`: 여의운문 대사창, 용무늬 80% 불투명 중앙 나레이션(우하단 그림자·화면 높이 5% 이동과 페이드), 수자문 UI·중앙 창, 문구 길이 통과/거부와 창 자동 크기 예시 추가 — 사용자가 구현 전에 네 화면과 길이 제한을 비교하려고.
+- `docs/ui-mockup/README.md`: 새 HTML 시안 링크 추가 — 기존 UI 시안에서 찾을 수 있게 하려고.
+
+## 2026-10-25 중앙 창 색과 나레이션 표기 조정
+
+- `docs/ui-mockup/story-ui-proposal.html`: 작전 개요·출진 확인의 수자문을 어두운 갈색 계열로 보이게 조정하고 나레이션의 '해 설' 표기를 제거 — 창의 색을 기존 UI에 맞추고 나레이션 문장만 보이게 하려고.
+- `docs/ui-mockup/story-ui-proposal.md`: 중앙 창의 갈색 문양과 나레이션 표기 제거를 시안 설명에 반영 — 검토 기준을 화면과 일치시키려고.
+
+## 2026-10-25 대사·나레이션·중앙 창 게임 반영
+
+- `assets/graphics/ui/ruyi-cloud-tile.png`, `assets/graphics/ui/shou-tile.png`: 확정한 타일을 런타임 에셋으로 추가 — 대사창과 중앙 창에 문양을 쓰려고.
+- `internal/gui/assets.go`: 문양 타일을 읽고 회색 명도로 변환 — 기존 진영색과 갈색 UI 색을 런타임에서 입히려고.
+- `internal/gui/dialogue_box.go`: 대사창에 여의운문을 적용하고 글이 길면 높이를 늘리며, 중앙 용무늬 나레이션의 투명도·그림자·중앙 정렬·5% 이동과 페이드를 구현 — 확정한 화면과 글자 잘림 방지를 적용하려고.
+- `internal/gui/scenario.go`, `internal/gui/game.go`: 나레이션을 대사창과 분리하고 퇴장 동작이 끝난 뒤 다음 노드로 진행 — 문장이 사라지는 애니메이션을 보이려고.
+- `internal/gui/skin.go`, `internal/gui/windows.go`, `internal/gui/explore.go`: 일반 UI 창에 은은한 수자문을, 작전 개요·출진 확인에 진한 갈색 수자문을 입히고 내용에 맞춰 크기를 조정하며 출진 확인 제목을 구별 — UI 바탕 문양과 중앙 창의 글자 넘침을 고치려고.
+- `internal/gui/ui_content_validation.go`, `internal/gui/ui_content_validation_test.go`: 실제 글꼴로 시나리오·탐색 문구·전투목표의 표시 가능 여부를 GUI 초기화 때 검사하고 초과 사례를 시험 — 잘리는 문구를 로딩 때 거부하려고.
+- `internal/gui/uidemo_storyconfirm.go`: 출진 확인 창 캡처용 데모 추가 — 실제 렌더링을 확인하려고.
+- `assets/scenario/hero/AGENTS.md`: 문구 작성 후 길이 검사 실행 규칙 추가 — 시나리오 작성자가 검사를 빠뜨리지 않게 하려고.
+- `docs/ui-mockup/story-ui-proposal.md`: 게임 반영 설계와 적용 범위 기록 — 시안에서 구현으로 옮긴 기준을 남기려고.
+- `docs/ui-mockup/story-ui-proposal.html`: 게임 반영 상태를 안내 문구에 반영 — 시안의 이전 문구가 현재 상태를 잘못 설명하지 않게 하려고.
+- `docs/presentation-scene.md`: 대사창·나레이션 문양과 배치, 문구 검사를 현행 동작으로 갱신 — 작성 문서가 게임 화면과 일치하게 하려고.

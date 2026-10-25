@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>장면 나무 4프레임 산들바람 시안</title>
+  <style>
+    :root { font-family: system-ui, sans-serif; color: #f0f3ed; background: #171e1b; }
+    body { max-width: 1320px; margin: auto; padding: 28px 22px 60px; }
+    h1 { font-size: 29px; margin: 0 0 9px; }
+    p { color: #c2d0c5; line-height: 1.55; }
+    .intro { margin: 0 0 19px; }
+    .controls { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding: 14px 16px;
+      background: #26352c; border: 1px solid #4a6552; border-radius: 10px; margin-bottom: 24px; }
+    button { border: 0; border-radius: 7px; padding: 8px 15px; background: #d4b0aa;
+      color: #2d2020; font: inherit; font-weight: 700; cursor: pointer; }
+    input { accent-color: #d4b0aa; }
+    output { min-width: 45px; font-variant-numeric: tabular-nums; }
+    .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    article { background: #222b25; border: 1px solid #405448; border-radius: 12px; overflow: hidden; }
+    article h2 { font-size: 17px; margin: 0; padding: 15px 16px 4px; }
+    .id { display: block; margin: 0 16px 13px; color: #9eb0a1; font-size: 12px; font-family: ui-monospace, monospace; }
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; padding: 0 12px; }
+    .sample { min-width: 0; height: 240px; border-radius: 8px; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end; overflow: hidden; background: linear-gradient(#b7c7af 0 60%, #809876 60%); }
+    .sample canvas { image-rendering: pixelated; max-width: 100%; }
+    .sample span { background: #26392fdd; color: #eff4ea; font-size: 12px; padding: 4px 8px;
+      margin: 4px 0 6px; border-radius: 5px; }
+    details { border-top: 1px solid #405448; margin-top: 13px; padding: 11px 15px 14px; }
+    summary { color: #d4b0aa; cursor: pointer; font-size: 14px; }
+    .reference { display: block; max-width: 100%; width: 280px; margin: 12px auto 15px; image-rendering: pixelated; }
+    .strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+    .thumb { text-align: center; background: #304036; border-radius: 5px; padding: 5px 2px; }
+    .thumb canvas { width: auto; max-width: 100%; height: 70px; object-fit: contain; image-rendering: pixelated; }
+    .thumb small { display: block; color: #bacbbd; font-size: 11px; }
+    .static-note { margin: 0 16px 16px; font-size: 13px; }
+    .footer { margin-top: 22px; font-size: 14px; }
+    @media (max-width: 1050px) { .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 670px) { .gallery { grid-template-columns: 1fr; } .sample { height: 215px; } }
+  </style>
+</head>
+<body>
+  <h1>장면 나무 · 산들바람 4프레임 시안</h1>
+  <p class="intro">잎·꽃이 있는 나무 13개 변형을 프레임당 250ms로 재생합니다. 3D 모델의 줄기와 가지는 고정하고 잎·꽃만 움직였으며, 최종 도트에는 각 나무의 기존 팔레트와 외곽선을 적용했습니다.</p>
+  <div class="controls">
+    <button id="toggle" type="button">일시정지</button>
+    <label>프레임 <input id="scrub" type="range" min="0" max="3" step="1" value="0"></label>
+    <output id="frame">1 / 4</output>
+    <span>250ms / 프레임 · 1초 반복</span>
+  </div>
+  <main class="gallery" id="gallery"></main>
+  <p class="footer">불탄 나무는 잎이 없어 정지 그림으로 표시합니다. 이 페이지는 시안이며 게임 런타임 에셋은 아직 바꾸지 않았습니다.</p>
+  <script>
+    const trees = [
+      ['stree_pine_0', '소나무 1', 92, 130],
+      ['stree_pine_1', '소나무 2', 69, 140],
+      ['stree_broad_0', '활엽수 1', 83, 115],
+      ['stree_broad_1', '활엽수 2', 79, 111],
+      ['stree_willow', '버드나무', 72, 91],
+      ['stree_old', '고목', 112, 102],
+      ['stree_bush_0', '덤불 1', 31, 22],
+      ['stree_bush_1', '덤불 2', 36, 23],
+      ['stree_plum_0', '매화나무 1', 79, 82],
+      ['stree_plum_1', '매화나무 2', 83, 89],
+      ['peach_bloom_0', '복숭아나무 1', 93, 96],
+      ['peach_bloom_1', '복숭아나무 2', 90, 93],
+      ['peach_bloom_2', '복숭아나무 3', 91, 92]
+    ];
+    const gallery = document.getElementById('gallery');
+    const images = new Map();
+    let current = 0, playing = true, timer;
+
+    function image(path) {
+      return new Promise((resolve, reject) => {
+        const item = new Image();
+        item.onload = () => resolve(item);
+        item.onerror = () => reject(new Error(path + ' 파일을 읽지 못했습니다.'));
+        item.src = path;
+      });
+    }
+    function drawFrame(name, target, frame) {
+      const [sheet, w, h] = images.get(name);
+      const context = target.getContext('2d');
+      context.imageSmoothingEnabled = false;
+      context.clearRect(0, 0, w, h);
+      context.drawImage(sheet, (frame % 2) * w, Math.floor(frame / 2) * h, w, h, 0, 0, w, h);
+    }
+    function show() {
+      for (const [name] of trees) drawFrame(name, document.getElementById('live-' + name), current);
+      document.getElementById('frame').textContent = (current + 1) + ' / 4';
+      document.getElementById('scrub').value = current;
+    }
+    function restart() {
+      clearInterval(timer);
+      if (playing) timer = setInterval(() => { current = (current + 1) % 4; show(); }, 250);
+    }
+    function sample(canvas, w, h) {
+      canvas.width = w; canvas.height = h;
+      const scale = Math.min(4, Math.max(1.3, Math.min(160 / w, 190 / h)));
+      canvas.style.width = Math.round(w * scale) + 'px';
+      canvas.style.height = Math.round(h * scale) + 'px';
+    }
+    async function addTree(name, label, w, h) {
+      const base = '../../tools/spritetool/assets/scene-tree-sway/' + name + '/';
+      const [still, sheet] = await Promise.all([
+        image('../../assets_candidate/tiles/' + name + '.png'), image(base + 'dot-sheet.png')
+      ]);
+      images.set(name, [sheet, w, h]);
+      const card = document.createElement('article');
+      card.innerHTML = '<h2>' + label + '</h2><span class="id">' + name + '</span>' +
+        '<div class="pair"><div class="sample"><canvas class="still"></canvas><span>기존 그림</span></div>' +
+        '<div class="sample"><canvas id="live-' + name + '"></canvas><span>4프레임</span></div></div>' +
+        '<details><summary>3D 참조와 네 프레임 펼치기</summary><div class="strip"></div></details>';
+      gallery.append(card);
+      const fixed = card.querySelector('.still'), live = card.querySelector('#live-' + name);
+      sample(fixed, w, h); sample(live, w, h);
+      fixed.getContext('2d').drawImage(still, 0, 0);
+      drawFrame(name, live, current);
+      const reference = document.createElement('img');
+      reference.className = 'reference'; reference.alt = label + ' 3D 참조 4프레임';
+      reference.src = base + 'reference-3d.png';
+      card.querySelector('details').insertBefore(reference, card.querySelector('.strip'));
+      for (let frame = 0; frame < 4; frame++) {
+        const thumb = document.createElement('div'), canvas = document.createElement('canvas');
+        thumb.className = 'thumb'; canvas.width = w; canvas.height = h;
+        const context = canvas.getContext('2d'); context.imageSmoothingEnabled = false;
+        context.drawImage(sheet, (frame % 2) * w, Math.floor(frame / 2) * h, w, h, 0, 0, w, h);
+        const caption = document.createElement('small'); caption.textContent = (frame + 1) + ' / 4';
+        thumb.append(canvas, caption); card.querySelector('.strip').append(thumb);
+      }
+    }
+    async function start() {
+      for (const tree of trees) await addTree(...tree);
+      const dead = document.createElement('article');
+      dead.innerHTML = '<h2>불탄 나무</h2><span class="id">stree_dead</span>' +
+        '<div class="pair"><div class="sample"><canvas></canvas><span>정지 그림</span></div></div>' +
+        '<p class="static-note">잎이 없어 바람 프레임을 만들지 않았습니다.</p>';
+      gallery.append(dead);
+      const still = await image('../../assets_candidate/tiles/stree_dead.png');
+      const canvas = dead.querySelector('canvas'); sample(canvas, 35, 86);
+      canvas.getContext('2d').drawImage(still, 0, 0);
+      show(); restart();
+    }
+    start().catch(error => { document.querySelector('.intro').textContent = error.message; });
+    document.getElementById('toggle').onclick = event => {
+      playing = !playing; event.currentTarget.textContent = playing ? '일시정지' : '재생'; restart();
+    };
+    document.getElementById('scrub').oninput = event => { current = Number(event.target.value); show(); };
+  </script>
+</body>
+</html>

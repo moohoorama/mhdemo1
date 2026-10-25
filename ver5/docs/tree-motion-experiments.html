@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>나무 움직임 두 가지 비교</title>
+  <style>
+    :root { font-family: system-ui, sans-serif; color: #f1f2e9; background: #17201b; }
+    body { max-width: 1150px; margin: auto; padding: 30px 20px 60px; }
+    h1 { font-size: 29px; margin: 0 0 7px; }
+    h2 { margin: 0 0 6px; font-size: 21px; }
+    p { color: #c4d1c4; line-height: 1.55; }
+    .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; background: #29392e;
+      padding: 12px 16px; margin: 22px 0 26px; border: 1px solid #47604d; border-radius: 10px; }
+    button { border: 0; border-radius: 7px; background: #dac2a0; color: #251f18;
+      padding: 9px 15px; font: inherit; font-weight: 700; cursor: pointer; }
+    input { accent-color: #dac2a0; }
+    output { min-width: 46px; font-variant-numeric: tabular-nums; }
+    section { background: #222d26; border: 1px solid #415748; border-radius: 14px;
+      margin-bottom: 20px; padding: 20px; }
+    section > p { margin: 0 0 16px; }
+    .trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .sample { border-radius: 9px; overflow: hidden; background: linear-gradient(#bdcbb5 0 63%, #8da27d 63%);
+      height: 290px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; }
+    .sample.magenta { background: #ff00ff; }
+    .sample canvas { max-width: 96%; image-rendering: pixelated; }
+    .sample span { margin: 5px 0 8px; padding: 5px 9px; border-radius: 5px; background: #293a2ecc;
+      font-size: 13px; color: #fff; text-align: center; }
+    .strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 17px; }
+    .frame { background: #304037; border: 1px solid #4b6252; border-radius: 7px; padding: 7px;
+      min-width: 0; text-align: center; }
+    .frame canvas { display: block; max-width: 100%; margin: auto; image-rendering: pixelated; }
+    .frame small { color: #d4ddd0; }
+    .files { font-size: 13px; margin: 15px 0 0; }
+    a { color: #e6cfa9; }
+    @media (max-width: 740px) { .trio { grid-template-columns: 1fr; } .strip { grid-template-columns: repeat(2, 1fr); }
+      .sample { height: 245px; } }
+  </style>
+</head>
+<body>
+  <h1>나무 움직임 두 가지 비교</h1>
+  <p>4프레임을 250ms씩 재생합니다. 첫 실험은 나무 위치를 그대로 둔 채 햇살만 바꾸고, 둘째는 버드나무 잎 움직임을 기존 진폭의 ⅓로 줄였습니다.</p>
+  <div class="controls"><button id="toggle" type="button">일시정지</button>
+    <label>프레임 <input id="scrub" type="range" min="0" max="3" step="1" value="0"></label>
+    <output id="frame">1 / 4</output><span>250ms / 프레임</span></div>
+
+  <section>
+    <h2>① 활엽수 · 움직이는 햇살</h2>
+    <p>3D 모델에서 보이는 면의 법선 벡터를 만들고, 기존 도트의 나무 형태에 맞췄습니다. 작은 각도로 옮겨 가는 햇살에 따라 팔레트 명암만 달라집니다.</p>
+    <div class="trio">
+      <div class="sample"><canvas id="broad-original" width="83" height="115"></canvas><span>원본 도트 · 고정</span></div>
+      <div class="sample"><canvas id="normal" width="83" height="115"></canvas><span>표면 법선 · RGB 방향</span></div>
+      <div class="sample"><canvas id="sunlight" width="83" height="115"></canvas><span>햇살 방향 변화</span></div>
+    </div>
+    <div class="strip" id="sun-frames"></div>
+    <p class="files"><a href="../../tools/spritetool/assets/tree-motion-experiments/stree_broad_0/normal-map.png">normal map PNG</a> ·
+      <a href="../../tools/spritetool/assets/tree-motion-experiments/stree_broad_0/sunlight-sheet.png">햇살 4프레임 PNG</a></p>
+  </section>
+
+  <section>
+    <h2>② 버드나무 · 잎 움직임 ⅓</h2>
+    <p>같은 3D 모델과 카메라에서 줄기·가지는 고정했습니다. 왼쪽은 기존 진폭 0.12, 가운데는 진폭 0.04입니다. 오른쪽은 새 3D 렌더를 기존 팔레트·외곽선으로 줄인 모습입니다.</p>
+    <div class="trio">
+      <div class="sample magenta"><canvas id="willow-before" width="448" height="448"></canvas><span>기존 잎 흔들림 · 0.12</span></div>
+      <div class="sample magenta"><canvas id="willow-after" width="448" height="448"></canvas><span>약한 잎 흔들림 · 0.04</span></div>
+      <div class="sample"><canvas id="willow-dots" width="72" height="91"></canvas><span>약한 움직임 · 도트</span></div>
+    </div>
+    <div class="strip" id="willow-frames"></div>
+    <p class="files"><a href="../../tools/spritetool/assets/tree-motion-experiments/stree_willow/reference-3d.png">약한 움직임 3D 시트</a> ·
+      <a href="../../tools/spritetool/assets/tree-motion-experiments/stree_willow/dot-sheet.png">약한 움직임 도트 시트</a></p>
+  </section>
+  <p>두 실험 모두 비교 시안이며 게임 에셋은 아직 바꾸지 않았습니다.</p>
+  <script>
+    const paths = {
+      broad: '../../assets_candidate/tiles/stree_broad_0.png',
+      normal: '../../tools/spritetool/assets/tree-motion-experiments/stree_broad_0/normal-map.png',
+      sun: '../../tools/spritetool/assets/tree-motion-experiments/stree_broad_0/sunlight-sheet.png',
+      willowBefore: '../../tools/spritetool/assets/scene-tree-sway/stree_willow/reference-3d.png',
+      willowAfter: '../../tools/spritetool/assets/tree-motion-experiments/stree_willow/reference-3d.png',
+      willowDots: '../../tools/spritetool/assets/tree-motion-experiments/stree_willow/dot-sheet.png'
+    };
+    const images = {};
+    let frame = 0, playing = true, timer;
+    function load(path) {
+      return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () => reject(new Error(path + ' 로드 실패'));
+        image.src = path;
+      });
+    }
+    function draw(target, image, index, width, height) {
+      const canvas = document.getElementById(target);
+      const context = canvas.getContext('2d');
+      context.imageSmoothingEnabled = false;
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, (index % 2) * width, Math.floor(index / 2) * height,
+        width, height, 0, 0, canvas.width, canvas.height);
+    }
+    function show() {
+      draw('sunlight', images.sun, frame, 83, 115);
+      draw('willow-before', images.willowBefore, frame, 448, 448);
+      draw('willow-after', images.willowAfter, frame, 448, 448);
+      draw('willow-dots', images.willowDots, frame, 72, 91);
+      document.getElementById('frame').textContent = (frame + 1) + ' / 4';
+      document.getElementById('scrub').value = frame;
+    }
+    function strip(id, image, width, height) {
+      const container = document.getElementById(id);
+      for (let i = 0; i < 4; i++) {
+        const block = document.createElement('div'), canvas = document.createElement('canvas');
+        block.className = 'frame'; canvas.width = width; canvas.height = height;
+        const context = canvas.getContext('2d'); context.imageSmoothingEnabled = false;
+        context.drawImage(image, (i % 2) * width, Math.floor(i / 2) * height, width, height,
+          0, 0, width, height);
+        canvas.style.height = '110px'; canvas.style.width = 'auto';
+        const label = document.createElement('small'); label.textContent = (i + 1) + ' / 4';
+        block.append(canvas, label); container.append(block);
+      }
+    }
+    function restart() {
+      clearInterval(timer);
+      if (playing) timer = setInterval(() => { frame = (frame + 1) % 4; show(); }, 250);
+    }
+    Promise.all(Object.entries(paths).map(async ([name, path]) => { images[name] = await load(path); }))
+      .then(() => {
+        document.getElementById('broad-original').getContext('2d').drawImage(images.broad, 0, 0);
+        document.getElementById('normal').getContext('2d').drawImage(images.normal, 0, 0);
+        for (const id of ['broad-original', 'normal', 'sunlight']) {
+          const canvas = document.getElementById(id); canvas.style.width = '166px'; canvas.style.height = '230px';
+        }
+        for (const id of ['willow-before', 'willow-after']) {
+          const canvas = document.getElementById(id); canvas.style.width = '230px'; canvas.style.height = '230px';
+        }
+        const dot = document.getElementById('willow-dots'); dot.style.width = '144px'; dot.style.height = '182px';
+        strip('sun-frames', images.sun, 83, 115);
+        strip('willow-frames', images.willowDots, 72, 91);
+        show(); restart();
+      }).catch(error => { document.querySelector('body > p').textContent = error.message; });
+    document.getElementById('toggle').onclick = event => {
+      playing = !playing; event.currentTarget.textContent = playing ? '일시정지' : '재생'; restart();
+    };
+    document.getElementById('scrub').oninput = event => { frame = Number(event.target.value); show(); };
+  </script>
+</body>
+</html>

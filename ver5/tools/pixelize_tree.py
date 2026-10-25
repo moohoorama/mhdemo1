@@ -34,15 +34,15 @@ FOUR = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 EIGHT = [(dx, dy) for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dx or dy]
 
 
-def keyed(path):
-    im = Image.open(path).convert('RGBA')
+def keyed(path, trim=True):
+    im = path.convert('RGBA') if isinstance(path, Image.Image) else Image.open(path).convert('RGBA')
     px = im.load()
     for y in range(im.height):
         for x in range(im.width):
             r, g, b, _ = px[x, y]
             if r > 120 and b > 120 and g < min(r, b) - 60:  # magenta and its fringe
                 px[x, y] = (0, 0, 0, 0)
-    return im.crop(im.getbbox())
+    return im.crop(im.getbbox()) if trim else im
 
 
 def lab(rgb):
@@ -64,7 +64,7 @@ def rgb(h):
     return tuple(int(h[i:i + 2], 16) for i in (1, 3, 5))
 
 
-def pixelize(t, W, H):
+def pixelize(t, W, H, source=None, trim=True):
     pal = {rgb(c): lab(rgb(c)) for c in t['palette']}
     k = min(pal, key=lambda c: pal[c][0])
     penalty = {rgb(c): v for c, v in t.get('penalty', {}).items()}
@@ -77,7 +77,7 @@ def pixelize(t, W, H):
             cache[c] = min(pal, key=lambda p: sum((a - b) ** 2 for a, b in zip(L, pal[p])) ** .5 + penalty.get(p, 0))
         return cache[c]
 
-    im = keyed(CAND / 'tiles' / t['source'])
+    im = keyed(source if source is not None else CAND / 'tiles' / t['source'], trim=trim)
     w, h = W - 2, H - 2
     big = im.resize((w * B, h * B), Image.LANCZOS)
     src = big.convert('RGB').filter(ImageFilter.MedianFilter(3)).load()

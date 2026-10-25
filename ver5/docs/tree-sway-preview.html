@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>복숭아나무 8프레임 시안</title>
+  <style>
+    :root { font-family: system-ui, sans-serif; color: #f4f0e8; background: #171d1b; }
+    body { max-width: 1180px; margin: auto; padding: 30px 22px 60px; }
+    h1 { font-size: 28px; margin: 0 0 8px; }
+    p { color: #bdc9c0; line-height: 1.55; }
+    .lead { margin: 0 0 25px; }
+    .steps { display: flex; gap: 10px; flex-wrap: wrap; color: #d7e4d9; margin-bottom: 24px; }
+    .steps span { padding: 8px 12px; background: #2b3932; border-radius: 7px; }
+    .steps b { color: #dba5ac; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .card { background: #222b27; border: 1px solid #405248; border-radius: 14px; overflow: hidden; }
+    .card h2 { font-size: 17px; margin: 0; padding: 16px 18px 0; }
+    .card small { display: block; padding: 3px 18px 0; color: #afc0b2; }
+    .stage { height: 340px; margin: 13px; display: grid; place-items: center; border-radius: 8px;
+      background: linear-gradient(#b9c5b1 0 55%, #829775 55%); overflow: hidden; }
+    .stage.magenta { background: #ff00ff; }
+    .stage canvas { width: 310px; height: 310px; image-rendering: pixelated; }
+    .stage canvas.original { width: 301px; height: 310px; }
+    .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 15px 24px; padding: 22px 0 30px; }
+    button { border: 0; border-radius: 8px; background: #dcaab1; color: #2d2022;
+      padding: 10px 18px; font: inherit; font-weight: 700; cursor: pointer; }
+    label { display: flex; align-items: center; gap: 9px; }
+    input { accent-color: #dcaab1; }
+    output { min-width: 58px; font-variant-numeric: tabular-nums; }
+    h3 { font-size: 18px; margin: 0 0 12px; }
+    .strip { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; }
+    .thumb { background: #29352e; border: 1px solid #46584a; border-radius: 8px; padding: 7px 2px;
+      display: grid; justify-items: center; }
+    .thumb canvas { width: 100%; max-width: 112px; height: auto; aspect-ratio: 93 / 96; image-rendering: pixelated; }
+    .thumb span { font-size: 13px; color: #cbd5c8; }
+    .links { margin: 20px 0 0; }
+    a { color: #e5b8bf; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } .strip { grid-template-columns: repeat(4, 1fr); }
+      .stage { height: 340px; } .stage canvas { width: 310px; height: 310px; } }
+  </style>
+</head>
+<body>
+  <h1>복숭아나무 · 8프레임 제작 시안</h1>
+  <p class="lead">3D 모델의 줄기와 가지를 고정하고 꽃·잎 덩어리만 여덟 자세로 움직였습니다. 최종 도트는 기존 나무의 팔레트와 외곽선을 적용하고 줄기 픽셀을 모든 프레임에서 통일했습니다.</p>
+  <div class="steps"><span><b>1</b> 줄기·가지 고정</span><span><b>2</b> 꽃·잎 8자세</span><span><b>3</b> 팔레트·외곽선</span><span><b>4</b> 같은 기준점으로 재생</span></div>
+  <div class="grid">
+    <section class="card"><h2>기존 장면 나무</h2><small>비교 기준 · 정지 그림</small><div class="stage"><canvas class="original" id="original" width="93" height="96"></canvas></div></section>
+    <section class="card"><h2>3D 모델 자세</h2><small>같은 카메라와 뿌리 위치에서 렌더링</small><div class="stage magenta"><canvas id="reference" width="128" height="128"></canvas></div></section>
+    <section class="card"><h2>최종 도트 시안</h2><small>93×96px · 기준점 (56, 91) · 8색 팔레트</small><div class="stage"><canvas id="dots" width="93" height="96"></canvas></div></section>
+  </div>
+  <div class="controls">
+    <button id="toggle" type="button">일시정지</button>
+    <label>프레임 <input id="scrub" type="range" min="0" max="7" step="1" value="0"><output id="frame">1 / 8</output></label>
+    <label>속도 <input id="speed" type="range" min="100" max="300" step="10" value="160"><output id="ms">160 ms</output></label>
+  </div>
+  <h3>최종 도트 · 여덟 프레임</h3>
+  <div class="strip" id="strip"></div>
+  <p class="links">원본 시트: <a href="../../tools/spritetool/assets/scene-peach-sway/reference-3d.png">3D 렌더</a> · <a href="../../tools/spritetool/assets/scene-peach-sway/dot-sheet.png">최종 도트</a></p>
+  <p>시안은 아직 게임에 적용하지 않았습니다. 꽃과 가지의 움직임, 그림체, 프레임 사이의 떨림을 여기서 확인할 수 있습니다.</p>
+  <script>
+    const base = '../../tools/spritetool/assets/scene-peach-sway/';
+    const files = {
+      original: '../../assets_candidate/tiles/peach_bloom_0.png',
+      reference: base + 'reference-3d.png',
+      dots: base + 'dot-sheet.png'
+    };
+    const images = {};
+    let frame = 0, playing = true, timer;
+    function drawCell(target, image, index) {
+      const canvas = document.getElementById(target);
+      const ctx = canvas.getContext('2d');
+      const col = index % 4, row = Math.floor(index / 4);
+      const x0 = Math.round(col * image.width / 4), x1 = Math.round((col + 1) * image.width / 4);
+      const y0 = Math.round(row * image.height / 2), y1 = Math.round((row + 1) * image.height / 2);
+      ctx.imageSmoothingEnabled = false;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(image, x0, y0, x1 - x0, y1 - y0, 0, 0, canvas.width, canvas.height);
+    }
+    function show() {
+      for (const name of ['reference', 'dots']) drawCell(name, images[name], frame);
+      document.getElementById('frame').textContent = (frame + 1) + ' / 8';
+      document.getElementById('scrub').value = frame;
+    }
+    function restart() {
+      clearInterval(timer);
+      if (playing) timer = setInterval(() => { frame = (frame + 1) % 8; show(); }, Number(document.getElementById('speed').value));
+    }
+    Promise.all(Object.entries(files).map(([name, path]) => new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => { images[name] = image; resolve(); };
+      image.onerror = () => reject(new Error(path + ' 파일을 읽을 수 없습니다.'));
+      image.src = path;
+    }))).then(() => {
+      document.getElementById('original').getContext('2d').drawImage(images.original, 0, 0);
+      const strip = document.getElementById('strip');
+      for (let i = 0; i < 8; i++) {
+        const cell = document.createElement('div'); cell.className = 'thumb';
+        const canvas = document.createElement('canvas'); canvas.width = 93; canvas.height = 96;
+        canvas.getContext('2d').drawImage(images.dots, (i % 4) * 93, Math.floor(i / 4) * 96, 93, 96, 0, 0, 93, 96);
+        const label = document.createElement('span'); label.textContent = (i + 1) + ' / 8';
+        cell.append(canvas, label); strip.append(cell);
+      }
+      show(); restart();
+    }).catch(error => { document.querySelector('.lead').textContent = error.message; });
+    document.getElementById('toggle').onclick = event => {
+      playing = !playing; event.currentTarget.textContent = playing ? '일시정지' : '재생'; restart();
+    };
+    document.getElementById('scrub').oninput = event => { frame = Number(event.target.value); show(); };
+    document.getElementById('speed').oninput = event => {
+      document.getElementById('ms').textContent = event.target.value + ' ms'; restart();
+    };
+  </script>
+</body>
+</html>
