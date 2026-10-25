@@ -5,6 +5,10 @@
 
 ---
 
+## 2026-10-25 탁현 관아 앞 태호석 치움
+
+- `assets/graphics/maps/S_zhuo2.json`, `S_zhuo.json`, `tools/scene_maps/zhuo.py`: 관아 앞 태호석을 뺌 — 사용자: 관아로 가는 길을 막음.
+
 ## 2026-10-25 장면 소품 그림자를 실루엣 투영으로
 
 - `internal/sprite/render.go`: 유닛 그림자의 투영·키움·흐림을 `castShadow`로 떼어 내고 그림 한 장용 `ImageShadow` 추가(시트 그림자는 결과 그대로, 파이썬 골든 일치) — 소품도 유닛과 같은 규칙으로 그림자를 만들려고.

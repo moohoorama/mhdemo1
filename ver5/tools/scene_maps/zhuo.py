@@ -40,7 +40,7 @@ ZHUO = outdoor(W, H, zhuo_glyph, props=[
     ('hall_u', 6, 1), ('banner', 5, 2), ('banner', 7, 2),
     *avenue('v', [(u, v / 2 + .25) for u in (5.75, 6.25) for v in range(5, 2 * H + 6)]),
     # 저택
-    ('hall_v', 2, 2), ('stree_plum_0', 0, 0), ('stree_plum_1', 3, 0), ('taihu_rock', 4, 3),
+    ('hall_v', 2, 2), ('stree_plum_0', 0, 0), ('stree_plum_1', 3, 0),
     ('lantern', 3, 1), ('lantern', 3, 3), ('flagstones_0', 3.4, 2.0),
     # 무기점
     ('house_tile', 9, 3), ('weapon_rack', 8, 4), ('weapon_rack', 10, 4), ('armor_stand', 11, 4),
