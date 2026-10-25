@@ -1,0 +1,27 @@
+# c08-start  S_council  ch08  origin -1 -1
+Pil#################################Pil
+###...Brz...Bnr...Wpneu1Bnr...ArmBrz...
+###Bnr......QiaHan............mn1......
+###FlgYan...TblTbl...Tbl...Tbl......gu1
+###CdlYuaDsk...........................
+###Cdl.................................
+###BnrWen...YShGon...Tbl...Tbl......gu2
+###Wpn.................................
+Pil...Brz........................Brz...
+
+Yua 원소  (sit)
+Yan 안량
+Wen 문추
+gu1 호위#1  (guards)
+gu2 호위#2  (guards)
+Qia 교모  (official_noncombat, sit)
+Han 한복  (official_noncombat, sit)
+YSh 원술  (sit)
+Gon 공주  (official_noncombat, sit)
+mn1 악공#1  (commoner_man)
+eu1 환관#1  (eunuch_noncombat)
+Cao 조조  (off stage, enters later (cell 12 4))
+
+# c08-01: Cao -> 7 3
+# c08-03: Cao -> 6 3
+# c08-10: Cao -> 12 4 and leaves

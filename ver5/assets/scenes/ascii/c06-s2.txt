@@ -1,0 +1,21 @@
+# c06-s2  S_army_camp  ch06  origin 0 0
+......FlgFlg......
+...Tntin1XHDTnt...
+...TntCaoBnrTnt...
+......BnrBnr......
+...TntLiuZhaTnt...
+......Gua.........
+
+Cao 조조
+XHD 하후돈
+Liu 유비
+Gua 관우
+Zha 장비
+in1 제후병#1  (light_infantry)
+in2 병사#1  (light_infantry, off stage, enters later (cell 1 8))
+in3 병사#2  (light_infantry, off stage, enters later (cell 4 8))
+Mes 전령  (light_cavalry, off stage, enters later (cell 8 3))
+
+# c06-10: in2 -> 1 5
+# c06-10: in3 -> 4 5
+# c06-14: Mes -> 5 3

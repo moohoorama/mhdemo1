@@ -1,0 +1,33 @@
+# c07-scene-2  S_army_camp  ch07  origin -1 0
+.........FlgFlg.........
+......Tnt......Tnt...Bsh
+......Tntin3BnrTnt......
+.........BnrBnr......wd2
+......Tnt......Tnt......
+wd1..................Bsh
+
+Cao 조조  (off stage, enters later (cell 3 10))
+XHD 하후돈  (off stage, enters later (cell 4 10))
+XHY 하후연  (off stage, enters later (cell 4 11))
+Liu 유비  (off stage, enters later (cell 2 10))
+Gua 관우  (off stage, enters later (cell 1 10))
+Zha 장비  (off stage, enters later (cell 2 11))
+in1 패잔병#1  (light_infantry, off stage, enters later (cell 3 11))
+pi1 패잔병#2  (pikeman, off stage, enters later (cell 5 11))
+in2 패잔병#3  (light_infantry, off stage, enters later (cell 0 11))
+in3 보초#1  (light_infantry)
+st1 들것#1  (stretcher_noncombat, off stage, enters later (cell 6 11))
+wd1 부상병#1  (wounded_noncombat, lie)
+wd2 부상병#2  (wounded_noncombat, sitground)
+
+# c07-narr-2: in1 -> 3 7
+# c07-narr-2: in2 -> 0 7
+# c07-narr-2: Cao -> 3 4
+# c07-narr-2: XHD -> 4 5
+# c07-narr-2: Liu -> 2 5
+# c07-narr-2: Gua -> 1 6
+# c07-narr-2: Zha -> 2 6
+# c07-narr-2: XHY -> 4 6
+# c07-narr-2: pi1 -> 5 7
+# c07-narr-2: st1 -> 6 8
+# c07-narr-3: Cao -> 3 5

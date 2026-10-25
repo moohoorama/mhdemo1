@@ -36,6 +36,11 @@ python3 tools/mapgen/mapgen.py tools/mapgen/layouts/hero/map02.txt assets/scenar
 
 전투 영역 바깥은 가장자리 칸을 이어 채우고(맵 에디터의 가져오기와 같다) 장식·소품은 비어 있으니 필요하면 에디터에서 더한다. 임시 확인 도구 `go run ./cmd/_m8check [-scenario 이름] [-stage B02] [-v]`는 시나리오를 로드해 검증하고 각 스테이지를 AI가 양쪽을 맡아 돌려 발동한 이벤트와 결과를 보여 준다.
 
+
+### 유닛 배치 그림
+
+`tools/mapgen/stage_ascii.py dump B01`이 스테이지의 배치를 `tools/mapgen/layouts/hero/stage01.txt`에 한 칸 3글자 그림으로 쓴다. 지형은 `...` 초원, `,,,` 황무지, `###` 성벽, `___` 성내, `~~~` 물, `^^^` 절벽, `[ ]` 성문 벽과 srpg-cli의 구조물 글자(`TRE`·`VIL`·`CMP`·`CST`·`PAS`·`BRG`·`FNC`), 유닛은 장수 `Cao`·`Liu`(장면 그림과 같은 코드), 병력 `tu1`(troop_turban), 출전 칸 `pl1`…, 횃불 `Trc`. 그림 아래에 코드마다 스테이지 항목(`Enemies[3]`)·진영·그룹·정책과 구역 범위가 적힌다. 그림에서 유닛 코드를 옮기고 `load B01`을 하면 그 항목의 X·Y가 바뀐다. 지형은 이 그림이 아니라 맵 글자 배치에서 고친다. 장면 배치도 같은 방식이다(`presentation-scene.md`, `tools/scene_maps/scene_ascii.py`). 스킬 `ascii-layout`이 순서를 정리한다.
+
 ## 필드
 
 - `Version`: 문서 버전(1).

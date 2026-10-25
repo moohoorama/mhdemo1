@@ -1,0 +1,16 @@
+# c02-gate  S_castle_out_open  ch02  origin -1 0
+.........Bnr...Bnr.........
+###########################
+~~~~~~~~~~~~===~~~~~~~~~~~~
+......BnrBrz...BrzBnr......
+...........................
+...TreHGaSun...CaoXHDBsh...
+
+Sun 손견
+HGa 황개
+Cao 조조
+XHD 하후돈  (infantry_noncombat)
+HFS 황보숭  (light_cavalry, off stage, enters later (cell 3 0))
+
+# c02-g1: HFS -> 3 3
+# c02-g8: Cao -> 4 4

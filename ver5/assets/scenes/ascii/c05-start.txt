@@ -1,0 +1,15 @@
+# c05-start  S_road  ch05  origin 0 0
+Tre......Tre...Bsh...
+...Mil...............
+...............LiuGua
+...............MilZha
+......Bsh............
+
+Liu 유비
+Gua 관우
+Zha 장비
+in1 손견병#1  (light_infantry, off stage, enters later (cell -3 2))
+in2 손견병#2  (light_infantry, off stage, enters later (cell -3 3))
+
+# c05-n1: in1 -> 0 2
+# c05-n1: in2 -> 0 3

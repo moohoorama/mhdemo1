@@ -1,0 +1,20 @@
+# c03-08  S_road  ch03  origin 0 0
+Tre......Tre...Bsh...
+...Mil...............
+GuaLiu...............
+Zha............Mil...
+......Bsh............
+
+Liu 유비
+Gua 관우
+Zha 장비
+Cao 조조  (caocao, off stage, enters later (cell 9 2))
+XHD 하후돈  (light_cavalry, off stage, enters later (cell 10 2))
+XHY 하후연  (light_cavalry, off stage, enters later (cell 10 3))
+cv1 기병#1  (light_cavalry, off stage, enters later (cell 11 2))
+
+# c03-09: Cao -> 4 2
+# c03-09: XHD -> 5 2
+# c03-09: XHY -> 4 3
+# c03-09: cv1 -> 6 2
+# c03-10: Liu -> 2 2

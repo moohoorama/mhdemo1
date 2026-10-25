@@ -1,0 +1,30 @@
+# c03-44  S_council  ch03  origin -1 -1
+Pil#################################Pil
+###...Brz...XHD...Wpneu1Bnr...ArmBrz...
+###Bnr......CaoQia...Han......mn1......
+###FlgYan...TblTbl...Tbl...Tbl......gu1
+###CdlYuaDsk...........................
+###Cdl.................................
+###BnrWen...YShGon...Tbl...Tbl......gu2
+###Wpn.....................LiuGua......
+Pil...Brz..................Zha...Brz...
+
+Yua 원소  (sit)
+Yan 안량
+Wen 문추
+gu1 호위#1  (guards)
+gu2 호위#2  (guards)
+Cao 조조  (sit)
+Qia 교모  (official_noncombat, sit)
+Han 한복  (official_noncombat, sit)
+YSh 원술  (sit)
+Gon 공주  (official_noncombat, sit)
+XHD 하후돈
+Liu 유비
+Gua 관우
+Zha 장비
+mn1 악공#1  (commoner_man)
+eu1 환관#1  (eunuch_noncombat)
+Mes 전령  (light_infantry, off stage, enters later (cell 12 4))
+
+# c03-46: Mes -> 9 3

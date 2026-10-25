@@ -1,0 +1,24 @@
+# c02-camp-empty  S_army_camp  ch02  origin 0 0
+......FlgFlg......
+...Tnt......Tnt...
+...TntBnrSolTnt...
+......BnrBnrin1...
+...Tnt......Tnt...
+
+Cao 조조  (off stage, enters later (cell 3 -18))
+XHD 하후돈  (infantry_noncombat, off stage, enters later (cell 4 -19))
+Sol 병사  (light_infantry)
+in1 병사#2  (light_infantry)
+Zha 장비  (off stage, enters later (cell -3 9))
+Gua 관우  (off stage, enters later (cell -2 11))
+Liu 유비  (off stage, enters later (cell -1 12))
+in2 의병#1  (light_infantry, off stage, enters later (cell -5 9))
+
+# c02-e1: Cao -> 3 1
+# c02-e1: XHD -> 4 0
+# c02-e4: Zha -> -3 9
+# c02-e4: Gua -> -2 11
+# c02-e4: Liu -> -1 12
+# c02-e4: in2 -> -5 9
+# c02-end: Cao -> 3 -18 and leaves
+# c02-end: XHD -> 4 -18 and leaves

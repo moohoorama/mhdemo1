@@ -1,0 +1,25 @@
+# c02-night  S_army_camp  ch02  origin 0 0
+......FlgFlg......
+...Tnt......Tnt...
+...TntBnrBnrTnt...
+......BnrBnr......
+in1Tnt...LiuTntin2
+in3...Gua...Zha...
+
+Liu 유비
+Gua 관우
+Zha 장비
+Xuf 서복  (off stage, enters later (cell 3 23))
+in1 의병#1  (light_infantry)
+in2 의병#2  (light_infantry)
+in3 의병#3  (light_infantry)
+
+# c02-n3: Xuf -> 3 6
+# c02-n4: Liu -> 3 5
+# c02-n6: Zha -> 4 23 and leaves
+# c02-n6: Gua -> 2 23 and leaves
+# c02-n7: Xuf -> 3 23 and leaves
+# c02-n7: Liu -> 3 23 and leaves
+# c02-n7: in1 -> 0 23 and leaves
+# c02-n7: in3 -> 0 23 and leaves
+# c02-n7: in2 -> 5 23 and leaves

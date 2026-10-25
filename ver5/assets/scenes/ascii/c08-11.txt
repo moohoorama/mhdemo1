@@ -1,0 +1,17 @@
+# c08-11  S_hill  ch08  origin 0 -1
+......Cao.........
+^^^^^^^^^^^^^^^^^^
+^^^Mil...MilBsh...
+^^^...............
+^^^...Bsh.........
+^^^...GuaZha......
+
+Cao 조조
+Liu 유비  (off stage, enters later (cell 8 -1))
+Gua 관우
+Zha 장비
+
+# c08-12: Liu -> 4 -1
+# c08-24: Cao -> -1 1
+# c08-26: Cao -> -1 10 and leaves
+# c08-29: Liu -> 4 -1

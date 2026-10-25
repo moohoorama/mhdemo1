@@ -1,0 +1,27 @@
+# c03-25  S_hall  ch03  origin -1 -1
+Pil##################Pil
+###......Cdl###Cdl......
+###...Pil...Xia...Pileu2
+###......eu1...DonLir...
+###......of1...of4......
+###...Pilof2...of5Pil...
+###.....................
+###...Pilof3...of6Pil...
+###.....................
+Pil...Lnthe1...he2Lnt...
+
+Xia 헌제  (throne)
+Don 동탁
+Lir 이유  (strategist)
+of1 대신#1  (official_crimson_noncombat, bow)
+of2 대신#2  (official_purple_noncombat, bow)
+of3 대신#3  (official_blue_noncombat, bow)
+of4 대신#4  (official_crimson_noncombat, bow)
+of5 대신#5  (official_black_noncombat, bow)
+of6 대신#6  (official_green_noncombat, bow)
+eu1 환관#1  (eunuch_noncombat)
+eu2 환관#2  (eunuch_noncombat)
+he1 서량병#1  (heavy_infantry)
+he2 서량병#2  (heavy_infantry)
+
+# c03-27: Don -> 4 2

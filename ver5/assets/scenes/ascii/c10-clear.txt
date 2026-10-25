@@ -1,0 +1,22 @@
+# c10-clear  S_road  ch10  origin 0 0
+Tre......Tre...Bsh...Bsh
+...Mil......pi1...GuaFan
+...............JiaLiu...
+............in1MilZha...
+......Bsh...............
+
+Liu 유비
+Gua 관우
+Zha 장비
+Jia 간옹
+Fan 번궁
+in1 의용병#1  (light_infantry)
+pi1 의용병#2  (pikeman)
+
+# c10-end: Liu -> 14 2 and leaves
+# c10-end: Fan -> 14 1 and leaves
+# c10-end: Gua -> 14 1 and leaves
+# c10-end: Zha -> 14 3 and leaves
+# c10-end: Jia -> 14 2 and leaves
+# c10-end: in1 -> 14 3 and leaves
+# c10-end: pi1 -> 14 1 and leaves

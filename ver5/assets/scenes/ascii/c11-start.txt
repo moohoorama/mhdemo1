@@ -1,0 +1,28 @@
+# c11-start  S_bridge  ch11  origin 0 0
+....................................
+Tre......Tre...............TreTre...
+....................................
+Tre......cv1cv2.........cv3cv4...Tre
+....................................
+~~~~~~~~~~~~~~~~~~===~~~~~~~~~~~~~~~
+.........Shd...Shd......Shd...Shd...
+.........cr1...cr2Quy...cr3...cr4...
+Tre..................YuaFlg.........
+...TntBnr...Bnrgu2Tia......gu1TwrTnt
+
+Yua 원소
+Tia 전풍
+Quy 국의
+gu1 호위#1  (guards)
+gu2 호위#2  (guards)
+cr1 노병#1  (crossbow)
+cr2 노병#2  (crossbow)
+cr3 노병#3  (crossbow)
+cr4 노병#4  (crossbow)
+cv1 백마기#1  (light_cavalry_white)
+cv2 백마기#2  (light_cavalry_white)
+cv3 백마기#3  (light_cavalry_white)
+cv4 백마기#4  (light_cavalry_white)
+in1 전령#1  (light_infantry, off stage, enters later (cell 1 10))
+
+# c11-07: in1 -> 5 8

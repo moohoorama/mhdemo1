@@ -1,0 +1,12 @@
+# c02-e-smith  S_weapon_shop2  ch02  origin -1 -1
+Pil###############Pil
+###...WpnWpnWpnArmArm
+###WpnBrz.........Sck
+###Wpn.........Ctr...
+###..................
+PilArm...............
+
+Liu 유비  (stands where the walk left them)
+Bla 대장장이  (stands where the walk left them)
+
+# c02-k1: Liu -> 4 3

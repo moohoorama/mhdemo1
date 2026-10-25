@@ -1,0 +1,12 @@
+# c03-y0  S_tent_lux  ch03  origin -1 -1
+Pil###############Pil
+###............BnrJar
+###Cdleu1...Tbl...Jar
+######YShTbl...Sol...
+###Cdleu2...Tbl......
+PilBnr...............
+
+YSh 원술  (sit)
+eu1 환관#1  (eunuch_noncombat)
+eu2 환관#2  (eunuch_noncombat)
+Sol 병사  (light_infantry)

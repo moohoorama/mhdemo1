@@ -1,0 +1,18 @@
+# c07-start  S_army_camp  ch07  origin 0 0
+...XHYFlgFlg......
+...TntCaoXHDTnt...
+...TntLiuBnrTntpi1
+......BnrBnr...in1
+...TntGuaZhaTnt...
+...in2......pi2...
+
+Cao 조조
+XHD 하후돈
+XHY 하후연
+Liu 유비
+Gua 관우
+Zha 장비
+pi1 조조병#1  (pikeman)
+in1 조조병#2  (light_infantry)
+in2 병사#1  (light_infantry)
+pi2 병사#2  (pikeman)

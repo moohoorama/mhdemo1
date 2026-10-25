@@ -1,0 +1,16 @@
+# c02-castle  S_rampart_siege  ch02  origin -4 0
+LntBnrLnt###LntBnrLntFlgLnt
+pi1...in1BrzHFS......Brzin2
+......Sck..................
+......Sckwd1...............
+...Potwd2..................
+
+HFS 황보숭
+Zhu 주준  (off stage, enters later (cell 5 4))
+in1 수비병#1  (light_infantry)
+in2 수비병#2  (light_infantry)
+pi1 수비병#3  (pikeman)
+wd1 부상병#1  (wounded_noncombat, lie)
+wd2 부상병#2  (wounded_noncombat, sitground)
+
+# c02-c2: Zhu -> 1 2

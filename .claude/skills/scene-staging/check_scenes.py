@@ -53,7 +53,7 @@ def main():
             if prefixes and not any(sid.startswith(p) or any(n.startswith(p) for n in sc['Nodes']) for p in prefixes):
                 continue
             art, props = load_map(cache, sc['Map'])
-            pos = {k: tuple(a['At']) for k, a in sc['Cast'].items() if not a.get('Off')}
+            pos = {k: tuple(a['At']) for k, a in sc['Cast'].items() if not a.get('Off') and 'At' in a}  # Stay: from the walk
             seen = set()
 
             def check(when):

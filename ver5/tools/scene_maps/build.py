@@ -51,6 +51,8 @@ TREE_PROPS = (('forest_', 'pine'), ('burnt_forest_', 'dead'), ('burnt_oak_', 'de
 # maps whose viewer houses are the battle map's village tile (a cluster of tiny round huts): the scene houses instead
 HOUSES = {'S_vil_peace': ('hut', [('house_thatch', 1.3, .55), ('house_thatch_x', .55, 1.6)]),
           'S_vil_burnt': ('burnt_hut', [('house_burnt', 1.3, .55), ('house_burnt', .55, 1.6)])}
+# props a map gets on top of the viewer's (braziers by an open gate for a night scene)
+EXTRA = {'S_castle_out_open': [('brazier', 2.0, 3.0), ('brazier', 4.0, 3.0)]}
 
 
 def grid(u0, u1, v0, v1):
@@ -252,6 +254,7 @@ def build(scene, state, map_id, name, props_known, warn, **plant_opts):
     if map_id in HOUSES:
         old_name, houses = HOUSES[map_id]
         props = [p for p in props if p[0] != old_name] + [list(h) for h in houses]
+    props += [list(p) for p in EXTRA.get(map_id, [])]
     bounds = [(vx - (vy + vh)) * 8 - 24, (vx + vy) * 4 - 48, ((vx + vw) - vy) * 8 + 24, (vx + vy + vw + vh) * 4 + 24]
     return {'id': map_id, 'name': name, 'size': [W, H], 'tiles': tiles, 'bounds': bounds, 'ground': ground,
             'decorations': decorations, 'props': props, 'deformed': False, 'native': True, 'scene': True,

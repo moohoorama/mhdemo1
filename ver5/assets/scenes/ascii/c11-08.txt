@@ -1,0 +1,22 @@
+# c11-08  S_tent_mid  ch11  origin -1 -1
+Pil###############Pil
+###.........BnrWpnArm
+###BnrBrz............
+###...Dsk...Map......
+###......GSZLiu......
+Pil...BedZhaGua...Brz
+
+GSZ 공손찬  (sit)
+Liu 유비
+Gua 관우
+Zha 장비
+Sol 병사  (light_infantry, off stage, enters later (cell 6 3))
+Che 진진  (scholar, off stage, enters later (cell 6 3))
+
+# c11-09: Sol -> 4 2
+# c11-11: Sol -> 6 3 and leaves
+# c11-11: Che -> 4 2
+# c11-21: Liu -> 3 3
+# c11-25: Gua -> 4 3
+# c11-27: Che -> 6 5 and leaves
+# c11-27: Gua -> 6 4 and leaves
