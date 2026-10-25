@@ -31,6 +31,20 @@
 - `cmd/_walkmap`(새 임시 도구), `internal/gui/uidemo_explore.go`(`-ui explore`), `internal/gui/explore_test.go`.
 - 앞에 전투가 하나 들어와 뒤 전투의 스테이지 레벨이 한 단계씩 올랐다(시험 기대값 갱신). 9장 이후 난이도는 다시 볼 일.
 
+## 2026-10-24 장면 편집기 2~4단계: 물체·성벽·성문·검사 (`cmd/_scene`)
+
+- `internal/scenemap/plan.go`: 물체 그림(`Draw`)에 맵 물체 번호(`Object`, JSON `o`) — 편집기가 클릭한 그림의 물체를 알기 위해. 게임은 쓰지 않는다.
+- `internal/scenemap/check.go`(새 파일)·`check_test.go`: `Check` — 성벽 줄 위에 선 물체, 같은 자리에 같은 물체 둘, 한 칸 이상 넓은 물체끼리 겹침. 작은 물체가 모여 선 것과 얇은 것(벽·휘장)이 붙은 것, 격자 밖 물체는 일부러 그렇게 놓은 맵이 있어 묻지 않는다(지금 맵들에는 문제 0개).
+- `cmd/_scene/main.go`: `POST /api/check`(문제와 걷는 칸).
+- `cmd/_scene/static/editor.js`·`viewer.js`·`index.html`·`style.css`: 물체(선반·놓기·고르기·끌기·화살표·지우기·칸에 맞춤·U V dx dy 고치기·그림 바꾸기), 성벽(끌어서 줄, 오른쪽 끌기로 칸 빼기), 성문(성벽 위 클릭, 열림/닫힘, 지우기), 검사 표시. 커서 칸을 맵의 점 변환(`point`)의 역으로 다시 계산하고 높은 칸 윗면을 잡는다 — 1단계의 땅 높이 한계를 고침.
+
+## 2026-10-24 장면 편집기 1단계: 바닥·높이 (`cmd/_scene`)
+
+- 결정: 장면 맵 편집기는 게임 안이 아니라 브라우저 뷰어(`cmd/_scene`)를 키워 만든다. 규칙 계산은 서버의 `internal/scenemap`이 하고 브라우저는 입력과 그리기만 · 같은 규칙을 Go 한 곳에 두면서 입력 화면(붓 목록·썸네일·팝업)을 ebiten으로 새로 짜는 비용을 피함(사용자와 합의) · `tools-scene-viewer.md`.
+- `internal/scenemap/format.go`: `Map.Encode` — 맵 파일 모양(키 한 줄, 격자 한 줄, 물체·성벽 줄 한 줄, 숫자 붙여 씀) 그대로 쓰기. `format_test.go`: 형식 2 맵 전부가 읽고 다시 쓰면 글자 그대로.
+- `cmd/_scene/main.go`: `POST /api/preview`(보낸 맵의 그리기 목록), `POST /api/save/<id>`(읽기·그려 보기가 되면 덮어쓰기).
+- `cmd/_scene/static/editor.js`(새 파일)·`viewer.js`·`index.html`·`style.css`: 편집 줄(보기·바닥·높이, 붓, 붓 크기, 격자, 되돌리기·다시·저장), 칠하기·집기, 편집 중 맵은 회전·다시 읽기에도 유지, 저장 안 한 편집 경고.
+
 ## 2026-10-24 성문 통로 안쪽 면을 어둡게
 
 - `../assets_candidate/tools/gen_pixel_castle.py`: 아치 어깨의 면 중 줄 방향을 보는 면(통로 안쪽)과 통로 옆벽 전체를 통로 색으로 — 열린 문에서 아치 위 어깨 면만 바깥 벽돌색으로 밝게 남아 어색하던 것(사용자 지적). 성벽 바깥면에 보이는 어깨는 돌 그대로. 성문 조각 40장, `map/extra.png`·`index.json` 다시 묶음.

@@ -92,13 +92,17 @@
   }
   function renderPlan(c) {
     const out = { hits: [], index: new Map() };
-    for (const d of plan.flat) draw(c, d);
+    for (const d of plan.flat) {
+      const hit = draw(c, d);
+      if (hit && d.o) { hit.obj = d.o - 1; out.hits.push(hit); }
+    }
     if (step < 1) return out;
     for (const p of plan.solid) {
       for (const d of p.draws) {
         const hit = draw(c, d);
         if (!hit) continue;
         hit.U = p.at[0]; hit.V = p.at[1];
+        if (d.o) hit.obj = d.o - 1;
         out.hits.push(hit);
         const key = `${p.at[0]},${p.at[1]}`;
         if (!out.index.has(key)) out.index.set(key, []);
@@ -179,6 +183,19 @@
       }
     });
   }
+  // grid outlines every small tile of the map's grid, on its ground or on its raised top
+  function grid() {
+    ctx.strokeStyle = 'rgba(255, 255, 255, .22)'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let y = 0; y < map.ground.length; y++) {
+      for (let x = 0; x < map.ground[0].length; x++) {
+        const U = x + map.origin[0], V = y + map.origin[1];
+        const [cx, cy] = propPoint((U - .5) / 2, (V - .5) / 2), up = lift(U, V);
+        ctx.moveTo(cx, cy - 8 - up); ctx.lineTo(cx + 16, cy - up); ctx.lineTo(cx, cy + 8 - up); ctx.lineTo(cx - 16, cy - up); ctx.closePath();
+      }
+    }
+    ctx.stroke();
+  }
   function render() {
     if (!map) return;
     window.sceneReady = false;
@@ -197,6 +214,8 @@
     } else {
       drawn = renderPlan(ctx);
       if (showFoot || showOrder) overlay();
+      if (window.sceneEditor?.grid) grid();
+      window.sceneEditor?.decorate(ctx, drawn.hits);
       note = `${map.id} · 형식 2 · 평면 ${plan.flat.length.toLocaleString()} · 입체 ${plan.solid.length.toLocaleString()}`;
     }
     hits = drawn.hits; objectIndex = drawn.index;
@@ -268,14 +287,26 @@
     const y = (point.clientY - rect.top) * canvas.height / rect.height;
     if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) { hovered = null; return; }
     const a = (x / 2 + left) / 16, b = (y / 2 + top) / 8;
-    const [u, v] = unrotate((a + b - 1) / 2, (b - a - 1) / 2);
-    const U = Math.floor(2 * u + .5), V = Math.floor(2 * v + .5);
+    let [u, v] = unrotate((a + b - 1) / 2, (b - a - 1) / 2);
+    let U = Math.floor(2 * u + .5), V = Math.floor(2 * v + .5), cu, cv;
+    if (map.format === 2) [U, V, cu, cv] = groundAt(x + 2 * left, y + 2 * top);
     const hit = hitObject(x, y);
-    hovered = { U, V, hit };
+    hovered = { U, V, hit, cu, cv };
     const names = [...new Set((objectIndex.get(`${U},${V}`) || []).map(item => item.side ? `${item.name}(${turnSide(item.side)})` : item.name))];
     const glyph = map.format === 2 ? map.ground[V - map.origin[1]]?.[U - map.origin[0]] : null;
     cursor.textContent = `작은 칸 (${U}, ${V})${glyph ? ` '${glyph}'` : ''} · 논리 (${u.toFixed(2)}, ${v.toFixed(2)})${hit ? ` · 그림 ${hit.name} (${hit.U}, ${hit.V})` : ''}${names.length ? ` · ${names.join(', ')}` : ''}`;
     if (!animating) { animating = true; requestAnimationFrame(pulse); }
+  }
+  // groundAt is the small tile under plan point (px, py) of a format 2 map and the map's ground point there, in small
+  // tiles (the inverse of internal/scenemap's view point): the top of a raised tile where one covers the point
+  function groundAt(px, py) {
+    const lifts = [...new Set(Object.values(rules.heights).map(h => h.lift))].sort((p, q) => q - p);
+    for (const up of [...lifts, 0]) {
+      const ru = (px / 16 + (py + up) / 8) / 2, rv = ((py + up) / 8 - px / 16) / 2;
+      const [cu, cv] = turn === 1 ? [2 - rv, ru] : turn === 2 ? [2 - ru, 2 - rv] : turn === 3 ? [rv, 2 - ru] : [ru, rv];
+      const U = Math.floor(cu), V = Math.floor(cv);
+      if (up === 0 || lift(U, V) === up) return [U, V, cu, cv];
+    }
   }
   function setZoom(next) {
     const centerX = (viewport.scrollLeft + viewport.clientWidth / 2) / zoom;
@@ -293,18 +324,39 @@
     viewport.scrollLeft = (canvas.width * zoom - viewport.clientWidth) / 2;
     viewport.scrollTop = (canvas.height * zoom - viewport.clientHeight) / 2;
   }
-  async function fetchJSON(url) {
-    const response = await fetch(url);
+  async function fetchJSON(url, body) {
+    const response = await fetch(url, body === undefined ? undefined : { method: 'POST', body });
     if (!response.ok) throw new Error(`${url}: ${(await response.text()).trim() || response.status}`);
     return response.json();
+  }
+  const planQuery = () => `turn=${turn}&decor=${decor && view !== 'diff' ? 1 : 0}`;
+  // preview draws the map being edited by the rules: the server builds its plan from the map sent. A change made
+  // while one is on its way waits for it, and only the latest is sent.
+  let previewing = null, nextPreview = null;
+  async function preview(m) {
+    map = m;
+    if (previewing) { nextPreview = m; return previewing; }
+    previewing = (async () => {
+      try {
+        plan = await fetchJSON(`/api/preview?${planQuery()}`, JSON.stringify(m));
+        render();
+      } catch (error) {
+        info.textContent = error.message;
+      }
+    })();
+    await previewing;
+    previewing = null;
+    if (nextPreview) { const n = nextPreview; nextPreview = null; await preview(n); }
   }
   // load reads the map (and for a format 2 map its plan and its comparison revision) and draws it
   async function load(id) {
     window.sceneReady = false;
-    map = await fetchJSON(`/api/map/${encodeURIComponent(id)}`);
+    const edited = window.sceneEditor?.edited(id);
+    map = edited || await fetchJSON(`/api/map/${encodeURIComponent(id)}`);
     plan = baseMap = null;
     if (map.format === 2) {
-      plan = await fetchJSON(`/api/plan/${encodeURIComponent(id)}?turn=${turn}&decor=${decor && view !== 'diff' ? 1 : 0}`);
+      plan = edited ? await fetchJSON(`/api/preview?${planQuery()}`, JSON.stringify(map))
+        : await fetchJSON(`/api/plan/${encodeURIComponent(id)}?${planQuery()}`);
       const base = await fetch(`/api/base/${encodeURIComponent(id)}`);
       baseMap = base.ok ? legacyScene.normalize(await base.json()) : null;
       if (baseMap?.format === 2) baseMap = null;
@@ -320,6 +372,7 @@
     if (showFoot) q.set('foot', 1);
     if (showOrder) q.set('order', 1);
     history.replaceState(null, '', `?${q}`);
+    window.sceneEditor?.loaded(map);
   }
   const reload = () => load(map.id).catch(error => { info.textContent = error.message; });
   for (const button of document.querySelectorAll('[data-step]')) button.addEventListener('click', () => { step = Number(button.dataset.step); reload(); });
@@ -331,7 +384,29 @@
   document.getElementById('order').addEventListener('click', () => { showOrder = !showOrder; reload(); });
   surface.addEventListener('mousemove', event => { pointer = { clientX: event.clientX, clientY: event.clientY }; updateHover(pointer); });
   surface.addEventListener('mouseleave', () => { hovered = pointer = null; cursor.textContent = '커서 좌표: —'; });
-  select.addEventListener('change', () => load(select.value).catch(error => { info.textContent = error.message; }));
+  select.addEventListener('change', () => {
+    if (window.sceneEditor?.dirty && !confirm(`${map.id}의 저장하지 않은 편집을 버릴까요?`)) { select.value = map.id; return; }
+    window.sceneEditor?.discard();
+    load(select.value).catch(error => { info.textContent = error.message; });
+  });
+  // what the editor (editor.js) reads and calls
+  window.sceneViewer = {
+    get map() { return map; },
+    get hovered() { return hovered; },
+    get rules() { return rules; },
+    get graphics() { return graphics; },
+    get turn() { return turn; },
+    spriteMeta, images,
+    surface, preview, render, reload, fetchJSON,
+    status(text) { info.textContent = text; },
+    // the canvas point of the centre of small tile (U, V), on the top of a raised tile
+    tilePoint(U, V) { const [x, y] = propPoint((U - .5) / 2, (V - .5) / 2); return [x, y - lift(U, V)]; },
+    // the window point over the centre of small tile (U, V) on its ground, for driving the page from a script
+    clientPoint(U, V) {
+      const [x, y] = propPoint((U - .5) / 2, (V - .5) / 2), r = canvas.getBoundingClientRect();
+      return [r.left + x * r.width / canvas.width, r.top + (y - lift(U, V)) * r.height / canvas.height];
+    },
+  };
   (async () => {
     const catalog = await fetchJSON('/api/catalog');
     graphics = catalog.graphics; rules = catalog.rules; scenery = catalog.scenery;

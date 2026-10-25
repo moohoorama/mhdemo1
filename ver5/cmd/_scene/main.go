@@ -1,15 +1,19 @@
-// _scene serves the game's scene maps in a common browser viewer.
+// _scene serves the game's scene maps in a common browser viewer, and edits the format 2 ones.
 // Run from ver5: go run ./cmd/_scene
 //
 // A map of the scene map format 2 is drawn from the plan the game draws from (internal/scenemap); an old map by the
 // old viewer code (static/legacy.js). For a format 2 map the viewer also draws the same map as it was at the -base
-// revision, the old way, and compares the two picture by picture.
+// revision, the old way, and compares the two picture by picture. The editor (static/editor.js) changes the map in
+// the browser and has the server draw it by the same rules (/api/preview), check it (/api/check) and write it back
+// (/api/save).
 package main
 
 import (
 	"embed"
 	"encoding/json"
 	"flag"
+	"fmt"
+	"io"
 	"io/fs"
 	"log"
 	"net/http"
@@ -142,10 +146,54 @@ func main() {
 			writeJSON(w, data)
 		}
 	})
-	// the plan of a format 2 map: ?turn=0..3&decor=1
+	// plan draws a format 2 map: ?turn=0..3&decor=1
+	plan := func(w http.ResponseWriter, r *http.Request, data []byte) {
+		m, v2, err := scenemap.Parse(data)
+		if err == nil && !v2 {
+			err = os.ErrInvalid
+		}
+		if err != nil {
+			fail(w, err, http.StatusBadRequest)
+			return
+		}
+		cat, err := scenemap.LoadCatalog(root)
+		if err != nil {
+			fail(w, err, http.StatusInternalServerError)
+			return
+		}
+		turn, _ := strconv.Atoi(r.URL.Query().Get("turn"))
+		p, err := scenemap.Build(m, cat, scenemap.Options{Turn: turn, Decor: r.URL.Query().Get("decor") == "1"})
+		if err != nil {
+			fail(w, err, http.StatusBadRequest)
+			return
+		}
+		out, err := json.Marshal(p)
+		if err != nil {
+			fail(w, err, http.StatusInternalServerError)
+			return
+		}
+		writeJSON(w, out)
+	}
 	mux.HandleFunc("/api/plan/", func(w http.ResponseWriter, r *http.Request) {
-		data, _, ok := readMap(w, r, "/api/plan/")
-		if !ok {
+		if data, _, ok := readMap(w, r, "/api/plan/"); ok {
+			plan(w, r, data)
+		}
+	})
+	// the plan of a map being edited, sent in the body
+	mux.HandleFunc("POST /api/preview", func(w http.ResponseWriter, r *http.Request) {
+		data, err := io.ReadAll(r.Body)
+		if err != nil {
+			fail(w, err, http.StatusBadRequest)
+			return
+		}
+		plan(w, r, data)
+	})
+	// check is what the editor marks on a map being edited: Check's problems, and the small tiles a person can walk
+	// as a row of '1' and '0' per grid row
+	mux.HandleFunc("POST /api/check", func(w http.ResponseWriter, r *http.Request) {
+		data, err := io.ReadAll(r.Body)
+		if err != nil {
+			fail(w, err, http.StatusBadRequest)
 			return
 		}
 		m, v2, err := scenemap.Parse(data)
@@ -161,18 +209,77 @@ func main() {
 			fail(w, err, http.StatusInternalServerError)
 			return
 		}
-		turn, _ := strconv.Atoi(r.URL.Query().Get("turn"))
-		plan, err := scenemap.Build(m, cat, scenemap.Options{Turn: turn, Decor: r.URL.Query().Get("decor") == "1"})
-		if err != nil {
-			fail(w, err, http.StatusBadRequest)
-			return
+		walk := scenemap.Walkable(m, cat)
+		rows := make([]string, walk.H)
+		for y := range rows {
+			row := make([]byte, walk.W)
+			for x := range row {
+				row[x] = '0'
+				if walk.Open(x+walk.Origin[0], y+walk.Origin[1]) {
+					row[x] = '1'
+				}
+			}
+			rows[y] = string(row)
 		}
-		out, err := json.Marshal(plan)
+		problems := scenemap.Check(m, cat)
+		if problems == nil {
+			problems = []scenemap.Problem{}
+		}
+		out, err := json.Marshal(struct {
+			Problems []scenemap.Problem `json:"problems"`
+			Walk     []string           `json:"walk"`
+		}{problems, rows})
 		if err != nil {
 			fail(w, err, http.StatusInternalServerError)
 			return
 		}
 		writeJSON(w, out)
+	})
+	// save writes an edited format 2 map over its file, once it parses and builds, laid out as the map files are
+	mux.HandleFunc("POST /api/save/", func(w http.ResponseWriter, r *http.Request) {
+		files, _, err := mapFiles()
+		if err != nil {
+			fail(w, err, http.StatusInternalServerError)
+			return
+		}
+		id := strings.TrimPrefix(r.URL.Path, "/api/save/")
+		path, ok := files[id]
+		if !ok {
+			http.NotFound(w, r)
+			return
+		}
+		data, err := io.ReadAll(r.Body)
+		if err != nil {
+			fail(w, err, http.StatusBadRequest)
+			return
+		}
+		m, v2, err := scenemap.Parse(data)
+		if err == nil && (!v2 || m.ID != id) {
+			err = fmt.Errorf("%s: not a format 2 map of this id", id)
+		}
+		if err != nil {
+			fail(w, err, http.StatusBadRequest)
+			return
+		}
+		cat, err := scenemap.LoadCatalog(root)
+		if err != nil {
+			fail(w, err, http.StatusInternalServerError)
+			return
+		}
+		if _, err := scenemap.Build(m, cat, scenemap.Options{}); err != nil {
+			fail(w, err, http.StatusBadRequest)
+			return
+		}
+		out, err := m.Encode()
+		if err == nil {
+			err = os.WriteFile(path, out, 0o644)
+		}
+		if err != nil {
+			fail(w, err, http.StatusInternalServerError)
+			return
+		}
+		log.Printf("저장: %s", path)
+		w.WriteHeader(http.StatusNoContent)
 	})
 	// the map as it was at the -base revision
 	mux.HandleFunc("/api/base/", func(w http.ResponseWriter, r *http.Request) {

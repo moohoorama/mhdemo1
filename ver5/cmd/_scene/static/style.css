@@ -16,3 +16,18 @@ canvas { display: block; image-rendering: pixelated; }
 #hover { position: absolute; inset: 0; pointer-events: none; }
 footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 9px 12px; background: #262e2b; font-size: .88rem; }
 button:disabled { opacity: .45; cursor: default; }
+.toolbar.edit { align-items: center; border-top: 1px solid #3a4540; }
+#palette button { display: flex; align-items: center; gap: 6px; }
+#palette i { width: 12px; height: 12px; border-radius: 2px; border: 1px solid #0006; }
+#editstate { color: #bfc8b7; font-size: .88rem; }
+[hidden] { display: none !important; }
+#inspector { align-items: center; gap: 8px; }
+#inspector input { width: 64px; padding: 5px; color: inherit; background: #293332; border: 1px solid #62726a; border-radius: 4px; }
+.shelf { display: grid; gap: 8px; padding: 10px; background: #222927; border-top: 1px solid #3a4540; }
+.shelf .group { flex-wrap: wrap; }
+#shelfsearch { max-width: 260px; padding: 6px 8px; color: inherit; background: #293332; border: 1px solid #62726a; border-radius: 4px; }
+#shelfitems { display: flex; flex-wrap: wrap; gap: 6px; max-height: 200px; overflow-y: auto; }
+#shelfitems button { display: grid; justify-items: center; gap: 2px; width: 84px; padding: 4px; font-size: .7rem; }
+#shelfitems button span { max-width: 76px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#shelfitems canvas { image-rendering: pixelated; }
+.problems { margin: 0; padding: 8px 12px 8px 30px; background: #2b2322; color: #f0c8c0; font-size: .85rem; border-top: 1px solid #3a4540; max-height: 120px; overflow-y: auto; }

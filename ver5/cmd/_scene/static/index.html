@@ -5,7 +5,7 @@
 <title>장면 맵</title>
 <link rel="stylesheet" href="/style.css">
 <header>
-  <div><h1>장면 맵</h1><p>게임 장면의 바닥·장식·소품·벽면을 게임과 같은 규칙으로 그립니다. 형식 2 맵은 기존 데이터와 픽셀로 비교합니다.</p></div>
+  <div><h1>장면 맵</h1><p>게임 장면의 바닥·장식·소품·벽면을 게임과 같은 규칙으로 그립니다. 형식 2 맵은 기존 데이터와 픽셀로 비교하고, 바닥·높이를 칠하고 물체를 놓아 저장할 수 있습니다(왼쪽 클릭·끌기: 칠하기·놓기·옮기기, 오른쪽 클릭: 그 값 집기, 물체를 고르고 화살표·Delete; 성벽: 끌어서 줄 긋기, 오른쪽 끌기로 지우기; 성문: 성벽 위 클릭으로 놓기·열림/닫힘 바꾸기, 오른쪽 클릭으로 지우기).</p></div>
   <label>장면 <select id="scene"></select></label>
 </header>
 <main>
@@ -16,9 +16,27 @@
     <div class="group" aria-label="배율"><button data-zoom="1" aria-pressed="true">×1</button><button data-zoom="2">×2</button><button data-zoom="4">×4</button><button data-zoom="8">×8</button></div>
     <div class="group" aria-label="회전"><button data-turn="0" aria-pressed="true">0°</button><button data-turn="1">90°</button><button data-turn="2">180°</button><button data-turn="3">270°</button></div>
   </section>
+  <section class="toolbar edit" id="editbar" hidden>
+    <div class="group" aria-label="편집"><button data-mode="view" aria-pressed="true">보기</button><button data-mode="ground">바닥</button><button data-mode="height">높이</button><button data-mode="object">물체</button><button data-mode="wall">성벽</button><button data-mode="gate">성문</button></div>
+    <div class="group" id="palette" aria-label="붓"></div>
+    <div class="group" id="sizes" aria-label="붓 크기"><button data-size="1" aria-pressed="true">1</button><button data-size="2">2</button><button data-size="4">4</button></div>
+    <div class="group"><button id="grid">격자</button><button id="check" title="걷는 칸(초록)과 문제(빨강)를 표시">검사</button><button id="snap" title="끄면 커서 자리 그대로(칸 중심에서 dx, dy) 놓는다">칸에 맞춤</button></div>
+    <div class="group"><button id="undo" title="Ctrl/Cmd+Z">되돌리기</button><button id="redo" title="Ctrl/Cmd+Shift+Z">다시</button><button id="save" title="Ctrl/Cmd+S">저장</button></div>
+    <span id="editstate"></span>
+    <div class="group" id="inspector" hidden><b id="objname"></b>
+      <label>U <input id="obju" type="number"></label><label>V <input id="objv" type="number"></label>
+      <label>dx <input id="objdx" type="number"></label><label>dy <input id="objdy" type="number"></label>
+      <button id="objswap" title="고른 그림으로 바꾸기">그림 바꾸기</button><button id="objdelete" title="Delete">지우기</button></div>
+  </section>
+  <ul class="problems" id="problems" hidden></ul>
+  <section class="shelf" id="shelf" hidden>
+    <div class="group" id="shelftabs"></div><input id="shelfsearch" type="search" placeholder="이름 찾기">
+    <div id="shelfitems"></div>
+  </section>
   <section id="viewport" aria-label="장면 맵 그림"><div id="surface"><canvas id="map"></canvas><canvas id="hover"></canvas></div></section>
   <footer><span id="info">불러오는 중…</span><span id="cursor">커서 좌표: —</span></footer>
 </main>
 <script src="/legacy.js" defer></script>
 <script src="/viewer.js" defer></script>
+<script src="/editor.js" defer></script>
 </html>

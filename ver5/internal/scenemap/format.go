@@ -8,6 +8,7 @@
 package scenemap
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -72,6 +73,73 @@ func Parse(data []byte) (m *Map, ok bool, err error) {
 		return nil, true, fmt.Errorf("%s: height grid does not match the ground", m.ID)
 	}
 	return m, true, nil
+}
+
+// Encode writes the map as the map files are laid out: one key per line, a grid row, an object or a wall line per
+// line, numbers packed.
+func (m *Map) Encode() ([]byte, error) {
+	var b bytes.Buffer
+	value := func(v any) error {
+		var e bytes.Buffer
+		enc := json.NewEncoder(&e)
+		enc.SetEscapeHTML(false)
+		if err := enc.Encode(v); err != nil {
+			return err
+		}
+		b.Write(bytes.TrimSuffix(e.Bytes(), []byte("\n")))
+		return nil
+	}
+	list := func(key string, n int, item func(int) any, last bool) error {
+		fmt.Fprintf(&b, " %q: [", key)
+		for i := range n {
+			b.WriteString("\n  ")
+			if err := value(item(i)); err != nil {
+				return err
+			}
+			if i < n-1 {
+				b.WriteByte(',')
+			}
+		}
+		if n > 0 {
+			b.WriteString("\n ")
+		}
+		b.WriteString("]")
+		if !last {
+			b.WriteByte(',')
+		}
+		b.WriteByte('\n')
+		return nil
+	}
+	b.WriteString("{\n")
+	for _, f := range []struct {
+		key string
+		v   any
+	}{{"id", m.ID}, {"name", m.Name}, {"format", m.Format}, {"size", m.Size}, {"origin", m.Origin}} {
+		fmt.Fprintf(&b, " %q: ", f.key)
+		if err := value(f.v); err != nil {
+			return nil, err
+		}
+		b.WriteString(",\n")
+	}
+	rows := func(r []string) func(int) any { return func(i int) any { return r[i] } }
+	if err := list("ground", len(m.Ground), rows(m.Ground), false); err != nil {
+		return nil, err
+	}
+	if len(m.Height) > 0 {
+		if err := list("height", len(m.Height), rows(m.Height), false); err != nil {
+			return nil, err
+		}
+	}
+	if err := list("objects", len(m.Objects), func(i int) any { return m.Objects[i] }, len(m.Walls) == 0); err != nil {
+		return nil, err
+	}
+	if len(m.Walls) > 0 {
+		if err := list("walls", len(m.Walls), func(i int) any { return m.Walls[i] }, true); err != nil {
+			return nil, err
+		}
+	}
+	b.WriteString("}\n")
+	return b.Bytes(), nil
 }
 
 // W and H are the grid's size in small tiles.

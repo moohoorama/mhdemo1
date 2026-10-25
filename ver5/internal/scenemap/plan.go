@@ -21,6 +21,8 @@ type Draw struct {
 	Y     int      `json:"y"`
 	Color string   `json:"c,omitempty"`
 	Lines [][4]int `json:"l,omitempty"` // x0, y0, x1, y1 of each segment, stroked 1 px wide
+	// Object is 1 + the index in the map's objects of the object this draws, 0 for none (for the editor to pick it).
+	Object int `json:"o,omitempty"`
 }
 
 // Kinds of Draw.
@@ -526,7 +528,7 @@ func (w *view) objects() (pieces []Piece, flat []Draw, err error) {
 		y float64
 	}
 	var flats []flatDraw
-	for _, ob := range w.m.Objects {
+	for i, ob := range w.m.Objects {
 		if w.c.isGate(ob.Name) {
 			continue // set into its wall by walls
 		}
@@ -542,7 +544,7 @@ func (w *view) objects() (pieces []Piece, flat []Draw, err error) {
 		if err != nil {
 			return nil, nil, err
 		}
-		d := Draw{Kind: DrawSprite, Name: ob.Name, X: round(x - float64(s.Pivot[0])), Y: round(y - float64(s.Pivot[1]) - float64(lift))}
+		d := Draw{Kind: DrawSprite, Name: ob.Name, X: round(x - float64(s.Pivot[0])), Y: round(y - float64(s.Pivot[1]) - float64(lift)), Object: i + 1}
 		if s.Ground {
 			flats = append(flats, flatDraw{d, y})
 			continue
