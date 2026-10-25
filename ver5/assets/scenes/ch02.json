@@ -523,41 +523,54 @@
     ]
    }
   },
-  "c02-dawn": {
+  "c02-night": {
    "Map": "S_army_camp",
-   "Time": "dawn",
+   "Time": "night",
    "Backdrop": "mountains",
    "Nodes": [
-    "c02-dawn",
-    "c02-09",
-    "c02-10",
-    "c02-11",
-    "c02-12",
-    "c02-17",
-    "c02-18",
-    "c02-19",
-    "c02-end"
+    "c02-night",
+    "c02-n1",
+    "c02-n2",
+    "c02-n3",
+    "c02-n4",
+    "c02-n5",
+    "c02-n6",
+    "c02-n7"
    ],
    "Ambient": [
     {
-     "Effect": "smoke",
+     "Effect": "bigfire",
      "At": [
-      -1.5,
-      4.0
+      -2.4,
+      9.0
+     ]
+    },
+    {
+     "Effect": "bigfire",
+     "At": [
+      -1.8,
+      10.6
      ]
     },
     {
      "Effect": "smoke",
      "At": [
-      6.5,
-      -1.0
+      -1.0,
+      8.5
      ]
     },
     {
      "Effect": "smoke",
      "At": [
       0.0,
-      -2.5
+      9.5
+     ]
+    },
+    {
+     "Effect": "smoke",
+     "At": [
+      -1.6,
+      7.2
      ]
     }
    ],
@@ -565,241 +578,682 @@
     "유비": {
      "At": [
       2.5,
-      2.8
+      2.6
      ],
-     "Face": "NE"
+     "Face": "SE"
     },
     "관우": {
      "At": [
-      1.9,
-      3.7
+      1.4,
+      3.6
      ],
-     "Face": "NE"
+     "Face": "SE"
     },
     "장비": {
      "At": [
-      3.2,
-      3.7
+      3.6,
+      3.6
      ],
-     "Face": "NE"
+     "Face": "SW"
     },
-    "조조": {
+    "서복": {
      "At": [
       2.5,
-      -2.5
-     ],
-     "Face": "SW",
-     "Off": true,
-     "Sprite": "caocao"
-    },
-    "하후돈": {
-     "At": [
-      2.5,
-      -3.5
-     ],
-     "Face": "SW",
-     "Off": true,
-     "Sprite": "light_cavalry"
-    },
-    "하후연": {
-     "At": [
-      2.5,
-      -4.5
-     ],
-     "Face": "SW",
-     "Off": true,
-     "Sprite": "light_cavalry"
-    },
-    "손견": {
-     "At": [
-      7.5,
-      3.2
-     ],
-     "Face": "NW",
-     "Off": true
-    },
-    "황개": {
-     "At": [
-      8.3,
-      2.3
-     ],
-     "Face": "NW",
-     "Off": true
-    },
-    "황보숭": {
-     "At": [
-      2.5,
-      8.0
+      23.0
      ],
      "Face": "NE",
-     "Off": true,
-     "Sprite": "light_cavalry"
+     "Off": true
+    },
+    "의병#1": {
+     "At": [
+      0.6,
+      3.0
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    },
+    "의병#2": {
+     "At": [
+      4.6,
+      2.8
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    },
+    "의병#3": {
+     "At": [
+      0.4,
+      4.6
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
     }
    },
    "Beats": {
-    "c02-09": [
+    "c02-n2": [
      [
       [
-       {
-        "Actor": "조조",
-        "Enter": [
-         2.5,
-         -2.5
-        ],
-        "Move": [
-         2.5,
-         1.4
-        ],
-        "Speed": 1.4
-       },
-       {
-        "Actor": "하후돈",
-        "Enter": [
-         2.5,
-         -3.5
-        ],
-        "Move": [
-         3.5,
-         0.9
-        ],
-        "Speed": 1.4,
-        "After": 0.4
-       },
-       {
-        "Actor": "하후연",
-        "Enter": [
-         2.5,
-         -4.5
-        ],
-        "Move": [
-         1.5,
-         0.9
-        ],
-        "Speed": 1.4,
-        "After": 0.8
-       }
-      ]
-     ]
-    ],
-    "c02-10": [
-     [
-      [
-       {
-        "Actor": "장비",
-        "Look": "NW"
-       }
-      ]
-     ]
-    ],
-    "c02-11": [
-     [
-      [
-       {
-        "Actor": "조조",
-        "Sprite": "caocao_noncombat"
-       },
-       {
-        "Actor": "하후돈",
-        "Sprite": "infantry_noncombat"
-       },
-       {
-        "Actor": "하후연",
-        "Sprite": "infantry_noncombat"
-       }
-      ]
-     ]
-    ],
-    "c02-12": [
-     [
-      [
-       {
-        "Actor": "손견",
-        "Enter": [
-         7.5,
-         3.2
-        ],
-        "Move": [
-         5.4,
-         3.2
-        ]
-       },
-       {
-        "Actor": "황개",
-        "Enter": [
-         8.3,
-         2.3
-        ],
-        "Move": [
-         5.7,
-         2.0
-        ],
-        "After": 0.3
-       }
-      ],
-      [
-       {
-        "Actor": "손견",
-        "Face": "NW",
-        "Say": "남쪽의 불, 잘 보았소."
-       }
-      ],
-      [
-       {
-        "Actor": "유비",
-        "Face": "SE",
-        "Play": "action"
-       }
-      ]
-     ]
-    ],
-    "c02-17": [
-     [
-      [
-       {
-        "Actor": "황보숭",
-        "Enter": [
-         2.5,
-         8.0
-        ],
-        "Move": [
-         2.5,
-         4.7
-        ],
-        "Speed": 1.5
-       }
-      ],
-      [
-       {
-        "Actor": "황보숭",
-        "Sprite": "light_infantry"
-       },
-       {
-        "Actor": "유비",
-        "Face": "SW"
-       },
        {
         "Actor": "관우",
         "Face": "SW"
        },
        {
-        "Actor": "장비",
-        "Face": "SW"
+        "CamAt": [
+         2.4,
+         3.6
+        ]
        }
       ]
      ]
     ],
-    "c02-19": [
+    "c02-n3": [
+     [
+      [
+       {
+        "Actor": "서복",
+        "Enter": [
+         2.5,
+         23.0
+        ],
+        "Move": [
+         2.5,
+         4.8
+        ],
+        "Speed": 2
+       },
+       {
+        "Actor": "유비",
+        "Face": "SW",
+        "After": 1.2
+       },
+       {
+        "Actor": "장비",
+        "Face": "SW",
+        "After": 1.2
+       },
+       {
+        "Actor": "의병#3",
+        "Emote": "!",
+        "After": 1.2
+       }
+      ]
+     ]
+    ],
+    "c02-n4": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Move": [
+         2.5,
+         3.6
+        ]
+       }
+      ]
+     ]
+    ],
+    "c02-n6": [
+     [
+      [
+       {
+        "Actor": "장비",
+        "Move": [
+         3.6,
+         23.0
+        ],
+        "Speed": 2.2,
+        "Exit": true
+       },
+       {
+        "Actor": "관우",
+        "Move": [
+         1.4,
+         23.0
+        ],
+        "Speed": 2,
+        "Exit": true,
+        "After": 0.6
+       }
+      ]
+     ]
+    ],
+    "c02-n7": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Move": [
+         2.5,
+         23.0
+        ],
+        "Speed": 2,
+        "Exit": true
+       },
+       {
+        "Actor": "서복",
+        "Move": [
+         2.9,
+         23.0
+        ],
+        "Speed": 2,
+        "Exit": true,
+        "After": 0.2
+       },
+       {
+        "Actor": "의병#1",
+        "Move": [
+         0.6,
+         23.0
+        ],
+        "Speed": 1.8,
+        "Exit": true,
+        "After": 0.6
+       },
+       {
+        "Actor": "의병#3",
+        "Move": [
+         0.4,
+         23.0
+        ],
+        "Speed": 1.8,
+        "Exit": true,
+        "After": 0.9
+       },
+       {
+        "Actor": "의병#2",
+        "Move": [
+         4.6,
+         23.0
+        ],
+        "Speed": 1.8,
+        "Exit": true,
+        "After": 1.2
+       }
+      ]
+     ]
+    ]
+   }
+  },
+  "c02-gate": {
+   "Map": "S_castle_out_open",
+   "Time": "night",
+   "Nodes": [
+    "c02-gate",
+    "c02-g1",
+    "c02-g2",
+    "c02-g3",
+    "c02-g4",
+    "c02-g5",
+    "c02-g6",
+    "c02-g7",
+    "c02-g8"
+   ],
+   "Ambient": [
+    {
+     "Effect": "smallfire",
+     "At": [
+      1.6,
+      3.4
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      4.2,
+      2.9
+     ]
+    },
+    {
+     "Effect": "smoke",
+     "At": [
+      5.5,
+      -1.5
+     ]
+    }
+   ],
+   "Cast": {
+    "손견": {
+     "At": [
+      2.0,
+      4.2
+     ],
+     "Face": "NE"
+    },
+    "황개": {
+     "At": [
+      1.2,
+      4.9
+     ],
+     "Face": "NE"
+    },
+    "조조": {
+     "At": [
+      4.0,
+      4.2
+     ],
+     "Face": "NW"
+    },
+    "하후돈": {
+     "At": [
+      4.8,
+      4.9
+     ],
+     "Face": "NW",
+     "Sprite": "infantry_noncombat"
+    },
+    "황보숭": {
+     "At": [
+      3.0,
+      0.4
+     ],
+     "Face": "SW",
+     "Off": true,
+     "Sprite": "light_cavalry"
+    }
+   },
+   "Beats": {
+    "c02-g1": [
      [
       [
        {
         "Actor": "황보숭",
+        "Enter": [
+         3.0,
+         0.4
+        ],
+        "Move": [
+         3.0,
+         3.3
+        ],
+        "Speed": 0.8
+       }
+      ],
+      [
+       {
+        "Actor": "손견",
         "Play": "action"
+       },
+       {
+        "Actor": "조조",
+        "Play": "action",
+        "After": 0.3
+       },
+       {
+        "Actor": "황개",
+        "Play": "action",
+        "After": 0.2
+       },
+       {
+        "Actor": "하후돈",
+        "Play": "action",
+        "After": 0.5
+       }
+      ]
+     ]
+    ],
+    "c02-g6": [
+     [
+      [
+       {
+        "Actor": "손견",
+        "Look": "SE"
+       }
+      ]
+     ]
+    ],
+    "c02-g8": [
+     [
+      [
+       {
+        "Actor": "조조",
+        "Move": [
+         3.7,
+         4.1
+        ]
+       }
+      ],
+      [
+       {
+        "Actor": "황보숭",
+        "Play": "action"
+       },
+       {
+        "Actor": "조조",
+        "Play": "action",
+        "After": 0.4
+       }
+      ]
+     ]
+    ]
+   }
+  },
+  "c02-camp-empty": {
+   "Map": "S_army_camp",
+   "Time": "night",
+   "Backdrop": "mountains",
+   "Nodes": [
+    "c02-camp-empty",
+    "c02-e1",
+    "c02-e2",
+    "c02-e3",
+    "c02-e4",
+    "c02-e5",
+    "c02-e6",
+    "c02-e7",
+    "c02-e8",
+    "c02-e9",
+    "c02-end"
+   ],
+   "Ambient": [
+    {
+     "Effect": "bigfire",
+     "At": [
+      -2.4,
+      9.0
+     ]
+    },
+    {
+     "Effect": "bigfire",
+     "At": [
+      -1.8,
+      10.6
+     ]
+    },
+    {
+     "Effect": "smoke",
+     "At": [
+      -1.0,
+      8.5
+     ]
+    },
+    {
+     "Effect": "smoke",
+     "At": [
+      0.0,
+      9.5
+     ]
+    },
+    {
+     "Effect": "smoke",
+     "At": [
+      -1.6,
+      7.2
+     ]
+    }
+   ],
+   "Cast": {
+    "조조": {
+     "At": [
+      2.5,
+      -18.0
+     ],
+     "Face": "SW",
+     "Off": true
+    },
+    "하후돈": {
+     "At": [
+      2.5,
+      -19.0
+     ],
+     "Face": "SW",
+     "Off": true,
+     "Sprite": "infantry_noncombat"
+    },
+    "병사": {
+     "At": [
+      2.5,
+      3.0
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    },
+    "병사#2": {
+     "At": [
+      3.6,
+      3.7
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    },
+    "장비": {
+     "At": [
+      -3.0,
+      9.0
+     ],
+     "Face": "NE",
+     "Off": true
+    },
+    "관우": {
+     "At": [
+      -2.0,
+      10.5
+     ],
+     "Face": "NE",
+     "Off": true
+    },
+    "유비": {
+     "At": [
+      -1.5,
+      12.0
+     ],
+     "Face": "NE",
+     "Off": true
+    },
+    "의병#1": {
+     "At": [
+      -5.0,
+      9.0
+     ],
+     "Face": "NE",
+     "Off": true,
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    }
+   },
+   "Beats": {
+    "c02-e1": [
+     [
+      [
+       {
+        "CamAt": [
+         2.6,
+         2.4
+        ]
+       },
+       {
+        "Actor": "조조",
+        "Enter": [
+         2.5,
+         -18.0
+        ],
+        "Move": [
+         2.5,
+         1.7
+        ],
+        "Speed": 1.8
+       },
+       {
+        "Actor": "하후돈",
+        "Enter": [
+         2.5,
+         -19.0
+        ],
+        "Move": [
+         3.6,
+         1.0
+        ],
+        "After": 0.4,
+        "Speed": 1.8
+       }
+      ]
+     ]
+    ],
+    "c02-e3": [
+     [
+      [
+       {
+        "Actor": "병사",
+        "Play": "action"
+       }
+      ]
+     ]
+    ],
+    "c02-e4": [
+     [
+      [
+       {
+        "Actor": "장비",
+        "Enter": [
+         -3.0,
+         9.0
+        ]
+       },
+       {
+        "Actor": "관우",
+        "Enter": [
+         -2.0,
+         10.5
+        ]
+       },
+       {
+        "Actor": "유비",
+        "Enter": [
+         -1.5,
+         12.0
+        ]
+       },
+       {
+        "Actor": "의병#1",
+        "Enter": [
+         -5.0,
+         9.0
+        ]
+       }
+      ],
+      [
+       {
+        "Actor": "조조",
+        "Face": "SW"
+       },
+       {
+        "Actor": "하후돈",
+        "Face": "SW"
+       },
+       {
+        "Wait": 0.8
+       }
+      ],
+      [
+       {
+        "Actor": "의병#1",
+        "Chatter": "물!|이쪽이다!|불이 옮겨 붙는다!"
+       }
+      ],
+      [
+       {
+        "Actor": "장비",
+        "Say": "물! 물 더 가져와!"
+       }
+      ],
+      [
+       {
+        "Actor": "관우",
+        "Say": "지붕을 끌어내려라. 옆집으로 번진다."
        }
       ],
       [
        {
         "Actor": "유비",
+        "Say": "어머님은 어느 집이오?!"
+       }
+      ]
+     ]
+    ],
+    "c02-e5": [
+     [
+      [
+       {
+        "Actor": "조조",
+        "Emote": "…"
+       }
+      ]
+     ]
+    ],
+    "c02-e6": [
+     [
+      [
+       {
+        "Actor": "의병#1",
+        "Chatter": "-"
+       },
+       {
+        "Actor": "조조",
+        "Face": "SE",
+        "Move": [
+         2.6,
+         2.0
+        ]
+       }
+      ],
+      [
+       {
+        "Actor": "조조",
+        "Face": "SW"
+       },
+       {
+        "Actor": "병사",
+        "Face": "NE"
+       }
+      ],
+      [
+       {
+        "Actor": "조조",
         "Play": "action"
+       },
+       {
+        "Actor": "병사",
+        "Play": "action",
+        "After": 0.5
+       }
+      ]
+     ]
+    ],
+    "c02-e8": [
+     [
+      [
+       {
+        "Actor": "하후돈",
+        "Look": "SW"
+       }
+      ]
+     ]
+    ],
+    "c02-end": [
+     [
+      [
+       {
+        "Actor": "조조",
+        "Move": [
+         2.5,
+         -18.0
+        ],
+        "Exit": true,
+        "Speed": 1.6
+       },
+       {
+        "Actor": "하후돈",
+        "Move": [
+         3.3,
+         -18.5
+        ],
+        "Exit": true,
+        "After": 0.5,
+        "Speed": 1.6
        }
       ]
      ]

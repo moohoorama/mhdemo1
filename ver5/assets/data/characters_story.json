@@ -360,7 +360,8 @@
      "horseSkin": "#202026",
      "saddle": "#d03030",
      "iron": "#e0c060"
-    }
+    },
+    "Portrait": "xiahoudun"
    }
   },
   "xiahouyuan": {
@@ -389,7 +390,8 @@
      "horseSkin": "#b0502a",
      "saddle": "#3a6fd0",
      "iron": "#e0c060"
-    }
+    },
+    "Portrait": "xiahouyuan"
    }
   },
   "caoren": {
@@ -778,6 +780,29 @@
    "Look": {
     "Faction": "shu",
     "Scene": "commoner_man"
+   }
+  },
+  "xufu": {
+   "Name": "서복",
+   "Biography": "영천의 젊은 협객. 성 안 민가에 불이 번지자 어머니를 찾아 의병 대장 유비에게 도움을 청한다. 훗날의 서서.",
+   "Class": "light_infantry",
+   "Stats": [
+    40,
+    50,
+    70,
+    50,
+    50,
+    60
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "infantry_noncombat"
    }
   },
   "scout": {

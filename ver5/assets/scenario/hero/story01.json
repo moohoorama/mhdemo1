@@ -29,12 +29,6 @@
    "Text": "고기 먹은 값 할 때가 왔구먼!"
   },
   {
-   "ID": "c01-s4",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "쫓는 데 정신이 팔린 놈들은 등이 비는 법이오."
-  },
-  {
    "ID": "c01-s5",
    "Kind": "say",
    "Speaker": "liubei",

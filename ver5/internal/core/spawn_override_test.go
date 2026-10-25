@@ -42,7 +42,7 @@ func TestEditedBattleSaveRestore(t *testing.T) {
 	hp, mp := 17, 0
 	traits := []string{}
 	eq := []string{}
-	d.Stages[0].Enemies = append(d.Stages[0].Enemies, content.Spawn{Character: "troop_footman", Class: "guards", Level: 1, X: 9, Y: 4, Facing: "NE", HP: &hp, MP: &mp, Traits: &traits, Equipment: &eq})
+	d.Stages[0].Enemies = append(d.Stages[0].Enemies, content.Spawn{Character: "troop_footman", Class: "guards", Level: 1, X: 12, Y: 2, Facing: "NE", HP: &hp, MP: &mp, Traits: &traits, Equipment: &eq})
 	e := New(d, 1)
 	for n := 0; e.Observe().Phase != "battle"; n++ {
 		if n > 100 {

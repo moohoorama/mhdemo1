@@ -218,11 +218,14 @@ func (g *Game) updateScene(dt float64) {
 			if pt := s.patrol[key]; pt != nil {
 				s.paths[key] = scenePath(v.u, v.v, pt.ends[pt.next][0], pt.ends[pt.next][1])
 				pt.next = 1 - pt.next
-			} else if v.anim == "walk" {
+			} else if v.anim == "walk" && v.leave == nil {
 				v.play(v.rest())
 			}
-			if s.exits[key] {
-				v.gone, s.exits[key] = true, false
+			if s.exits[key] { // walks on past the end of its path and fades out, like a unit leaving a battle
+				s.exits[key] = false
+				d := sceneStep[v.dir]
+				v.play("walk")
+				v.leave = &walkState{fu: v.u, fv: v.v, tu: v.u + d[0]*leaveCells, tv: v.v + d[1]*leaveCells}
 			}
 			delete(s.speed, key)
 		}
@@ -376,8 +379,8 @@ func (g *Game) stageStep(st scenes.Step) {
 	if st.Effect != "" && g.field != nil {
 		g.field.night.fires = g.field.night.fires[:0]
 		for _, e := range s.effects {
-			if e.kind == "fire" || e.kind == "smallfire" {
-				g.field.night.fires = append(g.field.night.fires, [2]float64{e.u, e.v})
+			if e.kind == "fire" || e.kind == "smallfire" || e.kind == "bigfire" {
+				g.field.night.fires = append(g.field.night.fires, nightFire{e.u, e.v, e.kind == "bigfire"})
 			}
 		}
 	}
@@ -420,11 +423,15 @@ func (g *Game) stageStep(st scenes.Step) {
 	}
 }
 
+// sceneStep is the map step of a facing, for an actor walking on past the end of its path.
+var sceneStep = map[string][2]float64{"SE": {1, 0}, "SW": {0, 1}, "NW": {-1, 0}, "NE": {0, -1},
+	"E": {.7, -.7}, "S": {.7, .7}, "W": {-.7, .7}, "N": {-.7, -.7}}
+
 // walkStep puts an entering actor on the stage and sends it along its walk.
 func (g *Game) walkStep(v *unitVis, st scenes.Step) {
 	s := g.scene
 	if len(st.Enter) == 2 {
-		v.u, v.v, v.gone, v.walk = st.Enter[0], st.Enter[1], false, nil
+		v.u, v.v, v.gone, v.walk, v.leave, v.arriving = st.Enter[0], st.Enter[1], false, nil, nil, leaveTime
 		v.lift = g.field.Lift(int(v.u), int(v.v))
 	}
 	if len(st.Move) == 2 {
@@ -450,7 +457,7 @@ func (g *Game) settleNode(node string) {
 					continue
 				}
 				if len(st.Enter) == 2 {
-					v.u, v.v, v.gone = st.Enter[0], st.Enter[1], false
+					v.u, v.v, v.gone, v.leave, v.arriving = st.Enter[0], st.Enter[1], false, nil, 0
 				}
 				if len(st.Move) == 2 {
 					v.u, v.v = st.Move[0], st.Move[1]
@@ -530,10 +537,10 @@ func (g *Game) skipBeats() {
 			} else if v.walk != nil {
 				v.u, v.v = v.walk.tu, v.walk.tv
 			}
-			if s.exits[key] {
+			if s.exits[key] || v.leave != nil {
 				v.gone = true
 			}
-			v.walk, v.lift = nil, g.field.Lift(int(v.u), int(v.v))
+			v.walk, v.arriving, v.lift = nil, 0, g.field.Lift(int(v.u), int(v.v))
 			v.play(v.rest())
 		}
 		for k, e := range s.emotes {
@@ -682,8 +689,16 @@ func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) 
 	}
 	x, y := g.field.Center(v.u, v.v)
 	sx, sy := worldToUI(g.toScreen(x, y-v.lift-v.top))
-	_, h := g.assets.Bubble.Size("", mark)
-	g.assets.Bubble.DrawText(dst, "", mark, duelview.Tail{}, sx-28, sy-h, drawPx)
+	w, h := g.assets.Bubble.Size("", mark)
+	// a speaker off the screen talks from its edge, the tail turned toward where they stand
+	const margin = 12.0
+	bx := max(margin, min(float64(uiW)-margin-w, sx-28))
+	by := max(margin, min(dialogueBox().top-margin-h, sy-h))
+	tail := duelview.Tail{Up: by > sy}
+	if bx != sx-28 {
+		tail.X = sx - bx
+	}
+	g.assets.Bubble.DrawText(dst, "", mark, tail, bx, by, drawPx)
 }
 
 var petalColors = []color.NRGBA{{R: 242, G: 167, B: 184, A: 255}, {R: 255, G: 214, B: 222, A: 255}, {R: 215, G: 119, B: 144, A: 255}}
@@ -708,6 +723,11 @@ func (g *Game) drawSceneEffects(dst *ebiten.Image) {
 			g.flames(dst, x, y, e.t, true)
 		case "smallfire":
 			g.flames(dst, x, y, e.t, false)
+		case "bigfire":
+			g.flames(dst, x-12, y-4, e.t, true)
+			g.flames(dst, x+12, y+2, e.t+.4, true)
+			g.flames(dst, x, y+8, e.t+.8, true)
+			g.smoke(dst, x, y-10, e.t, 3, 1)
 		case "smoke":
 			g.smoke(dst, x, y, e.t, 3, 1)
 		case "steam":

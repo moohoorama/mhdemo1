@@ -210,6 +210,11 @@ def build(scene, state, map_id, name, props_known, warn, **plant_opts):
         for u in range(vx, vx + vw):
             glyph.setdefault((u, v), '.')
 
+    for n, u, v in [p[:3] for p in props if p[0] in ('bridge_u', 'bridge_v')]:
+        for j in range(2):  # a bridge's water cells say so, so the game draws the bridge over the water, not under it
+            for i in range(2):
+                if glyph.get((math.floor(2 * u) + i, math.floor(2 * v) + j)) == '~':
+                    glyph[(math.floor(2 * u) + i, math.floor(2 * v) + j)] = 'b'
     small = [''.join(glyph[(u, v)] for u in range(vx, vx + vw)) for v in range(vy, vy + vh)]
     W, H = math.ceil(w / 2), math.ceil(h / 2)
     tiles = [''.join(glyph.get((2 * i, 2 * j), '.') for i in range(W)) for j in range(H)]

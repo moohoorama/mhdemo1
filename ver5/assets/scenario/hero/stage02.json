@@ -1557,8 +1557,8 @@
    "Enemy": "bocai",
    "Outcome": "victory",
    "AllyResult": "stay",
-   "EnemyResult": "retreat",
-   "Text": "파재: 네놈이 불을 놓은 놈이냐! 유비: 탁현의 유비 현덕이다. 유비가 쌍고검으로 파재를 몰아내자 파재가 달아났다.",
+   "EnemyResult": "death",
+   "Text": "파재: 네놈이 불을 놓은 놈이냐! 유비: 탁현의 유비 현덕이다. 유비가 쌍고검으로 파재를 베었다.",
    "Beats": [
     {
      "Kind": "talk",
@@ -1626,23 +1626,16 @@
     {
      "Kind": "talk",
      "Title": "파재가 겁에 질리다",
-     "Speech": "(불길에, 이놈까지……!) 물러나라, 물러나!",
+     "Speech": "(불길에, 이놈까지……!)",
      "Side": 1,
-     "Duration": 2.6
+     "Duration": 2.2
     },
     {
-     "Kind": "retreat",
-     "Title": "파재가 진영 뒤로 달아나다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 3.0
-    },
-    {
-     "Kind": "withdrawn",
-     "Title": "파재가 불길 속으로 사라지다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 1.1
+     "Kind": "win",
+     "Title": "유비가 쌍고검으로 파재를 베다",
+     "Speech": "백성에게서 빼앗은 것, 목숨으로 갚아라.",
+     "Side": 0,
+     "Duration": 2.5
     }
    ]
   }

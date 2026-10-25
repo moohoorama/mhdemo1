@@ -52,6 +52,7 @@ type unitVis struct {
 	charging     bool       // holds the first attack frame and whitens
 	dying        float64    // < 0: alive
 	leave        *walkState // walking off the battle area, fading out; t runs to leaveTime
+	arriving     float64    // a scene actor walking on: seconds left of fading in, from leaveTime
 	gone, greyed bool
 	ranged       bool
 	shoot        *sprite.Art // the look it shoots from range in (mounted_range), nil when it has none
@@ -147,6 +148,7 @@ func (u *unitVis) update(dt float64) {
 		u.dying += dt
 		u.gone = u.dying >= blinkTime
 	}
+	u.arriving = math.Max(0, u.arriving-dt)
 	if l := u.leave; l != nil && !u.gone {
 		l.t = math.Min(leaveTime, l.t+dt)
 		k := l.t / leaveTime
@@ -155,10 +157,11 @@ func (u *unitVis) update(dt float64) {
 	}
 }
 
-// leaving is how far u has walked off the battle area, 0..1; 0 when it is not leaving.
+// leaving is how far u has walked off the battle area, 0..1, or how much of its walk on a scene
+// actor still has to fade in; 0 when it is neither leaving nor arriving.
 func (u *unitVis) leaving() float64 {
 	if u.leave == nil {
-		return 0
+		return u.arriving / leaveTime
 	}
 	return u.leave.t / leaveTime
 }

@@ -13,10 +13,11 @@ import (
 // torches (Stage.Lights) and every unit (the torches the soldiers carry, so they can be told apart),
 // with a warm glow over the fires. Radii are world pixels at zoom 1.
 const (
-	flameLight = 150.0
-	emberLight = 95.0
-	torchLight = 80.0
-	unitLight  = 62.0
+	flameLight   = 150.0
+	bigFireLight = 440.0
+	emberLight   = 95.0
+	torchLight   = 80.0
+	unitLight    = 62.0
 )
 
 var (
@@ -28,11 +29,17 @@ var (
 type nightLayers struct {
 	on     bool
 	lights []image.Point
-	fires  [][2]float64  // a scene's fires, at fractional cells
+	fires  []nightFire   // a scene's fires
 	color  color.NRGBA   // the dark's colour; nightColor when unset (a scene's dusk or dawn is lighter)
 	flat   bool          // an even wash with no lights cut out (a scene remembered)
 	dark   *ebiten.Image // canvas-size scratch
 	light  *ebiten.Image // a soft disc: opaque at the centre, clear at the rim
+}
+
+// nightFire is a scene fire at fractional cells; a big fire is a house or a quarter burning, seen from afar.
+type nightFire struct {
+	u, v float64
+	big  bool
 }
 
 // lightCells are a stage's torch cells as points.
@@ -69,10 +76,11 @@ func (f *Field) drawNight(clockMS float64, units []*unitVis) {
 		u, v, lift float64
 		radius     float64
 		fire       bool
+		big        bool
 	}
 	var lamps []lamp
 	cell := func(p image.Point, radius float64, fire bool) lamp {
-		return lamp{float64(p.X), float64(p.Y), f.Lift(p.X, p.Y), radius, fire}
+		return lamp{float64(p.X), float64(p.Y), f.Lift(p.X, p.Y), radius, fire, false}
 	}
 	for p, look := range f.looks {
 		switch look {
@@ -86,11 +94,15 @@ func (f *Field) drawNight(clockMS float64, units []*unitVis) {
 		lamps = append(lamps, cell(p, torchLight, false))
 	}
 	for _, p := range n.fires {
-		lamps = append(lamps, lamp{p[0], p[1], f.Lift(int(p[0]), int(p[1])), flameLight, true})
+		r := flameLight
+		if p.big {
+			r = bigFireLight
+		}
+		lamps = append(lamps, lamp{p.u, p.v, f.Lift(int(p.u), int(p.v)), r, true, p.big})
 	}
 	for _, u := range units {
 		if !u.gone && u.visible() {
-			lamps = append(lamps, lamp{u.u, u.v, u.lift, unitLight, false})
+			lamps = append(lamps, lamp{u.u, u.v, u.lift, unitLight, false, false})
 		}
 	}
 	z := f.renderZoom
@@ -102,6 +114,9 @@ func (f *Field) drawNight(clockMS float64, units []*unitVis) {
 		x, y := f.Center(l.u, l.v)
 		x, y = f.renderPoint(x, y-l.lift)
 		flicker := 1 + .05*math.Sin(t*7.3+l.u*13+l.v*7) + .03*math.Sin(t*13.1+l.u)
+		if l.big { // a big fire heaves slowly and flares
+			flicker = 1 + .12*math.Sin(t*2.3+l.u*5) + .07*math.Sin(t*5.9+l.v*3) + .04*math.Sin(t*13.7+l.u)
+		}
 		r := l.radius * z * flicker * scale
 		w := float64(n.light.Bounds().Dx())
 		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
@@ -131,7 +146,11 @@ func (f *Field) drawNight(clockMS float64, units []*unitVis) {
 		op := place(l, .8)
 		op.Blend = ebiten.BlendLighter
 		op.ColorScale.ScaleWithColor(fireGlow)
-		op.ColorScale.ScaleAlpha(.22)
+		if l.big {
+			op.ColorScale.ScaleAlpha(.34)
+		} else {
+			op.ColorScale.ScaleAlpha(.22)
+		}
 		c.DrawImage(n.light, op)
 	}
 }

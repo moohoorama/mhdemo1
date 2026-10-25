@@ -35,23 +35,23 @@
  "Map": "map01.json",
  "Allies": [
   {
-   "X": 7,
-   "Y": 0
+   "X": 6,
+   "Y": 9
   },
   {
    "X": 6,
-   "Y": 0
+   "Y": 8
   },
   {
-   "X": 8,
-   "Y": 0
+   "X": 9,
+   "Y": 8
   }
  ],
  "Enemies": [
   {
    "Character": "dengmao",
    "X": 7,
-   "Y": 3,
+   "Y": 4,
    "Facing": "SW",
    "Group": "chase",
    "Policy": "assault",
@@ -60,7 +60,7 @@
   {
    "Character": "troop_turban",
    "X": 6,
-   "Y": 3,
+   "Y": 4,
    "Facing": "SW",
    "Group": "chase",
    "Policy": "assault",
@@ -69,7 +69,7 @@
   {
    "Character": "troop_turban",
    "X": 9,
-   "Y": 3,
+   "Y": 4,
    "Facing": "SW",
    "Group": "chase",
    "Policy": "assault",
@@ -77,29 +77,29 @@
   },
   {
    "Character": "chengyuanzhi",
-   "X": 2,
-   "Y": 4,
-   "Facing": "SE",
-   "Group": "camp",
+   "X": 7,
+   "Y": 0,
+   "Facing": "SW",
+   "Group": "rear",
    "Policy": "hold",
    "DuelFirst": true,
    "Rank": "commander"
   },
   {
    "Character": "troop_turban",
-   "X": 1,
-   "Y": 5,
-   "Facing": "SE",
-   "Group": "camp",
+   "X": 6,
+   "Y": 1,
+   "Facing": "SW",
+   "Group": "rear",
    "Policy": "hold",
    "Shift": -0.07
   },
   {
    "Character": "troop_turban",
-   "X": 3,
-   "Y": 5,
-   "Facing": "SE",
-   "Group": "camp",
+   "X": 8,
+   "Y": 1,
+   "Facing": "SW",
+   "Group": "rear",
    "Policy": "hold",
    "Shift": -0.07
   },
@@ -124,7 +124,7 @@
   {
    "Character": "troop_turban",
    "X": 4,
-   "Y": 7,
+   "Y": 4,
    "Facing": "SE",
    "Group": "road1",
    "Policy": "react",
@@ -133,7 +133,7 @@
   {
    "Character": "troop_turban",
    "X": 11,
-   "Y": 8,
+   "Y": 4,
    "Facing": "SW",
    "Group": "road2",
    "Policy": "react",
@@ -172,17 +172,6 @@
    "AI": true,
    "Policy": "hold",
    "Faction": "han"
-  },
-  {
-   "Character": "soldier",
-   "X": 8,
-   "Y": 11,
-   "Facing": "NE",
-   "Group": "garrison",
-   "AI": true,
-   "Policy": "hold",
-   "Faction": "han",
-   "Shift": -0.07
   }
  ],
  "Reward": {
@@ -235,8 +224,8 @@
         "Kind": "move",
         "Unit": "liubei",
         "To": {
-         "X": 7,
-         "Y": 1
+         "X": 6,
+         "Y": 8
         }
        },
        {
@@ -244,15 +233,15 @@
         "Unit": "guanyu",
         "To": {
          "X": 6,
-         "Y": 1
+         "Y": 7
         }
        },
        {
         "Kind": "move",
         "Unit": "zhangfei",
         "To": {
-         "X": 8,
-         "Y": 1
+         "X": 9,
+         "Y": 7
         }
        }
       ],
@@ -318,7 +307,7 @@
     {
      "Kind": "ai",
      "Targets": [
-      "camp"
+      "rear"
      ],
      "Policy": "assault"
     }
