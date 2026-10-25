@@ -10,8 +10,7 @@ import (
 	"srpg/internal/content"
 )
 
-// The dialogue box is the dragon pattern (assets/graphics/ui/dragon.png, made by
-// tools/ui/dragon_tile.py) in a black frame, tinted with the speaker's faction colour. Its
+// The dialogue box uses the ruyi pattern in a black frame, tinted with the speaker's faction colour. Its
 // left edge stays beside the portrait and its width follows the line: it springs open to the
 // right with a slight overshoot and resizes the same way, a black bar marking the edge that
 // unrolls.
@@ -31,10 +30,31 @@ var dragonTeal = [3]float32{.31, .40, .40}
 type dialogueLayout struct{ top, h, left, right, portrait, font float64 }
 
 func dialogueBox() dialogueLayout {
-	h := max(150, min(190, math.Round(float64(uiH)*.24)))
+	return dialogueBoxFor(uiW, uiH)
+}
+
+func dialogueBoxFor(width, height int) dialogueLayout {
+	h := max(150, min(190, math.Round(float64(height)*.24)))
 	p := min(portraitW, h+10)
-	return dialogueLayout{top: float64(uiH) - 30 - h, h: h, left: 36 + p + 16, right: float64(uiW) - 30, portrait: p,
+	return dialogueLayout{top: float64(height) - 30 - h, h: h, left: 36 + p + 16, right: float64(width) - 30, portrait: p,
 		font: boxFont * max(.85, h/190)}
+}
+
+func (g *Game) dialogueFit(s string, width, height int) (dialogueLayout, string, bool) {
+	b := dialogueBoxFor(width, height)
+	f := g.serif(b.font, 700)
+	maxText := b.right - b.left - 2*boxPad
+	if maxText <= 0 {
+		return b, "", false
+	}
+	wrapped := wrapWidth(s, f, maxText)
+	lines := strings.Count(wrapped, "\n") + 1
+	need := math.Max(b.h, 34+float64(lines)*b.font*1.45+18)
+	if need > float64(height)*.8 {
+		return b, wrapped, false
+	}
+	b.h, b.top = need, float64(height)-30-need
+	return b, wrapped, true
 }
 
 // dialogueAnim springs the box's width to its target and fades its tint to the speaker's.
@@ -106,11 +126,10 @@ func (g *Game) factionTint(speakers []string) [3]float32 {
 	return t
 }
 
-// drawDragon fills the layout rectangle with the dragon pattern in colour scale tint, the
+// drawPattern fills the layout rectangle with a repeated tile in colour scale tint, the
 // pattern shifted by (ox, oy). One quad repeats the tile, so linear filtering wraps across its
 // seams instead of fading to the transparent outside.
-func (g *Game) drawDragon(dst *ebiten.Image, x, y, w, h, ox, oy float64, tint [3]float32) {
-	tile := g.assets.Dragon
+func (g *Game) drawPattern(dst *ebiten.Image, tile *ebiten.Image, x, y, w, h, ox, oy, scale float64, tint [3]float32, alpha float32) {
 	if tile == nil || w <= 0 || h <= 0 {
 		return
 	}
@@ -119,12 +138,16 @@ func (g *Game) drawDragon(dst *ebiten.Image, x, y, w, h, ox, oy float64, tint [3
 		lx, ly := x+w*float64(i%2), y+h*float64(i/2)
 		vs[i] = ebiten.Vertex{
 			DstX: float32(lx*drawPx + drawOX), DstY: float32(ly*drawPx + drawOY),
-			SrcX: float32((lx + ox) / dragonScale), SrcY: float32((ly + oy) / dragonScale),
-			ColorR: tint[0], ColorG: tint[1], ColorB: tint[2], ColorA: 1,
+			SrcX: float32((lx + ox) / scale), SrcY: float32((ly + oy) / scale),
+			ColorR: tint[0], ColorG: tint[1], ColorB: tint[2], ColorA: alpha,
 		}
 	}
 	op := &ebiten.DrawTrianglesOptions{Address: ebiten.AddressRepeat, Filter: ebiten.FilterLinear}
 	dst.DrawTriangles(vs[:], []uint16{0, 1, 2, 1, 3, 2}, tile, op)
+}
+
+func (g *Game) drawDragon(dst *ebiten.Image, x, y, w, h, ox, oy float64, tint [3]float32) {
+	g.drawPattern(dst, g.assets.Dragon, x, y, w, h, ox, oy, dragonScale, tint, 1)
 }
 
 // drawBoxBody draws the open box from x, w wide, its top at y and h high.
@@ -134,7 +157,7 @@ func (g *Game) drawBoxBody(dst *ebiten.Image, x, y, w, h float64, tint [3]float3
 	}
 	x0, y0, fw, fh := float32(x), float32(y), float32(w), float32(h)
 	rect(dst, x0+9, y0+15, fw, fh, color.NRGBA{A: 107})
-	g.drawDragon(dst, x, y, w, h, 0, 0, [3]float32{tint[0] * .75, tint[1] * .75, tint[2] * .75})
+	g.drawPattern(dst, g.assets.Ruyi, x, y, w, h, 0, 0, 1, tint, 1)
 	if w > 12 {
 		strokeRect(dst, x0+5.5, y0+5.5, fw-11, fh-11, 1, color.NRGBA{R: 170, G: 195, B: 185, A: 71})
 	}
@@ -160,9 +183,8 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 	a := &g.dialogueAnim
 	a.advance(g.uiSeconds - a.clock)
 	a.clock = g.uiSeconds
-	b := dialogueBox()
+	b, wrapped, _ := g.dialogueFit(l.text, uiW, uiH)
 	f := g.serif(b.font, 700)
-	wrapped := wrapWidth(l.text, f, b.right-b.left-2*boxPad)
 	if a.key != key {
 		widest := 0.0
 		for _, s := range strings.Split(wrapped, "\n") {
@@ -238,5 +260,41 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 	if done && a.open() {
 		bob := 3 * math.Sin(g.uiSeconds*7)
 		g.label(dst, "▼", b.left+w-boxPad+8, b.top+b.h-36+bob, 13, color.NRGBA{R: 224, G: 90, B: 62, A: 255})
+	}
+}
+
+func (g *Game) drawNarration(dst *ebiten.Image, l line, text, key string) {
+	a := &g.dialogueAnim
+	if a.key != key {
+		a.key, a.shownAt = key, g.uiSeconds
+	}
+	f := g.serif(28, 700)
+	w := min(760, float64(uiW)*.8)
+	wrapped := wrapWidth(l.text, f, w-84)
+	lines := strings.Count(wrapped, "\n") + 1
+	h := max(170, 58+float64(lines)*f.Size*1.45)
+	x, y := (float64(uiW)-w)/2, (float64(uiH)-h)/2
+	alpha, dy := 1.0, 0.0
+	if g.narrationLeaving {
+		p := phase(g.uiSeconds-g.narrationExitAt, 0, .43)
+		alpha, dy = 1-p, float64(uiH)*.05*p
+	} else {
+		p := bezier(.18, .77, .18, 1, phase(g.uiSeconds-a.shownAt, 0, .52))
+		alpha, dy = p, float64(uiH)*.05*(1-p)
+	}
+	y += dy
+	shadow := uint8(150 * alpha)
+	rect(dst, float32(x+12), float32(y+16), float32(w), float32(h), color.NRGBA{A: shadow})
+	rect(dst, float32(x), float32(y), float32(w), float32(h), color.NRGBA{R: 20, G: 43, B: 45, A: uint8(204 * alpha)})
+	g.drawPattern(dst, g.assets.Dragon, x, y, w, h, 0, 0, dragonScale, dragonTeal, float32(.22*alpha))
+	strokeRect(dst, float32(x+1), float32(y+1), float32(w-2), float32(h-2), 3, color.NRGBA{A: uint8(255 * alpha)})
+	strokeRect(dst, float32(x+7), float32(y+7), float32(w-14), float32(h-14), 1, color.NRGBA{R: 180, G: 195, B: 178, A: uint8(90 * alpha)})
+	shown := wrapped
+	if !g.narrationLeaving {
+		shown = prefixLines(wrapped, len([]rune(text)))
+	}
+	for i, line := range strings.Split(shown, "\n") {
+		write(dst, line, f, x+(w-measure(line, f))/2, y+(h-float64(lines)*f.Size*1.45)/2+float64(i)*f.Size*1.45,
+			color.NRGBA{R: 252, G: 247, B: 231, A: uint8(255 * alpha)})
 	}
 }

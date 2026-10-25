@@ -110,6 +110,9 @@ func (g *Game) shownText(l line) (string, bool) {
 // advanceDialogue hurries the typing (a second click finishes it), then shows the next speaker,
 // then the next node.
 func (g *Game) advanceDialogue() {
+	if g.narrationLeaving {
+		return
+	}
 	o := g.S.Engine.Observe()
 	if o.Phase != "scenario" || !isTalk(o.Dialogue.Kind) {
 		return
@@ -130,6 +133,10 @@ func (g *Game) advanceDialogue() {
 		g.lineIndex++
 		g.lineTyping = startTyping(g.uiSeconds)
 		g.startLine(g.lineIndex)
+		return
+	}
+	if o.Dialogue.Kind == "narrate" {
+		g.narrationLeaving, g.narrationExitAt = true, g.uiSeconds
 		return
 	}
 	g.command(core.Command{Kind: "next"})
@@ -177,7 +184,12 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 		}
 	}
 	text, done := g.shownText(l)
-	g.drawDialogue(dst, l, text, done, fmt.Sprintf("%s|%s|%d", strings.Join(l.speakers, "·"), o.Node, g.lineIndex))
+	key := fmt.Sprintf("%s|%s|%d", strings.Join(l.speakers, "·"), o.Node, g.lineIndex)
+	if o.Dialogue.Kind == "narrate" {
+		g.drawNarration(dst, l, text, key)
+	} else {
+		g.drawDialogue(dst, l, text, done, key)
+	}
 	if o.Dialogue.Kind == "choice" {
 		y := uiH/2 - 45
 		box := image.Rect(uiW/2-180, y-30, uiW/2+180, y+20+len(o.Dialogue.Choices)*52)

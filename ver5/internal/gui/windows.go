@@ -41,10 +41,16 @@ func (g *Game) ask(message string, ok func()) { g.askWith(message, "확인", "�
 
 // askWith is ask with its own button labels; ok runs on yes.
 func (g *Game) askWith(message, yes, no string, ok func()) bool {
+	if g.font != nil {
+		if _, _, fits := g.confirmLayout(message, uiW, uiH); !fits {
+			g.toast("확인 문구가 화면에 들어가지 않습니다", bad)
+			return false
+		}
+	}
 	if !g.openOverlay("confirm") {
 		return false
 	}
-	g.question, g.yes, g.no, g.answer = message, yes, no, ok
+	g.question, g.yes, g.no, g.answer, g.confirmTitle = message, yes, no, ok, "확인"
 	return true
 }
 
@@ -69,7 +75,7 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 	w, h := 560, 440
 	switch g.overlay {
 	case "confirm":
-		w, h = 480, 210
+		w, h, _ = g.confirmLayout(g.question, uiW, uiH)
 	case "save":
 		w, h = 640, 480
 	case "load":
@@ -100,12 +106,16 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
 	x, y := uiW/2-w/2, uiH/2-h/2
 	r := image.Rect(x, y, x+w, y+h)
-	g.titled(dst, r, overlayTitles[g.overlay])
+	if g.overlay == "confirm" {
+		g.titledPattern(dst, r, g.confirmTitle)
+	} else {
+		g.titled(dst, r, overlayTitles[g.overlay])
+	}
 	g.btn(dst, image.Rect(x+w-96, y+16, x+w-18, y+44), "닫기", func() { g.overlay = "" })
 	left := x + 32
 	switch g.overlay {
 	case "confirm":
-		g.label(dst, g.question, float64(left), float64(y+44), 18, ink)
+		g.label(dst, wrapWidth(g.question, g.face(18), float64(w-64)), float64(left), float64(y+44), 18, ink)
 		g.btn(dst, image.Rect(left, y+h-62, left+190, y+h-28), g.yes, func() {
 			f := g.answer
 			g.overlay = ""
@@ -272,10 +282,14 @@ func (g *Game) drawModal(dst *ebiten.Image) {
 	m := g.modals[0]
 	g.buttons, g.blocks = nil, nil
 	g.addButton(image.Rect(0, 0, uiW, uiH), "", g.closeModal)
+	if m.kind == "objective" {
+		box := g.objectiveBox(uiW)
+		g.popup(dst, fmt.Sprintf("modal:%p", m), 110, uiW, uiH, box.Inset(-24), func(dst *ebiten.Image) { g.modalWindow(dst, m) })
+		return
+	}
 	box := map[string]image.Rectangle{
-		"objective": g.objectiveBox(Width),
-		"levelup":   image.Rect(Width/2-250, 200, Width/2+250, 540),
-		"trait":     image.Rect(Width/2-300, 220, Width/2+300, 560),
+		"levelup": image.Rect(Width/2-250, 200, Width/2+250, 540),
+		"trait":   image.Rect(Width/2-300, 220, Width/2+300, 560),
 	}[m.kind]
 	g.popup(dst, fmt.Sprintf("modal:%p", m), 110, Width, Height, box.Inset(-24), func(dst *ebiten.Image) { g.modalWindow(dst, m) })
 }
@@ -288,43 +302,19 @@ func (g *Game) modalWindow(dst *ebiten.Image, m *modal) {
 		st := g.S.Data.Stages[o.Stage]
 		brief := g.objective(o)
 		r := g.objectiveBox(uiW)
-		g.titled(dst, r, "작전 개요")
+		if _, fits := g.objectiveLayout(g.objectiveRows(o, brief), uiW, uiH); !fits {
+			g.titledPattern(dst, r, "작전 개요")
+			g.label(dst, "표시 공간이 부족합니다. UI 크기를 줄이세요.", float64(r.Min.X+32), float64(r.Min.Y+56), 18, ink)
+			return
+		}
+		g.titledPattern(dst, r, "작전 개요")
 		g.centered(dst, st.Name, float64(uiW/2), float64(r.Min.Y+32), 30, gold)
-		row := func(i int, name, v string) {
-			y := float64(r.Min.Y + 96 + i*36)
-			g.label(dst, name, float64(r.Min.X+48), y+2, 16, muted)
-			g.label(dst, v, float64(r.Min.X+160), y, 19, ink)
-		}
-		row(0, "승리 조건", brief.win)
-		row(1, "패배 조건", brief.lose)
-		n := 2
-		for i, sub := range brief.subs {
-			name, mark := "", ""
-			if i == 0 {
-				name = "부목표"
-			}
-			if sub.done {
-				mark = " (달성)"
-			}
-			row(n, name, sub.text+mark)
-			n++
-		}
-		turn := fmt.Sprintf("%d턴째 · 제한 없음", o.Round)
-		if st.TurnLimit > 0 {
-			turn = fmt.Sprintf("%d턴째 · %d턴까지", o.Round, st.TurnLimit)
-		}
-		row(n, "턴", turn)
-		n++
-		duels := g.objectiveDuels(o)
-		if len(duels) == 0 {
-			row(n, "일기토", "없음")
-		}
-		for i, d := range duels {
-			name := ""
-			if i == 0 {
-				name = "일기토"
-			}
-			row(n+i, name, d)
+		y := float64(r.Min.Y + 96)
+		for _, row := range g.objectiveRows(o, brief) {
+			wrapped := wrapWidth(row.text, g.face(19), float64(r.Dx()-208))
+			g.label(dst, row.name, float64(r.Min.X+48), y+2, 16, muted)
+			g.label(dst, wrapped, float64(r.Min.X+160), y, 19, ink)
+			y += max(36, float64(strings.Count(wrapped, "\n")+1)*19*1.45+9)
 		}
 		hint := "클릭하여 시작"
 		if m.manual {
@@ -494,13 +484,92 @@ func (g *Game) objectiveDuels(o core.Observation) []string {
 	return out
 }
 
-// objectiveBox is the objective window, as tall as its rows need.
-func (g *Game) objectiveBox(w int) image.Rectangle {
-	rows := 4
-	if g.S.Engine != nil {
-		o := g.S.Engine.Observe()
-		rows = 3 + len(g.S.Data.Stages[o.Stage].Sub) + max(1, len(g.objectiveDuels(o)))
+type objectiveRow struct{ name, text string }
+
+func (g *Game) objectiveRows(o core.Observation, brief briefing) []objectiveRow {
+	st := g.S.Data.Stages[o.Stage]
+	rows := []objectiveRow{{"승리 조건", brief.win}, {"패배 조건", brief.lose}}
+	for i, sub := range brief.subs {
+		name, mark := "", ""
+		if i == 0 {
+			name = "부목표"
+		}
+		if sub.done {
+			mark = " (달성)"
+		}
+		rows = append(rows, objectiveRow{name, sub.text + mark})
 	}
-	h := 96 + rows*36 + 56
-	return image.Rect(w/2-260, 330-h/2, w/2+260, 330+h/2)
+	turn := fmt.Sprintf("%d턴째 · 제한 없음", o.Round)
+	if st.TurnLimit > 0 {
+		turn = fmt.Sprintf("%d턴째 · %d턴까지", o.Round, st.TurnLimit)
+	}
+	rows = append(rows, objectiveRow{"턴", turn})
+	duels := g.objectiveDuels(o)
+	if len(duels) == 0 {
+		duels = []string{"없음"}
+	}
+	for i, duel := range duels {
+		name := ""
+		if i == 0 {
+			name = "일기토"
+		}
+		rows = append(rows, objectiveRow{name, duel})
+	}
+	return rows
+}
+
+func (g *Game) objectiveLayout(rows []objectiveRow, width, height int) (image.Rectangle, bool) {
+	maxW, maxH := width*4/5, height*4/5
+	fallback := image.Rectangle{}
+	for w := 520; w <= maxW; w += 16 {
+		h := 96 + 56
+		longest := 0
+		for _, row := range rows {
+			wrapped := wrapWidth(row.text, g.face(19), float64(w-208))
+			lines := strings.Count(wrapped, "\n") + 1
+			longest = max(longest, lines)
+			h += int(max(36, float64(lines)*19*1.45+9))
+		}
+		if h <= maxH {
+			r := image.Rect(width/2-w/2, height/2-h/2, width/2+w/2, height/2+h/2)
+			if fallback.Empty() {
+				fallback = r
+			}
+			if longest <= 2 {
+				return r, true
+			}
+		}
+	}
+	return fallback, !fallback.Empty()
+}
+
+func (g *Game) confirmLayout(message string, width, height int) (int, int, bool) {
+	fallbackW, fallbackH := 0, 0
+	for w := 480; w <= width*4/5; w += 16 {
+		wrapped := wrapWidth(message, g.face(18), float64(w-64))
+		lines := strings.Count(wrapped, "\n") + 1
+		h := max(210, 44+lines*27+90)
+		if h <= height*4/5 {
+			if fallbackW == 0 {
+				fallbackW, fallbackH = w, h
+			}
+			if lines <= 3 {
+				return w, h, true
+			}
+		}
+	}
+	return fallbackW, fallbackH, fallbackW > 0
+}
+
+// objectiveBox fits the complete rendered briefing within 80% of the UI canvas.
+func (g *Game) objectiveBox(w int) image.Rectangle {
+	if g.S.Engine == nil {
+		return image.Rect(w/2-260, 190, w/2+260, 510)
+	}
+	o := g.S.Engine.Observe()
+	r, ok := g.objectiveLayout(g.objectiveRows(o, g.objective(o)), w, uiH)
+	if !ok {
+		return image.Rect(w/10, uiH/2-100, w*9/10, uiH/2+100)
+	}
+	return r
 }

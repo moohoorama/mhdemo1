@@ -1,6 +1,7 @@
 # 전장 UI 개편 시안
 
 `index.html`은 브라우저용 움직이는 시안이다. 게임 코드가 아니며, 구현할 때 연출·타이밍의 기준으로 본다.
+[`story-ui-proposal.html`](story-ui-proposal.html)은 여의운문 대사창·용무늬 중앙 나레이션·수자문 중앙 창·문장 길이 검사를 비교하는 별도 시안이다. 설계 범위와 구현 전 확인점은 [`story-ui-proposal.md`](story-ui-proposal.md)에 적었다.
 초상은 `assets/graphics/portraits/`를 그대로 읽고, `img/`에는 게임 캡처만 둔다.
 
 ```sh

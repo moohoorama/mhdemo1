@@ -32,7 +32,9 @@ type propEntry struct {
 type Assets struct {
 	Duels         duel.Scripts
 	Bubble        *duelview.Bubble
-	Dragon        *ebiten.Image // grey dragon pattern of the title and the dialogue box
+	Dragon        *ebiten.Image // grey dragon pattern for narration
+	Ruyi          *ebiten.Image // grey ruyi pattern for dialogue
+	Shou          *ebiten.Image // grey shou pattern for central windows
 	groundPattern *ebiten.Image
 	StatusIcons   map[string]*ebiten.Image
 	Lib           *sprite.Library
@@ -146,6 +148,16 @@ func loadRGBA(path string) (*image.RGBA, error) {
 	return out, nil
 }
 
+func patternGrey(im *image.RGBA) *image.RGBA {
+	out := image.NewRGBA(im.Bounds())
+	for i := 0; i < len(im.Pix); i += 4 {
+		luma := (int(im.Pix[i])*299 + int(im.Pix[i+1])*587 + int(im.Pix[i+2])*114) / 1000
+		v := uint8(max(0, min(255, 120+(luma-40)*3/2)))
+		out.Pix[i], out.Pix[i+1], out.Pix[i+2], out.Pix[i+3] = v, v, v, im.Pix[i+3]
+	}
+	return out
+}
+
 // shadowed turns a black alpha-only shadow image into the shadow color.
 func shadowed(im *image.RGBA, c color.RGBA) *ebiten.Image {
 	for i := 0; i < len(im.Pix); i += 4 {
@@ -165,6 +177,14 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		return nil, err
 	}
 	dragon, err := loadRGBA(filepath.Join(dir, "ui", "dragon.png"))
+	if err != nil {
+		return nil, err
+	}
+	ruyi, err := loadRGBA(filepath.Join(dir, "ui", "ruyi-cloud-tile.png"))
+	if err != nil {
+		return nil, err
+	}
+	shou, err := loadRGBA(filepath.Join(dir, "ui", "shou-tile.png"))
 	if err != nil {
 		return nil, err
 	}
@@ -223,7 +243,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 	if err = json.Unmarshal(b, &index); err != nil {
 		return nil, err
 	}
-	a := &Assets{Bubble: bubble, Dragon: ebiten.NewImageFromImage(dragon), Duels: scripts, Tiles: map[int]Sprite{}, TileShadow: map[int]Sprite{},
+	a := &Assets{Bubble: bubble, Dragon: ebiten.NewImageFromImage(dragon), Ruyi: ebiten.NewImageFromImage(patternGrey(ruyi)), Shou: ebiten.NewImageFromImage(patternGrey(shou)), Duels: scripts, Tiles: map[int]Sprite{}, TileShadow: map[int]Sprite{},
 		Animations: map[string]TileAnimation{}, Structures: map[string]Sprite{}, Sites: map[string]Sprite{}, Maps: map[string]*MapArt{},
 		Rise: index.Structures.Rise, CliffRise: index.Structures.CliffRise, Portraits: map[string]*ebiten.Image{}, Props: map[string]Prop{}}
 	statusPixels, err := loadRGBA(filepath.Join(dir, "status", "icons.png"))

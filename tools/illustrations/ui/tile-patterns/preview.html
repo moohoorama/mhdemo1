@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>중국 전통 문양 타일 시안</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, -apple-system, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #111d1e; color: #dde7e0; }
+    .app { display: grid; grid-template-columns: 292px minmax(0, 1fr); height: 100vh; min-height: 560px; }
+    aside { padding: 28px 22px; background: #142325; border-right: 1px solid #3a5150; overflow-y: auto; }
+    .eyebrow { color: #91aaa3; font-size: 12px; letter-spacing: .16em; }
+    h1 { font-family: Georgia, serif; font-size: 27px; font-weight: 500; line-height: 1.25; margin: 12px 0 10px; }
+    .intro { color: #a5b6b1; font-size: 13px; line-height: 1.6; margin: 0 0 28px; }
+    .label { display: block; margin: 24px 0 10px; color: #9bb2aa; font-size: 12px; letter-spacing: .08em; }
+    .choices { display: grid; gap: 8px; }
+    button, .download { color: inherit; font: inherit; cursor: pointer; }
+    .choice { width: 100%; padding: 13px 14px; text-align: left; background: #203234; border: 1px solid #385052; border-radius: 8px; }
+    .choice[aria-pressed="true"] { border-color: #aec5b2; background: #2d4241; }
+    .choice strong { display: block; font-size: 15px; font-weight: 600; }
+    .choice small { display: block; color: #a2b7ae; margin-top: 4px; font-size: 12px; }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; }
+    input[type="range"] { width: 100%; accent-color: #a7bfad; margin: 10px 0 0; }
+    input[type="checkbox"] { accent-color: #a7bfad; }
+    .check { display: flex; align-items: center; gap: 9px; margin: 14px 0; color: #cfdbd4; font-size: 13px; }
+    .download { display: block; text-align: center; text-decoration: none; margin-top: 25px; padding: 12px; border: 1px solid #91aa9d; border-radius: 7px; background: #2c4241; font-size: 13px; }
+    .note { color: #8fa49d; font-size: 12px; line-height: 1.55; margin-top: 18px; }
+    .settings { color: #a9bdb2; font-size: 12px; line-height: 1.6; margin: 9px 0 0; }
+    main { min-width: 0; position: relative; overflow: hidden; }
+    #preview { position: absolute; inset: 0; cursor: grab; background-repeat: repeat; filter: url(#tileContrast); }
+    #preview:active { cursor: grabbing; }
+    #grid { position: absolute; inset: 0; pointer-events: none; opacity: 0; }
+    #grid.visible { opacity: 1; }
+    .hint { position: absolute; left: 20px; bottom: 20px; padding: 10px 14px; border-radius: 6px; background: #102021d9; color: #cbd7cf; font-size: 12px; pointer-events: none; }
+    @media (max-width: 720px) {
+      .app { display: flex; flex-direction: column; height: 100dvh; min-height: 0; }
+      aside { padding: 16px; max-height: 44dvh; }
+      h1 { font-size: 20px; margin: 5px 0; }
+      .intro, .note { display: none; }
+      .choices { grid-template-columns: repeat(3, 1fr); }
+      .choice { padding: 9px; }
+      .choice small { display: none; }
+      main { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+  <svg aria-hidden="true" width="0" height="0" style="position:absolute">
+    <filter id="tileContrast" color-interpolation-filters="sRGB">
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="1" intercept="0" />
+        <feFuncG type="linear" slope="1" intercept="0" />
+        <feFuncB type="linear" slope="1" intercept="0" />
+      </feComponentTransfer>
+    </filter>
+  </svg>
+  <div class="app">
+    <aside>
+      <div class="eyebrow">PATTERN STUDY · 01—03</div>
+      <h1>중국 전통 문양<br>반복 타일</h1>
+      <p class="intro">먹빛 청록과 흐릿한 직물 질감으로 맞춘 세 가지 배경입니다. 넓은 화면에서 반복 밀도와 이음새를 비교해 보세요.</p>
+      <span class="label">문양 선택</span>
+      <div class="choices" id="choices"></div>
+      <span class="label">반복 크기</span>
+      <div class="row"><span>타일 한 변</span><output id="sizeValue">520px</output></div>
+      <input id="size" type="range" min="280" max="900" value="520" step="10">
+      <span class="label">대비 미리보기</span>
+      <div class="row"><span>선택 문양 대비</span><output id="contrastValue">100%</output></div>
+      <input id="contrast" type="range" min="0" max="150" value="100" step="5">
+      <p class="settings" id="contrastSummary">여의운문 100% · 뇌문 100% · 수자문 100%</p>
+      <label class="check"><input id="originalToggle" type="checkbox"> 원본 이미지와 비교</label>
+      <label class="check"><input id="gridToggle" type="checkbox"> 타일 경계선 보기</label>
+      <a class="download" id="download" href="#" download>기본 타일 PNG 저장</a>
+      <p class="note">대비 슬라이더는 화면 미리보기에만 적용됩니다. 원하는 세 값을 알려주시면 PNG에 반영하겠습니다. 원본 비교를 켜면 생성 직후의 이미지를 보여줍니다.</p>
+    </aside>
+    <main>
+      <div id="preview" aria-label="반복 타일 미리보기"></div>
+      <div id="grid"></div>
+      <div class="hint">드래그하여 이동 · 왼쪽에서 문양과 크기 변경</div>
+    </main>
+  </div>
+  <script>
+    const patterns = [
+      { name: '여의운문', detail: '흐르는 길상 구름', file: 'ruyi-cloud.png', mean: [.12613, .18115, .17725], sourceMean: [.12613, .18119, .17733] },
+      { name: '뇌문', detail: '청동기 나선 기하', file: 'leiwen.png', mean: [.11767, .16859, .16472], sourceMean: [.16372, .21117, .20570] },
+      { name: '수자문', detail: '장수 문양과 구름', file: 'shou.png', mean: [.10909, .15348, .15127], sourceMean: [.10930, .15371, .15171] }
+    ];
+    const choices = document.querySelector('#choices');
+    const preview = document.querySelector('#preview');
+    const grid = document.querySelector('#grid');
+    const sizeInput = document.querySelector('#size');
+    const contrastInput = document.querySelector('#contrast');
+    const originalToggle = document.querySelector('#originalToggle');
+    const download = document.querySelector('#download');
+    let selected = Math.max(0, Math.min(2, Number(new URLSearchParams(location.search).get('pattern')) || 0));
+    let contrastValues = [100, 100, 100];
+    try {
+      const saved = JSON.parse(localStorage.getItem('tile-pattern-contrast-v2'));
+      if (Array.isArray(saved) && saved.length === 3) {
+        contrastValues = saved.map(value => Math.max(0, Math.min(150, Number(value) || 0)));
+      }
+    } catch (_) {}
+    const previewContrast = Number(new URLSearchParams(location.search).get('contrast'));
+    if (Number.isFinite(previewContrast) && new URLSearchParams(location.search).has('contrast')) {
+      contrastValues[selected] = Math.max(0, Math.min(150, previewContrast));
+    }
+    let offsetX = 0;
+    let offsetY = 0;
+    let dragging = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    patterns.forEach((pattern, index) => {
+      const button = document.createElement('button');
+      button.className = 'choice';
+      button.innerHTML = `<strong>${pattern.name}</strong><small>${pattern.detail}</small>`;
+      button.addEventListener('click', () => { selected = index; render(); });
+      choices.append(button);
+    });
+
+    function position() {
+      const size = Number(sizeInput.value);
+      preview.style.backgroundSize = `${size}px ${size}px`;
+      preview.style.backgroundPosition = `${offsetX}px ${offsetY}px`;
+      grid.style.backgroundImage = 'linear-gradient(to right, #c0d5bd99 1px, transparent 1px), linear-gradient(to bottom, #c0d5bd99 1px, transparent 1px)';
+      grid.style.backgroundSize = `${size}px ${size}px`;
+      grid.style.backgroundPosition = `${offsetX}px ${offsetY}px`;
+      document.querySelector('#sizeValue').value = `${size}px`;
+    }
+
+    function render() {
+      [...choices.children].forEach((button, index) => button.setAttribute('aria-pressed', index === selected));
+      const file = patterns[selected].file.replace('.png', originalToggle.checked ? '.png' : '-tile.png');
+      preview.style.backgroundImage = `url("${file}")`;
+      download.href = file;
+      download.download = file;
+      renderContrast();
+      position();
+    }
+
+    function renderContrast() {
+      const value = contrastValues[selected];
+      const factor = value / 100;
+      const mean = originalToggle.checked ? patterns[selected].sourceMean : patterns[selected].mean;
+      ['R', 'G', 'B'].forEach((channel, index) => {
+        const functionNode = document.querySelector(`feFunc${channel}`);
+        functionNode.setAttribute('slope', factor);
+        functionNode.setAttribute('intercept', (1 - factor) * mean[index]);
+      });
+      contrastInput.value = value;
+      document.querySelector('#contrastValue').value = `${value}%`;
+      document.querySelector('#contrastSummary').textContent = patterns.map((pattern, index) => `${pattern.name} ${contrastValues[index]}%`).join(' · ');
+    }
+
+    sizeInput.addEventListener('input', position);
+    contrastInput.addEventListener('input', () => {
+      contrastValues[selected] = Number(contrastInput.value);
+      try { localStorage.setItem('tile-pattern-contrast-v2', JSON.stringify(contrastValues)); } catch (_) {}
+      renderContrast();
+    });
+    originalToggle.addEventListener('change', render);
+    document.querySelector('#gridToggle').addEventListener('change', event => grid.classList.toggle('visible', event.target.checked));
+    preview.addEventListener('pointerdown', event => {
+      dragging = true;
+      lastX = event.clientX;
+      lastY = event.clientY;
+      preview.setPointerCapture(event.pointerId);
+    });
+    preview.addEventListener('pointermove', event => {
+      if (!dragging) return;
+      offsetX += event.clientX - lastX;
+      offsetY += event.clientY - lastY;
+      lastX = event.clientX;
+      lastY = event.clientY;
+      position();
+    });
+    preview.addEventListener('pointerup', () => { dragging = false; });
+    render();
+  </script>
+</body>
+</html>

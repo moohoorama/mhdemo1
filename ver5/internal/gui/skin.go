@@ -355,6 +355,7 @@ func (g *Game) window(dst *ebiten.Image, r image.Rectangle) {
 	op.GeoM.Scale(float64(w-8), float64(h-8)/16)
 	op.GeoM.Translate(float64(x+4), float64(y+4))
 	drawScaled(dst, g.assets.UI["window_glow"].Frames[0], op)
+	g.drawPattern(dst, g.assets.Shou, float64(x+8), float64(y+8), float64(w-16), float64(h-16), 0, 0, 1, [3]float32{.52, .35, .25}, .18)
 	nineSlice(dst, g.assets.UI["window_rim"].Frames[0], 8, r)
 }
 
@@ -387,6 +388,11 @@ func (g *Game) titled(dst *ebiten.Image, r image.Rectangle, title string) {
 	rect(dst, x, float32(r.Min.Y)-12, float32(w), 26, color.NRGBA{R: 108, G: 30, B: 26, A: 255})
 	strokeRect(dst, x, float32(r.Min.Y)-12, float32(w), 26, 2, gold)
 	g.label(dst, title, float64(x)+18, float64(r.Min.Y)-11, 17, ink)
+}
+
+func (g *Game) titledPattern(dst *ebiten.Image, r image.Rectangle, title string) {
+	g.titled(dst, r, title)
+	g.drawPattern(dst, g.assets.Shou, float64(r.Min.X+9), float64(r.Min.Y+9), float64(r.Dx()-18), float64(r.Dy()-18), 0, 0, 1, [3]float32{.52, .35, .25}, .62)
 }
 
 // cursorPos is the mouse position in UI px; screenshot drivers replace it.

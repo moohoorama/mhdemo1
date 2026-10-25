@@ -84,6 +84,8 @@ type Game struct {
 	lineIndex                 int
 	lineTyping                typing // how the current line is coming out
 	dialogueAnim              dialogueAnim
+	narrationLeaving          bool
+	narrationExitAt           float64
 	Verify                    bool
 	Shots                     []int // capture the screen at these ticks while autoplaying, then quit
 	verified                  map[string]bool
@@ -102,6 +104,7 @@ type Game struct {
 	itemEffects               map[string]itemEffect // itemEffect results by revision, officer, slot and piece
 	equip                     equipState
 	question, yes, no         string
+	confirmTitle              string
 	answer                    func()
 	endAsked                  string          // the battle turn whose "all allies ordered" prompt was shown
 	hudRect, hudBody          image.Rectangle // the HUD panel and its content as last drawn
@@ -184,6 +187,9 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 	g.scenes, _ = scenes.Load(filepath.Join(filepath.Dir(fontPath), "..", "scenes"))
 	g.assets, err = LoadAssets(filepath.Join(filepath.Dir(fontPath), "..", "graphics"), source, s.Data)
 	if err != nil {
+		return nil, err
+	}
+	if err := g.validateUIContent(); err != nil {
 		return nil, err
 	}
 	for id, script := range g.assets.Duels {
@@ -568,6 +574,10 @@ func (g *Game) Update() error {
 		return g.updateTour()
 	}
 	g.advance(1.0 / 60)
+	if g.narrationLeaving && g.uiSeconds-g.narrationExitAt >= .43 {
+		g.narrationLeaving = false
+		g.command(core.Command{Kind: "next"})
+	}
 	g.syncBattleLogStage()
 	g.learn = nil
 	if g.S.Engine != nil && g.S.Screen == "playing" {

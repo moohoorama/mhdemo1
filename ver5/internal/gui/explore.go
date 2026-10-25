@@ -400,9 +400,11 @@ func (g *Game) exploreArrive() {
 			case "event":
 				g.request(session.Request{Op: "command", Command: core.Command{Kind: "talk", Target: key}})
 			case "sortie":
-				g.askWith(person.Sortie.Ask, "예", "아니오", func() {
+				if g.askWith(person.Sortie.Ask, "예", "아니오", func() {
 					g.request(session.Request{Op: "command", Command: core.Command{Kind: "sortie", Target: key}})
-				})
+				}) {
+					g.confirmTitle = "출진 확인"
+				}
 				g.turnBack(aim.person)
 			case "shop":
 				g.shopFrom = key
