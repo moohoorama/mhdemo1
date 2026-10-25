@@ -57,6 +57,8 @@ type Assets struct {
 	UI            Shots                    // UI pictures: window frame, marks, icons, unit bar
 	Flames        map[string]FrameStrip    // flame tongues and smoke puffs by name
 	Backdrops     map[string]*ebiten.Image // far pictures behind outdoor scene maps (index.json "backdrops")
+	Sway          map[string]FrameStrip    // leaf sway of the scene trees by prop name (index.json "sway")
+	SwayMaps      map[string]bool          // the scene maps whose trees play Sway
 }
 
 // FrameStrip is an animation whose frames are all the same size, drawn with one pivot.
@@ -232,7 +234,17 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			Sprites map[string]propEntry
 		}
 		Backdrops map[string]string
-		Effects   map[string]struct {
+		Sway      struct { // leaf sway strips of the scene trees, packed by tools/build_tree_sway.py
+			Image   string
+			Frames  int
+			MS      int
+			Maps    []string
+			Sprites map[string]struct {
+				Rect  [4]int // frame 0; frame i lies i widths to the right
+				Pivot [2]float64
+			}
+		}
+		Effects map[string]struct {
 			Image  string
 			Frame  [2]int
 			Frames int
@@ -346,6 +358,26 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			strip.Frames = append(strip.Frames, Sprite{sheet.SubImage(r).(*ebiten.Image), e.Pivot[0], e.Pivot[1]})
 		}
 		a.Flames[name] = strip
+	}
+	a.Sway, a.SwayMaps = map[string]FrameStrip{}, map[string]bool{}
+	if index.Sway.Image != "" {
+		im, err := loadRGBA(filepath.Join(dir, index.Sway.Image))
+		if err != nil {
+			return nil, err
+		}
+		sheet := ebiten.NewImageFromImage(im)
+		for name, sp := range index.Sway.Sprites {
+			strip := FrameStrip{MS: index.Sway.MS}
+			x, y, w, h := sp.Rect[0], sp.Rect[1], sp.Rect[2], sp.Rect[3]
+			for i := range index.Sway.Frames {
+				r := image.Rect(x+i*w, y, x+(i+1)*w, y+h)
+				strip.Frames = append(strip.Frames, Sprite{sheet.SubImage(r).(*ebiten.Image), sp.Pivot[0], sp.Pivot[1]})
+			}
+			a.Sway[name] = strip
+		}
+		for _, id := range index.Sway.Maps {
+			a.SwayMaps[id] = true
+		}
 	}
 	a.Backdrops = map[string]*ebiten.Image{}
 	for name, path := range index.Backdrops {

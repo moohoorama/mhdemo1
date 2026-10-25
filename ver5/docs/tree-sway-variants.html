@@ -1,0 +1,248 @@
+<title>활엽수 살랑임 시안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  /* Layout: one control bar, the still original, then five option cards (big loop · grove · frame strip). */
+  :root {
+    --bg: #eef0e6; --panel: #f9faf4; --line: #cfd5bf; --fg: #27301f; --muted: #5d6852;
+    --accent: #6d4a2c; --sky: #c7d3bb; --grass: #8fa477; --grass-dark: #7d9266;
+    --display: "Gowun Batang", "Apple SD Gothic Neo", serif;
+    --body: "IBM Plex Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1a1f17; --panel: #232a1f; --line: #3b4733; --fg: #e8ecdc; --muted: #a9b49b;
+      --accent: #d9b88c; --sky: #2f3a2b; --grass: #50613f; --grass-dark: #445536; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1a1f17; --panel: #232a1f; --line: #3b4733; --fg: #e8ecdc; --muted: #a9b49b;
+    --accent: #d9b88c; --sky: #2f3a2b; --grass: #50613f; --grass-dark: #445536; color-scheme: dark;
+  }
+  body {
+    background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.6;
+    padding-block: 28px 64px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  main { max-width: 1080px; margin: 0 auto; display: grid; gap: 22px; }
+  h1 { font-family: var(--display); font-size: 30px; margin: 0; text-wrap: balance; }
+  h2.group { font-size: 26px; margin-top: 18px; }
+  h2 { font-family: var(--display); font-size: 22px; margin: 0; text-wrap: balance; }
+  p { margin: 0; max-width: 68ch; }
+  .lede { display: grid; gap: 8px; }
+  .muted { color: var(--muted); }
+  code { font-size: 13px; }
+
+  .bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; display: flex; flex-wrap: wrap; gap: 10px 18px;
+    align-items: center; padding: 10px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+  .bar label { display: flex; gap: 8px; align-items: center; }
+  .bar output { font-variant-numeric: tabular-nums; min-width: 4.5em; }
+  button { font: inherit; font-weight: 600; border: 1px solid var(--accent); color: var(--accent); background: transparent;
+    padding: 6px 14px; border-radius: 6px; cursor: pointer; }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  input[type=range] { accent-color: var(--accent); }
+
+  .common { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px; align-items: center; }
+  .common ul { margin: 0; padding-left: 1.2em; }
+
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; gap: 14px; }
+  .card header { display: grid; gap: 4px; }
+  .views { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: end; }
+  .stage { border-radius: 8px; background: linear-gradient(var(--sky) 0 70%, var(--grass) 70%); display: flex;
+    align-items: flex-end; justify-content: center; padding: 10px 12px 6px; }
+  .grove { background: linear-gradient(var(--sky) 0 58%, var(--grass) 58% 80%, var(--grass-dark) 80%); overflow: hidden; }
+  canvas { image-rendering: pixelated; display: block; max-width: 100%; }
+  .cap { font-size: 13px; color: var(--muted); }
+  .figure { display: grid; gap: 4px; min-width: 0; }
+  .strip { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+  .strip canvas { background: var(--sky); border-radius: 4px; flex: none; outline: 2px solid transparent; }
+  .strip canvas.on { outline-color: var(--accent); }
+  .notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 22px; font-size: 14px; }
+  .notes b { font-weight: 600; }
+
+  @media (max-width: 720px) {
+    .views, .common, .notes { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=IBM+Plex+Sans+KR:wght@400;600&display=swap">
+
+<main>
+  <div class="lede">
+    <h1>활엽수 살랑임 시안</h1>
+    <p class="muted">대상은 장면 맵에서 가장 많이 쓰이는 <code>stree_broad_0</code>(178그루)입니다. 모든 안은 기존 도트에서 픽셀을 옮기거나 색 단계를 바꿔 만들었고, 새 그림을 그리지 않았습니다. 2차 조합(F)과 3D 정보 이용(G)이 이번 시안이고, 1차(A~E)는 맨 아래에 있습니다.</p>
+  </div>
+
+  <div class="bar" role="group" aria-label="재생">
+    <button id="toggle" type="button">일시정지</button>
+    <label for="speed">프레임 간격 <input id="speed" type="range" min="80" max="320" step="10" value="160"></label>
+    <output id="speedOut" for="speed">160ms</output>
+    <label for="zoom">크게 보기 <input id="zoom" type="range" min="2" max="5" step="1" value="4"></label>
+    <output id="zoomOut" for="zoom">4배</output>
+  </div>
+
+  <section class="card common">
+    <div class="stage"><canvas id="orig"></canvas></div>
+    <div>
+      <h2>원본(정지)과 공통 조건</h2>
+      <ul>
+        <li>8프레임 반복(F5·G4는 12프레임), 기본 160ms. 위 막대로 간격을 바꿔 볼 수 있습니다.</li>
+        <li>원본 8색만 사용합니다. 줄기 픽셀은 모든 프레임에서 그대로입니다.</li>
+        <li>외곽선은 원본과 같은 규칙(잎·줄기의 상하좌우 이웃)으로 프레임마다 다시 그립니다. 원본에 적용하면 원본과 한 픽셀도 다르지 않습니다.</li>
+        <li>잎이 옆으로 나갈 자리를 위해 캔버스를 좌우 3px씩 늘렸습니다(83×115 → 89×115, 기준점 x+3).</li>
+        <li>숲 장면에서는 나무마다 시작 프레임을 달리해 같이 움직이지 않게 합니다. 아래 "여러 그루" 보기가 그 모습입니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div id="cards"></div>
+</main>
+
+<script>
+const GROUPS = [
+  { title: "2차 · C·D·E 조합", note: "큰 잎덩이를 휘게 하지 않고, 몇 픽셀짜리 잎 조각들이 수관 전체에서 따로 움직입니다. 가장자리 살랑(D)은 모든 안의 바탕입니다.", items: [
+    { key: "rim_sparkle", title: "F1 · 가장자리 살랑 + 잎 반짝임",
+      how: "가장자리 잎이 들썩이는 동안, 수관 전체의 3px 남짓한 잎 조각들이 제각각 한 단계 밝아졌다 어두워집니다.",
+      good: "가운데도 살아 있고 모양은 그대로라 울렁거림이 없습니다.",
+      risk: "바람 방향이 없어서 바람이라기보다 햇빛이 반짝이는 느낌에 가깝습니다." },
+    { key: "rim_waves", title: "F2 · 가장자리 살랑 + 넓은 바람 물결",
+      how: "E의 바람 띠를 수관보다 넓은 물결로 바꿔 나무 전체에 늘 걸리게 했습니다. 물마루의 잎은 밝게 뒤집히고, 뒤쪽은 어두워집니다.",
+      good: "E에서 좋았던 날리는 느낌을 국소가 아닌 전체에 줍니다.",
+      risk: "물결이 규칙적이라 오래 보면 줄무늬가 지나가는 것처럼 보일 수 있습니다." },
+    { key: "rim_sprays", title: "F3 · 가장자리 살랑 + 잎 조각 들썩",
+      how: "밝은 잎 무더기를 5px 이하 조각으로 나눠, 조각마다 1px씩 제 박자로 움직입니다. 비켜난 자리에는 한 단계 어두운 그늘이 드러납니다.",
+      good: "실제 잎이 움직이는 느낌에 가장 가깝습니다. 빛을 받는 왼쪽 위가 특히 살아납니다.",
+      risk: "그늘 쪽(오른쪽 아래)에는 밝은 조각이 적어 움직임이 덜합니다." },
+    { key: "rim_sprays_waves", title: "F4 · F3 + 바람 물결",
+      how: "F3의 잎 조각 움직임에 F2의 바람 물결을 약하게 얹었습니다.",
+      good: "조각 움직임과 바람의 흐름이 같이 보입니다.",
+      risk: "가장 바쁩니다. 대사 배경으로는 조금 소란할 수 있습니다." },
+    { key: "gust_cycle", title: "F5 · 고요 → 돌풍 → 고요",
+      how: "12프레임 동안 바람이 잦아들었다가 불어옵니다. 돌풍 때는 잎 조각과 가장자리가 바람 쪽으로 쏠리고 물결이 지나갑니다.",
+      good: "쉬는 구간이 있어 반복이 덜 기계적입니다. 바람이 분다는 것이 분명합니다.",
+      risk: "나무마다 시작 프레임을 엇갈리면 숲 전체에 같은 돌풍이 동시에 불지는 않습니다." },
+  ]},
+  { title: "3D 정보 이용", note: "활엽수 3D 모델(잎덩이 45개)을 도트 크기에 맞춰 렌더하고, 그 결과로 어느 잎덩이가 앞에 있는지, 얼마나 움직이는지, 잎 면이 빛 쪽으로 기우는지를 정합니다. 그림은 지금 도트의 픽셀입니다.", items: [
+    { key: "model_clumps", title: "G1 · 3D 잎덩이 45개 이동",
+      how: "3D에서 잎덩이마다 1px 남짓 옮겨 다시 렌더하고, 앞에 보이는 덩이의 움직임대로 도트를 옮깁니다. 높은 덩이일수록 많이 움직입니다.",
+      good: "앞 덩이가 뒤 덩이를 덮었다 드러내는 겹침이 맞습니다. C보다 덩이가 작고 단단히 움직여 울렁거림이 덜합니다.",
+      risk: "3D 실루엣이 도트보다 조금 작아 가장자리는 이웃의 움직임을 빌려 씁니다. 아래쪽 덩이는 덜 움직입니다." },
+    { key: "model_tilt", title: "G2 · 3D 잎 면 기울기 명암",
+      how: "위치는 그대로 두고, 3D 면 방향을 기준으로 잎 조각을 조금씩 기울여 빛 쪽으로 돌면 밝게, 반대면 어둡게 합니다.",
+      good: "빛을 받는 쪽과 그늘 쪽이 다르게 반응해 F1보다 입체적입니다.",
+      risk: "실루엣이 움직이지 않아, 작게 보면 반짝임만 남습니다." },
+    { key: "model_both", title: "G3 · G1 + G2",
+      how: "3D 잎덩이 이동과 잎 면 명암을 함께 씁니다.",
+      good: "덩이의 흔들림과 잎의 뒤집힘이 함께 보입니다.",
+      risk: "가장자리 움직임이 3D 실루엣에 묶여 D만큼 자유롭지 않습니다." },
+    { key: "model_gust", title: "G4 · G3 + 가장자리, 돌풍 주기",
+      how: "G3에 가장자리 살랑을 더하고, 12프레임 동안 고요 → 돌풍 → 고요로 세기를 바꿉니다.",
+      good: "3D 겹침, 잎 뒤집힘, 가장자리, 쉬는 구간을 다 갖춘 안입니다.",
+      risk: "만드는 과정이 가장 복잡해서 다른 나무로 옮길 때 손볼 값이 많습니다." },
+  ]},
+  { title: "1차 시안", note: "지난번에 본 다섯 안입니다. 비교용으로 남겨 둡니다.", items: [
+    { key: "shear", title: "A · 수관째 휘청", how: "수관 전체가 높이에 비례해 최대 2px 기울어집니다.", good: "단순하고 잘 보입니다.", risk: "기괴하다는 평." },
+    { key: "ripple", title: "B · 아래에서 위로 물결", how: "줄마다 위상이 달라 S자 물결이 올라갑니다.", good: "유기적입니다.", risk: "기괴하다는 평." },
+    { key: "clumps", title: "C · 잎덩이마다 따로", how: "8개 큰 잎덩이가 부드럽게 따로 흔들립니다.", good: "그나마 나았다는 평.", risk: "울렁거려 잎 느낌이 안 산다는 평." },
+    { key: "fringe", title: "D · 가장자리 잎만 살랑", how: "테두리 3px 안의 잎만 들썩입니다.", good: "E만큼 그럴싸하다는 평.", risk: "가운데가 그대로라 이상하다는 평." },
+    { key: "gust", title: "E · 바람 띠(잎 뒤집힘)", how: "바람 띠가 지나가며 잎이 밝게 뒤집힙니다.", good: "바람에 날리는 느낌.", risk: "국소적이라 어색하다는 평." },
+  ]},
+];
+const GROVE = [0, 3, 5, 2], GROVE_SCALE = 2;
+
+const load = src => new Promise((ok, fail) => { const im = new Image(); im.onload = () => ok(im); im.onerror = fail; im.src = src; });
+const base = "../../tools/spritetool/assets/tree-sway-variants/stree_broad_0/";
+const SRC = window.TREE_SRC || {};
+const srcOf = key => SRC[key] || base + key + ".png";
+
+let playing = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let interval = 160, zoom = 4, frame = 0, cw = 0, ch = 0;
+const views = [];
+
+function sized(c, w, h) { c.width = w; c.height = h; const g = c.getContext("2d"); g.imageSmoothingEnabled = false; return g; }
+
+function layout() {
+  for (const v of views) {
+    if (v.kind === "big") { v.g = sized(v.c, cw * zoom, ch * zoom); }
+  }
+  sized(origCanvas, cw * zoom, ch * zoom).drawImage(origImage, 0, 0, cw * zoom, ch * zoom);
+}
+
+function draw() {
+  for (const v of views) {
+    if (v.kind === "big") {
+      v.g.clearRect(0, 0, v.c.width, v.c.height);
+      v.g.drawImage(v.im, (frame % v.n) * cw, 0, cw, ch, 0, 0, cw * zoom, ch * zoom);
+    } else if (v.kind === "grove") {
+      v.g.clearRect(0, 0, v.c.width, v.c.height);
+      GROVE.forEach((off, i) => {
+        const f = (frame + Math.round(off * v.n / 8)) % v.n, x = i * (cw - 14) * GROVE_SCALE + (i % 2 ? 0 : 6), y = (i % 2 ? 10 : 0);
+        v.g.drawImage(v.im, f * cw, 0, cw, ch, x, y, cw * GROVE_SCALE, ch * GROVE_SCALE);
+      });
+    } else {
+      v.cells.forEach((c, i) => c.classList.toggle("on", i === frame % v.cells.length));
+    }
+  }
+}
+
+let last = 0;
+function tick(t) {
+  if (playing && t - last >= interval) { last = t; frame = (frame + 1) % 24; draw(); }
+  requestAnimationFrame(tick);
+}
+
+async function addCard(host, v) {
+    const im = await load(srcOf(v.key));
+    const n = Math.round(im.width / cw);
+    const card = document.createElement("section");
+    card.className = "card";
+    card.id = v.key;
+    card.innerHTML = `<header><h2>${v.title}</h2><p>${v.how}</p></header>
+      <div class="views">
+        <div class="figure"><div class="stage"><canvas class="big"></canvas></div><span class="cap">크게 보기</span></div>
+        <div class="figure"><div class="stage grove"><canvas class="grove"></canvas></div><span class="cap">여러 그루 · 2배 · 시작 프레임을 엇갈림</span></div>
+      </div>
+      <div class="figure"><div class="strip"></div><span class="cap">${n}프레임 · 2배 · 테두리가 지금 프레임</span></div>
+      <div class="notes"><p><b>좋은 점</b> ${v.good}</p><p><b>걸리는 점</b> ${v.risk}</p></div>`;
+    host.append(card);
+    views.push({ kind: "big", c: card.querySelector("canvas.big"), im, n });
+    const grove = card.querySelector("canvas.grove");
+    const gw = (GROVE.length - 1) * (cw - 14) * GROVE_SCALE + cw * GROVE_SCALE + 6;
+    views.push({ kind: "grove", c: grove, im, n, g: sized(grove, gw, ch * GROVE_SCALE + 10) });
+    const strip = card.querySelector(".strip"), cells = [];
+    for (let f = 0; f < n; f++) {
+      const c = document.createElement("canvas");
+      sized(c, cw * 2, ch * 2).drawImage(im, f * cw, 0, cw, ch, 0, 0, cw * 2, ch * 2);
+      c.title = `프레임 ${f}`; c.style.cursor = "pointer";
+      c.addEventListener("click", () => { frame = f; playing = false; toggle.textContent = "재생"; draw(); });
+      strip.append(c); cells.push(c);
+    }
+    views.push({ kind: "strip", cells });
+}
+
+let origCanvas, origImage;
+async function main() {
+  origImage = await load(srcOf("original"));
+  origCanvas = document.getElementById("orig");
+  cw = origImage.width; ch = origImage.height;
+  const host = document.getElementById("cards");
+  host.style.display = "grid"; host.style.gap = "22px";
+  for (const group of GROUPS) {
+    const head = document.createElement("div");
+    head.className = "lede";
+    head.innerHTML = `<h2 class="group">${group.title}</h2><p class="muted">${group.note}</p>`;
+    host.append(head);
+    for (const v of group.items) await addCard(host, v);
+  }
+  layout(); draw();
+  toggle.textContent = playing ? "일시정지" : "재생";
+  requestAnimationFrame(tick);
+}
+
+const toggle = document.getElementById("toggle");
+toggle.addEventListener("click", () => { playing = !playing; toggle.textContent = playing ? "일시정지" : "재생"; });
+const speed = document.getElementById("speed"), speedOut = document.getElementById("speedOut");
+speed.addEventListener("input", () => { interval = +speed.value; speedOut.textContent = interval + "ms"; });
+const zoomIn = document.getElementById("zoom"), zoomOut = document.getElementById("zoomOut");
+zoomIn.addEventListener("input", () => { zoom = +zoomIn.value; zoomOut.textContent = zoom + "배"; layout(); draw(); });
+main();
+</script>

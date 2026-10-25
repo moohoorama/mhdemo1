@@ -1,0 +1,82 @@
+{
+ "cell": [
+  89,
+  115
+ ],
+ "pivot_offset": [
+  3,
+  0
+ ],
+ "variants": [
+  {
+   "key": "rim_sparkle",
+   "title": "F1 · 가장자리 살랑 + 잎 반짝임",
+   "frames": 8
+  },
+  {
+   "key": "rim_waves",
+   "title": "F2 · 가장자리 살랑 + 넓은 바람 물결",
+   "frames": 8
+  },
+  {
+   "key": "rim_sprays",
+   "title": "F3 · 가장자리 살랑 + 잎 조각 들썩",
+   "frames": 8
+  },
+  {
+   "key": "rim_sprays_waves",
+   "title": "F4 · F3 + 바람 물결",
+   "frames": 8
+  },
+  {
+   "key": "gust_cycle",
+   "title": "F5 · 고요 → 돌풍 → 고요",
+   "frames": 12
+  },
+  {
+   "key": "model_clumps",
+   "title": "G1 · 3D 잎덩이 45개 이동",
+   "frames": 8
+  },
+  {
+   "key": "model_tilt",
+   "title": "G2 · 3D 잎 면 기울기 명암",
+   "frames": 8
+  },
+  {
+   "key": "model_both",
+   "title": "G3 · G1 + G2",
+   "frames": 8
+  },
+  {
+   "key": "model_gust",
+   "title": "G4 · G3 + 가장자리, 돌풍 주기",
+   "frames": 12
+  },
+  {
+   "key": "shear",
+   "title": "A · 수관째 휘청",
+   "frames": 8
+  },
+  {
+   "key": "ripple",
+   "title": "B · 아래에서 위로 물결",
+   "frames": 8
+  },
+  {
+   "key": "clumps",
+   "title": "C · 잎덩이마다 따로",
+   "frames": 8
+  },
+  {
+   "key": "fringe",
+   "title": "D · 가장자리 잎만 살랑",
+   "frames": 8
+  },
+  {
+   "key": "gust",
+   "title": "E · 바람 띠(잎 뒤집힘)",
+   "frames": 8
+  }
+ ]
+}

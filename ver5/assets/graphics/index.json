@@ -7628,5 +7628,174 @@
   "pass": "backdrops/pass.png",
   "city_wall": "backdrops/city_wall.png",
   "burning_city": "backdrops/burning_city.png"
+ },
+ "sway": {
+  "version": 1,
+  "image": "map/sway.png",
+  "frames": 8,
+  "ms": 160,
+  "maps": [
+   "S_zhuo2",
+   "S_peach_grove2",
+   "S_militia_camp"
+  ],
+  "sprites": {
+   "peach_bloom_0": {
+    "rect": [
+     0,
+     613,
+     99,
+     98
+    ],
+    "pivot": [
+     59,
+     93
+    ]
+   },
+   "peach_bloom_1": {
+    "rect": [
+     0,
+     712,
+     96,
+     95
+    ],
+    "pivot": [
+     52,
+     90
+    ]
+   },
+   "peach_bloom_2": {
+    "rect": [
+     0,
+     808,
+     97,
+     94
+    ],
+    "pivot": [
+     38,
+     89
+    ]
+   },
+   "stree_broad_0": {
+    "rect": [
+     0,
+     276,
+     89,
+     117
+    ],
+    "pivot": [
+     46,
+     111
+    ]
+   },
+   "stree_broad_1": {
+    "rect": [
+     0,
+     394,
+     85,
+     113
+    ],
+    "pivot": [
+     51,
+     107
+    ]
+   },
+   "stree_bush_0": {
+    "rect": [
+     0,
+     1174,
+     37,
+     24
+    ],
+    "pivot": [
+     21,
+     18
+    ]
+   },
+   "stree_bush_1": {
+    "rect": [
+     681,
+     1089,
+     42,
+     25
+    ],
+    "pivot": [
+     19,
+     16
+    ]
+   },
+   "stree_old": {
+    "rect": [
+     0,
+     508,
+     118,
+     104
+    ],
+    "pivot": [
+     57,
+     91
+    ]
+   },
+   "stree_pine_0": {
+    "rect": [
+     0,
+     143,
+     98,
+     132
+    ],
+    "pivot": [
+     38,
+     126
+    ]
+   },
+   "stree_pine_1": {
+    "rect": [
+     0,
+     0,
+     75,
+     142
+    ],
+    "pivot": [
+     45,
+     136
+    ]
+   },
+   "stree_plum_0": {
+    "rect": [
+     0,
+     1089,
+     85,
+     84
+    ],
+    "pivot": [
+     48,
+     79
+    ]
+   },
+   "stree_plum_1": {
+    "rect": [
+     0,
+     997,
+     89,
+     91
+    ],
+    "pivot": [
+     45,
+     86
+    ]
+   },
+   "stree_willow": {
+    "rect": [
+     0,
+     903,
+     78,
+     93
+    ],
+    "pivot": [
+     35,
+     87
+    ]
+   }
+  }
  }
 }

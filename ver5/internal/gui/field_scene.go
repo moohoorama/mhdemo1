@@ -172,11 +172,32 @@ func (f *Field) sceneItems() []drawItem {
 			for _, d := range p.Draws {
 				op := &ebiten.DrawImageOptions{}
 				f.shadeScenery(f.Canvas, op, p.Anchor[0], p.Anchor[1])
+				if f.drawSway(d, p.Anchor, ox, oy, op) {
+					continue
+				}
 				f.drawPlan(f.Canvas, d, ox, oy, op)
 			}
 		}})
 	}
 	return items
+}
+
+// drawSway draws a tree of a map listed in Assets.SwayMaps at its leaf sway frame; each tree starts at its own frame
+// and time so a grove does not move in step. It reports false for anything else.
+func (f *Field) drawSway(d scenemap.Draw, anchor [2]float64, ox, oy float64, op *ebiten.DrawImageOptions) bool {
+	strip, ok := f.A.Sway[d.Name]
+	if !ok || d.Kind != scenemap.DrawSprite || d.Sheet == "scenery" || d.Sheet == "structures" || !f.A.SwayMaps[f.Map.ID] {
+		return false
+	}
+	ax, ay := int(anchor[0]), int(anchor[1])
+	lag := hash3(ax, ay, 7) * float64(strip.MS)
+	n := len(strip.Frames)
+	s := strip.Frames[(int((f.clockMS+lag)/float64(strip.MS))+int(hash3(ax, ay, 8)*float64(n)))%n]
+	pr := f.A.Props[d.Name]
+	op.GeoM.Translate(ox+float64(d.X)+pr.PivotX-s.PivotX, oy+float64(d.Y)+pr.PivotY-s.PivotY)
+	f.renderOp(f.Canvas, op)
+	f.Canvas.DrawImage(s.Image, op)
+	return true
 }
 
 // groundLift is how high the ground under a point of game cell coordinates stands on a format 2 map.
