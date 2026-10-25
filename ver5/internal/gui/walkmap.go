@@ -264,31 +264,42 @@ func (g *Game) smallDiamond(dst *ebiten.Image, t smallTile, fill, rim color.NRGB
 	}
 }
 
-// plate is how a name plate looks: dim, under the cursor, or marking where the walk's main story or a side story
-// goes on.
+// plate is a name plate's hue: grey, or marking where the walk's main story (green) or a side story (yellow) goes
+// on.
 type plate int
 
 const ( // in the order they are drawn, the later on top
 	plateDim plate = iota
 	plateSide
 	plateMain
-	plateHover
 )
 
-// plateColors are each plate's body, rim and letters.
-var plateColors = map[plate][3]color.NRGBA{
-	plateDim:   {{R: 30, G: 20, B: 14, A: 210}, goldDim, ink},
-	plateHover: {{R: 92, G: 30, B: 20, A: 235}, gold, ink},
-	plateMain:  {{R: 236, G: 190, B: 46, A: 245}, {R: 255, G: 238, B: 150, A: 255}, {R: 44, G: 30, B: 6, A: 255}},
-	plateSide:  {{R: 56, G: 150, B: 70, A: 245}, {R: 170, G: 240, B: 170, A: 255}, {R: 250, G: 255, B: 246, A: 255}},
+// plateColors are each plate's body, rim and letters, at rest and under the cursor: the hue says what the plate
+// marks, and pointing at it brightens the body (luma ~64 to ~128) and turns the letters white.
+var plateColors = map[plate][2][3]color.NRGBA{
+	plateDim: {
+		{{R: 66, G: 64, B: 60, A: 255}, {R: 130, G: 128, B: 122, A: 255}, {R: 196, G: 192, B: 184, A: 255}},
+		{{R: 132, G: 128, B: 120, A: 255}, {R: 220, G: 216, B: 208, A: 255}, {R: 255, G: 255, B: 255, A: 255}},
+	},
+	plateMain: {
+		{{R: 40, G: 78, B: 44, A: 255}, {R: 100, G: 150, B: 100, A: 255}, {R: 170, G: 210, B: 160, A: 255}},
+		{{R: 78, G: 158, B: 88, A: 255}, {R: 190, G: 236, B: 190, A: 255}, {R: 255, G: 255, B: 255, A: 255}},
+	},
+	plateSide: {
+		{{R: 84, G: 66, B: 16, A: 255}, {R: 160, G: 136, B: 60, A: 255}, {R: 222, G: 196, B: 110, A: 255}},
+		{{R: 160, G: 130, B: 36, A: 255}, {R: 240, G: 222, B: 150, A: 255}, {R: 255, G: 255, B: 255, A: 255}},
+	},
 }
 
-// namePlate is a small plate with a name, centred on UI point (x, y)'s bottom edge.
-func (g *Game) namePlate(dst *ebiten.Image, name string, x, y float64, style plate) {
+// namePlate is a small plate with a name, centred on UI point (x, y)'s bottom edge; hover when the cursor is on it.
+func (g *Game) namePlate(dst *ebiten.Image, name string, x, y float64, style plate, hover bool) {
 	f := g.serif(15, 800)
 	tw := measure(name, f)
 	px, py := x-tw/2-10, y-26
-	c := plateColors[style]
+	c := plateColors[style][0]
+	if hover {
+		c = plateColors[style][1]
+	}
 	rect(dst, float32(px), float32(py), float32(tw+20), 24, c[0])
 	strokeRect(dst, float32(px)+.5, float32(py)+.5, float32(tw+19), 23, 1, c[1])
 	write(dst, name, f, px+10, py+1, c[2])

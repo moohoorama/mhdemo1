@@ -580,11 +580,8 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 				style = guideExit[j]
 			}
 		}
-		if idle && hover != nil && hover.At == e.At {
-			style = plateHover
-		}
 		sx, sy := worldToUI(g.toScreen(px, py))
-		plates = append(plates, namedPlate{g.exitName(a, e), sx, sy - 6, style})
+		plates = append(plates, namedPlate{g.exitName(a, e), sx, sy - 6, style, idle && hover != nil && hover.At == e.At})
 	}
 	for key := range w.people {
 		v := g.scene.actors[key]
@@ -592,16 +589,18 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 			continue
 		}
 		style := guidePerson[w.people[key]]
-		if idle && person == key {
-			style = plateHover
-		}
 		x, y := g.field.Center(v.u, v.v)
 		sx, sy := worldToUI(g.toScreen(x, y-v.lift-v.top-4))
-		plates = append(plates, namedPlate{key, sx, sy, style})
+		plates = append(plates, namedPlate{key, sx, sy, style, idle && person == key})
 	}
-	slices.SortStableFunc(plates, func(p, q namedPlate) int { return int(p.style) - int(q.style) }) // the guide's plates on top
+	slices.SortStableFunc(plates, func(p, q namedPlate) int { // the guide's plates on top, the one pointed at over all
+		if p.hover != q.hover {
+			return map[bool]int{false: -1, true: 1}[p.hover]
+		}
+		return int(p.style) - int(q.style)
+	})
 	for _, p := range plates {
-		g.namePlate(dst, p.name, p.x, p.y, p.style)
+		g.namePlate(dst, p.name, p.x, p.y, p.style, p.hover)
 	}
 	g.label(dst, a.Name, 24, 18, 22, gold)
 	g.label(dst, fmt.Sprintf("돈 %d", o.Money), 24, 52, 16, ink)
@@ -619,10 +618,11 @@ type namedPlate struct {
 	name  string
 	x, y  float64
 	style plate
+	hover bool
 }
 
 // exploreGuide is how the guide marks the exits of the hero's area (by index) and its people (by key): the main
-// story's way yellow, a side story's green, the main one winning where both lead. Nothing when the player turned the
+// story's way green, a side story's yellow, the main one winning where both lead. Nothing when the player turned the
 // guide off.
 func (g *Game) exploreGuide() (map[int]plate, map[string]plate) {
 	exits, people := map[int]plate{}, map[string]plate{}
