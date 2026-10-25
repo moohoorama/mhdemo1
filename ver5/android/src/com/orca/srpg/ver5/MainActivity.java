@@ -15,6 +15,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -61,7 +63,7 @@ public final class MainActivity extends Activity {
             revision = new String(bytes, 0, n, StandardCharsets.US_ASCII);
         }
         File root = new File(getFilesDir(), "runtime");
-        File marker = new File(root, ".revision");
+        File marker = new File(root, ".revision-v2");
         if (marker.isFile()) {
             try (FileInputStream in = new FileInputStream(marker)) {
                 byte[] bytes = new byte[64];
@@ -70,6 +72,7 @@ public final class MainActivity extends Activity {
         }
         if (!root.isDirectory() && !root.mkdirs()) throw new IOException("Cannot create runtime directory");
         String prefix = root.getCanonicalPath() + File.separator;
+        Set<String> bundledFiles = new HashSet<>();
         try (ZipInputStream zip = new ZipInputStream(getAssets().open("runtime.zip"))) {
             ZipEntry entry;
             byte[] buffer = new byte[65536];
@@ -79,6 +82,7 @@ public final class MainActivity extends Activity {
                 File parent = target.getParentFile();
                 if (!parent.isDirectory() && !parent.mkdirs()) throw new IOException("Cannot create asset directory");
                 if (!entry.isDirectory()) {
+                    bundledFiles.add(entry.getName());
                     try (FileOutputStream out = new FileOutputStream(target)) {
                         int count;
                         while ((count = zip.read(buffer)) != -1) out.write(buffer, 0, count);
@@ -87,8 +91,22 @@ public final class MainActivity extends Activity {
                 zip.closeEntry();
             }
         }
+        removeStaleFiles(root, "", bundledFiles);
         try (FileOutputStream out = new FileOutputStream(marker)) {
             out.write(revision.getBytes(StandardCharsets.US_ASCII));
+        }
+    }
+
+    private void removeStaleFiles(File dir, String path, Set<String> bundledFiles) throws IOException {
+        File[] children = dir.listFiles();
+        if (children == null) throw new IOException("Cannot list runtime directory: " + dir);
+        for (File child : children) {
+            String name = path + child.getName();
+            if (child.isDirectory()) {
+                removeStaleFiles(child, name + "/", bundledFiles);
+            } else if (!name.equals(".revision-v2") && !bundledFiles.contains(name) && !child.delete()) {
+                throw new IOException("Cannot remove old runtime asset: " + child);
+            }
         }
     }
 
