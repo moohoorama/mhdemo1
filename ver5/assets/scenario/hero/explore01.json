@@ -628,7 +628,7 @@
       3,
       4
      ],
-     "Face": "SE",
+     "Face": "SW",
      "Play": "action",
      "Chatter": "허리 펴라!|칼끝 똑바로!|잘하면 저녁에 고기다!",
      "Talk": [
@@ -643,7 +643,7 @@
       2,
       6
      ],
-     "Face": "NW",
+     "Face": "NE",
      "Sprite": "light_infantry",
      "Faction": "shu",
      "Play": "attack"
@@ -653,7 +653,7 @@
       4,
       6
      ],
-     "Face": "NW",
+     "Face": "NE",
      "Sprite": "light_infantry",
      "Faction": "shu",
      "Play": "attack"
@@ -663,7 +663,7 @@
       3,
       8
      ],
-     "Face": "NW",
+     "Face": "NE",
      "Sprite": "light_infantry",
      "Faction": "shu",
      "Play": "attack"

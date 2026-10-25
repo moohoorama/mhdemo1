@@ -1,9 +1,11 @@
 package gui
 
 import (
+	"cmp"
 	"fmt"
 	"image/color"
 	"math"
+	"slices"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -36,6 +38,7 @@ type scene struct {
 	emotes  map[string]*emote
 	looks   map[string]*look
 	effects []sceneEffect
+	petals  []petal // drawPetals' layout, kept from frame to frame
 	props   []sceneProp
 	spoke   map[string]bool
 	shake   float64
@@ -637,15 +640,30 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 		}
 		g.drawSceneEffects(dst)
 	})
+	type balloon struct {
+		name, mark string
+		v          *unitVis
+		talking    bool
+	}
+	var balloons []balloon
 	for name := range talking {
 		if v := s.actors[name]; v != nil && !v.gone && s.emotes[name] == nil {
-			g.bubble(dst, v, "", true)
+			balloons = append(balloons, balloon{name, "", v, true})
 		}
 	}
 	for name, e := range s.emotes {
 		if v := s.actors[name]; v != nil && !v.gone {
-			g.bubble(dst, v, e.text, false)
+			balloons = append(balloons, balloon{name, e.text, v, false})
 		}
+	}
+	// the lower a balloon's tail points, the later it is drawn, so overlapping ones keep one order
+	slices.SortFunc(balloons, func(a, b balloon) int {
+		ax, ay := g.field.Center(a.v.u, a.v.v)
+		bx, by := g.field.Center(b.v.u, b.v.v)
+		return cmp.Or(cmp.Compare(ay-a.v.lift-a.v.top, by-b.v.lift-b.v.top), cmp.Compare(ax, bx), strings.Compare(a.name, b.name))
+	})
+	for _, b := range balloons {
+		g.bubble(dst, b.v, b.mark, b.talking)
 	}
 	if s.fade > 0 {
 		inWorld(func() { rect(dst, 0, 0, float32(worldW), float32(worldH), color.NRGBA{A: uint8(255 * s.fade)}) })
@@ -701,24 +719,15 @@ func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) 
 	g.assets.Bubble.DrawText(dst, "", mark, tail, bx, by, drawPx)
 }
 
-var petalColors = []color.NRGBA{{R: 242, G: 167, B: 184, A: 255}, {R: 255, G: 214, B: 222, A: 255}, {R: 215, G: 119, B: 144, A: 255}}
-
-// drawSceneEffects draws the stage effects: peach petals drifting across the whole screen,
+// drawSceneEffects draws the stage effects: peach petals falling all around the camera,
 // fires, small fires, smoke and steam at map positions. Particles are pure functions of the
-// effect's age, so skipping beats or replaying a line shows the same thing.
+// effect's age (and the camera, for the petals), so skipping beats or replaying a line shows the same thing.
 func (g *Game) drawSceneEffects(dst *ebiten.Image) {
 	for _, e := range g.scene.effects {
 		x, y := g.field.Center(e.u, e.v)
 		switch e.kind {
 		case "petals":
-			for i := 0; i < 48; i++ {
-				k := float64(i)
-				fall, drift := 34+11*math.Mod(k*7.3, 5), 26+9*math.Mod(k*3.1, 4)
-				x := math.Mod(k*97.13+drift*e.t+12*math.Sin(e.t*1.3+k), float64(worldW)+40) - 20
-				y := math.Mod(k*61.7+fall*e.t, float64(worldH)+40) - 20
-				w := math.Abs(math.Sin(e.t*3 + k)) // tumbling: the petal frames are 2, 3 and 4 wide
-				g.screenFX(dst, "petal", min(2, int(w*3)), x, y, 0, 0, petalColors[i%len(petalColors)], 1)
-			}
+			g.drawPetals(dst, e.t)
 		case "fire":
 			g.flames(dst, x, y, e.t, true)
 		case "smallfire":

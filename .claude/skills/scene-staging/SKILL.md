@@ -16,6 +16,8 @@ Read first:
   prostrate, eunuchs, wounded lying or slumped, helper pairs, stretchers, prone crossbowmen, white horses; officers
   that sit, the emperor on his throne). Use only those. When the story needs something they cannot show, write it down as an engine request
   in the report; do not fake it with something that reads wrong.
+- `docs/story-writing.md` "자리와 방향" — units (scene cells vs explore/object small tiles), which axis each Face
+  points along, how to face someone and how to line people up in front of a thing. Check every At/Move/Face against it.
 - `assets/scenes/ch02.json`, `ch03.json`, `ch05.json`, `ch06.json` as worked examples (a council, a court, arrivals on a road, a night camp).
 - The stretch's story nodes in `assets/scenario/hero/storyNN.json` and its part of `docs/fullstory.md`.
 - Reuse battle sprites, motions and terrain; draw new art only where nothing fits (scholar/strategist sprites stand in
