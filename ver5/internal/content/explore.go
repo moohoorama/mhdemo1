@@ -74,9 +74,12 @@ type PersonMove struct {
 	Wander int      `json:",omitempty"`
 }
 
+// ExploreEvent is an event a person starts on being talked to, while every If holds. A Side event is no part of the
+// main story: the walk's guide shows it in its own colour, and the sortie does not wait for it.
 type ExploreEvent struct {
 	If   []string `json:",omitempty"`
 	Node string
+	Side bool `json:",omitempty"`
 }
 
 type ExploreSortie struct {

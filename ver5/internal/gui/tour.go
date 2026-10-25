@@ -223,7 +223,11 @@ func (g *Game) drawTour(dst *ebiten.Image) {
 			}
 		}
 		sx, sy := worldToUI(g.toScreen(px, py))
-		g.namePlate(dst, e.Name, sx, sy-6, e == hover)
+		style := plateDim
+		if e == hover {
+			style = plateHover
+		}
+		g.namePlate(dst, e.Name, sx, sy-6, style)
 	}
 	g.label(dst, w.t.Name+" · "+a.Name+" ("+a.Map+")", 24, 18, 18, gold)
 	g.label(dst, "클릭: 이동, 이름판·건물·출구: 다음 장면   휠: 확대   R·오른쪽 클릭: 걸을 수 있는 칸", 24, 46, 13, muted)

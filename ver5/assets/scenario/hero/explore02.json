@@ -30,7 +30,7 @@
      "To": "office"
     },
     {
-     "Name": "무기점",
+     "Name": "대장간",
      "At": [
       19,
       9
@@ -297,7 +297,7 @@
   },
   "weapons": {
    "Map": "S_weapon_shop2",
-   "Name": "무기점",
+   "Name": "대장간",
    "Zoom": 3,
    "At": [
     6,

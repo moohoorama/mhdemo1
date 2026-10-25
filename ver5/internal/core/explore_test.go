@@ -118,6 +118,27 @@ func TestOpeningPlaysOnceAsTheWalkOpens(t *testing.T) {
 	assert.Equal(t, "walk", e.Observe().Node, "it does not play again")
 }
 
+func TestGoalsGuideToTheMainEventThenTheSortie(t *testing.T) {
+	e := walkEngine(t)
+	x := e.ExploreFile()
+	x.Areas["grove"].People = map[string]*content.ExplorePerson{
+		"노인": {Face: "SW", Event: []content.ExploreEvent{{If: []string{"!flag:oath"}, Node: "oath", Side: true}}},
+	}
+	x.Areas["street"].Exits[0].If = nil
+	goals := e.Goals()
+	require.Len(t, goals, 2)
+	assert.Equal(t, Goal{Area: "street", Person: "장비", First: -1}, Goal{Area: goals[0].Area, Person: goals[0].Person, First: goals[0].First}, "the main event here")
+	assert.Equal(t, "grove", goals[1].Area)
+	assert.Equal(t, 0, goals[1].First, "the side event lies through the first exit")
+	assert.True(t, goals[1].Side)
+	applyOK(t, e, Command{Kind: "talk", Target: "장비"})
+	next(t, e)
+	goals = e.Goals()
+	require.Len(t, goals, 1, "with no main event due, the guide shows the sortie")
+	assert.True(t, goals[0].Sortie)
+	assert.Equal(t, "street", goals[0].Area)
+}
+
 func TestShopBuysAndSellsForHalf(t *testing.T) {
 	e := walkEngine(t)
 	applyOK(t, e, Command{Kind: "buy", Target: "상인", Item: "tonic", Count: 2})

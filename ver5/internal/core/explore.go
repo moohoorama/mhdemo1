@@ -21,6 +21,7 @@ func (e *Engine) gain(id string, n int) {
 type Visitor struct {
 	Key, Do string
 	Event   string // the event's first node
+	Side    bool   // the event is a side event
 }
 
 // Walking reports whether the story waits at an explore node for the hero to walk.
@@ -54,7 +55,7 @@ func (e *Engine) Visitors() []Visitor {
 		v := Visitor{Key: key, Do: "talk"}
 		for _, ev := range p.Event {
 			if e.holdsAll(ev.If) {
-				v.Do, v.Event = "event", ev.Node
+				v.Do, v.Event, v.Side = "event", ev.Node, ev.Side
 				break
 			}
 		}
@@ -171,45 +172,86 @@ func (e *Engine) explore(c Command) error {
 
 var faces = map[string]bool{"NE": true, "NW": true, "SE": true, "SW": true}
 
-// ExploreNext is what a player who wants the story to go on does next on the walk: walk to the nearest area where
-// an event is due and talk, else to the confidant and sortie. Nil when the walk is stuck (or the story is not
-// walking). Each walk command stands at the arrival place of the area it enters.
-func (e *Engine) ExploreNext() []Command {
+// Goal is someone the story waits on in the walk, reachable now through open exits: in Area, by key Person. First is
+// the exit of the hero's area that leads toward them, -1 when they stand in it. Side marks a side event, Sortie the
+// confidant (a goal only while no main event is due).
+type Goal struct {
+	Area, Person string
+	First        int
+	Side, Sortie bool
+	path         []Command
+}
+
+// Goals are the events due anywhere the hero can walk to now, nearest first, then the confidant's sortie when no
+// main event is due. Nil outside a walk.
+func (e *Engine) Goals() []Goal {
 	if !e.Walking() {
 		return nil
 	}
 	x, start := e.ExploreFile(), e.state.Spot.Area
-	for _, want := range []string{"event", "sortie"} {
-		prev := map[string]string{start: ""}
-		queue := []string{start}
-		for len(queue) > 0 {
-			id := queue[0]
-			queue = queue[1:]
-			t := fromState(e.data, e.Snapshot())
-			t.state.Spot = content.Spot{Area: id, Face: "SE"}
-			for _, v := range t.Visitors() {
-				if v.Do != want {
-					continue
-				}
-				var path []Command
-				for at := id; at != start; at = prev[at] {
-					s := x.Arrival(at, prev[at])
-					path = append([]Command{{Kind: "walk", Option: at, X: s.At[0], Y: s.At[1], Target: s.Face}}, path...)
-				}
-				kind := "talk"
-				if want == "sortie" {
-					kind = "sortie"
-				}
-				return append(path, Command{Kind: kind, Target: v.Key})
+	prev, first := map[string]string{start: ""}, map[string]int{start: -1}
+	queue := []string{start}
+	var events, sorties []Goal
+	main := false
+	for len(queue) > 0 {
+		id := queue[0]
+		queue = queue[1:]
+		t := fromState(e.data, e.Snapshot())
+		t.state.Spot = content.Spot{Area: id, Face: "SE"}
+		var path []Command
+		for at := id; at != start; at = prev[at] {
+			s := x.Arrival(at, prev[at])
+			path = append([]Command{{Kind: "walk", Option: at, X: s.At[0], Y: s.At[1], Target: s.Face}}, path...)
+		}
+		for _, v := range t.Visitors() {
+			g := Goal{Area: id, Person: v.Key, First: first[id], Side: v.Side, path: path}
+			switch v.Do {
+			case "event":
+				events, main = append(events, g), main || !v.Side
+			case "sortie":
+				g.Sortie = true
+				sorties = append(sorties, g)
 			}
-			open := t.OpenExits()
-			for i, ex := range x.Areas[id].Exits {
-				if _, seen := prev[ex.To]; open[i] && !seen {
-					prev[ex.To] = id
-					queue = append(queue, ex.To)
+		}
+		open := t.OpenExits()
+		for i, ex := range x.Areas[id].Exits {
+			if _, seen := prev[ex.To]; open[i] && !seen {
+				prev[ex.To] = id
+				first[ex.To] = first[id]
+				if id == start {
+					first[ex.To] = i
 				}
+				queue = append(queue, ex.To)
 			}
 		}
 	}
-	return nil
+	if !main {
+		events = append(events, sorties...)
+	}
+	return events
+}
+
+// ExploreNext is what a player who wants the story to go on does next on the walk: walk to the nearest main event and
+// talk, else to the confidant and sortie, else to the nearest side event. Nil when the walk is stuck (or the story is
+// not walking). Each walk command stands at the arrival place of the area it enters.
+func (e *Engine) ExploreNext() []Command {
+	goals := e.Goals()
+	pick := -1
+	for i, g := range goals {
+		if !g.Side && pick < 0 {
+			pick = i
+		}
+	}
+	if pick < 0 && len(goals) > 0 {
+		pick = 0
+	}
+	if pick < 0 {
+		return nil
+	}
+	g := goals[pick]
+	kind := "talk"
+	if g.Sortie {
+		kind = "sortie"
+	}
+	return append(append([]Command{}, g.path...), Command{Kind: kind, Target: g.Person})
 }

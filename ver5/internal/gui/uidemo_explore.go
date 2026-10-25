@@ -31,6 +31,7 @@ func demoExplore(d *Demo) error {
 	if r := g.request(session.Request{Op: "new", Seed: 1, Discard: true}); !r.OK {
 		return fmt.Errorf("explore demo: %s", r.Error)
 	}
+	cursorPos = func() (int, int) { return -1000, -1000 } // off the map until the first click
 	idle, wait := 0, 0
 	d.step = func(f int) {
 		wait++
@@ -78,6 +79,7 @@ func demoExplore(d *Demo) error {
 		if err := g.demoExploreAct(act); err != nil {
 			d.err = err
 		}
+		cursorPos = func() (int, int) { return -1000, -1000 } // off again, so the plates show the guide's colours
 	}
 	return nil
 }

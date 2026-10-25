@@ -79,7 +79,7 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 	case "deputy":
 		w, h = 640, 560
 	case "settings":
-		w, h = 640, 668
+		w, h = 640, 732
 	case "roster":
 		w, h = uiW-100, uiH-90
 	case "shop":
@@ -200,6 +200,10 @@ func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
 			{"전투 기록", []choice{
 				{"상세", s.Detail, set(func(v *storage.Settings) { v.Detail = true })},
 				{"주요 사건만", !s.Detail, set(func(v *storage.Settings) { v.Detail = false })},
+			}},
+			{"길 안내", []choice{
+				{"켜기", !s.NoGuide, set(func(v *storage.Settings) { v.NoGuide = false })},
+				{"끄기", s.NoGuide, set(func(v *storage.Settings) { v.NoGuide = true })},
 			}},
 			{"대사 속도", []choice{
 				{"한 글자씩", !s.InstantText, set(func(v *storage.Settings) { v.InstantText = false })},

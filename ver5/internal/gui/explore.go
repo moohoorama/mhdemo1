@@ -556,6 +556,8 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 			g.smallDiamond(dst, t, cursorFill, cursorRim)
 		}
 	}
+	guideExit, guidePerson := g.exploreGuide()
+	var plates []namedPlate
 	seen := map[[2]int]bool{}
 	for i := range a.Exits {
 		e := &a.Exits[i]
@@ -570,12 +572,34 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 				px, py = ox, oy
 			}
 		}
+		style := plateDim
+		for j, o := range a.Exits {
+			if o.At == e.At && guideExit[j] != plateDim {
+				style = guideExit[j]
+			}
+		}
+		if idle && hover != nil && hover.At == e.At {
+			style = plateHover
+		}
 		sx, sy := worldToUI(g.toScreen(px, py))
-		g.namePlate(dst, g.exitName(a, e), sx, sy-6, idle && hover != nil && hover.At == e.At)
+		plates = append(plates, namedPlate{g.exitName(a, e), sx, sy - 6, style})
 	}
-	if idle && person != "" && !scenes.Extra(person) {
-		cx, cy := cursorPos()
-		g.namePlate(dst, person, float64(cx), float64(cy)-16, false)
+	for key := range w.people {
+		v := g.scene.actors[key]
+		if v == nil || v.gone || scenes.Extra(key) || w.talk != nil {
+			continue
+		}
+		style := guidePerson[w.people[key]]
+		if idle && person == key {
+			style = plateHover
+		}
+		x, y := g.field.Center(v.u, v.v)
+		sx, sy := worldToUI(g.toScreen(x, y-v.lift-v.top-4))
+		plates = append(plates, namedPlate{key, sx, sy, style})
+	}
+	slices.SortStableFunc(plates, func(p, q namedPlate) int { return int(p.style) - int(q.style) }) // the guide's plates on top
+	for _, p := range plates {
+		g.namePlate(dst, p.name, p.x, p.y, p.style)
 	}
 	g.label(dst, a.Name, 24, 18, 22, gold)
 	g.label(dst, fmt.Sprintf("돈 %d", o.Money), 24, 52, 16, ink)
@@ -587,6 +611,36 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 		g.drawDialogue(dst, l, text, done, fmt.Sprintf("%s|explore|%s|%d", strings.Join(l.speakers, "·"), w.talkTo, w.talkI))
 	}
 	blackOut(dst, math.Max(w.fade, g.scene.fade))
+}
+
+type namedPlate struct {
+	name  string
+	x, y  float64
+	style plate
+}
+
+// exploreGuide is how the guide marks the exits of the hero's area (by index) and its people (by key): the main
+// story's way yellow, a side story's green, the main one winning where both lead. Nothing when the player turned the
+// guide off.
+func (g *Game) exploreGuide() (map[int]plate, map[string]plate) {
+	exits, people := map[int]plate{}, map[string]plate{}
+	if g.S.Settings.NoGuide {
+		return exits, people
+	}
+	mark := func(m map[int]plate, k int, side bool) {
+		if side && m[k] == plateMain {
+			return
+		}
+		m[k] = map[bool]plate{false: plateMain, true: plateSide}[side]
+	}
+	for _, goal := range g.S.Engine.Goals() {
+		if goal.First >= 0 {
+			mark(exits, goal.First, goal.Side)
+		} else if !goal.Side || people[goal.Person] != plateMain {
+			people[goal.Person] = map[bool]plate{false: plateMain, true: plateSide}[goal.Side]
+		}
+	}
+	return exits, people
 }
 
 // exitName is the name an exit's plate shows: of the one open now among those sharing its spot.

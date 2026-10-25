@@ -34,6 +34,7 @@ type Settings struct {
 	DamagePct   int    `json:"damage_pct,omitempty"`   // damage dealt in percent; 0 is DefaultScalePct
 	XPPct       int    `json:"xp_pct,omitempty"`       // experience gained in percent; 0 is DefaultScalePct
 	CounterAll  bool   `json:"counter_all"`            // every unit strikes back at half damage; on until the player turns it off
+	NoGuide     bool   `json:"no_guide,omitempty"`     // the walk does not mark where the story goes on
 }
 
 // ScalePcts are the percents the player may choose for the damage and experience scales.
