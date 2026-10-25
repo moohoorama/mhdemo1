@@ -20,7 +20,7 @@
 | 문서 | 내용 |
 |---|---|
 | [design.md](design.md) | 게임 방향, 성장·재미 목표, 설계 원칙 |
-| [conceptual_scenario.md](conceptual_scenario.md) | 시나리오 1~20의 뼈대 이야기 |
+| [fullstory.md](fullstory.md) | 전체 이야기: 기획, 인물, 공통부 1~24, 연의·가상모드 |
 | [story-writing.md](story-writing.md) | 이야기·대사 쓰는 법: 기조, 서사·대사·연출 원칙, 작업 순서 |
 | [history.md](history.md) | 설계 결정과 이유 |
 

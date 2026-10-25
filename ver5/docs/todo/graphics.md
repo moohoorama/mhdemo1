@@ -1,6 +1,6 @@
 # 해야 할 일: 그래픽
 
-범위: [conceptual_scenario.md](../conceptual_scenario.md) 1~20을 올리는 데 필요한 그림 작업.
+범위: [fullstory.md](../fullstory.md) 1~20을 올리는 데 필요한 그림 작업.
 실제로 시작할 때는 `docs/temp/`에 plan을 쓰고, 끝나면 결과를 해당 분야 문서(`presentation-*.md`)에 현재형으로 옮긴 뒤 이 항목을 지운다.
 
 ## 일러스트

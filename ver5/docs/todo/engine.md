@@ -1,6 +1,6 @@
 # 해야 할 일: 엔진
 
-범위: [conceptual_scenario.md](../conceptual_scenario.md) 1~20을 돌리기 위해 엔진에 더할 것(노드, 전투 이벤트, 승패, 군량 경제, 회의장). 아직 구현하지 않은 설계안이다.
+범위: [fullstory.md](../fullstory.md) 1~20을 돌리기 위해 엔진에 더할 것(노드, 전투 이벤트, 승패, 군량 경제, 회의장). 아직 구현하지 않은 설계안이다.
 현재 동작은 [logic-battle-event.md](../logic-battle-event.md), [logic-campaign.md](../logic-campaign.md), [data-scenario-node.md](../data-scenario-node.md)가 기준이다.
 실제로 시작할 때는 `docs/temp/`에 plan을 쓰고, 구현이 끝난 부분은 위 문서에 현재형으로 옮긴 뒤 이 문서에서 지운다.
 

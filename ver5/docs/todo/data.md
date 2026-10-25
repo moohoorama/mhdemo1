@@ -1,6 +1,6 @@
 # 해야 할 일: 데이터
 
-범위: [conceptual_scenario.md](../conceptual_scenario.md) 1~20을 게임 데이터(`assets/data/`)로 옮기는 일.
+범위: [fullstory.md](../fullstory.md) 1~20을 게임 데이터(`assets/data/`)로 옮기는 일.
 엔진이 새 어휘를 받쳐 줘야 쓸 수 있는 항목은 [engine.md](engine.md)가 먼저다.
 
 ## 캠페인과 전투 맵

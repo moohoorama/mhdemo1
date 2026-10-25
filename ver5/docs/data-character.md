@@ -15,7 +15,7 @@
 
 ## 중요도
 
-구 시나리오(`../docs_old/scenario.md` 3절)의 스테이지 목록을 기준으로 정했다. 새 시나리오 [conceptual_scenario.md](conceptual_scenario.md)에 맞춘 재조정이 남아 있고, 이 표에 없는 v1 등장 인물은 [todo/data.md](todo/data.md)에 따로 적는다.
+구 시나리오(`../docs_old/scenario.md` 3절)의 스테이지 목록을 기준으로 정했다. 새 시나리오 [fullstory.md](fullstory.md)에 맞춘 재조정이 남아 있고, 이 표에 없는 v1 등장 인물은 [todo/data.md](todo/data.md)에 따로 적는다.
 
 | 등급 | 기준 | 인원 |
 |---|---|---|

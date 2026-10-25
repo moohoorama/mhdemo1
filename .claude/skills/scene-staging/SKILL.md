@@ -17,7 +17,7 @@ Read first:
   that sit, the emperor on his throne). Use only those. When the story needs something they cannot show, write it down as an engine request
   in the report; do not fake it with something that reads wrong.
 - `assets/scenes/ch02.json`, `ch03.json`, `ch05.json`, `ch06.json` as worked examples (a council, a court, arrivals on a road, a night camp).
-- The stretch's story nodes in `assets/scenario/hero/storyNN.json` and its part of `docs/conceptual_scenario.md`.
+- The stretch's story nodes in `assets/scenario/hero/storyNN.json` and its part of `docs/fullstory.md`.
 - Reuse battle sprites, motions and terrain; draw new art only where nothing fits (scholar/strategist sprites stand in
   for court officials, class sprites for soldiers and riders, `bandit` for Yellow Turbans).
 
@@ -51,7 +51,7 @@ Then read the battle on each side of the stretch (`assets/scenario/hero/stageNN.
 - a `grant` or `join` comes after the line that gives or welcomes, not before;
 - each officer keeps one voice across story, battle bubbles and duels.
 
-`docs/conceptual_scenario.md` is the plan; when data and plan disagree, say which you followed.
+`docs/fullstory.md` is the plan; when data and plan disagree, say which you followed.
 
 ## 2. Pick the map
 

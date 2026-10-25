@@ -6,7 +6,7 @@ description: Checks and tunes a battle stage of the ver5 SRPG in three passes â€
 # Stage debugging
 
 Work from `ver5/`. Read `docs/stage_lv_balance.md` first (levels, enemy count, what the numbers must reach) and the
-stage's part of `docs/conceptual_scenario.md` (what the story says must happen and in what order). Report in Korean
+stage's part of `docs/fullstory.md` (what the story says must happen and in what order). Report in Korean
 with the evidence (numbers, CLI excerpts, frames).
 
 ## 1. Numbers â€” `cmd/_balance`

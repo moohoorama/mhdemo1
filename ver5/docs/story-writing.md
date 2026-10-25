@@ -1,7 +1,7 @@
 # 이야기 쓰는 법
 
 범위: 전투 사이 이야기(탐험의 사람 대사·이벤트, 출진 직전 장면, 전투 중 대사)를 쓰고 고칠 때의 기조와 순서.
-기준: 줄거리는 [../story_2026_10_23.md](../story_2026_10_23.md)(1부)와 [conceptual_scenario.md](conceptual_scenario.md), 장수별 말투는 [data-speech-style.md](data-speech-style.md), 연출 데이터는 [presentation-scene.md](presentation-scene.md)·[presentation-explore.md](presentation-explore.md).
+기준: 줄거리는 [fullstory.md](fullstory.md), 장수별 말투는 [data-speech-style.md](data-speech-style.md), 연출 데이터는 [presentation-scene.md](presentation-scene.md)·[presentation-explore.md](presentation-explore.md).
 확정 예: 1장·2장 대본 B(`assets/scenario/hero/story01.json`·`story02.json`의 `Events`). 새 장은 이 대본의 결을 따른다.
 
 ## 기조

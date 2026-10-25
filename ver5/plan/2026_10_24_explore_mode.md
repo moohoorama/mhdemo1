@@ -1,7 +1,7 @@
 # 탐험 모드 — 스토리를 걸어 다니며 진행하기 (1장 탁군 ~ 2장 영천 전투)
 
 작성일: 2026-10-24
-관련: [2026_10_23_story_impl.md](2026_10_23_story_impl.md)(1부 계획), [story_2026_10_23.md](../story_2026_10_23.md)(1부 원본), `cmd/_town2`·`internal/gui/tour.go`(형식 2 걷기 데모)
+관련: [2026_10_23_story_impl.md](2026_10_23_story_impl.md)(1부 계획), [fullstory.md](../docs/fullstory.md)(전체 이야기), `cmd/_town2`·`internal/gui/tour.go`(형식 2 걷기 데모)
 
 ## 1. 목표와 범위
 

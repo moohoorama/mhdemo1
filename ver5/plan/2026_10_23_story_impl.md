@@ -1,7 +1,7 @@
 # 1부(도원결의 ~ 동탁 추격전) 구현 계획
 
 작성일: 2026-10-23
-원본: [story_2026_10_23.md](../story_2026_10_23.md) (1부 1~7장 상세)
+원본: [fullstory.md](../docs/fullstory.md) (1부 1~7장)
 현재 구조: `assets/scenario/hero/` (`scenario.json`, `storyNN.json`, `stageNN.json`, `maps/mapNN.json`), 장면은 `assets/scenes/chNN.json`, 맵 레이아웃은 `tools/mapgen/layouts/hero/mapNN.txt`.
 
 ## 1. 범위와 결정 사항
@@ -224,7 +224,7 @@
 - 연출은 게임 화면 영상과 캡처로 확인한 뒤 보고한다.
 
 ## 10. 문서
-- `docs/conceptual_scenario.md` 1~7을 새 이야기로 바꾸고, 그 뒤 장 번호를 옮긴다.
+- (완료) 줄거리 문서는 `docs/fullstory.md` 하나로 합쳤다.
 - `docs/logic-battle-event.md` 8절(데이터 사용처: B01 탁군, B02 영천)을 갱신한다.
 - `docs/history.md`, `docs/todo/engine.md`(뒤치기·튜토리얼을 나중 할 일로)를 갱신한다.
 
