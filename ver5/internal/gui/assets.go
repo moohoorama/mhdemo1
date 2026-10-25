@@ -7,6 +7,7 @@ import (
 	"image/color"
 	"image/draw"
 	_ "image/png"
+	"math"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -58,6 +59,7 @@ type Assets struct {
 	Flames        map[string]FrameStrip    // flame tongues and smoke puffs by name
 	Backdrops     map[string]*ebiten.Image // far pictures behind outdoor scene maps (index.json "backdrops")
 	Sway          map[string]FrameStrip    // leaf sway of the scene trees by prop name (index.json "sway")
+	SwayShadow    map[string]FrameStrip    // the ground shadow of each sway frame
 	SwayMaps      map[string]bool          // the scene maps whose trees play Sway
 }
 
@@ -72,7 +74,8 @@ type FrameStrip struct {
 type Prop struct {
 	Sprite
 	Ground   bool
-	NoShadow bool // a story scene lays no ground shadow under it (index.json "shadow": false)
+	NoShadow bool   // a story scene lays no ground shadow under it (index.json "shadow": false)
+	Shadow   Sprite // its silhouette cast on the ground as the units' shadows are; nil Image for a ground prop or NoShadow
 }
 
 // Sprite is an image whose pivot lands on the drawing position.
@@ -328,15 +331,19 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		if sheet.Image == "" {
 			continue
 		}
-		pr, err := loadRGBA(filepath.Join(dir, sheet.Image))
+		pix, err := loadRGBA(filepath.Join(dir, sheet.Image))
 		if err != nil {
 			return nil, err
 		}
-		prSheet := ebiten.NewImageFromImage(pr)
+		prSheet := ebiten.NewImageFromImage(pix)
 		for name, p := range sheet.Sprites {
 			r := image.Rect(p.Rect[0], p.Rect[1], p.Rect[0]+p.Rect[2], p.Rect[1]+p.Rect[3])
-			a.Props[name] = Prop{Sprite{prSheet.SubImage(r).(*ebiten.Image), p.Pivot[0], p.Pivot[1]}, p.Layer == "ground",
-				p.Shadow != nil && !*p.Shadow}
+			pr := Prop{Sprite: Sprite{prSheet.SubImage(r).(*ebiten.Image), p.Pivot[0], p.Pivot[1]}, Ground: p.Layer == "ground",
+				NoShadow: p.Shadow != nil && !*p.Shadow}
+			if !pr.Ground && !pr.NoShadow {
+				pr.Shadow = castShadow(pix.SubImage(r).(*image.RGBA), p.Pivot, shade)
+			}
+			a.Props[name] = pr
 		}
 	}
 	// the walls of the battle map are the clean ones: no seam where one wall cell meets the next
@@ -359,7 +366,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		}
 		a.Flames[name] = strip
 	}
-	a.Sway, a.SwayMaps = map[string]FrameStrip{}, map[string]bool{}
+	a.Sway, a.SwayShadow, a.SwayMaps = map[string]FrameStrip{}, map[string]FrameStrip{}, map[string]bool{}
 	if index.Sway.Image != "" {
 		im, err := loadRGBA(filepath.Join(dir, index.Sway.Image))
 		if err != nil {
@@ -367,13 +374,14 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		}
 		sheet := ebiten.NewImageFromImage(im)
 		for name, sp := range index.Sway.Sprites {
-			strip := FrameStrip{MS: index.Sway.MS}
+			strip, shadows := FrameStrip{MS: index.Sway.MS}, FrameStrip{MS: index.Sway.MS}
 			x, y, w, h := sp.Rect[0], sp.Rect[1], sp.Rect[2], sp.Rect[3]
 			for i := range index.Sway.Frames {
 				r := image.Rect(x+i*w, y, x+(i+1)*w, y+h)
 				strip.Frames = append(strip.Frames, Sprite{sheet.SubImage(r).(*ebiten.Image), sp.Pivot[0], sp.Pivot[1]})
+				shadows.Frames = append(shadows.Frames, castShadow(im.SubImage(r).(*image.RGBA), sp.Pivot, shade))
 			}
-			a.Sway[name] = strip
+			a.Sway[name], a.SwayShadow[name] = strip, shadows
 		}
 		for _, id := range index.Sway.Maps {
 			a.SwayMaps[id] = true
@@ -561,4 +569,10 @@ func sceneMapArt(m *scenemap.Map) *MapArt {
 func (a *Assets) TileFrame(name string, ms float64) int {
 	t := a.Animations[name]
 	return t.Frames[int(ms/float64(t.MS))%len(t.Frames)]
+}
+
+// castShadow is the ground shadow of a picture standing on pivot, tinted c.
+func castShadow(img *image.RGBA, pivot [2]float64, c color.RGBA) Sprite {
+	sd := sprite.ImageShadow(img, [2]int{int(math.Round(pivot[0])), int(math.Round(pivot[1]))})
+	return Sprite{ebiten.NewImageFromImage(sprite.Tint(sd.Image, c)), float64(sd.Pivot[0]), float64(sd.Pivot[1])}
 }

@@ -5,6 +5,13 @@
 
 ---
 
+## 2026-10-25 장면 소품 그림자를 실루엣 투영으로
+
+- `internal/sprite/render.go`: 유닛 그림자의 투영·키움·흐림을 `castShadow`로 떼어 내고 그림 한 장용 `ImageShadow` 추가(시트 그림자는 결과 그대로, 파이썬 골든 일치) — 소품도 유닛과 같은 규칙으로 그림자를 만들려고.
+- `internal/sprite/art.go`: 그림자 색 입히기를 `Tint`로 떼어 냄.
+- `internal/gui/assets.go`: 서 있는 소품마다 `Prop.Shadow`, 흔들리는 나무는 프레임마다 `SwayShadow`를 로드할 때 만듦.
+- `internal/gui/field_scene.go`, `field.go`, `scene.go`: 장면 소품·비트 소품의 폭 맞춤 타원(`propShadow`)을 지우고 실루엣 그림자를 깖. 흔들리는 나무는 잎과 같은 프레임(`swayFrame`)의 그림자를 고름 — 사용자 요청: 가옥·나무·우물·바위에 모양대로 그림자, 나무가 흔들리면 그림자도 흔들리게. 탁군·도원 캡처로 확인.
+
 ## 2026-10-25 장면 나무 잎 흔들림(F3)을 탁군·복숭아 숲·의병 주둔지에
 
 - `tools/build_tree_sway.py`(새): 잎 있는 장면 나무 13종에 F3(밝은 잎·꽃 조각 1px 들썩 + 테두리 3px 살랑)를 8프레임·160ms로 만들어 `../assets_candidate/tiles/sway/`에 쓰고 `assets/graphics/map/sway.png`·`index.json` `"sway"`로 묶음. 줄기 옆 두 픽셀 이하의 초록 음영은 줄기로, 테두리 규칙 밖의 어두운 선(매화 잔가지)은 고정, 움직이는 조각은 잎 면적의 25%까지(밝은 흰 꽃이 많은 매화가 전체로 들끓지 않게), 버드나무는 가지 끝이 더 흔들림 — 사용자가 1차·2차 시안 중 F3를 골라 세 장면에 시험 적용.

@@ -56,7 +56,7 @@ type Field struct {
 	scenePieces                  []scenePiece // a format 2 scene map's standing layer, see makeScenePlan
 	clockMS                      float64
 
-	// beatShadows are the ground shadows of the props a story scene's beats put down (canvas point, prop width):
+	// beatShadows are the ground shadows of the props a story scene's beats put down (canvas point, shadow):
 	// those props are drawn over the field, but their shadows lie on the ground under the units like the map's
 	beatShadows []beatShadow
 	// groundMarks are pictures laid flat on the ground at canvas points: over the shadows, under everything that
@@ -387,37 +387,12 @@ func (f *Field) mapRect(s Sprite, x, y float64) image.Rectangle {
 
 type beatShadow struct {
 	x, y float64
-	w    int
+	s    Sprite
 }
 
 type groundMark struct {
 	s    Sprite
 	x, y float64
-}
-
-// propShadows are the soft ground shadows under a story scene's standing props, by width bucket.
-var propShadows = map[int]Sprite{}
-
-// propShadow is an oval shadow for a prop w pixels wide: a little wider than the prop, half as deep, darkest in
-// the middle like the units' shadows, cast down to the right of the prop's foot (light from the upper left).
-func propShadow(w int) Sprite {
-	sw := max(12, min(72, w+6)) / 4 * 4
-	if s, ok := propShadows[sw]; ok {
-		return s
-	}
-	sh := sw / 2
-	img := image.NewNRGBA(image.Rect(0, 0, sw, sh))
-	for y := range sh {
-		for x := range sw {
-			dx, dy := (float64(x)+.5)/float64(sw)*2-1, (float64(y)+.5)/float64(sh)*2-1
-			if d := dx*dx + dy*dy; d < 1 {
-				img.SetNRGBA(x, y, color.NRGBA{R: 18, G: 26, B: 14, A: uint8(170 * (1 - d*d))})
-			}
-		}
-	}
-	s := Sprite{ebiten.NewImageFromImage(img), float64(sw)/2 - 3, float64(sh)/2 - 2}
-	propShadows[sw] = s
-	return s
 }
 
 // fieldGround is the colour around a map, beyond its margin.
@@ -560,12 +535,12 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 				f.blit(c, s, x, y-8, nil)
 			}
 		}, rect: image.Rect(rx, top, rx+b.Dx(), ry+b.Dy())})
-		if f.Map.Scene && !f.A.Props[name].NoShadow {
-			f.blit(f.shadows, propShadow(b.Dx()), x, y, &ebiten.DrawImageOptions{Blend: maxBlend})
+		if sh := f.A.Props[name].Shadow; f.Map.Scene && sh.Image != nil {
+			f.blit(f.shadows, sh, x, y, &ebiten.DrawImageOptions{Blend: maxBlend})
 		}
 	})
 	for _, b := range f.beatShadows {
-		f.blit(f.shadows, propShadow(b.w), b.x, b.y, &ebiten.DrawImageOptions{Blend: maxBlend})
+		f.blit(f.shadows, b.s, b.x, b.y, &ebiten.DrawImageOptions{Blend: maxBlend})
 	}
 	for _, u := range units {
 		if u.gone {

@@ -77,40 +77,65 @@ func (s *Sheet) Shadow() *Shadow {
 
 func (s *Sheet) makeShadow() {
 	w, h := s.Cell[0], s.Cell[1]
-	px, py := s.Pivot[0], s.Pivot[1]
-	depth := int(math.Ceil(float64(py) * slope[1]))
-	sw, sh := w+int(math.Ceil(float64(py)*slope[0]))+2*shadowPad, depth+1+2*shadowPad
-	sd := &Shadow{Cell: [2]int{sw, sh}, Pivot: [2]int{px + shadowPad, shadowPad}}
+	sw, sh := shadowCell(w, s.Pivot[1])
+	sd := &Shadow{Cell: [2]int{sw, sh}, Pivot: [2]int{s.Pivot[0] + shadowPad, shadowPad}}
 	sd.Image = image.NewRGBA(image.Rect(0, 0, sw*s.Columns, sh*len(s.Rows)))
-	flat := make([]uint8, sw*sh)
 	for c := 0; c < len(s.Rows)*s.Columns; c++ {
-		clear(flat)
-		for d := 0; d <= depth; d++ {
-			src := int(math.RoundToEven(float64(py) - float64(d)/slope[1]))
-			if src < 0 {
-				break
-			}
-			x, y := shadowPad+int(math.RoundToEven(float64(d)/slope[1]*slope[0])), shadowPad+d
-			for i := 0; i < w && src < h; i++ {
-				if s.Colors[s.pix[c*w*h+src*w+i]].A != 0 {
-					flat[y*sw+x+i] = 255
-				}
-			}
-		}
-		grown := boxMax(flat, sw, sh)
-		blurred := boxBlur(boxBlur(grown, sw, sh), sw, sh)
+		alpha := castShadow(w, h, s.Pivot[1], func(x, y int) bool { return s.Colors[s.pix[c*w*h+y*w+x]].A != 0 })
 		x0, y0 := c%s.Columns*sw, c/s.Columns*sh
 		for y := 0; y < sh; y++ {
 			for x := 0; x < sw; x++ {
-				v := int(blurred[y*sw+x]) * halo / 255
-				if grown[y*sw+x] != 0 {
-					v = max(v, core)
-				}
-				sd.Image.Pix[sd.Image.PixOffset(x0+x, y0+y)+3] = uint8(v)
+				sd.Image.Pix[sd.Image.PixOffset(x0+x, y0+y)+3] = alpha[y*sw+x]
 			}
 		}
 	}
 	s.shadow = sd
+}
+
+// ImageShadow is the shadow of one picture standing on pivot, as a sheet's shadow is of each of its cells.
+func ImageShadow(img *image.RGBA, pivot [2]int) *Shadow {
+	b := img.Bounds()
+	sw, sh := shadowCell(b.Dx(), pivot[1])
+	sd := &Shadow{Image: image.NewRGBA(image.Rect(0, 0, sw, sh)), Cell: [2]int{sw, sh}, Pivot: [2]int{pivot[0] + shadowPad, shadowPad}}
+	alpha := castShadow(b.Dx(), b.Dy(), pivot[1], func(x, y int) bool { return img.Pix[img.PixOffset(b.Min.X+x, b.Min.Y+y)+3] != 0 })
+	for i, v := range alpha {
+		sd.Image.Pix[4*i+3] = v
+	}
+	return sd
+}
+
+func shadowCell(w, py int) (int, int) {
+	return w + int(math.Ceil(float64(py)*slope[0])) + 2*shadowPad, int(math.Ceil(float64(py)*slope[1])) + 1 + 2*shadowPad
+}
+
+// castShadow lays the opaque pixels of a w×h picture above row py flat on the ground and returns the shadow's
+// alpha in a shadowCell.
+func castShadow(w, h, py int, opaque func(x, y int) bool) []uint8 {
+	sw, sh := shadowCell(w, py)
+	depth := int(math.Ceil(float64(py) * slope[1]))
+	flat := make([]uint8, sw*sh)
+	for d := 0; d <= depth; d++ {
+		src := int(math.RoundToEven(float64(py) - float64(d)/slope[1]))
+		if src < 0 {
+			break
+		}
+		x, y := shadowPad+int(math.RoundToEven(float64(d)/slope[1]*slope[0])), shadowPad+d
+		for i := 0; i < w && src < h; i++ {
+			if opaque(i, src) {
+				flat[y*sw+x+i] = 255
+			}
+		}
+	}
+	grown := boxMax(flat, sw, sh)
+	blurred := boxBlur(boxBlur(grown, sw, sh), sw, sh)
+	for i := range blurred {
+		v := int(blurred[i]) * halo / 255
+		if grown[i] != 0 {
+			v = max(v, core)
+		}
+		flat[i] = uint8(v)
+	}
+	return flat
 }
 
 func boxMax(a []uint8, w, h int) []uint8 {

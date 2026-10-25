@@ -131,16 +131,20 @@ func (l *Library) Art(id string, p Palette) *Art {
 	}
 	sh, ok := l.shadows[id]
 	if !ok {
-		src := s.Shadow().Image
-		im := image.NewRGBA(src.Rect)
-		for i := 0; i < len(im.Pix); i += 4 {
-			a := uint32(src.Pix[i+3])
-			im.Pix[i], im.Pix[i+1], im.Pix[i+2], im.Pix[i+3] = uint8(uint32(l.shadowRGB.R)*a/255), uint8(uint32(l.shadowRGB.G)*a/255), uint8(uint32(l.shadowRGB.B)*a/255), uint8(a)
-		}
-		sh = ebiten.NewImageFromImage(im)
+		sh = ebiten.NewImageFromImage(Tint(s.Shadow().Image, l.shadowRGB))
 		l.shadows[id] = sh
 	}
 	a := newArt(s, p, sh)
 	l.arts[key] = a
 	return a
+}
+
+// Tint colours a shadow (black with the shadow in alpha) c, premultiplied.
+func Tint(src *image.RGBA, c color.RGBA) *image.RGBA {
+	im := image.NewRGBA(src.Rect)
+	for i := 0; i < len(im.Pix); i += 4 {
+		a := uint32(src.Pix[i+3])
+		im.Pix[i], im.Pix[i+1], im.Pix[i+2], im.Pix[i+3] = uint8(uint32(c.R)*a/255), uint8(uint32(c.G)*a/255), uint8(uint32(c.B)*a/255), uint8(a)
+	}
+	return im
 }

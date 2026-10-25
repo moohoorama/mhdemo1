@@ -18,7 +18,7 @@ import (
 // scenePiece is a standing piece of the plan in canvas pixels.
 type scenePiece struct {
 	scenemap.Piece
-	shadow int           // width of the ground shadow under it, 0 for none
+	shadow Sprite        // its ground shadow, nil Image for none
 	image  *ebiten.Image // a piece of several pictures (a raised block) drawn once at its Rect, so a frame draws it in one go
 }
 
@@ -61,7 +61,7 @@ func (f *Field) makeScenePlan() error {
 			}
 		}
 		if pr, ok := f.A.Props[p.Name]; ok && p.Rank == scenemap.RankObject && !pr.NoShadow {
-			sp.shadow = pr.Image.Bounds().Dx()
+			sp.shadow = pr.Shadow
 		}
 		f.scenePieces = append(f.scenePieces, sp)
 	}
@@ -156,8 +156,12 @@ func (f *Field) sceneItems() []drawItem {
 		if !f.DrawBounds.Empty() && !p.Rect.Overlaps(f.DrawBounds) {
 			continue
 		}
-		if p.shadow > 0 {
-			f.blit(f.shadows, propShadow(p.shadow), p.Anchor[0], p.Anchor[1], &ebiten.DrawImageOptions{Blend: maxBlend})
+		if p.shadow.Image != nil {
+			sh := p.shadow
+			if i, ok := f.swayFrame(p.Name, p.Anchor); ok {
+				sh = f.A.SwayShadow[p.Name].Frames[i]
+			}
+			f.blit(f.shadows, sh, p.Anchor[0], p.Anchor[1], &ebiten.DrawImageOptions{Blend: maxBlend})
 		}
 		ox, oy := f.OriginX*K, f.OriginY*K
 		items = append(items, drawItem{y: p.Anchor[1], rect: p.Rect, key: &p.Key, draw: func() {
@@ -182,22 +186,35 @@ func (f *Field) sceneItems() []drawItem {
 	return items
 }
 
-// drawSway draws a tree of a map listed in Assets.SwayMaps at its leaf sway frame; each tree starts at its own frame
-// and time so a grove does not move in step. It reports false for anything else.
+// drawSway draws a tree of a map listed in Assets.SwayMaps at its leaf sway frame. It reports false for anything
+// else.
 func (f *Field) drawSway(d scenemap.Draw, anchor [2]float64, ox, oy float64, op *ebiten.DrawImageOptions) bool {
-	strip, ok := f.A.Sway[d.Name]
-	if !ok || d.Kind != scenemap.DrawSprite || d.Sheet == "scenery" || d.Sheet == "structures" || !f.A.SwayMaps[f.Map.ID] {
+	if d.Kind != scenemap.DrawSprite || d.Sheet == "scenery" || d.Sheet == "structures" {
 		return false
 	}
-	ax, ay := int(anchor[0]), int(anchor[1])
-	lag := hash3(ax, ay, 7) * float64(strip.MS)
-	n := len(strip.Frames)
-	s := strip.Frames[(int((f.clockMS+lag)/float64(strip.MS))+int(hash3(ax, ay, 8)*float64(n)))%n]
+	i, ok := f.swayFrame(d.Name, anchor)
+	if !ok {
+		return false
+	}
+	s := f.A.Sway[d.Name].Frames[i]
 	pr := f.A.Props[d.Name]
 	op.GeoM.Translate(ox+float64(d.X)+pr.PivotX-s.PivotX, oy+float64(d.Y)+pr.PivotY-s.PivotY)
 	f.renderOp(f.Canvas, op)
 	f.Canvas.DrawImage(s.Image, op)
 	return true
+}
+
+// swayFrame is the sway frame of the tree prop name standing at anchor on a map listed in Assets.SwayMaps; each
+// tree starts at its own frame and time so a grove does not move in step.
+func (f *Field) swayFrame(name string, anchor [2]float64) (int, bool) {
+	strip, ok := f.A.Sway[name]
+	if !ok || !f.A.SwayMaps[f.Map.ID] {
+		return 0, false
+	}
+	ax, ay := int(anchor[0]), int(anchor[1])
+	lag := hash3(ax, ay, 7) * float64(strip.MS)
+	n := len(strip.Frames)
+	return (int((f.clockMS+lag)/float64(strip.MS)) + int(hash3(ax, ay, 8)*float64(n))) % n, true
 }
 
 // groundLift is how high the ground under a point of game cell coordinates stands on a format 2 map.
