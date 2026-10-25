@@ -17,8 +17,9 @@ func init() { demos["explore"] = demoExplore }
 const demoExploreRoute = "exit:주점,talk:관우,exit:거리로,exit:성문 밖,talk:장비,exit:의병 주둔지,talk:관우"
 
 // demoExplore plays a new game's story walk as clicks would (-stage "start:Node,talk:Name,exit:Name,sign:Name,
-// walk:U:V,grid,shop:Name,buy:Item"; start, first, begins the story at that node): each step is clicked once the hero has stood still for half a second; lines page by
-// themselves, the sortie question is answered yes and a shop closes after a second.
+// walk:U:V,grid,shop:Name,buy:Item"; start, first, begins the story at that node): each step is clicked once the
+// hero has stood still for half a second. Lines page by themselves, the sortie question is answered yes, the sortie
+// screen goes on to the battle, its briefing closes and a shop closes after a second.
 func demoExplore(d *Demo) error {
 	g := d.g
 	acts := strings.Split(demoExploreRoute, ",")
@@ -46,6 +47,18 @@ func demoExplore(d *Demo) error {
 			g.overlay, wait = "", 0
 			return
 		case g.overlay != "":
+			return
+		case len(g.modals) > 0:
+			if wait > 90 {
+				g.closeModal() // the battle's briefing
+				wait = 0
+			}
+			return
+		case o.Phase == "scenario" && o.Dialogue.Kind == "battle":
+			if wait > 60 {
+				g.command(core.Command{Kind: "start"}) // the sortie screen: go, and the battle's opening plays
+				wait = 0
+			}
 			return
 		case o.Phase == "scenario" && isTalk(o.Dialogue.Kind):
 			if wait > 50 {

@@ -1,30 +1,15 @@
-# B01 탁군 (초안, 24x24): 북쪽 모퉁이가 대흥산 기슭(절벽과 숲), 남쪽이 탁군성. 그 사이 들판에 황건 포위진.
-# 탁군성: 성벽 (14~21,14~21), 성 안 (15~20,15~20), 성문 (18,14) 관문(ip-, 지나갈 수 있음), 관아 (18,18).
-# 성문 구역 = (18,14) 1x2 (성문 칸과 바로 안쪽). 추정·수비병 (17~19,15~16).
-# 아군 시작: 산기슭 빈터 (3~5,3~5). 산길 (5,5)→(11,11), 이어 황무지 길이 성문 앞 (18,13)까지.
-# 정원지 본진 (11,11), 주둔지 (10,11)(11,10). 등무 성문 공격조 (17~19,12~13).
-# 주둔지는 본진 둘뿐. 포위진은 성벽을 보는 목책 12행 (13~15)(20~22), 12열 (14~16)(19~21)과 짓밟힌 땅(황무지). 북쪽(등 뒤)은 비어 있다.
-h-- h-- h-- h-- h-- h-- h-- gt- gt- g-- g-- g-- g-- gt- gt- gt- g-- g-- g-- g-- g-- g-- g-- g--
-h-- h-- h-- h-- gt- gt- gt- gt- gt- gt- g-- gt- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-h-- h-- h-- gt- g-- gt- gt- gt- gt- gt- g-- gt- g-- gt- gt- gt- g-- g-- g-- g-- g-- g-- gt- g--
-h-- h-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g--
-h-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g--
-h-- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-h-- gt- gt- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- d-- g-- g-- g-- g-- g-- g--
-gt- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g--
-gt- gt- gt- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g-- g--
-gt- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- d-- gt- g--
-g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- d-- gk- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- d-- g--
-gt- gt- gt- g-- g-- g-- g-- g-- g-- g-- gk- d-- d-- d-- d-- d-- d-- g-- g-- g-- g-- g-- g-- g--
-gt- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- gz- gz- g-- d-- d-- g-- gz- gz- gz- g--
-gt- g-- gt- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g--
-g-- gt- gt- g-- g-- g-- g-- g-- d-- d-- g-- g-- gz- g-- c-- c-- c-- c-- ip- c-- c-- c-- g-- g--
-g-- gt- gt- g-- g-- g-- g-- g-- g-- d-- g-- g-- gz- g-- c-- i-- i-- i-- i-- i-- i-- c-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- gz- g-- c-- iv- iv- i-- i-- i-- iv- c-- g-- g--
-g-- g-- g-- g-- gt- g-- d-- g-- g-- g-- g-- g-- g-- g-- c-- i-- i-- i-- i-- i-- iv- c-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- c-- i-- i-- i-- io- i-- i-- c-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- d-- g-- gz- g-- c-- iv- i-- i-- i-- i-- i-- c-- g-- g--
-g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- c-- i-- iv- i-- i-- iv- iv- c-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- gz- g-- c-- c-- c-- c-- c-- c-- c-- c-- g-- g--
-g-- g-- gt- g-- g-- g-- g-- g-- g-- gt- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+# B01 탁군 (16x13): 북쪽 끝에서 형제가 나타나고, 그 앞에서 등무 조가 탁현으로 달아나는 두 상인(장세평·소쌍)을 쫓는다.
+# 남쪽은 탁현 성벽(10행)과 성문 (7~8,10). 상인은 성문 구역에 닿으면 성 안으로 빠져나간다. 서쪽 (2,4)(1,5)가 정원지의 주둔지.
+gt- gt- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- gt- gt- gt-
+gt- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- gt- gt-
+g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- gt-
+g-- g-- g-- gt- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- dk- g-- g-- g-- g-- d-- d-- g-- g-- g-- gt- g-- g-- g--
+g-- dk- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- gt- g--
+g-- g-- g-- g-- gt- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g--
+c-- c-- c-- c-- c-- c-- c-- ip- ip- c-- c-- c-- c-- c-- c-- c--
+i-- i-- i-- io- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i--
+i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i--

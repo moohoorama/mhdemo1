@@ -9,9 +9,14 @@ func init() { demos["mapfx"] = demoMapFX }
 
 // demoMapFX paints what the battle map's pictures can show onto the first stage's map and plays it: a gate
 // in the castle wall, a fenced yard, burning and burnt forest, village and ground, flames on a wall, and a
-// bridge whole, damaged and broken. Coordinates are those of the first stage's map.
+// bridge whole, damaged and broken. Coordinates are those of Yingchuan's map (B02), played instead of a stage whose
+// map is too small for them.
 func demoMapFX(d *Demo) error {
-	err := d.battleWith(d.stage, func(doc *mapedit.Document) {
+	stage, data := d.stage, d.g.S.Data
+	if i := data.StageIndex(stage); i < 0 || data.Stages[i].Width < 19 || data.Stages[i].Height < 13 {
+		stage = "B02"
+	}
+	err := d.battleWith(stage, func(doc *mapedit.Document) {
 		data := d.g.S.Data
 		paint := func(x, y int, layer, glyph byte) { doc.Paint(data, x, y, layer, glyph) }
 		const (

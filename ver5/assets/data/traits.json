@@ -74,17 +74,17 @@
   },
   "cross_strike": {
    "Name": "사방격",
-   "Desc": "물리 공격이 십자 범위가 된다. 주변 칸의 적은 75% 피해.",
+   "Desc": "물리 공격이 십자 범위가 된다. 주변 칸의 적은 50% 피해.",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 600,
    "Effects": {
-    "splash_cross": 0.75
+    "splash_cross": 0.5
    }
   },
   "square_strike": {
    "Name": "팔방격",
-   "Desc": "물리 공격이 3×3 범위가 된다. 주변 칸의 적은 75% 피해.",
+   "Desc": "물리 공격이 3×3 범위가 된다. 주변 칸의 적은 50% 피해.",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 1000,
@@ -92,7 +92,7 @@
     "cross_strike"
    ],
    "Effects": {
-    "splash_square": 0.75
+    "splash_square": 0.5
    }
   },
   "siegecraft": {
@@ -138,12 +138,12 @@
   },
   "pierce": {
    "Name": "찔러공격",
-   "Desc": "대상 뒤의 적도 75% 피해를 받는다.",
+   "Desc": "대상 뒤의 적도 50% 피해를 받는다.",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 600,
    "Effects": {
-    "pierce": 0.75
+    "pierce": 0.5
    }
   },
   "venom": {
@@ -864,6 +864,16 @@
    "Kind": "strategy",
    "Tone": "debuff",
    "Cost": 700
+  },
+  "keen_edge": {
+   "Name": "예리",
+   "Desc": "물리 공격의 명중률이 10%p 오른다.",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 0,
+   "Effects": {
+    "accuracy": 10
+   }
   }
  }
 }

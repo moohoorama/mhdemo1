@@ -802,6 +802,79 @@
     "Faction": "shu",
     "Scene": "light_infantry"
    }
+  },
+  "zhangshiping": {
+   "Name": "장세평",
+   "Biography": "중산의 큰 상인. 해마다 북방에서 말을 사 오다 황건에게 쫓겨 탁현으로 피한다. 의병에게 말과 강철을 댄다.",
+   "Class": "light_infantry",
+   "Stats": [
+    45,
+    50,
+    60,
+    45,
+    40,
+    50
+   ],
+   "Level": 3,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword"
+   ],
+   "Look": {
+    "Faction": "merchant",
+    "Sprite": "commoner_man",
+    "Scene": "commoner_man",
+    "Portrait": "zhangshiping"
+   }
+  },
+  "sushuang": {
+   "Name": "소쌍",
+   "Biography": "장세평과 함께 다니는 중산의 상인. 의병의 뜻에 감복해 대장간에 강철을 맡긴다.",
+   "Class": "light_infantry",
+   "Stats": [
+    45,
+    50,
+    60,
+    45,
+    40,
+    50
+   ],
+   "Level": 3,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword"
+   ],
+   "Look": {
+    "Faction": "merchant",
+    "Sprite": "commoner_man",
+    "Scene": "commoner_man",
+    "Portrait": "sushuang"
+   }
+  },
+  "blacksmith": {
+   "Name": "대장장이",
+   "Biography": "탁현 대장간의 주인.",
+   "Class": "light_infantry",
+   "Stats": [
+    50,
+    50,
+    30,
+    40,
+    30,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "blacksmith_noncombat"
+   }
   }
  }
 }

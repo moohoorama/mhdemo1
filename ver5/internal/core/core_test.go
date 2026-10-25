@@ -910,3 +910,13 @@ func TestDisruptCutsAgilityAndMorale(t *testing.T) {
 		t.Fatalf("disrupt status %+v", s)
 	}
 }
+func TestAccuracyAddsToThePhysicalHitChance(t *testing.T) {
+	e, a, b := arena(t)
+	e.data.Traits["sharp"] = content.Trait{Name: "sharp", Kind: "talent", Tone: "attack", Effects: map[string]float64{content.FxAccuracy: 10}}
+	before := e.hitChance(a, b, e.basic())
+	with(e, "hero", "sharp")
+	after := e.hitChance(e.unit("hero"), b, e.basic())
+	if before < e.data.Rules.HitCeil-10 && after != before+10 {
+		t.Fatalf("hit chance %.1f → %.1f", before, after)
+	}
+}

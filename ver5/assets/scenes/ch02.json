@@ -1014,6 +1014,185 @@
      ]
     ]
    }
+  },
+  "c02-e-mansion": {
+   "Map": "S_mansion2",
+   "Nodes": [
+    "c02-e-mansion",
+    "c02-m1",
+    "c02-m2",
+    "c02-m3",
+    "c02-m4",
+    "c02-m5",
+    "c02-m6",
+    "c02-m7"
+   ],
+   "Cast": {
+    "유비": {
+     "Stay": true
+    },
+    "소쌍": {
+     "Stay": true
+    },
+    "장세평": {
+     "Stay": true
+    }
+   },
+   "Beats": {
+    "c02-m1": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Move": [
+         4.75,
+         3.25
+        ]
+       }
+      ],
+      [
+       {
+        "Actor": "유비",
+        "Face": "NE"
+       },
+       {
+        "Actor": "소쌍",
+        "Face": "SW"
+       },
+       {
+        "Actor": "장세평",
+        "Face": "SE"
+       }
+      ],
+      [
+       {
+        "Actor": "소쌍",
+        "Play": "action"
+       }
+      ]
+     ]
+    ],
+    "c02-m3": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Play": "action"
+       }
+      ]
+     ]
+    ],
+    "c02-m6": [
+     [
+      [
+       {
+        "Actor": "소쌍",
+        "Play": "action"
+       }
+      ]
+     ]
+    ],
+    "c02-m7": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Play": "action"
+       }
+      ]
+     ]
+    ]
+   }
+  },
+  "c02-e-smith": {
+   "Map": "S_weapon_shop2",
+   "Nodes": [
+    "c02-e-smith",
+    "c02-k1",
+    "c02-k2",
+    "c02-k4",
+    "c02-k6",
+    "c02-k7",
+    "c02-k8"
+   ],
+   "Cast": {
+    "유비": {
+     "Stay": true
+    },
+    "대장장이": {
+     "Stay": true
+    }
+   },
+   "Ambient": [
+    {
+     "Effect": "smallfire",
+     "At": [
+      0.75,
+      0.75
+     ]
+    }
+   ],
+   "Beats": {
+    "c02-k1": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Move": [
+         4.25,
+         3.25
+        ]
+       }
+      ],
+      [
+       {
+        "Actor": "유비",
+        "Face": "NE"
+       },
+       {
+        "Actor": "대장장이",
+        "Face": "SW"
+       }
+      ],
+      [
+       {
+        "Actor": "대장장이",
+        "Play": "action"
+       }
+      ]
+     ]
+    ],
+    "c02-k2": [
+     [
+      [
+       {
+        "Actor": "대장장이",
+        "Play": "action"
+       }
+      ]
+     ]
+    ],
+    "c02-k4": [
+     [
+      [
+       {
+        "Actor": "대장장이",
+        "Play": "action"
+       }
+      ]
+     ]
+    ],
+    "c02-k6": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Play": "action"
+       }
+      ]
+     ]
+    ]
+   }
   }
  }
 }

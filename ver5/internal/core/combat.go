@@ -69,7 +69,7 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 		if e.has(v, content.FxRangedImmune) && e.rangedAttack(u, v, s) {
 			return 0
 		}
-		h += curve(e.ratio(e.attackStats(u, s).Agility, e.stats(v).Agility), R.HitCurve) - float64(R.BasicAttack.Hit) - e.fx(v, content.FxEvade)
+		h += curve(e.ratio(e.attackStats(u, s).Agility, e.stats(v).Agility), R.HitCurve) - float64(R.BasicAttack.Hit) - e.fx(v, content.FxEvade) + e.fx(u, content.FxAccuracy)
 		return clamp(h, R.HitFloor, R.HitCeil)
 	case content.KindMagic, content.KindStatus:
 		if e.has(v, content.FxDispel) && e.stats(v).Mind > e.stats(u).Mind {

@@ -66,6 +66,27 @@
      "To": "tools"
     },
     {
+     "Name": "저택",
+     "At": [
+      7,
+      5
+     ],
+     "Object": [
+      5,
+      5
+     ],
+     "To": "mansion",
+     "If": [
+      "flag:c02-thanked"
+     ],
+     "Shut": [
+      [
+       "",
+       "큰 저택이다. 대문이 굳게 닫혀 있다."
+      ]
+     ]
+    },
+    {
      "Name": "노식의 진영으로",
      "At": [
       -1,
@@ -73,12 +94,12 @@
      ],
      "To": "luzhi",
      "If": [
-      "flag:c02-thanked"
+      "flag:c02-arms"
      ],
      "Shut": [
       [
        "",
-       "추정 교위에게 먼저 인사를 드리고 가자."
+       "떠나기 전에 소쌍 공의 저택에 들러 보자."
       ]
      ]
     }
@@ -159,6 +180,40 @@
        "어르신, 백성들이 버텨 준 덕입니다."
       ]
      ]
+    },
+    "관우@street": {
+     "At": [
+      1,
+      9
+     ],
+     "Face": "SE",
+     "If": [
+      "flag:c02-thanked",
+      "!flag:c02-arms"
+     ],
+     "Talk": [
+      [
+       "guanyu",
+       "형님, 그 상인들이 저택에서 형님을 찾는다 하오."
+      ]
+     ]
+    },
+    "장비@street": {
+     "At": [
+      1,
+      13
+     ],
+     "Face": "NE",
+     "If": [
+      "flag:c02-thanked",
+      "!flag:c02-arms"
+     ],
+     "Talk": [
+      [
+       "zhangfei",
+       "저택이면 술도 좋은 거 있겄쥬? 형님 혼자 다녀오셔유, 지는 의병들 보고 있을게유."
+      ]
+     ]
     }
    },
    "Signs": [
@@ -185,19 +240,6 @@
       [
        "",
        "맑은 물이 찰랑인다. 고을 사람들이 모두 이 우물을 쓴다."
-      ]
-     ]
-    },
-    {
-     "Name": "저택",
-     "At": [
-      5,
-      5
-     ],
-     "Talk": [
-      [
-       "",
-       "큰 저택이다. 대문이 굳게 닫혀 있다."
       ]
      ]
     }
@@ -322,7 +364,16 @@
      "Face": "SW",
      "Sprite": "blacksmith_noncombat",
      "Faction": "han",
-     "Shop": "weapons"
+     "Shop": "weapons",
+     "Event": [
+      {
+       "If": [
+        "flag:c02-gift",
+        "!flag:c02-arms"
+       ],
+       "Node": "c02-e-smith"
+      }
+     ]
     }
    }
   },
@@ -526,7 +577,7 @@
      ],
      "Face": "NE",
      "If": [
-      "flag:c02-thanked"
+      "flag:c02-arms"
      ],
      "Sortie": {
       "If": [
@@ -548,7 +599,7 @@
      ],
      "Face": "NW",
      "If": [
-      "flag:c02-thanked"
+      "flag:c02-arms"
      ],
      "Talk": [
       [
@@ -556,6 +607,71 @@
        "관군 놈들 다 졸고 있구먼유. 이래서 언제 장각을 잡는대유?"
       ]
      ]
+    }
+   }
+  },
+  "mansion": {
+   "Map": "S_mansion2",
+   "Name": "소쌍과 장세평의 저택",
+   "Zoom": 3,
+   "At": [
+    8,
+    8
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      15,
+      9
+     ],
+     "To": "zhuo"
+    }
+   ],
+   "People": {
+    "소쌍": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Event": [
+      {
+       "If": [
+        "!flag:c02-gift"
+       ],
+       "Node": "c02-e-mansion"
+      }
+     ],
+     "Talk": [
+      [
+       "sushuang",
+       "대장간에 가 보셨소? 그 사람 솜씨는 중산에서도 알아줍니다."
+      ]
+     ]
+    },
+    "장세평": {
+     "At": [
+      8,
+      3
+     ],
+     "Face": "SW",
+     "Pose": "sit",
+     "Talk": [
+      [
+       "zhangshiping",
+       "말은 성 밖에 매어 두었소. 언제든 끌고 가시오."
+      ]
+     ]
+    },
+    "하인#1": {
+     "At": [
+      4,
+      7
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_man",
+     "Faction": "han"
     }
    }
   }

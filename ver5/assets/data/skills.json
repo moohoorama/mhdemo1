@@ -895,7 +895,7 @@
   },
   "penetrate": {
    "Name": "관통",
-   "Desc": "목표 뒤의 적도 75% 피해를 받는다.",
+   "Desc": "목표 뒤의 적도 50% 피해를 받는다.",
    "Kind": "physical",
    "Mode": "ranged",
    "Shape": "single",
@@ -903,7 +903,7 @@
    "Hit": 90,
    "Min": 1,
    "Coeff": 1,
-   "Pierce": 0.75,
+   "Pierce": 0.5,
    "Requires": [
     "penetrate_art"
    ]
