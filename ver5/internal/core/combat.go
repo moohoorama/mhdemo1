@@ -311,6 +311,12 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 			share[q.ID] = k
 		}
 	}
+	side := func(q *Unit, k float64) { // struck besides the target: never more than the rules' share
+		if m := e.data.Rules.SideShareMax; m > 0 {
+			k = math.Min(k, m)
+		}
+		add(q, k)
+	}
 	for _, q := range e.targets(u, v, s) {
 		add(q, 1)
 	}
@@ -328,13 +334,13 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 				k = math.Max(k, cross)
 			}
 			if k > 0 {
-				add(e.occupied(v.X+dx, v.Y+dy), k)
+				side(e.occupied(v.X+dx, v.Y+dy), k)
 			}
 		}
 	}
 	if k := e.fx(u, content.FxSweepArc); k > 0 && adjacent(u.X, u.Y, v.X, v.Y) && !e.rangedAttack(u, v, s) {
 		for _, d := range arcAhead(sign(v.X-u.X), sign(v.Y-u.Y)) {
-			add(e.occupied(u.X+d.X, u.Y+d.Y), k)
+			side(e.occupied(u.X+d.X, u.Y+d.Y), k)
 		}
 	}
 	k := e.fx(u, content.FxPierce)
@@ -348,7 +354,7 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 		} else {
 			dx, dy = 0, sign(dy)
 		}
-		add(e.occupied(v.X+dx, v.Y+dy), k)
+		side(e.occupied(v.X+dx, v.Y+dy), k)
 	}
 	return
 }

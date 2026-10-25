@@ -920,3 +920,16 @@ func TestAccuracyAddsToThePhysicalHitChance(t *testing.T) {
 		t.Fatalf("hit chance %.1f → %.1f", before, after)
 	}
 }
+func TestSideHitsNeverPassTheRulesShare(t *testing.T) {
+	e, a, b := arena(t)
+	e.data.Rules.SideShareMax = 0.5
+	e.data.Traits["deep"] = content.Trait{Name: "deep", Kind: "talent", Tone: "attack", Effects: map[string]float64{content.FxPierce: 0.9}}
+	with(e, "hero", "deep")
+	behind := *b
+	behind.ID, behind.X, behind.Y = "behind", b.X+(b.X-a.X), b.Y+(b.Y-a.Y)
+	e.unitIDs[behind.ID] = e.units.NewEntity(&behind)
+	_, share := e.victims(e.unit("hero"), b, e.basic())
+	if share["behind"] != 0.5 || share[b.ID] != 1 {
+		t.Fatalf("shares %v", share)
+	}
+}

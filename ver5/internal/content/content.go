@@ -52,6 +52,7 @@ type Rules struct {
 	PromoteLevels         []int // minimum level to promote from tier i
 	StageLevelBase        int   // the n-th battle of the story is fought at StageLevelBase + StageLevelStep×(n−1); 0 leaves spawns at their characters' levels
 	StageLevelStep        int
+	SideShareMax          float64            // the most damage share a blow deals to anyone it strikes besides its target (splash, sweep, pierce)
 	RankLead              map[string]float64 // a rank's lead over the stage level, as a share of (stage level + StatLevelBase) so it means the same strength at any level
 	EnemyStock            map[string]int
 	AllyStock             map[string]int

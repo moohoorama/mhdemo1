@@ -785,7 +785,7 @@
   },
   "breakthrough": {
    "Name": "돌파",
-   "Desc": "병법의 관통 피해가 25%p 늘어난다.",
+   "Desc": "병법의 관통 피해가 25%p 늘어난다. 다만 주변 피해는 50%를 넘지 않는다.",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 1000,

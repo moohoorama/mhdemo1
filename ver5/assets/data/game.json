@@ -72,6 +72,7 @@
   ],
   "StageLevelBase": 3,
   "StageLevelStep": 2,
+  "SideShareMax": 0.5,
   "RankLead": {
    "troop": 0,
    "officer": 0.08,
