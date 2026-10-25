@@ -1521,32 +1521,6 @@
      }
     }
    ]
-  },
-  {
-   "ID": "bocai-calls-liubei",
-   "If": [
-    "hp:bocai<70",
-    "alive:liubei"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "bocai",
-       "Text": "네놈들 두목은 어디 있느냐! 썩 나와라!"
-      },
-      {
-       "Actor": "liubei",
-       "Text": "그대의 상대는 나다!"
-      }
-     ]
-    },
-    {
-     "Kind": "duel",
-     "Duel": "yingchuan-liubei-bocai"
-    }
-   ]
   }
  ],
  "Faction": "turban",

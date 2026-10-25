@@ -262,3 +262,60 @@ func TestChangsheSiegeUnfolds(t *testing.T) {
 	applyOK(t, e, Command{Kind: "end"})
 	assert.Equal(t, "victory", e.Observe().Result)
 }
+
+func TestYingchuanGuanYuAttackDoesNotSummonLiuBeiDuel(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	dd := *d
+	dd.Campaign.Start = "c02-battle"
+	e := New(&dd, 3)
+	applyOK(t, e, Command{Kind: "start"})
+
+	bocai, guanyu, liubei := e.unit("bocai"), e.unit("guanyu"), e.unit("liubei")
+	require.NotNil(t, bocai)
+	require.NotNil(t, guanyu)
+	require.NotNil(t, liubei)
+	bocai.X, bocai.Y = 2, 2
+	guanyu.X, guanyu.Y = 2, 3
+	liubei.X, liubei.Y = 3, 3
+	bocai.HP = e.stats(bocai).MaxHP * 69 / 100
+
+	r := applyOK(t, e, Command{Kind: "attack", Actor: "guanyu", Target: "bocai"})
+	assert.Empty(t, duelsIn(r), "Guanyu's attack cannot start Liu Bei's duel from two cells away")
+	assert.False(t, e.state.Executed["duel-yingchuan-liubei-bocai"])
+	assert.Positive(t, e.unit("bocai").HP, "Bo Cai remains on the field after surviving the attack")
+
+	liubei = e.unit("liubei")
+	liubei.X, liubei.Y = 3, 2
+	r = applyOK(t, e, Command{Kind: "wait", Actor: "liubei"})
+	require.Len(t, duelsIn(r), 1, "the duel starts when Liu Bei meets Bo Cai")
+	assert.Equal(t, "yingchuan-liubei-bocai", duelsIn(r)[0].DuelID)
+}
+
+func TestJiejiaoYuanShaoLeavesOnlyAtZeroHP(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	dd := *d
+	dd.Campaign.Start = "c11-40"
+	e := New(&dd, 3)
+	applyOK(t, e, Command{Kind: "start"})
+	plan, err := e.DeploymentPlan()
+	require.NoError(t, err)
+	for _, cmd := range plan {
+		applyOK(t, e, cmd)
+	}
+	require.Equal(t, "battle", e.state.Phase)
+
+	yuanshao, guanyu := e.unit("yuanshao"), e.unit("guanyu")
+	require.NotNil(t, yuanshao)
+	require.NotNil(t, guanyu)
+	yuanshao.HP = e.stats(yuanshao).MaxHP * 49 / 100
+	guanyu.X, guanyu.Y = yuanshao.X-1, yuanshao.Y
+	applyOK(t, e, Command{Kind: "wait", Actor: "guanyu"})
+	assert.Equal(t, "battle", e.state.Phase, "adjacency and low HP do not end the battle")
+	assert.Positive(t, e.unit("yuanshao").HP)
+
+	e.unit("yuanshao").HP = 0
+	applyOK(t, e, Command{Kind: "wait", Actor: "liubei"})
+	assert.Equal(t, "victory", e.state.Result, "zero HP satisfies the existing victory goal")
+}

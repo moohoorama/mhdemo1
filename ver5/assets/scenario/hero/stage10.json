@@ -1106,33 +1106,6 @@
      ]
     }
    ]
-  },
-  {
-   "ID": "yuanshao-retreat",
-   "If": [
-    "any:[adjacent:liubei:yuanshao, adjacent:guanyu:yuanshao, adjacent:zhangfei:yuanshao, hp:yuanshao<50]"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "tianfeng",
-       "Text": "주공, 물러나셔야 합니다!"
-      },
-      {
-       "Actor": "yuanshao",
-       "Text": "……백마의종이 허명이 아니었단 말인가."
-      }
-     ]
-    },
-    {
-     "Kind": "remove",
-     "Targets": [
-      "yuanshao"
-     ]
-    }
-   ]
   }
  ],
  "Reward": {

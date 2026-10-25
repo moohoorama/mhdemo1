@@ -36,13 +36,19 @@ func TestRenderedCampaignDuels(t *testing.T) {
 		t.Fatal(err)
 	}
 	p := &duelRenderTest{g: g, out: out, index: -1}
+	only := os.Getenv("SRPG_DUEL_ID")
 	for stage, st := range d.Stages {
 		for _, duel := range st.Duels {
+			if only != "" && duel.ID != only {
+				continue
+			}
 			p.cases = append(p.cases, duelRenderCase{stage: stage, duel: duel})
 		}
 	}
 	// Enemy-initiated presentation must keep the ally on the left.
-	p.cases = append(p.cases, duelRenderCase{stage: 0, duel: d.Stages[0].Duels[0], enemyAttacks: true})
+	if only == "" || only == d.Stages[0].Duels[0].ID {
+		p.cases = append(p.cases, duelRenderCase{stage: 0, duel: d.Stages[0].Duels[0], enemyAttacks: true})
+	}
 	result := make(chan error, 1)
 	ebiten.SetWindowSize(Width, Height)
 	rendererMain <- func() { result <- ebiten.RunGame(p) }

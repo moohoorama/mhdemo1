@@ -120,6 +120,9 @@ func (g *Game) startDuelScene(stage int, duel content.Duel, enemyAttacks bool) e
 	}
 	g.replayOne(before, cmd, r.Events)
 	g.player.Update(stagger)
+	for i := 0; i < 300 && g.player.Duel == nil && g.player.Busy(); i++ {
+		g.player.Update(.1)
+	}
 	if g.player.Duel == nil {
 		return fmt.Errorf("duel screen did not start")
 	}

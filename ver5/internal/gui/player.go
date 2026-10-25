@@ -338,7 +338,14 @@ func (g *Game) perform(a *replay.Action) []beat {
 			if actor == nil {
 				continue
 			}
-			blow, counters := splitCounters(c.Actor, events)
+			combatEvents := events
+			for i, e := range events {
+				if e.Kind == "duel" {
+					combatEvents = events[:i]
+					break
+				}
+			}
+			blow, counters := splitCounters(c.Actor, combatEvents)
 			for i, part := range splitDouble(blow) {
 				crit := false
 				for _, e := range part {
@@ -418,14 +425,6 @@ func (g *Game) perform(a *replay.Action) []beat {
 				add(leaveTime, func() { g.leaveField(u, dir) })
 			}
 		}
-		for _, e := range events {
-			if e.Kind == "duel" { // a stage duel: its meeting is shown after whatever brought the two together
-				view := g.duelView(e)
-				ev := events
-				add(view.Length()+cutInLength(view), func() { g.player.Duel = view })
-				add(blinkTime, func() { g.player.Duel = nil; g.strike(nil, ev) })
-			}
-		}
 		// the camera goes first to where a run of arrivals or of terrain changes happens, so the
 		// player sees an army come in or a fire start instead of a screen that seems to wait
 		looking := ""
@@ -440,6 +439,11 @@ func (g *Game) perform(a *replay.Action) []beat {
 				looking = ""
 			}
 			switch e.Kind {
+			case "duel":
+				view := g.duelView(e)
+				ev := events[i+1:]
+				add(view.Length()+cutInLength(view), func() { g.player.Duel = view })
+				add(blinkTime, func() { g.player.Duel = nil; g.strike(nil, ev) })
 			case "status":
 				// an event's stat change on many units at once shows on all of them together
 				if i > 0 && events[i-1].Kind == "status" && events[i-1].Text == e.Text {
