@@ -36,6 +36,12 @@ nodes (`ver5/assets/scenes/chNN.json`, `ver5/docs/presentation-scene.md`). Say "
 a battle map or an event CG. `go run ./cmd/_uidemo-vm -ui scenenode -stage c01-t1,c01-t2` plays the given story
 nodes' scenes line by line for capture.
 
+Before writing or editing story text (explore people's lines, events, scenes before a sortie, battle dialogue), read
+`ver5/docs/story-writing.md`: it holds the tone the confirmed chapters keep (연의's gravity with everyday humour,
+standing shown before it is claimed, actions over explanations), the staging rules and the order of work (two or three
+drafts side by side in an html page, the user picks, then data, then a game capture). Per-officer speech is in
+`ver5/docs/data-speech-style.md`.
+
 When you add or edit a stage (`ver5/assets/scenario/*/stageNN.json`, its map or its story nodes), read
 `ver5/docs/stage_lv_balance.md` first and set the ranks and the enemy count by it: stage files never hold
 levels — each spawn has a `Rank` (troop, officer, commander, boss) and an optional `Shift`, and the engine
