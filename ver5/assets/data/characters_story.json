@@ -756,6 +756,52 @@
     "Faction": "han",
     "Scene": "eunuch_noncombat"
    }
+  },
+  "drunkard": {
+   "Name": "술꾼",
+   "Biography": "탁현 장비의 주점 단골. 유비의 말에 의병에 처음 이름을 올린다.",
+   "Class": "light_infantry",
+   "Stats": [
+    40,
+    40,
+    30,
+    40,
+    30,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword"
+   ],
+   "Look": {
+    "Faction": "shu",
+    "Scene": "commoner_man"
+   }
+  },
+  "scout": {
+   "Name": "정찰병",
+   "Biography": "탁현 의병의 정찰병.",
+   "Class": "light_infantry",
+   "Stats": [
+    40,
+    40,
+    30,
+    50,
+    30,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword"
+   ],
+   "Look": {
+    "Faction": "shu",
+    "Scene": "light_infantry"
+   }
   }
  }
 }

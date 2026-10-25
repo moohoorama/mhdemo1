@@ -115,7 +115,7 @@ func TestScenesData(t *testing.T) {
 				if a.Sprite != "" && sheets[a.Sprite] == nil {
 					t.Errorf("%s: unknown sprite %q", key, a.Sprite)
 				}
-				if _, ok := names[scenes.Base(key)]; !ok && a.Sprite == "" {
+				if _, ok := names[scenes.Base(key)]; !ok && a.Sprite == "" && !a.Stay { // a walk's person brings its own
 					t.Errorf("%s: not a character name and no sprite given", key)
 				}
 			}
