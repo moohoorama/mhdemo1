@@ -573,15 +573,17 @@ func (g *Game) drawMinimap(dst *ebiten.Image, o core.Observation, x0, y0 float64
 			rect(dst, px, py, float32(s*2), float32(s), c)
 		}
 	}
+	// the dots follow the units on the field, so a replay shows no army before it arrives
 	for _, u := range o.UnitViews {
-		if u.HP <= 0 {
+		v := g.vis[u.ID]
+		if u.HP <= 0 || v == nil || v.gone {
 			continue
 		}
 		c := color.NRGBA{R: 120, G: 190, B: 255, A: 255}
 		if u.Faction == "enemy" {
 			c = color.NRGBA{R: 240, G: 80, B: 64, A: 255}
 		}
-		px, py := at(float64(u.X), float64(u.Y))
+		px, py := at(v.u, v.v)
 		fillCircle(dst, px+float32(s), py+float32(s/2), 2.5, c)
 	}
 	// visible area: screen corners → canvas → minimap (both are linear in the iso projection)

@@ -1205,3 +1205,6 @@
 - `assets/scenario/hero/story02.json`, `docs/fullstory.md`: 언덕을 남동쪽으로, 두 겹 울타리 묘사를 한 겹·세 문으로, 남쪽 울타리 → 남동쪽, 동·서 → 동북·남서, 3라운드 출격 — 새 구도에 맞춤.
 - `internal/core/campaign_content_test.go`: `TestChangsheSiegeUnfolds`의 불·성문 칸, 문 밖으로 나간 병사, 수비대 `assault`, 3라운드 출격으로 고침.
 - `tools/mapgen/layouts/hero/stage02.txt`: 새 배치로 다시 뽑음.
+- `internal/gui/game.go`: 시작 재생(`replayOpening`)에서 이벤트로 등장하는 유닛(`unit-arrival`)을 등장 차례 전까지 화면에서 뺌 — 끝난 상태로 한꺼번에 그려 조조군·손견군이 첫 화면부터 서 있었다(옛 구도는 구석이라 화면 밖이었을 뿐).
+- `internal/gui/hud.go`: 미니맵 점을 규칙 상태 대신 필드에 보이는 유닛 위치로 그림 — 재생 중 미니맵이 아직 오지 않은 군대와 컷신 뒤 자리를 미리 보여 줬다.
+- `internal/gui/game.go`, `internal/gui/turn_banner.go`: 전투가 시작되면(시작·마지막 배치) 개전 재생·브리핑·장면이 모두 끝나 조작할 수 있을 때 "제1턴 · 유비군의 차례"를 띄움 — 1턴 표시는 진영 종료 때만 나와 어느 전투도 첫 턴을 알리지 않았다.

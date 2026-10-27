@@ -67,6 +67,7 @@ type Game struct {
 	player                    Player
 	banner                    string
 	turnBanner                *turnBanner
+	openingTurn               bool // the first turn's banner waits for the battle's opening to finish
 	bannerT, clockMS          float64
 	shakeT                    float64
 	hitFlashT                 float64
@@ -327,6 +328,7 @@ func (g *Game) request(q session.Request) session.Response {
 	}
 	if r.OK && before != nil && before.Phase != "battle" && q.Op == "command" && g.S.View().Phase == "battle" {
 		g.replayOpening(q.Command, r.Events)
+		g.openingTurn = true
 	}
 	return r
 }
@@ -358,6 +360,8 @@ func (g *Game) replayOpening(c core.Command, events []core.Event) {
 	}
 	for _, e := range events {
 		switch e.Kind {
+		case "unit-arrival":
+			delete(g.vis, e.Actor) // comes in at its arrival beat, not before the opening plays
 		case "move":
 			rewind(e.Actor, e.Path)
 		case "cutscene":

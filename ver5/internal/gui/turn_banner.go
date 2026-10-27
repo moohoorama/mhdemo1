@@ -36,8 +36,21 @@ func (g *Game) showTurn(round int, faction, army string) {
 	g.turnBanner = &turnBanner{round: round, faction: faction, army: army}
 }
 
+// showOpeningTurn names the first turn once the battle's opening (its cutscene, its briefing) is
+// over and the player can act.
+func (g *Game) showOpeningTurn() {
+	if !g.openingTurn || g.player.Busy() || g.sceneBusy() || len(g.modals) > 0 || g.S.Engine == nil {
+		return
+	}
+	g.openingTurn = false
+	if o := g.S.Engine.Observe(); o.Phase == "battle" {
+		g.showTurn(o.Round, o.Turn, o.Army)
+	}
+}
+
 // advanceTurnBanner runs on real time; fast replay plays it twice as fast.
 func (g *Game) advanceTurnBanner(dt float64) {
+	g.showOpeningTurn()
 	b := g.turnBanner
 	if b == nil {
 		return
