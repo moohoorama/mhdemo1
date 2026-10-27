@@ -134,6 +134,7 @@ type Game struct {
 	recoveryID                string
 	recovery                  core.RecoveryPreview
 	sandboxView               core.ObservationCache
+	mini                      miniGround
 	modals                    []*modal
 	scenes                    *scenes.Book
 	names                     map[string]string // display name -> character id

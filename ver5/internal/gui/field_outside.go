@@ -34,13 +34,16 @@ type cloudShadow struct{ x, y, r, v float64 }
 type outsideLayers struct {
 	decor       *ebiten.Image // stones and groves in world space, empty over the map
 	tiles       *ebiten.Image // repeating quarter-tile grass with tufts, see outsideTiles
-	fog, layer  *ebiten.Image // screen-size scratch layers
-	holeFog     *ebiten.Image // radial hole textures, see radialHole
-	holeVig     *ebiten.Image
+	layer       *ebiten.Image // screen-size scratch layer
+	haze        *ebiten.Image // the fog under the vignette round the map's centre, see hazeTexture
+	drop, rim   *ebiten.Image // the border's bands across, see bandTexture
 	cloud       *ebiten.Image
 	clouds      []cloudShadow
 	cx, cy, rad float64 // map centre and half-diagonal in world pixels
 }
+
+// hazeReach is how far from the map's centre the haze texture reaches; beyond it the haze is even.
+const hazeReach = vignetteOuter * 1.05
 
 // mapOutline is the battle area's border in world pixels, corner by corner.
 func (f *Field) mapOutline() [4][2]float64 {
@@ -91,8 +94,8 @@ func (f *Field) makeOutside() {
 	}
 	p.Close()
 	vector.FillPath(o.decor, &p, nil, &vector.DrawPathOptions{ColorScale: colorScaleWhite(), Blend: ebiten.BlendDestinationOut})
-	o.holeFog = radialHole(func(d float64) float64 { return ramp(d, fogInner, fogOuter, fogMax) / fogMax }, fogOuter*1.05)
-	o.holeVig = radialHole(func(d float64) float64 { return ramp(d, vignetteInner, vignetteOuter, vignetteMax) / vignetteMax }, vignetteOuter*1.05)
+	o.haze = hazeTexture()
+	o.drop, o.rim = dropBand(), rimBand()
 	o.cloud = softEllipse()
 	for i := range 4 {
 		o.clouds = append(o.clouds, cloudShadow{x: r.Float64() * cloudSpan, y: o.cy + (r.Float64()-.5)*o.rad*1.6, r: 145 + r.Float64()*90, v: 7 + float64(i%3)*3.5})
@@ -147,20 +150,58 @@ func ramp(d, lo, hi, top float64) float64 {
 	return top * (.41 + .59*(k-.6)/.4)
 }
 
-// radialHole is a texture whose alpha at distance d (texture radius = reach) is
-// 1 - layer(d); drawn with BlendDestinationOut over a full layer it leaves layer(d).
-func radialHole(layer func(d float64) float64, reach float64) *ebiten.Image {
+// haze is the vignette laid over the fog at distance d from the map's centre: both deepen with d, so
+// one picture holds the two.
+func haze(d float64) color.NRGBA {
+	fa, va := ramp(d, fogInner, fogOuter, fogMax), ramp(d, vignetteInner, vignetteOuter, vignetteMax)
+	a := va + fa*(1-va)
+	if a == 0 {
+		return color.NRGBA{}
+	}
+	mix := func(v, f uint8) uint8 { return uint8(math.Round((float64(v)*va + float64(f)*fa*(1-va)) / a)) }
+	return color.NRGBA{R: mix(vignetteColor.R, fogColor.R), G: mix(vignetteColor.G, fogColor.G), B: mix(vignetteColor.B, fogColor.B), A: uint8(math.Round(255 * a))}
+}
+
+// hazeTexture is haze round the centre of a square hazeReach from it to each side; its corners are
+// already the even haze beyond.
+func hazeTexture() *ebiten.Image {
 	const n = 256
 	img := image.NewNRGBA(image.Rect(0, 0, n, n))
 	for y := range n {
 		for x := range n {
-			d := math.Hypot(float64(x)+.5-n/2, float64(y)+.5-n/2) / (n / 2) * reach
-			a := 1 - layer(d)
-			if d >= reach {
-				a = 0
-			}
-			img.SetNRGBA(x, y, color.NRGBA{R: 255, G: 255, B: 255, A: uint8(255 * max(0, min(1, a)))})
+			img.SetNRGBA(x, y, haze(math.Hypot(float64(x)+.5-n/2, float64(y)+.5-n/2)/(n/2)*hazeReach))
 		}
+	}
+	return ebiten.NewImageFromImage(img)
+}
+
+// A band is the border's cross-section: a one pixel wide column of alpha, stretched across a strip
+// along each side of the battle area (see drawBorder).
+const bandTexels = 18
+
+// dropBand is the dark drop just outside the edge: three soft strokes 3, 6 and 9 world px wide laid
+// on each other, the narrowest darkest.
+func dropBand() *ebiten.Image {
+	img := image.NewNRGBA(image.Rect(0, 0, 1, bandTexels))
+	for j := range bandTexels {
+		t := math.Abs((float64(j)+.5)/bandTexels-.5) * 9 // world px from the band's middle
+		clear := 1.0
+		for i, a := range []float64{60, 50, 40} {
+			if t < float64(i+1)*1.5 {
+				clear *= 1 - a/255
+			}
+		}
+		img.SetNRGBA(0, j, color.NRGBA{R: 255, G: 255, B: 255, A: uint8(math.Round(255 * (1 - clear)))})
+	}
+	return ebiten.NewImageFromImage(img)
+}
+
+// rimBand is the pale rim: solid in the middle, softening over the outer fifth on each side.
+func rimBand() *ebiten.Image {
+	img := image.NewNRGBA(image.Rect(0, 0, 1, bandTexels))
+	for j := range bandTexels {
+		t := math.Abs((float64(j)+.5)/bandTexels-.5) * 2
+		img.SetNRGBA(0, j, color.NRGBA{R: 255, G: 255, B: 255, A: uint8(math.Round(255 * min(1, (1-t)/.4)))})
 	}
 	return ebiten.NewImageFromImage(img)
 }
@@ -190,9 +231,8 @@ func (f *Field) drawOutsideGround(clockMS float64) {
 		o.layer = ebiten.NewImage(w, h)
 	}
 	z := f.renderZoom
-	mx, my := f.renderPoint(o.cx, o.cy)
-	outline := f.renderOutline()
-	// quarter-tile grass on the grid of the map's cells, outside the map only
+	// on one screen-size layer: quarter-tile grass on the grid of the map's cells, the decor, and the
+	// haze over them; the battle area is cut out of it once, and it is laid on the canvas once
 	o.layer.Clear()
 	ax, ay := f.renderPoint(f.Center(-.25, -.25))
 	tw, th := 512*z, 256*z
@@ -204,44 +244,87 @@ func (f *Field) drawOutsideGround(clockMS float64) {
 			o.layer.DrawImage(o.tiles, top)
 		}
 	}
-	vector.FillPath(o.layer, outline, nil, &vector.DrawPathOptions{ColorScale: colorScaleWhite(), Blend: ebiten.BlendDestinationOut})
-	c.DrawImage(o.layer, nil)
 	op := &ebiten.DrawImageOptions{}
-	f.renderOp(c, op)
-	c.DrawImage(o.decor, op)
-	for _, l := range []struct {
-		hole  *ebiten.Image
-		reach float64
-		c     color.NRGBA
-		top   float64
-	}{{o.holeFog, fogOuter * 1.05, fogColor, fogMax}, {o.holeVig, vignetteOuter * 1.05, vignetteColor, vignetteMax}} {
-		o.layer.Clear()
-		lc := l.c
-		lc.A = uint8(255 * l.top)
-		o.layer.Fill(lc)
-		hop := &ebiten.DrawImageOptions{Blend: ebiten.BlendDestinationOut}
-		s := l.reach * z * 2 / 256
-		hop.GeoM.Scale(s, s)
-		hop.GeoM.Translate(mx-l.reach*z, my-l.reach*z)
-		o.layer.DrawImage(l.hole, hop)
-		vector.FillPath(o.layer, outline, nil, &vector.DrawPathOptions{ColorScale: colorScaleWhite(), Blend: ebiten.BlendDestinationOut})
-		c.DrawImage(o.layer, nil)
-	}
+	op.GeoM.Translate(-f.renderX, -f.renderY)
+	op.GeoM.Scale(z, z)
+	o.layer.DrawImage(o.decor, op)
+	f.drawHaze(o.layer)
+	f.cutBattleArea(o.layer)
+	c.DrawImage(o.layer, nil)
 	// a dark drop just outside the edge, then a faintly pulsing pale rim on it
-	for i := 3; i >= 1; i-- {
-		so := &vector.StrokeOptions{Width: float32(float64(i) * 3 * z), LineJoin: vector.LineJoinRound}
-		dop := &vector.DrawPathOptions{AntiAlias: true}
-		dop.ColorScale.ScaleWithColor(color.NRGBA{A: uint8(40 + 10*(3-i))})
-		var shifted vector.Path
-		ao := &vector.AddPathOptions{}
-		ao.GeoM.Translate(0, 4*z)
-		shifted.AddPath(outline, ao)
-		vector.StrokePath(c, &shifted, so, dop)
-	}
+	f.drawBorder(c, o.drop, 4*z, 9*z, color.NRGBA{A: 255})
 	pulse := .35 + .08*math.Sin(clockMS/1000*1.6)
-	rop := &vector.DrawPathOptions{AntiAlias: true}
-	rop.ColorScale.ScaleWithColor(color.NRGBA{R: 240, G: 225, B: 170, A: uint8(255 * pulse)})
-	vector.StrokePath(c, outline, &vector.StrokeOptions{Width: float32(math.Max(1, 1.1*z))}, rop)
+	f.drawBorder(c, o.rim, 0, math.Max(1, 1.1*z)/.8, color.NRGBA{R: 240, G: 225, B: 170, A: uint8(255 * pulse)})
+}
+
+// drawHaze lays the haze over dst: its texture round the map's centre, the even haze around that.
+func (f *Field) drawHaze(dst *ebiten.Image) {
+	o := &f.outside
+	mx, my := f.renderPoint(o.cx, o.cy)
+	r := hazeReach * f.renderZoom
+	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
+	op.GeoM.Scale(2*r/256, 2*r/256)
+	op.GeoM.Translate(mx-r, my-r)
+	dst.DrawImage(o.haze, op)
+	w, h := float32(dst.Bounds().Dx()), float32(dst.Bounds().Dy())
+	x0, y0, x1, y1 := float32(mx-r), float32(my-r), float32(mx+r), float32(my+r)
+	even := haze(hazeReach)
+	vector.FillRect(dst, 0, 0, w, max(0, y0), even, false)
+	vector.FillRect(dst, 0, y1, w, max(0, h-y1), even, false)
+	vector.FillRect(dst, 0, y0, max(0, x0), y1-y0, even, false)
+	vector.FillRect(dst, x1, y0, max(0, w-x1), y1-y0, even, false)
+}
+
+// cutBattleArea clears the battle area out of a canvas-size dst: two triangles, no path to fill.
+func (f *Field) cutBattleArea(dst *ebiten.Image) {
+	var vs [4]ebiten.Vertex
+	for i, c := range f.mapOutline() {
+		x, y := f.renderPoint(c[0], c[1])
+		vs[i] = ebiten.Vertex{DstX: float32(x), DstY: float32(y), SrcX: 1.5, SrcY: 1.5, ColorR: 1, ColorG: 1, ColorB: 1, ColorA: 1}
+	}
+	dst.DrawTriangles(vs[:], []uint16{0, 1, 2, 0, 2, 3}, whitePixel(), &ebiten.DrawTrianglesOptions{Blend: ebiten.BlendDestinationOut})
+}
+
+// drawBorder stretches band across a strip width canvas px wide along each side of the battle area,
+// dy below it, tinted c. Neighbouring strips meet on the corners' bisectors, so none overlaps another.
+func (f *Field) drawBorder(dst, band *ebiten.Image, dy, width float64, c color.NRGBA) {
+	var p [4][2]float64
+	var mid [2]float64
+	for i, q := range f.mapOutline() {
+		p[i][0], p[i][1] = f.renderPoint(q[0], q[1])
+		p[i][1] += dy
+		mid[0], mid[1] = mid[0]+p[i][0]/4, mid[1]+p[i][1]/4
+	}
+	// each side's outward normal, then each corner's offset to where the two strips' edges cross
+	var n [4][2]float64
+	for i := range 4 {
+		a, b := p[i], p[(i+1)%4]
+		l := math.Hypot(b[0]-a[0], b[1]-a[1])
+		n[i] = [2]float64{(b[1] - a[1]) / l, -(b[0] - a[0]) / l}
+		if n[i][0]*((a[0]+b[0])/2-mid[0])+n[i][1]*((a[1]+b[1])/2-mid[1]) < 0 {
+			n[i] = [2]float64{-n[i][0], -n[i][1]}
+		}
+	}
+	var out, in [4][2]float64
+	for i := range 4 {
+		m, q := n[(i+3)%4], n[i]
+		k := width / 2 / (1 + m[0]*q[0] + m[1]*q[1])
+		out[i] = [2]float64{p[i][0] + (m[0]+q[0])*k, p[i][1] + (m[1]+q[1])*k}
+		in[i] = [2]float64{p[i][0] - (m[0]+q[0])*k, p[i][1] - (m[1]+q[1])*k}
+	}
+	r, g, b, a := float32(c.R)/255, float32(c.G)/255, float32(c.B)/255, float32(c.A)/255
+	vertex := func(q [2]float64, v float32) ebiten.Vertex {
+		return ebiten.Vertex{DstX: float32(q[0]), DstY: float32(q[1]), SrcX: .5, SrcY: v, ColorR: r, ColorG: g, ColorB: b, ColorA: a}
+	}
+	vs := make([]ebiten.Vertex, 0, 16)
+	is := make([]uint16, 0, 24)
+	for i := range 4 {
+		j := (i + 1) % 4
+		at := uint16(len(vs))
+		vs = append(vs, vertex(out[i], 0), vertex(out[j], 0), vertex(in[j], bandTexels), vertex(in[i], bandTexels))
+		is = append(is, at, at+1, at+2, at, at+2, at+3)
+	}
+	dst.DrawTriangles(vs, is, band, &ebiten.DrawTrianglesOptions{Filter: ebiten.FilterLinear})
 }
 
 // exteriorDim is how bright scenery just outside the battle area stays, like the ground there.
@@ -269,21 +352,6 @@ func (f *Field) edgeShade(u, v float64) float64 {
 	}
 	d := max(-.5-u, -.5-v, u-(float64(f.Map.W)-.5), v-(float64(f.Map.H)-.5))
 	return 1 - (1-exteriorDim)*math.Min(1, math.Max(0, d))
-}
-
-// renderOutline is the battle area's border in canvas pixels.
-func (f *Field) renderOutline() *vector.Path {
-	var p vector.Path
-	for i, c := range f.mapOutline() {
-		x, y := f.renderPoint(c[0], c[1])
-		if i == 0 {
-			p.MoveTo(float32(x), float32(y))
-		} else {
-			p.LineTo(float32(x), float32(y))
-		}
-	}
-	p.Close()
-	return &p
 }
 
 // drawCloudShadows drifts soft shadows over the whole field, units included.

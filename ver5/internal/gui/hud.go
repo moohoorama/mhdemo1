@@ -540,6 +540,18 @@ func (g *Game) miniPx() float64 {
 	return min(miniScale, float64(infoW-28)/float64(m.W+m.H))
 }
 
+// miniGround is the minimap's terrain, drawn for one map at one size and device pixel placement.
+type miniGround struct {
+	img *ebiten.Image
+	key miniKey
+}
+
+type miniKey struct {
+	m            *MapArt
+	s, px        float64 // UI px per cell step, device px per UI px
+	fracX, fracY float64 // the terrain's offset within its device pixel
+}
+
 // miniSize is the minimap's width and height.
 func (g *Game) miniSize() (w, h float64) {
 	m := g.field.Map
@@ -566,13 +578,29 @@ func (g *Game) drawMinimap(dst *ebiten.Image, o core.Observation, x0, y0 float64
 	at := func(u, v float64) (float32, float32) {
 		return float32(ox + (u-v)*s), float32(y0 + (u+v)*s/2)
 	}
-	for v, row := range m.Tiles {
-		for u := range row {
-			px, py := at(float64(u), float64(v))
-			c := miniColors[row[u]]
-			rect(dst, px, py, float32(s*2), float32(s), c)
+	// the terrain is drawn once on a picture of its own and laid down whole every frame; it keeps the
+	// device pixels it would have had, so it is remade when the map, its size or its place moves them
+	gx, gy := math.Floor(x0*drawPx+drawOX), math.Floor(y0*drawPx+drawOY)
+	key := miniKey{m, s, drawPx, x0*drawPx + drawOX - gx, y0*drawPx + drawOY - gy}
+	if g.mini.img == nil || g.mini.key != key {
+		if g.mini.img != nil {
+			g.mini.img.Deallocate()
 		}
+		g.mini.img = ebiten.NewImage(int(math.Ceil((w+2*s)*drawPx))+2, int(math.Ceil(h*drawPx))+2)
+		g.mini.key = key
+		keepX, keepY := drawOX, drawOY
+		drawOX, drawOY = keepX-gx, keepY-gy
+		for v, row := range m.Tiles {
+			for u := range row {
+				px, py := at(float64(u), float64(v))
+				rect(g.mini.img, px, py, float32(s*2), float32(s), miniColors[row[u]])
+			}
+		}
+		drawOX, drawOY = keepX, keepY
 	}
+	gop := &ebiten.DrawImageOptions{}
+	gop.GeoM.Translate(gx, gy)
+	dst.DrawImage(g.mini.img, gop)
 	// the dots follow the units on the field, so a replay shows no army before it arrives
 	for _, u := range o.UnitViews {
 		v := g.vis[u.ID]

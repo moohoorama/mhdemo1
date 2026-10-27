@@ -214,9 +214,45 @@ func strokeLine(dst *ebiten.Image, x0, y0, x1, y1, width float32, c color.Color)
 	vector.StrokeLine(dst, x0*s+ox, y0*s+oy, x1*s+ox, y1*s+oy, width*s, c, true)
 }
 
+// fillCircle stamps the disc picture, so many dots cost one batched draw and no path to fill.
 func fillCircle(dst *ebiten.Image, x, y, r float32, c color.Color) {
-	s, ox, oy := float32(drawPx), float32(drawOX), float32(drawOY)
-	vector.FillCircle(dst, x*s+ox, y*s+oy, r*s, c, true)
+	s, ox, oy := float64(drawPx), drawOX, drawOY
+	d := discImage()
+	k := 2 * float64(r) * s / float64(d.Bounds().Dx())
+	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
+	op.GeoM.Translate(-float64(d.Bounds().Dx())/2, -float64(d.Bounds().Dy())/2)
+	op.GeoM.Scale(k, k)
+	op.GeoM.Translate(float64(x)*s+ox, float64(y)*s+oy)
+	op.ColorScale.ScaleWithColor(c)
+	dst.DrawImage(d, op)
+}
+
+var discTex, whiteTex *ebiten.Image
+
+// discImage is a white disc with a one-texel soft rim, the picture fillCircle stamps.
+func discImage() *ebiten.Image {
+	if discTex == nil {
+		const n = 16
+		img := image.NewNRGBA(image.Rect(0, 0, n, n))
+		for y := range n {
+			for x := range n {
+				a := max(0, min(1, n/2-math.Hypot(float64(x)+.5-n/2, float64(y)+.5-n/2)))
+				img.SetNRGBA(x, y, color.NRGBA{R: 255, G: 255, B: 255, A: uint8(math.Round(255 * a))})
+			}
+		}
+		discTex = ebiten.NewImageFromImage(img)
+	}
+	return discTex
+}
+
+// whitePixel is one white pixel with white around it, a source for flat-coloured triangles: sample it at (1.5, 1.5).
+func whitePixel() *ebiten.Image {
+	if whiteTex == nil {
+		im := ebiten.NewImage(3, 3)
+		im.Fill(color.White)
+		whiteTex = im.SubImage(image.Rect(1, 1, 2, 2)).(*ebiten.Image)
+	}
+	return whiteTex
 }
 
 func scaled(p *vector.Path) *vector.Path {
