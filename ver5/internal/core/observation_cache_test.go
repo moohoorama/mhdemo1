@@ -47,3 +47,16 @@ func TestObservationCache(t *testing.T) {
 		assert.Equal(t, 40, c.Of(other).DamagePct)
 	})
 }
+
+// An observation shares the engine's state instead of copying it, so commands and settings after it
+// must leave it as it was.
+func TestObservationStaysAfterChanges(t *testing.T) {
+	e, _, _ := arena(t)
+	o := e.Observe()
+	want := encoded(o)
+	apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
+	e.SetDamagePct(50)
+	e.SetCounterAll(true)
+	assert.NotEqual(t, want, encoded(e.Observe()))
+	assert.Equal(t, want, encoded(o))
+}

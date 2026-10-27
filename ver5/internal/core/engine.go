@@ -55,13 +55,18 @@ func fromState(d *content.Data, s State) *Engine {
 	e.state.Units = nil
 	return e
 }
-func (e *Engine) Snapshot() State {
-	s := copyOf(e.state)
+func (e *Engine) Snapshot() State { return copyOf(e.current()) }
+
+// current is the state with its characters and units, sharing their maps and slices with the engine.
+// A committed state is never changed in place (Apply runs a command on a copy and swaps it in), so
+// what it shares stays as it was; readers must not change it.
+func (e *Engine) current() State {
+	s := e.state
 	for _, id := range keys(e.charIDs) {
-		s.Characters = append(s.Characters, copyOf(*e.char(id)))
+		s.Characters = append(s.Characters, *e.char(id))
 	}
 	for _, id := range keys(e.unitIDs) {
-		s.Units = append(s.Units, copyOf(*e.unit(id)))
+		s.Units = append(s.Units, *e.unit(id))
 	}
 	return s
 }
@@ -114,11 +119,14 @@ func (e *Engine) addCharacter(id, def string) *Character {
 	e.charIDs[id] = e.chars.NewEntity(&c)
 	return e.char(id)
 }
+// Observe is what a screen shows of the state. It shares the state's and the content's maps and
+// slices instead of copying them: callers only read it.
 func (e *Engine) Observe() Observation {
-	s := e.Snapshot()
-	o := Observation{State: s, Dialogue: copyOf(e.data.Node(s.Node))}
+	s := e.current()
+	o := Observation{State: s, Dialogue: e.data.Node(s.Node)}
 	if s.Phase == "deployment" || s.Phase == "battle" || s.Phase == "result" {
-		m := copyOf(e.data.Stages[s.Stage])
+		m := e.data.Stages[s.Stage]
+		m.Tiles = slices.Clone(m.Tiles)
 		for _, t := range s.TileStates {
 			at := t.X*content.CellWidth + content.CellWidth - 1
 			m.Tiles[t.Y] = m.Tiles[t.Y][:at] + t.State + m.Tiles[t.Y][at+1:]
