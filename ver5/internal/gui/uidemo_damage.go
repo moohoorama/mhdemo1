@@ -14,7 +14,7 @@ func demoDamage(d *Demo) error {
 	}
 	d.setHP(enemy, .78)
 	d.setHP(ally, .36)
-	d.g.sync(d.g.S.Engine.Observe())
+	d.g.sync(d.g.S.View())
 	d.step = func(f int) {
 		switch f {
 		case 30:

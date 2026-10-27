@@ -138,6 +138,23 @@ func (e *Engine) Observe() Observation {
 	return o
 }
 
+// ObservationCache keeps one engine's Observation until the engine is replaced or its state changes,
+// so a screen that reads it every frame builds it once per change. A command counts a revision; the
+// settings (SetDamagePct, SetXPPct, SetCounterAll) change the state without one, so they are compared
+// too. What it returns is shared: callers read it and never change it.
+type ObservationCache struct {
+	e *Engine
+	o Observation
+}
+
+func (c *ObservationCache) Of(e *Engine) Observation {
+	s := &e.state
+	if c.e != e || c.o.Revision != s.Revision || c.o.DamagePct != s.DamagePct || c.o.XPPct != s.XPPct || c.o.CounterAll != s.CounterAll {
+		c.e, c.o = e, e.Observe()
+	}
+	return c.o
+}
+
 // Data is the content bundle the engine runs.
 func (e *Engine) Data() *content.Data { return e.data }
 func fail(code string) error          { return fmt.Errorf("%s", code) }

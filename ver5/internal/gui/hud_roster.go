@@ -28,7 +28,7 @@ func (g *Game) rosterWindow(dst *ebiten.Image, x, y, w, h int) {
 	if g.S.Engine == nil {
 		return
 	}
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	left, right := x+32, x+w-32
 	// the seven buttons shrink with the window so the filters and the views never meet
 	bw := min(100, (right-left-12-18-24)/7)

@@ -86,7 +86,7 @@ func (g *Game) equipmentWindow(dst *ebiten.Image, x, y, w, h int) {
 	if g.S.Engine == nil {
 		return
 	}
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	of := g.officer(o, g.selected)
 	if of == nil {
 		return
@@ -291,7 +291,7 @@ func (g *Game) drawEquipPicker(dst *ebiten.Image) {
 }
 
 func (g *Game) equipPicker(dst *ebiten.Image, x, y int) {
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	of := g.officer(o, g.selected)
 	if of == nil {
 		g.equip.slot = ""
@@ -353,7 +353,7 @@ func (g *Game) pickRow(dst *ebiten.Image, of *core.Character, slot, item string,
 	case worn:
 		g.label(dst, "착용 중", float64(r.Max.X-16)-g.width("착용 중", 14), y+8, 14, gold)
 	default:
-		n := g.S.Engine.Observe().Warehouse[item]
+		n := g.S.View().Warehouse[item]
 		if n > 1 {
 			g.label(dst, fmt.Sprintf("×%d", n), x+60+g.width(g.itemName(item), 19)+8, y+6, 15, muted)
 		}
@@ -450,7 +450,7 @@ func (g *Game) drawEquipInfo(dst *ebiten.Image) {
 // itemEffect plays the piece on a copy of the game: the stats with the slot empty, with the
 // piece, and as they are now.
 func (g *Game) itemEffect(actor, slot, item string) itemEffect {
-	key := fmt.Sprint(g.S.Engine.Observe().Revision, actor, slot, item)
+	key := fmt.Sprint(g.S.View().Revision, actor, slot, item)
 	if e, ok := g.itemEffects[key]; ok {
 		return e
 	}

@@ -15,7 +15,7 @@ func demoDeploy(d *Demo) error {
 		return err
 	}
 	g.editorReturn = nil
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	g.ensureField(o)
 	g.sync(o)
 	g.modals = nil

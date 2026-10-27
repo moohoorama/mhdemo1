@@ -145,7 +145,7 @@ func (d *Demo) battleWith(id string, tweak func(*mapedit.Document)) error {
 
 // firstAlly is the first allied unit on the field.
 func (d *Demo) firstAlly() string {
-	for _, u := range d.g.S.Engine.Observe().UnitViews {
+	for _, u := range d.g.S.View().UnitViews {
 		if u.Faction == "ally" {
 			return u.ID
 		}
@@ -250,7 +250,7 @@ func (d *Demo) pair() (ally, enemy string, err error) {
 	if g.S.Engine, err = core.Restore(g.S.Data, snap); err != nil {
 		return
 	}
-	g.sync(g.S.Engine.Observe())
+	g.sync(g.S.View())
 	g.camX, g.camY = g.field.Center(float64(ax)+.5, float64(ay)+.5)
 	return
 }
@@ -261,7 +261,7 @@ func (d *Demo) setHP(id string, k float64) (hp, maxHP int) {
 	snap := g.S.Engine.Snapshot()
 	for i, u := range snap.Units {
 		if u.ID == id {
-			if v := g.unitView(g.S.Engine.Observe(), id); v != nil {
+			if v := g.unitView(g.S.View(), id); v != nil {
 				maxHP = v.Stats.MaxHP
 			}
 			hp = int(float64(maxHP) * k)
@@ -279,7 +279,7 @@ func (d *Demo) setHP(id string, k float64) (hp, maxHP int) {
 // hit applies an HP change to unit id from fraction from to fraction to and shows it.
 func (d *Demo) hit(actor, id string, from, to float64, crit bool) {
 	before, _ := d.setHP(id, from)
-	d.g.sync(d.g.S.Engine.Observe())
+	d.g.sync(d.g.S.View())
 	after, _ := d.setHP(id, to)
 	events := []core.Event{}
 	if crit {

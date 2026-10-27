@@ -23,10 +23,10 @@ func demoEquip(d *Demo) error {
 	d.step = func(f int) {
 		switch f {
 		case 30:
-			for i := 0; i < 200 && g.S.Engine.Observe().Dialogue.Kind != "battle"; i++ {
+			for i := 0; i < 200 && g.S.View().Dialogue.Kind != "battle"; i++ {
 				g.command(core.Command{Kind: "next"})
 			}
-			for _, c := range g.roster(g.S.Engine.Observe()) {
+			for _, c := range g.roster(g.S.View()) {
 				if g.S.Data.Characters[c.Def].Lord {
 					g.selected = c.ID
 				}
@@ -46,7 +46,7 @@ func demoEquip(d *Demo) error {
 		case 120:
 			g.openPicker(slot)
 		case 170:
-			for _, id := range sorted(g.S.Engine.Observe().Warehouse) {
+			for _, id := range sorted(g.S.View().Warehouse) {
 				eq := g.S.Data.Equipment[id]
 				if pick == "" && eq.Slot == slot && len(eq.Traits) > 0 && g.itemEffect(g.selected, slot, id).err == "" {
 					pick = id

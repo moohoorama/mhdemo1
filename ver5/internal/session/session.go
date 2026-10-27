@@ -17,6 +17,7 @@ type Session struct {
 	Settings storage.Settings
 	Dirty    bool
 	Screen   string
+	view     core.ObservationCache
 }
 type Request struct {
 	ID          any          `json:"id,omitempty"`
@@ -48,6 +49,10 @@ func New(d *content.Data, dir string) (*Session, error) {
 	s.Settings = v
 	return s, err
 }
+
+// View is what the engine shows now, built once per change of its state; callers only read it.
+func (s *Session) View() core.Observation { return s.view.Of(s.Engine) }
+
 func (s *Session) Handle(q Request) Response {
 	r := Response{ID: q.ID, OK: true}
 	events, err := s.handle(q, &r)
@@ -62,7 +67,7 @@ func (s *Session) Handle(q Request) Response {
 		s.Engine.SetDamagePct(s.Settings.DamageScale())
 		s.Engine.SetXPPct(s.Settings.XPScale())
 		s.Engine.SetCounterAll(s.Settings.CounterAll)
-		o := s.Engine.Observe()
+		o := s.View()
 		r.Observation = &o
 	}
 	return r
@@ -78,7 +83,7 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 		if err := need(); err != nil {
 			return err
 		}
-		if q.Revision == nil || *q.Revision != s.Engine.Observe().Revision {
+		if q.Revision == nil || *q.Revision != s.View().Revision {
 			return fmt.Errorf("StaleRevision")
 		}
 		return nil
@@ -191,28 +196,28 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 		var v core.Result
 		var err error
 		if q.Op == "command" {
-			o := s.Engine.Observe()
+			o := s.View()
 			if o.Phase == "battle" && o.Turn != "ally" && q.Command.Kind != "learn" && q.Command.Kind != "learn_close" {
 				return nil, fmt.Errorf("NotYourTurn")
 			}
 			v, err = s.apply(q.Command)
 		} else if q.Op == "ai" {
-			if s.Engine.Observe().Turn == "ally" && !s.Engine.Deploying() {
+			if s.View().Turn == "ally" && !s.Engine.Deploying() {
 				return nil, fmt.Errorf("NotYourTurn")
 			}
-			if len(s.Engine.Observe().Learning) > 0 {
+			if len(s.View().Learning) > 0 {
 				return nil, fmt.Errorf("LearningPending")
 			}
 			v, err = s.stepAI()
 		} else {
-			turn := s.Engine.Observe().Turn
-			phase := s.Engine.Observe().Phase
+			turn := s.View().Turn
+			phase := s.View().Phase
 			deadline := time.Now().Add(10 * time.Second)
 			for i := 0; i < 1000; i++ {
 				if time.Now().After(deadline) {
 					return v.Events, fmt.Errorf("AITimeLimit")
 				}
-				o := s.Engine.Observe()
+				o := s.View()
 				if (o.Phase != "battle" && o.Phase != "deployment") || o.Turn != turn || o.Phase != phase {
 					break
 				}
@@ -242,7 +247,7 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 // AdvanceEnemies honors the one-command setting and saves at allied turn starts.
 func (s *Session) AdvanceEnemies() ([]core.Event, error) {
 	out := []core.Event{}
-	if s.Engine == nil || s.Settings.AI != "auto" && s.Engine.Observe().Turn != "support" {
+	if s.Engine == nil || s.Settings.AI != "auto" && s.View().Turn != "support" {
 		return out, nil
 	}
 	deadline := time.Now().Add(10 * time.Second)
@@ -250,7 +255,7 @@ func (s *Session) AdvanceEnemies() ([]core.Event, error) {
 		if time.Now().After(deadline) {
 			return out, fmt.Errorf("AITimeLimit")
 		}
-		o := s.Engine.Observe()
+		o := s.View()
 		if o.Phase != "battle" || o.Turn == "ally" || o.Turn == "enemy" && s.Settings.AI != "auto" || len(o.Learning) > 0 {
 			return out, nil
 		}
@@ -272,7 +277,7 @@ func (s *Session) ResolvePhase() ([]*replay.Action, error) {
 	if s.Engine == nil {
 		return nil, fmt.Errorf("NoGame")
 	}
-	turn, army := s.Engine.Observe().Turn, s.Engine.Observe().Army
+	turn, army := s.View().Turn, s.View().Army
 	actions := []*replay.Action{}
 	deadline := time.Now().Add(10 * time.Second)
 	for i := 0; ; i++ {
@@ -282,7 +287,7 @@ func (s *Session) ResolvePhase() ([]*replay.Action, error) {
 		if time.Now().After(deadline) {
 			return actions, fmt.Errorf("AITimeLimit")
 		}
-		o := s.Engine.Observe()
+		o := s.View()
 		if o.Phase != "battle" || o.Turn != turn || o.Army != army || len(o.Learning) > 0 {
 			break
 		}

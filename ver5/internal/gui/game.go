@@ -132,6 +132,7 @@ type Game struct {
 	recoveryRevision          uint64
 	recoveryID                string
 	recovery                  core.RecoveryPreview
+	sandboxView               core.ObservationCache
 	modals                    []*modal
 	scenes                    *scenes.Book
 	names                     map[string]string // display name -> character id
@@ -240,7 +241,7 @@ func (g *Game) send(q session.Request) session.Response {
 	var before *core.Observation
 	c := q.Command
 	if g.S.Engine != nil {
-		o := g.S.Engine.Observe()
+		o := g.S.View()
 		before = &o
 		q.Revision = &o.Revision
 		if q.Op == "ai" && o.Phase == "battle" {
@@ -304,7 +305,7 @@ func (g *Game) request(q session.Request) session.Response {
 	var before *core.Observation
 	aiCommand := core.Command{}
 	if g.S.Engine != nil {
-		o := g.S.Engine.Observe()
+		o := g.S.View()
 		before = &o
 		if q.Op == "ai" && o.Phase == "battle" {
 			aiCommand, _ = ai.Next(g.S.Engine) // the command the session's AI step will apply
@@ -322,9 +323,9 @@ func (g *Game) request(q session.Request) session.Response {
 		if before.Phase != "deployment" || !g.S.Engine.Deploying() {
 			g.resetDeployment()
 		}
-		g.sync(g.S.Engine.Observe())
+		g.sync(g.S.View())
 	}
-	if r.OK && before != nil && before.Phase != "battle" && q.Op == "command" && g.S.Engine.Observe().Phase == "battle" {
+	if r.OK && before != nil && before.Phase != "battle" && q.Op == "command" && g.S.View().Phase == "battle" {
 		g.replayOpening(q.Command, r.Events)
 	}
 	return r
@@ -334,7 +335,7 @@ func (g *Game) request(q session.Request) session.Response {
 // the command that began the battle (start, the last deployment) also set it off: the units stand
 // where their first walk begins, and the replay takes them from there.
 func (g *Game) replayOpening(c core.Command, events []core.Event) {
-	final := g.S.Engine.Observe()
+	final := g.S.View()
 	shown := false
 	for _, e := range events {
 		switch e.Kind {
@@ -402,7 +403,7 @@ func (g *Game) record(before *core.Observation, events []core.Event) {
 			up.before, up.after = after, after
 		}
 		if g.S.Engine != nil {
-			o := g.S.Engine.Observe()
+			o := g.S.View()
 			if u := g.unitView(o, id); u != nil {
 				up.after, up.progress = u.Stats, u.XPProgress
 			}
@@ -427,14 +428,14 @@ func (g *Game) replayOne(before core.Observation, c core.Command, events []core.
 	a.Add(c, events)
 	actions := []*replay.Action{a}
 	replay.Link(actions)
-	g.player.Play(actions, g.S.Engine.Observe())
+	g.player.Play(actions, g.S.View())
 }
 
 // resolvePhase runs the current faction's whole phase with the AI and replays it.
 func (g *Game) resolvePhase() {
 	g.clearOrder()
 	g.selected = ""
-	before := g.S.Engine.Observe()
+	before := g.S.View()
 	actions, err := g.S.ResolvePhase()
 	if err != nil {
 		g.toast(err.Error(), bad)
@@ -455,7 +456,7 @@ func (g *Game) resolvePhase() {
 		}
 	}
 	g.record(&before, events)
-	g.player.Play(actions, g.S.Engine.Observe())
+	g.player.Play(actions, g.S.View())
 }
 
 func (g *Game) command(c core.Command) {
@@ -476,7 +477,7 @@ func (g *Game) assist() {
 		g.command(c)
 		return
 	}
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	if o.Phase == "scenario" {
 		switch o.Dialogue.Kind {
 		case "say", "narrate":
@@ -581,7 +582,7 @@ func (g *Game) Update() error {
 	g.syncBattleLogStage()
 	g.learn = nil
 	if g.S.Engine != nil && g.S.Screen == "playing" {
-		g.learn = g.S.Engine.Observe().Learners
+		g.learn = g.S.View().Learners
 	}
 	if g.Verify {
 		if err := g.verifyFrame(); err != nil {
@@ -646,7 +647,7 @@ func (g *Game) Update() error {
 		if g.autoplay {
 			g.assist()
 		} else {
-			o := g.S.Engine.Observe()
+			o := g.S.View()
 			if o.Phase == "battle" && (o.Turn == "support" || o.Turn == "enemy" && g.S.Settings.AI == "auto") && !g.busy() && len(g.learn) == 0 {
 				g.resolvePhase()
 			}
@@ -735,7 +736,7 @@ func (g *Game) keys() {
 	if len(g.learn) > 0 {
 		return
 	}
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	dialogue := o.Phase == "scenario" && isTalk(o.Dialogue.Kind)
 	if pressed(ebiten.KeyGraveAccent) {
 		g.input, g.entry = true, ""
@@ -780,7 +781,7 @@ func (g *Game) leftClick() {
 		g.exploreClick(g.toCanvas(cursorWorld()))
 		return
 	}
-	if o := g.S.Engine.Observe(); o.Phase != "battle" && o.Phase != "deployment" {
+	if o := g.S.View(); o.Phase != "battle" && o.Phase != "deployment" {
 		return
 	}
 	if !g.onMap() {
@@ -954,7 +955,7 @@ func (g *Game) titleMenu(dst *ebiten.Image) {
 }
 
 func (g *Game) play(dst *ebiten.Image) {
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	if o.Phase != "scenario" {
 		g.dialogueAnim = dialogueAnim{} // the next story opens a fresh box
 	}

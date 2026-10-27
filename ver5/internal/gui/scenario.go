@@ -113,7 +113,7 @@ func (g *Game) advanceDialogue() {
 	if g.narrationLeaving {
 		return
 	}
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	if o.Phase != "scenario" || !isTalk(o.Dialogue.Kind) {
 		return
 	}
@@ -360,7 +360,7 @@ func (g *Game) deputyWindow(dst *ebiten.Image, x, y, w, h int) {
 	if g.S.Engine == nil {
 		return
 	}
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	cmds, labels := []core.Command{{Kind: "undeputy", Actor: g.selected}}, []string{"부관 해제"}
 	for _, of := range g.roster(o) {
 		if of.ID != g.selected {
@@ -388,7 +388,7 @@ func (g *Game) deputyWindow(dst *ebiten.Image, x, y, w, h int) {
 
 // statDiff applies c to a copy of the game and reports the selected officer's stat changes.
 func (g *Game) statDiff(c core.Command) string {
-	key := fmt.Sprint(g.S.Engine.Observe().Revision, c)
+	key := fmt.Sprint(g.S.View().Revision, c)
 	if s, ok := g.diffs[key]; ok {
 		return s
 	}

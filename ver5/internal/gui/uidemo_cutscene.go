@@ -25,7 +25,7 @@ func demoCutscene(d *Demo) error {
 	ally := d.firstAlly()
 	d.look(ally)
 	var ax, ay int
-	for _, u := range g.S.Engine.Observe().UnitViews {
+	for _, u := range g.S.View().UnitViews {
 		if u.ID == ally {
 			ax, ay = u.X, u.Y
 		}

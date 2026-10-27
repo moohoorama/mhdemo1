@@ -40,7 +40,7 @@ func demoExplore(d *Demo) error {
 			g.narrationLeaving = false
 			g.command(core.Command{Kind: "next"})
 		}
-		o := g.S.Engine.Observe()
+		o := g.S.View()
 		switch {
 		case g.overlay == "confirm" && wait > 40:
 			answer := g.answer

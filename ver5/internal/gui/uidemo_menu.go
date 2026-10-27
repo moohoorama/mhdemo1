@@ -35,7 +35,7 @@ func demoMenu(d *Demo) error {
 	if g.S.Engine, err = core.Restore(g.S.Data, snap); err != nil {
 		return err
 	}
-	g.sync(g.S.Engine.Observe())
+	g.sync(g.S.View())
 	point := func(label string, i int) {
 		n := 0
 		for _, b := range g.buttons {
@@ -52,7 +52,7 @@ func demoMenu(d *Demo) error {
 	d.step = func(f int) {
 		switch f {
 		case 20:
-			g.begin(*g.unitView(g.S.Engine.Observe(), actor))
+			g.begin(*g.unitView(g.S.View(), actor))
 			g.ord.stage = "menu"
 		case 60:
 			point("공격", 0)

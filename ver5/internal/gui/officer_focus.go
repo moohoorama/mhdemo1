@@ -6,7 +6,7 @@ func (g *Game) focusOfficer(id string) {
 	if g.S.Engine == nil || g.popupPending() {
 		return
 	}
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	u := g.unitView(o, id)
 	if u == nil {
 		return

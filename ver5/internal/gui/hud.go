@@ -134,7 +134,7 @@ func (g *Game) endPhase() {
 	if g.popupPending() {
 		return
 	}
-	if left, _ := g.pending(g.S.Engine.Observe()); left > 0 {
+	if left, _ := g.pending(g.S.View()); left > 0 {
 		g.ask(fmt.Sprintf("아직 행동하지 않은 부대가 %d개 있습니다.\n진영을 종료하시겠습니까?", left), g.endTurn)
 		return
 	}
@@ -246,7 +246,7 @@ func (g *Game) detailUnit(o core.Observation) *core.UnitView {
 		return nil
 	}
 	if g.ord.sandbox != nil {
-		o = g.ord.sandbox.Observe()
+		o = g.view()
 	}
 	if u := g.unitView(o, g.selected); u != nil && u.HP > 0 {
 		return u
@@ -263,7 +263,7 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 		return
 	}
 	if g.ord.sandbox != nil {
-		o = g.ord.sandbox.Observe()
+		o = g.view()
 	}
 	if g.traitOf != u.ID {
 		g.traitOf, g.traitTop = u.ID, 0

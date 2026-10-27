@@ -38,7 +38,7 @@ func demoSceneNode(d *Demo) error {
 	}
 	d.overlay = func(dst *ebiten.Image) {
 		dst.Fill(color.Black)
-		o := g.S.Engine.Observe()
+		o := g.S.View()
 		o.Node, o.Dialogue = nodes[ni], g.S.Data.Node(nodes[ni])
 		g.scenario(dst, o)
 		g.drawIntro(dst)

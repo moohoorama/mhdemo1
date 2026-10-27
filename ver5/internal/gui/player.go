@@ -726,7 +726,7 @@ func (g *Game) say(u *unitVis, text string) {
 
 // expShown converts raw experience to the 0..100 scale the experience bar uses.
 func (g *Game) expShown(id string, raw int) int {
-	if u := g.unitView(g.S.Engine.Observe(), id); u != nil {
+	if u := g.unitView(g.S.View(), id); u != nil {
 		return max(1, int(math.Round(float64(raw)*100/float64(max(1, u.XPRequired)))))
 	}
 	return raw

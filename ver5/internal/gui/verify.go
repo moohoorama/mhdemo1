@@ -25,7 +25,7 @@ func (g *Game) verifyFrame() error {
 		g.request(session.Request{Op: "new", Seed: g.seed})
 		return nil
 	}
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	key := fmt.Sprintf("%d-%s-%s", o.Stage, o.Phase, o.Node)
 	if o.Phase == "battle" {
 		key = fmt.Sprintf("%d-battle-%s", o.Stage, o.Turn)

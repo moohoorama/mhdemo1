@@ -35,6 +35,14 @@ func (g *Game) engine() *core.Engine {
 	return g.S.Engine
 }
 
+// view is what engine shows.
+func (g *Game) view() core.Observation {
+	if g.ord.sandbox != nil {
+		return g.sandboxView.Of(g.ord.sandbox)
+	}
+	return g.S.View()
+}
+
 func (g *Game) unitView(o core.Observation, id string) *core.UnitView {
 	for i := range o.UnitViews {
 		if o.UnitViews[i].ID == id {
@@ -61,7 +69,7 @@ func (g *Game) cancel() bool {
 	case "target", "sub":
 		g.ord.stage, g.ord.sub, g.ord.armed = "menu", "", hoverCell{}
 	case "menu":
-		u := g.unitView(g.S.Engine.Observe(), g.ord.actor)
+		u := g.unitView(g.S.View(), g.ord.actor)
 		if g.ord.move == nil && u != nil && u.Moved {
 			g.clearOrder()
 			g.selected = ""
@@ -91,7 +99,7 @@ func (g *Game) tentative(x, y int) {
 		g.toast(koreanError(err.Error()), bad)
 		return
 	}
-	a := replay.New(g.S.Engine.Observe(), c.Actor)
+	a := replay.New(g.S.View(), c.Actor)
 	a.Add(c, r.Events)
 	g.ord.sandbox, g.ord.move, g.ord.stage, g.ord.armed = sb, &c, "menu", hoverCell{}
 	g.player.Play([]*replay.Action{a}, sb.Observe())
@@ -136,7 +144,7 @@ func (g *Game) arm(x, y int) bool {
 
 // mapClick handles a left click on the battlefield cell (x, y).
 func (g *Game) mapClick(x, y int) {
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	if o.Phase == "deployment" {
 		g.deploymentMapClick(x, y)
 		return
@@ -148,7 +156,7 @@ func (g *Game) mapClick(x, y int) {
 		}
 	}
 	if g.ord.actor != "" {
-		if a := g.unitView(g.engine().Observe(), g.ord.actor); a != nil && a.X == x && a.Y == y && g.ord.stage != "target" {
+		if a := g.unitView(g.view(), g.ord.actor); a != nil && a.X == x && a.Y == y && g.ord.stage != "target" {
 			if g.ord.stage == "move" {
 				g.ord.stage = "menu"
 			}
@@ -172,7 +180,7 @@ func (g *Game) mapClick(x, y int) {
 		}
 	case "target":
 		for _, c := range g.options(g.ord.pick) {
-			if t := g.unitView(g.engine().Observe(), c.Target); t != nil && t.X == x && t.Y == y {
+			if t := g.unitView(g.view(), c.Target); t != nil && t.X == x && t.Y == y {
 				if g.arm(x, y) {
 					return
 				}
@@ -231,7 +239,7 @@ func (g *Game) menuItems() []entry {
 		return func() { g.ord.sub, g.ord.stage = kind, "sub" }
 	}
 	attack := "무기로 공격합니다. 정해진 상대와 맞붙으면 일기토가 벌어집니다."
-	if a := g.unitView(g.engine().Observe(), g.ord.actor); a != nil {
+	if a := g.unitView(g.view(), g.ord.actor); a != nil {
 		lo, hi := g.engine().AttackRange(a.ID)
 		attack = fmt.Sprintf("무기로 공격합니다(사거리 %d–%d).\n정해진 상대와 맞붙으면 일기토가 벌어집니다.", lo, hi)
 	}
@@ -247,7 +255,7 @@ func (g *Game) menuItems() []entry {
 func (g *Game) subItems() []entry {
 	e := g.engine()
 	legal := e.LegalActions(g.ord.actor).Commands
-	o := e.Observe()
+	o := g.view()
 	u := g.unitView(o, g.ord.actor)
 	out := []entry{}
 	switch g.ord.sub {
@@ -332,7 +340,7 @@ func (g *Game) drawMenuAt(dst *ebiten.Image, sx, sy float64) {
 		if spec.x+spec.w > g.panelBounds().Max.X {
 			spec.x = r.Min.X - 4 - spec.w // no room on the right: open to the left
 		}
-		if u := g.unitView(g.engine().Observe(), g.ord.actor); u != nil && g.ord.sub == "skill" {
+		if u := g.unitView(g.view(), g.ord.actor); u != nil && g.ord.sub == "skill" {
 			spec.header = fmt.Sprintf("병법치 %d / %d", u.MP, u.Stats.MaxMP)
 			spec.gauge = float64(u.MP) / float64(max(1, u.Stats.MaxMP))
 		} else {
@@ -378,7 +386,7 @@ func (g *Game) orderMarks(o core.Observation) []Highlight {
 		return out
 	}
 	e := g.engine()
-	eo := e.Observe()
+	eo := g.view()
 	a := g.unitView(eo, g.ord.actor)
 	if a == nil {
 		return out
@@ -524,7 +532,7 @@ func abs(n int) int {
 }
 
 func (g *Game) threat(id string) []content.Point {
-	key := fmt.Sprint(g.S.Engine.Observe().Revision, id)
+	key := fmt.Sprint(g.S.View().Revision, id)
 	if p, ok := g.threats[key]; ok {
 		return p
 	}
@@ -561,7 +569,7 @@ func (g *Game) forecast(dst *ebiten.Image) {
 		return
 	}
 	e := g.engine()
-	o := e.Observe()
+	o := g.view()
 	var c *core.Command
 	for _, opt := range g.options(g.ord.pick) {
 		if t := g.unitView(o, opt.Target); t != nil && t.X == g.hover.x && t.Y == g.hover.y {

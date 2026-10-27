@@ -18,7 +18,7 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 	if e == nil || !e.Walking() || e.ExploreFile() == nil {
 		return
 	}
-	o := e.Observe()
+	o := g.S.View()
 	person := e.ExploreFile().Areas[o.Spot.Area].People[g.shopFrom]
 	if person == nil {
 		return
@@ -77,7 +77,7 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 	if g.S.Engine == nil {
 		return
 	}
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	roster := g.roster(o)
 	if !containsID(roster, g.selected) && len(roster) > 0 {
 		g.selected = roster[0].ID

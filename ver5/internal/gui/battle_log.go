@@ -35,7 +35,7 @@ func (g *Game) battleLogVisible() bool {
 	if g.S.Screen != "playing" || g.S.Engine == nil {
 		return false
 	}
-	p := g.S.Engine.Observe().Phase
+	p := g.S.View().Phase
 	return p == "battle" || p == "result"
 }
 
@@ -205,7 +205,7 @@ func (g *Game) bindBattleLogStage(id string) {
 
 func (g *Game) syncBattleLogStage() {
 	if g.S != nil && g.S.Engine != nil {
-		o := g.S.Engine.Observe()
+		o := g.S.View()
 		if o.Map != nil {
 			g.bindBattleLogStage(o.Map.ID)
 		} else if g.logStage != "" {

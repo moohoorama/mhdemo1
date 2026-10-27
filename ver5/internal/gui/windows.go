@@ -20,7 +20,7 @@ var overlayTitles = map[string]string{"menu": "메뉴", "save": "저장", "load"
 
 func (g *Game) popupPending() bool {
 	return g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 ||
-		(g.S.Engine != nil && g.S.Screen == "playing" && len(g.S.Engine.Observe().Learners) > 0)
+		(g.S.Engine != nil && g.S.Screen == "playing" && len(g.S.View().Learners) > 0)
 }
 
 func (g *Game) openOverlay(name string) bool {
@@ -298,7 +298,7 @@ func (g *Game) drawModal(dst *ebiten.Image) {
 func (g *Game) modalWindow(dst *ebiten.Image, m *modal) {
 	switch m.kind {
 	case "objective":
-		o := g.S.Engine.Observe()
+		o := g.S.View()
 		st := g.S.Data.Stages[o.Stage]
 		brief := g.objective(o)
 		r := g.objectiveBox(uiW)
@@ -566,7 +566,7 @@ func (g *Game) objectiveBox(w int) image.Rectangle {
 	if g.S.Engine == nil {
 		return image.Rect(w/2-260, 190, w/2+260, 510)
 	}
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	r, ok := g.objectiveLayout(g.objectiveRows(o, g.objective(o)), w, uiH)
 	if !ok {
 		return image.Rect(w/10, uiH/2-100, w*9/10, uiH/2+100)

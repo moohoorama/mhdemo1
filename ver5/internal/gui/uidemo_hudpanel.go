@@ -18,7 +18,7 @@ func demoHUDPanel(d *Demo) error {
 	d.look(ally)
 	g.logPending = []string{"유비 → 장각: 일반 공격", "유비 → 장각: 피해 320", "장각 → 유비: 반격"}
 	var u core.UnitView
-	for _, v := range g.S.Engine.Observe().UnitViews {
+	for _, v := range g.S.View().UnitViews {
 		if v.ID == ally {
 			u = v
 		}

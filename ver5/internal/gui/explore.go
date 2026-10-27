@@ -185,7 +185,7 @@ func (g *Game) layOutWalkFor(def *scenes.Scene) bool {
 	if x == nil {
 		return false
 	}
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	if x.Areas[o.Spot.Area].Map != def.Map {
 		return false
 	}
@@ -196,7 +196,7 @@ func (g *Game) layOutWalkFor(def *scenes.Scene) bool {
 // updateExplore steps the walk by one frame: the camera on the hero, the people walking about, the fade through an
 // exit, what the hero arrives at.
 func (g *Game) updateExplore() {
-	g.ensureExplore(g.S.Engine.Observe())
+	g.ensureExplore(g.S.View())
 	w := g.explore
 	s := g.scene
 	const dt = 1.0 / 60

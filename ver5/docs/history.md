@@ -5,6 +5,13 @@
 
 ---
 
+## 2026-10-27 화면이 읽는 엔진 상태를 바뀔 때만 만듦
+
+- `internal/core/engine.go`: `ObservationCache` 추가 — 엔진이 바뀌거나 상태가 바뀔 때(명령의 Revision, Revision을 올리지 않는 설정 세 가지)만 `Observe`를 다시 부르고, 그 사이에는 같은 결과를 돌려줌. 결과는 함께 쓰므로 읽기만 함. 장사의 밤(B02) 실제 게임 루프 측정: 프레임마다 `Observe`를 8번(팝업 확인 2·Update·전투 기록 2·키 입력·advance·그리기) 불러 상태 전체를 JSON으로 왕복 복사했고(한 번 1~2ms, 419KB) CPU의 44%를 차지 — 사용자: 안드로이드에서 전투가 끝난 뒤 스크롤이 버벅임. 바꾼 뒤 Update 8.1ms→0.06ms, 할당 4.9→1.4MB/프레임, 프레임 간격 p95 32~40ms→17~19ms.
+- `internal/session/session.go`: `Session.View()`가 캐시된 결과를 줌. session 안의 `Engine.Observe()`도 이것으로 바꿈. 설정 변경에 Revision을 올리는 방법은 JSON 줄 프로토콜의 Revision 약속(명령마다 하나)을 깨서(`StaleRevision`) 쓰지 않음.
+- `internal/gui/*.go`: `g.S.Engine.Observe()` 63곳을 `g.S.View()`로, 임시 이동 뒤 sandbox를 읽는 곳은 `g.view()`(sandbox 전용 캐시)로 바꿈. 한 번만 쓰는 sandbox·데모 준비 코드는 그대로 둠.
+- `internal/core/observation_cache_test.go`: 상태가 그대로일 때 재사용, 명령·설정·엔진 교체 뒤 다시 만듦을 확인.
+
 ## 2026-10-25 탐험 이름표 색: 색조는 뜻, 밝기는 가리킴
 
 - `internal/gui/walkmap.go`: 이름표 색을 보통 회색·본편 가이드 초록·곁이야기 가이드 노랑으로 바꾸고, 가리키면 같은 색조에서 바탕이 밝아지고(밝기 약 64→128) 글자가 흰색이 되게 함. `plateHover`를 없애고 `namePlate`가 가리킴을 따로 받음 — 사용자: 가이드 노랑·보통 갈색·가리킴 검붉은색이 섞여 고르고 있는지 헷갈림. 가리키면 가이드 색이 사라지던 문제도 없앰. 초록은 유비의 색.

@@ -15,7 +15,7 @@ func demoEnemyCam(d *Demo) error {
 	d.step = func(f int) {
 		switch f {
 		case 1:
-			for _, u := range g.S.Engine.Observe().UnitViews {
+			for _, u := range g.S.View().UnitViews {
 				if u.Faction == "ally" {
 					d.look(u.ID)
 					break

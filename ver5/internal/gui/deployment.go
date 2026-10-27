@@ -38,7 +38,7 @@ func (g *Game) selectDeployment(id string) {
 	if !g.deploying() {
 		return
 	}
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	if !slices.Contains(o.Deployment, id) {
 		return
 	}
@@ -52,7 +52,7 @@ func (g *Game) selectDeployment(id string) {
 	}
 }
 func (g *Game) deploymentMapClick(x, y int) {
-	o := g.S.Engine.Observe()
+	o := g.S.View()
 	for _, u := range o.UnitViews {
 		if u.X == x && u.Y == y && u.HP > 0 {
 			if slices.Contains(o.Deployment, u.ID) {
@@ -129,7 +129,7 @@ func (g *Game) scrollDeployment(delta int) {
 	if !g.deploying() {
 		return
 	}
-	maxScroll := max(0, len(g.S.Engine.Observe().Deployment)*deploymentCardWidth-g.deploymentCardsRect().Dx())
+	maxScroll := max(0, len(g.S.View().Deployment)*deploymentCardWidth-g.deploymentCardsRect().Dx())
 	g.deploymentScroll = max(0, min(maxScroll, g.deploymentScroll+delta))
 }
 func (g *Game) updateDeploymentPanel() bool {
@@ -157,7 +157,7 @@ func (g *Game) deploymentKeys() {
 		return
 	}
 	if pressed(ebiten.KeyTab) {
-		ids := g.S.Engine.Observe().Deployment
+		ids := g.S.View().Deployment
 		start := -1
 		for i, id := range ids {
 			if id == g.deploymentSelected {
@@ -166,7 +166,7 @@ func (g *Game) deploymentKeys() {
 		}
 		for n := 1; n <= len(ids); n++ {
 			id := ids[(start+n)%len(ids)]
-			if g.unitView(g.S.Engine.Observe(), id) == nil {
+			if g.unitView(g.S.View(), id) == nil {
 				g.deploymentSelected = id
 				g.scrollDeployment((start+n)%len(ids)*deploymentCardWidth - g.deploymentScroll)
 				break
