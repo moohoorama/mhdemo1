@@ -1,34 +1,32 @@
-# B02 영천 · 장사의 밤 (32x32): 장사성, 성을 가두는 안쪽 울타리, 황건 진영 띠, 바깥 울타리.
-# 울타리 틈은 모두 두 칸. 남쪽 숲(29~31)에 유관장이 숨고, 북쪽 끝은 강이다.
-w-- w-- w-- w-- w-- w-- w-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-w-- w-- w-- w-- w-- w-- d-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt-
-w-- w-- w-- w-- w-- d-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g--
-w-- w-- w-- w-- d-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-w-- w-- w-- d-- gz- gz- gz- g-- g-- gz- gz- gz- gz- gz- gz- g-- g-- gz- gz- gz- gz- gz- gz- g-- g-- gz- gz- gz- g-- g-- g-- g--
-w-- w-- d-- g-- gz- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- g-- g-- g--
-w-- d-- g-- g-- gz- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- g-- gt- g--
-d-- g-- g-- g-- g-- g-- g-- dk- g-- g-- g-- g-- g-- dk- g-- g-- g-- g-- dk- g-- g-- g-- g-- g-- dk- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- d-- g-- gz- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- gz- d-- g-- g-- g--
-g-- d-- g-- g-- gz- g-- g-- g-- g-- g-- gz- gz- gz- g-- g-- gz- gz- g-- g-- gz- gz- gz- g-- g-- g-- d-- g-- gz- g-- g-- g-- g--
-g-- g-- g-- g-- gz- d-- d-- g-- g-- g-- gz- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- gz- g-- g-- g-- g-- d-- gz- g-- g-- g-- g--
-g-- g-- g-- gt- gz- d-- g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- gz- g-- g-- g-- g-- g-- gz- g-- gt- g-- g--
-g-- g-- g-- g-- gz- g-- g-- dk- g-- g-- g-- g-- g-- c-- c-- c-- c-- c-- c-- g-- g-- g-- g-- g-- dk- g-- g-- gz- g-- g-- g-- g--
-g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- g-- g-- g-- c-- i-- i-- i-- i-- c-- g-- g-- g-- d-- d-- g-- g-- g-- gz- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- g-- c-- i-- io- i-- i-- m-- g-- g-- gz- g-- d-- g-- g-- g-- g-- g-- g-- g-- gt-
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- g-- c-- i-- i-- i-- i-- c-- g-- g-- gz- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-gt- g-- g-- g-- gz- g-- g-- g-- g-- g-- g-- g-- g-- c-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- g-- g-- g--
-g-- g-- g-- g-- gz- g-- g-- dk- g-- g-- g-- g-- g-- c-- c-- m-- c-- c-- c-- g-- g-- g-- g-- g-- dk- g-- g-- gz- g-- g-- g-- g--
-g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- gz- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- g-- g-- g-- d-- gz- g-- g-- gt- g--
-g-- gt- g-- g-- gz- g-- g-- g-- g-- d-- gz- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- g-- g-- d-- g-- gz- g-- g-- g-- g--
-g-- g-- g-- g-- gz- g-- g-- g-- d-- g-- gz- gz- gz- g-- g-- gz- gz- g-- g-- gz- gz- gz- g-- g-- g-- g-- g-- gz- g-- g-- d-- g--
-g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- d-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- dk- g-- g-- g-- g-- g-- dk- g-- g-- g-- g-- dk- g-- g-- g-- g-- g-- dk- g-- g-- g-- g-- g-- g-- g--
-g-- g-- gt- g-- gz- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- gz- g-- g-- g-- g--
-g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- gz- g-- g-- g-- g--
-g-- g-- g-- g-- gz- gz- gz- g-- g-- gz- gz- gz- gz- gz- gz- g-- g-- gz- gz- gz- gz- gz- gz- g-- g-- gz- gz- gz- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- gt-
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- gt- gt-
-g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- gt- gt- gt- gt-
-g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- gt- gt- gt-
+# B02 영천 · 장사의 밤 (26x30): 서북의 강에 등을 댄 장사성을 황건 진영이 ㄷ자로 둘러싸고, 울타리는 한 겹이다.
+# 동북·남동·남서 세 면 가운데에 세 칸 문이 있다. 유관장은 남동 숲, 조조는 동북, 손견은 남서에서 온다.
+w-- w-- w-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+w-- w-- w-- d-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+w-- w-- w-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- gt-
+w-- w-- w-- d-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+w-- w-- w-- d-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g--
+w-- w-- w-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+w-- w-- w-- gz- gz- gz- gz- gz- g-- g-- g-- gz- gz- gz- gz- gz- gz- g-- g-- d-- g-- g-- g-- g-- gt- g--
+w-- w-- w-- d-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- g-- g-- g-- g--
+w-- w-- w-- d-- g-- dk- g-- g-- g-- g-- g-- g-- g-- dk- g-- g-- gz- g-- g-- gt- g-- g-- g-- g-- g-- g--
+w-- w-- w-- d-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- g-- g-- g-- g--
+w-- w-- w-- d-- g-- g-- d-- g-- g-- g-- g-- g-- d-- g-- g-- g-- gz- g-- g-- g-- g-- g-- gt- gt- gt- gt-
+w-- w-- w-- c-- c-- c-- m-- c-- c-- c-- c-- g-- g-- dk- g-- g-- gz- g-- g-- g-- g-- g-- gt- gt- gt- gt-
+w-- w-- w-- c-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- gt- gt- gt- gt-
+w-- w-- w-- c-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- d-- g-- g-- g-- d-- g-- g-- g-- g-- gt- gt- gt-
+w-- w-- w-- c-- i-- i-- io- i-- i-- i-- c-- g-- g-- g-- g-- d-- g-- d-- g-- g-- g-- g-- g-- gt- gt- gt-
+w-- w-- w-- c-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- gt- gt- gt-
+w-- w-- w-- c-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- gt- gt- gt- gt-
+w-- w-- w-- c-- i-- i-- i-- i-- i-- i-- c-- g-- g-- dk- g-- g-- gz- g-- g-- g-- g-- g-- gt- gt- gt- gt-
+w-- w-- w-- c-- c-- c-- m-- c-- c-- c-- c-- g-- g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- gt- gt- gt- gt-
+w-- w-- w-- d-- d-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- gz- g-- g-- g-- gt- g-- g-- g-- g-- g--
+w-- w-- w-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- g-- g-- g-- g--
+w-- w-- w-- d-- g-- dk- g-- g-- g-- g-- g-- g-- g-- dk- g-- g-- gz- g-- g-- g-- d-- g-- g-- g-- g-- g--
+w-- w-- w-- d-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- g-- g-- gt- g--
+w-- w-- w-- gz- gz- gz- gz- gz- g-- g-- g-- gz- gz- gz- gz- gz- gz- g-- g-- g-- g-- g-- g-- g-- g-- g--
+w-- w-- w-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+w-- w-- w-- d-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- gt- g-- g-- g--
+w-- w-- w-- d-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+w-- w-- w-- d-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- gt-
+w-- w-- w-- d-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+w-- w-- w-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- gt- g-- g-- g-- g--

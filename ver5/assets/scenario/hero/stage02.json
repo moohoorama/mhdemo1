@@ -30,23 +30,23 @@
  "Map": "map02.json",
  "Allies": [
   {
-   "X": 31,
-   "Y": 29
+   "X": 24,
+   "Y": 14
   },
   {
-   "X": 29,
-   "Y": 31
+   "X": 25,
+   "Y": 16
   },
   {
-   "X": 30,
-   "Y": 30
+   "X": 25,
+   "Y": 12
   }
  ],
  "Enemies": [
   {
    "Character": "bocai",
-   "X": 22,
-   "Y": 22,
+   "X": 12,
+   "Y": 14,
    "Facing": "SE",
    "Group": "southcamp",
    "Policy": "hold",
@@ -55,8 +55,8 @@
   },
   {
    "Character": "troop_turban",
-   "X": 26,
-   "Y": 23,
+   "X": 15,
+   "Y": 13,
    "Facing": "SE",
    "Group": "so1",
    "Policy": "react",
@@ -64,8 +64,8 @@
   },
   {
    "Character": "troop_turban",
-   "X": 26,
-   "Y": 24,
+   "X": 15,
+   "Y": 15,
    "Facing": "SE",
    "Group": "so2",
    "Policy": "react",
@@ -73,96 +73,69 @@
   },
   {
    "Character": "troop_turban",
-   "X": 23,
-   "Y": 26,
-   "Facing": "SW",
+   "X": 14,
+   "Y": 11,
+   "Facing": "SE",
    "Group": "so3",
    "Policy": "react",
    "Shift": -0.07
   },
   {
    "Character": "troop_turban",
-   "X": 24,
-   "Y": 26,
-   "Facing": "SW",
+   "X": 14,
+   "Y": 17,
+   "Facing": "SE",
    "Group": "so4",
    "Policy": "react",
    "Shift": -0.07
   },
   {
    "Character": "troop_turban",
-   "X": 22,
-   "Y": 17,
-   "Facing": "NW",
-   "Group": "si1",
+   "X": 13,
+   "Y": 13,
+   "Facing": "SE",
+   "Group": "so5",
    "Policy": "react",
    "Shift": -0.07
   },
   {
    "Character": "troop_turban",
-   "X": 23,
-   "Y": 18,
-   "Facing": "NW",
-   "Group": "si2",
+   "X": 13,
+   "Y": 15,
+   "Facing": "SE",
+   "Group": "so6",
    "Policy": "react",
    "Shift": -0.07
   },
   {
    "Character": "troop_turban",
-   "X": 17,
-   "Y": 22,
-   "Facing": "NE",
-   "Group": "si3",
+   "X": 12,
+   "Y": 12,
+   "Facing": "SE",
+   "Group": "so7",
    "Policy": "react",
    "Shift": -0.07
   },
   {
    "Character": "troop_turban",
-   "X": 18,
-   "Y": 23,
-   "Facing": "NE",
-   "Group": "si4",
+   "X": 12,
+   "Y": 16,
+   "Facing": "SE",
+   "Group": "so8",
    "Policy": "react",
    "Shift": -0.07
   },
   {
    "Character": "zhangbao",
-   "X": 24,
-   "Y": 7,
+   "X": 9,
+   "Y": 8,
    "Facing": "NE",
    "Group": "eastcamp",
    "Policy": "react"
   },
   {
    "Character": "troop_turban",
-   "X": 23,
-   "Y": 6,
-   "Facing": "NE",
-   "Group": "eastcamp",
-   "Policy": "react",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_turban",
-   "X": 25,
-   "Y": 8,
-   "Facing": "NE",
-   "Group": "eastcamp",
-   "Policy": "react",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_turban",
-   "X": 25,
-   "Y": 6,
-   "Facing": "NE",
-   "Group": "eastcamp",
-   "Policy": "react",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_turban",
-   "X": 23,
+   "X": 7,
    "Y": 9,
    "Facing": "NE",
    "Group": "eastcamp",
@@ -170,17 +143,62 @@
    "Shift": -0.07
   },
   {
+   "Character": "troop_turban",
+   "X": 11,
+   "Y": 9,
+   "Facing": "NE",
+   "Group": "eastcamp",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 6,
+   "Y": 7,
+   "Facing": "NE",
+   "Group": "eastcamp",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 12,
+   "Y": 7,
+   "Facing": "NE",
+   "Group": "eastcamp",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
    "Character": "zhangliang",
-   "X": 7,
-   "Y": 24,
+   "X": 9,
+   "Y": 21,
    "Facing": "SW",
    "Group": "westcamp",
    "Policy": "react"
   },
   {
    "Character": "troop_turban",
+   "X": 7,
+   "Y": 20,
+   "Facing": "SW",
+   "Group": "westcamp",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 11,
+   "Y": 20,
+   "Facing": "SW",
+   "Group": "westcamp",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
    "X": 6,
-   "Y": 23,
+   "Y": 22,
    "Facing": "SW",
    "Group": "westcamp",
    "Policy": "react",
@@ -188,26 +206,8 @@
   },
   {
    "Character": "troop_turban",
-   "X": 8,
-   "Y": 25,
-   "Facing": "SW",
-   "Group": "westcamp",
-   "Policy": "react",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_turban",
-   "X": 6,
-   "Y": 25,
-   "Facing": "SW",
-   "Group": "westcamp",
-   "Policy": "react",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_turban",
-   "X": 9,
-   "Y": 23,
+   "X": 12,
+   "Y": 22,
    "Facing": "SW",
    "Group": "westcamp",
    "Policy": "react",
@@ -217,9 +217,9 @@
  "Party": [
   {
    "Character": "huangfusong",
-   "X": 17,
-   "Y": 15,
-   "Facing": "SE",
+   "X": 6,
+   "Y": 12,
+   "Facing": "NE",
    "Group": "garrison",
    "AI": true,
    "Policy": "hold",
@@ -227,7 +227,7 @@
   },
   {
    "Character": "zhujun",
-   "X": 15,
+   "X": 6,
    "Y": 17,
    "Facing": "SW",
    "Group": "garrison",
@@ -237,7 +237,73 @@
   },
   {
    "Character": "soldier",
-   "X": 17,
+   "X": 7,
+   "Y": 12,
+   "Facing": "NE",
+   "Group": "garrison",
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "soldier",
+   "X": 5,
+   "Y": 13,
+   "Facing": "NE",
+   "Group": "garrison",
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "soldier",
+   "X": 8,
+   "Y": 13,
+   "Facing": "NE",
+   "Group": "garrison",
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "soldier",
+   "X": 7,
+   "Y": 17,
+   "Facing": "SW",
+   "Group": "garrison",
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "soldier",
+   "X": 5,
+   "Y": 16,
+   "Facing": "SW",
+   "Group": "garrison",
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "soldier",
+   "X": 8,
+   "Y": 16,
+   "Facing": "SW",
+   "Group": "garrison",
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "soldier",
+   "X": 9,
    "Y": 14,
    "Facing": "SE",
    "Group": "garrison",
@@ -248,74 +314,8 @@
   },
   {
    "Character": "soldier",
-   "X": 17,
-   "Y": 16,
-   "Facing": "SE",
-   "Group": "garrison",
-   "AI": true,
-   "Policy": "hold",
-   "Faction": "han",
-   "Shift": -0.07
-  },
-  {
-   "Character": "soldier",
-   "X": 16,
+   "X": 9,
    "Y": 15,
-   "Facing": "SE",
-   "Group": "garrison",
-   "AI": true,
-   "Policy": "hold",
-   "Faction": "han",
-   "Shift": -0.07
-  },
-  {
-   "Character": "soldier",
-   "X": 14,
-   "Y": 17,
-   "Facing": "SW",
-   "Group": "garrison",
-   "AI": true,
-   "Policy": "hold",
-   "Faction": "han",
-   "Shift": -0.07
-  },
-  {
-   "Character": "soldier",
-   "X": 16,
-   "Y": 17,
-   "Facing": "SW",
-   "Group": "garrison",
-   "AI": true,
-   "Policy": "hold",
-   "Faction": "han",
-   "Shift": -0.07
-  },
-  {
-   "Character": "soldier",
-   "X": 15,
-   "Y": 16,
-   "Facing": "SW",
-   "Group": "garrison",
-   "AI": true,
-   "Policy": "hold",
-   "Faction": "han",
-   "Shift": -0.07
-  },
-  {
-   "Character": "soldier",
-   "X": 14,
-   "Y": 14,
-   "Facing": "SE",
-   "Group": "garrison",
-   "AI": true,
-   "Policy": "hold",
-   "Faction": "han",
-   "Shift": -0.07
-  },
-  {
-   "Character": "soldier",
-   "X": 16,
-   "Y": 16,
    "Facing": "SE",
    "Group": "garrison",
    "AI": true,
@@ -333,85 +333,63 @@
   {
    "ID": 1,
    "Rect": {
-    "X": 27,
-    "Y": 25,
+    "X": 16,
+    "Y": 12,
     "W": 1,
-    "H": 3
+    "H": 1
    },
-   "Name": "남쪽 모퉁이 울타리",
+   "Name": "남동 문 옆 울타리",
    "Description": "유비가 불을 놓는 울타리"
   },
   {
    "ID": 2,
    "Rect": {
-    "X": 25,
-    "Y": 27,
-    "W": 2,
+    "X": 16,
+    "Y": 16,
+    "W": 1,
     "H": 1
    },
-   "Name": "남쪽 모퉁이 울타리",
+   "Name": "남동 문 옆 울타리",
    "Description": "유비가 불을 놓는 울타리"
   },
   {
    "ID": 3,
    "Rect": {
-    "X": 27,
-    "Y": 17,
+    "X": 16,
+    "Y": 7,
     "W": 1,
-    "H": 6
+    "H": 5
    },
-   "Name": "남동 울타리",
+   "Name": "남동 울타리 오른편",
    "Description": "장비가 불을 놓는 울타리"
   },
   {
    "ID": 4,
    "Rect": {
-    "X": 17,
-    "Y": 27,
-    "W": 6,
-    "H": 1
+    "X": 16,
+    "Y": 17,
+    "W": 1,
+    "H": 6
    },
-   "Name": "남서 울타리",
+   "Name": "남동 울타리 왼편",
    "Description": "관우가 불을 놓는 울타리"
   },
   {
    "ID": 5,
    "Rect": {
-    "X": 27,
-    "Y": 4,
-    "W": 1,
-    "H": 3
+    "X": 3,
+    "Y": 6,
+    "W": 5,
+    "H": 1
    },
-   "Name": "동쪽 모퉁이 울타리",
+   "Name": "동북 울타리",
    "Description": "조조의 화공"
   },
   {
    "ID": 6,
    "Rect": {
-    "X": 25,
-    "Y": 4,
-    "W": 2,
-    "H": 1
-   },
-   "Name": "동쪽 모퉁이 울타리",
-   "Description": "조조의 화공"
-  },
-  {
-   "ID": 7,
-   "Rect": {
-    "X": 27,
-    "Y": 9,
-    "W": 1,
-    "H": 6
-   },
-   "Name": "동남 울타리",
-   "Description": "조조의 화공"
-  },
-  {
-   "ID": 8,
-   "Rect": {
-    "X": 17,
-    "Y": 4,
+    "X": 11,
+    "Y": 6,
     "W": 6,
     "H": 1
    },
@@ -419,70 +397,48 @@
    "Description": "조조의 화공"
   },
   {
-   "ID": 9,
+   "ID": 7,
    "Rect": {
-    "X": 4,
-    "Y": 27,
-    "W": 3,
+    "X": 3,
+    "Y": 23,
+    "W": 5,
     "H": 1
    },
-   "Name": "서쪽 모퉁이 울타리",
+   "Name": "남서 울타리",
    "Description": "손견의 화공"
+  },
+  {
+   "ID": 8,
+   "Rect": {
+    "X": 11,
+    "Y": 23,
+    "W": 6,
+    "H": 1
+   },
+   "Name": "남서 울타리",
+   "Description": "손견의 화공"
+  },
+  {
+   "ID": 9,
+   "Rect": {
+    "X": 6,
+    "Y": 11,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "동북 성문",
+   "Description": "장사성 동북쪽 성문"
   },
   {
    "ID": 10,
    "Rect": {
-    "X": 4,
-    "Y": 25,
-    "W": 1,
-    "H": 2
-   },
-   "Name": "서쪽 모퉁이 울타리",
-   "Description": "손견의 화공"
-  },
-  {
-   "ID": 11,
-   "Rect": {
-    "X": 9,
-    "Y": 27,
-    "W": 6,
-    "H": 1
-   },
-   "Name": "서남 울타리",
-   "Description": "손견의 화공"
-  },
-  {
-   "ID": 12,
-   "Rect": {
-    "X": 4,
-    "Y": 17,
-    "W": 1,
-    "H": 6
-   },
-   "Name": "서북 울타리",
-   "Description": "손견의 화공"
-  },
-  {
-   "ID": 13,
-   "Rect": {
-    "X": 18,
-    "Y": 15,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "동남 성문",
-   "Description": "장사성 동남쪽 성문"
-  },
-  {
-   "ID": 14,
-   "Rect": {
-    "X": 15,
+    "X": 6,
     "Y": 18,
     "W": 1,
     "H": 1
    },
-   "Name": "서남 성문",
-   "Description": "장사성 서남쪽 성문"
+   "Name": "남서 성문",
+   "Description": "장사성 남서쪽 성문"
   }
  ],
  "Events": [
@@ -496,7 +452,7 @@
        {
         "Kind": "say",
         "Unit": "liubei",
-        "Text": "운장은 남서쪽, 익덕은 남동쪽 울타리를 맡아라. 나는 모퉁이에 불을 놓겠다."
+        "Text": "운장은 왼편, 익덕은 오른편 울타리를 맡아라. 나는 문 옆에 불을 놓겠다."
        }
       ],
       [
@@ -504,43 +460,31 @@
         "Kind": "move",
         "Unit": "liubei",
         "To": {
-         "X": 28,
-         "Y": 26
-        }
+         "X": 17,
+         "Y": 14
+        },
+        "Facing": "NW"
        },
        {
         "Kind": "move",
         "Unit": "guanyu",
         "To": {
-         "X": 20,
-         "Y": 28
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "zhangfei",
-        "To": {
-         "X": 28,
+         "X": 17,
          "Y": 20
-        }
+        },
+        "Facing": "NW"
+       },
+       {
+        "Kind": "move",
+        "Unit": "zhangfei",
+        "To": {
+         "X": 17,
+         "Y": 9
+        },
+        "Facing": "NW"
        }
       ],
       [
-       {
-        "Kind": "face",
-        "Unit": "liubei",
-        "Facing": "NW"
-       },
-       {
-        "Kind": "face",
-        "Unit": "guanyu",
-        "Facing": "NE"
-       },
-       {
-        "Kind": "face",
-        "Unit": "zhangfei",
-        "Facing": "NW"
-       },
        {
         "Kind": "play",
         "Unit": "liubei",
@@ -598,41 +542,27 @@
         "Kind": "move",
         "Unit": "liubei",
         "To": {
-         "X": 30,
-         "Y": 30
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "guanyu",
-        "To": {
-         "X": 29,
-         "Y": 31
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "zhangfei",
-        "To": {
-         "X": 31,
-         "Y": 29
-        }
-       }
-      ],
-      [
-       {
-        "Kind": "face",
-        "Unit": "liubei",
+         "X": 23,
+         "Y": 14
+        },
         "Facing": "NW"
        },
        {
-        "Kind": "face",
+        "Kind": "move",
         "Unit": "guanyu",
-        "Facing": "NE"
+        "To": {
+         "X": 23,
+         "Y": 16
+        },
+        "Facing": "NW"
        },
        {
-        "Kind": "face",
+        "Kind": "move",
         "Unit": "zhangfei",
+        "To": {
+         "X": 23,
+         "Y": 12
+        },
         "Facing": "NW"
        }
       ]
@@ -668,11 +598,6 @@
         "Kind": "say",
         "Unit": "so2",
         "Text": "뜨, 뜨거워! 진영 밖으로 나가자!"
-       },
-       {
-        "Kind": "say",
-        "Unit": "si1",
-        "Text": "성 쪽으로 피해라!"
        }
       ],
       [
@@ -680,65 +605,37 @@
         "Kind": "move",
         "Unit": "so1",
         "To": {
-         "X": 29,
-         "Y": 22
-        }
+         "X": 18,
+         "Y": 13
+        },
+        "Facing": "SE"
        },
        {
         "Kind": "move",
         "Unit": "so2",
         "To": {
-         "X": 29,
-         "Y": 24
-        }
+         "X": 18,
+         "Y": 15
+        },
+        "Facing": "SE"
        },
        {
         "Kind": "move",
         "Unit": "so3",
         "To": {
-         "X": 22,
-         "Y": 29
-        }
+         "X": 19,
+         "Y": 14
+        },
+        "Facing": "SE"
        },
        {
         "Kind": "move",
         "Unit": "so4",
         "To": {
-         "X": 24,
-         "Y": 29
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "si1",
-        "To": {
-         "X": 20,
-         "Y": 17
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "si2",
-        "To": {
-         "X": 19,
-         "Y": 18
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "si3",
-        "To": {
-         "X": 17,
-         "Y": 20
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "si4",
-        "To": {
          "X": 18,
-         "Y": 19
-        }
+         "Y": 14
+        },
+        "Facing": "SE"
        }
       ]
      ]
@@ -758,43 +655,31 @@
         "Kind": "move",
         "Unit": "zhangfei",
         "To": {
-         "X": 30,
-         "Y": 24
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "guanyu",
-        "To": {
-         "X": 24,
-         "Y": 30
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "liubei",
-        "To": {
-         "X": 29,
-         "Y": 26
-        }
-       }
-      ],
-      [
-       {
-        "Kind": "face",
-        "Unit": "zhangfei",
-        "Facing": "NE"
-       },
-       {
-        "Kind": "face",
-        "Unit": "guanyu",
+         "X": 19,
+         "Y": 13
+        },
         "Facing": "NW"
        },
        {
-        "Kind": "face",
-        "Unit": "liubei",
-        "Facing": "NE"
+        "Kind": "move",
+        "Unit": "guanyu",
+        "To": {
+         "X": 19,
+         "Y": 15
+        },
+        "Facing": "NW"
        },
+       {
+        "Kind": "move",
+        "Unit": "liubei",
+        "To": {
+         "X": 20,
+         "Y": 14
+        },
+        "Facing": "NW"
+       }
+      ],
+      [
        {
         "Kind": "play",
         "Unit": "zhangfei",
@@ -809,12 +694,12 @@
       [
        {
         "Kind": "play",
-        "Unit": "so2",
+        "Unit": "so1",
         "Motion": "hit"
        },
        {
         "Kind": "play",
-        "Unit": "so4",
+        "Unit": "so2",
         "Motion": "hit"
        }
       ],
@@ -850,10 +735,10 @@
       "so2",
       "so3",
       "so4",
-      "si1",
-      "si2",
-      "si3",
-      "si4"
+      "so5",
+      "so6",
+      "so7",
+      "so8"
      ],
      "Policy": "assault"
     },
@@ -862,7 +747,7 @@
      "Spawns": [
       {
        "Character": "caocao",
-       "X": 29,
+       "X": 9,
        "Y": 2,
        "AI": true,
        "Policy": "assault",
@@ -872,8 +757,8 @@
       },
       {
        "Character": "xiahoudun",
-       "X": 28,
-       "Y": 1,
+       "X": 6,
+       "Y": 2,
        "AI": true,
        "Policy": "assault",
        "Faction": "wei",
@@ -882,8 +767,8 @@
       },
       {
        "Character": "xiahouyuan",
-       "X": 30,
-       "Y": 3,
+       "X": 12,
+       "Y": 2,
        "AI": true,
        "Policy": "assault",
        "Faction": "wei",
@@ -892,7 +777,7 @@
       },
       {
        "Character": "troop_footman",
-       "X": 27,
+       "X": 8,
        "Y": 1,
        "AI": true,
        "Policy": "assault",
@@ -902,7 +787,7 @@
       },
       {
        "Character": "troop_footman",
-       "X": 29,
+       "X": 10,
        "Y": 1,
        "AI": true,
        "Policy": "assault",
@@ -912,17 +797,7 @@
       },
       {
        "Character": "troop_footman",
-       "X": 30,
-       "Y": 2,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Facing": "SW",
-       "Group": "wei"
-      },
-      {
-       "Character": "troop_archer",
-       "X": 28,
+       "X": 9,
        "Y": 0,
        "AI": true,
        "Policy": "assault",
@@ -932,7 +807,7 @@
       },
       {
        "Character": "troop_archer",
-       "X": 30,
+       "X": 7,
        "Y": 0,
        "AI": true,
        "Policy": "assault",
@@ -942,8 +817,18 @@
       },
       {
        "Character": "troop_archer",
-       "X": 31,
-       "Y": 2,
+       "X": 11,
+       "Y": 0,
+       "AI": true,
+       "Policy": "assault",
+       "Faction": "wei",
+       "Facing": "SW",
+       "Group": "wei"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 13,
+       "Y": 1,
        "AI": true,
        "Policy": "assault",
        "Faction": "wei",
@@ -959,7 +844,7 @@
        {
         "Kind": "say",
         "Unit": "caocao",
-        "Text": "남쪽에 불길이 올랐다. 지금이다, 동쪽 울타리에도 불을 놓아라!"
+        "Text": "남동쪽에 불길이 올랐다. 지금이다, 우리도 울타리에 불을 놓아라!"
        }
       ],
       [
@@ -967,43 +852,31 @@
         "Kind": "move",
         "Unit": "xiahoudun",
         "To": {
-         "X": 20,
-         "Y": 3
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "xiahouyuan",
-        "To": {
-         "X": 28,
-         "Y": 11
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "caocao",
-        "To": {
-         "X": 28,
-         "Y": 4
-        }
-       }
-      ],
-      [
-       {
-        "Kind": "face",
-        "Unit": "xiahoudun",
+         "X": 5,
+         "Y": 5
+        },
         "Facing": "SW"
        },
        {
-        "Kind": "face",
+        "Kind": "move",
         "Unit": "xiahouyuan",
-        "Facing": "NW"
+        "To": {
+         "X": 13,
+         "Y": 5
+        },
+        "Facing": "SW"
        },
        {
-        "Kind": "face",
+        "Kind": "move",
         "Unit": "caocao",
-        "Facing": "NW"
-       },
+        "To": {
+         "X": 9,
+         "Y": 5
+        },
+        "Facing": "SW"
+       }
+      ],
+      [
        {
         "Kind": "play",
         "Unit": "xiahoudun",
@@ -1037,16 +910,6 @@
      "State": "F"
     },
     {
-     "Kind": "terrain",
-     "Area": 7,
-     "State": "F"
-    },
-    {
-     "Kind": "terrain",
-     "Area": 8,
-     "State": "F"
-    },
-    {
      "Kind": "cutscene",
      "Steps": [
       [
@@ -1054,25 +917,28 @@
         "Kind": "move",
         "Unit": "xiahoudun",
         "To": {
-         "X": 21,
-         "Y": 1
-        }
+         "X": 5,
+         "Y": 3
+        },
+        "Facing": "SW"
        },
        {
         "Kind": "move",
         "Unit": "xiahouyuan",
         "To": {
-         "X": 30,
-         "Y": 10
-        }
+         "X": 13,
+         "Y": 3
+        },
+        "Facing": "SW"
        },
        {
         "Kind": "move",
         "Unit": "caocao",
         "To": {
-         "X": 29,
+         "X": 9,
          "Y": 3
-        }
+        },
+        "Facing": "SW"
        }
       ]
      ]
@@ -1086,7 +952,7 @@
       },
       {
        "Actor": "xiahoudun",
-       "Text": "남쪽 깃발을 보니 의병인 듯합니다. 우리도 뒤질 수 없지요!"
+       "Text": "남동쪽 깃발을 보니 의병인 듯합니다. 우리도 뒤질 수 없지요!"
       }
      ]
     },
@@ -1095,37 +961,7 @@
      "Spawns": [
       {
        "Character": "sunjian",
-       "X": 2,
-       "Y": 29,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wu",
-       "Facing": "NE",
-       "Group": "wu"
-      },
-      {
-       "Character": "chengpu",
-       "X": 1,
-       "Y": 28,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wu",
-       "Facing": "NE",
-       "Group": "wu"
-      },
-      {
-       "Character": "huanggai",
-       "X": 3,
-       "Y": 30,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wu",
-       "Facing": "NE",
-       "Group": "wu"
-      },
-      {
-       "Character": "zumao",
-       "X": 0,
+       "X": 9,
        "Y": 27,
        "AI": true,
        "Policy": "assault",
@@ -1134,8 +970,68 @@
        "Group": "wu"
       },
       {
+       "Character": "chengpu",
+       "X": 6,
+       "Y": 27,
+       "AI": true,
+       "Policy": "assault",
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
+       "Character": "huanggai",
+       "X": 12,
+       "Y": 27,
+       "AI": true,
+       "Policy": "assault",
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
+       "Character": "zumao",
+       "X": 9,
+       "Y": 28,
+       "AI": true,
+       "Policy": "assault",
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
        "Character": "troop_footman",
-       "X": 1,
+       "X": 8,
+       "Y": 28,
+       "AI": true,
+       "Policy": "assault",
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 10,
+       "Y": 28,
+       "AI": true,
+       "Policy": "assault",
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 7,
+       "Y": 28,
+       "AI": true,
+       "Policy": "assault",
+       "Faction": "wu",
+       "Facing": "NE",
+       "Group": "wu"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 8,
        "Y": 29,
        "AI": true,
        "Policy": "assault",
@@ -1144,28 +1040,8 @@
        "Group": "wu"
       },
       {
-       "Character": "troop_footman",
-       "X": 2,
-       "Y": 30,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wu",
-       "Facing": "NE",
-       "Group": "wu"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 1,
-       "Y": 30,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wu",
-       "Facing": "NE",
-       "Group": "wu"
-      },
-      {
        "Character": "troop_archer",
-       "X": 0,
+       "X": 10,
        "Y": 29,
        "AI": true,
        "Policy": "assault",
@@ -1175,18 +1051,8 @@
       },
       {
        "Character": "troop_archer",
-       "X": 0,
-       "Y": 30,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wu",
-       "Facing": "NE",
-       "Group": "wu"
-      },
-      {
-       "Character": "troop_archer",
-       "X": 2,
-       "Y": 31,
+       "X": 11,
+       "Y": 28,
        "AI": true,
        "Policy": "assault",
        "Faction": "wu",
@@ -1202,51 +1068,39 @@
        {
         "Kind": "say",
         "Unit": "sunjian",
-        "Text": "불길이 먼저 올랐구나. 서쪽도 태워라!"
+        "Text": "불길이 먼저 올랐구나. 우리도 태워라!"
        }
       ],
       [
        {
         "Kind": "move",
-        "Unit": "huanggai",
+        "Unit": "chengpu",
         "To": {
-         "X": 3,
-         "Y": 20
-        }
+         "X": 5,
+         "Y": 24
+        },
+        "Facing": "NE"
        },
        {
         "Kind": "move",
-        "Unit": "chengpu",
+        "Unit": "huanggai",
         "To": {
-         "X": 11,
-         "Y": 28
-        }
+         "X": 13,
+         "Y": 24
+        },
+        "Facing": "NE"
        },
        {
         "Kind": "move",
         "Unit": "sunjian",
         "To": {
-         "X": 4,
-         "Y": 28
-        }
+         "X": 9,
+         "Y": 24
+        },
+        "Facing": "NE"
        }
       ],
       [
-       {
-        "Kind": "face",
-        "Unit": "huanggai",
-        "Facing": "NW"
-       },
-       {
-        "Kind": "face",
-        "Unit": "chengpu",
-        "Facing": "NE"
-       },
-       {
-        "Kind": "face",
-        "Unit": "sunjian",
-        "Facing": "NE"
-       },
        {
         "Kind": "play",
         "Unit": "huanggai",
@@ -1271,22 +1125,12 @@
     },
     {
      "Kind": "terrain",
-     "Area": 9,
+     "Area": 7,
      "State": "F"
     },
     {
      "Kind": "terrain",
-     "Area": 10,
-     "State": "F"
-    },
-    {
-     "Kind": "terrain",
-     "Area": 11,
-     "State": "F"
-    },
-    {
-     "Kind": "terrain",
-     "Area": 12,
+     "Area": 8,
      "State": "F"
     },
     {
@@ -1295,27 +1139,30 @@
       [
        {
         "Kind": "move",
-        "Unit": "huanggai",
+        "Unit": "chengpu",
         "To": {
-         "X": 1,
-         "Y": 21
-        }
+         "X": 5,
+         "Y": 26
+        },
+        "Facing": "NE"
        },
        {
         "Kind": "move",
-        "Unit": "chengpu",
+        "Unit": "huanggai",
         "To": {
-         "X": 10,
-         "Y": 30
-        }
+         "X": 13,
+         "Y": 26
+        },
+        "Facing": "NE"
        },
        {
         "Kind": "move",
         "Unit": "sunjian",
         "To": {
-         "X": 3,
-         "Y": 29
-        }
+         "X": 9,
+         "Y": 26
+        },
+        "Facing": "NE"
        }
       ]
      ]
@@ -1335,12 +1182,12 @@
     },
     {
      "Kind": "terrain",
-     "Area": 13,
+     "Area": 9,
      "State": "O"
     },
     {
      "Kind": "terrain",
-     "Area": 14,
+     "Area": 10,
      "State": "O"
     },
     {
@@ -1364,17 +1211,19 @@
         "Kind": "move",
         "Unit": "huangfusong",
         "To": {
-         "X": 20,
-         "Y": 15
-        }
+         "X": 6,
+         "Y": 10
+        },
+        "Facing": "NE"
        },
        {
         "Kind": "move",
         "Unit": "zhujun",
         "To": {
-         "X": 15,
-         "Y": 20
-        }
+         "X": 6,
+         "Y": 19
+        },
+        "Facing": "SW"
        }
       ]
      ]
@@ -1384,11 +1233,7 @@
      "Targets": [
       "garrison"
      ],
-     "Policy": "march",
-     "Goal": {
-      "X": 20,
-      "Y": 20
-     }
+     "Policy": "assault"
     },
     {
      "Kind": "cutscene",
@@ -1444,7 +1289,7 @@
      "Lines": [
       {
        "Actor": "bocai",
-       "Text": "동쪽에도…… 서쪽에도…… 남쪽에도! 성문까지 열렸다! 우, 우리가 에워싸였단 말이냐!"
+       "Text": "동북에도…… 남서에도…… 남동에도! 성문까지 열렸다! 우, 우리가 에워싸였단 말이냐!"
       }
      ]
     },
@@ -1456,10 +1301,10 @@
       "so2",
       "so3",
       "so4",
-      "si1",
-      "si2",
-      "si3",
-      "si4",
+      "so5",
+      "so6",
+      "so7",
+      "so8",
       "eastcamp",
       "westcamp"
      ],
@@ -1474,10 +1319,10 @@
       "so2",
       "so3",
       "so4",
-      "si1",
-      "si2",
-      "si3",
-      "si4",
+      "so5",
+      "so6",
+      "so7",
+      "so8",
       "eastcamp",
       "westcamp"
      ],
@@ -1497,7 +1342,7 @@
   {
    "ID": "bocai-sorties",
    "If": [
-    "round>=5"
+    "round>=3"
    ],
    "Do": [
     {
@@ -1516,8 +1361,8 @@
      ],
      "Policy": "march",
      "Goal": {
-      "X": 25,
-      "Y": 28
+      "X": 20,
+      "Y": 14
      }
     }
    ]
@@ -1618,60 +1463,36 @@
  "Night": true,
  "Lights": [
   {
-   "X": 24,
-   "Y": 24
-  },
-  {
-   "X": 24,
-   "Y": 7
-  },
-  {
-   "X": 7,
-   "Y": 24
-  },
-  {
-   "X": 7,
-   "Y": 7
-  },
-  {
-   "X": 24,
-   "Y": 13
-  },
-  {
-   "X": 24,
-   "Y": 18
+   "X": 5,
+   "Y": 8
   },
   {
    "X": 13,
-   "Y": 24
-  },
-  {
-   "X": 18,
-   "Y": 24
-  },
-  {
-   "X": 7,
-   "Y": 13
-  },
-  {
-   "X": 7,
-   "Y": 18
+   "Y": 8
   },
   {
    "X": 13,
-   "Y": 7
+   "Y": 11
   },
   {
-   "X": 18,
-   "Y": 7
+   "X": 13,
+   "Y": 17
   },
   {
-   "X": 18,
-   "Y": 15
+   "X": 5,
+   "Y": 21
   },
   {
-   "X": 15,
+   "X": 13,
+   "Y": 21
+  },
+  {
+   "X": 6,
    "Y": 18
+  },
+  {
+   "X": 6,
+   "Y": 11
   }
  ],
  "Armies": [

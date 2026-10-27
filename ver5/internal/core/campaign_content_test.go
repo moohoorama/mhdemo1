@@ -229,8 +229,9 @@ func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
 }
 
 // TestChangsheSiegeUnfolds plays the B02 story beat by beat with no move by the player: the
-// brothers set the south fences alight, the fire spreads, Cao Cao and Sun Jian fire the other
-// camps, the gates open and the Yellow Turbans run, and the battle is won once Bo Cai falls.
+// brothers set the southeast fence alight, the turbans pour out of its gate into their ambush, Cao
+// Cao and Sun Jian fire the northeast and southwest fences, the castle gates open, and the battle is
+// won once Bo Cai falls.
 func TestChangsheSiegeUnfolds(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
@@ -240,24 +241,23 @@ func TestChangsheSiegeUnfolds(t *testing.T) {
 	applyOK(t, e, Command{Kind: "start"})
 	require.Equal(t, "battle", e.state.Phase, "the brothers sortie with no deployment screen")
 	require.True(t, executed(e, "battle-B02-night-raid"), "the whole night attack plays before the first turn")
-	assert.Equal(t, byte('F'), e.Cell(27, 26).State, "the south corner of the outer fence burns")
-	assert.Equal(t, byte('F'), e.Cell(26, 4).State, "Cao Cao fires the east corner")
-	assert.Equal(t, byte('F'), e.Cell(4, 26).State, "Sun Jian fires the west corner")
-	assert.Equal(t, byte('O'), e.Cell(18, 15).State, "the castle gate stands open")
+	assert.Equal(t, byte('F'), e.Cell(16, 20).State, "the southeast fence burns")
+	assert.Equal(t, byte('F'), e.Cell(13, 6).State, "Cao Cao fires the northeast fence")
+	assert.Equal(t, byte('F'), e.Cell(5, 23).State, "Sun Jian fires the southwest fence")
+	assert.Equal(t, byte('O'), e.Cell(6, 11).State, "the castle gate stands open")
 	assert.NotNil(t, e.unit("caocao"))
 	assert.NotNil(t, e.unit("zumao"))
-	assert.GreaterOrEqual(t, e.matching("so1")[0].X, 28, "the soldiers by the outer fence ran out south")
-	assert.LessOrEqual(t, e.matching("si1")[0].X, 20, "the soldiers by the inner fence ran in toward the castle")
+	assert.GreaterOrEqual(t, e.matching("so1")[0].X, 17, "the soldiers by the gate ran out of it")
 	for _, id := range []string{"bocai", "zhangbao"} {
 		assert.Equal(t, -20, e.unit(id).Status["attack"].Value, "the turbans lose heart when they see they are surrounded")
 		assert.Equal(t, -20, e.unit(id).Status["defense"].Value)
 	}
-	assert.Equal(t, "march", e.unit("huangfusong").Policy)
+	assert.Equal(t, "assault", e.unit("huangfusong").Policy)
 	assert.Equal(t, "hold", e.unit("bocai").Policy)
-	for e.state.Round < 5 {
+	for e.state.Round < 3 {
 		applyOK(t, e, Command{Kind: "end"})
 	}
-	assert.Equal(t, "march", e.unit("bocai").Policy, "Bo Cai comes out in the fifth round")
+	assert.Equal(t, "march", e.unit("bocai").Policy, "Bo Cai comes out in the third round")
 	e.unit("bocai").HP = 0
 	applyOK(t, e, Command{Kind: "end"})
 	assert.Equal(t, "victory", e.Observe().Result)

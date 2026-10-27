@@ -1197,3 +1197,11 @@
 - `cmd/_facecheck/main.go`: 스테이지별 시작 위치·방향과 컷신 이동 경로·끝 방향을 찍는 임시 도구.
 - `docs/presentation-facing.md`: 방향이 왜 중요한지(탁군 사례), 시작 방향 규칙, 이벤트 이동 뒤 방향, 출진 칸 순서, 점검 순서 문서 추가 — 이벤트·장면에서 방향을 기본값에 맡기지 않게.
 - `../AGENTS.md`, `docs/README.md`, `docs/story-writing.md`, `docs/logic-battle-event.md`, `docs/data-scenario-node.md`: 방향 문서로 이어 주고 `move`의 `Facing`·함께 출발·생략 시 목표 쪽 방향을 적음.
+
+## 2026-10-27 영천 구도 회전: 남동 유관장·동북 조조·남서 손견, 한 겹 울타리와 세 칸 문
+
+- `tools/mapgen/layouts/hero/map02.txt`, `assets/scenario/hero/maps/map02.json`: 32x32 → 26x30. 장사성이 서북쪽 강에 등을 대고, 황건 진영을 한 겹 울타리가 ㄷ자로 감쌈(동북·남동·남서 가운데에 세 칸 문). 진영 안쪽 폭 9칸 → 4~5칸, 성문은 동북·남서 벽, 남동쪽에 유관장의 숲 — 두 겹 울타리에 유관장이 흩어지고 진영이 넓어 사모·청룡도로 문 하나를 두고 싸우는 느낌이 없었다.
+- `assets/scenario/hero/stage02.json`: 유관장 남동 숲, 조조 동북, 손견 남서에서 각자 제 앞 울타리를 태움(구역 14개 → 10개). 관우 왼편·장비 오른편·유비 문 옆 화공, 불에 쫓긴 황건 넷이 남동 문으로 나와 숲의 유관장에게 급습당함. 성 쪽으로 달아나던 안쪽 울타리 병사 넷(si1~si4)은 파재 곁 so5~so8로 바꿈. 황보숭·주준은 동북·남서 성문으로 나와 `assault`. 파재 출격 5라운드 → 3라운드, 목표는 남동 문 밖 — 바깥에 불이 났는데 안쪽 도적이 성으로 달리는 건 어색했고, 파재가 가운데로 오며 조조·손견·수비대가 먼저 쓰러뜨려 유비 일기토가 사라져서(rush 5판 모두 일기토, B05까지 승리).
+- `assets/scenario/hero/story02.json`, `docs/fullstory.md`: 언덕을 남동쪽으로, 두 겹 울타리 묘사를 한 겹·세 문으로, 남쪽 울타리 → 남동쪽, 동·서 → 동북·남서, 3라운드 출격 — 새 구도에 맞춤.
+- `internal/core/campaign_content_test.go`: `TestChangsheSiegeUnfolds`의 불·성문 칸, 문 밖으로 나간 병사, 수비대 `assault`, 3라운드 출격으로 고침.
+- `tools/mapgen/layouts/hero/stage02.txt`: 새 배치로 다시 뽑음.
