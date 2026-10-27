@@ -706,7 +706,7 @@ func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) 
 		mark = strings.Repeat("•", 1+int(g.clockMS/300)%3)
 	}
 	x, y := g.field.Center(v.u, v.v)
-	sx, sy := worldToUI(g.toScreen(x, y-v.lift-v.top))
+	sx, sy := worldToUI(g.toScreen(x, y-v.lift-g.field.groundLift(v.u, v.v)-v.top))
 	w, h := g.assets.Bubble.Size("", mark)
 	// a speaker off the screen talks from its edge, the tail turned toward where they stand
 	const margin = 12.0

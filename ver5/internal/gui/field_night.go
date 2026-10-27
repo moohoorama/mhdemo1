@@ -102,7 +102,7 @@ func (f *Field) drawNight(clockMS float64, units []*unitVis) {
 	}
 	for _, u := range units {
 		if !u.gone && u.visible() {
-			lamps = append(lamps, lamp{u.u, u.v, u.lift, unitLight, false, false})
+			lamps = append(lamps, lamp{u.u, u.v, u.lift + f.groundLift(u.u, u.v), unitLight, false, false})
 		}
 	}
 	z := f.renderZoom

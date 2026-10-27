@@ -391,7 +391,7 @@
    }
   },
   "c02-hill": {
-   "Map": "S_hill",
+   "Map": "S_cliff_camp",
    "Time": "night",
    "Nodes": [
     "c02-hill",
@@ -404,67 +404,144 @@
     {
      "Effect": "smallfire",
      "At": [
-      3.0,
-      3.2
+      2.0,
+      6.5
      ]
     },
     {
      "Effect": "smallfire",
      "At": [
-      4.6,
-      2.2
+      2.0,
+      11.0
      ]
     },
     {
      "Effect": "smallfire",
      "At": [
-      1.5,
-      4.2
+      3.5,
+      8.0
      ]
     },
     {
      "Effect": "smallfire",
      "At": [
-      5.6,
-      3.9
+      3.5,
+      5.0
      ]
     },
     {
      "Effect": "smallfire",
      "At": [
-      3.8,
-      4.9
+      0.5,
+      5.0
      ]
     },
     {
      "Effect": "smallfire",
      "At": [
-      6.4,
-      2.6
+      0.5,
+      8.0
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      3.5,
+      -4.0
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      -0.3,
+      -6.0
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      -0.3,
+      -3.5
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      -0.3,
+      -1.0
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      -0.3,
+      1.5
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      -0.3,
+      4.0
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      -0.3,
+      6.5
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      -0.3,
+      9.0
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      -0.3,
+      11.5
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      -0.3,
+      14.0
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      -0.3,
+      16.5
      ]
     }
    ],
    "Cast": {
     "유비": {
      "At": [
-      2,
-      -1
+      13,
+      3
      ],
-     "Face": "SW"
+     "Face": "NW"
     },
     "관우": {
      "At": [
-      1,
-      -2
+      14,
+      1
      ],
-     "Face": "SW"
+     "Face": "NW"
     },
     "장비": {
      "At": [
-      4,
-      -2
+      15,
+      4
      ],
-     "Face": "SW"
+     "Face": "NW"
     }
    },
    "Beats": {
@@ -474,7 +551,7 @@
        {
         "CamAt": [
          3,
-         2
+         5
         ]
        }
       ]
@@ -484,7 +561,10 @@
      [
       [
        {
-        "Cam": "유비"
+        "CamAt": [
+         9,
+         3
+        ]
        }
       ]
      ]
@@ -494,7 +574,7 @@
       [
        {
         "Actor": "관우",
-        "Look": "SW"
+        "Look": "NW"
        }
       ]
      ]
@@ -504,18 +584,18 @@
       [
        {
         "Actor": "유비",
-        "Face": "SW",
+        "Face": "NW",
         "Play": "action"
        }
       ],
       [
        {
         "Actor": "관우",
-        "Face": "SW"
+        "Face": "NW"
        },
        {
         "Actor": "장비",
-        "Face": "SW",
+        "Face": "NW",
         "After": 0.2
        }
       ]

@@ -1369,6 +1369,7 @@
   "maps/S_tent.json",
   "maps/S_road.json",
   "maps/S_hill.json",
+  "maps/S_cliff_camp.json",
   "maps/S_army_camp.json",
   "maps/S_castle_out.json",
   "maps/S_castle_out_open.json",
