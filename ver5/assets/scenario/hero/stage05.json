@@ -78,7 +78,7 @@
    "X": 2,
    "Y": 6,
    "Facing": "SE",
-   "Policy": "hold"
+   "Policy": "assault"
   },
   {
    "Character": "caocen",
@@ -120,7 +120,7 @@
    "Y": 3,
    "Facing": "SE",
    "Group": "xiliang",
-   "Policy": "hold",
+   "Policy": "assault",
    "Shift": -0.12
   },
   {
@@ -129,7 +129,7 @@
    "Y": 8,
    "Facing": "SE",
    "Group": "xiliang",
-   "Policy": "hold",
+   "Policy": "assault",
    "Shift": -0.12
   },
   {
@@ -138,7 +138,7 @@
    "Y": 6,
    "Facing": "SE",
    "Group": "xiliang",
-   "Policy": "hold",
+   "Policy": "assault",
    "Shift": -0.12
   },
   {
@@ -147,7 +147,7 @@
    "Y": 3,
    "Facing": "SE",
    "Group": "xiliang",
-   "Policy": "hold",
+   "Policy": "assault",
    "Shift": -0.12
   }
  ],
@@ -159,7 +159,7 @@
    "HP": 840,
    "Facing": "SW",
    "AI": true,
-   "Policy": "react",
+   "Policy": "assault",
    "Faction": "wu"
   },
   {
@@ -169,7 +169,7 @@
    "HP": 628,
    "Facing": "SW",
    "AI": true,
-   "Policy": "react",
+   "Policy": "assault",
    "Faction": "wu"
   },
   {
@@ -179,7 +179,7 @@
    "HP": 742,
    "Facing": "SW",
    "AI": true,
-   "Policy": "react",
+   "Policy": "assault",
    "Faction": "wu"
   },
   {
@@ -189,7 +189,7 @@
    "HP": 568,
    "Facing": "SW",
    "AI": true,
-   "Policy": "react",
+   "Policy": "assault",
    "Faction": "wu"
   }
  ],
@@ -513,7 +513,7 @@
   {
    "ID": "huaxiong-advance",
    "If": [
-    "round>=6"
+    "any:[alldefeated:xiliang, round>=8]"
    ],
    "Do": [
     {
@@ -521,7 +521,7 @@
      "Lines": [
       {
        "Actor": "huaxiong",
-       "Text": "졸개들로는 안 되겠구나. 이숙, 관문을 지켜라. 내가 직접 목을 베어 오마!"
+       "Text": "쓸모없는 놈들! 비켜라, 이 화웅이 직접 놈들의 목을 베어 주마!"
       }
      ]
     },
