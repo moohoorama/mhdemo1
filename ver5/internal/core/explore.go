@@ -153,6 +153,7 @@ func (e *Engine) explore(c Command) error {
 		}
 		e.state.Money -= price * c.Count
 		e.gain(c.Item, c.Count)
+		e.emit("grant", "", c.Item, c.Count)
 		return nil
 	}
 	store := e.state.Inventory

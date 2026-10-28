@@ -141,7 +141,8 @@ func TestGoalsGuideToTheMainEventThenTheSortie(t *testing.T) {
 
 func TestShopBuysAndSellsForHalf(t *testing.T) {
 	e := walkEngine(t)
-	applyOK(t, e, Command{Kind: "buy", Target: "상인", Item: "tonic", Count: 2})
+	r := applyOK(t, e, Command{Kind: "buy", Target: "상인", Item: "tonic", Count: 2})
+	assert.Contains(t, r.Events, Event{Kind: "grant", Target: "tonic", Amount: 2}, "a purchase is announced as a grant")
 	o := e.Observe()
 	assert.Equal(t, 40, o.Money)
 	assert.Equal(t, 4, o.Inventory["tonic"])

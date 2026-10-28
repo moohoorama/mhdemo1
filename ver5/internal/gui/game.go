@@ -378,7 +378,7 @@ func (g *Game) replayOpening(c core.Command, events []core.Event) {
 	g.replayOne(final, c, events)
 }
 
-// record turns events into log lines, announcements, level-up windows and battle XP.
+// record turns events into log lines, announcements, level-up and acquire windows and battle XP.
 func (g *Game) record(before *core.Observation, events []core.Event) {
 	levels := map[string][2]int{}
 	order := []string{}
@@ -424,6 +424,9 @@ func (g *Game) record(before *core.Observation, events []core.Event) {
 			}
 		}
 		g.modals = append(g.modals, &modal{kind: "levelup", level: up})
+	}
+	if gains := acquireGains(before, events); len(gains) > 0 {
+		g.modals = append(g.modals, &modal{kind: "acquire", gains: gains})
 	}
 }
 

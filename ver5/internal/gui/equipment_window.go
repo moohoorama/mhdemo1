@@ -423,9 +423,13 @@ func (g *Game) updateEquipPicker() bool {
 
 // drawEquipInfo draws the description of the badge last pressed; any click closes it.
 func (g *Game) drawEquipInfo(dst *ebiten.Image) {
-	g.addButton(image.Rect(0, 0, uiW, uiH), "", func() { g.equip.info = equipChip{} })
-	g.popup(dst, "overlay:equip-info", 100, equipInfoW+40, equipInfoH+40, image.Rect(0, 0, equipInfoW+40, equipInfoH+40), func(dst *ebiten.Image) {
-		c := g.equip.info
+	g.chipWindow(dst, "overlay:equip-info", g.equip.info, func() { g.equip.info = equipChip{} })
+}
+
+// chipWindow draws badge c's description as popup key over the screen; any click calls close.
+func (g *Game) chipWindow(dst *ebiten.Image, key string, c equipChip, close func()) {
+	g.addButton(image.Rect(0, 0, uiW, uiH), "", close)
+	g.popup(dst, key, 100, equipInfoW+40, equipInfoH+40, image.Rect(0, 0, equipInfoW+40, equipInfoH+40), func(dst *ebiten.Image) {
 		x, y := uiW/2-equipInfoW/2, uiH/2-equipInfoH/2
 		kind, tone := g.chipLook(c)
 		g.titled(dst, image.Rect(x, y, x+equipInfoW, y+equipInfoH), kindNames[kind]+" · "+toneNames[tone])

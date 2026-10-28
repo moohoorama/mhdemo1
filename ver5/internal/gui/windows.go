@@ -56,10 +56,13 @@ func (g *Game) askWith(message, yes, no string, ok func()) bool {
 
 // modal is a window shown after a replay, closed with a click.
 type modal struct {
-	kind   string // objective, levelup, trait
+	kind   string // objective, levelup, trait, acquire
 	manual bool   // an objective opened from the panel rather than at the battle's start
 	level  levelUp
 	trait  string
+	gains  []gain    // acquire: the cards
+	piece  string    // acquire: the card whose window is open
+	chip   equipChip // acquire: the trait open over that window
 	t      float64
 }
 
@@ -281,6 +284,10 @@ func (g *Game) readSlots() map[string]string {
 func (g *Game) drawModal(dst *ebiten.Image) {
 	m := g.modals[0]
 	g.buttons, g.blocks = nil, nil
+	if m.kind == "acquire" {
+		g.drawAcquire(dst, m)
+		return
+	}
 	g.addButton(image.Rect(0, 0, uiW, uiH), "", g.closeModal)
 	if m.kind == "objective" {
 		box := g.objectiveBox(uiW)
@@ -358,7 +365,11 @@ func (g *Game) modalWindow(dst *ebiten.Image, m *modal) {
 	}
 }
 
+// closeModal closes the first modal, or the top window stacked inside it.
 func (g *Game) closeModal() {
+	if len(g.modals) > 0 && g.modals[0].closeAcquire() {
+		return
+	}
 	if len(g.modals) > 0 {
 		g.modals = g.modals[1:]
 	}
