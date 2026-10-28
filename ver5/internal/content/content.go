@@ -144,6 +144,7 @@ type Equipment struct {
 }
 type Item struct {
 	Name, Desc string
+	Icon       string // the UI sheet's item_<Icon> picture
 	Effect     string
 	Amount     int
 	Class      string // the class a promotion item makes

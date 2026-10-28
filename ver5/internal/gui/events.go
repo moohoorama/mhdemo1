@@ -105,6 +105,14 @@ func (g *Game) itemName(id string) string {
 	return id
 }
 
+// itemIconOf is the icon of an equipment or an item, "" for anything else.
+func (g *Game) itemIconOf(id string) string {
+	if eq, ok := g.S.Data.Equipment[id]; ok {
+		return eq.Icon
+	}
+	return g.S.Data.Items[id].Icon
+}
+
 func (g *Game) className(id string) string {
 	if c, ok := g.S.Data.Classes[id]; ok {
 		return c.Name

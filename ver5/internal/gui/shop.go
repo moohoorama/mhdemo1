@@ -63,9 +63,7 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 // shopRow is one line of the shop: the piece's icon and name, a note (price, count) and its button.
 func (g *Game) shopRow(dst *ebiten.Image, r image.Rectangle, id, note, button string, click func()) {
 	rect(dst, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy()), trough)
-	if eq, ok := g.S.Data.Equipment[id]; ok {
-		g.itemIcon(dst, eq.Icon, float64(r.Min.X+8), float64(r.Min.Y+6), 1, false)
-	}
+	g.itemIcon(dst, g.itemIconOf(id), float64(r.Min.X+8), float64(r.Min.Y+6), 1, false)
 	g.label(dst, g.itemName(id), float64(r.Min.X+52), float64(r.Min.Y+11), 16, ink)
 	g.label(dst, note, float64(r.Max.X-180), float64(r.Min.Y+12), 15, gold)
 	g.btn(dst, image.Rect(r.Max.X-78, r.Min.Y+7, r.Max.X-8, r.Max.Y-7), button, click)

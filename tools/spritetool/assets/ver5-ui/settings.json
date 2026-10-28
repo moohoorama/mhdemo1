@@ -29,6 +29,13 @@
     "item_spear",
     "item_sword",
     "item_yitian",
+    "item_bean",
+    "item_barley",
+    "item_rice",
+    "item_liquor",
+    "item_fine_liquor",
+    "item_baijiu",
+    "item_scroll",
     "bar_frame",
     "bar_fill",
     "bar_trail",
@@ -39,6 +46,210 @@
   ],
   "outline": "#000000",
   "sprites": {
+    "item_bean": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_bean.png",
+      "frames": 1,
+      "timing": "an item icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "a": "#e2c590",
+            "b": "#bf9a62",
+            "c": "#8e6a3e",
+            "d": "#5e4426",
+            "s": "#4a2e1a",
+            "y": "#f2e2a0",
+            "z": "#d8bc6a",
+            "w": "#a88a3e"
+          }
+        }
+      }
+    },
+    "item_barley": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_barley.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an item icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "O": "#fbe27a",
+            "o": "#e8b23a",
+            "y": "#b8801e",
+            "Y": "#7a5014",
+            "s": "#6a4a24",
+            "S": "#a07a44"
+          }
+        }
+      }
+    },
+    "item_rice": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_rice.png",
+      "frames": 1,
+      "timing": "an item icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "H": "#ffffff",
+            "h": "#ecebe4",
+            "l": "#c8c4b8",
+            "m": "#9a958a",
+            "a": "#a0603a",
+            "b": "#74401f",
+            "c": "#4a2614"
+          }
+        }
+      }
+    },
+    "item_liquor": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_liquor.png",
+      "frames": 1,
+      "timing": "an item icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "a": "#b07040",
+            "b": "#84492a",
+            "c": "#5a2e1a",
+            "d": "#3a1c10",
+            "R": "#e04838",
+            "r": "#b02a22",
+            "q": "#7a1a16",
+            "y": "#d8b060",
+            "Y": "#9a7838"
+          }
+        }
+      }
+    },
+    "item_fine_liquor": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_fine_liquor.png",
+      "frames": 1,
+      "timing": "an item icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#c8eadc",
+            "l": "#94d0b8",
+            "b": "#64a890",
+            "d": "#3e7a68",
+            "R": "#e04838",
+            "r": "#b02a22",
+            "q": "#7a1a16"
+          }
+        }
+      }
+    },
+    "item_baijiu": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_baijiu.png",
+      "frames": 1,
+      "timing": "an item icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "a": "#8a5a3a",
+            "b": "#6a3e26",
+            "c": "#48261a",
+            "O": "#e8c060",
+            "o": "#c09030",
+            "y": "#8a6420",
+            "R": "#e04838",
+            "r": "#b02a22",
+            "q": "#7a1a16"
+          }
+        }
+      }
+    },
+    "item_scroll": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_scroll.png",
+      "frames": 1,
+      "timing": "an item icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#f6e6a0",
+            "l": "#e0c470",
+            "b": "#b8963e",
+            "d": "#7e6224",
+            "g": "#4a3018",
+            "R": "#e04838",
+            "r": "#b02a22",
+            "q": "#7a1a16",
+            "w": "#8a4a2a",
+            "W": "#5a2a14"
+          }
+        }
+      }
+    },
     "window_rim": {
       "cell": [
         17,

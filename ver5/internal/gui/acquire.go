@@ -185,8 +185,7 @@ func (g *Game) acquireCard(dst *ebiten.Image, r image.Rectangle, gn gain, a floa
 	}
 }
 
-// pieceIcon draws a piece's picture in an s-wide slot at (x, y): the equipment's icon, a coin for money, an empty
-// slot for an item that has no picture yet.
+// pieceIcon draws a piece's picture in an s-wide slot at (x, y): its icon, or a coin for money.
 func (g *Game) pieceIcon(dst *ebiten.Image, id string, x, y, s, a float64) {
 	rect(dst, float32(x), float32(y), float32(s), float32(s), fade(trough, a))
 	strokeRect(dst, float32(x)+.5, float32(y)+.5, float32(s)-1, float32(s)-1, 1, fade(goldDim, a))
@@ -198,10 +197,8 @@ func (g *Game) pieceIcon(dst *ebiten.Image, id string, x, y, s, a float64) {
 		vector.FillRect(dst, cx-rad*.3, cy-rad*.3, rad*.6, rad*.6, fade(trough, a), false)
 		return
 	}
-	if eq, ok := g.S.Data.Equipment[id]; ok {
-		if _, ok := g.assets.UI["item_"+eq.Icon]; ok {
-			g.drawUI(dst, "item_"+eq.Icon, 0, x+6, y+6, (s-12)/32, fade(white, a))
-		}
+	if _, ok := g.assets.UI["item_"+g.itemIconOf(id)]; ok {
+		g.drawUI(dst, "item_"+g.itemIconOf(id), 0, x+6, y+6, (s-12)/32, fade(white, a))
 	}
 }
 
