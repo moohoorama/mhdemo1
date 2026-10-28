@@ -36,7 +36,7 @@ type Step struct {
 	Zoom   float64 // camera zoom, whole numbers only (pixel art)
 	Time   string  // day (""), dusk, night or dawn from now on
 	Sprite string  // the actor stands as this sprite from now on
-	Prop   []any   // [name, u, v] puts a map prop down, [name] takes it away
+	Prop   []any   // [name, u, v] puts a map prop down, [name] takes it away, [name, actor] makes it move with that actor
 	Pose   string  // the motion the actor rests in from now on (sit, lie, kneel …); "idle" stands again
 	Patrol []float64
 	// walk to [u, v] and back, over and over, without holding up the beats (a sentry); a Move ends it

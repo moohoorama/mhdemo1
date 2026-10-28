@@ -1,5 +1,6 @@
 """민중: unarmed civilians on the 서생 rig. Four looks - 남자 (leads a child by the hand), 여자 (long skirt, child on
-her back), 노인 (white hair, long beard, a cane), 노파 (skirt, white hair, a cane and a stoop).
+her back), 노인 (white hair, long beard, a cane), 노파 (skirt, white hair in a low bun, a
+cane, a deep stoop and a hand on the small of her back).
 
 - body: hemp tunic (themeC) over brown trousers or a floor-length skirt (themeA), dark cord sash (iron), bare feet.
   No faction colour at all, so a stage's faction never tints them.
@@ -8,6 +9,8 @@ her back), 노인 (white hair, long beard, a cane), 노파 (skirt, white hair, a
   woman's back with a cloth sling (its head peeks over her shoulder). Both are part of the one sprite.
 - no attack row: only idle, walk, hit, exhausted and block are converted.
 """
+import math
+
 import grid3d_mounted as M
 from mounted_kits import scholar as SC
 
@@ -71,6 +74,26 @@ def elder_rows(rows):
     return out
 
 
+# 쪽: the old woman's hair knotted low at the back of the head, per view (x, y of the pattern's top left)
+BUN = ['.78.', '7889', '.89.']  # no inner outline: over the hair a ring would read as an eye
+BUN_AT = {'SW': (9, 6), 'W': (9, 6), 'NW': (6, 7), 'N': (5, 7)}
+
+
+def old_woman_rows(rows, d):
+    """White hair combed flat to the brow with no topknot or band, knotted in a low bun at the back (hidden from S)."""
+    out = [hair_keys(r) for r in rows]
+    w = len(out[0])
+    out[0], out[1], out[2] = '.'*w, '.'*w, ''.join('0' if c != '.' else '.' for c in rows[3])
+    out = [''.join('7' if c == '8' and y < 5 else c for c in r) for y, r in enumerate(out)]
+    if d in BUN_AT:
+        bx, by = BUN_AT[d]
+        for y, line in enumerate(BUN):
+            for x, c in enumerate(line):
+                if c != '.' and bx + x < w:
+                    out[by + y] = put(out[by + y], bx + x, c)
+    return out
+
+
 def grids(kind, beard=None):
     g = Hd.TOPKNOT
     if beard:
@@ -79,6 +102,8 @@ def grids(kind, beard=None):
         return {d: man_rows(r) for d, r in g.items()}
     if kind == 'woman':
         return {d: woman_rows(r, d) for d, r in g.items()}
+    if kind == 'old_woman':
+        return {d: old_woman_rows(r, d) for d, r in g.items()}
     return {d: elder_rows(r) for d, r in g.items()}
 
 
@@ -120,18 +145,47 @@ def pack(T, w, h, color):
         m.rod(T([sx, .0, 1.5]), T([sx*1.05, -.24, 1.0]), .05, COLLAR)
 
 
-def make(skirt, bundle, stoop=0.0, cane=False, **head):
+_transform = U.transform
+
+
+def transform(p):
+    """units.transform, and with p['hunch'] (radians) everything above the waist bent forward about it: a bowed back
+    with the skirt and legs still upright (lean shears the whole figure from the knees)."""
+    T, a = _transform(p), p.get('hunch')
+    if not a:
+        return T
+    c, s, w = math.cos(a), math.sin(a), 1.0
+
+    def bent(q):
+        x, y, z = q
+        if z > w:
+            y, z = y*c - (z - w)*s, w + (z - w)*c + y*s
+        return T([x, y, z])
+    return bent
+
+
+U.transform = transform
+
+
+def make(skirt, bundle, stoop=0.0, cane=False, behind=False, hunch=0.0, **head):
     SC.make()
     heads = Hd.heads(grids(**head))
 
     def figure(p):
         p['lean'] = p.get('lean', 0) + stoop
+        p['hunch'] = hunch
         if cane:
             p['hands'][0], p['elbows'][0] = [-.52, -.24, .86], [-.45, -.04, 1.1]
+        if behind:  # the other hand rests on the small of the back
+            p['hands'][1], p['elbows'][1] = [.12, .34, 1.0], [.44, .2, 1.12]
         T = body(p, skirt)
-        pack(T, *bundle)
-        if cane:
-            m.rod(T([-.52, -.24, 1.0]), T([-.6, -.36, .0]), .045, BROWN)
+        if behind:  # a rounded upper back
+            m.ell(T([0, .16, 1.32]), [.33, .2, .3], HEMP)
+        if bundle:
+            pack(T, *bundle)
+        if cane:  # from the hand straight down to the ground
+            top = T([-.52, -.24, 1.0])
+            m.rod(top, V([top[0] - .08, top[1] - .12, 0]), .045, BROWN)
         return T
 
     def pose_for(row, f):
@@ -149,4 +203,5 @@ def make(skirt, bundle, stoop=0.0, cane=False, **head):
 
 M.register('commoner_man', lambda: make(False, (.34, .36, BROWN), kind='man'))
 M.register('commoner_woman', lambda: make(True, (.3, .3, KID), kind='woman'))
+M.register('commoner_oldwoman', lambda: make(True, None, cane=True, hunch=.6, behind=True, kind='old_woman'))
 M.register('commoner_elder', lambda: make(False, (.26, .26, KID), cane=True, stoop=.12, kind='elder', beard='long'))

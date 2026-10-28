@@ -73,31 +73,31 @@
    "ID": "c01-n5",
    "Kind": "say",
    "Speaker": "zhangfei",
-   "Text": "오늘 저녁 안주유. 형님도 오셔유. 운장 형님은 벌써 사흘째 같은 자리여유."
+   "Text": "오늘 저녁 안주유. 형도 오셔유."
   },
   {
    "ID": "c01-n6",
    "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "사흘째?"
+   "Speaker": "zhangfei",
+   "Text": "근디 운장 형이 오늘 술을 무섭게 마셔유. 안 그래도 얼굴이 무섭게 생긴 양반이 잔 내려놓을 때마다 상이 쿵쿵!"
   },
   {
    "ID": "c01-n7",
    "Kind": "say",
    "Speaker": "zhangfei",
-   "Text": "술값은 꼬박꼬박 내는디 말을 한마디도 안 해유. 손님들이 무서워서 그 근처엔 안 앉아유. 장사 망하겄슈."
+   "Text": "손님들이 아예 그 근처엔 안 앉아유. 장사 망하겄슈."
   },
   {
    "ID": "c01-n8",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "이 방문 때문이겠지."
+   "Text": "운장이 그렇게 마신다니, 무슨 일이 있긴 있는 모양이군."
   },
   {
    "ID": "c01-n9",
    "Kind": "say",
    "Speaker": "zhangfei",
-   "Text": "그러니께 형님이 가서 뭐라고 좀 해 보셔유. 지는 고기부터 올려놓고!"
+   "Text": "그러니께 형이 가서 좀 물어보셔유. 지는 고기부터 올려놓고!"
   },
   {
    "ID": "c01-n10",
@@ -127,174 +127,191 @@
   },
   {
    "ID": "c01-t2",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "현덕. 익덕이 또 공짜 술을 돌리는 모양이오. 저러다 가게 문 닫겠소."
+   "Kind": "narrate",
+   "Text": "관우가 잔을 내려놓는다. 쿵!"
   },
   {
    "ID": "c01-t3",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "문 닫을 각오로 하는 장사니 걱정 마라."
+   "Text": "운장, 상 부서지겠네. 익덕이 장사 망한다고 울상이던데, 무슨 일인가?"
   },
   {
    "ID": "c01-t4",
    "Kind": "say",
-   "Speaker": "drunkard",
-   "Text": "(비틀거리며) 의병? 흥, 굶어 죽기 싫으면 차라리 황건에 붙지. 거긴 쌀이라도 준다더라!"
+   "Speaker": "guanyu",
+   "Text": "내일 의병에 이름 올리러 갑니다. 들어가면 언제 다시 마실지 모르니, 오늘 실컷 마셔 두는 거지요."
   },
   {
    "ID": "c01-t5",
-   "Kind": "narrate",
-   "Text": "주점이 조용해진다."
+   "Kind": "say",
+   "Speaker": "drunkard",
+   "Text": "(비틀거리며) 의병? 흐흐, 주정뱅이가 의병 해 봤자 배만 곯지. 차라리 황건에 붙어. 거긴 쌀이라도 준다더라!"
   },
   {
    "ID": "c01-t6",
-   "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "이놈이 지 가게에서 뭐라 했어?"
+   "Kind": "narrate",
+   "Text": "주점이 조용해진다. 관우가 천천히 일어선다."
   },
   {
    "ID": "c01-t7",
-   "Kind": "narrate",
-   "Text": "장비가 술꾼의 멱살을 잡는다. 유비가 일어나 장비의 팔에 손을 얹는다."
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "뭐라 그랬슈? 도적놈 편을 들어? 이놈이 지 가게에서!"
   },
   {
    "ID": "c01-t8",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "익덕, 놓거라."
+   "Kind": "narrate",
+   "Text": "장비가 술꾼의 멱살을 잡는다. 관우는 선 채로 수염을 쓸어내린다. 유비가 일어나 장비의 팔에 손을 얹는다."
   },
   {
    "ID": "c01-t9",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "(술꾼에게) 쌀을 준다니 솔깃하오? 황건이 그 쌀을 어디서 가져왔는지 아시오. 옆 고을 창고에서, 이웃의 부엌에서요."
+   "Text": "익덕, 놓게."
   },
   {
    "ID": "c01-t10",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "(술꾼에게) 쌀을 준다니 솔깃하오? 황건이 그 쌀을 어디서 가져왔는지 아시오. 옆 고을 창고에서, 이웃의 부엌에서요."
+  },
+  {
+   "ID": "c01-t11",
    "Kind": "say",
    "Speaker": "drunkard",
    "Text": "……그, 그래도 굶는 것보단……."
   },
   {
-   "ID": "c01-t11",
+   "ID": "c01-t12",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "굶지 않게 하겠소. 탁현 사람이 탁현을 지키는 데 쌀이 모자라면, 이 유비가 짚신을 엮어서라도 채우겠소."
+   "Text": "굶지 않게 하겠소. 의병에 드는 사람은 누구도 굶기지 않겠소. 내 가산을 다 털어서라도, 고을을 지키러 나선 사람들을 돕겠소."
   },
   {
-   "ID": "c01-t12",
+   "ID": "c01-t13",
    "Kind": "narrate",
    "Text": "술꾼이 한참 유비를 보다가 잔을 내려놓는다."
   },
   {
-   "ID": "c01-t13",
+   "ID": "c01-t14",
    "Kind": "say",
    "Speaker": "drunkard",
-   "Text": "짚신 장수 유씨 아들이……. 좋소. 나부터 이름 올리리다."
+   "Text": "저 돗자리 장수 물건은 십 년을 깔아도 안 해지더니……. 좋소, 그 말도 믿어 보리다. 나부터 이름 올리리다."
   },
   {
-   "ID": "c01-t14",
+   "ID": "c01-t15",
    "Kind": "narrate",
    "Text": "주점 여기저기서 손이 올라간다."
   },
   {
-   "ID": "c01-t15",
-   "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "(입을 벌리고) 형님 말 한마디에 이게 다 뭐래유……."
-  },
-  {
    "ID": "c01-t16",
    "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "(잔을 내려놓으며) 나는 병졸로라도 의병에 가려 했소. 오늘 보니 병졸로 갈 곳은 정해졌구려."
+   "Speaker": "zhangfei",
+   "Text": "(입을 벌리고) 형 말 한마디에 이게 다 뭐래유……."
   },
   {
    "ID": "c01-t17",
    "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "운장, 너는 병졸로 갈 사람이 아니야. 저 사람들을 줄 세울 사람이 필요하다."
+   "Speaker": "guanyu",
+   "Text": "(다시 앉으며) 나는 병졸로라도 의병에 가려 했습니다. 오늘 보니 병졸로 갈 곳은 정해졌군요."
   },
   {
    "ID": "c01-t18",
    "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "……좋소. 현덕 아래라면."
+   "Speaker": "liubei",
+   "Text": "운장, 자네는 병졸로 갈 사람이 아니네. 저 사람들을 줄 세울 사람이 필요하네."
   },
   {
    "ID": "c01-t19",
    "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "그럼 형님이 대장, 운장 형님이 부대장, 지는…… 술 담당!"
+   "Speaker": "guanyu",
+   "Text": "……좋습니다. 현덕 아래라면."
   },
   {
    "ID": "c01-t20",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "그럼 형이 대장, 운장 형이 부대장, 지는…… 술 담당!"
+  },
+  {
+   "ID": "c01-t21",
    "Kind": "say",
    "Speaker": "guanyu",
    "Text": "익덕은 선봉이다."
   },
   {
-   "ID": "c01-t21",
+   "ID": "c01-t22",
    "Kind": "say",
    "Speaker": "zhangfei",
    "Text": "선봉! 그거 좋네유. 맨 앞에서 술 마시는 거쥬?"
   },
   {
-   "ID": "c01-t22",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "그 많은 사람을 먹일 쌀이 걱정이구나."
-  },
-  {
    "ID": "c01-t23",
    "Kind": "say",
    "Speaker": "zhangfei",
-   "Text": "돈은 집 뒤 복숭아 숲을 팔면 꽤 될 거유. 팔기 전에 꽃이 한창이니께 거기서 한번 마셔유. 고기는 지가 다 굽겄슈!"
+   "Text": "근디 형, 몰랐는디 모아 둔 재산이 꽤 되나 봐유?"
   },
   {
    "ID": "c01-t24",
-   "Kind": "narrate",
-   "Text": "장비가 콧노래를 부르며 주점 문을 나선다."
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "음……. 돗자리 판 돈을 다 털면, 백 명쯤은 어떻게 먹일 수 있을 것 같네."
   },
   {
    "ID": "c01-t25",
-   "Kind": "narrate",
-   "Text": "그 숲은 장비의 부친 대부터 내려온 땅이다."
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "백 명유? 아까 손 든 사람만 해도 그보다 많겄슈. 그걸로 되겄슈?"
   },
   {
    "ID": "c01-t26",
    "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "저 녀석, 제 고향을 판다는 말을 술상 차린다는 말처럼 하네."
+   "Speaker": "zhangfei",
+   "Text": "지 집 뒤 복숭아 숲을 팔면 꽤 될 거유. 팔기 전에 꽃이 한창이니께 거기서 한번 마셔유. 고기는 지가 다 굽겄슈!"
   },
   {
    "ID": "c01-t27",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "술상 차리는 말을 할 때가 익덕이 제일 진지할 때요."
+   "Kind": "narrate",
+   "Text": "장비가 콧노래를 부르며 주점 문을 나선다."
   },
   {
    "ID": "c01-t28",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "하하, 그렇구나. 가자, 운장. 고기가 식겠다."
+   "Kind": "narrate",
+   "Text": "그 숲은 장비의 부친 대부터 내려온 땅이다."
   },
   {
    "ID": "c01-t29",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "저 친구, 제 고향을 판다는 말을 술상 차린다는 말처럼 하는구먼."
+  },
+  {
+   "ID": "c01-t30",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "술상 차리는 말을 할 때가 익덕이 제일 진지할 때지요."
+  },
+  {
+   "ID": "c01-t31",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "하하, 그렇군. 가세, 운장. 고기 식겠네."
+  },
+  {
+   "ID": "c01-t32",
    "Kind": "narrate",
    "Text": "관우가 일어나 장비를 따라 나선다."
   },
   {
-   "ID": "c01-t30",
+   "ID": "c01-t33",
    "Kind": "set",
    "Flags": {
     "c01-tavern": 1
    }
   },
   {
-   "ID": "c01-t31",
+   "ID": "c01-t34",
    "Kind": "back"
   },
   {
@@ -306,7 +323,7 @@
    "ID": "c01-o1",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "셋이 먹을 양이 아니구나."
+   "Text": "셋이 먹을 양이 아니로군."
   },
   {
    "ID": "c01-o2",
@@ -329,86 +346,115 @@
    "ID": "c01-o5",
    "Kind": "say",
    "Speaker": "zhangfei",
-   "Text": "근디 형님, 그 술꾼 말이유. 아까 보니께 벌써 장정 셋을 데려왔대유."
+   "Text": "근디 형, 그 술꾼 말이유. 벌써 장정을 열이나 데려왔대유."
   },
   {
    "ID": "c01-o6",
    "Kind": "say",
    "Speaker": "guanyu",
-   "Text": "칼로 사람을 겁줄 수는 있어도, 따라오게 하지는 못하오. 오늘 그걸 보았소."
+   "Text": "칼로 사람을 겁줄 수는 있어도, 따라오게 하지는 못하지요. 오늘 그걸 보았습니다."
   },
   {
    "ID": "c01-o7",
    "Kind": "say",
    "Speaker": "guanyu",
-   "Text": "(잔을 내려놓으며) 내일부터는 현덕을 주공이라 부르겠소. 군에는 위아래가 있어야 하오."
+   "Text": "(잔을 내려놓으며) 내일부터는 현덕을 주공이라 부르겠습니다. 황실 종친이시고, 우리 셋 중 사람을 가장 잘 이끌 분이시니까요."
   },
   {
    "ID": "c01-o8",
    "Kind": "say",
    "Speaker": "zhangfei",
-   "Text": "그럼 지는 뭐라 불러유? 주공? 아이고, 입에 안 붙는디."
+   "Text": "그럼 지도 주공이라 불러야 돼유? 아이고, 입에 안 붙는디."
   },
   {
    "ID": "c01-o9",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "운장, 주인과 종은 이득이 다하면 갈라선다. 나는 너희랑 그렇게 되기 싫다. 주공 말고, 형제로 하자."
+   "Text": "운장, 익덕. 나는 자네 둘을 가족으로 생각했네. 주공과 부하로 생각한 적은 없어."
   },
   {
    "ID": "c01-o10",
-   "Kind": "narrate",
-   "Text": "관우가 오래 유비를 본다. 그러고는 고개를 끄덕인다. 셋이 향로 앞에 나란히 선다."
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "지도 그래유! 성만 다르지, 가족이라고 생각했슈."
   },
   {
    "ID": "c01-o11",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "이럴 바엔 차라리 진짜 형제가 되는 거 어때유?"
+  },
+  {
+   "ID": "c01-o12",
+   "Kind": "narrate",
+   "Text": "유비가 웃으며 관우를 본다. 관우가 오래 유비를 보다가 고개를 끄덕인다. 셋이 향로 앞에 나란히 선다."
+  },
+  {
+   "ID": "c01-o13",
    "Kind": "say",
    "Speaker": "liubei·guanyu·zhangfei",
    "Text": "같은 날 태어나지 못했으나, 같은 날 죽기를 바라나이다!"
   },
   {
-   "ID": "c01-o12",
-   "Kind": "narrate",
-   "Text": "맏이는 유비, 둘째는 관우."
-  },
-  {
-   "ID": "c01-o13",
-   "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "그럼 지가 막내유? 술은 지가 제일 잘 마시는디."
-  },
-  {
    "ID": "c01-o14",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "익덕."
+   "Kind": "narrate",
+   "Text": "장비가 고개를 돌려 눈가를 비빈다."
   },
   {
    "ID": "c01-o15",
    "Kind": "say",
    "Speaker": "zhangfei",
-   "Text": "(눈을 비비며) 아이고, 꽃가루가 눈에 들어갔나……."
+   "Text": "아이고, 꽃가루가 눈에 들어갔나……."
   },
   {
    "ID": "c01-o16",
    "Kind": "say",
    "Speaker": "guanyu",
-   "Text": "꽃가루는 원래 그렇소."
+   "Text": "꽃가루는 원래 그렇다."
   },
   {
    "ID": "c01-o17",
    "Kind": "narrate",
-   "Text": "셋이 웃는다. 꽃잎이 술잔에 떨어진다."
+   "Text": "맏이는 유비, 둘째는 관우."
   },
   {
    "ID": "c01-o18",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "그럼 지가 막내유? 술은 지가 제일 잘 마시는디."
+  },
+  {
+   "ID": "c01-o19",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "익덕."
+  },
+  {
+   "ID": "c01-o20",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "……알겄슈, 둘째 형님."
+  },
+  {
+   "ID": "c01-o21",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "(유비에게 잔을 내밀며) 형님, 한 잔 받으십시오."
+  },
+  {
+   "ID": "c01-o22",
+   "Kind": "narrate",
+   "Text": "셋이 웃는다. 꽃잎이 술잔에 떨어진다."
+  },
+  {
+   "ID": "c01-o23",
    "Kind": "set",
    "Flags": {
     "c01-oath": 1
    }
   },
   {
-   "ID": "c01-o19",
+   "ID": "c01-o24",
    "Kind": "back",
    "Area": "zhuo",
    "At": [

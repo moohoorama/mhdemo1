@@ -5,6 +5,17 @@
 
 ---
 
+## 2026-10-28 1장 주점·도원 대사, 영천 새벽 골목 장면, 노모 도트
+
+결정 · 관우가 주점에 며칠째 있던 설정을 "무섭게 마셔 둘레에 사람이 없다"로 바꾸고, 결의는 유비가 "가족"을 꺼내고 장비가 "진짜 형제"를 제안하는 흐름으로. 영천 불을 끈 뒤 새벽 골목에서 서복의 인사와 화계서 전달을 보이고, 광종으로 돌아가는 동기를 둔다 · 이유: 사용자 "관우가 며칠째 있는건 ... 의병 되기 무서워서 저러는거 같잖아", "불끄고 돌아오니 진영에 노숙(노식)이 있다니", "불이 꺼진 마을을 보여주고, 서복이 감사합니다" · 영향받는 문서: fullstory.md
+- `assets/scenario/hero/story01.json`·`explore01.json`·`assets/scenes/ch01.json`: S#1~S#3 대사, 주점·도원 노드 번호를 새로 매기고 연출을 옮김(관우가 일어서고 다시 앉는 자세 추가). 결의 전 관우는 "현덕" + 부드러운 존댓말, 유비는 형제에게 하게체
+- `assets/scenario/hero/story02.json`·`assets/scenes/ch02.json`: 새 장면 `c02-dawn`(S_castle_town_burnt, 새벽, 서복·노모·병사). 화계서 지급과 "새벽녘에야 불이 꺼졌다"를 빈 진영 장면에서 이 장면으로 옮김. 조조·하후돈 퇴장은 `c02-e9`로
+- 불은 성 안이 아니라 장사성 남동쪽, 유비 진영 가까운 마을에 났다(성 안에 불이 났는데 황보숭이 손견·조조를 치하하는 것은 이상하다는 지적). `story02.json`·`characters_story.json`(서복 소개)·fullstory의 "성 안 민가·골목"을 마을로, `c02-dawn` 지도는 아래 `S_village_burnt`. 서복·노모·병사는 화면 밖에서 걸어 들어오고 걸어 나감
+- `assets/graphics/maps/S_village_burnt.json`(새 형식 2 맵)·`index.json`: 옛 `S_vil_burnt`(6×5)는 좁고 다닥다닥해서 10×8 불탄 마을을 새로 — 불탄 집 셋, 성한 초가 둘, 흙길·갈림길, 재·물통·우물·울타리·나무. `c02-dawn`에 정리하는 백성 셋(웅성임)을 둠. 유비의 마지막 줄은 "황보 장군께 인사 올리고, 광종 스승님께 돌아가세"(황보숭을 만나는 장면은 생략)
+- `internal/gui/scene.go`·`internal/scenes/scenes.go`·`scenario_test.go`: 장면 비트 `Prop: [이름, 배우]` — 놓인 소품이 그 배우를 따라 움직이고 배우가 퇴장하면 함께 사라진다. 3장 함거가 그 자리에서 사라지고 호송병이 형제를 뚫고 지나가던 것을, 형제가 길가로 비키고 함거가 노식과 함께 끌려 나가며 호송병이 뒤따르게 고침
+- `tools/doteditor/tools/mounted_kits/commoners.py`: `commoner_oldwoman`(노파) — 긴 치마, 쪽진 흰머리(테두리 없는 덩어리, 뒷모습에서 눈처럼 보이지 않게), 허리 위만 앞으로 꺾는 `hunch`(lean은 무릎부터 몸 전체를 기울여 넘어지는 것처럼 보임), 땅까지 곧은 지팡이, 뒷짐. 노인과는 치마·수염 없음·굽은 허리로 구별
+- `tools/doteditor/units/commoner_oldwoman.yaml`, `assets/sprites/commoner_oldwoman.spr`, `internal/sprite/testdata/units/commoner_oldwoman.png`: 새 시트
+
 ## 2026-10-28 수전: 낮은 물과 배
 
 - 결정: 전투맵의 물은 한 종류로, 수면을 땅보다 9px 낮게 그리고 좌상·우상 강둑에 흙 절벽을 세운다. 스테이지의 `Boats`가 물을 진입 불가로 둘지 배로 건널지 정하고, 배 전투의 물 칸은 보병류 우대(보병·적병 1·1.1, 궁병·서생 1·1.0, 기병 2·0.9, 병기 불가). 기병은 말 탄 채 긴 배에 탄다. 배는 들린 배 · 이유: 사용자가 시안(https://claude.ai/artifact/NwKVGU8HAq8mZP5UFovE36)을 보고 "느낌 되게 좋다", 얕은물·깊은물 구분 대신 "물은 이것으로 고정", "전투에 설정이 있어서 ... 둘 중 하나만", 배 밑 점선 물결 대신 기존 그림자 생성기로 · 영향받는 문서: plan-naval-water.md(새 문서), data-scenario-node.md, data-map.md, logic-combat.md

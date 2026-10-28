@@ -67,8 +67,18 @@ type sceneEffect struct {
 }
 
 type sceneProp struct {
-	name string
-	u, v float64
+	name   string
+	u, v   float64
+	follow string // an actor the prop moves with, u and v then its offset from that actor
+}
+
+// at is where the prop stands now: its own spot, or its offset from the actor it follows; false once that
+// actor has left the stage, so the prop leaves with them.
+func (p sceneProp) at(s *scene) (float64, float64, bool) {
+	if a := s.actors[p.follow]; a != nil {
+		return a.u + p.u, a.v + p.v, !a.gone
+	}
+	return p.u, p.v, true
 }
 
 type emote struct {
@@ -387,7 +397,17 @@ func (g *Game) stageStep(st scenes.Step) {
 			}
 		}
 	}
-	if len(st.Prop) > 0 {
+	if len(st.Prop) == 2 { // [name, actor]: the prop already down moves with that actor from here on
+		name, _ := st.Prop[0].(string)
+		actor, _ := st.Prop[1].(string)
+		if a := s.actors[actor]; a != nil {
+			for i, p := range s.props {
+				if p.name == name && p.follow == "" {
+					s.props[i] = sceneProp{name, p.u - a.u, p.v - a.v, actor}
+				}
+			}
+		}
+	} else if len(st.Prop) > 0 {
 		name, _ := st.Prop[0].(string)
 		kept := s.props[:0]
 		for _, p := range s.props {
@@ -399,7 +419,7 @@ func (g *Game) stageStep(st scenes.Step) {
 		if len(st.Prop) == 3 {
 			u, _ := st.Prop[1].(float64)
 			w, _ := st.Prop[2].(float64)
-			s.props = append(s.props, sceneProp{name, u, w})
+			s.props = append(s.props, sceneProp{name: name, u: u, v: w})
 		}
 	}
 	if st.Time != "" {
@@ -613,8 +633,9 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	}
 	g.field.beatShadows = g.field.beatShadows[:0]
 	for _, p := range s.props {
-		if sh := g.assets.Props[p.name].Shadow; sh.Image != nil {
-			x, y := g.field.Center(p.u, p.v)
+		if u, v, ok := p.at(s); ok && g.assets.Props[p.name].Shadow.Image != nil {
+			sh := g.assets.Props[p.name].Shadow
+			x, y := g.field.Center(u, v)
 			g.field.beatShadows = append(g.field.beatShadows, beatShadow{x, y, sh})
 		}
 	}
@@ -634,7 +655,11 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 		drawScaled(dst, g.field.Canvas, op)
 		for _, p := range s.props {
 			if pr, ok := g.assets.Props[p.name]; ok {
-				x, y := g.field.Center(p.u, p.v)
+				u, v, shown := p.at(s)
+				if !shown {
+					continue
+				}
+				x, y := g.field.Center(u, v)
 				g.drawCanvasSprite(dst, pr.Sprite, x, y, 1)
 			}
 		}

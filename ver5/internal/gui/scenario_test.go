@@ -167,8 +167,13 @@ func TestScenesData(t *testing.T) {
 				}
 				if len(st.Prop) > 0 {
 					name, _ := st.Prop[0].(string)
-					if index.Props.Sprites[name] == nil && index.Extra.Sprites[name] == nil || len(st.Prop) != 1 && len(st.Prop) != 3 {
-						t.Errorf("prop %v: unknown name or not [name, u, v] / [name]", st.Prop)
+					if index.Props.Sprites[name] == nil && index.Extra.Sprites[name] == nil || len(st.Prop) < 1 || len(st.Prop) > 3 {
+						t.Errorf("prop %v: unknown name or not [name, u, v] / [name, actor] / [name]", st.Prop)
+					}
+					if actor, ok := st.Prop[len(st.Prop)-1].(string); len(st.Prop) == 2 {
+						if _, cast := def.Cast[actor]; !ok || !cast {
+							t.Errorf("prop %v: follows no actor of the cast", st.Prop)
+						}
 					}
 				}
 			}

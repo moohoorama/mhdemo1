@@ -1,0 +1,22 @@
+# c02-dawn  S_village_burnt  ch02  origin 0 0
+Tre...............Tre.........
+...Hse...GuaHse...............
+.........Liu.........Hse......
+.........Zha......Bkt.........
+...........................Sck
+#########............###Wel###
+...Hse...MatBch.........Hse...
+..............................
+
+Liu 유비
+Gua 관우
+Zha 장비
+Xuf 서복  (off stage, enters later (cell 7 2))
+co1 노모  (commoner_oldwoman, off stage, enters later (cell 7 1))
+Sol 병사  (light_infantry, off stage, enters later (cell 5 7))
+
+# c02-d4: Xuf -> 4 2
+# c02-d4: co1 -> 5 1
+# c02-d10: Xuf -> 7 2 and leaves
+# c02-d10: co1 -> 7 1 and leaves
+# c02-d10: Sol -> 5 3
