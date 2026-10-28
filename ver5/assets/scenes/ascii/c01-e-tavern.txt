@@ -1,0 +1,25 @@
+# c01-e-tavern  S_tavern2  ch01  origin -1 -1
+Pil##################Pil
+###...Bch...Jar...CtrJar
+###...Tbl............Jar
+###.........Tbl.........
+###Lnt...............Bch
+###JarTbl.........Tbl...
+PilJar......Tbl.........
+
+Liu 유비  (stands where the walk left them)
+Gua 관우  (stands where the walk left them)
+Zha 장비  (stands where the walk left them)
+Dru 술꾼  (stands where the walk left them)
+xx1 손님  (stands where the walk left them)
+xx2 손님#1  (stands where the walk left them)
+xx3 손님#2  (stands where the walk left them)
+
+# c01-t1: Liu -> 2.25 2.25
+# c01-t8: Zha -> 3.25 3.75
+# c01-t8: Liu -> 3.25 2.75
+# c01-t10: Zha -> 4.25 3.75
+# c01-t17: Liu -> 2.25 2.25
+# c01-t17: Zha -> 4.25 2.25
+# c01-t27: Zha -> 6.25 4.25 and leaves
+# c01-t32: Gua -> 6.25 4.25 and leaves

@@ -78,21 +78,26 @@ func (g *Game) updatePointer() {
 	}
 	pointer.update(points)
 	if !pointer.multi {
+		if g.pinched {
+			g.pinched = false
+			g.setZoom(nearestZoom(g.zoom)) // a pinch settles on the nearest of the battle's zooms
+		}
 		return
 	}
 	g.dragging = false
 	x, y := cursorPos()
 	if g.editor != nil {
 		e := g.editor
-		if e.doc == nil || e.field == nil || e.popup != "" || g.overlay != "" || e.resizing || x < editorViewport.Min.X || x >= editorViewport.Max.X || y < editorViewport.Min.Y || y >= editorViewport.Max.Y {
+		if e.doc == nil || e.field == nil || e.popup != "" || g.overlay() != "" || e.resizing || x < editorViewport.Min.X || x >= editorViewport.Max.X || y < editorViewport.Min.Y || y >= editorViewport.Max.Y {
 			return
 		}
 		e.zoom = max(.1, min(3, e.zoom*pointer.ratio))
 		e.cx -= pointer.dx / uiPx / e.zoom
 		e.cy -= pointer.dy / uiPx / e.zoom
 		e.clampCamera()
-	} else if g.field != nil && !g.popupPending() && !g.input && g.onMap() {
-		g.setZoomImmediate(max(.5, min(4, g.zoom*pointer.ratio)))
+	} else if g.field != nil && !g.popupPending() && !g.input && g.onMap() && !g.cameraLocked() {
+		g.pinched = true
+		g.setZoomImmediate(max(zooms[0], min(zooms[len(zooms)-1], g.zoom*pointer.ratio)))
 		g.camX -= pointer.dx / worldPx / g.zoom
 		g.camY -= pointer.dy / worldPx / g.zoom
 	}

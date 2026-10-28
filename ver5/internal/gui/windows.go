@@ -16,25 +16,47 @@ import (
 )
 
 var overlayTitles = map[string]string{"menu": "메뉴", "save": "저장", "load": "불러오기", "settings": "설정",
-	"confirm": "확인", "equipment": "장비", "deputy": "부관", "roster": "병력일람", "shop": "상점", "party": "부대"}
+	"confirm": "확인", "equipment": "장비", "deputy": "부관", "roster": "병력일람", "shop": "상점", "party": "부대", "waypoints": "장면 이동"}
 
 func (g *Game) popupPending() bool {
-	return g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 ||
+	return len(g.overlays) > 0 || len(g.modals) > 0 || len(g.learn) > 0 ||
 		(g.S.Engine != nil && g.S.Screen == "playing" && len(g.S.View().Learners) > 0)
 }
 
+// overlay is the top window, the one that takes the input; "" when none is open.
+func (g *Game) overlay() string {
+	if len(g.overlays) == 0 {
+		return ""
+	}
+	return g.overlays[len(g.overlays)-1]
+}
+
+// openOverlay opens a window over the open ones; closing it shows the one beneath again.
 func (g *Game) openOverlay(name string) bool {
-	if g.overlay == "" && g.popupPending() {
+	if len(g.overlays) == 0 && g.popupPending() {
 		return false
 	}
-	g.overlay, g.page = name, 0
-	g.equip = equipState{}
+	g.overlays = append(g.overlays, name)
+	g.page = 0
+	if name == "equipment" {
+		g.equip = equipState{}
+	}
 	g.autoplay = false
 	if name == "save" || name == "load" {
 		g.slotInfo = g.readSlots()
 	}
 	return true
 }
+
+// closeOverlay closes the top window.
+func (g *Game) closeOverlay() {
+	if len(g.overlays) > 0 {
+		g.overlays = g.overlays[:len(g.overlays)-1]
+	}
+}
+
+// closeOverlays closes every window.
+func (g *Game) closeOverlays() { g.overlays = nil }
 
 // ask opens a confirmation window; ok runs on 확인.
 func (g *Game) ask(message string, ok func()) { g.askWith(message, "확인", "취소", ok) }
@@ -73,10 +95,24 @@ type levelUp struct {
 	progress      float64
 }
 
+// drawOverlay draws the open windows bottom first, each dimming the ones beneath; only the top
+// one takes clicks and shows the cursor's hover.
 func (g *Game) drawOverlay(dst *ebiten.Image) {
-	g.buttons, g.blocks = nil, nil
+	cursor := cursorPos
+	defer func() { cursorPos = cursor }()
+	for i, name := range g.overlays {
+		g.buttons, g.blocks = nil, nil
+		cursorPos = cursor
+		if i < len(g.overlays)-1 {
+			cursorPos = func() (int, int) { return -1000, -1000 }
+		}
+		g.drawWindow(dst, name)
+	}
+}
+
+func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 	w, h := 560, 440
-	switch g.overlay {
+	switch name {
 	case "confirm":
 		w, h, _ = g.confirmLayout(g.question, uiW, uiH)
 	case "save":
@@ -88,56 +124,55 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 	case "deputy":
 		w, h = 640, 560
 	case "settings":
-		w, h = 640, 732
+		w, h = 640, 668
 	case "roster":
 		w, h = uiW-100, uiH-90
 	case "shop":
 		w, h = 820, 640
 	case "party":
 		w, h = 1100, 720
+	case "waypoints":
+		w, h = waypointW, waypointH
 	}
 	// the window in a frame with room for its title plate and shadow
-	g.popup(dst, "overlay:"+g.overlay, 150, w+40, h+40, image.Rect(0, 0, w+40, h+40), func(dst *ebiten.Image) { g.overlayWindow(dst, w, h) })
-	if g.overlay == "equipment" && g.equip.slot != "" {
+	g.popup(dst, "overlay:"+name, 150, w+40, h+40, image.Rect(0, 0, w+40, h+40), func(dst *ebiten.Image) { g.overlayWindow(dst, name, w, h) })
+	if name == "equipment" && g.equip.slot != "" {
 		g.drawEquipPicker(dst)
 	}
-	if g.overlay == "equipment" && g.equip.info.id != "" {
+	if name == "equipment" && g.equip.info.id != "" {
 		g.drawEquipInfo(dst)
 	}
 }
 
-func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
+func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h int) {
 	x, y := uiW/2-w/2, uiH/2-h/2
 	r := image.Rect(x, y, x+w, y+h)
-	if g.overlay == "confirm" {
+	if name == "confirm" {
 		g.titledPattern(dst, r, g.confirmTitle)
 	} else {
-		g.titled(dst, r, overlayTitles[g.overlay])
+		g.titled(dst, r, overlayTitles[name])
 	}
-	g.btn(dst, image.Rect(x+w-96, y+16, x+w-18, y+44), "닫기", func() { g.overlay = "" })
+	g.btn(dst, image.Rect(x+w-96, y+16, x+w-18, y+44), "닫기", g.closeOverlay)
 	left := x + 32
-	switch g.overlay {
+	switch name {
 	case "confirm":
 		g.label(dst, wrapWidth(g.question, g.face(18), float64(w-64)), float64(left), float64(y+44), 18, ink)
 		g.btn(dst, image.Rect(left, y+h-62, left+190, y+h-28), g.yes, func() {
 			f := g.answer
-			g.overlay = ""
+			g.closeOverlay()
 			if f != nil {
 				f()
 			}
 		})
-		g.btn(dst, image.Rect(x+w-222, y+h-62, x+w-32, y+h-28), g.no, func() { g.overlay = "" })
+		g.btn(dst, image.Rect(x+w-222, y+h-62, x+w-32, y+h-28), g.no, g.closeOverlay)
 	case "menu":
 		items := []menuItem{
-			{"게임으로", func() { g.overlay = ""; g.request(session.Request{Op: "resume"}) }},
+			{"게임으로", func() { g.closeOverlays(); g.request(session.Request{Op: "resume"}) }},
 			{"저장", func() { g.openOverlay("save") }},
 			{"불러오기", func() { g.openOverlay("load") }},
 			{"설정", func() { g.openOverlay("settings") }},
 			{"시작 메뉴", func() {
 				g.request(session.Request{Op: "title"})
-				if g.S.Screen == "title" {
-					g.overlay = ""
-				}
 			}},
 			{"종료", func() { g.request(session.Request{Op: "quit"}) }},
 		}
@@ -148,7 +183,7 @@ func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
 			g.btn(dst, image.Rect(left, y+64+i*54, x+w-32, y+64+i*54+42), it.label, it.click)
 		}
 	case "save", "load":
-		op := g.overlay
+		op := name
 		g.label(dst, map[string]string{"save": "저장할 슬롯을 고르십시오. 덮어쓸 때는 확인합니다.", "load": "불러올 슬롯을 고르십시오."}[op], float64(left), float64(y+56), 14, muted)
 		slots := storage.ManualSlots()
 		if op == "load" {
@@ -172,13 +207,12 @@ func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
 						fmt.Sscan(slot, &g.slot)
 					}
 					g.request(session.Request{Op: op, Slot: slot})
-					if g.overlay != "confirm" {
-						g.overlay = ""
-					}
 				}
 			}
 			g.btn(dst, image.Rect(left, y+84+i*32, x+w-32, y+84+i*32+28), label, click)
 		}
+	case "waypoints":
+		g.waypointWindow(dst, x, y, w, h)
 	case "settings":
 		s := g.S.Settings
 		set := func(change func(v *storage.Settings)) func() {
@@ -206,9 +240,9 @@ func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
 			title string
 			opts  []choice
 		}{
-			{"적 AI", []choice{
-				{"자동 진행", s.AI == "auto", set(func(v *storage.Settings) { v.AI = "auto" })},
-				{"한 명령씩", s.AI == "step", set(func(v *storage.Settings) { v.AI = "step" })},
+			{"AI 차례", []choice{
+				{"동시에 보기", s.Replay != "one", set(func(v *storage.Settings) { v.Replay = "together" })},
+				{"하나씩 보기", s.Replay == "one", set(func(v *storage.Settings) { v.Replay = "one" })},
 			}},
 			{"전투 기록", []choice{
 				{"상세", s.Detail, set(func(v *storage.Settings) { v.Detail = true })},
@@ -226,10 +260,6 @@ func (g *Game) overlayWindow(dst *ebiten.Image, w, h int) {
 			{"UI 크기", scales},
 			{"데미지 배율", damages},
 			{"경험치 배율", xps},
-			{"전원 반격", []choice{
-				{"켜기", s.CounterAll, set(func(v *storage.Settings) { v.CounterAll = true })},
-				{"끄기", !s.CounterAll, set(func(v *storage.Settings) { v.CounterAll = false })},
-			}},
 		}
 		for i, it := range rows {
 			g.choiceRow(dst, left, y+64+i*64, x+w-32-left, it.title, it.opts)

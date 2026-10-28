@@ -77,6 +77,9 @@
       const [sx, sy, w, h] = meta.rect;
       c.drawImage(img, sx, sy, w, h, ox + d.x, oy + d.y, w, h);
       return { name: d.n, actual: d.n, x: ox + d.x, y: oy + d.y, w, h, meta, img };
+    } else if (d.k === 'anim') {
+      const meta = graphics.anims[d.n], img = images[`anim:${d.n}`], [sx, sy, w, h] = meta.rect;
+      if (img) c.drawImage(img, sx, sy, w, h, ox + d.x, oy + d.y, w, h); // frame 0; the game plays the strip
     } else if (d.k === 'fill') {
       c.fillStyle = d.c;
       for (let k = 0; k < 32; k++) {
@@ -412,6 +415,7 @@
     graphics = catalog.graphics; rules = catalog.rules; scenery = catalog.scenery;
     select.replaceChildren(...catalog.scenes.map(scene => new Option(`${scene.name} · ${scene.id}${scene.format === 2 ? ' · 형식 2' : ''}`, scene.id)));
     const sources = { tiles: graphics.tileset.image, props: graphics.props.image, extra: graphics.extra.image, scenery: scenery.image, structures: graphics.structures.image };
+    for (const [name, a] of Object.entries(graphics.anims)) sources[`anim:${name}`] = a.image;
     await Promise.all(Object.entries(sources).map(([key, path]) => new Promise((resolve, reject) => {
       const img = new Image(); img.onload = () => { images[key] = img; resolve(); };
       img.onerror = () => reject(new Error(`${path} 그림을 읽지 못했습니다.`));

@@ -1,0 +1,358 @@
+{
+ "ID": "B04",
+ "Name": "팽성 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 3,
+ "Required": [
+  "liubei",
+  "guanyu",
+  "zhangfei"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "defeated:zhangchun"
+   ],
+   "Text": "장순을 물리친다"
+  }
+ ],
+ "Defeat": [
+  {
+   "If": [
+    "at:raiders:1"
+   ],
+   "Text": "팽성 함락(적이 성 안에 들어옴)"
+  }
+ ],
+ "Sub": [
+  {
+   "ID": "carts",
+   "Text": "약탈 수레를 모두 되찾는다",
+   "If": [
+    "alldefeated:carts",
+    "!fled:carts"
+   ],
+   "Flag": "flag-pengcheng-carts"
+  }
+ ],
+ "TurnLimit": 15,
+ "Map": "map04.json",
+ "Allies": [
+  {
+   "X": 13,
+   "Y": 9
+  },
+  {
+   "X": 14,
+   "Y": 9
+  },
+  {
+   "X": 13,
+   "Y": 10
+  },
+  {
+   "X": 14,
+   "Y": 10
+  },
+  {
+   "X": 12,
+   "Y": 9
+  },
+  {
+   "X": 12,
+   "Y": 10
+  }
+ ],
+ "Party": [
+  {
+   "Character": "taoqian",
+   "X": 15,
+   "Y": 11,
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "han",
+   "Group": "xu",
+   "Policy": "hold"
+  },
+  {
+   "Character": "gaoshun",
+   "X": 16,
+   "Y": 10,
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "han",
+   "Group": "xu",
+   "Policy": "assault"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 17,
+   "Y": 10,
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "han",
+   "Group": "xu",
+   "Policy": "assault",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_archer",
+   "X": 16,
+   "Y": 12,
+   "Facing": "NE",
+   "AI": true,
+   "Faction": "han",
+   "Group": "xu",
+   "Policy": "hold",
+   "Shift": -0.07
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "zhangchun",
+   "X": 3,
+   "Y": 2,
+   "Facing": "SE",
+   "Group": "chief",
+   "Policy": "hold",
+   "Rank": "commander"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 4,
+   "Y": 2,
+   "Facing": "SE",
+   "Group": "guards",
+   "Policy": "hold",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 3,
+   "Y": 3,
+   "Facing": "SE",
+   "Group": "guards",
+   "Policy": "hold",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 2,
+   "Y": 3,
+   "Facing": "SE",
+   "Group": "guards",
+   "Policy": "hold",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 7,
+   "Y": 5,
+   "Facing": "SE",
+   "Group": "raiders",
+   "Policy": "assault",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 6,
+   "Y": 7,
+   "Facing": "SE",
+   "Group": "raiders",
+   "Policy": "assault",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 9,
+   "Y": 2,
+   "Facing": "SE",
+   "Group": "raiders",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 11,
+   "Y": 4,
+   "Facing": "SE",
+   "Group": "raiders",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 8,
+   "Y": 4,
+   "Facing": "SE",
+   "Group": "raiders",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "loot_cart",
+   "X": 17,
+   "Y": 4,
+   "Facing": "NW",
+   "Group": "carts",
+   "Policy": "flee",
+   "GoalArea": 2
+  },
+  {
+   "Character": "loot_cart",
+   "X": 17,
+   "Y": 6,
+   "Facing": "NW",
+   "Group": "carts",
+   "Policy": "flee",
+   "GoalArea": 2
+  }
+ ],
+ "Reward": {
+  "bean": 6,
+  "liquor": 2,
+  "money": 1000
+ },
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 13,
+    "Y": 12,
+    "W": 7,
+    "H": 4
+   },
+   "Name": "팽성 안",
+   "Description": "적이 들어오면 팽성이 떨어진다"
+  },
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 0,
+    "Y": 0,
+    "W": 2,
+    "H": 2
+   },
+   "Name": "북서쪽 퇴로",
+   "Description": "약탈 수레가 장순 뒤로 빠져나가는 모퉁이"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "opening",
+   "If": [
+    "round>=1"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangchun",
+       "Text": "팽성이 코앞이다! 수레는 이리로 몰고 와라. 기병은 성문을 들이쳐라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "taoqian",
+       "Text": "현덕, 성문은 내가 지키겠네. 들판을 부탁하네."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "운장, 익덕. 저 수레는 백성들 겨울 양식일세. 장순에게 닿기 전에 막아야 하네!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "gongsunzan",
+   "If": [
+    "round>=3"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "gongsunzan",
+       "X": 0,
+       "Y": 13,
+       "Facing": "NE",
+       "AI": true,
+       "Policy": "assault",
+       "Faction": "gongsun",
+       "Group": "white",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 12,
+       "Facing": "NE",
+       "AI": true,
+       "Policy": "assault",
+       "Faction": "gongsun",
+       "Group": "white",
+       "Side": "ally",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 1,
+       "Y": 14,
+       "Facing": "NE",
+       "AI": true,
+       "Policy": "assault",
+       "Faction": "gongsun",
+       "Group": "white",
+       "Side": "ally",
+       "Shift": -0.07
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "gongsunzan",
+       "Text": "장순! 유주에서부터 쫓아왔다. 오늘은 놓치지 않는다!"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "Faction": "barbarian",
+ "Duels": [],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "han",
+   "Name": "도겸·고순",
+   "Ally": true
+  },
+  {
+   "Faction": "gongsun",
+   "Name": "공손찬군",
+   "Ally": true
+  },
+  {
+   "Faction": "barbarian",
+   "Name": "장순과 오환 기병"
+  }
+ ]
+}

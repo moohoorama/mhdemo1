@@ -58,7 +58,15 @@
    "DuelFirst": true,
    "Facing": "SW",
    "Policy": "hold",
-   "Rank": "boss"
+   "Rank": "commander"
+  },
+  {
+   "Character": "zhangliao",
+   "X": 4,
+   "Y": 2,
+   "Facing": "SW",
+   "Policy": "hold",
+   "Rank": "officer"
   },
   {
    "Character": "troop_footman",
@@ -392,7 +400,7 @@
     {
      "Kind": "talk",
      "Title": "대사",
-     "Speech": "형~ 왔슈! 기다리고 있었슈!",
+     "Speech": "형들~ 왔슈! 기다리고 있었슈!",
      "Side": 0,
      "Duration": 2.1
     },
@@ -698,14 +706,14 @@
       {
        "Kind": "talk",
        "Title": "대사",
-       "Speech": "형~ 혼자서만 재밌게 놀면 섭섭하쥬!",
+       "Speech": "둘째 형~ 혼자서만 재밌게 놀면 섭섭하쥬!",
        "Side": 2,
        "Duration": 2.5
       },
       {
        "Kind": "talk",
        "Title": "대사",
-       "Speech": "운장, 우리가 함께하오!",
+       "Speech": "운장, 함께 가세!",
        "Side": 3,
        "Duration": 1.9
       },
@@ -1004,7 +1012,7 @@
       {
        "Kind": "talk",
        "Title": "대사",
-       "Speech": "아우들… 기다리고 있었소!",
+       "Speech": "아우들… 기다리고 있었네!",
        "Side": 0,
        "Duration": 2.0
       },
@@ -1060,7 +1068,7 @@
       {
        "Kind": "talk",
        "Title": "대사",
-       "Speech": "형제가 모이면 천하에 못 이길 자가 없소!",
+       "Speech": "형제가 모이면 천하에 못 이길 자가 없네!",
        "Side": 0,
        "Duration": 2.6
       },
@@ -1220,146 +1228,83 @@
    ]
   },
   {
-   "ID": "hulao-wuanguo",
-   "Ally": "wuanguo",
+   "ID": "hulao-fangyue",
+   "Ally": "fangyue",
    "Enemy": "lubu",
    "Outcome": "defeat",
-   "AllyResult": "retreat",
+   "AllyResult": "death",
    "EnemyResult": "stay",
-   "Text": "무안국이 여포에게 패하고 달아났다.",
+   "Text": "방열이 여포에게 패하고 전사했다.",
    "Beats": [
     {
      "Kind": "talk",
-     "Title": "대사",
-     "Speech": "그 위세도 여기까지다! 이 무안국이 상대해 주마!",
+     "Title": "방열이 여포를 막아서다",
+     "Speech": "여포! 하내의 방열이 네 목을 거두러 왔다!",
      "Side": 0,
-     "Duration": 2.9
+     "Duration": 2.6
     },
     {
      "Kind": "talk",
-     "Title": "대사",
-     "Speech": "무안국이라… 창 한 자루로 나를 쓰러뜨리겠다는 거냐?",
+     "Title": "여포가 비웃다",
+     "Speech": "하내? 처음 듣는 이름이군.",
      "Side": 1,
-     "Duration": 3.1
+     "Duration": 2.0
     },
     {
      "Kind": "approach",
-     "Title": "무안국의 도전",
+     "Title": "approach",
      "Speech": "",
      "Side": 0,
      "Duration": 1.2
     },
     {
      "Kind": "talk",
-     "Title": "대사",
+     "Title": "방열이 창을 겨누다",
      "Speech": "이 창 맛을 보아라!",
-     "Side": 0,
-     "Duration": 1.7
-    },
-    {
-     "Kind": "block",
-     "Title": "무안국이 창을 내지르다",
-     "Speech": "그게 전력이냐? 가볍구나.",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "block",
-     "Title": "다시 창을 휘두르다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "critical-block",
-     "Title": "무안국이 온 힘으로 내리치다",
-     "Speech": "으라아앗!",
-     "Side": 0,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "공명에 눈이 멀어 제 분수를 모르는구나.",
-     "Side": 1,
-     "Duration": 2.5
-    },
-    {
-     "Kind": "block",
-     "Title": "여포가 처음으로 화극을 휘두르다",
-     "Speech": "크윽…",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "yielding-block",
-     "Title": "무안국이 막지만 밀리다",
-     "Speech": "으윽!",
-     "Side": 1,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "아직… 끝나지 않았다!",
      "Side": 0,
      "Duration": 1.8
     },
     {
      "Kind": "block",
-     "Title": "무안국이 필사적으로 창을 휘두르다",
+     "Title": "방열의 창을 여포가 막다",
+     "Speech": "가볍구나.",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "방열이 거듭 찌르다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.05
     },
     {
-     "Kind": "yielding-block",
-     "Title": "여포의 화극에 무안국이 크게 밀리다",
-     "Speech": "으아악!",
+     "Kind": "block",
+     "Title": "여포의 화극을 방열이 간신히 막다",
+     "Speech": "크윽……!",
      "Side": 1,
-     "Duration": 1.2
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "방열이 질리다",
+     "Speech": "(이, 이자는……!)",
+     "Side": 0,
+     "Duration": 1.8
     },
     {
      "Kind": "critical",
-     "Title": "여포의 일격이 무안국의 팔을 베다",
-     "Speech": "여기까지다.",
+     "Title": "여포의 일격",
+     "Speech": "끝이다.",
      "Side": 1,
      "Duration": 1.3
     },
     {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "아직도 서 있다니… 질긴 놈이군.",
+     "Kind": "win",
+     "Title": "여포가 방열을 베다",
+     "Speech": "공에 눈먼 놈들뿐이로군.",
      "Side": 1,
-     "Duration": 2.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "(팔이… 도저히 당해낼 수 없구나!)",
-     "Side": 0,
      "Duration": 2.4
-    },
-    {
-     "Kind": "retreat",
-     "Title": "직선으로 달아나 아군 대열 속으로 사라지다",
-     "Speech": "물러나라!",
-     "Side": 0,
-     "Duration": 3.0
-    },
-    {
-     "Kind": "talk",
-     "Title": "대사",
-     "Speech": "쫓을 가치도 없군!",
-     "Side": 1,
-     "Duration": 1.6
-    },
-    {
-     "Kind": "withdrawn",
-     "Title": "무안국이 대열 속으로 사라지다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.1
     }
    ]
   }
@@ -1430,7 +1375,7 @@
        "Facing": "NE"
       },
       {
-       "Character": "wuanguo",
+       "Character": "fangyue",
        "X": 12,
        "Y": 4,
        "AI": true,
@@ -1505,8 +1450,8 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "wuanguo",
-       "Text": "샛길로 돌아 나왔다! 여포의 옆구리를 찔러라!"
+       "Actor": "fangyue",
+       "Text": "길은 이미 열렸다! 남은 건 여포 하나다!"
       },
       {
        "Actor": "mushun",
@@ -1561,7 +1506,8 @@
     {
      "Kind": "ai",
      "Targets": [
-      "lubu"
+      "lubu",
+      "zhangliao"
      ],
      "Policy": "assault"
     }
@@ -1570,7 +1516,7 @@
   {
    "ID": "brothers-challenge",
    "If": [
-    "any:[duel:hulao-mushun, duel:hulao-wuanguo]"
+    "any:[duel:hulao-mushun, duel:hulao-fangyue]"
    ],
    "Do": [
     {
@@ -1578,15 +1524,24 @@
      "Lines": [
       {
        "Actor": "liubei",
-       "Text": "여포……. 역시 강하군."
+       "Text": "공을 다투다 목숨부터 잃는구나……."
       },
       {
        "Actor": "zhangfei",
-       "Text": "형님, 걱정 마슈! 저 세 성 가진 종놈의 목은 이 장비가 따 오리다!"
+       "Text": "형, 이제 지 차례유. 저놈 콧대는 지가 꺾어 놓을 테니께."
       },
       {
        "Actor": "guanyu",
-       "Text": "익덕, 혼자 공을 세우려 들지 마라. 관운장의 청룡도도 녹슬지 않았다."
+       "Text": "익덕, 서두르지 마라. 저자는 혼자 상대할 자가 아니다."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "운장, 익덕. 셋이 함께 가세."
       }
      ]
     }

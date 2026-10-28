@@ -170,10 +170,14 @@ func (e *Engine) duelAlly(d content.Duel) *Unit {
 }
 
 // autoDuels holds every pending stage duel whose enemy stands next to its ally or one of its
-// supports. It runs at each settle(), so a duel starts as soon as they meet, whatever brought them
-// together (a move, a spawn, the start of the battle). One duel can change who stands where, so the stage's duels
-// are looked at again after each.
+// supports. It runs at each settle() but waits while the unit that took the command is still in
+// the middle of its turn: a move is not a meeting until the action that follows it (wait, attack,
+// skill, item) has been carried out. Spawns and the start of the battle set duels off at once.
+// One duel can change who stands where, so the stage's duels are looked at again after each.
 func (e *Engine) autoDuels() {
+	if m := e.unit(e.lastActor); m != nil && m.HP > 0 && !m.Done {
+		return
+	}
 	duels := e.data.Stages[e.state.Stage].Duels
 	for again := true; again; {
 		again = false
@@ -197,13 +201,11 @@ func (e *Engine) autoDuels() {
 }
 
 // duel resolves a stage duel between the two officers. The event names the ally first and
-// the one who moved to meet the other (if the command was one of theirs) as First; that
-// officer's action for the turn ends.
+// the one who moved to meet the other (if the command was one of theirs) as First.
 func (e *Engine) duel(ally, enemy *Unit, d content.Duel) {
 	first := ""
-	var mover *Unit
 	if m := e.unit(e.lastActor); m == ally || m == enemy || m != nil && slices.Contains(d.Supports, m.Character) {
-		mover, first = m, m.ID
+		first = m.ID
 	}
 	e.state.Executed["duel-"+d.ID] = true
 	e.events = append(e.events, Event{Kind: "duel", DuelID: d.ID, Outcome: d.Outcome, Actor: ally.ID, Target: enemy.ID, First: first, Text: d.Text + " [" + d.Outcome + "]"})
@@ -233,9 +235,6 @@ func (e *Engine) duel(ally, enemy *Unit, d content.Duel) {
 	}
 	if enemy.HP == 0 && ally.HP > 0 {
 		e.retreatSweep(ally, enemy, false)
-	}
-	if mover != nil {
-		mover.Moved, mover.Acted, mover.Attacked, mover.Done = true, true, true, true
 	}
 	if ally.HP > 0 && !ally.AI {
 		e.xp(ally.Character, XPPerLevel)

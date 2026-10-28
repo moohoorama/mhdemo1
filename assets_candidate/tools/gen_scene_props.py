@@ -204,7 +204,9 @@ def incense():
     d.ellipse([6, 12, 17, 16], fill=(90, 70, 40, 255), outline=OL)
     d.rectangle([2, 14, 4, 17], fill=(176, 130, 50, 255), outline=OL)
     d.rectangle([19, 14, 21, 17], fill=(176, 130, 50, 255), outline=OL)
-    d.line([(11, 10), (11, 3)], fill=(200, 200, 205, 200))
+    for x, top in ((10, 9), (12, 7), (14, 9)):  # three sticks; their smoke rises in the "incense" anim
+        d.line([(x, 11), (x, top + 1)], fill=(122, 50, 34, 255))
+        im.putpixel((x, top), (255, 176, 80, 255))
     return im, (12, 26)
 
 

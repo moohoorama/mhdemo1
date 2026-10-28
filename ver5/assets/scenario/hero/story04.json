@@ -1,0 +1,125 @@
+{
+ "Nodes": [
+  {
+   "ID": "c04-start",
+   "Kind": "scene",
+   "Place": "단양 · 고순의 마을"
+  },
+  {
+   "ID": "c04-a1",
+   "Kind": "narrate",
+   "Text": "마을 사람들이 고순 곁에 모인다. 유비가 고순에게 다가간다."
+  },
+  {
+   "ID": "c04-a2",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "마을에 크게 다치신 분은 없는 것 같아 다행이외다. 소인은 유비, 자는 현덕이라 합니다."
+  },
+  {
+   "ID": "c04-a3",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "장군의 이름은 어떻게 되십니까?"
+  },
+  {
+   "ID": "c04-a4",
+   "Kind": "say",
+   "Speaker": "gaoshun",
+   "Text": "고순이오."
+  },
+  {
+   "ID": "c04-a5",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "(작게) 저 양반은 둘째 형보다 말이 더 없네유."
+  },
+  {
+   "ID": "c04-a6",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "……."
+  },
+  {
+   "ID": "c04-a8",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "단양 사람 도겸, 자는 공조일세. 서주의 난을 수습하던 차에 고향이 도적에게 짓밟힌다는 말을 들었네."
+  },
+  {
+   "ID": "c04-a9",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "수습되자마자 달려왔는데, 그대가 아니었으면 늦을 뻔했어."
+  },
+  {
+   "ID": "c04-a10",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "탁군 탁현 사람 유비, 자는 현덕입니다. 대장군부의 명으로 왔습니다."
+  },
+  {
+   "ID": "c04-a11",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "(마을을 둘러보며) 다친 사람이 없어 다행이나, 집은 부서지고 곡식은 다 털렸구먼. 이래서야 겨울을 나겠나."
+  },
+  {
+   "ID": "c04-a12",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "고순이라 했나. 같은 단양 물 마시고 자란 사람끼리 어찌 모른 척하겠나."
+  },
+  {
+   "ID": "c04-a13",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "마을 사람들과 함께 서주로 오게. 내가 살 곳을 마련하겠네."
+  },
+  {
+   "ID": "c04-a14",
+   "Kind": "say",
+   "Speaker": "gaoshun",
+   "Text": "……감사합니다."
+  },
+  {
+   "ID": "c04-a15",
+   "Kind": "narrate",
+   "Text": "유비는 낙양으로, 도겸과 고순은 서주로 가야 한다. 낙양 가는 길에 서주가 있으니 함께 길을 나선다."
+  },
+  {
+   "ID": "c04-peng",
+   "Kind": "scene",
+   "Place": "팽성 · 성문 앞"
+  },
+  {
+   "ID": "c04-b1",
+   "Kind": "narrate",
+   "Text": "팽성에 닿는다. 마을 사람들이 성으로 들어가고, 유비가 도겸에게 작별을 고하려 한다."
+  },
+  {
+   "ID": "c04-b2",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "급보입니다! 북쪽에서 오랑캐 기병을 앞세운 도적 떼가 팽성으로 내려오고 있습니다!"
+  },
+  {
+   "ID": "c04-b3",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "장순의 무리로구나……. 현덕, 갈 길이 바쁜 줄 아네만……."
+  },
+  {
+   "ID": "c04-b4",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "여기까지 함께 왔는데 등을 돌릴 수는 없지요. 운장, 익덕. 채비하게."
+  },
+  {
+   "ID": "c04-battle",
+   "Kind": "battle",
+   "Stage": "B04",
+   "Text": "팽성 — 출전 준비"
+  }
+ ]
+}

@@ -48,7 +48,7 @@ func TestCoalitionArrivalAndControl(t *testing.T) {
 		if u.AI {
 			aiCount++
 			assert.Equal(t, "ally", u.Faction)
-			assert.Equal(t, map[bool]int{true: 11, false: 9}[!e.data.Characters[u.Def].Template], u.Level, "allied officers over the policy level 9 by their rank lead, their soldiers at it")
+			assert.Equal(t, map[bool]int{true: 15, false: 13}[!e.data.Characters[u.Def].Template], u.Level, "allied officers over the policy level 13 by their rank lead, their soldiers at it")
 		}
 	}
 	assert.Equal(t, 8, aiCount)
@@ -82,7 +82,7 @@ func TestCoalitionArrivalAndControl(t *testing.T) {
 	assert.Equal(t, 20, e.unit("lubu").Status["defense"].Value)
 }
 func TestCoalitionDuelsAndSimultaneousResponse(t *testing.T) {
-	for _, id := range []string{"mushun", "wuanguo"} {
+	for _, id := range []string{"mushun", "fangyue"} {
 		t.Run(id, func(t *testing.T) {
 			e := hulaoBattle(t)
 			summonCoalition(t, e)
@@ -92,7 +92,7 @@ func TestCoalitionDuelsAndSimultaneousResponse(t *testing.T) {
 			u.X, u.Y = boss.X-1, boss.Y
 			r := apply(t, e, Command{Kind: "wait", Actor: id}) // standing next to the partner starts the duel
 			assert.Zero(t, e.unit(id).HP)
-			assert.Equal(t, id != "wuanguo", e.char(id).Dead)
+			assert.True(t, e.char(id).Dead)
 			assert.Positive(t, e.unit("lubu").HP)
 			duels, talks := 0, []Event{}
 			for _, v := range r.Events {
@@ -105,11 +105,13 @@ func TestCoalitionDuelsAndSimultaneousResponse(t *testing.T) {
 				}
 			}
 			assert.Equal(t, 1, duels)
-			require.Len(t, talks, 1)
+			require.Len(t, talks, 2)
 			require.Len(t, talks[0].Speech, 3)
 			assert.Equal(t, "liubei", talks[0].Speech[0].Actor)
 			assert.Equal(t, "zhangfei", talks[0].Speech[1].Actor)
 			assert.Equal(t, "guanyu", talks[0].Speech[2].Actor)
+			require.Len(t, talks[1].Speech, 1)
+			assert.Equal(t, "liubei", talks[1].Speech[0].Actor)
 			e.events = nil
 			e.battleEvents()
 			assert.Empty(t, e.events)

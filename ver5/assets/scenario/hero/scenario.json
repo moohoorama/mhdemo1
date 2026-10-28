@@ -15,6 +15,14 @@
   "liquor": 8
  },
  "Money": 1000,
+ "Loadout": {
+  "guanyu": [
+   "qinglong_blade"
+  ],
+  "zhangfei": [
+   "serpent_spear"
+  ]
+ },
  "Chapters": [
   {
    "ID": "01",
@@ -27,6 +35,10 @@
   {
    "ID": "03",
    "File": "story03.json"
+  },
+  {
+   "ID": "04",
+   "File": "story04.json"
   },
   {
    "ID": "05",

@@ -1,0 +1,815 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "mansion",
+  "At": [
+   8,
+   8
+  ],
+  "Face": "NE"
+ },
+ "Areas": {
+  "mansion": {
+   "Map": "S_mansion2",
+   "Name": "낙양 · 조조의 저택",
+   "Times": [
+    {
+     "If": [
+      "flag:c03-rumor"
+     ],
+     "Time": "night"
+    }
+   ],
+   "Zoom": 3,
+   "At": [
+    8,
+    8
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      15,
+      9
+     ],
+     "To": "street",
+     "If": [
+      "flag:c03-in"
+     ]
+    }
+   ],
+   "People": {
+    "조조@in": {
+     "At": [
+      8,
+      4
+     ],
+     "Face": "SW",
+     "If": [
+      "!flag:c03-in"
+     ]
+    },
+    "조조@night": {
+     "At": [
+      8,
+      4
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:c03-rumor",
+      "!flag:c03-orders"
+     ],
+     "Event": [
+      {
+       "Node": "c03-e-night"
+      }
+     ]
+    },
+    "조조@after": {
+     "At": [
+      8,
+      4
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:c03-orders"
+     ],
+     "Talk": [
+      [
+       "caocao",
+       "단양은 멀다 하오. 몸조심하시오, 현덕."
+      ]
+     ]
+    },
+    "하인": {
+     "At": [
+      4,
+      7
+     ],
+     "Face": "NE",
+     "Talk": [
+      [
+       "servant",
+       "주인 나리는 새벽에 나가셔서 밤에야 들어오십니다."
+      ],
+      [
+       "servant",
+       "손님들 불편함 없게 모시라 하셨습니다."
+      ]
+     ]
+    },
+    "관우@mansion": {
+     "At": [
+      11,
+      8
+     ],
+     "Face": "NW",
+     "If": [
+      "flag:c03-rumor"
+     ],
+     "Talk": [
+      [
+       "guanyu",
+       "형님, 조 공께서 기다리고 계십니다."
+      ]
+     ],
+     "Sortie": {
+      "If": [
+       "flag:c03-orders"
+      ],
+      "Ask": "형님, 단양으로 떠날 채비가 끝났습니다. 출진하시겠습니까?"
+     }
+    },
+    "장비@mansion": {
+     "At": [
+      5,
+      8
+     ],
+     "Face": "NE",
+     "If": [
+      "flag:c03-rumor"
+     ],
+     "Talk": [
+      [
+       "zhangfei",
+       "이 집 술은 낙양 술집보다 맛나겄쥬?"
+      ]
+     ]
+    }
+   }
+  },
+  "street": {
+   "Map": "S_luoyang",
+   "Name": "낙양 · 저잣거리",
+   "Times": [
+    {
+     "If": [
+      "flag:c03-rumor"
+     ],
+     "Time": "night"
+    }
+   ],
+   "At": [
+    28,
+    10
+   ],
+   "Exits": [
+    {
+     "Name": "저택",
+     "At": [
+      14,
+      16
+     ],
+     "Object": [
+      14,
+      14
+     ],
+     "To": "mansion"
+    },
+    {
+     "Name": "도구점",
+     "At": [
+      37,
+      24
+     ],
+     "Object": [
+      37,
+      22
+     ],
+     "To": "tools"
+    },
+    {
+     "Name": "술집",
+     "At": [
+      21,
+      24
+     ],
+     "Object": [
+      21,
+      22
+     ],
+     "To": "tavern"
+    }
+   ],
+   "People": {
+    "상인": {
+     "At": [
+      44,
+      33
+     ],
+     "Face": "NE",
+     "Talk": [
+      [
+       "상인",
+       "천하 물건이 다 낙양으로 모인다오. 값도 천하에서 제일이고."
+      ]
+     ],
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Chatter": "골라 보시오|싸오, 싸!"
+    },
+    "아낙": {
+     "At": [
+      42,
+      36
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "아낙",
+       "황건 한패가 낙양에도 숨어 있었대요. 잡혀서 수레에 사지가 찢겼다지 뭐예요."
+      ]
+     ],
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c03-rumor"
+     ]
+    },
+    "노인": {
+     "At": [
+      12,
+      33
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "노인",
+       "궁궐을 고친다고 밭 한 마지기에 열 전씩 또 거둬 갔소. 작년에 고친 데를 또 고친다나."
+      ]
+     ],
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c03-rumor"
+     ]
+    },
+    "관병": {
+     "At": [
+      26,
+      6
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "han",
+     "Talk": [
+      [
+       "관병",
+       "여기서부터는 궁성이오. 물러서시오."
+      ]
+     ]
+    },
+    "관병#2": {
+     "At": [
+      31,
+      6
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    },
+    "장사꾼#1": {
+     "At": [
+      36,
+      33
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Chatter": "비단 들여가시오|웅성웅성"
+    },
+    "장사꾼#2": {
+     "At": [
+      50,
+      36
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Chatter": "햅쌀이오|웅성웅성"
+    },
+    "손님#1": {
+     "At": [
+      46,
+      34
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Move": {
+      "Wander": 3
+     }
+    },
+    "손님#2": {
+     "At": [
+      39,
+      34
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Move": {
+      "Wander": 2
+     }
+    },
+    "손님#3": {
+     "At": [
+      53,
+      34
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Move": {
+      "Wander": 3
+     }
+    },
+    "행인#1": {
+     "At": [
+      27,
+      16
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Move": {
+      "Patrol": [
+       [
+        27,
+        16
+       ],
+       [
+        27,
+        44
+       ]
+      ]
+     }
+    },
+    "행인#2": {
+     "At": [
+      30,
+      40
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_oldwoman",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Move": {
+      "Patrol": [
+       [
+        30,
+        40
+       ],
+       [
+        30,
+        12
+       ]
+      ]
+     }
+    },
+    "행인#3": {
+     "At": [
+      10,
+      25
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Move": {
+      "Patrol": [
+       [
+        10,
+        25
+       ],
+       [
+        50,
+        25
+       ]
+      ]
+     }
+    },
+    "선비#1": {
+     "At": [
+      28,
+      13
+     ],
+     "Face": "SE",
+     "Sprite": "official_green_noncombat",
+     "Faction": "han",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Move": {
+      "Wander": 3
+     }
+    },
+    "선비#2": {
+     "At": [
+      36,
+      16
+     ],
+     "Face": "NW",
+     "Sprite": "official_blue_noncombat",
+     "Faction": "han",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Chatter": "수군수군"
+    },
+    "수레꾼#1": {
+     "At": [
+      52,
+      28
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Play": "action"
+    },
+    "아낙#2": {
+     "At": [
+      15,
+      36
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Move": {
+      "Wander": 2
+     }
+    },
+    "순라군#1": {
+     "At": [
+      28,
+      12
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "han",
+     "If": [
+      "flag:c03-rumor"
+     ],
+     "Move": {
+      "Patrol": [
+       [
+        28,
+        12
+       ],
+       [
+        28,
+        44
+       ]
+      ]
+     }
+    },
+    "순라군#2": {
+     "At": [
+      6,
+      26
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "han",
+     "If": [
+      "flag:c03-rumor"
+     ],
+     "Move": {
+      "Patrol": [
+       [
+        6,
+        26
+       ],
+       [
+        52,
+        26
+       ]
+      ]
+     }
+    }
+   },
+   "Signs": [
+    {
+     "Name": "방문",
+     "At": [
+      35,
+      16
+     ],
+     "Talk": [
+      [
+       "",
+       "황건을 칠 인재를 천거하라는 조서가 붙어 있다."
+      ]
+     ]
+    }
+   ]
+  },
+  "tools": {
+   "Map": "S_tool_shop2",
+   "Name": "낙양 · 도구점",
+   "Zoom": 3,
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "street"
+    }
+   ],
+   "People": {
+    "상인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Shop": "luoyang",
+     "Talk": [
+      [
+       "상인",
+       "콩·보리에 술까지, 싸움 나가는 분들 쓸 건 다 있소."
+      ]
+     ],
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    }
+   }
+  },
+  "tavern": {
+   "Map": "S_tavern2",
+   "Name": "낙양 · 술집",
+   "Zoom": 3,
+   "Time": "dusk",
+   "Times": [
+    {
+     "If": [
+      "flag:c03-rumor"
+     ],
+     "Time": "night"
+    }
+   ],
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "street"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Shop": "tavern",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant"
+    },
+    "술손님": {
+     "At": [
+      2,
+      8
+     ],
+     "Face": "SE",
+     "Pose": "sit",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Event": [
+      {
+       "Node": "c03-e-rumor"
+      }
+     ]
+    },
+    "옆자리 손님": {
+     "At": [
+      4,
+      8
+     ],
+     "Face": "NW",
+     "Pose": "sit",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Event": [
+      {
+       "Node": "c03-e-rumor"
+      }
+     ]
+    },
+    "술손님@after": {
+     "At": [
+      2,
+      8
+     ],
+     "Face": "SE",
+     "Pose": "sit",
+     "If": [
+      "flag:c03-rumor"
+     ],
+     "Talk": [
+      [
+       "guest_a",
+       "대장군이 언제 칼을 뽑을지, 다들 그것만 본다네."
+      ]
+     ]
+    },
+    "옆자리 손님@after": {
+     "At": [
+      4,
+      8
+     ],
+     "Face": "NW",
+     "Pose": "sit",
+     "If": [
+      "flag:c03-rumor"
+     ],
+     "Talk": [
+      [
+       "guest_b",
+       "쉿, 목소리 낮추게. 벽에도 귀가 있다네."
+      ]
+     ]
+    },
+    "관우@tavern": {
+     "At": [
+      1,
+      3
+     ],
+     "Face": "SE",
+     "Pose": "sit",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Event": [
+      {
+       "Node": "c03-e-rumor"
+      }
+     ]
+    },
+    "장비@tavern": {
+     "At": [
+      3,
+      3
+     ],
+     "Face": "NW",
+     "Pose": "sit",
+     "If": [
+      "!flag:c03-rumor"
+     ],
+     "Talk": [
+      [
+       "zhangfei",
+       "여긴 고깃값이 탁현 세 배유. 지는 장사를 여기서 했어야 혔는디."
+      ]
+     ]
+    },
+    "늙은 장사치": {
+     "At": [
+      10,
+      7
+     ],
+     "Face": "SW",
+     "Pose": "sit",
+     "Talk": [
+      [
+       "늙은 장사치",
+       "벼슬에도 값이 있다더군. 현령 자리가 얼마, 태수 자리가 얼마."
+      ],
+      [
+       "늙은 장사치",
+       "돈이 모자라면 반값만 내고 먼저 앉았다가 나중에 갑절로 갚는다나."
+      ]
+     ],
+     "Sprite": "commoner_elder",
+     "Faction": "merchant"
+    },
+    "젊은 선비": {
+     "At": [
+      7,
+      9
+     ],
+     "Face": "SE",
+     "Pose": "sit",
+     "Talk": [
+      [
+       "젊은 선비",
+       "조조가 영천에서 돌아왔다며? 그 사람, 낙양 북부위 할 적에 문에 오색 몽둥이를 걸어 두고,"
+      ],
+      [
+       "젊은 선비",
+       "밤에 통금을 어긴 환관 건석의 숙부를 그 몽둥이로 때려죽였잖나."
+      ],
+      [
+       "짐꾼",
+       "간도 크지. 그런데 그 집안도 환관 집안이라며? 할아버지가 환관이었다던데. 한통속 아니오?"
+      ],
+      [
+       "젊은 선비",
+       "그러니 다들 헷갈려하지. 환관 손자가 환관 친척을 팼으니, 환관들은 미워하고 선비들은 못 믿고."
+      ],
+      [
+       "zhangfei",
+       "환관 손자든 뭐든, 처음 보는 우리헌테 집 내준 양반이유."
+      ],
+      [
+       "guanyu",
+       "사람은 집안으로 재는 것이 아니다."
+      ]
+     ],
+     "Sprite": "official_green_noncombat",
+     "Faction": "han"
+    },
+    "짐꾼": {
+     "At": [
+      8,
+      10
+     ],
+     "Face": "NW",
+     "Pose": "sit",
+     "Talk": [
+      [
+       "짐꾼",
+       "조조 이야기라면 저 선비 양반한테 물어보시오. 아까부터 그 얘기뿐이오."
+      ]
+     ],
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    },
+    "노인 손님": {
+     "At": [
+      6,
+      5
+     ],
+     "Face": "SE",
+     "Pose": "sit",
+     "Talk": [
+      [
+       "노인 손님",
+       "조조 말이오? 어릴 적엔 매사냥이나 다니던 망나니였다더군."
+      ],
+      [
+       "노인 손님",
+       "숙부가 아비한테 일러바치니까, 숙부 앞에서 입이 돌아간 척 쓰러졌다지."
+      ],
+      [
+       "노인 손님",
+       "그 뒤로 숙부 말은 아무도 안 믿었고. 꾀 하나는 타고났다는 게야."
+      ],
+      [
+       "노인 손님",
+       "허자장이란 양반이 그 사람을 두고 뭐라 평했는데……. 에잉, 술이 들어가니 기억이 안 나는구먼."
+      ]
+     ],
+     "Sprite": "commoner_elder",
+     "Faction": "merchant"
+    }
+   }
+  }
+ }
+}

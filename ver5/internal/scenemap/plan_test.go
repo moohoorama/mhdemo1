@@ -178,3 +178,52 @@ func TestWalkable(t *testing.T) {
 		})
 	}
 }
+
+// Within the walls of Zhuo the hero reaches the open gate but not the grass outside it.
+func TestWalkWithin(t *testing.T) {
+	m, c := load(t, "S_zhuo2")
+	w := Walkable(m, c)
+	require.True(t, w.Open(-3, 11), "the gate leads out before Within")
+	w.Within(7, 11)
+	for _, tc := range []struct {
+		name string
+		u, v int
+		open bool
+	}{
+		{"the street", 7, 11, true},
+		{"the gate's passage", -1, 11, true},
+		{"the grass outside the gate", -2, 11, false},
+		{"the grass outside the north wall", 10, -5, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			assert.Equal(t, tc.open, w.Open(tc.u, tc.v))
+		})
+	}
+}
+
+// A light-giving object carries its flames and light wherever it stands: on the raised cliff top they rise with it.
+func TestAttachments(t *testing.T) {
+	_, c := load(t, "S_cliff_camp")
+	for _, h := range []int{0, 2} {
+		height := []string{strings.Repeat(string(rune('0'+h)), 4)}
+		m := &Map{ID: "t", Format: 2, Ground: []string{"...."}, Height: height, Objects: []Object{{Name: "campfire", U: 1}}}
+		p, err := Build(m, c, Options{})
+		require.NoError(t, err)
+		var fire Piece
+		for _, piece := range p.Solid {
+			if piece.Name == "campfire" {
+				fire = piece
+			}
+		}
+		lift := float64(c.Rules.Heights["2"].Lift) * float64(h/2)
+		x, y := 16*(1.5-.5), 8*(1.5+.5)-lift
+		assert.Equal(t, [2]float64{x, y}, fire.Anchor)
+		require.Len(t, fire.Draws, 3, "the logs and two flames")
+		flame := c.Anims["flame_small"]
+		a := c.Rules.Attachments["campfire"][0]
+		assert.Equal(t, Draw{Kind: DrawAnim, Name: "flame_small", X: round(x + float64(a.At[0]-flame.Pivot[0])), Y: round(y + float64(a.At[1]-flame.Pivot[1]))}, fire.Draws[1])
+		require.Len(t, fire.Lights, 1)
+		assert.Equal(t, y-6, fire.Lights[0].Y)
+		assert.True(t, fire.Lights[0].Glow)
+	}
+}

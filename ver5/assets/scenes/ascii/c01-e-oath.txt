@@ -1,0 +1,23 @@
+# c01-e-oath  S_peach_grove2  ch01  origin 0 0
+Tre......Tre...Tre......Tre...
+..............................
+Tre........................Tre
+..................Jar.........
+......Tre......Tbl............
+..............................
+...Tre.....................Tre
+..............................
+
+Liu 유비  (stands where the walk left them)
+Gua 관우  (stands where the walk left them)
+Zha 장비  (stands where the walk left them)
+
+# c01-o1: Liu -> 3.75 3.75
+# c01-o1: Gua -> 4.75 2.75
+# c01-o1: Zha -> 5.75 3.75
+# c01-o12: Liu -> 3.75 3.25
+# c01-o12: Gua -> 4.75 2.25
+# c01-o12: Zha -> 5.25 3.25
+# c01-o12: Gua -> 2.75 2.25
+# c01-o12: Zha -> 4.75 3.25
+# c01-o12: Gua -> 2.75 3.25

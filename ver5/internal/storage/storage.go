@@ -25,16 +25,17 @@ func IsManualSlot(slot string) bool {
 }
 
 type Settings struct {
-	AI          string `json:"ai"`
+	Replay      string `json:"replay"` // how an AI army's turn plays: "together" or "one" action at a time
 	Color       bool   `json:"color"`
 	Detail      bool   `json:"detail"`
-	TextDelayMS int    `json:"text_delay_ms"`          // the CLI's pause after each letter
-	InstantText bool   `json:"instant_text,omitempty"` // the GUI shows lines whole instead of letter by letter
-	UIScale     int    `json:"ui_scale,omitempty"`     // percent; 0 is the platform default
-	DamagePct   int    `json:"damage_pct,omitempty"`   // damage dealt in percent; 0 is DefaultScalePct
-	XPPct       int    `json:"xp_pct,omitempty"`       // experience gained in percent; 0 is DefaultScalePct
-	CounterAll  bool   `json:"counter_all"`            // every unit strikes back at half damage; on until the player turns it off
-	NoGuide     bool   `json:"no_guide,omitempty"`     // the walk does not mark where the story goes on
+	TextDelayMS int    `json:"text_delay_ms"`           // the CLI's pause after each letter
+	InstantText bool   `json:"instant_text,omitempty"`  // the GUI shows lines whole instead of letter by letter
+	AutoText    bool   `json:"auto_text,omitempty"`     // the GUI turns to the next line on its own a while after one is out
+	UIScale     int    `json:"ui_scale,omitempty"`      // percent; 0 is the platform default
+	DamagePct   int    `json:"damage_pct,omitempty"`    // damage dealt in percent; 0 is DefaultScalePct
+	XPPct       int    `json:"xp_pct,omitempty"`        // experience gained in percent; 0 is DefaultScalePct
+	NoGuide     bool   `json:"no_guide,omitempty"`      // the walk does not mark where the story goes on
+	NoGoalGuide bool   `json:"no_goal_guide,omitempty"` // the battle does not outline what it is won and lost by
 }
 
 // ScalePcts are the percents the player may choose for the damage and experience scales.
@@ -59,9 +60,9 @@ func (s Settings) XPScale() int {
 	return s.XPPct
 }
 
-func DefaultSettings() Settings { return Settings{AI: "auto", Detail: true, CounterAll: true} }
+func DefaultSettings() Settings { return Settings{Replay: "together", Detail: true} }
 func (s Settings) Validate() error {
-	if s.AI != "auto" && s.AI != "step" || s.TextDelayMS < 0 || s.TextDelayMS > 1000 || s.UIScale != 0 && (s.UIScale < 80 || s.UIScale > 160) || s.DamagePct != 0 && !slices.Contains(ScalePcts, s.DamagePct) || s.XPPct != 0 && !slices.Contains(ScalePcts, s.XPPct) {
+	if s.Replay != "together" && s.Replay != "one" || s.TextDelayMS < 0 || s.TextDelayMS > 1000 || s.UIScale != 0 && (s.UIScale < 80 || s.UIScale > 160) || s.DamagePct != 0 && !slices.Contains(ScalePcts, s.DamagePct) || s.XPPct != 0 && !slices.Contains(ScalePcts, s.XPPct) {
 		return fmt.Errorf("InvalidSettings")
 	}
 	return nil

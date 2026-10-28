@@ -29,14 +29,14 @@ func TestEndPromptWaitsForLevelUpAndLearning(t *testing.T) {
 	g.modals = []*modal{{kind: "levelup"}, {kind: "levelup"}}
 	for i := 0; i < 2; i++ {
 		g.offerEnd(g.S.Engine.Observe())
-		assert.Empty(t, g.overlay)
+		assert.Empty(t, g.overlays)
 		assert.Empty(t, g.endAsked)
 		assert.False(t, g.openOverlay("menu"))
 		g.closeModal()
 	}
 	// Check authoritative engine learning even before the cached UI list refreshes.
 	g.offerEnd(g.S.Engine.Observe())
-	assert.Empty(t, g.overlay)
+	assert.Empty(t, g.overlays)
 	assert.Empty(t, g.endAsked)
 	assert.False(t, g.askWith("blocked", "yes", "no", nil))
 	before := g.S.Engine.Observe()
@@ -45,10 +45,10 @@ func TestEndPromptWaitsForLevelUpAndLearning(t *testing.T) {
 	_, err = g.S.Engine.Apply(core.Command{Kind: "learn_close", Actor: "hero"})
 	require.NoError(t, err)
 	g.offerEnd(g.S.Engine.Observe())
-	require.Equal(t, "confirm", g.overlay)
+	require.Equal(t, "confirm", g.overlay())
 	require.NotEmpty(t, g.endAsked)
 	require.NotNil(t, g.answer)
-	g.overlay = ""
+	g.closeOverlay()
 	g.answer()
 	assert.Equal(t, "enemy", g.S.Engine.Observe().Turn)
 }
@@ -62,8 +62,35 @@ func TestEndPromptDeclineIsOncePerTurn(t *testing.T) {
 		}
 	}
 	g.offerEnd(o)
-	require.Equal(t, "confirm", g.overlay)
-	g.overlay = ""
+	require.Equal(t, "confirm", g.overlay())
+	g.closeOverlay()
 	g.offerEnd(o)
-	assert.Empty(t, g.overlay)
+	assert.Empty(t, g.overlays)
+}
+
+func TestOverlayClosesBackToTheOneBeneath(t *testing.T) {
+	g := battleController(t)
+	require.True(t, g.openOverlay("party"))
+	require.True(t, g.openOverlay("equipment"))
+	assert.Equal(t, "equipment", g.overlay())
+
+	t.Run("close returns to the window beneath", func(t *testing.T) {
+		g.closeOverlay()
+		assert.Equal(t, "party", g.overlay())
+	})
+	t.Run("escape and right click close one at a time", func(t *testing.T) {
+		require.True(t, g.openOverlay("deputy"))
+		g.rightClick()
+		assert.Equal(t, "party", g.overlay())
+		g.rightClick()
+		assert.Empty(t, g.overlays)
+	})
+	t.Run("a confirmation answered returns to its window", func(t *testing.T) {
+		require.True(t, g.openOverlay("menu"))
+		require.True(t, g.askWith("?", "예", "아니오", func() {}))
+		g.closeOverlay()
+		assert.Equal(t, "menu", g.overlay())
+		g.closeOverlays()
+		assert.Empty(t, g.overlays)
+	})
 }

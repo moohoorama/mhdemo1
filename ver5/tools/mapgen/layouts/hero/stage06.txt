@@ -1,7 +1,7 @@
 # B06  stage06.json  map06.json  origin 0 0
 ^^^^^^^^^^^^^^^___^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ^^^^^^#########PAS#########^^^^^^^^^^^^^^^^^^
-^^^............Lub............^^^^^^^^^^^^^^^
+^^^.........ZhaLub............^^^^^^^^^^^^^^^
 ^^^...CMP......,,,...TRECMP...,,,...,,,...^^^
 ^^^TRE.........,,,............,,,...,,,...^^^
 ^^^...........................,,,...,,,...^^^
@@ -33,12 +33,13 @@ pl4 Allies[3]  player
 pl5 Allies[4]  player
 pl6 Allies[5]  player
 pl7 Allies[6]  player
-Lub Enemies[0]  lubu, enemy, policy hold, rank boss
-fo1 Enemies[1]  troop_footman, enemy, group vanguard, policy react
-fo2 Enemies[2]  troop_footman, enemy, group vanguard, policy react
-Lij Enemies[3]  lijue, enemy, group center, policy react
-fo3 Enemies[4]  troop_footman, enemy, group center, policy react
-Lir Enemies[5]  liru, enemy, group rear, policy hold
-ar1 Enemies[6]  troop_archer, enemy, group rear, policy hold
-ar2 Enemies[7]  troop_archer, enemy, group rear, policy hold
-fo4 Enemies[8]  troop_footman, enemy, group rear, policy hold
+Lub Enemies[0]  lubu, enemy, policy hold, rank commander
+Zha Enemies[1]  zhangliao, enemy, policy hold, rank officer
+fo1 Enemies[2]  troop_footman, enemy, group vanguard, policy react
+fo2 Enemies[3]  troop_footman, enemy, group vanguard, policy react
+Lij Enemies[4]  lijue, enemy, group center, policy react
+fo3 Enemies[5]  troop_footman, enemy, group center, policy react
+Lir Enemies[6]  liru, enemy, group rear, policy hold
+ar1 Enemies[7]  troop_archer, enemy, group rear, policy hold
+ar2 Enemies[8]  troop_archer, enemy, group rear, policy hold
+fo4 Enemies[9]  troop_footman, enemy, group rear, policy hold

@@ -38,8 +38,10 @@ func TestTopmostLayerThatSaysAValueWins(t *testing.T) {
 func TestStatesOverlayTheLayersBelow(t *testing.T) {
 	d := loadReal(t)
 	cav := d.Classes["light_cavalry"].Terrain
-	assert.Equal(t, Terrain{Factor: 0.8, Cost: 2}, d.Move(cav, cell("gte"), false), "embers: 80%, the tree's cost stays")
-	assert.Equal(t, Terrain{Factor: 0.8, Cost: 1}, d.Move(cav, cell("g-e"), false), "embers on grass")
+	assert.Equal(t, d.Move(cav, cell("gt-"), false), d.Move(cav, cell("gte"), false), "embers only burn: the tree's factor and cost stay")
+	assert.InDelta(t, 1.0, d.Move(cav, cell("g-w"), false).Factor, 1e-9, "wet grass: ten points off the grass's 110%")
+	assert.InDelta(t, 0.7, d.Move(cav, cell("gtw"), false).Factor, 1e-9, "and off the tree's 80%")
+	assert.Equal(t, Terrain{Factor: 1.1, Cost: 3}, d.Move(cav, cell("g-r"), false), "rubble: three steps, the grass's factor")
 	assert.Zero(t, d.Move(cav, cell("g-F"), false).Cost, "flames cannot be entered")
 	assert.Zero(t, d.Move(cav, cell("gvF"), false).Cost, "not even over a village")
 	assert.Equal(t, d.Move(cav, cell("gt-"), false), d.Move(cav, cell("gts"), false), "soot changes nothing")
@@ -49,7 +51,7 @@ func TestStatesOverlayTheLayersBelow(t *testing.T) {
 func TestRecoveryAndConditionsAcrossLayers(t *testing.T) {
 	d := loadReal(t)
 	assert.Equal(t, CellProps{RestHP: 10, RestMP: 2}, d.Props(cell("gv-")))
-	assert.Equal(t, CellProps{RestHP: -20, RestMP: 2}, d.Props(cell("gve")), "embers burn away a village's healing, its spell recovery stays")
+	assert.Equal(t, CellProps{RestHP: -10, RestMP: 2}, d.Props(cell("gve")), "embers burn away a village's healing, its spell recovery stays")
 	assert.Equal(t, CellProps{RestHP: 20, RestMP: 3, Castle: true}, d.Props(cell("ip-")))
 	assert.True(t, d.Props(cell("gt-")).Ambush)
 	assert.True(t, d.Props(cell("gtF")).Ambush, "an ambush is a condition: any layer may give it")

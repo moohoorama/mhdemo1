@@ -1,0 +1,37 @@
+# c04-start  S_danyang_village  ch04  origin 0 0
+...........................###..................
+...Hse............Hse......###..................
+...Jar.....................###~~~~~~Tre~~~Tre~~~
+.........Treco1Wel...Mat...###..................
+............el1Gao...Mat........................
+.........mn2mn1wm1wm2......###..................
+...Hse.........mn3...Sck...###..................
+...........................###..................
+..................Hse......###..................
+##############################..................
+....................................Bsh.........
+.........Tre......Tre...........................
+
+Gao 고순
+Liu 유비  (off stage, enters later (cell 18 4))
+Gua 관우  (off stage, enters later (cell 18 4))
+Zha 장비  (off stage, enters later (cell 18 4))
+Tao 도겸  (off stage, enters later (cell 18 4))
+in1 서주병#1  (light_infantry, off stage, enters later (cell 18 4))
+in2 서주병#2  (light_infantry, off stage, enters later (cell 18 4))
+in3 서주병#3  (light_infantry, off stage, enters later (cell 18 4))
+mn1 마을사람#1  (commoner_man)
+wm1 마을사람#2  (commoner_woman)
+el1 마을사람#3  (commoner_elder)
+co1 마을사람#4  (commoner_oldwoman)
+mn2 마을사람#5  (commoner_man)
+wm2 마을사람#6  (commoner_woman)
+mn3 마을사람#7  (commoner_man)
+
+# c04-a1: Liu -> 6 4
+# c04-a1: Gua -> 7 3
+# c04-a1: Zha -> 7 5
+# c04-a8: Tao -> 8 4
+# c04-a8: in1 -> 10 4
+# c04-a8: in2 -> 10 3
+# c04-a8: in3 -> 10 5

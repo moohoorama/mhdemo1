@@ -1,0 +1,25 @@
+# c03-e-flash  S_council  ch03  origin -1 -1
+Pil#################################Pil
+###...Brz...Bnrin3Wpn...Bnr...ArmBrz...
+###Bnr......Offof1...of2...of3of4......
+###Flg......TblTbl...Tbl...Tbl......gu1
+###CdlHejDsk...........................
+###Cdl.................................
+###Bnr......TblTbl...Tbl...Tbl......gu2
+###Wpn......Aidin1...in2...Cao.........
+Pil...Brz......in4...............Brz...
+
+Hej 하진  (sit)
+Off 관리  (official_noncombat, sit)
+of1 관리#1  (official_crimson_noncombat, sit)
+of2 관리#2  (official_purple_noncombat, sit)
+of3 관리#3  (official_blue_noncombat, sit)
+Aid 부장  (official_noncombat, sit)
+in1 무관#1  (infantry_noncombat, sit)
+in2 무관#2  (infantry_noncombat, sit)
+Cao 조조  (sit)
+in3 무관#3  (infantry_noncombat)
+in4 무관#4  (infantry_noncombat)
+gu1 호위#1  (guards)
+gu2 호위#2  (guards)
+of4 관리#4  (official_green_noncombat, sit)

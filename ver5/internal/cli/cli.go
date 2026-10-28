@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-const Help = "next | choose 선택ID | deploy 장수... | equip/unequip 장수 장비ID | start\nplace 장수 x y | unplace 장수 | deployment_finish\nmove 장수 x y | attack 장수 적ID | skill 장수 병법 대상 | item 장수 아이템 대상\ndeputy 주장 부관 | undeputy 주장\nlearn 장수 특성 | learn_close 장수 | wait 장수 | end | ai(적 한 명령) | auto(현재 진영)\nmap | status | legal [장수] | preview attack 장수 대상 | save/load 슬롯 | slots\nsettings [ai auto/step | color true/false | detail true/false | speed 밀리초]\nmenu | resume | title | retry | quit\nwalk 지역 u v 방향 | talk 사람 | sortie 사람 | buy/sell 사람 품목 개수"
+const Help = "next | choose 선택ID | deploy 장수... | equip/unequip 장수 장비ID | start\nplace 장수 x y | unplace 장수 | deployment_finish\nmove 장수 x y | attack 장수 적ID | skill 장수 병법 대상 | item 장수 아이템 대상\ndeputy 주장 부관 | undeputy 주장\nlearn 장수 특성 | learn_close 장수 | wait 장수 | end | ai(AI 한 명령) | auto(현재 진영)\nmap | status | legal [장수] | preview attack 장수 대상 | save/load 슬롯 | slots\nsettings [color true/false | detail true/false | speed 밀리초]\nmenu | resume | title | retry | quit\nwalk 지역 u v 방향 | talk 사람 | sortie 사람 | buy/sell 사람 품목 개수"
 
 func Parse(line string) (core.Command, error) {
 	p := strings.Fields(line)

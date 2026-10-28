@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestSupportPhaseIsAlwaysAutomaticAndRejectsPlayerCommands(t *testing.T) {
+func TestSupportPhaseRejectsPlayerCommands(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 	for _, n := range d.Nodes {
@@ -21,7 +21,6 @@ func TestSupportPhaseIsAlwaysAutomaticAndRejectsPlayerCommands(t *testing.T) {
 	require.NoError(t, err)
 	s.Engine = core.New(d, 17)
 	s.Screen = "playing"
-	s.Settings.AI = "step"
 	_, err = s.Engine.Apply(core.Command{Kind: "start"})
 	require.NoError(t, err)
 	plan, err := s.Engine.DeploymentPlan()
@@ -44,7 +43,6 @@ func TestSupportPhaseIsAlwaysAutomaticAndRejectsPlayerCommands(t *testing.T) {
 	require.NoError(t, err)
 	s.Engine.SetDamagePct(s.Settings.DamageScale()) // a request syncs the settings into the state
 	s.Engine.SetXPPct(s.Settings.XPScale())
-	s.Engine.SetCounterAll(s.Settings.CounterAll)
 	before := snapshot(s)
 	rev := s.Engine.Observe().Revision
 	r := s.Handle(Request{Op: "command", Revision: &rev, Command: core.Command{Kind: "wait", Actor: "mushun"}})
@@ -54,5 +52,5 @@ func TestSupportPhaseIsAlwaysAutomaticAndRejectsPlayerCommands(t *testing.T) {
 	events, err := s.AdvanceEnemies()
 	require.NoError(t, err)
 	assert.NotEmpty(t, events)
-	assert.Equal(t, "enemy", s.Engine.Observe().Turn)
+	assert.Equal(t, "ally", s.Engine.Observe().Turn)
 }

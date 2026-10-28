@@ -16,7 +16,7 @@ func (g *Game) rosterTable(w int) unitTable {
 		t.widths[i] = (w - t.nameW) / len(cells)
 	}
 	t.pick = func(id string) {
-		g.overlay = ""
+		g.closeOverlays()
 		g.focusOfficer(id)
 	}
 	return t

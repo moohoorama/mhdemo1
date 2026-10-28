@@ -223,8 +223,8 @@ ACTION = {'jailer': ('talk', 1), 'innkeeper': ('serve', 0), 'blacksmith': ('hamm
 for _key, (_name, _look, _battle, _colors) in STORY.items():
     LOOKS[_key] = _look
 # 유비: in shu his green coat (themeB) and the team robe and sash were one green; gold shoulders and a leather belt as
-# on his battle sheet (2026-10-23)
-U.KITS[LOOKS['liubei'][0].kit].update(shoulder=U.GOLD, tabard=LEATHER)
+# on his battle sheet (2026-10-23), and the white inner collar of his battle sheet (2026-10-27)
+U.KITS[LOOKS['liubei'][0].kit].update(shoulder=U.GOLD, tabard=LEATHER, scarf=C.WHITE, scarf_tail=.12)
 BATTLE = {'caocao': 'caocao', 'sunjian': 'sunjian', 'yuanshao': 'yuanshao', 'zhaoyun': 'zhaoyun', 'dongzhuo': 'light_cavalry', 'infantry': 'light_infantry',
           'yuanshu': 'yuanshu', 'gongsunzan': 'light_cavalry', 'liubei': 'liubei', 'guanyu': 'guanyu', 'zhangfei': 'zhangfei'}
 BATTLE.update({k: 'light_infantry' for k in SP.LOOKS})

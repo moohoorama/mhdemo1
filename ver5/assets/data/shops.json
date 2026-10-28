@@ -7,6 +7,7 @@
     "iron_spear",
     "short_bow",
     "bamboo_fan",
+    "iron_knuckles",
     "leather_armor",
     "plain_clothes"
    ]
@@ -24,6 +25,26 @@
    "Items": [
     "bean",
     "liquor"
+   ]
+  },
+  "luoyang": {
+   "Name": "도구점",
+   "Items": [
+    "bean",
+    "barley",
+    "liquor",
+    "fine_liquor",
+    "ration_bag",
+    "route_map"
+   ]
+  },
+  "camp": {
+   "Name": "종군 상인",
+   "Items": [
+    "bean",
+    "barley",
+    "liquor",
+    "fine_liquor"
    ]
   }
  }

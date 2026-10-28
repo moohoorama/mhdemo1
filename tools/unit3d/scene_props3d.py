@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """ver5 story-scene props modelled in 3D: weapon rack, armour stand, candle stand, antler barrier, watchtower,
-shield wall, straw mat, bloody cloth, medicine pot, broken spear, fallen flag, cauldron, grain sack and wine jar.
+shield wall, straw mat, bloody cloth, medicine pot, broken spear, fallen flag, cauldron, grain sack, wine jar, grain
+cart and the big command tent.
 
 Same camera and cel renderer as structures.py (one model unit = one 32 x 16 scene-map cell, 30 degree elevation,
 seen from SW: +x runs to the lower right along map u, +y to the upper right). Heights are at the scene people's
@@ -340,6 +341,88 @@ def prison_cart():
         wheel(-.1, sy*(W/2 + .16), .45, .45, sy)
     m.rod(V(-.1, -W/2 - .16, .45), V(-.1, W/2 + .16, .45), .035, IRON)  # axle
     return draw(cell=(160, 180), pivot=(70, 140))
+
+
+def grain_cart(draw_it=True):
+    """군량 수레: a two-wheeled cart, its bed piled with tied hemp grain sacks under a cross rope, the shafts run
+    forward (+x) down to the ground on a prop block. Long along u."""
+    m.meshes = []
+    bed, L, W, x0 = .55, 1.3, .8, -.35
+    m.box(V(x0, 0, bed - .05), V(L, W, .1), P.PLANK_DARK)  # bed
+    for s in (-1, 1):  # side boards
+        m.box(V(x0, s*(W/2 - .03), bed + .1), V(L, .05, .22), P.PLANK)
+    m.box(V(x0 - L/2 + .03, 0, bed + .1), V(.05, W, .22), P.PLANK)
+    for s in (-1, 1):  # shafts from under the bed forward to the ground
+        m.rod(V(x0 + L/2 - .2, s*.3, bed - .1), V(x0 + L/2 + .95, s*.24, .1), .04, P.PLANK_DARK)
+    m.box(V(x0 + L/2 + .95, 0, .05), V(.12, .6, .1), P.PLANK_DARK)  # block under the shaft ends
+    for x, y, z in ((-.7, -.18, .82), (-.35, -.2, .82), (0, -.18, .82), (-.7, .2, .82), (-.35, .2, .82),
+                    (0, .2, .82), (-.52, 0, 1.08), (-.17, 0, 1.08)):
+        m.ell(V(x, y, z), [.19, .17, .17], HEMP)
+        m.ell(V(x + .14, y, z + .04), [.05, .05, .05], STRAW_DARK)  # the tied neck
+    for x in (-.6, -.1):  # ropes over the load
+        m.rod(V(x, -W/2, bed + .2), V(x, 0, 1.27), .02, P.ROPE)
+        m.rod(V(x, 0, 1.27), V(x, W/2, bed + .2), .02, P.ROPE)
+    for sy in (-1, 1):
+        wheel(x0, sy*(W/2 + .1), .42, .42, sy)
+    m.rod(V(x0, -W/2 - .1, .42), V(x0, W/2 + .1, .42), .035, IRON)  # axle
+    return draw(cell=(140, 140), pivot=(66, 104)) if draw_it else None
+
+
+def grain_cart_v():
+    """The grain cart long along v (its shafts toward the viewer's lower left)."""
+    grain_cart(draw_it=False)
+    m.meshes = [(np.array([[p[1], -p[0], p[2]] for p in pts]), c) for pts, c in m.meshes]
+    return draw(cell=(140, 140), pivot=(74, 104))
+
+
+def command_tent():
+    """큰 막사: the commander's pavilion tent, about two game cells square: straight canvas walls on posts, a hip
+    roof along u with a ridge pole, a red scalloped valance under the eaves, the door on the long wall facing the
+    viewer (-y, the lower left) tied open under a small porch awning on two poles, a pennant at each ridge end."""
+    m.meshes = []
+    w, d, wh, peak, ov = 3.4, 2.8, 1.45, 2.9, .18
+    for y, c in ((-d/2, P.CANVAS), (d/2, P.CANVAS)):
+        m.poly([V(-w/2, y, 0), V(w/2, y, 0), V(w/2, y, wh), V(-w/2, y, wh)], c)
+    for x in (-w/2, w/2):
+        m.poly([V(x, -d/2, 0), V(x, d/2, 0), V(x, d/2, wh), V(x, -d/2, wh)], P.CANVAS_DARK if x > 0 else P.CANVAS)
+    for sx in (-1, 1):  # corner posts and a middle post on the long walls
+        for sy in (-1, 1):
+            m.box(V(sx*w/2, sy*d/2, wh/2), V(.08, .08, wh), S.WOOD)
+    for x in (-w/4, w/4):
+        m.box(V(x, -d/2 - .01, wh/2), V(.06, .02, wh), P.CANVAS_DARK)  # seams
+    door = .9  # the open doorway and its flaps tied back
+    m.box(V(0, -d/2 - .01, .5), V(door, .02, 1.0), P.INK)
+    for s in (-1, 1):
+        m.poly([V(s*door/2, -d/2 - .03, 1.1), V(s*(door/2 + .3), -d/2 - .03, 1.1), V(s*(door/2 + .05), -d/2 - .03, .25)],
+               P.CANVAS_DARK)
+    z0, x0, x1, y0, y1 = wh - .02, -w/2 - ov, w/2 + ov, -d/2 - ov, d/2 + ov
+    r0, r1 = -w/2 + d/2 - .2, w/2 - d/2 + .2  # the ridge ends
+    m.poly([V(x0, y0, z0), V(x1, y0, z0), V(r1, 0, peak), V(r0, 0, peak)], P.CANVAS)
+    m.poly([V(x0, y1, z0), V(r0, 0, peak), V(r1, 0, peak), V(x1, y1, z0)], P.CANVAS_DARK)
+    m.poly([V(x0, y0, z0), V(r0, 0, peak), V(x0, y1, z0)], P.CANVAS)
+    m.poly([V(x1, y0, z0), V(x1, y1, z0), V(r1, 0, peak)], P.CANVAS_DARK)
+    for t in np.linspace(.12, .88, 6):  # seams down the front and back slopes
+        for y in (y0, y1):
+            a, b = V(x0 + (x1 - x0)*t, y*1.003, z0 + .005), V(r0 + (r1 - r0)*t, 0, peak)
+            m.poly([a - [.025, 0, 0], a + [.025, 0, 0], b + [.02, 0, 0], b - [.02, 0, 0]], P.CANVAS_DARK)
+    m.rod(V(r0 - .05, 0, peak + .02), V(r1 + .05, 0, peak + .02), .05, S.WOOD)  # ridge pole
+    for a, b, side in ((V(x0, y0, z0), V(x1, y0, z0), 0), (V(x1, y0, z0), V(x1, y1, z0), 1),
+                       (V(x0, y1, z0), V(x0, y0, z0), 1), (V(x1, y1, z0), V(x0, y1, z0), 0)):
+        n = max(3, int(np.linalg.norm(b - a)/.42))
+        for i in range(n):  # the valance: a band and a scallop under each stretch
+            p, q = a + (b - a)*i/n, a + (b - a)*(i + 1)/n
+            m.poly([p, q, q - [0, 0, .16], p - [0, 0, .16]], P.BANNER)
+            m.poly([p - [0, 0, .16], q - [0, 0, .16], (p + q)/2 - [0, 0, .28]], P.BANNER_DARK if side else P.BANNER)
+    for x in (-door/2 - .15, door/2 + .15):  # porch: two poles and an awning over the door
+        m.rod(V(x, -d/2 - .75, 0), V(x, -d/2 - .75, 1.0), .035, S.WOOD)
+    m.poly([V(-door/2 - .25, -d/2 - .02, 1.2), V(door/2 + .25, -d/2 - .02, 1.2), V(door/2 + .25, -d/2 - .8, 1.0),
+            V(-door/2 - .25, -d/2 - .8, 1.0)], P.CANVAS_DARK)
+    m.poly([V(-door/2 - .25, -d/2 - .8, 1.0), V(door/2 + .25, -d/2 - .8, 1.0), V(door/2 + .25, -d/2 - .81, .88),
+            V(-door/2 - .25, -d/2 - .81, .88)], P.BANNER)
+    for x in (r0, r1):  # pennants
+        m.rod(V(x, 0, peak), V(x, 0, peak + .7), .025, S.WOOD)
+        m.box(V(x + .2, 0, peak + .55), V(.36, .02, .22), P.BANNER)
+    return draw(cell=(260, 240), pivot=(130, 180))
 
 
 def water_bucket():
@@ -762,7 +845,8 @@ PROPS = {'weapon_rack': weapon_rack, 'armor_stand': armor_stand, 'candle_stand':
          'straw_mat': straw_mat, 'bloody_cloth': bloody_cloth, 'medicine_pot': medicine_pot,
          'broken_spear': broken_spear, 'fallen_flag': fallen_flag, 'cauldron': cauldron,
          'grain_sack': grain_sack, 'wine_jar': wine_jar,
-         'prison_cart': prison_cart, 'water_bucket': water_bucket, 'water_jar': water_jar, 'campfire': campfire,
+         'prison_cart': prison_cart, 'grain_cart': grain_cart, 'grain_cart_v': grain_cart_v,
+         'command_tent': command_tent, 'water_bucket': water_bucket, 'water_jar': water_jar, 'campfire': campfire,
          'notice_post': notice_post, 'peach_bloom_0': lambda: peach_tree(0), 'peach_bloom_1': lambda: peach_tree(1),
          'peach_bloom_2': lambda: peach_tree(2),
          'stree_pine_0': pine, 'stree_pine_1': lambda: pine(1), 'stree_broad_0': broadleaf, 'stree_broad_1': lambda: broadleaf(1),

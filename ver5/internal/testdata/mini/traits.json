@@ -144,6 +144,17 @@
     "life_steal": 0.25
    }
   },
+  "full_share_t": {
+   "Name": "Full",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Desc": "",
+   "Cost": 0,
+   "Requires": [],
+   "Effects": {
+    "full_share": 1
+   }
+  },
   "awe": {
    "Name": "Awe",
    "Kind": "talent",

@@ -36,7 +36,10 @@ DARK_HOOD = {d: Hd.beard(Hd.recolor(r, {'7': '0', '8': '1', '9': '2', 'a': '3', 
              for d, r in Hd.HOOD.items()}
 GUANYU = H(Hd.GUANYU, skin='KL', lid='K')
 ZHANGFEI_HELM = H(Hd.ZHANGFEI, Hd.PLUME, skin='hi', lid='h')
-LIUBEI = H(L.eared(L.GOLD_CAP))
+# black topknot under a small gold crown, as in his portrait and battle sheet (2026-10-27): the crown's widest row is hair again
+SMALL_CROWN = {d: [Hd.recolor(r, {'m': 'g', 'l': 'f', 'k': 'g'}) if y == 3 else r for y, r in enumerate(rows)]
+               for d, rows in Hd.CROWN.items()}
+LIUBEI = H(L.bearded(SMALL_CROWN, 'goatee'))
 
 LOOKS = {
     'guanyu': [

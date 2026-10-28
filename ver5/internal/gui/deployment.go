@@ -92,7 +92,7 @@ func (g *Game) deploymentMarks() []Highlight {
 }
 
 func (g *Game) deploymentPreviewCommand() (core.Command, bool) {
-	if !g.deploying() || g.deploymentSelected == "" || !g.hover.ok || g.overlay != "" || len(g.modals) > 0 || g.input {
+	if !g.deploying() || g.deploymentSelected == "" || !g.hover.ok || g.overlay() != "" || len(g.modals) > 0 || g.input {
 		return core.Command{}, false
 	}
 	for _, c := range g.S.Engine.LegalActions(g.deploymentSelected).Commands {

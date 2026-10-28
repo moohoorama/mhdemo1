@@ -33,7 +33,11 @@ func (g *Game) advance(dt float64) {
 		}
 		g.zoom = g.zoomFrom + (g.zoomTo-g.zoomFrom)*t
 	}
-	g.advancePan(dt)
+	if g.player.ai && g.player.Busy() {
+		g.advancePan(dt * float64(g.speed)) // an AI turn's camera keeps up with its replay
+	} else {
+		g.advancePan(dt)
+	}
 	dt *= float64(g.speed)
 	if g.duelPreview != nil {
 		dt *= g.previewRate
@@ -95,8 +99,8 @@ func (g *Game) ensureField(o core.Observation) {
 		g.field.dispose()
 	}
 	g.field = NewField(g.assets, g.assets.Maps[o.Map.ID])
-	g.vis, g.scene, g.zoom = map[string]*unitVis{}, nil, 1
-	g.zoomFrom, g.zoomTo, g.zoomT = 1, 1, 0
+	g.vis, g.scene = map[string]*unitVis{}, nil
+	g.setZoomImmediate(battleZoom)
 	g.pan = nil
 	size := g.field.Size()
 	g.camX, g.camY = float64(size.X)/2, float64(size.Y)/2
@@ -145,8 +149,22 @@ func (g *Game) sync(o core.Observation) {
 	}
 }
 
-// zooms are the canvas scales the wheel steps through; 1 shows unit pixels 1:1.
-var zooms = []float64{.5, 1, 2, 4}
+// zooms are the battle's canvas scales, which the wheel steps through and a pinch settles on;
+// 1 shows unit pixels 1:1. A battle opens at battleZoom.
+var zooms = []float64{1, 2, 4}
+
+const battleZoom = 2
+
+// nearestZoom is the step of zooms nearest z, by ratio.
+func nearestZoom(z float64) float64 {
+	best := zooms[0]
+	for _, s := range zooms {
+		if math.Abs(math.Log(z/s)) < math.Abs(math.Log(z/best)) {
+			best = s
+		}
+	}
+	return best
+}
 
 func (g *Game) setZoom(target float64) {
 	if target == g.zoom {
@@ -174,6 +192,7 @@ func (g *Game) toScreen(x, y float64) (float64, float64) {
 
 // camera pans with the arrow keys, the window's edges or a drag with either button and
 // zooms with the wheel. A click without dragging selects (left) or cancels (right) instead.
+// On an AI army's turn only the clicks work (cameraLocked).
 func (g *Game) camera() {
 	if g.field == nil || g.popupPending() || g.input {
 		g.dragging = false
@@ -181,6 +200,10 @@ func (g *Game) camera() {
 	}
 	vp := g.battleViewport()
 	step := 12.0 / g.zoom
+	locked := g.cameraLocked()
+	if locked {
+		step = 0
+	}
 	if ebiten.IsKeyPressed(ebiten.KeyArrowLeft) {
 		g.camX -= step
 	}
@@ -215,7 +238,7 @@ func (g *Game) camera() {
 	if mouseJustPressed(ebiten.MouseButtonRight) && onMap && !g.dragging {
 		g.dragging, g.dragMoved, g.dragButton, g.dragX, g.dragY = true, false, ebiten.MouseButtonRight, x, y
 	}
-	if g.dragMoved || ebiten.IsKeyPressed(ebiten.KeyArrowLeft) || ebiten.IsKeyPressed(ebiten.KeyArrowRight) || ebiten.IsKeyPressed(ebiten.KeyArrowUp) || ebiten.IsKeyPressed(ebiten.KeyArrowDown) {
+	if !locked && (g.dragMoved || ebiten.IsKeyPressed(ebiten.KeyArrowLeft) || ebiten.IsKeyPressed(ebiten.KeyArrowRight) || ebiten.IsKeyPressed(ebiten.KeyArrowUp) || ebiten.IsKeyPressed(ebiten.KeyArrowDown)) {
 		g.pan = nil // the player's own camera wins over a glide
 	}
 	if g.dragging {
@@ -226,14 +249,14 @@ func (g *Game) camera() {
 			} else if !g.dragMoved {
 				g.mapRelease()
 			}
-		} else if g.dragMoved || abs(x-g.dragX)+abs(y-g.dragY) > 4 {
+		} else if !locked && (g.dragMoved || abs(x-g.dragX)+abs(y-g.dragY) > 4) {
 			g.dragMoved = true
 			g.camX -= float64(x-g.dragX) * uiPx / worldPx / g.zoom
 			g.camY -= float64(y-g.dragY) * uiPx / worldPx / g.zoom
 			g.dragX, g.dragY = x, y
 		}
 	}
-	if _, wheel := ebiten.Wheel(); wheel != 0 && onMap && (g.zoomTo == g.zoomFrom || g.zoomT >= .5) {
+	if _, wheel := ebiten.Wheel(); wheel != 0 && onMap && !locked && (g.zoomTo == g.zoomFrom || g.zoomT >= .5) {
 		current := g.zoom
 		if g.zoomT < .5 {
 			current = g.zoomTo

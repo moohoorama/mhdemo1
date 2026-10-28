@@ -236,3 +236,36 @@ func (d *MapDocument) EncodeFiles() (stage, mapDoc []byte, err error) {
 	mapDoc, err = json.MarshalIndent(mapFile{d.Decorations, d.Props, d.Version, d.Play, d.Visual, d.Cells, d.Default}, "", " ")
 	return
 }
+
+// Waypoint is a point a game can start at to check the story: the first node of a chapter or a battle node.
+type Waypoint struct {
+	Node    string
+	Chapter int    // from 1
+	Stage   string // the battle's stage id; empty at a chapter's start
+	Place   string // where the chapter opens: its first scene's place or the area its first explore starts in
+}
+
+// Waypoints lists every chapter's start and every battle in story order.
+func (d *Data) Waypoints() []Waypoint {
+	out := []Waypoint{}
+	for i, c := range d.Chapters {
+		w := Waypoint{Node: c.Nodes[0], Chapter: i + 1}
+		for _, id := range c.Nodes {
+			if n := d.Node(id); n.Kind == "scene" && n.Place != "" {
+				w.Place = n.Place
+			} else if x := d.Explores[n.Explore]; n.Kind == "explore" && x.Areas[x.Start.Area] != nil {
+				w.Place = x.Areas[x.Start.Area].Name
+			}
+			if w.Place != "" {
+				break
+			}
+		}
+		out = append(out, w)
+		for _, id := range c.Nodes {
+			if n := d.Node(id); n.Kind == "battle" {
+				out = append(out, Waypoint{Node: id, Chapter: i + 1, Stage: n.Stage})
+			}
+		}
+	}
+	return out
+}

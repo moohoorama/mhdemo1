@@ -119,8 +119,10 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 	}
 	p := Preview{Cost: e.cost(u, s), Hit: e.hitChance(u, v, s), Effect: s.Effect}
 	phys := s.Kind == content.KindPhysical
-	if phys {
+	if phys || s.Kind == content.KindMagic {
 		p.Crit = e.critChance(u, v, s)
+	}
+	if phys {
 		p.Double = e.doubleChance(u, v, s)
 	}
 	var hit []*Unit
@@ -161,10 +163,6 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 // SetDamagePct scales the damage of every blow to pct percent; the setting travels with snapshots,
 // so previews and trial copies deal the same damage.
 func (e *Engine) SetDamagePct(pct int) { e.state.DamagePct = pct }
-
-// SetCounterAll makes every unit strike back at a physical attacker in its reach, at counterAllShare
-// of a normal blow, besides the counters stances and traits give.
-func (e *Engine) SetCounterAll(on bool) { e.state.CounterAll = on }
 
 // SetXPPct scales the experience every battle action earns to pct percent.
 func (e *Engine) SetXPPct(pct int) { e.state.XPPct = pct }
@@ -449,20 +447,13 @@ func (e *Engine) CharacterStats(id string) (Stats, error) {
 }
 
 // CounterDamage is the most damage the target can return to the actor after c lands,
-// or 0 when the target has no counter stance or the actor is out of its reach.
+// or 0 when c is not a physical action or the actor is out of the target's reach.
 func (e *Engine) CounterDamage(c Command) int {
 	u, v := e.unit(c.Actor), e.unit(c.Target)
 	if u == nil || v == nil || v.HP <= 0 || v.Faction == u.Faction {
 		return 0
 	}
-	forced := e.has(v, content.FxCounterForce) && e.might(u) < e.might(v)
-	share := e.data.Rules.CounterShare
-	if v.Status["counter"].Turns == 0 && !forced && !e.has(v, content.FxCounterAlways) {
-		if !e.state.CounterAll {
-			return 0
-		}
-		share = counterAllShare
-	}
+	share, forced := e.counterShare(u, v)
 	s, err := e.skillDef(c)
 	if err != nil || s.Kind != content.KindPhysical || !e.inRange(v, u, e.basic()) {
 		return 0

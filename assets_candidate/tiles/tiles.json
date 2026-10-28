@@ -6826,6 +6826,308 @@
    "scale": "scene",
    "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)"
   },
+  "gatehouse_closed_u_0": {
+   "file": "tiles/gatehouse_closed_u_0.png",
+   "size": [
+    62,
+    28
+   ],
+   "pivot": [
+    31,
+    32
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_closed_u_1": {
+   "file": "tiles/gatehouse_closed_u_1.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_closed_u_2": {
+   "file": "tiles/gatehouse_closed_u_2.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_closed_u_3": {
+   "file": "tiles/gatehouse_closed_u_3.png",
+   "size": [
+    63,
+    43
+   ],
+   "pivot": [
+    32,
+    34
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_closed_v_0": {
+   "file": "tiles/gatehouse_closed_v_0.png",
+   "size": [
+    62,
+    28
+   ],
+   "pivot": [
+    31,
+    32
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_closed_v_1": {
+   "file": "tiles/gatehouse_closed_v_1.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_closed_v_2": {
+   "file": "tiles/gatehouse_closed_v_2.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_closed_v_3": {
+   "file": "tiles/gatehouse_closed_v_3.png",
+   "size": [
+    63,
+    43
+   ],
+   "pivot": [
+    31,
+    34
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "wall_plaster_nw": {
+   "file": "tiles/wall_plaster_nw.png",
+   "size": [
+    36,
+    53
+   ],
+   "pivot": [
+    35,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "wall_plaster_ne": {
+   "file": "tiles/wall_plaster_ne.png",
+   "size": [
+    36,
+    53
+   ],
+   "pivot": [
+    1,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "wall_lacquer_nw": {
+   "file": "tiles/wall_lacquer_nw.png",
+   "size": [
+    36,
+    53
+   ],
+   "pivot": [
+    35,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "wall_lacquer_ne": {
+   "file": "tiles/wall_lacquer_ne.png",
+   "size": [
+    36,
+    53
+   ],
+   "pivot": [
+    1,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "wall_canvas_nw": {
+   "file": "tiles/wall_canvas_nw.png",
+   "size": [
+    36,
+    53
+   ],
+   "pivot": [
+    35,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "wall_canvas_ne": {
+   "file": "tiles/wall_canvas_ne.png",
+   "size": [
+    36,
+    53
+   ],
+   "pivot": [
+    1,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "floor_wood": {
+   "file": "tiles/floor_wood.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "floor_carpet": {
+   "file": "tiles/floor_carpet.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "floor_palace": {
+   "file": "tiles/floor_palace.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "floor_tent": {
+   "file": "tiles/floor_tent.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "grain_cart": {
+   "file": "tiles/grain_cart.png",
+   "size": [
+    50,
+    45
+   ],
+   "pivot": [
+    24,
+    31
+   ],
+   "layer": "object"
+  },
+  "grain_cart_v": {
+   "file": "tiles/grain_cart_v.png",
+   "size": [
+    50,
+    45
+   ],
+   "pivot": [
+    27,
+    31
+   ],
+   "layer": "object"
+  },
+  "command_tent": {
+   "file": "tiles/command_tent.png",
+   "size": [
+    113,
+    102
+   ],
+   "pivot": [
+    57,
+    76
+   ],
+   "layer": "object"
+  },
   "bank_nw_grass": {
    "file": "tiles/bank_nw_grass.png",
    "size": [
@@ -7064,125 +7366,200 @@
    "shadow": false,
    "note": "battle-map boat (tools/unit3d/boats3d.py)"
   },
-  "gatehouse_closed_u_0": {
-   "file": "tiles/gatehouse_closed_u_0.png",
+  "wet_0": {
+   "file": "tiles/wet_0.png",
    "size": [
-    62,
-    28
-   ],
-   "pivot": [
-    31,
+    64,
     32
-   ],
-   "layer": "object",
-   "scale": "battle",
-   "blocks": true,
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
-  },
-  "gatehouse_closed_u_1": {
-   "file": "tiles/gatehouse_closed_u_1.png",
-   "size": [
-    1,
-    1
-   ],
-   "pivot": [
-    0,
-    0
-   ],
-   "layer": "object",
-   "scale": "battle",
-   "blocks": true,
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
-  },
-  "gatehouse_closed_u_2": {
-   "file": "tiles/gatehouse_closed_u_2.png",
-   "size": [
-    1,
-    1
-   ],
-   "pivot": [
-    0,
-    0
-   ],
-   "layer": "object",
-   "scale": "battle",
-   "blocks": true,
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
-  },
-  "gatehouse_closed_u_3": {
-   "file": "tiles/gatehouse_closed_u_3.png",
-   "size": [
-    63,
-    43
    ],
    "pivot": [
     32,
-    34
+    16
    ],
-   "layer": "object",
-   "scale": "battle",
-   "blocks": true,
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
   },
-  "gatehouse_closed_v_0": {
-   "file": "tiles/gatehouse_closed_v_0.png",
+  "rubble_0": {
+   "file": "tiles/rubble_0.png",
    "size": [
-    62,
-    28
+    64,
+    40
    ],
    "pivot": [
-    31,
+    32,
+    24
+   ],
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
+  },
+  "wet_1": {
+   "file": "tiles/wet_1.png",
+   "size": [
+    64,
     32
    ],
-   "layer": "object",
-   "scale": "battle",
-   "blocks": true,
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
   },
-  "gatehouse_closed_v_1": {
-   "file": "tiles/gatehouse_closed_v_1.png",
+  "rubble_1": {
+   "file": "tiles/rubble_1.png",
    "size": [
-    1,
-    1
+    64,
+    40
    ],
    "pivot": [
-    0,
-    0
+    32,
+    24
    ],
-   "layer": "object",
-   "scale": "battle",
-   "blocks": true,
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
   },
-  "gatehouse_closed_v_2": {
-   "file": "tiles/gatehouse_closed_v_2.png",
+  "wet_2": {
+   "file": "tiles/wet_2.png",
    "size": [
-    1,
-    1
+    64,
+    32
    ],
    "pivot": [
-    0,
-    0
+    32,
+    16
    ],
-   "layer": "object",
-   "scale": "battle",
-   "blocks": true,
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
   },
-  "gatehouse_closed_v_3": {
-   "file": "tiles/gatehouse_closed_v_3.png",
+  "rubble_2": {
+   "file": "tiles/rubble_2.png",
    "size": [
-    63,
-    43
+    64,
+    40
    ],
    "pivot": [
-    31,
-    34
+    32,
+    24
    ],
-   "layer": "object",
-   "scale": "battle",
-   "blocks": true,
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
+  },
+  "wet_3": {
+   "file": "tiles/wet_3.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
+  },
+  "rubble_3": {
+   "file": "tiles/rubble_3.png",
+   "size": [
+    64,
+    40
+   ],
+   "pivot": [
+    32,
+    24
+   ],
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
+  },
+  "wet_4": {
+   "file": "tiles/wet_4.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
+  },
+  "rubble_4": {
+   "file": "tiles/rubble_4.png",
+   "size": [
+    64,
+    40
+   ],
+   "pivot": [
+    32,
+    24
+   ],
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
+  },
+  "charred_0": {
+   "file": "tiles/charred_0.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
+  },
+  "charred_1": {
+   "file": "tiles/charred_1.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
+  },
+  "charred_2": {
+   "file": "tiles/charred_2.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
+  },
+  "charred_3": {
+   "file": "tiles/charred_3.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
+  },
+  "charred_4": {
+   "file": "tiles/charred_4.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "note": "battle-map ground mark of a critical spell (gen_ground_marks.py)"
   },
   "gatehouse_open_u_0": {
    "file": "tiles/gatehouse_open_u_0.png",
@@ -7294,152 +7671,6 @@
    ],
    "layer": "object",
    "scale": "battle",
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
-  },
-  "wall_plaster_nw": {
-   "file": "tiles/wall_plaster_nw.png",
-   "size": [
-    36,
-    53
-   ],
-   "pivot": [
-    35,
-    36
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "shadow": false,
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
-  },
-  "wall_plaster_ne": {
-   "file": "tiles/wall_plaster_ne.png",
-   "size": [
-    36,
-    53
-   ],
-   "pivot": [
-    1,
-    36
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "shadow": false,
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
-  },
-  "wall_lacquer_nw": {
-   "file": "tiles/wall_lacquer_nw.png",
-   "size": [
-    36,
-    53
-   ],
-   "pivot": [
-    35,
-    36
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "shadow": false,
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
-  },
-  "wall_lacquer_ne": {
-   "file": "tiles/wall_lacquer_ne.png",
-   "size": [
-    36,
-    53
-   ],
-   "pivot": [
-    1,
-    36
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "shadow": false,
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
-  },
-  "wall_canvas_nw": {
-   "file": "tiles/wall_canvas_nw.png",
-   "size": [
-    36,
-    53
-   ],
-   "pivot": [
-    35,
-    36
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "shadow": false,
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
-  },
-  "wall_canvas_ne": {
-   "file": "tiles/wall_canvas_ne.png",
-   "size": [
-    36,
-    53
-   ],
-   "pivot": [
-    1,
-    36
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "shadow": false,
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
-  },
-  "floor_wood": {
-   "file": "tiles/floor_wood.png",
-   "size": [
-    64,
-    32
-   ],
-   "pivot": [
-    32,
-    16
-   ],
-   "layer": "ground",
-   "scale": "scene",
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
-  },
-  "floor_carpet": {
-   "file": "tiles/floor_carpet.png",
-   "size": [
-    64,
-    32
-   ],
-   "pivot": [
-    32,
-    16
-   ],
-   "layer": "ground",
-   "scale": "scene",
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
-  },
-  "floor_palace": {
-   "file": "tiles/floor_palace.png",
-   "size": [
-    64,
-    32
-   ],
-   "pivot": [
-    32,
-    16
-   ],
-   "layer": "ground",
-   "scale": "scene",
-   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
-  },
-  "floor_tent": {
-   "file": "tiles/floor_tent.png",
-   "size": [
-    64,
-    32
-   ],
-   "pivot": [
-    32,
-    16
-   ],
-   "layer": "ground",
-   "scale": "scene",
    "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   }
  }

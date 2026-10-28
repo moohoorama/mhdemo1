@@ -1,5 +1,5 @@
 {
- "note": "Rules of the scene maps (docs/presentation-scene.md, internal/scenemap): what a ground glyph, a height step, a wall line and a gate are drawn with, and the footprint of the objects that cover more than one small tile. Footprints are [du, dv, w, d] in small tiles from the object's anchor (its pivot's ground point); objects not listed cover the one small tile round their anchor.",
+ "note": "Rules of the scene maps (docs/presentation-scene.md, internal/scenemap): what a ground glyph, a height step, a wall line and a gate are drawn with, and the footprint of the objects that cover more than one small tile. Footprints are [du, dv, w, d] in small tiles from the object's anchor (its pivot's ground point); objects not listed cover the one small tile round their anchor. Attachments are what an object carries wherever it stands: a looping strip (index.json \"anims\") with its pivot at \"at\" canvas pixels from the object's anchor, and/or a light of radius \"light\" (world pixels at zoom 1) cast at night there, \"glow\" adding a fire's warm glow.",
  "walkable": ".diTWPC",
  "surfaces": {".": 1, "d": 2, "~": 0, "c": 1, "h": 2, "i": 2, "b": 0, "v": 2, "k": 2, "f": 1, "o": 1, "g": 1},
  "floors": {
@@ -26,6 +26,14 @@
   "house_thatch_x": [-1, -1, 2, 2], "house_burnt": [-1, -1, 2, 2], "tavern": [-1, -1, 2, 2],
   "watchtower": [-0.75, -0.75, 1.5, 1.5], "tent": [-0.75, -0.75, 1.5, 1.5], "tent_round": [-0.75, -0.75, 1.5, 1.5],
   "bed": [-0.75, -0.75, 1.5, 1.5], "map_table": [-0.75, -0.75, 1.5, 1.5], "market_stall": [-0.75, -0.75, 1.5, 1.5],
-  "market_stall_cloth": [-0.75, -0.75, 1.5, 1.5], "market_stall_jar": [-0.75, -0.75, 1.5, 1.5]
+  "market_stall_cloth": [-0.75, -0.75, 1.5, 1.5], "market_stall_jar": [-0.75, -0.75, 1.5, 1.5],
+  "grain_cart": [-1, -0.55, 2.2, 1.1], "grain_cart_v": [-0.55, -1, 1.1, 2.2], "command_tent": [-1.75, -1.45, 3.5, 2.9]
+ },
+ "attachments": {
+  "campfire": [{"anim": "flame_small", "at": [-2, -1]}, {"anim": "flame_small", "at": [2, 0]}, {"at": [0, -6], "light": 150, "glow": true}],
+  "brazier": [{"anim": "flame_small", "at": [-4, -13]}, {"anim": "flame_small", "at": [4, -13]}, {"anim": "flame_small", "at": [0, -11]}, {"at": [0, -16], "light": 150, "glow": true}],
+  "soup_stove": [{"at": [-7, -2], "light": 70, "glow": true}],
+  "lantern": [{"at": [0, -26], "light": 90}],
+  "candle_stand": [{"at": [0, -33], "light": 60}]
  }
 }

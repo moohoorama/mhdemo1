@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	"srpg/internal/content"
@@ -165,8 +166,14 @@ func TestScenesData(t *testing.T) {
 				if st.Sprite != "" && sheets[st.Sprite] == nil {
 					t.Errorf("%s: unknown sprite %q", st.Actor, st.Sprite)
 				}
+				for _, c := range st.Via {
+					if len(c) != 2 || len(st.Move) != 2 {
+						t.Errorf("%s: via %v is not [u, v] before a Move", st.Actor, st.Via)
+					}
+				}
 				if len(st.Prop) > 0 {
 					name, _ := st.Prop[0].(string)
+					name, _, _ = strings.Cut(name, "#")
 					if index.Props.Sprites[name] == nil && index.Extra.Sprites[name] == nil || len(st.Prop) < 1 || len(st.Prop) > 3 {
 						t.Errorf("prop %v: unknown name or not [name, u, v] / [name, actor] / [name]", st.Prop)
 					}

@@ -1,18 +1,31 @@
-# c07-start  S_army_camp  ch07  origin 0 0
-...XHYFlgFlg......
-...TntCaoXHDTnt...
-...TntLiuBnrTntpi1
-......BnrBnr...in1
-...TntGuaZhaTnt...
-...in2......pi2...
+# c07-start  S_council  ch07  origin -1 -1
+Pil#################################Pil
+###...Brz...Bnr...Wpn...BnrXHDArmBrz...
+###Bnr.........QiaKonHanCao...mn1......
+###Flg......TblTbl...Tbl...Tbl......gu1
+###CdlYuaDsk...........................
+###Cdl.................................
+###Bnr......YShTbl...TblGSZTbl......gu2
+###Wpn........................LiuGua...
+Pil...Brz.....................ZhaBrz...
 
-Cao 조조
+Yua 원소  (sit)
+Cao 조조  (sit)
 XHD 하후돈
-XHY 하후연
+Qia 교모  (official_noncombat, sit)
+Han 한복  (official_noncombat, sit)
+YSh 원술  (sit)
+gu1 호위#1  (guards)
+gu2 호위#2  (guards)
+Kon 공융  (sit)
 Liu 유비
 Gua 관우
 Zha 장비
-pi1 조조병#1  (pikeman)
-in1 조조병#2  (light_infantry)
-in2 병사#1  (light_infantry)
-pi2 병사#2  (pikeman)
+mn1 악공#1  (commoner_man)
+GSZ 공손찬  (sit)
+
+# c07-a1: GSZ -> 7 6
+# c07-a1: GSZ -> 8 6
+# c07-a4: Cao -> 7 4
+# c07-a4: Cao -> 9 4
+# c07-a4: Cao -> 9 5

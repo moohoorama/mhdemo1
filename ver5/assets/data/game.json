@@ -48,9 +48,16 @@
    "Max": 70
   },
   "CounterShare": 0.7,
+  "PlainCounterShare": 0.5,
   "DoubleShare": 0.7,
   "PoisonPercent": 5,
   "BurnPercent": 4,
+  "CritMarks": {
+   "fire": "e",
+   "water": "w",
+   "earth": "r"
+  },
+  "CritMarkTurns": 3,
   "BuffPercent": 20,
   "BuffTurns": 2,
   "ExpGrowth": 1.035,
@@ -275,7 +282,20 @@
    "Name": "불씨",
    "Look": "ember",
    "Blaze": 0.8,
-   "RestHP": -20
+   "RestHP": -10,
+   "Then": "s",
+   "Grounds": "gdi"
+  },
+  "w": {
+   "Name": "물웅덩이",
+   "Look": "wet",
+   "Factor": -0.1,
+   "Grounds": "gdi"
+  },
+  "r": {
+   "Name": "돌무더기",
+   "Look": "rubble",
+   "Grounds": "gdi"
   },
   "F": {
    "Name": "화염",

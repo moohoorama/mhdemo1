@@ -24,9 +24,10 @@ type Spot struct {
 
 type ExploreArea struct {
 	Map, Name string
-	Time      string  `json:",omitempty"` // the scene time of day (night, dusk); day when empty
-	Zoom      float64 `json:",omitempty"` // the camera's zoom on arrival, whole numbers; 2 when 0
-	At        [2]int  // where the hero stands on arriving where no exit leads back
+	Time      string        `json:",omitempty"` // the scene time of day (night, dusk); day when empty
+	Times     []ExploreTime `json:",omitempty"` // the first whose If holds stands in for Time (night falls)
+	Zoom      float64       `json:",omitempty"` // the camera's zoom on arrival, whole numbers; 2 when 0
+	At        [2]int        // where the hero stands on arriving where no exit leads back
 	Exits     []ExploreExit
 	People    map[string]*ExplorePerson `json:",omitempty"`
 	Effects   []ExploreEffect           `json:",omitempty"`
@@ -80,6 +81,12 @@ type ExploreEvent struct {
 	If   []string `json:",omitempty"`
 	Node string
 	Side bool `json:",omitempty"`
+}
+
+// ExploreTime is an area's time of day while every If holds.
+type ExploreTime struct {
+	If   []string `json:",omitempty"`
+	Time string
 }
 
 type ExploreSortie struct {
@@ -171,6 +178,11 @@ func (d *Data) validateExplores(nodes map[string]Node) error {
 			where := name + " " + aid
 			if a.Map == "" || a.Name == "" {
 				return fmt.Errorf("%s: map and name", where)
+			}
+			for _, t := range a.Times {
+				if err := conds(where+" time "+t.Time, t.If); err != nil {
+					return err
+				}
 			}
 			for _, e := range a.Exits {
 				if x.Areas[e.To] == nil || e.Name == "" {

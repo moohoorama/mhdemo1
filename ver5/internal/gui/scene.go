@@ -44,7 +44,8 @@ type scene struct {
 	shake   float64
 	camU    float64
 	camV    float64
-	fade    float64                 // 1 → 0: the scene opening out of black
+	fade    float64                 // 1 → 0: the scene opening out of black; 0 → 1 while leaving
+	leaving bool                    // darkening to black before the next node opens another scene
 	patrol  map[string]*patrol      // sentries walking to and fro
 	chatter map[string]*chatterLine // extras murmuring now and then
 }
@@ -79,6 +80,12 @@ func (p sceneProp) at(s *scene) (float64, float64, bool) {
 		return a.u + p.u, a.v + p.v, !a.gone
 	}
 	return p.u, p.v, true
+}
+
+// art is the map prop the scene prop shows: a name like "straw_mat#2" lets one prop stand in several places.
+func (p sceneProp) art() string {
+	name, _, _ := strings.Cut(p.name, "#")
+	return name
 }
 
 type emote struct {
@@ -258,7 +265,14 @@ func (g *Game) updateScene(dt float64) {
 		}
 	}
 	s.shake = math.Max(0, s.shake-dt)
-	s.fade = math.Max(0, s.fade-dt/fadeTime)
+	if s.leaving {
+		if s.fade = math.Min(1, s.fade+dt/fadeTime); s.fade == 1 {
+			s.leaving = false
+			g.command(core.Command{Kind: "next"})
+		}
+	} else {
+		s.fade = math.Max(0, s.fade-dt/fadeTime)
+	}
 	for key, c := range s.chatter {
 		if c.t -= dt; c.t <= 0 && s.emotes[key] == nil && !s.actors[key].gone {
 			s.emotes[key] = &emote{text: c.lines[c.i%len(c.lines)], life: emoteTime + .4}
@@ -459,7 +473,12 @@ func (g *Game) walkStep(v *unitVis, st scenes.Step) {
 	}
 	if len(st.Move) == 2 {
 		delete(s.patrol, v.id)
-		s.paths[v.id] = scenePath(v.u, v.v, st.Move[0], st.Move[1])
+		u, w, path := v.u, v.v, [][2]float64{}
+		for _, c := range append(st.Via, st.Move) {
+			path = append(path, scenePath(u, w, c[0], c[1])...)
+			u, w = c[0], c[1]
+		}
+		s.paths[v.id] = path
 		s.held[v.id] = true
 	}
 	if st.Speed > 0 {
@@ -633,12 +652,13 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	}
 	g.field.beatShadows = g.field.beatShadows[:0]
 	for _, p := range s.props {
-		if u, v, ok := p.at(s); ok && g.assets.Props[p.name].Shadow.Image != nil {
-			sh := g.assets.Props[p.name].Shadow
+		if u, v, ok := p.at(s); ok && g.assets.Props[p.art()].Shadow.Image != nil {
+			sh := g.assets.Props[p.art()].Shadow
 			x, y := g.field.Center(u, v)
 			g.field.beatShadows = append(g.field.beatShadows, beatShadow{x, y, sh})
 		}
 	}
+	g.field.setGoals(nil)
 	g.field.Draw(g.clockMS, actors, nil)
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-g.camX, -g.camY)
@@ -654,7 +674,7 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 		g.drawBackdrop(dst)
 		drawScaled(dst, g.field.Canvas, op)
 		for _, p := range s.props {
-			if pr, ok := g.assets.Props[p.name]; ok {
+			if pr, ok := g.assets.Props[p.art()]; ok {
 				u, v, shown := p.at(s)
 				if !shown {
 					continue
@@ -786,7 +806,7 @@ func (g *Game) flames(dst *ebiten.Image, x, y, t float64, big bool) {
 	z := g.zoom
 	glow := g.assets.FX["campfire_glow"]
 	glow.drawAlpha(dst, 0, x, y-8, g.toScreen, z, .7+.2*math.Sin(t*9))
-	tall, small := g.assets.Flames["flame"], g.assets.Flames["flame_small"]
+	tall, small := g.assets.Anims["flame"], g.assets.Anims["flame_small"]
 	spots := [][3]float64{{-6, -2, 0}, {6, -2, 0}, {0, -3, 1}, {-3, 2, 1}, {4, 2, 1}} // back ones first
 	if !big {
 		spots = [][3]float64{{-2, 0, 0}, {2, 1, 0}}
@@ -824,7 +844,7 @@ func (g *Game) birds(dst *ebiten.Image, x, y, t float64) {
 
 // smoke draws n puffs rising from canvas point (x, y) at opacity a.
 func (g *Game) smoke(dst *ebiten.Image, x, y, t float64, n int, a float64) {
-	puff := g.assets.Flames["smoke"]
+	puff := g.assets.Anims["smoke"]
 	for i := 0; i < n && len(puff.Frames) > 0; i++ {
 		life := math.Mod(t*.5+float64(i)/float64(n), 1)
 		f := puff.Frames[min(len(puff.Frames)-1, int(life*float64(len(puff.Frames))))]

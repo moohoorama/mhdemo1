@@ -218,9 +218,8 @@ func TestDerivedAttacksKeepStrikeTraits(t *testing.T) {
 		}
 		return
 	}
-	t.Run("counter-all", func(t *testing.T) {
+	t.Run("counter", func(t *testing.T) {
 		e, a, b := setup(t)
-		e.SetCounterAll(true)
 		with(e, "boss", "cross_t", "twice")
 		e.events = nil
 		require.NoError(t, e.useSkill(a, Command{Kind: "attack", Actor: a.ID, Target: b.ID}))
@@ -253,7 +252,6 @@ func TestDerivedAttacksKeepStrikeTraits(t *testing.T) {
 	})
 	t.Run("no assist on a counter", func(t *testing.T) {
 		e, _, b := setup(t)
-		e.SetCounterAll(true)
 		w := e.unit("archer1")
 		e.char("archer1").Class = "rider"
 		e.char("archer1").Equipment = map[string]string{}
@@ -264,5 +262,54 @@ func TestDerivedAttacksKeepStrikeTraits(t *testing.T) {
 		require.NoError(t, e.useSkill(b, Command{Kind: "attack", Actor: b.ID, Target: "hero"}))
 		got, _ := struck(e, w.ID)
 		assert.Empty(t, got)
+	})
+}
+
+func TestFullShareStrikesInFull(t *testing.T) {
+	setup := func(t *testing.T, traits ...string) (*Engine, *Unit, *Unit) {
+		e, a, b := arena(t)
+		w := e.unit("archer1")
+		w.X, w.Y = 5, 5
+		a.HP, b.HP, w.HP = 10000, 10000, 10000
+		e.data.Rules.HitFloor, e.data.Rules.HitCeil, e.data.Rules.CritMultiplier = 100, 100, 1
+		with(e, "boss", traits...)
+		return e, a, b
+	}
+	dealt := func(e *Engine, by string) (out []int) {
+		for _, ev := range e.events {
+			if ev.Kind == "damage" && ev.Actor == by {
+				out = append(out, ev.Amount)
+			}
+		}
+		return
+	}
+	t.Run("second strike", func(t *testing.T) {
+		for _, full := range []bool{false, true} {
+			e, a, b := setup(t)
+			if full {
+				with(e, "boss", "full_share_t")
+			}
+			e.events = nil
+			e.attackOn(b, a, []*Unit{a}, e.basic(), map[string]float64{a.ID: 1}, true, true)
+			got := dealt(e, b.ID)
+			require.Len(t, got, 2)
+			assert.Equal(t, full, got[0] == got[1], "full %t: %v", full, got)
+		}
+	})
+	t.Run("counter", func(t *testing.T) {
+		e, a, b := setup(t)
+		k, _ := e.counterShare(a, b)
+		assert.Equal(t, e.data.Rules.PlainCounterShare, k)
+		with(e, "boss", "full_share_t")
+		k, _ = e.counterShare(a, b)
+		assert.Equal(t, 1.0, k)
+	})
+	t.Run("beside the target", func(t *testing.T) {
+		e, a, b := setup(t, "cross_t")
+		_, share := e.victims(b, a, e.basic())
+		assert.Less(t, share["archer1"], 1.0)
+		with(e, "boss", "full_share_t")
+		_, share = e.victims(b, a, e.basic())
+		assert.Equal(t, 1.0, share["archer1"])
 	})
 }

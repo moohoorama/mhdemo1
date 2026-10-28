@@ -39,6 +39,17 @@ func (e *Engine) ExploreFile() *content.Explore {
 
 func (e *Engine) area() *content.ExploreArea { return e.ExploreFile().Areas[e.state.Spot.Area] }
 
+// AreaTime is the time of day in the hero's area now: the first of its Times whose If holds, else its Time.
+func (e *Engine) AreaTime() string {
+	a := e.area()
+	for _, t := range a.Times {
+		if e.holdsAll(t.If) {
+			return t.Time
+		}
+	}
+	return a.Time
+}
+
 // Visitors are the people standing in the hero's area now, by key: also during one of the walk's events, where
 // nobody can be talked to.
 func (e *Engine) Visitors() []Visitor {

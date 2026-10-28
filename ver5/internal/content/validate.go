@@ -214,6 +214,13 @@ func (d *Data) Validate() error {
 	if c.Money < 0 {
 		return fmt.Errorf("campaign money %d", c.Money)
 	}
+	for id, eqs := range c.Loadout {
+		for _, eq := range eqs {
+			if _, ok := d.Equipment[eq]; !ok || !d.Characters[id].Playable {
+				return fmt.Errorf("campaign loadout %s %s", id, eq)
+			}
+		}
+	}
 	nodes := map[string]Node{}
 	for _, n := range d.Nodes {
 		if n.ID == "" || nodes[n.ID].ID != "" {

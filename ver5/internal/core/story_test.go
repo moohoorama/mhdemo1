@@ -186,8 +186,8 @@ func TestJoiningOfficerCatchesUpWithTheStory(t *testing.T) {
 	apply(t, e, Command{Kind: "start"})
 	o := e.char("jianyong")
 	require.NotNil(t, o)
-	assert.Equal(t, 13, o.Level, "the level of Xindu, the next battle")
-	assert.Equal(t, 1200, o.Points, "100 per level like the brothers")
+	assert.Equal(t, 17, o.Level, "the level of Xindu, the next battle")
+	assert.Equal(t, 1600, o.Points, "100 per level like the brothers")
 }
 
 func TestOfficersBelowTheStageLevelAreNotRaisedAtTheSortie(t *testing.T) {

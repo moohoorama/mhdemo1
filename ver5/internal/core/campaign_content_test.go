@@ -138,7 +138,9 @@ func executed(e *Engine, key string) bool { return e.state.Executed[key] }
 
 func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, true)
-	assert.Equal(t, []string{"B01", "B02", "B05", "B06", "B07", "B08", "B09", "B10"}, fought)
+	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10"}, fought)
+	assert.Equal(t, 1, e.state.Flags["flag-pengcheng-carts"])
+	assert.Positive(t, e.state.Inventory["barley"], "Tao Qian shares the grain from the carts")
 	assert.Equal(t, 1, e.state.Flags["flag-sunjian-alive"])
 	assert.Equal(t, 1, e.state.Flags["flag-bianshui-generals"])
 	assert.Equal(t, 1, e.state.Flags["flag-julu-clear"])
@@ -154,7 +156,7 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 
 func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, false)
-	assert.Len(t, fought, 8)
+	assert.Len(t, fought, 10)
 	assert.Zero(t, e.state.Flags["flag-julu-clear"])
 	assert.Positive(t, e.state.Warehouse["fire_manual"], "Huangfu Song hands the manual to whoever broke the siege by fire")
 	assert.True(t, executed(e, "battle-B10-vanguard-strong"), "the vanguard at Jiejiao is the hard one")

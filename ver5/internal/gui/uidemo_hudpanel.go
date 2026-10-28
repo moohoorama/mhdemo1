@@ -43,13 +43,13 @@ func demoHUDPanel(d *Demo) error {
 		case 160:
 			g.unitsList.filter, g.unitsList.order = "all", unitSort{"hp", 2}
 		case 190:
-			g.overlay = "roster"
+			g.overlays = []string{"roster"}
 		case 205:
 			g.rosterList.kind, g.rosterList.order = 1, unitSort{"attack", 2}
 		case 220:
 			g.rosterList.kind, g.rosterList.filter, g.rosterList.order = 2, "all", unitSort{"attr무력", 2}
 		case 235:
-			g.overlay = ""
+			g.closeOverlays()
 		case 240:
 			g.hudBase = "misc"
 		case 280:

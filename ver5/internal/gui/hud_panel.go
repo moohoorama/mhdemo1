@@ -6,17 +6,15 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/core"
-	"srpg/internal/session"
 )
 
 // The battle HUD's one panel in the upper right corner (docs_old/plans/PLAN_hud-panel.md): a head
 // line with the side to move and the end-of-phase button, a row of tabs, and the tab's content,
 // which sets the panel's height. Selecting an officer shows the unit tab; letting go returns to
-// the tab chosen by hand, and the enemy's turn shows the log.
+// the tab chosen by hand, and an AI army's turn shows the log.
 const (
 	hudHeaderH = 36
 	hudTabsH   = 32
-	hudAIRowH  = 34
 )
 
 // hudTop is the panel's top edge.
@@ -29,22 +27,18 @@ type hudTab struct{ id, title string }
 
 var hudTabs = []hudTab{{"minimap", "미니맵"}, {"unit", "장수"}, {"units", "일람"}, {"log", "기록"}, {"misc", "기타"}}
 
-// hudManualAI reports whether the enemy's turn waits for the player to advance it.
-func (g *Game) hudManualAI(o core.Observation) bool {
-	return o.Turn == "enemy" && g.S.Settings.AI != "auto"
-}
-
-// hudFollowTurn shows the log for the enemy's turn and the previous tab again afterwards.
+// hudFollowTurn shows the log for the AI armies' turns (enemy and allied) and the previous tab
+// again afterwards.
 func (g *Game) hudFollowTurn(o core.Observation) {
 	if o.Turn == g.hudTurn {
 		return
 	}
-	was := g.hudTurn == "enemy"
+	was := g.hudTurn != "" && g.hudTurn != "ally"
 	g.hudTurn = o.Turn
-	switch {
-	case o.Turn == "enemy":
+	switch now := o.Turn != "ally"; {
+	case now && !was:
 		g.hudBefore, g.hudBase, g.hudPeek = g.hudBase, "log", ""
-	case was:
+	case !now && was:
 		g.hudBase = g.hudBefore
 	}
 }
@@ -89,9 +83,6 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 	g.hudFollowTurn(o)
 	tab := g.hudCurrent(o)
 	head := hudHeaderH
-	if g.hudManualAI(o) {
-		head += hudAIRowH
-	}
 	x, y := uiW-12-infoW, hudTop()
 	room := uiH - 8 - y - head - hudTabsH
 	bodyH := 0
@@ -185,17 +176,6 @@ func (g *Game) hudHead(dst *ebiten.Image, o core.Observation, r image.Rectangle)
 		end = g.endPhase
 	}
 	g.btn(dst, image.Rect(r.Max.X-108, r.Min.Y+5, r.Max.X-10, r.Min.Y+hudHeaderH-5), "진영 종료", end)
-	if g.hudManualAI(o) {
-		var one, all func()
-		if idle {
-			one = func() { g.request(session.Request{Op: "ai"}) }
-			all = g.resolvePhase
-		}
-		y := r.Min.Y + hudHeaderH
-		half := (r.Dx() - 30) / 2
-		g.btn(dst, image.Rect(r.Min.X+10, y, r.Min.X+10+half, y+hudAIRowH-6), "적 한 명령", one)
-		g.btn(dst, image.Rect(r.Min.X+20+half, y, r.Min.X+20+2*half, y+hudAIRowH-6), "적 진영 진행", all)
-	}
 }
 
 // hudTabRow draws the tabs: the unit tab is always there and shows itself with a selection, and a click on another
@@ -236,7 +216,7 @@ func (g *Game) hudMisc(dst *ebiten.Image, r image.Rectangle) {
 		click func()
 	}{
 		{"위협 범위" + mark(g.threatAll), func() { g.threatAll = !g.threatAll }},
-		{"자동 진행" + mark(g.autoplay), func() { g.autoplay = !g.autoplay }},
+		{"자동 전투" + mark(g.autoplay), func() { g.autoplay = !g.autoplay }},
 		{"작전 개요", func() { g.modals = append(g.modals, &modal{kind: "objective", manual: true}) }},
 		{"병력일람", func() { g.openOverlay("roster") }},
 		{"메뉴", func() { g.openOverlay("menu") }},

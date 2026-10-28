@@ -1,0 +1,20 @@
+# c03-e-rumor  S_tavern2  ch03  origin -1 -1
+Pil##################Pil
+###...Bch...Jar...CtrJar
+###...Tbl............Jar
+###.........Tbl.........
+###Lnt...............Bch
+###JarTbl.........Tbl...
+PilJar......Tbl.........
+
+Gue 술손님  (stands where the walk left them)
+G_b 옆자리 손님  (stands where the walk left them)
+Liu 유비  (stands where the walk left them)
+Gua 관우  (stands where the walk left them)
+Zha 장비  (stands where the walk left them)
+
+# c03-r1: Liu -> 3 3
+# c03-r9: Zha -> 5 4
+# c03-r9: Zha -> 7 4 and leaves
+# c03-r9: Gua -> 5 4
+# c03-r9: Gua -> 7 4 and leaves

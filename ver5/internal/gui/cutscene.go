@@ -41,22 +41,31 @@ func timelineEnd(entries []timedFn) float64 {
 // walkTimeline has a unit walk a path cell by cell from the moment start, then stand at rest turned
 // to facing (none: the way its last step went).
 func (g *Game) walkTimeline(id string, path []content.Point, facing string, start float64) []timedFn {
-	v := g.unitAt(id)
-	if v == nil || len(path) < 1 {
+	if len(path) < 1 {
 		return nil
 	}
 	var out []timedFn
 	for i, cell := range path[1:] {
 		cell := cell
-		out = append(out, timedFn{start + float64(i)*stepTime, func() { g.stepTo(v, cell) }})
+		out = append(out, timedFn{start + float64(i)*stepTime, g.onUnit(id, func(v *unitVis) { g.stepTo(v, cell) })})
 	}
-	out = append(out, timedFn{start + float64(len(path)-1)*stepTime, func() {
+	out = append(out, timedFn{start + float64(len(path)-1)*stepTime, g.onUnit(id, func(v *unitVis) {
 		if facing != "" {
 			v.dir = facing
 		}
 		v.play(v.rest())
-	}})
+	})})
 	return out
+}
+
+// onUnit runs f on the unit as it stands when the beat comes: a unit that arrives earlier in the same
+// replay is not on the field yet when the timeline is built.
+func (g *Game) onUnit(id string, f func(*unitVis)) func() {
+	return func() {
+		if v := g.unitAt(id); v != nil {
+			f(v)
+		}
+	}
 }
 
 // cutsceneTimeline turns a cutscene's groups into one timeline: a group's steps start together
@@ -66,23 +75,18 @@ func (g *Game) cutsceneTimeline(groups [][]core.CutStep) (entries []timedFn, tot
 		longest := 0.0
 		for _, st := range group {
 			st := st
-			v := g.unitAt(st.Unit)
 			length := 0.0
 			switch st.Kind {
 			case "move":
 				entries = append(entries, g.walkTimeline(st.Unit, st.Path, st.Facing, total)...)
 				length = float64(max(0, len(st.Path)-1)) * stepTime
 			case "play":
-				if v != nil {
-					entries = append(entries,
-						timedFn{total, func() { v.play(st.Motion) }},
-						timedFn{total + cutPlayTime(st), func() { v.play(v.rest()) }})
-				}
+				entries = append(entries,
+					timedFn{total, g.onUnit(st.Unit, func(v *unitVis) { v.play(st.Motion) })},
+					timedFn{total + cutPlayTime(st), g.onUnit(st.Unit, func(v *unitVis) { v.play(v.rest()) })})
 				length = cutPlayTime(st)
 			case "face":
-				if v != nil {
-					entries = append(entries, timedFn{total, func() { v.dir = st.Facing }})
-				}
+				entries = append(entries, timedFn{total, g.onUnit(st.Unit, func(v *unitVis) { v.dir = st.Facing })})
 			case "say":
 				lines := []content.Speech{{Actor: st.Unit, Text: st.Text}}
 				length = max(2, 1.5+float64(len([]rune(st.Text)))*.09)

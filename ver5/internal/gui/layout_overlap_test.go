@@ -25,19 +25,19 @@ func TestNoOverlappingButtons(t *testing.T) {
 		"units":        func() { g.hudBase = "units" },
 		"log":          func() { g.hudBase = "log" },
 		"misc":         func() { g.hudBase = "misc" },
-		"menu":         func() { g.overlay = "menu" },
-		"settings":     func() { g.overlay = "settings" },
+		"menu":         func() { g.overlays = []string{"menu"} },
+		"settings":     func() { g.overlays = []string{"settings"} },
 		"objective":    func() { g.modals = []*modal{{kind: "objective", manual: true}} },
-		"roster-basic": func() { g.overlay = "roster" },
-		"roster-stats": func() { g.overlay, g.rosterList.kind = "roster", 1 },
-		"roster-bio":   func() { g.overlay, g.rosterList.kind = "roster", 2 },
-		"roster-equip": func() { g.overlay, g.rosterList.kind = "roster", 3 },
+		"roster-basic": func() { g.overlays = []string{"roster"} },
+		"roster-stats": func() { g.overlays, g.rosterList.kind = []string{"roster"}, 1 },
+		"roster-bio":   func() { g.overlays, g.rosterList.kind = []string{"roster"}, 2 },
+		"roster-equip": func() { g.overlays, g.rosterList.kind = []string{"roster"}, 3 },
 	}
 	for name, setup := range scenes {
 		for _, scale := range []int{70, 100, 130, 160, 200} {
 			for _, sc := range screens {
 				t.Run(fmt.Sprintf("%s/%dx%d@%d", name, sc.X, sc.Y, scale), func(t *testing.T) {
-					g.hudBase, g.selected, g.overlay, g.modals, g.rosterList = "", "", "", nil, unitList{filter: "all"}
+					g.hudBase, g.selected, g.overlays, g.modals, g.rosterList = "", "", nil, nil, unitList{filter: "all"}
 					g.windows = nil
 					g.S.Settings.UIScale = scale
 					setup()

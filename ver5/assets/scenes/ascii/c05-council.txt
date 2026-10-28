@@ -1,0 +1,38 @@
+# c05-council  S_council  ch05  origin -1 -1
+Pil#################################Pil
+###...Brz...Bnr...Wpn...BnrXHDArmBrz...
+###Bnr.........QiaKonHan...............
+###Flg......TblTbl...Tbl...Tbl......gu1
+###CdlYuaDsk...........................
+###Cdl.................................
+###Bnr......YShSun...Tbl...Tbl......gu2
+###Wpn.................................
+Pil...Brz........................Brz...
+
+Yua 원소  (sit)
+Cao 조조  (off stage, enters later (cell 12 4))
+XHD 하후돈
+Qia 교모  (official_noncombat, sit)
+Han 한복  (official_noncombat, sit)
+YSh 원술  (sit)
+gu1 호위#1  (guards)
+gu2 호위#2  (guards)
+Sun 손견  (sit)
+Kon 공융  (sit)
+Liu 유비  (off stage, enters later (cell 12 4))
+Gua 관우  (off stage, enters later (cell 12 4))
+Zha 장비  (off stage, enters later (cell 12 4))
+Mes 전령  (light_infantry, off stage, enters later (cell 12 4))
+
+# c05-f1: Cao -> 9 4
+# c05-f1: Liu -> 10 4
+# c05-f1: Gua -> 11 3
+# c05-f1: Zha -> 11 4
+# c05-f3a: Cao -> 9 1
+# c05-f3a: Gua -> 9 3
+# c05-f3a: Liu -> 8 4
+# c05-f3a: Zha -> 9 5
+# c05-f3a: Cao -> 7 1
+# c05-f21: Mes -> 10 4
+# c05-f23: Sun -> 4 6
+# c05-f23: Sun -> 12 6 and leaves

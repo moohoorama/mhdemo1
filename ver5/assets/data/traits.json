@@ -178,7 +178,17 @@
   },
   "intimidate": {
    "Name": "위압",
-   "Desc": "물리 공격이 빗나가도 피해의 절반이 들어간다.",
+   "Desc": "무게와 위압감으로 어떤 상황에서도 피해가 줄지 않는다. 연격·반격과 주변·뒤 칸을 함께 치는 공격이 온전히 들어간다.",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 0,
+   "Effects": {
+    "full_share": 1
+   }
+  },
+  "vital_strike": {
+   "Name": "급소",
+   "Desc": "피하는 적의 빈틈을 찔러, 물리 공격이 빗나가도 피해의 절반이 들어간다.",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 0,

@@ -2,12 +2,12 @@
 TRETRETRETRE...,,,...~~~~~~TRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRE.........
 TRETRETRETRE,,,...,,,~~~~~~TRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRE.........
 TRETRETRETRE...,,,...~~~~~~TRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRE.........
-TRETRETRE............~~~~~~TRETRETRETRETRE...fo5ar3Xurfo6ca1TRETRETRETRETRE.........
-...,,,...............~~~~~~............XHY...fo1fo3...............pl1pl5............
-.....................BRGBRG...............CaoCngar1...............pl2pl6............
-.....................BRGBRG...............XHDfo2ar2...............pl3pl7............
-......,,,............~~~~~~............Cen......fo4...............pl4pl8.........CMP
-TRETRETRE............~~~~~~TRETRETRETRETREca2fo7ar4fo8ar5...TRETRETRETRETRE.........
+TRETRETRE............~~~~~~TRETRETRETRETRE..................TRETRETRETRETRE.........
+...,,,...............~~~~~~......ca1fo3XHY...fo1..................pl1pl5............
+..................TrcBRGBRGTrcXurar2fo4...CaoCngar1...............pl2pl6............
+.....................~~~~~~...ar4ar3fo5...XHDfo2..................pl3pl7............
+......,,,............~~~~~~......ca2fo6Cen........................pl4pl8.........Trc
+TRETRETRE............~~~~~~TRETRETRETRETRE..................TRETRETRETRETRE.........
 TRETRETRETRE,,,...,,,~~~~~~TRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRE.........
 TRETRETRETRE...,,,...~~~~~~TRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRE.........
 TRETRETRETRE,,,...,,,~~~~~~TRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRE.........
@@ -20,27 +20,24 @@ pl5 Allies[4]  player
 pl6 Allies[5]  player
 pl7 Allies[6]  player
 pl8 Allies[7]  player
-Cao Party[0]  caocao, ally, group wei, policy march, faction wei
-XHD Party[1]  xiahoudun, ally, group wei, policy march, faction wei
-XHY Party[2]  xiahouyuan, ally, group wei, policy march, faction wei
-Cen Party[3]  caoren, ally, group wei, policy march, faction wei
-Cng Party[4]  caohong, ally, group wei, policy march, faction wei
-fo1 Party[5]  troop_footman, ally, group wei, policy march, faction wei
-fo2 Party[6]  troop_footman, ally, group wei, policy march, faction wei
-ar1 Party[7]  troop_archer, ally, group wei, policy march, faction wei
-ar2 Party[8]  troop_archer, ally, group wei, policy march, faction wei
-fo3 Party[9]  troop_footman, ally, group wei, policy march, faction wei
-fo4 Party[10]  troop_footman, ally, group wei, policy march, faction wei
-Xur Enemies[0]  xurong, enemy, group ambush, policy hold, rank commander
-fo5 Enemies[1]  troop_footman, enemy, group ambush, policy hold
-ar3 Enemies[2]  troop_archer, enemy, group ambush, policy hold
-fo6 Enemies[3]  troop_footman, enemy, group ambush, policy hold
-ca1 Enemies[4]  troop_cavalry, enemy, group ambush, policy hold
-ca2 Enemies[5]  troop_cavalry, enemy, group ambush, policy hold
-fo7 Enemies[6]  troop_footman, enemy, group ambush, policy hold
-ar4 Enemies[7]  troop_archer, enemy, group ambush, policy hold
-fo8 Enemies[8]  troop_footman, enemy, group ambush, policy hold
-ar5 Enemies[9]  troop_archer, enemy, group ambush, policy hold
+Cao Party[0]  caocao, ally, group wei, policy assault, faction wei
+XHD Party[1]  xiahoudun, ally, group wei, policy assault, faction wei
+XHY Party[2]  xiahouyuan, ally, group wei, policy assault, faction wei
+Cen Party[3]  caoren, ally, group wei, policy assault, faction wei
+Cng Party[4]  caohong, ally, group wei, policy assault, faction wei
+fo1 Party[5]  troop_footman, ally, group wei, policy assault, faction wei
+fo2 Party[6]  troop_footman, ally, group wei, policy assault, faction wei
+ar1 Party[7]  troop_archer, ally, group wei, policy assault, faction wei
+Xur Enemies[0]  xurong, enemy, group rear, policy assault, rank commander
+fo3 Enemies[1]  troop_footman, enemy, group rear, policy assault
+ar2 Enemies[2]  troop_archer, enemy, group rear, policy assault
+fo4 Enemies[3]  troop_footman, enemy, group rear, policy assault
+ca1 Enemies[4]  troop_cavalry, enemy, group rear, policy assault
+ca2 Enemies[5]  troop_cavalry, enemy, group rear, policy assault
+fo5 Enemies[6]  troop_footman, enemy, group rear, policy assault
+ar3 Enemies[7]  troop_archer, enemy, group rear, policy assault
+fo6 Enemies[8]  troop_footman, enemy, group rear, policy assault
+ar4 Enemies[9]  troop_archer, enemy, group rear, policy assault
 
 # area 1 연합 진영 방향: x 25..27, y 3..8
 # area 2 동남쪽 끝: x 27..27, y 0..11

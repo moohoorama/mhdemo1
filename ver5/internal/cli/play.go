@@ -158,7 +158,6 @@ func (p *player) settingsScreen() {
 		p.request(q)
 	}
 	p.add(fmt.Sprintf("전투 기록 자세히: %t", v.Detail), func() { set(func(*session.Request) { v.Detail = !v.Detail }) })
-	p.add(fmt.Sprintf("전원 반격(피해 50%%): %t", v.CounterAll), func() { set(func(*session.Request) { v.CounterAll = !v.CounterAll }) })
 	p.add("돌아가기", func() { p.screen = "" })
 }
 
@@ -484,6 +483,10 @@ func (p *player) events(evs []core.Event) {
 				state = st.Name
 			}
 			p.printf("  지형 변화: 구역 %d → %s\n", e.Amount, state)
+		case "mark":
+			if len(e.Path) > 0 {
+				p.printf("  지형 변화: (%d,%d) → %s\n", e.Path[0].X, e.Path[0].Y, p.d.States[e.Target].Name)
+			}
 		case "status": // a run of the same change is one line
 			if i > 0 && evs[i-1].Kind == "status" && evs[i-1].Text == e.Text && evs[i-1].Amount == e.Amount {
 				continue

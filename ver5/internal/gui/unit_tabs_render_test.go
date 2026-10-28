@@ -146,7 +146,7 @@ func (p *unitTabsRenderTest) Update() error {
 		u := g.unitView(o, g.selected)
 		g.modals = []*modal{{kind: "levelup", level: levelUp{id: u.ID, from: 1, to: 2, before: u.Stats, after: u.Stats, progress: 20}}}
 		g.offerEnd(o)
-		if g.overlay != "" {
+		if g.overlay() != "" {
 			p.err = fmt.Errorf("confirmation overlaps level-up")
 			return ebiten.Termination
 		}
@@ -157,7 +157,7 @@ func (p *unitTabsRenderTest) Update() error {
 		}
 		g.buttons[0].click()
 		g.offerEnd(g.S.Engine.Observe())
-		if g.overlay != "" {
+		if g.overlay() != "" {
 			p.err = fmt.Errorf("confirmation overlaps learning")
 			return ebiten.Termination
 		}
@@ -177,7 +177,7 @@ func (p *unitTabsRenderTest) Update() error {
 		g.player.Skip()
 		g.learn = g.S.Engine.Observe().Learners
 		g.offerEnd(g.S.Engine.Observe())
-		if g.overlay != "confirm" {
+		if g.overlay() != "confirm" {
 			p.err = fmt.Errorf("end confirmation missing after learning")
 			return ebiten.Termination
 		}

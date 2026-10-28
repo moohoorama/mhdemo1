@@ -11,7 +11,9 @@ func (g *Game) focusOfficer(id string) {
 	if u == nil {
 		return
 	}
-	g.panToCell(u.X, u.Y)
+	if !g.cameraLocked() {
+		g.panToCell(u.X, u.Y)
+	}
 	g.selected = id
 	if g.busy() {
 		return

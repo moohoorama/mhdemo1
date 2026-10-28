@@ -17,6 +17,7 @@
     "item_halberd",
     "item_horse",
     "item_jueying",
+    "item_knuckles",
     "item_leather",
     "item_map",
     "item_medicine",
@@ -713,6 +714,29 @@
             "w": "#d8c8b0",
             "s": "#2c1a10",
             "i": "#c8c6bc"
+          }
+        }
+      }
+    },
+    "item_knuckles": {
+      "cell": [144, 144],
+      "anchor": [8, 8],
+      "dot": 4,
+      "source": "sources/item_knuckles.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "g": "#3a2416",
+            "G": "#5e3a22",
+            "w": "#87562f",
+            "W": "#a8743f",
+            "d": "#4b5157",
+            "b": "#7f868c",
+            "l": "#b3b9bd",
+            "h": "#e4e8e9"
           }
         }
       }

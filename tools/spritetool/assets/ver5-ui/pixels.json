@@ -1494,6 +1494,48 @@
    ]
   }
  ],
+ "item_knuckles": [
+  {
+   "icon": [
+    "....................................",
+    "....................................",
+    "....................................",
+    ".....................kkkk...........",
+    "....................kkGGGk..........",
+    "..................kkgGGGGGkk........",
+    "................kkkGwwkkkggkk.......",
+    "..............kkkkGwwwwkkggwwk......",
+    "..........kkkkgGGGggwGGGkkggGk......",
+    ".......kkkkwwwwwwGGggwwGGkgggGk.....",
+    "......kkwwwGwwwwGGGGgGGGGGgggGk.....",
+    ".....kkwwwwGGGwwwGGGGGGgGGGkgGkk....",
+    "....kkGwwwwGGGwGGwwggGGgGGGkkGkk....",
+    "....kGGGwwGGGwwGGGgggggggGgGkGkk....",
+    "...kkhhdkkGGwwwwGGGggggGGggGGGk.....",
+    "...kbhddlhkGwwGGGGGGgggGGGgGGk......",
+    "..kkbdddbbblhkGGGwwGggggGGGkk.......",
+    "..klbddbbbbbbbbGGwwGGggGGGkgkk......",
+    "..kbdddbbdbbbbdhGGwGGGgGGkgggkkk....",
+    "..kkddbbddbbddkhhkkGGgggGkggggGkk...",
+    "...kggkdddddddhbbbdkGGggkkkggggwk...",
+    "...kGGgGgbbdddbbbddkGGgkk..kgggwkk..",
+    "...kGGGGGggddlbddddgGGGkk...kkkGGk..",
+    "....kGGGGgGGgldddddgkgGk.....kGGGk..",
+    ".....kGGggGGggbdddggkgGk....kGGGGk..",
+    "......kkggGGggGGddggggkk...kGGGGk...",
+    ".......kkkkggGGggggggkk...kwGGGGk...",
+    "..........kkgkGgGggkkk...kwwGGGk....",
+    "............kkkGGGk......kkwwwkk....",
+    "..............kkkk........kkwwk.....",
+    "............................kkk.....",
+    ".............................k......",
+    "....................................",
+    "....................................",
+    "....................................",
+    "...................................."
+   ]
+  }
+ ],
  "item_bean": [
   {
    "icon": [

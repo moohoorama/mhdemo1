@@ -132,7 +132,7 @@ func TestTerrainRecoverySeparatesHPAndMP(t *testing.T) {
 				t.Fatal(lines)
 			}
 			lines = strings.Join(terrainInfoLines(d, content.Cell{Ground: 'g', Structure: 'v', State: 'e'}, false, family, "보병"), "\n")
-			if !strings.Contains(lines, "차례 시작 병력 -20%") || strings.Contains(lines, "병력 회복 +") {
+			if !strings.Contains(lines, "차례 시작 병력 -10%") || strings.Contains(lines, "병력 회복 +") {
 				t.Fatal("embers on a village:", lines)
 			}
 		})

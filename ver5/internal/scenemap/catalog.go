@@ -18,8 +18,10 @@ type Catalog struct {
 	Tiles map[int]Sprite
 	// Animations are the tileset's frame lists by name ("water", "grass_0", …).
 	Animations map[string][]int
-	Rules      Rules
-	Scenery    *Scenery // nil when graphics/map/scenery.json is absent
+	// Anims are the looping strips (index.json "anims") by name, each with the rect and pivot of its frame 0.
+	Anims   map[string]Sprite
+	Rules   Rules
+	Scenery *Scenery // nil when graphics/map/scenery.json is absent
 }
 
 // Sprite is a picture on one of the sheets; its pivot lands on the drawing point.
@@ -68,6 +70,25 @@ type Rules struct {
 		Offset [2]int `json:"offset"`
 	} `json:"corner_shadow"`
 	Footprints map[string][4]float64 `json:"footprints"`
+	// Attachments are what an object carries wherever it stands: the flames of a campfire, the light of a lantern.
+	Attachments map[string][]Attachment `json:"attachments"`
+}
+
+// Attachment is a looping strip drawn over an object (a flame), the light it casts at night, or both, at At canvas
+// pixels from the object's anchor.
+type Attachment struct {
+	Anim  string  `json:"anim,omitempty"`
+	At    [2]int  `json:"at"`
+	Light float64 `json:"light,omitempty"` // the light's radius, world pixels at zoom 1
+	Glow  bool    `json:"glow,omitempty"`  // a fire's warm glow over its light
+}
+
+// Light is a light an object casts at night, at a canvas point.
+type Light struct {
+	X      float64 `json:"x"`
+	Y      float64 `json:"y"`
+	Radius float64 `json:"r"`
+	Glow   bool    `json:"glow,omitempty"`
 }
 
 // LoadCatalog reads the catalog from a graphics directory (assets/graphics).
@@ -105,8 +126,12 @@ func NewCatalog(index, rules, scenery []byte) (*Catalog, error) {
 				Frames []int `json:"frames"`
 			} `json:"animations"`
 		} `json:"tileset"`
-		Props      sheet `json:"props"`
-		Extra      sheet `json:"extra"`
+		Props sheet `json:"props"`
+		Extra sheet `json:"extra"`
+		Anims map[string]struct {
+			Rect  [4]int `json:"rect"`
+			Pivot [2]int `json:"pivot"`
+		} `json:"anims"`
 		Structures struct {
 			Cell    [2]int         `json:"cell"`
 			Pivot   [2]int         `json:"pivot"`
@@ -116,7 +141,8 @@ func NewCatalog(index, rules, scenery []byte) (*Catalog, error) {
 	if err := json.Unmarshal(index, &ix); err != nil {
 		return nil, fmt.Errorf("index.json: %w", err)
 	}
-	c := &Catalog{Sprites: map[string]Sprite{}, Structures: map[string]Sprite{}, Tiles: map[int]Sprite{}, Animations: map[string][]int{}}
+	c := &Catalog{Sprites: map[string]Sprite{}, Structures: map[string]Sprite{}, Tiles: map[int]Sprite{}, Animations: map[string][]int{},
+		Anims: map[string]Sprite{}}
 	st := ix.Structures
 	for name, i := range st.Sprites {
 		c.Structures[name] = Sprite{Sheet: "structures", Rect: [4]int{i * st.Cell[0], 0, st.Cell[0], st.Cell[1]}, Pivot: st.Pivot}
@@ -133,6 +159,9 @@ func NewCatalog(index, rules, scenery []byte) (*Catalog, error) {
 	}
 	for name, a := range ix.Tileset.Animations {
 		c.Animations[name] = a.Frames
+	}
+	for name, a := range ix.Anims {
+		c.Anims[name] = Sprite{Sheet: "anims", Rect: a.Rect, Pivot: a.Pivot}
 	}
 	for _, s := range []struct {
 		name string
@@ -171,6 +200,21 @@ func (c *Catalog) footprint(name string) [4]float64 {
 		return f
 	}
 	return [4]float64{-.5, -.5, 1, 1}
+}
+
+// Attach lays out what an object named name carries when its anchor is at canvas point (x, y): the strips to draw
+// over it (DrawAnim) and its lights.
+func (c *Catalog) Attach(name string, x, y float64) (draws []Draw, lights []Light) {
+	for _, a := range c.Rules.Attachments[name] {
+		ax, ay := x+float64(a.At[0]), y+float64(a.At[1])
+		if s, ok := c.Anims[a.Anim]; ok {
+			draws = append(draws, Draw{Kind: DrawAnim, Name: a.Anim, X: round(ax - float64(s.Pivot[0])), Y: round(ay - float64(s.Pivot[1]))})
+		}
+		if a.Light > 0 {
+			lights = append(lights, Light{ax, ay, a.Light, a.Glow})
+		}
+	}
+	return draws, lights
 }
 
 func parseColor(s string) ([4]uint8, error) {

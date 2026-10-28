@@ -203,7 +203,7 @@
      "Talk": [
       [
        "노인",
-       "유씨 댁 아들! 돗자리 한 장 엮어 주게. 아, 이제 장수 하신다고? 그럼 돗자리는 누가 엮나."
+       "어이, 돗자리 장수! 한 장 엮어 주게. 아, 이제 장수 하신다고? 그럼 돗자리는 누가 엮나."
       ]
      ]
     }
@@ -599,24 +599,36 @@
    "Map": "S_militia_camp",
    "Name": "의병 주둔지",
    "At": [
-    6,
-    8
+    10,
+    5
    ],
    "Exits": [
     {
      "Name": "탁현으로",
      "At": [
-      6,
-      10
+      10,
+      3
      ],
      "To": "zhuo"
+    },
+    {
+     "Name": "삼형제의 막사",
+     "At": [
+      20,
+      26
+     ],
+     "Object": [
+      19,
+      24
+     ],
+     "To": "camp_tent"
     }
    ],
    "People": {
     "관우@camp": {
      "At": [
-      6,
-      4
+      12,
+      18
      ],
      "Face": "SE",
      "Sortie": {
@@ -625,8 +637,8 @@
     },
     "장비@camp": {
      "At": [
-      3,
-      4
+      20,
+      10
      ],
      "Face": "SW",
      "Play": "action",
@@ -640,8 +652,8 @@
     },
     "의병#1": {
      "At": [
-      2,
-      6
+      18,
+      14
      ],
      "Face": "NE",
      "Sprite": "light_infantry",
@@ -650,8 +662,8 @@
     },
     "의병#2": {
      "At": [
-      4,
-      6
+      20,
+      14
      ],
      "Face": "NE",
      "Sprite": "light_infantry",
@@ -660,8 +672,8 @@
     },
     "의병#3": {
      "At": [
-      3,
-      8
+      22,
+      14
      ],
      "Face": "NE",
      "Sprite": "light_infantry",
@@ -670,8 +682,8 @@
     },
     "술꾼@camp": {
      "At": [
-      9,
-      6
+      14,
+      10
      ],
      "Face": "SW",
      "Sprite": "light_infantry",
@@ -685,15 +697,66 @@
        "나리! 이름 올린 놈 중에 제가 제일 먼저였습니다. 그건 꼭 기억해 주십시오."
       ]
      ]
-    }
-   },
-   "Effects": [
-    {
-     "Effect": "smallfire",
+    },
+    "의병#4": {
      "At": [
-      6,
-      6
-     ]
+      19,
+      16
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "shu",
+     "Play": "attack"
+    },
+    "의병#5": {
+     "At": [
+      21,
+      16
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "shu",
+     "Play": "attack"
+    },
+    "의병#6": {
+     "At": [
+      30,
+      21
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "shu",
+     "Move": {
+      "Wander": 3
+     }
+    },
+    "의병#7": {
+     "At": [
+      17,
+      20
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    }
+   }
+  },
+  "camp_tent": {
+   "Map": "S_tent2",
+   "Name": "삼형제의 막사",
+   "Zoom": 3,
+   "At": [
+    6,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "밖으로",
+     "At": [
+      7,
+      7
+     ],
+     "To": "camp"
     }
    ]
   }

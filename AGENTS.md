@@ -42,6 +42,22 @@ standing shown before it is claimed, actions over explanations), the staging rul
 drafts side by side in an html page, the user picks, then data, then a game capture). Per-officer speech is in
 `ver5/docs/data-speech-style.md`.
 
+The core of this game's story (`ver5/docs/fullstory.md` and every scene, explore line and battle line drawn from it) is
+that it satisfies both the 삼국지 enthusiast and the player who enjoys 삼국지 lightly — in its wording and in its plot:
+- Wording keeps a fitting distance from the period. Not the language of papers, reference works or specialist
+  sources (no bare official titles like 상시 or 낭중, no 태학생 or 당고 in a passing line), but words a player today
+  understands that still sit naturally next to 연의's phrasing (십상시, 환관, 대장군, 벼슬을 돈 주고 산다).
+  Titles 연의 readers know well and a newcomer still reads as "some post" stay (기도위, 북부위, 태수, 자사).
+- Show the times as a feeling, not a thesis. The player only needs to sense that things are rotten (벼슬을 사고팔고,
+  뇌물을 바라고, 그 값을 세금으로 짜낸다); don't lecture on causes such as "the Yellow Turbans rose because of the
+  십상시".
+- The plot must hold up for the enthusiast: each person acts from their real standing, interests and the customs of
+  the late Han (check 정사 and 연의 before writing; don't belittle anyone without reason, don't invent schemes their
+  position would never allow). People exchange names before they use each other's 자.
+- Well-known anecdotes (조조's 오색 몽둥이, his feigned stroke, 허소's verdict) go in as townsfolk gossip a fan smiles
+  at and a newcomer still follows. Optional talk carries this colour; the line that opens the next event stays one,
+  short and plain.
+
 Where every person looks matters as much as where they stand: facing is read before any line is. Whenever you
 write or change a battle event, a cutscene, a scene, a stage's placement or its opening, decide each person's facing
 with their position — the engine turns an unset battle spawn toward its side's objective, and every event move should

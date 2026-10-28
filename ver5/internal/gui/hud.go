@@ -630,6 +630,9 @@ func (g *Game) drawMinimap(dst *ebiten.Image, o core.Observation, x0, y0 float64
 		strokeRect(dst, ax, ay, bx-ax, by-ay, 1, ink)
 	}
 	g.addButton(r, "", func() {
+		if g.cameraLocked() {
+			return
+		}
 		mx, my := cursorPos()
 		g.camX = ((float64(mx)-ox)/s*16 + g.field.OriginX) * K
 		g.camY = ((float64(my)-y0)/s*16 + g.field.OriginY) * K

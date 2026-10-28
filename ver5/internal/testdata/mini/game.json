@@ -48,9 +48,16 @@
   },
   "CritMultiplier": 1.5,
   "CounterShare": 0.7,
+  "PlainCounterShare": 0.5,
   "DoubleShare": 0.7,
   "PoisonPercent": 5,
   "BurnPercent": 4,
+  "CritMarks": {
+   "fire": "e",
+   "water": "w",
+   "earth": "r"
+  },
+  "CritMarkTurns": 3,
   "BuffPercent": 20,
   "BuffTurns": 2,
   "ExpGrowth": 1.035,
@@ -149,7 +156,18 @@
   "e": {
    "Name": "embers",
    "Blaze": 0.8,
-   "RestHP": -20
+   "RestHP": -10,
+   "Then": "s",
+   "Grounds": "gi"
+  },
+  "w": {
+   "Name": "wet",
+   "Factor": -0.1,
+   "Grounds": "gi"
+  },
+  "r": {
+   "Name": "rubble",
+   "Grounds": "gi"
   },
   "F": {
    "Name": "flames",

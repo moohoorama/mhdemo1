@@ -99,9 +99,9 @@ func (e *Engine) critForced(u, v *Unit, s content.Skill) bool {
 		e.has(u, content.FxCritAmbush) && e.CellProps(u.X, u.Y).Ambush
 }
 
-// critChance is the chance in percent that a physical blow lands critically; 100 when forced.
+// critChance is the chance in percent that a blow lands critically, by the morale of both sides; 100 when forced.
 func (e *Engine) critChance(u, v *Unit, s content.Skill) float64 {
-	if e.critForced(u, v, e.basic()) {
+	if e.critForced(u, v, s) {
 		return 100
 	}
 	return chance(e.data.Rules.Crit, e.ratio(e.attackStats(u, s).Morale, e.stats(v).Morale))
@@ -157,11 +157,11 @@ type blow struct {
 	derived bool
 }
 
-// strike is one blow: hit, critical and damage, with a missed blow still landing a share of it for 위압-like traits.
-// It reports the damage dealt and whether the blow hit.
-func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool) {
+// strike is one blow: hit, critical and damage, with a missed blow still landing a share of it for 급소-like traits.
+// It reports the damage dealt, whether the blow hit and whether it was critical.
+func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 	if u.HP <= 0 || v.HP <= 0 {
-		return 0, false
+		return 0, false, false
 	}
 	R := e.data.Rules
 	phys := s.Kind == content.KindPhysical
@@ -170,10 +170,10 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool) {
 	crit := false
 	if hit {
 		crit = e.critForced(u, v, s)
-		if phys && !crit {
+		if !crit {
 			crit = float64(e.rand(100)) < e.critChance(u, v, s)
 		}
-		if crit && phys && e.has(v, content.FxCritImmune) {
+		if crit && e.has(v, content.FxCritImmune) {
 			hit, crit = false, false
 		}
 	}
@@ -182,7 +182,7 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool) {
 		e.emit("miss", u.ID, v.ID, 0)
 		half := e.fx(u, content.FxMissHalf)
 		if !phys || half == 0 {
-			return 0, false
+			return 0, false, false
 		}
 		d *= half
 	} else if crit {
@@ -203,7 +203,7 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool) {
 			v.Status["poison"] = status
 		}
 	}
-	return n, hit
+	return n, hit, crit
 }
 
 // leech is the HP a striker takes back from damage it dealt.
@@ -234,9 +234,11 @@ func (e *Engine) attackOn(u, aim *Unit, vs []*Unit, s content.Skill, share map[s
 			b := blow{share: share[v.ID], derived: derived}
 			if i == 1 {
 				e.emit("double", u.ID, v.ID, 0)
-				b.share *= e.data.Rules.DoubleShare
+				if !e.has(u, content.FxFullShare) {
+					b.share *= e.data.Rules.DoubleShare
+				}
 			}
-			n, hit := e.strike(u, v, s, b)
+			n, hit, _ := e.strike(u, v, s, b)
 			dealt[v.ID] += n
 			if !hit && !derived {
 				e.riposte(v, u)
@@ -279,24 +281,27 @@ func (e *Engine) riposte(v, u *Unit) {
 	}
 }
 
-// counterAllShare is the share of a normal blow the counter-all setting strikes back with.
-const counterAllShare = 0.5
+// counterShare is the share of a normal blow v strikes back at u with: full for a 위압 unit, CounterShare
+// from a counter stance or trait, PlainCounterShare otherwise. forced is a counter by force against a
+// weaker attacker, which surely strikes twice.
+func (e *Engine) counterShare(u, v *Unit) (k float64, forced bool) {
+	forced = e.has(v, content.FxCounterForce) && e.might(u) < e.might(v)
+	if e.has(v, content.FxFullShare) {
+		return 1, forced
+	}
+	if v.Status["counter"].Turns > 0 || forced || e.has(v, content.FxCounterAlways) {
+		return e.data.Rules.CounterShare, forced
+	}
+	return e.data.Rules.PlainCounterShare, false
+}
 
-// counterBack is the target's counter-attack after it took u's physical action: from a counter stance,
-// or by force against a weaker attacker, which surely strikes twice. Without either, the counter-all
-// setting strikes back at counterAllShare.
+// counterBack is the target's counter-attack after it took u's physical action; every unit strikes back
+// at an attacker in its reach.
 func (e *Engine) counterBack(u, v *Unit) {
 	if v.HP <= 0 || u.HP <= 0 || !e.inRange(v, u, e.basic()) {
 		return
 	}
-	forced := e.has(v, content.FxCounterForce) && e.might(u) < e.might(v)
-	k := e.data.Rules.CounterShare
-	if v.Status["counter"].Turns == 0 && !forced && !e.has(v, content.FxCounterAlways) {
-		if !e.state.CounterAll {
-			return
-		}
-		k = counterAllShare
-	}
+	k, forced := e.counterShare(u, v)
 	e.strikeBack(v, []*Unit{u}, k, forced)
 }
 
@@ -311,8 +316,11 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 			share[q.ID] = k
 		}
 	}
-	side := func(q *Unit, k float64) { // struck besides the target: never more than the rules' share
-		if m := e.data.Rules.SideShareMax; m > 0 {
+	full := e.has(u, content.FxFullShare)
+	side := func(q *Unit, k float64) { // struck besides the target: never more than the rules' share, or in full for 위압
+		if full {
+			k = 1
+		} else if m := e.data.Rules.SideShareMax; m > 0 {
 			k = math.Min(k, m)
 		}
 		add(q, k)
@@ -535,8 +543,11 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 	apply := func(q *Unit, derived bool) {
 		if s.Kind == content.KindMagic {
 			struck = append(struck, q)
-			n, _ := e.strike(u, q, s, blow{share: 1})
+			n, _, crit := e.strike(u, q, s, blow{share: 1})
 			dealt[q.ID] += n
+			if crit {
+				e.markCell(q.X, q.Y, s.Element)
+			}
 			if !derived && e.has(q, content.FxReflect) && q.HP > 0 && u.HP > 0 {
 				e.strike(q, u, s, blow{share: 1, derived: true})
 			}

@@ -35,7 +35,7 @@ func TestIncomingStrikeAwardsExperience(t *testing.T) {
 			}
 			before := ally.HP
 			e.events = nil
-			n, hit := e.strike(enemy, ally, skill, blow{share: 1, derived: tc.derived})
+			n, hit, _ := e.strike(enemy, ally, skill, blow{share: 1, derived: tc.derived})
 			if tc.block {
 				if hit || n != 0 || ally.HP != before {
 					t.Fatal("defense did not block")

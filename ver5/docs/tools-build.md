@@ -12,7 +12,7 @@ uv run --with pillow python tools/build_effects.py        # 수제 픽셀 원본
 ```
 
 ```sh
-python3 tools/build_extra.py                                   # ../assets_candidate 그림 → assets/graphics/map/extra.png, effects/*.png (index.json의 extra, effects)
+python3 tools/build_extra.py                                   # ../assets_candidate 그림 → assets/graphics/map/extra.png, effects/*.png (index.json의 extra, anims의 불·연기·향로 줄)
 node tools/scene_maps/export.mjs > /tmp/scenes_draws.json      # 후보 viewer의 장면을 돌려 어떤 그림이 어디에 놓이는지 뽑는다
 python3 tools/scene_maps/build.py /tmp/scenes_draws.json       # → assets/graphics/maps/S_*.json 와 index.json의 maps
 python3 tools/scene_maps/compose.py                            # viewer에 없는 방(S_council, S_hall, S_tent_mid, S_tent_lux, S_tavern, S_inn), 야외(S_bridge, S_pass, S_peach_grove, S_castle_town, S_jail_street, S_market, S_checkpoint), 변형(S_turban_camp, S_rampart_siege, S_army_camp_hungry, S_castle_town_burnt)
@@ -34,7 +34,7 @@ python3 tools/scene_maps/wire_story.py                         # 장면이 없�
 python3 tools/scene_maps/scene_format.py                       # assets/scenes/*.json 줄 배치를 맞춘다
 ```
 
-- `build_extra.py`는 후보의 성벽(도트 `wall_clean_*`, 게임의 `wall_*`를 대신한다)·성문(`gatehouse_{closed,open}_*`)·실내 벽·바닥(같은 이름의 props.png 그림을 덮는다)·울타리·그을음·불탄 구조물·다리 손상·장면 소품과 불·연기 줄을 게임 그림 묶음으로 옮긴다. 옛 기둥 성문(`gate_*`)과 숲 속 덤불 시안은 넣지 않는다. 불·연기 줄은 `Assets.Flames`, 그림은 `Assets.Props`로 읽힌다.
+- `build_extra.py`는 후보의 성벽(도트 `wall_clean_*`, 게임의 `wall_*`를 대신한다)·성문(`gatehouse_{closed,open}_*`)·실내 벽·바닥(같은 이름의 props.png 그림을 덮는다)·울타리·그을음·불탄 구조물·다리 손상·장면 소품과 불·연기 줄을 게임 그림 묶음으로 옮긴다. 옛 기둥 성문(`gate_*`)과 숲 속 덤불 시안은 넣지 않는다. `../assets_candidate/anims/anims.json`의 줄(정지 그림 위에 아스키 프레임, 향로 연기)도 `effects/`에 그린다. 불·연기·향로 줄은 `index.json`의 `"anims"`로 `Assets.Anims`, 그림은 `Assets.Props`로 읽힌다(형식은 [presentation-scene.md](presentation-scene.md)).
 - 장면 나무(`stree_*`·`peach_bloom_*`)는 3D 렌더를 그대로 쓰지 않는다. 다시 그리려면: `python3 ../tools/unit3d/scene_props3d.py <이름> --3d`로 렌더를 `../output/scene-props3d/`에 받고(인자 없이 돌려도 칠한 나무는 덮어쓰지 않는다), 정수배 최근접 확대해 1024 마젠타 판에 놓아 codex-image에 참고로 준다. 요청문은 `trees.json`의 `prompt`를 따른다 — "참고는 실루엣·크기·줄기 기울기·가지 배치·빛 방향(왼쪽 위)만, 공 모양 덩이·덩이 위 구멍은 베끼지 말 것, 16비트 손도트처럼 큰 잎 덩이 몇 개·3톤 셀 음영·1px 외곽선"(참고를 그대로 따르라고만 하면 3D 덩이를 그대로 베낀다). 후보 둘 중 고른 그림을 512px로 `sources/<이름>.png`에 두고 `pixelize_tree.py`를 돌린다. 변환 값: `penalty`(그 색을 덜 쓰게, 소나무 밝은 잎), `dark`(가닥·꽃 덩이 사이 어두운 틈을 살림), `bark`+`foot`/`speck`+`inner`(꽃 둘레에 칠한 적갈색 테두리가 껍질색으로 잡히는 것을 테두리·꽃 그늘로).
 - 장면 맵은 viewer의 JS 장면 정의에서 뽑아 만든다. 원리와 빠지는 것(유닛·불꽃·하늘·밤 색)은 `tools/scene_maps/build.py` 위쪽 설명과 [presentation-scene.md](presentation-scene.md)에 있다.
 - 상태 아이콘 원본·설정은 `../tools/spritetool/assets/ver5-status/`, 런타임은 `assets/graphics/status/`다.

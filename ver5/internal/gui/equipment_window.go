@@ -386,7 +386,7 @@ func (g *Game) pickCommand(of *core.Character, slot string) (core.Command, bool)
 // press is let go on without dragging.
 func (g *Game) updateEquipPicker() bool {
 	e := &g.equip
-	if g.overlay != "equipment" || e.slot == "" || e.info.id != "" {
+	if g.overlay() != "equipment" || e.slot == "" || e.info.id != "" {
 		e.pressed = false
 		return false
 	}

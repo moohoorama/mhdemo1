@@ -56,17 +56,17 @@ type Assets struct {
 	FX            Shots                    // effects and their particles
 	Outside       Shots                    // pines and stones outside the battle area
 	UI            Shots                    // UI pictures: window frame, marks, icons, unit bar
-	Flames        map[string]FrameStrip    // flame tongues and smoke puffs by name
 	Backdrops     map[string]*ebiten.Image // far pictures behind outdoor scene maps (index.json "backdrops")
-	Sway          map[string]FrameStrip    // leaf sway of the scene trees by prop name (index.json "sway")
-	SwayShadow    map[string]FrameStrip    // the ground shadow of each sway frame
-	SwayMaps      map[string]bool          // the scene maps whose trees play Sway
+	// Anims are the looping strips by name (index.json "anims"): flame tongues and smoke puffs the code places, and
+	// scene props that move (tree leaves, incense smoke), which play wherever a prop of that name stands
+	Anims map[string]FrameStrip
 }
 
 // FrameStrip is an animation whose frames are all the same size, drawn with one pivot.
 type FrameStrip struct {
-	Frames []Sprite
-	MS     int // per frame; 0 for a strip stepped by something else (smoke ages)
+	Frames  []Sprite
+	MS      int      // per frame; 0 for a strip stepped by something else (smoke ages)
+	Shadows []Sprite // the ground shadow of each frame, for a prop whose outline moves; nil keeps the prop's own
 }
 
 // Prop is scene art at the characters' pixel scale (not K times larger like map tiles).
@@ -238,22 +238,13 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			Sprites map[string]propEntry
 		}
 		Backdrops map[string]string
-		Sway      struct { // leaf sway strips of the scene trees, packed by tools/build_tree_sway.py
+		Anims     map[string]struct { // packed by tools/build_extra.py (flames, smoke, incense) and tools/build_tree_sway.py
 			Image   string
+			Rect    [4]int // frame 0; frame i lies i widths to the right
 			Frames  int
 			MS      int
-			Maps    []string
-			Sprites map[string]struct {
-				Rect  [4]int // frame 0; frame i lies i widths to the right
-				Pivot [2]float64
-			}
-		}
-		Effects map[string]struct {
-			Image  string
-			Frame  [2]int
-			Frames int
-			MS     int
-			Pivot  [2]float64
+			Pivot   [2]float64
+			Shadows bool // every frame casts its own ground shadow
 		}
 	}
 	if err = json.Unmarshal(b, &index); err != nil {
@@ -353,40 +344,33 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			a.Structures[fmt.Sprintf("wall_%02d", i)] = clean.Sprite
 		}
 	}
-	a.Flames = map[string]FrameStrip{}
-	for name, e := range index.Effects {
-		im, err := loadRGBA(filepath.Join(dir, e.Image))
-		if err != nil {
-			return nil, err
-		}
-		sheet := ebiten.NewImageFromImage(im)
-		strip := FrameStrip{MS: e.MS}
-		for i := 0; i < e.Frames; i++ {
-			r := image.Rect(i*e.Frame[0], 0, (i+1)*e.Frame[0], e.Frame[1])
-			strip.Frames = append(strip.Frames, Sprite{sheet.SubImage(r).(*ebiten.Image), e.Pivot[0], e.Pivot[1]})
-		}
-		a.Flames[name] = strip
+	a.Anims = map[string]FrameStrip{}
+	type animSheet struct {
+		pix *image.RGBA
+		img *ebiten.Image
 	}
-	a.Sway, a.SwayShadow, a.SwayMaps = map[string]FrameStrip{}, map[string]FrameStrip{}, map[string]bool{}
-	if index.Sway.Image != "" {
-		im, err := loadRGBA(filepath.Join(dir, index.Sway.Image))
-		if err != nil {
-			return nil, err
-		}
-		sheet := ebiten.NewImageFromImage(im)
-		for name, sp := range index.Sway.Sprites {
-			strip, shadows := FrameStrip{MS: index.Sway.MS}, FrameStrip{MS: index.Sway.MS}
-			x, y, w, h := sp.Rect[0], sp.Rect[1], sp.Rect[2], sp.Rect[3]
-			for i := range index.Sway.Frames {
-				r := image.Rect(x+i*w, y, x+(i+1)*w, y+h)
-				strip.Frames = append(strip.Frames, Sprite{sheet.SubImage(r).(*ebiten.Image), sp.Pivot[0], sp.Pivot[1]})
-				shadows.Frames = append(shadows.Frames, castShadow(im.SubImage(r).(*image.RGBA), sp.Pivot, shade))
+	strips := map[string]animSheet{} // the trees share one sheet
+	for name, e := range index.Anims {
+		sh, ok := strips[e.Image]
+		if !ok {
+			pix, err := loadRGBA(filepath.Join(dir, e.Image))
+			if err != nil {
+				return nil, err
 			}
-			a.Sway[name], a.SwayShadow[name] = strip, shadows
+			sh = animSheet{pix, ebiten.NewImageFromImage(pix)}
+			strips[e.Image] = sh
 		}
-		for _, id := range index.Sway.Maps {
-			a.SwayMaps[id] = true
+		im, sheet := sh.pix, sh.img
+		strip := FrameStrip{MS: e.MS}
+		x, y, w, h := e.Rect[0], e.Rect[1], e.Rect[2], e.Rect[3]
+		for i := range e.Frames {
+			r := image.Rect(x+i*w, y, x+(i+1)*w, y+h)
+			strip.Frames = append(strip.Frames, Sprite{sheet.SubImage(r).(*ebiten.Image), e.Pivot[0], e.Pivot[1]})
+			if e.Shadows {
+				strip.Shadows = append(strip.Shadows, castShadow(im.SubImage(r).(*image.RGBA), e.Pivot, shade))
+			}
 		}
+		a.Anims[name] = strip
 	}
 	a.Backdrops = map[string]*ebiten.Image{}
 	for name, path := range index.Backdrops {

@@ -12,11 +12,11 @@
 ~~~~~~~~~,,,......,,,...............,,,.........FNC...............TRETRETRETRE
 ~~~~~~~~~#########Trc############......Trctu3...FNC...............TRETRETRETRE
 ~~~~~~~~~###______HFSso1______###...tu7.........FNC...............TRETRETREpl3
-~~~~~~~~~###___so2______so3___###......tu5,,,tu1......,,,............TRETRETRE
-~~~~~~~~~###______CST______so7###...Boc......,,,...,,,...............TREpl1TRE
-~~~~~~~~~###_______________so8###......tu6,,,tu2.....................TRETRETRE
-~~~~~~~~~###___so5______so6___###...tu8.........FNC...............TRETRETREpl2
-~~~~~~~~~###______Zhuso4______###......Trctu4...FNC...............TRETRETRETRE
+~~~~~~~~~###___so2____________###......tu5,,,tu1......,,,............TRETRETRE
+~~~~~~~~~###______CST_________###...Boc......,,,...,,,...............TREpl1TRE
+~~~~~~~~~###__________________###......tu6,,,tu2.....................TRETRETRE
+~~~~~~~~~###___so4____________###...tu8.........FNC...............TRETRETREpl2
+~~~~~~~~~###______Zhuso3______###......Trctu4...FNC...............TRETRETRETRE
 ~~~~~~~~~#########Trc############...............FNC...............TRETRETRETRE
 ~~~~~~~~~,,,,,,.....................,,,.........FNC.........TRE...............
 ~~~~~~~~~,,,.........t13.........t14............FNC...........................
@@ -39,10 +39,6 @@ so1 Party[2]  soldier, ally, group garrison, policy hold, faction han
 so2 Party[3]  soldier, ally, group garrison, policy hold, faction han
 so3 Party[4]  soldier, ally, group garrison, policy hold, faction han
 so4 Party[5]  soldier, ally, group garrison, policy hold, faction han
-so5 Party[6]  soldier, ally, group garrison, policy hold, faction han
-so6 Party[7]  soldier, ally, group garrison, policy hold, faction han
-so7 Party[8]  soldier, ally, group garrison, policy hold, faction han
-so8 Party[9]  soldier, ally, group garrison, policy hold, faction han
 Boc Enemies[0]  bocai, enemy, group southcamp, policy hold, rank commander
 tu1 Enemies[1]  troop_turban, enemy, group so1, policy react
 tu2 Enemies[2]  troop_turban, enemy, group so2, policy react

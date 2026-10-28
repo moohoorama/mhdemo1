@@ -9,7 +9,7 @@ import (
 func TestCoalitionDuelStory(t *testing.T) {
 	scripts, err := loadScripts()
 	require.NoError(t, err)
-	for _, id := range []string{"hulao-mushun", "hulao-wuanguo"} {
+	for _, id := range []string{"hulao-mushun", "hulao-fangyue"} {
 		t.Run(id, func(t *testing.T) {
 			story := scripts.Story(id, "defeat")
 			for time := 0.; time < story.Duration(); time += .03 {
@@ -49,21 +49,10 @@ func TestCoalitionDuelStory(t *testing.T) {
 		assert.Zero(t, last.Actors[1].Gray)
 	})
 
-	t.Run("Wuanguo retreats into his ranks and fades out", func(t *testing.T) {
-		story := scripts.Story("hulao-wuanguo", "defeat")
-		start := at(story, "retreat", 0)
-		var fade float64
-		for time := 0.; time < 3; time += .05 {
-			state := at(story, "retreat", time)
-			assert.Equal(t, start.Actors[1].Position, state.Actors[1].Position)
-			assert.Zero(t, state.Actors[0].Lane)
-			assert.GreaterOrEqual(t, state.Actors[0].Fade, fade)
-			fade = state.Actors[0].Fade
-		}
-		assert.Zero(t, at(story, "retreat", .5).Actors[0].Fade)
-		final := story.Sample(story.Duration())
-		assert.Equal(t, 1.0, final.Actors[0].Fade)
-		assert.Zero(t, final.Actors[0].Gray)
-		assert.Equal(t, "NW", final.Actors[0].Facing)
+	t.Run("Fangyue is cut down at the end", func(t *testing.T) {
+		story := scripts.Story("hulao-fangyue", "defeat")
+		last := story.Sample(story.Duration())
+		assert.Equal(t, 1.0, last.Actors[0].Gray)
+		assert.Zero(t, last.Actors[1].Gray)
 	})
 }

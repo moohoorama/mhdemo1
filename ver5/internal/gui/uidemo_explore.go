@@ -42,15 +42,17 @@ func demoExplore(d *Demo) error {
 		}
 		o := g.S.View()
 		switch {
-		case g.overlay == "confirm" && wait > 40:
+		case g.overlay() == "confirm" && wait > 40:
 			answer := g.answer
-			g.overlay, wait = "", 0
+			g.closeOverlay()
+			wait = 0
 			answer()
 			return
-		case g.overlay == "shop" && wait > 60:
-			g.overlay, wait = "", 0
+		case g.overlay() == "shop" && wait > 60:
+			g.closeOverlay()
+			wait = 0
 			return
-		case g.overlay != "":
+		case g.overlay() != "":
 			return
 		case len(g.modals) > 0:
 			if wait > 90 {
@@ -65,6 +67,9 @@ func demoExplore(d *Demo) error {
 			}
 			return
 		case o.Phase == "scenario" && isTalk(o.Dialogue.Kind):
+			if g.sceneBusy() {
+				wait = 0
+			}
 			if wait > 50 {
 				g.advanceDialogue()
 				wait = 0

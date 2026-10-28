@@ -115,7 +115,10 @@ func (g *Game) confirm(c core.Command) {
 		}
 	}
 	if c.Kind == "wait" {
-		g.send(session.Request{Op: "command", Command: c})
+		before := g.S.View()
+		if r := g.send(session.Request{Op: "command", Command: c}); r.OK && len(r.Events) > 0 {
+			g.replayOne(before, c, r.Events) // what the finished turn set off, such as a duel
+		}
 		return
 	}
 	g.request(session.Request{Op: "command", Command: c})
@@ -168,10 +171,6 @@ func (g *Game) mapClick(x, y int) {
 		for _, c := range g.S.Engine.LegalActions(g.ord.actor).Commands {
 			if c.Kind == "move" && c.X == x && c.Y == y {
 				if g.arm(x, y) {
-					return
-				}
-				if g.S.Engine.DuelAt(g.ord.actor, x, y) != "" {
-					g.moveIntoDuel(c) // a stage duel starts as soon as the two meet: no preview, no question
 					return
 				}
 				g.tentative(x, y)
@@ -794,11 +793,4 @@ func names(g *Game, ids []string) []string {
 		out[i] = g.name(id)
 	}
 	return out
-}
-
-// moveIntoDuel sends the move that starts a duel at once (a tentative move could not show it) and
-// replays the walk and the duel, which a plain move has already shown as its preview.
-func (g *Game) moveIntoDuel(c core.Command) {
-	g.clearOrder()
-	g.request(session.Request{Op: "command", Command: c})
 }

@@ -40,7 +40,7 @@ func TestMapFXDemoPaintsAValidMapAndTheArtIsLoaded(t *testing.T) {
 		}
 	}
 	for _, name := range []string{"flame_t", "flame_t_small", "smoke_t"} {
-		if s := a.Flames[name]; len(s.Frames) == 0 {
+		if s := a.Anims[name]; len(s.Frames) == 0 {
 			t.Errorf("no flame strip %q", name)
 		}
 	}

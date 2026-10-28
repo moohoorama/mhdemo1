@@ -6,13 +6,15 @@
 Every sprite of assets_candidate/tiles/tiles.json except the old pillar gate (gate_*) and the forest-cover idea
 (cover_bush_*), and the hay hut of structures.png (as "hut", for the scenario scenes), goes into one sheet, assets/graphics/map/extra.png, and is listed in assets/graphics/index.json under
 "extra" the way "props" is (rect, pivot, layer). The flame and smoke strips of assets_candidate/effects are copied to
-assets/graphics/effects/ and listed under "effects". The game reads both lists into its props and flame tables.
+assets/graphics/effects/, and the looping strips of assets_candidate/anims/anims.json (ASCII frames laid over a still
+tile, e.g. the smoke over the incense burner) are drawn there; both are listed under "anims", the game's one table of
+looping strips (docs/presentation-scene.md). The game reads "extra" into its props and "anims" into Assets.Anims.
 Requires Pillow."""
 import json
 import shutil
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageColor
 
 ROOT = Path(__file__).resolve().parents[2]
 CAND = ROOT / 'assets_candidate'
@@ -56,15 +58,43 @@ def main():
     out = {}
     for n, e in effects.items():
         shutil.copyfile(CAND / e['file'], GFX / 'effects' / f'{n}.png')
-        out[n] = {'image': f'effects/{n}.png', 'frame': e['frame'], 'frames': e['frames'], 'ms': e.get('ms', 0), 'pivot': e['pivot']}
+        out[n] = {'image': f'effects/{n}.png', 'rect': [0, 0, *e['frame']], 'frames': e['frames'], 'ms': e.get('ms', 0),
+                  'pivot': e['pivot']}
+    for n, a in json.load(open(CAND / 'anims/anims.json')).items():
+        if n == 'note':
+            continue
+        strip = drawn_strip(a, Image.open(CAND / tiles[a['base']]['file']).convert('RGBA'))
+        strip.save(GFX / 'effects' / f'{n}.png', optimize=True)
+        px, py = tiles[a['base']]['pivot']
+        out[n] = {'image': f'effects/{n}.png', 'rect': [0, 0, strip.width // len(a['frames']), strip.height],
+                  'frames': len(a['frames']), 'ms': a['ms'], 'pivot': [px, py + a['lift']]}
 
     path = GFX / 'index.json'
     index = json.load(open(path))
     index['extra'] = {'version': 1, 'image': 'map/extra.png', 'sprites': sprites}
-    index['effects'] = out
+    anims = {n: e for n, e in index.get('anims', {}).items() if not e['image'].startswith('effects/')}  # others' strips
+    index['anims'] = dict(sorted({**anims, **out}.items()))
     json.dump(index, open(path, 'w'), ensure_ascii=False, indent=1)
     open(path, 'a').write('\n')
-    print('extra', len(sprites), 'sprites', sheet.size, 'effects', len(out))
+    print('extra', len(sprites), 'sprites', sheet.size, 'anims', len(out))
+
+
+def drawn_strip(a, base):
+    """The frames of an anims.json entry side by side: the still tile lifted by a['lift'] rows, its ASCII frame over it
+    (palette colour at the character's alpha)."""
+    w, h = base.width, base.height + a['lift']
+    strip = Image.new('RGBA', (w * len(a['frames']), h))
+    for i, rows in enumerate(a['frames']):
+        assert len(rows) <= h and all(len(r) == w for r in rows), f'frame {i}: rows must be {w} wide, at most {h}'
+        frame = Image.new('RGBA', (w, h))
+        frame.paste(base, (0, a['lift']))
+        over = Image.new('RGBA', (w, h))
+        for y, row in enumerate(rows):
+            for x, c in enumerate(row):
+                if c != '.':
+                    over.putpixel((x, y), ImageColor.getrgb(a['palette'][c]) + (a['alpha'][c],))
+        strip.paste(Image.alpha_composite(frame, over), (i * w, 0))
+    return strip
 
 
 if __name__ == '__main__':

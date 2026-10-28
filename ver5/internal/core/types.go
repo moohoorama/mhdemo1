@@ -70,7 +70,6 @@ type State struct {
 	TileStates                        []TileState       `json:",omitempty"` // states an event put on cells, for Turns more rounds (0: for good)
 	Choices                           map[string]string // choice node -> the option taken
 	DamagePct, XPPct                  int               `json:",omitempty"` // damage dealt and experience gained in percent; 0 is 100
-	CounterAll                        bool              `json:",omitempty"` // every unit strikes back at a physical attacker in reach
 	Learning                          []string          // characters whose learning window is open, in order
 	Checkpoint                        *State            `json:",omitempty"`
 }
@@ -143,7 +142,7 @@ type Preview struct {
 	Cost, MinDamage, MaxDamage int
 	Healing, MPRecovery        int
 	Effect                     string
-	Hit, Crit, Double          float64 // percent; Crit and Double are 0 for non-physical actions
+	Hit, Crit, Double          float64 // percent; Crit is 0 for actions that do no damage, Double for spells too
 	XP, CritXP                 int     // the actor's experience in 1/100 percent of a level if it lands, normally and critically
 	Targets                    []string
 }

@@ -209,16 +209,40 @@ type Player struct {
 	Fading []*battleBubble // lines done with, fading out
 	// nextLine asks the replay to move on from the line on screen (a click once it is all out)
 	nextLine bool
-	// followed is the enemy group the camera last moved to (enemy_camera.go)
-	followed string
+	// ai marks an AI army's turn: its actions start on screen and log as they start (ai_view.go)
+	ai bool
+	// aimed is the action the camera last glided to; it starts even if not all of it fits
+	aimed int
+	// from is the state the AI turn started in, whose army the HUD names while it plays
+	from core.Observation
 }
 
 func (p *Player) Busy() bool { return len(p.waiting)+len(p.running) > 0 }
 
 // Play queues actions; final is the observation after all of them (synced at the end).
 func (p *Player) Play(actions []*replay.Action, final core.Observation) {
+	p.play(actions, final, false)
+}
+
+// PlayAI queues the AI army's turn that started in from: each action waits to be on screen and
+// writes the battle log when it starts.
+func (p *Player) PlayAI(from core.Observation, actions []*replay.Action, final core.Observation) {
+	p.play(actions, final, true)
+	p.from = from
+}
+
+// shownTurn is o with the turn the screen is playing: that of an AI turn until its replay ends,
+// though the rules have moved on.
+func (p *Player) shownTurn(o core.Observation) core.Observation {
+	if p.ai && p.Busy() {
+		o.Turn, o.Army, o.Round = p.from.Turn, p.from.Army, p.from.Round
+	}
+	return o
+}
+
+func (p *Player) play(actions []*replay.Action, final core.Observation, ai bool) {
 	p.g.dropSpeech()
-	p.actions, p.final = actions, final
+	p.actions, p.final, p.ai, p.aimed = actions, final, ai, -1
 	p.done = make([]bool, len(actions))
 	p.waiting = p.waiting[:0]
 	p.running = p.running[:0]
@@ -226,7 +250,6 @@ func (p *Player) Play(actions []*replay.Action, final core.Observation) {
 		p.waiting = append(p.waiting, i)
 	}
 	p.gap = stagger
-	p.followed = ""
 	p.looks = nil
 	if len(actions) == 0 {
 		p.g.sync(final)
@@ -243,18 +266,24 @@ func (p *Player) Update(dt float64) {
 		p.Duel.Advance(p.cutInStep(dt)) // the duel's clock waits for the cut-in
 	}
 	p.gap += dt
-	for k, i := range p.waiting {
-		ready := true
-		for _, j := range p.actions[i].After {
-			ready = ready && p.done[j]
+	if p.gap >= stagger {
+		ready := []int{}
+		for k, i := range p.waiting {
+			ok := true
+			for _, j := range p.actions[i].After {
+				ok = ok && p.done[j]
+			}
+			if ok {
+				ready = append(ready, k)
+			}
 		}
-		if ready && p.gap >= stagger {
+		if k := p.nextShown(ready); k >= 0 {
+			i := p.waiting[k]
 			p.waiting = append(p.waiting[:k], p.waiting[k+1:]...)
+			p.logAction(i)
 			r := &running{index: i, beats: p.g.perform(p.actions[i]), i: -1}
 			p.running = append(p.running, r)
 			p.gap = 0
-			p.followMovers()
-			break
 		}
 	}
 	if p.nextLine {
@@ -305,11 +334,23 @@ func (p *Player) Skip() {
 	if !p.Busy() {
 		return
 	}
+	for _, i := range p.waiting {
+		p.logAction(i)
+	}
 	p.waiting, p.running, p.Duel = nil, nil, nil
 	p.g.dropSpeech()
 	p.looks = nil
 	p.g.popups = nil
 	p.g.sync(p.final)
+}
+
+// logAction writes an AI action's commands to the battle log as it is shown.
+func (p *Player) logAction(i int) {
+	if p.ai {
+		for _, s := range p.actions[i].Steps {
+			p.g.logCommand(s.Command, s.Events)
+		}
+	}
 }
 
 func (g *Game) unitAt(id string) *unitVis { return g.vis[id] }
@@ -480,6 +521,13 @@ func (g *Game) perform(a *replay.Action) []beat {
 					look("terrain", x, y)
 				}
 				add(.4, func() { g.changeLooks(event) })
+			case "mark":
+				// the marks one spell leaves come up together
+				event, wait := e, .3
+				if i > 0 && events[i-1].Kind == "mark" {
+					wait = 0
+				}
+				add(wait, func() { g.markLook(event) })
 			case "unit-arrival":
 				event := e
 				if e.Unit != nil {

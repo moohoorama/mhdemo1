@@ -16,11 +16,12 @@ import (
 // and wait of it has ended.
 type Step struct {
 	Actor  string
-	Move   []float64 // walk to [u, v], along u first, then v
-	Enter  []float64 // appear at [u, v] first (an actor that starts off the stage), then walk to Move
-	Exit   bool      // leave the stage when the walk ends
-	Speed  float64   // walking speed, 1 when 0 (2 runs, .6 drags)
-	After  float64   // seconds after the group starts
+	Move   []float64   // walk to [u, v], along u first, then v
+	Via    [][]float64 // corners [u, v] the walk to Move passes first, in order, each reached along u first
+	Enter  []float64   // appear at [u, v] first (an actor that starts off the stage), then walk to Move
+	Exit   bool        // leave the stage when the walk ends
+	Speed  float64     // walking speed, 1 when 0 (2 runs, .6 drags)
+	After  float64     // seconds after the group starts
 	Face   string
 	Look   string // turn this way for a moment, then back
 	Play   string
@@ -36,7 +37,7 @@ type Step struct {
 	Zoom   float64 // camera zoom, whole numbers only (pixel art)
 	Time   string  // day (""), dusk, night or dawn from now on
 	Sprite string  // the actor stands as this sprite from now on
-	Prop   []any   // [name, u, v] puts a map prop down, [name] takes it away, [name, actor] makes it move with that actor
+	Prop   []any   // [name, u, v] puts a map prop down, [name] takes it away, [name, actor] makes it move with that actor; "name#2" is one more of that prop
 	Pose   string  // the motion the actor rests in from now on (sit, lie, kneel …); "idle" stands again
 	Patrol []float64
 	// walk to [u, v] and back, over and over, without holding up the beats (a sentry); a Move ends it

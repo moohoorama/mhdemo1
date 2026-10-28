@@ -234,9 +234,9 @@ func (g *Game) updateUnitList() bool {
 	}
 	l := &g.unitsList
 	switch {
-	case g.overlay == "roster":
+	case g.overlay() == "roster":
 		l = &g.rosterList
-	case g.hudShown == "units" && g.overlay == "":
+	case g.hudShown == "units" && g.overlay() == "":
 		if x, y := cursorPos(); !image.Pt(x, y).In(g.hudBody) {
 			return false
 		}

@@ -25,6 +25,7 @@ const (
 	FxLifeSteal      = "life_steal"       // heals this share of damage dealt
 	FxMissHalf       = "miss_half"        // a missed physical blow still deals this share
 	FxBulwark        = "bulwark"          // blows above this share of max HP deal half above it
+	FxFullShare      = "full_share"       // second strikes, counters and blows on the cells beside or behind the target deal full damage
 	FxCritImmune     = "crit_immune"      // a blow that would crit is blocked
 	FxRangedImmune   = "ranged_immune"    // ranged attackers always miss
 	FxRiposte        = "riposte"          // strikes back at a physical attacker that misses; value is the damage multiplier
@@ -68,7 +69,7 @@ var TraitEffects = map[string]bool{}
 
 func init() {
 	for _, k := range []string{FxRetreatSweep, FxCounterAlways, FxTurnDefense, FxCritWeaker, FxCritAlways, FxSpellCrit, FxCritAmbush, FxDoubleAlways, FxCounterForce, FxAssist,
-		FxSplashCross, FxSplashSquare, FxPierce, FxPierceBoost, FxIgnoreTerrain, FxPoison, FxLifeSteal, FxMissHalf, FxBulwark, FxCritImmune,
+		FxSplashCross, FxSplashSquare, FxPierce, FxPierceBoost, FxIgnoreTerrain, FxPoison, FxLifeSteal, FxMissHalf, FxBulwark, FxFullShare, FxCritImmune,
 		FxRangedImmune, FxRiposte, FxReflect, FxFortify, FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxFarSight,
 		FxMountedRange, FxLightMove, FxSpellRange, FxSpellSure, FxChain, FxSure, FxCritElement, FxDispel, FxStatusImmune,
 		FxHealBonus, FxAura, FxDeputy, FxItemShare, FxManaRegen, FxBloodCost, FxRegen, FxBuffExtend, FxLastStand,

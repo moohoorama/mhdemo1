@@ -3,124 +3,390 @@
   {
    "ID": "c07-start",
    "Kind": "scene",
-   "Place": "낙양 동쪽 · 조조의 영채"
+   "Place": "반동탁 연합 · 원소의 막사"
   },
   {
-   "ID": "c07-narr-1",
+   "ID": "c07-a1",
    "Kind": "narrate",
-   "Text": "서쪽 하늘이 붉다. 낙양이 타고 있다. 조조가 지도를 펼쳐 놓고 유비와 마주 섰다."
+   "Text": "호로관의 승전을 축하하는 술자리. 싸움에 나오지 않은 제후들이 잔을 든다."
   },
   {
-   "ID": "c07-01",
+   "ID": "c07-a2",
    "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "동탁은 천자와 백성 수십만을 끌고 가오. 걸음이 느릴 수밖에 없소."
+   "Speaker": "yuanshao",
+   "Text": "여포를 물리쳤으니 맹주로서 이보다 기쁜 일이 없소. 선봉을 현덕에게 맡긴 보람이 있었구려."
   },
   {
-   "ID": "c07-02",
+   "ID": "c07-a3",
    "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "지금 쫓으면 반드시 따라잡을 수 있소."
+   "Speaker": "yuanshao",
+   "Text": "다만 목순과 방열은 안타깝소. 상당과 하내가 공을 서두르다 아까운 장수를 잃었지."
   },
   {
-   "ID": "c07-03",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "동탁도 그것을 알 터이니, 길목에 군사를 숨겨 두었을 것입니다."
-  },
-  {
-   "ID": "c07-04",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "그래서 내가 선봉으로 나가 복병을 끌어내겠소. 복병이 드러나면 현덕이 뒤에서 들이치시오."
-  },
-  {
-   "ID": "c07-05",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "제후들도 우리 뒤를 받치기로 약조했소."
-  },
-  {
-   "ID": "c07-06",
+   "ID": "c07-a4",
    "Kind": "say",
    "Speaker": "zhangfei",
-   "Text": "그 제후 놈들이 정말 올지 모르겠슈."
+   "Text": "(작게) 뒤를 받친다더니, 술상만 받쳤네유."
   },
   {
-   "ID": "c07-07",
+   "ID": "c07-a5",
+   "Kind": "narrate",
+   "Text": "장비가 아차 하고 관우를 본다. 관우는 말리지 않는다. 조조가 잔에 코를 박고 웃음을 삼킨다."
+  },
+  {
+   "ID": "c07-out",
+   "Kind": "scene",
+   "Place": "반동탁 연합 · 막사 밖"
+  },
+  {
+   "ID": "c07-b1",
    "Kind": "say",
    "Speaker": "caocao",
-   "Text": "(웃으며) 올 것이오. 이번만큼은 그들도 체면이 있으니."
+   "Text": "공은 누구에게서나 장점을 찾는다 들었소. 저 안의 사람들에게서도 찾을 수 있소?"
+  },
+  {
+   "ID": "c07-b2",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "(한참 생각하다) 원본초 공은…… 말을 참 곱게 하십니다."
+  },
+  {
+   "ID": "c07-b3",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "그게 장점이면 천하제일이구려."
+  },
+  {
+   "ID": "c07-b4",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그리고 공로 공은 화를 내도 숨기지 않으십니다. 그건 정말 장점입니다."
+  },
+  {
+   "ID": "c07-b5",
+   "Kind": "narrate",
+   "Text": "조조가 웃다가 멈춘다. 서쪽 하늘이 붉다. 해가 진 지 한참이다."
+  },
+  {
+   "ID": "c07-b6",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "급보입니다! 동탁이 낙양에 불을 지르고 천자를 모시고 장안으로 떠났습니다! 백성 수십만을 몰고 갑니다!"
+  },
+  {
+   "ID": "c07-b7",
+   "Kind": "narrate",
+   "Text": "조조의 얼굴에서 냉소가 사라진다. 유비가 처음 보는 얼굴이다."
+  },
+  {
+   "ID": "c07-b8",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "지금 쫓아야 하오."
+  },
+  {
+   "ID": "c07-council",
+   "Kind": "scene",
+   "Place": "반동탁 연합 · 원소의 막사"
+  },
+  {
+   "ID": "c07-c1",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "동탁이 천자를 끼고 백성을 몰아가고 있소. 지금 쫓으면 한 번 싸움으로 천하가 정해지오."
+  },
+  {
+   "ID": "c07-c2",
+   "Kind": "narrate",
+   "Text": "제후들은 서로 눈치만 본다."
+  },
+  {
+   "ID": "c07-c3",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "다들 지쳤소. 동탁은 장안에서 스스로 무너질 것이오."
+  },
+  {
+   "ID": "c07-c4",
+   "Kind": "say",
+   "Speaker": "yuanshu",
+   "Text": "패한 적을 쫓다 다치면 누가 책임진다는 거냐!"
+  },
+  {
+   "ID": "c07-c5",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "(잠시 말이 없다가, 웃으며) ……알겠소. 다들 푹 쉬시오."
+  },
+  {
+   "ID": "c07-c6",
+   "Kind": "narrate",
+   "Text": "조조가 막사를 나간다."
+  },
+  {
+   "ID": "c07-out2",
+   "Kind": "scene",
+   "Place": "반동탁 연합 · 막사 밖"
+  },
+  {
+   "ID": "c07-d1",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "현덕, 어서 출진합시다."
+  },
+  {
+   "ID": "c07-d2",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "예? 방금 제후들이 다 반대하지 않았습니까."
+  },
+  {
+   "ID": "c07-d3",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "날 믿으시오. 해 뜨기 전에 떠나야 하오. 서두르시오."
+  },
+  {
+   "ID": "c07-d4",
+   "Kind": "narrate",
+   "Text": "조조가 영채 쪽으로 사라진다."
+  },
+  {
+   "ID": "c07-d5",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형, 저 양반 웃는 게 뭔가 꿍꿍이가 있는 얼굴인디유."
+  },
+  {
+   "ID": "c07-walk",
+   "Kind": "explore",
+   "Explore": "explore07"
+  },
+  {
+   "ID": "c07-march",
+   "Kind": "scene",
+   "Place": "서쪽으로 가는 길"
+  },
+  {
+   "ID": "c07-e1",
+   "Kind": "narrate",
+   "Text": "새벽. 유비의 군사와 조조의 군사가 나란히 행군한다."
+  },
+  {
+   "ID": "c07-e2",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형! 뒤에서 흙먼지가 일어유! 저번엔 뒤를 받친다더니, 이번엔 진짜로 오네유?"
+  },
+  {
+   "ID": "c07-e3",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "맹덕 공, 이게 어찌 된 일입니까?"
+  },
+  {
+   "ID": "c07-e4",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "진영에 말을 좀 흘렸소. 동탁이 보물을 싣고 가는데 무거워서 행렬 끝이 처진다고."
+  },
+  {
+   "ID": "c07-e5",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "그리고 조조가 그걸 혼자 차지하러 몰래 떠났다고."
+  },
+  {
+   "ID": "c07-e6",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "원공로는 남이 먼저 가져가는 꼴을 못 보고, 원본초는 남이 먼저 공을 세우는 꼴을 못 보지."
+  },
+  {
+   "ID": "c07-e7",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "누구 하나 움직이면 다 따라오게 되어 있소."
+  },
+  {
+   "ID": "c07-e8",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "보물을 보고 온 사람들은, 보물이 없으면 어떻게 합니까."
+  },
+  {
+   "ID": "c07-e9",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "그게 무슨 문제요? 내가 보물이 있다고 한 것도, 보물을 준다고 한 것도 아닌데."
   },
   {
    "ID": "c07-battle",
    "Kind": "battle",
    "Stage": "B07",
-   "Text": "변수 — 출전 준비"
+   "Text": "동탁 추격전 — 출전 준비"
   },
   {
    "ID": "c07-scene-2",
    "Kind": "scene",
-   "Place": "변수 동쪽 · 연합 진영 근처"
+   "Place": "반동탁 연합 · 조조 진영 앞마당, 새벽"
   },
   {
-   "ID": "c07-narr-2",
+   "ID": "c07-f01",
    "Kind": "narrate",
-   "Text": "안개 속으로 패잔병들이 걸어 들어온다. 조조의 어깨에 화살 자국이 있다."
+   "Text": "동이 틀 무렵, 조조 진영의 앞마당. 거적 덮인 주검이 줄지어 누워 있다."
   },
   {
-   "ID": "c07-11",
+   "ID": "c07-f02",
+   "Kind": "narrate",
+   "Text": "조조와 유비의 군사가 돌아온다. 유비의 말은 다친 군사를 싣고 먼저 의원 막사로 갔다. 유비는 밤새 걸어서 왔다."
+  },
+  {
+   "ID": "c07-f03",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형~ 그 말은 형이 타라니께유. 밤새 걸었더니 내 다리가 다 붓겄슈."
+  },
+  {
+   "ID": "c07-f04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "자네 다리가 부었으면, 허벅지에 화살 맞은 그 사람은 어떻겠나. 내 다리는 아직 둘 다 성하네."
+  },
+  {
+   "ID": "c07-f05",
+   "Kind": "narrate",
+   "Text": "장비가 주검 줄을 보고 입을 다문다. 거적 사이에는 탁군에서부터 따라온 의병들도 누워 있다."
+  },
+  {
+   "ID": "c07-f06",
+   "Kind": "say",
+   "Speaker": "caohong",
+   "Text": "주공. 고향에서 따라나선 이들 가운데…… 반도 돌아오지 못했습니다."
+  },
+  {
+   "ID": "c07-f08",
    "Kind": "say",
    "Speaker": "caocao",
-   "Text": "현덕, 공이 아니었으면 나는 저 숲에 누웠을 것이오."
+   "Text": "현덕. 공이 번갈아 뒤를 끊자 하지 않았다면, 나는 그 여울가에 누웠을 것이오."
   },
   {
-   "ID": "c07-gift-check",
+   "ID": "c07-f09",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "번갈아 끊자 했으니 제 차례를 했을 뿐입니다. 맹덕 공의 군사들도 끝까지 물러서지 않았습니다."
+  },
+  {
+   "ID": "c07-f10",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "운장, 익덕. 여울목에 둘이 버티고 선 걸 보고 서량 기병이 말머리를 돌리더구려."
+  },
+  {
+   "ID": "c07-f11",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "맨 끝은 하후 장군이 지켰소. 우리는 그 앞에 섰을 뿐이오."
+  },
+  {
+   "ID": "c07-f12",
+   "Kind": "say",
+   "Speaker": "xiahoudun",
+   "Text": "흥. 그쪽 둘이 앞을 막아 준 덕에 등이 좀 편하긴 했다."
+  },
+  {
+   "ID": "c07-sub-check",
    "Kind": "branch",
    "Cases": [
     {
      "If": [
       "flag:flag-bianshui-generals"
      ],
-     "Next": "c07-narr-3"
+     "Next": "c07-y01"
     }
    ],
-   "Else": "c07-end"
+   "Else": "c07-x01"
   },
   {
-   "ID": "c07-narr-3",
+   "ID": "c07-x01",
    "Kind": "narrate",
-   "Text": "조조가 허리에서 칼 한 자루를 풀어 유비에게 내민다."
+   "Text": "조조의 어깨에 감은 천에 피가 배어 있다. 조조가 타고 온 말은 조홍의 말이다."
   },
   {
-   "ID": "c07-12",
+   "ID": "c07-x02",
+   "Kind": "say",
+   "Speaker": "caohong",
+   "Text": "주공께서 그 여울을 건너신 것만으로 됐습니다. 말이야 또 구하면 그만이지요."
+  },
+  {
+   "ID": "c07-y01",
+   "Kind": "narrate",
+   "Text": "호위병을 거느린 원소가 앞마당으로 들어온다. 주검 줄 앞에서 걸음을 멈춘다."
+  },
+  {
+   "ID": "c07-y02",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "맹덕, 군사를 많이 잃었구려."
+  },
+  {
+   "ID": "c07-y03",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "그 군사로는 홀로 서기 어렵겠소. 동군이 비어 있으니 그리로 가서 흑산의 도적이나 막으시오. 군량은 내가 대 주리다."
+  },
+  {
+   "ID": "c07-y04",
    "Kind": "say",
    "Speaker": "caocao",
-   "Text": "의천검이오. 내가 아끼는 두 자루 칼 가운데 하나지."
+   "Text": "(잠시 말이 없다가) ……고맙네, 본초. 자네가 내 오랜 벗이라 다행이야."
   },
   {
-   "ID": "c07-13",
+   "ID": "c07-y05",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "……본초?"
+  },
+  {
+   "ID": "c07-y06",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "맹덕, 여기는 연합의 진영이고 나는 맹주요. 공이 흘린 헛소문을 좇아 나갔다가, 제후들이 체면만 잃고 돌아왔소."
+  },
+  {
+   "ID": "c07-y07",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "군사를 다 잃은 사람이 맹주와 너나들이할 처지는 아닐 텐데."
+  },
+  {
+   "ID": "c07-y08",
+   "Kind": "say",
+   "Speaker": "xiahoudun",
+   "Text": "이놈! 여포 깃발만 보고 달아난 것들이 무슨 체면을—"
+  },
+  {
+   "ID": "c07-y09",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "그려! 몸만 사릴 줄 아는 것들이 뭔 큰소리여!"
+  },
+  {
+   "ID": "c07-y12",
    "Kind": "say",
    "Speaker": "caocao",
-   "Text": "오늘 내 목숨을 건져 준 사람에게 주는 것이니 사양하지 마시오."
+   "Text": "(허리를 깊이 굽히며) ……맹주의 말씀이 옳습니다. 제가 제 처지를 몰랐습니다. 분부대로 하겠습니다."
   },
   {
-   "ID": "c07-14",
+   "ID": "c07-y13",
    "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "……받겠습니다."
+   "Speaker": "yuanshao",
+   "Text": "그래야지."
   },
   {
-   "ID": "c07-grant",
-   "Kind": "grant",
-   "Item": "yitian_sword",
-   "Count": 1,
-   "Event": "grant-yitian_sword"
-  },
-  {
-   "ID": "c07-end",
+   "ID": "c07-y14",
    "Kind": "narrate",
-   "Text": "연합 진영의 깃발이 새벽 안개 사이로 흐릿하게 보였다."
+   "Text": "원소가 돌아간다. 조조는 원소가 보이지 않게 된 뒤에도 한참 허리를 펴지 않는다."
   }
  ]
 }

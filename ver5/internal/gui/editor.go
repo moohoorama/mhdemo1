@@ -205,9 +205,9 @@ func (g *Game) updateEditor() error {
 			}
 		}
 	}
-	if g.overlay != "" {
+	if g.overlay() != "" {
 		if pressed(ebiten.KeyEscape) {
-			g.overlay = ""
+			g.closeOverlay()
 		}
 		return nil
 	}
@@ -685,7 +685,7 @@ func (g *Game) editorTrial() {
 	g.field = nil
 	g.vis = map[string]*unitVis{}
 	g.modals = nil
-	g.overlay = ""
+	g.closeOverlays()
 	g.resetBattleLog()
 	g.resetDeployment()
 }
@@ -710,7 +710,7 @@ func (g *Game) endEditorTrial() {
 	g.field = nil
 	g.vis = map[string]*unitVis{}
 	g.modals = nil
-	g.overlay = ""
+	g.closeOverlays()
 	g.resetBattleLog()
 	g.resetDeployment()
 }

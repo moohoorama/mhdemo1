@@ -1,0 +1,42 @@
+# B04  stage04.json  map04.json  origin 0 0
+...........................,,,........................TRETRE
+......TRETRE...............,,,..............................
+.........Zhaca1............ca6...............TRE......TRETRE
+......ca3ca2...............,,,............TRE............TRE
+......,,,......TRETRE...ca8...,,,ca7...............Loo......
+.....................ca4.........,,,........................
+............,,,.....................,,,............Lrt......
+..................ca5..................,,,..................
+TRETRE........................,,,.........,,,...............
+TRE............,,,..................pl5pl1pl2,,,............
+.....................,,,............pl6pl3pl4,,,Gaofo1......
+....................................#########Tao############
+.....................VILVIL.........###_________ar1_________
+.....................VIL............###_________CST_________
+.........TRE...............VIL......###_____________________
+TRETRETRE...TRETRE..................###_____________________
+
+pl1 Allies[0]  player
+pl2 Allies[1]  player
+pl3 Allies[2]  player
+pl4 Allies[3]  player
+pl5 Allies[4]  player
+pl6 Allies[5]  player
+Tao Party[0]  taoqian, ally, group xu, policy hold, faction han
+Gao Party[1]  gaoshun, ally, group xu, policy assault, faction han
+fo1 Party[2]  troop_footman, ally, group xu, policy assault, faction han
+ar1 Party[3]  troop_archer, ally, group xu, policy hold, faction han
+Zha Enemies[0]  zhangchun, enemy, group chief, policy hold, rank commander
+ca1 Enemies[1]  troop_cavalry, enemy, group guards, policy hold
+ca2 Enemies[2]  troop_cavalry, enemy, group guards, policy hold
+ca3 Enemies[3]  troop_cavalry, enemy, group guards, policy hold
+ca4 Enemies[4]  troop_cavalry, enemy, group raiders, policy assault
+ca5 Enemies[5]  troop_cavalry, enemy, group raiders, policy assault
+ca6 Enemies[6]  troop_cavalry, enemy, group raiders, policy react
+ca7 Enemies[7]  troop_cavalry, enemy, group raiders, policy react
+ca8 Enemies[8]  troop_cavalry, enemy, group raiders, policy react
+Loo Enemies[9]  loot_cart, enemy, group carts, policy flee
+Lrt Enemies[10]  loot_cart, enemy, group carts, policy flee
+
+# area 1 팽성 안: x 13..19, y 12..15
+# area 2 북서쪽 퇴로: x 0..1, y 0..1

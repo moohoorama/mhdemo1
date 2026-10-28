@@ -69,20 +69,6 @@
      ]
     },
     {
-     "Effect": "smallfire",
-     "At": [
-      -0.9,
-      0.95
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      2.6,
-      0.95
-     ]
-    },
-    {
      "Actor": "수비병#2",
      "Patrol": [
       6,
@@ -399,127 +385,6 @@
     "c02-06",
     "c02-07",
     "c02-08"
-   ],
-   "Ambient": [
-    {
-     "Effect": "smallfire",
-     "At": [
-      2.0,
-      6.5
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      2.0,
-      11.0
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      3.5,
-      8.0
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      3.5,
-      5.0
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      0.5,
-      5.0
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      0.5,
-      8.0
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      3.5,
-      -4.0
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      -0.3,
-      -6.0
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      -0.3,
-      -3.5
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      -0.3,
-      -1.0
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      -0.3,
-      1.5
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      -0.3,
-      4.0
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      -0.3,
-      6.5
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      -0.3,
-      9.0
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      -0.3,
-      11.5
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      -0.3,
-      14.0
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      -0.3,
-      16.5
-     ]
-    }
    ],
    "Cast": {
     "유비": {
@@ -872,20 +737,6 @@
     "c02-g8"
    ],
    "Ambient": [
-    {
-     "Effect": "smallfire",
-     "At": [
-      2,
-      3
-     ]
-    },
-    {
-     "Effect": "smallfire",
-     "At": [
-      4,
-      3
-     ]
-    },
     {
      "Effect": "smoke",
      "At": [
@@ -1344,7 +1195,8 @@
     "c02-z5",
     "c02-z6",
     "c02-z7",
-    "c02-z8"
+    "c02-z8",
+    "c02-z9"
    ],
    "Cast": {
     "유비": {
@@ -1400,11 +1252,21 @@
        }
       ]
      ]
+    ],
+    "c02-z9": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Look": "SE"
+       }
+      ]
+     ]
     ]
    }
   },
   "c02-e-luzhi": {
-   "Map": "S_army_camp2",
+   "Map": "S_luzhi_camp",
    "Nodes": [
     "c02-e-luzhi",
     "c02-l1",
@@ -1437,7 +1299,7 @@
     "장비": {
      "Stay": true
     },
-    "좌풍": {
+    "사신": {
      "Stay": true
     }
    },
@@ -1446,34 +1308,44 @@
      [
       [
        {
-        "Actor": "좌풍",
-        "Face": "NE"
+        "Actor": "사신",
+        "Face": "SW"
        },
        {
         "Actor": "노식",
-        "Face": "SW"
+        "Face": "NE"
        }
       ]
      ]
     ],
-    "c02-l2": [
+    "c02-l3": [
      [
       [
        {
-        "Actor": "좌풍",
+        "Actor": "유비",
+        "Look": "SE"
+       }
+      ]
+     ]
+    ],
+    "c02-l4": [
+     [
+      [
+       {
+        "Actor": "사신",
         "Play": "action"
        }
       ]
      ]
     ],
-    "c02-l5": [
+    "c02-l7": [
      [
       [
        {
-        "Actor": "좌풍",
+        "Actor": "사신",
         "Move": [
-         4,
-         5
+         30,
+         10
         ],
         "Exit": true,
         "Speed": 0.8
@@ -1487,24 +1359,14 @@
       ]
      ]
     ],
-    "c02-l7": [
-     [
-      [
-       {
-        "Actor": "유비",
-        "Look": "SE"
-       }
-      ]
-     ]
-    ],
     "c02-l8": [
      [
       [
        {
         "Actor": "유비",
         "Move": [
-         3,
-         2
+         27,
+         9
         ]
        }
       ],
@@ -1650,15 +1512,6 @@
      "Stay": true
     }
    },
-   "Ambient": [
-    {
-     "Effect": "smallfire",
-     "At": [
-      0.75,
-      0.75
-     ]
-    }
-   ],
    "Beats": {
     "c02-k1": [
      [

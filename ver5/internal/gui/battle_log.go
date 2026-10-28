@@ -41,7 +41,7 @@ func (g *Game) battleLogVisible() bool {
 
 // updateBattleLog consumes mouse input before the map camera and selection.
 func (g *Game) updateBattleLog() bool {
-	if !g.battleLogVisible() || g.hudShown != "log" || g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 || g.input {
+	if !g.battleLogVisible() || g.hudShown != "log" || g.overlay() != "" || len(g.modals) > 0 || len(g.learn) > 0 || g.input {
 		g.logDragging = false
 		g.logThumbDragging = false
 		return false

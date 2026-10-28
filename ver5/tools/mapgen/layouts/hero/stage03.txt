@@ -1,0 +1,36 @@
+# B03  stage03.json  map03.json  origin 0 0
+^^^^^^^^^^^^^^^^^^TRETRE......,,,...............TRETRE
+^^^^^^^^^^^^^^^^^^......TRE...Tur.........TRETRE...TRE
+^^^^^^^^^^^^^^^^^^.........t11,,,t12..................
+..............................t10...FNCFNCFNCFNCFNCFNC
+,,,,,,,,,,,,...............tu9,,,tu8FNC...,,,......,,,
+.........tu3,,,,,,.........TREtu7...FNC,,,VIL...VIL...
+TRETRE...tu1tu2tu4,,,TRE......tu6tu5FNC......,,,......
+^^^^^^^^^......^^^^^^......,,,,,,,,,Gao...,,,VIL...VIL
+^^^^^^^^^,,,,,,^^^,,,,,,,,,.........FNC,,,......,,,...
+^^^^^^^^^,,,,,,^^^^^^...............FNC...VIL,,,VIL...
+^^^......,,,,,,...^^^^^^............FNC...,,,......,,,
+^^^......,,,......^^^...............FNCFNCFNCFNCFNCFNC
+......pl1pl2pl3^^^^^^...TRE...TRE..................TRE
+......pl4pl5pl6...^^^^^^...TRE...TRE.........TRETRETRE
+
+pl1 Allies[0]  player
+pl2 Allies[1]  player
+pl3 Allies[2]  player
+pl4 Allies[3]  player
+pl5 Allies[4]  player
+pl6 Allies[5]  player
+Gao Party[0]  gaoshun, ally, group village, policy hold, faction han
+Tur Enemies[0]  turban_chief, enemy, group chief, policy hold, rank commander
+tu1 Enemies[1]  troop_turban, enemy, group pass, policy react
+tu2 Enemies[2]  troop_turban, enemy, group pass, policy react
+tu3 Enemies[3]  troop_turban, enemy, group pass, policy react
+tu4 Enemies[4]  troop_turban, enemy, group pass, policy react
+tu5 Enemies[5]  troop_turban, enemy, group main, policy assault
+tu6 Enemies[6]  troop_turban, enemy, group main, policy assault
+tu7 Enemies[7]  troop_turban, enemy, group main, policy assault
+tu8 Enemies[8]  troop_turban, enemy, group main, policy assault
+tu9 Enemies[9]  troop_turban, enemy, group main, policy assault
+t10 Enemies[10]  troop_turban, enemy, group main, policy assault
+t11 Enemies[11]  troop_turban, enemy, group main, policy assault
+t12 Enemies[12]  troop_turban, enemy, group main, policy assault

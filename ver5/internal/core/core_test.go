@@ -306,39 +306,22 @@ func answered(r Result, from, to string) bool {
 	}
 	return false
 }
-func TestCounterStanceAndForcedCounter(t *testing.T) {
-	e, _, _ := arena(t)
-	if r := apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"}); answered(r, "boss", "hero") {
-		t.Fatal("no stance, no counter")
-	}
-	e2, _, b2 := arena(t)
-	b2.Status["counter"] = Status{Turns: 2}
-	if e2.CounterDamage(Command{Kind: "attack", Actor: "hero", Target: "boss"}) == 0 {
-		t.Fatal("counter damage preview")
-	}
-	if r := apply(t, e2, Command{Kind: "attack", Actor: "hero", Target: "boss"}); !answered(r, "boss", "hero") {
-		t.Fatal("stance counter")
-	}
-	// 투신-like: the boss out-mights the hero, so a hero attack is answered with no stance at all
-	e3, _, _ := arena(t)
-	with(e3, "boss", "counter_t")
-	if r := apply(t, e3, Command{Kind: "attack", Actor: "hero", Target: "boss"}); !answered(r, "boss", "hero") {
-		t.Fatal("forced counter against a weaker attacker")
-	}
-}
-func TestCounterAllAnswersEveryAttack(t *testing.T) {
+func TestEveryUnitCountersAndStancesCounterHarder(t *testing.T) {
 	c := Command{Kind: "attack", Actor: "hero", Target: "boss"}
 	e, _, _ := arena(t)
-	e.SetCounterAll(true)
 	if r := apply(t, e, c); !answered(r, "boss", "hero") {
-		t.Fatal("counter-all answers with no stance")
+		t.Fatal("a unit with no stance strikes back")
 	}
-	e2, _, _ := arena(t)
-	e2.SetCounterAll(true)
-	half := e2.CounterDamage(c)
-	e2.unit("boss").Status["counter"] = Status{Turns: 2}
-	if stance := e2.CounterDamage(c); half == 0 || half >= stance {
-		t.Fatalf("counter-all preview %d should be below the stance's %d", half, stance)
+	e2, _, b2 := arena(t)
+	plain := e2.CounterDamage(c)
+	b2.Status["counter"] = Status{Turns: 2}
+	stance := e2.CounterDamage(c)
+	// 투신-like: the boss out-mights the hero, so it counters as hard as a stance and surely twice
+	e3, _, _ := arena(t)
+	with(e3, "boss", "counter_t")
+	forced := e3.CounterDamage(c)
+	if plain == 0 || plain >= stance || stance >= forced {
+		t.Fatalf("counter previews should grow plain %d < stance %d < forced %d", plain, stance, forced)
 	}
 }
 func TestRiposteAnswersEveryMiss(t *testing.T) {
@@ -367,7 +350,7 @@ func TestBulwarkHalvesTheExcess(t *testing.T) {
 		t.Skip("fixture damage below the threshold")
 	}
 	hp := b.HP
-	n, hit := e.strike(a, b, e.basic(), blow{share: 1})
+	n, hit, _ := e.strike(a, b, e.basic(), blow{share: 1})
 	if !hit {
 		t.Skip("missed")
 	}

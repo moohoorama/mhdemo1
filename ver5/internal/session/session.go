@@ -26,6 +26,7 @@ type Request struct {
 	Revision    *uint64      `json:"revision,omitempty"`
 	Command     core.Command `json:"command"`
 	Actor, Slot string
+	Node        string            `json:"node,omitempty"` // the waypoint a jump starts at
 	Overwrite   bool              `json:"overwrite"`
 	Discard     bool              `json:"discard_current"`
 	Settings    *storage.Settings `json:"settings,omitempty"`
@@ -66,7 +67,6 @@ func (s *Session) Handle(q Request) Response {
 	if s.Engine != nil {
 		s.Engine.SetDamagePct(s.Settings.DamageScale())
 		s.Engine.SetXPPct(s.Settings.XPScale())
-		s.Engine.SetCounterAll(s.Settings.CounterAll)
 		o := s.View()
 		r.Observation = &o
 	}
@@ -100,6 +100,18 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 			return nil, err
 		}
 		s.Engine = core.New(s.Data, q.Seed)
+		s.Screen = "playing"
+		s.Dirty = true
+		return nil, nil
+	case "jump":
+		if err := discard(); err != nil {
+			return nil, err
+		}
+		e, err := core.NewAt(s.Data, q.Seed, q.Node)
+		if err != nil {
+			return nil, err
+		}
+		s.Engine = e
 		s.Screen = "playing"
 		s.Dirty = true
 		return nil, nil
@@ -244,10 +256,10 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 	return nil, fmt.Errorf("UnknownOperation")
 }
 
-// AdvanceEnemies honors the one-command setting and saves at allied turn starts.
+// AdvanceEnemies plays every AI army's turn up to the allies' and saves at allied turn starts.
 func (s *Session) AdvanceEnemies() ([]core.Event, error) {
 	out := []core.Event{}
-	if s.Engine == nil || s.Settings.AI != "auto" && s.View().Turn != "support" {
+	if s.Engine == nil {
 		return out, nil
 	}
 	deadline := time.Now().Add(10 * time.Second)
@@ -256,7 +268,7 @@ func (s *Session) AdvanceEnemies() ([]core.Event, error) {
 			return out, fmt.Errorf("AITimeLimit")
 		}
 		o := s.View()
-		if o.Phase != "battle" || o.Turn == "ally" || o.Turn == "enemy" && s.Settings.AI != "auto" || len(o.Learning) > 0 {
+		if o.Phase != "battle" || o.Turn == "ally" || len(o.Learning) > 0 {
 			return out, nil
 		}
 		v, err := s.stepAI()

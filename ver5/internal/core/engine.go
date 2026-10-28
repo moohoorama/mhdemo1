@@ -25,6 +25,13 @@ type Engine struct {
 
 func copyOf[T any](v T) T { b, _ := json.Marshal(v); var c T; _ = json.Unmarshal(b, &c); return c }
 func New(d *content.Data, seed uint64) *Engine {
+	e := begin(d, seed)
+	e.enter()
+	return e
+}
+
+// begin is a new game before it enters its first node.
+func begin(d *content.Data, seed uint64) *Engine {
 	c := d.Campaign
 	s := State{Format: 5, AI: AIPolicyVersion, Difficulty: "normal", Core: CoreVersion, Rules: RulesVersion, Content: d.Version, ContentHash: d.Hash,
 		Seed: seed, RNG: seed, Phase: "scenario", Node: c.Start, Inventory: copyOf(c.Inventory), Warehouse: map[string]int{},
@@ -36,7 +43,6 @@ func New(d *content.Data, seed uint64) *Engine {
 	for _, id := range c.Roster {
 		e.addCharacter(id, id)
 	}
-	e.enter()
 	return e
 }
 func fromState(d *content.Data, s State) *Engine {
@@ -148,7 +154,7 @@ func (e *Engine) Observe() Observation {
 
 // ObservationCache keeps one engine's Observation until the engine is replaced or its state changes,
 // so a screen that reads it every frame builds it once per change. A command counts a revision; the
-// settings (SetDamagePct, SetXPPct, SetCounterAll) change the state without one, so they are compared
+// settings (SetDamagePct, SetXPPct) change the state without one, so they are compared
 // too. What it returns is shared: callers read it and never change it.
 type ObservationCache struct {
 	e *Engine
@@ -157,7 +163,7 @@ type ObservationCache struct {
 
 func (c *ObservationCache) Of(e *Engine) Observation {
 	s := &e.state
-	if c.e != e || c.o.Revision != s.Revision || c.o.DamagePct != s.DamagePct || c.o.XPPct != s.XPPct || c.o.CounterAll != s.CounterAll {
+	if c.e != e || c.o.Revision != s.Revision || c.o.DamagePct != s.DamagePct || c.o.XPPct != s.XPPct {
 		c.e, c.o = e, e.Observe()
 	}
 	return c.o
@@ -353,16 +359,7 @@ func (e *Engine) enter() {
 			}
 			e.state.Node = next
 		case "join", "grant":
-			if !e.state.Executed[n.Event] {
-				if n.Kind == "join" {
-					e.raiseTo(e.addCharacter(n.Character, n.Character), e.data.Rules.StageLevel(e.data.NextBattleOrder(n.ID)))
-					e.state.Deployment = append(e.state.Deployment, n.Character)
-				} else {
-					e.gain(n.Item, n.Count)
-				}
-				e.state.Executed[n.Event] = true
-				e.emit(n.Kind, "", n.Character+n.Item, n.Count)
-			}
+			e.once(n)
 			e.state.Node = e.data.After(n.ID)
 		case "explore":
 			if e.state.Explore != n.ID {
@@ -398,6 +395,21 @@ func (e *Engine) enter() {
 			return
 		}
 	}
+}
+
+// once runs a join or grant node the first time the story reaches it.
+func (e *Engine) once(n content.Node) {
+	if e.state.Executed[n.Event] {
+		return
+	}
+	if n.Kind == "join" {
+		e.raiseTo(e.addCharacter(n.Character, n.Character), e.data.Rules.StageLevel(e.data.NextBattleOrder(n.ID)))
+		e.state.Deployment = append(e.state.Deployment, n.Character)
+	} else {
+		e.gain(n.Item, n.Count)
+	}
+	e.state.Executed[n.Event] = true
+	e.emit(n.Kind, "", n.Character+n.Item, n.Count)
 }
 func (e *Engine) execute(c Command) error {
 	if len(e.state.Learning) > 0 && c.Kind != "learn" && c.Kind != "learn_close" {

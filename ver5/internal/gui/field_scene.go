@@ -20,6 +20,7 @@ type scenePiece struct {
 	scenemap.Piece
 	shadow Sprite        // its ground shadow, nil Image for none
 	image  *ebiten.Image // a piece of several pictures (a raised block) drawn once at its Rect, so a frame draws it in one go
+	anims  []scenemap.Draw // the looping strips it carries (a campfire's flames), played over it
 }
 
 // makeScenePlan bakes the flat layer into the ground pictures (one per water frame when there is water) and keeps
@@ -54,7 +55,15 @@ func (f *Field) makeScenePlan() error {
 		p.Rect = p.Rect.Add(image.Pt(int(ox), int(oy)))
 		p.Anchor = [2]float64{p.Anchor[0] + ox, p.Anchor[1] + oy}
 		sp := scenePiece{Piece: p}
-		if len(p.Draws) > 1 {
+		for _, d := range p.Draws {
+			if d.Kind == scenemap.DrawAnim {
+				sp.anims = append(sp.anims, d)
+			}
+		}
+		for _, l := range p.Lights {
+			f.night.props = append(f.night.props, scenemap.Light{X: l.X + ox, Y: l.Y + oy, Radius: l.Radius, Glow: l.Glow})
+		}
+		if len(p.Draws)-len(sp.anims) > 1 {
 			sp.image = ebiten.NewImage(p.Rect.Dx(), p.Rect.Dy())
 			for _, d := range p.Draws {
 				f.drawPlan(sp.image, d, ox-float64(p.Rect.Min.X), oy-float64(p.Rect.Min.Y), nil)
@@ -89,6 +98,8 @@ func (f *Field) drawPlan(dst *ebiten.Image, d scenemap.Draw, ox, oy float64, op 
 	case scenemap.DrawFill:
 		img = f.A.diamond(d.Color)
 		op.GeoM.Translate(-32, 0)
+	case scenemap.DrawAnim:
+		return // played over its piece every frame by drawStrip
 	case scenemap.DrawLines:
 		z := float32(1)
 		if f.renderZoom > 0 && dst == f.Canvas {
@@ -158,8 +169,8 @@ func (f *Field) sceneItems() []drawItem {
 		}
 		if p.shadow.Image != nil {
 			sh := p.shadow
-			if i, ok := f.swayFrame(p.Name, p.Anchor); ok {
-				sh = f.A.SwayShadow[p.Name].Frames[i]
+			if i, ok := f.animFrame(p.Name, p.Anchor); ok && f.A.Anims[p.Name].Shadows != nil {
+				sh = f.A.Anims[p.Name].Shadows[i]
 			}
 			f.blit(f.shadows, sh, p.Anchor[0], p.Anchor[1], &ebiten.DrawImageOptions{Blend: maxBlend})
 		}
@@ -171,32 +182,35 @@ func (f *Field) sceneItems() []drawItem {
 				op.GeoM.Translate(float64(p.Rect.Min.X), float64(p.Rect.Min.Y))
 				f.renderOp(f.Canvas, op)
 				f.Canvas.DrawImage(p.image, op)
-				return
-			}
-			for _, d := range p.Draws {
-				op := &ebiten.DrawImageOptions{}
-				f.shadeScenery(f.Canvas, op, p.Anchor[0], p.Anchor[1])
-				if f.drawSway(d, p.Anchor, ox, oy, op) {
-					continue
+			} else {
+				for _, d := range p.Draws {
+					op := &ebiten.DrawImageOptions{}
+					f.shadeScenery(f.Canvas, op, p.Anchor[0], p.Anchor[1])
+					if f.drawAnim(d, p.Anchor, ox, oy, op) {
+						continue
+					}
+					f.drawPlan(f.Canvas, d, ox, oy, op)
 				}
-				f.drawPlan(f.Canvas, d, ox, oy, op)
+			}
+			for _, d := range p.anims {
+				f.drawStrip(d, ox, oy)
 			}
 		}})
 	}
 	return items
 }
 
-// drawSway draws a tree of a map listed in Assets.SwayMaps at its leaf sway frame. It reports false for anything
-// else.
-func (f *Field) drawSway(d scenemap.Draw, anchor [2]float64, ox, oy float64, op *ebiten.DrawImageOptions) bool {
+// drawAnim draws a prop that has a looping strip of its name in Assets.Anims (a tree's leaves, the incense smoke) at
+// its current frame. It reports false for anything else.
+func (f *Field) drawAnim(d scenemap.Draw, anchor [2]float64, ox, oy float64, op *ebiten.DrawImageOptions) bool {
 	if d.Kind != scenemap.DrawSprite || d.Sheet == "scenery" || d.Sheet == "structures" {
 		return false
 	}
-	i, ok := f.swayFrame(d.Name, anchor)
+	i, ok := f.animFrame(d.Name, anchor)
 	if !ok {
 		return false
 	}
-	s := f.A.Sway[d.Name].Frames[i]
+	s := f.A.Anims[d.Name].Frames[i]
 	pr := f.A.Props[d.Name]
 	op.GeoM.Translate(ox+float64(d.X)+pr.PivotX-s.PivotX, oy+float64(d.Y)+pr.PivotY-s.PivotY)
 	f.renderOp(f.Canvas, op)
@@ -204,11 +218,26 @@ func (f *Field) drawSway(d scenemap.Draw, anchor [2]float64, ox, oy float64, op 
 	return true
 }
 
-// swayFrame is the sway frame of the tree prop name standing at anchor on a map listed in Assets.SwayMaps; each
-// tree starts at its own frame and time so a grove does not move in step.
-func (f *Field) swayFrame(name string, anchor [2]float64) (int, bool) {
-	strip, ok := f.A.Sway[name]
-	if !ok || !f.A.SwayMaps[f.Map.ID] {
+// drawStrip draws a looping strip an object carries (scenemap.DrawAnim, top left at canvas offset (ox, oy)) at its
+// current frame; each starts at its own frame and time, so two flames of a fire do not flicker in step.
+func (f *Field) drawStrip(d scenemap.Draw, ox, oy float64) {
+	i, ok := f.animFrame(d.Name, [2]float64{float64(d.X), float64(d.Y)})
+	if !ok {
+		return
+	}
+	s := f.A.Anims[d.Name].Frames[i]
+	op := &ebiten.DrawImageOptions{}
+	f.shadeScenery(f.Canvas, op, ox+float64(d.X)+s.PivotX, oy+float64(d.Y)+s.PivotY)
+	op.GeoM.Translate(ox+float64(d.X), oy+float64(d.Y))
+	f.renderOp(f.Canvas, op)
+	f.Canvas.DrawImage(s.Image, op)
+}
+
+// animFrame is the frame of the looping strip of prop name standing at anchor; each prop starts at its own frame and
+// time so a grove does not move in step.
+func (f *Field) animFrame(name string, anchor [2]float64) (int, bool) {
+	strip, ok := f.A.Anims[name]
+	if !ok || strip.MS <= 0 {
 		return 0, false
 	}
 	ax, ay := int(anchor[0]), int(anchor[1])

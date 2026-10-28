@@ -63,10 +63,26 @@
     0,
     0
    ]
+  },  "iron_knuckles": {
+   "Name": "철권갑",
+   "Desc": "주먹에 감는 쇠 덧댐.",
+   "Slot": "weapon",
+   "Type": "fist",
+   "Icon": "knuckles",
+   "Price": 300,
+   "Bonus": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
   },
+
   "gujeong_blade": {
    "Name": "고정도",
-   "Desc": "싸움터에서 수습한 명검. 위압을 준다.",
+   "Desc": "싸움터에서 수습한 명검. 날이 예리하다.",
    "Slot": "weapon",
    "Type": "sword",
    "Icon": "dao",

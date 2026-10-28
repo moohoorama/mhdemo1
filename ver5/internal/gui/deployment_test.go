@@ -80,7 +80,7 @@ func TestDeploymentPreview(t *testing.T) {
 		{"outside deployment area", func(g *Game) { g.hover = hoverCell{0, 0, true} }, false},
 		{"occupied", func(g *Game) { g.deploymentMapClick(1, 2); g.selectDeployment("archer1") }, false},
 		{"placed", func(g *Game) { g.deploymentMapClick(1, 2); g.deploymentSelected = "hero" }, false},
-		{"overlay", func(g *Game) { g.overlay = "menu" }, false},
+		{"overlay", func(g *Game) { g.overlays = []string{"menu"} }, false},
 		{"modal", func(g *Game) { g.modals = []*modal{{kind: "objective"}} }, false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {

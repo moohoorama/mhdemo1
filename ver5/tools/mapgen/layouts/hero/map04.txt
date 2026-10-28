@@ -1,0 +1,18 @@
+# B04 팽성 (20x16): 동남쪽에 팽성(문 15,11), 북서쪽 모퉁이(3,2)에 장순과 호위 기병, 그 앞 들에 오환 기병.
+# 약탈 수레 둘은 동쪽 들(17,4)(17,6)에서 북서쪽 퇴로(0~1,0~1)로 달아난다. 공손찬은 3턴에 남서(0~1,12~14)에서 온다.
+g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- gt- gt-
+g-- g-- gt- gt- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- gt- g-- g-- gt- gt-
+g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- gt- g-- g-- g-- g-- gt-
+g-- g-- d-- g-- g-- gt- gt- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- d-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g--
+gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- d-- g-- g-- g-- g-- g--
+gt- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- c-- c-- c-- m-- c-- c-- c-- c--
+g-- g-- g-- g-- g-- g-- g-- dv- dv- g-- g-- g-- c-- i-- i-- i-- i-- i-- i-- i--
+g-- g-- g-- g-- g-- g-- g-- dv- g-- g-- g-- g-- c-- i-- i-- i-- io- i-- i-- i--
+g-- g-- g-- gt- g-- g-- g-- g-- g-- dv- g-- g-- c-- i-- i-- i-- i-- i-- i-- i--
+gt- gt- gt- g-- gt- gt- g-- g-- g-- g-- g-- g-- c-- i-- i-- i-- i-- i-- i-- i--

@@ -1,362 +1,237 @@
 {
  "Scenes": {
   "c03-start": {
-   "Map": "S_army_camp",
-   "Backdrop": "mountains",
-   "Nodes": ["c03-start", "c03-01", "c03-02", "c03-03", "c03-04", "c03-05", "c03-06", "c03-07"],
-   "Ambient": [{"Effect": "fire", "At": [6.2, 0.4]}, {"Effect": "smallfire", "At": [-1.0, 1.6]}],
-   "Cast": {
-    "유비": {"At": [2, 2], "Face": "NE"},
-    "관우": {"At": [2, 4], "Face": "NE"},
-    "장비": {"At": [3, 4], "Face": "NE"},
-    "병사#1": {"At": [1, 5], "Face": "SE", "Sprite": "light_infantry", "Faction": "shu"},
-    "병사#2": {"At": [4, 5], "Face": "NW", "Sprite": "light_infantry", "Faction": "shu"},
-    "전령": {"At": [3, -3], "Face": "SW", "Off": true, "Sprite": "light_cavalry"}
-   },
-   "Beats": {
-    "c03-01": [
-     [
-      [{"Actor": "병사#1", "Play": "attack"}, {"Actor": "병사#2", "Play": "attack", "After": 0.5}],
-      [{"Actor": "전령", "Enter": [3, -3], "Move": [2, 1], "Speed": 2}]
-     ]
-    ],
-    "c03-02": [
-     [
-      [{"Actor": "전령", "Sprite": "light_infantry"}, {"Actor": "전령", "Play": "exhausted"}]
-     ]
-    ],
-    "c03-03": [
-     [
-      [{"Actor": "유비", "Play": "action"}]
-     ]
-    ],
-    "c03-06": [
-     [
-      [{"Actor": "장비", "Emote": "!", "Play": "action"}]
-     ]
-    ],
-    "c03-07": [
-     [
-      [{"Actor": "유비", "Look": "SW"}],
-      [{"Actor": "유비", "Face": "NE"}]
-     ]
-    ]
-   }
-  },
-  "c03-08": {
    "Map": "S_road",
-   "Time": "dusk",
    "Backdrop": "mountains",
-   "Nodes": ["c03-08", "c03-09", "c03-10", "c03-11", "c03-12", "c03-13", "c03-14", "c03-15", "c03-16", "c03-17", "c03-18", "c03-19", "c03-20", "c03-21", "c03-22", "c03-23", "c03-24"],
+   "Nodes": ["c03-start", "c03-a1", "c03-a2", "c03-a3", "c03-a4", "c03-a5", "c03-a6", "c03-a7", "c03-a8", "c03-a9", "c03-a10", "c03-a11", "c03-a12"],
+   "Ambient": [{"Prop": ["prison_cart", 5.3, 2.3]}],
    "Cast": {
-    "유비": {"At": [1, 2], "Face": "SE"},
-    "관우": {"At": [0, 2], "Face": "SE"},
-    "장비": {"At": [0, 3], "Face": "SE"},
-    "조조": {"At": [9, 2], "Face": "NW", "Off": true, "Sprite": "caocao"},
-    "하후돈": {"At": [10, 2], "Face": "NW", "Off": true, "Sprite": "light_cavalry"},
-    "하후연": {"At": [10, 3], "Face": "NW", "Off": true, "Sprite": "light_cavalry"},
-    "기병#1": {"At": [11, 2], "Face": "NW", "Sprite": "light_cavalry", "Off": true, "Faction": "wei"}
+    "노식": {"At": [5, 2], "Face": "NW", "Hold": true},
+    "호송병#1": {"At": [6, 2], "Face": "NW", "Sprite": "light_infantry", "Faction": "han"},
+    "호송병#2": {"At": [7, 2], "Face": "NW", "Sprite": "light_infantry", "Faction": "han"},
+    "유비": {"At": [-4, 2], "Face": "SE", "Off": true},
+    "관우": {"At": [-5, 2], "Face": "SE", "Off": true},
+    "장비": {"At": [-4, 1], "Face": "SE", "Off": true}
    },
    "Beats": {
-    "c03-09": [
+    "c03-a1": [
      [
-      [{"Actor": "조조", "Enter": [9, 2], "Move": [4, 2], "Speed": 1.6}, {"Actor": "하후돈", "Enter": [10, 2], "Move": [5, 2], "Speed": 1.6, "After": 0.3}, {"Actor": "하후연", "Enter": [10, 3], "Move": [4, 3], "Speed": 1.6, "After": 0.6}, {"Actor": "기병#1", "Enter": [11, 2], "Move": [6, 2], "Speed": 1.6, "After": 0.9}]
+      [{"Actor": "유비", "Enter": [-4, 2], "Move": [3, 2]}, {"Actor": "장비", "Enter": [-4, 1], "Move": [4, 1], "After": 0.2}, {"Actor": "관우", "Enter": [-5, 2], "Move": [2, 2], "After": 0.4}]
      ]
     ],
-    "c03-10": [
+    "c03-a2": [
      [
-      [{"Actor": "유비", "Move": [2, 2]}]
+      [{"Actor": "장비", "Emote": "!"}]
      ]
     ],
-    "c03-11": [
-     [
-      [{"Actor": "조조", "Sprite": "caocao_noncombat"}]
-     ]
-    ],
-    "c03-13": [
+    "c03-a3": [
      [
       [{"Actor": "유비", "Emote": "!"}]
      ]
     ],
-    "c03-14": [
+    "c03-a7": [
      [
-      [{"Time": "memory"}],
-      [{"Shake": 0.4}, {"Actor": "관우", "Emote": "!"}, {"Actor": "장비", "Emote": "!", "After": 0.2}]
+      [{"Actor": "장비", "Emote": "!"}, {"Actor": "호송병#1", "Look": "NW"}]
      ]
     ],
-    "c03-15": [
+    "c03-a10": [
      [
-      [{"Time": "dusk"}]
+      [{"Actor": "관우", "Move": [2, 1]}, {"Actor": "유비", "Move": [3, 1]}],
+      [{"Actor": "관우", "Face": "SW"}, {"Actor": "유비", "Face": "SW"}, {"Actor": "장비", "Face": "SW"}],
+      [{"Prop": ["prison_cart", "노식"]}, {"Actor": "노식", "Move": [-8, 2], "Speed": 0.6, "Exit": true}, {"Actor": "호송병#1", "Move": [-8, 2], "Speed": 0.6, "Exit": true, "After": 0.5}, {"Actor": "호송병#2", "Move": [-8, 2], "Speed": 0.6, "Exit": true, "After": 1.0}],
+      [{"Actor": "관우", "Move": [2, 2]}],
+      [{"Actor": "관우", "Move": [4, 2]}],
+      [{"Actor": "관우", "Face": "NE"}, {"Actor": "장비", "Face": "SW"}]
      ]
     ],
-    "c03-17": [
+    "c03-a11": [
      [
-      [{"Actor": "유비", "Emote": "…"}]
-     ]
-    ],
-    "c03-18": [
-     [
-      [{"Actor": "조조", "Emote": "…"}, {"Actor": "하후돈", "Look": "NW", "After": 0.3}]
-     ]
-    ],
-    "c03-22": [
-     [
-      [{"Actor": "조조", "Play": "action"}]
-     ]
-    ],
-    "c03-24": [
-     [
-      [{"Actor": "유비", "Look": "NW"}],
-      [{"Actor": "유비", "Face": "SE", "Play": "action"}]
+      [{"Actor": "관우", "Face": "NE"}, {"Actor": "장비", "Face": "SW"}]
      ]
     ]
    }
   },
-  "c03-25": {
-   "Map": "S_hall",
-   "Nodes": ["c03-25", "c03-26", "c03-27", "c03-28", "c03-29", "c03-30"],
+  "c03-road": {
+   "Map": "S_road",
+   "Backdrop": "mountains",
+   "Nodes": ["c03-road", "c03-b1", "c03-b2", "c03-b3", "c03-b4", "c03-b5", "c03-b6", "c03-b7", "c03-b8", "c03-b9", "c03-b10", "c03-b11", "c03-b12", "c03-b13", "c03-b14", "c03-b15", "c03-b16"],
    "Cast": {
-    "헌제": {"At": [3, 1], "Face": "SW", "Hold": true, "Pose": "throne"},
-    "동탁": {"At": [4, 2], "Face": "SW"},
-    "이유": {"At": [5, 2], "Face": "SW", "Sprite": "strategist", "Faction": "dong"},
-    "대신#1": {"At": [2, 3], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
-    "대신#2": {"At": [2, 4], "Face": "NE", "Sprite": "official_purple_noncombat", "Pose": "bow", "Faction": "han"},
-    "대신#3": {"At": [2, 6], "Face": "NE", "Sprite": "official_blue_noncombat", "Pose": "bow", "Faction": "han"},
-    "대신#4": {"At": [4, 3], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
-    "대신#5": {"At": [4, 4], "Face": "NE", "Sprite": "official_black_noncombat", "Pose": "bow", "Faction": "han"},
-    "대신#6": {"At": [4, 6], "Face": "NE", "Sprite": "official_green_noncombat", "Pose": "bow", "Faction": "han"},
-    "환관#1": {"At": [2, 2], "Face": "SE", "Sprite": "eunuch_noncombat", "Faction": "han"},
-    "환관#2": {"At": [6, 1], "Face": "SW", "Sprite": "eunuch_noncombat", "Faction": "han"},
-    "서량병#1": {"At": [2, 8], "Face": "NE", "Sprite": "heavy_infantry", "Faction": "dong"},
-    "서량병#2": {"At": [4, 8], "Face": "NE", "Sprite": "heavy_infantry", "Faction": "dong"}
+    "유비": {"At": [5, 2], "Face": "NW"},
+    "관우": {"At": [6, 2], "Face": "NW"},
+    "장비": {"At": [6, 3], "Face": "NW"},
+    "조조": {"At": [11, 2], "Face": "NW", "Off": true},
+    "종자": {"At": [11, 3], "Face": "NW", "Off": true, "Sprite": "infantry_noncombat", "Faction": "wei"},
+    "조조병#1": {"At": [12, 2], "Face": "NW", "Off": true, "Sprite": "light_cavalry", "Faction": "wei"},
+    "조조병#2": {"At": [12, 3], "Face": "NW", "Off": true, "Sprite": "light_cavalry", "Faction": "wei"}
    },
    "Beats": {
-    "c03-26": [
+    "c03-b1": [
      [
-      [{"CamAt": [3, 3]}]
+      [{"Actor": "조조", "Enter": [11, 2], "Move": [8, 2]}, {"Actor": "종자", "Enter": [11, 3], "Move": [8, 3], "After": 0.3}, {"Actor": "조조병#1", "Enter": [12, 2], "Move": [10, 2], "After": 0.5}, {"Actor": "조조병#2", "Enter": [12, 3], "Move": [10, 3], "After": 0.7}],
+      [{"Actor": "유비", "Face": "SE"}, {"Actor": "관우", "Face": "SE"}, {"Actor": "장비", "Face": "SE"}]
      ]
     ],
-    "c03-27": [
+    "c03-b5": [
      [
-      [{"Actor": "동탁", "Move": [4, 2]}],
-      [{"Actor": "동탁", "Face": "SW", "Play": "action"}]
-     ]
-    ],
-    "c03-28": [
-     [
-      [{"Cam": "헌제"}, {"Actor": "헌제", "Emote": "…"}],
-      [{"Actor": "이유", "Look": "NW"}]
-     ]
-    ],
-    "c03-29": [
-     [
-      [{"CamAt": [3, 3]}, {"Actor": "동탁", "Play": "action", "Shake": 0.35}],
-      [{"Actor": "대신#1", "Emote": "!", "After": 0.08}, {"Actor": "대신#2", "Emote": "!", "After": 0.16}, {"Actor": "대신#3", "Emote": "!", "After": 0.24}, {"Actor": "대신#4", "Emote": "!", "After": 0.32}, {"Actor": "대신#5", "Emote": "!", "After": 0.4}, {"Actor": "대신#6", "Emote": "!", "After": 0.48}],
-      [{"Actor": "대신#1", "Pose": "prostrate", "After": 0.1}, {"Actor": "대신#2", "Pose": "prostrate", "After": 0.2}, {"Actor": "대신#3", "Pose": "prostrate", "After": 0.30000000000000004}, {"Actor": "대신#4", "Pose": "prostrate", "After": 0.4}, {"Actor": "대신#5", "Pose": "prostrate", "After": 0.5}, {"Actor": "대신#6", "Pose": "prostrate", "After": 0.6000000000000001}, {"Actor": "환관#1", "Pose": "prostrate"}, {"Actor": "환관#2", "Pose": "prostrate", "After": 0.2}]
-     ]
-    ],
-    "c03-30": [
-     [
-      [{"CamAt": [3, 4]}]
+      [{"Actor": "조조", "Move": [7, 2]}],
+      [{"Actor": "조조", "Face": "NW"}]
      ]
     ]
    }
   },
-  "c03-31": {
-   "Map": "S_council",
-   "Nodes": ["c03-31", "c03-32", "c03-33", "c03-34", "c03-35", "c03-36", "c03-37", "c03-38", "c03-39", "c03-40", "c03-41", "c03-42", "c03-43"],
-   "Ambient": [{"Effect": "smallfire", "At": [1.4, 0.5]}, {"Effect": "smallfire", "At": [1.4, 6.6]}, {"Effect": "smallfire", "At": [9.6, 0.5]}, {"Effect": "smallfire", "At": [9.6, 6.6]}],
+  "c03-depart": {
+   "Map": "S_road",
+   "Time": "dawn",
+   "Backdrop": "mountains",
+   "Nodes": ["c03-depart", "c03-c1", "c03-c2"],
    "Cast": {
-    "원소": {"At": [1, 3], "Face": "SE", "Hold": true, "Pose": "sit"},
-    "안량": {"At": [1, 2], "Face": "SE"},
-    "문추": {"At": [1, 5], "Face": "SE"},
-    "호위#1": {"At": [11, 2], "Face": "NW", "Sprite": "guards", "Faction": "yuan"},
-    "호위#2": {"At": [11, 5], "Face": "NW", "Sprite": "guards", "Faction": "yuan"},
-    "조조": {"At": [3, 1], "Face": "SW", "Pose": "sit"},
-    "교모": {"At": [4, 1], "Face": "SW", "Pose": "sit", "Sprite": "official_noncombat", "Faction": "yuan"},
-    "한복": {"At": [6, 1], "Face": "SW", "Pose": "sit", "Sprite": "official_noncombat", "Faction": "yuan"},
-    "원술": {"At": [3, 5], "Face": "NE", "Pose": "sit"},
-    "손견": {"At": [4, 5], "Face": "NE", "Pose": "sit"},
-    "공주": {"At": [6, 6], "Face": "NE", "Pose": "sit", "Sprite": "official_noncombat", "Faction": "yuan"},
-    "하후돈": {"At": [3, 0], "Face": "SW"},
-    "정보": {"At": [4, 6], "Face": "NE"},
-    "유비": {"At": [12, 4], "Face": "NW", "Off": true},
-    "관우": {"At": [12, 4], "Face": "NW", "Off": true},
-    "장비": {"At": [12, 4], "Face": "NW", "Off": true}
+    "유비": {"At": [8, 2], "Face": "NW"},
+    "관우": {"At": [9, 2], "Face": "NW"},
+    "장비": {"At": [9, 3], "Face": "NW"},
+    "의병#1": {"At": [10, 2], "Face": "NW", "Sprite": "light_infantry", "Faction": "shu"},
+    "의병#2": {"At": [10, 3], "Face": "NW", "Sprite": "light_infantry", "Faction": "shu"}
    },
    "Beats": {
-    "c03-32": [
+    "c03-c1": [
      [
-      [{"CamAt": [6, 4]}],
-      [{"Actor": "유비", "Enter": [12, 4], "Move": [9, 3]}, {"Actor": "관우", "Enter": [12, 4], "Move": [10, 3], "After": 0.6}, {"Actor": "장비", "Enter": [12, 4], "Move": [10, 4], "After": 1.2}],
-      [{"Actor": "유비", "Face": "NW"}, {"Actor": "관우", "Face": "NW"}, {"Actor": "장비", "Face": "NW"}]
+      [{"Actor": "유비", "Move": [5, 2]}, {"Actor": "관우", "Move": [6, 2]}, {"Actor": "장비", "Move": [6, 3]}, {"Actor": "의병#1", "Move": [7, 2]}, {"Actor": "의병#2", "Move": [7, 3]}]
      ]
     ],
-    "c03-33": [
+    "c03-c2": [
      [
-      [{"Actor": "원술", "Face": "SE"}]
-     ]
-    ],
-    "c03-34": [
-     [
-      [{"Actor": "유비", "Play": "action"}]
-     ]
-    ],
-    "c03-35": [
-     [
-      [{"Actor": "원술", "Face": "SE", "Play": "action", "Emote": "!", "Shake": 0.3}],
-      [{"Actor": "장비", "Emote": "!", "Play": "action"}, {"Actor": "관우", "Look": "SE", "After": 0.3}]
-     ]
-    ],
-    "c03-36": [
-     [
-      [{"Actor": "조조", "Face": "SE"}]
-     ]
-    ],
-    "c03-38": [
-     [
-      [{"Actor": "손견", "Face": "SE", "Play": "action"}]
-     ]
-    ],
-    "c03-39": [
-     [
-      [{"Actor": "원술", "Face": "NW", "Emote": "…"}]
-     ]
-    ],
-    "c03-41": [
-     [
-      [{"Actor": "원소", "Play": "action"}]
-     ]
-    ],
-    "c03-43": [
-     [
-      [{"Cam": "원술"}, {"Actor": "원술", "Face": "SE"}]
+      [{"Effect": "smoke", "At": [-3, 1]}, {"Effect": "smoke", "At": [-4, 2]}],
+      [{"Actor": "장비", "Emote": "!"}]
      ]
     ]
    }
   },
-  "c03-y0": {
-   "Map": "S_tent_lux",
-   "Nodes": ["c03-y0", "c03-y1", "c03-y2", "c03-y3", "c03-y4"],
+  "c03-e-in": {
+   "Map": "S_mansion2",
+   "Nodes": ["c03-e-in", "c03-i1", "c03-i2"],
    "Cast": {
-    "원술": {"At": [1, 2], "Face": "SE", "Hold": true, "Pose": "sit"},
-    "환관#1": {"At": [1, 1], "Face": "SE", "Sprite": "eunuch_noncombat", "Faction": "yuan"},
-    "환관#2": {"At": [1, 3], "Face": "NE", "Sprite": "eunuch_noncombat", "Faction": "yuan"},
-    "병사": {"At": [4, 2], "Face": "NW", "Sprite": "light_infantry", "Faction": "yuan"}
+    "조조": {"Stay": true},
+    "유비": {"Stay": true},
+    "하인": {"Stay": true}
    },
    "Beats": {
-    "c03-y1": [
+    "c03-i2": [
      [
-      [{"Actor": "병사", "Play": "exhausted"}],
-      [{"Actor": "원술", "Emote": "…"}]
-     ]
-    ],
-    "c03-y3": [
-     [
-      [{"Actor": "원술", "Play": "action"}],
-      [{"Actor": "환관#1", "Pose": "bow"}]
+      [{"Actor": "조조", "Move": [8, 2], "Exit": true}]
      ]
     ]
    }
   },
-  "c03-z0": {
-   "Map": "S_army_camp_hungry",
+  "c03-e-rumor": {
+   "Map": "S_tavern2",
+   "Time": "dusk",
+   "Nodes": ["c03-e-rumor", "c03-r1", "c03-r2", "c03-r3", "c03-r4", "c03-r5", "c03-r6", "c03-r7", "c03-r8", "c03-r9"],
+   "Cast": {
+    "술손님": {"Stay": true},
+    "옆자리 손님": {"Stay": true},
+    "유비": {"Stay": true},
+    "관우": {"Stay": true},
+    "장비": {"Stay": true}
+   },
+   "Beats": {
+    "c03-r1": [
+     [
+      [{"Actor": "유비", "Move": [3, 3]}],
+      [{"Actor": "유비", "Face": "NW"}]
+     ]
+    ],
+    "c03-r5": [
+     [
+      [{"Actor": "장비", "Look": "SE"}]
+     ]
+    ],
+    "c03-r8": [
+     [
+      [{"Time": "night"}, {"Actor": "관우", "Pose": "idle"}, {"Actor": "장비", "Pose": "idle"}]
+     ]
+    ],
+    "c03-r9": [
+     [
+      [{"Actor": "장비", "Move": [5, 4]}],
+      [{"Actor": "장비", "Move": [7, 4], "Exit": true}, {"Actor": "관우", "Move": [5, 4], "After": 0.3}],
+      [{"Actor": "관우", "Move": [7, 4], "Exit": true}, {"Actor": "유비", "Face": "SE"}]
+     ]
+    ]
+   }
+  },
+  "c03-e-night": {
+   "Map": "S_mansion2",
    "Time": "night",
-   "Backdrop": "city_wall",
-   "Nodes": ["c03-z0", "c03-z1", "c03-z2", "c03-z3", "c03-z4", "c03-z5", "c03-z6", "c03-z7"],
+   "Nodes": ["c03-e-night", "c03-n1", "c03-n2", "c03-n3"],
    "Cast": {
-    "손견": {"At": [2, 2], "Face": "SW"},
-    "황개": {"At": [2, 4], "Face": "NE"},
-    "정보": {"At": [3, 4], "Face": "NE"},
-    "한당": {"At": [6, 3], "Face": "NW", "Off": true},
-    "손견병#1": {"At": [1, 5], "Face": "NE", "Sprite": "wounded_noncombat", "Pose": "lie", "Faction": "wu"},
-    "손견병#2": {"At": [3, 5], "Face": "NW", "Sprite": "wounded_noncombat", "Pose": "lie", "Faction": "wu"},
-    "서량기#1": {"At": [3, -6], "Face": "SW", "Off": true, "Sprite": "light_cavalry", "Faction": "dong"},
-    "서량기#2": {"At": [3, -6], "Face": "SW", "Off": true, "Sprite": "light_cavalry", "Faction": "dong"},
-    "손견병#3": {"At": [0, 4], "Face": "NE", "Sprite": "wounded_noncombat", "Pose": "sitground", "Faction": "wu"}
+    "조조": {"Stay": true},
+    "유비": {"Stay": true},
+    "관우": {"Stay": true},
+    "장비": {"Stay": true}
    },
    "Beats": {
-    "c03-z1": [
+   }
+  },
+  "c03-e-flash": {
+   "Map": "S_council",
+   "Time": "memory",
+   "Nodes": ["c03-e-flash", "c03-f1", "c03-f2", "c03-f3", "c03-f4", "c03-f5", "c03-f6", "c03-f7", "c03-f8", "c03-f9", "c03-f10", "c03-f11", "c03-f12", "c03-f13"],
+   "Ambient": [{"Actor": "관리#1", "Chatter": "웅성웅성|수군수군"}, {"Actor": "관리#2", "Chatter": "웅성웅성|궁 안이 또 시끄럽다지"}, {"Actor": "관리#3", "Chatter": "수군수군|웅성웅성"}, {"Actor": "무관#1", "Chatter": "웅성웅성|대장군께선 언제 나서시려나"}, {"Actor": "무관#2", "Chatter": "수군수군|웅성웅성"}, {"Actor": "관리#4", "Chatter": "웅성웅성|수군수군"}],
+   "Cast": {
+    "하진": {"At": [1, 3], "Face": "SE", "Hold": true, "Pose": "sit"},
+    "관리": {"At": [3, 1], "Face": "SW", "Pose": "sit", "Sprite": "official_noncombat", "Faction": "han"},
+    "관리#1": {"At": [4, 1], "Face": "SW", "Pose": "sit", "Sprite": "official_crimson_noncombat", "Faction": "han"},
+    "관리#2": {"At": [6, 1], "Face": "SW", "Pose": "sit", "Sprite": "official_purple_noncombat", "Faction": "han"},
+    "관리#3": {"At": [8, 1], "Face": "SW", "Pose": "sit", "Sprite": "official_blue_noncombat", "Faction": "han"},
+    "부장": {"At": [3, 6], "Face": "NE", "Pose": "sit", "Sprite": "official_noncombat", "Faction": "han"},
+    "무관#1": {"At": [4, 6], "Face": "NE", "Pose": "sit", "Sprite": "infantry_noncombat", "Faction": "han"},
+    "무관#2": {"At": [6, 6], "Face": "NE", "Pose": "sit", "Sprite": "infantry_noncombat", "Faction": "han"},
+    "조조": {"At": [8, 6], "Face": "NE", "Pose": "sit"},
+    "무관#3": {"At": [4, 0], "Face": "SW", "Sprite": "infantry_noncombat", "Faction": "han"},
+    "무관#4": {"At": [4, 7], "Face": "NE", "Sprite": "infantry_noncombat", "Faction": "han"},
+    "호위#1": {"At": [11, 2], "Face": "NW", "Sprite": "guards", "Faction": "han"},
+    "호위#2": {"At": [11, 5], "Face": "NW", "Sprite": "guards", "Faction": "han"},
+    "관리#4": {"At": [9, 1], "Face": "SW", "Pose": "sit", "Sprite": "official_green_noncombat", "Faction": "han"}
+   },
+   "Beats": {
+    "c03-f1": [
      [
-      [{"Actor": "손견병#3", "Chatter": "배가…|으으…"}]
+      [{"Actor": "관리#2", "Say": "환관들이 또 무슨 일을 꾸민다던데……"}],
+      [{"Actor": "무관#1", "Say": "쉿, 대장군 앞이오."}]
      ]
     ],
-    "c03-z4": [
+    "c03-f2": [
      [
-      [{"Actor": "손견", "Play": "action", "Shake": 0.2}]
+      [{"Actor": "관리", "Play": "action"}]
      ]
     ],
-    "c03-z5": [
+    "c03-f3": [
      [
-      [{"CamAt": [3, -1]}, {"Actor": "서량기#1", "Enter": [3, -6], "Move": [2, -3], "Speed": 2}, {"Actor": "서량기#2", "Enter": [3, -6], "Move": [3, -4], "Speed": 2, "After": 0.3}],
-      [{"Actor": "서량기#1", "Say": "와아—!", "Shake": 0.5}, {"Effect": "fire", "At": [1.6, -2.6]}, {"Effect": "fire", "At": [3.8, -2.2]}]
+      [{"Actor": "관리#1", "Chatter": "단양이라니……|산골이라 길도 험하다던데"}, {"Actor": "관리#3", "Chatter": "군사를 어디서 빼 오나|웅성웅성"}, {"Actor": "무관#2", "Chatter": "누가 가겠소|수군수군"}, {"Actor": "관리#2", "Emote": "…"}]
      ]
     ],
-    "c03-z6": [
+    "c03-f5": [
      [
-      [{"Actor": "손견병#3", "Chatter": "-"}, {"Actor": "손견병#3", "Pose": "idle"}, {"Actor": "손견병#1", "Pose": "sitground"}],
-      [{"Cam": "손견"}, {"Actor": "한당", "Enter": [6, 3], "Move": [4, 3], "Speed": 2}],
-      [{"Actor": "손견", "Face": "NE"}, {"Actor": "황개", "Face": "NE"}, {"Actor": "정보", "Face": "NE"}]
+      [{"Actor": "하진", "Play": "action"}, {"Actor": "관리#1", "Chatter": "-"}, {"Actor": "관리#2", "Chatter": "-"}, {"Actor": "관리#3", "Chatter": "-"}, {"Actor": "무관#1", "Chatter": "-"}, {"Actor": "무관#2", "Chatter": "-"}, {"Actor": "관리#4", "Chatter": "-"}]
      ]
     ],
-    "c03-z7": [
+    "c03-f6": [
      [
-      [{"Actor": "손견", "Play": "action"}]
+      [{"Actor": "관리#1", "Look": "SE"}, {"Actor": "관리#2", "Look": "SE"}, {"Actor": "무관#1", "Look": "SE"}]
      ]
     ]
    }
   },
-  "c03-44": {
-   "Map": "S_council",
+  "c03-e-night2": {
+   "Map": "S_mansion2",
    "Time": "night",
-   "Nodes": ["c03-44", "c03-45", "c03-46", "c03-47", "c03-48", "c03-49"],
-   "Ambient": [{"Effect": "smallfire", "At": [1.4, 0.5]}, {"Effect": "smallfire", "At": [1.4, 6.6]}, {"Effect": "smallfire", "At": [9.6, 0.5]}, {"Effect": "smallfire", "At": [9.6, 6.6]}, {"Actor": "악공#1", "Chatter": "♪|♪♪"}],
+   "Nodes": ["c03-e-night2", "c03-m1", "c03-m2", "c03-m3", "c03-m4", "c03-m5", "c03-m6"],
    "Cast": {
-    "원소": {"At": [1, 3], "Face": "SE", "Hold": true, "Pose": "sit"},
-    "안량": {"At": [1, 2], "Face": "SE"},
-    "문추": {"At": [1, 5], "Face": "SE"},
-    "호위#1": {"At": [11, 2], "Face": "NW", "Sprite": "guards", "Faction": "yuan"},
-    "호위#2": {"At": [11, 5], "Face": "NW", "Sprite": "guards", "Faction": "yuan"},
-    "조조": {"At": [3, 1], "Face": "SW", "Pose": "sit"},
-    "교모": {"At": [4, 1], "Face": "SW", "Pose": "sit", "Sprite": "official_noncombat", "Faction": "yuan"},
-    "한복": {"At": [6, 1], "Face": "SW", "Pose": "sit", "Sprite": "official_noncombat", "Faction": "yuan"},
-    "원술": {"At": [3, 5], "Face": "NE", "Pose": "sit"},
-    "공주": {"At": [4, 5], "Face": "NE", "Pose": "sit", "Sprite": "official_noncombat", "Faction": "yuan"},
-    "하후돈": {"At": [3, 0], "Face": "SW"},
-    "유비": {"At": [8, 6], "Face": "NW"},
-    "관우": {"At": [9, 6], "Face": "NW"},
-    "장비": {"At": [8, 7], "Face": "NW"},
-    "악공#1": {"At": [9, 1], "Face": "NW", "Sprite": "commoner_man", "Faction": "yuan"},
-    "환관#1": {"At": [6, 0], "Face": "SW", "Sprite": "eunuch_noncombat", "Faction": "yuan"},
-    "전령": {"At": [12, 4], "Face": "NW", "Off": true, "Sprite": "light_infantry"}
+    "조조": {"At": [4, 2], "Face": "SW"},
+    "유비": {"At": [4, 4], "Face": "NE"},
+    "관우": {"At": [3, 4], "Face": "NE"},
+    "장비": {"At": [5, 3], "Face": "NE"}
    },
    "Beats": {
-    "c03-45": [
-     [
-      [{"Actor": "원소", "Play": "action"}, {"Actor": "교모", "Play": "action", "After": 0.3}, {"Actor": "한복", "Play": "action", "After": 0.6}]
-     ]
-    ],
-    "c03-46": [
-     [
-      [{"Actor": "악공#1", "Chatter": "-"}, {"Actor": "전령", "Enter": [12, 4], "Move": [9, 3], "Speed": 2}],
-      [{"Actor": "전령", "Play": "exhausted"}]
-     ]
-    ],
-    "c03-47": [
-     [
-      [{"Actor": "교모", "Emote": "!"}, {"Actor": "한복", "Emote": "!", "After": 0.2}, {"Actor": "공주", "Emote": "!", "After": 0.4}, {"Actor": "조조", "Face": "SE", "After": 0.1}, {"Actor": "원술", "Face": "NW", "After": 0.5}, {"Actor": "안량", "Chatter": "웅성웅성|…"}, {"Actor": "문추", "Chatter": "…|웅성웅성"}]
-     ]
-    ],
-    "c03-48": [
-     [
-      [{"Actor": "안량", "Chatter": "-"}, {"Actor": "문추", "Chatter": "-"}, {"Cam": "조조"}, {"Actor": "조조", "Face": "SE"}]
-     ]
-    ],
-    "c03-49": [
-     [
-      [{"Actor": "유비", "Play": "action"}]
-     ]
-    ]
    }
   }
  }

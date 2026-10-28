@@ -263,7 +263,12 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 	}
 }
 
-func (g *Game) drawNarration(dst *ebiten.Image, l line, text, key string) {
+// narrationIn is how long a narration takes to rise in; clicks wait for it so a double click
+// cannot skip the line.
+const narrationIn = .52
+
+// drawNarration shows the whole line at once; the box and its text fade in and out together.
+func (g *Game) drawNarration(dst *ebiten.Image, l line, key string) {
 	a := &g.dialogueAnim
 	if a.key != key {
 		a.key, a.shownAt = key, g.uiSeconds
@@ -279,7 +284,7 @@ func (g *Game) drawNarration(dst *ebiten.Image, l line, text, key string) {
 		p := phase(g.uiSeconds-g.narrationExitAt, 0, .43)
 		alpha, dy = 1-p, float64(uiH)*.05*p
 	} else {
-		p := bezier(.18, .77, .18, 1, phase(g.uiSeconds-a.shownAt, 0, .52))
+		p := bezier(.18, .77, .18, 1, phase(g.uiSeconds-a.shownAt, 0, narrationIn))
 		alpha, dy = p, float64(uiH)*.05*(1-p)
 	}
 	y += dy
@@ -289,11 +294,7 @@ func (g *Game) drawNarration(dst *ebiten.Image, l line, text, key string) {
 	g.drawPattern(dst, g.assets.Dragon, x, y, w, h, 0, 0, dragonScale, dragonTeal, float32(.22*alpha))
 	strokeRect(dst, float32(x+1), float32(y+1), float32(w-2), float32(h-2), 3, color.NRGBA{A: uint8(255 * alpha)})
 	strokeRect(dst, float32(x+7), float32(y+7), float32(w-14), float32(h-14), 1, color.NRGBA{R: 180, G: 195, B: 178, A: uint8(90 * alpha)})
-	shown := wrapped
-	if !g.narrationLeaving {
-		shown = prefixLines(wrapped, len([]rune(text)))
-	}
-	for i, line := range strings.Split(shown, "\n") {
+	for i, line := range strings.Split(wrapped, "\n") {
 		write(dst, line, f, x+(w-measure(line, f))/2, y+(h-float64(lines)*f.Size*1.45)/2+float64(i)*f.Size*1.45,
 			color.NRGBA{R: 252, G: 247, B: 231, A: uint8(255 * alpha)})
 	}

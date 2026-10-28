@@ -25,7 +25,14 @@ func duelsIn(r Result) []Event {
 	return out
 }
 
-func TestAMoveNextToTheDuelPartnerStartsTheDuel(t *testing.T) {
+// moveAndWait moves the unit and ends its turn there, returning what the wait set off.
+func moveAndWait(t *testing.T, e *Engine, id string, x, y int) Result {
+	t.Helper()
+	assert.Empty(t, duelsIn(applyOK(t, e, Command{Kind: "move", Actor: id, X: x, Y: y})), "a move alone is no meeting yet")
+	return applyOK(t, e, Command{Kind: "wait", Actor: id})
+}
+
+func TestEndingTheTurnNextToTheDuelPartnerStartsTheDuel(t *testing.T) {
 	e := battleWith(t, func(s *content.Stage) {
 		neverWon(s)
 		s.Enemies[0].X, s.Enemies[0].Y = 4, 2 // the boss stands where the hero can reach
@@ -34,15 +41,13 @@ func TestAMoveNextToTheDuelPartnerStartsTheDuel(t *testing.T) {
 	assert.Equal(t, "D", e.DuelAt("hero", 4, 1))
 	assert.Empty(t, e.DuelAt("hero", 2, 2), "two cells away")
 	assert.Empty(t, e.DuelAt("archer1", 3, 2), "the archer is no one's partner")
-	r := applyOK(t, e, Command{Kind: "move", Actor: "hero", X: 3, Y: 2})
+	r := moveAndWait(t, e, "hero", 3, 2)
 	duels := duelsIn(r)
 	require.Len(t, duels, 1)
 	assert.Equal(t, "hero", duels[0].First)
 	assert.Equal(t, "hero", duels[0].Actor)
 	assert.Equal(t, "boss", duels[0].Target)
 	assert.Zero(t, e.unit("boss").HP, "the fixed result: the boss retreats")
-	hero := e.unit("hero")
-	assert.True(t, hero.Moved && hero.Acted && hero.Done, "the duel ends the mover's action")
 	assert.True(t, e.state.Executed["duel-D"])
 	assert.Empty(t, e.DuelAt("hero", 3, 2), "a duel is held once")
 }
@@ -52,7 +57,7 @@ func TestADuelHappensOnceAndSurvivesSaveAndRestore(t *testing.T) {
 		neverWon(s)
 		s.Enemies[0].X, s.Enemies[0].Y = 4, 2
 	})
-	applyOK(t, e, Command{Kind: "move", Actor: "hero", X: 3, Y: 2})
+	moveAndWait(t, e, "hero", 3, 2)
 	r, err := Restore(e.Data(), e.Snapshot())
 	require.NoError(t, err)
 	assert.Empty(t, duelsIn(applyOK(t, r, Command{Kind: "end"})))
@@ -65,7 +70,7 @@ func TestTheEnemyWalkingUpStartsTheDuelToo(t *testing.T) {
 	})
 	assert.False(t, e.state.Executed["duel-D"], "(3,3) is two cells from the hero at (1,3)")
 	applyOK(t, e, Command{Kind: "end"})
-	r := applyOK(t, e, Command{Kind: "move", Actor: "boss", X: 2, Y: 3})
+	r := moveAndWait(t, e, "boss", 2, 3)
 	duels := duelsIn(r)
 	require.Len(t, duels, 1)
 	assert.Equal(t, "boss", duels[0].First)
@@ -107,23 +112,50 @@ func TestASupportMeetingTheEnemyStartsTheDuel(t *testing.T) {
 		s.Enemies[0].X, s.Enemies[0].Y = 4, 3
 	})
 	assert.Equal(t, "D", e.DuelAt("archer1", 3, 3), "the archer joins the hero's duel")
-	r := applyOK(t, e, Command{Kind: "move", Actor: "archer1", X: 3, Y: 3})
+	r := moveAndWait(t, e, "archer1", 3, 3)
 	duels := duelsIn(r)
 	require.Len(t, duels, 1)
 	assert.Equal(t, "archer1", duels[0].First, "the staging opens with the support who met the boss")
 	assert.Equal(t, "hero", duels[0].Actor, "the duel is still the hero's")
-	assert.True(t, e.unit("archer1").Done)
 }
 
 func TestASupportFightsTheDuelWhenItsAllyHasLeft(t *testing.T) {
 	e := battleWith(t, func(s *content.Stage) {
 		neverWon(s)
-		s.Duels[0].Supports = []string{"archer1", "nobody"}
-		s.Enemies[0].X, s.Enemies[0].Y = 4, 3
+		s.Duels[0].Ally = "archer1"
+		s.Duels[0].Supports = []string{"hero", "nobody"}
+		s.Enemies[0].X, s.Enemies[0].Y = 4, 2
 	})
-	e.unit("hero").HP = 0
-	r := applyOK(t, e, Command{Kind: "move", Actor: "archer1", X: 3, Y: 3})
+	e.unit("archer1").HP = 0 // the hero is the lord, so the archer is the one who leaves
+	r := moveAndWait(t, e, "hero", 3, 2)
 	duels := duelsIn(r)
 	require.Len(t, duels, 1)
-	assert.Equal(t, "archer1", duels[0].Actor, "the support stands in for the hero")
+	assert.Equal(t, "hero", duels[0].Actor, "the support stands in for the archer")
+}
+
+func TestAnAttackAfterTheMoveIsCarriedOutBeforeTheDuel(t *testing.T) {
+	e := battleWith(t, func(s *content.Stage) {
+		neverWon(s)
+		s.Enemies[0].X, s.Enemies[0].Y = 4, 2
+	})
+	e.unit("boss").HP = 9999 // outlives one blow, so the duel still has someone to meet
+	applyOK(t, e, Command{Kind: "move", Actor: "hero", X: 3, Y: 2})
+	for _, c := range e.LegalActions("hero").Commands {
+		if c.Kind == "attack" && c.Target == "boss" {
+			r := applyOK(t, e, c)
+			first, duel := -1, -1
+			for i, ev := range r.Events {
+				if ev.Kind == "duel" {
+					duel = i
+				} else if first < 0 && ev.Target == "boss" {
+					first = i
+				}
+			}
+			require.GreaterOrEqual(t, duel, 0, "the finished attack sets off the duel")
+			require.GreaterOrEqual(t, first, 0)
+			assert.Less(t, first, duel, "the blow lands before the duel")
+			return
+		}
+	}
+	t.Fatal("the hero has no attack on the boss from (3,2)")
 }

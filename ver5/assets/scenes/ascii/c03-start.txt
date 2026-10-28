@@ -1,16 +1,24 @@
-# c03-start  S_army_camp  ch03  origin 0 0
-......FlgFlg......
-...Tnt......Tnt...
-...TntLiuBnrTnt...
-......BnrBnr......
-...TntGuaZhaTnt...
-...in1......in2...
+# c03-start  S_road  ch03  origin 0 0
+Tre......Tre...Bsh...Bsh
+...Mil..................
+...............LuZin1in2
+...............Mil......
+......Bsh...............
 
-Liu 유비
-Gua 관우
-Zha 장비
-in1 병사#1  (light_infantry)
-in2 병사#2  (light_infantry)
-Mes 전령  (light_cavalry, off stage, enters later (cell 3 -3))
+LuZ 노식
+in1 호송병#1  (light_infantry)
+in2 호송병#2  (light_infantry)
+Liu 유비  (off stage, enters later (cell -4 2))
+Gua 관우  (off stage, enters later (cell -5 2))
+Zha 장비  (off stage, enters later (cell -4 1))
 
-# c03-01: Mes -> 2 1
+# c03-a1: Liu -> 3 2
+# c03-a1: Zha -> 4 1
+# c03-a1: Gua -> 2 2
+# c03-a10: Gua -> 2 1
+# c03-a10: Liu -> 3 1
+# c03-a10: LuZ -> -8 2 and leaves
+# c03-a10: in1 -> -8 2 and leaves
+# c03-a10: in2 -> -8 2 and leaves
+# c03-a10: Gua -> 2 2
+# c03-a10: Gua -> 4 2

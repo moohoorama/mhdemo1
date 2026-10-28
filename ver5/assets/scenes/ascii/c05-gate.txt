@@ -1,0 +1,43 @@
+# c05-gate  S_checkpoint  ch05  origin 0 0
+....................................
+........................###.........
+..................TntTwr###Bnr......
+.....................in2###Off...Mil
+........................###.........
+..................FlgWpn###LntNtc...
+......Bsh...............###Bnrin1Bsh
+........................###.........
+........................###.........
+........................###.........
+...Tre..................###.........
+........................###.........
+............Bsh.........###.........
+.....................Bsh###.........
+........................###...Tre...
+
+Off 관리  (official_noncombat)
+in1 관문 병사#1  (light_infantry)
+in2 관문 병사#2  (light_infantry)
+Liu 유비  (off stage, enters later (cell 13 4))
+Cao 조조  (off stage, enters later (cell 13 4))
+Gua 관우  (off stage, enters later (cell 13 4))
+Zha 장비  (off stage, enters later (cell 13 5))
+
+# c05-d1: Liu -> 10 3
+# c05-d1: Cao -> 10 4
+# c05-d1: Gua -> 11 4
+# c05-d1: Zha -> 11 5
+# c05-d2: Cao -> 6 3
+# c05-d3: Liu -> 10 4
+# c05-d3: Liu -> 5 4
+# c05-d3: Gua -> 6 4
+# c05-d3: Zha -> 11 4
+# c05-d3: Zha -> 7 4
+# c05-d6: Cao -> 2 3
+# c05-d6: Liu -> 2 4
+# c05-d6: Gua -> 3 4
+# c05-d6: Zha -> 4 5
+# c05-d14: Cao -> 0 3 and leaves
+# c05-d14: Liu -> 0 4 and leaves
+# c05-d14: Gua -> 1 4 and leaves
+# c05-d14: Zha -> 1 5 and leaves

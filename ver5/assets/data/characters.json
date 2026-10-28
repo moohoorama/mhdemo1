@@ -2,7 +2,7 @@
  "Characters": {
   "liubei": {
    "Name": "유비",
-   "Biography": "자는 현덕. 탁현에서 짚신을 팔던 한실의 후예로, 도원에서 관우·장비와 의형제를 맺고 의용군을 일으킨다. 인덕으로 인재를 모아 촉한을 세운다.",
+   "Biography": "자는 현덕. 탁현에서 어머니와 짚신을 삼고 돗자리를 엮어 팔던 한실의 후예로, 도원에서 관우·장비와 의형제를 맺고 의용군을 일으킨다. 인덕으로 인재를 모아 촉한을 세운다.",
    "Class": "light_infantry",
    "Stats": [
     91,
@@ -248,7 +248,7 @@
    ],
    "Level": 6,
    "Traits": [
-    "intimidate"
+    "vital_strike"
    ],
    "Learn": [],
    "Equipment": [
@@ -1064,6 +1064,60 @@
     "Palette": {
      "horseSkin": "#a09078",
      "saddle": "#404060"
+    }
+   }
+  },
+  "fangyue": {
+   "Name": "방열",
+   "Biography": "하내 왕광 휘하의 장수. 호로관에서 공을 노려 샛길로 나와 여포에게 달려들었다가 다섯 합 만에 쓰러진다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    55,
+    63,
+    25,
+    52,
+    30,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "yuan",
+    "Palette": {
+     "horseSkin": "#3a3a3a",
+     "saddle": "#6a3a2a"
+    }
+   }
+  },
+  "zhangliao": {
+   "Name": "장료",
+   "Biography": "자는 문원. 안문 마읍 사람으로 여포를 따르는 젊은 장수. 호로관에서 여포 곁을 지킨다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    86,
+    88,
+    72,
+    80,
+    62,
+    70
+   ],
+   "Level": 6,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "dong",
+    "Palette": {
+     "horseSkin": "#c8c0b0",
+     "saddle": "#3a4a6a"
     }
    }
   },

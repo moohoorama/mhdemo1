@@ -34,8 +34,6 @@ func TestObservationCache(t *testing.T) {
 		assert.Equal(t, 50, c.Of(e).DamagePct)
 		e.SetXPPct(70)
 		assert.Equal(t, 70, c.Of(e).XPPct)
-		e.SetCounterAll(true)
-		assert.True(t, c.Of(e).CounterAll)
 	})
 	t.Run("rebuilds for another engine", func(t *testing.T) {
 		e := battle(t)
@@ -56,7 +54,6 @@ func TestObservationStaysAfterChanges(t *testing.T) {
 	want := encoded(o)
 	apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
 	e.SetDamagePct(50)
-	e.SetCounterAll(true)
 	assert.NotEqual(t, want, encoded(e.Observe()))
 	assert.Equal(t, want, encoded(o))
 }

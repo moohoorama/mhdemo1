@@ -77,7 +77,7 @@ func TestSlotsChecksumAndAtomicFailure(t *testing.T) {
 func TestSettingsIndependent(t *testing.T) {
 	s := Store{t.TempDir()}
 	v := DefaultSettings()
-	v.AI = "step"
+	v.Replay = "one"
 	v.Color = true
 	v.TextDelayMS = 5
 	if err := s.SaveSettings(v); err != nil {
@@ -88,7 +88,7 @@ func TestSettingsIndependent(t *testing.T) {
 		t.Fatal(read, err)
 	}
 	bad := v
-	bad.AI = "unknown"
+	bad.Replay = "unknown"
 	if err = s.SaveSettings(bad); err == nil {
 		t.Fatal("invalid setting saved")
 	}
@@ -115,22 +115,4 @@ func TestDamagePctSetting(t *testing.T) {
 	assert.NoError(t, x.Validate())
 	x.XPPct = 50
 	assert.Error(t, x.Validate())
-}
-
-func TestCounterAllIsOnUntilTurnedOff(t *testing.T) {
-	s := Store{t.TempDir()}
-	t.Run("older settings without the key", func(t *testing.T) {
-		assert.NoError(t, os.WriteFile(filepath.Join(s.Dir, "settings.json"), []byte(`{"ai":"auto","detail":true,"damage_pct":70}`), 0644))
-		v, err := s.LoadSettings()
-		assert.NoError(t, err)
-		assert.True(t, v.CounterAll)
-	})
-	t.Run("turned off stays off", func(t *testing.T) {
-		v := DefaultSettings()
-		v.CounterAll = false
-		assert.NoError(t, s.SaveSettings(v))
-		read, err := s.LoadSettings()
-		assert.NoError(t, err)
-		assert.False(t, read.CounterAll)
-	})
 }

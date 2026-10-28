@@ -1,0 +1,16 @@
+# c05-field  S_road  ch05  origin 0 0
+Tre......Tre...Bsh...
+...Mil...............
+...............LiuGua
+in2in1in3......MilZha
+......Bsh............
+
+Liu 유비
+Gua 관우
+Zha 장비
+Sun 손견  (off stage, enters later (cell -1 2))
+in1 손견병#1  (light_infantry)
+in2 손견병#2  (light_infantry)
+in3 손견병#3  (light_infantry)
+
+# c05-n10: Sun -> 4 2

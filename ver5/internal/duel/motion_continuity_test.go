@@ -11,7 +11,7 @@ import (
 func TestArrivedFightersStopWalking(t *testing.T) {
 	scripts, err := loadScripts()
 	require.NoError(t, err)
-	for _, id := range []string{"hulao-mushun", "hulao-wuanguo"} {
+	for _, id := range []string{"hulao-mushun", "hulao-fangyue"} {
 		t.Run(id, func(t *testing.T) {
 			story := scripts.Story(id, "defeat")
 			moving := at(story, "approach", .5)

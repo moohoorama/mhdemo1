@@ -1,0 +1,28 @@
+# c05-reunion  S_pengcheng_field  ch05  origin 0 0
+...~~~~~~~~~~~~~~~~~~~~~~~~Tre...Bsh...Tre
+...Tre~~~~~~~~~~~~~~~Bsh..................
+.........Bsh...Tre~~~.....................
+Bsh.........Tao...LiuGua...............Bsh
+............Gao......Zha..................
+...........................in1............
+..................Sck......Sck............
+............Fir...in2...Sck...............
+.........Mat..............................
+...Bsh..............................Bsh...
+
+Tao 도겸
+Gao 고순
+Liu 유비
+Gua 관우
+Zha 장비
+in1 서주병#1  (light_infantry)
+in2 서주병#2  (light_infantry)
+GSZ 공손찬  (light_cavalry, off stage, enters later (cell 5 12))
+cv1 백마기#1  (light_cavalry_white, off stage, enters later (cell 4 12))
+cv2 백마기#2  (light_cavalry_white, off stage, enters later (cell 7 12))
+
+# c05-a1: GSZ -> 5 6
+# c05-a1: cv1 -> 3 8
+# c05-a1: cv2 -> 7 8
+# c05-a3: Liu -> 6 4
+# c05-a7: GSZ -> 5 3

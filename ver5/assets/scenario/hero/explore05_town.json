@@ -1,0 +1,282 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   17,
+   8
+  ],
+  "Face": "NW"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_road_town",
+   "Name": "낙양 가는 길 · 작은 고을",
+   "Time": "dusk",
+   "Times": [
+    {
+     "If": [
+      "flag:c05-inn"
+     ],
+     "Time": "night"
+    }
+   ],
+   "At": [
+    17,
+    8
+   ],
+   "Exits": [
+    {
+     "Name": "주막",
+     "At": [
+      10,
+      5
+     ],
+     "Object": [
+      10,
+      3
+     ],
+     "To": "inn"
+    }
+   ],
+   "People": {
+    "장꾼": {
+     "At": [
+      10,
+      10
+     ],
+     "Face": "NE",
+     "Talk": [
+      [
+       "장꾼",
+       "천자께서 돌아가셨대요. 새 천자가 섰다는데, 누군지는 아무도 몰라."
+      ]
+     ],
+     "Chatter": "싸오, 싸!|골라 보시오",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    },
+    "노인": {
+     "At": [
+      7,
+      6
+     ],
+     "Face": "SE",
+     "If": [
+      "!flag:c05-hejin"
+     ],
+     "Event": [
+      {
+       "Node": "c05-e-elder"
+      }
+     ],
+     "Sprite": "commoner_elder",
+     "Faction": "merchant"
+    },
+    "노인@after": {
+     "At": [
+      7,
+      6
+     ],
+     "Face": "SE",
+     "If": [
+      "flag:c05-hejin"
+     ],
+     "Talk": [
+      [
+       "노인",
+       "대장군 하진이 궁에 불려 들어갔다가 목이 떨어졌다지. 그 뒤로 궁 안이 피바다가 됐다더군."
+      ]
+     ],
+     "Sprite": "commoner_elder",
+     "Faction": "merchant"
+    },
+    "짐꾼": {
+     "At": [
+      16,
+      6
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "짐꾼",
+       "관문 기둥에 방이 붙었습디다. 서량의 동탁이 군사를 끌고 낙양에 들어왔다고."
+      ]
+     ],
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    },
+    "아낙": {
+     "At": [
+      14,
+      10
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "아낙",
+       "낙양 쪽에서 오는 사람들 봇짐이 날마다 늘어요. 다들 쫓기듯 와요."
+      ]
+     ],
+     "Sprite": "commoner_woman",
+     "Faction": "merchant"
+    },
+    "주막 머슴": {
+     "At": [
+      12,
+      6
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "주막 머슴",
+       "아까 삿갓 쓴 손님이 들었는데요, 말을 한마디도 안 해요."
+      ]
+     ],
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    },
+    "행인#1": {
+     "At": [
+      2,
+      8
+     ],
+     "Face": "SE",
+     "Move": {
+      "Patrol": [
+       [
+        2,
+        8
+       ],
+       [
+        15,
+        8
+       ]
+      ]
+     },
+     "Sprite": "commoner_woman",
+     "Faction": "merchant"
+    },
+    "관우@town": {
+     "At": [
+      19,
+      7
+     ],
+     "Face": "NW",
+     "If": [
+      "!flag:c05-inn"
+     ],
+     "Talk": [
+      [
+       "guanyu",
+       "형님, 오늘 밤은 주막에서 묵으시지요."
+      ]
+     ]
+    },
+    "장비@town": {
+     "At": [
+      19,
+      10
+     ],
+     "Face": "NW",
+     "If": [
+      "!flag:c05-inn",
+      "!flag:c05-hejin"
+     ]
+    },
+    "장비@hejin": {
+     "At": [
+      19,
+      10
+     ],
+     "Face": "NW",
+     "If": [
+      "!flag:c05-inn",
+      "flag:c05-hejin"
+     ],
+     "Talk": [
+      [
+       "zhangfei",
+       "형, 대장군이 죽었으면… 그럼 우린 이제 누구 명 받아유?"
+      ],
+      [
+       "liubei",
+       "……."
+      ]
+     ]
+    }
+   }
+  },
+  "inn": {
+   "Map": "S_tavern2",
+   "Name": "작은 고을 · 주막",
+   "Zoom": 3,
+   "Time": "night",
+   "At": [
+    13,
+    9
+   ],
+   "Exits": [
+    {
+     "Name": "고을로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Shop": "tavern",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant"
+    },
+    "삿갓 쓴 사내": {
+     "At": [
+      2,
+      4
+     ],
+     "Face": "SE",
+     "Pose": "sit",
+     "If": [
+      "!flag:c05-inn"
+     ],
+     "Event": [
+      {
+       "Node": "c05-inn"
+      }
+     ],
+     "Sprite": "caocao_noncombat",
+     "Faction": "wei"
+    },
+    "장비@inn": {
+     "At": [
+      6,
+      4
+     ],
+     "Face": "NW",
+     "If": [
+      "flag:c05-inn"
+     ]
+    },
+    "술손님#1": {
+     "At": [
+      10,
+      9
+     ],
+     "Face": "NW",
+     "Pose": "sit",
+     "Chatter": "낙양이 난리라더군|쉿……",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    }
+   }
+  }
+ }
+}

@@ -3,98 +3,75 @@
   {
    "ID": "c06-start",
    "Kind": "scene",
-   "Place": "호로관 · 연합 진영"
+   "Place": "반동탁 연합 · 진영"
   },
   {
-   "ID": "c06-01",
+   "ID": "c06-a1",
    "Kind": "narrate",
-   "Text": "멀리 호로관이 산과 산 사이를 막고 서 있다. 관 앞에 서량군이 진을 쳤다."
+   "Text": "사수관의 승전이 연합 진영에 닿는다. 원술이 투덜댄다. 이름도 없는 자들이 사수관의 공을 가로챘다."
   },
   {
-   "ID": "c06-02",
+   "ID": "c06-a2",
    "Kind": "say",
    "Speaker": "caocao",
-   "Text": "화웅을 잃은 동탁이 호로관에 여포를 세웠다 하오."
+   "Text": "공로 공 군량이 늦은 덕에 저 사람들이 공을 세울 자리가 생겼으니, 오히려 잘됐소."
   },
   {
-   "ID": "c06-03",
+   "ID": "c06-a3",
    "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "제후들은 그 이름만 듣고도 진을 나서지 않으려 하오."
+   "Speaker": "yuanshu",
+   "Text": "지금 내가 군량을 일부러 늦췄다는 거냐!"
   },
   {
-   "ID": "c06-04",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "그렇다면 저희가 먼저 나서겠습니다. 관 앞의 서량군부터 걷어내지요."
+   "ID": "c06-council",
+   "Kind": "scene",
+   "Place": "반동탁 연합 · 맹주의 막사"
   },
   {
-   "ID": "c06-05",
+   "ID": "c06-b1",
    "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "고맙소, 현덕. 나는 제후들을 다그쳐 뒤를 받치게 하겠소."
+   "Speaker": "messenger",
+   "Text": "여포가 호로관 앞에 진채를 세우고 싸움을 돋웁니다!"
   },
   {
-   "ID": "c06-06",
+   "ID": "c06-b2",
+   "Kind": "narrate",
+   "Text": "제후들이 서로 눈치만 본다."
+  },
+  {
+   "ID": "c06-b3",
    "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "여포든 뭐든, 나오기만 하면 이 장비가 상대해 주지!"
+   "Speaker": "yuanshao",
+   "Text": "여포의 무용은 천하가 아는 바요. ……아깝구나. 내 장수 안량과 문추가 아직 오지 않았으니."
+  },
+  {
+   "ID": "c06-b4",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "둘 중 하나만 여기 있었어도 여포 따위가 무엇이겠소."
+  },
+  {
+   "ID": "c06-b5",
+   "Kind": "say",
+   "Speaker": "yuanshu",
+   "Text": "사수관에서 재주를 보인 이들이 있지 않소. 직은 없어도 몸은 날래던데."
+  },
+  {
+   "ID": "c06-b6",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "(고개를 끄덕이며) 그럼 이리 합시다. 현덕이 선봉에 서시오. 우리가 본군으로 뒤를 받치겠소."
+  },
+  {
+   "ID": "c06-walk",
+   "Kind": "explore",
+   "Explore": "explore06"
   },
   {
    "ID": "c06-battle",
    "Kind": "battle",
    "Stage": "B06",
    "Text": "호로관 — 출전 준비"
-  },
-  {
-   "ID": "c06-s2",
-   "Kind": "scene",
-   "Place": "호로관 · 연합 진영 저녁"
-  },
-  {
-   "ID": "c06-10",
-   "Kind": "narrate",
-   "Text": "흩어졌던 제후들의 군사가 하나둘 진으로 돌아온다. 원소의 막사 쪽에서 웃음소리가 들린다."
-  },
-  {
-   "ID": "c06-11",
-   "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "형, 먼저 내빼던 놈들이 지금 술잔을 돌리고 있소."
-  },
-  {
-   "ID": "c06-12",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "공을 탐낸 자들은 뒤늦게 달려 나가 무너지고, 길을 연 자들이 여포를 막았소."
-  },
-  {
-   "ID": "c06-13",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "그런데 공을 논할 때는 저들이 앞자리에 앉겠지. ……우스운 일이오."
-  },
-  {
-   "ID": "c06-14",
-   "Kind": "narrate",
-   "Text": "유비는 말이 없다. 그때 전령이 달려온다."
-  },
-  {
-   "ID": "c06-15",
-   "Kind": "say",
-   "Speaker": "messenger",
-   "Text": "급보요! 동탁이 낙양에 불을 지르고, 천자를 끼고 서쪽 장안으로 떠났사옵니다!"
-  },
-  {
-   "ID": "c06-16",
-   "Kind": "narrate",
-   "Text": "멀리 서쪽 하늘이 붉게 물들어 있다."
-  },
-  {
-   "ID": "c06-17",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "지금 쫓아야 하오. 지금이 아니면 다시는 기회가 없소."
   }
  ]
 }

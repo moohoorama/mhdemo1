@@ -4,7 +4,7 @@
    "Map": "S_council",
    "Time": "night",
    "Nodes": ["c08-start", "c08-01", "c08-02", "c08-03", "c08-04", "c08-05", "c08-06", "c08-07", "c08-08", "c08-09", "c08-10"],
-   "Ambient": [{"Effect": "smallfire", "At": [1.4, 0.5]}, {"Effect": "smallfire", "At": [1.4, 6.6]}, {"Effect": "smallfire", "At": [9.6, 0.5]}, {"Effect": "smallfire", "At": [9.6, 6.6]}, {"Actor": "악공#1", "Chatter": "♪|♪♪"}],
+   "Ambient": [{"Actor": "악공#1", "Chatter": "♪|♪♪"}],
    "Cast": {
     "원소": {"At": [1, 3], "Face": "SE", "Hold": true, "Pose": "sit"},
     "안량": {"At": [1, 2], "Face": "SE"},

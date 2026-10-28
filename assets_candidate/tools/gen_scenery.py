@@ -274,6 +274,62 @@ def reed(seed, h):
     return s
 
 
+MARSH_INK = {"a": (150, 168, 96), "b": (110, 140, 78), "c": (74, 100, 64), "r": (122, 84, 52), "w": (164, 186, 194)}
+MARSH = [  # reed clump, cattails, sedge, thin reeds; each stands in a pale ring of water (w)
+    """
+....a....
+..a.a..a.
+..a.b..a.
+.ab.b.ab.
+.ab.bbab.
+.bbcbbbb.
+.bccbcbb.
+.cccccc..
+.wwwwwww.""",
+    """
+..r....
+..r..r.
+..a..r.
+.ra..a.
+.ra.ba.
+.ba.b..
+.bb.b.a
+.bbcbba
+.cbcbc.
+..ccc..
+.wwwww.""",
+    """
+...a...a...
+.a.ab.ab.a.
+.abbbbbbba.
+bbcbbcbbcbb
+.ccccccccc.
+..wwwwwww..""",
+    """
+.a...
+.a..a
+.a..a
+.ab.a
+.bb.b
+.bb.b
+abbbb
+bbcbb
+.ccc.
+wwwww""",
+]
+
+
+def marsh(art):
+    """a marsh plant of the ford drawn as ASCII dots, its water ring half seen through"""
+    rows = art.strip("\n").split("\n")
+    s = Stamp(len(rows[0]), len(rows))
+    for y, row in enumerate(rows):
+        for x, ch in enumerate(row):
+            if ch in MARSH_INK:
+                s.put(x, y, MARSH_INK[ch], .6 if ch == "w" else 1)
+    return s
+
+
 def lily(seed, big):
     """a lily pad (a notched ellipse) lit top-left; now and then a flower pixel"""
     r = random.Random(seed)
@@ -590,12 +646,21 @@ def build():
         add("water.tone", f"water_dark_{i}", blob(w, h, (24, 80, 94), .24, 1060 + i, rough=.2))
     for i, (w, h) in enumerate([(48, 18), (56, 20)]):
         add("water.tone", f"water_light_{i}", blob(w, h, (110, 176, 182), .15, 1070 + i, rough=.2))
-    anim = {"glint": [], "ripple": []}
+    # the ford: marsh plants of its own, the shore's reeds and the grass's tufts; the plain: the grass's tufts and flowers
+    # with the waste's pebbles, cracks and patches
+    for i, art in enumerate(MARSH):
+        add("ford.marsh", f"marsh_{i}", marsh(art))
+    for g, src in (("reed", "water.reed"), ("tuft", "grass.tuft"), ("tone", "grass.tone")):
+        groups[f"ford.{g}"] = list(groups[src])
+    for g, src in (("tuft", "grass.tuft"), ("flower", "grass.flower"), ("pebble", "waste.pebble"), ("crack", "waste.crack"), ("patch", "waste.patch")):
+        groups[f"plain.{g}"] = list(groups[src])
+    # looping strips: frame sprite names and how long each frame shows (the game's FrameStrip)
+    anim = {"glint": {"frames": [], "ms": 260}, "ripple": {"frames": [], "ms": 380}}
     for f in range(4):
         sprites[f"glint_{f}"] = glint(f)
-        anim["glint"].append(f"glint_{f}")
+        anim["glint"]["frames"].append(f"glint_{f}")
         sprites[f"ripple_{f}"] = ripple(f)
-        anim["ripple"].append(f"ripple_{f}")
+        anim["ripple"]["frames"].append(f"ripple_{f}")
 
     camp_base, camp_flag, camp_at = camp_parts()
     sprites["camp_base"] = camp_base
@@ -604,14 +669,14 @@ def build():
         sprites[f"castle_flag_{f}"] = castle_flag(f)
     for f in range(8):
         sprites[f"smoke_{f}"] = smoke(f)
-    anim["camp_flag"] = [f"camp_flag_{f}" for f in range(4)]
-    anim["castle_flag"] = [f"castle_flag_{f}" for f in range(4)]
-    anim["smoke"] = [f"smoke_{f}" for f in range(8)]
+    anim["camp_flag"] = {"frames": [f"camp_flag_{f}" for f in range(4)], "ms": 170}
+    anim["castle_flag"] = {"frames": [f"castle_flag_{f}" for f in range(4)], "ms": 150}
+    anim["smoke"] = {"frames": [f"smoke_{f}" for f in range(8)], "ms": 220}
     sites = {
-        "camp": {"base": "camp_base", "overlays": [{"anim": "camp_flag", "at": list(camp_at), "ms": 170}]},
-        "village": {"overlays": [{"anim": "smoke", "at": [13, -12], "ms": 220, "chance": .4},
-                                 {"anim": "smoke", "at": [-22, -13], "ms": 220, "phase": 3, "chance": .25}]},
-        "castle": {"overlays": [{"anim": "castle_flag", "at": [-1, -27], "ms": 150}]},
+        "camp": {"base": "camp_base", "overlays": [{"anim": "camp_flag", "at": list(camp_at)}]},
+        "village": {"overlays": [{"anim": "smoke", "at": [13, -12], "chance": .4},
+                                 {"anim": "smoke", "at": [-22, -13], "phase": 3, "chance": .25}]},
+        "castle": {"overlays": [{"anim": "castle_flag", "at": [-1, -27]}]},
     }
 
     pines = []
@@ -622,8 +687,8 @@ def build():
             sprites[fn] = pine(spec, f)
             frames.append(fn)
         size = "s" if spec["H"] < 12 else ("l" if spec["H"] >= 19 else "m")
-        sw = {"s": 8, "m": 11, "l": 14}[size]
-        pines.append({"frames": frames, "shadow": f"shadow_{size}", "weight": [w_in, w_edge], "height": spec["H"]})
+        anim[name] = {"frames": frames, "ms": 300}
+        pines.append({"anim": name, "shadow": f"shadow_{size}", "weight": [w_in, w_edge], "height": spec["H"]})
     for size, w in (("s", 8), ("m", 11), ("l", 14)):
         sprites[f"shadow_{size}"] = shadow_stamp(w)
 
@@ -640,6 +705,9 @@ SCATTER = {
     # reeds only where water meets land, lilies only away from it; foam is a chance per shore edge (a second
     # streak with foam2); glint and ripple are animated, per water tile
     "water": {"reed": .9, "lily": .10, "tone": .10, "foam": .85, "foam2": .35, "glint": .22, "ripple": .04},
+    # marsh plants gather in clumps (internal/scenemap/scenery.go clumped)
+    "ford": {"marsh": .35, "reed": .10, "tuft": .20, "tone": .06},
+    "plain": {"tuft": .70, "pebble": .22, "crack": .08, "patch": .06, "flower": .04},
 }
 
 
@@ -665,9 +733,10 @@ def zoom(im, k):
     return im.resize((im.width * k, im.height * k), Image.NEAREST)
 
 
-def preview(sprites, groups, pines):
+def preview(sprites, groups, pines, anim):
     """contact sheets: decoration on the ground colour it is meant for, pines with their 4 sway frames"""
-    bgs = {"grass": GRASS, "waste": SOIL, "floor": FLOOR, "forest": mix(GRASS, DARK, .35), "cliff": SOIL, "water": WATER}
+    bgs = {"grass": GRASS, "waste": SOIL, "floor": FLOOR, "forest": mix(GRASS, DARK, .35), "cliff": SOIL, "water": WATER,
+           "ford": (98, 120, 128), "plain": mix(GRASS, SOIL, .5)}
     k = 5
     for area, bg in bgs.items():
         names = [n for g, ns in groups.items() if g.startswith(area + ".") for n in ns]
@@ -685,7 +754,7 @@ def preview(sprites, groups, pines):
     sheet = Image.new("RGBA", (1500, 520), mix(GRASS, DARK, .2) + (255,))
     for i, p in enumerate(pines):
         x0, y0 = 10 + (i % 5) * 295, 14 + (i // 5) * 250
-        for f, fn in enumerate(p["frames"]):
+        for f, fn in enumerate(anim[p["anim"]]["frames"]):
             sheet.alpha_composite(zoom(sprites[fn].im, 3), (x0 + f * 72, y0))
     sheet.convert("RGB").save(os.path.join(OUT, "preview_pines.png"))
 
@@ -707,7 +776,7 @@ def main():
     meta = {"image": "map/scenery.png", "sprites": index, "groups": groups, "scatter": SCATTER, "pines": pines, "anim": anim, "sites": sites,
             "note": "ground decoration is soft (no outline); pines keep the game's ink outline; see assets_candidate/tools/gen_scenery.py"}
     json.dump(meta, open(os.path.join(OUT, "scenery.json"), "w"), indent=1)
-    preview(sprites, groups, pines)
+    preview(sprites, groups, pines, anim)
     print(f"{len(sprites)} sprites, sheet {sheet.size}")
     if "--install" in sys.argv:
         install()

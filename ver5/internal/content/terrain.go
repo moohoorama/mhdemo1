@@ -24,11 +24,12 @@ type Structure struct {
 	RestHP, RestMP *int `json:",omitempty"` // percent of max HP restored (or lost, below zero) at turn start; multiplier of spell point regeneration
 }
 
-// State lies over a cell and is put there by events. Then is the state it turns into when its rounds
-// run out (none: the cell is clear again). On, when given, lists the structure glyphs it can lie over
-// (a damaged bridge), and Grounds the grounds (an open gate); none means any cell. Look names how the
-// picture shows it ("ember", "flame", "soot", "damaged", "broken", "open"); Blaze is the size of the
-// fire drawn on it.
+// State lies over a cell and is put there by events and by critical spells (Rules.CritMarks). Then is the
+// state it turns into when its rounds run out (none: the cell is clear again). On, when given, lists the
+// structure glyphs it can lie over (a damaged bridge), and Grounds the grounds (an open gate); none means
+// any cell. Look names how the picture shows it ("ember", "flame", "soot", "wet", "rubble", "damaged",
+// "broken", "open"); Blaze is the size of the fire drawn on it. Factor is added to the terrain factor of
+// every class that stands on it, on top of what the layers below and its own TerrainRule say.
 type State struct {
 	Name    string
 	Then    string  `json:",omitempty"`
@@ -36,6 +37,7 @@ type State struct {
 	Grounds string  `json:",omitempty"`
 	Look    string  `json:",omitempty"`
 	Blaze   float64 `json:",omitempty"`
+	Factor  float64 `json:",omitempty"`
 	RestHP  *int    `json:",omitempty"`
 }
 
@@ -102,6 +104,7 @@ func (d *Data) Move(group string, c Cell, boats bool) Terrain {
 			t.Cost = *r.Cost
 		}
 	}
+	t.Factor += d.States[string(c.State)].Factor
 	return t
 }
 
@@ -215,6 +218,11 @@ func (d *Data) validateTerrain() string {
 			if _, ok := d.Grounds[string(g)]; !ok {
 				return "state " + k + " lies over unknown ground " + string(g)
 			}
+		}
+	}
+	for element, k := range d.Rules.CritMarks {
+		if _, ok := d.States[k]; !ok {
+			return "crit mark of " + element + ": unknown state " + k
 		}
 	}
 	if c, ok := ParseCell(d.Rules.EdgeTile); !ok || d.ValidCell(c) != "" || c.State != NoLayer {

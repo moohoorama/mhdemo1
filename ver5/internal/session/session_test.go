@@ -57,10 +57,10 @@ func TestSaveLoadMenusAndRevision(t *testing.T) {
 		t.Fatal("discard intent")
 	}
 	v := storage.DefaultSettings()
-	v.AI = "step"
+	v.Replay = "one"
 	request(t, s, Request{Op: "settings", Settings: &v})
 	request(t, s, Request{Op: "load", Slot: "1", Discard: true})
-	if snapshot(s) != before || s.Settings.AI != "step" {
+	if snapshot(s) != before || s.Settings.Replay != "one" {
 		t.Fatal("load changed settings or state")
 	}
 	if s.Handle(Request{Op: "save", Slot: "1"}).Error != "OverwriteRequired" {

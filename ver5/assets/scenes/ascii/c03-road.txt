@@ -1,0 +1,20 @@
+# c03-road  S_road  ch03  origin 0 0
+Tre......Tre...Bsh...
+...Mil...............
+...............LiuGua
+...............MilZha
+......Bsh............
+
+Liu 유비
+Gua 관우
+Zha 장비
+Cao 조조  (off stage, enters later (cell 11 2))
+Att 종자  (infantry_noncombat, off stage, enters later (cell 11 3))
+cv1 조조병#1  (light_cavalry, off stage, enters later (cell 12 2))
+cv2 조조병#2  (light_cavalry, off stage, enters later (cell 12 3))
+
+# c03-b1: Cao -> 8 2
+# c03-b1: Att -> 8 3
+# c03-b1: cv1 -> 10 2
+# c03-b1: cv2 -> 10 3
+# c03-b5: Cao -> 7 2

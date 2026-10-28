@@ -10,8 +10,9 @@ and out. Bark, trunk and branch colours never move; only the picture's own colou
 redrawn round every frame (4-neighbour, the rule that reproduces the original outline).
 
 Writes assets_candidate/tiles/sway/<name>.png (a strip of frames) and packs them into assets/graphics/map/sway.png,
-listed in assets/graphics/index.json under "sway": the frame-0 rect and pivot of each tree, the frame count and
-time, and the scene maps that play it ("maps")."""
+listed in assets/graphics/index.json under "anims" (the game's table of looping strips) with each tree's frame-0
+rect, pivot, frame count and time, and "shadows" so every frame casts its own ground shadow. A tree of that name
+placed on any scene map plays it."""
 import json
 import math
 from pathlib import Path
@@ -24,7 +25,6 @@ CAND = ROOT / 'assets_candidate/tiles'
 GFX = ROOT / 'ver5/assets/graphics'
 FRAMES, MS = 8, 160
 SIDE, TOP = 3, 2  # room for the rim to move into
-MAPS = ['S_zhuo2', 'S_peach_grove2', 'S_militia_camp']
 WIDTH = 1024
 
 OUTLINE = (11, 16, 27)
@@ -208,13 +208,14 @@ def main():
     for n in strips:
         sheet.paste(strips[n], place[n])
         px, py = trees[n]['pivot']
-        sprites[n] = {'rect': [*place[n], strips[n].width // FRAMES, strips[n].height], 'pivot': [px + SIDE, py + TOP]}
+        sprites[n] = {'image': 'map/sway.png', 'rect': [*place[n], strips[n].width // FRAMES, strips[n].height],
+                      'frames': FRAMES, 'ms': MS, 'pivot': [px + SIDE, py + TOP], 'shadows': True}
     sheet.save(GFX / 'map/sway.png', optimize=True)
 
     path = GFX / 'index.json'
     index = json.load(open(path))
-    index['sway'] = {'version': 1, 'image': 'map/sway.png', 'frames': FRAMES, 'ms': MS, 'maps': MAPS,
-                     'sprites': sprites}
+    anims = {n: e for n, e in index.get('anims', {}).items() if e['image'] != 'map/sway.png'}  # others' strips
+    index['anims'] = dict(sorted({**anims, **sprites}.items()))
     json.dump(index, open(path, 'w'), ensure_ascii=False, indent=1)
     open(path, 'a').write('\n')
     print('sway', len(sprites), 'trees', sheet.size)

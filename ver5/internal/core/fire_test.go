@@ -38,10 +38,11 @@ func TestFireStatesAreInTheData(t *testing.T) {
 		d, err := content.Load(dir)
 		require.NoError(t, err)
 		require.NotNil(t, d.States["e"].RestHP, dir)
-		assert.Equal(t, -20, *d.States["e"].RestHP, dir)
+		assert.Equal(t, -10, *d.States["e"].RestHP, dir)
 		for family := range d.Terrain {
+			grass := d.Move(family, content.Cell{Ground: 'g', Structure: content.NoLayer, State: content.NoLayer}, false)
 			embers := d.Move(family, content.Cell{Ground: 'g', Structure: content.NoLayer, State: 'e'}, false)
-			assert.Equal(t, content.Terrain{Factor: .8, Cost: 1}, embers, family+" embers on grass: every class at 80%")
+			assert.Equal(t, grass, embers, family+" embers on grass: the grass's factor and cost, they only burn")
 			assert.Zero(t, d.Move(family, content.Cell{Ground: 'g', Structure: content.NoLayer, State: 'F'}, false).Cost, family+": flames cannot be entered")
 		}
 	}
@@ -74,7 +75,7 @@ func TestStandingInFireHurtsAtTheStartOfYourTurnButWalkingThroughDoesNot(t *test
 	r := applyOK(t, e, Command{Kind: "end"}) // the allies' turn starts
 	assert.Zero(t, damageTo(r, "hero"), "passing through costs nothing")
 	assert.Equal(t, maxHP, e.unit("hero").HP)
-	assert.Equal(t, e.stats(e.unit("archer1")).MaxHP*20/100, damageTo(r, "archer1"), "standing in it costs a fifth")
+	assert.Equal(t, e.stats(e.unit("archer1")).MaxHP*10/100, damageTo(r, "archer1"), "standing in it costs a tenth")
 }
 
 func TestFireCanDriveAUnitOffTheField(t *testing.T) {
@@ -130,7 +131,7 @@ func TestEmbersStayForGoodAndLeaveGroundAndStructureAlone(t *testing.T) {
 		applyOK(t, e, Command{Kind: "end"})
 	}
 	assert.Equal(t, content.Cell{Ground: 'g', Structure: 'v', State: 'e'}, e.Cell(4, 2))
-	assert.Equal(t, -20, e.CellProps(4, 2).RestHP, "a burning village no longer heals")
+	assert.Equal(t, -10, e.CellProps(4, 2).RestHP, "a burning village no longer heals")
 }
 
 func TestLightingTheSameCellAgainReplacesTheState(t *testing.T) {

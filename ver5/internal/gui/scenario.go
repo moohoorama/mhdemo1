@@ -12,6 +12,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/content"
 	"srpg/internal/core"
+	"srpg/internal/session"
 )
 
 // line is one speaker's part of a dialogue node. Content keeps several speakers in one
@@ -107,10 +108,15 @@ func (g *Game) shownText(l line) (string, bool) {
 	return string(r[:n]), n == len(r)
 }
 
+// lineKey names a shown line, so the box knows when the line under it changed.
+func lineKey(speakers []string, node string, i int) string {
+	return fmt.Sprintf("%s|%s|%d", strings.Join(speakers, "·"), node, i)
+}
+
 // advanceDialogue hurries the typing (a second click finishes it), then shows the next speaker,
 // then the next node.
 func (g *Game) advanceDialogue() {
-	if g.narrationLeaving {
+	if g.narrationLeaving || g.uiSeconds < g.skipUntil || g.scene != nil && g.scene.leaving {
 		return
 	}
 	o := g.S.View()
@@ -124,6 +130,13 @@ func (g *Game) advanceDialogue() {
 	if g.busy() {
 		return
 	}
+	if o.Dialogue.Kind == "narrate" {
+		a := &g.dialogueAnim
+		if a.key == lineKey(nil, o.Node, 0) && g.uiSeconds-a.shownAt >= narrationIn {
+			g.narrationLeaving, g.narrationExitAt = true, g.uiSeconds
+		}
+		return
+	}
 	lines := g.nodeLines(o.Dialogue)
 	if _, done := g.shownText(lines[min(g.lineIndex, len(lines)-1)]); !done {
 		g.lineTyping.hurry(g.uiSeconds)
@@ -135,11 +148,143 @@ func (g *Game) advanceDialogue() {
 		g.startLine(g.lineIndex)
 		return
 	}
-	if o.Dialogue.Kind == "narrate" {
-		g.narrationLeaving, g.narrationExitAt = true, g.uiSeconds
-		return
+	g.nextNode()
+}
+
+// nextNode goes on to the next node; when that node opens another scene, the scene on screen first darkens to
+// black (the new one then opens out of black).
+func (g *Game) nextNode() {
+	if s := g.scene; s != nil && s.node == g.S.View().Node {
+		if s.leaving {
+			return
+		}
+		if def, _ := g.scenes.For(g.S.Data.After(s.node)); def != nil && def != s.def {
+			s.leaving = true
+			return
+		}
 	}
 	g.command(core.Command{Kind: "next"})
+}
+
+// turnPage goes on to the next node once a narration has faded out, and turns the page when the
+// auto setting says so.
+func (g *Game) turnPage() {
+	g.skipScene()
+	if g.narrationLeaving && g.uiSeconds-g.narrationExitAt >= .43 {
+		g.narrationLeaving = false
+		g.nextNode()
+	}
+	g.autoPage()
+}
+
+// autoWait is how long a line that is out stays before the auto setting turns the page.
+const autoWait = 2.0
+
+// autoPage turns the page as a click would once the line on screen has been out autoWait seconds,
+// when the player turned it on.
+func (g *Game) autoPage() {
+	key, next := g.pageReady()
+	if !g.S.Settings.AutoText || next == nil {
+		g.autoKey = ""
+		return
+	}
+	if g.autoKey != key {
+		g.autoKey, g.autoAt = key, g.uiSeconds
+		return
+	}
+	if g.uiSeconds-g.autoAt >= autoWait {
+		g.autoKey = ""
+		next()
+	}
+}
+
+// pageReady names the line on screen and how to turn past it, when it is out and nothing else holds the page.
+func (g *Game) pageReady() (string, func()) {
+	if g.S.Engine == nil || g.S.Screen != "playing" || g.overlay() != "" || len(g.modals) > 0 || len(g.learn) > 0 {
+		return "", nil
+	}
+	if g.exploring() {
+		w := g.explore
+		if w == nil || w.talk == nil {
+			return "", nil
+		}
+		if _, done := g.shownText(w.talk[w.talkI]); !done {
+			return "", nil
+		}
+		return fmt.Sprintf("explore|%s|%d", w.talkTo, w.talkI), g.nextExploreLine
+	}
+	o := g.S.View()
+	if o.Phase != "scenario" || !isTalk(o.Dialogue.Kind) || g.shownNode != o.Node || g.narrationLeaving || g.sceneBusy() || g.busy() {
+		return "", nil
+	}
+	if o.Dialogue.Kind == "narrate" {
+		a := &g.dialogueAnim
+		if a.key != lineKey(nil, o.Node, 0) || g.uiSeconds-a.shownAt < narrationIn {
+			return "", nil
+		}
+		return a.key, g.advanceDialogue
+	}
+	lines := g.nodeLines(o.Dialogue)
+	l := lines[min(g.lineIndex, len(lines)-1)]
+	if _, done := g.shownText(l); !done {
+		return "", nil
+	}
+	return lineKey(l.speakers, o.Node, g.lineIndex), g.advanceDialogue
+}
+
+// autoButton in the upper left corner of a talk turns the auto setting on and off.
+func (g *Game) autoButton(dst *ebiten.Image, x, y int) {
+	s := g.S.Settings
+	label := map[bool]string{false: "자동 넘김 꺼짐", true: "자동 넘김 켜짐"}[s.AutoText]
+	g.btn(dst, image.Rect(x, y, x+150, y+44), label, func() {
+		s.AutoText = !s.AutoText
+		g.request(session.Request{Op: "settings", Settings: &s})
+	})
+}
+
+// skipGuard is how long clicks wait after a skip stops, so a second press does not run on into the next scene.
+const skipGuard = 1.0
+
+// skipButton beside the auto button skips the rest of the scene on screen.
+func (g *Game) skipButton(dst *ebiten.Image, x, y int) {
+	var click func()
+	if g.scene != nil && g.skipping == nil && g.uiSeconds >= g.skipUntil {
+		click = func() { g.skipping = g.scene.def }
+	}
+	g.btn(dst, image.Rect(x, y, x+150, y+44), "장면 넘기기", click)
+}
+
+// skipScene pages through the scene being skipped at once, its actors settling where its beats would take them,
+// and stops on the first line of whatever comes next: another scene, a choice, a battle, the walk. A window or a
+// learning holds it until closed.
+func (g *Game) skipScene() {
+	for g.skipping != nil {
+		if g.S.Engine == nil || g.S.Screen != "playing" || g.overlay() != "" || len(g.modals) > 0 {
+			return
+		}
+		o := g.S.View()
+		if len(o.Learners) > 0 {
+			return
+		}
+		s := g.scene
+		if def, _ := g.scenes.For(o.Node); o.Phase != "scenario" || !isTalk(o.Dialogue.Kind) || def != g.skipping || s == nil || s.def != def {
+			g.skipping, g.skipUntil = nil, g.uiSeconds+skipGuard
+			return
+		}
+		if s.node == o.Node {
+			for g.sceneBusy() {
+				g.skipBeats()
+			}
+		} else {
+			g.settleNode(o.Node)
+			s.node, s.groups = o.Node, nil
+		}
+		g.intro, g.narrationLeaving = nil, false
+		g.command(core.Command{Kind: "next"})
+		if g.S.View().Node == o.Node {
+			g.skipping = nil
+		}
+	}
 }
 
 func (g *Game) backdrop(dst *ebiten.Image, o core.Observation) {
@@ -180,15 +325,23 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 		if g.sceneBusy() { // the line waits for its beats
 			g.lineTyping = startTyping(g.uiSeconds)
 			g.label(dst, "클릭: 넘기기", float64(uiW-150), float64(uiH-40), 13, muted)
+			g.autoButton(dst, 12, 10)
+			g.skipButton(dst, 170, 10)
 			return
 		}
 	}
-	text, done := g.shownText(l)
-	key := fmt.Sprintf("%s|%s|%d", strings.Join(l.speakers, "·"), o.Node, g.lineIndex)
+	key := lineKey(l.speakers, o.Node, g.lineIndex)
 	if o.Dialogue.Kind == "narrate" {
-		g.drawNarration(dst, l, text, key)
+		g.drawNarration(dst, l, key)
 	} else {
+		text, done := g.shownText(l)
 		g.drawDialogue(dst, l, text, done, key)
+	}
+	if isTalk(o.Dialogue.Kind) {
+		g.autoButton(dst, 12, 10)
+		if staged {
+			g.skipButton(dst, 170, 10)
+		}
 	}
 	if o.Dialogue.Kind == "choice" {
 		y := uiH/2 - 45
@@ -272,7 +425,11 @@ func (g *Game) preparation(dst *ebiten.Image, o core.Observation) {
 			items = append(items, fmt.Sprintf("%s ×%d", g.itemName(id), o.Inventory[id]))
 		}
 	}
-	g.label(dst, wrap(strings.Join(items, "  ·  "), 34), float64(r.Min.X+32), float64(y+38), 14, ink)
+	lines := strings.Split(wrap(strings.Join(items, "  ·  "), 34), "\n")
+	if fit := max(1, int(float64(r.Max.Y-12-(y+38))/(14*1.45))); len(lines) > fit {
+		lines = append(lines[:fit-1], lines[fit-1]+" …")
+	}
+	g.label(dst, strings.Join(lines, "\n"), float64(r.Min.X+32), float64(y+38), 14, ink)
 	g.officerDetail(dst, o, image.Rect(r.Min.X+500, r.Min.Y+50, r.Max.X-28, r.Max.Y-90))
 	g.btn(dst, image.Rect(r.Max.X-330, r.Max.Y-72, r.Max.X-28, r.Max.Y-28), "출  전", func() { g.command(core.Command{Kind: "start"}) })
 }

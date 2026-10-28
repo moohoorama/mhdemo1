@@ -83,7 +83,7 @@ func (g *Game) layOutExplore(o core.Observation) {
 	}
 	w := &exploreWalk{engine: e, node: o.Node, area: o.Spot.Area, hero: g.S.Data.Characters[x.Hero].Name, people: map[string]string{},
 		homes: map[string]string{}, rest: map[string]float64{}, leg: map[string]int{}, markT: math.Inf(1), rng: rand.New(rand.NewPCG(7, 11))}
-	def := &scenes.Scene{ID: "explore:" + w.area, Map: a.Map, Time: a.Time, Cast: map[string]scenes.Actor{}}
+	def := &scenes.Scene{ID: "explore:" + w.area, Map: a.Map, Time: e.AreaTime(), Cast: map[string]scenes.Actor{}}
 	at := func(t [2]int) []float64 { u, v := smallTile(t).cell(); return []float64{u, v} }
 	def.Cast[w.hero] = scenes.Actor{At: at(o.Spot.At), Face: o.Spot.Face}
 	for _, v := range e.Visitors() {
@@ -107,6 +107,7 @@ func (g *Game) layOutExplore(o core.Observation) {
 	w.grid = walkGrid{walk: &scenemap.Walk{}}
 	if art := g.assets.Maps[a.Map]; art != nil && art.SceneMap != nil {
 		w.grid.walk = scenemap.Walkable(art.SceneMap, g.assets.SceneRules)
+		w.grid.walk.Within(a.At[0], a.At[1]) // the hero leaves by an exit, not by walking out of the gate
 	} else {
 		g.toast(a.Map+"은 형식 2 장면 맵이 아니라 걸을 수 없습니다", bad)
 	}
@@ -610,6 +611,7 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 		l := w.talk[w.talkI]
 		text, done := g.shownText(l)
 		g.drawDialogue(dst, l, text, done, fmt.Sprintf("%s|explore|%s|%d", strings.Join(l.speakers, "·"), w.talkTo, w.talkI))
+		g.autoButton(dst, 24, 84)
 	}
 	blackOut(dst, math.Max(w.fade, g.scene.fade))
 }

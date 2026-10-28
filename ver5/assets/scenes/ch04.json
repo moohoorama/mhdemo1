@@ -1,0 +1,80 @@
+{
+ "Scenes": {
+  "c04-start": {
+   "Map": "S_danyang_village",
+   "Nodes": ["c04-start", "c04-a1", "c04-a2", "c04-a3", "c04-a4", "c04-a5", "c04-a6", "c04-a8", "c04-a9", "c04-a10", "c04-a11", "c04-a12", "c04-a13", "c04-a14", "c04-a15"],
+   "Ambient": [{"Actor": "마을사람#1", "Chatter": "살았다…|고 장사 덕이야|다친 데 없소?"}, {"Actor": "마을사람#4", "Chatter": "아이고…|곡식이 다…"}, {"Actor": "마을사람#7", "Chatter": "웅성웅성|누가 오는구먼"}],
+   "Cast": {
+    "고순": {"At": [5, 4], "Face": "SE"},
+    "유비": {"At": [18, 4], "Face": "NW", "Off": true},
+    "관우": {"At": [18, 4], "Face": "NW", "Off": true},
+    "장비": {"At": [18, 4], "Face": "NW", "Off": true},
+    "도겸": {"At": [18, 4], "Face": "NW", "Off": true},
+    "서주병#1": {"At": [18, 4], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "han"},
+    "서주병#2": {"At": [18, 4], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "han"},
+    "서주병#3": {"At": [18, 4], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "han"},
+    "마을사람#1": {"At": [4, 5], "Face": "NE", "Sprite": "commoner_man", "Faction": "merchant"},
+    "마을사람#2": {"At": [5, 5], "Face": "NE", "Sprite": "commoner_woman", "Faction": "merchant"},
+    "마을사람#3": {"At": [4, 4], "Face": "SE", "Sprite": "commoner_elder", "Faction": "merchant"},
+    "마을사람#4": {"At": [4, 3], "Face": "SE", "Sprite": "commoner_oldwoman", "Faction": "merchant"},
+    "마을사람#5": {"At": [3, 5], "Face": "SE", "Sprite": "commoner_man", "Faction": "merchant"},
+    "마을사람#6": {"At": [6, 5], "Face": "NW", "Sprite": "commoner_woman", "Faction": "merchant"},
+    "마을사람#7": {"At": [5, 6], "Face": "NE", "Sprite": "commoner_man", "Faction": "merchant"}
+   },
+   "Beats": {
+    "c04-a1": [
+     [
+      [{"Actor": "유비", "Enter": [18, 4], "Move": [6, 4]}, {"Actor": "관우", "Enter": [18, 4], "Move": [7, 3], "After": 0.6}, {"Actor": "장비", "Enter": [18, 4], "Move": [7, 5], "After": 1.2}],
+      [{"Actor": "유비", "Face": "NW"}, {"Actor": "관우", "Face": "NW"}, {"Actor": "장비", "Face": "NW"}, {"Actor": "마을사람#6", "Face": "SE"}, {"Actor": "마을사람#2", "Emote": "!"}]
+     ]
+    ],
+    "c04-a8": [
+     [
+      [{"Actor": "마을사람#7", "Chatter": "-"}, {"Actor": "도겸", "Enter": [18, 4], "Move": [8, 4]}, {"Actor": "서주병#1", "Enter": [18, 4], "Move": [10, 4], "After": 0.6}, {"Actor": "서주병#2", "Enter": [18, 4], "Move": [10, 3], "After": 1.2}, {"Actor": "서주병#3", "Enter": [18, 4], "Move": [10, 5], "After": 1.8}],
+      [{"Actor": "도겸", "Face": "NW"}, {"Actor": "서주병#1", "Face": "NW"}, {"Actor": "서주병#2", "Face": "NW"}, {"Actor": "서주병#3", "Face": "NW"}, {"Actor": "유비", "Face": "SE"}, {"Actor": "관우", "Face": "SE"}, {"Actor": "장비", "Face": "SE"}]
+     ]
+    ],
+    "c04-a11": [
+     [
+      [{"Actor": "도겸", "Look": "NE"}]
+     ]
+    ],
+    "c04-a12": [
+     [
+      [{"Actor": "도겸", "Face": "NW"}]
+     ]
+    ],
+    "c04-a14": [
+     [
+      [{"Actor": "고순", "Play": "action"}, {"Actor": "마을사람#3", "Emote": "…"}]
+     ]
+    ]
+   }
+  },
+  "c04-peng": {
+   "Map": "S_castle_out",
+   "Nodes": ["c04-peng", "c04-b1", "c04-b2", "c04-b3", "c04-b4"],
+   "Cast": {
+    "도겸": {"At": [3, 3], "Face": "SE"},
+    "고순": {"At": [3, 4], "Face": "SE"},
+    "유비": {"At": [5, 3], "Face": "NW"},
+    "관우": {"At": [6, 3], "Face": "NW"},
+    "장비": {"At": [6, 4], "Face": "NW"},
+    "전령": {"At": [10, 3], "Face": "NW", "Off": true, "Sprite": "light_infantry"}
+   },
+   "Beats": {
+    "c04-b2": [
+     [
+      [{"Actor": "전령", "Enter": [10, 3], "Move": [7, 3], "Speed": 2}],
+      [{"Actor": "전령", "Play": "exhausted"}, {"Actor": "유비", "Face": "SE"}, {"Actor": "도겸", "Look": "SE"}]
+     ]
+    ],
+    "c04-b4": [
+     [
+      [{"Actor": "유비", "Face": "NW"}]
+     ]
+    ]
+   }
+  }
+ }
+}

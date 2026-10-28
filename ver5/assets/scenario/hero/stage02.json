@@ -259,17 +259,6 @@
   },
   {
    "Character": "soldier",
-   "X": 8,
-   "Y": 13,
-   "Facing": "NE",
-   "Group": "garrison",
-   "AI": true,
-   "Policy": "hold",
-   "Faction": "han",
-   "Shift": -0.07
-  },
-  {
-   "Character": "soldier",
    "X": 7,
    "Y": 17,
    "Facing": "SW",
@@ -284,39 +273,6 @@
    "X": 5,
    "Y": 16,
    "Facing": "SW",
-   "Group": "garrison",
-   "AI": true,
-   "Policy": "hold",
-   "Faction": "han",
-   "Shift": -0.07
-  },
-  {
-   "Character": "soldier",
-   "X": 8,
-   "Y": 16,
-   "Facing": "SW",
-   "Group": "garrison",
-   "AI": true,
-   "Policy": "hold",
-   "Faction": "han",
-   "Shift": -0.07
-  },
-  {
-   "Character": "soldier",
-   "X": 9,
-   "Y": 14,
-   "Facing": "SE",
-   "Group": "garrison",
-   "AI": true,
-   "Policy": "hold",
-   "Faction": "han",
-   "Shift": -0.07
-  },
-  {
-   "Character": "soldier",
-   "X": 9,
-   "Y": 15,
-   "Facing": "SE",
    "Group": "garrison",
    "AI": true,
    "Policy": "hold",
@@ -452,7 +408,7 @@
        {
         "Kind": "say",
         "Unit": "liubei",
-        "Text": "운장은 왼편, 익덕은 오른편 울타리를 맡아라. 나는 문 옆에 불을 놓겠다."
+        "Text": "운장은 왼편, 익덕은 오른편 울타리를 맡게. 나는 문 옆에 불을 놓겠네."
        }
       ],
       [
@@ -774,66 +730,6 @@
        "Faction": "wei",
        "Facing": "SW",
        "Group": "wei"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 8,
-       "Y": 1,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Facing": "SW",
-       "Group": "wei"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 10,
-       "Y": 1,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Facing": "SW",
-       "Group": "wei"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 9,
-       "Y": 0,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Facing": "SW",
-       "Group": "wei"
-      },
-      {
-       "Character": "troop_archer",
-       "X": 7,
-       "Y": 0,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Facing": "SW",
-       "Group": "wei"
-      },
-      {
-       "Character": "troop_archer",
-       "X": 11,
-       "Y": 0,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Facing": "SW",
-       "Group": "wei"
-      },
-      {
-       "Character": "troop_archer",
-       "X": 13,
-       "Y": 1,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Facing": "SW",
-       "Group": "wei"
       }
      ]
     },
@@ -992,66 +888,6 @@
       {
        "Character": "zumao",
        "X": 9,
-       "Y": 28,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wu",
-       "Facing": "NE",
-       "Group": "wu"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 8,
-       "Y": 28,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wu",
-       "Facing": "NE",
-       "Group": "wu"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 10,
-       "Y": 28,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wu",
-       "Facing": "NE",
-       "Group": "wu"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 7,
-       "Y": 28,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wu",
-       "Facing": "NE",
-       "Group": "wu"
-      },
-      {
-       "Character": "troop_archer",
-       "X": 8,
-       "Y": 29,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wu",
-       "Facing": "NE",
-       "Group": "wu"
-      },
-      {
-       "Character": "troop_archer",
-       "X": 10,
-       "Y": 29,
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wu",
-       "Facing": "NE",
-       "Group": "wu"
-      },
-      {
-       "Character": "troop_archer",
-       "X": 11,
        "Y": 28,
        "AI": true,
        "Policy": "assault",

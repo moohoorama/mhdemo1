@@ -19,8 +19,8 @@ import (
 // the ink outline of everything that matters in a battle; decoration has none.
 type Scenery struct {
 	sprites map[string]Sprite
-	anim    map[string][]Sprite // looping effects: frames in order
-	sites   map[string]siteLife // by strongpoint sprite name (camp, village, castle)
+	anim    map[string]FrameStrip // looping strips: the water's glints and ripples, flags, smoke, pine sway
+	sites   map[string]siteLife   // by strongpoint sprite name (camp, village, castle)
 	pines   []pineArt
 }
 
@@ -33,21 +33,18 @@ type siteLife struct {
 }
 
 type siteOverlay struct {
-	frames []Sprite
+	strip  FrameStrip
 	dx, dy float64
-	ms     float64
 	phase  int
 	chance float64 // share of this kind of strongpoint that has the overlay (0 means all)
 }
 
-// pineArt is one pine with its four sway frames. weight is how often it is chosen inside a forest and at its edge.
+// pineArt is one pine with its sway strip. weight is how often it is chosen inside a forest and at its edge.
 type pineArt struct {
-	frames [4]Sprite
+	sway   FrameStrip
 	shadow Sprite
 	weight [2]float64
 }
-
-const swayMS = 300.0 // one sway frame
 
 func loadScenery(dir string) (*Scenery, error) {
 	b, err := os.ReadFile(filepath.Join(dir, "map", "scenery.json"))
@@ -63,19 +60,21 @@ func loadScenery(dir string) (*Scenery, error) {
 			Rect  [4]int
 			Pivot [2]float64
 		}
-		Anim  map[string][]string
+		Anim map[string]struct {
+			Frames []string
+			MS     int
+		}
 		Sites map[string]struct {
 			Base     string
 			Overlays []struct {
 				Anim   string
 				At     [2]float64
-				MS     float64
 				Phase  int
 				Chance float64
 			}
 		}
 		Pines []struct {
-			Frames []string
+			Anim   string
 			Shadow string
 			Weight [2]float64
 		}
@@ -88,15 +87,20 @@ func loadScenery(dir string) (*Scenery, error) {
 		return nil, err
 	}
 	sheet := ebiten.NewImageFromImage(pixels)
-	s := &Scenery{sprites: map[string]Sprite{}, anim: map[string][]Sprite{}}
+	s := &Scenery{sprites: map[string]Sprite{}, anim: map[string]FrameStrip{}}
 	for name, v := range meta.Sprites {
 		r := image.Rect(v.Rect[0], v.Rect[1], v.Rect[0]+v.Rect[2], v.Rect[1]+v.Rect[3])
 		s.sprites[name] = Sprite{sheet.SubImage(r).(*ebiten.Image), v.Pivot[0], v.Pivot[1]}
 	}
-	for kind, names := range meta.Anim {
-		for _, name := range names {
-			s.anim[kind] = append(s.anim[kind], s.sprites[name])
+	for kind, a := range meta.Anim {
+		if a.MS <= 0 || len(a.Frames) == 0 {
+			return nil, fmt.Errorf("scenery.json: anim %s needs frames and ms", kind)
 		}
+		strip := FrameStrip{MS: a.MS}
+		for _, name := range a.Frames {
+			strip.Frames = append(strip.Frames, s.sprites[name])
+		}
+		s.anim[kind] = strip
 	}
 	s.sites = map[string]siteLife{}
 	for name, v := range meta.Sites {
@@ -106,19 +110,16 @@ func loadScenery(dir string) (*Scenery, error) {
 			life.base = &base
 		}
 		for _, o := range v.Overlays {
-			life.overlays = append(life.overlays, siteOverlay{s.anim[o.Anim], o.At[0], o.At[1], o.MS, o.Phase, o.Chance})
+			life.overlays = append(life.overlays, siteOverlay{s.anim[o.Anim], o.At[0], o.At[1], o.Phase, o.Chance})
 		}
 		s.sites[name] = life
 	}
 	for _, p := range meta.Pines {
-		if len(p.Frames) != 4 {
-			return nil, fmt.Errorf("scenery.json: pine needs 4 frames, has %d", len(p.Frames))
+		sway, ok := s.anim[p.Anim]
+		if !ok {
+			return nil, fmt.Errorf("scenery.json: pine anim %q is missing", p.Anim)
 		}
-		art := pineArt{shadow: s.sprites[p.Shadow], weight: p.Weight}
-		for i, name := range p.Frames {
-			art.frames[i] = s.sprites[name]
-		}
-		s.pines = append(s.pines, art)
+		s.pines = append(s.pines, pineArt{sway: sway, shadow: s.sprites[p.Shadow], weight: p.Weight})
 	}
 	return s, nil
 }
@@ -181,17 +182,14 @@ func (f *Field) makeScenery() {
 	}
 }
 
-// sceneFXMS is how long one frame of each looping water effect shows.
-var sceneFXMS = map[string]float64{"glint": 260, "ripple": 380}
-
 // drawWaterFX draws the looping twinkles and ripples that are in view over the water.
 func (f *Field) drawWaterFX() {
 	for _, e := range f.waterFX {
 		if !f.DrawBounds.Empty() && !image.Pt(int(e.X), int(e.Y)).In(f.DrawBounds) {
 			continue
 		}
-		frames := f.A.Scenery.anim[e.Kind]
-		f.blit(f.Canvas, frames[(int((f.clockMS+e.Lag)/sceneFXMS[e.Kind])+e.Phase)%len(frames)], e.X, e.Y, nil)
+		strip := f.A.Scenery.anim[e.Kind]
+		f.blit(f.Canvas, strip.Frames[(int((f.clockMS+e.Lag)/float64(strip.MS))+e.Phase)%len(strip.Frames)], e.X, e.Y, nil)
 	}
 }
 
@@ -269,15 +267,16 @@ func (f *Field) nativeForest(items *[]drawItem) {
 				}
 				pine := sc.pines[pick(weights, seed.Unit(x, y, 60+i))]
 				phase := int(math.Floor(px*.012 + py*.006))
-				lag := float64(seed.Hash(x, y, 80+i) % uint32(swayMS)) // so the trees do not all change frame at the same instant
-				s0 := pine.frames[0]
+				sway := pine.sway
+				lag := float64(seed.Hash(x, y, 80+i) % uint32(sway.MS)) // so the trees do not all change frame at the same instant
+				s0 := sway.Frames[0]
 				b0 := s0.Image.Bounds()
 				rx, ry := int(math.Round(px-s0.PivotX)), int(math.Round(py-s0.PivotY))
 				*items = append(*items, drawItem{y: py, rect: image.Rect(rx, ry, rx+b0.Dx(), ry+b0.Dy()), draw: func() {
 					if f.look(at.X, at.Y) == "soot" {
 						return
 					}
-					f.blit(f.Canvas, pine.frames[(int((f.clockMS+lag)/swayMS)+phase)&3], px, py, nil)
+					f.blit(f.Canvas, sway.Frames[(int((f.clockMS+lag)/float64(sway.MS))+phase)%len(sway.Frames)], px, py, nil)
 				}})
 				op := &ebiten.DrawImageOptions{Blend: maxBlend}
 				op.GeoM.Translate(math.Round(px-pine.shadow.PivotX), math.Round(py-pine.shadow.PivotY))
@@ -322,7 +321,7 @@ func (f *Field) drawSite(still Sprite, life siteLife, x, y float64, u, v int) {
 		if o.chance > 0 && seed.Unit(u, v, 11+i) >= o.chance {
 			continue
 		}
-		frames := o.frames
-		f.blit(f.Canvas, frames[(int(f.clockMS/o.ms+wave)+o.phase)%len(frames)], x+o.dx, y+o.dy, nil)
+		frames := o.strip.Frames
+		f.blit(f.Canvas, frames[(int(f.clockMS/float64(o.strip.MS)+wave)+o.phase)%len(frames)], x+o.dx, y+o.dy, nil)
 	}
 }

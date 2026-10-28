@@ -7,10 +7,11 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/content"
+	"srpg/internal/scenemap"
 )
 
 // A night stage is drawn under a blue dark, cut open round the fires burning on its cells, its
-// torches (Stage.Lights) and every unit (the torches the soldiers carry, so they can be told apart),
+// torches (Stage.Lights), the lights its objects carry (a campfire, a lantern) and every unit (the torches the soldiers carry, so they can be told apart),
 // with a warm glow over the fires. Radii are world pixels at zoom 1.
 const (
 	flameLight   = 150.0
@@ -29,11 +30,12 @@ var (
 type nightLayers struct {
 	on     bool
 	lights []image.Point
-	fires  []nightFire   // a scene's fires
-	color  color.NRGBA   // the dark's colour; nightColor when unset (a scene's dusk or dawn is lighter)
-	flat   bool          // an even wash with no lights cut out (a scene remembered)
-	dark   *ebiten.Image // canvas-size scratch
-	light  *ebiten.Image // a soft disc: opaque at the centre, clear at the rim
+	fires  []nightFire      // a scene's fires
+	props  []scenemap.Light // the lights the map's objects carry (scenemap.Attachment), canvas points
+	color  color.NRGBA      // the dark's colour; nightColor when unset (a scene's dusk or dawn is lighter)
+	flat   bool             // an even wash with no lights cut out (a scene remembered)
+	dark   *ebiten.Image    // canvas-size scratch
+	light  *ebiten.Image    // a soft disc: opaque at the centre, clear at the rim
 }
 
 // nightFire is a scene fire at fractional cells; a big fire is a house or a quarter burning, seen from afar.
@@ -73,14 +75,18 @@ func (f *Field) drawNight(clockMS float64, units []*unitVis) {
 		n.light = softDisc()
 	}
 	type lamp struct {
-		u, v, lift float64
-		radius     float64
-		fire       bool
-		big        bool
+		x, y   float64 // canvas point
+		radius float64
+		fire   bool
+		big    bool
 	}
 	var lamps []lamp
+	at := func(u, v, lift, radius float64, fire, big bool) lamp {
+		x, y := f.Center(u, v)
+		return lamp{x, y - lift, radius, fire, big}
+	}
 	cell := func(p image.Point, radius float64, fire bool) lamp {
-		return lamp{float64(p.X), float64(p.Y), f.Lift(p.X, p.Y), radius, fire, false}
+		return at(float64(p.X), float64(p.Y), f.Lift(p.X, p.Y), radius, fire, false)
 	}
 	for p, look := range f.looks {
 		switch look {
@@ -93,16 +99,19 @@ func (f *Field) drawNight(clockMS float64, units []*unitVis) {
 	for _, p := range n.lights {
 		lamps = append(lamps, cell(p, torchLight, false))
 	}
+	for _, l := range n.props {
+		lamps = append(lamps, lamp{l.X, l.Y, l.Radius, l.Glow, false})
+	}
 	for _, p := range n.fires {
 		r := flameLight
 		if p.big {
 			r = bigFireLight
 		}
-		lamps = append(lamps, lamp{p.u, p.v, f.Lift(int(p.u), int(p.v)), r, true, p.big})
+		lamps = append(lamps, at(p.u, p.v, f.Lift(int(p.u), int(p.v)), r, true, p.big))
 	}
 	for _, u := range units {
 		if !u.gone && u.visible() {
-			lamps = append(lamps, lamp{u.u, u.v, u.lift + f.groundLift(u.u, u.v), unitLight, false, false})
+			lamps = append(lamps, at(u.u, u.v, u.lift+f.groundLift(u.u, u.v), unitLight, false, false))
 		}
 	}
 	z := f.renderZoom
@@ -111,11 +120,11 @@ func (f *Field) drawNight(clockMS float64, units []*unitVis) {
 	}
 	t := clockMS / 1000
 	place := func(l lamp, scale float64) *ebiten.DrawImageOptions {
-		x, y := f.Center(l.u, l.v)
-		x, y = f.renderPoint(x, y-l.lift)
-		flicker := 1 + .05*math.Sin(t*7.3+l.u*13+l.v*7) + .03*math.Sin(t*13.1+l.u)
+		x, y := f.renderPoint(l.x, l.y)
+		su, sv := l.x/32, l.y/16 // a phase of its own for each lamp
+		flicker := 1 + .05*math.Sin(t*7.3+su*13+sv*7) + .03*math.Sin(t*13.1+su)
 		if l.big { // a big fire heaves slowly and flares
-			flicker = 1 + .12*math.Sin(t*2.3+l.u*5) + .07*math.Sin(t*5.9+l.v*3) + .04*math.Sin(t*13.7+l.u)
+			flicker = 1 + .12*math.Sin(t*2.3+su*5) + .07*math.Sin(t*5.9+sv*3) + .04*math.Sin(t*13.7+su)
 		}
 		r := l.radius * z * flicker * scale
 		w := float64(n.light.Bounds().Dx())

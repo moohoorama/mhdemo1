@@ -10,12 +10,44 @@ type Walk struct {
 	Origin [2]int
 	W, H   int
 	open   []bool
+	gate   []bool // the small tiles of a gate's passage
+}
+
+func (w *Walk) index(u, v int) (int, bool) {
+	x, y := u-w.Origin[0], v-w.Origin[1]
+	return y*w.W + x, x >= 0 && y >= 0 && x < w.W && y < w.H
 }
 
 // Open reports whether small tile (u, v) can be walked.
 func (w *Walk) Open(u, v int) bool {
-	x, y := u-w.Origin[0], v-w.Origin[1]
-	return x >= 0 && y >= 0 && x < w.W && y < w.H && w.open[y*w.W+x]
+	i, ok := w.index(u, v)
+	return ok && w.open[i]
+}
+
+// Within keeps open only the small tiles reachable from (u, v) without going through a gate, and the gates'
+// passages themselves: a gate becomes a way out of the walls (an explore exit), not a way to the ground beyond.
+// Nothing changes when (u, v) cannot be walked.
+func (w *Walk) Within(u, v int) {
+	start, ok := w.index(u, v)
+	if !ok || !w.open[start] || w.gate[start] {
+		return
+	}
+	seen := make([]bool, len(w.open))
+	seen[start] = true
+	for queue := []int{start}; len(queue) > 0; queue = queue[1:] {
+		i := queue[0]
+		x, y := i%w.W, i/w.W
+		for _, d := range [4][2]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}} {
+			j, ok := w.index(x+d[0]+w.Origin[0], y+d[1]+w.Origin[1])
+			if ok && !seen[j] && w.open[j] && !w.gate[j] {
+				seen[j] = true
+				queue = append(queue, j)
+			}
+		}
+	}
+	for i := range w.open {
+		w.open[i] = w.open[i] && (seen[i] || w.gate[i])
+	}
 }
 
 // Walkable marks the small tiles a person can walk: on ground whose glyph is walkable (scene.json "walkable") at
@@ -23,10 +55,10 @@ func (w *Walk) Open(u, v int) bool {
 // own size, when smaller) along both axes; not on a wall line, except through a gate's passage (scene.json
 // gate_passage: the small tiles from the gate's point along the line).
 func Walkable(m *Map, c *Catalog) *Walk {
-	w := &Walk{Origin: m.Origin, W: m.W(), H: m.H(), open: make([]bool, m.W()*m.H())}
+	w := &Walk{Origin: m.Origin, W: m.W(), H: m.H(), open: make([]bool, m.W()*m.H()), gate: make([]bool, m.W()*m.H())}
 	set := func(u, v int, open bool) {
-		if x, y := u-w.Origin[0], v-w.Origin[1]; x >= 0 && y >= 0 && x < w.W && y < w.H {
-			w.open[y*w.W+x] = open
+		if i, ok := w.index(u, v); ok {
+			w.open[i] = open
 		}
 	}
 	for y := range w.H {
@@ -70,10 +102,13 @@ func Walkable(m *Map, c *Catalog) *Walk {
 			}
 			if alongU && ob.V == line.From[1] || !alongU && ob.U == line.From[0] {
 				for d := c.Rules.GatePassage[0]; d <= c.Rules.GatePassage[1]; d++ {
+					u, v := ob.U, ob.V+d
 					if alongU {
-						set(ob.U+d, ob.V, m.Step(ob.U+d, ob.V) == 0)
-					} else {
-						set(ob.U, ob.V+d, m.Step(ob.U, ob.V+d) == 0)
+						u, v = ob.U+d, ob.V
+					}
+					set(u, v, m.Step(u, v) == 0)
+					if i, ok := w.index(u, v); ok {
+						w.gate[i] = true
 					}
 				}
 			}

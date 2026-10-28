@@ -1,0 +1,15 @@
+# c04-peng  S_castle_out  ch04  origin -1 0
+.........Bnr...Bnr.........
+###########################
+~~~~~~~~~~~~===~~~~~~~~~~~~
+......Bnr...Tao...LiuGua...
+............Gao......Zha...
+
+Tao 도겸
+Gao 고순
+Liu 유비
+Gua 관우
+Zha 장비
+Mes 전령  (light_infantry, off stage, enters later (cell 10 3))
+
+# c04-b2: Mes -> 7 3

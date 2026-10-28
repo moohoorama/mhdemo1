@@ -1,0 +1,282 @@
+{
+ "ID": "B03",
+ "Name": "단양 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 3,
+ "Required": [
+  "liubei",
+  "guanyu",
+  "zhangfei"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "defeated:turban_chief"
+   ],
+   "Text": "황건 두목을 격파"
+  }
+ ],
+ "Defeat": [
+  {
+   "If": [
+    "defeated:gaoshun"
+   ],
+   "Text": "고순 퇴각(마을 함락)"
+  }
+ ],
+ "TurnLimit": 15,
+ "Map": "map03.json",
+ "Allies": [
+  {
+   "X": 2,
+   "Y": 12
+  },
+  {
+   "X": 3,
+   "Y": 12
+  },
+  {
+   "X": 4,
+   "Y": 12
+  },
+  {
+   "X": 2,
+   "Y": 13
+  },
+  {
+   "X": 3,
+   "Y": 13
+  },
+  {
+   "X": 4,
+   "Y": 13
+  }
+ ],
+ "Party": [
+  {
+   "Character": "gaoshun",
+   "X": 12,
+   "Y": 7,
+   "Facing": "NW",
+   "AI": true,
+   "Faction": "han",
+   "Group": "village",
+   "Policy": "hold",
+   "Rank": "commander"
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "turban_chief",
+   "X": 10,
+   "Y": 1,
+   "Facing": "SE",
+   "Group": "chief",
+   "Policy": "hold",
+   "Rank": "commander"
+  },
+  {
+   "Character": "troop_turban",
+   "X": 3,
+   "Y": 6,
+   "Facing": "SW",
+   "Group": "pass",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 4,
+   "Y": 6,
+   "Facing": "SW",
+   "Group": "pass",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 3,
+   "Y": 5,
+   "Facing": "SW",
+   "Group": "pass",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 11,
+   "Y": 6,
+   "Facing": "SE",
+   "Group": "main",
+   "Policy": "assault",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 10,
+   "Y": 6,
+   "Facing": "SE",
+   "Group": "main",
+   "Policy": "assault",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 10,
+   "Y": 5,
+   "Facing": "SE",
+   "Group": "main",
+   "Policy": "assault",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 11,
+   "Y": 4,
+   "Facing": "SE",
+   "Group": "main",
+   "Policy": "assault",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 9,
+   "Y": 4,
+   "Facing": "SE",
+   "Group": "main",
+   "Policy": "assault",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_turban",
+   "X": 10,
+   "Y": 3,
+   "Facing": "SE",
+   "Group": "main",
+   "Policy": "assault",
+   "Shift": -0.07
+  }
+ ],
+ "Reward": {
+  "bean": 6,
+  "liquor": 2,
+  "money": 1000
+ },
+ "Events": [
+  {
+   "ID": "opening",
+   "If": [
+    "round>=1"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "turban_chief",
+       "Text": "저놈 하나만 치우면 마을은 우리 것이다! 번갈아 밀어붙여라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "누가 혼자 마을 입구를 막고 있네! 운장, 익덕, 고갯길부터 뚫고 서두르세!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "taoqian-arrives",
+   "If": [
+    "round>=3"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "taoqian",
+       "X": 0,
+       "Y": 4,
+       "Facing": "SE",
+       "AI": true,
+       "Policy": "assault",
+       "Faction": "han",
+       "Group": "tao",
+       "Side": "ally"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 1,
+       "Y": 4,
+       "Facing": "SE",
+       "AI": true,
+       "Policy": "assault",
+       "Faction": "han",
+       "Group": "tao",
+       "Side": "ally",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_footman",
+       "X": 0,
+       "Y": 3,
+       "Facing": "SE",
+       "AI": true,
+       "Policy": "assault",
+       "Faction": "han",
+       "Group": "tao",
+       "Side": "ally",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_archer",
+       "X": 0,
+       "Y": 5,
+       "Facing": "SE",
+       "AI": true,
+       "Policy": "assault",
+       "Faction": "han",
+       "Group": "tao",
+       "Side": "ally",
+       "Shift": -0.07
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "taoqian",
+       "Text": "내 고향 마을을 도적 손에 둘 수는 없다! 단양의 아들들아, 나를 따르라!"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "Areas": [],
+ "Faction": "turban",
+ "Duels": [],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "han",
+   "Name": "단양병",
+   "Ally": true
+  },
+  {
+   "Faction": "turban",
+   "Name": "황건 잔당"
+  }
+ ]
+}

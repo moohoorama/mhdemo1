@@ -30,7 +30,8 @@ type Rules struct {
 	ManaRecoveryFactor    float64 // spell points per turn = base + ManaRecoveryFactor*StatNumerator/(StatDenominator-intellect)
 	Crit, Double          Chance
 	CritMultiplier        float64
-	CounterShare          float64 // a counter deals this share of a normal blow
+	CounterShare          float64 // a counter from a stance or trait deals this share of a normal blow
+	PlainCounterShare     float64 // any other unit strikes back in its reach with this share of a normal blow
 	DoubleShare           float64 // a second strike deals this share of a normal blow
 	PoisonPercent         int
 	BurnPercent           int
@@ -56,7 +57,9 @@ type Rules struct {
 	RankLead              map[string]float64 // a rank's lead over the stage level, as a share of (stage level + StatLevelBase) so it means the same strength at any level
 	EnemyStock            map[string]int
 	AllyStock             map[string]int
-	EdgeTile              string // the cell (ground, structure, state) that lies beyond the map's edge
+	EdgeTile              string            // the cell (ground, structure, state) that lies beyond the map's edge
+	CritMarks             map[string]string // the state a critical spell of the element leaves on each critically struck target's cell
+	CritMarkTurns         int               // how many rounds that state lasts
 	AuraHeal              int
 }
 type Campaign struct {
@@ -65,6 +68,7 @@ type Campaign struct {
 	Deployment []string
 	Inventory  map[string]int
 	Money      int
+	Loadout    map[string][]string `json:",omitempty"` // equipment each officer wears in a game started at a waypoint
 }
 
 // Chapter is one story file of the scenario, in play order. Nodes lists the ids of the story's flow; Events

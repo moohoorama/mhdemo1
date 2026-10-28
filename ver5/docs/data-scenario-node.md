@@ -33,6 +33,7 @@ assets/scenario/
 | `Roster` | 처음부터 가진 인물 ID. 모두 `Playable`이어야 한다. |
 | `Deployment` | 처음 출전 명단. 모두 `Playable`이어야 한다. |
 | `Inventory` | 처음 인벤토리. 키는 `items.json`에 있는 아이템, 개수는 0 이상. |
+| `Loadout` | `{인물: [장비 ID…]}`. 장면 이동([logic-campaign.md](logic-campaign.md) 1절)으로 시작한 게임에서 그 인물이 차는 장비. 인물은 `Playable`, 장비는 `equipment.json`에 있어야 한다. |
 | `Chapters` | `[{"ID","File"}]`. 장 ID는 유일, 파일은 비어 있지 않은 노드 배열. |
 
 ## 2. 노드(장 파일)

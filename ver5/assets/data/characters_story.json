@@ -544,6 +544,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
+    "iron_knuckles",
     "plain_clothes"
    ],
    "Look": {
@@ -737,8 +738,8 @@
    }
   },
   "zuofeng": {
-   "Name": "좌풍",
-   "Biography": "십상시의 사람인 황문. 노식의 진영을 돌며 뇌물을 바라다 얻지 못하자 노식을 모함한다.",
+   "Name": "사신",
+   "Biography": "조정이 노식의 진중을 살피라고 보낸 환관(정사·연의의 좌풍). 군량 수레를 세며 예물을 바라다 얻지 못하자 노식을 모함한다.",
    "Class": "light_infantry",
    "Stats": [
     30,
@@ -899,6 +900,386 @@
    "Look": {
     "Faction": "han",
     "Scene": "blacksmith_noncombat"
+   }
+  },
+  "gaoshun": {
+   "Name": "고순",
+   "Biography": "단양 산골 마을의 무인. 말수가 적고 술을 마시지 않는다. 황건 잔당 앞에서 혼자 마을 입구를 막아선다.",
+   "Class": "light_infantry",
+   "Stats": [
+    82,
+    86,
+    55,
+    62,
+    50,
+    58
+   ],
+   "Level": 5,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "gaoshun_noncombat",
+    "Portrait": "gaoshun"
+   }
+  },
+  "taoqian": {
+   "Name": "도겸",
+   "Biography": "자는 공조. 단양 사람으로 서주의 난을 수습하다 고향이 짓밟힌다는 말에 군사를 이끌고 달려온다.",
+   "Class": "light_infantry",
+   "Stats": [
+    72,
+    55,
+    70,
+    50,
+    60,
+    78
+   ],
+   "Level": 5,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "taoqian_noncombat",
+    "Portrait": "taoqian"
+   }
+  },
+  "zhangchun": {
+   "Name": "장순",
+   "Biography": "오환과 손잡고 청주·서주·유주·기주를 노략질한 반란의 우두머리. 공손찬에게 쫓겨 팽성까지 내려온다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    74,
+    72,
+    58,
+    70,
+    50,
+    48
+   ],
+   "Level": 7,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Sprite": "heavy_cavalry",
+    "Faction": "barbarian",
+    "Portrait": "zhangchun",
+    "Palette": {
+     "horseSkin": "#202026",
+     "saddle": "#c03030",
+     "iron": "#e0c060"
+    }
+   }
+  },
+  "kongrong": {
+   "Name": "공융",
+   "Biography": "자는 문거. 공자의 후손으로 북해를 다스린다. 옛말을 즐겨 꺼낸다.",
+   "Class": "scholar",
+   "Stats": [
+    60,
+    30,
+    85,
+    50,
+    60,
+    88
+   ],
+   "Level": 9,
+   "Traits": [
+    "stratagem"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes",
+    "tactics_primer"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "kongrong_noncombat",
+    "Portrait": "kongrong"
+   }
+  },
+  "hejin": {
+   "Name": "하진",
+   "Biography": "황후의 오라비인 대장군. 셈이 빠르고 체면을 안다. 십상시와 서로 눈을 흘긴다.",
+   "Class": "light_infantry",
+   "Stats": [
+    70,
+    60,
+    52,
+    50,
+    60,
+    62
+   ],
+   "Level": 9,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "official_black_noncombat"
+   }
+  },
+  "turban_chief": {
+   "Name": "황건 두목",
+   "Biography": "단양 산골 마을들을 휩쓰는 황건 잔당의 우두머리.",
+   "Class": "bandit",
+   "Stats": [
+    60,
+    70,
+    30,
+    56,
+    40,
+    30
+   ],
+   "Level": 5,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "turban",
+    "Palette": {
+     "themeA": "#7a3a1a",
+     "iron": "#c8a040"
+    }
+   }
+  },
+  "servant": {
+   "Name": "하인",
+   "Biography": "조조 집안의 하인.",
+   "Class": "light_infantry",
+   "Stats": [
+    20,
+    10,
+    30,
+    30,
+    30,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "commoner_man"
+   }
+  },
+  "attendant": {
+   "Name": "종자",
+   "Biography": "조조를 따르는 종자.",
+   "Class": "light_infantry",
+   "Stats": [
+    40,
+    40,
+    30,
+    50,
+    40,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei",
+    "Scene": "infantry_noncombat"
+   },
+   "Template": true
+  },
+  "official": {
+   "Name": "관리",
+   "Biography": "대장군부의 관리.",
+   "Class": "light_infantry",
+   "Stats": [
+    30,
+    20,
+    60,
+    30,
+    40,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "official_noncombat"
+   },
+   "Template": true
+  },
+  "aide": {
+   "Name": "부장",
+   "Biography": "대장군부의 부장.",
+   "Class": "light_infantry",
+   "Stats": [
+    50,
+    50,
+    40,
+    40,
+    40,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "official_blue_noncombat"
+   },
+   "Template": true
+  },
+  "guest_a": {
+   "Name": "술손님",
+   "Biography": "낙양 술집의 손님.",
+   "Class": "light_infantry",
+   "Stats": [
+    20,
+    20,
+    30,
+    30,
+    30,
+    30
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "merchant",
+    "Scene": "commoner_man"
+   }
+  },
+  "guest_b": {
+   "Name": "옆자리 손님",
+   "Biography": "낙양 술집의 손님.",
+   "Class": "light_infantry",
+   "Stats": [
+    20,
+    20,
+    30,
+    30,
+    30,
+    30
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "merchant",
+    "Scene": "commoner_elder"
+   }
+  },
+  "loot_cart": {
+   "Name": "약탈 수레",
+   "Biography": "장순의 무리가 팽성 바깥 고을에서 털어 온 곡식을 싣고 북쪽으로 달아나는 수레.",
+   "Class": "light_infantry",
+   "Stats": [
+    30,
+    40,
+    20,
+    40,
+    30,
+    20
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "barbarian",
+    "Sprite": "chariot"
+   },
+   "Template": true
+  },
+  "innkeeper": {
+   "Name": "주인",
+   "Biography": "낙양 가는 길, 작은 고을 주막의 주인.",
+   "Class": "light_infantry",
+   "Stats": [
+    20,
+    10,
+    30,
+    30,
+    30,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "merchant",
+    "Scene": "innkeeper_noncombat"
+   }
+  },
+  "town_elder": {
+   "Name": "노인",
+   "Biography": "낙양 가는 길, 작은 고을의 노인. 하진이 죽었다는 소문을 전한다.",
+   "Class": "light_infantry",
+   "Stats": [
+    20,
+    10,
+    30,
+    30,
+    30,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "merchant",
+    "Scene": "commoner_elder"
    }
   }
  }

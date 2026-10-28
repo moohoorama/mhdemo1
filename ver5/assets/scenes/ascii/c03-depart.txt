@@ -1,0 +1,18 @@
+# c03-depart  S_road  ch03  origin 0 0
+Tre......Tre...Bsh...Bsh.........
+...Mil.....................Bsh...
+........................LiuGuain1
+...............Mil.........Zhain2
+......Bsh........................
+
+Liu 유비
+Gua 관우
+Zha 장비
+in1 의병#1  (light_infantry)
+in2 의병#2  (light_infantry)
+
+# c03-c1: Liu -> 5 2
+# c03-c1: Gua -> 6 2
+# c03-c1: Zha -> 6 3
+# c03-c1: in1 -> 7 2
+# c03-c1: in2 -> 7 3

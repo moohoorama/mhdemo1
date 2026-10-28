@@ -31,6 +31,7 @@ const (
 	DrawSprite = "sprite" // a prop or scenery picture
 	DrawFill   = "fill"   // a game cell's diamond filled with Color, 64 x 32 (DiamondRow)
 	DrawLines  = "lines"
+	DrawAnim   = "anim" // frame 0 of a looping strip (Catalog.Anims); the game plays it
 )
 
 // Piece is one item of the standing layer: a raised block, a wall piece, an object. Its draws go out together.
@@ -40,6 +41,7 @@ type Piece struct {
 	At     [2]int     `json:"at"`     // the map's small tile it belongs to
 	Anchor [2]float64 `json:"anchor"` // canvas point it stands on (raised with its ground)
 	Draws  []Draw     `json:"draws"`
+	Lights []Light    `json:"lights,omitempty"`
 }
 
 // Plan is a map's drawing list: the flat layer in order, then the standing layer in order. People and effects are
@@ -552,9 +554,10 @@ func (w *view) objects() (pieces []Piece, flat []Draw, err error) {
 		f := w.c.footprint(ob.Name)
 		au, av := w.point(cu+f[0], cv+f[1])
 		bu, bv := w.point(cu+f[0]+f[2], cv+f[1]+f[3])
+		anims, lights := w.c.Attach(ob.Name, x, y-float64(lift))
 		pieces = append(pieces, Piece{Key: Key{Box: [4]float64{min(au, bu), min(av, bv), max(au, bu), max(av, bv)},
 			Lift: lift, Rank: RankObject, X: x}, Name: ob.Name, At: [2]int{ob.U, ob.V}, Anchor: [2]float64{x, y - float64(lift)},
-			Draws: []Draw{d}})
+			Draws: append([]Draw{d}, anims...), Lights: lights})
 	}
 	sort.SliceStable(flats, func(a, b int) bool { return flats[a].y < flats[b].y })
 	for _, f := range flats {
@@ -684,6 +687,9 @@ func (w *view) rect(draws []Draw) image.Rectangle {
 			case "structures":
 				s = w.c.Structures[d.Name]
 			}
+			b = image.Rect(d.X, d.Y, d.X+s.Rect[2], d.Y+s.Rect[3])
+		case DrawAnim:
+			s := w.c.Anims[d.Name]
 			b = image.Rect(d.X, d.Y, d.X+s.Rect[2], d.Y+s.Rect[3])
 		case DrawFill:
 			b = image.Rect(d.X-32, d.Y, d.X+32, d.Y+32)

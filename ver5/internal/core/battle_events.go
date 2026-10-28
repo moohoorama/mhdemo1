@@ -256,6 +256,33 @@ func (e *Engine) setState(stage content.Stage, x, y int, state string, turns int
 	}
 }
 
+// markCell leaves the mark of a critical spell of the element on the cell for Rules.CritMarkTurns rounds:
+// embers, a wet patch or rubble. It lies only where the mark's state may lie, and only over a bare cell, another
+// mark or what a mark turns into; what an event put there (a fire, a broken bridge, an open gate) stays.
+func (e *Engine) markCell(x, y int, element string) {
+	R := e.data.Rules
+	state, ok := R.CritMarks[element]
+	if !ok {
+		return
+	}
+	c := e.Cell(x, y)
+	if c.State != content.NoLayer && !e.markState(string(c.State)) || e.data.ValidCell(withState(c, state)) != "" {
+		return
+	}
+	e.setState(e.data.Stages[e.state.Stage], x, y, state, R.CritMarkTurns)
+	e.events = append(e.events, Event{Kind: "mark", Target: state, Path: []content.Point{{X: x, Y: y}}})
+}
+
+// markState reports whether a critical spell may cover the state: a mark, or what one turns into.
+func (e *Engine) markState(k string) bool {
+	for _, m := range e.data.Rules.CritMarks {
+		if k == m || k == e.data.States[m].Then {
+			return true
+		}
+	}
+	return false
+}
+
 // ageTerrain counts a round off every temporary state; the ones that run out turn into what the data says.
 func (e *Engine) ageTerrain() {
 	stage := e.data.Stages[e.state.Stage]

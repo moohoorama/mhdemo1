@@ -79,6 +79,7 @@ type Game struct {
 	zoomT                     float64
 	speed                     int
 	dragging, dragMoved       bool
+	pinched                   bool // two fingers are zooming the battle; it settles on a step of zooms when they lift
 	dragX, dragY              int
 	dragButton                ebiten.MouseButton
 	shownNode                 string
@@ -87,6 +88,10 @@ type Game struct {
 	dialogueAnim              dialogueAnim
 	narrationLeaving          bool
 	narrationExitAt           float64
+	autoKey                   string        // the line the auto setting is waiting on
+	autoAt                    float64       // when that line was out
+	skipping                  *scenes.Scene // the scene the skip button is paging through
+	skipUntil                 float64       // clicks wait until then after a skip stops
 	Verify                    bool
 	Shots                     []int // capture the screen at these ticks while autoplaying, then quit
 	verified                  map[string]bool
@@ -104,6 +109,7 @@ type Game struct {
 	diffs                     map[string]string
 	itemEffects               map[string]itemEffect // itemEffect results by revision, officer, slot and piece
 	equip                     equipState
+	waypoints                 waypointList
 	question, yes, no         string
 	confirmTitle              string
 	answer                    func()
@@ -149,7 +155,8 @@ type Game struct {
 	battleXP, startLevel      map[string]int
 	resultPage                int
 	slotInfo                  map[string]string
-	selected, overlay         string
+	selected                  string
+	overlays                  []string // the open windows, the top one last
 	notice, entry             string
 	page, slot, ticks         int
 	input, autoplay           bool
@@ -246,9 +253,6 @@ func (g *Game) send(q session.Request) session.Response {
 		o := g.S.View()
 		before = &o
 		q.Revision = &o.Revision
-		if q.Op == "ai" && o.Phase == "battle" {
-			c, _ = ai.Next(g.S.Engine)
-		}
 	}
 	r := g.S.Handle(q)
 	if g.log != nil {
@@ -275,6 +279,7 @@ func (g *Game) send(q session.Request) session.Response {
 		g.player.Skip()
 		g.vis = map[string]*unitVis{}
 		g.popups, g.effects, g.modals = nil, nil, nil
+		g.closeOverlays()
 		g.clearOrder()
 		g.selected, g.endAsked = "", ""
 		if g.field != nil {
@@ -287,11 +292,12 @@ func (g *Game) send(q session.Request) session.Response {
 	g.notice = "완료"
 	switch q.Op {
 	case "save":
+		g.closeOverlays()
 		g.toast(fmt.Sprintf("슬롯 %s 저장 완료", q.Slot), gold)
 	case "load":
 		g.toast("불러오기 완료", gold)
 	}
-	if (q.Op == "command" || q.Op == "ai") && g.selected == c.Actor {
+	if q.Op == "command" && g.selected == c.Actor {
 		switch c.Kind {
 		case "attack", "skill", "item", "wait":
 			g.selected = ""
@@ -305,21 +311,13 @@ func (g *Game) send(q session.Request) session.Response {
 // request is send plus the replay of a battle command.
 func (g *Game) request(q session.Request) session.Response {
 	var before *core.Observation
-	aiCommand := core.Command{}
 	if g.S.Engine != nil {
 		o := g.S.View()
 		before = &o
-		if q.Op == "ai" && o.Phase == "battle" {
-			aiCommand, _ = ai.Next(g.S.Engine) // the command the session's AI step will apply
-		}
 	}
 	r := g.send(q)
-	if r.OK && before != nil && before.Phase == "battle" && (q.Op == "command" || q.Op == "ai") {
-		c := q.Command
-		if q.Op == "ai" {
-			c = aiCommand
-		}
-		g.replayOne(*before, c, r.Events)
+	if r.OK && before != nil && before.Phase == "battle" && q.Op == "command" {
+		g.replayOne(*before, q.Command, r.Events)
 	}
 	if r.OK && g.S.Engine != nil && before != nil && (before.Phase == "deployment" || g.S.Engine.Deploying()) {
 		if before.Phase != "deployment" || !g.S.Engine.Deploying() {
@@ -459,12 +457,11 @@ func (g *Game) resolvePhase() {
 	events := []core.Event{}
 	for _, a := range actions {
 		for _, s := range a.Steps {
-			g.logCommand(s.Command, s.Events)
 			events = append(events, s.Events...)
 		}
 	}
 	g.record(&before, events)
-	g.player.Play(actions, g.S.View())
+	g.player.PlayAI(before, actions, g.S.View())
 }
 
 func (g *Game) command(c core.Command) {
@@ -547,6 +544,28 @@ func (g *Game) assist() {
 // nextSpeed is the replay speed the F key steps to.
 var nextSpeed = map[int]int{1: 2, 2: 4, 4: 8, 8: 1}
 
+// speedButton in the upper left corner of the battle shows the replay speed and steps it as F does;
+// the objective guide's switch stands beside it.
+func (g *Game) speedButton(dst *ebiten.Image) {
+	r := image.Rect(12, 10, 104, 70)
+	g.btn(dst, r, "", func() { g.speed = nextSpeed[g.speed] })
+	g.block(r)
+	label, size := fmt.Sprintf("×%d", g.speed), 30.0
+	g.label(dst, label, float64(r.Min.X)+(float64(r.Dx())-g.width(label, size))/2, float64(r.Min.Y)+(float64(r.Dy())-size*1.45)/2, size, gold)
+	r = image.Rect(r.Max.X+8, r.Min.Y, r.Max.X+100, r.Max.Y)
+	g.btn(dst, r, "", func() {
+		v := g.S.Settings
+		v.NoGoalGuide = !v.NoGoalGuide
+		g.request(session.Request{Op: "settings", Settings: &v})
+	})
+	g.block(r)
+	label, size, fg := "목표", 26.0, gold
+	if g.S.Settings.NoGoalGuide {
+		fg = muted
+	}
+	g.label(dst, label, float64(r.Min.X)+(float64(r.Dx())-g.width(label, size))/2, float64(r.Min.Y)+(float64(r.Dy())-size*1.45)/2, size, fg)
+}
+
 func sorted[V any](m map[string]V) []string {
 	out := []string{}
 	for k := range m {
@@ -559,8 +578,8 @@ func sorted[V any](m map[string]V) []string {
 // rightClick cancels the current window or order step, else clears the selection.
 func (g *Game) rightClick() {
 	switch {
-	case g.overlay != "":
-		g.overlay = ""
+	case g.overlay() != "":
+		g.closeOverlay()
 	case g.popupPending():
 	case g.deploying():
 		g.deploymentSelected = ""
@@ -583,10 +602,7 @@ func (g *Game) Update() error {
 		return g.updateTour()
 	}
 	g.advance(1.0 / 60)
-	if g.narrationLeaving && g.uiSeconds-g.narrationExitAt >= .43 {
-		g.narrationLeaving = false
-		g.command(core.Command{Kind: "next"})
-	}
+	g.turnPage()
 	g.syncBattleLogStage()
 	g.learn = nil
 	if g.S.Engine != nil && g.S.Screen == "playing" {
@@ -637,7 +653,7 @@ func (g *Game) Update() error {
 			g.exploreInput()
 		}
 	}
-	logInput := g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker()
+	logInput := g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker() || g.updateWaypoints()
 	g.updateDeploymentPanel()
 	g.updateHover()
 	g.keys()
@@ -651,12 +667,12 @@ func (g *Game) Update() error {
 	if g.autoplay && len(g.modals) > 0 && g.modals[0].t > 1.2 {
 		g.closeModal()
 	}
-	if playing && g.overlay == "" && len(g.modals) == 0 && g.ticks%12 == 0 {
+	if playing && g.overlay() == "" && len(g.modals) == 0 && g.ticks%12 == 0 {
 		if g.autoplay {
 			g.assist()
 		} else {
 			o := g.S.View()
-			if o.Phase == "battle" && (o.Turn == "support" || o.Turn == "enemy" && g.S.Settings.AI == "auto") && !g.busy() && len(g.learn) == 0 {
+			if o.Phase == "battle" && o.Turn != "ally" && !g.busy() && len(g.learn) == 0 {
 				g.resolvePhase()
 			}
 			g.offerEnd(o)
@@ -719,8 +735,8 @@ func (g *Game) keys() {
 			g.equip.info = equipChip{}
 		case g.equip.slot != "":
 			g.equip.slot = ""
-		case g.overlay != "":
-			g.overlay = ""
+		case g.overlay() != "":
+			g.closeOverlay()
 		case len(g.modals) > 0:
 			g.closeModal()
 		case len(g.learn) > 0:
@@ -732,7 +748,7 @@ func (g *Game) keys() {
 		}
 		return
 	}
-	if g.overlay != "" || g.S.Screen != "playing" || g.S.Engine == nil {
+	if g.overlay() != "" || g.S.Screen != "playing" || g.S.Engine == nil {
 		return
 	}
 	if len(g.modals) > 0 {
@@ -782,7 +798,7 @@ func (g *Game) leftClick() {
 			return
 		}
 	}
-	if g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 || g.S.Screen != "playing" || g.S.Engine == nil || g.field == nil || g.dragging {
+	if g.overlay() != "" || len(g.modals) > 0 || len(g.learn) > 0 || g.S.Screen != "playing" || g.S.Engine == nil || g.field == nil || g.dragging {
 		return
 	}
 	if g.exploring() {
@@ -800,7 +816,7 @@ func (g *Game) leftClick() {
 
 // mapRelease is a left click on the battlefield that did not become a drag.
 func (g *Game) mapRelease() {
-	if g.overlay != "" || len(g.modals) > 0 || len(g.learn) > 0 || g.S.Engine == nil || g.field == nil || g.busy() {
+	if g.overlay() != "" || len(g.modals) > 0 || len(g.learn) > 0 || g.S.Engine == nil || g.field == nil || g.busy() {
 		return
 	}
 	if !g.onMap() {
@@ -884,7 +900,7 @@ func (g *Game) drawFrame(dst *ebiten.Image) {
 		g.btn(dst, image.Rect(uiW-230, 12, uiW-14, 44), "에디터로 돌아가기", g.endEditorTrial)
 	}
 
-	if g.overlay != "" {
+	if g.overlay() != "" {
 		g.drawOverlay(dst)
 	} else if len(g.modals) > 0 && (!g.busy() || g.briefed()) && g.S.Engine != nil {
 		g.drawModal(dst)
@@ -947,10 +963,11 @@ func (g *Game) titleMenu(dst *ebiten.Image) {
 		names[i] = st.Name
 	}
 	g.label(dst, strings.Join(names, " → "), 104, 214, 16, muted)
-	r := image.Rect(96, 290, 420, 680)
+	r := image.Rect(96, 290, 420, 736)
 	g.window(dst, r)
 	items := []menuItem{
-		{"새로 시작", func() { g.request(session.Request{Op: "new", Seed: g.seed}); g.overlay = "" }},
+		{"새로 시작", func() { g.request(session.Request{Op: "new", Seed: g.seed}) }},
+		{"장면 이동", func() { g.waypoints.top = 0; g.openOverlay("waypoints") }},
 		{"불러오기", func() { g.openOverlay("load") }},
 		{"일기토", func() { _ = g.OpenDuel("", "", false) }},
 		{"맵에디터", func() { g.editor = &mapEditor{selected: -1, level: 1, facing: "NW", zoom: 1} }},
@@ -1043,6 +1060,7 @@ func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 		g.field.SetLooks(LooksOf(g.S.Data, o))
 	}
 	g.field.setNight(o.Map.Night, lightCells(o.Map.Lights))
+	g.field.setGoals(g.goalShapes(o))
 	g.field.Draw(g.clockMS, units, g.marks(o))
 	g.drawDeploymentPreview(o)
 	if g.field.Map.Native && g.shakeT > 0 {
@@ -1096,10 +1114,8 @@ func (g *Game) battleHUD(dst *ebiten.Image, o core.Observation) {
 		g.messages(dst)
 		return
 	}
-	if g.speed > 1 {
-		g.label(dst, fmt.Sprintf("재생 ×%d", g.speed), 14, 12, 13, gold)
-	}
-	g.battleHUDPanel(dst, o)
+	g.speedButton(dst)
+	g.battleHUDPanel(dst, g.player.shownTurn(o))
 	g.drawMenu(dst)
 	g.forecast(dst)
 	g.brief(dst, o)

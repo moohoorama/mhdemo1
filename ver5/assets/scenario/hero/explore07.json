@@ -1,0 +1,429 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "camp",
+  "At": [
+   42,
+   37
+  ],
+  "Face": "SE"
+ },
+ "Areas": {
+  "camp": {
+   "Map": "S_coalition_camp",
+   "Name": "반동탁 연합 · 진영, 밤",
+   "Time": "night",
+   "At": [
+    42,
+    37
+   ],
+   "Exits": [
+    {
+     "Name": "맹주의 막사",
+     "At": [
+      40,
+      34
+     ],
+     "Object": [
+      40,
+      32
+     ],
+     "To": "meng_tent"
+    },
+    {
+     "Name": "원술의 막사",
+     "At": [
+      30,
+      19
+     ],
+     "Object": [
+      30,
+      17
+     ],
+     "To": "yuanshu_tent"
+    },
+    {
+     "Name": "조조의 막사",
+     "At": [
+      49,
+      19
+     ],
+     "Object": [
+      49,
+      17
+     ],
+     "To": "cao_tent"
+    },
+    {
+     "Name": "삼형제의 막사",
+     "At": [
+      50,
+      53
+     ],
+     "Object": [
+      50,
+      51
+     ],
+     "To": "our_tent"
+    }
+   ],
+   "People": {
+    "병사#1": {
+     "At": [
+      30,
+      36
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "병사",
+       "동탁이 낙양 황실 보물을 수레째 싣고 간다더군."
+      ]
+     ]
+    },
+    "병사#2": {
+     "At": [
+      24,
+      34
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "병사",
+       "보물이 하도 많아서 길에 흘리면서 간다던데."
+      ]
+     ]
+    },
+    "병사#3": {
+     "At": [
+      48,
+      34
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "병사",
+       "보물 실을 자리가 모자라 창이며 갑옷을 길가에 버리고 갔다지 뭐요."
+      ]
+     ]
+    },
+    "병사#4": {
+     "At": [
+      41,
+      27
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "병사",
+       "천자께서 쓰시던 보물까지 몽땅 실어 갔다더군."
+      ]
+     ]
+    },
+    "원술 진영 병사": {
+     "At": [
+      33,
+      25
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "원술 진영 병사",
+       "우리 주공께서 갑자기 말에 안장을 얹으라 하시네. 아까는 여포 앞에 누가 서겠냐 하시더니."
+      ]
+     ]
+    },
+    "종군 상인": {
+     "At": [
+      64,
+      51
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Shop": "camp",
+     "Talk": [
+      [
+       "종군 상인",
+       "다들 갑자기 바빠졌소. 무슨 바람이 분 건지."
+      ]
+     ]
+    },
+    "장비": {
+     "At": [
+      45,
+      38
+     ],
+     "Face": "NW",
+     "Talk": [
+      [
+       "zhangfei",
+       "형, 아까는 다들 싫다더니, 왜 이리 부산스럽대유?"
+      ]
+     ]
+    },
+    "관우": {
+     "At": [
+      33,
+      37
+     ],
+     "Face": "NW",
+     "Sortie": {
+      "Ask": "형님, 맹덕 공의 군사는 이미 떠났습니다. 서두르시지요."
+     }
+    },
+    "위병#1": {
+     "At": [
+      38,
+      34
+     ],
+     "Face": "SW",
+     "Sprite": "guards",
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "위병",
+       "맹주께서 장수들을 다시 부르셨소. 이 밤중에 무슨 일인지."
+      ]
+     ]
+    },
+    "위병#2": {
+     "At": [
+      42,
+      34
+     ],
+     "Face": "SW",
+     "Sprite": "guards",
+     "Faction": "yuan"
+    },
+    "순찰병#1": {
+     "At": [
+      8,
+      35
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "yuan",
+     "Move": {
+      "Patrol": [
+       [
+        8,
+        35
+       ],
+       [
+        72,
+        35
+       ]
+      ]
+     },
+     "Talk": [
+      [
+       "순찰병",
+       "이 밤중에 진영 문마다 말이 들락날락하오."
+      ]
+     ]
+    },
+    "순찰병#2": {
+     "At": [
+      40,
+      46
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "yuan",
+     "Move": {
+      "Patrol": [
+       [
+        40,
+        46
+       ],
+       [
+        40,
+        66
+       ]
+      ]
+     }
+    },
+    "조조군#1": {
+     "At": [
+      61,
+      12
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "wei",
+     "Talk": [
+      [
+       "조조 진영 병사",
+       "주공과 장군들은 벌써 떠나셨소. 우리는 짐을 챙겨 뒤따라가오."
+      ]
+     ],
+     "Move": {
+      "Wander": 2
+     }
+    },
+    "조조군#2": {
+     "At": [
+      64,
+      12
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "wei"
+    },
+    "손님#1": {
+     "At": [
+      68,
+      50
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Move": {
+      "Wander": 3
+     }
+    },
+    "원소군 병졸": {
+     "At": [
+      19,
+      20
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "원소군 병졸",
+       "조 장군은 그걸 알고 혼자 차지하려고 벌써 떠났다던데?"
+      ]
+     ]
+    },
+    "교모": {
+     "At": [
+      35,
+      37
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "qiaomao",
+       "흘린 보물만 주워도 고을 하나 살림이라던데……. 아, 아니오. 나는 동탁을 치러 가는 거요."
+      ]
+     ]
+    },
+    "공융": {
+     "At": [
+      66,
+      30
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "kongrong",
+       "백성을 몰아가는 자를 쫓는 일이라면 마땅하지. ……보물 이야기는 듣기 민망하구려."
+      ]
+     ]
+    },
+    "공손찬": {
+     "At": [
+      45,
+      54
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "gongsunzan",
+       "현덕, 너도 가느냐? 맹주의 영이 떨어지면 나도 뒤따르마."
+      ]
+     ]
+    }
+   }
+  },
+  "meng_tent": {
+   "Map": "S_council2",
+   "Name": "맹주의 막사",
+   "Zoom": 3,
+   "At": [
+    21,
+    14
+   ],
+   "Exits": [
+    {
+     "Name": "밖으로",
+     "At": [
+      23,
+      15
+     ],
+     "To": "camp"
+    }
+   ]
+  },
+  "yuanshu_tent": {
+   "Map": "S_tent_lux2",
+   "Name": "원술의 막사",
+   "Zoom": 3,
+   "At": [
+    10,
+    8
+   ],
+   "Exits": [
+    {
+     "Name": "밖으로",
+     "At": [
+      11,
+      9
+     ],
+     "To": "camp"
+    }
+   ]
+  },
+  "cao_tent": {
+   "Map": "S_tent_mid",
+   "Name": "조조의 막사",
+   "Zoom": 3,
+   "At": [
+    10,
+    8
+   ],
+   "Exits": [
+    {
+     "Name": "밖으로",
+     "At": [
+      11,
+      9
+     ],
+     "To": "camp"
+    }
+   ]
+  },
+  "our_tent": {
+   "Map": "S_tent2",
+   "Name": "삼형제의 막사",
+   "Zoom": 3,
+   "At": [
+    6,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "밖으로",
+     "At": [
+      7,
+      7
+     ],
+     "To": "camp"
+    }
+   ]
+  }
+ }
+}

@@ -15,7 +15,7 @@ func init() { demos["popups"] = demoPopups }
 func demoPopups(d *Demo) error {
 	g := d.g
 	open := func(name string) {
-		g.overlay = ""
+		g.closeOverlays()
 		g.openOverlay(name)
 	}
 	traits := make([]string, 0, len(g.S.Data.Traits))
@@ -28,7 +28,7 @@ func demoPopups(d *Demo) error {
 		case 60:
 			open("settings")
 		case 120:
-			g.overlay = ""
+			g.closeOverlays()
 			if err := d.battle(d.stage); err != nil {
 				d.err = err
 			}
@@ -37,7 +37,7 @@ func demoPopups(d *Demo) error {
 		case 270:
 			open("menu")
 		case 330:
-			g.overlay = ""
+			g.closeOverlays()
 			g.modals = []*modal{{kind: "objective"}}
 		case 390:
 			if len(traits) > 0 {

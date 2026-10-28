@@ -27,7 +27,6 @@ func main() {
 	seeds := flag.Int("seeds", 5, "seeds per stage")
 	first := flag.Int("first", 1, "first seed")
 	damage := flag.Int("damage", storage.DefaultScalePct, "damage scale in percent, as the settings set it")
-	counter := flag.Bool("counter", storage.DefaultSettings().CounterAll, "every unit strikes back (the counter-all setting)")
 	xp := flag.Int("xp", storage.DefaultScalePct, "experience scale in percent, as the settings set it")
 	offset := flag.Int("offset", 0, "the player's officers this many levels off the stage level")
 	show := flag.Bool("show", false, "print every unit's numbers when the battle starts (seed 1)")
@@ -43,7 +42,7 @@ func main() {
 		gain := map[string][]float64{}
 		var lost []string
 		for seed := *first; seed < *first+*seeds; seed++ {
-			res, round, gained, retreats := play(d, i, level, uint64(seed), *player, *damage, *xp, *counter, *show && seed == *first)
+			res, round, gained, retreats := play(d, i, level, uint64(seed), *player, *damage, *xp, *show && seed == *first)
 			if res == "victory" {
 				wins++
 			}
@@ -90,7 +89,7 @@ func count(ids []string) []string {
 
 // play fights stage i with every playable officer at level, and returns the result, the last round,
 // the levels each of the player's officers gained (fractions from experience) and who retreated.
-func play(d *content.Data, i, level int, seed uint64, player string, damage, xp int, counter bool, show bool) (string, int, map[string]float64, []string) {
+func play(d *content.Data, i, level int, seed uint64, player string, damage, xp int, show bool) (string, int, map[string]float64, []string) {
 	dd := *d
 	dd.Characters = maps.Clone(d.Characters)
 	for id, c := range dd.Characters {
@@ -107,7 +106,6 @@ func play(d *content.Data, i, level int, seed uint64, player string, damage, xp 
 	e := core.New(&dd, seed)
 	e.SetDamagePct(damage)
 	e.SetXPPct(xp)
-	e.SetCounterAll(counter)
 	_, err := e.Apply(core.Command{Kind: "start"})
 	check(err)
 	var retreats []string

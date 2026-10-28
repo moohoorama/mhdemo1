@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"fmt"
 	"image"
 	"math"
 
@@ -91,6 +92,14 @@ func (g *Game) changeLooks(e core.Event) {
 	}
 }
 
+// markLook applies one mark event (a state a critical spell left on a cell) to the looks a replay holds.
+func (g *Game) markLook(e core.Event) {
+	if g.player.looks == nil || len(e.Path) == 0 {
+		return
+	}
+	g.player.looks[image.Pt(e.Path[0].X, e.Path[0].Y)] = g.S.Data.States[e.Target].Look
+}
+
 // LooksOf is Looks of an observation.
 func LooksOf(data *content.Data, o core.Observation) map[image.Point]string {
 	return Looks(data, o.Map)
@@ -101,9 +110,23 @@ func (f *Field) look(u, v int) string { return f.looks[image.Pt(u, v)] }
 // ashless are the grounds and structures the soot does not mark: nothing to blacken, or nobody walks there.
 func ashless(g byte) bool { return g == 'c' || g == 'h' || g == 'm' || g == '~' || g == 'b' }
 
-// drawStateGround lays soot over the burnt ground: four small marks on a cell.
+// markSprites are the ground pictures of the states a critical spell leaves, by look: markVariants of each,
+// one to a cell (assets_candidate/tools/gen_ground_marks.py).
+var markSprites = map[string]string{"ember": "charred", "wet": "wet", "rubble": "rubble"}
+
+const markVariants = 5
+
+// drawStateGround lays the ground marks: soot over the burnt ground, four small marks on a cell, and one
+// picture of charred, wet or stony ground on a cell a critical spell marked.
 func (f *Field) drawStateGround(dst *ebiten.Image) {
 	for p, look := range f.looks {
+		if name, ok := markSprites[look]; ok {
+			if s, ok := f.A.Props[fmt.Sprintf("%s_%d", name, int(hash3(p.X, p.Y, 7)*markVariants))]; ok {
+				px, py := f.mapCenter(float64(p.X), float64(p.Y))
+				f.blitMap(dst, s.Sprite, px, py, nil)
+			}
+			continue
+		}
 		if look != "soot" || ashless(f.small(2*p.X, 2*p.Y)) {
 			continue
 		}
@@ -135,9 +158,9 @@ func (f *Field) stateItems(clockMS float64) []drawItem {
 		if look != "ember" && look != "flame" {
 			continue
 		}
-		tongue, n, spread := f.A.Flames["flame_t_small"], 4, 10.0
+		tongue, n, spread := f.A.Anims["flame_t_small"], 4, 10.0
 		if look == "flame" {
-			tongue, n, spread = f.A.Flames["flame_t"], 7, 13.0
+			tongue, n, spread = f.A.Anims["flame_t"], 7, 13.0
 		}
 		if len(tongue.Frames) == 0 {
 			continue
@@ -161,7 +184,7 @@ func (f *Field) stateItems(clockMS float64) []drawItem {
 
 // smoke lifts two puffs at a time from a burning cell, each rising and thinning through the strip's frames.
 func (f *Field) smoke(p image.Point, cx, cy, clockMS float64) []drawItem {
-	puff := f.A.Flames["smoke_t"]
+	puff := f.A.Anims["smoke_t"]
 	if len(puff.Frames) == 0 {
 		return nil
 	}

@@ -27,6 +27,7 @@ const K = 2
 // ((u - v) * 16, (u + v + 1) * 8) relative to Origin; the canvas is K times that.
 type Field struct {
 	deployment                   bool
+	goals                        []goalShape // the objective guide's outlines
 	sceneryLayer                 bool
 	deploymentCells              []content.Point
 	worldSize                    image.Point
@@ -143,6 +144,10 @@ func NewField(a *Assets, m *MapArt) *Field {
 			f.finishScenery()
 		}
 	}
+	f.eachProp(false, func(name string, _ Sprite, x, y float64) {
+		_, lights := a.SceneRules.Attach(name, x, y)
+		f.night.props = append(f.night.props, lights...)
+	})
 	return f
 }
 
@@ -467,6 +472,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		op.ColorScale.ScaleWithColor(color.NRGBA(col)) // Highlight colors are straight alpha
 		vector.FillPath(c, paths[col], nil, op)
 	}
+	f.drawGoals(c)
 	f.shadows.Clear()
 	items := []drawItem{}
 	for _, it := range f.ceilingItems {
@@ -541,12 +547,20 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		if cliff {
 			top -= 8
 		}
+		anims, _ := f.A.SceneRules.Attach(name, x, y)
+		rect := image.Rect(rx, top, rx+b.Dx(), ry+b.Dy())
+		for _, d := range anims {
+			rect = rect.Union(f.A.Anims[d.Name].Frames[0].Image.Bounds().Add(image.Pt(d.X, d.Y)))
+		}
 		items = append(items, drawItem{y: y, draw: func() {
 			f.blit(c, s, x, y, nil)
 			if cliff {
 				f.blit(c, s, x, y-8, nil)
 			}
-		}, rect: image.Rect(rx, top, rx+b.Dx(), ry+b.Dy())})
+			for _, d := range anims {
+				f.drawStrip(d, 0, 0)
+			}
+		}, rect: rect})
 		if sh := f.A.Props[name].Shadow; f.Map.Scene && sh.Image != nil {
 			f.blit(f.shadows, sh, x, y, &ebiten.DrawImageOptions{Blend: maxBlend})
 		}

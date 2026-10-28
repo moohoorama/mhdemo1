@@ -100,7 +100,7 @@ func TestCampaignScripts(t *testing.T) {
 			t.Fatal("draw should be a long duel")
 		}
 	})
-	t.Run("Huaxiong is held off and flees", func(t *testing.T) {
+	t.Run("Huaxiong is held off and cut down", func(t *testing.T) {
 		story := scripts.Story("sishui-guan-yu", "victory")
 		for time := 0.; time < story.Duration(); time += .03 {
 			r := story.Sample(time)
@@ -113,24 +113,19 @@ func TestCampaignScripts(t *testing.T) {
 		if before.Flash != 0 || contact.Flash <= 0 || !contact.Critical || contact.Actors[0].Animation != "block" || math.Abs(contact.Actors[0].Position-before.Actors[0].Position) > 5 || contact.ShakeSide != 1 {
 			t.Fatalf("powerful blow was not calmly blocked: %+v", contact)
 		}
-		for _, time := range []float64{.1, .8, 1.6, 2.1} {
-			if r := at(story, "retreat", time); r.Actors[1].Lane != 0 || r.Actors[1].Animation != "walk" || r.Actors[0].Animation != "idle" {
-				t.Fatalf("Huaxiong must flee in a straight line while Guan Yu holds his ground: %+v", r)
-			}
-		}
-		if last := story.Sample(story.Duration()); last.Actors[1].Fade != 1 || last.Actors[1].Animation == "exhausted" || !last.Done {
-			t.Fatalf("Huaxiong must vanish into his ranks, not fall: %+v", last)
+		if last := story.Sample(story.Duration()); last.Actors[1].Gray != 1 || last.Actors[0].Gray != 0 || !last.Done {
+			t.Fatalf("Huaxiong must fall to Guan Yu's blow: %+v", last)
 		}
 		found := false
 		for _, stage := range data.Stages {
 			for _, d := range stage.Duels {
 				if d.ID == "sishui-guan-yu" {
-					found = d.Outcome == "victory" && d.EnemyResult == "retreat" && d.AllyResult == "stay"
+					found = d.Outcome == "victory" && d.EnemyResult == "death" && d.AllyResult == "stay"
 				}
 			}
 		}
 		if !found {
-			t.Fatal("map outcome must match Huaxiong's flight: he dies later, at the coalition camp")
+			t.Fatal("map outcome must match the duel: Huaxiong dies on the field")
 		}
 	})
 }

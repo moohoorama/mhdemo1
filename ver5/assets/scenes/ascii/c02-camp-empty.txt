@@ -20,5 +20,5 @@ in2 의병#1  (light_infantry, off stage, enters later (cell -5 9))
 # c02-e4: Gua -> -2 11
 # c02-e4: Liu -> -1 12
 # c02-e4: in2 -> -5 9
-# c02-end: Cao -> 3 -18 and leaves
-# c02-end: XHD -> 4 -18 and leaves
+# c02-e9: Cao -> 3 -18 and leaves
+# c02-e9: XHD -> 4 -18 and leaves
