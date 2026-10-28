@@ -26,23 +26,23 @@ func TestTopmostLayerThatSaysAValueWins(t *testing.T) {
 	d := loadReal(t)
 	foot := d.Classes[d.Characters[d.Campaign.Roster[0]].Class].Terrain
 	cav := d.Classes["light_cavalry"].Terrain
-	assert.Equal(t, Terrain{Factor: 1.1, Cost: 1}, d.Move(cav, cell("g--")), "grass")
-	assert.Equal(t, Terrain{Factor: 0.9, Cost: 2}, d.Move(cav, cell("d--")), "wasteland")
-	assert.Equal(t, Terrain{Factor: 1.1, Cost: 1}, d.Move(cav, cell("dv-")), "a village says its own cost over the wasteland's")
-	assert.Equal(t, Terrain{Factor: 0.8, Cost: 2}, d.Move(cav, cell("gt-")), "a tree on grass")
-	assert.Zero(t, d.Move(foot, cell("w--")).Cost, "water")
-	assert.Positive(t, d.Move(foot, cell("wb-")).Cost, "a bridge over water can be crossed")
-	assert.Zero(t, d.Move(foot, cell("c--")).Cost, "a wall")
+	assert.Equal(t, Terrain{Factor: 1.1, Cost: 1}, d.Move(cav, cell("g--"), false), "grass")
+	assert.Equal(t, Terrain{Factor: 0.9, Cost: 2}, d.Move(cav, cell("d--"), false), "wasteland")
+	assert.Equal(t, Terrain{Factor: 1.1, Cost: 1}, d.Move(cav, cell("dv-"), false), "a village says its own cost over the wasteland's")
+	assert.Equal(t, Terrain{Factor: 0.8, Cost: 2}, d.Move(cav, cell("gt-"), false), "a tree on grass")
+	assert.Zero(t, d.Move(foot, cell("w--"), false).Cost, "water")
+	assert.Positive(t, d.Move(foot, cell("wb-"), false).Cost, "a bridge over water can be crossed")
+	assert.Zero(t, d.Move(foot, cell("c--"), false).Cost, "a wall")
 }
 
 func TestStatesOverlayTheLayersBelow(t *testing.T) {
 	d := loadReal(t)
 	cav := d.Classes["light_cavalry"].Terrain
-	assert.Equal(t, Terrain{Factor: 0.8, Cost: 2}, d.Move(cav, cell("gte")), "embers: 80%, the tree's cost stays")
-	assert.Equal(t, Terrain{Factor: 0.8, Cost: 1}, d.Move(cav, cell("g-e")), "embers on grass")
-	assert.Zero(t, d.Move(cav, cell("g-F")).Cost, "flames cannot be entered")
-	assert.Zero(t, d.Move(cav, cell("gvF")).Cost, "not even over a village")
-	assert.Equal(t, d.Move(cav, cell("gt-")), d.Move(cav, cell("gts")), "soot changes nothing")
+	assert.Equal(t, Terrain{Factor: 0.8, Cost: 2}, d.Move(cav, cell("gte"), false), "embers: 80%, the tree's cost stays")
+	assert.Equal(t, Terrain{Factor: 0.8, Cost: 1}, d.Move(cav, cell("g-e"), false), "embers on grass")
+	assert.Zero(t, d.Move(cav, cell("g-F"), false).Cost, "flames cannot be entered")
+	assert.Zero(t, d.Move(cav, cell("gvF"), false).Cost, "not even over a village")
+	assert.Equal(t, d.Move(cav, cell("gt-"), false), d.Move(cav, cell("gts"), false), "soot changes nothing")
 	assert.Equal(t, d.Props(cell("gv-")), d.Props(cell("gvs")), "soot changes nothing")
 }
 
@@ -96,12 +96,36 @@ func TestGatesFencesAndBrokenBridgesBlockTheWay(t *testing.T) {
 	foot := d.Classes[d.Characters[d.Campaign.Roster[0]].Class].Terrain
 	cav := d.Classes["light_cavalry"].Terrain
 	for _, g := range []string{foot, cav} {
-		assert.Zero(t, d.Move(g, cell("m--")).Cost, "a gate wall")
-		assert.Zero(t, d.Move(g, cell("gz-")).Cost, "a fence")
-		assert.Zero(t, d.Move(g, cell("wbx")).Cost, "a broken bridge")
-		assert.Positive(t, d.Move(g, cell("wb-")).Cost, "a whole bridge")
-		assert.Positive(t, d.Move(g, cell("wbd")).Cost, "a damaged bridge can still be crossed")
+		assert.Zero(t, d.Move(g, cell("m--"), false).Cost, "a gate wall")
+		assert.Zero(t, d.Move(g, cell("gz-"), false).Cost, "a fence")
+		assert.Zero(t, d.Move(g, cell("wbx"), false).Cost, "a broken bridge")
+		assert.Positive(t, d.Move(g, cell("wb-"), false).Cost, "a whole bridge")
+		assert.Positive(t, d.Move(g, cell("wbd"), false).Cost, "a damaged bridge can still be crossed")
 	}
-	assert.Equal(t, 2, d.Move(foot, cell("wbd")).Cost, "...slowly")
+	assert.Equal(t, 2, d.Move(foot, cell("wbd"), false).Cost, "...slowly")
 	assert.True(t, d.Props(cell("wbx")).Water, "a broken bridge lies over water")
+}
+
+func TestBoatsOpenTheWater(t *testing.T) {
+	d := loadReal(t)
+	t.Run("without boats water stops everyone", func(t *testing.T) {
+		for group := range d.Terrain {
+			assert.Zero(t, d.Move(group, cell("w--"), false).Cost, group)
+		}
+	})
+	t.Run("with boats foot soldiers are at home, horses slow, machines stay ashore", func(t *testing.T) {
+		assert.Equal(t, Terrain{Factor: 1.1, Cost: 1}, d.Move("infantry", cell("w--"), true))
+		assert.Equal(t, Terrain{Factor: 1.1, Cost: 1}, d.Move("bandit", cell("w--"), true))
+		assert.Equal(t, Terrain{Factor: 1, Cost: 1}, d.Move("archer", cell("w--"), true))
+		assert.Equal(t, Terrain{Factor: 1, Cost: 1}, d.Move("scholar", cell("w--"), true))
+		assert.Equal(t, Terrain{Factor: 0.9, Cost: 2}, d.Move("cavalry", cell("w--"), true))
+		assert.Zero(t, d.Move("machine", cell("w--"), true).Cost)
+	})
+	t.Run("bridges and their states still lie over the boat rule", func(t *testing.T) {
+		assert.Equal(t, d.Move("cavalry", cell("wb-"), false), d.Move("cavalry", cell("wb-"), true))
+		assert.Zero(t, d.Move("infantry", cell("wbx"), true).Cost, "a broken bridge still blocks the way")
+	})
+	t.Run("land is unchanged", func(t *testing.T) {
+		assert.Equal(t, d.Move("cavalry", cell("g--"), false), d.Move("cavalry", cell("g--"), true))
+	})
 }

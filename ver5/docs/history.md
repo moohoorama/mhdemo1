@@ -5,6 +5,20 @@
 
 ---
 
+## 2026-10-28 수전: 낮은 물과 배
+
+- 결정: 전투맵의 물은 한 종류로, 수면을 땅보다 9px 낮게 그리고 좌상·우상 강둑에 흙 절벽을 세운다. 스테이지의 `Boats`가 물을 진입 불가로 둘지 배로 건널지 정하고, 배 전투의 물 칸은 보병류 우대(보병·적병 1·1.1, 궁병·서생 1·1.0, 기병 2·0.9, 병기 불가). 기병은 말 탄 채 긴 배에 탄다. 배는 들린 배 · 이유: 사용자가 시안(https://claude.ai/artifact/NwKVGU8HAq8mZP5UFovE36)을 보고 "느낌 되게 좋다", 얕은물·깊은물 구분 대신 "물은 이것으로 고정", "전투에 설정이 있어서 ... 둘 중 하나만", 배 밑 점선 물결 대신 기존 그림자 생성기로 · 영향받는 문서: plan-naval-water.md(새 문서), data-scenario-node.md, data-map.md, logic-combat.md
+- `internal/content/terrain.go`·`content.go`: `Stage.Boats`, `Data.Boats`(병종군 → 물 땅 → 규칙), `Move(group, cell, boats)`가 배 전투에서 `Boats` 규칙을 땅 바로 위 층으로 덧씌움(다리·상태는 그 위라 부서진 다리는 그대로 막힘), `validateTerrain`이 `Boats`의 병종군·물 땅을 검사 — 스테이지 하나의 설정으로 물의 쓰임을 바꾸려고
+- `assets/data/terrain.json`: `Boats` 표
+- `internal/core/rules.go`·`battle_events.go`·`api.go`, `internal/content/map_document.go`, `internal/gui/editor.go`·`hud.go`: `Move` 호출처에 배 여부를 넘김(`Engine.Boats()`), 저장 검사가 배 전투에서는 물 위 유닛을 허용, `waterNear`가 자기 칸도 봄(배 위에서 물 병법) — 배 전투에서 물 위에 설 수 있게
+- `internal/gui/field_water.go`(새 파일): `makeBanks`(물 작은 칸의 NW·NE 변에 땅 이웃이면 강둑 면, 그 쪽 아래 변의 이웃도 땅이면 잘린 면, SE·SW 변에 1px 선), `boat`·`pose`·`drawAfloat`(물 위 유닛을 배 → 병사(걷기 대신 대기 프레임) → 앞 뱃전으로 조립해 출렁이고, 앞쪽 땅 칸의 발자국으로 지운 뒤 캔버스에) — 물을 실제로 내리지 않고 낮아 보이게: 물 텍스처가 이음새 없이 반복되므로 강둑 면만 덮으면 됨
+- `internal/gui/field.go`·`field_native.go`·`field_render.go`·`assets.go`·`player.go`·`view.go`: `MapArt.SunkWater`(전투맵만), 물 칸 `Lift` −9(유닛·바·효과가 따라 내려옴), 하이라이트는 땅 높이, 낮은 물에서는 물가 블렌드를 그리지 않음, 강둑을 물 장식 다음에 그림, 배 그림자(배 소품 그림자 + 대기 프레임 그림자), `unitVis.mounted`·`boatAxis`
+- `internal/gui/uidemo_naval.go`(새 파일): `-ui naval` — 가장 큰 맵에 강을 칠하고 `Boats`를 켜, 물 위 아군과 강을 건너는 AI를 보임
+- `../tools/unit3d/boats3d.py`(새 파일): 들린 배 3D 모델(뱃전이 양 끝으로 휘어 오르고 이물·고물 기둥), 보병용 `boat_{u,v}`·기병용 `boat_l_{u,v}`와 앞 뱃전 `_rim`(그림자 없음), `--review`
+- `../assets_candidate/tools/gen_banks.py`(새 파일): 강둑 면 `bank_{nw,ne}_{grass,soil}[_cut]`(9px 흙 절벽, 풀·흙 테두리, 발치 물거품)과 `bank_line_{se,sw}`, `--review`
+- `../assets_candidate/tiles/boat*.png`·`bank_*.png`, `tiles.json`, `assets/graphics/map/extra.png`·`index.json`(extra): 위 그림, `build_extra.py`로 다시 묶음
+- `internal/content/terrain_test.go`: 배 전투 규칙 시험, 다른 `Move` 시험은 배 없음으로
+
 ## 2026-10-27 맵 바깥 테두리와 미니맵을 벡터 경로 대신 이미지로
 
 - `internal/gui/field_outside.go`: 바깥 풀밭·장식·안개·비네트를 화면 크기 이미지 하나에 모아 전투 영역을 삼각형 두 개(`cutBattleArea`)로 한 번 오려 내고 한 번 합성함. 안개와 비네트는 맵 중심에서의 거리만으로 정해지므로 둘을 겹친 색을 텍스처 하나(`hazeTexture`)에 미리 구움. 경계의 어두운 그림자와 깜빡이는 테두리 선은 1픽셀 폭 세로 띠 이미지(`dropBand`, `rimBand`)를 네 변의 사각형에 늘려 찍고, 이웃한 변은 모서리 이등분선에서 만나 겹치지 않게 함(`drawBorder`). 띠 두께는 찍을 때 확대 배율에 맞추므로 ×4에서도 선명함 — 매 프레임 안티에일리어싱 경로 7개(오려 내기 3·선 4)와 화면 전체 합성 3번이 들던 것을 경로 0·합성 1로. 월드 크기로 미리 굽는 안은 확대하면 선이 계단지고 배율마다 구우면 메모리가 커서 쓰지 않음. 비교 페이지: https://claude.ai/artifact/26wMvxb3wVzYZyzaoECgEC

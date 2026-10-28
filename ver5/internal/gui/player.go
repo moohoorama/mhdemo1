@@ -58,7 +58,9 @@ type unitVis struct {
 	ranged       bool
 	shoot        *sprite.Art // the look it shoots from range in (mounted_range), nil when it has none
 	shootClass   string
-	siege        bool // attacks are stones lobbed along an arc
+	siege        bool   // attacks are stones lobbed along an arc
+	mounted      bool   // rides a horse: takes the long boat on water
+	boatAxis     string // "u" or "v": how its boat lies, kept while it faces straight N, E, S or W
 	inactive     bool
 	actor        bool   // a scene actor: no HP bar, rests standing or in its pose
 	pose         string // a scene actor's resting motion (sit, lie …); "" stands

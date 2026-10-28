@@ -78,7 +78,7 @@ func (g *Game) editorOpen(index int) {
 }
 func artFromDocument(d *mapedit.Document, data *content.Data) *MapArt {
 	a := d.Graphics(data)
-	m := &MapArt{ID: a.ID, Name: a.Name, W: a.Size[0], H: a.Size[1], Tiles: a.Tiles, Bounds: image.Rect(a.Bounds[0], a.Bounds[1], a.Bounds[2], a.Bounds[3]), Native: true, Deformed: true, Visual: a.Visual, SmallTiles: a.SmallTiles}
+	m := &MapArt{ID: a.ID, Name: a.Name, W: a.Size[0], H: a.Size[1], Tiles: a.Tiles, Bounds: image.Rect(a.Bounds[0], a.Bounds[1], a.Bounds[2], a.Bounds[3]), Native: true, Deformed: true, SunkWater: true, Visual: a.Visual, SmallTiles: a.SmallTiles}
 	num := func(v any) float64 {
 		switch n := v.(type) {
 		case int:
@@ -462,7 +462,7 @@ func (g *Game) editorStamp(p image.Point, erase bool) {
 			usable := false
 			for _, id := range g.S.Data.Campaign.Roster {
 				class := g.S.Data.Classes[g.S.Data.Characters[id].Class]
-				usable = usable || g.S.Data.Move(class.Terrain, d.Cell(x, y)).Cost > 0
+				usable = usable || g.S.Data.Move(class.Terrain, d.Cell(x, y), d.Stage.Boats).Cost > 0
 			}
 			if !usable {
 				e.message = "아군이 배치할 수 없는 지형입니다"

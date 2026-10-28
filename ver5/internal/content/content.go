@@ -404,6 +404,7 @@ type Stage struct {
 	Faction            string  `json:",omitempty"` // color of this stage's enemies without a faction of their own
 	Forced             bool    `json:",omitempty"` // the officers sortie straight onto the Allies cells in order: no deployment screen
 	Night              bool    `json:",omitempty"` // the battle is drawn at night, lit only round fires and Lights
+	Boats              bool    `json:",omitempty"` // water is crossed in boats (terrain.json Boats); without it water stops every unit
 	Lights             []Point `json:",omitempty"` // cells that light the night around them (torches)
 	Armies             []Army  `json:",omitempty"` // the stage's armies in turn order; colors not listed follow in order of appearance
 }
@@ -461,6 +462,7 @@ type Data struct {
 	Structures     map[string]Structure
 	States         map[string]State
 	Terrain        map[string]TerrainSet
+	Boats          map[string]map[string]TerrainRule `json:",omitempty"` // movement group -> water ground -> its rule on a stage with boats
 	Classes        map[string]Class
 	Characters     map[string]Character
 	Equipment      map[string]Equipment

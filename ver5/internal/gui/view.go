@@ -332,6 +332,7 @@ func (g *Game) syncUnit(u core.UnitView, o core.Observation) {
 		}
 	}
 	v.siege = slices.Contains(g.S.Data.Classes[u.Class].Tags, content.TagSiege)
+	v.mounted = slices.Contains(g.S.Data.Classes[u.Class].Tags, content.TagMounted)
 	v.gone = u.HP <= 0
 	if !v.gone {
 		v.dying, v.leave = -1, nil

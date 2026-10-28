@@ -201,6 +201,8 @@ func (f *Field) drawNativeWater(dst *ebiten.Image, ms float64) {
 		for _, id := range t.Layers {
 			if id == 0 {
 				id = frame
+			} else if f.Map.SunkWater {
+				continue // no shore blend: the banks (makeBanks) part water from land
 			}
 			f.blitMap(dst, f.A.Tiles[id], f.OriginX+float64(t.X), f.OriginY+float64(t.Y), nil)
 		}

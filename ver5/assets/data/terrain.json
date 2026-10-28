@@ -474,5 +474,37 @@
     }
    }
   }
+ },
+ "Boats": {
+  "infantry": {
+   "w": {
+    "Factor": 1.1,
+    "Cost": 1
+   }
+  },
+  "bandit": {
+   "w": {
+    "Factor": 1.1,
+    "Cost": 1
+   }
+  },
+  "archer": {
+   "w": {
+    "Factor": 1,
+    "Cost": 1
+   }
+  },
+  "scholar": {
+   "w": {
+    "Factor": 1,
+    "Cost": 1
+   }
+  },
+  "cavalry": {
+   "w": {
+    "Factor": 0.9,
+    "Cost": 2
+   }
+  }
  }
 }

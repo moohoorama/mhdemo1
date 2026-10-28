@@ -77,14 +77,19 @@ type CellProps struct {
 	Water, Ambush, Castle bool
 }
 
-// Move is what the group pays and gets on the cell: the topmost layer that says a value wins.
-func (d *Data) Move(group string, c Cell) Terrain {
+// Move is what the group pays and gets on the cell: the topmost layer that says a value wins. On a stage
+// with boats the group's Boats rule for the ground lies just over the ground, under structures and states.
+func (d *Data) Move(group string, c Cell, boats bool) Terrain {
 	set := d.Terrain[group]
 	var t Terrain
+	var afloat map[string]TerrainRule
+	if boats {
+		afloat = d.Boats[group]
+	}
 	layers := []struct {
 		rules map[string]TerrainRule
 		glyph byte
-	}{{set.Ground, c.Ground}, {set.Structure, c.Structure}, {set.State, c.State}}
+	}{{set.Ground, c.Ground}, {afloat, c.Ground}, {set.Structure, c.Structure}, {set.State, c.State}}
 	for _, l := range layers {
 		r, ok := l.rules[string(l.glyph)]
 		if !ok {
@@ -234,6 +239,16 @@ func (d *Data) validateTerrain() string {
 		for k := range set.State {
 			if _, ok := d.States[k]; !ok {
 				return "terrain " + group + ": unknown state " + k
+			}
+		}
+	}
+	for group, rules := range d.Boats {
+		if _, ok := d.Terrain[group]; !ok {
+			return "boats: unknown movement group " + group
+		}
+		for k := range rules {
+			if !d.Grounds[k].Water {
+				return "boats " + group + ": " + k + " is not water"
 			}
 		}
 	}

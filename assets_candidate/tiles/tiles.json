@@ -6881,6 +6881,244 @@
    "layer": "object",
    "scale": "scene",
    "made": "pixel art drawn on the small-tile grid (gen_pixel_castle.py)"
+  },
+  "bank_nw_grass": {
+   "file": "tiles/bank_nw_grass.png",
+   "size": [
+    16,
+    19
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "note": "battle-map water banks (gen_banks.py)"
+  },
+  "bank_nw_grass_cut": {
+   "file": "tiles/bank_nw_grass_cut.png",
+   "size": [
+    16,
+    19
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "note": "battle-map water banks (gen_banks.py)"
+  },
+  "bank_nw_soil": {
+   "file": "tiles/bank_nw_soil.png",
+   "size": [
+    16,
+    19
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "note": "battle-map water banks (gen_banks.py)"
+  },
+  "bank_nw_soil_cut": {
+   "file": "tiles/bank_nw_soil_cut.png",
+   "size": [
+    16,
+    19
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "note": "battle-map water banks (gen_banks.py)"
+  },
+  "bank_ne_grass": {
+   "file": "tiles/bank_ne_grass.png",
+   "size": [
+    16,
+    19
+   ],
+   "pivot": [
+    0,
+    8
+   ],
+   "layer": "ground",
+   "note": "battle-map water banks (gen_banks.py)"
+  },
+  "bank_ne_grass_cut": {
+   "file": "tiles/bank_ne_grass_cut.png",
+   "size": [
+    16,
+    19
+   ],
+   "pivot": [
+    0,
+    8
+   ],
+   "layer": "ground",
+   "note": "battle-map water banks (gen_banks.py)"
+  },
+  "bank_ne_soil": {
+   "file": "tiles/bank_ne_soil.png",
+   "size": [
+    16,
+    19
+   ],
+   "pivot": [
+    0,
+    8
+   ],
+   "layer": "ground",
+   "note": "battle-map water banks (gen_banks.py)"
+  },
+  "bank_ne_soil_cut": {
+   "file": "tiles/bank_ne_soil_cut.png",
+   "size": [
+    16,
+    19
+   ],
+   "pivot": [
+    0,
+    8
+   ],
+   "layer": "ground",
+   "note": "battle-map water banks (gen_banks.py)"
+  },
+  "bank_line_se": {
+   "file": "tiles/bank_line_se.png",
+   "size": [
+    16,
+    9
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "ground",
+   "note": "battle-map water banks (gen_banks.py)"
+  },
+  "bank_line_sw": {
+   "file": "tiles/bank_line_sw.png",
+   "size": [
+    16,
+    9
+   ],
+   "pivot": [
+    16,
+    0
+   ],
+   "layer": "ground",
+   "note": "battle-map water banks (gen_banks.py)"
+  },
+  "boat_u": {
+   "file": "tiles/boat_u.png",
+   "size": [
+    54,
+    36
+   ],
+   "pivot": [
+    28,
+    26
+   ],
+   "layer": "object",
+   "note": "battle-map boat (tools/unit3d/boats3d.py)"
+  },
+  "boat_u_rim": {
+   "file": "tiles/boat_u_rim.png",
+   "size": [
+    54,
+    36
+   ],
+   "pivot": [
+    28,
+    26
+   ],
+   "layer": "object",
+   "shadow": false,
+   "note": "battle-map boat (tools/unit3d/boats3d.py)"
+  },
+  "boat_v": {
+   "file": "tiles/boat_v.png",
+   "size": [
+    54,
+    36
+   ],
+   "pivot": [
+    27,
+    26
+   ],
+   "layer": "object",
+   "note": "battle-map boat (tools/unit3d/boats3d.py)"
+  },
+  "boat_v_rim": {
+   "file": "tiles/boat_v_rim.png",
+   "size": [
+    54,
+    36
+   ],
+   "pivot": [
+    27,
+    26
+   ],
+   "layer": "object",
+   "shadow": false,
+   "note": "battle-map boat (tools/unit3d/boats3d.py)"
+  },
+  "boat_l_u": {
+   "file": "tiles/boat_l_u.png",
+   "size": [
+    65,
+    41
+   ],
+   "pivot": [
+    33,
+    28
+   ],
+   "layer": "object",
+   "note": "battle-map boat (tools/unit3d/boats3d.py)"
+  },
+  "boat_l_u_rim": {
+   "file": "tiles/boat_l_u_rim.png",
+   "size": [
+    65,
+    41
+   ],
+   "pivot": [
+    33,
+    28
+   ],
+   "layer": "object",
+   "shadow": false,
+   "note": "battle-map boat (tools/unit3d/boats3d.py)"
+  },
+  "boat_l_v": {
+   "file": "tiles/boat_l_v.png",
+   "size": [
+    65,
+    41
+   ],
+   "pivot": [
+    33,
+    28
+   ],
+   "layer": "object",
+   "note": "battle-map boat (tools/unit3d/boats3d.py)"
+  },
+  "boat_l_v_rim": {
+   "file": "tiles/boat_l_v_rim.png",
+   "size": [
+    65,
+    41
+   ],
+   "pivot": [
+    33,
+    28
+   ],
+   "layer": "object",
+   "shadow": false,
+   "note": "battle-map boat (tools/unit3d/boats3d.py)"
   }
  }
 }

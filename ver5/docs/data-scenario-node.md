@@ -95,6 +95,7 @@ assets/scenario/
 | `Faction` | 자기 `Faction`이 없는 적 스폰의 진영색. `Factions`에 있어야 한다. |
 | `Forced` | 참이면 강제 출전이다. 출전하면 배치 화면 없이 출전 명단을 `Allies` 칸에 놓고 곧바로 전투가 시작된다([logic-campaign.md](logic-campaign.md) 4절). |
 | `Night` | 참이면 밤 전투로 그린다(그림만, 규칙에는 영향 없음, [presentation-ui.md](presentation-ui.md)의 밤). |
+| `Boats` | 참이면 물을 배로 건너는 전투다. 물 칸의 비용·배율은 `terrain.json`의 `Boats` 표(병종군별)가 땅 바로 위에 덧씌우고, 물 위 병력은 배에 탄 모습으로 그린다. 없으면 물은 모두에게 진입 불가([logic-combat.md](logic-combat.md) 지형). |
 | `Lights` | 밤에 둘레를 밝히는 칸 `{X, Y}`(횃불) 목록(선택). 영역 안이어야 한다. |
 | `Armies` | 진영 목록(선택): `{Faction, Name, Ally}`. `Faction`은 진영색 ID, `Name`은 화면에 보이는 이름(유비군·조조군·황건군), `Ally`는 플레이어 편인지. 목록 순서가 AI 진영의 차례 순서다. 플레이어 편 진영의 색을 입은 적 유닛이 있으면 로드 오류. |
 

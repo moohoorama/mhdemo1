@@ -105,7 +105,7 @@ func TestTerrainWithoutUnitDoesNotClaimBlocked(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, cell := range []content.Cell{{Ground: 'g', Structure: content.NoLayer, State: content.NoLayer}, {Ground: 'w', Structure: content.NoLayer, State: content.NoLayer}, {Ground: 'i', Structure: 'p', State: content.NoLayer}, {Ground: 'g', Structure: 't', State: 'F'}} {
-		text := strings.Join(terrainInfoLines(d, cell, "", ""), " ")
+		text := strings.Join(terrainInfoLines(d, cell, false, "", ""), " ")
 		if strings.Contains(text, "진입 불가") || regexp.MustCompile(`(^|[^0-9])0%`).MatchString(text) {
 			t.Fatal(text)
 		}
@@ -119,19 +119,19 @@ func TestTerrainRecoverySeparatesHPAndMP(t *testing.T) {
 	}
 	for _, family := range []string{"", d.Classes[d.Characters[d.Campaign.Roster[0]].Class].Terrain} {
 		t.Run(family, func(t *testing.T) {
-			lines := strings.Join(terrainInfoLines(d, content.Cell{Ground: 'i', Structure: content.NoLayer, State: content.NoLayer}, family, "보병"), "\n")
+			lines := strings.Join(terrainInfoLines(d, content.Cell{Ground: 'i', Structure: content.NoLayer, State: content.NoLayer}, false, family, "보병"), "\n")
 			if !strings.Contains(lines, "지형 회복 효과 없음") {
 				t.Fatal(lines)
 			}
-			lines = strings.Join(terrainInfoLines(d, content.Cell{Ground: 'g', Structure: 'v', State: content.NoLayer}, family, "보병"), "\n")
+			lines = strings.Join(terrainInfoLines(d, content.Cell{Ground: 'g', Structure: 'v', State: content.NoLayer}, false, family, "보병"), "\n")
 			if !strings.Contains(lines, "병력 회복 +10%") || !strings.Contains(lines, "병법치 회복 ×2") {
 				t.Fatal(lines)
 			}
-			lines = strings.Join(terrainInfoLines(d, content.Cell{Ground: 'g', Structure: 'o', State: content.NoLayer}, family, "보병"), "\n")
+			lines = strings.Join(terrainInfoLines(d, content.Cell{Ground: 'g', Structure: 'o', State: content.NoLayer}, false, family, "보병"), "\n")
 			if !strings.Contains(lines, "병력 회복 +20%") || !strings.Contains(lines, "병법치 회복 ×3") {
 				t.Fatal(lines)
 			}
-			lines = strings.Join(terrainInfoLines(d, content.Cell{Ground: 'g', Structure: 'v', State: 'e'}, family, "보병"), "\n")
+			lines = strings.Join(terrainInfoLines(d, content.Cell{Ground: 'g', Structure: 'v', State: 'e'}, false, family, "보병"), "\n")
 			if !strings.Contains(lines, "차례 시작 병력 -20%") || strings.Contains(lines, "병력 회복 +") {
 				t.Fatal("embers on a village:", lines)
 			}

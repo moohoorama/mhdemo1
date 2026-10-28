@@ -16,7 +16,7 @@ func TestForestStepCost(t *testing.T) {
 		if slices.Contains(c.Tags, "mounted") || slices.Contains(c.Tags, "siege") {
 			want = 2
 		}
-		if got := d.Move(c.Terrain, Cell{Ground: 'g', Structure: 't', State: NoLayer}).Cost; got != want {
+		if got := d.Move(c.Terrain, Cell{Ground: 'g', Structure: 't', State: NoLayer}, false).Cost; got != want {
 			t.Errorf("%s pays %d to enter a forest, want %d", id, got, want)
 		}
 	}

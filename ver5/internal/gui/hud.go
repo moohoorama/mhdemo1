@@ -197,7 +197,7 @@ func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
 		family, class = c.Terrain, c.Name
 	}
 	cell := g.engine().Cell(g.hover.x, g.hover.y)
-	lines := terrainInfoLines(g.S.Data, cell, family, class)
+	lines := terrainInfoLines(g.S.Data, cell, g.engine().Boats(), family, class)
 	w, uh := 226, 0
 	if u != nil {
 		uh = 74
@@ -675,13 +675,13 @@ func (g *Game) unitRecovery(id string, revision uint64) core.RecoveryPreview {
 	return g.recovery
 }
 
-func terrainInfoLines(data *content.Data, cell content.Cell, family, class string) []string {
+func terrainInfoLines(data *content.Data, cell content.Cell, boats bool, family, class string) []string {
 	d := data.Props(cell)
 	var lines []string
 	if family == "" {
 		lines = []string{"이동·보정: 유닛 선택 시 표시"}
 	} else {
-		t := data.Move(family, cell)
+		t := data.Move(family, cell, boats)
 		move := "진입 불가"
 		if t.Cost > 0 {
 			move = fmt.Sprintf("이동 비용 %d", t.Cost)

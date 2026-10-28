@@ -363,7 +363,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 		if u.Facing != "" && !contains([]string{"N", "NE", "E", "SE", "S", "SW", "W", "NW"}, u.Facing) {
 			return nil, fail("CorruptSave")
 		}
-		if ids[u.ID] || u.ID != u.Character || !seen[u.Character] || u.Status == nil || u.Items == nil || !contains([]string{"ally", "enemy"}, u.Faction) || u.Faction == "ally" && !deploy[u.ID] && fixed[u.ID] != "ally" || u.X < 0 || u.Y < 0 || u.X >= stage.Width || u.Y >= stage.Height || e.openWater(u.X, u.Y) {
+		if ids[u.ID] || u.ID != u.Character || !seen[u.Character] || u.Status == nil || u.Items == nil || !contains([]string{"ally", "enemy"}, u.Faction) || u.Faction == "ally" && !deploy[u.ID] && fixed[u.ID] != "ally" || u.X < 0 || u.Y < 0 || u.X >= stage.Width || u.Y >= stage.Height || !stage.Boats && e.openWater(u.X, u.Y) {
 			return nil, fail("CorruptSave")
 		}
 		ids[u.ID] = true

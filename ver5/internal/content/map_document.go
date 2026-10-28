@@ -229,7 +229,7 @@ func (d *MapDocument) Validate(data *Data) error {
 		usable := false
 		for _, id := range data.Campaign.Roster {
 			class := data.Classes[data.Characters[id].Class]
-			usable = usable || data.Move(class.Terrain, st.Cell(p.X, p.Y)).Cost > 0
+			usable = usable || data.Move(class.Terrain, st.Cell(p.X, p.Y), st.Boats).Cost > 0
 		}
 		if !usable {
 			return fmt.Errorf("아군이 배치할 수 없는 지형 (%d,%d)", p.X, p.Y)

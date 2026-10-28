@@ -174,7 +174,7 @@ func (e *Engine) placeSpawns(stage content.Stage, spawns []content.Spawn) ([]con
 		for y := 0; y < stage.Height; y++ {
 			for x := 0; x < stage.Width; x++ {
 				p := content.Point{X: x, Y: y}
-				if reserved[p] || e.occupied(x, y) != nil || e.data.Move(e.data.Classes[class].Terrain, e.Cell(x, y)).Cost <= 0 {
+				if reserved[p] || e.occupied(x, y) != nil || e.data.Move(e.data.Classes[class].Terrain, e.Cell(x, y), e.Boats()).Cost <= 0 {
 					continue
 				}
 				if n := dist(x, y, sp.X, sp.Y); n < score {

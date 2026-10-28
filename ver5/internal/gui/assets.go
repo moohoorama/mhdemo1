@@ -107,6 +107,7 @@ type MapArt struct {
 	SmallSnap   bool
 	CliffRepeat bool
 	Deformed    bool // battle map: forests drawn as deformed cells, like villages
+	SunkWater   bool // battle map: water lies sunkDepth below the ground behind earth banks (field_water.go)
 	// SceneMap is set for a scene map of format 2, drawn by internal/scenemap's rules (field_scene.go); the fields
 	// above it are filled from it for the code that reads any map (size, grid, glyphs).
 	SceneMap *scenemap.Map

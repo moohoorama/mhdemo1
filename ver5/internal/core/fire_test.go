@@ -40,9 +40,9 @@ func TestFireStatesAreInTheData(t *testing.T) {
 		require.NotNil(t, d.States["e"].RestHP, dir)
 		assert.Equal(t, -20, *d.States["e"].RestHP, dir)
 		for family := range d.Terrain {
-			embers := d.Move(family, content.Cell{Ground: 'g', Structure: content.NoLayer, State: 'e'})
+			embers := d.Move(family, content.Cell{Ground: 'g', Structure: content.NoLayer, State: 'e'}, false)
 			assert.Equal(t, content.Terrain{Factor: .8, Cost: 1}, embers, family+" embers on grass: every class at 80%")
-			assert.Zero(t, d.Move(family, content.Cell{Ground: 'g', Structure: content.NoLayer, State: 'F'}).Cost, family+": flames cannot be entered")
+			assert.Zero(t, d.Move(family, content.Cell{Ground: 'g', Structure: content.NoLayer, State: 'F'}, false).Cost, family+": flames cannot be entered")
 		}
 	}
 }
@@ -198,5 +198,5 @@ func TestBridgeStatesLieOnlyOverBridges(t *testing.T) {
 	e.changeTerrain(stage, content.Action{Kind: "terrain", Area: 1, State: "x"})
 	assert.Equal(t, byte('x'), e.Cell(3, 3).State, "the bridge breaks")
 	assert.Equal(t, byte(content.NoLayer), e.Cell(4, 3).State, "the grass beside it is not a bridge")
-	assert.Zero(t, e.data.Move(e.unitClass(e.unit("hero")).Terrain, e.Cell(3, 3)).Cost, "a broken bridge cannot be crossed")
+	assert.Zero(t, e.data.Move(e.unitClass(e.unit("hero")).Terrain, e.Cell(3, 3), false).Cost, "a broken bridge cannot be crossed")
 }

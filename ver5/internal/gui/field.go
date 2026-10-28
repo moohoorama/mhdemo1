@@ -53,7 +53,9 @@ type Field struct {
 	treeShadow                   *ebiten.Image          // tree shadows while the field is built, then folded into decor
 	cliffTop                     *ebiten.Image          // baked decoration of the cliff tops, drawn with each cliff block
 	waterFX                      []scenemap.Ripple
-	scenePieces                  []scenePiece // a format 2 scene map's standing layer, see makeScenePlan
+	banks                        []drawItem    // a battle map's water banks, see makeBanks
+	afloat                       *ebiten.Image // viewport scratch where a boat and its crew are put together
+	scenePieces                  []scenePiece  // a format 2 scene map's standing layer, see makeScenePlan
 	clockMS                      float64
 
 	// beatShadows are the ground shadows of the props a story scene's beats put down (canvas point, shadow):
@@ -129,6 +131,7 @@ func NewField(a *Assets, m *MapArt) *Field {
 	f.makeHighlandCeiling()
 	if m.Native {
 		f.makeNativeFloors()
+		f.makeBanks()
 		f.makeExterior()
 		f.makeOutside()
 		if a.Scenery != nil {
@@ -319,6 +322,8 @@ func (f *Field) Tile(u, v int) byte {
 func (f *Field) Lift(u, v int) float64 {
 	if t := f.Tile(u, v); t == 'c' || t == 'm' && f.look(u, v) != "open" {
 		return float64(f.A.Rise) * f.artScale()
+	} else if t == '~' && f.Map.SunkWater {
+		return -sunkDepth
 	}
 	return 0
 }
@@ -426,6 +431,11 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			f.drawBaked(c, f.decor)
 			f.drawWaterFX()
 		}
+		for _, it := range f.banks {
+			if f.DrawBounds.Empty() || it.rect.Overlaps(f.DrawBounds) {
+				it.draw()
+			}
+		}
 	}
 	// Shade the out-of-battle ground only; scenery and units are drawn afterward.
 	if f.exterior != nil && !f.ShowExterior {
@@ -448,7 +458,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			paths[m.Color] = p
 			colors = append(colors, m.Color)
 		}
-		f.cellPath(p, m.U, m.V, f.Lift(m.U, m.V))
+		f.cellPath(p, m.U, m.V, max(0, f.Lift(m.U, m.V))) // sunk water: the cell's footprint, where a click lands
 	}
 	for _, col := range colors {
 		op := &vector.DrawPathOptions{}
@@ -551,10 +561,16 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		ground := f.groundLift(u.u, u.v)
 		lift := u.lift + ground
 		if u.visible() {
-			sh := Sprite{u.art.Shadow(u.dir, u.anim, u.frame()), u.art.ShadowPivot[0], u.art.ShadowPivot[1]}
+			anim, frame := f.pose(u)
+			sh := Sprite{u.art.Shadow(u.dir, anim, frame), u.art.ShadowPivot[0], u.art.ShadowPivot[1]}
 			sop := &ebiten.DrawImageOptions{Blend: maxBlend}
 			sop.ColorScale.ScaleAlpha(float32(1 - u.leaving()))
 			f.blit(f.shadows, sh, x, y-lift, sop)
+			if boat, k := f.boat(u); k > 0 {
+				bop := &ebiten.DrawImageOptions{Blend: maxBlend}
+				bop.ColorScale.ScaleAlpha(float32(k * (1 - u.leaving())))
+				f.blit(f.shadows, f.A.Props[boat].Shadow, x, y-lift, bop)
+			}
 		}
 		unit := u
 		b := u.art.Frame(u.dir, u.anim, u.frame()).Bounds()
@@ -705,8 +721,13 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {
 		op.ColorScale.Scale(b, b, b, 1)
 		op.ColorScale.ScaleAlpha(float32(1 - k*k))
 	}
-	s := Sprite{u.art.Frame(u.dir, u.anim, u.frame()), u.art.Pivot[0], u.art.Pivot[1]}
-	f.blit(f.Canvas, s, x, y, op)
+	anim, frame := f.pose(u)
+	s := Sprite{u.art.Frame(u.dir, anim, frame), u.art.Pivot[0], u.art.Pivot[1]}
+	if boat, k := f.boat(u); k > 0 {
+		f.drawAfloat(u, s, boat, k, x, y, op)
+	} else {
+		f.blit(f.Canvas, s, x, y, op)
+	}
 	if u.charge > 0 && !ghost { // gathering a critical blow: a white silhouette fades in over the sprite
 		var cm colorm.ColorM
 		cm.Scale(0, 0, 0, .9*u.charge)

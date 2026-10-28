@@ -90,10 +90,13 @@ func (e *Engine) openWater(x, y int) bool {
 	return c.Structure == content.NoLayer && e.data.Grounds[string(c.Ground)].Water
 }
 
+// Boats reports whether this stage crosses water in boats.
+func (e *Engine) Boats() bool { return e.data.Stages[e.state.Stage].Boats }
+
 // CellProps is what the cell at (x, y) does besides costing steps: recovery, water, ambush, castle.
 func (e *Engine) CellProps(x, y int) content.CellProps { return e.data.Props(e.Cell(x, y)) }
 func (e *Engine) terrain(u *Unit, x, y int) content.Terrain {
-	t := e.data.Move(e.unitClass(u).Terrain, e.Cell(x, y))
+	t := e.data.Move(e.unitClass(u).Terrain, e.Cell(x, y), e.Boats())
 	if e.has(u, content.FxIgnoreMoveCost) && t.Cost > 0 {
 		t.Cost = 1
 	}
@@ -289,9 +292,9 @@ func (e *Engine) inRange(u, v *Unit, s content.Skill) bool {
 	return d >= lo && d <= hi
 }
 
-// waterNear reports whether a water tile touches (x, y).
+// waterNear reports whether (x, y) is water or a water tile touches it (a unit afloat stands on water).
 func (e *Engine) waterNear(x, y int) bool {
-	for _, p := range []content.Point{{X: 1}, {X: -1}, {Y: 1}, {Y: -1}} {
+	for _, p := range []content.Point{{}, {X: 1}, {X: -1}, {Y: 1}, {Y: -1}} {
 		if e.CellProps(x+p.X, y+p.Y).Water {
 			return true
 		}
