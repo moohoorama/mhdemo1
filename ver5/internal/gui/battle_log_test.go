@@ -55,6 +55,26 @@ func TestBattleLogCommand(t *testing.T) {
 	}
 }
 
+func TestUnitArrivalLogNamesTheSide(t *testing.T) {
+	g := logTestGame(t)
+	cases := []struct {
+		name    string
+		faction string
+		want    string
+	}{
+		{"an ally joins", "ally", "조조 동맹군 합류"},
+		{"an enemy appears", "enemy", "조조 등장"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			line, _ := g.eventText(core.Event{Kind: "unit-arrival", Actor: "caocao", Unit: &core.Unit{ID: "caocao", Faction: tc.faction}})
+			if line != tc.want {
+				t.Errorf("got %q, want %q", line, tc.want)
+			}
+		})
+	}
+}
+
 func TestLogWindow(t *testing.T) {
 	for _, tc := range []struct {
 		name         string

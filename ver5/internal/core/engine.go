@@ -375,6 +375,12 @@ func (e *Engine) enter() {
 			}
 			return
 		case "back":
+			if n.Leave {
+				next := e.data.After(e.state.Explore)
+				e.state.Explore, e.state.Spot = "", content.Spot{}
+				e.state.Node = next
+				continue
+			}
 			if n.Area != "" {
 				e.state.Spot = e.data.Explores[e.data.Node(e.state.Explore).Explore].Arrival(n.Area, "")
 				if n.At != nil {

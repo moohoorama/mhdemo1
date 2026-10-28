@@ -436,6 +436,7 @@ type Node struct {
 	Area                                                string  `json:",omitempty"` // back: the area the hero stands in afterwards; where he talked when empty
 	At                                                  *[2]int `json:",omitempty"` // back: his small tile there
 	Face                                                string  `json:",omitempty"` // back: the way he faces there
+	Leave                                               bool    `json:",omitempty"` // back: the walk is over; the story goes on after the explore node
 }
 type EditorChoice struct{ ID, Name string }
 type EditorFamily struct {

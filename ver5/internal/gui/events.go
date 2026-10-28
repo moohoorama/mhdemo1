@@ -20,6 +20,9 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		}
 		return strings.Join(lines, " / "), false
 	case "unit-arrival":
+		if e.Unit != nil && e.Unit.Faction != "ally" {
+			return a + " 등장", false
+		}
 		return a + " 동맹군 합류", false
 	case "retreat-sweep":
 		return a + " 요극 발동", false

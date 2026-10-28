@@ -225,7 +225,7 @@ func (d *Data) validateExplores(nodes map[string]Node) error {
 				}
 			}
 		case "back":
-			if n.Area == "" && (n.At != nil || n.Face != "") || n.Face != "" && !faces[n.Face] {
+			if n.Area == "" && (n.At != nil || n.Face != "") || n.Face != "" && !faces[n.Face] || n.Leave && n.Area != "" {
 				return fmt.Errorf("node %s: back", n.ID)
 			}
 		}
