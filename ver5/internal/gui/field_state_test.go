@@ -34,7 +34,7 @@ func TestMapFXDemoPaintsAValidMapAndTheArtIsLoaded(t *testing.T) {
 		t.Fatal(err)
 	}
 	a := d.g.assets
-	for _, name := range []string{"wall_clean_00", "wall_clean_15", "gatehouse_closed_u", "gatehouse_closed_v", "fence_00", "fence_15", "ash_2_0", "burnt_village", "burnt_camp", "burnt_forest_3", "bridge_u_damaged", "bridge_v_broken"} {
+	for _, name := range []string{"wall_clean_00", "wall_clean_15", "gatehouse_closed_u_0", "gatehouse_closed_v_3", "fence_00", "fence_15", "ash_2_0", "burnt_village", "burnt_camp", "burnt_forest_3", "bridge_u_damaged", "bridge_v_broken"} {
 		if _, ok := a.Props[name]; !ok {
 			t.Errorf("no picture %q", name)
 		}

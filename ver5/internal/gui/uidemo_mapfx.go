@@ -7,8 +7,8 @@ import (
 
 func init() { demos["mapfx"] = demoMapFX }
 
-// demoMapFX paints what the battle map's pictures can show onto the first stage's map and plays it: a gate
-// in the castle wall, a fenced yard, burning and burnt forest, village and ground, flames on a wall, and a
+// demoMapFX paints what the battle map's pictures can show onto the first stage's map and plays it: gates
+// in the castle walls, a fenced yard, burning and burnt forest, village and ground, flames on a wall, and a
 // bridge whole, damaged and broken. The coordinates need a map at least 19×13: a stage whose map is smaller gives
 // way to the largest one.
 func demoMapFX(d *Demo) error {
@@ -20,14 +20,40 @@ func demoMapFX(d *Demo) error {
 			}
 		}
 	}
+	var gates [][2]float64
 	err := d.battleWith(stage, func(doc *mapedit.Document) {
 		data := d.g.S.Data
 		paint := func(x, y int, layer, glyph byte) { doc.Paint(data, x, y, layer, glyph) }
 		const (
 			ground, structure, state = content.LayerGround, content.LayerStructure, content.LayerState
 		)
-		paint(3, 4, ground, 'm') // a gate in the north wall, and one in the west wall
-		paint(1, 7, ground, 'm')
+		// a gate in the middle of a straight wall run along x and one along y, at least two wall cells from a
+		// corner or a gate on each side, so it does not crowd the map's own gates
+		wall := func(x, y int) bool { return doc.Cell(x, y).Ground == 'c' }
+		run := func(x, y, dx, dy int) int {
+			n := 0
+			for wall(x+dx*(n+1), y+dy*(n+1)) {
+				n++
+			}
+			return n
+		}
+		for _, d := range [][2]int{{1, 0}, {0, 1}} {
+			best, at := 1, [2]int{-1, -1}
+			for y := 1; y < doc.Play.H-1; y++ {
+				for x := 1; x < doc.Play.W-1; x++ {
+					if !wall(x, y) || wall(x-d[1], y-d[0]) || wall(x+d[1], y+d[0]) {
+						continue
+					}
+					if n := min(run(x, y, -d[0], -d[1]), run(x, y, d[0], d[1])); n > best {
+						best, at = n, [2]int{x, y}
+					}
+				}
+			}
+			if at[0] >= 0 {
+				paint(at[0], at[1], ground, 'm')
+				gates = append(gates, [2]float64{float64(at[0]), float64(at[1])})
+			}
+		}
 		for x := 8; x <= 13; x++ { // a fenced yard with a gap to the south
 			for y := 6; y <= 11; y++ {
 				if (x == 8 || x == 13 || y == 6 || y == 11) && !(y == 11 && (x == 10 || x == 11)) {
@@ -67,6 +93,9 @@ func demoMapFX(d *Demo) error {
 	// the camera visits each group of features for 60 frames: the overview, the gates, the burning forest, the
 	// village, the wall fire, the bridges
 	sights := [][3]float64{{11, 7, 1.4}, {3, 6, 3}, {1, 1, 3}, {15, 11, 3}, {4, 4, 3}, {17.5, 7, 2.2}}
+	if len(gates) > 0 {
+		sights[1] = [3]float64{gates[0][0], gates[0][1], 3}
+	}
 	d.step = func(frame int) {
 		at := sights[min(frame/60, len(sights)-1)]
 		g.zoom = at[2]

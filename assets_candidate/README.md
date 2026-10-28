@@ -14,8 +14,9 @@
 | 쓰임 | 종류 | 파일 | 만든 방법 |
 |---|---|---|---|
 | 전투맵 | 성문 A(기둥 문루, 열림·닫힘) | `tiles/gate_floor_{u,v}.png`, `gate_{open,closed}_{u,v}_{back,front}.png`, `gate_roof_{u,v}.png` | 처음부터 새로 그림. 성벽 사이 한 칸을 채우는 문루: 높은 기둥 넷이 슬레이트 지붕을 받쳐 말 탄 기병이 밑으로 지나갈 높이(기둥 32px), 통로 앞뒤 끝에 문이 하나씩. 열림은 문이 안쪽으로 젖혀져 양옆에 붙고 닫힘은 두 문이 통로를 막는다. 층: 바닥(ground), 뒤 문틀(정렬 y−3), 앞 문틀(y+3), 지붕(y+5) — 병사·기병이 문틀 사이로 지나가고 지붕 밑에 들어가게 함. `_u`는 성벽이 u축을 따라갈 때(SW·NE면), `_v`는 좌우 반전. 주둔 가능한 관문 타일(`sites.png`)과는 별개 |
-| 전투맵 | 성문 C(낮은 문루) | `tiles/gatehouse_closed_{u,v}.png`, `gatehouse_floor_{u,v}.png` | 게임의 성벽 블록(`wall_15`) 위에 만든 한 칸짜리 문루라 벽돌·외곽선·높이(면 17px)가 옆 성벽과 같다. 성가퀴 윗면을 지우고, 한쪽 면에 반원 머리의 아치와 닫힌 문을 내고, 처마가 성벽 윗선에 놓이는 낮은 지붕을 얹음. 열리면 이 그림이 사라져 성벽 사이가 뚫린 길(바닥 `gatehouse_floor_*`만 남음)이 된다. `_u`는 성벽이 u축(문이 SW면), `_v`는 v축(SE면) |
-| 전투맵 | 이음새 지운 성벽 | `tiles/wall_clean_00..15.png` | 게임의 성벽 그림에서 칸이 이어지는 쪽의 끝 외곽선(성벽 따라 반복되는 세로 눈금)을 지움. 성벽을 이어 그릴 때 이 그림을 쓰면 눈금이 없다 |
+| 전투맵 | 성문(문루) | `tiles/gatehouse_{closed,open}_{u,v}_{0..3}.png` | `tools/gen_pixel_kit.py`: 게임 칸 하나(작은 칸 2×2)를 덮는 마당형 문루를 도트로 직접(성벽 높이 16px, 양옆 담과 앞뒤 문 담, 마당 폭 거의 끝까지 넓은 아치, 문 위 성벽에 붉은 기둥 넷과 검은 평판). 닫힌 것은 문짝이 아치를 막고, 열린 것(관문 `p` 포함)은 문짝이 마당 양옆 담에 붙음. 칸 중심선(u+v=2) 뒤는 조각 0, 앞은 조각 3, 1·2는 빈 그림 — 성문 칸의 유닛이 그 사이에 그려짐. `_u`는 성벽 줄이 u 방향 |
+| 전투맵 | 성벽 | `tiles/wall_clean_00..15.png` | `tools/gen_pixel_kit.py`: 작은 칸 하나의 성벽을 도트로 직접(벽돌 무늬를 가로 2·세로 1로 쌓음), 트인 면(nw,ne,se,sw = 비트 0~3)에 성가퀴 |
+| 장면 | 실내 벽·바닥 | `tiles/wall_{plaster,lacquer,canvas}_{nw,ne}.png`, `floor_{wood,carpet,palace,tent}.png` | `tools/gen_pixel_kit.py`: 같은 방식. props.png의 같은 이름 그림을 대신한다 |
 | 전투맵 | 불탄 마을·주둔지 | `tiles/burnt_village.png`, `burnt_camp.png` | 마을·주둔지 구조물(100×110)을 숯 색으로, 일부를 지우고 불씨를 얹음 |
 | 전투맵 | 불탄 숲 | `tiles/burnt_forest_0..3.png` | 기존 소나무 숲(`forest_*`)을 같은 방식으로 |
 | 전투맵 | 낮은 울타리 | `tiles/fence_00..15.png` | 무릎 아래 높이, 성벽과 같은 이음 마스크(nw,ne,se,sw = 비트 0~3) |
@@ -48,6 +49,6 @@ python3 spr.py light_infantry light_cavalry liubei_noncombat bandit guanyu_nonco
 python3 build_all.py      # 모든 후보 그림 + tiles.json + viewer.html (한 프로세스로 돌려야 목록이 한 곳에 모인다)
 ```
 
-`gen_all.py`(문·불탄 것·그을음·울타리·다리·불길·연기), `gen_interior.py`(화로·지도 탁자), `gen_gate.py`(성문 A), `gen_gatehouse.py`(성문 C), `gen_walls.py`(이음새 지운 성벽), `gen_scene_props.py`(2D 장면 소품), `gen_3d_props.py`(3D 모델 소품), `gen_3d_castle.py`(장면용 큰 성벽 세트)는 `build_all.py`가 불러 쓴다. 따로 돌리면 `tiles/tiles.json`에 일부만 남아 시연 화면이 깨진다.
+`gen_all.py`(문·불탄 것·그을음·울타리·다리·불길·연기), `gen_interior.py`(화로·지도 탁자), `gen_gate.py`(성문 A), `gen_scene_props.py`(2D 장면 소품), `gen_3d_props.py`(3D 모델 소품), `gen_3d_castle.py`(장면용 큰 성벽 세트)는 `build_all.py`가 불러 쓴다. `gen_pixel_castle.py`·`gen_pixel_kit.py`는 따로 `--write`로 돌린다(`build_all.py`가 tiles.json을 새로 쓰므로 그 뒤에 다시). 따로 돌리면 `tiles/tiles.json`에 일부만 남아 시연 화면이 깨진다.
 
 Pillow가 필요하다. 그림은 게임 그림을 읽어 바탕으로 쓰므로 `ver5/assets/graphics`가 있어야 한다.

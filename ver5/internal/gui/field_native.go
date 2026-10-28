@@ -28,22 +28,22 @@ func (f *Field) eachSmall(fn func(int, int, byte, float64, float64)) {
 	}
 }
 
-// shown is small tile (x, y) as it stands now: an open gate is castle floor.
+// shown is small tile (x, y) as it stands now: a pass and an open gate are castle floor under their open gatehouse.
 func (f *Field) shown(x, y int) byte {
 	t := f.small(x, y)
-	if t == 'm' && f.look(floorDiv(x, 2), floorDiv(y, 2)) == "open" {
+	if t == 'g' || t == 'm' && f.look(floorDiv(x, 2), floorDiv(y, 2)) == "open" {
 		return 'i'
 	}
 	return t
 }
 
 // smallBlock picks the raised-block sprite (wall or cliff) whose open faces look at the
-// neighbours outside the block, an open gate's floor among them.
+// neighbours outside the block.
 func (f *Field) smallBlock(x, y int) string {
 	t := f.small(x, y)
 	mask := 0
 	for i, d := range [][2]int{{-1, 0}, {0, -1}, {1, 0}, {0, 1}} {
-		if !sameBlock(t, f.shown(x+d[0], y+d[1])) {
+		if !sameBlock(t, f.small(x+d[0], y+d[1])) {
 			mask |= 1 << i
 		}
 	}
@@ -53,7 +53,7 @@ func (f *Field) smallBlock(x, y int) string {
 // Floors and bridges must be drawn after animated water so wet atlas fragments cannot cover them.
 func (f *Field) makeNativeFloors() {
 	f.eachSmall(func(x, y int, t byte, px, py float64) {
-		if t == 'i' || t == 'm' {
+		if t == 'i' || t == 'm' || t == 'g' {
 			s := f.A.Structures["floor"]
 			f.nativeGround = append(f.nativeGround, drawItem{rect: f.mapRect(s, px, py), draw: func() {
 				if f.shown(x, y) == 'i' { // a gate shows its floor once open
@@ -75,24 +75,26 @@ func (f *Field) makeNativeFloors() {
 
 func (f *Field) nativeObjects(items *[]drawItem) {
 	f.eachSmall(func(u, v int, t byte, x, y float64) {
-		if t != 'c' && t != 'h' && t != 'm' {
+		if t != 'c' && t != 'h' && t != 'm' && t != 'g' {
 			return
 		}
 		s := f.A.Structures[f.smallBlock(u, v)]
-		if t != 'm' {
+		if t != 'm' && t != 'g' {
 			top := t == 'h'
-			*items = append(*items, drawItem{y: y * K, rect: f.mapRect(s, x, y), draw: func() {
-				f.blitMap(f.Canvas, f.A.Structures[f.smallBlock(u, v)], x, y, nil) // its ends show once a gate beside it opens
+			*items = append(*items, drawItem{y: y * K, rect: f.mapRect(s, x, y), hides: t == 'c', draw: func() {
+				f.blitMap(f.Canvas, s, x, y, nil)
 				if top {
 					f.drawCliffTop(x*K, y*K)
 				}
 			}})
 			return
 		}
-		closed := f.gateSprite(u, v, s, "closed")
-		*items = append(*items, drawItem{y: y * K, rect: f.mapRect(closed, x, y), draw: func() {
-			if f.shown(u, v) == 'm' { // an open gate is drawn as the castle floor it has become
+		closed, open := f.gateSprite(u, v, s, "closed"), f.gateSprite(u, v, s, "open")
+		*items = append(*items, drawItem{y: y * K, rect: f.mapRect(closed, x, y).Union(f.mapRect(open, x, y)), hides: true, draw: func() {
+			if f.shown(u, v) == 'm' {
 				f.blitMap(f.Canvas, closed, x, y, nil)
+			} else {
+				f.blitMap(f.Canvas, open, x, y, nil)
 			}
 		}})
 	})
@@ -132,13 +134,13 @@ func (f *Field) nativeObjects(items *[]drawItem) {
 }
 
 // siteSprite names the strongpoint sprite of each one-cell site tile.
-var siteSprite = map[byte]string{'k': "camp", 'v': "village", 'o': "castle", 'g': "gate"}
+var siteSprite = map[byte]string{'k': "camp", 'v': "village", 'o': "castle"}
 
-// burntSite names the picture a site burns down to; the castle and the gate do not burn.
+// burntSite names the picture a site burns down to; the castle does not burn.
 var burntSite = map[byte]string{'k': "burnt_camp", 'v': "burnt_village"}
 
 // nativeSites draws one strongpoint per game cell, at the characters' scale like the forests. A cell is a
-// site when most of its small tiles are; a gate turns to the castle wall line it sits in.
+// site when most of its small tiles are.
 func (f *Field) nativeSites(items *[]drawItem) {
 	cellHas := func(x, y int, t byte) int {
 		n := 0
@@ -156,7 +158,7 @@ func (f *Field) nativeSites(items *[]drawItem) {
 		for x := v[0] / 2; x < (v[0]+v[2])/2; x++ {
 			var site byte
 			best := 0
-			for _, t := range []byte{'k', 'v', 'o', 'g'} {
+			for _, t := range []byte{'k', 'v', 'o'} {
 				if n := cellHas(x, y, t); n > best {
 					site, best = t, n
 				}
@@ -165,12 +167,6 @@ func (f *Field) nativeSites(items *[]drawItem) {
 				continue
 			}
 			name := siteSprite[site]
-			if site == 'g' {
-				name = "gate_u"
-				if cellHas(x, y-1, 'c') > 0 || cellHas(x, y+1, 'c') > 0 {
-					name = "gate_v"
-				}
-			}
 			s := f.A.Sites[name]
 			px, py := f.Center(float64(x), float64(y))
 			at := image.Pt(x, y)
@@ -294,13 +290,16 @@ func (f *Field) bridgeSprite(name string, at image.Point, whole Sprite) Sprite {
 	return whole
 }
 
-// gateSprite is the gatehouse of small tile (u, v) in a picture set ("closed"), turned to the wall line it sits in.
+// gateSprite is small tile (u, v)'s piece of the gatehouse over its game cell in a picture set ("closed", "open"), turned to
+// the wall line the cell sits in. A piece is named by its place in the cell, du + 2dv.
 func (f *Field) gateSprite(u, v int, wall Sprite, set string) Sprite {
-	isWall := func(t byte) bool { return t == 'c' || t == 'm' }
-	name := "gatehouse_" + set + "_v"
-	if isWall(f.small(u-1, v)) || isWall(f.small(u+1, v)) {
-		name = "gatehouse_" + set + "_u"
+	isWall := func(t byte) bool { return t == 'c' || t == 'm' || t == 'g' }
+	x, y := 2*floorDiv(u, 2), 2*floorDiv(v, 2)
+	axis := "v"
+	if isWall(f.small(x-1, y)) || isWall(f.small(x+2, y)) {
+		axis = "u"
 	}
+	name := fmt.Sprintf("gatehouse_%s_%s_%d", set, axis, u-x+2*(v-y))
 	if p, ok := f.A.Props[name]; ok {
 		return p.Sprite
 	}

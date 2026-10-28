@@ -118,7 +118,7 @@ func (g *Game) drawDeploymentPreview(o core.Observation) {
 		}
 		u := &unitVis{art: art, ally: true, actor: true, dir: "SE", anim: "idle", dying: -1}
 		x, y := g.field.Center(float64(c.X), float64(c.Y))
-		g.field.drawUnit(u, x, y-g.field.Lift(c.X, c.Y), true)
+		g.field.drawUnit(u, x, y-g.field.Lift(c.X, c.Y), .5)
 		return
 	}
 }

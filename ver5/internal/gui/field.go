@@ -378,7 +378,8 @@ type drawItem struct {
 	kind  int // 0 scenery, 1 unit
 	draw  func()
 	rect  image.Rectangle // canvas area the sprite's image covers
-	ghost func()          // units: redraw at half opacity when scenery drawn later covers it
+	ghost func(float32)   // units: redraw at this opacity when scenery drawn later covers it
+	hides bool            // scenery a unit behind it shows through faintly (castle walls and gates)
 	key   *scenemap.Key   // a format 2 scene map's sort key; nil: made from y and rect (orderScene)
 }
 
@@ -575,8 +576,8 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		unit := u
 		b := u.art.Frame(u.dir, u.anim, u.frame()).Bounds()
 		rx, ry := int(math.Round(x-u.art.Pivot[0])), int(math.Round(y-lift-u.art.Pivot[1]))
-		it := drawItem{y: y, kind: 1, draw: func() { f.drawUnit(unit, x, y-lift, false) },
-			rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy()), ghost: func() { f.drawUnit(unit, x, y-lift, true) }}
+		it := drawItem{y: y, kind: 1, draw: func() { f.drawUnit(unit, x, y-lift, 0) },
+			rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy()), ghost: func(a float32) { f.drawUnit(unit, x, y-lift, a) }}
 		if f.Map.SceneMap != nil {
 			k := f.sceneKey(x, y, ground, scenemap.RankPerson, it.rect)
 			it.key = &k
@@ -606,17 +607,24 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		it.draw()
 	}
 	f.sceneryLayer = false
-	// a unit behind a tree, wall or house shows through it at half opacity; where nothing
-	// covers it the ghost lands on its own pixels and changes nothing
+	// a unit behind a tree or house shows through it at half opacity, behind a castle wall or gate
+	// faintly; where nothing covers it the ghost lands on its own pixels and changes nothing
 	for i, it := range items {
 		if it.kind != 1 {
 			continue
 		}
+		var alpha float32
 		for _, later := range items[i+1:] {
 			if later.kind == 0 && later.rect.Overlaps(it.rect) {
-				it.ghost()
-				break
+				if later.hides {
+					alpha = .3
+					break
+				}
+				alpha = .5
 			}
+		}
+		if alpha > 0 {
+			it.ghost(alpha)
 		}
 	}
 	if !f.ShowExterior {
@@ -668,9 +676,12 @@ func (f *Field) bridgeName(u, v int) string {
 	return "bridge_u"
 }
 
-// sameBlock reports whether neighbour n continues the block of tile t. A gate is a ground-level
-// courtyard, so the wall blocks either side show their ends to it.
-func sameBlock(t, n byte) bool { return n == t || t == 'c' && n == 'm' || t == 'm' && n == 'c' }
+// sameBlock reports whether neighbour n continues the block of tile t: the wall runs on into a gate, shut, open or
+// a pass, whose gatehouse stands to the wall's height at both ends.
+func sameBlock(t, n byte) bool {
+	wall := func(t byte) bool { return t == 'c' || t == 'm' || t == 'g' }
+	return n == t || wall(t) && wall(n)
+}
 
 // blockSprite picks the wall or cliff sprite whose open faces look at the cell's outside neighbours.
 func blockSprite(f *Field, u, v int) string {
@@ -692,13 +703,14 @@ func blockVariant(t byte, mask, x, y int) string {
 	return fmt.Sprintf("wall_%02d", mask)
 }
 
-func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {
+// drawUnit draws u at canvas point (x, y); a ghost (opacity above 0) is the unit redrawn faintly over what covers it.
+func (f *Field) drawUnit(u *unitVis, x, y float64, ghost float32) {
 	if !u.visible() {
 		return
 	}
 	op := &ebiten.DrawImageOptions{}
-	if ghost {
-		op.ColorScale.ScaleAlpha(.5)
+	if ghost > 0 {
+		op.ColorScale.ScaleAlpha(ghost)
 	}
 	if u.status["poison"].Turns > 0 {
 		op.ColorScale.Scale(.82, .95, .76, 1)
@@ -728,7 +740,7 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost bool) {
 	} else {
 		f.blit(f.Canvas, s, x, y, op)
 	}
-	if u.charge > 0 && !ghost { // gathering a critical blow: a white silhouette fades in over the sprite
+	if u.charge > 0 && ghost == 0 { // gathering a critical blow: a white silhouette fades in over the sprite
 		var cm colorm.ColorM
 		cm.Scale(0, 0, 0, .9*u.charge)
 		cm.Translate(1, 1, 1, 0)

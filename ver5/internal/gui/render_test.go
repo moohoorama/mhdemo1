@@ -431,7 +431,7 @@ func (p *editorRenderTest) statusPixelPreview() error {
 		u.shownHP, u.maxHP, u.shownMP, u.maxMP = 80, 100, 30, 50
 		u.anim, u.animT, u.flash, u.greyed = "idle", 0, 0, false
 		f := &Field{A: p.g.assets, Canvas: native}
-		f.drawUnit(&u, 40, 83, false)
+		f.drawUnit(&u, 40, 83, 0)
 		f.drawUnitStatuses(&u, 40, 83, 0)
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(3, 3)

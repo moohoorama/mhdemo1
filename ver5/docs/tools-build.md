@@ -23,6 +23,7 @@ python3 tools/scene_maps/join_overlay.py                       # 알파만 쓴 �
 python3 tools/scene_maps/tall_cliff.py                         # 높은 장면 절벽 tcliff_*: 전투 맵 절벽 블록의 바위 면 행을 쌓음 → ../assets_candidate/tiles (그 뒤 build_extra.py, compose.py)
 python3 ../assets_candidate/tools/gen_3d_castle.py --write      # 옛 형식 장면용 성벽·성문(성문은 아치 가운데에서 갈라 반 칸 조각) → ../assets_candidate/tiles
 python3 ../assets_candidate/tools/gen_pixel_castle.py --write    # 형식 2 성벽 칸·성가퀴·밑동 그림자·성문 조각(도트로 직접) → ../assets_candidate/tiles (--preview 경로: 확인 그림; 그 뒤 build_extra.py)
+python3 ../assets_candidate/tools/gen_pixel_kit.py --write       # 전투 성벽 wall_clean_*·성문 gatehouse_{closed,open}_{u,v}_{0..3}, 실내 벽 wall_*_{nw,ne}·바닥 floor_*(같은 방식) → ../assets_candidate/tiles (--compare 경로: 지금 그림과 비교; 그 뒤 build_extra.py. 스킬 pixel-iso-kit)
 python3 ../tools/unit3d/scene_props3d.py                        # 3D 모델 장면 소품 → ../assets_candidate/tiles (--review: 옛 그림과 비교, 이름을 주면 그 소품만, --out=경로; 그 뒤 build_extra.py)
 python3 tools/pixelize_tree.py [이름 …]                         # 장면 나무: codex 그림(../assets_candidate/tiles/sources/*.png) → 3D 렌더와 같은 크기·피벗의 도트 (값은 sources/trees.json; 그 뒤 build_extra.py)
 python3 tools/doteditor/tools/civ3d.py official wounded …       # 장면 사람 시트(3D 변환, tools/unit3d/scene_people.py)
@@ -31,7 +32,7 @@ python3 tools/scene_maps/wire_story.py                         # 장면이 없�
 python3 tools/scene_maps/scene_format.py                       # assets/scenes/*.json 줄 배치를 맞춘다
 ```
 
-- `build_extra.py`는 후보의 성벽(이음새 없는 `wall_clean_*`, 게임의 `wall_*`를 대신한다)·성문 C·울타리·그을음·불탄 구조물·다리 손상·장면 소품과 불·연기 줄을 게임 그림 묶음으로 옮긴다. 옛 기둥 성문(`gate_*`)과 숲 속 덤불 시안은 넣지 않는다. 불·연기 줄은 `Assets.Flames`, 그림은 `Assets.Props`로 읽힌다.
+- `build_extra.py`는 후보의 성벽(도트 `wall_clean_*`, 게임의 `wall_*`를 대신한다)·성문(`gatehouse_{closed,open}_*`)·실내 벽·바닥(같은 이름의 props.png 그림을 덮는다)·울타리·그을음·불탄 구조물·다리 손상·장면 소품과 불·연기 줄을 게임 그림 묶음으로 옮긴다. 옛 기둥 성문(`gate_*`)과 숲 속 덤불 시안은 넣지 않는다. 불·연기 줄은 `Assets.Flames`, 그림은 `Assets.Props`로 읽힌다.
 - 장면 나무(`stree_*`·`peach_bloom_*`)는 3D 렌더를 그대로 쓰지 않는다. 다시 그리려면: `python3 ../tools/unit3d/scene_props3d.py <이름> --3d`로 렌더를 `../output/scene-props3d/`에 받고(인자 없이 돌려도 칠한 나무는 덮어쓰지 않는다), 정수배 최근접 확대해 1024 마젠타 판에 놓아 codex-image에 참고로 준다. 요청문은 `trees.json`의 `prompt`를 따른다 — "참고는 실루엣·크기·줄기 기울기·가지 배치·빛 방향(왼쪽 위)만, 공 모양 덩이·덩이 위 구멍은 베끼지 말 것, 16비트 손도트처럼 큰 잎 덩이 몇 개·3톤 셀 음영·1px 외곽선"(참고를 그대로 따르라고만 하면 3D 덩이를 그대로 베낀다). 후보 둘 중 고른 그림을 512px로 `sources/<이름>.png`에 두고 `pixelize_tree.py`를 돌린다. 변환 값: `penalty`(그 색을 덜 쓰게, 소나무 밝은 잎), `dark`(가닥·꽃 덩이 사이 어두운 틈을 살림), `bark`+`foot`/`speck`+`inner`(꽃 둘레에 칠한 적갈색 테두리가 껍질색으로 잡히는 것을 테두리·꽃 그늘로).
 - 장면 맵은 viewer의 JS 장면 정의에서 뽑아 만든다. 원리와 빠지는 것(유닛·불꽃·하늘·밤 색)은 `tools/scene_maps/build.py` 위쪽 설명과 [presentation-scene.md](presentation-scene.md)에 있다.
 - 상태 아이콘 원본·설정은 `../tools/spritetool/assets/ver5-status/`, 런타임은 `assets/graphics/status/`다.

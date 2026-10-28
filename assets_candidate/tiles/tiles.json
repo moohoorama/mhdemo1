@@ -1197,301 +1197,245 @@
    "blocks": true,
    "note": "one of the two door frames; draw with sort y offset sort_dy"
   },
-  "gatehouse_closed_u": {
-   "file": "tiles/gatehouse_closed_u.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    39
-   ],
-   "layer": "object",
-   "scale": "battle",
-   "blocks": true,
-   "note": "one wall cell, as high as the walls (it is the wall block); when the gate opens it simply disappears (gatehouse_floor_* stays)"
-  },
-  "gatehouse_floor_u": {
-   "file": "tiles/gatehouse_floor_u.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    39
-   ],
-   "layer": "ground",
-   "scale": "battle"
-  },
-  "gatehouse_closed_v": {
-   "file": "tiles/gatehouse_closed_v.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    39
-   ],
-   "layer": "object",
-   "scale": "battle",
-   "blocks": true,
-   "note": "one wall cell, as high as the walls (it is the wall block); when the gate opens it simply disappears (gatehouse_floor_* stays)"
-  },
-  "gatehouse_floor_v": {
-   "file": "tiles/gatehouse_floor_v.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    39
-   ],
-   "layer": "ground",
-   "scale": "battle"
-  },
   "wall_clean_00": {
    "file": "tiles/wall_clean_00.png",
    "size": [
-    40,
-    48
+    30,
+    16
    ],
    "pivot": [
-    21,
-    39
+    15,
+    24
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 0,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_01": {
    "file": "tiles/wall_clean_01.png",
    "size": [
-    40,
-    48
+    32,
+    22
    ],
    "pivot": [
-    21,
-    39
+    17,
+    30
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 1,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_02": {
    "file": "tiles/wall_clean_02.png",
    "size": [
-    40,
-    48
+    32,
+    22
    ],
    "pivot": [
-    21,
-    39
+    15,
+    30
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 2,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_03": {
    "file": "tiles/wall_clean_03.png",
    "size": [
-    40,
-    48
+    34,
+    22
    ],
    "pivot": [
-    21,
-    39
+    17,
+    30
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 3,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_04": {
    "file": "tiles/wall_clean_04.png",
    "size": [
-    40,
-    48
+    32,
+    33
    ],
    "pivot": [
-    21,
-    39
+    15,
+    24
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 4,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_05": {
    "file": "tiles/wall_clean_05.png",
    "size": [
-    40,
-    48
+    34,
+    39
    ],
    "pivot": [
-    21,
-    39
+    17,
+    30
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 5,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_06": {
    "file": "tiles/wall_clean_06.png",
    "size": [
-    40,
-    48
+    32,
+    39
    ],
    "pivot": [
-    21,
-    39
+    15,
+    30
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 6,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_07": {
    "file": "tiles/wall_clean_07.png",
    "size": [
-    40,
-    48
+    34,
+    39
    ],
    "pivot": [
-    21,
-    39
+    17,
+    30
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 7,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_08": {
    "file": "tiles/wall_clean_08.png",
    "size": [
-    40,
-    48
+    32,
+    33
    ],
    "pivot": [
-    21,
-    39
+    17,
+    24
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 8,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_09": {
    "file": "tiles/wall_clean_09.png",
    "size": [
-    40,
-    48
+    32,
+    39
    ],
    "pivot": [
-    21,
-    39
+    17,
+    30
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 9,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_10": {
    "file": "tiles/wall_clean_10.png",
    "size": [
-    40,
-    48
+    34,
+    39
    ],
    "pivot": [
-    21,
-    39
+    17,
+    30
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 10,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_11": {
    "file": "tiles/wall_clean_11.png",
    "size": [
-    40,
-    48
+    34,
+    39
    ],
    "pivot": [
-    21,
-    39
+    17,
+    30
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 11,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_12": {
    "file": "tiles/wall_clean_12.png",
    "size": [
-    40,
-    48
+    34,
+    33
    ],
    "pivot": [
-    21,
-    39
+    17,
+    24
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 12,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_13": {
    "file": "tiles/wall_clean_13.png",
    "size": [
-    40,
-    48
+    34,
+    39
    ],
    "pivot": [
-    21,
-    39
+    17,
+    30
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 13,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_14": {
    "file": "tiles/wall_clean_14.png",
    "size": [
-    40,
-    48
+    34,
+    39
    ],
    "pivot": [
-    21,
-    39
+    17,
+    30
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 14,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "wall_clean_15": {
    "file": "tiles/wall_clean_15.png",
    "size": [
-    40,
-    48
+    34,
+    39
    ],
    "pivot": [
-    21,
-    39
+    17,
+    30
    ],
    "layer": "object",
    "scale": "battle",
    "mask": 15,
-   "note": "the game's wall cell without the joint seams"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "screen_u": {
    "file": "tiles/screen_u.png",
@@ -7119,6 +7063,384 @@
    "layer": "object",
    "shadow": false,
    "note": "battle-map boat (tools/unit3d/boats3d.py)"
+  },
+  "gatehouse_closed_u_0": {
+   "file": "tiles/gatehouse_closed_u_0.png",
+   "size": [
+    62,
+    28
+   ],
+   "pivot": [
+    31,
+    32
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_closed_u_1": {
+   "file": "tiles/gatehouse_closed_u_1.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_closed_u_2": {
+   "file": "tiles/gatehouse_closed_u_2.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_closed_u_3": {
+   "file": "tiles/gatehouse_closed_u_3.png",
+   "size": [
+    63,
+    43
+   ],
+   "pivot": [
+    32,
+    34
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_closed_v_0": {
+   "file": "tiles/gatehouse_closed_v_0.png",
+   "size": [
+    62,
+    28
+   ],
+   "pivot": [
+    31,
+    32
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_closed_v_1": {
+   "file": "tiles/gatehouse_closed_v_1.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_closed_v_2": {
+   "file": "tiles/gatehouse_closed_v_2.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_closed_v_3": {
+   "file": "tiles/gatehouse_closed_v_3.png",
+   "size": [
+    63,
+    43
+   ],
+   "pivot": [
+    31,
+    34
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "blocks": true,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_open_u_0": {
+   "file": "tiles/gatehouse_open_u_0.png",
+   "size": [
+    62,
+    41
+   ],
+   "pivot": [
+    31,
+    32
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_open_u_1": {
+   "file": "tiles/gatehouse_open_u_1.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_open_u_2": {
+   "file": "tiles/gatehouse_open_u_2.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_open_u_3": {
+   "file": "tiles/gatehouse_open_u_3.png",
+   "size": [
+    63,
+    43
+   ],
+   "pivot": [
+    32,
+    34
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_open_v_0": {
+   "file": "tiles/gatehouse_open_v_0.png",
+   "size": [
+    62,
+    41
+   ],
+   "pivot": [
+    31,
+    32
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_open_v_1": {
+   "file": "tiles/gatehouse_open_v_1.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_open_v_2": {
+   "file": "tiles/gatehouse_open_v_2.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "gatehouse_open_v_3": {
+   "file": "tiles/gatehouse_open_v_3.png",
+   "size": [
+    63,
+    43
+   ],
+   "pivot": [
+    31,
+    34
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "wall_plaster_nw": {
+   "file": "tiles/wall_plaster_nw.png",
+   "size": [
+    36,
+    53
+   ],
+   "pivot": [
+    35,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "wall_plaster_ne": {
+   "file": "tiles/wall_plaster_ne.png",
+   "size": [
+    36,
+    53
+   ],
+   "pivot": [
+    1,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "wall_lacquer_nw": {
+   "file": "tiles/wall_lacquer_nw.png",
+   "size": [
+    36,
+    53
+   ],
+   "pivot": [
+    35,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "wall_lacquer_ne": {
+   "file": "tiles/wall_lacquer_ne.png",
+   "size": [
+    36,
+    53
+   ],
+   "pivot": [
+    1,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "wall_canvas_nw": {
+   "file": "tiles/wall_canvas_nw.png",
+   "size": [
+    36,
+    53
+   ],
+   "pivot": [
+    35,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "wall_canvas_ne": {
+   "file": "tiles/wall_canvas_ne.png",
+   "size": [
+    36,
+    53
+   ],
+   "pivot": [
+    1,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "floor_wood": {
+   "file": "tiles/floor_wood.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "floor_carpet": {
+   "file": "tiles/floor_carpet.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "floor_palace": {
+   "file": "tiles/floor_palace.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "floor_tent": {
+   "file": "tiles/floor_tent.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   }
  }
 }

@@ -3,8 +3,6 @@ import json
 import gen_all
 import gen_interior  # registers brazier and map_table on import
 import gen_gate
-import gen_gatehouse
-import gen_walls
 import gen_scene_props
 import gen_3d_props
 import gen_3d_castle
@@ -12,8 +10,6 @@ import gen_cover
 from common import out
 
 gen_gate.run()
-gen_gatehouse.run()
-gen_walls.run()
 gen_scene_props.run()
 gen_3d_props.run()
 gen_3d_castle.run()

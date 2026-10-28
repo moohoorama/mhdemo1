@@ -301,16 +301,6 @@ SCENES.forestCover={name:'숲 속 병력',w:10,h:8,zoom:3,tiles:R(8,()=>R(10,()=
     if(s===3)units.forEach(u=>u.tintFn=()=>inF(u.u,u.v)?'rgba(30,70,40,.4)':null);
     return{items,flames,smoke,under,units};}};
 
-SCENES.gatehouse={name:'성문 C(낮은 문루)',w:11,h:9,tiles:R(9,()=>'...........'),states:['닫힘','열림(성문이 사라짐)'],
-  desc:'주변 성벽과 같은 높이로 낮춘 한 칸짜리 문루. 닫혀 있을 때는 성벽 줄의 일부처럼 서 있고, 열리면 성문 그림이 사라져 성벽 사이가 그대로 뚫린 길이 됩니다. 성벽은 칸 이음새의 세로선을 지운 그림입니다.',
-  build(s){const items=[],flames=[],smoke=[],under=[],units=[];
-    const sc={tiles:R(9,v=>R(11,u=>(v===4&&u!==5)?'c':'.').join('')),w:11,h:9};
-    for(let u=0;u<11;u++){const[sx,sy]=tileC(u,4);if(u===5){if(s===0){const sp=cd('gatehouse_closed_u');items.push({y:sy,draw:c=>put(c,sp,sx,sy)});}else under.push(c=>put(c,cd('gatehouse_floor_u'),sx,sy));continue;}
-      const sp=cd('wall_clean_'+String(wallMask(sc,u,4)).padStart(2,'0'));items.push({y:sy,draw:c=>put(c,sp,sx,sy)});}
-    const th=s===0?[[5,9],[5,5.9]]:[[5,9],[5,0.5]];
-    units.push(new Unit('light_cavalry',th,{speed:2.2,face:'NE'}),new Unit('light_infantry',s===0?[[4,9],[4,6.4]]:[[4,9],[4,6.4],[5,5.4],[5,1]],{speed:1.8,face:'NE',wait:.3}),new Unit('light_infantry',s===0?[[6,9],[6,6.4]]:[[6,9],[6,6.4],[5,5.2],[5,1.5]],{speed:1.8,face:'NE',wait:.6}));
-    return{items,flames,smoke,under,units};}};
-
 
 // ---- scenario scenes: real-scale rooms and places composed from the game's props and the candidates ----
 const SP=n=>DATA.cand[n]?cd(n):pr(n);
