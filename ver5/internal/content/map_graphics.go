@@ -78,8 +78,20 @@ func (d *MapDocument) Graphics(data *Data) MapArt {
 		for x := vx; x < vx+v.W*2; x++ {
 			for j := 0; j < 2; j++ {
 				for i := 0; i < 2; i++ {
-					dry, soil := mask(x*2+i, y*2+j, 1), mask(x*2+i, y*2+j, 2)
-					a.Ground = append(a.Ground, Fragment{X: (x-y)*8 + (i-j)*4, Y: (x+y)*4 + (i+j)*2, Layers: groundLayers[dry][soil]})
+					var masks [len(groundSets)]int
+					base := 0
+					for k := range groundSets {
+						if masks[k] = mask(x*2+i, y*2+j, k); masks[k] == 15 {
+							base = k
+						}
+					}
+					layers := []int{groundSets[base]}
+					for k := base + 1; k < len(groundSets); k++ {
+						if masks[k] != 0 {
+							layers = append(layers, groundSets[k]+masks[k])
+						}
+					}
+					a.Ground = append(a.Ground, Fragment{X: (x-y)*8 + (i-j)*4, Y: (x+y)*4 + (i+j)*2, Layers: layers})
 				}
 			}
 		}
@@ -102,25 +114,6 @@ type Fragment struct {
 	Layers []int
 }
 
-var groundLayers = func() [16][16][]int {
-	var all [16][16][]int
-	for dry := 0; dry < 16; dry++ {
-		for soil := 0; soil < 16; soil++ {
-			layers := []int{8}
-			if soil != 15 {
-				layers = []int{23}
-				if dry != 15 {
-					layers = []int{0}
-					if dry != 0 {
-						layers = append(layers, 23+dry)
-					}
-				}
-				if soil != 0 {
-					layers = append(layers, 8+soil)
-				}
-			}
-			all[dry][soil] = layers
-		}
-	}
-	return all
-}()
+// groundSets are the tileset pictures of the surface levels from the bottom (water, ford, grass, plain, soil): the whole
+// tile at the id, the edge where the level lies over the ones below at id + corner mask (1..14).
+var groundSets = [...]int{0, 70, 23, 86, 8}

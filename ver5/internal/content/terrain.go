@@ -9,7 +9,7 @@ const NoLayer = '-'
 type Ground struct {
 	Name    string
 	Glyph   string
-	Surface int  `json:",omitempty"` // how the ground is drawn: 0 water, 1 grass, 2 soil
+	Surface int  `json:",omitempty"` // how the ground is drawn: its level from 0 water, 1 ford, 2 grass, 3 plain to 4 soil
 	Water   bool `json:",omitempty"` // spells that need water look for it beside the caster or target
 }
 

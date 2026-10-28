@@ -58,9 +58,10 @@ type unitVis struct {
 	ranged       bool
 	shoot        *sprite.Art // the look it shoots from range in (mounted_range), nil when it has none
 	shootClass   string
-	siege        bool   // attacks are stones lobbed along an arc
-	mounted      bool   // rides a horse: takes the long boat on water
-	boatAxis     string // "u" or "v": how its boat lies, kept while it faces straight N, E, S or W
+	siege        bool    // attacks are stones lobbed along an arc
+	mounted      bool    // rides a horse: takes the long boat on water
+	boatAxis     string  // "u" or "v": how its boat lies, kept while it faces straight N, E, S or W
+	wade         float64 // 0..1: how far it has sunk into a ford it stands on (field_wade.go)
 	inactive     bool
 	actor        bool   // a scene actor: no HP bar, rests standing or in its pose
 	pose         string // a scene actor's resting motion (sit, lie …); "" stands

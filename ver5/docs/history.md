@@ -5,6 +5,19 @@
 
 ---
 
+## 2026-10-29 여울·평지 지형, 여울에 잠기는 발, 탁군 길은 평지로
+
+- 결정: 땅에 여울(`s`, 강가의 얕게 물이 고인 땅)과 평지(`l`, 초원과 황무지 사이)를 더하고, 물·황무지처럼 경계가 번지게 한다. 여울은 청회색에 늪 수풀, 여울에 선 병력은 발이 잠긴다. 탁군 전투의 황무지 길은 평지로 · 이유: 사용자 "강근처, 약간 축축한 지형", "초원보다는 흙길이지만 황무지만큼 척박하진 않음", "여울을 좀 더 청회색 계열로… 늪지대처럼 수풀", "병력이 들어갔을 때 발쪽이 여울에 잠긴 스프라이트", 시험 화면에 "아주 좋아" · 영향받는 문서: data-map.md, tools-build.md
+- `assets/data/game.json`: 땅 `s` 여울·`l` 평지, `Surface`를 층 번호로(물 0, 여울 1, 초원·성벽·성문 2, 평지 3, 황무지·성내·절벽 4). 나무·울타리는 여울·평지에, 마을·주둔지·성은 평지에도 선다
+- `assets/data/terrain.json`: 평지는 모든 병종군 배율 1·비용 1, 여울은 기병만 0.9·2(말이 빠짐), 나머지 1·1
+- `internal/content/map_graphics.go`: 땅 조각 층을 물·초원·흙 세 층 고정 표에서 층 목록(`groundSets`)으로 — 조각마다 가장 높은 꽉 찬 층을 바탕으로 그 위 층들의 경계를 얹음
+- `tools/build_ground_tiles.py`(새 파일): 여울(70~84)·평지(86~100) 경계 조각을 `tileset.png`에 추가. 경계 모양과 음영은 물가(풀→물)·흙길(흙→풀) 조각에서 빌려 이음이 기존 땅과 같고, 여울은 얕은 물빛 청회색에 물 반짝임·진흙 점
+- `../assets_candidate/tools/gen_scenery.py`: 여울 늪 수풀 네 종(갈대 덤불·부들·사초·가는 갈대, 아스키 도트), 여울·평지 장식 묶음과 밀도. `internal/scenemap/scenery.go`: `s`는 ford, `l`은 plain 장식, 늪 수풀은 모여 남
+- `internal/gui/field_wade.go`(새 파일), `field.go`, `player.go`, `field_render.go`: 여울 칸의 병력은 0.2초에 걸쳐 잠김. 유닛을 따로 그린 판에서 수면선(보병 5px, 기병 8px) 아래를 물빛으로 물들이고 반쯤 비치게 하며, 수면선에 물결 고리(뒤 반은 유닛 뒤, 앞 반은 앞, 걸을 때 빨리 퍼짐), 그림자는 옅게. 새 스프라이트 없이 모든 병종·8방향에 맞음
+- `internal/gui/uidemo_wading.go`·`uidemo_terrainmix.go`(새 데모): 여울을 걸어 드나드는 장수 둘과 8방향 보병·기병 줄 / 여울·평지가 다른 땅·성벽·절벽·나무·마을·울타리와 맞붙는 견본 20개
+- `internal/gui/hud.go` 미니맵 색, `internal/cli/ascii.go`·`tools/mapgen/stage_ascii.py` 배치 글자
+- `assets/scenario/hero/maps/map01.json`, `tools/mapgen/layouts/hero/stage01.txt`: 탁군의 황무지 28칸(가운데 길)을 평지로
+
 ## 2026-10-29 이벤트로 끝나는 탐험, 등장 로그
 
 - `internal/content/content.go`(`Node.Leave`), `internal/core/engine.go`(`back`), `internal/content/explore.go`(검사): `back` 노드에 `Leave`를 두면 탐험을 마치고 탐험 노드 다음으로 이야기가 이어진다 — 탐험은 출진(`Sortie`)으로만 끝났는데, 사용자가 5장 주막 이벤트가 끝나면 바로 관문으로 가길 원함.

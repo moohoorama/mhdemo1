@@ -24,6 +24,8 @@ python3 tools/scene_maps/tall_cliff.py                         # 높은 장면 �
 python3 ../assets_candidate/tools/gen_3d_castle.py --write      # 옛 형식 장면용 성벽·성문(성문은 아치 가운데에서 갈라 반 칸 조각) → ../assets_candidate/tiles
 python3 ../assets_candidate/tools/gen_pixel_castle.py --write    # 형식 2 성벽 칸·성가퀴·밑동 그림자·성문 조각(도트로 직접) → ../assets_candidate/tiles (--preview 경로: 확인 그림; 그 뒤 build_extra.py)
 python3 ../assets_candidate/tools/gen_pixel_kit.py --write       # 전투 성벽 wall_clean_*·성문 gatehouse_{closed,open}_{u,v}_{0..3}, 실내 벽 wall_*_{nw,ne}·바닥 floor_*(같은 방식) → ../assets_candidate/tiles (--compare 경로: 지금 그림과 비교; 그 뒤 build_extra.py. 스킬 pixel-iso-kit)
+python3 tools/build_ground_tiles.py                             # 여울·평지 땅 경계 조각 두 벌(물가·흙길 경계 모양과 음영을 빌려 새 질감) → assets/graphics/map/tileset.png, index.json의 tileset (원본 tileset.png에 한 번만)
+python3 ../assets_candidate/tools/gen_scenery.py --install     # 땅 장식(풀포기·자갈·여울의 늪 수풀 …)·소나무·거점 깃발 → assets/graphics/map/scenery.png, scenery.json
 python3 ../tools/unit3d/scene_props3d.py                        # 3D 모델 장면 소품 → ../assets_candidate/tiles (--review: 옛 그림과 비교, 이름을 주면 그 소품만, --out=경로; 그 뒤 build_extra.py)
 python3 tools/pixelize_tree.py [이름 …]                         # 장면 나무: codex 그림(../assets_candidate/tiles/sources/*.png) → 3D 렌더와 같은 크기·피벗의 도트 (값은 sources/trees.json; 그 뒤 build_extra.py)
 python3 tools/doteditor/tools/civ3d.py official wounded …       # 장면 사람 시트(3D 변환, tools/unit3d/scene_people.py)

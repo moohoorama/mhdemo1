@@ -76,6 +76,10 @@ func surface(t byte) string {
 		return "grass"
 	case 'd':
 		return "waste"
+	case 's':
+		return "ford"
+	case 'l':
+		return "plain"
 	case 'i':
 		return "floor"
 	case 'f':
@@ -92,7 +96,7 @@ func surface(t byte) string {
 var underlay = map[string]bool{"patch": true, "tone": true, "stain": true, "shade": true}
 
 // clumped lists the groups that gather in a few places instead of spreading evenly.
-var clumped = map[string]bool{"flower": true, "mushroom": true, "bush": true}
+var clumped = map[string]bool{"flower": true, "mushroom": true, "bush": true, "marsh": true}
 
 // keepOff lists the glyphs ground decoration stays a tile away from: water, walls, cliffs, bridges and the
 // strongpoints, whose edges and sprites decoration would run into.

@@ -29,6 +29,14 @@
     "m": {
      "Factor": 0.9,
      "Cost": 0
+    },
+    "l": {
+     "Factor": 1,
+     "Cost": 1
+    },
+    "s": {
+     "Factor": 0.9,
+     "Cost": 2
     }
    },
    "Structure": {
@@ -108,6 +116,14 @@
     "m": {
      "Factor": 1.2,
      "Cost": 0
+    },
+    "l": {
+     "Factor": 1,
+     "Cost": 1
+    },
+    "s": {
+     "Factor": 1,
+     "Cost": 1
     }
    },
    "Structure": {
@@ -187,6 +203,14 @@
     "m": {
      "Factor": 1.1,
      "Cost": 0
+    },
+    "l": {
+     "Factor": 1,
+     "Cost": 1
+    },
+    "s": {
+     "Factor": 1,
+     "Cost": 1
     }
    },
    "Structure": {
@@ -266,6 +290,14 @@
     "m": {
      "Factor": 1,
      "Cost": 0
+    },
+    "l": {
+     "Factor": 1,
+     "Cost": 1
+    },
+    "s": {
+     "Factor": 1,
+     "Cost": 1
     }
    },
    "Structure": {
@@ -345,6 +377,14 @@
     "m": {
      "Factor": 0.8,
      "Cost": 0
+    },
+    "l": {
+     "Factor": 1,
+     "Cost": 1
+    },
+    "s": {
+     "Factor": 1,
+     "Cost": 1
     }
    },
    "Structure": {
@@ -424,6 +464,14 @@
     "m": {
      "Factor": 1.1,
      "Cost": 0
+    },
+    "l": {
+     "Factor": 1,
+     "Cost": 1
+    },
+    "s": {
+     "Factor": 1,
+     "Cost": 1
     }
    },
    "Structure": {

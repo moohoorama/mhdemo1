@@ -178,12 +178,12 @@
   "g": {
    "Name": "초원",
    "Glyph": ".",
-   "Surface": 1
+   "Surface": 2
   },
   "d": {
    "Name": "황무지",
    "Glyph": "d",
-   "Surface": 2
+   "Surface": 4
   },
   "w": {
    "Name": "물",
@@ -194,49 +194,59 @@
   "c": {
    "Name": "성벽",
    "Glyph": "c",
-   "Surface": 1
+   "Surface": 2
   },
   "i": {
    "Name": "성내",
    "Glyph": "i",
-   "Surface": 2
+   "Surface": 4
   },
   "h": {
    "Name": "절벽",
    "Glyph": "h",
-   "Surface": 2
+   "Surface": 4
   },
   "m": {
    "Name": "성문",
    "Glyph": "m",
+   "Surface": 2
+  },
+  "s": {
+   "Name": "여울",
+   "Glyph": "s",
    "Surface": 1
+  },
+  "l": {
+   "Name": "평지",
+   "Glyph": "l",
+   "Surface": 3
   }
  },
  "Structures": {
   "t": {
    "Name": "나무",
    "Glyph": "f",
-   "Grounds": "gd",
+   "Grounds": "gdsl",
    "Ambush": true
   },
   "v": {
    "Name": "마을",
    "Glyph": "v",
-   "Grounds": "gdi",
+   "Grounds": "gdil",
    "RestHP": 10,
    "RestMP": 2
   },
   "k": {
    "Name": "주둔지",
    "Glyph": "k",
-   "Grounds": "gdi",
+   "Grounds": "gdil",
    "RestHP": 10,
    "RestMP": 2
   },
   "o": {
    "Name": "성",
    "Glyph": "o",
-   "Grounds": "gi",
+   "Grounds": "gil",
    "Castle": true,
    "RestHP": 20,
    "RestMP": 3
@@ -257,7 +267,7 @@
   "z": {
    "Name": "울타리",
    "Glyph": "z",
-   "Grounds": "gdi"
+   "Grounds": "gdisl"
   }
  },
  "States": {

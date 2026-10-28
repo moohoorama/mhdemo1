@@ -55,6 +55,7 @@ type Field struct {
 	waterFX                      []scenemap.Ripple
 	banks                        []drawItem    // a battle map's water banks, see makeBanks
 	afloat                       *ebiten.Image // viewport scratch where a boat and its crew are put together
+	wading                       *ebiten.Image // viewport scratch where a unit standing in a ford is put together
 	scenePieces                  []scenePiece  // a format 2 scene map's standing layer, see makeScenePlan
 	clockMS                      float64
 
@@ -561,11 +562,12 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		x += u.shakeOffset()
 		ground := f.groundLift(u.u, u.v)
 		lift := u.lift + ground
+		f.updateWade(u)
 		if u.visible() {
 			anim, frame := f.pose(u)
 			sh := Sprite{u.art.Shadow(u.dir, anim, frame), u.art.ShadowPivot[0], u.art.ShadowPivot[1]}
 			sop := &ebiten.DrawImageOptions{Blend: maxBlend}
-			sop.ColorScale.ScaleAlpha(float32(1 - u.leaving()))
+			sop.ColorScale.ScaleAlpha(float32((1 - u.leaving()) * (1 - .7*u.wade)))
 			f.blit(f.shadows, sh, x, y-lift, sop)
 			if boat, k := f.boat(u); k > 0 {
 				bop := &ebiten.DrawImageOptions{Blend: maxBlend}
@@ -737,6 +739,8 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost float32) {
 	s := Sprite{u.art.Frame(u.dir, anim, frame), u.art.Pivot[0], u.art.Pivot[1]}
 	if boat, k := f.boat(u); k > 0 {
 		f.drawAfloat(u, s, boat, k, x, y, op)
+	} else if u.wade > .01 {
+		f.drawWading(u, s, x, y, op)
 	} else {
 		f.blit(f.Canvas, s, x, y, op)
 	}
