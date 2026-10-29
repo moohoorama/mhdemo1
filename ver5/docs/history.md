@@ -5,6 +5,20 @@
 
 ---
 
+## 2026-10-29 전투맵 땅은 반 칸마다 합성한 바닥을 깊이만큼 내려 그리고, 높은 칸 앞에 벽을 세운다
+
+- 결정: 전투맵 땅을 맵 전체 한 장으로 굽지 않고, 반 칸마다 땅 조각·여울 돌을 32×16 한 장으로 합성(그리는 목록을 열쇠로 캐시)해 깊이(땅 0, 여울 5, 물 9)만큼 내려 먼 칸부터 그린다. 그다음 뒤 칸이 높은 변에만 뒤 칸 깊이부터 이 칸 깊이까지 벽을 먼 칸부터 그린다. 경계 번짐은 같은 깊이끼리만, 벽은 옆 칸 바닥보다 깊은 줄을 그 칸 마름모 위에서 지운다. 벽·여울 돌 원본은 128×128 틀, 반 칸 중심 (64, 64) · 이유: 층 분해(https://claude.ai/artifact/6Th8NszPxW4r6uTSDHVwz9)로 물 덧칠이 물가 번짐을 지우고, 모든 둑 조각이 위쪽을 땅 높이로 가정해 여울·물 사이 턱과 여울 뒤 경계가 5px 올라가며, 둑 조각이 먼 칸부터 그려지지 않음이 드러남. 사용자 "타일방식으로 매번 출력", "128x128 png… 64x64가 기준점", "합칠만한건 없으려나", "가리면 안될걸 가릴까봐 걱정", 시험 렌더러(https://claude.ai/artifact/3UWtDaSk9hvBimRcHCvGsB)를 보고 "훨씬 자연스러워졌네", "'같은 높이끼리만'이 맞을거 같고. 벽 가림 처리 켜는것도 맞고" · 영향받는 문서: plan-tile-floors.md(새 파일), plan-naval-water.md, data-map.md
+- `internal/gui/field_floors.go`(새 파일): `floorTile`, `makeFloors`, `floorPicture`, `wallsOf`, `drawFloors`, `drawWalls`. `internal/gui/field.go`: 전투맵은 `f.ground`·`f.clip`을 굽지 않음, 그리는 순서 바닥 → 성 바닥 → 벽 → 장식 → 물 반짝임 → 다리. `internal/gui/field_water.go`: `makeBanks` 삭제. `internal/gui/field_native.go`: `drawNativeWater`는 전투맵이 아닌 맵만. `internal/gui/field_scenery.go`: 장식·물결을 놓인 칸 깊이만큼 내리고 더 가까운 높은 바닥에 덮이면 뺌(`lowerOnFloor`). `internal/content/map_graphics.go`: `GroundLevel`
+- `../assets_candidate/tools/gen_banks.py`: `wall_{grass,soil,stone,weir}_{nw,ne}_{위}{아래}_{옆 칸 깊이}`, 128 틀의 `ford_bed_*`. 옛 `bank_*`·`ford_*_{grass,soil}`·`ford_back_*` 삭제. `tools/build_extra.py`: `"frame": 128` 조각은 투명 테두리를 잘라 묶고 기준점을 계산
+- 확인: `_uidemo-vm -ui rivercross`·`rivercross-b07`·`naval` 캡처, `go test ./internal/gui/`
+
+## 2026-10-29 다리 밑으로 둑이 잇고 교각이 서며, 여울은 땅과 물 사이 높이의 돌바닥
+
+- 결정: 낮은 물의 건넘목을 그림으로 잇는다. 다리는 땅 높이 그대로 두되 다리 밑에도 둑(끝은 돌 축대)을 잇고 옆판·교각·난간을 단다. 여울은 땅보다 5px 낮고 물보다 4px 높은, 맑은 얕은 물 아래 돌바닥으로, 땅 쪽에 흙 턱, 아래쪽 물 쪽에 울퉁불퉁한 돌 사이로 물이 흘러내리는 턱, 뒤쪽 물과는 물빛이 번져 섞임 · 이유: 사용자 "물타일이 내려가면서 절벽생긴게, 다리등에는 적용되지 않으니까 좀 어색해", 시안 네 가지 중 "1안이 훨씬 좋은거같아", 여울은 "평지와 강의 중간 정도… 돌이랑 진흙이랑 징검돌다리 이런거 있어서 살짝 솟았다는 느낌", "물 담그기는 냅두고", 첫 구현을 보고 "여울이랑 물이 너무 칼같이 구별", "땅에 가깝게 높아보여", "울퉁불퉁한 돌이 있어서 거기로 물이 흘러내린다는 느낌", "흙탕물처럼 보여서", 강둑 절벽이 여울과 만나는 곳에서 "b가 a를 끊어버리잖아", 층 분해 페이지(https://claude.ai/artifact/6Th8NszPxW4r6uTSDHVwz9)를 보고 "3번이 덮어버리면서", "7번 턱의 높이가 여울의 높이-물이 높이", "11이 밑에가 깍여있어", "위쪽 찍고 그 다음에 아래쪽" · 영향받는 문서: plan-naval-water.md, data-map.md
+- `../assets_candidate/tools/gen_banks.py`: `bank_*_stone`·`bank_*_ford`·`ford_*_{grass,soil}`·`ford_back_*`·`ford_bed_0~7`·`bridge_edge_{se,sw}`·`bridge_rail_{nw,ne}`, 옆 칸 여울로 넘어가는 부분은 5px만 남는 강둑 `bank_*_cutford`. `tools/build_extra.py`로 `extra.png`에 묶음
+- `internal/gui/field_water.go`: `fordDepth`, `makeBanks`가 다리 칸·여울 칸에도 면을 깖, `bridgeEdges`, 여울 칸에는 배를 띄우지 않음. `internal/gui/field.go`: 여울 칸 `Lift` −5, 다리는 둑 다음에 그림(`bridges`). `internal/gui/field_native.go`: 다리를 `bridges`로. 앞에 여울이 있는 물 칸엔 어두운 선을 긋지 않음, 둑 조각을 먼 칸부터(같은 칸에선 턱 → 절벽 → 선) 그림, 여울 턱은 옆 칸이 땅일 때만 자름, `Field.Layers`(디버그 층 스위치). `internal/gui/field_native.go`: 낮은 물 위에도 여울 쪽 경계 번짐(`content.FordTile`)은 다시 얹음 `internal/gui/field_wade.go`: −5에서도 발이 잠김
+- 확인: `_uidemo-vm -ui rivercross`(폭 2칸 강에 다리·여울)와 `-ui rivercross-b07`(B07 맵) 캡처
+
 ## 2026-10-29 플레이어 AI는 기대전투력으로 고르고, 쓰러질 수 있는 칸만 피하며, 목표 구역으로 간다
 
 - 결정: 플레이어 유닛(자동 진행·측정)은 기대전투력 `max(공격, 지력) × (r^0.5 + 1)/2`(퇴각 0, 군주 ×5, 격파 대상 ×2)의 아군 합 − 적 합 증가로 공격·책략·회복·도구·버프·이동을 함께 매긴다. 군주와 장수는 쓰러질 수 있는 칸만 피한다. 승리 목표가 보내는 구역으로 남은 라운드에 맞춰 가고, 치르고 남는 일기토를 연다. 적·동맹 AI는 그대로. 정책 `greedy-12` · 이유: 옛 점수는 피해량만 보아 버프를 안 쓰고, 회복 점수(회복량 × 0.85)가 다가가기(40점 안팎)를 늘 이겨 호로관에서 궁수 둘 앞에 18라운드를 머물렀고, 도달 목표를 몰라 B07을 늘 졌다. 사용자 "HP비율^n × 공격력(문관은 정신력)을 기대전투력이라 하고… 최대화", "(hp비율^n+m)/(m+1) 같은게 더 좋지 않아?", "3번에서 난 군주만 두는게 아니라 장수도", "몇가지 안으로 시뮬레이션 돌려봐", "d안+목표 이게 맞다는 거였어. 즉 바꾸라는 거" · 영향받는 문서: system-architecture.md, logic-battle-event.md, stage_lv_balance.md, system-save.md

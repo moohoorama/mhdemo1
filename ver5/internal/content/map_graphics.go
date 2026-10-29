@@ -117,3 +117,14 @@ type Fragment struct {
 // groundSets are the tileset pictures of the surface levels from the bottom (water, ford, grass, plain, soil): the whole
 // tile at the id, the edge where the level lies over the ones below at id + corner mask (1..14).
 var groundSets = [...]int{0, 70, 23, 86, 8}
+
+// GroundLevel is the surface level (0 water, 1 ford, 2 grass, 3 plain, 4 soil) a ground layer of a Fragment draws:
+// 0 is the water, the others a level's whole tile or its edge.
+func GroundLevel(id int) int {
+	for k := len(groundSets) - 1; k > 0; k-- {
+		if id >= groundSets[k] && id <= groundSets[k]+14 {
+			return k
+		}
+	}
+	return 0
+}

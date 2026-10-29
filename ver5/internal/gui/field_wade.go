@@ -21,7 +21,7 @@ func wadeDepth(u *unitVis) float64 {
 // walks onto the ford and comes up as it walks off.
 func (f *Field) updateWade(u *unitVis) {
 	target := 0.0
-	if u.lift == 0 && f.Tile(int(math.Round(u.u)), int(math.Round(u.v))) == 's' {
+	if u.lift <= 0 && u.lift >= -fordDepth && f.Tile(int(math.Round(u.u)), int(math.Round(u.v))) == 's' {
 		target = 1
 	}
 	u.wade += math.Max(-.08, math.Min(.08, target-u.wade))

@@ -54,10 +54,12 @@ type Field struct {
 	treeShadow                   *ebiten.Image          // tree shadows while the field is built, then folded into decor
 	cliffTop                     *ebiten.Image          // baked decoration of the cliff tops, drawn with each cliff block
 	waterFX                      []scenemap.Ripple
-	banks                        []drawItem    // a battle map's water banks, see makeBanks
-	afloat                       *ebiten.Image // viewport scratch where a boat and its crew are put together
-	wading                       *ebiten.Image // viewport scratch where a unit standing in a ford is put together
-	scenePieces                  []scenePiece  // a format 2 scene map's standing layer, see makeScenePlan
+	floorTiles                   []floorTile     // a battle map's small tiles far to near, see makeFloors
+	bridges                      []drawItem      // bridge decks, over the walls under their ends
+	Layers                       map[string]bool // debug: when set, only these layers of a native map are drawn, see shows
+	afloat                       *ebiten.Image   // viewport scratch where a boat and its crew are put together
+	wading                       *ebiten.Image   // viewport scratch where a unit standing in a ford is put together
+	scenePieces                  []scenePiece    // a format 2 scene map's standing layer, see makeScenePlan
 	clockMS                      float64
 
 	// beatShadows are the ground shadows of the props a story scene's beats put down (canvas point, shadow):
@@ -77,7 +79,10 @@ var maxBlend = ebiten.Blend{
 func NewField(a *Assets, m *MapArt) *Field {
 	w, h := (m.Bounds.Dx()+2*margin)*K, (m.Bounds.Dy()+2*margin)*K
 	f := &Field{worldSize: image.Pt(w, h), A: a, Map: m, OriginX: float64(margin - m.Bounds.Min.X), OriginY: float64(margin - m.Bounds.Min.Y),
-		clip: ebiten.NewImage(w, h), shadows: ebiten.NewImage(w, h), Canvas: ebiten.NewImage(w, h), ShowExterior: m.Scene}
+		shadows: ebiten.NewImage(w, h), Canvas: ebiten.NewImage(w, h), ShowExterior: m.Scene}
+	if !m.SunkWater {
+		f.clip = ebiten.NewImage(w, h) // a battle map draws its floors tile by tile (makeFloors), no map-wide ground
+	}
 	if m.SceneMap != nil {
 		if err := f.makeScenePlan(); err != nil {
 			panic(err) // the map loaded, so its plan builds: LoadAssets builds every format 2 map once
@@ -86,6 +91,9 @@ func NewField(a *Assets, m *MapArt) *Field {
 	}
 	water := a.Animations["water"].Frames
 	for i := range f.ground {
+		if m.SunkWater {
+			break
+		}
 		if m.Native && i > 0 {
 			f.ground[i] = f.ground[0]
 			continue
@@ -129,11 +137,13 @@ func NewField(a *Assets, m *MapArt) *Field {
 		f.eachProp(true, func(_ string, s Sprite, x, y float64) { f.blit(g, s, x, y, nil) })
 		f.ground[i] = g
 	}
-	f.clip.DrawImage(f.ground[0], nil)
+	if f.clip != nil {
+		f.clip.DrawImage(f.ground[0], nil)
+	}
 	f.makeHighlandCeiling()
 	if m.Native {
 		f.makeNativeFloors()
-		f.makeBanks()
+		f.makeFloors()
 		f.makeExterior()
 		f.makeOutside()
 		if a.Scenery != nil {
@@ -315,6 +325,9 @@ func (f *Field) cellPath(p *vector.Path, u, v int, lift float64) {
 	p.Close()
 }
 
+// shows reports whether debug layer name is drawn: always, unless Layers picks some.
+func (f *Field) shows(name string) bool { return f.Layers == nil || f.Layers[name] }
+
 func (f *Field) Inside(u, v int) bool { return u >= 0 && v >= 0 && u < f.Map.W && v < f.Map.H }
 
 func (f *Field) Tile(u, v int) byte {
@@ -330,6 +343,8 @@ func (f *Field) Lift(u, v int) float64 {
 		return float64(f.A.Rise) * f.artScale()
 	} else if t == '~' && f.Map.SunkWater {
 		return -sunkDepth
+	} else if t == 's' && f.Map.SunkWater {
+		return -fordDepth
 	}
 	return 0
 }
@@ -415,34 +430,52 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	c := f.Canvas
 	f.sceneryLayer = false
 	f.clockMS = clockMS
-	if f.Map.Scene {
+	if f.Map.Scene || f.Layers != nil {
 		c.Clear() // a story scene: what lies past the picture is the scene's backdrop (or the ground colour)
 	} else {
 		c.Fill(fieldGround)
 	}
 	water := f.A.Animations["water"]
-	if f.Map.Native && f.renderZoom > 0 {
+	if f.Map.Native && f.renderZoom > 0 && f.shows("background") {
 		f.renderBackground(c)
 	}
-	groundOp := &ebiten.DrawImageOptions{}
-	f.renderOp(c, groundOp)
-	c.DrawImage(f.ground[int(clockMS/float64(water.MS))%len(f.ground)], groundOp)
+	if f.shows("ground") {
+		if f.Map.SunkWater {
+			f.drawFloors(c, clockMS)
+		} else {
+			groundOp := &ebiten.DrawImageOptions{}
+			f.renderOp(c, groundOp)
+			c.DrawImage(f.ground[int(clockMS/float64(water.MS))%len(f.ground)], groundOp)
+		}
+	}
 	if f.Map.Native {
-		f.drawNativeWater(c, clockMS)
+		if f.shows("water") && !f.Map.SunkWater {
+			f.drawNativeWater(c, clockMS)
+		}
 		for _, it := range f.nativeGround {
-			if f.DrawBounds.Empty() || it.rect.Overlaps(f.DrawBounds) {
+			if (f.DrawBounds.Empty() || it.rect.Overlaps(f.DrawBounds)) && f.shows("floors") {
 				it.draw()
 			}
+		}
+		if f.shows("walls") {
+			f.drawWalls(c)
 		}
 		if f.decor != nil {
-			f.drawBaked(c, f.decor)
-			f.drawWaterFX()
+			if f.shows("decor") {
+				f.drawBaked(c, f.decor)
+			}
+			if f.shows("waterfx") {
+				f.drawWaterFX()
+			}
 		}
-		for _, it := range f.banks {
+		for _, it := range f.bridges {
 			if f.DrawBounds.Empty() || it.rect.Overlaps(f.DrawBounds) {
 				it.draw()
 			}
 		}
+	}
+	if !f.shows("objects") {
+		return
 	}
 	// Shade the out-of-battle ground only; scenery and units are drawn afterward.
 	if f.exterior != nil && !f.ShowExterior {
@@ -601,9 +634,11 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		items = append(items, it)
 	}
 	// one layer so overlapping shadows do not darken each other, kept on the ground
-	clipOp := &ebiten.DrawImageOptions{Blend: ebiten.BlendDestinationIn}
-	f.renderOp(f.shadows, clipOp)
-	f.shadows.DrawImage(f.clip, clipOp)
+	if f.clip != nil {
+		clipOp := &ebiten.DrawImageOptions{Blend: ebiten.BlendDestinationIn}
+		f.renderOp(f.shadows, clipOp)
+		f.shadows.DrawImage(f.clip, clipOp)
+	}
 	c.DrawImage(f.shadows, nil)
 	for _, m := range f.groundMarks {
 		f.blit(c, m.s, m.x, m.y, nil)

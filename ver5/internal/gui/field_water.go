@@ -3,7 +3,6 @@ package gui
 import (
 	"image"
 	"math"
-	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
@@ -12,59 +11,41 @@ import (
 // sunkDepth is how many canvas pixels a battle map's water lies below the ground (docs/plan-naval-water.md).
 const sunkDepth = 9
 
+// fordDepth is how far a battle map's ford, a stony bed under shallow water, lies below the ground: about halfway
+// down to the water (docs/plan-tile-floors.md).
+const fordDepth = 5
+
 // wet reports whether small tile glyph t lets water through: water, and the water under a bridge.
 func wet(t byte) bool { return t == '~' || t == 'b' }
 
-// makeBanks lays the earth faces of a sunk water's banks: on a water small tile's NW and NE edges where the
-// neighbour is land, cut along the tile's own lower edge on that side when the land goes on there; and a dark
-// line on its SE and SW edges where the land in front hides the lower water. The water texture repeats without
-// seams, so water drawn at ground height under these faces looks sunk.
-func (f *Field) makeBanks() {
+// bridgeEdges are the side pieces of bridge small tile (x, y) on a battle map's sunk water: on each edge over open
+// water a rail, and on a front edge the deck's side beam and a pier down to the water. A broken bridge has none.
+func (f *Field) bridgeEdges(x, y int, at image.Point, px, py float64) []drawItem {
 	if !f.Map.SunkWater {
-		return
+		return nil
 	}
-	lip := func(t byte) string {
-		if strings.IndexByte("dichm", t) >= 0 {
-			return "soil"
+	var items []drawItem
+	for _, e := range []struct {
+		name string
+		d    [2]int
+	}{{"bridge_rail_nw", [2]int{-1, 0}}, {"bridge_rail_ne", [2]int{0, -1}}, {"bridge_edge_se", [2]int{1, 0}}, {"bridge_edge_sw", [2]int{0, 1}}} {
+		if f.small(x+e.d[0], y+e.d[1]) != '~' {
+			continue
 		}
-		return "grass"
+		s := f.A.Props[e.name].Sprite
+		items = append(items, drawItem{rect: f.mapRect(s, px, py), draw: func() {
+			if f.look(at.X, at.Y) != "broken" && f.shows("bridge-edge") {
+				f.blitMap(f.Canvas, s, px, py, nil)
+			}
+		}})
 	}
-	f.eachSmall(func(x, y int, t byte, px, py float64) {
-		if t != '~' {
-			return
-		}
-		var names []string
-		for _, e := range []struct {
-			side        string
-			back, side2 [2]int // the neighbour behind the edge, and the one beside it on the same side
-		}{{"nw", [2]int{-1, 0}, [2]int{0, 1}}, {"ne", [2]int{0, -1}, [2]int{1, 0}}} {
-			n := f.small(x+e.back[0], y+e.back[1])
-			if wet(n) {
-				continue
-			}
-			name := "bank_" + e.side + "_" + lip(n)
-			if !wet(f.small(x+e.side2[0], y+e.side2[1])) {
-				name += "_cut"
-			}
-			names = append(names, name)
-		}
-		if !wet(f.small(x+1, y)) {
-			names = append(names, "bank_line_se")
-		}
-		if !wet(f.small(x, y+1)) {
-			names = append(names, "bank_line_sw")
-		}
-		for _, name := range names {
-			s := f.A.Props[name].Sprite
-			f.banks = append(f.banks, drawItem{rect: f.mapRect(s, px, py), draw: func() { f.blitMap(f.Canvas, s, px, py, nil) }})
-		}
-	})
+	return items
 }
 
 // boat is the boat a unit stands in and how much of it shows (0 none, 1 whole): on sunk water, fading in
 // with the unit's drop as it steps off the bank.
 func (f *Field) boat(u *unitVis) (string, float64) {
-	if !f.Map.SunkWater || u.lift >= 0 || u.actor {
+	if !f.Map.SunkWater || u.lift >= 0 || u.actor || f.Tile(int(math.Round(u.u)), int(math.Round(u.v))) == 's' {
 		return "", 0
 	}
 	switch u.dir {

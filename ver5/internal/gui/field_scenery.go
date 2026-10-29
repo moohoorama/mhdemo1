@@ -7,6 +7,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -166,6 +167,10 @@ func (f *Field) makeScenery() {
 		mx, my := f.mapCenter((float64(x)+.5)/2-.5, (float64(y)+.5)/2-.5)
 		return mx * K, my * K
 	}, float64(f.A.CliffRise))
+	if f.Map.SunkWater { // lowered with the floor they lie on (docs/plan-tile-floors.md)
+		stamps = slices.DeleteFunc(stamps, func(st scenemap.Stamp) bool { return !f.lowerOnFloor(&st.X, &st.Y) })
+		ripples = slices.DeleteFunc(ripples, func(r scenemap.Ripple) bool { return !f.lowerOnFloor(&r.X, &r.Y) })
+	}
 	f.waterFX = ripples
 	for _, st := range stamps {
 		s := f.A.Scenery.sprites[st.Name]
@@ -180,6 +185,27 @@ func (f *Field) makeScenery() {
 		}
 		dst.DrawImage(s.Image, op)
 	}
+}
+
+// lowerOnFloor moves canvas point (x, y), placed at ground height, down by the depth of the battle map small tile
+// under it, and reports whether it still shows there: false where a nearer, higher floor covers the lowered point.
+func (f *Field) lowerOnFloor(x, y *float64) bool {
+	at := func(x, y float64) (int, int) { // the small tile whose ground diamond holds canvas point (x, y)
+		a, b := (x/K-f.OriginX)/8, (y/K-f.OriginY-4)/4 // x - y and x + y in small tiles
+		return int(math.Floor((a+b)/2 + .5)), int(math.Floor((b-a)/2 + .5))
+	}
+	sx, sy := at(*x, *y)
+	d := depthOf(f.small(sx, sy))
+	*y += float64(d)
+	for _, dd := range []int{0, fordDepth} {
+		if dd >= d {
+			break
+		}
+		if nx, ny := at(*x, *y-float64(dd)); depthOf(f.small(nx, ny)) == dd && nx+ny > sx+sy {
+			return false
+		}
+	}
+	return true
 }
 
 // drawWaterFX draws the looping twinkles and ripples that are in view over the water.

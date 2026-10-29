@@ -50,7 +50,8 @@ func (f *Field) smallBlock(x, y int) string {
 	return blockVariant(t, mask, x, y)
 }
 
-// Floors and bridges must be drawn after animated water so wet atlas fragments cannot cover them.
+// Floors and bridges must be drawn after animated water so wet atlas fragments cannot cover them; bridges go
+// after the banks too, which run on under their ends.
 func (f *Field) makeNativeFloors() {
 	f.eachSmall(func(x, y int, t byte, px, py float64) {
 		if t == 'i' || t == 'm' || t == 'g' {
@@ -68,7 +69,12 @@ func (f *Field) makeNativeFloors() {
 			}
 			s := f.A.Props[name].Sprite
 			at := image.Pt(content.FloorHalf(x), content.FloorHalf(y))
-			f.nativeGround = append(f.nativeGround, drawItem{rect: f.mapRect(s, px, py), draw: func() { f.nativeProp(f.Canvas, f.bridgeSprite(name, at, s), px, py) }})
+			f.bridges = append(f.bridges, drawItem{rect: f.mapRect(s, px, py), draw: func() {
+				if f.shows("bridge-deck") {
+					f.nativeProp(f.Canvas, f.bridgeSprite(name, at, s), px, py)
+				}
+			}})
+			f.bridges = append(f.bridges, f.bridgeEdges(x, y, at, px, py)...)
 		}
 	})
 }
@@ -197,8 +203,6 @@ func (f *Field) drawNativeWater(dst *ebiten.Image, ms float64) {
 		for _, id := range t.Layers {
 			if id == 0 {
 				id = frame
-			} else if f.Map.SunkWater {
-				continue // no shore blend: the banks (makeBanks) part water from land
 			}
 			f.blitMap(dst, f.A.Tiles[id], f.OriginX+float64(t.X), f.OriginY+float64(t.Y), nil)
 		}

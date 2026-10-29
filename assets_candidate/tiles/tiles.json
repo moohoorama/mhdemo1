@@ -7128,136 +7128,6 @@
    ],
    "layer": "object"
   },
-  "bank_nw_grass": {
-   "file": "tiles/bank_nw_grass.png",
-   "size": [
-    16,
-    19
-   ],
-   "pivot": [
-    16,
-    8
-   ],
-   "layer": "ground",
-   "note": "battle-map water banks (gen_banks.py)"
-  },
-  "bank_nw_grass_cut": {
-   "file": "tiles/bank_nw_grass_cut.png",
-   "size": [
-    16,
-    19
-   ],
-   "pivot": [
-    16,
-    8
-   ],
-   "layer": "ground",
-   "note": "battle-map water banks (gen_banks.py)"
-  },
-  "bank_nw_soil": {
-   "file": "tiles/bank_nw_soil.png",
-   "size": [
-    16,
-    19
-   ],
-   "pivot": [
-    16,
-    8
-   ],
-   "layer": "ground",
-   "note": "battle-map water banks (gen_banks.py)"
-  },
-  "bank_nw_soil_cut": {
-   "file": "tiles/bank_nw_soil_cut.png",
-   "size": [
-    16,
-    19
-   ],
-   "pivot": [
-    16,
-    8
-   ],
-   "layer": "ground",
-   "note": "battle-map water banks (gen_banks.py)"
-  },
-  "bank_ne_grass": {
-   "file": "tiles/bank_ne_grass.png",
-   "size": [
-    16,
-    19
-   ],
-   "pivot": [
-    0,
-    8
-   ],
-   "layer": "ground",
-   "note": "battle-map water banks (gen_banks.py)"
-  },
-  "bank_ne_grass_cut": {
-   "file": "tiles/bank_ne_grass_cut.png",
-   "size": [
-    16,
-    19
-   ],
-   "pivot": [
-    0,
-    8
-   ],
-   "layer": "ground",
-   "note": "battle-map water banks (gen_banks.py)"
-  },
-  "bank_ne_soil": {
-   "file": "tiles/bank_ne_soil.png",
-   "size": [
-    16,
-    19
-   ],
-   "pivot": [
-    0,
-    8
-   ],
-   "layer": "ground",
-   "note": "battle-map water banks (gen_banks.py)"
-  },
-  "bank_ne_soil_cut": {
-   "file": "tiles/bank_ne_soil_cut.png",
-   "size": [
-    16,
-    19
-   ],
-   "pivot": [
-    0,
-    8
-   ],
-   "layer": "ground",
-   "note": "battle-map water banks (gen_banks.py)"
-  },
-  "bank_line_se": {
-   "file": "tiles/bank_line_se.png",
-   "size": [
-    16,
-    9
-   ],
-   "pivot": [
-    0,
-    0
-   ],
-   "layer": "ground",
-   "note": "battle-map water banks (gen_banks.py)"
-  },
-  "bank_line_sw": {
-   "file": "tiles/bank_line_sw.png",
-   "size": [
-    16,
-    9
-   ],
-   "pivot": [
-    16,
-    0
-   ],
-   "layer": "ground",
-   "note": "battle-map water banks (gen_banks.py)"
-  },
   "boat_u": {
    "file": "tiles/boat_u.png",
    "size": [
@@ -7672,6 +7542,674 @@
    "layer": "object",
    "scale": "battle",
    "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "bridge_rail_nw": {
+   "file": "tiles/bridge_rail_nw.png",
+   "size": [
+    16,
+    32
+   ],
+   "pivot": [
+    16,
+    13
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)"
+  },
+  "bridge_rail_ne": {
+   "file": "tiles/bridge_rail_ne.png",
+   "size": [
+    16,
+    32
+   ],
+   "pivot": [
+    0,
+    13
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)"
+  },
+  "bridge_edge_se": {
+   "file": "tiles/bridge_edge_se.png",
+   "size": [
+    16,
+    32
+   ],
+   "pivot": [
+    0,
+    13
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)"
+  },
+  "bridge_edge_sw": {
+   "file": "tiles/bridge_edge_sw.png",
+   "size": [
+    16,
+    32
+   ],
+   "pivot": [
+    16,
+    13
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)"
+  },
+  "ford_bed_0": {
+   "file": "tiles/ford_bed_0.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "ford_bed_1": {
+   "file": "tiles/ford_bed_1.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "ford_bed_2": {
+   "file": "tiles/ford_bed_2.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "ford_bed_3": {
+   "file": "tiles/ford_bed_3.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "ford_bed_4": {
+   "file": "tiles/ford_bed_4.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "ford_bed_5": {
+   "file": "tiles/ford_bed_5.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "ford_bed_6": {
+   "file": "tiles/ford_bed_6.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "ford_bed_7": {
+   "file": "tiles/ford_bed_7.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_grass_nw_05_0": {
+   "file": "tiles/wall_grass_nw_05_0.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_grass_nw_05_5": {
+   "file": "tiles/wall_grass_nw_05_5.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_grass_nw_05_9": {
+   "file": "tiles/wall_grass_nw_05_9.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_grass_ne_05_0": {
+   "file": "tiles/wall_grass_ne_05_0.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_grass_ne_05_5": {
+   "file": "tiles/wall_grass_ne_05_5.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_grass_ne_05_9": {
+   "file": "tiles/wall_grass_ne_05_9.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_grass_nw_09_0": {
+   "file": "tiles/wall_grass_nw_09_0.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_grass_nw_09_5": {
+   "file": "tiles/wall_grass_nw_09_5.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_grass_nw_09_9": {
+   "file": "tiles/wall_grass_nw_09_9.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_grass_ne_09_0": {
+   "file": "tiles/wall_grass_ne_09_0.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_grass_ne_09_5": {
+   "file": "tiles/wall_grass_ne_09_5.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_grass_ne_09_9": {
+   "file": "tiles/wall_grass_ne_09_9.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_soil_nw_05_0": {
+   "file": "tiles/wall_soil_nw_05_0.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_soil_nw_05_5": {
+   "file": "tiles/wall_soil_nw_05_5.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_soil_nw_05_9": {
+   "file": "tiles/wall_soil_nw_05_9.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_soil_ne_05_0": {
+   "file": "tiles/wall_soil_ne_05_0.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_soil_ne_05_5": {
+   "file": "tiles/wall_soil_ne_05_5.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_soil_ne_05_9": {
+   "file": "tiles/wall_soil_ne_05_9.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_soil_nw_09_0": {
+   "file": "tiles/wall_soil_nw_09_0.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_soil_nw_09_5": {
+   "file": "tiles/wall_soil_nw_09_5.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_soil_nw_09_9": {
+   "file": "tiles/wall_soil_nw_09_9.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_soil_ne_09_0": {
+   "file": "tiles/wall_soil_ne_09_0.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_soil_ne_09_5": {
+   "file": "tiles/wall_soil_ne_09_5.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_soil_ne_09_9": {
+   "file": "tiles/wall_soil_ne_09_9.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_stone_nw_09_0": {
+   "file": "tiles/wall_stone_nw_09_0.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_stone_nw_09_5": {
+   "file": "tiles/wall_stone_nw_09_5.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_stone_nw_09_9": {
+   "file": "tiles/wall_stone_nw_09_9.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_stone_ne_09_0": {
+   "file": "tiles/wall_stone_ne_09_0.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_stone_ne_09_5": {
+   "file": "tiles/wall_stone_ne_09_5.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_stone_ne_09_9": {
+   "file": "tiles/wall_stone_ne_09_9.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_weir_nw_59_0": {
+   "file": "tiles/wall_weir_nw_59_0.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_weir_nw_59_5": {
+   "file": "tiles/wall_weir_nw_59_5.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_weir_nw_59_9": {
+   "file": "tiles/wall_weir_nw_59_9.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_weir_ne_59_0": {
+   "file": "tiles/wall_weir_ne_59_0.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_weir_ne_59_5": {
+   "file": "tiles/wall_weir_ne_59_5.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
+  },
+  "wall_weir_ne_59_9": {
+   "file": "tiles/wall_weir_ne_59_9.png",
+   "size": [
+    128,
+    128
+   ],
+   "pivot": [
+    64,
+    64
+   ],
+   "layer": "ground",
+   "note": "battle-map ground walls and crossings (gen_banks.py)",
+   "frame": 128
   }
  }
 }
