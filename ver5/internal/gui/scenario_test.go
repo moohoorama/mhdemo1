@@ -104,6 +104,9 @@ func TestScenesData(t *testing.T) {
 			if !times[def.Time] {
 				t.Errorf("time %q", def.Time)
 			}
+			if def.Glow != "" && def.Glow != "fire_nw" {
+				t.Errorf("glow %q", def.Glow)
+			}
 			for key, a := range def.Cast {
 				if !a.Stay && (len(a.At) != 2 || !diagonal[a.Face]) {
 					t.Errorf("%s: needs At [u, v] and a diagonal Face, has %v %q", key, a.At, a.Face)

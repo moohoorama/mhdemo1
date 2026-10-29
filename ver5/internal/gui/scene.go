@@ -820,7 +820,7 @@ var glowImage = func() *ebiten.Image {
 	for y := range n {
 		for x := range n {
 			d := math.Min(1, math.Hypot(float64(x), float64(y))/n)
-			a := uint8(255 * (1 - d) * (1 - d))
+			a := uint8(255 * math.Pow(1-d, 2.5))
 			im.SetRGBA(x, y, color.RGBA{a, a, a, a})
 		}
 	}
@@ -835,10 +835,10 @@ func (g *Game) drawGlow(dst *ebiten.Image) {
 	}
 	t := g.clockMS / 1000
 	k := .7 + .18*math.Sin(t*1.3) + .08*math.Sin(t*3.7+1) + .04*math.Sin(t*9.1+2)
-	reach := float64(worldW) * (.85 + .06*math.Sin(t*.8))
+	reach := float64(worldW) * (.6 + .05*math.Sin(t*.8))
 	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear, Blend: ebiten.BlendLighter}
 	op.GeoM.Scale(reach/128, reach/128)
-	op.ColorScale.Scale(float32(.75*k), float32(.2*k), float32(.06*k), 1)
+	op.ColorScale.Scale(float32(.6*k), float32(.13*k), float32(.03*k), 1)
 	dst.DrawImage(glowImage, op)
 }
 
