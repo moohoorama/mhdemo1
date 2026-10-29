@@ -43,7 +43,8 @@
     "bar_ticks",
     "bar_mp",
     "scroll_curl",
-    "scroll_grain"
+    "scroll_grain",
+    "edge_arrow"
   ],
   "outline": "#000000",
   "sprites": {
@@ -1219,6 +1220,23 @@
             "l": "#d4d4d4",
             "m": "#a8a8a8",
             "d": "#767676"
+          }
+        }
+      }
+    },
+    "edge_arrow": {
+      "cell": [96, 96],
+      "anchor": [48, 48],
+      "dot": 4,
+      "frames": 8,
+      "timing": "the battle map's edge-scroll cursor, N NE E SE S SW W NW: 24x24 dot art drawn by hand as ASCII (E and NE; the rest turned or mirrored, then lit again from above), a 1-dot outline and 1:1 slopes, at 4 art px per dot; the game draws it at two UI px per dot, nearest, the anchor at the centre",
+      "layers": {
+        "arrow": {
+          "palette": {
+            "k": "#140e0a",
+            "l": "#f6e2a0",
+            "g": "#d9b056",
+            "d": "#9a6e2c"
           }
         }
       }

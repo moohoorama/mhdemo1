@@ -205,20 +205,13 @@ func (p *editorRenderTest) Update() error {
 		}
 		g.uiSeconds = .25
 		for _, c := range g.S.Engine.LegalActions(g.deploymentSelected).Commands {
-			if c.Kind == "place" {
+			if c.Kind == "reposition" {
 				g.hover = hoverCell{c.X, c.Y, true}
 				break
 			}
 		}
 	case 7:
-		commands, err := g.S.Engine.DeploymentPlan()
-		if err != nil {
-			p.err = err
-			return ebiten.Termination
-		}
-		c := commands[0]
-		g.deploymentSelected = c.Actor
-		g.deploymentMapClick(c.X, c.Y)
+		g.deploymentMapClick(g.hover.x, g.hover.y)
 		snap := g.S.Engine.Snapshot()
 		restored, err := core.Restore(g.S.Data, snap)
 		if err != nil {
@@ -226,7 +219,7 @@ func (p *editorRenderTest) Update() error {
 			return ebiten.Termination
 		}
 		g.S.Engine = restored
-		g.selectDeployment(g.S.Engine.Observe().Deployment[1])
+		g.selectDeployment(g.S.Engine.Observe().Deployment[1], false)
 		g.zoom = 1.5
 	case 8:
 		commands, err := g.S.Engine.DeploymentPlan()
@@ -269,7 +262,7 @@ func (p *editorRenderTest) Update() error {
 		g.field = nil
 		g.assets.Maps[st.ID] = legacy
 		g.ensureField(g.S.Engine.Observe())
-		g.selectDeployment(g.S.Engine.Observe().Deployment[0])
+		g.selectDeployment(g.S.Engine.Observe().Deployment[0], false)
 		g.zoom = 1.5
 	default:
 		return ebiten.Termination

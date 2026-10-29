@@ -55,6 +55,14 @@ type Game struct {
 	editorSession             *session.Session
 	deploymentSelected        string
 	deploymentScroll          int
+	sortieTried               string // the battle node startSortie last tried to leave for its deployment
+	edgeDir                   int    // the edge_arrow frame under the cursor while edgeOn (edge_scroll.go)
+	edgeOn                    bool
+	deputyList                unitList  // the deputy window's view, sort and scroll (deputy_window.go)
+	deputyPick                string    // the candidate the deputy window previews
+	deputyInfo                equipChip // the deputy window's trait badge last pressed
+	edgeHeld                  float64   // seconds the left button has been held on an edge arrow
+	cursorHidden              bool
 	uiSeconds                 float64
 	textCache                 map[string]*ebiten.Image // rendered text by key (ui_anim.go)
 	root                      string
@@ -109,7 +117,6 @@ type Game struct {
 	hover                     hoverCell
 	threatAll                 bool
 	threats                   map[string][]content.Point
-	diffs                     map[string]string
 	itemEffects               map[string]itemEffect // itemEffect results by revision, officer, slot and piece
 	equip                     equipState
 	waypoints                 waypointList
@@ -194,7 +201,7 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 		return nil, err
 	}
 	g := &Game{S: s, font: source, brushFont: brush, serifFont: serif, seed: seed, verified: map[string]bool{}, slot: 1, auditDir: auditDir,
-		vis: map[string]*unitVis{}, zoom: 1, zoomFrom: 1, zoomTo: 1, zoomT: .5, speed: 1, threats: map[string][]content.Point{}, diffs: map[string]string{}, itemEffects: map[string]itemEffect{},
+		vis: map[string]*unitVis{}, zoom: 1, zoomFrom: 1, zoomTo: 1, zoomT: .5, speed: 1, threats: map[string][]content.Point{}, itemEffects: map[string]itemEffect{},
 		battleXP: map[string]int{}, startLevel: map[string]int{}}
 	g.root = filepath.Dir(filepath.Dir(filepath.Dir(fontPath)))
 	g.player.g = g
@@ -329,6 +336,9 @@ func (g *Game) request(q session.Request) session.Response {
 	if r.OK && g.S.Engine != nil && before != nil && (before.Phase == "deployment" || g.S.Engine.Deploying()) {
 		if before.Phase != "deployment" || !g.S.Engine.Deploying() {
 			g.resetDeployment()
+		}
+		if before.Phase != "deployment" && g.S.Engine.Deploying() {
+			g.placeSortie()
 		}
 		g.sync(g.S.View())
 	}
@@ -643,10 +653,11 @@ func (g *Game) Update() error {
 			g.exploreInput()
 		}
 	}
-	logInput := g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker() || g.updateWaypoints()
+	logInput := g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker() || g.updateWaypoints() || g.updateDeputyList()
 	g.updateDeploymentPanel()
 	g.updateHover()
 	g.keys()
+	g.edgeOn = false
 	if !logInput {
 		g.camera()
 	}
@@ -654,6 +665,11 @@ func (g *Game) Update() error {
 		g.leftClick()
 	}
 	playing := g.S.Screen == "playing" && g.S.Engine != nil
+	if playing && !g.autoplay && !g.popupPending() {
+		if o := g.S.View(); o.Phase == "scenario" && o.Dialogue.Kind == "battle" {
+			g.startSortie()
+		}
+	}
 	if g.autoplay && len(g.modals) > 0 && g.modals[0].t > 1.2 {
 		g.closeModal()
 	}
@@ -800,7 +816,7 @@ func (g *Game) leftClick() {
 	if o := g.S.View(); o.Phase != "battle" && o.Phase != "deployment" {
 		return
 	}
-	if !g.onMap() {
+	if !g.onMap() || g.edgeOn {
 		return
 	}
 	g.dragging, g.dragMoved, g.dragButton, g.dragX, g.dragY = true, false, ebiten.MouseButtonLeft, x, y
@@ -900,6 +916,7 @@ func (g *Game) drawFrame(dst *ebiten.Image) {
 		g.drawLearning(dst)
 	}
 	g.showWindows(dst)
+	g.drawEdgeArrow(dst)
 	if g.input {
 		rect(dst, 0, float32(uiH-40), float32(uiW), 40, color.NRGBA{A: 220})
 		g.label(dst, "> "+g.entry+"_", 16, float64(uiH-34), 18, gold)

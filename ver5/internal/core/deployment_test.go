@@ -3,6 +3,9 @@ package core
 import (
 	"srpg/internal/content"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func deployment(t *testing.T) *Engine {
@@ -115,7 +118,7 @@ func TestDeploymentLegalActionsAndFailure(t *testing.T) {
 		t.Fatal("no empty cells")
 	}
 	apply(t, e, commands[0])
-	if commands := e.LegalActions("hero").Commands; len(commands) != 1 || commands[0].Kind != "unplace" {
+	if commands := e.LegalActions("hero").Commands; len(commands) < 2 || commands[0].Kind != "unplace" || commands[1].Kind != "reposition" {
 		t.Fatal("placed officer options")
 	}
 	e.data.Stages[0].Allies = []content.Point{{X: e.unit("hero").X, Y: e.unit("hero").Y}}
@@ -192,4 +195,122 @@ func TestForcedSortie(t *testing.T) {
 	if _, err := Restore(d, e.Snapshot()); err != nil {
 		t.Fatal(err)
 	}
+}
+
+func TestDeploymentRedeploy(t *testing.T) {
+	setup := func(t *testing.T) *Engine {
+		e := deployment(t)
+		apply(t, e, Command{Kind: "deploy", Deployment: []string{"hero", "archer1"}})
+		for _, id := range []string{"hero", "archer1"} {
+			if e.unit(id) == nil {
+				t.Fatalf("%s did not stand on the field", id)
+			}
+		}
+		return e
+	}
+	t.Run("leaving the sortie leaves the field", func(t *testing.T) {
+		e := setup(t)
+		hero := copyOf(*e.unit("hero"))
+		apply(t, e, Command{Kind: "deploy", Deployment: []string{"hero"}})
+		assert.Nil(t, e.unit("archer1"))
+		assert.Equal(t, hero.X, e.unit("hero").X)
+		assert.Equal(t, hero.Y, e.unit("hero").Y)
+		assertRejected(t, e, Command{Kind: "deploy", Deployment: []string{"archer1"}})
+		assertRejected(t, e, Command{Kind: "start"})
+	})
+	t.Run("new gear stands again in place", func(t *testing.T) {
+		e := setup(t)
+		before := copyOf(*e.unit("hero"))
+		apply(t, e, Command{Kind: "unequip", Actor: "hero", Item: "jerkin"})
+		u := e.unit("hero")
+		assert.Equal(t, before.X, u.X)
+		assert.Equal(t, before.Y, u.Y)
+		assert.Equal(t, e.stats(u).MaxHP, u.HP)
+		assert.Equal(t, 1, e.state.Warehouse["jerkin"])
+	})
+	t.Run("reposition moves and trades cells", func(t *testing.T) {
+		e := setup(t)
+		hero, archer := copyOf(*e.unit("hero")), copyOf(*e.unit("archer1"))
+		apply(t, e, Command{Kind: "reposition", Actor: "hero", X: archer.X, Y: archer.Y})
+		assert.Equal(t, [2]int{archer.X, archer.Y}, [2]int{e.unit("hero").X, e.unit("hero").Y})
+		assert.Equal(t, [2]int{hero.X, hero.Y}, [2]int{e.unit("archer1").X, e.unit("archer1").Y})
+		assertRejected(t, e, Command{Kind: "reposition", Actor: "hero", X: archer.X, Y: archer.Y})
+		assertRejected(t, e, Command{Kind: "reposition", Actor: "hero", X: 3, Y: 0})
+		_, err := Restore(e.data, e.Snapshot())
+		require.NoError(t, err)
+	})
+	t.Run("a deputy leaves the field and stands behind its officer", func(t *testing.T) {
+		e := setup(t)
+		with(e, "hero", "deputy_t")
+		hero := copyOf(*e.unit("hero"))
+		before := e.stats(e.unit("hero"))
+		apply(t, e, Command{Kind: "deputy", Actor: "hero", Target: "archer1"})
+		assert.Nil(t, e.unit("archer1"))
+		assert.Equal(t, []string{"hero"}, e.state.Deployment)
+		u := e.unit("hero")
+		assert.Equal(t, [2]int{hero.X, hero.Y}, [2]int{u.X, u.Y})
+		assert.Equal(t, "archer1", e.char("hero").Deputy)
+		assert.Equal(t, e.stats(u).MaxHP, u.HP)
+		assertRejected(t, e, Command{Kind: "deploy", Deployment: []string{"hero", "archer1"}})
+		apply(t, e, Command{Kind: "undeputy", Actor: "hero"})
+		assert.Equal(t, before, e.stats(e.unit("hero")))
+		assert.Empty(t, e.char("hero").Deputy)
+		assert.Nil(t, e.unit("archer1"), "a released deputy waits until sent out")
+		apply(t, e, Command{Kind: "deploy", Deployment: []string{"hero", "archer1"}})
+		assert.NotNil(t, e.unit("archer1"))
+		_, err := Restore(e.data, e.Snapshot())
+		require.NoError(t, err)
+	})
+	t.Run("the lord and the required officers cannot serve as deputies", func(t *testing.T) {
+		e := setup(t)
+		with(e, "hero", "deputy_t")
+		with(e, "archer1", "deputy_t")
+		e.data.Stages[e.state.Stage].Required = []string{"archer1"}
+		defer func() { e.data.Stages[e.state.Stage].Required = nil }()
+		assert.EqualError(t, e.DeputyCheck("archer1", "hero"), "LordDeputy")
+		assert.EqualError(t, e.DeputyCheck("hero", "archer1"), "RequiredDeputy")
+		assertRejected(t, e, Command{Kind: "deputy", Actor: "hero", Target: "archer1"})
+		before, _, err := e.DeputyStats("hero", "")
+		require.NoError(t, err)
+		_, _, err = e.DeputyStats("hero", "archer1")
+		require.NoError(t, err)
+		after, _, _ := e.DeputyStats("hero", "")
+		assert.Equal(t, before, after, "a preview leaves the officer as it was")
+		assert.Empty(t, e.char("hero").Deputy)
+	})
+	t.Run("the battle's sortie is kept for a retry", func(t *testing.T) {
+		e := setup(t)
+		apply(t, e, Command{Kind: "unequip", Actor: "hero", Item: "jerkin"})
+		apply(t, e, Command{Kind: "deploy", Deployment: []string{"hero"}})
+		apply(t, e, Command{Kind: "deployment_finish"})
+		cp := e.state.Checkpoint
+		require.NotNil(t, cp)
+		assert.Equal(t, []string{"hero"}, cp.Deployment)
+		assert.Equal(t, 1, cp.Warehouse["jerkin"])
+		for _, o := range cp.Characters {
+			if o.ID == "hero" {
+				assert.Empty(t, o.Equipment["armor"])
+			}
+		}
+		_, err := Restore(e.data, e.Snapshot())
+		require.NoError(t, err)
+	})
+}
+
+func TestRequiredDeputyGoesToBattle(t *testing.T) {
+	e := New(data(t), 17)
+	apply(t, e, Command{Kind: "next"})
+	apply(t, e, Command{Kind: "choose", Option: "go"})
+	with(e, "hero", "deputy_t")
+	apply(t, e, Command{Kind: "deputy", Actor: "hero", Target: "archer1"})
+	require.Equal(t, "archer1", e.char("hero").Deputy)
+	require.NotContains(t, e.state.Deployment, "archer1")
+	e.data.Stages[e.state.Stage].Required = []string{"archer1"}
+	e.enter() // the battle node again, now requiring the deputy
+	assert.Empty(t, e.char("hero").Deputy)
+	assert.Contains(t, e.state.Deployment, "archer1")
+	assert.Equal(t, "undeputy", e.events[len(e.events)-1].Kind)
+	apply(t, e, Command{Kind: "start"})
+	_, err := Restore(e.data, e.Snapshot())
+	require.NoError(t, err)
 }

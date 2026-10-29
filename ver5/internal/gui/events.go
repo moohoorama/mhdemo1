@@ -87,6 +87,8 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		return fmt.Sprintf("%s ×%d 획득", g.itemName(e.Target), e.Amount), true
 	case "deputy":
 		return fmt.Sprintf("%s 부관: %s", a, t), false
+	case "undeputy":
+		return fmt.Sprintf("%s, %s의 부관에서 풀려 출전", t, a), true
 	case "attack-hit", "spell-hit", "deployment_finish":
 		return "", false
 	}
@@ -171,6 +173,8 @@ var errorNames = map[string]string{
 	"IncompatibleSave": "호환되지 않는 저장입니다", "CorruptSave": "저장 파일이 손상되었습니다",
 	"IncompatibleEquipment": "이 병종은 쓸 수 없는 장비입니다", "MissingEquipment": "창고에 없는 장비입니다",
 	"InvalidActor": "장비를 바꿀 수 없는 장수입니다", "ChangedContent": "게임 데이터가 바뀌기 전의 저장입니다",
+	"DeputyUnavailable": "부관을 둘 수 없는 장수입니다", "InvalidDeputy": "부관이 될 수 없는 장수입니다",
+	"LordDeputy": "군주는 부관이 될 수 없습니다", "RequiredDeputy": "이번 전투에 반드시 출전해야 하는 장수입니다",
 }
 
 func errorText(err error) string {

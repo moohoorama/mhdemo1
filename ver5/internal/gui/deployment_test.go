@@ -7,6 +7,9 @@ import (
 	"srpg/internal/core"
 	"srpg/internal/session"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func deploymentController(t *testing.T) *Game {
@@ -23,45 +26,57 @@ func deploymentController(t *testing.T) *Game {
 	}
 	return g
 }
+func cellOf(g *Game, id string) [2]int {
+	u := g.unitView(g.S.Engine.Observe(), id)
+	if u == nil {
+		return [2]int{-1, -1}
+	}
+	return [2]int{u.X, u.Y}
+}
 func TestDeploymentCardsAndMap(t *testing.T) {
 	g := deploymentController(t)
-	if g.battleLogVisible() || g.battleViewport().Max.Y != deploymentTop() {
-		t.Fatal("battle HUD remained")
-	}
-	g.selectDeployment("hero")
-	if g.deploymentSelected != "hero" || len(g.deploymentMarks()) == 0 {
-		t.Fatal("card not selected")
-	}
-	g.selectDeployment("hero")
-	if g.deploymentSelected != "" {
-		t.Fatal("same card did not cancel")
-	}
-	g.selectDeployment("hero")
-	g.mapClick(1, 2)
-	if g.unitView(g.S.Engine.Observe(), "hero") == nil || g.deploymentSelected != "" || g.player.Busy() {
-		t.Fatal("placement was not immediate")
-	}
-	g.mapClick(1, 2)
-	if g.unitView(g.S.Engine.Observe(), "hero") != nil || g.deploymentSelected != "hero" {
-		t.Fatal("map click should unplace the ally and keep it selected")
-	}
-	g.mapClick(1, 2)
-	if g.unitView(g.S.Engine.Observe(), "hero") == nil || g.deploymentSelected != "" {
-		t.Fatal("selected ally was not placed again")
-	}
-	g.selectDeployment("archer1")
-	g.mapClick(1, 2)
-	if g.unitView(g.S.Engine.Observe(), "hero") != nil || g.unitView(g.S.Engine.Observe(), "archer1") != nil || g.deploymentSelected != "hero" {
-		t.Fatal("placed ally click should unplace it, never swap")
-	}
-	g.mapClick(1, 2)
-	g.selectDeployment("archer1")
-	g.mapClick(1, 3)
-	g.selectDeployment("archer1")
-	if g.unitView(g.S.Engine.Observe(), "archer1") != nil || g.deploymentSelected != "archer1" {
-		t.Fatal("placed card did not unplace and stay selected")
-	}
-	g.mapClick(1, 3)
+	require.False(t, g.battleLogVisible())
+	require.Equal(t, deploymentTop(), g.battleViewport().Max.Y)
+	t.Run("the sortie stands on the field at once", func(t *testing.T) {
+		assert.Equal(t, [2]int{1, 3}, cellOf(g, "hero"))
+		assert.Equal(t, [2]int{1, 2}, cellOf(g, "archer1"))
+	})
+	t.Run("a map click selects and deselects", func(t *testing.T) {
+		g.mapClick(1, 3)
+		assert.Equal(t, "hero", g.deploymentSelected)
+		assert.NotEmpty(t, g.deploymentMarks())
+		g.mapClick(1, 3)
+		assert.Empty(t, g.deploymentSelected)
+	})
+	t.Run("the selected officer moves to an empty cell", func(t *testing.T) {
+		g.mapClick(1, 3)
+		g.mapClick(2, 2)
+		assert.Equal(t, [2]int{2, 2}, cellOf(g, "hero"))
+		assert.Equal(t, "hero", g.deploymentSelected)
+		assert.False(t, g.player.Busy())
+	})
+	t.Run("another ally's cell picks that ally", func(t *testing.T) {
+		g.mapClick(1, 2)
+		assert.Equal(t, [2]int{2, 2}, cellOf(g, "hero"))
+		assert.Equal(t, [2]int{1, 2}, cellOf(g, "archer1"))
+		assert.Equal(t, "archer1", g.deploymentSelected)
+		for _, m := range g.deploymentMarks()[1:] {
+			assert.NotEqual(t, [2]int{2, 2}, [2]int{m.U, m.V}, "no ally's cell is lit as a move")
+		}
+	})
+	t.Run("a card calls an officer back and sends it out again", func(t *testing.T) {
+		g.toggleSortie("archer1")
+		assert.Equal(t, [2]int{-1, -1}, cellOf(g, "archer1"))
+		assert.Equal(t, []string{"hero", "archer1"}, g.sortieCards(g.S.View()))
+		g.toggleSortie("archer1")
+		assert.NotEqual(t, [2]int{-1, -1}, cellOf(g, "archer1"))
+		assert.Equal(t, "archer1", g.deploymentSelected)
+	})
+	t.Run("the lord stays in the sortie", func(t *testing.T) {
+		g.toggleSortie("hero")
+		assert.Contains(t, g.S.View().Deployment, "hero")
+		assert.Equal(t, "hero", g.deploymentSelected)
+	})
 	g.finishDeployment()
 	if g.deploying() || !g.battleLogVisible() || g.battleViewport() != image.Rect(0, 0, worldW, worldH) || g.ord.actor != "" {
 		t.Fatal("battle HUD not restored")
@@ -78,22 +93,19 @@ func TestDeploymentPreview(t *testing.T) {
 		{"no selection", func(g *Game) { g.deploymentSelected = "" }, false},
 		{"outside map or HUD", func(g *Game) { g.hover.ok = false }, false},
 		{"outside deployment area", func(g *Game) { g.hover = hoverCell{0, 0, true} }, false},
-		{"occupied", func(g *Game) { g.deploymentMapClick(1, 2); g.selectDeployment("archer1") }, false},
-		{"placed", func(g *Game) { g.deploymentMapClick(1, 2); g.deploymentSelected = "hero" }, false},
+		{"an ally's cell", func(g *Game) { g.hover = hoverCell{1, 2, true} }, false},
 		{"overlay", func(g *Game) { g.overlays = []string{"menu"} }, false},
 		{"modal", func(g *Game) { g.modals = []*modal{{kind: "objective"}} }, false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			g := deploymentController(t)
-			g.selectDeployment("hero")
-			g.hover = hoverCell{1, 2, true}
+			g.selectDeployment("hero", false)
+			g.hover = hoverCell{2, 2, true}
 			tc.change(g)
 			c, ok := g.deploymentPreviewCommand()
-			if ok != tc.visible {
-				t.Fatalf("preview visible=%t, want %t", ok, tc.visible)
-			}
-			if ok && (c.Actor != "hero" || c.X != 1 || c.Y != 2) {
-				t.Fatalf("wrong preview: %+v", c)
+			require.Equal(t, tc.visible, ok)
+			if ok {
+				assert.Equal(t, core.Command{Kind: "reposition", Actor: "hero", X: 2, Y: 2}, c)
 			}
 		})
 	}
@@ -120,25 +132,25 @@ func TestDeploymentPulseAndViewport(t *testing.T) {
 }
 func TestDeploymentLoadAndPanel(t *testing.T) {
 	g := deploymentController(t)
-	g.selectDeployment("hero")
-	g.mapClick(1, 2)
+	g.mapClick(1, 3)
+	g.mapClick(2, 2)
 	if r := g.request(session.Request{Op: "save", Slot: "1"}); !r.OK {
 		t.Fatal(r.Error)
 	}
-	g.selectDeployment("archer1")
+	g.selectDeployment("archer1", false)
 	if r := g.request(session.Request{Op: "load", Slot: "1", Discard: true}); !r.OK {
 		t.Fatal(r.Error)
 	}
-	if g.deploymentSelected != "" || !g.deploying() || g.unitView(g.S.Engine.Observe(), "hero") == nil {
-		t.Fatal("partial load lost state")
+	if g.deploymentSelected != "" || !g.deploying() || cellOf(g, "hero") != [2]int{2, 2} {
+		t.Fatal("load lost the placement")
 	}
 	old := cursorPos
 	defer func() { cursorPos = old }()
 	cursorPos = func() (int, int) { return 500, Height - 30 }
-	g.hover = hoverCell{2, 2, true}
+	g.hover = hoverCell{1, 3, true}
 	g.deploymentSelected = "archer1"
 	g.mapRelease()
-	if g.unitView(g.S.Engine.Observe(), "archer1") != nil {
+	if cellOf(g, "archer1") != [2]int{1, 2} {
 		t.Fatal("panel click reached map")
 	}
 	g.scrollDeployment(10000)
@@ -177,4 +189,24 @@ func TestLongDeploymentList(t *testing.T) {
 	if g.deploymentScroll != 0 {
 		t.Fatal("negative scroll")
 	}
+}
+
+func TestStartSortie(t *testing.T) {
+	g := battleController(t)
+	cp := g.S.Engine.Snapshot().Checkpoint
+	e, err := core.Restore(g.S.Data, *cp)
+	require.NoError(t, err)
+	g.S.Engine = e
+	g.S.Data.Stages[cp.Stage].Max = 1
+	require.Equal(t, "scenario", g.S.View().Phase)
+	g.startSortie()
+	require.True(t, g.deploying())
+	o := g.S.View()
+	assert.Equal(t, []string{"hero"}, o.Deployment, "trimmed to the stage's limit, the lord kept")
+	for _, id := range o.Deployment {
+		assert.NotNil(t, g.unitView(o, id), "%s stands on the field", id)
+	}
+	rev := o.Revision
+	g.startSortie()
+	assert.Equal(t, rev, g.S.View().Revision, "tried once per battle node")
 }

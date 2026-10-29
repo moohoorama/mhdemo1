@@ -190,7 +190,7 @@ func (g *Game) toScreen(x, y float64) (float64, float64) {
 	return (x-g.camX)*z + float64(vp.Min.X+vp.Dx()/2), (y-g.camY)*z + float64(vp.Min.Y+vp.Dy()/2)
 }
 
-// camera pans with the arrow keys, the window's edges or a drag with either button and
+// camera pans with the arrow keys, a press on a battle map's edge arrow or a drag with either button and
 // zooms with the wheel. A click without dragging selects (left) or cancels (right) instead.
 // On an AI army's turn only the clicks work (cameraLocked).
 func (g *Game) camera() {
@@ -198,7 +198,6 @@ func (g *Game) camera() {
 		g.dragging = false
 		return
 	}
-	vp := g.battleViewport()
 	step := 12.0 / g.zoom
 	locked := g.cameraLocked()
 	if locked {
@@ -217,25 +216,11 @@ func (g *Game) camera() {
 		g.camY += step
 	}
 	x, y := cursorPos()
-	wx, wy := cursorWorld()
 	onMap := g.onMap()
-	// the window's edge, a band 5% of its width, scrolls too (not while a screenshot run drives the
-	// game), even where a HUD bar lies along it, as the deployment title bar does along the top
-	edge := float64(worldW) * .05
-	if !pointer.used && len(g.Shots) == 0 && !g.dragging && ebiten.IsFocused() && image.Pt(int(wx), int(wy)).In(vp) {
-		switch {
-		case wx < float64(vp.Min.X)+edge:
-			g.camX -= step
-		case wx >= float64(vp.Max.X)-edge:
-			g.camX += step
-		}
-		switch {
-		case wy < float64(vp.Min.Y)+edge:
-			g.camY -= step
-		case wy >= float64(vp.Max.Y)-edge:
-			g.camY += step
-		}
+	if ebiten.IsFocused() {
+		g.edgeDir, g.edgeOn = g.edgeArrow(locked)
 	}
+	g.edgeScroll(step)
 	if mouseJustPressed(ebiten.MouseButtonRight) && onMap && !g.dragging {
 		g.dragging, g.dragMoved, g.dragButton, g.dragX, g.dragY = true, false, ebiten.MouseButtonRight, x, y
 	}

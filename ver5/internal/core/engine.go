@@ -339,6 +339,7 @@ func (e *Engine) enter() {
 		switch n.Kind {
 		case "battle":
 			e.state.Stage = e.data.StageIndex(n.Stage)
+			e.releaseRequired(e.data.Stages[e.state.Stage])
 			e.fitSortie(e.data.Stages[e.state.Stage])
 			return
 		case "scene":
@@ -476,12 +477,15 @@ func (e *Engine) execute(c Command) error {
 		e.enter()
 		return nil
 	case "equip", "unequip", "deploy", "start", "deputy", "undeputy":
+		if e.Deploying() {
+			return e.redeploy(c)
+		}
 		return e.prepare(c)
 	case "walk", "talk", "sortie", "buy", "sell":
 		return e.explore(c)
 	case "learn", "learn_close":
 		return e.learn(c)
-	case "place", "unplace", "deployment_finish":
+	case "place", "unplace", "reposition", "deployment_finish":
 		return e.deployCommand(c)
 	case "end":
 		if e.state.Phase != "battle" {
@@ -542,7 +546,7 @@ func (e *Engine) execute(c Command) error {
 }
 func (e *Engine) prepare(c Command) error {
 	kind := e.data.Node(e.state.Node).Kind
-	if e.state.Phase != "scenario" || kind != "battle" && (kind != "explore" || c.Kind == "deploy" || c.Kind == "start") {
+	if e.state.Phase != "scenario" && !e.Deploying() || kind != "battle" && (kind != "explore" || c.Kind == "deploy" || c.Kind == "start") {
 		return fail("WrongPhase")
 	}
 	if c.Kind == "deputy" || c.Kind == "undeputy" {

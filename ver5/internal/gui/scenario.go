@@ -6,7 +6,6 @@ import (
 	"image/color"
 	"math"
 	"regexp"
-	"slices"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -287,8 +286,7 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 			g.scene.node = ""
 		}
 	}
-	if o.Dialogue.Kind == "battle" {
-		g.inFrame(dst, Width, Height, image.Rect(0, 0, Width, Height), 0, func(dst *ebiten.Image) { g.preparation(dst, o) })
+	if o.Dialogue.Kind == "battle" { // startSortie goes on to the deployment
 		return
 	}
 	lines := g.nodeLines(o.Dialogue)
@@ -336,89 +334,6 @@ func (g *Game) roster(o core.Observation) []core.Character {
 		}
 	}
 	return out
-}
-
-// preparation is the sortie screen: who goes, their stats, equipment and deputy.
-func (g *Game) preparation(dst *ebiten.Image, o core.Observation) {
-	roster := g.roster(o)
-	if !containsID(roster, g.selected) && len(roster) > 0 {
-		g.selected = roster[0].ID
-	}
-	stage := g.S.Data.Stages[o.Stage]
-	limit := stage.Max
-	r := image.Rect(40, 120, uiW-40, 810)
-	g.titled(dst, r, "출전 준비 · "+g.S.Data.Stages[o.Stage].Name)
-	g.label(dst, fmt.Sprintf("출전 %d / %d", len(o.Deployment), limit), float64(r.Min.X+32), float64(r.Min.Y+26), 17, gold)
-	deployed := map[string]bool{}
-	for _, id := range o.Deployment {
-		deployed[id] = true
-	}
-	y := r.Min.Y + 64
-	for _, of := range roster {
-		officer := of
-		row := image.Rect(r.Min.X+28, y, r.Min.X+470, y+76)
-		g.btn(dst, row, "", func() { g.selected = officer.ID; g.page = 0 })
-		if g.selected == of.ID {
-			rect(dst, float32(row.Min.X), float32(row.Min.Y), 4, float32(row.Dy()), gold)
-		}
-		mark := "대기"
-		if deployed[of.ID] {
-			mark = "출전 ✓"
-		}
-		var toggle func()
-		required := slices.Contains(stage.Required, of.ID)
-		if !of.Dead && !g.S.Data.Characters[of.Def].Lord && !required {
-			toggle = func() { g.toggleDeploy(o, officer.ID) }
-		} else if required && deployed[of.ID] {
-			mark = "필수"
-		}
-		g.btn(dst, image.Rect(row.Max.X-96, y+22, row.Max.X-12, y+54), mark, toggle)
-		g.portrait(dst, of.ID, of.Class, float64(row.Min.X+14), float64(y+8), 60)
-		c := ink
-		if of.Dead {
-			c = muted
-		}
-		g.label(dst, g.name(of.ID), float64(row.Min.X+88), float64(y+8), 19, c)
-		sub := fmt.Sprintf("Lv%d · %s", of.Level, g.className(of.Class))
-		if of.Dead {
-			sub += " · 사망"
-		}
-		if of.Deputy != "" {
-			sub += " · 부관 " + g.name(of.Deputy)
-		}
-		g.label(dst, sub, float64(row.Min.X+88), float64(y+40), 14, muted)
-		y += 86
-	}
-	g.label(dst, "군량 · 도구", float64(r.Min.X+32), float64(y+12), 15, gold)
-	items := []string{}
-	for _, id := range sorted(o.Inventory) {
-		if o.Inventory[id] > 0 {
-			items = append(items, fmt.Sprintf("%s ×%d", g.itemName(id), o.Inventory[id]))
-		}
-	}
-	lines := strings.Split(wrap(strings.Join(items, "  ·  "), 34), "\n")
-	if fit := max(1, int(float64(r.Max.Y-12-(y+38))/(14*1.45))); len(lines) > fit {
-		lines = append(lines[:fit-1], lines[fit-1]+" …")
-	}
-	g.label(dst, strings.Join(lines, "\n"), float64(r.Min.X+32), float64(y+38), 14, ink)
-	g.officerDetail(dst, o, image.Rect(r.Min.X+500, r.Min.Y+50, r.Max.X-28, r.Max.Y-90))
-	g.btn(dst, image.Rect(r.Max.X-330, r.Max.Y-72, r.Max.X-28, r.Max.Y-28), "출  전", func() { g.command(core.Command{Kind: "start"}) })
-}
-
-func (g *Game) toggleDeploy(o core.Observation, id string) {
-	ids := []string{}
-	found := false
-	for _, d := range o.Deployment {
-		if d == id {
-			found = true
-		} else {
-			ids = append(ids, d)
-		}
-	}
-	if !found {
-		ids = append(ids, id)
-	}
-	g.command(core.Command{Kind: "deploy", Deployment: ids})
 }
 
 func (g *Game) officerDetail(dst *ebiten.Image, o core.Observation, r image.Rectangle) {
@@ -481,68 +396,6 @@ func (g *Game) officerDetail(dst *ebiten.Image, o core.Observation, r image.Rect
 	}
 	g.btn(dst, image.Rect(r.Min.X, r.Max.Y-44, r.Min.X+200, r.Max.Y-8), "장비 변경", func() { g.openOverlay("equipment") })
 	g.btn(dst, image.Rect(r.Min.X+216, r.Max.Y-44, r.Min.X+416, r.Max.Y-8), "부관 지정", deputy)
-}
-
-// deputyWindow lists the deputy commands with the stat change each makes.
-func (g *Game) deputyWindow(dst *ebiten.Image, x, y, w, h int) {
-	if g.S.Engine == nil {
-		return
-	}
-	o := g.S.View()
-	cmds, labels := []core.Command{{Kind: "undeputy", Actor: g.selected}}, []string{"부관 해제"}
-	for _, of := range g.roster(o) {
-		if of.ID != g.selected {
-			cmds = append(cmds, core.Command{Kind: "deputy", Actor: g.selected, Target: of.ID})
-			labels = append(labels, "임명  "+g.name(of.ID))
-		}
-	}
-	g.label(dst, g.name(g.selected)+" — 항목에 마우스를 올리면 능력치 변화를 봅니다.", float64(x+32), float64(y+52), 14, muted)
-	per := 9
-	for i := g.page * per; i < min(len(cmds), g.page*per+per); i++ {
-		c := cmds[i]
-		row := image.Rect(x+32, y+84+(i%per)*42, x+w-32, y+84+(i%per)*42+36)
-		g.btn(dst, row, labels[i], func() { g.command(c) })
-		if hovered(row) {
-			g.label(dst, g.statDiff(c), float64(x+300), float64(row.Min.Y+9), 13, good)
-		}
-	}
-	g.btn(dst, image.Rect(x+32, y+h-56, x+182, y+h-22), "이전", func() { g.page = max(0, g.page-1) })
-	g.btn(dst, image.Rect(x+198, y+h-56, x+348, y+h-22), "다음", func() {
-		if (g.page+1)*per < len(cmds) {
-			g.page++
-		}
-	})
-}
-
-// statDiff applies c to a copy of the game and reports the selected officer's stat changes.
-func (g *Game) statDiff(c core.Command) string {
-	key := fmt.Sprint(g.S.View().Revision, c)
-	if s, ok := g.diffs[key]; ok {
-		return s
-	}
-	out := "변화 없음"
-	before, err := g.S.Engine.CharacterStats(c.Actor)
-	sb, err2 := core.Restore(g.S.Data, g.S.Engine.Snapshot())
-	if err == nil && err2 == nil {
-		if _, err := sb.Apply(c); err != nil {
-			out = koreanError(err.Error())
-		} else if after, err := sb.CharacterStats(c.Actor); err == nil {
-			parts := []string{}
-			for _, s := range statRows {
-				if d := s.get(after) - s.get(before); d != 0 {
-					parts = append(parts, fmt.Sprintf("%s %+d", s.name, d))
-				}
-			}
-			if len(parts) > 0 {
-				out = strings.Join(parts, "  ")
-			}
-		}
-	}
-	if len(g.diffs) > 128 {
-		g.diffs = map[string]string{}
-	}
-	g.diffs[key] = out
-	return out
 }
 
 func containsID(cs []core.Character, id string) bool {

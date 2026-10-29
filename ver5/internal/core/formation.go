@@ -30,13 +30,10 @@ func (e *Engine) assignDeputy(c Command) error {
 		o.Deputy = ""
 		return nil
 	}
+	if err := e.DeputyCheck(o.ID, c.Target); err != nil {
+		return err
+	}
 	d := e.char(c.Target)
-	if !e.CanDeputize(o.ID) {
-		return fail("DeputyUnavailable")
-	}
-	if !e.playable(d) || d.ID == o.ID || e.def(d).Lord || d.Dead || d.Deputy != "" || e.isDeputy(d.ID) {
-		return fail("InvalidDeputy")
-	}
 	// Assignment retires the independent deployment and warehouses equipment.
 	for _, item := range d.Equipment {
 		e.state.Warehouse[item]++
@@ -52,6 +49,59 @@ func (e *Engine) assignDeputy(c Command) error {
 	e.state.Deployment = deploy
 	e.emit("deputy", o.ID, d.ID, 0)
 	return nil
+}
+
+// releaseRequired frees the officers a stage requires from serving as deputies, so they go into the battle.
+func (e *Engine) releaseRequired(s content.Stage) {
+	for _, id := range keys(e.charIDs) {
+		if o := e.char(id); o.Deputy != "" && contains(s.Required, o.Deputy) {
+			e.emit("undeputy", o.ID, o.Deputy, 0)
+			o.Deputy = ""
+		}
+	}
+}
+
+// DeputyCheck reports why the target cannot become the officer's deputy now, or nil: the officer
+// must be able to name one, and the target be a living officer who is neither the lord, nor one
+// the coming battle requires, nor one with or serving as a deputy.
+func (e *Engine) DeputyCheck(actor, target string) error {
+	if !e.CanDeputize(actor) {
+		return fail("DeputyUnavailable")
+	}
+	d := e.char(target)
+	if !e.playable(d) || d.ID == actor || d.Dead || d.Deputy != "" || e.isDeputy(d.ID) {
+		return fail("InvalidDeputy")
+	}
+	if e.def(d).Lord {
+		return fail("LordDeputy")
+	}
+	if e.state.Stage >= 0 && e.state.Stage < len(e.data.Stages) && (e.Deploying() || e.state.Phase == "scenario" && e.data.Node(e.state.Node).Kind == "battle") &&
+		contains(e.data.Stages[e.state.Stage].Required, d.ID) {
+		return fail("RequiredDeputy")
+	}
+	return nil
+}
+
+// DeputyStats are the officer's stats and six attributes were the target its deputy ("" for none),
+// leaving the state as it is.
+func (e *Engine) DeputyStats(actor, target string) (Stats, [6]int, error) {
+	o := e.char(actor)
+	if o == nil || target != "" && e.char(target) == nil {
+		return Stats{}, [6]int{}, fail("InvalidCharacter")
+	}
+	old := o.Deputy
+	o.Deputy = target
+	defer func() { o.Deputy = old }()
+	return e.stats(&Unit{ID: actor, Character: actor, Faction: "ally", Status: map[string]Status{}}), attributes(e.attributes(o)), nil
+}
+
+// DeputyTraits are the traits an officer brings to the one it serves as deputy.
+func (e *Engine) DeputyTraits(id string) []string {
+	d := e.char(id)
+	if d == nil {
+		return nil
+	}
+	return append(slices.Clone(e.def(d).Traits), d.Learned...)
 }
 
 // attributes are the character's six attributes with the deputy's blended in where the deputy's are higher.

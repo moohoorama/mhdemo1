@@ -46,6 +46,7 @@ type equipState struct {
 	pressTop int
 	pressed  bool
 	moved    bool
+	alone    bool // the picker was opened from the deployment's officer window: closing it closes the window too
 }
 
 type pickRow struct {
@@ -57,7 +58,7 @@ type pickRow struct {
 // equipChip is one trait or skill a piece brings: given while worn, learnable while worn, or
 // a skill usable while worn.
 type equipChip struct {
-	from, id string // trait, learn, skill
+	from, id string // trait, learn, skill, deputy
 }
 
 // itemEffect is what a piece does for the officer: its stat gain over the empty slot and the
@@ -439,6 +440,8 @@ func (g *Game) chipWindow(dst *ebiten.Image, key string, c equipChip, close func
 		switch c.from {
 		case "trait":
 			desc = g.traitDesc(c.id)
+		case "deputy":
+			note, desc = "부관으로 있는 동안 주장에게 준다.", g.traitDesc(c.id)
 		case "learn":
 			note = fmt.Sprintf("착용하는 동안 특성치 %d로 배울 수 있다.", g.S.Data.Traits[c.id].Cost)
 			desc = g.traitDesc(c.id)

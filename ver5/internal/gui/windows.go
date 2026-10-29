@@ -17,7 +17,7 @@ import (
 )
 
 var overlayTitles = map[string]string{"menu": "메뉴", "save": "저장", "load": "불러오기", "settings": "설정",
-	"confirm": "확인", "equipment": "장비", "deputy": "부관", "roster": "병력일람", "shop": "상점", "party": "부대", "waypoints": "장면 이동"}
+	"confirm": "확인", "equipment": "장비", "deputy": "부관 임명", "roster": "병력일람", "shop": "상점", "party": "부대", "waypoints": "장면 이동"}
 
 func (g *Game) popupPending() bool {
 	return len(g.overlays) > 0 || len(g.modals) > 0 || len(g.learn) > 0 ||
@@ -41,6 +41,9 @@ func (g *Game) openOverlay(name string) bool {
 	g.page = 0
 	if name == "equipment" {
 		g.equip = equipState{}
+	}
+	if name == "deputy" {
+		g.deputyPick, g.deputyInfo, g.deputyList.top = "", equipChip{}, 0
 	}
 	g.autoplay = false
 	if name == "save" || name == "load" {
@@ -123,7 +126,7 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 	case "equipment":
 		w, h = 760, 80+3*(equipCardH+14)+10
 	case "deputy":
-		w, h = 640, 560
+		w, h = deputyW, deputyH
 	case "settings":
 		w, h = 640, 668
 	case "roster":
@@ -142,6 +145,9 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 	}
 	if name == "equipment" && g.equip.info.id != "" {
 		g.drawEquipInfo(dst)
+	}
+	if name == "deputy" && g.deputyInfo.id != "" {
+		g.chipWindow(dst, "overlay:deputy-info", g.deputyInfo, func() { g.deputyInfo = equipChip{} })
 	}
 }
 
@@ -267,7 +273,7 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h int) {
 		for i, it := range rows {
 			g.choiceRow(dst, left, y+64+i*64, x+w-32-left, it.title, it.opts)
 		}
-		g.label(dst, "조작: 클릭 선택 · 우클릭/Esc 취소 · 드래그/화면 가장자리/화살표 화면 이동 · 휠 확대\n"+
+		g.label(dst, "조작: 클릭 선택 · 우클릭/Esc 취소 · 드래그/가장자리 화살표 클릭/방향키 화면 이동 · 휠 확대\n"+
 			"Space 추천 한 명령 · F 재생 속도 · Enter 재생 건너뛰기 · F5/F9 저장/불러오기",
 			float64(left), float64(y+64+len(rows)*64+4), 13, muted)
 	case "equipment":
@@ -477,7 +483,7 @@ func (g *Game) resultWindow(dst *ebiten.Image, o core.Observation) {
 			reason = fmt.Sprintf("%d턴 제한 초과", st.TurnLimit)
 		}
 		g.centered(dst, reason, float64(uiW/2), 346, 19, ink)
-		g.btn(dst, image.Rect(r.Min.X+40, 420, r.Max.X-40, 456), "출전 준비부터 재도전", func() { g.request(session.Request{Op: "retry"}) })
+		g.btn(dst, image.Rect(r.Min.X+40, 420, r.Max.X-40, 456), "배치부터 재도전", func() { g.request(session.Request{Op: "retry"}) })
 		g.btn(dst, image.Rect(r.Min.X+40, 466, r.Min.X+260, 502), "불러오기", func() { g.openOverlay("load") })
 		g.btn(dst, image.Rect(r.Max.X-260, 466, r.Max.X-40, 502), "시작 메뉴", func() { g.request(session.Request{Op: "title"}) })
 		return

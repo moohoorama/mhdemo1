@@ -29,6 +29,11 @@ func (e *Engine) LegalActions(actor string) Options {
 		} else if contains(e.state.Deployment, actor) {
 			if e.unit(actor) != nil {
 				out.Commands = append(out.Commands, Command{Kind: "unplace", Actor: actor})
+				for _, p := range e.data.Stages[e.state.Stage].Allies {
+					if e.canReposition(actor, p) {
+						out.Commands = append(out.Commands, Command{Kind: "reposition", Actor: actor, X: p.X, Y: p.Y})
+					}
+				}
 			} else {
 				for _, p := range e.data.Stages[e.state.Stage].Allies {
 					if e.deploymentCell(actor, p) {
