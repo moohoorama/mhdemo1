@@ -115,6 +115,10 @@
    "Group": "pikes",
    "Policy": "hold",
    "Class": "pikeman",
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
    "Shift": -0.07
   },
   {
@@ -125,6 +129,10 @@
    "Group": "pikes",
    "Policy": "hold",
    "Class": "pikeman",
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
    "Shift": -0.07
   },
   {
@@ -135,6 +143,10 @@
    "Group": "pikes",
    "Policy": "hold",
    "Class": "pikeman",
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
    "Shift": -0.07
   },
   {

@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"maps"
 	"math"
 	"sort"
 	"srpg/internal/content"
@@ -448,7 +449,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 						return nil, fail("CorruptSave")
 					}
 				}
-				if u.Moved || u.Acted || u.Attacked || u.Done || u.HP <= 0 || len(u.Status) != 0 {
+				if u.Moved || u.Acted || u.Attacked || u.Done || u.HP <= 0 || !maps.Equal(u.Status, e.startStatus(&u)) {
 					return nil, fail("CorruptSave")
 				}
 				if deploy[u.ID] {

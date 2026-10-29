@@ -718,11 +718,18 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	if sp.MP != nil {
 		u.MP = min(st.MaxMP, max(0, *sp.MP))
 	}
-	if k := int(e.fx(&u, content.FxTurnDefense)); k > 0 {
-		e.applyStatus(&u, "defense", e.data.Rules.BuffTurns, k)
-	}
+	u.Status = e.startStatus(&u)
 	e.unitIDs[id] = e.units.NewEntity(&u)
 	return e.unit(id)
+}
+
+// startStatus is what a unit is placed with: the defense its traits grant every turn.
+func (e *Engine) startStatus(u *Unit) map[string]Status {
+	s := map[string]Status{}
+	if k := int(e.fx(u, content.FxTurnDefense)); k > 0 {
+		s["defense"] = Status{Turns: e.data.Rules.BuffTurns, Value: k}
+	}
+	return s
 }
 func (e *Engine) settle() {
 	if e.state.Phase != "battle" {

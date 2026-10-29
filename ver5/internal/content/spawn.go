@@ -105,17 +105,6 @@ func (d *Data) ValidateSpawn(s Spawn) error {
 			}
 		}
 	}
-	if s.Equipment != nil {
-		slots := map[string]bool{}
-		cl := d.Classes[class]
-		for _, id := range *s.Equipment {
-			eq, ok := d.Equipment[id]
-			if !ok || slots[eq.Slot] || !d.Carries(cl, d.SpawnTraits(s), eq) {
-				return fmt.Errorf("장비 호환/슬롯 오류 %s", id)
-			}
-			slots[eq.Slot] = true
-		}
-	}
 	effective := map[string]bool{}
 	base := c.Traits
 	if s.Traits != nil {
@@ -127,6 +116,14 @@ func (d *Data) ValidateSpawn(s Spawn) error {
 	equipment := c.Equipment
 	if s.Equipment != nil {
 		equipment = *s.Equipment
+	}
+	slots := map[string]bool{}
+	for _, id := range equipment {
+		eq, ok := d.Equipment[id]
+		if !ok || slots[eq.Slot] || !d.Carries(d.Classes[class], d.SpawnTraits(s), eq) {
+			return fmt.Errorf("장비 호환/슬롯 오류 %s", id)
+		}
+		slots[eq.Slot] = true
 	}
 	for _, id := range equipment {
 		for _, t := range d.Equipment[id].Traits {
