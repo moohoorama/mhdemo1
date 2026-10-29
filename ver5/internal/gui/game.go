@@ -130,6 +130,10 @@ type Game struct {
 	party                     partyView       // the party window's tab and what it shows
 	hudH, hudAlpha, hudAnimAt float64         // its drawn height and opacity, and when they last eased
 	hudLayer                  *ebiten.Image   // where it is drawn while faded
+	trans                     *transition     // the screen change fading through black
+	shownScreen               string          // the screen the last update showed (screenKey)
+	lastFrame                 *ebiten.Image   // the frame drawn last, held still when a change darkens it
+	darkness                  float64         // how black the world went in the frame drawn last
 	hudShown                  string          // the tab it showed
 	hudBase, hudPeek          string          // the tab chosen by hand; the one looked at while an officer is selected
 	unitsList, rosterList     unitList        // the HUD tab's unit list and the roster window's
@@ -592,6 +596,10 @@ func (g *Game) rightClick() {
 func (g *Game) Update() error {
 	g.updatePointer()
 	g.ticks++
+	defer g.watchScreen()
+	if g.holdForTransition() {
+		return nil
+	}
 	if g.gallery != nil {
 		return g.updateDuelGallery()
 	}
@@ -870,7 +878,7 @@ func (g *Game) Draw(dst *ebiten.Image) {
 	dst.DrawImage(g.fixedCanvas, op)
 }
 
-func (g *Game) drawFrame(dst *ebiten.Image) {
+func (g *Game) drawScreen(dst *ebiten.Image) {
 	if g.gallery != nil {
 		dst.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
 		g.buttons, g.blocks = nil, nil

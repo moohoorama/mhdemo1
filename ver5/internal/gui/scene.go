@@ -779,9 +779,7 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	for _, b := range balloons {
 		g.bubble(dst, b.v, b.mark, b.talking)
 	}
-	if s.fade > 0 {
-		inWorld(func() { rect(dst, 0, 0, float32(worldW), float32(worldH), color.NRGBA{A: uint8(255 * s.fade)}) })
-	}
+	g.blackOut(dst, s.fade)
 }
 
 // drawBackdrop lays the scene's far picture (mountains, a pass, a burning city) across the top of the screen,

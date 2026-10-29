@@ -304,10 +304,3 @@ func (g *Game) namePlate(dst *ebiten.Image, name string, x, y float64, style pla
 	strokeRect(dst, float32(px)+.5, float32(py)+.5, float32(tw+19), 23, 1, c[1])
 	write(dst, name, f, px+10, py+1, c[2])
 }
-
-// blackOut covers the world with black at strength k (a fade).
-func blackOut(dst *ebiten.Image, k float64) {
-	if k > 0 {
-		inWorld(func() { rect(dst, 0, 0, float32(worldW), float32(worldH), color.NRGBA{A: uint8(255 * min(1, k))}) })
-	}
-}

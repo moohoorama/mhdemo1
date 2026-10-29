@@ -607,7 +607,7 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 		text, done := g.shownText(l)
 		g.drawDialogue(dst, l, text, done, fmt.Sprintf("%s|explore|%s|%d", strings.Join(l.speakers, "·"), w.talkTo, w.talkI))
 	}
-	blackOut(dst, math.Max(w.fade, g.scene.fade))
+	g.blackOut(dst, math.Max(w.fade, g.scene.fade))
 }
 
 type namedPlate struct {

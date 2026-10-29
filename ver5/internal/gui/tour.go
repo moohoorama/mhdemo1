@@ -227,5 +227,5 @@ func (g *Game) drawTour(dst *ebiten.Image) {
 	}
 	g.label(dst, w.t.Name+" · "+a.Name+" ("+a.Map+")", 24, 18, 18, gold)
 	g.label(dst, "클릭: 이동, 이름판·건물·출구: 다음 장면   휠: 확대   R·오른쪽 클릭: 걸을 수 있는 칸", 24, 46, 13, muted)
-	blackOut(dst, math.Max(w.fade, g.scene.fade))
+	g.blackOut(dst, math.Max(w.fade, g.scene.fade))
 }
