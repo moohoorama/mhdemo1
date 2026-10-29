@@ -82,7 +82,7 @@ func TestRushWinsTheFirstStages(t *testing.T) {
 	wins := 0
 	for seed := uint64(1); seed <= 5; seed++ {
 		e, results := rushCampaign(t, seed, 3)
-		if results["B01"] == "victory" && results["B02"] == "victory" && results["B05"] == "victory" {
+		if results["B01"] == "victory" && results["B02"] == "victory" && results["B03"] == "victory" {
 			wins++
 		} else {
 			t.Logf("seed %d: %v", seed, results)

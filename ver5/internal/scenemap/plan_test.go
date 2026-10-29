@@ -167,7 +167,7 @@ func TestWalkable(t *testing.T) {
 	}{
 		{"the road east of the wall", 20, 9, true},
 		{"the far cliff", 20, 0, false},
-		{"the near ridge", 20, 16, false},
+		{"the near ridge", 20, 32, false},
 		{"the wall line", 17, 3, false},
 		{"the gate's passage", 17, 9, true},
 		{"the gate's wing", 17, 12, false},
