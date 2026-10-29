@@ -1755,3 +1755,5 @@
 - assets/scenes/ch07.json(c07-out, c07-out2): 막사 밖 두 장면을 S_army_camp에서 연합 진영(S_coalition_camp, 밤) 맹주 막사 앞으로 옮김. 위병 둘이 문을 지키고, 전령은 남쪽 길로 뛰어 들어오며, S#4에서는 삼형제가 막사에서 걸어 나오고 조조는 동쪽 대로로 떠남 — 10/28 "맹주 막사 밖은 연합군 진영, 밤" 결정이 구현 지시에서 빠져 영천 의병 진영 그림이 쓰이던 것
 - assets/scenario/hero/explore05_town.json: 주막의 삿갓 쓴 조조 자리를 작은 칸 (2,4)→(3,5)로, c05-inn 장면의 자리와 맞춤 — 말을 걸면 조조가 반 칸 아래로 튀던 것
 - internal/gui/scenario.go: 장면이 어두워지는 동안 이미 사라진 마지막 나레이션을 다시 그리지 않음; internal/gui/uidemo_explore.go: 나레이션 끝을 Update와 같은 turnPage로 넘김 — 5장 궁궐 "대신들 가운데…" 나레이션이 사라졌다 다시 뜨던 것
+- internal/gui/field.go·field_scene.go·field_render.go(`raisedShadows`, `shadowLayer`, `drawRaisedShadow`): 장면 맵의 높은 땅 위 그림자(사람·덤불·소품)를 따로 모아 두었다가 윗면 칸을 그릴 때 그 칸 마름모만큼 그림 — 맨땅 그림자 층 위에 윗면 조각이 덮여, 8장 연합 진영 위 벼랑의 조조 일행에게 그림자가 없던 것
+- assets/scenes/ch08.json(c08-s1): 철군 행렬·공손찬·삼형제가 진영 동·서 문 칸 (38,18)·(1,18)로 드나들고 진영 안은 17행으로 걸음, 군량 수레도 (39,18)로 — 17행 그대로 문 옆 울타리 기둥을 뚫고 지나가던 것

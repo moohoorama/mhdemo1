@@ -42,25 +42,25 @@ Zha 장비
 Jia 간옹
 in1 병사#1  (light_infantry)
 in2 병사#2  (light_infantry)
-Sun 손견  (off stage, enters later (cell 38 17))
-HGa 황개  (off stage, enters later (cell 38 17))
-Che 정보  (off stage, enters later (cell 38 17))
-in3 오군#1  (light_infantry, off stage, enters later (cell 38 17))
-in4 오군#2  (light_infantry, off stage, enters later (cell 38 17))
-YSh 원술  (off stage, enters later (cell 38 17))
-in5 원술군#1  (light_infantry, off stage, enters later (cell 38 17))
-GSZ 공손찬  (off stage, enters later (cell 2 17))
+Sun 손견  (off stage, enters later (cell 38 18))
+HGa 황개  (off stage, enters later (cell 38 18))
+Che 정보  (off stage, enters later (cell 38 18))
+in3 오군#1  (light_infantry, off stage, enters later (cell 38 18))
+in4 오군#2  (light_infantry, off stage, enters later (cell 38 18))
+YSh 원술  (off stage, enters later (cell 38 18))
+in5 원술군#1  (light_infantry, off stage, enters later (cell 38 18))
+GSZ 공손찬  (off stage, enters later (cell 1 18))
 
-# c08-s4: Sun -> 1 17 and leaves
-# c08-s4: HGa -> 1 17 and leaves
-# c08-s4: Che -> 1 17 and leaves
-# c08-s4: in3 -> 1 17 and leaves
-# c08-s4: in4 -> 1 17 and leaves
-# c08-s5: in5 -> 1 17 and leaves
-# c08-s5: YSh -> 1 17 and leaves
+# c08-s4: Sun -> 1 18 and leaves
+# c08-s4: HGa -> 1 18 and leaves
+# c08-s4: Che -> 1 18 and leaves
+# c08-s4: in3 -> 1 18 and leaves
+# c08-s4: in4 -> 1 18 and leaves
+# c08-s5: in5 -> 1 18 and leaves
+# c08-s5: YSh -> 1 18 and leaves
 # c08-s5: GSZ -> 27 16
-# c08-s12: GSZ -> 1 17 and leaves
-# c08-s12: Gua -> 1 17 and leaves
-# c08-s12: Liu -> 1 17 and leaves
-# c08-s12: Zha -> 1 17 and leaves
-# c08-s12: Jia -> 1 17 and leaves
+# c08-s12: GSZ -> 1 18 and leaves
+# c08-s12: Gua -> 1 18 and leaves
+# c08-s12: Liu -> 1 18 and leaves
+# c08-s12: Zha -> 1 18 and leaves
+# c08-s12: Jia -> 1 18 and leaves

@@ -72,6 +72,9 @@ func (f *Field) makeScenePlan() error {
 		if pr, ok := f.A.Props[p.Name]; ok && p.Rank == scenemap.RankObject && !pr.NoShadow {
 			sp.shadow = pr.Shadow
 		}
+		if p.Rank == scenemap.RankFace && f.raisedShadows == nil {
+			f.raisedShadows = newLayer(f.shadows.Bounds().Dx(), f.shadows.Bounds().Dy())
+		}
 		f.scenePieces = append(f.scenePieces, sp)
 	}
 	return nil
@@ -172,7 +175,7 @@ func (f *Field) sceneItems() []drawItem {
 			if i, ok := f.animFrame(p.Name, p.Anchor); ok && f.A.Anims[p.Name].Shadows != nil {
 				sh = f.A.Anims[p.Name].Shadows[i]
 			}
-			f.blit(f.shadows, sh, p.Anchor[0], p.Anchor[1], &ebiten.DrawImageOptions{Blend: maxBlend})
+			f.blit(f.shadowLayer(float64(p.Lift)), sh, p.Anchor[0], p.Anchor[1], &ebiten.DrawImageOptions{Blend: maxBlend})
 		}
 		ox, oy := f.OriginX*K, f.OriginY*K
 		items = append(items, drawItem{y: p.Anchor[1], rect: p.Rect, key: &p.Key, draw: func() {
@@ -192,12 +195,35 @@ func (f *Field) sceneItems() []drawItem {
 					f.drawPlan(f.Canvas, d, ox, oy, op)
 				}
 			}
+			if p.Rank == scenemap.RankFace {
+				f.drawRaisedShadow(p.Anchor[0], p.Anchor[1])
+			}
 			for _, d := range p.anims {
 				f.drawStrip(d, ox, oy)
 			}
 		}})
 	}
 	return items
+}
+
+// shadowLayer is where a shadow cast on ground lifted this high is laid: the ground's shadow layer, drawn under the
+// standing layer, or on raised ground the layer each top draws its own part of, since the tops stand in that layer.
+func (f *Field) shadowLayer(lift float64) *ebiten.Image {
+	if lift > 0 && f.raisedShadows != nil {
+		return f.raisedShadows
+	}
+	return f.shadows
+}
+
+// drawRaisedShadow draws the shadows lying on the top of a raised small tile centred on canvas point (x, y), clipped
+// to the top's diamond.
+func (f *Field) drawRaisedShadow(x, y float64) {
+	var vs [4]ebiten.Vertex
+	for i, d := range [4][2]float64{{0, -8}, {16, 0}, {0, 8}, {-16, 0}} {
+		px, py := f.renderPoint(x+d[0], y+d[1])
+		vs[i] = ebiten.Vertex{DstX: float32(px), DstY: float32(py), SrcX: float32(px), SrcY: float32(py), ColorR: 1, ColorG: 1, ColorB: 1, ColorA: 1}
+	}
+	f.Canvas.DrawTriangles(vs[:], []uint16{0, 1, 2, 0, 2, 3}, f.raisedShadows, nil)
 }
 
 // drawAnim draws a prop that has a looping strip of its name in Assets.Anims (a tree's leaves, the incense smoke) at

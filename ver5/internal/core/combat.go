@@ -342,7 +342,7 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 		}
 		add(q, k)
 	}
-	if s.Each {
+	if s.Shape != content.ShapeSingle {
 		for _, aim := range e.targets(u, v, s) {
 			hit, sh := e.victims(u, aim, single(s))
 			for _, q := range hit {
@@ -351,12 +351,7 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 		}
 		return
 	}
-	for _, q := range e.targets(u, v, s) {
-		add(q, 1)
-	}
-	if s.Shape != content.ShapeSingle {
-		return
-	}
+	add(v, 1)
 	cross, square := e.fx(u, content.FxSplashCross), e.fx(u, content.FxSplashSquare)
 	for dy := -1; dy <= 1; dy++ {
 		for dx := -1; dx <= 1; dx++ {
@@ -494,8 +489,8 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 	return nil
 }
 
-// single is the attack a skill that strikes each target on its own makes on one of them, widened
-// by the attacker's area traits like a basic attack.
+// single is the attack an area skill makes on each of its targets, widened by the attacker's area traits
+// like a basic attack.
 func single(s content.Skill) content.Skill {
 	s.Shape, s.Each = content.ShapeSingle, false
 	return s
