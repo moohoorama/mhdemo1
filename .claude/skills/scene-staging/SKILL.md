@@ -97,11 +97,16 @@ with `tools/scene_maps/scene_format.py`'s `write()`, or edit by hand and run `sc
 
 ```sh
 python3 ../.claude/skills/scene-staging/check_scenes.py c02-3 c02-4   # scene or node id prefixes; none = every scene
-go test ./internal/gui -run 'TestScenesData|TestScenarioNodesAreStaged'   # cast names, sprites, factions, steps, every node staged
+go test ./internal/gui -run 'TestScenesData|TestScenarioNodesAreStaged|TestSceneWalksStayOnOpenGround'   # cast names, sprites, factions, steps, every node staged, walks
 ```
 
 It flags actors closer than 1 cell (their sprites overlap on the iso screen), off the open floor, on a standing prop,
 or outside the map picture, at the cast spots and after every beat group (enters, walks and exits played in order). Fix every line for the stretches you staged.
+`TestSceneWalksStayOnOpenGround` walks every Move (through its Via, u first then v, as the scene screen does) and
+every Patrol both ways on the format 2 scene maps, and fails a walk that crosses a small tile the map's rules close
+(`scenemap.Footing`: fences, walls outside gate passages, tents, tables) or climbs between heights. Route round with
+whole-cell `Via` corners; a gate's passage is where `scenemap.Walkable` opens the wall, not where the ASCII picture
+puts it. Old format maps are not walked.
 
 ## 6. Check the screen
 

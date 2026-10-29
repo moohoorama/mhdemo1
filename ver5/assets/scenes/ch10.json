@@ -40,7 +40,7 @@
     ],
     "c10-07": [
      [
-      [{"Actor": "공손찬", "Enter": [5, 3], "Via": [[8, 6]], "Move": [9, 6], "Speed": 0.8}, {"Actor": "조운", "Enter": [5, 3], "Via": [[8, 5]], "Move": [9, 5], "Speed": 0.8, "After": 0.5}],
+      [{"Actor": "공손찬", "Enter": [5, 3], "Via": [[5, 6]], "Move": [9, 6], "Speed": 0.8}, {"Actor": "조운", "Enter": [5, 3], "Via": [[5, 5]], "Move": [9, 5], "Speed": 0.8, "After": 0.5}],
       [{"Actor": "공손찬", "Face": "SE"}, {"Actor": "조운", "Face": "SE"}, {"Actor": "전해", "Face": "NW"}]
      ]
     ],

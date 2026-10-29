@@ -105,33 +105,33 @@
     "간옹": {"At": [29, 18], "Face": "NE"},
     "병사#1": {"At": [17, 10], "Face": "SW", "Sprite": "light_infantry", "Faction": "yuan"},
     "병사#2": {"At": [26, 21], "Face": "NW", "Sprite": "light_infantry", "Faction": "yuan"},
-    "손견": {"Off": true, "At": [38, 18], "Face": "NW"},
-    "황개": {"Off": true, "At": [38, 18], "Face": "NW"},
-    "정보": {"Off": true, "At": [38, 18], "Face": "NW"},
-    "오군#1": {"Off": true, "At": [38, 18], "Face": "NW", "Sprite": "light_infantry", "Faction": "wu"},
-    "오군#2": {"Off": true, "At": [38, 18], "Face": "NW", "Sprite": "light_infantry", "Faction": "wu"},
-    "원술": {"Off": true, "At": [38, 18], "Face": "NW"},
-    "원술군#1": {"Off": true, "At": [38, 18], "Face": "NW", "Sprite": "light_infantry", "Faction": "yuan"},
-    "공손찬": {"Off": true, "At": [1, 18], "Face": "SE"}
+    "손견": {"Off": true, "At": [38, 17], "Face": "NW"},
+    "황개": {"Off": true, "At": [38, 17], "Face": "NW"},
+    "정보": {"Off": true, "At": [38, 17], "Face": "NW"},
+    "오군#1": {"Off": true, "At": [38, 17], "Face": "NW", "Sprite": "light_infantry", "Faction": "wu"},
+    "오군#2": {"Off": true, "At": [38, 17], "Face": "NW", "Sprite": "light_infantry", "Faction": "wu"},
+    "원술": {"Off": true, "At": [38, 17], "Face": "NW"},
+    "원술군#1": {"Off": true, "At": [38, 17], "Face": "NW", "Sprite": "light_infantry", "Faction": "yuan"},
+    "공손찬": {"Off": true, "At": [1, 17], "Face": "SE"}
    },
    "Beats": {
     "c08-s2": [
      [
-      [{"CamAt": [26, 17]}, {"Zoom": 3}, {"Actor": "병사#1", "Patrol": [17, 4]}, {"Actor": "병사#2", "Patrol": [30, 21]}],
+      [{"CamAt": [26, 17]}, {"Zoom": 3}, {"Actor": "병사#1", "Patrol": [17, 4]}, {"Actor": "병사#2", "Patrol": [22, 21]}],
       [{"Wait": 1.5}]
      ]
     ],
     "c08-s4": [
      [
-      [{"Actor": "손견", "Enter": [38, 18], "Via": [[36, 17], [3, 17]], "Move": [1, 18], "Speed": 0.8, "Exit": true, "After": 0.0}, {"Actor": "황개", "Enter": [38, 18], "Via": [[36, 17], [3, 17]], "Move": [1, 18], "Speed": 0.8, "Exit": true, "After": 0.55}, {"Actor": "정보", "Enter": [38, 18], "Via": [[36, 17], [3, 17]], "Move": [1, 18], "Speed": 0.8, "Exit": true, "After": 1.1}, {"Actor": "오군#1", "Enter": [38, 18], "Via": [[36, 17], [3, 17]], "Move": [1, 18], "Speed": 0.8, "Exit": true, "After": 1.6500000000000001}, {"Actor": "오군#2", "Enter": [38, 18], "Via": [[36, 17], [3, 17]], "Move": [1, 18], "Speed": 0.8, "Exit": true, "After": 2.2}],
+      [{"Actor": "손견", "Enter": [38, 17], "Via": [[36, 17], [3, 17]], "Move": [1, 17], "Speed": 0.8, "Exit": true, "After": 0.0}, {"Actor": "황개", "Enter": [38, 17], "Via": [[36, 17], [3, 17]], "Move": [1, 17], "Speed": 0.8, "Exit": true, "After": 0.55}, {"Actor": "정보", "Enter": [38, 17], "Via": [[36, 17], [3, 17]], "Move": [1, 17], "Speed": 0.8, "Exit": true, "After": 1.1}, {"Actor": "오군#1", "Enter": [38, 17], "Via": [[36, 17], [3, 17]], "Move": [1, 17], "Speed": 0.8, "Exit": true, "After": 1.6500000000000001}, {"Actor": "오군#2", "Enter": [38, 17], "Via": [[36, 17], [3, 17]], "Move": [1, 17], "Speed": 0.8, "Exit": true, "After": 2.2}],
       [{"Wait": 0.3}]
      ]
     ],
     "c08-s5": [
      [
       [{"Prop": ["grain_cart", 39, 18]}],
-      [{"Prop": ["grain_cart", "원술군#1"]}, {"Actor": "원술군#1", "Enter": [38, 18], "Via": [[36, 17], [3, 17]], "Move": [1, 18], "Speed": 0.7, "Exit": true}, {"Actor": "원술", "Enter": [38, 18], "Via": [[36, 17], [3, 17]], "Move": [1, 18], "Speed": 0.7, "Exit": true, "After": 1.0}],
-      [{"Actor": "공손찬", "Enter": [1, 18], "Via": [[3, 17], [26, 17]], "Move": [27, 16], "Speed": 1.0}],
+      [{"Prop": ["grain_cart", "원술군#1"]}, {"Actor": "원술군#1", "Enter": [38, 17], "Via": [[36, 17], [3, 17]], "Move": [1, 17], "Speed": 0.7, "Exit": true}, {"Actor": "원술", "Enter": [38, 17], "Via": [[36, 17], [3, 17]], "Move": [1, 17], "Speed": 0.7, "Exit": true, "After": 1.0}],
+      [{"Actor": "공손찬", "Enter": [1, 17], "Via": [[3, 17], [26, 17]], "Move": [27, 16], "Speed": 1.0}],
       [{"Actor": "공손찬", "Face": "SW"}, {"Actor": "유비", "Face": "NE"}]
      ]
     ],
@@ -153,7 +153,7 @@
     "c08-s12": [
      [
       [{"Actor": "공손찬", "Face": "NW"}, {"Wait": 0.3}],
-      [{"Actor": "공손찬", "Via": [[27, 17], [3, 17]], "Move": [1, 18], "Speed": 0.9, "Exit": true, "After": 0}, {"Actor": "관우", "Via": [[26, 17], [3, 17]], "Move": [1, 18], "Speed": 0.9, "Exit": true, "After": 1.4}, {"Actor": "유비", "Via": [[27, 17], [3, 17]], "Move": [1, 18], "Speed": 0.9, "Exit": true, "After": 2.0}, {"Actor": "장비", "Via": [[28, 17], [3, 17]], "Move": [1, 18], "Speed": 0.9, "Exit": true, "After": 2.6}, {"Actor": "간옹", "Via": [[29, 17], [3, 17]], "Move": [1, 18], "Speed": 0.9, "Exit": true, "After": 3.2}],
+      [{"Actor": "공손찬", "Via": [[27, 17], [3, 17]], "Move": [1, 17], "Speed": 0.9, "Exit": true, "After": 0}, {"Actor": "관우", "Via": [[26, 17], [3, 17]], "Move": [1, 17], "Speed": 0.9, "Exit": true, "After": 1.4}, {"Actor": "유비", "Via": [[27, 17], [3, 17]], "Move": [1, 17], "Speed": 0.9, "Exit": true, "After": 2.0}, {"Actor": "장비", "Via": [[28, 17], [3, 17]], "Move": [1, 17], "Speed": 0.9, "Exit": true, "After": 2.6}, {"Actor": "간옹", "Via": [[29, 17], [3, 17]], "Move": [1, 17], "Speed": 0.9, "Exit": true, "After": 3.2}],
       [{"Wait": 0.5}]
      ]
     ]
@@ -222,7 +222,7 @@
      ],
      [
       [{"Actor": "전령", "Pose": "idle"}, {"Wait": 0.4}],
-      [{"Actor": "전령", "Move": [7, 4], "Speed": 1.2, "Exit": true}, {"Actor": "관우", "Via": [[2, 3], [6, 3]], "Move": [7, 4], "Speed": 1, "Exit": true, "After": 0.6}, {"Actor": "장비", "Via": [[5, 3], [6, 3]], "Move": [7, 4], "Speed": 1, "Exit": true, "After": 1.2}, {"Actor": "간옹", "Move": [7, 4], "Speed": 1, "Exit": true, "After": 1.8}],
+      [{"Actor": "전령", "Move": [7, 4], "Speed": 1.2, "Exit": true}, {"Actor": "관우", "Via": [[2, 3], [3, 3], [3, 4]], "Move": [7, 4], "Speed": 1, "Exit": true, "After": 0.6}, {"Actor": "장비", "Via": [[5, 3], [6, 3]], "Move": [7, 4], "Speed": 1, "Exit": true, "After": 1.2}, {"Actor": "간옹", "Move": [7, 4], "Speed": 1, "Exit": true, "After": 1.8}],
       [{"Wait": 0.5}]
      ]
     ]

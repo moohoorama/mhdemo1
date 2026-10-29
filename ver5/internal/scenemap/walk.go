@@ -54,7 +54,14 @@ func (w *Walk) Within(u, v int) {
 // height 0; not under a standing object, which covers the tiles its footprint overlaps by half a tile (or half its
 // own size, when smaller) along both axes; not on a wall line, except through a gate's passage (scene.json
 // gate_passage: the small tiles from the gate's point along the line).
-func Walkable(m *Map, c *Catalog) *Walk {
+func Walkable(m *Map, c *Catalog) *Walk { return walkable(m, c, true) }
+
+// Footing marks the small tiles a person can stand on as Walkable does, at any height: a scene puts people on raised
+// ground too (a hill, a rampart). Walking between two of them of different heights is a climb.
+func Footing(m *Map, c *Catalog) *Walk { return walkable(m, c, false) }
+
+func walkable(m *Map, c *Catalog, flat bool) *Walk {
+	level := func(u, v int) bool { return !flat || m.Step(u, v) == 0 }
 	w := &Walk{Origin: m.Origin, W: m.W(), H: m.H(), open: make([]bool, m.W()*m.H()), gate: make([]bool, m.W()*m.H())}
 	set := func(u, v int, open bool) {
 		if i, ok := w.index(u, v); ok {
@@ -64,7 +71,7 @@ func Walkable(m *Map, c *Catalog) *Walk {
 	for y := range w.H {
 		for x := range w.W {
 			u, v := x+w.Origin[0], y+w.Origin[1]
-			set(u, v, m.Step(u, v) == 0 && strings.IndexByte(c.Rules.Walkable, m.Glyph(u, v)) >= 0)
+			set(u, v, level(u, v) && strings.IndexByte(c.Rules.Walkable, m.Glyph(u, v)) >= 0)
 		}
 	}
 	for _, ob := range m.Objects {
@@ -106,7 +113,7 @@ func Walkable(m *Map, c *Catalog) *Walk {
 					if alongU {
 						u, v = ob.U+d, ob.V
 					}
-					set(u, v, m.Step(u, v) == 0)
+					set(u, v, level(u, v))
 					if i, ok := w.index(u, v); ok {
 						w.gate[i] = true
 					}

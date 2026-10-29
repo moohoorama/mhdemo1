@@ -14,8 +14,8 @@
     "백성#1": {"At": [4, 8], "Face": "SE", "Sprite": "commoner_man", "Faction": "merchant"},
     "백성#2": {"At": [10, 8], "Face": "SW", "Sprite": "commoner_woman", "Faction": "merchant"},
     "백성#3": {"At": [9, 10], "Face": "NW", "Sprite": "commoner_elder", "Faction": "merchant"},
-    "수비병#1": {"At": [6, 13], "Face": "NE", "Sprite": "light_infantry", "Faction": "han"},
-    "수비병#2": {"At": [8, 13], "Face": "NE", "Sprite": "light_infantry", "Faction": "han"}
+    "수비병#1": {"At": [5, 14], "Face": "SW", "Sprite": "light_infantry", "Faction": "han"},
+    "수비병#2": {"At": [8, 14], "Face": "SW", "Sprite": "light_infantry", "Faction": "han"}
    },
    "Beats": {
     "c09-02": [
@@ -47,18 +47,18 @@
     "장비": {"At": [6, 7], "Face": "NE"},
     "간옹": {"At": [8, 7], "Face": "NE"},
     "번궁": {"At": [7, 4], "Face": "SW"},
-    "전해": {"At": [7, 15], "Face": "NE", "Off": true},
+    "전해": {"At": [6, 15], "Face": "NE", "Off": true},
     "백성#1": {"At": [4, 8], "Face": "SE", "Sprite": "commoner_man", "Faction": "merchant"},
     "백성#2": {"At": [10, 8], "Face": "SW", "Sprite": "commoner_woman", "Faction": "merchant"},
     "백성#3": {"At": [9, 10], "Face": "NW", "Sprite": "commoner_elder", "Faction": "merchant"},
-    "수비병#1": {"At": [6, 13], "Face": "NE", "Sprite": "light_infantry", "Faction": "han"},
-    "수비병#2": {"At": [8, 13], "Face": "NE", "Sprite": "light_infantry", "Faction": "han"}
+    "수비병#1": {"At": [5, 14], "Face": "SW", "Sprite": "light_infantry", "Faction": "han"},
+    "수비병#2": {"At": [8, 14], "Face": "SW", "Sprite": "light_infantry", "Faction": "han"}
    },
    "Beats": {
     "c09-13": [
      [
       [{"CamAt": [7, 8]}, {"Zoom": 2}],
-      [{"Actor": "전해", "Enter": [7, 15], "Move": [7, 9], "Speed": 1.6}],
+      [{"Actor": "전해", "Enter": [6, 15], "Via": [[6, 9]], "Move": [7, 9], "Speed": 1.6}],
       [{"Actor": "전해", "Face": "NE"}, {"Actor": "유비", "Face": "SW"}, {"Actor": "관우", "Face": "SW"}, {"Actor": "장비", "Face": "SW"}, {"Actor": "간옹", "Face": "SW"}, {"Actor": "번궁", "Face": "SW"}]
      ]
     ],
@@ -77,7 +77,7 @@
       [{"Actor": "간옹", "Face": "NW"}]
      ],
      [
-      [{"Actor": "전해", "Move": [7, 15], "Speed": 1.4, "Exit": true}, {"Wait": 0.8}]
+      [{"Actor": "전해", "Via": [[6, 9]], "Move": [6, 15], "Speed": 1.4, "Exit": true}, {"Wait": 0.8}]
      ]
     ]
    }

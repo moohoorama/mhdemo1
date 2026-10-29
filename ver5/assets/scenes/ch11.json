@@ -40,7 +40,7 @@
     ],
     "c11-08": [
      [
-      [{"Actor": "공손찬", "Move": [12, 5], "Speed": 0.8}, {"Actor": "전해", "Move": [11, 5], "Speed": 0.8, "After": 0.3}, {"Actor": "관우", "Move": [10, 6], "Speed": 0.8, "After": 0.5}, {"Actor": "장비", "Move": [10, 7], "Speed": 0.8, "After": 0.6}, {"Actor": "간옹", "Move": [9, 7], "Speed": 0.8, "After": 0.8}, {"Actor": "번궁", "Move": [9, 6], "Speed": 0.8, "After": 1.0}, {"Actor": "유비", "Move": [17, 9], "Speed": 0.7, "After": 1.2}, {"Actor": "조운", "Move": [17, 10], "Speed": 0.7, "After": 1.4}],
+      [{"Actor": "공손찬", "Move": [12, 5], "Speed": 0.8}, {"Actor": "전해", "Move": [11, 5], "Speed": 0.8, "After": 0.3}, {"Actor": "관우", "Move": [10, 6], "Speed": 0.8, "After": 0.5}, {"Actor": "장비", "Move": [10, 7], "Speed": 0.8, "After": 0.6}, {"Actor": "간옹", "Via": [[17, 7], [11, 7], [11, 8]], "Move": [9, 7], "Speed": 0.8, "After": 0.8}, {"Actor": "번궁", "Via": [[16, 7], [9, 7]], "Move": [9, 6], "Speed": 0.8, "After": 1.0}, {"Actor": "유비", "Move": [17, 9], "Speed": 0.7, "After": 1.2}, {"Actor": "조운", "Via": [[13, 7], [16, 7], [16, 10]], "Move": [17, 10], "Speed": 0.7, "After": 1.4}],
       [{"CamAt": [17, 9]}, {"Zoom": 3}, {"Actor": "유비", "Face": "SE"}, {"Actor": "조운", "Face": "NE"}]
      ]
     ],

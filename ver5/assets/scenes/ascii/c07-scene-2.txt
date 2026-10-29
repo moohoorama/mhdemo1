@@ -4,11 +4,11 @@ TreTre...Tre............Tre...Tre.........Bsh............Bsh.........Tre........
 ...###Twr.............................................Twr......Twr.............................................Twr###...
 ...###...########################...#####################......########################...........................###...
 Bsh###...###TntTnt...TntTnt...###...###............Sck###......###Tnt...TntTnt...Tnt###...Arm...ArmArm...ArmArm...###...
-...###...###TntTnt...TntTnt...###...###............Sck###......###Tnt...TntTnt...Tnt###...pi2Cen......CaoXHYin2...###Tre
-...###...###..................###...###............Sck###......###..................###........................in1###...
-...###...###Tnt...............###...###...............###......###...............Tnt###.....................pi1...###Tre
-...###...###Tnt...Tnt.........Bnr...###...............###......###...............Tnt###...Wpn...Wpn............st1###...
-...###...###...Flg...Brz............###...FlgTblBrz...###......###...Flg...Brz......###.....................wd2wd1###...
+...###...###TntTnt...TntTnt...###...###............Sck###......###Tnt...TntTnt...Tnt###.....................XHY...###Tre
+...###...###..................###...###............Sck###......###..................###........................Cen###...
+...###...###Tnt...............###...###...............###......###...............Tnt###...........................###Tre
+...###...###Tnt...Tnt.........Bnr...###...............###......###...............Tnt###...Wpn...Wpn......Caowd9wd1###...
+...###...###...Flg...Brz............###...FlgTblBrz...###......###...Flg...Brz......###......wd3wd4wd5wd6wd7wd8wd2###...
 Bsh###...###Tnt...............Bnr...###Jar............###......###...............Tnt###...#####################...###Tre
 Tre###...###TntTnt...TntTnt...###...###Jar............Bnr......Bnr......TntTnt...Tnt###...###............Tnt###...###...
 ...###...###..................###...###.............................................###...###......Tnt......###...###...
@@ -39,34 +39,38 @@ Tre#############################################################################
 Cao 조홍
 XHY 하후연
 Cen 조인
-in1 패잔병#1  (light_infantry)
-pi1 패잔병#2  (pikeman)
-wd1 부상병#1  (wounded_noncombat, lie)
-wd2 부상병#2  (wounded_noncombat, sitground)
-in2 패잔병#3  (light_infantry)
-pi2 패잔병#4  (pikeman)
-st1 들것#1  (stretcher_noncombat)
-XHD 하후돈  (off stage, enters later (cell 20 16))
+wd1 패잔병#1  (wounded_noncombat, sitground)
+wd2 패잔병#2  (wounded_noncombat, sitground)
+wd3 주검#1  (wounded_noncombat, lie)
+wd4 주검#2  (wounded_noncombat, lie)
+wd5 주검#3  (wounded_noncombat, lie)
+wd6 주검#4  (wounded_noncombat, lie)
+wd7 주검#5  (wounded_noncombat, lie)
+wd8 주검#6  (wounded_noncombat, lie)
+wd9 주검#7  (wounded_noncombat, lie)
 Ca1 조조  (off stage, enters later (cell 20 16))
-cv1 부상병#3  (light_cavalry, off stage, enters later (cell 20 16))
-Liu 유비  (off stage, enters later (cell 20 16))
+XHD 하후돈  (off stage, enters later (cell 20 16))
 Gua 관우  (off stage, enters later (cell 20 16))
+Liu 유비  (off stage, enters later (cell 20 16))
 Zha 장비  (off stage, enters later (cell 20 16))
-Mes 전령  (light_infantry, off stage, enters later (cell 20 16))
+gu1 호위#1  (guards, off stage, enters later (cell 20 16))
+Yua 원소  (off stage, enters later (cell 20 16))
+gu2 호위#2  (guards, off stage, enters later (cell 20 16))
 
-# c07-f01: XHD -> 29 5
-# c07-f01: Ca1 -> 29 6
-# c07-f01: cv1 -> 29 7
-# c07-f01: Liu -> 29 8
-# c07-f01: Gua -> 29 9
-# c07-f02: XHD -> 32 5
-# c07-f02: Ca1 -> 33 5
-# c07-f02: cv1 -> 34 8
-# c07-f02: Liu -> 33 8
-# c07-f02: Gua -> 34 9
-# c07-f02: Zha -> 29 9
-# c07-f03: Zha -> 32 9
-# c07-f06: Ca1 -> 33 6
-# c07-g01: Cao -> 34 7
-# c07-h01: Mes -> 29 7
-# c07-h01: Mes -> 32 7
+# c07-f02: Ca1 -> 35 5
+# c07-f02: XHD -> 34 5
+# c07-f02: Gua -> 36 7
+# c07-f02: Liu -> 35 7
+# c07-f02: Zha -> 34 7
+# c07-y01: gu1 -> 30 5
+# c07-y01: Yua -> 31 6
+# c07-y01: gu2 -> 30 7
+# c07-y08: XHD -> 33 5
+# c07-y09: Zha -> 33 7
+# c07-y12: Ca1 -> 32 5
+# c07-y12: Liu -> 32 6
+# c07-y12: XHD -> 34 5
+# c07-y12: Zha -> 34 7
+# c07-y14: gu2 -> 20 16 and leaves
+# c07-y14: Yua -> 20 16 and leaves
+# c07-y14: gu1 -> 20 16 and leaves

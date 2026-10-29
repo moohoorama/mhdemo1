@@ -3,14 +3,14 @@ Pil#################################Pil
 ###...Brz...XHD...Wpn...Bnr...ArmBrz...
 ###Bnr.........QiaKonHan...............
 ###Flg......TblTbl...Tbl...Tbl......gu1
-###CdlYuaDsk...........................
+###CdlYuaDsk............Cao............
 ###Cdl.................................
 ###Bnr......YShTbl...Tbl...Tbl......gu2
-###Wpn........................Gua......
+###Wpn.....................LiuGua......
 Pil...Brz..................Zha...Brz...
 
 Yua 원소  (sit)
-Cao 조조  (off stage, enters later (cell 7 3))
+Cao 조조
 XHD 하후돈
 Qia 교모  (official_noncombat, sit)
 Han 한복  (official_noncombat, sit)
@@ -18,9 +18,8 @@ YSh 원술  (sit)
 gu1 호위#1  (guards)
 gu2 호위#2  (guards)
 Kon 공융  (sit)
-Liu 유비  (off stage, enters later (cell 8 6))
+Liu 유비
 Gua 관우
 Zha 장비
 
-# c07-c1: Cao -> 7 3
-# c07-c1: Liu -> 8 6
+# c07-c6: Cao -> 12 4 and leaves
