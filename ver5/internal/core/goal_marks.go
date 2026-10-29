@@ -106,7 +106,7 @@ func (e *Engine) SubMarks() []GoalMark {
 	}
 	stage := e.data.Stages[e.state.Stage]
 	var out []GoalMark
-	for _, o := range stage.Sub {
+	for _, o := range e.battleGoals().Sub {
 		marks, pending := e.condMarks(stage, o.If, true)
 		for _, m := range marks {
 			m.Pending = pending

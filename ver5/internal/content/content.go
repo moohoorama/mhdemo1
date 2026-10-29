@@ -282,6 +282,7 @@ type Action struct {
 	GoalArea int            `json:",omitempty"` // ai: instead of Goal, any cell of this area
 	Victory  []Goal         `json:",omitempty"` // goals: the win goals from now on; left out, they stay
 	Defeat   []Goal         `json:",omitempty"` // goals: the loss goals from now on; left out, they stay ([] clears them)
+	Sub      []Objective    `json:",omitempty"` // goals: the bonus objectives from now on; left out, they stay
 }
 
 // Move sends a unit (or each unit of a group, to cells around To) somewhere, ignoring move range and
@@ -363,9 +364,12 @@ type Goal struct {
 	Text string
 }
 
-// Goals are a battle's win and loss goals: the stage's at first, until a goals action of a battle
-// event puts others in place.
-type Goals struct{ Victory, Defeat []Goal }
+// Goals are a battle's win and loss goals and its bonus objectives: the stage's at first, until a
+// goals action of a battle event puts others in place.
+type Goals struct {
+	Victory, Defeat []Goal
+	Sub             []Objective `json:",omitempty"`
+}
 
 // Objective is a bonus goal judged when the battle is won: if its If holds then, the player gets
 // Reward and the story flag Flag.

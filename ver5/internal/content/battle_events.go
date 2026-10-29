@@ -182,13 +182,16 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 					}
 				}
 			case "goals":
-				if a.Victory == nil && a.Defeat == nil {
+				if a.Victory == nil && a.Defeat == nil && a.Sub == nil {
 					return nil, nil, fmt.Errorf("battle event %s: goals without goals", event.ID)
 				}
 				if err := d.validateGoals(s.ID, "victory", a.Victory, true, refs); err != nil {
 					return nil, nil, fmt.Errorf("battle event %s: %w", event.ID, err)
 				}
 				if err := d.validateGoals(s.ID, "defeat", a.Defeat, false, refs); err != nil {
+					return nil, nil, fmt.Errorf("battle event %s: %w", event.ID, err)
+				}
+				if err := d.validateSubs(s.ID, a.Sub, refs); err != nil {
 					return nil, nil, fmt.Errorf("battle event %s: %w", event.ID, err)
 				}
 			case "flag":
@@ -242,20 +245,25 @@ func (d *Data) validateObjectives(s Stage, refs *battleRefs) error {
 	if err := d.validateGoals(s.ID, "defeat", s.Defeat, false, refs); err != nil {
 		return err
 	}
+	return d.validateSubs(s.ID, s.Sub, refs)
+}
+
+// validateSubs checks a list of bonus objectives: the stage's own, or those a goals action puts in place.
+func (d *Data) validateSubs(stage string, subs []Objective, refs *battleRefs) error {
 	ids := map[string]bool{}
-	for _, o := range s.Sub {
+	for _, o := range subs {
 		if o.ID == "" || ids[o.ID] || o.Text == "" || len(o.If) == 0 {
-			return fmt.Errorf("stage %s: objective %q", s.ID, o.ID)
+			return fmt.Errorf("stage %s: objective %q", stage, o.ID)
 		}
 		ids[o.ID] = true
 		for _, cond := range o.If {
 			if err := d.validateCond(cond, refs); err != nil {
-				return fmt.Errorf("stage %s: objective %s: %w", s.ID, o.ID, err)
+				return fmt.Errorf("stage %s: objective %s: %w", stage, o.ID, err)
 			}
 		}
 		for item, n := range o.Reward {
 			if !d.Gainable(item) || n < 1 {
-				return fmt.Errorf("stage %s: objective %s reward %s", s.ID, o.ID, item)
+				return fmt.Errorf("stage %s: objective %s reward %s", stage, o.ID, item)
 			}
 		}
 	}

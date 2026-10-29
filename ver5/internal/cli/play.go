@@ -453,6 +453,17 @@ func (p *player) events(evs []core.Event) {
 			p.printf("  %s → %s 빗나감\n", name(e.Actor), name(e.Target))
 		case "heal":
 			p.printf("  %s → %s %d 회복\n", name(e.Actor), name(e.Target), e.Amount)
+		case "pouch-heal":
+			p.printf("  %s 주머니의 콩 %d 회복\n", name(e.Actor), e.Amount)
+		case "goals":
+			if m := p.obs().Map; m != nil {
+				for _, g := range m.Victory {
+					p.printf("  ◎ 전투목표 변경 · 승리: %s\n", g.Text)
+				}
+				for _, o := range m.Sub {
+					p.printf("  ◎ 전투목표 변경 · 부목표: %s\n", o.Text)
+				}
+			}
 		case "retreat", "death":
 			p.printf("  ✝ %s %s\n", name(e.Actor), map[string]string{"retreat": "퇴각", "death": "전사"}[e.Kind])
 		case "speech":

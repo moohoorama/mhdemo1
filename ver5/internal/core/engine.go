@@ -138,7 +138,7 @@ func (e *Engine) Observe() Observation {
 			m.Tiles[t.Y] = m.Tiles[t.Y][:at] + t.State + m.Tiles[t.Y][at+1:]
 		}
 		if g := s.Goals; g != nil {
-			m.Victory, m.Defeat = g.Victory, g.Defeat
+			m.Victory, m.Defeat, m.Sub = g.Victory, g.Defeat, g.Sub
 		}
 		o.Map = &m
 	}
@@ -774,7 +774,7 @@ func (e *Engine) settle() {
 		}
 		e.state.Executed[key] = true
 	}
-	for _, o := range stage.Sub {
+	for _, o := range goals.Sub {
 		if key := "sub-" + stage.ID + "-" + o.ID; !e.state.Executed[key] && e.holdsIn(o.If, true) {
 			e.state.Executed[key] = true
 			for item, n := range o.Reward {
@@ -812,7 +812,7 @@ func (e *Engine) SubDone() []bool {
 		return nil
 	}
 	var out []bool
-	for _, o := range e.data.Stages[e.state.Stage].Sub {
+	for _, o := range e.battleGoals().Sub {
 		out = append(out, e.state.Executed["sub-"+e.data.Stages[e.state.Stage].ID+"-"+o.ID] || e.state.Phase == "battle" && e.holdsIn(o.If, true))
 	}
 	return out

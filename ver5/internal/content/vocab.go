@@ -62,6 +62,7 @@ const (
 	FxEvade          = "evade"            // physical attacks on it hit this many percentage points less often
 	FxSweepArc       = "sweep_arc"        // a melee strike also hits the arc of five cells ahead of it; value is the damage share
 	FxAccuracy       = "accuracy"         // its physical attacks hit this many percentage points more often
+	FxPouchHeal      = "pouch_heal"       // after an attack hurts it and leaves it standing, it recovers this many HP
 )
 
 // TraitEffects lists every trait effect key; keys ending in ':' take an element (or weapon type) after it.
@@ -73,7 +74,7 @@ func init() {
 		FxRangedImmune, FxRiposte, FxReflect, FxFortify, FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxFarSight,
 		FxMountedRange, FxLightMove, FxSpellRange, FxSpellSure, FxChain, FxSure, FxCritElement, FxDispel, FxStatusImmune,
 		FxHealBonus, FxAura, FxDeputy, FxItemShare, FxManaRegen, FxBloodCost, FxRegen, FxBuffExtend, FxLastStand,
-		FxCostHalf, FxCleanse, FxBlendBonus, FxDeputyAppoint, FxWield, FxEvade, FxSweepArc, FxAccuracy} {
+		FxCostHalf, FxCleanse, FxBlendBonus, FxDeputyAppoint, FxWield, FxEvade, FxSweepArc, FxAccuracy, FxPouchHeal} {
 		TraitEffects[k] = true
 	}
 }

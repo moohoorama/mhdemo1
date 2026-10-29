@@ -3,6 +3,7 @@ package core
 import (
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"srpg/internal/content"
 )
 
@@ -213,4 +214,32 @@ func TestEvadeLowersTheHitChanceOfPhysicalAttacks(t *testing.T) {
 	if base <= e.data.Rules.HitFloor+15 || got != base-15 {
 		t.Fatalf("hit chance %v -> %v, want %v", base, got, base-15)
 	}
+}
+
+func TestPouchHealsAfterABlow(t *testing.T) {
+	e, _, _ := arena(t)
+	with(e, "boss", "pouch_t")
+	for i := 0; i < 8; i++ {
+		boss := e.unit("boss")
+		boss.HP = e.stats(boss).MaxHP
+		resetActions(e.unit("hero"))
+		apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
+		e.state.Learning = nil
+		dealt, healed := 0, 0
+		for _, ev := range e.events {
+			if ev.Kind == "damage" && ev.Target == "boss" {
+				dealt += ev.Amount
+			}
+			if ev.Kind == "pouch-heal" && ev.Actor == "boss" {
+				healed += ev.Amount
+			}
+		}
+		if dealt == 0 {
+			continue
+		}
+		assert.Equal(t, min(dealt, 50), healed, "once per attack, never above the full bar")
+		assert.Equal(t, e.stats(e.unit("boss")).MaxHP-dealt+healed, e.unit("boss").HP)
+		return
+	}
+	t.Fatal("no blow landed in 8 swings")
 }

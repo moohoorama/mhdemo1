@@ -61,6 +61,8 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		return fmt.Sprintf("%s: 병법치 -%d", a, e.Amount), false
 	case "recover-hp":
 		return fmt.Sprintf("%s: 병력 +%d", a, e.Amount), false
+	case "pouch-heal":
+		return fmt.Sprintf("%s: 주머니의 콩을 먹음 병력 +%d", a, e.Amount), false
 	case "recover-mp":
 		return fmt.Sprintf("%s: 병법치 +%d", a, e.Amount), false
 	case "move", "place":

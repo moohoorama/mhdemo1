@@ -1757,3 +1757,16 @@
 - internal/gui/scenario.go: 장면이 어두워지는 동안 이미 사라진 마지막 나레이션을 다시 그리지 않음; internal/gui/uidemo_explore.go: 나레이션 끝을 Update와 같은 turnPage로 넘김 — 5장 궁궐 "대신들 가운데…" 나레이션이 사라졌다 다시 뜨던 것
 - internal/gui/field.go·field_scene.go·field_render.go(`raisedShadows`, `shadowLayer`, `drawRaisedShadow`): 장면 맵의 높은 땅 위 그림자(사람·덤불·소품)를 따로 모아 두었다가 윗면 칸을 그릴 때 그 칸 마름모만큼 그림 — 맨땅 그림자 층 위에 윗면 조각이 덮여, 8장 연합 진영 위 벼랑의 조조 일행에게 그림자가 없던 것
 - assets/scenes/ch08.json(c08-s1): 철군 행렬·공손찬·삼형제가 진영 동·서 문 칸 (38,18)·(1,18)로 드나들고 진영 안은 17행으로 걸음, 군량 수레도 (39,18)로 — 17행 그대로 문 옆 울타리 기둥을 뚫고 지나가던 것
+
+## 2026-10-30 호로관 부목표는 첫 일기토 뒤에 나타나고, 콩주머니는 맞고 버티면 콩을 먹는다
+
+- 결정: 6장 부목표는 처음에 보이지 않고, 목순·방열의 첫 일기토 뒤 유관장 대사("동맹군의 피해가 막심하네…")와 함께 전투 목표 창이 다시 열리며 나타난다. 조건은 "연합군 병사 셋 이상 생존"(여섯 부대 가운데, 상당·하내 구분 없음) · 이유: 사용자 "처음에 그런 부목표가 나오면 이후의 동맹군 병사가 나오는게 예상이 될거아냐", "그냥 연맹군으로 하고, 연맹군이 셋 이상 남아야 한다" · 영향받는 문서: fullstory.md, logic-battle-event.md
+- 결정: 콩주머니는 장신구. 공격을 받아 다치고도 버티면 공격 한 번에 한 번 병력을 400 회복한다(가진 콩은 줄지 않는다) · 이유: 사용자 "피격할때마다 알아서 콩을 먹는거야"
+- `internal/content`: `goals` 동작에 `Sub`, `Goals.Sub`, `validateSubs`, 조건 `alive:X>=N`, 효과 키 `pouch_heal`. `internal/core`: 바뀐 부목표가 승리 판정·`SubDone`·`SubMarks`·`Observe`를 따름, `pouchHeal`(이벤트 `pouch-heal`). GUI·CLI에 회복 표시
+- `assets/scenario/hero/stage06.json`: 연합군 병사 여섯에 `Group: coalition`, `brothers-challenge`에 대사 둘과 `goals`(부목표 `coalition`, 플래그 `flag-hulao-coalition`). `equipment.json`·`traits.json`: `bean_pouch`
+- 확인: `go test ./internal/core/ ./internal/cli/ ./internal/session/`, GUI 임시 데모로 일기토 → 대사 → 전투 목표 창 캡처
+- 결정: 콩주머니는 7장 첫머리 S#0에서, 호로관에서 돌아온 삼형제가 진영 문으로 들어올 때 살아 돌아온 연합군 병사가 어머니가 콩을 볶아 넣어 준 주머니를 준다. 미달성이면 S#0 없이 막사 안으로 간다. 공융은 주지 않고, 11장 북해는 서주로 가는 길에 황건적에게 공격받는 북해를 본 것뿐이다 · 이유: 사용자 "진영 바깥에서 안쪽으로 걸어오는데, 병사가 나서서 고맙다고 콩주머니 주고 가는건", "북해 구원은 그냥 서주에서 구원 요청이 와서 가는데, 가는길에 북해를 들렀다가 황건적에게 공격받는걸 본거 뿐" · 영향받는 문서: fullstory.md
+- 거절: 7장 S#2 막사 밖에 공융·관우·장비를 두고 공융이 주는 안 — 공융이 막사를 들락거리고 조조가 뒤에 나오는 동선이 어색함. 그 전 초안의 공융 대사("안에서는 목순과 방열을 아깝다고만 하더이다")는 다른 인물을 깎아내리는 대사라 거절
+- `assets/scenario/hero/story07.json`: 첫머리 `c07-gate-branch`(`flag:flag-hulao-coalition`) → `c07-gate`, `c07-g1`~`c07-g7`(지급 `grant-bean_pouch`). `assets/scenes/ch07.json` `c07-gate`: S_coalition_camp 밤, 화톳불(33,19) 곁 경보병 셋, 삼형제가 동문(38,17)으로 들어와 (30,17)·(31,17)·(31,18), 병사가 (30,18)로 뛰어옴(무릎 꿇기·두드림 지문은 빼기로 함)
+- `tools/spritetool/assets/ver5-ui/settings.json`·`pixels.json`·`sources/item_bean_pouch.png`, `assets/graphics/ui/ui.png`·`ui.json`: 콩주머니 아이콘 `item_bean_pouch` — codex 그림(입 벌린 삼베 주머니에 볶은 콩, 붉은 끈) → `pixelize_icon.py`, 콩 사이가 끈의 검붉은색으로 잡혀 콩 그림자색 `v`를 더함. 군량낭(`item_ration`)과 구별되게 입을 벌려 콩을 보임. `equipment.json` `bean_pouch.Icon`
+- `assets/scenes/ch07.json` `c07-gate`·`story07.json`: 병사가 넘어진 것처럼 보이던 무릎 꿇기를 빼고 서서 맞음, 유비 "(병사를 일으키며) 일어나게."와 장비 "(병사 어깨를 두드리며)" 지문을 뺌 — 사용자 "병사가 넘어져서 보이고, 일으켜주고 없애주고, (어깨를 두드리며)도 없애죠"

@@ -1392,7 +1392,8 @@
        "AI": true,
        "Policy": "assault",
        "Faction": "yuan",
-       "Facing": "NE"
+       "Facing": "NE",
+       "Group": "coalition"
       },
       {
        "Character": "troop_footman",
@@ -1402,7 +1403,8 @@
        "AI": true,
        "Policy": "assault",
        "Faction": "yuan",
-       "Facing": "NE"
+       "Facing": "NE",
+       "Group": "coalition"
       },
       {
        "Character": "troop_footman",
@@ -1412,7 +1414,8 @@
        "AI": true,
        "Policy": "assault",
        "Faction": "yuan",
-       "Facing": "NE"
+       "Facing": "NE",
+       "Group": "coalition"
       },
       {
        "Character": "troop_footman",
@@ -1422,7 +1425,8 @@
        "AI": true,
        "Policy": "assault",
        "Faction": "yuan",
-       "Facing": "NE"
+       "Facing": "NE",
+       "Group": "coalition"
       },
       {
        "Character": "troop_footman",
@@ -1432,7 +1436,8 @@
        "AI": true,
        "Policy": "assault",
        "Faction": "yuan",
-       "Facing": "NE"
+       "Facing": "NE",
+       "Group": "coalition"
       },
       {
        "Character": "troop_footman",
@@ -1442,7 +1447,8 @@
        "AI": true,
        "Policy": "assault",
        "Faction": "yuan",
-       "Facing": "NE"
+       "Facing": "NE",
+       "Group": "coalition"
       }
      ]
     },
@@ -1527,6 +1533,19 @@
        "Text": "공을 다투다 목숨부터 잃는구나……."
       },
       {
+       "Actor": "guanyu",
+       "Text": "형님, 장수를 잃은 연합군 병사들이 갈 곳 없이 흩어지고 있습니다."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "동맹군의 피해가 막심하네. 저들마저 잃기 전에 어서 여포를 물리쳐야 하네."
+      },
+      {
        "Actor": "zhangfei",
        "Text": "형, 이제 지 차례유. 저놈 콧대는 지가 꺾어 놓을 테니께."
       },
@@ -1542,6 +1561,19 @@
       {
        "Actor": "liubei",
        "Text": "운장, 익덕. 셋이 함께 가세."
+      }
+     ]
+    },
+    {
+     "Kind": "goals",
+     "Sub": [
+      {
+       "ID": "coalition",
+       "Text": "연합군 병사 셋 이상 생존",
+       "If": [
+        "alive:coalition>=3"
+       ],
+       "Flag": "flag-hulao-coalition"
       }
      ]
     }

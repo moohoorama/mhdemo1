@@ -155,6 +155,9 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 			if a.Defeat != nil {
 				g.Defeat = a.Defeat
 			}
+			if a.Sub != nil {
+				g.Sub = a.Sub
+			}
 			e.state.Goals = &g
 			e.events = append(e.events, Event{Kind: "goals"})
 		case "flag":
@@ -512,11 +515,12 @@ func (e *Engine) playCutscene(groups [][]content.Step) {
 	}
 }
 
-// battleGoals are the current battle's win and loss goals: the stage's, until an event changed them.
+// battleGoals are the current battle's win and loss goals and bonus objectives: the stage's, until an
+// event changed them.
 func (e *Engine) battleGoals() content.Goals {
 	if e.state.Goals != nil {
 		return *e.state.Goals
 	}
 	s := e.data.Stages[e.state.Stage]
-	return content.Goals{Victory: s.Victory, Defeat: s.Defeat}
+	return content.Goals{Victory: s.Victory, Defeat: s.Defeat, Sub: s.Sub}
 }

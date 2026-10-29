@@ -884,6 +884,16 @@
    "Effects": {
     "accuracy": 10
    }
+  },
+  "bean_pouch": {
+   "Name": "콩주머니",
+   "Desc": "공격을 받고 버티면 콩을 하나 먹어 병력을 400 회복한다.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 0,
+   "Effects": {
+    "pouch_heal": 400
+   }
   }
  }
 }

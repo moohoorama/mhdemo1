@@ -1,6 +1,67 @@
 {
  "Nodes": [
   {
+   "ID": "c07-gate-branch",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-hulao-coalition"
+     ],
+     "Next": "c07-gate"
+    }
+   ],
+   "Else": "c07-start"
+  },
+  {
+   "ID": "c07-gate",
+   "Kind": "scene",
+   "Place": "반동탁 연합 · 진영"
+  },
+  {
+   "ID": "c07-g1",
+   "Kind": "say",
+   "Speaker": "soldier",
+   "Text": "호로관에서 선봉에 서셨던 나리시지요? 나리 덕에 살아 돌아왔습니다."
+  },
+  {
+   "ID": "c07-g2",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "다친 데는 없는가?"
+  },
+  {
+   "ID": "c07-g3",
+   "Kind": "say",
+   "Speaker": "soldier",
+   "Text": "드릴 게 이것뿐입니다. 고향 떠날 때 어머니가 콩을 볶아 넣어 주신 주머니입니다."
+  },
+  {
+   "ID": "c07-g4",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그리 귀한 것을 어찌 받겠나."
+  },
+  {
+   "ID": "c07-g5",
+   "Kind": "say",
+   "Speaker": "soldier",
+   "Text": "나리가 지니고 계시면, 저 같은 놈들이 또 살겠지요."
+  },
+  {
+   "ID": "c07-g6",
+   "Kind": "grant",
+   "Item": "bean_pouch",
+   "Count": 1,
+   "Event": "grant-bean_pouch"
+  },
+  {
+   "ID": "c07-g7",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "고맙구먼. 형, 이건 아껴 먹어야겄슈."
+  },
+  {
    "ID": "c07-start",
    "Kind": "scene",
    "Place": "반동탁 연합 · 원소의 막사"

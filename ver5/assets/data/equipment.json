@@ -429,6 +429,24 @@
    "Learn": [
     "dash"
    ]
+  },
+  "bean_pouch": {
+   "Name": "콩주머니",
+   "Desc": "공융이 군사들 배 곯지 않게 늘 지니던 주머니. 공격을 받고 버티면 콩을 하나 꺼내 먹는다.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Icon": "bean_pouch",
+   "Bonus": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "bean_pouch"
+   ]
   }
  }
 }

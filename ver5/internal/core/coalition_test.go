@@ -105,13 +105,17 @@ func TestCoalitionDuelsAndSimultaneousResponse(t *testing.T) {
 				}
 			}
 			assert.Equal(t, 1, duels)
-			require.Len(t, talks, 2)
-			require.Len(t, talks[0].Speech, 3)
-			assert.Equal(t, "liubei", talks[0].Speech[0].Actor)
-			assert.Equal(t, "zhangfei", talks[0].Speech[1].Actor)
-			assert.Equal(t, "guanyu", talks[0].Speech[2].Actor)
-			require.Len(t, talks[1].Speech, 1)
-			assert.Equal(t, "liubei", talks[1].Speech[0].Actor)
+			speakers := [][]string{}
+			for _, v := range talks {
+				var who []string
+				for _, l := range v.Speech {
+					who = append(who, l.Actor)
+				}
+				speakers = append(speakers, who)
+			}
+			assert.Equal(t, [][]string{{"liubei", "guanyu"}, {"liubei", "zhangfei", "guanyu"}, {"liubei"}}, speakers)
+			require.Len(t, e.Observe().Map.Sub, 1, "saving the coalition becomes a bonus objective")
+			assert.Equal(t, []bool{len(e.matching("coalition")) >= 3}, e.SubDone())
 			e.events = nil
 			e.battleEvents()
 			assert.Empty(t, e.events)

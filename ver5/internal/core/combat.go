@@ -523,6 +523,7 @@ func (e *Engine) physical(u, v *Unit, s content.Skill, c Command) {
 
 // exchange is one attack on its victims with what answers it: allies' assists and the victims' counters.
 func (e *Engine) exchange(u, v *Unit, hit []*Unit, share map[string]float64, s content.Skill, c Command) {
+	hp := u.HP
 	dealt, total := e.attackOn(u, v, hit, s, share, false, false), 0
 	for _, q := range hit {
 		total += dealt[q.ID]
@@ -563,11 +564,31 @@ func (e *Engine) exchange(u, v *Unit, hit []*Unit, share map[string]float64, s c
 		}
 	}
 	e.leech(u, total)
+	for _, q := range hit {
+		if dealt[q.ID] > 0 {
+			e.pouchHeal(q)
+		}
+	}
+	if u.HP < hp {
+		e.pouchHeal(u) // hurt by a counter
+	}
+}
+
+// pouchHeal is what a unit with a ration pouch eats once an attack has hurt it and left it standing.
+func (e *Engine) pouchHeal(v *Unit) {
+	if v.HP <= 0 {
+		return
+	}
+	if n := min(e.stats(v).MaxHP-v.HP, int(e.fx(v, content.FxPouchHeal))); n > 0 {
+		v.HP += n
+		e.emit("pouch-heal", v.ID, "", n)
+	}
 }
 
 // spell resolves a magic, status, buff or heal skill on every unit it reaches.
 func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 	R := e.data.Rules
+	hp := u.HP
 	dealt := map[string]int{}
 	var struck []*Unit
 	apply := func(q *Unit, derived bool) {
@@ -643,7 +664,11 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 		if n := dealt[q.ID]; n > 0 {
 			e.emit("spell-hit", u.ID, q.ID, n)
 			e.actionXP(u, q, true, q.HP == 0)
+			e.pouchHeal(q)
 		}
+	}
+	if u.HP < hp {
+		e.pouchHeal(u) // hurt by a reflected spell
 	}
 }
 

@@ -690,6 +690,17 @@
     "sweep_arc": 0.5
    }
   },
+  "pouch_t": {
+   "Name": "Pouch",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Desc": "",
+   "Cost": 0,
+   "Requires": [],
+   "Effects": {
+    "pouch_heal": 50
+   }
+  },
   "evader": {
    "Name": "Evader",
    "Kind": "talent",

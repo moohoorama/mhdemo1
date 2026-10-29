@@ -1,5 +1,36 @@
 {
  "Scenes": {
+  "c07-gate": {
+   "Map": "S_coalition_camp",
+   "Time": "night",
+   "Backdrop": "burning_city",
+   "Glow": "fire_nw",
+   "Nodes": ["c07-gate", "c07-g1", "c07-g2", "c07-g3", "c07-g4", "c07-g5", "c07-g7"],
+   "Ambient": [{"CamAt": [32, 18]}, {"Effect": "fire", "At": [33, 19]}],
+   "Cast": {
+    "병사": {"At": [32, 19], "Face": "SE", "Sprite": "light_infantry", "Faction": "yuan"},
+    "연합군병#1": {"At": [34, 19], "Face": "NW", "Sprite": "wounded_noncombat", "Faction": "yuan"},
+    "연합군병#2": {"At": [33, 20], "Face": "NE", "Sprite": "wounded_noncombat", "Faction": "yuan"},
+    "유비": {"At": [38, 17], "Face": "NW", "Off": true},
+    "관우": {"At": [38, 17], "Face": "NW", "Off": true},
+    "장비": {"At": [38, 17], "Face": "NW", "Off": true}
+   },
+   "Beats": {
+    "c07-g1": [
+     [
+      [{"Actor": "유비", "Enter": [38, 17], "Move": [30, 17], "Speed": 0.8}, {"Actor": "관우", "Enter": [38, 17], "Move": [31, 17], "Speed": 0.8, "After": 0.5}, {"Actor": "장비", "Enter": [38, 17], "Via": [[37, 17], [37, 18]], "Move": [31, 18], "Speed": 0.8, "After": 1.0}],
+      [{"Actor": "병사", "Face": "NW", "Emote": "!"}],
+      [{"Actor": "병사", "Via": [[32, 18]], "Move": [30, 18], "Speed": 1.6}],
+      [{"Actor": "병사", "Face": "NE"}, {"Actor": "유비", "Face": "SW"}]
+     ]
+    ],
+    "c07-g7": [
+     [
+      [{"Actor": "장비", "Face": "SW"}]
+     ]
+    ]
+   }
+  },
   "c07-start": {
    "Map": "S_council",
    "Time": "night",

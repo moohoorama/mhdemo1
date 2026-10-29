@@ -852,7 +852,7 @@ func (g *Game) strike(attacker *unitVis, events []core.Event) {
 				t.shownHP = min(t.maxHP, t.shownHP+e.Amount)
 			}
 			g.sayNumber(t, numberHeal, e.Amount)
-		case "recover-hp":
+		case "recover-hp", "pouch-heal":
 			if u := g.unitAt(e.Actor); u != nil {
 				u.shownHP = min(u.maxHP, u.shownHP+e.Amount)
 				g.sayNumber(u, numberHeal, e.Amount)

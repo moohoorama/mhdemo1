@@ -23,7 +23,8 @@ var battleConds = map[string]bool{"flag": true, "choice": true, "won": true, "ro
 
 var turnNames = []string{"ally", "support", "enemy"}
 
-// ParseCond reads "!?op:args". The forms are flag:key[>=N], alive|dead|party|defeated|alldefeated:X,
+// ParseCond reads "!?op:args". The forms are flag:key[>=N], alive:X[>=N] (in battle, at least N of X
+// stand), dead|party|defeated|alldefeated:X,
 // choice:node=option, won:stage, round>=N, turnstart:faction, at|allat:X:area, adjacent:A:B,
 // hp:X<N, duel:id, fled:X (left the field by flight) and any:[cond, cond]. A leading ! negates.
 func ParseCond(s string) (Cond, error) {
@@ -46,7 +47,7 @@ func ParseCond(s string) (Cond, error) {
 	}
 	c.Op, c.Arg = op, arg
 	switch op {
-	case "flag":
+	case "flag", "alive":
 		if name, n, ok := strings.Cut(arg, ">="); ok {
 			v, err := strconv.Atoi(n)
 			if err != nil || name == "" {
@@ -137,6 +138,9 @@ func (d *Data) validateParsed(s string, c Cond, refs *battleRefs) error {
 	}
 	switch c.Op {
 	case "alive", "dead", "party":
+		if refs == nil && c.N > 1 {
+			return fmt.Errorf("condition %q: a count is for battles", s)
+		}
 		if refs == nil && !d.Has(c.Arg) {
 			return fmt.Errorf("condition %q: no character %s", s, c.Arg)
 		}

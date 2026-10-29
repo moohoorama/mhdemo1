@@ -176,3 +176,21 @@ func TestRequiredOfficersAndTheSortieLimit(t *testing.T) {
 	_, err = r.Apply(Command{Kind: "deploy", Deployment: []string{"hero"}})
 	assert.NoError(t, err, "a dead required officer is not demanded")
 }
+
+func TestAnEventPutsABonusObjectiveInPlace(t *testing.T) {
+	sub := content.Objective{ID: "spared", Text: "two troops stand", If: []string{"alive:troops>=2"}, Flag: "flag-spared"}
+	setup := func(s *content.Stage) {
+		s.Enemies[1].Group, s.Enemies[2].Group = "troops", "troops"
+		s.Events = []content.BattleEvent{{ID: "late", If: []string{"defeated:boss"}, Do: []content.Action{{Kind: "goals", Sub: []content.Objective{sub}}}}}
+	}
+	assert.Empty(t, battleWith(t, setup).SubDone(), "no bonus objective before the event")
+
+	e := settleWith(t, setup, func(s *State) { killUnits(s, "boss") })
+	require.Equal(t, "victory", e.Observe().Result)
+	assert.Equal(t, []content.Objective{sub}, e.Observe().Map.Sub, "the briefing shows the event's objective")
+	assert.Equal(t, 1, e.state.Flags["flag-spared"])
+
+	e = settleWith(t, setup, func(s *State) { killUnits(s, "boss", "troop#1") })
+	require.Equal(t, "victory", e.Observe().Result)
+	assert.Zero(t, e.state.Flags["flag-spared"], "one troop is fewer than two")
+}

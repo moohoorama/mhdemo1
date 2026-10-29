@@ -59,12 +59,13 @@ func (e *Engine) holds(c content.Cond, battle bool) bool {
 		return e.state.Executed["won-"+c.Arg]
 	case "alive":
 		if battle {
+			n := 0
 			for _, u := range e.matching(c.Arg) {
 				if u.HP > 0 {
-					return true
+					n++
 				}
 			}
-			return false
+			return n >= c.N
 		}
 		o := e.char(c.Arg)
 		return o != nil && !o.Dead
