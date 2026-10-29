@@ -24,6 +24,7 @@
     "item_primer",
     "item_qinggang",
     "item_ration",
+    "item_bean_pouch",
     "item_redhare",
     "item_robe",
     "item_seal",
@@ -952,6 +953,31 @@
             "y": "#eedc94",
             "z": "#c6a650",
             "w": "#8a6c30"
+          }
+        }
+      }
+    },
+    "item_bean_pouch": {
+      "cell": [144, 144],
+      "anchor": [8, 8],
+      "dot": 4,
+      "source": "sources/item_bean_pouch.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "a": "#d8c49a",
+            "b": "#b39a6c",
+            "c": "#857048",
+            "d": "#5a4630",
+            "r": "#a8382a",
+            "s": "#6c1e16",
+            "y": "#e8c878",
+            "z": "#c49a4a",
+            "w": "#8a6430",
+            "v": "#6a4620"
           }
         }
       }

@@ -2055,5 +2055,47 @@
     "........................"
    ]
   }
+ ],
+ "item_bean_pouch": [
+  {
+   "icon": [
+    "....................................",
+    "....................................",
+    ".............kkk....................",
+    ".........kkkkaaakkkkkkk.............",
+    "........kkaaaaaaakaaaksk............",
+    ".......kkaaaccbbvyvaaakkk...........",
+    "......kkaccvvccvvyyzvbaaak..........",
+    ".....kdabcvyyvvyyyzzvvbbaak.........",
+    ".....kaaavyyzvvyyyyyyzvvbaak........",
+    ".....kaaavwzzyyzvyyyzzvzvaaak.......",
+    ".....kkaaaaawyyzvyzvzzzzvaaak.......",
+    "......kbaaaaaazvzzzvzzzvvaakk.......",
+    ".......kbbaaaaavvvyyzzvaabkk........",
+    ".......ksccaaaaaaavvvvaabkk.........",
+    "......kkcrraacbaaaaaabbbsk..........",
+    ".....kabcaarrcbbaaabbbbkrkk.........",
+    "....kaabaaasrrrrraabbrrrkkk.........",
+    "...kkaaaaabaakrrrrrrrrrrcbkk........",
+    "...kkaaaaabaaabbbkssrssrbbbkk.......",
+    "...kaaaaabaaaabaabbbrrsrbbbkk.......",
+    "...kaaaaabaaaabaaabbbrsrrbbbk.......",
+    "...kaaaaaaaaaaaaaabbbrsrrrbbkk......",
+    "..kaaaaaaaaaaaabaaabbrbbrrbbkk......",
+    "..kabbaaaaaaaaabaaabrrbbbrrbkk......",
+    "..kkbbaaaaaaaaaaaaabrrrbbrbbkk......",
+    "...kbbbaaaaabaaaaaabbrbbbbbbk.......",
+    "...kbbbaaaaabbaaababbbbbbbbkk.......",
+    "...kkccbaaabbbbaabbbbbbbccck.kk.....",
+    "....kkccbbbbbbbbbbbbbbbccck.kyzk....",
+    ".....kkccbbbbccbbbbbbccyyykkyyzzk...",
+    "......kkcccbccccbbbbcckyyyzkzzzkk...",
+    "........kkkccccccccckkkzzzvkkkkk....",
+    "..........kkkkkkkkkkk.kkzkk..kk.....",
+    ".......................kkk..........",
+    "....................................",
+    "...................................."
+   ]
+  }
  ]
 }
