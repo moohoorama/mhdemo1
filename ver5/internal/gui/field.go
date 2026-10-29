@@ -50,7 +50,8 @@ type Field struct {
 	ground                       [8]*ebiten.Image // per water frame; castle floor baked in
 	clip                         *ebiten.Image    // opaque where there is ground
 	shadows                      *ebiten.Image
-	raisedShadows                *ebiten.Image // shadows on a scene map's raised ground, laid with each top (drawRaisedShadow)
+	raisedShadows                *ebiten.Image     // shadows on a scene map's raised ground, laid with each top (drawRaisedShadow)
+	raisedShadowRects            []image.Rectangle // where this frame's shadows lie on raisedShadows, canvas pixels
 	Canvas                       *ebiten.Image
 	ShowExterior                 bool
 	exterior                     *ebiten.Image
@@ -517,6 +518,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	if f.raisedShadows != nil {
 		f.raisedShadows.Clear()
 	}
+	f.raisedShadowRects = f.raisedShadowRects[:0]
 	items := []drawItem{}
 	for _, it := range f.ceilingItems {
 		if f.DrawBounds.Empty() || it.rect.Overlaps(f.DrawBounds) {
@@ -625,11 +627,11 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			sh := Sprite{u.art.Shadow(u.dir, anim, frame), u.art.ShadowPivot[0], u.art.ShadowPivot[1]}
 			sop := &ebiten.DrawImageOptions{Blend: maxBlend}
 			sop.ColorScale.ScaleAlpha(float32((1 - u.leaving()) * (1 - .7*u.wade)))
-			f.blit(f.shadowLayer(ground), sh, x, y-lift, sop)
+			f.castShadow(ground, sh, x, y-lift, sop)
 			if boat, k := f.boat(u); k > 0 {
 				bop := &ebiten.DrawImageOptions{Blend: maxBlend}
 				bop.ColorScale.ScaleAlpha(float32(k * (1 - u.leaving())))
-				f.blit(f.shadowLayer(ground), f.A.Props[boat].Shadow, x, y-lift, bop)
+				f.castShadow(ground, f.A.Props[boat].Shadow, x, y-lift, bop)
 			}
 		}
 		unit := u

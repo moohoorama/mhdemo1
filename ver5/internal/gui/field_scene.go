@@ -4,6 +4,7 @@ import (
 	"image"
 	"image/color"
 	"math"
+	"slices"
 	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -18,8 +19,8 @@ import (
 // scenePiece is a standing piece of the plan in canvas pixels.
 type scenePiece struct {
 	scenemap.Piece
-	shadow Sprite        // its ground shadow, nil Image for none
-	image  *ebiten.Image // a piece of several pictures (a raised block) drawn once at its Rect, so a frame draws it in one go
+	shadow Sprite          // its ground shadow, nil Image for none
+	image  *ebiten.Image   // a piece of several pictures (a raised block) drawn once at its Rect, so a frame draws it in one go
 	anims  []scenemap.Draw // the looping strips it carries (a campfire's flames), played over it
 }
 
@@ -175,7 +176,7 @@ func (f *Field) sceneItems() []drawItem {
 			if i, ok := f.animFrame(p.Name, p.Anchor); ok && f.A.Anims[p.Name].Shadows != nil {
 				sh = f.A.Anims[p.Name].Shadows[i]
 			}
-			f.blit(f.shadowLayer(float64(p.Lift)), sh, p.Anchor[0], p.Anchor[1], &ebiten.DrawImageOptions{Blend: maxBlend})
+			f.castShadow(float64(p.Lift), sh, p.Anchor[0], p.Anchor[1], &ebiten.DrawImageOptions{Blend: maxBlend})
 		}
 		ox, oy := f.OriginX*K, f.OriginY*K
 		items = append(items, drawItem{y: p.Anchor[1], rect: p.Rect, key: &p.Key, draw: func() {
@@ -206,18 +207,26 @@ func (f *Field) sceneItems() []drawItem {
 	return items
 }
 
-// shadowLayer is where a shadow cast on ground lifted this high is laid: the ground's shadow layer, drawn under the
-// standing layer, or on raised ground the layer each top draws its own part of, since the tops stand in that layer.
-func (f *Field) shadowLayer(lift float64) *ebiten.Image {
-	if lift > 0 && f.raisedShadows != nil {
-		return f.raisedShadows
+// castShadow lays a shadow cast on ground lifted this high: on the ground's shadow layer, drawn under the standing
+// layer, or on raised ground on the layer each top draws its own part of, since the tops stand in that layer.
+func (f *Field) castShadow(lift float64, s Sprite, x, y float64, op *ebiten.DrawImageOptions) {
+	if lift <= 0 || f.raisedShadows == nil {
+		f.blit(f.shadows, s, x, y, op)
+		return
 	}
-	return f.shadows
+	rx, ry := int(math.Round(x-s.PivotX)), int(math.Round(y-s.PivotY))
+	f.raisedShadowRects = append(f.raisedShadowRects, image.Rect(rx, ry, rx+s.Image.Bounds().Dx(), ry+s.Image.Bounds().Dy()))
+	f.blit(f.raisedShadows, s, x, y, op)
 }
 
 // drawRaisedShadow draws the shadows lying on the top of a raised small tile centred on canvas point (x, y), clipped
-// to the top's diamond.
+// to the top's diamond. Tops no shadow reaches are skipped: each draw from the shadow layer breaks the batch of the
+// tops' own drawing, and a cliff map has thousands of tops.
 func (f *Field) drawRaisedShadow(x, y float64) {
+	top := image.Rect(int(x)-17, int(y)-9, int(x)+17, int(y)+9)
+	if !slices.ContainsFunc(f.raisedShadowRects, top.Overlaps) {
+		return
+	}
 	var vs [4]ebiten.Vertex
 	for i, d := range [4][2]float64{{0, -8}, {16, 0}, {0, 8}, {-16, 0}} {
 		px, py := f.renderPoint(x+d[0], y+d[1])
