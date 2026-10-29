@@ -44,9 +44,9 @@ func (e *Engine) objectiveCells(u *Unit) []content.Point {
 	if u.Goal != nil || u.GoalArea != 0 {
 		return stage.GoalCells(u.Goal, u.GoalArea)
 	}
-	goals := stage.Victory
+	goals := e.battleGoals().Victory
 	if u.Faction == "enemy" {
-		goals = stage.Defeat
+		goals = e.battleGoals().Defeat
 	}
 	for _, g := range goals {
 		var cells []content.Point

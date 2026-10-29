@@ -55,8 +55,9 @@ func (e *Engine) GoalMarks() []GoalMark {
 			}
 		}
 	}
-	add(stage.Victory, true)
-	add(stage.Defeat, false)
+	goals := e.battleGoals()
+	add(goals.Victory, true)
+	add(goals.Defeat, false)
 	for _, id := range keys(e.unitIDs) {
 		if u := e.unit(id); u.HP > 0 && u.Faction == "ally" && e.unitDef(u).Lord {
 			out = append(out, GoalMark{Unit: u.ID})

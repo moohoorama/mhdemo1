@@ -515,6 +515,8 @@ func (g *Game) perform(a *replay.Action) []beat {
 			case "cutscene":
 				entries, total := g.cutsceneTimeline(e.Cutscene)
 				addTimeline(add, entries, total)
+			case "goals":
+				add(.3, func() { g.modals = append(g.modals, &modal{kind: "objective"}) })
 			case "terrain":
 				event := e
 				if x, y, ok := g.areaCenter(e.Amount); ok {

@@ -36,7 +36,7 @@ func (g *Game) startDuelScene(stage int, duel content.Duel, enemyAttacks bool) e
 	if !g.S.Data.Characters[duel.Ally].Playable {
 		snap := e.Snapshot()
 		for i := range snap.Units {
-			if snap.Units[i].Faction == "enemy" && !slices.Contains(g.S.Data.Stages[stage].VictoryTargets(), snap.Units[i].ID) {
+			if snap.Units[i].Faction == "enemy" && !slices.Contains(e.Observe().Map.VictoryTargets(), snap.Units[i].ID) {
 				snap.Units[i].HP = 0
 			}
 		}

@@ -30,7 +30,13 @@ func main() {
 	xp := flag.Int("xp", storage.DefaultScalePct, "experience scale in percent, as the settings set it")
 	offset := flag.Int("offset", 0, "the player's officers this many levels off the stage level")
 	show := flag.Bool("show", false, "print every unit's numbers when the battle starts (seed 1)")
+	eval := flag.String("eval", "", "other weights for the player's units as n,m,threat,top,w (ai.ParseEval)")
 	flag.Parse()
+	if *eval != "" {
+		x, err := ai.ParseEval(*eval)
+		check(err)
+		ai.Player = x
+	}
 	d, err := content.Load(*dir)
 	check(err)
 	for i, st := range d.Stages {

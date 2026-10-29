@@ -661,6 +661,9 @@ func (e *Engine) useItem(u *Unit, c Command) error {
 			w.HP += actual
 		}
 		e.emit("item", u.ID, w.ID, actual)
+		if actual > 0 && u.Faction == "ally" {
+			e.xp(u.Character, e.supportXP(u, w)) // like a support spell; a full bar teaches nothing
+		}
 	}
 	return nil
 }

@@ -147,6 +147,16 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 					}
 				}
 			}
+		case "goals":
+			g := e.battleGoals()
+			if a.Victory != nil {
+				g.Victory = a.Victory
+			}
+			if a.Defeat != nil {
+				g.Defeat = a.Defeat
+			}
+			e.state.Goals = &g
+			e.events = append(e.events, Event{Kind: "goals"})
 		case "flag":
 			if e.state.PendingFlags == nil {
 				e.state.PendingFlags = map[string]int{}
@@ -474,4 +484,13 @@ func (e *Engine) playCutscene(groups [][]content.Step) {
 	if len(out) > 0 {
 		e.events = append(e.events, Event{Kind: "cutscene", Cutscene: out})
 	}
+}
+
+// battleGoals are the current battle's win and loss goals: the stage's, until an event changed them.
+func (e *Engine) battleGoals() content.Goals {
+	if e.state.Goals != nil {
+		return *e.state.Goals
+	}
+	s := e.data.Stages[e.state.Stage]
+	return content.Goals{Victory: s.Victory, Defeat: s.Defeat}
 }

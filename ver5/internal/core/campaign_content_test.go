@@ -68,7 +68,7 @@ func satisfy(t *testing.T, e *Engine, conds []string) {
 	}
 }
 
-// winStage sorties for the stage the engine stands at and wins it the way its first victory goal asks;
+// winStage sorties for the stage the engine stands at and wins it the way its first victory goal now asks;
 // with bonus it also does what every bonus objective asks.
 func winStage(t *testing.T, e *Engine, bonus bool) {
 	stage := e.data.Stages[e.state.Stage]
@@ -83,7 +83,7 @@ func winStage(t *testing.T, e *Engine, bonus bool) {
 		applyOK(t, e, Command{Kind: "end"})
 	}
 	for i := 0; i < 14 && e.Observe().Phase == "battle"; i++ {
-		satisfy(t, e, stage.Victory[0].If)
+		satisfy(t, e, e.battleGoals().Victory[0].If) // an event may have changed the goals
 		if bonus {
 			for _, o := range stage.Sub {
 				satisfy(t, e, o.If)
@@ -144,9 +144,11 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	assert.Equal(t, 1, e.state.Flags["flag-sunjian-alive"])
 	assert.Equal(t, 1, e.state.Flags["flag-bianshui-generals"])
 	assert.Equal(t, 1, e.state.Flags["flag-julu-clear"])
-	for _, item := range []string{"fire_manual", "gujeong_blade", "yitian_sword"} {
+	for _, item := range []string{"gujeong_blade", "yitian_sword"} {
 		assert.Positive(t, e.state.Warehouse[item], item+" is handed over")
 	}
+	assert.Equal(t, "fire_manual", e.char("liubei").Equipment["accessory"], "Liu Bei takes up the manual at once")
+	assert.Positive(t, e.state.Warehouse["tactics_primer"], "the primer goes to the warehouse")
 	for _, id := range []string{"jianyong", "fangong", "zhaoyun"} {
 		assert.NotNil(t, e.char(id), id+" joins the party")
 	}
@@ -158,7 +160,7 @@ func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, false)
 	assert.Len(t, fought, 10)
 	assert.Zero(t, e.state.Flags["flag-julu-clear"])
-	assert.Positive(t, e.state.Warehouse["fire_manual"], "Huangfu Song hands the manual to whoever broke the siege by fire")
+	assert.Equal(t, "fire_manual", e.char("liubei").Equipment["accessory"], "Huangfu Song hands the manual to whoever broke the siege by fire")
 	assert.True(t, executed(e, "battle-B10-vanguard-strong"), "the vanguard at Jiejiao is the hard one")
 	assert.False(t, executed(e, "battle-B10-vanguard-clear"))
 }

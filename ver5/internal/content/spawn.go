@@ -47,7 +47,7 @@ func (r Rules) StageLevel(order int) int {
 	if r.StageLevelBase == 0 {
 		return 0
 	}
-	return r.StageLevelBase + r.StageLevelStep*(max(order, 1)-1)
+	return r.StageLevelBase + int(math.Round(r.StageLevelStep*float64(max(order, 1)-1)))
 }
 
 // SpawnLevel is the level a spawn enters the order-th battle at: the stage level plus its rank's

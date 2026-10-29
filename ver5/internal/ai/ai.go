@@ -31,6 +31,9 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 	if len(options) == 0 {
 		return core.Command{}, fmt.Errorf("NoLegalActions")
 	}
+	if Player != nil && me.Faction == "ally" && !me.AI {
+		return chooseEval(e, o, me, options, duels), nil
+	}
 	if me.Policy == "react" && !inReach(e, o, me) {
 		return core.Command{Kind: "wait", Actor: actor}, nil
 	}

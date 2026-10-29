@@ -78,7 +78,7 @@
    30
   ],
   "StageLevelBase": 3,
-  "StageLevelStep": 2,
+  "StageLevelStep": 1.5,
   "SideShareMax": 0.5,
   "RankLead": {
    "troop": 0,

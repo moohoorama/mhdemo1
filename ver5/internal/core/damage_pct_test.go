@@ -37,3 +37,24 @@ func TestXPPctScalesActionXP(t *testing.T) {
 		assert.InDelta(t, want, got, 1, "%d%%", pct)
 	}
 }
+
+func TestItemTeachesLikeASupportSpell(t *testing.T) {
+	t.Run("a heal that lands", func(t *testing.T) {
+		e, _, _ := arena(t)
+		u := e.unit("hero")
+		u.HP = 10
+		want := e.supportXP(u, u)
+		p, err := e.Preview(Command{Kind: "item", Actor: "hero", Target: "hero", Item: "ration"})
+		require.NoError(t, err)
+		assert.Equal(t, want, p.XP)
+		before := e.char("hero").XP
+		apply(t, e, Command{Kind: "item", Actor: "hero", Target: "hero", Item: "ration"})
+		assert.Equal(t, before+want, e.char("hero").XP)
+	})
+	t.Run("a full bar", func(t *testing.T) {
+		e, _, _ := arena(t)
+		before := e.char("hero").XP
+		apply(t, e, Command{Kind: "item", Actor: "hero", Target: "hero", Item: "ration"})
+		assert.Equal(t, before, e.char("hero").XP)
+	})
+}

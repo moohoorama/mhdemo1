@@ -85,11 +85,7 @@ func (e *Engine) arrive(node string) {
 			if e.state.Warehouse[eq] == 0 || !e.carries(o, item) {
 				continue
 			}
-			if old := o.Equipment[item.Slot]; old != "" {
-				e.state.Warehouse[old]++
-			}
-			e.state.Warehouse[eq]--
-			o.Equipment[item.Slot] = eq
+			e.wear(o, eq)
 		}
 	}
 	e.state.Node = node

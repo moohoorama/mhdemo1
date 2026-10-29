@@ -12,10 +12,9 @@
  "Victory": [
   {
    "If": [
-    "flag:flag-b04-lubu",
-    "at:liubei:1"
+    "alldefeated:enemy"
    ],
-   "Text": "여포가 나타난 뒤 유비가 동쪽 끝에 도달"
+   "Text": "동탁군 후위를 모두 물리친다"
   }
  ],
  "Sub": [
@@ -769,6 +768,17 @@
      ],
      "Policy": "flee",
      "GoalArea": 2
+    },
+    {
+     "Kind": "goals",
+     "Victory": [
+      {
+       "If": [
+        "at:liubei:1"
+       ],
+       "Text": "유비가 동쪽 끝으로 빠져나간다"
+      }
+     ]
     }
    ]
   },

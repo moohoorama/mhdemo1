@@ -51,8 +51,8 @@ type Rules struct {
 	DeputyWeight          int   // deputy attribute blend: ratio = (own charm*DeputyWeight + deputy charm) / DeputyDivisor
 	DeputyDivisor         int   // also the percent scale of charm
 	PromoteLevels         []int // minimum level to promote from tier i
-	StageLevelBase        int   // the n-th battle of the story is fought at StageLevelBase + StageLevelStep×(n−1); 0 leaves spawns at their characters' levels
-	StageLevelStep        int
+	StageLevelBase        int     // the n-th battle of the story is fought at StageLevelBase + StageLevelStep×(n−1), rounded; 0 leaves spawns at their characters' levels
+	StageLevelStep        float64
 	SideShareMax          float64            // the most damage share a blow deals to anyone it strikes besides its target (splash, sweep, pierce)
 	RankLead              map[string]float64 // a rank's lead over the stage level, as a share of (stage level + StatLevelBase) so it means the same strength at any level
 	EnemyStock            map[string]int
@@ -279,6 +279,8 @@ type Action struct {
 	Policy   string         `json:",omitempty"` // ai: the new policy of the Targets
 	Goal     *Point         `json:",omitempty"` // ai: its goal cell, for march and flee
 	GoalArea int            `json:",omitempty"` // ai: instead of Goal, any cell of this area
+	Victory  []Goal         `json:",omitempty"` // goals: the win goals from now on; left out, they stay
+	Defeat   []Goal         `json:",omitempty"` // goals: the loss goals from now on; left out, they stay ([] clears them)
 }
 
 // Move sends a unit (or each unit of a group, to cells around To) somewhere, ignoring move range and
@@ -355,6 +357,10 @@ type Goal struct {
 	Text string
 }
 
+// Goals are a battle's win and loss goals: the stage's at first, until a goals action of a battle
+// event puts others in place.
+type Goals struct{ Victory, Defeat []Goal }
+
 // Objective is a bonus goal judged when the battle is won: if its If holds then, the player gets
 // Reward and the story flag Flag.
 type Objective struct {
@@ -364,9 +370,12 @@ type Objective struct {
 }
 
 // VictoryTargets are the units a victory goal asks to defeat (defeated:X), whom the AI goes after.
-func (s Stage) VictoryTargets() []string {
+func (s Stage) VictoryTargets() []string { return DefeatTargets(s.Victory) }
+
+// DefeatTargets are the units the goals ask to defeat (defeated:X).
+func DefeatTargets(goals []Goal) []string {
 	var out []string
-	for _, g := range s.Victory {
+	for _, g := range goals {
 		for _, cond := range g.If {
 			if id, ok := strings.CutPrefix(cond, "defeated:"); ok {
 				out = append(out, id)

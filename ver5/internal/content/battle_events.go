@@ -133,7 +133,7 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 				if !duels[a.Duel] {
 					return nil, nil, fmt.Errorf("battle event %s: no duel %q", event.ID, a.Duel)
 				}
-			case "say", "remove", "flag":
+			case "say", "remove", "flag", "goals":
 			default:
 				return nil, nil, fmt.Errorf("battle event %s: action %q", event.ID, a.Kind)
 			}
@@ -181,6 +181,16 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 						return nil, nil, fmt.Errorf("battle event %s: %s %s", event.ID, a.Kind, t)
 					}
 				}
+			case "goals":
+				if a.Victory == nil && a.Defeat == nil {
+					return nil, nil, fmt.Errorf("battle event %s: goals without goals", event.ID)
+				}
+				if err := d.validateGoals(s.ID, "victory", a.Victory, true, refs); err != nil {
+					return nil, nil, fmt.Errorf("battle event %s: %w", event.ID, err)
+				}
+				if err := d.validateGoals(s.ID, "defeat", a.Defeat, false, refs); err != nil {
+					return nil, nil, fmt.Errorf("battle event %s: %w", event.ID, err)
+				}
 			case "flag":
 				if len(a.Flags) == 0 {
 					return nil, nil, fmt.Errorf("battle event %s: flag without flags", event.ID)
@@ -194,6 +204,21 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 		}
 	}
 	return allies, enemies, nil
+}
+
+// validateGoals checks a list of win (needText) or loss goals.
+func (d *Data) validateGoals(stage, kind string, list []Goal, needText bool, refs *battleRefs) error {
+	for _, g := range list {
+		if len(g.If) == 0 || needText && g.Text == "" {
+			return fmt.Errorf("stage %s: %s goal %q", stage, kind, g.Text)
+		}
+		for _, cond := range g.If {
+			if err := d.validateCond(cond, refs); err != nil {
+				return fmt.Errorf("stage %s: %s goal: %w", stage, kind, err)
+			}
+		}
+	}
+	return nil
 }
 
 // validateObjectives checks who must sortie and the victory, defeat and bonus goals.
@@ -211,23 +236,10 @@ func (d *Data) validateObjectives(s Stage, refs *battleRefs) error {
 	if len(s.Victory) == 0 {
 		return fmt.Errorf("stage %s: no victory goal", s.ID)
 	}
-	goals := func(kind string, list []Goal, needText bool) error {
-		for _, g := range list {
-			if len(g.If) == 0 || needText && g.Text == "" {
-				return fmt.Errorf("stage %s: %s goal %q", s.ID, kind, g.Text)
-			}
-			for _, cond := range g.If {
-				if err := d.validateCond(cond, refs); err != nil {
-					return fmt.Errorf("stage %s: %s goal: %w", s.ID, kind, err)
-				}
-			}
-		}
-		return nil
-	}
-	if err := goals("victory", s.Victory, true); err != nil {
+	if err := d.validateGoals(s.ID, "victory", s.Victory, true, refs); err != nil {
 		return err
 	}
-	if err := goals("defeat", s.Defeat, false); err != nil {
+	if err := d.validateGoals(s.ID, "defeat", s.Defeat, false, refs); err != nil {
 		return err
 	}
 	ids := map[string]bool{}

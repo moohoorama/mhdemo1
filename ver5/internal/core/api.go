@@ -107,7 +107,14 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 		if err := t.execute(c); err != nil {
 			return Preview{}, err
 		}
-		return Preview{Healing: v.HP - hp, MPRecovery: v.MP - mp, Hit: 100, Targets: []string{v.ID}}, nil
+		p := Preview{Healing: v.HP - hp, MPRecovery: v.MP - mp, Hit: 100, Targets: []string{v.ID}}
+		for _, ev := range t.events {
+			if ev.Kind == "experience" && ev.Actor == u.Character {
+				p.XP += ev.Amount
+			}
+		}
+		p.CritXP = p.XP
+		return p, nil
 	}
 	s, err := e.skillDef(c)
 	if err != nil {
@@ -150,6 +157,10 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 				crit = int(math.Floor(d * e.data.Rules.CritMultiplier))
 			}
 			p.MaxDamage += crit
+			if p.Damage == nil {
+				p.Damage = map[string]int{}
+			}
+			p.Damage[q.ID] = normal
 			p.XP += e.actionXPAmount(u, q, c.Kind == "skill", normal >= q.HP)
 			p.CritXP += e.actionXPAmount(u, q, c.Kind == "skill", crit >= q.HP)
 		} else if u.Faction == "ally" && (s.Effect != "heal" || heal > 0) {
@@ -463,6 +474,24 @@ func (e *Engine) CounterDamage(c Command) int {
 		n *= 2
 	}
 	return n
+}
+
+// Strike is the expected damage of a's best blow on b that a can pay for, its basic attack or a
+// damaging skill with normal hits weighed by their chance, wherever the two stand. The AI weighs
+// threats and the blows a move would open with it.
+func (e *Engine) Strike(a, b string) float64 {
+	u, v := e.unit(a), e.unit(b)
+	if u == nil || v == nil || u.HP <= 0 || v.HP <= 0 {
+		return 0
+	}
+	best := e.damage(u, v, e.basic()) * e.hitChance(u, v, e.basic()) / 100
+	for _, name := range e.skills(e.char(u.Character)) {
+		s := e.data.Skills[name]
+		if (s.Kind == content.KindPhysical || s.Kind == content.KindMagic) && e.cost(u, s) <= u.MP {
+			best = max(best, e.damage(u, v, s)*e.hitChance(u, v, s)/100)
+		}
+	}
+	return best
 }
 
 // AttackRange is the reach of the unit's basic attack.

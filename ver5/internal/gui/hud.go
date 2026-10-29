@@ -84,6 +84,9 @@ type briefSub struct {
 
 func (g *Game) objective(o core.Observation) briefing {
 	st := g.S.Data.Stages[o.Stage]
+	if o.Map != nil {
+		st = *o.Map // the goals an event changed
+	}
 	wins := []string{}
 	for _, goal := range st.Victory {
 		wins = append(wins, goal.Text)

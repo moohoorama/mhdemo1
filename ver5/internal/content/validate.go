@@ -304,6 +304,9 @@ func (d *Data) Validate() error {
 			if !d.Gainable(n.Item) {
 				return fmt.Errorf("node %s grants %s", n.ID, n.Item)
 			}
+			if _, ok := d.Equipment[n.Item]; n.Character != "" && (!ok || !d.Characters[n.Character].Playable) {
+				return fmt.Errorf("node %s puts %s on %s", n.ID, n.Item, n.Character)
+			}
 		case "choice", "explore", "back":
 		default:
 			return fmt.Errorf("node %s kind %s", n.ID, n.Kind)

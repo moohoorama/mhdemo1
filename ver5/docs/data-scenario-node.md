@@ -53,7 +53,7 @@ assets/scenario/
 | `Else` | `branch` | 어느 칸도 참이 아닐 때 갈 노드(없으면 기본 순서). |
 | `Flags` | `set` | 플래그 이름 → 값(정수). 비어 있을 수 없다. |
 | `Stage` | `battle` | 출전할 스테이지 ID. 스테이지에 있어야 한다. |
-| `Character` | `join` | 합류하는 인물 ID. `Playable`이어야 한다. |
+| `Character` | `join` `grant` | `join`: 합류하는 인물 ID. `grant`: 받은 장비를 곧바로 차는 인물(그 칸의 옛 장비는 창고로, 병종이 못 들면 창고에만). 둘 다 `Playable`이어야 하고, `grant`는 장비일 때만 쓴다. |
 | `Item` | `grant` | 주는 아이템 또는 장비 ID. 둘 중 하나에 있어야 한다. |
 | `Count` | `grant` | 개수. |
 | `Event` | `join`, `grant` | 한 번만 실행하기 위한 `Executed` 키. 규칙은 `join-<인물ID>`, `grant-<아이템ID>`. |

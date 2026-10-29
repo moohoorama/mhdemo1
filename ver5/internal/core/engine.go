@@ -137,6 +137,9 @@ func (e *Engine) Observe() Observation {
 			at := t.X*content.CellWidth + content.CellWidth - 1
 			m.Tiles[t.Y] = m.Tiles[t.Y][:at] + t.State + m.Tiles[t.Y][at+1:]
 		}
+		if g := s.Goals; g != nil {
+			m.Victory, m.Defeat = g.Victory, g.Defeat
+		}
 		o.Map = &m
 	}
 	for _, u := range s.Units {
@@ -405,11 +408,26 @@ func (e *Engine) once(n content.Node) {
 	if n.Kind == "join" {
 		e.raiseTo(e.addCharacter(n.Character, n.Character), e.data.Rules.StageLevel(e.data.NextBattleOrder(n.ID)))
 		e.state.Deployment = append(e.state.Deployment, n.Character)
-	} else {
-		e.gain(n.Item, n.Count)
+		e.state.Executed[n.Event] = true
+		e.emit(n.Kind, "", n.Character, n.Count)
+		return
+	}
+	e.gain(n.Item, n.Count)
+	if o := e.char(n.Character); o != nil && !o.Dead && e.carries(o, e.data.Equipment[n.Item]) {
+		e.wear(o, n.Item)
 	}
 	e.state.Executed[n.Event] = true
-	e.emit(n.Kind, "", n.Character+n.Item, n.Count)
+	e.emit(n.Kind, "", n.Item, n.Count)
+}
+
+// wear puts a piece from the warehouse on o; the piece it replaces goes back to the warehouse.
+func (e *Engine) wear(o *Character, id string) {
+	slot := e.data.Equipment[id].Slot
+	e.state.Warehouse[id]--
+	if old := o.Equipment[slot]; old != "" {
+		e.state.Warehouse[old]++
+	}
+	o.Equipment[slot] = id
 }
 func (e *Engine) execute(c Command) error {
 	if len(e.state.Learning) > 0 && c.Kind != "learn" && c.Kind != "learn_close" {
@@ -574,11 +592,7 @@ func (e *Engine) prepare(c Command) error {
 		if e.state.Warehouse[c.Item] < 1 {
 			return fail("MissingEquipment")
 		}
-		e.state.Warehouse[c.Item]--
-		if old != "" {
-			e.state.Warehouse[old]++
-		}
-		o.Equipment[eq.Slot] = c.Item
+		e.wear(o, c.Item)
 		return nil
 	}
 	if c.Kind != "start" {
@@ -733,8 +747,9 @@ func (e *Engine) settle() {
 			loss = true // the campaign is lost with its lord
 		}
 	}
-	loss = loss || !alive["ally"] || e.anyGoal(stage.Defeat)
-	win := e.anyGoal(stage.Victory)
+	goals := e.battleGoals()
+	loss = loss || !alive["ally"] || e.anyGoal(goals.Defeat)
+	win := e.anyGoal(goals.Victory)
 	if !loss && !win {
 		return
 	}
@@ -804,6 +819,7 @@ func (e *Engine) clearBattle() {
 	s.Learning = nil
 	s.PendingFlags = nil
 	s.TileStates = nil
+	s.Goals = nil
 	s.Round = 0
 	s.Turn = ""
 	s.Result = ""

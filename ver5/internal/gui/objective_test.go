@@ -8,13 +8,12 @@ import (
 
 func TestBriefingListsGoalsAndBonusObjectives(t *testing.T) {
 	g := battleController(t)
-	o := g.S.Engine.Observe()
-	st := &g.S.Data.Stages[o.Stage]
+	st := &g.S.Data.Stages[g.S.Engine.Observe().Stage]
 	st.Victory = []content.Goal{{If: []string{"defeated:boss"}, Text: "보스 격파"}, {If: []string{"alldefeated:enemy"}, Text: "적군 전멸"}}
 	st.Defeat = []content.Goal{{If: []string{"at:enemy:1"}, Text: "진영 점령"}}
 	st.TurnLimit = 12
 	st.Sub = []content.Objective{{ID: "a", Text: "전원 생존", If: []string{"alive:hero"}}, {ID: "b", Text: "보스 격파 전 일기토", If: []string{"duel:none"}}}
-	b := g.objective(o)
+	b := g.objective(g.S.Engine.Observe())
 	if b.win != "보스 격파 또는 적군 전멸" {
 		t.Fatalf("win: %q", b.win)
 	}

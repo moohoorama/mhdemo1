@@ -3,7 +3,7 @@ package core
 import "srpg/internal/content"
 
 const CoreVersion = "2"
-const AIPolicyVersion = "greedy-11"
+const AIPolicyVersion = "greedy-12"
 const RulesVersion = "rules-14"
 
 // Character is a persistent record: a party member, or a troop made for one battle (Temp).
@@ -68,6 +68,7 @@ type State struct {
 	Flags                             map[string]int    // story flags set by set nodes
 	PendingFlags                      map[string]int    `json:",omitempty"` // flags a battle sets; they join Flags when it is won
 	TileStates                        []TileState       `json:",omitempty"` // states an event put on cells, for Turns more rounds (0: for good)
+	Goals                             *content.Goals    `json:",omitempty"` // the battle's goals once an event changed them; nil keeps the stage's
 	Choices                           map[string]string // choice node -> the option taken
 	DamagePct, XPPct                  int               `json:",omitempty"` // damage dealt and experience gained in percent; 0 is 100
 	Learning                          []string          // characters whose learning window is open, in order
@@ -145,5 +146,6 @@ type Preview struct {
 	Hit, Crit, Double          float64 // percent; Crit is 0 for actions that do no damage, Double for spells too
 	XP, CritXP                 int     // the actor's experience in 1/100 percent of a level if it lands, normally and critically
 	Targets                    []string
+	Damage                     map[string]int `json:",omitempty"` // each target's damage from a normal hit
 }
 type Options struct{ Commands []Command }

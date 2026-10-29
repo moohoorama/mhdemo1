@@ -10,9 +10,10 @@ import (
 func TestStageLevelFollowsTheStoryOrder(t *testing.T) {
 	d, err := Load("../../assets/data")
 	require.NoError(t, err)
+	levels := []int{3, 5, 6, 8, 9, 11, 12, 14, 15, 17}
 	for i, id := range []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10"} {
 		assert.Equal(t, i+1, d.StageOrder(id), id)
-		assert.Equal(t, 3+2*i, d.Rules.StageLevel(d.StageOrder(id)), id)
+		assert.Equal(t, levels[i], d.Rules.StageLevel(d.StageOrder(id)), id)
 	}
 	assert.Equal(t, 8, d.NextBattleOrder("c09-11"), "Jian Yong joins before Xindu")
 }
@@ -26,9 +27,9 @@ func TestRankLeadKeepsItsShareOfStrength(t *testing.T) {
 	})
 	t.Run("the lead grows with the level", func(t *testing.T) {
 		boss := Spawn{Character: "lubu", Rank: "boss"}
-		assert.Equal(t, 12, d.SpawnLevel(3, boss))
-		assert.Equal(t, 15, d.SpawnLevel(4, boss))
-		assert.Equal(t, 23, d.SpawnLevel(7, boss))
+		assert.Equal(t, 11, d.SpawnLevel(3, boss))
+		assert.Equal(t, 13, d.SpawnLevel(4, boss))
+		assert.Equal(t, 19, d.SpawnLevel(7, boss))
 	})
 	t.Run("shift", func(t *testing.T) {
 		assert.Equal(t, 3, d.SpawnLevel(2, Spawn{Character: "troop_footman", Shift: -0.12}))
