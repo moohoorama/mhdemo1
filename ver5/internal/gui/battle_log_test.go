@@ -107,7 +107,7 @@ func TestBattleLogRetainsRecentRecords(t *testing.T) {
 }
 
 func TestBattleLogHeight(t *testing.T) {
-	most := uiH - hudTop() - hudHeaderH - hudTabsH - 12
+	most := uiH - hudTop() - hudHeaderH - cornerRowH - hudTabsH - 12
 	for _, tc := range []struct {
 		name         string
 		height, want int

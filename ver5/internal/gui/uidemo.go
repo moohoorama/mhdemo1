@@ -32,9 +32,9 @@ type Demo struct {
 	overlay       func(dst *ebiten.Image)
 	replace       bool // the overlay draws the whole screen; the game's own screen is skipped
 	err           error
-	// stage and duel are the data ids the demos play; the engine never names content, so
+	// stage, duel and node are the data ids the demos play; the engine never names content, so
 	// cmd/_uidemo passes them in
-	stage, duel string
+	stage, duel, node string
 }
 
 // DemoOptions say which demo to play and how. Frames go to Out every Every frames; Every <= 0
@@ -43,9 +43,11 @@ type Demo struct {
 type DemoOptions struct {
 	Name, Out   string
 	Stage, Duel string
+	Node        string // story node the scene demos jump to
 	Frames      int
 	Every       int
 	UIScale     int
+	Debug       bool // srpg-gui -debug: the checking tools in the menus
 }
 
 // demos are the UI pieces cmd/_uidemo can show, by name.
@@ -101,7 +103,8 @@ func NewDemo(root string, o DemoOptions) (*Demo, error) {
 			duel = st.Duels[0].ID
 		}
 	}
-	demo := &Demo{g: g, frames: frames, every: every, out: out, stepped: -1, stage: stage, duel: duel}
+	g.Debug = o.Debug
+	demo := &Demo{g: g, frames: frames, every: every, out: out, stepped: -1, stage: stage, duel: duel, node: o.Node}
 	if err = setup(demo); err != nil {
 		return nil, err
 	}

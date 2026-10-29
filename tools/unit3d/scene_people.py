@@ -3,7 +3,8 @@
 People: court officials in wide-sleeved robes holding a tablet (홀) in the faction colour or in black, a eunuch, a
 wounded soldier, and two stretcher bearers with a man on the stretcher. Poses
 added to scene sheets: sit (on a stool), throne (on the imperial chair), bow (읍),
-prostrate (부복), lie (on the back) and sitground (slumped on the ground).
+prostrate (부복), lie (on the back), sitground (slumped on the ground), and two threats (2026-10-29): fist (a fist
+thrown up as after an uppercut) and point (an arm thrust out, jabbing a finger).
 
 The model is the civilian soldier of units.py. Bending and lying rotate the finished meshes about the hip (or the
 ground) instead of adding joints; a figure lying down stamps its 2D head turned on its side (turned()), and a
@@ -28,7 +29,7 @@ STOOL, THRONE_RED, THRONE_GOLD = '#6e4126', '#a8402e', U.GOLD  # the throne: red
 R.add_ramps({THRONE_RED: 'KLLM'})
 R.add_ramps({CLOTH: '5566', DARK_WOOD: '0ffg', STOOL: 'fggh'})
 
-POSES = ['sit', 'throne', 'bow', 'prostrate', 'lie', 'sitground']
+POSES = ['sit', 'throne', 'bow', 'prostrate', 'lie', 'sitground', 'fist', 'point']
 ROWS = C.ANIMATIONS + [p for p in POSES if p not in C.ANIMATIONS]  # scene sheet rows: civilian's, then these
 TURNED_HEAD = {'lie'}  # the 2D head turned on its side (crown toward the head end)
 
@@ -193,6 +194,20 @@ def posed(walk_build, kit, held=False, extra=None):
             lying = rotate(faces, -math.pi/2, .3, shift)
             h = turn_point(head, -math.pi/2, .3, shift)
             return U.result(lying, h, 0, f)
+        if name == 'fist':
+            p = standing()
+            p['hands'][0], p['elbows'][0] = [-.32, -.55, 2.25], [-.46, -.42, 1.7]
+            p['hands'][1], p['elbows'][1] = [.4, -.25, 1.05], [.52, -.05, 1.18]
+            p['lean'] = -.08
+            faces, head = body(p)
+            return U.result(faces, head, 0, f)
+        if name == 'point':
+            p = standing()
+            p['hands'][0], p['elbows'][0] = [-.18, -.88, 1.42], [-.38, -.45, 1.38]
+            p['hands'][1], p['elbows'][1] = [.4, .08, 1.02], [.62, .1, 1.2]  # the other fist on the hip
+            p['lean'] = -.1
+            faces, head = body(p)
+            return U.result(faces, head, 0, f)
         raise KeyError(name)
     build.rows = ROWS
     return build
@@ -311,6 +326,6 @@ POSE_KEY_TAGS = {'xiandi': {'K': 'x', 'L': 'w', 'M': 'v'}}
 POSE_COLORS = {'xiandi': ['horseSkin1=#c44a3a', 'horseSkin2=#902c28', 'horseSkin3=#5c1a1e']}
 POSE_SHEET_HEAD = {'guanyu', 'xiandi'}  # their sheets' heads differ from the civilian pick: pose frames take the sheet's
 # poses added to existing officers' sheets (their other rows are not redrawn)
-OFFICER_POSES = {'liubei': ['sit'], 'guanyu': ['sit'], 'zhangfei': ['sit'], 'caocao': ['sit'], 'sunjian': ['sit'],
+OFFICER_POSES = {'liubei': ['sit'], 'guanyu': ['sit'], 'zhangfei': ['sit', 'point'], 'caocao': ['sit', 'bow'], 'sunjian': ['sit'],
                  'yuanshao': ['sit'], 'zhaoyun': ['sit'], 'dongzhuo': ['sit'], 'yuanshu': ['sit'], 'gongsunzan': ['sit'],
-                 'infantry': ['sit', 'sitground'], 'xiandi': ['throne']}
+                 'infantry': ['sit', 'sitground', 'prostrate'], 'xiandi': ['throne']}

@@ -36,7 +36,12 @@ func main() {
 		err = cli.RunJSON(s, os.Stdin, os.Stdout)
 	} else {
 		if *slot != "" && s.Store.Exists(*slot) {
-			if r := s.Handle(session.Request{Op: "load", Slot: *slot}); !r.OK {
+			r := s.Handle(session.Request{Op: "load", Slot: *slot})
+			if r.Error == "ChangedContent" {
+				fmt.Fprintf(os.Stderr, "warning: slot %s was saved before the game data changed; loading it anyway\n", *slot)
+				r = s.Handle(session.Request{Op: "load", Slot: *slot, Changed: true})
+			}
+			if !r.OK {
 				fatal(fmt.Errorf("load %s: %s", *slot, r.Error))
 			}
 		}

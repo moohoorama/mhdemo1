@@ -63,7 +63,8 @@
     0,
     0
    ]
-  },  "iron_knuckles": {
+  },
+  "iron_knuckles": {
    "Name": "철권갑",
    "Desc": "주먹에 감는 쇠 덧댐.",
    "Slot": "weapon",
@@ -79,7 +80,6 @@
     0
    ]
   },
-
   "gujeong_blade": {
    "Name": "고정도",
    "Desc": "싸움터에서 수습한 명검. 날이 예리하다.",
@@ -179,6 +179,25 @@
     0,
     1,
     0,
+    0
+   ],
+   "Learn": [
+    "dash"
+   ]
+  },
+  "jueying": {
+   "Name": "절영",
+   "Desc": "조조가 아끼던 검은 명마. 그림자조차 따라오지 못한다 해서 절영이다.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Icon": "horse",
+   "Price": 0,
+   "Bonus": [
+    0,
+    0,
+    0,
+    2,
+    1,
     0
    ],
    "Learn": [
@@ -390,6 +409,25 @@
    ],
    "Traits": [
     "pierce"
+   ]
+  },
+  "baima": {
+   "Name": "백마",
+   "Desc": "공손찬 백마의종의 말 가운데 가장 빠른 흰 말. 연합 진영에서 한 약속으로 받았다.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Icon": "horse",
+   "Price": 0,
+   "Bonus": [
+    0,
+    0,
+    0,
+    2,
+    0,
+    0
+   ],
+   "Learn": [
+    "dash"
    ]
   }
  }

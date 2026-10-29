@@ -18,6 +18,7 @@ and set `Look.Scene` in assets/data/characters.json (docs/presentation-sprite.md
 sprite of its own stands in `Scene` of its class (classes.json).
 """
 import copy
+import math
 import re
 import subprocess
 import sys
@@ -164,6 +165,55 @@ def serve():
     return p, extra
 
 
+# 삿갓: a low, wide straw cone in the themeC keys (m sunlit half, l shaded half, k the rim's near edge), drawn from
+# its outline so the sides run straight from the apex to the rim; the head grid grows to 23 columns and 3 rows on top
+SATGAT_W, SATGAT_PAD, SATGAT_TOP = 23, 5, 3
+
+
+def satgat_mask(cx, cy, tilt, a=10.5, b=2.4, h=6.0):
+    """The hat seen from above: rim ellipse (a, b) round (cx, cy), the apex h above it, the sides the apex's tangents
+    to the rim, the whole turned by tilt (negative lowers the left side). {(x, y): key}, outline included."""
+    c, s = math.cos(tilt), math.sin(tilt)
+    tv, tu = -b*b/h, a*math.sqrt(1 - (b/h)**2)
+    out = {}
+    for y in range(-SATGAT_TOP, 20):
+        for x in range(SATGAT_W):
+            dx, dy = x + .5 - cx, y + .5 - cy
+            u, v = dx*c + dy*s, -dx*s + dy*c
+            inside = (u/a)**2 + (v/b)**2 <= 1 or -h <= v <= tv and abs(u) <= tu*(v + h)/(tv + h)
+            if inside:
+                near = v > 0 and (u/a)**2 + ((v + 1)/b)**2 > 1
+                out[x, y] = 'k' if near else ('m' if u < -.3 else 'l')
+    for x, y in [p for p in out if any((p[0] + dx, p[1] + dy) not in out for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))]:
+        out[x, y] = '0'
+    return out
+
+
+def satgat(grids, rim, tilt=0.0):
+    """The head under a 삿갓 whose rim centre lies on head row rim: the head above the hat's outline is cleared."""
+    out = {}
+    for d, rows in grids.items():
+        n = len(rows) + SATGAT_TOP
+        g = [list('.' * SATGAT_W) for _ in range(n)]
+        for y, r in enumerate(rows):
+            g[y + SATGAT_TOP][SATGAT_PAD:SATGAT_PAD + len(r)] = r
+        mask = satgat_mask(SATGAT_PAD + 6.5, rim + SATGAT_TOP + .5, tilt)
+        for x in range(SATGAT_W):
+            under = max((y for (mx, y) in mask if mx == x), default=-1)
+            for y in range(min(under, rim + SATGAT_TOP)):
+                g[y][x] = '.'
+        for (x, y), k in mask.items():
+            if 0 <= y < n:
+                g[y][x] = k
+        out[d] = [''.join(r) for r in g]
+    return out
+
+
+def satgat_heads(rim, tilt=0.0):
+    head = Hd.heads(satgat(L.bearded(L.CAP, 'goatee'), rim, tilt))
+    return dict(head, anchor=(Hd.ANCHOR[0] + SATGAT_PAD, Hd.ANCHOR[1] + SATGAT_TOP))
+
+
 GREY = tags('hair', ['#d6d4ce', '#9e9c96', '#605e5a'])
 WHITE_HAIR = tags('hair', ['#f0eee8', '#c2c0ba', '#7c7a76'])
 STORY = {
@@ -193,6 +243,11 @@ STORY = {
     'kongrong': ('공융', scene('kongrong', 1, Hd.heads(bearded(SP.JINXIAN, 'long', 'g'), crest=2),
                              cloth=U.RED, robe=U.RED, guard=L.WHITE, tabard=U.BLACK),
                  'light_infantry', HAIR + tags('themeB', ['#5f9a68', '#356b42', '#1e4228'])),
+    # 간옹: Liu Bei's friend from Zhuo, a scholar at ease — a white cloth kerchief over the hair, a short beard, a
+    # loose green robe (themeB) over a white inner robe, a dark sash; his action raises a cup (the portrait)
+    'jianyong': ('간옹', scene('jianyong', 1, Hd.heads(bearded(Hd.TOPKNOT, 'goatee', 'g'), WHITE_BAND),
+                             cloth=U.RED, robe=U.RED, guard=L.WHITE, tabard=LEATHER),
+                 'light_infantry', HAIR + tags('themeB', ['#7fa77a', '#4f7a52', '#2e4d34'])),
     # 추정: a Han commandant, iron helmet with the team plume, team tunic, steel shoulders, leather belt
     'zoujing': ('추정', scene('zoujing', 1, Hd.heads(bearded(Hd.IRON, 'goatee', 'g'), Hd.PLUME),
                             cloth=U.BLUE, guard=U.STEEL, tabard=LEATHER),
@@ -201,6 +256,16 @@ STORY = {
     'gaoshun': ('고순', scene('gaoshun', 1, Hd.heads(NO_PLUME), cloth=U.RED, guard=LEATHER, tabard=LEATHER),
                 'light_infantry', HAIR + tags('themeB', ['#8c8272', '#5e574c', '#3a352e'])
                 + tags('themeA', ['#9a6a42', '#6c4528', '#442a18'])),
+    # 조조 in disguise (5장 주막, 관문): the 삿갓 pulled low over his goatee face, a plain grey-brown hemp robe
+    # (themeB) and a leather belt instead of the Wei blue
+    'caocao_hat': ('조조', scene('caocao_hat', 1, satgat_heads(4),
+                                 cloth=U.RED, robe=U.RED, guard=U.RED, tabard=LEATHER),
+                   'light_infantry', HAIR + tags('themeB', ['#9a917c', '#6c6555', '#454034'])
+                   + tags('themeC', ['#e0c98a', '#b8995a', '#7a6236'])),
+    # the same with the 삿갓 taken off (주막, after he is recognised): his scholar's cap over the hemp robe
+    'caocao_plain': ('조조', scene('caocao_plain', 1, Hd.heads(L.bearded(L.CAP, 'goatee')),
+                                   cloth=U.RED, robe=U.RED, guard=U.RED, tabard=LEATHER),
+                     'light_infantry', HAIR + tags('themeB', ['#9a917c', '#6c6555', '#454034'])),
     # extras (aprons in a theme colour of their own: themeC)
     'jailer': ('옥졸', scene('jailer', 1, Hd.heads(L.CAP), cloth=U.RED, guard=LEATHER, tabard=U.GOLD),
                'light_infantry', HAIR + tags('themeB', ['#76808c', '#4e5660', '#30353c'])
@@ -218,8 +283,10 @@ STORY = {
                    + tags('themeC', ['#c49a64', '#946c40', '#624426'])),
 }
 STORY_POSES = {k: ['sit'] for k in ('luzhi', 'huangfusong', 'xiahoudun', 'liuyan', 'taoqian', 'kongrong', 'zoujing',
-                                     'gaoshun')}
-ACTION = {'jailer': ('talk', 1), 'innkeeper': ('serve', 0), 'blacksmith': ('hammer', 0)}  # else the salute
+                                     'gaoshun', 'caocao_hat', 'caocao_plain')}
+STORY_POSES['xiahoudun'] = ['sit', 'fist']
+STORY_POSES['jianyong'] = ['sit']
+ACTION = {'jianyong': ('toast', 2), 'jailer': ('talk', 1), 'innkeeper': ('serve', 0), 'blacksmith': ('hammer', 0)}  # else the salute
 for _key, (_name, _look, _battle, _colors) in STORY.items():
     LOOKS[_key] = _look
 # 유비: in shu his green coat (themeB) and the team robe and sash were one green; gold shoulders and a leather belt as
@@ -236,6 +303,8 @@ for _key, (_name, _look, _battle, _colors) in STORY.items():
     BATTLE[_key], NAME[_key], EXTRA_COLORS[_key] = _battle, _name, _colors
 # 노식·황보숭: their light infantry helmet is the battle sheet's leather (themeA), not iron
 HEAD_TAGS = {k: {'1': 'o', '2': 'o', '3': 'n', '4': 'm', '5': 'm'} for k in ('luzhi', 'huangfusong')}
+# a head of its own for a pose: 조조 seated pulls the 삿갓 down and forward over his eyes
+POSE_HEADS = {'caocao_hat': {'sit': satgat_heads(6, -.18)}}
 # (3D animation, direction, 3D frame) -> (sheet animation, frame); walk steps are the two stride frames
 FRAMES = [('idle', 'NW', 0, 'idle', 0), ('idle', 'SW', 0, 'idle', 0),
           ('walk', 'NW', 0, 'walk', 0), ('walk', 'NW', 2, 'walk', 1), ('walk', 'SW', 0, 'walk', 0), ('walk', 'SW', 2, 'walk', 1),
@@ -346,7 +415,7 @@ def make(unit, only_poses=False):
 
     ground = {d: max(y for y, r in enumerate(render('idle', d, 0, head)) for c in r if c != '.') for d in ('NW', 'SW')}
     for anim, d, n, out_anim, out_n in frames:
-        own = SP.turned(head) if anim in SP.TURNED_HEAD else head
+        own = SP.turned(head) if anim in SP.TURNED_HEAD else POSE_HEADS.get(unit, {}).get(anim, head)
         full, body = render(anim, d, n, own), render(anim, d, n, blank)
         dx, dy = 28 - B.SPEC['pivot'][0], 38 - ground[d]
         out, under = to_tags(full, body, dx, dy, colors, unmapped, unit if out_anim in poses else None, unit), None

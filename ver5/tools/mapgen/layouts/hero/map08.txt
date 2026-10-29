@@ -1,14 +1,18 @@
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- c-- c-- c-- c-- c-- c-- c-- c-- c-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- c-- i-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- c-- i-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- c-- i-- i-- i-- i-- i-- i-- i-- ip- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- c-- i-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- c-- i-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- c-- i-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- c-- c-- c-- c-- c-- ip- c-- c-- c-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-gt- gt- gt- g-- g-- g-- g-- g-- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- g-- g-- g-- g-- g--
-gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- g-- g-- g-- g--
+# B08 신도성 (20x16): 북동쪽에 신도성(성문 15,5). 원소 별동대가 성문을 에워쌌다.
+# 번궁은 성 안(15,2)에서 버티다 3턴에 성문을 열고 나온다. 고람의 본진은 북서쪽 진채(6,1). 유비군은 남서쪽 길(0~3,13~15)에서 온다.
+gt- gt- g-- g-- g-- g-- g-- g-- g-- gt- g-- c-- i-- i-- i-- i-- i-- i-- i-- i--
+gt- g-- g-- d-- g-- g-- dk- g-- g-- g-- g-- c-- i-- iv- i-- i-- i-- i-- i-- i--
+g-- g-- gt- d-- g-- g-- g-- g-- g-- g-- gt- c-- i-- i-- i-- i-- io- i-- i-- i--
+g-- g-- g-- g-- g-- l-- l-- l-- l-- g-- g-- c-- i-- i-- i-- i-- i-- i-- iv- i--
+g-- g-- d-- g-- g-- g-- g-- g-- l-- l-- g-- c-- i-- i-- i-- i-- i-- i-- i-- i--
+gt- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- c-- c-- c-- c-- m-- c-- c-- c-- c--
+g-- gt- g-- g-- g-- g-- g-- d-- g-- g-- l-- l-- l-- l-- l-- l-- d-- g-- g-- g--
+gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- l-- l-- g-- g-- g-- g--
+d-- g-- g-- dt- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- gt- g-- g-- g--
+g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- d-- g-- l-- lt- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- l-- l-- dv- l-- g-- g-- d-- g-- d-- d-- g-- g-- gt- g--
+g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- gv- g-- gt-
+g-- g-- g-- g-- l-- l-- g-- g-- gt- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- gt-
+l-- l-- l-- l-- l-- g-- g-- g-- g-- gt- g-- g-- g-- gt- d-- g-- g-- gt- g-- g--

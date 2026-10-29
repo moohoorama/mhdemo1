@@ -72,6 +72,9 @@ func Build(m *Map, c *Catalog, o Options) (*Plan, error) {
 	w := newView(m, c, o.Turn)
 	p := &Plan{Bounds: m.Bounds(), Tall: m.Tall()}
 	p.Flat = append(w.ground(), w.floors()...)
+	if o.Decor {
+		w.tops = w.topStamps()
+	}
 	blocks, feet, err := w.blocks()
 	if err != nil {
 		return nil, err
@@ -112,6 +115,7 @@ type view struct {
 	c              *Catalog
 	turn           int
 	u0, v0, u1, v1 int
+	tops           map[[2]int][]Stamp // ground decoration on raised tiles' tops, by the map's small tile
 }
 
 func newView(m *Map, c *Catalog, turn int) *view {
@@ -331,6 +335,7 @@ func (w *view) blocks() (blocks []Piece, feet []Draw, err error) {
 			p := Piece{Key: Key{Box: [4]float64{float64(u), float64(v), float64(u + 1), float64(v + 1)}, Rank: RankFace,
 				X: float64(x)}, Name: "top", At: [2]int{ou, ov}, Anchor: [2]float64{float64(x), float64(y - lift)}}
 			p.Draws = w.quarters(u, v, lift, nil)
+			p.Draws = append(p.Draws, w.stampDraws(w.tops[[2]int{ou, ov}], lift)...)
 			if open&3 != 0 {
 				d := Draw{Kind: DrawLines, Color: rim}
 				top := y - 8 - lift
@@ -657,15 +662,51 @@ func (w *view) decoration() []Draw {
 			x, y := center(u, v)
 			return float64(x), float64(y)
 		}, 0)
+	var flat []Stamp
+	for _, st := range stamps {
+		if !st.Top {
+			flat = append(flat, st)
+		}
+	}
+	return w.stampDraws(flat, 0)
+}
+
+// topStamps scatters the ground decoration of a raised tile's own ground (cracks and pebbles on a soil cliff top)
+// over its top, kept off the lip like the ground keeps off a cliff's foot; the stamps go with their tile's block.
+func (w *view) topStamps() map[[2]int][]Stamp {
+	sc := w.c.Scenery
+	if sc == nil {
+		return nil
+	}
+	glyph := func(u, v int) byte {
+		if !w.m.Inside(u, v) || w.m.Step(u, v) == 0 {
+			return 'h'
+		}
+		return w.m.Glyph(u, v)
+	}
+	stamps, _ := sc.Decorate(w.m.ID+"/top", glyph, w.m.Origin[0], w.m.Origin[1], w.m.Origin[0]+w.m.W(), w.m.Origin[1]+w.m.H(),
+		func(u, v int) (float64, float64) {
+			x, y := center(u, v)
+			return float64(x), float64(y)
+		}, 0)
+	tops := map[[2]int][]Stamp{}
+	for _, st := range stamps {
+		u, v := int(math.Floor((st.X/16+st.Y/8)/2)), int(math.Floor((st.Y/8-st.X/16)/2))
+		if !st.Top && w.m.Inside(u, v) && w.m.Step(u, v) > 0 {
+			tops[[2]int{u, v}] = append(tops[[2]int{u, v}], st)
+		}
+	}
+	return tops
+}
+
+// stampDraws turns decoration stamps (map canvas points) into the view's draws, lift pixels up.
+func (w *view) stampDraws(stamps []Stamp, lift int) []Draw {
 	var out []Draw
 	for _, st := range stamps {
-		if st.Top {
-			continue
-		}
 		ru, rv := w.point((st.X/16+st.Y/8)/2, (st.Y/8-st.X/16)/2)
-		s := sc.Sprites[st.Name]
+		s := w.c.Scenery.Sprites[st.Name]
 		out = append(out, Draw{Kind: DrawSprite, Sheet: "scenery", Name: st.Name,
-			X: round(16*(ru-rv)) - s.Pivot[0], Y: round(8*(ru+rv)) - s.Pivot[1]})
+			X: round(16*(ru-rv)) - s.Pivot[0], Y: round(8*(ru+rv)) - s.Pivot[1] - lift})
 	}
 	return out
 }

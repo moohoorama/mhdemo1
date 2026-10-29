@@ -5,6 +5,9 @@ import "srpg/internal/content"
 // holdsAll reports whether every story condition holds (nodes pick branches with it).
 func (e *Engine) holdsAll(conds []string) bool { return e.holdsIn(conds, false) }
 
+// Holds reports whether every story condition holds now (a scene's props that are there only after a side goal).
+func (e *Engine) Holds(conds []string) bool { return e.holdsAll(conds) }
+
 // holdsIn reports whether every condition string holds; battle conditions read the units on the
 // map, story ones the roster. Strings were validated at load.
 func (e *Engine) holdsIn(conds []string, battle bool) bool {

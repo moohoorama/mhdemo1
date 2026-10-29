@@ -199,7 +199,10 @@ func (g *Game) drawCutPanes(dst *ebiten.Image, v *duelview.View, t, top, bandH, 
 func (g *Game) cutPane(side int, portrait *ebiten.Image, pw, ph, drift float64) *ebiten.Image {
 	w, h := int(math.Ceil(pw*drawPx)), int(math.Ceil(ph*drawPx))
 	if g.cutPanes[side] == nil || g.cutPanes[side].Bounds().Dx() != w || g.cutPanes[side].Bounds().Dy() != h {
-		g.cutPanes[side] = ebiten.NewImage(w, h)
+		if g.cutPanes[side] != nil {
+			g.cutPanes[side].Deallocate()
+		}
+		g.cutPanes[side] = newLayer(w, h)
 	}
 	im := g.cutPanes[side]
 	im.Clear()

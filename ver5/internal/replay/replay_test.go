@@ -16,6 +16,15 @@ func walk(actor string, cells ...content.Point) core.Event {
 	return core.Event{Kind: "move", Actor: actor, Path: cells}
 }
 
+// walker is an action whose first command is a move along cells.
+func walker(actor string, cells ...content.Point) *Action {
+	a := act(actor, cells[0], walk(actor, cells...))
+	a.Steps[0].Command = core.Command{Kind: "move", Actor: actor}
+	return a
+}
+
+func pt(x, y int) content.Point { return content.Point{X: x, Y: y} }
+
 func TestLink(t *testing.T) {
 	t.Run("independent actions start together", func(t *testing.T) {
 		a := act("a", content.Point{X: 0, Y: 0}, walk("a", content.Point{X: 0, Y: 0}, content.Point{X: 0, Y: 1}))
@@ -41,6 +50,35 @@ func TestLink(t *testing.T) {
 		Link([]*Action{a, b})
 		if !reflect.DeepEqual(b.After, []int{0}) {
 			t.Fatalf("after: %v", b.After)
+		}
+	})
+	t.Run("walks over the same cells trail each other", func(t *testing.T) {
+		// a file walking east: b starts where a starts from and follows a cell behind, c behind b
+		a := walker("a", pt(1, 0), pt(2, 0), pt(3, 0), pt(4, 0))
+		b := walker("b", pt(0, 0), pt(1, 0), pt(2, 0), pt(3, 0))
+		c := walker("c", pt(0, 1), pt(0, 0), pt(1, 0), pt(2, 0))
+		Link([]*Action{a, b, c})
+		if len(b.After) != 0 || !reflect.DeepEqual(b.Trail, []Lead{{0, 1}}) {
+			t.Fatalf("b: after %v trail %v", b.After, b.Trail)
+		}
+		if len(c.After) != 0 || !reflect.DeepEqual(c.Trail, []Lead{{1, 1}}) {
+			t.Fatalf("c: after %v trail %v", c.After, c.Trail)
+		}
+	})
+	t.Run("a walk through where an earlier walk stops follows its arrival", func(t *testing.T) {
+		a := walker("a", pt(1, 0), pt(2, 0))
+		b := walker("b", pt(0, 0), pt(1, 0), pt(2, 0), pt(3, 0))
+		Link([]*Action{a, b})
+		if len(b.After) != 0 || !reflect.DeepEqual(b.Trail, []Lead{{0, 1}}) {
+			t.Fatalf("b: after %v trail %v", b.After, b.Trail)
+		}
+	})
+	t.Run("a walk over a cell an earlier action fights on waits for all of it", func(t *testing.T) {
+		a := act("a", pt(2, 0), core.Event{Kind: "damage", Actor: "a", Target: "t1"})
+		b := walker("b", pt(1, 0), pt(2, 0), pt(3, 0))
+		Link([]*Action{a, b})
+		if !reflect.DeepEqual(b.After, []int{0}) || len(b.Trail) != 0 {
+			t.Fatalf("b: after %v trail %v", b.After, b.Trail)
 		}
 	})
 	t.Run("a unit hit earlier moves after the blow", func(t *testing.T) {

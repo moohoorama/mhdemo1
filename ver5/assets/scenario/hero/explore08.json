@@ -1,0 +1,407 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "office",
+  "At": [
+   9,
+   5
+  ],
+  "Face": "SW"
+ },
+ "Areas": {
+  "pingyuan": {
+   "Map": "S_pingyuan",
+   "Name": "평원현",
+   "At": [
+    11,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "현청",
+     "At": [
+      11,
+      6
+     ],
+     "Object": [
+      11,
+      4
+     ],
+     "To": "office"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      5,
+      14
+     ],
+     "Object": [
+      5,
+      12
+     ],
+     "To": "tavern"
+    },
+    {
+     "Name": "도구점",
+     "At": [
+      18,
+      13
+     ],
+     "Object": [
+      18,
+      11
+     ],
+     "To": "tools"
+    },
+    {
+     "Name": "대장간",
+     "At": [
+      31,
+      13
+     ],
+     "Object": [
+      31,
+      11
+     ],
+     "To": "weapons"
+    }
+   ],
+   "People": {
+    "관우@town": {
+     "At": [
+      13,
+      8
+     ],
+     "Face": "SW",
+     "Sortie": {
+      "Ask": "형님, 신도로 갈 군사의 채비가 끝났습니다. 출진하시겠습니까?"
+     }
+    },
+    "장비@town": {
+     "At": [
+      1,
+      6
+     ],
+     "Face": "SE",
+     "Play": "action",
+     "Chatter": "창끝 들어!|겁먹지 말어!|잘하믄 저녁에 고기다!",
+     "Talk": [
+      [
+       "zhangfei",
+       "형~ 현병 놈들은 이번이 첫 싸움이유. 겁먹지 말라고 단단히 일러 뒀슈."
+      ]
+     ]
+    },
+    "간옹@town": {
+     "At": [
+      7,
+      14
+     ],
+     "Face": "SE",
+     "Pose": "sit",
+     "Talk": [
+      [
+       "jianyong",
+       "군량 수레는 다 꾸렸네. 떠나기 전 한잔은 군량에 안 들어가네."
+      ]
+     ]
+    },
+    "현병": {
+     "At": [
+      3,
+      8
+     ],
+     "Face": "NW",
+     "Sprite": "light_infantry",
+     "Faction": "shu",
+     "Play": "attack",
+     "Talk": [
+      [
+       "현병",
+       "장 장군 목소리에 귀가 다 먹먹합니다요."
+      ]
+     ]
+    },
+    "현병#1": {
+     "At": [
+      4,
+      5
+     ],
+     "Face": "NW",
+     "Sprite": "light_infantry",
+     "Faction": "shu",
+     "Play": "attack"
+    },
+    "현병#2": {
+     "At": [
+      22,
+      1
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    },
+    "현병#3": {
+     "At": [
+      26,
+      1
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    },
+    "아낙": {
+     "At": [
+      16,
+      16
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Move": {
+      "Wander": 3
+     },
+     "Talk": [
+      [
+       "아낙",
+       "현령님 오시고 나서 장터에 도둑이 없어졌어요."
+      ]
+     ]
+    },
+    "노인": {
+     "At": [
+      14,
+      22
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Chatter": "에구, 허리야",
+     "Talk": [
+      [
+       "노인",
+       "한복 그 양반, 기주를 통째로 내주고도 목숨은 못 건졌다지. 순한 게 죄라면 죄였어."
+      ]
+     ]
+    },
+    "뱃사공": {
+     "At": [
+      37,
+      23
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "뱃사공",
+       "운하로 올라오던 기주 쌀이 뚝 끊겼수. 이제 원소네 쌀이 됐으니 여기까진 안 오겠지."
+      ]
+     ]
+    },
+    "장꾼": {
+     "At": [
+      33,
+      21
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "싸오, 싸!|골라 보시오",
+     "Talk": [
+      [
+       "장꾼",
+       "현령님 일행이시구려! 콩 한 됫박쯤은 덤으로 얹어 드리지요."
+      ]
+     ]
+    },
+    "행인#1": {
+     "At": [
+      24,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Move": {
+      "Patrol": [
+       [
+        24,
+        3
+       ],
+       [
+        24,
+        26
+       ]
+      ]
+     }
+    },
+    "행인#2": {
+     "At": [
+      2,
+      16
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Move": {
+      "Patrol": [
+       [
+        2,
+        16
+       ],
+       [
+        34,
+        16
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "office": {
+   "Map": "S_zhuo_office2",
+   "Name": "평원현 · 현청",
+   "At": [
+    9,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "pingyuan"
+    }
+   ],
+   "People": {
+    "현병#1": {
+     "At": [
+      3,
+      5
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    },
+    "현병#2": {
+     "At": [
+      13,
+      5
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    }
+   }
+  },
+  "weapons": {
+   "Map": "S_weapon_shop2",
+   "Name": "대장간",
+   "At": [
+    6,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "pingyuan"
+    }
+   ],
+   "People": {
+    "대장장이": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons"
+    }
+   }
+  },
+  "tools": {
+   "Map": "S_tool_shop2",
+   "Name": "도구점",
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "pingyuan"
+    }
+   ],
+   "People": {
+    "상인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tools"
+    }
+   }
+  },
+  "tavern": {
+   "Map": "S_tavern2",
+   "Name": "주점",
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "pingyuan"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tavern"
+    },
+    "손님": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "한 잔 더!|크으, 좋다",
+     "Talk": [
+      [
+       "손님",
+       "현령님이 몸소 술집에 다 오시네! 간 선생은 아까부터 저 앞 평상에 계십니다요."
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

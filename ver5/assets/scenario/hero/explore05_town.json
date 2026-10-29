@@ -182,6 +182,12 @@
      "If": [
       "!flag:c05-inn",
       "!flag:c05-hejin"
+     ],
+     "Talk": [
+      [
+       "zhangfei",
+       "형~ 이 고을 사람들 얼굴이 다 어둡구먼유. 뭔 일이 났나 물어나 봐유."
+      ]
      ]
     },
     "장비@hejin": {
@@ -239,8 +245,8 @@
     },
     "삿갓 쓴 사내": {
      "At": [
-      2,
-      4
+      3,
+      5
      ],
      "Face": "SE",
      "Pose": "sit",
@@ -252,7 +258,7 @@
        "Node": "c05-inn"
       }
      ],
-     "Sprite": "caocao_noncombat",
+     "Sprite": "caocao_hat_noncombat",
      "Faction": "wei"
     },
     "장비@inn": {
@@ -263,6 +269,12 @@
      "Face": "NW",
      "If": [
       "flag:c05-inn"
+     ],
+     "Talk": [
+      [
+       "zhangfei",
+       "그 양반, 황제 글을 지가 썼다는 거쥬? 간이 배 밖에 나왔구먼유."
+      ]
      ]
     },
     "술손님#1": {

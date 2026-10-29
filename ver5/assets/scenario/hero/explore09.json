@@ -1,0 +1,266 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   14,
+   10
+  ],
+  "Face": "NE"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_xindu",
+   "Name": "신도성",
+   "Time": "dusk",
+   "At": [
+    14,
+    10
+   ],
+   "Exits": [
+    {
+     "Name": "관아",
+     "At": [
+      14,
+      6
+     ],
+     "Object": [
+      14,
+      3
+     ],
+     "To": "office"
+    },
+    {
+     "Name": "도구점",
+     "At": [
+      22,
+      14
+     ],
+     "Object": [
+      22,
+      12
+     ],
+     "To": "tools"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      6,
+      14
+     ],
+     "Object": [
+      6,
+      12
+     ],
+     "To": "tavern"
+    }
+   ],
+   "People": {
+    "관우@town": {
+     "At": [
+      16,
+      8
+     ],
+     "Face": "SW",
+     "Sortie": {
+      "Ask": "형님, 거록으로 갈 채비가 끝났습니다. 출진하시겠습니까?"
+     }
+    },
+    "장비@town": {
+     "At": [
+      10,
+      10
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "zhangfei",
+       "번궁 양반 주먹 봤슈? 맨손으로 창을 꺾더라니께유. 형, 우리 쪽에 아주 든든한 사람이 왔슈."
+      ]
+     ]
+    },
+    "간옹@town": {
+     "At": [
+      9,
+      15
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "jianyong",
+       "번궁이 남긴 부장한테 군량 셈법을 일러 줬네. 성주가 바뀌어도 장부는 남는 법이지."
+      ]
+     ]
+    },
+    "번궁@town": {
+     "At": [
+      18,
+      10
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "fangong",
+       "거록은 벼랑과 숲이 겹겹이오. 숲에서는 불이 잘 붙으니, 내가 화계로 길을 열어 보겠소."
+      ]
+     ]
+    },
+    "노인": {
+     "At": [
+      19,
+      22
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "노인",
+       "고람 군사가 성문을 두드릴 때, 손주들을 우물에 숨겼다오. 번 성주가 버텨 준 덕에 꺼내 줄 수 있었지."
+      ]
+     ]
+    },
+    "아낙": {
+     "At": [
+      12,
+      18
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Move": {
+      "Wander": 3
+     },
+     "Talk": [
+      [
+       "아낙",
+       "원소 군사는 이 고을 쌀을 다 거둬 갈 거라더니, 평원 군사는 쌀 한 톨 안 건드리네요."
+      ]
+     ]
+    },
+    "수비병": {
+     "At": [
+      13,
+      26
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "han",
+     "Talk": [
+      [
+       "수비병",
+       "성주님이 떠나신다니 서운하지만, 저 같아도 따라가고 싶을 겁니다."
+      ]
+     ]
+    },
+    "수비병#1": {
+     "At": [
+      16,
+      26
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    }
+   }
+  },
+  "office": {
+   "Map": "S_zhuo_office2",
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "Name": "신도성 · 관아",
+   "At": [
+    9,
+    5
+   ],
+   "People": {
+    "관병#1": {
+     "At": [
+      3,
+      5
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    },
+    "관병#2": {
+     "At": [
+      13,
+      5
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    }
+   }
+  },
+  "tools": {
+   "Map": "S_tool_shop2",
+   "Name": "도구점",
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "상인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tools"
+    }
+   }
+  },
+  "tavern": {
+   "Map": "S_tavern2",
+   "Name": "주점",
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tavern"
+    }
+   }
+  }
+ }
+}

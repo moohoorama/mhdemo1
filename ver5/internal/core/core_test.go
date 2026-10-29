@@ -2,6 +2,7 @@ package core
 
 import (
 	"encoding/json"
+	"math"
 	"srpg/internal/content"
 	"testing"
 )
@@ -322,6 +323,21 @@ func TestEveryUnitCountersAndStancesCounterHarder(t *testing.T) {
 	forced := e3.CounterDamage(c)
 	if plain == 0 || plain >= stance || stance >= forced {
 		t.Fatalf("counter previews should grow plain %d < stance %d < forced %d", plain, stance, forced)
+	}
+}
+func TestAClassWithoutReachNeitherStrikesNorStrikesBack(t *testing.T) {
+	e, _, _ := arena(t)
+	cl := e.data.Classes["guard"]
+	cl.Range = 0
+	e.data.Classes["guard"] = cl
+	e.char("boss").Class = "guard"
+	if r := apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"}); answered(r, "boss", "hero") {
+		t.Fatal("a unit without reach struck back")
+	}
+	for _, c := range e.LegalActions("boss").Commands {
+		if c.Kind == "attack" {
+			t.Fatalf("a unit without reach may attack: %+v", c)
+		}
 	}
 }
 func TestRiposteAnswersEveryMiss(t *testing.T) {
@@ -766,6 +782,27 @@ func TestMagicCoefficientAddsSpellDamage(t *testing.T) {
 	want := e.damage(a, b, plain) + (float64(sa.Mind-sb.Mind)+level*R.MagicLevelScale)*.7
 	if got := e.damage(a, b, skill); got != want {
 		t.Fatalf("damage %v, want %v", got, want)
+	}
+}
+
+func TestSpellGainsOnItsElementsTerrain(t *testing.T) {
+	e, a, b := arena(t)
+	fire := content.Skill{Kind: content.KindMagic, Coeff: 1, Element: "fire"}
+	plain := e.damage(a, b, fire)
+	ground := string(e.Cell(b.X, b.Y).Ground)
+	e.data.Rules.ElementTerrain = map[string]map[string]int{"fire": {ground: 30}, "water": {ground: 15}}
+	if got := e.damage(a, b, fire); math.Abs(got-plain*1.3) > 1e-9 {
+		t.Fatalf("fire on its terrain: %v, want %v", got, plain*1.3)
+	}
+	e.data.Rules.ElementTerrain = map[string]map[string]int{"water": {ground: 15}}
+	if got := e.damage(a, b, fire); got != plain {
+		t.Fatalf("another element's terrain: %v, want %v", got, plain)
+	}
+	strike := content.Skill{Kind: content.KindPhysical, Coeff: 1, Element: "fire"}
+	before := e.damage(a, b, strike)
+	e.data.Rules.ElementTerrain = map[string]map[string]int{"fire": {ground: 30}}
+	if got := e.damage(a, b, strike); got != before {
+		t.Fatalf("a strike with an element: %v, want %v", got, before)
 	}
 }
 

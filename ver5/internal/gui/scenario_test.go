@@ -186,6 +186,11 @@ func TestScenesData(t *testing.T) {
 			}
 			for _, st := range def.Ambient {
 				check(st)
+				for _, c := range st.If {
+					if _, err := content.ParseCond(c); err != nil {
+						t.Errorf("ambient step: %v", err)
+					}
+				}
 			}
 			for node, lines := range def.Beats {
 				if !inScene[node] {
@@ -195,6 +200,9 @@ func TestScenesData(t *testing.T) {
 					for _, group := range line {
 						for _, st := range group {
 							check(st)
+							if len(st.If) > 0 {
+								t.Errorf("%s: If is for ambient steps only", node)
+							}
 						}
 					}
 				}

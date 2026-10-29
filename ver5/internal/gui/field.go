@@ -23,6 +23,12 @@ const margin = 48 // map pixels around the map bounds (sprites reach past the gr
 // size they had when everything shared one scale, without losing any detail.
 const K = 2
 
+// newLayer is a picture as large as the map or the screen. It gets a texture of its own: on ebiten's shared atlas it
+// would grow a page up to 16384² that any small picture left on it keeps from being freed.
+func newLayer(w, h int) *ebiten.Image {
+	return ebiten.NewImageWithOptions(image.Rect(0, 0, w, h), &ebiten.NewImageOptions{Unmanaged: true})
+}
+
 // Field draws one battle map. Map pixels: cell (u, v) has its centre at
 // ((u - v) * 16, (u + v + 1) * 8) relative to Origin; the canvas is K times that.
 type Field struct {
@@ -79,9 +85,9 @@ var maxBlend = ebiten.Blend{
 func NewField(a *Assets, m *MapArt) *Field {
 	w, h := (m.Bounds.Dx()+2*margin)*K, (m.Bounds.Dy()+2*margin)*K
 	f := &Field{worldSize: image.Pt(w, h), A: a, Map: m, OriginX: float64(margin - m.Bounds.Min.X), OriginY: float64(margin - m.Bounds.Min.Y),
-		shadows: ebiten.NewImage(w, h), Canvas: ebiten.NewImage(w, h), ShowExterior: m.Scene}
+		shadows: newLayer(w, h), Canvas: newLayer(w, h), ShowExterior: m.Scene}
 	if !m.SunkWater {
-		f.clip = ebiten.NewImage(w, h) // a battle map draws its floors tile by tile (makeFloors), no map-wide ground
+		f.clip = newLayer(w, h) // a battle map draws its floors tile by tile (makeFloors), no map-wide ground
 	}
 	if m.SceneMap != nil {
 		if err := f.makeScenePlan(); err != nil {
@@ -98,7 +104,7 @@ func NewField(a *Assets, m *MapArt) *Field {
 			f.ground[i] = f.ground[0]
 			continue
 		}
-		g := ebiten.NewImage(w, h)
+		g := newLayer(w, h)
 		if m.Native && !m.Scene {
 			f.fillGround(g)
 		}

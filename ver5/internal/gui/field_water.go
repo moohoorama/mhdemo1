@@ -80,7 +80,7 @@ func (f *Field) drawAfloat(u *unitVis, s Sprite, boat string, k, x, y float64, o
 		if f.afloat != nil {
 			f.afloat.Deallocate()
 		}
-		f.afloat = ebiten.NewImage(cb.Dx(), cb.Dy())
+		f.afloat = newLayer(cb.Dx(), cb.Dy())
 	}
 	y += math.Round(math.Sin(f.clockMS/420 + (u.u+u.v)*1.7))
 	hull, rim := f.A.Props[boat].Sprite, f.A.Props[boat+"_rim"].Sprite

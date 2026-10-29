@@ -23,7 +23,7 @@ python3 tools/scene_maps/join_overlay.py                       # 알파만 쓴 �
 python3 tools/scene_maps/tall_cliff.py                         # 높은 장면 절벽 tcliff_*: 전투 맵 절벽 블록의 바위 면 행을 쌓음 → ../assets_candidate/tiles (그 뒤 build_extra.py, compose.py)
 python3 ../assets_candidate/tools/gen_3d_castle.py --write      # 옛 형식 장면용 성벽·성문(성문은 아치 가운데에서 갈라 반 칸 조각) → ../assets_candidate/tiles
 python3 ../assets_candidate/tools/gen_pixel_castle.py --write    # 형식 2 성벽 칸·성가퀴·밑동 그림자·성문 조각(도트로 직접) → ../assets_candidate/tiles (--preview 경로: 확인 그림; 그 뒤 build_extra.py)
-python3 ../assets_candidate/tools/gen_pixel_kit.py --write       # 전투 성벽 wall_clean_*·성문 gatehouse_{closed,open}_{u,v}_{0..3}, 실내 벽 wall_*_{nw,ne}·바닥 floor_*(같은 방식) → ../assets_candidate/tiles (--compare 경로: 지금 그림과 비교; 그 뒤 build_extra.py. 스킬 pixel-iso-kit)
+python3 ../assets_candidate/tools/gen_pixel_kit.py --write       # 전투 성벽 wall_clean_*·성문 gatehouse_{closed,open}_{u,v}_{0..3}, 울타리 fence_*·마을 village_0..3·주둔지 camp와 불탄 판, 실내 벽 wall_*_{nw,ne}·바닥 floor_*(같은 방식) → ../assets_candidate/tiles (--compare 경로: 지금 그림과 비교; 그 뒤 build_extra.py. 스킬 pixel-iso-kit)
 python3 tools/build_ground_tiles.py                             # 여울·평지 땅 경계 조각 두 벌(물가·흙길 경계 모양과 음영을 빌려 새 질감) → assets/graphics/map/tileset.png, index.json의 tileset (원본 tileset.png에 한 번만)
 python3 ../assets_candidate/tools/gen_scenery.py --install     # 땅 장식(풀포기·자갈·여울의 늪 수풀 …)·소나무·거점 깃발 → assets/graphics/map/scenery.png, scenery.json
 python3 ../tools/unit3d/scene_props3d.py                        # 3D 모델 장면 소품 → ../assets_candidate/tiles (--review: 옛 그림과 비교, 이름을 주면 그 소품만, --out=경로; 그 뒤 build_extra.py)
@@ -41,7 +41,7 @@ python3 tools/scene_maps/scene_format.py                       # assets/scenes/*
 - 수제 픽셀 원본은 `../tools/spritetool/assets/`의 `ver5-projectiles/`(돌·그림자·흙먼지), `ver5-fx/`(책략·전투·피격·장면 효과, 일기토 섬광, 입자), `ver5-outside/`(맵 밖 소나무·돌), `ver5-ui/`(창 테두리, 표시·아이콘, HP바 부품, 두루마리 무늬)다. 스프라이트는 레이어 묶음이고, 레이어는 아스키 격자(`pixels.json`, 팔레트 색) 또는 `gen.py` 함수가 그리는 부드러운 반투명 그림이다. 레이어마다 투명도(하나 또는 프레임별)와 합성(`normal`/`lighter`)이 있어 빌더가 보통 시트와 빛 시트(`_light.png`, 게임이 더하기 합성으로 겹침)로 나눠 굽는다. 각 원본의 `seed.py`는 격자 첫 판을 뽑는 도구(공용 도구 `tools/pixelgrid.py`)로, 다시 돌리면 손질이 지워진다. 런타임은 `Assets.Projectiles`·`FX`·`Outside`·`UI`(`internal/gui/shots.go`).
 - UI 그림은 그림 4px이 UI 1px이고 부드럽게 축소한다(아이콘·삼각 표시, 이웃 그림이 섞이지 않게 둘레 8px 투명 여백). 단, 창 테두리는 그림 1px이 UI 1px이고 최근접으로 9조각 늘려 단색 사각형처럼 또렷하다. HP바 부품은 게임 화소로 맵 위에 그린다.
 - `cmd/_uidemo-vm`은 기본 크기(1280×850)에서 UI를 절반 해상도 버퍼에 그린 뒤 2배로 키운다. 1px 선을 비교할 때는 `-size 2560x1700`으로 찍는다.
-- 거점 그림은 `../tools/unit3d/sites.py`가 `assets/graphics/map/sites.png`로 굽는다(게임 칸 하나에 한 장, 관문은 성벽 줄 방향별 두 장).
+- 거점 그림은 `../tools/unit3d/sites.py`가 `assets/graphics/map/sites.png`로 굽는다(게임 칸 하나에 한 장, 관문은 성벽 줄 방향별 두 장). 마을·주둔지는 `gen_pixel_kit.py`의 같은 이름 그림(`extra`)이 있으면 그것을 그린다. 마을은 네 판(`village_0..3`)을 칸 좌표 (x+2y) mod 4로 골라 이웃 칸과 겹치지 않게 하고, 판마다 굴뚝 연기 자리가 `scenery.json`의 `village_<n>`에 있다(`gen_scenery.py`가 `gen_pixel_kit.smoke_points`에서 읽음). 주둔지 깃발 천은 아직 sites.png 주둔지에서 오려 낸다(`gen_scenery.py camp_parts`).
 
 ## Android APK
 

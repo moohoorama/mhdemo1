@@ -1,6 +1,8 @@
 package gui
 
 import (
+	"fmt"
+
 	"srpg/internal/core"
 	"srpg/internal/session"
 )
@@ -34,11 +36,14 @@ func demoAutoText(d *Demo) error {
 
 func init() { demos["sceneskip"] = demoSceneSkip }
 
-// demoSceneSkip jumps to chapter 3, whose two first scenes share a road, and presses the skip button a little into
+// demoSceneSkip jumps to the -node story node (chapter 3's start, whose two first scenes share a road) and presses the skip button a little into
 // the first scene and again right after it stops.
 func demoSceneSkip(d *Demo) error {
+	if d.node == "" {
+		return fmt.Errorf("sceneskip needs -node")
+	}
 	g := d.g
-	g.request(session.Request{Op: "jump", Seed: 1, Node: "c03-start"})
+	g.request(session.Request{Op: "jump", Seed: 1, Node: d.node})
 	for l := g.S.View().Learners; len(l) > 0; l = g.S.View().Learners {
 		g.request(session.Request{Op: "command", Command: core.Command{Kind: "learn_close", Actor: l[0].ID}})
 	}

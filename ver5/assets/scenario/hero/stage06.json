@@ -5,7 +5,7 @@
  "Height": 0,
  "Tiles": null,
  "Map": "map06.json",
- "Max": 3,
+ "Max": 4,
  "Required": [
   "liubei",
   "guanyu",

@@ -20,6 +20,7 @@ import random
 from PIL import Image, ImageDraw
 
 import common
+import gen_pixel_kit
 
 OUT = os.path.join(common.ROOT, "scenery")
 
@@ -407,10 +408,10 @@ def flutter(rows, frame, amp=1.6, step=.5):
 
 
 def camp_parts():
-    """the camp with its flag cloth erased, and the cloth's four waving frames (cut from the original pixels)"""
+    """the camp flag cloth's four waving frames, cut from the sites.png camp's pixels, and where the cloth hangs from
+    the pivot (on the pole of gen_pixel_kit.py's camp)"""
     im, pivot = common.site("camp")
-    base = im.copy()
-    bp, ip = base.load(), im.load()
+    ip = im.load()
     x0, y0, x1, y1 = 50, 40, 56, 52  # cloth, free edge included, inclusive
     rows = []
     for y in range(y0, y1 + 1):
@@ -418,8 +419,6 @@ def camp_parts():
         while row and row[-1][3] == 0:
             row.pop()
         rows.append(row)
-        for x in range(x0, x1 + 1):
-            bp[x, y] = (0, 0, 0, 0)
     frames = []
     for f in range(4):
         st = Stamp(10, y1 - y0 + 1, (0, 0))
@@ -428,10 +427,7 @@ def camp_parts():
                 if c[3]:
                     st.px[x, y] = c
         frames.append(st)
-    bs = Stamp(*base.size, pivot)
-    bs.im = base
-    bs.px = base.load()
-    return bs, frames, (x0 - pivot[0], y0 - pivot[1])
+    return frames, (x0 - pivot[0], y0 - pivot[1])
 
 
 def castle_flag(frame):
@@ -662,8 +658,7 @@ def build():
         sprites[f"ripple_{f}"] = ripple(f)
         anim["ripple"]["frames"].append(f"ripple_{f}")
 
-    camp_base, camp_flag, camp_at = camp_parts()
-    sprites["camp_base"] = camp_base
+    camp_flag, camp_at = camp_parts()
     for f in range(4):
         sprites[f"camp_flag_{f}"] = camp_flag[f]
         sprites[f"castle_flag_{f}"] = castle_flag(f)
@@ -673,11 +668,12 @@ def build():
     anim["castle_flag"] = {"frames": [f"castle_flag_{f}" for f in range(4)], "ms": 150}
     anim["smoke"] = {"frames": [f"smoke_{f}" for f in range(8)], "ms": 220}
     sites = {
-        "camp": {"base": "camp_base", "overlays": [{"anim": "camp_flag", "at": list(camp_at)}]},
-        "village": {"overlays": [{"anim": "smoke", "at": [13, -12], "chance": .4},
-                                 {"anim": "smoke", "at": [-22, -13], "phase": 3, "chance": .25}]},
+        "camp": {"overlays": [{"anim": "camp_flag", "at": list(camp_at)}]},
         "castle": {"overlays": [{"anim": "castle_flag", "at": [-1, -27]}]},
     }
+    for n in range(len(gen_pixel_kit.VILLAGES)):   # each village picture smokes from its own chimneys
+        sites["village_%d" % n] = {"overlays": [{"anim": "smoke", "at": list(at), "phase": 3 * i, "chance": (.4, .25)[i]}
+                                                for i, at in enumerate(gen_pixel_kit.smoke_points(n))]}
 
     pines = []
     for name, spec, w_in, w_edge in PINES:

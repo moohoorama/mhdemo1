@@ -162,6 +162,26 @@ func TestEachSkillAttacksTargetsOneByOne(t *testing.T) {
 	assert.Equal(t, []string{"hit boss", "counter", "next troop#1", "hit troop#1"}, order)
 }
 
+func TestEachSkillBlowsSplashLikeBasicAttacks(t *testing.T) {
+	e, a, b := arena(t)
+	t1, t2 := e.unit("troop#1"), e.unit("troop#2")
+	t1.HP, t2.HP, b.HP = 10000, 10000, 10000
+	t1.X, t1.Y = 5, 5 // beside the hero, struck on its own
+	t2.X, t2.Y = 7, 6 // out of reach, behind the boss
+	with(e, "hero", "cross_t")
+	s := e.basic()
+	s.Shape, s.Each = content.ShapeAll, true
+	hit, share := e.victims(a, b, s)
+	assert.Len(t, hit, 3)
+	assert.Equal(t, 1.0, share[t1.ID])
+	assert.Equal(t, .75, share[t2.ID])
+
+	e.data.Rules.HitFloor, e.data.Rules.HitCeil = 100, 100
+	e.events = nil
+	e.physical(a, b, s, Command{Kind: "skill", Actor: a.ID, Target: b.ID})
+	assert.Less(t, t2.HP, 10000)
+}
+
 func TestTurnLimitBoundary(t *testing.T) {
 	for _, tc := range []struct {
 		name         string

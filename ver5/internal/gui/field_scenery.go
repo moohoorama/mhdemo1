@@ -25,11 +25,9 @@ type Scenery struct {
 	pines   []pineArt
 }
 
-// siteLife brings a strongpoint to life: an optional replacement for its still picture (the camp without its flag
-// cloth) and looping overlays drawn on it (the flag, chimney smoke, a pennant). at is where an overlay's pivot lies
-// from the strongpoint's own pivot.
+// siteLife brings a strongpoint to life: looping overlays drawn on it (the flag, chimney smoke, a pennant). at is
+// where an overlay's pivot lies from the strongpoint's own pivot.
 type siteLife struct {
-	base     *Sprite
 	overlays []siteOverlay
 }
 
@@ -66,7 +64,6 @@ func loadScenery(dir string) (*Scenery, error) {
 			MS     int
 		}
 		Sites map[string]struct {
-			Base     string
 			Overlays []struct {
 				Anim   string
 				At     [2]float64
@@ -106,10 +103,6 @@ func loadScenery(dir string) (*Scenery, error) {
 	s.sites = map[string]siteLife{}
 	for name, v := range meta.Sites {
 		var life siteLife
-		if v.Base != "" {
-			base := s.sprites[v.Base]
-			life.base = &base
-		}
 		for _, o := range v.Overlays {
 			life.overlays = append(life.overlays, siteOverlay{s.anim[o.Anim], o.At[0], o.At[1], o.Phase, o.Chance})
 		}
@@ -146,8 +139,8 @@ func pick(weights []float64, u float64) int {
 // Tree shadows are collected apart while the trees are placed and folded into it by finishScenery.
 func (f *Field) makeScenery() {
 	w, h := f.Canvas.Bounds().Dx(), f.Canvas.Bounds().Dy()
-	f.decor = ebiten.NewImage(w, h)
-	f.treeShadow = ebiten.NewImage(w, h)
+	f.decor = newLayer(w, h)
+	f.treeShadow = newLayer(w, h)
 	floored := map[[2]int]bool{} // an old room map's boards, mats and carpets lie over plain ground: no grass under them
 	for _, p := range f.Map.Props {
 		if strings.HasPrefix(p.Name, "floor_") && !p.Fill {
@@ -179,7 +172,7 @@ func (f *Field) makeScenery() {
 		dst := f.decor
 		if st.Top {
 			if f.cliffTop == nil {
-				f.cliffTop = ebiten.NewImage(w, h)
+				f.cliffTop = newLayer(w, h)
 			}
 			dst = f.cliffTop
 		}
@@ -333,12 +326,9 @@ func (f *Field) drawBaked(dst, img *ebiten.Image) {
 	dst.DrawImage(img, op)
 }
 
-// drawSite draws a strongpoint with its life: the still picture (or its replacement) and the looping overlays.
-// u and v are its cell, which decides where it smokes and how its phase lags.
+// drawSite draws a strongpoint with its life: the still picture and the looping overlays. u and v are its cell,
+// which decides where it smokes and how its phase lags.
 func (f *Field) drawSite(still Sprite, life siteLife, x, y float64, u, v int) {
-	if life.base != nil {
-		still = *life.base
-	}
 	f.blit(f.Canvas, still, x, y, nil)
 	seed := scenemap.NewSeed(f.Map.ID)
 	// the same wind as the trees: the phase moves across the map, with a little spread

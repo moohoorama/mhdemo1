@@ -1,0 +1,245 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "camp",
+  "At": [
+   24,
+   14
+  ],
+  "Face": "NW"
+ },
+ "Areas": {
+  "camp": {
+   "Map": "S_gongsun_camp",
+   "Name": "계교 · 공손찬의 진영",
+   "Time": "dusk",
+   "At": [
+    24,
+    14
+   ],
+   "Exits": [
+    {
+     "Name": "공손찬의 막사",
+     "At": [
+      11,
+      7
+     ],
+     "Object": [
+      11,
+      4
+     ],
+     "To": "tent"
+    }
+   ],
+   "People": {
+    "관우@camp": {
+     "At": [
+      28,
+      13
+     ],
+     "Face": "NW",
+     "Sortie": {
+      "Ask": "형님, 다리 앞에 설 채비가 끝났습니다. 출진하시겠습니까?"
+     }
+    },
+    "조운": {
+     "At": [
+      27,
+      21
+     ],
+     "Face": "NW",
+     "Talk": [
+      [
+       "zhaoyun",
+       "내일은 공의 곁에서 싸웁니다. 노병은 쏘기 전에 방패 뒤에 엎드려 있습니다. 멀리서는 강하지만, 붙으면 약합니다."
+      ],
+      [
+       "zhaoyun",
+       "내일은 문추가 여울로 돌아올 겁니다. 백마로는 그쪽을 막겠습니다."
+      ]
+     ]
+    },
+    "전해": {
+     "At": [
+      17,
+      11
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "tiankai",
+       "장군께서는 오늘 일로 몹시 분해하십니다. 내일은 다리 앞만 지켜 주시면 됩니다."
+      ]
+     ]
+    },
+    "장비@camp": {
+     "At": [
+      20,
+      9
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "zhangfei",
+       "공손 장군이 백마 준다던 약속, 내일 이기고 나면 꼭 받아 내야겄슈."
+      ]
+     ]
+    },
+    "간옹@camp": {
+     "At": [
+      22,
+      17
+     ],
+     "Face": "NE",
+     "Talk": [
+      [
+       "jianyong",
+       "부상병들한테 약을 나눠 줬네. 공손 장군 진영은 말 먹이는 넉넉한데 사람 약은 모자라더군."
+      ]
+     ]
+    },
+    "번궁@camp": {
+     "At": [
+      8,
+      12
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "fangong",
+       "다리는 좁소. 노병 앞에서 한꺼번에 건너면 과녁이 되오. 문추를 먼저 꺾고, 원소가 나설 때를 기다리시오."
+      ]
+     ]
+    },
+    "부상병": {
+     "At": [
+      25,
+      18
+     ],
+     "Face": "NE",
+     "Sprite": "wounded_noncombat",
+     "Faction": "gongsun",
+     "Chatter": "으으……",
+     "Talk": [
+      [
+       "부상병",
+       "방패 뒤에서 한꺼번에 쇠뇌가…… 말들이 비명을 지르며 쓰러졌습니다……."
+      ]
+     ]
+    },
+    "부상병#1": {
+     "At": [
+      29,
+      18
+     ],
+     "Face": "NW",
+     "Sprite": "wounded_noncombat",
+     "Faction": "gongsun",
+     "Chatter": "물……"
+    },
+    "백마병": {
+     "At": [
+      14,
+      15
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun",
+     "Talk": [
+      [
+       "백마병",
+       "자룡 그 사람, 원소 진영 한가운데로 뛰어들어 장군을 업고 나왔습니다. 창 한 자루로요."
+      ]
+     ]
+    },
+    "백마병#1": {
+     "At": [
+      30,
+      11
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun"
+    },
+    "백마병#2": {
+     "At": [
+      30,
+      16
+     ],
+     "Face": "NW",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun"
+    },
+    "백마병#3": {
+     "At": [
+      20,
+      13
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun",
+     "Move": {
+      "Patrol": [
+       [
+        20,
+        13
+       ],
+       [
+        6,
+        13
+       ]
+      ]
+     }
+    },
+    "종군 상인": {
+     "At": [
+      6,
+      9
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Shop": "camp",
+     "Chatter": "콩 있소, 술 있소"
+    }
+   }
+  },
+  "tent": {
+   "Map": "S_tent_mid",
+   "Name": "공손찬의 막사",
+   "At": [
+    10,
+    8
+   ],
+   "Exits": [
+    {
+     "Name": "밖으로",
+     "At": [
+      11,
+      9
+     ],
+     "To": "camp"
+    }
+   ],
+   "People": {
+    "공손찬": {
+     "At": [
+      6,
+      3
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "gongsunzan",
+       "원본초 그놈은 정면으로 싸운 적이 없다. 한복을 겁주고, 나를 부추기고, 이번엔 방패 뒤에 숨어서 쏘더군."
+      ],
+      [
+       "gongsunzan",
+       "현덕, 내일은 그놈을 끌어내 다오. 그놈이 직접 나서면, 그때가 끝이다."
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

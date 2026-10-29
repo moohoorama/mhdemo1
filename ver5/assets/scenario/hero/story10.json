@@ -3,79 +3,157 @@
   {
    "ID": "c10-start",
    "Kind": "scene",
-   "Place": "거록 · 들판"
+   "Place": "계교 · 공손찬의 진영, 해 질 녘"
   },
   {
-   "ID": "c10-n1",
-   "Kind": "narrate",
-   "Text": "계교로 가는 길을 원소군의 진이 가로막고 있다. 깃발에 '안' 자가 보인다."
-  },
-  {
-   "ID": "c10-s1",
-   "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "하필 계교로 가는 길목을 안량이 막았네. 돌아가면 사흘이 늦어."
-  },
-  {
-   "ID": "c10-s2",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "사흘이면 공손 형님이 버티지 못한다. 뚫고 간다."
-  },
-  {
-   "ID": "c10-s3",
-   "Kind": "say",
-   "Speaker": "fangong",
-   "Text": "장군, 양옆 언덕이 너무 조용합니다. 조심하십시오."
-  },
-  {
-   "ID": "c10-battle",
-   "Kind": "battle",
-   "Stage": "B09",
-   "Text": "거록 — 출전 준비"
-  },
-  {
-   "ID": "c10-br",
+   "ID": "c10-01",
    "Kind": "branch",
    "Cases": [
     {
      "If": [
       "flag:flag-julu-clear"
      ],
-     "Next": "c10-clear"
+     "Next": "c10-a1"
     }
    ],
-   "Else": "c10-pass"
+   "Else": "c10-b1"
   },
   {
-   "ID": "c10-clear",
-   "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "안량도 장합도 물러갔네. 이만하면 원소도 우리를 얕보지 못하겠구먼."
-  },
-  {
-   "ID": "c10-clear2",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "서두르자. 계교는 지척이다.",
-   "Next": "c10-end"
-  },
-  {
-   "ID": "c10-pass",
-   "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "길은 뚫었네만, 안량과 장합이 아직 멀쩡하니 뒤가 마음에 걸리는구먼."
-  },
-  {
-   "ID": "c10-pass2",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "지금은 계교가 먼저다. 가자."
-  },
-  {
-   "ID": "c10-end",
+   "ID": "c10-a1",
    "Kind": "narrate",
-   "Text": "유비군은 거록의 진을 뚫고 계교로 길을 재촉했다."
+   "Text": "거록을 뚫은 유비군은 계교로 서둘렀다. 관우에게 꺾인 안량은 체면을 잃고 거록에 남았다.",
+   "Next": "c10-03"
+  },
+  {
+   "ID": "c10-b1",
+   "Kind": "narrate",
+   "Text": "거록을 뚫은 유비군은 계교로 서둘렀다. 그러나 싸움을 피해 물러난 안량도 군사를 수습해 계교로 향했다."
+  },
+  {
+   "ID": "c10-03",
+   "Kind": "say",
+   "Speaker": "tiankai",
+   "Text": "현덕 공! 늦지 않으셨습니다. ……아니, 조금 늦으셨습니다."
+  },
+  {
+   "ID": "c10-04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "무슨 일이오?"
+  },
+  {
+   "ID": "c10-05",
+   "Kind": "say",
+   "Speaker": "tiankai",
+   "Text": "오늘 낮 장군께서 백마의종을 이끌고 다리를 건너셨는데, 국의의 노병이 방패 뒤에 엎드려 있다가 일제히 쏘았습니다."
+  },
+  {
+   "ID": "c10-06",
+   "Kind": "say",
+   "Speaker": "tiankai",
+   "Text": "백마들이 한꺼번에 쓰러지고, 장군께서도 말에서—"
+  },
+  {
+   "ID": "c10-07",
+   "Kind": "say",
+   "Speaker": "gongsunzan",
+   "Text": "떨어질 뻔한 게 아니라 떨어졌다. 이 젊은이가 아니었으면 지금쯤 원본초의 진영에 내 목이 걸렸겠지."
+  },
+  {
+   "ID": "c10-08",
+   "Kind": "say",
+   "Speaker": "gongsunzan",
+   "Text": "상산의 조자룡이다. 원소 밑에 있다가, 원소에게 백성을 구할 뜻이 없다며 나를 찾아왔다."
+  },
+  {
+   "ID": "c10-09",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "조운 자룡입니다. 장군을 구한 것은 제 창이 아니라 장군의 운입니다."
+  },
+  {
+   "ID": "c10-10",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "유비 현덕이오. ……어지러운 때에 섬길 주인을 스스로 고르는 사람은 드물지요."
+  },
+  {
+   "ID": "c10-11",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "현덕 공의 이야기는 들었습니다. 공의 군사는 지나는 고을의 곡식을 건드리지 않는다고."
+  },
+  {
+   "ID": "c10-12",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형~ 이 양반 눈빛이 보통이 아니유. 형 쳐다보는 눈이 딱 내가 형 처음 볼 때 같구먼유."
+  },
+  {
+   "ID": "c10-13",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "익덕."
+  },
+  {
+   "ID": "c10-14",
+   "Kind": "say",
+   "Speaker": "gongsunzan",
+   "Text": "내일 원본초가 총공격을 해 온다. 현덕, 다리 앞을 맡아 다오. 남은 백마를 다 모아 뒤를 받치마."
+  },
+  {
+   "ID": "c10-15",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "형님, 맡겨 주십시오."
+  },
+  {
+   "ID": "c10-18",
+   "Kind": "say",
+   "Speaker": "gongsunzan",
+   "Text": "자룡, 내일은 현덕 곁에서 싸워라. 네 창은 다리 앞에서 더 쓸모가 있을 게다."
+  },
+  {
+   "ID": "c10-19",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "명을 받들겠습니다. 현덕 공, 내일은 공의 기병을 맡겠습니다."
+  },
+  {
+   "ID": "c10-20",
+   "Kind": "join",
+   "Character": "zhaoyun",
+   "Event": "join-zhaoyun"
+  },
+  {
+   "ID": "c10-16",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-julu-clear"
+     ],
+     "Next": "c10-walk"
+    }
+   ],
+   "Else": "c10-17"
+  },
+  {
+   "ID": "c10-17",
+   "Kind": "say",
+   "Speaker": "tiankai",
+   "Text": "거록에서 물러난 안량이 원소 진영에 닿았다는 보고도 있습니다. 내일은 그자도 나올 겁니다."
+  },
+  {
+   "ID": "c10-walk",
+   "Kind": "explore",
+   "Explore": "explore10"
+  },
+  {
+   "ID": "c10-battle",
+   "Kind": "battle",
+   "Stage": "B10",
+   "Text": "계교 전투 — 출전 준비"
   }
  ]
 }

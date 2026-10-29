@@ -15,7 +15,7 @@ func TestStageLevelFollowsTheStoryOrder(t *testing.T) {
 		assert.Equal(t, i+1, d.StageOrder(id), id)
 		assert.Equal(t, levels[i], d.Rules.StageLevel(d.StageOrder(id)), id)
 	}
-	assert.Equal(t, 8, d.NextBattleOrder("c09-11"), "Jian Yong joins before Xindu")
+	assert.Equal(t, 4, d.NextBattleOrder("c04-c6"), "Jian Yong joins at Pengcheng, before its battle")
 }
 
 func TestRankLeadKeepsItsShareOfStrength(t *testing.T) {

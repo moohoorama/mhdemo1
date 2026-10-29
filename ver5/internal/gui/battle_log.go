@@ -28,7 +28,7 @@ func (g *Game) logBodyHeight() int {
 	if h == 0 {
 		h = 260
 	}
-	return max(120, min(h, uiH-hudTop()-hudHeaderH-hudTabsH-12))
+	return max(120, min(h, uiH-hudTop()-hudHeaderH-cornerRowH-hudTabsH-12))
 }
 
 func (g *Game) battleLogVisible() bool {

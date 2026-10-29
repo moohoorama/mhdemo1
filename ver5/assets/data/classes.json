@@ -33,6 +33,32 @@
     "pikeman"
    ]
   },
+  "commoner": {
+   "Name": "민중",
+   "Desc": "싸울 줄 모르는 백성. 공격도 반격도 하지 못한다.",
+   "Terrain": "infantry",
+   "Attack": "melee",
+   "Weapon": "sword",
+   "Armor": "armor",
+   "Move": 4,
+   "Range": 0,
+   "Bonus": [
+    12,
+    10,
+    5,
+    7,
+    8,
+    18
+   ],
+   "HPFactor": 3,
+   "MPBase": 14,
+   "RecoveryBase": 2,
+   "Tier": 0,
+   "Sprite": "light_infantry",
+   "Portrait": "light_infantry",
+   "Pool": [],
+   "Promotes": []
+  },
   "heavy_infantry": {
    "Name": "중보병",
    "Desc": "두꺼운 갑옷의 보병.",

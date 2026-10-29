@@ -1717,18 +1717,6 @@
     4
    ]
   },
-  "camp_base": {
-   "rect": [
-    0,
-    88,
-    100,
-    110
-   ],
-   "pivot": [
-    50,
-    77
-   ]
-  },
   "camp_flag_0": {
    "rect": [
     101,
@@ -3024,7 +3012,6 @@
  },
  "sites": {
   "camp": {
-   "base": "camp_base",
    "overlays": [
     {
      "anim": "camp_flag",
@@ -3032,27 +3019,6 @@
       0,
       -37
      ]
-    }
-   ]
-  },
-  "village": {
-   "overlays": [
-    {
-     "anim": "smoke",
-     "at": [
-      13,
-      -12
-     ],
-     "chance": 0.4
-    },
-    {
-     "anim": "smoke",
-     "at": [
-      -22,
-      -13
-     ],
-     "phase": 3,
-     "chance": 0.25
     }
    ]
   },
@@ -3064,6 +3030,85 @@
       -1,
       -27
      ]
+    }
+   ]
+  },
+  "village_0": {
+   "overlays": [
+    {
+     "anim": "smoke",
+     "at": [
+      -9,
+      -27
+     ],
+     "phase": 0,
+     "chance": 0.4
+    },
+    {
+     "anim": "smoke",
+     "at": [
+      20,
+      -24
+     ],
+     "phase": 3,
+     "chance": 0.25
+    }
+   ]
+  },
+  "village_1": {
+   "overlays": [
+    {
+     "anim": "smoke",
+     "at": [
+      -8,
+      -29
+     ],
+     "phase": 0,
+     "chance": 0.4
+    },
+    {
+     "anim": "smoke",
+     "at": [
+      19,
+      -23
+     ],
+     "phase": 3,
+     "chance": 0.25
+    }
+   ]
+  },
+  "village_2": {
+   "overlays": [
+    {
+     "anim": "smoke",
+     "at": [
+      16,
+      -29
+     ],
+     "phase": 0,
+     "chance": 0.4
+    }
+   ]
+  },
+  "village_3": {
+   "overlays": [
+    {
+     "anim": "smoke",
+     "at": [
+      0,
+      -29
+     ],
+     "phase": 0,
+     "chance": 0.4
+    },
+    {
+     "anim": "smoke",
+     "at": [
+      15,
+      -22
+     ],
+     "phase": 3,
+     "chance": 0.25
     }
    ]
   }

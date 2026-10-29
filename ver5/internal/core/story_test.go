@@ -181,13 +181,13 @@ func TestRetryAfterDefeatReturnsToTheSortieNotTheScenesBefore(t *testing.T) {
 func TestJoiningOfficerCatchesUpWithTheStory(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
-	d.Campaign.Start = "c09-11"
+	d.Nodes = append(d.Nodes, content.Node{ID: "test-join", Kind: "join", Character: "jianyong", Next: "c07-battle"})
+	d.Campaign.Start = "test-join"
 	e := New(d, 1)
-	apply(t, e, Command{Kind: "start"})
 	o := e.char("jianyong")
 	require.NotNil(t, o)
-	assert.Equal(t, 14, o.Level, "the level of Xindu, the next battle")
-	assert.Equal(t, 1300, o.Points, "100 per level like the brothers")
+	assert.Equal(t, 12, o.Level, "the level of the Dong Zhuo chase, the next battle")
+	assert.Equal(t, 1100, o.Points, "100 per level like the brothers")
 }
 
 func TestOfficersBelowTheStageLevelAreNotRaisedAtTheSortie(t *testing.T) {

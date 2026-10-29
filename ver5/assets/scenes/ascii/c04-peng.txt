@@ -2,14 +2,22 @@
 .........Bnr...Bnr.........
 ###########################
 ~~~~~~~~~~~~===~~~~~~~~~~~~
-......Bnr...Tao...LiuGua...
-............Gao......Zha...
+......BnrTao...LiuBnr......
+.........Gao...ZhaGua......
 
 Tao 도겸
 Gao 고순
 Liu 유비
 Gua 관우
 Zha 장비
+Jia 간옹  (off stage, enters later (cell 10 4))
+ZSP 장세평  (off stage, enters later (cell 10 4))
+mn1 마부#1  (commoner_man, off stage, enters later (cell 10 3))
+mn2 마부#2  (commoner_man, off stage, enters later (cell 10 4))
 Mes 전령  (light_infantry, off stage, enters later (cell 10 3))
 
-# c04-b2: Mes -> 7 3
+# c04-c1: mn1 -> 7 3
+# c04-c1: Jia -> 6 4
+# c04-c1: ZSP -> 7 4
+# c04-c1: mn2 -> 8 4
+# c04-b2: Mes -> 6 3

@@ -58,6 +58,11 @@
    "earth": "r"
   },
   "CritMarkTurns": 3,
+  "ElementTerrain": {
+   "fire": {"g": 15, "t": 30},
+   "water": {"s": 15, "w": 30},
+   "earth": {"d": 15}
+  },
   "BuffPercent": 20,
   "BuffTurns": 2,
   "ExpGrowth": 1.035,

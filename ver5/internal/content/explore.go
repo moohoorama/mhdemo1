@@ -197,6 +197,9 @@ func (d *Data) validateExplores(nodes map[string]Node) error {
 				if PersonName(key) == "" || !faces[p.Face] {
 					return fmt.Errorf("%s: name or face", where)
 				}
+				if !strings.Contains(key, "#") && len(p.Talk) == 0 && len(p.Event) == 0 && p.Shop == "" && p.Sortie == nil {
+					return fmt.Errorf("%s: a named person says nothing (no Talk, Event, Shop or Sortie)", where)
+				}
 				if p.Move != nil && (len(p.Move.Patrol) == 0) == (p.Move.Wander <= 0) {
 					return fmt.Errorf("%s: move is a patrol or a wander", where)
 				}

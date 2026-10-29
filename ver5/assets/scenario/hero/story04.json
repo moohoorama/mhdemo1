@@ -98,6 +98,42 @@
    "Text": "팽성에 닿는다. 마을 사람들이 성으로 들어가고, 유비가 도겸에게 작별을 고하려 한다."
   },
   {
+   "ID": "c04-c1",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "현덕! 영천 가면 광종 갔다 하고, 광종 가면 낙양 갔다 하고, 낙양 가니 단양 갔다더군. 발바닥이 다 닳았네."
+  },
+  {
+   "ID": "c04-c2",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "헌화! 자네가 어찌 여기까지."
+  },
+  {
+   "ID": "c04-c3",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "탁현 외상값은 한 푼도 안 남기고 갚았네. 술집 주인이 울더군, 단골 하나 잃는다고."
+  },
+  {
+   "ID": "c04-c4",
+   "Kind": "say",
+   "Speaker": "zhangshiping",
+   "Text": "북쪽 말을 서주에 팔러 가는 길에, 헌화 선생이 현덕 공을 찾는다기에 함께 왔습니다. 군량도 조금 실어 왔지요."
+  },
+  {
+   "ID": "c04-c5",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "군량! 헌화 형님 오는 길은 늘 반갑구먼유!"
+  },
+  {
+   "ID": "c04-c6",
+   "Kind": "join",
+   "Character": "jianyong",
+   "Event": "join-jianyong"
+  },
+  {
    "ID": "c04-b2",
    "Kind": "say",
    "Speaker": "messenger",
@@ -114,6 +150,12 @@
    "Kind": "say",
    "Speaker": "liubei",
    "Text": "여기까지 함께 왔는데 등을 돌릴 수는 없지요. 운장, 익덕. 채비하게."
+  },
+  {
+   "ID": "c04-b5",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "말 장사 행렬이 털리게 생겼으니 나도 거들어야겠군."
   },
   {
    "ID": "c04-battle",

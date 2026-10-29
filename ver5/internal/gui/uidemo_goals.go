@@ -2,8 +2,8 @@ package gui
 
 func init() { demos["goals"] = demoGoals }
 
-// demoGoals shows the objective guide on a stage, the camera on the middle of its marks, and switches it
-// off at frame 150.
+// demoGoals shows the objective guide on a stage, the camera on the middle of its marks, opens the
+// 전투 목표 window at frame 100 and switches the guide off from it at frame 150.
 func demoGoals(d *Demo) error {
 	if err := d.battle(d.stage); err != nil {
 		return err
@@ -21,7 +21,10 @@ func demoGoals(d *Demo) error {
 		if n > 0 {
 			g.camX, g.camY = g.field.Center(su/n, sv/n)
 		}
-		if f == 150 {
+		switch f {
+		case 100:
+			g.openObjective()
+		case 150:
 			g.S.Settings.NoGoalGuide = true
 		}
 	}

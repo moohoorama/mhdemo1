@@ -144,22 +144,22 @@
   {
    "Character": "zhangshiping",
    "X": 7,
-   "Y": 5,
+   "Y": 6,
    "Facing": "SW",
    "Group": "merchants",
    "AI": true,
-   "Policy": "flee",
+   "Policy": "run",
    "GoalArea": 1,
    "Faction": "merchant"
   },
   {
    "Character": "sushuang",
    "X": 8,
-   "Y": 5,
+   "Y": 6,
    "Facing": "SW",
    "Group": "merchants",
    "AI": true,
-   "Policy": "flee",
+   "Policy": "run",
    "GoalArea": 1,
    "Faction": "merchant"
   },

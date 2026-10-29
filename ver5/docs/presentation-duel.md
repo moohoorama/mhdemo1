@@ -2,7 +2,7 @@
 
 일기토는 이야기와 장수 성격에 맞춘 짧은 전투극이다. 시간에 따른 상태를 `internal/duel`에서 계산하고 `internal/duelview`가 기존 .spr와 수묵 초상으로 그린다. 기본 재생은 기존보다 정확히 2배 빠르며 본편·감상 모드에 함께 적용한다. 이름은 굵게, 대사는 보통 굵기로 구별하며 속말은 괄호로 표시한다. 일반 감상 화면에는 초상·흰색 PNG 말풍선·건너뛰기만 표시한다. 말풍선은 모서리·꼬리 크기를 유지하는 10조각 공통 렌더러다.
 
-본편 전투와 시작 메뉴의 **일기토**는 같은 JSON·렌더러를 사용한다. 감상 모드는 캠페인 명령을 실행하지 않고 기존 진행·저장·난수를 유지한다. 목록에서 승부를 고르면 바로 재생하고, 끝나거나 건너뛰면 목록으로 돌아온다. `Esc`로 목록에서 시작 메뉴로 돌아간다. 독립 `cmd/srpg-duel`은 본편으로 통합했다.
+본편 전투와 시작 메뉴(`-debug`)의 **일기토**는 같은 JSON·렌더러를 사용한다. 감상 모드는 캠페인 명령을 실행하지 않고 기존 진행·저장·난수를 유지한다. 목록에서 승부를 고르면 바로 재생하고, 끝나거나 건너뛰면 목록으로 돌아온다. `Esc`로 목록에서 시작 메뉴로 돌아간다. 독립 `cmd/srpg-duel`은 본편으로 통합했다.
 
 ## 이야기 데이터
 
@@ -48,7 +48,7 @@
 ```sh
 go run ./cmd/srpg-gui
 go run ./cmd/srpg-gui -duel hulao-guan-yu
-go run ./cmd/srpg-gui -duel hulao-liu-bei -duel-debug
+go run ./cmd/srpg-gui -duel hulao-liu-bei -debug
 go run ./cmd/srpg-gui -duel hulao-zhang-fei -duel-capture reports/duel-gallery
 go test ./internal/duel ./internal/core ./internal/gui ./internal/content
 go vet ./internal/duel ./internal/duelview ./internal/gui ./cmd/srpg-gui
@@ -56,6 +56,6 @@ SRPG_RENDER_TEST=1 go test ./internal/gui -run '^TestRenderedCampaignDuels$' -co
 SRPG_RENDER_TEST=1 go test ./internal/gui -run '^TestRenderedDuelGalleryMenu$' -count=1 -v
 ```
 
-명시적 `-duel-debug`는 저작용 상황 설명과 `Space` 정지, `R` 처음, `←/→` 장면 탐색을 표시한다. 일반 감상에서는 `Enter`·`Space`·`Esc`가 건너뛰기다. 본편 일기토의 `F`는 기존 배속 조작이다. `-duel-capture`는 각 장면을 PNG로 저장한 뒤 종료한다.
+`-debug`(검증 모드)에서는 저작용 상황 설명과 `Space` 정지, `R` 처음, `←/→` 장면 탐색을 표시한다. 일반 감상에서는 `Enter`·`Space`·`Esc`가 건너뛰기다. 본편 일기토의 `F`는 기존 배속 조작이다. `-duel-capture`는 각 장면을 PNG로 저장한 뒤 종료한다.
 
 프로젝트 제작 스킬은 `.agents/skills/duel-authoring/SKILL.md`다. 검증은 첫 타격·강공 방어·회피·지원군 진입·퇴각 경로·후속 결과와 감상 모드의 캠페인 상태 불변을 확인한다. 실제 본편 발동·종료·건너뛰기와 2배 해상도 렌더링도 검사한다.

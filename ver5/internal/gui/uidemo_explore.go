@@ -36,10 +36,7 @@ func demoExplore(d *Demo) error {
 	idle, wait := 0, 0
 	d.step = func(f int) {
 		wait++
-		if g.narrationLeaving && g.uiSeconds-g.narrationExitAt >= .43 { // as Update ends a narration that faded out
-			g.narrationLeaving = false
-			g.command(core.Command{Kind: "next"})
-		}
+		g.turnPage() // as Update ends a narration that faded out
 		o := g.S.View()
 		switch {
 		case g.overlay() == "confirm" && wait > 40:

@@ -3,18 +3,19 @@
  "Name": "계교 전투",
  "Width": 0,
  "Height": 0,
- "Max": 5,
+ "Max": 6,
  "Required": [
   "liubei",
   "guanyu",
-  "zhangfei"
+  "zhangfei",
+  "zhaoyun"
  ],
  "Victory": [
   {
    "If": [
     "defeated:yuanshao"
    ],
-   "Text": "원소 퇴각"
+   "Text": "원소를 물리친다"
   }
  ],
  "Defeat": [
@@ -23,1066 +24,234 @@
     "defeated:gongsunzan"
    ],
    "Text": "공손찬 퇴각"
-  },
-  {
-   "If": [
-    "defeated:zhaoyun"
-   ],
-   "Text": "조운 퇴각"
   }
  ],
- "TurnLimit": 30,
- "Tiles": null,
+ "TurnLimit": 25,
+ "Map": "map10.json",
  "Allies": [
   {
-   "X": 1,
-   "Y": 3
+   "X": 6,
+   "Y": 7
   },
   {
-   "X": 1,
-   "Y": 4
+   "X": 7,
+   "Y": 7
   },
   {
-   "X": 2,
-   "Y": 3
+   "X": 6,
+   "Y": 8
   },
   {
-   "X": 2,
-   "Y": 4
+   "X": 7,
+   "Y": 8
   },
   {
-   "X": 3,
-   "Y": 3
+   "X": 6,
+   "Y": 9
   },
   {
-   "X": 3,
-   "Y": 4
+   "X": 7,
+   "Y": 9
   },
   {
-   "X": 2,
-   "Y": 2
-  },
-  {
-   "X": 2,
-   "Y": 5
+   "X": 5,
+   "Y": 8
   }
  ],
  "Party": [
   {
    "Character": "gongsunzan",
-   "X": 20,
-   "Y": 4,
-   "Facing": "SW",
+   "X": 3,
+   "Y": 8,
+   "Facing": "SE",
+   "Group": "white",
    "Policy": "hold",
    "AI": true,
-   "HP": 400,
    "Faction": "gongsun"
   },
   {
    "Character": "tiankai",
    "X": 5,
-   "Y": 4,
-   "AI": true,
+   "Y": 6,
+   "Facing": "SE",
+   "Group": "white",
    "Policy": "react",
-   "Faction": "gongsun",
-   "Facing": "SE"
+   "AI": true,
+   "Faction": "gongsun"
   },
   {
    "Character": "troop_cavalry",
-   "X": 5,
-   "Y": 3,
-   "Faction": "gongsun",
-   "AI": true,
-   "Policy": "react",
-   "Group": "tianjun",
+   "X": 4,
+   "Y": 7,
    "Facing": "SE",
-   "Class": "light_cavalry",
+   "Group": "white",
+   "Policy": "react",
+   "AI": true,
+   "Faction": "gongsun",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 4,
+   "Y": 10,
+   "Facing": "SE",
+   "Group": "white",
+   "Policy": "react",
+   "AI": true,
+   "Faction": "gongsun",
    "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
    "X": 5,
-   "Y": 5,
-   "Faction": "gongsun",
-   "AI": true,
-   "Policy": "react",
-   "Group": "tianjun",
+   "Y": 12,
    "Facing": "SE",
-   "Class": "light_cavalry",
-   "Shift": -0.07
-  },
-  {
-   "Character": "yangang",
-   "X": 13,
-   "Y": 3,
-   "AI": true,
+   "Group": "white",
    "Policy": "react",
-   "Faction": "gongsun",
-   "Facing": "SE",
-   "HP": 400
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 11,
-   "Y": 4,
-   "Faction": "gongsun",
    "AI": true,
-   "Policy": "react",
-   "Group": "baima",
-   "Facing": "SE",
-   "Class": "light_cavalry",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 12,
-   "Y": 4,
    "Faction": "gongsun",
-   "AI": true,
-   "Policy": "react",
-   "Group": "baima",
-   "Facing": "SE",
-   "Class": "light_cavalry",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 14,
-   "Y": 4,
-   "Faction": "gongsun",
-   "AI": true,
-   "Policy": "react",
-   "Group": "baima",
-   "Facing": "SE",
-   "Class": "light_cavalry",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 15,
-   "Y": 4,
-   "Faction": "gongsun",
-   "AI": true,
-   "Policy": "react",
-   "Group": "baima",
-   "Facing": "SE",
-   "Class": "light_cavalry",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 11,
-   "Y": 3,
-   "Faction": "gongsun",
-   "AI": true,
-   "Policy": "react",
-   "Group": "baima-heavy",
-   "Facing": "SE",
-   "Class": "heavy_cavalry",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 15,
-   "Y": 3,
-   "Faction": "gongsun",
-   "AI": true,
-   "Policy": "react",
-   "Group": "baima-heavy",
-   "Facing": "SE",
-   "Class": "heavy_cavalry",
    "Shift": -0.07
   }
  ],
  "Enemies": [
   {
-   "Character": "wenchou",
-   "X": 14,
-   "Y": 11,
-   "DuelFirst": true,
-   "Faction": "yuan",
-   "Facing": "NW",
-   "Policy": "react"
-  },
-  {
-   "Character": "quyi",
-   "X": 11,
-   "Y": 10,
-   "Faction": "yuan",
-   "Facing": "NE",
-   "Policy": "react"
-  },
-  {
    "Character": "yuanshao",
-   "X": 13,
-   "Y": 13,
+   "X": 21,
+   "Y": 8,
+   "Facing": "SW",
+   "Group": "hq",
    "Policy": "hold",
-   "Faction": "yuan",
-   "Facing": "NW",
    "Rank": "commander"
   },
   {
    "Character": "tianfeng",
-   "X": 15,
-   "Y": 13,
+   "X": 21,
+   "Y": 7,
+   "Facing": "SW",
+   "Group": "hq",
    "Policy": "hold",
-   "Faction": "yuan",
-   "Facing": "NW"
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 20,
+   "Y": 8,
+   "Facing": "SW",
+   "Group": "hq-guard",
+   "Policy": "hold",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 21,
+   "Y": 9,
+   "Facing": "SW",
+   "Group": "hq-guard",
+   "Policy": "hold",
+   "Shift": -0.07
+  },
+  {
+   "Character": "quyi",
+   "X": 16,
+   "Y": 8,
+   "Facing": "SW",
+   "Group": "crossbows",
+   "Policy": "hold",
+   "Shift": -0.08
+  },
+  {
+   "Character": "troop_archer",
+   "X": 14,
+   "Y": 7,
+   "Facing": "SW",
+   "Group": "crossbows",
+   "Policy": "hold",
+   "Class": "crossbow",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_archer",
+   "X": 14,
+   "Y": 9,
+   "Facing": "SW",
+   "Group": "crossbows",
+   "Policy": "hold",
+   "Class": "crossbow",
+   "Shift": -0.12
+  },
+  {
+   "Character": "wenchou",
+   "X": 18,
+   "Y": 14,
+   "Facing": "SW",
+   "Group": "wen",
+   "Policy": "assault"
   },
   {
    "Character": "troop_cavalry",
-   "X": 13,
-   "Y": 10,
-   "Faction": "yuan",
-   "Group": "wen-cav",
-   "Policy": "react",
-   "Facing": "NW",
-   "Class": "light_cavalry",
+   "X": 17,
+   "Y": 14,
+   "Facing": "SW",
+   "Group": "wen",
+   "Policy": "assault",
    "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
-   "X": 15,
-   "Y": 10,
-   "Faction": "yuan",
-   "Group": "wen-cav",
-   "Policy": "react",
-   "Facing": "NW",
-   "Class": "light_cavalry",
+   "X": 18,
+   "Y": 15,
+   "Facing": "SW",
+   "Group": "wen",
+   "Policy": "assault",
    "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
+   "X": 19,
+   "Y": 13,
+   "Facing": "SW",
+   "Group": "wen",
+   "Policy": "assault",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_archer",
    "X": 16,
    "Y": 11,
-   "Faction": "yuan",
-   "Group": "wen-cav",
-   "Policy": "react",
-   "Facing": "NW",
-   "Class": "light_cavalry",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_archer",
-   "X": 12,
-   "Y": 8,
-   "Faction": "yuan",
+   "Facing": "SW",
+   "Group": "line",
    "Policy": "hold",
-   "Group": "ambush",
-   "Facing": "NE",
-   "Class": "crossbow",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_archer",
-   "X": 12,
-   "Y": 9,
-   "Faction": "yuan",
-   "Policy": "hold",
-   "Group": "ambush",
-   "Facing": "NE",
-   "Class": "crossbow",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_archer",
-   "X": 15,
-   "Y": 8,
-   "Faction": "yuan",
-   "Policy": "hold",
-   "Group": "ambush",
-   "Facing": "NE",
-   "Class": "crossbow",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_archer",
-   "X": 15,
-   "Y": 9,
-   "Faction": "yuan",
-   "Policy": "hold",
-   "Group": "ambush",
-   "Facing": "NE",
-   "Class": "crossbow",
    "Shift": -0.07
   },
   {
    "Character": "troop_footman",
-   "X": 12,
-   "Y": 12,
-   "Faction": "yuan",
+   "X": 18,
+   "Y": 7,
+   "Facing": "SW",
+   "Group": "line",
    "Policy": "hold",
-   "Group": "yuan-guard",
-   "Facing": "NW",
-   "Class": "light_infantry",
    "Shift": -0.07
   },
   {
    "Character": "troop_footman",
-   "X": 14,
-   "Y": 12,
-   "Faction": "yuan",
+   "X": 18,
+   "Y": 9,
+   "Facing": "SW",
+   "Group": "line",
    "Policy": "hold",
-   "Group": "yuan-guard",
-   "Facing": "NW",
-   "Class": "light_infantry",
    "Shift": -0.07
   }
  ],
- "Duels": [
-  {
-   "ID": "zhangfei-wenchou",
-   "Ally": "zhangfei",
-   "Enemy": "wenchou",
-   "Outcome": "victory",
-   "AllyResult": "stay",
-   "EnemyResult": "retreat",
-   "Text": "장비가 문추를 몰아붙이자 문추가 물러났다.",
-   "Beats": [
-    {
-     "Kind": "talk",
-     "Title": "장비의 호통",
-     "Speech": "네놈이 공손 형님을 쫓았다는 문추냐!",
-     "Side": 0,
-     "Duration": 2.4
-    },
-    {
-     "Kind": "talk",
-     "Title": "문추가 분통을 터뜨리다",
-     "Speech": "상산의 조자룡인지 뭔지 하는 애송이가 방해하더니, 이번엔 시커먼 촌놈이냐!",
-     "Side": 1,
-     "Duration": 4.0
-    },
-    {
-     "Kind": "talk",
-     "Title": "문추가 기세 좋게 선언하다",
-     "Speech": "공손찬 목을 코앞에서 놓쳤다. 네놈 목이라도 베어 가겠다!",
-     "Side": 1,
-     "Duration": 3.3
-    },
-    {
-     "Kind": "approach",
-     "Title": "문추가 기세 좋게 달려들다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "rush-block",
-     "Title": "문추가 돌진하며 찌르다",
-     "Speech": "오냐, 와 봐유!",
-     "Side": 1,
-     "Duration": 1.1
-    },
-    {
-     "Kind": "block",
-     "Title": "장비가 문추의 창을 받아내다",
-     "Speech": "이게 다여?",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "hit",
-     "Title": "문추의 창이 장비를 스치다",
-     "Speech": "받아라!",
-     "Side": 1,
-     "Duration": 1.1
-    },
-    {
-     "Kind": "talk",
-     "Title": "장비가 일격을 맞다",
-     "Speech": "크윽! 이 자식이…!",
-     "Side": 0,
-     "Duration": 1.7
-    },
-    {
-     "Kind": "talk",
-     "Title": "장비의 기세가 오르다",
-     "Speech": "하하! 이제야 좀 놀 만하구먼!",
-     "Side": 0,
-     "Duration": 2.2
-    },
-    {
-     "Kind": "critical-block",
-     "Title": "장비가 강공을 퍼붓고 문추가 받아내다",
-     "Speech": "어딜 도망가려 혀!",
-     "Side": 0,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "문추가 위기를 느끼다",
-     "Speech": "(이놈은 방해꾼 정도가 아니다……!)",
-     "Side": 1,
-     "Duration": 2.4
-    },
-    {
-     "Kind": "rush-critical-block",
-     "Title": "장비가 돌진하며 몰아붙이다",
-     "Speech": "이거나 먹어랏!",
-     "Side": 0,
-     "Duration": 1.25
-    },
-    {
-     "Kind": "block",
-     "Title": "문추가 이를 악물고 찌르다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "critical-block",
-     "Title": "장비가 다시 강공을 퍼붓다",
-     "Speech": "공손 형님한테 손대면 가만 안 둘겨!",
-     "Side": 0,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "press",
-     "Title": "장비가 전진하고 문추가 뒷걸음질하다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "문추가 물러나기로 하다",
-     "Speech": "이 촌놈이……! 일단 물러난다!",
-     "Side": 1,
-     "Duration": 2.2
-    },
-    {
-     "Kind": "retreat",
-     "Title": "문추가 직선으로 아군 대열 속으로 물러나다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 3.0
-    },
-    {
-     "Kind": "withdrawn",
-     "Title": "문추가 대열 속으로 사라지다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 1.1
-    }
-   ]
-  },
-  {
-   "ID": "gongsunzan-wenchou",
-   "Ally": "gongsunzan",
-   "Enemy": "wenchou",
-   "Outcome": "draw",
-   "AllyResult": "stay",
-   "EnemyResult": "stay",
-   "Text": "공손찬이 문추에게 밀리면서도 끝내 쓰러지지 않아 승부가 나지 않았다.",
-   "Beats": [
-    {
-     "Kind": "talk",
-     "Title": "문추가 공손찬을 몰아세우다",
-     "Speech": "공손찬! 네 목을 내놓아라!",
-     "Side": 1,
-     "Duration": 2.0
-    },
-    {
-     "Kind": "talk",
-     "Title": "공손찬이 호통으로 맞서다",
-     "Speech": "내가 누구라고 생각하느냐! 북평의 공손백규다!",
-     "Side": 0,
-     "Duration": 2.8
-    },
-    {
-     "Kind": "approach",
-     "Title": "문추가 말을 몰아 달려들다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "block",
-     "Title": "공손찬이 문추의 창을 받아내다",
-     "Speech": "아직 이 창은 녹슬지 않았다!",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "block",
-     "Title": "문추가 거듭 찔러 오다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "hit",
-     "Title": "공손찬이 틈을 찔러 반격하다",
-     "Speech": "받아라!",
-     "Side": 0,
-     "Duration": 1.1
-    },
-    {
-     "Kind": "rush-block",
-     "Title": "문추가 돌진하지만 공손찬이 막다",
-     "Speech": "그 정도로는 어림없다!",
-     "Side": 1,
-     "Duration": 1.1
-    },
-    {
-     "Kind": "talk",
-     "Title": "공손찬이 병사들을 떠올리다",
-     "Speech": "(엄강……! 내 백마들이……)",
-     "Side": 0,
-     "Duration": 2.1
-    },
-    {
-     "Kind": "yielding-block",
-     "Title": "공손찬이 막지만 밀리다",
-     "Speech": "으윽…!",
-     "Side": 1,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "yielding-block",
-     "Title": "공손찬이 거듭 밀리다",
-     "Speech": "크윽……!",
-     "Side": 1,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "문추가 몰아붙이다",
-     "Speech": "지친 말 위에서 언제까지 버틸 테냐!",
-     "Side": 1,
-     "Duration": 2.4
-    },
-    {
-     "Kind": "critical-block",
-     "Title": "문추가 온 힘으로 내리찍지만 공손찬이 받아내다",
-     "Speech": "이것으로 끝이다!",
-     "Side": 1,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "공손찬이 이를 악물다",
-     "Speech": "(여기서 쓰러질 수는 없다……!)",
-     "Side": 0,
-     "Duration": 2.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "문추가 숨을 몰아쉬다",
-     "Speech": "끈질긴 놈이군……! 오늘 네 목은 내가 가져간다!",
-     "Side": 1,
-     "Duration": 2.9
-    },
-    {
-     "Kind": "draw",
-     "Title": "두 장수가 승부를 내지 못하고 거리를 벌리다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 2.5
-    }
-   ]
-  }
- ],
+ "Reward": {
+  "bean": 8,
+  "barley": 4,
+  "liquor": 4,
+  "money": 1500
+ },
+ "Areas": [],
  "Events": [
   {
    "ID": "opening",
-   "Do": [
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "move",
-        "Unit": "baima",
-        "To": {
-         "X": 13,
-         "Y": 9
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "baima-heavy",
-        "To": {
-         "X": 13,
-         "Y": 9
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "yangang",
-        "To": {
-         "X": 13,
-         "Y": 8
-        }
-       },
-       {
-        "Kind": "say",
-        "Unit": "gongsunzan",
-        "Text": "원본초의 진은 다리 건너 저 너머다. 백마의종, 단숨에 짓밟아라!"
-       },
-       {
-        "Kind": "wait",
-        "Seconds": 1.5
-       }
-      ],
-      [
-       {
-        "Kind": "say",
-        "Unit": "yangang",
-        "Text": "주공의 뒤를 따르라!"
-       },
-       {
-        "Kind": "wait",
-        "Seconds": 2
-       }
-      ],
-      [
-       {
-        "Kind": "say",
-        "Unit": "quyi",
-        "Text": "……아직이다. 조금만 더. 쏴라!"
-       },
-       {
-        "Kind": "wait",
-        "Seconds": 1.5
-       }
-      ],
-      [
-       {
-        "Kind": "play",
-        "Unit": "ambush",
-        "Motion": "attack"
-       },
-       {
-        "Kind": "play",
-        "Unit": "yangang",
-        "Motion": "hit"
-       },
-       {
-        "Kind": "play",
-        "Unit": "baima-heavy",
-        "Motion": "hit"
-       },
-       {
-        "Kind": "wait",
-        "Seconds": 1.5
-       }
-      ],
-      [
-       {
-        "Kind": "play",
-        "Unit": "yangang",
-        "Motion": "exhausted"
-       },
-       {
-        "Kind": "play",
-        "Unit": "baima-heavy",
-        "Motion": "exhausted"
-       },
-       {
-        "Kind": "say",
-        "Unit": "gongsunzan",
-        "Text": "엄강……! 물러나라, 다리를 건너 물러나라!"
-       },
-       {
-        "Kind": "wait",
-        "Seconds": 2
-       }
-      ],
-      [
-       {
-        "Kind": "move",
-        "Unit": "baima",
-        "To": {
-         "X": 13,
-         "Y": 4
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "baima-heavy",
-        "To": {
-         "X": 12,
-         "Y": 3
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "yangang",
-        "To": {
-         "X": 13,
-         "Y": 3
-        }
-       }
-      ],
-      [
-       {
-        "Kind": "play",
-        "Unit": "baima",
-        "Motion": "exhausted"
-       },
-       {
-        "Kind": "play",
-        "Unit": "baima-heavy",
-        "Motion": "exhausted"
-       },
-       {
-        "Kind": "play",
-        "Unit": "yangang",
-        "Motion": "exhausted"
-       },
-       {
-        "Kind": "wait",
-        "Seconds": 1.5
-       }
-      ],
-      [
-       {
-        "Kind": "move",
-        "Unit": "wenchou",
-        "To": {
-         "X": 13,
-         "Y": 5
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "wen-cav",
-        "To": {
-         "X": 13,
-         "Y": 5
-        }
-       },
-       {
-        "Kind": "say",
-        "Unit": "wenchou",
-        "Text": "지친 백마들이로구나. 모조리 쓸어버려라!"
-       }
-      ],
-      [
-       {
-        "Kind": "move",
-        "Unit": "baima",
-        "To": {
-         "X": 17,
-         "Y": 1
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "baima-heavy",
-        "To": {
-         "X": 9,
-         "Y": 1
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "yangang",
-        "To": {
-         "X": 10,
-         "Y": 2
-        }
-       },
-       {
-        "Kind": "wait",
-        "Seconds": 1
-       }
-      ],
-      [
-       {
-        "Kind": "move",
-        "Unit": "wenchou",
-        "To": {
-         "X": 19,
-         "Y": 4
-        }
-       },
-       {
-        "Kind": "wait",
-        "Seconds": 1
-       }
-      ]
-     ]
-    },
-    {
-     "Kind": "duel",
-     "Duel": "gongsunzan-wenchou"
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "move",
-        "Unit": "gongsunzan",
-        "To": {
-         "X": 21,
-         "Y": 3
-        }
-       },
-       {
-        "Kind": "say",
-        "Unit": "wenchou",
-        "Text": "어디로 도망치느냐!"
-       },
-       {
-        "Kind": "wait",
-        "Seconds": 1
-       }
-      ]
-     ]
-    },
-    {
-     "Kind": "join",
-     "Spawns": [
-      {
-       "Character": "zhaoyun",
-       "X": 22,
-       "Y": 5,
-       "Facing": "SW"
-      }
-     ]
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "say",
-        "Unit": "zhaoyun",
-        "Text": "상산의 조자룡이다! 공손 장군, 물러나십시오!"
-       },
-       {
-        "Kind": "wait",
-        "Seconds": 1
-       }
-      ],
-      [
-       {
-        "Kind": "move",
-        "Unit": "zhaoyun",
-        "To": {
-         "X": 20,
-         "Y": 3
-        }
-       },
-       {
-        "Kind": "say",
-        "Unit": "gongsunzan",
-        "Text": "젊은이, 그대는……!"
-       }
-      ],
-      [
-       {
-        "Kind": "play",
-        "Unit": "zhaoyun",
-        "Motion": "attack"
-       },
-       {
-        "Kind": "play",
-        "Unit": "wenchou",
-        "Motion": "block"
-       },
-       {
-        "Kind": "wait",
-        "Seconds": 1.5
-       }
-      ],
-      [
-       {
-        "Kind": "say",
-        "Unit": "tiankai",
-        "Text": "주공! 유현덕 공과 함께 왔습니다!"
-       },
-       {
-        "Kind": "wait",
-        "Seconds": 2
-       }
-      ],
-      [
-       {
-        "Kind": "say",
-        "Unit": "wenchou",
-        "Text": "원군이라……. 물러난다!"
-       },
-       {
-        "Kind": "move",
-        "Unit": "wenchou",
-        "To": {
-         "X": 14,
-         "Y": 10
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "wen-cav",
-        "To": {
-         "X": 14,
-         "Y": 10
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "zhaoyun",
-        "To": {
-         "X": 13,
-         "Y": 4
-        }
-       },
-       {
-        "Kind": "move",
-        "Unit": "gongsunzan",
-        "To": {
-         "X": 20,
-         "Y": 4
-        }
-       },
-       {
-        "Kind": "wait",
-        "Seconds": 1
-       }
-      ]
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "vanguard-clear",
-   "If": [
-    "flag:flag-julu-clear"
-   ],
-   "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "chenzhen",
-       "X": 10,
-       "Y": 11,
-       "Group": "vanguard",
-       "Policy": "react",
-       "Faction": "yuan",
-       "Facing": "NE",
-       "Side": "enemy"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 18,
-       "Y": 11,
-       "Faction": "yuan",
-       "Group": "vanguard",
-       "Policy": "react",
-       "Facing": "NW",
-       "Class": "light_infantry",
-       "Side": "enemy",
-       "Shift": -0.07
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "vanguard-strong",
-   "If": [
-    "!flag:flag-julu-clear"
-   ],
-   "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "zhanghe",
-       "X": 10,
-       "Y": 11,
-       "Group": "vanguard",
-       "Policy": "react",
-       "Faction": "yuan",
-       "Facing": "NE",
-       "Side": "enemy"
-      },
-      {
-       "Character": "yanliang",
-       "X": 18,
-       "Y": 11,
-       "Group": "vanguard",
-       "Policy": "react",
-       "Faction": "yuan",
-       "Facing": "NW",
-       "Side": "enemy"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 9,
-       "Y": 12,
-       "Faction": "yuan",
-       "Group": "vanguard",
-       "Policy": "react",
-       "Facing": "NE",
-       "Class": "light_infantry",
-       "Side": "enemy",
-       "Shift": -0.07
-      },
-      {
-       "Character": "troop_footman",
-       "X": 19,
-       "Y": 12,
-       "Faction": "yuan",
-       "Group": "vanguard",
-       "Policy": "react",
-       "Facing": "NW",
-       "Class": "light_infantry",
-       "Side": "enemy",
-       "Shift": -0.07
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "all-out",
-   "If": [
-    "round>=2"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "yuanshao",
-       "Text": "공손찬을 놓친 것은 아쉽소만, 실로 통쾌하구려. 원호의 계책이 백마의종을 꺾었소."
-      },
-      {
-       "Actor": "tianfeng",
-       "Text": "주공, 저들에게 원군이 왔습니다. 다리를 굳게 지키고 저들이 지치기를 기다리십시오."
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "yuanshao",
-       "Text": "(웃으며) 백마의종이라는 이름도 허명이었소. 이 기세를 놓칠 수는 없지. 전군, 총공격하라!"
-      }
-     ]
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "wen-cav",
-      "vanguard",
-      "ambush",
-      "wenchou",
-      "quyi"
-     ],
-     "Policy": "assault"
-    }
-   ]
-  },
-  {
-   "ID": "greeting",
    "If": [
     "round>=1"
    ],
@@ -1091,8 +260,26 @@
      "Kind": "say",
      "Lines": [
       {
+       "Actor": "yuanshao",
+       "Text": "공손찬의 백마도 오늘로 끝이다. 국의, 다리 머리를 지켜라. 문추는 여울로 돌아 들어가라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "quyi",
+       "Text": "맡겨 두십시오. 내 현묘한 승리 기록이 하나 또 추가되겠군요."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
        "Actor": "gongsunzan",
-       "Text": "현덕……. 와 주었구나."
+       "Text": "현덕! 다리 건너 노병이 백마를 꺾은 놈들이다. 정면으로 들이치지 마라!"
       }
      ]
     },
@@ -1101,20 +288,246 @@
      "Lines": [
       {
        "Actor": "liubei",
-       "Text": "형님은 뒤에서 쉬십시오. 저희가 막겠습니다."
+       "Text": "노병은 가까이 붙으면 약하다. 여울로 오는 기병부터 막고, 다리는 그다음이다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhaoyun",
+       "Text": "여울은 제가 맡겠습니다. 백마 몇 기만 붙여 주십시오."
       }
      ]
     }
    ]
+  },
+  {
+   "ID": "vanguard-strong",
+   "If": [
+    "round>=4",
+    "!flag:flag-julu-clear"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "yanliang",
+       "X": 22,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "van",
+       "Policy": "assault",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 21,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "van",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Shift": -0.07
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yanliang",
+       "Text": "거록의 빚을 갚으러 왔다! 관운장은 어디 있느냐!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "좋다, 안량. 다리를 밀어붙여라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "vanguard-clear",
+   "If": [
+    "round>=4",
+    "flag:flag-julu-clear"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "안량은 아직이냐?"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "tianfeng",
+       "Text": "거록에서 관우에게 꺾여 낯을 들지 못한다 합니다. 서두르지 말라 아뢰었다는 것만은 기억해 주십시오."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "all-out",
+   "If": [
+    "defeated:wenchou"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "문추가 물러났다고……? 전군, 총공격이다! 다리를 건너 공손찬을 쳐라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "tianfeng",
+       "Text": "주공, 노병을 앞에 두고 기다리셔야 합니다! ……제가 아뢰었다는 것만은 기억해 주십시오."
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "line",
+      "hq-guard"
+     ],
+     "Policy": "assault"
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "yuanshao"
+     ],
+     "Policy": "march",
+     "Goal": {
+      "X": 16,
+      "Y": 9
+     }
+    }
+   ]
+  },
+  {
+   "ID": "crossbows-broken",
+   "If": [
+    "alldefeated:crossbows"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "국의의 노병까지……! 물러서지 마라, 나는 사세삼공의 원본초다!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "yuanshao"
+     ],
+     "Policy": "assault"
+    }
+   ]
   }
  ],
- "Reward": {
-  "bean": 8,
-  "barley": 4,
-  "liquor": 4
- },
  "Faction": "yuan",
- "Map": "map10.json",
+ "Duels": [
+  {
+   "ID": "jiejiao-zhangfei-wenchou",
+   "Ally": "zhangfei",
+   "Enemy": "wenchou",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "문추가 장비와 맞붙어 버티다가 기병을 잃고 물러났다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "문추가 길을 막다",
+     "Speech": "하북의 문추다! 여울은 내가 건넌다!",
+     "Side": 1,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 막아서다",
+     "Speech": "건너긴 뭘 건너유! 여기서 끝이유!",
+     "Side": 0,
+     "Duration": 2.4
+    },
+    {
+     "Kind": "approach",
+     "Title": "맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "문추의 창을 막다",
+     "Speech": "어림없슈!",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 몰아치다",
+     "Speech": "크윽!",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-critical-block",
+     "Title": "장비가 돌진해 내려치다",
+     "Speech": "으라앗!",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "문추가 이를 갈다",
+     "Speech": "이 검은 놈……! 오늘은 물러나지만 다음은 없다!",
+     "Side": 1,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "retreat",
+     "Title": "문추가 여울 너머로 물러나다",
+     "Speech": "물러난다!",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "문추가 퇴각하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    }
+   ]
+  }
+ ],
  "Armies": [
   {
    "Faction": "shu",

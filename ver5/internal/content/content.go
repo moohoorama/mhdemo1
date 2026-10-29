@@ -51,15 +51,16 @@ type Rules struct {
 	DeputyWeight          int   // deputy attribute blend: ratio = (own charm*DeputyWeight + deputy charm) / DeputyDivisor
 	DeputyDivisor         int   // also the percent scale of charm
 	PromoteLevels         []int // minimum level to promote from tier i
-	StageLevelBase        int     // the n-th battle of the story is fought at StageLevelBase + StageLevelStep×(n−1), rounded; 0 leaves spawns at their characters' levels
+	StageLevelBase        int   // the n-th battle of the story is fought at StageLevelBase + StageLevelStep×(n−1), rounded; 0 leaves spawns at their characters' levels
 	StageLevelStep        float64
 	SideShareMax          float64            // the most damage share a blow deals to anyone it strikes besides its target (splash, sweep, pierce)
 	RankLead              map[string]float64 // a rank's lead over the stage level, as a share of (stage level + StatLevelBase) so it means the same strength at any level
 	EnemyStock            map[string]int
 	AllyStock             map[string]int
-	EdgeTile              string            // the cell (ground, structure, state) that lies beyond the map's edge
-	CritMarks             map[string]string // the state a critical spell of the element leaves on each critically struck target's cell
-	CritMarkTurns         int               // how many rounds that state lasts
+	EdgeTile              string                    // the cell (ground, structure, state) that lies beyond the map's edge
+	CritMarks             map[string]string         // the state a critical spell of the element leaves on each critically struck target's cell
+	CritMarkTurns         int                       // how many rounds that state lasts
+	ElementTerrain        map[string]map[string]int // percent more a spell of the element deals to a target on the structure or, without one listed, the ground letter
 	AuraHeal              int
 }
 type Campaign struct {
@@ -292,7 +293,8 @@ type Move struct {
 }
 
 // Step is one thing that happens in a cutscene: Unit moves to To (a group fills the cells around it)
-// and turns to Facing there (none: the way its last step went), plays Motion (attack, hit, block, exhausted), turns to Facing, says Text, or the scene waits Seconds.
+// and turns to Facing there (none: the way its last step went), plays Motion (attack, hit, block, exhausted), turns to Facing, says Text,
+// leaves the field across the nearest edge as if fled, or the scene waits Seconds.
 type Step struct {
 	Kind, Unit, Motion, Facing, Text string
 	To                               *Point  `json:",omitempty"`
@@ -304,17 +306,21 @@ var BuffStats = []string{"attack", "defense", "mind", "morale", "agility", "spee
 
 // Policies are the behaviours an AI-driven unit can be given: hold stands its ground and strikes what
 // comes within reach, react stands until an opponent is within its move and reach and then goes for
-// it, assault always advances, march goes for a cell fighting what it meets, and flee goes for a cell
-// without fighting and leaves the field when it gets there.
-var Policies = []string{"hold", "react", "assault", "march", "flee"}
+// it, assault always advances, march goes for a cell fighting what it meets, flee goes for a cell
+// without fighting and leaves the field when it gets there, and run does the same blindly: it only
+// walks, never stopping to use an item.
+var Policies = []string{"hold", "react", "assault", "march", "flee", "run"}
 
-// ValidPolicy checks a policy and its goal against each other: march and flee take either a goal cell
-// inside the stage or one of its areas with a cell inside, the other policies neither.
+// Leaves reports whether a unit with the policy leaves the field when it reaches its goal.
+func Leaves(policy string) bool { return policy == "flee" || policy == "run" }
+
+// ValidPolicy checks a policy and its goal against each other: march, flee and run take either a goal
+// cell inside the stage or one of its areas with a cell inside, the other policies neither.
 func (s Stage) ValidPolicy(policy string, goal *Point, area int) bool {
 	if policy != "" && !contains(Policies, policy) {
 		return false
 	}
-	if policy == "march" || policy == "flee" {
+	if policy == "march" || Leaves(policy) {
 		return (goal == nil) != (area == 0) && len(s.GoalCells(goal, area)) > 0
 	}
 	return goal == nil && area == 0
@@ -381,6 +387,36 @@ func DefeatTargets(goals []Goal) []string {
 				out = append(out, id)
 			}
 		}
+	}
+	return out
+}
+
+// DuelGroups numbers each of the stage's duels by the officers it joins, from 0 in the order the duels
+// first appear: duels that share an officer (one enemy met by several, a support) get the same number.
+func (s Stage) DuelGroups() []int {
+	parent := map[string]string{}
+	var root func(string) string
+	root = func(n string) string {
+		if p, ok := parent[n]; ok && p != n {
+			parent[n] = root(p)
+			return parent[n]
+		}
+		parent[n] = n
+		return n
+	}
+	for _, d := range s.Duels {
+		for _, n := range append([]string{d.Enemy}, d.Supports...) {
+			parent[root(n)] = root(d.Ally)
+		}
+	}
+	number := map[string]int{}
+	out := make([]int, len(s.Duels))
+	for i, d := range s.Duels {
+		r := root(d.Ally)
+		if _, ok := number[r]; !ok {
+			number[r] = len(number)
+		}
+		out[i] = number[r]
 	}
 	return out
 }

@@ -178,11 +178,28 @@ func (e *Engine) SetDamagePct(pct int) { e.state.DamagePct = pct }
 // SetXPPct scales the experience every battle action earns to pct percent.
 func (e *Engine) SetXPPct(pct int) { e.state.XPPct = pct }
 
+// Restore rebuilds an engine from a state saved with this data; one saved before the data changed fails
+// with ChangedContent, which RestoreChanged takes anyway.
 func Restore(d *content.Data, s State) (*Engine, error) { return restore(d, copyOf(s), true) }
+
+// RestoreChanged restores a state saved before the data last changed (while the game is still being
+// made, a save should outlive an edited line or map); the engine carries the data's hash from then on.
+func RestoreChanged(d *content.Data, s State) (*Engine, error) {
+	s = copyOf(s)
+	s.ContentHash = d.Hash
+	if s.Checkpoint != nil {
+		s.Checkpoint.ContentHash = d.Hash
+	}
+	return restore(d, s, true)
+}
+
 func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	R := d.Rules
-	if s.AI != AIPolicyVersion || s.Difficulty != "normal" || s.Format != 5 || s.Core != CoreVersion || s.Rules != RulesVersion || s.Content != d.Version || s.ContentHash != d.Hash {
+	if s.AI != AIPolicyVersion || s.Difficulty != "normal" || s.Format != 5 || s.Core != CoreVersion || s.Rules != RulesVersion || s.Content != d.Version {
 		return nil, fail("IncompatibleSave")
+	}
+	if s.ContentHash != d.Hash {
+		return nil, fail("ChangedContent")
 	}
 	for i, t := range s.TileStates {
 		if s.Stage < 0 || s.Stage >= len(d.Stages) {

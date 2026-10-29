@@ -77,9 +77,30 @@ type briefing struct {
 	win, lose string
 	subs      []briefSub
 }
+
+// briefSub is a bonus goal with how it stands: lit while it holds, its state named on a switch-like chip.
 type briefSub struct {
-	text string
-	done bool
+	text, state string
+	lit         bool
+}
+
+// subState names how a bonus goal stands. One that only keeps someone alive is judged at the victory, so
+// during the battle it is being kept or has failed; any other holds once met.
+func subState(sub content.Objective, done bool, battle bool) (string, bool) {
+	keep := len(sub.If) > 0
+	for _, s := range sub.If {
+		c, err := content.ParseCond(s)
+		keep = keep && err == nil && c.Op == "alive" && !c.Not
+	}
+	switch {
+	case keep && battle && done:
+		return "지키는 중", true
+	case keep && battle:
+		return "실패", false
+	case done:
+		return "달성", true
+	}
+	return "미달성", false
 }
 
 func (g *Game) objective(o core.Observation) briefing {
@@ -103,7 +124,8 @@ func (g *Game) objective(o core.Observation) briefing {
 	b := briefing{win: strings.Join(wins, " 또는 "), lose: strings.Join(lose, " / ")}
 	done := g.S.Engine.SubDone()
 	for i, sub := range st.Sub {
-		b.subs = append(b.subs, briefSub{sub.Text, i < len(done) && done[i]})
+		state, lit := subState(sub, i < len(done) && done[i], o.Phase == "battle")
+		b.subs = append(b.subs, briefSub{sub.Text, state, lit})
 	}
 	return b
 }
@@ -563,11 +585,11 @@ func (g *Game) miniSize() (w, h float64) {
 	return w, w / 2
 }
 
-// minimap shows the whole field, unit dots and the visible area in a window of its own;
-// deployment has no panel.
-func (g *Game) minimap(dst *ebiten.Image, o core.Observation) {
+// minimap shows the whole field, unit dots and the visible area in a window of its own from top down:
+// deployment has no HUD panel to hold it, so it hangs under the right corner panel.
+func (g *Game) minimap(dst *ebiten.Image, o core.Observation, top int) {
 	w, h := g.miniSize()
-	x0, y0 := float64(uiW)-12-w-14, 52.0
+	x0, y0 := float64(uiW)-12-w-14, float64(top)
 	g.window(dst, image.Rect(int(x0)-10, int(y0)-10, int(x0+w)+10, int(y0+h)+10))
 	g.drawMinimap(dst, o, x0, y0)
 }
@@ -590,7 +612,7 @@ func (g *Game) drawMinimap(dst *ebiten.Image, o core.Observation, x0, y0 float64
 		if g.mini.img != nil {
 			g.mini.img.Deallocate()
 		}
-		g.mini.img = ebiten.NewImage(int(math.Ceil((w+2*s)*drawPx))+2, int(math.Ceil(h*drawPx))+2)
+		g.mini.img = newLayer(int(math.Ceil((w+2*s)*drawPx))+2, int(math.Ceil(h*drawPx))+2)
 		g.mini.key = key
 		keepX, keepY := drawOX, drawOY
 		drawOX, drawOY = keepX-gx, keepY-gy

@@ -28,6 +28,6 @@ func TestUIContentFits(t *testing.T) {
 	require.False(t, ok)
 	_, _, ok = d.g.confirmLayout(strings.Repeat("출진하시겠습니까? ", 100), 800, 531)
 	require.False(t, ok)
-	_, ok = d.g.objectiveLayout([]objectiveRow{{"승리 조건", strings.Repeat("적군을 물리치고 아군을 지킨다. ", 100)}}, 800, 531)
+	_, ok = d.g.objectiveLayout([]objectiveRow{{name: "승리 조건", text: strings.Repeat("적군을 물리치고 아군을 지킨다. ", 100)}}, 800, 531)
 	require.False(t, ok)
 }

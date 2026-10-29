@@ -15,8 +15,8 @@ func (f *Field) prepareRender(z, x, y float64, w, h int) {
 	if f.Canvas.Bounds().Dx() != w || f.Canvas.Bounds().Dy() != h {
 		f.Canvas.Deallocate()
 		f.shadows.Deallocate()
-		f.Canvas = ebiten.NewImage(w, h)
-		f.shadows = ebiten.NewImage(w, h)
+		f.Canvas = newLayer(w, h)
+		f.shadows = newLayer(w, h)
 	}
 }
 func (f *Field) renderOp(dst *ebiten.Image, op *ebiten.DrawImageOptions) {

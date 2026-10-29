@@ -219,9 +219,10 @@ func (g *Game) camera() {
 	x, y := cursorPos()
 	wx, wy := cursorWorld()
 	onMap := g.onMap()
-	// the window's edge scrolls too (not while a screenshot run drives the game)
-	const edge = 8
-	if !pointer.used && len(g.Shots) == 0 && !g.dragging && ebiten.IsFocused() && onMap {
+	// the window's edge, a band 5% of its width, scrolls too (not while a screenshot run drives the
+	// game), even where a HUD bar lies along it, as the deployment title bar does along the top
+	edge := float64(worldW) * .05
+	if !pointer.used && len(g.Shots) == 0 && !g.dragging && ebiten.IsFocused() && image.Pt(int(wx), int(wy)).In(vp) {
 		switch {
 		case wx < float64(vp.Min.X)+edge:
 			g.camX -= step

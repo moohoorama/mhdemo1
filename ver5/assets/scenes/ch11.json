@@ -1,200 +1,57 @@
 {
  "Scenes": {
   "c11-start": {
-   "Map": "S_bridge",
-   "Backdrop": "mountains",
-   "Nodes": ["c11-start", "c11-02", "c11-03", "c11-04", "c11-05", "c11-06", "c11-07"],
+   "Map": "S_gongsun_camp",
+   "Time": "night",
+   "Nodes": ["c11-start", "c11-01", "c11-02", "c11-03", "c11-04", "c11-05", "c11-06", "c11-07", "c11-08", "c11-09", "c11-10", "c11-11", "c11-12"],
+   "Ambient": [{"Effect": "smallfire", "At": [12.0, 3.5]}],
    "Cast": {
-    "원소": {"At": [7, 8], "Face": "NE"},
-    "전풍": {"At": [6, 9], "Face": "NE"},
-    "국의": {"At": [6, 7], "Face": "NE"},
-    "호위#1": {"At": [9, 9], "Face": "NW", "Sprite": "guards", "Faction": "yuan"},
-    "호위#2": {"At": [5, 9], "Face": "NE", "Sprite": "guards", "Faction": "yuan"},
-    "노병#1": {"At": [3, 7], "Face": "NE", "Sprite": "crossbow", "Faction": "yuan"},
-    "노병#2": {"At": [5, 7], "Face": "NE", "Sprite": "crossbow", "Faction": "yuan"},
-    "노병#3": {"At": [8, 7], "Face": "NE", "Sprite": "crossbow", "Faction": "yuan"},
-    "노병#4": {"At": [10, 7], "Face": "NE", "Sprite": "crossbow", "Faction": "yuan"},
-    "백마기#1": {"At": [3, 3], "Face": "SW", "Sprite": "light_cavalry_white", "Faction": "gongsun"},
-    "백마기#2": {"At": [4, 3], "Face": "SW", "Sprite": "light_cavalry_white", "Faction": "gongsun"},
-    "백마기#3": {"At": [8, 3], "Face": "SW", "Sprite": "light_cavalry_white", "Faction": "gongsun"},
-    "백마기#4": {"At": [9, 3], "Face": "SW", "Sprite": "light_cavalry_white", "Faction": "gongsun"},
-    "전령#1": {"At": [1, 10], "Face": "SE", "Sprite": "light_infantry", "Off": true, "Faction": "yuan"}
+    "공손찬": {"At": [14, 6], "Face": "SE"},
+    "전해": {"At": [14, 5], "Face": "SE"},
+    "유비": {"At": [16, 7], "Face": "NW"},
+    "관우": {"At": [16, 6], "Face": "NW"},
+    "장비": {"At": [17, 7], "Face": "NW"},
+    "간옹": {"At": [17, 8], "Face": "NW"},
+    "번궁": {"At": [16, 8], "Face": "NW"},
+    "조운": {"At": [13, 8], "Face": "SE"},
+    "백마병#1": {"At": [14, 4], "Face": "SW", "Sprite": "light_infantry", "Faction": "gongsun"},
+    "백마병#2": {"At": [12, 7], "Face": "SE", "Sprite": "light_infantry", "Faction": "gongsun"}
    },
    "Beats": {
+    "c11-01": [
+     [
+      [{"CamAt": [15, 7]}, {"Zoom": 2}, {"Wait": 1.5}]
+     ]
+    ],
     "c11-02": [
      [
-      [{"CamAt": [6, 3]}],
-      [{"Wait": 0.6}],
-      [{"CamAt": [7, 8]}]
-     ]
-    ],
-    "c11-03": [
-     [
-      [{"Actor": "원소", "Look": "NE"}]
-     ]
-    ],
-    "c11-04": [
-     [
-      [{"Actor": "전풍", "Play": "action"}, {"CamAt": [5, 7]}],
-      [{"Wait": 0.4}]
+      [{"Actor": "공손찬", "Face": "SE"}, {"Actor": "유비", "Face": "NW"}]
      ]
     ],
     "c11-05": [
      [
-      [{"CamAt": [6, 5]}],
-      [{"Wait": 0.4}],
-      [{"CamAt": [7, 8]}]
-     ]
-    ],
-    "c11-06": [
-     [
-      [{"Actor": "원소", "Play": "action"}]
+      [{"Actor": "장비", "Face": "NW"}, {"Actor": "장비", "Play": "action"}]
      ]
     ],
     "c11-07": [
      [
-      [{"Actor": "전령#1", "Enter": [1, 10], "Move": [5, 8], "Speed": 1.8}],
-      [{"Actor": "전령#1", "Face": "NE", "Play": "exhausted"}],
-      [{"Actor": "국의", "Face": "SW"}]
+      [{"Actor": "간옹", "Face": "NE"}]
      ]
-    ]
-   }
-  },
-  "c11-08": {
-   "Map": "S_tent_mid",
-   "Time": "dusk",
-   "Nodes": ["c11-08", "c11-09", "c11-10", "c11-11", "c11-12", "c11-13", "c11-14", "c11-15", "c11-16", "c11-17", "c11-18", "c11-19", "c11-20", "c11-21", "c11-22", "c11-23", "c11-24", "c11-25", "c11-26", "c11-27"],
-   "Cast": {
-    "공손찬": {"At": [2, 3], "Face": "SE", "Pose": "sit"},
-    "유비": {"At": [3, 3], "Face": "NW"},
-    "관우": {"At": [3, 4], "Face": "NW"},
-    "장비": {"At": [2, 4], "Face": "NE"},
-    "병사": {"At": [6, 3], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "gongsun"},
-    "진진": {"At": [6, 3], "Face": "NW", "Off": true, "Sprite": "scholar"}
-   },
-   "Beats": {
-    "c11-09": [
+    ],
+    "c11-08": [
      [
-      [{"Actor": "병사", "Enter": [6, 3], "Move": [4, 2]}],
-      [{"Actor": "병사", "Face": "NW", "Play": "exhausted"}]
+      [{"Actor": "공손찬", "Move": [12, 5], "Speed": 0.8}, {"Actor": "전해", "Move": [11, 5], "Speed": 0.8, "After": 0.3}, {"Actor": "관우", "Move": [10, 6], "Speed": 0.8, "After": 0.5}, {"Actor": "장비", "Move": [10, 7], "Speed": 0.8, "After": 0.6}, {"Actor": "간옹", "Move": [9, 7], "Speed": 0.8, "After": 0.8}, {"Actor": "번궁", "Move": [9, 6], "Speed": 0.8, "After": 1.0}, {"Actor": "유비", "Move": [17, 9], "Speed": 0.7, "After": 1.2}, {"Actor": "조운", "Move": [17, 10], "Speed": 0.7, "After": 1.4}],
+      [{"CamAt": [17, 9]}, {"Zoom": 3}, {"Actor": "유비", "Face": "SE"}, {"Actor": "조운", "Face": "NE"}]
      ]
     ],
     "c11-11": [
      [
-      [{"Actor": "병사", "Move": [6, 3], "Exit": true}],
-      [{"Actor": "진진", "Enter": [6, 3], "Move": [4, 2], "Speed": 0.8}],
-      [{"Actor": "진진", "Face": "NW", "Play": "exhausted"}]
+      [{"Actor": "조운", "Face": "NW"}]
      ]
     ],
-    "c11-14": [
+    "c11-12": [
      [
-      [{"Actor": "공손찬", "Play": "action"}],
-      [{"Wait": 0.6}],
-      [{"Actor": "공손찬", "Emote": "…"}]
-     ]
-    ],
-    "c11-16": [
-     [
-      [{"Actor": "유비", "Look": "NE"}, {"Actor": "장비", "Look": "SE", "After": 0.3}],
-      [{"Wait": 0.6}]
-     ]
-    ],
-    "c11-18": [
-     [
-      [{"Actor": "공손찬", "Pose": "idle"}],
-      [{"Actor": "공손찬", "Sprite": "light_infantry"}],
-      [{"Actor": "공손찬", "Face": "SE", "Play": "attack", "Shake": 0.3}],
-      [{"Actor": "진진", "Emote": "!"}, {"Actor": "장비", "Emote": "!", "After": 0.2}]
-     ]
-    ],
-    "c11-20": [
-     [
-      [{"Actor": "진진", "Play": "hit"}]
-     ]
-    ],
-    "c11-21": [
-     [
-      [{"Actor": "유비", "Move": [3, 3], "Speed": 1.4}],
-      [{"Actor": "유비", "Face": "NW"}]
-     ]
-    ],
-    "c11-22": [
-     [
-      [{"Actor": "유비", "Face": "NW"}]
-     ]
-    ],
-    "c11-24": [
-     [
-      [{"Actor": "유비", "Look": "SE"}]
-     ]
-    ],
-    "c11-25": [
-     [
-      [{"Actor": "관우", "Move": [4, 3]}],
-      [{"Actor": "관우", "Face": "NW"}]
-     ]
-    ],
-    "c11-27": [
-     [
-      [{"Actor": "진진", "Move": [6, 5], "Exit": true}, {"Actor": "관우", "Move": [6, 4], "Exit": true, "After": 0.6}],
-      [{"Actor": "공손찬", "Play": "attack"}, {"Actor": "공손찬", "Emote": "!"}]
-     ]
-    ]
-   }
-  },
-  "c11-28": {
-   "Map": "S_army_camp",
-   "Backdrop": "mountains",
-   "Nodes": ["c11-28", "c11-29", "c11-30", "c11-31", "c11-32", "c11-33", "c11-34", "c11-35", "c11-36", "c11-37", "c11-38", "c11-39"],
-   "Cast": {
-    "공손찬": {"At": [2, 1], "Face": "SW"},
-    "전해": {"At": [1, 0], "Face": "SE"},
-    "조운": {"At": [3, 1], "Face": "SW"},
-    "유비": {"At": [2, 2], "Face": "NE"},
-    "관우": {"At": [2, 4], "Face": "NE"},
-    "장비": {"At": [3, 4], "Face": "NE"},
-    "간옹": {"At": [1, 5], "Face": "NE"},
-    "번궁": {"At": [4, 5], "Face": "NE"},
-    "백마기#1": {"At": [-1, 2], "Face": "SE", "Sprite": "light_cavalry", "Faction": "gongsun"},
-    "백마기#2": {"At": [-1, 3], "Face": "SE", "Sprite": "light_cavalry", "Faction": "gongsun"},
-    "백마기#3": {"At": [6, 2], "Face": "SW", "Sprite": "light_cavalry", "Faction": "gongsun"}
-   },
-   "Beats": {
-    "c11-29": [
-     [
-      [{"Actor": "공손찬", "Play": "action"}]
-     ]
-    ],
-    "c11-32": [
-     [
-      [{"Actor": "공손찬", "Look": "NW"}],
-      [{"Actor": "전해", "Play": "action"}]
-     ]
-    ],
-    "c11-33": [
-     [
-      [{"Actor": "유비", "Play": "action"}]
-     ]
-    ],
-    "c11-34": [
-     [
-      [{"Actor": "공손찬", "Face": "SE"}]
-     ]
-    ],
-    "c11-35": [
-     [
-      [{"Actor": "공손찬", "Face": "SE"}]
-     ]
-    ],
-    "c11-37": [
-     [
-      [{"Actor": "조운", "Move": [3, 2]}],
-      [{"Actor": "조운", "Face": "SW", "Play": "action"}]
-     ]
-    ],
-    "c11-39": [
-     [
-      [{"Actor": "유비", "Play": "action"}]
+      [{"Actor": "유비", "Face": "SW"}]
      ]
     ]
    }

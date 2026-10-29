@@ -2,10 +2,10 @@
  "Items": {
   "bean": {
    "Name": "콩",
-   "Desc": "병력을 220 회복한다.",
+   "Desc": "병력을 400 회복한다.",
    "Icon": "bean",
    "Effect": "hp",
-   "Amount": 220,
+   "Amount": 400,
    "Price": 20
   },
   "barley": {

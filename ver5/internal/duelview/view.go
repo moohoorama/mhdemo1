@@ -1,6 +1,7 @@
 package duelview
 
 import (
+	"image"
 	"image/color"
 	"math"
 	"sort"
@@ -78,7 +79,9 @@ func (g *View) fit(w, h int) (canvas, uiLayer *ebiten.Image) {
 			g.canvas.Deallocate()
 			g.uiLayer.Deallocate()
 		}
-		g.canvas, g.uiLayer = ebiten.NewImage(g.cw, g.ch), ebiten.NewImage(g.cw, g.ch)
+		layer := &ebiten.NewImageOptions{Unmanaged: true} // its own texture, off the shared atlas (gui.newLayer)
+		g.canvas = ebiten.NewImageWithOptions(image.Rect(0, 0, g.cw, g.ch), layer)
+		g.uiLayer = ebiten.NewImageWithOptions(image.Rect(0, 0, g.cw, g.ch), layer)
 	}
 	return g.canvas, g.uiLayer
 }

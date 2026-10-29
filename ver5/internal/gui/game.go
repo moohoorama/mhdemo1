@@ -15,6 +15,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"slices"
 	"sort"
 	"strings"
 	"time"
@@ -83,6 +84,7 @@ type Game struct {
 	dragX, dragY              int
 	dragButton                ebiten.MouseButton
 	shownNode                 string
+	held                      *core.Observation // the story as it stood when a gift's window opened over it, shown until it closes
 	lineIndex                 int
 	lineTyping                typing // how the current line is coming out
 	dialogueAnim              dialogueAnim
@@ -93,6 +95,7 @@ type Game struct {
 	skipping                  *scenes.Scene // the scene the skip button is paging through
 	skipUntil                 float64       // clicks wait until then after a skip stops
 	Verify                    bool
+	Debug                     bool  // the tools for checking the game: scene jumps, duels, the map editor, damage and XP scales
 	Shots                     []int // capture the screen at these ticks while autoplaying, then quit
 	verified                  map[string]bool
 	verifyDone                int
@@ -115,7 +118,9 @@ type Game struct {
 	answer                    func()
 	endAsked                  string          // the battle turn whose "all allies ordered" prompt was shown
 	hudRect, hudBody          image.Rectangle // the HUD panel and its content as last drawn
-	hudFolded, hudAnimated    bool            // the panel shows its head only; it has been drawn before
+	hudFolded, hudAnimated    bool            // the panel (or the right corner panel) shows its head only; it has been drawn before
+	leftFolded                bool            // the left corner panel shows its head only
+	party                     partyView       // the party window's tab and what it shows
 	hudH, hudAlpha, hudAnimAt float64         // its drawn height and opacity, and when they last eased
 	hudLayer                  *ebiten.Image   // where it is drawn while faded
 	hudShown                  string          // the tab it showed
@@ -268,6 +273,8 @@ func (g *Game) send(q session.Request) session.Response {
 			g.ask("기존 저장을 덮어쓰시겠습니까?", func() { q.Overwrite = true; g.request(q) })
 		case "DiscardRequired":
 			g.ask("저장하지 않은 진행을 버리시겠습니까?", func() { q.Discard = true; g.request(q) })
+		case "ChangedContent":
+			g.ask("게임 데이터가 바뀌기 전의 저장입니다.\n그래도 불러오시겠습니까?", func() { q.Changed = true; g.request(q) })
 		default:
 			g.notice = r.Error
 			g.toast(koreanError(r.Error), bad)
@@ -425,6 +432,9 @@ func (g *Game) record(before *core.Observation, events []core.Event) {
 	}
 	if gains := acquireGains(before, events); len(gains) > 0 {
 		g.modals = append(g.modals, &modal{kind: "acquire", gains: gains})
+		if before != nil && before.Phase == "scenario" && g.held == nil {
+			g.held = before
+		}
 	}
 }
 
@@ -544,27 +554,7 @@ func (g *Game) assist() {
 // nextSpeed is the replay speed the F key steps to.
 var nextSpeed = map[int]int{1: 2, 2: 4, 4: 8, 8: 1}
 
-// speedButton in the upper left corner of the battle shows the replay speed and steps it as F does;
-// the objective guide's switch stands beside it.
-func (g *Game) speedButton(dst *ebiten.Image) {
-	r := image.Rect(12, 10, 104, 70)
-	g.btn(dst, r, "", func() { g.speed = nextSpeed[g.speed] })
-	g.block(r)
-	label, size := fmt.Sprintf("×%d", g.speed), 30.0
-	g.label(dst, label, float64(r.Min.X)+(float64(r.Dx())-g.width(label, size))/2, float64(r.Min.Y)+(float64(r.Dy())-size*1.45)/2, size, gold)
-	r = image.Rect(r.Max.X+8, r.Min.Y, r.Max.X+100, r.Max.Y)
-	g.btn(dst, r, "", func() {
-		v := g.S.Settings
-		v.NoGoalGuide = !v.NoGoalGuide
-		g.request(session.Request{Op: "settings", Settings: &v})
-	})
-	g.block(r)
-	label, size, fg := "목표", 26.0, gold
-	if g.S.Settings.NoGoalGuide {
-		fg = muted
-	}
-	g.label(dst, label, float64(r.Min.X)+(float64(r.Dx())-g.width(label, size))/2, float64(r.Min.Y)+(float64(r.Dy())-size*1.45)/2, size, fg)
-}
+func (g *Game) openObjective() { g.modals = append(g.modals, &modal{kind: "objective", manual: true}) }
 
 func sorted[V any](m map[string]V) []string {
 	out := []string{}
@@ -802,7 +792,9 @@ func (g *Game) leftClick() {
 		return
 	}
 	if g.exploring() {
-		g.exploreClick(g.toCanvas(cursorWorld()))
+		if !g.overHUD(x, y) { // not through the corner panels
+			g.exploreClick(g.toCanvas(cursorWorld()))
+		}
 		return
 	}
 	if o := g.S.View(); o.Phase != "battle" && o.Phase != "deployment" {
@@ -852,7 +844,7 @@ func (g *Game) Draw(dst *ebiten.Image) {
 		if g.fixedCanvas != nil {
 			g.fixedCanvas.Deallocate()
 		}
-		g.fixedCanvas = ebiten.NewImage(w, h)
+		g.fixedCanvas = newLayer(w, h)
 	}
 	g.fixedCanvas.Clear()
 	g.drawFrame(g.fixedCanvas)
@@ -963,17 +955,18 @@ func (g *Game) titleMenu(dst *ebiten.Image) {
 		names[i] = st.Name
 	}
 	g.label(dst, strings.Join(names, " → "), 104, 214, 16, muted)
-	r := image.Rect(96, 290, 420, 736)
-	g.window(dst, r)
-	items := []menuItem{
-		{"새로 시작", func() { g.request(session.Request{Op: "new", Seed: g.seed}) }},
-		{"장면 이동", func() { g.waypoints.top = 0; g.openOverlay("waypoints") }},
-		{"불러오기", func() { g.openOverlay("load") }},
-		{"일기토", func() { _ = g.OpenDuel("", "", false) }},
-		{"맵에디터", func() { g.editor = &mapEditor{selected: -1, level: 1, facing: "NW", zoom: 1} }},
-		{"설정", func() { g.openOverlay("settings") }},
-		{"종료", func() { g.request(session.Request{Op: "quit"}) }},
+	items := []menuItem{{"새로 시작", func() { g.request(session.Request{Op: "new", Seed: g.seed}) }}}
+	if g.Debug {
+		items = append(items, menuItem{"장면 이동", func() { g.waypoints.top = 0; g.openOverlay("waypoints") }})
 	}
+	items = append(items, menuItem{"불러오기", func() { g.openOverlay("load") }})
+	if g.Debug {
+		items = append(items, menuItem{"일기토", func() { _ = g.OpenDuel("", "", true) }},
+			menuItem{"맵에디터", func() { g.editor = &mapEditor{selected: -1, level: 1, facing: "NW", zoom: 1} }})
+	}
+	items = append(items, menuItem{"설정", func() { g.openOverlay("settings") }}, menuItem{"종료", func() { g.request(session.Request{Op: "quit"}) }})
+	r := image.Rect(96, 290, 420, 290+54+len(items)*56)
+	g.window(dst, r)
 	for i, it := range items {
 		g.btn(dst, image.Rect(r.Min.X+28, r.Min.Y+30+i*56, r.Max.X-28, r.Min.Y+30+i*56+44), it.label, it.click)
 	}
@@ -981,6 +974,12 @@ func (g *Game) titleMenu(dst *ebiten.Image) {
 
 func (g *Game) play(dst *ebiten.Image) {
 	o := g.S.View()
+	if g.held != nil && !slices.ContainsFunc(g.modals, func(m *modal) bool { return m.kind == "acquire" }) {
+		g.held = nil
+	}
+	if g.held != nil {
+		o = *g.held
+	}
 	if o.Phase != "scenario" {
 		g.dialogueAnim = dialogueAnim{} // the next story opens a fresh box
 	}
@@ -990,7 +989,7 @@ func (g *Game) play(dst *ebiten.Image) {
 	case "scenario":
 		g.scenario(dst, o)
 		g.drawIntro(dst)
-		g.btn(dst, menuButtonRect(), "메뉴", func() { g.openOverlay("menu") })
+		g.storyPanels(dst, o)
 	default:
 		g.battle(dst, o)
 		if o.Phase == "result" && !g.busy() {
@@ -1110,11 +1109,10 @@ func (g *Game) battleHUD(dst *ebiten.Image, o core.Observation) {
 	}
 	if o.Phase == "deployment" {
 		g.drawDeployment(dst, o)
-		g.minimap(dst, o)
 		g.messages(dst)
 		return
 	}
-	g.speedButton(dst)
+	g.battleLeftPanel(dst, o, g.chapterName(o.Node))
 	g.battleHUDPanel(dst, g.player.shownTurn(o))
 	g.drawMenu(dst)
 	g.forecast(dst)

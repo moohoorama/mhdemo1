@@ -53,25 +53,56 @@
   },
   "c04-peng": {
    "Map": "S_castle_out",
-   "Nodes": ["c04-peng", "c04-b1", "c04-b2", "c04-b3", "c04-b4"],
+   "Nodes": ["c04-peng", "c04-b1", "c04-c1", "c04-c2", "c04-c3", "c04-c4", "c04-c5", "c04-c6", "c04-b2", "c04-b3", "c04-b4", "c04-b5"],
    "Cast": {
-    "도겸": {"At": [3, 3], "Face": "SE"},
-    "고순": {"At": [3, 4], "Face": "SE"},
-    "유비": {"At": [5, 3], "Face": "NW"},
-    "관우": {"At": [6, 3], "Face": "NW"},
-    "장비": {"At": [6, 4], "Face": "NW"},
+    "도겸": {"At": [2, 3], "Face": "SE"},
+    "고순": {"At": [2, 4], "Face": "SE"},
+    "유비": {"At": [4, 3], "Face": "NW"},
+    "관우": {"At": [5, 4], "Face": "NW"},
+    "장비": {"At": [4, 4], "Face": "NW"},
+    "간옹": {"At": [10, 4], "Face": "NW", "Off": true},
+    "장세평": {"At": [10, 4], "Face": "NW", "Off": true},
+    "마부#1": {"At": [10, 3], "Face": "NW", "Off": true, "Sprite": "commoner_man", "Faction": "merchant"},
+    "마부#2": {"At": [10, 4], "Face": "NW", "Off": true, "Sprite": "commoner_man", "Faction": "merchant"},
     "전령": {"At": [10, 3], "Face": "NW", "Off": true, "Sprite": "light_infantry"}
    },
    "Beats": {
+    "c04-c1": [
+     [
+      [{"Prop": ["grain_cart", 11, 3]}],
+      [{"Prop": ["grain_cart", "마부#1"]}, {"Actor": "마부#1", "Enter": [10, 4], "Move": [7, 4], "Speed": 0.8}, {"Actor": "간옹", "Enter": [10, 3], "Move": [6, 3], "Speed": 0.9, "After": 0.4}, {"Actor": "장세평", "Enter": [10, 3], "Move": [7, 3], "Speed": 0.8, "After": 1.0}, {"Actor": "마부#2", "Enter": [10, 4], "Move": [8, 4], "Speed": 0.8, "After": 1.6}],
+      [{"Actor": "간옹", "Face": "NW"}, {"Actor": "유비", "Face": "SE"}, {"Actor": "장비", "Face": "SE"}, {"Actor": "관우", "Face": "SE"}]
+     ]
+    ],
+    "c04-c2": [
+     [
+      [{"Actor": "유비", "Face": "SE"}]
+     ]
+    ],
+    "c04-c4": [
+     [
+      [{"Actor": "장세평", "Face": "NW"}, {"Actor": "장세평", "Play": "action"}]
+     ]
+    ],
+    "c04-c5": [
+     [
+      [{"Actor": "장비", "Face": "SE"}]
+     ]
+    ],
     "c04-b2": [
      [
-      [{"Actor": "전령", "Enter": [10, 3], "Move": [7, 3], "Speed": 2}],
+      [{"Actor": "전령", "Enter": [10, 3], "Move": [8, 3], "Speed": 2}],
       [{"Actor": "전령", "Play": "exhausted"}, {"Actor": "유비", "Face": "SE"}, {"Actor": "도겸", "Look": "SE"}]
      ]
     ],
     "c04-b4": [
      [
       [{"Actor": "유비", "Face": "NW"}]
+     ]
+    ],
+    "c04-b5": [
+     [
+      [{"Actor": "간옹", "Face": "NW"}]
      ]
     ]
    }

@@ -585,6 +585,16 @@
    "sfence_03",
    18,
    18
+  ],
+  [
+   "field_trampled",
+   25,
+   14
+  ],
+  [
+   "field_trampled",
+   15,
+   22
   ]
  ]
 }

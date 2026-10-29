@@ -878,7 +878,7 @@ func (e *Engine) leaveByFlight() {
 	stage := e.data.Stages[e.state.Stage]
 	for _, id := range keys(e.unitIDs) {
 		u := e.unit(id)
-		if u.HP <= 0 || u.Policy != "flee" || !slices.Contains(stage.GoalCells(u.Goal, u.GoalArea), content.Point{X: u.X, Y: u.Y}) {
+		if u.HP <= 0 || !content.Leaves(u.Policy) || !slices.Contains(stage.GoalCells(u.Goal, u.GoalArea), content.Point{X: u.X, Y: u.Y}) {
 			continue
 		}
 		u.HP = 0

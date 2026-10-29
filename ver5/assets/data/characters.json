@@ -133,6 +133,7 @@
    ],
    "Look": {
     "Portrait": "jianyong",
+    "Scene": "jianyong_noncombat",
     "Faction": "shu",
     "Palette": {
      "themeA": "#d8d0a0",

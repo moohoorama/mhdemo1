@@ -36,7 +36,7 @@ func runSheet() error {
 	for i, sc := range screens {
 		dirs[i] = filepath.Join(*out, fmt.Sprintf("screen-%d", i))
 		cmd := exec.Command(self, "-ui", *ui, "-frames", strconv.Itoa(*frames), "-at", *at,
-			"-stage", *stage, "-duel", *duel, "-out", dirs[i],
+			"-stage", *stage, "-duel", *duel, "-node", *node, "-out", dirs[i],
 			"-size", fmt.Sprintf("%dx%d", sc.w, sc.h), "-uiscale", strconv.Itoa(sc.uiScale))
 		cmd.Stdout, cmd.Stderr = os.Stderr, os.Stderr
 		fmt.Fprintf(os.Stderr, "%s: ", sc.name)

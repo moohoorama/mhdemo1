@@ -94,10 +94,6 @@ for i in range(3):
     save("tiles", "burnt_oak_%d" % i, skeleton(im, 20 + i), pv, "object", scale="scene", note="scenario scenes only (the battle map uses pines)")
 im, pv = structure("village")
 save("tiles", "burnt_hut", charred(im, 33, 0.18, embers=9), pv, "object", scale="scene", note="from the structures.png hay-hut cell; scenario scenes")
-im, pv = site("village")
-save("tiles", "burnt_village", charred(im, 30, 0.2, embers=12), pv, "object", scale="battle", note="from the battle map's village site (100x110, 2x2 cells)")
-im, pv = site("camp")
-save("tiles", "burnt_camp", charred(im, 32, 0.2, embers=12), pv, "object", scale="battle", note="from the camp site")
 im, pv = prop("tavern")
 save("tiles", "burnt_tavern", charred(im, 31, 0.3, embers=14), pv, "object", scale="scene", note="scenario scenes only")
 
@@ -125,7 +121,8 @@ for level, (cover, alpha) in enumerate([(0.18, 70), (0.42, 110), (0.72, 150)], 1
         save("tiles", "ash_%d_%d" % (level, v), im, (16, 8), "ground", level=level)
 
 
-# ---- fence autotile: post in the middle, a rail toward each connected side ----
+# ---- scene fence autotile: post in the middle, two rails toward each connected side (the battle map's fences and
+# burnt sites are drawn by gen_pixel_kit.py) ----
 WOOD = [(150, 100, 58, 255), (116, 74, 42, 255), (84, 52, 32, 255)]
 SIDES = {"nw": (-8, -4), "ne": (8, -4), "se": (8, 4), "sw": (-8, 4)}  # bit 0..3
 W, H, PIV = 40, 48, (21, 39)
@@ -142,42 +139,31 @@ def rail(px, x0, y0, x1, y1, body):
                 px[x, y + dy] = c
 
 
-def fence_cell(mask, tall):
+def fence_cell(mask):
     im = Image.new("RGBA", (W, H))
     px = im.load()
     cx, cy = PIV
     sides = [s for i, s in enumerate(SIDES) if mask >> i & 1]
-    post = 14 if tall else 6
-    rails = ((11, WOOD[0]), (6, WOOD[1])) if tall else ((4, WOOD[0]),)
+    post = 14
     for far in (True, False):
         if not far:
             for y in range(cy - post, cy + 1):
-                for x in ((cx - 1, cx, cx + 1) if tall else (cx - 1, cx)):
-                    edge = (x != cx or y in (cy - post, cy)) if tall else (y in (cy - post, cy) or x == cx - 1)
+                for x in (cx - 1, cx, cx + 1):
+                    edge = x != cx or y in (cy - post, cy)
                     px[x, y] = OUTLINE if edge else (WOOD[0] if y < cy - post // 2 else WOOD[1])
-            if tall:
-                px[cx, cy - post + 1] = WOOD[0]
-                px[cx - 1, cy - post] = px[cx + 1, cy - post] = (0, 0, 0, 0)
+            px[cx, cy - post + 1] = WOOD[0]
+            px[cx - 1, cy - post] = px[cx + 1, cy - post] = (0, 0, 0, 0)
         for s in sides:
             dx, dy = SIDES[s]
             if (dy < 0) != far:
                 continue
-            for hgt, col in rails:
-                if tall:
-                    rail(px, cx, cy - hgt, cx + dx, cy + dy - hgt, col)
-                else:
-                    n = max(abs(dx), abs(dy))
-                    for i in range(n + 1):
-                        x, y = cx + round(dx * i / n), cy + round(dy * i / n) - hgt
-                        px[x, y] = col
-                        if y + 1 < H:
-                            px[x, y + 1] = OUTLINE
+            for hgt, col in ((11, WOOD[0]), (6, WOOD[1])):
+                rail(px, cx, cy - hgt, cx + dx, cy + dy - hgt, col)
     return im
 
 
 for mask in range(16):
-    save("tiles", "fence_%02d" % mask, fence_cell(mask, False), PIV, "object", mask=mask, sides_bits=list(SIDES), scale="battle", note="low fence for the deformed battle map")
-    save("tiles", "sfence_%02d" % mask, fence_cell(mask, True), PIV, "object", mask=mask, sides_bits=list(SIDES), scale="scene", note="waist-high fence for scenario scenes")
+    save("tiles", "sfence_%02d" % mask, fence_cell(mask), PIV, "object", mask=mask, sides_bits=list(SIDES), scale="scene", note="waist-high fence for scenario scenes")
 
 
 # ---- bridges: damaged (a hole) and broken (two stumps) ----

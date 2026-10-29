@@ -3,6 +3,15 @@
   "c05-reunion": {
    "Map": "S_pengcheng_field",
    "Time": "dusk",
+   "Ambient": [
+    {"Prop": ["grain_cart", 7, 5], "If": ["flag:flag-pengcheng-carts"]},
+    {"Prop": ["grain_cart_v", 8.5, 5.5], "If": ["flag:flag-pengcheng-carts"]},
+    {"Prop": ["grain_cart#2", 7.5, 6.5], "If": ["flag:flag-pengcheng-carts"]},
+    {"Prop": ["grain_cart_v#2", 6, 5.5], "If": ["flag:flag-pengcheng-carts"]},
+    {"Prop": ["grain_sack", 8.5, 7], "If": ["flag:flag-pengcheng-carts"]},
+    {"Prop": ["grain_sack#2", 9, 6.5], "If": ["flag:flag-pengcheng-carts"]},
+    {"Prop": ["grain_sack#3", 6.5, 6.5], "If": ["flag:flag-pengcheng-carts"]}
+   ],
    "Nodes": ["c05-reunion", "c05-a1", "c05-a2", "c05-a3", "c05-a4", "c05-a5", "c05-a6", "c05-a7", "c05-carts-s"],
    "Cast": {
     "도겸": {"At": [4, 3], "Face": "SE"},
@@ -89,8 +98,8 @@
    "Cast": {
     "유비": {"Stay": true},
     "주인": {"Stay": true},
-    "삿갓 쓴 사내": {"At": [1.25, 2.25], "Face": "SE", "Pose": "sit", "Off": true, "Sprite": "caocao_noncombat", "Faction": "wei"},
-    "조조": {"At": [1.25, 2.25], "Face": "SE", "Pose": "sit", "Sprite": "caocao_noncombat"},
+    "삿갓 쓴 사내": {"At": [1.25, 2.25], "Face": "SE", "Pose": "sit", "Off": true, "Sprite": "caocao_hat_noncombat", "Faction": "wei"},
+    "조조": {"At": [1.25, 2.25], "Face": "SE", "Pose": "sit", "Sprite": "caocao_hat_noncombat"},
     "관우": {"At": [6.75, 4.75], "Face": "NW", "Off": true},
     "장비": {"At": [6.75, 4.75], "Face": "NW", "Off": true}
    },
@@ -103,6 +112,7 @@
     ],
     "c05-c5": [
      [
+      [{"Actor": "조조", "Sprite": "caocao_plain_noncombat"}],
       [{"Actor": "조조", "Play": "action"}]
      ]
     ],
@@ -146,7 +156,7 @@
     "관문 병사#1": {"At": [10, 6], "Face": "SE", "Sprite": "light_infantry", "Faction": "han"},
     "관문 병사#2": {"At": [7, 3], "Face": "SE", "Sprite": "light_infantry", "Faction": "han"},
     "유비": {"At": [13, 4], "Face": "NW", "Off": true},
-    "조조": {"At": [13, 4], "Face": "NW", "Off": true},
+    "조조": {"At": [13, 4], "Face": "NW", "Off": true, "Sprite": "caocao_hat_noncombat"},
     "관우": {"At": [13, 4], "Face": "NW", "Off": true},
     "장비": {"At": [13, 5], "Face": "NW", "Off": true}
    },

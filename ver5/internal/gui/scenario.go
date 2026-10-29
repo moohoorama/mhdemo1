@@ -12,7 +12,6 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/content"
 	"srpg/internal/core"
-	"srpg/internal/session"
 )
 
 // line is one speaker's part of a dialogue node. Content keeps several speakers in one
@@ -232,28 +231,6 @@ func (g *Game) pageReady() (string, func()) {
 	return lineKey(l.speakers, o.Node, g.lineIndex), g.advanceDialogue
 }
 
-// autoButton in the upper left corner of a talk turns the auto setting on and off.
-func (g *Game) autoButton(dst *ebiten.Image, x, y int) {
-	s := g.S.Settings
-	label := map[bool]string{false: "자동 넘김 꺼짐", true: "자동 넘김 켜짐"}[s.AutoText]
-	g.btn(dst, image.Rect(x, y, x+150, y+44), label, func() {
-		s.AutoText = !s.AutoText
-		g.request(session.Request{Op: "settings", Settings: &s})
-	})
-}
-
-// skipGuard is how long clicks wait after a skip stops, so a second press does not run on into the next scene.
-const skipGuard = 1.0
-
-// skipButton beside the auto button skips the rest of the scene on screen.
-func (g *Game) skipButton(dst *ebiten.Image, x, y int) {
-	var click func()
-	if g.scene != nil && g.skipping == nil && g.uiSeconds >= g.skipUntil {
-		click = func() { g.skipping = g.scene.def }
-	}
-	g.btn(dst, image.Rect(x, y, x+150, y+44), "장면 넘기기", click)
-}
-
 // skipScene pages through the scene being skipped at once, its actors settling where its beats would take them,
 // and stops on the first line of whatever comes next: another scene, a choice, a battle, the walk. A window or a
 // learning holds it until closed.
@@ -325,23 +302,17 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 		if g.sceneBusy() { // the line waits for its beats
 			g.lineTyping = startTyping(g.uiSeconds)
 			g.label(dst, "클릭: 넘기기", float64(uiW-150), float64(uiH-40), 13, muted)
-			g.autoButton(dst, 12, 10)
-			g.skipButton(dst, 170, 10)
 			return
 		}
 	}
 	key := lineKey(l.speakers, o.Node, g.lineIndex)
 	if o.Dialogue.Kind == "narrate" {
-		g.drawNarration(dst, l, key)
+		if !staged || !g.scene.leaving { // it already faded out before the scene darkens
+			g.drawNarration(dst, l, key)
+		}
 	} else {
 		text, done := g.shownText(l)
 		g.drawDialogue(dst, l, text, done, key)
-	}
-	if isTalk(o.Dialogue.Kind) {
-		g.autoButton(dst, 12, 10)
-		if staged {
-			g.skipButton(dst, 170, 10)
-		}
 	}
 	if o.Dialogue.Kind == "choice" {
 		y := uiH/2 - 45

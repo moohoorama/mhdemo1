@@ -29,6 +29,7 @@ type Request struct {
 	Node        string            `json:"node,omitempty"` // the waypoint a jump starts at
 	Overwrite   bool              `json:"overwrite"`
 	Discard     bool              `json:"discard_current"`
+	Changed     bool              `json:"load_changed"` // load a save made before the data changed
 	Settings    *storage.Settings `json:"settings,omitempty"`
 }
 type Response struct {
@@ -167,7 +168,11 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 		if err != nil {
 			return nil, err
 		}
-		candidate, err := core.Restore(s.Data, snap)
+		restore := core.Restore
+		if q.Changed {
+			restore = core.RestoreChanged
+		}
+		candidate, err := restore(s.Data, snap)
 		if err != nil {
 			return nil, err
 		}

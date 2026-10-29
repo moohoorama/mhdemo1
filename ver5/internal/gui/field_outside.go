@@ -63,7 +63,7 @@ func (f *Field) makeOutside() {
 		o.cy += c[1] / 4
 	}
 	o.rad = math.Hypot(corners[0][0]-corners[2][0], corners[0][1]-corners[2][1]) / 2
-	o.decor = ebiten.NewImage(w, h)
+	o.decor = newLayer(w, h)
 	r := rand.New(rand.NewPCG(uint64(f.Map.W*131+f.Map.H), 7))
 	put := func(name string, frame int, x, y float64) {
 		sh := f.A.Outside[name]
@@ -228,7 +228,10 @@ func (f *Field) drawOutsideGround(clockMS float64) {
 	c := f.Canvas
 	w, h := c.Bounds().Dx(), c.Bounds().Dy()
 	if o.layer == nil || o.layer.Bounds().Dx() != w || o.layer.Bounds().Dy() != h {
-		o.layer = ebiten.NewImage(w, h)
+		if o.layer != nil {
+			o.layer.Deallocate()
+		}
+		o.layer = newLayer(w, h)
 	}
 	z := f.renderZoom
 	// on one screen-size layer: quarter-tile grass on the grid of the map's cells, the decor, and the

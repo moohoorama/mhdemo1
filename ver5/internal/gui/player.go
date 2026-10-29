@@ -197,6 +197,8 @@ type Player struct {
 	g       *Game
 	actions []*replay.Action
 	done    []bool
+	started []float64 // when each action started on the replay's clock; -1 before
+	clock   float64
 	waiting []int
 	running []*running
 	gap     float64
@@ -244,6 +246,11 @@ func (p *Player) play(actions []*replay.Action, final core.Observation, ai bool)
 	p.g.dropSpeech()
 	p.actions, p.final, p.ai, p.aimed = actions, final, ai, -1
 	p.done = make([]bool, len(actions))
+	p.started = make([]float64, len(actions))
+	for i := range p.started {
+		p.started[i] = -1
+	}
+	p.clock = 0
 	p.waiting = p.waiting[:0]
 	p.running = p.running[:0]
 	for i := range actions {
@@ -266,12 +273,16 @@ func (p *Player) Update(dt float64) {
 		p.Duel.Advance(p.cutInStep(dt)) // the duel's clock waits for the cut-in
 	}
 	p.gap += dt
+	p.clock += dt
 	if p.gap >= stagger {
 		ready := []int{}
 		for k, i := range p.waiting {
 			ok := true
 			for _, j := range p.actions[i].After {
 				ok = ok && p.done[j]
+			}
+			for _, l := range p.actions[i].Trail {
+				ok = ok && p.started[l.Index] >= 0 && p.clock >= p.started[l.Index]+l.Steps*stepTime
 			}
 			if ok {
 				ready = append(ready, k)
@@ -281,6 +292,7 @@ func (p *Player) Update(dt float64) {
 			i := p.waiting[k]
 			p.waiting = append(p.waiting[:k], p.waiting[k+1:]...)
 			p.logAction(i)
+			p.started[i] = p.clock
 			r := &running{index: i, beats: p.g.perform(p.actions[i]), i: -1}
 			p.running = append(p.running, r)
 			p.gap = 0

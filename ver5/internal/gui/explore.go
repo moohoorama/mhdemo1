@@ -2,7 +2,6 @@ package gui
 
 import (
 	"fmt"
-	"image"
 	"maps"
 	"math"
 	"math/rand/v2"
@@ -603,15 +602,10 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 	for _, p := range plates {
 		g.namePlate(dst, p.name, p.x, p.y, p.style, p.hover)
 	}
-	g.label(dst, a.Name, 24, 18, 22, gold)
-	g.label(dst, fmt.Sprintf("돈 %d", o.Money), 24, 52, 16, ink)
-	r := menuButtonRect()
-	g.btn(dst, image.Rect(r.Min.X-r.Dx()-10, r.Min.Y, r.Min.X-10, r.Max.Y), "부대", func() { g.openOverlay("party") })
 	if w.talk != nil {
 		l := w.talk[w.talkI]
 		text, done := g.shownText(l)
 		g.drawDialogue(dst, l, text, done, fmt.Sprintf("%s|explore|%s|%d", strings.Join(l.speakers, "·"), w.talkTo, w.talkI))
-		g.autoButton(dst, 24, 84)
 	}
 	blackOut(dst, math.Max(w.fade, g.scene.fade))
 }

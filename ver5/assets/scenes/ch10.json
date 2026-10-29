@@ -1,87 +1,82 @@
 {
  "Scenes": {
   "c10-start": {
-   "Map": "S_pass",
-   "Backdrop": "mountains",
-   "Nodes": ["c10-start", "c10-n1", "c10-s1", "c10-s2", "c10-s3"],
-   "Ambient": [{"Actor": "원소병#5", "Patrol": [11, 2]}],
+   "Map": "S_gongsun_camp",
+   "Time": "dusk",
+   "Nodes": ["c10-start", "c10-01", "c10-a1", "c10-b1", "c10-03", "c10-04", "c10-05", "c10-06", "c10-07", "c10-08", "c10-09", "c10-10", "c10-11", "c10-12", "c10-13", "c10-14", "c10-15", "c10-18", "c10-19", "c10-20", "c10-16", "c10-17"],
+   "Ambient": [{"Actor": "부상병#1", "Chatter": "으으……|노병이……"}, {"Actor": "부상병#3", "Chatter": "말이…… 내 말이……"}, {"Effect": "smallfire", "At": [12.0, 3.5]}],
    "Cast": {
-    "유비": {"At": [3, 4], "Face": "SE"},
-    "관우": {"At": [2, 3], "Face": "SE"},
-    "장비": {"At": [2, 5], "Face": "SE"},
-    "간옹": {"At": [1, 4], "Face": "SE"},
-    "번궁": {"At": [4, 3], "Face": "SE"},
-    "의용병#1": {"At": [0, 3], "Face": "SE", "Sprite": "light_infantry", "Faction": "shu"},
-    "의용병#2": {"At": [0, 5], "Face": "SE", "Sprite": "pikeman", "Faction": "shu"},
-    "안량": {"At": [9, 4], "Face": "NW", "Sprite": "light_cavalry"},
-    "원소병#1": {"At": [7, 2], "Face": "NW", "Sprite": "pikeman", "Faction": "yuan"},
-    "원소병#2": {"At": [7, 3], "Face": "NW", "Sprite": "pikeman", "Faction": "yuan"},
-    "원소병#3": {"At": [7, 4], "Face": "NW", "Sprite": "pikeman", "Faction": "yuan"},
-    "원소병#4": {"At": [7, 5], "Face": "NW", "Sprite": "pikeman", "Faction": "yuan"},
-    "원소병#5": {"At": [9, 2], "Face": "NW", "Sprite": "archer", "Faction": "yuan"},
-    "원소병#6": {"At": [10, 5], "Face": "NW", "Sprite": "archer", "Faction": "yuan"}
+    "부상병#1": {"At": [12, 9], "Face": "NE", "Sprite": "wounded_noncombat", "Faction": "gongsun"},
+    "부상병#2": {"At": [13, 9], "Face": "NW", "Sprite": "wounded_noncombat", "Faction": "gongsun"},
+    "부상병#3": {"At": [14, 9], "Face": "NE", "Sprite": "wounded_noncombat", "Faction": "gongsun"},
+    "부상병#4": {"At": [12, 10], "Face": "NE", "Sprite": "wounded_noncombat", "Faction": "gongsun"},
+    "백마병#1": {"At": [10, 8], "Face": "SE", "Sprite": "light_infantry", "Faction": "gongsun"},
+    "백마병#2": {"At": [14, 5], "Face": "SW", "Sprite": "light_infantry", "Faction": "gongsun"},
+    "전해": {"At": [9, 6], "Face": "SE"},
+    "공손찬": {"At": [5, 3], "Face": "SE", "Off": true},
+    "조운": {"At": [5, 3], "Face": "SE", "Off": true},
+    "유비": {"At": [18, 7], "Face": "NW", "Off": true},
+    "관우": {"At": [18, 7], "Face": "NW", "Off": true},
+    "장비": {"At": [18, 7], "Face": "NW", "Off": true},
+    "간옹": {"At": [18, 7], "Face": "NW", "Off": true},
+    "번궁": {"At": [18, 7], "Face": "NW", "Off": true}
    },
    "Beats": {
-    "c10-n1": [
+    "c10-a1": [
      [
-      [{"CamAt": [9, 4]}],
-      [{"Shake": 0.3}, {"Actor": "원소병#2", "Play": "attack"}, {"Actor": "원소병#3", "Play": "attack", "After": 0.2}],
-      [{"Wait": 0.4}],
-      [{"CamAt": [4, 4]}]
+      [{"CamAt": [12, 7]}, {"Zoom": 2}, {"Wait": 1.5}]
      ]
     ],
-    "c10-s2": [
+    "c10-b1": [
      [
-      [{"Actor": "장비", "Emote": "!"}]
+      [{"CamAt": [12, 7]}, {"Zoom": 2}, {"Wait": 1.5}]
      ]
     ],
-    "c10-s3": [
+    "c10-03": [
      [
-      [{"CamAt": [5, 2]}, {"Effect": "birds", "At": [4.6, 1.0]}],
-      [{"Actor": "번궁", "Look": "NE"}],
-      [{"Effect": "glint", "At": [5.6, 6.9]}, {"Actor": "번궁", "Look": "SW"}, {"Actor": "관우", "Look": "SW", "After": 0.3}],
-      [{"CamAt": [4, 4]}]
-     ]
-    ]
-   }
-  },
-  "c10-clear": {
-   "Map": "S_road",
-   "Nodes": ["c10-clear", "c10-clear2", "c10-pass", "c10-pass2", "c10-end"],
-   "Ambient": [{"Effect": "smoke", "At": [10.6, 0.4]}, {"Effect": "smoke", "At": [11.4, 3.9]}],
-   "Cast": {
-    "유비": {"At": [6, 2], "Face": "SE"},
-    "관우": {"At": [6, 1], "Face": "SE"},
-    "장비": {"At": [6, 3], "Face": "SE"},
-    "간옹": {"At": [5, 2], "Face": "SE"},
-    "번궁": {"At": [7, 1], "Face": "SE"},
-    "의용병#1": {"At": [4, 3], "Face": "SE", "Sprite": "light_infantry", "Faction": "shu"},
-    "의용병#2": {"At": [4, 1], "Face": "SE", "Sprite": "pikeman", "Faction": "shu"}
-   },
-   "Beats": {
-    "c10-clear": [
-     [
-      [{"Actor": "의용병#1", "Say": "와아!"}, {"Actor": "의용병#2", "Say": "와아!", "After": 0.3}]
+      [{"Actor": "유비", "Enter": [18, 7], "Move": [12, 7], "Speed": 0.9}, {"Actor": "관우", "Enter": [18, 6], "Move": [12, 6], "Speed": 0.9, "After": 0.2}, {"Actor": "장비", "Enter": [18, 7], "Move": [13, 7], "Speed": 0.9, "After": 0.7}, {"Actor": "간옹", "Enter": [18, 6], "Move": [13, 6], "Speed": 0.9, "After": 0.9}, {"Actor": "번궁", "Enter": [18, 7], "Move": [14, 7], "Speed": 0.9, "After": 1.4}, {"Actor": "전해", "Move": [10, 7], "Speed": 1.3, "After": 1.6}],
+      [{"Actor": "전해", "Face": "SE"}, {"Actor": "유비", "Face": "NW"}, {"Actor": "관우", "Face": "NW"}]
      ]
     ],
-    "c10-clear2": [
+    "c10-07": [
      [
-      [{"Actor": "유비", "Face": "SE"}]
+      [{"Actor": "공손찬", "Enter": [5, 3], "Via": [[8, 6]], "Move": [9, 6], "Speed": 0.8}, {"Actor": "조운", "Enter": [5, 3], "Via": [[8, 5]], "Move": [9, 5], "Speed": 0.8, "After": 0.5}],
+      [{"Actor": "공손찬", "Face": "SE"}, {"Actor": "조운", "Face": "SE"}, {"Actor": "전해", "Face": "NW"}]
      ]
     ],
-    "c10-pass": [
+    "c10-09": [
      [
-      [{"Actor": "간옹", "Look": "NW"}]
+      [{"Actor": "조운", "Play": "action"}]
      ]
     ],
-    "c10-pass2": [
+    "c10-10": [
      [
-      [{"Actor": "유비", "Face": "SE"}]
+      [{"Actor": "유비", "Face": "NW"}, {"Actor": "유비", "Play": "action"}]
      ]
     ],
-    "c10-end": [
+    "c10-12": [
      [
-      [{"CamAt": [9, 2]}, {"Actor": "유비", "Move": [14, 2], "Exit": true, "Speed": 1.2}, {"Actor": "번궁", "Move": [14, 1], "Exit": true, "Speed": 1.2, "After": 0.2}, {"Actor": "관우", "Move": [14, 1], "Exit": true, "Speed": 1.2, "After": 0.5}, {"Actor": "장비", "Move": [14, 3], "Exit": true, "Speed": 1.2, "After": 0.5}, {"Actor": "간옹", "Move": [14, 2], "Exit": true, "Speed": 1.2, "After": 0.9}, {"Actor": "의용병#1", "Move": [14, 3], "Exit": true, "Speed": 1.2, "After": 1.3}, {"Actor": "의용병#2", "Move": [14, 1], "Exit": true, "Speed": 1.2, "After": 1.6}]
+      [{"Actor": "장비", "Face": "NW"}]
+     ]
+    ],
+    "c10-13": [
+     [
+      [{"Actor": "관우", "Face": "SE"}]
+     ]
+    ],
+    "c10-15": [
+     [
+      [{"Actor": "유비", "Play": "action"}]
+     ]
+    ],
+    "c10-18": [
+     [
+      [{"Actor": "공손찬", "Face": "NE"}]
+     ]
+    ],
+    "c10-19": [
+     [
+      [{"Actor": "조운", "Face": "SE"}, {"Actor": "조운", "Play": "action"}]
      ]
     ]
    }

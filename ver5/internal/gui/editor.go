@@ -115,7 +115,15 @@ func (f *Field) dispose() {
 			p.image.Deallocate()
 		}
 	}
-	for _, im := range append(f.ground[:], f.Canvas, f.clip, f.shadows, f.exterior, f.night.dark, f.night.light, f.decor, f.treeShadow, f.cliffTop, o.decor, o.tiles, o.layer, o.haze, o.drop, o.rim, o.cloud) {
+	for _, t := range f.floorTiles {
+		for _, im := range t.floor {
+			if im != nil && !seen[im] {
+				im.Deallocate()
+				seen[im] = true
+			}
+		}
+	}
+	for _, im := range append(f.ground[:], f.Canvas, f.clip, f.shadows, f.exterior, f.night.dark, f.night.light, f.afloat, f.wading, f.decor, f.treeShadow, f.cliffTop, o.decor, o.tiles, o.layer, o.haze, o.drop, o.rim, o.cloud) {
 		if im != nil && !seen[im] {
 			im.Deallocate()
 			seen[im] = true
@@ -682,6 +690,9 @@ func (g *Game) editorTrial() {
 	g.S = &session.Session{Data: &d, Engine: core.New(&d, 1), Screen: "playing", Settings: g.editorSession.Settings, Store: g.editorSession.Store}
 	g.S.Store.Dir = trialDir
 	g.assets.Maps[st.ID] = artFromDocument(e.doc, &d)
+	if g.field != nil {
+		g.field.dispose()
+	}
 	g.field = nil
 	g.vis = map[string]*unitVis{}
 	g.modals = nil

@@ -36,7 +36,7 @@ func (f *Field) drawWading(u *unitVis, s Sprite, x, y float64, op *ebiten.DrawIm
 		if f.wading != nil {
 			f.wading.Deallocate()
 		}
-		f.wading = ebiten.NewImage(cb.Dx(), cb.Dy())
+		f.wading = newLayer(cb.Dx(), cb.Dy())
 	}
 	b := s.Image.Bounds()
 	x0, y0 := f.renderPoint(x-s.PivotX, y-s.PivotY)

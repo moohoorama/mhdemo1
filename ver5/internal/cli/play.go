@@ -470,6 +470,8 @@ func (p *player) events(evs []core.Event) {
 						p.printf("  [컷신] 「%s」 %s\n", name(st.Unit), st.Text)
 					case "play":
 						p.printf("  [컷신] %s %s\n", name(st.Unit), st.Motion)
+					case "leave":
+						p.printf("  [컷신] %s 퇴장\n", name(st.Unit))
 					}
 				}
 			}

@@ -122,7 +122,11 @@ func (g *Game) drawDuel(dst *ebiten.Image) {
 		g.camY = g.duelCam[1] + (v.Focus[1]-g.duelCam[1])*pan
 		b := dst.Bounds()
 		if g.duelMap == nil || g.duelMap.Bounds() != b {
-			g.duelMap, g.duelUI = ebiten.NewImage(b.Dx(), b.Dy()), ebiten.NewImage(b.Dx(), b.Dy())
+			if g.duelMap != nil {
+				g.duelMap.Deallocate()
+				g.duelUI.Deallocate()
+			}
+			g.duelMap, g.duelUI = newLayer(b.Dx(), b.Dy()), newLayer(b.Dx(), b.Dy())
 		}
 		g.duelMap.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
 		g.layer = layerMap

@@ -64,7 +64,7 @@ func (g *Game) validateUIContent() error {
 		}
 		brief := briefing{win: strings.Join(wins, " 또는 "), lose: strings.Join(losses, " / ")}
 		for _, sub := range st.Sub {
-			brief.subs = append(brief.subs, briefSub{text: sub.Text, done: true})
+			brief.subs = append(brief.subs, briefSub{text: sub.Text, state: "지키는 중", lit: true})
 		}
 		rows := g.objectiveRows(core.Observation{State: core.State{Stage: i, Round: max(1, st.TurnLimit)}}, brief)
 		if _, ok := g.objectiveLayout(rows, narrowW, narrowH); !ok {

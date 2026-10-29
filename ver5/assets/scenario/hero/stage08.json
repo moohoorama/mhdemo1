@@ -13,429 +13,204 @@
  "Victory": [
   {
    "If": [
-    "defeated:chunyuqiong"
+    "defeated:gaolan"
    ],
-   "Text": "순우경 퇴각"
+   "Text": "고람을 물리친다"
   }
  ],
- "Defeat": [
-  {
-   "If": [
-    "defeated:fangong"
-   ],
-   "Text": "번궁 퇴각"
-  },
-  {
-   "If": [
-    "at:enemy:1"
-   ],
-   "Text": "성 안이 점령당함"
-  }
- ],
+ "Defeat": [],
  "TurnLimit": 15,
  "Map": "map08.json",
- "Tiles": null,
  "Allies": [
   {
-   "X": 21,
-   "Y": 0
+   "X": 1,
+   "Y": 13
   },
   {
-   "X": 22,
-   "Y": 1
+   "X": 2,
+   "Y": 13
   },
   {
-   "X": 20,
-   "Y": 0
+   "X": 1,
+   "Y": 14
   },
   {
-   "X": 21,
-   "Y": 1
+   "X": 2,
+   "Y": 14
   },
   {
-   "X": 22,
-   "Y": 2
+   "X": 3,
+   "Y": 14
   },
   {
-   "X": 20,
-   "Y": 2
+   "X": 2,
+   "Y": 15
   }
  ],
  "Party": [
   {
    "Character": "fangong",
-   "X": 3,
-   "Y": 5,
-   "AI": true,
+   "X": 15,
+   "Y": 3,
+   "Facing": "SW",
+   "Group": "xindu",
    "Policy": "hold",
-   "Facing": "SE"
+   "AI": true,
+   "Faction": "han"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 14,
+   "Y": 3,
+   "Facing": "SW",
+   "Group": "xindu",
+   "Policy": "hold",
+   "AI": true,
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 3,
+   "Facing": "SW",
+   "Group": "xindu",
+   "Policy": "hold",
+   "AI": true,
+   "Faction": "han",
+   "Shift": -0.07
   }
  ],
  "Enemies": [
   {
-   "Character": "chunyuqiong",
-   "X": 14,
-   "Y": 6,
-   "Facing": "NW",
-   "Policy": "march",
-   "Goal": {
-    "X": 10,
-    "Y": 6
-   },
-   "Group": "chunyu",
+   "Character": "gaolan",
+   "X": 5,
+   "Y": 3,
+   "Facing": "SE",
+   "Group": "chief",
+   "Policy": "hold",
    "Rank": "commander"
   },
   {
    "Character": "troop_footman",
-   "X": 12,
-   "Y": 4,
-   "Group": "main",
-   "Facing": "NW",
-   "Policy": "march",
-   "Goal": {
-    "X": 10,
-    "Y": 6
-   },
-   "Shift": -0.07
+   "X": 4,
+   "Y": 3,
+   "Facing": "SE",
+   "Group": "guards",
+   "Policy": "hold"
   },
   {
    "Character": "troop_footman",
-   "X": 12,
-   "Y": 5,
-   "Group": "main",
-   "Facing": "NW",
-   "Policy": "march",
-   "Goal": {
-    "X": 10,
-    "Y": 6
-   },
-   "Shift": -0.07
+   "X": 6,
+   "Y": 3,
+   "Facing": "SE",
+   "Group": "guards",
+   "Policy": "hold"
   },
   {
    "Character": "troop_footman",
-   "X": 12,
+   "X": 14,
    "Y": 7,
-   "Group": "main",
-   "Facing": "NW",
-   "Policy": "march",
-   "Goal": {
-    "X": 10,
-    "Y": 6
-   },
+   "Facing": "NE",
+   "Group": "gate",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
    "Character": "troop_footman",
-   "X": 12,
-   "Y": 8,
-   "Group": "main",
-   "Facing": "NW",
-   "Policy": "march",
-   "Goal": {
-    "X": 10,
-    "Y": 6
-   },
+   "X": 16,
+   "Y": 7,
+   "Facing": "NE",
+   "Group": "gate",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
    "Character": "troop_archer",
    "X": 13,
+   "Y": 10,
+   "Facing": "NE",
+   "Group": "gate",
+   "Policy": "hold",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 8,
+   "Y": 9,
+   "Facing": "SW",
+   "Group": "riders",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 9,
+   "Y": 11,
+   "Facing": "SW",
+   "Group": "riders",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 6,
+   "Y": 8,
+   "Facing": "SW",
+   "Group": "riders",
+   "Policy": "react",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 9,
    "Y": 5,
-   "Group": "main",
-   "Facing": "NW",
-   "Policy": "march",
-   "Goal": {
-    "X": 10,
-    "Y": 6
-   },
+   "Facing": "SW",
+   "Group": "camp",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
    "Character": "troop_archer",
-   "X": 13,
-   "Y": 7,
-   "Group": "main",
-   "Facing": "NW",
-   "Policy": "march",
-   "Goal": {
-    "X": 10,
-    "Y": 6
-   },
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_footman",
-   "X": 13,
+   "X": 8,
    "Y": 4,
-   "Group": "main",
-   "Facing": "NW",
-   "Policy": "march",
-   "Goal": {
-    "X": 10,
-    "Y": 6
-   },
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_footman",
-   "X": 13,
-   "Y": 8,
-   "Group": "main",
-   "Facing": "NW",
-   "Policy": "march",
-   "Goal": {
-    "X": 10,
-    "Y": 6
-   },
+   "Facing": "SW",
+   "Group": "camp",
+   "Policy": "react",
    "Shift": -0.07
   }
  ],
- "Faction": "yuan",
+ "Reward": {
+  "bean": 6,
+  "liquor": 2,
+  "money": 1000
+ },
  "Areas": [
   {
    "ID": 1,
    "Rect": {
-    "X": 2,
-    "Y": 4,
-    "W": 4,
-    "H": 4
+    "X": 15,
+    "Y": 5,
+    "W": 1,
+    "H": 1
    },
-   "Name": "성 안",
-   "Description": "적이 들어서면 성이 점령당하는 성 안 지점"
-  }
- ],
- "Duels": [
-  {
-   "ID": "xindu-zhang-fei",
-   "Ally": "zhangfei",
-   "Enemy": "chunyuqiong",
-   "Outcome": "victory",
-   "AllyResult": "stay",
-   "EnemyResult": "retreat",
-   "Text": "장비가 술에 취한 순우경을 몰아붙이자 순우경이 물러났다.",
-   "Beats": [
-    {
-     "Kind": "talk",
-     "Title": "장비의 도발",
-     "Speech": "연인 장익덕이다! 술은 저승에서 마셔라!",
-     "Side": 0,
-     "Duration": 2.5
-    },
-    {
-     "Kind": "talk",
-     "Title": "순우경이 당황하다",
-     "Speech": "이, 이놈이……! 한창 기분 좋을 때 어디서 굴러온 촌놈이냐!",
-     "Side": 1,
-     "Duration": 3.4
-    },
-    {
-     "Kind": "talk",
-     "Title": "장비가 술로 받아치다",
-     "Speech": "술이믄 이 장익덕이 모를까 보냐! 한 잔 걸치고 싸워도 네놈보단 낫겄다!",
-     "Side": 0,
-     "Duration": 3.9
-    },
-    {
-     "Kind": "approach",
-     "Title": "순우경이 비틀비틀 칼을 들고 나서다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "talk",
-     "Title": "순우경이 허세를 부리다",
-     "Speech": "내 칼맛이 술보다 독하다! 받아라!",
-     "Side": 1,
-     "Duration": 2.3
-    },
-    {
-     "Kind": "block",
-     "Title": "순우경의 칼을 장비가 가볍게 막다",
-     "Speech": "간지럽구먼. 술이 덜 깼나 보우?",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "dodge",
-     "Title": "순우경의 칼이 허공을 가르다",
-     "Speech": "어딜 베는겨, 헛손질이잖여!",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "rush-block",
-     "Title": "순우경이 휘청이며 돌진하다",
-     "Speech": "비틀거리지 말고 똑바로 와 보슈!",
-     "Side": 1,
-     "Duration": 1.1
-    },
-    {
-     "Kind": "talk",
-     "Title": "순우경의 눈이 풀리다",
-     "Speech": "(술기운인지… 이놈이 둘로 보인다……)",
-     "Side": 1,
-     "Duration": 2.5
-    },
-    {
-     "Kind": "talk",
-     "Title": "장비가 마무리를 선언하다",
-     "Speech": "이제 내 차례여! 취한 놈은 곱게 재워 줘야지!",
-     "Side": 0,
-     "Duration": 2.9
-    },
-    {
-     "Kind": "critical",
-     "Title": "장비의 창끝이 순우경의 코끝을 스치다",
-     "Speech": "으라앗!",
-     "Side": 0,
-     "Duration": 1.3
-    },
-    {
-     "Kind": "talk",
-     "Title": "순우경이 술기운에서 깨다",
-     "Speech": "(코끝이 서늘하다……! 술이 확 깼다!)",
-     "Side": 1,
-     "Duration": 2.5
-    },
-    {
-     "Kind": "talk",
-     "Title": "순우경이 도망을 결심하다",
-     "Speech": "이, 이놈이……! 성문은 나중에다! 물러난다!",
-     "Side": 1,
-     "Duration": 2.8
-    },
-    {
-     "Kind": "retreat",
-     "Title": "순우경이 직선으로 아군 대열 속으로 달아나다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 3.0
-    },
-    {
-     "Kind": "talk",
-     "Title": "장비가 뒤에서 소리치다",
-     "Speech": "어딜 가는겨! 술값은 내고 가야지!",
-     "Side": 0,
-     "Duration": 2.3
-    },
-    {
-     "Kind": "withdrawn",
-     "Title": "순우경이 대열 속으로 사라지다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 1.1
-    }
-   ]
+   "Name": "신도성 성문",
+   "Description": "번궁이 호응해 나올 때 열린다"
   }
  ],
  "Events": [
   {
    "ID": "opening",
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "chunyuqiong",
-       "Text": "성문이 곧 부서진다! 오늘 밤은 신도성에서 술을 마신다!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "fangong",
-       "Text": "원군이다! 조금만 더 버텨라!"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "flank-arrives",
    "If": [
-    "round>=3"
+    "round>=1"
    ],
    "Do": [
     {
-     "Kind": "spawn",
-     "Spawns": [
+     "Kind": "say",
+     "Lines": [
       {
-       "Character": "troop_cavalry",
-       "X": 14,
-       "Y": 11,
-       "Group": "flank",
-       "Facing": "SW",
-       "Policy": "march",
-       "Goal": {
-        "X": 6,
-        "Y": 11
-       },
-       "Faction": "yuan",
-       "Side": "enemy",
-       "Shift": -0.07
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 15,
-       "Y": 11,
-       "Group": "flank",
-       "Facing": "SW",
-       "Policy": "march",
-       "Goal": {
-        "X": 6,
-        "Y": 11
-       },
-       "Faction": "yuan",
-       "Side": "enemy",
-       "Shift": -0.07
-      },
-      {
-       "Character": "troop_footman",
-       "X": 12,
-       "Y": 11,
-       "Group": "flank",
-       "Facing": "SW",
-       "Policy": "march",
-       "Goal": {
-        "X": 6,
-        "Y": 11
-       },
-       "Faction": "yuan",
-       "Side": "enemy",
-       "Shift": -0.07
-      },
-      {
-       "Character": "troop_footman",
-       "X": 13,
-       "Y": 11,
-       "Group": "flank",
-       "Facing": "SW",
-       "Policy": "march",
-       "Goal": {
-        "X": 6,
-        "Y": 11
-       },
-       "Faction": "yuan",
-       "Side": "enemy",
-       "Shift": -0.07
-      },
-      {
-       "Character": "troop_archer",
-       "X": 11,
-       "Y": 11,
-       "Group": "flank",
-       "Facing": "SW",
-       "Policy": "march",
-       "Goal": {
-        "X": 6,
-        "Y": 11
-       },
-       "Faction": "yuan",
-       "Side": "enemy",
-       "Shift": -0.07
+       "Actor": "gaolan",
+       "Text": "성문 하나 못 깨느냐! 성이 떨어지면 번궁의 목을 베는 자에게 상을 내리겠다!"
       }
      ]
     },
@@ -444,7 +219,7 @@
      "Lines": [
       {
        "Actor": "fangong",
-       "Text": "남문으로도 적이 옵니다! 이쪽은 병사가 모자라오!"
+       "Text": "평원 쪽에서 깃발이 온다……! 모두 버텨라, 원군이다!"
       }
      ]
     },
@@ -453,18 +228,169 @@
      "Lines": [
       {
        "Actor": "liubei",
-       "Text": "운장, 남문을 맡아라. 익덕과 나는 동문의 순우경을 친다."
+       "Text": "신도성이 아직 버티고 있다. 운장, 익덕, 서두르세!"
       }
      ]
     }
    ]
+  },
+  {
+   "ID": "sally",
+   "If": [
+    "round>=3"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "fangong",
+       "Text": "평원 군사가 저렇게 싸우는데 성 안에만 있을 수 없다! 우리도 호응하자. 성문을 열어라!"
+      }
+     ]
+    },
+    {
+     "Kind": "terrain",
+     "Area": 1,
+     "State": "O"
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "xindu"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "riders-broken",
+   "If": [
+    "alldefeated:riders"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "gaolan",
+       "Text": "기병이 무너졌다고? ……성문은 그만두고 저 깃발부터 막아라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "gate",
+      "camp"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "chief-out",
+   "If": [
+    "any:[alldefeated:gate, hp:gaolan<70]"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "gaolan",
+       "Text": "쓸모없는 것들! 내가 직접 나가 주마!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "chief",
+      "guards"
+     ],
+     "Policy": "assault"
+    }
+   ]
   }
  ],
- "Reward": {
-  "bean": 6,
-  "barley": 2,
-  "liquor": 2
- },
+ "Faction": "yuan",
+ "Duels": [
+  {
+   "ID": "xindu-guanyu-gaolan",
+   "Ally": "guanyu",
+   "Enemy": "gaolan",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "고람이 관우를 막아섰으나 몇 합을 버티지 못하고 달아났다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "고람이 관우를 막아서다",
+     "Speech": "수염 긴 놈, 네가 화웅을 베었다는 관우냐!",
+     "Side": 1,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 답하다",
+     "Speech": "알면서 길을 막느냐.",
+     "Side": 0,
+     "Duration": 2.0
+    },
+    {
+     "Kind": "approach",
+     "Title": "맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "고람의 첫 창을 막다",
+     "Speech": "느리군.",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "고람이 거듭 몰아치다",
+     "Speech": "이 정도로는 성문도 못 깨겠구나.",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "관우가 청룡도를 내려치다",
+     "Speech": "하앗!",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "고람이 질리다",
+     "Speech": "(이, 이건 사람의 힘이 아니다……!)",
+     "Side": 1,
+     "Duration": 2.2
+    },
+    {
+     "Kind": "retreat",
+     "Title": "고람이 말머리를 돌려 달아나다",
+     "Speech": "물러난다! 본진으로 물러나라!",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "고람이 퇴각하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    }
+   ]
+  }
+ ],
  "Armies": [
   {
    "Faction": "shu",
@@ -472,8 +398,13 @@
    "Ally": true
   },
   {
+   "Faction": "han",
+   "Name": "번궁과 신도 수비대",
+   "Ally": true
+  },
+  {
    "Faction": "yuan",
-   "Name": "원소군"
+   "Name": "원소 별동대"
   }
  ]
 }

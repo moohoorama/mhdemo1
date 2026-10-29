@@ -1,0 +1,20 @@
+# c08-p5  S_zhuo_office2  ch08  origin -1 -1
+Pil##################Pil
+###...BnrCdl###CdlBnrLnt
+###.........Dai.........
+###Lnt...Gua...LiuZha...
+###...Tbl.........Tbl...
+###Wpn...Jia............
+Pil.....................
+
+Liu 유비  (sit)
+Gua 관우
+Zha 장비
+Jia 간옹
+Mes 전령  (infantry_noncombat, off stage, enters later (cell 7 4))
+
+# c08-p6: Mes -> 4 4
+# c08-p12: Mes -> 7 4 and leaves
+# c08-p12: Gua -> 7 4 and leaves
+# c08-p12: Zha -> 7 4 and leaves
+# c08-p12: Jia -> 7 4 and leaves

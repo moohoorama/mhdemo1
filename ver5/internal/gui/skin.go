@@ -447,6 +447,18 @@ func hovered(r image.Rectangle) bool {
 
 // btn registers a clickable button; a nil click draws it disabled.
 func (g *Game) btn(dst *ebiten.Image, r image.Rectangle, label string, click func()) {
+	fg, size := g.btnFace(dst, r, label, click)
+	g.label(dst, label, float64(r.Min.X)+10, float64(r.Min.Y)+(float64(r.Dy())-size*1.45)/2, size, fg)
+}
+
+// centeredBtn is btn with its label centred, as the corner panels' buttons are.
+func (g *Game) centeredBtn(dst *ebiten.Image, r image.Rectangle, label string, click func()) {
+	fg, size := g.btnFace(dst, r, label, click)
+	g.label(dst, label, float64(r.Min.X)+(float64(r.Dx())-g.width(label, size))/2, float64(r.Min.Y)+(float64(r.Dy())-size*1.45)/2, size, fg)
+}
+
+// btnFace draws a raised button, registers it unless click is nil, and gives its label's colour and size.
+func (g *Game) btnFace(dst *ebiten.Image, r image.Rectangle, label string, click func()) (color.NRGBA, float64) {
 	x, y, w, h := float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy())
 	body, rim, fg := lacquer2, goldDim, ink
 	if click == nil {
@@ -460,11 +472,32 @@ func (g *Game) btn(dst *ebiten.Image, r image.Rectangle, label string, click fun
 	rect(dst, x, y, w, h, body)
 	strokeRect(dst, x+.5, y+.5, w-1, h-1, 1, rim)
 	rect(dst, x+1, y+1, w-2, 1, color.NRGBA{R: 255, G: 255, B: 255, A: 28})
-	size := 15.0
 	if h < 28 {
-		size = 13
+		return fg, 13
 	}
-	g.label(dst, label, float64(x)+10, float64(y)+(float64(h)-size*1.45)/2, size, fg)
+	return fg, 15
+}
+
+// toggleBtn is a switch: pressed in and gold while on, a raised button with a muted label while off.
+func (g *Game) toggleBtn(dst *ebiten.Image, r image.Rectangle, label string, on bool, click func()) {
+	if !on {
+		_, size := g.btnFace(dst, r, label, click)
+		g.label(dst, label, float64(r.Min.X)+(float64(r.Dx())-g.width(label, size))/2, float64(r.Min.Y)+(float64(r.Dy())-size*1.45)/2, size, muted)
+		return
+	}
+	x, y, w, h := float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy())
+	g.addButton(r, label, click)
+	rect(dst, x, y, w, h, color.NRGBA{R: 132, G: 98, B: 34, A: 255})
+	rect(dst, x+1, y+1, w-2, 3, color.NRGBA{A: 110})
+	strokeRect(dst, x+.5, y+.5, w-1, h-1, 1.5, gold)
+	g.label(dst, label, float64(x)+(float64(w)-g.width(label, 15))/2, float64(y)+(float64(h)-15*1.45)/2+1, 15, color.NRGBA{R: 255, G: 238, B: 170, A: 255})
+}
+
+// emptySlot marks the place of a button the screen has no use for, so the others keep theirs.
+func emptySlot(dst *ebiten.Image, r image.Rectangle) {
+	x, y, w, h := float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy())
+	rect(dst, x, y, w, h, color.NRGBA{A: 56})
+	strokeRect(dst, x+.5, y+.5, w-1, h-1, 1, color.NRGBA{R: 132, G: 104, B: 52, A: 110})
 }
 
 // choiceBtn is a button of a group of which one is chosen: the chosen one is pressed in, gold

@@ -69,7 +69,7 @@ func (f *Field) drawNight(clockMS float64, units []*unitVis) {
 		if n.dark != nil {
 			n.dark.Deallocate()
 		}
-		n.dark = ebiten.NewImage(b.Dx(), b.Dy())
+		n.dark = newLayer(b.Dx(), b.Dy())
 	}
 	if n.light == nil {
 		n.light = softDisc()

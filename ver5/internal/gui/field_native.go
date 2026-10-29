@@ -145,6 +145,10 @@ var siteSprite = map[byte]string{'k': "camp", 'v': "village", 'o': "castle"}
 // burntSite names the picture a site burns down to; the castle does not burn.
 var burntSite = map[byte]string{'k': "burnt_camp", 'v': "burnt_village"}
 
+// siteVariants is how many pictures a site has, named <name>_0, _1, ...: a cell takes picture (x + 2y) mod n, so
+// with four pictures its eight neighbours all take another one than it does.
+var siteVariants = map[byte]int{'v': 4}
+
 // nativeSites draws one strongpoint per game cell, at the characters' scale like the forests. A cell is a
 // site when most of its small tiles are.
 func (f *Field) nativeSites(items *[]drawItem) {
@@ -172,8 +176,15 @@ func (f *Field) nativeSites(items *[]drawItem) {
 			if site == 0 {
 				continue
 			}
-			name := siteSprite[site]
+			name, burntName := siteSprite[site], burntSite[site]
 			s := f.A.Sites[name]
+			if n := siteVariants[site]; n > 0 {
+				k := fmt.Sprintf("_%d", ((x+2*y)%n+n)%n)
+				name, burntName = name+k, burntName+k
+			}
+			if p, ok := f.A.Props[name]; ok { // the pixel-kit picture replaces sites.png's
+				s = p.Sprite
+			}
 			px, py := f.Center(float64(x), float64(y))
 			at := image.Pt(x, y)
 			still := func() { f.blit(f.Canvas, s, px, py, nil) }
@@ -183,7 +194,7 @@ func (f *Field) nativeSites(items *[]drawItem) {
 				}
 			}
 			*items = append(*items, drawItem{y: py - .1, rect: f.mapRect(s, px/K, py/K), draw: func() {
-				if burnt, ok := f.A.Props[burntSite[site]]; ok && f.look(at.X, at.Y) == "soot" {
+				if burnt, ok := f.A.Props[burntName]; ok && f.look(at.X, at.Y) == "soot" {
 					f.blit(f.Canvas, burnt.Sprite, px, py, nil)
 					return
 				}
@@ -210,7 +221,7 @@ func (f *Field) drawNativeWater(dst *ebiten.Image, ms float64) {
 }
 func (f *Field) makeExterior() {
 	w, h := f.Canvas.Bounds().Dx(), f.Canvas.Bounds().Dy()
-	f.exterior = ebiten.NewImage(w, h)
+	f.exterior = newLayer(w, h)
 	f.exterior.Fill(color.NRGBA{A: 140})
 	var p vector.Path
 	// Grid vertices differ from cell centers by half a cell along both axes.
@@ -310,8 +321,7 @@ func (f *Field) gateSprite(u, v int, wall Sprite, set string) Sprite {
 	return wall
 }
 
-// nativeFences puts a fence on each fenced game cell, joined to the fences next to it. A fence picture is drawn for
-// the map's own cell size, so it is drawn at twice its size on the half-cell lattice's game cells.
+// nativeFences puts a fence on each fenced game cell, joined to the fences next to it.
 func (f *Field) nativeFences(items *[]drawItem) {
 	v := f.Map.Visual
 	fence := func(x, y int) bool { return f.small(2*x, 2*y) == 'z' }
@@ -332,7 +342,7 @@ func (f *Field) nativeFences(items *[]drawItem) {
 			}
 			px, py := f.Center(float64(x), float64(y))
 			sprite := s.Sprite
-			*items = append(*items, drawItem{y: py, rect: image.Rect(int(px)-44, int(py)-80, int(px)+44, int(py)+20), draw: func() { f.blitK(f.Canvas, sprite, px, py, 2) }})
+			*items = append(*items, drawItem{y: py, rect: f.mapRect(sprite, px/K, py/K), draw: func() { f.blit(f.Canvas, sprite, px, py, nil) }})
 		}
 	}
 }

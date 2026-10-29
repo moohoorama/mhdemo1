@@ -105,33 +105,19 @@
    "scale": "scene",
    "note": "from the structures.png hay-hut cell; scenario scenes"
   },
-  "burnt_village": {
-   "file": "tiles/burnt_village.png",
-   "size": [
-    100,
-    110
-   ],
-   "pivot": [
-    50,
-    77
-   ],
-   "layer": "object",
-   "scale": "battle",
-   "note": "from the battle map's village site (100x110, 2x2 cells)"
-  },
   "burnt_camp": {
    "file": "tiles/burnt_camp.png",
    "size": [
-    100,
-    110
+    64,
+    38
    ],
    "pivot": [
-    50,
-    77
+    32,
+    22
    ],
    "layer": "object",
    "scale": "battle",
-   "note": "from the camp site"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "burnt_tavern": {
    "file": "tiles/burnt_tavern.png",
@@ -267,14 +253,15 @@
   "fence_00": {
    "file": "tiles/fence_00.png",
    "size": [
-    40,
-    48
+    6,
+    20
    ],
    "pivot": [
-    21,
-    39
+    3,
+    18
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 0,
    "sides_bits": [
     "nw",
@@ -282,8 +269,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_00": {
    "file": "tiles/sfence_00.png",
@@ -309,14 +295,15 @@
   "fence_01": {
    "file": "tiles/fence_01.png",
    "size": [
-    40,
-    48
+    22,
+    27
    ],
    "pivot": [
-    21,
-    39
+    19,
+    25
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 1,
    "sides_bits": [
     "nw",
@@ -324,8 +311,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_01": {
    "file": "tiles/sfence_01.png",
@@ -351,14 +337,15 @@
   "fence_02": {
    "file": "tiles/fence_02.png",
    "size": [
-    40,
-    48
+    22,
+    27
    ],
    "pivot": [
-    21,
-    39
+    3,
+    25
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 2,
    "sides_bits": [
     "nw",
@@ -366,8 +353,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_02": {
    "file": "tiles/sfence_02.png",
@@ -393,14 +379,15 @@
   "fence_03": {
    "file": "tiles/fence_03.png",
    "size": [
-    40,
-    48
+    38,
+    27
    ],
    "pivot": [
-    21,
-    39
+    19,
+    25
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 3,
    "sides_bits": [
     "nw",
@@ -408,8 +395,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_03": {
    "file": "tiles/sfence_03.png",
@@ -435,14 +421,15 @@
   "fence_04": {
    "file": "tiles/fence_04.png",
    "size": [
-    40,
-    48
+    22,
+    28
    ],
    "pivot": [
-    21,
-    39
+    3,
+    18
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 4,
    "sides_bits": [
     "nw",
@@ -450,8 +437,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_04": {
    "file": "tiles/sfence_04.png",
@@ -477,14 +463,15 @@
   "fence_05": {
    "file": "tiles/fence_05.png",
    "size": [
-    40,
-    48
+    38,
+    35
    ],
    "pivot": [
-    21,
-    39
+    19,
+    25
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 5,
    "sides_bits": [
     "nw",
@@ -492,8 +479,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_05": {
    "file": "tiles/sfence_05.png",
@@ -519,14 +505,15 @@
   "fence_06": {
    "file": "tiles/fence_06.png",
    "size": [
-    40,
-    48
+    22,
+    35
    ],
    "pivot": [
-    21,
-    39
+    3,
+    25
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 6,
    "sides_bits": [
     "nw",
@@ -534,8 +521,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_06": {
    "file": "tiles/sfence_06.png",
@@ -561,14 +547,15 @@
   "fence_07": {
    "file": "tiles/fence_07.png",
    "size": [
-    40,
-    48
+    38,
+    35
    ],
    "pivot": [
-    21,
-    39
+    19,
+    25
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 7,
    "sides_bits": [
     "nw",
@@ -576,8 +563,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_07": {
    "file": "tiles/sfence_07.png",
@@ -603,14 +589,15 @@
   "fence_08": {
    "file": "tiles/fence_08.png",
    "size": [
-    40,
-    48
+    22,
+    28
    ],
    "pivot": [
-    21,
-    39
+    19,
+    18
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 8,
    "sides_bits": [
     "nw",
@@ -618,8 +605,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_08": {
    "file": "tiles/sfence_08.png",
@@ -645,14 +631,15 @@
   "fence_09": {
    "file": "tiles/fence_09.png",
    "size": [
-    40,
-    48
+    22,
+    35
    ],
    "pivot": [
-    21,
-    39
+    19,
+    25
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 9,
    "sides_bits": [
     "nw",
@@ -660,8 +647,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_09": {
    "file": "tiles/sfence_09.png",
@@ -687,14 +673,15 @@
   "fence_10": {
    "file": "tiles/fence_10.png",
    "size": [
-    40,
-    48
+    38,
+    35
    ],
    "pivot": [
-    21,
-    39
+    19,
+    25
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 10,
    "sides_bits": [
     "nw",
@@ -702,8 +689,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_10": {
    "file": "tiles/sfence_10.png",
@@ -729,14 +715,15 @@
   "fence_11": {
    "file": "tiles/fence_11.png",
    "size": [
-    40,
-    48
+    38,
+    35
    ],
    "pivot": [
-    21,
-    39
+    19,
+    25
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 11,
    "sides_bits": [
     "nw",
@@ -744,8 +731,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_11": {
    "file": "tiles/sfence_11.png",
@@ -771,14 +757,15 @@
   "fence_12": {
    "file": "tiles/fence_12.png",
    "size": [
-    40,
-    48
+    38,
+    28
    ],
    "pivot": [
-    21,
-    39
+    19,
+    18
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 12,
    "sides_bits": [
     "nw",
@@ -786,8 +773,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_12": {
    "file": "tiles/sfence_12.png",
@@ -813,14 +799,15 @@
   "fence_13": {
    "file": "tiles/fence_13.png",
    "size": [
-    40,
-    48
+    38,
+    35
    ],
    "pivot": [
-    21,
-    39
+    19,
+    25
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 13,
    "sides_bits": [
     "nw",
@@ -828,8 +815,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_13": {
    "file": "tiles/sfence_13.png",
@@ -855,14 +841,15 @@
   "fence_14": {
    "file": "tiles/fence_14.png",
    "size": [
-    40,
-    48
+    38,
+    35
    ],
    "pivot": [
-    21,
-    39
+    19,
+    25
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 14,
    "sides_bits": [
     "nw",
@@ -870,8 +857,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_14": {
    "file": "tiles/sfence_14.png",
@@ -897,14 +883,15 @@
   "fence_15": {
    "file": "tiles/fence_15.png",
    "size": [
-    40,
-    48
+    38,
+    35
    ],
    "pivot": [
-    21,
-    39
+    19,
+    25
    ],
    "layer": "object",
+   "scale": "battle",
    "mask": 15,
    "sides_bits": [
     "nw",
@@ -912,8 +899,7 @@
     "se",
     "sw"
    ],
-   "scale": "battle",
-   "note": "low fence for the deformed battle map"
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   },
   "sfence_15": {
    "file": "tiles/sfence_15.png",
@@ -7707,6 +7693,54 @@
    "note": "battle-map ground walls and crossings (gen_banks.py)",
    "frame": 128
   },
+  "rock_pile_0": {
+   "file": "tiles/rock_pile_0.png",
+   "size": [
+    49,
+    30
+   ],
+   "pivot": [
+    26,
+    19
+   ],
+   "layer": "object"
+  },
+  "rock_pile_1": {
+   "file": "tiles/rock_pile_1.png",
+   "size": [
+    49,
+    27
+   ],
+   "pivot": [
+    26,
+    17
+   ],
+   "layer": "object"
+  },
+  "rock_pile_2": {
+   "file": "tiles/rock_pile_2.png",
+   "size": [
+    49,
+    27
+   ],
+   "pivot": [
+    23,
+    17
+   ],
+   "layer": "object"
+  },
+  "beacon": {
+   "file": "tiles/beacon.png",
+   "size": [
+    35,
+    45
+   ],
+   "pivot": [
+    18,
+    37
+   ],
+   "layer": "object"
+  },
   "wall_grass_nw_05_0": {
    "file": "tiles/wall_grass_nw_05_0.png",
    "size": [
@@ -8210,6 +8244,216 @@
    "layer": "ground",
    "note": "battle-map ground walls and crossings (gen_banks.py)",
    "frame": 128
+  },
+  "shrine": {
+   "file": "tiles/shrine.png",
+   "size": [
+    73,
+    78
+   ],
+   "pivot": [
+    37,
+    61
+   ],
+   "layer": "object"
+  },
+  "granary_round": {
+   "file": "tiles/granary_round.png",
+   "size": [
+    41,
+    62
+   ],
+   "pivot": [
+    22,
+    51
+   ],
+   "layer": "object"
+  },
+  "granary_raised": {
+   "file": "tiles/granary_raised.png",
+   "size": [
+    54,
+    69
+   ],
+   "pivot": [
+    29,
+    56
+   ],
+   "layer": "object"
+  },
+  "field_bare": {
+   "file": "tiles/field_bare.png",
+   "size": [
+    113,
+    60
+   ],
+   "pivot": [
+    57,
+    31
+   ],
+   "layer": "ground"
+  },
+  "field_sprout": {
+   "file": "tiles/field_sprout.png",
+   "size": [
+    113,
+    60
+   ],
+   "pivot": [
+    57,
+    31
+   ],
+   "layer": "ground"
+  },
+  "field_ripe": {
+   "file": "tiles/field_ripe.png",
+   "size": [
+    113,
+    63
+   ],
+   "pivot": [
+    57,
+    34
+   ],
+   "layer": "ground"
+  },
+  "camp": {
+   "file": "tiles/camp.png",
+   "size": [
+    64,
+    60
+   ],
+   "pivot": [
+    32,
+    44
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "field_trampled": {
+   "file": "tiles/field_trampled.png",
+   "size": [
+    113,
+    62
+   ],
+   "pivot": [
+    57,
+    33
+   ],
+   "layer": "ground"
+  },
+  "village_0": {
+   "file": "tiles/village_0.png",
+   "size": [
+    64,
+    51
+   ],
+   "pivot": [
+    32,
+    35
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "burnt_village_0": {
+   "file": "tiles/burnt_village_0.png",
+   "size": [
+    64,
+    35
+   ],
+   "pivot": [
+    32,
+    19
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "village_1": {
+   "file": "tiles/village_1.png",
+   "size": [
+    64,
+    51
+   ],
+   "pivot": [
+    32,
+    35
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "burnt_village_1": {
+   "file": "tiles/burnt_village_1.png",
+   "size": [
+    64,
+    35
+   ],
+   "pivot": [
+    32,
+    19
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "village_2": {
+   "file": "tiles/village_2.png",
+   "size": [
+    64,
+    53
+   ],
+   "pivot": [
+    32,
+    37
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "burnt_village_2": {
+   "file": "tiles/burnt_village_2.png",
+   "size": [
+    64,
+    36
+   ],
+   "pivot": [
+    32,
+    20
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "village_3": {
+   "file": "tiles/village_3.png",
+   "size": [
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    29
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "burnt_village_3": {
+   "file": "tiles/burnt_village_3.png",
+   "size": [
+    64,
+    35
+   ],
+   "pivot": [
+    32,
+    19
+   ],
+   "layer": "object",
+   "scale": "battle",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
   }
  }
 }

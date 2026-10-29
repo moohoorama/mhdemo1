@@ -92,7 +92,7 @@ func (d *Data) Validate() error {
 		}
 	}
 	for id, c := range d.Classes {
-		if _, ok := d.Terrain[c.Terrain]; !ok || !in(c.Attack, AttackMelee, AttackRanged) || c.Move < 1 || c.Range < 1 || c.HPFactor < 1 ||
+		if _, ok := d.Terrain[c.Terrain]; !ok || !in(c.Attack, AttackMelee, AttackRanged) || c.Move < 1 || c.Range < 0 || c.HPFactor < 1 ||
 			c.Tier < 0 || c.Tier >= len(r.PromoteLevels)+1 || c.Name == "" {
 			return fmt.Errorf("class %s", id)
 		}

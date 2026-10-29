@@ -361,7 +361,8 @@
      "saddle": "#d03030",
      "iron": "#e0c060"
     },
-    "Portrait": "xiahoudun"
+    "Portrait": "xiahoudun",
+    "Scene": "xiahoudun_noncombat"
    }
   },
   "xiahouyuan": {
@@ -529,12 +530,12 @@
   },
   "fangong": {
    "Name": "번궁",
-   "Biography": "영걸전의 번궁. 신도성에서 유비에게 항복해 따르는 무도가.",
+   "Biography": "신도성주. 원소의 별동대에 맞서 성을 지키고, 구원하러 온 유비를 따른다. 주먹 못지않게 지형을 읽어 불을 놓는 데 밝다.",
    "Class": "brawler",
    "Stats": [
     62,
     72,
-    32,
+    73,
     62,
     42,
     48
@@ -542,7 +543,9 @@
    "Level": 3,
    "Points": 200,
    "Traits": [],
-   "Learn": [],
+   "Learn": [
+    "fire"
+   ],
    "Equipment": [
     "iron_knuckles",
     "plain_clothes"
@@ -832,7 +835,7 @@
   "zhangshiping": {
    "Name": "장세평",
    "Biography": "중산의 큰 상인. 해마다 북방에서 말을 사 오다 황건에게 쫓겨 탁현으로 피한다. 의병에게 말과 강철을 댄다.",
-   "Class": "light_infantry",
+   "Class": "commoner",
    "Stats": [
     45,
     50,
@@ -857,7 +860,7 @@
   "sushuang": {
    "Name": "소쌍",
    "Biography": "장세평과 함께 다니는 중산의 상인. 의병의 뜻에 감복해 대장간에 강철을 맡긴다.",
-   "Class": "light_infantry",
+   "Class": "commoner",
    "Stats": [
     45,
     50,

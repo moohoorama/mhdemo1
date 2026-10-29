@@ -104,41 +104,6 @@
  ],
  "objects": [
   [
-   "grain_cart",
-   14,
-   10
-  ],
-  [
-   "grain_cart_v",
-   17,
-   11
-  ],
-  [
-   "grain_cart",
-   15,
-   13
-  ],
-  [
-   "grain_cart_v",
-   12,
-   11
-  ],
-  [
-   "grain_sack",
-   17,
-   14
-  ],
-  [
-   "grain_sack",
-   18,
-   13
-  ],
-  [
-   "grain_sack",
-   13,
-   13
-  ],
-  [
    "campfire",
    8,
    14

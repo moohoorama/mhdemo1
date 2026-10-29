@@ -45,7 +45,7 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 		s := -1.0
 		switch c.Kind {
 		case "attack", "skill":
-			if me.Policy == "flee" {
+			if content.Leaves(me.Policy) {
 				continue // a fleeing unit only runs
 			}
 			if duels && me.DuelFirst && e.DuelPending(me.ID, c.Target) {
@@ -91,6 +91,9 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 				}
 			}
 		case "item":
+			if me.Policy == "run" {
+				continue // a running unit does not stop even to tend its wounds
+			}
 			p, err := e.Preview(c)
 			if err != nil {
 				continue
@@ -123,7 +126,7 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 					break
 				}
 			}
-			if me.Policy == "march" || me.Policy == "flee" {
+			if me.Policy == "march" || content.Leaves(me.Policy) {
 				if goal == nil {
 					goal = walkingFrom(e, o, me, o.Map.GoalCells(me.Goal, me.GoalArea))
 				}

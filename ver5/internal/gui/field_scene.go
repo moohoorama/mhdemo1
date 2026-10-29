@@ -41,7 +41,7 @@ func (f *Field) makeScenePlan() error {
 			f.ground[i] = f.ground[0]
 			continue
 		}
-		g := ebiten.NewImage(f.worldSize.X, f.worldSize.Y)
+		g := newLayer(f.worldSize.X, f.worldSize.Y)
 		for _, d := range plan.Flat {
 			if d.Name == "water" {
 				d.Tile = water[i%len(water)]

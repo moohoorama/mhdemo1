@@ -42,3 +42,28 @@ func TestAnEventChangesTheBattleGoals(t *testing.T) {
 	e.clearBattle()
 	assert.Nil(t, e.state.Goals, "the next battle starts from its own goals")
 }
+
+func TestBonusGoalMarksWhereUnitsFlee(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	for _, n := range d.Nodes {
+		if n.Kind == "battle" && n.Stage == "B04" {
+			d.Campaign.Start = n.ID
+		}
+	}
+	e := New(d, 1)
+	apply(t, e, Command{Kind: "start"})
+	corner := e.data.Stages[e.state.Stage].GoalCells(nil, 2)
+	require.NotEmpty(t, corner)
+	carts, areas := 0, 0
+	for _, m := range e.SubMarks() {
+		if m.Unit != "" && e.unit(m.Unit).Group == "carts" {
+			carts++
+		}
+		if assert.ObjectsAreEqual(corner, m.Cells) {
+			areas++
+		}
+	}
+	assert.Equal(t, 2, carts, "each loot cart once")
+	assert.Equal(t, 1, areas, "the corner the carts flee to, once")
+}

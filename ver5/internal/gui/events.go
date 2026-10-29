@@ -168,7 +168,7 @@ var errorNames = map[string]string{
 	"InvalidSlot": "슬롯이 올바르지 않습니다", "NoGame": "진행 중인 게임이 없습니다",
 	"IncompatibleSave": "호환되지 않는 저장입니다", "CorruptSave": "저장 파일이 손상되었습니다",
 	"IncompatibleEquipment": "이 병종은 쓸 수 없는 장비입니다", "MissingEquipment": "창고에 없는 장비입니다",
-	"InvalidActor": "장비를 바꿀 수 없는 장수입니다",
+	"InvalidActor": "장비를 바꿀 수 없는 장수입니다", "ChangedContent": "게임 데이터가 바뀌기 전의 저장입니다",
 }
 
 func errorText(err error) string {

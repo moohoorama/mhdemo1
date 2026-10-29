@@ -81,6 +81,17 @@ func TestSaveLoadMenusAndRevision(t *testing.T) {
 	if s.Handle(Request{Op: "load", Slot: "2", Discard: true}).Error != "IncompatibleSave" || snapshot(s) != before {
 		t.Fatal("incompatible load replaced game")
 	}
+	old := s.Engine.Snapshot()
+	old.ContentHash = "before-an-edit"
+	if err := s.Store.Save("3", old, false); err != nil {
+		t.Fatal(err)
+	}
+	if s.Handle(Request{Op: "load", Slot: "3", Discard: true}).Error != "ChangedContent" || snapshot(s) != before {
+		t.Fatal("a save from before a data change loaded without asking")
+	}
+	if r := s.Handle(Request{Op: "load", Slot: "3", Discard: true, Changed: true}); !r.OK || s.Engine.Snapshot().ContentHash != s.Data.Hash {
+		t.Fatal("a save from before a data change did not load when asked to")
+	}
 	request(t, s, Request{Op: "title", Discard: true})
 	if s.Engine != nil || s.Screen != "title" {
 		t.Fatal("title")

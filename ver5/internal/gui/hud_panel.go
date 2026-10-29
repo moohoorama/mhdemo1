@@ -13,15 +13,12 @@ import (
 // which sets the panel's height. Selecting an officer shows the unit tab; letting go returns to
 // the tab chosen by hand, and an AI army's turn shows the log.
 const (
-	hudHeaderH = 36
+	hudHeaderH = cornerHeadH
 	hudTabsH   = 32
 )
 
-// hudTop is the panel's top edge.
-func hudTop() int { return 8 }
-
-// menuButtonRect is the menu button in the top right corner of the screens without the panel.
-func menuButtonRect() image.Rectangle { return image.Rect(uiW-104, 6, uiW-8, 35) }
+// hudTop is the top edge of the panel and of the corner panels beside it.
+func hudTop() int { return 10 }
 
 type hudTab struct{ id, title string }
 
@@ -82,7 +79,7 @@ const hudFadeAlpha = .55
 func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 	g.hudFollowTurn(o)
 	tab := g.hudCurrent(o)
-	head := hudHeaderH
+	head := hudHeaderH + cornerRowH
 	x, y := uiW-12-infoW, hudTop()
 	room := uiH - 8 - y - head - hudTabsH
 	bodyH := 0
@@ -90,6 +87,9 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 		bodyH = g.hudBodyHeight(tab, o, room)
 	}
 	h := min(head+hudTabsH+bodyH, uiH-8-y)
+	if g.hudFolded {
+		h = hudHeaderH
+	}
 	r := image.Rect(x, y, x+infoW, y+h)
 	g.hudRect, g.hudShown, g.hudBody = r, tab, image.Rect(x, y+head+hudTabsH, x+infoW, y+h)
 	if g.hudFolded {
@@ -121,7 +121,10 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 	faded := g.hudAlpha < .995
 	if faded {
 		if g.hudLayer == nil || g.hudLayer.Bounds().Size() != dst.Bounds().Size() {
-			g.hudLayer = ebiten.NewImage(dst.Bounds().Dx(), dst.Bounds().Dy())
+			if g.hudLayer != nil {
+				g.hudLayer.Deallocate()
+			}
+			g.hudLayer = newLayer(dst.Bounds().Dx(), dst.Bounds().Dy())
 		}
 		g.hudLayer.Clear()
 		canvas = g.hudLayer
@@ -130,7 +133,10 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 	g.window(cd, shown)
 	g.block(r)
 	g.hudHead(cd, o, r)
-	g.hudTabRow(cd, o, tab, x, y+head)
+	if !g.hudFolded {
+		g.cornerButtons(cd, x, y+hudHeaderH, func() { g.openOverlay("roster") })
+		g.hudTabRow(cd, o, tab, x, y+head)
+	}
 	switch g.hudShown {
 	case "log":
 		g.drawBattleLog(cd)
@@ -164,18 +170,16 @@ func (g *Game) hudHead(dst *ebiten.Image, o core.Observation, r image.Rectangle)
 	if st := g.S.Data.Stages[o.Stage]; st.TurnLimit > 0 {
 		turn = fmt.Sprintf("%d/%d턴", o.Round, st.TurnLimit)
 	}
-	fold := image.Rect(r.Min.X+8, r.Min.Y+6, r.Min.X+32, r.Min.Y+hudHeaderH-6)
-	g.btn(dst, fold, "", func() { g.hudFolded = !g.hudFolded })
-	g.sortMark(dst, float32(fold.Min.X+fold.Dx()/2), float32(fold.Min.Y+fold.Dy()/2), !g.hudFolded, gold)
-	g.label(dst, side, float64(r.Min.X+42), float64(r.Min.Y+8), 15, c)
-	g.label(dst, turn, float64(r.Min.X+42)+g.width(side, 15)+8, float64(r.Min.Y+10), 13, muted)
+	g.label(dst, side, float64(r.Min.X+12), float64(r.Min.Y+8), 15, c)
+	g.label(dst, turn, float64(r.Min.X+12)+g.width(side, 15)+8, float64(r.Min.Y+10), 13, muted)
+	g.foldButton(dst, r.Max.X-32, r.Min.Y, &g.hudFolded)
 
 	idle := !g.busy() && o.Phase == "battle"
 	var end func()
 	if idle && o.Turn == "ally" {
 		end = g.endPhase
 	}
-	g.btn(dst, image.Rect(r.Max.X-108, r.Min.Y+5, r.Max.X-10, r.Min.Y+hudHeaderH-5), "진영 종료", end)
+	g.btn(dst, image.Rect(r.Max.X-138, r.Min.Y+5, r.Max.X-40, r.Min.Y+hudHeaderH-5), "진영 종료", end)
 }
 
 // hudTabRow draws the tabs: the unit tab is always there and shows itself with a selection, and a click on another
@@ -217,9 +221,7 @@ func (g *Game) hudMisc(dst *ebiten.Image, r image.Rectangle) {
 	}{
 		{"위협 범위" + mark(g.threatAll), func() { g.threatAll = !g.threatAll }},
 		{"자동 전투" + mark(g.autoplay), func() { g.autoplay = !g.autoplay }},
-		{"작전 개요", func() { g.modals = append(g.modals, &modal{kind: "objective", manual: true}) }},
 		{"병력일람", func() { g.openOverlay("roster") }},
-		{"메뉴", func() { g.openOverlay("menu") }},
 	}
 	for i, it := range items {
 		y := r.Min.Y + 10 + i*40

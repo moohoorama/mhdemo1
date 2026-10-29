@@ -5,6 +5,100 @@
 
 ---
 
+## 2026-10-29 모든 화면의 위쪽 두 모서리에 같은 판: 왼쪽은 장소·장·돈과 배속·확대·자동 넘김·장면 넘기기·전투 목표, 오른쪽은 부대·메뉴, 부대 창에 소지품 탭
+
+- 결정: 화면마다 제각각이던 왼쪽 위(전투 `×1`·`전투 목표` 92×60·140×60, 장면 `자동 넘김 꺼짐/켜짐`·`장면 넘기기` 150×44, 탐험 지역 이름·돈 글자와 대화 중 (24,84)의 자동 넘김)와 오른쪽 위(`메뉴` 96×29, 탐험 `부대`)를 접을 수 있는 판 두 개로 통일. 칸은 늘 같은 순서·자리, 화면에 없는 칸은 빈칸. 켜고 끄는 것은 `목표 안내`와 같은 토글 · 이유: 사용자 "좌상단에 보이는 버튼들이 제각각이야", "자동넘김 꺼짐 같은걸 토글로", "그 화면에 해당 안하는건 비워두는 식으로", "좌상단의 버튼들, 돈 이런것들도 다 확장/축소", "좌상단에 화면 확대 배율도", "우상단의 부대, 매뉴도 마찬가지로", "부대쪽에는 아이템 목록도" — 시안 https://claude.ai/artifact/8ZXyLF1BuWS1J8FsjJ6Txu · 영향받는 문서: presentation-ui.md("모서리 판"), presentation-explore.md, presentation-scene.md
+- `internal/gui/hud_corner.go`(새 파일): `leftPanel`(폭 540, 좁으면 칸을 여러 줄로)·`rightPanel`·`cornerButtons`·`foldButton`, 칸 `speedSlot`·`zoomSlot`·`autoSlot`·`skipSlot`·`goalSlot`, 화면별 `storyPanels`·`battleLeftPanel` — 칸 정의를 한곳에 모아 화면마다 자리가 같게
+- `internal/gui/skin.go`: `btn`의 몸통을 `btnFace`로 떼고 `centeredBtn`·`toggleBtn`·`emptySlot` 추가. `windows.go`: `objectiveButtons`가 `toggleBtn`·`centeredBtn`을 씀 — 토글 모양을 하나로
+- `internal/gui/scenario.go`: `autoButton`·`skipButton` 삭제(`skipGuard`는 hud_corner.go로). `explore.go`: 지역 이름·돈 글자와 `부대`·자동 넘김 버튼 삭제. `game.go`: `speedButton` 삭제, 이야기 화면은 `storyPanels`, 전투는 `battleLeftPanel`, 탐험에서 판 위 클릭은 걷기로 넘기지 않음, `leftFolded`·`party` 필드 — 옛 버튼들을 판으로 대체
+- `internal/gui/hud_panel.go`: 머리줄 34px·위 10px로 진행판과 맞추고 접기 버튼을 오른쪽 끝으로, 머리줄 아래 `부대`(병력일람)·`메뉴` 줄, 접으면 머리줄만(전에는 탭 줄도 남음), `기타` 탭에서 `전투 목표`·`메뉴` 뺌, `menuButtonRect` 삭제. `battle_log.go`·`battle_log_test.go`: 기록 높이 한도에서 버튼 줄을 뺌 — 전투에서도 같은 자리에 부대·메뉴
+- `internal/gui/deployment.go`: 40px 제목 띠와 `메뉴` 대신 두 판, 미니맵은 오른쪽 판 아래(`hud.go` `minimap`이 위치를 받음)
+- `internal/gui/party.go`(새 파일, `shop.go`에서 `partyWindow` 옮김): 부대 창에 `장수`·`소지품` 탭. 소지품은 `Inventory`·`Warehouse`·장착 장비를 한 목록(`belongings`)으로 모아 종류별로 거르고, 고른 것의 설명·가진 수·장착·쓰는 곳, 장비는 `장비 바꾸기`
+- `internal/gui/uidemo_party.go`(새 파일): `party` 데모(부대 창 두 탭) — 캡처 확인용
+ 위쪽 가장자리로 스크롤되고 가장자리 띠는 화면 폭의 5%, 보조목표의 도망 목적지가 보이며, 데이터가 바뀐 뒤의 저장도 묻고 불러온다
+
+- `internal/gui/view.go`: 가장자리 스크롤이 HUD 위인지(`onMap`)가 아니라 전장 화면(`battleViewport`) 안인지로 판단, 띠 두께를 8 전장 px에서 화면 폭의 5%로 — 사용자 "병력 배치할때 스크롤이 위쪽으로 안되", "화면폭 한 5%로 하자" — 배치 화면 위쪽 40px 제목 띠가 가장자리 8px을 덮어 위로 밀 수 없었다
+- `internal/core/goal_marks.go`: 보조목표의 부정 조건(`!fled:carts`)도 표시해 도망 목적지 구역을 회색으로 그림. 같은 유닛·구역이 두 번 표시되지 않게 합침. 승패 목표의 부정 조건은 여전히 빼는데, B01 "장세평 퇴각"(`defeated`, `!fled`)의 목적지는 달아나면 지지 않는 곳이라 패배 색이 틀린 뜻이 되기 때문. 부정 깃발 조건도 대기(pending)로 바르게 판단 — 사용자 "팽성에서 마차 도망갈때, 어디로 도망가는지 방향을 몰라 … 보조목표와 관련된거, 가령 목적지 같은거, 그것도 다 표현되도록". 유닛 옆 방향 화살표도 그려 봤으나 "화살표는 지워. 그냥 목적지 구역 표시면 되"로 뺌
+- `internal/core/battle_goals_test.go`: B04 수레 표시·퇴로 구역 테스트
+- `internal/core/api.go`: 데이터 해시(`ContentHash`)만 다른 저장은 `IncompatibleSave` 대신 `ChangedContent`, `RestoreChanged`가 지금 해시로 바꿔 불러옴(버전 상수가 다르면 여전히 거부). `internal/session/session.go`: `load`의 `Changed`(`load_changed`). `internal/gui/game.go`·`events.go`: `ChangedContent`면 "게임 데이터가 바뀌기 전의 저장입니다. 그래도 불러오시겠습니까?"를 묻고 확인 시 다시 불러옴. `cmd/srpg-cli/main.go`: 경고를 찍고 불러옴. `internal/session/session_test.go`: 테스트 — 사용자 "지금은 테스트 용이니까... sha256 다르면 경고 후 불러오기 되는걸로 하자" — json 한 글자만 바뀌어도 모든 저장이 깨졌다
+
+## 2026-10-29 영천 황건 진영 대화는 언덕 맵 성벽 밑에서 하고 카메라가 언덕으로 흐르며, 하진의 망설임은 지문 대신 1초 쉼
+
+- 결정: 2장 `c02-camp` 장면(숲길 옆 작은 진영 `S_turban_camp`)을 없애고 그 대사(c02-camp, t1~t3)를 `c02-hill`(`S_cliff_camp`) 앞에 붙임. 성벽 밑 진영에 파재·장량·도적 9을 두고, 나레이션(c02-05)에서 카메라가 벼랑 위 유관장으로 흐른다 · 이유: 사용자 "황건적 진영이 장면에 나오는데, 너무 작고 상황에 안맞는거 같아. 성을 포위하고 있다는 느낌이 안들어 … 거기서 슥 스크롤 해서 언덕위의 유관장을 보여주는거지" · 영향받는 문서: presentation-scene.md
+- `assets/scenes/ch02.json`: `c02-camp` 삭제, `c02-hill`에 황건 배역·잡담·비트와 시작 카메라(`Ambient` `CamAt [2,5]`), c02-05 `CamAt [10,3]`. 파일을 `scene_format.py` 배치로 다시 씀 — 한 장면으로 이어 진영과 언덕이 한 맵에 있음을 보이기
+- `assets/scenes/ascii/c02-*.txt`: 다시 뽑음, `c02-camp.txt` 삭제 — ch02 배치 그림을 지금 데이터에 맞춤
+- `internal/gui/scene.go`: 장면을 열 때 배우 가운데를 `Ambient`보다 먼저 잡아, `Ambient`의 `CamAt`이 시작 카메라가 됨 — 이름 있는 배우가 진영과 언덕에 나뉘어 있으면 가운데 허공에서 시작했음
+- `assets/scenario/hero/story03.json`(c03-f13), `docs/fullstory.md`: 하진 대사의 "(잠시 생각하다)" 지문 삭제, `assets/scenes/ch03.json`: c03-f13 앞에 `Wait 1.0` — 사용자 "(잠시생각하며)이런 지문 없애고, 실제로 딜레이 주도록 … 1초 정도"
+
+## 2026-10-29 1장 상인은 민중 병종으로 맹목적으로 성문까지 달아난다
+
+- 결정: 새 행동 정책 `run`(목표로 걷기만 하고 공격·기술·도구를 쓰지 않음, 목표에 닿으면 `flee`처럼 맵을 빠짐)과 새 병종 `commoner`(민중: 경보병과 같고 사거리 0이라 공격도 반격도 못 함)를 두고, B01의 장세평·소쌍을 민중·`run`으로 · 이유: 사용자 "1탄에서 장세평,소쌍이 안도망가. 도구로 회복하고 있어. 그냥 맹목적으로 도망가는 ai 추가하고, 그 ai를 쓰게 해죠", "민중은 경보병이랑 비슷한 대신 사거리 0. 즉 공격도 반격도 안하도록" — `flee`는 공격·기술만 빼서, 다친 상인은 도구 회복(회복량×0.85)이 한 칸 다가가기(3)보다 점수가 높아 제자리에서 회복만 했다 · 영향받는 문서: logic-battle-event.md 5.4, data-scenario-node.md
+- `internal/content/content.go`: `Policies`에 `run`, `Leaves`(목표에 닿으면 빠지는 정책), `ValidPolicy`가 `run`에도 목표를 요구. `internal/content/validate.go`: 병종 `Range` 0 허용
+- `internal/ai/ai.go`: `run`은 도구도 쓰지 않음. `internal/core/engine.go`(`leaveByFlight`), `internal/core/goal_marks.go`: `flee` 대신 `content.Leaves`
+- `assets/data/classes.json`: `commoner`(민중). `assets/data/characters_story.json`: 장세평·소쌍을 `commoner`로. `assets/scenario/hero/stage01.json`: 둘의 `Policy`를 `run`으로
+- `internal/ai/policy_test.go`: 다친 도주 유닛이 `flee`는 도구, `run`은 이동. `internal/core/core_test.go`: 사거리 0 병종은 공격 명령이 없고 반격하지 않음
+- 확인: `_balance -stage B01 -player ai` 5/5 승. `TestRushWinsTheFirstStages`의 B01 패배(시드 3·4)는 이 변경 전에도 같음
+
+## 2026-10-29 5장의 조조는 삿갓 쓴 베옷 차림으로 나온다
+
+- 결정: 주막 구석의 사내와 이튿날 관문의 조조는 삿갓을 눌러쓰고 수수한 베옷을 입는다(`caocao_hat_noncombat`). 주막에서 "삿갓을 벗으며"(`c05-c5`) 삿갓만 벗고 베옷 차림은 그대로(`caocao_plain_noncombat`), 관문에서는 다시 삿갓을 쓴다 · 이유: 사용자 "조조가 삿갓 쓰고 있다고 하는데, 삿갓이 없으니 아쉽네", "삿갓 쓴 조조 그려죠" · 영향받는 문서: 없음(fullstory.md에 이미 삿갓 연출이 적혀 있음)
+- `tools/doteditor/tools/civ3d.py`: `satgat_mask`·`satgat`·`satgat_heads`(낮고 넓은 원뿔 삿갓을 윤곽으로 계산해 찍음 — 꼭짓점에서 테 끝까지 옆선이 곧게, 23칸 폭, 짚색은 themeC), `POSE_HEADS`(앉으면 삿갓을 앞으로 기울여 눈가를 가림), `caocao_hat`·`caocao_plain`. 처음 그린 손 도안은 원뿔과 테가 ㄴ자로 꺾여 보여 바꿈 — 사용자 "꼭대기랑 끝이 일자로", "낮고 펑퍼짐한" `tools/doteditor/units/caocao_hat_noncombat.yaml`, `caocao_plain_noncombat.yaml`, `assets/sprites/*.spr`
+- `assets/scenes/ch05.json`(`c05-inn`, `c05-gate`), `assets/scenario/hero/explore05_town.json`(삿갓 쓴 사내)
+- 대사는 장비@town 안 1, 장비@inn 안 2("간이 배 밖에 나왔구먼유"), 장꾼 안 1, 유비 안 2("무도한 자일세")로 정함
+
+## 2026-10-29 장면의 시간 전환은 어두워졌다 밝아지고, 팽성 수레는 되찾았을 때만 들판에 선다
+
+- 결정: 장면 연출 묶음에 `Time`이 있으면 0.5초 검게 어두워진 뒤 시간을 바꾸고 다시 밝아지며, 대사는 다 밝아진 뒤 뜬다. 장면 `Ambient` 단계에 `If`(이야기 조건)를 붙일 수 있다. 이름 있는 탐험 인물은 대사·이벤트·상점·출진 중 하나를 가져야 한다 · 이유: 사용자 "술집에서 이야기하고 어두워지는데, 뭔가 깜빡하고 번쩍 하는거같아", "수레 있는 장면, 없는 장면 둘", "장비가 대사 가능처럼 표시는 되는데 눌러도 말을 안해", "단양 마을 망가진거 보여주는 용도로 울타리 바깥에 짓밟힌 밭", "스승님 그래버리니 개인적인 원한때문에 토벌하는 느낌" · 영향받는 문서: fullstory.md
+- `internal/gui/scene.go`: `nightfall`, `changesTime`. `internal/scenes/scenes.go`: `Step.If`. `internal/core/cond.go`: `Engine.Holds`. `internal/gui/scenario_test.go`: `If` 조건 검사, 비트에서는 금지
+- `internal/content/explore.go`: 할 일 없는 이름 있는 인물을 막음. `internal/core/explore_test.go`
+- `assets/graphics/maps/S_pengcheng_field.json`: 곡식 수레·자루를 맵에서 뺌. `assets/scenes/ch05.json`(`c05-reunion`): `flag-pengcheng-carts`일 때만 수레·자루를 소품으로 놓음
+- `tools/unit3d/scene_props3d.py`: `field_trampled`(말이 가로지른 조밭). `assets/graphics/maps/S_danyang_village.json`: 울타리 밖 두 곳. `assets/graphics/map/extra.png`, `index.json` 다시 묶음
+- `explore05_town.json`(장비@town, 장비@inn), `explore08.json`(장꾼), `explore03.json`(조조@in) 대사. `story05.json`(`c05-d14`) 유비 대사를 "무도한 자일세…"로. `docs/fullstory.md` 반영
+
+## 2026-10-29 간옹은 4장 팽성에서 합류하고, 1·2장 탁현에 미리 나온다
+
+- 결정: fullstory의 간옹 합류(4장 S#2 팽성, 장세평의 말 장사 행렬)를 게임에 옮긴다. 1장·2장 탁현 거리에 간옹 NPC(복선 대사), 4장 팽성 성문 앞에 군량 수레와 장세평·간옹이 걸어 들어와 합류. 외상값 생색 대사 "탁현 외상값은 한 푼도 안 남기고 갚았네. 술집 주인이 울더군, 단골 하나 잃는다고." 8장의 임시 합류(`c08-join`)는 지운다. B04~B07 출전 최대 3 → 4 · 이유: 사용자 "난 당연히 된줄 알았는데 막상 해보니 등장 안해서 놀랐네", "진행해" · 영향받는 문서: fullstory.md
+- `assets/scenario/hero/story04.json`(`c04-c1`~`c04-c6`, `c04-b5`), `assets/scenes/ch04.json`(`c04-peng`: 행렬 입장, 전령 자리), `explore01.json`·`explore02.json`(탁현 거리의 간옹), `story08.json`(`c08-join` 삭제), `stage04~07.json`(`Max` 4)
+- `internal/content/stage_level_test.go`: 간옹이 B04 앞에서 합류(`c04-c6`)
+- 측정(ai, 10시드, 간옹 포함): B04 10/10, B05 9/10, B06 10/10, B07 10/10(간옹 없을 때와 거의 같음)
+
+## 2026-10-29 조운은 계교부터 유비군으로 싸운다
+
+- 결정: 10장 진영 장면 끝에 공손찬이 "자룡, 내일은 현덕 곁에서 싸워라" 하고 조운이 합류한다. B10에서 조운은 필수 출전(최대 여섯), 11장 강가에서 "공손 장군께서 당분간 공의 곁에 있으라 하셨습니다"로 북해·서주까지 함께한다 · 이유: 사용자 "조운을 유비 진영으로 놓으면 스토리가 많이 이상할까? 어차피 이후, 북해 공융에 대한 원군, 서주 팽성 전투까지 같이할텐데", "조운 같은편 되게 고쳐죠". 정사 「조운별전」에서 공손찬이 유비를 전해에게 보낼 때 조운이 따라가 유비의 기병을 맡았다 · 영향받는 문서: fullstory.md
+- `assets/scenario/hero/story10.json`(`c10-18`~`c10-20`), `story11.json`, `explore10.json`(조운 대사), `assets/scenes/ch10.json`. `assets/scenario/hero/stage10.json`: 조운을 아군 AI에서 빼고 `Required`·`Max` 6, 조운 첫 대사, 조운이 들어온 만큼 문추 기병 하나·궁병 하나를 되돌림
+- `internal/core/campaign_content_test.go`: 조운 합류 확인
+- 측정(ai, 10시드, 간옹·번궁·조운 포함): 거록 부목표 실패(안량 출현) 5/10, 달성 9/10
+
+## 2026-10-29 신도성은 번궁이 성 안에서 호응해 나오고, 거록은 벼랑과 숲, 책략은 속성 지형에서 더 아프다
+
+- 결정: B08 번궁은 성 안에 있다가 3턴에 "우리도 호응하자" 하고 성문을 열고 나온다(패배 조건 번궁 퇴각 삭제). 전투맵의 마을·진채는 붙여 두지 않는다(B08 진채 하나·마을 둘 흩어서, B09·B10 진채 한 칸씩). 거록은 계교와 같은 강·다리 대신 벼랑 능선의 길목과 남쪽 숲길, 숲이 많은 지형으로 바꾸고 길목 북서쪽에 회복용 성을 둔다. 신도성 장면 맵은 탁현·평원과 달리 성벽이 북서·남서쪽(성문 남서쪽 벽)인 새 맵. 9장 S#1 대사를 줄이고 번궁이 "더 중요한 것은 계교의 대결, 계교로 원군을 가자"고 말한다. 번궁은 지력 73, 고유 학습 풀에 화계. 책략은 속성에 맞는 지형에서 피해가 늘어난다(화계 초원 +15%·숲 +30%, 수계 여울 +15%·물 +30%, 지계 황무지 +15%) · 이유: 사용자 "신도 성 전투는 왜 신도성주가 나와있어", "마을은 있다면 클러스터링 되어 있지 않게", "신도성이나 탁군이나 평원이나 너무 비슷", "계교랑 거록이랑 지형이 똑같네", "번궁의 화계가 은근 쏠쏠히 쓸만하게" · 영향받는 문서: fullstory.md, logic-combat.md, logic-traits.md
+- `internal/content/content.go`: `Rules.ElementTerrain`. `internal/core/combat.go`: `elementTerrain`(구조물 값이 있으면 그 값, 없으면 땅의 값), 공격 책략(`KindMagic`)에만. `assets/data/game.json`: `ElementTerrain`. `internal/core/core_test.go`: `TestSpellGainsOnItsElementsTerrain`
+- `assets/data/characters_story.json`: 번궁 지력 32 → 73, `Learn: ["fire"]`, 소개글
+- `tools/scene_maps/xindu.py`(새 파일), `assets/graphics/maps/S_xindu.json`, `index.json`. `assets/scenes/ch09.json`, `explore09.json`: 새 맵 자리
+- 장면의 마지막 대사 뒤 퇴장(8장 현청, 9장 전해)을 대사 다음 줄로 옮김: 같은 줄에 두면 대사가 나오기 전에 나가 버림
+- 측정(ai/rush, 10시드): B08 10/10 · 7/10, B09 10/10 · 1/10, B10 4/10(안량 출현) · 7/10(부목표 달성)
+
+## 2026-10-29 8~11장: 신도성·거록·계교 전투와 그 사이 이야기
+
+- 결정: 8장 평원에서 이어 신도성 전투(B08, 원소 별동대 고람, 번궁 구원) → 9장 신도성(번궁 합류, 전해의 영) → 거록 전투(B09, 안량·장합, 부목표 관우 대 안량 일기토) → 10장 계교 공손찬의 진영(백마의종 패배, 조운 첫 만남) → 계교 전투(B10, 국의의 노병·문추·원소 총공격) → 11장 첫 장면(백마, 조운과의 강가 대화)까지 새로 만든다. 판마다 보상: 번궁 합류, 계교에 안량이 오지 않음, 백마 · 이유: 사용자 "아예 전반적으로 계교전투까지… 신도,거록,계교의 전투와 이야기를 만든 다음, 장면장면의 스샷과 함께 대본, 설명, 구도 해서 html로". 정사·연의: 원소의 기주 탈취 뒤 계교에서 국의의 노병이 백마의종을 꺾음, 조운은 이 무렵 공손찬 휘하에서 유비를 만남. 영걸전 오마주로 신도 번궁, 거록 안량·장합 · 영향받는 문서: fullstory.md, presentation-explore.md, stage_lv_balance.md
+- 부목표를 "10턴 안에"에서 "관우가 안량을 일기토로 물리친다"로 바꿈: 빨리 이기기만 하면 저절로 달성되어 무엇을 해야 하는지 보이지 않음. 안량이 관우에게 꺾여 체면을 잃는 것은 훗날 백마의 복선
+- `tools/mapgen/layouts/hero/map08~10.txt`, `assets/scenario/hero/maps/map08~10.json`: 새 전투맵(신도성 20×16, 거록 22×16 강·다리·여울, 계교 24×18 계수·다리·여울·양쪽 진채). `assets/scenario/hero/stage08~10.json`: 새 스테이지
+- `assets/scenario/hero/story08.json`(`c08-battle`), `story09~11.json`, `explore09~10.json`, `scenario.json`(9~11장), `assets/scenes/ch09~11.json`
+- `tools/scene_maps/gongsun_camp.py`(새 파일), `assets/graphics/maps/S_gongsun_camp.json`, `index.json`: 계교 공손찬의 진영 장면 맵
+- `assets/data/equipment.json`: `baima`(백마, 보조, 이동 +2·질주 습득, 값 임시)
+- `cmd/_balance/main.go`: `-roster`(합류한 장수를 명단·출전에 더해 잰다)
+- `internal/core/campaign_content_test.go`, `internal/content/stage_level_test.go`: 캠페인 B01~B10, 거록 부목표·번궁 합류·백마·계교 안량 출현 여부 확인
+- 측정(ai, 10시드, 합류 장수 포함): B08 8/10, B09 10/10, B10 5/10(거록 부목표 실패, 안량 출현) · 7/10(달성)
+
+## 2026-10-29 8장 S#3 평원현: 부임과 기주는 해설로, 이야기는 현청의 급보에서 시작한다
+
+- 결정: 연합이 흩어진 뒤 몇 달을 건너뛴다. 평원 거리 위 해설로 평원현령 부임과 원소의 기주 탈취(한복의 죽음, 공손찬과 원소의 대립)를 알리고, 현청에서 전령이 원소 별동대의 신도 공격을 알리면서 장면이 시작된다. 평원현은 하북의 탐험 거점(현청·훈련장·상점·운하 나루)이고 관우에게 말하면 신도성으로 출진한다 · 이유: 사용자 "어차피 삼국지 영걸전 오마주야", "현승 맞이하는 장면 없애자… 시간이 지났다는 걸로", "사자가 문으로 뛰어 들어와 엎드립니다부터 시작하자". 옛 9장 첫머리(길에서 간옹이 서신을 가져옴)는 간옹이 4장부터 함께 있어 맞지 않음 · 영향받는 문서: fullstory.md, presentation-explore.md
+- `tools/scene_maps/pingyuan.py`(새 파일), `assets/graphics/maps/S_pingyuan.json`(새 파일), `index.json`: 평원현 장면 맵. 북문을 탁현(서쪽 문)과 다른 오른쪽 벽에, 운하로 하북 평원 고을 느낌
+- `assets/scenario/hero/story08.json`: `c08-p1`~`c08-p12`(해설·현청 급보), `c08-join`(간옹 합류 — 4장 팽성 합류를 만들기 전까지 B08이 간옹을 요구해서 여기 둠), `c08-walk`(explore08). `assets/scenario/hero/explore08.json`(새 파일). `assets/scenes/ch08.json`: `c08-p1`(평원 거리, 행인·현병), `c08-p5`(현청, 전령이 들어와 엎드림, 끝에 모두 걸어 나감)
+- 8장 S#3 이후의 옛 구현을 모두 삭제(git에 남음): `assets/scenario/hero/story09~11.json`, `stage08~10.json`, `maps/map08~10.json`, `assets/scenes/ch09~11.json`, `assets/scenes/ascii/c09-*·c10-*·c11-*`, `tools/mapgen/layouts/hero/stage08~10.txt`, `docs/plan-yuanshao-retreat.md`, `scenario.json`의 9~11장. 8장은 평원 탐험에서 끝나고 관우에게 출진하면 캠페인이 끝난다 · 이유: 사용자 "여기 이후의 전투맵이나 그런거 다 이상하거든. 그냥 지워버려. 햇갈리지 않게". 시험: 캠페인 끝까지 B01~B07, 계교 원소 퇴각 시험 삭제, 합류 레벨 시험은 B07 앞에 둔 시험용 합류 노드로
+- `../tools/unit3d/scene_people.py`: 보병 비전투 도트에 `prostrate`(전령이 엎드림). `tools/doteditor/units/infantry_noncombat.yaml`, `assets/sprites/infantry_noncombat.spr`
+- `internal/content/stage_level_test.go`, `internal/core/story_test.go`: 간옹 합류 노드 `c09-11` → `c08-join`, 합류 뒤 다음 노드가 탐험이라 `start` 명령 없이 확인
+
 ## 2026-10-29 전투맵 땅은 반 칸마다 합성한 바닥을 깊이만큼 내려 그리고, 높은 칸 앞에 벽을 세운다
 
 - 결정: 전투맵 땅을 맵 전체 한 장으로 굽지 않고, 반 칸마다 땅 조각·여울 돌을 32×16 한 장으로 합성(그리는 목록을 열쇠로 캐시)해 깊이(땅 0, 여울 5, 물 9)만큼 내려 먼 칸부터 그린다. 그다음 뒤 칸이 높은 변에만 뒤 칸 깊이부터 이 칸 깊이까지 벽을 먼 칸부터 그린다. 경계 번짐은 같은 깊이끼리만, 벽은 옆 칸 바닥보다 깊은 줄을 그 칸 마름모 위에서 지운다. 벽·여울 돌 원본은 128×128 틀, 반 칸 중심 (64, 64) · 이유: 층 분해(https://claude.ai/artifact/6Th8NszPxW4r6uTSDHVwz9)로 물 덧칠이 물가 번짐을 지우고, 모든 둑 조각이 위쪽을 땅 높이로 가정해 여울·물 사이 턱과 여울 뒤 경계가 5px 올라가며, 둑 조각이 먼 칸부터 그려지지 않음이 드러남. 사용자 "타일방식으로 매번 출력", "128x128 png… 64x64가 기준점", "합칠만한건 없으려나", "가리면 안될걸 가릴까봐 걱정", 시험 렌더러(https://claude.ai/artifact/3UWtDaSk9hvBimRcHCvGsB)를 보고 "훨씬 자연스러워졌네", "'같은 높이끼리만'이 맞을거 같고. 벽 가림 처리 켜는것도 맞고" · 영향받는 문서: plan-tile-floors.md(새 파일), plan-naval-water.md, data-map.md
@@ -12,12 +106,13 @@
 - `../assets_candidate/tools/gen_banks.py`: `wall_{grass,soil,stone,weir}_{nw,ne}_{위}{아래}_{옆 칸 깊이}`, 128 틀의 `ford_bed_*`. 옛 `bank_*`·`ford_*_{grass,soil}`·`ford_back_*` 삭제. `tools/build_extra.py`: `"frame": 128` 조각은 투명 테두리를 잘라 묶고 기준점을 계산
 - 확인: `_uidemo-vm -ui rivercross`·`rivercross-b07`·`naval` 캡처, `go test ./internal/gui/`
 
-## 2026-10-29 다리 밑으로 둑이 잇고 교각이 서며, 여울은 땅과 물 사이 높이의 돌바닥
+## 2026-10-29 간옹은 4장 팽성에서 합류, 콩주머니는 호로관 부목표로 공융이 준다
 
-- 결정: 낮은 물의 건넘목을 그림으로 잇는다. 다리는 땅 높이 그대로 두되 다리 밑에도 둑(끝은 돌 축대)을 잇고 옆판·교각·난간을 단다. 여울은 땅보다 5px 낮고 물보다 4px 높은, 맑은 얕은 물 아래 돌바닥으로, 땅 쪽에 흙 턱, 아래쪽 물 쪽에 울퉁불퉁한 돌 사이로 물이 흘러내리는 턱, 뒤쪽 물과는 물빛이 번져 섞임 · 이유: 사용자 "물타일이 내려가면서 절벽생긴게, 다리등에는 적용되지 않으니까 좀 어색해", 시안 네 가지 중 "1안이 훨씬 좋은거같아", 여울은 "평지와 강의 중간 정도… 돌이랑 진흙이랑 징검돌다리 이런거 있어서 살짝 솟았다는 느낌", "물 담그기는 냅두고", 첫 구현을 보고 "여울이랑 물이 너무 칼같이 구별", "땅에 가깝게 높아보여", "울퉁불퉁한 돌이 있어서 거기로 물이 흘러내린다는 느낌", "흙탕물처럼 보여서", 강둑 절벽이 여울과 만나는 곳에서 "b가 a를 끊어버리잖아", 층 분해 페이지(https://claude.ai/artifact/6Th8NszPxW4r6uTSDHVwz9)를 보고 "3번이 덮어버리면서", "7번 턱의 높이가 여울의 높이-물이 높이", "11이 밑에가 깍여있어", "위쪽 찍고 그 다음에 아래쪽" · 영향받는 문서: plan-naval-water.md, data-map.md
-- `../assets_candidate/tools/gen_banks.py`: `bank_*_stone`·`bank_*_ford`·`ford_*_{grass,soil}`·`ford_back_*`·`ford_bed_0~7`·`bridge_edge_{se,sw}`·`bridge_rail_{nw,ne}`, 옆 칸 여울로 넘어가는 부분은 5px만 남는 강둑 `bank_*_cutford`. `tools/build_extra.py`로 `extra.png`에 묶음
-- `internal/gui/field_water.go`: `fordDepth`, `makeBanks`가 다리 칸·여울 칸에도 면을 깖, `bridgeEdges`, 여울 칸에는 배를 띄우지 않음. `internal/gui/field.go`: 여울 칸 `Lift` −5, 다리는 둑 다음에 그림(`bridges`). `internal/gui/field_native.go`: 다리를 `bridges`로. 앞에 여울이 있는 물 칸엔 어두운 선을 긋지 않음, 둑 조각을 먼 칸부터(같은 칸에선 턱 → 절벽 → 선) 그림, 여울 턱은 옆 칸이 땅일 때만 자름, `Field.Layers`(디버그 층 스위치). `internal/gui/field_native.go`: 낮은 물 위에도 여울 쪽 경계 번짐(`content.FordTile`)은 다시 얹음 `internal/gui/field_wade.go`: −5에서도 발이 잠김
-- 확인: `_uidemo-vm -ui rivercross`(폭 2칸 강에 다리·여울)와 `-ui rivercross-b07`(B07 맵) 캡처
+- 결정: 간옹을 4장 팽성에서 합류시킨다. 탁현에서 의병의 외상값을 정리하고 장세평의 군량을 챙기다가 그의 말 장사 행렬에 끼어 온다. 유비의 어머니는 다루지 않는다(사용자: "간옹이 왔다면 어머니는 어떻게 하고 왔다는건가"). 1장 탁현 거리에 NPC로 미리 세운다 · 이유: 사용자 "7탄까지면 꽤 긴데, 유관장만 나오는게 아쉬워. 대충 4탄쯤 간옹을 등장", 안 A(상인 행렬) 선택, "1장 탁군 스토리에서도 npc로 간옹 있으면 좋지 않을까? 복선 식으로" · 영향받는 문서: fullstory.md
+- 결정: 판마다 다음 판의 동기(새 장수·아이템·특성)를 하나씩: 1 청룡언월도·장팔사모, 2 화계서, 3 간옹, 4 보리, 5 고정도, 6 콩주머니, 7 절영 · 이유: 사용자 "다음판,다음판을 이어갈 수 있는 원동력으로 새로운 특성/인물/아이템" · 영향받는 문서: fullstory.md
+- 결정: 자웅일대검은 간옹 합류 때가 아니라 더 나중 · 이유: 사용자 "자웅일대검은 더 나중에 주도록" · 영향받는 문서: fullstory.md
+- 결정: 콩주머니(조조전식, 피격마다 콩을 먹음)는 6장 호로관 부목표(상당·하내 병사가 한 부대라도 산 채로 여포를 물리침) 보상으로 공융이 준다. 콩 회복량 220 → 400 · 이유: 사용자 "콩주머니가 너무 일찍나오긴 한다. 호로관에서 부목표", "공융 어떄? 공융은 좀 인격자로", 공융의 은혜가 11장 북해 구원의 복선 · 영향받는 문서: fullstory.md, data-item.md
+- `docs/fullstory.md`: 출전 원칙(4장부터 넷)과 판마다 받는 것, 1장 간옹 복선, 4장 S#2 간옹 합류, 5~7장 아군에 간옹, 6장 부목표와 전투 뒤 S#5 공융, 8장 개요의 간옹 합류 삭제
 
 ## 2026-10-29 플레이어 AI는 기대전투력으로 고르고, 쓰러질 수 있는 칸만 피하며, 목표 구역으로 간다
 
@@ -36,6 +131,18 @@
 - 테스트: battle_goals_test.go(바뀐 목표·안내·저장·승리·다음 전투), campaign_content_test.go `winStage`가 지금 목표로, objective_test.go
 - 측정(B07, 10 시드): 지금 측정 AI 0/10(도달 목표를 모름), 목표 이동을 아는 시험 평가식 10/10·4.6라운드. 여포가 서쪽 끝에 나타나 빠져나가기가 쉬움 — 스테이지 조정은 남김
 
+## 2026-10-29 동탁 추격전 뒤: 새벽 앞마당과 벼랑의 작별, 조조가 패도로 돌아서는 자리
+
+- 결정: 추격전 뒤 선물은 의천검이 아니라 절영 · 이유: 사용자 "앞에서 고정도를 얻었어. 둘다 칼이야. 칼 쓰는 사람은 유비밖에 없거든" · 영향받는 문서: fullstory.md, data-item.md
+- 결정: 원소의 밤 술자리를 빼고, 원소가 새벽 앞마당에 와서 동군을 맡기며 "본초" 소리에 맹주를 내세우고 조조가 읍한다 · 이유: 사용자 제안("원소가 오는거야… 니 처지가 감히 나랑 맞먹을 수 있겠느냐"), 정사에서 형양 패전 뒤 조조가 원소에게 반쯤 기댔다가 동군태수가 됨. 원소의 하대 이유는 조조의 헛소문에 제후들이 망신당한 것 · 영향받는 문서: fullstory.md
+- 결정: 절영은 새벽이 아니라 벼랑의 작별에서 준다("이제 나한테는 어울리지 않는 말이오" 다음 "천하를 버릴지언정") · 이유: 사용자 "이 작별 자리 이거 좋은거같아" · 영향받는 문서: fullstory.md
+- 결정: 제후들은 술판이 아니라 몸을 사렸을 뿐(비파·술 소리 뺌), 말은 그리지 않고 대사로만, 일행은 동시에 걸어 들어오고, 말리기는 서술 대신 위협 자세·말풍선·읍 · 이유: 사용자 지적(첫 영상) · 영향받는 문서: presentation-scene.md
+- 결정: 벼랑 장면은 2장 벼랑의 사본이 아니라 진영이 벼랑 남서쪽 아래에 펼쳐진 새 맵 · 이유: 진영이 벼랑 뒤(북서쪽)에 있으면 벽이 카메라 반대편이라 "절벽이란 느낌이 안 들어", 벼랑 위 풀 칸은 "초록색 초원 같은게 점점점점" · 영향받는 문서: presentation-scene.md
+- `assets/scenario/hero/story07.json`·`assets/scenes/ch07.json` `c07-scene-2`: 새벽 앞마당(S_coalition_camp 조조 진영 앞마당, 거적 덮인 주검, 원소와 호위, 부목표 실패 분기). `story08.json`·`ch08.json`: 옛 원소 막사·언덕 대신 벼랑의 작별(S_cliff_coalition, 봉화대 연기, 절영 grant)
+- `assets/data/equipment.json`: `jueying`(절영, 장신구, 민첩 +2·사기 +1, 질주; 수치 임시). `characters_story.json`: 하후돈 `Look.Scene` `xiahoudun_noncombat`. `internal/core/campaign_content_test.go`: 의천검 → 절영
+- `internal/scenes/scenes.go`·`internal/gui/scene.go`: `Via`(Move 전에 거치는 모퉁이), 소품 이름 `#` 뒤는 같은 소품의 다른 한 개(`straw_mat#2`), 장면 효과가 높은 땅 높이만큼 올라감. `internal/scenemap/plan.go`: 높은 땅 윗면에도 그 땅의 지면 장식(`topStamps`)
+- `tools/unit3d/scene_people.py`·`tools/doteditor/tools/civ3d.py`: 자세 `fist`(하후돈)·`point`(장비)·조조 `bow`. `tools/unit3d/scene_props3d.py`: `beacon`(봉화대), `rock_pile_0~2`(만들었으나 사용자 "어색해"로 맵에서 뺌). `tools/scene_maps/cliff_coalition.py`: S_cliff_coalition
+
 ## 2026-10-29 스테이지 레벨은 전투마다 +1.5, 도구도 경험치를 주고, 유비는 화계서를 든다
 
 - 결정: 기준 레벨을 `3 + round(1.5 × (n − 1))`로(`StageLevelStep` 1.5, 실수). 경험치·일기토·특성치·승급 레벨은 그대로 · 이유: 사용자 "전투당 +1.5 정도로", "promote level은 15,30으로 그대로… 기존이 promote가 너무 빨리 와서 조정하자고 한거", "특성치도 100으로 그대로", "경험치를 24로" — 공통부 24·연의 13·가상 16 전투로 +2면 끝이 Lv75~81(거물 Lv95 안팎). +1.5면 장판파 38, 연의 끝 57, 가상 끝 62. B01부터 성장을 이어 가는 캠페인 측정에서 경험치 24로 평균이 기준 레벨을 따라감(경험치는 레벨차로 스스로 조절됨) · 영향받는 문서: stage_lv_balance.md, logic-campaign.md
@@ -47,6 +154,28 @@
 - `cmd/_campaign`(새, 임시): B01부터 이야기를 따라 게임 AI로 싸우며(지면 난수를 바꿔 다섯 번까지) 유관장 레벨과 유비의 행동을 낸다
 - 테스트: stage_level_test.go·coalition_test.go·story_test.go 기대 레벨, campaign_content_test.go 화계서는 유비가 참, damage_pct_test.go 도구 경험치
 - 측정(`_campaign`, 시드 1~3, B07 기준 Lv12 앞): 고치기 전 관우 14~15 · 장비 11~13 · 유비 7~8 → 고친 뒤 관우 14 · 장비 13~14 · 유비 13~14. 유비는 B01 견고, B03부터 초열을 판마다 2~7번, 콩을 1~7번 씀. 셋 평균이 기준보다 +1.5~2 높음. B07은 고치기 전에도 늘 지던 스테이지
+
+## 2026-10-29 다리 밑으로 둑이 잇고 교각이 서며, 여울은 땅과 물 사이 높이의 돌바닥
+
+- 결정: 낮은 물의 건넘목을 그림으로 잇는다. 다리는 땅 높이 그대로 두되 다리 밑에도 둑(끝은 돌 축대)을 잇고 옆판·교각·난간을 단다. 여울은 땅보다 5px 낮고 물보다 4px 높은, 맑은 얕은 물 아래 돌바닥으로, 땅 쪽에 흙 턱, 아래쪽 물 쪽에 울퉁불퉁한 돌 사이로 물이 흘러내리는 턱, 뒤쪽 물과는 물빛이 번져 섞임 · 이유: 사용자 "물타일이 내려가면서 절벽생긴게, 다리등에는 적용되지 않으니까 좀 어색해", 시안 네 가지 중 "1안이 훨씬 좋은거같아", 여울은 "평지와 강의 중간 정도… 돌이랑 진흙이랑 징검돌다리 이런거 있어서 살짝 솟았다는 느낌", "물 담그기는 냅두고", 첫 구현을 보고 "여울이랑 물이 너무 칼같이 구별", "땅에 가깝게 높아보여", "울퉁불퉁한 돌이 있어서 거기로 물이 흘러내린다는 느낌", "흙탕물처럼 보여서", 강둑 절벽이 여울과 만나는 곳에서 "b가 a를 끊어버리잖아", 층 분해 페이지(https://claude.ai/artifact/6Th8NszPxW4r6uTSDHVwz9)를 보고 "3번이 덮어버리면서", "7번 턱의 높이가 여울의 높이-물이 높이", "11이 밑에가 깍여있어", "위쪽 찍고 그 다음에 아래쪽" · 영향받는 문서: plan-naval-water.md, data-map.md
+- `../assets_candidate/tools/gen_banks.py`: `bank_*_stone`·`bank_*_ford`·`ford_*_{grass,soil}`·`ford_back_*`·`ford_bed_0~7`·`bridge_edge_{se,sw}`·`bridge_rail_{nw,ne}`, 옆 칸 여울로 넘어가는 부분은 5px만 남는 강둑 `bank_*_cutford`. `tools/build_extra.py`로 `extra.png`에 묶음
+- `internal/gui/field_water.go`: `fordDepth`, `makeBanks`가 다리 칸·여울 칸에도 면을 깖, `bridgeEdges`, 여울 칸에는 배를 띄우지 않음. `internal/gui/field.go`: 여울 칸 `Lift` −5, 다리는 둑 다음에 그림(`bridges`). `internal/gui/field_native.go`: 다리를 `bridges`로. 앞에 여울이 있는 물 칸엔 어두운 선을 긋지 않음, 둑 조각을 먼 칸부터(같은 칸에선 턱 → 절벽 → 선) 그림, 여울 턱은 옆 칸이 땅일 때만 자름, `Field.Layers`(디버그 층 스위치). `internal/gui/field_native.go`: 낮은 물 위에도 여울 쪽 경계 번짐(`content.FordTile`)은 다시 얹음 `internal/gui/field_wade.go`: −5에서도 발이 잠김
+- 확인: `_uidemo-vm -ui rivercross`(폭 2칸 강에 다리·여울)와 `-ui rivercross-b07`(B07 맵) 캡처
+
+## 2026-10-29 외길을 지나는 AI 유닛이 한 칸 간격으로 함께 걷는다
+
+- 결정: 클레임 리플레이에서 두 행동이 둘 다 걸어서 지나가기만 하는 칸은, 뒤 행동이 앞 행동 전체가 아니라 앞 유닛이 그 칸을 벗어날 때까지만 기다린다(`Trail`) · 이유: 사용자 "좁은 지형이 있고, 거기에 지나갈 때는 무조건 한번에 1기씩 애니메이션이야? AI 특유의 동시에 전개되는게 갑자기 안되네" — B07 여포군 보병이 3턴부터 움직이며 다리 앞에서 한 기씩 건너는 게 드러남 · 영향받는 문서: presentation-replay.md
+- `internal/replay/replay.go`: `Claim`(키, 걷는 칸인지, 머무는 걸음 `In`~`Out`), `Action.walk`(첫 명령이 이동일 때의 길), `Action.Trail`·`Lead`. `Link`가 걷는 칸끼리는 `After` 대신 `Trail`에 출발 지연(걸음 수)을 적음
+- `internal/gui/player.go`: 재생 시계 `clock`, 행동별 출발 시각 `started`. `Trail`의 앞 행동이 출발하고 `걸음 × stepTime`이 지나야 출발
+- `internal/replay/replay_test.go`: 한 줄로 걷는 셋이 한 걸음씩 뒤따름, 멈춘 자리를 지나가는 행동은 도착 뒤, 싸우는 칸을 지나가는 행동은 끝까지 기다림
+- 확인: B07 3턴부터 끝내기를 반복하는 GUI 캡처에서 4턴 동탁군 차례에 기병 둘·셋이 한 칸 간격으로 다리 위를 함께 건넘
+
+## 2026-10-29 동탁 추격전: 제후군은 이벤트 안에서 물러나고, 여포군은 서쪽 끝 세 줄, 여포는 가운데
+
+- 결정: 컷신 단계 `leave`(가장 가까운 가장자리로 걸어가 도주 퇴장)를 두고, B07 제후군의 퇴각을 `ai flee` 대신 이벤트 안의 `leave`로. 여포군은 x 0~2 세 줄, 여포는 가운데 (1,5). 보병은 나오자마자 `assault` · 이유: 사용자 "여포가 나온 후 아군을 이동시키면 한참 메뉴가 안 뜸… 우하단 동맹군이 후퇴하는 모션이 나오더라", "여포가 나타난 후 동맹군이 여포다! 하더니 바로 후퇴하는 모션이 이벤트에 나온 후, 조조군과 유비군만 남아 대화", "여포가 병력들 가운데 있어야", "같이 나온 보병들은 멀뚱멀뚱", "좌상단 끝 3,2,1칸" · 영향받는 문서: logic-battle-event.md, data-scenario-node.md, presentation-replay.md
+- 원인: 제후군은 동쪽 끝(구역 2) 바로 옆에 나와 일부가 이미 구역 안에 서 있었고, 도주 유닛의 퇴장(`leaveByFlight`)은 다음 정산, 곧 플레이어의 다음 행동 뒤에 일어났다. 그래서 이동 직후 제후군 열세 명의 퇴장 연출이 끝날 때까지 행동 메뉴가 나오지 않았다
+- `internal/core/battle_events.go`: 컷신 단계 `leave` — `leave`가 가장 가까운 가장자리 칸(걸을 수 있는 땅)까지의 길을 내고 HP 0, `fled-` 기록. `internal/gui/cutscene.go`: 그 길을 걸은 뒤 `leaveField`. `internal/content/battle_events.go`·`content.go`: 검증·설명. `internal/cli/play.go`: `[컷신] X 퇴장`
+- `assets/scenario/hero/stage07.json`: `lords-and-lubu`의 `ai lords flee`를 `cutscene [[leave lords]]`로. 여포군 스폰을 앞줄 x 2(보병 (2,3) · 기병 (2,4~7) · 보병 (2,8)), 가운데 줄 x 1(보병 (1,3)(1,4) · 여포 (1,5) · 보병 (1,6)(1,7)), 뒷줄 x 0(보병 (0,3)(0,5~7))으로. 화면에서 여포 바로 위 칸 (0,4)는 비워 보병이 여포의 HP 막대·말풍선을 가리지 않게 함. 보병 그룹 `lubu-foot`을 `lubu`에 합치고 `assault`로 나오게 해 `lubu-foot-follows`를 지움. 여포는 그대로 `react` → 4턴 `assault`(`lubu-charges`). 스폰 순서가 기병 → 여포 → 보병이고 여포가 다리 줄(y 5)에 있어, 텍스트 추적에서 4턴에 여포가 보병보다 먼저 다리를 건넘을 확인
 
 ## 2026-10-29 여울·평지 지형, 여울에 잠기는 발, 탁군 길은 평지로
 
@@ -61,12 +190,19 @@
 - `internal/gui/hud.go` 미니맵 색, `internal/cli/ascii.go`·`tools/mapgen/stage_ascii.py` 배치 글자
 - `assets/scenario/hero/maps/map01.json`, `tools/mapgen/layouts/hero/stage01.txt`: 탁군의 황무지 28칸(가운데 길)을 평지로
 
+## 2026-10-29 1장 상인 한 칸 성문 쪽으로
+
+- `assets/scenario/hero/stage01.json`, `tools/mapgen/layouts/hero/stage01.txt`: 장세평 (7,5)→(7,6), 소쌍 (8,5)→(8,6) — 사용자 "1탄 난이도를 낮추려고 상인을 성과 가깝게 한 칸씩 좌하로". 등무와 한 칸 벌어지고 성문까지 한 칸 줄어듦. `_balance -seeds 20`: rush 11/20 → 15/20(유비 퇴각 9 → 5), ai 20/20 그대로, 두 방식 모두 상인은 전후 한 번도 쓰러지지 않음.
+- `cmd/_balance/main.go`: 퇴각 집계에 AI 아군(상인·수비대)이 쓰러진 것도 `npc:` 접두어로 넣음(성문으로 빠져나간 `flight`는 뺌) — 호위 대상이 쓰러지는지 볼 수단이 없었음.
+
 ## 2026-10-29 전투 목표 안내
 
-- `internal/core/goal_marks.go`(새 파일, `Engine.GoalMarks`): 승리·패배 조건에서 표시할 유닛·지역을 뽑음 — `defeated`는 그 유닛, `at`은 지역과(아군이면) 그 유닛, 군주는 늘 패배 쪽, `flag`·`round`가 아직이면 `Pending` — 사용자 "특정 위치 이동, 특정 세력 전멸이 뭔지 인식이 안 됨".
-- `internal/gui/field_goals.go`(새 파일), `field.go`: 바닥 색칠 뒤·지형물과 유닛 앞에 초록(승리, 칸 크기)·빨강(패배, 작게) 마름모와 지역 테두리, 미충족 목표는 흐리게 — 사용자 안: 겹친 유닛은 큰 초록·작은 빨강, 표시는 배경 타일 쪽 발밑. 조건 줄에 올리면 밝아지는 연결은 "정 필요하면 나중에"로 뺌.
-- `internal/gui/game.go`(`speedButton`), `internal/storage/storage.go`(`NoGoalGuide`): 속도 버튼 오른쪽 `목표` 토글, 기본 켜짐, 설정에 저장. `scene.go`: 장면은 안내를 지움.
-- `internal/gui/uidemo_goals.go`(새 파일): 표시 중심으로 카메라를 맞추고 150프레임에 끄는 데모. `docs/presentation-ui.md`: 설명.
+- `internal/core/goal_marks.go`(새 파일, `Engine.GoalMarks`·`DuelMarks`): 승리·패배 조건에서 표시할 유닛·지역을 뽑음 — `defeated`는 그 유닛, `at`은 지역과(아군이면) 그 유닛, 군주는 늘 패배 쪽, `flag`·`round`가 아직이면 `Pending`. 남은 일기토의 장수(대신 나설 `Supports` 포함)와 그 묶음 번호 — 사용자 "특정 위치 이동, 특정 세력 전멸이 뭔지 인식이 안 됨", "장비랑 등무가 싸우는지 정원지랑 싸우는지 헷갈림".
+- `internal/content/content.go`(`Stage.DuelGroups`, 테스트 `duel_groups_test.go`): 장수를 공유하는 대진을 한 묶음으로 — 사용자 "한 장수가 여럿이랑 걸리면 같은 색".
+- `internal/gui/field_goals.go`(새 파일), `field.go`: 바닥 색칠 뒤·지형물과 유닛 앞에 초록 실선(승리, 칸 크기)·빨강 실선(패배, 작게)·묶음 색 점선(일기토, 그 사이) 마름모와 지역 테두리, 미충족 목표는 흐리게. 일기토 색은 초록·빨강과 먼 다섯 색을 돌려 씀 — 사용자 안(겹친 유닛은 큰 초록·작은 빨강, 표시는 배경 타일 쪽 발밑, 일기토는 좀 작게, 먼 색). 조건 줄에 올리면 밝아지는 연결은 "정 필요하면 나중에"로 뺌.
+- `internal/gui/game.go`(`speedButton`·`openObjective`), `hud_panel.go`, `windows.go`: 속도 버튼 오른쪽 `전투 목표` 버튼이 옛 `작전 개요` 모달(이름을 `전투 목표`로)을 염. 모달 아래에 `목표 안내` 토글(켜지면 금빛으로 눌림)과 `확인`, 아무 데나 클릭해 닫던 것은 확인으로만 — 사용자 "그냥 '목표'라고 쓰니 투박", 토글을 모달 안에 두자는 안. 일기토 줄 앞에 그 색의 점선 마름모. `internal/storage/storage.go`(`NoGoalGuide`): 기본 켜짐, 설정에 저장. `scene.go`: 장면은 안내를 지움.
+- `internal/gui/windows.go`(`objectiveDuels`): 일기토 줄에 대신 나설 장수(`Supports`)도 `장비·관우·유비 대 여포`처럼 함께 — 사용자 "호로관은 관우 대 여포, 유비 대 여포도 있는데 전투 목표에 안 나옴".
+- `internal/gui/uidemo_goals.go`(새 파일): 표시 중심으로 카메라를 맞추고 100프레임에 모달을 열어 150프레임에 안내를 끄는 데모. `docs/presentation-ui.md`·`presentation-replay.md`: 설명.
 
 ## 2026-10-29 5장 주막 조조 사연·관문 대사
 
@@ -1608,3 +1744,14 @@
 - assets/scenario/hero/stage05.json, docs/fullstory.md: 사수관 — 이숙·서량 보병 넷 `hold` → `assault`, 손견·정보·황개·한당 `react` → `assault`. 화웅 출진은 6턴 고정 → 서량병이 모두 쓰러지거나 8턴(`any:[alldefeated:xiliang, round>=8]`), 대사 "이숙, 관문을 지켜라" → "쓸모없는 놈들! 비켜라, 이 화웅이 직접 놈들의 목을 베어 주마!" — 동탁군 절반과 손견군이 제자리에서 움직이지 않아 싸움이 안 되던 것(ai 20판 19승·평균 7.8라운드, rush 17승)
 - internal/gui/acquire.go(새 파일)·windows.go·game.go·equipment_window.go, internal/core/explore.go, internal/gui/uidemo_acquire.go·acquire_test.go, internal/core/explore_test.go: 획득 창 — 이야기·탐험 지급과 상점 구매(구매도 `grant` 이벤트를 냄)로 무언가 들어오면 화면 가운데 '획득' 아래 물건마다 패가 한 장씩 차례로 올라옴(처음 얻는 것은 '처음' 표시와 금빛). 장비 패는 특성을, 도구 패는 쓰임을 보여 주고, 누르면 장비·도구 창(설명·보정·특성 단추 / 효과·가진 수), 특성 단추는 장비 창의 특성 설명 창(`chipWindow`로 떼어 냄)을 위에 엶. 창은 바깥 클릭·Esc로 한 겹씩 닫히고 패는 다시 움직이지 않으며, 패는 확인으로만 닫힘. 전투 보상은 결산 창 그대로 — 아이템을 얻어도 화면에 아무것도 뜨지 않던 것(`g.notice`는 그려지지 않았음), 사용자가 고른 시안 C(나란한 패)
 - assets/data/items.json, internal/content/content.go(`Item.Icon`), tools/spritetool/assets/ver5-ui(settings·pixels·sources/item_bean·barley·rice·liquor·fine_liquor·baijiu·scroll.png), assets/graphics/ui, internal/gui/events.go(`itemIconOf`)·acquire.go·shop.go·uidemo_acquire.go: 도구 아이콘 7종 — 콩(콩 자루), 보리(보릿단), 쌀(쌀 사발), 술(붉은 천 덮은 술독), 특급주(청자 술병), 빼갈(황토 봉인 술독), 승급서(죽간, 12종 공용). codex 그림→도트 변환. 획득 패·도구 창·상점 줄에 나옴 — 도구가 아이콘 없이 빈 칸으로 나오던 것
+
+## 2026-10-29 전투 맵 울타리·마을·주둔지를 도트 상자로
+
+- ../assets_candidate/tools/gen_pixel_kit.py(battle sites 절), ../assets_candidate/tiles(fence_00..15, village, camp, burnt_village, burnt_camp), assets/graphics/map/extra.png: 성벽·성문과 같은 방식(작은 칸 가로2·세로1 격자 위 상자에 도트 무늬)으로 다시 그림. 울타리는 가로대 두 줄 나무 울타리, 마을은 초가·기와집·짚더미·우물·울짱, 주둔지는 말뚝 목책·지휘 막사·병사 막사·보급 꾸러미·깃대, 불탄 판은 지붕·천막이 없어진 숯 색 — 옛 울타리는 작은 그림을 2배로 키워 성겼고 마을은 노란 네모 넷뿐이던 것
+- internal/gui/field_native.go: 울타리를 1배로 그림, 마을·주둔지는 같은 이름의 extra 그림이 있으면 sites.png 대신 그림. internal/gui/field_scenery.go: 깃발 없는 주둔지 대체 그림(`base`) 처리 삭제
+- assets/graphics/map/scenery.json, ../assets_candidate/tools/gen_scenery.py: 주둔지 `base`(camp_base) 삭제, 마을 연기를 새 굴뚝 꼭대기(-9,-27)·(20,-24)로
+- ../assets_candidate/tools/gen_all.py: 옛 전투 울타리와 sites.png에서 만들던 불탄 마을·주둔지를 뺌(장면 울타리 sfence는 그대로)
+- ../assets_candidate/tools/gen_pixel_kit.py(village_0..3, house·ruin), internal/gui/field_native.go(`siteVariants`), assets/graphics/map/scenery.json·../assets_candidate/tools/gen_scenery.py(`village_<n>` 연기): 마을 그림을 네 판으로 — 초가·기와집, ㄱ자 초가와 장독대·텃밭, 부잣집 기와집과 곳간·흙담, 오두막 셋. 칸 좌표 (x+2y) mod 4로 골라 붙은 여덟 칸이 늘 다른 판, 불탄 판은 벽 껍데기만 들쭉날쭉 — 단양처럼 마을이 모인 맵에서 같은 그림이 줄지어 보이던 것
+- assets/scenes/ch07.json(c07-out, c07-out2): 막사 밖 두 장면을 S_army_camp에서 연합 진영(S_coalition_camp, 밤) 맹주 막사 앞으로 옮김. 위병 둘이 문을 지키고, 전령은 남쪽 길로 뛰어 들어오며, S#4에서는 삼형제가 막사에서 걸어 나오고 조조는 동쪽 대로로 떠남 — 10/28 "맹주 막사 밖은 연합군 진영, 밤" 결정이 구현 지시에서 빠져 영천 의병 진영 그림이 쓰이던 것
+- assets/scenario/hero/explore05_town.json: 주막의 삿갓 쓴 조조 자리를 작은 칸 (2,4)→(3,5)로, c05-inn 장면의 자리와 맞춤 — 말을 걸면 조조가 반 칸 아래로 튀던 것
+- internal/gui/scenario.go: 장면이 어두워지는 동안 이미 사라진 마지막 나레이션을 다시 그리지 않음; internal/gui/uidemo_explore.go: 나레이션 끝을 Update와 같은 turnPage로 넘김 — 5장 궁궐 "대신들 가운데…" 나레이션이 사라졌다 다시 뜨던 것

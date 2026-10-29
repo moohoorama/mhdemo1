@@ -45,10 +45,27 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	if s.MagicCoeff > 0 {
 		out += math.Max(1, float64(a.Mind-b.Mind)+level*R.MagicLevelScale) * s.MagicCoeff
 	}
+	if p := e.elementTerrain(v, s.Element); p != 0 && s.Kind == content.KindMagic {
+		out *= 1 + float64(p)/100
+	}
 	if p := e.state.DamagePct; p > 0 && p != 100 {
 		out = math.Max(1, out*float64(p)/100)
 	}
 	return out
+}
+
+// elementTerrain is the percent a spell of the element gains on the target's cell: fire in grass and woods,
+// water in fords and on the water, earth on badland (Rules.ElementTerrain).
+func (e *Engine) elementTerrain(v *Unit, element string) int {
+	bonus := e.data.Rules.ElementTerrain[element]
+	if bonus == nil {
+		return 0
+	}
+	c := e.Cell(v.X, v.Y)
+	if p, ok := bonus[string(c.Structure)]; ok {
+		return p
+	}
+	return bonus[string(c.Ground)]
 }
 
 // rangedAttack tells whether the blow comes from a distance: by an archer's weapon or from beyond the eight cells around the target.
@@ -325,6 +342,15 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 		}
 		add(q, k)
 	}
+	if s.Each {
+		for _, aim := range e.targets(u, v, s) {
+			hit, sh := e.victims(u, aim, single(s))
+			for _, q := range hit {
+				add(q, sh[q.ID])
+			}
+		}
+		return
+	}
 	for _, q := range e.targets(u, v, s) {
 		add(q, 1)
 	}
@@ -468,16 +494,24 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 	return nil
 }
 
+// single is the attack a skill that strikes each target on its own makes on one of them, widened
+// by the attacker's area traits like a basic attack.
+func single(s content.Skill) content.Skill {
+	s.Shape, s.Each = content.ShapeSingle, false
+	return s
+}
+
 // physical resolves a physical action: one attack on all its victims, or, for a skill that strikes each
-// target on its own, an attack with its own exchange on each of them in turn, the aimed one first.
+// target on its own, a blow with its own exchange on each of them in turn, the aimed one first.
 func (e *Engine) physical(u, v *Unit, s content.Skill, c Command) {
-	hit, share := e.victims(u, v, s)
 	if !s.Each {
+		hit, share := e.victims(u, v, s)
 		e.exchange(u, v, hit, share, s, c)
 		return
 	}
-	slices.SortStableFunc(hit, func(a, b *Unit) int { return btoi(b == v) - btoi(a == v) })
-	for i, q := range hit {
+	aims := e.targets(u, v, s)
+	slices.SortStableFunc(aims, func(a, b *Unit) int { return btoi(b == v) - btoi(a == v) })
+	for i, q := range aims {
 		if u.HP <= 0 {
 			return
 		}
@@ -487,7 +521,8 @@ func (e *Engine) physical(u, v *Unit, s content.Skill, c Command) {
 		if i > 0 {
 			e.emit("next-strike", u.ID, q.ID, 0)
 		}
-		e.exchange(u, q, []*Unit{q}, map[string]float64{q.ID: share[q.ID]}, s, c)
+		hit, share := e.victims(u, q, single(s))
+		e.exchange(u, q, hit, share, s, c)
 	}
 }
 

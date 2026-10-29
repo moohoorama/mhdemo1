@@ -68,30 +68,3 @@ func (g *Game) shopRow(dst *ebiten.Image, r image.Rectangle, id, note, button st
 	g.label(dst, note, float64(r.Max.X-180), float64(r.Min.Y+12), 15, gold)
 	g.btn(dst, image.Rect(r.Max.X-78, r.Min.Y+7, r.Max.X-8, r.Max.Y-7), button, click)
 }
-
-// partyWindow is the party on the walk: the officers on the left, the picked one's stats and equipment on the
-// right, with the buttons to change the equipment and the deputy.
-func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
-	if g.S.Engine == nil {
-		return
-	}
-	o := g.S.View()
-	roster := g.roster(o)
-	if !containsID(roster, g.selected) && len(roster) > 0 {
-		g.selected = roster[0].ID
-	}
-	ry := y + 64
-	for _, of := range roster {
-		officer := of
-		row := image.Rect(x+28, ry, x+440, ry+76)
-		g.btn(dst, row, "", func() { g.selected = officer.ID })
-		if g.selected == of.ID {
-			rect(dst, float32(row.Min.X), float32(row.Min.Y), 4, float32(row.Dy()), gold)
-		}
-		g.portrait(dst, of.ID, of.Class, float64(row.Min.X+14), float64(ry+8), 60)
-		g.label(dst, g.name(of.ID), float64(row.Min.X+88), float64(ry+8), 19, ink)
-		g.label(dst, fmt.Sprintf("Lv%d · %s", of.Level, g.className(of.Class)), float64(row.Min.X+88), float64(ry+40), 14, muted)
-		ry += 86
-	}
-	g.officerDetail(dst, o, image.Rect(x+470, y+60, x+w-28, y+h-20))
-}

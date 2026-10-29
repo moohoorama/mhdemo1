@@ -3,6 +3,7 @@
 //
 //	go run ./cmd/_uidemo -ui turn -out reports/uidemo/turn -frames 120 -every 6
 //	go run ./cmd/_uidemo -ui duel -duel <stage duel id>
+//	go run ./cmd/_uidemo -ui sceneskip -node <story node id>
 package main
 
 import (
@@ -22,8 +23,10 @@ func main() {
 	every := flag.Int("every", 6, "save every n-th frame; 0 saves none (vmhost guest)")
 	stage := flag.String("stage", "", "battle stage the demos play (default: the first)")
 	duel := flag.String("duel", "", "stage duel the duel demo plays (default: the first)")
+	node := flag.String("node", "", "story node the scene demos jump to")
 	size := flag.String("size", "1280x850", "window size in device pixels, e.g. 2400x1080 for a phone")
 	uiScale := flag.Int("uiscale", 0, "UI size setting in percent (80-160); 0 keeps the default")
+	debug := flag.Bool("debug", false, "show what srpg-gui -debug shows")
 	flag.Parse()
 	var w, h int
 	if _, err := fmt.Sscanf(*size, "%dx%d", &w, &h); err != nil {
@@ -33,8 +36,8 @@ func main() {
 	if *out == "" {
 		*out = "reports/uidemo/" + *name
 	}
-	d, err := gui.NewDemo(".", gui.DemoOptions{Name: *name, Out: *out, Stage: *stage, Duel: *duel,
-		Frames: *frames, Every: *every, UIScale: *uiScale})
+	d, err := gui.NewDemo(".", gui.DemoOptions{Name: *name, Out: *out, Stage: *stage, Duel: *duel, Node: *node,
+		Frames: *frames, Every: *every, UIScale: *uiScale, Debug: *debug})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

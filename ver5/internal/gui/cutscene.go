@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"image"
 	"sort"
 
 	"srpg/internal/content"
@@ -96,6 +97,15 @@ func (g *Game) cutsceneTimeline(groups [][]core.CutStep) (entries []timedFn, tot
 						g.logPending = append(g.logPending, g.name(st.Unit)+": "+st.Text)
 					}},
 					timedFn{total + length, func() { g.dropSpeech() }})
+			case "leave":
+				entries = append(entries, g.walkTimeline(st.Unit, st.Path, "", total)...)
+				walked := float64(max(0, len(st.Path)-1)) * stepTime
+				dir := image.Point{}
+				if n := len(st.Path); n > 1 {
+					dir = image.Pt(st.Path[n-1].X-st.Path[n-2].X, st.Path[n-1].Y-st.Path[n-2].Y)
+				}
+				entries = append(entries, timedFn{total + walked, g.onUnit(st.Unit, func(v *unitVis) { g.leaveField(v, dir) })})
+				length = walked + leaveTime
 			case "wait":
 				length = st.Seconds
 			}

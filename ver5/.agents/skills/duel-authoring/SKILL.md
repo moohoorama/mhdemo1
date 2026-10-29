@@ -31,7 +31,7 @@ description: 이 프로젝트의 전투 중 일기토를 이야기와 장수 성
 
 ## 화면과 검증
 
-일반 감상 화면에는 상황 설명·동작 제목·진행률·분석용 조작을 표시하지 않는다. 장수 초상, 실제 대사와 건너뛰기 버튼을 사용한다. 저작용 설명과 탐색은 본편 감상 모드의 명시적인 `-duel-debug` 모드에 둔다. 말풍선은 `internal/duelview/bubble.go`의 흰색 PNG 조립을 쓴다.
+일반 감상 화면에는 상황 설명·동작 제목·진행률·분석용 조작을 표시하지 않는다. 장수 초상, 실제 대사와 건너뛰기 버튼을 사용한다. 저작용 설명과 탐색은 검증 모드(`-debug`)에 둔다. 말풍선은 `internal/duelview/bubble.go`의 흰색 PNG 조립을 쓴다.
 
 검증은 결과뿐 아니라 이야기 의미를 확인한다. 방어 순간의 자세와 효과, 여유로운 장수의 피격·탈진 여부, 도주 경로, 추격자의 도착, 첫 타격 전후 시점, 사망·퇴각 결과가 관찰 가능한 테스트 대상이다. 바뀐 동작은 타격 전·접촉·이후 및 마지막 구간을 확인한다. 입력한 JSON과 같은 문자열인지 확인하는 테스트로 대신하지 않는다.
 
@@ -39,7 +39,7 @@ description: 이 프로젝트의 전투 중 일기토를 이야기와 장수 성
 go test ./internal/duel ./internal/core ./internal/gui
 go vet ./internal/duel ./internal/duelview ./internal/gui ./cmd/srpg-gui
 go run ./cmd/srpg-gui -duel <ID> -duel-capture reports/duel-story-preview
-go run ./cmd/srpg-gui -duel <ID> -duel-debug
+go run ./cmd/srpg-gui -duel <ID> -debug
 SRPG_RENDER_TEST=1 go test ./internal/gui -run '^TestRenderedCampaignDuels$' -count=1 -v
 ```
 

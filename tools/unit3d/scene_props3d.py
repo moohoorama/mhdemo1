@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ver5 story-scene props modelled in 3D: weapon rack, armour stand, candle stand, antler barrier, watchtower,
 shield wall, straw mat, bloody cloth, medicine pot, broken spear, fallen flag, cauldron, grain sack, wine jar, grain
-cart and the big command tent.
+cart, the big command tent, rock piles and a beacon tower.
 
 Same camera and cel renderer as structures.py (one model unit = one 32 x 16 scene-map cell, 30 degree elevation,
 seen from SW: +x runs to the lower right along map u, +y to the upper right). Heights are at the scene people's
@@ -840,6 +840,220 @@ def well():
     return draw()
 
 
+ROCK, ROCK_DARK = '#9a8660', '#6e5a40'  # the cliff's tan stone, lit and in shade
+R.add_ramps({ROCK: 'UTTS', ROCK_DARK: 'fUUT'})
+
+
+def boulder(rnd, c, r):
+    """A lumpy weathered boulder: three overlapping flattened lumps round c."""
+    for k in range(3):
+        a = rnd.uniform(0, math.tau)
+        d = r*.35*(k > 0)
+        m.ell(c + V(d*math.cos(a), d*math.sin(a), r*.15*(k == 0)),
+              [r*rnd.uniform(.75, 1.0), r*rnd.uniform(.65, .9), r*rnd.uniform(.45, .62)], ROCK if k != 2 else ROCK_DARK)
+
+
+def rock_pile(seed=0):
+    """바위 무더기: a few weathered boulders of the cliff's tan stone half sunk in the soil, smaller stones at their
+    feet (the bare cliff top over the coalition camp)."""
+    rnd = np.random.default_rng(seed + 91)
+    m.meshes = []
+    for x, y, r in [(0, 0, .72), (.55, .32, .45), (-.5, .4, .36)][:2 + seed % 2]:
+        boulder(rnd, V(x, y, r*.3), r)
+    for _ in range(5):
+        a, d = rnd.uniform(0, math.tau), rnd.uniform(.7, 1.05)
+        r = rnd.uniform(.08, .15)
+        m.ell(V(d*math.cos(a), d*math.sin(a), r*.4), [r, r*.85, r*.55], ROCK_DARK if rnd.random() < .5 else ROCK)
+    return draw()
+
+
+def beacon():
+    """봉화대: a round tower of stacked field stone, waist to shoulder high, with brushwood and logs heaped on top
+    ready to be lit; the thin smoke over it is the scene's smoke effect."""
+    rnd = np.random.default_rng(7)
+    m.meshes = []
+    disc((0, 0, 0), (0, 0, 1.2), .62, ROCK_DARK, n=18)
+    disc((0, 0, 1.2), (0, 0, 1.28), .68, ROCK, n=18)
+    for k in range(4):  # courses of stone showing in the wall
+        z = .18 + k*.28
+        for i in range(9):
+            a = i*math.tau/9 + k*.35
+            m.ell(V(.6*math.cos(a), .6*math.sin(a), z), [.13, .13, .09], ROCK if (i + k) % 2 else ROCK_DARK)
+    for k in range(7):  # the brushwood heap
+        a = k*math.tau/7 + rnd.uniform(-.2, .2)
+        m.rod(V(.42*math.cos(a), .42*math.sin(a), 1.3), V(.06*math.cos(a), .06*math.sin(a), 1.75), .05,
+              P.PLANK_DARK if k % 2 else SHAFT)
+    m.ell(V(0, 0, 1.42), [.3, .3, .16], STRAW_DARK)
+    return draw(cell=(96, 140), pivot=(48, 112))
+
+
+SOIL, SOIL_RIDGE, SPROUT, MILLET, MILLET_HEAD = '#5a3620', '#8a5a34', '#79b866', '#c9a24a', '#e6b23a'
+R.add_ramps({SOIL: 'ffff', SOIL_RIDGE: 'ghhi', SPROUT: 'IJJJ', MILLET: 'kkll', MILLET_HEAD: 'lmmn'})
+
+
+def shrine():
+    """마을 사당: a small tiled shrine on a stone plinth, two steps up the front; plaster walls on three sides, the
+    front (-y) open between red pillars onto a dark hall with the spirit tablet on its altar, a bronze incense
+    tripod at the foot of the steps."""
+    m.meshes = []
+    w, d, base, wh, rh, ov = 2.0, 1.5, .26, 1.35, .8, .24
+    m.box(V(0, 0, base/2), V(w + .3, d + .3, base), STONE_GREY)
+    m.box(V(0, 0, base - .02), V(w + .34, d + .34, .04), S.STONE)
+    for i, (y, h) in enumerate(((-d/2 - .3, .08), (-d/2 - .22, .16))):
+        m.box(V(0, y, h/2), V(.7 - .1*i, .16, h), S.STONE if i else STONE_GREY)
+    z = base + wh/2
+    m.box(V(0, d/2 - .04, z), V(w, .08, wh), PLASTER)  # back wall
+    for x in (-w/2, w/2):
+        m.box(V(x, 0, z), V(.08, d, wh), PLASTER)
+    m.box(V(0, -d/2 + .3, z), V(w - .08, .02, wh), P.INK)  # the dark hall behind the front
+    m.box(V(0, -d/2 + .26, base + .32), V(.7, .3, .08), P.LACQUER_DARK)  # altar
+    m.box(V(0, -d/2 + .27, base + .55), V(.14, .03, .3), GOLD)  # spirit tablet
+    for x in (-.22, .22):
+        m.ell(V(x, -d/2 + .2, base + .42), [.05, .05, .05], CLAY)  # offering bowls
+    for x in (-w/2, -w/6, w/6, w/2):  # red pillars along the open front
+        m.box(V(x, -d/2, z), V(.1, .1, wh), P.LACQUER)
+    m.box(V(0, -d/2, base + wh - .06), V(w + .1, .1, .12), P.LACQUER_DARK)  # lintel
+    m.box(V(0, -d/2 - .06, base + wh - .2), V(.4, .02, .14), GOLD)  # name board
+    z0, z1 = base + wh, base + wh + rh
+    x0, x1, y0, y1 = -w/2 - ov, w/2 + ov, -d/2 - ov, d/2 + ov
+    m.poly([V(x0, y0, z0), V(x1, y0, z0), V(x1 - .3, 0, z1), V(x0 + .3, 0, z1)], TILE_ROOF)  # hip roof
+    m.poly([V(x0, y1, z0), V(x0 + .3, 0, z1), V(x1 - .3, 0, z1), V(x1, y1, z0)], TILE_ROOF_DARK)
+    m.poly([V(x0, y0, z0), V(x0 + .3, 0, z1), V(x0, y1, z0)], TILE_ROOF)
+    m.poly([V(x1, y0, z0), V(x1, y1, z0), V(x1 - .3, 0, z1)], TILE_ROOF)
+    for x in np.linspace(x0 + .2, x1 - .2, 8):  # tile rows down the front slope
+        k = (x - x0)/(x1 - x0)
+        top = x0 + .3 + (x1 - x0 - .6)*k
+        m.poly([V(x - .02, y0 - .005, z0 + .005), V(x + .02, y0 - .005, z0 + .005), V(top + .02, -.02, z1 - .01),
+                V(top - .02, -.02, z1 - .01)], TILE_ROOF_DARK)
+    m.box(V(0, 0, z1 + .04), V(w + 2*ov - .5, .14, .1), TILE_ROOF_DARK)  # ridge, its ends turned up
+    for sx in (-1, 1):
+        m.box(V(sx*(w/2 + ov - .28), 0, z1 + .14), V(.1, .12, .18), TILE_ROOF_DARK)
+    for k in range(3):  # incense tripod before the steps
+        a = k*math.tau/3 + .5
+        m.rod(V(.12*math.cos(a), -d/2 - .7 + .12*math.sin(a), .16), V(.16*math.cos(a), -d/2 - .7 + .16*math.sin(a), 0),
+              .025, BRONZE)
+    bowl((0, -d/2 - .7, .36), .18, .2, BRONZE)
+    disc((0, -d/2 - .7, .33), (0, -d/2 - .7, .35), .16, ASH)
+    for x in (-.04, .05):
+        m.rod(V(x, -d/2 - .7, .34), V(x, -d/2 - .7, .52), .01, RED)  # incense sticks
+    return draw(cell=(160, 180), pivot=(80, 140))
+
+
+def granary_round():
+    """둥근 곳간 (the Han clay granary 囷): a round plastered wall on a stone footing, bound with two timber bands,
+    a conical thatch roof, a small door high on the wall facing the viewer and a ladder up to it, sacks at its foot."""
+    m.meshes = []
+    r, h = .62, 1.5
+    disc((0, 0, 0), (0, 0, .22), r + .1, STONE_GREY, n=18)
+    disc((0, 0, .22), (0, 0, h), r, PLASTER, n=18)
+    for z in (.55, 1.2):
+        disc((0, 0, z), (0, 0, z + .06), r + .015, P.PLANK_DARK, n=18, ends=False)
+    m.box(V(0, -r + .01, 1.0), V(.32, .06, .38), P.PLANK_DARK)  # door frame
+    m.box(V(0, -r - .02, 1.0), V(.24, .02, .3), P.PLANK)
+    for t0, t1 in zip(np.linspace(0, 1, 18, endpoint=False), np.linspace(1/18, 1, 18)):  # the roof cone
+        a0, a1 = t0*math.tau, t1*math.tau
+        lit = math.sin((a0 + a1)/2 + .8) < 0
+        m.poly([V((r + .22)*math.cos(a0), (r + .22)*math.sin(a0), h - .05),
+                V((r + .22)*math.cos(a1), (r + .22)*math.sin(a1), h - .05), V(0, 0, h + .95)],
+               S.THATCH if lit else S.THATCH_DARK)
+    m.ell(V(0, 0, h + .95), [.1, .1, .1], S.THATCH_DARK)  # tied top
+    disc((0, 0, h + .78), (0, 0, h + .84), .16, P.ROPE, ends=False)
+    for x in (-.12, .12):  # ladder up to the door
+        m.rod(V(x, -r - .5, 0), V(x, -r - .06, .9), .02, P.PLANK)
+    for z in np.arange(.15, .9, .18):
+        m.box(V(0, -r - .5 + .44*z/.9, z), V(.26, .03, .03), P.PLANK)
+    for x, y in ((.55, -.55), (.75, -.25)):
+        m.ell(V(x, y, .2), [.2, .17, .2], HEMP)
+        m.ell(V(x, y, .4), [.07, .06, .06], STRAW_DARK)
+    return draw(cell=(120, 140), pivot=(60, 104))
+
+
+def granary_raised():
+    """고상 곳간: a plank storehouse on nine posts, each capped with a flat stone against rats, a thatched gable
+    roof along u, a door on the front (-y) reached by a notched log."""
+    m.meshes = []
+    w, d, lift, wh, rh, ov = 1.6, 1.2, .62, 1.0, .65, .16
+    for x in (-w/2 + .08, 0, w/2 - .08):
+        for y in (-d/2 + .08, 0, d/2 - .08):
+            m.box(V(x, y, lift/2 - .04), V(.1, .1, lift - .08), P.PLANK_DARK)
+            disc((x, y, lift - .1), (x, y, lift - .05), .12, STONE_GREY, n=10)
+    m.box(V(0, 0, lift + .03), V(w + .1, d + .1, .08), P.PLANK_DARK)  # floor
+    m.box(V(0, 0, lift + .07 + wh/2), V(w, d, wh), P.PLANK)
+    for x in np.linspace(-w/2 + .2, w/2 - .2, 6):  # boards on the front
+        m.box(V(x, -d/2 - .005, lift + .07 + wh/2), V(.02, .01, wh), P.PLANK_DARK)
+    for y in np.linspace(-d/2 + .2, d/2 - .2, 4):
+        m.box(V(w/2 + .005, y, lift + .07 + wh/2), V(.01, .02, wh), P.PLANK_DARK)
+    m.box(V(-.35, -d/2 - .015, lift + .45), V(.34, .02, .62), P.PLANK_DARK)  # door
+    m.box(V(-.35, -d/2 - .025, lift + .45), V(.3, .01, .03), P.ROPE)
+    z0, z1 = lift + .07 + wh - .02, lift + .07 + wh + rh
+    x0, x1, y0, y1 = -w/2 - ov, w/2 + ov, -d/2 - ov, d/2 + ov
+    m.poly([V(x0, y0, z0), V(x1, y0, z0), V(x1, 0, z1), V(x0, 0, z1)], S.THATCH)
+    m.poly([V(x0, y1, z0), V(x0, 0, z1), V(x1, 0, z1), V(x1, y1, z0)], S.THATCH_DARK)
+    for x in (-w/2, w/2):
+        m.poly([V(x, -d/2, z0), V(x, 0, z1 - .02), V(x, d/2, z0)], P.PLANK)
+    for x in np.linspace(x0 + .15, x1 - .15, 8):
+        m.poly([V(x - .025, y0 - .005, z0 + .005), V(x + .025, y0 - .005, z0 + .005), V(x + .025, -.02, z1 - .01),
+                V(x - .025, -.02, z1 - .01)], S.THATCH_DARK)
+    m.rod(V(x0, 0, z1 + .03), V(x1, 0, z1 + .03), .06, P.PLANK_DARK)
+    m.rod(V(-.35, -d/2 - .55, 0), V(-.35, -d/2 - .06, lift + .1), .06, SHAFT)  # notched log
+    for t in (.3, .6):
+        m.box(V(-.35, -d/2 - .55 + .49*t, (lift + .1)*t + .04), V(.14, .06, .03), P.PLANK_DARK)
+    m.ell(V(.5, -d/2 - .3, .2), [.2, .17, .2], HEMP)
+    return draw(cell=(140, 150), pivot=(70, 112))
+
+
+def field(season='bare', L=4.0, W=2.6):
+    """밭: a strip field long along u inside a low earth bund, ridges and furrows running along it. bare: freshly
+    turned soil; sprout: a row of young green shoots on each ridge; ripe: millet standing knee high, its heavy
+    gold heads nodding; trampled: the ripe millet ridden through, a hoof-printed track across it, the stalks
+    either side broken or beaten flat (drawn under the units, so people walk in it)."""
+    rnd = np.random.default_rng({'bare': 1, 'sprout': 2, 'ripe': 3, 'trampled': 4}[season])
+    m.meshes = []
+    m.box(V(0, 0, .01), V(L, W, .02), SOIL)
+    for s in (-1, 1):  # the bund
+        m.box(V(0, s*(W/2 + .04), .05), V(L + .16, .1, .1), SOIL_RIDGE)
+        m.box(V(s*(L/2 + .04), 0, .05), V(.1, W, .1), SOIL_RIDGE)
+    rows = np.linspace(-W/2 + .16, W/2 - .16, 9)
+    for y in rows:
+        m.box(V(0, y, .05), V(L - .1, .14, .07), SOIL_RIDGE)
+    if season == 'sprout':
+        for y in rows:
+            for x in np.arange(-L/2 + .15, L/2 - .1, .17):
+                m.ell(V(x + rnd.uniform(-.03, .03), y, .13), [.05, .05, .06], SPROUT)
+    elif season == 'ripe':
+        for y in rows:
+            for x in np.arange(-L/2 + .1, L/2 - .06, .1):
+                x += rnd.uniform(-.03, .03)
+                top = V(x, y, rnd.uniform(.36, .46))
+                m.rod(V(x, y, .08), top, .012, MILLET)
+                m.ell(top + V(.05, -.03, -.03), [.07, .05, .06], MILLET_HEAD)
+    elif season == 'trampled':
+        track = lambda x, y: abs(y - .45*x - .1)  # the horsemen's line across the field
+        for x in np.arange(-L/2 + .3, L/2 - .2, .32):  # hoof prints
+            y = .45*x + .1 + rnd.uniform(-.18, .18)
+            m.box(V(x, y, .09), V(.1, .08, .02), SOIL)
+        for y in rows:
+            for x in np.arange(-L/2 + .1, L/2 - .06, .1):
+                x += rnd.uniform(-.03, .03)
+                near, r = track(x, y), rnd.uniform()
+                if near < .3 or near < .7 and r < .75:  # beaten flat away from the track
+                    if near < .3 and r < .6:
+                        continue
+                    d = np.sign(y - .45*x - .1) or 1
+                    a = rnd.uniform(-.5, .5)
+                    tip = V(x + .3*math.cos(a), y + d*.3*abs(math.sin(a)) + d*.08, .1)
+                    m.rod(V(x, y, .08), tip, .012, MILLET)
+                    if r < .5:
+                        m.ell(tip + V(.03, 0, -.01), [.06, .04, .03], MILLET_HEAD)
+                elif r < .3:  # snapped short
+                    m.rod(V(x, y, .08), V(x + rnd.uniform(-.04, .04), y, rnd.uniform(.16, .22)), .013, MILLET)
+                else:  # left standing, leaning
+                    top = V(x + rnd.uniform(-.1, .1), y + rnd.uniform(-.1, .1), rnd.uniform(.3, .42))
+                    m.rod(V(x, y, .08), top, .012, MILLET)
+                    m.ell(top + V(.05, -.03, -.03), [.07, .05, .06], MILLET_HEAD)
+    return draw(cell=(160, 120), pivot=(80, 70))
+
+
 PROPS = {'weapon_rack': weapon_rack, 'armor_stand': armor_stand, 'candle_stand': candle_stand,
          'antler_barrier': antler_barrier, 'watchtower': watchtower, 'shield_wall': shield_wall,
          'straw_mat': straw_mat, 'bloody_cloth': bloody_cloth, 'medicine_pot': medicine_pot,
@@ -856,8 +1070,13 @@ PROPS = {'weapon_rack': weapon_rack, 'armor_stand': armor_stand, 'candle_stand':
          'market_stall': market_stall, 'market_stall_cloth': lambda: market_stall('cloth'),
          'market_stall_jar': lambda: market_stall('jar'), 'soup_stove': soup_stove, 'bench': bench, 'counter': counter,
          'house_tile': house, 'house_thatch': lambda: house('thatch'), 'house_burnt': lambda: house('burnt'),
-         'house_tile_x': turned(lambda draw_it: house('tile', draw_it)), 'house_thatch_x': turned(lambda draw_it: house('thatch', draw_it))}
-GROUND = {'bloody_cloth', 'broken_spear', 'fallen_flag', 'straw_mat', 'fallen_petals', 'flagstones_0', 'flagstones_1'}  # drawn under the units
+         'house_tile_x': turned(lambda draw_it: house('tile', draw_it)), 'house_thatch_x': turned(lambda draw_it: house('thatch', draw_it)),
+         'rock_pile_0': rock_pile, 'rock_pile_1': lambda: rock_pile(1), 'rock_pile_2': lambda: rock_pile(2), 'beacon': beacon,
+         'shrine': shrine, 'granary_round': granary_round, 'granary_raised': granary_raised,
+         'field_bare': field, 'field_sprout': lambda: field('sprout'), 'field_ripe': lambda: field('ripe'),
+         'field_trampled': lambda: field('trampled')}
+GROUND = {'bloody_cloth', 'broken_spear', 'fallen_flag', 'straw_mat', 'fallen_petals', 'flagstones_0', 'flagstones_1',
+          'field_bare', 'field_sprout', 'field_ripe', 'field_trampled'}  # drawn under the units
 
 # Hand retouches after the render, in trimmed-image pixels: (x, y, palette key). Negative x, y count from the
 # right / bottom edge.

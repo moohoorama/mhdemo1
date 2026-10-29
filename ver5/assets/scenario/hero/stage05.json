@@ -3,7 +3,7 @@
  "Name": "사수관 전투",
  "Width": 0,
  "Height": 0,
- "Max": 3,
+ "Max": 4,
  "Required": [
   "liubei",
   "guanyu",

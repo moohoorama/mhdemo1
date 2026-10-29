@@ -41,7 +41,8 @@ type Step struct {
 	Pose   string  // the motion the actor rests in from now on (sit, lie, kneel …); "idle" stands again
 	Patrol []float64
 	// walk to [u, v] and back, over and over, without holding up the beats (a sentry); a Move ends it
-	Chatter string // short bubbles the actor keeps saying now and then, "|" between them; "-" stops
+	Chatter string   // short bubbles the actor keeps saying now and then, "|" between them; "-" stops
+	If      []string // Ambient only: the step runs when these story conditions hold (carts there only once won back)
 }
 
 // Actor is where a cast member starts. A cast key with "#" ("병사#2") is an extra: no name plate, no portrait;
@@ -63,6 +64,7 @@ type Scene struct {
 	Map      string
 	Time     string
 	Backdrop string // the far picture behind an outdoor map (assets/graphics/backdrops)
+	Glow     string // a far light washing over the screen from one corner: "fire_nw" (a city burning beyond the north-west)
 	Nodes    []string
 	Ambient  []Step // run once as the scene opens (fires, braziers, smoke, sentries, chatter)
 	Cast     map[string]Actor

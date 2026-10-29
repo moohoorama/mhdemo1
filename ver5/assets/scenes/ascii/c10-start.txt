@@ -1,24 +1,39 @@
-# c10-start  S_pass  ch10  origin 0 0
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-...Tre......BshTre...pi2Abrar1Twr...
-in1...Gua...Fan......pi3...Bnr...Tnt
-...Jia...Liu.........pi4...Yan...Tnt
-pi1...Zha............pi5AbrBnrar2Tnt
-......Bsh......BshBsh...............
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# c10-start  S_gongsun_camp  ch10  origin 0 0
+################################################......
+###..........................................###......
+###..............................Tnt...Tnt...###......
+###......Flg.........Flg............Fir......###......
+###SckSckBrzBnr...Bnr...Brz......Tnt...Tnt...###......
+###Wpn....................................in2Bnr......
+###........................Tia........................
+###...................................................
+###Wpn..............................MatMatMatBnr......
+###......Tnt...Tnt......Tnt...in1...wd1wd2wd3###......
+###.........Fir............Fir......wd4MatPotBkt......
+###......Tnt...Tnt......Tnt...Tnt............###......
+###..........................................###......
+################################################......
 
-Liu 유비
-Gua 관우
-Zha 장비
-Jia 간옹
-Fan 번궁
-in1 의용병#1  (light_infantry)
-pi1 의용병#2  (pikeman)
-Yan 안량  (light_cavalry)
-pi2 원소병#1  (pikeman)
-pi3 원소병#2  (pikeman)
-pi4 원소병#3  (pikeman)
-pi5 원소병#4  (pikeman)
-ar1 원소병#5  (archer)
-ar2 원소병#6  (archer)
+wd1 부상병#1  (wounded_noncombat)
+wd2 부상병#2  (wounded_noncombat)
+wd3 부상병#3  (wounded_noncombat)
+wd4 부상병#4  (wounded_noncombat)
+in1 백마병#1  (light_infantry)
+in2 백마병#2  (light_infantry)
+Tia 전해
+GSZ 공손찬  (off stage, enters later (cell 5 3))
+Zha 조운  (off stage, enters later (cell 5 3))
+Liu 유비  (off stage, enters later (cell 18 7))
+Gua 관우  (off stage, enters later (cell 18 7))
+Zei 장비  (off stage, enters later (cell 18 7))
+Jia 간옹  (off stage, enters later (cell 18 7))
+Fan 번궁  (off stage, enters later (cell 18 7))
+
+# c10-03: Liu -> 12 7
+# c10-03: Gua -> 12 6
+# c10-03: Zei -> 13 7
+# c10-03: Jia -> 13 6
+# c10-03: Fan -> 14 7
+# c10-03: Tia -> 10 7
+# c10-07: GSZ -> 9 6
+# c10-07: Zha -> 9 5

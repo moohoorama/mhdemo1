@@ -437,6 +437,30 @@ func straightPath(from, to content.Point) []content.Point {
 	return path
 }
 
+// leave walks a unit to the nearest edge cell it can stand on and takes it off the field as if it had
+// fled there, returning the cells it walks.
+func (e *Engine) leave(u *Unit) []content.Point {
+	stage := e.data.Stages[e.state.Stage]
+	best, score := content.Point{X: u.X, Y: u.Y}, stage.Width+stage.Height+1
+	for y := 0; y < stage.Height; y++ {
+		for x := 0; x < stage.Width; x++ {
+			if x > 0 && y > 0 && x < stage.Width-1 && y < stage.Height-1 || e.terrain(u, x, y).Cost <= 0 {
+				continue
+			}
+			if n := dist(x, y, u.X, u.Y); n < score {
+				best, score = content.Point{X: x, Y: y}, n
+			}
+		}
+	}
+	path := e.walk(u, best)
+	u.X, u.Y, u.HP = best.X, best.Y, 0
+	if len(path) > 1 {
+		u.Facing = content.Toward(path[len(path)-2], path[len(path)-1])
+	}
+	e.state.Executed["fled-"+stage.ID+"-"+u.ID] = true
+	return path
+}
+
 // playCutscene applies a cutscene's end state (positions and facings; hit points and the rest stay
 // as they are) and sends the replay what it came to, step by step. Steps about units that are not on
 // the field are left out; a group's moves are carried out together.
@@ -471,6 +495,8 @@ func (e *Engine) playCutscene(groups [][]content.Step) {
 					steps = append(steps, CutStep{Kind: "face", Unit: u.ID, Facing: st.Facing})
 				case "say":
 					steps = append(steps, CutStep{Kind: "say", Unit: u.ID, Text: st.Text})
+				case "leave":
+					steps = append(steps, CutStep{Kind: "leave", Unit: u.ID, Path: e.leave(u)})
 				}
 			}
 			if st.Kind == "wait" {

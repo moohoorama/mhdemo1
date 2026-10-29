@@ -3,6 +3,7 @@ package gui
 import (
 	"fmt"
 	"image"
+	"image/color"
 	"math"
 	"os"
 	"path/filepath"
@@ -236,10 +237,11 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h int) {
 			damages = append(damages, choice{fmt.Sprintf("%d%%", n), s.DamageScale() == n, set(func(v *storage.Settings) { v.DamagePct = n })})
 			xps = append(xps, choice{fmt.Sprintf("%d%%", n), s.XPScale() == n, set(func(v *storage.Settings) { v.XPPct = n })})
 		}
-		rows := []struct {
+		type row struct {
 			title string
 			opts  []choice
-		}{
+		}
+		rows := []row{
 			{"AI 차례", []choice{
 				{"동시에 보기", s.Replay != "one", set(func(v *storage.Settings) { v.Replay = "together" })},
 				{"하나씩 보기", s.Replay == "one", set(func(v *storage.Settings) { v.Replay = "one" })},
@@ -258,8 +260,9 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h int) {
 			}},
 			{"재생 속도", speeds},
 			{"UI 크기", scales},
-			{"데미지 배율", damages},
-			{"경험치 배율", xps},
+		}
+		if g.Debug {
+			rows = append(rows, row{"데미지 배율", damages}, row{"경험치 배율", xps})
 		}
 		for i, it := range rows {
 			g.choiceRow(dst, left, y+64+i*64, x+w-32-left, it.title, it.opts)
@@ -318,12 +321,13 @@ func (g *Game) drawModal(dst *ebiten.Image) {
 		g.drawAcquire(dst, m)
 		return
 	}
-	g.addButton(image.Rect(0, 0, uiW, uiH), "", g.closeModal)
 	if m.kind == "objective" {
+
 		box := g.objectiveBox(uiW)
 		g.popup(dst, fmt.Sprintf("modal:%p", m), 110, uiW, uiH, box.Inset(-24), func(dst *ebiten.Image) { g.modalWindow(dst, m) })
 		return
 	}
+	g.addButton(image.Rect(0, 0, uiW, uiH), "", g.closeModal)
 	box := map[string]image.Rectangle{
 		"levelup": image.Rect(Width/2-250, 200, Width/2+250, 540),
 		"trait":   image.Rect(Width/2-300, 220, Width/2+300, 560),
@@ -340,24 +344,34 @@ func (g *Game) modalWindow(dst *ebiten.Image, m *modal) {
 		brief := g.objective(o)
 		r := g.objectiveBox(uiW)
 		if _, fits := g.objectiveLayout(g.objectiveRows(o, brief), uiW, uiH); !fits {
-			g.titledPattern(dst, r, "작전 개요")
+			g.titledPattern(dst, r, "전투 목표")
 			g.label(dst, "표시 공간이 부족합니다. UI 크기를 줄이세요.", float64(r.Min.X+32), float64(r.Min.Y+56), 18, ink)
+			g.objectiveButtons(dst, r)
 			return
 		}
-		g.titledPattern(dst, r, "작전 개요")
+		g.titledPattern(dst, r, "전투 목표")
 		g.centered(dst, st.Name, float64(uiW/2), float64(r.Min.Y+32), 30, gold)
 		y := float64(r.Min.Y + 96)
 		for _, row := range g.objectiveRows(o, brief) {
-			wrapped := wrapWidth(row.text, g.face(19), float64(r.Dx()-208))
+			tw := float64(r.Dx() - 208)
+			if row.state != "" {
+				tw -= subChipW
+			}
+			wrapped := wrapWidth(row.text, g.face(19), tw)
 			g.label(dst, row.name, float64(r.Min.X+48), y+2, 16, muted)
-			g.label(dst, wrapped, float64(r.Min.X+160), y, 19, ink)
+			tx := float64(r.Min.X + 160)
+			if row.duel > 0 {
+				duelSwatch(dst, tx+12, y+14, duelColor(row.duel-1))
+				tx += 32
+			}
+			if row.state != "" {
+				g.subChip(dst, tx, y, row.state, row.lit)
+				tx += subChipW
+			}
+			g.label(dst, wrapped, tx, y, 19, ink)
 			y += max(36, float64(strings.Count(wrapped, "\n")+1)*19*1.45+9)
 		}
-		hint := "클릭하여 시작"
-		if m.manual {
-			hint = "클릭하여 닫기"
-		}
-		g.centered(dst, hint, float64(uiW/2), float64(r.Max.Y-34), 13, muted)
+		g.objectiveButtons(dst, r)
 	case "levelup":
 		l := m.level
 		r := image.Rect(uiW/2-250, 200, uiW/2+250, 540)
@@ -393,6 +407,41 @@ func (g *Game) modalWindow(dst *ebiten.Image, m *modal) {
 		g.label(dst, wrap(g.traitDesc(m.trait), 34), float64(r.Min.X+48), 342, 18, ink)
 		g.centered(dst, "클릭하여 닫기", float64(uiW/2), float64(r.Max.Y-36), 13, muted)
 	}
+}
+
+// objectiveButtons are the briefing's bottom row: the objective guide's switch, pressed in and gold
+// while the guide shows, and 확인, which closes it.
+func (g *Game) objectiveButtons(dst *ebiten.Image, r image.Rectangle) {
+	y := r.Max.Y - 58
+	on := !g.S.Settings.NoGoalGuide
+	toggle := func() {
+		v := g.S.Settings
+		v.NoGoalGuide = on
+		g.request(session.Request{Op: "settings", Settings: &v})
+	}
+	g.toggleBtn(dst, image.Rect(r.Min.X+48, y, r.Min.X+48+150, y+36), "목표 안내", on, toggle)
+	g.centeredBtn(dst, image.Rect(r.Max.X-48-140, y, r.Max.X-48, y+36), "확인", g.closeModal)
+}
+
+// subChip is a bonus goal's state before its line, drawn like the guide's switch: pressed in and gold while
+// the goal holds, dark when it does not.
+func (g *Game) subChip(dst *ebiten.Image, x, y float64, state string, lit bool) {
+	cx, cy, w, h := float32(x), float32(y)+1, float32(subChipW-12), float32(26)
+	tx, ty := x+(float64(w)-g.width(state, 14))/2, float64(cy)+(float64(h)-14*1.45)/2+1
+	if lit {
+		rect(dst, cx, cy, w, h, color.NRGBA{R: 132, G: 98, B: 34, A: 255})
+		rect(dst, cx+1, cy+1, w-2, 3, color.NRGBA{A: 110})
+		strokeRect(dst, cx+.5, cy+.5, w-1, h-1, 1.5, gold)
+		g.label(dst, state, tx, ty, 14, color.NRGBA{R: 255, G: 238, B: 170, A: 255})
+		return
+	}
+	col := muted
+	if state == "실패" {
+		col = bad
+	}
+	rect(dst, cx, cy, w, h, color.NRGBA{R: 24, G: 18, B: 14, A: 255})
+	strokeRect(dst, cx+.5, cy+.5, w-1, h-1, 1, goldDim)
+	g.label(dst, state, tx, ty, 14, col)
 }
 
 // closeModal closes the first modal, or the top window stacked inside it.
@@ -512,50 +561,57 @@ func (g *Game) choiceRow(dst *ebiten.Image, x, y, w int, title string, opts []ch
 	}
 }
 
-// objectiveDuels names the stage's duels as "ally 대 enemy", the rest counted.
-func (g *Game) objectiveDuels(o core.Observation) []string {
-	out := []string{}
-	for _, d := range g.S.Data.Stages[o.Stage].Duels {
+// objectiveDuels names the stage's duels as "ally·supports 대 enemy", each with its guide colour, the rest counted.
+func (g *Game) objectiveDuels(o core.Observation) []objectiveRow {
+	st := g.S.Data.Stages[o.Stage]
+	groups := st.DuelGroups()
+	out := []objectiveRow{}
+	for i, d := range st.Duels {
 		if len(out) == 3 {
-			out = append(out, fmt.Sprintf("외 %d건", len(g.S.Data.Stages[o.Stage].Duels)-3))
+			out = append(out, objectiveRow{text: fmt.Sprintf("외 %d건", len(st.Duels)-3)})
 			break
 		}
-		out = append(out, g.name(d.Ally)+" 대 "+g.name(d.Enemy))
+		names := []string{}
+		for _, id := range append([]string{d.Ally}, d.Supports...) {
+			names = append(names, g.name(id))
+		}
+		out = append(out, objectiveRow{text: strings.Join(names, "·") + " 대 " + g.name(d.Enemy), duel: 1 + groups[i]})
 	}
 	return out
 }
 
-type objectiveRow struct{ name, text string }
+// objectiveRow is a line of the briefing; a duel's carries 1 + its duel group, for the guide's swatch, and a
+// bonus goal's its state for the chip before it.
+type objectiveRow struct {
+	name, text, state string
+	lit               bool
+	duel              int
+}
+
+// subChipW is the width a bonus goal's state chip takes before its text, the gap included.
+const subChipW = 96
 
 func (g *Game) objectiveRows(o core.Observation, brief briefing) []objectiveRow {
 	st := g.S.Data.Stages[o.Stage]
-	rows := []objectiveRow{{"승리 조건", brief.win}, {"패배 조건", brief.lose}}
+	rows := []objectiveRow{{name: "승리 조건", text: brief.win}, {name: "패배 조건", text: brief.lose}}
 	for i, sub := range brief.subs {
-		name, mark := "", ""
+		name := ""
 		if i == 0 {
 			name = "부목표"
 		}
-		if sub.done {
-			mark = " (달성)"
-		}
-		rows = append(rows, objectiveRow{name, sub.text + mark})
+		rows = append(rows, objectiveRow{name: name, text: sub.text, state: sub.state, lit: sub.lit})
 	}
 	turn := fmt.Sprintf("%d턴째 · 제한 없음", o.Round)
 	if st.TurnLimit > 0 {
 		turn = fmt.Sprintf("%d턴째 · %d턴까지", o.Round, st.TurnLimit)
 	}
-	rows = append(rows, objectiveRow{"턴", turn})
+	rows = append(rows, objectiveRow{name: "턴", text: turn})
 	duels := g.objectiveDuels(o)
 	if len(duels) == 0 {
-		duels = []string{"없음"}
+		duels = []objectiveRow{{text: "없음"}}
 	}
-	for i, duel := range duels {
-		name := ""
-		if i == 0 {
-			name = "일기토"
-		}
-		rows = append(rows, objectiveRow{name, duel})
-	}
+	duels[0].name = "일기토"
+	rows = append(rows, duels...)
 	return rows
 }
 
@@ -563,10 +619,14 @@ func (g *Game) objectiveLayout(rows []objectiveRow, width, height int) (image.Re
 	maxW, maxH := width*4/5, height*4/5
 	fallback := image.Rectangle{}
 	for w := 520; w <= maxW; w += 16 {
-		h := 96 + 56
+		h := 96 + 80 // title above, the buttons below
 		longest := 0
 		for _, row := range rows {
-			wrapped := wrapWidth(row.text, g.face(19), float64(w-208))
+			tw := float64(w - 208)
+			if row.state != "" {
+				tw -= subChipW
+			}
+			wrapped := wrapWidth(row.text, g.face(19), tw)
 			lines := strings.Count(wrapped, "\n") + 1
 			longest = max(longest, lines)
 			h += int(max(36, float64(lines)*19*1.45+9))

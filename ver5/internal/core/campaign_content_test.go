@@ -144,7 +144,7 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	assert.Equal(t, 1, e.state.Flags["flag-sunjian-alive"])
 	assert.Equal(t, 1, e.state.Flags["flag-bianshui-generals"])
 	assert.Equal(t, 1, e.state.Flags["flag-julu-clear"])
-	for _, item := range []string{"gujeong_blade", "yitian_sword"} {
+	for _, item := range []string{"gujeong_blade", "jueying", "baima"} {
 		assert.Positive(t, e.state.Warehouse[item], item+" is handed over")
 	}
 	assert.Equal(t, "fire_manual", e.char("liubei").Equipment["accessory"], "Liu Bei takes up the manual at once")
@@ -152,7 +152,7 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	for _, id := range []string{"jianyong", "fangong", "zhaoyun"} {
 		assert.NotNil(t, e.char(id), id+" joins the party")
 	}
-	assert.True(t, executed(e, "battle-B10-vanguard-clear"), "a clean win at Julu eases the vanguard at Jiejiao")
+	assert.True(t, executed(e, "battle-B10-vanguard-clear"), "a quick win at Julu keeps Yan Liang away from Jiejiao")
 	assert.False(t, executed(e, "battle-B10-vanguard-strong"))
 }
 
@@ -160,9 +160,9 @@ func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, false)
 	assert.Len(t, fought, 10)
 	assert.Zero(t, e.state.Flags["flag-julu-clear"])
-	assert.Equal(t, "fire_manual", e.char("liubei").Equipment["accessory"], "Huangfu Song hands the manual to whoever broke the siege by fire")
-	assert.True(t, executed(e, "battle-B10-vanguard-strong"), "the vanguard at Jiejiao is the hard one")
+	assert.True(t, executed(e, "battle-B10-vanguard-strong"), "Yan Liang comes back at Jiejiao")
 	assert.False(t, executed(e, "battle-B10-vanguard-clear"))
+	assert.Equal(t, "fire_manual", e.char("liubei").Equipment["accessory"], "Huangfu Song hands the manual to whoever broke the siege by fire")
 }
 
 func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
@@ -294,32 +294,4 @@ func TestYingchuanGuanYuAttackDoesNotSummonLiuBeiDuel(t *testing.T) {
 	r = applyOK(t, e, Command{Kind: "wait", Actor: "liubei"})
 	require.Len(t, duelsIn(r), 1, "the duel starts when Liu Bei meets Bo Cai")
 	assert.Equal(t, "yingchuan-liubei-bocai", duelsIn(r)[0].DuelID)
-}
-
-func TestJiejiaoYuanShaoLeavesOnlyAtZeroHP(t *testing.T) {
-	d, err := content.Load("../../assets/data")
-	require.NoError(t, err)
-	dd := *d
-	dd.Campaign.Start = "c11-40"
-	e := New(&dd, 3)
-	applyOK(t, e, Command{Kind: "start"})
-	plan, err := e.DeploymentPlan()
-	require.NoError(t, err)
-	for _, cmd := range plan {
-		applyOK(t, e, cmd)
-	}
-	require.Equal(t, "battle", e.state.Phase)
-
-	yuanshao, guanyu := e.unit("yuanshao"), e.unit("guanyu")
-	require.NotNil(t, yuanshao)
-	require.NotNil(t, guanyu)
-	yuanshao.HP = e.stats(yuanshao).MaxHP * 49 / 100
-	guanyu.X, guanyu.Y = yuanshao.X-1, yuanshao.Y
-	applyOK(t, e, Command{Kind: "wait", Actor: "guanyu"})
-	assert.Equal(t, "battle", e.state.Phase, "adjacency and low HP do not end the battle")
-	assert.Positive(t, e.unit("yuanshao").HP)
-
-	e.unit("yuanshao").HP = 0
-	applyOK(t, e, Command{Kind: "wait", Actor: "liubei"})
-	assert.Equal(t, "victory", e.state.Result, "zero HP satisfies the existing victory goal")
 }

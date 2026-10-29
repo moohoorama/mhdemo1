@@ -123,6 +123,28 @@ func TestFleeRunsToItsGoalNeverFightsAndLeavesTheField(t *testing.T) {
 	assert.Zero(t, unit(e, "boss").HP)
 }
 
+func TestRunKeepsWalkingWhereFleeStopsToHeal(t *testing.T) {
+	for policy, want := range map[string]string{"flee": "item", "run": "move"} {
+		t.Run(policy, func(t *testing.T) {
+			goal := content.Point{X: 10, Y: 7}
+			e := battle(t, func(s *content.Stage) { s.Enemies[0].Policy, s.Enemies[0].Goal = policy, &goal })
+			snap := e.Snapshot()
+			for i := range snap.Units {
+				if snap.Units[i].ID == "boss" {
+					snap.Units[i].HP = 1
+				}
+			}
+			e, err := core.Restore(e.Data(), snap)
+			require.NoError(t, err)
+			_, err = e.Apply(core.Command{Kind: "end"})
+			require.NoError(t, err)
+			c, err := Choose(e, "boss")
+			require.NoError(t, err)
+			assert.Equal(t, want, c.Kind)
+		})
+	}
+}
+
 func TestMarchingIsDeterministic(t *testing.T) {
 	run := func() string {
 		goal := content.Point{X: 10, Y: 7}

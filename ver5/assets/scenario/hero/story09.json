@@ -3,112 +3,101 @@
   {
    "ID": "c09-start",
    "Kind": "scene",
-   "Place": "하북으로 가는 길"
+   "Place": "신도성 안"
   },
   {
    "ID": "c09-02",
-   "Kind": "narrate",
-   "Text": "먼지를 일으키며 한 사내가 말을 몰아 온다."
+   "Kind": "say",
+   "Speaker": "fangong",
+   "Text": "평원 현령께서 오지 않으셨다면 신도는 함락되었을 것이오."
   },
   {
    "ID": "c09-03",
    "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "현덕! 탁현에서 기다리다 목이 빠지는 줄 알았네."
+   "Speaker": "liubei",
+   "Text": "모두 힘써준 덕분이지요."
   },
   {
    "ID": "c09-04",
    "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "헌화! 자네가 어찌 여기에."
+   "Speaker": "fangong",
+   "Text": "원소가 공손 장군을 노리는 한, 신도 하나 지켜서는 아무것도 지킬 수 없소. 성은 부장에게 맡기겠소."
   },
   {
    "ID": "c09-05",
    "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "반가운 얼굴만 들고 온 게 아닐세. 공손 장군의 서신이네."
-  },
-  {
-   "ID": "c09-06",
-   "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "계교에서 원본초와 맞붙었는데 형세가 좋지 않다고, 노 선생 문하의 정을 봐서 구해 달라 하시네."
-  },
-  {
-   "ID": "c09-07",
-   "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "원본초는 공손 장군이 쳐들어온다는 소문을 흘려 한복을 겁주고 기주를 얻었다더군. 이번엔 그 공손 장군을 치는 거지."
-  },
-  {
-   "ID": "c09-08",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "계교라면 남쪽으로 한참입니다. 가는 길에 신도와 거록을 지나야 합니다."
-  },
-  {
-   "ID": "c09-09",
-   "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "그런데 신도가 지금 원소군에 에워싸여 있다더군. 성주 번궁이 공손 장군 편이라 홀로 버티고 있다지."
+   "Speaker": "fangong",
+   "Text": "지금 더 중요한 것은 계교에서 벌어질 공손 장군과 원소의 대결이오. 계교로 원군을 갑시다. 이 번궁도 함께 가겠소."
   },
   {
    "ID": "c09-10",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "그냥 지나칠 수는 없다. 신도부터 간다."
+   "Text": "공 같은 분이라면 내가 청해야 할 일이오. 함께 갑시다."
   },
   {
    "ID": "c09-11",
    "Kind": "join",
-   "Character": "jianyong",
-   "Event": "join-jianyong"
+   "Character": "fangong",
+   "Event": "join-fangong"
   },
   {
    "ID": "c09-12",
-   "Kind": "battle",
-   "Stage": "B08",
-   "Text": "신도 — 출전 준비"
+   "Kind": "scene",
+   "Place": "신도성 안, 해 질 녘"
   },
   {
    "ID": "c09-13",
-   "Kind": "scene",
-   "Place": "신도성 안"
+   "Kind": "say",
+   "Speaker": "tiankai",
+   "Text": "현덕 공! 공손 장군의 영입니다. 원소가 계교로 대군을 모으고 있습니다."
   },
   {
    "ID": "c09-14",
-   "Kind": "narrate",
-   "Text": "부서진 성문 곁에서 병사들이 숨을 고른다. 번궁이 유비 앞에 와서 무릎을 꿇는다."
+   "Kind": "say",
+   "Speaker": "tiankai",
+   "Text": "장군께서 계교에서 결전을 치르시려 하니, 현덕 공도 계교로 와 달라 하십니다."
   },
   {
    "ID": "c09-15",
    "Kind": "say",
-   "Speaker": "fangong",
-   "Text": "장군이 아니었으면 신도는 원본초의 것이 되었을 것이오. 공손 장군을 구하러 가신다 들었소."
+   "Speaker": "guanyu",
+   "Text": "형님, 계교로 가려면 거록을 지나야 합니다."
   },
   {
    "ID": "c09-16",
    "Kind": "say",
-   "Speaker": "fangong",
-   "Text": "성은 부장에게 맡기고, 소장도 함께 가겠소."
+   "Speaker": "tiankai",
+   "Text": "그 거록을 원소의 선봉 안량과 장합이 막고 있습니다. 벼랑 사이 길목을 지키니 쉽지 않을 겁니다."
   },
   {
    "ID": "c09-17",
    "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "성주께서 성을 두고 어찌……."
+   "Speaker": "fangong",
+   "Text": "거록은 벼랑 사이로 난 길목 하나, 남쪽 숲길 하나뿐이오. 길목이 막히면 숲길로 돌아야 하오."
   },
   {
    "ID": "c09-18",
    "Kind": "say",
-   "Speaker": "fangong",
-   "Text": "성은 장군께서 지켜 주셨소. 이제 소장의 창은 장군의 것이오."
+   "Speaker": "liubei",
+   "Text": "거록을 빨리 뚫을수록 계교의 공손 장군이 덜 위태롭겠군."
   },
   {
    "ID": "c09-19",
-   "Kind": "join",
-   "Character": "fangong",
-   "Event": "join-fangong"
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "서둘러 가되 넘어지지는 말게. 현덕, 자네는 어릴 적부터 서두르다 신발 끈부터 끊어 먹었지."
+  },
+  {
+   "ID": "c09-walk",
+   "Kind": "explore",
+   "Explore": "explore09"
+  },
+  {
+   "ID": "c09-battle",
+   "Kind": "battle",
+   "Stage": "B09",
+   "Text": "거록 전투 — 출전 준비"
   }
  ]
 }

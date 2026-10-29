@@ -47,7 +47,7 @@ func walkEngine(t *testing.T) *Engine {
 					"장비":       {Face: "SW", Event: []content.ExploreEvent{{If: []string{"!flag:oath"}, Node: "oath"}}, Talk: []content.Line{{"장비", "가유"}}},
 					"관우":       {Face: "SW", Sortie: &content.ExploreSortie{If: []string{"flag:oath"}, Ask: "출진?"}},
 					"상인":       {Face: "SW", Shop: "tools"},
-					"장비@after": {Face: "SW", If: []string{"flag:oath"}},
+					"장비@after": {Face: "SW", If: []string{"flag:oath"}, Talk: []content.Line{{"장비", "형~"}}},
 				}},
 			"grove": {Map: "S_b", Name: "숲", At: [2]int{2, 2}, Exits: []content.ExploreExit{{Name: "거리", At: [2]int{9, 0}, To: "street"}}},
 		},

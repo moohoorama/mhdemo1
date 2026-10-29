@@ -1,9 +1,13 @@
 package main
 
 import (
+	"expvar"
 	"flag"
 	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
+	"net"
+	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"path/filepath"
 	"srpg/internal/content"
@@ -23,7 +27,7 @@ func main() {
 	shots := flag.String("shots", "", "autoplay a new game and save screens at these ticks (60/s), e.g. 600,1200; needs -audit")
 	duelID := flag.String("duel", "", "open a duel directly by its scenario ID")
 	duelCapture := flag.String("duel-capture", "", "capture each beat of -duel and exit")
-	duelDebug := flag.Bool("duel-debug", false, "show authoring descriptions and seeking controls")
+	debug := flag.Bool("debug", false, "checking tools: scene jumps, duels, map editor, damage/XP scales, duel authoring view, pprof on "+debugAddr)
 	flag.Parse()
 	// Finder launches apps with an arbitrary working directory. Resolve bundled
 	// runtime assets beside the executable while respecting explicit flags.
@@ -55,17 +59,23 @@ func main() {
 	if err != nil {
 		fail(err)
 	}
+	if *debug {
+		serveDebug()
+	} else {
+		// the scales are chosen only in debug mode; a choice made there is not in force outside it
+		s.Settings.DamagePct, s.Settings.XPPct = 0, 0
+	}
 	g, err := gui.New(s, *font, *seed, *audit)
 	if err != nil {
 		fail(err)
 	}
 	defer g.Close()
-	if *duelID != "" || *duelCapture != "" || *duelDebug {
-		if err := g.OpenDuel(*duelID, *duelCapture, *duelDebug); err != nil {
+	if *duelID != "" || *duelCapture != "" {
+		if err := g.OpenDuel(*duelID, *duelCapture, *debug); err != nil {
 			fail(err)
 		}
 	}
-	g.Verify = *verify
+	g.Verify, g.Debug = *verify, *debug
 	for _, t := range strings.Split(*shots, ",") {
 		if n, err := strconv.Atoi(strings.TrimSpace(t)); err == nil {
 			g.Shots = append(g.Shots, n)
@@ -85,3 +95,22 @@ func main() {
 	}
 }
 func fail(err error) { fmt.Fprintln(os.Stderr, err); os.Exit(1) }
+
+const debugAddr = "127.0.0.1:6060"
+
+// serveDebug serves net/http/pprof (heap, CPU, goroutines) and expvar, which carries the Go memory statistics and
+// gpu_image_bytes: the textures ebiten holds, which the Go heap does not show.
+func serveDebug() {
+	expvar.Publish("gpu_image_bytes", expvar.Func(func() any {
+		var d ebiten.DebugInfo
+		ebiten.ReadDebugInfo(&d)
+		return d.TotalGPUImageMemoryUsageInBytes
+	}))
+	l, err := net.Listen("tcp", debugAddr)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "debug server:", err)
+		return
+	}
+	fmt.Fprintf(os.Stderr, "debug: http://%s/debug/pprof/ · http://%s/debug/vars\n", debugAddr, debugAddr)
+	go http.Serve(l, nil)
+}

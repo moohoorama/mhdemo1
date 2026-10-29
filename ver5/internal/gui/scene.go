@@ -3,6 +3,7 @@ package gui
 import (
 	"cmp"
 	"fmt"
+	"image"
 	"image/color"
 	"math"
 	"slices"
@@ -19,35 +20,36 @@ import (
 // the beats took them from node to node; a node entered in the middle of a stretch (a loaded game) first settles
 // the beats of the nodes before it.
 type scene struct {
-	def     *scenes.Scene
-	node    string
-	actors  map[string]*unitVis
-	extra   map[string]bool // cast keys with "#": no bubble when a name matches, never turned toward a speaker
-	hold    map[string]bool // cast that keeps its facing while others speak
-	held    map[string]bool // turned or moved by this node's beats: auto-facing leaves them alone
-	groups  [][]scenes.Step
-	gi      int
-	begun   bool
-	t       float64 // seconds since the running group started
-	pending []scenes.Step
-	wait    float64
-	paths   map[string][][2]float64
-	speed   map[string]float64
-	exits   map[string]bool
-	plays   map[string]string
-	emotes  map[string]*emote
-	looks   map[string]*look
-	effects []sceneEffect
-	petals  []petal // drawPetals' layout, kept from frame to frame
-	props   []sceneProp
-	spoke   map[string]bool
-	shake   float64
-	camU    float64
-	camV    float64
-	fade    float64                 // 1 → 0: the scene opening out of black; 0 → 1 while leaving
-	leaving bool                    // darkening to black before the next node opens another scene
-	patrol  map[string]*patrol      // sentries walking to and fro
-	chatter map[string]*chatterLine // extras murmuring now and then
+	def       *scenes.Scene
+	node      string
+	actors    map[string]*unitVis
+	extra     map[string]bool // cast keys with "#": no bubble when a name matches, never turned toward a speaker
+	hold      map[string]bool // cast that keeps its facing while others speak
+	held      map[string]bool // turned or moved by this node's beats: auto-facing leaves them alone
+	groups    [][]scenes.Step
+	gi        int
+	begun     bool
+	t         float64 // seconds since the running group started
+	pending   []scenes.Step
+	wait      float64
+	paths     map[string][][2]float64
+	speed     map[string]float64
+	exits     map[string]bool
+	plays     map[string]string
+	emotes    map[string]*emote
+	looks     map[string]*look
+	effects   []sceneEffect
+	petals    []petal // drawPetals' layout, kept from frame to frame
+	props     []sceneProp
+	spoke     map[string]bool
+	shake     float64
+	camU      float64
+	camV      float64
+	fade      float64                 // 1 → 0: the scene opening out of black; 0 → 1 while leaving
+	leaving   bool                    // darkening to black before the next node opens another scene
+	nightfall bool                    // darkening to black before a beat changes the time of day
+	patrol    map[string]*patrol      // sentries walking to and fro
+	chatter   map[string]*chatterLine // extras murmuring now and then
 }
 
 type patrol struct {
@@ -131,6 +133,9 @@ func (g *Game) enterScene(o core.Observation) bool {
 
 // openScene builds the scene's map and cast, lights its ambient effects and frames the cast.
 func (g *Game) openScene(def *scenes.Scene) {
+	if g.field != nil {
+		g.field.dispose()
+	}
 	g.field = NewField(g.assets, g.assets.Maps[def.Map])
 	s := &scene{def: def, actors: map[string]*unitVis{}, extra: map[string]bool{}, hold: map[string]bool{}, held: map[string]bool{},
 		paths: map[string][][2]float64{}, speed: map[string]float64{}, exits: map[string]bool{}, plays: map[string]string{},
@@ -143,11 +148,13 @@ func (g *Game) openScene(def *scenes.Scene) {
 		}
 	}
 	g.setSceneTime(def.Time)
+	s.camU, s.camV = g.castCentre() // an Ambient CamAt may open the scene elsewhere
 	for _, st := range def.Ambient {
-		g.startStep(st)
+		if g.S == nil || g.S.Engine.Holds(st.If) {
+			g.startStep(st)
+		}
 	}
 	g.zoom = 2
-	s.camU, s.camV = g.castCentre()
 	g.camX, g.camY = g.sceneCam()
 }
 
@@ -270,6 +277,8 @@ func (g *Game) updateScene(dt float64) {
 			s.leaving = false
 			g.command(core.Command{Kind: "next"})
 		}
+	} else if s.nightfall {
+		s.fade = math.Min(1, s.fade+dt/fadeTime)
 	} else {
 		s.fade = math.Max(0, s.fade-dt/fadeTime)
 	}
@@ -287,6 +296,13 @@ func (g *Game) updateScene(dt float64) {
 		return
 	}
 	if !s.begun {
+		if !s.nightfall && changesTime(s.groups[s.gi]) && s.fade < 1 {
+			s.nightfall = true
+		}
+		if s.nightfall && s.fade < 1 {
+			return
+		}
+		s.nightfall = false
 		s.begun, s.t, s.pending = true, 0, nil
 		for _, st := range s.groups[s.gi] {
 			if st.After > 0 {
@@ -308,7 +324,7 @@ func (g *Game) updateScene(dt float64) {
 	}
 	s.pending = rest
 	s.wait -= dt
-	if s.wait > 0 || len(s.pending) > 0 {
+	if s.wait > 0 || len(s.pending) > 0 || s.fade > 0 && changesTime(s.groups[s.gi]) {
 		return
 	}
 	for key, v := range s.actors {
@@ -324,6 +340,16 @@ func (g *Game) updateScene(dt float64) {
 	s.plays = map[string]string{}
 	s.gi++
 	s.begun = false
+}
+
+// changesTime reports whether a group of steps turns the time of day: the scene goes dark first and opens on it.
+func changesTime(group []scenes.Step) bool {
+	for _, st := range group {
+		if st.Time != "" {
+			return true
+		}
+	}
+	return false
 }
 
 // startStep starts one step of a beat.
@@ -596,9 +622,10 @@ func (g *Game) skipBeats() {
 	}
 }
 
-// faceSpeaker turns the named actors of the cast near a speaker toward them, and the speaker toward the nearest of
-// them, unless the cast holds them or this node's beats already turned them. People of a walk who stand by an event
-// without being in its cast take no part.
+// faceSpeaker turns the speaker toward the one they speak to, and the named actors of the cast near the speaker, or
+// spoken to however far, toward the speaker, unless the cast holds them or this node's beats already turned them. A
+// speaker who speaks to no one turns to the nearest of them. People of a walk who stand by an event without being in
+// its cast take no part.
 func (g *Game) faceSpeaker(name string) {
 	s := g.scene
 	sp := s.actors[name]
@@ -608,6 +635,7 @@ func (g *Game) faceSpeaker(name string) {
 	free := func(key string, v *unitVis) bool {
 		return !v.gone && !s.extra[key] && !s.hold[key] && !s.held[key] && v.walk == nil && s.looks[key] == nil
 	}
+	to := s.actors[g.addressee(name)]
 	var near *unitVis
 	best := 5.0
 	for key, v := range s.actors {
@@ -615,7 +643,7 @@ func (g *Game) faceSpeaker(name string) {
 			continue
 		}
 		d := math.Hypot(v.u-sp.u, v.v-sp.v)
-		if d >= 5 {
+		if d >= 5 && v != to {
 			continue
 		}
 		if d < best {
@@ -625,9 +653,47 @@ func (g *Game) faceSpeaker(name string) {
 			v.face(sp.u, sp.v)
 		}
 	}
-	if near != nil && free(name, sp) {
-		sp.face(near.u, near.v)
+	if to == nil {
+		to = near
 	}
+	if to != nil && free(name, sp) {
+		sp.face(to.u, to.v)
+	}
+}
+
+// addressee is the cast key of the one a speaker's line in the scene is said to: the last other speaker on the stage
+// to speak before it, or, on the scene's first lines, the first to answer; "" when no one else on the stage speaks.
+func (g *Game) addressee(name string) string {
+	s := g.scene
+	at := slices.Index(s.def.Nodes, s.node)
+	if at < 0 || g.S == nil {
+		return ""
+	}
+	other := func(id string) string {
+		n := g.S.Data.Node(id)
+		if n.Kind != "say" {
+			return ""
+		}
+		for _, sid := range strings.Split(n.Speaker, "·") {
+			key := g.S.Data.Characters[sid].Name
+			_, cast := s.def.Cast[key]
+			if v := s.actors[key]; key != name && cast && v != nil && !v.gone {
+				return key
+			}
+		}
+		return ""
+	}
+	for i := at - 1; i >= 0; i-- {
+		if key := other(s.def.Nodes[i]); key != "" {
+			return key
+		}
+	}
+	for _, id := range s.def.Nodes[at+1:] {
+		if key := other(id); key != "" {
+			return key
+		}
+	}
+	return ""
 }
 
 // drawScene draws the scene map and its actors, the speakers' bubbles and emotes.
@@ -643,11 +709,13 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 			talking[name] = true
 		}
 	}
-	for name, v := range s.actors { // a speaker gestures once when their line comes up
-		if talking[name] && !s.spoke[name] && v.walk == nil && v.anim == "idle" && !v.gone {
+	for name, v := range s.actors { // a speaker turns and, standing, gestures once when their line comes up
+		if talking[name] && !s.spoke[name] && v.walk == nil && v.anim == v.rest() && !v.gone {
 			s.spoke[name] = true
 			g.faceSpeaker(name)
-			v.play("action")
+			if v.anim == "idle" {
+				v.play("action")
+			}
 		}
 	}
 	g.field.beatShadows = g.field.beatShadows[:0]
@@ -684,6 +752,7 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 			}
 		}
 		g.drawSceneEffects(dst)
+		g.drawGlow(dst)
 	})
 	type balloon struct {
 		name, mark string
@@ -744,6 +813,35 @@ func (g *Game) drawBackdrop(dst *ebiten.Image) {
 	rect(dst, 0, float32(bottom), float32(worldW), float32(worldH)-float32(bottom), ground)
 }
 
+// glowImage is a corner light fading out along the diagonal, white at the top left corner.
+var glowImage = func() *ebiten.Image {
+	const n = 128
+	im := image.NewRGBA(image.Rect(0, 0, n, n))
+	for y := range n {
+		for x := range n {
+			d := math.Min(1, math.Hypot(float64(x), float64(y))/n)
+			a := uint8(255 * (1 - d) * (1 - d))
+			im.SetRGBA(x, y, color.RGBA{a, a, a, a})
+		}
+	}
+	return ebiten.NewImageFromImage(im)
+}()
+
+// drawGlow washes the screen with the scene's far light: for fire_nw, a red glow from the top left corner (the
+// north-west) that swells and flickers like a city burning beyond the horizon.
+func (g *Game) drawGlow(dst *ebiten.Image) {
+	if g.scene.def.Glow != "fire_nw" {
+		return
+	}
+	t := g.clockMS / 1000
+	k := .7 + .18*math.Sin(t*1.3) + .08*math.Sin(t*3.7+1) + .04*math.Sin(t*9.1+2)
+	reach := float64(worldW) * (.85 + .06*math.Sin(t*.8))
+	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear, Blend: ebiten.BlendLighter}
+	op.GeoM.Scale(reach/128, reach/128)
+	op.ColorScale.Scale(float32(.75*k), float32(.2*k), float32(.06*k), 1)
+	dst.DrawImage(glowImage, op)
+}
+
 // bubble is a speech balloon above the actor's head: animated dots while talking, or an
 // emote mark or a short line.
 func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) {
@@ -767,9 +865,11 @@ func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) 
 // drawSceneEffects draws the stage effects: peach petals falling all around the camera,
 // fires, small fires, smoke and steam at map positions. Particles are pure functions of the
 // effect's age (and the camera, for the petals), so skipping beats or replaying a line shows the same thing.
+// Effects on raised ground rise with it, like the people standing there.
 func (g *Game) drawSceneEffects(dst *ebiten.Image) {
 	for _, e := range g.scene.effects {
 		x, y := g.field.Center(e.u, e.v)
+		y -= g.field.Lift(int(e.u), int(e.v)) + g.field.groundLift(e.u, e.v) // a fire or smoke on raised ground burns on its top
 		switch e.kind {
 		case "petals":
 			g.drawPetals(dst, e.t)

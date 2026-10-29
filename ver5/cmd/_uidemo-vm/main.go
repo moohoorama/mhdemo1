@@ -43,6 +43,7 @@ var (
 	frames = flag.Int("frames", 120, "frames to play, one game tick each (60 per second)")
 	stage  = flag.String("stage", "", "battle stage the demo plays (default: the first)")
 	duel   = flag.String("duel", "", "stage duel the duel demo plays (default: the first)")
+	node   = flag.String("node", "", "story node the scene demos jump to")
 	out    = flag.String("out", "", "PNG directory (default reports/uidemo/<ui>)")
 	every  = flag.Int("every", 0, "save every n-th frame as PNG; 0 for none")
 	at     = flag.String("at", "", "comma-separated frames to save as PNG, e.g. 30,96,264")
@@ -202,7 +203,7 @@ func run() error {
 		return fmt.Errorf("building the guest: %w", err)
 	}
 	// one more frame than captured: the guest stops itself after its last frame
-	guestCmd := exec.Command(guestBin, "-ui", *ui, "-frames", strconv.Itoa(*frames+1), "-every", "0", "-stage", *stage, "-duel", *duel,
+	guestCmd := exec.Command(guestBin, "-ui", *ui, "-frames", strconv.Itoa(*frames+1), "-every", "0", "-stage", *stage, "-duel", *duel, "-node", *node,
 		"-size", *size, "-uiscale", strconv.Itoa(*uiPct))
 	guestCmd.Env = append(os.Environ(), "EBITENGINE_VM_ENDPOINT="+endpoint)
 	guestCmd.Stdout, guestCmd.Stderr = os.Stderr, os.Stderr

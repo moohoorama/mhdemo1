@@ -20,7 +20,7 @@ func TestBriefingListsGoalsAndBonusObjectives(t *testing.T) {
 	if b.lose != "hero 퇴각 / 진영 점령 / 12턴 초과" && b.lose != g.lordName()+" 퇴각 / 진영 점령 / 12턴 초과" {
 		t.Fatalf("lose: %q", b.lose)
 	}
-	if len(b.subs) != 2 || !b.subs[0].done || b.subs[1].done {
+	if len(b.subs) != 2 || b.subs[0] != (briefSub{"전원 생존", "지키는 중", true}) || b.subs[1] != (briefSub{"보스 격파 전 일기토", "미달성", false}) {
 		t.Fatalf("subs: %+v", b.subs)
 	}
 }

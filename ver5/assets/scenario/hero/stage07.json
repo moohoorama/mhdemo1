@@ -3,7 +3,7 @@
  "Name": "동탁 추격전",
  "Width": 0,
  "Height": 0,
- "Max": 3,
+ "Max": 4,
  "Required": [
   "liubei",
   "guanyu",
@@ -509,18 +509,7 @@
      "Spawns": [
       {
        "Character": "troop_cavalry",
-       "X": 5,
-       "Y": 3,
-       "Class": "light_cavalry",
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 5,
+       "X": 2,
        "Y": 4,
        "Class": "light_cavalry",
        "Facing": "SE",
@@ -531,7 +520,7 @@
       },
       {
        "Character": "troop_cavalry",
-       "X": 5,
+       "X": 2,
        "Y": 5,
        "Class": "light_cavalry",
        "Facing": "SE",
@@ -542,7 +531,7 @@
       },
       {
        "Character": "troop_cavalry",
-       "X": 5,
+       "X": 2,
        "Y": 6,
        "Class": "light_cavalry",
        "Facing": "SE",
@@ -552,9 +541,20 @@
        "Faction": "dong"
       },
       {
+       "Character": "troop_cavalry",
+       "X": 2,
+       "Y": 7,
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
        "Character": "lubu",
-       "X": 4,
-       "Y": 3,
+       "X": 1,
+       "Y": 5,
        "Facing": "SE",
        "Group": "lubu",
        "Policy": "react",
@@ -565,111 +565,101 @@
       },
       {
        "Character": "troop_footman",
-       "X": 4,
-       "Y": 4,
-       "Facing": "SE",
-       "Group": "lubu-foot",
-       "Policy": "react",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 4,
-       "Y": 5,
-       "Facing": "SE",
-       "Group": "lubu-foot",
-       "Policy": "react",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 4,
-       "Y": 6,
-       "Facing": "SE",
-       "Group": "lubu-foot",
-       "Policy": "react",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 4,
-       "Y": 7,
-       "Facing": "SE",
-       "Group": "lubu-foot",
-       "Policy": "react",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 4,
-       "Y": 8,
-       "Facing": "SE",
-       "Group": "lubu-foot",
-       "Policy": "react",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 3,
+       "X": 2,
        "Y": 3,
        "Facing": "SE",
-       "Group": "lubu-foot",
-       "Policy": "react",
+       "Group": "lubu",
+       "Policy": "assault",
        "Side": "enemy",
        "Faction": "dong"
       },
       {
        "Character": "troop_footman",
-       "X": 3,
-       "Y": 4,
-       "Facing": "SE",
-       "Group": "lubu-foot",
-       "Policy": "react",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 3,
-       "Y": 5,
-       "Facing": "SE",
-       "Group": "lubu-foot",
-       "Policy": "react",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 3,
-       "Y": 6,
-       "Facing": "SE",
-       "Group": "lubu-foot",
-       "Policy": "react",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 3,
-       "Y": 7,
-       "Facing": "SE",
-       "Group": "lubu-foot",
-       "Policy": "react",
-       "Side": "enemy",
-       "Faction": "dong"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 3,
+       "X": 2,
        "Y": 8,
        "Facing": "SE",
-       "Group": "lubu-foot",
-       "Policy": "react",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 1,
+       "Y": 3,
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 1,
+       "Y": 4,
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 1,
+       "Y": 6,
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 1,
+       "Y": 7,
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 0,
+       "Y": 3,
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 0,
+       "Y": 5,
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 0,
+       "Y": 6,
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "dong"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 0,
+       "Y": 7,
+       "Facing": "SE",
+       "Group": "lubu",
+       "Policy": "assault",
        "Side": "enemy",
        "Faction": "dong"
       }
@@ -700,12 +690,15 @@
      ]
     },
     {
-     "Kind": "ai",
-     "Targets": [
-      "lords"
-     ],
-     "Policy": "flee",
-     "GoalArea": 2
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "leave",
+        "Unit": "lords"
+       }
+      ]
+     ]
     },
     {
      "Kind": "say",
@@ -793,22 +786,6 @@
      "Kind": "ai",
      "Targets": [
       "lubu"
-     ],
-     "Policy": "assault"
-    }
-   ]
-  },
-  {
-   "ID": "lubu-foot-follows",
-   "If": [
-    "flag:flag-b04-lubu",
-    "round>=5"
-   ],
-   "Do": [
-    {
-     "Kind": "ai",
-     "Targets": [
-      "lubu-foot"
      ],
      "Policy": "assault"
     }

@@ -4,6 +4,7 @@
 //
 //	go run ./cmd/_balance                       every stage, careless player (rush)
 //	go run ./cmd/_balance -stage B02 -player ai -seeds 10
+//	go run ./cmd/_balance -stage B09 -player ai -roster jianyong,fangong
 package main
 
 import (
@@ -31,6 +32,7 @@ func main() {
 	offset := flag.Int("offset", 0, "the player's officers this many levels off the stage level")
 	show := flag.Bool("show", false, "print every unit's numbers when the battle starts (seed 1)")
 	eval := flag.String("eval", "", "other weights for the player's units as n,m,threat,top,w (ai.ParseEval)")
+	joined := flag.String("roster", "", "officers who joined after the start, comma separated (fangong,jianyong)")
 	flag.Parse()
 	if *eval != "" {
 		x, err := ai.ParseEval(*eval)
@@ -39,6 +41,10 @@ func main() {
 	}
 	d, err := content.Load(*dir)
 	check(err)
+	if *joined != "" {
+		d.Campaign.Roster = append(append([]string{}, d.Campaign.Roster...), strings.Split(*joined, ",")...)
+		d.Campaign.Deployment = append(append([]string{}, d.Campaign.Deployment...), strings.Split(*joined, ",")...)
+	}
 	for i, st := range d.Stages {
 		if *only != "" && st.ID != *only {
 			continue
@@ -159,6 +165,8 @@ func play(d *content.Data, i, level int, seed uint64, player string, damage, xp 
 				for _, u := range e.Observe().UnitViews {
 					if u.ID == ev.Actor && u.Faction == "ally" && !u.AI {
 						retreats = append(retreats, u.ID)
+					} else if u.ID == ev.Actor && u.Faction != "enemy" && ev.Text != "flight" { // an escort beaten, not one that got away
+						retreats = append(retreats, "npc:"+u.ID)
 					}
 				}
 			}
