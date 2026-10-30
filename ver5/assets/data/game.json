@@ -86,6 +86,8 @@
   "StageLevelStep": 1.5,
   "SideShareMax": 0.5,
   "RankLead": {
+   "rabble": -0.14,
+   "recruit": -0.07,
    "troop": 0,
    "officer": 0.08,
    "commander": 0.15,

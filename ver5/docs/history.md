@@ -1770,3 +1770,10 @@
 - `assets/scenario/hero/story07.json`: 첫머리 `c07-gate-branch`(`flag:flag-hulao-coalition`) → `c07-gate`, `c07-g1`~`c07-g7`(지급 `grant-bean_pouch`). `assets/scenes/ch07.json` `c07-gate`: S_coalition_camp 밤, 화톳불(33,19) 곁 경보병 셋, 삼형제가 동문(38,17)으로 들어와 (30,17)·(31,17)·(31,18), 병사가 (30,18)로 뛰어옴(무릎 꿇기·두드림 지문은 빼기로 함)
 - `tools/spritetool/assets/ver5-ui/settings.json`·`pixels.json`·`sources/item_bean_pouch.png`, `assets/graphics/ui/ui.png`·`ui.json`: 콩주머니 아이콘 `item_bean_pouch` — codex 그림(입 벌린 삼베 주머니에 볶은 콩, 붉은 끈) → `pixelize_icon.py`, 콩 사이가 끈의 검붉은색으로 잡혀 콩 그림자색 `v`를 더함. 군량낭(`item_ration`)과 구별되게 입을 벌려 콩을 보임. `equipment.json` `bean_pouch.Icon`
 - `assets/scenes/ch07.json` `c07-gate`·`story07.json`: 병사가 넘어진 것처럼 보이던 무릎 꿇기를 빼고 서서 맞음, 유비 "(병사를 일으키며) 일어나게."와 장비 "(병사 어깨를 두드리며)" 지문을 뺌 — 사용자 "병사가 넘어져서 보이고, 일으켜주고 없애주고, (어깨를 두드리며)도 없애죠"
+
+## 2026-10-30 잡병 직급 오합지졸·신병, B01·B02는 오합지졸
+
+- 결정: 직급에 `rabble` 오합지졸(−0.14)과 `recruit` 신병(−0.07)을 더한다. B01·B02 황건 잡병은 오합지졸(L3에서 Lv1, L5에서 Lv3), 다른 판의 "병졸 + Shift −0.07" 잡병은 신병으로 이름만 바꾼다(레벨 그대로) · 이유: 사용자 "잡병을 두고… 오합지졸", "신병 -0.07 오합지졸 -0.14", "1,2탄을 오합지졸, 3,4탄을 신병". 1탄 맵 길을 초원으로 바꾸는 안은 측정(20판 11 → 13승)만 하고 원래대로 둠
+- 결정: 영천 유비 대 파재 일기토는 강제하지 않는다(체력 절반에서 일기토 열기, 승리 조건을 일기토로 바꾸기 둘 다 거절). 러시 시험에서 그 요구를 뺌 · 이유: 사용자 "둘다 별로인데"
+- 측정: B01 서툰 플레이 40판 16 → 37승(장비 퇴각 33 → 16), 일반 AI 40/40 그대로. 일반 AI의 B01 레벨 상승 관우 +1.8 → +1.7, 유비 +0.9 → +0.7, 장비 +1.7 그대로. 이어서 키우면 서툰 플레이는 절반이 B03에서 멈추고, 게임 AI는 다섯 판 중 넷이 B10까지 깸(stage_lv_balance.md 3.2)
+- `assets/data/game.json` `Rules.RankLead`, `assets/scenario/hero/stage01~10.json` 잡병 `Rank`, `internal/ai/rush_test.go`, `docs/stage_lv_balance.md`, `docs/data-scenario-node.md`

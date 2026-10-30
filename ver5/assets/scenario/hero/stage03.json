@@ -83,7 +83,7 @@
    "Facing": "SW",
    "Group": "pass",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_turban",
@@ -92,7 +92,7 @@
    "Facing": "SW",
    "Group": "pass",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_turban",
@@ -101,7 +101,7 @@
    "Facing": "SW",
    "Group": "pass",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_turban",
@@ -110,7 +110,7 @@
    "Facing": "SE",
    "Group": "main",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_turban",
@@ -119,7 +119,7 @@
    "Facing": "SE",
    "Group": "main",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_turban",
@@ -128,7 +128,7 @@
    "Facing": "SE",
    "Group": "main",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_turban",
@@ -137,7 +137,7 @@
    "Facing": "SE",
    "Group": "main",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_turban",
@@ -146,7 +146,7 @@
    "Facing": "SE",
    "Group": "main",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_turban",
@@ -155,7 +155,7 @@
    "Facing": "SE",
    "Group": "main",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   }
  ],
  "Reward": {
@@ -220,7 +220,7 @@
        "Faction": "han",
        "Group": "tao",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       },
       {
        "Character": "troop_footman",
@@ -232,7 +232,7 @@
        "Faction": "han",
        "Group": "tao",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       },
       {
        "Character": "troop_archer",
@@ -244,7 +244,7 @@
        "Faction": "han",
        "Group": "tao",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       }
      ]
     },

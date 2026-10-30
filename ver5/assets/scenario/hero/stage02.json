@@ -60,7 +60,7 @@
    "Facing": "SE",
    "Group": "so1",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "troop_turban",
@@ -69,7 +69,7 @@
    "Facing": "SE",
    "Group": "so2",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "troop_turban",
@@ -78,7 +78,7 @@
    "Facing": "SE",
    "Group": "so3",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "troop_turban",
@@ -87,7 +87,7 @@
    "Facing": "SE",
    "Group": "so4",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "troop_turban",
@@ -96,7 +96,7 @@
    "Facing": "SE",
    "Group": "so5",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "troop_turban",
@@ -105,7 +105,7 @@
    "Facing": "SE",
    "Group": "so6",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "troop_turban",
@@ -114,7 +114,7 @@
    "Facing": "SE",
    "Group": "so7",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "troop_turban",
@@ -123,7 +123,7 @@
    "Facing": "SE",
    "Group": "so8",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "zhangbao",
@@ -140,7 +140,7 @@
    "Facing": "NE",
    "Group": "eastcamp",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "troop_turban",
@@ -149,7 +149,7 @@
    "Facing": "NE",
    "Group": "eastcamp",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "troop_turban",
@@ -158,7 +158,7 @@
    "Facing": "NE",
    "Group": "eastcamp",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "troop_turban",
@@ -167,7 +167,7 @@
    "Facing": "NE",
    "Group": "eastcamp",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "zhangliang",
@@ -184,7 +184,7 @@
    "Facing": "SW",
    "Group": "westcamp",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "troop_turban",
@@ -193,7 +193,7 @@
    "Facing": "SW",
    "Group": "westcamp",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "troop_turban",
@@ -202,7 +202,7 @@
    "Facing": "SW",
    "Group": "westcamp",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   },
   {
    "Character": "troop_turban",
@@ -211,7 +211,7 @@
    "Facing": "SW",
    "Group": "westcamp",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "rabble"
   }
  ],
  "Party": [

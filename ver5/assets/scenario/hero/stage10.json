@@ -139,7 +139,7 @@
    "Facing": "SW",
    "Group": "hq-guard",
    "Policy": "hold",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_footman",
@@ -148,7 +148,7 @@
    "Facing": "SW",
    "Group": "hq-guard",
    "Policy": "hold",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "quyi",
@@ -194,7 +194,7 @@
    "Facing": "SW",
    "Group": "wen",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
@@ -203,7 +203,7 @@
    "Facing": "SW",
    "Group": "wen",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
@@ -212,7 +212,7 @@
    "Facing": "SW",
    "Group": "wen",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_archer",
@@ -221,7 +221,7 @@
    "Facing": "SW",
    "Group": "line",
    "Policy": "hold",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_footman",
@@ -230,7 +230,7 @@
    "Facing": "SW",
    "Group": "line",
    "Policy": "hold",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_footman",
@@ -239,7 +239,7 @@
    "Facing": "SW",
    "Group": "line",
    "Policy": "hold",
-   "Shift": -0.07
+   "Rank": "recruit"
   }
  ],
  "Reward": {
@@ -330,7 +330,7 @@
        "Group": "van",
        "Policy": "assault",
        "Side": "enemy",
-       "Shift": -0.07
+       "Rank": "recruit"
       }
      ]
     },

@@ -94,7 +94,7 @@
    "Facing": "SE",
    "Group": "xiliang",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
@@ -103,7 +103,7 @@
    "Facing": "SE",
    "Group": "xiliang",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
@@ -112,7 +112,7 @@
    "Facing": "SE",
    "Group": "xiliang",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_footman",

@@ -125,7 +125,7 @@
    "Facing": "SE",
    "Group": "guards",
    "Policy": "hold",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
@@ -134,7 +134,7 @@
    "Facing": "SE",
    "Group": "guards",
    "Policy": "hold",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
@@ -143,7 +143,7 @@
    "Facing": "SE",
    "Group": "guards",
    "Policy": "hold",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
@@ -152,7 +152,7 @@
    "Facing": "SE",
    "Group": "raiders",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
@@ -161,7 +161,7 @@
    "Facing": "SE",
    "Group": "raiders",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
@@ -170,7 +170,7 @@
    "Facing": "SE",
    "Group": "raiders",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
@@ -179,7 +179,7 @@
    "Facing": "SE",
    "Group": "raiders",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
@@ -188,7 +188,7 @@
    "Facing": "SE",
    "Group": "raiders",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "loot_cart",
@@ -304,7 +304,7 @@
        "Faction": "gongsun",
        "Group": "white",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       },
       {
        "Character": "troop_cavalry",
@@ -316,7 +316,7 @@
        "Faction": "gongsun",
        "Group": "white",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       }
      ]
     },

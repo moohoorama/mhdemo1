@@ -75,7 +75,7 @@
    "Facing": "SW",
    "Group": "vanguard",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_footman",
@@ -84,7 +84,7 @@
    "Facing": "SW",
    "Group": "vanguard",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "lijue",
@@ -101,7 +101,7 @@
    "Facing": "SW",
    "Group": "center",
    "Policy": "react",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "liru",

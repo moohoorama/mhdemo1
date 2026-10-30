@@ -181,7 +181,7 @@
    "Facing": "SE",
    "Group": "rear",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_archer",
@@ -190,7 +190,7 @@
    "Facing": "SE",
    "Group": "rear",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_footman",
@@ -199,7 +199,7 @@
    "Facing": "SE",
    "Group": "rear",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
@@ -208,7 +208,7 @@
    "Facing": "SE",
    "Group": "rear",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
@@ -217,7 +217,7 @@
    "Facing": "SE",
    "Group": "rear",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_footman",
@@ -226,7 +226,7 @@
    "Facing": "SE",
    "Group": "rear",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_archer",
@@ -235,7 +235,7 @@
    "Facing": "SE",
    "Group": "rear",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_footman",
@@ -244,7 +244,7 @@
    "Facing": "SE",
    "Group": "rear",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   },
   {
    "Character": "troop_archer",
@@ -253,7 +253,7 @@
    "Facing": "SE",
    "Group": "rear",
    "Policy": "assault",
-   "Shift": -0.07
+   "Rank": "recruit"
   }
  ],
  "Reward": {
@@ -374,7 +374,7 @@
        "Faction": "yuan",
        "Group": "lords",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       },
       {
        "Character": "troop_footman",
@@ -386,7 +386,7 @@
        "Faction": "yuan",
        "Group": "lords",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       },
       {
        "Character": "troop_footman",
@@ -398,7 +398,7 @@
        "Faction": "yuan",
        "Group": "lords",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       },
       {
        "Character": "troop_footman",
@@ -410,7 +410,7 @@
        "Faction": "yuan",
        "Group": "lords",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       },
       {
        "Character": "troop_archer",
@@ -422,7 +422,7 @@
        "Faction": "yuan",
        "Group": "lords",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       },
       {
        "Character": "troop_archer",
@@ -434,7 +434,7 @@
        "Faction": "yuan",
        "Group": "lords",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       },
       {
        "Character": "troop_archer",
@@ -446,7 +446,7 @@
        "Faction": "yuan",
        "Group": "lords",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       },
       {
        "Character": "troop_footman",
@@ -458,7 +458,7 @@
        "Faction": "yuan",
        "Group": "lords",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       },
       {
        "Character": "troop_footman",
@@ -470,7 +470,7 @@
        "Faction": "yuan",
        "Group": "lords",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       },
       {
        "Character": "troop_archer",
@@ -482,7 +482,7 @@
        "Faction": "yuan",
        "Group": "lords",
        "Side": "ally",
-       "Shift": -0.07
+       "Rank": "recruit"
       }
      ]
     },
