@@ -16,7 +16,7 @@ import (
 // light_infantry); the player's units are capitalized, the enemy's lowercase, and the mark after
 // a glyph tells the side: ' ' the player, '+' an AI ally, '!' the enemy.
 
-var groundGlyph = map[byte]string{'g': "   ", 'd': " . ", 'l': " ' ", 's': " ; ", 'w': "~~~", 'c': "###", 'i': " _ ", 'h': "^^^", 'm': "[ ]"}
+var groundGlyph = map[byte]string{'g': "   ", 'd': " . ", 'l': " ' ", 's': " ; ", 'w': "~~~", 'c': "###", 'i': " _ ", 'h': "^^^", 'm': "[ ]", 'u': " n ", 'n': "MMM"}
 var structureGlyph = map[byte]string{'t': "TRE", 'v': "VIL", 'k': "CMP", 'o': "CST", 'p': "PAS", 'b': "BRG", 'z': "FNC"}
 var stateGlyph = map[byte]string{'e': "EMB", 'F': "FIR", 'x': "xxx", 'O': "[O]"}
 

@@ -77,6 +77,51 @@ func (f *Field) makeNativeFloors() {
 			f.bridges = append(f.bridges, f.bridgeEdges(x, y, at, px, py)...)
 		}
 	})
+	f.eachGameCell('u', func(x, y int, px, py float64) {
+		s := f.A.Props[fmt.Sprintf("bt_knoll_%02d", f.cellMask(x, y, 'u'))].Sprite
+		f.nativeGround = append(f.nativeGround, drawItem{rect: f.mapRect(s, px/K, py/K), draw: func() { f.blit(f.Canvas, s, px, py, nil) }})
+	})
+}
+
+// knollLift is how high a unit on a rolling hill (u) stands: the crest of its picture (tools/worldmap/gen_terrain.py
+// KNOLL). Only the unit rises; its cell's marks stay on the ground (markLift).
+const knollLift = 7
+
+// eachGameCell calls fn with every game cell of the picture whose small tiles are all glyph t, and its canvas centre.
+func (f *Field) eachGameCell(t byte, fn func(x, y int, px, py float64)) {
+	v := f.Map.Visual
+	for y := v[1] / 2; y < (v[1]+v[3])/2; y++ {
+		for x := v[0] / 2; x < (v[0]+v[2])/2; x++ {
+			if f.small(2*x, 2*y) == t && f.small(2*x+1, 2*y+1) == t {
+				px, py := f.Center(float64(x), float64(y))
+				fn(x, y, px, py)
+			}
+		}
+	}
+}
+
+// cellMask has bit i set when the game cell next to (x, y) at side i (-u, -v, +u, +v) is glyph t too.
+func (f *Field) cellMask(x, y int, t byte) int {
+	mask := 0
+	for i, d := range [4][2]int{{-1, 0}, {0, -1}, {1, 0}, {0, 1}} {
+		if f.small(2*(x+d[0]), 2*(y+d[1])) == t {
+			mask |= 1 << i
+		}
+	}
+	return mask
+}
+
+// nativeMountains stands a mountain on every mountain cell (n): bare rock, a big one where mountains ring it.
+func (f *Field) nativeMountains(items *[]drawItem) {
+	f.eachGameCell('n', func(x, y int, px, py float64) {
+		h := ((x*7+y*13+x*y*3)%97 + 97) % 97
+		name := fmt.Sprintf("wm_mtn_rock_%d", h%3)
+		if f.cellMask(x, y, 'n') == 15 && h%3 == 0 {
+			name = fmt.Sprintf("wm_mtn_big_%d", h%2)
+		}
+		s := f.A.Props[name].Sprite
+		*items = append(*items, drawItem{y: py, rect: f.mapRect(s, px/K, py/K), draw: func() { f.blit(f.Canvas, s, px, py, nil) }})
+	})
 }
 
 func (f *Field) nativeObjects(items *[]drawItem) {
@@ -105,6 +150,7 @@ func (f *Field) nativeObjects(items *[]drawItem) {
 		}})
 	})
 	f.nativeSites(items)
+	f.nativeMountains(items)
 	f.nativeFences(items)
 	if f.A.Scenery != nil {
 		f.nativeForest(items)

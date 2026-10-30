@@ -234,6 +234,16 @@
    "Name": "평지",
    "Glyph": "l",
    "Surface": 3
+  },
+  "u": {
+   "Name": "구릉",
+   "Glyph": "u",
+   "Surface": 2
+  },
+  "n": {
+   "Name": "산",
+   "Glyph": "n",
+   "Surface": 2
   }
  },
  "Structures": {

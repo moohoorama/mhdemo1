@@ -32,7 +32,7 @@ OUT = ROOT / 'tools/mapgen/layouts/hero'
 sys.path.insert(0, str(ROOT / 'tools/scene_maps'))
 from scene_ascii import OFFICER  # noqa: E402  the same officer codes as the scene pictures
 
-GROUND = {'g': '...', 'd': ',,,', 'l': "'''", 's': ';;;', 'w': '~~~', 'c': '###', 'i': '___', 'h': '^^^', 'm': '[ ]'}
+GROUND = {'g': '...', 'd': ',,,', 'l': "'''", 's': ';;;', 'w': '~~~', 'c': '###', 'i': '___', 'h': '^^^', 'm': '[ ]', 'u': ' n ', 'n': 'MMM'}
 STRUCTURE = {'t': 'TRE', 'v': 'VIL', 'k': 'CMP', 'o': 'CST', 'p': 'PAS', 'b': 'BRG', 'z': 'FNC'}
 STATE = {'e': 'EMB', 'F': 'FIR', 'x': 'xxx', 'O': '[O]'}
 SIDES = (('Allies', 'player'), ('Party', 'ally'), ('Enemies', 'enemy'))

@@ -237,6 +237,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			Image   string
 			Sprites map[string]propEntry
 		}
+		Terrain   string // the hills, mountains and roads of tools/worldmap/gen_terrain.py: a sheet like Extra, read as props
 		Backdrops map[string]string
 		Anims     map[string]struct { // packed by tools/build_extra.py (flames, smoke, incense) and tools/build_tree_sway.py
 			Image   string
@@ -316,10 +317,23 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		w, h := index.Sites.Cell[0], index.Sites.Cell[1]
 		a.Sites[name] = Sprite{siSheet.SubImage(image.Rect(i*w, 0, (i+1)*w, h)).(*ebiten.Image), index.Sites.Pivot[0], index.Sites.Pivot[1]}
 	}
-	for _, sheet := range []struct {
+	type propSheet struct {
 		Image   string
 		Sprites map[string]propEntry
-	}{{index.Props.Image, index.Props.Sprites}, {index.Extra.Image, index.Extra.Sprites}} {
+	}
+	sheetList := []propSheet{{index.Props.Image, index.Props.Sprites}, {index.Extra.Image, index.Extra.Sprites}}
+	if index.Terrain != "" {
+		raw, err := os.ReadFile(filepath.Join(dir, index.Terrain))
+		if err != nil {
+			return nil, err
+		}
+		var terrain propSheet
+		if err := json.Unmarshal(raw, &terrain); err != nil {
+			return nil, fmt.Errorf("%s: %w", index.Terrain, err)
+		}
+		sheetList = append(sheetList, terrain)
+	}
+	for _, sheet := range sheetList {
 		if sheet.Image == "" {
 			continue
 		}

@@ -88,9 +88,9 @@ func (f *Field) drawGoals(c *ebiten.Image) {
 		case s.cells != nil:
 			f.areaBorder(p, s.cells)
 		case s.duel > 0:
-			f.dashedDiamond(p, s.u, s.v, k, max(0, f.Lift(int(math.Round(s.u)), int(math.Round(s.v)))))
+			f.dashedDiamond(p, s.u, s.v, k, f.markLift(int(math.Round(s.u)), int(math.Round(s.v))))
 		default:
-			f.diamond(p, s.u, s.v, k, max(0, f.Lift(int(math.Round(s.u)), int(math.Round(s.v)))))
+			f.diamond(p, s.u, s.v, k, f.markLift(int(math.Round(s.u)), int(math.Round(s.v))))
 		}
 		op := &vector.DrawPathOptions{AntiAlias: true}
 		op.ColorScale.ScaleWithColor(col)
@@ -144,7 +144,7 @@ func (f *Field) dashedDiamond(p *vector.Path, u, v, k, lift float64) {
 func (f *Field) areaBorder(p *vector.Path, cells []content.Point) {
 	for _, c := range cells {
 		x, y := f.Center(float64(c.X), float64(c.Y))
-		lift := max(0, f.Lift(c.X, c.Y))
+		lift := f.markLift(c.X, c.Y)
 		for i, n := range cellSides {
 			if containsCell(cells, c.X+n[0], c.Y+n[1]) {
 				continue

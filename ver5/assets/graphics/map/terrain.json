@@ -1,0 +1,863 @@
+{
+ "image": "map/terrain.png",
+ "sprites": {
+  "bt_hill_00": {
+   "rect": [
+    230,
+    0,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_01": {
+   "rect": [
+    327,
+    0,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_02": {
+   "rect": [
+    424,
+    0,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_03": {
+   "rect": [
+    521,
+    0,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_04": {
+   "rect": [
+    618,
+    0,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_05": {
+   "rect": [
+    715,
+    0,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_06": {
+   "rect": [
+    812,
+    0,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_07": {
+   "rect": [
+    909,
+    0,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_08": {
+   "rect": [
+    0,
+    83,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_09": {
+   "rect": [
+    97,
+    83,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_10": {
+   "rect": [
+    194,
+    83,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_11": {
+   "rect": [
+    291,
+    83,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_12": {
+   "rect": [
+    388,
+    83,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_13": {
+   "rect": [
+    485,
+    83,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_14": {
+   "rect": [
+    582,
+    83,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_hill_15": {
+   "rect": [
+    679,
+    83,
+    96,
+    60
+   ],
+   "pivot": [
+    48,
+    34
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_00": {
+   "rect": [
+    355,
+    144,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_01": {
+   "rect": [
+    420,
+    144,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_02": {
+   "rect": [
+    485,
+    144,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_03": {
+   "rect": [
+    550,
+    144,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_04": {
+   "rect": [
+    615,
+    144,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_05": {
+   "rect": [
+    680,
+    144,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_06": {
+   "rect": [
+    745,
+    144,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_07": {
+   "rect": [
+    810,
+    144,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_08": {
+   "rect": [
+    875,
+    144,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_09": {
+   "rect": [
+    940,
+    144,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_10": {
+   "rect": [
+    0,
+    198,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_11": {
+   "rect": [
+    65,
+    198,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_12": {
+   "rect": [
+    130,
+    198,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_13": {
+   "rect": [
+    195,
+    198,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_14": {
+   "rect": [
+    260,
+    198,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "bt_knoll_15": {
+   "rect": [
+    325,
+    198,
+    64,
+    45
+   ],
+   "pivot": [
+    32,
+    26
+   ],
+   "layer": "ground"
+  },
+  "wm_hill_0": {
+   "rect": [
+    455,
+    244,
+    52,
+    29
+   ],
+   "pivot": [
+    27,
+    18
+   ],
+   "layer": "object"
+  },
+  "wm_hill_1": {
+   "rect": [
+    561,
+    244,
+    52,
+    28
+   ],
+   "pivot": [
+    27,
+    17
+   ],
+   "layer": "object"
+  },
+  "wm_hill_2": {
+   "rect": [
+    508,
+    244,
+    52,
+    29
+   ],
+   "pivot": [
+    27,
+    18
+   ],
+   "layer": "object"
+  },
+  "wm_mtn_big_0": {
+   "rect": [
+    0,
+    0,
+    56,
+    82
+   ],
+   "pivot": [
+    28,
+    67
+   ],
+   "layer": "object"
+  },
+  "wm_mtn_big_1": {
+   "rect": [
+    114,
+    0,
+    56,
+    78
+   ],
+   "pivot": [
+    28,
+    63
+   ],
+   "layer": "object"
+  },
+  "wm_mtn_green_0": {
+   "rect": [
+    303,
+    144,
+    51,
+    47
+   ],
+   "pivot": [
+    26,
+    36
+   ],
+   "layer": "object"
+  },
+  "wm_mtn_green_1": {
+   "rect": [
+    251,
+    144,
+    51,
+    48
+   ],
+   "pivot": [
+    27,
+    37
+   ],
+   "layer": "object"
+  },
+  "wm_mtn_green_2": {
+   "rect": [
+    200,
+    144,
+    50,
+    49
+   ],
+   "pivot": [
+    25,
+    38
+   ],
+   "layer": "object"
+  },
+  "wm_mtn_rock_0": {
+   "rect": [
+    826,
+    83,
+    49,
+    54
+   ],
+   "pivot": [
+    25,
+    43
+   ],
+   "layer": "object"
+  },
+  "wm_mtn_rock_1": {
+   "rect": [
+    776,
+    83,
+    49,
+    55
+   ],
+   "pivot": [
+    25,
+    43
+   ],
+   "layer": "object"
+  },
+  "wm_mtn_rock_2": {
+   "rect": [
+    50,
+    144,
+    49,
+    52
+   ],
+   "pivot": [
+    25,
+    41
+   ],
+   "layer": "object"
+  },
+  "wm_mtn_snow_0": {
+   "rect": [
+    0,
+    144,
+    49,
+    53
+   ],
+   "pivot": [
+    25,
+    42
+   ],
+   "layer": "object"
+  },
+  "wm_mtn_snow_1": {
+   "rect": [
+    150,
+    144,
+    49,
+    50
+   ],
+   "pivot": [
+    25,
+    39
+   ],
+   "layer": "object"
+  },
+  "wm_mtn_stone_0": {
+   "rect": [
+    100,
+    144,
+    49,
+    51
+   ],
+   "pivot": [
+    25,
+    40
+   ],
+   "layer": "object"
+  },
+  "wm_mtn_stone_1": {
+   "rect": [
+    876,
+    83,
+    49,
+    54
+   ],
+   "pivot": [
+    25,
+    43
+   ],
+   "layer": "object"
+  },
+  "wm_mtn_stone_2": {
+   "rect": [
+    926,
+    83,
+    49,
+    54
+   ],
+   "pivot": [
+    25,
+    43
+   ],
+   "layer": "object"
+  },
+  "wm_peak_0": {
+   "rect": [
+    171,
+    0,
+    58,
+    75
+   ],
+   "pivot": [
+    30,
+    60
+   ],
+   "layer": "object"
+  },
+  "wm_peak_1": {
+   "rect": [
+    57,
+    0,
+    56,
+    81
+   ],
+   "pivot": [
+    28,
+    66
+   ],
+   "layer": "object"
+  },
+  "wm_road_00": {
+   "rect": [
+    390,
+    198,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_01": {
+   "rect": [
+    455,
+    198,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_02": {
+   "rect": [
+    520,
+    198,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_03": {
+   "rect": [
+    585,
+    198,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_04": {
+   "rect": [
+    650,
+    198,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_05": {
+   "rect": [
+    715,
+    198,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_06": {
+   "rect": [
+    780,
+    198,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_07": {
+   "rect": [
+    845,
+    198,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_08": {
+   "rect": [
+    910,
+    198,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_09": {
+   "rect": [
+    0,
+    244,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_10": {
+   "rect": [
+    65,
+    244,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_11": {
+   "rect": [
+    130,
+    244,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_12": {
+   "rect": [
+    195,
+    244,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_13": {
+   "rect": [
+    260,
+    244,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_14": {
+   "rect": [
+    325,
+    244,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  },
+  "wm_road_15": {
+   "rect": [
+    390,
+    244,
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground"
+  }
+ }
+}

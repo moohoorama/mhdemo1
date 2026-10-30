@@ -1,19 +1,20 @@
 # B09 거록 (22x16): 남북으로 뻗은 벼랑 능선(x 10~11), 가운데 길목(7~8행), 남쪽 숲길(13~14행), 곳곳에 벼랑과 숲.
 # 장합이 길목 동쪽 머리를 창병으로 막고, 안량의 기병은 이미 길목을 넘어 북서쪽(5~7,2~3)에 있다.
 # 원소군 진채는 동쪽 끝(20,5). 길목 북서쪽에 작은 성(8,4). 유비군은 서쪽(0~3,6~8)에서 온다.
-gt- gt- g-- gt- g-- d-- g-- gt- gt- g-- h-- h-- g-- g-- h-- h-- h-- gt- g-- gt- g-- gt-
-g-- gt- g-- g-- g-- g-- gt- dt- gt- g-- h-- h-- g-- gt- g-- h-- g-- gt- gt- g-- g-- g--
-g-- g-- gt- g-- g-- g-- g-- g-- gt- g-- h-- h-- g-- d-- g-- g-- d-- g-- gt- d-- gt- gt-
-gt- g-- g-- gt- g-- g-- gt- g-- g-- gt- h-- h-- dt- gt- g-- gt- gt- g-- gt- g-- g-- g--
-gt- g-- g-- dt- g-- h-- gt- g-- go- g-- h-- h-- g-- g-- g-- gt- gt- g-- g-- gt- g-- g--
-gt- gt- gt- gt- h-- h-- gt- g-- g-- g-- h-- h-- dt- gt- g-- g-- gt- g-- gt- g-- dk- gt-
-gt- g-- g-- g-- gt- g-- g-- g-- d-- d-- h-- h-- g-- g-- gt- g-- g-- g-- gt- g-- gt- gt-
+# 능선과 벼랑은 산(n). 유비군이 오는 서쪽(1~3,6)과 북동쪽(12~13,1~2)에 구릉(u).
+gt- gt- g-- gt- g-- d-- g-- gt- gt- g-- n-- n-- g-- g-- n-- n-- n-- gt- g-- gt- g-- gt-
+g-- gt- g-- g-- g-- g-- gt- dt- gt- g-- n-- n-- u-- gt- g-- n-- g-- gt- gt- g-- g-- g--
+g-- g-- gt- g-- g-- g-- g-- g-- gt- g-- n-- n-- u-- u-- g-- g-- d-- g-- gt- d-- gt- gt-
+gt- g-- g-- gt- g-- g-- gt- g-- g-- gt- n-- n-- dt- gt- g-- gt- gt- g-- gt- g-- g-- g--
+gt- g-- g-- dt- g-- n-- gt- g-- go- g-- n-- n-- g-- g-- g-- gt- gt- g-- g-- gt- g-- g--
+gt- gt- gt- gt- n-- n-- gt- g-- g-- g-- n-- n-- dt- gt- g-- g-- gt- g-- gt- g-- dk- gt-
+gt- u-- u-- u-- gt- g-- g-- g-- d-- d-- n-- n-- g-- g-- gt- g-- g-- g-- gt- g-- gt- gt-
 l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l--
 g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- d-- gt- g-- g-- gt- l-- gt- g-- g-- g--
-g-- gt- g-- g-- g-- g-- g-- g-- gt- gt- h-- h-- gt- gt- g-- g-- l-- l-- gt- g-- g-- g--
-gt- gt- g-- gt- g-- g-- g-- gt- g-- gt- h-- h-- gt- g-- g-- h-- h-- gt- gt- g-- gt- gt-
-h-- h-- g-- g-- g-- g-- gt- gt- gt- g-- h-- h-- g-- gt- l-- l-- h-- g-- g-- gt- g-- g--
-h-- g-- gt- g-- gt- gt- gt- g-- gt- gt- h-- h-- gt- l-- l-- g-- gt- g-- gt- gt- g-- g--
+g-- gt- g-- g-- g-- g-- g-- g-- gt- gt- n-- n-- gt- gt- g-- g-- l-- l-- gt- g-- g-- g--
+gt- gt- g-- gt- g-- g-- g-- gt- g-- gt- n-- n-- gt- g-- g-- n-- n-- gt- gt- g-- gt- gt-
+n-- n-- g-- g-- g-- g-- gt- gt- gt- g-- n-- n-- g-- gt- l-- l-- n-- g-- g-- gt- g-- g--
+n-- g-- gt- g-- gt- gt- gt- g-- gt- gt- n-- n-- gt- l-- l-- g-- gt- g-- gt- gt- g-- g--
 gt- gt- g-- g-- g-- g-- g-- g-- gt- l-- l-- l-- l-- l-- d-- g-- g-- gt- gt- gt- gt- g--
-g-- gt- g-- gt- g-- gt- g-- g-- gt- g-- d-- g-- g-- g-- g-- g-- gt- gt- g-- h-- h-- g--
-g-- g-- gt- gt- gt- gt- gt- gt- gt- g-- h-- h-- g-- gt- g-- g-- g-- g-- g-- g-- h-- g--
+g-- gt- g-- gt- g-- gt- g-- g-- gt- g-- d-- g-- g-- g-- g-- g-- gt- gt- g-- n-- n-- g--
+g-- g-- gt- gt- gt- gt- gt- gt- gt- g-- n-- n-- g-- gt- g-- g-- g-- g-- g-- g-- n-- g--

@@ -352,8 +352,19 @@ func (f *Field) Lift(u, v int) float64 {
 		return -sunkDepth
 	} else if t == 's' && f.Map.SunkWater {
 		return -fordDepth
+	} else if t == 'u' && f.Map.Native {
+		return knollLift
 	}
 	return 0
+}
+
+// markLift is how high a cell's marks (move range, goals) are drawn: on a wall's top, but on the flat ground over
+// sunk water and over a rolling hill, whose heights are only in the picture: the cell is chosen on the ground.
+func (f *Field) markLift(u, v int) float64 {
+	if f.Tile(u, v) == 'u' {
+		return 0
+	}
+	return max(0, f.Lift(u, v))
 }
 
 func (f *Field) blit(dst *ebiten.Image, s Sprite, x, y float64, op *ebiten.DrawImageOptions) {
@@ -519,7 +530,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			paths[m.Color] = p
 			colors = append(colors, m.Color)
 		}
-		f.cellPath(p, m.U, m.V, max(0, f.Lift(m.U, m.V))) // sunk water: the cell's footprint, where a click lands
+		f.cellPath(p, m.U, m.V, f.markLift(m.U, m.V)) // sunk water, a hill: the cell's footprint, where a click lands
 	}
 	for _, col := range colors {
 		op := &vector.DrawPathOptions{}

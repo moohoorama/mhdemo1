@@ -5,6 +5,16 @@
 
 ---
 
+## 2026-10-30 구릉과 산: 단양·거록의 절벽을 산으로, 둥근 구릉 추가
+
+- `assets/data/game.json`, `terrain.json`: 땅 `u` 구릉(기병 비용 2, 나머지 1, 배율 1)과 `n` 산(모두 진입 불가) — 사용자가 평평한 대지 대신 "둥근 구릉 하나에 지금 산들(이동 불능)"을 골랐다.
+- `internal/gui/field.go`, `field_goals.go`: `Lift`가 구릉에서 +7, 표시는 새 `markLift`로 땅 높이 — 물처럼 높이는 그림과 유닛에만 두고 칸 선택·클릭은 평평한 격자 그대로 두려고(평평한 대지에 땅 높이 표시는 둑과 격자가 비껴 보여 거절).
+- `internal/gui/field_native.go`: 구릉은 이웃 연결 16가지 둔덕(`bt_knoll_<mask>`)을 바닥층에, 산은 바위산(`wm_mtn_rock_*`, 사방이 산이면 가끔 `wm_mtn_big_*`)을 서 있는 물체로 — 숲·마을과 같은 1배 도트.
+- `tools/worldmap/gen_terrain.py` → `assets/graphics/map/terrain.png`·`terrain.json`, `assets/graphics/index.json` `terrain`, `internal/gui/assets.go`: 지형 조각 시트를 소품으로 읽음 — extra 시트(다른 작업이 재생성하는 파일)와 분리해 따로 굽는다.
+- `tools/mapgen/layouts/hero/map03.txt`, `map09.txt` → `maps/map03.json`, `map09.json`: 절벽(`h`)을 모두 산으로, 단양은 고갯길 동쪽 출구·북쪽 들판, 거록은 서쪽 접근로·북동쪽에 구릉.
+- `internal/gui/hud.go`, `internal/cli/ascii.go`, `tools/mapgen/stage_ascii.py`, `mapgen.py`: 미니맵 색, 글자 지도(` n ` 구릉, `MMM` 산).
+- `internal/gui/uidemo_hills.go`: 구릉 위 아군과 이동 범위를 보이는 데모(`-ui hills -stage B03 -node 7,9`).
+
 ## 2026-10-29 모든 화면의 위쪽 두 모서리에 같은 판: 왼쪽은 장소·장·돈과 배속·확대·자동 넘김·장면 넘기기·전투 목표, 오른쪽은 부대·메뉴, 부대 창에 소지품 탭
 
 - 결정: 화면마다 제각각이던 왼쪽 위(전투 `×1`·`전투 목표` 92×60·140×60, 장면 `자동 넘김 꺼짐/켜짐`·`장면 넘기기` 150×44, 탐험 지역 이름·돈 글자와 대화 중 (24,84)의 자동 넘김)와 오른쪽 위(`메뉴` 96×29, 탐험 `부대`)를 접을 수 있는 판 두 개로 통일. 칸은 늘 같은 순서·자리, 화면에 없는 칸은 빈칸. 켜고 끄는 것은 `목표 안내`와 같은 토글 · 이유: 사용자 "좌상단에 보이는 버튼들이 제각각이야", "자동넘김 꺼짐 같은걸 토글로", "그 화면에 해당 안하는건 비워두는 식으로", "좌상단의 버튼들, 돈 이런것들도 다 확장/축소", "좌상단에 화면 확대 배율도", "우상단의 부대, 매뉴도 마찬가지로", "부대쪽에는 아이템 목록도" — 시안 https://claude.ai/artifact/8ZXyLF1BuWS1J8FsjJ6Txu · 영향받는 문서: presentation-ui.md("모서리 판"), presentation-explore.md, presentation-scene.md
