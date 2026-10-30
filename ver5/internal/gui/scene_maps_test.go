@@ -25,8 +25,8 @@ func TestScenePlanInField(t *testing.T) {
 			require.NoError(t, err)
 			f := NewField(a, art)
 			defer f.dispose()
-			require.Len(t, f.scenePieces, len(plan.Solid))
-			for i, p := range plan.Solid {
+			require.Len(t, f.scenePieces, len(plan.Pieces()))
+			for i, p := range plan.Pieces() {
 				assert.Equal(t, p.Name, f.scenePieces[i].Name)
 				assert.Equal(t, p.Draws, f.scenePieces[i].Draws)
 			}

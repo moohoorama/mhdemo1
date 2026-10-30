@@ -50,8 +50,7 @@ type Field struct {
 	ground                       [8]*ebiten.Image // per water frame; castle floor baked in
 	clip                         *ebiten.Image    // opaque where there is ground
 	shadows                      *ebiten.Image
-	raisedShadows                *ebiten.Image     // shadows on a scene map's raised ground, laid with each top (drawRaisedShadow)
-	raisedShadowRects            []image.Rectangle // where this frame's shadows lie on raisedShadows, canvas pixels
+	levels                       []sceneLevel // a format 2 scene map's raised grounds, lowest first (makeScenePlan)
 	Canvas                       *ebiten.Image
 	ShowExterior                 bool
 	exterior                     *ebiten.Image
@@ -406,10 +405,24 @@ type drawItem struct {
 	y     float64
 	kind  int // 0 scenery, 1 unit
 	draw  func()
-	rect  image.Rectangle // canvas area the sprite's image covers
-	ghost func(float32)   // units: redraw at this opacity when scenery drawn later covers it
-	hides bool            // scenery a unit behind it shows through faintly (castle walls and gates)
-	key   *scenemap.Key   // a format 2 scene map's sort key; nil: made from y and rect (orderScene)
+	rect  image.Rectangle   // canvas area the sprite's image covers
+	ghost func(float32)     // units: redraw at this opacity when scenery drawn later covers it
+	hides bool              // scenery a unit behind it shows through faintly (castle walls and gates)
+	key   *scenemap.Key     // a format 2 scene map's sort key; nil: made from y and rect (orderScene)
+	level int               // the ground a format 2 scene map's item stands on: 0, or 1 + its index in levels
+	tops  []image.Rectangle // a raised level's tops, drawn as one item: the areas that hide what lies behind
+}
+
+func (it drawItem) covers(r image.Rectangle) bool {
+	if it.tops == nil {
+		return it.rect.Overlaps(r)
+	}
+	for _, t := range it.tops {
+		if t.Overlaps(r) {
+			return true
+		}
+	}
+	return false
 }
 
 // mapRect is the canvas area blitMap covers with s at map position (x, y).
@@ -515,10 +528,9 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	}
 	f.drawGoals(c)
 	f.shadows.Clear()
-	if f.raisedShadows != nil {
-		f.raisedShadows.Clear()
+	for _, l := range f.levels {
+		l.shadows.Clear()
 	}
-	f.raisedShadowRects = f.raisedShadowRects[:0]
 	items := []drawItem{}
 	for _, it := range f.ceilingItems {
 		if f.DrawBounds.Empty() || it.rect.Overlaps(f.DrawBounds) {
@@ -641,7 +653,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy()), ghost: func(a float32) { f.drawUnit(unit, x, y-lift, a) }}
 		if f.Map.SceneMap != nil {
 			k := f.sceneKey(x, y, ground, scenemap.RankPerson, it.rect)
-			it.key = &k
+			it.key, it.level = &k, f.levelOf(ground)
 		}
 		items = append(items, it)
 	}
@@ -656,7 +668,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		f.blit(c, m.s, m.x, m.y, nil)
 	}
 	if f.Map.SceneMap != nil {
-		items = f.orderScene(items)
+		items = f.drawSceneLevels(items)
 	} else {
 		sort.SliceStable(items, func(i, j int) bool {
 			if items[i].y != items[j].y {
@@ -664,10 +676,10 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			}
 			return items[i].kind < items[j].kind
 		})
-	}
-	for _, it := range items {
-		f.sceneryLayer = it.kind == 0
-		it.draw()
+		for _, it := range items {
+			f.sceneryLayer = it.kind == 0
+			it.draw()
+		}
 	}
 	f.sceneryLayer = false
 	// a unit behind a tree or house shows through it at half opacity, behind a castle wall or gate
@@ -678,7 +690,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		}
 		var alpha float32
 		for _, later := range items[i+1:] {
-			if later.kind == 0 && later.rect.Overlaps(it.rect) {
+			if later.kind == 0 && later.covers(it.rect) {
 				if later.hides {
 					alpha = .3
 					break

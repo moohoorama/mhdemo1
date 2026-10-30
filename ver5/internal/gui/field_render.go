@@ -17,14 +17,14 @@ func (f *Field) prepareRender(z, x, y float64, w, h int) {
 		f.shadows.Deallocate()
 		f.Canvas = newLayer(w, h)
 		f.shadows = newLayer(w, h)
-		if f.raisedShadows != nil {
-			f.raisedShadows.Deallocate()
-			f.raisedShadows = newLayer(w, h)
+		for i := range f.levels {
+			f.levels[i].shadows.Deallocate()
+			f.levels[i].shadows = newLayer(w, h)
 		}
 	}
 }
 func (f *Field) renderOp(dst *ebiten.Image, op *ebiten.DrawImageOptions) {
-	if f.renderZoom > 0 && (dst == f.Canvas || dst == f.shadows || dst == f.raisedShadows || dst == f.afloat || dst == f.wading) {
+	if f.renderZoom > 0 && (dst == f.Canvas || dst == f.shadows || dst == f.afloat || dst == f.wading || f.levelShadows(dst)) {
 		op.GeoM.Translate(-f.renderX, -f.renderY)
 		op.GeoM.Scale(f.renderZoom, f.renderZoom)
 	}

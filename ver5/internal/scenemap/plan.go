@@ -23,6 +23,8 @@ type Draw struct {
 	Lines [][4]int `json:"l,omitempty"` // x0, y0, x1, y1 of each segment, stroked 1 px wide
 	// Object is 1 + the index in the map's objects of the object this draws, 0 for none (for the editor to pick it).
 	Object int `json:"o,omitempty"`
+	// Clip, when set, is the convex polygon (canvas points) the picture is cut to.
+	Clip [][2]int `json:"clip,omitempty"`
 }
 
 // Kinds of Draw.
@@ -34,7 +36,8 @@ const (
 	DrawAnim   = "anim" // frame 0 of a looping strip (Catalog.Anims); the game plays it
 )
 
-// Piece is one item of the standing layer: a raised block, a wall piece, an object. Its draws go out together.
+// Piece is one item of the standing layer: a raised block's faces, a wall piece, an object. Its draws go out
+// together.
 type Piece struct {
 	Key
 	Name   string     `json:"name"`
@@ -44,13 +47,34 @@ type Piece struct {
 	Lights []Light    `json:"lights,omitempty"`
 }
 
-// Plan is a map's drawing list: the flat layer in order, then the standing layer in order. People and effects are
-// the caller's: they go into the standing layer by Order with the pieces' keys, and over everything.
+// Plan is a map's drawing list: the ground's flat layer in order, then what stands on the ground in order, then each
+// raised level the same way, lowest first. People and effects are the caller's: they go into the standing layer of
+// the ground they stand on by Order with the pieces' keys, and over everything.
 type Plan struct {
 	Bounds [4]int  `json:"bounds"`
 	Tall   bool    `json:"tall"`
 	Flat   []Draw  `json:"flat"`
 	Solid  []Piece `json:"solid"`
+	Levels []Level `json:"levels,omitempty"`
+}
+
+// Level is the raised ground of one height. Its tops lie flat over everything standing on lower ground, so they hide
+// what stands behind the rise; the faces of the rise stand on the ground at their feet, among what stands there,
+// since they hide what stands behind them and what stands in front hides them.
+type Level struct {
+	Lift  int               `json:"lift"`
+	Flat  []Draw            `json:"flat"`
+	Solid []Piece           `json:"solid"`
+	Tops  []image.Rectangle `json:"tops"` // each top's diamond on the canvas
+}
+
+// Pieces are the standing pieces of every ground, the ground's first.
+func (p *Plan) Pieces() []Piece {
+	out := append([]Piece{}, p.Solid...)
+	for _, l := range p.Levels {
+		out = append(out, l.Solid...)
+	}
+	return out
 }
 
 type Options struct {
@@ -75,7 +99,7 @@ func Build(m *Map, c *Catalog, o Options) (*Plan, error) {
 	if o.Decor {
 		w.tops = w.topStamps()
 	}
-	blocks, feet, err := w.blocks()
+	blocks, levels, feet, err := w.blocks()
 	if err != nil {
 		return nil, err
 	}
@@ -96,13 +120,28 @@ func Build(m *Map, c *Catalog, o Options) (*Plan, error) {
 		p.Flat = append(p.Flat, w.decoration()...)
 	}
 	p.Flat = append(p.Flat, feet...)
-	keys := make([]Key, len(pieces))
-	for i := range pieces {
-		pieces[i].Rect = w.rect(pieces[i].Draws)
-		keys[i] = pieces[i].Key
+	p.Levels = levels
+	grounds := map[int]*[]Piece{0: &p.Solid}
+	for i := range p.Levels {
+		grounds[p.Levels[i].Lift] = &p.Levels[i].Solid
 	}
-	for _, i := range Order(keys) {
-		p.Solid = append(p.Solid, pieces[i])
+	byGround := map[int][]Piece{}
+	for _, piece := range pieces {
+		piece.Rect = w.rect(piece.Draws)
+		byGround[piece.Lift] = append(byGround[piece.Lift], piece)
+	}
+	for lift, ps := range byGround {
+		solid, ok := grounds[lift]
+		if !ok {
+			return nil, fmt.Errorf("%s: something stands %d pixels up, where no ground is", m.ID, lift)
+		}
+		keys := make([]Key, len(ps))
+		for i := range ps {
+			keys[i] = ps[i].Key
+		}
+		for _, i := range Order(keys) {
+			*solid = append(*solid, ps[i])
+		}
 	}
 	return p, nil
 }
@@ -310,10 +349,15 @@ func (w *view) floors() []Draw {
 	return out
 }
 
-// blocks are the raised small tiles: each its top (its ground, lifted), the outline of the top's back edges where
-// they drop, and the picture of its faces that look at lower ground; feet are the shadow bands along those faces'
-// feet on the ground in front of them.
-func (w *view) blocks() (blocks []Piece, feet []Draw, err error) {
+// blocks are the raised small tiles: their tops (their ground, lifted) with the outline of the back edges where they
+// drop, by height in levels, and the pictures of their faces that look at lower ground, each standing on the ground
+// at its foot; feet are the shadow bands along those faces' feet on the ground in front of them.
+func (w *view) blocks() (blocks []Piece, levels []Level, feet []Draw, err error) {
+	type top struct {
+		front, x int
+		draws    []Draw
+	}
+	byLift := map[int][]top{}
 	for v := w.v0; v < w.v1; v++ {
 		for u := w.u0; u < w.u1; u++ {
 			s := w.step(u, v)
@@ -322,20 +366,26 @@ func (w *view) blocks() (blocks []Piece, feet []Draw, err error) {
 			}
 			lift, faces, foot, rim, err := w.height(s)
 			if err != nil {
-				return nil, nil, err
+				return nil, nil, nil, err
 			}
-			open := 0
+			open, footLift := 0, lift
 			for bit, d := range [][2]int{{-1, 0}, {0, -1}, {1, 0}, {0, 1}} {
-				if w.step(u+d[0], v+d[1]) < s {
+				if n := w.step(u+d[0], v+d[1]); n < s {
 					open |= 1 << bit
+					if bit >= 2 {
+						l, _, _, _, err := w.height(n)
+						if err != nil {
+							return nil, nil, nil, err
+						}
+						footLift = min(footLift, l)
+					}
 				}
 			}
 			x, y := center(u, v)
 			ou, ov := w.orig(u, v)
-			p := Piece{Key: Key{Box: [4]float64{float64(u), float64(v), float64(u + 1), float64(v + 1)}, Rank: RankFace,
-				X: float64(x)}, Name: "top", At: [2]int{ou, ov}, Anchor: [2]float64{float64(x), float64(y - lift)}}
-			p.Draws = w.quarters(u, v, lift, nil)
-			p.Draws = append(p.Draws, w.stampDraws(w.tops[[2]int{ou, ov}], lift)...)
+			t := top{front: u + v, x: x}
+			t.draws = w.quarters(u, v, lift, nil)
+			t.draws = append(t.draws, w.stampDraws(w.tops[[2]int{ou, ov}], lift)...)
 			if open&3 != 0 {
 				d := Draw{Kind: DrawLines, Color: rim}
 				top := y - 8 - lift
@@ -345,18 +395,24 @@ func (w *view) blocks() (blocks []Piece, feet []Draw, err error) {
 				if open&2 != 0 {
 					d.Lines = append(d.Lines, [4]int{x, top, x + 16, top + 8})
 				}
-				p.Draws = append(p.Draws, d)
+				t.draws = append(t.draws, d)
 			}
 			if open&12 != 0 {
 				name := fmt.Sprintf("%s_%02d_%d", faces, open&12, ((ou*7+ov*3)%3+3)%3)
 				sp, ok := w.c.Sprites[name]
 				if !ok {
-					return nil, nil, fmt.Errorf("%s: no picture %s", w.m.ID, name)
+					return nil, nil, nil, fmt.Errorf("%s: no picture %s", w.m.ID, name)
 				}
-				p.Name = name
-				p.Draws = append(p.Draws, Draw{Kind: DrawSprite, Name: name, X: x - sp.Pivot[0], Y: y - sp.Pivot[1]})
+				d := Draw{Kind: DrawSprite, Name: name, X: x - sp.Pivot[0], Y: y - sp.Pivot[1]}
+				blocks = append(blocks, Piece{Key: Key{Box: [4]float64{float64(u), float64(v), float64(u + 1), float64(v + 1)},
+					Lift: footLift, Rank: RankFace, X: float64(x)}, Name: name, At: [2]int{ou, ov},
+					Anchor: [2]float64{float64(x), float64(y - lift)}, Draws: []Draw{d}})
+				// the faces' lip lies on the top's front edges: it goes with the top, over its ground
+				c := y - lift
+				d.Clip = [][2]int{{x - 16, d.Y}, {x + 16, d.Y}, {x + 16, c}, {x, c + 8}, {x - 16, c}}
+				t.draws = append(t.draws, d)
 			}
-			blocks = append(blocks, p)
+			byLift[lift] = append(byLift[lift], t)
 			for _, f := range []struct {
 				bit, du, dv int
 				side        string
@@ -369,8 +425,22 @@ func (w *view) blocks() (blocks []Piece, feet []Draw, err error) {
 			}
 		}
 	}
+	// the tops go down as the standing layer orders single tiles: by front corner, then left to right
+	for lift, tops := range byLift {
+		sort.SliceStable(tops, func(a, b int) bool {
+			return tops[a].front < tops[b].front || tops[a].front == tops[b].front && tops[a].x < tops[b].x
+		})
+		l := Level{Lift: lift}
+		for _, t := range tops {
+			l.Flat = append(l.Flat, t.draws...)
+			y := 8*(t.front+1) - lift
+			l.Tops = append(l.Tops, image.Rect(t.x-16, y-8, t.x+16, y+8))
+		}
+		levels = append(levels, l)
+	}
+	sort.Slice(levels, func(a, b int) bool { return levels[a].Lift < levels[b].Lift })
 	sort.SliceStable(feet, func(a, b int) bool { return feet[a].Y < feet[b].Y })
-	return blocks, feet, nil
+	return blocks, levels, feet, nil
 }
 
 // walls lays each wall line one block per small tile, and sets the gates standing on it into it: a gate is a run of

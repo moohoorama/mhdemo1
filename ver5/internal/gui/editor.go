@@ -115,6 +115,10 @@ func (f *Field) dispose() {
 			p.image.Deallocate()
 		}
 	}
+	for _, l := range f.levels {
+		l.top.Deallocate()
+		l.shadows.Deallocate()
+	}
 	for _, t := range f.floorTiles {
 		for _, im := range t.floor {
 			if im != nil && !seen[im] {

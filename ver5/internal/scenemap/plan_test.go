@@ -210,7 +210,7 @@ func TestAttachments(t *testing.T) {
 		p, err := Build(m, c, Options{})
 		require.NoError(t, err)
 		var fire Piece
-		for _, piece := range p.Solid {
+		for _, piece := range p.Pieces() {
 			if piece.Name == "campfire" {
 				fire = piece
 			}
@@ -225,5 +225,48 @@ func TestAttachments(t *testing.T) {
 		require.Len(t, fire.Lights, 1)
 		assert.Equal(t, y-6, fire.Lights[0].Y)
 		assert.True(t, fire.Lights[0].Glow)
+	}
+}
+
+// A raised level's tops are drawn over everything standing on lower ground, so nothing standing there may reach up
+// into a top that lies behind it: the top would cover what stands in front of it.
+func TestLevelsCoverOnlyWhatStandsBehind(t *testing.T) {
+	paths, err := filepath.Glob(filepath.Join(gfx, "maps", "S_*.json"))
+	require.NoError(t, err)
+	c, err := LoadCatalog(gfx)
+	require.NoError(t, err)
+	for _, path := range paths {
+		data, err := os.ReadFile(path)
+		require.NoError(t, err)
+		m, ok, err := Parse(data)
+		require.NoError(t, err)
+		if !ok {
+			continue
+		}
+		for turn := range 4 {
+			p, err := Build(m, c, Options{Turn: turn, Decor: true})
+			require.NoError(t, err)
+			if len(p.Levels) == 0 {
+				break
+			}
+			w := newView(m, c, turn)
+			for v := w.v0; v < w.v1; v++ {
+				for u := w.u0; u < w.u1; u++ {
+					lift, _, _, _, err := w.height(w.step(u, v))
+					require.NoError(t, err)
+					if lift == 0 {
+						continue
+					}
+					x, y := center(u, v)
+					top := Key{Box: [4]float64{float64(u), float64(v), float64(u + 1), float64(v + 1)}, Lift: lift,
+						Rect: image.Rect(x-16, y-8-lift, x+16, y+8-lift)}
+					for _, q := range p.Pieces() {
+						if q.Lift < lift && q.Rank != RankFace && q.Rect.Overlaps(top.Rect) && top.behind(q.Key) {
+							t.Errorf("%s turn %d: %s at %v reaches into the top of (%d, %d) behind it", m.ID, turn, q.Name, q.At, u, v)
+						}
+					}
+				}
+			}
+		}
 	}
 }

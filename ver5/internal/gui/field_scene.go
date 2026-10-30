@@ -4,7 +4,6 @@ import (
 	"image"
 	"image/color"
 	"math"
-	"slices"
 	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -19,13 +18,23 @@ import (
 // scenePiece is a standing piece of the plan in canvas pixels.
 type scenePiece struct {
 	scenemap.Piece
+	level  int             // the ground it stands on (drawItem.level)
 	shadow Sprite          // its ground shadow, nil Image for none
-	image  *ebiten.Image   // a piece of several pictures (a raised block) drawn once at its Rect, so a frame draws it in one go
+	image  *ebiten.Image   // a piece of several pictures drawn once at its Rect, so a frame draws it in one go
 	anims  []scenemap.Draw // the looping strips it carries (a campfire's flames), played over it
 }
 
-// makeScenePlan bakes the flat layer into the ground pictures (one per water frame when there is water) and keeps
-// the standing pieces.
+// sceneLevel is a raised ground of the plan: its tops baked once like the ground, and the shadows cast on them this
+// frame, laid over the tops and cut to them.
+type sceneLevel struct {
+	lift    float64
+	top     *ebiten.Image     // world size, like the ground
+	tops    []image.Rectangle // each top's diamond, canvas pixels
+	shadows *ebiten.Image     // render size, like the ground's shadows
+}
+
+// makeScenePlan bakes the flat layer into the ground pictures (one per water frame when there is water) and each
+// raised level's tops into a picture of its own, and keeps the standing pieces.
 func (f *Field) makeScenePlan() error {
 	plan, err := scenemap.Build(f.Map.SceneMap, f.A.SceneRules, scenemap.Options{Decor: true})
 	if err != nil {
@@ -52,10 +61,29 @@ func (f *Field) makeScenePlan() error {
 		f.ground[i] = g
 	}
 	f.clip.DrawImage(f.ground[0], nil)
-	for _, p := range plan.Solid {
+	f.addScenePieces(plan.Solid, 0)
+	for i, l := range plan.Levels {
+		lv := sceneLevel{lift: float64(l.Lift), top: newLayer(f.worldSize.X, f.worldSize.Y),
+			shadows: newLayer(f.shadows.Bounds().Dx(), f.shadows.Bounds().Dy())}
+		for _, d := range l.Flat {
+			f.drawPlan(lv.top, d, ox, oy, nil)
+		}
+		for _, r := range l.Tops {
+			lv.tops = append(lv.tops, r.Add(image.Pt(int(ox), int(oy))))
+		}
+		f.levels = append(f.levels, lv)
+		f.addScenePieces(l.Solid, i+1)
+	}
+	return nil
+}
+
+// addScenePieces keeps the standing pieces of one ground of the plan.
+func (f *Field) addScenePieces(pieces []scenemap.Piece, level int) {
+	ox, oy := f.OriginX*K, f.OriginY*K
+	for _, p := range pieces {
 		p.Rect = p.Rect.Add(image.Pt(int(ox), int(oy)))
 		p.Anchor = [2]float64{p.Anchor[0] + ox, p.Anchor[1] + oy}
-		sp := scenePiece{Piece: p}
+		sp := scenePiece{Piece: p, level: level}
 		for _, d := range p.Draws {
 			if d.Kind == scenemap.DrawAnim {
 				sp.anims = append(sp.anims, d)
@@ -73,12 +101,8 @@ func (f *Field) makeScenePlan() error {
 		if pr, ok := f.A.Props[p.Name]; ok && p.Rank == scenemap.RankObject && !pr.NoShadow {
 			sp.shadow = pr.Shadow
 		}
-		if p.Rank == scenemap.RankFace && f.raisedShadows == nil {
-			f.raisedShadows = newLayer(f.shadows.Bounds().Dx(), f.shadows.Bounds().Dy())
-		}
 		f.scenePieces = append(f.scenePieces, sp)
 	}
-	return nil
 }
 
 // drawPlan draws one picture of a plan at canvas offset (ox, oy) of dst; op carries the caller's colour.
@@ -121,7 +145,22 @@ func (f *Field) drawPlan(dst *ebiten.Image, d scenemap.Draw, ox, oy float64, op 
 	}
 	op.GeoM.Translate(ox+float64(d.X), oy+float64(d.Y))
 	f.renderOp(dst, op)
-	dst.DrawImage(img, op)
+	if len(d.Clip) == 0 {
+		dst.DrawImage(img, op)
+		return
+	}
+	o, cs := img.Bounds().Min, op.ColorScale
+	vs := make([]ebiten.Vertex, len(d.Clip))
+	is := make([]uint16, 0, 3*(len(d.Clip)-2))
+	for i, p := range d.Clip {
+		sx, sy := float64(p[0]-d.X), float64(p[1]-d.Y)
+		x, y := op.GeoM.Apply(sx, sy)
+		vs[i] = ebiten.Vertex{DstX: float32(x), DstY: float32(y), SrcX: float32(o.X) + float32(sx), SrcY: float32(o.Y) + float32(sy), ColorR: cs.R(), ColorG: cs.G(), ColorB: cs.B(), ColorA: cs.A()}
+		if i >= 2 {
+			is = append(is, 0, uint16(i-1), uint16(i))
+		}
+	}
+	dst.DrawTriangles(vs, is, img, nil)
 }
 
 // diamond is a game cell's diamond (64 x 32, scenemap.DiamondRow) filled with a colour.
@@ -179,7 +218,7 @@ func (f *Field) sceneItems() []drawItem {
 			f.castShadow(float64(p.Lift), sh, p.Anchor[0], p.Anchor[1], &ebiten.DrawImageOptions{Blend: maxBlend})
 		}
 		ox, oy := f.OriginX*K, f.OriginY*K
-		items = append(items, drawItem{y: p.Anchor[1], rect: p.Rect, key: &p.Key, draw: func() {
+		items = append(items, drawItem{y: p.Anchor[1], rect: p.Rect, key: &p.Key, level: p.level, draw: func() {
 			if p.image != nil {
 				op := &ebiten.DrawImageOptions{}
 				f.shadeScenery(f.Canvas, op, p.Anchor[0], p.Anchor[1])
@@ -196,9 +235,6 @@ func (f *Field) sceneItems() []drawItem {
 					f.drawPlan(f.Canvas, d, ox, oy, op)
 				}
 			}
-			if p.Rank == scenemap.RankFace {
-				f.drawRaisedShadow(p.Anchor[0], p.Anchor[1])
-			}
 			for _, d := range p.anims {
 				f.drawStrip(d, ox, oy)
 			}
@@ -207,32 +243,64 @@ func (f *Field) sceneItems() []drawItem {
 	return items
 }
 
-// castShadow lays a shadow cast on ground lifted this high: on the ground's shadow layer, drawn under the standing
-// layer, or on raised ground on the layer each top draws its own part of, since the tops stand in that layer.
+// castShadow lays a shadow cast on ground lifted this high on that ground's shadow layer.
 func (f *Field) castShadow(lift float64, s Sprite, x, y float64, op *ebiten.DrawImageOptions) {
-	if lift <= 0 || f.raisedShadows == nil {
-		f.blit(f.shadows, s, x, y, op)
-		return
+	dst := f.shadows
+	if l := f.levelOf(lift); l > 0 {
+		dst = f.levels[l-1].shadows
 	}
-	rx, ry := int(math.Round(x-s.PivotX)), int(math.Round(y-s.PivotY))
-	f.raisedShadowRects = append(f.raisedShadowRects, image.Rect(rx, ry, rx+s.Image.Bounds().Dx(), ry+s.Image.Bounds().Dy()))
-	f.blit(f.raisedShadows, s, x, y, op)
+	f.blit(dst, s, x, y, op)
 }
 
-// drawRaisedShadow draws the shadows lying on the top of a raised small tile centred on canvas point (x, y), clipped
-// to the top's diamond. Tops no shadow reaches are skipped: each draw from the shadow layer breaks the batch of the
-// tops' own drawing, and a cliff map has thousands of tops.
-func (f *Field) drawRaisedShadow(x, y float64) {
-	top := image.Rect(int(x)-17, int(y)-9, int(x)+17, int(y)+9)
-	if !slices.ContainsFunc(f.raisedShadowRects, top.Overlaps) {
-		return
+// levelOf is the ground (drawItem.level) lifted this high.
+func (f *Field) levelOf(lift float64) int {
+	for i, l := range f.levels {
+		if l.lift == lift {
+			return i + 1
+		}
 	}
-	var vs [4]ebiten.Vertex
-	for i, d := range [4][2]float64{{0, -8}, {16, 0}, {0, 8}, {-16, 0}} {
-		px, py := f.renderPoint(x+d[0], y+d[1])
-		vs[i] = ebiten.Vertex{DstX: float32(px), DstY: float32(py), SrcX: float32(px), SrcY: float32(py), ColorR: 1, ColorG: 1, ColorB: 1, ColorA: 1}
+	return 0
+}
+
+func (f *Field) levelShadows(img *ebiten.Image) bool {
+	for _, l := range f.levels {
+		if l.shadows == img {
+			return true
+		}
 	}
-	f.Canvas.DrawTriangles(vs[:], []uint16{0, 1, 2, 0, 2, 3}, f.raisedShadows, nil)
+	return false
+}
+
+// drawSceneLevels draws a format 2 map's standing layer ground by ground: what stands on the ground, then for each
+// raised level its tops, the shadows on them and what stands on it. It returns the items in the order drawn, each
+// level's tops among them as scenery, so what they hide shows through.
+func (f *Field) drawSceneLevels(items []drawItem) []drawItem {
+	out := make([]drawItem, 0, len(items)+len(f.levels))
+	for i := 0; i <= len(f.levels); i++ {
+		if i > 0 {
+			l := &f.levels[i-1]
+			op := &ebiten.DrawImageOptions{}
+			f.renderOp(f.Canvas, op)
+			f.Canvas.DrawImage(l.top, op)
+			clipOp := &ebiten.DrawImageOptions{Blend: ebiten.BlendDestinationIn}
+			f.renderOp(l.shadows, clipOp)
+			l.shadows.DrawImage(l.top, clipOp)
+			f.Canvas.DrawImage(l.shadows, nil)
+			out = append(out, drawItem{tops: l.tops, level: i})
+		}
+		var ground []drawItem
+		for _, it := range items {
+			if it.level == i {
+				ground = append(ground, it)
+			}
+		}
+		for _, it := range f.orderScene(ground) {
+			f.sceneryLayer = it.kind == 0
+			it.draw()
+			out = append(out, it)
+		}
+	}
+	return out
 }
 
 // drawAnim draws a prop that has a looping strip of its name in Assets.Anims (a tree's leaves, the incense smoke) at

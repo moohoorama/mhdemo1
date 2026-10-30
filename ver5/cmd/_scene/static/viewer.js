@@ -75,7 +75,13 @@
       const [meta, img] = d.s === 'scenery' ? [scenery.sprites[d.n], images.scenery]
         : d.s === 'structures' ? [structureMeta(d.n), images.structures] : spriteMeta(d.n);
       const [sx, sy, w, h] = meta.rect;
+      if (d.clip) { // cut to a polygon: a cliff face's lip, drawn with the top it lies on
+        c.save(); c.beginPath();
+        for (const [x, y] of d.clip) c.lineTo(ox + x, oy + y);
+        c.clip();
+      }
       c.drawImage(img, sx, sy, w, h, ox + d.x, oy + d.y, w, h);
+      if (d.clip) c.restore();
       return { name: d.n, actual: d.n, x: ox + d.x, y: oy + d.y, w, h, meta, img };
     } else if (d.k === 'anim') {
       const meta = graphics.anims[d.n], img = images[`anim:${d.n}`], [sx, sy, w, h] = meta.rect;
@@ -100,17 +106,25 @@
       if (hit && d.o) { hit.obj = d.o - 1; out.hits.push(hit); }
     }
     if (step < 1) return out;
-    for (const p of plan.solid) {
-      for (const d of p.draws) {
-        const hit = draw(c, d);
-        if (!hit) continue;
-        hit.U = p.at[0]; hit.V = p.at[1];
-        if (d.o) hit.obj = d.o - 1;
-        out.hits.push(hit);
-        const key = `${p.at[0]},${p.at[1]}`;
-        if (!out.index.has(key)) out.index.set(key, []);
-        out.index.get(key).push(hit);
+    const stand = solid => {
+      for (const p of solid) {
+        for (const d of p.draws) {
+          const hit = draw(c, d);
+          if (!hit) continue;
+          hit.U = p.at[0]; hit.V = p.at[1];
+          if (d.o) hit.obj = d.o - 1;
+          out.hits.push(hit);
+          const key = `${p.at[0]},${p.at[1]}`;
+          if (!out.index.has(key)) out.index.set(key, []);
+          out.index.get(key).push(hit);
+        }
       }
+    };
+    // the ground's standing layer, then each raised level: its tops over all that stands lower, then what stands on it
+    stand(plan.solid);
+    for (const level of plan.levels || []) {
+      for (const d of level.flat) draw(c, d);
+      stand(level.solid);
     }
     return out;
   }
@@ -167,7 +181,7 @@
   }
   function overlay() {
     const ox = -2 * left, oy = -2 * top;
-    plan.solid.forEach((p, i) => {
+    [...plan.solid, ...(plan.levels || []).flatMap(l => l.solid)].forEach((p, i) => {
       if (p.rank === 0) return; // the raised ground: a footprint and a number on every tile would hide the map
       const [u0, v0, u1, v1] = p.box;
       const pt = (u, v) => [ox + 16 * (u - v), oy + 8 * (u + v) - p.lift];
@@ -219,7 +233,7 @@
       if (showFoot || showOrder) overlay();
       if (window.sceneEditor?.grid) grid();
       window.sceneEditor?.decorate(ctx, drawn.hits);
-      note = `${map.id} · 형식 2 · 평면 ${plan.flat.length.toLocaleString()} · 입체 ${plan.solid.length.toLocaleString()}`;
+      note = `${map.id} · 형식 2 · 평면 ${plan.flat.length.toLocaleString()} · 입체 ${[...plan.solid, ...(plan.levels || []).flatMap(l => l.solid)].length.toLocaleString()}`;
     }
     hits = drawn.hits; objectIndex = drawn.index;
     for (const button of document.querySelectorAll('[data-step]')) button.setAttribute('aria-pressed', String(Number(button.dataset.step) === step));
