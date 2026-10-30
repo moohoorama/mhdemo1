@@ -252,7 +252,7 @@ func TestLevelsCoverOnlyWhatStandsBehind(t *testing.T) {
 			w := newView(m, c, turn)
 			for v := w.v0; v < w.v1; v++ {
 				for u := w.u0; u < w.u1; u++ {
-					lift, _, _, _, err := w.height(w.step(u, v))
+					lift, _, _, err := w.height(w.step(u, v))
 					require.NoError(t, err)
 					if lift == 0 {
 						continue

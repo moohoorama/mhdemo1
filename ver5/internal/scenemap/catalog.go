@@ -60,7 +60,6 @@ type Rules struct {
 		Lift  int    `json:"lift"`
 		Faces string `json:"faces"`
 		Foot  string `json:"foot"`
-		Rim   string `json:"rim"`
 	} `json:"heights"`
 	Walls        map[string]WallFamily `json:"walls"`
 	Gates        map[string]string     `json:"gates"`        // a gate object -> its slices (<slices>_<axis>_<k>)

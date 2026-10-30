@@ -1786,3 +1786,5 @@
 - `internal/scenemap/plan.go`: `Plan.Levels`(`Level`: `Lift`·`Flat`·`Solid`·`Tops`), `Plan.Pieces`, `blocks`가 윗면을 높이별 층으로·옆면만 조각으로(키 높이는 발치 땅), `Draw.Clip`(옆면 입술). `Build`가 땅마다 따로 정렬
 - `internal/gui/field_scene.go`·`field.go`·`field_render.go`·`editor.go`: `sceneLevel`(윗면 그림·그림자 층), `drawSceneLevels`, `castShadow`가 높이별 그림자 층에, `drawItem.level`·`tops`(윗면에 가린 사람의 반투명 표시). `raisedShadows`·`drawRaisedShadow`(칸마다 그림자 조각) 삭제. `cmd/_scene/static/viewer.js`가 층을 그림
 - 확인: 8장 벼랑 장면에서 입체 조각 4,141 → 436, 프레임당 GPU 명령 530 → 23, 같은 재생의 CPU 시간 약 절반 이하. 2·4·5·8장 언덕 장면을 바꾸기 전과 픽셀 비교 — 5장 같음, 8장 벼랑 위 화로·덤불 밑단이 앞 칸 윗면에 잘리던 것이 온전히 보임, 4장 윗면 풀 장식이 나무 그림자 아래로 들어감, 2장은 밤 조명 합성 순서 차이(1~2단계 색)뿐
+- 결정: 높은 땅 뒤쪽(NW·NE) 가장자리가 떨어지는 곳에 긋던 1px 테두리 선(`scene.json` `heights.2.rim` `#4a3a25`)을 없앤다 · 이유: 선 있음·없음 비교(5장 관문, 2장 언덕 진영 밤 — https://claude.ai/artifact/WQ9JQNkz1JjHazvN1En8eb) 뒤 사용자 "선 없애죠"
+- `internal/scenemap`: `Draw.Lines`·`DrawLines`, `Heights.Rim`, `height`의 rim 반환 삭제, `blocks`는 앞쪽 두 면만 봄. `internal/gui/field_scene.go` `drawPlan`의 선 긋기, `cmd/_scene/static/viewer.js`의 `lines` 삭제. `assets/graphics/scene.json`에서 `rim`

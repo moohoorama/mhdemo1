@@ -17,10 +17,9 @@ type Draw struct {
 	Sheet string `json:"s,omitempty"`
 	Tile  int    `json:"t"`
 	// X, Y: a picture's top left; a diamond's top vertex.
-	X     int      `json:"x"`
-	Y     int      `json:"y"`
-	Color string   `json:"c,omitempty"`
-	Lines [][4]int `json:"l,omitempty"` // x0, y0, x1, y1 of each segment, stroked 1 px wide
+	X     int    `json:"x"`
+	Y     int    `json:"y"`
+	Color string `json:"c,omitempty"`
 	// Object is 1 + the index in the map's objects of the object this draws, 0 for none (for the editor to pick it).
 	Object int `json:"o,omitempty"`
 	// Clip, when set, is the convex polygon (canvas points) the picture is cut to.
@@ -32,8 +31,7 @@ const (
 	DrawTile   = "tile"   // a ground tileset piece
 	DrawSprite = "sprite" // a prop or scenery picture
 	DrawFill   = "fill"   // a game cell's diamond filled with Color, 64 x 32 (DiamondRow)
-	DrawLines  = "lines"
-	DrawAnim   = "anim" // frame 0 of a looping strip (Catalog.Anims); the game plays it
+	DrawAnim   = "anim"   // frame 0 of a looping strip (Catalog.Anims); the game plays it
 )
 
 // Piece is one item of the standing layer: a raised block's faces, a wall piece, an object. Its draws go out
@@ -222,15 +220,15 @@ func (w *view) isFloor(g byte) bool {
 	return ok && !f.Tile
 }
 
-func (w *view) height(step int) (lift int, faces, foot, rim string, err error) {
+func (w *view) height(step int) (lift int, faces, foot string, err error) {
 	if step == 0 {
-		return 0, "", "", "", nil
+		return 0, "", "", nil
 	}
 	h, ok := w.c.Rules.Heights[strconv.Itoa(step)]
 	if !ok {
-		return 0, "", "", "", fmt.Errorf("%s: no rule for height step %d", w.m.ID, step)
+		return 0, "", "", fmt.Errorf("%s: no rule for height step %d", w.m.ID, step)
 	}
-	return h.Lift, h.Faces, h.Foot, h.Rim, nil
+	return h.Lift, h.Faces, h.Foot, nil
 }
 
 // layers are the tileset pieces of quarter (i, j) of small tile (u, v), bottom first: a grass or soil piece cut to
@@ -349,9 +347,8 @@ func (w *view) floors() []Draw {
 	return out
 }
 
-// blocks are the raised small tiles: their tops (their ground, lifted) with the outline of the back edges where they
-// drop, by height in levels, and the pictures of their faces that look at lower ground, each standing on the ground
-// at its foot; feet are the shadow bands along those faces' feet on the ground in front of them.
+// blocks are the raised small tiles: their tops (their ground, lifted), by height in levels, and the pictures of their
+// faces that look at lower ground, each standing on the ground at its foot; feet are the shadow bands along those faces' feet on the ground in front of them.
 func (w *view) blocks() (blocks []Piece, levels []Level, feet []Draw, err error) {
 	type top struct {
 		front, x int
@@ -364,21 +361,19 @@ func (w *view) blocks() (blocks []Piece, levels []Level, feet []Draw, err error)
 			if s == 0 {
 				continue
 			}
-			lift, faces, foot, rim, err := w.height(s)
+			lift, faces, foot, err := w.height(s)
 			if err != nil {
 				return nil, nil, nil, err
 			}
-			open, footLift := 0, lift
-			for bit, d := range [][2]int{{-1, 0}, {0, -1}, {1, 0}, {0, 1}} {
+			open, footLift := 0, lift // the faces looking at lower ground: 4 toward +u, 8 toward +v
+			for bit, d := range map[int][2]int{4: {1, 0}, 8: {0, 1}} {
 				if n := w.step(u+d[0], v+d[1]); n < s {
-					open |= 1 << bit
-					if bit >= 2 {
-						l, _, _, _, err := w.height(n)
-						if err != nil {
-							return nil, nil, nil, err
-						}
-						footLift = min(footLift, l)
+					open |= bit
+					l, _, _, err := w.height(n)
+					if err != nil {
+						return nil, nil, nil, err
 					}
+					footLift = min(footLift, l)
 				}
 			}
 			x, y := center(u, v)
@@ -386,17 +381,6 @@ func (w *view) blocks() (blocks []Piece, levels []Level, feet []Draw, err error)
 			t := top{front: u + v, x: x}
 			t.draws = w.quarters(u, v, lift, nil)
 			t.draws = append(t.draws, w.stampDraws(w.tops[[2]int{ou, ov}], lift)...)
-			if open&3 != 0 {
-				d := Draw{Kind: DrawLines, Color: rim}
-				top := y - 8 - lift
-				if open&1 != 0 {
-					d.Lines = append(d.Lines, [4]int{x, top, x - 16, top + 8})
-				}
-				if open&2 != 0 {
-					d.Lines = append(d.Lines, [4]int{x, top, x + 16, top + 8})
-				}
-				t.draws = append(t.draws, d)
-			}
 			if open&12 != 0 {
 				name := fmt.Sprintf("%s_%02d_%d", faces, open&12, ((ou*7+ov*3)%3+3)%3)
 				sp, ok := w.c.Sprites[name]
@@ -617,7 +601,7 @@ func (w *view) objects() (pieces []Piece, flat []Draw, err error) {
 		cv := float64(ob.V) + .5 - float64(ob.DX)/32 + float64(ob.DY)/16
 		ru, rv := w.point(cu, cv)
 		x, y := 16*(ru-rv), 8*(ru+rv)
-		lift, _, _, _, err := w.height(w.step(int(math.Floor(ru)), int(math.Floor(rv))))
+		lift, _, _, err := w.height(w.step(int(math.Floor(ru)), int(math.Floor(rv))))
 		if err != nil {
 			return nil, nil, err
 		}
@@ -669,7 +653,7 @@ func (w *view) cornerShadows(pieces []Piece) error {
 			if w.step(u, v+1) < s {
 				open |= 8
 			}
-			lift, _, _, _, _ := w.height(s)
+			lift, _, _, _ := w.height(s)
 			if open&4 != 0 {
 				se[[2]int{u, v}] = face{i, lift}
 			}
@@ -804,10 +788,6 @@ func (w *view) rect(draws []Draw) image.Rectangle {
 			b = image.Rect(d.X, d.Y, d.X+s.Rect[2], d.Y+s.Rect[3])
 		case DrawFill:
 			b = image.Rect(d.X-32, d.Y, d.X+32, d.Y+32)
-		case DrawLines:
-			for _, l := range d.Lines {
-				b = b.Union(image.Rect(min(l[0], l[2]), min(l[1], l[3]), max(l[0], l[2])+1, max(l[1], l[3])+1))
-			}
 		}
 		r = r.Union(b)
 	}

@@ -128,20 +128,6 @@ func (f *Field) drawPlan(dst *ebiten.Image, d scenemap.Draw, ox, oy float64, op 
 		op.GeoM.Translate(-32, 0)
 	case scenemap.DrawAnim:
 		return // played over its piece every frame by drawStrip
-	case scenemap.DrawLines:
-		z := float32(1)
-		if f.renderZoom > 0 && dst == f.Canvas {
-			z = float32(f.renderZoom)
-		}
-		for _, l := range d.Lines {
-			x0, y0, x1, y1 := ox+float64(l[0]), oy+float64(l[1]), ox+float64(l[2]), oy+float64(l[3])
-			if dst == f.Canvas {
-				x0, y0 = f.renderPoint(x0, y0)
-				x1, y1 = f.renderPoint(x1, y1)
-			}
-			vector.StrokeLine(dst, float32(x0), float32(y0), float32(x1), float32(y1), z, hexColor(d.Color), false)
-		}
-		return
 	}
 	op.GeoM.Translate(ox+float64(d.X), oy+float64(d.Y))
 	f.renderOp(dst, op)

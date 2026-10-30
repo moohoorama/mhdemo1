@@ -92,10 +92,6 @@
         const hw = k < 16 ? 2 * (k + 1) : 2 * (32 - k);
         c.fillRect(ox + d.x - hw, oy + d.y + k, 2 * hw, 1);
       }
-    } else if (d.k === 'lines') {
-      c.beginPath();
-      for (const [x0, y0, x1, y1] of d.l) { c.moveTo(ox + x0, oy + y0); c.lineTo(ox + x1, oy + y1); }
-      c.strokeStyle = d.c; c.lineWidth = 1; c.stroke();
     }
     return null;
   }
