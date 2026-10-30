@@ -65,11 +65,19 @@ name the `Facing` it ends with — and check it on a game capture. Read `ver5/do
 
 When you add or edit a stage (`ver5/assets/scenario/*/stageNN.json`, its map or its story nodes), read
 `ver5/docs/stage_lv_balance.md` first and set the ranks and the enemy count by it: stage files never hold
-levels — each spawn has a `Rank` (troop, officer, commander, boss) and an optional `Shift`, and the engine
-computes the level from the stage's place in the story (3 + 2×(n − 1)) with a lead that is a share of
+levels — each spawn has a `Rank` (rabble, recruit, troop, officer, commander, boss) and an optional `Shift`, and the engine
+computes the level from the stage's place in the story (3 + round(1.5×(n − 1))) with a lead that is a share of
 strength, not a fixed number of levels. Joining officers are raised to the stage level. Then measure with `go run ./cmd/_balance`,
 play it through `go run ./cmd/srpg-cli -slot 9` (numbered menus, letter maps; the slot carries the game
 between runs) to check the placement and the order of the story, and only then capture the GUI.
+
+Never force a duel because an officer's HP dropped (a battle event that opens a duel at "HP under half", or a
+victory goal turned into a duel so that only that officer can finish the fight). The user rejected it outright
+(2026-10-30): it breeds bugs (the blow that would have felled the officer, counters and area strikes, the duel's
+own outcome against the HP left) and it breaks the battle's flow. A duel opens when its officers meet as the
+stage sets it (adjacency, `DuelFirst`, a scripted event at a story moment). If another officer defeats the duel's
+partner first, the duel simply does not happen; write the story after the battle so it does not depend on who
+struck the last blow.
 
 Every time you change something, record it in `ver5/docs/history.md`. Each entry lists the changed
 file name, what was changed, and the intent (or reason): `파일이름: 수정내역 — 의도`.
