@@ -24,6 +24,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import numpy as np
+
 HERE = Path(__file__).resolve().parent
 DE = HERE.parent
 sys.path.insert(0, str(DE.parents[2] / 'tools/unit3d'))
@@ -36,6 +38,7 @@ import looks as L  # noqa: E402
 import render as R  # noqa: E402
 import units as U  # noqa: E402
 import scene_people as SP  # noqa: E402
+from story_heads import DARK_TOPKNOT, bearded, cap, helmet  # noqa: E402
 
 W, H = 56, 46
 LEATHER = U.BROWN
@@ -87,30 +90,34 @@ def tags(group, colors):
     return [f'{group}{i + 1}={c}' for i, c in enumerate(colors)]
 
 
-def bearded(grids, kind, key):
-    """Hd.beard with the beard in a hair key (h light, g mid, f dark), so the sheet's hair tags colour it: in the
-    iron keys a palette that gilds iron (노식, 하후돈) would gild the beard too."""
-    out = {}
-    for d, rows in grids.items():
-        new = Hd.beard(rows, 'ij', kind)
-        out[d] = [''.join(key if c == '1' and (y >= len(rows) or rows[y][x] != '1') else c for x, c in enumerate(r))
-                  for y, r in enumerate(new)]
-    return out
-
-
 NO_PLUME = {d: Hd.recolor(r, {'b': '2', 'c': '3', 'd': '3'}) for d, r in Hd.IRON.items()}  # a plain knob on top
 WHITE_BAND = {'k': '4', 'l': '5', 'm': '6'}  # the topknot band in plain white cloth
 _soldier = U.soldier
 
 
 def soldier(p, kit, weapon=True):
-    """units.soldier, plus an apron (kit 'apron': its colour) hanging from the sash to the knees with a bib."""
+    """units.soldier, plus an apron (kit 'apron': its colour) hanging from the sash to the knees with a bib, a cape
+    (kit 'cape') hanging down the back from the shoulders to the calves, and a feather fan (kit 'fan': its colour)
+    held up in the right hand in front of the chest, below the face."""
     faces, head = _soldier(p, kit, weapon)
+    T = U.transform(p)
     apron = U.KITS[kit].get('apron')
     if apron:
-        T = U.transform(p)
         U.m.box(T([0, -.3, .7]), [.58, .05, .62], apron)
         U.m.box(T([0, -.29, 1.2]), [.36, .04, .32], apron)
+    cape = U.KITS[kit].get('cape')
+    if cape:
+        U.m.box(T([0, .29, 1.03]), [.7, .05, .84], cape)
+        U.m.box(T([0, .22, 1.42]), [.7, .12, .1], cape)
+    fan = U.KITS[kit].get('fan')
+    if fan:
+        hand = T(p['hands'][1])  # the hand on the near side in SW/SE: in the other the body hides the fan
+        d = U.V([-.4, -.3, .85]) / math.hypot(.4, .3, .85)  # up across the chest
+        side = U.V([.9, 0, .43]) / math.hypot(.9, .43)  # across d, so the fan faces front and back
+        U.m.rod(hand - d*.08, hand + d*.16, .04, LEATHER)
+        base = hand + d*.15 + U.V([0, -.25, 0])  # held out before the chest and beard
+        U.m.poly([base] + [base + (d*math.cos(a) + side*math.sin(a))*.55 for a in np.linspace(-.9, .9, 7)], fan)
+        U.m.ell(base, [.06]*3, U.GOLD)
     return U.m.meshes, head
 
 
@@ -282,8 +289,78 @@ STORY = {
                    'light_infantry', HAIR + tags('themeB', ['#7e7468', '#544c44', '#34302c'])
                    + tags('themeC', ['#c49a64', '#946c40', '#624426'])),
 }
+# ---- later cast (2026-10-30): no battle sheet of their own yet, so the look is set here ------------------------
+# 제갈량·사마의·육손·주유 follow their 삼국지 14 portraits (2026-10-30). Colours beyond the five sheet groups go to the
+# horse tags, unused on a sheet without a horse: XTRA renders in N/O/P (-> horseSkin), MANE in K/L/M (-> horseMane)
+# and SADDLE in Q/R/S (-> saddle); KEY_TAGS maps those render keys for these units only.
+XTRA, MANE, SADDLE = '#5a3a7a', '#a0382a', '#4ab0b0'
+FAN = '#e8e8f0'  # feathers, in the MANE keys; a weapon colour, so it is drawn back over the 2D head (the beard)
+R.add_ramps({XTRA: 'NOPP', MANE: 'KLMM', SADDLE: 'QRSS', FAN: 'KLMM'})
+U.WEAPON_COLORS.add(FAN)
+EXTRA_KEYS = {'N': 'x', 'O': 'w', 'P': 'v', 'K': 'A', 'L': 'z', 'M': 'y', 'Q': 'D', 'R': 'C', 'S': 'B'}
+
+
+STORY.update({
+    # 제갈량: the teal cap with a gold band, a goatee, the white robe with blue lapels (themeA, the shoes and the fan's
+    # handle too), a teal ribbon at the neck (iron), a purple sash (XTRA), the crane-feather fan in a whiter white
+    # with grey shading (FAN) so it stands off the robe
+    'zhugeliang': ('제갈량', scene('zhugeliang', 1, Hd.heads(bearded(cap('45', 'lm'), 'goatee', 'g')),
+                                 cloth=U.RED, robe=U.RED, guard=LEATHER, shoulder=U.RED, tabard=XTRA, scarf=U.STEEL,
+                                 fan=FAN),
+                   'light_infantry', HAIR + tags('themeB', ['#f6f2e6', '#d6cfbc', '#9a927e'])
+                   + tags('themeA', ['#6a8cc8', '#3a5a96', '#1e3060']) + tags('iron', ['#86dcd2', '#3aa09a', '#1e6260'])
+                   + tags('themeC', ['#f0d070', '#c8a040', '#806020'])
+                   + tags('horseSkin', ['#8a7aa0', '#5e4e78', '#3a2e50'])
+                   + tags('horseMane', ['#ffffff', '#c8ccd8', '#7a7e90'])),
+    # 사마의: the dark red-purple cap (SADDLE) down to the brow (a gold band read as bare forehead), grey hair, a long
+    # black beard (in the black robe's themeB, the hair tags being grey), a black robe under a dark bronze
+    # coat (sleeves, shoulders, skirt: themeA), the blue-purple collar band down the front (iron), a maroon belt (XTRA)
+    'simayi': ('사마의', scene('simayi', 1, Hd.heads(bearded(cap('RS', 'RR'), 'long', 'd')),
+                             cloth=U.RED, robe=LEATHER, arms=LEATHER, shoulder=LEATHER, guard=U.STEEL, tabard=XTRA,
+                             scarf=U.STEEL),
+               'light_infantry', GREY + tags('themeB', ['#4a4a52', '#2a2a30', '#16161a'])
+               + tags('themeA', ['#8a7a5a', '#5e5038', '#3a3022']) + tags('iron', ['#a4a4e4', '#6262b4', '#38387c'])
+               + tags('themeC', ['#f0d070', '#c8a040', '#806020'])
+               + tags('horseSkin', ['#a04a5a', '#70303e', '#481e28'])
+               + tags('saddle', ['#7a4466', '#58304c', '#381c30'])),
+    # 육손: the blue-domed helmet with a yellow plume, beardless; silver scale chest and shoulders (iron), brown sleeves
+    # and trousers (themeA), navy skirt and belt (themeB), a green cape and collar (XTRA)
+    'luxun': ('육손', scene('luxun', 1, Hd.heads(helmet('bcd', 'klm')), cloth=LEATHER, arms=LEATHER,
+                          guard=U.STEEL, shoulder=U.STEEL, robe=U.RED, tabard=U.RED, cape=XTRA, scarf=XTRA, scarf_tail=.1),
+              'light_infantry', HAIR + tags('themeA', ['#a08058', '#74583a', '#4a3622'])
+              + tags('themeB', ['#5a6aa8', '#34447a', '#1e284a']) + tags('iron', ['#e0e4ea', '#a0a8b4', '#5e6670'])
+              + tags('themeC', ['#ffe680', '#e8c030', '#a07818'])
+              + tags('horseSkin', ['#7ab85a', '#4a8a3a', '#2a5a24'])),
+    # 주유: the red-domed helmet (MANE) with a teal plume (SADDLE), beardless; white robe (themeB), silver chest
+    # (iron), gold shoulders, a dark belt and boots (themeA), a purple cape and collar (XTRA)
+    'zhouyu': ('주유', scene('zhouyu', 1, Hd.heads(helmet('KLM', 'QRS')), cloth=U.RED, robe=U.RED,
+                           guard=U.STEEL, shoulder=U.GOLD, tabard=LEATHER, cape=XTRA, scarf=XTRA, scarf_tail=.1),
+               'light_infantry', HAIR + tags('themeB', ['#f6f2e6', '#d6cfbc', '#9a927e'])
+               + tags('themeA', ['#7a5a40', '#523a28', '#30221a']) + tags('iron', ['#e0e4ea', '#a0a8b4', '#5e6670'])
+               + tags('themeC', ['#f0d070', '#c8a040', '#806020'])
+               + tags('horseSkin', ['#9a78c8', '#6a4a9a', '#40286a'])
+               + tags('horseMane', ['#d0604a', '#a0382a', '#682018']) + tags('saddle', ['#8ae0dc', '#4ab0b0', '#2a7276'])),
+    # 황충: the old general off duty — white topknot, long white beard, team tunic, steel shoulders, red sash
+    'huangzhong': ('황충', scene('huangzhong', 1, Hd.heads(bearded(Hd.HAIR, 'long', 'h')),
+                               cloth=U.BLUE, guard=U.STEEL, tabard=U.RED),
+                   'light_infantry', WHITE_HAIR + tags('themeB', ['#c8604a', '#963a2c', '#5e221c'])),
+    # 장료: dark iron helmet with the team plume (his portrait), a moustache, team tunic under his navy coat
+    'zhangliao': ('장료', scene('zhangliao', 1, Hd.heads(bearded(L.DARK_IRON, 'goatee', 'g'), Hd.PLUME),
+                              cloth=U.BLUE, robe=U.RED, guard=U.STEEL, tabard=LEATHER),
+                  'light_infantry', HAIR + tags('themeB', ['#5a6a8c', '#3a4a6a', '#222c44'])),
+    # 여몽: a soldier risen from the ranks — bare topknot, bristling beard, team tunic, leather shoulders and belt
+    'lumeng': ('여몽', scene('lumeng', 1, Hd.heads(bearded(DARK_TOPKNOT, 'bristle', 'g')), cloth=U.BLUE, guard=LEATHER,
+                           tabard=LEATHER),
+               'light_infantry', HAIR + tags('themeA', ['#9a6a42', '#6c4528', '#442a18'])),
+    # 손권: 紫髯 — dark purple hair and beard, the gold crown, a crimson robe over the team tunic, gold belt
+    'sunquan': ('손권', scene('sunquan', 1, Hd.heads(bearded(Hd.CROWN, 'goatee', 'g')), cloth=U.BLUE, robe=U.RED,
+                            guard=U.RED, tabard=U.GOLD),
+                'light_infantry', tags('hair', ['#7a4e86', '#4e2e5a', '#2c1834'])
+                + tags('themeB', ['#b8484a', '#86282e', '#521a1e'])),
+})
 STORY_POSES = {k: ['sit'] for k in ('luzhi', 'huangfusong', 'xiahoudun', 'liuyan', 'taoqian', 'kongrong', 'zoujing',
-                                     'gaoshun', 'caocao_hat', 'caocao_plain')}
+                                     'gaoshun', 'caocao_hat', 'caocao_plain', 'zhugeliang', 'simayi', 'huangzhong',
+                                     'zhangliao', 'zhouyu', 'luxun', 'lumeng', 'sunquan')}
 STORY_POSES['xiahoudun'] = ['sit', 'fist']
 STORY_POSES['jianyong'] = ['sit']
 ACTION = {'jianyong': ('toast', 2), 'jailer': ('talk', 1), 'innkeeper': ('serve', 0), 'blacksmith': ('hammer', 0)}  # else the salute
@@ -303,6 +380,7 @@ for _key, (_name, _look, _battle, _colors) in STORY.items():
     BATTLE[_key], NAME[_key], EXTRA_COLORS[_key] = _battle, _name, _colors
 # 노식·황보숭: their light infantry helmet is the battle sheet's leather (themeA), not iron
 HEAD_TAGS = {k: {'1': 'o', '2': 'o', '3': 'n', '4': 'm', '5': 'm'} for k in ('luzhi', 'huangfusong')}
+KEY_TAGS = {k: EXTRA_KEYS for k in ('zhugeliang', 'simayi', 'luxun', 'zhouyu')}
 # a head of its own for a pose: 조조 seated pulls the 삿갓 down and forward over his eyes
 POSE_HEADS = {'caocao_hat': {'sit': satgat_heads(6, -.18)}}
 # (3D animation, direction, 3D frame) -> (sheet animation, frame); walk steps are the two stride frames
@@ -364,7 +442,7 @@ def to_tags(full, body, dx, dy, colors, unmapped, posed_unit, unit=None):
             if c == '.':
                 continue
             table = BODY if body[y][x] == c else HEADMAP
-            tag = SP.POSE_KEY_TAGS.get(posed_unit, {}).get(c) or table.get(c)
+            tag = SP.POSE_KEY_TAGS.get(posed_unit, {}).get(c) or KEY_TAGS.get(unit, {}).get(c) or table.get(c)
             if table is HEADMAP:
                 tag = HEAD_TAGS.get(unit, {}).get(c, tag)
             if tag is None:

@@ -24,13 +24,14 @@ func TestAcquireGains(t *testing.T) {
 		{Kind: "grant", Target: "sword", Amount: 1},
 		{Kind: "grant", Target: content.Money, Amount: 50},
 	}
-	assert.Equal(t, []gain{{"spear", 1, true}, {"tonic", 3, false}, {"sword", 1, false}, {content.Money, 50, false}}, acquireGains(before, events))
-	assert.Empty(t, acquireGains(before, []core.Event{{Kind: "join", Target: "spear", Amount: 1}}))
+	assert.Equal(t, []gain{{"spear", 1, true, false}, {"tonic", 3, false, false}, {"sword", 1, false, false}, {content.Money, 50, false, false}}, acquireGains(before, events))
+	joined := append(events, core.Event{Kind: "join", Target: "zhaoyun"})
+	assert.Equal(t, gain{id: "zhaoyun", n: 1, officer: true}, acquireGains(before, joined)[0], "the officer who joined comes before the pieces")
 }
 
 // Closing takes off the trait window, then the piece's, and only then the cards.
 func TestAcquireClosesOneLayerAtATime(t *testing.T) {
-	m := &modal{kind: "acquire", gains: []gain{{"spear", 1, true}}, piece: "spear", chip: equipChip{"trait", "keen"}}
+	m := &modal{kind: "acquire", gains: []gain{{id: "spear", n: 1, first: true}}, piece: "spear", chip: equipChip{"trait", "keen"}}
 	g := &Game{modals: []*modal{m, {kind: "levelup"}}}
 	g.closeModal()
 	assert.Empty(t, m.chip.id)
@@ -56,5 +57,24 @@ func TestStoryGrantOpensAcquire(t *testing.T) {
 	require.NotEmpty(t, g.modals)
 	m := g.modals[len(g.modals)-1]
 	assert.Equal(t, "acquire", m.kind)
-	assert.Equal(t, []gain{{"gujeong_blade", 1, true}}, m.gains)
+	assert.Equal(t, []gain{{id: "gujeong_blade", n: 1, first: true}}, m.gains)
+}
+
+// 조운 joining in the story opens the acquire window with his card.
+func TestStoryJoinOpensAcquire(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	s := core.New(d, 1).Snapshot()
+	s.Node = "c10-19"
+	g := &Game{S: &session.Session{Data: d}}
+	g.S.Engine, err = core.Restore(d, s)
+	require.NoError(t, err)
+	r := g.send(session.Request{Op: "command", Command: core.Command{Kind: "next"}})
+	require.True(t, r.OK, r.Error)
+	require.NotEmpty(t, g.modals)
+	m := g.modals[len(g.modals)-1]
+	assert.Equal(t, "acquire", m.kind)
+	assert.Equal(t, gain{id: "zhaoyun", n: 1, officer: true}, m.gains[0])
+	assert.True(t, g.joined("zhaoyun"))
+	assert.False(t, g.joined("gujeong_blade"))
 }

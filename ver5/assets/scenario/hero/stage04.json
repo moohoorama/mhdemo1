@@ -342,7 +342,7 @@
   },
   {
    "Faction": "han",
-   "Name": "도겸·고순",
+   "Name": "도겸군",
    "Ally": true
   },
   {
@@ -352,7 +352,7 @@
   },
   {
    "Faction": "barbarian",
-   "Name": "장순과 오환 기병"
+   "Name": "장순군"
   }
  ]
 }

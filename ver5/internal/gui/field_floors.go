@@ -182,7 +182,11 @@ func (f *Field) drawFloors(dst *ebiten.Image, ms float64) {
 		f.renderOp(dst, op)
 		dst.DrawImage(t.floor[frame], op)
 	}
-	f.eachProp(true, func(_ string, s Sprite, x, y float64) { f.blit(dst, s, x, y, nil) })
+	f.eachProp(true, func(_ string, s Sprite, x, y float64) {
+		if f.DrawBounds.Empty() || f.mapRect(s, x/K, y/K).Overlaps(f.DrawBounds) {
+			f.blit(dst, s, x, y, nil)
+		}
+	})
 }
 
 // drawWalls draws the battle map's walls far to near, after all the floors.

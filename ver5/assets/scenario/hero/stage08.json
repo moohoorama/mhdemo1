@@ -13,9 +13,9 @@
  "Victory": [
   {
    "If": [
-    "defeated:gaolan"
+    "defeated:chunyuqiong"
    ],
-   "Text": "고람을 물리친다"
+   "Text": "순우경을 물리친다"
   }
  ],
  "Defeat": [],
@@ -56,7 +56,7 @@
    "Group": "xindu",
    "Policy": "hold",
    "AI": true,
-   "Faction": "han"
+   "Faction": "gongsun"
   },
   {
    "Character": "troop_footman",
@@ -66,7 +66,7 @@
    "Group": "xindu",
    "Policy": "hold",
    "AI": true,
-   "Faction": "han",
+   "Faction": "gongsun",
    "Shift": -0.07
   },
   {
@@ -77,13 +77,13 @@
    "Group": "xindu",
    "Policy": "hold",
    "AI": true,
-   "Faction": "han",
+   "Faction": "gongsun",
    "Shift": -0.07
   }
  ],
  "Enemies": [
   {
-   "Character": "gaolan",
+   "Character": "chunyuqiong",
    "X": 5,
    "Y": 3,
    "Facing": "SE",
@@ -209,8 +209,8 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "gaolan",
-       "Text": "성문 하나 못 깨느냐! 성이 떨어지면 번궁의 목을 베는 자에게 상을 내리겠다!"
+       "Actor": "chunyuqiong",
+       "Text": "성문 하나 못 깨느냐! 번궁의 목을 베어 오는 자에게는 상에 술 한 독을 얹어 주마!"
       }
      ]
     },
@@ -260,6 +260,23 @@
       "xindu"
      ],
      "Policy": "assault"
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "chunyuqiong",
+       "Text": "번궁이 제 발로 기어 나왔구나! 다들 따라와라, 그 목은 내가 친다!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "chief",
+      "guards"
+     ],
+     "Policy": "assault"
     }
    ]
   },
@@ -273,8 +290,8 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "gaolan",
-       "Text": "기병이 무너졌다고? ……성문은 그만두고 저 깃발부터 막아라!"
+       "Actor": "chunyuqiong",
+       "Text": "기병이 무너졌다고? ……술이 확 깨는군. 성문은 그만두고 저 깃발부터 막아라!"
       }
      ]
     },
@@ -291,14 +308,15 @@
   {
    "ID": "chief-out",
    "If": [
-    "any:[alldefeated:gate, hp:gaolan<70]"
+    "any:[alldefeated:gate, hp:chunyuqiong<70]",
+    "!round>=3"
    ],
    "Do": [
     {
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "gaolan",
+       "Actor": "chunyuqiong",
        "Text": "쓸모없는 것들! 내가 직접 나가 주마!"
       }
      ]
@@ -317,25 +335,25 @@
  "Faction": "yuan",
  "Duels": [
   {
-   "ID": "xindu-guanyu-gaolan",
+   "ID": "xindu-guanyu-chunyuqiong",
    "Ally": "guanyu",
-   "Enemy": "gaolan",
+   "Enemy": "chunyuqiong",
    "Outcome": "victory",
    "AllyResult": "stay",
    "EnemyResult": "retreat",
-   "Text": "고람이 관우를 막아섰으나 몇 합을 버티지 못하고 달아났다.",
+   "Text": "순우경이 관우를 막아섰으나 몇 합을 버티지 못하고 달아났다.",
    "Beats": [
     {
      "Kind": "talk",
-     "Title": "고람이 관우를 막아서다",
-     "Speech": "수염 긴 놈, 네가 화웅을 베었다는 관우냐!",
+     "Title": "순우경이 관우를 막아서다",
+     "Speech": "수염 긴 놈, 네가 화웅을 베었다는 관우냐! 오늘 술안주로 삼아 주마!",
      "Side": 1,
      "Duration": 2.8
     },
     {
      "Kind": "talk",
      "Title": "관우가 답하다",
-     "Speech": "알면서 길을 막느냐.",
+     "Speech": "술 냄새를 풍기며 길을 막느냐.",
      "Side": 0,
      "Duration": 2.0
     },
@@ -348,17 +366,80 @@
     },
     {
      "Kind": "block",
-     "Title": "고람의 첫 창을 막다",
+     "Title": "순우경의 첫 칼을 막다",
      "Speech": "느리군.",
      "Side": 1,
      "Duration": 1.05
     },
     {
+     "Kind": "block",
+     "Title": "순우경이 거푸 칼을 휘두르다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "관우가 비켜 흘리다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
      "Kind": "rush-block",
-     "Title": "고람이 거듭 몰아치다",
+     "Title": "순우경이 거듭 몰아치다",
      "Speech": "이 정도로는 성문도 못 깨겠구나.",
      "Side": 1,
      "Duration": 1.1
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 칼을 내밀어 보다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "순우경이 받아내다 밀리다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "순우경이 악을 쓰며 덤비다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 가볍게 받아넘기다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "순우경이 비틀대며 다시 베다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 다시 칼을 내밀다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "순우경이 크게 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
     },
     {
      "Kind": "critical-block",
@@ -369,21 +450,21 @@
     },
     {
      "Kind": "talk",
-     "Title": "고람이 질리다",
-     "Speech": "(이, 이건 사람의 힘이 아니다……!)",
+     "Title": "순우경이 질리다",
+     "Speech": "(수, 술이 다 깼다……! 이건 사람의 힘이 아니다!)",
      "Side": 1,
      "Duration": 2.2
     },
     {
      "Kind": "retreat",
-     "Title": "고람이 말머리를 돌려 달아나다",
+     "Title": "순우경이 등을 돌려 달아나다",
      "Speech": "물러난다! 본진으로 물러나라!",
      "Side": 1,
      "Duration": 3.0
     },
     {
      "Kind": "withdrawn",
-     "Title": "고람이 퇴각하다",
+     "Title": "순우경이 퇴각하다",
      "Speech": "",
      "Side": 1,
      "Duration": 1.1
@@ -398,13 +479,13 @@
    "Ally": true
   },
   {
-   "Faction": "han",
-   "Name": "번궁과 신도 수비대",
+   "Faction": "gongsun",
+   "Name": "공손찬군",
    "Ally": true
   },
   {
    "Faction": "yuan",
-   "Name": "원소 별동대"
+   "Name": "원소군"
   }
  ]
 }

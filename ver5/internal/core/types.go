@@ -118,7 +118,8 @@ type Observation struct {
 	Learners  []Learner
 }
 type Command struct {
-	Kind, Actor, Target, Skill, Item, Trait, Option string
+	Kind, Actor, Target, Skill, Item, Trait string
+	Option                                          string // choose: the option; item (promotion): the class picked
 	X, Y                                            int
 	Count                                           int `json:",omitempty"` // buy, sell: how many
 	Deployment                                      []string

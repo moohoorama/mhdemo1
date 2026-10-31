@@ -19,12 +19,13 @@ import (
 // sandbox engine so it can be taken back; nothing reaches the session until confirmed.
 type order struct {
 	actor   string
-	stage   string // move, menu, sub, target
+	stage   string // move, menu, sub, target, branch
 	sandbox *core.Engine
 	move    *core.Command
 	sub     string       // skill, item
 	pick    core.Command // the chosen action, Target unset
 	armed   hoverCell    // touch: the cell tapped once, waiting for a second tap
+	branch  []promotionUp // branch: the classes an 인수 can make, each with its command
 }
 
 // engine is where the order's options are computed: the sandbox after a tentative move.
@@ -66,6 +67,8 @@ func (g *Game) begin(u core.UnitView) {
 // deselects the actor, as deselecting any other unit does.
 func (g *Game) cancel() bool {
 	switch g.ord.stage {
+	case "branch":
+		g.ord.stage, g.ord.branch = "target", nil
 	case "target", "sub":
 		g.ord.stage, g.ord.sub, g.ord.armed = "menu", "", hoverCell{}
 	case "menu":
@@ -178,18 +181,26 @@ func (g *Game) mapClick(x, y int) {
 			}
 		}
 	case "target":
+		var hits []core.Command
 		for _, c := range g.options(g.ord.pick) {
 			if t := g.unitView(g.view(), c.Target); t != nil && t.X == x && t.Y == y {
-				if g.arm(x, y) {
-					return
-				}
-				g.confirm(c)
+				hits = append(hits, c)
+			}
+		}
+		if len(hits) > 0 {
+			if g.arm(x, y) {
 				return
 			}
+			if len(hits) > 1 { // an 인수 that can make more than one class: pick the class first
+				g.ord.stage, g.ord.branch = "branch", g.branches(hits)
+				return
+			}
+			g.confirm(hits[0])
+			return
 		}
 		g.cancel() // a cell that is not a target steps back, like a click outside the menu
 		return
-	case "menu", "sub":
+	case "menu", "sub", "branch":
 		g.cancel()
 		return
 	}

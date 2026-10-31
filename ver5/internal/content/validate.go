@@ -148,8 +148,8 @@ func (d *Data) Validate() error {
 				return fmt.Errorf("item %s", id)
 			}
 		case ItemPromote:
-			if c, ok := d.Classes[it.Class]; !ok || c.Tier < 1 {
-				return fmt.Errorf("item %s: class %s", id, it.Class)
+			if it.Tier < 1 || it.Tier > len(r.PromoteLevels) {
+				return fmt.Errorf("item %s: tier %d", id, it.Tier)
 			}
 		default:
 			return fmt.Errorf("item %s: effect %q", id, it.Effect)

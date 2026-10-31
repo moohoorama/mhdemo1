@@ -48,89 +48,19 @@
    "Amount": 120,
    "Price": 120
   },
-  "promote_heavy_cavalry": {
-   "Name": "승급서(중기병)",
-   "Desc": "중기병(으)로 승급한다.",
-   "Icon": "scroll",
+  "insu_mid": {
+   "Name": "중급 인수",
+   "Desc": "관인과 인끈. 받은 장수가 중급 병종으로 승급한다. 갈래가 둘이면 쓸 때 고른다.",
+   "Icon": "insu",
    "Effect": "promote",
-   "Class": "heavy_cavalry"
+   "Tier": 1
   },
-  "promote_royal_guard": {
-   "Name": "승급서(친위대)",
-   "Desc": "친위대(으)로 승급한다.",
-   "Icon": "scroll",
+  "insu_high": {
+   "Name": "상급 인수",
+   "Desc": "관인과 인끈. 받은 장수가 상급 병종으로 승급한다. 갈래가 둘이면 쓸 때 고른다.",
+   "Icon": "insu",
    "Effect": "promote",
-   "Class": "royal_guard"
-  },
-  "promote_heavy_infantry": {
-   "Name": "승급서(중보병)",
-   "Desc": "중보병(으)로 승급한다.",
-   "Icon": "scroll",
-   "Effect": "promote",
-   "Class": "heavy_infantry"
-  },
-  "promote_guards": {
-   "Name": "승급서(근위병)",
-   "Desc": "근위병(으)로 승급한다.",
-   "Icon": "scroll",
-   "Effect": "promote",
-   "Class": "guards"
-  },
-  "promote_crossbow": {
-   "Name": "승급서(노병)",
-   "Desc": "노병(으)로 승급한다.",
-   "Icon": "scroll",
-   "Effect": "promote",
-   "Class": "crossbow"
-  },
-  "promote_repeating_crossbow": {
-   "Name": "승급서(연노병)",
-   "Desc": "연노병(으)로 승급한다.",
-   "Icon": "scroll",
-   "Effect": "promote",
-   "Class": "repeating_crossbow"
-  },
-  "promote_staff_officer": {
-   "Name": "승급서(참모)",
-   "Desc": "참모(으)로 승급한다.",
-   "Icon": "scroll",
-   "Effect": "promote",
-   "Class": "staff_officer"
-  },
-  "promote_strategist": {
-   "Name": "승급서(군사)",
-   "Desc": "군사(으)로 승급한다.",
-   "Icon": "scroll",
-   "Effect": "promote",
-   "Class": "strategist"
-  },
-  "promote_sorcerer": {
-   "Name": "승급서(방술사)",
-   "Desc": "방술사(으)로 승급한다.",
-   "Icon": "scroll",
-   "Effect": "promote",
-   "Class": "sorcerer"
-  },
-  "promote_mystic": {
-   "Name": "승급서(선술사)",
-   "Desc": "선술사(으)로 승급한다.",
-   "Icon": "scroll",
-   "Effect": "promote",
-   "Class": "mystic"
-  },
-  "promote_ruffian": {
-   "Name": "승급서(흉적)",
-   "Desc": "흉적(으)로 승급한다.",
-   "Icon": "scroll",
-   "Effect": "promote",
-   "Class": "ruffian"
-  },
-  "promote_outlaw": {
-   "Name": "승급서(의적)",
-   "Desc": "의적(으)로 승급한다.",
-   "Icon": "scroll",
-   "Effect": "promote",
-   "Class": "outlaw"
+   "Tier": 2
   }
  }
 }

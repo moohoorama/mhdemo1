@@ -104,7 +104,7 @@ func (g *Game) learningWindow(dst *ebiten.Image, l core.Learner) {
 	drawTable(g, dst, &w.list, table[learnRow]{
 		cols: g.learnColumns(), rowH: 36, headH: 32, size: 15, center: true,
 		empty:    "지금 익힐 수 있는 특성이 없습니다.",
-		first:    func(row *learnRow) bool { return row.ok },
+		rank:     func(row *learnRow) int { return b2i(!row.ok) },
 		dim:      func(row *learnRow) bool { return !row.ok },
 		selected: func(row *learnRow) bool { return row.id == w.pick },
 		pick:     func(row *learnRow) { w.pick = row.id },

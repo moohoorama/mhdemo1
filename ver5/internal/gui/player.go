@@ -41,6 +41,7 @@ type unitVis struct {
 	id           string
 	ally         bool
 	art          *sprite.Art
+	look         string // the class and weapon art was picked for; a change picks it again
 	u, v, lift   float64
 	dir, anim    string
 	facing       string // the facing the rules state last gave; a change turns the unit to it
@@ -51,6 +52,9 @@ type unitVis struct {
 	shakeAmp     float64
 	charge       float64    // 0..1: how white the sprite is drawn while gathering a critical blow
 	charging     bool       // holds the first attack frame and whitens
+	bleach       float64    // 0..1: how white the sprite is drawn while it is promoted
+	bleachTo     float64    // where bleach is heading, at bleachRate a second
+	bleachRate   float64
 	dying        float64    // < 0: alive
 	leave        *walkState // walking off the battle area, fading out; t runs to leaveTime
 	arriving     float64    // a scene actor walking on: seconds left of fading in, from leaveTime
@@ -131,6 +135,11 @@ func (u *unitVis) update(dt float64) {
 			u.animT += dt
 		}
 		u.charge = math.Max(0, u.charge-dt*5)
+	}
+	if u.bleach < u.bleachTo {
+		u.bleach = math.Min(u.bleachTo, u.bleach+dt*u.bleachRate)
+	} else {
+		u.bleach = math.Max(u.bleachTo, u.bleach-dt*u.bleachRate)
 	}
 	if w := u.walk; w != nil {
 		w.t = math.Min(stepTime, w.t+dt)
@@ -435,6 +444,10 @@ func (g *Game) perform(a *replay.Action) []beat {
 				}
 			}
 		case "item":
+			if g.S.Data.Items[c.Item].Effect == content.ItemPromote {
+				g.promotion(add, actor)
+				break
+			}
 			ev := events
 			add(.6, func() {
 				for _, e := range ev {
@@ -876,3 +889,29 @@ func (g *Game) strike(attacker *unitVis, events []core.Event) {
 		}
 	}
 }
+
+// promotion plays a unit taking its new rank: the seal rises over its head, it turns white while gold
+// rings and motes close in, the screen flashes, it takes its new look in a pillar of light and the
+// white drains away. The promotion window follows the replay.
+func (g *Game) promotion(add func(float64, func()), u *unitVis) {
+	if u == nil {
+		add(.1, func() {})
+		return
+	}
+	add(panTime, func() { g.panToCell(int(u.u), int(u.v)) })
+	add(.5, func() { g.spawn("insu", nil, u, 1.1, white) })
+	add(1.0, func() {
+		u.bleachTo, u.bleachRate = 1, 1
+		g.spawn("promote_gather", nil, u, 1.0, white)
+	})
+	add(.15, func() { g.hitFlashT, g.hitFlashCrit = hitFlash, false })
+	add(.9, func() {
+		if final := g.unitView(g.player.final, u.id); final != nil {
+			g.syncUnit(*final, g.player.final)
+		}
+		u.play("idle")
+		u.bleachTo, u.bleachRate = 0, 1.25
+		g.spawn("promote", nil, u, 1.0, white)
+	})
+}
+

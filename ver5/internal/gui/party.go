@@ -66,18 +66,18 @@ func (g *Game) belongings(o core.Observation) []belonging {
 	return out
 }
 
-// belongingKind is the filter a thing falls under: an equipment slot's name, 승급서 or 소모품.
+// belongingKind is the filter a thing falls under: an equipment slot's name, 인수 or 소모품.
 func (g *Game) belongingKind(id string) string {
 	if eq, ok := g.S.Data.Equipment[id]; ok {
 		return slotNames[eq.Slot]
 	}
 	if g.S.Data.Items[id].Effect == "promote" {
-		return "승급서"
+		return "인수"
 	}
 	return "소모품"
 }
 
-var belongingKinds = []string{"전체", "소모품", "승급서", "무기", "방어구", "장신구"}
+var belongingKinds = []string{"전체", "소모품", "인수", "무기", "방어구", "장신구"}
 
 // partyWindow is the party on the walk, in two tabs: the officers, the picked one's stats and equipment beside
 // them with the buttons to change the equipment and the deputy, and the belongings.

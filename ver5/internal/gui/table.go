@@ -55,15 +55,15 @@ type column[R any] struct {
 	after func(dst *ebiten.Image, r *R, cell image.Rectangle)
 }
 
-// table is how a list is laid out and what its rows do. first puts rows ahead whatever the sort;
-// open says which rows a click picks (nil: all).
+// table is how a list is laid out and what its rows do. rank keeps rows in bands whatever the sort,
+// the lowest first; open says which rows a click picks (nil: all).
 type table[R any] struct {
 	cols        []column[R]
 	rowH, headH int
 	size        float64
 	center      bool
 	empty       string
-	first       func(r *R) bool
+	rank        func(r *R) int
 	open        func(r *R) bool
 	dim         func(r *R) bool
 	selected    func(r *R) bool
@@ -98,8 +98,8 @@ func keepSort[R any](l *tableList, cols []column[R]) {
 	l.order = tableSort{}
 }
 
-// sortRows orders the rows by the column the sort names, those first says first ahead.
-func sortRows[R any](rows []R, cols []column[R], s tableSort, first func(r *R) bool) {
+// sortRows orders the rows by the column the sort names within the bands rank gives.
+func sortRows[R any](rows []R, cols []column[R], s tableSort, rank func(r *R) int) {
 	less := func(a, b *R) bool { return false }
 	for _, c := range cols {
 		if s.dir == 0 || c.key != s.key {
@@ -120,19 +120,28 @@ func sortRows[R any](rows []R, cols []column[R], s tableSort, first func(r *R) b
 	}
 	sort.SliceStable(rows, func(i, j int) bool {
 		a, b := &rows[i], &rows[j]
-		if first != nil && first(a) != first(b) {
-			return first(a)
+		if rank != nil && rank(a) != rank(b) {
+			return rank(a) < rank(b)
 		}
 		return less(a, b)
 	})
 }
 
-// drawTable sorts the rows and draws the header and as many rows as fit in r, with a scrollbar
-// when more exist.
+// drawTable sorts the rows and draws the header and as many rows as fit in r, with a scrollbar on
+// the right when more exist. The rows scroll by the wheel (the window's update), a drag on them or
+// on the scrollbar, and a press on the bar's track pages; a row is picked when a press on it is let
+// go without dragging.
 func drawTable[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], rows []R, r image.Rectangle) {
 	keepSort(l, t.cols)
-	sortRows(rows, t.cols, l.order, t.first)
-	ws := t.widths(r.Dx())
+	sortRows(rows, t.cols, l.order, t.rank)
+	fit := max(1, (r.Dy()-t.headH-tablePadBelow)/t.rowH)
+	l.top = max(0, min(l.top, len(rows)-fit))
+	scroll := len(rows) > fit
+	tw := r.Dx()
+	if scroll {
+		tw -= tableBarW + 4
+	}
+	ws := t.widths(tw)
 	x, hy := r.Min.X, r.Min.Y
 	for i, c := range t.cols {
 		g.tableHeader(dst, l, c.key, c.label, image.Rect(x, hy, x+ws[i], hy+t.headH), c.pad, t.size-1, t.center && !c.left)
@@ -140,30 +149,98 @@ func drawTable[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], rows
 	}
 	rect(dst, float32(r.Min.X), float32(hy+t.headH-1), float32(r.Dx()), 1, goldDim)
 
-	fit := max(1, (r.Dy()-t.headH-tablePadBelow)/t.rowH)
-	l.top = max(0, min(l.top, len(rows)-fit))
 	ry := hy + t.headH
+	g.addButton(image.Rect(r.Min.X, ry, r.Min.X+tw, r.Max.Y), "", func() { g.pressTable(l, t.rowH, nil) })
 	for i := l.top; i < len(rows) && i < l.top+fit; i++ {
-		tableRow(g, dst, l, t, ws, &rows[i], image.Rect(r.Min.X, ry+(i-l.top)*t.rowH, r.Max.X, ry+(i-l.top+1)*t.rowH))
+		tableRow(g, dst, l, t, ws, &rows[i], image.Rect(r.Min.X, ry+(i-l.top)*t.rowH, r.Min.X+tw, ry+(i-l.top+1)*t.rowH))
 	}
 	if len(rows) == 0 && t.empty != "" {
 		g.label(dst, t.empty, float64(r.Min.X+4), float64(ry+8), t.size, muted)
 	}
-	if len(rows) > fit {
-		track := image.Rect(r.Max.X-6, ry, r.Max.X, ry+fit*t.rowH)
-		rect(dst, float32(track.Min.X), float32(track.Min.Y), float32(track.Dx()), float32(track.Dy()), color.NRGBA{R: 90, G: 90, B: 90, A: 110})
-		th := max(18, track.Dy()*fit/len(rows))
-		ty := track.Min.Y + (track.Dy()-th)*l.top/(len(rows)-fit)
-		rect(dst, float32(track.Min.X), float32(ty), float32(track.Dx()), float32(th), color.NRGBA{R: 185, G: 170, B: 135, A: 220})
+	if scroll {
+		g.tableBar(dst, l, image.Rect(r.Max.X-tableBarW, ry, r.Max.X, ry+fit*t.rowH), fit, len(rows))
 	}
+}
+
+const tableBarW = 10
+
+// tableBar draws the scrollbar over track for fit of n rows and registers its press: on the thumb
+// it drags the thumb, elsewhere it pages toward the press.
+func (g *Game) tableBar(dst *ebiten.Image, l *tableList, track image.Rectangle, fit, n int) {
+	th := max(24, track.Dy()*fit/n)
+	thumb := image.Rect(track.Min.X, track.Min.Y+(track.Dy()-th)*l.top/(n-fit), track.Max.X, 0)
+	thumb.Max.Y = thumb.Min.Y + th
+	rect(dst, float32(track.Min.X), float32(track.Min.Y), float32(track.Dx()), float32(track.Dy()), color.NRGBA{R: 90, G: 90, B: 90, A: 110})
+	c := color.NRGBA{R: 185, G: 170, B: 135, A: 220}
+	if d := g.tableDrag; hovered(thumb) || d != nil && d.l == l && d.perPx > 0 {
+		c = color.NRGBA{R: 225, G: 205, B: 150, A: 240}
+	}
+	rect(dst, float32(thumb.Min.X), float32(thumb.Min.Y), float32(thumb.Dx()), float32(thumb.Dy()), c)
+	g.addButton(track, "", func() {
+		x, y := cursorPos()
+		switch p := image.Pt(x, y); {
+		case p.In(unframed(thumb)):
+			g.tableDrag = &tableDrag{l: l, press: p, top: l.top, perPx: float64(n-fit) / float64(max(1, track.Dy()-th))}
+		case p.Y < unframed(thumb).Min.Y:
+			l.top -= fit
+		default:
+			l.top += fit
+		}
+	})
+}
+
+// tableDrag is a press on a table being held: dragging the rows or the scrollbar's thumb, or a row
+// to pick when it is let go without moving.
+type tableDrag struct {
+	l     *tableList
+	rowH  int
+	press image.Point
+	top   int
+	moved bool
+	perPx float64 // rows per px of the thumb's travel, while dragging the thumb
+	pick  func()
+}
+
+// pressTable starts holding a press on l's rows; pick runs if it is let go without dragging.
+func (g *Game) pressTable(l *tableList, rowH int, pick func()) {
+	x, y := cursorPos()
+	g.tableDrag = &tableDrag{l: l, rowH: rowH, press: image.Pt(x, y), top: l.top, pick: pick}
+}
+
+// updateTableDrag follows the press held on a table: the rows follow the pointer once it moves
+// past dragStartPx, the thumb at once; letting go of a row that did not move picks it.
+func (g *Game) updateTableDrag() bool {
+	d := g.tableDrag
+	if d == nil {
+		return false
+	}
+	_, y := cursorPos()
+	dy := y - d.press.Y
+	if mousePressed(ebiten.MouseButtonLeft) {
+		switch {
+		case d.perPx > 0:
+			d.l.top = d.top + int(float64(dy)*d.perPx+.5)
+		case d.moved || abs(dy) > dragStartPx:
+			d.moved = true
+			d.l.top = d.top - dy/d.rowH
+		}
+		return true
+	}
+	g.tableDrag = nil
+	if !d.moved && d.pick != nil {
+		d.pick()
+	}
+	return true
 }
 
 // tableRow draws one row over rr and registers its click.
 func tableRow[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], ws []int, row *R, rr image.Rectangle) {
 	open := t.open == nil || t.open(row)
+	var pick func()
 	if open && t.pick != nil {
-		g.addButton(rr, "", func() { t.pick(row) })
+		pick = func() { t.pick(row) }
 	}
+	g.addButton(rr, "", func() { g.pressTable(l, t.rowH, pick) })
 	switch {
 	case t.selected != nil && t.selected(row):
 		strokeRect(dst, float32(rr.Min.X), float32(rr.Min.Y+1), float32(rr.Dx()-2), float32(rr.Dy()-2), 1.5, gold)
@@ -251,4 +328,12 @@ func (g *Game) clip(s string, size, w float64) string {
 		r = r[:len(r)-1]
 	}
 	return string(r) + "…"
+}
+
+// b2i is 1 for true, for ranks.
+func b2i(b bool) int {
+	if b {
+		return 1
+	}
+	return 0
 }

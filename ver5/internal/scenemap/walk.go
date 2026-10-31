@@ -18,6 +18,18 @@ func (w *Walk) index(u, v int) (int, bool) {
 	return y*w.W + x, x >= 0 && y >= 0 && x < w.W && y < w.H
 }
 
+// NewWalk is a walk over the w x h small tiles from origin, open where open says (a map that is no scene map:
+// the world map of cmd/_cnmap).
+func NewWalk(origin [2]int, w, h int, open func(u, v int) bool) *Walk {
+	k := &Walk{Origin: origin, W: w, H: h, open: make([]bool, w*h), gate: make([]bool, w*h)}
+	for y := 0; y < h; y++ {
+		for x := 0; x < w; x++ {
+			k.open[y*w+x] = open(x+origin[0], y+origin[1])
+		}
+	}
+	return k
+}
+
 // Open reports whether small tile (u, v) can be walked.
 func (w *Walk) Open(u, v int) bool {
 	i, ok := w.index(u, v)

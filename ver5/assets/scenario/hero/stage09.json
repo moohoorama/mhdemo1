@@ -12,24 +12,33 @@
  "Victory": [
   {
    "If": [
-    "defeated:yanliang",
-    "defeated:zhanghe"
+    "at:liubei:1"
    ],
-   "Text": "안량과 장합을 물리친다"
+   "Text": "유비가 동남쪽 끝의 성에 들어선다"
   }
  ],
  "Defeat": [],
  "Sub": [
   {
    "ID": "duel",
-   "Text": "관우가 안량을 일기토로 물리친다",
+   "Text": "장비가 안량을 일기토로 물리친다",
    "If": [
-    "duel:julu-guanyu-yanliang"
+    "duel:julu-zhangfei-yanliang"
    ],
    "Flag": "flag-julu-clear"
+  },
+  {
+   "ID": "zhanghe",
+   "Text": "장합을 물리친다",
+   "If": [
+    "defeated:zhanghe"
+   ],
+   "Reward": {
+    "insu_mid": 1
+   }
   }
  ],
- "TurnLimit": 15,
+ "TurnLimit": 20,
  "Map": "map09.json",
  "Allies": [
   {
@@ -64,43 +73,8 @@
  "Party": [],
  "Enemies": [
   {
-   "Character": "yanliang",
-   "X": 6,
-   "Y": 2,
-   "Facing": "SW",
-   "Group": "vanguard",
-   "Policy": "react"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 5,
-   "Y": 2,
-   "Facing": "SW",
-   "Group": "vanguard",
-   "Policy": "react",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 7,
-   "Y": 3,
-   "Facing": "SW",
-   "Group": "vanguard",
-   "Policy": "react",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 5,
-   "Y": 3,
-   "Facing": "SW",
-   "Group": "vanguard",
-   "Policy": "react",
-   "Rank": "recruit"
-  },
-  {
    "Character": "zhanghe",
-   "X": 13,
+   "X": 18,
    "Y": 7,
    "Facing": "SW",
    "Group": "bridge",
@@ -108,6 +82,14 @@
    "Rank": "commander"
   },
   {
+   "Character": "gaolan",
+   "X": 14,
+   "Y": 7,
+   "Facing": "SW",
+   "Group": "gaolan",
+   "Policy": "hold"
+  },
+  {
    "Character": "troop_footman",
    "X": 12,
    "Y": 6,
@@ -118,8 +100,7 @@
    "Equipment": [
     "iron_spear",
     "leather_armor"
-   ],
-   "Rank": "recruit"
+   ]
   },
   {
    "Character": "troop_footman",
@@ -132,8 +113,7 @@
    "Equipment": [
     "iron_spear",
     "leather_armor"
-   ],
-   "Rank": "recruit"
+   ]
   },
   {
    "Character": "troop_footman",
@@ -146,8 +126,7 @@
    "Equipment": [
     "iron_spear",
     "leather_armor"
-   ],
-   "Rank": "recruit"
+   ]
   },
   {
    "Character": "troop_archer",
@@ -155,8 +134,7 @@
    "Y": 5,
    "Facing": "SW",
    "Group": "pikes",
-   "Policy": "hold",
-   "Rank": "recruit"
+   "Policy": "hold"
   },
   {
    "Character": "troop_archer",
@@ -164,53 +142,65 @@
    "Y": 9,
    "Facing": "SW",
    "Group": "pikes",
+   "Policy": "hold"
+  },
+  {
+   "Character": "fengji",
+   "X": 19,
+   "Y": 7,
+   "Facing": "SW",
+   "Group": "bridge",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 18,
+   "Y": 6,
+   "Facing": "SW",
+   "Group": "bridge",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 18,
+   "Y": 8,
+   "Facing": "SW",
+   "Group": "bridge",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 13,
+   "Facing": "NW",
+   "Group": "fort",
    "Policy": "hold",
    "Rank": "recruit"
   },
   {
    "Character": "troop_footman",
    "X": 12,
-   "Y": 13,
-   "Facing": "SW",
-   "Group": "trail",
-   "Policy": "react",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 13,
    "Y": 14,
-   "Facing": "SW",
-   "Group": "trail",
-   "Policy": "react",
+   "Facing": "NW",
+   "Group": "fort",
+   "Policy": "hold",
    "Rank": "recruit"
   },
   {
    "Character": "troop_archer",
-   "X": 14,
-   "Y": 12,
+   "X": 13,
+   "Y": 13,
    "Facing": "SW",
-   "Group": "trail",
-   "Policy": "react",
-   "Rank": "recruit"
+   "Group": "fort",
+   "Policy": "hold"
   },
   {
-   "Character": "troop_footman",
-   "X": 17,
-   "Y": 6,
-   "Facing": "SW",
-   "Group": "reserve",
-   "Policy": "hold",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 17,
+   "Character": "shenpei",
+   "X": 16,
    "Y": 8,
    "Facing": "SW",
    "Group": "reserve",
-   "Policy": "hold",
-   "Rank": "recruit"
+   "Policy": "hold"
   }
  ],
  "Reward": {
@@ -219,7 +209,52 @@
   "liquor": 2,
   "money": 1000
  },
- "Areas": [],
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 19,
+    "Y": 15,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "동남쪽 성",
+   "Description": "숲길을 돌아 닿는 거록 동남쪽 끝의 성. 유비가 들어서면 거록을 뚫는다"
+  },
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 10,
+    "Y": 6,
+    "W": 4,
+    "H": 3
+   },
+   "Name": "길목",
+   "Description": "안량과 장합 사이, 벼랑 가운데 길목. 유비가 들어서면 원소군이 에워싼다"
+  },
+  {
+   "ID": 3,
+   "Rect": {
+    "X": 12,
+    "Y": 13,
+    "W": 2,
+    "H": 3
+   },
+   "Name": "숲길 성 너머",
+   "Description": "남쪽 숲길의 성을 지난 곳. 유비가 들어서면 장합이 우회를 알아챈다"
+  },
+  {
+   "ID": 4,
+   "Rect": {
+    "X": 4,
+    "Y": 1,
+    "W": 4,
+    "H": 3
+   },
+   "Name": "북동쪽 숲",
+   "Description": "안량의 기병이 숨어 유비군이 길목에 들기를 기다리는 숲"
+  }
+ ],
  "Events": [
   {
    "ID": "opening",
@@ -231,17 +266,8 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "yanliang",
-       "Text": "공손찬에게 붙은 돗자리 장수라더니, 겨우 이 정도 군사냐!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
        "Actor": "zhanghe",
-       "Text": "길목은 내가 막는다. 안 장군, 서두르지 마시오."
+       "Text": "길목은 내가 막는다. 유비가 오거든 정해 둔 대로 하라."
       }
      ]
     },
@@ -250,9 +276,236 @@
      "Lines": [
       {
        "Actor": "liubei",
-       "Text": "벼랑을 넘으려면 길목이나 남쪽 숲길이다. 먼저 이쪽으로 넘어온 기병부터 꺾자!"
+       "Text": "벼랑을 넘으려면 가운데 길목이나 남쪽 숲길이다. 숲길 끝의 성을 지나면 계교로 가는 길이 트인다."
       }
      ]
+    }
+   ]
+  },
+  {
+   "ID": "ambush-found",
+   "If": [
+    "at:ally:4",
+    "!flag:flag-julu-ambush-sprung"
+   ],
+   "Do": [
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-julu-ambush-found": 1
+     }
+    }
+   ]
+  },
+  {
+   "ID": "ambush",
+   "If": [
+    "any:[at:ally:2, at:ally:4, at:liubei:3]"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "yanliang",
+       "X": 6,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "vanguard",
+       "Policy": "assault",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 5,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "vanguard",
+       "Policy": "assault",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 7,
+       "Y": 3,
+       "Facing": "SW",
+       "Group": "vanguard",
+       "Policy": "assault",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 5,
+       "Y": 3,
+       "Facing": "SW",
+       "Group": "vanguard",
+       "Policy": "assault",
+       "Side": "enemy"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "ambush-found-talk",
+   "If": [
+    "flag:flag-julu-ambush-found"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yanliang",
+       "Text": "들켰나! 에잇, 숨어 있을 것 없다. 나가서 짓밟아라!"
+      }
+     ]
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "vanguard"
+     ],
+     "Stat": "attack",
+     "Value": -20,
+     "Turns": 3
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "vanguard"
+     ],
+     "Stat": "defense",
+     "Value": -20,
+     "Turns": 3
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhanghe",
+       "Text": "매복이 들켰다! 기다릴 것 없다. 창병은 길목을 지켜라. 나머지는 들이쳐라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "gaolan",
+      "reserve"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "ambush-sprung",
+   "If": [
+    "at:ally:2",
+    "!flag:flag-julu-ambush-found"
+   ],
+   "Do": [
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-julu-ambush-sprung": 1
+     }
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yanliang",
+       "Text": "걸려들었구나! 돗자리 장수, 네 뒤는 이 안량이 끊는다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhanghe",
+       "Text": "됐다, 길목에 들었다. 앞뒤로 에워싸라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "shenpei",
+       "Text": "한 걸음도 물러서지 마라! 주공께 부끄럽지 않게 싸워라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "gaolan",
+      "reserve"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "zhanghe-out",
+   "If": [
+    "round>=4"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "fengji",
+       "Text": "장군, 이제 나서시지요."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhanghe",
+       "Text": "좋다. 하간의 장합이 직접 나간다. 나를 따르라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "bridge"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "bypass",
+   "If": [
+    "at:liubei:3"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhanghe",
+       "Text": "유비가 숲길로 돌아 빠져나간다! 길목은 버려라. 전군, 남쪽으로 내려가 막아라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "vanguard",
+      "gaolan",
+      "pikes",
+      "reserve",
+      "bridge"
+     ],
+     "Policy": "assault"
     }
    ]
   },
@@ -267,41 +520,9 @@
      "Lines": [
       {
        "Actor": "zhanghe",
-       "Text": "안 장군이 물러났다고……? 창병은 자리를 지켜라. 길목만 막으면 된다."
+       "Text": "안 장군이 물러났다고……? 흔들리지 마라, 계속 밀어붙여라!"
       }
      ]
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "trail"
-     ],
-     "Policy": "assault"
-    }
-   ]
-  },
-  {
-   "ID": "pass-open",
-   "If": [
-    "alldefeated:pikes"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "zhanghe",
-       "Text": "……이 군사들, 보통 의병이 아니다. 남은 군사는 나를 따르라!"
-      }
-     ]
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "bridge",
-      "reserve"
-     ],
-     "Policy": "assault"
     }
    ]
   }
@@ -309,27 +530,27 @@
  "Faction": "yuan",
  "Duels": [
   {
-   "ID": "julu-guanyu-yanliang",
-   "Ally": "guanyu",
+   "ID": "julu-zhangfei-yanliang",
+   "Ally": "zhangfei",
    "Enemy": "yanliang",
    "Outcome": "victory",
    "AllyResult": "stay",
    "EnemyResult": "retreat",
-   "Text": "안량이 관우와 칼을 섞다가 밀려 물러났다. 물러나며 다음을 기약했다.",
+   "Text": "안량이 장비와 창을 섞다가 밀려 물러났다. 물러나며 다음을 기약했다.",
    "Beats": [
     {
      "Kind": "talk",
-     "Title": "안량이 관우를 알아보다",
-     "Speech": "네가 화웅을 베었다는 그 관운장이냐. 하북의 안량이다!",
+     "Title": "안량이 장비를 알아보다",
+     "Speech": "호로관에서 여포에게 덤볐다는 검은 놈이 너냐. 하북의 안량이다!",
      "Side": 1,
      "Duration": 3.0
     },
     {
      "Kind": "talk",
-     "Title": "관우가 받다",
-     "Speech": "이름은 들었다. 칼로 보여 다오.",
+     "Title": "장비가 받다",
+     "Speech": "연인 장익덕이여! 이름만 크면 뭐 하슈, 창으로 보여 보슈!",
      "Side": 0,
-     "Duration": 2.2
+     "Duration": 2.6
     },
     {
      "Kind": "approach",
@@ -340,38 +561,157 @@
     },
     {
      "Kind": "block",
-     "Title": "안량의 칼을 막다",
-     "Speech": "무겁구나.",
+     "Title": "안량의 칼을 장비가 막다",
+     "Speech": "무겁구먼! 그래도 이 정도여!",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "안량이 다시 칼을 내리치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장비가 받아내며 한 걸음 밀리다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 받아치다",
+     "Speech": "큭……!",
      "Side": 0,
      "Duration": 1.05
     },
     {
      "Kind": "block",
-     "Title": "관우가 받아치다",
-     "Speech": "큭……!",
+     "Title": "안량이 받아치다",
+     "Speech": "",
      "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 거푸 내지르다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "안량이 말머리를 돌려 피하다",
+     "Speech": "",
+     "Side": 0,
      "Duration": 1.05
     },
     {
      "Kind": "rush-block",
      "Title": "안량이 돌진하며 몰아치다",
-     "Speech": "아직이다!",
+     "Speech": "어림없슈!",
      "Side": 1,
      "Duration": 1.1
     },
     {
+     "Kind": "block",
+     "Title": "장비가 사모로 맞받다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "안량이 칼을 비껴 베다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장비의 사모에 안량이 밀리다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "안량이 칼을 고쳐 쥐고 내리치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
      "Kind": "critical-block",
-     "Title": "관우가 청룡도를 휘두르다",
-     "Speech": "하앗!",
+     "Title": "안량의 강공을 장비가 받아내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 사모로 되받아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "안량이 몸을 젖혀 피하다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "안량이 거듭 베다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장비가 한 걸음 밀리다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 성나 내지르다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "안량이 크게 밀리다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "장비가 사모를 내지르다",
+     "Speech": "으라아앗!",
      "Side": 0,
      "Duration": 1.2
     },
     {
      "Kind": "talk",
      "Title": "안량이 물러서다",
-     "Speech": "오늘은 여기까지다. 관운장, 그 목은 다음에 받으마!",
+     "Speech": "(이 괴력은……!) 오늘은 여기까지다. 장익덕, 그 목은 다음에 받으마!",
      "Side": 1,
-     "Duration": 3.0
+     "Duration": 3.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 외치다",
+     "Speech": "도망가긴 어딜 도망가유! 거기 서슈!",
+     "Side": 0,
+     "Duration": 2.2
     },
     {
      "Kind": "retreat",
@@ -388,80 +728,6 @@
      "Duration": 1.1
     }
    ]
-  },
-  {
-   "ID": "julu-zhangfei-zhanghe",
-   "Ally": "zhangfei",
-   "Enemy": "zhanghe",
-   "Outcome": "draw",
-   "AllyResult": "stay",
-   "EnemyResult": "stay",
-   "Text": "장비와 장합이 수십 합을 겨루었으나 승부가 나지 않았다.",
-   "Beats": [
-    {
-     "Kind": "talk",
-     "Title": "장비가 장합을 부르다",
-     "Speech": "거기 길목 막고 선 놈! 연인 장익덕이 상대해 주겠슈!",
-     "Side": 0,
-     "Duration": 3.0
-    },
-    {
-     "Kind": "talk",
-     "Title": "장합이 침착하게 받다",
-     "Speech": "하간의 장합이다. 힘만으로는 이 길목을 못 지난다.",
-     "Side": 1,
-     "Duration": 3.0
-    },
-    {
-     "Kind": "approach",
-     "Title": "맞붙다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 1.2
-    },
-    {
-     "Kind": "block",
-     "Title": "장비의 사모를 장합이 흘리다",
-     "Speech": "흘려 버리는구먼!",
-     "Side": 0,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "dodge",
-     "Title": "장합이 몸을 비키다",
-     "Speech": "느리다.",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "rush-block",
-     "Title": "장비가 몰아치다",
-     "Speech": "언제까지 피하나 보자!",
-     "Side": 0,
-     "Duration": 1.1
-    },
-    {
-     "Kind": "block",
-     "Title": "장합이 받아내다",
-     "Speech": "……과연 호로관의 장비로군.",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "talk",
-     "Title": "장비가 투덜대다",
-     "Speech": "미꾸라지 같은 놈이구먼!",
-     "Side": 0,
-     "Duration": 2.0
-    },
-    {
-     "Kind": "draw",
-     "Title": "두 장수가 물러서다",
-     "Speech": "",
-     "Side": 0,
-     "Duration": 2.5
-    }
-   ]
   }
  ],
  "Armies": [
@@ -472,7 +738,7 @@
   },
   {
    "Faction": "yuan",
-   "Name": "안량·장합"
+   "Name": "원소군"
   }
  ]
 }

@@ -1,0 +1,915 @@
+{
+ "Scenes": {
+  "c11-envoy": {
+   "Map": "S_tent_mid",
+   "Nodes": [
+    "c11-e0",
+    "c11-e1",
+    "c11-e2",
+    "c11-e3",
+    "c11-e4",
+    "c11-e5"
+   ],
+   "Cast": {
+    "공손찬": {
+     "At": [
+      1,
+      1
+     ],
+     "Face": "SE"
+    },
+    "진진": {
+     "At": [
+      3,
+      3
+     ],
+     "Face": "NW",
+     "Sprite": "official_noncombat",
+     "Faction": "yuan"
+    },
+    "유비": {
+     "At": [
+      3,
+      1
+     ],
+     "Face": "SW"
+    },
+    "관우": {
+     "At": [
+      4,
+      1
+     ],
+     "Face": "SW"
+    },
+    "장비": {
+     "At": [
+      4,
+      2
+     ],
+     "Face": "SW"
+    },
+    "조운": {
+     "At": [
+      2,
+      4
+     ],
+     "Face": "NE"
+    },
+    "백마병#1": {
+     "At": [
+      5,
+      3
+     ],
+     "Face": "NW",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun"
+    }
+   },
+   "Beats": {
+    "c11-e2": [
+     [
+      [
+       {
+        "Actor": "공손찬",
+        "Move": [
+         1,
+         3
+        ]
+       },
+       {
+        "Actor": "공손찬",
+        "Face": "SE"
+       },
+       {
+        "Actor": "공손찬",
+        "Play": "attack"
+       },
+       {
+        "Actor": "유비",
+        "Via": [
+         [
+          3,
+          2
+         ]
+        ],
+        "Move": [
+         2,
+         3
+        ]
+       },
+       {
+        "Actor": "유비",
+        "Face": "NW"
+       }
+      ]
+     ]
+    ],
+    "c11-e3": [
+     [
+      [
+       {
+        "Actor": "유비",
+        "Face": "SE"
+       },
+       {
+        "Actor": "유비",
+        "Say": "……"
+       }
+      ]
+     ]
+    ],
+    "c11-e4": [
+     [
+      [
+       {
+        "Actor": "관우",
+        "Move": [
+         4,
+         3
+        ]
+       },
+       {
+        "Actor": "관우",
+        "Face": "NW"
+       },
+       {
+        "Actor": "진진",
+        "Face": "SE"
+       },
+       {
+        "Actor": "유비",
+        "Face": "NW"
+       }
+      ]
+     ]
+    ],
+    "c11-e5": [
+     [
+      [
+       {
+        "Actor": "관우",
+        "Exit": true
+       },
+       {
+        "Actor": "진진",
+        "Exit": true
+       },
+       {
+        "Actor": "공손찬",
+        "Move": [
+         1,
+         1
+        ]
+       },
+       {
+        "Actor": "공손찬",
+        "Pose": "sit"
+       },
+       {
+        "Actor": "공손찬",
+        "Face": "SE"
+       },
+       {
+        "Actor": "유비",
+        "Move": [
+         1,
+         3
+        ]
+       },
+       {
+        "Actor": "유비",
+        "Face": "NE"
+       }
+      ]
+     ]
+    ]
+   }
+  },
+  "c11-road": {
+   "Map": "S_field_road",
+   "Nodes": [
+    "c11-r0",
+    "c11-r1"
+   ],
+   "Cast": {
+    "유비": {
+     "At": [
+      3,
+      7
+     ],
+     "Face": "NE"
+    },
+    "관우": {
+     "At": [
+      2,
+      7
+     ],
+     "Face": "NE"
+    },
+    "장비": {
+     "At": [
+      4,
+      7
+     ],
+     "Face": "NE"
+    },
+    "조운": {
+     "At": [
+      3,
+      8
+     ],
+     "Face": "NE"
+    },
+    "간옹": {
+     "At": [
+      2,
+      8
+     ],
+     "Face": "NE"
+    },
+    "번궁": {
+     "At": [
+      4,
+      8
+     ],
+     "Face": "NE"
+    },
+    "손건": {
+     "At": [
+      3,
+      6
+     ],
+     "Face": "NE"
+    },
+    "태사자": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "horse_archer",
+     "Faction": "han"
+    }
+   },
+   "Beats": {
+    "c11-r1": [
+     [
+      [
+       {
+        "Actor": "태사자",
+        "Move": [
+         5,
+         4
+        ]
+       },
+       {
+        "Actor": "태사자",
+        "Face": "SW"
+       },
+       {
+        "Actor": "유비",
+        "Move": [
+         5,
+         6
+        ]
+       },
+       {
+        "Actor": "유비",
+        "Face": "NE"
+       },
+       {
+        "Actor": "손건",
+        "Move": [
+         6,
+         6
+        ]
+       },
+       {
+        "Actor": "손건",
+        "Face": "NE"
+       }
+      ]
+     ]
+    ]
+   }
+  },
+  "c12-gate": {
+   "Map": "S_castle_out",
+   "Nodes": [
+    "c12-g0"
+   ],
+   "Cast": {
+    "공융": {
+     "At": [
+      3,
+      3
+     ],
+     "Face": "SW"
+    },
+    "태사자": {
+     "At": [
+      4,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    },
+    "북해병#1": {
+     "At": [
+      2,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    },
+    "유비": {
+     "At": [
+      3,
+      4
+     ],
+     "Face": "NE"
+    },
+    "관우": {
+     "At": [
+      2,
+      4
+     ],
+     "Face": "NE"
+    },
+    "장비": {
+     "At": [
+      4,
+      4
+     ],
+     "Face": "NE"
+    },
+    "조운": {
+     "At": [
+      5,
+      4
+     ],
+     "Face": "NE"
+    },
+    "간옹": {
+     "At": [
+      1,
+      4
+     ],
+     "Face": "NE"
+    },
+    "번궁": {
+     "At": [
+      0,
+      4
+     ],
+     "Face": "NE"
+    },
+    "손건": {
+     "At": [
+      6,
+      4
+     ],
+     "Face": "NE"
+    }
+   }
+  },
+  "c12-village": {
+   "Map": "S_village_burnt",
+   "Time": "dusk",
+   "Nodes": [
+    "c12-v0",
+    "c12-v1"
+   ],
+   "Ambient": [
+    {
+     "Effect": "smoke",
+     "At": [
+      7.5,
+      1.5
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      2.0,
+      6.5
+     ]
+    },
+    {
+     "Prop": [
+      "fallen_flag",
+      5.25,
+      4.25
+     ]
+    }
+   ],
+   "Cast": {
+    "유비": {
+     "At": [
+      4,
+      4
+     ],
+     "Face": "SE"
+    },
+    "관우": {
+     "At": [
+      3,
+      3
+     ],
+     "Face": "SE"
+    },
+    "장비": {
+     "At": [
+      3,
+      5
+     ],
+     "Face": "SE"
+    },
+    "조운": {
+     "At": [
+      6,
+      5
+     ],
+     "Face": "NW"
+    },
+    "간옹": {
+     "At": [
+      2,
+      4
+     ],
+     "Face": "SE"
+    },
+    "번궁": {
+     "At": [
+      2,
+      3
+     ],
+     "Face": "SE"
+    },
+    "손건": {
+     "At": [
+      5,
+      2
+     ],
+     "Face": "SW"
+    },
+    "노인#1": {
+     "At": [
+      7,
+      4
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_elder"
+    },
+    "부상자#1": {
+     "At": [
+      8,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "wounded_noncombat",
+     "Pose": "sitground"
+    },
+    "아낙#1": {
+     "At": [
+      6,
+      2
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_woman"
+    },
+    "전령#1": {
+     "At": [
+      9,
+      7
+     ],
+     "Face": "NW",
+     "Sprite": "light_cavalry",
+     "Faction": "han",
+     "Off": true
+    }
+   },
+   "Beats": {
+    "c12-v1": [
+     [
+      [
+       {
+        "Actor": "노인#1",
+        "Move": [
+         6,
+         4
+        ]
+       },
+       {
+        "Actor": "노인#1",
+        "Face": "NW"
+       },
+       {
+        "Actor": "유비",
+        "Face": "SE"
+       },
+       {
+        "Actor": "전령#1",
+        "Enter": [
+         9,
+         7
+        ],
+        "Move": [
+         6,
+         6
+        ]
+       },
+       {
+        "Actor": "전령#1",
+        "Face": "NW"
+       }
+      ]
+     ]
+    ]
+   }
+  },
+  "c11-beiping": {
+   "Map": "S_council",
+   "Nodes": [
+    "c11-b0"
+   ],
+   "Cast": {
+    "공손찬": {
+     "At": [
+      1,
+      3
+     ],
+     "Face": "SE",
+     "Pose": "sit",
+     "Hold": true
+    },
+    "전해": {
+     "At": [
+      2,
+      4
+     ],
+     "Face": "NE"
+    },
+    "유비": {
+     "At": [
+      4,
+      3
+     ],
+     "Face": "NW"
+    },
+    "관우": {
+     "At": [
+      5,
+      3
+     ],
+     "Face": "NW"
+    },
+    "장비": {
+     "At": [
+      5,
+      4
+     ],
+     "Face": "NW"
+    },
+    "간옹": {
+     "At": [
+      6,
+      4
+     ],
+     "Face": "NW"
+    },
+    "번궁": {
+     "At": [
+      7,
+      3
+     ],
+     "Face": "NW"
+    },
+    "조운": {
+     "At": [
+      6,
+      5
+     ],
+     "Face": "NW"
+    },
+    "손건": {
+     "At": [
+      11,
+      4
+     ],
+     "Face": "NW",
+     "Off": true
+    }
+   },
+   "Beats": {
+    "c11-b0": [
+     [
+      [
+       {
+        "Actor": "손건",
+        "Enter": [
+         11,
+         4
+        ],
+        "Move": [
+         3,
+         4
+        ]
+       },
+       {
+        "Actor": "손건",
+        "Face": "NW"
+       },
+       {
+        "Actor": "손건",
+        "Pose": "bow"
+       }
+      ]
+     ]
+    ]
+   }
+  },
+  "c11-town": {
+   "Map": "S_castle_town",
+   "Nodes": [
+    "c11-t0"
+   ],
+   "Cast": {
+    "관우": {
+     "At": [
+      5,
+      3
+     ],
+     "Face": "SW"
+    },
+    "장비": {
+     "At": [
+      4,
+      6
+     ],
+     "Face": "SE"
+    },
+    "간옹": {
+     "At": [
+      6,
+      7
+     ],
+     "Face": "NW"
+    },
+    "조운": {
+     "At": [
+      8,
+      7
+     ],
+     "Face": "NW"
+    },
+    "번궁": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW"
+    },
+    "손건": {
+     "At": [
+      3,
+      7
+     ],
+     "Face": "NE"
+    },
+    "유비": {
+     "At": [
+      5,
+      5
+     ],
+     "Face": "NE"
+    },
+    "궁병 군관": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "archer",
+     "Faction": "gongsun"
+    },
+    "무술 사범": {
+     "At": [
+      10,
+      8
+     ],
+     "Face": "NW",
+     "Sprite": "brawler",
+     "Faction": "gongsun"
+    },
+    "공손찬의 막료": {
+     "At": [
+      4,
+      4
+     ],
+     "Face": "SE",
+     "Sprite": "official_noncombat",
+     "Faction": "gongsun"
+    },
+    "백성#1": {
+     "At": [
+      2,
+      7
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_man"
+    },
+    "백성#2": {
+     "At": [
+      7,
+      9
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_woman"
+    }
+   }
+  }
+ },
+ "Renders": [
+  {
+   "Scene": "c11-envoy",
+   "Shots": [
+    {
+     "Name": "1-letter",
+     "After": "c11-e1"
+    },
+    {
+     "Name": "2-sword",
+     "After": "c11-e3"
+    },
+    {
+     "Name": "3-guide",
+     "After": "c11-e4"
+    },
+    {
+     "Name": "4-seat",
+     "After": "c11-e5"
+    }
+   ],
+   "Spots": [
+    {
+     "Label": "A",
+     "Name": "막사 입구",
+     "Cells": [
+      [
+       5,
+       4
+      ]
+     ]
+    },
+    {
+     "Label": "B",
+     "Name": "공손찬의 자리",
+     "Cells": [
+      [
+       1,
+       1
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "Scene": "c11-beiping",
+   "Shots": [
+    {
+     "Name": "1",
+     "After": "c11-b0"
+    }
+   ],
+   "Spots": [
+    {
+     "Label": "A",
+     "Name": "공손찬의 자리",
+     "Cells": [
+      [
+       1,
+       3
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "Scene": "c11-town",
+   "Shots": [
+    {
+     "Name": "1",
+     "After": ""
+    }
+   ],
+   "Spots": [
+    {
+     "Label": "A",
+     "Name": "관아(공손찬의 부중)",
+     "Cells": [
+      [
+       5,
+       1
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "Scene": "c11-road",
+   "Shots": [
+    {
+     "Name": "1-arrive",
+     "After": "c11-r0"
+    },
+    {
+     "Name": "2-meet",
+     "After": "c11-r1"
+    }
+   ],
+   "Spots": [
+    {
+     "Label": "A",
+     "Name": "북해 쪽",
+     "Cells": [
+      [
+       12,
+       3
+      ],
+      [
+       13,
+       3
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "Scene": "c12-gate",
+   "Shots": [
+    {
+     "Name": "1",
+     "After": "c12-g0"
+    }
+   ],
+   "Spots": [
+    {
+     "Label": "A",
+     "Name": "북해성 해자 다리",
+     "Cells": [
+      [
+       3,
+       2
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "Scene": "c12-village",
+   "Shots": [
+    {
+     "Name": "1-flag",
+     "After": "c12-v0"
+    },
+    {
+     "Name": "2-scout",
+     "After": "c12-v1"
+    }
+   ],
+   "Spots": [
+    {
+     "Label": "A",
+     "Name": "그을린 조 자 깃발",
+     "Cells": [
+      [
+       5,
+       4
+      ]
+     ]
+    },
+    {
+     "Label": "B",
+     "Name": "서주 가는 길",
+     "Cells": [
+      [
+       9,
+       6
+      ],
+      [
+       9,
+       7
+      ],
+      [
+       8,
+       7
+      ]
+     ]
+    }
+   ]
+  }
+ ]
+}

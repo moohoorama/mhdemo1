@@ -103,7 +103,7 @@
 
 두 주머니는 서로 다른 종류를 담는다.
 
-- `Inventory`: 아이템(`items.json`) ID별 개수. 아군이 쓰는 소모품과 승급서는 모두 이 공용 주머니에서 쓴다. 적과 동맹군(`AI` 아군)은 자기 `Items`를 따로 가진다(`Rules.EnemyStock`, `Rules.AllyStock`).
+- `Inventory`: 아이템(`items.json`) ID별 개수. 아군이 쓰는 소모품과 인수는 모두 이 공용 주머니에서 쓴다. 적과 동맹군(`AI` 아군)은 자기 `Items`를 따로 가진다(`Rules.EnemyStock`, `Rules.AllyStock`).
 - `Warehouse`: 장비(`equipment.json`) ID별 개수. 장착하지 않은 장비를 둔다.
 
 보상과 부여는 다음과 같이 들어간다.

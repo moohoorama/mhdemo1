@@ -54,6 +54,12 @@ that it satisfies both the 삼국지 enthusiast and the player who enjoys 삼국
 - The plot must hold up for the enthusiast: each person acts from their real standing, interests and the customs of
   the late Han (check 정사 and 연의 before writing; don't belittle anyone without reason, don't invent schemes their
   position would never allow). People exchange names before they use each other's 자.
+- Titles and forms of address follow the year of the scene and each speaker's standing. Check the office a person
+  holds at that moment (도겸 is 서주목 by 194, not 서주자사), and use the honorific a period reader expects (a 자사 or 목
+  is 사군: "사군께서"). A subordinate never calls their own lord by 자 in front of others (손건 says "서주목 도겸 공의
+  막료", never "도공조"). A 자 is given when peers meet or when the two will call each other by it from now on; a
+  low-ranking officer or envoy introducing himself to a general gives only his name, and his 자 comes out later, when
+  the relationship begins (when he joins, for example).
 - Well-known anecdotes (조조's 오색 몽둥이, his feigned stroke, 허소's verdict) go in as townsfolk gossip a fan smiles
   at and a newcomer still follows. Optional talk carries this colour; the line that opens the next event stays one,
   short and plain.

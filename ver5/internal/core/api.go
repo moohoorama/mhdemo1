@@ -79,11 +79,15 @@ func (e *Engine) LegalActions(actor string) Options {
 			for _, id := range keys(e.unitIDs) {
 				v := e.unit(id)
 				if v.HP > 0 && v.Faction == u.Faction && dist(u.X, u.Y, v.X, v.Y) <= 1 {
-					if e.data.Items[item].Effect == content.ItemPromote {
-						t := fromState(e.data, e.Snapshot())
-						if t.execute(Command{Kind: "item", Actor: actor, Target: id, Item: item}) != nil {
-							continue
+					if e.data.Items[item].Effect == content.ItemPromote { // one command per class it can make
+						o := e.char(v.Character)
+						for _, class := range e.data.Promotes(o.Def, o.Class) {
+							c := Command{Kind: "item", Actor: actor, Target: id, Item: item, Option: class}
+							if t := fromState(e.data, e.Snapshot()); t.execute(c) == nil {
+								out.Commands = append(out.Commands, c)
+							}
 						}
+						continue
 					}
 					out.Commands = append(out.Commands, Command{Kind: "item", Actor: actor, Target: id, Item: item})
 				}

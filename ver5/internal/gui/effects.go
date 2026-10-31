@@ -13,7 +13,7 @@ import (
 // relative to the target's feet (fx, fy for the source) and scale with the camera zoom like
 // the units do.
 type effect struct {
-	kind   string // arrow, slash, fire, water, heal, buff, debuff, block
+	kind   string // arrow, slash, fire, water, heal, buff, debuff, block, insu, promote_gather, promote
 	tu, tv float64
 	fu, fv float64
 	lift   float64 // target cell surface height
@@ -32,6 +32,7 @@ type particle struct {
 	sprite          string // the fx sprite drawn, at frame
 	frame           int
 	col             color.NRGBA // the tint of a white sprite; zero for one drawn in its colours
+	in              bool        // brightens as it goes instead of fading: drawn in toward the origin
 }
 
 var (
@@ -138,6 +139,22 @@ func (g *Game) spawn(kind string, from, to *unitVis, dur float64, tint color.NRG
 			}
 			add(particle{x: 0, y: chest, vx: math.Cos(a) * v, vy: math.Sin(a)*v*.7 - 50, g: 320,
 				life: .3 + r.Float64()*.35, sprite: "spark", col: col})
+		}
+	case "promote_gather":
+		// motes come in from all round to the chest, ending where they meet
+		for i := 0; i < 24; i++ {
+			a := r.Float64() * 2 * math.Pi
+			d := 34 + r.Float64()*26
+			life := .7 + r.Float64()*.3
+			x, y := math.Cos(a)*d, math.Sin(a)*d*.5+chest*.6
+			add(particle{x: x, y: y, vx: -x / life, vy: (chest*.6 - y) / life, life: life, sprite: "promote_mote", in: true})
+		}
+	case "promote":
+		for i := 0; i < 26; i++ {
+			a := r.Float64() * 2 * math.Pi
+			v := 50 + r.Float64()*70
+			add(particle{x: 0, y: chest * .6, vx: math.Cos(a) * v, vy: math.Sin(a)*v*.5 - 30, g: -40,
+				life: .5 + r.Float64()*.4, sprite: "promote_mote"})
 		}
 	case "block":
 		// sparks fly back toward the attacker's side
@@ -266,6 +283,20 @@ func (g *Game) drawEffects(dst *ebiten.Image) {
 			fx, _ := g.field.Center(e.fu, e.fv)
 			sh := g.assets.FX["block"]
 			sh.blit(dst, sh.frameOver(k), x, chest, g.toScreen, z, white, 1, fx < x)
+		case "insu": // the seal of the new rank rises over the head, dot for dot with the sprites
+			k := 1 - math.Pow(1-min(1, e.t/.35), 2)
+			a := min(1, e.t/.15, (e.dur-e.t)/.2)
+			sh := g.assets.UI["item_insu"]
+			sx, sy := g.toScreen(x, y-e.lift-e.height-14-6*k)
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Translate(-float64(sh.Frames[0].Bounds().Dx())/2, -float64(sh.Frames[0].Bounds().Dy())/2)
+			op.GeoM.Scale(z/4, z/4)
+			op.GeoM.Translate(math.Round(sx), math.Round(sy))
+			op.ColorScale.ScaleAlpha(float32(a))
+			drawScaled(dst, sh.Frames[0], op)
+		case "promote_gather", "promote":
+			sh := g.assets.FX[e.kind]
+			sh.draw(dst, sh.frameOver(k), x, y-e.lift, g.toScreen, z)
 		case "critical": // a white burst and rays at the chest, a shockwave on the ground
 			sh, wave := g.assets.FX["critical"], g.assets.FX["critical_wave"]
 			wave.draw(dst, wave.frameOver(k), x, y-e.lift, g.toScreen, z)
@@ -281,7 +312,11 @@ func (g *Game) drawEffects(dst *ebiten.Image) {
 			if q.col.A > 0 {
 				c = q.col
 			}
-			sh.drawTint(dst, q.frame, qx, qy, g.toScreen, z, c, 1-e.t/q.life)
+			a := 1 - e.t/q.life
+			if q.in {
+				a = e.t / q.life
+			}
+			sh.drawTint(dst, q.frame, qx, qy, g.toScreen, z, c, a)
 		}
 	}
 }

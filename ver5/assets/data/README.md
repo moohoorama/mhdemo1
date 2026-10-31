@@ -22,7 +22,7 @@ Scenes live in `assets/scenes.json`, not here.
 - Characters use pinyin matching portrait/sprite stems (`liubei`, `lubu`, ...). Soldier templates: `troop_turban`, `troop_footman`, `troop_archer`.
 - Classes: English names (`light_infantry`, `scholar`, `staff_officer`, `sorcerer`, ...). Equipment types: `sword spear bow fan` / `armor robe` / `any`.
 - Skills: English (`scorch`, `minor_supply`, `sweep`); traits: English (`valor`, `fire_boost`). Spell family roots (`fire water earth relief exhort hinder stratagem`) are given-only (Cost 0).
-- Promotion items: `promote_<class id>`. Scenario events: `join-<id>`, `grant-<id>`.
+- Promotion items: `insu_mid` (tier 1) and `insu_high` (tier 2); the class is picked when one is used. Scenario events: `join-<id>`, `grant-<id>`.
 
 ## Officer biographies
 

@@ -18,7 +18,7 @@ go run ./cmd/_balance -stage B03 -seeds 1 -show         # unit numbers at the st
 go test ./internal/ai -run Rush -v                      # the first three battles with growth carried over (the real campaign)
 ```
 
-- It starts the player's officers at the policy level 3 + 2×(n − 1). Targets: rush ≥ 4/5 on the first three stages,
+- It sends out every officer who has joined by the stage's battle (the starting roster and the story's `join` nodes, required officers first, up to the stage's `Max`) at the policy level 3 + round(1.5×(n − 1)). Targets: rush ≥ 4/5 on the first three stages,
   ai ≥ 4/5 everywhere, officers +1.5~2.5 levels.
 - When it loses, read `-show`: who retreats first, who dealt the blow. Typical causes found so far: a strategist's
   magic on a low-Mind officer (Li Ru 622 on Zhang Fei), an L+1 officer hitting for 40% HP, everything engaging at
@@ -55,6 +55,13 @@ The CLI shows rules and order, not timing or drawing. Capture what the player se
 ```sh
 caffeinate -d -i go run ./cmd/_uidemo-vm -ui <demo> -frames 2400 -every 30 -size 2560x1700 -half -mp4 $SCRATCH/x.mp4 -out $SCRATCH/x
 ```
+
+- `-still 3` stops the recording once the screen has not changed for three seconds (the result card, a stuck
+  demo), so a long `-frames` budget does not leave minutes of a still screen.
+- To watch a whole battle played by the AI, the temporary demo sets the playable officers to the stage level
+  in `g.S.Data.Characters` (a clone), calls `d.battle(stage)`, and in `d.step` calls `g.assist()` every 12
+  frames with `g.autoplay, g.speed = true, 4` — the editor's trial battle is not the "playing" screen whose
+  loop runs autoplay — and closes a level-up card after a second (`g.closeModal()` when `g.modals` is not empty).
 
 - To play a stage's opening from the story, add a temporary demo `internal/gui/uidemo_zz_tmp*.go` that starts a new
   game, pages the dialogue (`g.advanceDialogue()` every few frames), sends `start` at the battle node and, a couple

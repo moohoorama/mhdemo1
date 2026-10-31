@@ -49,7 +49,7 @@
   },
   "CounterShare": 0.7,
   "PlainCounterShare": 0.5,
-  "DoubleShare": 0.7,
+  "DoubleShare": 0.5,
   "PoisonPercent": 5,
   "BurnPercent": 4,
   "CritMarks": {

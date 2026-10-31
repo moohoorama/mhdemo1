@@ -1,10 +1,10 @@
-// Temporary tool for stage level balance (docs/stage_lv_balance.md): starts each stage with the
-// player's officers at the stage level (Rules.StageLevel), plays it with a player AI over several
-// seeds and reports the win rate, the rounds and the levels the officers gained.
+// Temporary tool for stage level balance (docs/stage_lv_balance.md): starts each stage with every
+// officer who has joined by its battle at the stage level (Rules.StageLevel), as many as the stage
+// takes, plays it with a player AI over several seeds and reports the win rate, the rounds and the
+// levels the officers gained.
 //
 //	go run ./cmd/_balance                       every stage, careless player (rush)
 //	go run ./cmd/_balance -stage B02 -player ai -seeds 10
-//	go run ./cmd/_balance -stage B09 -player ai -roster jianyong,fangong
 package main
 
 import (
@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"maps"
 	"os"
+	"slices"
 	"sort"
 	"strings"
 
@@ -32,7 +33,6 @@ func main() {
 	offset := flag.Int("offset", 0, "the player's officers this many levels off the stage level")
 	show := flag.Bool("show", false, "print every unit's numbers when the battle starts (seed 1)")
 	eval := flag.String("eval", "", "other weights for the player's units as n,m,threat,top,w (ai.ParseEval)")
-	joined := flag.String("roster", "", "officers who joined after the start, comma separated (fangong,jianyong)")
 	flag.Parse()
 	if *eval != "" {
 		x, err := ai.ParseEval(*eval)
@@ -41,10 +41,6 @@ func main() {
 	}
 	d, err := content.Load(*dir)
 	check(err)
-	if *joined != "" {
-		d.Campaign.Roster = append(append([]string{}, d.Campaign.Roster...), strings.Split(*joined, ",")...)
-		d.Campaign.Deployment = append(append([]string{}, d.Campaign.Deployment...), strings.Split(*joined, ",")...)
-	}
 	for i, st := range d.Stages {
 		if *only != "" && st.ID != *only {
 			continue
@@ -99,7 +95,7 @@ func count(ids []string) []string {
 	return out
 }
 
-// play fights stage i with every playable officer at level, and returns the result, the last round,
+// play fights stage i with the sortie at level, and returns the result, the last round,
 // the levels each of the player's officers gained (fractions from experience) and who retreated.
 func play(d *content.Data, i, level int, seed uint64, player string, damage, xp int, show bool) (string, int, map[string]float64, []string) {
 	dd := *d
@@ -115,6 +111,8 @@ func play(d *content.Data, i, level int, seed uint64, player string, damage, xp 
 			dd.Campaign.Start = n.ID
 		}
 	}
+	dd.Campaign.Roster = sortie(d, d.Stages[i])
+	dd.Campaign.Deployment = dd.Campaign.Roster
 	e := core.New(&dd, seed)
 	e.SetDamagePct(damage)
 	e.SetXPPct(xp)
@@ -180,6 +178,31 @@ func play(d *content.Data, i, level int, seed uint64, player string, damage, xp 
 		}
 	}
 	return o.Result, o.Round, gained, retreats
+}
+
+// sortie is who goes out to stage st: the officers it requires, then the starting roster and everyone the
+// story joins before its battle, up to the stage's limit.
+func sortie(d *content.Data, st content.Stage) []string {
+	joined := append([]string{}, d.Campaign.Roster...)
+chapters:
+	for _, c := range d.Chapters {
+		for _, id := range c.Nodes {
+			n := d.Node(id)
+			if n.Kind == "battle" && n.Stage == st.ID {
+				break chapters
+			}
+			if n.Kind == "join" {
+				joined = append(joined, n.Character)
+			}
+		}
+	}
+	var ids []string
+	for _, id := range append(append([]string{}, st.Required...), joined...) {
+		if slices.Contains(joined, id) && !slices.Contains(ids, id) && len(ids) < st.Max {
+			ids = append(ids, id)
+		}
+	}
+	return ids
 }
 
 func check(err error) {

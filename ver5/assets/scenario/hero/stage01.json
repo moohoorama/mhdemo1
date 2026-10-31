@@ -352,7 +352,7 @@
     {
      "Kind": "talk",
      "Title": "중앙에서 정면으로 대치하다",
-     "Speech": "네놈의 사모쯤이야 이 칼로 부러뜨려 주마!",
+     "Speech": "네놈의 창쯤이야 이 칼로 부러뜨려 주마!",
      "Side": 1,
      "Duration": 2.6
     },
@@ -362,6 +362,34 @@
      "Speech": "간지럽구먼!",
      "Side": 1,
      "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "등무가 거푸 칼을 내리치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 창대로 툭 밀어 보다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "등무가 옆으로 베어 들고 장비가 슬쩍 비키다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장비의 찌르기에 등무가 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
     },
     {
      "Kind": "hit",
@@ -378,11 +406,39 @@
      "Duration": 1.9
     },
     {
+     "Kind": "block",
+     "Title": "등무가 발끈해 마구 휘두르다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 칼날을 받아넘기다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
      "Kind": "rush-block",
      "Title": "성난 등무가 돌진하며 거듭 베다",
      "Speech": "흥, 어림없슈!",
      "Side": 1,
      "Duration": 1.1
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "장비가 창을 내리찍자 등무가 겨우 받아내다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "등무가 뒤로 주르륵 밀리다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
     },
     {
      "Kind": "talk",
@@ -407,7 +463,7 @@
     },
     {
      "Kind": "win",
-     "Title": "장비가 한 합에 등무를 꿰뚫다",
+     "Title": "장비가 등무를 꿰뚫다",
      "Speech": "다음은 누구여! 어서 나와 보슈!",
      "Side": 0,
      "Duration": 2.5
@@ -459,11 +515,67 @@
      "Duration": 1.05
     },
     {
+     "Kind": "block",
+     "Title": "정원지가 허리를 노려 베다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "관우가 반 걸음 물러나 칼끝을 흘려보내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "관우가 칼등으로 밀어내자 정원지가 물러나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "정원지가 다시 덤벼들다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
      "Kind": "talk",
      "Title": "정원지의 초조함",
      "Speech": "(이놈… 어찌 이리 꿈쩍도 않느냐!)",
      "Side": 1,
      "Duration": 2.4
+    },
+    {
+     "Kind": "block",
+     "Title": "정원지가 위아래로 번갈아 베다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "정원지가 온 힘으로 내려치나 관우가 받아내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 한 번 칼을 내밀어 보다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "관우가 정원지의 칼을 비껴 피하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
     },
     {
      "Kind": "rush-block",

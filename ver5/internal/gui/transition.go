@@ -31,6 +31,8 @@ func (g *Game) screenKey() string {
 		return "editor"
 	case g.tour != nil:
 		return "tour"
+	case g.world != nil:
+		return "world"
 	case g.player.Duel != nil:
 		return ""
 	case g.S.Screen == "title" || g.S.Engine == nil:

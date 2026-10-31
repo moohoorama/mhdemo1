@@ -29,6 +29,11 @@
    ],
    "Look": {
     "Sprite": "liubei",
+    "Sprites": {
+     "light_infantry": "liubei",
+     "heavy_infantry": "liubei_heavy_infantry",
+     "guards": "liubei_guards"
+    },
     "Scene": "liubei_noncombat",
     "Portrait": "liubei",
     "Faction": "shu"
@@ -64,6 +69,11 @@
    ],
    "Look": {
     "Sprite": "guanyu",
+    "Sprites": {
+     "light_cavalry": "guanyu",
+     "heavy_cavalry": "guanyu_heavy_cavalry",
+     "royal_guard": "guanyu_royal_guard"
+    },
     "Scene": "guanyu_noncombat",
     "Portrait": "guanyu",
     "Faction": "shu"
@@ -99,6 +109,11 @@
    ],
    "Look": {
     "Sprite": "zhangfei",
+    "Sprites": {
+     "light_cavalry": "zhangfei",
+     "heavy_cavalry": "zhangfei_heavy_cavalry",
+     "royal_guard": "zhangfei_royal_guard"
+    },
     "Scene": "zhangfei_noncombat",
     "Portrait": "zhangfei",
     "Faction": "shu"
@@ -333,6 +348,8 @@
     "Sprite": "lubu",
     "Sprites": {
      "light_cavalry": "lubu",
+     "heavy_cavalry": "lubu",
+     "royal_guard": "lubu",
      "horse_archer": "lubu_bow"
     },
     "Portrait": "lubu",
@@ -462,8 +479,11 @@
     "Portrait": "zhaoyun",
     "Faction": "gongsun",
     "Sprite": "zhaoyun",
-     "Scene": "zhaoyun_noncombat",
+    "Scene": "zhaoyun_noncombat",
     "Sprites": {
+     "light_cavalry": "zhaoyun_light",
+     "heavy_cavalry": "zhaoyun",
+     "royal_guard": "zhaoyun_royal",
      "light_cavalry:sword": "zhaoyun_sword",
      "heavy_cavalry:sword": "zhaoyun_sword",
      "royal_guard:sword": "zhaoyun_sword"
@@ -554,7 +574,12 @@
     "Portrait": "yuanshao",
     "Faction": "yuan",
     "Sprite": "yuanshao",
-     "Scene": "yuanshao_noncombat"
+    "Sprites": {
+     "light_cavalry": "yuanshao_light",
+     "heavy_cavalry": "yuanshao_heavy",
+     "royal_guard": "yuanshao"
+    },
+    "Scene": "yuanshao_noncombat"
    }
   },
   "wenchou": {
@@ -674,7 +699,7 @@
   "gaolan": {
    "Name": "고람",
    "Biography": "원소군 장수. 관도에서 장합과 함께 조조 본채를 공격한다. 곽도의 참언으로 위태로워지자 장합과 함께 조조에게 항복한다.",
-   "Class": "light_infantry",
+   "Class": "archer",
    "Stats": [
     85,
     86,
@@ -687,7 +712,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "short_bow",
     "leather_armor"
    ],
    "Look": {
@@ -734,7 +759,7 @@
   "shenpei": {
    "Name": "심배",
    "Biography": "원소의 모사. 원소 사후 원상을 세워 업성을 굳게 지키며 조조의 공격을 막는다. 성이 함락되자 끝까지 북쪽을 향해 무릎 꿇고 죽음을 택한다.",
-   "Class": "light_infantry",
+   "Class": "scholar",
    "Stats": [
     80,
     59,
@@ -744,11 +769,13 @@
     61
    ],
    "Level": 9,
-   "Traits": [],
+   "Traits": [
+    "water"
+   ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
-    "leather_armor"
+    "bamboo_fan",
+    "plain_clothes"
    ],
    "Look": {
     "Portrait": "shenpei",
@@ -756,6 +783,37 @@
     "Palette": {
      "themeA": "#e8e8e8",
      "themeB": "#5070a0"
+    }
+   }
+  },
+  "fengji": {
+   "Name": "봉기",
+   "Biography": "원소의 모사. 한복을 몰아내고 기주를 빼앗는 계책을 낸다. 전풍과 사이가 나빴고, 원소 사후 원상을 지지하다 원담에게 죽는다.",
+   "Class": "scholar",
+   "Stats": [
+    69,
+    38,
+    83,
+    64,
+    53,
+    57
+   ],
+   "Level": 8,
+   "Traits": [
+    "fire",
+    "stratagem"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Portrait": "fengji",
+    "Faction": "yuan",
+    "Palette": {
+     "themeC": "#8a7a3a",
+     "iron": "#d0a030"
     }
    }
   },
@@ -807,7 +865,7 @@
    "Look": {
     "Faction": "wu",
     "Sprite": "sunjian",
-     "Scene": "sunjian_noncombat",
+    "Scene": "sunjian_noncombat",
     "Portrait": "sunjian"
    }
   },
@@ -837,8 +895,11 @@
     "Portrait": "caocao",
     "Faction": "wei",
     "Sprite": "caocao",
-     "Scene": "caocao_noncombat",
+    "Scene": "caocao_noncombat",
     "Sprites": {
+     "light_cavalry": "caocao",
+     "heavy_cavalry": "caocao",
+     "royal_guard": "caocao",
      "light_cavalry:sword": "caocao_sword",
      "heavy_cavalry:sword": "caocao_sword",
      "royal_guard:sword": "caocao_sword"
@@ -894,7 +955,7 @@
    "Look": {
     "Portrait": "dongzhuo",
     "Faction": "dong",
-     "Scene": "dongzhuo_noncombat",
+    "Scene": "dongzhuo_noncombat",
     "Palette": {
      "themeA": [
       "#7a5a9a",
@@ -1119,7 +1180,9 @@
     "Palette": {
      "horseSkin": "#c8c0b0",
      "saddle": "#3a4a6a"
-    }
+    },
+    "Scene": "zhangliao_noncombat",
+    "Portrait": "zhangliao"
    }
   },
   "troop_commoner_man": {

@@ -28,7 +28,8 @@
   "bed": [-0.75, -0.75, 1.5, 1.5], "map_table": [-0.75, -0.75, 1.5, 1.5], "market_stall": [-0.75, -0.75, 1.5, 1.5],
   "market_stall_cloth": [-0.75, -0.75, 1.5, 1.5], "market_stall_jar": [-0.75, -0.75, 1.5, 1.5],
   "grain_cart": [-1, -0.55, 2.2, 1.1], "grain_cart_v": [-0.55, -1, 1.1, 2.2], "command_tent": [-1.75, -1.45, 3.5, 2.9],
-  "shrine": [-1.15, -0.9, 2.3, 2.55], "granary_round": [-0.75, -0.75, 1.5, 1.5], "granary_raised": [-0.85, -0.65, 1.7, 1.6]
+  "shrine": [-1.15, -0.9, 2.3, 2.55], "granary_round": [-0.75, -0.75, 1.5, 1.5], "granary_raised": [-0.85, -0.65, 1.7, 1.6],
+  "scene_bridge_u": [-3.5, -1.5, 8, 4], "antler_barrier_v": [-0.5, -0.5, 1, 2]
  },
  "attachments": {
   "campfire": [{"anim": "flame_small", "at": [-2, -1]}, {"anim": "flame_small", "at": [2, 0]}, {"at": [0, -6], "light": 150, "glow": true}],

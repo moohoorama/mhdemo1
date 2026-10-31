@@ -10,7 +10,8 @@ import (
 func init() { demos["scenemap"] = demoSceneMap }
 
 // demoSceneMap shows one scenario scene map (-stage S_village, S_road, ...) on its own, fitted to the screen,
-// as the scene camera sees it: at twice the canvas size around the middle of its playing area.
+// as the scene camera sees it: at twice the canvas size around the middle of its playing area, or around game cell
+// "u,v" given with -node.
 func demoSceneMap(d *Demo) error {
 	id := d.stage
 	art := d.g.assets.Maps[id]
@@ -23,7 +24,9 @@ func demoSceneMap(d *Demo) error {
 		dst.Fill(color.Black)
 		// the scene's camera: twice the canvas size, on the middle of the playing area
 		w := dst.Bounds()
-		cx, cy := f.Center(float64(art.W)/2-.5, float64(art.H)/2-.5)
+		u, v := float64(art.W)/2-.5, float64(art.H)/2-.5
+		fmt.Sscanf(d.node, "%g,%g", &u, &v)
+		cx, cy := f.Center(u, v)
 		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterPixelated}
 		op.GeoM.Translate(-cx, -cy)
 		op.GeoM.Scale(2, 2)

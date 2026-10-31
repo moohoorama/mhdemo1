@@ -137,7 +137,12 @@ func (e *Engine) promote(u *Unit, c Command, it content.Item) error {
 	}
 	o := e.char(u.Character)
 	cl := e.class(o)
-	if !contains(cl.Promotes, it.Class) {
+	next := e.data.Promotes(o.Def, o.Class)
+	class := c.Option
+	if class == "" && len(next) == 1 {
+		class = next[0]
+	}
+	if it.Tier != cl.Tier+1 || !contains(next, class) {
 		return fail("InvalidPromotion")
 	}
 	required := e.data.Rules.PromoteLevels[cl.Tier]
@@ -151,11 +156,11 @@ func (e *Engine) promote(u *Unit, c Command, it content.Item) error {
 		return fail("ActionSpent")
 	}
 	e.state.Inventory[c.Item]--
-	o.Class = it.Class
+	o.Class = class
 	st := e.stats(u)
 	u.HP = st.MaxHP
 	u.MP = st.MaxMP
-	e.emit("promotion", u.ID, it.Class, required)
+	e.emit("promotion", u.ID, class, required)
 	return nil
 }
 

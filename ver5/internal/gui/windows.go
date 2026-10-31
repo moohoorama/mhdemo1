@@ -13,6 +13,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/core"
 	"srpg/internal/session"
+	"srpg/internal/sprite"
 	"srpg/internal/storage"
 )
 
@@ -82,9 +83,10 @@ func (g *Game) askWith(message, yes, no string, ok func()) bool {
 
 // modal is a window shown after a replay, closed with a click.
 type modal struct {
-	kind   string // objective, levelup, trait, acquire
+	kind   string // objective, levelup, promotion, trait, acquire
 	manual bool   // an objective opened from the panel rather than at the battle's start
 	level  levelUp
+	promo  promotionUp
 	trait  string
 	gains  []gain    // acquire: the cards
 	piece  string    // acquire: the card whose window is open
@@ -97,6 +99,15 @@ type levelUp struct {
 	from, to      int
 	before, after core.Stats
 	progress      float64
+}
+
+// promotionUp is what the promotion window shows: who, the class left and the one taken, the looks of
+// both and the stats before and after.
+type promotionUp struct {
+	cmd           core.Command // the branch picker: the command that makes this class
+	id, from, to  string
+	old, new      *sprite.Art
+	before, after core.Stats
 }
 
 // drawOverlay draws the open windows bottom first, each dimming the ones beneath; only the top
@@ -335,7 +346,8 @@ func (g *Game) drawModal(dst *ebiten.Image) {
 	}
 	g.addButton(image.Rect(0, 0, uiW, uiH), "", g.closeModal)
 	box := map[string]image.Rectangle{
-		"levelup": image.Rect(Width/2-250, 200, Width/2+250, 540),
+		"levelup":   image.Rect(Width/2-250, 200, Width/2+250, 540),
+		"promotion": image.Rect(Width/2-280, 170, Width/2+280, 600),
 		"trait":   image.Rect(Width/2-300, 220, Width/2+300, 560),
 	}[m.kind]
 	g.popup(dst, fmt.Sprintf("modal:%p", m), 110, Width, Height, box.Inset(-24), func(dst *ebiten.Image) { g.modalWindow(dst, m) })
@@ -400,6 +412,8 @@ func (g *Game) modalWindow(dst *ebiten.Image, m *modal) {
 			}
 		}
 		g.centered(dst, "클릭하여 계속", float64(uiW/2), 512, 13, muted)
+	case "promotion":
+		g.promotionWindow(dst, m.promo, m.t)
 	case "trait":
 		r := image.Rect(uiW/2-300, 220, uiW/2+300, 560)
 		g.titled(dst, r, "특성")
@@ -680,3 +694,132 @@ func (g *Game) objectiveBox(w int) image.Rectangle {
 	}
 	return r
 }
+
+// promotionWindow lays the old look beside the new, the new class's name and description with its move
+// and reach, the stats before and after with the gain, and the traits the new class teaches.
+func (g *Game) promotionWindow(dst *ebiten.Image, p promotionUp, t float64) {
+	r := image.Rect(uiW/2-280, 170, uiW/2+280, 600)
+	g.titled(dst, r, "승급")
+	from, to := g.S.Data.Classes[p.from], g.S.Data.Classes[p.to]
+	look := func(a *sprite.Art, cx, alpha float64) {
+		if a == nil {
+			return
+		}
+		z := min(3, 96/max(1, a.TopOffset()))
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(z, z)
+		op.GeoM.Translate(math.Round(cx-a.Pivot[0]*z), math.Round(306-a.Pivot[1]*z))
+		op.ColorScale.ScaleAlpha(float32(alpha))
+		drawScaled(dst, a.Frame("SW", "idle", 0), op)
+	}
+	x := float64(r.Min.X)
+	look(p.old, x+80, .55)
+	g.centered(dst, "→", x+150, 250, 24, gold)
+	look(p.new, x+220, min(1, t/.4))
+	g.label(dst, g.name(p.id), x+300, 206, 18, muted)
+	g.label(dst, from.Name+"  →", x+300, 236, 16, muted)
+	g.label(dst, to.Name, x+300, 258, 30, gold)
+	g.label(dst, wrapWidth(to.Desc, g.face(15), float64(r.Dx()-80)), x+40, 324, 15, ink)
+	move := fmt.Sprintf("이동 %d → %d", from.Move, to.Move)
+	reach := fmt.Sprintf("사거리 %d → %d", from.Range, to.Range)
+	g.label(dst, move, x+40, 352, 14, muted)
+	g.label(dst, reach, x+200, 352, 14, muted)
+	for i, s := range statRows {
+		a, b := s.get(p.before), s.get(p.after)
+		col, row := i%2, i/2
+		px, py := x+40+float64(col*250), float64(386+row*28)
+		g.label(dst, s.name, px, py, 15, muted)
+		g.label(dst, fmt.Sprintf("%d → %d", a, b), px+70, py, 15, ink)
+		if b != a {
+			g.label(dst, fmt.Sprintf("%+d", b-a), px+180, py, 15, gainColor(b-a))
+		}
+	}
+	var names []string
+	for _, id := range to.Pool {
+		names = append(names, g.traitName(id))
+	}
+	if len(names) > 0 {
+		g.centered(dst, "익힐 수 있는 특성: "+strings.Join(names, " · "), float64(uiW/2), 508, 14, muted)
+	}
+	g.centered(dst, "클릭하여 계속", float64(uiW/2), 568, 13, muted)
+}
+
+// branches are the promotions the commands would make, each worked out on a copy of the battle.
+func (g *Game) branches(cmds []core.Command) []promotionUp {
+	var out []promotionUp
+	before := g.view()
+	for _, c := range cmds {
+		sb, err := core.Restore(g.S.Data, g.engine().Snapshot())
+		if err != nil {
+			continue
+		}
+		if _, err = sb.Apply(c); err != nil {
+			continue
+		}
+		p := g.promotionBetween(&before, sb.Observe(), c.Target)
+		p.cmd = c
+		out = append(out, p)
+	}
+	return out
+}
+
+// drawBranches is the 인수's class picker: one card per class it can make, with the officer's new look, the class's
+// description, move and reach, and the stats it would have. A card promotes into it; outside steps back.
+func (g *Game) drawBranches(dst *ebiten.Image) {
+	if g.ord.stage != "branch" || len(g.ord.branch) == 0 {
+		return
+	}
+	const cardW, cardH, gap = 300, 400, 24
+	n := len(g.ord.branch)
+	w := n*cardW + (n-1)*gap + 64
+	r := image.Rect(uiW/2-w/2, 150, uiW/2+w/2, 150+cardH+120)
+	g.titled(dst, r, "승급")
+	g.centered(dst, g.name(g.ord.branch[0].id)+" — 어느 병종으로 올릴까요?", float64(uiW/2), float64(r.Min.Y+26), 17, ink)
+	for i, p := range g.ord.branch {
+		c := image.Rect(r.Min.X+32+i*(cardW+gap), r.Min.Y+62, r.Min.X+32+i*(cardW+gap)+cardW, r.Min.Y+62+cardH)
+		hover := hovered(c)
+		body := lacquer
+		if hover {
+			body = lacquer2
+		}
+		rect(dst, float32(c.Min.X), float32(c.Min.Y), float32(cardW), float32(cardH), body)
+		rim := goldDim
+		if hover {
+			rim = gold
+		}
+		strokeRect(dst, float32(c.Min.X)+1, float32(c.Min.Y)+1, cardW-2, cardH-2, 2, rim)
+		x, cx := float64(c.Min.X+20), float64(c.Min.X+cardW/2)
+		if a := p.new; a != nil {
+			z := min(3, 84/max(1, a.TopOffset()))
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Scale(z, z)
+			op.GeoM.Translate(math.Round(cx-a.Pivot[0]*z), math.Round(float64(c.Min.Y+108)-a.Pivot[1]*z))
+			drawScaled(dst, a.Frame("SW", "idle", 0), op)
+		}
+		to, from := g.S.Data.Classes[p.to], g.S.Data.Classes[p.from]
+		g.centered(dst, to.Name, cx, float64(c.Min.Y+120), 26, gold)
+		g.label(dst, wrapWidth(to.Desc, g.face(14), cardW-40), x, float64(c.Min.Y+160), 14, ink)
+		g.label(dst, fmt.Sprintf("이동 %d → %d   사거리 %d → %d", from.Move, to.Move, from.Range, to.Range), x, float64(c.Min.Y+206), 13, muted)
+		for j, s := range statRows {
+			a, b := s.get(p.before), s.get(p.after)
+			py := float64(c.Min.Y + 234 + j*22)
+			g.label(dst, s.name, x, py, 14, muted)
+			g.label(dst, fmt.Sprint(b), x+90, py, 14, ink)
+			if b != a {
+				g.label(dst, fmt.Sprintf("%+d", b-a), x+170, py, 14, gainColor(b-a))
+			}
+		}
+		cmd := p.cmd
+		g.addButton(c, "", func() { g.confirm(cmd) })
+	}
+	g.centered(dst, "창 밖을 누르면 돌아갑니다", float64(uiW/2), float64(r.Max.Y-36), 13, muted)
+}
+
+// gainColor is how a stat change reads: green up, red down.
+func gainColor(d int) color.NRGBA {
+	if d < 0 {
+		return bad
+	}
+	return good
+}
+

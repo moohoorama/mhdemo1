@@ -126,9 +126,6 @@ func (g *Game) layOutExplore(o core.Observation) {
 	}
 	s.camU, s.camV = hero.u, hero.v
 	g.camX, g.camY = g.sceneCam()
-	if before == a.Map {
-		s.fade = 0 // back from an event on this stage
-	}
 }
 
 // adoptScene stages an event on the walk's own stage when the event's scene is set on the area's map: whoever the

@@ -31,6 +31,7 @@
     "item_spear",
     "item_sword",
     "item_yitian",
+    "item_treasure_sword",
     "item_bean",
     "item_barley",
     "item_rice",
@@ -38,6 +39,7 @@
     "item_fine_liquor",
     "item_baijiu",
     "item_scroll",
+    "item_insu",
     "bar_frame",
     "bar_fill",
     "bar_trail",
@@ -218,6 +220,36 @@
             "R": "#e04838",
             "r": "#b02a22",
             "q": "#7a1a16"
+          }
+        }
+      }
+    },
+    "item_insu": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_insu.png",
+      "frames": 1,
+      "timing": "an item icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "z": "#4a2c0c",
+            "a": "#6a4410",
+            "b": "#a8761e",
+            "c": "#dcaa34",
+            "d": "#f6de7c",
+            "e": "#0e3236",
+            "f": "#185c60",
+            "g": "#2a8a88",
+            "h": "#5cbcb2"
           }
         }
       }
@@ -1137,6 +1169,40 @@
             "m": "#3e3a36",
             "n": "#6e6861",
             "N": "#9a928a"
+          }
+        }
+      }
+    },
+    "item_treasure_sword": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_treasure_sword.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "d": "#5b6168",
+            "b": "#9aa1a7",
+            "l": "#cfd4d7",
+            "h": "#f4f6f6",
+            "y": "#a87a22",
+            "o": "#d6aa45",
+            "O": "#f2d78a",
+            "n": "#24242a",
+            "N": "#45474f",
+            "m": "#6e717b",
+            "R": "#74201a",
+            "r": "#c0362a"
           }
         }
       }

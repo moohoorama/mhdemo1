@@ -257,6 +257,20 @@
      "Duration": 1.1
     },
     {
+     "Kind": "block",
+     "Title": "화웅이 창을 휘둘러 옆구리를 노리다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "관우가 말머리를 돌려 창끝을 흘리다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
      "Kind": "talk",
      "Title": "화웅이 당황하다",
      "Speech": "(이놈… 어찌 꿈쩍도 않는가!)",
@@ -274,6 +288,20 @@
      "Kind": "block",
      "Title": "화웅이 밀어붙이며 창대를 비벼 대다",
      "Speech": "아직도 몸이 덜 풀렸다.",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "관우가 청룡도를 한 번 내밀자 화웅이 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "화웅이 다시 달려들다",
+     "Speech": "",
      "Side": 1,
      "Duration": 1.05
     },
@@ -299,6 +327,13 @@
      "Duration": 1.05
     },
     {
+     "Kind": "block",
+     "Title": "관우가 가볍게 베어 보다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
      "Kind": "talk",
      "Title": "화웅의 팔이 저려 오다",
      "Speech": "으으… 팔이 저려 온다!",
@@ -318,6 +353,20 @@
      "Speech": "",
      "Side": 1,
      "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "화웅이 숨을 몰아쉬며 찌르다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "청룡도가 화웅을 밀어붙이다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
     },
     {
      "Kind": "talk",
@@ -345,6 +394,13 @@
      "Title": "화웅이 마지막 발악을 하다",
      "Speech": "",
      "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 청룡도로 화웅의 창을 쳐내다",
+     "Speech": "",
+     "Side": 0,
      "Duration": 1.05
     },
     {

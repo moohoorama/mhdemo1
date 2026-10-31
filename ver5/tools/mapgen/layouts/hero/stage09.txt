@@ -1,0 +1,44 @@
+# B09  stage09.json  map09.json  origin 0 0
+TRETRE...TRE...,,,...TRETRE...MMMMMM......MMMMMMMMMTRE...TRE...TRE
+...TRE......TRETRETRETRETRE...MMMMMM n TRE...MMM...TRETRE.........
+......TRE...TRETRETRETRETRE...MMMMMM n  n ......,,,...TRE,,,TRETRE
+TRE......TRETRETRETRETRE...TREMMMMMMTRETRE...TRETRE...TRE.........
+TRE......TRE...MMMTRE...CST...MMMMMM.........TRETRE......TRE......
+TRETRETRETREMMMMMMTRE.........MMMMMMTRETREar1...TRE...TRE...CMPTRE
+TREpl1pl2 n TRE.........,,,,,,MMMMMMfo1fo3TRE.........fo4...TRETRE
+'''pl3pl4pl7''''''''''''''''''''''''''''''Gao'''''''''ZhaFen''''''
+...pl5pl6...TRE......TRE............fo2TRE......She'''fo5.........
+...TRE..................TRETREMMMMMMTRETREar2...''''''TRE.........
+TRETRE...TRE.........TRE...TREMMMMMMTRE......MMMMMMTRETRE...TRETRE
+MMMMMM............TRETRETRE...MMMMMM...TRE'''MMMMMM......TRE......
+MMM...TRE...TRETRETRE...TRETREMMMMMMMMMMMMMMMMMMTRE...TRETRE......
+TRETRE..................TRE'''''''''fo6ar3,,,......TRETRETRETRE...
+...TRE...TRE...TRE......TRE...,,,...fo7.........TRETRE...MMMMMM...
+......TRETRETRETRETRETRETRE...MMMMMM...TRE...............CSTMMM...
+
+pl1 Allies[0]  player
+pl2 Allies[1]  player
+pl3 Allies[2]  player
+pl4 Allies[3]  player
+pl5 Allies[4]  player
+pl6 Allies[5]  player
+pl7 Allies[6]  player
+Zha Enemies[0]  zhanghe, enemy, group bridge, policy hold, rank commander
+Gao Enemies[1]  gaolan, enemy, group gaolan, policy hold
+fo1 Enemies[2]  troop_footman, enemy, group pikes, policy hold
+fo2 Enemies[3]  troop_footman, enemy, group pikes, policy hold
+fo3 Enemies[4]  troop_footman, enemy, group pikes, policy hold
+ar1 Enemies[5]  troop_archer, enemy, group pikes, policy hold
+ar2 Enemies[6]  troop_archer, enemy, group pikes, policy hold
+Fen Enemies[7]  fengji, enemy, group bridge, policy hold
+fo4 Enemies[8]  troop_footman, enemy, group bridge, policy hold
+fo5 Enemies[9]  troop_footman, enemy, group bridge, policy hold
+fo6 Enemies[10]  troop_footman, enemy, group fort, policy hold, rank recruit
+fo7 Enemies[11]  troop_footman, enemy, group fort, policy hold, rank recruit
+ar3 Enemies[12]  troop_archer, enemy, group fort, policy hold
+She Enemies[13]  shenpei, enemy, group reserve, policy hold
+
+# area 1 동남쪽 성: x 19..19, y 15..15
+# area 2 길목: x 10..13, y 6..8
+# area 3 숲길 성 너머: x 12..13, y 13..15
+# area 4 북서쪽 숲: x 4..7, y 1..3

@@ -9,6 +9,7 @@
 //	go run ./cmd/_uidemo-vm -ui duel -frames 420 -every 30 -mp4 reports/uidemo/duel.mp4
 //	go run ./cmd/_uidemo-vm -ui uiscale -frames 760 -size 2400x1080 -uiscale 160 -at 380,720
 //	go run ./cmd/_uidemo-vm -ui uiscale -frames 760 -sheet -at 260,380,720
+//	go run ./cmd/_uidemo-vm -ui zz-tmp -frames 30000 -still 3 -mp4 reports/uidemo/battle.mp4
 //
 // -sheet plays the demo once per reference screen (phone landscape at 130% and 160%, a 4:3
 // tablet, the desktop window; see docs_old/plans/PLAN_ui-scale-ppi.md) and puts each -at frame
@@ -19,6 +20,7 @@
 package main
 
 import (
+	"bytes"
 	"errors"
 	"flag"
 	"fmt"
@@ -53,6 +55,7 @@ var (
 	size   = flag.String("size", "1280x850", "screen size in device pixels, e.g. 2400x1080 for a phone")
 	uiPct  = flag.Int("uiscale", 0, "UI size setting in percent (80-160); 0 keeps the default")
 	sheet  = flag.Bool("sheet", false, "capture the -at frames on every reference screen into one sheet each")
+	still  = flag.Float64("still", 0, "stop once the screen has not changed for this many seconds; 0 plays every frame")
 )
 
 // screens are the reference screens -sheet plays on.
@@ -79,6 +82,8 @@ type host struct {
 	writers sync.WaitGroup
 	frame   int
 	err     error
+	last    []byte // the previous frame's pixels, for -still
+	same    int    // frames in a row equal to last
 }
 
 func (h *host) Update() error {
@@ -103,6 +108,15 @@ func (h *host) Update() error {
 			return errors.New("compositing the guest frame failed")
 		}
 		h.screen.ReadPixels(h.pixels)
+		if *still > 0 {
+			if bytes.Equal(h.pixels, h.last) {
+				if h.same++; h.same >= int(*still*60) {
+					return ebiten.Termination
+				}
+			} else {
+				h.same, h.last = 0, append(h.last[:0], h.pixels...)
+			}
+		}
 		if h.video != nil {
 			if _, err := h.video.Write(h.pixels); err != nil {
 				return fmt.Errorf("writing frame %d to ffmpeg: %w", h.frame, err)

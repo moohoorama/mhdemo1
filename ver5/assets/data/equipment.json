@@ -64,6 +64,22 @@
     0
    ]
   },
+  "bamboo_slips": {
+   "Name": "죽간",
+   "Desc": "대나무 쪽을 엮은 책. 펼쳐 들고 책략을 쓴다.",
+   "Slot": "weapon",
+   "Type": "fan",
+   "Icon": "scroll",
+   "Price": 300,
+   "Bonus": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ]
+  },
   "iron_knuckles": {
    "Name": "철권갑",
    "Desc": "주먹에 감는 쇠 덧댐.",
@@ -132,6 +148,21 @@
    ],
    "Traits": [
     "heaven_blade"
+   ]
+  },
+  "treasure_sword": {
+   "Name": "보검",
+   "Desc": "금으로 꾸민 보검. 문무를 겸한 장수가 차고 책략을 쓴다.",
+   "Slot": "weapon",
+   "Type": "sword",
+   "Icon": "treasure_sword",
+   "Bonus": [
+    1,
+    0,
+    1,
+    0,
+    0,
+    0
    ]
   },
   "leather_armor": {

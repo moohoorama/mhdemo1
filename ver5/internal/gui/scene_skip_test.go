@@ -76,6 +76,10 @@ func TestSkipScene(t *testing.T) {
 		g.uiSeconds += skipGuard
 		g.skipping = g.scene.def
 		g.turnPage()
+		require.NotEmpty(t, g.modals, "간옹 joins on the way: his card holds the skip")
+		assert.Equal(t, gain{id: "jianyong", n: 1, officer: true}, g.modals[0].gains[0])
+		g.closeModal()
+		g.turnPage()
 		o := g.S.View()
 		assert.Equal(t, "battle", o.Dialogue.Kind)
 		assert.Equal(t, "c04-battle", o.Node)

@@ -30,38 +30,38 @@
  "Map": "map10.json",
  "Allies": [
   {
-   "X": 6,
-   "Y": 7
+   "X": 9,
+   "Y": 14
+  },
+  {
+   "X": 9,
+   "Y": 15
+  },
+  {
+   "X": 9,
+   "Y": 16
+  },
+  {
+   "X": 8,
+   "Y": 14
+  },
+  {
+   "X": 8,
+   "Y": 15
+  },
+  {
+   "X": 8,
+   "Y": 16
   },
   {
    "X": 7,
-   "Y": 7
-  },
-  {
-   "X": 6,
-   "Y": 8
-  },
-  {
-   "X": 7,
-   "Y": 8
-  },
-  {
-   "X": 6,
-   "Y": 9
-  },
-  {
-   "X": 7,
-   "Y": 9
-  },
-  {
-   "X": 5,
-   "Y": 8
+   "Y": 16
   }
  ],
  "Party": [
   {
    "Character": "gongsunzan",
-   "X": 3,
+   "X": 1,
    "Y": 8,
    "Facing": "SE",
    "Group": "white",
@@ -71,43 +71,43 @@
   },
   {
    "Character": "tiankai",
-   "X": 5,
-   "Y": 6,
+   "X": 0,
+   "Y": 8,
    "Facing": "SE",
    "Group": "white",
-   "Policy": "react",
+   "Policy": "hold",
    "AI": true,
    "Faction": "gongsun"
   },
   {
    "Character": "troop_cavalry",
-   "X": 4,
+   "X": 2,
    "Y": 7,
    "Facing": "SE",
    "Group": "white",
-   "Policy": "react",
+   "Policy": "hold",
    "AI": true,
    "Faction": "gongsun",
    "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
-   "X": 4,
-   "Y": 10,
+   "X": 2,
+   "Y": 8,
    "Facing": "SE",
    "Group": "white",
-   "Policy": "react",
+   "Policy": "hold",
    "AI": true,
    "Faction": "gongsun",
    "Shift": -0.07
   },
   {
    "Character": "troop_cavalry",
-   "X": 5,
-   "Y": 12,
+   "X": 2,
+   "Y": 9,
    "Facing": "SE",
    "Group": "white",
-   "Policy": "react",
+   "Policy": "hold",
    "AI": true,
    "Faction": "gongsun",
    "Shift": -0.07
@@ -181,37 +181,37 @@
   },
   {
    "Character": "wenchou",
-   "X": 18,
-   "Y": 14,
-   "Facing": "SW",
+   "X": 21,
+   "Y": 11,
+   "Facing": "NW",
    "Group": "wen",
-   "Policy": "assault"
+   "Policy": "hold"
   },
   {
    "Character": "troop_cavalry",
-   "X": 17,
-   "Y": 14,
-   "Facing": "SW",
+   "X": 20,
+   "Y": 11,
+   "Facing": "NW",
    "Group": "wen",
-   "Policy": "assault",
+   "Policy": "hold",
    "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
-   "X": 18,
-   "Y": 15,
-   "Facing": "SW",
+   "X": 21,
+   "Y": 12,
+   "Facing": "NW",
    "Group": "wen",
-   "Policy": "assault",
+   "Policy": "hold",
    "Rank": "recruit"
   },
   {
    "Character": "troop_cavalry",
-   "X": 19,
-   "Y": 13,
-   "Facing": "SW",
+   "X": 20,
+   "Y": 12,
+   "Facing": "NW",
    "Group": "wen",
-   "Policy": "assault",
+   "Policy": "hold",
    "Rank": "recruit"
   },
   {
@@ -248,7 +248,19 @@
   "liquor": 4,
   "money": 1500
  },
- "Areas": [],
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 13,
+    "Y": 6,
+    "W": 3,
+    "H": 5
+   },
+   "Name": "다리 동쪽 머리",
+   "Description": "유비군이 여울로 돌아 닿으면 문추가 나온다"
+  }
+ ],
  "Events": [
   {
    "ID": "opening",
@@ -261,7 +273,7 @@
      "Lines": [
       {
        "Actor": "yuanshao",
-       "Text": "공손찬의 백마도 오늘로 끝이다. 국의, 다리 머리를 지켜라. 문추는 여울로 돌아 들어가라!"
+       "Text": "공손찬의 백마도 오늘로 끝이다. 국의, 다리 머리를 지켜라. 문추는 내 곁에 있어라."
       }
      ]
     },
@@ -279,7 +291,7 @@
      "Lines": [
       {
        "Actor": "gongsunzan",
-       "Text": "현덕! 다리 건너 노병이 백마를 꺾은 놈들이다. 정면으로 들이치지 마라!"
+       "Text": "백마는 다리 한가운데로 간다! 현덕, 여울로 돌아 노병의 등을 쳐라. 늦으면 내 목이 다리 위에 걸린다!"
       }
      ]
     },
@@ -288,7 +300,7 @@
      "Lines": [
       {
        "Actor": "liubei",
-       "Text": "노병은 가까이 붙으면 약하다. 여울로 오는 기병부터 막고, 다리는 그다음이다!"
+       "Text": "여울을 건너 다리 머리 뒤로! 공손 장군보다 늦어선 안 된다, 서둘러라!"
       }
      ]
     },
@@ -297,9 +309,78 @@
      "Lines": [
       {
        "Actor": "zhaoyun",
-       "Text": "여울은 제가 맡겠습니다. 백마 몇 기만 붙여 주십시오."
+       "Text": "노병은 앞만 봅니다. 등 뒤로 붙으면 무너집니다!"
       }
      ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "white"
+     ],
+     "Policy": "march",
+     "Goal": {
+      "X": 9,
+      "Y": 8
+     }
+    }
+   ]
+  },
+  {
+   "ID": "pincer",
+   "If": [
+    "any:[at:liubei:1, at:guanyu:1, at:zhangfei:1, at:zhaoyun:1, round>=4]"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "여울로 돌아 들어왔다고……? 문추, 나가서 저 깃발을 꺾어라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "wenchou",
+       "Text": "하북의 문추가 간다! 저놈들을 계수에 처넣어라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "wen"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "white-charge",
+   "If": [
+    "any:[at:liubei:1, at:guanyu:1, at:zhangfei:1, at:zhaoyun:1, round>=5]",
+    "round>=4"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "gongsunzan",
+       "Text": "현덕이 등을 쳤다! 백마의종, 다리를 건너라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "white"
+     ],
+     "Policy": "assault"
     }
    ]
   },
@@ -339,7 +420,7 @@
      "Lines": [
       {
        "Actor": "yanliang",
-       "Text": "거록의 빚을 갚으러 왔다! 관운장은 어디 있느냐!"
+       "Text": "거록의 빚을 갚으러 왔다! 장익덕은 어디 있느냐!"
       }
      ]
     },
@@ -375,7 +456,7 @@
      "Lines": [
       {
        "Actor": "tianfeng",
-       "Text": "거록에서 관우에게 꺾여 낯을 들지 못한다 합니다. 서두르지 말라 아뢰었다는 것만은 기억해 주십시오."
+       "Text": "거록에서 장비에게 꺾여 낯을 들지 못한다 합니다. 서두르지 말라 아뢰었다는 것만은 기억해 주십시오."
       }
      ]
     }
@@ -465,14 +546,14 @@
     {
      "Kind": "talk",
      "Title": "문추가 길을 막다",
-     "Speech": "하북의 문추다! 여울은 내가 건넌다!",
+     "Speech": "하북의 문추다! 여울로 기어 온 쥐새끼들이 네놈들이냐!",
      "Side": 1,
      "Duration": 2.6
     },
     {
      "Kind": "talk",
      "Title": "장비가 막아서다",
-     "Speech": "건너긴 뭘 건너유! 여기서 끝이유!",
+     "Speech": "쥐새끼는 누구유! 여기서 끝이유!",
      "Side": 0,
      "Duration": 2.4
     },
@@ -492,10 +573,129 @@
     },
     {
      "Kind": "block",
+     "Title": "문추가 창을 거푸 찌르다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "장비가 몸을 비키다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
      "Title": "장비가 몰아치다",
      "Speech": "크윽!",
      "Side": 0,
      "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "문추가 맞받아 찌르다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 다시 내지르다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "문추가 밀려 물러나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "문추가 악을 쓰며 찌르다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "문추가 창을 고쳐 잡고 찌르다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "장비가 상체를 젖혀 피하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 사모로 맞찌르다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "문추가 사모를 걷어내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "문추의 강공을 장비가 받아내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장비가 밀리다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 이를 갈며 내지르다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "문추가 말을 돌려 피하다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "문추가 거푸 찌르다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 사모를 휘두르다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "문추가 크게 밀리다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
     },
     {
      "Kind": "rush-critical-block",
@@ -513,7 +713,7 @@
     },
     {
      "Kind": "retreat",
-     "Title": "문추가 여울 너머로 물러나다",
+     "Title": "문추가 본진 쪽으로 물러나다",
      "Speech": "물러난다!",
      "Side": 1,
      "Duration": 3.0

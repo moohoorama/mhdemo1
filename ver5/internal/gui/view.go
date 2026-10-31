@@ -316,9 +316,13 @@ func (g *Game) syncUnit(u core.UnitView, o core.Observation) {
 		if u.Facing != "" {
 			dir = u.Facing
 		}
-		art := g.battleClassArt(u.Def, u.Class, u.Weapon, u.Color)
-		v = &unitVis{id: u.ID, ally: u.Faction == "ally", art: art, dir: dir, anim: "idle", dying: -1, top: art.TopOffset()}
+		v = &unitVis{id: u.ID, ally: u.Faction == "ally", dir: dir, anim: "idle", dying: -1}
 		g.vis[u.ID] = v
+	}
+	if look := u.Class + ":" + u.Weapon; look != v.look {
+		v.look = look
+		v.art = g.battleClassArt(u.Def, u.Class, u.Weapon, u.Color)
+		v.top = v.art.TopOffset()
 	}
 	if u.Facing != v.facing {
 		v.facing = u.Facing

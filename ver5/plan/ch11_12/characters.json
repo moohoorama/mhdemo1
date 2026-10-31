@@ -1,0 +1,126 @@
+{
+ "Characters": {
+  "taishici": {
+   "Name": "태사자",
+   "Biography": "자는 자의. 동래 사람. 어머니가 공융에게 입은 은혜를 갚으려 북해의 포위를 뚫고 구원을 청하러 나온 활의 명수.",
+   "Class": "horse_archer",
+   "Stats": [
+    80,
+    88,
+    60,
+    90,
+    70,
+    72
+   ],
+   "Level": 10,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Palette": {
+     "horseSkin": "#7a5030",
+     "saddle": "#2a4a70"
+    }
+   }
+  },
+  "guanhai": {
+   "Name": "관해",
+   "Biography": "북해를 에워싼 황건 잔당의 우두머리. 성 안의 양식이 떨어지기를 기다린다.",
+   "Class": "bandit",
+   "Stats": [
+    70,
+    84,
+    30,
+    62,
+    45,
+    35
+   ],
+   "Level": 10,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "turban",
+    "Palette": {
+     "themeA": "#8a6a10",
+     "iron": "#c8a040"
+    }
+   }
+  },
+  "yujin": {
+   "Name": "우금",
+   "Biography": "조조군의 장수. 군령이 엄해 명을 어기는 법이 없다.",
+   "Class": "heavy_infantry",
+   "Stats": [
+    84,
+    80,
+    60,
+    60,
+    60,
+    55
+   ],
+   "Level": 12,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "seonbi": {
+   "Name": "선비",
+   "Biography": "피난길에도 품위를 잃지 않는 선비. 어린 조카들을 데리고 있다. 이름을 밝히지 않는다.",
+   "Class": "scholar",
+   "Stats": [
+    30,
+    20,
+    80,
+    40,
+    60,
+    80
+   ],
+   "Level": 5,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "official_noncombat"
+   }
+  },
+  "refugee_cart": {
+   "Name": "피난 수레",
+   "Biography": "서주성으로 가는 피난민의 수레. 늙은이와 아이들이 타고 있다.",
+   "Class": "light_infantry",
+   "Stats": [
+    30,
+    20,
+    20,
+    40,
+    30,
+    20
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [],
+   "Look": {
+    "Faction": "han",
+    "Sprite": "chariot"
+   }
+  }
+ }
+}

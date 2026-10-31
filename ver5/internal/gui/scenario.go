@@ -149,19 +149,36 @@ func (g *Game) advanceDialogue() {
 	g.nextNode()
 }
 
-// nextNode goes on to the next node; when that node opens another scene, the scene on screen first darkens to
-// black (the new one then opens out of black).
+// nextNode goes on to the next node; when that node opens another scene or goes back to the walk, the scene on
+// screen first darkens to black (the new one then opens out of black).
 func (g *Game) nextNode() {
 	if s := g.scene; s != nil && s.node == g.S.View().Node {
 		if s.leaving {
 			return
 		}
-		if def, _ := g.scenes.For(g.S.Data.After(s.node)); def != nil && def != s.def {
+		next := g.S.Data.After(s.node)
+		if def, _ := g.scenes.For(next); def != nil && def != s.def || g.backToWalk(next) {
 			s.leaving = true
 			return
 		}
 	}
 	g.command(core.Command{Kind: "next"})
+}
+
+// backToWalk reports whether the story goes from node back to the walk with nothing shown on the way: the walk is
+// laid out anew (people come and go with the flags the story set), so the screen goes through black.
+func (g *Game) backToWalk(node string) bool {
+	for node != "" {
+		switch g.S.Data.Node(node).Kind {
+		case "back", "explore":
+			return true
+		case "set", "join", "grant":
+			node = g.S.Data.After(node)
+		default:
+			return false
+		}
+	}
+	return false
 }
 
 // turnPage goes on to the next node once a narration has faded out, and turns the page when the
@@ -302,6 +319,10 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 			g.label(dst, "클릭: 넘기기", float64(uiW-150), float64(uiH-40), 13, muted)
 			return
 		}
+	}
+	if g.held != nil { // a gift's or a joining officer's window is up: the box closes and the next line opens a fresh one
+		g.dialogueAnim = dialogueAnim{}
+		return
 	}
 	key := lineKey(l.speakers, o.Node, g.lineIndex)
 	if o.Dialogue.Kind == "narrate" {

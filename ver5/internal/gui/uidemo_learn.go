@@ -26,7 +26,7 @@ func demoLearn(d *Demo) error {
 	})
 	pick := func(at int) {
 		rows := g.learnRows(g.learn[0])
-		sortRows(rows, g.learnColumns(), g.learnWin.list.order, func(r *learnRow) bool { return r.ok })
+		sortRows(rows, g.learnColumns(), g.learnWin.list.order, func(r *learnRow) int { return b2i(!r.ok) })
 		if at < 0 {
 			at += len(rows)
 		}

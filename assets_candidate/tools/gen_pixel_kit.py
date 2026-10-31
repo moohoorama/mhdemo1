@@ -9,6 +9,8 @@ small-tile grid (x = 16(u - v), y = 8(u + v) - z), so every course and joint ste
   room floors   floor_{wood,carpet,palace,tent}: one game cell, a 64 x 32 diamond, one dot per pixel
   battle sites  fence_00..15 (mask bits as the walls'), village, camp, burnt_village, burnt_camp: one game cell at
                 the map's scale, pivot at its centre; village and camp take the place of sites.png's pictures
+  scene bridge  scene_bridge_u: the 계교 bridge of S_gongsun_camp, 8 small tiles along u (six of water, one onto each
+                bank) by 4 across, one picture anchored at the centre of its tile (3, 1) from the back corner
 
   python3 gen_pixel_kit.py --compare DIR   # old and new pieces, a battle castle corner, four rooms and a patch of
                                            # fences, villages and camps, into DIR
@@ -698,6 +700,56 @@ def sites():
     return out
 
 
+# ---------------------------------------------------------------- scene bridge
+#
+# A plank deck on a stone abutment at each end, raised over the water on rows of piles with a cap beam across each
+# row, a rail of posts along both sides. The water stays flat under it (the scene maps' water is drawn level with
+# the ground), so the deck stands BZ pixels over it and ramps down onto each bank.
+
+pc.PAL.update({
+    "kA": (164, 124, 80), "kB": (150, 112, 70), "ka": (104, 74, 46),     # deck planks, two tones, the seams
+})
+BL, BW, BZ = 8, 4, 10    # length along u, width along v (small tiles), deck top (pixels)
+BDECK = 3                # deck thickness
+BRAMP = 7                # pixels the ramps rise a tile
+BRAIL = (10, 11, 15, 17) # mid rail and top rail, pixels above the deck
+BANCHOR = (3.5, 1.5)     # the anchor tile's centre, from the back corner
+
+
+def planks(f, u, v, z, s, h):
+    if f.startswith("+z") or f.startswith("r"):
+        i = np.floor(16 * u + 1e-6).astype(int)
+        j = np.floor(16 * v + 1e-6).astype(int)
+        seam = (i % 5 == 4) | ((j + 7 * (i // 5)) % 23 == 0)
+        return np.where(seam, "ka", np.where((i // 5) % 2 == 0, "kA", "kB"))
+    return wood(f, u, v, z, s, h)
+
+
+def abutment(f, u, v, z, s, h):
+    if f == "+z" or f.startswith("r"):
+        return np.full(u.shape, "sU")
+    return brick(s, h, "sW", "sw", w=6, rows=2) if pc.lit(f) else brick(s, h, "sw", "zk", w=6, rows=2)
+
+
+def scene_bridge():
+    up = ((-BRAMP, 0, 1), 1, "r-u")                 # z <= 1 + BRAMP u: the near ramp
+    down = ((BRAMP, 0, 1), 1 + BRAMP * BL, "r+u")   # z <= 1 + BRAMP (BL - u): the far ramp
+    bodies = [Body(box(0, BL, .15, BW - .15, BZ - BDECK, BZ) + [up, down], planks, 0)]
+    for a0, a1, ramp in ((0, 1.4, ((-BRAMP, 0, 1), 0, "r-u")), (BL - 1.4, BL, ((BRAMP, 0, 1), BRAMP * BL, "r+u"))):
+        bodies.append(Body(box(a0, a1, .05, BW - .05, 0, BZ - BDECK) + [ramp], abutment, 0))
+    for a in (2.6, 4, 5.4):                        # rows of piles, a cap beam across each
+        bodies.append(Body(box(a - .09, a + .09, .1, BW - .1, BZ - BDECK - 1.5, BZ - BDECK), wood, 0))
+        for c in (.3, 1.4, 2.6, BW - .3):
+            bodies.append(Body(box(a - .07, a + .07, c - .07, c + .07, 0, BZ - BDECK), wood, 0))
+    for c in (.22, BW - .22):                      # the rails: posts every 1.4 tiles, a mid and a top rail
+        for a in (1.2, 2.6, 4, 5.4, BL - 1.2):
+            bodies.append(Body(box(a - .07, a + .07, c - .07, c + .07, BZ, BZ + BRAIL[3] + 1), wood, 0))
+        for z0, z1 in ((BRAIL[0], BRAIL[1]), (BRAIL[2], BRAIL[3])):
+            bodies.append(Body(box(1.2, BL - 1.2, c - .04, c + .04, BZ + z0, BZ + z1), wood, 0))
+    a, own, o = render(bodies)
+    return piece(a, own, o, 0, (16 * (BANCHOR[0] - BANCHOR[1]), 8 * (BANCHOR[0] + BANCHOR[1])))
+
+
 # ---------------------------------------------------------------- comparison
 
 def old_prop(name):
@@ -880,6 +932,7 @@ def kit():
     for name, (im, pv) in sites().items():
         fields = dict(mask=int(name[-2:]), sides_bits=["nw", "ne", "se", "sw"]) if name.startswith("fence_") else {}
         out[name] = (im, pv, dict(layer="object", scale="battle", **fields))
+    out["scene_bridge_u"] = (*scene_bridge(), dict(layer="object", scale="scene"))
     return out
 
 

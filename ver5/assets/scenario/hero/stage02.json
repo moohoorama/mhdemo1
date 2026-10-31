@@ -1244,6 +1244,34 @@
      "Duration": 1.05
     },
     {
+     "Kind": "block",
+     "Title": "파재가 연거푸 내리치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "유비가 막지만 한 걸음 밀리다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "유비가 검을 찔러 넣다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "파재가 몸을 틀어 피하다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
      "Kind": "hit",
      "Title": "유비가 검으로 되받아치다",
      "Speech": "물러서라!",
@@ -1258,11 +1286,39 @@
      "Duration": 2.2
     },
     {
+     "Kind": "block",
+     "Title": "파재가 악을 쓰며 몰아치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "유비가 물러서며 칼을 피하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
      "Kind": "rush-block",
      "Title": "파재가 돌진하며 베다",
      "Speech": "어림없다!",
      "Side": 1,
      "Duration": 1.1
+    },
+    {
+     "Kind": "block",
+     "Title": "유비의 검을 파재가 겨우 받아내다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "파재가 뒷걸음치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
     },
     {
      "Kind": "talk",

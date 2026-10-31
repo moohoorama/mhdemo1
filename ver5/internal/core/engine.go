@@ -685,6 +685,9 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	if sp.Class != "" {
 		c.Class = sp.Class
 	}
+	if side == "enemy" {
+		c.Class = e.promotedAt(def, c.Class, c.Level)
+	}
 	if sp.Traits != nil {
 		c.TraitsOverride = copyOf(sp.Traits)
 	}
@@ -725,6 +728,18 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	u.Status = e.startStatus(&u)
 	e.unitIDs[id] = e.units.NewEntity(&u)
 	return e.unit(id)
+}
+
+// promotedAt is the class a character reaches from class after every promotion the level allows, each time to its
+// first branch.
+func (e *Engine) promotedAt(def, class string, level int) string {
+	for {
+		cl, next := e.data.Classes[class], e.data.Promotes(def, class)
+		if cl.Tier >= len(e.data.Rules.PromoteLevels) || level < e.data.Rules.PromoteLevels[cl.Tier] || len(next) == 0 {
+			return class
+		}
+		class = next[0]
+	}
 }
 
 // startStatus is what a unit is placed with: the defense its traits grant every turn.

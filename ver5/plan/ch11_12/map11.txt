@@ -1,0 +1,17 @@
+# B11 북해 (16x15): 남쪽 모퉁이 길 -> 성(10,11) -> 여울(10~11,7~8) -> 길 -> 황건 -> 북해성(성벽 y=3, 닫힌 성문 7,3).
+# 남서쪽 구릉(4~7,12~14)에서 증원 다섯이 나온다.
+g-- g-- g-- c-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g--
+g-- g-- gt- c-- i-- i-- i-- i-- i-- i-- c-- g-- gt- g-- g-- g--
+g-- gt- g-- c-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- gt- g--
+g-- g-- g-- c-- c-- c-- c-- m-- c-- c-- c-- g-- g-- g-- g-- g--
+gt- g-- g-- g-- g-- d-- d-- l-- d-- d-- g-- g-- g-- gt- g-- g--
+g-- gt- g-- g-- d-- g-- g-- l-- l-- dk- l-- l-- g-- d-- g-- gt-
+g-- g-- gt- g-- g-- g-- d-- g-- g-- d-- g-- l-- g-- g-- g-- g--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- s-- s-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- s-- s-- w-- w-- w-- w--
+g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g--
+g-- gt- g-- g-- g-- gt- g-- g-- gt- g-- l-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- go- g-- g-- g-- g-- g--
+g-- g-- g-- gt- g-- u-- u-- g-- d-- g-- l-- l-- l-- l-- g-- g--
+gt- g-- g-- g-- u-- u-- u-- u-- g-- gt- g-- g-- g-- l-- g-- g--
+g-- g-- g-- g-- u-- u-- u-- u-- g-- g-- g-- g-- g-- l-- l-- l--

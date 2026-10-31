@@ -13,7 +13,7 @@
   "promo_guard": {
    "Name": "Guard Writ",
    "Effect": "promote",
-   "Class": "guard"
+   "Tier": 1
   }
  }
 }

@@ -34,7 +34,7 @@ func TestUnitListRows(t *testing.T) {
 	tb := unitTable{cells: unitViewKinds[0].cells}.table(&Game{}, o)
 	ids := func(l *unitList) []string {
 		rows := unitListRows(o, l)
-		sortRows(rows, tb.cols, l.order, tb.first)
+		sortRows(rows, tb.cols, l.order, tb.rank)
 		out := []string{}
 		for _, u := range rows {
 			out = append(out, u.ID)

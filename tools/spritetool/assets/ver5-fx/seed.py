@@ -322,6 +322,46 @@ def speck(s):
     return [{"speck": ["ww"]}]
 
 
+def promote_gather(s):
+    """Two gold ground rings closing in on the feet while the unit whitens."""
+    w, h = s["cell"]
+    cx, cy = s["anchor"]
+    frames = []
+    for k in ks(s["frames"]):
+        outer, inner = Grid(w, h), Grid(w, h)
+        outer.ellipse(cx, cy, 6 + (1 - k) * 46, 2, "y")
+        inner.ellipse(cx, cy, 4 + (1 - k) ** 1.6 * 30, 1.4, "w")
+        frames.append({"outer": outer.lines(), "inner": inner.lines()})
+    return frames
+
+
+def promote(s):
+    """The new look comes out: a gold pillar shoots up and narrows, streaks rise in it, a ring runs out."""
+    w, h = s["cell"]
+    cx, cy = s["anchor"]
+    frames = []
+    streaks = [(-13, 0, 2), (-8, .35, 1), (-4, .15, 1), (5, .25, 1), (9, .05, 2), (14, .45, 1), (0, .6, 1)]
+    for k in ks(s["frames"]):
+        pillar, rays, ring = Grid(w, h), Grid(w, h), Grid(w, h)
+        tall = 96 * min(1, k * 4)
+        narrow = 1 - .6 * k
+        for half, c in ((14, "a"), (9, "b"), (4, "c")):
+            pillar.trapezoid(cx, cy, cy - tall, half * narrow, half * narrow * .55, c)
+        for dx, lag, thick in streaks:
+            t = k * 1.4 - lag
+            if 0 < t < 1:
+                y = cy - 8 - t * 100
+                rays.line(cx + dx, y, cx + dx, y + 10, thick, "y", square=True)
+        ring.ellipse(cx, cy, 8 + k * 30, 2, "r")
+        ring.ellipse(cx, cy, 4 + k * 18, 1.4, "w")
+        frames.append({"pillar": pillar.lines(), "rays": rays.lines(), "ring": ring.lines()})
+    return frames
+
+
+def promote_mote(s):
+    return [{"mote": ["..y..", ".ywy.", "ywwwy", ".ywy.", "..y.."]}]
+
+
 if __name__ == "__main__":
     settings = json.loads((HERE / "settings.json").read_text())
     path = HERE / "pixels.json"

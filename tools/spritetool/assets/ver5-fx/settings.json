@@ -23,6 +23,9 @@
     "crit_ring",
     "click_ring",
     "heal_streak",
+    "promote_gather",
+    "promote",
+    "promote_mote",
     "campfire_glow",
     "petal",
     "clash",
@@ -1006,6 +1009,154 @@
         "speck": {
           "palette": {
             "w": "#ffffff"
+          }
+        }
+      }
+    },
+    "promote_gather": {
+      "cell": [
+        112,
+        56
+      ],
+      "anchor": [
+        56,
+        28
+      ],
+      "frames": 10,
+      "timing": "played once while a promoted unit whitens (1.0 s): two gold rings close in on its feet",
+      "layers": {
+        "outer": {
+          "blend": "lighter",
+          "alpha": [
+            0.2,
+            0.45,
+            0.7,
+            0.9,
+            1,
+            1,
+            1,
+            1,
+            0.9,
+            0.7
+          ],
+          "palette": {
+            "y": "#ffd66e"
+          }
+        },
+        "inner": {
+          "blend": "lighter",
+          "alpha": [
+            0.1,
+            0.25,
+            0.45,
+            0.6,
+            0.7,
+            0.75,
+            0.75,
+            0.7,
+            0.6,
+            0.45
+          ],
+          "palette": {
+            "w": "#fff8dc"
+          }
+        }
+      }
+    },
+    "promote": {
+      "cell": [
+        80,
+        128
+      ],
+      "anchor": [
+        40,
+        108
+      ],
+      "frames": 12,
+      "timing": "played once as a promoted unit takes its new look (1.0 s): a gold pillar shoots up and narrows, streaks rise, a ground ring runs out",
+      "layers": {
+        "pillar": {
+          "blend": "normal",
+          "alpha": [
+            0.85,
+            0.77,
+            0.7,
+            0.62,
+            0.54,
+            0.46,
+            0.39,
+            0.31,
+            0.23,
+            0.15,
+            0.08,
+            0.0
+          ],
+          "palette": {
+            "a": "#b07c22",
+            "b": "#e8be52",
+            "c": "#fff4cc"
+          }
+        },
+        "rays": {
+          "blend": "lighter",
+          "alpha": [
+            1.0,
+            0.93,
+            0.85,
+            0.78,
+            0.71,
+            0.64,
+            0.56,
+            0.49,
+            0.42,
+            0.35,
+            0.27,
+            0.2
+          ],
+          "palette": {
+            "y": "#ffe08a"
+          }
+        },
+        "ring": {
+          "blend": "lighter",
+          "alpha": [
+            1.0,
+            0.91,
+            0.83,
+            0.74,
+            0.66,
+            0.57,
+            0.49,
+            0.4,
+            0.32,
+            0.23,
+            0.15,
+            0.06
+          ],
+          "palette": {
+            "r": "#ffd66e",
+            "w": "#fff8dc"
+          }
+        }
+      }
+    },
+    "promote_mote": {
+      "cell": [
+        5,
+        5
+      ],
+      "anchor": [
+        2,
+        2
+      ],
+      "frames": 1,
+      "timing": "a gold mote drawn in toward a unit being promoted and thrown out when it changes; the game fades it",
+      "layers": {
+        "mote": {
+          "blend": "lighter",
+          "palette": {
+            "y": "#ffd66e",
+            "w": "#fffbe8"
           }
         }
       }

@@ -49,6 +49,8 @@ type evaluator struct {
 	victory []string
 	vital   []string // own units whose fall loses the battle besides the lord (a defeat goal's defeated:X)
 	goal    map[content.Point]int // walking distance to the area a victory goal sends me to; nil without one
+	escort  map[content.Point]int // walking distance to the stretch of way ahead of another unit a victory goal sends somewhere
+	clear   []string              // opponents near that stretch
 	pending bool                  // that goal's story condition does not hold yet
 }
 
@@ -75,7 +77,7 @@ func (x *evaluator) worth(u *core.UnitView, hp int) float64 {
 	if u.Faction == x.me.Faction {
 		return w
 	}
-	if slices.Contains(x.victory, u.ID) {
+	if slices.Contains(x.victory, u.ID) || slices.Contains(x.clear, u.ID) {
 		w *= 2
 	}
 	if x.menaces(u) {
@@ -289,22 +291,43 @@ func (x *evaluator) move(c core.Command, walk map[content.Point]int, duels bool)
 			best += 10 * w
 		}
 	}
+	if x.escort != nil {
+		best += escortPull * x.worth(me, me.HP) * float64(far(x.escort, me.X, me.Y)-far(x.escort, c.X, c.Y))
+	}
 	return best - x.risk(me, content.Point{X: c.X, Y: c.Y}, me.HP)
 }
+
+// escortPull is how much a step nearer the way ahead of a unit walking to a goal is worth, in shares of
+// the walker's own worth: as strong as a goal pulls its own unit when time runs short.
+const escortPull = .2
 
 func chooseEval(e *core.Engine, o core.Observation, me *core.UnitView, options []core.Command, duels bool) core.Command {
 	x := &evaluator{Eval: Player, e: e, o: o, me: me, victory: o.Map.VictoryTargets(), vital: content.DefeatTargets(o.Map.Defeat)}
 	marks := e.GoalMarks()
+	var cells []content.Point
+	for _, n := range marks {
+		if n.Win {
+			cells = append(cells, n.Cells...)
+		}
+	}
 	for _, m := range marks {
-		if m.Win && m.Unit == me.ID {
-			var cells []content.Point
-			for _, n := range marks {
-				if n.Win {
-					cells = append(cells, n.Cells...)
+		if !m.Win || m.Unit == "" || len(cells) == 0 {
+			continue
+		}
+		if m.Unit == me.ID {
+			x.goal, _ = goalRoute(e, o, me, cells)
+			x.pending, x.escort, x.clear = m.Pending, nil, nil
+			break
+		}
+		// another unit walks to the goal: keep up with it and clear its way
+		for i := range o.UnitViews {
+			if v := &o.UnitViews[i]; v.ID == m.Unit && v.Faction == me.Faction && v.HP > 0 && !m.Pending {
+				_, way := goalRoute(e, o, v, cells)
+				var ahead []content.Point
+				ahead, x.clear = escort(e, o, v, way)
+				if len(ahead) > 0 {
+					x.escort = walkingFrom(e, o, me, ahead)
 				}
-			}
-			if len(cells) > 0 {
-				x.goal, x.pending = walkingFrom(e, o, me, cells), m.Pending
 			}
 		}
 	}

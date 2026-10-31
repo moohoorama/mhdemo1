@@ -1,5 +1,6 @@
 """장수 전용 키트: 조조(친위대 + 관모), 여포(중기병 + 방천화극), 원소(친위대 + 금투구), 조운(은빛 갑옷 기병),
-손견(두건 쓴 경기병), 헌제(바닥에 끌리는 도포의 서생), 원술(가는 몸에 금 문양의 도보 장수).
+손견(두건 쓴 경기병), 헌제(바닥에 끌리는 도포의 서생), 원술(가는 몸에 금 문양의 도보 장수),
+조운·원소의 다른 기병 계열(경기병·중기병·친위대) 시트.
 
 Each unit reuses an existing kit and changes the head (2D grids below), the armour or the body:
 - heads: the S view is slimmed by one interior column per side so the face is as narrow as the 경기병's; the iron
@@ -14,6 +15,8 @@ Each unit reuses an existing kit and changes the head (2D grids below), the armo
 - 헌제: the 서생 body with a robe that trails on the floor.
 - 원술: infantry body squeezed to 78% width with gold embroidery (hem ring, medallion, collar band, dots, cuffs) and
   the tall faction crest moved over from 원소.
+- 조운 경기병·친위대, 원소 경기병·중기병: the same head on the light rider, or on the 친위대 (crest dropped, his plume
+  stands) / 중기병 kit, so the sheet changes with the class (Look.Sprites).
 Colours (horse coat, silver steel, hair, plume) are set per tag with grid.py colors after the conversion.
 """
 import numpy as np
@@ -340,6 +343,26 @@ def make_yuanshu():
     return build, M.Hd.heads(YUANSHU)
 
 
+# ---- the same heroes in the other classes of their line (경기병 -> 중기병 -> 친위대) ---------------------
+def make_zhaoyun_light():
+    return M.rider_build('rider'), M.Hd.heads(ZHAOYUN)
+
+
+def make_zhaoyun_royal():
+    M.UNITS['royal_guard']()
+    RG.rider_armour = royal_armour(False)  # his own plume, no faction crest
+    return M.rider_build(RG.KIT), M.Hd.heads(ZHAOYUN)
+
+
+def make_yuanshao_light():
+    return M.rider_build('rider'), M.Hd.heads(YUANSHAO, Hd.PLUME)
+
+
+def make_yuanshao_heavy():
+    M.UNITS['heavy_cavalry']()
+    return M.rider_build(HC.KIT), M.Hd.heads(YUANSHAO, Hd.PLUME)
+
+
 M.register('caocao', make_caocao, vertical_spear=True)
 M.register('caocao_sword', make_caocao_sword)
 M.register('lubu', make_lubu, vertical_spear=True)
@@ -350,3 +373,6 @@ M.register('zhaoyun_sword', make_zhaoyun_sword)
 M.register('sunjian', make_sunjian, vertical_spear=True)
 M.register('xiandi', make_xiandi)
 M.register('yuanshu', make_yuanshu)
+for _name, _make in (('zhaoyun_light', make_zhaoyun_light), ('zhaoyun_royal', make_zhaoyun_royal),
+                     ('yuanshao_light', make_yuanshao_light), ('yuanshao_heavy', make_yuanshao_heavy)):
+    M.register(_name, _make, vertical_spear=True)

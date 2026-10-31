@@ -102,10 +102,13 @@ func (g *Game) startingWeapon(c content.Character) string {
 }
 
 // battleClassArt is the sprite of a character serving in class with a weapon of the given type: its entry for
-// that class and weapon, for the class, the character's default sprite, or else the class's own.
+// that class and weapon, for the class, its default sprite in its own class, or else the class's own (recoloured).
 func (g *Game) battleClassArt(def, class, weapon, faction string) *sprite.Art {
 	c := g.S.Data.Characters[def]
-	ids := []string{c.Look.Sprites[class], c.Look.Sprite}
+	ids := []string{c.Look.Sprites[class]}
+	if class == c.Class {
+		ids = append(ids, c.Look.Sprite)
+	}
 	if weapon != "" {
 		ids = append([]string{c.Look.Sprites[class+":"+weapon]}, ids...)
 	}

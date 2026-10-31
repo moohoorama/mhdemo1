@@ -752,6 +752,16 @@
     "wield:sword": 1
    }
   },
+  "scholar_general": {
+   "Name": "유장",
+   "Desc": "책사이지만 병종의 무기에 더해 검을 장착할 수 있다.",
+   "Kind": "talent",
+   "Tone": "buff",
+   "Cost": 0,
+   "Effects": {
+    "wield:sword": 1
+   }
+  },
   "deputy_appoint": {
    "Name": "부관임명",
    "Desc": "부관을 둘 수 있다. 부관의 능력치와 특성이 주장을 돕는다.",

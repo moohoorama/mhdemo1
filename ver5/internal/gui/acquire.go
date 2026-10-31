@@ -14,7 +14,7 @@ import (
 )
 
 // The acquire window is what the party just got outside a battle's result (a story grant, an event's gift, a
-// purchase): one card per piece, turned up one after another once, that stays until 확인. A card opens the piece's
+// purchase, an officer joining): one card per piece or officer, turned up one after another once, that stays until 확인. A card opens the piece's
 // window; a trait on an equipment's window opens the trait's. Those stack on the cards and close one at a time
 // without the cards moving again.
 const (
@@ -22,18 +22,25 @@ const (
 	acqCardTop                     = 262
 	acqFirst, acqEach              = .2, .15 // seconds before the first card turns up, and between cards
 	acqTurn                        = .4
-	acqPieceW                      = 520
+	acqPieceW, acqOfficerW         = 520, 760
 )
 
 type gain struct {
-	id    string
-	n     int
-	first bool // the party owned none before
+	id      string
+	n       int
+	first   bool // the party owned none before
+	officer bool // an officer who joined the party, not a piece
 }
 
-// acquireGains are the grant events as cards, one per piece; first marks a piece the party did not own in before.
+// acquireGains are the join and grant events as cards: the officers who joined first, then one per piece; first
+// marks a piece the party did not own in before.
 func acquireGains(before *core.Observation, events []core.Event) []gain {
 	var out []gain
+	for _, e := range events {
+		if e.Kind == "join" {
+			out = append(out, gain{id: e.Target, n: 1, officer: true})
+		}
+	}
 	for _, e := range events {
 		if e.Kind != "grant" || e.Amount <= 0 {
 			continue
@@ -82,8 +89,12 @@ func (g *Game) drawAcquire(dst *ebiten.Image, m *modal) {
 	}
 	g.addButton(full, "", g.closeModal)
 	h := g.pieceHeight(m.piece)
-	g.popup(dst, fmt.Sprintf("acquire:%p:%s", m, m.piece), 80, acqPieceW+40, h+40, image.Rect(0, 0, acqPieceW+40, h+40), func(dst *ebiten.Image) {
-		g.pieceWindow(dst, m, image.Rect(20, 20, 20+acqPieceW, 20+h))
+	w = acqPieceW
+	if g.joined(m.piece) {
+		w = acqOfficerW
+	}
+	g.popup(dst, fmt.Sprintf("acquire:%p:%s", m, m.piece), 80, w+40, h+40, image.Rect(0, 0, w+40, h+40), func(dst *ebiten.Image) {
+		g.pieceWindow(dst, m, image.Rect(20, 20, 20+w, 20+h))
 	})
 	if m.chip.id != "" {
 		g.chipWindow(dst, fmt.Sprintf("acquire:%p:%s:%s", m, m.piece, m.chip.id), m.chip, g.closeModal)
@@ -105,7 +116,13 @@ func (m *modal) closeAcquire() bool {
 
 func (g *Game) acquireCards(dst *ebiten.Image, m *modal) {
 	cx := float64(uiW / 2)
-	g.centered(dst, "획  득", cx, 196, 34, gold)
+	title := "합  류"
+	for _, gn := range m.gains {
+		if !gn.officer {
+			title = "획  득"
+		}
+	}
+	g.centered(dst, title, cx, 196, 34, gold)
 	n := len(m.gains)
 	x0 := uiW/2 - (n*acqCardW+(n-1)*acqCardGap)/2
 	for i, gn := range m.gains {
@@ -136,7 +153,7 @@ func (g *Game) acquireCard(dst *ebiten.Image, r image.Rectangle, gn gain, a floa
 	if gn.first || hover {
 		rim = gold
 	}
-	if gn.first {
+	if gn.first || gn.officer {
 		for i := float32(1); i <= 6; i++ {
 			strokeRect(dst, x-i*2, y-i*2, w+i*4, h+i*4, 2, fade(color.NRGBA{R: 226, G: 182, B: 93, A: uint8(70 - 10*i)}, a))
 		}
@@ -149,11 +166,22 @@ func (g *Game) acquireCard(dst *ebiten.Image, r image.Rectangle, gn gain, a floa
 	rect(dst, x, y, w, h, fade(body, a))
 	strokeRect(dst, x+1, y+1, w-2, h-2, 2, fade(rim, a))
 	cx := float64(r.Min.X + r.Dx()/2)
-	if gn.first {
-		tw := float32(g.width("처음", 12) + 16)
+	if gn.first || gn.officer {
+		tag := "처음"
+		if gn.officer {
+			tag = "새 장수"
+		}
+		tw := float32(g.width(tag, 12) + 16)
 		rect(dst, float32(cx)-tw/2, y-10, tw, 20, fade(color.NRGBA{R: 108, G: 30, B: 26, A: 255}, a))
 		strokeRect(dst, float32(cx)-tw/2, y-10, tw, 20, 1, fade(gold, a))
-		g.centered(dst, "처음", cx, float64(y)-10, 12, fade(ink, a))
+		g.centered(dst, tag, cx, float64(y)-10, 12, fade(ink, a))
+	}
+	if gn.officer {
+		g.officerCard(dst, gn.id, cx, float64(y), a)
+		if a >= 1 {
+			g.addButton(r, "", func() { m.piece = gn.id })
+		}
+		return
 	}
 	g.pieceIcon(dst, gn.id, cx-44, float64(y)+22, 88, a)
 	g.centered(dst, g.pieceName(gn.id), cx, float64(y)+120, 20, fade(ink, a))
@@ -202,6 +230,89 @@ func (g *Game) pieceIcon(dst *ebiten.Image, id string, x, y, s, a float64) {
 	}
 }
 
+// officerCard is a joining officer's card below its tag: the portrait, the name, class and level, and the
+// officer's own traits.
+func (g *Game) officerCard(dst *ebiten.Image, id string, cx, y, a float64) {
+	c := g.S.Data.Characters[id]
+	rect(dst, float32(cx-44), float32(y+22), 88, 88, fade(trough, a))
+	if src := g.portraitArt(c, ""); src != nil {
+		blit(dst, src, cx-44, y+22, 88, 88, fade(white, a))
+	}
+	strokeRect(dst, float32(cx-44)+.5, float32(y+22)+.5, 87, 87, 1, fade(goldDim, a))
+	g.centered(dst, c.Name, cx, y+120, 20, fade(ink, a))
+	g.centered(dst, g.officerRank(id), cx, y+150, 15, fade(gold, a))
+	g.centered(dst, "장수", cx, y+174, 12, fade(muted, a))
+	ty := y + 200
+	for _, t := range c.Traits {
+		name := g.traitName(t)
+		cw := traitIconSize*.8 + 6 + g.width(name, 13)
+		kind, tone := g.chipLook(equipChip{"trait", t})
+		rect(dst, float32(cx-cw/2-6), float32(ty-3), float32(cw+12), 24, fade(trough, a))
+		g.traitIcon(dst, kind, tone, cx-cw/2, ty, traitIconSize*.8)
+		g.label(dst, name, cx-cw/2+traitIconSize*.8+6, ty, 13, fade(ink, a))
+		ty += 28
+	}
+}
+
+// officerRank is an officer's class and level in the party, as "경기병 · Lv 13".
+func (g *Game) officerRank(id string) string {
+	for _, c := range g.S.View().Characters {
+		if c.ID == id {
+			return fmt.Sprintf("%s · Lv %d", g.className(c.Class), c.Level)
+		}
+	}
+	return g.className(g.S.Data.Characters[id].Class)
+}
+
+// officerWindow is a joining officer's card opened: the portrait, name, class and level and the biography, the battle
+// stats (전투력) beside the six attributes (열전), and each trait with what it does (each opening its own window).
+func (g *Game) officerWindow(dst *ebiten.Image, m *modal, r image.Rectangle) {
+	c := g.S.Data.Characters[m.piece]
+	g.titled(dst, r, "장수")
+	x, y := float64(r.Min.X+28), float64(r.Min.Y+30)
+	g.portrait(dst, m.piece, "", x, y, 96)
+	g.label(dst, c.Name, x+116, y+4, 26, gold)
+	g.label(dst, g.officerRank(m.piece), x+116, y+42, 15, ink)
+	g.label(dst, wrapWidth(c.Biography, g.face(14), float64(r.Dx()-172)), x+116, y+66, 14, muted)
+	y += 132
+	section := func(title string, at float64) {
+		g.label(dst, title, at, y, 16, gold)
+		strokeLine(dst, float32(at), float32(y+26), float32(at+320), float32(y+26), 1, goldDim)
+	}
+	deputy := ""
+	if o := g.officer(g.S.View(), m.piece); o != nil {
+		deputy = o.Deputy
+	}
+	if st, attrs, err := g.S.Engine.DeputyStats(m.piece, deputy); err == nil {
+		section("전투력", x)
+		section("열전", x+364)
+		for i, s := range statRows {
+			py := y + 36 + float64(i)*26
+			g.label(dst, s.name, x, py, 15, muted)
+			g.label(dst, fmt.Sprint(s.get(st)), x+90, py, 15, ink)
+		}
+		for i, a := range deputyViews[2].stats {
+			py := y + 36 + float64(i)*26
+			g.label(dst, a.label, x+364, py, 15, muted)
+			g.label(dst, fmt.Sprint(a.get(st, attrs)), x+454, py, 15, ink)
+		}
+		y += 36 + float64(len(statRows))*26 + 12
+	}
+	section("특성", x)
+	y += 36
+	for _, t := range c.Traits {
+		ch := equipChip{"trait", t}
+		g.chip(dst, ch, x, y, func() { m.chip = ch })
+		desc := wrapWidth(g.traitDesc(t), g.face(14), float64(r.Dx()-56-180))
+		g.label(dst, desc, x+180, y, 14, ink)
+		y += max(34, float64(strings.Count(desc, "\n")+1)*14*1.45+12)
+	}
+	if len(c.Traits) == 0 {
+		g.label(dst, "없음", x, y, 15, ink)
+	}
+	g.centered(dst, "창 밖을 누르면 닫힙니다", float64(r.Min.X+r.Dx()/2), float64(r.Max.Y-34), 13, muted)
+}
+
 func (g *Game) pieceName(id string) string {
 	if id == content.Money {
 		return "돈"
@@ -221,6 +332,9 @@ func (g *Game) pieceKind(id string) string {
 }
 
 func (g *Game) pieceHeight(id string) int {
+	if g.joined(id) {
+		return 560
+	}
 	if _, ok := g.S.Data.Equipment[id]; ok {
 		return 330
 	}
@@ -230,6 +344,10 @@ func (g *Game) pieceHeight(id string) int {
 // pieceWindow is a card's window: an equipment's description, stat bonus and traits (each opening its own window),
 // or an item's use and how many the party holds.
 func (g *Game) pieceWindow(dst *ebiten.Image, m *modal, r image.Rectangle) {
+	if g.joined(m.piece) {
+		g.officerWindow(dst, m, r)
+		return
+	}
 	eq, isEq := g.S.Data.Equipment[m.piece]
 	title := "도구"
 	if isEq {
@@ -299,3 +417,12 @@ func fade(c color.NRGBA, a float64) color.NRGBA {
 	c.A = uint8(float64(c.A) * max(0, min(1, a)))
 	return c
 }
+
+// joined reports whether a card's id is an officer rather than a piece.
+func (g *Game) joined(id string) bool {
+	_, item := g.S.Data.Items[id]
+	_, eq := g.S.Data.Equipment[id]
+	_, c := g.S.Data.Characters[id]
+	return c && !item && !eq && id != content.Money
+}
+

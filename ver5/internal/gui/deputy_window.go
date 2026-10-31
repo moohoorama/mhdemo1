@@ -249,7 +249,7 @@ func (g *Game) deputyWindow(dst *ebiten.Image, x, y, w, h int) {
 	// the table
 	drawTable(g, dst, &g.deputyList.tableList, table[deputyRow]{
 		cols: g.deputyColumns(base, attrs), rowH: 40, headH: 34, size: 15, center: true,
-		first:    func(r *deputyRow) bool { return r.reason == "" },
+		rank:     func(r *deputyRow) int { return b2i(r.reason != "") },
 		dim:      func(r *deputyRow) bool { return r.reason != "" },
 		selected: func(r *deputyRow) bool { return r.id == pick },
 		pick:     func(r *deputyRow) { g.deputyPick = r.id },

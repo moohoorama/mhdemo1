@@ -624,6 +624,12 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		for _, d := range anims {
 			rect = rect.Union(f.A.Anims[d.Name].Frames[0].Image.Bounds().Add(image.Pt(d.X, d.Y)))
 		}
+		if sh := f.A.Props[name].Shadow; f.Map.Scene && sh.Image != nil {
+			f.blit(f.shadows, sh, x, y, &ebiten.DrawImageOptions{Blend: maxBlend})
+		}
+		if !f.DrawBounds.Empty() && !rect.Overlaps(f.DrawBounds) {
+			return
+		}
 		items = append(items, drawItem{y: y, draw: func() {
 			f.blit(c, s, x, y, nil)
 			if cliff {
@@ -633,9 +639,6 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 				f.drawStrip(d, 0, 0)
 			}
 		}, rect: rect})
-		if sh := f.A.Props[name].Shadow; f.Map.Scene && sh.Image != nil {
-			f.blit(f.shadows, sh, x, y, &ebiten.DrawImageOptions{Blend: maxBlend})
-		}
 	})
 	for _, b := range f.beatShadows {
 		f.blit(f.shadows, b.s, b.x, b.y, &ebiten.DrawImageOptions{Blend: maxBlend})
@@ -832,9 +835,9 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost float32) {
 	} else {
 		f.blit(f.Canvas, s, x, y, op)
 	}
-	if u.charge > 0 && ghost == 0 { // gathering a critical blow: a white silhouette fades in over the sprite
+	if k := max(.9*u.charge, u.bleach); k > 0 && ghost == 0 { // gathering a critical blow or being promoted: a white silhouette fades in over the sprite
 		var cm colorm.ColorM
-		cm.Scale(0, 0, 0, .9*u.charge)
+		cm.Scale(0, 0, 0, k)
 		cm.Translate(1, 1, 1, 0)
 		wop := &colorm.DrawImageOptions{}
 		wop.GeoM.Translate(math.Round(x-s.PivotX), math.Round(y-s.PivotY))

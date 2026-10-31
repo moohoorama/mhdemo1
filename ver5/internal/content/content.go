@@ -124,8 +124,8 @@ func (c *Colors) UnmarshalJSON(b []byte) error {
 
 // Look is how a character is drawn.
 type Look struct {
-	Sprite   string            // battle sprite for any class Sprites does not name; the class's when empty
-	Sprites  map[string]string `json:",omitempty"` // class id, or class id:weapon type -> battle sprite while the character serves in that class (with that weapon)
+	Sprite   string            // battle sprite in the character's own class when Sprites does not name it; the class's when empty
+	Sprites  map[string]string `json:",omitempty"` // class id, or class id:weapon type -> battle sprite while the character serves in that class (with that weapon); a character with any only promotes into the classes named
 	Scene    string            // non-combat sprite for scenes; Sprite when empty
 	Portrait string
 	Faction  string
@@ -152,7 +152,7 @@ type Item struct {
 	Icon       string // the UI sheet's item_<Icon> picture
 	Effect     string
 	Amount     int
-	Class      string // the class a promotion item makes
+	Tier       int    // promotion item: the tier of the class it makes (1 중급, 2 상급); the class is picked on use
 	Price      int    `json:",omitempty"` // what a shop asks in money; it buys it back for half
 }
 type Trait struct {

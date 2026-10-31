@@ -39,7 +39,7 @@
      "Cost": 2
     },
     "u": {
-     "Factor": 1,
+     "Factor": 0.8,
      "Cost": 2
     },
     "n": {
@@ -419,7 +419,7 @@
      "Cost": 1
     },
     "u": {
-     "Factor": 1,
+     "Factor": 1.2,
      "Cost": 1
     },
     "n": {

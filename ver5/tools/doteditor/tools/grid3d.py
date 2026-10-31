@@ -2,6 +2,7 @@
 """3D cel-shaded render -> tag grid working copy (heroes/<id>/grid), for class sprites derived from an existing sheet.
 
   python3 grid3d.py <id> [--kit heavy|guards|light|pike|bandit] [--base heavy_infantry] [--anims idle,walk,...] [--dirs S,SW,...]
+  python3 grid3d.py liubei_guards --kit guards --hero liubei --base liubei   # a hero in a class: HERO_CLOTHES, head from --base
 
 Pipeline (tools/unit3d does the rendering, this file only converts):
   1. render every frame of the unit with the 3D body kit in KITS (no head),
@@ -32,6 +33,9 @@ V = m.V
 LEATHER = U.BROWN
 BUCKLER = '#d7bc7c'  # light wood; its ramp keys A B C map to themeB
 U.RAMPS[BUCKLER] = 'ABCC'
+IVORY = '#d3c8a9'  # 유비's robe: its ramp keys } | map to themeB2/3 (the robe tags of his sheet)
+U.RAMPS[IVORY] = '}}||'
+B.R.COLOR.update({'}': (211, 200, 168), '|': (148, 136, 102)})
 B.R.add_ramps(U.RAMPS)
 W, H = 56, 46  # the base sheets' cell
 PAD = {'pike': 12}  # kit -> columns added on each side of the cell (the couched spear reaches past the 56 columns)
@@ -43,7 +47,8 @@ EFFECT = set('EFG123456')
 KEY2TAG = {'0': '#', '1': 'c', '2': 'c', '3': 'b', '4': 'b', '5': 'a', '6': 'a', 'i': 'd', 'j': 'e',
            'f': 'o', 'g': 'n', 'h': 'm', 'k': 'u', 'l': 't', 'm': 's', 'W': 'l', 'X': 'l', 'Y': 'k', 'Z': 'j',
            'A': 'r', 'B': 'q', 'C': 'p',
-           'b': 'r', 'c': 'q', 'd': 'p', 'S': 's', 'T': 't', 'U': 'u'}  # S T U: hemp (적병 tunic), themeC  # themeB: the 경보병 buckler, the 장창병 red spear tassel
+           'b': 'r', 'c': 'q', 'd': 'p', 'S': 's', 'T': 't', 'U': 'u',  # S T U: hemp (적병 tunic), themeC  # themeB: the 경보병 buckler, the 장창병 red spear tassel
+           '}': 'q', '|': 'r'}  # the hero robe (IVORY)
 
 
 def round_shield(p, T):
@@ -80,6 +85,24 @@ def decorate_body(p, shield):
                        (.72, .92, .35, .32), (.42, .96, .37, .32), (.14, 1.0, .39, .3)]:
         m.box(T([0, y, z]), [w, .08, h], U.BLUE)
     m.ell(T([0, -.02, 1.5]), [.3, .22, .1], U.BLUE)
+
+
+def short_armour(p):
+    """The 중보병 body armour without a shield, cloak ending at the waist (the 중기병 rider's, also 유비's 쌍검 중보병)."""
+    T = U.transform(p)
+    m.ell(T([0, -.04, 1.12]), [.42, .3, .42], U.STEEL)  # cuirass, wide enough to show from the side
+    m.box(T([0, -.06, .78]), [.62, .5, .09], LEATHER)  # belt
+    for x in (-.18, 0, .18):  # tassets
+        m.box(T([x, -.29, .6]), [.14, .05, .34], LEATHER)
+    for s in (-1, 1):
+        sh = T([s*.4, 0, 1.42])
+        m.ell(sh + V([s*.01, 0, -.02]), [.22, .24, .2], U.BLUE)  # faction pauldron
+        m.ell(sh + V([s*.01, 0, .09]), [.2, .21, .09], U.STEEL)  # with a steel cap
+        el, ha = T(p['elbows'][0 if s < 0 else 1]), T(p['hands'][0 if s < 0 else 1])
+        m.rod(el*.45 + ha*.55, ha*.9 + el*.1, .15, U.STEEL)  # vambrace on the forearm
+    for z, w, y, h in [(1.52, .82, .29, .2), (1.30, .84, .31, .26), (1.02, .88, .33, .32)]:
+        m.box(T([0, y, z]), [w, .08, h], U.BLUE)  # short cloak, ends at the waist
+    m.ell(T([0, -.02, 1.5]), [.3, .22, .1], U.BLUE)  # cloak collar
 
 
 def decorate_heavy(p):
@@ -146,6 +169,11 @@ def relaxed_pose(pose):
 
 KITS = {'bandit': (BANDIT_KIT, decorate_bandit), 'heavy': (HEAVY_KIT, decorate_heavy), 'guards': (HEAVY_KIT, decorate_guards), 'light': (LIGHT_KIT, decorate_light),
         'pike': (PIKE_KIT, lambda p: decorate_light(p, buckler=False))}
+# A hero serving in a class: the class kit in the hero's clothes (HERO_CLOTHES), or a kit of its own (HERO_KITS). Its head
+# box comes from the hero sheet (--base) at the place the heavy_infantry sheet it was drawn over has its plume, without
+# the hero's old blades, and the attack trail is stamped from the 3D render.
+HERO_CLOTHES = {'liubei': dict(cloth=IVORY, robe=IVORY)}
+HERO_KITS = {('liubei', 'heavy'): (dict(HEAVY_KIT, twin=True), short_armour)}  # 쌍검: no shield
 # 장창병: the cavalry's couched thrust (hand and spear direction of attacks.SPEAR['charge']) on the infantry thrust stance
 A.SWORD['pike'] = dict(name='창 찌르기', effect='pierce', frames=[
     dict(hand=[-.48, .3, 1.2], blade=[0, -1, .12], lean=.1),
@@ -264,11 +292,17 @@ def main():
     ap.add_argument('--base', default='heavy_infantry', help='base sheet whose exported grid (heroes/<base>/grid) supplies heads and effects')
     ap.add_argument('--anims', default=','.join(B.ANIMATIONS))
     ap.add_argument('--dirs', default=','.join(B.DIRECTIONS))
+    ap.add_argument('--hero', choices=HERO_CLOTHES)
     a = ap.parse_args()
     kit = a.kit
     pad, up = PAD.get(kit, 0), UP_ROWS.get(kit, 0)
     w, h = W + 2*pad, H + up + EXTRA_ROWS.get(kit, 0)
     U.KITS[kit], decorate = KITS[kit]
+    if a.hero:
+        k, decorate = HERO_KITS.get((a.hero, kit), (U.KITS[kit], decorate))
+        U.KITS[kit] = dict(k, **HERO_CLOTHES[a.hero])
+    trails = kit in TRAILS or a.hero
+    strip_blades = kit == 'bandit' or a.hero
     A.SELECTED[kit] = ATTACK_STYLE.get(kit) or A.SELECTED['bandit' if kit == 'bandit' else 'infantry']  # the 3D attack style of the base sheet (tools/unit3d's own 'infantry' unit)
     orig_soldier = U.soldier
 
@@ -300,7 +334,7 @@ def main():
             return out
 
         A.pierce = short_pierce
-    if kit in TRAILS:  # the attack trail is drawn from the 3D blade path (a pasted base trail does not follow a new blade)
+    if trails:  # the attack trail is drawn from the 3D blade path (a pasted base trail does not follow a new blade)
         draw = B.E.draw
         B.E.draw = lambda *args: effects.append(draw(*args)) or effects[-1]
 
@@ -339,7 +373,7 @@ def main():
     head = Hd.heads({d: ['.' * 13] * 12 for d in Hd.IRON})  # body only; heads come from the base grid
     out_root, ref_root = HERE.parent / 'heroes' / a.id / 'grid', HERE.parent / 'heroes' / a.base / 'grid'
     # 적병: its own head is hand-drawn without a plume, so the head box is located on the heavy_infantry sheet it was drawn from
-    loc_root = HERE.parent / 'heroes' / ('heavy_infantry' if kit == 'bandit' else a.base) / 'grid'
+    loc_root = HERE.parent / 'heroes' / ('heavy_infantry' if strip_blades else a.base) / 'grid'
     plume = re.compile(r'#(?:j|jk|kj|jj)#')
     solid = lambda c: c != '.' and c not in EFFECT
     for d in a.dirs.split(','):
@@ -369,15 +403,15 @@ def main():
                 top = next(y for y, r in enumerate(loc) if plume.search(r[20:40]))
                 px = 20 + plume.search(loc[top][20:40]).start() + 1
                 cells = {(x, y): ref[y][x] for y in range(top, min(top + 12, H)) for x in range(px - 7, px + 8) if solid(ref[y][x])}
-                if kit == 'bandit':  # the base sheet's old blade (iron) and its outline sit in the head box: the 3D blade replaces them
+                if strip_blades:  # the base sheet's old blade (iron) and its outline sit in the head box: the 3D blade replaces them
                     near = lambda p: [(p[0] + i, p[1] + j) for i in (-1, 0, 1) for j in (-1, 0, 1) if (i, j) != (0, 0)]
                     iron = {p for p, c in cells.items() if c in 'abc'}
                     drop = iron | {p for p, c in cells.items() if c == '#' and any(q in iron for q in near(p))
                                    and not any(cells.get(q, '#') not in '#abc' for q in near(p))}
                     cells = {p: c for p, c in cells.items() if p not in drop}
                 for (x, y), c in cells.items():
-                    out[y + up][x + pad] = HEAD_MAP.get(kit, {}).get(c, c)
-                if kit == 'bandit':
+                    out[y + up][x + pad] = c if a.hero else HEAD_MAP.get(kit, {}).get(c, c)
+                if strip_blades:
                     for (x, y), c in front_weapon(last['fr'], d).items():
                         if 0 <= x + dx < w and 0 <= y + dy < h and c in KEY2TAG:
                             out[y + dy][x + dx] = KEY2TAG[c]
@@ -388,9 +422,9 @@ def main():
                                 out[y + up][x + pad] = ref[y][x]
                 for y in range(H):
                     for x in range(W):
-                        if ref[y][x] in EFFECT and out[y + up][x + pad] == '.' and not (kit in TRAILS and anim == 'attack'):
+                        if ref[y][x] in EFFECT and out[y + up][x + pad] == '.' and not (trails and anim == 'attack'):
                             out[y + up][x + pad] = ref[y][x]
-                if kit in TRAILS and anim == 'attack':
+                if trails and anim == 'attack':
                     for under, over in effects:
                         for layer in (over, under):
                             stamp(layer, out, dx, dy)

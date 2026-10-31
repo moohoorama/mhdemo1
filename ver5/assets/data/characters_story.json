@@ -536,7 +536,7 @@
     62,
     72,
     73,
-    62,
+    88,
     42,
     48
    ],
@@ -1233,7 +1233,10 @@
    ],
    "Look": {
     "Faction": "barbarian",
-    "Sprite": "chariot"
+    "Sprite": "chariot",
+    "Sprites": {
+     "light_infantry": "chariot"
+    }
    },
    "Template": true
   },
@@ -1283,6 +1286,231 @@
    "Look": {
     "Faction": "merchant",
     "Scene": "commoner_elder"
+   }
+  },
+  "zhugeliang": {
+   "Name": "제갈량",
+   "Biography": "자는 공명, 호는 와룡. 삼고초려로 출사해 천하삼분을 제시하고 촉한의 승상이 된다. 연의 최고의 지략가.",
+   "Class": "scholar",
+   "Stats": [
+    98,
+    38,
+    100,
+    82,
+    96,
+    95
+   ],
+   "Level": 9,
+   "Traits": [
+    "stratagem"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes",
+    "tactics_primer"
+   ],
+   "Look": {
+    "Faction": "shu",
+    "Scene": "zhugeliang_noncombat",
+    "Portrait": "zhugeliang",
+    "Sprite": "zhugeliang",
+    "Sprites": {
+     "scholar": "zhugeliang",
+     "staff_officer": "zhugeliang_staff_officer",
+     "strategist": "zhugeliang_strategist"
+    }
+   }
+  },
+  "simayi": {
+   "Name": "사마의",
+   "Biography": "자는 중달. 조조에게 발탁되어 위의 기둥이 된 지략가. 의심이 많고 신중하다.",
+   "Class": "scholar",
+   "Stats": [
+    98,
+    63,
+    99,
+    82,
+    100,
+    88
+   ],
+   "Level": 9,
+   "Traits": [
+    "hinder"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_slips",
+    "plain_clothes",
+    "tactics_primer"
+   ],
+   "Look": {
+    "Faction": "wei",
+    "Scene": "simayi_noncombat",
+    "Portrait": "simayi",
+    "Sprite": "simayi",
+    "Sprites": {
+     "scholar": "simayi",
+     "staff_officer": "simayi_staff_officer",
+     "strategist": "simayi_strategist"
+    }
+   }
+  },
+  "zhouyu": {
+   "Name": "주유",
+   "Biography": "자는 공근. 손책의 의형제로 미주랑이라 불린 오의 대도독. 적벽에서 화공으로 조조의 대군을 불사른다.",
+   "Class": "scholar",
+   "Stats": [
+    96,
+    72,
+    97,
+    87,
+    85,
+    96
+   ],
+   "Level": 9,
+   "Traits": [
+    "fire",
+    "scholar_general"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "treasure_sword",
+    "plain_clothes",
+    "tactics_primer"
+   ],
+   "Look": {
+    "Faction": "wu",
+    "Scene": "zhouyu_noncombat",
+    "Portrait": "zhouyu",
+    "Sprite": "zhouyu",
+    "Sprites": {
+     "scholar": "zhouyu",
+     "staff_officer": "zhouyu_staff_officer",
+     "strategist": "zhouyu_strategist"
+    }
+   }
+  },
+  "luxun": {
+   "Name": "육손",
+   "Biography": "자는 백언. 젊은 서생으로 여겨졌으나 여몽의 뒤를 이어 형주를 안정시키고, 이릉에서 유비의 영채를 불태운다.",
+   "Class": "scholar",
+   "Stats": [
+    96,
+    66,
+    98,
+    90,
+    85,
+    90
+   ],
+   "Level": 9,
+   "Traits": [
+    "fire",
+    "scholar_general"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "treasure_sword",
+    "plain_clothes",
+    "tactics_primer"
+   ],
+   "Look": {
+    "Faction": "wu",
+    "Scene": "luxun_noncombat",
+    "Portrait": "luxun",
+    "Sprite": "luxun",
+    "Sprites": {
+     "scholar": "luxun",
+     "staff_officer": "luxun_staff_officer",
+     "strategist": "luxun_strategist"
+    }
+   }
+  },
+  "huangzhong": {
+   "Name": "황충",
+   "Biography": "자는 한승. 장사의 노장으로 관우와 일기토를 벌인 뒤 유비에게 귀순한다. 정군산에서 하후연을 베어 오호대장에 오른다.",
+   "Class": "archer",
+   "Stats": [
+    89,
+    94,
+    63,
+    91,
+    80,
+    82
+   ],
+   "Level": 9,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "shu",
+    "Scene": "huangzhong_noncombat",
+    "Portrait": "huangzhong",
+    "Sprite": "huangzhong",
+    "Sprites": {
+     "archer": "huangzhong",
+     "crossbow": "huangzhong_crossbow",
+     "repeating_crossbow": "huangzhong_repeating_crossbow"
+    }
+   }
+  },
+  "lumeng": {
+   "Name": "여몽",
+   "Biography": "자는 자명. 무식한 무장이었으나 손권의 권유로 학문에 힘써 괄목상대를 남긴다. 백의도강으로 형주를 빼앗는다.",
+   "Class": "light_infantry",
+   "Stats": [
+    91,
+    82,
+    91,
+    79,
+    77,
+    79
+   ],
+   "Level": 9,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wu",
+    "Scene": "lumeng_noncombat",
+    "Portrait": "lumeng",
+    "Sprite": "lumeng",
+    "Sprites": {
+     "light_infantry": "lumeng",
+     "heavy_infantry": "lumeng_heavy_infantry",
+     "guards": "lumeng_guards"
+    }
+   }
+  },
+  "sunquan": {
+   "Name": "손권",
+   "Biography": "자는 중모. 형 손책의 뒤를 이은 강동의 주인. 푸른 눈에 붉은 수염을 가졌다.",
+   "Class": "light_infantry",
+   "Stats": [
+    88,
+    67,
+    85,
+    76,
+    90,
+    95
+   ],
+   "Level": 9,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wu",
+    "Scene": "sunquan_noncombat",
+    "Portrait": "sunquan"
    }
   }
  }

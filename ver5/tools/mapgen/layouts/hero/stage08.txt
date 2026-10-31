@@ -1,0 +1,40 @@
+# B08  stage08.json  map08.json  origin 0 0
+TRETRE.....................TRE...###________________________
+TRE......,,,......CMP............###___VIL__________________
+......TRE,,,..................TRE###____________CST_________
+............fo3Chufo4''''''......###______fo1Fanfo2___VIL___
+......,,,...............ar2'''...###________________________
+TRE........................fo7'''############[ ]############
+...TRE...............,,,......'''''''''''''''''',,,.........
+TRE...........................,,,.........fo5'''fo6.........
+,,,......TRE......ca3...............'''''''''...............
+........................ca1......''''''.........TRE.........
+............TRETRE............''''''...ar1..................
+.....................,,,...ca2TRE...........................
+..................''''''VIL'''......,,,...,,,,,,......TRE...
+...pl1pl2......''''''...........................,,,VIL...TRE
+...pl3pl4pl5''''''......TRE.........TRE..................TRE
+''''''pl6''''''............TRE.........TRE,,,......TRE......
+
+pl1 Allies[0]  player
+pl2 Allies[1]  player
+pl3 Allies[2]  player
+pl4 Allies[3]  player
+pl5 Allies[4]  player
+pl6 Allies[5]  player
+Fan Party[0]  fangong, ally, group xindu, policy hold, faction gongsun
+fo1 Party[1]  troop_footman, ally, group xindu, policy hold, faction gongsun
+fo2 Party[2]  troop_footman, ally, group xindu, policy hold, faction gongsun
+Chu Enemies[0]  chunyuqiong, enemy, group chief, policy hold, rank commander
+fo3 Enemies[1]  troop_footman, enemy, group guards, policy hold
+fo4 Enemies[2]  troop_footman, enemy, group guards, policy hold
+fo5 Enemies[3]  troop_footman, enemy, group gate, policy react, rank recruit
+fo6 Enemies[4]  troop_footman, enemy, group gate, policy react, rank recruit
+ar1 Enemies[5]  troop_archer, enemy, group gate, policy hold, rank recruit
+ca1 Enemies[6]  troop_cavalry, enemy, group riders, policy react, rank recruit
+ca2 Enemies[7]  troop_cavalry, enemy, group riders, policy react, rank recruit
+ca3 Enemies[8]  troop_cavalry, enemy, group riders, policy react, rank recruit
+fo7 Enemies[9]  troop_footman, enemy, group camp, policy react, rank recruit
+ar2 Enemies[10]  troop_archer, enemy, group camp, policy react, rank recruit
+
+# area 1 신도성 성문: x 15..15, y 5..5

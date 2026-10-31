@@ -163,8 +163,10 @@ type Game struct {
 	learn                     []core.Learner    // learning windows open now, in order
 	learnWin                  learnWindow
 	shopView                  shopView
+	tableDrag                 *tableDrag // the press held on a table (table.go)
 	scene                     *scene
 	tour                      *tourWalk    // the walk round the format 2 scene maps (tour.go, cmd/_town2)
+	world                     *worldWalk   // the walk over the world map (worldmap.go, cmd/_cnmap)
 	explore                   *exploreWalk // the story's walk between battles (explore.go)
 	shopFrom                  string       // the person of the walk whose shop is open
 	intro                     *officerIntro
@@ -445,12 +447,37 @@ func (g *Game) record(before *core.Observation, events []core.Event) {
 		}
 		g.modals = append(g.modals, &modal{kind: "levelup", level: up})
 	}
+	for _, e := range events {
+		if e.Kind == "promotion" {
+			g.modals = append(g.modals, &modal{kind: "promotion", promo: g.promotionUp(before, e.Actor)})
+		}
+	}
 	if gains := acquireGains(before, events); len(gains) > 0 {
 		g.modals = append(g.modals, &modal{kind: "acquire", gains: gains})
 		if before != nil && before.Phase == "scenario" && g.held == nil {
 			g.held = before
 		}
 	}
+}
+
+// promotionUp is the promotion window's content for unit id: its class and look before the events, and after.
+func (g *Game) promotionUp(before *core.Observation, id string) promotionUp {
+	return g.promotionBetween(before, g.S.View(), id)
+}
+
+// promotionBetween is unit id's promotion from observation before to after.
+func (g *Game) promotionBetween(before *core.Observation, after core.Observation, id string) promotionUp {
+	p := promotionUp{id: id}
+	if u := g.unitView(after, id); u != nil {
+		p.to, p.after, p.new = u.Class, u.Stats, g.battleClassArt(u.Def, u.Class, u.Weapon, u.Color)
+		p.from, p.before, p.old = p.to, p.after, p.new
+	}
+	if before != nil {
+		if u := g.unitView(*before, id); u != nil {
+			p.from, p.before, p.old = u.Class, u.Stats, g.battleClassArt(u.Def, u.Class, u.Weapon, u.Color)
+		}
+	}
+	return p
 }
 
 // replayOne shows a single applied command (the player's, or one AI step) as a one-action replay.
@@ -610,6 +637,9 @@ func (g *Game) Update() error {
 	if g.tour != nil {
 		return g.updateTour()
 	}
+	if g.world != nil {
+		return g.updateWorld()
+	}
 	g.advance(1.0 / 60)
 	g.turnPage()
 	g.syncBattleLogStage()
@@ -662,7 +692,7 @@ func (g *Game) Update() error {
 			g.exploreInput()
 		}
 	}
-	logInput := g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker() || g.updateWaypoints() || g.updateDeputyList() || g.updateLearnList() || g.updateShopList()
+	logInput := g.updateTableDrag() || g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker() || g.updateWaypoints() || g.updateDeputyList() || g.updateLearnList() || g.updateShopList()
 	g.updateDeploymentPanel()
 	g.updateHover()
 	g.keys()
@@ -908,6 +938,8 @@ func (g *Game) drawScreen(dst *ebiten.Image) {
 		g.drawEditor(dst)
 	} else if g.tour != nil {
 		g.drawTour(dst)
+	} else if g.world != nil {
+		g.drawWorld(dst)
 	} else if g.S.Screen == "title" || g.S.Engine == nil {
 		g.title(dst)
 	} else {
@@ -1141,6 +1173,7 @@ func (g *Game) battleHUD(dst *ebiten.Image, o core.Observation) {
 	g.battleLeftPanel(dst, o, g.chapterName(o.Node))
 	g.battleHUDPanel(dst, g.player.shownTurn(o))
 	g.drawMenu(dst)
+	g.drawBranches(dst)
 	g.forecast(dst)
 	g.brief(dst, o)
 	g.messages(dst)

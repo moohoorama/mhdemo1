@@ -192,7 +192,7 @@ func (t unitTable) table(g *Game, o core.Observation) table[core.UnitView] {
 	return table[core.UnitView]{
 		cols: cols, rowH: t.rowH, headH: t.headH, size: t.size, center: t.center,
 		empty:    "해당하는 장수가 없습니다.",
-		first:    func(u *core.UnitView) bool { return u.HP > 0 },
+		rank:     func(u *core.UnitView) int { return b2i(u.HP <= 0) },
 		open:     func(u *core.UnitView) bool { return u.HP > 0 },
 		dim:      func(u *core.UnitView) bool { return u.HP <= 0 || u.Faction == "ally" && !u.AI && !unitOrderable(o, u) },
 		selected: func(u *core.UnitView) bool { return g.selected == u.ID },

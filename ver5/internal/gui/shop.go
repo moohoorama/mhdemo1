@@ -91,7 +91,7 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 	}
 	drawTable(g, dst, &v.list, table[goodsRow]{
 		cols: cols, rowH: 36, headH: 32, size: 15, center: true, empty: empty,
-		first:    func(r *goodsRow) bool { return r.ok },
+		rank:     func(r *goodsRow) int { return b2i(!r.ok) },
 		dim:      func(r *goodsRow) bool { return !r.ok },
 		selected: func(r *goodsRow) bool { return r.id == v.pick },
 		pick: func(r *goodsRow) {

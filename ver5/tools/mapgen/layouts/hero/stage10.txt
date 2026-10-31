@@ -1,0 +1,48 @@
+# B10  stage10.json  map10.json  origin 0 0
+TRE,,,......TRE.........TRE......~~~~~~......TRE......,,,TRE.........TRE
+...TRE.........TRE...............~~~~~~.........TRE...,,,...............
+...........................TRE...~~~~~~......,,,.....................TRE
+..................TRE............~~~~~~......TRE........................
+.....................,,,.........~~~~~~.................................
+...CMP...........................~~~~~~...,,,...,,,.........,,,...CMP...
+.................................~~~~~~.................................
+ca3ca1,,,........................~~~~~~...ar1.........fo3......Tng......
+CMPGSZ'''''''''''''''''''''''''''BRGBRG'''''''''Quy'''''''''fo1Yua''''''
+Tiaca2............,,,............~~~~~~...ar2.........fo4''''''fo2......
+.....................,,,.........~~~~~~......,,,......'''''',,,.........
+...CMP......,,,..................~~~~~~.........ar3,,,'''...ca4WenCMP,,,
+.....................TRE.........~~~~~~...TRE.........''',,,ca6ca5......
+...,,,...........................~~~~~~...,,,......''''''...............
+TRE.........,,,...,,,TREpl4pl1;;;~~~~~~.........''''''..................
+...TRE..................pl5pl2;;;;;;;;;;;;...'''TRE..................TRE
+...,,,.........TRE...pl7pl6pl3;;;;;;;;;;;;''''''............TRE.........
+.........TRE............TRE......~~~~~~;;;.........TRE.........,,,...TRE
+
+pl1 Allies[0]  player
+pl2 Allies[1]  player
+pl3 Allies[2]  player
+pl4 Allies[3]  player
+pl5 Allies[4]  player
+pl6 Allies[5]  player
+pl7 Allies[6]  player
+GSZ Party[0]  gongsunzan, ally, group white, policy assault, faction gongsun
+Tia Party[1]  tiankai, ally, group white, policy assault, faction gongsun
+ca1 Party[2]  troop_cavalry, ally, group white, policy assault, faction gongsun
+ca2 Party[3]  troop_cavalry, ally, group white, policy assault, faction gongsun
+ca3 Party[4]  troop_cavalry, ally, group white, policy assault, faction gongsun
+Yua Enemies[0]  yuanshao, enemy, group hq, policy hold, rank commander
+Tng Enemies[1]  tianfeng, enemy, group hq, policy hold
+fo1 Enemies[2]  troop_footman, enemy, group hq-guard, policy hold, rank recruit
+fo2 Enemies[3]  troop_footman, enemy, group hq-guard, policy hold, rank recruit
+Quy Enemies[4]  quyi, enemy, group crossbows, policy hold
+ar1 Enemies[5]  troop_archer, enemy, group crossbows, policy hold
+ar2 Enemies[6]  troop_archer, enemy, group crossbows, policy hold
+Wen Enemies[7]  wenchou, enemy, group wen, policy hold
+ca4 Enemies[8]  troop_cavalry, enemy, group wen, policy hold, rank recruit
+ca5 Enemies[9]  troop_cavalry, enemy, group wen, policy hold, rank recruit
+ca6 Enemies[10]  troop_cavalry, enemy, group wen, policy hold, rank recruit
+ar3 Enemies[11]  troop_archer, enemy, group line, policy hold, rank recruit
+fo3 Enemies[12]  troop_footman, enemy, group line, policy hold, rank recruit
+fo4 Enemies[13]  troop_footman, enemy, group line, policy hold, rank recruit
+
+# area 1 다리 동쪽 머리: x 13..15, y 6..10

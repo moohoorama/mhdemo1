@@ -254,6 +254,11 @@ func walking(e *core.Engine, o core.Observation, me *core.UnitView) map[content.
 
 // walkingFrom is how far each cell is from the nearest seed cell, walking as me would.
 func walkingFrom(e *core.Engine, o core.Observation, me *core.UnitView, seeds []content.Point) map[content.Point]int {
+	return walkingFromWith(e, o, me, seeds, nil)
+}
+
+// walkingFromWith is walkingFrom with extra paid for entering a cell, when extra is set.
+func walkingFromWith(e *core.Engine, o core.Observation, me *core.UnitView, seeds []content.Point, extra func(content.Point) int) map[content.Point]int {
 	dist := map[content.Point]int{}
 	queue := []content.Point{}
 	for _, p := range seeds {
@@ -277,6 +282,9 @@ func walkingFrom(e *core.Engine, o core.Observation, me *core.UnitView, seeds []
 			}
 			if cost == 0 || e.StepCost(me.ID, q.X, q.Y) == 0 && (q.X != me.X || q.Y != me.Y) {
 				continue
+			}
+			if extra != nil {
+				cost += extra(p)
 			}
 			if old, ok := dist[q]; !ok || dist[p]+cost < old {
 				dist[q] = dist[p] + cost

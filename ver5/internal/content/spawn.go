@@ -3,7 +3,27 @@ package content
 import (
 	"fmt"
 	"math"
+	"strings"
 )
+
+// Promotes is where a character serving in class can be promoted: the class's branches, or for a character drawn
+// per class (Look.Sprites) only the branches it has a sprite for, so its own look follows every promotion.
+func (d *Data) Promotes(character, class string) []string {
+	next, sprites := d.Classes[class].Promotes, d.Characters[character].Look.Sprites
+	if len(sprites) == 0 {
+		return next
+	}
+	var out []string
+	for _, c := range next {
+		for key := range sprites {
+			if k, _, _ := strings.Cut(key, ":"); k == c {
+				out = append(out, c)
+				break
+			}
+		}
+	}
+	return out
+}
 
 func (d *Data) ClassFamily(id string) string {
 	c := d.Classes[id]

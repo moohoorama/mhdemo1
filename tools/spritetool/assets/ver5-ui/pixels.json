@@ -2097,5 +2097,89 @@
     "...................................."
    ]
   }
+ ],
+ "item_insu": [
+  {
+   "icon": [
+    "....................................",
+    "....................................",
+    "................kkk.................",
+    "...............kkkkkk...............",
+    ".............kkbceeekkk.............",
+    "............kkkbbegghgkk............",
+    ".....kkkk..kabbbbkeeghgkk...........",
+    "....kkkkkkkabbdddbabfhhkk...........",
+    "...kdddcczkbbddddccbahhhk...........",
+    "..kdddkbbbbbbdddccbbaahhfk..........",
+    "..kccbcbabbbdbbcccbaaaagfk..........",
+    "..kkbaaaaabadddbbbbaaaaggek.........",
+    "...kkaaaaaazzbccbaaaaaaeggek........",
+    ".....kkzzzzzcbbccccbbzzzeggekk......",
+    "....kkkczzzbccbbabazzzzzkeghgkk.....",
+    "...kdddazzzbccbbzzzkkzbbbbbfhhkk....",
+    "...kcbdzzzzzbbbbzzzzzzaabbckhhgk....",
+    "...kcbbbbbbzbbbbbzbbbbbcbzzzhhgfk...",
+    "...kcbbbbccbaabbbbbbccczzzzzkhgfk...",
+    "...kcbbbbcccddzzbbccaazzzzzakggfk...",
+    "...kcbbbbccbbdddccaaaazzzzaakgffk...",
+    "...kcbbbbcbbbbbdaaaaazzzzzaaggffk...",
+    "...kcbbbbcbbbbbcaaaaazzzzzaaggfk....",
+    "....kzbbbbbbbbbcaaaaazzzzakkgekk....",
+    ".....kkbbbbbbbbcaaaaazzzkkkkgek.....",
+    ".......kkbbbbbbcaaaazzzkk.kddak.....",
+    ".........kkbbbbcaaaakkk...keffk.....",
+    "...........kkbbcaakk.....keffffk....",
+    ".............kkkkk......kgghffgk....",
+    ".......................khgghffgkk...",
+    ".......................kffhggfffk...",
+    ".......................kkeffgffkk...",
+    "........................kkkkfkkk....",
+    "...........................kkk......",
+    "....................................",
+    "...................................."
+   ]
+  }
+ ],
+ "item_treasure_sword": [
+  {
+   "icon": [
+    "....................................",
+    "....................................",
+    ".............................kkk....",
+    "...........................kkkhkk...",
+    ".........................kkhhhbbk...",
+    "........................knlhhlbk....",
+    ".......................knllhblbk....",
+    "......................knlllbblkk....",
+    ".....................kklllbbllk.....",
+    ".....................klbbbbllk......",
+    "...................kklbbbbblk.......",
+    "..................kllbbbbblk........",
+    "..................klbbbbblk.........",
+    "................kklbbbbbnk..........",
+    "...............knlbbbbblk...........",
+    "..........kk..kklbbbbblk............",
+    ".........kkokkklbbbbbnk.............",
+    "........kooooklbbbbblk..............",
+    "........koooooobbbblk...............",
+    ".........kyyyooobbnk................",
+    "..........kyyoyobkk.................",
+    ".........kNNyyyyokk.................",
+    "........kNNnyyooyokk................",
+    "......kkNNnykkooyok.................",
+    "....kkkNNokkk.kooyk.................",
+    "...kooookykk...kkk..................",
+    "..kooooykk..........................",
+    "..kyoooRrkk.........................",
+    "..kkyyokrrkkkkk.....................",
+    "...kkyk.krrrrrrkk...................",
+    ".....k...krrrrrrkk..................",
+    "..........krrrrrk...................",
+    "...........krrrkk...................",
+    "............kkkk....................",
+    "....................................",
+    "...................................."
+   ]
+  }
  ]
 }

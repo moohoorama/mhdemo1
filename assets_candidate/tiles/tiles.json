@@ -8454,6 +8454,33 @@
    "layer": "object",
    "scale": "battle",
    "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "scene_bridge_u": {
+   "file": "tiles/scene_bridge_u.png",
+   "size": [
+    192,
+    115
+   ],
+   "pivot": [
+    96,
+    59
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "pixel art drawn on the small-tile grid (gen_pixel_kit.py)"
+  },
+  "antler_barrier_v": {
+   "file": "tiles/antler_barrier_v.png",
+   "size": [
+    42,
+    34
+   ],
+   "pivot": [
+    21,
+    24
+   ],
+   "layer": "object",
+   "note": "antler_barrier mirrored, running along v"
   }
  }
 }
