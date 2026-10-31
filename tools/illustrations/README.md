@@ -131,5 +131,5 @@ Square 1:1 image, plain dark navy background, no text, no watermark, no border.
 
 ## 남은 일
 
-- 유비는 `style-samples/4-ink-wash.png`를 그대로 쓴다(포즈가 다른 새 버전이 필요하면 따로 만든다).
+- 유비는 `style-samples/4-ink-wash.png`에서 옷깃의 금색 자수만 아이보리 옷깃으로 바꾼 `portraits/liubei.png`를 쓴다(2026-10-31, 첫 장은 화풍 기준으로 그대로 둔다).
 - 런타임 크기·자르기 규칙과 `ver5/assets/graphics`로 묶는 방식을 정한다. 지금 GUI는 `portraits.png`·`enemies.png` 4열 시트에서 잘라 쓴다.
