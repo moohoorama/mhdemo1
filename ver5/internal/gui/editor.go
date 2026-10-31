@@ -115,6 +115,11 @@ func (f *Field) dispose() {
 			p.image.Deallocate()
 		}
 	}
+	for _, c := range f.waterChunks {
+		for _, im := range c.frames {
+			im.Deallocate()
+		}
+	}
 	for _, l := range f.levels {
 		l.top.Deallocate()
 		l.shadows.Deallocate()

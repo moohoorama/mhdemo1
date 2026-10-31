@@ -33,8 +33,8 @@ type sceneLevel struct {
 	shadows *ebiten.Image     // render size, like the ground's shadows
 }
 
-// makeScenePlan bakes the flat layer into the ground pictures (one per water frame when there is water) and each
-// raised level's tops into a picture of its own, and keeps the standing pieces.
+// makeScenePlan bakes the flat layer into the ground picture once (its water at the first frame; makeWaterChunks
+// keeps where it plays) and each raised level's tops into a picture of its own, and keeps the standing pieces.
 func (f *Field) makeScenePlan() error {
 	plan, err := scenemap.Build(f.Map.SceneMap, f.A.SceneRules, scenemap.Options{Decor: true})
 	if err != nil {
@@ -42,24 +42,17 @@ func (f *Field) makeScenePlan() error {
 	}
 	ox, oy := f.OriginX*K, f.OriginY*K
 	water := f.A.Animations["water"].Frames
-	animated := false
+	g := newLayer(f.worldSize.X, f.worldSize.Y)
 	for _, d := range plan.Flat {
-		animated = animated || d.Name == "water"
+		if d.Name == "water" {
+			d.Tile = water[0]
+		}
+		f.drawPlan(g, d, ox, oy, nil)
 	}
 	for i := range f.ground {
-		if i > 0 && !animated {
-			f.ground[i] = f.ground[0]
-			continue
-		}
-		g := newLayer(f.worldSize.X, f.worldSize.Y)
-		for _, d := range plan.Flat {
-			if d.Name == "water" {
-				d.Tile = water[i%len(water)]
-			}
-			f.drawPlan(g, d, ox, oy, nil)
-		}
 		f.ground[i] = g
 	}
+	f.makeWaterChunks(plan.Flat)
 	f.clip.DrawImage(f.ground[0], nil)
 	f.addScenePieces(plan.Solid, 0)
 	for i, l := range plan.Levels {
@@ -75,6 +68,79 @@ func (f *Field) makeScenePlan() error {
 		f.addScenePieces(l.Solid, i+1)
 	}
 	return nil
+}
+
+// waterChunk is a square of the ground picture water shows in, baked at every water frame: the ground is baked
+// once and a frame copies its chunks over it, where eight pictures the size of the map, one per water frame, would
+// weigh on a phone's memory and take the scene's opening to bake.
+type waterChunk struct {
+	rect   image.Rectangle
+	frames []*ebiten.Image
+}
+
+const waterChunkSize = 128
+
+// makeWaterChunks bakes the chunks of the ground that water shows in, each with the flat pictures over it in the
+// order drawn.
+func (f *Field) makeWaterChunks(flat []scenemap.Draw) {
+	ox, oy := f.OriginX*K, f.OriginY*K
+	index := map[image.Point]int{}
+	var draws [][]scenemap.Draw
+	cells := func(r image.Rectangle) (image.Point, image.Point) {
+		return image.Pt(r.Min.X/waterChunkSize, r.Min.Y/waterChunkSize), image.Pt((r.Max.X-1)/waterChunkSize, (r.Max.Y-1)/waterChunkSize)
+	}
+	for _, d := range flat {
+		if d.Name != "water" {
+			continue
+		}
+		lo, hi := cells(f.planRect(d, ox, oy))
+		for y := lo.Y; y <= hi.Y; y++ {
+			for x := lo.X; x <= hi.X; x++ {
+				if _, ok := index[image.Pt(x, y)]; !ok {
+					index[image.Pt(x, y)] = len(f.waterChunks)
+					r := image.Rect(x*waterChunkSize, y*waterChunkSize, (x+1)*waterChunkSize, (y+1)*waterChunkSize)
+					f.waterChunks = append(f.waterChunks, waterChunk{rect: r.Intersect(f.ground[0].Bounds())})
+					draws = append(draws, nil)
+				}
+			}
+		}
+	}
+	for _, d := range flat {
+		lo, hi := cells(f.planRect(d, ox, oy))
+		for y := lo.Y; y <= hi.Y; y++ {
+			for x := lo.X; x <= hi.X; x++ {
+				if i, ok := index[image.Pt(x, y)]; ok {
+					draws[i] = append(draws[i], d)
+				}
+			}
+		}
+	}
+	for i := range f.waterChunks {
+		c := &f.waterChunks[i]
+		for _, tile := range f.A.Animations["water"].Frames {
+			img := ebiten.NewImage(c.rect.Dx(), c.rect.Dy())
+			for _, d := range draws[i] {
+				if d.Name == "water" {
+					d.Tile = tile
+				}
+				f.drawPlan(img, d, ox-float64(c.rect.Min.X), oy-float64(c.rect.Min.Y), nil)
+			}
+			c.frames = append(c.frames, img)
+		}
+	}
+}
+
+// playWater lays the water chunks at this water frame on the ground.
+func (f *Field) playWater(frame int) {
+	if len(f.waterChunks) == 0 || frame == f.waterFrame {
+		return
+	}
+	f.waterFrame = frame
+	for _, c := range f.waterChunks {
+		op := &ebiten.DrawImageOptions{Blend: ebiten.BlendCopy}
+		op.GeoM.Translate(float64(c.rect.Min.X), float64(c.rect.Min.Y))
+		f.ground[0].DrawImage(c.frames[frame%len(c.frames)], op)
+	}
 }
 
 // addScenePieces keeps the standing pieces of one ground of the plan.
@@ -105,31 +171,47 @@ func (f *Field) addScenePieces(pieces []scenemap.Piece, level int) {
 	}
 }
 
+// planImage is the picture a draw of a plan lays and where its top left sits from the draw's point; nil for a
+// looping strip, played over its piece every frame by drawStrip.
+func (f *Field) planImage(d scenemap.Draw) (*ebiten.Image, image.Point) {
+	switch d.Kind {
+	case scenemap.DrawTile:
+		return f.A.Tiles[d.Tile].Image, image.Point{}
+	case scenemap.DrawSprite:
+		switch d.Sheet {
+		case "scenery":
+			return f.A.Scenery.sprites[d.Name].Image, image.Point{}
+		case "structures":
+			return f.A.Structures[d.Name].Image, image.Point{}
+		default:
+			return f.A.Props[d.Name].Image, image.Point{}
+		}
+	case scenemap.DrawFill:
+		return f.A.diamond(d.Color), image.Pt(-32, 0)
+	}
+	return nil, image.Point{}
+}
+
+// planRect is where a draw of a plan lays its picture at canvas offset (ox, oy).
+func (f *Field) planRect(d scenemap.Draw, ox, oy float64) image.Rectangle {
+	img, at := f.planImage(d)
+	if img == nil {
+		return image.Rectangle{}
+	}
+	r := image.Rectangle{Max: img.Bounds().Size()}
+	return r.Add(at.Add(image.Pt(int(ox)+d.X, int(oy)+d.Y)))
+}
+
 // drawPlan draws one picture of a plan at canvas offset (ox, oy) of dst; op carries the caller's colour.
 func (f *Field) drawPlan(dst *ebiten.Image, d scenemap.Draw, ox, oy float64, op *ebiten.DrawImageOptions) {
 	if op == nil {
 		op = &ebiten.DrawImageOptions{}
 	}
-	var img *ebiten.Image
-	switch d.Kind {
-	case scenemap.DrawTile:
-		img = f.A.Tiles[d.Tile].Image
-	case scenemap.DrawSprite:
-		switch d.Sheet {
-		case "scenery":
-			img = f.A.Scenery.sprites[d.Name].Image
-		case "structures":
-			img = f.A.Structures[d.Name].Image
-		default:
-			img = f.A.Props[d.Name].Image
-		}
-	case scenemap.DrawFill:
-		img = f.A.diamond(d.Color)
-		op.GeoM.Translate(-32, 0)
-	case scenemap.DrawAnim:
-		return // played over its piece every frame by drawStrip
+	img, at := f.planImage(d)
+	if img == nil {
+		return
 	}
-	op.GeoM.Translate(ox+float64(d.X), oy+float64(d.Y))
+	op.GeoM.Translate(ox+float64(d.X+at.X), oy+float64(d.Y+at.Y))
 	f.renderOp(dst, op)
 	if len(d.Clip) == 0 {
 		dst.DrawImage(img, op)

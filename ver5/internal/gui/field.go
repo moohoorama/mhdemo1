@@ -67,6 +67,8 @@ type Field struct {
 	afloat                       *ebiten.Image   // viewport scratch where a boat and its crew are put together
 	wading                       *ebiten.Image   // viewport scratch where a unit standing in a ford is put together
 	scenePieces                  []scenePiece    // a format 2 scene map's standing layer, see makeScenePlan
+	waterChunks                  []waterChunk    // where a format 2 scene map's water plays on its ground, see playWater
+	waterFrame                   int             // the water frame the ground shows
 	clockMS                      float64
 
 	// beatShadows are the ground shadows of the props a story scene's beats put down (canvas point, shadow):
@@ -475,9 +477,11 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		if f.Map.SunkWater {
 			f.drawFloors(c, clockMS)
 		} else {
+			frame := int(clockMS/float64(water.MS)) % len(f.ground)
+			f.playWater(frame)
 			groundOp := &ebiten.DrawImageOptions{}
 			f.renderOp(c, groundOp)
-			c.DrawImage(f.ground[int(clockMS/float64(water.MS))%len(f.ground)], groundOp)
+			c.DrawImage(f.ground[frame], groundOp)
 		}
 	}
 	if f.Map.Native {
