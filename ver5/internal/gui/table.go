@@ -150,7 +150,6 @@ func drawTable[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], rows
 	rect(dst, float32(r.Min.X), float32(hy+t.headH-1), float32(r.Dx()), 1, goldDim)
 
 	ry := hy + t.headH
-	g.addButton(image.Rect(r.Min.X, ry, r.Min.X+tw, r.Max.Y), "", func() { g.pressTable(l, t.rowH, nil) })
 	for i := l.top; i < len(rows) && i < l.top+fit; i++ {
 		tableRow(g, dst, l, t, ws, &rows[i], image.Rect(r.Min.X, ry+(i-l.top)*t.rowH, r.Min.X+tw, ry+(i-l.top+1)*t.rowH))
 	}
@@ -168,8 +167,8 @@ const tableBarW = 10
 // it drags the thumb, elsewhere it pages toward the press.
 func (g *Game) tableBar(dst *ebiten.Image, l *tableList, track image.Rectangle, fit, n int) {
 	th := max(24, track.Dy()*fit/n)
-	thumb := image.Rect(track.Min.X, track.Min.Y+(track.Dy()-th)*l.top/(n-fit), track.Max.X, 0)
-	thumb.Max.Y = thumb.Min.Y + th
+	ty := track.Min.Y + (track.Dy()-th)*l.top/(n-fit)
+	thumb := image.Rect(track.Min.X, ty, track.Max.X, ty+th)
 	rect(dst, float32(track.Min.X), float32(track.Min.Y), float32(track.Dx()), float32(track.Dy()), color.NRGBA{R: 90, G: 90, B: 90, A: 110})
 	c := color.NRGBA{R: 185, G: 170, B: 135, A: 220}
 	if d := g.tableDrag; hovered(thumb) || d != nil && d.l == l && d.perPx > 0 {

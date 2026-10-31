@@ -7,9 +7,9 @@ import (
 
 func init() { demos["shop"] = demoShop }
 
-// demoShop starts at chapter 1's walk and opens its tools merchant's shop with money to spend and twelve of an item to sell,
+// demoShop starts at chapter 1's walk and opens its tools merchant's shop with money to spend, twelve of an item and every piece of equipment to sell,
 // the opening event skipped and the hero put in the merchant's area; from the frame the shop opens: the buy table (+20), a piece picked (+40) and five of it chosen (+60), bought (+80),
-// the sell tab sorted by count (+100), the beans picked at their most (+120) and sold (+140).
+// the sell tab sorted by count (+100), the beans picked at their most (+120) and sold (+140), and the sell list scrolled down (+160).
 func demoShop(d *Demo) error {
 	if d.stage == "" {
 		d.stage = "start:c01-walk"
@@ -28,6 +28,11 @@ func demoShop(d *Demo) error {
 			d.edit(func(s *core.State) {
 				s.Node, s.Spot.Area = s.Explore, "tools" // past the walk's opening event
 				s.Money = 3000
+				for id, eq := range g.S.Data.Equipment {
+					if eq.Price > 0 {
+						s.Warehouse[id]++ // a sell list longer than the table
+					}
+				}
 				for _, id := range sorted(g.S.Data.Items) {
 					if g.S.Data.Items[id].Price > 0 {
 						s.Inventory[id] += 12
@@ -64,6 +69,8 @@ func demoShop(d *Demo) error {
 			v.n = 1 << 20
 		case 140:
 			trade("sell")
+		case 160:
+			v.list.top = 4
 		}
 	}
 	return nil

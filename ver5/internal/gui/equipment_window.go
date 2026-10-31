@@ -12,8 +12,8 @@ import (
 
 // The equipment window shows the selected officer's three slots as cards: each piece's icon,
 // name, what it adds to the officer's stats and the traits it brings. A card opens the picker,
-// a scrolled list of the pieces in the warehouse that fit the slot, laid out the same way; the
-// picked one is put on with 확인. A trait badge opens its description over both.
+// a table of the pieces in the warehouse the officer can wear in the slot, each with how it changes
+// the stats against what is worn now; the picked one is shown in full below and put on with 확인. A trait badge opens its description over both.
 
 var equipSlots = []string{"weapon", "armor", "accessory"}
 
@@ -24,8 +24,7 @@ var slotIcons = map[string]string{"weapon": "sword", "armor": "robe", "accessory
 
 const (
 	equipCardH   = 132
-	pickRowH     = 112
-	pickerW      = 720
+	pickerW      = 900
 	pickerH      = 680
 	equipInfoW   = 460
 	equipInfoH   = 250
@@ -36,23 +35,19 @@ const (
 
 // equipState is the equipment window's state beyond the overlay name.
 type equipState struct {
-	slot     string // the slot whose picker is open, "" when closed
-	pick     string // the picked piece, pickNothing to take the slot's piece off
-	top      int    // the picker list's scroll, UI px
-	info     equipChip
-	view     image.Rectangle // the picker list as last drawn, in UI px
-	rows     []pickRow
-	press    image.Point
-	pressTop int
-	pressed  bool
-	moved    bool
-	alone    bool // the picker was opened from the deployment's officer window: closing it closes the window too
+	slot  string // the slot whose picker is open, "" when closed
+	pick  string // the picked piece, pickNothing to take the slot's piece off
+	list  tableList
+	info  equipChip
+	alone bool // the picker was opened from the deployment's officer window: closing it closes the window too
 }
 
-type pickRow struct {
-	r    image.Rectangle // UI px
-	item string
-	ok   bool
+// equipRow is one row of the picker: a piece, or taking the slot's piece off (id pickNothing).
+type equipRow struct {
+	id, name string
+	change   []statDelta // against what is worn now
+	chips    []equipChip
+	worn     bool
 }
 
 // equipChip is one trait or skill a piece brings: given while worn, learnable while worn, or
@@ -259,28 +254,82 @@ func (g *Game) itemIcon(dst *ebiten.Image, icon string, x, y, k float64, dim boo
 }
 
 func (g *Game) openPicker(slot string) {
-	g.equip.slot, g.equip.pick, g.equip.top = slot, equipCurrent, 0
+	g.equip.slot, g.equip.pick, g.equip.list = slot, equipCurrent, tableList{}
 }
 
-// pickable lists the picker's rows: taking the piece off when one is worn, the worn one (once,
-// even with more in the warehouse), the warehouse's pieces for the slot the officer can wear,
-// then those it cannot.
-func (g *Game) pickable(o core.Observation, of *core.Character, slot string) []string {
-	out, unfit := []string{}, []string{}
+// pickable are the picker's rows: taking the piece off when one is worn, the worn one (once, even
+// with more in the warehouse), then the warehouse's pieces for the slot the officer can wear.
+func (g *Game) pickable(o core.Observation, of *core.Character, slot string) []equipRow {
+	row := func(id string) equipRow {
+		eq := g.S.Data.Equipment[id]
+		return equipRow{id: id, name: eq.Name, change: g.itemEffect(of.ID, slot, id).change, chips: itemChips(eq.Traits, eq.Learn, eq.Skills)}
+	}
+	out := []equipRow{}
 	worn := of.Equipment[slot]
 	if worn != "" {
-		out = append(out, pickNothing, worn)
+		out = append(out, equipRow{id: pickNothing, name: "장비 벗기", change: negate(g.itemEffect(of.ID, slot, worn).gain)})
+		r := row(worn)
+		r.change, r.worn = nil, true
+		out = append(out, r)
 	}
 	for _, id := range sorted(o.Warehouse) {
-		switch {
-		case o.Warehouse[id] < 1 || g.S.Data.Equipment[id].Slot != slot || id == worn:
-		case g.itemEffect(of.ID, slot, id).err == "":
-			out = append(out, id)
-		default:
-			unfit = append(unfit, id)
+		if o.Warehouse[id] > 0 && g.S.Data.Equipment[id].Slot == slot && id != worn && g.itemEffect(of.ID, slot, id).err == "" {
+			out = append(out, row(id))
 		}
 	}
-	return append(out, unfit...)
+	return out
+}
+
+// pickColumns are the picker's columns: the piece, the change of each stat, the traits it brings.
+func (g *Game) pickColumns(slot string) []column[equipRow] {
+	cols := []column[equipRow]{{key: "name", label: "이름", w: 190, text: true, left: true, pad: 34, size: 1,
+		get: func(r *equipRow) (string, float64) { return r.name, 0 },
+		show: func(r *equipRow, ink color.Color, w float64) (string, color.Color) {
+			if r.worn {
+				return g.clip(r.name, 16, w-g.width(" (착용)", 16)) + " (착용)", gold
+			}
+			return r.name, ink
+		},
+		after: func(dst *ebiten.Image, r *equipRow, cell image.Rectangle) {
+			icon, dim := slotIcons[slot], true
+			if r.id != pickNothing {
+				icon, dim = g.S.Data.Equipment[r.id].Icon, false
+			}
+			g.itemIcon(dst, icon, float64(cell.Min.X+8), float64(cell.Min.Y+cell.Dy()/2-12), .75, dim)
+		}}}
+	for _, st := range statRows {
+		delta := func(r *equipRow) int {
+			for _, d := range r.change {
+				if d.name == st.name {
+					return d.d
+				}
+			}
+			return 0
+		}
+		cols = append(cols, column[equipRow]{key: st.name, label: st.name, w: 62,
+			get: func(r *equipRow) (string, float64) { return fmt.Sprintf("%+d", delta(r)), float64(delta(r)) },
+			show: func(r *equipRow, ink color.Color, w float64) (string, color.Color) {
+				switch d := delta(r); {
+				case d > 0:
+					return fmt.Sprintf("%+d", d), good
+				case d < 0:
+					return fmt.Sprintf("%+d", d), bad
+				}
+				return "—", muted
+			}})
+	}
+	return append(cols, column[equipRow]{key: "traits", label: "특성", left: true, size: -2,
+		get: func(r *equipRow) (string, float64) { return "", float64(len(r.chips)) },
+		show: func(r *equipRow, ink color.Color, w float64) (string, color.Color) {
+			if len(r.chips) == 0 {
+				return "—", muted
+			}
+			names := make([]string, len(r.chips))
+			for i, c := range r.chips {
+				names[i] = g.chipName(c)
+			}
+			return strings.Join(names, ", "), ink
+		}})
 }
 
 // drawEquipPicker draws the picker over the equipment window.
@@ -300,35 +349,67 @@ func (g *Game) equipPicker(dst *ebiten.Image, x, y int) {
 	}
 	slot := g.equip.slot
 	g.titled(dst, image.Rect(x, y, x+pickerW, y+pickerH), slotNames[slot]+" 고르기")
-	g.label(dst, "오른쪽 수치는 지금 장비와 견준 변화입니다.", float64(x+32), float64(y+40), 14, muted)
-	view := image.Rect(x+24, y+74, x+pickerW-24, y+pickerH-78)
-	items := g.pickable(o, of, slot)
-	content := len(items)*(pickRowH+8) - 8
-	g.equip.top = max(0, min(g.equip.top, content-view.Dy()))
-	g.equip.view, g.equip.rows = unframed(view), g.equip.rows[:0]
-	clip := dst.SubImage(image.Rect(int(float64(view.Min.X)*drawPx+drawOX), int(float64(view.Min.Y)*drawPx+drawOY),
-		int(float64(view.Max.X)*drawPx+drawOX), int(float64(view.Max.Y)*drawPx+drawOY))).(*ebiten.Image)
-	inner := view.Max.X - 14
-	if len(items) == 0 {
-		g.label(dst, "창고에 이 칸에 맞는 장비가 없습니다.", float64(view.Min.X+12), float64(view.Min.Y+12), 15, muted)
-	}
-	for i, item := range items {
-		top := view.Min.Y + i*(pickRowH+8) - g.equip.top
-		r := image.Rect(view.Min.X, top, inner, top+pickRowH)
-		if !r.Overlaps(view) {
+	g.label(dst, "수치는 지금 장비와 견준 변화입니다. 머리글을 누르면 정렬합니다.", float64(x+32), float64(y+40), 14, muted)
+	rows := g.pickable(o, of, slot)
+	picked := func(r *equipRow) bool { return r.id == g.equip.pick || g.equip.pick == equipCurrent && r.worn }
+	drawTable(g, dst, &g.equip.list, table[equipRow]{
+		cols: g.pickColumns(slot), rowH: 38, headH: 32, size: 15, center: true,
+		empty: "창고에 이 칸에 맞는 장비가 없습니다.",
+		rank: func(r *equipRow) int {
+			switch {
+			case r.id == pickNothing:
+				return 0
+			case r.worn:
+				return 1
+			}
+			return 2
+		},
+		selected: picked,
+		pick:     func(r *equipRow) { g.equip.pick = r.id },
+	}, rows, image.Rect(x+24, y+70, x+pickerW-24, y+pickerH-200))
+
+	// the row picked, in full: what it gives over the empty slot and every trait it brings
+	box := image.Rect(x+24, y+pickerH-192, x+pickerW-24, y+pickerH-76)
+	rect(dst, float32(box.Min.X), float32(box.Min.Y), float32(box.Dx()), float32(box.Dy()), color.NRGBA{R: 255, G: 240, B: 210, A: 12})
+	bx, by := float64(box.Min.X+16), float64(box.Min.Y+14)
+	for i := range rows {
+		r := &rows[i]
+		if !picked(r) {
 			continue
 		}
-		ok := item == pickNothing || item == of.Equipment[slot] || g.itemEffect(of.ID, slot, item).err == ""
-		g.equip.rows = append(g.equip.rows, pickRow{unframed(r.Intersect(view)), item, ok})
-		g.pickRow(clip, of, slot, item, r, ok, hovered(r.Intersect(view)))
+		if r.id == pickNothing {
+			g.itemIcon(dst, slotIcons[slot], bx+3, by+3, .75, true)
+			g.label(dst, "장비 벗기", bx+40, by+2, 20, gold)
+			g.label(dst, g.itemName(of.Equipment[slot])+"을(를) 창고로 돌립니다.", bx, by+44, 15, ink)
+			break
+		}
+		eq := g.S.Data.Equipment[r.id]
+		g.itemIcon(dst, eq.Icon, bx+3, by+3, .75, false)
+		g.label(dst, eq.Name, bx+40, by+2, 20, gold)
+		note := slotNames[slot]
+		if r.worn {
+			note += " · 착용 중"
+		}
+		g.label(dst, note, bx+48+g.width(eq.Name, 20), by+8, 13, muted)
+		parts := []string{}
+		for _, d := range g.itemEffect(of.ID, slot, r.id).gain {
+			parts = append(parts, fmt.Sprintf("%s %+d", d.name, d.d))
+		}
+		gain := "빈 칸 대비 능력치 변화 없음"
+		if len(parts) > 0 {
+			gain = "빈 칸 대비  " + strings.Join(parts, "  ")
+		}
+		g.label(dst, gain, bx, by+40, 14, ink)
+		cx := bx
+		for _, c := range r.chips {
+			chip := c
+			cx = g.chip(dst, c, cx, by+70, func() { g.equip.info = chip }) + 14
+		}
+		if cx == bx {
+			g.label(dst, "특성 없음", bx, by+72, 13, muted)
+		}
 	}
-	if content > view.Dy() {
-		track := image.Rect(view.Max.X-6, view.Min.Y, view.Max.X, view.Max.Y)
-		rect(dst, float32(track.Min.X), float32(track.Min.Y), float32(track.Dx()), float32(track.Dy()), color.NRGBA{R: 90, G: 90, B: 90, A: 110})
-		th := max(24, view.Dy()*view.Dy()/content)
-		ty := view.Min.Y + (view.Dy()-th)*g.equip.top/(content-view.Dy())
-		rect(dst, float32(track.Min.X), float32(ty), float32(track.Dx()), float32(th), color.NRGBA{R: 185, G: 170, B: 135, A: 220})
-	}
+
 	var confirm func()
 	if c, ok := g.pickCommand(of, slot); ok {
 		confirm = func() {
@@ -338,29 +419,6 @@ func (g *Game) equipPicker(dst *ebiten.Image, x, y int) {
 	}
 	g.btn(dst, image.Rect(x+pickerW/2-230, y+pickerH-60, x+pickerW/2-10, y+pickerH-20), "확인", confirm)
 	g.btn(dst, image.Rect(x+pickerW/2+10, y+pickerH-60, x+pickerW/2+230, y+pickerH-20), "취소", func() { g.equip.slot = "" })
-}
-
-func (g *Game) pickRow(dst *ebiten.Image, of *core.Character, slot, item string, r image.Rectangle, ok, hover bool) {
-	worn := of.Equipment[slot]
-	g.equipPanel(dst, r, ok && hover, g.equip.pick == item || g.equip.pick == equipCurrent && item == worn)
-	x, y := float64(r.Min.X+16), float64(r.Min.Y+14)
-	switch item {
-	case pickNothing:
-		g.itemIcon(dst, slotIcons[slot], x, y+6, 1.25, true)
-		g.label(dst, "장비 벗기", x+60, y+4, 19, ink)
-		g.label(dst, g.itemName(worn)+"을(를) 창고로 돌립니다.", x+60, y+34, 14, muted)
-		g.deltaLine(dst, negate(g.itemEffect(of.ID, slot, worn).gain), "변화 없음", float64(r.Max.X-16), y+8)
-		return
-	case worn:
-		g.label(dst, "착용 중", float64(r.Max.X-16)-g.width("착용 중", 14), y+8, 14, gold)
-	default:
-		n := g.S.View().Warehouse[item]
-		if n > 1 {
-			g.label(dst, fmt.Sprintf("×%d", n), x+60+g.width(g.itemName(item), 19)+8, y+6, 15, muted)
-		}
-	}
-	g.itemIcon(dst, g.S.Data.Equipment[item].Icon, x, y+6, 1.25, !ok)
-	g.itemLines(dst, of.ID, slot, item, x+60, y, float64(r.Max.X-16), item != worn)
 }
 
 func negate(ds []statDelta) []statDelta {
@@ -383,43 +441,16 @@ func (g *Game) pickCommand(of *core.Character, slot string) (core.Command, bool)
 	return core.Command{Kind: "equip", Actor: of.ID, Item: g.equip.pick}, g.itemEffect(of.ID, slot, g.equip.pick).err == ""
 }
 
-// updateEquipPicker scrolls the picker by the wheel or a drag on the list and picks the row a
-// press is let go on without dragging.
+// updateEquipPicker scrolls the picker's table by the wheel.
 func (g *Game) updateEquipPicker() bool {
-	e := &g.equip
-	if g.overlay() != "equipment" || e.slot == "" || e.info.id != "" {
-		e.pressed = false
+	if g.overlay() != "equipment" || g.equip.slot == "" || g.equip.info.id != "" {
 		return false
 	}
-	x, y := cursorPos()
-	p := image.Pt(x, y)
-	if _, wheel := ebiten.Wheel(); wheel != 0 && p.In(e.view) {
-		e.top = max(0, e.top-int(wheel*40))
-	}
-	if mouseJustPressed(ebiten.MouseButtonLeft) && p.In(e.view) {
-		e.pressed, e.moved, e.press, e.pressTop = true, false, p, e.top
-	}
-	if !e.pressed {
-		return false
-	}
-	if mousePressed(ebiten.MouseButtonLeft) {
-		if abs(p.Y-e.press.Y) > dragStartPx {
-			e.moved = true
-		}
-		if e.moved {
-			e.top = max(0, e.pressTop-(p.Y-e.press.Y))
-		}
+	if _, wheel := ebiten.Wheel(); wheel != 0 {
+		g.equip.list.top -= int(wheel)
 		return true
 	}
-	e.pressed = false
-	if !e.moved {
-		for _, r := range e.rows {
-			if r.ok && e.press.In(r.r) {
-				e.pick = r.item
-			}
-		}
-	}
-	return true
+	return false
 }
 
 // drawEquipInfo draws the description of the badge last pressed; any click closes it.

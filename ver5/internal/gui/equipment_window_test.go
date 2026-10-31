@@ -27,20 +27,31 @@ func TestEveryEquipmentAndTraitIconIsOnTheUISheet(t *testing.T) {
 	}
 }
 
-func TestPickerListsTheWornPieceOnce(t *testing.T) {
+func TestPickerListsTheWornPieceOnceAndOnlyWhatFits(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
-	g := &Game{S: &session.Session{Data: d, Engine: core.New(d, 1)}, itemEffects: map[string]itemEffect{}}
-	o := g.S.Engine.Observe()
-	require.NotEmpty(t, o.Characters)
-	of := &o.Characters[0]
-	of.Equipment = map[string]string{"armor": "leather_armor"}
-	o.Warehouse = map[string]int{"leather_armor": 2, "plain_clothes": 1, "iron_sword": 1}
-	rows := g.pickable(o, of, "armor")
-	assert.Equal(t, pickNothing, rows[0])
-	assert.Equal(t, 1, countOf(rows, "leather_armor"))
-	assert.Contains(t, rows, "plain_clothes")
-	assert.NotContains(t, rows, "iron_sword")
+	start := core.New(d, 1)
+	for i := 0; i < 200 && start.Observe().Dialogue.Kind != "battle"; i++ { // past the opening, to the walk where pieces change
+		start.Apply(core.Command{Kind: "next"})
+	}
+	snap := start.Snapshot()
+	require.NotEmpty(t, snap.Characters)
+	snap.Characters[0].Equipment = map[string]string{"armor": "leather_armor"}
+	snap.Warehouse = map[string]int{"leather_armor": 2, "diamond_armor": 1, "plain_clothes": 1, "iron_sword": 1}
+	e, err := core.Restore(d, snap)
+	require.NoError(t, err)
+	g := &Game{S: &session.Session{Data: d, Engine: e}, itemEffects: map[string]itemEffect{}}
+	o := e.Observe()
+	of := g.officer(o, snap.Characters[0].ID)
+	ids := []string{}
+	for _, r := range g.pickable(o, of, "armor") {
+		ids = append(ids, r.id)
+	}
+	assert.Equal(t, pickNothing, ids[0])
+	assert.Equal(t, 1, countOf(ids, "leather_armor"))
+	assert.Contains(t, ids, "diamond_armor")
+	assert.NotContains(t, ids, "plain_clothes", "a robe the first officer's class cannot wear is left out")
+	assert.NotContains(t, ids, "iron_sword")
 }
 
 func countOf(xs []string, x string) int {

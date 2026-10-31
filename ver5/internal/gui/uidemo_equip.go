@@ -32,6 +32,9 @@ func demoEquip(d *Demo) error {
 				}
 			}
 			d.edit(func(s *core.State) {
+				if s.Explore != "" {
+					s.Node = s.Explore // past the walk's opening event, where pieces change
+				}
 				for id := range g.S.Data.Equipment {
 					s.Warehouse[id]++
 				}
@@ -54,7 +57,7 @@ func demoEquip(d *Demo) error {
 			}
 			g.equip.pick = pick
 		case 210:
-			g.equip.top = 300
+			g.equip.list.top = 5
 		case 250:
 			if pick != "" {
 				g.equip.info = equipChip{"trait", g.S.Data.Equipment[pick].Traits[0]}
