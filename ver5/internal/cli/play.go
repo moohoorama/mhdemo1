@@ -412,7 +412,7 @@ func (p *player) targetScreen(o core.Observation, kind string) {
 			case pv.Healing > 0:
 				guess = fmt.Sprintf("회복 %d", pv.Healing)
 			case pv.MaxDamage > 0:
-				guess = fmt.Sprintf("피해 %d~%d 명중 %.0f%% 치명 %.0f%%", pv.MinDamage, pv.MaxDamage, pv.Hit, pv.Crit)
+				guess = fmt.Sprintf("피해 %d~%d 명중 %.0f%% 치명 %.0f%%", pv.Damage[c.Target], pv.CritDamage[c.Target], pv.Hit, pv.Crit)
 			default:
 				guess = fmt.Sprintf("명중 %.0f%% %s", pv.Hit, pv.Effect)
 			}

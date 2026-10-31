@@ -275,6 +275,31 @@ func TestSplashAndPierce(t *testing.T) {
 		t.Fatalf("pierce %v %v", hit, share)
 	}
 }
+func TestPreviewDamageIsEachTargetsOwn(t *testing.T) {
+	e, a, b := arena(t)
+	t2 := e.unit("troop#2")
+	t2.HP, t2.X, t2.Y = e.stats(t2).MaxHP, 7, 6 // behind the target
+	e.char("hero").Class = "rider"
+	e.char("hero").Equipment = map[string]string{"weapon": "spear"}
+	c := Command{Kind: "attack", Actor: a.ID, Target: b.ID}
+	p, err := e.Preview(c)
+	if err != nil || len(p.Targets) != 2 {
+		t.Fatalf("pierce %+v %v", p, err)
+	}
+	d := e.damage(a, b, e.basic())
+	if p.Damage[b.ID] != int(math.Floor(d)) || p.CritDamage[b.ID] != int(math.Floor(d*e.data.Rules.CritMultiplier)) {
+		t.Fatalf("target's own damage %v %v, raw %.1f", p.Damage, p.CritDamage, d)
+	}
+	if p.CritDamage[t2.ID] >= p.CritDamage[b.ID] || p.MaxDamage != p.CritDamage[b.ID]+p.CritDamage[t2.ID] {
+		t.Fatalf("the one behind takes a share of the total: %v, max %d", p.CritDamage, p.MaxDamage)
+	}
+	with(e, "boss", "bulwark_t")
+	p, _ = e.Preview(c)
+	limit, crit := float64(e.stats(b).MaxHP)*.1, d*e.data.Rules.CritMultiplier
+	if crit > limit && p.CritDamage[b.ID] != int(math.Floor(limit+(crit-limit)/2)) {
+		t.Fatalf("bulwark: %d, raw %.1f, limit %.1f", p.CritDamage[b.ID], crit, limit)
+	}
+}
 func TestClassTraits(t *testing.T) {
 	e, a, b := arena(t)
 	t1 := e.unit("troop#1")

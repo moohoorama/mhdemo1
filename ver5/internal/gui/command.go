@@ -585,15 +585,13 @@ func (g *Game) forecast(dst *ebiten.Image) {
 	}
 	a, t := g.unitView(o, c.Actor), g.unitView(o, c.Target)
 	counter := e.CounterDamage(*c) * 2 / 3 // CounterDamage's maximum includes the critical blow
-	dmg := p.MaxDamage
-	if c.Kind == "attack" || c.Kind == "skill" && g.S.Data.Skills[c.Skill].Kind == "physical" {
-		dmg = p.MaxDamage * 2 / 3 // Preview's maximum includes the critical blow
-	}
+	// only the aimed target's own share: a splash or pierce adds the others' damage to MaxDamage
+	dmg, crit := p.Damage[t.ID], p.CritDamage[t.ID]
 	lines := []string{}
 	switch {
 	case dmg >= t.HP:
 		lines = append(lines, "격파!")
-	case p.MaxDamage >= t.HP:
+	case crit >= t.HP:
 		lines = append(lines, "치명타 시 격파!")
 	}
 	if p.Effect != "" && p.MaxDamage == 0 && p.Healing == 0 {
@@ -625,12 +623,12 @@ func (g *Game) forecast(dst *ebiten.Image) {
 		if dmg >= t.HP {
 			back[0] = 0
 		}
-		if p.MaxDamage >= t.HP {
+		if crit >= t.HP {
 			back[1] = 0
 		}
 		y = g.side(dst, a, x, y, sideChange{hp: back, mp: -p.Cost, xp: [2]int{p.XP, p.CritXP}})
 		rect(dst, float32(x), float32(y+3), float32(w-32), 1, goldDim)
-		y = g.side(dst, t, x, y+8, sideChange{hp: [2]int{p.Healing - dmg, p.Healing - p.MaxDamage}, mp: p.MPRecovery})
+		y = g.side(dst, t, x, y+8, sideChange{hp: [2]int{p.Healing - dmg, p.Healing - crit}, mp: p.MPRecovery})
 	}
 	rect(dst, float32(x), float32(y+3), float32(w-32), 1, goldDim)
 	odds := fmt.Sprintf("명중 %.0f%%", p.Hit)

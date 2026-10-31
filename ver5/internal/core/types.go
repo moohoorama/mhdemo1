@@ -140,12 +140,13 @@ type Result struct {
 	Events   []Event
 }
 type Preview struct {
-	Cost, MinDamage, MaxDamage int
-	Healing, MPRecovery        int
-	Effect                     string
-	Hit, Crit, Double          float64 // percent; Crit is 0 for actions that do no damage, Double for spells too
-	XP, CritXP                 int     // the actor's experience in 1/100 percent of a level if it lands, normally and critically
-	Targets                    []string
-	Damage                     map[string]int `json:",omitempty"` // each target's damage from a normal hit
+	Cost, MaxDamage     int // MaxDamage: every target's critical damage together
+	Healing, MPRecovery int
+	Effect              string
+	Hit, Crit, Double   float64 // percent; Crit is 0 for actions that do no damage, Double for spells too
+	XP, CritXP          int     // the actor's experience in 1/100 percent of a level if it lands, normally and critically
+	Targets             []string
+	Damage              map[string]int `json:",omitempty"` // each target's damage from a normal hit
+	CritDamage          map[string]int `json:",omitempty"` // each target's damage from a critical hit
 }
 type Options struct{ Commands []Command }

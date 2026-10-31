@@ -206,13 +206,7 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 		d *= R.CritMultiplier
 		e.emit("critical", u.ID, v.ID, 0)
 	}
-	if k := e.fx(v, content.FxBulwark); k > 0 {
-		limit := float64(e.stats(v).MaxHP) * k
-		if d > limit {
-			d = limit + (d-limit)/2
-		}
-	}
-	n := e.hurt(v, int(math.Floor(d)), u)
+	n := e.hurt(v, int(math.Floor(e.bulwark(v, d))), u)
 	if hit && n > 0 && phys && e.has(u, content.FxPoison) {
 		e.applyStatus(v, "poison", 3, 0)
 		if status, ok := v.Status["poison"]; ok {
@@ -221,6 +215,16 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 		}
 	}
 	return n, hit, crit
+}
+
+// bulwark is what a blow of d leaves after v's 철벽, which halves the part above its share of max HP.
+func (e *Engine) bulwark(v *Unit, d float64) float64 {
+	if k := e.fx(v, content.FxBulwark); k > 0 {
+		if limit := float64(e.stats(v).MaxHP) * k; d > limit {
+			return limit + (d-limit)/2
+		}
+	}
+	return d
 }
 
 // leech is the HP a striker takes back from damage it dealt.

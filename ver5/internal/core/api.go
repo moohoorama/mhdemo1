@@ -158,15 +158,12 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 				k = share[q.ID]
 			}
 			d := e.damage(u, q, s) * k
-			normal, crit := int(math.Floor(d)), int(math.Floor(d))
-			if phys {
-				crit = int(math.Floor(d * e.data.Rules.CritMultiplier))
-			}
+			normal, crit := int(math.Floor(e.bulwark(q, d))), int(math.Floor(e.bulwark(q, d*e.data.Rules.CritMultiplier)))
 			p.MaxDamage += crit
 			if p.Damage == nil {
-				p.Damage = map[string]int{}
+				p.Damage, p.CritDamage = map[string]int{}, map[string]int{}
 			}
-			p.Damage[q.ID] = normal
+			p.Damage[q.ID], p.CritDamage[q.ID] = normal, crit
 			p.XP += e.actionXPAmount(u, q, c.Kind == "skill", normal >= q.HP)
 			p.CritXP += e.actionXPAmount(u, q, c.Kind == "skill", crit >= q.HP)
 		} else if u.Faction == "ally" && (s.Effect != "heal" || heal > 0) {
