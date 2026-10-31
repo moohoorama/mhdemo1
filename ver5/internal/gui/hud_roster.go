@@ -6,15 +6,10 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
-// rosterTable lays the roster window's list out over the width w: the name, then the view's
-// cells sharing the rest equally, in text larger than the panel's.
-func (g *Game) rosterTable(w int) unitTable {
-	cells := unitViewKinds[g.rosterList.kind].cells
-	t := unitTable{cells: cells, nameW: 150, rowH: 36, headH: 36, size: 17, center: true}
-	t.widths = make([]int, len(cells))
-	for i := range t.widths {
-		t.widths[i] = (w - t.nameW) / len(cells)
-	}
+// rosterTable lays the roster window's list out: the name, then the view's cells sharing the
+// rest equally, in text larger than the panel's.
+func (g *Game) rosterTable() unitTable {
+	t := unitTable{cells: unitViewKinds[g.rosterList.kind].cells, nameW: 150, rowH: 36, headH: 36, size: 17, center: true}
 	t.pick = func(id string) {
 		g.closeOverlays()
 		g.focusOfficer(id)
@@ -43,5 +38,5 @@ func (g *Game) rosterWindow(dst *ebiten.Image, x, y, w, h int) {
 		bx := kx + i*(bw+6)
 		g.btn(dst, image.Rect(bx, y+54, bx+bw, y+84), k.title, click)
 	}
-	g.unitTable(dst, o, &g.rosterList, g.rosterTable(right-left), image.Rect(left, y+98, right, y+h-20))
+	g.unitTable(dst, o, &g.rosterList, g.rosterTable(), image.Rect(left, y+98, right, y+h-20))
 }

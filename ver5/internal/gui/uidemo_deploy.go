@@ -156,9 +156,9 @@ func demoDeployDeputy(d *Demo) error {
 		case 89:
 			g.deputyPick = ids[3]
 		case 90:
-			g.deputyList.order = unitSort{"attack", 2}
+			g.deputyList.order = tableSort{"attack", 2}
 		case 105:
-			g.deputyList.kind, g.deputyList.order = 2, unitSort{"a1", 2}
+			g.deputyList.kind, g.deputyList.order = 2, tableSort{"a1", 2}
 			g.deputyPick = bench
 		case 120:
 			g.request(session.Request{Op: "command", Command: core.Command{Kind: "deputy", Actor: ids[1], Target: bench}})
