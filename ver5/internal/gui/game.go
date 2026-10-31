@@ -162,6 +162,7 @@ type Game struct {
 	names                     map[string]string // display name -> character id
 	learn                     []core.Learner    // learning windows open now, in order
 	learnWin                  learnWindow
+	shopView                  shopView
 	scene                     *scene
 	tour                      *tourWalk    // the walk round the format 2 scene maps (tour.go, cmd/_town2)
 	explore                   *exploreWalk // the story's walk between battles (explore.go)
@@ -661,7 +662,7 @@ func (g *Game) Update() error {
 			g.exploreInput()
 		}
 	}
-	logInput := g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker() || g.updateWaypoints() || g.updateDeputyList() || g.updateLearnList()
+	logInput := g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker() || g.updateWaypoints() || g.updateDeputyList() || g.updateLearnList() || g.updateShopList()
 	g.updateDeploymentPanel()
 	g.updateHover()
 	g.keys()

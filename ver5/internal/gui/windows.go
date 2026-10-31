@@ -132,7 +132,7 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 	case "roster":
 		w, h = uiW-100, uiH-90
 	case "shop":
-		w, h = 820, 640
+		w, h = 880, 720
 	case "party":
 		w, h = 1100, 720
 	case "waypoints":

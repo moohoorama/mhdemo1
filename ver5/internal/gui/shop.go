@@ -3,16 +3,51 @@ package gui
 import (
 	"fmt"
 	"image"
+	"image/color"
+	"slices"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/core"
 	"srpg/internal/session"
 )
 
-const shopRowH = 50
+// shopView is the shop window's state: whose shop, the tab, its table, the thing picked and how many.
+type shopView struct {
+	of   string
+	sell bool
+	list tableList
+	pick string
+	n    int
+}
 
-// shopWindow is the shop of the walk's person g.shopFrom: what it sells on the left, what the party owns that it
-// buys back for half on the right, and the money.
+// shopRows are what the shop sells with what the party has of each, or what the party owns that it buys
+// back for half.
+func (g *Game) shopRows(o core.Observation, items []string, sell bool) []goodsRow {
+	rows := []goodsRow{}
+	if !sell {
+		for _, id := range items {
+			r := g.goodsRow(id)
+			r.price, r.count = g.S.Data.Price(id), o.Inventory[id]+o.Warehouse[id]
+			r.ok = o.Money >= r.price
+			rows = append(rows, r)
+		}
+		return rows
+	}
+	for _, store := range []map[string]int{o.Inventory, o.Warehouse} {
+		for _, id := range sorted(store) {
+			if price := g.S.Data.Price(id); price > 0 && store[id] > 0 {
+				r := g.goodsRow(id)
+				r.price, r.count = price/2, store[id]
+				rows = append(rows, r)
+			}
+		}
+	}
+	return rows
+}
+
+// shopWindow is the shop of the walk's person g.shopFrom in two tabs, buying and selling: a table of the
+// things, and below it the one picked in full with how many to trade and what the money comes to; 확인
+// trades.
 func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 	e := g.S.Engine
 	if e == nil || !e.Walking() || e.ExploreFile() == nil {
@@ -23,48 +58,107 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 	if person == nil {
 		return
 	}
+	v := &g.shopView
+	if v.of != g.shopFrom {
+		*v = shopView{of: g.shopFrom}
+	}
 	shop := g.S.Data.Shops[person.Shop]
-	g.label(dst, shop.Name, float64(x+32), float64(y+44), 20, gold)
-	g.label(dst, fmt.Sprintf("돈 %d", o.Money), float64(x+w/2+20), float64(y+46), 18, ink)
-	trade := func(kind, item string) func() {
-		return func() {
-			g.request(session.Request{Op: "command", Command: core.Command{Kind: kind, Target: g.shopFrom, Item: item, Count: 1}})
-		}
+	left, right := x+28, x+w-28
+	g.label(dst, shop.Name, float64(left+4), float64(y+34), 20, gold)
+	money := fmt.Sprintf("돈 %d", o.Money)
+	g.label(dst, money, float64(x+w-120)-g.width(money, 16), float64(y+36), 16, ink) // left of the window's 닫기
+	for i, tab := range []string{"사기", "팔기 (반값)"} {
+		sell := i == 1
+		g.choiceBtn(dst, image.Rect(left+i*146, y+74, left+i*146+140, y+106), tab, v.sell == sell, func() {
+			*v = shopView{of: v.of, sell: sell}
+		})
 	}
-	col := w/2 - 44
-	g.label(dst, "사기", float64(x+32), float64(y+88), 16, muted)
-	for i, id := range shop.Items {
-		r := image.Rect(x+28, y+116+i*shopRowH, x+28+col, y+116+i*shopRowH+shopRowH-6)
-		price := g.S.Data.Price(id)
-		var buy func()
-		if o.Money >= price {
-			buy = trade("buy", id)
-		}
-		g.shopRow(dst, r, id, fmt.Sprintf("%d", price), "사기", buy)
+
+	rows := g.shopRows(o, shop.Items, v.sell)
+	at := slices.IndexFunc(rows, func(r goodsRow) bool { return r.id == v.pick })
+	var picked *goodsRow
+	if at >= 0 {
+		r := rows[at]
+		picked = &r
+	} else {
+		v.pick = ""
 	}
-	g.label(dst, "팔기 (반값)", float64(x+w/2+20), float64(y+88), 16, muted)
-	i := 0
-	for _, store := range []map[string]int{o.Inventory, o.Warehouse} {
-		for _, id := range sorted(store) {
-			price := g.S.Data.Price(id)
-			if price <= 0 || store[id] <= 0 || y+116+(i+1)*shopRowH > y+h-20 {
-				continue
+	cols := g.goodsColumns(goodsNumber("price", "가격", func(r *goodsRow) int { return r.price }), goodsNumber("count", "보유", func(r *goodsRow) int { return r.count }))
+	empty := "파는 물건이 없습니다."
+	if v.sell {
+		cols = g.goodsColumns(goodsNumber("count", "보유", func(r *goodsRow) int { return r.count }), goodsNumber("price", "판매가", func(r *goodsRow) int { return r.price }))
+		empty = "팔 물건이 없습니다."
+	}
+	drawTable(g, dst, &v.list, table[goodsRow]{
+		cols: cols, rowH: 36, headH: 32, size: 15, center: true, empty: empty,
+		first:    func(r *goodsRow) bool { return r.ok },
+		dim:      func(r *goodsRow) bool { return !r.ok },
+		selected: func(r *goodsRow) bool { return r.id == v.pick },
+		pick: func(r *goodsRow) {
+			if v.pick != r.id {
+				v.pick, v.n = r.id, 1
 			}
-			r := image.Rect(x+w/2+16, y+116+i*shopRowH, x+w/2+16+col, y+116+i*shopRowH+shopRowH-6)
-			g.shopRow(dst, r, id, fmt.Sprintf("×%d · %d", store[id], price/2), "팔기", trade("sell", id))
-			i++
+		},
+	}, rows, image.Rect(left, y+118, right, y+h-232))
+
+	// the thing picked, in full, with how many to trade
+	box := image.Rect(left, y+h-224, right, y+h-72)
+	rect(dst, float32(box.Min.X), float32(box.Min.Y), float32(box.Dx()), float32(box.Dy()), color.NRGBA{R: 255, G: 240, B: 210, A: 12})
+	var trade func()
+	if picked == nil {
+		g.label(dst, "물건을 누르면 설명이 여기에 나옵니다.", float64(box.Min.X+16), float64(box.Min.Y+16), 14, muted)
+	} else {
+		bx, by := box.Min.X+16, box.Min.Y+14
+		g.itemIcon(dst, g.itemIconOf(picked.id), float64(bx+3), float64(by+3), .75, false)
+		g.label(dst, picked.name, float64(bx+40), float64(by+2), 20, gold)
+		g.label(dst, picked.kind, float64(bx+48)+g.width(picked.name, 20), float64(by+8), 13, muted)
+		each := fmt.Sprintf("개당 %d", picked.price)
+		g.label(dst, each, float64(box.Max.X-16)-g.width(each, 14), float64(by+6), 14, ink)
+		g.label(dst, wrapWidth(g.itemDesc(picked.id), g.face(14), float64(box.Dx()-32)), float64(bx), float64(by+40), 14, ink)
+
+		most := picked.count
+		if !v.sell {
+			most = o.Money / max(1, picked.price)
 		}
+		g.countPicker(dst, bx, box.Max.Y-48, &v.n, most)
+		sum, after := picked.price*v.n, o.Money-picked.price*v.n
+		if v.sell {
+			after = o.Money + sum
+		}
+		msg, c := fmt.Sprintf("%d개 × %d = %d   돈 %d → %d", v.n, picked.price, sum, o.Money, after), color.Color(ink)
+		if most < 1 {
+			msg, c = fmt.Sprintf("돈이 %d 모자랍니다", picked.price-o.Money), bad
+		} else {
+			kind, id, n := "buy", picked.id, v.n
+			if v.sell {
+				kind = "sell"
+			}
+			trade = func() {
+				g.request(session.Request{Op: "command", Command: core.Command{Kind: kind, Target: g.shopFrom, Item: id, Count: n}})
+				v.n = 1
+			}
+		}
+		g.label(dst, msg, float64(box.Max.X-16)-g.width(msg, 14), float64(box.Max.Y-41), 14, c)
 	}
-	if i == 0 {
-		g.label(dst, "팔 물건이 없습니다", float64(x+w/2+20), float64(y+120), 15, muted)
-	}
+	g.centeredBtn(dst, image.Rect(right-160, y+h-60, right, y+h-22), "확인", trade)
 }
 
-// shopRow is one line of the shop: the piece's icon and name, a note (price, count) and its button.
-func (g *Game) shopRow(dst *ebiten.Image, r image.Rectangle, id, note, button string, click func()) {
-	rect(dst, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy()), trough)
-	g.itemIcon(dst, g.itemIconOf(id), float64(r.Min.X+8), float64(r.Min.Y+6), 1, false)
-	g.label(dst, g.itemName(id), float64(r.Min.X+52), float64(r.Min.Y+11), 16, ink)
-	g.label(dst, note, float64(r.Max.X-180), float64(r.Min.Y+12), 15, gold)
-	g.btn(dst, image.Rect(r.Max.X-78, r.Min.Y+7, r.Max.X-8, r.Max.Y-7), button, click)
+// itemDesc is what a thing does, equipment or item.
+func (g *Game) itemDesc(id string) string {
+	if eq, ok := g.S.Data.Equipment[id]; ok {
+		return eq.Desc
+	}
+	return g.S.Data.Items[id].Desc
+}
+
+// updateShopList scrolls the shop's table by the wheel.
+func (g *Game) updateShopList() bool {
+	if g.overlay() != "shop" {
+		return false
+	}
+	if _, wheel := ebiten.Wheel(); wheel != 0 {
+		g.shopView.list.top -= int(wheel)
+		return true
+	}
+	return false
 }

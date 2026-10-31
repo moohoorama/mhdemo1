@@ -16,6 +16,7 @@ import (
 type partyView struct {
 	items        bool
 	filter, item string
+	list         tableList
 }
 
 // belonging is a kind of thing the party has: how many are carried or stored, and who wears the rest.
@@ -115,12 +116,8 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 	g.officerDetail(dst, o, image.Rect(x+470, y+92, x+w-28, y+h-20))
 }
 
-const (
-	belongW, belongH, belongGap = 154, 72, 8
-	belongCols                  = 4
-)
-
-// belongingsTab lists the party's things of the kind picked on the left, the one looked at described on the right.
+// belongingsTab lists the party's things of the kind picked in a table on the left, the one looked at described on
+// the right.
 func (g *Game) belongingsTab(dst *ebiten.Image, o core.Observation, x, y, w, h int) {
 	p := &g.party
 	if p.filter == "" {
@@ -128,7 +125,7 @@ func (g *Game) belongingsTab(dst *ebiten.Image, o core.Observation, x, y, w, h i
 	}
 	for i, k := range belongingKinds {
 		kind := k
-		g.choiceBtn(dst, image.Rect(x+28+i*102, y, x+28+i*102+96, y+30), kind, p.filter == kind, func() { p.filter, p.item = kind, "" })
+		g.choiceBtn(dst, image.Rect(x+28+i*102, y, x+28+i*102+96, y+30), kind, p.filter == kind, func() { p.filter, p.item, p.list.top = kind, "", 0 })
 	}
 	var shown []belonging
 	for _, b := range g.belongings(o) {
@@ -136,43 +133,36 @@ func (g *Game) belongingsTab(dst *ebiten.Image, o core.Observation, x, y, w, h i
 			shown = append(shown, b)
 		}
 	}
-	rows := (h - 44) / (belongH + belongGap)
-	shown = shown[:min(len(shown), rows*belongCols)]
 	if len(shown) == 0 {
 		g.label(dst, "가진 물건이 없습니다", float64(x+32), float64(y+52), 15, muted)
 		return
 	}
 	cur := shown[0]
-	for _, b := range shown {
+	rows := make([]goodsRow, len(shown))
+	for i, b := range shown {
 		if b.id == p.item {
 			cur = b
 		}
-	}
-	for i, b := range shown {
-		id := b.id
-		cx, cy := x+28+i%belongCols*(belongW+belongGap), y+44+i/belongCols*(belongH+belongGap)
-		r := image.Rect(cx, cy, cx+belongW, cy+belongH)
-		if id == cur.id {
-			rect(dst, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy()), hoverC)
-			strokeRect(dst, float32(r.Min.X)+.5, float32(r.Min.Y)+.5, float32(r.Dx()-1), float32(r.Dy()-1), 1.5, gold)
-		} else {
-			g.btnFace(dst, r, g.itemName(id), func() { p.item = id })
+		rows[i] = g.goodsRow(b.id)
+		rows[i].count = b.count()
+		switch {
+		case len(b.wearer) == 1:
+			rows[i].wear = b.wearer[0]
+		case len(b.wearer) > 1:
+			rows[i].wear = fmt.Sprintf("%d명", len(b.wearer))
+		case g.S.Data.Equipment[b.id].Slot != "":
+			rows[i].wear = "창고"
 		}
-		g.itemIcon(dst, g.itemIconOf(id), float64(cx+12), float64(cy+20), 1, false)
-		g.label(dst, g.itemName(id), float64(cx+56), float64(cy+8), 14, ink)
-		g.label(dst, fmt.Sprintf("×%d", b.count()), float64(cx+56), float64(cy+29), 13, gold)
-		tag := "창고"
-		if len(b.wearer) > 0 {
-			tag = "장착: " + b.wearer[0]
-			if len(b.wearer) > 1 {
-				tag = fmt.Sprintf("%d명 장착", len(b.wearer))
-			}
-		} else if _, ok := g.S.Data.Equipment[id]; !ok {
-			tag = ""
-		}
-		g.label(dst, tag, float64(cx+56), float64(cy+49), 12, muted)
 	}
-	g.belongingDetail(dst, cur, image.Rect(x+28+belongCols*(belongW+belongGap)+16, y, x+w-28, y+h-20))
+	const tableW = 648
+	drawTable(g, dst, &p.list, table[goodsRow]{
+		cols: g.goodsColumns(goodsNumber("count", "수량", func(r *goodsRow) int { return r.count }),
+			column[goodsRow]{key: "wear", label: "장착", w: 150, text: true, get: func(r *goodsRow) (string, float64) { return r.wear, 0 }}),
+		rowH: 36, headH: 32, size: 15, center: true,
+		selected: func(r *goodsRow) bool { return r.id == cur.id },
+		pick:     func(r *goodsRow) { p.item = r.id },
+	}, rows, image.Rect(x+28, y+44, x+28+tableW, y+h-20))
+	g.belongingDetail(dst, cur, image.Rect(x+28+tableW+16, y, x+w-28, y+h-20))
 }
 
 // belongingDetail describes a thing: its picture, kind and use, how many there are and who wears them; equipment
