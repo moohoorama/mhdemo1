@@ -1,0 +1,607 @@
+{
+ "Chapter": 10,
+ "Title": "공손찬의 진영 (계교)",
+ "Renders": [
+  {
+   "Scene": "c10-start",
+   "Shots": [
+    {
+     "Name": "stage",
+     "After": ""
+    }
+   ],
+   "Spots": [
+    {
+     "Label": "A",
+     "Name": "북서쪽 뒷문",
+     "Cells": [
+      [
+       -1,
+       6
+      ],
+      [
+       -1,
+       7
+      ],
+      [
+       0,
+       6
+      ],
+      [
+       0,
+       7
+      ]
+     ]
+    },
+    {
+     "Label": "B",
+     "Name": "진영 마당",
+     "Cells": [
+      [
+       3,
+       6
+      ],
+      [
+       3,
+       7
+      ],
+      [
+       3,
+       8
+      ],
+      [
+       4,
+       6
+      ],
+      [
+       4,
+       7
+      ],
+      [
+       4,
+       8
+      ],
+      [
+       5,
+       6
+      ],
+      [
+       5,
+       7
+      ],
+      [
+       5,
+       8
+      ],
+      [
+       6,
+       6
+      ],
+      [
+       6,
+       7
+      ],
+      [
+       6,
+       8
+      ],
+      [
+       7,
+       6
+      ],
+      [
+       7,
+       7
+      ],
+      [
+       7,
+       8
+      ]
+     ]
+    },
+    {
+     "Label": "C",
+     "Name": "부상병 거적",
+     "Cells": [
+      [
+       1,
+       9
+      ],
+      [
+       2,
+       9
+      ],
+      [
+       3,
+       9
+      ],
+      [
+       4,
+       9
+      ],
+      [
+       1,
+       10
+      ],
+      [
+       2,
+       10
+      ],
+      [
+       3,
+       10
+      ]
+     ]
+    },
+    {
+     "Label": "D",
+     "Name": "공손찬의 막사 앞",
+     "Cells": [
+      [
+       5,
+       3
+      ],
+      [
+       5,
+       4
+      ],
+      [
+       5,
+       5
+      ]
+     ]
+    }
+   ]
+  }
+ ],
+ "Entries": [
+  {
+   "Key": "c10-start",
+   "Kind": "scene",
+   "Section": "장면",
+   "Text": "계교 · 공손찬의 진영, 해 질 녘",
+   "Scene": "c10-start",
+   "Hint": "맵 S_gongsun_camp, dusk\n부상병#1 (1,9) NE sitground wounded_noncombat\n부상병#2 (2,9) SE sitground wounded_noncombat\n부상병#3 (3,9) NE sitground wounded_noncombat\n부상병#4 (2,10) NE sitground wounded_noncombat\n백마병#1 (10,8) SE light_infantry\n백마병#2 (14,5) SW light_infantry\n전해 (4,9) NW\n공손찬 (5,3) SE 처음엔 무대 밖\n조운 (5,3) SE 처음엔 무대 밖\n유비 (-2,7) SE 처음엔 무대 밖\n관우 (-2,6) SE 처음엔 무대 밖\n장비 (-2,7) SE 처음엔 무대 밖\n간옹 (-2,6) SE 처음엔 무대 밖\n번궁 (-2,7) SE 처음엔 무대 밖\n주변: 부상병#1: 혼잣말 으으……|노병이……\n주변: 부상병#3: 혼잣말 말이…… 내 말이……\n주변: 효과 smallfire",
+   "Stage": "해 질 녘. (C) 거적 위에 화살 맞은 백마병 넷이 주저앉아 있다. 몇이 신음한다(「으으……」 「노병이……」 「말이…… 내 말이……」).\n전해가 (C) 부상병들 곁에 서서 (A) 뒷문 쪽을 바라보고 있다. 백마병 둘이 진영 안쪽에서 보초를 선다.\n유비 일행, 공손찬, 조운은 아직 보이지 않는다."
+  },
+  {
+   "Key": "c10-01",
+   "Kind": "branch",
+   "Section": "장면",
+   "Fixed": true,
+   "Note": "거록 부목표(장비가 안량을 일기토로 물리침) 달성 → 「달성」 해설, 실패 → 「실패」 해설",
+   "Stage": "",
+   "NoteByHand": true
+  },
+  {
+   "Key": "c10-a1",
+   "Kind": "narrate",
+   "Section": "장면",
+   "Text": "거록을 뚫은 유비군은 계교로 서둘렀다.",
+   "Hint": "묶음1: 카메라 (5,7) / 줌 2 / 1.5초 대기",
+   "Stage": "카메라가 (B) 마당을 가까이 당겨 비추고 잠시 머문다.",
+   "Note": "부목표 달성일 때"
+  },
+  {
+   "Key": "c10-b1",
+   "Kind": "narrate",
+   "Section": "장면",
+   "Text": "거록을 뚫은 유비군은 계교로 서둘렀다.",
+   "Hint": "묶음1: 카메라 (5,7) / 줌 2 / 1.5초 대기",
+   "Stage": "카메라가 (B) 마당을 가까이 당겨 비추고 잠시 머문다.",
+   "Note": "부목표 실패일 때"
+  },
+  {
+   "Key": "c10-03",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "현덕 공! 늦지 않으셨습니다. ……아니, 조금 늦으셨습니다.",
+   "Speaker": "전해",
+   "SpeakerID": "tiankai",
+   "Hint": "묶음1: 유비: (-2,7)에 등장 (5,7)로 걷기(속도 0.9) / 관우: (-2,6)에 등장 (5,6)로 걷기(속도 0.9) +0.2초 / 장비: (-2,7)에 등장 (4,7)로 걷기(속도 0.9) +0.7초 / 간옹: (-2,6)에 등장 (4,6)로 걷기(속도 0.9) +0.9초 / 번궁: (-2,7)에 등장 (3,7)로 걷기(속도 0.9) +1.4초 / 전해: (4,8) 거쳐 (7,8)로 걷기(속도 1.3) +1.6초\n묶음2: 전해: 방향 NW / 유비: 방향 SE / 관우: 방향 SE",
+   "Stage": "유비가 (A) 뒷문으로 걸어 들어와 (B)에 선다. 관우, 장비, 간옹, 번궁이 조금씩 사이를 두고 뒤따라 들어와 유비 뒤에 모인다(관우는 유비 옆, 장비와 간옹은 그 뒤, 번궁이 맨 뒤).\n일행이 들어오는 동안 전해가 (C)를 떠나 바삐 (B)로 와서 일행 앞에 선다. 전해와 유비, 관우가 서로 마주 본다."
+  },
+  {
+   "Key": "c10-04",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "무슨 일이오?",
+   "Speaker": "유비",
+   "SpeakerID": "liubei",
+   "Stage": ""
+  },
+  {
+   "Key": "c10-05",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "오늘 낮 장군께서 백마의종을 이끌고 다리를 건너셨는데, 국의의 노병이 방패 뒤에 엎드려 있다가 일제히 쏘았습니다.",
+   "Speaker": "전해",
+   "SpeakerID": "tiankai",
+   "Stage": ""
+  },
+  {
+   "Key": "c10-06",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "백마들이 한꺼번에 쓰러지고, 장군께서도 말에서—",
+   "Speaker": "전해",
+   "SpeakerID": "tiankai",
+   "Stage": ""
+  },
+  {
+   "Key": "c10-07",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "떨어질 뻔한 게 아니라 떨어졌다. 이 젊은이가 아니었으면 지금쯤 원본초의 진영에 내 목이 걸렸겠지.",
+   "Speaker": "공손찬",
+   "SpeakerID": "gongsunzan",
+   "Hint": "묶음1: 공손찬: (5,3)에 등장 (5,5) 거쳐 (6,6) 거쳐 (7,7)로 걷기(속도 0.8) / 조운: (5,3)에 등장 (5,5) 거쳐 (6,5) 거쳐 (7,6)로 걷기(속도 0.8) +0.5초\n묶음2: 공손찬: 방향 NW / 조운: 방향 NW / 전해: 방향 NE",
+   "Stage": "공손찬이 (D) 막사에서 나와 (B)로 걸어와 전해 옆에 선다. 조운이 반걸음 뒤에서 따라 나와 공손찬 곁에 선다.\n공손찬과 조운은 유비 일행을 향해 서고, 전해는 공손찬 쪽으로 몸을 돌린다."
+  },
+  {
+   "Key": "c10-08",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "원소 밑에 있다가, 원소에게 백성을 구할 뜻이 없다며 나를 찾아왔다. 자룡, 인사하게.",
+   "Speaker": "공손찬",
+   "SpeakerID": "gongsunzan",
+   "Stage": ""
+  },
+  {
+   "Key": "c10-09",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "조운입니다. 때를 맞춰서 다행이었습니다.",
+   "Speaker": "조운",
+   "SpeakerID": "zhaoyun",
+   "Hint": "묶음1: 조운: 동작 action",
+   "Stage": "조운이 예를 갖춰 인사한다."
+  },
+  {
+   "Key": "c10-10",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "유비 현덕이오. ……어지러운 때에 섬길 주인을 스스로 고르는 사람은 드물지요.",
+   "Speaker": "유비",
+   "SpeakerID": "liubei",
+   "Hint": "묶음1: 유비: 방향 SE / 유비: 동작 action",
+   "Stage": "유비가 조운을 향해 답례한다."
+  },
+  {
+   "Key": "c10-11",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "현덕 공의 이야기는 여기저기서 많이 들었습니다. 백성을 구하고 역적 동탁을 물리치는데 애쓰셨다구요.",
+   "Speaker": "조운",
+   "SpeakerID": "zhaoyun",
+   "Stage": ""
+  },
+  {
+   "Key": "c10-12",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "형~ 이 양반 눈빛이 보통이 아니유. 형 쳐다보는 눈이 딱 내가 형 처음 볼 때 같구먼유.",
+   "Speaker": "장비",
+   "SpeakerID": "zhangfei",
+   "Hint": "묶음1: 장비: 방향 SE",
+   "Stage": "장비가 조운 쪽으로 고개를 돌린다."
+  },
+  {
+   "Key": "c10-13",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "익덕.",
+   "Speaker": "관우",
+   "SpeakerID": "guanyu",
+   "Hint": "묶음1: 관우: 방향 SW",
+   "Stage": "관우가 장비를 돌아본다."
+  },
+  {
+   "Key": "c10-14",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "내일 나는 남은 백마를 몰고 다리 한가운데로 들어간다. 현덕, 자네는 자룡과 함께 여울로 돌아 다리 머리의 뒤를 쳐 다오.",
+   "Speaker": "공손찬",
+   "SpeakerID": "gongsunzan",
+   "Stage": ""
+  },
+  {
+   "Key": "c10-15",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "노병이 내 쪽을 보고 있을 때 등을 치면 단번에 무너진다. 늦지 마라.",
+   "Speaker": "공손찬",
+   "SpeakerID": "gongsunzan",
+   "Hint": "묶음1: 공손찬: 방향 NE",
+   "Stage": "공손찬이 조운을 돌아본다."
+  },
+  {
+   "Key": "c10-18",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "형님, 맡겨 주십시오. ……자룡, 잘 부탁하오.",
+   "Speaker": "유비",
+   "SpeakerID": "liubei",
+   "Hint": "묶음1: 공손찬: 방향 NW / 유비: 동작 action",
+   "Stage": "공손찬이 다시 유비를 본다. 유비가 예를 갖춘다."
+  },
+  {
+   "Key": "c10-19",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "명을 받들겠습니다.",
+   "Speaker": "조운",
+   "SpeakerID": "zhaoyun",
+   "Hint": "묶음1: 조운: 방향 NW / 조운: 동작 action",
+   "Stage": "조운이 유비를 향해 서서 예를 갖춘다."
+  },
+  {
+   "Key": "c10-20",
+   "Kind": "join",
+   "Section": "장면",
+   "Fixed": true,
+   "Note": "조운 합류",
+   "Stage": "조운 합류 알림."
+  },
+  {
+   "Key": "c10-16",
+   "Kind": "branch",
+   "Section": "장면",
+   "Fixed": true,
+   "Note": "부목표 달성이면 바로 탐험, 실패면 전해의 다음 줄 뒤에 탐험",
+   "Stage": "",
+   "NoteByHand": true
+  },
+  {
+   "Key": "c10-17",
+   "Kind": "say",
+   "Section": "장면",
+   "Text": "거록에서 물러난 안량이 원소 진영에 닿았다는 보고도 있습니다. 내일은 그자도 나올 겁니다.",
+   "Speaker": "전해",
+   "SpeakerID": "tiankai",
+   "Stage": "",
+   "Note": "부목표 실패일 때만"
+  },
+  {
+   "Key": "c10-walk",
+   "Kind": "explore",
+   "Section": "장면",
+   "Fixed": true,
+   "Note": "탐험 explore10",
+   "Stage": "장면이 끝나고 진영 탐험으로 이어진다(아래 「탐험」)."
+  },
+  {
+   "Key": "c10-battle",
+   "Kind": "battle",
+   "Section": "장면",
+   "Fixed": true,
+   "Note": "계교 전투 — 출전 준비",
+   "Stage": ""
+  },
+  {
+   "Key": "explore10:camp",
+   "Kind": "area",
+   "Section": "탐험",
+   "Text": "계교 · 공손찬의 진영",
+   "Fixed": true,
+   "Note": "explore10 · 맵 S_gongsun_camp",
+   "Stage": "유비가 진영 동쪽에서 시작해 자유롭게 걸어 다닌다. 공손찬의 막사로 들어갈 수 있다."
+  },
+  {
+   "Key": "explore10:camp:관우@camp:talk0",
+   "Section": "탐험",
+   "Who": "관우",
+   "Stage": "동쪽 앞문 안쪽에 서 있다. 말을 걸면 출진을 묻는다.",
+   "Kind": "talk",
+   "Text": "형님, 다리 앞에 설 채비가 끝났습니다. 출진하시겠습니까?",
+   "Speaker": "관우",
+   "SpeakerID": "guanyu",
+   "Note": "출진 묻기",
+   "Hint": "작은 칸 (28,13) NW"
+  },
+  {
+   "Key": "explore10:camp:조운:talk0",
+   "Section": "탐험",
+   "Who": "조운",
+   "Stage": "진영 남동쪽, 무기 걸이 옆에 서 있다.",
+   "Kind": "talk",
+   "Text": "내일은 공의 곁에서 싸웁니다. 노병은 앞만 봅니다. 등 뒤로 붙으면 무너집니다.",
+   "Speaker": "조운",
+   "SpeakerID": "zhaoyun",
+   "Note": "말 걸 때 1번째",
+   "Hint": "작은 칸 (27,21) NW"
+  },
+  {
+   "Key": "explore10:camp:조운:talk1",
+   "Section": "탐험",
+   "Who": "조운",
+   "Stage": "",
+   "Kind": "talk",
+   "Text": "여울은 얕지만 말은 느려집니다. 서둘러야 공손 장군과 때를 맞춥니다.",
+   "Speaker": "조운",
+   "SpeakerID": "zhaoyun",
+   "Note": "말 걸 때 2번째"
+  },
+  {
+   "Key": "explore10:camp:전해:talk0",
+   "Section": "탐험",
+   "Who": "전해",
+   "Stage": "진영 한가운데 길, 공손찬의 막사 쪽에 서 있다.",
+   "Kind": "talk",
+   "Text": "장군께서는 오늘 일로 몹시 분해하십니다. 내일은 여울로 도는 길, 늦지 않으셔야 합니다.",
+   "Speaker": "전해",
+   "SpeakerID": "tiankai",
+   "Note": "말 걸 때",
+   "Hint": "작은 칸 (17,11) SE"
+  },
+  {
+   "Key": "explore10:camp:장비@camp:talk0",
+   "Section": "탐험",
+   "Who": "장비",
+   "Stage": "북쪽 화로 옆에 서 있다.",
+   "Kind": "talk",
+   "Text": "공손 장군이 백마 준다던 약속, 내일 이기고 나면 꼭 받아 내야겄슈.",
+   "Speaker": "장비",
+   "SpeakerID": "zhangfei",
+   "Note": "말 걸 때",
+   "Hint": "작은 칸 (20,9) SE"
+  },
+  {
+   "Key": "explore10:camp:간옹@camp:talk0",
+   "Section": "탐험",
+   "Who": "간옹",
+   "Stage": "가운데 막사들 앞, 부상병 쪽을 보고 서 있다.",
+   "Kind": "talk",
+   "Text": "부상병들한테 약을 나눠 줬네. 공손 장군 진영은 말 먹이는 넉넉한데 사람 약은 모자라더군.",
+   "Speaker": "간옹",
+   "SpeakerID": "jianyong",
+   "Note": "말 걸 때",
+   "Hint": "작은 칸 (22,17) NE"
+  },
+  {
+   "Key": "explore10:camp:번궁@camp:talk0",
+   "Section": "탐험",
+   "Who": "번궁",
+   "Stage": "서쪽 뒷문 가까이 서 있다.",
+   "Kind": "talk",
+   "Text": "여울을 건너면 다리 머리 뒤까지 금방이오. 노병을 등 뒤에서 치면 원소 곁의 문추가 달려올 테니 대비하시오.",
+   "Speaker": "번궁",
+   "SpeakerID": "fangong",
+   "Note": "말 걸 때",
+   "Hint": "작은 칸 (8,12) SE"
+  },
+  {
+   "Key": "explore10:camp:부상병:chatter0",
+   "Section": "탐험",
+   "Who": "부상병",
+   "Stage": "뒷문 안쪽 거적 위에 주저앉아 있다.",
+   "Kind": "chatter",
+   "Text": "으으……",
+   "Note": "혼잣말 말풍선, | 로 여러 개",
+   "Hint": "작은 칸 (5,18) NE"
+  },
+  {
+   "Key": "explore10:camp:부상병:talk1",
+   "Section": "탐험",
+   "Who": "부상병",
+   "Stage": "",
+   "Kind": "talk",
+   "Text": "방패 뒤에서 한꺼번에 쇠뇌가…… 말들이 비명을 지르며 쓰러졌습니다…….",
+   "Speaker": "부상병",
+   "SpeakerID": "부상병",
+   "Note": "말 걸 때"
+  },
+  {
+   "Key": "explore10:camp:부상병#1:chatter0",
+   "Section": "탐험",
+   "Who": "부상병#1",
+   "Stage": "다른 부상병 곁에 주저앉아 있다.",
+   "Kind": "chatter",
+   "Text": "물……",
+   "Note": "혼잣말 말풍선, | 로 여러 개",
+   "Hint": "작은 칸 (7,21) NW"
+  },
+  {
+   "Key": "explore10:camp:백마병:talk0",
+   "Section": "탐험",
+   "Who": "백마병",
+   "Stage": "진영 가운데에 서 있다.",
+   "Kind": "talk",
+   "Text": "자룡 그 사람, 원소 진영 한가운데로 뛰어들어 장군을 업고 나왔습니다. 창 한 자루로요.",
+   "Speaker": "백마병",
+   "SpeakerID": "백마병",
+   "Note": "말 걸 때",
+   "Hint": "작은 칸 (14,15) NE"
+  },
+  {
+   "Key": "explore10:camp:백마병#1:person0",
+   "Section": "탐험",
+   "Who": "백마병#1",
+   "Stage": "동쪽 앞문 보초.",
+   "Kind": "person",
+   "Text": "",
+   "Hint": "작은 칸 (31,12) SW"
+  },
+  {
+   "Key": "explore10:camp:백마병#2:person0",
+   "Section": "탐험",
+   "Who": "백마병#2",
+   "Stage": "동쪽 앞문 보초.",
+   "Kind": "person",
+   "Text": "",
+   "Hint": "작은 칸 (31,15) NW"
+  },
+  {
+   "Key": "explore10:camp:백마병#3:person0",
+   "Section": "탐험",
+   "Who": "백마병#3",
+   "Stage": "진영 가운데 길을 동서로 오가며 순찰한다.",
+   "Kind": "person",
+   "Text": "",
+   "Hint": "작은 칸 (20,13) SE 순찰 {'Patrol': [[20, 13], [6, 13]]}"
+  },
+  {
+   "Key": "explore10:camp:종군 상인:chatter0",
+   "Section": "탐험",
+   "Who": "종군 상인",
+   "Stage": "북서쪽 곡식 자루 옆에서 장사한다(상점).",
+   "Kind": "chatter",
+   "Text": "콩 있소, 술 있소",
+   "Note": "혼잣말 말풍선, | 로 여러 개",
+   "Hint": "작은 칸 (6,9) SE"
+  },
+  {
+   "Key": "explore10:camp:백마병#4:talk0",
+   "Section": "탐험",
+   "Who": "백마병#4",
+   "Stage": "앞문 밖 녹각 앞에 서 있다.",
+   "Kind": "talk",
+   "Text": "다리 건너편 둑은 원소군입니다. 녹각 너머로는 나가지 마십시오.",
+   "Speaker": "백마병",
+   "SpeakerID": "백마병",
+   "Note": "말 걸 때",
+   "Hint": "작은 칸 (40,13) SE"
+  },
+  {
+   "Key": "explore10:camp:백마병#5:person0",
+   "Section": "탐험",
+   "Who": "백마병#5",
+   "Stage": "앞문 밖 녹각 앞에 서 있다.",
+   "Kind": "person",
+   "Text": "",
+   "Hint": "작은 칸 (40,14) SE"
+  },
+  {
+   "Key": "explore10:tent",
+   "Kind": "area",
+   "Section": "탐험",
+   "Text": "공손찬의 막사",
+   "Fixed": true,
+   "Note": "explore10 · 맵 S_tent_mid",
+   "Stage": "막사 입구로 나가면 진영으로 돌아간다."
+  },
+  {
+   "Key": "explore10:tent:공손찬:talk0",
+   "Section": "탐험",
+   "Who": "공손찬",
+   "Stage": "막사 안쪽에 앉은 자리 앞에 서 있다.",
+   "Kind": "talk",
+   "Text": "원본초 그놈은 정면으로 싸운 적이 없다. 한복을 겁주고, 나를 부추기고, 이번엔 방패 뒤에 숨어서 쏘더군.",
+   "Speaker": "공손찬",
+   "SpeakerID": "gongsunzan",
+   "Note": "말 걸 때 1번째",
+   "Hint": "작은 칸 (6,3) SW"
+  },
+  {
+   "Key": "explore10:tent:공손찬:talk1",
+   "Section": "탐험",
+   "Who": "공손찬",
+   "Stage": "",
+   "Kind": "talk",
+   "Text": "현덕, 내일은 그놈을 끌어내 다오. 그놈이 직접 나서면, 그때가 끝이다.",
+   "Speaker": "공손찬",
+   "SpeakerID": "gongsunzan",
+   "Note": "말 걸 때 2번째"
+  }
+ ]
+}

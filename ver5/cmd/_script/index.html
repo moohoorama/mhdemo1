@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>대본 편집</title>
+<style>
+:root {
+  --bg: #f4efe4; --paper: #fbf8f1; --ink: #2b2620; --muted: #7a6f60; --line: #ddd3c1;
+  --accent: #8a3b2a; --changed: #c98a1d; --changed-bg: #fff4dc; --new: #3d7a4a; --del: #a33;
+  --stage: #5b6b7a;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #1d1b18; --paper: #262320; --ink: #ece4d6; --muted: #9c917f; --line: #3b3630;
+    --accent: #e08a6c; --changed: #e0b25a; --changed-bg: #3a3122; --new: #7fc08c; --del: #e07a7a; --stage: #9fb2c4; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.6 "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; }
+header { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+  padding: 10px 16px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+header h1 { font-size: 17px; margin: 0; flex: 1; min-width: 200px; }
+#status { color: var(--muted); font-size: 13px; }
+button { font: inherit; border: 1px solid var(--line); background: var(--paper); color: var(--ink);
+  border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+button.primary:disabled { opacity: .5; cursor: default; }
+main { max-width: 820px; margin: 0 auto; padding: 16px 16px 120px; }
+#pics img { width: 100%; border-radius: 8px; border: 1px solid var(--line); display: block; margin-bottom: 8px; cursor: zoom-in; }
+#pics { margin-bottom: 12px; }
+@media (min-width: 1400px) {
+  .wrap { display: grid; grid-template-columns: minmax(0, 820px) minmax(0, 1fr); gap: 20px; padding: 0 16px; }
+  main { margin: 0; padding-left: 0; padding-right: 0; }
+  #pics { position: sticky; top: 64px; align-self: start; margin-top: 16px; max-height: calc(100vh - 80px); overflow: auto; }
+}
+#zoom { position: fixed; inset: 0; background: rgba(0,0,0,.85); display: none; z-index: 10; overflow: auto; cursor: zoom-out; }
+#zoom img { display: block; margin: auto; max-width: none; }
+.help { color: var(--muted); font-size: 13px; margin: 0 0 18px; }
+h2 { font-size: 15px; color: var(--accent); margin: 32px 0 10px; border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin: 8px 0;
+  position: relative; }
+.card.changed { border-color: var(--changed); background: var(--changed-bg); }
+.card.added { border-color: var(--new); }
+.card.deleted { opacity: .5; }
+.card.deleted textarea, .card.deleted input { text-decoration: line-through; }
+.row { display: flex; gap: 10px; align-items: flex-start; }
+.face { width: 44px; height: 44px; border-radius: 6px; object-fit: cover; object-position: top; background: var(--line); flex: none; }
+.face.none { visibility: hidden; }
+.body { flex: 1; min-width: 0; }
+.meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+.tag { font-size: 12px; border: 1px solid var(--line); border-radius: 10px; padding: 0 8px; }
+.note { font-size: 12px; color: var(--muted); }
+input.speaker { font: inherit; font-weight: 600; color: var(--ink); background: transparent; border: none;
+  border-bottom: 1px dashed var(--line); width: 9em; padding: 0; }
+textarea { width: 100%; font: inherit; color: var(--ink); background: transparent; border: 1px solid transparent;
+  border-radius: 4px; padding: 2px 4px; resize: none; overflow: hidden; display: block; }
+textarea:hover, textarea:focus { border-color: var(--line); outline: none; background: var(--paper); }
+textarea.stage { color: var(--stage); font-size: 14px; font-style: italic; }
+textarea.stage:placeholder-shown { font-size: 12px; }
+textarea.text { font-size: 16px; }
+.place textarea.text { font-weight: 700; font-size: 17px; }
+.orig { font-size: 12px; color: var(--muted); margin-top: 4px; white-space: pre-wrap; }
+.orig b { color: var(--changed); font-weight: 600; }
+.tools { position: absolute; top: 6px; right: 8px; display: none; gap: 4px; }
+.card:hover .tools, .card:focus-within .tools { display: flex; }
+.tools button { font-size: 12px; padding: 1px 7px; }
+.who { font-weight: 700; margin: 18px 0 2px; font-size: 14px; }
+@media (max-width: 600px) { .tools { display: flex; position: static; justify-content: flex-end; } }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title">대본 편집</h1>
+  <span id="status"></span>
+  <label style="font-size:13px"><input type="checkbox" id="showOrig" checked> 원문 같이 보기</label>
+  <button class="primary" id="save" disabled>저장 (⌘S)</button>
+</header>
+<div class="wrap">
+<main>
+  <p class="help">회색 기울임 글씨는 지문(움직임·등장·동작), 큰 글씨는 대사입니다. 둘 다 그냥 고치면 됩니다.
+    지문은 묘사로 대충 적어도 됩니다. 카드에 마우스를 올리면 줄 추가·삭제 버튼이 나옵니다. 다 고치면 저장하고 알려 주세요.</p>
+  <div id="list"></div>
+</main>
+<aside id="pics"></aside>
+</div>
+<div id="zoom" onclick="this.style.display='none'"><img></div>
+<script>
+let base, entries, dirty = false, seq = 0;
+const $ = s => document.querySelector(s);
+const faceOf = {};
+
+async function load() {
+  const r = await fetch('/api/script').then(r => r.json());
+  base = r.base;
+  for (const e of base.Entries) if (e.Speaker && e.SpeakerID) faceOf[e.Speaker] = e.SpeakerID;
+  entries = r.edited ? r.edited.Entries : structuredClone(base.Entries);
+  for (const e of entries) { const m = /^new-(\d+)$/.exec(e.Key); if (m) seq = Math.max(seq, +m[1]); }
+  $('#title').textContent = `${base.Chapter}장 ${base.Title}`;
+  const pics = $('#pics');
+  pics.textContent = '';
+  for (const r of base.Renders || []) {
+    const place = base.Entries.find(e => e.Scene === r.Scene)?.Text || r.Scene;
+    for (const sh of r.Shots?.length ? r.Shots : [{ Name: 'stage' }]) {
+      const cap = document.createElement('div'); cap.className = 'who'; cap.textContent = place;
+      const img = document.createElement('img');
+      img.src = `/picture/${r.Scene}.${sh.Name}?t=` + Date.now();
+      img.alt = place + ' 배치';
+      img.onerror = () => { cap.remove(); img.remove(); };
+      img.onclick = () => { $('#zoom img').src = img.src; $('#zoom').style.display = 'block'; };
+      pics.append(cap, img);
+    }
+  }
+  if (pics.childNodes.length) {
+    const n = document.createElement('div'); n.className = 'note';
+    n.textContent = '지문의 (A)~(D)는 그림의 위치입니다. 그림을 누르면 크게 보입니다.';
+    pics.append(n);
+  }
+  render();
+  setStatus(r.edited ? `저장본 불러옴 (${r.edited.Saved || ''})` : '원본');
+}
+
+const baseBy = () => Object.fromEntries(base.Entries.map(e => [e.Key, e]));
+function diffOf(e) {
+  const b = baseBy()[e.Key];
+  if (!b) return { added: true, fields: [] };
+  const fields = ['Text', 'Stage', 'Speaker'].filter(f => (e[f] || '') !== (b[f] || ''));
+  return { added: false, fields, b };
+}
+
+function render() {
+  const list = $('#list');
+  list.textContent = '';
+  let section = null, who = null;
+  for (const [i, e] of entries.entries()) {
+    const sec = e.Section || (e.Who ? '탐험' : '장면');
+    if (sec !== section) { section = sec; const h = document.createElement('h2'); h.textContent = sectionTitle[sec] || sec; list.append(h); who = null; }
+    if (e.Kind === 'area') { const h = document.createElement('div'); h.className = 'who'; h.style.color = 'var(--accent)'; h.textContent = '▸ ' + e.Text; list.append(h); who = null; }
+    if (e.Who && e.Who !== who) { who = e.Who; const h = document.createElement('div'); h.className = 'who'; h.textContent = e.Who; list.append(h); }
+    list.append(card(e, i));
+  }
+  updateStatus();
+  requestAnimationFrame(() => document.querySelectorAll('textarea').forEach(grow));
+}
+
+const kindLabel = { scene: '장소', narrate: '해설', branch: '분기', join: '합류', explore: '탐험으로', battle: '전투', chatter: '혼잣말',
+  talk: '말 걸기', area: '구역', person: '사람', event: '이벤트', sign: '팻말', set: '깃발', grant: '받음', back: '탐험으로 돌아감' };
+const sectionTitle = { 장면: '장면', 이벤트: '이벤트 (탐험 중 말을 걸면 열리는 장면)', 탐험: '탐험 (걸어 다니며 말 걸기)' };
+
+function card(e, i) {
+  const d = diffOf(e);
+  const c = document.createElement('div');
+  c.className = 'card' + (e.Kind === 'scene' ? ' place' : '') + (d.added ? ' added' : d.fields.length ? ' changed' : '') + (e.Deleted ? ' deleted' : '');
+  const row = document.createElement('div'); row.className = 'row';
+  const speaking = e.Kind === 'say' || (e.Kind === 'talk');
+  if (speaking) {
+    const img = document.createElement('img'); img.className = 'face';
+    const id = faceOf[e.Speaker] || e.SpeakerID;
+    if (id && /^[a-z0-9_]+$/.test(id)) { img.src = '/portrait/' + id; img.onerror = () => img.classList.add('none'); } else img.classList.add('none');
+    row.append(img);
+  }
+  const body = document.createElement('div'); body.className = 'body';
+  const meta = document.createElement('div'); meta.className = 'meta';
+  if (speaking) {
+    const sp = document.createElement('input'); sp.className = 'speaker'; sp.value = e.Speaker || ''; sp.placeholder = '화자';
+    sp.setAttribute('list', 'speakers');
+    sp.oninput = () => { e.Speaker = sp.value; touch(); };
+    sp.onchange = render;
+    meta.append(sp);
+  }
+  if (e.Kind !== 'say') { const t = document.createElement('span'); t.className = 'tag'; t.textContent = kindLabel[e.Kind] || e.Kind; meta.append(t); }
+  if (e.Note) { const n = document.createElement('span'); n.className = 'note'; n.textContent = e.Note; meta.append(n); }
+  if (d.added) { const n = document.createElement('span'); n.className = 'tag'; n.style.color = 'var(--new)'; n.textContent = '새 줄'; meta.append(n); }
+  if (e.Deleted) { const n = document.createElement('span'); n.className = 'tag'; n.style.color = 'var(--del)'; n.textContent = '삭제'; meta.append(n); }
+  if (meta.childNodes.length) body.append(meta);
+
+  body.append(area(e, 'Stage', 'stage', e.Kind === 'person' || e.Who ? '자리·하는 일 (비워도 됨)' : '지문: 움직임·등장·동작 (없으면 비워 둠)'));
+  if (!e.Fixed && e.Kind !== 'person') body.append(area(e, 'Text', 'text', '대사'));
+
+  if ($('#showOrig').checked && d.fields.length) {
+    const o = document.createElement('div'); o.className = 'orig';
+    for (const f of d.fields) {
+      const name = { Text: '원래 대사', Stage: '원래 지문', Speaker: '원래 화자' }[f];
+      const b = document.createElement('b'); b.textContent = name + ': ';
+      o.append(b, (d.b[f] || '(없음)'), document.createElement('br'));
+    }
+    body.append(o);
+  }
+  row.append(body); c.append(row);
+
+  const tools = document.createElement('div'); tools.className = 'tools';
+  if (!e.Fixed || e.Kind === 'battle' || e.Kind === 'join' || e.Kind === 'explore' || e.Kind === 'branch') {
+    const add = document.createElement('button'); add.textContent = '+ 아래에 줄';
+    add.onclick = () => {
+      const exploreLine = !!e.Who;
+      const n = { Key: 'new-' + (++seq), Kind: exploreLine ? 'talk' : 'say', Section: e.Section, Speaker: speaking ? e.Speaker : '', Text: '', Stage: '' };
+      if (exploreLine) n.Who = e.Who;
+      entries.splice(i + 1, 0, n); touch(); render();
+    };
+    tools.append(add);
+  }
+  if (!e.Fixed && e.Kind !== 'scene') {
+    const del = document.createElement('button');
+    del.textContent = e.Deleted ? '되살리기' : '삭제';
+    del.onclick = () => {
+      if (d.added) entries.splice(i, 1); else e.Deleted = !e.Deleted || undefined;
+      touch(); render();
+    };
+    tools.append(del);
+  }
+  if (d.fields.length) {
+    const rv = document.createElement('button'); rv.textContent = '원래대로';
+    rv.onclick = () => { for (const f of d.fields) e[f] = d.b[f]; touch(); render(); };
+    tools.append(rv);
+  }
+  if (tools.childNodes.length) c.append(tools);
+  return c;
+}
+
+function area(e, field, cls, ph) {
+  const t = document.createElement('textarea'); t.className = cls; t.rows = 1; t.placeholder = ph;
+  t.value = e[field] || '';
+  t.oninput = () => { e[field] = t.value; grow(t); touch(); };
+  t.onblur = () => { const c = t.closest('.card'); const d = diffOf(e); c.classList.toggle('changed', !d.added && d.fields.length > 0); };
+  return t;
+}
+function grow(t) { t.style.height = 'auto'; t.style.height = t.scrollHeight + 'px'; }
+
+function changes() {
+  return entries.filter(e => e.Deleted || diffOf(e).added || diffOf(e).fields.length).length
+    + base.Entries.filter(b => !entries.some(e => e.Key === b.Key)).length;
+}
+function touch() { dirty = true; $('#save').disabled = false; updateStatus(); }
+function updateStatus() { setStatus(`바뀐 곳 ${changes()}개` + (dirty ? ' · 저장 안 됨' : '')); }
+function setStatus(s) { $('#status').textContent = s; }
+
+async function save() {
+  const saved = new Date().toLocaleString('ko-KR');
+  const body = { Chapter: base.Chapter, Title: base.Title, Saved: saved, Entries: entries };
+  const r = await fetch('/api/save', { method: 'POST', body: JSON.stringify(body) });
+  if (!r.ok) { setStatus('저장 실패: ' + await r.text()); return; }
+  dirty = false; $('#save').disabled = true; setStatus(`저장됨 ${saved} · 바뀐 곳 ${changes()}개`);
+}
+
+$('#save').onclick = save;
+$('#showOrig').onchange = render;
+addEventListener('keydown', ev => { if ((ev.metaKey || ev.ctrlKey) && ev.key === 's') { ev.preventDefault(); save(); } });
+addEventListener('beforeunload', ev => { if (dirty) { ev.preventDefault(); ev.returnValue = ''; } });
+load().then(() => {
+  const dl = document.createElement('datalist'); dl.id = 'speakers';
+  for (const n of Object.keys(faceOf)) { const o = document.createElement('option'); o.value = n; dl.append(o); }
+  document.body.append(dl);
+});
+</script>
+</body>
+</html>
