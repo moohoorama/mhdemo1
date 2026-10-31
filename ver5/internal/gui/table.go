@@ -46,6 +46,7 @@ type column[R any] struct {
 	w          int     // 0 takes the width the other columns leave
 	text       bool    // sorts by the text rather than the number
 	left       bool    // keeps to the left in a centred table
+	pad        int     // room before the text, for what after draws there
 	size       float64 // the text size against the table's
 	get        func(r *R) (string, float64)
 	// show is what the cell shows within the width w and in what colour, when not get's text in
@@ -134,7 +135,7 @@ func drawTable[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], rows
 	ws := t.widths(r.Dx())
 	x, hy := r.Min.X, r.Min.Y
 	for i, c := range t.cols {
-		g.tableHeader(dst, l, c.key, c.label, image.Rect(x, hy, x+ws[i], hy+t.headH), t.size-1, t.center && !c.left)
+		g.tableHeader(dst, l, c.key, c.label, image.Rect(x, hy, x+ws[i], hy+t.headH), c.pad, t.size-1, t.center && !c.left)
 		x += ws[i]
 	}
 	rect(dst, float32(r.Min.X), float32(hy+t.headH-1), float32(r.Dx()), 1, goldDim)
@@ -181,10 +182,10 @@ func tableRow[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], ws []
 		s, _ := c.get(row)
 		tc := ink2
 		if c.show != nil {
-			s, tc = c.show(row, ink2, float64(w-6))
+			s, tc = c.show(row, ink2, float64(w-6-c.pad))
 		}
-		s = g.clip(s, size, float64(w-6))
-		tx := float64(x + 4)
+		s = g.clip(s, size, float64(w-6-c.pad))
+		tx := float64(x + 4 + c.pad)
 		if t.center && !c.left {
 			tx = float64(x) + (float64(w)-g.width(s, size))/2
 		}
@@ -202,7 +203,7 @@ func tableRow[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], ws []
 }
 
 // tableHeader draws a header cell with the sort mark and registers its click.
-func (g *Game) tableHeader(dst *ebiten.Image, l *tableList, key, label string, r image.Rectangle, size float64, center bool) {
+func (g *Game) tableHeader(dst *ebiten.Image, l *tableList, key, label string, r image.Rectangle, pad int, size float64, center bool) {
 	g.addButton(r, label, func() { l.order = l.order.cycle(key) })
 	c := muted
 	sorted := l.order.key == key && l.order.dir != 0
@@ -213,7 +214,7 @@ func (g *Game) tableHeader(dst *ebiten.Image, l *tableList, key, label string, r
 		c = ink
 	}
 	ty := float64(r.Min.Y) + (float64(r.Dy())-size*1.25)/2
-	lx := float64(r.Min.X + 4)
+	lx := float64(r.Min.X + 4 + pad)
 	if center {
 		lx = float64(r.Min.X) + (float64(r.Dx())-g.width(label, size))/2
 	}
