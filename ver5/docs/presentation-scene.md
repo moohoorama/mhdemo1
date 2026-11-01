@@ -53,7 +53,7 @@
   `Faction`을 생략하면 인물의 `Look.Faction`. `Sprite`는 인물의 장면 스프라이트 대신 쓸 스프라이트 ID(말 탄 장수는 전투 시트, 병사는 병종 시트).
   `Off`는 무대 밖에서 시작해 `Enter`로 들어온다. `Hold`는 화자 쪽으로 저절로 돌아보지 않는다(성 밖을 보는 장수, 옥좌의 황제).
   `Stay`는 탐험 지역 맵에서 여는 이벤트에서만 쓴다: 탐험에서 서 있던 자리·방향 그대로 서고 `At`·`Face`를 적지 않는다([presentation-explore.md](presentation-explore.md)).
-  `Pose`는 서 있는 대신 쉬는 동작이다(`sit` 의자에 앉음, `throne` 옥좌, `bow` 읍, `prostrate` 부복, `lie` 누움, `sitground` 땅에 기대 앉음, `fist` 주먹을 치켜듦(하후돈), `point` 삿대질(장비)).
+  `Pose`는 서 있는 대신 쉬는 동작이다(`sit` 의자에 앉음, `throne` 옥좌, `bow` 읍, `prostrate` 부복, `lie` 누움, `prone` 엎드림(죽은 백성, 민중 시트만), `sitground` 땅에 기대 앉음, `fist` 주먹을 치켜듦(하후돈), `point` 삿대질(장비)).
   동작(`Play`)이나 걷기가 끝나면 이 자세로 돌아간다. 그 배우의 시트에 있는 동작만 쓴다(시험이 확인한다).
 - `Beats[노드][i]`는 그 노드의 i번째 화자 줄 앞에 재생할 그룹들이다. 한 그룹의 단계는 함께 시작하고(`After`만큼 늦출 수 있다),
   걷기·한 번 동작·말풍선·`Wait`가 다 끝나야 다음 그룹이 시작한다. 비트가 끝나야 그 줄이 나온다. 클릭하면 남은 비트를 끝 상태로 건너뛴다(장수 첫 등장에서 멈춘다).
@@ -177,9 +177,10 @@
 - 전투 스프라이트는 `Look.Sprites[병종:무기 종류]`, `Look.Sprites[병종]`, 캐릭터 자신의 병종일 때만 `Look.Sprite`, 병종의 스프라이트(캐릭터 `Palette`로 색만 바뀜) 순이다(`battleClassArt`). 그래서 `Look.Sprite`만 있는 원술·손견은 승급하면 병종 공용 도트로 바뀐다. `Look.Sprites`는 병종 ID(또는 `병종:장착 무기 종류`, 예: `light_cavalry:sword`) → 스프라이트 ID 표라서 병종이 바뀌거나 무기를 바꿔 들면 보이는 모습도 바뀐다(무기 종류는 `UnitView.Weapon`). 조조와 조운은 창이면 `Look.Sprite`, 검이면 `caocao_sword`·`zhaoyun_sword`다. 병종에 `Shoot`가 있고 백마 같은 `mounted_range`가 있는 유닛이 대상의 주변 8칸 밖을 기본 공격하면, 공격 동안 `Look.Sprites[Shoot 병종]`(없으면 그 병종의 스프라이트)로 바뀌어 활을 쏘고 화살이 날아간다(`shootArt`, `shootsFromRange`).
   유비·관우·장비·조조·손견·원소·조운·동탁은 `Look.Scene`이 `<id>_noncombat`이다.
 - 장면 사람(비전투 시트, `tools/doteditor/tools/civ3d.py` + `tools/unit3d/scene_people.py`의 3D 모델을 변환): `official_noncombat`(문관, 조복이 진영색: 제후의 문관), 품계별 조복 `official_crimson`(삼공)·`official_purple`(구경)·`official_blue`(대부)·`official_green`(낭관)`_noncombat`(`tools/doteditor/tools/robe_colors.py`가 진영색 칸을 theme B로 옮겨 만든다; 궁궐에서는 옥좌에 가까울수록 높은 품계), `official_black_noncombat`(검은 조복의 원로), `eunuch_noncombat`(환관), `wounded_noncombat`(부상병: 대기·걷기·`lie`·`sitground`), `stretcher_noncombat`(들것과 두 사람), `yuanshu_noncombat`·`gongsunzan_noncombat`(원술·공손찬 평복), `light_cavalry_white`(백마 기병, 경기병의 말만 흰색).
+  민중 시트(`commoner_man`·`commoner_woman`·`commoner_elder`·`commoner_oldwoman`, 8방향 전투 형식)의 `prone`은 `mounted_kits/commoners.py`를 `grid3d_mounted.py <id> --unit <id> --base scholar --anims prone --dirs N,S,W,NW,SW --mirror`로 변환한 것이다(먼저 `grid.py poses <id> prone`·`grid.py export <id> --anim prone`).
   장수 시트에 덧붙인 자세: 조조·손견·원소·조운·동탁·유비·관우·장비·원술·공손찬·일반 보병 `sit`, 일반 보병 `sitground`, 헌제 `throne`. 문관·중신 `bow`·`prostrate`·`sit`, 환관 `bow`·`prostrate`.
 - 비전투 스프라이트는 NW·SW 두 방향만 그린다. NE·SE는 `.spr`를 만들 때 NW·SW를 좌우 반전한 행으로 이미 들어 있고 런타임은 반전하지 않는다.
-  동작은 `idle`·`walk`(대기·왼발·대기·오른발)·`action` 하나와, 시트에 따라 한 프레임짜리 자세(`sit`·`throne`·`bow`·`prostrate`·`lie`·`sitground`)다. 자세 칸은 `grid.py poses <id> <자세…>`가 덧붙인다. 형식과 빌드는 [presentation-sprite.md](presentation-sprite.md)에 있다.
+  동작은 `idle`·`walk`(대기·왼발·대기·오른발)·`action` 하나와, 시트에 따라 한 프레임짜리 자세(`sit`·`throne`·`bow`·`prostrate`·`lie`·`sitground`)다(민중 시트의 `prone`은 위 참고). 자세 칸은 `grid.py poses <id> <자세…>`가 덧붙인다. 형식과 빌드는 [presentation-sprite.md](presentation-sprite.md)에 있다.
 - 방향이 대각선이 아니면 가까운 행을 쓴다: `N`→`NW`, `E`→`SE`, `S`→`SW`, `W`→`SW`.
 - 진영색·옷색은 캐릭터 데이터(`Look.Faction`, `Look.Palette`)와 진영 표(`Factions`)가 정한다([data-character.md](data-character.md)).
 

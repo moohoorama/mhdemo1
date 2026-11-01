@@ -12,6 +12,8 @@ exactly one tag. Needs `grid.py new <base> <id> <name>` first; writes grid files
 
 A unit is a module in mounted_kits/ that calls register(name, make). make() applies its monkeypatches and returns
 (build, heads): build(row, f, style=None) for all six animation rows (the block row included) and the head set.
+A scene pose row (--anims prone, added first with `grid.py poses <id> prone`) calls build(name, f) and stamps
+heads['poses'][name](direction) when the kit gives one (e.g. the head turned on its side).
 Attack effects come from the 3D render (stamped as effect tags); other animations paste the base sheet's effects.
 """
 import argparse
@@ -166,10 +168,12 @@ def convert(a):
         bottom = max(y for y, row in enumerate(captured[-1]) for c in row if c != '.')
         dx, dy = px - B.SPEC['pivot'][0], py - bottom  # idle frame 0 puts the hooves on the pivot row
         for anim in a.anims.split(','):
-            for n in range(4):
+            row = B.ANIMATIONS.index(anim) if anim in B.ANIMATIONS else anim
+            head_set = heads['poses'][anim](d) if anim in heads.get('poses', {}) else heads
+            for n in range(unit['animations'][anim]['frames']):
                 captured.clear()
                 effects.clear()
-                B.frame(build, heads, B.SPEC, d, B.ANIMATIONS.index(anim), n, lift=0,
+                B.frame(build, head_set, B.SPEC, d, row, n, lift=0,
                         style=FACING_STYLE.get(d) if vertical and anim == 'attack' else None)
                 path = out_root / anim / f'{d}-{n}.txt'
                 protect = [[False] * w for _ in range(h)]
@@ -194,7 +198,7 @@ def convert(a):
                     for under, over in effects:
                         for layer in (over, under):
                             G.stamp(layer, out, dx, dy)
-                if anim != 'attack' and a.base != 'none':
+                if anim != 'attack' and a.base != 'none' and anim in B.ANIMATIONS:
                     ref = read(ref_root / anim / f'{d}-{n}.txt')
                     for y in range(bh):
                         for x in range(bw):
@@ -204,6 +208,14 @@ def convert(a):
                     out = denoise.clean(out, protect)[0]
                 G.write_grid(path, out)
         print(d, 'done', flush=True)
+    if a.mirror:
+        for anim in a.anims.split(','):
+            for n in range(unit['animations'][anim]['frames']):
+                for d, src in Hd.MIRROR.items():
+                    rows = read(out_root / anim / f'{src}-{n}.txt')
+                    G.write_grid(out_root / anim / f'{d}-{n}.txt',
+                                 [[r[2*px - x] if 0 <= 2*px - x < w else '.' for x in range(w)] for r in rows])
+                    print(d, 'mirrored from', src, flush=True)
 
 
 def main():
@@ -220,6 +232,8 @@ def main():
     ap.add_argument('--anims', default=','.join(B.ANIMATIONS))
     ap.add_argument('--dirs', default=','.join(B.DIRECTIONS))
     ap.add_argument('--denoise', action='store_true', help='clean the converted frames with denoise.clean (head kept)')
+    ap.add_argument('--mirror', action='store_true',
+                    help='write NE, E and SE as the NW, W and SW grids flipped about the pivot (render only the W side)')
     ap.add_argument('--denoise-only', action='store_true',
                     help='render only to locate the head, then clean the existing grid files in place')
     convert(ap.parse_args())

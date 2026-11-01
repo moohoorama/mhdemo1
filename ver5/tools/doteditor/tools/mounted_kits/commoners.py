@@ -8,6 +8,9 @@ cane, a deep stoop and a hand on the small of her back).
 - child: simple 3D parts (head, tunic, legs) scaled to about 55%; held by the man's right hand, carried on the
   woman's back with a cloth sling (its head peeks over her shoulder). Both are part of the one sprite.
 - no attack row: only idle, walk, hit, exhausted and block are converted.
+- prone (2026-11-01): a scene pose, dead face down on the ground (`grid.py poses <id> prone`, export, then
+  `grid3d_mounted.py <id> --unit <id> --base scholar --anims prone --dirs N,S,W,NW,SW --mirror`). The finished meshes tip forward onto the ground and the back-of-head grid is
+  stamped turned on its side, crown away from the body (prone_heads), as scene_people's 'lie' does.
 """
 import math
 
@@ -107,6 +110,49 @@ def grids(kind, beard=None):
     return {d: elder_rows(r) for d, r in g.items()}
 
 
+PRONE_SKEW = .64  # share of the turn that would lay the body flat across the screen
+
+
+def prone_yaw():
+    """Turn the lying body part of the way across the screen in the diagonal views (head still toward the facing
+    side), so it is not foreshortened along the view: the frame's view comes from units.VIEW (set by build.frame)."""
+    t = U.VIEW['t']
+    az = math.atan2(t[1], t[0])
+    if abs(abs(az) - math.pi/2) < .01:
+        return 0.0
+    if abs(az) > math.pi/2:
+        az -= math.copysign(math.pi, az)
+    return PRONE_SKEW*az
+
+
+def prone_heads(head_set):
+    """Per view, the head set for lying face down: the back-of-head (NW) grid with the crown turned away from the
+    body - left in the W-side views (the E side mirrors them), up in N, down in S."""
+    g, (ax, ay) = head_set['grids']['NW'], head_set['anchor']
+    h, w = len(g), len(g[0])
+    left = [''.join(r[w - 1 - x] for r in g) for x in range(w)]
+    down = [r[::-1] for r in reversed(g)]
+
+    def view(d):
+        if d == 'N':
+            return dict(head_set, grids={'N': g})
+        if d == 'S':
+            return dict(head_set, grids={'S': down}, anchor=(w - 1 - ax, h - 1 - ay))
+        return dict(head_set, grids={k: left for k in ('NW', 'W', 'SW')}, anchor=(ay, w - 1 - ax))
+    return view
+
+
+def tip_forward(meshes, pivot_z, dy, yaw=0.0):
+    """Rotate a standing figure a quarter turn about the x axis through (y=0, z=pivot_z) so it lies face down
+    (the head toward -y), move it dy along y, then turn it yaw about the vertical axis."""
+    return turn([(V([[x, dy - (z - pivot_z), pivot_z + y] for x, y, z in verts]), color) for verts, color in meshes], yaw)
+
+
+def turn(meshes, yaw):
+    c, s = math.cos(yaw), math.sin(yaw)
+    return [(V([[x*c - y*s, x*s + y*c, z] for x, y, z in verts]), color) for verts, color in meshes]
+
+
 # ---- body ----------------------------------------------------------------------------------
 def body(p, skirt):
     m.meshes = []
@@ -191,14 +237,37 @@ def make(skirt, bundle, stoop=0.0, cane=False, behind=False, hunch=0.0, **head):
     def pose_for(row, f):
         return U.hit_pose(f, U.pose(0, 0)) if row == U.HIT else U.pose(row, f)
 
+    def prone(f):
+        """Dead face down: arms loose along the sides, legs a little apart, no breathing. A cane lies on the
+        ground beside the body."""
+        p = U.pose(0, 0)
+        p['hands'] = [[-.62, -.1, .82], [.66, -.1, .86]]
+        p['elbows'] = [[-.58, -.06, 1.12], [.62, -.06, 1.14]]
+        p['knees'] = [[-.27, -.04, .46], [.29, -.04, .46]]
+        p['feet'] = [[-.3, 0, .13], [.34, 0, .13]] if not skirt else [[-.2, 0, -.12], [.24, 0, -.1]]  # out past the hem
+        T = body(p, skirt)
+        if bundle:
+            pack(T, *bundle)
+        pivot, dy = .3, .9
+        yaw = prone_yaw()
+        faces = tip_forward(m.meshes, pivot, dy, yaw)
+        if cane:
+            m.meshes = []
+            m.rod(V([.85, -.9, .05]), V([.7, .55, .05]), .045, BROWN)
+            faces += turn(m.meshes, yaw)
+        head = tip_forward([(V([T(U.HEAD)]), None)], pivot, dy, yaw)[0][0][0]
+        return U.result(faces, head, 0, f)
+
     def build(row, f, style=None):
+        if row == 'prone':
+            return prone(f)
         if row == B.BLOCK:
             k = Bl.SWORD[Bl.SELECTED]['frames'][f]
             T = figure(Bl.foot_pose(k))
             return Bl.displace(U.result(m.meshes, T(U.HEAD), 0, f), k.get('sway', 0), k.get('back', 0))
         T = figure(pose_for(row, f))
         return U.result(m.meshes, T(U.HEAD), row, f)
-    return build, heads
+    return build, dict(heads, poses={'prone': prone_heads(heads)})
 
 
 M.register('commoner_man', lambda: make(False, (.34, .36, BROWN), kind='man'))

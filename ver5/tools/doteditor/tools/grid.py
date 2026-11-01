@@ -8,7 +8,7 @@
                                                        # -> heroes/liubei/grid/<anim>/<dir>-<n>.txt (keeps existing files)
   grid.py import liubei                                # every grid file back into units/liubei.yaml
   grid.py colors guanyu themeA1=#5fae5a themeA2=#3d8a45 themeA3=#24573a
-  grid.py poses liubei_noncombat sit bow               # noncombat: add one-frame motions (a copy of idle to draw over)
+  grid.py poses liubei_noncombat sit bow               # add one-frame motions (a copy of idle in every row to draw over)
 
 Each grid file starts with ';' comment lines (frame, cell, pivot, legend, column ruler); pixel lines are 'NN|<row>'.
 """
@@ -62,11 +62,12 @@ def cmd_new(a):
     print('wrote', dots.save(doc))
 
 
-LOOPING = {'sit', 'throne', 'lie', 'sitground', 'prostrate'}  # poses held while the scene goes on
+LOOPING = {'sit', 'throne', 'lie', 'sitground', 'prostrate', 'prone'}  # poses held while the scene goes on
 
 
 def add_poses(doc, poses):
-    """Append one-frame motions to a noncombat sheet (NW and SW copies of idle); existing ones are kept."""
+    """Append one-frame motions (copies of idle in every row of the sheet: NW and SW on a noncombat sheet);
+    existing ones are kept."""
     u = doc['unit']
     col = max(a['first_column'] + a['frames'] for a in u['animations'].values())
     added = []
@@ -75,7 +76,7 @@ def add_poses(doc, poses):
             continue
         u['animations'][name] = dict(first_column=col, frames=1, ms=[400 if name in LOOPING else 900], loop=name in LOOPING)
         col += 1
-        for d in ('NW', 'SW'):
+        for d in u['rows']:
             f = copy.deepcopy(dots.frame(doc, 'idle', d, 0))
             f.update(animation=name, frame=0)
             doc['frames'].append(f)
@@ -85,8 +86,6 @@ def add_poses(doc, poses):
 
 def cmd_poses(a):
     doc = dots.with_alpha(dots.load(a.id))
-    if not a.id.endswith('_noncombat'):
-        raise SystemExit('poses are for noncombat sheets')
     print('added', add_poses(doc, a.poses), '->', dots.save(doc))
 
 
