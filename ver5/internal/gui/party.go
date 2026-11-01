@@ -190,8 +190,12 @@ func (g *Game) belongingDetail(dst *ebiten.Image, b belonging, r image.Rectangle
 			worn += fmt.Sprintf(" (창고 %d)", b.stock)
 		}
 	}
-	for i, row := range [][2]string{{"가진 수", fmt.Sprintf("×%d", b.count())}, {"장착", worn}, {"쓰는 곳", where}} {
-		ry := float64(r.Max.Y) - 160 + float64(i*28)
+	rows := [][2]string{{"가진 수", fmt.Sprintf("×%d", b.count())}, {"장착", worn}, {"쓰는 곳", where}}
+	if isEq {
+		rows = append([][2]string{{"보정", bonusText(eq.Bonus, nil)}}, rows...)
+	}
+	for i, row := range rows {
+		ry := float64(r.Max.Y) - 76 - float64((len(rows)-i)*28)
 		g.label(dst, row[0], x, ry, 14, muted)
 		g.label(dst, row[1], x+80, ry, 14, ink)
 	}

@@ -114,7 +114,11 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 		g.label(dst, picked.kind, float64(bx+48)+g.width(picked.name, 20), float64(by+8), 13, muted)
 		each := fmt.Sprintf("개당 %d", picked.price)
 		g.label(dst, each, float64(box.Max.X-16)-g.width(each, 14), float64(by+6), 14, ink)
-		g.label(dst, wrapWidth(g.itemDesc(picked.id), g.face(14), float64(box.Dx()-32)), float64(bx), float64(by+40), 14, ink)
+		desc := g.itemDesc(picked.id)
+		if eq, ok := g.S.Data.Equipment[picked.id]; ok {
+			desc = "보정  " + bonusText(eq.Bonus, nil) + "\n" + desc
+		}
+		g.label(dst, wrapWidth(desc, g.face(14), float64(box.Dx()-32)), float64(bx), float64(by+40), 14, ink)
 
 		most := picked.count
 		if !v.sell {

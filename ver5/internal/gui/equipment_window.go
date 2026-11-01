@@ -45,7 +45,7 @@ type equipState struct {
 // equipRow is one row of the picker: a piece, or taking the slot's piece off (id pickNothing).
 type equipRow struct {
 	id, name string
-	change   []statDelta // against what is worn now
+	bonus    [6]float64
 	chips    []equipChip
 	worn     bool
 }
@@ -116,30 +116,18 @@ func (g *Game) equipCard(dst *ebiten.Image, of *core.Character, slot string, r i
 		return
 	}
 	g.itemIcon(dst, g.S.Data.Equipment[item].Icon, x+16, y+44, 1.5, false)
-	g.itemLines(dst, of.ID, slot, item, x+84, y+40, float64(r.Max.X-16), false)
+	g.itemLines(dst, of.ID, slot, item, x+84, y+40)
 }
 
-// itemLines draws a piece's name, its stat gain and its traits from (x, y); with change set the
-// stat change from what is worn now goes on the right of the name line.
-func (g *Game) itemLines(dst *ebiten.Image, actor, slot, item string, x, y, right float64, change bool) {
+// itemLines draws a piece's name, its bonus grades with what they raise the officer's stats by, and
+// its traits from (x, y).
+func (g *Game) itemLines(dst *ebiten.Image, actor, slot, item string, x, y float64) {
 	eq := g.S.Data.Equipment[item]
 	g.label(dst, eq.Name, x, y, 19, ink)
-	e := g.itemEffect(actor, slot, item)
-	if change && e.err == "" {
-		g.deltaLine(dst, e.change, "변화 없음", right, y+4)
-	}
-	if e.err != "" {
+	if e := g.itemEffect(actor, slot, item); e.err != "" {
 		g.label(dst, e.err, x, y+30, 14, bad)
 	} else {
-		parts := []string{}
-		for _, d := range e.gain {
-			parts = append(parts, fmt.Sprintf("%s %+d", d.name, d.d))
-		}
-		gain := strings.Join(parts, "  ")
-		if gain == "" {
-			gain = "능력치 변화 없음"
-		}
-		g.label(dst, gain, x, y+30, 14, muted)
+		g.label(dst, "보정  "+bonusText(eq.Bonus, e.gain), x, y+30, 14, muted)
 	}
 	cx := x
 	for _, c := range itemChips(eq.Traits, eq.Learn, eq.Skills) {
@@ -148,23 +136,6 @@ func (g *Game) itemLines(dst *ebiten.Image, actor, slot, item string, x, y, righ
 	}
 	if cx == x {
 		g.label(dst, "특성 없음", x, y+56, 13, muted)
-	}
-}
-
-// deltaLine writes stat changes right-aligned at right, gains green and losses red.
-func (g *Game) deltaLine(dst *ebiten.Image, ds []statDelta, none string, right, y float64) {
-	if len(ds) == 0 {
-		g.label(dst, none, right-g.width(none, 14), y, 14, muted)
-		return
-	}
-	for i := len(ds) - 1; i >= 0; i-- {
-		s, c := fmt.Sprintf("%s %+d", ds[i].name, ds[i].d), good
-		if ds[i].d < 0 {
-			c = bad
-		}
-		right -= g.width(s, 14)
-		g.label(dst, s, right, y, 14, c)
-		right -= 12
 	}
 }
 
@@ -262,14 +233,14 @@ func (g *Game) openPicker(slot string) {
 func (g *Game) pickable(o core.Observation, of *core.Character, slot string) []equipRow {
 	row := func(id string) equipRow {
 		eq := g.S.Data.Equipment[id]
-		return equipRow{id: id, name: eq.Name, change: g.itemEffect(of.ID, slot, id).change, chips: itemChips(eq.Traits, eq.Learn, eq.Skills)}
+		return equipRow{id: id, name: eq.Name, bonus: eq.Bonus, chips: itemChips(eq.Traits, eq.Learn, eq.Skills)}
 	}
 	out := []equipRow{}
 	worn := of.Equipment[slot]
 	if worn != "" {
-		out = append(out, equipRow{id: pickNothing, name: "장비 벗기", change: negate(g.itemEffect(of.ID, slot, worn).gain)})
+		out = append(out, equipRow{id: pickNothing, name: "장비 벗기"})
 		r := row(worn)
-		r.change, r.worn = nil, true
+		r.worn = true
 		out = append(out, r)
 	}
 	for _, id := range sorted(o.Warehouse) {
@@ -280,8 +251,9 @@ func (g *Game) pickable(o core.Observation, of *core.Character, slot string) []e
 	return out
 }
 
-// pickColumns are the picker's columns: the piece, the change of each stat, the traits it brings.
-func (g *Game) pickColumns(slot string) []column[equipRow] {
+// pickColumns are the picker's columns: the piece, its grade on each stat (green above worn's, red
+// below), the traits it brings.
+func (g *Game) pickColumns(slot string, worn [6]float64) []column[equipRow] {
 	cols := []column[equipRow]{{key: "name", label: "이름", w: 190, text: true, left: true, pad: 34, size: 1,
 		get: func(r *equipRow) (string, float64) { return r.name, 0 },
 		show: func(r *equipRow, ink color.Color, w float64) (string, color.Color) {
@@ -297,25 +269,23 @@ func (g *Game) pickColumns(slot string) []column[equipRow] {
 			}
 			g.itemIcon(dst, icon, float64(cell.Min.X+8), float64(cell.Min.Y+cell.Dy()/2-12), .75, dim)
 		}}}
-	for _, st := range statRows {
-		delta := func(r *equipRow) int {
-			for _, d := range r.change {
-				if d.name == st.name {
-					return d.d
-				}
-			}
-			return 0
-		}
-		cols = append(cols, column[equipRow]{key: st.name, label: st.name, w: 62,
-			get: func(r *equipRow) (string, float64) { return fmt.Sprintf("%+d", delta(r)), float64(delta(r)) },
+	for i, ax := range hexAxes {
+		cols = append(cols, column[equipRow]{key: ax.stat, label: ax.stat, w: 66,
+			get: func(r *equipRow) (string, float64) { return bonusGrade(r.bonus[i]), r.bonus[i] },
 			show: func(r *equipRow, ink color.Color, w float64) (string, color.Color) {
-				switch d := delta(r); {
-				case d > 0:
-					return fmt.Sprintf("%+d", d), good
-				case d < 0:
-					return fmt.Sprintf("%+d", d), bad
+				v := r.bonus[i]
+				c := ink
+				switch {
+				case r.worn || r.id == pickNothing:
+				case v > worn[i]:
+					c = good
+				case v < worn[i]:
+					c = bad
 				}
-				return "—", muted
+				if v == 0 {
+					return "—", c
+				}
+				return bonusGrade(v), c
 			}})
 	}
 	return append(cols, column[equipRow]{key: "traits", label: "특성", left: true, size: -2,
@@ -349,11 +319,11 @@ func (g *Game) equipPicker(dst *ebiten.Image, x, y int) {
 	}
 	slot := g.equip.slot
 	g.titled(dst, image.Rect(x, y, x+pickerW, y+pickerH), slotNames[slot]+" 고르기")
-	g.label(dst, "수치는 지금 장비와 견준 변화입니다. 머리글을 누르면 정렬합니다.", float64(x+32), float64(y+40), 14, muted)
+	g.label(dst, "글자는 보정 등급(D +1 · C +2 · B +3 · A +4 · S +5)으로, 지금 장비보다 높으면 초록, 낮으면 빨강입니다. 머리글을 누르면 정렬합니다.", float64(x+32), float64(y+40), 14, muted)
 	rows := g.pickable(o, of, slot)
 	picked := func(r *equipRow) bool { return r.id == g.equip.pick || g.equip.pick == equipCurrent && r.worn }
 	drawTable(g, dst, &g.equip.list, table[equipRow]{
-		cols: g.pickColumns(slot), rowH: 38, headH: 32, size: 15, center: true,
+		cols: g.pickColumns(slot, g.S.Data.Equipment[of.Equipment[slot]].Bonus), rowH: 38, headH: 32, size: 15, center: true,
 		empty: "창고에 이 칸에 맞는 장비가 없습니다.",
 		rank: func(r *equipRow) int {
 			switch {
@@ -391,15 +361,7 @@ func (g *Game) equipPicker(dst *ebiten.Image, x, y int) {
 			note += " · 착용 중"
 		}
 		g.label(dst, note, bx+48+g.width(eq.Name, 20), by+8, 13, muted)
-		parts := []string{}
-		for _, d := range g.itemEffect(of.ID, slot, r.id).gain {
-			parts = append(parts, fmt.Sprintf("%s %+d", d.name, d.d))
-		}
-		gain := "빈 칸 대비 능력치 변화 없음"
-		if len(parts) > 0 {
-			gain = "빈 칸 대비  " + strings.Join(parts, "  ")
-		}
-		g.label(dst, gain, bx, by+40, 14, ink)
+		g.label(dst, "보정  "+bonusText(eq.Bonus, g.itemEffect(of.ID, slot, r.id).gain), bx, by+40, 14, ink)
 		cx := bx
 		for _, c := range r.chips {
 			chip := c
@@ -419,14 +381,6 @@ func (g *Game) equipPicker(dst *ebiten.Image, x, y int) {
 	}
 	g.btn(dst, image.Rect(x+pickerW/2-230, y+pickerH-60, x+pickerW/2-10, y+pickerH-20), "확인", confirm)
 	g.btn(dst, image.Rect(x+pickerW/2+10, y+pickerH-60, x+pickerW/2+230, y+pickerH-20), "취소", func() { g.equip.slot = "" })
-}
-
-func negate(ds []statDelta) []statDelta {
-	out := make([]statDelta, len(ds))
-	for i, d := range ds {
-		out[i] = statDelta{d.name, -d.d}
-	}
-	return out
 }
 
 // pickCommand is the command 확인 sends for the picked row, if it changes anything.

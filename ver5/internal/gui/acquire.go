@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"math"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -368,7 +367,7 @@ func (g *Game) pieceWindow(dst *ebiten.Image, m *modal, r image.Rectangle) {
 		strokeLine(dst, float32(x), float32(y), float32(r.Max.X-28), float32(y), 1, goldDim)
 		y += 14
 		row("보정")
-		g.label(dst, bonusText(eq.Bonus), x+90, y, 15, good)
+		g.label(dst, bonusText(eq.Bonus, nil), x+90, y, 15, good)
 		y += 36
 		row("특성")
 		cx := x + 90
@@ -393,23 +392,35 @@ func (g *Game) pieceWindow(dst *ebiten.Image, m *modal, r image.Rectangle) {
 	g.centered(dst, "창 밖을 누르면 닫힙니다", float64(r.Min.X+r.Dx()/2), float64(r.Max.Y-34), 13, muted)
 }
 
-// bonusText is an equipment's stat bonus in the order of its six growth terms (hexAxes), "없음" when it has none.
-func bonusText(b [6]float64) string {
+// bonusText is an equipment's stat bonus as grades in the order of its six growth terms (hexAxes), "공격 B · 정신 D",
+// each followed by what it raises an officer's stat by when gain is given; "없음" when it has none.
+func bonusText(b [6]float64, gain []statDelta) string {
 	var parts []string
 	for i, v := range b {
 		if v == 0 {
 			continue
 		}
-		n := fmt.Sprintf("%+g", v)
-		if v == math.Trunc(v) {
-			n = fmt.Sprintf("%+d", int(v))
+		part := hexAxes[i].stat + " " + bonusGrade(v)
+		for _, d := range gain {
+			if d.name == hexAxes[i].stat {
+				part += fmt.Sprintf(" (%+d)", d.d)
+			}
 		}
-		parts = append(parts, hexAxes[i].stat+" "+n)
+		parts = append(parts, part)
 	}
 	if len(parts) == 0 {
 		return "없음"
 	}
 	return strings.Join(parts, " · ")
+}
+
+// bonusGrade is an equipment bonus as the grade it shows as, the same whoever wears it: D +1, C +2,
+// B +3, A +4, S +5.
+func bonusGrade(v float64) string {
+	if n := int(v); float64(n) == v && n >= 1 && n <= 5 {
+		return string("DCBAS"[n-1])
+	}
+	return fmt.Sprintf("%+g", v)
 }
 
 // fade is c with its alpha scaled by a.

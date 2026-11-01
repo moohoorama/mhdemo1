@@ -63,3 +63,13 @@ func countOf(xs []string, x string) int {
 	}
 	return n
 }
+
+func TestBonusGrades(t *testing.T) {
+	for v, want := range map[float64]string{1: "D", 2: "C", 3: "B", 4: "A", 5: "S", 1.5: "+1.5", 6: "+6"} {
+		assert.Equal(t, want, bonusGrade(v), v)
+	}
+	b := [6]float64{3, 0, 1}
+	assert.Equal(t, "공격 B · 정신 D", bonusText(b, nil))
+	assert.Equal(t, "공격 B (+39) · 정신 D (+13)", bonusText(b, []statDelta{{"공격", 39}, {"정신", 13}}))
+	assert.Equal(t, "없음", bonusText([6]float64{}, nil))
+}
