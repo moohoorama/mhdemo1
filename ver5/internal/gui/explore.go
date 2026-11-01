@@ -52,9 +52,11 @@ type exploreAim struct {
 
 const walkerStep = 1.0 // the people's walking speed, in scene steps
 
-// exploring reports whether the game stands at a walk.
+// exploring reports whether the game stands at a walk. Not while a gift's or a joining officer's window holds the
+// story line that came before: that line's scene stays on screen, and laying the walk out under it would take
+// the scene away every frame.
 func (g *Game) exploring() bool {
-	return g.S.Engine != nil && g.S.Screen == "playing" && g.S.Engine.Walking()
+	return g.held == nil && g.S.Engine != nil && g.S.Screen == "playing" && g.S.Engine.Walking()
 }
 
 // ensureExplore lays the area out when the story came to it (or back to it from an event, or by loading).

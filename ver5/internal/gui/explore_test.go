@@ -5,7 +5,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"srpg/internal/core"
 	"srpg/internal/scenemap"
+	"srpg/internal/session"
 )
 
 // Every area of the story's walks is a scene map of format 2, and from where the hero arrives he can walk to each
@@ -45,4 +47,27 @@ func TestExploreAreasCanBeWalked(t *testing.T) {
 			})
 		}
 	}
+}
+
+// A joining officer's window that comes up as the story goes back to the walk (조운 in chapter 10, when the Julu
+// flag sends the branch straight on to the walk) keeps the line before it on screen: the walk is not laid out
+// under it, or the two would take the scene from each other every frame and the window would never show.
+func TestHeldStoryKeepsTheWalkAway(t *testing.T) {
+	d, err := NewDemo("../..", DemoOptions{Name: "mapfx"})
+	require.NoError(t, err)
+	g := d.g
+	require.True(t, g.send(session.Request{Op: "jump", Seed: 1, Node: "c10-start"}).OK)
+	st := g.S.Engine.Snapshot()
+	st.Learning, st.Flags["flag-julu-clear"] = nil, 1
+	g.S.Engine, err = core.Restore(g.S.Data, st)
+	require.NoError(t, err)
+	for g.S.View().Node != "c10-19" {
+		require.True(t, g.request(session.Request{Op: "command", Command: core.Command{Kind: "next"}}).OK, g.S.View().Node)
+	}
+	g.request(session.Request{Op: "command", Command: core.Command{Kind: "next"}})
+	require.True(t, g.S.Engine.Walking(), "조운 joins and the story goes on to the walk")
+	require.NotNil(t, g.held, "his window holds 조운's last line")
+	assert.False(t, g.exploring())
+	g.held = nil // the screen lets go of the line once the window is closed
+	assert.True(t, g.exploring())
 }
