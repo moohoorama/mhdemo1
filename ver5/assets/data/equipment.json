@@ -233,7 +233,19 @@
    ],
    "Learn": [
     "dash"
-   ]
+   ],
+   "Palette": {
+    "horseSkin": [
+     "#2a2a30",
+     "#18181c",
+     "#0c0c10"
+    ],
+    "horseMane": [
+     "#1c1c22",
+     "#101014",
+     "#060608"
+    ]
+   }
   },
   "ration_bag": {
    "Name": "군량낭",
@@ -368,7 +380,19 @@
    ],
    "Traits": [
     "red_hare"
-   ]
+   ],
+   "Palette": {
+    "horseSkin": [
+     "#c0482a",
+     "#8e2e1a",
+     "#5a1a10"
+    ],
+    "horseMane": [
+     "#5a1a10",
+     "#3a100a",
+     "#200806"
+    ]
+   }
   },
   "diamond_armor": {
    "Name": "금강갑",
@@ -459,7 +483,19 @@
    ],
    "Learn": [
     "dash"
-   ]
+   ],
+   "Palette": {
+    "horseSkin": [
+     "#ffffff",
+     "#e8e8ec",
+     "#b0b0b8"
+    ],
+    "horseMane": [
+     "#e8e8ec",
+     "#c8c8d0",
+     "#9a9aa4"
+    ]
+   }
   },
   "bean_pouch": {
    "Name": "콩주머니",

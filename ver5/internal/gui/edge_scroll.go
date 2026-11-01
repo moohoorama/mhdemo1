@@ -17,7 +17,7 @@ const edgeHoldDelay = .3
 // if any: the cursor must be in the band along the viewport's edge (5% of the window's width), off
 // the HUD, and the camera able to go that way. Story scenes and the walk follow Liu Bei instead.
 func (g *Game) edgeArrow(locked bool) (int, bool) {
-	if g.S.Engine == nil || g.field == nil || locked || pointer.used || len(g.Shots) > 0 || g.dragging {
+	if g.field == nil || locked || pointer.used || len(g.Shots) > 0 || g.dragging {
 		return 0, false
 	}
 	if o := g.S.View(); o.Phase != "battle" && o.Phase != "deployment" || g.exploring() || g.scene != nil {

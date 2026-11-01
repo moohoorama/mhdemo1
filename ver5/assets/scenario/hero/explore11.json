@@ -1,0 +1,257 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   14,
+   10
+  ],
+  "Face": "NE"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_xindu",
+   "Name": "북평성",
+   "At": [
+    14,
+    10
+   ],
+   "Exits": [
+    {
+     "Name": "관아",
+     "At": [
+      14,
+      6
+     ],
+     "Object": [
+      14,
+      3
+     ],
+     "To": "office"
+    },
+    {
+     "Name": "도구점",
+     "At": [
+      22,
+      14
+     ],
+     "Object": [
+      22,
+      12
+     ],
+     "To": "tools"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      6,
+      14
+     ],
+     "Object": [
+      6,
+      12
+     ],
+     "To": "tavern"
+    }
+   ],
+   "People": {
+    "관우@town": {
+     "At": [
+      16,
+      8
+     ],
+     "Face": "SW",
+     "Sortie": {
+      "Ask": "형님, 서주로 떠나시겠습니까?"
+     }
+    },
+    "손건": {
+     "At": [
+      18,
+      10
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "sunqian",
+       "서주까지는 청주를 지나는 먼 길입니다. 채비를 마치시면 관 장군께 말씀하십시오."
+      ]
+     ]
+    },
+    "공손찬의 막료": {
+     "At": [
+      10,
+      10
+     ],
+     "Face": "SE",
+     "Sprite": "official_noncombat",
+     "Faction": "gongsun",
+     "Talk": [
+      [
+       "공손찬의 막료",
+       "한 단계 위 병종이 된 장수는 '부관임명'을 익힐 수 있습니다. 부관은 따로 나가 싸우지 않고 주장 곁에 서서, 주장에게 모자란 재주를 메워 줍니다."
+      ],
+      [
+       "공손찬의 막료",
+       "주장이 싸우는 걸 보며 부관도 함께 자라고요."
+      ]
+     ]
+    },
+    "궁병 군관": {
+     "At": [
+      19,
+      22
+     ],
+     "Face": "NE",
+     "Sprite": "archer",
+     "Faction": "gongsun",
+     "Talk": [
+      [
+       "궁병 군관",
+       "궁병이 인수를 받으면 노병이 됩니다. 쇠뇌는 활보다 한 칸 더, 네 칸까지 날아가지요."
+      ],
+      [
+       "궁병 군관",
+       "계교 다리 머리에서 국의의 노병 맛을 보셨을 겁니다."
+      ]
+     ]
+    },
+    "무술 사범": {
+     "At": [
+      12,
+      18
+     ],
+     "Face": "SE",
+     "Sprite": "brawler",
+     "Faction": "gongsun",
+     "Talk": [
+      [
+       "무술 사범",
+       "맨주먹 무도가도 인수를 받으면 권사가 됩니다. 철 장갑을 끼고 연타를 퍼붓지요."
+      ],
+      [
+       "무술 사범",
+       "주먹은 피하고 되받아치는 데서 시작합니다."
+      ]
+     ]
+    },
+    "수비병#2": {
+     "At": [
+      13,
+      26
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun"
+    },
+    "수비병#1": {
+     "At": [
+      16,
+      26
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun"
+    }
+   }
+  },
+  "office": {
+   "Map": "S_zhuo_office2",
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "Name": "북평성 · 관아",
+   "At": [
+    9,
+    5
+   ],
+   "People": {
+    "관병#1": {
+     "At": [
+      3,
+      5
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun"
+    },
+    "관병#2": {
+     "At": [
+      13,
+      5
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun"
+    }
+   }
+  },
+  "tools": {
+   "Map": "S_tool_shop2",
+   "Name": "도구점",
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "상인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tools"
+    }
+   }
+  },
+  "tavern": {
+   "Map": "S_tavern2",
+   "Name": "주점",
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tavern"
+    }
+   }
+  }
+ }
+}

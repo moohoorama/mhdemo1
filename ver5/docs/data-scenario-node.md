@@ -33,6 +33,7 @@ assets/scenario/
 | `Roster` | 처음부터 가진 인물 ID. 모두 `Playable`이어야 한다. |
 | `Deployment` | 처음 출전 명단. 모두 `Playable`이어야 한다. |
 | `Inventory` | 처음 인벤토리. 키는 `items.json`에 있는 아이템, 개수는 0 이상. |
+| `Warehouse` | 처음 창고. 아무도 차지 않은 장비. 키는 `equipment.json`에 있는 장비, 개수는 0 이상. 생략 가능. |
 | `Loadout` | `{인물: [장비 ID…]}`. 장면 이동([logic-campaign.md](logic-campaign.md) 1절)으로 시작한 게임에서 그 인물이 차는 장비. 인물은 `Playable`, 장비는 `equipment.json`에 있어야 한다. |
 | `Chapters` | `[{"ID","File"}]`. 장 ID는 유일, 파일은 비어 있지 않은 노드 배열. |
 
@@ -86,7 +87,8 @@ assets/scenario/
 | `Defeat` | 추가 패배 목표 `[{If, Text}]`(선택, `Text`는 선택). 군주의 퇴각과 아군 전멸은 늘 패배다. |
 | `Sub` | 부목표 `[{ID, Text, If, Flag, Reward}]`(선택). `ID`는 유일, `Text`·`If` 필수, `Reward`는 아이템 ID → 1 이상 개수. |
 | `TurnLimit` | 0 이상. 0이면 무제한([logic-battle-event.md](logic-battle-event.md)). |
-| `Allies` | 출전 장수를 놓을 수 있는 칸 `{X, Y}` 목록. |
+| `Allies` | 출전 장수를 놓을 수 있는 칸 `{X, Y}` 목록. 기본 배치는 이 순서대로 칸을 채운다. |
+| `Recommend` | 장수별 권장 배치: 인물 ID → `Allies` 칸 하나. 출전한 그 장수를 기본 배치(배치 화면을 처음 열 때, 자동 진행, 강제 출전)가 그 칸에 세우고, 나머지는 `Allies` 순서대로 채운다. 칸이 막혔거나 그 병종이 설 수 없으면 건너뛴다. 플레이어는 배치 화면에서 옮길 수 있다. 없으면 `Allies` 순서만 쓴다. |
 | `Enemies` | 적 스폰 목록. 비어 있을 수 없다(맵 문서 검증). |
 | `Party` | 처음부터 지도에 있는 고정 아군 스폰 목록(선택). |
 | `Reward` | 승리 보상. 아이템 ID → 개수. 인벤토리로 들어간다. |

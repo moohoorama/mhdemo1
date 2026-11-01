@@ -65,6 +65,9 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 			out *= 1 + k*(1-float64(v.HP)/float64(max(1, b.MaxHP)))
 		}
 	}
+	if k := e.fx(u, content.FxOpening); k > 0 {
+		out *= 1 + k*math.Max(0, float64(v.HP)/float64(max(1, b.MaxHP))-.5)
+	}
 	if k := e.fx(u, content.FxDesperate); k > 0 && e.wounded(u) {
 		out *= 1 + k
 	}
@@ -132,7 +135,8 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 		if e.has(u, content.FxRangedSure) && ranged {
 			return 100
 		}
-		h += curve(e.ratio(e.attackStats(u, s).Agility, e.stats(v).Agility), R.HitCurve) - float64(R.BasicAttack.Hit) - e.fx(v, content.FxEvade) + e.fx(u, content.FxAccuracy)
+		h += curve(e.ratio(e.attackStats(u, s).Agility, e.stats(v).Agility), R.HitCurve) - float64(R.BasicAttack.Hit) - e.fx(v, content.FxEvade) + e.fx(u, content.FxAccuracy) +
+			e.fx(u, content.FxChargeAccuracy)*float64(u.Steps)
 		return clamp(h, R.HitFloor, R.HitCeil)
 	case content.KindMagic, content.KindStatus:
 		if e.has(v, content.FxDispel) && v.Faction != u.Faction {
@@ -301,13 +305,6 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 				e.applyStatus(v, id, R.BuffTurns, -R.BuffPercent)
 			}
 		}
-	}
-	if crit && n > 0 && v.HP > 0 && e.has(v, content.FxCritRally) {
-		turns := 1 // through the end of its next turn
-		if v.ActsIn(e.state.Turn, e.state.Army) {
-			turns = 2
-		}
-		e.applyStatus(v, "attack", turns, R.BuffPercent)
 	}
 	return n, hit, crit
 }
@@ -1076,9 +1073,6 @@ func (e *Engine) endFaction() {
 		}
 		u.MP = min(st.MaxMP, u.MP+r)
 		if k := int(e.fx(u, content.FxHaste)); k > 0 {
-			e.applyStatus(u, "speed", R.BuffTurns, k)
-		}
-		if k := int(e.fx(u, content.FxWoundedHaste)); k > 0 && e.wounded(u) {
 			e.applyStatus(u, "speed", R.BuffTurns, k)
 		}
 		u.Moved = false

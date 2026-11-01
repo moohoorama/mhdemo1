@@ -31,7 +31,7 @@ Scenes live in `assets/scenes.json`, not here.
 ## Trait rules
 
 - Given traits (class Grants, equipment Traits) have Cost 0 and are never learnable. Learnable traits (Cost 300-1500) sit in Class.Pool or Character.Learn.
-- Player characters start with `Traits: []` and a `Learn` list; enemies and NPCs get `Traits` directly.
+- Player characters join with one starting trait in `Traits` and a `Learn` list, and wear no accessory; enemies and NPCs get `Traits` directly.
 - Tiered spell families: root + `<x>_boost` / `<x>_spread`; top spells need all three.
 
 `tools/migrate/gen_data.py` regenerated this bundle from ver4 once; after that, edit the JSON directly.

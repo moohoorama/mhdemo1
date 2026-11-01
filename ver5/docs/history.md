@@ -5,6 +5,38 @@
 
 ---
 
+## 2026-11-01 관우·장비·조운 고유 특성 가르기, 개전·기습·호통, 질타 삭제
+
+- 결정: 같은 기병 계열을 타는 세 장수의 고유 특성이 겹쳐(일당백 셋, 연전 둘) 역할을 가른다. 관우는 성한 적을 크게 벤다(위압·연전·필살·반격술·개전·돌진), 장비는 둘러싸여 버티며 맞은 적을 꺾는다(무쌍술·근성·일당백·호통, 연전·사방격·팔방격 뺌), 조운은 홀로 파고든다(일당백·다재다능·일기당천). 질타는 삭제 — 사용자 결정. 영향받는 문서: `logic-traits.md`, `logic-combat.md`.
+- `assets/data/traits.json`: 개전(`opening` 0.5: 대상 병력이 50%를 넘은 만큼의 절반을 피해 배율에 더함, 100%면 +25%), 기습(`charge_accuracy` 3: 이번 차례에 걸은 칸 수 × 물리 명중률 +3%p), 호통(`hit_debuff:attack`) 추가, 옛 기습(산·숲 반드시 치명타, `ambush_crit`)은 이름을 난전으로, 질타(`rebuke_prep`) 삭제. `assets/data/skills.json`: 질타 책략(`rebuke`) 삭제(공격 봉쇄 `disarm`은 봉격이 계속 씀). `assets/data/characters.json`: 세 장수 `Learn`.
+- `internal/content/vocab.go`, `internal/core/combat.go`: `FxOpening`(피해 계산)·`FxChargeAccuracy`(물리 명중, `Unit.Steps`). `internal/core/traits_test.go`: 걸은 칸만큼 명중이 오르는지, 성한 적에게 +25%이고 절반 이하에선 보너스가 없는지. `internal/content/class_pools_test.go`: 질타 줄 뺌.
+- 이어서: 관우는 반격술·돌진을 빼고 기습(위압·연전·필살·개전·기습), 조운은 돌파를 더한다. 중기병 풀은 돌파를 내주고 돌진·충격을 받아 부관임명·돌격·돌진·충격, 충격의 선행(돌진)은 없앤다 — 사용자 결정: 관우만 개인 특성이 많고 조운이 적다, 셋이 거치는 중기병 풀은 개인 특성과 겹치지 않게. `assets/data/classes.json`·`traits.json`·`characters.json`, `internal/content/class_pools_test.go`.
+- `assets/data/traits.json`: 특성 대결 시뮬레이션(`cmd/_traitsim`, 같은 병종 1:1·3:3·5:5, 한쪽만 특성)에서 양생+의협이 남은 병력 차이 +42%p로 가장 셌다(양생만 +18%p, 필살 +28%p). 의협을 잃은 병력의 10%로 낮췄다가, 이어서 옛 의협을 지우고 양생을 의협으로 바꿈 — 사용자 결정.
+- `assets/data/characters.json`: 관우 `Learn`에서 연전을 뺀다 — 사용자 결정. Lv30 대결 시뮬레이션에서 필살 +40%p·연전 +35%p로 관우만 두드러졌고, 유관장조가 개인 특성 4개씩이 된다.
+- `assets/data/skills.json`, `internal/content/content.go`, `internal/core/rules.go`: 수계 책략의 물가 조건(`Condition: water`, 시전자나 대상이 물에 닿아야 씀)과 `waterNear`를 지운다. 모든 책략은 어느 지형에서든 쓰고, 지형은 속성 피해 보정(`ElementTerrain`)으로만 다르다 — 사용자 결정. 평지 대결 시뮬레이션에서 수계 계통이 한 번도 쓰이지 못했다.
+- `assets/data/characters.json`·`characters_story.json`: 플레이어 장수가 고유 특성 하나를 지닌 채 합류한다 — 유비 독려, 관우 개전, 장비 호통, 조운 돌파, 간옹 구휼(약낭 대신), 번궁 화계. 관평의 군마를 빼 아군은 장신구 없이 합류한다 — 사용자 결정. 시작 특성은 그 장수다움이 바로 보이되 시뮬레이션에서 중간 이하 세기인 것(필살·연전 같은 확정형은 배우는 목표로 남김). `assets/data/README.md`, `docs/logic-traits.md`.
+- `cmd/_traitsim`: 병사 틀·제외 특성을 코드에 적지 않고 데이터에서 찾는다(승급 줄 첫 병종의 틀 중 스테이지에 가장 많이 나오는 것, 부관·아이템·마을·무기 효과를 가진 특성) — 콘텐츠 이름 금지 검사(`purity_test.go`).
+- `assets/data/characters.json`·`characters_story.json`, `assets/scenario/hero/stage02·05·06·07·09·10.json`: 12전투까지의 적 장수에게 고유 특성 하나를 인물 `Traits`로 준다(문관은 책략 계통과 함께, 판 배치의 `Traits`는 지움). 초반 장수와 이숙·조잠·장료·순우경·관해는 특성 없이. 서영은 변수의 복병답게 경보병(난전)으로 — 사용자 결정. 표는 `docs/logic-traits.md` 4.1.
+- `assets/data/characters.json`·`characters_story.json`: 동맹 장수에게도 고유 특성 하나 — 황보숭 화계, 하후돈 근성, 하후연 신속, 손견 선봉, 황개 고육, 고순 함진, 공손찬 기사, 한당 조준, 조홍 보급, 전해 돌격, 태사자 백발백중, 공융·손건 강론, 제갈현 구휼 — 사용자 결정. 동맹 AI가 강해지지 않게 조건이 있거나 약한 것 위주.
+- `assets/data/traits.json`, `internal/content/vocab.go`, `internal/core/combat.go`: 발묘담정(`unflinching`, `crit_rally`)을 지운다 — 사용자: 이상한 특성. 하후돈 고유로 검토했다가 접었다. `docs/logic-combat.md`·`logic-traits.md`, 루트 `_newfeature.md`·`_newfeature-editor.html`.
+- `assets/data/traits.json`, `internal/content/vocab.go`, `internal/core/combat.go`: 소요진(`xiaoyao_ford`, `wounded_haste`)을 지운다 — 사용자 결정. 배우는 곳이 없었고 장료 고유로 줄 것도 접었다. `docs/logic-combat.md`·`logic-traits.md`, 루트 `_newfeature.md`·`_newfeature-editor.html`에서도 뺐다.
+- `docs/balance-traits-sim.md`(새 문서), `docs/README.md`: 특성 대결 시뮬레이션의 재는 법·결과·한계를 남긴다 — 사용자: 시뮬레이션 결과를 docs에.
+- `cmd/_traitsim`(임시): 같은 병종끼리 평지에서 한쪽에만 특성을 주고 양쪽을 적 AI로 싸워 승률·남은 병력 차이를 잰다. 시드마다 특성 쪽 선공/후공, 거리 2칸/6칸을 섞어 누가 먼저 때리나의 치우침을 지운다.
+
+## 2026-11-01 고유한 색의 말, 장수별 권장 배치
+
+- `internal/content/content.go`, `assets/data/equipment.json`: 장비 `Palette` — 백마(흰 털·흰 갈기)·절영(검은 말)·적토마(붉은 말). `internal/core/rules.go`·`engine.go`·`types.go`: 기마 병종이 그 장신구를 차면 `UnitView.Mount`. `internal/gui/look.go`·`view.go`·`game.go`·`deployment.go`·`duel.go`·`duel_gallery.go`·`editor.go`·`editor_ui.go`: 전투 도트(배치 미리보기·전투·일기토·승급)가 말의 색을 장수 팔레트 위에 덮어 그림 — 사용자: 말 아이템에 고유 색이 있고 타면 장수의 말 색이 바뀌게.
+- `internal/content/content.go`·`map_document.go`·`validate.go`, `internal/core/deployment.go`: 스테이지 `Recommend`(장수 → `Allies` 칸) — 기본 배치(배치 화면·자동 진행·강제 출전)가 그 장수를 그 칸에 먼저 세우고 나머지는 칸 순서대로. 사용자: 배치 영역을 넓혀 두 길 중 하나를 고르게 할 때, 권장 배치로 시작하고 AI도 그 상태에서 출발하게.
+- `internal/core/deployment_test.go`, `internal/gui/look_test.go`: 권장 칸에 서고 나머지가 칸 순서를 지키는지, 말 색이 그림에 들어가고 `Mount`가 보이는지.
+- `docs/data-item.md`, `docs/data-scenario-node.md`, `docs/logic-campaign.md`: 두 필드.
+
+## 2026-11-01 문관·무도가 계열 방어 보정
+
+- `assets/data/classes.json`: 병종 방어 보정(`Bonus` 둘째 값)을 문관 계열 +3(서생·참모·군사 4→7, 방술사 5→8, 선술사 6→9), 무도가 계열 +2(무도가·권사 6→8, 권성 7→9) — 사용자: 문관과 무도가의 방어력이 너무 약하다. 서주 전투 시안의 제갈현(서생 Lv22)이 방어 276으로 적 중보병(공격 550)에게 2~3턴에 쓰러졌다. Lv20·통솔 50 문관은 283→373, 궁병(6)·노병(7)과 비슷한 선.
+- `plan/ch11_12/`(시안): 제갈현을 방술사로, 제갈현을 치는 보병 둘을 신병으로. 시안 도구(`cmd/_draft1112sim`, `uidemo_zz_draft1112.go`)는 출전 명단을 `sortie.json`에서 읽는다(소스에 장수 이름을 두지 않으려고).
+- 이어서(시안): 제갈현을 치는 보병을 하나로, 유비군 출발을 위쪽 띠 가운데 (9,2) 언저리로(동·서 두 길 중 고르게) — 사용자 결정. 게임 AI 10판: 승 4·패 6, AI가 서쪽 길을 골라 4턴에 북쪽 꼭대기에 나타난 조인 무리와 부딪쳐 유비가 7~9턴에 퇴각하는 판이 많음.
+- 이어서(시안): 조인 등장을 북쪽 맵 끝(0,0 언저리)으로, 산줄기를 맵 끝까지 이어 조인이 서쪽 다리로만 가게, 배치 영역을 (8~16, 1~2) 18칸으로 넓히고 칸 순서로 가운데부터 채움 — 사용자 결정(조인은 서쪽 다리로 가는 게 컨셉, AI는 깰 수 있고 사람은 부목표까지). 게임 AI 10판 10승(9~12턴), 고순 10판 생존, 제갈현은 4~7턴 퇴각.
+
 ## 2026-11-01 고유 병종 도독, 밀려나는 연출의 감속과 흙먼지
 
 - 결정: 오의 대도독 넷(주유·육손·여몽·노숙)을 위한 승급 없는 고유 병종 `도독`을 둔다. 검·갑옷의 근접 보병이면서 책략을 쓰는 올라운더, 3단계 취급. 손권은 경보병 그대로. 도트는 있는 것만 쓴다 — 사용자 결정. 주유·육손이 보검을 들 근거(삭제된 유장)를 병종이 대신한다.
@@ -26,6 +58,13 @@
 - `internal/gui`: 목표 칸 표시를 `ActionCells`로, 밀려난 대상은 피격 모션 그대로 미끄러짐, 사격 모습은 창이 닿지 않을 때(`ShootsAt`, 밀리기 전 자리로), 팔진 상태 표시 삭제, 새 상태 이름. `uidemo_knockback.go`: 돌파 밀어내기 데모. `internal/ai/ai.go`: 접근 판단을 `CanStrikeFrom`으로. `internal/cli/play.go`: 밀어내기·중가 줄.
 - 테스트: `reach_test.go`(공격 범위 모양, 장창의 근접 판정, 적 레벨 특성, 연환) 추가, 사라진 규칙의 테스트를 새 규칙으로 고침, `testdata/mini`의 특성·병법 갱신.
 - 밸런스(`_balance -player ai -seeds 3`): B09 거록 2/3 → 1/3, B10 계교 3/3 → 1/3. B10은 적 보병 대각공격을 빼면 3/3으로 돌아온다. 수치 조정은 하지 않았다.
+
+## 2026-11-01 서주 전투 승리 조건과 배치
+
+- `docs/fullstory.md`: 서주 전투 승리를 "유비가 서주성에 들어간다"로, 부목표를 승리까지 제갈현 생존(인수)·고순 생존(13장 고순 합류)으로(육도·고순 가족 조건은 뺌), 조인을 북쪽 꼭대기로 올리고 유비군은 동쪽 끝에서 출발, 산줄기는 조인과 동쪽 사이로 옮김 — 사용자: 조인 기병과 제갈현이 너무 가까웠다.
+- `plan/ch11_12/`(시안): map12, `stage12.json`.
+- 이어서: 유비군 출발을 (15,2) 언저리로, 강에 닿는 산줄기 끝을 풀밭·구릉 한 칸씩으로 터 강을 따라 서쪽 다리로 빨리 가게, 제갈현을 치는 보병 둘을 강 건너로, 조인은 처음부터 있지 않고 4턴 이벤트로 나타남 — 사용자: 제갈현이 쓰러지기 전에 구하러 가기에 동선이 어렵다.
+- 이어서: 사수 물길을 1:1 계단 대신 서쪽은 곧게(맵 끝~서쪽 다리), 가운데는 2~3칸으로 굽이치게, 동쪽 다리 아래에서 동쪽 끝까지 곧게; 물을 나무보다 나중에 깔아 나무가 물길을 끊던 것을 고침; 서주성 북동문까지 길을 이음 — 사용자: 강이 곧은 사선처럼 지그재그로 보였다(반 칸만 물로 칠한 그림 시안은 "게임이 깨진 것 같다"며 되돌림). 바깥 227칸·안쪽 252칸.
 
 ## 2026-11-01 12장 서주 전투 구도
 
@@ -2055,3 +2094,40 @@
 - 확인(rush, `cmd/_routesim -trace B09 -rush`): 2턴에 길목 기습 대사가 나오고 들킴 대사는 나오지 않음(처음엔 둘 다 나와 들킴 쪽을 기습 플래그로 막음). rush 0/10
 - `assets/scenario/hero/maps/map09.json` 숲 (4~7, 1~3), `assets/scenario/hero/stage09.json` `TurnLimit`·`Enemies`(안량군 뺌)·`Areas` 4·`Events`
 - 확인(`cmd/_balance` ai 10판): 7/10, 평균 11라운드. 측정 AI는 숲길로 우회해 매복이 터지기 전에 지나가고, 안량군은 우회 뒤에 숲에서 나와 뒤쫓음(시드 1: 6턴 우회, 8턴 승리)
+
+## 2026-11-01 유비 고유 특성 넷: 의협·도술·인덕·호운
+- 결정: 옛 의협(잃은 병력 10%)을 없애고 양생(최대 병력 10% 회복)을 의협으로, 인덕(인접 아군 회복)을 도술로, 용인술(부관 섞을 때 매력 +20)을 인덕으로 이름을 바꾸고, 보급은 유비 목록에서 뺌(간옹·군량낭은 그대로) · 이유: 사용자 "의협 없애고, 양생을 의협으로… 보급 없애고. 용인술을 인덕으로, 인덕을 도술로"
+- `assets/data/traits.json`: `chivalry`(옛 의협) 삭제, `vitality` → `chivalry`(의협), `benevolence` → `taoism`(도술), `employment` → `benevolence`(인덕, 선행 도술) — id를 이름과 맞춤
+- `assets/data/characters.json`: 유비 `Learn` 6 → 4 (의협·도술·인덕·호운)
+- `docs/logic-traits.md`·`logic-growth.md`·`logic-combat.md`, `internal/core/formation.go`·`core_test.go` 주석, `cmd/_traitsim/main.go`: 새 이름·id로
+
+## 2026-11-01 유비는 도술 대신 독려를 배우고, 아군은 장신구를 차지 않고 시작한다
+- 결정: 유비 고유 특성 도술 → 독려(인덕의 선행도 독려로), 시작 장수의 장신구는 모두 창고로 · 이유: 사용자 "도술 특성 빼고 독려 특성 주자. 병법입문 등, 초기에 보조구는 다 장착 안한 걸로"
+- `internal/content/content.go`: `Campaign.Warehouse`(처음 창고) 추가, `validate.go`가 장비 id 검사, `internal/core/engine.go` `begin`이 창고에 옮겨 담음 — 시작 장비를 차지 않은 채 갖고 시작하게
+- `assets/data/characters.json`: 유비 `Learn` 의협·독려·인덕·호운, 유비·관우·장비·간옹 `Equipment`에서 장신구(병법입문·군마·군마·약낭) 뺌
+- `assets/data/traits.json`: `benevolence`(인덕) `Requires` taoism → exhort (도술은 정의만 남음)
+- `assets/scenario/hero/scenario.json`: `Warehouse` 병법입문 1·군마 2
+- `assets/scenario/hero/story04.json`·`assets/scenes/ch04.json`: 간옹 합류 뒤 `c04-c7` grant 약낭(창고로) — 간옹이 가져온 약낭은 차지 않은 채 들어옴
+- `docs/data-scenario-node.md`·`docs/logic-campaign.md`: `Warehouse` 설명
+- 확인: 새 게임 창고 {병법입문 1, 군마 2}, 유비 철검·가죽갑옷, 관우 철창·가죽갑옷. core·content(다른 세션 임시 파일의 순수성 시험 제외)·gui·ai·session 시험 통과
+
+## 2026-11-01 11·12장을 게임에 넣음: 진진의 사자 길, 북평의 손건, 태사자와 북해 전투, 북해성, 불탄 마을, 서주 전투
+- 결정: `plan/ch11_12` 시안(장면·대사·전투맵)을 그대로 게임 데이터로 · 이유: 사용자 "계교, 서주까지 다 반영하자"
+- `assets/scenario/hero/story11.json`: S#2 공손찬의 막사(`c11-envoy`~, 인수 `grant-c11-insu`), 해설 화친, S#3 북평(`c11-beiping`~), 탐험 `explore11`, S#4 북해로 가는 길(`c11-road`~), 전투 B11
+- `assets/scenario/hero/story12.json`(새 장) · `scenario.json` `Chapters` 12: 북해성 문 앞(`c12-start`, 태사자 부목표면 인수 `grant-c12-taishici`), 탐험 `explore12`, 불탄 마을(`c12-village`~), 전투 B12
+- `assets/scenario/hero/explore11.json`(북평성: S_xindu, 궁병 군관·무술 사범·공손찬의 막료·손건), `explore12.json`(북해성: S_beihai, 공융·손건·피난민·상인·대장장이)
+- `assets/scenario/hero/stage11.json`·`maps/map11.json`(북해 16×15, 보상 콩 8·보리 4·술 4·1500), `stage12.json`·`maps/map12.json`(서주 24×24, 제갈현 부목표 보상 중급 인수, 보상 2000)
+- `stage12.json` 조정: 조인 증원 4턴 → 5턴, 서주병 하나를 서문 문간 (17,20)에 — 다른 세션의 특성·병종 변경 뒤 AI 6/10이던 것이, 조인이 서문으로 곧장 드는 판을 막아 19/20(`cmd/_balance -player ai`, 시드 1~20). B11은 10/10, 평균 5.1라운드
+- `assets/data/characters_story.json`: 태사자·관해·우금·제갈현 추가, 진진을 원소의 사자(문관, 학자)로
+- `assets/scenes/ch11.json`(`c11-envoy`·`c11-beiping`·`c11-road`), `ch12.json`(`c12-start`·`c12-village`): 시안 배치에서 공손찬 자리를 화로 앞 (1,1) → (2,1)로(불꽃이 머리에 겹침), 탁자를 지나는 걸음을 빼고 그 자리에서 칼을 뽑음, 손건의 읍(그 시트에 없는 동작) 뺌, 태사자·정찰병은 무대 밖에서 등장
+- `assets/graphics/maps/S_beihai.json`·`S_xuzhou_ruin.json`·`S_field_road.json` 추가(`index.json` maps), `S_castle_out.json` 해자 앞 덤불 다섯 삭제(4장 팽성 장면도 같은 맵)
+- `internal/core/campaign_content_test.go`: 캠페인이 B12까지, 부목표 플래그 셋 확인, 나중에 합류하는 일기토 장수는 명단에 넣고 시험
+- `docs/fullstory.md`: 11·12장 [구현] 표시, 조인 5턴·서문 문지기
+- 확인: core·content(순수성 시험 제외)·gui·ai·session·cli 시험 통과, 장면 넷 게임 캡처(`reports/uidemo/c11env2`, `c11-beiping`, `c11-road`, `c12-start`, `c12-village`)
+- 남은 것: 태사자·관해·우금·제갈현 초상과 전투 도트(지금은 병종 시트), 손건 비전투 도트, 탐험 속 장비·간옹 등 일행 대사
+
+## 2026-11-01 서주까지의 날짜를 뺌
+- `assets/scenario/hero/story12.json` `c12-v1`: "내려온 지 사흘" → "남쪽으로 내려가 서주 땅에 들어서자", `explore12.json` 손건: "서주까지는 사흘 길" → "청주만 지나면 바로 서주입니다" — 북해에서 서주성까지는 사흘로 갈 수 없는 거리라, 날짜 대신 땅 이름으로 · 이유: 사용자 "날짜 관련된거 없애죠"
+
+## 2026-11-01 고순의 고유 특성: 함진·군율·돌파
+- `assets/data/characters_story.json` 고순 `Learn`: 함진(`break_line`)·군율(`discipline`)·돌파(`breakthrough`), `docs/logic-traits.md` 표에 고순 — 13장에 합류할 고순의 몫. 함진은 혼자 싸울 때 약해(시뮬레이션 경보병 1:1 61.7%, 돌파 71.7%) 돌파로 이어 치고, 군율은 엄한 군기 · 이유: 사용자 "고순은 일당백, 엄명, 철벽 빼고 돌파를 주자"

@@ -7,6 +7,7 @@ import (
 	"image/color"
 	"math"
 	"slices"
+	"srpg/internal/content"
 	"srpg/internal/core"
 	"srpg/internal/session"
 )
@@ -228,7 +229,11 @@ func (g *Game) drawDeploymentPreview(o core.Observation) {
 		if ch.ID != c.Actor {
 			continue
 		}
-		art := g.battleClassArt(ch.Def, ch.Class, g.S.Data.Equipment[ch.Equipment["weapon"]].Type, g.S.Data.Characters[ch.Def].Look.Faction)
+		mount := ""
+		if slices.Contains(g.S.Data.Classes[ch.Class].Tags, content.TagMounted) {
+			mount = ch.Equipment["accessory"]
+		}
+		art := g.battleClassArt(ch.Def, ch.Class, g.S.Data.Equipment[ch.Equipment["weapon"]].Type, mount, g.S.Data.Characters[ch.Def].Look.Faction)
 		if art == nil {
 			return
 		}

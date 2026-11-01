@@ -170,7 +170,6 @@
    "Cost": 24,
    "Hit": 110,
    "Element": "water",
-   "Condition": "water",
    "Min": 1,
    "Max": 4,
    "Coeff": 1,
@@ -187,7 +186,6 @@
    "Cost": 48,
    "Hit": 110,
    "Element": "water",
-   "Condition": "water",
    "Min": 1,
    "Max": 3,
    "Coeff": 1.5,
@@ -205,7 +203,6 @@
    "Cost": 48,
    "Hit": 110,
    "Element": "water",
-   "Condition": "water",
    "Min": 1,
    "Max": 4,
    "Coeff": 0.7,
@@ -223,7 +220,6 @@
    "Cost": 64,
    "Hit": 110,
    "Element": "water",
-   "Condition": "water",
    "Min": 1,
    "Max": 7,
    "Coeff": 1.5,
@@ -242,7 +238,6 @@
    "Cost": 64,
    "Hit": 110,
    "Element": "water",
-   "Condition": "water",
    "Min": 1,
    "Max": 3,
    "Coeff": 1,
@@ -979,23 +974,6 @@
    "Effect": "agility",
    "Requires": [
     "press_prep"
-   ]
-  },
-  "rebuke": {
-   "Kind": "status",
-   "Mode": "melee",
-   "Shape": "single",
-   "Cost": 30,
-   "Hit": 100,
-   "Duration": 3,
-   "Name": "질타",
-   "Desc": "인접 적 1기의 공격을 봉쇄한다. 반드시 성공.",
-   "Effect": "disarm",
-   "Min": 1,
-   "Max": 1,
-   "Sure": true,
-   "Requires": [
-    "rebuke_prep"
    ]
   },
   "slander": {

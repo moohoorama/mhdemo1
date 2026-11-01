@@ -81,7 +81,7 @@
    }
   },
   "ambush_crit": {
-   "Name": "기습",
+   "Name": "난전",
    "Desc": "산·숲에 있으면 물리 공격이 반드시 치명타.",
    "Kind": "talent",
    "Tone": "attack",
@@ -236,15 +236,22 @@
     "charge_power": 0.05
    }
   },
+  "charge_aim": {
+   "Name": "기습",
+   "Desc": "이번 차례에 이동한 칸 수 × 물리 공격 명중률 +3%p.",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 500,
+   "Effects": {
+    "charge_accuracy": 3
+   }
+  },
   "impact": {
    "Name": "충격",
    "Desc": "4칸 이상 이동한 뒤 근접 공격하면 대상에게 방어력 저하.",
    "Kind": "talent",
    "Tone": "debuff",
    "Cost": 500,
-   "Requires": [
-    "charge_strike"
-   ],
    "Effects": {
     "charge_shock": 4
    }
@@ -279,6 +286,16 @@
     "crit_vs_wounded": 1
    }
   },
+  "opening": {
+   "Name": "개전",
+   "Desc": "대상의 병력이 50%를 넘은 만큼, 그 절반을 피해 배율에 더한다(병력 100%면 +25%, 50% 이하면 0).",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 500,
+   "Effects": {
+    "opening": 0.5
+   }
+  },
   "vanguard": {
    "Name": "선봉",
    "Desc": "매 자기 차례 자신에게 공격력 버프.",
@@ -309,6 +326,16 @@
     "hit_debuff:defense": 1
    }
   },
+  "roar": {
+   "Name": "호통",
+   "Desc": "물리 공격이 명중하면 대상에게 공격력 저하.",
+   "Kind": "talent",
+   "Tone": "debuff",
+   "Cost": 500,
+   "Effects": {
+    "hit_debuff:attack": 1
+   }
+  },
   "awe": {
    "Name": "위풍",
    "Desc": "적을 퇴각시키면 그 적의 주변 8칸에 있던 적에게 사기·순발 저하.",
@@ -318,16 +345,6 @@
    "Effects": {
     "rout:morale": 1,
     "rout:agility": 1
-   }
-  },
-  "unflinching": {
-   "Name": "발묘담정",
-   "Desc": "치명타를 맞으면 다음 자기 차례 끝까지 공격력 버프.",
-   "Kind": "talent",
-   "Tone": "buff",
-   "Cost": 500,
-   "Effects": {
-    "crit_rally": 1
    }
   },
   "bodyguard": {
@@ -437,16 +454,6 @@
    "Cost": 500,
    "Effects": {
     "mounted_range": 2
-   }
-  },
-  "xiaoyao_ford": {
-   "Name": "소요진",
-   "Desc": "병력이 절반 이하면 매 자기 차례 자신에게 이동력 +2 버프.",
-   "Kind": "talent",
-   "Tone": "move",
-   "Cost": 500,
-   "Effects": {
-    "wounded_haste": 2
    }
   },
   "ironwall": {
@@ -789,8 +796,8 @@
     "poison_boost": 1
    }
   },
-  "vitality": {
-   "Name": "양생",
+  "chivalry": {
+   "Name": "의협",
    "Desc": "자기 차례 시작에 최대 병력의 10%를 회복한다.",
    "Kind": "talent",
    "Tone": "heal",
@@ -799,21 +806,8 @@
     "regen": 0.1
    }
   },
-  "chivalry": {
-   "Name": "의협",
-   "Desc": "자기 차례 시작에 잃은 병력의 20%를 회복한다(양생과 함께 적용).",
-   "Kind": "talent",
-   "Tone": "heal",
-   "Cost": 500,
-   "Requires": [
-    "vitality"
-   ],
-   "Effects": {
-    "wound_regen": 0.2
-   }
-  },
-  "benevolence": {
-   "Name": "인덕",
+  "taoism": {
+   "Name": "도술",
    "Desc": "자기 차례 시작에 인접 아군이 최대 병력의 10%를 회복한다.",
    "Kind": "talent",
    "Tone": "heal",
@@ -822,14 +816,14 @@
     "aura_heal": 0.1
    }
   },
-  "employment": {
-   "Name": "용인술",
+  "benevolence": {
+   "Name": "인덕",
    "Desc": "부관 능력치를 섞을 때 주장의 매력을 +20으로 본다.",
    "Kind": "talent",
    "Tone": "buff",
    "Cost": 500,
    "Requires": [
-    "benevolence"
+    "exhort"
    ],
    "Effects": {
     "deputy_charm": 20
@@ -1240,13 +1234,6 @@
   "provoke_prep": {
    "Name": "도발",
    "Desc": "도발 책략 사용 가능. 자신을 중심으로 한 십자 5칸의 적에게 사기 저하.",
-   "Kind": "strategy",
-   "Tone": "debuff",
-   "Cost": 500
-  },
-  "rebuke_prep": {
-   "Name": "질타",
-   "Desc": "질타 책략 사용 가능. 인접 적 1기의 공격을 봉쇄한다. 반드시 성공.",
    "Kind": "strategy",
    "Tone": "debuff",
    "Cost": 500

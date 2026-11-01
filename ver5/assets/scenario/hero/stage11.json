@@ -1,0 +1,368 @@
+{
+ "ID": "B11",
+ "Name": "북해 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 6,
+ "Required": [
+  "liubei",
+  "guanyu",
+  "zhangfei",
+  "zhaoyun"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "defeated:guanhai"
+   ],
+   "Text": "관해를 물리친다"
+  }
+ ],
+ "Sub": [
+  {
+   "ID": "taishici",
+   "Text": "태사자가 살아남는다",
+   "If": [
+    "alive:taishici"
+   ],
+   "Flag": "flag-beihai-taishici"
+  }
+ ],
+ "TurnLimit": 25,
+ "Map": "map11.json",
+ "Allies": [
+  {
+   "X": 14,
+   "Y": 14
+  },
+  {
+   "X": 15,
+   "Y": 14
+  },
+  {
+   "X": 14,
+   "Y": 13
+  },
+  {
+   "X": 15,
+   "Y": 13
+  },
+  {
+   "X": 15,
+   "Y": 12
+  },
+  {
+   "X": 13,
+   "Y": 13
+  },
+  {
+   "X": 12,
+   "Y": 14
+  }
+ ],
+ "Party": [
+  {
+   "Character": "taishici",
+   "X": 13,
+   "Y": 12,
+   "Facing": "NW",
+   "Group": "tai",
+   "Policy": "assault",
+   "AI": true,
+   "Faction": "han"
+  },
+  {
+   "Character": "kongrong",
+   "X": 7,
+   "Y": 1,
+   "Facing": "SW",
+   "Group": "kong",
+   "Policy": "hold",
+   "AI": true,
+   "Faction": "han"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 6,
+   "Y": 2,
+   "Facing": "SW",
+   "Group": "kong",
+   "Policy": "hold",
+   "AI": true,
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 8,
+   "Y": 2,
+   "Facing": "SW",
+   "Group": "kong",
+   "Policy": "hold",
+   "AI": true,
+   "Faction": "han",
+   "Shift": -0.07
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "guanhai",
+   "X": 8,
+   "Y": 5,
+   "Facing": "NE",
+   "Group": "hq",
+   "Policy": "hold",
+   "Rank": "commander",
+   "DuelFirst": true
+  },
+  {
+   "Character": "troop_turban",
+   "X": 6,
+   "Y": 4,
+   "Facing": "NE",
+   "Group": "gate",
+   "Policy": "hold",
+   "Rank": "recruit"
+  },
+  {
+   "Character": "troop_turban",
+   "X": 8,
+   "Y": 4,
+   "Facing": "NE",
+   "Group": "gate",
+   "Policy": "hold",
+   "Rank": "recruit"
+  },
+  {
+   "Character": "troop_turban",
+   "X": 5,
+   "Y": 5,
+   "Facing": "NE",
+   "Group": "gate",
+   "Policy": "hold",
+   "Rank": "recruit"
+  },
+  {
+   "Character": "troop_turban",
+   "X": 9,
+   "Y": 6,
+   "Facing": "SE",
+   "Group": "gate",
+   "Policy": "hold",
+   "Rank": "recruit"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 12,
+   "Y": 5,
+   "Facing": "SW",
+   "Group": "bank",
+   "Policy": "react",
+   "Rank": "recruit"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 9,
+   "Y": 5,
+   "Facing": "SW",
+   "Group": "bank",
+   "Policy": "react",
+   "Rank": "recruit"
+  },
+  {
+   "Character": "troop_turban",
+   "X": 10,
+   "Y": 6,
+   "Facing": "SW",
+   "Group": "ford",
+   "Policy": "react"
+  },
+  {
+   "Character": "troop_turban",
+   "X": 12,
+   "Y": 6,
+   "Facing": "SW",
+   "Group": "ford",
+   "Policy": "react"
+  }
+ ],
+ "Reward": {
+  "bean": 8,
+  "barley": 4,
+  "liquor": 4,
+  "money": 1500
+ },
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 0,
+    "Y": 0,
+    "W": 16,
+    "H": 7
+   },
+   "Name": "강 북쪽",
+   "Description": "유비군 장수가 여기 있을 때 적 차례가 오면 남서쪽 구릉에 황건 증원"
+  },
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 7,
+    "Y": 3,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "북해성 성문"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "opening",
+   "If": [
+    "round>=1"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "guanhai",
+       "Text": "성 안 쥐새끼들, 이제 양식도 바닥났겠지! 문만 열면 다 끝난다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "taishici",
+       "Text": "여울만 건너면 성문 앞이오! 내가 먼저 가겠소!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "자의를 따라 여울을 건넌다! 길가의 성은 비워 두지 마라."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhaoyun",
+       "Text": "관해는 성문 앞 진채에 있습니다."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "reinforce",
+   "If": [
+    "any:[at:liubei:1, at:guanyu:1, at:zhangfei:1, at:zhaoyun:1, at:jianyong:1, at:fangong:1]",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_turban",
+       "X": 6,
+       "Y": 14,
+       "Facing": "NE",
+       "Group": "rear",
+       "Policy": "assault",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_turban",
+       "X": 5,
+       "Y": 14,
+       "Facing": "NE",
+       "Group": "rear",
+       "Policy": "assault",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_turban",
+       "X": 7,
+       "Y": 14,
+       "Facing": "NE",
+       "Group": "rear",
+       "Policy": "assault",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_turban",
+       "X": 6,
+       "Y": 13,
+       "Facing": "NE",
+       "Group": "rear",
+       "Policy": "assault",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_turban",
+       "X": 5,
+       "Y": 13,
+       "Facing": "NE",
+       "Group": "rear",
+       "Policy": "assault",
+       "Side": "enemy"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "guanhai",
+       "Text": "오, 동료들이 더 왔구나! 저놈들 등을 쳐라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "gate",
+      "hq"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  }
+ ],
+ "Faction": "turban",
+ "Duels": [
+  {
+   "ID": "beihai-zhaoyun-guanhai",
+   "Ally": "zhaoyun",
+   "Enemy": "guanhai",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "관해가 조운의 창을 받아 내지 못하고 진채로 달아났다."
+  }
+ ],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "han",
+   "Name": "북해군",
+   "Ally": true
+  },
+  {
+   "Faction": "turban",
+   "Name": "황건군"
+  }
+ ]
+}

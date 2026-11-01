@@ -74,7 +74,7 @@ func (g *Game) armyName(faction, army string) string {
 	if faction == "ally" {
 		return g.lordName() + "군"
 	}
-	if g.S != nil && g.S.Engine != nil {
+	if g.S != nil {
 		if st := g.S.View().Map; st != nil {
 			for _, a := range st.Armies {
 				if a.Faction == army {

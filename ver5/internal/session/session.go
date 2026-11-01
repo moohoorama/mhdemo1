@@ -53,7 +53,13 @@ func New(d *content.Data, dir string) (*Session, error) {
 }
 
 // View is what the engine shows now, built once per change of its state; callers only read it.
-func (s *Session) View() core.Observation { return s.view.Of(s.Engine) }
+// With no game it is the zero Observation, whose empty Phase matches no screen.
+func (s *Session) View() core.Observation {
+	if s.Engine == nil {
+		return core.Observation{}
+	}
+	return s.view.Of(s.Engine)
+}
 
 func (s *Session) Handle(q Request) Response {
 	r := Response{ID: q.ID, OK: true}

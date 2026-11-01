@@ -1,0 +1,116 @@
+{
+ "Nodes": [
+  {
+   "ID": "c12-start",
+   "Kind": "scene",
+   "Place": "북해성 문 앞"
+  },
+  {
+   "ID": "c12-g1",
+   "Kind": "say",
+   "Speaker": "kongrong",
+   "Text": "옛말에 이르기를, 어려울 때 온 벗이 참된 벗이라 하였소. 현덕 공께 큰 빚을 졌구려."
+  },
+  {
+   "ID": "c12-g2",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-beihai-taishici"
+     ],
+     "Next": "c12-g3"
+    }
+   ],
+   "Else": "c12-walk"
+  },
+  {
+   "ID": "c12-g3",
+   "Kind": "say",
+   "Speaker": "taishici",
+   "Text": "포위를 뚫을 때 공융 공께 받은 것이오. 내게는 과분하니, 공의 장수에게 쓰시오."
+  },
+  {
+   "ID": "c12-g4",
+   "Kind": "grant",
+   "Item": "insu_mid",
+   "Count": 1,
+   "Event": "grant-c12-taishici"
+  },
+  {
+   "ID": "c12-g5",
+   "Kind": "say",
+   "Speaker": "taishici",
+   "Text": "어머니께 은혜를 갚았다 말씀드릴 수 있게 되었소. 다음에 만날 때는 이 화살로 빚을 갚겠소."
+  },
+  {
+   "ID": "c12-walk",
+   "Kind": "explore",
+   "Explore": "explore12"
+  },
+  {
+   "ID": "c12-village",
+   "Kind": "scene",
+   "Place": "서주 땅 · 불탄 마을"
+  },
+  {
+   "ID": "c12-v1",
+   "Kind": "narrate",
+   "Text": "북해를 떠나 남쪽으로 내려가 서주 땅에 들어서자, 연기가 보였다."
+  },
+  {
+   "ID": "c12-v2",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "연기 나는 걸 보니, 여기서도 한바탕 붙었나 보네유."
+  },
+  {
+   "ID": "c12-v3",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "싸움이라기엔……. 쓰러진 건 백성들뿐이군요."
+  },
+  {
+   "ID": "c12-v4",
+   "Kind": "say",
+   "Speaker": "town_elder",
+   "Text": "조조 놈이 지 아비 원수를 갚는다면서…… 살아 있는 건 다 죽이고 다녔어……."
+  },
+  {
+   "ID": "c12-v5",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "조 장군의 부친이 서주 땅에서 해를 입으셨습니다. 사군의 부하였던 자가 저지른 일이고, 사군께서는 알지도 못하셨습니다……."
+  },
+  {
+   "ID": "c12-v6",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "그렇다고 이게…… 이게 사람이 할 짓이유!"
+  },
+  {
+   "ID": "c12-v7",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……맹덕 공."
+  },
+  {
+   "ID": "c12-v8",
+   "Kind": "say",
+   "Speaker": "scout",
+   "Text": "남쪽 길에 서주성으로 가는 피난민 행렬이 있습니다! 조조군 기병이 뒤를 쫓고 있습니다!"
+  },
+  {
+   "ID": "c12-v9",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "고순 장군도 팽성 사람들을 데리고 그 길로 오고 있을 겁니다."
+  },
+  {
+   "ID": "c12-battle",
+   "Kind": "battle",
+   "Stage": "B12",
+   "Text": "서주 전투 — 출전 준비"
+  }
+ ]
+}

@@ -18,7 +18,7 @@
 | `result` | 전투 결과(`Result`가 `victory` 또는 `defeat`)를 보여 준다. |
 | `complete` | 캠페인이 끝났다. |
 
-새 게임은 `Campaign.Start` 노드에서 `scenario` 단계로 시작한다. 시작 로스터(`Campaign.Roster`)는 모두 인물로 만들어지고, 시작 출전 명단은 `Campaign.Deployment`, 시작 인벤토리는 `Campaign.Inventory`다. 값은 시나리오 파일(`assets/scenario/<시나리오>/scenario.json`)을 본다.
+새 게임은 `Campaign.Start` 노드에서 `scenario` 단계로 시작한다. 시작 로스터(`Campaign.Roster`)는 모두 인물로 만들어지고, 시작 출전 명단은 `Campaign.Deployment`, 시작 인벤토리는 `Campaign.Inventory`, 시작 창고는 `Campaign.Warehouse`다. 값은 시나리오 파일(`assets/scenario/<시나리오>/scenario.json`)을 본다.
 
 검증용 **장면 이동**(`-debug` 시작 메뉴, 세션 `jump` 요청에 `node`)은 지점(`Data.Waypoints`: 각 장의 첫 노드와 각 `battle` 노드)에서 새 게임을 연다(`core.NewAt`).
 
@@ -77,7 +77,7 @@
 - `place`(`Actor`, `X`, `Y`): 출전 명단의 장수를 놓는다. 칸은 `Allies`에 있고, 비어 있고, 그 장수의 병종이 설 수 있는 지형(비용 > 0)이어야 한다. 아니면 `InvalidPlacement`. 이미 놓였으면 `AlreadyPlaced`. 놓인 장수는 병력 최대, 병법 0으로 시작한다.
 - `unplace`: 놓은 장수를 거둔다. 고정 아군은 대상이 아니다(출전 명단에 없으므로 `InvalidActor`).
 - `deployment_finish`: 출전 명단 전원이 놓였고 살아 있어야 한다(아니면 `DeploymentIncomplete`). 단계를 `battle`로 바꾸고 `deployment_finish` 이벤트를 낸다.
-- `DeploymentPlan`: 남은 장수에게 칸을 최대한 겹치지 않게 배정하는 명령열을 만든다(자동 진행용). 자리가 모자라면 `NoDeploymentSpace`.
+- `DeploymentPlan`: 남은 장수에게 칸을 최대한 겹치지 않게 배정하는 명령열을 만든다(자동 진행용). `Stage.Recommend`에 권장 칸이 있는 장수는 그 칸에 먼저 세우고(비어 있고 설 수 있을 때), 나머지는 `Allies` 순서대로 채운다. 자리가 모자라면 `NoDeploymentSpace`.
 
 `Allies` 칸 수는 `Max` 이상이어야 로드된다([data-scenario-node.md](data-scenario-node.md)). 스테이지의 `Required`(필수 출전)에 든 인물은 출전 준비에 들어서면 출전 명단에 자동으로 들어가고(전사했거나 부관이면 건너뜀) 명단에서 뺄 수 없다. `deploy`·`start`는 명단이 `Max`를 넘거나 필수 인물이 빠지면 `InvalidDeployment`다.
 

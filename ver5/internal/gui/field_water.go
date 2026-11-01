@@ -43,9 +43,24 @@ func (f *Field) bridgeEdges(x, y int, at image.Point, px, py float64) []drawItem
 }
 
 // boat is the boat a unit stands in and how much of it shows (0 none, 1 whole): on sunk water, fading in
-// with the unit's drop as it steps off the bank.
+// with the unit's drop below the shallower end of its step, the bank or a ford. A step that neither leaves
+// nor reaches water, as onto a ford, has none.
 func (f *Field) boat(u *unitVis) (string, float64) {
-	if !f.Map.SunkWater || u.lift >= 0 || u.actor || f.Tile(int(math.Round(u.u)), int(math.Round(u.v))) == 's' {
+	if !f.Map.SunkWater || u.lift >= 0 || u.actor {
+		return "", 0
+	}
+	water := func(u, v float64) bool { return f.Tile(int(math.Round(u)), int(math.Round(v))) == '~' }
+	shallow := 0.0
+	if w := u.walk; w != nil {
+		if !water(w.fu, w.fv) && !water(w.tu, w.tv) {
+			return "", 0
+		}
+		shallow = min(0, max(w.fl, w.tl))
+	} else if !water(u.u, u.v) {
+		return "", 0
+	}
+	k := min(1, (shallow-u.lift)/(sunkDepth+shallow))
+	if k <= 0 {
 		return "", 0
 	}
 	switch u.dir {
@@ -61,7 +76,7 @@ func (f *Field) boat(u *unitVis) (string, float64) {
 	if u.mounted {
 		name = "boat_l_"
 	}
-	return name + u.boatAxis, min(1, -u.lift/sunkDepth)
+	return name + u.boatAxis, k
 }
 
 // pose is the animation and frame a unit is drawn in: afloat it does not walk, the boat carries it.

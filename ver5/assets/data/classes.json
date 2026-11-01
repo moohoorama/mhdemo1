@@ -250,8 +250,9 @@
    "Portrait": "heavy_cavalry",
    "Pool": [
     "deputy_appoint",
-    "breakthrough",
-    "charge"
+    "charge",
+    "charge_strike",
+    "impact"
    ],
    "Tags": [
     "mounted"
@@ -507,7 +508,7 @@
    "Range": 1,
    "Bonus": [
     6,
-    4,
+    7,
     12,
     8,
     9,
@@ -545,7 +546,7 @@
    "Range": 1,
    "Bonus": [
     6,
-    4,
+    7,
     14,
     9,
     10,
@@ -581,7 +582,7 @@
    "Range": 1,
    "Bonus": [
     6,
-    4,
+    7,
     16,
     10,
     11,
@@ -613,7 +614,7 @@
    "Range": 1,
    "Bonus": [
     6,
-    5,
+    8,
     14,
     8,
     10,
@@ -650,7 +651,7 @@
    "Range": 1,
    "Bonus": [
     6,
-    6,
+    9,
     16,
     8,
     11,
@@ -810,7 +811,7 @@
    "Range": 1,
    "Bonus": [
     13,
-    6,
+    8,
     4,
     11,
     10,
@@ -842,7 +843,7 @@
    "Range": 1,
    "Bonus": [
     14,
-    6,
+    8,
     4,
     13,
     11,
@@ -874,7 +875,7 @@
    "Range": 1,
    "Bonus": [
     15,
-    7,
+    9,
     4,
     15,
     11,

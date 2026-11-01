@@ -40,7 +40,9 @@
     55
    ],
    "Level": 4,
-   "Traits": [],
+   "Traits": [
+    "fire"
+   ],
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
@@ -67,7 +69,9 @@
     54
    ],
    "Level": 4,
-   "Traits": [],
+   "Traits": [
+    "stratagem"
+   ],
    "Learn": [],
    "Equipment": [
     "iron_sword",
@@ -123,7 +127,9 @@
     80
    ],
    "Level": 9,
-   "Traits": [],
+   "Traits": [
+    "fire"
+   ],
    "Learn": [],
    "Equipment": [
     "iron_sword",
@@ -207,7 +213,9 @@
     64
    ],
    "Level": 7,
-   "Traits": [],
+   "Traits": [
+    "blood_pay"
+   ],
    "Learn": [],
    "Equipment": [
     "iron_sword",
@@ -235,7 +243,9 @@
     56
    ],
    "Level": 6,
-   "Traits": [],
+   "Traits": [
+    "aim_prep"
+   ],
    "Learn": [],
    "Equipment": [
     "short_bow",
@@ -307,7 +317,7 @@
   "xurong": {
    "Name": "서영",
    "Biography": "동탁군 장수. 변수에서 복병으로 조조를 쫓는다.",
-   "Class": "light_cavalry",
+   "Class": "light_infantry",
    "Stats": [
     78,
     86,
@@ -317,19 +327,16 @@
     52
    ],
    "Level": 8,
-   "Traits": [],
+   "Traits": [
+    "ambush_crit"
+   ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
-    "leather_armor",
-    "war_horse"
+    "iron_sword",
+    "leather_armor"
    ],
    "Look": {
-    "Faction": "dong",
-    "Palette": {
-     "horseSkin": "#3a2a22",
-     "saddle": "#c8c8d0"
-    }
+    "Faction": "dong"
    }
   },
   "xiahoudun": {
@@ -345,7 +352,9 @@
     70
    ],
    "Level": 9,
-   "Traits": [],
+   "Traits": [
+    "grit"
+   ],
    "Learn": [],
    "Equipment": [
     "iron_spear",
@@ -376,7 +385,9 @@
     62
    ],
    "Level": 8,
-   "Traits": [],
+   "Traits": [
+    "swiftness"
+   ],
    "Learn": [],
    "Equipment": [
     "iron_spear",
@@ -406,7 +417,9 @@
     65
    ],
    "Level": 8,
-   "Traits": [],
+   "Traits": [
+    "ironwall"
+   ],
    "Learn": [],
    "Equipment": [
     "iron_spear",
@@ -433,7 +446,9 @@
     62
    ],
    "Level": 8,
-   "Traits": [],
+   "Traits": [
+    "supply"
+   ],
    "Learn": [],
    "Equipment": [
     "iron_sword",
@@ -540,7 +555,9 @@
    ],
    "Level": 3,
    "Points": 200,
-   "Traits": [],
+   "Traits": [
+    "fire"
+   ],
    "Learn": [
     "fire",
     "footwork"
@@ -568,7 +585,9 @@
     55
    ],
    "Level": 9,
-   "Traits": [],
+   "Traits": [
+    "first_climb"
+   ],
    "Learn": [],
    "Equipment": [
     "short_bow",
@@ -585,8 +604,8 @@
   },
   "chenzhen": {
    "Name": "진진",
-   "Biography": "원소군 장수. 국의와 함께 쇠뇌 부대를 맡는다.",
-   "Class": "crossbow",
+   "Biography": "자는 공위. 원소의 사자. 신중하고 눈치 빠른 선비로, 계교 뒤 화친의 글을 들고 공손찬의 진영에 온다.",
+   "Class": "scholar",
    "Stats": [
     68,
     64,
@@ -599,8 +618,8 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "short_bow",
-    "leather_armor"
+    "bamboo_fan",
+    "plain_clothes"
    ],
    "Look": {
     "Faction": "yuan",
@@ -608,7 +627,8 @@
      "iron": "#40404a",
      "themeA": "#5a8a3a"
     },
-    "Portrait": "chenzhen"
+    "Portrait": "chenzhen",
+    "Scene": "official_noncombat"
    }
   },
   "tiankai": {
@@ -624,7 +644,9 @@
     56
    ],
    "Level": 5,
-   "Traits": [],
+   "Traits": [
+    "charge"
+   ],
    "Learn": [],
    "Equipment": [
     "iron_spear",
@@ -917,8 +939,14 @@
     58
    ],
    "Level": 5,
-   "Traits": [],
-   "Learn": [],
+   "Traits": [
+    "break_line"
+   ],
+   "Learn": [
+    "break_line",
+    "discipline",
+    "breakthrough"
+   ],
    "Equipment": [
     "iron_sword",
     "leather_armor"
@@ -998,7 +1026,9 @@
     88
    ],
    "Level": 9,
-   "Traits": [],
+   "Traits": [
+    "lecture"
+   ],
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
@@ -1488,8 +1518,7 @@
    "Learn": [],
    "Equipment": [
     "iron_spear",
-    "leather_armor",
-    "war_horse"
+    "leather_armor"
    ],
    "Look": {
     "Faction": "shu"
@@ -1518,6 +1547,113 @@
     "Faction": "wu",
     "Scene": "sunquan_noncombat",
     "Portrait": "sunquan"
+   }
+  },
+  "taishici": {
+   "Name": "태사자",
+   "Biography": "자는 자의. 동래 사람. 어머니가 공융에게 입은 은혜를 갚으려 북해의 포위를 뚫고 구원을 청하러 나온 활의 명수.",
+   "Class": "horse_archer",
+   "Stats": [
+    80,
+    88,
+    60,
+    90,
+    70,
+    72
+   ],
+   "Level": 10,
+   "Traits": [
+    "sure_shot"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Palette": {
+     "horseSkin": "#7a5030",
+     "saddle": "#2a4a70"
+    }
+   }
+  },
+  "guanhai": {
+   "Name": "관해",
+   "Biography": "북해를 에워싼 황건 잔당의 우두머리. 성 안의 양식이 떨어지기를 기다린다.",
+   "Class": "bandit",
+   "Stats": [
+    70,
+    84,
+    30,
+    62,
+    45,
+    35
+   ],
+   "Level": 10,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "turban",
+    "Palette": {
+     "themeA": "#8a6a10",
+     "iron": "#c8a040"
+    }
+   }
+  },
+  "yujin": {
+   "Name": "우금",
+   "Biography": "조조군의 장수. 군령이 엄해 명을 어기는 법이 없다.",
+   "Class": "archer",
+   "Stats": [
+    84,
+    80,
+    60,
+    60,
+    60,
+    55
+   ],
+   "Level": 12,
+   "Traits": [
+    "strict_order"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "zhugexuan": {
+   "Name": "제갈현",
+   "Biography": "낭야 사람. 피난 중에도 품위를 잃지 않는 선비.",
+   "Class": "sorcerer",
+   "Stats": [
+    30,
+    20,
+    80,
+    40,
+    60,
+    80
+   ],
+   "Level": 5,
+   "Traits": [
+    "relief"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "official_noncombat"
    }
   }
  }

@@ -150,11 +150,7 @@
    "Y": 7,
    "Facing": "SW",
    "Group": "bridge",
-   "Policy": "hold",
-   "Traits": [
-    "fire",
-    "stratagem"
-   ]
+   "Policy": "hold"
   },
   {
    "Character": "troop_footman",
@@ -204,10 +200,7 @@
    "Y": 8,
    "Facing": "SW",
    "Group": "reserve",
-   "Policy": "hold",
-   "Traits": [
-    "water"
-   ]
+   "Policy": "hold"
   }
  ],
  "Reward": {

@@ -22,7 +22,7 @@ var overlayTitles = map[string]string{"menu": "메뉴", "save": "저장", "load"
 
 func (g *Game) popupPending() bool {
 	return len(g.overlays) > 0 || len(g.modals) > 0 || len(g.learn) > 0 ||
-		(g.S.Engine != nil && g.S.Screen == "playing" && len(g.S.View().Learners) > 0)
+		(g.S.Screen == "playing" && len(g.S.View().Learners) > 0)
 }
 
 // overlay is the top window, the one that takes the input; "" when none is open.

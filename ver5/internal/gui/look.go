@@ -3,6 +3,7 @@ package gui
 import (
 	"encoding/json"
 	"image/color"
+	"maps"
 	"strings"
 
 	"srpg/internal/content"
@@ -88,7 +89,7 @@ func (g *Game) art(id, faction string, look content.Look) *sprite.Art {
 // battleArt is the character's battle sprite, or its class's.
 func (g *Game) battleArt(def, faction string) *sprite.Art {
 	c := g.S.Data.Characters[def]
-	return g.battleClassArt(def, c.Class, g.startingWeapon(c), faction)
+	return g.battleClassArt(def, c.Class, g.startingWeapon(c), "", faction)
 }
 
 // startingWeapon is the type of the weapon a character's definition equips.
@@ -103,8 +104,10 @@ func (g *Game) startingWeapon(c content.Character) string {
 
 // battleClassArt is the sprite of a character serving in class with a weapon of the given type: its entry for
 // that class and weapon, for the class, its default sprite in its own class, or else the class's own (recoloured).
-func (g *Game) battleClassArt(def, class, weapon, faction string) *sprite.Art {
+// A mount (an equipped horse of its own colour, UnitView.Mount) lays its colours over the character's.
+func (g *Game) battleClassArt(def, class, weapon, mount, faction string) *sprite.Art {
 	c := g.S.Data.Characters[def]
+	c.Look = g.mountLook(c.Look, mount)
 	ids := []string{c.Look.Sprites[class]}
 	if class == c.Class {
 		ids = append(ids, c.Look.Sprite)
@@ -120,10 +123,26 @@ func (g *Game) battleClassArt(def, class, weapon, faction string) *sprite.Art {
 	return g.art(g.S.Data.Classes[class].Sprite, faction, c.Look)
 }
 
+// mountLook is the character's look with the colours of the horse it rides laid over it.
+func (g *Game) mountLook(look content.Look, mount string) content.Look {
+	pal := g.S.Data.Equipment[mount].Palette
+	if len(pal) == 0 {
+		return look
+	}
+	own := maps.Clone(look.Palette)
+	if own == nil {
+		own = map[string]content.Colors{}
+	}
+	maps.Copy(own, pal)
+	look.Palette = own
+	return look
+}
+
 // shootArt is the look a unit takes while shooting from range: the character's sprite for the
 // shoot class, else that class's own (never the sprite the character carries into every class).
-func (g *Game) shootArt(def, class, faction string) *sprite.Art {
+func (g *Game) shootArt(def, class, mount, faction string) *sprite.Art {
 	c := g.S.Data.Characters[def]
+	c.Look = g.mountLook(c.Look, mount)
 	if id := c.Look.Sprites[class]; id != "" {
 		if a := g.art(id, faction, c.Look); a != nil {
 			return a

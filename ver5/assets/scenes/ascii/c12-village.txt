@@ -1,0 +1,31 @@
+# c12-village  S_xuzhou_ruin  ch12  origin 0 0
+..........................................
+..........................................
+.........Hse......Hse.........Hse.........
+..............................el1...wm3Tre
+#########GuaZun...mn1......TowWel.........
+......SunZhaLiu..................Bkt......
+Tre.....................wm2......mn2...###
+...............co1......wm1Hse............
+..........................................
+...............Tre........................
+
+Liu 유비
+Gua 관우
+Zha 장비
+Zun 조운
+Sun 손건
+mn1 주검#1  (commoner_man, prone)
+wm1 주검#2  (commoner_woman, prone)
+el1 주검#3  (commoner_elder, prone)
+wm2 아낙#1  (commoner_woman)
+mn2 주검#4  (commoner_man, prone)
+co1 주검#5  (commoner_oldwoman, prone)
+wm3 주검#6  (commoner_woman, prone)
+Tow 노인  (commoner_elder)
+Sco 정찰병  (light_cavalry, off stage, enters later (cell 13 9))
+
+# c12-v3: Zun -> 5 4
+# c12-v4: Liu -> 7 4
+# c12-v4: Tow -> 8 4
+# c12-v8: Sco -> 10 5

@@ -314,3 +314,18 @@ func TestRequiredDeputyGoesToBattle(t *testing.T) {
 	_, err := Restore(e.data, e.Snapshot())
 	require.NoError(t, err)
 }
+
+func TestDeploymentStandsRecommendedOfficersOnTheirCells(t *testing.T) {
+	e := deployment(t)
+	e.data.Stages[0].Allies = []content.Point{{X: 1, Y: 2}, {X: 2, Y: 2}, {X: 3, Y: 2}}
+	e.data.Stages[0].Recommend = map[string]content.Point{"archer1": {X: 1, Y: 2}}
+	finishDeployment(t, e)
+	assert.Equal(t, content.Point{X: 1, Y: 2}, content.Point{X: e.unit("archer1").X, Y: e.unit("archer1").Y}, "the recommended cell")
+	assert.Equal(t, content.Point{X: 2, Y: 2}, content.Point{X: e.unit("hero").X, Y: e.unit("hero").Y}, "the others keep the cells' order past it")
+
+	e = deployment(t)
+	e.data.Stages[0].Allies = []content.Point{{X: 1, Y: 2}, {X: 2, Y: 2}, {X: 3, Y: 2}}
+	e.data.Stages[0].Recommend = map[string]content.Point{"archer1": {X: 5, Y: 5}}
+	finishDeployment(t, e)
+	assert.NotNil(t, e.unit("archer1"), "a recommendation off the ally cells is passed over")
+}

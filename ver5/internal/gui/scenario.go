@@ -271,7 +271,7 @@ func (g *Game) pageReady() (string, func()) {
 // learning holds it until closed.
 func (g *Game) skipScene() {
 	for g.skipping != nil {
-		if g.S.Engine == nil || g.S.Screen != "playing" || g.overlay() != "" || len(g.modals) > 0 {
+		if g.S.Screen != "playing" || g.overlay() != "" || len(g.modals) > 0 {
 			return
 		}
 		o := g.S.View()

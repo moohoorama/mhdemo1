@@ -3,7 +3,7 @@
   "c11-start": {
    "Map": "S_gongsun_camp",
    "Time": "night",
-   "Nodes": ["c11-start", "c11-01", "c11-02", "c11-03", "c11-04", "c11-05", "c11-06", "c11-07", "c11-11", "c11-12"],
+   "Nodes": ["c11-start", "c11-01", "c11-02", "c11-03", "c11-04", "c11-05", "c11-06", "c11-07"],
    "Ambient": [{"Effect": "smallfire", "At": [12.0, 3.5]}],
    "Cast": {
     "공손찬": {"At": [14, 6], "Face": "SE"},
@@ -37,16 +37,81 @@
      [
       [{"Actor": "간옹", "Face": "NE"}]
      ]
-    ],
-    "c11-11": [
+    ]
+   }
+  },
+  "c11-envoy": {
+   "Map": "S_tent_mid",
+   "Nodes": ["c11-envoy", "c11-e1", "c11-e2", "c11-e3", "c11-e4", "c11-e5", "c11-e6", "c11-e7", "c11-e8", "c11-e9", "c11-e10", "c11-e11"],
+   "Cast": {
+    "공손찬": {"At": [2, 1], "Face": "SE", "Pose": "sit"},
+    "진진": {"At": [2, 4], "Face": "NE", "Sprite": "official_noncombat", "Faction": "yuan"},
+    "유비": {"At": [3, 3], "Face": "NW"},
+    "관우": {"At": [4, 3], "Face": "NW"},
+    "장비": {"At": [4, 2], "Face": "NW"},
+    "조운": {"At": [5, 2], "Face": "NW"},
+    "백마병#1": {"At": [5, 1], "Face": "SW", "Sprite": "light_infantry", "Faction": "gongsun"}
+   },
+   "Beats": {
+    "c11-e3": [
      [
-      [{"Actor": "공손찬", "Move": [12, 5], "Speed": 0.8}, {"Actor": "전해", "Move": [11, 5], "Speed": 0.8, "After": 0.3}, {"Actor": "관우", "Move": [10, 6], "Speed": 0.8, "After": 0.5}, {"Actor": "장비", "Move": [10, 7], "Speed": 0.8, "After": 0.6}, {"Actor": "간옹", "Via": [[17, 7], [11, 7], [11, 8]], "Move": [9, 7], "Speed": 0.8, "After": 0.8}, {"Actor": "번궁", "Via": [[16, 7], [9, 7]], "Move": [9, 6], "Speed": 0.8, "After": 1.0}, {"Actor": "유비", "Via": [[18, 7]], "Move": [19, 9], "Speed": 0.7, "After": 1.2}, {"Actor": "조운", "Via": [[13, 7], [17, 7], [18, 10]], "Move": [19, 10], "Speed": 0.7, "After": 1.4}],
-      [{"CamAt": [19, 9]}, {"Zoom": 3}, {"Actor": "유비", "Face": "SE"}, {"Actor": "조운", "Face": "NE"}]
+      [{"Actor": "공손찬", "Pose": "idle"}, {"Actor": "공손찬", "Face": "SW"}],
+      [{"Actor": "공손찬", "Play": "attack"}],
+      [{"Actor": "유비", "Move": [2, 3]}, {"Actor": "유비", "Face": "NE"}]
      ]
     ],
-    "c11-12": [
+    "c11-e4": [
      [
-      [{"Actor": "유비", "Face": "SW"}]
+      [{"Actor": "유비", "Face": "SE"}, {"Actor": "유비", "Say": "……"}],
+      [{"Actor": "관우", "Move": [3, 4]}, {"Actor": "관우", "Face": "NW"}, {"Actor": "진진", "Face": "SE"}],
+      [{"Actor": "유비", "Face": "NE"}]
+     ]
+    ],
+    "c11-e5": [
+     [
+      [{"Actor": "진진", "Face": "SW"}, {"Actor": "진진", "Exit": true}, {"Actor": "관우", "After": 0.4, "Face": "SW"}, {"Actor": "관우", "After": 0.4, "Exit": true}],
+      [{"Actor": "공손찬", "Face": "SE"}, {"Actor": "공손찬", "Pose": "sit"}, {"Actor": "유비", "Move": [1, 3]}, {"Actor": "유비", "Face": "NE"}]
+     ]
+    ]
+   }
+  },
+  "c11-beiping": {
+   "Map": "S_council",
+   "Nodes": ["c11-beiping", "c11-b1", "c11-b2", "c11-b3", "c11-b4", "c11-b5"],
+   "Cast": {
+    "공손찬": {"At": [1, 3], "Face": "SE", "Pose": "sit", "Hold": true},
+    "전해": {"At": [2, 4], "Face": "NE"},
+    "유비": {"At": [4, 3], "Face": "NW"},
+    "관우": {"At": [5, 3], "Face": "NW"},
+    "장비": {"At": [5, 5], "Face": "NW"},
+    "조운": {"At": [6, 5], "Face": "NW"},
+    "손건": {"At": [11, 4], "Face": "NW", "Off": true}
+   },
+   "Beats": {
+    "c11-b1": [
+     [
+      [{"Actor": "손건", "Enter": [11, 4], "Move": [3, 4]}, {"Actor": "손건", "Face": "NW"}]
+     ]
+    ]
+   }
+  },
+  "c11-road": {
+   "Map": "S_field_road",
+   "Nodes": ["c11-road", "c11-r1", "c11-r2", "c11-r3", "c11-r4", "c11-r5"],
+   "Cast": {
+    "유비": {"At": [3, 7], "Face": "NE"},
+    "관우": {"At": [2, 7], "Face": "NE"},
+    "장비": {"At": [4, 7], "Face": "NE"},
+    "조운": {"At": [3, 8], "Face": "NE"},
+    "손건": {"At": [3, 6], "Face": "NE"},
+    "태사자": {"At": [11, 3], "Face": "SW", "Sprite": "horse_archer", "Faction": "han", "Off": true}
+   },
+   "Beats": {
+    "c11-r1": [
+     [
+      [{"Actor": "태사자", "Enter": [11, 3], "Move": [5, 4], "Speed": 2}, {"Actor": "태사자", "Face": "SW"}],
+      [{"Actor": "손건", "Move": [6, 6]}, {"Actor": "손건", "Face": "NE"}],
+      [{"Actor": "유비", "Via": [[3, 6]], "Move": [5, 6]}, {"Actor": "유비", "Face": "NE"}]
      ]
     ]
    }

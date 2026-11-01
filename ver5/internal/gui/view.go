@@ -79,7 +79,7 @@ func (g *Game) advance(dt float64) {
 	g.popups = kept
 	g.bannerT = math.Max(0, g.bannerT-dt)
 	g.hitFlashT = math.Max(0, g.hitFlashT-dt)
-	if !g.busy() && g.S.Engine != nil {
+	if !g.busy() {
 		o := g.S.View()
 		if o.Phase == "deployment" || o.Phase == "battle" || o.Phase == "result" {
 			g.sync(o)
@@ -321,7 +321,7 @@ func (g *Game) syncUnit(u core.UnitView, o core.Observation) {
 	}
 	if look := u.Class + ":" + u.Weapon; look != v.look {
 		v.look = look
-		v.art = g.battleClassArt(u.Def, u.Class, u.Weapon, u.Color)
+		v.art = g.battleClassArt(u.Def, u.Class, u.Weapon, u.Mount, u.Color)
 		v.top = v.art.TopOffset()
 	}
 	if u.Facing != v.facing {
@@ -341,7 +341,7 @@ func (g *Game) syncUnit(u core.UnitView, o core.Observation) {
 	if v.shootClass != u.Shoot {
 		v.shootClass, v.shoot = u.Shoot, nil
 		if u.Shoot != "" {
-			v.shoot = g.shootArt(u.Def, u.Shoot, u.Color)
+			v.shoot = g.shootArt(u.Def, u.Shoot, u.Mount, u.Color)
 		}
 	}
 	v.siege = slices.Contains(g.S.Data.Classes[u.Class].Tags, content.TagSiege)

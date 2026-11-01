@@ -13,7 +13,7 @@ import (
 func TestSpriteFollowsTheClassAndShootsInItsOwnLook(t *testing.T) {
 	g, _, _, _, _ := stoneGame(t)
 	art := func(def, class, weapon string) string {
-		a := g.battleClassArt(def, class, weapon, "dong")
+		a := g.battleClassArt(def, class, weapon, "", "dong")
 		require.NotNil(t, a)
 		return a.ID
 	}
@@ -33,7 +33,7 @@ func TestSpriteFollowsTheClassAndShootsInItsOwnLook(t *testing.T) {
 	assert.Equal(t, "heavy_cavalry", art("sunjian", "heavy_cavalry", "spear"), "drawn once: promoted, the class's own")
 
 	shoot := func(def string) string {
-		a := g.shootArt(def, "horse_archer", "dong")
+		a := g.shootArt(def, "horse_archer", "", "dong")
 		require.NotNil(t, a)
 		return a.ID
 	}
@@ -44,7 +44,7 @@ func TestSpriteFollowsTheClassAndShootsInItsOwnLook(t *testing.T) {
 func TestShootingLookIsUsedBeyondTheMeleeReach(t *testing.T) {
 	g, _, _, _, _ := stoneGame(t)
 	attack := core.Command{Kind: "attack"}
-	actor := &unitVis{id: "guanyu", u: 5, v: 5, shoot: g.shootArt("lubu", "horse_archer", "dong")}
+	actor := &unitVis{id: "guanyu", u: 5, v: 5, shoot: g.shootArt("lubu", "horse_archer", "", "dong")}
 	far := &unitVis{id: "x-target", u: 7, v: 5}
 	assert.False(t, g.shootsFromRange(actor, far, attack, nil), "a rider without 기사 never shoots")
 	st := g.S.Engine.Snapshot()
@@ -157,4 +157,32 @@ func TestInsuOffersEachClassAndThePickDecides(t *testing.T) {
 	_, err = e.Apply(core.Command{Kind: "item", Actor: officer, Target: officer, Item: "insu_mid", Option: "horse_archer"})
 	require.NoError(t, err)
 	assert.Equal(t, "horse_archer", g.unitView(e.Observe(), officer).Class)
+}
+
+func TestAnEquippedHorseOfItsOwnColourRecoloursTheRider(t *testing.T) {
+	g, _, _, _, _ := stoneGame(t)
+	plain := g.battleClassArt("guanyu", "light_cavalry", "", "", "shu")
+	white := g.battleClassArt("guanyu", "light_cavalry", "", "baima", "shu")
+	require.NotNil(t, plain)
+	require.NotNil(t, white)
+	assert.Equal(t, plain.ID, white.ID, "the same sheet")
+	assert.NotSame(t, plain, white, "drawn in the horse's colours")
+	assert.Same(t, plain, g.battleClassArt("guanyu", "light_cavalry", "", "war_horse", "shu"), "a horse without colours of its own changes nothing")
+
+	st := g.S.Engine.Snapshot()
+	for i := range st.Characters {
+		if st.Characters[i].ID == "guanyu" {
+			st.Characters[i].Equipment["accessory"] = "baima"
+		}
+	}
+	e, err := core.Restore(g.S.Data, st)
+	require.NoError(t, err)
+	found := false
+	for _, u := range e.Observe().UnitViews {
+		if u.Character == "guanyu" {
+			found = true
+			assert.Equal(t, "baima", u.Mount, "a rider shows the horse it rides")
+		}
+	}
+	assert.True(t, found, "Guan Yu is on the field")
 }

@@ -98,6 +98,7 @@ type UnitView struct {
 	Name, Class, Def      string
 	Shoot                 string `json:",omitempty"` // class whose look it takes when its attack shoots from range
 	Weapon                string `json:",omitempty"` // type of the equipped weapon
+	Mount                 string `json:",omitempty"` // the equipped horse whose own colours the rider's look takes (Equipment.Palette)
 	Level, XP, XPRequired int
 	XPProgress            float64
 	Stats                 Stats

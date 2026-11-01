@@ -139,6 +139,9 @@ func (d *MapDocument) Compile() Stage {
 		st.Allies[i].X -= d.Play.X
 		st.Allies[i].Y -= d.Play.Y
 	}
+	for id, p := range st.Recommend {
+		st.Recommend[id] = Point{X: p.X - d.Play.X, Y: p.Y - d.Play.Y}
+	}
 	shift := func(p *Point) {
 		if p != nil {
 			p.X -= d.Play.X

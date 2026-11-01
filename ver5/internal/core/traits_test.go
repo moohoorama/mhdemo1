@@ -211,3 +211,30 @@ func TestPouchHealsAfterABlow(t *testing.T) {
 	}
 	t.Fatal("no blow landed in 8 swings")
 }
+
+func TestChargeAccuracyGrowsWithTheCellsWalked(t *testing.T) {
+	e, a, b := arena(t)
+	e.data.Rules.HitFloor, e.data.Rules.HitCeil = 0, 100
+	e.data.Traits["ambush_t"] = content.Trait{Name: "기습", Kind: "talent", Tone: "attack", Effects: map[string]float64{content.FxChargeAccuracy: 3}}
+	still := e.hitChance(a, b, e.basic())
+	with(e, "hero", "ambush_t")
+	hero := e.unit("hero")
+	assert.Equal(t, still, e.hitChance(hero, b, e.basic()), "no walk, no bonus")
+	hero.Steps = 4
+	assert.InDelta(t, still+12, e.hitChance(hero, b, e.basic()), 1e-9, "four cells walked: +12%p")
+}
+
+func TestOpeningDealsMoreOnAFreshTarget(t *testing.T) {
+	e, a, b := arena(t)
+	full := e.stats(b).MaxHP
+	b.HP = full
+	plain := e.damage(a, b, e.basic())
+	e.data.Traits["open_t"] = content.Trait{Name: "개전", Kind: "talent", Tone: "attack", Effects: map[string]float64{content.FxOpening: .5}}
+	with(e, "hero", "open_t")
+	hero := e.unit("hero")
+	assert.InDelta(t, plain*1.25, e.damage(hero, b, e.basic()), 1e-6, "full HP: +25%")
+	b.HP = full / 2
+	half := e.damage(hero, b, e.basic())
+	b.HP = full / 4
+	assert.InDelta(t, half, e.damage(hero, b, e.basic()), 1e-6, "half HP or less: no bonus")
+}

@@ -569,10 +569,7 @@
        "Side": "enemy",
        "Faction": "dong",
        "DuelFirst": true,
-       "Rank": "commander",
-       "Traits": [
-        "deadly"
-       ]
+       "Rank": "commander"
       },
       {
        "Character": "troop_footman",

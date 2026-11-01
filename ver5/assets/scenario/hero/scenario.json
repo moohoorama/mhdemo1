@@ -14,6 +14,10 @@
   "bean": 18,
   "liquor": 8
  },
+ "Warehouse": {
+  "tactics_primer": 1,
+  "war_horse": 2
+ },
  "Money": 1000,
  "Loadout": {
   "guanyu": [
@@ -67,6 +71,10 @@
   {
    "ID": "11",
    "File": "story11.json"
+  },
+  {
+   "ID": "12",
+   "File": "story12.json"
   }
  ]
 }

@@ -79,9 +79,6 @@ func (g *Game) officer(o core.Observation, id string) *core.Character {
 
 // equipmentWindow draws the three slot cards.
 func (g *Game) equipmentWindow(dst *ebiten.Image, x, y, w, h int) {
-	if g.S.Engine == nil {
-		return
-	}
 	o := g.S.View()
 	of := g.officer(o, g.selected)
 	if of == nil {

@@ -1,0 +1,68 @@
+{
+ "Scenes": {
+  "c12-start": {
+   "Map": "S_castle_out",
+   "Nodes": ["c12-start", "c12-g1", "c12-g2", "c12-g3", "c12-g4", "c12-g5"],
+   "Cast": {
+    "공융": {"At": [3, 4], "Face": "SW"},
+    "태사자": {"At": [4, 4], "Face": "SW", "Sprite": "light_infantry", "Faction": "han", "Off": true},
+    "북해병#1": {"At": [3, 3], "Face": "SW", "Sprite": "light_infantry", "Faction": "han"},
+    "유비": {"At": [3, 5], "Face": "NE"},
+    "관우": {"At": [2, 6], "Face": "NE"},
+    "장비": {"At": [4, 6], "Face": "NE"},
+    "손건": {"At": [2, 5], "Face": "NE"}
+   },
+   "Beats": {
+    "c12-g3": [
+     [
+      [{"Actor": "태사자", "Enter": [5, 4], "Move": [4, 4]}, {"Actor": "태사자", "Face": "SW"}]
+     ]
+    ]
+   }
+  },
+  "c12-village": {
+   "Map": "S_xuzhou_ruin",
+   "Time": "dusk",
+   "Nodes": ["c12-village", "c12-v1", "c12-v2", "c12-v3", "c12-v4", "c12-v5", "c12-v6", "c12-v7", "c12-v8", "c12-v9"],
+   "Ambient": [{"Effect": "smoke", "At": [6.5, 2.0]}, {"Effect": "smoke", "At": [10.0, 1.5]}, {"Effect": "smallfire", "At": [9.5, 7.0]}, {"Effect": "smoke", "At": [4.0, 7.0]}, {"Effect": "smallfire", "At": [12.0, 6.5]}, {"Effect": "smoke", "At": [9.0, 7.5]}, {"Effect": "smallfire", "At": [3.0, 7.5]}, {"Effect": "smoke", "At": [12.5, 1.5]}],
+   "Cast": {
+    "유비": {"At": [4, 5], "Face": "SE"},
+    "관우": {"At": [3, 4], "Face": "SE"},
+    "장비": {"At": [3, 5], "Face": "SE"},
+    "조운": {"At": [4, 4], "Face": "SE"},
+    "손건": {"At": [2, 5], "Face": "SE"},
+    "주검#1": {"At": [6, 4], "Face": "SE", "Sprite": "commoner_man", "Pose": "prone"},
+    "주검#2": {"At": [8, 7], "Face": "NE", "Sprite": "commoner_woman", "Pose": "prone"},
+    "주검#3": {"At": [10, 3], "Face": "SW", "Sprite": "commoner_elder", "Pose": "prone"},
+    "아낙#1": {"At": [8, 6], "Face": "NE", "Sprite": "commoner_woman"},
+    "주검#4": {"At": [11, 6], "Face": "NW", "Sprite": "commoner_man", "Pose": "prone"},
+    "주검#5": {"At": [5, 7], "Face": "SW", "Sprite": "commoner_oldwoman", "Pose": "prone"},
+    "주검#6": {"At": [12, 3], "Face": "SE", "Sprite": "commoner_woman", "Pose": "prone"},
+    "노인": {"At": [9, 4], "Face": "NW", "Sprite": "commoner_elder"},
+    "정찰병": {"At": [13, 9], "Face": "NW", "Sprite": "light_cavalry", "Faction": "shu", "Off": true}
+   },
+   "Beats": {
+    "c12-v3": [
+     [
+      [{"Actor": "조운", "Move": [5, 4]}, {"Actor": "조운", "Face": "SE"}]
+     ]
+    ],
+    "c12-v4": [
+     [
+      [{"Actor": "유비", "Move": [7, 4]}, {"Actor": "유비", "Face": "SE"}, {"Actor": "노인", "Move": [8, 4]}, {"Actor": "노인", "Face": "NW"}]
+     ]
+    ],
+    "c12-v7": [
+     [
+      [{"Actor": "관우", "Say": "……"}]
+     ]
+    ],
+    "c12-v8": [
+     [
+      [{"Actor": "정찰병", "Enter": [13, 9], "Via": [[10, 9]], "Move": [10, 5], "Speed": 2}, {"Actor": "정찰병", "Face": "NW"}]
+     ]
+    ]
+   }
+  }
+ }
+}

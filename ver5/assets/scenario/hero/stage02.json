@@ -175,10 +175,7 @@
    "Y": 21,
    "Facing": "SW",
    "Group": "westcamp",
-   "Policy": "react",
-   "Traits": [
-    "fire"
-   ]
+   "Policy": "react"
   },
   {
    "Character": "troop_turban",

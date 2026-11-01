@@ -10,8 +10,12 @@ import (
 // earlier) one true, but a chain longer than this stops until the next command.
 const eventPasses = 8
 
-// Battle events run their actions once their conditions hold; speech is presented by the replay.
+// Battle events run their actions once their conditions hold; speech is presented by the replay. Like a duel they
+// wait for the unit in command to finish its action, so a move that is still being ordered sets none off.
 func (e *Engine) battleEvents() {
+	if m := e.unit(e.lastActor); m != nil && m.HP > 0 && !m.Done {
+		return
+	}
 	stage := e.data.Stages[e.state.Stage]
 	for pass := 0; pass < eventPasses; pass++ {
 		fired := false

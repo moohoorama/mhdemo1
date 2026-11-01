@@ -35,7 +35,7 @@ func (f *Field) setGoals(shapes []goalShape) { f.goals = shapes }
 
 // goalShapes places the stage's goal marks: units where they are drawn, areas on their cells.
 func (g *Game) goalShapes(o core.Observation) []goalShape {
-	if g.S.Settings.NoGoalGuide || g.S.Engine == nil || o.Phase != "battle" && o.Phase != "deployment" {
+	if g.S.Settings.NoGoalGuide || o.Phase != "battle" && o.Phase != "deployment" {
 		return nil
 	}
 	var out []goalShape

@@ -128,7 +128,7 @@ func (g *Game) editorFacingButton(dst *ebiten.Image, r image.Rectangle, sp conte
 		return
 	}
 	v := g.editorPreview(sp)
-	art := g.battleClassArt(v.Def, v.Class, v.Weapon, v.Color)
+	art := g.battleClassArt(v.Def, v.Class, v.Weapon, v.Mount, v.Color)
 	if art == nil {
 		return
 	}

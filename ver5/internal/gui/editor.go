@@ -875,7 +875,7 @@ func (g *Game) editorUnits() []*unitVis {
 		if i < len(e.doc.Stage.Enemies) {
 			v = g.editorPreview(sp)
 		}
-		art := g.battleClassArt(v.Def, v.Class, v.Weapon, v.Color)
+		art := g.battleClassArt(v.Def, v.Class, v.Weapon, v.Mount, v.Color)
 		if art == nil {
 			continue
 		}

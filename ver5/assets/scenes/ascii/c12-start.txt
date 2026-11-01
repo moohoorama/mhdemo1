@@ -1,0 +1,18 @@
+# c12-start  S_castle_out  ch12  origin -1 0
+.........Bnr...Bnr.........
+###########################
+~~~~~~~~~~~~===~~~~~~~~~~~~
+......Bnr...in1...Bnr......
+............Kon............
+...Tre...SunLiu............
+.........Gua...Zha.........
+
+Kon 공융
+Tai 태사자  (light_infantry, off stage, enters later (cell 4 4))
+in1 북해병#1  (light_infantry)
+Liu 유비
+Gua 관우
+Zha 장비
+Sun 손건
+
+# c12-g3: Tai -> 4 4

@@ -36,10 +36,13 @@ func New(d *content.Data, seed uint64) *Engine {
 func begin(d *content.Data, seed uint64) *Engine {
 	c := d.Campaign
 	s := State{Format: 5, AI: AIPolicyVersion, Difficulty: "normal", Core: CoreVersion, Rules: RulesVersion, Content: d.Version, ContentHash: d.Hash,
-		Seed: seed, RNG: seed, Phase: "scenario", Node: c.Start, Inventory: copyOf(c.Inventory), Warehouse: map[string]int{},
+		Seed: seed, RNG: seed, Phase: "scenario", Node: c.Start, Inventory: copyOf(c.Inventory), Warehouse: copyOf(c.Warehouse),
 		Deployment: append([]string{}, c.Deployment...), Executed: map[string]bool{}, Flags: map[string]int{}, Choices: map[string]string{}, Money: c.Money}
 	if s.Inventory == nil {
 		s.Inventory = map[string]int{}
+	}
+	if s.Warehouse == nil {
+		s.Warehouse = map[string]int{}
 	}
 	e := fromState(d, s)
 	for _, id := range c.Roster {
@@ -146,7 +149,7 @@ func (e *Engine) Observe() Observation {
 	}
 	for _, u := range s.Units {
 		c := e.char(u.Character)
-		o.UnitViews = append(o.UnitViews, UnitView{Unit: u, Name: e.name(c), Class: c.Class, Def: c.Def, Shoot: e.shootClass(&u), Weapon: e.weaponType(&u), Level: c.Level, XP: c.XP, XPRequired: XPPerLevel,
+		o.UnitViews = append(o.UnitViews, UnitView{Unit: u, Name: e.name(c), Class: c.Class, Def: c.Def, Shoot: e.shootClass(&u), Weapon: e.weaponType(&u), Mount: e.mount(&u), Level: c.Level, XP: c.XP, XPRequired: XPPerLevel,
 			XPProgress: ExperienceProgress(c.XP), Stats: e.stats(&u), Attributes: attributes(e.attributes(c)), Points: c.Points,
 			Traits: e.traits(c), Skills: e.skills(c)})
 	}
@@ -918,7 +921,7 @@ func SpawnPreview(d *content.Data, stage string, sp content.Spawn) UnitView {
 	u := e.spawn(sp.Character, sp.Character, "enemy", sp.X, sp.Y, sp)
 	c := e.char(u.Character)
 	c.Level = d.SpawnLevel(d.StageOrder(stage), sp)
-	return UnitView{Unit: *u, Name: e.name(c), Class: c.Class, Def: c.Def, Shoot: e.shootClass(u), Weapon: e.weaponType(u), Level: c.Level, Stats: e.stats(u), Traits: e.traits(c), Skills: e.skills(c)}
+	return UnitView{Unit: *u, Name: e.name(c), Class: c.Class, Def: c.Def, Shoot: e.shootClass(u), Weapon: e.weaponType(u), Mount: e.mount(u), Level: c.Level, Stats: e.stats(u), Traits: e.traits(c), Skills: e.skills(c)}
 }
 
 // requiredIn reports whether the sortie holds every officer the stage requires who is able to go.

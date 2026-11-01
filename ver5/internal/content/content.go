@@ -75,6 +75,7 @@ type Campaign struct {
 	Roster     []string
 	Deployment []string
 	Inventory  map[string]int
+	Warehouse  map[string]int `json:",omitempty"` // equipment owned but worn by no one
 	Money      int
 	Loadout    map[string][]string `json:",omitempty"` // equipment each officer wears in a game started at a waypoint
 }
@@ -152,6 +153,7 @@ type Equipment struct {
 	Price                  int    `json:",omitempty"` // what a shop asks in money; it buys it back for half
 	Bonus                  [6]float64
 	Traits, Learn, Skills  []string
+	Palette                map[string]Colors `json:",omitempty"` // a horse of its own colour: tag group -> colours laid over the wearer's look while a mounted class rides it
 }
 type Item struct {
 	Name, Desc string
@@ -174,7 +176,6 @@ type Skill struct {
 	Kind, Mode    string
 	Shape, Effect string
 	Element       string
-	Condition     string
 	Item          string // the item a steal takes
 	Requires      []string
 	Cost, Hit     int
@@ -457,6 +458,7 @@ type Stage struct {
 	Sub                []Objective `json:",omitempty"` // bonus objectives judged at the victory
 	Tiles              []string
 	Allies             []Point
+	Recommend          map[string]Point `json:",omitempty"` // officer -> the Allies cell the default placement stands them on when they sortie
 	Enemies            []Spawn
 	Reward             map[string]int
 	Duels              []Duel

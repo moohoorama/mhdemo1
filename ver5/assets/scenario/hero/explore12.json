@@ -1,0 +1,126 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "city",
+  "At": [
+   7,
+   9
+  ],
+  "Face": "NE"
+ },
+ "Areas": {
+  "city": {
+   "Map": "S_beihai",
+   "Name": "북해성",
+   "At": [
+    7,
+    9
+   ],
+   "People": {
+    "관우@city": {
+     "At": [
+      7,
+      11
+     ],
+     "Face": "NE",
+     "Sortie": {
+      "Ask": "형님, 서주로 떠나시겠습니까?"
+     }
+    },
+    "공융": {
+     "At": [
+      7,
+      3
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "kongrong",
+       "성 안 곳간을 열어 피난 온 이들에게 죽을 쑤고 있소."
+      ],
+      [
+       "kongrong",
+       "옛말에 이르기를, 곳간이 차야 예를 안다 하였는데…… 지금은 곳간보다 사람이 먼저요."
+      ]
+     ]
+    },
+    "손건": {
+     "At": [
+      6,
+      7
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "sunqian",
+       "청주만 지나면 바로 서주입니다. 채비를 마치시면 관 장군께 말씀하십시오."
+      ]
+     ]
+    },
+    "피난민": {
+     "At": [
+      2,
+      5
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "피난민",
+       "서주에서 피난 왔습니다. 서주가 지금 난리예요……."
+      ]
+     ]
+    },
+    "피난민#1": {
+     "At": [
+      1,
+      4
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Pose": "sitground"
+    },
+    "피난민#2": {
+     "At": [
+      3,
+      6
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    },
+    "상인": {
+     "At": [
+      9,
+      6
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Shop": "tools"
+    },
+    "대장장이": {
+     "At": [
+      12,
+      8
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons"
+    },
+    "북해병#1": {
+     "At": [
+      5,
+      12
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    }
+   }
+  }
+ }
+}

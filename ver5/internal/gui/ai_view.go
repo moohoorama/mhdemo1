@@ -99,7 +99,7 @@ func (g *Game) cameraLocked() bool {
 	if g.player.ai && g.player.Busy() {
 		return true
 	}
-	if g.S == nil || g.S.Engine == nil {
+	if g.S == nil {
 		return false
 	}
 	o := g.S.View()

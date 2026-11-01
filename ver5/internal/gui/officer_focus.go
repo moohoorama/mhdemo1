@@ -3,7 +3,7 @@ package gui
 // focusOfficer centres the camera on an allied officer and selects it, opening its
 // orders when it may still act this turn.
 func (g *Game) focusOfficer(id string) {
-	if g.S.Engine == nil || g.popupPending() {
+	if g.popupPending() {
 		return
 	}
 	o := g.S.View()

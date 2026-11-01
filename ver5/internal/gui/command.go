@@ -411,7 +411,7 @@ func (g *Game) orderMarks(o core.Observation) []Highlight {
 	case "target":
 		pick := g.ord.pick
 		pick.Actor = a.ID
-		for _, p := range g.S.Engine.ActionCells(pick) {
+		for _, p := range e.ActionCells(pick) {
 			if g.field.Inside(p.X, p.Y) && g.field.Tile(p.X, p.Y) != '~' {
 				add(p, color.RGBA{230, 90, 60, 60})
 			}

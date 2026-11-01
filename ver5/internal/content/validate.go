@@ -221,6 +221,11 @@ func (d *Data) Validate() error {
 			return fmt.Errorf("campaign item %s", id)
 		}
 	}
+	for id, n := range c.Warehouse {
+		if _, ok := d.Equipment[id]; !ok || n < 0 {
+			return fmt.Errorf("campaign equipment %s", id)
+		}
+	}
 	if c.Money < 0 {
 		return fmt.Errorf("campaign money %d", c.Money)
 	}
@@ -402,6 +407,11 @@ func (d *Data) Validate() error {
 				return fmt.Errorf("ally spawn")
 			}
 			seen[p] = true
+		}
+		for id, p := range s.Recommend {
+			if !d.Characters[id].Playable || !seen[p] {
+				return fmt.Errorf("stage %s recommend %s %d,%d: a playable officer on one of the Allies cells", s.ID, id, p.X, p.Y)
+			}
 		}
 		for _, p := range s.Lights {
 			if p.X < 0 || p.Y < 0 || p.X >= s.Width || p.Y >= s.Height {

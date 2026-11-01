@@ -71,10 +71,7 @@
    "Facing": "SE",
    "Policy": "hold",
    "DuelFirst": true,
-   "Rank": "commander",
-   "Traits": [
-    "vital_strike"
-   ]
+   "Rank": "commander"
   },
   {
    "Character": "lisu",

@@ -32,6 +32,7 @@
 | [logic-growth.md](logic-growth.md) | 경험치, 레벨, 승급, 부관 |
 | [stage_lv_balance.md](stage_lv_balance.md) | 스테이지 레벨 정책, 적 수, 재는 법 |
 | [balance-battle.md](balance-battle.md) | 전투 밸런스 정리본(사본): 규칙·병종·특성·책략·장비·인물·1~10판 짜임과 계산 수치 |
+| [balance-traits-sim.md](balance-traits-sim.md) | 특성 대결 시뮬레이션: 같은 병종끼리 한쪽만 특성을 줬을 때의 승률·남은 병력 차이 |
 | [logic-traits.md](logic-traits.md) | 특성과 책략 |
 | [logic-duel.md](logic-duel.md) | 일기토 규칙 |
 | [logic-battle-event.md](logic-battle-event.md) | 전투 이벤트와 승패 판정 |

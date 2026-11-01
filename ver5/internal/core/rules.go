@@ -256,6 +256,18 @@ func (e *Engine) weaponType(u *Unit) string {
 }
 func (e *Engine) mounted(u *Unit) bool { return contains(e.unitClass(u).Tags, content.TagMounted) }
 
+// mount is the equipped accessory whose colours the unit's horse takes, or "" on foot or without one.
+func (e *Engine) mount(u *Unit) string {
+	c := e.char(u.Character)
+	if c == nil || !e.mounted(u) {
+		return ""
+	}
+	if id := c.Equipment["accessory"]; len(e.data.Equipment[id].Palette) > 0 {
+		return id
+	}
+	return ""
+}
+
 // shootClass is the class whose look a mounted unit takes when its basic attack shoots from range (FxMountedRange), or "".
 func (e *Engine) shootClass(u *Unit) string {
 	if !e.mounted(u) || e.fx(u, content.FxMountedRange) <= 0 {
@@ -375,15 +387,6 @@ func (e *Engine) rangeFor(u *Unit, s content.Skill) (int, int) {
 	return lo, hi
 }
 
-// waterNear reports whether (x, y) is water or a water tile touches it (a unit afloat stands on water).
-func (e *Engine) waterNear(x, y int) bool {
-	for _, p := range []content.Point{{}, {X: 1}, {X: -1}, {Y: 1}, {Y: -1}} {
-		if e.CellProps(x+p.X, y+p.Y).Water {
-			return true
-		}
-	}
-	return false
-}
 func (e *Engine) validateSkill(u *Unit, c Command, s content.Skill) (*Unit, error) {
 	if u.Status["confusion"].Turns > 0 {
 		return nil, fail("Confused")
@@ -427,9 +430,6 @@ func (e *Engine) validateSkill(u *Unit, c Command, s content.Skill) (*Unit, erro
 	}
 	if !e.inRange(u, v, s) {
 		return nil, fail("OutOfRange")
-	}
-	if s.Condition == "water" && !e.waterNear(u.X, u.Y) && !e.waterNear(v.X, v.Y) {
-		return nil, fail("TerrainCondition")
 	}
 	return v, nil
 }

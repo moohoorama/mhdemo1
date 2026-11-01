@@ -48,16 +48,156 @@
    "Text": "말 한 마리에 저리 좋아하니, 북평 가면 백 마리 달라 하겠구먼."
   },
   {
-   "ID": "c11-11",
-   "Kind": "say",
-   "Speaker": "zhaoyun",
-   "Text": "현덕 공, 공손 장군께서 당분간 공의 곁에 있으라 하셨습니다. 그동안 이 조운의 창은 공의 것입니다."
+   "ID": "c11-envoy",
+   "Kind": "scene",
+   "Place": "계교 · 공손찬의 막사"
   },
   {
-   "ID": "c11-12",
+   "ID": "c11-e1",
+   "Kind": "say",
+   "Speaker": "gongsunzan",
+   "Text": "……백마가 계수를 건너는 모습이 참으로 볼 만했다고? 다음엔 물에 빠지지 않게 조심하라고?"
+  },
+  {
+   "ID": "c11-e2",
+   "Kind": "say",
+   "Speaker": "chenzhen",
+   "Text": "장군, 소인은 화친의 글이라고만 들었습니다. 봉인을 뜯어 본 적이—"
+  },
+  {
+   "ID": "c11-e3",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "든든하구려, 자룡."
+   "Text": "형님, 칼을 거두십시오. 사자를 베면 화친을 깬 사람은 형님이 됩니다."
+  },
+  {
+   "ID": "c11-e4",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "먼 길 오셨소. 사자께서 쉬실 곳으로 모시겠소."
+  },
+  {
+   "ID": "c11-e5",
+   "Kind": "say",
+   "Speaker": "gongsunzan",
+   "Text": "원본초 이놈……. 화친을 하자면서 나를 비웃고, 내가 사자를 베면 화친을 깬 놈으로 만들고. 양쪽으로 나를 갖고 놀았어."
+  },
+  {
+   "ID": "c11-e6",
+   "Kind": "say",
+   "Speaker": "gongsunzan",
+   "Text": "……머리가 좀 식으니 정신이 드는군. 백마의종이 반이나 꺾였다. 지금은 화친하고 군사를 추스를 때다."
+  },
+  {
+   "ID": "c11-e7",
+   "Kind": "say",
+   "Speaker": "gongsunzan",
+   "Text": "사자에게는 내가 화친을 받아들인다고 전하겠다."
+  },
+  {
+   "ID": "c11-e8",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "좋은 결정이십니다, 형님."
+  },
+  {
+   "ID": "c11-e9",
+   "Kind": "say",
+   "Speaker": "gongsunzan",
+   "Text": "……아까는 네 덕에 원본초 손에 놀아나지 않았다. 이거나 받아 둬라."
+  },
+  {
+   "ID": "c11-e10",
+   "Kind": "grant",
+   "Item": "insu_mid",
+   "Count": 1,
+   "Event": "grant-c11-insu"
+  },
+  {
+   "ID": "c11-e11",
+   "Kind": "narrate",
+   "Text": "원소 진영과 몇 차례 사자가 오간 끝에 화친이 이루어졌다. 공손찬은 유비와 함께 북평으로 돌아갔다."
+  },
+  {
+   "ID": "c11-beiping",
+   "Kind": "scene",
+   "Place": "북평 · 공손찬의 부중"
+  },
+  {
+   "ID": "c11-b1",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "서주목 도겸 공의 막료, 손건이라 하옵니다."
+  },
+  {
+   "ID": "c11-b2",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "조조가 아비의 원수를 갚는다며 서주로 쳐들어왔습니다. 사군께서는 팽성에서 잔을 나누신 공손 장군의 의리를 믿고 구원을 청하라 하셨습니다."
+  },
+  {
+   "ID": "c11-b3",
+   "Kind": "say",
+   "Speaker": "gongsunzan",
+   "Text": "화친은 했다만 원본초는 믿을 놈이 못 된다. 나는 북평을 비울 수 없어. 현덕, 네가 가라. 자룡도 데려가고."
+  },
+  {
+   "ID": "c11-b4",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "팽성에서 도 사군께 받은 곡식 값을 갚을 때가 됐군요."
+  },
+  {
+   "ID": "c11-b5",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "서주까지는 제가 길을 안내하겠습니다. 청주를 지나 북해를 거쳐 가는 길입니다. 북해는 제 고향이라 길이 훤합니다."
+  },
+  {
+   "ID": "c11-walk",
+   "Kind": "explore",
+   "Explore": "explore11"
+  },
+  {
+   "ID": "c11-road",
+   "Kind": "scene",
+   "Place": "북해로 가는 길"
+  },
+  {
+   "ID": "c11-r1",
+   "Kind": "say",
+   "Speaker": "taishici",
+   "Text": "길을 막아 송구하오. 혹시 평원의 유현덕 공이시오?"
+  },
+  {
+   "ID": "c11-r2",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그렇소만."
+  },
+  {
+   "ID": "c11-r3",
+   "Kind": "say",
+   "Speaker": "taishici",
+   "Text": "동래 사람 태사자, 자는 자의요. 북해 공융 공께서 황건에게 에워싸여 계시오. 어머니께서 공께 입은 은혜를 갚으라 하셔서, 포위를 뚫고 구원을 청하러 나왔소."
+  },
+  {
+   "ID": "c11-r4",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "문거 공께서……. 연합 진영에서 뵌 분이오. 서주로 가는 길이 북해를 지나니, 함께 갑시다."
+  },
+  {
+   "ID": "c11-r5",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "성을 에워싼 건 관해의 무리입니다. 성 동쪽에 진채를 세웠다고 들었습니다."
+  },
+  {
+   "ID": "c11-battle",
+   "Kind": "battle",
+   "Stage": "B11",
+   "Text": "북해 전투 — 출전 준비"
   }
  ]
 }

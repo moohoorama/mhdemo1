@@ -141,12 +141,15 @@ func executed(e *Engine, key string) bool { return e.state.Executed[key] }
 
 func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, true)
-	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10"}, fought)
+	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12"}, fought)
 	assert.Equal(t, 1, e.state.Flags["flag-pengcheng-carts"])
 	assert.Positive(t, e.state.Inventory["barley"], "Tao Qian shares the grain from the carts")
 	assert.Equal(t, 1, e.state.Flags["flag-sunjian-alive"])
 	assert.Equal(t, 1, e.state.Flags["flag-bianshui-generals"])
 	assert.Equal(t, 1, e.state.Flags["flag-julu-clear"])
+	for _, flag := range []string{"flag-beihai-taishici", "flag-zhugexuan", "flag-gaoshun"} {
+		assert.Equal(t, 1, e.state.Flags[flag], flag)
+	}
 	for _, item := range []string{"gujeong_blade", "jueying", "baima"} {
 		assert.Positive(t, e.state.Warehouse[item], item+" is handed over")
 	}
@@ -161,7 +164,7 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 
 func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, false)
-	assert.Len(t, fought, 10)
+	assert.Len(t, fought, 12)
 	assert.Zero(t, e.state.Flags["flag-julu-clear"])
 	assert.True(t, executed(e, "battle-B10-vanguard-strong"), "Yan Liang comes back at Jiejiao")
 	assert.False(t, executed(e, "battle-B10-vanguard-clear"))
@@ -212,6 +215,9 @@ func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
 		for _, duel := range stage.Duels {
 			t.Run(duel.ID, func(t *testing.T) {
 				dd := *d
+				if !slices.Contains(dd.Campaign.Roster, duel.Ally) { // an officer who joins later stands in for the start
+					dd.Campaign.Roster = append(slices.Clone(dd.Campaign.Roster), duel.Ally)
+				}
 				for _, n := range d.Nodes {
 					if n.Kind == "battle" && n.Stage == stage.ID {
 						dd.Campaign.Start = n.ID

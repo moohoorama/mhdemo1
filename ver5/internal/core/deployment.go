@@ -180,15 +180,30 @@ func (e *Engine) DeploymentPlan() ([]Command, error) {
 	return append(out, Command{Kind: "deployment_finish"}), nil
 }
 
-// placements are the place commands that stand every officer not yet on the field.
+// placements are the place commands that stand every officer not yet on the field: an officer the stage
+// recommends a cell for (Stage.Recommend) on that cell when it is free and they can stand there, the rest in the
+// cells' order.
 func (e *Engine) placements() ([]Command, error) {
-	cells := e.data.Stages[e.state.Stage].Allies
+	st := e.data.Stages[e.state.Stage]
+	cells := st.Allies
 	owner := map[int]string{}
+	kept := map[int]bool{} // recommended cells: the others do not take or push them
+	for _, id := range e.state.Deployment {
+		p, ok := st.Recommend[id]
+		if !ok || e.unit(id) != nil || e.occupied(p.X, p.Y) != nil || !e.deploymentCell(id, p) {
+			continue
+		}
+		for i, c := range cells {
+			if c == p && owner[i] == "" {
+				owner[i], kept[i] = id, true
+			}
+		}
+	}
 	var assign func(string, map[int]bool) bool
 	assign = func(id string, seen map[int]bool) bool {
 		for _, free := range []bool{true, false} { // a free cell first, so the officers keep the cells' order
 			for i, p := range cells {
-				if seen[i] || (owner[i] == "") != free || !e.deploymentCell(id, p) {
+				if seen[i] || kept[i] || (owner[i] == "") != free || !e.deploymentCell(id, p) {
 					continue
 				}
 				seen[i] = true
@@ -201,8 +216,12 @@ func (e *Engine) placements() ([]Command, error) {
 		}
 		return false
 	}
+	placed := map[string]bool{}
+	for _, id := range owner {
+		placed[id] = true
+	}
 	for _, id := range e.state.Deployment {
-		if e.unit(id) == nil && !assign(id, map[int]bool{}) {
+		if e.unit(id) == nil && !placed[id] && !assign(id, map[int]bool{}) {
 			return nil, fail("NoDeploymentSpace")
 		}
 	}

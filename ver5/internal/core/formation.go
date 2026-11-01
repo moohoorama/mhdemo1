@@ -115,7 +115,7 @@ func (e *Engine) attributes(o *Character) [6]float64 {
 	if d := e.char(o.Deputy); d != nil && !d.Dead {
 		b := e.def(d).Stats
 		charm := float64(a[5]) + e.ownFx(o, content.FxDeputyCharm)
-		r := (charm*float64(R.DeputyWeight) + float64(b[5])) / float64(R.DeputyDivisor) // past 1 with 용인술, on purpose
+		r := (charm*float64(R.DeputyWeight) + float64(b[5])) / float64(R.DeputyDivisor) // past 1 with 인덕 (deputy_charm), on purpose
 		for i := range a {
 			if b[i] > a[i] {
 				out[i] = float64(a[i])*(1-r) + float64(b[i])*r

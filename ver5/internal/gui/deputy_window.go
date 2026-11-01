@@ -152,9 +152,6 @@ func (g *Game) deputyRows(o core.Observation) []deputyRow {
 
 // deputyWindow draws the window's body inside the overlay frame at (x, y).
 func (g *Game) deputyWindow(dst *ebiten.Image, x, y, w, h int) {
-	if g.S.Engine == nil {
-		return
-	}
 	o := g.S.View()
 	of := g.officer(o, g.selected)
 	if of == nil {

@@ -40,6 +40,8 @@ const (
 	FxLone            = "lone"                   // attack and defense grow by this share with no ally in the eight cells around
 	FxChargePower     = "charge_power"           // attack grows by this share for each cell walked this turn
 	FxChargeShock     = "charge_shock"           // a melee attack after walking this many cells lowers the target's defense
+	FxChargeAccuracy  = "charge_accuracy"        // physical hit chance grows by this many percentage points for each cell walked this turn
+	FxOpening         = "opening"                // its blows deal this share more of the target's HP share above half
 	FxDesperate       = "desperate"              // at half HP or less its blows deal this share more
 	FxGrit            = "grit"                   // at half HP or less blows on it deal this share less
 	FxRangedSure      = "ranged_sure"            // its ranged attacks always hit
@@ -47,7 +49,6 @@ const (
 	FxHitDebuff       = "hit_debuff:"            // + status: a landed physical hit lowers that stat of the target
 	FxTurnBuff        = "turn_buff:"             // + status: a buff of this percent on itself each own turn
 	FxAuraBuff        = "aura_buff:"             // + status: a buff of this percent on the allies around it each own turn
-	FxCritRally       = "crit_rally"             // a critical blow on it raises its attack until the end of its next turn
 	FxBulwark         = "bulwark"                // blows above this share of max HP deal half above it
 	FxCritImmune      = "crit_immune"            // a blow that would crit is blocked
 	FxRangedImmune    = "ranged_immune"          // ranged attackers always miss
@@ -59,7 +60,6 @@ const (
 	FxIgnoreZOC       = "ignore_zoc"             // zone of control never stops
 	FxHaste           = "haste"                  // each turn, a movement buff of this many points
 	FxAuraHaste       = "aura_haste"             // each turn, a movement buff of this many points on the allies around it
-	FxWoundedHaste    = "wounded_haste"          // at half HP or less, a movement buff of this many points each turn
 	FxRangedReach     = "ranged_reach"           // ranged attacks reach this many cells farther
 	FxMountedRange    = "mounted_range"          // mounted classes may shoot at this distance
 	FxSpellRange      = "spell_range"            // spell reach
@@ -108,9 +108,10 @@ func init() {
 	for _, k := range []string{FxDiagonal, FxLongReach, FxRetreatSweep, FxCritAlways, FxCritBoost, FxSpellCrit, FxCritAmbush, FxCritScholar,
 		FxCritMounted, FxCritWounded, FxLoneCritLeader, FxDoubleAlways, FxAssist, FxRetaliate, FxGuardian, FxSplashCross, FxSplashSquare,
 		FxPierce, FxFlank, FxHeavy, FxKnockback, FxTerrainCap, FxTerrainFloor, FxIgnoreGuardBuff, FxPoison, FxPoisonBoost, FxLifeSteal,
-		FxMissHalf, FxOutnumbered, FxCompanions, FxLone, FxChargePower, FxChargeShock, FxDesperate, FxGrit, FxRangedSure, FxRout,
-		FxHitDebuff, FxTurnBuff, FxAuraBuff, FxCritRally, FxBulwark, FxCritImmune, FxRangedImmune, FxReflect, FxReflectStatus, FxFortify,
-		FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxAuraHaste, FxWoundedHaste, FxRangedReach, FxMountedRange, FxSpellRange,
+		FxMissHalf, FxOutnumbered, FxCompanions, FxLone, FxChargePower, FxChargeShock, FxChargeAccuracy, FxOpening,
+		FxDesperate, FxGrit, FxRangedSure, FxRout,
+		FxHitDebuff, FxTurnBuff, FxAuraBuff, FxBulwark, FxCritImmune, FxRangedImmune, FxReflect, FxReflectStatus, FxFortify,
+		FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxAuraHaste, FxRangedReach, FxMountedRange, FxSpellRange,
 		FxSpellSure, FxSpellWard, FxChain, FxSure, FxCritElement, FxPower, FxPatience, FxFinisher, FxDispelBuffs, FxSpellLeech, FxDispel,
 		FxStatusImmune, FxStatusWard, FxHealBonus, FxAura, FxAuraMana, FxDeputyCharm, FxItemShare, FxItemDouble, FxManaRegen,
 		FxBloodCost, FxRegen, FxWoundRegen, FxBuffExtend, FxSelfGuardHalf, FxLastStand, FxCostHalf, FxCleanse, FxPassAilments,

@@ -130,11 +130,7 @@
    "Facing": "SW",
    "Group": "hq",
    "Policy": "hold",
-   "Shift": -0.07,
-   "Traits": [
-    "fire",
-    "water"
-   ]
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",

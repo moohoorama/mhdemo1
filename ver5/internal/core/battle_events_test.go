@@ -63,6 +63,17 @@ func TestTurnstartWaitsForTheUnitToSurviveAPlayerTurn(t *testing.T) {
 	assert.Zero(t, e.state.Flags["burn"], "a battle's flags stay pending until it is won")
 }
 
+func TestAreaEventWaitsForTheMoverToFinishItsAction(t *testing.T) {
+	e := battleWith(t, func(s *content.Stage) {
+		s.Areas = []content.Area{{ID: 1, Rect: content.MapRect{X: 2, Y: 2, W: 1, H: 1}, Name: "ford"}}
+		s.Events = []content.BattleEvent{flagEvent("pincer", "at:hero:1")}
+	})
+	apply(t, e, Command{Kind: "move", Actor: "hero", X: 2, Y: 2})
+	assert.False(t, fired(e, "pincer"), "a move still being ordered sets nothing off")
+	apply(t, e, Command{Kind: "wait", Actor: "hero"})
+	assert.True(t, fired(e, "pincer"))
+}
+
 func TestTurnstartEventDoesNotFireWhenTheUnitIsGone(t *testing.T) {
 	e := battleWith(t, func(s *content.Stage) {
 		s.Enemies[1].Group = "g"

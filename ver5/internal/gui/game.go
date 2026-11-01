@@ -429,15 +429,13 @@ func (g *Game) record(before *core.Observation, events []core.Event) {
 		if after, err := g.S.Engine.CharacterStats(id); err == nil {
 			up.before, up.after = after, after
 		}
-		if g.S.Engine != nil {
-			o := g.S.View()
-			if u := g.unitView(o, id); u != nil {
-				up.after, up.progress = u.Stats, u.XPProgress
-			}
-			for _, c := range o.Characters {
-				if c.ID == id && up.progress == 0 {
-					up.progress = core.ExperienceProgress(c.XP)
-				}
+		o := g.S.View()
+		if u := g.unitView(o, id); u != nil {
+			up.after, up.progress = u.Stats, u.XPProgress
+		}
+		for _, c := range o.Characters {
+			if c.ID == id && up.progress == 0 {
+				up.progress = core.ExperienceProgress(c.XP)
 			}
 		}
 		if before != nil {
@@ -469,12 +467,12 @@ func (g *Game) promotionUp(before *core.Observation, id string) promotionUp {
 func (g *Game) promotionBetween(before *core.Observation, after core.Observation, id string) promotionUp {
 	p := promotionUp{id: id}
 	if u := g.unitView(after, id); u != nil {
-		p.to, p.after, p.new = u.Class, u.Stats, g.battleClassArt(u.Def, u.Class, u.Weapon, u.Color)
+		p.to, p.after, p.new = u.Class, u.Stats, g.battleClassArt(u.Def, u.Class, u.Weapon, u.Mount, u.Color)
 		p.from, p.before, p.old = p.to, p.after, p.new
 	}
 	if before != nil {
 		if u := g.unitView(*before, id); u != nil {
-			p.from, p.before, p.old = u.Class, u.Stats, g.battleClassArt(u.Def, u.Class, u.Weapon, u.Color)
+			p.from, p.before, p.old = u.Class, u.Stats, g.battleClassArt(u.Def, u.Class, u.Weapon, u.Mount, u.Color)
 		}
 	}
 	return p
@@ -644,7 +642,7 @@ func (g *Game) Update() error {
 	g.turnPage()
 	g.syncBattleLogStage()
 	g.learn = nil
-	if g.S.Engine != nil && g.S.Screen == "playing" {
+	if g.S.Screen == "playing" {
 		g.learn = g.S.View().Learners
 	}
 	if g.Verify {
@@ -703,7 +701,7 @@ func (g *Game) Update() error {
 	if !logInput && mouseJustPressed(ebiten.MouseButtonLeft) {
 		g.leftClick()
 	}
-	playing := g.S.Screen == "playing" && g.S.Engine != nil
+	playing := g.S.Screen == "playing"
 	if playing && !g.autoplay && !g.popupPending() {
 		if o := g.S.View(); o.Phase == "scenario" && o.Dialogue.Kind == "battle" {
 			g.startSortie()
