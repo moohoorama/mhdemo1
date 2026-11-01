@@ -77,30 +77,6 @@
     "Faction": "wei"
    }
   },
-  "seonbi": {
-   "Name": "선비",
-   "Biography": "피난길에도 품위를 잃지 않는 선비. 어린 조카들을 데리고 있다. 이름을 밝히지 않는다.",
-   "Class": "scholar",
-   "Stats": [
-    30,
-    20,
-    80,
-    40,
-    60,
-    80
-   ],
-   "Level": 5,
-   "Traits": [],
-   "Learn": [],
-   "Equipment": [
-    "bamboo_fan",
-    "plain_clothes"
-   ],
-   "Look": {
-    "Faction": "han",
-    "Scene": "official_noncombat"
-   }
-  },
   "refugee_cart": {
    "Name": "피난 수레",
    "Biography": "서주성으로 가는 피난민의 수레. 늙은이와 아이들이 타고 있다.",
@@ -120,6 +96,30 @@
    "Look": {
     "Faction": "han",
     "Sprite": "chariot"
+   }
+  },
+  "zhugexuan": {
+   "Name": "제갈현",
+   "Biography": "낭야 사람. 피난 중에도 품위를 잃지 않는 선비.",
+   "Class": "scholar",
+   "Stats": [
+    30,
+    20,
+    80,
+    40,
+    60,
+    80
+   ],
+   "Level": 5,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "official_noncombat"
    }
   }
  }

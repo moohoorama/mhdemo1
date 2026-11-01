@@ -37,9 +37,9 @@
   },
   {
    "ID": "scholar",
-   "Text": "선비를 서주성으로 보낸다",
+   "Text": "제갈현을 서주성으로 보낸다",
    "If": [
-    "fled:seonbi"
+    "fled:zhugexuan"
    ],
    "Flag": "flag-zhugexuan"
   }
@@ -175,7 +175,7 @@
    "Faction": "han"
   },
   {
-   "Character": "seonbi",
+   "Character": "zhugexuan",
    "X": 2,
    "Y": 11,
    "Facing": "SE",
@@ -411,8 +411,8 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "seonbi",
-       "Text": "얘들아, 고개를 들지 마라. ……숨소리도 내지 말고."
+       "Actor": "zhugexuan",
+       "Text": "(대숲 안) ……여기서 끝날 수는 없다."
       }
      ]
     }
@@ -421,15 +421,15 @@
   {
    "ID": "rescue",
    "If": [
-    "any:[adjacent:liubei:seonbi, adjacent:guanyu:seonbi, adjacent:zhangfei:seonbi, adjacent:zhaoyun:seonbi, adjacent:jianyong:seonbi, adjacent:fangong:seonbi]"
+    "any:[adjacent:liubei:zhugexuan, adjacent:guanyu:zhugexuan, adjacent:zhangfei:zhugexuan, adjacent:zhaoyun:zhugexuan, adjacent:jianyong:zhugexuan, adjacent:fangong:zhugexuan]"
    ],
    "Do": [
     {
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "seonbi",
-       "Text": "고맙소. ……이름은 묻지 말아 주시오. 아이들을 성까지만 데려가면 되오."
+       "Actor": "zhugexuan",
+       "Text": "낭야의 제갈현이오. 남쪽으로 내려가던 길이었소. 이 은혜는 잊지 않겠소."
       }
      ]
     },

@@ -220,20 +220,6 @@
      ],
      "Face": "NE"
     },
-    "간옹": {
-     "At": [
-      2,
-      8
-     ],
-     "Face": "NE"
-    },
-    "번궁": {
-     "At": [
-      4,
-      8
-     ],
-     "Face": "NE"
-    },
     "손건": {
      "At": [
       3,
@@ -302,14 +288,14 @@
     "공융": {
      "At": [
       3,
-      3
+      4
      ],
      "Face": "SW"
     },
     "태사자": {
      "At": [
       4,
-      3
+      4
      ],
      "Face": "SW",
      "Sprite": "light_infantry",
@@ -317,7 +303,7 @@
     },
     "북해병#1": {
      "At": [
-      2,
+      3,
       3
      ],
      "Face": "SW",
@@ -327,81 +313,97 @@
     "유비": {
      "At": [
       3,
-      4
+      5
      ],
      "Face": "NE"
     },
     "관우": {
      "At": [
       2,
-      4
+      6
      ],
      "Face": "NE"
     },
     "장비": {
      "At": [
       4,
-      4
-     ],
-     "Face": "NE"
-    },
-    "조운": {
-     "At": [
-      5,
-      4
-     ],
-     "Face": "NE"
-    },
-    "간옹": {
-     "At": [
-      1,
-      4
-     ],
-     "Face": "NE"
-    },
-    "번궁": {
-     "At": [
-      0,
-      4
+      6
      ],
      "Face": "NE"
     },
     "손건": {
      "At": [
-      6,
-      4
+      2,
+      5
      ],
      "Face": "NE"
     }
    }
   },
   "c12-village": {
-   "Map": "S_village_burnt",
+   "Map": "S_xuzhou_ruin",
    "Time": "dusk",
    "Nodes": [
     "c12-v0",
-    "c12-v1"
+    "c12-v1",
+    "c12-v2",
+    "c12-v3"
    ],
    "Ambient": [
     {
      "Effect": "smoke",
      "At": [
-      7.5,
+      6.5,
+      2.0
+     ]
+    },
+    {
+     "Effect": "smoke",
+     "At": [
+      10.0,
       1.5
      ]
     },
     {
      "Effect": "smallfire",
      "At": [
-      2.0,
+      9.5,
+      7.0
+     ]
+    },
+    {
+     "Effect": "smoke",
+     "At": [
+      4.0,
+      7.0
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      12.0,
       6.5
      ]
     },
     {
-     "Prop": [
-      "fallen_flag",
-      5.25,
-      4.25
+     "Effect": "smoke",
+     "At": [
+      9.0,
+      7.5
+     ]
+    },
+    {
+     "Effect": "smallfire",
+     "At": [
+      3.0,
+      7.5
+     ]
+    },
+    {
+     "Effect": "smoke",
+     "At": [
+      12.5,
+      1.5
      ]
     }
    ],
@@ -409,14 +411,14 @@
     "유비": {
      "At": [
       4,
-      4
+      5
      ],
      "Face": "SE"
     },
     "관우": {
      "At": [
       3,
-      3
+      4
      ],
      "Face": "SE"
     },
@@ -429,66 +431,97 @@
     },
     "조운": {
      "At": [
-      6,
-      5
-     ],
-     "Face": "NW"
-    },
-    "간옹": {
-     "At": [
-      2,
+      4,
       4
-     ],
-     "Face": "SE"
-    },
-    "번궁": {
-     "At": [
-      2,
-      3
      ],
      "Face": "SE"
     },
     "손건": {
      "At": [
-      5,
-      2
+      2,
+      5
      ],
-     "Face": "SW"
+     "Face": "SE"
+    },
+    "주검#1": {
+     "At": [
+      6,
+      4
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Pose": "prone"
+    },
+    "주검#2": {
+     "At": [
+      8,
+      7
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_woman",
+     "Pose": "prone"
+    },
+    "주검#3": {
+     "At": [
+      10,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_elder",
+     "Pose": "prone"
     },
     "노인#1": {
      "At": [
-      7,
+      9,
       4
      ],
      "Face": "NW",
      "Sprite": "commoner_elder"
     },
-    "부상자#1": {
-     "At": [
-      8,
-      3
-     ],
-     "Face": "SW",
-     "Sprite": "wounded_noncombat",
-     "Pose": "sitground"
-    },
     "아낙#1": {
      "At": [
-      6,
-      2
+      8,
+      6
      ],
-     "Face": "SW",
+     "Face": "NE",
      "Sprite": "commoner_woman"
     },
     "전령#1": {
      "At": [
-      9,
-      7
+      13,
+      9
      ],
      "Face": "NW",
      "Sprite": "light_cavalry",
      "Faction": "han",
      "Off": true
+    },
+    "주검#4": {
+     "At": [
+      11,
+      6
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Pose": "prone"
+    },
+    "주검#5": {
+     "At": [
+      5,
+      7
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_oldwoman",
+     "Pose": "prone"
+    },
+    "주검#6": {
+     "At": [
+      12,
+      3
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_woman",
+     "Pose": "prone"
     }
    },
    "Beats": {
@@ -496,29 +529,52 @@
      [
       [
        {
-        "Actor": "노인#1",
+        "Actor": "유비",
         "Move": [
-         6,
+         7,
          4
         ]
-       },
-       {
-        "Actor": "노인#1",
-        "Face": "NW"
        },
        {
         "Actor": "유비",
         "Face": "SE"
        },
        {
+        "Actor": "노인#1",
+        "Move": [
+         8,
+         4
+        ]
+       },
+       {
+        "Actor": "노인#1",
+        "Face": "NW"
+       }
+      ]
+     ]
+    ],
+    "c12-v2": [
+     [
+      [
+       {
+        "Actor": "관우",
+        "Say": "……"
+       }
+      ]
+     ]
+    ],
+    "c12-v3": [
+     [
+      [
+       {
         "Actor": "전령#1",
         "Enter": [
-         9,
-         7
+         13,
+         9
         ],
         "Move": [
-         6,
-         6
+         9,
+         5
         ]
        },
        {
@@ -573,20 +629,6 @@
      ],
      "Face": "NW"
     },
-    "간옹": {
-     "At": [
-      6,
-      4
-     ],
-     "Face": "NW"
-    },
-    "번궁": {
-     "At": [
-      7,
-      3
-     ],
-     "Face": "NW"
-    },
     "조운": {
      "At": [
       6,
@@ -632,64 +674,73 @@
    }
   },
   "c11-town": {
-   "Map": "S_castle_town",
+   "Map": "S_xindu",
    "Nodes": [
     "c11-t0"
    ],
    "Cast": {
     "관우": {
      "At": [
-      5,
-      3
+      8,
+      4
      ],
      "Face": "SW"
     },
+    "유비": {
+     "At": [
+      7,
+      6
+     ],
+     "Face": "NE"
+    },
     "장비": {
      "At": [
-      4,
-      6
+      5,
+      5
      ],
      "Face": "SE"
     },
     "간옹": {
      "At": [
       6,
-      7
+      8
      ],
-     "Face": "NW"
-    },
-    "조운": {
-     "At": [
-      8,
-      7
-     ],
-     "Face": "NW"
+     "Face": "SE"
     },
     "번궁": {
      "At": [
-      9,
-      5
+      8,
+      6
      ],
-     "Face": "NW"
+     "Face": "SW"
+    },
+    "조운": {
+     "At": [
+      10,
+      4
+     ],
+     "Face": "SW"
     },
     "손건": {
      "At": [
-      3,
-      7
+      6,
+      10
      ],
      "Face": "NE"
     },
-    "유비": {
+    "공손찬의 막료": {
      "At": [
-      5,
-      5
+      6,
+      3
      ],
-     "Face": "NE"
+     "Face": "SE",
+     "Sprite": "official_noncombat",
+     "Faction": "gongsun"
     },
     "궁병 군관": {
      "At": [
-      9,
-      3
+      13,
+      7
      ],
      "Face": "SW",
      "Sprite": "archer",
@@ -697,37 +748,152 @@
     },
     "무술 사범": {
      "At": [
-      10,
-      8
+      7,
+      9
      ],
      "Face": "NW",
      "Sprite": "brawler",
      "Faction": "gongsun"
     },
-    "공손찬의 막료": {
-     "At": [
-      4,
-      4
-     ],
-     "Face": "SE",
-     "Sprite": "official_noncombat",
-     "Faction": "gongsun"
-    },
     "백성#1": {
      "At": [
-      2,
-      7
+      4,
+      11
      ],
      "Face": "NE",
      "Sprite": "commoner_man"
     },
     "백성#2": {
      "At": [
-      7,
-      9
+      11,
+      11
      ],
      "Face": "NW",
      "Sprite": "commoner_woman"
+    }
+   }
+  },
+  "c12-beihai": {
+   "Map": "S_beihai",
+   "Nodes": [
+    "c12-h0"
+   ],
+   "Ambient": [
+    {
+     "Effect": "smallfire",
+     "At": [
+      3.0,
+      4.5
+     ]
+    }
+   ],
+   "Cast": {
+    "관우": {
+     "At": [
+      7,
+      11
+     ],
+     "Face": "NE"
+    },
+    "유비": {
+     "At": [
+      7,
+      9
+     ],
+     "Face": "NE"
+    },
+    "장비": {
+     "At": [
+      4,
+      7
+     ],
+     "Face": "SE"
+    },
+    "조운": {
+     "At": [
+      10,
+      7
+     ],
+     "Face": "SW"
+    },
+    "간옹": {
+     "At": [
+      12,
+      4
+     ],
+     "Face": "SW"
+    },
+    "번궁": {
+     "At": [
+      10,
+      9
+     ],
+     "Face": "NW"
+    },
+    "손건": {
+     "At": [
+      6,
+      7
+     ],
+     "Face": "SE"
+    },
+    "공융": {
+     "At": [
+      7,
+      3
+     ],
+     "Face": "SW"
+    },
+    "피난민#1": {
+     "At": [
+      1,
+      4
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_elder",
+     "Pose": "sitground"
+    },
+    "피난민#2": {
+     "At": [
+      2,
+      5
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_woman"
+    },
+    "피난민#3": {
+     "At": [
+      3,
+      6
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_man"
+    },
+    "북해병#1": {
+     "At": [
+      5,
+      12
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    },
+    "상인": {
+     "At": [
+      9,
+      6
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    },
+    "대장장이": {
+     "At": [
+      12,
+      8
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat"
     }
    }
   }
@@ -811,7 +977,7 @@
      "Name": "관아(공손찬의 부중)",
      "Cells": [
       [
-       5,
+       7,
        1
       ]
      ]
@@ -876,36 +1042,95 @@
      "After": "c12-v0"
     },
     {
-     "Name": "2-scout",
+     "Name": "2-elder",
      "After": "c12-v1"
+    },
+    {
+     "Name": "3-cover",
+     "After": "c12-v2"
+    },
+    {
+     "Name": "4-scout",
+     "After": "c12-v3"
     }
    ],
    "Spots": [
     {
      "Label": "A",
-     "Name": "그을린 조 자 깃발",
+     "Name": "그을린 깃발",
      "Cells": [
       [
-       5,
+       7,
        4
       ]
      ]
     },
     {
      "Label": "B",
-     "Name": "서주 가는 길",
+     "Name": "서주로 가는 갈림길",
      "Cells": [
       [
-       9,
-       6
+       6,
+       8
       ],
       [
-       9,
-       7
+       6,
+       9
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "Scene": "c12-beihai",
+   "Shots": [
+    {
+     "Name": "1",
+     "After": ""
+    }
+   ],
+   "Spots": [
+    {
+     "Label": "A",
+     "Name": "공융의 부중",
+     "Cells": [
+      [
+       7,
+       1
+      ]
+     ]
+    },
+    {
+     "Label": "B",
+     "Name": "학당",
+     "Cells": [
+      [
+       12,
+       2
+      ]
+     ]
+    },
+    {
+     "Label": "C",
+     "Name": "피난민 거처",
+     "Cells": [
+      [
+       1,
+       4
       ],
       [
-       8,
-       7
+       2,
+       5
+      ]
+     ]
+    },
+    {
+     "Label": "D",
+     "Name": "성문(해자 다리 쪽)",
+     "Cells": [
+      [
+       7,
+       13
       ]
      ]
     }
