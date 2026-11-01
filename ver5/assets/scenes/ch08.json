@@ -222,7 +222,7 @@
      ],
      [
       [{"Actor": "전령", "Pose": "idle"}, {"Wait": 0.4}],
-      [{"Actor": "전령", "Move": [7, 4], "Speed": 1.2, "Exit": true}, {"Actor": "관우", "Via": [[2, 3], [3, 3], [3, 4]], "Move": [7, 4], "Speed": 1, "Exit": true, "After": 0.6}, {"Actor": "장비", "Via": [[5, 3], [6, 3]], "Move": [7, 4], "Speed": 1, "Exit": true, "After": 1.2}, {"Actor": "간옹", "Move": [7, 4], "Speed": 1, "Exit": true, "After": 1.8}],
+      [{"Actor": "전령", "Move": [7, 4], "Speed": 1.2, "Exit": true}, {"Actor": "관우", "Face": "SE", "After": 0.6}, {"Actor": "장비", "Via": [[5, 3], [6, 3]], "Move": [7, 4], "Speed": 1, "Exit": true, "After": 1.2}, {"Actor": "간옹", "Move": [7, 4], "Speed": 1, "Exit": true, "After": 1.8}],
       [{"Wait": 0.5}]
      ]
     ]

@@ -150,10 +150,16 @@ func (g *Game) advanceDialogue() {
 }
 
 // nextNode goes on to the next node; when that node opens another scene or goes back to the walk, the scene on
-// screen first darkens to black (the new one then opens out of black).
+// screen first darkens to black (the new one then opens out of black). Beats set after the node's last line play
+// before that.
 func (g *Game) nextNode() {
 	if s := g.scene; s != nil && s.node == g.S.View().Node {
 		if s.leaving {
+			return
+		}
+		if n := len(g.nodeLines(g.S.View().Dialogue)); g.lineIndex < n && len(s.def.Line(s.node, n)) > 0 {
+			g.lineIndex = n // the beats after the node's last line play out first (closingBeats)
+			g.startLine(n)
 			return
 		}
 		next := g.S.Data.After(s.node)
@@ -189,7 +195,20 @@ func (g *Game) turnPage() {
 		g.narrationLeaving = false
 		g.nextNode()
 	}
+	g.closingBeats()
 	g.autoPage()
+}
+
+// closingBeats goes on to the next node once the beats after a node's last line have played out.
+func (g *Game) closingBeats() {
+	o := g.S.View()
+	s := g.scene
+	if s == nil || s.leaving || o.Phase != "scenario" || !isTalk(o.Dialogue.Kind) || g.shownNode != o.Node || s.node != o.Node {
+		return
+	}
+	if g.lineIndex >= len(g.nodeLines(o.Dialogue)) && !g.sceneBusy() {
+		g.nextNode()
+	}
 }
 
 // autoWait is how long a line that is out stays before the auto setting turns the page.
@@ -319,6 +338,9 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 			g.label(dst, "클릭: 넘기기", float64(uiW-150), float64(uiH-40), 13, muted)
 			return
 		}
+	}
+	if staged && g.lineIndex >= len(lines) { // the node's closing beats: the box stays closed
+		return
 	}
 	if g.held != nil { // a gift's or a joining officer's window is up: the box closes and the next line opens a fresh one
 		g.dialogueAnim = dialogueAnim{}

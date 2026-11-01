@@ -72,13 +72,9 @@ func (g *Game) layOutExplore(o core.Observation) {
 	e := g.S.Engine
 	x := e.ExploreFile()
 	a := x.Areas[o.Spot.Area]
-	before := ""
 	var left *unitVis // the hero as the event before left him, on this map
-	if g.field != nil {
-		before = g.field.Map.ID
-		if g.scene != nil && before == a.Map {
-			left = g.scene.actors[g.S.Data.Characters[x.Hero].Name]
-		}
+	if g.field != nil && g.scene != nil && g.field.Map.ID == a.Map {
+		left = g.scene.actors[g.S.Data.Characters[x.Hero].Name]
 	}
 	w := &exploreWalk{engine: e, node: o.Node, area: o.Spot.Area, hero: g.S.Data.Characters[x.Hero].Name, people: map[string]string{},
 		homes: map[string]string{}, rest: map[string]float64{}, leg: map[string]int{}, markT: math.Inf(1), rng: rand.New(rand.NewPCG(7, 11))}
