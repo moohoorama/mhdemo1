@@ -138,7 +138,11 @@ func (p *player) loadScreen() {
 	slots := p.s.Store.Slots()
 	p.printf("\n불러오기 (0: 뒤로)\n")
 	for _, slot := range slots {
-		p.add("슬롯 "+slot, func() {
+		name := "슬롯 " + slot
+		if n, ok := strings.CutPrefix(slot, "auto"); ok {
+			name = "자동 저장 " + n
+		}
+		p.add(name, func() {
 			if p.request(session.Request{Op: "load", Slot: slot, Discard: true}) {
 				p.screen = ""
 			}

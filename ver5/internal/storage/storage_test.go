@@ -47,10 +47,10 @@ func TestSlotsChecksumAndAtomicFailure(t *testing.T) {
 	if err = s.Save("10", a, true); err != nil {
 		t.Fatal(err)
 	}
-	if err = s.Save("auto", a, true); err != nil {
-		t.Fatal(err)
+	if err = s.Save("auto", a, true); err == nil {
+		t.Fatal("legacy auto slot")
 	}
-	if len(s.Slots()) != 11 {
+	if len(s.Slots()) != 10 {
 		t.Fatal("slot count")
 	}
 	p := filepath.Join(s.Dir, "slot-1.json")

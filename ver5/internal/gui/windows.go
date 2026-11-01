@@ -5,8 +5,6 @@ import (
 	"image"
 	"image/color"
 	"math"
-	"os"
-	"path/filepath"
 	"sort"
 	"strings"
 
@@ -48,7 +46,7 @@ func (g *Game) openOverlay(name string) bool {
 	}
 	g.autoplay = false
 	if name == "save" || name == "load" {
-		g.slotInfo = g.readSlots()
+		g.openSaves(name)
 	}
 	return true
 }
@@ -131,9 +129,9 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 	case "confirm":
 		w, h, _ = g.confirmLayout(g.question, uiW, uiH)
 	case "save":
-		w, h = 640, 480
+		w, h = saveW, saveH-46
 	case "load":
-		w, h = 760, 660
+		w, h = saveW, saveH
 	case "equipment":
 		w, h = 760, 80+3*(equipCardH+14)+10
 	case "deputy":
@@ -201,34 +199,7 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h int) {
 			g.btn(dst, image.Rect(left, y+64+i*54, x+w-32, y+64+i*54+42), it.label, it.click)
 		}
 	case "save", "load":
-		op := name
-		g.label(dst, map[string]string{"save": "저장할 슬롯을 고르십시오. 덮어쓸 때는 확인합니다.", "load": "불러올 슬롯을 고르십시오."}[op], float64(left), float64(y+56), 14, muted)
-		slots := storage.ManualSlots()
-		if op == "load" {
-			slots = append(storage.AutoSlots(), slots...)
-		}
-		for i, s := range slots {
-			slot := s
-			info, ok := g.slotInfo[slot]
-			name := "슬롯 " + slot
-			if !storage.IsManualSlot(slot) {
-				name = "자동 저장 " + strings.TrimPrefix(slot, "auto")
-			}
-			label := name + "   —   비어 있음"
-			if ok {
-				label = name + "   " + info
-			}
-			var click func()
-			if op == "save" || ok {
-				click = func() {
-					if storage.IsManualSlot(slot) {
-						fmt.Sscan(slot, &g.slot)
-					}
-					g.request(session.Request{Op: op, Slot: slot})
-				}
-			}
-			g.btn(dst, image.Rect(left, y+84+i*32, x+w-32, y+84+i*32+28), label, click)
-		}
+		g.saveWindow(dst, name, x, y, w, h)
 	case "waypoints":
 		g.waypointWindow(dst, x, y, w, h)
 	case "settings":
@@ -307,29 +278,6 @@ func (g *Game) focus(u, v int) {
 	}
 }
 
-// readSlots describes each existing save: chapter, battle or story, and when it was saved.
-func (g *Game) readSlots() map[string]string {
-	out := map[string]string{}
-	for _, slot := range g.S.Store.Slots() {
-		s, err := g.S.Store.Load(slot)
-		if err != nil {
-			out[slot] = "읽을 수 없음"
-			continue
-		}
-		stage := g.S.Data.Stages[min(max(0, s.Stage), len(g.S.Data.Stages)-1)]
-		where := map[string]string{"scenario": "이야기", "deployment": "아군 배치", "result": "전투 결과", "complete": "완료"}[s.Phase]
-		if s.Phase == "battle" {
-			where = fmt.Sprintf("%d턴 · %s", s.Round, factionName(s.Turn))
-		}
-		when := ""
-		if fi, err := os.Stat(filepath.Join(g.S.Store.Dir, "slot-"+slot+".json")); err == nil {
-			when = fi.ModTime().Format("01/02 15:04")
-		}
-		out[slot] = fmt.Sprintf("제%d장 %s · %s · %s", s.Stage+1, stage.Name, where, when)
-	}
-	return out
-}
-
 // drawModal draws the first queued modal; any click closes it.
 func (g *Game) drawModal(dst *ebiten.Image) {
 	m := g.modals[0]
@@ -348,7 +296,7 @@ func (g *Game) drawModal(dst *ebiten.Image) {
 	box := map[string]image.Rectangle{
 		"levelup":   image.Rect(Width/2-250, 200, Width/2+250, 540),
 		"promotion": image.Rect(Width/2-280, 170, Width/2+280, 600),
-		"trait":   image.Rect(Width/2-300, 220, Width/2+300, 560),
+		"trait":     image.Rect(Width/2-300, 220, Width/2+300, 560),
 	}[m.kind]
 	g.popup(dst, fmt.Sprintf("modal:%p", m), 110, Width, Height, box.Inset(-24), func(dst *ebiten.Image) { g.modalWindow(dst, m) })
 }
@@ -822,4 +770,3 @@ func gainColor(d int) color.NRGBA {
 	}
 	return good
 }
-

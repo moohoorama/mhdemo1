@@ -173,7 +173,7 @@ type Game struct {
 	introImg                  introImages
 	battleXP, startLevel      map[string]int
 	resultPage                int
-	slotInfo                  map[string]string
+	saves                     saveList
 	selected                  string
 	overlays                  []string // the open windows, the top one last
 	notice, entry             string

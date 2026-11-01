@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -12,6 +11,7 @@ import (
 	"srpg/internal/content"
 	"srpg/internal/core"
 	"srpg/internal/session"
+	"srpg/internal/storage"
 )
 
 func TestRenderedAutosaveSlots(t *testing.T) {
@@ -81,54 +81,41 @@ func (p *autosaveRenderTest) Update() error {
 	switch p.step {
 	case 0:
 		auto, manual := 0, 0
-		for _, b := range g.buttons {
-			if strings.HasPrefix(b.label, "자동 저장 ") {
+		for _, r := range g.saves.rows {
+			if r.ok && storage.IsAutoSlot(r.slot) {
 				auto++
 			}
-			if strings.HasPrefix(b.label, "슬롯 ") {
+			if r.ok && storage.IsManualSlot(r.slot) {
 				manual++
 			}
-			if b.rect.Min.Y < 0 || b.rect.Max.Y > Height {
-				p.err = fmt.Errorf("save button outside screen")
-				return ebiten.Termination
-			}
 		}
-		if auto != 4 || manual != 1 {
-			p.err = fmt.Errorf("slots: %d automatic, %d manual", auto, manual)
+		if auto != 4 || manual != 1 || g.saves.auto || g.saves.pick != "1" {
+			p.err = fmt.Errorf("slots: %d automatic, %d manual, auto tab %t, pick %s", auto, manual, g.saves.auto, g.saves.pick)
 			return ebiten.Termination
 		}
 		g.openOverlay("save")
 	case 1:
-		manual := 0
-		for _, b := range g.buttons {
-			if strings.HasPrefix(b.label, "슬롯 ") {
-				manual++
-			}
-			if strings.HasPrefix(b.label, "자동 저장") {
-				p.err = fmt.Errorf("automatic slots writable in manual menu")
-				return ebiten.Termination
-			}
-		}
-		if manual != 10 {
-			p.err = fmt.Errorf("manual save slots: %d", manual)
+		if g.saves.auto {
+			p.err = fmt.Errorf("automatic slots writable in manual menu")
 			return ebiten.Termination
 		}
 		g.openOverlay("load")
 	case 2:
+		g.showSaveTab(true)
+		g.saves.pick = "auto4"
+		p.step++
+		return nil
+	case 3:
 		for _, b := range g.buttons {
-			if strings.HasPrefix(b.label, "자동 저장 4 ") {
-				if b.click == nil {
-					p.err = fmt.Errorf("autosave cannot be loaded")
-					return ebiten.Termination
-				}
+			if b.label == "확인" && b.click != nil {
 				b.click()
 				p.step++
 				return nil
 			}
 		}
-		p.err = fmt.Errorf("missing automatic slot 4")
+		p.err = fmt.Errorf("automatic slot 4 cannot be loaded")
 		return ebiten.Termination
-	case 3:
+	case 4:
 		return ebiten.Termination
 	}
 	p.step++
@@ -139,8 +126,7 @@ func (p *autosaveRenderTest) Draw(dst *ebiten.Image) {
 		return
 	}
 	p.g.Draw(dst)
-	if p.step < 2 {
-		name := []string{"load", "save"}[p.step]
+	if name, ok := map[int]string{0: "load", 1: "save", 3: "load-auto"}[p.step]; ok {
 		p.err = saveDuelFrame(dst, filepath.Join(p.out, name+".png"))
 	}
 	p.drawn = true

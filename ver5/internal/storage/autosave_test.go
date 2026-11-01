@@ -14,24 +14,24 @@ func TestAutosaveRotationAndManualIsolation(t *testing.T) {
 	store := Store{Dir: dir}
 	manual := core.State{Revision: 999}
 	require.NoError(t, store.Save("1", manual, false))
-	for revision := uint64(1); revision <= 6; revision++ {
+	for revision := uint64(1); revision <= 12; revision++ {
 		// A new store instance must continue the disk-backed rotation.
 		store = Store{Dir: dir}
 		require.NoError(t, store.Autosave(core.State{Revision: revision}))
 	}
-	for slot, revision := range map[string]uint64{"auto1": 5, "auto2": 6, "auto3": 3, "auto4": 4, "1": 999} {
+	for slot, revision := range map[string]uint64{"auto1": 11, "auto2": 12, "auto3": 3, "auto10": 10, "1": 999} {
 		state, err := store.Load(slot)
 		require.NoError(t, err)
 		assert.Equal(t, revision, state.Revision)
 	}
-	assert.Len(t, store.Slots(), 5)
+	assert.Len(t, store.Slots(), 11)
 	// Reading an older save does not change the next slot.
 	_, err := store.Load("auto3")
 	require.NoError(t, err)
-	require.NoError(t, store.Autosave(core.State{Revision: 7}))
+	require.NoError(t, store.Autosave(core.State{Revision: 13}))
 	state, err := store.Load("auto3")
 	require.NoError(t, err)
-	assert.Equal(t, uint64(7), state.Revision)
+	assert.Equal(t, uint64(13), state.Revision)
 }
 
 func TestAutosaveFailurePreservesRotation(t *testing.T) {

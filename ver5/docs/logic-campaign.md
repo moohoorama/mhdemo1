@@ -116,6 +116,6 @@
 
 ## 8. 자동 저장
 
-세션(`internal/session`)이 `Apply`의 결과 이벤트를 보고 자동 저장한다. `deployment_finish` 이벤트 또는 `turn` 이벤트 중 아군 차례 시작(`Target == "ally"`)이 있고, 그때 `Phase`가 `battle`일 때 한 번 저장한다. 이동·공격·지원·적군 차례에는 저장하지 않는다.
+세션(`internal/session`)이 탐험의 `sortie` 명령이 성공하면 그 명령 직전 상태를 자동 저장한다. 또 `Apply`의 결과 이벤트를 보고 자동 저장한다. `deployment_finish` 이벤트 또는 `turn` 이벤트 중 아군 차례 시작(`Target == "ally"`)이 있고, 그때 `Phase`가 `battle`일 때 한 번 저장한다. 이동·공격·지원·적군 차례에는 저장하지 않는다.
 
-슬롯은 `auto1`~`auto4` 네 개를 1→2→3→4→1로 돌며 덮어쓴다. 다음 슬롯은 각 파일의 순번(`sequence`) 최댓값으로 정하므로 게임을 다시 실행하거나 옛 저장을 불러와도 순서가 이어진다. 수동 슬롯 `1`~`10`과 독립이다. 쓰기에 실패하면 `autosave-failed` 이벤트가 결과에 덧붙고 회전은 변하지 않는다. 파일 형식과 불러오기는 [system-save.md](system-save.md)가 기준이다.
+슬롯은 `auto1`~`auto10` 열 개를 차례로 돌며 덮어쓴다. 다음 슬롯은 각 파일의 순번(`sequence`) 최댓값으로 정하므로 게임을 다시 실행하거나 옛 저장을 불러와도 순서가 이어진다. 수동 슬롯 `1`~`10`과 독립이다. 쓰기에 실패하면 `autosave-failed` 이벤트가 결과에 덧붙고 회전은 변하지 않는다. 파일 형식과 불러오기는 [system-save.md](system-save.md)가 기준이다.

@@ -344,22 +344,35 @@ func (s *Session) stepAI() (core.Result, error) {
 	return s.apply(c)
 }
 
+// apply runs a command and autosaves: the walk as it stood when the confidant asked, once the party
+// sorties, so loading it walks again before saying yes; and every allied turn start of a battle.
 func (s *Session) apply(c core.Command) (core.Result, error) {
+	var walk *core.State
+	if c.Kind == "sortie" {
+		state := s.Engine.Snapshot()
+		walk = &state
+	}
 	r, err := s.Engine.Apply(c)
 	if err != nil {
 		return r, err
 	}
+	if walk != nil {
+		s.autosave(*walk, &r)
+	}
 	for _, event := range r.Events {
 		if event.Kind == "deployment_finish" || event.Kind == "turn" && event.Target == "ally" {
-			state := s.Engine.Snapshot()
-			if state.Phase != "battle" {
-				break
-			}
-			if err := s.Store.Autosave(state); err != nil {
-				r.Events = append(r.Events, core.Event{Kind: "autosave-failed", Text: "자동 저장 실패: " + err.Error()})
+			if state := s.Engine.Snapshot(); state.Phase == "battle" {
+				s.autosave(state, &r)
 			}
 			break
 		}
 	}
 	return r, nil
+}
+
+// autosave writes the state to the next automatic slot; a failure is told as an event, not an error.
+func (s *Session) autosave(state core.State, r *core.Result) {
+	if err := s.Store.Autosave(state); err != nil {
+		r.Events = append(r.Events, core.Event{Kind: "autosave-failed", Text: "자동 저장 실패: " + err.Error()})
+	}
 }

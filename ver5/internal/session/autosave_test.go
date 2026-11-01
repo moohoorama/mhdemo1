@@ -38,7 +38,7 @@ func TestAutosaveAtAlliedRoundStarts(t *testing.T) {
 			request(t, s, Request{Op: "observe"})
 			assert.Len(t, s.Store.Slots(), 1)
 			request(t, s, Request{Op: "save", Slot: "1"})
-			for round := 2; round <= 6; round++ {
+			for round := 2; round <= 12; round++ {
 				request(t, s, Request{Op: "command", Command: core.Command{Kind: "end"}})
 				require.Equal(t, "enemy", s.Engine.Observe().Turn)
 				switch mode {
@@ -58,7 +58,7 @@ func TestAutosaveAtAlliedRoundStarts(t *testing.T) {
 				require.Equal(t, "ally", s.Engine.Observe().Turn)
 				assert.Equal(t, round, s.Engine.Observe().Round)
 			}
-			for slot, round := range map[string]int{"auto1": 5, "auto2": 6, "auto3": 3, "auto4": 4} {
+			for slot, round := range map[string]int{"auto1": 11, "auto2": 12, "auto3": 3, "auto10": 10} {
 				state, err := s.Store.Load(slot)
 				require.NoError(t, err)
 				assert.Equal(t, round, state.Round)
@@ -75,7 +75,7 @@ func TestAutosaveAtAlliedRoundStarts(t *testing.T) {
 			require.NoError(t, err)
 			assert.Equal(t, 1, manual.Round)
 			request(t, s, Request{Op: "load", Slot: "auto3", Discard: true})
-			assert.Len(t, s.Store.Slots(), 5)
+			assert.Len(t, s.Store.Slots(), 11)
 			request(t, s, Request{Op: "command", Command: core.Command{Kind: "end"}})
 			_, err = s.ResolvePhase()
 			require.NoError(t, err)
@@ -137,4 +137,33 @@ func TestSupportPhaseDoesNotRotateAutosave(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, "ally", s.Engine.Observe().Turn)
 	assert.Len(t, s.Store.Slots(), 2)
+}
+
+func TestAutosaveBeforeSortie(t *testing.T) {
+	s := setup(t)
+	flow := []content.Node{
+		{ID: "walk", Kind: "explore", Explore: "explore01"},
+		{ID: "pre", Kind: "narrate", Text: "off we go"},
+		{ID: "fight", Kind: "battle", Stage: "S1"},
+	}
+	s.Data.Nodes = flow
+	s.Data.Chapters = []content.Chapter{{ID: "1", File: "x.json", Nodes: []string{"walk", "pre", "fight"}}}
+	s.Data.Campaign.Start = "walk"
+	s.Data.Explores = map[string]*content.Explore{"explore01": {
+		Hero:  "hero",
+		Start: content.Spot{Area: "street", At: [2]int{5, 5}, Face: "SE"},
+		Areas: map[string]*content.ExploreArea{"street": {Map: "S_a", Name: "거리", At: [2]int{1, 1},
+			People: map[string]*content.ExplorePerson{"관우": {Face: "SW", Sortie: &content.ExploreSortie{Ask: "출진?"}}}}},
+	}}
+	require.NoError(t, s.Data.Validate())
+	request(t, s, Request{Op: "new", Seed: 1})
+	request(t, s, Request{Op: "command", Command: core.Command{Kind: "walk", Option: "street", X: 2, Y: 3, Target: "NW"}})
+	request(t, s, Request{Op: "command", Command: core.Command{Kind: "sortie", Target: "관우"}})
+	assert.Equal(t, "pre", s.Engine.Observe().Node)
+
+	request(t, s, Request{Op: "load", Slot: "auto1", Discard: true})
+	o := s.Engine.Observe()
+	assert.Equal(t, "walk", o.Node, "the save walks again before the confidant is answered")
+	assert.Equal(t, content.Spot{Area: "street", At: [2]int{2, 3}, Face: "NW"}, o.Spot)
+	assert.Equal(t, []string{"auto1"}, s.Store.Slots())
 }

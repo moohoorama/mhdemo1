@@ -9,20 +9,26 @@ import (
 	"path/filepath"
 	"slices"
 	"srpg/internal/core"
+	"time"
 )
 
 type Store struct{ Dir string }
 
-func ManualSlots() []string { return []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"} }
-func AutoSlots() []string   { return []string{"auto1", "auto2", "auto3", "auto4"} }
-func IsManualSlot(slot string) bool {
-	for _, id := range ManualSlots() {
-		if slot == id {
-			return true
-		}
+// SlotCount is how many slots each of the manual and the automatic saves has.
+const SlotCount = 10
+
+// ManualSlots are the player's slots "1".."10"; AutoSlots are "auto1".."auto10", written only by Autosave.
+func ManualSlots() []string { return slotIDs("") }
+func AutoSlots() []string   { return slotIDs("auto") }
+func slotIDs(prefix string) []string {
+	out := make([]string, SlotCount)
+	for i := range out {
+		out[i] = fmt.Sprint(prefix, i+1)
 	}
-	return false
+	return out
 }
+func IsManualSlot(slot string) bool { return slices.Contains(ManualSlots(), slot) }
+func IsAutoSlot(slot string) bool   { return slices.Contains(AutoSlots(), slot) }
 
 type Settings struct {
 	Replay      string `json:"replay"` // how an AI army's turn plays: "together" or "one" action at a time
@@ -68,11 +74,7 @@ func (s Settings) Validate() error {
 	return nil
 }
 func (s Store) path(slot string) (string, error) {
-	valid := slot == "auto" || IsManualSlot(slot)
-	for _, id := range AutoSlots() {
-		valid = valid || slot == id
-	}
-	if !valid {
+	if !IsManualSlot(slot) && !IsAutoSlot(slot) {
 		return "", fmt.Errorf("InvalidSlot")
 	}
 	return filepath.Join(s.Dir, "slot-"+slot+".json"), nil
@@ -87,7 +89,7 @@ func (s Store) Exists(slot string) bool {
 }
 func (s Store) Slots() []string {
 	out := []string{}
-	for _, id := range append(append(ManualSlots(), AutoSlots()...), "auto") {
+	for _, id := range append(ManualSlots(), AutoSlots()...) {
 		if s.Exists(id) {
 			out = append(out, id)
 		}
@@ -192,7 +194,20 @@ func (s Store) LoadSettings() (Settings, error) {
 	return v, v.Validate()
 }
 
-// Autosave stores the next turn snapshot and the rotation sequence in the same atomic write.
+// SavedAt is when the slot was last written; the zero time when it is empty.
+func (s Store) SavedAt(slot string) time.Time {
+	p, err := s.path(slot)
+	if err != nil {
+		return time.Time{}
+	}
+	fi, err := os.Stat(p)
+	if err != nil {
+		return time.Time{}
+	}
+	return fi.ModTime()
+}
+
+// Autosave stores the next snapshot and the rotation sequence in the same atomic write.
 func (s Store) Autosave(state core.State) error {
 	var latest uint64
 	slots := AutoSlots()
