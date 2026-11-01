@@ -88,7 +88,15 @@
    "AI": true,
    "Faction": "wei",
    "Group": "wei",
-   "Policy": "assault"
+   "Policy": "assault",
+   "Traits": [
+    "civil_martial",
+    "versatile"
+   ],
+   "Equipment": [
+    "yitian_sword",
+    "leather_armor"
+   ]
   },
   {
    "Character": "xiahoudun",
@@ -561,7 +569,10 @@
        "Side": "enemy",
        "Faction": "dong",
        "DuelFirst": true,
-       "Rank": "commander"
+       "Rank": "commander",
+       "Traits": [
+        "deadly"
+       ]
       },
       {
        "Character": "troop_footman",

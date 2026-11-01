@@ -14,6 +14,7 @@ import (
 
 const (
 	stepTime        = .28 // seconds per cell while walking
+	knockTime       = .4  // seconds a knocked-back unit slides its cell
 	stagger         = .2  // minimum delay between two actions starting
 	shakeTime       = .45
 	shakePx         = 3.0
@@ -80,6 +81,10 @@ type unitVis struct {
 }
 type walkState struct {
 	fu, fv, tu, tv, fl, tl, t float64
+	dur                       float64              // seconds for the cell, stepTime when 0
+	ease                      bool                 // fast at first and slowing to a stop (sin of 0..90°), else even
+	marks                     []float64            // shares of dur at which mark is called, in order
+	mark                      func(u, v float64)   // called at each mark with where the unit is
 }
 
 func (u *unitVis) frozenRest() bool {
@@ -142,11 +147,23 @@ func (u *unitVis) update(dt float64) {
 		u.bleach = math.Max(u.bleachTo, u.bleach-dt*u.bleachRate)
 	}
 	if w := u.walk; w != nil {
-		w.t = math.Min(stepTime, w.t+dt)
-		k := w.t / stepTime
+		dur := w.dur
+		if dur <= 0 {
+			dur = stepTime
+		}
+		w.t = math.Min(dur, w.t+dt)
+		raw := w.t / dur
+		k := raw
+		if w.ease {
+			k = math.Sin(raw * math.Pi / 2)
+		}
 		u.u, u.v = w.fu+(w.tu-w.fu)*k, w.fv+(w.tv-w.fv)*k
 		u.lift = w.fl + (w.tl-w.fl)*k
-		if w.t >= stepTime {
+		for len(w.marks) > 0 && raw >= w.marks[0] {
+			w.marks = w.marks[1:]
+			w.mark(u.u, u.v)
+		}
+		if w.t >= dur {
 			u.walk = nil
 		}
 	}
@@ -662,7 +679,7 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	gather := float64(ms[0]+ms[1]) / 1000
 	follow := float64(ms[2]+ms[3])/1000 + .25
 	kind := g.effectKind(actor, c)
-	shooting := g.shootsFromRange(actor, target, c)
+	shooting := g.shootsFromRange(actor, target, c, events)
 	if shooting && kind == "slash" {
 		kind = "arrow"
 	}
@@ -727,9 +744,10 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	})
 }
 
-// shootsFromRange tells whether the basic attack is a shot in the actor's shoot look: it has one and the
-// target stands beyond the eight cells around it, judged where both stand when the action ends.
-func (g *Game) shootsFromRange(actor, target *unitVis, c core.Command) bool {
+// shootsFromRange tells whether the basic attack is a shot in the actor's shoot look: it has one and its
+// melee weapon does not reach the target, judged where both stand when the action ends (where the target
+// stood before a knockback among the events).
+func (g *Game) shootsFromRange(actor, target *unitVis, c core.Command, events []core.Event) bool {
 	if actor == nil || target == nil || actor == target || actor.shoot == nil || c.Kind != "attack" {
 		return false
 	}
@@ -743,7 +761,12 @@ func (g *Game) shootsFromRange(actor, target *unitVis, c core.Command) bool {
 	}
 	ax, ay := cell(actor)
 	tx, ty := cell(target)
-	return math.Abs(float64(ax-tx)) > 1 || math.Abs(float64(ay-ty)) > 1
+	for _, e := range events {
+		if e.Kind == "knockback" && e.Target == target.id && len(e.Path) == 2 {
+			tx, ty = e.Path[0].X, e.Path[0].Y
+		}
+	}
+	return g.S.Engine.ShootsAt(actor.id, content.Point{X: ax, Y: ay}, tx, ty)
 }
 
 // heading is the direction of id's last step among events, zero when it did not walk.
@@ -885,6 +908,12 @@ func (g *Game) strike(attacker *unitVis, events []core.Event) {
 			if u := g.unitAt(e.Actor); u != nil && e.Text != "flight" {
 				u.shownHP = 0
 				u.dying = 0
+			}
+		case "knockback": // shoved a cell back in its hit motion: fast at first, then sliding to a stop in a trail of dust
+			if t != nil && len(e.Path) == 2 {
+				to := e.Path[1]
+				t.walk = &walkState{fu: t.u, fv: t.v, tu: float64(to.X), tv: float64(to.Y), fl: t.lift, tl: g.field.Lift(to.X, to.Y),
+					dur: knockTime, ease: true, marks: []float64{0, .4, 1}, mark: func(u, v float64) { g.dustAt(u, v, t.lift) }}
 			}
 		}
 	}

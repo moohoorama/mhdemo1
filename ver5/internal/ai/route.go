@@ -6,7 +6,7 @@ import (
 )
 
 // RouteEnemyTurns is what one enemy by the way costs a walk to a goal, in rounds: about what the player's
-// units lose fighting it off on the way (cmd/_routesim: half a round to most of one each).
+// units lose fighting it off on the way (measured by a since-removed simulation: half a round to most of one each).
 const RouteEnemyTurns = .5
 
 // routeThreat is an opponent and how near a way has to pass to meet it: four cells, or one for a unit

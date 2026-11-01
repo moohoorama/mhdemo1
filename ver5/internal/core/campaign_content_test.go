@@ -1,7 +1,10 @@
 package core
 
 import (
+	"regexp"
+	"slices"
 	"sort"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -165,6 +168,43 @@ func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
 	assert.Equal(t, "fire_manual", e.char("liubei").Equipment["accessory"], "Huangfu Song hands the manual to whoever broke the siege by fire")
 }
 
+// enterAreas stands one of the player's officers in every area of the stage that no victory goal names, the
+// lord first, so events that wait for someone to reach a place (an ambush springing) happen.
+func enterAreas(e *Engine, stage content.Stage) {
+	won := map[int]bool{}
+	at := regexp.MustCompile(`at:[^:,\]]+:(\d+)`)
+	for _, g := range stage.Victory {
+		for _, c := range g.If {
+			for _, m := range at.FindAllStringSubmatch(c, -1) {
+				n, _ := strconv.Atoi(m[1])
+				won[n] = true
+			}
+		}
+	}
+	var officers []*Unit
+	for _, id := range keys(e.unitIDs) {
+		if u := e.unit(id); u.Faction == "ally" && !u.AI && u.HP > 0 {
+			officers = append(officers, u)
+		}
+	}
+	slices.SortStableFunc(officers, func(a, b *Unit) int { return btoi(e.unitDef(b).Lord) - btoi(e.unitDef(a).Lord) })
+	for _, a := range stage.Areas {
+		if won[a.ID] || len(officers) == 0 {
+			continue
+		}
+		u := officers[0]
+		r := a.Rect
+		for y := r.Y; y < r.Y+r.H; y++ {
+			for x := r.X; x < r.X+r.W; x++ {
+				if u != nil && e.occupied(x, y) == nil && e.terrain(u, x, y).Cost > 0 {
+					u.X, u.Y = x, y
+					officers, u = officers[1:], nil
+				}
+			}
+		}
+	}
+}
+
 func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
@@ -191,6 +231,7 @@ func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
 						u.HP = 0
 					}
 				}
+				enterAreas(e, stage)
 				for i := 0; i < 6 && e.Observe().Phase == "battle"; i++ {
 					applyOK(t, e, Command{Kind: "end"})
 				}

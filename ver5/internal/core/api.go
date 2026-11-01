@@ -488,16 +488,11 @@ func (e *Engine) CounterDamage(c Command) int {
 	if u == nil || v == nil || v.HP <= 0 || v.Faction == u.Faction {
 		return 0
 	}
-	share, forced := e.counterShare(u, v)
 	s, err := e.skillDef(c)
-	if err != nil || s.Kind != content.KindPhysical || !e.inRange(v, u, e.basic()) {
+	if err != nil || s.Kind != content.KindPhysical || !e.has(v, content.FxRetaliate) && !e.inRange(v, u, e.basic()) {
 		return 0
 	}
-	n := int(math.Floor(e.damage(v, u, e.basic()) * e.data.Rules.CritMultiplier * share))
-	if forced {
-		n *= 2
-	}
-	return n
+	return int(math.Floor(e.damage(v, u, e.basic()) * (e.data.Rules.CritMultiplier + e.fx(v, content.FxCritBoost)) * e.counterShare(v)))
 }
 
 // Strike is the expected damage of a's best blow on b that a can pay for, its basic attack or a
@@ -518,13 +513,92 @@ func (e *Engine) Strike(a, b string) float64 {
 	return best
 }
 
-// AttackRange is the reach of the unit's basic attack.
+// AttackRange is the distance band the unit's basic attack falls in; CanStrikeFrom tells the exact cells.
 func (e *Engine) AttackRange(id string) (lo, hi int) {
 	u := e.unit(id)
 	if u == nil {
 		return 0, 0
 	}
 	return e.rangeFor(u, e.basic())
+}
+
+// CanStrikeFrom tells whether the unit standing at from would reach (x, y) with its basic attack.
+func (e *Engine) CanStrikeFrom(id string, from content.Point, x, y int) bool {
+	u := e.unit(id)
+	return u != nil && e.reachesFrom(u, e.basic(), from, x, y)
+}
+
+// ShootsAt tells whether the unit's basic attack from `from` on (x, y) would be a shot rather than a
+// melee blow (a rider with 기사 beyond its spear's reach).
+func (e *Engine) ShootsAt(id string, from content.Point, x, y int) bool {
+	u := e.unit(id)
+	if u == nil {
+		return false
+	}
+	_, ranged := e.weaponReach(u, e.basic(), from, x, y)
+	return ranged
+}
+
+// ActionCells are the cells the action reaches from where its actor stands: its weapon's own pattern for
+// an attack, a skill's band, the cells around for an item.
+func (e *Engine) ActionCells(c Command) []content.Point {
+	u := e.unit(c.Actor)
+	if u == nil {
+		return nil
+	}
+	from := content.Point{X: u.X, Y: u.Y}
+	if c.Kind == "item" {
+		out := []content.Point{from}
+		for _, d := range []content.Point{{Y: -1}, {X: -1}, {X: 1}, {Y: 1}} {
+			out = append(out, content.Point{X: u.X + d.X, Y: u.Y + d.Y})
+		}
+		return out
+	}
+	s, err := e.skillDef(c)
+	if err != nil {
+		return nil
+	}
+	set := map[content.Point]bool{}
+	e.cellsFrom(e.offsets(u, s), from, set)
+	return sortedCells(set)
+}
+
+// offsets are the cells, relative to the unit, that it reaches with the skill.
+func (e *Engine) offsets(u *Unit, s content.Skill) []content.Point {
+	_, hi := e.rangeFor(u, s)
+	var out []content.Point
+	for y := -hi; y <= hi; y++ {
+		for x := -hi; x <= hi; x++ {
+			if e.reachesFrom(u, s, content.Point{}, x, y) {
+				out = append(out, content.Point{X: x, Y: y})
+			}
+		}
+	}
+	return out
+}
+
+// cellsFrom adds to set the map cells the offsets reach from a cell.
+func (e *Engine) cellsFrom(offsets []content.Point, from content.Point, set map[content.Point]bool) {
+	stage := e.data.Stages[e.state.Stage]
+	for _, d := range offsets {
+		if x, y := from.X+d.X, from.Y+d.Y; x >= 0 && y >= 0 && x < stage.Width && y < stage.Height {
+			set[content.Point{X: x, Y: y}] = true
+		}
+	}
+}
+
+func sortedCells(set map[content.Point]bool) []content.Point {
+	out := make([]content.Point, 0, len(set))
+	for p := range set {
+		out = append(out, p)
+	}
+	sort.Slice(out, func(i, j int) bool {
+		if out[i].Y == out[j].Y {
+			return out[i].X < out[j].X
+		}
+		return out[i].Y < out[j].Y
+	})
+	return out
 }
 
 // StepCost is what entering (x, y) costs the unit, 0 where it cannot enter.
@@ -549,35 +623,22 @@ func (e *Engine) Threat(id string) []content.Point {
 	if len(cost) == 0 {
 		cost = map[content.Point]int{{X: u.X, Y: u.Y}: 0}
 	}
-	lo, hi := e.rangeFor(&u, e.basic())
+	reach := map[content.Point]bool{}
+	for _, d := range e.offsets(&u, e.basic()) {
+		reach[d] = true
+	}
 	for _, name := range e.skills(e.char(u.Character)) {
 		s := e.data.Skills[name]
-		if s.Kind == content.KindPhysical || s.Kind == content.KindMagic || s.Kind == content.KindStatus {
-			l, h := e.rangeFor(&u, s)
-			lo, hi = min(lo, l), max(hi, h)
-		}
-	}
-	stage := e.data.Stages[e.state.Stage]
-	set := map[content.Point]bool{}
-	for p := range cost {
-		for y := p.Y - hi; y <= p.Y+hi; y++ {
-			for x := p.X - hi; x <= p.X+hi; x++ {
-				d := dist(p.X, p.Y, x, y)
-				if d >= max(1, lo) && d <= hi && x >= 0 && y >= 0 && x < stage.Width && y < stage.Height {
-					set[content.Point{X: x, Y: y}] = true
-				}
+		if (s.Kind == content.KindPhysical || s.Kind == content.KindMagic || s.Kind == content.KindStatus) && s.Mode != content.ModeSelf {
+			for _, d := range e.offsets(&u, s) {
+				reach[d] = true
 			}
 		}
 	}
-	out := make([]content.Point, 0, len(set))
-	for p := range set {
-		out = append(out, p)
+	offsets := sortedCells(reach)
+	set := map[content.Point]bool{}
+	for p := range cost {
+		e.cellsFrom(offsets, p, set)
 	}
-	sort.Slice(out, func(i, j int) bool {
-		if out[i].Y == out[j].Y {
-			return out[i].X < out[j].X
-		}
-		return out[i].Y < out[j].Y
-	})
-	return out
+	return sortedCells(set)
 }

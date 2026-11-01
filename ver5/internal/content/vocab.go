@@ -4,79 +4,126 @@ package content
 // skills, traits); it can only combine these identifiers, and new ones need engine code.
 
 // Trait effects. A trait's Effects maps one of these keys to a number; a flag is 1.
-// Effects of the same key from several traits (own, deputy, equipment, class grants) add up.
+// Effects of the same key from several traits (own, deputy, equipment) add up. Keys ending in ':' take
+// a status (or an element, or a weapon type) after them.
 const (
-	FxRetreatSweep   = "retreat_sweep"    // defeats trigger one extra strike on surrounding foes
-	FxCounterAlways  = "counter_always"   // counter every physical attack in reach
-	FxTurnDefense    = "turn_defense"     // defense percent granted each own turn
-	FxCritWeaker     = "crit_vs_weaker"   // physical attacks on a lower-might target always crit
-	FxCritAlways     = "crit_always"      // physical attacks always crit
-	FxSpellCrit      = "spell_crit"       // landed attack spells always crit
-	FxCritAmbush     = "crit_ambush"      // physical attacks always crit from an ambush tile
-	FxDoubleAlways   = "double_always"    // second strike chance is 100%
-	FxCounterForce   = "counter_force"    // counters a lower-might attacker in reach; value is the damage multiplier
-	FxAssist         = "assist"           // follows an ally's physical attack on a foe in reach; value is the damage share
-	FxSplashCross    = "splash_cross"     // physical attack also hits the cross; value is the damage share
-	FxSplashSquare   = "splash_square"    // physical attack also hits the 3x3; value is the damage share
-	FxPierce         = "pierce"           // the enemy behind the target takes this share
-	FxPierceBoost    = "pierce_boost"     // adds to the pierce share of skills
-	FxIgnoreTerrain  = "ignore_terrain"   // target's terrain defense is ignored
-	FxPoison         = "poison_on_hit"    // landed physical hits poison
-	FxLifeSteal      = "life_steal"       // heals this share of damage dealt
-	FxMissHalf       = "miss_half"        // a missed physical blow still deals this share
-	FxBulwark        = "bulwark"          // blows above this share of max HP deal half above it
-	FxFullShare      = "full_share"       // second strikes, counters and blows on the cells beside or behind the target deal full damage
-	FxCritImmune     = "crit_immune"      // a blow that would crit is blocked
-	FxRangedImmune   = "ranged_immune"    // ranged attackers always miss
-	FxRiposte        = "riposte"          // strikes back at a physical attacker that misses; value is the damage multiplier
-	FxReflect        = "reflect"          // returns an attack spell to its caster
-	FxFortify        = "fortify"          // on a castle tile, a defense buff of this percent each turn
-	FxMove           = "move"             // movement points
-	FxIgnoreMoveCost = "ignore_move_cost" // terrain never slows
-	FxIgnoreZOC      = "ignore_zoc"       // zone of control never stops
-	FxHaste          = "haste"            // each turn, a movement buff of this many points
-	FxFarSight       = "far_sight"        // each turn, a range buff of this many cells
-	FxMountedRange   = "mounted_range"    // mounted classes may attack at range 1..value
-	FxLightMove      = "light_move"       // light classes gain this movement
-	FxSpellRange     = "spell_range"      // spell reach
-	FxSpellSure      = "spell_sure"       // spells on lower-mind targets never fail
-	FxChain          = "chain"            // attack spells repeat on one neighbour
-	FxSure           = "sure:"            // + element: spells of the element never fail
-	FxCritElement    = "crit:"            // + element: spells of the element always crit
-	FxDispel         = "dispel"           // spells from lower-mind casters fail
-	FxStatusImmune   = "status_immune"    // harmful statuses never land
-	FxHealBonus      = "heal_bonus"       // healing amounts grow by this share
-	FxAura           = "aura_heal"        // adjacent allies recover this share at turn start
-	FxDeputy         = "deputy_rate"      // the deputy's attributes count at this rate
-	FxItemShare      = "item_share"       // items also affect one more adjacent ally
-	FxManaRegen      = "mana_regen"       // spell points regenerate this many times faster
-	FxBloodCost      = "blood_cost"       // missing spell points are paid in HP at this ratio
-	FxRegen          = "regen"            // recovers this share of max HP at turn start
-	FxBuffExtend     = "buff_extend"      // buffs it casts last this many turns longer
-	FxLastStand      = "last_stand"       // survives its first fall with 1 HP
-	FxCostHalf       = "cost_half"        // skill costs are halved
-	FxCleanse        = "cleanse"          // harmful statuses end at turn start
-	FxBlendBonus     = "blend_bonus"      // the lower of the class attack and mind bonuses rises to their average
-	FxDeputyAppoint  = "deputy_appoint"   // may name a deputy
-	FxWield          = "wield:"           // + weapon type: may also equip weapons of that type
-	FxEvade          = "evade"            // physical attacks on it hit this many percentage points less often
-	FxSweepArc       = "sweep_arc"        // a melee strike also hits the arc of five cells ahead of it; value is the damage share
-	FxAccuracy       = "accuracy"         // its physical attacks hit this many percentage points more often
-	FxPouchHeal      = "pouch_heal"       // after an attack hurts it and leaves it standing, it recovers this many HP
+	FxDiagonal        = "diagonal"               // the melee reach also takes the four diagonal cells
+	FxLongReach       = "long_reach"             // the melee reach runs two cells along the four straight lines
+	FxRetreatSweep    = "retreat_sweep"          // defeats trigger one extra strike on surrounding foes
+	FxCritAlways      = "crit_always"            // physical attacks always crit
+	FxCritBoost       = "crit_boost"             // added to the critical multiplier of its blows
+	FxSpellCrit       = "spell_crit"             // landed attack spells always crit
+	FxCritAmbush      = "crit_ambush"            // physical attacks always crit from an ambush tile (woods, mountains)
+	FxCritScholar     = "crit_vs_scholar"        // physical attacks on a scholar class always crit
+	FxCritMounted     = "crit_ranged_vs_mounted" // ranged attacks on a mounted class always crit
+	FxCritWounded     = "crit_vs_wounded"        // attacks on a target at half HP or less always crit
+	FxLoneCritLeader  = "lone_crit_leader"       // with no ally around, attacks on a commander or boss always crit
+	FxDoubleAlways    = "double_always"          // second strike chance is 100%
+	FxAssist          = "assist"                 // follows an ally's physical attack on a foe in reach; value is the damage share
+	FxRetaliate       = "retaliate"              // counters every physical attack, from any distance
+	FxGuardian        = "guardian"               // counters at this share a melee attacker of an adjacent ally that it can reach
+	FxSplashCross     = "splash_cross"           // physical attack also hits the cross; value is the damage share
+	FxSplashSquare    = "splash_square"          // physical attack also hits the 3x3; value is the damage share
+	FxPierce          = "pierce"                 // the enemy behind the target takes this share
+	FxFlank           = "flank"                  // a melee strike also hits the two cells beside the target; value is the damage share
+	FxHeavy           = "heavy"                  // added to the share of its counters, second strikes and side blows
+	FxKnockback       = "knockback"              // a landed first blow pushes the target one cell back; where it cannot go, the blow deals this share more
+	FxTerrainCap      = "terrain_cap"            // the target's terrain factor counts at most 1
+	FxTerrainFloor    = "terrain_floor"          // its own terrain factor counts at least 1
+	FxIgnoreGuardBuff = "ignore_guard_buff"      // the target's defense buff is left out of its blows
+	FxPoison          = "poison_on_hit"          // landed physical hits poison
+	FxPoisonBoost     = "poison_boost"           // the poison it puts on deals this many times more
+	FxLifeSteal       = "life_steal"             // heals this share of damage dealt
+	FxMissHalf        = "miss_half"              // a missed physical blow still deals this share
+	FxOutnumbered     = "outnumbered"            // attack and defense grow by this share for each foe in the eight cells around
+	FxCompanions      = "companions"             // attack and defense grow by this share for each ally in the eight cells around
+	FxLone            = "lone"                   // attack and defense grow by this share with no ally in the eight cells around
+	FxChargePower     = "charge_power"           // attack grows by this share for each cell walked this turn
+	FxChargeShock     = "charge_shock"           // a melee attack after walking this many cells lowers the target's defense
+	FxDesperate       = "desperate"              // at half HP or less its blows deal this share more
+	FxGrit            = "grit"                   // at half HP or less blows on it deal this share less
+	FxRangedSure      = "ranged_sure"            // its ranged attacks always hit
+	FxRout            = "rout:"                  // + status: defeating a foe lowers that stat of the foes around it
+	FxHitDebuff       = "hit_debuff:"            // + status: a landed physical hit lowers that stat of the target
+	FxTurnBuff        = "turn_buff:"             // + status: a buff of this percent on itself each own turn
+	FxAuraBuff        = "aura_buff:"             // + status: a buff of this percent on the allies around it each own turn
+	FxCritRally       = "crit_rally"             // a critical blow on it raises its attack until the end of its next turn
+	FxBulwark         = "bulwark"                // blows above this share of max HP deal half above it
+	FxCritImmune      = "crit_immune"            // a blow that would crit is blocked
+	FxRangedImmune    = "ranged_immune"          // ranged attackers always miss
+	FxReflect         = "reflect"                // returns an attack spell to its caster
+	FxReflectStatus   = "reflect_status"         // returns a harmful status spell to its caster
+	FxFortify         = "fortify"                // on a castle tile, a defense buff of this percent each turn
+	FxMove            = "move"                   // movement points
+	FxIgnoreMoveCost  = "ignore_move_cost"       // terrain never slows
+	FxIgnoreZOC       = "ignore_zoc"             // zone of control never stops
+	FxHaste           = "haste"                  // each turn, a movement buff of this many points
+	FxAuraHaste       = "aura_haste"             // each turn, a movement buff of this many points on the allies around it
+	FxWoundedHaste    = "wounded_haste"          // at half HP or less, a movement buff of this many points each turn
+	FxRangedReach     = "ranged_reach"           // ranged attacks reach this many cells farther
+	FxMountedRange    = "mounted_range"          // mounted classes may shoot at this distance
+	FxSpellRange      = "spell_range"            // spell reach
+	FxSpellSure       = "spell_sure"             // its spells never fail
+	FxSpellWard       = "spell_ward"             // enemy spells on it succeed this many percentage points less often
+	FxChain           = "chain"                  // single-target spells also reach the weakest of the target's side in the eight cells around it
+	FxSure            = "sure:"                  // + element: spells of the element never fail
+	FxCritElement     = "crit:"                  // + element: spells of the element always crit
+	FxPower           = "power:"                 // + element: spells of the element deal this share more
+	FxPatience        = "patience"               // spells deal (spell points − 50)% more above 50 spell points
+	FxFinisher        = "finisher"               // spells deal this share of the target's missing HP fraction more
+	FxDispelBuffs     = "dispel_buffs"           // its attack spells strip the target's buffs
+	FxSpellLeech      = "spell_leech"            // casting an attack spell restores this share of its max HP
+	FxDispel          = "dispel"                 // enemy attack and status spells never land on it
+	FxStatusImmune    = "status_immune"          // harmful statuses never land
+	FxStatusWard      = "status_ward"            // harmful statuses never land on the allies next to it
+	FxHealBonus       = "heal_bonus"             // healing amounts grow by this share
+	FxAura            = "aura_heal"              // adjacent allies recover this share at turn start
+	FxAuraMana        = "aura_mana"              // adjacent allies recover this share of their max spell points at turn start
+	FxDeputyCharm     = "deputy_charm"           // added to its charm when the deputy's attributes are blended in
+	FxItemShare       = "item_share"             // items also affect the weakest ally in the eight cells around the target
+	FxItemDouble      = "item_double"            // items it uses work twice
+	FxManaRegen       = "mana_regen"             // spell points regenerate this many times faster
+	FxBloodCost       = "blood_cost"             // missing spell points are paid in HP at this ratio
+	FxRegen           = "regen"                  // recovers this share of max HP at turn start
+	FxWoundRegen      = "wound_regen"            // recovers this share of its missing HP at turn start
+	FxBuffExtend      = "buff_extend"            // buffs it casts last this many turns longer
+	FxSelfGuardHalf   = "self_guard_half"        // a defense buff it casts on itself costs half
+	FxLastStand       = "last_stand"             // survives its first fall with 1 HP
+	FxCostHalf        = "cost_half"              // skill costs are halved
+	FxCleanse         = "cleanse"                // harmful statuses end at turn start
+	FxPassAilments    = "pass_ailments"          // at turn start its harmful statuses pass to an adjacent ally
+	FxVillageForage   = "village_forage"         // ending its turn in a village finds a barley and a bean
+	FxBlendBonus      = "blend_bonus"            // the lower of the class attack and mind bonuses rises to their average
+	FxDeputyAppoint   = "deputy_appoint"         // may name a deputy
+	FxWield           = "wield:"                 // + weapon type: may also equip weapons of that type
+	FxEvade           = "evade"                  // physical attacks on it hit this many percentage points less often
+	FxAccuracy        = "accuracy"               // its physical attacks hit this many percentage points more often
+	FxPouchHeal       = "pouch_heal"             // after an attack hurts it and leaves it standing, it recovers this many HP
 )
 
-// TraitEffects lists every trait effect key; keys ending in ':' take an element (or weapon type) after it.
+// TraitEffects lists every trait effect key; keys ending in ':' take a status, element or weapon type after it.
 var TraitEffects = map[string]bool{}
 
 func init() {
-	for _, k := range []string{FxRetreatSweep, FxCounterAlways, FxTurnDefense, FxCritWeaker, FxCritAlways, FxSpellCrit, FxCritAmbush, FxDoubleAlways, FxCounterForce, FxAssist,
-		FxSplashCross, FxSplashSquare, FxPierce, FxPierceBoost, FxIgnoreTerrain, FxPoison, FxLifeSteal, FxMissHalf, FxBulwark, FxFullShare, FxCritImmune,
-		FxRangedImmune, FxRiposte, FxReflect, FxFortify, FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxFarSight,
-		FxMountedRange, FxLightMove, FxSpellRange, FxSpellSure, FxChain, FxSure, FxCritElement, FxDispel, FxStatusImmune,
-		FxHealBonus, FxAura, FxDeputy, FxItemShare, FxManaRegen, FxBloodCost, FxRegen, FxBuffExtend, FxLastStand,
-		FxCostHalf, FxCleanse, FxBlendBonus, FxDeputyAppoint, FxWield, FxEvade, FxSweepArc, FxAccuracy, FxPouchHeal} {
+	for _, k := range []string{FxDiagonal, FxLongReach, FxRetreatSweep, FxCritAlways, FxCritBoost, FxSpellCrit, FxCritAmbush, FxCritScholar,
+		FxCritMounted, FxCritWounded, FxLoneCritLeader, FxDoubleAlways, FxAssist, FxRetaliate, FxGuardian, FxSplashCross, FxSplashSquare,
+		FxPierce, FxFlank, FxHeavy, FxKnockback, FxTerrainCap, FxTerrainFloor, FxIgnoreGuardBuff, FxPoison, FxPoisonBoost, FxLifeSteal,
+		FxMissHalf, FxOutnumbered, FxCompanions, FxLone, FxChargePower, FxChargeShock, FxDesperate, FxGrit, FxRangedSure, FxRout,
+		FxHitDebuff, FxTurnBuff, FxAuraBuff, FxCritRally, FxBulwark, FxCritImmune, FxRangedImmune, FxReflect, FxReflectStatus, FxFortify,
+		FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxAuraHaste, FxWoundedHaste, FxRangedReach, FxMountedRange, FxSpellRange,
+		FxSpellSure, FxSpellWard, FxChain, FxSure, FxCritElement, FxPower, FxPatience, FxFinisher, FxDispelBuffs, FxSpellLeech, FxDispel,
+		FxStatusImmune, FxStatusWard, FxHealBonus, FxAura, FxAuraMana, FxDeputyCharm, FxItemShare, FxItemDouble, FxManaRegen,
+		FxBloodCost, FxRegen, FxWoundRegen, FxBuffExtend, FxSelfGuardHalf, FxLastStand, FxCostHalf, FxCleanse, FxPassAilments,
+		FxVillageForage, FxBlendBonus, FxDeputyAppoint, FxWield, FxEvade, FxAccuracy, FxPouchHeal} {
 		TraitEffects[k] = true
 	}
+}
+
+// StatusEffects are the trait effects a unit holds while it carries the status: the stances a buff puts on it.
+var StatusEffects = map[string]map[string]float64{
+	"stance_pierce": {FxPierce: .5},
+	"stance_cross":  {FxSplashCross: .5},
+	"stance_square": {FxSplashSquare: .5},
 }
 
 // Skill kinds, modes, shapes and effects.
@@ -86,6 +133,7 @@ const (
 	KindStatus   = "status"
 	KindBuff     = "buff"
 	KindHeal     = "heal"
+	KindMixed    = "mixed" // helps the caster's side and harms the other in the same area
 
 	ModeMelee  = "melee"
 	ModeRanged = "ranged"
@@ -107,12 +155,17 @@ const (
 )
 
 // Skill effects: a heal's kind, the status a buff or status skill applies, or what a physical skill adds to its blow.
+// A buff, status or mixed skill may join several stat statuses with '+' ("attack+defense").
 var SkillEffects = map[string]bool{
-	"heal": true, "cure": true, "dispel": true, "steal": true, "eightfold": true, "counter": true,
+	"heal": true, "cure": true, "dispel": true, "steal": true, "counter": true,
 	"mind": true, "attack": true, "defense": true, "morale": true, "agility": true, "speed": true, "range": true,
 	"poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "refill": true,
-	"guard": true, "aim": true, "provoke": true, "disrupt": true,
+	"guard": true, "aim": true, "disrupt": true, "invert": true, "sure_crit": true,
+	"stance_pierce": true, "stance_cross": true, "stance_square": true,
 }
+
+// StatStatuses are the statuses that raise or lower a battle stat by a percentage.
+var StatStatuses = map[string]bool{"attack": true, "defense": true, "mind": true, "morale": true, "agility": true}
 
 // Harmful statuses, ended by status immunity and cleansing.
 var Harmful = map[string]bool{"disrupt": true, "poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "weak": true}
@@ -120,14 +173,15 @@ var Harmful = map[string]bool{"disrupt": true, "poison": true, "burn": true, "co
 // Statuses lists every status id a unit can carry.
 var Statuses = map[string]bool{
 	"poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "weak": true,
-	"speed": true, "range": true, "counter": true, "eightfold": true,
+	"speed": true, "range": true, "counter": true, "sure_crit": true,
+	"stance_pierce": true, "stance_cross": true, "stance_square": true,
 	"attack": true, "defense": true, "mind": true, "morale": true, "agility": true,
 	"guard": true, "disrupt": true,
 }
 
 // Class tags the engine reads.
 const (
-	TagMounted = "mounted" // rides: gains ranged attacks from FxMountedRange
-	TagLight   = "light"   // gains movement from FxLightMove
+	TagMounted = "mounted" // rides: gains ranged attacks from FxMountedRange, and 선등 crits it
 	TagSiege   = "siege"   // a siege engine: the screens show its attacks as stones lobbed along an arc
+	TagCivil   = "civil"   // a civil officer's class: 낙봉 crits it
 )

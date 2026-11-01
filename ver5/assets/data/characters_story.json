@@ -40,9 +40,7 @@
     55
    ],
    "Level": 4,
-   "Traits": [
-    "fire"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
@@ -544,7 +542,8 @@
    "Points": 200,
    "Traits": [],
    "Learn": [
-    "fire"
+    "fire",
+    "footwork"
    ],
    "Equipment": [
     "iron_knuckles",
@@ -999,9 +998,7 @@
     88
    ],
    "Level": 9,
-   "Traits": [
-    "stratagem"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
@@ -1301,9 +1298,7 @@
     95
    ],
    "Level": 9,
-   "Traits": [
-    "stratagem"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
@@ -1335,9 +1330,7 @@
     88
    ],
    "Level": 9,
-   "Traits": [
-    "hinder"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
     "bamboo_slips",
@@ -1359,7 +1352,7 @@
   "zhouyu": {
    "Name": "주유",
    "Biography": "자는 공근. 손책의 의형제로 미주랑이라 불린 오의 대도독. 적벽에서 화공으로 조조의 대군을 불사른다.",
-   "Class": "scholar",
+   "Class": "dudu",
    "Stats": [
     96,
     72,
@@ -1369,32 +1362,27 @@
     96
    ],
    "Level": 9,
-   "Traits": [
-    "fire",
-    "scholar_general"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
     "treasure_sword",
-    "plain_clothes",
+    "leather_armor",
     "tactics_primer"
    ],
    "Look": {
     "Faction": "wu",
     "Scene": "zhouyu_noncombat",
     "Portrait": "zhouyu",
-    "Sprite": "zhouyu",
+    "Sprite": "zhouyu_strategist",
     "Sprites": {
-     "scholar": "zhouyu",
-     "staff_officer": "zhouyu_staff_officer",
-     "strategist": "zhouyu_strategist"
+     "dudu": "zhouyu_strategist"
     }
    }
   },
   "luxun": {
    "Name": "육손",
    "Biography": "자는 백언. 젊은 서생으로 여겨졌으나 여몽의 뒤를 이어 형주를 안정시키고, 이릉에서 유비의 영채를 불태운다.",
-   "Class": "scholar",
+   "Class": "dudu",
    "Stats": [
     96,
     66,
@@ -1404,25 +1392,20 @@
     90
    ],
    "Level": 9,
-   "Traits": [
-    "fire",
-    "scholar_general"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
     "treasure_sword",
-    "plain_clothes",
+    "leather_armor",
     "tactics_primer"
    ],
    "Look": {
     "Faction": "wu",
     "Scene": "luxun_noncombat",
     "Portrait": "luxun",
-    "Sprite": "luxun",
+    "Sprite": "luxun_strategist",
     "Sprites": {
-     "scholar": "luxun",
-     "staff_officer": "luxun_staff_officer",
-     "strategist": "luxun_strategist"
+     "dudu": "luxun_strategist"
     }
    }
   },
@@ -1460,7 +1443,7 @@
   "lumeng": {
    "Name": "여몽",
    "Biography": "자는 자명. 무식한 무장이었으나 손권의 권유로 학문에 힘써 괄목상대를 남긴다. 백의도강으로 형주를 빼앗는다.",
-   "Class": "light_infantry",
+   "Class": "dudu",
    "Stats": [
     91,
     82,
@@ -1480,12 +1463,36 @@
     "Faction": "wu",
     "Scene": "lumeng_noncombat",
     "Portrait": "lumeng",
-    "Sprite": "lumeng",
+    "Sprite": "lumeng_guards",
     "Sprites": {
-     "light_infantry": "lumeng",
-     "heavy_infantry": "lumeng_heavy_infantry",
-     "guards": "lumeng_guards"
+     "dudu": "lumeng_guards"
     }
+   }
+  },
+  "guanping": {
+   "Name": "관평",
+   "Biography": "관우의 양자. 아버지를 따라 형주를 지키며 방덕과 겨룬다. 맥성에서 관우와 함께 사로잡혀 죽는다. 효성과 충의로 아버지를 끝까지 따른다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    82,
+    85,
+    63,
+    78,
+    73,
+    81
+   ],
+   "Level": 3,
+   "Points": 200,
+   "Playable": true,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor",
+    "war_horse"
+   ],
+   "Look": {
+    "Faction": "shu"
    }
   },
   "sunquan": {

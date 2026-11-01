@@ -58,7 +58,10 @@
    "DuelFirst": true,
    "Facing": "SW",
    "Policy": "hold",
-   "Rank": "commander"
+   "Rank": "commander",
+   "Traits": [
+    "deadly"
+   ]
   },
   {
    "Character": "zhangliao",
@@ -110,7 +113,11 @@
    "Facing": "SW",
    "Group": "rear",
    "Policy": "hold",
-   "Shift": -0.08
+   "Shift": -0.08,
+   "Traits": [
+    "fire",
+    "stratagem"
+   ]
   },
   {
    "Character": "troop_archer",

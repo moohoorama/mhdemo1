@@ -54,19 +54,22 @@
    "Effect": "steal",
    "Item": "bean",
    "Min": 1,
-   "Coeff": 0.7
+   "Coeff": 0.7,
+   "Requires": [
+    "steal_art"
+   ]
   },
   "eightfold": {
    "Name": "팔진도",
-   "Desc": "아군 한 명의 단일 책략을 3×3 범위로 넓힌다.",
-   "Kind": "buff",
+   "Desc": "3×3 범위의 아군은 공격·방어 버프, 적은 공격·방어 디버프.",
+   "Kind": "mixed",
    "Mode": "any",
-   "Shape": "single",
+   "Shape": "square",
    "Cost": 40,
    "Hit": 100,
-   "Effect": "eightfold",
+   "Effect": "attack+defense",
    "Max": 3,
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "eight_formation"
    ]
@@ -541,19 +544,18 @@
    ]
   },
   "inspire": {
-   "Name": "고무",
-   "Desc": "십자 범위 아군의 공격력 +20%.",
    "Kind": "buff",
    "Mode": "any",
-   "Shape": "cross",
-   "Cost": 60,
-   "Hit": 90,
-   "Effect": "attack",
+   "Shape": "single",
+   "Cost": 30,
+   "Hit": 100,
+   "Duration": 3,
+   "Name": "휘기",
+   "Desc": "아군 1기의 다음 물리 공격이 반드시 치명타.",
+   "Effect": "sure_crit",
    "Max": 3,
-   "Duration": 2,
    "Requires": [
-    "exhort",
-    "exhort_boost"
+    "inspire_prep"
    ]
   },
   "fortify_line": {
@@ -845,39 +847,6 @@
     "reload_prep"
    ]
   },
-  "thrust": {
-   "Name": "찌르기",
-   "Desc": "창으로 찔러 목표 뒤의 적도 반 피해를 준다.",
-   "Kind": "physical",
-   "Mode": "melee",
-   "Shape": "single",
-   "Cost": 24,
-   "Hit": 90,
-   "Min": 1,
-   "Coeff": 1,
-   "Weapon": "spear",
-   "Pierce": 0.5,
-   "Requires": [
-    "thrust_art"
-   ]
-  },
-  "chain_thrust": {
-   "Name": "연속찌르기",
-   "Desc": "창으로 두 번 찔러 목표 뒤의 적도 반 피해를 준다.",
-   "Kind": "physical",
-   "Mode": "melee",
-   "Shape": "single",
-   "Cost": 48,
-   "Hit": 90,
-   "Min": 1,
-   "Coeff": 1,
-   "Weapon": "spear",
-   "Pierce": 0.5,
-   "Strikes": 2,
-   "Requires": [
-    "chain_thrust_art"
-   ]
-  },
   "rapid_fire": {
    "Name": "연발",
    "Desc": "원거리 공격을 두 번 한다.",
@@ -970,15 +939,14 @@
   },
   "provoke": {
    "Name": "도발",
-   "Desc": "공격이 명중하면 대상의 방어력을 낮춘다.",
-   "Kind": "physical",
-   "Mode": "any",
-   "Shape": "single",
-   "Cost": 18,
-   "Hit": 90,
-   "Min": 1,
-   "Coeff": 1,
-   "Effect": "provoke",
+   "Desc": "자신을 중심으로 한 십자 5칸의 적에게 사기 저하.",
+   "Kind": "status",
+   "Mode": "self",
+   "Shape": "cross",
+   "Cost": 24,
+   "Hit": 85,
+   "Effect": "morale",
+   "Duration": 3,
    "Requires": [
     "provoke_prep"
    ]
@@ -997,6 +965,171 @@
    "Duration": 2,
    "Requires": [
     "disrupt_prep"
+   ]
+  },
+  "pressure": {
+   "Kind": "status",
+   "Mode": "self",
+   "Shape": "cross",
+   "Cost": 24,
+   "Hit": 85,
+   "Duration": 3,
+   "Name": "압박",
+   "Desc": "자신을 중심으로 한 십자 5칸의 적에게 순발 저하.",
+   "Effect": "agility",
+   "Requires": [
+    "press_prep"
+   ]
+  },
+  "rebuke": {
+   "Kind": "status",
+   "Mode": "melee",
+   "Shape": "single",
+   "Cost": 30,
+   "Hit": 100,
+   "Duration": 3,
+   "Name": "질타",
+   "Desc": "인접 적 1기의 공격을 봉쇄한다. 반드시 성공.",
+   "Effect": "disarm",
+   "Min": 1,
+   "Max": 1,
+   "Sure": true,
+   "Requires": [
+    "rebuke_prep"
+   ]
+  },
+  "slander": {
+   "Kind": "status",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 30,
+   "Hit": 80,
+   "Duration": 3,
+   "Name": "참언",
+   "Desc": "대상에게 걸린 버프를 같은 종류의 디버프로 뒤집는다.",
+   "Effect": "invert",
+   "Min": 1,
+   "Max": 3,
+   "Requires": [
+    "slander_prep"
+   ]
+  },
+  "focus": {
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 18,
+   "Hit": 100,
+   "Duration": 3,
+   "Name": "집중",
+   "Desc": "자신에게 정신력·사기 버프.",
+   "Effect": "mind+morale",
+   "Requires": [
+    "focus"
+   ]
+  },
+  "spirit": {
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 18,
+   "Hit": 100,
+   "Duration": 3,
+   "Name": "기합",
+   "Desc": "자신에게 공격력·순발 버프.",
+   "Effect": "attack+agility",
+   "Requires": [
+    "spirit_prep"
+   ]
+  },
+  "spirit_wide": {
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "cross",
+   "Cost": 36,
+   "Hit": 100,
+   "Duration": 3,
+   "Name": "기합확산",
+   "Desc": "자신을 포함한 십자 5칸의 아군에게 공격력·순발 버프.",
+   "Effect": "attack+agility",
+   "Requires": [
+    "spirit_prep",
+    "spirit_spread"
+   ]
+  },
+  "ambition": {
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 36,
+   "Hit": 100,
+   "Duration": 3,
+   "Name": "패기",
+   "Desc": "자신에게 공격·정신·방어·순발·사기 버프.",
+   "Effect": "attack+defense+mind+agility+morale",
+   "Requires": [
+    "ambition"
+   ]
+  },
+  "extend_range": {
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 30,
+   "Hit": 100,
+   "Duration": 3,
+   "Name": "사거리 확장",
+   "Desc": "아군 1기의 공격 사거리 +1(근접은 근접 판정 유지).",
+   "Effect": "range",
+   "Coeff": 1,
+   "Max": 3,
+   "Requires": [
+    "extend_prep"
+   ]
+  },
+  "stance_pierce": {
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 30,
+   "Hit": 100,
+   "Duration": 3,
+   "Name": "찔러 태세",
+   "Desc": "아군 1기의 일반 공격이 대상 뒤의 적도 50% 피해를 준다.",
+   "Effect": "stance_pierce",
+   "Max": 3,
+   "Requires": [
+    "stance_prep"
+   ]
+  },
+  "stance_cross": {
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 30,
+   "Hit": 100,
+   "Duration": 3,
+   "Name": "사방 태세",
+   "Desc": "아군 1기의 일반 공격이 십자 범위가 된다(주변 50%).",
+   "Effect": "stance_cross",
+   "Max": 3,
+   "Requires": [
+    "stance_prep"
+   ]
+  },
+  "stance_square": {
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "single",
+   "Cost": 30,
+   "Hit": 100,
+   "Duration": 3,
+   "Name": "팔방 태세",
+   "Desc": "아군 1기의 일반 공격이 3×3 범위가 된다(주변 50%).",
+   "Effect": "stance_square",
+   "Max": 3,
+   "Requires": [
+    "stance_prep"
    ]
   }
  }

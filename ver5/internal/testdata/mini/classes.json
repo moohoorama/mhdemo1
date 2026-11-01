@@ -103,8 +103,7 @@
    "Shoot": "archer",
    "Name": "Rider",
    "Tags": [
-    "mounted",
-    "light"
+    "mounted"
    ]
   },
   "mage": {

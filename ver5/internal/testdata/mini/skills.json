@@ -186,13 +186,13 @@
   },
   "eight": {
    "Name": "Eightfold",
-   "Kind": "buff",
+   "Kind": "mixed",
    "Mode": "any",
-   "Shape": "single",
+   "Shape": "square",
    "Hit": 100,
    "Min": 0,
    "Coeff": 1,
-   "Effect": "eightfold",
+   "Effect": "attack+defense",
    "Duration": 2,
    "Cost": 10,
    "Max": 3,
@@ -336,14 +336,13 @@
   "provoke_s": {
    "Name": "Provoke",
    "Desc": "",
-   "Kind": "physical",
-   "Mode": "any",
-   "Shape": "single",
+   "Kind": "status",
+   "Mode": "self",
+   "Shape": "cross",
    "Cost": 10,
    "Hit": 90,
-   "Min": 1,
-   "Coeff": 1,
-   "Effect": "provoke",
+   "Duration": 2,
+   "Effect": "morale",
    "Requires": [
     "provoke_t"
    ]

@@ -55,6 +55,8 @@ type Rules struct {
 	StageLevelStep        float64
 	SideShareMax          float64            // the most damage share a blow deals to anyone it strikes besides its target (splash, sweep, pierce)
 	RankLead              map[string]float64 // a rank's lead over the stage level, as a share of (stage level + StatLevelBase) so it means the same strength at any level
+	EnemyTraits           map[string][]LevelTrait // class -> traits an enemy of the class holds from a level on, besides its stage's
+	ForageItems           []string                // what 중가 finds in a village at the end of its turn, one of each
 	EnemyStock            map[string]int
 	AllyStock             map[string]int
 	EdgeTile              string                    // the cell (ground, structure, state) that lies beyond the map's edge
@@ -62,6 +64,11 @@ type Rules struct {
 	CritMarkTurns         int                       // how many rounds that state lasts
 	ElementTerrain        map[string]map[string]int // percent more a spell of the element deals to a target on the structure or, without one listed, the ground letter
 	AuraHeal              int
+}
+// LevelTrait is a trait held from a level on.
+type LevelTrait struct {
+	Level int
+	Trait string
 }
 type Campaign struct {
 	Start      string // first scenario node
@@ -102,7 +109,6 @@ type Class struct {
 	Bonus                           [6]float64
 	MPBase, RecoveryBase            int
 	Skills, Pool, Tags              []string
-	Traits                          []string // held while in this class (not learned, lost on class change)
 	Promotes                        []string
 	Tier                            int
 	Sprite                          string
@@ -180,6 +186,7 @@ type Skill struct {
 	Pierce        float64 // share of damage the enemy behind the target takes
 	Strikes       int     // 2 makes every use strike twice
 	Each          bool    // strikes every target with an attack of its own, one after another
+	Sure          bool    // a status skill that always lands (immunities still hold)
 	Reach         int     // cells the skill adds to the attacker's range
 	MagicCoeff    float64 // a physical skill also deals spell damage at this coefficient
 	Deprecated    bool

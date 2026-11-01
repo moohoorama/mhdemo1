@@ -86,7 +86,7 @@
    "Cost": 400,
    "Requires": [],
    "Effects": {
-    "crit_vs_weaker": 1
+    "crit_vs_wounded": 1
    }
   },
   "deputy_t": {
@@ -152,7 +152,7 @@
    "Cost": 0,
    "Requires": [],
    "Effects": {
-    "full_share": 1
+    "heavy": 0.3
    }
   },
   "awe": {
@@ -220,7 +220,7 @@
    "Cost": 300,
    "Requires": [],
    "Effects": {
-    "counter_force": 1
+    "retaliate": 1
    }
   },
   "gold": {
@@ -253,7 +253,7 @@
    "Cost": 300,
    "Requires": [],
    "Effects": {
-    "riposte": 0.7
+    "guardian": 0.5
    }
   },
   "reflect_t": {
@@ -275,7 +275,7 @@
    "Cost": 300,
    "Requires": [],
    "Effects": {
-    "fortify": 1
+    "fortify": 20
    }
   },
   "dash": {
@@ -343,7 +343,7 @@
    "Cost": 300,
    "Requires": [],
    "Effects": {
-    "far_sight": 1
+    "ranged_reach": 2
    }
   },
   "steed": {
@@ -354,8 +354,7 @@
    "Cost": 300,
    "Requires": [],
    "Effects": {
-    "mounted_range": 2,
-    "light_move": 1
+    "mounted_range": 2
    }
   },
   "reach": {
@@ -467,7 +466,7 @@
    "Cost": 300,
    "Requires": [],
    "Effects": {
-    "deputy_rate": 1.1
+    "deputy_charm": 20
    }
   },
   "share": {
@@ -566,7 +565,7 @@
    "Cost": 300,
    "Requires": [],
    "Effects": {
-    "ignore_terrain": 1
+    "terrain_cap": 1
    }
   },
   "aid_t": {
@@ -617,7 +616,7 @@
    "Cost": 400,
    "Requires": [],
    "Effects": {
-    "pierce_boost": 0.25
+    "knockback": 0.25
    }
   },
   "far_t": {
@@ -687,7 +686,7 @@
    "Cost": 0,
    "Requires": [],
    "Effects": {
-    "sweep_arc": 0.5
+    "flank": 0.5
    }
   },
   "pouch_t": {
@@ -699,6 +698,24 @@
    "Requires": [],
    "Effects": {
     "pouch_heal": 50
+   }
+  },
+  "diag_t": {
+   "Name": "Diagonal",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 100,
+   "Effects": {
+    "diagonal": 1
+   }
+  },
+  "long_t": {
+   "Name": "Long",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 100,
+   "Effects": {
+    "long_reach": 1
    }
   },
   "evader": {

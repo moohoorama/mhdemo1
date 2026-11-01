@@ -21,6 +21,8 @@ type Engine struct {
 	events           []Event
 	turnStarted      string // the faction whose turn this command began, for turnstart conditions
 	lastActor        string // who the command in progress is for, so a duel knows who moved to meet whom
+	caster           string // who is using a skill now, and the spell points it began with (인내)
+	castMP           int
 }
 
 func copyOf[T any](v T) T { b, _ := json.Marshal(v); var c T; _ = json.Unmarshal(b, &c); return c }
@@ -226,7 +228,7 @@ func contains(s []string, v string) bool {
 	return false
 }
 
-// traits is every trait the character has: innate, learned, given by class and equipment, and the deputy's own.
+// traits is every trait the character has: innate (or set by its stage), learned, given by equipment, and the deputy's own.
 func (e *Engine) traits(c *Character) []string {
 	set := map[string]bool{}
 	add := func(s []string) {
@@ -240,7 +242,6 @@ func (e *Engine) traits(c *Character) []string {
 		add(e.def(c).Traits)
 	}
 	add(c.Learned)
-	add(e.class(c).Traits)
 	for _, eq := range c.Equipment {
 		add(e.data.Equipment[eq].Traits)
 	}
@@ -251,8 +252,16 @@ func (e *Engine) traits(c *Character) []string {
 	return keys(set)
 }
 
-// fx totals one trait effect over the unit's traits.
-func (e *Engine) fx(u *Unit, key string) float64 { return e.fxOf(e.char(u.Character), key) }
+// fx totals one trait effect over the unit's traits and the stances its statuses put on it.
+func (e *Engine) fx(u *Unit, key string) float64 {
+	n := e.fxOf(e.char(u.Character), key)
+	for id, st := range u.Status {
+		if st.Turns > 0 {
+			n += content.StatusEffects[id][key]
+		}
+	}
+	return n
+}
 func (e *Engine) fxOf(c *Character, key string) float64 {
 	n := 0.0
 	for _, t := range e.traits(c) {
@@ -261,6 +270,20 @@ func (e *Engine) fxOf(c *Character, key string) float64 {
 	return n
 }
 func (e *Engine) has(u *Unit, key string) bool         { return e.fx(u, key) != 0 }
+
+// ownFx totals one trait effect over the traits the character holds itself, leaving out its deputy's and
+// its equipment's.
+func (e *Engine) ownFx(c *Character, key string) float64 {
+	held := e.def(c).Traits
+	if c.TraitsOverride != nil {
+		held = *c.TraitsOverride
+	}
+	n := 0.0
+	for _, t := range append(slices.Clone(held), c.Learned...) {
+		n += e.data.Traits[t].Effects[key]
+	}
+	return n
+}
 func (e *Engine) hasTrait(c *Character, t string) bool { return contains(e.traits(c), t) }
 
 // learnable lists the traits the character may learn now: in the learn pool, prerequisites met, not yet owned.
@@ -528,6 +551,7 @@ func (e *Engine) execute(c Command) error {
 		u.X = c.X
 		u.Y = c.Y
 		u.Moved = true
+		u.Steps = len(path) - 1
 		e.events = append(e.events, Event{Kind: "move", Actor: u.ID, Path: path})
 		return nil
 	case "item", "attack", "skill":
@@ -691,6 +715,9 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	if sp.Traits != nil {
 		c.TraitsOverride = copyOf(sp.Traits)
 	}
+	if side == "enemy" {
+		e.grantLevelTraits(c)
+	}
 	if sp.Equipment != nil {
 		c.Equipment = map[string]string{}
 		for _, id := range *sp.Equipment {
@@ -706,7 +733,7 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	if sp.Faction != "" {
 		color = sp.Faction
 	}
-	u := Unit{AI: sp.AI, Policy: sp.Policy, Goal: copyGoal(sp.Goal), GoalArea: sp.GoalArea, DuelFirst: sp.DuelFirst, Group: sp.Group, ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
+	u := Unit{AI: sp.AI, Policy: sp.Policy, Goal: copyGoal(sp.Goal), GoalArea: sp.GoalArea, DuelFirst: sp.DuelFirst, Group: sp.Group, Rank: sp.Rank, ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
 	npcStock := e.data.Rules.EnemyStock
 	if side == "ally" {
 		npcStock = e.data.Rules.AllyStock
@@ -742,13 +769,39 @@ func (e *Engine) promotedAt(def, class string, level int) string {
 	}
 }
 
-// startStatus is what a unit is placed with: the defense its traits grant every turn.
+// grantLevelTraits gives an enemy the traits its class holds at its level (Rules.EnemyTraits) on top of
+// those its stage sets.
+func (e *Engine) grantLevelTraits(c *Character) {
+	held := slices.Clone(e.def(c).Traits)
+	if c.TraitsOverride != nil {
+		held = slices.Clone(*c.TraitsOverride)
+	}
+	for _, lt := range e.data.Rules.EnemyTraits[c.Class] {
+		if c.Level >= lt.Level && !contains(held, lt.Trait) {
+			held = append(held, lt.Trait)
+		}
+	}
+	c.TraitsOverride = &held
+}
+
+// startStatus is what a unit is placed with: the buffs its traits grant every turn.
 func (e *Engine) startStatus(u *Unit) map[string]Status {
 	s := map[string]Status{}
-	if k := int(e.fx(u, content.FxTurnDefense)); k > 0 {
-		s["defense"] = Status{Turns: e.data.Rules.BuffTurns, Value: k}
+	for id, k := range e.turnBuffs(u) {
+		s[id] = Status{Turns: e.data.Rules.BuffTurns, Value: k}
 	}
 	return s
+}
+
+// turnBuffs are the stat buffs, in percent, the unit's traits put on it every own turn.
+func (e *Engine) turnBuffs(u *Unit) map[string]int {
+	out := map[string]int{}
+	for id := range content.StatStatuses {
+		if k := int(e.fx(u, content.FxTurnBuff+id)); k > 0 {
+			out[id] = k
+		}
+	}
+	return out
 }
 func (e *Engine) settle() {
 	if e.state.Phase != "battle" {

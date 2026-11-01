@@ -4,7 +4,7 @@ import "srpg/internal/content"
 
 const CoreVersion = "2"
 const AIPolicyVersion = "greedy-12"
-const RulesVersion = "rules-14"
+const RulesVersion = "rules-15"
 
 // Character is a persistent record: a party member, or a troop made for one battle (Temp).
 type Character struct {
@@ -31,6 +31,8 @@ type Unit struct {
 	Facing                               string `json:",omitempty"`
 	X, Y, HP, MP                         int
 	Moved, Acted, Attacked, Done, Spared bool
+	Steps                                int    `json:",omitempty"` // cells walked this turn (돌진, 충격)
+	Rank                                 string `json:",omitempty"` // the stage's rank for the spawn: commander and boss lead it (자오곡)
 	Status                               map[string]Status
 	Items                                map[string]int
 }
@@ -119,10 +121,10 @@ type Observation struct {
 }
 type Command struct {
 	Kind, Actor, Target, Skill, Item, Trait string
-	Option                                          string // choose: the option; item (promotion): the class picked
-	X, Y                                            int
-	Count                                           int `json:",omitempty"` // buy, sell: how many
-	Deployment                                      []string
+	Option                                  string // choose: the option; item (promotion): the class picked
+	X, Y                                    int
+	Count                                   int `json:",omitempty"` // buy, sell: how many
+	Deployment                              []string
 }
 type Event struct {
 	Speech                    []content.Speech `json:",omitempty"`

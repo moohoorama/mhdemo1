@@ -409,13 +409,11 @@ func (g *Game) orderMarks(o core.Observation) []Highlight {
 			}
 		}
 	case "target":
-		lo, hi := g.reach(*a, g.ord.pick)
-		for y := a.Y - hi; y <= a.Y+hi; y++ {
-			for x := a.X - hi; x <= a.X+hi; x++ {
-				d := abs(x-a.X) + abs(y-a.Y)
-				if d >= lo && d <= hi && g.field.Inside(x, y) && g.field.Tile(x, y) != '~' {
-					add(content.Point{X: x, Y: y}, color.RGBA{230, 90, 60, 60})
-				}
+		pick := g.ord.pick
+		pick.Actor = a.ID
+		for _, p := range g.S.Engine.ActionCells(pick) {
+			if g.field.Inside(p.X, p.Y) && g.field.Tile(p.X, p.Y) != '~' {
+				add(p, color.RGBA{230, 90, 60, 60})
 			}
 		}
 		for _, c := range g.options(g.ord.pick) {
@@ -438,27 +436,6 @@ func containsCell(cells []content.Point, x, y int) bool {
 		}
 	}
 	return false
-}
-
-// reach is the distance band a picked action covers, as the core measures it (traits that
-// lengthen a spell's reach are not shown).
-func (g *Game) reach(a core.UnitView, pick core.Command) (int, int) {
-	lo, hi := g.engine().AttackRange(a.ID)
-	switch pick.Kind {
-	case "item":
-		return 0, 1
-	case "skill":
-		s := g.S.Data.Skills[pick.Skill]
-		if s.Mode == content.ModeSelf {
-			return 0, 0
-		}
-		if s.Max > 0 {
-			lo, hi = s.Min, s.Max+a.Status["range"].Value
-		} else {
-			lo = max(lo, s.Min)
-		}
-	}
-	return lo, hi
 }
 
 type areaMark struct {
@@ -485,9 +462,6 @@ func (g *Game) areaMarks(e *core.Engine, o core.Observation, a core.UnitView) []
 	}
 	s := g.S.Data.Skills[c.Skill]
 	shape := s.Shape
-	if shape == content.ShapeSingle && s.Kind != content.KindPhysical && s.Mode != content.ModeSelf && a.Status["eightfold"].Turns > 0 {
-		shape = content.ShapeSquare
-	}
 	hx, hy := g.hover.x, g.hover.y
 	var cells []content.Point
 	switch shape {

@@ -116,7 +116,7 @@
   },
   "qinggang_sword": {
    "Name": "청공검",
-   "Desc": "조조가 아끼던 보검. 철을 진흙처럼 벤다. 청공: 앞을 치면 앞 칸과 양옆 둘씩 5칸의 적도 50% 피해를 받는다.",
+   "Desc": "조조가 아끼던 보검. 철을 진흙처럼 벤다. 청공: 앞을 치면 그 대상의 양옆 두 칸의 적도 50% 피해를 받는다.",
    "Slot": "weapon",
    "Type": "sword",
    "Icon": "qinggang",
@@ -354,7 +354,7 @@
   },
   "red_hare": {
    "Name": "적토마",
-   "Desc": "이동력 +2. 마중적토: 사거리 안의 물리 공격에 반드시 반격한다.",
+   "Desc": "이동력 +2. 마중적토: 적의 견제(ZOC)에 막히지 않는다.",
    "Slot": "accessory",
    "Type": "any",
    "Icon": "redhare",
@@ -367,7 +367,7 @@
     0
    ],
    "Traits": [
-    "red_hare_counter"
+    "red_hare"
    ]
   },
   "diamond_armor": {
@@ -421,7 +421,7 @@
     0
    ],
    "Traits": [
-    "intimidate"
+    "heavy_blow"
    ]
   },
   "serpent_spear": {

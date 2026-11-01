@@ -2,13 +2,14 @@ package core
 
 import (
 	"math"
+	"slices"
 	"sort"
 	"srpg/internal/content"
+	"strings"
 )
 
 func clamp(v, lo, hi float64) float64 { return math.Max(lo, math.Min(hi, v)) }
 func dist(x, y, a, b int) int         { return abs(x-a) + abs(y-b) }
-func adjacent(x, y, a, b int) bool    { return abs(x-a) <= 1 && abs(y-b) <= 1 }
 func abs(n int) int {
 	if n < 0 {
 		return -n
@@ -57,6 +58,15 @@ func (e *Engine) stats(u *Unit) Stats {
 			k = c.HPFactor
 		}
 		v[i] = int(math.Floor(float64(k*(o.Level+R.StatLevelBase)) * (R.StatNumerator/(R.StatDenominator-at) + b[i])))
+	}
+	if u.HP > 0 { // standing on the field: who is around, how far it walked
+		foes, allies := e.around(u, false), e.around(u, true)
+		k := e.fx(u, content.FxOutnumbered)*float64(foes) + e.fx(u, content.FxCompanions)*float64(allies)
+		if allies == 0 {
+			k += e.fx(u, content.FxLone)
+		}
+		v[0] = int(float64(v[0]) * (1 + k + e.fx(u, content.FxChargePower)*float64(u.Steps)))
+		v[1] = int(float64(v[1]) * (1 + k))
 	}
 	v[0] = max(1, percent(v[0], u.Status["attack"].Value))
 	v[1] = max(1, percent(v[1], u.Status["defense"].Value))
@@ -141,11 +151,7 @@ func (e *Engine) moves(u *Unit) []content.Point {
 // movement is the unit's movement points this turn.
 func (e *Engine) movement(u *Unit) int {
 	cl := e.unitClass(u)
-	n := cl.Move + u.Status["speed"].Value + int(e.fx(u, content.FxMove))
-	if contains(cl.Tags, content.TagLight) {
-		n += int(e.fx(u, content.FxLightMove))
-	}
-	return n
+	return cl.Move + u.Status["speed"].Value + int(e.fx(u, content.FxMove))
 }
 
 // reach returns the movement cost of every cell the unit can stop on and the cell each was
@@ -222,10 +228,13 @@ func (e *Engine) skillDef(c Command) (content.Skill, error) {
 }
 func (e *Engine) basic() content.Skill { return e.data.Rules.BasicAttack }
 
-// cost is what the skill spends from the unit's spell points.
+// cost is what the skill spends from the unit's spell points: halved by 백출, and by 수호 for a defense buff on itself.
 func (e *Engine) cost(u *Unit, s content.Skill) int {
 	n := s.Cost
 	if e.has(u, content.FxCostHalf) && n > 0 {
+		n = max(1, (n+1)/2)
+	}
+	if e.has(u, content.FxSelfGuardHalf) && n > 0 && s.Mode == content.ModeSelf && s.Kind == content.KindBuff && slices.Contains(strings.Split(s.Effect, "+"), "defense") {
 		n = max(1, (n+1)/2)
 	}
 	return n
@@ -260,36 +269,110 @@ func (e *Engine) canRange(u *Unit) bool {
 	return e.unitClass(u).Attack == content.AttackRanged || e.mounted(u) && e.fx(u, content.FxMountedRange) > 0
 }
 func (e *Engine) canMelee(u *Unit) bool { return e.unitClass(u).Attack == content.AttackMelee }
+
+// meleeReach tells whether a melee blow reaches the cell (dx, dy) away: the four straight neighbours, the
+// diagonals too with 대각공격, two cells along the straight lines with 장창·장풍, and the diamond of two with
+// both. A range buff or a skill's reach lengthens the lines (and the diamond).
+func (e *Engine) meleeReach(u *Unit, s content.Skill, dx, dy int) bool {
+	r := e.unitClass(u).Range + u.Status["range"].Value + s.Reach + int(e.fx(u, content.FxLongReach))
+	d := abs(dx) + abs(dy)
+	if d == 0 || r < 1 {
+		return false
+	}
+	diagonal := e.has(u, content.FxDiagonal)
+	switch {
+	case diagonal && r >= 2:
+		return d <= r
+	case diagonal && abs(dx) <= 1 && abs(dy) <= 1:
+		return true
+	}
+	return (dx == 0 || dy == 0) && d <= r
+}
+
+// rangedBand is the nearest and farthest a shot reaches: a bow or crossbow's class range, or the
+// distance 기사 lets a rider shoot at; hi < lo when the unit cannot shoot.
+func (e *Engine) rangedBand(u *Unit, s content.Skill) (lo, hi int) {
+	cl := e.unitClass(u)
+	more := u.Status["range"].Value + s.Reach + int(e.fx(u, content.FxRangedReach))
+	if cl.Attack == content.AttackRanged {
+		return max(1, s.Min, cl.MinRange), cl.Range + more
+	}
+	if k := int(e.fx(u, content.FxMountedRange)); k > 0 && e.mounted(u) {
+		return 2, k + more
+	}
+	return 1, 0
+}
+
+// weaponReach tells whether a weapon blow from `from` reaches (x, y), and whether it would be a shot:
+// a melee weapon's own reach comes first, a bow (or 기사) shoots wherever its band reaches.
+func (e *Engine) weaponReach(u *Unit, s content.Skill, from content.Point, x, y int) (ok, ranged bool) {
+	dx, dy := x-from.X, y-from.Y
+	if s.Mode != content.ModeRanged && e.canMelee(u) && e.meleeReach(u, s, dx, dy) {
+		return true, false
+	}
+	if s.Mode != content.ModeMelee {
+		lo, hi := e.rangedBand(u, s)
+		if d := abs(dx) + abs(dy); d >= lo && d <= hi {
+			return true, true
+		}
+	}
+	return false, false
+}
+
+// skillBand is the distance band of a skill with a reach of its own (spells and the like).
+func (e *Engine) skillBand(u *Unit, s content.Skill) (int, int) {
+	hi := s.Max + u.Status["range"].Value + s.Reach
+	if s.Kind != content.KindPhysical {
+		hi += int(e.fx(u, content.FxSpellRange))
+	}
+	return s.Min, hi
+}
+
+// reachesFrom tells whether the unit standing at from reaches (x, y) with the skill.
+func (e *Engine) reachesFrom(u *Unit, s content.Skill, from content.Point, x, y int) bool {
+	if s.Mode == content.ModeSelf {
+		return x == from.X && y == from.Y
+	}
+	if s.Max == 0 {
+		ok, _ := e.weaponReach(u, s, from, x, y)
+		return ok
+	}
+	lo, hi := e.skillBand(u, s)
+	d := dist(from.X, from.Y, x, y)
+	return d >= lo && d <= hi
+}
+func (e *Engine) inRange(u, v *Unit, s content.Skill) bool {
+	return e.reachesFrom(u, s, content.Point{X: u.X, Y: u.Y}, v.X, v.Y)
+}
+
+// rangeFor is the distance band the skill's reach falls in, for screens and AI estimates; the exact cells
+// are reachesFrom's.
 func (e *Engine) rangeFor(u *Unit, s content.Skill) (int, int) {
 	if s.Mode == content.ModeSelf {
 		return 0, 0
 	}
-	cl := e.unitClass(u)
-	lo, hi := s.Min, s.Max
-	if hi == 0 {
-		hi = cl.Range
-		if e.mounted(u) {
-			hi = max(hi, int(e.fx(u, content.FxMountedRange)))
-		}
-		if cl.Attack == content.AttackRanged {
-			lo = max(lo, cl.MinRange)
+	if s.Max > 0 {
+		return e.skillBand(u, s)
+	}
+	lo, hi := 0, 0
+	if s.Mode != content.ModeRanged && e.canMelee(u) {
+		r := e.unitClass(u).Range + u.Status["range"].Value + s.Reach + int(e.fx(u, content.FxLongReach))
+		if r > 0 {
+			lo, hi = 1, r
+			if e.has(u, content.FxDiagonal) && r == 1 {
+				hi = 2
+			}
 		}
 	}
-	hi += u.Status["range"].Value + s.Reach
-	if s.Kind != content.KindPhysical {
-		hi += int(e.fx(u, content.FxSpellRange))
+	if s.Mode != content.ModeMelee {
+		if l, h := e.rangedBand(u, s); h >= l {
+			if hi == 0 {
+				lo = l
+			}
+			hi = max(hi, h)
+		}
 	}
 	return lo, hi
-}
-
-// rangedSkill tells whether the skill is a ranged attack by its mode or by the class's attack mode.
-func (e *Engine) rangedSkill(u *Unit, s content.Skill) bool {
-	return s.Mode == content.ModeRanged || s.Mode == content.ModeAny && e.unitClass(u).Attack == content.AttackRanged
-}
-func (e *Engine) inRange(u, v *Unit, s content.Skill) bool {
-	lo, hi := e.rangeFor(u, s)
-	d := dist(u.X, u.Y, v.X, v.Y)
-	return d >= lo && d <= hi
 }
 
 // waterNear reports whether (x, y) is water or a water tile touches it (a unit afloat stands on water).
@@ -339,8 +422,7 @@ func (e *Engine) validateSkill(u *Unit, c Command, s content.Skill) (*Unit, erro
 	if v == nil || v.HP <= 0 {
 		return nil, fail("InvalidTarget")
 	}
-	friendly := s.Kind == content.KindHeal || s.Kind == content.KindBuff
-	if friendly != (v.Faction == u.Faction) {
+	if friendly(s) != (v.Faction == u.Faction) && s.Kind != content.KindMixed && s.Mode != content.ModeSelf {
 		return nil, fail("InvalidTarget")
 	}
 	if !e.inRange(u, v, s) {

@@ -5,6 +5,28 @@
 
 ---
 
+## 2026-11-01 고유 병종 도독, 밀려나는 연출의 감속과 흙먼지
+
+- 결정: 오의 대도독 넷(주유·육손·여몽·노숙)을 위한 승급 없는 고유 병종 `도독`을 둔다. 검·갑옷의 근접 보병이면서 책략을 쓰는 올라운더, 3단계 취급. 손권은 경보병 그대로. 도트는 있는 것만 쓴다 — 사용자 결정. 주유·육손이 보검을 들 근거(삭제된 유장)를 병종이 대신한다.
+- `assets/data/classes.json`: `dudu` 추가(보정 12·10·13·10·11·17, MP 30·회복 6, 풀 부관임명·화계·화계강화·화계확산·수계·수계강화·수계확산·구휼·독려, `civil` 태그 없음).
+- `assets/data/characters_story.json`: 주유·육손·여몽을 도독으로, 주유·육손은 보검·가죽갑옷으로 되돌림, 전투 도트는 주유·육손 군사 시트, 여몽 근위병 시트. 노숙은 아직 장수 데이터가 없다.
+- `../_newfeature.md`(2절 고유 병종), `docs/logic-traits.md`(3.3 표).
+- `internal/core/campaign_content_test.go`: 일기토 테스트가 턴을 넘기기 전에 승리 목표가 아닌 구역마다 아군을 하나씩(군주 먼저) 세움(`enterAreas`) — 거록의 안량처럼 아군이 특정 위치에 가야 나오는 상대를 다루려고. `internal/gui/look_test.go`: 경기병 조운 도트를 `zhaoyun_light`로, 인수 갈래 테스트는 관우 대신 병종별 도트가 없는 기병 관평을 출전시켜 검사 — 데이터가 바뀐 뒤 남아 있던 실패.
+- `assets/data/characters_story.json`: 관평(경기병, 82/85/63/78/73/81, 플레이어 장수, 병종별 도트 없음 — 경기병 계열 기본 도트) 추가. `docs/data-character.md`: 관평 병종을 경기병으로 — 사용자: 관평은 조형 없는 기병으로 새로 만든다.
+- `cmd/_routesim`: 삭제(거록 밸런스용 임시 도구, 판·장수 id를 코드에 박아 순수성 검사에 걸림) — 사용자 결정. `internal/ai/route.go`: 주석의 도구 이름을 뺌.
+- `internal/gui/player.go`: 돌파로 밀려난 대상이 0.4초 동안 sin(0~90°)로 처음엔 빠르게 끝엔 천천히 미끄러지고, 시작·40%·멈춤에 흙먼지. `walkState`에 `dur`·`ease`·`marks` — 사용자: 팍 밀렸다가 스르륵 흙먼지 내며 멈추게. `projectile.go`: `dustAt`.
+
+## 2026-11-01 새 특성 체계(_newfeature.md) 반영
+
+- 결정: 특성·병법·책략을 저장소 루트 `_newfeature.md`의 분류안으로 바꾼다. 학습 비용은 모두 500, 장수는 아무 특성도 배우지 않은 채 시작하고(인물 특성도 전부 학습), 적·동맹은 판 배치 `Traits`와 병종 레벨 표(`Rules.EnemyTraits`: 적 보병 계열 10레벨 대각공격, 장창병·전차대 15레벨 장창)로 갖는다. 공격 범위는 공격 방법마다 모양이 있고, 근접·원거리는 거리가 아니라 무기로 정한다. 허실·심모·질타·간파는 능력치를 비교하지 않는다. 버프 기본 20%·3턴. 용인술은 주장 매력 +20(N이 1을 넘는 것은 의도). 백마는 기사로 통일, 용장·신장·투신·응사·유장·찌르기·연속찌르기는 삭제 — 사용자 결정. 영향받는 문서: `logic-traits.md`, `logic-combat.md`, `logic-growth.md`, `data-character.md`.
+- `../_newfeature.md`: 위 결정(비용·적 특성·공격 범위·근접 판정·버프 기본값·응징·답파·돌파·공성·용인술 문구, 중기병 돌격·친위대 급소, 장비 학습 특성 유지, 4절 결정 목록)을 반영.
+- `assets/data/traits.json`: 144개 특성으로 다시 씀(비용 500, 장비 전용 0). `skills.json`: 찌르기·연속찌르기 삭제, 도발을 십자 사기 저하 책략으로, 압박·질타(`Sure`)·참언·집중·기합·기합확산·패기·휘기·사거리 확장·찔러/사방/팔방 태세 추가, 팔진도를 복합 책략(`mixed`, 3×3 아군 버프·적 디버프)으로, 탈취는 `steal_art` 특성이 연다. `classes.json`: 병종 풀을 2절대로, 장창병·전차대 기본 사거리 1, 병종 고정 특성·적병 고정 탈취·`light` 태그 삭제, 문관 병종에 `civil` 태그(낙봉). `characters*.json`: 모든 `Traits`를 비우고 플레이어 장수 `Learn`을 3절대로, 조조 기본 무기는 철창(판에서 의천검). `equipment.json`: 청룡언월도 → 참격, 적토마는 이동력 +2·ZOC 무시. `game.json`: `BuffTurns` 3, `CounterShare` 1.0(반격술 50%→100%), `EnemyTraits`, `ForageItems`, 산 `Ambush`·성내 `Castle`·마을 `Village`. `scenario/hero/stage02·05·06·07·09·10.json`: 장량·조조·화웅·여포(필살)·이유·심배·봉기·전풍의 특성을 판 배치로.
+- `internal/content`: 새 효과 키(`vocab.go`), `Skill.Sure`, `KindMixed`, `+`로 잇는 능력치 효과, `StatusEffects`(태세), `Rules.EnemyTraits`·`ForageItems`, 땅의 `Ambush`·`Castle`과 구조물 `Village`, `Class.Traits` 삭제, 검증.
+- `internal/core/rules.go`: 맨해튼 거리 하나 대신 `meleeReach`(4방·대각·장창 큰 십자·마름모)·`rangedBand`(활 고리·기사 2칸)·`weaponReach`, 수호 비용 반감. `combat.go`: 무기 기준 `rangedAttack`, 응징·호위·참격·돌파(밀어내기·막히면 +25%, `knockback` 이벤트)·공성/답파 지형·장구직입·결사·근성·인내·집요·화신·치명 확정(추살·낙봉·선등·자오곡·휘기)·치명타강화·함진·충격·위압/위풍·발묘담정·간파/허실/교변·엄명·역계·연환·보급(주변 8칸 중 병력이 가장 적은 1기)·파진·유계·물심양면·짐독·전가·의협·오라(강론·급행·금쇄·지균)·중가·소요진. `engine.go`: 상태가 주는 효과, `grantLevelTraits`, `turnBuffs`, 걸은 칸 `Steps`, 배치 `Rank`. `formation.go`: 용인술 매력 +20. `api.go`: `ActionCells`·`CanStrikeFrom`·`ShootsAt`, 모양 기준 `Threat`. `types.go`: `RulesVersion` rules-15.
+- `internal/gui`: 목표 칸 표시를 `ActionCells`로, 밀려난 대상은 피격 모션 그대로 미끄러짐, 사격 모습은 창이 닿지 않을 때(`ShootsAt`, 밀리기 전 자리로), 팔진 상태 표시 삭제, 새 상태 이름. `uidemo_knockback.go`: 돌파 밀어내기 데모. `internal/ai/ai.go`: 접근 판단을 `CanStrikeFrom`으로. `internal/cli/play.go`: 밀어내기·중가 줄.
+- 테스트: `reach_test.go`(공격 범위 모양, 장창의 근접 판정, 적 레벨 특성, 연환) 추가, 사라진 규칙의 테스트를 새 규칙으로 고침, `testdata/mini`의 특성·병법 갱신.
+- 밸런스(`_balance -player ai -seeds 3`): B09 거록 2/3 → 1/3, B10 계교 3/3 → 1/3. B10은 적 보병 대각공격을 빼면 3/3으로 돌아온다. 수치 조정은 하지 않았다.
+
 ## 2026-11-01 12장 서주 전투 구도
 
 - `docs/fullstory.md`: 서주 전투를 사수가 맵을 반으로 가르는 구도로 — ㄱ자 바깥 지역, 동·서 다리, 남쪽의 큰 서주성(성곽), 동쪽 다리 건너 고순(우금이 침, 4턴 안팎에 뚫림), 북서쪽 조인(산줄기로 유비군과 갈림, 서쪽 다리로 서주성), 서쪽 다리 건너 제갈현(보병 둘이 침), 백성은 서주성으로 도망, 우금은 궁병 — 사용자: 이전 안(피난 수레 호위)이 별로였다. 피난 수레는 뺌.

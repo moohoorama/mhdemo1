@@ -3,12 +3,11 @@ package core
 import (
 	"math"
 	"slices"
+	"strings"
 
 	"srpg/internal/content"
 )
 
-// might is the character's base might, the stat the might-comparing traits read.
-func (e *Engine) might(u *Unit) int      { return e.unitDef(u).Stats[1] }
 func (e *Engine) ratio(a, b int) float64 { return float64(max(1, a)) / float64(max(1, b)) }
 
 // curve interpolates linearly between points sorted by x and holds the end values outside them.
@@ -34,19 +33,43 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	if s.Kind == content.KindMagic {
 		base = math.Max(1, float64(a.Mind-b.Mind)+level*R.MagicLevelScale)
 	} else {
-		tf := e.terrain(v, v.X, v.Y).Factor
-		if e.has(u, content.FxIgnoreTerrain) {
-			tf = 1
+		af, tf := e.terrain(u, u.X, u.Y).Factor, e.terrain(v, v.X, v.Y).Factor
+		if e.has(u, content.FxTerrainFloor) {
+			af = math.Max(af, 1)
 		}
-		atk, def := float64(a.Attack)*e.terrain(u, u.X, u.Y).Factor, float64(b.Defense)*tf
-		base = math.Max(1, atk-def+level*R.PhysicalLevelScale)
+		if e.has(v, content.FxTerrainFloor) {
+			tf = math.Max(tf, 1)
+		}
+		if e.has(u, content.FxTerrainCap) {
+			tf = math.Min(tf, 1)
+		}
+		def := float64(b.Defense)
+		if p := v.Status["defense"].Value; p > 0 && e.has(u, content.FxIgnoreGuardBuff) {
+			def = def * 100 / float64(100+p)
+		}
+		base = math.Max(1, float64(a.Attack)*af-def*tf+level*R.PhysicalLevelScale)
 	}
 	out := base * s.Coeff
 	if s.MagicCoeff > 0 {
 		out += math.Max(1, float64(a.Mind-b.Mind)+level*R.MagicLevelScale) * s.MagicCoeff
 	}
-	if p := e.elementTerrain(v, s.Element); p != 0 && s.Kind == content.KindMagic {
-		out *= 1 + float64(p)/100
+	if s.Kind == content.KindMagic {
+		if p := e.elementTerrain(v, s.Element); p != 0 {
+			out *= 1 + float64(p)/100
+		}
+		out *= 1 + e.fx(u, content.FxPower+s.Element)
+		if mp := e.castingMP(u); mp > 50 && e.has(u, content.FxPatience) {
+			out *= 1 + float64(mp-50)/100
+		}
+		if k := e.fx(u, content.FxFinisher); k > 0 {
+			out *= 1 + k*(1-float64(v.HP)/float64(max(1, b.MaxHP)))
+		}
+	}
+	if k := e.fx(u, content.FxDesperate); k > 0 && e.wounded(u) {
+		out *= 1 + k
+	}
+	if k := e.fx(v, content.FxGrit); k > 0 && e.wounded(v) {
+		out *= 1 - k
 	}
 	if p := e.state.DamagePct; p > 0 && p != 100 {
 		out = math.Max(1, out*float64(p)/100)
@@ -68,37 +91,63 @@ func (e *Engine) elementTerrain(v *Unit, element string) int {
 	return bonus[string(c.Ground)]
 }
 
-// rangedAttack tells whether the blow comes from a distance: by an archer's weapon or from beyond the eight cells around the target.
+// wounded tells whether the unit is down to half its HP or less.
+func (e *Engine) wounded(u *Unit) bool { return u.HP*2 <= e.stats(u).MaxHP }
+
+// castingMP is the spell points the unit had when it began the skill it is using now (what 인내 reads),
+// or what it holds when it is not casting.
+func (e *Engine) castingMP(u *Unit) int {
+	if e.caster == u.ID {
+		return e.castMP
+	}
+	return u.MP
+}
+
+// rangedAttack tells whether the blow is a shot, by the weapon that makes it: a bow, or a rider shooting
+// with 기사 at a cell its melee weapon does not reach. Distance alone never makes a blow ranged.
 func (e *Engine) rangedAttack(u, v *Unit, s content.Skill) bool {
-	if s.Mode == content.ModeRanged {
+	switch {
+	case s.Mode == content.ModeRanged:
+		return true
+	case s.Mode == content.ModeMelee:
+		return false
+	case e.unitClass(u).Attack == content.AttackRanged:
 		return true
 	}
-	return s.Mode == content.ModeAny && (e.unitClass(u).Attack == content.AttackRanged || !adjacent(u.X, u.Y, v.X, v.Y))
+	_, ranged := e.weaponReach(u, s, content.Point{X: u.X, Y: u.Y}, v.X, v.Y)
+	return ranged
 }
 func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 	R := e.data.Rules
 	h := float64(s.Hit)
 	switch s.Kind {
 	case content.KindPhysical:
-		if v.Status["guard"].Turns > 0 && !e.rangedAttack(u, v, s) {
+		ranged := e.rangedAttack(u, v, s)
+		if v.Status["guard"].Turns > 0 && !ranged {
 			return 0
 		}
-		if e.has(v, content.FxRangedImmune) && e.rangedAttack(u, v, s) {
+		if e.has(v, content.FxRangedImmune) && ranged {
 			return 0
+		}
+		if e.has(u, content.FxRangedSure) && ranged {
+			return 100
 		}
 		h += curve(e.ratio(e.attackStats(u, s).Agility, e.stats(v).Agility), R.HitCurve) - float64(R.BasicAttack.Hit) - e.fx(v, content.FxEvade) + e.fx(u, content.FxAccuracy)
 		return clamp(h, R.HitFloor, R.HitCeil)
 	case content.KindMagic, content.KindStatus:
-		if e.has(v, content.FxDispel) && e.stats(v).Mind > e.stats(u).Mind {
+		if e.has(v, content.FxDispel) && v.Faction != u.Faction {
 			return 0
 		}
-		if s.Kind == content.KindStatus && e.has(v, content.FxStatusImmune) {
+		if s.Kind == content.KindStatus && e.statusImmune(v) && v.Faction != u.Faction {
 			return 0
 		}
-		if e.has(u, content.FxSpellSure) && e.stats(u).Mind > e.stats(v).Mind || e.fx(u, content.FxSure+s.Element) > 0 {
+		if s.Sure || e.has(u, content.FxSpellSure) || e.fx(u, content.FxSure+s.Element) > 0 {
 			return 100
 		}
 		h += float64(e.unitDef(u).Stats[4]-e.unitDef(v).Stats[4]) * .5
+		if v.Faction != u.Faction {
+			h -= e.fx(v, content.FxSpellWard)
+		}
 		return clamp(h, R.SpellFloor, R.SpellCeil)
 	}
 	if s.Mode != content.ModeSelf && s.Hit < 100 {
@@ -109,11 +158,30 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 
 // critForced tells whether the blow is a certain critical.
 func (e *Engine) critForced(u, v *Unit, s content.Skill) bool {
+	if e.has(u, content.FxCritWounded) && e.wounded(v) || e.has(u, content.FxLoneCritLeader) && e.alone(u) && (v.Rank == "commander" || v.Rank == "boss") {
+		return true
+	}
 	if s.Kind == content.KindMagic {
 		return e.has(u, content.FxSpellCrit) || e.fx(u, content.FxCritElement+s.Element) > 0
 	}
-	return e.has(u, content.FxCritAlways) || e.has(u, content.FxCritWeaker) && e.might(u) > e.might(v) ||
-		e.has(u, content.FxCritAmbush) && e.CellProps(u.X, u.Y).Ambush
+	return e.has(u, content.FxCritAlways) || u.Status["sure_crit"].Turns > 0 ||
+		e.has(u, content.FxCritAmbush) && e.CellProps(u.X, u.Y).Ambush ||
+		e.has(u, content.FxCritScholar) && contains(e.unitClass(v).Tags, content.TagCivil) ||
+		e.has(u, content.FxCritMounted) && e.mounted(v) && e.rangedAttack(u, v, s)
+}
+
+// alone tells whether no ally of the unit stands in the eight cells around it (일기당천).
+func (e *Engine) alone(u *Unit) bool { return e.around(u, true) == 0 }
+
+// around counts the living allies (or foes) of the unit in the eight cells around it.
+func (e *Engine) around(u *Unit, allies bool) int {
+	n := 0
+	for _, p := range ring {
+		if q := e.occupied(u.X+p.X, u.Y+p.Y); q != nil && (q.Faction == u.Faction) == allies {
+			n++
+		}
+	}
+	return n
 }
 
 // critChance is the chance in percent that a blow lands critically, by the morale of both sides; 100 when forced.
@@ -142,9 +210,22 @@ func (e *Engine) attackStats(u *Unit, s content.Skill) Stats {
 	return st
 }
 
+// statusImmune tells whether harmful statuses fail on the unit: its own 군율, or an adjacent ally's 엄명.
+func (e *Engine) statusImmune(v *Unit) bool {
+	if e.has(v, content.FxStatusImmune) {
+		return true
+	}
+	for _, p := range ring {
+		if q := e.occupied(v.X+p.X, v.Y+p.Y); q != nil && q.Faction == v.Faction && e.has(q, content.FxStatusWard) {
+			return true
+		}
+	}
+	return false
+}
+
 // applyStatus puts a status on v. A stat percentage replaces an opposite one and otherwise keeps the stronger.
 func (e *Engine) applyStatus(v *Unit, id string, turns, value int) {
-	if content.Harmful[id] && e.has(v, content.FxStatusImmune) {
+	if content.Harmful[id] && e.statusImmune(v) {
 		return
 	}
 	old := v.Status[id]
@@ -168,7 +249,7 @@ func (e *Engine) hurt(v *Unit, n int, u *Unit) int {
 }
 
 // blow is how one strike is made: its share of full damage, and whether it was set off by another attack
-// (a counter, assist, riposte or reflection), which never sets off another.
+// (a counter, assist, guard or reflection), which never sets off another.
 type blow struct {
 	share   float64
 	derived bool
@@ -203,16 +284,30 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 		}
 		d *= half
 	} else if crit {
-		d *= R.CritMultiplier
+		d *= R.CritMultiplier + e.fx(u, content.FxCritBoost)
 		e.emit("critical", u.ID, v.ID, 0)
 	}
 	n := e.hurt(v, int(math.Floor(e.bulwark(v, d))), u)
-	if hit && n > 0 && phys && e.has(u, content.FxPoison) {
-		e.applyStatus(v, "poison", 3, 0)
-		if status, ok := v.Status["poison"]; ok {
-			status.Source = u.ID
-			v.Status["poison"] = status
+	if hit && n > 0 && phys {
+		if e.has(u, content.FxPoison) {
+			e.applyStatus(v, "poison", 3, 0)
+			if status, ok := v.Status["poison"]; ok {
+				status.Source = u.ID
+				v.Status["poison"] = status
+			}
 		}
+		for id := range content.StatStatuses {
+			if e.has(u, content.FxHitDebuff+id) {
+				e.applyStatus(v, id, R.BuffTurns, -R.BuffPercent)
+			}
+		}
+	}
+	if crit && n > 0 && v.HP > 0 && e.has(v, content.FxCritRally) {
+		turns := 1 // through the end of its next turn
+		if v.ActsIn(e.state.Turn, e.state.Army) {
+			turns = 2
+		}
+		e.applyStatus(v, "attack", turns, R.BuffPercent)
 	}
 	return n, hit, crit
 }
@@ -236,8 +331,8 @@ func (e *Engine) leech(u *Unit, dealt int) {
 
 // attackOn is one physical attack on its victims. Whether it strikes twice is rolled once, against the
 // target the attack was aimed at, and holds for every victim unless twice forces it; all take the first
-// strike before any takes the second, so a splash lands with the first swing. A miss lets a riposting
-// victim strike back.
+// strike before any takes the second, so a splash lands with the first swing. With 돌파 a landed first
+// blow on the aim pushes it a cell back, or deals more where it cannot be pushed.
 func (e *Engine) attackOn(u, aim *Unit, vs []*Unit, s content.Skill, share map[string]float64, derived, twice bool) map[string]int {
 	var again []*Unit
 	if twice || float64(e.rand(100)) < e.doubleChance(u, aim, s) || s.Strikes > 1 {
@@ -255,14 +350,21 @@ func (e *Engine) attackOn(u, aim *Unit, vs []*Unit, s content.Skill, share map[s
 			b := blow{share: share[v.ID], derived: derived}
 			if i == 1 {
 				e.emit("double", u.ID, v.ID, 0)
-				if !e.has(u, content.FxFullShare) {
-					b.share *= e.data.Rules.DoubleShare
+				b.share *= e.data.Rules.DoubleShare + e.fx(u, content.FxHeavy)
+			}
+			push, canPush := content.Point{}, false
+			knock := i == 0 && v == aim && !derived && s.Kind == content.KindPhysical && e.has(u, content.FxKnockback)
+			if knock {
+				if push, canPush = e.pushCell(u, v); !canPush {
+					b.share *= 1 + e.fx(u, content.FxKnockback)
 				}
 			}
 			n, hit, _ := e.strike(u, v, s, b)
 			dealt[v.ID] += n
-			if !hit && !derived {
-				e.riposte(v, u)
+			if knock && canPush && hit && v.HP > 0 {
+				from := content.Point{X: v.X, Y: v.Y}
+				v.X, v.Y = push.X, push.Y
+				e.events = append(e.events, Event{Kind: "knockback", Actor: u.ID, Target: v.ID, Path: []content.Point{from, push}})
 			}
 		}
 	}
@@ -275,7 +377,27 @@ func btoi(b bool) int {
 	return 0
 }
 
-// strikeBack is a basic attack set off by another one (a counter, assist or riposte) at share k of a
+// pushCell is the cell behind v as u strikes it (away from u, along the longer axis, or diagonally on
+// a diagonal blow) and whether v can be pushed there: a cell its class can enter, with nobody on it.
+func (e *Engine) pushCell(u, v *Unit) (content.Point, bool) {
+	dx, dy := v.X-u.X, v.Y-u.Y
+	switch {
+	case abs(dx) > abs(dy):
+		dx, dy = sign(dx), 0
+	case abs(dy) > abs(dx):
+		dx, dy = 0, sign(dy)
+	default:
+		dx, dy = sign(dx), sign(dy)
+	}
+	p := content.Point{X: v.X + dx, Y: v.Y + dy}
+	s := e.data.Stages[e.state.Stage]
+	if p.X < 0 || p.Y < 0 || p.X >= s.Width || p.Y >= s.Height || e.terrain(v, p.X, p.Y).Cost == 0 || e.occupied(p.X, p.Y) != nil {
+		return p, false
+	}
+	return p, true
+}
+
+// strikeBack is a basic attack set off by another one (a counter, assist or guard) at share k of a
 // normal blow. It is aimed at the first of aims and also hits the rest, each widened by u's area traits,
 // and strikes twice like any attack of u's, or surely when twice is set. u heals by what it deals.
 func (e *Engine) strikeBack(u *Unit, aims []*Unit, k float64, twice bool) {
@@ -295,35 +417,41 @@ func (e *Engine) strikeBack(u *Unit, aims []*Unit, k float64, twice bool) {
 	}
 }
 
-// riposte is the defender's answer to a missed blow, from anywhere.
-func (e *Engine) riposte(v, u *Unit) {
-	if k := e.fx(v, content.FxRiposte); k > 0 && v.HP > 0 && u.HP > 0 {
-		e.strikeBack(v, []*Unit{u}, k, false)
+// counterShare is the share of a normal blow v strikes back at u with: CounterShare in a counter stance,
+// PlainCounterShare otherwise, either raised by 참격.
+func (e *Engine) counterShare(v *Unit) float64 {
+	k := e.data.Rules.PlainCounterShare
+	if v.Status["counter"].Turns > 0 {
+		k = e.data.Rules.CounterShare
 	}
+	return k + e.fx(v, content.FxHeavy)
 }
 
-// counterShare is the share of a normal blow v strikes back at u with: full for a 위압 unit, CounterShare
-// from a counter stance or trait, PlainCounterShare otherwise. forced is a counter by force against a
-// weaker attacker, which surely strikes twice.
-func (e *Engine) counterShare(u, v *Unit) (k float64, forced bool) {
-	forced = e.has(v, content.FxCounterForce) && e.might(u) < e.might(v)
-	if e.has(v, content.FxFullShare) {
-		return 1, forced
-	}
-	if v.Status["counter"].Turns > 0 || forced || e.has(v, content.FxCounterAlways) {
-		return e.data.Rules.CounterShare, forced
-	}
-	return e.data.Rules.PlainCounterShare, false
-}
-
-// counterBack is the target's counter-attack after it took u's physical action; every unit strikes back
-// at an attacker in its reach.
+// counterBack is the target's counter-attack after it took u's physical action: every unit strikes back
+// at an attacker in its reach, and one with 응징 at an attacker anywhere.
 func (e *Engine) counterBack(u, v *Unit) {
-	if v.HP <= 0 || u.HP <= 0 || !e.inRange(v, u, e.basic()) {
+	if v.HP <= 0 || u.HP <= 0 || !e.has(v, content.FxRetaliate) && !e.inRange(v, u, e.basic()) {
 		return
 	}
-	k, forced := e.counterShare(u, v)
-	e.strikeBack(v, []*Unit{u}, k, forced)
+	e.strikeBack(v, []*Unit{u}, e.counterShare(v), false)
+}
+
+// guard is what 호위 does after u's melee attack on the struck: each ally next to one of them that has
+// 호위 and reaches u strikes back once at its share.
+func (e *Engine) guard(u *Unit, struck []*Unit) {
+	done := map[string]bool{}
+	for _, q := range struck {
+		for _, p := range ring {
+			w := e.occupied(q.X+p.X, q.Y+p.Y)
+			if w == nil || done[w.ID] || w.Faction != q.Faction || u.HP <= 0 {
+				continue
+			}
+			if k := e.fx(w, content.FxGuardian); k > 0 && e.inRange(w, u, e.basic()) {
+				done[w.ID] = true
+				e.strikeBack(w, []*Unit{u}, k, false)
+			}
+		}
+	}
 }
 
 // victims are the units a physical action strikes with the share of full damage each takes.
@@ -337,14 +465,11 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 			share[q.ID] = k
 		}
 	}
-	full := e.has(u, content.FxFullShare)
-	side := func(q *Unit, k float64) { // struck besides the target: never more than the rules' share, or in full for 위압
-		if full {
-			k = 1
-		} else if m := e.data.Rules.SideShareMax; m > 0 {
+	side := func(q *Unit, k float64) { // struck besides the target: never more than the rules' share, raised by 참격
+		if m := e.data.Rules.SideShareMax; m > 0 {
 			k = math.Min(k, m)
 		}
-		add(q, k)
+		add(q, k+e.fx(u, content.FxHeavy))
 	}
 	if s.Shape != content.ShapeSingle {
 		for _, aim := range e.targets(u, v, s) {
@@ -371,15 +496,12 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 			}
 		}
 	}
-	if k := e.fx(u, content.FxSweepArc); k > 0 && adjacent(u.X, u.Y, v.X, v.Y) && !e.rangedAttack(u, v, s) {
-		for _, d := range arcAhead(sign(v.X-u.X), sign(v.Y-u.Y)) {
-			side(e.occupied(u.X+d.X, u.Y+d.Y), k)
-		}
+	if k := e.fx(u, content.FxFlank); k > 0 && !e.rangedAttack(u, v, s) {
+		dx, dy := sign(v.X-u.X), sign(v.Y-u.Y)
+		side(e.occupied(v.X-dy, v.Y+dx), k)
+		side(e.occupied(v.X+dy, v.Y-dx), k)
 	}
-	k := e.fx(u, content.FxPierce)
-	if s.Pierce > 0 {
-		k = math.Max(k, s.Pierce+e.fx(u, content.FxPierceBoost))
-	}
+	k := math.Max(e.fx(u, content.FxPierce), s.Pierce)
 	if k > 0 {
 		dx, dy := v.X-u.X, v.Y-u.Y
 		if abs(dx) >= abs(dy) {
@@ -392,29 +514,13 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 	return
 }
 
-// ring is the eight cells around a unit in compass order on the screen: N NE E SE S SW W NW.
+// ring is the eight cells around a unit.
 var ring = [8]content.Point{{X: -1, Y: -1}, {Y: -1}, {X: 1, Y: -1}, {X: 1}, {X: 1, Y: 1}, {Y: 1}, {X: -1, Y: 1}, {X: -1}}
 
-// arcAhead is the five cells of the ring ahead of a strike toward (dx, dy): that cell and two to each side of it.
-func arcAhead(dx, dy int) []content.Point {
-	for i, p := range ring {
-		if p.X == dx && p.Y == dy {
-			out := make([]content.Point, 0, 5)
-			for k := -2; k <= 2; k++ {
-				out = append(out, ring[(i+k+8)%8])
-			}
-			return out
-		}
-	}
-	return nil
-}
-
-// targets are the units a skill reaches, by its shape: those of the opposite side for harm, the caster's side for help.
+// targets are the units a skill reaches, by its shape: those of the opposite side for harm, the caster's
+// side for help, both for a mixed skill.
 func (e *Engine) targets(u, v *Unit, s content.Skill) []*Unit {
 	shape := s.Shape
-	if shape == content.ShapeSingle && s.Kind != content.KindPhysical && s.Mode != content.ModeSelf && u.Status["eightfold"].Turns > 0 {
-		shape = content.ShapeSquare
-	}
 	dx, dy := sign(v.X-u.X), 0
 	if abs(v.Y-u.Y) > abs(v.X-u.X) {
 		dx, dy = 0, sign(v.Y-u.Y)
@@ -425,8 +531,7 @@ func (e *Engine) targets(u, v *Unit, s content.Skill) []*Unit {
 		if q.HP <= 0 {
 			continue
 		}
-		friendly := s.Kind == content.KindHeal || s.Kind == content.KindBuff
-		if friendly != (q.Faction == u.Faction) {
+		if friendly(s) != (q.Faction == u.Faction) && s.Kind != content.KindMixed {
 			continue
 		}
 		in := false
@@ -450,6 +555,10 @@ func (e *Engine) targets(u, v *Unit, s content.Skill) []*Unit {
 	}
 	return out
 }
+
+// friendly tells whether the skill helps those it reaches.
+func friendly(s content.Skill) bool { return s.Kind == content.KindHeal || s.Kind == content.KindBuff }
+
 func (e *Engine) useSkill(u *Unit, c Command) error {
 	s, err := e.skillDef(c)
 	if err != nil {
@@ -459,6 +568,8 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 	if err != nil {
 		return err
 	}
+	e.caster, e.castMP = u.ID, u.MP
+	defer func() { e.caster = "" }()
 	if n := e.cost(u, s); n > 0 {
 		hp, _ := e.payable(u, n)
 		u.MP = max(0, u.MP-n)
@@ -485,12 +596,32 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 		}
 		for j := i - 1; j >= 0; j-- {
 			if hit := events[j]; hit.Kind == "damage" && hit.Target == event.Actor {
+				e.rout(e.unit(hit.Actor), e.unit(event.Actor))
 				e.retreatSweep(e.unit(hit.Actor), e.unit(event.Actor), false)
 				break
 			}
 		}
 	}
 	return nil
+}
+
+// rout is what 위압 and 위풍 do when u defeats v: the foes of u in the eight cells around v lose heart.
+func (e *Engine) rout(u, v *Unit) {
+	if u == nil || v == nil || u.HP <= 0 {
+		return
+	}
+	R := e.data.Rules
+	for id := range content.StatStatuses {
+		if !e.has(u, content.FxRout+id) {
+			continue
+		}
+		for _, p := range ring {
+			if q := e.occupied(v.X+p.X, v.Y+p.Y); q != nil && q.Faction != u.Faction {
+				e.applyStatus(q, id, R.BuffTurns, -R.BuffPercent)
+				e.emit("effect", u.ID, q.ID, 0)
+			}
+		}
+	}
 }
 
 // single is the attack an area skill makes on each of its targets, widened by the attacker's area traits
@@ -528,15 +659,20 @@ func (e *Engine) physical(u, v *Unit, s content.Skill, c Command) {
 // exchange is one attack on its victims with what answers it: allies' assists and the victims' counters.
 func (e *Engine) exchange(u, v *Unit, hit []*Unit, share map[string]float64, s content.Skill, c Command) {
 	hp := u.HP
+	melee := map[string]bool{}
+	for _, q := range hit {
+		melee[q.ID] = !e.rangedAttack(u, q, s)
+	}
 	dealt, total := e.attackOn(u, v, hit, s, share, false, false), 0
+	delete(u.Status, "sure_crit")
 	for _, q := range hit {
 		total += dealt[q.ID]
-		if !e.rangedAttack(u, q, s) {
+		if melee[q.ID] {
 			delete(q.Status, "guard")
 		}
-		if s.Effect == "provoke" && dealt[q.ID] > 0 {
-			e.applyStatus(q, "defense", e.data.Rules.BuffTurns, -e.data.Rules.BuffPercent)
-		}
+	}
+	if k := int(e.fx(u, content.FxChargeShock)); k > 0 && u.Steps >= k && melee[v.ID] && dealt[v.ID] > 0 && v.HP > 0 {
+		e.applyStatus(v, "defense", e.data.Rules.BuffTurns, -e.data.Rules.BuffPercent)
 	}
 	for _, id := range keys(e.unitIDs) {
 		w := e.unit(id)
@@ -556,8 +692,17 @@ func (e *Engine) exchange(u, v *Unit, hit []*Unit, share map[string]float64, s c
 		slices.SortStableFunc(reach, func(a, b *Unit) int { return btoi(b == v) - btoi(a == v) })
 		e.strikeBack(w, reach, k, false)
 	}
+	var struck []*Unit
+	for _, q := range hit {
+		if melee[q.ID] {
+			struck = append(struck, q)
+		}
+	}
 	for _, q := range hit {
 		e.counterBack(u, q)
+	}
+	e.guard(u, struck)
+	for _, q := range hit {
 		if n := dealt[q.ID]; n > 0 {
 			e.emit("attack-hit", u.ID, q.ID, n)
 			e.actionXP(u, q, c.Kind == "skill", q.HP == 0)
@@ -589,7 +734,7 @@ func (e *Engine) pouchHeal(v *Unit) {
 	}
 }
 
-// spell resolves a magic, status, buff or heal skill on every unit it reaches.
+// spell resolves a magic, status, buff, heal or mixed skill on every unit it reaches.
 func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 	R := e.data.Rules
 	hp := u.HP
@@ -598,10 +743,13 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 	apply := func(q *Unit, derived bool) {
 		if s.Kind == content.KindMagic {
 			struck = append(struck, q)
-			n, _, crit := e.strike(u, q, s, blow{share: 1})
+			n, hit, crit := e.strike(u, q, s, blow{share: 1})
 			dealt[q.ID] += n
 			if crit {
 				e.markCell(q.X, q.Y, s.Element)
+			}
+			if hit && q.HP > 0 && e.has(u, content.FxDispelBuffs) {
+				stripBuffs(q)
 			}
 			if !derived && e.has(q, content.FxReflect) && q.HP > 0 && u.HP > 0 {
 				e.strike(q, u, s, blow{share: 1, derived: true})
@@ -611,6 +759,10 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 		if float64(e.rand(100)) >= e.hitChance(u, q, s) {
 			e.emit("miss", u.ID, q.ID, 0)
 			return
+		}
+		if s.Kind == content.KindStatus && !derived && q.Faction != u.Faction && e.has(q, content.FxReflectStatus) {
+			e.emit("effect", q.ID, u.ID, 0)
+			q = u // 역계: the status turns back on its caster
 		}
 		useful := false
 		recovered := 0
@@ -632,16 +784,27 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 		case "refill":
 			recovered = min(e.stats(q).MaxMP-q.MP, int(s.Coeff))
 			q.MP += recovered
-		case "attack", "defense", "mind", "morale", "agility", "disrupt":
-			p := R.BuffPercent
-			if s.Kind == content.KindStatus {
-				p = -p
+		case "invert":
+			for k, st := range q.Status {
+				if content.StatStatuses[k] && st.Value > 0 {
+					st.Value = -st.Value
+					q.Status[k] = st
+				}
 			}
-			e.applyStatus(q, s.Effect, turns, p)
 		case "speed", "range":
 			e.applyStatus(q, s.Effect, turns, int(s.Coeff))
 		default:
-			e.applyStatus(q, s.Effect, turns, 0)
+			if parts := strings.Split(s.Effect, "+"); content.StatStatuses[parts[0]] || s.Effect == "disrupt" {
+				p := R.BuffPercent
+				if s.Kind == content.KindStatus || s.Kind == content.KindMixed && q.Faction != u.Faction {
+					p = -p
+				}
+				for _, id := range parts {
+					e.applyStatus(q, id, turns, p)
+				}
+			} else {
+				e.applyStatus(q, s.Effect, turns, 0)
+			}
 		}
 		e.emit("effect", u.ID, q.ID, recovered)
 		// Support spells provide training too. Full-health healing does not.
@@ -649,19 +812,13 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 			e.xp(u.Character, e.supportXP(u, q))
 		}
 	}
-	for _, q := range e.targets(u, v, s) {
+	reached := e.targets(u, v, s)
+	for _, q := range reached {
 		apply(q, false)
 	}
-	if s.Kind == content.KindMagic && s.Shape != content.ShapeAll && s.Mode != content.ModeSelf && e.has(u, content.FxChain) {
-		near := []*Unit{}
-		for _, id := range keys(e.unitIDs) {
-			q := e.unit(id)
-			if q.ID != v.ID && q.Faction == v.Faction && q.HP > 0 && abs(q.X-v.X) <= 1 && abs(q.Y-v.Y) <= 1 {
-				near = append(near, q)
-			}
-		}
-		if len(near) > 0 {
-			apply(near[e.rand(len(near))], false)
+	if s.Shape == content.ShapeSingle && s.Mode != content.ModeSelf && e.has(u, content.FxChain) {
+		if q := e.weakestAround(v, v.Faction); q != nil {
+			apply(q, false)
 		}
 	}
 	for _, q := range struck {
@@ -671,8 +828,42 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 			e.pouchHeal(q)
 		}
 	}
+	if k := e.fx(u, content.FxSpellLeech); k > 0 && s.Kind == content.KindMagic && u.HP > 0 {
+		n := min(e.stats(u).MaxHP-u.HP, int(float64(e.stats(u).MaxHP)*k))
+		u.HP += n
+		e.emit("heal", u.ID, u.ID, n)
+	}
 	if u.HP < hp {
 		e.pouchHeal(u) // hurt by a reflected spell
+	}
+}
+
+// weakestAround is the living unit of the faction in the eight cells around v with the least HP (the first
+// in id order on a tie), or nil: the one 연환 and 보급 also reach.
+func (e *Engine) weakestAround(v *Unit, faction string) *Unit {
+	var best *Unit
+	for _, id := range keys(e.unitIDs) {
+		w := e.unit(id)
+		if w.ID == v.ID || w.HP <= 0 || w.Faction != faction || abs(w.X-v.X) > 1 || abs(w.Y-v.Y) > 1 {
+			continue
+		}
+		if best == nil || w.HP < best.HP {
+			best = w
+		}
+	}
+	return best
+}
+
+// buffStatuses are the statuses that help their holder besides stat raises: 파진 strips them with those.
+var buffStatuses = map[string]bool{"speed": true, "range": true, "counter": true, "guard": true, "sure_crit": true,
+	"stance_pierce": true, "stance_cross": true, "stance_square": true}
+
+// stripBuffs removes every buff the unit holds.
+func stripBuffs(q *Unit) {
+	for k, st := range q.Status {
+		if buffStatuses[k] || content.StatStatuses[k] && st.Value > 0 {
+			delete(q.Status, k)
+		}
 	}
 }
 
@@ -702,18 +893,19 @@ func (e *Engine) useItem(u *Unit, c Command) error {
 	stock[c.Item]--
 	users := []*Unit{v}
 	if e.has(u, content.FxItemShare) {
-		for _, id := range keys(e.unitIDs) {
-			if w := e.unit(id); w.ID != v.ID && w.HP > 0 && w.Faction == u.Faction && dist(w.X, w.Y, v.X, v.Y) == 1 {
-				users = append(users, w)
-				break
-			}
+		if w := e.weakestAround(v, u.Faction); w != nil {
+			users = append(users, w)
 		}
 	}
-	n := e.healAmount(u, float64(it.Amount))
+	times := 1
+	if e.has(u, content.FxItemDouble) {
+		times = 2 // 물심양면: the item works twice, and teaches twice
+	}
+	n := e.healAmount(u, float64(it.Amount*times))
 	for _, w := range users {
 		actual := 0
 		if it.Effect == content.ItemMP {
-			actual = min(e.stats(w).MaxMP-w.MP, it.Amount)
+			actual = min(e.stats(w).MaxMP-w.MP, it.Amount*times)
 			w.MP += actual
 		} else {
 			actual = min(e.stats(w).MaxHP-w.HP, n)
@@ -721,7 +913,7 @@ func (e *Engine) useItem(u *Unit, c Command) error {
 		}
 		e.emit("item", u.ID, w.ID, actual)
 		if actual > 0 && u.Faction == "ally" {
-			e.xp(u.Character, e.supportXP(u, w)) // like a support spell; a full bar teaches nothing
+			e.xp(u.Character, e.supportXP(u, w)*times) // like a support spell; a full bar teaches nothing
 		}
 	}
 	return nil
@@ -784,6 +976,12 @@ func (e *Engine) endFaction() {
 		if !u.ActsIn(ending, endingArmy) {
 			continue
 		}
+		if u.HP > 0 && e.has(u, content.FxVillageForage) && e.CellProps(u.X, u.Y).Village {
+			for _, item := range R.ForageItems {
+				e.stock(u)[item]++
+			}
+			e.emit("forage", u.ID, "", 0)
+		}
 		for _, k := range keys(u.Status) {
 			s := u.Status[k]
 			if k == "counter" {
@@ -835,7 +1033,11 @@ func (e *Engine) endFaction() {
 				delete(u.Status, k)
 			}
 		}
+		if e.has(u, content.FxPassAilments) {
+			e.passAilments(u)
+		}
 		delete(u.Status, "counter")
+		u.Steps = 0
 		st := e.stats(u)
 		if u.Status["poison"].Turns > 0 {
 			e.dot(u, "poison", st.MaxHP*R.PoisonPercent/100)
@@ -850,6 +1052,7 @@ func (e *Engine) endFaction() {
 			continue
 		}
 		hp[id], mp[id] = u.HP, u.MP
+		lost := st.MaxHP - u.HP
 		r := int(float64(st.Recovery) * (1 + e.fx(u, content.FxManaRegen)))
 		heal := func(n int) { u.HP = min(st.MaxHP, u.HP+e.healAmount(u, float64(n))) }
 		t := e.CellProps(u.X, u.Y)
@@ -859,38 +1062,65 @@ func (e *Engine) endFaction() {
 		if t.RestMP > 0 {
 			r *= t.RestMP
 		}
-		if k := int(e.fx(u, content.FxTurnDefense)); k > 0 {
-			e.applyStatus(u, "defense", R.BuffTurns, k)
+		for id, k := range e.turnBuffs(u) {
+			e.applyStatus(u, id, R.BuffTurns, k)
 		}
-		if e.has(u, content.FxFortify) && t.Castle {
-			e.applyStatus(u, "defense", R.BuffTurns, R.BuffPercent)
+		if k := int(e.fx(u, content.FxFortify)); k > 0 && t.Castle {
+			e.applyStatus(u, "defense", R.BuffTurns, k)
 		}
 		if k := e.fx(u, content.FxRegen); k > 0 {
 			heal(int(float64(st.MaxHP) * k))
+		}
+		if k := e.fx(u, content.FxWoundRegen); k > 0 {
+			heal(int(float64(lost) * k))
 		}
 		u.MP = min(st.MaxMP, u.MP+r)
 		if k := int(e.fx(u, content.FxHaste)); k > 0 {
 			e.applyStatus(u, "speed", R.BuffTurns, k)
 		}
-		if k := int(e.fx(u, content.FxFarSight)); k > 0 {
-			e.applyStatus(u, "range", R.BuffTurns, k)
+		if k := int(e.fx(u, content.FxWoundedHaste)); k > 0 && e.wounded(u) {
+			e.applyStatus(u, "speed", R.BuffTurns, k)
 		}
 		u.Moved = false
 		u.Acted = false
 		u.Attacked = false
 		u.Done = false
 	}
-	// Auras are deduplicated per recipient, independent of component iteration order.
+	// Auras are deduplicated per recipient, independent of component iteration order: each kind
+	// comes once, from the first neighbour that has it.
 	for _, id := range keys(e.unitIDs) {
 		v := e.unit(id)
 		if !v.ActsIn(starting, e.state.Army) || v.HP <= 0 {
 			continue
 		}
+		got := map[string]bool{}
 		for _, aid := range keys(e.unitIDs) {
 			u := e.unit(aid)
-			if k := e.fx(u, content.FxAura); k > 0 && u.ID != v.ID && u.HP > 0 && u.Faction == v.Faction && abs(u.X-v.X) <= 1 && abs(u.Y-v.Y) <= 1 {
-				v.HP = min(e.stats(v).MaxHP, v.HP+e.healAmount(v, float64(e.stats(v).MaxHP)*k))
-				break
+			if u.ID == v.ID || u.HP <= 0 || u.Faction != v.Faction || abs(u.X-v.X) > 1 || abs(u.Y-v.Y) > 1 {
+				continue
+			}
+			once := func(key string) float64 {
+				k := e.fx(u, key)
+				if k <= 0 || got[key] {
+					return 0
+				}
+				got[key] = true
+				return k
+			}
+			st := e.stats(v)
+			if k := once(content.FxAura); k > 0 {
+				v.HP = min(st.MaxHP, v.HP+e.healAmount(v, float64(st.MaxHP)*k))
+			}
+			if k := once(content.FxAuraMana); k > 0 {
+				v.MP = min(st.MaxMP, v.MP+int(float64(st.MaxMP)*k))
+			}
+			if k := once(content.FxAuraHaste); k > 0 {
+				e.applyStatus(v, "speed", R.BuffTurns, int(k))
+			}
+			for sid := range content.StatStatuses {
+				if k := once(content.FxAuraBuff + sid); k > 0 {
+					e.applyStatus(v, sid, R.BuffTurns, int(k))
+				}
 			}
 		}
 	}
@@ -906,11 +1136,36 @@ func (e *Engine) endFaction() {
 	e.emit("turn", "", starting, e.state.Round)
 	e.events[len(e.events)-1].Text = e.state.Army
 }
+
+// passAilments is 전가: the unit's harmful statuses and stat debuffs pass to one adjacent ally.
+func (e *Engine) passAilments(u *Unit) {
+	for _, p := range ring {
+		w := e.occupied(u.X+p.X, u.Y+p.Y)
+		if w == nil || w.Faction != u.Faction {
+			continue
+		}
+		moved := false
+		for _, k := range keys(u.Status) {
+			if st := u.Status[k]; content.Harmful[k] || content.StatStatuses[k] && st.Value < 0 {
+				w.Status[k] = st
+				delete(u.Status, k)
+				moved = true
+			}
+		}
+		if moved {
+			e.emit("effect", u.ID, w.ID, 0)
+		}
+		return
+	}
+}
 func (e *Engine) dot(v *Unit, id string, n int) {
 	if v.HP <= 0 {
 		return
 	}
 	if source := e.unit(v.Status[id].Source); source != nil {
+		if id == "poison" {
+			n = int(float64(n) * (1 + e.fx(source, content.FxPoisonBoost)))
+		}
 		actual := e.hurt(v, n, source)
 		if actual > 0 && v.HP == 0 {
 			e.actionXP(source, v, false, true)

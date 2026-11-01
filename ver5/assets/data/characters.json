@@ -18,9 +18,12 @@
    "Playable": true,
    "Traits": [],
    "Learn": [
+    "vitality",
+    "chivalry",
     "benevolence",
     "employment",
-    "supply"
+    "supply",
+    "fortune"
    ],
    "Equipment": [
     "iron_sword",
@@ -56,11 +59,11 @@
    "Playable": true,
    "Traits": [],
    "Learn": [
-    "valor",
+    "intimidate",
     "relentless",
-    "warlord",
     "deadly",
-    "counter_art"
+    "counter_art",
+    "hundred_foes"
    ],
    "Equipment": [
     "iron_spear",
@@ -96,11 +99,12 @@
    "Playable": true,
    "Traits": [],
    "Learn": [
-    "battle_fury",
     "sweep_art",
     "relentless",
     "cross_strike",
-    "square_strike"
+    "square_strike",
+    "grit",
+    "hundred_foes"
    ],
    "Equipment": [
     "iron_spear",
@@ -137,9 +141,7 @@
    "Traits": [],
    "Learn": [
     "supply",
-    "medicine",
-    "discipline",
-    "insight"
+    "medicine"
    ],
    "Equipment": [
     "short_bow",
@@ -227,10 +229,7 @@
     93
    ],
    "Level": 2,
-   "Traits": [
-    "fire",
-    "exhort"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
@@ -263,9 +262,7 @@
     53
    ],
    "Level": 6,
-   "Traits": [
-    "vital_strike"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
     "iron_spear",
@@ -335,9 +332,7 @@
     42
    ],
    "Level": 9,
-   "Traits": [
-    "valor"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
     "fangtian_halberd",
@@ -369,10 +364,7 @@
     43
    ],
    "Level": 7,
-   "Traits": [
-    "fire",
-    "stratagem"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
@@ -435,9 +427,7 @@
     92
    ],
    "Level": 3,
-   "Traits": [
-    "fire"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
@@ -467,10 +457,11 @@
    ],
    "Level": 8,
    "Points": 700,
-   "Traits": [
+   "Traits": [],
+   "Learn": [
+    "hundred_foes",
     "versatile"
    ],
-   "Learn": [],
    "Equipment": [
     "iron_spear",
     "leather_armor"
@@ -737,10 +728,7 @@
     77
    ],
    "Level": 9,
-   "Traits": [
-    "fire",
-    "water"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
@@ -769,9 +757,7 @@
     61
    ],
    "Level": 9,
-   "Traits": [
-    "water"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
@@ -799,10 +785,7 @@
     57
    ],
    "Level": 8,
-   "Traits": [
-    "fire",
-    "stratagem"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
@@ -882,13 +865,10 @@
     96
    ],
    "Level": 14,
-   "Traits": [
-    "civil_martial",
-    "versatile"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [
-    "yitian_sword",
+    "iron_spear",
     "leather_armor"
    ],
    "Look": {
@@ -1068,9 +1048,7 @@
    ],
    "Level": 4,
    "Template": true,
-   "Traits": [
-    "fire"
-   ],
+   "Traits": [],
    "Learn": [],
    "Equipment": [],
    "Look": {}

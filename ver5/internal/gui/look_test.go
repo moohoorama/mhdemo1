@@ -1,10 +1,12 @@
 package gui
 
 import (
+	"slices"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"srpg/internal/content"
 	"srpg/internal/core"
 )
 
@@ -39,21 +41,31 @@ func TestSpriteFollowsTheClassAndShootsInItsOwnLook(t *testing.T) {
 	assert.Equal(t, "horse_archer", shoot("zhaoyun"), "no own look for the class: the class's, never the spear sprite")
 }
 
-func TestShootingLookIsUsedOnlyBeyondTheEightCells(t *testing.T) {
+func TestShootingLookIsUsedBeyondTheMeleeReach(t *testing.T) {
 	g, _, _, _, _ := stoneGame(t)
-	shoot := g.shootArt("lubu", "horse_archer", "dong")
-	actor := &unitVis{id: "x-actor", u: 5, v: 5, shoot: shoot}
 	attack := core.Command{Kind: "attack"}
+	actor := &unitVis{id: "guanyu", u: 5, v: 5, shoot: g.shootArt("lubu", "horse_archer", "dong")}
+	far := &unitVis{id: "x-target", u: 7, v: 5}
+	assert.False(t, g.shootsFromRange(actor, far, attack, nil), "a rider without 기사 never shoots")
+	st := g.S.Engine.Snapshot()
+	for i := range st.Characters {
+		if st.Characters[i].ID == "guanyu" {
+			st.Characters[i].Learned = append(st.Characters[i].Learned, "horse_archery")
+		}
+	}
+	e, err := core.Restore(g.S.Data, st)
+	require.NoError(t, err)
+	g.S.Engine = e
 	for _, c := range []struct {
 		u, v float64
 		want bool
-	}{{6, 5, false}, {6, 6, false}, {4, 4, false}, {7, 5, true}, {6, 7, true}, {5, 8, true}} {
+	}{{6, 5, false}, {5, 4, false}, {6, 6, true}, {4, 4, true}, {7, 5, true}, {5, 7, true}} {
 		target := &unitVis{id: "x-target", u: c.u, v: c.v}
-		assert.Equal(t, c.want, g.shootsFromRange(actor, target, attack), "target at (%v,%v)", c.u, c.v)
+		assert.Equal(t, c.want, g.shootsFromRange(actor, target, attack, nil), "target at (%v,%v)", c.u, c.v)
 	}
-	far := &unitVis{id: "x-target", u: 8, v: 5}
-	assert.False(t, g.shootsFromRange(&unitVis{id: "x-actor", u: 5, v: 5}, far, attack), "no shoot look")
-	assert.False(t, g.shootsFromRange(actor, far, core.Command{Kind: "skill"}), "skills keep the normal look")
+	knocked := []core.Event{{Kind: "knockback", Target: "x-target", Path: []content.Point{{X: 6, Y: 5}, {X: 7, Y: 5}}}}
+	assert.False(t, g.shootsFromRange(actor, far, attack, knocked), "judged where the target stood before it was pushed")
+	assert.False(t, g.shootsFromRange(actor, far, core.Command{Kind: "skill"}, nil), "skills keep the normal look")
 }
 
 func TestBattleUnitTakesItsNewLookWhenItsWeaponOrClassChanges(t *testing.T) {
@@ -72,7 +84,7 @@ func TestBattleUnitTakesItsNewLookWhenItsWeaponOrClassChanges(t *testing.T) {
 		return g.vis[u.ID]
 	}
 	first := shown("zhaoyun", "light_cavalry", "spear")
-	assert.Equal(t, "zhaoyun", first.art.ID)
+	assert.Equal(t, "zhaoyun_light", first.art.ID)
 	first.dir = "NE"
 	sword := shown("zhaoyun", "light_cavalry", "sword")
 	assert.Same(t, first, sword, "the same unit, only its picture changes")
@@ -88,17 +100,36 @@ func TestBattleUnitTakesItsNewLookWhenItsWeaponOrClassChanges(t *testing.T) {
 // class with the look and stats it would bring.
 func TestInsuOffersEachClassAndThePickDecides(t *testing.T) {
 	g, _, _, _, _ := stoneGame(t)
+	// a light cavalry officer without looks of his own for the classes (관평) takes the place of the first
+	// one that has a line of them (an officer with named looks promotes only into those classes)
 	snap := g.S.Engine.Snapshot()
-	officer := ""
-	for _, u := range snap.Units {
-		for j, c := range snap.Characters {
-			if u.Faction == "ally" && c.ID == u.Character && c.Class == "light_cavalry" && officer == "" {
-				officer = c.ID
-				snap.Characters[j].Level = 15
-			}
+	officer, rider := "", ""
+	for id, c := range g.S.Data.Characters {
+		if c.Playable && c.Class == "light_cavalry" && len(c.Look.Sprites) == 0 && (officer == "" || id < officer) {
+			officer = id
 		}
 	}
-	require.NotEmpty(t, officer)
+	require.NotEmpty(t, officer, "no light cavalry officer without looks of his own")
+	for j, c := range snap.Characters {
+		if c.Class == "light_cavalry" && slices.Contains(snap.Deployment, c.ID) && rider == "" {
+			rider = c.ID
+			o := c
+			o.ID, o.Def, o.Level = officer, officer, 15
+			snap.Characters = append(snap.Characters, o)
+			snap.Characters[j].Equipment = map[string]string{}
+		}
+	}
+	require.NotEmpty(t, rider)
+	for i, id := range snap.Deployment {
+		if id == rider {
+			snap.Deployment[i] = officer
+		}
+	}
+	for i := range snap.Units {
+		if snap.Units[i].ID == rider {
+			snap.Units[i].ID, snap.Units[i].Character = officer, officer
+		}
+	}
 	snap.Inventory["insu_mid"], snap.Inventory["insu_high"] = 1, 1
 	e, err := core.Restore(g.S.Data, snap)
 	require.NoError(t, err)

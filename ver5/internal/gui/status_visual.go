@@ -14,13 +14,13 @@ type statusIcon struct {
 
 func unitStatusIcons(status map[string]core.Status) []statusIcon {
 	icons := []statusIcon{}
-	for _, id := range []string{"attack", "defense", "agility", "mind", "morale", "speed", "range", "counter", "eightfold", "weak"} {
+	for _, id := range []string{"attack", "defense", "agility", "mind", "morale", "speed", "range", "counter", "weak"} {
 		s := status[id]
 		if s.Turns <= 0 {
 			continue
 		}
 		down := s.Value < 0 || id == "weak"
-		if s.Value == 0 && id != "counter" && id != "eightfold" && id != "weak" {
+		if s.Value == 0 && id != "counter" && id != "weak" {
 			continue
 		}
 		icons = append(icons, statusIcon{kind: id, down: down})

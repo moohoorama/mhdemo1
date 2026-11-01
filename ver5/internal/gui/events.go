@@ -63,6 +63,10 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		return fmt.Sprintf("%s: 병력 +%d", a, e.Amount), false
 	case "pouch-heal":
 		return fmt.Sprintf("%s: 주머니의 콩을 먹음 병력 +%d", a, e.Amount), false
+	case "knockback":
+		return fmt.Sprintf("%s: %s을(를) 밀어냄", a, t), false
+	case "forage":
+		return a + ": 마을에서 보리·콩을 얻음", false
 	case "recover-mp":
 		return fmt.Sprintf("%s: 병법치 +%d", a, e.Amount), false
 	case "move", "place":
@@ -143,7 +147,8 @@ func factionName(f string) string {
 }
 
 // statusLabels are the engine's status ids as the screen names them.
-var statusLabels = map[string]string{"speed": "신속", "range": "원시", "counter": "반격", "eightfold": "팔진",
+var statusLabels = map[string]string{"speed": "신속", "range": "사거리", "counter": "반격", "sure_crit": "필치",
+	"stance_pierce": "찔러", "stance_cross": "사방", "stance_square": "팔방",
 	"mind": "정신", "morale": "사기", "attack": "공격", "defense": "방어", "agility": "순발", "poison": "중독", "burn": "화상",
 	"confusion": "혼란", "seal": "봉책", "root": "속박", "disarm": "봉격", "weak": "약화",
 	"guard": "경계", "disrupt": "교란"}

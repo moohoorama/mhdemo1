@@ -175,7 +175,10 @@
    "Y": 21,
    "Facing": "SW",
    "Group": "westcamp",
-   "Policy": "react"
+   "Policy": "react",
+   "Traits": [
+    "fire"
+   ]
   },
   {
    "Character": "troop_turban",
@@ -709,7 +712,15 @@
        "Policy": "assault",
        "Faction": "wei",
        "Facing": "SW",
-       "Group": "wei"
+       "Group": "wei",
+       "Traits": [
+        "civil_martial",
+        "versatile"
+       ],
+       "Equipment": [
+        "yitian_sword",
+        "leather_armor"
+       ]
       },
       {
        "Character": "xiahoudun",

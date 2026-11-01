@@ -50,8 +50,8 @@ func TestStatesOverlayTheLayersBelow(t *testing.T) {
 
 func TestRecoveryAndConditionsAcrossLayers(t *testing.T) {
 	d := loadReal(t)
-	assert.Equal(t, CellProps{RestHP: 10, RestMP: 2}, d.Props(cell("gv-")))
-	assert.Equal(t, CellProps{RestHP: -10, RestMP: 2}, d.Props(cell("gve")), "embers burn away a village's healing, its spell recovery stays")
+	assert.Equal(t, CellProps{RestHP: 10, RestMP: 2, Village: true}, d.Props(cell("gv-")))
+	assert.Equal(t, CellProps{RestHP: -10, RestMP: 2, Village: true}, d.Props(cell("gve")), "embers burn away a village's healing, its spell recovery stays")
 	assert.Equal(t, CellProps{RestHP: 20, RestMP: 3, Castle: true}, d.Props(cell("ip-")))
 	assert.True(t, d.Props(cell("gt-")).Ambush)
 	assert.True(t, d.Props(cell("gtF")).Ambush, "an ambush is a condition: any layer may give it")

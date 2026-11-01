@@ -47,7 +47,7 @@
    "Per": 30,
    "Max": 70
   },
-  "CounterShare": 0.7,
+  "CounterShare": 1.0,
   "PlainCounterShare": 0.5,
   "DoubleShare": 0.5,
   "PoisonPercent": 5,
@@ -64,7 +64,7 @@
    "earth": {"d": 15}
   },
   "BuffPercent": 20,
-  "BuffTurns": 2,
+  "BuffTurns": 3,
   "ExpGrowth": 1.035,
   "ExpAction": 24,
   "ExpSpell": 2,
@@ -85,6 +85,14 @@
   "StageLevelBase": 3,
   "StageLevelStep": 1.5,
   "SideShareMax": 0.5,
+  "ForageItems": ["barley", "bean"],
+  "EnemyTraits": {
+   "light_infantry": [{"Level": 10, "Trait": "diagonal"}],
+   "heavy_infantry": [{"Level": 10, "Trait": "diagonal"}],
+   "guards": [{"Level": 10, "Trait": "diagonal"}],
+   "pikeman": [{"Level": 10, "Trait": "diagonal"}, {"Level": 15, "Trait": "long_spear"}],
+   "chariot": [{"Level": 10, "Trait": "diagonal"}, {"Level": 15, "Trait": "long_spear"}]
+  },
   "RankLead": {
    "rabble": -0.14,
    "recruit": -0.07,
@@ -213,7 +221,8 @@
   "i": {
    "Name": "성내",
    "Glyph": "i",
-   "Surface": 4
+   "Surface": 4,
+   "Castle": true
   },
   "h": {
    "Name": "절벽",
@@ -243,7 +252,8 @@
   "n": {
    "Name": "산",
    "Glyph": "n",
-   "Surface": 2
+   "Surface": 2,
+   "Ambush": true
   }
  },
  "Structures": {
@@ -258,7 +268,8 @@
    "Glyph": "v",
    "Grounds": "gdil",
    "RestHP": 10,
-   "RestMP": 2
+   "RestMP": 2,
+   "Village": true
   },
   "k": {
    "Name": "주둔지",

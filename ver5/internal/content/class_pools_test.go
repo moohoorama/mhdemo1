@@ -5,14 +5,16 @@ import (
 	"testing"
 )
 
-// classPools is trait-design-v2 section 8 as the data bundle teaches it.
+// classPools is the classified trait draft (_newfeature.md section 2) as the data bundle teaches it.
 var classPools = map[string][]string{
-	"light_infantry":     {"guard_prep", "fire", "first_aid"},
+	"light_infantry":     {"diagonal", "fire", "first_aid"},
 	"heavy_infantry":     {"deputy_appoint", "brace_prep", "assist"},
-	"guards":             {"castle_defense", "ironwall", "siegecraft"},
+	"guards":             {"castle_defense", "siegecraft", "composure"},
+	"pikeman":            {"deputy_appoint", "long_spear", "pierce"},
 	"light_cavalry":      {"dash", "disrupt_prep", "provoke_prep"},
-	"heavy_cavalry":      {"deputy_appoint", "thrust_art", "breakthrough"},
-	"royal_guard":        {"gale", "charge", "chain_thrust_art"},
+	"heavy_cavalry":      {"deputy_appoint", "breakthrough", "charge"},
+	"royal_guard":        {"gale", "vital_strike"},
+	"horse_archer":       {"deputy_appoint", "snipe_prep", "retaliate"},
 	"archer":             {"relief", "snipe_prep", "aim_prep"},
 	"crossbow":           {"deputy_appoint", "water", "fire_arrow_art", "reload_prep"},
 	"repeating_crossbow": {"exhort", "rapid_art", "penetrate_art"},
@@ -56,7 +58,8 @@ func TestEveryLearnableSkillTraitOpensASkill(t *testing.T) {
 			}
 		}
 	}
-	for _, trait := range []string{"guard_prep", "brace_prep", "first_aid", "disrupt_prep", "provoke_prep", "thrust_art", "chain_thrust_art",
+	for _, trait := range []string{"guard_prep", "brace_prep", "first_aid", "disrupt_prep", "provoke_prep", "press_prep", "rebuke_prep",
+		"slander_prep", "focus", "spirit_prep", "ambition", "inspire_prep", "extend_prep", "stance_prep", "steal_art",
 		"snipe_prep", "aim_prep", "fire_arrow_art", "reload_prep", "rapid_art", "penetrate_art"} {
 		if !opens[trait] {
 			t.Errorf("trait %s opens no skill", trait)

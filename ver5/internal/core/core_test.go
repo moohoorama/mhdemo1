@@ -182,7 +182,7 @@ func TestMovementTraitsAndRiders(t *testing.T) {
 	e.char("hero").Class = "rider"
 	e.char("hero").Equipment = map[string]string{}
 	with(e, "hero", "steed")
-	if lo, hi = e.AttackRange("hero"); lo != 1 || hi != 2 || e.movement(a) != 5+1+3 {
+	if lo, hi = e.AttackRange("hero"); lo != 1 || hi != 2 || e.movement(a) != 5+3 {
 		t.Fatalf("steed %d-%d move %d", lo, hi, e.movement(a))
 	}
 }
@@ -207,15 +207,15 @@ func TestForcedCriticalsAndImmunity(t *testing.T) {
 		t.Fatal("a blocked blow dealt damage")
 	}
 }
-func TestCritAgainstWeakerMight(t *testing.T) {
-	e, hero, boss := arena(t) // might: hero 76, boss 80
+func TestCritAgainstTheWounded(t *testing.T) {
+	e, hero, boss := arena(t)
 	with(e, "hero", "weak_crit")
 	if e.critForced(hero, boss, e.basic()) {
-		t.Fatal("the hero is weaker than the boss")
+		t.Fatal("the boss is unhurt")
 	}
-	with(e, "boss", "weak_crit")
-	if !e.critForced(boss, hero, e.basic()) {
-		t.Fatal("the boss out-mights the hero")
+	boss.HP = e.stats(boss).MaxHP / 2
+	if !e.critForced(hero, boss, e.basic()) || !e.critForced(hero, boss, e.data.Skills["flame"]) {
+		t.Fatal("at half HP every attack on it crits")
 	}
 }
 func TestAmbushCrit(t *testing.T) {
@@ -300,30 +300,6 @@ func TestPreviewDamageIsEachTargetsOwn(t *testing.T) {
 		t.Fatalf("bulwark: %d, raw %.1f, limit %.1f", p.CritDamage[b.ID], crit, limit)
 	}
 }
-func TestClassTraits(t *testing.T) {
-	e, a, b := arena(t)
-	t1 := e.unit("troop#1")
-	t1.HP, t1.X, t1.Y = e.stats(t1).MaxHP, 6, 5
-	hero := e.char("hero")
-	cl := e.data.Classes[hero.Class]
-	cl.Traits = []string{"cross_t"}
-	e.data.Classes[hero.Class] = cl
-	if !e.hasTrait(hero, "cross_t") {
-		t.Fatal("class trait not held")
-	}
-	if hit, share := e.victims(a, b, e.basic()); len(hit) != 2 || share["troop#1"] != .75 {
-		t.Fatalf("class cross %v %v", hit, share)
-	}
-	for _, id := range e.learnable(hero) {
-		if id == "cross_t" {
-			t.Fatal("a class trait is offered for learning")
-		}
-	}
-	hero.Class = "rider"
-	if e.hasTrait(hero, "cross_t") {
-		t.Fatal("class trait kept after the class changed")
-	}
-}
 func answered(r Result, from, to string) bool {
 	for _, ev := range r.Events {
 		if (ev.Kind == "damage" || ev.Kind == "miss") && ev.Actor == from && ev.Target == to {
@@ -341,13 +317,36 @@ func TestEveryUnitCountersAndStancesCounterHarder(t *testing.T) {
 	e2, _, b2 := arena(t)
 	plain := e2.CounterDamage(c)
 	b2.Status["counter"] = Status{Turns: 2}
-	stance := e2.CounterDamage(c)
-	// 투신-like: the boss out-mights the hero, so it counters as hard as a stance and surely twice
-	e3, _, _ := arena(t)
-	with(e3, "boss", "counter_t")
-	forced := e3.CounterDamage(c)
-	if plain == 0 || plain >= stance || stance >= forced {
-		t.Fatalf("counter previews should grow plain %d < stance %d < forced %d", plain, stance, forced)
+	if stance := e2.CounterDamage(c); plain == 0 || plain >= stance {
+		t.Fatalf("counter previews should grow plain %d < stance %d", plain, stance)
+	}
+}
+func TestRetaliateAnswersFromAnyDistance(t *testing.T) {
+	setup := func(t *testing.T) *Engine {
+		e, _, _ := arena(t)
+		e.char("hero").Class = "archer"
+		e.char("hero").Equipment = map[string]string{}
+		e.unit("hero").X = 3
+		return e
+	}
+	c := Command{Kind: "attack", Actor: "hero", Target: "boss"}
+	e := setup(t)
+	if e.CounterDamage(c) != 0 {
+		t.Fatal("the boss's sword does not reach the archer")
+	}
+	with(e, "boss", "counter_t")
+	if e.CounterDamage(c) == 0 {
+		t.Fatal("응징 strikes back beyond its reach")
+	}
+	r := apply(t, e, c)
+	if !answered(r, "boss", "hero") {
+		t.Fatal("응징 answered no shot")
+	}
+	e2 := setup(t)
+	with(e2, "boss", "counter_t")
+	sage(e2, 4, 6)
+	if r := apply(t, e2, Command{Kind: "skill", Actor: "sage", Target: "boss", Skill: "flame"}); answered(r, "boss", "sage") {
+		t.Fatal("응징 never answers a spell")
 	}
 }
 func TestAClassWithoutReachNeitherStrikesNorStrikesBack(t *testing.T) {
@@ -365,21 +364,21 @@ func TestAClassWithoutReachNeitherStrikesNorStrikesBack(t *testing.T) {
 		}
 	}
 }
-func TestRiposteAnswersEveryMiss(t *testing.T) {
-	e, _, _ := arena(t)
-	with(e, "boss", "riposte_t", "shield")
-	e.char("hero").Class = "archer"
-	e.char("hero").Equipment = map[string]string{}
-	e.unit("hero").X = 3
-	for i := 0; i < 4; i++ {
-		resetActions(e.unit("hero"))
-		r := apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
-		if !answered(r, "boss", "hero") {
-			t.Fatal("ranged_immune makes every shot miss and the riposte answers")
-		}
-		e.unit("boss").HP = e.stats(e.unit("boss")).MaxHP
-		e.unit("hero").HP = e.stats(e.unit("hero")).MaxHP
-		e.state.Phase, e.state.Result = "battle", ""
+func TestGuardianAnswersForANeighbour(t *testing.T) {
+	e, _, _ := arena(t) // hero (5,6) strikes the boss (6,6)
+	t1 := e.unit("troop#1")
+	t1.HP, t1.X, t1.Y = e.stats(t1).MaxHP, 5, 5 // beside the boss, and its sword reaches the hero
+	with(e, "troop#1", "riposte_t")
+	r := apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
+	if !answered(r, "troop#1", "hero") {
+		t.Fatal("호위 answers a melee blow on its neighbour")
+	}
+	e2, _, _ := arena(t)
+	t1 = e2.unit("troop#1")
+	t1.HP, t1.X, t1.Y = e2.stats(t1).MaxHP, 7, 7 // beside the boss, the hero out of its reach
+	with(e2, "troop#1", "riposte_t")
+	if r := apply(t, e2, Command{Kind: "attack", Actor: "hero", Target: "boss"}); answered(r, "troop#1", "hero") {
+		t.Fatal("호위 needs the attacker in its reach")
 	}
 }
 func TestBulwarkHalvesTheExcess(t *testing.T) {
@@ -467,25 +466,18 @@ func TestReflectReturnsTheSpell(t *testing.T) {
 		t.Fatal("reflect should hit the caster")
 	}
 }
-func TestDispelBlocksLowerMind(t *testing.T) {
+func TestDispelBlocksEnemySpells(t *testing.T) {
 	e, _, b := arena(t)
 	sage(e, 4, 6)
-	with(e, "boss", "see")
 	b.Status = map[string]Status{}
 	u := e.unit("sage")
-	if e.stats(b).Mind > e.stats(u).Mind {
-		t.Skip("fixture: the boss out-minds the sage")
-	}
 	if e.hitChance(u, b, e.data.Skills["flame"]) == 0 {
-		t.Fatal("dispel only stops lower-mind casters")
+		t.Fatal("the boss has no 간파 yet")
 	}
-	e.char("sage").Level = 1
-	b.HP = e.stats(b).MaxHP
-	d := e.data.Characters["boss"]
-	d.Stats[2] = 100
-	e.data.Characters["boss"] = d
-	if e.stats(b).Mind > e.stats(u).Mind && e.hitChance(u, b, e.data.Skills["flame"]) != 0 {
-		t.Fatal("dispel")
+	with(e, "boss", "see")
+	e.char("sage").Level = 50
+	if e.hitChance(u, b, e.data.Skills["flame"]) != 0 {
+		t.Fatal("간파 stops every enemy attack spell, whatever the caster's mind")
 	}
 }
 func TestHealingBonusItemsAndShare(t *testing.T) {
@@ -536,7 +528,7 @@ func TestRegenAuraAndTurnBuffs(t *testing.T) {
 	e.endFaction()
 	e.endFaction()
 	a := e.unit("hero")
-	if a.HP <= 100 || a.Status["speed"].Value != 2 || a.Status["range"].Value != 1 {
+	if a.HP <= 100 || a.Status["speed"].Value != 2 {
 		t.Fatalf("hp %d %+v", a.HP, a.Status)
 	}
 	a.X, a.Y = 8, 1 // the keep
@@ -587,9 +579,11 @@ func TestDeputyBlend(t *testing.T) {
 	if a := e.attributes(c); a[0] <= 91 || a[0] >= 100 {
 		t.Fatalf("blend %v", a)
 	}
-	with(e, "hero", "lead")
-	if a := e.attributes(c); int(a[0]) != 110 {
-		t.Fatalf("deputy_rate %v", a)
+	with(e, "hero", "lead") // 용인술: the main officer's charm counts 20 higher
+	R, own := e.data.Rules, e.def(c).Stats
+	n := (float64(own[5]+20)*float64(R.DeputyWeight) + 100) / float64(R.DeputyDivisor)
+	if a := e.attributes(c); math.Abs(a[0]-(n*100+(1-n)*float64(own[0]))) > 1e-9 {
+		t.Fatalf("용인술 blend %v, n %.3f", a, n)
 	}
 }
 func TestExperienceBarIsLevelIndependent(t *testing.T) {
@@ -757,21 +751,36 @@ func TestSelfSkillsHealAndGuardTheCaster(t *testing.T) {
 	assertRejected(t, e, Command{Kind: "skill", Actor: "hero", Target: "boss", Skill: "brace"})
 }
 
-func TestPierceSkillReachesBehindAndBreakthroughAddsToIt(t *testing.T) {
-	e, a, b := arena(t)
-	t2 := e.unit("troop#2")
-	t2.HP = e.stats(t2).MaxHP
-	t2.X, t2.Y = 7, 6 // behind the target
-	skill := e.data.Skills["thrust_s"]
-	if _, share := e.victims(a, b, skill); share["troop#2"] != .5 {
-		t.Fatalf("pierce share %v", share)
+func TestKnockbackPushesOrHitsHarder(t *testing.T) {
+	setup := func(t *testing.T) (*Engine, *Unit, *Unit) {
+		e, a, b := arena(t)
+		e.data.Rules.HitFloor, e.data.Rules.HitCeil = 100, 100
+		a.HP, b.HP = 10000, 10000
+		with(e, "hero", "boost_t")
+		return e, a, b
 	}
-	with(e, "hero", "boost_t")
-	if _, share := e.victims(a, b, skill); share["troop#2"] != .75 {
-		t.Fatalf("boosted share %v", share)
+	e, _, _ := setup(t)
+	r := apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
+	if b := e.unit("boss"); b.X != 7 || b.Y != 6 {
+		t.Fatalf("the boss should slide a cell back, at (%d,%d)", b.X, b.Y)
 	}
-	if _, share := e.victims(a, b, e.basic()); share["troop#2"] != 0 {
-		t.Fatalf("a plain attack must not pierce: %v", share)
+	pushed := false
+	for _, ev := range r.Events {
+		pushed = pushed || ev.Kind == "knockback" && ev.Target == "boss" && len(ev.Path) == 2
+	}
+	if !pushed {
+		t.Fatal("no knockback event")
+	}
+	e2, a2, b2 := setup(t)
+	t2 := e2.unit("troop#2")
+	t2.HP, t2.X, t2.Y = e2.stats(t2).MaxHP, 7, 6 // behind the boss: it cannot be pushed
+	free := e2.damage(a2, b2, e2.basic())
+	n, _, _ := e2.strike(a2, b2, e2.basic(), blow{share: 1})
+	e3, a3, b3 := setup(t)
+	e3.unit("troop#2").HP, e3.unit("troop#2").X, e3.unit("troop#2").Y = 1000, 7, 6
+	dealt := e3.attackOn(a3, b3, []*Unit{b3}, e3.basic(), map[string]float64{b3.ID: 1}, false, false)
+	if b3.X != 6 || float64(dealt[b3.ID]) < math.Floor(free*1.25)-1 || n == 0 {
+		t.Fatalf("blocked: stays at %d, deals %d (free blow %.0f)", b3.X, dealt[b3.ID], free)
 	}
 }
 func TestSkillNeedsItsWeapon(t *testing.T) {
@@ -908,31 +917,19 @@ func TestAimAndSnipeAreShots(t *testing.T) {
 	}
 	apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "boss", Skill: "snipe_s"})
 }
-func TestProvokeLowersDefenseOnAHit(t *testing.T) {
+func TestProvokeLowersMoraleAroundTheCaster(t *testing.T) {
 	e, _, _ := arena(t)
+	e.data.Rules.SpellFloor, e.data.Rules.SpellCeil = 100, 100
 	with(e, "hero", "provoke_t")
-	R := e.data.Rules
-	hit := false
-	for i := 0; i < 30; i++ {
-		h := e.unit("hero")
-		h.MP = 100
-		resetActions(h)
-		r := apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "boss", Skill: "provoke_s"})
-		for _, ev := range r.Events {
-			if ev.Kind == "damage" && ev.Target == "boss" && ev.Amount > 0 {
-				hit = true
-				if s := e.unit("boss").Status["defense"]; s.Value != -R.BuffPercent {
-					t.Fatalf("defense status %+v", s)
-				}
-			}
-		}
-		e.unit("hero").HP = e.stats(e.unit("hero")).MaxHP
-		e.unit("boss").HP = e.stats(e.unit("boss")).MaxHP
-		delete(e.unit("boss").Status, "defense")
-		e.state.Phase, e.state.Result, e.state.Learning = "battle", "", nil
+	e.unit("hero").MP = 100
+	t1 := e.unit("troop#1")
+	t1.HP, t1.X, t1.Y = e.stats(t1).MaxHP, 4, 5 // diagonal to the hero: outside the cross
+	apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "hero", Skill: "provoke_s"})
+	if s := e.unit("boss").Status["morale"]; s.Value != -e.data.Rules.BuffPercent {
+		t.Fatalf("boss morale %+v", s)
 	}
-	if !hit {
-		t.Fatal("no provoking attack hit in 30 tries")
+	if s := e.unit("troop#1").Status["morale"]; s.Turns != 0 {
+		t.Fatalf("a diagonal foe is outside the cross: %+v", s)
 	}
 }
 func TestDisruptCutsAgilityAndMorale(t *testing.T) {

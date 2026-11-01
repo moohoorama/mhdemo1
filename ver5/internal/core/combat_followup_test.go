@@ -288,7 +288,7 @@ func TestDerivedAttacksKeepStrikeTraits(t *testing.T) {
 	})
 }
 
-func TestFullShareStrikesInFull(t *testing.T) {
+func TestHeavyBlowRaisesShares(t *testing.T) {
 	setup := func(t *testing.T, traits ...string) (*Engine, *Unit, *Unit) {
 		e, a, b := arena(t)
 		w := e.unit("archer1")
@@ -320,19 +320,17 @@ func TestFullShareStrikesInFull(t *testing.T) {
 		}
 	})
 	t.Run("counter", func(t *testing.T) {
-		e, a, b := setup(t)
-		k, _ := e.counterShare(a, b)
-		assert.Equal(t, e.data.Rules.PlainCounterShare, k)
+		e, _, b := setup(t)
+		assert.Equal(t, e.data.Rules.PlainCounterShare, e.counterShare(b))
 		with(e, "boss", "full_share_t")
-		k, _ = e.counterShare(a, b)
-		assert.Equal(t, 1.0, k)
+		assert.InDelta(t, e.data.Rules.PlainCounterShare+.3, e.counterShare(b), 1e-9)
 	})
 	t.Run("beside the target", func(t *testing.T) {
 		e, a, b := setup(t, "cross_t")
 		_, share := e.victims(b, a, e.basic())
-		assert.Less(t, share["archer1"], 1.0)
+		before := share["archer1"]
 		with(e, "boss", "full_share_t")
 		_, share = e.victims(b, a, e.basic())
-		assert.Equal(t, 1.0, share["archer1"])
+		assert.InDelta(t, before+.3, share["archer1"], 1e-9)
 	})
 }

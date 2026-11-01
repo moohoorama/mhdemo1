@@ -11,6 +11,8 @@ type Ground struct {
 	Glyph   string
 	Surface int  `json:",omitempty"` // how the ground is drawn: its level from 0 water, 1 ford, 2 grass, 3 plain to 4 soil
 	Water   bool `json:",omitempty"` // spells that need water look for it beside the caster or target
+	Ambush  bool `json:",omitempty"` // 기습 crits from it (mountains)
+	Castle  bool `json:",omitempty"` // 수성 holds on it (the town inside the walls)
 }
 
 // Structure stands on a ground. Grounds lists the ground glyphs it may stand on. RestHP and RestMP,
@@ -21,6 +23,7 @@ type Structure struct {
 	Grounds        string
 	Ambush         bool `json:",omitempty"`
 	Castle         bool `json:",omitempty"`
+	Village        bool `json:",omitempty"` // 중가 forages in it
 	RestHP, RestMP *int `json:",omitempty"` // percent of max HP restored (or lost, below zero) at turn start; multiplier of spell point regeneration
 }
 
@@ -75,8 +78,8 @@ func (s Stage) Cell(x, y int) Cell {
 
 // CellProps is what a cell does besides costing steps.
 type CellProps struct {
-	RestHP, RestMP        int
-	Water, Ambush, Castle bool
+	RestHP, RestMP                 int
+	Water, Ambush, Castle, Village bool
 }
 
 // Move is what the group pays and gets on the cell: the topmost layer that says a value wins. On a stage
@@ -113,9 +116,9 @@ func (d *Data) Move(group string, c Cell, boats bool) Terrain {
 func (d *Data) Props(c Cell) CellProps {
 	var p CellProps
 	g := d.Grounds[string(c.Ground)]
-	p.Water = g.Water
+	p.Water, p.Ambush, p.Castle = g.Water, g.Ambush, g.Castle
 	if st, ok := d.Structures[string(c.Structure)]; ok {
-		p.Ambush, p.Castle = st.Ambush, st.Castle
+		p.Ambush, p.Castle, p.Village = p.Ambush || st.Ambush, p.Castle || st.Castle, st.Village
 		if st.RestHP != nil {
 			p.RestHP = *st.RestHP
 		}

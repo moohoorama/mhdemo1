@@ -75,9 +75,9 @@ func (d *Data) Validate() error {
 		}
 	}
 	for id, s := range d.Skills {
-		if s.Name == "" || !in(s.Kind, KindPhysical, KindMagic, KindStatus, KindBuff, KindHeal) || !in(s.Mode, ModeMelee, ModeRanged, ModeSelf, ModeAny) ||
+		if s.Name == "" || !in(s.Kind, KindPhysical, KindMagic, KindStatus, KindBuff, KindHeal, KindMixed) || !in(s.Mode, ModeMelee, ModeRanged, ModeSelf, ModeAny) ||
 			!in(s.Shape, ShapeSingle, ShapeCross, ShapeSquare, ShapeLine, ShapeAll) || s.Cost < 0 || s.Hit < 0 || s.Min < 0 || s.Max < 0 ||
-			s.Shape == ShapeLine && s.Length < 1 || s.Strikes < 0 || s.Strikes > 2 || s.Reach < 0 || (s.Effect == "aim" || s.Effect == "provoke") && s.Kind != KindPhysical || s.Each && (s.Kind != KindPhysical || s.Shape == ShapeSingle) || s.Pierce < 0 || s.Pierce > 1 || s.Pierce > 0 && s.Shape != ShapeSingle || s.MagicCoeff < 0 || s.MagicCoeff > 0 && s.Kind != KindPhysical || s.Effect != "" && !SkillEffects[s.Effect] || s.Kind != KindPhysical && s.Kind != KindMagic && s.Effect == "" {
+			s.Shape == ShapeLine && s.Length < 1 || s.Strikes < 0 || s.Strikes > 2 || s.Reach < 0 || s.Effect == "aim" && s.Kind != KindPhysical || s.Sure && s.Kind != KindStatus || s.Each && (s.Kind != KindPhysical || s.Shape == ShapeSingle) || s.Pierce < 0 || s.Pierce > 1 || s.Pierce > 0 && s.Shape != ShapeSingle || s.MagicCoeff < 0 || s.MagicCoeff > 0 && s.Kind != KindPhysical || s.Effect != "" && !validSkillEffect(s) || s.Kind != KindPhysical && s.Kind != KindMagic && s.Effect == "" {
 			return fmt.Errorf("skill %s", id)
 		}
 		for _, t := range s.Requires {
@@ -110,11 +110,6 @@ func (d *Data) Validate() error {
 		for _, t := range c.Pool {
 			if d.Traits[t].Cost < 1 {
 				return fmt.Errorf("class %s: pool trait %s is not learnable", id, t)
-			}
-		}
-		for _, t := range c.Traits {
-			if d.Traits[t].Name == "" {
-				return fmt.Errorf("class %s: unknown trait %s", id, t)
 			}
 		}
 		if s, ok := d.Classes[c.Shoot]; c.Shoot != "" && (!ok || s.Attack != AttackRanged) {
@@ -190,6 +185,21 @@ func (d *Data) Validate() error {
 		if f := c.Look.Faction; f != "" {
 			if _, ok := d.Factions[f]; !ok {
 				return fmt.Errorf("character %s: faction %s", id, f)
+			}
+		}
+	}
+	for _, item := range r.ForageItems {
+		if _, ok := d.Items[item]; !ok {
+			return fmt.Errorf("forage item %s", item)
+		}
+	}
+	for class, list := range r.EnemyTraits {
+		if _, ok := d.Classes[class]; !ok {
+			return fmt.Errorf("enemy traits: unknown class %s", class)
+		}
+		for _, lt := range list {
+			if _, ok := d.Traits[lt.Trait]; !ok || lt.Level < 1 {
+				return fmt.Errorf("enemy traits of %s: %s from level %d", class, lt.Trait, lt.Level)
 			}
 		}
 	}
@@ -463,4 +473,22 @@ func (d *Data) checkNodeLoops(nodes map[string]Node) error {
 		}
 	}
 	return nil
+}
+
+// validSkillEffect tells whether the skill's effect is one the engine knows: one effect, or for a buff,
+// status or mixed skill several stat statuses joined with '+'.
+func validSkillEffect(s Skill) bool {
+	if SkillEffects[s.Effect] {
+		return true
+	}
+	parts := strings.Split(s.Effect, "+")
+	if len(parts) < 2 || !in(s.Kind, KindBuff, KindStatus, KindMixed) {
+		return false
+	}
+	for _, p := range parts {
+		if !StatStatuses[p] {
+			return false
+		}
+	}
+	return true
 }

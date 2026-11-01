@@ -24,7 +24,7 @@
    "Sprite": "light_infantry",
    "Portrait": "light_infantry",
    "Pool": [
-    "guard_prep",
+    "diagonal",
     "fire",
     "first_aid"
    ],
@@ -99,7 +99,7 @@
    "Weapon": "spear",
    "Armor": "armor",
    "Move": 4,
-   "Range": 2,
+   "Range": 1,
    "Bonus": [
     14,
     11,
@@ -116,7 +116,7 @@
    "Portrait": "pikeman",
    "Pool": [
     "deputy_appoint",
-    "thrust_art",
+    "long_spear",
     "pierce"
    ],
    "Promotes": [
@@ -132,7 +132,7 @@
    "Weapon": "spear",
    "Armor": "armor",
    "Move": 6,
-   "Range": 2,
+   "Range": 1,
    "Bonus": [
     16,
     12,
@@ -149,7 +149,7 @@
    "Portrait": "chariot",
    "Pool": [
     "siegecraft",
-    "valor",
+    "deadly",
     "sweep_art"
    ],
    "Tags": [
@@ -181,8 +181,8 @@
    "Portrait": "guards",
    "Pool": [
     "castle_defense",
-    "ironwall",
-    "siegecraft"
+    "siegecraft",
+    "composure"
    ]
   },
   "light_cavalry": {
@@ -216,8 +216,7 @@
     "provoke_prep"
    ],
    "Tags": [
-    "mounted",
-    "light"
+    "mounted"
    ],
    "Promotes": [
     "heavy_cavalry",
@@ -251,8 +250,8 @@
    "Portrait": "heavy_cavalry",
    "Pool": [
     "deputy_appoint",
-    "thrust_art",
-    "breakthrough"
+    "breakthrough",
+    "charge"
    ],
    "Tags": [
     "mounted"
@@ -288,8 +287,8 @@
    "MinRange": 2,
    "Pool": [
     "deputy_appoint",
-    "white_horse",
-    "snipe_prep"
+    "snipe_prep",
+    "retaliate"
    ],
    "Tags": [
     "mounted"
@@ -324,9 +323,9 @@
    "Portrait": "horse_crossbow",
    "MinRange": 2,
    "Pool": [
-    "white_horse",
     "volley",
-    "reload_prep"
+    "reload_prep",
+    "missile_immunity"
    ],
    "Tags": [
     "mounted"
@@ -359,8 +358,7 @@
    "Portrait": "royal_guard",
    "Pool": [
     "gale",
-    "charge",
-    "chain_thrust_art"
+    "vital_strike"
    ],
    "Tags": [
     "mounted"
@@ -491,9 +489,7 @@
    "Pool": [
     "siegecraft",
     "volley",
-    "far_sight"
-   ],
-   "Traits": [
+    "far_sight",
     "cross_strike"
    ],
    "Tags": [
@@ -523,12 +519,14 @@
    "Tier": 0,
    "Sprite": "scholar",
    "Portrait": "scholar",
+   "Tags": [
+    "civil"
+   ],
    "Pool": [
     "fire",
     "water",
+    "earth",
     "relief",
-    "fire_boost",
-    "water_boost",
     "focus"
    ],
    "Promotes": [
@@ -559,16 +557,14 @@
    "Tier": 1,
    "Sprite": "strategist",
    "Portrait": "staff_officer",
+   "Tags": [
+    "civil"
+   ],
    "Pool": [
     "deputy_appoint",
-    "earth",
-    "hinder",
-    "stratagem",
     "fire_spread",
     "water_spread",
-    "earth_boost",
-    "feint",
-    "fire_god"
+    "earth_spread"
    ],
    "Promotes": [
     "strategist"
@@ -597,12 +593,13 @@
    "Tier": 2,
    "Sprite": "grand_strategist",
    "Portrait": "strategist",
+   "Tags": [
+    "civil"
+   ],
    "Pool": [
-    "earth_spread",
-    "hinder_boost",
-    "stratagem_boost",
-    "chain",
-    "half_cost"
+    "fire_boost",
+    "water_boost",
+    "earth_boost"
    ]
   },
   "sorcerer": {
@@ -628,13 +625,15 @@
    "Tier": 1,
    "Sprite": "sorcerer",
    "Portrait": "sorcerer",
+   "Tags": [
+    "civil"
+   ],
    "Pool": [
     "deputy_appoint",
     "exhort",
     "relief_boost",
     "relief_spread",
-    "medicine",
-    "cunning"
+    "medicine"
    ],
    "Promotes": [
     "mystic"
@@ -663,11 +662,47 @@
    "Tier": 2,
    "Sprite": "mystic",
    "Portrait": "mystic",
+   "Tags": [
+    "civil"
+   ],
    "Pool": [
     "exhort_boost",
-    "eight_formation",
-    "lasting",
-    "deep_scheme"
+    "lasting"
+   ]
+  },
+  "dudu": {
+   "Name": "도독",
+   "Desc": "검을 차고 군을 이끌며 책략도 쓰는 오의 대도독. 승급하지 않는다.",
+   "Terrain": "infantry",
+   "Attack": "melee",
+   "Weapon": "sword",
+   "Armor": "armor",
+   "Move": 4,
+   "Range": 1,
+   "Bonus": [
+    12,
+    10,
+    13,
+    10,
+    11,
+    17
+   ],
+   "HPFactor": 3,
+   "MPBase": 30,
+   "RecoveryBase": 6,
+   "Tier": 2,
+   "Sprite": "grand_strategist",
+   "Portrait": "strategist",
+   "Pool": [
+    "deputy_appoint",
+    "fire",
+    "fire_boost",
+    "fire_spread",
+    "water",
+    "water_boost",
+    "water_spread",
+    "relief",
+    "exhort"
    ]
   },
   "bandit": {
@@ -693,13 +728,10 @@
    "Tier": 0,
    "Sprite": "bandit",
    "Portrait": "bandit",
-   "Skills": [
-    "steal"
-   ],
    "Pool": [
-    "venom",
-    "rough_terrain",
-    "ambush_crit"
+    "counter_art",
+    "earth",
+    "provoke_prep"
    ],
    "Promotes": [
     "ruffian"
@@ -728,13 +760,11 @@
    "Tier": 1,
    "Sprite": "ruffian",
    "Portrait": "ruffian",
-   "Skills": [
-    "steal"
-   ],
    "Pool": [
-    "drain",
-    "dash",
-    "fortune"
+    "deputy_appoint",
+    "venom",
+    "ambush_crit",
+    "diagonal"
    ],
    "Promotes": [
     "outlaw"
@@ -763,12 +793,10 @@
    "Tier": 2,
    "Sprite": "outlaw",
    "Portrait": "outlaw",
-   "Skills": [
-    "steal"
-   ],
    "Pool": [
-    "assist",
-    "charge"
+    "vital_strike",
+    "crit_boost",
+    "relief"
    ]
   },
   "brawler": {
@@ -795,9 +823,9 @@
    "Sprite": "brawler",
    "Portrait": "brawler",
    "Pool": [
+    "spirit_prep",
     "counter_art",
-    "composure",
-    "drain"
+    "fire"
    ],
    "Promotes": [
     "pugilist"
@@ -828,8 +856,8 @@
    "Portrait": "pugilist",
    "Pool": [
     "deputy_appoint",
-    "battle_fury",
-    "relentless"
+    "diagonal",
+    "press_prep"
    ],
    "Promotes": [
     "fist_saint"
@@ -859,9 +887,9 @@
    "Sprite": "fist_saint",
    "Portrait": "fist_saint",
    "Pool": [
-    "valor",
-    "cross_strike",
-    "diamond"
+    "spirit_spread",
+    "palm_wind",
+    "fire_boost"
    ]
   }
  }

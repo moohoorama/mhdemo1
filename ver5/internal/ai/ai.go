@@ -221,7 +221,7 @@ func threatened(e *core.Engine, o core.Observation, faction string) map[content.
 // nearer the closest opponent. A cell inside the unit's least reach of an opponent is never taken:
 // from there it could not strike that one at all.
 func approach(e *core.Engine, o core.Observation, me *core.UnitView, x, y int, walk map[content.Point]int, duels bool) float64 {
-	lo, hi := e.AttackRange(me.ID)
+	lo, _ := e.AttackRange(me.ID)
 	near, strike := 999, false
 	for _, v := range o.UnitViews {
 		if v.Faction == me.Faction || v.HP <= 0 {
@@ -232,7 +232,7 @@ func approach(e *core.Engine, o core.Observation, me *core.UnitView, x, y int, w
 			return -5
 		}
 		near = min(near, d)
-		strike = strike || d <= hi && !(duels && me.DuelFirst && e.DuelPending(me.ID, v.ID))
+		strike = strike || e.CanStrikeFrom(me.ID, content.Point{X: x, Y: y}, v.X, v.Y) && !(duels && me.DuelFirst && e.DuelPending(me.ID, v.ID))
 	}
 	if strike {
 		return 40 + float64(near) // above any approach (3 a cell), under any blow from where it stands

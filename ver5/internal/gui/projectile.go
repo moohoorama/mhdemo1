@@ -214,7 +214,10 @@ func (g *Game) throw(thrower, target *unitVis, flight float64) {
 }
 
 // dust raises a stone's landing dust under a unit the blow reaches beside its landing cell.
-func (g *Game) dust(u *unitVis) {
-	x, y := g.field.Center(u.u, u.v)
-	g.lobs = append(g.lobs, NewDust("stone", x, y-u.lift))
+func (g *Game) dust(u *unitVis) { g.dustAt(u.u, u.v, u.lift) }
+
+// dustAt raises the landing dust on the ground at the (fractional) cell (u, v) lifted by lift.
+func (g *Game) dustAt(u, v, lift float64) {
+	x, y := g.field.Center(u, v)
+	g.lobs = append(g.lobs, NewDust("stone", x, y-lift))
 }
