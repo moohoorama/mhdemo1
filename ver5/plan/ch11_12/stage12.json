@@ -19,10 +19,9 @@
  "Defeat": [
   {
    "If": [
-    "defeated:refugee_cart",
-    "!fled:refugee_cart"
+    "at:enemy:2"
    ],
-   "Text": "피난 수레가 쓰러진다"
+   "Text": "조조군이 서주성에 들어간다"
   }
  ],
  "Sub": [
@@ -37,9 +36,9 @@
   },
   {
    "ID": "scholar",
-   "Text": "제갈현을 서주성으로 보낸다",
+   "Text": "제갈현이 살아남는다",
    "If": [
-    "fled:zhugexuan"
+    "alive:zhugexuan"
    ],
    "Flag": "flag-zhugexuan"
   }
@@ -50,105 +49,61 @@
   {
    "ID": 1,
    "Rect": {
-    "X": 20,
-    "Y": 19,
+    "X": 17,
+    "Y": 20,
     "W": 1,
     "H": 1
    },
-   "Name": "서주성",
-   "Description": "피난민이 들어가는 성"
+   "Name": "서주성 서문",
+   "Description": "피난민이 들어가는 문"
   },
   {
    "ID": 2,
    "Rect": {
-    "X": 19,
-    "Y": 8,
-    "W": 3,
-    "H": 3
+    "X": 18,
+    "Y": 18,
+    "W": 6,
+    "H": 6
    },
-   "Name": "고순의 마을"
+   "Name": "서주성 안"
   }
  ],
  "Allies": [
   {
-   "X": 2,
+   "X": 4,
+   "Y": 0
+  },
+  {
+   "X": 5,
+   "Y": 0
+  },
+  {
+   "X": 4,
    "Y": 1
+  },
+  {
+   "X": 5,
+   "Y": 1
+  },
+  {
+   "X": 3,
+   "Y": 0
   },
   {
    "X": 3,
    "Y": 1
   },
   {
-   "X": 2,
+   "X": 6,
    "Y": 0
-  },
-  {
-   "X": 3,
-   "Y": 0
-  },
-  {
-   "X": 1,
-   "Y": 1
-  },
-  {
-   "X": 1,
-   "Y": 0
-  },
-  {
-   "X": 2,
-   "Y": 2
   }
  ],
  "Party": [
   {
-   "Character": "refugee_cart",
-   "X": 9,
-   "Y": 8,
-   "Facing": "SW",
-   "Group": "refugees",
-   "Policy": "flee",
-   "GoalArea": 1,
-   "AI": true,
-   "Faction": "han"
-  },
-  {
-   "Character": "troop_commoner_man",
-   "X": 9,
-   "Y": 7,
-   "Facing": "SW",
-   "Group": "refugees",
-   "Policy": "flee",
-   "GoalArea": 1,
-   "AI": true,
-   "Faction": "han"
-  },
-  {
-   "Character": "troop_commoner_woman",
-   "X": 8,
-   "Y": 6,
-   "Facing": "SE",
-   "Group": "refugees",
-   "Policy": "flee",
-   "GoalArea": 1,
-   "AI": true,
-   "Faction": "han"
-  },
-  {
-   "Character": "troop_commoner_elder",
-   "X": 9,
-   "Y": 6,
-   "Facing": "SW",
-   "Group": "refugees",
-   "Policy": "flee",
-   "GoalArea": 1,
-   "AI": true,
-   "Faction": "han"
-  },
-  {
    "Character": "gaoshun",
-   "X": 20,
-   "Y": 9,
-   "Facing": "NW",
+   "X": 15,
+   "Y": 10,
+   "Facing": "SE",
    "Group": "gao",
    "Policy": "hold",
    "AI": true,
@@ -156,9 +111,9 @@
   },
   {
    "Character": "troop_commoner_woman",
-   "X": 21,
-   "Y": 9,
-   "Facing": "NW",
+   "X": 14,
+   "Y": 10,
+   "Facing": "SE",
    "Group": "peng",
    "Policy": "hold",
    "AI": true,
@@ -166,9 +121,9 @@
   },
   {
    "Character": "troop_commoner_elder",
-   "X": 20,
-   "Y": 10,
-   "Facing": "NW",
+   "X": 15,
+   "Y": 11,
+   "Facing": "NE",
    "Group": "peng",
    "Policy": "hold",
    "AI": true,
@@ -176,120 +131,222 @@
   },
   {
    "Character": "zhugexuan",
-   "X": 2,
-   "Y": 11,
-   "Facing": "SE",
+   "X": 5,
+   "Y": 16,
+   "Facing": "NE",
    "Group": "scholar",
    "Policy": "hold",
    "AI": true,
    "Faction": "han"
+  },
+  {
+   "Character": "troop_commoner_man",
+   "X": 8,
+   "Y": 16,
+   "Facing": "SE",
+   "Group": "refugees",
+   "Policy": "flee",
+   "GoalArea": 1,
+   "AI": true,
+   "Faction": "han"
+  },
+  {
+   "Character": "troop_commoner_woman",
+   "X": 9,
+   "Y": 17,
+   "Facing": "SE",
+   "Group": "refugees",
+   "Policy": "flee",
+   "GoalArea": 1,
+   "AI": true,
+   "Faction": "han"
+  },
+  {
+   "Character": "troop_commoner_elder",
+   "X": 8,
+   "Y": 18,
+   "Facing": "SE",
+   "Group": "refugees",
+   "Policy": "flee",
+   "GoalArea": 1,
+   "AI": true,
+   "Faction": "han"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 19,
+   "Y": 21,
+   "Facing": "NW",
+   "Group": "xuzhou",
+   "Policy": "hold",
+   "AI": true,
+   "Faction": "han",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 21,
+   "Y": 19,
+   "Facing": "NE",
+   "Group": "xuzhou",
+   "Policy": "hold",
+   "AI": true,
+   "Faction": "han",
+   "Shift": -0.07
   }
  ],
  "Enemies": [
   {
    "Character": "yujin",
-   "X": 21,
-   "Y": 4,
-   "Facing": "SW",
-   "Group": "hq",
+   "X": 20,
+   "Y": 9,
+   "Facing": "NW",
+   "Group": "yu",
    "Policy": "hold",
    "Rank": "commander",
    "Faction": "wei"
   },
   {
    "Character": "troop_footman",
-   "X": 20,
-   "Y": 4,
-   "Facing": "SW",
-   "Group": "hq",
-   "Policy": "hold",
-   "Rank": "recruit",
-   "Faction": "wei"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 21,
-   "Y": 5,
-   "Facing": "SW",
-   "Group": "hq",
-   "Policy": "hold",
-   "Rank": "recruit",
-   "Faction": "wei"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 12,
-   "Y": 3,
-   "Facing": "SW",
-   "Group": "chase",
-   "Policy": "assault",
-   "Rank": "recruit",
-   "Faction": "wei"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 13,
-   "Y": 4,
-   "Facing": "SW",
-   "Group": "chase",
-   "Policy": "assault",
-   "Rank": "recruit",
-   "Faction": "wei"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 11,
-   "Y": 2,
-   "Facing": "SW",
-   "Group": "chase",
-   "Policy": "assault",
-   "Rank": "recruit",
-   "Faction": "wei"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 17,
-   "Y": 9,
-   "Facing": "SE",
-   "Group": "raid",
-   "Policy": "hold",
-   "Faction": "wei"
-  },
-  {
-   "Character": "troop_footman",
    "X": 18,
+   "Y": 10,
+   "Facing": "NW",
+   "Group": "yu",
+   "Policy": "assault",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 19,
    "Y": 11,
-   "Facing": "SE",
-   "Group": "raid",
-   "Policy": "hold",
+   "Facing": "NW",
+   "Group": "yu",
+   "Policy": "assault",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 19,
+   "Y": 9,
+   "Facing": "NW",
+   "Group": "yu",
+   "Policy": "assault",
    "Faction": "wei"
   },
   {
    "Character": "troop_archer",
+   "X": 21,
+   "Y": 10,
+   "Facing": "NW",
+   "Group": "yu",
+   "Policy": "assault",
+   "Rank": "recruit",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_cavalry",
    "X": 17,
    "Y": 7,
-   "Facing": "SE",
-   "Group": "raid",
-   "Policy": "hold",
+   "Facing": "SW",
+   "Group": "yu-rear",
+   "Policy": "react",
+   "Rank": "recruit",
    "Faction": "wei"
   },
   {
-   "Character": "troop_archer",
-   "X": 11,
-   "Y": 17,
-   "Facing": "NW",
-   "Group": "ford",
+   "Character": "troop_cavalry",
+   "X": 16,
+   "Y": 6,
+   "Facing": "SW",
+   "Group": "yu-rear",
    "Policy": "react",
    "Rank": "recruit",
    "Faction": "wei"
   },
   {
    "Character": "troop_footman",
-   "X": 15,
+   "X": 6,
+   "Y": 16,
+   "Facing": "NW",
+   "Group": "hunt",
+   "Policy": "assault",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 5,
    "Y": 17,
    "Facing": "NE",
-   "Group": "ford",
-   "Policy": "react",
+   "Group": "hunt",
+   "Policy": "assault",
+   "Faction": "wei"
+  },
+  {
+   "Character": "caoren",
+   "X": 2,
+   "Y": 12,
+   "Facing": "SE",
+   "Group": "cao",
+   "Policy": "hold",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 3,
+   "Y": 12,
+   "Facing": "SE",
+   "Group": "cao",
+   "Policy": "hold",
+   "Rank": "recruit",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 1,
+   "Y": 12,
+   "Facing": "SE",
+   "Group": "cao",
+   "Policy": "hold",
+   "Rank": "recruit",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 2,
+   "Y": 13,
+   "Facing": "SE",
+   "Group": "cao",
+   "Policy": "hold",
+   "Rank": "recruit",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 3,
+   "Y": 13,
+   "Facing": "SE",
+   "Group": "cao",
+   "Policy": "hold",
+   "Rank": "recruit",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 1,
+   "Y": 13,
+   "Facing": "SE",
+   "Group": "cao",
+   "Policy": "hold",
+   "Rank": "recruit",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 2,
+   "Y": 14,
+   "Facing": "SE",
+   "Group": "cao",
+   "Policy": "hold",
    "Rank": "recruit",
    "Faction": "wei"
   }
@@ -302,7 +359,7 @@
    "Outcome": "victory",
    "AllyResult": "stay",
    "EnemyResult": "retreat",
-   "Text": "우금이 장비의 사모를 열 합 넘게 받아 냈으나 끝내 진을 물렸다."
+   "Text": "우금이 장비의 사모를 받아 내지 못하고 진을 물렸다."
   }
  ],
  "Reward": {},
@@ -318,7 +375,16 @@
      "Lines": [
       {
        "Actor": "yujin",
-       "Text": "주공의 영이다. 서주 사람은 하나도 성에 들이지 마라."
+       "Text": "다리 건너 마을 하나다. 쏘아라. 저 장수만 꺾으면 서주성까지 막을 것이 없다."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "gaoshun",
+       "Text": "…………"
       }
      ]
     },
@@ -327,23 +393,39 @@
      "Lines": [
       {
        "Actor": "liubei",
-       "Text": "백성들을 서주성까지 보낸다! 운장, 익덕, 기병부터 막아라!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "zhaoyun",
-       "Text": "수레가 다리를 건널 때까지 길 양옆을 지키겠습니다."
+       "Text": "저 다리 건너 깃발…… 고순이다! 동쪽 다리로 서두른다!"
       }
      ]
     }
    ]
   },
   {
-   "ID": "gaoshun",
+   "ID": "caoren",
+   "If": [
+    "round>=3"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caoren",
+       "Text": "서쪽 다리를 건넌다. 성까지 길을 쓸어라."
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "cao"
+     ],
+     "Policy": "march",
+     "GoalArea": 2
+    }
+   ]
+  },
+  {
+   "ID": "scholar",
    "If": [
     "round>=2"
    ],
@@ -352,118 +434,10 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "gaoshun",
-       "Text": "현덕 공. ……이 마을에 팽성 사람들이 있소."
-      }
-     ]
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "raid"
-     ],
-     "Policy": "assault"
-    }
-   ]
-  },
-  {
-   "ID": "hunters",
-   "If": [
-    "round>=3"
-   ],
-   "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "troop_footman",
-       "X": 0,
-       "Y": 7,
-       "Facing": "SE",
-       "Group": "hunt",
-       "Policy": "assault",
-       "Side": "enemy",
-       "Faction": "wei"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 1,
-       "Y": 7,
-       "Facing": "SE",
-       "Group": "hunt",
-       "Policy": "assault",
-       "Side": "enemy",
-       "Faction": "wei"
-      },
-      {
-       "Character": "troop_archer",
-       "X": 0,
-       "Y": 8,
-       "Facing": "SE",
-       "Group": "hunt",
-       "Policy": "assault",
-       "Side": "enemy",
-       "Faction": "wei"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
        "Actor": "zhugexuan",
-       "Text": "(대숲 안) ……여기서 끝날 수는 없다."
+       "Text": "(마을 안) ……여기서 끝날 수는 없다."
       }
      ]
-    }
-   ]
-  },
-  {
-   "ID": "rescue",
-   "If": [
-    "any:[adjacent:liubei:zhugexuan, adjacent:guanyu:zhugexuan, adjacent:zhangfei:zhugexuan, adjacent:zhaoyun:zhugexuan, adjacent:jianyong:zhugexuan, adjacent:fangong:zhugexuan]"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "zhugexuan",
-       "Text": "낭야의 제갈현이오. 남쪽으로 내려가던 길이었소. 이 은혜는 잊지 않겠소."
-      }
-     ]
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "scholar"
-     ],
-     "Policy": "flee",
-     "GoalArea": 1
-    }
-   ]
-  },
-  {
-   "ID": "yujin",
-   "If": [
-    "round>=4"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "yujin",
-       "Text": "길을 막는 자가 누구든, 영을 어긴 것과 같다. 쳐라."
-      }
-     ]
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "hq"
-     ],
-     "Policy": "assault"
     }
    ]
   }

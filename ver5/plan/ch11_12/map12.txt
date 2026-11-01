@@ -1,24 +1,26 @@
-# B12 서주 (24x22): 북쪽 모퉁이에서 남쪽 서주성(20,19)까지 내려가는 피난길. 개울 다리(13,14~15), 서쪽 여울(2~3,14).
-# 고순의 마을(20,9) 동쪽, 선비가 숨은 대숲(0~4,10~13) 서쪽, 불탄 마을 둘.
+# B12 서주 (24x24): 사수가 화면의 ㄱ자 바깥(위·오른쪽 띠)을 맵의 절반으로 가른다.
+# 동쪽 다리 (16~17,10) 건너 고순의 마을 (15,10), 서쪽 다리 (4,13~14) 건너 제갈현의 마을 (5,16), 남쪽 서주성(성곽).
 g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-l-- l-- l-- l-- l-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- l-- g-- d-s g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- l-- g-- dve d-s g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g--
-g-- g-- g-- g-- l-- d-s g-- g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- gt- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- d-s dve d-s g-- g-- g-- g-- g-- g-- gz- g-- gz- g-- g--
-g-- g-- g-- g-- g-- g-- g-- gt- g-- l-- g-- d-s g-- g-- g-- g-- g-- g-- g-- g-- gv- g-- g-- g--
-g-- gt- gt- g-- gt- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- g-- g-- g--
-g-- gt- g-- gt- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-gt- g-- gt- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g--
-g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- w-- w-- w-- g-- g-- g-- g--
-w-- w-- s-- s-- w-- w-- g-- g-- g-- g-- g-- g-- w-- wb- w-- w-- w-- w-- g-- g-- g-- g-- gt- g--
-g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- w-- w-- wb- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- gt- g-- g-- g--
-g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- go- g-- g-- g--
-g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- d-s l-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- gt- g-- g-- g-- g-- g-- g-- dve g-- l-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- d-s g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g--
+n-- g-- gt- g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- d-s l-- l-- g-- g-- g-- g-- g-- g-- g--
+n-- n-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- dve g-- g-- l-- g-- d-- g-- g-- g-- g-- g--
+g-- n-- n-- g-- g-- g-- g-- g-- g-- g-- w-- w-- d-s w-- w-- g-- l-- g-- g-- g-- g-- g-- gt- g--
+g-- g-- n-- n-- g-- g-- g-- g-- g-- w-- w-- g-- g-- g-- w-- w-- l-- g-- g-- g-- g-- g-- g-- g--
+gt- g-- l-- l-- l-- g-- g-- g-- w-- w-- g-- gt- g-- g-- g-- w-- l-- l-- l-- g-- g-- gt- g-- g--
+g-- g-- g-- g-- l-- n-- gt- w-- w-- g-- g-- g-- g-- g-- g-- gv- wb- wb- l-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- l-- n-- w-- w-- g-- g-- g-- g-- g-- gt- g-- l-- g-- w-- w-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- l-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- w-- w-- d-- g-- g-- g--
+g-- g-- g-- g-- wb- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- gt- w-- g-- g-- gt-
+g-- g-- g-- w-- wb- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- l-- g-- g-- g-- g-- w-- w-- g-- g--
+gt- g-- w-- w-- l-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- w-- w-- g--
+g-- w-- w-- g-- l-- gv- g-- g-- g-- g-- g-- g-- g-- d-- g-- l-- l-- l-- g-- g-- g-- g-- w-- w--
+w-- w-- g-- g-- l-- l-- l-- u-- l-- l-- l-- g-- g-- g-- g-- g-- g-- c-- c-- c-- ip- c-- c-- w--
+w-- g-- g-- d-- g-- g-- u-- g-- g-- g-- l-- g-- g-- g-- gt- g-- g-- c-- i-- i-- i-- i-- i-- i--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- c-- i-- i-- i-- i-- iv- i--
+g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- ip- i-- i-- i-- i-- i-- i--
+g-- g-- gt- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- c-- i-- i-- i-- io- i-- i--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- c-- i-- iv- i-- i-- i-- i--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- c-- i-- i-- i-- i-- i-- i--

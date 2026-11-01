@@ -57,7 +57,7 @@
   "yujin": {
    "Name": "우금",
    "Biography": "조조군의 장수. 군령이 엄해 명을 어기는 법이 없다.",
-   "Class": "heavy_infantry",
+   "Class": "archer",
    "Stats": [
     84,
     80,
@@ -70,7 +70,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "short_bow",
     "leather_armor"
    ],
    "Look": {
