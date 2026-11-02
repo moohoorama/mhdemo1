@@ -231,6 +231,15 @@ func contains(s []string, v string) bool {
 	return false
 }
 
+// innate are the traits a character holds without learning them: an NPC's plan for its level and class, or the
+// list its stage sets. Officers in the party hold none.
+func innate(c *Character) []string {
+	if c.TraitsOverride == nil {
+		return nil
+	}
+	return *c.TraitsOverride
+}
+
 // traits is every trait the character has: innate (or set by its stage), learned, given by equipment, and the deputy's own.
 func (e *Engine) traits(c *Character) []string {
 	set := map[string]bool{}
@@ -239,17 +248,13 @@ func (e *Engine) traits(c *Character) []string {
 			set[id] = true
 		}
 	}
-	if c.TraitsOverride != nil {
-		add(*c.TraitsOverride)
-	} else {
-		add(e.def(c).Traits)
-	}
+	add(innate(c))
 	add(c.Learned)
 	for _, eq := range c.Equipment {
 		add(e.data.Equipment[eq].Traits)
 	}
 	if d := e.char(c.Deputy); d != nil && !d.Dead {
-		add(e.def(d).Traits)
+		add(innate(d))
 		add(d.Learned)
 	}
 	return keys(set)
@@ -277,12 +282,8 @@ func (e *Engine) has(u *Unit, key string) bool         { return e.fx(u, key) != 
 // ownFx totals one trait effect over the traits the character holds itself, leaving out its deputy's and
 // its equipment's.
 func (e *Engine) ownFx(c *Character, key string) float64 {
-	held := e.def(c).Traits
-	if c.TraitsOverride != nil {
-		held = *c.TraitsOverride
-	}
 	n := 0.0
-	for _, t := range append(slices.Clone(held), c.Learned...) {
+	for _, t := range append(slices.Clone(innate(c)), c.Learned...) {
 		n += e.data.Traits[t].Effects[key]
 	}
 	return n
@@ -712,14 +713,12 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	if sp.Class != "" {
 		c.Class = sp.Class
 	}
-	if side == "enemy" {
+	if c.Temp {
 		c.Class = e.promotedAt(def, c.Class, c.Level)
-	}
-	if sp.Traits != nil {
+		held := e.data.PlannedTraits(def, c.Class, c.Level, sp.Traits)
+		c.TraitsOverride = &held
+	} else if sp.Traits != nil {
 		c.TraitsOverride = copyOf(sp.Traits)
-	}
-	if side == "enemy" {
-		e.grantLevelTraits(c)
 	}
 	if sp.Equipment != nil {
 		c.Equipment = map[string]string{}
@@ -770,21 +769,6 @@ func (e *Engine) promotedAt(def, class string, level int) string {
 		}
 		class = next[0]
 	}
-}
-
-// grantLevelTraits gives an enemy the traits its class holds at its level (Rules.EnemyTraits) on top of
-// those its stage sets.
-func (e *Engine) grantLevelTraits(c *Character) {
-	held := slices.Clone(e.def(c).Traits)
-	if c.TraitsOverride != nil {
-		held = slices.Clone(*c.TraitsOverride)
-	}
-	for _, lt := range e.data.Rules.EnemyTraits[c.Class] {
-		if c.Level >= lt.Level && !contains(held, lt.Trait) {
-			held = append(held, lt.Trait)
-		}
-	}
-	c.TraitsOverride = &held
 }
 
 // startStatus is what a unit is placed with: the buffs its traits grant every turn.

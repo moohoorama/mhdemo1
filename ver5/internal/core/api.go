@@ -268,11 +268,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 			}
 			learned[t] = true
 		}
-		held := def.Traits
-		if o.TraitsOverride != nil {
-			held = *o.TraitsOverride
-		}
-		held = append(append([]string{}, held...), o.Learned...)
+		held := append(append([]string{}, innate(&o)...), o.Learned...)
 		for slot, eq := range o.Equipment {
 			v, ok := d.Equipment[eq]
 			if !ok || v.Slot != slot || !d.Carries(d.Classes[o.Class], held, v) {

@@ -5,6 +5,49 @@
 
 ---
 
+## 2026-11-02 문관 계열 병종 계획은 책략을 촘촘히, 민중은 승급하지 않음
+- 결정: 서생→참모→군사는 Lv1 화계·3 수계·6 지계·10 구휼·15/18/21 확산·30/33/36 강화, 방술사→선술사는 Lv1 구휼·3 화계·6 수계·10 지계·15 독려·18 구휼강화·21 구휼확산·25 의술·30 독려강화·35 장구, 도독은 Lv1 화계·수계·구휼·독려와 30·35에 강화·확산 · 이유: 사용자 "문관은 좀 많이 줘야해. 화계, 수계, 지계, 회복하는거. 레벨좀 빡빡하게라도 책략 많이 줘야해"
+- 민중 템플릿 셋(`troop_commoner_*`)에 `Look.Sprites`(경보병만)를 두어 승급하지 않게 한다 — AI 동맹 승급을 켜자 12판 피난민이 Lv20 중보병으로 나왔다
+- `assets/data/classes.json`, `assets/data/characters.json`, `docs/logic-traits.md` 4.1·4.1.1절
+- 확인: `cmd/_balance -player ai -seeds 20` B02 20/20, B06 20/20, B09 15/20, B10 17/20, B12 18/20
+
+## 2026-11-02 난사는 황충 몫
+- 결정: 병종 풀에서 뺀 난사를 황충의 고유 특성 계획 첫째와 고유 학습 풀에 둔다 · 이유: 사용자 "난사는 황충에게 줘"
+- `assets/data/characters_story.json`(황충 `Traits`·`Learn`), `docs/logic-traits.md` 5절
+
+## 2026-11-02 반격강화 추가, 번궁의 둘째 고유 특성
+- 결정: 새 특성 반격강화(`counter_boost`, 반격 피해 비율 +50%p)를 번궁의 고유 특성 계획 둘째와 고유 학습 풀에 넣는다. 반격술 태세와 함께면 50% + 50% + 50% = 150% · 이유: 사용자 "반격 강화를 주자. 반격 강화는 그냥 반격에 +50%야. 반격술과 같이 하면 +150%. 즉 공격하는것보다 더 쌔게 반격하는거지"
+- `assets/data/traits.json`, `assets/data/characters_story.json`(번궁 `Traits`·`Learn`), `internal/content/vocab.go`(`FxCounterBoost`), `internal/core/combat.go`(`counterShare`)
+- 시험: `internal/core/counter_boost_test.go`. 문서: `docs/logic-traits.md` 4.1절
+
+## 2026-11-02 시작 특성을 없애고 고유·병종 특성 계획, 동맹 승급, boss +22%
+- 결정: 플레이어 장수는 특성 없이 합류해 직접 배운다. 인물의 `Traits`는 NPC로 나올 때의 고유 특성 계획(순서대로 Lv1~15 첫째, 16~30 둘째, 31~45 셋째, 46~60 넷째)이고, 연의 속 위상 등급(S 4·A 3·B 2·C 1·D 0)으로 길이를 정했다. 병종마다 레벨별 병종 특성 계획(`Class.Plan`)을 두어 `Rules.EnemyTraits`를 대신한다. 장수는 둘 다, 일반병은 병종 계획만 따르고, 일반병 특성은 사거리·공격 범위(대각공격·장창·원시·사방격·장풍)와 기병의 초원지형보조만. AI 동맹도 적처럼 레벨대로 승급하고 계획을 따른다. boss 직급 +30% → +22%, 7판 여포 commander → boss(Lv15 → Lv17). 조운 고유 풀 일당백 → 간접공격면역 · 이유: 사용자 "시작 특성을 없애고, 즉 무특성에서 고유특성을 일일이 찍게 하고, 대신 동맹/적들을 위해 권장 특성 트리를 만들까해", "s급은 특성 4개, a급 3개, b급 2개, c급 1개", "1~15레벨일때 첫번째 특성, 16~30일때 2번째 … 고유특성 계획", "일반병 특성은 사거리, 공격범위 같은거 위주만", "동맹도 레벨대로 승급해야해", "boss는 +22% 어때?", 조운은 "노병이 강한 계교 전투에서 활약하게"
+- `internal/content/content.go`: `Rules.TraitPlanStep`, `Class.Plan`, `Rules.EnemyTraits` 삭제. `spawn.go`: `PlannedTraits`. `validate.go`: 병종 계획 검사
+- `internal/core/engine.go`: `spawn`이 `Temp`(적·AI 동맹·템플릿) 유닛을 승급시키고 `PlannedTraits`를 `TraitsOverride`로 둔다, `innate`(편성 장수는 고유 특성 없음), `grantLevelTraits` 삭제. `formation.go`(`DeputyTraits`)·`api.go`(저장 검사)가 `innate`를 쓴다
+- `assets/data/game.json`: `TraitPlanStep` 15, `EnemyTraits` 삭제, boss 0.22. `classes.json`: `Plan`. `characters*.json`: 1~12판 인물의 고유 특성 계획, 조운 `Learn`. `stage02.json`·`stage07.json`: 조조 `Traits`(다재다능이 계획 맨 앞이라 필요 없음) 삭제, 7판 여포 boss
+- `cmd/_traitsim`: 아군 쪽 특성은 배운 것으로, 적 쪽은 `Spawn.Traits`로, 병종 계획은 끈다
+- 시험: `internal/core/reach_test.go`(`TestNPCsHoldTheirPlansFromALevel`), `core_test.go`(`addSage`), `content/stage_level_test.go`(boss), `gui/editor_test.go`, `internal/testdata/mini/game.json`
+- 문서: `docs/logic-traits.md` 2.1·2.2·2.4·4.1·4.1.1·4.2·5절, `docs/stage_lv_balance.md` 직급 표, `docs/balance-traits-sim.md`
+- 미정: 번궁의 둘째 고유 특성. 문관 계열 병종 계획은 Lv1 화계(방술사·선술사는 구휼)라 전풍·심배의 수계는 빠졌다. 기존 저장의 플레이어 장수는 시작 특성을 잃는다(배운 특성은 그대로)
+
+## 2026-11-02 선등 → 대기병 전술(근접·원거리 모두)
+- 결정: 특성 선등(`first_climb`, 기병을 원거리 공격하면 확정 치명)을 대기병 전술(`anti_cavalry`, 기병을 물리 공격하면 확정 치명)로 바꾼다 · 이유: 사용자 "선등이 무슨뜻이야? 와닿질 않아", 오환 기병을 상대한 공손찬에게 주려는데 기사를 빼면 원거리 공격이 없어 발동하지 않음
+- `assets/data/traits.json`, `assets/data/characters_story.json`(국의), `internal/content/vocab.go`(`FxCritMounted` 값 `crit_vs_mounted`), `internal/core/combat.go`(`critForced`에서 원거리 조건 삭제)
+- `docs/logic-combat.md` 2.3절, `docs/logic-traits.md` 4.1절
+
+## 2026-11-02 장구직입 삭제
+- 결정: 특성 장구직입(대상의 방어 버프를 빼고 피해 계산)을 없앤다 · 이유: 사용자 "장구직입이 뭔지 모르겠는데 지워. 방어 디버프 무시하는거잖아. 안좋아. 이름도 이해 안가." 배우거나 가진 장수도 없었다
+- `assets/data/traits.json`: `straight_drive` 삭제. `internal/content/vocab.go`: `FxIgnoreGuardBuff` 삭제(나머지 줄은 gofmt 정렬). `internal/core/combat.go`: 방어 버프를 빼던 계산 삭제
+- `docs/logic-combat.md` 2절, `_newfeature.md` 장구직입 행·서황 배정
+
+## 2026-11-02 기병·궁병 계열 학습 풀 재편, 원거리 사거리 2~3 고정, 3단계 이동 +1
+- 결정: 경기병 풀을 기마술·공격명중률증가(신규, 명중 +5%p)·초원지형보조(신규, 맨 초원 지형 배율 +0.05)로 바꾸고 기병 초원 기본 배율을 1.1 → 1.05로 내린다. 교란은 적병 풀로. 중기병에서 돌격을 빼고(적토마·전해 몫), 친위대에 대각공격. 궁병 저격 → 공격명중률증가, 궁기병 응징 → 조준, 노기병 난사·간접공격면역 → 화시·연발, 발석거 난사 뺌. 원거리 병종 사거리는 모두 2~3, 원시는 발석거만. 3단계 병종 이동 +1(근위병·연노병·군사·선술사·권성·도독 5, 발석거 2 → 4) · 이유: 사용자 "경기병이 특성을 너무 찍을게 없어. 다 경기병에 안맞고 찍기 아까운거 같아", "초원은 기병의 땅", "응징, 난사는 너무 고급", "사거리를 전부 2~3으로 고정", "3단계에서는 이동 1씩 빠르게"
+- `assets/data/traits.json`: `accuracy_up`·`grass_footing` 추가. `assets/data/classes.json`: 풀·`Range`·`Move`. `assets/data/terrain.json`: 기병 초원 1.05
+- `internal/content/vocab.go`·`terrain.go`: `FxGrassFactor`, `GroundGrass`. `internal/core/rules.go`: `terrain`이 맨 초원에서 `grass_factor`를 배율에 더함
+- `internal/content/class_pools_test.go`·`terrain_test.go`: 새 풀·배율
+- `docs/logic-traits.md` 3.1.1·3.3, `docs/balance-battle.md` 1.5·2.1
+- 확인: `cmd/_balance -seeds 10`(rush) 전후 B01~B12 승률 차이는 판마다 ±2 이내. content 시험은 다른 세션 임시 파일의 순수성 시험만 실패, core 통과
+
 ## 2026-11-01 관우·장비·조운 고유 특성 가르기, 개전·기습·호통, 질타 삭제
 
 - 결정: 같은 기병 계열을 타는 세 장수의 고유 특성이 겹쳐(일당백 셋, 연전 둘) 역할을 가른다. 관우는 성한 적을 크게 벤다(위압·연전·필살·반격술·개전·돌진), 장비는 둘러싸여 버티며 맞은 적을 꺾는다(무쌍술·근성·일당백·호통, 연전·사방격·팔방격 뺌), 조운은 홀로 파고든다(일당백·다재다능·일기당천). 질타는 삭제 — 사용자 결정. 영향받는 문서: `logic-traits.md`, `logic-combat.md`.

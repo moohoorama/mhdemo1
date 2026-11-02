@@ -27,9 +27,9 @@ func TestRankLeadKeepsItsShareOfStrength(t *testing.T) {
 	})
 	t.Run("the lead grows with the level", func(t *testing.T) {
 		boss := Spawn{Character: "lubu", Rank: "boss"}
-		assert.Equal(t, 11, d.SpawnLevel(3, boss))
-		assert.Equal(t, 13, d.SpawnLevel(4, boss))
-		assert.Equal(t, 19, d.SpawnLevel(7, boss))
+		assert.Equal(t, 10, d.SpawnLevel(3, boss))
+		assert.Equal(t, 12, d.SpawnLevel(4, boss))
+		assert.Equal(t, 17, d.SpawnLevel(7, boss))
 	})
 	t.Run("shift", func(t *testing.T) {
 		assert.Equal(t, 3, d.SpawnLevel(2, Spawn{Character: "troop_footman", Shift: -0.12}))

@@ -89,10 +89,6 @@
    "Faction": "wei",
    "Group": "wei",
    "Policy": "assault",
-   "Traits": [
-    "civil_martial",
-    "versatile"
-   ],
    "Equipment": [
     "yitian_sword",
     "leather_armor"
@@ -569,7 +565,7 @@
        "Side": "enemy",
        "Faction": "dong",
        "DuelFirst": true,
-       "Rank": "commander"
+       "Rank": "boss"
       },
       {
        "Character": "troop_footman",

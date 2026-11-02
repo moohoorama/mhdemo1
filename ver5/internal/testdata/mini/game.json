@@ -69,6 +69,7 @@
   "ExpMaxFactor": 2,
   "ExpSupportPercent": 16,
   "PointsPerLevel": 100,
+  "TraitPlanStep": 15,
   "MaxLevel": 99,
   "DeputyShare": 85,
   "DeputyWeight": 2,

@@ -193,13 +193,13 @@ func (d *Data) Validate() error {
 			return fmt.Errorf("forage item %s", item)
 		}
 	}
-	for class, list := range r.EnemyTraits {
-		if _, ok := d.Classes[class]; !ok {
-			return fmt.Errorf("enemy traits: unknown class %s", class)
-		}
-		for _, lt := range list {
+	if r.TraitPlanStep < 1 {
+		return fmt.Errorf("trait plan step %d", r.TraitPlanStep)
+	}
+	for class, cl := range d.Classes {
+		for _, lt := range cl.Plan {
 			if _, ok := d.Traits[lt.Trait]; !ok || lt.Level < 1 {
-				return fmt.Errorf("enemy traits of %s: %s from level %d", class, lt.Trait, lt.Level)
+				return fmt.Errorf("trait plan of %s: %s from level %d", class, lt.Trait, lt.Level)
 			}
 		}
 	}

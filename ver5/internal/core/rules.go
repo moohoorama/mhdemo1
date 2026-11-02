@@ -106,9 +106,13 @@ func (e *Engine) Boats() bool { return e.data.Stages[e.state.Stage].Boats }
 // CellProps is what the cell at (x, y) does besides costing steps: recovery, water, ambush, castle.
 func (e *Engine) CellProps(x, y int) content.CellProps { return e.data.Props(e.Cell(x, y)) }
 func (e *Engine) terrain(u *Unit, x, y int) content.Terrain {
-	t := e.data.Move(e.unitClass(u).Terrain, e.Cell(x, y), e.Boats())
+	c := e.Cell(x, y)
+	t := e.data.Move(e.unitClass(u).Terrain, c, e.Boats())
 	if e.has(u, content.FxIgnoreMoveCost) && t.Cost > 0 {
 		t.Cost = 1
+	}
+	if c.Ground == content.GroundGrass && c.Structure == content.NoLayer {
+		t.Factor += e.fx(u, content.FxGrassFactor)
 	}
 	return t
 }

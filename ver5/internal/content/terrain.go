@@ -5,6 +5,9 @@ import "strings"
 // NoLayer fills the structure or state of a cell that has none.
 const NoLayer = '-'
 
+// GroundGrass is the grassland ground glyph.
+const GroundGrass = 'g'
+
 // Ground is what a cell stands on. Glyph is the character the map art knows it by.
 type Ground struct {
 	Name    string

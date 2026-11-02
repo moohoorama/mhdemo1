@@ -17,7 +17,10 @@
    "Lord": true,
    "Playable": true,
    "Traits": [
-    "exhort"
+    "exhort",
+    "chivalry",
+    "benevolence",
+    "fortune"
    ],
    "Learn": [
     "chivalry",
@@ -57,7 +60,10 @@
    "Points": 200,
    "Playable": true,
    "Traits": [
-    "opening"
+    "opening",
+    "charge_aim",
+    "intimidate",
+    "deadly"
    ],
    "Learn": [
     "intimidate",
@@ -97,7 +103,10 @@
    "Points": 200,
    "Playable": true,
    "Traits": [
-    "roar"
+    "roar",
+    "grit",
+    "hundred_foes",
+    "sweep_art"
    ],
    "Learn": [
     "sweep_art",
@@ -137,7 +146,8 @@
    "Points": 100,
    "Playable": true,
    "Traits": [
-    "relief"
+    "supply",
+    "medicine"
    ],
    "Learn": [
     "supply",
@@ -170,7 +180,9 @@
     42
    ],
    "Level": 4,
-   "Traits": [],
+   "Traits": [
+    "vanguard"
+   ],
    "Learn": [],
    "Equipment": [
     "iron_sword",
@@ -262,7 +274,9 @@
    ],
    "Level": 6,
    "Traits": [
-    "vital_strike"
+    "vital_strike",
+    "vanguard",
+    "pursuit"
    ],
    "Learn": [],
    "Equipment": [
@@ -334,7 +348,10 @@
    ],
    "Level": 9,
    "Traits": [
-    "deadly"
+    "deadly",
+    "hundred_foes",
+    "horse_archery",
+    "missile_immunity"
    ],
    "Learn": [],
    "Equipment": [
@@ -368,9 +385,9 @@
    ],
    "Level": 7,
    "Traits": [
-    "fire",
+    "insight",
     "stratagem",
-    "insight"
+    "deadly_poison"
    ],
    "Learn": [],
    "Equipment": [
@@ -404,7 +421,9 @@
    ],
    "Level": 7,
    "Traits": [
-    "siegecraft"
+    "siegecraft",
+    "venom",
+    "hoarding"
    ],
    "Learn": [],
    "Equipment": [
@@ -437,7 +456,8 @@
    ],
    "Level": 3,
    "Traits": [
-    "lecture"
+    "lecture",
+    "even_hand"
    ],
    "Learn": [],
    "Equipment": [
@@ -469,13 +489,16 @@
    "Level": 8,
    "Points": 700,
    "Traits": [
-    "breakthrough"
-   ],
-   "Learn": [
-    "hundred_foes",
+    "breakthrough",
     "versatile",
     "lone_warrior",
-    "breakthrough"
+    "missile_immunity"
+   ],
+   "Learn": [
+    "versatile",
+    "lone_warrior",
+    "breakthrough",
+    "missile_immunity"
    ],
    "Equipment": [
     "iron_spear",
@@ -511,7 +534,9 @@
    ],
    "Level": 8,
    "Traits": [
-    "horse_archery"
+    "anti_cavalry",
+    "pursuit",
+    "intimidate"
    ],
    "Learn": [],
    "Equipment": [
@@ -573,7 +598,9 @@
    ],
    "Level": 10,
    "Traits": [
-    "four_generations"
+    "four_generations",
+    "exhort",
+    "even_hand"
    ],
    "Learn": [],
    "Equipment": [
@@ -606,7 +633,9 @@
    ],
    "Level": 10,
    "Traits": [
-    "do_or_die"
+    "do_or_die",
+    "pursuit",
+    "retaliate"
    ],
    "Learn": [],
    "Equipment": [
@@ -637,7 +666,9 @@
    ],
    "Level": 10,
    "Traits": [
-    "awe"
+    "awe",
+    "relentless",
+    "grit"
    ],
    "Learn": [],
    "Equipment": [
@@ -668,7 +699,10 @@
    ],
    "Level": 11,
    "Traits": [
-    "adaptable"
+    "adaptable",
+    "sure_footing",
+    "charge_aim",
+    "diamond"
    ],
    "Learn": [],
    "Equipment": [
@@ -697,7 +731,10 @@
     51
    ],
    "Level": 11,
-   "Traits": [],
+   "Traits": [
+    "castle_defense",
+    "supply"
+   ],
    "Learn": [],
    "Equipment": [
     "iron_sword",
@@ -726,7 +763,8 @@
    ],
    "Level": 10,
    "Traits": [
-    "assist"
+    "assist",
+    "bodyguard"
    ],
    "Learn": [],
    "Equipment": [
@@ -756,9 +794,9 @@
    ],
    "Level": 9,
    "Traits": [
-    "fire",
-    "water",
-    "deep_scheme"
+    "deep_scheme",
+    "insight",
+    "break_formation"
    ],
    "Learn": [],
    "Equipment": [
@@ -789,8 +827,9 @@
    ],
    "Level": 9,
    "Traits": [
-    "water",
-    "castle_defense"
+    "castle_defense",
+    "discipline",
+    "spell_reflect"
    ],
    "Learn": [],
    "Equipment": [
@@ -820,7 +859,6 @@
    ],
    "Level": 8,
    "Traits": [
-    "fire",
     "stratagem",
     "cunning"
    ],
@@ -851,7 +889,10 @@
     49
    ],
    "Level": 8,
-   "Traits": [],
+   "Traits": [
+    "four_generations",
+    "hoarding"
+   ],
    "Learn": [],
    "Equipment": [
     "iron_sword",
@@ -878,7 +919,10 @@
    ],
    "Level": 10,
    "Traits": [
-    "vanguard"
+    "vanguard",
+    "intimidate",
+    "do_or_die",
+    "hundred_foes"
    ],
    "Learn": [],
    "Equipment": [
@@ -905,7 +949,12 @@
     96
    ],
    "Level": 14,
-   "Traits": [],
+   "Traits": [
+    "versatile",
+    "civil_martial",
+    "feint",
+    "ambition"
+   ],
    "Learn": [],
    "Equipment": [
     "iron_spear",
@@ -1187,7 +1236,12 @@
     70
    ],
    "Level": 6,
-   "Traits": [],
+   "Traits": [
+    "hundred_foes",
+    "relentless",
+    "breakthrough",
+    "awe"
+   ],
    "Learn": [],
    "Equipment": [
     "iron_spear",
@@ -1220,7 +1274,10 @@
    "Learn": [],
    "Equipment": [],
    "Look": {
-    "Sprite": "commoner_man"
+    "Sprite": "commoner_man",
+    "Sprites": {
+     "light_infantry": "commoner_man"
+    }
    }
   },
   "troop_commoner_woman": {
@@ -1240,7 +1297,10 @@
    "Learn": [],
    "Equipment": [],
    "Look": {
-    "Sprite": "commoner_woman"
+    "Sprite": "commoner_woman",
+    "Sprites": {
+     "light_infantry": "commoner_woman"
+    }
    }
   },
   "troop_commoner_elder": {
@@ -1260,7 +1320,10 @@
    "Learn": [],
    "Equipment": [],
    "Look": {
-    "Sprite": "commoner_elder"
+    "Sprite": "commoner_elder",
+    "Sprites": {
+     "light_infantry": "commoner_elder"
+    }
    }
   }
  }

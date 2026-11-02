@@ -86,20 +86,14 @@
   "StageLevelStep": 1.5,
   "SideShareMax": 0.5,
   "ForageItems": ["barley", "bean"],
-  "EnemyTraits": {
-   "light_infantry": [{"Level": 10, "Trait": "diagonal"}],
-   "heavy_infantry": [{"Level": 10, "Trait": "diagonal"}],
-   "guards": [{"Level": 10, "Trait": "diagonal"}],
-   "pikeman": [{"Level": 10, "Trait": "diagonal"}, {"Level": 15, "Trait": "long_spear"}],
-   "chariot": [{"Level": 10, "Trait": "diagonal"}, {"Level": 15, "Trait": "long_spear"}]
-  },
+  "TraitPlanStep": 15,
   "RankLead": {
    "rabble": -0.14,
    "recruit": -0.07,
    "troop": 0,
    "officer": 0.08,
    "commander": 0.15,
-   "boss": 0.3
+   "boss": 0.22
   },
   "EnemyStock": {
    "bean": 1

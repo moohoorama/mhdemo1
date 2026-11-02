@@ -70,6 +70,16 @@
     "retaliate": 1
    }
   },
+  "counter_boost": {
+   "Name": "반격강화",
+   "Desc": "반격 피해 비율 +50%p(50% → 100%, 반격술 태세와 함께면 150%).",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 500,
+   "Effects": {
+    "counter_boost": 0.5
+   }
+  },
   "assist": {
    "Name": "협동",
    "Desc": "자기 차례에 공격범위 안의 적이 아군의 물리 공격을 받으면 같은 대상을 50% 피해로 추가 공격.",
@@ -266,14 +276,14 @@
     "crit_vs_scholar": 1
    }
   },
-  "first_climb": {
-   "Name": "선등",
-   "Desc": "기병을 원거리 공격하면 반드시 치명타.",
+  "anti_cavalry": {
+   "Name": "대기병 전술",
+   "Desc": "기병을 물리 공격하면 근접·원거리 모두 반드시 치명타.",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 500,
    "Effects": {
-    "crit_ranged_vs_mounted": 1
+    "crit_vs_mounted": 1
    }
   },
   "pursuit": {
@@ -357,19 +367,6 @@
     "guardian": 0.5
    }
   },
-  "straight_drive": {
-   "Name": "장구직입",
-   "Desc": "대상의 방어 버프를 무시하고 피해를 계산한다.",
-   "Kind": "talent",
-   "Tone": "attack",
-   "Cost": 500,
-   "Requires": [
-    "siegecraft"
-   ],
-   "Effects": {
-    "ignore_guard_buff": 1
-   }
-  },
   "dash": {
    "Name": "기마술",
    "Desc": "이동력 +1.",
@@ -378,6 +375,26 @@
    "Cost": 500,
    "Effects": {
     "move": 1
+   }
+  },
+  "accuracy_up": {
+   "Name": "공격명중률증가",
+   "Desc": "물리 공격 명중률 +5%p.",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 500,
+   "Effects": {
+    "accuracy": 5
+   }
+  },
+  "grass_footing": {
+   "Name": "초원지형보조",
+   "Desc": "나무·마을·주둔지가 없는 맨 초원에 서면 지형 보정 +5%(공격·방어 모두).",
+   "Kind": "talent",
+   "Tone": "move",
+   "Cost": 500,
+   "Effects": {
+    "grass_factor": 0.05
    }
   },
   "gale": {

@@ -3,6 +3,7 @@ package content
 import (
 	"fmt"
 	"math"
+	"slices"
 	"strings"
 )
 
@@ -53,12 +54,29 @@ func (d *Data) Carries(cl Class, traits []string, eq Equipment) bool {
 	return true
 }
 
-// SpawnTraits are the traits a spawn starts with: its own list, else its character's.
+// SpawnTraits are the traits a spawn may start with: its own list, else its character's whole plan.
 func (d *Data) SpawnTraits(s Spawn) []string {
 	if s.Traits != nil {
 		return *s.Traits
 	}
 	return d.Characters[s.Character].Traits
+}
+
+// PlannedTraits are the traits an NPC officer of the character holds in the class at the level: the first of its
+// own plan, one more every Rules.TraitPlanStep levels (or own in full when the stage sets it), then the class plan's.
+func (d *Data) PlannedTraits(def, class string, level int, own *[]string) []string {
+	var out []string
+	if own != nil {
+		out = slices.Clone(*own)
+	} else if plan := d.Characters[def].Traits; len(plan) > 0 && d.Rules.TraitPlanStep > 0 {
+		out = slices.Clone(plan[:min(len(plan), (max(level, 1)-1)/d.Rules.TraitPlanStep+1)])
+	}
+	for _, lt := range d.Classes[class].Plan {
+		if level >= lt.Level && !slices.Contains(out, lt.Trait) {
+			out = append(out, lt.Trait)
+		}
+	}
+	return out
 }
 
 // StageLevel is the level the order-th battle of the story is fought at: the player's officers are

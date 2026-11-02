@@ -125,7 +125,6 @@ func main() {
 	check(err)
 	ai.Player = nil // both sides by the enemy's greedy AI
 	d.Rules.StageLevelBase = 0
-	d.Rules.EnemyTraits = nil
 	d.Rules.EnemyStock, d.Rules.AllyStock = nil, nil
 	d.Campaign.Inventory = nil
 	lines := map[string][]string{}
@@ -135,6 +134,7 @@ func main() {
 	d.Classes = maps.Clone(d.Classes)
 	for id, c := range d.Classes {
 		c.Promotes = nil // enemies would be promoted by their level
+		c.Plan = nil     // and hold their class's traits
 		d.Classes[id] = c
 	}
 	su := setup{d: d, level: *level, gaps: splitInts(*gaps), seeds: *seeds}
@@ -304,15 +304,15 @@ func fight(su setup, j job, side string, gap int, seed uint64, show bool) tally 
 	for i := 0; i < j.n; i++ {
 		c := d.Characters[j.tpl]
 		c.Template, c.Playable, c.Lord = false, true, false
-		c.Class, c.Level, c.Traits, c.Learn, c.Equipment = j.class, su.level, *traits("ally"), nil, kit
+		c.Class, c.Level, c.Traits, c.Learn, c.Equipment = j.class, su.level, nil, nil, kit
 		id := "zz_side" + strconv.Itoa(i+1)
 		dd.Characters[id] = c
 		roster = append(roster, id)
 		foe := c
-		foe.Playable, foe.Traits = false, *traits("enemy")
+		foe.Playable = false
 		fid := "zz_foe" + strconv.Itoa(i+1)
 		dd.Characters[fid] = foe
-		enemies = append(enemies, content.Spawn{Character: fid, Level: su.level, X: foes[i].X, Y: foes[i].Y, Facing: "NW", Policy: "assault"})
+		enemies = append(enemies, content.Spawn{Character: fid, Level: su.level, X: foes[i].X, Y: foes[i].Y, Facing: "NW", Policy: "assault", Traits: traits("enemy")})
 	}
 	st := content.Stage{ID: "zz-traitsim", Name: "traitsim", Width: w, Height: h, Max: j.n, Tiles: tiles, Allies: allies,
 		Enemies: enemies, TurnLimit: 30, Forced: true,
@@ -321,8 +321,15 @@ func fight(su setup, j job, side string, gap int, seed uint64, show bool) tally 
 	dd.Nodes = append(slices.Clone(d.Nodes), content.Node{ID: "zz-traitsim", Kind: "battle", Stage: st.ID})
 	dd.Campaign.Start = "zz-traitsim"
 	dd.Campaign.Roster, dd.Campaign.Deployment = roster, roster
-	e := core.New(&dd, seed)
-	_, err := e.Apply(core.Command{Kind: "start"})
+	snap := core.New(&dd, seed).Snapshot() // officers in the party hold only what they learned
+	for i := range snap.Characters {
+		if strings.HasPrefix(snap.Characters[i].ID, "zz_side") {
+			snap.Characters[i].Learned = *traits("ally")
+		}
+	}
+	e, err := core.Restore(&dd, snap)
+	check(err)
+	_, err = e.Apply(core.Command{Kind: "start"})
 	check(err)
 	if fullMP {
 		snap, maxMP := e.Snapshot(), map[string]int{}

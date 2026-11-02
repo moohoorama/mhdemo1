@@ -43,11 +43,7 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 		if e.has(u, content.FxTerrainCap) {
 			tf = math.Min(tf, 1)
 		}
-		def := float64(b.Defense)
-		if p := v.Status["defense"].Value; p > 0 && e.has(u, content.FxIgnoreGuardBuff) {
-			def = def * 100 / float64(100+p)
-		}
-		base = math.Max(1, float64(a.Attack)*af-def*tf+level*R.PhysicalLevelScale)
+		base = math.Max(1, float64(a.Attack)*af-float64(b.Defense)*tf+level*R.PhysicalLevelScale)
 	}
 	out := base * s.Coeff
 	if s.MagicCoeff > 0 {
@@ -171,7 +167,7 @@ func (e *Engine) critForced(u, v *Unit, s content.Skill) bool {
 	return e.has(u, content.FxCritAlways) || u.Status["sure_crit"].Turns > 0 ||
 		e.has(u, content.FxCritAmbush) && e.CellProps(u.X, u.Y).Ambush ||
 		e.has(u, content.FxCritScholar) && contains(e.unitClass(v).Tags, content.TagCivil) ||
-		e.has(u, content.FxCritMounted) && e.mounted(v) && e.rangedAttack(u, v, s)
+		e.has(u, content.FxCritMounted) && e.mounted(v)
 }
 
 // alone tells whether no ally of the unit stands in the eight cells around it (일기당천).
@@ -415,13 +411,13 @@ func (e *Engine) strikeBack(u *Unit, aims []*Unit, k float64, twice bool) {
 }
 
 // counterShare is the share of a normal blow v strikes back at u with: CounterShare in a counter stance,
-// PlainCounterShare otherwise, either raised by 참격.
+// PlainCounterShare otherwise, either raised by 참격 and 반격강화.
 func (e *Engine) counterShare(v *Unit) float64 {
 	k := e.data.Rules.PlainCounterShare
 	if v.Status["counter"].Turns > 0 {
 		k = e.data.Rules.CounterShare
 	}
-	return k + e.fx(v, content.FxHeavy)
+	return k + e.fx(v, content.FxHeavy) + e.fx(v, content.FxCounterBoost)
 }
 
 // counterBack is the target's counter-attack after it took u's physical action: every unit strikes back

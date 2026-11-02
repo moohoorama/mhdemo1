@@ -403,20 +403,25 @@ func TestSpellFamiliesNeedTheirTraits(t *testing.T) {
 	if got := e.skills(e.char("hero")); len(got) != 0 {
 		t.Fatalf("hero skills %v", got)
 	}
-	e.addCharacter("sage", "sage")
+	addSage(e)
 	if got := e.skills(e.char("sage")); len(got) < 8 {
 		t.Fatalf("sage skills %v", got)
 	}
 	if contains(e.skills(e.char("sage")), "inferno") {
 		t.Fatal("inferno needs fire_up")
 	}
-	e.char("sage").Learned = []string{"fire_up"}
+	with(e, "sage", "fire_up")
 	if !contains(e.skills(e.char("sage")), "inferno") {
 		t.Fatal("inferno should open")
 	}
 }
-func sage(e *Engine, x, y int) {
+// addSage puts the sage in the party, having learned the traits its definition plans.
+func addSage(e *Engine) {
 	e.addCharacter("sage", "sage")
+	with(e, "sage", e.data.Characters["sage"].Traits...)
+}
+func sage(e *Engine, x, y int) {
+	addSage(e)
 	u := e.spawn("sage", "sage", "ally", x, y, content.Spawn{})
 	u.MP = 500
 }

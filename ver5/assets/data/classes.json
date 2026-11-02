@@ -28,6 +28,12 @@
     "fire",
     "first_aid"
    ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "diagonal"
+    }
+   ],
    "Promotes": [
     "heavy_infantry",
     "pikeman"
@@ -87,6 +93,12 @@
     "assist",
     "brace_prep"
    ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "diagonal"
+    }
+   ],
    "Promotes": [
     "guards"
    ]
@@ -118,6 +130,16 @@
     "deputy_appoint",
     "long_spear",
     "pierce"
+   ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "diagonal"
+    },
+    {
+     "Level": 15,
+     "Trait": "long_spear"
+    }
    ],
    "Promotes": [
     "chariot"
@@ -152,6 +174,16 @@
     "deadly",
     "sweep_art"
    ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "diagonal"
+    },
+    {
+     "Level": 15,
+     "Trait": "long_spear"
+    }
+   ],
    "Tags": [
     "mounted"
    ]
@@ -163,7 +195,7 @@
    "Attack": "melee",
    "Weapon": "sword",
    "Armor": "armor",
-   "Move": 4,
+   "Move": 5,
    "Range": 1,
    "Bonus": [
     14,
@@ -183,6 +215,12 @@
     "castle_defense",
     "siegecraft",
     "composure"
+   ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "diagonal"
+    }
    ]
   },
   "light_cavalry": {
@@ -212,8 +250,14 @@
    "Portrait": "light_cavalry",
    "Pool": [
     "dash",
-    "disrupt_prep",
-    "provoke_prep"
+    "accuracy_up",
+    "grass_footing"
+   ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "grass_footing"
+    }
    ],
    "Tags": [
     "mounted"
@@ -250,9 +294,14 @@
    "Portrait": "heavy_cavalry",
    "Pool": [
     "deputy_appoint",
-    "charge",
     "charge_strike",
     "impact"
+   ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "grass_footing"
+    }
    ],
    "Tags": [
     "mounted"
@@ -289,7 +338,13 @@
    "Pool": [
     "deputy_appoint",
     "snipe_prep",
-    "retaliate"
+    "aim_prep"
+   ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "grass_footing"
+    }
    ],
    "Tags": [
     "mounted"
@@ -307,7 +362,7 @@
    "Weapon": "bow",
    "Armor": "armor",
    "Move": 6,
-   "Range": 4,
+   "Range": 3,
    "Bonus": [
     15,
     9,
@@ -324,9 +379,15 @@
    "Portrait": "horse_crossbow",
    "MinRange": 2,
    "Pool": [
-    "volley",
     "reload_prep",
-    "missile_immunity"
+    "fire_arrow_art",
+    "rapid_art"
+   ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "grass_footing"
+    }
    ],
    "Tags": [
     "mounted"
@@ -359,7 +420,18 @@
    "Portrait": "royal_guard",
    "Pool": [
     "gale",
-    "vital_strike"
+    "vital_strike",
+    "diagonal"
+   ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "grass_footing"
+    },
+    {
+     "Level": 30,
+     "Trait": "diagonal"
+    }
    ],
    "Tags": [
     "mounted"
@@ -391,7 +463,7 @@
    "MinRange": 2,
    "Pool": [
     "relief",
-    "snipe_prep",
+    "accuracy_up",
     "aim_prep"
    ],
    "Promotes": [
@@ -406,7 +478,7 @@
    "Weapon": "bow",
    "Armor": "armor",
    "Move": 4,
-   "Range": 4,
+   "Range": 3,
    "Bonus": [
     13,
     7,
@@ -425,8 +497,8 @@
    "Pool": [
     "deputy_appoint",
     "water",
-    "reload_prep",
-    "fire_arrow_art"
+    "fire_arrow_art",
+    "reload_prep"
    ],
    "Promotes": [
     "repeating_crossbow",
@@ -440,8 +512,8 @@
    "Attack": "ranged",
    "Weapon": "bow",
    "Armor": "armor",
-   "Move": 4,
-   "Range": 4,
+   "Move": 5,
+   "Range": 3,
    "Bonus": [
     15,
     7,
@@ -459,8 +531,8 @@
    "MinRange": 2,
    "Pool": [
     "exhort",
-    "rapid_art",
-    "penetrate_art"
+    "penetrate_art",
+    "rapid_art"
    ]
   },
   "catapult": {
@@ -470,8 +542,8 @@
    "Attack": "ranged",
    "Weapon": "bow",
    "Armor": "armor",
-   "Move": 2,
-   "Range": 5,
+   "Move": 4,
+   "Range": 3,
    "Bonus": [
     14,
     8,
@@ -489,9 +561,18 @@
    "MinRange": 2,
    "Pool": [
     "siegecraft",
-    "volley",
-    "far_sight",
-    "cross_strike"
+    "cross_strike",
+    "far_sight"
+   ],
+   "Plan": [
+    {
+     "Level": 30,
+     "Trait": "far_sight"
+    },
+    {
+     "Level": 40,
+     "Trait": "cross_strike"
+    }
    ],
    "Tags": [
     "siege"
@@ -530,6 +611,24 @@
     "relief",
     "focus"
    ],
+   "Plan": [
+    {
+     "Level": 1,
+     "Trait": "fire"
+    },
+    {
+     "Level": 3,
+     "Trait": "water"
+    },
+    {
+     "Level": 6,
+     "Trait": "earth"
+    },
+    {
+     "Level": 10,
+     "Trait": "relief"
+    }
+   ],
    "Promotes": [
     "staff_officer",
     "sorcerer"
@@ -567,6 +666,36 @@
     "water_spread",
     "earth_spread"
    ],
+   "Plan": [
+    {
+     "Level": 1,
+     "Trait": "fire"
+    },
+    {
+     "Level": 3,
+     "Trait": "water"
+    },
+    {
+     "Level": 6,
+     "Trait": "earth"
+    },
+    {
+     "Level": 10,
+     "Trait": "relief"
+    },
+    {
+     "Level": 15,
+     "Trait": "fire_spread"
+    },
+    {
+     "Level": 18,
+     "Trait": "water_spread"
+    },
+    {
+     "Level": 21,
+     "Trait": "earth_spread"
+    }
+   ],
    "Promotes": [
     "strategist"
    ]
@@ -578,7 +707,7 @@
    "Attack": "melee",
    "Weapon": "fan",
    "Armor": "robe",
-   "Move": 4,
+   "Move": 5,
    "Range": 1,
    "Bonus": [
     6,
@@ -601,6 +730,48 @@
     "fire_boost",
     "water_boost",
     "earth_boost"
+   ],
+   "Plan": [
+    {
+     "Level": 1,
+     "Trait": "fire"
+    },
+    {
+     "Level": 3,
+     "Trait": "water"
+    },
+    {
+     "Level": 6,
+     "Trait": "earth"
+    },
+    {
+     "Level": 10,
+     "Trait": "relief"
+    },
+    {
+     "Level": 15,
+     "Trait": "fire_spread"
+    },
+    {
+     "Level": 18,
+     "Trait": "water_spread"
+    },
+    {
+     "Level": 21,
+     "Trait": "earth_spread"
+    },
+    {
+     "Level": 30,
+     "Trait": "fire_boost"
+    },
+    {
+     "Level": 33,
+     "Trait": "water_boost"
+    },
+    {
+     "Level": 36,
+     "Trait": "earth_boost"
+    }
    ]
   },
   "sorcerer": {
@@ -636,6 +807,40 @@
     "relief_spread",
     "medicine"
    ],
+   "Plan": [
+    {
+     "Level": 1,
+     "Trait": "relief"
+    },
+    {
+     "Level": 3,
+     "Trait": "fire"
+    },
+    {
+     "Level": 6,
+     "Trait": "water"
+    },
+    {
+     "Level": 10,
+     "Trait": "earth"
+    },
+    {
+     "Level": 15,
+     "Trait": "exhort"
+    },
+    {
+     "Level": 18,
+     "Trait": "relief_boost"
+    },
+    {
+     "Level": 21,
+     "Trait": "relief_spread"
+    },
+    {
+     "Level": 25,
+     "Trait": "medicine"
+    }
+   ],
    "Promotes": [
     "mystic"
    ]
@@ -647,7 +852,7 @@
    "Attack": "melee",
    "Weapon": "fan",
    "Armor": "robe",
-   "Move": 4,
+   "Move": 5,
    "Range": 1,
    "Bonus": [
     6,
@@ -669,6 +874,48 @@
    "Pool": [
     "exhort_boost",
     "lasting"
+   ],
+   "Plan": [
+    {
+     "Level": 1,
+     "Trait": "relief"
+    },
+    {
+     "Level": 3,
+     "Trait": "fire"
+    },
+    {
+     "Level": 6,
+     "Trait": "water"
+    },
+    {
+     "Level": 10,
+     "Trait": "earth"
+    },
+    {
+     "Level": 15,
+     "Trait": "exhort"
+    },
+    {
+     "Level": 18,
+     "Trait": "relief_boost"
+    },
+    {
+     "Level": 21,
+     "Trait": "relief_spread"
+    },
+    {
+     "Level": 25,
+     "Trait": "medicine"
+    },
+    {
+     "Level": 30,
+     "Trait": "exhort_boost"
+    },
+    {
+     "Level": 35,
+     "Trait": "lasting"
+    }
    ]
   },
   "dudu": {
@@ -678,7 +925,7 @@
    "Attack": "melee",
    "Weapon": "sword",
    "Armor": "armor",
-   "Move": 4,
+   "Move": 5,
    "Range": 1,
    "Bonus": [
     12,
@@ -704,6 +951,40 @@
     "water_spread",
     "relief",
     "exhort"
+   ],
+   "Plan": [
+    {
+     "Level": 1,
+     "Trait": "fire"
+    },
+    {
+     "Level": 1,
+     "Trait": "water"
+    },
+    {
+     "Level": 1,
+     "Trait": "relief"
+    },
+    {
+     "Level": 1,
+     "Trait": "exhort"
+    },
+    {
+     "Level": 30,
+     "Trait": "fire_boost"
+    },
+    {
+     "Level": 30,
+     "Trait": "water_boost"
+    },
+    {
+     "Level": 35,
+     "Trait": "fire_spread"
+    },
+    {
+     "Level": 35,
+     "Trait": "water_spread"
+    }
    ]
   },
   "bandit": {
@@ -732,7 +1013,8 @@
    "Pool": [
     "counter_art",
     "earth",
-    "provoke_prep"
+    "provoke_prep",
+    "disrupt_prep"
    ],
    "Promotes": [
     "ruffian"
@@ -767,6 +1049,12 @@
     "ambush_crit",
     "diagonal"
    ],
+   "Plan": [
+    {
+     "Level": 15,
+     "Trait": "diagonal"
+    }
+   ],
    "Promotes": [
     "outlaw"
    ]
@@ -798,6 +1086,12 @@
     "vital_strike",
     "crit_boost",
     "relief"
+   ],
+   "Plan": [
+    {
+     "Level": 15,
+     "Trait": "diagonal"
+    }
    ]
   },
   "brawler": {
@@ -860,6 +1154,12 @@
     "diagonal",
     "press_prep"
    ],
+   "Plan": [
+    {
+     "Level": 15,
+     "Trait": "diagonal"
+    }
+   ],
    "Promotes": [
     "fist_saint"
    ]
@@ -871,7 +1171,7 @@
    "Attack": "melee",
    "Weapon": "fist",
    "Armor": "robe",
-   "Move": 4,
+   "Move": 5,
    "Range": 1,
    "Bonus": [
     15,
@@ -891,6 +1191,16 @@
     "spirit_spread",
     "palm_wind",
     "fire_boost"
+   ],
+   "Plan": [
+    {
+     "Level": 15,
+     "Trait": "diagonal"
+    },
+    {
+     "Level": 30,
+     "Trait": "palm_wind"
+    }
    ]
   }
  }

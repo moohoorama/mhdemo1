@@ -46,17 +46,29 @@ func TestALongSpearBlowStaysMelee(t *testing.T) {
 	assert.NotZero(t, e.hitChance(a, b, e.basic()), "간접공격면역 does not stop a spear")
 }
 
-func TestEnemiesHoldTheirClassTraitsFromALevel(t *testing.T) {
+func TestNPCsHoldTheirPlansFromALevel(t *testing.T) {
 	e, _, _ := arena(t)
 	class := e.char("troop#2").Class // a level 5 troop
-	e.data.Rules.EnemyTraits = map[string][]content.LevelTrait{class: {{Level: 5, Trait: "diag_t"}, {Level: 6, Trait: "long_t"}}}
+	cl := e.data.Classes[class]
+	cl.Plan = []content.LevelTrait{{Level: 5, Trait: "diag_t"}, {Level: 6, Trait: "long_t"}}
+	e.data.Classes[class] = cl
 	sp := content.Spawn{Character: "troop", Level: 5}
 	u := e.spawn("troop", "troop", "enemy", 9, 9, sp)
 	c := e.char(u.Character)
 	assert.True(t, e.hasTrait(c, "diag_t"))
 	assert.False(t, e.hasTrait(c, "long_t"), "not yet at level 5")
 	ally := e.spawn("troop", "troop", "ally", 9, 8, content.Spawn{Character: "troop", Level: 5, AI: true})
-	assert.False(t, e.hasTrait(e.char(ally.Character), "diag_t"), "only enemies")
+	assert.True(t, e.hasTrait(e.char(ally.Character), "diag_t"), "allies follow the plan too")
+
+	e.data.Rules.TraitPlanStep = 15
+	def := e.data.Characters["troop"]
+	def.Traits = []string{"diag_t", "long_t", "shield"}
+	e.data.Characters["troop"] = def
+	cl.Plan = nil
+	e.data.Classes[class] = cl
+	for level, want := range map[int][]string{1: {"diag_t"}, 15: {"diag_t"}, 16: {"diag_t", "long_t"}, 31: {"diag_t", "long_t", "shield"}, 60: {"diag_t", "long_t", "shield"}} {
+		assert.Equal(t, want, e.data.PlannedTraits("troop", class, level, nil), "level %d", level)
+	}
 }
 
 func TestChainAndSupplyReachTheWeakestAround(t *testing.T) {

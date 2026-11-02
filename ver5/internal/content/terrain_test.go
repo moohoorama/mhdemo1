@@ -26,7 +26,7 @@ func TestTopmostLayerThatSaysAValueWins(t *testing.T) {
 	d := loadReal(t)
 	foot := d.Classes[d.Characters[d.Campaign.Roster[0]].Class].Terrain
 	cav := d.Classes["light_cavalry"].Terrain
-	assert.Equal(t, Terrain{Factor: 1.1, Cost: 1}, d.Move(cav, cell("g--"), false), "grass")
+	assert.Equal(t, Terrain{Factor: 1.05, Cost: 1}, d.Move(cav, cell("g--"), false), "grass")
 	assert.Equal(t, Terrain{Factor: 0.9, Cost: 2}, d.Move(cav, cell("d--"), false), "wasteland")
 	assert.Equal(t, Terrain{Factor: 1.1, Cost: 1}, d.Move(cav, cell("dv-"), false), "a village says its own cost over the wasteland's")
 	assert.Equal(t, Terrain{Factor: 0.8, Cost: 2}, d.Move(cav, cell("gt-"), false), "a tree on grass")
@@ -39,9 +39,9 @@ func TestStatesOverlayTheLayersBelow(t *testing.T) {
 	d := loadReal(t)
 	cav := d.Classes["light_cavalry"].Terrain
 	assert.Equal(t, d.Move(cav, cell("gt-"), false), d.Move(cav, cell("gte"), false), "embers only burn: the tree's factor and cost stay")
-	assert.InDelta(t, 1.0, d.Move(cav, cell("g-w"), false).Factor, 1e-9, "wet grass: ten points off the grass's 110%")
+	assert.InDelta(t, 0.95, d.Move(cav, cell("g-w"), false).Factor, 1e-9, "wet grass: ten points off the grass's 105%")
 	assert.InDelta(t, 0.7, d.Move(cav, cell("gtw"), false).Factor, 1e-9, "and off the tree's 80%")
-	assert.Equal(t, Terrain{Factor: 1.1, Cost: 3}, d.Move(cav, cell("g-r"), false), "rubble: three steps, the grass's factor")
+	assert.Equal(t, Terrain{Factor: 1.05, Cost: 3}, d.Move(cav, cell("g-r"), false), "rubble: three steps, the grass's factor")
 	assert.Zero(t, d.Move(cav, cell("g-F"), false).Cost, "flames cannot be entered")
 	assert.Zero(t, d.Move(cav, cell("gvF"), false).Cost, "not even over a village")
 	assert.Equal(t, d.Move(cav, cell("gt-"), false), d.Move(cav, cell("gts"), false), "soot changes nothing")

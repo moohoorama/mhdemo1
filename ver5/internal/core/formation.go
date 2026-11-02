@@ -101,7 +101,7 @@ func (e *Engine) DeputyTraits(id string) []string {
 	if d == nil {
 		return nil
 	}
-	return append(slices.Clone(e.def(d).Traits), d.Learned...)
+	return append(slices.Clone(innate(d)), d.Learned...)
 }
 
 // attributes are the character's six attributes with the deputy's blended in where the deputy's are higher.

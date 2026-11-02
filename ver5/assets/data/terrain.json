@@ -3,7 +3,7 @@
   "cavalry": {
    "Ground": {
     "g": {
-     "Factor": 1.1,
+     "Factor": 1.05,
      "Cost": 1
     },
     "d": {

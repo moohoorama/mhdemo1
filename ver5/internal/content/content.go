@@ -55,7 +55,7 @@ type Rules struct {
 	StageLevelStep        float64
 	SideShareMax          float64            // the most damage share a blow deals to anyone it strikes besides its target (splash, sweep, pierce)
 	RankLead              map[string]float64 // a rank's lead over the stage level, as a share of (stage level + StatLevelBase) so it means the same strength at any level
-	EnemyTraits           map[string][]LevelTrait // class -> traits an enemy of the class holds from a level on, besides its stage's
+	TraitPlanStep         int                // an NPC officer holds the k-th trait of its own plan (Character.Traits) from level (k−1)×TraitPlanStep+1
 	ForageItems           []string                // what 중가 finds in a village at the end of its turn, one of each
 	EnemyStock            map[string]int
 	AllyStock             map[string]int
@@ -109,6 +109,7 @@ type Class struct {
 	Move, Range, MinRange, HPFactor int    // MinRange: the nearest cell a ranged class can attack
 	Bonus                           [6]float64
 	MPBase, RecoveryBase            int
+	Plan                            []LevelTrait // traits an NPC of the class holds from a level on; it lists those of the classes below it too
 	Skills, Pool, Tags              []string
 	Promotes                        []string
 	Tier                            int
@@ -144,7 +145,8 @@ type Character struct {
 	Level                    int
 	Points                   int `json:",omitempty"` // trait points the character starts with
 	Lord, Playable, Template bool
-	Traits, Learn, Equipment []string
+	Traits                   []string // own trait plan for an NPC appearance, in order, one more every Rules.TraitPlanStep levels; officers in the party start with none
+	Learn, Equipment         []string
 	Look                     Look
 }
 type Equipment struct {

@@ -11,13 +11,16 @@ var classPools = map[string][]string{
 	"heavy_infantry":     {"deputy_appoint", "brace_prep", "assist"},
 	"guards":             {"castle_defense", "siegecraft", "composure"},
 	"pikeman":            {"deputy_appoint", "long_spear", "pierce"},
-	"light_cavalry":      {"dash", "disrupt_prep", "provoke_prep"},
-	"heavy_cavalry":      {"deputy_appoint", "charge", "charge_strike", "impact"},
-	"royal_guard":        {"gale", "vital_strike"},
-	"horse_archer":       {"deputy_appoint", "snipe_prep", "retaliate"},
-	"archer":             {"relief", "snipe_prep", "aim_prep"},
+	"light_cavalry":      {"dash", "accuracy_up", "grass_footing"},
+	"heavy_cavalry":      {"deputy_appoint", "charge_strike", "impact"},
+	"royal_guard":        {"gale", "vital_strike", "diagonal"},
+	"horse_archer":       {"deputy_appoint", "snipe_prep", "aim_prep"},
+	"horse_crossbow":     {"reload_prep", "fire_arrow_art", "rapid_art"},
+	"archer":             {"relief", "accuracy_up", "aim_prep"},
 	"crossbow":           {"deputy_appoint", "water", "fire_arrow_art", "reload_prep"},
 	"repeating_crossbow": {"exhort", "rapid_art", "penetrate_art"},
+	"catapult":           {"siegecraft", "cross_strike", "far_sight"},
+	"bandit":             {"counter_art", "earth", "provoke_prep", "disrupt_prep"},
 }
 
 func TestClassPoolsFollowTraitDesign(t *testing.T) {

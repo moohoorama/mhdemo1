@@ -710,10 +710,6 @@
        "Faction": "wei",
        "Facing": "SW",
        "Group": "wei",
-       "Traits": [
-        "civil_martial",
-        "versatile"
-       ],
        "Equipment": [
         "yitian_sword",
         "leather_armor"

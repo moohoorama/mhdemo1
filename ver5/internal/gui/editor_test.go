@@ -68,6 +68,11 @@ func TestEditorTraitChoicesBelongToOfficer(t *testing.T) {
 		for _, eq := range c.Equipment {
 			owned = append(owned, d.Equipment[eq].Traits...)
 		}
+		for _, cl := range d.Classes {
+			for _, lt := range cl.Plan {
+				owned = append(owned, lt.Trait)
+			}
+		}
 		for _, trait := range traits {
 			if !slices.Contains(owned, trait) {
 				t.Fatal("unowned choice")
