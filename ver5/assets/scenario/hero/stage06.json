@@ -140,11 +140,6 @@
    "Shift": -0.12
   }
  ],
- "Reward": {
-  "barley": 1,
-  "bean": 8,
-  "liquor": 4
- },
  "Duels": [
   {
    "ID": "hulao-brothers",

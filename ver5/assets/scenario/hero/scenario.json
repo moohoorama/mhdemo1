@@ -11,8 +11,8 @@
   "zhangfei"
  ],
  "Inventory": {
-  "bean": 18,
-  "liquor": 8
+  "bean": 3,
+  "liquor": 3
  },
  "Warehouse": {
   "tactics_primer": 1,

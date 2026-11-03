@@ -6,7 +6,7 @@
    "Icon": "bean",
    "Effect": "hp",
    "Amount": 400,
-   "Price": 20
+   "Price": 200
   },
   "barley": {
    "Name": "보리",
@@ -14,7 +14,7 @@
    "Icon": "barley",
    "Effect": "hp",
    "Amount": 700,
-   "Price": 60
+   "Price": 400
   },
   "rice": {
    "Name": "쌀",
@@ -22,7 +22,7 @@
    "Icon": "rice",
    "Effect": "hp",
    "Amount": 2200,
-   "Price": 180
+   "Price": 1000
   },
   "liquor": {
    "Name": "술",
@@ -30,7 +30,7 @@
    "Icon": "liquor",
    "Effect": "mp",
    "Amount": 30,
-   "Price": 30
+   "Price": 300
   },
   "fine_liquor": {
    "Name": "특급주",
@@ -38,7 +38,7 @@
    "Icon": "fine_liquor",
    "Effect": "mp",
    "Amount": 60,
-   "Price": 60
+   "Price": 600
   },
   "baijiu": {
    "Name": "빼갈",
@@ -46,7 +46,7 @@
    "Icon": "baijiu",
    "Effect": "mp",
    "Amount": 120,
-   "Price": 120
+   "Price": 1200
   },
   "insu_mid": {
    "Name": "중급 인수",

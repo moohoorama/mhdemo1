@@ -112,7 +112,7 @@ assets/scenario/
 {"ID": "B02", "Name": "사수관 전투", "Max": 4, "TurnLimit": 30,
  "Victory": [{"If": ["defeated:huaxiong"], "Text": "화웅 격파"}],
  "Sub": [{"ID": "duels", "Text": "두 일기토에서 모두 이긴다", "If": ["duel:a", "duel:b"], "Flag": "flag-b02-duels", "Reward": {"liquor": 1}}],
- "Reward": {"bean": 8, "liquor": 4}, "Faction": "dong", "Map": "map02.json"}
+ "Reward": {"money": 1000}, "Faction": "dong", "Map": "map02.json"}
 ```
 
 ## 4. 스폰(`Spawn`)
