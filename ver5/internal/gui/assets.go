@@ -7,6 +7,7 @@ import (
 	"image/color"
 	"image/draw"
 	_ "image/png"
+	"maps"
 	"math"
 	"os"
 	"path/filepath"
@@ -532,6 +533,11 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 	if a.FX, err = LoadShots(dir, "effects/fx"); err != nil {
 		return nil, err
 	}
+	spells, err := LoadShots(dir, "effects/spells")
+	if err != nil {
+		return nil, err
+	}
+	maps.Copy(a.FX, spells)
 	if a.Outside, err = LoadShots(dir, "map/outside"); err != nil {
 		return nil, err
 	}

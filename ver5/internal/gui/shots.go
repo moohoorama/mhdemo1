@@ -15,17 +15,29 @@ import (
 // additive layers (built by tools/build_effects.py): "effects/projectiles" (the flying stone, its
 // ground shadow and its landing dust) and "effects/fx" (effects and their particles) at the
 // characters' pixel scale, "map/outside" (scenery outside the battle area) and "ui/ui" (UI
-// pictures, drawn at four art pixels per UI pixel).
+// pictures, drawn at four art pixels per UI pixel); also "effects/spells", the simulated spell
+// effects baked by tools/spellsim.py, each frame cropped tight with an anchor of its own.
 type Shots map[string]Shot
 
 // Shot is one sprite: its frames, the additive frames drawn over them (nil if it has none), the
-// anchor (sprite pixels) that lands on the drawing position, and per-frame milliseconds for a
-// one-shot animation.
+// anchor (sprite pixels) that lands on the drawing position, or one per frame (Anchors) for frames
+// cropped tight, per-frame milliseconds for a one-shot animation, and for a spell the seconds into
+// it when its blow lands (Hit).
 type Shot struct {
-	Anchor [2]float64
-	Frames []*ebiten.Image
-	Light  []*ebiten.Image
-	MS     []int
+	Anchor  [2]float64
+	Anchors [][2]float64
+	Frames  []*ebiten.Image
+	Light   []*ebiten.Image
+	MS      []int
+	Hit     float64
+}
+
+// anchor is frame i's anchor.
+func (s Shot) anchor(i int) [2]float64 {
+	if i < len(s.Anchors) {
+		return s.Anchors[i]
+	}
+	return s.Anchor
 }
 
 func LoadShots(dir, name string) (Shots, error) {
@@ -34,10 +46,12 @@ func LoadShots(dir, name string) (Shots, error) {
 		return nil, err
 	}
 	var index map[string]struct {
-		Anchor [2]float64
-		Frames [][4]int
-		Light  bool
-		MS     []int
+		Anchor  [2]float64
+		Anchors [][2]float64
+		Frames  [][4]int
+		Light   bool
+		MS      []int
+		Hit     float64
 	}
 	if err := json.Unmarshal(b, &index); err != nil {
 		return nil, err
@@ -56,7 +70,7 @@ func LoadShots(dir, name string) (Shots, error) {
 	var light *ebiten.Image
 	p := Shots{}
 	for id, s := range index {
-		shot := Shot{Anchor: s.Anchor, MS: s.MS}
+		shot := Shot{Anchor: s.Anchor, Anchors: s.Anchors, MS: s.MS, Hit: s.Hit}
 		if s.Light && light == nil {
 			if light, err = load(name + "_light.png"); err != nil {
 				return nil, err
@@ -140,12 +154,13 @@ func (s Shot) drawTint(dst *ebiten.Image, i int, x, y float64, toScreen func(x, 
 
 // blit is drawTint, mirrored left to right about the anchor when mirror is set.
 func (s Shot) blit(dst *ebiten.Image, i int, x, y float64, toScreen func(x, y float64) (float64, float64), zoom float64, c color.NRGBA, a float64, mirror bool) {
-	ax := s.Anchor[0]
+	an := s.anchor(i)
+	ax := an[0]
 	w := float64(s.Frames[i].Bounds().Dx())
 	if mirror {
 		ax = w - ax
 	}
-	px, py := toScreen(math.Round(x-ax), math.Round(y-s.Anchor[1]))
+	px, py := toScreen(math.Round(x-ax), math.Round(y-an[1]))
 	at := func(blend ebiten.Blend) *ebiten.DrawImageOptions {
 		op := &ebiten.DrawImageOptions{Blend: blend}
 		op.ColorScale.ScaleWithColor(c)

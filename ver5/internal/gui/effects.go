@@ -4,6 +4,7 @@ import (
 	"image/color"
 	"math"
 	"math/rand/v2"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/core"
@@ -13,7 +14,7 @@ import (
 // relative to the target's feet (fx, fy for the source) and scale with the camera zoom like
 // the units do.
 type effect struct {
-	kind   string // arrow, slash, fire, water, heal, buff, debuff, block, insu, promote_gather, promote
+	kind   string // arrow, slash, fire, water, heal, buff, debuff, block, insu, promote_gather, promote, spell_<skill>
 	tu, tv float64
 	fu, fv float64
 	lift   float64 // target cell surface height
@@ -48,6 +49,26 @@ var buffTint = map[string]color.NRGBA{
 	"defense": {100, 160, 255, 255},
 }
 
+// A spell with a baked look (assets/graphics/effects/spells, made by tools/spellsim.py) plays it as one
+// effect over its whole area: drawn on the target cell, or for 폭염 from the first cell of its line.
+// It starts as the cast is released and the damage waits for its Hit (a rock landing, a dragon diving).
+const spellPrefix = "spell_"
+
+var (
+	// spellShake is how long a spell's blow shakes the screen.
+	spellShake = map[string]float64{
+		"spell_tsunami": .3, "spell_blaze": .22, "spell_inferno": .3, "spell_fire_dragon": .3,
+		"spell_water_dragon": .3, "spell_rockfall": .22, "spell_landslide": .35, "spell_earthquake": .6,
+		"spell_boulder": .5, "spell_earth_dragon": .35,
+	}
+	// spellFromSide are drawn coming in from up-left; mirrored when the caster stands to the right.
+	spellFromSide = map[string]bool{"spell_tsunami": true, "spell_landslide": true}
+	// spellOnGround lie flat on the ground under the units (팔진도's formation) instead of over them.
+	spellOnGround = map[string]bool{"spell_eightfold": true}
+)
+
+func isSpell(kind string) bool { return strings.HasPrefix(kind, spellPrefix) }
+
 // effectKind is how an attack or skill looks.
 func (g *Game) effectKind(actor *unitVis, c core.Command) string {
 	if c.Kind == "attack" {
@@ -58,6 +79,9 @@ func (g *Game) effectKind(actor *unitVis, c core.Command) string {
 			return "arrow"
 		}
 		return "slash"
+	}
+	if _, ok := g.assets.FX[spellPrefix+c.Skill]; ok {
+		return spellPrefix + c.Skill
 	}
 	s := g.S.Data.Skills[c.Skill]
 	switch {
@@ -184,6 +208,10 @@ func (g *Game) impact(kind string, actor, target *unitVis, events []core.Event, 
 	if kind == "stone" {
 		g.shakeT = math.Max(g.shakeT, .22)
 	}
+	spell := isSpell(kind)
+	if spell {
+		g.shakeT = math.Max(g.shakeT, spellShake[kind])
+	}
 	seen := map[string]bool{}
 	for _, e := range events {
 		switch e.Kind {
@@ -202,6 +230,10 @@ func (g *Game) impact(kind string, actor, target *unitVis, events []core.Event, 
 				if t != nil && t != target {
 					g.dust(t)
 				}
+				continue
+			}
+			if spell { // its look covers the whole area and is already playing
+				g.spellPiece(kind, actor, t)
 				continue
 			}
 			dur := map[string]float64{"slash": .55, "fire": 1.0, "water": .9, "heal": 1.1, "buff": 1.2, "debuff": 1.1}[kind]
@@ -238,6 +270,7 @@ func (g *Game) updateEffects(dt float64) {
 		}
 	}
 	g.effects = kept
+	g.groundSpells()
 	g.shakeT = math.Max(0, g.shakeT-dt)
 }
 
@@ -297,6 +330,10 @@ func (g *Game) drawEffects(dst *ebiten.Image) {
 		case "promote_gather", "promote":
 			sh := g.assets.FX[e.kind]
 			sh.draw(dst, sh.frameOver(k), x, y-e.lift, g.toScreen, z)
+		default:
+			if isSpell(e.kind) {
+				g.drawSpell(dst, e, x, y)
+			}
 		case "critical": // a white burst and rays at the chest, a shockwave on the ground
 			sh, wave := g.assets.FX["critical"], g.assets.FX["critical_wave"]
 			wave.draw(dst, wave.frameOver(k), x, y-e.lift, g.toScreen, z)
@@ -319,4 +356,84 @@ func (g *Game) drawEffects(dst *ebiten.Image) {
 			sh.drawTint(dst, q.frame, qx, qy, g.toScreen, z, c, a)
 		}
 	}
+}
+
+// spellPiece puts a spell's per-unit piece on a unit it reaches, when the spell has one: <look>_ally on the
+// caster's side, <look>_enemy on the other (팔진도 strengthens one and weakens the other).
+func (g *Game) spellPiece(kind string, actor, t *unitVis) {
+	if t == nil || actor == nil {
+		return
+	}
+	piece := kind + "_enemy"
+	if t.ally == actor.ally {
+		piece = kind + "_ally"
+	}
+	if sh, ok := g.assets.FX[piece]; ok {
+		g.spawn(piece, actor, t, sh.length(), white)
+	}
+}
+
+// groundSpells lays the spell looks that lie on the ground under the units, refreshed every tick; it leaves the
+// field's ground marks alone when it has none to lay and laid none before (the town walk's click ring uses them).
+func (g *Game) groundSpells() {
+	var marks []groundMark
+	for _, e := range g.effects {
+		if !spellOnGround[e.kind] {
+			continue
+		}
+		sh := g.assets.FX[e.kind]
+		i := sh.frameAt(e.t)
+		if i < 0 {
+			continue
+		}
+		x, y := g.field.Center(e.tu, e.tv)
+		an := sh.anchor(i)
+		marks = append(marks, groundMark{Sprite{sh.Frames[i], an[0], an[1]}, x, y - e.lift})
+	}
+	if len(marks) > 0 || g.groundFX {
+		g.field.groundMarks = marks
+		g.groundFX = len(marks) > 0
+	}
+}
+
+// drawSpell draws a spell's baked look at its time. A line (폭염) is drawn from the first cell in front
+// of the caster: the sprite runs down-right, its _back twin up-left, and mirroring turns those into the
+// other two directions. A look that comes in from the side is mirrored to come from the caster's side.
+func (g *Game) drawSpell(dst *ebiten.Image, e *effect, x, y float64) {
+	kind, mirror := e.kind, false
+	if spellOnGround[kind] {
+		return
+	}
+	if kind == "spell_inferno" {
+		du, dv := e.tu-e.fu, e.tv-e.fv
+		su, sv := 0.0, 0.0
+		if math.Abs(du) >= math.Abs(dv) {
+			su = math.Copysign(1, du)
+		} else {
+			sv = math.Copysign(1, dv)
+		}
+		x, y = g.field.Center(e.fu+su, e.fv+sv)
+		if su < 0 || sv < 0 {
+			kind = "spell_inferno_back"
+		}
+		mirror = sv != 0
+	} else if spellFromSide[kind] {
+		mirror = e.flip(g)
+	}
+	sh, ok := g.assets.FX[kind]
+	if !ok {
+		return
+	}
+	i := sh.frameAt(e.t)
+	if i < 0 {
+		return
+	}
+	sh.blit(dst, i, x, y-e.lift, g.toScreen, g.zoom, white, 1, mirror)
+}
+
+// flip says whether a look drawn coming from up-left is mirrored: its caster stands to the right.
+func (e *effect) flip(g *Game) bool {
+	fx, _ := g.field.Center(e.fu, e.fv)
+	tx, _ := g.field.Center(e.tu, e.tv)
+	return fx > tx
 }

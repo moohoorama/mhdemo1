@@ -726,6 +726,11 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 		flight := math.Max(.12, math.Hypot(target.u-actor.u, target.v-actor.v)*arrowSecPerCell)
 		add(flight, func() { g.spawn("arrow", actor, target, flight, spark) })
 	}
+	if isSpell(kind) && target != nil {
+		// the look starts as the cast is released; the blow lands (and the damage shows) at its Hit
+		sh := g.assets.FX[kind]
+		add(sh.Hit, func() { g.spawn(kind, actor, target, sh.length(), tint) })
+	}
 	wait := follow
 	for _, e := range events {
 		if e.Kind == "retreat" {

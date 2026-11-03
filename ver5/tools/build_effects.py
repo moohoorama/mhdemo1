@@ -74,7 +74,8 @@ def from_sum(acc, w, h):
     return im
 
 
-def build(source, name):
+def load_source(source):
+    """settings, pixels and the gen module (or None) of one source directory."""
     src = ASSETS / source
     settings = json.loads((src / "settings.json").read_text())
     pixels = json.loads((src / "pixels.json").read_text())
@@ -83,31 +84,40 @@ def build(source, name):
         spec = importlib.util.spec_from_file_location("gen", src / "gen.py")
         gen = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(gen)
-    rows = []  # one sheet row per sprite: (name, settings, [(normal, light) per frame])
-    for sprite in settings["frame_order"]:
-        s = settings["sprites"][sprite]
-        w, h = s["cell"]
-        layers = layers_of(s)
-        frames = pixels.get(sprite) or [{} for _ in range(s["frames"])]
-        out = []
-        for i, frame in enumerate(frames):
-            normal, light, lit = Image.new("RGBA", (w, h)), [[0.0, 0.0, 0.0] for _ in range(w * h)], False
-            for lname, layer in layers.items():
-                if "gen" in layer:
-                    im = getattr(gen, layer["gen"])(i, len(frames), w, h)
-                else:
-                    grid = frame if isinstance(frame, list) else frame[lname]
-                    palette = {"o": settings["outline"], **layer["palette"]}
-                    k = s.get("dot", 1)
-                    im = grid_image(grid, palette, w // k, h // k, f"{sprite} frame {i} {lname}").resize((w, h), Image.NEAREST)
-                im = faded(im, opacity(layer, i))
-                if layer.get("blend", "normal") == "lighter":
-                    add(light, im)
-                    lit = True
-                else:
-                    normal.alpha_composite(im)
-            out.append((normal, from_sum(light, w, h) if lit else None))
-        rows.append((sprite, s, out))
+    return settings, pixels, gen
+
+
+def sprite_frames(settings, pixels, gen, sprite):
+    """[(normal, light or None)] per frame of one sprite, as the game layers them."""
+    s = settings["sprites"][sprite]
+    w, h = s["cell"]
+    layers = layers_of(s)
+    frames = pixels.get(sprite) or [{} for _ in range(s["frames"])]
+    out = []
+    for i, frame in enumerate(frames):
+        normal, light, lit = Image.new("RGBA", (w, h)), [[0.0, 0.0, 0.0] for _ in range(w * h)], False
+        for lname, layer in layers.items():
+            if "gen" in layer:
+                im = getattr(gen, layer["gen"])(i, len(frames), w, h)
+            else:
+                grid = frame if isinstance(frame, list) else frame[lname]
+                palette = {"o": settings["outline"], **layer["palette"]}
+                k = s.get("dot", 1)
+                im = grid_image(grid, palette, w // k, h // k, f"{sprite} frame {i} {lname}").resize((w, h), Image.NEAREST)
+            im = faded(im, opacity(layer, i))
+            if layer.get("blend", "normal") == "lighter":
+                add(light, im)
+                lit = True
+            else:
+                normal.alpha_composite(im)
+        out.append((normal, from_sum(light, w, h) if lit else None))
+    return out
+
+
+def build(source, name):
+    settings, pixels, gen = load_source(source)
+    rows = [(sprite, settings["sprites"][sprite], sprite_frames(settings, pixels, gen, sprite))
+            for sprite in settings["frame_order"]]
     width = max(s["cell"][0] * len(frames) for _, s, frames in rows)
     height = sum(s["cell"][1] for _, s, _ in rows)
     sheet, light_sheet = Image.new("RGBA", (width, height)), Image.new("RGBA", (width, height))
@@ -136,5 +146,6 @@ def build(source, name):
     out.with_suffix(".json").write_text(json.dumps(index, indent=1) + "\n")
 
 
-for source, name in SOURCES.items():
-    build(source, name)
+if __name__ == "__main__":
+    for source, name in SOURCES.items():
+        build(source, name)

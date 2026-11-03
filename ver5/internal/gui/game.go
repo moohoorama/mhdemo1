@@ -79,6 +79,7 @@ type Game struct {
 	openingTurn               bool // the first turn's banner waits for the battle's opening to finish
 	bannerT, clockMS          float64
 	shakeT                    float64
+	groundFX                  bool // spell looks lie in the field's ground marks (groundSpells)
 	hitFlashT                 float64
 	hitFlashCrit              bool
 	camX, camY                float64
