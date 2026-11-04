@@ -23,6 +23,7 @@ import numpy as np
 
 import grid3d_mounted as M
 from mounted_kits import heavy_cavalry as HC, horse_archer as HA, royal_guard as RG, scholar as SC
+from story_heads import bearded as story_bearded
 
 G, U, Hd, B, Bl = M.G, M.U, M.Hd, M.B, M.Bl
 m = G.m
@@ -343,6 +344,24 @@ def make_yuanshu():
     return build, M.Hd.heads(YUANSHU)
 
 
+ZHANGLIAO_KIT = 'rider_zhangliao'
+# 장료 (his scene sheet, civ3d.py): the dark iron helmet with the team plume and a goatee in hair2
+ZHANGLIAO = recolor(story_bearded(slim({d: Hd.recolor(r, Hd.DARK_IRON) for d, r in Hd.IRON.items()}), 'goatee', 'g'),
+                    {'g': '8'})
+
+
+def make_zhangliao():
+    """장료: his scene look on the light rider — team tunic, a navy coat over the thighs (RED -> themeB), steel
+    guards, a leather belt — with a crescent glaive (언월도, as in his portrait) swung like 관우's."""
+    hair_tags()
+    U.KITS[ZHANGLIAO_KIT] = dict(U.KITS['rider'], robe=U.RED, tabard=U.BROWN)
+    inner = M.rider_build(ZHANGLIAO_KIT, weapon='glaive')
+
+    def build(row, f, style=None):
+        return inner(row, f, style or 'glaive_sweep')
+    return build, M.Hd.heads(ZHANGLIAO, Hd.PLUME)
+
+
 # ---- the same heroes in the other classes of their line (경기병 -> 중기병 -> 친위대) ---------------------
 def make_zhaoyun_light():
     return M.rider_build('rider'), M.Hd.heads(ZHAOYUN)
@@ -371,6 +390,7 @@ M.register('yuanshao', make_yuanshao, vertical_spear=True)
 M.register('zhaoyun', make_zhaoyun, vertical_spear=True)
 M.register('zhaoyun_sword', make_zhaoyun_sword)
 M.register('sunjian', make_sunjian, vertical_spear=True)
+M.register('zhangliao', make_zhangliao)
 M.register('xiandi', make_xiandi)
 M.register('yuanshu', make_yuanshu)
 for _name, _make in (('zhaoyun_light', make_zhaoyun_light), ('zhaoyun_royal', make_zhaoyun_royal),

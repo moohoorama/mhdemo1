@@ -1249,6 +1249,7 @@
    ],
    "Look": {
     "Faction": "dong",
+    "Sprite": "zhangliao",
     "Palette": {
      "horseSkin": "#c8c0b0",
      "saddle": "#3a4a6a"
