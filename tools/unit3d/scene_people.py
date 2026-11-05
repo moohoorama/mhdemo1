@@ -28,10 +28,20 @@ IVORY, WOOD, DARK_WOOD, CLOTH = '#ede1bd', '#976039', '#5e3a22', '#e8e2d0'
 STOOL, THRONE_RED, THRONE_GOLD = '#6e4126', '#a8402e', U.GOLD  # the throne: red lacquered wood, gold trim
 R.add_ramps({THRONE_RED: 'KLLM'})
 R.add_ramps({CLOTH: '5566', DARK_WOOD: '0ffg', STOOL: 'fggh'})
+# the quilt of the sickbed (bed) in keys of its own, dark to light; civ3d puts them in the saddle tags (BED_COLORS)
+BLANKET = '#4e5a7e'
+BLANKET_KEYS = '«»¬'
+R.COLOR.update({'«': (40, 48, 74), '»': (78, 90, 126), '¬': (112, 126, 164)})
+R.add_ramps({BLANKET: '«»¬¬'})
+SLEEP_HAIR, SLEEP_CAP, SLEEP_EYE = '#d4d8d8', '#1e2832', '#15191b'
+R.add_ramps({SLEEP_HAIR: '3456', SLEEP_CAP: '0112'})
+# the sleeper's own look by kit (default: dark hair, bare head, no beard)
+SLEEPERS = {'taoqian_civ1': dict(hair=SLEEP_HAIR, cap=True, beard=True)}
 
-POSES = ['sit', 'throne', 'bow', 'prostrate', 'lie', 'sitground', 'fist', 'point']
+POSES = ['sit', 'throne', 'bow', 'prostrate', 'lie', 'sitground', 'fist', 'point', 'bed']
 ROWS = C.ANIMATIONS + [p for p in POSES if p not in C.ANIMATIONS]  # scene sheet rows: civilian's, then these
 TURNED_HEAD = {'lie'}  # the 2D head turned on its side (crown toward the head end)
+MODELLED_HEAD = {'bed'}  # no 2D head: the head is modelled with the pose (sleeper)
 
 
 def turned(head_set):
@@ -127,6 +137,43 @@ def throne():
     return m.meshes
 
 
+BED_SIZE = 1.5  # the sickbed against a life-size one, every way: the 2D heads are big, so the bed is too
+
+
+def sickbed(lift):
+    """침상 for the sick: a low wooden platform on short legs with a low board at the head end (+y), a pillow under
+    the head and a quilt drawn up to the shoulders; the sleeper lies along y, head at +y, on its top at lift (all
+    measures times BED_SIZE)."""
+    m.meshes = []
+    k = BED_SIZE
+    L0, L1, W = -1.35*k, 1.45*k, .6*k
+    yc, ln = (L0 + L1)/2, L1 - L0
+    m.box(V([0, yc, lift - .08*k]), [W*2, ln, .16*k], STOOL)  # the platform
+    for sx in (-1, 1):
+        for y in (L0 + .1*k, L1 - .1*k):
+            m.box(V([sx*(W - .08*k), y, (lift - .16*k)/2]), [.14*k, .14*k, lift - .16*k], DARK_WOOD)
+    m.box(V([0, L1 - .04*k, lift + .2*k]), [W*2, .08*k, .4*k], DARK_WOOD)  # head board
+    m.ell(V([0, 1.2*k, lift + .1*k]), [.34*k, .2*k, .1*k], CLOTH)  # pillow
+    m.box(V([0, -.45*k, lift + .25*k]), [W*2 - .08*k, 1.75*k, .36*k], BLANKET)  # the quilt over the bed
+    m.ell(V([0, -.4*k, lift + .44*k]), [.46*k, 1.0*k, .26*k], BLANKET)  # and over the body
+    return m.meshes
+
+
+def sleeper(look, c):
+    """A big (2D-head sized) head lying face up (+z) with its crown toward +y, centred on c: face, hair round the
+    back and crown, shut eyes, brows, and the look's court cap and beard."""
+    hair = look.get('hair', '#2a2220')
+    m.ell(c + V([0, .2, -.12]), [.6, .56, .42], hair)  # back of the head and crown on the pillow
+    m.ell(c, [.54, .5, .44], U.SKIN)  # face
+    for sx in (-1, 1):
+        m.box(c + V([sx*.22, .1, .43]), [.2, .07, .06], SLEEP_EYE)  # shut eyes
+        m.box(c + V([sx*.22, .25, .4]), [.22, .08, .06], hair)  # brows
+    if look.get('cap'):  # 진현관 lying flat toward the head board
+        m.box(c + V([0, .72, 0]), [.62, .36, .62], SLEEP_CAP)
+    if look.get('beard'):  # a long beard laid on the chest
+        m.ell(c + V([0, -.55, .22]), [.42, .5, .2], hair)
+
+
 # ---- sheet builders ---------------------------------------------------------------------------------------------
 
 def posed(walk_build, kit, held=False, extra=None):
@@ -194,6 +241,14 @@ def posed(walk_build, kit, held=False, extra=None):
             lying = rotate(faces, -math.pi/2, .3, shift)
             h = turn_point(head, -math.pi/2, .3, shift)
             return U.result(lying, h, 0, f)
+        if name == 'bed':  # the body is all under the quilt: a modelled head lies face up on the pillow
+            k, lift = BED_SIZE, .45*BED_SIZE
+            kit_ = U.KITS[kit]
+            m.meshes = []
+            if not SLEEPERS.get(kit, {}).get('beard'):
+                m.ell(V([0, .62*k, lift + .3*k]), [.36*k, .14*k, .16*k], kit_.get('robe') or kit_['cloth'])
+            sleeper(SLEEPERS.get(kit, {}), V([0, 1.25, lift + .55]))
+            return U.result(m.meshes + sickbed(lift + .02*k), V([0, 1.3, lift + .5]), 0, f)
         if name == 'fist':
             p = standing()
             p['hands'][0], p['elbows'][0] = [-.32, -.55, 2.25], [-.46, -.42, 1.7]

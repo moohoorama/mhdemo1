@@ -9,6 +9,7 @@
   grid.py import liubei                                # every grid file back into units/liubei.yaml
   grid.py colors guanyu themeA1=#5fae5a themeA2=#3d8a45 themeA3=#24573a
   grid.py poses liubei_noncombat sit bow               # add one-frame motions (a copy of idle in every row to draw over)
+  grid.py cell taoqian_noncombat 64 50 32 36           # every frame onto a 64x50 cell, pivot moved to (32, 36)
 
 Each grid file starts with ';' comment lines (frame, cell, pivot, legend, column ruler); pixel lines are 'NN|<row>'.
 """
@@ -62,7 +63,7 @@ def cmd_new(a):
     print('wrote', dots.save(doc))
 
 
-LOOPING = {'sit', 'throne', 'lie', 'sitground', 'prostrate', 'prone'}  # poses held while the scene goes on
+LOOPING = {'sit', 'throne', 'lie', 'bed', 'sitground', 'prostrate', 'prone'}  # poses held while the scene goes on
 
 
 def add_poses(doc, poses):
@@ -123,6 +124,24 @@ def cmd_import(a):
     print(f'imported {count} frames ->', dots.save(doc))
 
 
+def cmd_cell(a):
+    """Widen (or narrow) every frame to a new cell, moving the pixels so the pivot lands on the new pivot."""
+    doc = dots.with_alpha(dots.load(a.id))
+    u = doc['unit']
+    (w, h), (px, py) = u['cell'], u['pivot']
+    dx, dy = a.px - px, a.py - py
+    for f in doc['frames']:
+        for key, empty in (('tags', 0), ('alpha', '00')):
+            out = [[empty]*a.w for _ in range(a.h)]
+            for y, row in enumerate(f[key]):
+                for x, v in enumerate(row):
+                    if 0 <= x + dx < a.w and 0 <= y + dy < a.h:
+                        out[y + dy][x + dx] = v
+            f[key] = out
+    u.update(cell=[a.w, a.h], pivot=[a.px, a.py])
+    print(f'cell {w}x{h} -> {a.w}x{a.h}, pivot ({px}, {py}) -> ({a.px}, {a.py}):', dots.save(doc))
+
+
 def cmd_colors(a):
     doc = dots.with_alpha(dots.load(a.id))
     ids = dots.tag_ids(doc)
@@ -149,10 +168,14 @@ def main():
     sub.add_parser('import').add_argument('id')
     c = sub.add_parser('colors')
     c.add_argument('id'), c.add_argument('pairs', nargs='+')
+    z = sub.add_parser('cell')
+    z.add_argument('id'), z.add_argument('w', type=int), z.add_argument('h', type=int)
+    z.add_argument('px', type=int), z.add_argument('py', type=int)
     q = sub.add_parser('poses')
     q.add_argument('id'), q.add_argument('poses', nargs='+')
     a = p.parse_args()
-    {'new': cmd_new, 'export': cmd_export, 'import': cmd_import, 'colors': cmd_colors, 'poses': cmd_poses}[a.cmd](a)
+    {'new': cmd_new, 'export': cmd_export, 'import': cmd_import, 'colors': cmd_colors, 'poses': cmd_poses,
+     'cell': cmd_cell}[a.cmd](a)
 
 
 if __name__ == '__main__':

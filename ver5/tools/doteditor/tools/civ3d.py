@@ -363,6 +363,7 @@ STORY_POSES = {k: ['sit'] for k in ('luzhi', 'huangfusong', 'xiahoudun', 'liuyan
                                      'zhangliao', 'zhouyu', 'luxun', 'lumeng', 'sunquan')}
 STORY_POSES['xiahoudun'] = ['sit', 'fist']
 STORY_POSES['jianyong'] = ['sit']
+STORY_POSES['taoqian'] = ['sit', 'bed']  # 도겸 on his sickbed (서주 양도, his last words)
 ACTION = {'jianyong': ('toast', 2), 'jailer': ('talk', 1), 'innkeeper': ('serve', 0), 'blacksmith': ('hammer', 0)}  # else the salute
 for _key, (_name, _look, _battle, _colors) in STORY.items():
     LOOKS[_key] = _look
@@ -381,6 +382,52 @@ for _key, (_name, _look, _battle, _colors) in STORY.items():
 # 노식·황보숭: their light infantry helmet is the battle sheet's leather (themeA), not iron
 HEAD_TAGS = {k: {'1': 'o', '2': 'o', '3': 'n', '4': 'm', '5': 'm'} for k in ('luzhi', 'huangfusong')}
 KEY_TAGS = {k: EXTRA_KEYS for k in ('zhugeliang', 'simayi', 'luxun', 'zhouyu')}
+# hand retouches laid over a rendered pose frame: (unit, pose, direction) -> [(row, first column, pixels)] in grid
+# characters ('.' clears); 도겸's sleeping head (the modelled head is too small for its face to read unaided)
+RETOUCH = {
+    ('taoqian', 'bed', 'SW'): [
+        (9, 29, '......................'),
+        (10, 29, '................######..'),
+        (11, 29, '..............##cccccc#.'),
+        (12, 29, '............##aacccccccc#'),
+        (13, 29, '.........###aaaaaccccccc#'),
+        (14, 29, '......####ddaaaaaacccc####'),
+        (15, 35, 'a###dde#daaaaccc'),  # the face as on the standing sheet: mid skin, a light band by the hair
+        (16, 36, 'a#aeee#edaaabb#'),
+        (17, 35, 'aa#aaeeee#ddeab#'),
+        (18, 33, 'BBaaaaaeeee#deab#'),
+        (19, 32, 'BBaaaaaaabeeeeeb#'),
+        (20, 31, 'BBaaaaaaabbbeeeb#'),
+        (21, 31, 'B#aaaaaabbbb###'),
+        (22, 32, '##aabbb##BBDD'),
+        (23, 34, '###'),
+        # the eyes: two dots on a diagonal each (lower left, upper right), one above the other across the face
+        (15, 41, 'e#'),
+        (16, 39, 'ee#edd'),
+        (17, 40, 'eeeeedde'),
+        (18, 40, 'eeee#de'),
+        (19, 42, 'e#eee')],
+    ('taoqian', 'bed', 'NW'): [
+        (21, 34, 'Baaaa##'),
+        (22, 33, 'Baaaaaaa#b'),
+        (23, 33, 'Caaaaaaaeed#'),
+        (24, 34, 'baaaeee#dda#'),
+        (25, 35, 'Dbaeee#ddaacccc#'),
+        (26, 36, '#ee#eddaacccccc##'),
+        (27, 36, '#ee#eddaaccccc#'),
+        (28, 36, '#eeeedaaacccc#'),
+        (29, 36, '#eeeaaabbcc#'),
+        (30, 37, '#aabbbccc#'),
+        (31, 37, '#bbb###'),
+        # the eyes: two dots on a diagonal each, mirroring SW's (upper left, lower right)
+        (24, 38, 'ee#edd'),
+        (25, 38, 'eee#dd'),
+        (26, 37, 'eeeedd'),
+        (27, 37, 'e#eedd'),
+        (28, 37, 'ee#ed')],
+}
+
+
 # a head of its own for a pose: 조조 seated pulls the 삿갓 down and forward over his eyes
 POSE_HEADS = {'caocao_hat': {'sit': satgat_heads(6, -.18)}}
 # (3D animation, direction, 3D frame) -> (sheet animation, frame); walk steps are the two stride frames
@@ -389,7 +436,10 @@ FRAMES = [('idle', 'NW', 0, 'idle', 0), ('idle', 'SW', 0, 'idle', 0),
           ('salute', 'NW', 2, 'action', 0), ('salute', 'SW', 2, 'action', 0)]
 BODY = {'0': '#', '1': 'c', '2': 'c', '3': 'b', '4': 'b', '5': 'a', '6': 'a', 'i': 'd', 'j': 'e', 'f': 'o', 'g': 'n', 'h': 'm',
         'k': 'u', 'l': 't', 'm': 's', 'W': 'l', 'X': 'l', 'Y': 'k', 'Z': 'j', 'A': 'r', 'B': 'q', 'C': 'p', 'b': 'r', 'c': 'q', 'd': 'p'}
+BODY.update(zip(SP.BLANKET_KEYS, 'DCB'))  # the sickbed quilt (scene_people.sickbed) dark/mid/light -> saddle3/2/1
 HEADMAP = dict(BODY, f='i', g='h', h='g')  # head hair dark/mid/light -> hair3/2/1
+BED_COLORS = tags('saddle', ['#707ea4', '#4e5a7e', '#28304a'])  # the quilt, set on a sheet that gets the bed pose
+BED_CELL = (64, 50, 32, 36)  # w, h, pivot x, y: a sheet with the bed pose is widened to hold the bed
 LETTERS = 'abcdefghijklmnopqrstuvwxyzABCD#EFG'  # tag order of tag_colors
 
 
@@ -468,7 +518,15 @@ def make(unit, only_poses=False):
         grid('poses', uid, *poses)
     if unit in SP.POSE_COLORS:
         grid('colors', uid, *SP.POSE_COLORS[unit])
-    if only_poses:
+    resized = False
+    if 'bed' in poses:
+        grid('colors', uid, *BED_COLORS)
+        if dots.load(uid)['unit']['cell'] != list(BED_CELL[:2]):
+            grid('cell', uid, *map(str, BED_CELL))
+            resized = True
+    global W, H
+    (W, H), (px, py) = (u := dots.load(uid)['unit'])['cell'], u['pivot']
+    if only_poses and not resized:
         for pose in poses:
             grid('export', uid, '--anim', pose, '--force')
     else:
@@ -494,12 +552,16 @@ def make(unit, only_poses=False):
     ground = {d: max(y for y, r in enumerate(render('idle', d, 0, head)) for c in r if c != '.') for d in ('NW', 'SW')}
     for anim, d, n, out_anim, out_n in frames:
         own = SP.turned(head) if anim in SP.TURNED_HEAD else POSE_HEADS.get(unit, {}).get(anim, head)
+        if anim in SP.MODELLED_HEAD:
+            own = blank
         full, body = render(anim, d, n, own), render(anim, d, n, blank)
-        dx, dy = 28 - B.SPEC['pivot'][0], 38 - ground[d]
+        dx, dy = px - B.SPEC['pivot'][0], py - ground[d]
         out, under = to_tags(full, body, dx, dy, colors, unmapped, unit if out_anim in poses else None, unit), None
         if out_anim in poses and unit in SP.POSE_SHEET_HEAD:
             under = to_tags(body, body, dx, dy, colors, unmapped, unit)
             sheet_head(uid, d, out, under)
+        for y, x, run in RETOUCH.get((unit, out_anim, d), []):
+            out[y][x:x + len(run)] = run
         path = DE / f'heroes/{uid}/grid/{out_anim}/{d}-{out_n}.txt'
         lines = path.read_text().split('\n')
         for i, line in enumerate(lines):
