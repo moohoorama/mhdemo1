@@ -65,7 +65,7 @@ func (g *Game) hudBodyHeight(tab string, o core.Observation, room int) int {
 	case "misc":
 		return 5*40 + 20
 	case "unit":
-		return detailH
+		return briefH
 	}
 	_, h := g.miniSize()
 	return int(h) + 40
@@ -74,27 +74,34 @@ func (g *Game) hudBodyHeight(tab string, o core.Observation, room int) int {
 // hudFadeAlpha is how opaque the panel stays while the pointer is away from it.
 const hudFadeAlpha = .55
 
-// battleHUDPanel draws the panel and registers its buttons. Its height eases to the tab's,
-// it folds to the head and the tabs, and it fades while the pointer is elsewhere.
+// hudGripH is the strip along the top of the info panel that drags the log's height.
+const hudGripH = 12
+
+// battleHUDPanel draws the HUD in two: at the top right the side to move with 진영 종료 and the 관리 and 메뉴
+// buttons, and at the bottom right the info panel with its tabs, whose height eases to the tab's. Folding leaves
+// the head; the info panel fades while the pointer is elsewhere.
 func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 	g.hudFollowTurn(o)
 	tab := g.hudCurrent(o)
 	head := hudHeaderH + cornerRowH
 	x, y := uiW-12-infoW, hudTop()
-	room := uiH - 8 - y - head - hudTabsH
-	bodyH := 0
+	topH := head
+	if g.hudFolded {
+		topH = hudHeaderH
+	}
+	top := image.Rect(x, y, x+infoW, y+topH)
+	g.window(dst, top)
+	g.block(top)
+	g.hudHead(dst, o, top)
 	if !g.hudFolded {
-		bodyH = g.hudBodyHeight(tab, o, room)
+		g.cornerButtons(dst, x, y+hudHeaderH, func() { g.openOverlay("roster") })
 	}
-	h := min(head+hudTabsH+bodyH, uiH-8-y)
+	g.hudRect, g.hudShown, g.hudBody = top, "", image.Rectangle{}
 	if g.hudFolded {
-		h = hudHeaderH
+		return
 	}
-	r := image.Rect(x, y, x+infoW, y+h)
-	g.hudRect, g.hudShown, g.hudBody = r, tab, image.Rect(x, y+head+hudTabsH, x+infoW, y+h)
-	if g.hudFolded {
-		g.hudShown, g.hudBody = "", image.Rectangle{}
-	}
+	room := uiH - 12 - (top.Max.Y + 12) - hudGripH - hudTabsH
+	h := hudGripH + hudTabsH + min(room, g.hudBodyHeight(tab, o, room))
 
 	now := g.uiSeconds
 	k := 1.0
@@ -105,8 +112,12 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 	if !g.hudAnimated || abs(int(g.hudH*2)-h*2) < 1 {
 		g.hudH = float64(h)
 	}
+	info := image.Rect(x, uiH-12-h, x+infoW, uiH-12)
+	shown := image.Rect(x, uiH-12-int(g.hudH+.5), x+infoW, uiH-12)
+	g.hudRect = image.Rect(x, y, x+infoW, info.Max.Y)
+	g.hudInfo, g.hudShown, g.hudBody = info, tab, image.Rect(x, info.Min.Y+hudGripH+hudTabsH, x+infoW, info.Max.Y)
 	target := 1.0
-	if cx, cy := cursorPos(); !image.Pt(cx, cy).In(r) && !g.logDragging && !g.logThumbDragging {
+	if cx, cy := cursorPos(); !pointer.used && !image.Pt(cx, cy).In(info) && !g.logDragging && !g.logThumbDragging { // a touch screen has no pointer to come back
 		target = hudFadeAlpha
 	}
 	if !g.hudAnimated {
@@ -115,8 +126,7 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 	g.hudAlpha += (target - g.hudAlpha) * k
 	g.hudAnimated, g.hudAnimAt = true, now
 
-	shown := image.Rect(x, y, x+infoW, y+int(g.hudH+.5))
-	clip := image.Rect(int(float64(x-2)*drawPx+drawOX), int(float64(y-2)*drawPx+drawOY), int(float64(x+infoW+8)*drawPx+drawOX), int(float64(shown.Max.Y+8)*drawPx+drawOY))
+	clip := image.Rect(int(float64(x-2)*drawPx+drawOX), int(float64(shown.Min.Y-2)*drawPx+drawOY), int(float64(x+infoW+8)*drawPx+drawOX), int(float64(shown.Max.Y+8)*drawPx+drawOY))
 	canvas := dst
 	faded := g.hudAlpha < .995
 	if faded {
@@ -131,12 +141,12 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 	}
 	cd := canvas.SubImage(clip.Intersect(canvas.Bounds())).(*ebiten.Image)
 	g.window(cd, shown)
-	g.block(r)
-	g.hudHead(cd, o, r)
-	if !g.hudFolded {
-		g.cornerButtons(cd, x, y+hudHeaderH, func() { g.openOverlay("roster") })
-		g.hudTabRow(cd, o, tab, x, y+head)
+	g.block(info)
+	if tab == "log" {
+		grip := image.Rect(x+infoW/2-18, shown.Min.Y+5, x+infoW/2+18, shown.Min.Y+8)
+		rect(cd, float32(grip.Min.X), float32(grip.Min.Y), float32(grip.Dx()), 3, goldDim)
 	}
+	g.hudTabRow(cd, o, tab, x, shown.Min.Y+hudGripH)
 	switch g.hudShown {
 	case "log":
 		g.drawBattleLog(cd)
@@ -148,7 +158,7 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 		if g.detailUnit(o) == nil {
 			g.label(cd, "선택한 장수가 없습니다.", float64(g.hudBody.Min.X+14), float64(g.hudBody.Min.Y+16), 14, muted)
 		}
-		g.detail(cd, o)
+		g.hudBrief(cd, o, g.hudBody)
 	case "minimap":
 		w, mh := g.miniSize()
 		g.drawMinimap(cd, o, float64(g.hudBody.Min.X)+(infoW-w)/2, float64(g.hudBody.Min.Y)+(float64(g.hudBody.Dy())-mh)/2)

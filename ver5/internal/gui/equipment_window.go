@@ -421,35 +421,3 @@ func statDeltas(a, b core.Stats) []statDelta {
 	}
 	return out
 }
-
-// detailEquipment is the unit panel's equipment tab: each slot's icon and piece, and badges
-// for the traits it brings that open the trait window.
-func (g *Game) detailEquipment(dst *ebiten.Image, o core.Observation, id string, r image.Rectangle) {
-	of := g.officer(o, id)
-	if of == nil {
-		return
-	}
-	x := float64(r.Min.X)
-	for i, slot := range equipSlots {
-		y := float64(r.Min.Y + i*72)
-		item, ok := of.Equipment[slot]
-		if !ok {
-			g.itemIcon(dst, slotIcons[slot], x+3, y+3, 1, true)
-			g.label(dst, slotNames[slot]+" · 없음", x+46, y+10, 13, muted)
-			continue
-		}
-		eq := g.S.Data.Equipment[item]
-		g.itemIcon(dst, eq.Icon, x+3, y+3, 1, false)
-		g.label(dst, slotNames[slot], x+46, y, 11, muted)
-		g.label(dst, eq.Name, x+46, y+14, 14, ink)
-		cx := x + 46
-		for _, c := range itemChips(eq.Traits, eq.Learn, nil) {
-			t := c.id
-			cx = g.chip(dst, c, cx, y+38, func() {
-				if !g.popupPending() {
-					g.modals = append(g.modals, &modal{kind: "trait", trait: t})
-				}
-			}) + 10
-		}
-	}
-}

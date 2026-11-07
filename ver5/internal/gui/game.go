@@ -128,6 +128,7 @@ type Game struct {
 	answer                    func()
 	endAsked                  string          // the battle turn whose "all allies ordered" prompt was shown
 	hudRect, hudBody          image.Rectangle // the HUD panel and its content as last drawn
+	hudInfo                   image.Rectangle // the info panel at the bottom right as last drawn
 	hudFolded, hudAnimated    bool            // the panel (or the right corner panel) shows its head only; it has been drawn before
 	leftFolded                bool            // the left corner panel shows its head only
 	party                     partyView       // the party window's tab and what it shows
@@ -141,10 +142,6 @@ type Game struct {
 	hudBase, hudPeek          string          // the tab chosen by hand; the one looked at while an officer is selected
 	unitsList, rosterList     unitList        // the HUD tab's unit list and the roster window's
 	hudTurn, hudBefore        string          // the side that moved last, and the tab to return to after the enemy's turn
-	traitOf                   string
-	traitTop                  int
-	detailTab                 int
-	detailPage                int
 	toasts                    []*toast
 	history                   []string
 	logPending                []string

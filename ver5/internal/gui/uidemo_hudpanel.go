@@ -6,7 +6,7 @@ func init() { demos["hudpanel"] = demoHUDPanel }
 
 // demoHUDPanel walks the battle HUD panel: the minimap (frame 20), the log (60), the unit list
 // (100) sorted by orders (130), all units by troops (160), the roster window (190) with its stats view
-// by attack (205) and the biography view of all units (220), and the other tab (240), an officer selected (280) with its tabs, a peek at the
+// by attack (205) and the biography view of all units (220), and the other tab (240), an officer selected (280) in short, its detail opened to look at (320), a peek at the
 // minimap while selected (400), back to the base tab on letting go (440), the brief card over a
 // unit (480) and over bare ground (520), the objective window (600), the panel opaque under the pointer (700), folded (740), faded again and unfolded (800), and the enemy's turn (860).
 func demoHUDPanel(d *Demo) error {
@@ -54,11 +54,10 @@ func demoHUDPanel(d *Demo) error {
 			g.hudBase = "misc"
 		case 280:
 			g.hudBase, g.selected = "units", ally
-			g.detailTab = 0
 		case 320:
-			g.detailTab = 1
+			g.openUnit(true)
 		case 360:
-			g.detailTab = 3
+			g.closeOverlay()
 		case 400:
 			g.hudPeek = "minimap"
 		case 440:
