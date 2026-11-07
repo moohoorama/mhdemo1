@@ -74,7 +74,7 @@ func (g *Game) unitWindow(dst *ebiten.Image, x, y, w, h int) {
 		g.label(dst, "부관은 장비를 들지 않습니다. 임명하면 부관의 장비는 창고로 갑니다.", float64(body.Min.X), float64(body.Min.Y+226), 13, muted)
 	}
 	if u.readOnly {
-		g.actionRow(dst, x+w-16, y+h-60, action{"닫기", false, g.closeOverlay})
+		g.closeRow(dst, x+w-16, y+h-60, g.closeOverlay)
 		return
 	}
 	var swap, dismiss func()
@@ -85,8 +85,8 @@ func (g *Game) unitWindow(dst *ebiten.Image, x, y, w, h int) {
 		id := of.ID
 		dismiss = func() { g.command(core.Command{Kind: "undeputy", Actor: id}) }
 	}
-	all := append([]action{{"장비 변경", false, func() { g.openOverlay("equipment") }}, {"부관 바꾸기", false, swap}, {"부관 해임", false, dismiss}, {"닫기", false, g.closeOverlay}}, acts...)
-	g.actionRow(dst, x+w-16, y+h-60, all...)
+	all := append([]action{{"장비 변경", false, func() { g.openOverlay("equipment") }}, {"부관 바꾸기", false, swap}, {"부관 해임", false, dismiss}}, acts...)
+	g.closeRow(dst, x+w-16, y+h-60, g.closeOverlay, all...)
 }
 
 // unitHead is the top of the 전투력 and 열전 tabs: the lead's and the deputy's faces and the deputy's weight. It

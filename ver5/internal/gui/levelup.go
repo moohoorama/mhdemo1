@@ -20,7 +20,8 @@ func (g *Game) levelUpChoice(m *modal) bool {
 
 // levelUpWindow is a level-up: who, the levels and the points gained, the stats with what they grew by, and the
 // traits the officer may learn now as the same chips as the trait shelves. With points to spend it ends in
-// 나중에 (the points wait for the walk or the next preparation) and 특성 배우기, which opens the officer's trait tab.
+// 특성 배우기, which opens the officer's trait tab, beside 닫기, which leaves the points for the walk or the next
+// preparation.
 func (g *Game) levelUpWindow(dst *ebiten.Image, m *modal) {
 	l := m.level
 	r := levelUpBox
@@ -79,13 +80,13 @@ func (g *Game) levelUpWindow(dst *ebiten.Image, m *modal) {
 		}
 	}
 	if !g.levelUpChoice(m) {
-		g.actionRow(dst, r.Max.X-16, r.Max.Y-touchH-12, action{"확인", true, g.closeModal})
+		g.closeRow(dst, r.Max.X-16, r.Max.Y-touchH-12, g.closeModal)
 		return
 	}
 	id := l.id
-	later := func() {
+	later := func() { // closing puts the learning off to the walk or the next preparation
 		g.closeModal()
 		g.command(core.Command{Kind: "learn_close", Actor: id})
 	}
-	g.actionRow(dst, r.Max.X-16, r.Max.Y-touchH-12, action{"나중에", false, later}, action{"특성 배우기 ›", true, g.closeModal})
+	g.closeRow(dst, r.Max.X-16, r.Max.Y-touchH-12, later, action{"특성 배우기 ›", true, g.closeModal})
 }

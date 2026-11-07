@@ -194,6 +194,9 @@ func (g *Game) saveWindow(dst *ebiten.Image, op string, x, y, w, h int) {
 			g.request(session.Request{Op: op, Slot: slot})
 		}
 	}
-	g.btn(dst, image.Rect(x+w/2-200, y+h-62, x+w/2-10, y+h-24), "확인", ok)
-	g.btn(dst, image.Rect(x+w/2+10, y+h-62, x+w/2+200, y+h-24), "취소", g.closeOverlay)
+	label := "불러오기"
+	if op == "save" {
+		label = "저장"
+	}
+	g.overlayActs = append(g.overlayActs, action{label, true, ok})
 }

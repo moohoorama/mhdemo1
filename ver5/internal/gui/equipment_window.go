@@ -24,7 +24,7 @@ var slotIcons = map[string]string{"weapon": "sword", "armor": "robe", "accessory
 const (
 	equipCardH   = 132
 	equipInfoW   = 460
-	equipInfoH   = 250
+	equipInfoH   = 290
 	dragStartPx  = 8
 	pickNothing  = "-" // the picker's "take it off" row
 	equipCurrent = ""  // no pick yet
@@ -214,7 +214,7 @@ func (g *Game) equipmentWindow(dst *ebiten.Image, x, y, w, h int) {
 			g.equip.pick = equipCurrent
 		}
 	}
-	g.actionRow(dst, right, y+h-60, action{"닫기", false, g.closeOverlay}, action{label, true, confirm})
+	g.closeRow(dst, right, y+h-60, g.closeOverlay, action{label, true, confirm})
 }
 
 func itemChips(traits, learn, skills []string) []equipChip {
@@ -369,7 +369,7 @@ func (g *Game) chipWindow(dst *ebiten.Image, key string, c equipChip, close func
 		}
 		g.label(dst, note, float64(x+90), float64(y+72), 13, muted)
 		g.label(dst, wrapWidth(desc, g.face(15), float64(equipInfoW-56)), float64(x+28), float64(y+112), 15, ink)
-		g.centered(dst, "클릭하여 닫기", float64(x+equipInfoW/2), float64(y+equipInfoH-32), 13, muted)
+		g.closeRow(dst, x+equipInfoW-16, y+equipInfoH-touchH-12, close)
 	})
 }
 
@@ -420,4 +420,36 @@ func statDeltas(a, b core.Stats) []statDelta {
 		}
 	}
 	return out
+}
+
+// detailEquipment is the unit panel's equipment tab: each slot's icon and piece, and badges
+// for the traits it brings that open the trait window.
+func (g *Game) detailEquipment(dst *ebiten.Image, o core.Observation, id string, r image.Rectangle) {
+	of := g.officer(o, id)
+	if of == nil {
+		return
+	}
+	x := float64(r.Min.X)
+	for i, slot := range equipSlots {
+		y := float64(r.Min.Y + i*72)
+		item, ok := of.Equipment[slot]
+		if !ok {
+			g.itemIcon(dst, slotIcons[slot], x+3, y+3, 1, true)
+			g.label(dst, slotNames[slot]+" · 없음", x+46, y+10, 13, muted)
+			continue
+		}
+		eq := g.S.Data.Equipment[item]
+		g.itemIcon(dst, eq.Icon, x+3, y+3, 1, false)
+		g.label(dst, slotNames[slot], x+46, y, 11, muted)
+		g.label(dst, eq.Name, x+46, y+14, 14, ink)
+		cx := x + 46
+		for _, c := range itemChips(eq.Traits, eq.Learn, nil) {
+			t := c.id
+			cx = g.chip(dst, c, cx, y+38, func() {
+				if !g.popupPending() {
+					g.modals = append(g.modals, &modal{kind: "trait", trait: t})
+				}
+			}) + 10
+		}
+	}
 }

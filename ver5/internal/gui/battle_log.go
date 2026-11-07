@@ -56,7 +56,7 @@ func (g *Game) updateBattleLog() bool {
 	}
 	if g.logDragging {
 		if mousePressed(ebiten.MouseButtonLeft) {
-			g.logHeight = info.Max.Y - (y - g.logDragOffset) - hudGripH - hudTabsH
+			g.logHeight = info.Max.Y - (y - g.logDragOffset) - hudGripH - hudTabsH // the log tab keeps the grip strip
 		} else {
 			g.logDragging = false
 		}

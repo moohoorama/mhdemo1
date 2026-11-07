@@ -34,20 +34,25 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 	if !containsID(roster, g.selected) && len(roster) > 0 {
 		g.selected = roster[0].ID
 	}
-	closeLabel := "닫기"
-	if p.learning {
-		closeLabel = "다 배웠음"
-	}
+	// one switch at the top left for the three views: the list beside the picked officer, the table, the belongings
+	view := 0
 	switch {
 	case p.items:
-		g.label(dst, "소지품", float64(x+16), float64(y+14), 18, gold)
+		view = 2
+	case p.table:
+		view = 1
+	}
+	viewsEnd := g.tabRow(dst, x+8, y+4, []string{"목록", "표", "소지품"}, view, func(i int) { p.table, p.items = i == 1, i == 2 })
+	switch {
+	case p.items:
+		rect(dst, float32(x+8), float32(y+52), float32(w-16), 1, goldDim)
 		g.moneyLabel(dst, float64(x+w-16), float64(y+16), 15)
-		g.belongingsTab(dst, o, x, y+56, w, h-56-64)
-		g.actionRow(dst, x+w-16, y+h-60, action{"장수로", false, func() { p.items = false }}, action{closeLabel, false, g.closeOverlay})
+		g.belongingsTab(dst, o, x, y+64, w, h-64-64)
+		g.closeRow(dst, x+w-16, y+h-60, g.closeOverlay)
 		return
 	case p.table:
-		g.officerTable(dst, o, roster, image.Rect(x, y, x+w, y+h))
-		g.actionRow(dst, x+w-16, y+h-60, action{"목록으로", false, func() { p.table = false }}, action{closeLabel, false, g.closeOverlay})
+		g.officerTable(dst, o, roster, image.Rect(x, y, x+w, y+h), viewsEnd)
+		g.closeRow(dst, x+w-16, y+h-60, g.closeOverlay)
 		return
 	}
 	listW := 300
@@ -55,12 +60,9 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 		listW = 340
 	}
 	rect(dst, float32(x+listW), float32(y+8), 1, float32(h-16), goldDim)
-	g.label(dst, "장수", float64(x+16), float64(y+12), 18, gold)
-	g.label(dst, fmt.Sprintf("%d명", len(roster)), float64(x+24)+g.width("장수", 18), float64(y+17), 13, muted)
-	g.mBtn(dst, image.Rect(x+listW-160, y+4, x+listW-84, y+4+touchH), "소지품", false, func() { p.items = true })
-	g.mBtn(dst, image.Rect(x+listW-78, y+4, x+listW-8, y+4+touchH), "표로", false, func() { p.table = true })
-	rect(dst, float32(x+8), float32(y+56), float32(listW-16), 1, goldDim)
-	g.listRows(dst, &p.officers, image.Rect(x+6, y+58, x+listW-4, y+h-6), len(roster), listRowH, func(i int, rr image.Rectangle) {
+	rect(dst, float32(x+8), float32(y+52), float32(listW-16), 1, goldDim)
+	g.label(dst, fmt.Sprintf("%d명", len(roster)), float64(viewsEnd+10), float64(y+19), 13, muted)
+	g.listRows(dst, &p.officers, image.Rect(x+6, y+54, x+listW-4, y+h-6), len(roster), listRowH, func(i int, rr image.Rectangle) {
 		c := roster[i]
 		note, noteC := fmt.Sprintf("특성치 %d", c.Points), muted
 		if g.hasAffordable(c) {
@@ -88,7 +90,7 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 	g.tabRow(dst, int(nx+g.width(g.name(of.ID), 18))+18, y+4, officerTabs, p.tab, func(i int) { p.tab = i })
 	rect(dst, float32(rx), float32(y+52), float32(x+w-16-rx), 1, goldDim)
 	body := image.Rect(rx, y+60, x+w-16, y+h-64)
-	acts := []action{{closeLabel, false, g.closeOverlay}}
+	var acts []action
 	switch p.tab {
 	case 0:
 		g.officerPower(dst, o, of, body)
@@ -100,7 +102,7 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 		g.officerEquipment(dst, of, body)
 		acts = append(acts, action{"장비 변경", true, func() { g.openOverlay("equipment") }})
 	}
-	g.actionRow(dst, x+w-16, y+h-60, acts...)
+	g.closeRow(dst, x+w-16, y+h-60, g.closeOverlay, acts...)
 }
 
 // tag is a small red plate with a label, as the window titles are.
@@ -271,12 +273,12 @@ func (g *Game) officerEquipment(dst *ebiten.Image, of *core.Character, r image.R
 // officerView is a kind of the officers' table: the columns after the name.
 var officerViews = []string{"기본", "전투력", "열전", "장비"}
 
-// officerTable shows the officers as a table, one row each and 48 high, in the columns of the kind picked; a row
-// opens that officer in the list.
-func (g *Game) officerTable(dst *ebiten.Image, o core.Observation, roster []core.Character, r image.Rectangle) {
+// officerTable shows the officers as a table, one row each and 48 high, in the columns of the kind picked (its tabs
+// right of the view switch, after); a row opens that officer in the list.
+func (g *Game) officerTable(dst *ebiten.Image, o core.Observation, roster []core.Character, r image.Rectangle, after int) {
 	p := &g.party
-	g.label(dst, "장수 · 표", float64(r.Min.X+16), float64(r.Min.Y+12), 18, gold)
-	g.tabRow(dst, r.Min.X+40+int(g.width("장수 · 표", 18)), r.Min.Y+4, officerViews, p.view, func(i int) { p.view, p.officerList.order = i, tableSort{} })
+	rect(dst, float32(after+12), float32(r.Min.Y+14), 1, 28, goldDim)
+	g.tabRow(dst, after+24, r.Min.Y+4, officerViews, p.view, func(i int) { p.view, p.officerList.order = i, tableSort{} })
 	rect(dst, float32(r.Min.X+8), float32(r.Min.Y+52), float32(r.Dx()-16), 1, goldDim)
 	type row struct {
 		c     core.Character

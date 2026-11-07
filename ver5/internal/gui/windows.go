@@ -150,12 +150,15 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 		w, h = 640, 84+len(g.S.Data.Rules.Difficulties)*difficultyRowH
 	}
 	// the window in a frame with room for its title plate and shadow; a sheet has no plate
-	pad := 40
-	if sheetWindows[name] {
+	pad, strip := 40, closeStrip
+	switch {
+	case sheetWindows[name]:
 		w, h = sheetSize()
-		pad = 16
+		pad, strip = 16, 0
+	case name == "confirm":
+		strip = 0
 	}
-	g.popup(dst, "overlay:"+name, 150, w+pad, h+pad, image.Rect(0, 0, w+pad, h+pad), func(dst *ebiten.Image) { g.overlayWindow(dst, name, w, h) })
+	g.popup(dst, "overlay:"+name, 150, w+pad, h+strip+pad, image.Rect(0, 0, w+pad, h+strip+pad), func(dst *ebiten.Image) { g.overlayWindow(dst, name, w, h, strip) })
 	if name == "equipment" && g.equip.info.id != "" {
 		g.drawEquipInfo(dst)
 	}
@@ -167,9 +170,20 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 	}
 }
 
-func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h int) {
-	x, y := uiW/2-w/2, uiH/2-h/2
-	r := image.Rect(x, y, x+w, y+h)
+// closeStrip is the row under an older window's content that holds 닫기 at the bottom right.
+const closeStrip = touchH + 16
+
+// overlayWindow draws a window: its frame (strip px taller than the content, for 닫기 and the actions the content
+// put in overlayActs), the content in w×h and the close row.
+func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h, strip int) {
+	x, y := uiW/2-w/2, uiH/2-(h+strip)/2
+	r := image.Rect(x, y, x+w, y+h+strip)
+	g.overlayActs = nil
+	defer func() {
+		if strip > 0 {
+			g.closeRow(dst, x+w-20, y+h+strip-touchH-14, g.closeOverlay, g.overlayActs...)
+		}
+	}()
 	switch {
 	case sheetWindows[name]:
 		g.window(dst, r)
@@ -177,9 +191,6 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h int) {
 		g.titledPattern(dst, r, g.confirmTitle)
 	default:
 		g.titled(dst, r, overlayTitles[name])
-	}
-	if !sheetWindows[name] {
-		g.btn(dst, image.Rect(x+w-96, y+16, x+w-18, y+44), "닫기", g.closeOverlay)
 	}
 	left := x + 32
 	switch name {
@@ -371,7 +382,7 @@ func (g *Game) modalWindow(dst *ebiten.Image, m *modal) {
 			g.centered(dst, fmt.Sprintf("%s · 습득 특성치 %d", g.traitKindName(m.trait), t.Cost), float64(uiW/2), 304, 14, muted)
 		}
 		g.label(dst, wrap(g.traitDesc(m.trait), 34), float64(r.Min.X+48), 342, 18, ink)
-		g.centered(dst, "클릭하여 닫기", float64(uiW/2), float64(r.Max.Y-36), 13, muted)
+		g.closeRow(dst, r.Max.X-16, r.Max.Y-touchH-12, g.closeModal)
 	}
 }
 
@@ -386,7 +397,7 @@ func (g *Game) objectiveButtons(dst *ebiten.Image, r image.Rectangle) {
 		g.request(session.Request{Op: "settings", Settings: &v})
 	}
 	g.toggleBtn(dst, image.Rect(r.Min.X+48, y, r.Min.X+48+150, y+36), "목표 안내", on, toggle)
-	g.centeredBtn(dst, image.Rect(r.Max.X-48-140, y, r.Max.X-48, y+36), "확인", g.closeModal)
+	g.mBtn(dst, image.Rect(r.Max.X-48-96, y-6, r.Max.X-48, y-6+touchH), "닫기", false, g.closeModal)
 }
 
 // subChip is a bonus goal's state before its line, drawn like the guide's switch: pressed in and gold while
@@ -687,7 +698,7 @@ func (g *Game) promotionWindow(dst *ebiten.Image, p promotionUp, t float64) {
 	if len(names) > 0 {
 		g.centered(dst, "익힐 수 있는 특성: "+strings.Join(names, " · "), float64(uiW/2), 508, 14, muted)
 	}
-	g.centered(dst, "클릭하여 계속", float64(uiW/2), 568, 13, muted)
+	g.closeRow(dst, r.Max.X-16, r.Max.Y-touchH-12, g.closeModal)
 }
 
 // branches are the promotions the commands would make, each worked out on a copy of the battle.

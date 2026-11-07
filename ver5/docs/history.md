@@ -5,6 +5,11 @@
 
 ---
 
+## 2026-11-07 닫기는 오른쪽 아래 끝, HUD 장수 칸은 예전으로, 장수 창 전환 한자리
+- `internal/gui/ui_kit.go`(`closeRow`), `officer_window.go`, `unit_window.go`, `deputy_window.go`, `equipment_window.go`, `levelup.go`, `windows.go`, `save_window.go`, `shop.go`: 모든 창의 닫는 버튼을 오른쪽 아래 끝 `닫기` 하나로(`다 배웠음`·`나중에`·`취소`·`확인` 없앰), 다른 할 일은 그 왼쪽에 조금 떨어뜨림; 옛 창은 내용 밑 띠에 `닫기`, 상점은 `N개 사기`/`N개 팔기` — 사용자 "다 배웠음 이렇게 나오니 헷갈려", "물건 살 때도 확인이라고 적혀 있으니 무슨 의미인지 모르겠음"
+- `internal/gui/hud.go`, `hud_panel.go`, `equipment_window.go`, `unit_tabs_render_test.go`(되살림), `hud_brief.go`(삭제): HUD 장수 탭을 간단 보기에서 예전 상세(상태·경험치·능력/특성/장비/열전 탭)로 되돌림, 능력 탭 육각형은 패널이 낮으면 줄어듦, 정보 패널 위 여백·손잡이 띠를 줄여 폰 160%에서 다 들어가게 — 사용자 "상태이상도 안 보이고 경험치도 안 보이고 … 예전 게 훨씬 좋았음"
+- `internal/gui/officer_window.go`: 장수 창의 `목록`·`표`·`소지품`을 왼쪽 위 전환 탭 하나로, `목록으로`·`장수로` 없앰 — 사용자 "표로 전환하는 버튼은 좌상단에 있고, 목록 전환하는 버튼은 우하단에 있고"
+
 ## 2026-11-07 왼쪽 위 판은 있는 버튼만
 - `internal/gui/hud_corner.go`, `skin.go`: 진행판의 빈칸(`emptySlot`)을 없애고 그 화면에 있는 버튼만 붙여 놓으며, 판 폭을 버튼과 머리줄에 맞춤 — 사용자 "빈칸 그냥 없애주고, 활성화된 버튼만"
 
@@ -21,6 +26,9 @@
 - `internal/gui/deployment.go`: 아래 카드 띠와 배치의 장수 창을 없애고 오른쪽 위 `전투 시작`, 오른쪽 아래 출전 부대 — 사용자 "하단을 채워버리니 더 길쭉해서 이상해", 장비·부관·출전 여부는 출전 준비에서
 - `internal/gui/hud_panel.go`, `hud_brief.go`(새), `hud.go`, `battle_log.go`: 전투 HUD를 오른쪽 위(차례·진영 종료·관리·메뉴)와 오른쪽 아래(탭 정보 패널)로 나눔, 장수 탭은 간단 보기와 `자세히 보기`(부대 상세, 보기만), 기록 높이 손잡이는 패널 위쪽, 터치에서는 패널이 흐려지지 않음 — 사용자 "정보나 그런 건 우상단에서 우하단으로, 배속 같은 보조적인 건 좌상단에", 진영 종료는 원래대로 위
 - `internal/gui/levelup.go`(새), `windows.go`: 레벨 업 창에 지금 배울 수 있는 특성 칩과 `나중에`/`특성 배우기 ›`, 학습 창은 배울 장수만
+
+## 2026-11-07 세객·종횡가는 부채에 두건·인장·목소리 고리
+- `tools/doteditor/tools/mounted_kits/orator.py`, `units/orator.yaml`·`diplomat.yaml`, `assets/sprites/orator.spr`·`diplomat.spr`, `internal/sprite/testdata/units/`: 붓을 버리고 회색 부채로; 세객은 흰 천 두건(복건), 종횡가는 금 장식 관모; 허리 앞에 금 인장과 붉은 끈(말 안장색 키, 걸을 때 흔들림, 종횡가는 두 가닥); 공격은 카메라를 향한 목소리 고리(세객 두 겹, 종횡가 세 겹) — 사용자 "붓이 막상 보니 좀 어색하다. 세객도 책 계열로", 구별은 A(머리)·B(허리 인수)·D(공격 효과)로 승낙
 
 ## 2026-11-07 세객·종횡가는 붓, 군사는 부채
 - `tools/doteditor/tools/mounted_kits/orator.py`, `units/orator.yaml`·`diplomat.yaml`, `assets/sprites/orator.spr`·`diplomat.spr`: 절(사신의 깃대)을 크게 그린 붓(대나무 붓대·금 고리·흰 붓털·먹 끝)으로, 공격은 허공에 굵은 먹 획을 긋고 먹방울을 튀김 — 사용자 "세 단 달린 절이 잘 안 보인다. 붓은 어때?", "크게 그려서 좀 튀게". 붓대는 말 털색 키(horseSkin)로 따로 둠 — themeA는 종횡가의 관모라 함께 바뀌었다

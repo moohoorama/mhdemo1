@@ -115,6 +115,7 @@ type Game struct {
 	blocks                    []image.Rectangle
 	wheelAreas                []wheelArea
 	unitWin                   unitWindowState
+	overlayActs               []action // the actions an older window's content puts beside 닫기
 	ord                       order
 	menuAnim, subAnim         panelAnim
 	hover                     hoverCell
@@ -142,6 +143,10 @@ type Game struct {
 	hudBase, hudPeek          string          // the tab chosen by hand; the one looked at while an officer is selected
 	unitsList, rosterList     unitList        // the HUD tab's unit list and the roster window's
 	hudTurn, hudBefore        string          // the side that moved last, and the tab to return to after the enemy's turn
+	traitOf                   string
+	traitTop                  int
+	detailTab                 int
+	detailPage                int
 	toasts                    []*toast
 	history                   []string
 	logPending                []string

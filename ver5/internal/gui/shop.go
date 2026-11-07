@@ -48,7 +48,7 @@ func (g *Game) shopRows(o core.Observation, items []string, sell bool) []goodsRo
 }
 
 // shopWindow is the shop of the walk's person g.shopFrom in two tabs, buying and selling: a table of the
-// things, and below it the one picked in full with how many to trade and what the money comes to; 확인
+// things, and below it the one picked in full with how many to trade and what the money comes to; 사기 or 팔기
 // trades.
 func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 	e := g.S.Engine
@@ -154,8 +154,12 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 				verb = "판매"
 			}
 			question := fmt.Sprintf("%s을(를) %d개 %s하시겠습니까?\n소지금 %d원 → %d원", name, n, verb, o.Money, after)
+			yes := "사기"
+			if v.sell {
+				yes = "팔기"
+			}
 			trade = func() {
-				g.askWith(question, "예", "아니오", func() {
+				g.askWith(question, yes, "그만두기", func() {
 					g.request(session.Request{Op: "command", Command: core.Command{Kind: kind, Target: g.shopFrom, Item: id, Count: n}})
 					v.n = 1
 				})
@@ -163,7 +167,14 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 		}
 		g.label(dst, msg, float64(box.Max.X-16)-g.width(msg, 14), float64(box.Max.Y-41), 14, c)
 	}
-	g.centeredBtn(dst, image.Rect(right-160, y+h-60, right, y+h-22), "확인", trade)
+	verb := "사기"
+	if v.sell {
+		verb = "팔기"
+	}
+	if picked != nil && trade != nil {
+		verb = fmt.Sprintf("%d개 %s", v.n, verb)
+	}
+	g.overlayActs = append(g.overlayActs, action{verb, true, trade})
 }
 
 // itemDesc is what a thing does, equipment or item.

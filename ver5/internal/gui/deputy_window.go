@@ -282,7 +282,7 @@ func (g *Game) deputyWindow(dst *ebiten.Image, x, y, w, h int) {
 	case picked != nil:
 		label = picked.name + " 임명"
 	}
-	g.actionRow(dst, right, y+h-60, action{"부관 해임", false, release}, action{"닫기", false, g.closeOverlay}, action{label, true, appoint})
+	g.closeRow(dst, right, y+h-60, g.closeOverlay, action{"부관 해임", false, release}, action{label, true, appoint})
 }
 
 // traitList names as many of the traits as fit in w at the size, then how many more there are.
