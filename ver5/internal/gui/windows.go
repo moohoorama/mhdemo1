@@ -308,9 +308,11 @@ func (g *Game) drawModal(dst *ebiten.Image) {
 		g.popup(dst, fmt.Sprintf("modal:%p", m), 110, uiW, uiH, box.Inset(-24), func(dst *ebiten.Image) { g.modalWindow(dst, m) })
 		return
 	}
-	g.addButton(image.Rect(0, 0, uiW, uiH), "", g.closeModal)
+	if m.kind != "levelup" || !g.levelUpChoice(m) {
+		g.addButton(image.Rect(0, 0, uiW, uiH), "", g.closeModal)
+	}
 	box := map[string]image.Rectangle{
-		"levelup":   image.Rect(Width/2-250, 200, Width/2+250, 540),
+		"levelup":   levelUpBox,
 		"promotion": image.Rect(Width/2-280, 170, Width/2+280, 600),
 		"trait":     image.Rect(Width/2-300, 220, Width/2+300, 560),
 	}[m.kind]
@@ -355,27 +357,7 @@ func (g *Game) modalWindow(dst *ebiten.Image, m *modal) {
 		}
 		g.objectiveButtons(dst, r)
 	case "levelup":
-		l := m.level
-		r := image.Rect(uiW/2-250, 200, uiW/2+250, 540)
-		g.titled(dst, r, "레벨 업")
-		g.portrait(dst, l.id, "", float64(r.Min.X+32), 236, 110)
-		g.label(dst, g.name(l.id), float64(r.Min.X+164), 232, 26, gold)
-		g.label(dst, fmt.Sprintf("Lv %d  →  Lv %d", l.from, l.to), float64(r.Min.X+164), 274, 20, ink)
-		g.label(dst, fmt.Sprintf("특성치 +%d", 100*(l.to-l.from)), float64(r.Min.X+164), 306, 15, good)
-		k := min(1, m.t/.8) * l.progress / 100
-		bar(dst, float32(r.Min.X+164), 334, 220, 8, k, xpC)
-		g.label(dst, fmt.Sprintf("EXP %.0f / 100", l.progress), float64(r.Min.X+392), 326, 13, muted)
-		for i, s := range statRows {
-			a, b := s.get(l.before), s.get(l.after)
-			col, row := i%2, i/2
-			px, py := float64(r.Min.X+40+col*230), float64(366+row*30)
-			g.label(dst, s.name, px, py, 15, muted)
-			g.label(dst, fmt.Sprint(b), px+70, py, 15, ink)
-			if b != a {
-				g.label(dst, fmt.Sprintf("+%d", b-a), px+130, py, 15, good)
-			}
-		}
-		g.centered(dst, "클릭하여 계속", float64(uiW/2), 512, 13, muted)
+		g.levelUpWindow(dst, m)
 	case "promotion":
 		g.promotionWindow(dst, m.promo, m.t)
 	case "trait":

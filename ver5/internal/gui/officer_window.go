@@ -23,6 +23,14 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 	o := g.S.View()
 	p := &g.party
 	roster := g.roster(o)
+	if p.learning { // a level-up's learning lists only the officers waiting to learn
+		waiting := slices.DeleteFunc(slices.Clone(roster), func(c core.Character) bool {
+			return !slices.ContainsFunc(g.learn, func(l core.Learner) bool { return l.ID == c.ID })
+		})
+		if len(waiting) > 0 {
+			roster = waiting
+		}
+	}
 	if !containsID(roster, g.selected) && len(roster) > 0 {
 		g.selected = roster[0].ID
 	}
