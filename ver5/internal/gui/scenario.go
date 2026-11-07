@@ -322,7 +322,7 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 			g.scene.node = ""
 		}
 	}
-	if o.Dialogue.Kind == "battle" { // startSortie goes on to the deployment
+	if o.Dialogue.Kind == "battle" { // the sortie preparation (drawSortie) or, forced, startSortie
 		return
 	}
 	lines := g.nodeLines(o.Dialogue)

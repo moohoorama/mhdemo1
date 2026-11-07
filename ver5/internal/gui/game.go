@@ -712,7 +712,7 @@ func (g *Game) Update() error {
 	}
 	playing := g.S.Screen == "playing"
 	if playing && !g.autoplay && !g.popupPending() {
-		if o := g.S.View(); o.Phase == "scenario" && o.Dialogue.Kind == "battle" {
+		if o := g.S.View(); o.Phase == "scenario" && o.Dialogue.Kind == "battle" && g.sortieForced(o) {
 			g.startSortie()
 		}
 	}
@@ -1075,6 +1075,10 @@ func (g *Game) play(dst *ebiten.Image) {
 		g.complete(dst, o)
 	case "scenario":
 		g.scenario(dst, o)
+		if o.Dialogue.Kind == "battle" && !g.sortieForced(o) {
+			g.drawSortie(dst, o)
+			return
+		}
 		g.drawIntro(dst)
 		g.storyPanels(dst, o)
 	default:

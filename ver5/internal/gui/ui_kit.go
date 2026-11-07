@@ -243,7 +243,9 @@ func (g *Game) traitShelves(dst *ebiten.Image, r image.Rectangle, shelves []shel
 		}
 		x := r.Min.X + headW
 		if len(s.traits) == 0 {
-			g.label(dst, s.empty, float64(x), float64(y+14), 12, faintInk)
+			g.label(dst, s.empty, float64(x), float64(y+8), 12, faintInk)
+			y += 36
+			continue
 		}
 		for _, e := range s.traits {
 			if w := g.traitChipW(e); x+w > r.Max.X && x > r.Min.X+headW {
@@ -280,7 +282,7 @@ func (g *Game) traitCard(dst *ebiten.Image, r image.Rectangle, id, from, note st
 	desc := wrapWidth(g.traitDesc(id), g.face(14), float64(r.Dx()-68))
 	g.label(dst, desc, x+44, y+26, 14, ink)
 	if note != "" {
-		g.label(dst, note, x+44, float64(r.Max.Y-26), 12, muted)
+		g.label(dst, note, x+44, float64(r.Max.Y-24), 12, muted)
 	}
 }
 

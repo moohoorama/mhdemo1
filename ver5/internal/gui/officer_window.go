@@ -79,7 +79,7 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 	g.label(dst, g.name(of.ID), nx, float64(y+12), 18, gold)
 	g.tabRow(dst, int(nx+g.width(g.name(of.ID), 18))+18, y+4, officerTabs, p.tab, func(i int) { p.tab = i })
 	rect(dst, float32(rx), float32(y+52), float32(x+w-16-rx), 1, goldDim)
-	body := image.Rect(rx, y+64, x+w-16, y+h-68)
+	body := image.Rect(rx, y+60, x+w-16, y+h-64)
 	acts := []action{{closeLabel, false, g.closeOverlay}}
 	switch p.tab {
 	case 0:
@@ -182,8 +182,8 @@ func (g *Game) officerTraits(dst *ebiten.Image, of *core.Character, r image.Rect
 	default:
 		note = fmt.Sprintf("특성치 %d → %d", of.Points, of.Points-picked.cost)
 	}
-	cardY := min(r.Min.Y+used+8, r.Max.Y-96)
-	g.traitCard(dst, image.Rect(r.Min.X, cardY, r.Max.X, cardY+96), picked.id, picked.group, note)
+	cardY := min(r.Min.Y+used+6, r.Max.Y-84)
+	g.traitCard(dst, image.Rect(r.Min.X, cardY, r.Max.X, cardY+84), picked.id, picked.group, note)
 	if picked.have || !picked.learnable {
 		return nil
 	}
