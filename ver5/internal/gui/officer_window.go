@@ -123,25 +123,59 @@ func (g *Game) hasAffordable(c core.Character) bool {
 	return false
 }
 
-// officerPower is the 전투력 tab: the hexagon and the battle stats of the officer alone; the attributes are on 열전.
+// officerPower is the 전투력 tab: the hexagon, and down its right each battle stat with a bar against the
+// roster's best, the move and range, and the experience — all of the officer alone; the attributes are on 열전.
 func (g *Game) officerPower(dst *ebiten.Image, o core.Observation, of *core.Character, r image.Rectangle) {
 	stats, _, err := g.S.Engine.DeputyStats(of.ID, "")
 	if err != nil {
 		return
 	}
-	radius := min(72.0, float64(r.Dy()-60)/2)
-	g.hexChart(dst, float64(r.Min.X)+radius+64, float64(r.Min.Y)+radius+26, radius, stats, nil, g.rosterBest(o))
-	x, y := float64(r.Min.X)+2*radius+150, float64(r.Min.Y+4)
-	for i, s := range statRows {
-		col, row := i%2, i/2
-		px, py := x+float64(col*130), y+float64(row*28)
-		g.label(dst, s.name, px, py, 15, muted)
-		g.label(dst, fmt.Sprint(s.get(stats)), px+60, py, 15, ink)
+	radius := max(50, min(100, (float64(r.Dy())-70)/2))
+	cx, cy := float64(r.Min.X)+radius+70, float64(r.Min.Y)+radius+28
+	g.hexChart(dst, cx, cy, radius, stats, nil, g.rosterBest(o))
+	g.statBars(dst, o, stats, cx+radius+84, float64(r.Min.Y+4), float64(r.Max.X), min(34, float64(r.Dy()-84)/7))
+	y := float64(r.Min.Y+4) + 7*min(34, float64(r.Dy()-84)/7) + 10
+	x := cx + radius + 84
+	cl := g.S.Data.Classes[of.Class]
+	reach := fmt.Sprint(cl.Range)
+	if cl.MinRange > 1 {
+		reach = fmt.Sprintf("%d~%d", cl.MinRange, cl.Range)
 	}
+	g.label(dst, fmt.Sprintf("이동 %d · 사거리 %s", cl.Move, reach), x, y, 14, muted)
 	progress := core.ExperienceProgress(of.XP)
-	y += 4*28 + 12
-	bar(dst, float32(x), float32(y+6), 180, 8, progress/100, xpC)
-	g.label(dst, fmt.Sprintf("경험치 %.0f / 100", progress), x+190, y, 13, muted)
+	y += 28
+	bar(dst, float32(x), float32(y+6), float32(float64(r.Max.X)-x-130), 8, progress/100, xpC)
+	g.label(dst, fmt.Sprintf("경험치 %.0f / 100", progress), float64(r.Max.X)-120, y, 13, muted)
+}
+
+// statBars lists the battle stats from (x, y) to right, rowH apart: the name, the value and a bar against the best
+// of the roster.
+func (g *Game) statBars(dst *ebiten.Image, o core.Observation, s core.Stats, x, y, right, rowH float64) {
+	best := map[string]int{}
+	for _, c := range g.roster(o) {
+		cs, _, err := g.S.Engine.DeputyStats(c.ID, c.Deputy)
+		if err != nil {
+			continue
+		}
+		for _, row := range statRows {
+			best[row.name] = max(best[row.name], row.get(cs))
+		}
+	}
+	for i, row := range statRows {
+		py := y + float64(i)*rowH
+		v := row.get(s)
+		g.label(dst, row.name, x, py, 15, muted)
+		vs := fmt.Sprint(v)
+		g.label(dst, vs, x+112-g.width(vs, 15), py, 15, ink)
+		c := color.Color(gold)
+		switch row.name {
+		case "병력":
+			c = hpC
+		case "병법치":
+			c = mpC
+		}
+		bar(dst, float32(x+124), float32(py+8), float32(right-x-124), 8, float64(v)/float64(max(1, best[row.name], v)), c)
+	}
 }
 
 var attrNames = []string{"통솔", "무력", "지력", "민첩", "운", "매력"}
@@ -199,7 +233,7 @@ func (g *Game) officerTraits(dst *ebiten.Image, of *core.Character, r image.Rect
 // officerBio is the 열전 tab: the biography, the six attributes and the officer's own traits with what they do.
 func (g *Game) officerBio(dst *ebiten.Image, of *core.Character, r image.Rectangle) {
 	x, y := float64(r.Min.X), float64(r.Min.Y)
-	bio := wrapWidth(g.S.Data.Characters[of.Def].Biography, g.face(14), float64(r.Dx()))
+	bio := wrapWidth(g.S.Data.Characters[of.Def].Biography, g.face(14), float64(r.Dx()-16))
 	g.label(dst, bio, x, y, 14, ink)
 	_, h := measureLines(g, bio, 14)
 	y += h + 12

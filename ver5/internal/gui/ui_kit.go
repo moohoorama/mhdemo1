@@ -19,7 +19,7 @@ const (
 	touchH    = 48
 	listRowH  = 56
 	chipH     = 40
-	sheetMax  = 1180
+	sheetMax  = 960
 	sheetMaxH = 720
 )
 

@@ -154,7 +154,7 @@ func (g *Game) unitPower(dst *ebiten.Image, o core.Observation, of *core.Charact
 		return
 	}
 	unit, _, _ := g.S.Engine.DeputyStats(of.ID, of.Deputy)
-	radius := max(30, min(72.0, (float64(r.Max.Y)-y-40)/2))
+	radius := max(30, min(92.0, (float64(r.Max.Y)-y-40)/2))
 	var dashed *core.Stats
 	if of.Deputy != "" {
 		dashed = &alone
@@ -277,7 +277,7 @@ func (g *Game) unitBio(dst *ebiten.Image, o core.Observation, of *core.Character
 	if of.Deputy != "" {
 		ids = append(ids, of.Deputy)
 	}
-	bx, bw := float64(r.Min.X)+tw+24, float64(r.Max.X)-float64(r.Min.X)-tw-24
+	bx, bw := float64(r.Min.X)+tw+24, float64(r.Max.X)-float64(r.Min.X)-tw-40
 	room := (float64(r.Max.Y) - y) / float64(len(ids))
 	for i, id := range ids {
 		c := g.officer(o, id)
