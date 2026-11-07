@@ -493,13 +493,6 @@ func (g *Game) toggleBtn(dst *ebiten.Image, r image.Rectangle, label string, on 
 	g.label(dst, label, float64(x)+(float64(w)-g.width(label, 15))/2, float64(y)+(float64(h)-15*1.45)/2+1, 15, color.NRGBA{R: 255, G: 238, B: 170, A: 255})
 }
 
-// emptySlot marks the place of a button the screen has no use for, so the others keep theirs.
-func emptySlot(dst *ebiten.Image, r image.Rectangle) {
-	x, y, w, h := float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy())
-	rect(dst, x, y, w, h, color.NRGBA{A: 56})
-	strokeRect(dst, x+.5, y+.5, w-1, h-1, 1, color.NRGBA{R: 132, G: 104, B: 52, A: 110})
-}
-
 // choiceBtn is a button of a group of which one is chosen: the chosen one is pressed in, gold
 // and does nothing, the others are raised buttons. Labels are centred.
 func (g *Game) choiceBtn(dst *ebiten.Image, r image.Rectangle, label string, on bool, click func()) {

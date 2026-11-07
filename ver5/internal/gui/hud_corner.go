@@ -35,8 +35,6 @@ type cornerSlot struct {
 
 func (g *Game) cornerButton(dst *ebiten.Image, r image.Rectangle, s *cornerSlot) {
 	switch {
-	case s == nil:
-		emptySlot(dst, r)
 	case s.toggle:
 		g.toggleBtn(dst, r, s.label, s.on, s.click)
 	default:
@@ -52,14 +50,30 @@ func (g *Game) foldButton(dst *ebiten.Image, x, y int, folded *bool) {
 }
 
 // leftPanel is the panel in the upper left: on its head the fold switch, the place, the chapter and the money;
-// below it five slots always in this order — speed, zoom, auto text, skip scene, battle objective — a nil slot
-// left empty. A window too narrow for both panels side by side wraps the slots into more rows.
-func (g *Game) leftPanel(dst *ebiten.Image, place, sub, money string, slots [5]*cornerSlot) {
-	w := min(leftPanelW, uiW-12-12-8-infoW)
+// below it the buttons the screen has, in this order — speed, zoom, auto text, skip scene, battle objective — a nil
+// slot left out. The panel is as wide as its buttons and head need; a window too narrow wraps the buttons.
+func (g *Game) leftPanel(dst *ebiten.Image, place, sub, money string, all [5]*cornerSlot) {
+	slots := []*cornerSlot{}
+	for _, s := range all {
+		if s != nil {
+			slots = append(slots, s)
+		}
+	}
+	const slotW = (leftPanelW - 2*cornerPad - 4*cornerGap) / 5
+	need := 2*cornerPad + len(slots)*slotW + max(0, len(slots)-1)*cornerGap
+	head := 42 + 12.0
+	if place != "" {
+		head += g.width(place, 15) + 8
+	}
+	head += g.width(sub, 13)
+	if money != "" {
+		head += 16 + g.width(money, 15)
+	}
+	w := min(max(need, int(head)), uiW-12-12-8-infoW)
 	cols := max(1, min(len(slots), (w-2*cornerPad+cornerGap)/(cornerSlotW+cornerGap)))
-	rows := (len(slots) + cols - 1) / cols
+	rows := max(1, (len(slots)+cols-1)/cols)
 	h := cornerHeadH
-	if !g.leftFolded {
+	if !g.leftFolded && len(slots) > 0 {
 		h += cornerRowH + (rows-1)*(cornerBtnH+cornerGap)
 	}
 	r := image.Rect(12, hudTop(), 12+w, hudTop()+h)
@@ -75,7 +89,7 @@ func (g *Game) leftPanel(dst *ebiten.Image, place, sub, money string, slots [5]*
 	if money != "" {
 		g.moneyLabel(dst, float64(r.Max.X-12), float64(r.Min.Y+8), 15)
 	}
-	if g.leftFolded {
+	if g.leftFolded || len(slots) == 0 {
 		return
 	}
 	rect(dst, float32(r.Min.X+8), float32(r.Min.Y+cornerHeadH), float32(w-16), 1, goldDim)

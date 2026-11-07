@@ -5,6 +5,9 @@
 
 ---
 
+## 2026-11-07 왼쪽 위 판은 있는 버튼만
+- `internal/gui/hud_corner.go`, `skin.go`: 진행판의 빈칸(`emptySlot`)을 없애고 그 화면에 있는 버튼만 붙여 놓으며, 판 폭을 버튼과 머리줄에 맞춤 — 사용자 "빈칸 그냥 없애주고, 활성화된 버튼만"
+
 ## 2026-11-07 전투력 탭에는 전투 능력만
 - `internal/gui/unit_window.go`, `officer_window.go`: 부대 상세·장수 창의 전투력 탭에서 통솔·무력 같은 열전 능력 표를 빼 열전 탭으로 옮김(부대 상세 열전은 주장·부관·부대 표), 전투력은 육각형과 병력·병법치·공격·방어… 표만 — 사용자 "전투력은 부대 전투력, 병력/병법/공격/방... 이런 것만"
 
@@ -23,6 +26,7 @@
 - `tools/doteditor/tools/mounted_kits/orator.py`, `units/orator.yaml`·`diplomat.yaml`, `assets/sprites/orator.spr`·`diplomat.spr`: 절(사신의 깃대)을 크게 그린 붓(대나무 붓대·금 고리·흰 붓털·먹 끝)으로, 공격은 허공에 굵은 먹 획을 긋고 먹방울을 튀김 — 사용자 "세 단 달린 절이 잘 안 보인다. 붓은 어때?", "크게 그려서 좀 튀게". 붓대는 말 털색 키(horseSkin)로 따로 둠 — themeA는 종횡가의 관모라 함께 바뀌었다
 - `tools/doteditor/tools/mounted_kits/grand_strategist.py`, `units/grand_strategist.yaml`, `assets/sprites/grand_strategist.spr`: 군사의 금 여의를 참모의 깃털 부채로(여의 함수 삭제) — 사용자 "이상한 망치같은거 들고 있는데, 참모처럼 부채로". 원래처럼 denoise까지
 - `internal/sprite/testdata/units/orator.png`·`diplomat.png`·`grand_strategist.png`: 기준 그림 갱신
+- `units/grand_strategist.yaml`(themeB), `grand_strategist.spr`: 군사 부채를 붉은색에서 회색으로 — 사용자 "빨간색이 너무 튀어. 회색계열로"
 
 ## 2026-11-07 장면 이동은 디버그 모드 밖에서도
 - `internal/gui/game.go`: 타이틀 메뉴의 "장면 이동"을 `Debug` 조건 밖으로 — 사용자 "debug 모드 아니어도 되게". 일기토·맵에디터·데미지/경험치 배율은 그대로 디버그 전용
