@@ -5,6 +5,25 @@
 
 ---
 
+## 2026-11-07 장수·부대·특성 화면 개편 (폰 크기 기준)
+- 결정: 장수·부대·특성 화면을 폰 914×411dp 기준으로 다시 짠다 — 누르는 것 48, 본문 14·최소 12, 할 일 버튼은 오른쪽 아래(맨 오른쪽 주 행동), 창 오른쪽 위에는 버튼 없음 · 이유: 사용자 "터치하고 글씨 읽는다고 했을 때 저게 될 거 같냐", "주요 액션 버튼을 우하단으로", "창 닫는 걸 이야기해야 했어" — 이전 화면은 폰에서 버튼 약 25dp, 글자 약 11dp였다 · 영향받는 문서: [plan-party-ui.md](plan-party-ui.md), [presentation-ui.md](presentation-ui.md)
+- `internal/gui/ui_kit.go`(새): 48 버튼·탭 줄·목록 줄·할 일 줄·특성 칩과 선반·특성 설명 카드·육각형, 화면을 채우는 판(`sheetWindows`)
+- `internal/gui/officer_window.go`(새), `party.go`, `scenario.go`, `trait_catalog.go`: 관리 창의 장수 탭을 왼쪽 목록 + 오른쪽 탭 넷(전투력·특성·열전·장비)으로, 표로 보기, 소지품 — 스토리에서도 특성을 배우고 장비를 바꾼다(사용자 "스토리에서 특성 배움, 장비 장착 가능하도록")
+- `internal/gui/sortie.go`(새), `game.go`: 전투 노드에서 출전 준비 화면을 그리고(강제 출전 스테이지는 지금처럼 바로), 출진이 배치로 넘어간다 — 사용자 "출전과 부관, 이거 직관적이야"
+- `internal/gui/unit_window.go`(새), `internal/core/formation.go`(`DeputyBlend`): 부대 상세 — 부관 가중치와 혼자/보정/부대, 주장·부관 특성 선반을 나눠 보기
+- `internal/gui/deputy_window.go`, `equipment_window.go`: 부관 임명과 장비를 화면을 채우는 목록 + 오른쪽 미리보기로, 장비 고르기 창을 장비 창에 합침
+- `internal/gui/deployment.go`: 아래 카드 띠와 배치의 장수 창을 없애고 오른쪽 위 `전투 시작`, 오른쪽 아래 출전 부대 — 사용자 "하단을 채워버리니 더 길쭉해서 이상해", 장비·부관·출전 여부는 출전 준비에서
+- `internal/gui/hud_panel.go`, `hud_brief.go`(새), `hud.go`, `battle_log.go`: 전투 HUD를 오른쪽 위(차례·진영 종료·관리·메뉴)와 오른쪽 아래(탭 정보 패널)로 나눔, 장수 탭은 간단 보기와 `자세히 보기`(부대 상세, 보기만), 기록 높이 손잡이는 패널 위쪽, 터치에서는 패널이 흐려지지 않음 — 사용자 "정보나 그런 건 우상단에서 우하단으로, 배속 같은 보조적인 건 좌상단에", 진영 종료는 원래대로 위
+- `internal/gui/levelup.go`(새), `windows.go`: 레벨 업 창에 지금 배울 수 있는 특성 칩과 `나중에`/`특성 배우기 ›`, 학습 창은 배울 장수만
+
+## 2026-11-07 세객·종횡가는 붓, 군사는 부채
+- `tools/doteditor/tools/mounted_kits/orator.py`, `units/orator.yaml`·`diplomat.yaml`, `assets/sprites/orator.spr`·`diplomat.spr`: 절(사신의 깃대)을 크게 그린 붓(대나무 붓대·금 고리·흰 붓털·먹 끝)으로, 공격은 허공에 굵은 먹 획을 긋고 먹방울을 튀김 — 사용자 "세 단 달린 절이 잘 안 보인다. 붓은 어때?", "크게 그려서 좀 튀게". 붓대는 말 털색 키(horseSkin)로 따로 둠 — themeA는 종횡가의 관모라 함께 바뀌었다
+- `tools/doteditor/tools/mounted_kits/grand_strategist.py`, `units/grand_strategist.yaml`, `assets/sprites/grand_strategist.spr`: 군사의 금 여의를 참모의 깃털 부채로(여의 함수 삭제) — 사용자 "이상한 망치같은거 들고 있는데, 참모처럼 부채로". 원래처럼 denoise까지
+- `internal/sprite/testdata/units/orator.png`·`diplomat.png`·`grand_strategist.png`: 기준 그림 갱신
+
+## 2026-11-07 장면 이동은 디버그 모드 밖에서도
+- `internal/gui/game.go`: 타이틀 메뉴의 "장면 이동"을 `Debug` 조건 밖으로 — 사용자 "debug 모드 아니어도 되게". 일기토·맵에디터·데미지/경험치 배율은 그대로 디버그 전용
+
 ## 2026-11-07 실패하던 테스트 정리
 - `internal/content/purity_test.go`: "관리"(화면 메뉴 낱말)를 엔진 어휘로 허용, 임시 도구(`cmd/_이름`, `uidemo_zz_tmp*`)는 검사에서 뺌 — 임시 도구는 확인하려는 데이터 이름을 쓰는 게 정상이고, "관리"는 대장군부 관리 인물 이름과 겹쳤을 뿐
 - `internal/sprite/testdata/units/`: 세객·종횡가·여포·여포(맨손)·유비 기마·유비·장비 비전투 기준 PNG를 `golden.py`의 `render`로 다시 뽑음 — 시트는 바뀌었는데 기준 그림이 옛것이었다
