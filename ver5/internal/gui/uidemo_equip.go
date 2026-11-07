@@ -67,7 +67,7 @@ func demoEquip(d *Demo) error {
 			if pick != "" {
 				g.command(core.Command{Kind: "equip", Actor: g.selected, Item: pick})
 			}
-			g.equip.slot = ""
+			g.equip.pick = equipCurrent
 		}
 	}
 	return nil

@@ -42,7 +42,7 @@ func (g *Game) openOverlay(name string) bool {
 		g.equip = equipState{}
 	}
 	if name == "deputy" {
-		g.deputyPick, g.deputyInfo, g.deputyList.top = "", equipChip{}, 0
+		g.deputyPick, g.deputyInfo, g.party.deputies.top = "", equipChip{}, 0
 	}
 	g.autoplay = false
 	if name == "save" || name == "load" {
@@ -156,9 +156,6 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 		pad = 16
 	}
 	g.popup(dst, "overlay:"+name, 150, w+pad, h+pad, image.Rect(0, 0, w+pad, h+pad), func(dst *ebiten.Image) { g.overlayWindow(dst, name, w, h) })
-	if name == "equipment" && g.equip.slot != "" {
-		g.drawEquipPicker(dst)
-	}
 	if name == "equipment" && g.equip.info.id != "" {
 		g.drawEquipInfo(dst)
 	}

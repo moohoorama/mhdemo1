@@ -11,8 +11,8 @@ import (
 	"srpg/internal/session"
 )
 
-// The deputy window (부관 임명): the officer's stats on top, then a sortable table of the officers
-// who could serve it, each with what it would add, in the roster window's three views.
+// The deputy window (부관 임명): the officers who could serve the selected one, each with the weight it would get
+// and the attributes it would raise, and the one picked beside them with what it changes.
 
 const deputyW, deputyH = 1040, 700
 
@@ -64,49 +64,6 @@ func deputyStats(keys [][2]string) []struct {
 	return out
 }
 
-// deputyColumns are the table's columns in the view: the name and the traits, on 기본 the class
-// and level, then what the candidate would add.
-func (g *Game) deputyColumns(base core.Stats, attrs [6]int) []column[deputyRow] {
-	cols := []column[deputyRow]{
-		{key: "name", label: "장수", w: 110, text: true, left: true, size: 1,
-			get: func(r *deputyRow) (string, float64) { return r.name, 0 },
-			show: func(r *deputyRow, ink color.Color, w float64) (string, color.Color) {
-				if r.current {
-					return r.name, gold
-				}
-				return r.name, ink
-			}},
-		{key: "traits", label: "특성", left: true, size: -2,
-			get: func(r *deputyRow) (string, float64) { return "", float64(len(r.traits)) },
-			show: func(r *deputyRow, ink color.Color, w float64) (string, color.Color) {
-				return g.traitList(r.traits, 13, w-10), ink
-			}},
-	}
-	if g.deputyList.kind == 0 {
-		cols = append(cols,
-			column[deputyRow]{key: "class", label: "병종", w: 96, text: true, get: func(r *deputyRow) (string, float64) { return g.className(r.class), 0 }},
-			column[deputyRow]{key: "level", label: "레벨", w: 60, get: func(r *deputyRow) (string, float64) { return fmt.Sprint(r.level), float64(r.level) }})
-	}
-	for _, s := range deputyViews[g.deputyList.kind].stats {
-		cols = append(cols, column[deputyRow]{key: s.key, label: s.label, w: 74,
-			get: func(r *deputyRow) (string, float64) {
-				d := s.get(r.stats, r.attrs) - s.get(base, attrs)
-				return fmt.Sprintf("%+d", d), float64(d)
-			},
-			show: func(r *deputyRow, ink color.Color, w float64) (string, color.Color) {
-				d := s.get(r.stats, r.attrs) - s.get(base, attrs)
-				switch {
-				case d == 0:
-					return "—", muted
-				case d > 0 && r.reason == "":
-					return fmt.Sprintf("%+d", d), good
-				}
-				return fmt.Sprintf("%+d", d), ink
-			}})
-	}
-	return cols
-}
-
 // deputyRows are the officers who could serve the selected one, those who can first.
 func (g *Game) deputyRows(o core.Observation) []deputyRow {
 	actor := g.selected
@@ -150,107 +107,157 @@ func (g *Game) deputyRows(o core.Observation) []deputyRow {
 	return rows
 }
 
-// deputyWindow draws the window's body inside the overlay frame at (x, y).
+// deputyWindow is the deputy appointment, filling the screen: the candidates on the left, each with where they
+// are now, their charm, the weight they would get and the attributes they would raise; the one picked on the right
+// with the lead's battle stats alone, the bonus and as a unit, and the traits the deputy would bring.
 func (g *Game) deputyWindow(dst *ebiten.Image, x, y, w, h int) {
 	o := g.S.View()
 	of := g.officer(o, g.selected)
 	if of == nil {
 		return
 	}
-	base, attrs, err := g.S.Engine.DeputyStats(of.ID, "")
+	alone, aloneAttrs, err := g.S.Engine.DeputyStats(of.ID, "")
 	if err != nil {
 		return
 	}
 	rows := g.deputyRows(o)
+	slices.SortStableFunc(rows, func(a, b deputyRow) int {
+		if a.current != b.current {
+			return b2i(b.current) - b2i(a.current)
+		}
+		return b2i(a.reason != "") - b2i(b.reason != "")
+	})
 	pick := g.deputyPick
-	at := slices.IndexFunc(rows, func(r deputyRow) bool { return r.id == pick })
-	var picked *deputyRow
-	if at < 0 {
+	if pick == "" {
 		pick = of.Deputy
-	} else {
-		cand := rows[at]
-		picked = &cand
 	}
-	left, right := x+32, x+w-32
-	g.label(dst, "장수를 누르면 위에 그 장수를 부관으로 두었을 때의 능력치가 나옵니다. 금색 이름이 지금 부관이고, 머리글을 누르면 정렬합니다.", float64(left), float64(y+48), 14, muted)
-	bw := 100
-	for i, v := range deputyViews {
-		idx := i
-		var click func()
-		if g.deputyList.kind != idx {
-			click = func() { g.deputyList.kind, g.deputyList.top = idx, 0 }
+	at := slices.IndexFunc(rows, func(r deputyRow) bool { return r.id == pick })
+	if at < 0 && len(rows) > 0 {
+		at, pick = 0, rows[0].id
+	}
+	listW := min(520, w*11/20)
+	rect(dst, float32(x+listW), float32(y+8), 1, float32(h-16), goldDim)
+	g.label(dst, "부관 임명", float64(x+16), float64(y+12), 18, gold)
+	sub := fmt.Sprintf("%s대 · %s 매력 %d", g.name(of.ID), g.name(of.ID), aloneAttrs[5])
+	g.label(dst, sub, float64(x+28)+g.width("부관 임명", 18), float64(y+17), 13, muted)
+	rect(dst, float32(x+8), float32(y+56), float32(listW-16), 1, goldDim)
+	g.listRows(dst, &g.party.deputies, image.Rect(x+6, y+58, x+listW-4, y+h-6), len(rows), listRowH, func(i int, rr image.Rectangle) {
+		r := rows[i]
+		c := g.officer(o, r.id)
+		if c == nil {
+			return
 		}
-		bx := right - (len(deputyViews)-i)*(bw+6) + 6
-		g.btn(dst, image.Rect(bx, y+74, bx+bw, y+104), v.title, click)
-	}
+		rowBack(dst, rr, r.id == pick)
+		ink0 := ink
+		if r.reason != "" {
+			ink0 = faintInk
+		}
+		px, py := float64(rr.Min.X+12), float64(rr.Min.Y)
+		g.portrait(dst, c.ID, c.Class, px, py+8, 40)
+		g.label(dst, r.name, px+50, py+7, 16, ink0)
+		where := "대기"
+		switch {
+		case r.current:
+			where = g.name(of.ID) + " 부관"
+		case g.servedBy(o, r.id) != "":
+			where = g.name(g.servedBy(o, r.id)) + " 부관"
+		case slices.Contains(o.Deployment, r.id):
+			where = "출전"
+		}
+		_, depAttrs, _ := g.S.Engine.DeputyStats(r.id, "")
+		g.label(dst, fmt.Sprintf("%s · 매력 %d", where, depAttrs[5]), px+50, py+31, 12, muted)
+		if r.reason != "" {
+			g.label(dst, ellipsis(g, r.reason, 12, rr.Dx()-200), px+190, py+21, 12, faintInk)
+			return
+		}
+		wr, _ := g.S.Engine.DeputyBlend(of.ID, r.id)
+		g.label(dst, fmt.Sprintf("%.0f%%", wr*100), px+172, py+14, 18, gold)
+		ups := ""
+		for k, a := range attrNames {
+			if d := r.attrs[k] - aloneAttrs[k]; d > 0 {
+				ups += fmt.Sprintf("%s+%d ", a, d)
+			}
+		}
+		if ups == "" {
+			ups = "오르는 능력 없음"
+		}
+		g.label(dst, ellipsis(g, ups, 13, rr.Dx()-252), px+236, py+19, 13, good)
+	}, func(i int) { g.deputyPick = rows[i].id })
 
-	// the officer: its stats in the view with the picked deputy, green where the deputy raises them
-	top := image.Rect(left, y+116, right, y+282)
-	rect(dst, float32(top.Min.X), float32(top.Min.Y), float32(top.Dx()), float32(top.Dy()), color.NRGBA{R: 255, G: 240, B: 210, A: 12})
-	g.portrait(dst, of.ID, of.Class, float64(top.Min.X+12), float64(top.Min.Y+12), 76)
-	g.label(dst, g.name(of.ID), float64(top.Min.X+100), float64(top.Min.Y+14), 22, gold)
-	sub := "부관 없음"
-	if pick != "" {
-		sub = "부관 " + g.name(pick)
-		if pick != of.Deputy {
-			sub += " (미리 보기)"
-		}
-	}
-	g.label(dst, fmt.Sprintf("%s · Lv%d · %s", g.className(of.Class), of.Level, sub), float64(top.Min.X+100), float64(top.Min.Y+50), 14, ink)
-	if picked != nil { // the picked candidate: why it cannot serve, or what naming it does besides
-		msg, c := picked.note, gold
-		if picked.reason != "" {
-			msg, c = g.name(pick)+": "+picked.reason, bad
-		}
-		g.label(dst, msg, float64(top.Min.X+100), float64(top.Min.Y+74), 13, c)
-	}
-	ws, wa := base, attrs
-	if pick != "" {
-		ws, wa, _ = g.S.Engine.DeputyStats(of.ID, pick)
-	}
-	sx := top.Min.X + 360
-	for _, s := range deputyViews[g.deputyList.kind].stats {
-		now, bare := s.get(ws, wa), s.get(base, attrs)
-		g.label(dst, s.label, float64(sx), float64(top.Min.Y+20), 13, muted)
-		c := ink
-		if now > bare {
-			c = good
-		}
-		g.label(dst, fmt.Sprint(now), float64(sx), float64(top.Min.Y+44), 20, c)
-		if now != bare {
-			g.label(dst, fmt.Sprintf("%+d", now-bare), float64(sx), float64(top.Min.Y+72), 13, c)
-		}
-		sx += 92
-	}
-	// the traits the picked candidate brings, every one, as badges that open their description
-	bx, by := float64(top.Min.X+12), float64(top.Min.Y+108)
-	if picked == nil {
-		g.label(dst, "장수를 누르면 그 장수가 부관으로서 주는 특성이 여기에 모두 나옵니다.", bx, by+2, 13, muted)
-	} else if len(picked.traits) == 0 {
-		g.label(dst, g.name(pick)+"이(가) 주는 특성은 없습니다.", bx, by+2, 13, muted)
+	rx, right := x+listW+16, x+w-16
+	var picked *deputyRow
+	if at >= 0 {
+		picked = &rows[at]
 	}
 	if picked != nil {
-		for i, t := range picked.traits {
-			c := equipChip{"deputy", t}
-			if w := traitIconSize + 20 + g.width(g.traitName(t), 14); bx+w > float64(top.Max.X-12) {
-				if by += 28; by+traitIconSize > float64(top.Max.Y-4) {
-					g.label(dst, fmt.Sprintf("외 %d", len(picked.traits)-i), bx, by-26, 13, muted)
-					break
-				}
-				bx = float64(top.Min.X + 12)
+		c := g.officer(o, picked.id)
+		if c != nil {
+			g.portrait(dst, c.ID, c.Class, float64(rx), float64(y+8), 44)
+		}
+		g.label(dst, picked.name, float64(rx+54), float64(y+6), 18, gold)
+		info := ""
+		if picked.reason == "" {
+			wr, _ := g.S.Engine.DeputyBlend(of.ID, picked.id)
+			info = fmt.Sprintf("가중치 %.0f%%", wr*100)
+		}
+		if picked.note != "" {
+			info += " · " + picked.note
+		}
+		g.label(dst, ellipsis(g, info, 12, right-rx-60), float64(rx+54), float64(y+32), 12, muted)
+		ty := float64(y + 64)
+		cols := []float64{float64(rx), float64(rx) + float64(right-rx)*0.42, float64(rx) + float64(right-rx)*0.68, float64(right)}
+		for i, hd := range []string{"전투", "혼자", "보정", "부대"} {
+			px := cols[i]
+			if i > 0 {
+				px -= g.width(hd, 12) + 8
 			}
-			bx = g.chip(dst, c, bx, by, func() { g.deputyInfo = c }) + 14
+			g.label(dst, hd, px, ty, 12, muted)
+		}
+		rect(dst, float32(rx), float32(ty+20), float32(right-rx), 1, goldDim)
+		ty += 26
+		for _, s := range statRows {
+			a, b := s.get(alone), s.get(picked.stats)
+			bonus, bc := "—", faintInk
+			if b != a {
+				bonus, bc = fmt.Sprintf("%+d", b-a), good
+			}
+			for i, v := range []string{s.name, fmt.Sprint(a), bonus, fmt.Sprint(b)} {
+				px, c := cols[i], color.Color(ink)
+				if i > 0 {
+					px -= g.width(v, 14) + 8
+				}
+				switch i {
+				case 0:
+					c = muted
+				case 2:
+					c = bc
+				case 3:
+					c = gold
+				}
+				g.label(dst, v, px, ty, 14, c)
+			}
+			ty += 24
+		}
+		ty += 6
+		g.label(dst, "부대에 더해지는 특성", float64(rx), ty, 12, muted)
+		tx := float64(rx)
+		ty += 20
+		if len(picked.traits) == 0 {
+			g.label(dst, "없음", tx, ty, 13, faintInk)
+		}
+		for _, t := range picked.traits {
+			tw := 26 + g.width(g.traitName(t), 13) + 12
+			if tx+tw > float64(right) {
+				tx, ty = float64(rx), ty+24
+			}
+			if ty+20 > float64(y+h-70) {
+				break
+			}
+			g.traitIconOf(dst, t, tx, ty, 20)
+			g.label(dst, g.traitName(t), tx+24, ty, 13, ink)
+			tx += tw
 		}
 	}
-
-	// the table
-	drawTable(g, dst, &g.deputyList.tableList, table[deputyRow]{
-		cols: g.deputyColumns(base, attrs), rowH: 40, headH: 34, size: 15, center: true,
-		rank:     func(r *deputyRow) int { return b2i(r.reason != "") },
-		dim:      func(r *deputyRow) bool { return r.reason != "" },
-		selected: func(r *deputyRow) bool { return r.id == pick },
-		pick:     func(r *deputyRow) { g.deputyPick = r.id },
-	}, rows, image.Rect(left, y+298, right, y+h-60))
 
 	var appoint, release func()
 	if picked != nil && pick != of.Deputy && picked.reason == "" {
@@ -269,11 +276,13 @@ func (g *Game) deputyWindow(dst *ebiten.Image, x, y, w, h int) {
 		}
 	}
 	label := "임명"
-	if appoint != nil {
-		label = g.name(pick) + " 임명"
+	switch {
+	case picked != nil && picked.current:
+		label = "지금 부관"
+	case picked != nil:
+		label = picked.name + " 임명"
 	}
-	g.btn(dst, image.Rect(right-420, y+h-56, right-220, y+h-18), label, appoint)
-	g.btn(dst, image.Rect(right-200, y+h-56, right, y+h-18), "부관 해제", release)
+	g.actionRow(dst, right, y+h-60, action{"부관 해임", false, release}, action{"닫기", false, g.closeOverlay}, action{label, true, appoint})
 }
 
 // traitList names as many of the traits as fit in w at the size, then how many more there are.
@@ -294,16 +303,4 @@ func (g *Game) traitList(traits []string, size, w float64) string {
 		out = next
 	}
 	return out
-}
-
-// updateDeputyList scrolls the deputy table by the wheel.
-func (g *Game) updateDeputyList() bool {
-	if g.overlay() != "deputy" {
-		return false
-	}
-	if _, wheel := ebiten.Wheel(); wheel != 0 {
-		g.deputyList.top -= int(wheel)
-		return true
-	}
-	return false
 }

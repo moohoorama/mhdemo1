@@ -22,6 +22,7 @@ type partyView struct {
 	list         tableList
 	officers     tableList
 	officerList  tableList
+	deputies     tableList
 }
 
 // belonging is a kind of thing the party has: how many are carried or stored, and who wears the rest.

@@ -58,7 +58,6 @@ type Game struct {
 	sortieTried               string // the battle node startSortie last tried to leave for its deployment
 	edgeDir                   int    // the edge_arrow frame under the cursor while edgeOn (edge_scroll.go)
 	edgeOn                    bool
-	deputyList                unitList  // the deputy window's view, sort and scroll (deputy_window.go)
 	deputyPick                string    // the candidate the deputy window previews
 	deputyInfo                equipChip // the deputy window's trait badge last pressed
 	edgeHeld                  float64   // seconds the left button has been held on an edge arrow
@@ -700,7 +699,7 @@ func (g *Game) Update() error {
 			g.exploreInput()
 		}
 	}
-	logInput := g.updateTableDrag() || g.updateWheelLists() || g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker() || g.updateWaypoints() || g.updateDeputyList() || g.updateShopList()
+	logInput := g.updateTableDrag() || g.updateWheelLists() || g.updateBattleLog() || g.updateUnitList() || g.updateWaypoints() || g.updateShopList()
 	g.updateDeploymentPanel()
 	g.updateHover()
 	g.keys()
@@ -788,8 +787,6 @@ func (g *Game) keys() {
 			g.equip.info = equipChip{}
 		case g.overlay() == "shop" && g.shopView.info.id != "":
 			g.shopView.info = equipChip{}
-		case g.equip.slot != "":
-			g.equip.slot = ""
 		case g.overlay() != "":
 			g.closeOverlay()
 		case len(g.modals) > 0:

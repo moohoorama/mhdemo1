@@ -48,7 +48,6 @@ func demoDeploy(d *Demo) error {
 			g.toggleSortie(last)
 		case 85:
 			g.toggleSortie(last)
-		case 135:
 			g.selected = last
 			g.openOverlay("equipment")
 			g.openPicker("weapon")
@@ -144,7 +143,6 @@ func demoDeployDeputy(d *Demo) error {
 		case 55:
 			g.selected = ids[1]
 			g.openOverlay("deputy")
-			g.deputyList.kind = 1
 		case 75:
 			g.deputyPick = bench
 		case 80:
@@ -155,16 +153,12 @@ func demoDeployDeputy(d *Demo) error {
 			g.deputyPick = ids[0]
 		case 89:
 			g.deputyPick = ids[3]
-		case 90:
-			g.deputyList.order = tableSort{"attack", 2}
 		case 105:
-			g.deputyList.kind, g.deputyList.order = 2, tableSort{"a1", 2}
 			g.deputyPick = bench
 		case 120:
 			g.request(session.Request{Op: "command", Command: core.Command{Kind: "deputy", Actor: ids[1], Target: bench}})
 			g.deputyPick = ""
 		case 135:
-			g.deputyList.kind = 0
 		case 150:
 			g.closeOverlay()
 		case 180:
