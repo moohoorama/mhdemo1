@@ -13,7 +13,6 @@
     99
    ],
    "Level": 3,
-   "Points": 200,
    "Lord": true,
    "Playable": true,
    "Traits": [
@@ -52,12 +51,11 @@
     100,
     98,
     79,
-    83,
+    65,
     85,
     92
    ],
    "Level": 3,
-   "Points": 200,
    "Playable": true,
    "Traits": [
     "opening",
@@ -95,12 +93,11 @@
     83,
     99,
     42,
-    92,
-    72,
+    87,
+    88,
     74
    ],
    "Level": 3,
-   "Points": 200,
    "Playable": true,
    "Traits": [
     "roar",
@@ -143,7 +140,6 @@
     96
    ],
    "Level": 2,
-   "Points": 100,
    "Playable": true,
    "Traits": [
     "supply",
@@ -459,7 +455,10 @@
     "lecture",
     "even_hand"
    ],
-   "Learn": [],
+   "Learn": [
+    "lecture",
+    "even_hand"
+   ],
    "Equipment": [
     "bamboo_fan",
     "plain_clothes"
@@ -471,8 +470,14 @@
      "hair": "#2a2a2a",
      "themeC": "#2a6a4a",
      "themeA": "#c8b050"
+    },
+    "Sprites": {
+     "scholar": "scholar",
+     "orator": "orator",
+     "diplomat": "diplomat"
     }
-   }
+   },
+   "Playable": true
   },
   "zhaoyun": {
    "Name": "조운",
@@ -482,12 +487,11 @@
     92,
     97,
     78,
-    96,
-    90,
+    94,
+    65,
     90
    ],
    "Level": 8,
-   "Points": 700,
    "Traits": [
     "breakthrough",
     "versatile",
@@ -860,7 +864,7 @@
    "Level": 8,
    "Traits": [
     "stratagem",
-    "cunning"
+    "shift_blame"
    ],
    "Learn": [],
    "Equipment": [
@@ -1062,6 +1066,29 @@
     "Portrait": "turban_soldier"
    }
   },
+  "troop_bandit": {
+   "Name": "산적",
+   "Class": "bandit",
+   "Stats": [
+    38,
+    46,
+    22,
+    44,
+    45,
+    38
+   ],
+   "Level": 2,
+   "Template": true,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "taishan"
+   }
+  },
   "troop_footman": {
    "Name": "일반 부대",
    "Class": "light_infantry",
@@ -1228,12 +1255,12 @@
    "Biography": "자는 문원. 안문 마읍 사람으로 여포를 따르는 젊은 장수. 호로관에서 여포 곁을 지킨다.",
    "Class": "light_cavalry",
    "Stats": [
-    86,
-    88,
-    72,
+    93,
+    96,
     80,
-    62,
-    70
+    89,
+    90,
+    87
    ],
    "Level": 6,
    "Traits": [
@@ -1255,7 +1282,12 @@
      "saddle": "#3a4a6a"
     },
     "Scene": "zhangliao_noncombat",
-    "Portrait": "zhangliao"
+    "Portrait": "zhangliao",
+    "Sprites": {
+     "light_cavalry": "zhangliao",
+     "heavy_cavalry": "zhangliao",
+     "royal_guard": "zhangliao"
+    }
    }
   },
   "troop_commoner_man": {

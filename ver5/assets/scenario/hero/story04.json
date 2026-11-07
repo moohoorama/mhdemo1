@@ -134,13 +134,6 @@
    "Event": "join-jianyong"
   },
   {
-   "ID": "c04-c7",
-   "Kind": "grant",
-   "Item": "medicine_pouch",
-   "Count": 1,
-   "Event": "grant-medicine_pouch"
-  },
-  {
    "ID": "c04-b2",
    "Kind": "say",
    "Speaker": "messenger",

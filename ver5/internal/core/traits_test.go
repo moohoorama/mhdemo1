@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"srpg/internal/content"
 )
 
@@ -136,6 +137,20 @@ func TestStatusImmunityAndCleanse(t *testing.T) {
 		t.Fatal("cleanse")
 	}
 }
+func TestSpellCureEndsTheAllysAilments(t *testing.T) {
+	for _, cure := range []bool{false, true} {
+		e, h, _ := arena(t)
+		sage(e, 4, 6)
+		with(e, "sage", "mercy")
+		if cure {
+			with(e, "sage", "mercy", "needles")
+		}
+		h.HP = e.stats(h).MaxHP / 2
+		h.Status["poison"] = Status{Turns: 3}
+		apply(t, e, Command{Kind: "skill", Actor: "sage", Target: "hero", Skill: "mend"})
+		assert.Equal(t, cure, e.unit("hero").Status["poison"].Turns == 0, "spell_cure %v", cure)
+	}
+}
 func TestRiderShootsBeyondItsSpear(t *testing.T) {
 	e, _, _ := arena(t)
 	e.char("archer1").Class = "rider"
@@ -237,4 +252,43 @@ func TestOpeningDealsMoreOnAFreshTarget(t *testing.T) {
 	half := e.damage(hero, b, e.basic())
 	b.HP = full / 4
 	assert.InDelta(t, half, e.damage(hero, b, e.basic()), 1e-6, "half HP or less: no bonus")
+}
+
+func TestCrushTakesTheDefeatedFoesSpellPoints(t *testing.T) {
+	e, _, _ := arena(t)
+	sage(e, 4, 6)
+	with(e, "sage", "drain")
+	u, b := e.unit("sage"), e.unit("boss")
+	flame := e.data.Skills["flame"]
+	u.MP, b.HP, b.MP = e.cost(u, flame), 1, 30
+	apply(t, e, Command{Kind: "skill", Actor: "sage", Target: "boss", Skill: "flame"})
+	require.Equal(t, 0, e.unit("boss").HP, "the flame defeats the boss")
+	assert.Equal(t, min(e.stats(u).MaxMP, 30), e.unit("sage").MP)
+	assert.Equal(t, 30-e.unit("sage").MP, e.unit("boss").MP)
+}
+
+func TestStatusDoubleLengthensTheCastersAilments(t *testing.T) {
+	for _, linger := range []bool{false, true} {
+		e, _, _ := arena(t)
+		sage(e, 4, 6)
+		if linger {
+			with(e, "sage", "linger")
+		}
+		apply(t, e, Command{Kind: "skill", Actor: "sage", Target: "boss", Skill: "seal"})
+		want := map[bool]int{false: 2, true: 4}[linger]
+		assert.Equal(t, want, e.unit("boss").Status["seal"].Turns, "status_double %v", linger)
+	}
+}
+
+func TestWeakPointCritsAnAilingFoe(t *testing.T) {
+	e, hero, boss := arena(t)
+	flame := e.data.Skills["flame"]
+	assert.False(t, e.critForced(hero, boss, e.basic()))
+	with(e, "hero", "exploit")
+	assert.False(t, e.critForced(hero, boss, e.basic()), "a healthy foe")
+	boss.Status["confusion"] = Status{Turns: 2}
+	assert.True(t, e.critForced(hero, boss, e.basic()), "an attack")
+	assert.True(t, e.critForced(hero, boss, flame), "a spell")
+	boss.Status = map[string]Status{"attack": {Turns: 2, Value: -20}}
+	assert.False(t, e.critForced(hero, boss, e.basic()), "a debuff is no ailment")
 }

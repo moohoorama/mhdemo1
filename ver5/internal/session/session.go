@@ -26,7 +26,8 @@ type Request struct {
 	Revision    *uint64      `json:"revision,omitempty"`
 	Command     core.Command `json:"command"`
 	Actor, Slot string
-	Node        string            `json:"node,omitempty"` // the waypoint a jump starts at
+	Node        string            `json:"node,omitempty"`       // the waypoint a jump starts at
+	Difficulty  string            `json:"difficulty,omitempty"` // a new game's difficulty; none is normal
 	Overwrite   bool              `json:"overwrite"`
 	Discard     bool              `json:"discard_current"`
 	Changed     bool              `json:"load_changed"` // load a save made before the data changed
@@ -106,7 +107,11 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 		if err := discard(); err != nil {
 			return nil, err
 		}
-		s.Engine = core.New(s.Data, q.Seed)
+		e, err := core.NewGame(s.Data, q.Seed, q.Difficulty)
+		if err != nil {
+			return nil, err
+		}
+		s.Engine = e
 		s.Screen = "playing"
 		s.Dirty = true
 		return nil, nil

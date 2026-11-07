@@ -454,6 +454,18 @@
    }
   },
   {
+   "ID": "c01-o-join-guanyu",
+   "Kind": "join",
+   "Event": "join-guanyu",
+   "Character": "guanyu"
+  },
+  {
+   "ID": "c01-o-join-zhangfei",
+   "Kind": "join",
+   "Event": "join-zhangfei",
+   "Character": "zhangfei"
+  },
+  {
    "ID": "c01-o24",
    "Kind": "back",
    "Area": "zhuo",

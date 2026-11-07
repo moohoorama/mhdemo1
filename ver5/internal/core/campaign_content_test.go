@@ -141,7 +141,7 @@ func executed(e *Engine, key string) bool { return e.state.Executed[key] }
 
 func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, true)
-	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12"}, fought)
+	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14"}, fought)
 	assert.Equal(t, 1, e.state.Flags["flag-pengcheng-carts"])
 	assert.Positive(t, e.state.Inventory["barley"], "Tao Qian shares the grain from the carts")
 	assert.Equal(t, 1, e.state.Flags["flag-sunjian-alive"])
@@ -150,25 +150,25 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	for _, flag := range []string{"flag-beihai-taishici", "flag-zhugexuan", "flag-gaoshun"} {
 		assert.Equal(t, 1, e.state.Flags[flag], flag)
 	}
-	for _, item := range []string{"gujeong_blade", "jueying", "baima"} {
-		assert.Positive(t, e.state.Warehouse[item], item+" is handed over")
+	for _, item := range []string{"fire_manual", "gujeong_blade", "jueying", "baima", "sanlue", "medicine_pouch"} {
+		assert.Positive(t, e.state.Warehouse[item], item+" is handed over to the warehouse")
 	}
-	assert.Equal(t, "fire_manual", e.char("liubei").Equipment["accessory"], "Liu Bei takes up the manual at once")
-	assert.Positive(t, e.state.Warehouse["tactics_primer"], "the primer goes to the warehouse")
-	for _, id := range []string{"jianyong", "fangong", "zhaoyun"} {
+	for _, id := range []string{"jianyong", "fangong", "sunqian", "gaoshun"} {
 		assert.NotNil(t, e.char(id), id+" joins the party")
 	}
+	assert.Nil(t, e.char("fanya"), "Fan A stays at Xiaopei with the sick")
+	assert.Nil(t, e.char("zhaoyun"), "Zhao Yun goes back to Gongsun Zan at Xiaopei")
 	assert.True(t, executed(e, "battle-B10-vanguard-clear"), "a quick win at Julu keeps Yan Liang away from Jiejiao")
 	assert.False(t, executed(e, "battle-B10-vanguard-strong"))
 }
 
 func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, false)
-	assert.Len(t, fought, 12)
+	assert.Len(t, fought, 14)
 	assert.Zero(t, e.state.Flags["flag-julu-clear"])
 	assert.True(t, executed(e, "battle-B10-vanguard-strong"), "Yan Liang comes back at Jiejiao")
 	assert.False(t, executed(e, "battle-B10-vanguard-clear"))
-	assert.Equal(t, "fire_manual", e.char("liubei").Equipment["accessory"], "Huangfu Song hands the manual to whoever broke the siege by fire")
+	assert.Positive(t, e.state.Warehouse["fire_manual"], "Huangfu Song hands the manual over whoever broke the siege by fire")
 }
 
 // enterAreas stands one of the player's officers in every area of the stage that no victory goal names, the
@@ -225,6 +225,12 @@ func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
 				}
 				e := New(&dd, 5)
 				require.Equal(t, si, e.state.Stage)
+				if !slices.Contains(e.state.Deployment, duel.Ally) { // not a required officer: in for the last of the sortie when it is full
+					if len(e.state.Deployment) >= stage.Max {
+						e.state.Deployment = e.state.Deployment[:stage.Max-1]
+					}
+					e.state.Deployment = append(e.state.Deployment, duel.Ally)
+				}
 				applyOK(t, e, Command{Kind: "start"})
 				plan, err := e.DeploymentPlan()
 				require.NoError(t, err)
@@ -341,4 +347,35 @@ func TestYingchuanGuanYuAttackDoesNotSummonLiuBeiDuel(t *testing.T) {
 	r = applyOK(t, e, Command{Kind: "wait", Actor: "liubei"})
 	require.Len(t, duelsIn(r), 1, "the duel starts when Liu Bei meets Bo Cai")
 	assert.Equal(t, "yingchuan-liubei-bocai", duelsIn(r)[0].DuelID)
+}
+
+func TestSwornBrothersJoinWhenTheOathEnds(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	e := New(d, 1)
+	assert.Equal(t, []string{"liubei"}, keys(e.charIDs), "only Liu Bei starts the walk")
+	assert.Equal(t, []string{"liubei"}, e.state.Deployment)
+
+	dd := *d
+	dd.Campaign.Start = "c01-battle"
+	e = New(&dd, 1)
+	assert.ElementsMatch(t, []string{"liubei", "guanyu", "zhangfei"}, keys(e.charIDs), "after the oath they are in the party")
+	assert.Equal(t, d.Rules.StageLevel(1), e.char("guanyu").Level)
+}
+
+func TestOfficersJoinInTheClassTheirLevelReaches(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	t.Run("Zhao Yun joins Jiejiao as heavy cavalry", func(t *testing.T) {
+		dd := *d
+		dd.Campaign.Start = "c10-battle"
+		e := New(&dd, 1)
+		zy := e.char("zhaoyun")
+		require.NotNil(t, zy)
+		assert.Equal(t, d.Rules.StageLevel(d.StageOrder("B10")), zy.Level)
+		assert.Equal(t, "heavy_cavalry", zy.Class)
+	})
+	t.Run("a join between battles is at the last battle's level", func(t *testing.T) {
+		assert.Equal(t, d.StageOrder("B13"), d.LastBattleOrder("c14-d16"))
+	})
 }

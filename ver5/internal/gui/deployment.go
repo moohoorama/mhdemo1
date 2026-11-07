@@ -364,18 +364,29 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 }
 
 // deploymentOfficer is the window of the selected officer on the right: who it is, then its gear and
-// deputy, each row opening the window that changes it.
+// deputy, each row opening the window that changes it. Where the screen is too short for that column (a phone),
+// the window widens into two: who it is and its stats on the left, the gear, deputy and 대기로 돌리기 on the right,
+// the rows shrinking to one line as far as needed.
 func (g *Game) deploymentOfficer(dst *ebiten.Image, o core.Observation, id string, r image.Rectangle) {
 	of := g.officer(o, id)
 	rows := len(equipSlots)
 	if g.S.Engine.CanDeputize(id) {
 		rows++
 	}
-	h := 14 + 80 + 4*24 + 8 + rows*50 + 6
+	button := 0
 	if !g.sortieLocked(id) {
-		h += 46
+		button = 46
 	}
-	r.Max.Y = min(r.Max.Y, r.Min.Y+h)
+	head := 14 + 80 + 4*24 + 8
+	rowH := 50
+	wide := r.Dy() < head+rows*rowH+6+button
+	if wide {
+		r.Min.X = r.Max.X - 2*infoW
+		rowH = min(50, max(34, (r.Dy()-20-button)/rows))
+		r.Max.Y = min(r.Max.Y, r.Min.Y+max(head, 10+rows*rowH+button+4))
+	} else {
+		r.Max.Y = min(r.Max.Y, r.Min.Y+head+rows*rowH+6+button)
+	}
 	g.window(dst, r)
 	g.block(r)
 	x, y := float64(r.Min.X+14), float64(r.Min.Y+14)
@@ -383,7 +394,7 @@ func (g *Game) deploymentOfficer(dst *ebiten.Image, o core.Observation, id strin
 	g.label(dst, g.name(id), x+78, y+2, 20, gold)
 	g.label(dst, fmt.Sprintf("%s · Lv%d", g.className(of.Class), of.Level), x+78, y+34, 14, ink)
 	if g.sortieLocked(id) {
-		g.label(dst, "필수 출전", float64(r.Max.X-14)-g.width("필수 출전", 12), y+4, 12, good)
+		g.label(dst, "필수 출전", float64(r.Min.X+infoW-14)-g.width("필수 출전", 12), y+4, 12, good)
 	}
 	y += 80
 	if stats, err := g.S.Engine.CharacterStats(id); err == nil {
@@ -393,25 +404,39 @@ func (g *Game) deploymentOfficer(dst *ebiten.Image, o core.Observation, id strin
 			g.label(dst, fmt.Sprint(s.get(stats)), sx+64, sy, 13, ink)
 		}
 	}
-	y += 4*24 + 8
-	rowH := 50
+	col := image.Rect(r.Min.X+10, int(y)+4*24+8, r.Max.X-10, r.Max.Y)
+	if wide {
+		col = image.Rect(r.Min.X+infoW, r.Min.Y+10, r.Max.X-10, r.Max.Y)
+	}
+	y = float64(col.Min.Y)
+	oneLine := rowH < 44
 	row := func(label string, icon string, dim bool, value string, click func()) {
-		rr := image.Rect(r.Min.X+10, int(y), r.Max.X-10, int(y)+rowH-6)
+		rr := image.Rect(col.Min.X, int(y), col.Max.X, int(y)+rowH-6)
 		g.equipPanel(dst, rr, click != nil && hovered(rr), false)
 		if click != nil {
 			g.addButton(rr, "", click)
 		}
-		if icon != "" {
-			g.itemIcon(dst, icon, float64(rr.Min.X+8), float64(rr.Min.Y+6), 1, dim)
+		iy := float64(rr.Min.Y + 6)
+		if oneLine {
+			iy = float64(rr.Min.Y + rr.Dy()/2 - 16)
 		}
-		g.label(dst, label, float64(rr.Min.X+50), float64(rr.Min.Y+4), 12, muted)
+		if icon != "" {
+			g.itemIcon(dst, icon, float64(rr.Min.X+8), iy, 1, dim)
+		}
 		c := ink
 		if dim {
 			c = muted
 		}
-		g.label(dst, value, float64(rr.Min.X+50), float64(rr.Min.Y+20), 15, c)
+		if oneLine {
+			ty := float64(rr.Min.Y + rr.Dy()/2 - 9)
+			g.label(dst, label, float64(rr.Min.X+50), ty+2, 12, muted)
+			g.label(dst, value, float64(rr.Min.X+50)+g.width(label, 12)+10, ty, 15, c)
+		} else {
+			g.label(dst, label, float64(rr.Min.X+50), float64(rr.Min.Y+4), 12, muted)
+			g.label(dst, value, float64(rr.Min.X+50), float64(rr.Min.Y+20), 15, c)
+		}
 		if click != nil {
-			g.label(dst, "›", float64(rr.Max.X-20), float64(rr.Min.Y+12), 18, muted)
+			g.label(dst, "›", float64(rr.Max.X-20), float64(rr.Min.Y+rr.Dy()/2-11), 18, muted)
 		}
 		y += float64(rowH)
 	}
@@ -441,6 +466,6 @@ func (g *Game) deploymentOfficer(dst *ebiten.Image, o core.Observation, id strin
 		})
 	}
 	if !g.sortieLocked(id) {
-		g.btn(dst, image.Rect(r.Min.X+10, r.Max.Y-46, r.Max.X-10, r.Max.Y-10), "대기로 돌리기", func() { g.toggleSortie(id) })
+		g.btn(dst, image.Rect(col.Min.X, r.Max.Y-46, col.Max.X, r.Max.Y-10), "대기로 돌리기", func() { g.toggleSortie(id) })
 	}
 }

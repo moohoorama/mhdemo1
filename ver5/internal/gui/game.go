@@ -64,6 +64,8 @@ type Game struct {
 	edgeHeld                  float64   // seconds the left button has been held on an edge arrow
 	cursorHidden              bool
 	uiSeconds                 float64
+	moneyShown                int  // the money as the screen counts it toward the real sum
+	moneyReady                bool // moneyShown has been set from a game
 	textCache                 map[string]*ebiten.Image // rendered text by key (ui_anim.go)
 	root                      string
 	assets                    *Assets
@@ -162,7 +164,6 @@ type Game struct {
 	scenes                    *scenes.Book
 	names                     map[string]string // display name -> character id
 	learn                     []core.Learner    // learning windows open now, in order
-	learnWin                  learnWindow
 	shopView                  shopView
 	tableDrag                 *tableDrag // the press held on a table (table.go)
 	scene                     *scene
@@ -544,6 +545,10 @@ func (g *Game) assist() {
 				break
 			}
 		case "battle":
+			if c, ok := g.S.Engine.OwnerPiece(); ok {
+				g.command(c)
+				return
+			}
 			g.command(core.Command{Kind: "start"})
 		case "explore":
 			if plan := g.S.Engine.ExploreNext(); len(plan) > 0 {
@@ -640,12 +645,14 @@ func (g *Game) Update() error {
 		return g.updateWorld()
 	}
 	g.advance(1.0 / 60)
+	g.tickMoney()
 	g.turnPage()
 	g.syncBattleLogStage()
 	g.learn = nil
 	if g.S.Screen == "playing" {
 		g.learn = g.S.View().Learners
 	}
+	g.updateLearning()
 	if g.Verify {
 		if err := g.verifyFrame(); err != nil {
 			if g.verifyDone > 0 {
@@ -691,7 +698,7 @@ func (g *Game) Update() error {
 			g.exploreInput()
 		}
 	}
-	logInput := g.updateTableDrag() || g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker() || g.updateWaypoints() || g.updateDeputyList() || g.updateLearnList() || g.updateShopList()
+	logInput := g.updateTableDrag() || g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker() || g.updateWaypoints() || g.updateDeputyList() || g.updateShopList()
 	g.updateDeploymentPanel()
 	g.updateHover()
 	g.keys()
@@ -777,6 +784,8 @@ func (g *Game) keys() {
 		switch {
 		case g.equip.info.id != "":
 			g.equip.info = equipChip{}
+		case g.overlay() == "shop" && g.shopView.info.id != "":
+			g.shopView.info = equipChip{}
 		case g.equip.slot != "":
 			g.equip.slot = ""
 		case g.overlay() != "":
@@ -952,8 +961,6 @@ func (g *Game) drawScreen(dst *ebiten.Image) {
 		g.drawOverlay(dst)
 	} else if len(g.modals) > 0 && (!g.busy() || g.briefed()) && g.S.Engine != nil {
 		g.drawModal(dst)
-	} else if len(g.learn) > 0 && !g.busy() {
-		g.drawLearning(dst)
 	}
 	g.showWindows(dst)
 	g.drawEdgeArrow(dst)
@@ -1001,10 +1008,24 @@ func (g *Game) title(dst *ebiten.Image) {
 	g.inFrame(dst, Width, Height, image.Rect(0, 0, Width, Height), 0, g.titleMenu)
 }
 
+// titleCast is the three officers the title shows: the starting roster, then those who join in story order.
+func (g *Game) titleCast() []string {
+	d := g.S.Data
+	cast := slices.Clone(d.Campaign.Roster)
+	for _, c := range d.Chapters {
+		for _, id := range append(slices.Clone(c.Nodes), c.Events...) {
+			if n := d.Node(id); n.Kind == "join" && !slices.Contains(cast, n.Character) {
+				cast = append(cast, n.Character)
+			}
+		}
+	}
+	return cast[:min(3, len(cast))]
+}
+
 // titleMenu is the title screen's content, laid out on the Width×Height design.
 func (g *Game) titleMenu(dst *ebiten.Image) {
 	g.label(dst, g.S.Data.Title, 96, 70, 64, gold)
-	for i, id := range g.S.Data.Campaign.Roster[:min(3, len(g.S.Data.Campaign.Roster))] {
+	for i, id := range g.titleCast() {
 		g.portrait(dst, id, "", float64(650+i*190), float64(205+i%2*50), 170)
 	}
 	names := make([]string, len(g.S.Data.Stages))
@@ -1012,10 +1033,21 @@ func (g *Game) titleMenu(dst *ebiten.Image) {
 		names[i] = st.Name
 	}
 	g.label(dst, strings.Join(names, " → "), 104, 214, 16, muted)
-	items := []menuItem{{"새로 시작", func() { g.request(session.Request{Op: "new", Seed: g.seed}) }}}
+	items := []menuItem{{"새로 시작", func() {
+		if len(g.S.Data.Rules.Difficulties) == 0 {
+			g.request(session.Request{Op: "new", Seed: g.seed})
+			return
+		}
+		g.openOverlay("difficulty")
+	}}}
 	if g.Debug {
 		items = append(items, menuItem{"장면 이동", func() { g.waypoints.top = 0; g.openOverlay("waypoints") }})
 	}
+	cont := menuItem{label: "이어하기"}
+	if slot, ok := g.S.Store.Latest(); ok {
+		cont.click = func() { g.request(session.Request{Op: "load", Slot: slot}) }
+	}
+	items = append(items[:1], append([]menuItem{cont}, items[1:]...)...)
 	items = append(items, menuItem{"불러오기", func() { g.openOverlay("load") }})
 	if g.Debug {
 		items = append(items, menuItem{"일기토", func() { _ = g.OpenDuel("", "", true) }},

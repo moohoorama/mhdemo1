@@ -4,7 +4,8 @@ People: court officials in wide-sleeved robes holding a tablet (홀) in the fact
 wounded soldier, and two stretcher bearers with a man on the stretcher. Poses
 added to scene sheets: sit (on a stool), throne (on the imperial chair), bow (읍),
 prostrate (부복), lie (on the back), sitground (slumped on the ground), and two threats (2026-10-29): fist (a fist
-thrown up as after an uppercut) and point (an arm thrust out, jabbing a finger).
+thrown up as after an uppercut) and point (an arm thrust out, jabbing a finger); draw (2026-11-02): a sword drawn
+and levelled at someone before him, for an officer whose sheet carries no weapon.
 
 The model is the civilian soldier of units.py. Bending and lying rotate the finished meshes about the hip (or the
 ground) instead of adding joints; a figure lying down stamps its 2D head turned on its side (turned()), and a
@@ -38,7 +39,7 @@ R.add_ramps({SLEEP_HAIR: '3456', SLEEP_CAP: '0112'})
 # the sleeper's own look by kit (default: dark hair, bare head, no beard)
 SLEEPERS = {'taoqian_civ1': dict(hair=SLEEP_HAIR, cap=True, beard=True)}
 
-POSES = ['sit', 'throne', 'bow', 'prostrate', 'lie', 'sitground', 'fist', 'point', 'bed']
+POSES = ['sit', 'throne', 'bow', 'prostrate', 'lie', 'sitground', 'fist', 'point', 'draw', 'bed']
 ROWS = C.ANIMATIONS + [p for p in POSES if p not in C.ANIMATIONS]  # scene sheet rows: civilian's, then these
 TURNED_HEAD = {'lie'}  # the 2D head turned on its side (crown toward the head end)
 MODELLED_HEAD = {'bed'}  # no 2D head: the head is modelled with the pose (sleeper)
@@ -263,6 +264,16 @@ def posed(walk_build, kit, held=False, extra=None):
             p['lean'] = -.1
             faces, head = body(p)
             return U.result(faces, head, 0, f)
+        if name == 'draw':
+            p = standing()
+            p['hands'][0], p['elbows'][0] = [-.22, -.62, 1.32], [-.42, -.3, 1.25]
+            p['hands'][1], p['elbows'][1] = [.4, .02, 1.0], [.56, .06, 1.2]
+            p['blade'] = [.05, -1, .35]  # levelled forward, the point a little up
+            p['lean'] = -.06
+            faces, head = body(p)
+            m.meshes = []
+            U.sword(p, U.transform(p))
+            return U.result(faces + m.meshes, head, 0, f)
         raise KeyError(name)
     build.rows = ROWS
     return build
@@ -382,5 +393,80 @@ POSE_COLORS = {'xiandi': ['horseSkin1=#c44a3a', 'horseSkin2=#902c28', 'horseSkin
 POSE_SHEET_HEAD = {'guanyu', 'xiandi'}  # their sheets' heads differ from the civilian pick: pose frames take the sheet's
 # poses added to existing officers' sheets (their other rows are not redrawn)
 OFFICER_POSES = {'liubei': ['sit'], 'guanyu': ['sit'], 'zhangfei': ['sit', 'point'], 'caocao': ['sit', 'bow'], 'sunjian': ['sit'],
-                 'yuanshao': ['sit'], 'zhaoyun': ['sit'], 'dongzhuo': ['sit'], 'yuanshu': ['sit'], 'gongsunzan': ['sit'],
+                 'yuanshao': ['sit'], 'zhaoyun': ['sit'], 'dongzhuo': ['sit'], 'yuanshu': ['sit'], 'gongsunzan': ['sit', 'draw'],
                  'infantry': ['sit', 'sitground', 'prostrate'], 'xiandi': ['throne']}
+
+
+# ---- children (2026-11-04) -------------------------------------------------------------------------------------
+# 제갈현's late brother's children (13장): the civilian body shrunk about the ground, narrower less than shorter so
+# they stay sturdy, under the adults' full-size 2D head, so they stand about 70% as tall with a big head. The boy
+# wears his hair in two small knots (總角) and a short coat over trousers, the girl two looped buns tied with
+# ribbons (the gold keys: themeC) and a long robe to the ankles.
+CHILD_SCALE = {'child_boy': (.78, .58), 'child_girl': (.78, .6)}  # (width and depth, height)
+
+
+def scaled(build, sxy, sz):
+    """A builder whose frames are build's shrunk about the ground point under the figure."""
+    s = V([sxy, sxy, sz])
+
+    def b(row, f, style=None):
+        fr = build(row, f, style) if style else build(row, f)
+        fr['faces'] = [(np.asarray(verts) * s, color) for verts, color in fr['faces']]
+        fr['head'] = np.asarray(fr['head']) * s
+        if 'heads' in fr:
+            fr['heads'] = [(np.asarray(pt) * s, h, face) for pt, h, face in fr['heads']]
+        return fr
+    b.rows = getattr(build, 'rows', C.ANIMATIONS)
+    return b
+
+
+def skirt(kit):
+    """The lower half of a long robe, from the knees to the ankles, following the hips."""
+    def parts(p):
+        T = U.transform(p)
+        m.meshes = []
+        m.ell(T([0, -.01, .36]), [.38, .3, .36], U.KITS[kit]['robe'])
+        return m.meshes
+    return parts
+
+
+def child(key, head, long_robe=False, **kit):
+    walk = C.walker(key, 1, **kit)
+    build = posed(walk, walk.kit, extra=skirt(walk.kit) if long_robe else None)
+    out = scaled(build, *CHILD_SCALE[key])
+    out.kit = walk.kit
+    return out, head
+
+
+def hair_top(rows, top):
+    """A bare head with its topknot rows (0-3) replaced by top (4 rows)."""
+    return list(top) + list(rows[4:])
+
+
+# two small knots on the crown, one over each temple (總角)
+BOY_KNOTS = {'SW': ['.............', '..00....00...', '.0gf0..0gf0..', '.0ff0000ff00.'],
+             'NW': ['.............', '...00...00...', '..0gf0.0gf0..', '..0ff000ff00.']}
+BOY_HAIR = {d: hair_top(Hd.HAIR[d], BOY_KNOTS.get(d, BOY_KNOTS['SW'])) for d in Hd.HAIR}
+# two looped buns high on the sides, each tied with a ribbon (l/k gold keys), the grid widened two columns a side
+GIRL_PAD = 2
+
+
+def girl_hair(rows, d):
+    w = len(rows[0]) + 2*GIRL_PAD
+    g = [list('.'*GIRL_PAD + r + '.'*GIRL_PAD) for r in rows]
+    for y in range(4):  # no topknot
+        g[y] = list('.'*w)
+    g[3][2 + GIRL_PAD:11 + GIRL_PAD] = list('000000000')
+    buns = {'SW': ['.0gg0.', '0gfff0', '0ffff0', '.0lk0.'], 'NW': ['.0gg0.', '0gfff0', '0ffff0', '.0lk0.']}[
+        'NW' if d == 'NW' else 'SW']
+    for i, x0 in enumerate((0, w - 6)):
+        for dy, r in enumerate(buns):
+            for dx, c in enumerate(r if i == 0 else r[::-1]):
+                if c != '.':
+                    g[1 + dy][x0 + dx] = c
+    return [''.join(r) for r in g]
+
+
+GIRL_HAIR = {d: girl_hair(rows, d) for d, rows in Hd.HAIR.items()}
+BOY_HEAD = Hd.heads(BOY_HAIR)
+GIRL_HEAD = dict(Hd.heads(GIRL_HAIR), anchor=(Hd.ANCHOR[0] + GIRL_PAD, Hd.ANCHOR[1]))

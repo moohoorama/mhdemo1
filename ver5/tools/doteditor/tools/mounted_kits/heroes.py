@@ -237,9 +237,44 @@ def make_caocao_sword():
     hair_tags()
     return swordsman(M.rider_build(RG.KIT, weapon='glaive')), M.Hd.heads(CAOCAO)
 
+def lubu_steel():
+    """The halberd's blades, spear point and crescent in the hair tags (set to bright steel on the sheet): 여포's iron
+    tags are his near-black armour, so steel drawn in them came out as an outline only. The plume root that used
+    hair2 moves to horseMane2, the same dark red."""
+    hair_tags()
+    M.KEY2TAG['b'] = 'z'
+    M.R.add_ramps({'#d6e7ec': '9877'})
+
+
 def make_lubu():
     M.UNITS['heavy_cavalry']()
+    lubu_steel()
     return M.rider_build(HC.KIT, weapon='halberd'), M.Hd.heads(LUBU, crest=Hd.FEATHER_ROWS)
+
+
+def make_lubu_unarmed():
+    """여포 on 적토마 with empty hands: the story scene where he has flung his halberd into the ground."""
+    M.UNITS['heavy_cavalry']()
+    lubu_steel()
+    return M.rider_build(HC.KIT, weapon='none'), M.Hd.heads(LUBU, crest=Hd.FEATHER_ROWS)
+
+
+def make_liubei_mounted():
+    """유비 riding (story scenes): his scene robe (the white coat, gold shoulders, leather belt, white inner collar of
+    civilian.py's chosen look, as civ3d.py dresses it) on the light rider, his black topknot under the small gold
+    crown and goatee; no weapon."""
+    import civilian as C
+    hair_tags()
+    _, walk, _ = C.LOOKS['liubei'][C.SELECTED['liubei']]
+    kit = walk.kit + '_rider'
+    # on horseback the long robe covers most of him: coat and robe are white (his chosen look), not the team colour
+    U.KITS[kit] = dict(U.KITS[walk.kit], shoulder=U.GOLD, tabard=U.BROWN, scarf=C.WHITE, scarf_tail=.12)
+    import scene_people as SP
+    for part in ('cloth', 'robe', 'guard'):  # IVORY is the hero robe colour that converts to themeB (white on his sheet)
+        U.KITS[kit][part] = SP.IVORY
+    crown = {d: [''.join(r) for r in rows] for d, rows in C.SMALL_CROWN.items()}  # its crown row comes as a list
+    head = recolor(bearded(slim(crown), 'goatee'), {**HAIR_KEYS, '1': '7'})
+    return M.rider_build(kit, weapon='none'), M.Hd.heads(head)
 
 
 def make_lubu_bow():
@@ -386,6 +421,8 @@ M.register('caocao', make_caocao, vertical_spear=True)
 M.register('caocao_sword', make_caocao_sword)
 M.register('lubu', make_lubu, vertical_spear=True)
 M.register('lubu_bow', make_lubu_bow)
+M.register('lubu_unarmed', make_lubu_unarmed)
+M.register('liubei_mounted', make_liubei_mounted)
 M.register('yuanshao', make_yuanshao, vertical_spear=True)
 M.register('zhaoyun', make_zhaoyun, vertical_spear=True)
 M.register('zhaoyun_sword', make_zhaoyun_sword)

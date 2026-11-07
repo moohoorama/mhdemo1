@@ -200,9 +200,15 @@ func RestoreChanged(d *content.Data, s State) (*Engine, error) {
 	return restore(d, s, true)
 }
 
+// knownDifficulty tells whether a save's difficulty is one the rules still have.
+func knownDifficulty(d *content.Data, id string) bool {
+	_, ok := d.Rules.DifficultyOf(id)
+	return ok || id == "normal"
+}
+
 func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	R := d.Rules
-	if s.AI != AIPolicyVersion || s.Difficulty != "normal" || s.Format != 5 || s.Core != CoreVersion || s.Rules != RulesVersion || s.Content != d.Version {
+	if s.AI != AIPolicyVersion || !knownDifficulty(d, s.Difficulty) || s.Format != 5 || s.Core != CoreVersion || s.Rules != RulesVersion || s.Content != d.Version {
 		return nil, fail("IncompatibleSave")
 	}
 	if s.ContentHash != d.Hash {

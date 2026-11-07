@@ -13,7 +13,7 @@ const waypointStock = 9
 // it counts as played on its default path (its officers joined, its grants and flags set, its battles won
 // without their bonus objectives), every officer is at the level of the next battle with the learning
 // window open for the points that brought, the party owns every item and every piece of equipment, and
-// the officers wear the campaign's Loadout.
+// every piece with an Owner is on that officer.
 func NewAt(d *content.Data, seed uint64, node string) (*Engine, error) {
 	if !slices.ContainsFunc(d.Waypoints(), func(w content.Waypoint) bool { return w.Node == node }) {
 		return nil, fail("UnknownWaypoint")
@@ -38,7 +38,7 @@ func (e *Engine) pass(n content.Node, c content.Chapter) {
 		for k, v := range n.Flags {
 			e.state.Flags[k] = v
 		}
-	case "join", "grant":
+	case "join", "grant", "leave":
 		e.once(n)
 	case "explore": // its events are what the walk sets
 		for _, id := range c.Events {
@@ -78,15 +78,8 @@ func (e *Engine) arrive(node string) {
 			e.state.Warehouse[id] = max(e.state.Warehouse[id], 1)
 		}
 	}
-	for _, id := range keys(e.charIDs) {
-		o := e.char(id)
-		for _, eq := range e.data.Campaign.Loadout[id] {
-			item := e.data.Equipment[eq]
-			if e.state.Warehouse[eq] == 0 || !e.carries(o, item) {
-				continue
-			}
-			e.wear(o, eq)
-		}
+	for c, ok := e.OwnerPiece(); ok; c, ok = e.OwnerPiece() {
+		e.wear(e.char(c.Actor), c.Item)
 	}
 	e.state.Node = node
 	e.events = nil

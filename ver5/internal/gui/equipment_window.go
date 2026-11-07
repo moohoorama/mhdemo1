@@ -374,6 +374,7 @@ func (g *Game) equipPicker(dst *ebiten.Image, x, y int) {
 		confirm = func() {
 			g.command(c)
 			g.equip.slot = ""
+			g.dropPopup("overlay:equip-picker")
 		}
 	}
 	g.btn(dst, image.Rect(x+pickerW/2-230, y+pickerH-60, x+pickerW/2-10, y+pickerH-20), "확인", confirm)

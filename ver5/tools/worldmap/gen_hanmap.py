@@ -39,10 +39,10 @@ LEGEND = {'.': 'grass', ',': 'earth', "'": 'plain', '~': 'water', 'T': 'forest',
 # (name, province, u, v, kind): the castles of the picture; gates and villages placed by their place in history
 PLACES = [
     ('양평', '유주', 82, 10, 'city'), ('북평', '유주', 67, 2, 'city'), ('계', '유주', 56, 3, 'city'),
-    ('남피', '기주', 73, 12, 'city'), ('평원', '기주', 68, 16, 'city'), ('업', '기주', 54, 20, 'city'),
+    ('남피', '기주', 73, 12, 'city'), ('평원', '기주', 70, 6, 'city'), ('업', '기주', 54, 20, 'city'),
     ('진양', '병주', 42, 8, 'city'), ('상당', '병주', 41, 19, 'city'), ('북해', '청주', 83, 31, 'city'),
     ('복양', '연주', 68, 27, 'city'), ('진류', '연주', 57, 30, 'city'), ('하비', '서주', 76, 43, 'city'),
-    ('소패', '서주', 68, 39, 'city'), ('허창', '예주', 56, 38, 'city'), ('여남', '예주', 57, 50, 'city'),
+    ('소패', '서주', 68, 39, 'city'), ('허도', '예주', 56, 38, 'city'), ('여남', '예주', 57, 50, 'city'),
     ('낙양', '사례', 45, 33, 'capital'), ('장안', '옹주', 30, 33, 'city'), ('안정', '옹주', 27, 22, 'city'),
     ('천수', '옹주', 14, 29, 'city'), ('서평', '양주', 3, 16, 'city'), ('무위', '양주', 9, 8, 'city'),
     ('수춘', '양주', 70, 53, 'city'), ('여강', '양주', 70, 66, 'city'), ('말릉', '양주', 85, 60, 'city'),
@@ -58,20 +58,51 @@ PLACES = [
     ('호로관', '사례', 50, 32, 'gate'), ('동관', '사례', 37, 33, 'gate'), ('양평관', '익주', 15, 49, 'gate'),
     ('검각', '익주', 17, 56, 'gate'),
     ('탁현', '유주', 54, 7, 'village'),
-    # the story's places from the oath to Jieqiao (docs/fullstory.md 1~10): camps, gates and fields of battle
-    ('탁군 들판', '유주', 51, 9, 'field'), ('광종', '기주', 60, 16, 'camp'), ('장사성', '예주', 52, 41, 'city'),
+    # the story's places (docs/fullstory.md): camps, gates and fields of battle of the common part 1~24
+    ('탁군 들판', '유주', 51, 9, 'field'), ('광종', '기주', 60, 20, 'camp'), ('장사성', '예주', 52, 41, 'city'),
     ('단양', '서주', 78, 48, 'village'), ('팽성', '서주', 71, 41, 'city'), ('산조', '연주', 60, 31, 'camp'),
-    ('사수관', '사례', 50, 36, 'gate'), ('변수', '사례', 54, 31, 'field'), ('신도', '기주', 63, 10, 'city'),
-    ('거록', '기주', 57, 13, 'field'), ('계교', '기주', 66, 14, 'camp'),
+    ('사수관', '사례', 50, 36, 'gate'), ('신안', '사례', 41, 33, 'field'), ('신도', '기주', 63, 10, 'city'),
+    ('거록', '기주', 57, 13, 'field'), ('계교', '기주', 66, 14, 'camp'), ('서주', '서주', 80, 38, 'city'),
+    ('태산', '연주', 76, 30, 'field'), ('광릉', '서주', 78, 50, 'city'), ('고성', '예주', 60, 45, 'city'),
+    ('백마', '연주', 64, 31, 'field'), ('여양', '기주', 63, 27, 'camp'), ('관도', '연주', 55, 34, 'field'),
+    ('융중', '형주', 42, 59, 'village'), ('박망파', '형주', 42, 47, 'field'), ('장판', '형주', 46, 65, 'field'),
+    # ... and of the two modes after Changban
+    ('적벽', '형주', 56, 68, 'field'), ('화용도', '형주', 50, 70, 'field'), ('공안', '형주', 45, 80, 'city'),
+    ('맥성', '형주', 43, 68, 'city'), ('이릉', '형주', 38, 72, 'field'), ('번성', '형주', 45, 55, 'city'),
+    ('하구', '형주', 53, 60, 'city'), ('상용', '형주', 35, 54, 'city'), ('부수관', '익주', 14, 66, 'gate'),
+    ('낙성', '익주', 12, 68, 'city'), ('가맹관', '익주', 16, 53, 'gate'), ('와구관', '익주', 24, 60, 'gate'),
+    ('정군산', '익주', 14, 46, 'field'),
+    # not in the story, but places of the age
+    ('진창', '옹주', 21, 34, 'city'), ('합비', '양주', 73, 58, 'city'),
 ]
 # what each place of the story is for, by chapter
 NOTES = {
     '탁현': '1장 도원결의', '탁군 들판': '1장 탁군 전투', '광종': '2장 노식의 진영', '장사성': '2장 영천 전투',
     '낙양': '3장 조조의 저택', '단양': '3장 단양 전투', '팽성': '4장 팽성 전투', '산조': '5~8장 반동탁 연합 진영',
-    '사수관': '5장 사수관 전투', '호로관': '6장 호로관 전투', '변수': '7장 동탁 추격전', '평원': '8장 평원현',
+    '사수관': '5장 사수관 전투', '호로관': '6장 호로관 전투', '신안': '7장 동탁 추격전', '평원': '8장 평원현',
     '신도': '8장 신도성 전투', '거록': '9장 거록 전투', '계교': '10장 공손찬의 진영 · 계교 전투',
+    '북평': '11장 공손찬의 부중', '북해': '11장 북해 전투', '서주': '12장 서주 전투', '태산': '13장 태산 전투',
+    '광릉': '14장 광릉 전투', '소패': '15장 소패 전투', '하비': '16장 하비 전투 · 백문루',
+    '허도': '17장 허도 · 가상 5부 허창 전투', '업': '18장 원소 진영 탈출', '백마': '18장 안량·문추가 베인 곳',
+    '여양': '18장 원소군의 강가 진지', '고성': '19장 고성 전투', '관도': '20장 관도의 패배 · 가상 5부 관도 최종결전',
+    '여남': '20장 여남 전투', '양양': '21·24장 유표의 관저 · 가상 1부 양양 공략전', '강하': '21장 강하 전투',
+    '신야': '22장 신야 전투', '융중': '23장 삼고초려', '박망파': '23장 박망파 전투', '장판': '24장 장판파 전투',
+    '완': '24장 송충이 가던 곳',
+    '적벽': '연의 1부 적벽 전투', '화용도': '연의 1부 화용도', '강릉': '연의 2부 남군 · 가상 1부 강릉 전투',
+    '장사': '연의 2부 형남 4군', '무릉': '연의 2부 형남 4군', '영릉': '연의 2부 형남 4군',
+    '계양': '연의 2부 형남 4군', '공안': '연의 2부 공안 전투', '부수관': '연의 3부 부수관 전투',
+    '낙성': '연의 3부 낙성 전투', '가맹관': '연의 3부 · 가상 2부 가맹관 전투', '와구관': '연의 4부 와구관 전투',
+    '정군산': '연의 4부 · 가상 3부 정군산 전투', '양평관': '연의 4부 · 가상 3부 양평관 전투',
+    '번성': '연의 5부 · 가상 4부 번성 전투', '맥성': '연의 5부 맥성 전투', '이릉': '연의 5부 이릉 전투',
+    '영안': '연의 엔딩 백제성', '상용': '가상 2부 상용 전투', '하구': '가상 4부 하구 전투',
+    '말릉': '가상 4부 말릉 전투', '장안': '가상 5부 장안 전투', '성도': '익주의 치소', '한중': '익주의 북문',
+    '진창': '관중의 서쪽 문', '합비': '회남의 요충',
 }
 LINKS = 2  # roads from each city to this many nearest cities
+# roads the story walks, laid first so the others join them: the Hebei arc goes 평원, 신도, 거록, 계교 and over its
+# bridge to 업, 평원 goes down past 남피 to 북해, and Yuan Shao's army from 업 to the river at 여양
+STORY_ROADS = [('평원', '신도'), ('신도', '거록'), ('거록', '광종'), ('거록', '계교'), ('계교', '업'), ('평원', '남피'),
+               ('남피', '북해'), ('업', '여양')]
 
 # the rivers the picture draws as dark green bands, traced by hand over it (the sea, the Yangtze and the lakes are
 # read from the picture's water)
@@ -184,9 +215,9 @@ def clear_places(kind):
             kind[v, u] = '.'
 
 
-def route(kind, a, b):
+def route(kind, a, b, bridge=9):
     """The cheapest way from cell a to b: mountains cost much, water more (a bridge), forest and hills a little."""
-    cost = {'.': 1, ',': 1, "'": 1, 'T': 2, 'h': 3, 'M': 40, '~': 9}
+    cost = {'.': 1, ',': 1, "'": 1, 'T': 2, 'h': 3, 'M': 40, '~': bridge}
     dist, prev = {a: 0}, {}
     q = [(0, a)]
     while q:
@@ -199,7 +230,7 @@ def route(kind, a, b):
             n = (c[0] + du, c[1] + dv)
             if not (0 <= n[0] < N and 0 <= n[1] < N):
                 continue
-            nd = d + cost[kind[n[1], n[0]]] - (.5 if n in ROADS else 0)  # share the roads already laid
+            nd = d + (.3 if n in ROADS else cost[kind[n[1], n[0]]])  # follow the roads already laid, not beside them
             if nd < dist.get(n, 1e18):
                 dist[n], prev[n] = nd, c
                 heapq.heappush(q, (nd, n))
@@ -213,6 +244,34 @@ def route(kind, a, b):
 ROADS = set()
 
 
+def linked(a, b, without):
+    """Whether road cells a and b are joined by roads that do not pass through cell without."""
+    seen, todo = {a}, [a]
+    while todo:
+        c = todo.pop()
+        if c == b:
+            return True
+        for du, dv in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            n = (c[0] + du, c[1] + dv)
+            if n in ROADS and n != without and n not in seen:
+                seen.add(n)
+                todo.append(n)
+    return False
+
+
+def thin(keep):
+    """Two roads laid side by side make 2 x 2 blocks of road; drop the cells of a block the roads can go without."""
+    for u, v in sorted(ROADS):
+        for c in ((u, v), (u + 1, v), (u, v + 1), (u + 1, v + 1)):
+            if not {(u, v), (u + 1, v), (u, v + 1), (u + 1, v + 1)} <= ROADS:
+                break
+            if c in keep:
+                continue
+            near = [n for n in ((c[0] + 1, c[1]), (c[0] - 1, c[1]), (c[0], c[1] + 1), (c[0], c[1] - 1)) if n in ROADS]
+            if all(linked(near[0], n, c) for n in near[1:]):
+                ROADS.discard(c)
+
+
 def roads(kind):
     towns = [(u, v) for _, _, u, v, k in PLACES if k != 'tribe']
     pairs = set()
@@ -221,9 +280,12 @@ def roads(kind):
         for d, b in near:
             if d < 20:
                 pairs.add(tuple(sorted((a, b))))
+    at = {n: (u, v) for n, _, u, v, _ in PLACES}
+    for a, b in STORY_ROADS:
+        ROADS.update(route(kind, at[a], at[b], bridge=3))  # the story crosses rivers rather than going round
     for a, b in sorted(pairs, key=lambda p: math.dist(*p)):
-        for c in route(kind, a, b):
-            ROADS.add(c)
+        ROADS.update(route(kind, a, b))
+    thin(set(towns))
     for u, v in ROADS:
         if kind[v, u] in 'Mh':
             kind[v, u] = '.'  # a road cuts its pass

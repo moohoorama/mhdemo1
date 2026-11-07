@@ -116,6 +116,8 @@ func (p *player) show() {
 		p.loadScreen()
 	case p.screen == "settings":
 		p.settingsScreen()
+	case p.screen == "difficulty":
+		p.difficultyScreen()
 	case p.s.Engine == nil || p.s.Screen == "title":
 		p.titleScreen()
 	default:
@@ -128,10 +130,30 @@ func (p *player) show() {
 
 func (p *player) titleScreen() {
 	p.printf("\n== %s ==\n", p.d.Title)
-	p.add("시작하기", func() { p.request(session.Request{Op: "new", Seed: p.seed, Discard: true}) })
+	p.add("시작하기", func() {
+		if len(p.d.Rules.Difficulties) == 0 {
+			p.request(session.Request{Op: "new", Seed: p.seed, Discard: true})
+			return
+		}
+		p.screen = "difficulty"
+	})
+	if slot, ok := p.s.Store.Latest(); ok {
+		p.add("이어하기", func() { p.request(session.Request{Op: "load", Slot: slot, Discard: true}) })
+	}
 	p.add("불러오기", func() { p.screen = "load" })
 	p.add("설정", func() { p.screen = "settings" })
 	p.add("종료", func() { p.quit = true })
+}
+
+func (p *player) difficultyScreen() {
+	p.printf("\n난이도 (0: 뒤로)\n")
+	for _, v := range p.d.Rules.Difficulties {
+		p.add(v.Name+" — "+v.Desc, func() {
+			if p.request(session.Request{Op: "new", Seed: p.seed, Discard: true, Difficulty: v.ID}) {
+				p.screen = ""
+			}
+		})
+	}
 }
 
 func (p *player) loadScreen() {

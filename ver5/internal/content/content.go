@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"sort"
 	"strings"
 )
@@ -56,6 +57,7 @@ type Rules struct {
 	SideShareMax          float64            // the most damage share a blow deals to anyone it strikes besides its target (splash, sweep, pierce)
 	RankLead              map[string]float64 // a rank's lead over the stage level, as a share of (stage level + StatLevelBase) so it means the same strength at any level
 	TraitPlanStep         int                // an NPC officer holds the k-th trait of its own plan (Character.Traits) from level (k−1)×TraitPlanStep+1
+	Difficulties          []Difficulty       // chosen at a new game, in the order the title shows them; "normal" is the default
 	ForageItems           []string                // what 중가 finds in a village at the end of its turn, one of each
 	EnemyStock            map[string]int
 	AllyStock             map[string]int
@@ -77,7 +79,6 @@ type Campaign struct {
 	Inventory  map[string]int
 	Warehouse  map[string]int `json:",omitempty"` // equipment owned but worn by no one
 	Money      int
-	Loadout    map[string][]string `json:",omitempty"` // equipment each officer wears in a game started at a waypoint
 }
 
 // Chapter is one story file of the scenario, in play order. Nodes lists the ids of the story's flow; Events
@@ -109,8 +110,8 @@ type Class struct {
 	Move, Range, MinRange, HPFactor int    // MinRange: the nearest cell a ranged class can attack
 	Bonus                           [6]float64
 	MPBase, RecoveryBase            int
-	Plan                            []LevelTrait // traits an NPC of the class holds from a level on; it lists those of the classes below it too
 	Skills, Pool, Tags              []string
+	Plan                            []LevelTrait // traits an NPC of the class holds from a level on; it lists those of the classes below it too
 	Promotes                        []string
 	Tier                            int
 	Sprite                          string
@@ -143,7 +144,6 @@ type Character struct {
 	Name, Class, Biography   string
 	Stats                    [6]int
 	Level                    int
-	Points                   int `json:",omitempty"` // trait points the character starts with
 	Lord, Playable, Template bool
 	Traits                   []string // own trait plan for an NPC appearance, in order, one more every Rules.TraitPlanStep levels; officers in the party start with none
 	Learn, Equipment         []string
@@ -156,6 +156,7 @@ type Equipment struct {
 	Bonus                  [6]float64
 	Traits, Learn, Skills  []string
 	Palette                map[string]Colors `json:",omitempty"` // a horse of its own colour: tag group -> colours laid over the wearer's look while a mounted class rides it
+	Owner                  string            `json:",omitempty"` // the officer it suits; the AI and the waypoint games put it on them
 }
 type Item struct {
 	Name, Desc string
@@ -671,6 +672,42 @@ func (d *Data) NextBattleOrder(id string) int {
 		}
 	}
 	return 0
+}
+
+// Difficulty is what a campaign's difficulty changes, unseen by the player: a lead added to every enemy's
+// rank (a share of strength, as RankLead) and the experience the party earns in percent.
+type Difficulty struct {
+	ID, Name, Desc string
+	EnemyShift     float64
+	XPPct          int
+}
+
+// DifficultyOf is the difficulty with the given id.
+func (r Rules) DifficultyOf(id string) (Difficulty, bool) {
+	for _, v := range r.Difficulties {
+		if v.ID == id {
+			return v, true
+		}
+	}
+	return Difficulty{}, false
+}
+
+// LastBattleOrder is the order of the last battle the story has fought by node id (a chapter's walk event
+// counts from its walk); 0 when none came before.
+func (d *Data) LastBattleOrder(id string) int {
+	last := 0
+	for _, c := range d.Chapters {
+		for _, nid := range c.Nodes {
+			n := d.Node(nid)
+			if nid == id || n.Kind == "explore" && slices.Contains(c.Events, id) {
+				return last
+			}
+			if n.Kind == "battle" {
+				last = d.StageOrder(n.Stage)
+			}
+		}
+	}
+	return last
 }
 
 // Spawns lists a spawn's character definition.

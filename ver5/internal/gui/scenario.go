@@ -6,6 +6,7 @@ import (
 	"image/color"
 	"math"
 	"regexp"
+	"slices"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -178,7 +179,7 @@ func (g *Game) backToWalk(node string) bool {
 		switch g.S.Data.Node(node).Kind {
 		case "back", "explore":
 			return true
-		case "set", "join", "grant":
+		case "set", "join", "grant", "leave":
 			node = g.S.Data.After(node)
 		default:
 			return false
@@ -333,6 +334,7 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 	}
 	if staged {
 		g.drawScene(dst, l.speakers)
+		g.blackOut(dst, g.scene.fade)
 		if g.sceneBusy() { // the line waits for its beats
 			g.lineTyping = startTyping(g.uiSeconds)
 			g.label(dst, "클릭: 넘기기", float64(uiW-150), float64(uiH-40), 13, muted)
@@ -396,6 +398,28 @@ func (g *Game) officerDetail(dst *ebiten.Image, o core.Observation, r image.Rect
 	progress := core.ExperienceProgress(of.XP)
 	bar(dst, float32(x+140), float32(y+74), 260, 8, progress/100, xpC)
 	g.label(dst, fmt.Sprintf("EXP %.1f / 100   ·   특성치 %d", progress, of.Points), x+140, y+86, 14, muted)
+	g.choiceBtn(dst, image.Rect(r.Max.X-212, r.Min.Y, r.Max.X-108, r.Min.Y+32), "능력·장비", !g.party.traits, func() { g.party.traits = false })
+	g.choiceBtn(dst, image.Rect(r.Max.X-102, r.Min.Y, r.Max.X, r.Min.Y+32), "특성", g.party.traits, func() { g.party.traits = true })
+	if g.party.traits {
+		have := slices.Clone(of.Learned)
+		equip := []string{}
+		for _, id := range of.Equipment {
+			equip = append(equip, id)
+		}
+		for _, id := range equip {
+			have = append(have, g.S.Data.Equipment[id].Traits...)
+		}
+		rows := g.traitCatalog(of.Def, of.Class, equip, have)
+		if e := g.S.Engine; e != nil {
+			learnable := e.Learnable(of.ID)
+			for i := range rows {
+				rows[i].learnable = !rows[i].have && slices.Contains(learnable, rows[i].id)
+				rows[i].affordable = rows[i].learnable && rows[i].cost <= of.Points
+			}
+		}
+		g.traitTab(dst, of.ID, rows, image.Rect(r.Min.X, r.Min.Y+138, r.Max.X, r.Max.Y))
+		return
+	}
 	stats, err := g.S.Engine.CharacterStats(of.ID)
 	if err == nil {
 		for i, s := range statRows {

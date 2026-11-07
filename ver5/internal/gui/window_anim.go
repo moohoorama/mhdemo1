@@ -99,3 +99,12 @@ func (a *windowAnim) drawOn(dst *ebiten.Image, now float64) {
 	op.GeoM.Translate(float64(a.at.X), float64(a.at.Y+top)+dy*uiPx)
 	dst.DrawImage(a.img.SubImage(image.Rect(0, top, b.Dx(), bottom)).(*ebiten.Image), op)
 }
+
+// dropPopup takes popup key off the screen at once, without the closing roll that would show its last frame over
+// whatever the click just changed.
+func (g *Game) dropPopup(key string) {
+	if a := g.windows[key]; a != nil {
+		a.img.Deallocate()
+		delete(g.windows, key)
+	}
+}

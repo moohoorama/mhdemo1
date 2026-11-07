@@ -142,7 +142,7 @@ func TestGoalsGuideToTheMainEventThenTheSortie(t *testing.T) {
 func TestShopBuysAndSellsForHalf(t *testing.T) {
 	e := walkEngine(t)
 	r := applyOK(t, e, Command{Kind: "buy", Target: "상인", Item: "tonic", Count: 2})
-	assert.Contains(t, r.Events, Event{Kind: "grant", Target: "tonic", Amount: 2}, "a purchase is announced as a grant")
+	assert.Contains(t, r.Events, Event{Kind: "buy", Target: "tonic", Amount: 2}, "a purchase is announced as a buy, not a grant")
 	o := e.Observe()
 	assert.Equal(t, 40, o.Money)
 	assert.Equal(t, 4, o.Inventory["tonic"])
@@ -196,4 +196,19 @@ func TestExploreNextFindsTheEventThenTheSortie(t *testing.T) {
 		}
 	}
 	assert.Equal(t, "pre", e.Observe().Node)
+}
+
+func TestLearningOpensOnTheWalkWhenPointsAreSpent(t *testing.T) {
+	e := walkEngine(t)
+	e.char("hero").Points = 0
+	assertRejected(t, e, Command{Kind: "learn_open", Actor: "hero"})
+	e.char("hero").Points = 1000
+	assert.True(t, e.CanLearn("hero"))
+	applyOK(t, e, Command{Kind: "learn_open", Actor: "hero"})
+	assert.Equal(t, []string{"hero"}, e.state.Learning)
+	assertRejected(t, e, Command{Kind: "walk", Actor: "hero"})
+	applyOK(t, e, Command{Kind: "learn_close", Actor: "hero"})
+	assert.Empty(t, e.state.Learning)
+	e.state.Phase = "battle"
+	assertRejected(t, e, Command{Kind: "learn_open", Actor: "hero"})
 }

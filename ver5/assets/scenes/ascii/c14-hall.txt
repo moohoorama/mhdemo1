@@ -1,0 +1,26 @@
+# c14-hall  S_xuzhou_hall  ch14  origin -1 -1
+###########################
+###......BnrCdl###CdlBnr...Lnt
+###Wpn.........Liu............
+###......Gua...Dsk...Zha......
+###......Miz...###...Cao......
+###Arm...Mif...###...Jia......
+###......Che...###............
+###............###............
+   Lnt.........###............
+
+Liu 유비
+Gua 관우
+Miz 미축
+Mif 미방
+Che 진등
+Zha 장비
+Cao 조표
+Jia 간옹
+Lub 여포  (off stage, enters later (cell 4 4))
+Cng 진궁  (off stage, enters later (cell 4 5))
+
+# c14-lh08: Lub -> 4 4
+# c14-lh08: Cng -> 4 5
+# c14-lh10: Lub -> 4 10 and leaves
+# c14-lh10: Cng -> 4 10 and leaves

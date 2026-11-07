@@ -30,7 +30,7 @@ func TestEngineSourceNamesNoGameContent(t *testing.T) {
 		engine[strings.TrimSuffix(k, ":")] = true
 	}
 	// Korean words the screens use as labels of engine vocabulary (statuses, the equipment tab) may coincide with data names.
-	for _, w := range []string{"장비", "신속", "원시", "반격", "혼란", "봉책", "봉격", "약화", "경계", "조준", "저격", "도발", "교란"} {
+	for _, w := range []string{"장비", "신속", "원시", "반격", "혼란", "봉책", "봉격", "약화", "경계", "조준", "저격", "도발", "교란", "관리"} {
 		engine[w] = true
 	}
 	banned := map[string]string{}
@@ -78,8 +78,16 @@ func TestEngineSourceNamesNoGameContent(t *testing.T) {
 	}
 	for _, root := range []string{"../../internal", "../../cmd"} {
 		_ = filepath.Walk(root, func(p string, info os.FileInfo, err error) error {
-			if err != nil || info.IsDir() || !strings.HasSuffix(p, ".go") || strings.HasSuffix(p, "_test.go") {
+			if err != nil {
 				return err
+			}
+			// temporary tools (cmd/_name, uidemo_zz_tmp* demos) may name the content they check
+			if info.IsDir() && strings.HasPrefix(info.Name(), "_") {
+				return filepath.SkipDir
+			}
+			if info.IsDir() || !strings.HasSuffix(p, ".go") || strings.HasSuffix(p, "_test.go") ||
+				strings.HasPrefix(info.Name(), "uidemo_zz_tmp") {
+				return nil
 			}
 			f, err := parser.ParseFile(token.NewFileSet(), p, nil, 0)
 			if err != nil {

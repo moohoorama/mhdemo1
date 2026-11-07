@@ -73,7 +73,7 @@ func (g *Game) leftPanel(dst *ebiten.Image, place, sub, money string, slots [5]*
 	}
 	g.label(dst, sub, x, float64(r.Min.Y+10), 13, muted)
 	if money != "" {
-		g.label(dst, money, float64(r.Max.X-12)-g.width(money, 15), float64(r.Min.Y+8), 15, ink)
+		g.moneyLabel(dst, float64(r.Max.X-12), float64(r.Min.Y+8), 15)
 	}
 	if g.leftFolded {
 		return
@@ -92,7 +92,7 @@ func (g *Game) cornerButtons(dst *ebiten.Image, x, y int, party func()) {
 	rect(dst, float32(x+8), float32(y), float32(infoW-16), 1, goldDim)
 	sw := (infoW - 2*cornerPad - cornerGap) / 2
 	by := y + 1 + cornerPad
-	g.centeredBtn(dst, image.Rect(x+cornerPad, by, x+cornerPad+sw, by+cornerBtnH), "부대", party)
+	g.centeredBtn(dst, image.Rect(x+cornerPad, by, x+cornerPad+sw, by+cornerBtnH), "관리", party)
 	g.centeredBtn(dst, image.Rect(x+cornerPad+sw+cornerGap, by, x+cornerPad+2*sw+cornerGap, by+cornerBtnH), "메뉴", func() { g.openOverlay("menu") })
 }
 

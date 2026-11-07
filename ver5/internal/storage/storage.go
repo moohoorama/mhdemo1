@@ -207,6 +207,18 @@ func (s Store) SavedAt(slot string) time.Time {
 	return fi.ModTime()
 }
 
+// Latest is the most recently written slot, manual or automatic; false when nothing is saved.
+func (s Store) Latest() (string, bool) {
+	var best string
+	var at time.Time
+	for _, slot := range s.Slots() {
+		if t := s.SavedAt(slot); best == "" || t.After(at) {
+			best, at = slot, t
+		}
+	}
+	return best, best != ""
+}
+
 // Autosave stores the next snapshot and the rotation sequence in the same atomic write.
 func (s Store) Autosave(state core.State) error {
 	var latest uint64

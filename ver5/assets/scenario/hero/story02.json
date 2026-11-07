@@ -326,7 +326,6 @@
    "ID": "c02-grant",
    "Kind": "grant",
    "Item": "fire_manual",
-   "Character": "liubei",
    "Count": 1,
    "Event": "grant-fire_manual"
   },

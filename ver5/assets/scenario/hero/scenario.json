@@ -1,32 +1,16 @@
 {
  "Start": "c01-walk",
  "Roster": [
-  "liubei",
-  "guanyu",
-  "zhangfei"
+  "liubei"
  ],
  "Deployment": [
-  "liubei",
-  "guanyu",
-  "zhangfei"
+  "liubei"
  ],
  "Inventory": {
   "bean": 3,
   "liquor": 3
  },
- "Warehouse": {
-  "tactics_primer": 1,
-  "war_horse": 2
- },
  "Money": 1000,
- "Loadout": {
-  "guanyu": [
-   "qinglong_blade"
-  ],
-  "zhangfei": [
-   "serpent_spear"
-  ]
- },
  "Chapters": [
   {
    "ID": "01",
@@ -75,6 +59,18 @@
   {
    "ID": "12",
    "File": "story12.json"
+  },
+  {
+   "ID": "13",
+   "File": "story13.json"
+  },
+  {
+   "ID": "14",
+   "File": "story14.json"
+  },
+  {
+   "ID": "15",
+   "File": "story15.json"
   }
  ]
 }

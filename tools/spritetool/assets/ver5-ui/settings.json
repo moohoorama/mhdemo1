@@ -17,6 +17,8 @@
     "item_halberd",
     "item_horse",
     "item_jueying",
+    "item_baima",
+    "item_sanlue",
     "item_knuckles",
     "item_leather",
     "item_map",
@@ -801,6 +803,53 @@
             "w": "#eef0f4",
             "i": "#c0c6d0",
             "r": "#7a4626"
+          }
+        }
+      }
+    },
+    "item_baima": {
+      "cell": [144, 144],
+      "anchor": [8, 8],
+      "dot": 4,
+      "source": "sources/item_baima.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1a1820",
+            "w": "#f6f6fa",
+            "h": "#d8dce6",
+            "a": "#aab2c4",
+            "b": "#7c86a0",
+            "c": "#525a74",
+            "e": "#16141c",
+            "r": "#c0302c",
+            "s": "#7e1c1c",
+            "y": "#e8b84a"
+          }
+        }
+      }
+    },
+    "item_sanlue": {
+      "cell": [144, 144],
+      "anchor": [8, 8],
+      "dot": 4,
+      "source": "sources/item_sanlue.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "l": "#ecd088",
+            "h": "#d4aa58",
+            "a": "#ac8436",
+            "b": "#835e26",
+            "c": "#5a3e1a",
+            "d": "#3a2612",
+            "i": "#5656c0",
+            "j": "#33337e"
           }
         }
       }

@@ -8481,6 +8481,122 @@
    ],
    "layer": "object",
    "note": "antler_barrier mirrored, running along v"
+  },
+  "curtain_slate_ne": {
+   "file": "tiles/curtain_slate_ne.png",
+   "size": [
+    37,
+    50
+   ],
+   "pivot": [
+    4,
+    48
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "palette swap of the palace piece (plain_hall_props.py)"
+  },
+  "curtain_slate_nw": {
+   "file": "tiles/curtain_slate_nw.png",
+   "size": [
+    37,
+    50
+   ],
+   "pivot": [
+    34,
+    48
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "palette swap of the palace piece (plain_hall_props.py)"
+  },
+  "wall_umber_ne": {
+   "file": "tiles/wall_umber_ne.png",
+   "size": [
+    36,
+    53
+   ],
+   "pivot": [
+    1,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "palette swap of the palace piece (plain_hall_props.py)"
+  },
+  "wall_umber_nw": {
+   "file": "tiles/wall_umber_nw.png",
+   "size": [
+    36,
+    53
+   ],
+   "pivot": [
+    35,
+    36
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "shadow": false,
+   "made": "palette swap of the palace piece (plain_hall_props.py)"
+  },
+  "pillar_umber": {
+   "size": [
+    15,
+    50
+   ],
+   "pivot": [
+    8,
+    46
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "file": "tiles/pillar_umber.png",
+   "made": "palette swap of the palace piece (plain_hall_props.py)"
+  },
+  "screen_paper": {
+   "file": "tiles/screen_paper.png",
+   "size": [
+    50,
+    56
+   ],
+   "pivot": [
+    25,
+    44
+   ],
+   "layer": "object",
+   "shadow": false,
+   "made": "palette swap of the palace piece (plain_hall_props.py)"
+  },
+  "floor_mat": {
+   "file": "tiles/floor_mat.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "palette swap of the palace piece (plain_hall_props.py)"
+  },
+  "dais_plain": {
+   "size": [
+    53,
+    54
+   ],
+   "pivot": [
+    27,
+    40
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "file": "tiles/dais_plain.png",
+   "made": "palette swap of the palace piece (plain_hall_props.py)"
   }
  }
 }

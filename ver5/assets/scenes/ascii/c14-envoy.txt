@@ -1,0 +1,28 @@
+# c14-envoy  S_xuzhou_hall  ch14  origin -1 -1
+###########################
+###......BnrCdl###CdlBnr...Lnt
+###Wpn.........Liu............
+###......Gua...Dsk...Zha......
+###......Miz...###...Cao......
+###Arm...Mif...###...Jia......
+###......Che...###............
+###............###............
+   Lnt.........###............
+
+Liu 유비
+Gua 관우
+Miz 미축
+Mif 미방
+Zha 장비
+Cao 조표
+Jia 간옹
+Che 진등
+Cou 조정 사자  (off stage, enters later (cell 4 4))
+
+# c14-e00: Cou -> 4 7
+# c14-e00: Liu -> 4 4
+# c14-e00: Cou -> 4 1
+# c14-e03: Cou -> 4 10 and leaves
+# c14-e03: Liu -> 4 1
+# c14-e06a: Che -> 3 4
+# c14-e06g: Che -> 2 5

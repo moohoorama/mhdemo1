@@ -36,7 +36,7 @@ func TestClassPoolsFollowTraitDesign(t *testing.T) {
 			t.Errorf("%s teaches %v, want %v", class, got, want)
 		}
 	}
-	for _, class := range []string{"staff_officer", "sorcerer"} {
+	for _, class := range []string{"staff_officer", "orator", "sorcerer"} {
 		if !slices.Contains(d.Classes[class].Pool, "deputy_appoint") {
 			t.Errorf("%s cannot learn deputy_appoint", class)
 		}

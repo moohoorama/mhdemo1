@@ -374,7 +374,7 @@ COATS = {'bay': ('#825032', '#9a6845', '#352820'), 'black': ('#2b2b33', '#3d3d48
          'red': ('#7a2f22', '#a14a35', '#352820'),  # red: Red Hare
          'white': ('#c9cdd0', '#dde1e3', '#5a5f66')}
 RAMPS.update({'#7a2f22': 'bKLM', '#a14a35': 'KLLM', '#c9cdd0': '3455', '#dde1e3': '4556', '#5a5f66': '1223'})
-MOUNT_REACH = {'none': (.9, 1.75), 'spear': (.9, 1.75), 'snake': (.9, 1.75), 'glaive': (1.15, 1.95), 'halberd': (.9, 1.75)}
+MOUNT_REACH = {'none': (.9, 1.75), 'spear': (.9, 1.75), 'snake': (.9, 1.75), 'glaive': (1.15, 1.95), 'halberd': (.9, 2.3)}
 RIDER_OFFSET = V([0, .12, 1.2])
 
 
@@ -456,6 +456,8 @@ def cavalry(row, f, style=None, kit='rider', coat='bay', weapon='spear'):
         side = facing(dv)*.1
     if weapon == 'glaive':
         glaive_at(hand, dv, side*10)
+    elif weapon == 'halberd':  # the Sky Piercer's shaft runs longer, so its head clears 여포's pheasant plumes
+        m.rod(hand - dv*.55, hand + dv*1.8, .045, '#966131')
     elif weapon != 'none':  # 'none': an unarmed rider (merchant)
         m.rod(hand - dv*.5, hand + dv*1.45, .045, '#966131')
     tip, base = hand + dv*1.75, hand + dv*1.42
@@ -464,16 +466,19 @@ def cavalry(row, f, style=None, kit='rider', coat='bay', weapon='spear'):
         center = [base + dv*.55*t + side*.6*math.sin(3*math.pi*t) for t in ts]
         strip([c - side*.9*(1 - t) for c, t in zip(center, ts)],
               [c + side*.9*(1 - t) for c, t in zip(center, ts)], '#d6e7ec')
-    elif weapon in ('spear', 'halberd'):
+    elif weapon == 'spear':
         m.poly([base - side, tip, base + side, base - dv*.06], '#d6e7ec')
-    if weapon == 'halberd':  # Sky Piercer: crescent blade on one side of the spear head
-        ts = np.linspace(0, 1, 6)
+    if weapon == 'halberd':  # Sky Piercer (방천화극): a long spear point with a crescent blade on each side of it
+        tip, base = hand + dv*2.3, hand + dv*1.85
+        m.poly([base - side*1.2, tip, base + side*1.2, base - dv*.06], '#d6e7ec')
+        ts = np.linspace(0, 1, 7)
         bulge = [math.sin(math.pi*t) for t in ts]
-        inner = [base - dv*.25 + dv*.45*t + side*(1.2 + .8*b) for t, b in zip(ts, bulge)]
-        outer = [base - dv*.25 + dv*.45*t + side*(1.2 + 2.6*b) for t, b in zip(ts, bulge)]
-        strip(inner, outer, '#d6e7ec')
-        m.rod(base - dv*.3, base - dv*.18, .06, GOLD)
-        m.ell(base - dv*.36 - side*.6, [.07]*3, RED)
+        for s_ in (1, -1):
+            inner = [base - dv*.3 + dv*.5*t + side*s_*(1.0 + .9*b) for t, b in zip(ts, bulge)]
+            outer = [base - dv*.3 + dv*.5*t + side*s_*(1.0 + 3.4*b) for t, b in zip(ts, bulge)]
+            strip(inner, outer, '#d6e7ec')
+        m.rod(base - dv*.38, base - dv*.26, .065, GOLD)
+        m.ell(base - dv*.48, [.09, .09, .12], RED)
     chest_c, muzzle, dark = COATS[coat]
     nod = [0, -.04, -.08, -.04][f] if row == 0 else 0
 

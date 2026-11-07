@@ -158,7 +158,8 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 
 // critForced tells whether the blow is a certain critical.
 func (e *Engine) critForced(u, v *Unit, s content.Skill) bool {
-	if e.has(u, content.FxCritWounded) && e.wounded(v) || e.has(u, content.FxLoneCritLeader) && e.alone(u) && (v.Rank == "commander" || v.Rank == "boss") {
+	if e.has(u, content.FxCritWounded) && e.wounded(v) || e.has(u, content.FxLoneCritLeader) && e.alone(u) && (v.Rank == "commander" || v.Rank == "boss") ||
+		e.has(u, content.FxCritAiling) && ailing(v) {
 		return true
 	}
 	if s.Kind == content.KindMagic {
@@ -475,6 +476,10 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 	}
 	add(v, 1)
 	cross, square := e.fx(u, content.FxSplashCross), e.fx(u, content.FxSplashSquare)
+	if e.rangedAttack(u, v, s) {
+		cross = math.Max(cross, e.fx(u, content.FxSplashCrossRanged))
+		square = math.Max(square, e.fx(u, content.FxSplashSquareRanged))
+	}
 	for dy := -1; dy <= 1; dy++ {
 		for dx := -1; dx <= 1; dx++ {
 			if dx == 0 && dy == 0 {
@@ -590,12 +595,37 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 		for j := i - 1; j >= 0; j-- {
 			if hit := events[j]; hit.Kind == "damage" && hit.Target == event.Actor {
 				e.rout(e.unit(hit.Actor), e.unit(event.Actor))
+				e.absorbMana(e.unit(hit.Actor), e.unit(event.Actor))
 				e.retreatSweep(e.unit(hit.Actor), e.unit(event.Actor), false)
 				break
 			}
 		}
 	}
 	return nil
+}
+
+// absorbMana is what 격파 does when u defeats v: u takes the spell points v had left.
+func (e *Engine) absorbMana(u, v *Unit) {
+	if u == nil || v == nil || u.HP <= 0 || !e.has(u, content.FxAbsorbMana) {
+		return
+	}
+	n := min(e.stats(u).MaxMP-u.MP, v.MP)
+	if n <= 0 {
+		return
+	}
+	u.MP += n
+	v.MP -= n
+	e.emit("effect", u.ID, u.ID, n)
+}
+
+// ailing tells whether the unit carries a harmful status (약점공략).
+func ailing(v *Unit) bool {
+	for k, st := range v.Status {
+		if content.Harmful[k] && st.Turns > 0 {
+			return true
+		}
+	}
+	return false
 }
 
 // rout is what 위압 and 위풍 do when u defeats v: the foes of u in the eight cells around v lose heart.
@@ -763,6 +793,9 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 		if s.Kind == content.KindBuff && turns >= 2 {
 			turns += int(e.fx(u, content.FxBuffExtend))
 		}
+		if s.Kind == content.KindStatus && q.Faction != u.Faction && e.has(u, content.FxStatusDouble) {
+			turns *= 2
+		}
 		switch s.Effect {
 		case "heal":
 			n := e.healAmount(u, float64(e.stats(u).Mind)*s.Coeff)
@@ -797,6 +830,14 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 				}
 			} else {
 				e.applyStatus(q, s.Effect, turns, 0)
+			}
+		}
+		if s.Kind == content.KindStatus && q.Faction != u.Faction && e.has(u, content.FxDispelBuffs) {
+			stripBuffs(q)
+		}
+		if q.Faction == u.Faction && s.Kind != content.KindStatus && e.has(u, content.FxSpellCure) {
+			for k := range content.Harmful {
+				delete(q.Status, k)
 			}
 		}
 		e.emit("effect", u.ID, q.ID, recovered)

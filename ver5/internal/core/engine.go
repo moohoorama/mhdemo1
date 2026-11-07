@@ -32,6 +32,37 @@ func New(d *content.Data, seed uint64) *Engine {
 	return e
 }
 
+// NewGame is a new game at the given difficulty ("" is normal).
+func NewGame(d *content.Data, seed uint64, difficulty string) (*Engine, error) {
+	if difficulty == "" {
+		difficulty = "normal"
+	}
+	if _, ok := d.Rules.DifficultyOf(difficulty); !ok && difficulty != "normal" {
+		return nil, fail("UnknownDifficulty")
+	}
+	e := begin(d, seed)
+	e.state.Difficulty = difficulty
+	e.enter()
+	return e, nil
+}
+
+// difficulty is what the campaign's difficulty changes; a game whose rules name none plays as normal.
+func (e *Engine) difficulty() content.Difficulty {
+	if v, ok := e.data.Rules.DifficultyOf(e.state.Difficulty); ok {
+		return v
+	}
+	return content.Difficulty{ID: "normal", XPPct: 100}
+}
+
+// xpScale is the share of experience the party earns: the player's setting times the difficulty's.
+func (e *Engine) xpScale() float64 {
+	f := float64(e.difficulty().XPPct) / 100
+	if p := e.state.XPPct; p > 0 {
+		f *= float64(p) / 100
+	}
+	return f
+}
+
 // begin is a new game before it enters its first node.
 func begin(d *content.Data, seed uint64) *Engine {
 	c := d.Campaign
@@ -48,6 +79,7 @@ func begin(d *content.Data, seed uint64) *Engine {
 	for _, id := range c.Roster {
 		e.addCharacter(id, id)
 	}
+	e.joinBefore(c.Start)
 	return e
 }
 func fromState(d *content.Data, s State) *Engine {
@@ -123,7 +155,7 @@ func (e *Engine) addCharacter(id, def string) *Character {
 		return c
 	}
 	d := e.data.Characters[def]
-	c := Character{ID: id, Def: def, Class: d.Class, Level: d.Level, Points: d.Points, Temp: d.Template, Equipment: map[string]string{}, Learned: []string{}}
+	c := Character{ID: id, Def: def, Class: d.Class, Level: d.Level, Points: e.data.Rules.PointsPerLevel * (d.Level - 1), Temp: d.Template, Equipment: map[string]string{}, Learned: []string{}}
 	for _, eq := range d.Equipment {
 		c.Equipment[e.data.Equipment[eq].Slot] = eq
 	}
@@ -389,7 +421,7 @@ func (e *Engine) enter() {
 				next = e.data.After(n.ID)
 			}
 			e.state.Node = next
-		case "join", "grant":
+		case "join", "grant", "leave":
 			e.once(n)
 			e.state.Node = e.data.After(n.ID)
 		case "explore":
@@ -428,24 +460,102 @@ func (e *Engine) enter() {
 	}
 }
 
-// once runs a join or grant node the first time the story reaches it.
+// joinOrder is the battle a join node leads to. A walk event ends in a back node, so its battle is the one
+// after the walk it belongs to. A join no battle follows yet is at the level of the last one fought.
+func (e *Engine) joinOrder(n content.Node) int {
+	if o := e.data.NextBattleOrder(n.ID); o > 0 {
+		return o
+	}
+	for _, c := range e.data.Chapters {
+		if slices.Contains(c.Events, n.ID) {
+			for _, id := range c.Nodes {
+				if o := e.data.NextBattleOrder(id); e.data.Node(id).Kind == "explore" && o > 0 {
+					return o
+				}
+			}
+		}
+	}
+	return e.data.LastBattleOrder(n.ID)
+}
+
+// joinBefore has every officer who joins in the story before the start node already in the party, so a game
+// started at a later node has the party that story brings there.
+func (e *Engine) joinBefore(start string) {
+	var joins []content.Node
+	for _, c := range e.data.Chapters {
+		for _, id := range c.Nodes {
+			if id == start {
+				for _, n := range joins {
+					if e.char(n.Character) == nil {
+						e.once(n)
+					}
+				}
+				return
+			}
+			n := e.data.Node(id)
+			if n.Kind == "join" {
+				joins = append(joins, n)
+			}
+			if n.Kind == "leave" {
+				joins = slices.DeleteFunc(joins, func(j content.Node) bool { return j.Character == n.Character })
+			}
+			if n.Kind == "explore" {
+				for _, ev := range c.Events {
+					if m := e.data.Node(ev); m.Kind == "join" {
+						joins = append(joins, m)
+					}
+				}
+			}
+		}
+	}
+}
+
+// once runs a join, leave or grant node the first time the story reaches it.
 func (e *Engine) once(n content.Node) {
 	if e.state.Executed[n.Event] {
 		return
 	}
+	if n.Kind == "leave" {
+		e.dismiss(n.Character)
+		e.state.Executed[n.Event] = true
+		e.emit(n.Kind, "", n.Character, 0)
+		return
+	}
 	if n.Kind == "join" {
-		e.raiseTo(e.addCharacter(n.Character, n.Character), e.data.Rules.StageLevel(e.data.NextBattleOrder(n.ID)))
-		e.state.Deployment = append(e.state.Deployment, n.Character)
+		e.joinAt(e.addCharacter(n.Character, n.Character), e.data.Rules.StageLevel(e.joinOrder(n)))
+		if !contains(e.state.Deployment, n.Character) {
+			e.state.Deployment = append(e.state.Deployment, n.Character)
+		}
 		e.state.Executed[n.Event] = true
 		e.emit(n.Kind, "", n.Character, n.Count)
 		return
 	}
 	e.gain(n.Item, n.Count)
-	if o := e.char(n.Character); o != nil && !o.Dead && e.carries(o, e.data.Equipment[n.Item]) {
-		e.wear(o, n.Item)
-	}
 	e.state.Executed[n.Event] = true
 	e.emit(n.Kind, "", n.Item, n.Count)
+}
+
+// dismiss takes an officer out of the party. The pieces they wear beyond their own starting gear go to the
+// warehouse, and the officer they kept as deputy is free again.
+func (e *Engine) dismiss(id string) {
+	o := e.char(id)
+	if o == nil {
+		return
+	}
+	own := e.data.Characters[o.Def].Equipment
+	for _, item := range o.Equipment {
+		if !contains(own, item) {
+			e.state.Warehouse[item]++
+		}
+	}
+	for _, k := range keys(e.charIDs) {
+		if c := e.char(k); c.Deputy == id {
+			c.Deputy = ""
+		}
+	}
+	e.state.Deployment = slices.DeleteFunc(slices.Clone(e.state.Deployment), func(d string) bool { return d == id })
+	e.world.RemoveEntity(e.charIDs[id])
+	delete(e.charIDs, id)
 }
 
 // wear puts a piece from the warehouse on o; the piece it replaces goes back to the warehouse.
@@ -456,6 +566,23 @@ func (e *Engine) wear(o *Character, id string) {
 		e.state.Warehouse[old]++
 	}
 	o.Equipment[slot] = id
+}
+
+// OwnerPiece is the next equip command that puts a piece from the warehouse on its Owner: an officer in the
+// party who may change equipment now and can carry it, whose slot does not already hold a piece of their own.
+func (e *Engine) OwnerPiece() (Command, bool) {
+	for _, id := range keys(e.data.Equipment) {
+		eq := e.data.Equipment[id]
+		o := e.char(eq.Owner)
+		if eq.Owner == "" || e.state.Warehouse[id] < 1 || o == nil || o.Dead || e.isDeputy(o.ID) || !e.carries(o, eq) {
+			continue
+		}
+		if e.data.Equipment[o.Equipment[eq.Slot]].Owner == o.ID {
+			continue
+		}
+		return Command{Kind: "equip", Actor: o.ID, Item: id}, true
+	}
+	return Command{}, false
 }
 func (e *Engine) execute(c Command) error {
 	if len(e.state.Learning) > 0 && c.Kind != "learn" && c.Kind != "learn_close" {
@@ -512,6 +639,8 @@ func (e *Engine) execute(c Command) error {
 		return e.explore(c)
 	case "learn", "learn_close":
 		return e.learn(c)
+	case "learn_open":
+		return e.openLearning(c)
 	case "place", "unplace", "reposition", "deployment_finish":
 		return e.deployCommand(c)
 	case "end":
@@ -707,6 +836,9 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 		c.Temp = true
 		c.Placement = true
 	}
+	if side == "enemy" {
+		sp.Shift += e.difficulty().EnemyShift
+	}
 	if c.Temp || sp.Level > 0 {
 		c.Level = e.data.SpawnLevel(e.stageOrder(), sp)
 	}
@@ -802,11 +934,15 @@ func (e *Engine) settle() {
 	e.leaveByFlight()
 	e.autoDuels()
 	e.battleEvents()
+	if e.midAction() {
+		return
+	}
 	stage := e.data.Stages[e.state.Stage]
-	alive := map[string]bool{}
+	alive, fielded := map[string]bool{}, map[string]bool{}
 	loss := false
 	for _, id := range keys(e.unitIDs) {
 		u := e.unit(id)
+		fielded[u.Faction] = true
 		if u.HP > 0 {
 			alive[u.Faction] = true
 		} else if u.Faction == "ally" && e.unitDef(u).Lord {
@@ -815,7 +951,7 @@ func (e *Engine) settle() {
 	}
 	goals := e.battleGoals()
 	loss = loss || !alive["ally"] || e.anyGoal(goals.Defeat)
-	win := e.anyGoal(goals.Victory)
+	win := e.anyGoal(goals.Victory) || fielded["enemy"] && !alive["enemy"]
 	if !loss && !win {
 		return
 	}
@@ -853,6 +989,13 @@ func (e *Engine) settle() {
 	}
 	e.state.PendingFlags = nil
 	e.emit("victory", "", stage.ID, 0)
+}
+
+// midAction tells whether the unit that took the command has moved but not yet acted: nothing that a
+// move would set off (a duel, a battle event, a goal) counts until its wait, attack, skill or item.
+func (e *Engine) midAction() bool {
+	m := e.unit(e.lastActor)
+	return m != nil && m.HP > 0 && !m.Done
 }
 
 // anyGoal reports whether one of the goals holds: all conditions of a goal must.
@@ -918,7 +1061,8 @@ func (e *Engine) requiredIn(s content.Stage, sortie []string) bool {
 	return true
 }
 
-// fitSortie puts the officers a stage requires into the sortie; the player trims the rest to fit.
+// fitSortie puts the officers a stage requires into the sortie and, when more have joined than the stage takes,
+// keeps the highest-levelled of the rest (the lord always goes); the player changes it from there.
 func (e *Engine) fitSortie(s content.Stage) {
 	ids := append([]string{}, e.state.Deployment...)
 	for i := len(s.Required) - 1; i >= 0; i-- {
@@ -926,6 +1070,16 @@ func (e *Engine) fitSortie(s content.Stage) {
 		if o := e.char(id); o != nil && !o.Dead && !e.isDeputy(id) && !contains(ids, id) {
 			ids = append([]string{id}, ids...)
 		}
+	}
+	if s.Max > 0 && len(ids) > s.Max {
+		must := func(id string) bool { return contains(s.Required, id) || e.def(e.char(id)).Lord }
+		sort.SliceStable(ids, func(i, j int) bool {
+			if must(ids[i]) != must(ids[j]) {
+				return must(ids[i])
+			}
+			return e.char(ids[i]).Level > e.char(ids[j]).Level
+		})
+		ids = ids[:max(s.Max, len(slices.DeleteFunc(slices.Clone(ids), func(id string) bool { return !must(id) })))]
 	}
 	e.state.Deployment = ids
 }

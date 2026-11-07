@@ -15,8 +15,12 @@ import (
 // picked and the one looked at.
 type partyView struct {
 	items        bool
+	traits       bool // the officers' tab shows their traits instead of their stats
+	learning     bool // opened by a level-up for the officers still learning; closing it ends their learning
 	filter, item string
+	trait        string
 	list         tableList
+	traitList    tableList
 }
 
 // belonging is a kind of thing the party has: how many are carried or stored, and who wears the rest.
@@ -89,8 +93,7 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 	p := &g.party
 	g.choiceBtn(dst, image.Rect(x+28, y+28, x+148, y+62), "장수", !p.items, func() { p.items = false })
 	g.choiceBtn(dst, image.Rect(x+154, y+28, x+274, y+62), "소지품", p.items, func() { p.items = true })
-	money := fmt.Sprintf("돈 %d", o.Money)
-	g.label(dst, money, float64(x+w-120)-g.width(money, 16), float64(y+34), 16, ink) // left of the window's 닫기
+	g.moneyLabel(dst, float64(x+w-120), float64(y+34), 16) // left of the window's 닫기
 	rect(dst, float32(x+28), float32(y+72), float32(w-56), 1, goldDim)
 	if p.items {
 		g.belongingsTab(dst, o, x, y+84, w, h-84)

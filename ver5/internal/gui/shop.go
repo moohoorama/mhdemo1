@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/color"
 	"slices"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/core"
@@ -18,6 +19,7 @@ type shopView struct {
 	list tableList
 	pick string
 	n    int
+	info equipChip // a badge of the thing picked, shown in full
 }
 
 // shopRows are what the shop sells with what the party has of each, or what the party owns that it buys
@@ -65,8 +67,7 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 	shop := g.S.Data.Shops[person.Shop]
 	left, right := x+28, x+w-28
 	g.label(dst, shop.Name, float64(left+4), float64(y+34), 20, gold)
-	money := fmt.Sprintf("돈 %d", o.Money)
-	g.label(dst, money, float64(x+w-120)-g.width(money, 16), float64(y+36), 16, ink) // left of the window's 닫기
+	g.moneyLabel(dst, float64(x+w-120), float64(y+36), 16) // left of the window's 닫기
 	for i, tab := range []string{"사기", "팔기 (반값)"} {
 		sell := i == 1
 		g.choiceBtn(dst, image.Rect(left+i*146, y+74, left+i*146+140, y+106), tab, v.sell == sell, func() {
@@ -99,10 +100,10 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 				v.pick, v.n = r.id, 1
 			}
 		},
-	}, rows, image.Rect(left, y+118, right, y+h-232))
+	}, rows, image.Rect(left, y+118, right, y+h-272))
 
 	// the thing picked, in full, with how many to trade
-	box := image.Rect(left, y+h-224, right, y+h-72)
+	box := image.Rect(left, y+h-264, right, y+h-72)
 	rect(dst, float32(box.Min.X), float32(box.Min.Y), float32(box.Dx()), float32(box.Dy()), color.NRGBA{R: 255, G: 240, B: 210, A: 12})
 	var trade func()
 	if picked == nil {
@@ -118,7 +119,18 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 		if eq, ok := g.S.Data.Equipment[picked.id]; ok {
 			desc = "보정  " + bonusText(eq.Bonus, nil) + "\n" + desc
 		}
-		g.label(dst, wrapWidth(desc, g.face(14), float64(box.Dx()-32)), float64(bx), float64(by+40), 14, ink)
+		wrapped := wrapWidth(desc, g.face(14), float64(box.Dx()-32))
+		g.label(dst, wrapped, float64(bx), float64(by+40), 14, ink)
+		if eq, ok := g.S.Data.Equipment[picked.id]; ok {
+			cx, cy := float64(bx), float64(by+44)+float64(strings.Count(wrapped, "\n")+1)*21
+			for _, c := range itemChips(eq.Traits, eq.Learn, eq.Skills) {
+				chip := c
+				cx = g.chip(dst, c, cx, cy, func() { v.info = chip }) + 14
+			}
+			if cx == float64(bx) {
+				g.label(dst, "특성 없음", cx, cy+2, 13, muted)
+			}
+		}
 
 		most := picked.count
 		if !v.sell {
@@ -137,9 +149,16 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 			if v.sell {
 				kind = "sell"
 			}
+			verb, name := "구매", g.itemName(id)
+			if v.sell {
+				verb = "판매"
+			}
+			question := fmt.Sprintf("%s을(를) %d개 %s하시겠습니까?\n소지금 %d원 → %d원", name, n, verb, o.Money, after)
 			trade = func() {
-				g.request(session.Request{Op: "command", Command: core.Command{Kind: kind, Target: g.shopFrom, Item: id, Count: n}})
-				v.n = 1
+				g.askWith(question, "예", "아니오", func() {
+					g.request(session.Request{Op: "command", Command: core.Command{Kind: kind, Target: g.shopFrom, Item: id, Count: n}})
+					v.n = 1
+				})
 			}
 		}
 		g.label(dst, msg, float64(box.Max.X-16)-g.width(msg, 14), float64(box.Max.Y-41), 14, c)

@@ -45,23 +45,37 @@ func TestNewAt(t *testing.T) {
 				assert.True(t, s.Executed["won-"+w.Stage], w.Stage)
 			}
 		}
+		left := map[string]bool{}
 		for _, n := range d.Nodes {
-			if n.Kind == "join" && d.ChapterIndex(n.ID) < d.ChapterIndex(last.Node) {
+			if n.ID == last.Node {
+				break
+			}
+			if n.Kind == "leave" {
+				left[n.Character] = true
+			}
+		}
+		for _, n := range d.Nodes {
+			if n.Kind == "join" && d.ChapterIndex(n.ID) < d.ChapterIndex(last.Node) && !left[n.Character] {
 				assert.NotNil(t, e.char(n.Character), n.Character)
 			}
 		}
+		for id := range left {
+			assert.Nil(t, e.char(id), id+" has left")
+		}
 	})
 
-	t.Run("officers wear the loadout", func(t *testing.T) {
+	t.Run("officers wear the pieces they own", func(t *testing.T) {
 		e, err := NewAt(d, 1, ways[0].Node)
 		require.NoError(t, err)
-		for id, eqs := range d.Campaign.Loadout {
-			if o := e.char(id); o != nil {
-				for _, eq := range eqs {
-					assert.Equal(t, eq, o.Equipment[d.Equipment[eq].Slot], id)
-				}
+		_, more := e.OwnerPiece()
+		assert.False(t, more, "nothing is left for an owner to put on")
+		worn := 0
+		for id, eq := range d.Equipment {
+			if o := e.char(eq.Owner); o != nil && o.Equipment[eq.Slot] == id {
+				worn++
 			}
 		}
+		assert.Positive(t, worn)
 	})
 
 	t.Run("an unknown node is refused", func(t *testing.T) {

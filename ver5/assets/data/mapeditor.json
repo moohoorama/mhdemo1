@@ -92,6 +92,14 @@
       "Name": "군사"
      },
      {
+      "ID": "orator",
+      "Name": "세객"
+     },
+     {
+      "ID": "diplomat",
+      "Name": "종횡가"
+     },
+     {
       "ID": "sorcerer",
       "Name": "방술사"
      },

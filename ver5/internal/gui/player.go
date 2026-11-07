@@ -25,6 +25,7 @@ const (
 	leaveTime       = 1.0 // seconds a unit takes to walk off the battle area when it leaves by flight
 	leaveCells      = 1.5 // how far past its cell it walks out
 	arrowSecPerCell = .07 // an arrow's flight time per cell of distance
+	healPause       = .3  // seconds a pouch heal's number is read before the next swing
 )
 
 var directions = []string{"E", "SE", "S", "SW", "W", "NW", "N", "NE"} // by screen angle from +x
@@ -639,14 +640,13 @@ type counter struct {
 
 // splitCounters separates the counter-attacks (and assists) from an attack's events. A counter is a
 // blow (critical, damage, miss) by someone other than the actor, with the retreats its blows
-// cause; each one is shown as its own swing after the attack lands.
+// cause; each one is shown as its own swing after the attack lands. A pouch heal goes with the
+// swing that last hurt its eater, though the engine only eats once every blow is in.
 func splitCounters(actor string, events []core.Event) ([]core.Event, []counter) {
 	blow, counters := []core.Event{}, []counter{}
 	struck := map[string]string{}
+	hurtBy := map[string]int{} // 1 + the counter whose swing last hurt each unit, 0 for the attack's own
 	for _, e := range events {
-		if e.Kind == "damage" {
-			struck[e.Target] = e.Actor
-		}
 		back := e.Actor != actor && e.Actor != "" && (e.Kind == "critical" || e.Kind == "damage" || e.Kind == "miss" || e.Kind == "double")
 		switch {
 		case back && (len(counters) == 0 || counters[len(counters)-1].by != e.Actor):
@@ -654,8 +654,18 @@ func splitCounters(actor string, events []core.Event) ([]core.Event, []counter) 
 		case back || e.Kind == "retreat" && len(counters) > 0 && struck[e.Actor] == counters[len(counters)-1].by:
 			k := &counters[len(counters)-1]
 			k.events = append(k.events, e)
+		case e.Kind == "pouch-heal" && hurtBy[e.Actor] > 0:
+			k := &counters[hurtBy[e.Actor]-1]
+			k.events = append(k.events, e)
 		default:
 			blow = append(blow, e)
+		}
+		if e.Kind == "damage" {
+			struck[e.Target] = e.Actor
+			hurtBy[e.Target] = 0
+			if back {
+				hurtBy[e.Target] = len(counters)
+			}
 		}
 	}
 	return blow, counters
@@ -742,11 +752,30 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	if crit {
 		wait = math.Max(wait, shakeTime*1.6)
 	}
+	var hits, heals []core.Event
+	for _, e := range events {
+		if e.Kind == "pouch-heal" {
+			heals = append(heals, e)
+		} else {
+			hits = append(hits, e)
+		}
+	}
 	add(wait, func() {
 		actor.art = look
-		g.impact(kind, actor, target, events, tint)
-		g.strike(actor, events)
+		g.impact(kind, actor, target, hits, tint)
+		g.strike(actor, hits)
 	})
+	if len(heals) == 0 {
+		return
+	}
+	hurt := 0.0 // the eaters' hit motions play out before the beans are eaten
+	for _, e := range heals {
+		if u := g.unitAt(e.Actor); u != nil {
+			hurt = math.Max(hurt, u.art.Length("hit"))
+		}
+	}
+	add(math.Max(0, hurt-wait), func() {})
+	add(healPause, func() { g.strike(actor, heals) })
 }
 
 // shootsFromRange tells whether the basic attack is a shot in the actor's shoot look: it has one and its

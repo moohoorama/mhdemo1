@@ -75,8 +75,10 @@ func (g *Game) layOutExplore(o core.Observation) {
 	x := e.ExploreFile()
 	a := x.Areas[o.Spot.Area]
 	var left *unitVis // the hero as the event before left him, on this map
+	fade := 1.0       // how dark the scene opens: as dark as the one it replaces on the same map, so that it neither flashes to black nor to light
 	if g.field != nil && g.scene != nil && g.field.Map.ID == a.Map {
 		left = g.scene.actors[g.S.Data.Characters[x.Hero].Name]
+		fade = g.scene.fade
 	}
 	w := &exploreWalk{engine: e, node: o.Node, area: o.Spot.Area, hero: g.S.Data.Characters[x.Hero].Name, people: map[string]string{},
 		homes: map[string]string{}, rest: map[string]float64{}, leg: map[string]int{}, markT: math.Inf(1), rng: rand.New(rand.NewPCG(7, 11))}
@@ -101,6 +103,7 @@ func (g *Game) layOutExplore(o core.Observation) {
 	}
 	g.explore = w
 	g.openScene(def)
+	g.scene.fade = fade
 	w.grid = walkGrid{walk: &scenemap.Walk{}}
 	if art := g.assets.Maps[a.Map]; art != nil && art.SceneMap != nil {
 		w.grid.walk = scenemap.Walkable(art.SceneMap, g.assets.SceneRules)

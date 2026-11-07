@@ -32,6 +32,7 @@ func main() {
 	xp := flag.Int("xp", storage.DefaultScalePct, "experience scale in percent, as the settings set it")
 	offset := flag.Int("offset", 0, "the player's officers this many levels off the stage level")
 	show := flag.Bool("show", false, "print every unit's numbers when the battle starts (seed 1)")
+	flag.StringVar(&difficulty, "difficulty", "normal", "the campaign's difficulty (easy, normal, hard)")
 	eval := flag.String("eval", "", "other weights for the player's units as n,m,threat,top,w (ai.ParseEval)")
 	flag.Parse()
 	if *eval != "" {
@@ -95,6 +96,9 @@ func count(ids []string) []string {
 	return out
 }
 
+// difficulty is the campaign difficulty every battle is fought at.
+var difficulty string
+
 // play fights stage i with the sortie at level, and returns the result, the last round,
 // the levels each of the player's officers gained (fractions from experience) and who retreated.
 func play(d *content.Data, i, level int, seed uint64, player string, damage, xp int, show bool) (string, int, map[string]float64, []string) {
@@ -111,12 +115,17 @@ func play(d *content.Data, i, level int, seed uint64, player string, damage, xp 
 			dd.Campaign.Start = n.ID
 		}
 	}
-	dd.Campaign.Roster = sortie(d, d.Stages[i])
+	dd.Campaign.Roster, dd.Campaign.Warehouse = sortie(d, d.Stages[i])
 	dd.Campaign.Deployment = dd.Campaign.Roster
-	e := core.New(&dd, seed)
+	e, err := core.NewGame(&dd, seed, difficulty)
+	check(err)
 	e.SetDamagePct(damage)
 	e.SetXPPct(xp)
-	_, err := e.Apply(core.Command{Kind: "start"})
+	for c, ok := e.OwnerPiece(); ok; c, ok = e.OwnerPiece() {
+		_, err := e.Apply(c)
+		check(err)
+	}
+	_, err = e.Apply(core.Command{Kind: "start"})
 	check(err)
 	var retreats []string
 	start := map[string]float64{}
@@ -181,9 +190,19 @@ func play(d *content.Data, i, level int, seed uint64, player string, damage, xp 
 }
 
 // sortie is who goes out to stage st: the officers it requires, then the starting roster and everyone the
-// story joins before its battle, up to the stage's limit.
-func sortie(d *content.Data, st content.Stage) []string {
+// story joins before its battle, up to the stage's limit; and the warehouse: the starting one with every piece
+// of equipment the story grants before the battle, its explore talks and bonus objectives included.
+func sortie(d *content.Data, st content.Stage) ([]string, map[string]int) {
 	joined := append([]string{}, d.Campaign.Roster...)
+	warehouse := maps.Clone(d.Campaign.Warehouse)
+	if warehouse == nil {
+		warehouse = map[string]int{}
+	}
+	grant := func(n content.Node) {
+		if _, ok := d.Equipment[n.Item]; ok && n.Kind == "grant" {
+			warehouse[n.Item] += n.Count
+		}
+	}
 chapters:
 	for _, c := range d.Chapters {
 		for _, id := range c.Nodes {
@@ -191,8 +210,17 @@ chapters:
 			if n.Kind == "battle" && n.Stage == st.ID {
 				break chapters
 			}
+			grant(n)
+			if n.Kind == "explore" {
+				for _, ev := range c.Events {
+					grant(d.Node(ev))
+				}
+			}
 			if n.Kind == "join" {
 				joined = append(joined, n.Character)
+			}
+			if n.Kind == "leave" {
+				joined = slices.DeleteFunc(joined, func(id string) bool { return id == n.Character })
 			}
 		}
 	}
@@ -202,7 +230,7 @@ chapters:
 			ids = append(ids, id)
 		}
 	}
-	return ids
+	return ids, warehouse
 }
 
 func check(err error) {

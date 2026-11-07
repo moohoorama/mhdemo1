@@ -1,0 +1,707 @@
+{
+ "ID": "B14",
+ "Name": "우이 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 8,
+ "Required": [
+  "liubei"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "alldefeated:front",
+    "alldefeated:ji"
+   ],
+   "Text": "다리 앞의 원술군을 물리친다"
+  }
+ ],
+ "TurnLimit": 30,
+ "Map": "map14.json",
+ "Allies": [
+  {
+   "X": 2,
+   "Y": 2
+  },
+  {
+   "X": 3,
+   "Y": 2
+  },
+  {
+   "X": 2,
+   "Y": 3
+  },
+  {
+   "X": 1,
+   "Y": 2
+  },
+  {
+   "X": 3,
+   "Y": 3
+  },
+  {
+   "X": 1,
+   "Y": 3
+  },
+  {
+   "X": 2,
+   "Y": 4
+  },
+  {
+   "X": 3,
+   "Y": 4
+  },
+  {
+   "X": 1,
+   "Y": 4
+  },
+  {
+   "X": 2,
+   "Y": 1
+  }
+ ],
+ "Recommend": {
+  "liubei": {
+   "X": 2,
+   "Y": 2
+  }
+ },
+ "Party": [],
+ "Enemies": [
+  {
+   "Character": "jiling",
+   "X": 10,
+   "Y": 7,
+   "Group": "ji",
+   "Policy": "react",
+   "Faction": "yuan",
+   "Rank": "commander",
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 7,
+   "Y": 6,
+   "Group": "front",
+   "Policy": "react",
+   "Faction": "yuan",
+   "Shift": -0.12,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 7,
+   "Y": 8,
+   "Group": "front",
+   "Policy": "react",
+   "Faction": "yuan",
+   "Shift": -0.12,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 9,
+   "Y": 6,
+   "Group": "front",
+   "Policy": "react",
+   "Faction": "yuan",
+   "Shift": -0.12,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 9,
+   "Y": 8,
+   "Group": "front",
+   "Policy": "react",
+   "Faction": "yuan",
+   "Shift": -0.12,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 6,
+   "Y": 5,
+   "Group": "front",
+   "Policy": "assault",
+   "Faction": "yuan",
+   "Class": "brawler",
+   "Equipment": [
+    "iron_knuckles",
+    "plain_clothes"
+   ],
+   "Facing": "NW",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 6,
+   "Y": 9,
+   "Group": "front",
+   "Policy": "assault",
+   "Faction": "yuan",
+   "Class": "brawler",
+   "Equipment": [
+    "iron_knuckles",
+    "plain_clothes"
+   ],
+   "Facing": "NW",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_bandit",
+   "X": 8,
+   "Y": 3,
+   "Group": "front",
+   "Policy": "assault",
+   "Faction": "yuan",
+   "Shift": -0.12,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_bandit",
+   "X": 8,
+   "Y": 10,
+   "Group": "front",
+   "Policy": "assault",
+   "Faction": "yuan",
+   "Shift": -0.12,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_bandit",
+   "X": 5,
+   "Y": 7,
+   "Group": "front",
+   "Policy": "assault",
+   "Faction": "yuan",
+   "Shift": -0.12,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 14,
+   "Y": 6,
+   "Group": "bank",
+   "Policy": "hold",
+   "Faction": "yuan",
+   "Shift": -0.12,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 14,
+   "Y": 8,
+   "Group": "bank",
+   "Policy": "hold",
+   "Faction": "yuan",
+   "Shift": -0.12,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 13,
+   "Y": 9,
+   "Group": "bank",
+   "Policy": "hold",
+   "Faction": "yuan",
+   "Shift": -0.12,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 5,
+   "Group": "fort",
+   "Policy": "react",
+   "Faction": "yuan",
+   "Shift": -0.12,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 8,
+   "Group": "fort",
+   "Policy": "react",
+   "Faction": "yuan",
+   "Shift": -0.12,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 19,
+   "Y": 7,
+   "Group": "fort",
+   "Policy": "hold",
+   "Faction": "yuan",
+   "Facing": "NW",
+   "Shift": -0.12
+  }
+ ],
+ "Reward": {
+  "money": 2000
+ },
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 14,
+    "Y": 0,
+    "W": 10,
+    "H": 12
+   },
+   "Name": "회수 건너편",
+   "Description": "원술군의 작은 성"
+  },
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 0,
+    "Y": 15,
+    "W": 6,
+    "H": 9
+   },
+   "Name": "서쪽 성",
+   "Description": "물러날 곳"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "opening",
+   "If": [
+    "round>=1"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "jiling",
+       "Text": "돗자리 장수의 목은 내가 가져간다! 쳐라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "다리 앞의 적부터 몰아낸다. 그다음 건너편 성이다."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "bridge",
+   "If": [
+    "any:[at:ally:1, alldefeated:front]"
+   ],
+   "Do": [
+    {
+     "Kind": "goals",
+     "Victory": [
+      {
+       "If": [
+        "alldefeated:fort",
+        "alldefeated:bank"
+       ],
+       "Text": "건너편 성의 원술군을 물리친다"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "guanyu",
+       "Text": "형님, 다리를 건넜습니다. 성만 떨어뜨리면 회수를 막을 수 있습니다."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "lubu",
+   "If": [
+    "any:[defeated:fort, defeated:bank, round>=10]"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "zhangliao",
+       "X": 2,
+       "Y": 1,
+       "Group": "lu-north",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Rank": "commander",
+       "Side": "enemy",
+       "Class": "heavy_cavalry"
+      },
+      {
+       "Character": "houcheng",
+       "X": 1,
+       "Y": 2,
+       "Group": "lu-north",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Side": "enemy"
+      },
+      {
+       "Character": "songxian",
+       "X": 3,
+       "Y": 0,
+       "Group": "lu-north",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 0,
+       "Group": "lu-north",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Side": "enemy",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 1,
+       "Y": 0,
+       "Group": "lu-north",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Side": "enemy",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 1,
+       "Group": "lu-north",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Side": "enemy",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 1,
+       "Y": 1,
+       "Group": "lu-north",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Side": "enemy",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 4,
+       "Y": 0,
+       "Group": "lu-north",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Side": "enemy",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 3,
+       "Group": "lu-north",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Side": "enemy",
+       "Shift": -0.07,
+       "Class": "horse_archer",
+       "Equipment": [
+        "short_bow",
+        "leather_armor"
+       ]
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 3,
+       "Y": 1,
+       "Group": "lu-north",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Side": "enemy",
+       "Shift": -0.07,
+       "Class": "horse_archer",
+       "Equipment": [
+        "short_bow",
+        "leather_armor"
+       ]
+      },
+      {
+       "Character": "chengong",
+       "X": 21,
+       "Y": 21,
+       "Group": "lu-south",
+       "Policy": "react",
+       "Faction": "dong",
+       "Rank": "officer",
+       "Side": "enemy"
+      },
+      {
+       "Character": "weixu",
+       "X": 19,
+       "Y": 20,
+       "Group": "lu-south",
+       "Policy": "react",
+       "Faction": "dong",
+       "Side": "enemy"
+      },
+      {
+       "Character": "caoxing",
+       "X": 22,
+       "Y": 19,
+       "Group": "lu-south",
+       "Policy": "react",
+       "Faction": "dong",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 18,
+       "Y": 21,
+       "Group": "lu-south",
+       "Policy": "react",
+       "Faction": "dong",
+       "Side": "enemy",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 20,
+       "Y": 19,
+       "Group": "lu-south",
+       "Policy": "react",
+       "Faction": "dong",
+       "Side": "enemy",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 23,
+       "Y": 21,
+       "Group": "lu-south",
+       "Policy": "react",
+       "Faction": "dong",
+       "Side": "enemy",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 22,
+       "Y": 22,
+       "Group": "lu-south",
+       "Policy": "react",
+       "Faction": "dong",
+       "Side": "enemy",
+       "Shift": -0.07,
+       "Class": "horse_archer",
+       "Equipment": [
+        "short_bow",
+        "leather_armor"
+       ]
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 23,
+       "Y": 19,
+       "Group": "lu-south",
+       "Policy": "react",
+       "Faction": "dong",
+       "Side": "enemy",
+       "Shift": -0.07,
+       "Class": "horse_archer",
+       "Equipment": [
+        "short_bow",
+        "leather_armor"
+       ]
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangliao",
+       "Text": "주공의 명이다. 유비의 뒤를 끊어라."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "chengong",
+       "Text": "현덕 공, 하비는 이미 떨어졌소. 돌아갈 곳은 없소."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "여포 이놈……! 소패를 내줬더니 하비를 삼켜?"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "jiling",
+       "Text": "여포가 왔구나! 쳐라, 한 놈도 놓치지 마라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "fort",
+      "bank",
+      "ji"
+     ],
+     "Policy": "assault"
+    },
+    {
+     "Kind": "goals",
+     "Victory": [
+      {
+       "If": [
+        "at:liubei:2"
+       ],
+       "Text": "유비가 서쪽 성으로 물러난다"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "……서쪽 성으로 물러난다! 흩어지지 마라!"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "Faction": "yuan",
+ "Duels": [
+  {
+   "ID": "xuyi-guanyu-jiling",
+   "Ally": "guanyu",
+   "Enemy": "jiling",
+   "Outcome": "draw",
+   "AllyResult": "stay",
+   "EnemyResult": "stay",
+   "Text": "관우와 기령이 삼십 합을 겨루었으나 승부가 나지 않았다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "기령이 관우를 막아서다",
+     "Speech": "네가 관운장이냐. 이 삼첨도를 받아 보아라!",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 답하다",
+     "Speech": "말이 많구나.",
+     "Side": 0,
+     "Duration": 2.0
+    },
+    {
+     "Kind": "approach",
+     "Title": "기령이 말을 몰아 달려들다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 삼첨도를 받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 청룡도를 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "기령이 받아 내다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "기령이 돌진하며 몰아치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "dodge",
+     "Title": "관우가 말머리를 돌려 흘리다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "관우가 크게 내리치나 기령이 버티다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "기령이 숨을 고르다",
+     "Speech": "……과연 소문대로구나.",
+     "Side": 1,
+     "Duration": 2.4
+    },
+    {
+     "Kind": "draw",
+     "Title": "두 장수가 승부를 내지 못하고 물러서다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 2.5
+    }
+   ]
+  }
+ ],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "yuan",
+   "Name": "원술군"
+  },
+  {
+   "Faction": "dong",
+   "Name": "여포군"
+  }
+ ]
+}

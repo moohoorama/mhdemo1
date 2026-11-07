@@ -75,6 +75,25 @@ func TestAllAtNeedsEveryAllyThere(t *testing.T) {
 	assert.Equal(t, "battle", e.Observe().Phase, "the archer is still behind")
 }
 
+func TestReachGoalWaitsForTheMoverToFinishItsAction(t *testing.T) {
+	e := battleWith(t, func(s *content.Stage) {
+		s.Areas = []content.Area{{ID: 1, Rect: content.MapRect{X: 2, Y: 2, W: 1, H: 1}, Name: "gate"}}
+		s.Victory = []content.Goal{goal("reach", "at:hero:1")}
+	})
+	applyOK(t, e, Command{Kind: "move", Actor: "hero", X: 2, Y: 2})
+	assert.Equal(t, "battle", e.Observe().Phase, "a move still being ordered wins nothing")
+	applyOK(t, e, Command{Kind: "wait", Actor: "hero"})
+	assert.Equal(t, "victory", e.Observe().Result)
+}
+
+func TestRoutWinsWhateverTheGoal(t *testing.T) {
+	e := settleWith(t, func(s *content.Stage) {
+		s.Areas = []content.Area{{ID: 1, Rect: content.MapRect{X: 6, Y: 4, W: 1, H: 2}, Name: "stairs"}}
+		s.Victory = []content.Goal{goal("reach", "at:hero:1")}
+	}, func(s *State) { killUnits(s, "boss", "troop#1", "troop#2") })
+	assert.Equal(t, "victory", e.Observe().Result)
+}
+
 func unitIndex(s *State, id string) int {
 	for i := range s.Units {
 		if s.Units[i].ID == id {

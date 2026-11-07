@@ -171,8 +171,8 @@
    "Portrait": "chariot",
    "Pool": [
     "siegecraft",
-    "deadly",
-    "sweep_art"
+    "charge_strike",
+    "impact"
    ],
    "Plan": [
     {
@@ -580,7 +580,7 @@
   },
   "scholar": {
    "Name": "서생",
-   "Desc": "화계·수계·구휼을 쓰는 문관.",
+   "Desc": "초열과 구휼을 쓰는 문관.",
    "Terrain": "scholar",
    "Attack": "melee",
    "Weapon": "fan",
@@ -606,8 +606,6 @@
    ],
    "Pool": [
     "fire",
-    "water",
-    "earth",
     "relief",
     "focus"
    ],
@@ -617,26 +615,19 @@
      "Trait": "fire"
     },
     {
-     "Level": 3,
-     "Trait": "water"
-    },
-    {
-     "Level": 6,
-     "Trait": "earth"
-    },
-    {
      "Level": 10,
      "Trait": "relief"
     }
    ],
    "Promotes": [
     "staff_officer",
+    "orator",
     "sorcerer"
    ]
   },
   "staff_officer": {
    "Name": "참모",
-   "Desc": "공격 책략과 방해 책략에 능한 참모.",
+   "Desc": "화계·수계·지계로 적을 치는 참모.",
    "Terrain": "scholar",
    "Attack": "melee",
    "Weapon": "fan",
@@ -662,9 +653,10 @@
    ],
    "Pool": [
     "deputy_appoint",
-    "fire_spread",
-    "water_spread",
-    "earth_spread"
+    "spread",
+    "water",
+    "earth",
+    "crush"
    ],
    "Plan": [
     {
@@ -672,28 +664,24 @@
      "Trait": "fire"
     },
     {
-     "Level": 3,
-     "Trait": "water"
-    },
-    {
-     "Level": 6,
-     "Trait": "earth"
-    },
-    {
      "Level": 10,
      "Trait": "relief"
     },
     {
      "Level": 15,
-     "Trait": "fire_spread"
+     "Trait": "water"
+    },
+    {
+     "Level": 15,
+     "Trait": "earth"
     },
     {
      "Level": 18,
-     "Trait": "water_spread"
+     "Trait": "spread"
     },
     {
      "Level": 21,
-     "Trait": "earth_spread"
+     "Trait": "crush"
     }
    ],
    "Promotes": [
@@ -702,7 +690,7 @@
   },
   "strategist": {
    "Name": "군사",
-   "Desc": "모든 공격·방해 책략을 쓰는 군사.",
+   "Desc": "강한 공격 책략을 모두 쓰는 군사.",
    "Terrain": "scholar",
    "Attack": "melee",
    "Weapon": "fan",
@@ -737,28 +725,24 @@
      "Trait": "fire"
     },
     {
-     "Level": 3,
-     "Trait": "water"
-    },
-    {
-     "Level": 6,
-     "Trait": "earth"
-    },
-    {
      "Level": 10,
      "Trait": "relief"
     },
     {
      "Level": 15,
-     "Trait": "fire_spread"
+     "Trait": "water"
+    },
+    {
+     "Level": 15,
+     "Trait": "earth"
     },
     {
      "Level": 18,
-     "Trait": "water_spread"
+     "Trait": "spread"
     },
     {
      "Level": 21,
-     "Trait": "earth_spread"
+     "Trait": "crush"
     },
     {
      "Level": 30,
@@ -771,6 +755,130 @@
     {
      "Level": 36,
      "Trait": "earth_boost"
+    }
+   ]
+  },
+  "orator": {
+   "Name": "세객",
+   "Desc": "말로 적을 흔들어 디버프와 상태이상을 거는 세객.",
+   "Terrain": "scholar",
+   "Attack": "melee",
+   "Weapon": "fan",
+   "Armor": "robe",
+   "Move": 5,
+   "Range": 1,
+   "Bonus": [
+    6,
+    7,
+    13,
+    10,
+    11,
+    12
+   ],
+   "HPFactor": 3,
+   "MPBase": 34,
+   "RecoveryBase": 8,
+   "Tier": 1,
+   "Sprite": "orator",
+   "Portrait": "staff_officer",
+   "Tags": [
+    "civil"
+   ],
+   "Pool": [
+    "deputy_appoint",
+    "hinder",
+    "stratagem",
+    "status_double"
+   ],
+   "Plan": [
+    {
+     "Level": 1,
+     "Trait": "fire"
+    },
+    {
+     "Level": 10,
+     "Trait": "relief"
+    },
+    {
+     "Level": 15,
+     "Trait": "hinder"
+    },
+    {
+     "Level": 15,
+     "Trait": "stratagem"
+    },
+    {
+     "Level": 18,
+     "Trait": "status_double"
+    }
+   ],
+   "Promotes": [
+    "diplomat"
+   ]
+  },
+  "diplomat": {
+   "Name": "종횡가",
+   "Desc": "천하를 말로 움직이며 넓은 범위에 계략을 펼치는 종횡가.",
+   "Terrain": "scholar",
+   "Attack": "melee",
+   "Weapon": "fan",
+   "Armor": "robe",
+   "Move": 5,
+   "Range": 1,
+   "Bonus": [
+    6,
+    7,
+    15,
+    11,
+    12,
+    13
+   ],
+   "HPFactor": 3,
+   "MPBase": 40,
+   "RecoveryBase": 8,
+   "Tier": 2,
+   "Sprite": "diplomat",
+   "Portrait": "strategist",
+   "Tags": [
+    "civil"
+   ],
+   "Pool": [
+    "stratagem_spread",
+    "stratagem_boost",
+    "weak_point"
+   ],
+   "Plan": [
+    {
+     "Level": 1,
+     "Trait": "fire"
+    },
+    {
+     "Level": 10,
+     "Trait": "relief"
+    },
+    {
+     "Level": 15,
+     "Trait": "hinder"
+    },
+    {
+     "Level": 15,
+     "Trait": "stratagem"
+    },
+    {
+     "Level": 18,
+     "Trait": "status_double"
+    },
+    {
+     "Level": 30,
+     "Trait": "stratagem_spread"
+    },
+    {
+     "Level": 33,
+     "Trait": "stratagem_boost"
+    },
+    {
+     "Level": 36,
+     "Trait": "weak_point"
     }
    ]
   },
@@ -813,16 +921,8 @@
      "Trait": "relief"
     },
     {
-     "Level": 3,
+     "Level": 1,
      "Trait": "fire"
-    },
-    {
-     "Level": 6,
-     "Trait": "water"
-    },
-    {
-     "Level": 10,
-     "Trait": "earth"
     },
     {
      "Level": 15,
@@ -881,16 +981,8 @@
      "Trait": "relief"
     },
     {
-     "Level": 3,
+     "Level": 1,
      "Trait": "fire"
-    },
-    {
-     "Level": 6,
-     "Trait": "water"
-    },
-    {
-     "Level": 10,
-     "Trait": "earth"
     },
     {
      "Level": 15,
@@ -945,10 +1037,9 @@
     "deputy_appoint",
     "fire",
     "fire_boost",
-    "fire_spread",
+    "spread",
     "water",
     "water_boost",
-    "water_spread",
     "relief",
     "exhort"
    ],
@@ -979,11 +1070,7 @@
     },
     {
      "Level": 35,
-     "Trait": "fire_spread"
-    },
-    {
-     "Level": 35,
-     "Trait": "water_spread"
+     "Trait": "spread"
     }
    ]
   },

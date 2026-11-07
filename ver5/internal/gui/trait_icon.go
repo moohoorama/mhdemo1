@@ -77,3 +77,11 @@ func (g *Game) traitKindName(id string) string {
 	kind, tone := g.traitLook(id)
 	return kindNames[kind] + " · " + toneNames[tone]
 }
+
+// drawDimmedTraitIcon draws trait id's icon in grey, for a trait not learned.
+func (g *Game) drawDimmedTraitIcon(dst *ebiten.Image, id string, x, y, s float64) {
+	kind, _ := g.traitLook(id)
+	if name := "trait_" + kind; len(g.assets.UI[name].Frames) > 0 {
+		g.drawUI(dst, name, 0, x, y, s/traitIconSize, dimInk)
+	}
+}

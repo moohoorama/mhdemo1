@@ -1,0 +1,452 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   25,
+   2
+  ],
+  "Face": "SW"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_xuzhou_town",
+   "Name": "서주성",
+   "At": [
+    25,
+    2
+   ],
+   "Exits": [
+    {
+     "Name": "도구점",
+     "At": [
+      29,
+      15
+     ],
+     "Object": [
+      29,
+      13
+     ],
+     "To": "tools"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      35,
+      15
+     ],
+     "Object": [
+      35,
+      13
+     ],
+     "To": "tavern"
+    },
+    {
+     "Name": "대장간",
+     "At": [
+      42,
+      6
+     ],
+     "Object": [
+      40,
+      6
+     ],
+     "To": "weapons"
+    }
+   ],
+   "People": {
+    "관우@town": {
+     "At": [
+      14,
+      18
+     ],
+     "Face": "SE",
+     "Sortie": {
+      "Ask": "형님, 성 안은 다 둘러보셨습니까? 관청으로 드시지요."
+     }
+    },
+    "진등": {
+     "At": [
+      9,
+      17
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "chendeng",
+       "사군의 장례는 무사히 치렀습니다. 서주 사람들 눈이 이제 장군께 쏠려 있습니다."
+      ]
+     ]
+    },
+    "조표": {
+     "At": [
+      10,
+      23
+     ],
+     "Face": "NE",
+     "Talk": [
+      [
+       "caobao",
+       "단양병은 사군께서 손수 기르신 군사요. ……그 점은 잊지 마시오."
+      ]
+     ]
+    },
+    "단양병#1": {
+     "At": [
+      12,
+      24
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    },
+    "단양병#2": {
+     "At": [
+      12,
+      22
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    },
+    "미축": {
+     "At": [
+      18,
+      11
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "mizhu",
+       "저희 상단의 곳간입니다. 서주의 곳간이 모자라면 언제든 열겠습니다."
+      ]
+     ]
+    },
+    "미방": {
+     "At": [
+      21,
+      25
+     ],
+     "Face": "NE",
+     "Talk": [
+      [
+       "mifang",
+       "피난민이 몰려든 뒤로 곡식 값이 자꾸 오릅니다. 다른 고을 상인들을 불러들이면 값이 좀 내려갈 텐데요."
+      ]
+     ]
+    },
+    "손건": {
+     "At": [
+      17,
+      18
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "sunqian",
+       "여러 고을에서 새 목백께 인사를 올리겠다는 글이 쌓이고 있습니다. 차례를 정리해 두겠습니다."
+      ]
+     ]
+    },
+    "간옹@town": {
+     "At": [
+      37,
+      18
+     ],
+     "Face": "SW",
+     "Pose": "sit",
+     "Talk": [
+      [
+       "jianyong",
+       "장터가 소패보다 세 배는 크구먼. 외상 받아 줄 집도 세 배는 되겠지."
+      ]
+     ]
+    },
+    "번아": {
+     "At": [
+      9,
+      35
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "fanya",
+       "피난민 가운데 앓는 이가 많습니다. 정자 곁에 자리를 얻어 돌보고 있습니다."
+      ]
+     ]
+    },
+    "소금 장수": {
+     "At": [
+      31,
+      20
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "소금 장수",
+       "연주에서 넘어온 사람 말이, 조조가 연주를 도로 찾았답디다. 여포는 크게 지고 동쪽으로 달아났다던데."
+      ]
+     ],
+     "Chatter": "소금 사시오!"
+    },
+    "아낙": {
+     "At": [
+      33,
+      24
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "아낙",
+       "동쪽이면…… 여기 서주 아니우? 그 사람이 이 근처에 와 있는 거 아니우?"
+      ]
+     ]
+    },
+    "노인": {
+     "At": [
+      25,
+      27
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "노인",
+       "장안에서 도망친 천자께서 낙양에 닿으셨는데, 조조가 모셔다 허현에 도읍을 세웠다더군."
+      ],
+      [
+       "노인",
+       "그 공으로 사공에 거기장군이 되었다지."
+      ]
+     ],
+     "Chatter": "에구, 허리야"
+    },
+    "뱃사공": {
+     "At": [
+      42,
+      18
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "뱃사공",
+       "사수 물길로 올라오는 배가 요즘 부쩍 늘었수. 다들 서주는 아직 살 만하다고들 하니."
+      ]
+     ]
+    },
+    "수비병#1": {
+     "At": [
+      23,
+      1
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    },
+    "수비병#2": {
+     "At": [
+      27,
+      1
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    },
+    "행인#1": {
+     "At": [
+      14,
+      17
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Move": {
+      "Patrol": [
+       [
+        14,
+        17
+       ],
+       [
+        40,
+        17
+       ]
+      ]
+     }
+    },
+    "행인#2": {
+     "At": [
+      25,
+      4
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Move": {
+      "Patrol": [
+       [
+        25,
+        4
+       ],
+       [
+        25,
+        14
+       ]
+      ]
+     }
+    },
+    "장꾼": {
+     "At": [
+      19,
+      21
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "싸오, 싸!|골라 보시오",
+     "Talk": [
+      [
+       "장꾼",
+       "새 목백 나리시구려! 서주 장터는 아직 물건이 넉넉하답니다."
+      ]
+     ]
+    },
+    "피난민#1": {
+     "At": [
+      7,
+      37
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Pose": "sitground"
+    }
+   }
+  },
+  "tools": {
+   "Map": "S_tool_shop2",
+   "Name": "도구점",
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "상인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "xuzhou"
+    }
+   }
+  },
+  "tavern": {
+   "Map": "S_tavern2",
+   "Name": "주점",
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tavern"
+    },
+    "손님": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "한 잔 더!|크으, 좋다",
+     "Talk": [
+      [
+       "손님",
+       "새 목백 나리 아니시오? 도 사군 상 치르시느라 애쓰셨소."
+      ]
+     ]
+    },
+    "장비@tavern": {
+     "At": [
+      5,
+      5
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "zhangfei",
+       "형, 서주 술은 소패 술보다 훨씬 낫구먼유! 한 잔만…… 딱 한 잔만유."
+      ]
+     ]
+    }
+   }
+  },
+  "weapons": {
+   "Map": "S_weapon_shop2",
+   "Name": "대장간",
+   "At": [
+    6,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "대장장이": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons"
+    }
+   }
+  }
+ }
+}

@@ -13,7 +13,7 @@ const eventPasses = 8
 // Battle events run their actions once their conditions hold; speech is presented by the replay. Like a duel they
 // wait for the unit in command to finish its action, so a move that is still being ordered sets none off.
 func (e *Engine) battleEvents() {
-	if m := e.unit(e.lastActor); m != nil && m.HP > 0 && !m.Done {
+	if e.midAction() {
 		return
 	}
 	stage := e.data.Stages[e.state.Stage]
@@ -88,9 +88,9 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 				if o := e.char(sp.Character); e.unit(sp.Character) != nil || o != nil && o.Dead {
 					continue // already on the map, or fallen
 				}
+				e.joinAt(e.addCharacter(sp.Character, sp.Character), e.data.Rules.StageLevel(e.stageOrder()))
 				u := e.spawn(sp.Character, sp.Character, "ally", p.X, p.Y, sp)
 				e.faceObjective(u, nil)
-				e.raiseTo(e.char(u.Character), e.data.Rules.StageLevel(e.stageOrder()))
 				snapshot := copyOf(*u)
 				e.events = append(e.events, Event{Kind: "unit-arrival", Actor: u.ID, Unit: &snapshot})
 			}

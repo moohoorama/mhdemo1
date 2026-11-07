@@ -202,22 +202,68 @@
    }
   },
   "c05-palace": {
-   "Map": "S_hall",
+   "Map": "S_luoyang_hall",
    "Nodes": ["c05-palace", "c05-e1", "c05-e2", "c05-e3", "c05-e4"],
+   "Ambient": [{"CamAt": [6, 3]}],
    "Cast": {
-    "헌제": {"At": [3, 1], "Face": "SW", "Hold": true, "Pose": "throne"},
-    "동탁": {"At": [4, 2], "Face": "SW"},
-    "대신#1": {"At": [2, 3], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
-    "대신#2": {"At": [2, 4], "Face": "NE", "Sprite": "official_purple_noncombat", "Pose": "bow", "Faction": "han"},
-    "대신#3": {"At": [4, 3], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
-    "대신#4": {"At": [4, 4], "Face": "NE", "Sprite": "official_black_noncombat", "Pose": "bow", "Faction": "han"},
-    "서량병#1": {"At": [2, 8], "Face": "NE", "Sprite": "heavy_infantry", "Faction": "dong"},
-    "서량병#2": {"At": [4, 8], "Face": "NE", "Sprite": "heavy_infantry", "Faction": "dong"}
+    "헌제": {"At": [6, 1], "Face": "SW", "Hold": true, "Pose": "throne"},
+    "동탁": {"At": [7, 1], "Face": "SW"},
+    "대신#1": {"At": [2, 3], "Face": "NE", "Sprite": "official_purple_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#2": {"At": [3, 3], "Face": "NE", "Sprite": "official_purple_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#3": {"At": [4, 3], "Face": "NE", "Sprite": "official_purple_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#4": {"At": [8, 3], "Face": "NE", "Sprite": "official_purple_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#5": {"At": [9, 3], "Face": "NE", "Sprite": "official_purple_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#6": {"At": [10, 3], "Face": "NE", "Sprite": "official_purple_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#7": {"At": [2, 4], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#8": {"At": [3, 4], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#9": {"At": [4, 4], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#10": {"At": [8, 4], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#11": {"At": [9, 4], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#12": {"At": [10, 4], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#13": {"At": [2, 5], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#14": {"At": [3, 5], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#15": {"At": [4, 5], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#16": {"At": [8, 5], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#17": {"At": [9, 5], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#18": {"At": [10, 5], "Face": "NE", "Sprite": "official_crimson_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#19": {"At": [2, 6], "Face": "NE", "Sprite": "official_blue_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#20": {"At": [3, 6], "Face": "NE", "Sprite": "official_blue_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#21": {"At": [4, 6], "Face": "NE", "Sprite": "official_blue_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#22": {"At": [8, 6], "Face": "NE", "Sprite": "official_blue_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#23": {"At": [9, 6], "Face": "NE", "Sprite": "official_blue_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#24": {"At": [10, 6], "Face": "NE", "Sprite": "official_blue_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#25": {"At": [2, 7], "Face": "NE", "Sprite": "official_green_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#26": {"At": [3, 7], "Face": "NE", "Sprite": "official_green_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#27": {"At": [4, 7], "Face": "NE", "Sprite": "official_green_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#28": {"At": [8, 7], "Face": "NE", "Sprite": "official_green_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#29": {"At": [9, 7], "Face": "NE", "Sprite": "official_green_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#30": {"At": [10, 7], "Face": "NE", "Sprite": "official_green_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#31": {"At": [2, 8], "Face": "NE", "Sprite": "official_black_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#32": {"At": [3, 8], "Face": "NE", "Sprite": "official_black_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#33": {"At": [4, 8], "Face": "NE", "Sprite": "official_black_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#34": {"At": [8, 8], "Face": "NE", "Sprite": "official_black_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#35": {"At": [9, 8], "Face": "NE", "Sprite": "official_black_noncombat", "Pose": "bow", "Faction": "han"},
+    "대신#36": {"At": [10, 8], "Face": "NE", "Sprite": "official_black_noncombat", "Pose": "bow", "Faction": "han"},
+    "서량병#1": {"At": [0, 3], "Face": "SE", "Sprite": "heavy_infantry", "Faction": "dong"},
+    "서량병#2": {"At": [0, 6], "Face": "SE", "Sprite": "heavy_infantry", "Faction": "dong"},
+    "서량병#3": {"At": [0, 9], "Face": "SE", "Sprite": "heavy_infantry", "Faction": "dong"},
+    "서량병#4": {"At": [12, 3], "Face": "NW", "Sprite": "heavy_infantry", "Faction": "dong"},
+    "서량병#5": {"At": [12, 6], "Face": "NW", "Sprite": "heavy_infantry", "Faction": "dong"},
+    "서량병#6": {"At": [12, 9], "Face": "NW", "Sprite": "heavy_infantry", "Faction": "dong"},
+    "서량병#7": {"At": [5, 11], "Face": "NE", "Sprite": "heavy_infantry", "Faction": "dong"},
+    "서량병#8": {"At": [7, 11], "Face": "NE", "Sprite": "heavy_infantry", "Faction": "dong"},
+    "서량병#9": {"At": [5, 1], "Face": "SE", "Sprite": "heavy_infantry", "Faction": "dong"},
+    "서량병#10": {"At": [8, 2], "Face": "NW", "Sprite": "heavy_infantry", "Faction": "dong"}
    },
    "Beats": {
     "c05-e2": [
      [
       [{"Actor": "동탁", "Face": "NW"}]
+     ]
+    ],
+    "c05-e4": [
+     [
+      [{"CamAt": [6, 6]}]
      ]
     ]
    }

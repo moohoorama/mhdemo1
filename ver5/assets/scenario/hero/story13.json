@@ -577,7 +577,7 @@
    "ID": "c13-d04",
    "Kind": "say",
    "Speaker": "fanya",
-   "Text": "소패에 머물며 군사와 백성을 돌보게 해 주십시오."
+   "Text": "저는 소패에 남아 함께 내려온 사람들을 마저 돌보겠습니다."
   },
   {
    "ID": "c13-d05",
@@ -609,12 +609,6 @@
    "Item": "medicine_pouch",
    "Count": 1,
    "Event": "grant-medicine_pouch"
-  },
-  {
-   "ID": "c13-d11",
-   "Kind": "join",
-   "Character": "fanya",
-   "Event": "join-fanya"
   }
  ],
  "Events": [

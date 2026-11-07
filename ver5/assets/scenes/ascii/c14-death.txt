@@ -1,0 +1,21 @@
+# c14-death  S_xuzhou_room  ch14  origin -1 -1
+#####################
+###...Cdl###...Cdl...Lnt
+###......TaoMizMif...Dsk
+###...Che...............
+###...............CaoPot
+###.....................
+   .....................
+
+Tao 도겸  (bed)
+Miz 미축
+Mif 미방
+Che 진등
+Cao 조표
+Liu 유비  (off stage, enters later (cell 2 2))
+Gua 관우  (off stage, enters later (cell 2 3))
+Zha 장비  (off stage, enters later (cell 3 3))
+
+# c14-d01: Liu -> 2 2
+# c14-d01: Gua -> 2 3
+# c14-d01: Zha -> 3 3

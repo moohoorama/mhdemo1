@@ -8,6 +8,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -685,7 +686,13 @@ func (g *Game) editorTrial() {
 			}
 		}
 	}
-	d.Campaign.Deployment = d.Campaign.Roster[:min(st.Max, len(d.Campaign.Roster))]
+	deployment := slices.Clone(st.Required)
+	for _, id := range d.Campaign.Roster {
+		if !slices.Contains(deployment, id) {
+			deployment = append(deployment, id)
+		}
+	}
+	d.Campaign.Deployment = deployment[:min(st.Max, len(deployment))]
 	trialDir, err := os.MkdirTemp("", "srpg-editor-trial-")
 	if err != nil {
 		e.message = err.Error()

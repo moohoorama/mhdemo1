@@ -583,13 +583,11 @@
     48
    ],
    "Level": 3,
-   "Points": 200,
    "Traits": [
     "footwork",
     "counter_boost"
    ],
    "Learn": [
-    "fire",
     "footwork",
     "counter_boost"
    ],
@@ -971,8 +969,8 @@
     82,
     86,
     55,
-    62,
-    50,
+    82,
+    36,
     58
    ],
    "Level": 5,
@@ -994,7 +992,8 @@
     "Faction": "han",
     "Scene": "gaoshun_noncombat",
     "Portrait": "gaoshun"
-   }
+   },
+   "Playable": true
   },
   "taoqian": {
    "Name": "도겸",
@@ -1494,10 +1493,16 @@
    ],
    "Level": 9,
    "Traits": [
-    "volley"
+    "volley",
+    "sure_shot",
+    "ambush_crit",
+    "sure_footing"
    ],
    "Learn": [
-    "volley"
+    "volley",
+    "sure_shot",
+    "ambush_crit",
+    "sure_footing"
    ],
    "Equipment": [
     "short_bow",
@@ -1557,7 +1562,6 @@
     81
    ],
    "Level": 3,
-   "Points": 200,
    "Playable": true,
    "Traits": [],
    "Learn": [],
@@ -1657,7 +1661,7 @@
   "yujin": {
    "Name": "우금",
    "Biography": "조조군의 장수. 군령이 엄해 명을 어기는 법이 없다.",
-   "Class": "archer",
+   "Class": "light_infantry",
    "Stats": [
     84,
     80,
@@ -1674,7 +1678,34 @@
    ],
    "Learn": [],
    "Equipment": [
-    "short_bow",
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "yuejin": {
+   "Name": "악진",
+   "Biography": "조조군의 장수. 작은 체구에 담이 커 언제나 앞장서 싸운다.",
+   "Class": "light_infantry",
+   "Stats": [
+    78,
+    82,
+    45,
+    70,
+    60,
+    55
+   ],
+   "Level": 12,
+   "Traits": [
+    "vanguard",
+    "siegecraft",
+    "hundred_foes"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1704,7 +1735,620 @@
    ],
    "Look": {
     "Faction": "han",
+    "Scene": "zhugexuan_noncombat",
+    "Portrait": "zhugexuan"
+   }
+  },
+  "xushu": {
+   "Name": "서서",
+   "Biography": "자는 원직, 가명 단복. 신야에서 유비의 군사가 되어 조인의 팔문금쇄진을 깬다. 어머니 때문에 조조에게 가며 제갈량을 천거하고 평생 계책을 내지 않는다.",
+   "Class": "strategist",
+   "Stats": [
+    90,
+    64,
+    97,
+    82,
+    82,
+    87
+   ],
+   "Level": 9,
+   "Traits": [],
+   "Learn": [
+    "civil_martial",
+    "break_formation"
+   ],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes",
+    "tactics_primer"
+   ],
+   "Look": {
+    "Faction": "shu",
     "Scene": "official_noncombat"
+   }
+  },
+  "mizhu": {
+   "Name": "미축",
+   "Biography": "자는 자중. 서주의 거부로 도겸 사후 유비를 섬기고, 여포에게 근거지를 잃은 유비에게 가산을 털어 군자금을 댄다.",
+   "Class": "sorcerer",
+   "Stats": [
+    48,
+    30,
+    78,
+    54,
+    82,
+    96
+   ],
+   "Level": 20,
+   "Playable": true,
+   "Traits": [],
+   "Learn": [
+    "hoarding",
+    "supply"
+   ],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "shu",
+    "Scene": "mizhu_noncombat",
+    "Palette": {
+     "themeA": "#e0c070",
+     "themeC": "#8a5a20"
+    },
+    "Portrait": "mizhu"
+   }
+  },
+  "mifang": {
+   "Name": "미방",
+   "Biography": "자는 자방. 미축의 동생으로 형과 함께 유비를 따른다. 형주 남군을 지키다 관우와 불화한다.",
+   "Class": "heavy_infantry",
+   "Stats": [
+    54,
+    62,
+    49,
+    61,
+    52,
+    68
+   ],
+   "Level": 20,
+   "Playable": true,
+   "Traits": [],
+   "Learn": [
+    "brace_prep",
+    "castle_defense",
+    "fortune"
+   ],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "shu",
+    "Scene": "mifang_noncombat",
+    "Palette": {
+     "themeA": "#a05a2a",
+     "iron": "#c8c0a8"
+    },
+    "Portrait": "mifang"
+   }
+  },
+  "fanya": {
+   "Name": "번아",
+   "Biography": "화타의 제자. 의술로 병사를 고치고, 훗날 독화살을 맞은 관우의 팔을 치료한다.",
+   "Class": "sorcerer",
+   "Stats": [
+    52,
+    30,
+    80,
+    60,
+    70,
+    70
+   ],
+   "Level": 20,
+   "Playable": true,
+   "Traits": [],
+   "Learn": [
+    "acupuncture",
+    "taoism"
+   ],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "shu",
+    "Scene": "fanya_noncombat",
+    "Palette": {
+     "themeA": "#6a9a7a",
+     "themeC": "#e8e8d8"
+    },
+    "Portrait": "fanya"
+   }
+  },
+  "chengong": {
+   "Name": "진궁",
+   "Biography": "중모현령. 동탁 암살에 실패한 조조를 놓아주고 따랐으나 떠나 여포의 모사가 된다.",
+   "Class": "staff_officer",
+   "Stats": [
+    84,
+    54,
+    94,
+    73,
+    66,
+    77
+   ],
+   "Level": 20,
+   "Traits": [
+    "feint",
+    "stratagem"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_slips",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "dong",
+    "Scene": "official_noncombat",
+    "Palette": {
+     "themeA": "#2a3a6a",
+     "themeC": "#8a8aa0"
+    }
+   }
+  },
+  "zangba": {
+   "Name": "장패",
+   "Biography": "태산 일대의 도적 두목. 손관·윤례·오돈 등을 거느리고 여포를 돕다 조조에게 귀순한다.",
+   "Class": "ruffian",
+   "Stats": [
+    85,
+    82,
+    67,
+    80,
+    95,
+    82
+   ],
+   "Level": 20,
+   "Traits": [
+    "ambush_crit",
+    "assist",
+    "intimidate"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "taishan",
+    "Scene": "official_noncombat",
+    "Palette": {
+     "themeA": "#5a3a20",
+     "hair": "#2a2a2a",
+     "iron": "#8a6a40"
+    },
+    "Portrait": "zangba"
+   }
+  },
+  "jiling": {
+   "Name": "기령",
+   "Biography": "원술군 대장. 삼첨양인도를 쓰며 우이에서 관우와 30합을 겨룬다.",
+   "Class": "heavy_cavalry",
+   "Stats": [
+    83,
+    89,
+    48,
+    76,
+    65,
+    62
+   ],
+   "Level": 10,
+   "Traits": [
+    "diagonal",
+    "spirit_prep"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "yuan",
+    "Scene": "official_noncombat",
+    "Palette": {
+     "themeA": [
+      "#ffd052",
+      "#e69d23",
+      "#ad6318"
+     ],
+     "iron": "#8a8a94",
+     "horseSkin": "#2a2a30",
+     "saddle": "#c03030"
+    }
+   }
+  },
+  "caobao": {
+   "Name": "조표",
+   "Biography": "도겸의 옛 부하이자 여포의 장인. 취한 장비에게 매를 맞자 원한을 품고 여포를 끌어들인다.",
+   "Class": "heavy_infantry",
+   "Stats": [
+    60,
+    67,
+    37,
+    61,
+    45,
+    46
+   ],
+   "Level": 20,
+   "Traits": [
+    "shift_blame"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "caobao_noncombat",
+    "Palette": {
+     "themeA": "#4a6a4a",
+     "iron": "#8a8a94"
+    },
+    "Portrait": "caobao"
+   }
+  },
+  "chendeng": {
+   "Name": "진등",
+   "Biography": "자는 원룡. 하비 사람으로 도겸 아래에서 둔전을 일으킨다. 말은 공손하나 속으로 셈이 깊다.",
+   "Class": "staff_officer",
+   "Stats": [
+    72,
+    48,
+    90,
+    62,
+    74,
+    78
+   ],
+   "Level": 10,
+   "Traits": [
+    "insight"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_slips",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "chendeng_noncombat",
+    "Portrait": "chendeng"
+   }
+  },
+  "xutan": {
+   "Name": "허탐",
+   "Biography": "도겸의 중랑장. 단양병을 거느리며, 굴러온 객장을 반기지 않는다.",
+   "Class": "light_infantry",
+   "Stats": [
+    62,
+    68,
+    42,
+    60,
+    48,
+    46
+   ],
+   "Level": 10,
+   "Traits": [
+    "grit"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "xutan_noncombat",
+    "Portrait": "xutan"
+   }
+  },
+  "sunguan": {
+   "Name": "손관",
+   "Biography": "자는 중대. 태산의 무리를 이끄는 장패의 동료. 훗날 조조에게 귀순해 청주·서주 바닷가를 맡는다.",
+   "Class": "bandit",
+   "Stats": [
+    70,
+    78,
+    48,
+    72,
+    62,
+    58
+   ],
+   "Level": 10,
+   "Traits": [
+    "relentless"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "taishan",
+    "Palette": {
+     "themeA": "#6a4a2a",
+     "hair": "#2a2a2a"
+    },
+    "Portrait": "sunguan"
+   }
+  },
+  "refugee_merchant": {
+   "Name": "피난 상인",
+   "Biography": "서주에서 소패로 피난 온 상인. 태산 길이 막혀 짐을 풀지 못한다.",
+   "Class": "light_infantry",
+   "Stats": [
+    20,
+    10,
+    30,
+    30,
+    30,
+    30
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "merchant",
+    "Scene": "commoner_man"
+   }
+  },
+  "herb_woman": {
+   "Name": "약방 아낙",
+   "Biography": "소패 약방 앞의 아낙. 팽성 사람들을 돌보던 의원을 안다.",
+   "Class": "light_infantry",
+   "Stats": [
+    20,
+    10,
+    30,
+    30,
+    30,
+    30
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "merchant",
+    "Scene": "commoner_woman"
+   }
+  },
+  "houcheng": {
+   "Name": "후성",
+   "Biography": "여포의 기병 장수. 병주 시절부터 여포를 따랐다.",
+   "Class": "heavy_cavalry",
+   "Stats": [
+    66,
+    73,
+    30,
+    46,
+    41,
+    44
+   ],
+   "Level": 20,
+   "Traits": [
+    "dash"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "dong",
+    "Palette": {
+     "iron": "#9a7038",
+     "themeA": [
+      "#c0483c",
+      "#8a2e26",
+      "#521a16"
+     ],
+     "horseSkin": "#4a3020",
+     "horseMane": "#1e1410",
+     "saddle": "#8a2420"
+    }
+   }
+  },
+  "songxian": {
+   "Name": "송헌",
+   "Biography": "여포의 기병 장수. 후성·위속과 함께 여포 곁을 지킨다.",
+   "Class": "heavy_cavalry",
+   "Stats": [
+    69,
+    70,
+    35,
+    49,
+    44,
+    42
+   ],
+   "Level": 20,
+   "Traits": [
+    "charge_strike"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "dong",
+    "Palette": {
+     "iron": "#c8ccd4",
+     "themeA": [
+      "#4f8f6a",
+      "#346a4c",
+      "#1c3c2a"
+     ],
+     "horseSkin": "#d8d0c0",
+     "horseMane": "#8a8478",
+     "saddle": "#2e6a46"
+    }
+   }
+  },
+  "weixu": {
+   "Name": "위속",
+   "Biography": "여포의 기병 장수. 여포의 처족이다.",
+   "Class": "heavy_cavalry",
+   "Stats": [
+    63,
+    68,
+    33,
+    44,
+    47,
+    48
+   ],
+   "Level": 20,
+   "Traits": [
+    "grass_footing"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "dong",
+    "Palette": {
+     "iron": "#6a5a80",
+     "themeA": [
+      "#9a6ab8",
+      "#6a4486",
+      "#3a264c"
+     ],
+     "horseSkin": "#2a2628",
+     "horseMane": "#121012",
+     "saddle": "#5a3a7a"
+    }
+   }
+  },
+  "caoxing": {
+   "Name": "조성",
+   "Biography": "여포의 궁기병 장수. 말 위에서 활을 잘 쏜다.",
+   "Class": "horse_archer",
+   "Stats": [
+    67,
+    74,
+    29,
+    52,
+    45,
+    41
+   ],
+   "Level": 20,
+   "Traits": [
+    "accuracy_up"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "dong",
+    "Palette": {
+     "iron": "#b89a48",
+     "themeA": [
+      "#e0b040",
+      "#a87a26",
+      "#5e4214"
+     ],
+     "horseSkin": "#a06a3a",
+     "horseMane": "#4a2e18",
+     "saddle": "#a07a1a"
+    }
+   }
+  },
+  "court_envoy": {
+   "Name": "조정 사자",
+   "Biography": "허도의 조정에서 조서를 받들고 온 사자.",
+   "Class": "scholar",
+   "Stats": [
+    40,
+    36,
+    50,
+    40,
+    40,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_slips",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Scene": "official_purple_noncombat",
+    "Faction": "han"
+   }
+  },
+  "yanghong": {
+   "Name": "양홍",
+   "Biography": "원술의 모사. 기령을 보내기 전에 원술을 말린다.",
+   "Class": "scholar",
+   "Stats": [
+    40,
+    36,
+    50,
+    40,
+    40,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_slips",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Scene": "official_green_noncombat",
+    "Faction": "yuan",
+    "Palette": {
+     "themeA": "#3a5a3a"
+    }
+   }
+  },
+  "gatekeeper": {
+   "Name": "수문장",
+   "Biography": "서주성 문을 지키는 장수.",
+   "Class": "light_infantry",
+   "Stats": [
+    45,
+    48,
+    30,
+    45,
+    40,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Scene": "light_infantry",
+    "Faction": "han"
    }
   }
  }

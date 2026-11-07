@@ -45,7 +45,7 @@
    "Desc": "물리 공격이 반드시 치명타.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1500,
    "Effects": {
     "crit_always": 1
    }
@@ -75,7 +75,7 @@
    "Desc": "반격 피해 비율 +50%p(50% → 100%, 반격술 태세와 함께면 150%).",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "counter_boost": 0.5
    }
@@ -101,18 +101,18 @@
    }
   },
   "cross_strike": {
-   "Name": "사방격",
-   "Desc": "물리 공격이 십자 범위가 된다. 주변 칸의 적은 50% 피해.",
+   "Name": "사방격(원)",
+   "Desc": "원거리 물리 공격이 십자 범위가 된다. 주변 칸의 적은 50% 피해.",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 500,
    "Effects": {
-    "splash_cross": 0.5
+    "splash_cross_ranged": 0.5
    }
   },
   "square_strike": {
-   "Name": "팔방격",
-   "Desc": "물리 공격이 3×3 범위가 된다. 주변 칸의 적은 50% 피해.",
+   "Name": "팔방격(원)",
+   "Desc": "원거리 물리 공격이 3×3 범위가 된다. 주변 칸의 적은 50% 피해.",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 500,
@@ -120,7 +120,7 @@
     "cross_strike"
    ],
    "Effects": {
-    "splash_square": 0.5
+    "splash_square_ranged": 0.5
    }
   },
   "pierce": {
@@ -138,7 +138,7 @@
    "Desc": "물리 공격의 첫 타가 명중하면 대상을 뒤로 1칸 밀어낸다. 밀 수 없으면 그 타격의 피해 +25%.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "knockback": 0.25
    }
@@ -188,7 +188,7 @@
    "Desc": "주변 8칸의 적 1기당 공격력·방어력 +3%.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 700,
    "Effects": {
     "outnumbered": 0.03
    }
@@ -198,7 +198,7 @@
    "Desc": "적을 퇴각시키면 그 적의 주변 8칸에 있던 적에게 공격력 저하.",
    "Kind": "talent",
    "Tone": "debuff",
-   "Cost": 500,
+   "Cost": 700,
    "Effects": {
     "rout:attack": 1
    }
@@ -208,7 +208,7 @@
    "Desc": "주변 8칸에 아군이 없으면 공격력·방어력 +10%.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 700,
    "Effects": {
     "lone": 0.1
    }
@@ -231,7 +231,7 @@
    "Desc": "원거리 공격이 반드시 명중한다.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "ranged_sure": 1
    }
@@ -251,7 +251,7 @@
    "Desc": "이번 차례에 이동한 칸 수 × 물리 공격 명중률 +3%p.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 700,
    "Effects": {
     "charge_accuracy": 3
    }
@@ -301,7 +301,7 @@
    "Desc": "대상의 병력이 50%를 넘은 만큼, 그 절반을 피해 배율에 더한다(병력 100%면 +25%, 50% 이하면 0).",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "opening": 0.5
    }
@@ -331,7 +331,7 @@
    "Desc": "물리 공격이 명중하면 대상에게 방어력 저하.",
    "Kind": "talent",
    "Tone": "debuff",
-   "Cost": 500,
+   "Cost": 700,
    "Effects": {
     "hit_debuff:defense": 1
    }
@@ -341,7 +341,7 @@
    "Desc": "물리 공격이 명중하면 대상에게 공격력 저하.",
    "Kind": "talent",
    "Tone": "debuff",
-   "Cost": 500,
+   "Cost": 700,
    "Effects": {
     "hit_debuff:attack": 1
    }
@@ -498,7 +498,7 @@
    "Desc": "병력이 절반 이하면 받는 피해 절반.",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "grit": 0.5
    }
@@ -508,7 +508,7 @@
    "Desc": "자신의 지형 보정이 100 미만이면 100으로 본다(공격·방어 모두).",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 500,
+   "Cost": 700,
    "Effects": {
     "terrain_floor": 1
    }
@@ -541,7 +541,7 @@
    "Desc": "전투 중 처음 쓰러질 때 병력 1로 버틴다.",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "last_stand": 1
    }
@@ -551,7 +551,7 @@
    "Desc": "적의 원거리 공격이 명중하지 않는다.",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 500,
+   "Cost": 1200,
    "Effects": {
     "ranged_immune": 1
    }
@@ -594,7 +594,7 @@
    "Desc": "해로운 상태이상 책략에 걸리지 않는다.",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 500,
+   "Cost": 700,
    "Effects": {
     "status_immune": 1
    }
@@ -627,7 +627,7 @@
    "Desc": "적의 물리 공격 명중률 −15%p.",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "evade": 15
    }
@@ -667,12 +667,12 @@
   },
   "cunning": {
    "Name": "귀모",
-   "Desc": "책략 사거리 +3.",
+   "Desc": "책략 사거리 +2.",
    "Kind": "talent",
    "Tone": "craft",
    "Cost": 500,
    "Effects": {
-    "spell_range": 3
+    "spell_range": 2
    }
   },
   "feint": {
@@ -726,6 +726,9 @@
    "Kind": "talent",
    "Tone": "craft",
    "Cost": 500,
+   "Requires": [
+    "exhort"
+   ],
    "Effects": {
     "buff_extend": 1
    }
@@ -818,7 +821,7 @@
    "Desc": "자기 차례 시작에 최대 병력의 10%를 회복한다.",
    "Kind": "talent",
    "Tone": "heal",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "regen": 0.1
    }
@@ -833,12 +836,22 @@
     "aura_heal": 0.1
    }
   },
+  "acupuncture": {
+   "Name": "침술",
+   "Desc": "아군에게 책략(회복·버프 등)을 걸면 그 아군의 상태이상이 모두 풀린다.",
+   "Kind": "talent",
+   "Tone": "heal",
+   "Cost": 1000,
+   "Effects": {
+    "spell_cure": 1
+   }
+  },
   "benevolence": {
    "Name": "인덕",
    "Desc": "부관 능력치를 섞을 때 주장의 매력을 +20으로 본다.",
    "Kind": "talent",
    "Tone": "buff",
-   "Cost": 500,
+   "Cost": 700,
    "Requires": [
     "exhort"
    ],
@@ -852,6 +865,9 @@
    "Kind": "talent",
    "Tone": "heal",
    "Cost": 500,
+   "Requires": [
+    "relief"
+   ],
    "Effects": {
     "heal_bonus": 0.5
    }
@@ -861,7 +877,7 @@
    "Desc": "쓴 아이템이 대상 주변 8칸의 아군 중 병력이 가장 적은 1기에게도 적용된다.",
    "Kind": "talent",
    "Tone": "heal",
-   "Cost": 500,
+   "Cost": 700,
    "Effects": {
     "item_share": 1
    }
@@ -922,7 +938,7 @@
    "Desc": "병종의 무기에 더해 검과 창을 모두 장착할 수 있다.",
    "Kind": "talent",
    "Tone": "craft",
-   "Cost": 500,
+   "Cost": 700,
    "Effects": {
     "wield:spear": 1,
     "wield:sword": 1
@@ -1065,14 +1081,14 @@
    "Desc": "무쌍 병법 사용 가능. 공격범위 안의 적을 하나씩 차례로 벤다.",
    "Kind": "tactic",
    "Tone": "attack",
-   "Cost": 500
+   "Cost": 1200
   },
   "volley": {
    "Name": "난사",
    "Desc": "난사 병법 사용 가능. 공격범위 안의 모든 적을 쏜다(원거리 전용).",
    "Kind": "tactic",
    "Tone": "attack",
-   "Cost": 500
+   "Cost": 1200
   },
   "snipe_prep": {
    "Name": "저격",
@@ -1150,15 +1166,12 @@
     "fire"
    ]
   },
-  "fire_spread": {
-   "Name": "화계확산",
-   "Desc": "화계 책략의 범위 갈래를 연다. 강화와 함께 있으면 최상위 책략이 열린다.",
+  "spread": {
+   "Name": "확산",
+   "Desc": "화계·수계·지계 책략의 범위 갈래를 연다. 강화와 함께 있으면 최상위 책략이 열린다.",
    "Kind": "strategy",
    "Tone": "attack",
-   "Cost": 500,
-   "Requires": [
-    "fire"
-   ]
+   "Cost": 500
   },
   "water_boost": {
    "Name": "수계강화",
@@ -1170,29 +1183,9 @@
     "water"
    ]
   },
-  "water_spread": {
-   "Name": "수계확산",
-   "Desc": "수계 책략의 범위 갈래를 연다. 강화와 함께 있으면 최상위 책략이 열린다.",
-   "Kind": "strategy",
-   "Tone": "attack",
-   "Cost": 500,
-   "Requires": [
-    "water"
-   ]
-  },
   "earth_boost": {
    "Name": "지계강화",
    "Desc": "지계 책략의 강한 갈래를 연다. 확산과 함께 있으면 최상위 책략이 열린다.",
-   "Kind": "strategy",
-   "Tone": "attack",
-   "Cost": 500,
-   "Requires": [
-    "earth"
-   ]
-  },
-  "earth_spread": {
-   "Name": "지계확산",
-   "Desc": "지계 책략의 범위 갈래를 연다. 강화와 함께 있으면 최상위 책략이 열린다.",
    "Kind": "strategy",
    "Tone": "attack",
    "Cost": 500,
@@ -1214,16 +1207,6 @@
    "Tone": "debuff",
    "Cost": 500
   },
-  "hinder_boost": {
-   "Name": "견제강화",
-   "Desc": "견제 계통의 상위 책략을 연다.",
-   "Kind": "strategy",
-   "Tone": "debuff",
-   "Cost": 500,
-   "Requires": [
-    "hinder"
-   ]
-  },
   "stratagem_boost": {
    "Name": "계략강화",
    "Desc": "계략 계통의 상위 책략을 연다.",
@@ -1233,6 +1216,46 @@
    "Requires": [
     "stratagem"
    ]
+  },
+  "stratagem_spread": {
+   "Name": "계략확산",
+   "Desc": "계략·견제 책략의 범위 갈래를 연다. 대혼란·독무·위축·와해를 쓴다.",
+   "Kind": "strategy",
+   "Tone": "debuff",
+   "Cost": 500,
+   "Requires": [
+    "stratagem"
+   ]
+  },
+  "crush": {
+   "Name": "격파",
+   "Desc": "적을 퇴각시키면 그 적이 가진 병법치를 빨아들인다.",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 500,
+   "Effects": {
+    "absorb_mana": 1
+   }
+  },
+  "status_double": {
+   "Name": "상태이상연장",
+   "Desc": "자신이 건 디버프와 상태이상이 두 배로 오래 간다.",
+   "Kind": "talent",
+   "Tone": "debuff",
+   "Cost": 500,
+   "Effects": {
+    "status_double": 1
+   }
+  },
+  "weak_point": {
+   "Name": "약점공략",
+   "Desc": "상태이상이 걸린 적에게는 공격과 병법이 반드시 치명타가 된다.",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 500,
+   "Effects": {
+    "crit_vs_ailing": 1
+   }
   },
   "disrupt_prep": {
    "Name": "교란",

@@ -135,3 +135,18 @@ B09 거록에 문관으로 나오며 새로 그렸다. 옷은 전풍·심배와 
 B-allies 4칸 그림이 "꽃미남 아이돌 같다"고 해서, 북해의 유학자 선비로 다시 그렸다. 엄숙하지 않고 사람 좋은 인상(눈가 웃음 주름·온화한 눈매), 30대 후반, 짧은 콧수염과 턱수염. 관·녹색 도포는 그대로 두고 배경은 서재로 바꿨다. 두 안 중 A(죽간을 들고 손바닥을 펴 설명하는 자세)를 골랐고, B(공수하고 성문 길 배경)는 웃음이 능글맞아 버렸다.
 
 - sunqian: Sun Qian (Gongyou) of the Chinese Three Kingdoms era, a Confucian scholar-official from Beihai who studied the classics, Liu Bei's envoy and diplomat, about thirty-eight, of medium build (not fat, not thin). FACE: a gentle, warm, good-natured scholar's face, a broad kindly forehead, soft slightly downturned friendly eyes with faint smile lines at the corners, mild relaxed brows, a rounded nose, a calm closed mouth with the slightest kindly ease, a neat thin black moustache and a modest short black beard on the chin; the trustworthy, approachable look of a learned man who puts people at ease, serene but not stern. A black scholar's cap (jinxian guan) over a black topknot with a small gold hairpin. A plain deep green scholar's robe with ivory inner collar, a simple sash, wide sleeves. He holds a half-unrolled bundle of bamboo slips in one hand and gestures openly toward the viewer with the other palm up, as if politely explaining a matter, three-quarter view facing left. Background in light ink wash: a quiet study with a low writing desk, brush stand and stacked bamboo-slip books, faint. Waist-up portrait, square 1:1 image. This is a portrait for a serious Three Kingdoms strategy game: he must look dignified and likeable, a mature man's face that is clearly his own (the specific features described), NOT a pretty idol face, NOT a youthful flower-boy, NOT a model; never goofy, never fat, never sickly, no open grin or laughing. No large anime eyes. No text, no names, no seals, no watermark, no border. Style: East Asian ink wash painting with light watercolor tints, expressive calligraphic brush strokes, soft rice-paper texture background. Match the brushwork, palette and paper of the reference image.
+
+## mizhu·mifang·fanya·zangba·caobao — 미축·미방·번아·장패·조표 (2026-11-04, 단독 5장, `sheets/<키>-single.png` 1254px → 496px, 게임용 256px)
+문서의 외모 칸(미축 비단 관모·장부, 미방 철 투구·칼·방패, 번아 약초·부채, 장패 산도적 두목) 그대로 그렸고, 조표는 문서가 비어 있어 "원한 품은 늙은 무장"으로 정했다. 공통 꼬리: 허리 위 3/4 왼쪽, 정사각형, 아이돌·꽃미남 금지, 글자·인장·테두리 없음, 4번 수묵 담채 + 참조 이미지. 배경만 인물별로 다르다(곳간, 성문, 약초 선반, 산채, 문루).
+
+### 2026-11-04 고침
+- 미방: 첫 그림이 너무 미형이라 다시 그림. A안(`sheets/mifang-v2a.png`: 부잣집 티 나는 둥근 얼굴, 셈하는 눈, 커 보이는 투구)을 고르고, 손이 아기 손 같아 칼자루 쥔 손만 어른 손으로 고친 `sheets/mifang-v2c.png`를 원본으로 씀(B안 `mifang-v2b.png`는 안 고름).
+  A안 프롬프트 요지: "a plain, ordinary face with no heroic air, slightly puffy cheeks of a man raised in wealth, narrow heavy-lidded eyes … wary, calculating look, thin uneven mustache, small pinched mouth … iron helmet sitting a bit too large" + 공통 꼬리. "glancing sideways"를 넣었더니 고개까지 돌아갔다 — 다음부터 "몸과 얼굴이 같은 방향, 고개를 돌리지 않음"을 넣을 것.
+- 미축·번아·조표: 사용자 요청으로 좌우 반전(원본·`-single`·게임용 모두).
+
+## chendeng·xutan·zhugexuan·sunguan — 진등·허탐·제갈현·손관 (2026-11-04, 단독 4장, `sheets/<키>-single.png` 1254px → 496px, 게임용 256px)
+- 공통 꼬리: "Chest-up portrait, three-quarter view: body and face both turned toward the viewer's left, head NOT turned away from the body …", 아이돌·꽃미남·웃음·비만·병약 금지, 4번 수묵 담채 + 참조 이미지.
+- 진등: 서른 즈음 하비의 자신만만한 명사, 날카롭고 냉정하게 재는 눈, 검은 관, 청록 관복, 죽간 묶음(장면 시트 청록과 맞춤). 배경 관청과 들.
+- 허탐: 마흔 즈음 단양병 장수, 각진 얼굴·굵은 눈썹·완고한 표정, 검붉은 전포에 찰갑, 투구 없이 천으로 묶은 상투, 칼자루. 배경 막사와 깃발.
+- 제갈현: 사용자 요청 "문사 선비 같은 느낌". 마흔대 피난 중인 문인, 단정한 긴 수염, 검은 유건, 바랜 옥색 도포, 책 두루마리. 배경 길가 버들.
+- 손관: 서른 중반 태산 산적 두령, 볕에 탄 얼굴·광대뼈 흉터, 흙갈색 천으로 싼 머리, 기운 가죽 갑옷, 창. 장패(붉은 머리띠·큰 칼)와 구분. 배경 벼랑 위 산채.

@@ -61,9 +61,12 @@ func (g *Game) goalShapes(o core.Observation) []goalShape {
 	return out
 }
 
-// drawGoals strokes the objective guide over the ground tints, under scenery and units: a winning
-// mark the size of its cell, a losing one smaller, so a unit carrying both shows the two.
-func (f *Field) drawGoals(c *ebiten.Image) {
+// goalThrough is how strongly the guide shows again over scenery and units.
+const goalThrough = .55
+
+// drawGoals strokes the objective guide at alpha: over the ground tints under scenery and units, then
+// faintly over them. A winning mark is the size of its cell, a losing one smaller, so a unit carrying both shows the two.
+func (f *Field) drawGoals(c *ebiten.Image, alpha float64) {
 	z := 1.0
 	if f.renderZoom > 0 {
 		z = f.renderZoom
@@ -86,7 +89,7 @@ func (f *Field) drawGoals(c *ebiten.Image) {
 		p := &vector.Path{}
 		switch {
 		case s.cells != nil:
-			f.areaBorder(p, s.cells)
+			f.areaBorder(p, s.cells, k)
 		case s.duel > 0:
 			f.dashedDiamond(p, s.u, s.v, k, f.markLift(int(math.Round(s.u)), int(math.Round(s.v))))
 		default:
@@ -94,7 +97,7 @@ func (f *Field) drawGoals(c *ebiten.Image) {
 		}
 		op := &vector.DrawPathOptions{AntiAlias: true}
 		op.ColorScale.ScaleWithColor(col)
-		op.ColorScale.ScaleAlpha(float32(a))
+		op.ColorScale.ScaleAlpha(float32(a * alpha))
 		vector.StrokePath(c, p, &vector.StrokeOptions{Width: float32(3 * z), LineJoin: vector.LineJoinRound}, op)
 	}
 }
@@ -104,6 +107,8 @@ func (f *Field) drawGoals(c *ebiten.Image) {
 var (
 	cellCorners = [4][2]float64{{0, -16}, {32, 0}, {0, 16}, {-32, 0}}
 	cellSides   = [4][2]int{{0, -1}, {1, 0}, {0, 1}, {-1, 0}}
+	// cellCornersUV are the same corners in cells
+	cellCornersUV = [4][2]float64{{-.5, -.5}, {.5, -.5}, {.5, .5}, {-.5, .5}}
 )
 
 func (f *Field) diamond(p *vector.Path, u, v, k, lift float64) {
@@ -122,11 +127,11 @@ func (f *Field) diamond(p *vector.Path, u, v, k, lift float64) {
 // dashedDiamond is diamond in dashes, each edge cut into the same number of them so the corners stay drawn.
 func (f *Field) dashedDiamond(p *vector.Path, u, v, k, lift float64) {
 	x, y := f.Center(u, v)
-	const dashes = 4
+	const dashes, half = 2, .3 // long dashes: short ones break into dots a horse's legs hide
 	for i := range cellCorners {
 		a, b := cellCorners[i], cellCorners[(i+1)%4]
 		for j := range dashes {
-			t0, t1 := (float64(j)-.25)/dashes, (float64(j)+.25)/dashes
+			t0, t1 := (float64(j)-half)/dashes, (float64(j)+half)/dashes
 			for _, t := range [][2]float64{{max(0, t0), t1}, {1 + t0, 1}} {
 				if t[0] >= t[1] {
 					continue
@@ -140,20 +145,39 @@ func (f *Field) dashedDiamond(p *vector.Path, u, v, k, lift float64) {
 	}
 }
 
-// areaBorder traces the edges of the cells that no other cell of the area shares.
-func (f *Field) areaBorder(p *vector.Path, cells []content.Point) {
+// areaBorder traces the edges of the cells that no other cell of the area shares, drawn inside the area by
+// half of what k takes off a unit's diamond, so a win and a loss on the same area show as two rings.
+func (f *Field) areaBorder(p *vector.Path, cells []content.Point, k float64) {
+	d := (1 - k) / 2
+	in := func(c content.Point, n [2]int) bool { return containsCell(cells, c.X+n[0], c.Y+n[1]) }
+	// end moves a boundary corner along the side m it meets: in at an outer corner, out where the border turns inward
+	end := func(c content.Point, n, m [2]int) float64 {
+		switch {
+		case !in(c, m):
+			return -d
+		case in(c, [2]int{m[0] + n[0], m[1] + n[1]}):
+			return d
+		}
+		return 0
+	}
 	for _, c := range cells {
-		x, y := f.Center(float64(c.X), float64(c.Y))
 		lift := f.markLift(c.X, c.Y)
+		pt := func(du, dv float64) (float32, float32) {
+			x, y := f.Center(float64(c.X)+du, float64(c.Y)+dv)
+			rx, ry := f.renderPoint(x, y-lift)
+			return float32(rx), float32(ry)
+		}
 		for i, n := range cellSides {
-			if containsCell(cells, c.X+n[0], c.Y+n[1]) {
+			if in(c, n) {
 				continue
 			}
-			a, b := cellCorners[i], cellCorners[(i+1)%4]
-			ax, ay := f.renderPoint(x+a[0], y+a[1]-lift)
-			bx, by := f.renderPoint(x+b[0], y+b[1]-lift)
-			p.MoveTo(float32(ax), float32(ay))
-			p.LineTo(float32(bx), float32(by))
+			ma, mb := cellSides[(i+3)%4], cellSides[(i+1)%4]
+			a, b := cellCornersUV[i], cellCornersUV[(i+1)%4]
+			ea, eb := end(c, n, ma), end(c, n, mb)
+			ax, ay := pt(a[0]-float64(n[0])*d+float64(ma[0])*ea, a[1]-float64(n[1])*d+float64(ma[1])*ea)
+			bx, by := pt(b[0]-float64(n[0])*d+float64(mb[0])*eb, b[1]-float64(n[1])*d+float64(mb[1])*eb)
+			p.MoveTo(ax, ay)
+			p.LineTo(bx, by)
 		}
 	}
 }

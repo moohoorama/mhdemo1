@@ -358,12 +358,26 @@ STORY.update({
                 'light_infantry', tags('hair', ['#7a4e86', '#4e2e5a', '#2c1834'])
                 + tags('themeB', ['#b8484a', '#86282e', '#521a1e'])),
 })
+# 제갈현's nephews and niece (13장, 2026-11-04): children of a gentry house on the road, plain but decent and a little
+# worn (tools/unit3d/scene_people.py child): the boy in a slate-blue coat and trousers, the girl in a dusty rose robe
+# with red ribbons (themeC) in her buns; a dark brown belt and shoes (themeA), a white inner collar (iron)
+KID_COLORS = HAIR + tags('themeA', ['#8a6a4a', '#5e4630', '#3a2a1c']) + tags('iron', ['#f2ede0', '#d2c9b4', '#958b76'])
+STORY.update({
+    'child_boy': ('소년', SP.child('child_boy', SP.BOY_HEAD, cloth=U.RED, guard=U.RED, tabard=LEATHER, scarf=C.WHITE,
+                                 scarf_tail=.1),
+                  'light_infantry', KID_COLORS + tags('themeB', ['#8494a8', '#5a687e', '#384254'])),
+    'child_girl': ('소녀', SP.child('child_girl', SP.GIRL_HEAD, long_robe=True, cloth=U.RED, robe=U.RED, guard=U.RED,
+                                  tabard=LEATHER, scarf=C.WHITE, scarf_tail=.1),
+                   'light_infantry', KID_COLORS + tags('themeB', ['#c8a09a', '#9a706a', '#644644'])
+                   + tags('themeC', ['#d86a5a', '#b04438', '#742a24'])),
+})
 STORY_POSES = {k: ['sit'] for k in ('luzhi', 'huangfusong', 'xiahoudun', 'liuyan', 'taoqian', 'kongrong', 'zoujing',
                                      'gaoshun', 'caocao_hat', 'caocao_plain', 'zhugeliang', 'simayi', 'huangzhong',
                                      'zhangliao', 'zhouyu', 'luxun', 'lumeng', 'sunquan')}
 STORY_POSES['xiahoudun'] = ['sit', 'fist']
 STORY_POSES['jianyong'] = ['sit']
 STORY_POSES['taoqian'] = ['sit', 'bed']  # 도겸 on his sickbed (서주 양도, his last words)
+STORY_POSES.update(child_boy=['bow'], child_girl=['bow'])
 ACTION = {'jianyong': ('toast', 2), 'jailer': ('talk', 1), 'innkeeper': ('serve', 0), 'blacksmith': ('hammer', 0)}  # else the salute
 for _key, (_name, _look, _battle, _colors) in STORY.items():
     LOOKS[_key] = _look

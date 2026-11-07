@@ -139,8 +139,9 @@
    "X": 14,
    "Y": 10,
    "Facing": "SE",
-   "Group": "peng",
-   "Policy": "hold",
+   "Group": "refugees",
+   "Policy": "run",
+   "GoalArea": 2,
    "AI": true,
    "Faction": "han"
   },
@@ -149,8 +150,9 @@
    "X": 15,
    "Y": 11,
    "Facing": "NE",
-   "Group": "peng",
-   "Policy": "hold",
+   "Group": "refugees",
+   "Policy": "run",
+   "GoalArea": 2,
    "AI": true,
    "Faction": "han"
   },
@@ -170,8 +172,8 @@
    "Y": 16,
    "Facing": "SE",
    "Group": "refugees",
-   "Policy": "flee",
-   "GoalArea": 1,
+   "Policy": "run",
+   "GoalArea": 2,
    "AI": true,
    "Faction": "han"
   },
@@ -181,8 +183,8 @@
    "Y": 17,
    "Facing": "SE",
    "Group": "refugees",
-   "Policy": "flee",
-   "GoalArea": 1,
+   "Policy": "run",
+   "GoalArea": 2,
    "AI": true,
    "Faction": "han"
   },
@@ -192,8 +194,8 @@
    "Y": 18,
    "Facing": "SE",
    "Group": "refugees",
-   "Policy": "flee",
-   "GoalArea": 1,
+   "Policy": "run",
+   "GoalArea": 2,
    "AI": true,
    "Faction": "han"
   },
@@ -304,17 +306,6 @@
  },
  "Areas": [
   {
-   "ID": 1,
-   "Rect": {
-    "X": 17,
-    "Y": 20,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "서주성 서문",
-   "Description": "피난민이 들어가는 문"
-  },
-  {
    "ID": 2,
    "Rect": {
     "X": 18,
@@ -365,7 +356,7 @@
   {
    "ID": "caoren",
    "If": [
-    "round>=5"
+    "round>=3"
    ],
    "Do": [
     {
@@ -373,6 +364,7 @@
      "Spawns": [
       {
        "Character": "caoren",
+       "Rank": "commander",
        "X": 0,
        "Y": 0,
        "Facing": "SW",
@@ -389,7 +381,7 @@
        "Facing": "SW",
        "Group": "cao",
        "Policy": "march",
-       "Rank": "recruit",
+       "Rank": "troop",
        "Faction": "wei",
        "Side": "enemy",
        "GoalArea": 2
@@ -401,7 +393,7 @@
        "Facing": "SW",
        "Group": "cao",
        "Policy": "march",
-       "Rank": "recruit",
+       "Rank": "troop",
        "Faction": "wei",
        "Side": "enemy",
        "GoalArea": 2
@@ -413,7 +405,7 @@
        "Facing": "SW",
        "Group": "cao",
        "Policy": "march",
-       "Rank": "recruit",
+       "Rank": "troop",
        "Faction": "wei",
        "Side": "enemy",
        "GoalArea": 2
@@ -425,7 +417,7 @@
        "Facing": "SW",
        "Group": "cao",
        "Policy": "march",
-       "Rank": "recruit",
+       "Rank": "troop",
        "Faction": "wei",
        "Side": "enemy",
        "GoalArea": 2
@@ -437,7 +429,7 @@
        "Facing": "SW",
        "Group": "cao",
        "Policy": "march",
-       "Rank": "recruit",
+       "Rank": "troop",
        "Faction": "wei",
        "Side": "enemy",
        "GoalArea": 2
@@ -449,7 +441,7 @@
        "Facing": "SW",
        "Group": "cao",
        "Policy": "march",
-       "Rank": "recruit",
+       "Rank": "troop",
        "Faction": "wei",
        "Side": "enemy",
        "GoalArea": 2
@@ -462,6 +454,112 @@
       {
        "Actor": "caoren",
        "Text": "서쪽 다리를 건넌다. 성까지 길을 쓸어라."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "yuejin",
+   "If": [
+    "round>=5"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "yuejin",
+       "Rank": "commander",
+       "X": 18,
+       "Y": 1,
+       "Facing": "SW",
+       "Group": "yue",
+       "Policy": "march",
+       "Faction": "wei",
+       "Side": "enemy",
+       "GoalArea": 2
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 19,
+       "Y": 1,
+       "Facing": "SW",
+       "Group": "yue",
+       "Policy": "march",
+       "Rank": "troop",
+       "Faction": "wei",
+       "Side": "enemy",
+       "GoalArea": 2
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 19,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "yue",
+       "Policy": "march",
+       "Rank": "troop",
+       "Faction": "wei",
+       "Side": "enemy",
+       "GoalArea": 2
+      },
+      {
+       "Character": "troop_footman",
+       "X": 17,
+       "Y": 1,
+       "Facing": "SW",
+       "Group": "yue",
+       "Policy": "march",
+       "Rank": "troop",
+       "Faction": "wei",
+       "Side": "enemy",
+       "GoalArea": 2
+      },
+      {
+       "Character": "troop_footman",
+       "X": 18,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "yue",
+       "Policy": "march",
+       "Rank": "troop",
+       "Faction": "wei",
+       "Side": "enemy",
+       "GoalArea": 2
+      },
+      {
+       "Character": "troop_archer",
+       "X": 17,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "yue",
+       "Policy": "march",
+       "Rank": "troop",
+       "Faction": "wei",
+       "Side": "enemy",
+       "GoalArea": 2
+      },
+      {
+       "Character": "troop_archer",
+       "X": 20,
+       "Y": 1,
+       "Facing": "SW",
+       "Group": "yue",
+       "Policy": "march",
+       "Rank": "troop",
+       "Faction": "wei",
+       "Side": "enemy",
+       "GoalArea": 2
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuejin",
+       "Text": "동쪽 다리로 밀고 들어간다. 선봉은 내가 선다, 뒤처지지 마라!"
       }
      ]
     }
@@ -494,7 +592,135 @@
    "Outcome": "victory",
    "AllyResult": "stay",
    "EnemyResult": "retreat",
-   "Text": "우금이 장비의 사모를 받아 내지 못하고 진을 물렸다."
+   "Text": "우금이 장비의 사모를 받아 내지 못하고 진을 물렸다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "우금이 장비를 알아보다",
+     "Speech": "호로관에서 여포와 맞섰다는 장익덕이오? 조공께 들었소. 허나 오늘은 적이오.",
+     "Side": 1,
+     "Duration": 4.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 받아치다",
+     "Speech": "조공 사람이여? 그럼 가서 전하슈. 서주 백성 그만 건드리라고!",
+     "Side": 0,
+     "Duration": 3.7
+    },
+    {
+     "Kind": "approach",
+     "Title": "장비가 말을 몰아 달려들다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "우금이 장비의 사모를 받다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "우금이 흐트러짐 없이 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 거푸 내지르다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "우금이 몸을 낮춰 피하다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "우금이 틈을 노려 파고들다",
+     "Speech": "어림없슈!",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 사모로 맞받다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "우금이 한 걸음 밀리다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "우금이 칼을 고쳐 쥐고 베다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "장비가 힘을 실어 내려치다",
+     "Speech": "으라앗!",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "우금이 이를 악물고 버티다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "우금이 크게 밀리다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "우금이 진을 물리다",
+     "Speech": "……장군의 말은 전하겠소. 진을 물려라!",
+     "Side": 1,
+     "Duration": 2.7
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 외치다",
+     "Speech": "꼭 전하슈! 안 전하면 또 온다고!",
+     "Side": 0,
+     "Duration": 2.5
+    },
+    {
+     "Kind": "retreat",
+     "Title": "우금이 대오를 지키며 물러나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "우금이 퇴각하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    }
+   ]
   }
  ],
  "Armies": [

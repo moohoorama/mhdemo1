@@ -150,7 +150,8 @@
    "Y": 7,
    "Facing": "SW",
    "Group": "bridge",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Class": "orator"
   },
   {
    "Character": "troop_footman",
@@ -465,14 +466,18 @@
      "Lines": [
       {
        "Actor": "zhanghe",
-       "Text": "좋다. 하간의 장합이 직접 나간다. 나를 따르라!"
+       "Text": "좋다. 하간의 장합이 직접 나간다. 창병도 길목을 버려라. 성의 병사들도 모두 나와라, 총공격이다!"
       }
      ]
     },
     {
      "Kind": "ai",
      "Targets": [
-      "bridge"
+      "bridge",
+      "pikes",
+      "gaolan",
+      "reserve",
+      "fort"
      ],
      "Policy": "assault"
     }
@@ -662,6 +667,34 @@
      "Duration": 1.05
     },
     {
+     "Kind": "talk",
+     "Title": "장비가 투덜대다",
+     "Speech": "고놈, 금방 쓰러질 거 같더니 요리조리 잘도 피하는구먼.",
+     "Side": 0,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 안량의 말을 보다",
+     "Speech": "(가만… 저놈이 잘하는 게 아니라 말이 좋은겨!)",
+     "Side": 0,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 말을 탐내다",
+     "Speech": "야, 안량! 니 말 탐난다. 바꾸자!",
+     "Side": 0,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "talk",
+     "Title": "안량이 어이없어하다",
+     "Speech": "……싸우다 말을 바꾸자는 놈은 처음 본다!",
+     "Side": 1,
+     "Duration": 2.8
+    },
+    {
      "Kind": "block",
      "Title": "안량이 거듭 베다",
      "Speech": "",
@@ -706,9 +739,9 @@
     {
      "Kind": "talk",
      "Title": "장비가 외치다",
-     "Speech": "도망가긴 어딜 도망가유! 거기 서슈!",
+     "Speech": "목 말고 말이나 두고 가랑께!",
      "Side": 0,
-     "Duration": 2.2
+     "Duration": 2.4
     },
     {
      "Kind": "retreat",

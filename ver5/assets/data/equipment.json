@@ -6,7 +6,7 @@
    "Slot": "weapon",
    "Type": "sword",
    "Icon": "sword",
-   "Price": 300,
+   "Price": 1200,
    "Bonus": [
     1,
     0,
@@ -22,7 +22,7 @@
    "Slot": "weapon",
    "Type": "spear",
    "Icon": "spear",
-   "Price": 300,
+   "Price": 1200,
    "Bonus": [
     1,
     0,
@@ -38,7 +38,7 @@
    "Slot": "weapon",
    "Type": "bow",
    "Icon": "bow",
-   "Price": 300,
+   "Price": 1200,
    "Bonus": [
     1,
     0,
@@ -54,7 +54,7 @@
    "Slot": "weapon",
    "Type": "fan",
    "Icon": "fan",
-   "Price": 300,
+   "Price": 1200,
    "Bonus": [
     0,
     0,
@@ -70,7 +70,7 @@
    "Slot": "weapon",
    "Type": "fan",
    "Icon": "scroll",
-   "Price": 300,
+   "Price": 1200,
    "Bonus": [
     0,
     0,
@@ -86,7 +86,7 @@
    "Slot": "weapon",
    "Type": "fist",
    "Icon": "knuckles",
-   "Price": 300,
+   "Price": 1200,
    "Bonus": [
     1,
     0,
@@ -97,6 +97,7 @@
    ]
   },
   "gujeong_blade": {
+   "Owner": "liubei",
    "Name": "고정도",
    "Desc": "싸움터에서 수습한 명검. 날이 예리하다.",
    "Slot": "weapon",
@@ -171,7 +172,7 @@
    "Slot": "armor",
    "Type": "armor",
    "Icon": "leather",
-   "Price": 250,
+   "Price": 1000,
    "Bonus": [
     0,
     1,
@@ -187,7 +188,7 @@
    "Slot": "armor",
    "Type": "robe",
    "Icon": "robe",
-   "Price": 150,
+   "Price": 600,
    "Bonus": [
     0,
     1,
@@ -203,7 +204,7 @@
    "Slot": "accessory",
    "Type": "any",
    "Icon": "horse",
-   "Price": 400,
+   "Price": 1600,
    "Bonus": [
     0,
     0,
@@ -211,17 +212,15 @@
     1,
     0,
     0
-   ],
-   "Learn": [
-    "dash"
    ]
   },
   "jueying": {
+   "Owner": "guanyu",
    "Name": "절영",
    "Desc": "조조가 아끼던 검은 명마. 그림자조차 따라오지 못한다 해서 절영이다.",
    "Slot": "accessory",
    "Type": "any",
-   "Icon": "horse",
+   "Icon": "jueying",
    "Price": 0,
    "Bonus": [
     0,
@@ -230,9 +229,6 @@
     2,
     1,
     0
-   ],
-   "Learn": [
-    "dash"
    ],
    "Palette": {
     "horseSkin": [
@@ -245,7 +241,10 @@
      "#101014",
      "#060608"
     ]
-   }
+   },
+   "Traits": [
+    "gale"
+   ]
   },
   "ration_bag": {
    "Name": "군량낭",
@@ -253,7 +252,7 @@
    "Slot": "accessory",
    "Type": "any",
    "Icon": "ration",
-   "Price": 300,
+   "Price": 1200,
    "Bonus": [
     0,
     0,
@@ -262,7 +261,7 @@
     0,
     2
    ],
-   "Learn": [
+   "Traits": [
     "supply"
    ]
   },
@@ -272,7 +271,7 @@
    "Slot": "accessory",
    "Type": "any",
    "Icon": "map",
-   "Price": 300,
+   "Price": 1200,
    "Bonus": [
     0,
     0,
@@ -281,7 +280,7 @@
     0,
     0
    ],
-   "Learn": [
+   "Traits": [
     "rough_terrain"
    ]
   },
@@ -300,9 +299,7 @@
     0
    ],
    "Traits": [
-    "relief"
-   ],
-   "Learn": [
+    "relief",
     "medicine"
    ]
   },
@@ -321,9 +318,7 @@
     0
    ],
    "Traits": [
-    "exhort"
-   ],
-   "Learn": [
+    "exhort",
     "composure",
     "swiftness"
    ]
@@ -413,6 +408,7 @@
    ]
   },
   "fire_manual": {
+   "Owner": "liubei",
    "Name": "화계서",
    "Desc": "황보숭이 건넨 병서. 화계 책략을 쓰게 한다.",
    "Slot": "accessory",
@@ -430,7 +426,26 @@
     "fire"
    ]
   },
+  "sanlue": {
+   "Name": "삼략",
+   "Desc": "장량이 하비에서 노인에게 얻었다는 병법서. 화계·수계·지계를 넓게 펼친다.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Icon": "sanlue",
+   "Bonus": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "spread"
+   ]
+  },
   "qinglong_blade": {
+   "Owner": "guanyu",
    "Name": "청룡언월도",
    "Desc": "여든두 근의 언월도. 칼날에 용이 서렸다.",
    "Slot": "weapon",
@@ -449,6 +464,7 @@
    ]
   },
   "serpent_spear": {
+   "Owner": "zhangfei",
    "Name": "장팔사모",
    "Desc": "한 장 여덟 자, 뱀처럼 휜 날의 창.",
    "Slot": "weapon",
@@ -467,11 +483,12 @@
    ]
   },
   "baima": {
+   "Owner": "zhaoyun",
    "Name": "백마",
    "Desc": "공손찬 백마의종의 말 가운데 가장 빠른 흰 말. 연합 진영에서 한 약속으로 받았다.",
    "Slot": "accessory",
    "Type": "any",
-   "Icon": "horse",
+   "Icon": "baima",
    "Price": 0,
    "Bonus": [
     0,
@@ -480,9 +497,6 @@
     2,
     0,
     0
-   ],
-   "Learn": [
-    "dash"
    ],
    "Palette": {
     "horseSkin": [
@@ -495,9 +509,13 @@
      "#c8c8d0",
      "#9a9aa4"
     ]
-   }
+   },
+   "Traits": [
+    "gale"
+   ]
   },
   "bean_pouch": {
+   "Owner": "zhangfei",
    "Name": "콩주머니",
    "Desc": "공융이 군사들 배 곯지 않게 늘 지니던 주머니. 공격을 받고 버티면 콩을 하나 꺼내 먹는다.",
    "Slot": "accessory",

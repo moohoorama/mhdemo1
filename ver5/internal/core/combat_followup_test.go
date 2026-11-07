@@ -334,3 +334,36 @@ func TestHeavyBlowRaisesShares(t *testing.T) {
 		assert.InDelta(t, before+.3, share["archer1"], 1e-9)
 	})
 }
+
+func TestRangedCrossSplash(t *testing.T) {
+	setup := func(t *testing.T, mode string) []*Unit {
+		e, a, b := arena(t)
+		t1 := e.unit("troop#1")
+		t1.X, t1.Y, t1.HP = b.X+1, b.Y, 10000
+		e.data.Traits["cross_ranged_t"] = content.Trait{Name: "CrossRanged", Effects: map[string]float64{content.FxSplashCrossRanged: .5}}
+		with(e, a.ID, "cross_ranged_t")
+		s := e.basic()
+		s.Mode = mode
+		hit, _ := e.victims(a, b, s)
+		return hit
+	}
+	t.Run("a ranged attack hits the cross", func(t *testing.T) {
+		assert.Len(t, setup(t, content.ModeRanged), 2)
+	})
+	t.Run("a melee attack hits the target alone", func(t *testing.T) {
+		assert.Len(t, setup(t, content.ModeMelee), 1)
+	})
+	t.Run("the 3x3 one too", func(t *testing.T) {
+		e, a, b := arena(t)
+		t1 := e.unit("troop#1")
+		t1.X, t1.Y, t1.HP = b.X+1, b.Y+1, 10000
+		e.data.Traits["square_ranged_t"] = content.Trait{Name: "SquareRanged", Effects: map[string]float64{content.FxSplashSquareRanged: .5}}
+		with(e, a.ID, "square_ranged_t")
+		s := e.basic()
+		for mode, n := range map[string]int{content.ModeRanged: 2, content.ModeMelee: 1} {
+			s.Mode = mode
+			hit, _ := e.victims(a, b, s)
+			assert.Len(t, hit, n, mode)
+		}
+	})
+}

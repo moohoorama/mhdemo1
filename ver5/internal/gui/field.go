@@ -541,7 +541,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		op.ColorScale.ScaleWithColor(color.NRGBA(col)) // Highlight colors are straight alpha
 		vector.FillPath(c, paths[col], nil, op)
 	}
-	f.drawGoals(c)
+	f.drawGoals(c, 1)
 	f.shadows.Clear()
 	for _, l := range f.levels {
 		l.shadows.Clear()
@@ -720,6 +720,8 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			it.ghost(alpha)
 		}
 	}
+	// the guide again, faint, through a castle on its cell or a horse standing on it
+	f.drawGoals(c, goalThrough)
 	if !f.ShowExterior {
 		f.drawCloudShadows(clockMS)
 	}

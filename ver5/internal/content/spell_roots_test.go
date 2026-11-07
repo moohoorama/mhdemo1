@@ -5,15 +5,15 @@ import (
 	"testing"
 )
 
-// spellRoots are the spell roots classes teach; 견제 and 계략 are left to officers and stages for now.
-var spellRoots = []string{"fire", "water", "earth", "relief", "exhort"}
+// spellRoots are the spell roots classes teach.
+var spellRoots = []string{"fire", "water", "earth", "relief", "exhort", "hinder", "stratagem"}
 
 func TestSpellRootsAreLearnableAndTaught(t *testing.T) {
 	d, err := Load("../../assets/data")
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, root := range append(slices.Clone(spellRoots), "hinder", "stratagem") {
+	for _, root := range spellRoots {
 		if d.Traits[root].Cost < 1 {
 			t.Errorf("%s is not learnable", root)
 		}
@@ -35,7 +35,7 @@ func TestScholarClassesTeachASpellRoot(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, class := range []string{"scholar", "staff_officer", "strategist", "sorcerer", "mystic"} {
+	for _, class := range []string{"scholar", "staff_officer", "strategist", "orator", "diplomat", "sorcerer", "mystic"} {
 		has := false
 		for _, trait := range d.Classes[class].AllPool() {
 			has = has || slices.Contains(spellRoots, trait)

@@ -29,7 +29,7 @@ type Step struct {
 	Say    string // a speech bubble on the map, without the dialogue scroll
 	Wait   float64
 	Intro  string // an officer's first appearance
-	Effect string // petals, fire, smallfire, smoke, steam, birds, glint, none
+	Effect string // petals, fire, smallfire, smoke, steam, birds, glint, flash, halberd, halberd_throw, none
 	At     []float64
 	Shake  float64 // seconds of screen shake
 	Cam    string  // look at this actor
@@ -41,8 +41,22 @@ type Step struct {
 	Pose   string  // the motion the actor rests in from now on (sit, lie, kneel …); "idle" stands again
 	Patrol []float64
 	// walk to [u, v] and back, over and over, without holding up the beats (a sentry); a Move ends it
-	Chatter string   // short bubbles the actor keeps saying now and then, "|" between them; "-" stops
-	If      []string // Ambient only: the step runs when these story conditions hold (carts there only once won back)
+	Chatter   string    // short bubbles the actor keeps saying now and then, "|" between them; "-" stops
+	If        []string  // Ambient only: the step runs when these story conditions hold (carts there only once won back)
+	Shoot     *Shoot    // the actor looses an arrow at the stage's halberd and the camera chases it
+	Free      bool      // the walk goes on without holding up the beats: people talking as they ride
+	Stop      bool      // the actor stops walking at the next whole cell
+	Follow    string    // the camera keeps on this actor from now on ("-" stops)
+	Place     []float64 // the actor is at [u, v] at once (in the dark of a fade: time has passed)
+	IfWalking bool      // the step runs only while its actor is still on its way (a line for players who read fast)
+}
+
+// Shoot is an arrow loosed at the halberd standing on the stage (the scene's halberd effect), flown over the map with
+// the camera scrolling after it.
+type Shoot struct {
+	Time float64 // seconds in the air (1 when 0)
+	Peak float64 // how high the arc climbs above its ends, in canvas px (60 when 0)
+	Say  string  // a bubble over the shooter while the bow is held drawn
 }
 
 // Actor is where a cast member starts. A cast key with "#" ("병사#2") is an extra: no name plate, no portrait;
@@ -52,10 +66,11 @@ type Actor struct {
 	Face    string
 	Faction string
 	Sprite  string
-	Off     bool   // starts off the stage, until a step Enters it
-	Hold    bool   // never turns by itself toward whoever speaks
-	Pose    string // the motion it rests in (sit, lie, kneel …) instead of standing idle
-	Stay    bool   // on an explore walk's own stage: stands where the walk left it, with no At or Face of its own
+	Off     bool     // starts off the stage, until a step Enters it
+	Hold    bool     // never turns by itself toward whoever speaks
+	Pose    string   // the motion it rests in (sit, lie, kneel …) instead of standing idle
+	Stay    bool     // on an explore walk's own stage: stands where the walk left it, with no At or Face of its own
+	If      []string // stands only when these story conditions hold (an officer who lived through an earlier battle)
 }
 
 // Scene is one stretch of story nodes staged on one map.
@@ -93,29 +108,37 @@ func Load(dir string) (*Book, error) {
 	sort.Strings(paths)
 	b := &Book{Scenes: map[string]*Scene{}, byNode: map[string]*Scene{}}
 	for _, p := range paths {
-		raw, err := os.ReadFile(p)
-		if err != nil {
+		if err := b.Add(p); err != nil {
 			return nil, err
-		}
-		var f file
-		if err := json.Unmarshal(raw, &f); err != nil {
-			return nil, fmt.Errorf("%s: %w", filepath.Base(p), err)
-		}
-		for id, s := range f.Scenes {
-			if _, dup := b.Scenes[id]; dup {
-				return nil, fmt.Errorf("%s: scene %s is defined twice", filepath.Base(p), id)
-			}
-			s.ID = id
-			b.Scenes[id] = s
-			for _, n := range s.Nodes {
-				if other := b.byNode[n]; other != nil {
-					return nil, fmt.Errorf("node %s is in scenes %s and %s", n, other.ID, id)
-				}
-				b.byNode[n] = s
-			}
 		}
 	}
 	return b, nil
+}
+
+// Add reads one more scene file into the book, for a trial chapter kept outside assets/scenes.
+func (b *Book) Add(path string) error {
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	var f file
+	if err := json.Unmarshal(raw, &f); err != nil {
+		return fmt.Errorf("%s: %w", filepath.Base(path), err)
+	}
+	for id, s := range f.Scenes {
+		if _, dup := b.Scenes[id]; dup {
+			return fmt.Errorf("%s: scene %s is defined twice", filepath.Base(path), id)
+		}
+		s.ID = id
+		b.Scenes[id] = s
+		for _, n := range s.Nodes {
+			if other := b.byNode[n]; other != nil {
+				return fmt.Errorf("node %s is in scenes %s and %s", n, other.ID, id)
+			}
+			b.byNode[n] = s
+		}
+	}
+	return nil
 }
 
 // For is the scene node is staged in and the node's place in it; nil when it has none.

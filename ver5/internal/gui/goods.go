@@ -8,6 +8,55 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
+// approach moves shown halfway to real each call and the last step of one all the way, so that it arrives.
+func approach(shown, real int) int {
+	next := (shown + real) / 2
+	if next == shown {
+		return real
+	}
+	return next
+}
+
+// tickMoney counts the money shown toward the real sum.
+func (g *Game) tickMoney() {
+	if g.S.Engine == nil || g.S.Screen != "playing" {
+		g.moneyReady = false
+		return
+	}
+	real := g.S.View().Money
+	if !g.moneyReady {
+		g.moneyShown, g.moneyReady = real, true
+		return
+	}
+	g.moneyShown = approach(g.moneyShown, real)
+}
+
+// moneyLabel draws the money as the screen counts it with its right edge at right: plain while it holds, red with
+// a dark outline while it falls and gold with one while it rises.
+func (g *Game) moneyLabel(dst *ebiten.Image, right, y, size float64) {
+	real := g.S.View().Money
+	shown := real
+	if g.moneyReady {
+		shown = g.moneyShown
+	}
+	s := fmt.Sprintf("돈 %d", shown)
+	x := right - g.width(s, size)
+	c := color.Color(ink)
+	switch {
+	case shown > real:
+		c = bad
+	case shown < real:
+		c = gold
+	default:
+		g.label(dst, s, x, y, size, c)
+		return
+	}
+	for _, d := range [][2]float64{{-1, -1}, {0, -1}, {1, -1}, {-1, 0}, {1, 0}, {-1, 1}, {0, 1}, {1, 1}} {
+		g.label(dst, s, x+d[0], y+d[1], size, color.NRGBA{A: 230})
+	}
+	g.label(dst, s, x, y, size, c)
+}
+
 // goodsRow is one kind of thing in a shop's or the party's table.
 type goodsRow struct {
 	id, name, kind string

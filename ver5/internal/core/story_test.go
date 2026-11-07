@@ -190,6 +190,29 @@ func TestJoiningOfficerCatchesUpWithTheStory(t *testing.T) {
 	assert.Equal(t, 1100, o.Points, "100 per level like the brothers")
 }
 
+func TestLeavingOfficerGoesWithHisOwnGearOnly(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	d.Nodes = append(d.Nodes,
+		content.Node{ID: "test-join", Kind: "join", Character: "jianyong", Event: "join-test", Next: "test-say"},
+		content.Node{ID: "test-say", Kind: "say", Speaker: "jianyong", Text: "잘 있게.", Next: "test-leave"},
+		content.Node{ID: "test-leave", Kind: "leave", Character: "jianyong", Event: "leave-test", Next: "c07-battle"})
+	d.Campaign.Start = "test-join"
+	e := New(d, 1)
+	require.NotNil(t, e.char("jianyong"))
+	require.Contains(t, e.state.Deployment, "jianyong")
+	e.char("jianyong").Equipment["accessory"] = "medicine_pouch"
+	e.char("liubei").Deputy = "jianyong"
+	apply(t, e, Command{Kind: "next"})
+
+	assert.Nil(t, e.char("jianyong"))
+	assert.NotContains(t, e.state.Deployment, "jianyong")
+	assert.Empty(t, e.char("liubei").Deputy)
+	assert.Equal(t, 1, e.state.Warehouse["medicine_pouch"], "a piece the party gave him stays")
+	assert.Zero(t, e.state.Warehouse["short_bow"], "his own bow goes with him")
+	assert.Equal(t, "leave", e.events[len(e.events)-1].Kind)
+}
+
 func TestOfficersBelowTheStageLevelAreNotRaisedAtTheSortie(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)

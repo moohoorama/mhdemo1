@@ -56,7 +56,7 @@
     "c11-e3": [
      [
       [{"Actor": "공손찬", "Pose": "idle"}, {"Actor": "공손찬", "Face": "SW"}],
-      [{"Actor": "공손찬", "Play": "attack"}],
+      [{"Actor": "공손찬", "Face": "SW"}, {"Actor": "공손찬", "Pose": "draw"}],
       [{"Actor": "유비", "Move": [2, 3]}, {"Actor": "유비", "Face": "NE"}]
      ]
     ],
@@ -70,7 +70,7 @@
     "c11-e5": [
      [
       [{"Actor": "진진", "Face": "SW"}, {"Actor": "진진", "Exit": true}, {"Actor": "관우", "After": 0.4, "Face": "SW"}, {"Actor": "관우", "After": 0.4, "Exit": true}],
-      [{"Actor": "공손찬", "Face": "SE"}, {"Actor": "공손찬", "Pose": "sit"}, {"Actor": "유비", "Move": [1, 3]}, {"Actor": "유비", "Face": "NE"}]
+      [{"Actor": "공손찬", "Pose": "idle"}, {"Actor": "공손찬", "Face": "SE"}, {"Actor": "공손찬", "Pose": "sit"}, {"Actor": "유비", "Move": [1, 3]}, {"Actor": "유비", "Face": "NE"}]
      ]
     ]
    }

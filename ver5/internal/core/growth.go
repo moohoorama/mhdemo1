@@ -27,9 +27,7 @@ func (e *Engine) actionXPAmount(u, v *Unit, spell, defeated bool) int {
 	a, b := e.char(u.Character), e.char(v.Character)
 	factor := clamp(1+R.ExpLevelStep*float64(b.Level-a.Level), R.ExpMinFactor, R.ExpMaxFactor)
 	n := R.ExpAction * XPPerLevel / 100 * factor * math.Pow(R.ExpGrowth, float64(b.Level-a.Level))
-	if p := e.state.XPPct; p > 0 {
-		n *= float64(p) / 100
-	}
+	n *= e.xpScale()
 	if spell {
 		n *= R.ExpSpell
 	}
@@ -54,9 +52,7 @@ func (e *Engine) supportXP(u, q *Unit) int {
 	diff := float64(e.char(q.Character).Level - e.char(u.Character).Level)
 	factor := clamp(1+R.ExpLevelStep*diff, R.ExpMinFactor, R.ExpMaxFactor)
 	n := float64(XPPerLevel*R.ExpSupportPercent/100) * factor * math.Pow(R.ExpGrowth, diff)
-	if p := e.state.XPPct; p > 0 {
-		n *= float64(p) / 100
-	}
+	n *= e.xpScale()
 	return max(1, int(math.Round(n)))
 }
 func (e *Engine) xp(id string, n int) {
@@ -98,8 +94,39 @@ func (e *Engine) canLearn(c *Character) bool {
 	return false
 }
 
-// learn spends a character's points on a trait while its learning window is open, or closes the window.
-// The window closes by itself when nothing affordable is left.
+// CanLearn reports whether the officer may open the learning window now: the walk or a preparation is on, and
+// the officer is a living player officer with points for a trait.
+func (e *Engine) CanLearn(id string) bool {
+	o := e.char(id)
+	kind := e.data.Node(e.state.Node).Kind
+	inPrep := (e.state.Phase == "scenario" || e.Deploying()) && (kind == "battle" || kind == "explore")
+	return inPrep && o != nil && !o.Dead && e.def(o).Playable && e.canLearn(o)
+}
+
+// Learnable lists the traits the officer may learn now: not held, prerequisites met (cost aside).
+func (e *Engine) Learnable(id string) []string {
+	if o := e.char(id); o != nil {
+		return e.learnable(o)
+	}
+	return nil
+}
+
+// openLearning opens the learning window of an officer outside battle, so the points can be spent whenever the
+// party is in camp or on the walk, not only after a level-up.
+func (e *Engine) openLearning(c Command) error {
+	if e.state.Phase != "scenario" && !e.Deploying() {
+		return fail("WrongPhase")
+	}
+	if !e.CanLearn(c.Actor) {
+		return fail("NothingToLearn")
+	}
+	e.state.Learning = append(e.state.Learning, c.Actor)
+	return nil
+}
+
+// learn spends a character's points on a trait while its learning window is open or whenever CanLearn allows it
+// (the trait list of the party window), or closes the window. The window closes by itself when nothing affordable
+// is left.
 func (e *Engine) learn(c Command) error {
 	i := -1
 	for k, id := range e.state.Learning {
@@ -107,7 +134,7 @@ func (e *Engine) learn(c Command) error {
 			i = k
 		}
 	}
-	if i < 0 {
+	if i < 0 && (c.Kind != "learn" || !e.CanLearn(c.Actor)) {
 		return fail("WrongPhase")
 	}
 	o := e.char(c.Actor)
@@ -123,10 +150,17 @@ func (e *Engine) learn(c Command) error {
 		o.Learned = append(o.Learned, c.Trait)
 		e.emit("learn", o.ID, c.Trait, 0)
 	}
-	if c.Kind == "learn_close" || !e.canLearn(o) {
+	if i >= 0 && (c.Kind == "learn_close" || !e.canLearn(o)) {
 		e.state.Learning = append(e.state.Learning[:i], e.state.Learning[i+1:]...)
 	}
 	return nil
+}
+
+// joinAt brings an officer who joins to the level the story has reached, in the class that level reaches on
+// the officer's own promotion path.
+func (e *Engine) joinAt(o *Character, level int) {
+	e.raiseTo(o, level)
+	o.Class = e.promotedAt(o.Def, o.Class, o.Level)
 }
 
 // raiseTo lifts an officer who joins below the level the story has reached, with the trait points the

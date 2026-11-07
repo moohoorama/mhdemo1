@@ -87,8 +87,12 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		return fmt.Sprintf("%d턴 · %s 차례", e.Amount, g.armyName(e.Target, e.Text)), false
 	case "join":
 		return g.name(e.Target) + " 합류", true
+	case "leave":
+		return g.name(e.Target) + " 떠남", true
 	case "grant":
 		return fmt.Sprintf("%s ×%d 획득", g.itemName(e.Target), e.Amount), true
+	case "buy":
+		return fmt.Sprintf("%s ×%d 구매", g.itemName(e.Target), e.Amount), true
 	case "deputy":
 		return fmt.Sprintf("%s 부관: %s", a, t), false
 	case "undeputy":

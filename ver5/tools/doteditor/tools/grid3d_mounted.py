@@ -184,8 +184,8 @@ def convert(a):
                     G.write_grid(path, denoise.clean(read(path), protect)[0])
                     continue
                 out = [['.'] * w for _ in range(h)]
-                for y, row in enumerate(captured[-1]):
-                    for x, c in enumerate(row):
+                for y, line in enumerate(captured[-1]):
+                    for x, c in enumerate(line):
                         if c == '.':
                             continue
                         if c not in KEY2TAG:

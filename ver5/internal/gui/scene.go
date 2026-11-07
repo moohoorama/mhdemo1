@@ -50,6 +50,9 @@ type scene struct {
 	nightfall bool                    // darkening to black before a beat changes the time of day
 	patrol    map[string]*patrol      // sentries walking to and fro
 	chatter   map[string]*chatterLine // extras murmuring now and then
+	shot      *sceneShot              // an arrow chased by the camera (a Shoot step)
+	free      map[string]bool         // walkers whose walk does not hold up the beats
+	follow    string                  // the actor the camera keeps on
 }
 
 type patrol struct {
@@ -67,6 +70,7 @@ type sceneEffect struct {
 	kind string
 	u, v float64
 	t    float64
+	hit  float64 // seconds since an arrow struck it (a halberd); < 0 not struck
 }
 
 type sceneProp struct {
@@ -139,10 +143,12 @@ func (g *Game) openScene(def *scenes.Scene) {
 	g.field = NewField(g.assets, g.assets.Maps[def.Map])
 	s := &scene{def: def, actors: map[string]*unitVis{}, extra: map[string]bool{}, hold: map[string]bool{}, held: map[string]bool{},
 		paths: map[string][][2]float64{}, speed: map[string]float64{}, exits: map[string]bool{}, plays: map[string]string{},
-		emotes: map[string]*emote{}, looks: map[string]*look{}, fade: 1, patrol: map[string]*patrol{}, chatter: map[string]*chatterLine{}}
+		emotes: map[string]*emote{}, looks: map[string]*look{}, fade: 1, patrol: map[string]*patrol{}, chatter: map[string]*chatterLine{},
+		free: map[string]bool{}}
 	g.scene = s
 	for key, a := range def.Cast {
 		if v := g.castActor(key, a); v != nil {
+			v.gone = v.gone || g.S != nil && !g.S.Engine.Holds(a.If)
 			s.actors[key] = v
 			s.extra[key], s.hold[key] = scenes.Extra(key), a.Hold
 		}
@@ -264,7 +270,21 @@ func (g *Game) updateScene(dt float64) {
 		}
 	}
 	for i := range s.effects {
-		s.effects[i].t += dt
+		e := &s.effects[i]
+		if e.kind == "halberd" && e.t < halberdDrop && e.t+dt >= halberdDrop {
+			s.shake = math.Max(s.shake, .3)
+		}
+		if e.kind == "halberd_throw" && e.t < halberdThrow() && e.t+dt >= halberdThrow() {
+			s.shake = math.Max(s.shake, .3)
+			for key := range s.free { // the riders charging at each other pull up where it lands
+				s.paths[key] = nil
+				delete(s.free, key)
+			}
+		}
+		e.t += dt
+		if e.hit >= 0 {
+			e.hit += dt
+		}
 	}
 	for k, e := range s.emotes {
 		if e.t += dt; e.t > e.life {
@@ -289,9 +309,13 @@ func (g *Game) updateScene(dt float64) {
 			c.t = chatEvery + float64((len(key)*13+c.i*7)%10)/10
 		}
 	}
+	if a := s.actors[s.follow]; a != nil {
+		s.camU, s.camV = a.u, a.v
+	}
 	tx, ty := g.sceneCam()
 	ease := math.Min(1, dt*camEase)
 	g.camX, g.camY = g.camX+(tx-g.camX)*ease, g.camY+(ty-g.camY)*ease
+	g.updateShot(dt)
 	if !g.sceneBusy() {
 		return
 	}
@@ -328,7 +352,7 @@ func (g *Game) updateScene(dt float64) {
 		return
 	}
 	for key, v := range s.actors {
-		if s.patrol[key] == nil && (len(s.paths[key]) > 0 || v.walk != nil) || s.plays[key] != "" && v.anim == s.plays[key] {
+		if s.patrol[key] == nil && !s.free[key] && (len(s.paths[key]) > 0 || v.walk != nil) || s.plays[key] != "" && v.anim == s.plays[key] {
 			return
 		}
 	}
@@ -356,6 +380,9 @@ func changesTime(group []scenes.Step) bool {
 func (g *Game) startStep(st scenes.Step) {
 	s := g.scene
 	v := s.actors[st.Actor]
+	if st.IfWalking && (v == nil || v.walk == nil && len(s.paths[st.Actor]) == 0) {
+		return
+	}
 	if st.Wait > 0 {
 		s.wait = math.Max(s.wait, st.Wait)
 	}
@@ -364,6 +391,12 @@ func (g *Game) startStep(st scenes.Step) {
 		s.wait = math.Max(s.wait, g.intro.length)
 	}
 	g.stageStep(st)
+	if st.Effect == "halberd_throw" { // the beats wait until it has landed
+		s.wait = math.Max(s.wait, halberdThrow())
+	}
+	if st.Shoot != nil {
+		g.startShot(v, st)
+	}
 	if st.Shake > 0 {
 		s.shake = math.Max(s.shake, st.Shake)
 	}
@@ -372,6 +405,16 @@ func (g *Game) startStep(st scenes.Step) {
 	}
 	if len(st.Enter) == 2 || len(st.Move) == 2 || st.Exit {
 		g.walkStep(v, st)
+	}
+	if st.Stop {
+		s.paths[v.id] = nil
+		delete(s.free, v.id)
+	}
+	if len(st.Place) == 2 {
+		v.u, v.v, v.walk, v.gone = st.Place[0], st.Place[1], nil, false
+		s.paths[v.id] = nil
+		v.lift = g.field.Lift(int(v.u), int(v.v))
+		v.play(v.rest())
 	}
 	if st.Face != "" {
 		v.dir, s.held[st.Actor] = st.Face, true
@@ -423,11 +466,11 @@ func (g *Game) stageStep(st scenes.Step) {
 	case st.Effect == "none":
 		s.effects = nil
 	case len(st.At) == 2:
-		s.effects = append(s.effects, sceneEffect{kind: st.Effect, u: st.At[0], v: st.At[1]})
+		s.effects = append(s.effects, sceneEffect{kind: st.Effect, u: st.At[0], v: st.At[1], hit: -1})
 	case v != nil:
-		s.effects = append(s.effects, sceneEffect{kind: st.Effect, u: v.u, v: v.v})
+		s.effects = append(s.effects, sceneEffect{kind: st.Effect, u: v.u, v: v.v, hit: -1})
 	default:
-		s.effects = append(s.effects, sceneEffect{kind: st.Effect})
+		s.effects = append(s.effects, sceneEffect{kind: st.Effect, hit: -1})
 	}
 	if st.Effect != "" && g.field != nil {
 		g.field.night.fires = g.field.night.fires[:0]
@@ -468,6 +511,12 @@ func (g *Game) stageStep(st scenes.Step) {
 			t = ""
 		}
 		g.setSceneTime(t)
+	}
+	switch {
+	case st.Follow == "-":
+		s.follow = ""
+	case st.Follow != "":
+		s.follow = st.Follow
 	}
 	if a := s.actors[st.Cam]; a != nil {
 		s.camU, s.camV = a.u, a.v
@@ -511,6 +560,10 @@ func (g *Game) walkStep(v *unitVis, st scenes.Step) {
 		s.speed[v.id] = st.Speed
 	}
 	s.exits[v.id] = st.Exit
+	if s.free == nil {
+		s.free = map[string]bool{}
+	}
+	s.free[v.id] = st.Free
 }
 
 // settleNode puts the stage where a node's beats leave it, at once: for a node entered in the middle of a scene.
@@ -617,6 +670,7 @@ func (g *Game) skipBeats() {
 			}
 		}
 		s.paths, s.plays, s.exits, s.speed, s.pending, s.wait = map[string][][2]float64{}, map[string]string{}, map[string]bool{}, map[string]float64{}, nil, 0
+		g.skipShot()
 		s.gi++
 		s.begun = false
 	}
@@ -696,7 +750,7 @@ func (g *Game) addressee(name string) string {
 	return ""
 }
 
-// drawScene draws the scene map and its actors, the speakers' bubbles and emotes.
+// drawScene draws the scene map and its actors, the speakers' bubbles and emotes; the caller darkens it by the fade.
 func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	s := g.scene
 	actors := make([]*unitVis, 0, len(s.actors))
@@ -752,7 +806,12 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 			}
 		}
 		g.drawSceneEffects(dst)
+		g.drawShot(dst)
 		g.drawGlow(dst)
+		if a := g.sceneFlash(); a > 0 {
+			rect(dst, 0, 0, float32(worldW), float32(worldH), color.NRGBA{255, 255, 255, uint8(255 * a)})
+		}
+		g.drawShotScreen(dst)
 	})
 	type balloon struct {
 		name, mark string
@@ -779,7 +838,6 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	for _, b := range balloons {
 		g.bubble(dst, b.v, b.mark, b.talking)
 	}
-	g.blackOut(dst, s.fade)
 }
 
 // drawBackdrop lays the scene's far picture (mountains, a pass, a burning city) across the top of the screen,
@@ -886,6 +944,10 @@ func (g *Game) drawSceneEffects(dst *ebiten.Image) {
 			g.smoke(dst, x, y+20, e.t, 1, .45)
 		case "birds":
 			g.birds(dst, x, y, e.t)
+		case "halberd":
+			g.drawPlantedHalberd(dst, x, y, e.t)
+		case "halberd_throw":
+			g.drawThrownHalberd(dst, x, y, e.t, e.hit)
 		case "glint":
 			for i := 0; i < 3; i++ {
 				if k := e.t - float64(i)*.45; k >= 0 && k < .3 {
@@ -959,4 +1021,17 @@ func (g *Game) drawCanvasSprite(dst *ebiten.Image, s Sprite, x, y, a float64) {
 	op.GeoM.Scale(g.zoom, g.zoom)
 	op.GeoM.Translate(math.Round(px), math.Round(py))
 	drawScaled(dst, s.Image, op)
+}
+
+// AddScenes reads one more scene file, for a trial chapter staged outside assets/scenes (cmd/_scene15).
+func (g *Game) AddScenes(path string) error {
+	if g.scenes == nil {
+		return fmt.Errorf("no scene book")
+	}
+	return g.scenes.Add(path)
+}
+
+// RestartScene drops the running scene, so the next node opens its scene afresh (cmd/_scene15 jumping within a scene).
+func (g *Game) RestartScene() {
+	g.scene, g.shownNode, g.intro = nil, "", nil
 }

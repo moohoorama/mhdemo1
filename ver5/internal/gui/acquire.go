@@ -81,7 +81,7 @@ func (g *Game) drawAcquire(dst *ebiten.Image, m *modal) {
 	g.addButton(full, "", func() {})
 	n := len(m.gains)
 	w := n*acqCardW + (n-1)*acqCardGap
-	box := image.Rect(Width/2-w/2-24, 190, Width/2+w/2+24, acqCardTop+acqCardH+110)
+	box := image.Rect(Width/2-w/2-24, 190, Width/2+w/2+24, acqCardTop+g.acqCardHeight(m)+110)
 	g.popup(dst, fmt.Sprintf("modal:%p", m), 150, Width, Height, box, func(dst *ebiten.Image) { g.acquireCards(dst, m) })
 	if m.piece == "" {
 		return
@@ -123,6 +123,7 @@ func (g *Game) acquireCards(dst *ebiten.Image, m *modal) {
 	}
 	g.centered(dst, title, cx, 196, 34, gold)
 	n := len(m.gains)
+	cardH := g.acqCardHeight(m)
 	x0 := uiW/2 - (n*acqCardW+(n-1)*acqCardGap)/2
 	for i, gn := range m.gains {
 		p := phase(m.t, acqFirst+acqEach*float64(i), acqTurn)
@@ -130,16 +131,38 @@ func (g *Game) acquireCards(dst *ebiten.Image, m *modal) {
 			continue
 		}
 		up := bezier(.3, 1.4, .5, 1, p)
-		r := image.Rect(x0+i*(acqCardW+acqCardGap), acqCardTop, x0+i*(acqCardW+acqCardGap)+acqCardW, acqCardTop+acqCardH).Add(image.Pt(0, int(24*(1-up))))
+		r := image.Rect(x0+i*(acqCardW+acqCardGap), acqCardTop, x0+i*(acqCardW+acqCardGap)+acqCardW, acqCardTop+cardH).Add(image.Pt(0, int(24*(1-up))))
 		g.acquireCard(dst, r, gn, min(1, p*2), m)
 	}
 	done := phase(m.t, acqFirst+acqEach*float64(n-1)+acqTurn, .3)
 	if done <= 0 {
 		return
 	}
-	g.centered(dst, "패를 누르면 자세히 볼 수 있습니다", cx, acqCardTop+acqCardH+16, 13, fade(muted, done))
-	g.btn(dst, image.Rect(uiW/2-80, acqCardTop+acqCardH+48, uiW/2+80, acqCardTop+acqCardH+86), "", g.closeModal)
-	g.centered(dst, "확인", cx, acqCardTop+acqCardH+56, 15, ink)
+	g.centered(dst, "패를 누르면 자세히 볼 수 있습니다", cx, float64(acqCardTop+cardH+16), 13, fade(muted, done))
+	g.btn(dst, image.Rect(uiW/2-80, acqCardTop+cardH+48, uiW/2+80, acqCardTop+cardH+86), "", g.closeModal)
+	g.centered(dst, "확인", cx, float64(acqCardTop+cardH+56), 15, ink)
+}
+
+// acqCardHeight is the height every card of the window takes: the tallest card's lines below the 200 px head
+// (an officer's traits or an equipment's chips at 28 px, an item's use at 18 px), and at least acqCardH.
+func (g *Game) acqCardHeight(m *modal) int {
+	h := acqCardH
+	for _, gn := range m.gains {
+		lines, step := 0, 28
+		switch {
+		case gn.officer:
+			lines = len(g.S.Data.Characters[gn.id].Traits)
+		case gn.id == content.Money:
+		default:
+			if eq, ok := g.S.Data.Equipment[gn.id]; ok {
+				lines = len(itemChips(eq.Traits, eq.Learn, eq.Skills))
+			} else if it, ok := g.S.Data.Items[gn.id]; ok {
+				lines, step = strings.Count(wrapWidth(it.Desc, g.face(12), acqCardW-24), "\n")+1, 18
+			}
+		}
+		h = max(h, 200+lines*step+10)
+	}
+	return h
 }
 
 // acquireCard is one card at alpha a: the picture, the name and count, the kind, and the equipment's traits or the
@@ -272,7 +295,7 @@ func (g *Game) officerWindow(dst *ebiten.Image, m *modal, r image.Rectangle) {
 	g.portrait(dst, m.piece, "", x, y, 96)
 	g.label(dst, c.Name, x+116, y+4, 26, gold)
 	g.label(dst, g.officerRank(m.piece), x+116, y+42, 15, ink)
-	g.label(dst, wrapWidth(c.Biography, g.face(14), float64(r.Dx()-172)), x+116, y+66, 14, muted)
+	g.label(dst, wrapWidth(c.Biography, g.face(14), float64(r.Dx()-200)), x+116, y+66, 14, muted)
 	y += 132
 	section := func(title string, at float64) {
 		g.label(dst, title, at, y, 16, gold)
@@ -302,14 +325,23 @@ func (g *Game) officerWindow(dst *ebiten.Image, m *modal, r image.Rectangle) {
 	for _, t := range c.Traits {
 		ch := equipChip{"trait", t}
 		g.chip(dst, ch, x, y, func() { m.chip = ch })
-		desc := wrapWidth(g.traitDesc(t), g.face(14), float64(r.Dx()-56-180))
-		g.label(dst, desc, x+180, y, 14, ink)
-		y += max(34, float64(strings.Count(desc, "\n")+1)*14*1.45+12)
+		g.label(dst, g.traitRowDesc(t), x+180, y, 14, ink)
+		y += float64(g.traitRowHeight(t))
 	}
 	if len(c.Traits) == 0 {
 		g.label(dst, "없음", x, y, 15, ink)
 	}
 	g.centered(dst, "창 밖을 누르면 닫힙니다", float64(r.Min.X+r.Dx()/2), float64(r.Max.Y-34), 13, muted)
+}
+
+// traitRowDesc is a trait's description wrapped to the officer window's trait column.
+func (g *Game) traitRowDesc(t string) string {
+	return wrapWidth(g.traitDesc(t), g.face(14), float64(acqOfficerW-56-180))
+}
+
+// traitRowHeight is the height of a trait's row in the officer window.
+func (g *Game) traitRowHeight(t string) int {
+	return int(max(34, float64(strings.Count(g.traitRowDesc(t), "\n")+1)*14*1.45+12))
 }
 
 func (g *Game) pieceName(id string) string {
@@ -332,7 +364,11 @@ func (g *Game) pieceKind(id string) string {
 
 func (g *Game) pieceHeight(id string) int {
 	if g.joined(id) {
-		return 560
+		h := 30 + 132 + 36 + len(statRows)*26 + 12 + 36 + 56 // head, 전투력·열전, 특성 header, footer
+		for _, t := range g.S.Data.Characters[id].Traits {
+			h += g.traitRowHeight(t)
+		}
+		return max(560, h)
 	}
 	if _, ok := g.S.Data.Equipment[id]; ok {
 		return 330
@@ -436,4 +472,3 @@ func (g *Game) joined(id string) bool {
 	_, c := g.S.Data.Characters[id]
 	return c && !item && !eq && id != content.Money
 }
-

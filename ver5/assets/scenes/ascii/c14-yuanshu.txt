@@ -1,0 +1,59 @@
+# c14-yuanshu  S_shouchun_hall  ch14  origin -1 -1
+Pil####################################Pil
+###......Bnr...Bnr...###CdlBnr...Bnr...Jar
+###.........Brzhe1...YSh...he2Brz.........
+###BnrPil...........................Pil...
+###......of1of2Yan.........Jilin1in2......
+###......of3of4of5.........in3in4in5......
+###...Pilof6of7of8.........in6in7in8Pil...
+###Bnr...of9o10o11.........in9i10i11......
+###......o12o13o14.........i12i13i14......
+###...Pilo15o16o17.........i15i16i17Pil...
+###.......................................
+###Bnr...TblTbl............Tbl...Tbl......
+PilJar............he3...he4...............
+
+YSh 원술  (sit)
+Yan 양홍
+Jil 기령
+of1 문관#1  (official_purple_noncombat)
+of2 문관#2  (official_purple_noncombat)
+of3 문관#3  (official_crimson_noncombat)
+of4 문관#4  (official_crimson_noncombat)
+of5 문관#5  (official_crimson_noncombat)
+of6 문관#6  (official_crimson_noncombat)
+of7 문관#7  (official_crimson_noncombat)
+of8 문관#8  (official_crimson_noncombat)
+of9 문관#9  (official_blue_noncombat)
+o10 문관#10  (official_blue_noncombat)
+o11 문관#11  (official_blue_noncombat)
+o12 문관#12  (official_green_noncombat)
+o13 문관#13  (official_green_noncombat)
+o14 문관#14  (official_green_noncombat)
+o15 문관#15  (official_noncombat)
+o16 문관#16  (official_noncombat)
+o17 문관#17  (official_noncombat)
+in1 무관#1  (infantry_noncombat)
+in2 무관#2  (infantry_noncombat)
+in3 무관#3  (infantry_noncombat)
+in4 무관#4  (infantry_noncombat)
+in5 무관#5  (infantry_noncombat)
+in6 무관#6  (infantry_noncombat)
+in7 무관#7  (infantry_noncombat)
+in8 무관#8  (infantry_noncombat)
+in9 무관#9  (infantry_noncombat)
+i10 무관#10  (infantry_noncombat)
+i11 무관#11  (infantry_noncombat)
+i12 무관#12  (infantry_noncombat)
+i13 무관#13  (infantry_noncombat)
+i14 무관#14  (infantry_noncombat)
+i15 무관#15  (infantry_noncombat)
+i16 무관#16  (infantry_noncombat)
+i17 무관#17  (infantry_noncombat)
+he1 호위#1  (heavy_infantry)
+he2 호위#2  (heavy_infantry)
+he3 호위#3  (heavy_infantry)
+he4 호위#4  (heavy_infantry)
+
+# c14-y04: Yan -> 5 3
+# c14-y06: Jil -> 7 3

@@ -2181,5 +2181,89 @@
     "...................................."
    ]
   }
+ ],
+ "item_baima": [
+  {
+   "icon": [
+    "....................................",
+    "....................................",
+    ".....................k..............",
+    "....................kek.kk..........",
+    "...............kkkkkwekkeek.........",
+    ".............kkkwweewhkeeek.........",
+    "..........kkkeewwwewbheweek.........",
+    ".........keekewwwbewbawwkk..........",
+    ".........kewwwhhbbwwbwwwwkk.........",
+    ".......kkkeewhhwwkwwwwwwhhk.........",
+    "......kewwwwwwwwwrswwrrryyk.........",
+    ".....kwwhhhhwwwwchrarrrkkyek........",
+    "....keaaehwwwwbbchkyrhhwwwwek.......",
+    "....keeeahwbbbchhhyyhhhwwweek.......",
+    ".....kkeawwwbachhhsshwwwwwwek.......",
+    "....keewwwwhhhhwhwrsrhwwwwwwek......",
+    "...kwwwwwwwhchhwhwrrrrhwwwwwwk......",
+    "..kehbwwaaacchwwhkrwwrshhwwwsek.....",
+    "..kebbwacccchwwwbrswwwrshhrrrkek....",
+    "..keeeabbcchhwwwhcshwhhsskrwwwwk....",
+    "..kekeebahchhwwwhbbehhhhyyhhhcwek...",
+    "...kkewwaahhwwhwhbbekkkkrshhhcaek...",
+    "...kewwwachhwwhwhhbbk.kkeaahhaaek...",
+    "..kewwahhchhwwhwwhbbek..kkaacaek....",
+    "..keeeahbhhhwhhhwhhbek...keeeek.....",
+    "..keeaabbhhwwhhhwwhbbek...kkkk......",
+    "...keabbchhwwhhhhwwbbhek............",
+    "...keabbchhwwhhhhwwwbhek............",
+    "....kaebchhwwwhhhhwwwhhek...........",
+    ".....kkehhhwwwhhhhhhwhhhk...........",
+    "......kehhwwwwhhhhhhwwhhek..........",
+    ".......keewwwwhhhhhhhwhhek..........",
+    "........kkeeeeeheeeeeeekk...........",
+    "..........kkkkkkkkkkkkk.............",
+    "....................................",
+    "...................................."
+   ]
+  }
+ ],
+ "item_sanlue": [
+  {
+   "icon": [
+    "....................................",
+    "....................................",
+    "................kkkk................",
+    "..............kkkhkkkk..............",
+    ".............kkhbhchcdk.............",
+    "............kkhhbhchaadk............",
+    "...........kdakkiiiiiabdk...........",
+    "...........kdkiiiiiiiibdk...........",
+    "..........kdiijhhhbhjjjjdk..........",
+    "..........kjjjhhhhbhaajjjk..........",
+    "..........kibhhhhkkbaabjjk..........",
+    "..........kjbhhlllllldbbjk..........",
+    "..........kkbclllddllldbkk..........",
+    "..........kdallllllllldbdk..........",
+    "........kkdddlllllllldlbddkk........",
+    ".......kddddlllllddlldlddbhdk.......",
+    "......kdhhddllllllllldldabhhdk......",
+    ".....kdabhkallllllllldhdabhbadk.....",
+    ".....kdaiiiijllllllldhhjiiiiadk.....",
+    ".....kjiiiihkdllllldhhhhhbiiijk.....",
+    ".....kijhhhhhbdhhhdhhhbhhbhjjjk.....",
+    "....kdjhhhhhhbbddddddabhhbhbajjk....",
+    "....kjbhhllllllbbddabllllllbabjk....",
+    "....kdbhllllllllbbdallllllllabkk....",
+    "....kdallldddddllcdllldddddlcbk.....",
+    "....kdalllllllldlcdlllllllldlbk.....",
+    "....kddllllddlldlldllllddlldlck.....",
+    "....kddlllldddldldllllldddlddddk....",
+    ".....kdlllllddldhddlllllddldhdk.....",
+    ".....kdlllddllldhddlllddllldhdk.....",
+    "......kdlllllldddkkdlllllldddk......",
+    ".......kddlldddddkkddlllddddk.......",
+    "........kddddddkk..kkddddddk........",
+    ".........kkkkkk......kkkkkk.........",
+    "....................................",
+    "...................................."
+   ]
+  }
  ]
 }

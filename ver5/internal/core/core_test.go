@@ -125,7 +125,7 @@ func TestCampaignFlowAndJoin(t *testing.T) {
 	}
 	apply(t, e, Command{Kind: "continue"})
 	o := e.Observe()
-	if o.Dialogue.ID != "prep2" || o.Stage != 1 || e.char("sage") == nil || e.state.Warehouse["spear"] != 1 || len(o.Deployment) != 3 {
+	if o.Dialogue.ID != "prep2" || o.Stage != 1 || e.char("sage") == nil || e.state.Warehouse["spear"] != 1 || len(o.Deployment) != 2 {
 		t.Fatalf("%s %d %v", o.Dialogue.ID, o.Stage, o.Deployment)
 	}
 	for _, c := range e.Snapshot().Characters {

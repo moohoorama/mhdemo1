@@ -18,6 +18,7 @@
 | `Learn` | 착용하는 동안 학습 후보에 더해지는 특성. 모두 배울 수 있는 특성(`Cost >= 1`)이어야 한다. |
 | `Palette` | 고유한 색을 가진 말: 도트 태그 묶음(`horseSkin`·`horseMane`·`saddle` 등) → 색. 기마 병종이 이 장신구를 차면 전투 도트(배치·전투·일기토)의 말이 이 색으로 칠해진다(장수 `Look.Palette` 위에 덮음). 도보 병종은 그대로다. 예: 백마는 흰 털·흰 갈기, 절영은 검은 말, 적토마는 붉은 말. |
 | `Skills` | 착용하는 동안 쓸 수 있는 기술. 모두 `skills.json`에 있어야 한다. |
+| `Owner` | 추천 주인. `Playable` 인물이고 그 시작 병종이 들 수 있어야 한다. 이야기로 받은 장비는 언제나 창고로 가고, 플레이어가 아니라 게임 AI(자동 진행·`_campaign`·`_balance`)와 장면 이동 게임이 출전 전에 창고에서 꺼내 이 인물에게 채운다(`Engine.OwnerPiece`). 그 칸에 이미 자기 주인 장비를 찬 인물에게는 채우지 않는다. |
 
 ```json
 "fangtian_halberd": {"Name": "방천화극", "Slot": "weapon", "Type": "spear", "Bonus": [3, 0, 0, 0, 0, 0], "Traits": ["halberd_sweep"]}

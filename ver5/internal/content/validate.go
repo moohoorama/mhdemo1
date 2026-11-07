@@ -26,6 +26,14 @@ func (d *Data) Validate() error {
 	if r.StageLevelBase > 0 && (r.StageLevelStep < 0 || !troop || !officer) {
 		return fmt.Errorf("rules: a stage level needs a step and the troop and officer ranks")
 	}
+	for _, v := range r.Difficulties {
+		if v.ID == "" || v.Name == "" || v.XPPct <= 0 {
+			return fmt.Errorf("rules: difficulty %q incomplete", v.ID)
+		}
+	}
+	if _, ok := r.DifficultyOf("normal"); !ok && len(r.Difficulties) > 0 {
+		return fmt.Errorf("rules: no normal difficulty")
+	}
 	if len(d.Classes) == 0 || len(d.Characters) == 0 || len(d.Terrain) == 0 || len(d.Grounds) == 0 || len(d.Stages) == 0 || len(d.Nodes) == 0 {
 		return fmt.Errorf("missing content definitions")
 	}
@@ -135,6 +143,9 @@ func (d *Data) Validate() error {
 				return fmt.Errorf("equipment %s: unknown skill %s", id, s)
 			}
 		}
+		if o, ok := d.Characters[e.Owner]; e.Owner != "" && (!ok || !o.Playable || !d.Carries(d.Classes[o.Class], o.Traits, e)) {
+			return fmt.Errorf("equipment %s: owner %s", id, e.Owner)
+		}
 	}
 	for id, it := range d.Items {
 		switch it.Effect {
@@ -152,7 +163,7 @@ func (d *Data) Validate() error {
 	}
 	for id, c := range d.Characters {
 		cl, ok := d.Classes[c.Class]
-		if !ok || c.Name == "" || c.Level < 1 || c.Level > r.MaxLevel || c.Points < 0 || c.Lord && !c.Playable || c.Template && (c.Lord || c.Playable) {
+		if !ok || c.Name == "" || c.Level < 1 || c.Level > r.MaxLevel || c.Lord && !c.Playable || c.Template && (c.Lord || c.Playable) {
 			return fmt.Errorf("character %s", id)
 		}
 		for _, s := range c.Stats {
@@ -229,13 +240,6 @@ func (d *Data) Validate() error {
 	if c.Money < 0 {
 		return fmt.Errorf("campaign money %d", c.Money)
 	}
-	for id, eqs := range c.Loadout {
-		for _, eq := range eqs {
-			if _, ok := d.Equipment[eq]; !ok || !d.Characters[id].Playable {
-				return fmt.Errorf("campaign loadout %s %s", id, eq)
-			}
-		}
-	}
 	nodes := map[string]Node{}
 	for _, n := range d.Nodes {
 		if n.ID == "" || nodes[n.ID].ID != "" {
@@ -311,7 +315,7 @@ func (d *Data) Validate() error {
 				}
 			}
 		case "end":
-		case "join":
+		case "join", "leave":
 			if !d.Characters[n.Character].Playable {
 				return fmt.Errorf("node %s joins %s", n.ID, n.Character)
 			}
@@ -319,8 +323,8 @@ func (d *Data) Validate() error {
 			if !d.Gainable(n.Item) {
 				return fmt.Errorf("node %s grants %s", n.ID, n.Item)
 			}
-			if _, ok := d.Equipment[n.Item]; n.Character != "" && (!ok || !d.Characters[n.Character].Playable) {
-				return fmt.Errorf("node %s puts %s on %s", n.ID, n.Item, n.Character)
+			if n.Character != "" {
+				return fmt.Errorf("node %s puts %s on %s: grants go to the warehouse", n.ID, n.Item, n.Character)
 			}
 		case "choice", "explore", "back":
 		default:

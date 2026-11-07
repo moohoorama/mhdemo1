@@ -16,7 +16,7 @@ import (
 )
 
 var overlayTitles = map[string]string{"menu": "메뉴", "save": "저장", "load": "불러오기", "settings": "설정",
-	"confirm": "확인", "equipment": "장비", "deputy": "부관 임명", "roster": "병력일람", "shop": "상점", "party": "부대", "waypoints": "장면 이동"}
+	"confirm": "확인", "equipment": "장비", "deputy": "부관 임명", "roster": "병력일람", "shop": "상점", "party": "관리", "waypoints": "장면 이동", "difficulty": "난이도"}
 
 func (g *Game) popupPending() bool {
 	return len(g.overlays) > 0 || len(g.modals) > 0 || len(g.learn) > 0 ||
@@ -146,6 +146,8 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 		w, h = 1100, 720
 	case "waypoints":
 		w, h = waypointW, waypointH
+	case "difficulty":
+		w, h = 640, 84+len(g.S.Data.Rules.Difficulties)*difficultyRowH
 	}
 	// the window in a frame with room for its title plate and shadow
 	g.popup(dst, "overlay:"+name, 150, w+40, h+40, image.Rect(0, 0, w+40, h+40), func(dst *ebiten.Image) { g.overlayWindow(dst, name, w, h) })
@@ -154,6 +156,9 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 	}
 	if name == "equipment" && g.equip.info.id != "" {
 		g.drawEquipInfo(dst)
+	}
+	if name == "shop" && g.shopView.info.id != "" {
+		g.chipWindow(dst, "overlay:shop-info", g.shopView.info, func() { g.shopView.info = equipChip{} })
 	}
 	if name == "deputy" && g.deputyInfo.id != "" {
 		g.chipWindow(dst, "overlay:deputy-info", g.deputyInfo, func() { g.deputyInfo = equipChip{} })
@@ -202,6 +207,8 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h int) {
 		g.saveWindow(dst, name, x, y, w, h)
 	case "waypoints":
 		g.waypointWindow(dst, x, y, w, h)
+	case "difficulty":
+		g.difficultyWindow(dst, x, y, w)
 	case "settings":
 		s := g.S.Settings
 		set := func(change func(v *storage.Settings)) func() {
@@ -769,4 +776,20 @@ func gainColor(d int) color.NRGBA {
 		return bad
 	}
 	return good
+}
+
+const difficultyRowH = 96
+
+// difficultyWindow picks a new game's difficulty: each one a button with its name over its description.
+func (g *Game) difficultyWindow(dst *ebiten.Image, x, y, w int) {
+	for i, v := range g.S.Data.Rules.Difficulties {
+		id := v.ID
+		top := y + 64 + i*difficultyRowH
+		g.btn(dst, image.Rect(x+32, top, x+w-32, top+difficultyRowH-14), "", func() {
+			g.closeOverlays()
+			g.request(session.Request{Op: "new", Seed: g.seed, Difficulty: id})
+		})
+		g.label(dst, v.Name, float64(x+52), float64(top+10), 22, ink)
+		g.label(dst, wrapWidth(v.Desc, g.face(16), float64(w-104)), float64(x+52), float64(top+42), 16, muted)
+	}
 }

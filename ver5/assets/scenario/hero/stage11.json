@@ -343,7 +343,149 @@
    "Outcome": "victory",
    "AllyResult": "stay",
    "EnemyResult": "retreat",
-   "Text": "관해가 조운의 창을 받아 내지 못하고 진채로 달아났다."
+   "Text": "관해가 조운의 창을 받아 내지 못하고 진채로 달아났다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "관해가 길을 막다",
+     "Speech": "흰 말 탄 애송이가 감히! 북해는 이 관해가 삼킨다!",
+     "Side": 1,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 이름을 대다",
+     "Speech": "상산의 조자룡이오. 성을 에운 군사를 거두시오.",
+     "Side": 0,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "talk",
+     "Title": "관해가 비웃다",
+     "Speech": "얼굴 반반한 놈이 입만 살았구나!",
+     "Side": 1,
+     "Duration": 2.5
+    },
+    {
+     "Kind": "approach",
+     "Title": "관해가 말을 몰아 달려들다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "조운이 관해의 칼을 받아 넘기다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관해가 거듭 내리치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "조운이 가볍게 몸을 비키다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "관해가 돌진하며 몰아치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "block",
+     "Title": "조운이 창을 내지르다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "관해가 창끝에 밀리다",
+     "Speech": "크윽!",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "조운이 연달아 찌르다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "관해가 간신히 피하다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "관해가 놀라다",
+     "Speech": "(창끝이…… 보이지 않는다!)",
+     "Side": 1,
+     "Duration": 2.3
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "관해가 온 힘으로 내리치나 조운이 받아내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 끝을 알리다",
+     "Speech": "다음 합에서 끝내겠소.",
+     "Side": 0,
+     "Duration": 2.0
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "조운의 창이 관해의 칼을 쳐 내다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "관해가 크게 밀리다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "관해가 물러서다",
+     "Speech": "무, 물러나라! 진채로 물러나!",
+     "Side": 1,
+     "Duration": 2.4
+    },
+    {
+     "Kind": "retreat",
+     "Title": "관해가 진채로 달아나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "관해가 퇴각하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    }
+   ]
   }
  ],
  "Armies": [

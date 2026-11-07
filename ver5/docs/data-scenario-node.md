@@ -34,7 +34,6 @@ assets/scenario/
 | `Deployment` | 처음 출전 명단. 모두 `Playable`이어야 한다. |
 | `Inventory` | 처음 인벤토리. 키는 `items.json`에 있는 아이템, 개수는 0 이상. |
 | `Warehouse` | 처음 창고. 아무도 차지 않은 장비. 키는 `equipment.json`에 있는 장비, 개수는 0 이상. 생략 가능. |
-| `Loadout` | `{인물: [장비 ID…]}`. 장면 이동([logic-campaign.md](logic-campaign.md) 1절)으로 시작한 게임에서 그 인물이 차는 장비. 인물은 `Playable`, 장비는 `equipment.json`에 있어야 한다. |
 | `Chapters` | `[{"ID","File"}]`. 장 ID는 유일, 파일은 비어 있지 않은 노드 배열. |
 
 ## 2. 노드(장 파일)
@@ -44,22 +43,23 @@ assets/scenario/
 | 필드 | 쓰는 Kind | 뜻 |
 |---|---|---|
 | `ID` | 모두 | 비어 있지 않고 유일해야 한다. |
-| `Kind` | 모두 | `say` `narrate` `choice` `battle` `scene` `set` `branch` `join` `grant` `end` 중 하나. 다른 값은 로드 오류. |
+| `Kind` | 모두 | `say` `narrate` `choice` `battle` `scene` `set` `branch` `join` `leave` `grant` `end` 중 하나. 다른 값은 로드 오류. |
 | `Text` | `say` `narrate` `choice` `battle` | 화면에 보이는 글. `say`·`narrate`는 비어 있을 수 없다. |
 | `Speaker` | `say` | 말하는 인물 ID. 여럿이 함께 말하면 `·`로 잇는다. 모두 인물이어야 한다. `narrate`에는 쓰지 않는다. |
 | `Place` | `scene` | 이야기가 지금 있는 장소. 비어 있을 수 없고 화면 배경 위에 표시된다. |
-| `Next` | `say` `narrate` `battle` `scene` `set` `join` `grant` | 다음 노드 ID. 비어 있지 않으면 노드에 있어야 한다. 비어 있으면 아래의 기본 순서를 따른다. |
+| `Next` | `say` `narrate` `battle` `scene` `set` `join` `leave` `grant` | 다음 노드 ID. 비어 있지 않으면 노드에 있어야 한다. 비어 있으면 아래의 기본 순서를 따른다. |
 | `Choices` | `choice` | 선택지 이름 → 노드 ID. 가리키는 노드가 모두 있어야 한다. |
 | `Cases` | `branch` | `[{If, Next}]`. `If`는 조건 문자열 배열(비어 있을 수 없음), `Next`는 있는 노드. 위에서부터 보아 처음 참인 칸으로 간다. |
 | `Else` | `branch` | 어느 칸도 참이 아닐 때 갈 노드(없으면 기본 순서). |
 | `Flags` | `set` | 플래그 이름 → 값(정수). 비어 있을 수 없다. |
 | `Stage` | `battle` | 출전할 스테이지 ID. 스테이지에 있어야 한다. |
-| `Character` | `join` `grant` | `join`: 합류하는 인물 ID. `grant`: 받은 장비를 곧바로 차는 인물(그 칸의 옛 장비는 창고로, 병종이 못 들면 창고에만). 둘 다 `Playable`이어야 하고, `grant`는 장비일 때만 쓴다. |
+| `Character` | `join` | 합류하는 인물 ID. `Playable`이어야 한다. `grant`에 쓰면 로드 오류다 — 받은 장비는 언제나 창고로 간다(누가 찰지는 장비 `Owner`, [data-item.md](data-item.md)). |
 | `Item` | `grant` | 주는 아이템 또는 장비 ID. 둘 중 하나에 있어야 한다. |
 | `Count` | `grant` | 개수. |
-| `Event` | `join`, `grant` | 한 번만 실행하기 위한 `Executed` 키. 규칙은 `join-<인물ID>`, `grant-<아이템ID>`. |
+| `Event` | `join`, `leave`, `grant` | 한 번만 실행하기 위한 `Executed` 키. 규칙은 `join-<인물ID>`, `leave-<인물ID>`, `grant-<아이템ID>`. |
+| `Character` | `leave` | 편성에서 빠지는 인물 ID. `Playable`이어야 한다. 그 인물의 처음 장비는 함께 떠나고 나중에 입힌 장비는 창고로 간다. 그를 부관으로 둔 장수는 부관이 비고, 출전 명단에서도 빠진다. 다시 합류시킬 때는 다른 `Event` 키(`join-<인물ID>-2`)를 쓴다. |
 
-조건 문자열(`If`): `flag:키`(값이 1 이상) `flag:키>=N` `alive:인물` `dead:인물` `party:인물` `choice:노드=옵션` `won:스테이지`, 앞에 `!`을 붙이면 부정이다. 참조는 모두 로드 때 검증한다. 멈추지 않는 노드(`scene` `set` `branch` `join` `grant`)만으로 고리를 만들면 로드 오류다.
+조건 문자열(`If`): `flag:키`(값이 1 이상) `flag:키>=N` `alive:인물` `dead:인물` `party:인물` `choice:노드=옵션` `won:스테이지`, 앞에 `!`을 붙이면 부정이다. 참조는 모두 로드 때 검증한다. 멈추지 않는 노드(`scene` `set` `branch` `join` `leave` `grant`)만으로 고리를 만들면 로드 오류다.
 
 다음 노드는 노드의 `Next`가 정하고, 비어 있으면 같은 장 파일의 다음 노드, 장의 마지막이면 다음 장의 첫 노드, 마지막 장의 끝이면 캠페인이 끝난다. `battle` 노드의 `Next`는 그 스테이지에서 이긴 뒤의 행선지다.
 

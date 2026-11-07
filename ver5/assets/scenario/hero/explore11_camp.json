@@ -1,0 +1,583 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "camp",
+  "At": [
+   11,
+   8
+  ],
+  "Face": "SE"
+ },
+ "Areas": {
+  "camp": {
+   "Map": "S_gongsun_camp",
+   "Name": "계교 · 공손찬의 진영",
+   "At": [
+    11,
+    8
+   ],
+   "Exits": [
+    {
+     "Name": "평원으로",
+     "At": [
+      0,
+      13
+     ],
+     "To": "pingyuan"
+    }
+   ],
+   "People": {
+    "부상병": {
+     "At": [
+      5,
+      18
+     ],
+     "Face": "NE",
+     "Sprite": "wounded_noncombat",
+     "Faction": "gongsun",
+     "Chatter": "으으……",
+     "Talk": [
+      [
+       "부상병",
+       "방패 뒤에서 한꺼번에 쇠뇌가…… 말들이 비명을 지르며 쓰러졌습니다……."
+      ]
+     ],
+     "Pose": "sitground"
+    },
+    "부상병#1": {
+     "At": [
+      7,
+      21
+     ],
+     "Face": "NW",
+     "Sprite": "wounded_noncombat",
+     "Faction": "gongsun",
+     "Chatter": "물……",
+     "Pose": "sitground"
+    },
+    "백마병#1": {
+     "At": [
+      31,
+      12
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun"
+    },
+    "백마병#2": {
+     "At": [
+      31,
+      15
+     ],
+     "Face": "NW",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun"
+    },
+    "백마병#3": {
+     "At": [
+      20,
+      13
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun",
+     "Move": {
+      "Patrol": [
+       [
+        20,
+        13
+       ],
+       [
+        6,
+        13
+       ]
+      ]
+     }
+    },
+    "종군 상인": {
+     "At": [
+      6,
+      9
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Shop": "camp",
+     "Chatter": "콩 있소, 술 있소"
+    },
+    "백마병#4": {
+     "At": [
+      40,
+      13
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun",
+     "Talk": [
+      [
+       "백마병",
+       "화친이 됐다지만, 건너편 둑의 원소군은 아직 그대로입니다."
+      ]
+     ]
+    },
+    "백마병#5": {
+     "At": [
+      40,
+      14
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun"
+    },
+    "관우@c11camp": {
+     "At": [
+      3,
+      13
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "guanyu",
+       "형님, 평원으로 가는 길은 뒷문으로 나가면 됩니다."
+      ]
+     ]
+    },
+    "장비@c11camp": {
+     "At": [
+      8,
+      10
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "zhangfei",
+       "백마 타고 평원까지 달려 볼라유. 형, 먼저 가 있을 테니께 천천히 오슈!"
+      ]
+     ]
+    },
+    "간옹@c11camp": {
+     "At": [
+      6,
+      16
+     ],
+     "Face": "NE",
+     "Talk": [
+      [
+       "jianyong",
+       "짐은 다 꾸렸네. 화친이라 해도 원소가 언제 마음을 바꿀지 모르니, 평원 성벽부터 손봐야지."
+      ]
+     ]
+    },
+    "번궁@c11camp": {
+     "At": [
+      12,
+      12
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "fangong",
+       "공손 장군은 북평으로, 우리는 평원으로. 한동안은 조용하겠구려."
+      ]
+     ]
+    },
+    "전해": {
+     "At": [
+      17,
+      11
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "tiankai",
+       "장군께서는 북평으로 돌아가십니다. 현덕 공께는 평원을 굳게 지켜 달라 하셨습니다."
+      ]
+     ]
+    }
+   }
+  },
+  "pingyuan": {
+   "Map": "S_pingyuan",
+   "Name": "평원현",
+   "At": [
+    24,
+    2
+   ],
+   "Exits": [
+    {
+     "Name": "현청",
+     "At": [
+      11,
+      6
+     ],
+     "Object": [
+      11,
+      4
+     ],
+     "To": "office"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      5,
+      14
+     ],
+     "Object": [
+      5,
+      12
+     ],
+     "To": "tavern"
+    },
+    {
+     "Name": "도구점",
+     "At": [
+      18,
+      13
+     ],
+     "Object": [
+      18,
+      11
+     ],
+     "To": "tools"
+    },
+    {
+     "Name": "대장간",
+     "At": [
+      31,
+      13
+     ],
+     "Object": [
+      31,
+      11
+     ],
+     "To": "weapons"
+    }
+   ],
+   "People": {
+    "현병#2": {
+     "At": [
+      22,
+      1
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    },
+    "현병#3": {
+     "At": [
+      26,
+      1
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    },
+    "아낙": {
+     "At": [
+      16,
+      16
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Move": {
+      "Wander": 3
+     },
+     "Talk": [
+      [
+       "아낙",
+       "현령님 돌아오셨네! 장안 소식 들으셨어요? 동탁이 죽었대요!"
+      ]
+     ]
+    },
+    "노인": {
+     "At": [
+      14,
+      22
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Chatter": "에구, 허리야",
+     "Talk": [
+      [
+       "노인",
+       "사도 왕윤이 꾀를 내서, 동탁의 양아들 여포가 제 손으로 동탁을 찔렀다는구먼."
+      ],
+      [
+       "노인",
+       "장안 저자에 내다 버린 시체 배꼽에 심지를 꽂아 불을 붙였더니, 며칠을 탔다지. 그 기름진 배로 백성 피를 얼마나 빨았으면……."
+      ]
+     ]
+    },
+    "뱃사공": {
+     "At": [
+      37,
+      23
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "뱃사공",
+       "아비를 찌른 아들이라니. 장안 사람들은 춤을 췄다는데, 나는 어째 그 여포라는 사람이 더 무섭수."
+      ]
+     ]
+    },
+    "장꾼": {
+     "At": [
+      33,
+      21
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "싸오, 싸!|골라 보시오",
+     "Talk": [
+      [
+       "장꾼",
+       "동탁이 죽었으니 이제 세상이 좀 조용해지려나요. 장안 쪽 길이 열리면 장사도 다시 되겠지요."
+      ]
+     ]
+    },
+    "행인#1": {
+     "At": [
+      24,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Move": {
+      "Patrol": [
+       [
+        24,
+        3
+       ],
+       [
+        24,
+        26
+       ]
+      ]
+     }
+    },
+    "행인#2": {
+     "At": [
+      2,
+      16
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Move": {
+      "Patrol": [
+       [
+        2,
+        16
+       ],
+       [
+        34,
+        16
+       ]
+      ]
+     }
+    },
+    "장비@pingyuan": {
+     "At": [
+      13,
+      9
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "zhangfei",
+       "양아비를 찔러유? 호로관에서 붙어 보니께 그럴 놈이긴 허더만."
+      ]
+     ]
+    },
+    "관우@pingyuan": {
+     "At": [
+      9,
+      9
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "guanyu",
+       "주인을 저버린 자는 또 저버리는 법입니다."
+      ]
+     ]
+    },
+    "간옹@pingyuan": {
+     "At": [
+      7,
+      14
+     ],
+     "Face": "SE",
+     "Pose": "sit",
+     "Talk": [
+      [
+       "jianyong",
+       "동탁이 죽었다고 천하가 조용해질 것 같나. 고기 한 덩이에 이리가 여럿 달려들겠지."
+      ]
+     ]
+    }
+   }
+  },
+  "office": {
+   "Map": "S_zhuo_office2",
+   "Name": "평원현 · 현청",
+   "At": [
+    9,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "pingyuan"
+    }
+   ],
+   "People": {
+    "현병#1": {
+     "At": [
+      3,
+      5
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    },
+    "현병#2": {
+     "At": [
+      13,
+      5
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    },
+    "조운": {
+     "At": [
+      7,
+      5
+     ],
+     "Face": "SE",
+     "Sortie": {
+      "Ask": "공손 장군께서 유공을 찾으십니다. 서주에서 사자가 왔다 하니, 함께 북평으로 가시겠습니까?"
+     }
+    }
+   }
+  },
+  "tavern": {
+   "Map": "S_tavern2",
+   "Name": "주점",
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "pingyuan"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tavern"
+    },
+    "손님": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "한 잔 더!|크으, 좋다",
+     "Talk": [
+      [
+       "손님",
+       "현령님! 동탁이 죽었다니 오늘은 축하주요! 한 잔 받으시지요."
+      ]
+     ]
+    }
+   }
+  },
+  "tools": {
+   "Map": "S_tool_shop2",
+   "Name": "도구점",
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "pingyuan"
+    }
+   ],
+   "People": {
+    "상인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tools"
+    }
+   }
+  },
+  "weapons": {
+   "Map": "S_weapon_shop2",
+   "Name": "대장간",
+   "At": [
+    6,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "pingyuan"
+    }
+   ],
+   "People": {
+    "대장장이": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons"
+    }
+   }
+  }
+ }
+}

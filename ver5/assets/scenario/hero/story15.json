@@ -1,0 +1,413 @@
+{
+ "Nodes": [
+  {
+   "ID": "c15-grain",
+   "Kind": "scene",
+   "Place": "광릉 진영 밖"
+  },
+  {
+   "ID": "c15-g00",
+   "Kind": "narrate",
+   "Text": "하비를 잃은 유비는 남은 군사를 거두어 광릉으로 물러났다."
+  },
+  {
+   "ID": "c15-g01",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "줄을 서게. 한 사람에 한 되씩일세. 밀치지 말게."
+  },
+  {
+   "ID": "c15-g02",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "형님, 집에서 가져온 곡식은 벌써 바닥이 보입니다."
+  },
+  {
+   "ID": "c15-g03",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "근처 고을에서 사들이게."
+  },
+  {
+   "ID": "c15-g04",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "흉년이라 곡식 값이 열 곱절로 뛰었습니다. 이대로 사다가는 우리 집안이 거덜 납니다."
+  },
+  {
+   "ID": "c15-g05",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "이 근방은 곡식 값이 너무 비쌉니다. 다른 고을 상인들도 불러와야겠습니다."
+  },
+  {
+   "ID": "c15-g06",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "원술과 여포 사이에 끼인 처지일세. 낯선 자들을 함부로 들였다가 어쩌려고."
+  },
+  {
+   "ID": "c15-g07",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "다 방법이 있습니다, 형님."
+  },
+  {
+   "ID": "c15-g08",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "사군께서 위급하시네. 허튼짓은 하지 말게."
+  },
+  {
+   "ID": "c15-g09",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "(……이대로는 손해가 너무 크다. 어떻게든 해야지.)"
+  },
+  {
+   "ID": "c15-spy",
+   "Kind": "scene",
+   "Place": "광릉 군막"
+  },
+  {
+   "ID": "c15-s01",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "곡식이 이래서야 열흘을 버티기 어렵겠네."
+  },
+  {
+   "ID": "c15-s02",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "무릎 꿇어라."
+  },
+  {
+   "ID": "c15-s03",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "미방. 이놈……!"
+  },
+  {
+   "ID": "c15-s04",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "둘째 형, 왜 그려유! 진정혀유!"
+  },
+  {
+   "ID": "c15-s05",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "운장, 무슨 일인가. 이자는 누군가?"
+  },
+  {
+   "ID": "c15-s06",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "진영 안에서 원술의 첩자를 잡았습니다. 곡식을 판다는 상인들 틈에 섞여 들어왔습니다."
+  },
+  {
+   "ID": "c15-s07",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "미방이 사방에 사람을 보내 상인을 불러 모으고, 값을 가장 싸게 부른 자들에게 곡식을 샀습니다. 소문을 그리 멀리 냈으니 원술이 모를 리 없지요."
+  },
+  {
+   "ID": "c15-s08",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "이자들은 상인 행세를 하며 진을 다 둘러보고 갔습니다. 우리가 굶주린다는 것도, 진의 생김새도 이미 원술에게 갔을 겁니다."
+  },
+  {
+   "ID": "c15-s09",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "사군, 아우를 잘못 단속한 제 죄입니다."
+  },
+  {
+   "ID": "c15-s10",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "고, 곡식 값을 아끼려던 것뿐이었습니다…… 죽을죄를 지었습니다."
+  },
+  {
+   "ID": "c15-s11",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "일부러 그런 것도 아니고, 이미 벌어진 일일세. 지금은 죄를 따질 때가 아니야."
+  },
+  {
+   "ID": "c15-s12",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "원술이 알았다면 곧 움직일 걸세. 대책부터 세우세."
+  },
+  {
+   "ID": "c15-s13",
+   "Kind": "narrate",
+   "Text": "진영 밖에서 함성이 오른다."
+  },
+  {
+   "ID": "c15-clash",
+   "Kind": "scene",
+   "Place": "광릉 들판"
+  },
+  {
+   "ID": "c15-c01",
+   "Kind": "say",
+   "Speaker": "jiling",
+   "Text": "굶주린 군사로 어디까지 버티나 보자! 유비의 진을 짓밟아라!"
+  },
+  {
+   "ID": "c15-c02",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "배는 고파도 사모는 안 고프다! 덤벼 보랑께!"
+  },
+  {
+   "ID": "c15-c03",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "익덕, 가자."
+  },
+  {
+   "ID": "c15-c04",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "기다리시오!"
+  },
+  {
+   "ID": "c15-c05",
+   "Kind": "say",
+   "Speaker": "jiling",
+   "Text": "여, 여포……!"
+  },
+  {
+   "ID": "c15-c06",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "저놈이 왜 여기 있는겨!"
+  },
+  {
+   "ID": "c15-c07",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "나 여포는 싸움을 좋아하지 않소. 잠깐 내 이야기를 들어 보시오."
+  },
+  {
+   "ID": "c15-c08",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "양쪽 다 군사를 물려 주시겠소?"
+  },
+  {
+   "ID": "c15-c09",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "(운장, 군사들이 굶주리고 지쳤네. 지금이라도 쉬게 해야겠네.)"
+  },
+  {
+   "ID": "c15-c10",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "(형님 뜻대로 하겠습니다.) ……물러나라!"
+  },
+  {
+   "ID": "c15-c11",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "기 장군도 어서 물리시오. 내가 저 화극을 다시 뽑아 들어야 하겠소? 나는 싸우는 게 싫소."
+  },
+  {
+   "ID": "c15-c12",
+   "Kind": "say",
+   "Speaker": "jiling",
+   "Text": "……일단 무슨 말을 하는지 들어나 봅시다. 물러나라!"
+  },
+  {
+   "ID": "c15-c13",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "자, 우리끼리 이야기 좀 합시다."
+  },
+  {
+   "ID": "c15-r01",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "이쯤에서 서로 군사를 물리는 게 어떻겠소?"
+  },
+  {
+   "ID": "c15-r02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "나는 좋다고 생각하오만……"
+  },
+  {
+   "ID": "c15-r03",
+   "Kind": "say",
+   "Speaker": "jiling",
+   "Text": "나는 주공의 명을 받은 몸이오. 어쩔 수 없소."
+  },
+  {
+   "ID": "c15-r04",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "명이야 이기라는 것이겠지. 싸우지 않고 물러나게 만드는 것도 이기는 것이오."
+  },
+  {
+   "ID": "c15-r05",
+   "Kind": "say",
+   "Speaker": "jiling",
+   "Text": "군사를 먼저 낸 건 저쪽이오. 먼저 공격받은 건 우리인데, 왜 우리가 참아야 하오?"
+  },
+  {
+   "ID": "c15-r06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "천자의 조서가 와서 어쩔 수 없었소. 우리도 정말 치려던 게 아니라, 조서를 따르는 모습을 보이려 했을 뿐이오."
+  },
+  {
+   "ID": "c15-r07",
+   "Kind": "say",
+   "Speaker": "jiling",
+   "Text": "조서라니! 그 조서가 누구 손에서 나왔는지 모르는 사람이 어디 있소!"
+  },
+  {
+   "ID": "c15-r08",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "이 양반이! 형이 좋게 말할 때 알아들으랑께!"
+  },
+  {
+   "ID": "c15-r09",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "익덕, 참게."
+  },
+  {
+   "ID": "c15-r10",
+   "Kind": "say",
+   "Speaker": "jiling",
+   "Text": "좋게? 남의 땅에 군사를 끌고 와 놓고 좋게라니!"
+  },
+  {
+   "ID": "c15-r11",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "잠깐, 잠깐! 그만들 하시오."
+  },
+  {
+   "ID": "c15-r12",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "이렇게 대립만 하면 끝이 없지 않소. 그럼 하늘의 뜻에 맡깁시다."
+  },
+  {
+   "ID": "c15-r13",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "아까 내 화극을 꽂아 둔 데가 여기서 백오십 보요. 내가 활로 그 화극을 맞히면, 하늘이 싸우지 말라는 뜻으로 알고 군사를 거두시오."
+  },
+  {
+   "ID": "c15-r14",
+   "Kind": "say",
+   "Speaker": "jiling",
+   "Text": "백오십 보? 말도 안 되는 소리요!"
+  },
+  {
+   "ID": "c15-r15",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……못 맞히면 어찌 되는 것이오?"
+  },
+  {
+   "ID": "c15-r16",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "그땐 마음대로들 싸우시오. 나는 구경이나 하지. 자, 약속하시겠소?"
+  },
+  {
+   "ID": "c15-r17",
+   "Kind": "say",
+   "Speaker": "jiling",
+   "Text": "……좋소. 약속하리다."
+  },
+  {
+   "ID": "c15-r18",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……약속하겠소."
+  },
+  {
+   "ID": "c15-r19",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "활을 가져오너라."
+  },
+  {
+   "ID": "c15-p11",
+   "Kind": "say",
+   "Speaker": "jiling",
+   "Text": "마, 맞혔다고……?"
+  },
+  {
+   "ID": "c15-p12",
+   "Kind": "say",
+   "Speaker": "jiling",
+   "Text": "(유비에 여포까지 상대할 수는 없다…….) 돌아간다!"
+  },
+  {
+   "ID": "c15-p13",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "장군 덕에 피를 보지 않았소. 고맙소…… 고맙기는 한데……"
+  },
+  {
+   "ID": "c15-p14",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "하하, 고마울 것까지야. 나는 서주에서 와 달라는 청을 받고 왔을 뿐이오."
+  },
+  {
+   "ID": "c15-p15",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "어쩌다 보니 현덕 공의 땅을 차지하게 되었지만, 내 뜻은 아니었소. 조표가 성문을 열어 주더군."
+  },
+  {
+   "ID": "c15-p16",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "근거지가 없으면 고생이 많겠지. 소패를 내어 드리리다."
+  },
+  {
+   "ID": "c15-p17",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "생각해 보시오. 조조를 쳐서 서주를 구했고, 오늘은 현덕 공을 구했고, 소패까지 내주었으니…… 은혜를 입은 건 그쪽이오. 고마워하시오."
+  },
+  {
+   "ID": "c15-p18",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "이 자식이! 활 솜씨에 놀라서 말하는 법을 까먹고 있었더니, 버르장머리가 없구먼!"
+  },
+  {
+   "ID": "c15-p19",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "익덕."
+  },
+  {
+   "ID": "c15-p20",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "맞소. 고맙소. 곧 소패로 떠나겠소."
+  },
+  {
+   "ID": "c15-p21",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "하하하!"
+  }
+ ]
+}

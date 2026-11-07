@@ -87,6 +87,11 @@
   "SideShareMax": 0.5,
   "ForageItems": ["barley", "bean"],
   "TraitPlanStep": 15,
+  "Difficulties": [
+   {"ID": "easy", "Name": "쉬움", "Desc": "SRPG 장르에 익숙하지 않은 분들을 위한 난이도입니다.", "EnemyShift": -0.15, "XPPct": 130},
+   {"ID": "normal", "Name": "보통", "Desc": "SRPG 장르와 코에이 삼국지에 익숙한 분들을 위한 난이도입니다.", "EnemyShift": 0, "XPPct": 100},
+   {"ID": "hard", "Name": "어려움", "Desc": "이 게임에 익숙한 분들을 위한 난이도입니다.", "EnemyShift": 0.15, "XPPct": 85}
+  ],
   "RankLead": {
    "rabble": -0.14,
    "recruit": -0.07,
@@ -139,6 +144,14 @@
     "#ffb84f",
     "#d38e11",
     "#895d14"
+   ]
+  },
+  "taishan": {
+   "Name": "태산 도적",
+   "Colors": [
+    "#c89a6a",
+    "#9a6a3e",
+    "#5a3a22"
    ]
   },
   "dong": {

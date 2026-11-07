@@ -129,7 +129,7 @@
    "Y": 7,
    "Facing": "SW",
    "Group": "hq",
-   "Policy": "hold",
+   "Policy": "react",
    "Shift": -0.07
   },
   {
@@ -164,20 +164,18 @@
    "X": 14,
    "Y": 7,
    "Facing": "SW",
-   "Group": "crossbows",
+   "Group": "xbows",
    "Policy": "hold",
-   "Class": "crossbow",
-   "Shift": -0.12
+   "Class": "crossbow"
   },
   {
    "Character": "troop_archer",
    "X": 14,
    "Y": 9,
    "Facing": "SW",
-   "Group": "crossbows",
+   "Group": "xbows",
    "Policy": "hold",
-   "Class": "crossbow",
-   "Shift": -0.12
+   "Class": "crossbow"
   },
   {
    "Character": "wenchou",
@@ -185,7 +183,8 @@
    "Y": 11,
    "Facing": "NW",
    "Group": "wen",
-   "Policy": "hold"
+   "Policy": "hold",
+   "Rank": "commander"
   },
   {
    "Character": "troop_cavalry",
@@ -453,7 +452,16 @@
      "Lines": [
       {
        "Actor": "tianfeng",
-       "Text": "거록에서 장비에게 꺾여 낯을 들지 못한다 합니다. 서두르지 말라 아뢰었다는 것만은 기억해 주십시오."
+       "Text": "안 장군은 오지 못합니다. 그러니 더욱 서두르지 마십시오. 다리만 지키면 공손찬이 제풀에 지칩니다."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "흥, 또 지키라는 소리로군."
       }
      ]
     }
@@ -462,7 +470,8 @@
   {
    "ID": "all-out",
    "If": [
-    "defeated:wenchou"
+    "defeated:wenchou",
+    "!alldefeated:xbows"
    ],
    "Do": [
     {
@@ -479,7 +488,78 @@
      "Lines": [
       {
        "Actor": "tianfeng",
-       "Text": "주공, 노병을 앞에 두고 기다리셔야 합니다! ……제가 아뢰었다는 것만은 기억해 주십시오."
+       "Text": "지금 나서시면 안 됩니다. 노병 뒤에서 버티시면 저들은 다리를 건너지 못합니다."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "사세삼공의 원본초가 숨어서 싸우란 말이냐!"
+      }
+     ]
+    },
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-jiejiao-all-out": 1
+     }
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "line",
+      "hq-guard"
+     ],
+     "Policy": "assault"
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "yuanshao"
+     ],
+     "Policy": "march",
+     "Goal": {
+      "X": 16,
+      "Y": 9
+     }
+    }
+   ]
+  },
+  {
+   "ID": "all-out-broken",
+   "If": [
+    "defeated:wenchou",
+    "alldefeated:xbows",
+    "!flag:flag-jiejiao-all-out"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "문추가 물러났다고……? 전군, 총공격이다! 다리를 건너 공손찬을 쳐라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "tianfeng",
+       "Text": "노병이 무너졌습니다. 본진을 물려 다리를 끊고 다음을 기약하십시오."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "물러나? 공손찬 앞에서 등을 보이란 말이오!"
       }
      ]
     },
@@ -507,7 +587,8 @@
   {
    "ID": "crossbows-broken",
    "If": [
-    "alldefeated:crossbows"
+    "alldefeated:xbows",
+    "defeated:quyi"
    ],
    "Do": [
     {

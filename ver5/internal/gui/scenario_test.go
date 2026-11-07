@@ -98,7 +98,7 @@ func TestScenesData(t *testing.T) {
 	names := nameIndex(d)
 	diagonal := map[string]bool{"NW": true, "NE": true, "SW": true, "SE": true}
 	times := map[string]bool{"": true, "day": true, "dusk": true, "night": true, "dawn": true, "memory": true}
-	effects := map[string]bool{"": true, "none": true, "petals": true, "fire": true, "smallfire": true, "bigfire": true, "smoke": true, "steam": true, "birds": true, "glint": true}
+	effects := map[string]bool{"": true, "none": true, "petals": true, "fire": true, "smallfire": true, "bigfire": true, "smoke": true, "steam": true, "birds": true, "glint": true, "halberd": true, "halberd_throw": true}
 	for id, def := range book.Scenes {
 		t.Run(id, func(t *testing.T) {
 			if !times[def.Time] {
@@ -184,6 +184,13 @@ func TestScenesData(t *testing.T) {
 						if _, cast := def.Cast[actor]; !ok || !cast {
 							t.Errorf("prop %v: follows no actor of the cast", st.Prop)
 						}
+					}
+				}
+			}
+			for key, a := range def.Cast {
+				for _, c := range a.If {
+					if _, err := content.ParseCond(c); err != nil {
+						t.Errorf("cast %s: %v", key, err)
 					}
 				}
 			}

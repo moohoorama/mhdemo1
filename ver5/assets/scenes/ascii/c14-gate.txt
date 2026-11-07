@@ -1,0 +1,46 @@
+# c14-gate  S_xuzhou_gate  ch14  origin 0 -1
+..................Stl..................###
+..................Sck...Mat...Jar......###
+...Tre............Mat......MatSck......###
+.....................MatFirCld...Jar...###
+...............Bsh...Bkt...............###
+.........Tre.....................Bnr...###
+....................................in1###
+.......................................###
+....................................in2###
+...Tre......Bsh...Mil..................###
+...............Tre...............Bnr...###
+...........................Ntc.........###
+........................MatMat...Sck...###
+...Bsh..................Bkt............###
+
+Gat 수문장  (off stage, enters later (cell 11 5))
+in1 서주병#1  (light_infantry)
+in2 서주병#2  (light_infantry)
+Liu 유비  (off stage, enters later (cell 9 6))
+Gua 관우  (off stage, enters later (cell 10 5))
+Zha 장비  (off stage, enters later (cell 10 7))
+Che 진등  (off stage, enters later (cell 11 4))
+Miz 미축  (off stage, enters later (cell 11 8))
+Lub 여포  (lubu_unarmed, off stage, enters later (cell 5 6))
+Zao 장료  (zhangliao, off stage, enters later (cell 4 5))
+Cng 진궁  (off stage, enters later (cell 5 7))
+cv1 기병#1  (light_cavalry, off stage, enters later (cell 3 6))
+cv2 기병#2  (light_cavalry, off stage, enters later (cell 2 5))
+cv3 기병#3  (light_cavalry, off stage, enters later (cell 2 7))
+
+# c14-lg01: Gat -> 11 5
+# c14-lg02: Liu -> 9 6
+# c14-lg02: Gua -> 10 5
+# c14-lg02: Zha -> 10 7
+# c14-lg02: Che -> 11 4
+# c14-lg02: Miz -> 11 8
+# c14-lg02: Lub -> 5 6
+# c14-lg02: Zao -> 4 5
+# c14-lg02: Cng -> 5 7
+# c14-lg02: cv1 -> 3 6
+# c14-lg02: cv2 -> 2 5
+# c14-lg02: cv3 -> 2 7
+# c14-lg07: Cng -> 6 7
+# c14-lg08: Lub -> 7 6
+# c14-lg09: Gua -> 9 7

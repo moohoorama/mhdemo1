@@ -69,6 +69,9 @@ func main() {
 		case o.Phase == "scenario" && o.Dialogue.Kind == "battle":
 			st := d.Stages[o.Stage]
 			fmt.Printf("%s Lv%-2d before:%s\n", st.ID, d.Rules.StageLevel(st.Order), levels())
+			for c, ok := e.OwnerPiece(); ok; c, ok = e.OwnerPiece() {
+				apply(c)
+			}
 			before := e.Snapshot()
 			tries := 1
 			var acts map[string]int

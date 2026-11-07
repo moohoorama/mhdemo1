@@ -47,6 +47,7 @@ func demoSceneFile(d *Demo) error {
 	d.overlay = func(dst *ebiten.Image) {
 		dst.Fill(color.Black)
 		d.g.drawScene(dst, nil)
+		d.g.blackOut(dst, d.g.scene.fade)
 	}
 	return nil
 }

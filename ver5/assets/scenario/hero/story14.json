@@ -1,0 +1,426 @@
+{
+ "Nodes": [
+  {
+   "ID": "c14-death",
+   "Kind": "scene",
+   "Place": "서주 · 도겸의 집"
+  },
+  {
+   "ID": "c14-d00",
+   "Kind": "narrate",
+   "Text": "며칠 뒤, 서주에서 사람이 달려왔다. 도겸이 위독하다."
+  },
+  {
+   "ID": "c14-d01",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "현덕…… 왔는가."
+  },
+  {
+   "ID": "c14-d02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "사군! 어찌 이리 되셨습니까."
+  },
+  {
+   "ID": "c14-d03",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "늙은이가 갈 때가 되었을 뿐이네. 내 아들들은 재주가 없어 이 땅을 지키지 못하네."
+  },
+  {
+   "ID": "c14-d04",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "서주를 맡아 주게. 이 늙은이가 자네에게 하는 마지막 청일세."
+  },
+  {
+   "ID": "c14-d05",
+   "Kind": "say",
+   "Speaker": "chendeng",
+   "Text": "사군의 뜻이 서주 백성의 뜻이기도 합니다. 장군께서 맡아 주십시오."
+  },
+  {
+   "ID": "c14-d06",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "저희 형제도 장군을 모시겠습니다."
+  },
+  {
+   "ID": "c14-d07",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "형님 말씀이 옳습니다."
+  },
+  {
+   "ID": "c14-d08",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "저는 그럴 만한 그릇이 못 됩니다. 서주를 맡을 분은 따로 있을 것입니다."
+  },
+  {
+   "ID": "c14-d09",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "이 늙은이가 사람을 몇이나 보아 왔겠는가. 백성을 먼저 생각하는 사람은 자네뿐이었네."
+  },
+  {
+   "ID": "c14-d10",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님, 사군께서 이렇게까지 청하십니다. 받으셔야 합니다."
+  },
+  {
+   "ID": "c14-d11",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "맞슈, 형! 형이 안 맡으면 또 엉뚱한 놈이 와서 백성만 고생혀유!"
+  },
+  {
+   "ID": "c14-d12",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……알겠습니다. 서주를 맡겠습니다."
+  },
+  {
+   "ID": "c14-d13",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "고맙네…… 이제야…… 마음이 놓이는구먼."
+  },
+  {
+   "ID": "c14-d14",
+   "Kind": "narrate",
+   "Text": "도겸이 웃는 얼굴로 눈을 감았다."
+  },
+  {
+   "ID": "c14-d15",
+   "Kind": "say",
+   "Speaker": "caobao",
+   "Text": "……"
+  },
+  {
+   "ID": "c14-d16",
+   "Kind": "join",
+   "Character": "mizhu",
+   "Event": "join-mizhu"
+  },
+  {
+   "ID": "c14-d17",
+   "Kind": "join",
+   "Character": "mifang",
+   "Event": "join-mifang"
+  },
+  {
+   "ID": "c14-d18",
+   "Kind": "narrate",
+   "Text": "도겸의 장례를 치르고, 서주의 인수는 유비에게 넘어왔다."
+  },
+  {
+   "ID": "c14-walk",
+   "Kind": "explore",
+   "Explore": "explore14"
+  },
+  {
+   "ID": "c14-gate",
+   "Kind": "scene",
+   "Place": "서주성 앞"
+  },
+  {
+   "ID": "c14-lg01",
+   "Kind": "say",
+   "Speaker": "gatekeeper",
+   "Text": "아뢰오! 여포가 군사를 이끌고 성 밖에 와, 사군께 몸을 맡기겠다 합니다!"
+  },
+  {
+   "ID": "c14-lg02",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "현덕! 오래간만이구려."
+  },
+  {
+   "ID": "c14-lg03",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "내가 연주를 친 덕에 조조가 서주에서 물러갔다지? 조조로부터 서주를 구하려던 내 계획이 들어맞은 걸 보니, 마음이 한결 편안하군."
+  },
+  {
+   "ID": "c14-lg04",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "뭐여? 그건 형이 글을 써서 물린 거……!"
+  },
+  {
+   "ID": "c14-lg05",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "익덕."
+  },
+  {
+   "ID": "c14-lg06",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "연주는 조조에게 잠시 맡겨 두었소. 내가 서주 곁에 있어야 조조가 다시는 서주를 넘보지 못할 테니까."
+  },
+  {
+   "ID": "c14-lg07",
+   "Kind": "say",
+   "Speaker": "chengong",
+   "Text": "장군, 말씀을 줄이시지요. 진궁, 자는 공대라 합니다. 길 잃은 군사입니다. 머물 곳만 빌려주시면 이 은혜는 잊지 않겠습니다."
+  },
+  {
+   "ID": "c14-lg08",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "아우, 우리 둘 다 변방에서 올라와 고생하는 처지 아니오. 서로 도우며 삽시다."
+  },
+  {
+   "ID": "c14-lg09",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "아우? 누가 누구 아우여!"
+  },
+  {
+   "ID": "c14-lg10",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "먼 길 오셨소. 쉬실 곳을 마련할 테니, 성 밖에서 잠시 기다려 주시오."
+  },
+  {
+   "ID": "c14-hall",
+   "Kind": "scene",
+   "Place": "서주 관청"
+  },
+  {
+   "ID": "c14-lh01",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "여포는 정원을 베고 동탁을 벤 사람입니다. 두 번이나 주인을 벤 자를 곁에 둘 수는 없습니다."
+  },
+  {
+   "ID": "c14-lh02",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "지금 베어 버립시다! 지친 군사 몇이니 오늘이 기회유!"
+  },
+  {
+   "ID": "c14-lh03",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "익덕. ……하지만 형님, 저자를 성 안에 들이시면 안 됩니다."
+  },
+  {
+   "ID": "c14-lh04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "궁해서 찾아온 사람을 내치면, 다음에 궁한 사람은 누구를 찾아가겠나."
+  },
+  {
+   "ID": "c14-lh05",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "성 안에는 들이지 않겠네. 소패를 내어 주세. 우리가 머물던 곳이니 군량도 서주에서 대고."
+  },
+  {
+   "ID": "c14-lh06",
+   "Kind": "say",
+   "Speaker": "chendeng",
+   "Text": "소패에 두시면 조조를 막는 울타리는 되겠지요."
+  },
+  {
+   "ID": "c14-lh07",
+   "Kind": "say",
+   "Speaker": "caobao",
+   "Text": "……"
+  },
+  {
+   "ID": "c14-lh08",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "장군, 서주는 아직 조조를 두려워하오. 소패에 머물며 조조를 견제해 주시오. 군량은 서주에서 대겠소."
+  },
+  {
+   "ID": "c14-lh09",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "좋소! 내가 소패에 있으면 조조는 서주 쪽으로 고개도 못 돌릴 거요. 아우가 사람 볼 줄은 아는구려."
+  },
+  {
+   "ID": "c14-lh10",
+   "Kind": "say",
+   "Speaker": "chengong",
+   "Text": "장군의 뜻, 잊지 않겠습니다."
+  },
+  {
+   "ID": "c14-envoy",
+   "Kind": "scene",
+   "Place": "하비 관청"
+  },
+  {
+   "ID": "c14-e00",
+   "Kind": "narrate",
+   "Text": "얼마 뒤, 조정에서 사자가 왔다."
+  },
+  {
+   "ID": "c14-e01",
+   "Kind": "say",
+   "Speaker": "court_envoy",
+   "Text": "조서를 받으시오."
+  },
+  {
+   "ID": "c14-e02",
+   "Kind": "say",
+   "Speaker": "court_envoy",
+   "Text": "원술이 회남에서 분수를 모르고 날뛰니, 서주목 유비는 군사를 내어 이를 쳐라."
+  },
+  {
+   "ID": "c14-e02b",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "신 유비, 삼가 조서를 받듭니다."
+  },
+  {
+   "ID": "c14-e03",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "요즘 조조가 천자를 모신 뒤로, 제가 천자인 양 조서를 함부로 내린다 들었습니다."
+  },
+  {
+   "ID": "c14-e03b",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "홀홀단신일 때에도 천자의 조서를 거짓으로 꾸민 사람입니다. 지금은 말할 것도 없지요."
+  },
+  {
+   "ID": "c14-e03c",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "아무리 보아도 이건 조조의 간계입니다. 장군께서 서주를 비우고 원술과 싸워 지치기를 기다리는 것이지요."
+  },
+  {
+   "ID": "c14-e04",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "원술이면 그 금칠한 막사에서 거들먹거리던 양반 아뉴? 형, 한번 혼내 주자구유!"
+  },
+  {
+   "ID": "c14-e05",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "익덕."
+  },
+  {
+   "ID": "c14-e06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "간계라 해도 천자의 조서일세. 신하 된 몸으로 모른 척할 수는 없네."
+  },
+  {
+   "ID": "c14-e06a",
+   "Kind": "say",
+   "Speaker": "chendeng",
+   "Text": "그렇다면 받들기만 하시지요. 군량을 모으고 군사를 고르느라 채비가 늦어진다고 아뢰면 됩니다."
+  },
+  {
+   "ID": "c14-e06b",
+   "Kind": "say",
+   "Speaker": "chendeng",
+   "Text": "조정에는 날마다 일이 쌓이는 법입니다. 그렇게 달포만 끌어도, 이 일은 다른 일들에 묻혀 흐지부지될 것입니다."
+  },
+  {
+   "ID": "c14-e06c",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "받든다 해 놓고 미루라는 말인가. 그건 천자를 속이는 일일세."
+  },
+  {
+   "ID": "c14-e06d",
+   "Kind": "say",
+   "Speaker": "chendeng",
+   "Text": "조조가 꾀로 오는데 정직으로만 받으시면 서주가 위태롭습니다. 지금은 꾀를 쓰셔야 할 때입니다."
+  },
+  {
+   "ID": "c14-e06e",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "꾀를 꾀로 받으면, 나도 조조와 다를 게 무엇이겠나."
+  },
+  {
+   "ID": "c14-e06f",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "군사를 이끌고 우이까지 나가 진을 치겠네. 원술의 움직임을 보다가, 싸울 만하지 않으면 돌아오겠네."
+  },
+  {
+   "ID": "c14-e06g",
+   "Kind": "say",
+   "Speaker": "chendeng",
+   "Text": "……뜻대로 하십시오."
+  },
+  {
+   "ID": "c14-e07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "운장, 익덕은 나와 함께 가세. 조 장군, 하비를 부탁하오."
+  },
+  {
+   "ID": "c14-e08",
+   "Kind": "say",
+   "Speaker": "caobao",
+   "Text": "……맡겨 두십시오."
+  },
+  {
+   "ID": "c14-yuanshu",
+   "Kind": "scene",
+   "Place": "원술의 막사"
+  },
+  {
+   "ID": "c14-y01",
+   "Kind": "say",
+   "Speaker": "yuanshu",
+   "Text": "무어라? 돗자리나 짜던 놈이, 감히 짐을……!"
+  },
+  {
+   "ID": "c14-y02",
+   "Kind": "say",
+   "Speaker": "yanghong",
+   "Text": "주공, 말씀을 삼가십시오. 아직은……"
+  },
+  {
+   "ID": "c14-y03",
+   "Kind": "say",
+   "Speaker": "yuanshu",
+   "Text": "흥."
+  },
+  {
+   "ID": "c14-y04",
+   "Kind": "say",
+   "Speaker": "yanghong",
+   "Text": "유비는 조서를 받들고 왔습니다. 그와 싸우면 조정에 맞서는 꼴이 됩니다. 서주는 여포도 노리고 있으니, 둘이 다투게 두고 기다리시지요."
+  },
+  {
+   "ID": "c14-y05",
+   "Kind": "say",
+   "Speaker": "yuanshu",
+   "Text": "조정? 조조가 쥐고 흔드는 조정 말이냐. 기령!"
+  },
+  {
+   "ID": "c14-y06",
+   "Kind": "say",
+   "Speaker": "jiling",
+   "Text": "예!"
+  },
+  {
+   "ID": "c14-y07",
+   "Kind": "say",
+   "Speaker": "yuanshu",
+   "Text": "군사를 줄 테니, 그 돗자리 장수를 회수에 처넣고 오너라."
+  },
+  {
+   "ID": "c14-battle",
+   "Kind": "battle",
+   "Stage": "B14",
+   "Text": "우이 전투 — 출전 준비"
+  }
+ ]
+}

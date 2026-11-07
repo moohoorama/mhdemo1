@@ -1,7 +1,7 @@
 # c11-envoy  S_tent_mid  ch11  origin -1 -1
 Pil###############Pil
 ###.........BnrWpnArm
-###BnrGSZ.........in1
+###BnrBrzGSZ......in1
 ###...Dsk...MapZhaZun
 ###.........LiuGua...
 Pil...BedChe......Brz
@@ -14,8 +14,6 @@ Zha 장비
 Zun 조운
 in1 백마병#1  (light_infantry)
 
-# c11-e3: GSZ -> 2 1
 # c11-e3: Liu -> 2 3
 # c11-e4: Gua -> 3 4
-# c11-e5: GSZ -> 1 1
 # c11-e5: Liu -> 1 3

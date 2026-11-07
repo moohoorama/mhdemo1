@@ -358,7 +358,7 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 		}
 		g.detailText(dst, image.Rect(body.Min.X, body.Min.Y+180, body.Max.X, body.Max.Y), strings.Join(status, " · "))
 	case 1:
-		g.detailTraits(dst, body, u.Traits)
+		g.detailTraits(dst, body, g.unitTraitRows(o, u))
 	case 2:
 		g.detailEquipment(dst, o, u.Character, body)
 	case 3:
@@ -374,11 +374,36 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 	}
 }
 
-func (g *Game) detailTraits(dst *ebiten.Image, r image.Rectangle, traits []string) {
+// unitTraitRows are the traits of a unit's officer: those held, and for the player's own officers those they have
+// not learned yet, to be shown dimmed.
+func (g *Game) unitTraitRows(o core.Observation, u *core.UnitView) []traitEntry {
+	if !g.S.Data.Characters[u.Def].Playable {
+		rows := make([]traitEntry, len(u.Traits))
+		for i, id := range u.Traits {
+			rows[i] = traitEntry{id: id, have: true}
+		}
+		return rows
+	}
+	var equip []string
+	for _, c := range o.Characters {
+		if c.ID == u.Character {
+			for _, id := range c.Equipment {
+				equip = append(equip, id)
+			}
+		}
+	}
+	return g.traitCatalog(u.Def, u.Class, equip, u.Traits)
+}
+
+func (g *Game) detailTraits(dst *ebiten.Image, r image.Rectangle, traits []traitEntry) {
 	const rowH, arrowH = 28, 18
 	rows := max(1, (r.Dy()-28-2*arrowH-4)/rowH)
 	g.traitTop = max(0, min(max(0, len(traits)-rows), g.traitTop))
-	g.label(dst, fmt.Sprintf("보유 특성 %d", len(traits)), float64(r.Min.X), float64(r.Min.Y), 13, gold)
+	held := 0
+	for _, t := range traits {
+		held += b2i(t.have)
+	}
+	g.label(dst, fmt.Sprintf("보유 특성 %d / %d", held, len(traits)), float64(r.Min.X), float64(r.Min.Y), 13, gold)
 	var up, down func()
 	if g.traitTop > 0 {
 		up = func() { g.traitTop-- }
@@ -390,15 +415,24 @@ func (g *Game) detailTraits(dst *ebiten.Image, r image.Rectangle, traits []strin
 	g.arrow(dst, image.Rect(r.Min.X, y, r.Max.X, y+arrowH), true, up)
 	y += arrowH + 2
 	for i := 0; i < min(rows, len(traits)); i++ {
-		id := traits[g.traitTop+i]
+		t := traits[g.traitTop+i]
+		id := t.id
 		row := image.Rect(r.Min.X, y+i*rowH, r.Max.X, y+(i+1)*rowH-2)
 		g.btn(dst, row, "", func() {
 			if !g.popupPending() {
 				g.modals = append(g.modals, &modal{kind: "trait", trait: id})
 			}
 		})
-		g.traitIconOf(dst, id, float64(row.Min.X+4), float64(row.Min.Y+3), 20)
-		g.label(dst, g.traitName(id), float64(row.Min.X+30), float64(row.Min.Y+3), 13, ink)
+		var fg color.Color = ink
+		if !t.have {
+			fg = dimInk
+		}
+		if t.have {
+			g.traitIconOf(dst, id, float64(row.Min.X+4), float64(row.Min.Y+3), 20)
+		} else {
+			g.drawDimmedTraitIcon(dst, id, float64(row.Min.X+4), float64(row.Min.Y+3), 20)
+		}
+		g.label(dst, g.traitName(id), float64(row.Min.X+30), float64(row.Min.Y+3), 13, fg)
 	}
 	if len(traits) == 0 {
 		g.label(dst, "(없음)", float64(r.Min.X+8), float64(y+4), 13, muted)

@@ -223,7 +223,7 @@ func (e *Engine) duelAlly(d content.Duel) *Unit {
 // skill, item) has been carried out. Spawns and the start of the battle set duels off at once.
 // One duel can change who stands where, so the stage's duels are looked at again after each.
 func (e *Engine) autoDuels() {
-	if m := e.unit(e.lastActor); m != nil && m.HP > 0 && !m.Done {
+	if e.midAction() {
 		return
 	}
 	duels := e.data.Stages[e.state.Stage].Duels

@@ -728,6 +728,50 @@
    "Effects": {
     "evade": 15
    }
+  },
+  "needles": {
+   "Name": "Needles",
+   "Kind": "talent",
+   "Tone": "buff",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "spell_cure": 1
+   }
+  },
+  "drain": {
+   "Name": "Drain",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "absorb_mana": 1
+   }
+  },
+  "linger": {
+   "Name": "Linger",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "status_double": 1
+   }
+  },
+  "exploit": {
+   "Name": "Exploit",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Desc": "",
+   "Cost": 300,
+   "Requires": [],
+   "Effects": {
+    "crit_vs_ailing": 1
+   }
   }
  }
 }
