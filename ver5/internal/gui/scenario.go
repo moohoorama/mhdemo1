@@ -6,7 +6,6 @@ import (
 	"image/color"
 	"math"
 	"regexp"
-	"slices"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -379,90 +378,6 @@ func (g *Game) roster(o core.Observation) []core.Character {
 		}
 	}
 	return out
-}
-
-func (g *Game) officerDetail(dst *ebiten.Image, o core.Observation, r image.Rectangle) {
-	var of *core.Character
-	for i := range o.Characters {
-		if o.Characters[i].ID == g.selected {
-			of = &o.Characters[i]
-		}
-	}
-	if of == nil {
-		return
-	}
-	x, y := float64(r.Min.X), float64(r.Min.Y)
-	g.portrait(dst, of.ID, of.Class, x, y, 120)
-	g.label(dst, g.name(of.ID), x+140, y, 28, gold)
-	g.label(dst, fmt.Sprintf("%s · Lv%d", g.className(of.Class), of.Level), x+140, y+42, 17, ink)
-	progress := core.ExperienceProgress(of.XP)
-	bar(dst, float32(x+140), float32(y+74), 260, 8, progress/100, xpC)
-	g.label(dst, fmt.Sprintf("EXP %.1f / 100   ·   특성치 %d", progress, of.Points), x+140, y+86, 14, muted)
-	g.choiceBtn(dst, image.Rect(r.Max.X-212, r.Min.Y, r.Max.X-108, r.Min.Y+32), "능력·장비", !g.party.traits, func() { g.party.traits = false })
-	g.choiceBtn(dst, image.Rect(r.Max.X-102, r.Min.Y, r.Max.X, r.Min.Y+32), "특성", g.party.traits, func() { g.party.traits = true })
-	if g.party.traits {
-		have := slices.Clone(of.Learned)
-		equip := []string{}
-		for _, id := range of.Equipment {
-			equip = append(equip, id)
-		}
-		for _, id := range equip {
-			have = append(have, g.S.Data.Equipment[id].Traits...)
-		}
-		rows := g.traitCatalog(of.Def, of.Class, equip, have)
-		if e := g.S.Engine; e != nil {
-			learnable := e.Learnable(of.ID)
-			for i := range rows {
-				rows[i].learnable = !rows[i].have && slices.Contains(learnable, rows[i].id)
-				rows[i].affordable = rows[i].learnable && rows[i].cost <= of.Points
-			}
-		}
-		g.traitTab(dst, of.ID, rows, image.Rect(r.Min.X, r.Min.Y+138, r.Max.X, r.Max.Y))
-		return
-	}
-	stats, err := g.S.Engine.CharacterStats(of.ID)
-	if err == nil {
-		for i, s := range statRows {
-			col, row := i%2, i/2
-			g.label(dst, s.name, x+float64(col*200), y+140+float64(row*28), 15, muted)
-			g.label(dst, fmt.Sprint(s.get(stats)), x+80+float64(col*200), y+140+float64(row*28), 15, ink)
-		}
-	}
-	g.label(dst, "장비", x, y+262, 16, gold)
-	ey := y + 292
-	for _, slot := range equipSlots {
-		g.label(dst, slotNames[slot], x, ey+6, 15, muted)
-		if item, ok := of.Equipment[slot]; ok {
-			g.itemIcon(dst, g.S.Data.Equipment[item].Icon, x+80, ey, 1, false)
-			g.label(dst, g.itemName(item), x+124, ey+6, 15, ink)
-		} else {
-			g.itemIcon(dst, slotIcons[slot], x+80, ey, 1, true)
-			g.label(dst, "—", x+124, ey+6, 15, muted)
-		}
-		ey += 42
-	}
-	g.label(dst, "습득 특성", x, ey+8, 13, muted)
-	if len(of.Learned) == 0 {
-		g.label(dst, "—", x+80, ey+8, 13, muted)
-	}
-	cx, cy := x+80, ey+6
-	for _, t := range of.Learned {
-		id := t
-		if w := traitIconSize + 20 + g.width(g.traitName(id), 14); cx+w > float64(r.Max.X) && cx > x+80 {
-			cx, cy = x+80, cy+30
-		}
-		cx = g.chip(dst, equipChip{"trait", id}, cx, cy, func() {
-			if !g.popupPending() {
-				g.modals = append(g.modals, &modal{kind: "trait", trait: id})
-			}
-		}) + 14
-	}
-	var deputy func()
-	if !of.Dead && g.S.Engine.CanDeputize(of.ID) {
-		deputy = func() { g.openOverlay("deputy") }
-	}
-	g.btn(dst, image.Rect(r.Min.X, r.Max.Y-44, r.Min.X+200, r.Max.Y-8), "장비 변경", func() { g.openOverlay("equipment") })
-	g.btn(dst, image.Rect(r.Min.X+216, r.Max.Y-44, r.Min.X+416, r.Max.Y-8), "부관 지정", deputy)
 }
 
 func containsID(cs []core.Character, id string) bool {

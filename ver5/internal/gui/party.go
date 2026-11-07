@@ -3,7 +3,6 @@ package gui
 import (
 	"fmt"
 	"image"
-	"image/color"
 	"slices"
 	"strings"
 
@@ -15,12 +14,14 @@ import (
 // picked and the one looked at.
 type partyView struct {
 	items        bool
-	traits       bool // the officers' tab shows their traits instead of their stats
+	table        bool // the officers as a table rather than the list beside the one picked
+	tab, view    int  // the picked officer's tab (officerTabs) and the table's kind (officerViews)
 	learning     bool // opened by a level-up for the officers still learning; closing it ends their learning
 	filter, item string
 	trait        string
 	list         tableList
-	traitList    tableList
+	officers     tableList
+	officerList  tableList
 }
 
 // belonging is a kind of thing the party has: how many are carried or stored, and who wears the rest.
@@ -83,42 +84,6 @@ func (g *Game) belongingKind(id string) string {
 
 var belongingKinds = []string{"전체", "소모품", "인수", "무기", "방어구", "장신구"}
 
-// partyWindow is the party on the walk, in two tabs: the officers, the picked one's stats and equipment beside
-// them with the buttons to change the equipment and the deputy, and the belongings.
-func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
-	if g.S.Engine == nil {
-		return
-	}
-	o := g.S.View()
-	p := &g.party
-	g.choiceBtn(dst, image.Rect(x+28, y+28, x+148, y+62), "장수", !p.items, func() { p.items = false })
-	g.choiceBtn(dst, image.Rect(x+154, y+28, x+274, y+62), "소지품", p.items, func() { p.items = true })
-	g.moneyLabel(dst, float64(x+w-120), float64(y+34), 16) // left of the window's 닫기
-	rect(dst, float32(x+28), float32(y+72), float32(w-56), 1, goldDim)
-	if p.items {
-		g.belongingsTab(dst, o, x, y+84, w, h-84)
-		return
-	}
-	roster := g.roster(o)
-	if !containsID(roster, g.selected) && len(roster) > 0 {
-		g.selected = roster[0].ID
-	}
-	ry := y + 96
-	for _, of := range roster {
-		officer := of
-		row := image.Rect(x+28, ry, x+440, ry+76)
-		g.btn(dst, row, "", func() { g.selected = officer.ID })
-		if g.selected == of.ID {
-			rect(dst, float32(row.Min.X), float32(row.Min.Y), 4, float32(row.Dy()), gold)
-		}
-		g.portrait(dst, of.ID, of.Class, float64(row.Min.X+14), float64(ry+8), 60)
-		g.label(dst, g.name(of.ID), float64(row.Min.X+88), float64(ry+8), 19, ink)
-		g.label(dst, fmt.Sprintf("Lv%d · %s", of.Level, g.className(of.Class)), float64(row.Min.X+88), float64(ry+40), 14, muted)
-		ry += 86
-	}
-	g.officerDetail(dst, o, image.Rect(x+470, y+92, x+w-28, y+h-20))
-}
-
 // belongingsTab lists the party's things of the kind picked in a table on the left, the one looked at described on
 // the right.
 func (g *Game) belongingsTab(dst *ebiten.Image, o core.Observation, x, y, w, h int) {
@@ -126,10 +91,7 @@ func (g *Game) belongingsTab(dst *ebiten.Image, o core.Observation, x, y, w, h i
 	if p.filter == "" {
 		p.filter = belongingKinds[0]
 	}
-	for i, k := range belongingKinds {
-		kind := k
-		g.choiceBtn(dst, image.Rect(x+28+i*102, y, x+28+i*102+96, y+30), kind, p.filter == kind, func() { p.filter, p.item, p.list.top = kind, "", 0 })
-	}
+	g.tabRow(dst, x+16, y, belongingKinds, slices.Index(belongingKinds, p.filter), func(i int) { p.filter, p.item, p.list.top = belongingKinds[i], "", 0 })
 	var shown []belonging
 	for _, b := range g.belongings(o) {
 		if p.filter == belongingKinds[0] || g.belongingKind(b.id) == p.filter {
@@ -137,7 +99,7 @@ func (g *Game) belongingsTab(dst *ebiten.Image, o core.Observation, x, y, w, h i
 		}
 	}
 	if len(shown) == 0 {
-		g.label(dst, "가진 물건이 없습니다", float64(x+32), float64(y+52), 15, muted)
+		g.label(dst, "가진 물건이 없습니다", float64(x+20), float64(y+64), 15, muted)
 		return
 	}
 	cur := shown[0]
@@ -157,32 +119,36 @@ func (g *Game) belongingsTab(dst *ebiten.Image, o core.Observation, x, y, w, h i
 			rows[i].wear = "창고"
 		}
 	}
-	const tableW = 648
+	detailW := min(320, w/3)
+	tableW := w - 32 - detailW - 16
 	drawTable(g, dst, &p.list, table[goodsRow]{
 		cols: g.goodsColumns(goodsNumber("count", "수량", func(r *goodsRow) int { return r.count }),
 			column[goodsRow]{key: "wear", label: "장착", w: 150, text: true, get: func(r *goodsRow) (string, float64) { return r.wear, 0 }}),
-		rowH: 36, headH: 32, size: 15, center: true,
+		rowH: touchH, headH: 32, size: 15, center: true,
 		selected: func(r *goodsRow) bool { return r.id == cur.id },
 		pick:     func(r *goodsRow) { p.item = r.id },
-	}, rows, image.Rect(x+28, y+44, x+28+tableW, y+h-20))
-	g.belongingDetail(dst, cur, image.Rect(x+28+tableW+16, y, x+w-28, y+h-20))
+	}, rows, image.Rect(x+16, y+56, x+16+tableW, y+h))
+	g.belongingDetail(dst, cur, image.Rect(x+16+tableW+16, y, x+w-16, y+h))
 }
 
-// belongingDetail describes a thing: its picture, kind and use, how many there are and who wears them; equipment
-// gets the button to the equipment window of its first wearer or of the officer picked.
+// belongingDetail describes a thing: its picture, name and kind, what it does, how many there are and who wears
+// them; equipment gets the button to the equipment window of its first wearer or of the officer picked.
 func (g *Game) belongingDetail(dst *ebiten.Image, b belonging, r image.Rectangle) {
-	rect(dst, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy()), color.NRGBA{A: 56})
-	strokeRect(dst, float32(r.Min.X)+.5, float32(r.Min.Y)+.5, float32(r.Dx()-1), float32(r.Dy()-1), 1, goldDim)
-	x, y := float64(r.Min.X+20), float64(r.Min.Y+20)
-	g.itemIcon(dst, g.itemIconOf(b.id), x+3, y+3, 2, false)
-	g.label(dst, g.itemName(b.id), x+90, y+8, 22, gold)
-	g.label(dst, g.belongingKind(b.id), x+90, y+42, 14, muted)
+	card(dst, r)
+	x, y := float64(r.Min.X+14), float64(r.Min.Y+14)
+	g.itemIcon(dst, g.itemIconOf(b.id), x+3, y+3, 1.5, false)
+	g.label(dst, g.itemName(b.id), x+64, y, 18, gold)
+	g.label(dst, g.belongingKind(b.id), x+64, y+28, 12, muted)
 	desc := g.S.Data.Items[b.id].Desc
 	eq, isEq := g.S.Data.Equipment[b.id]
 	if isEq {
 		desc = eq.Desc
 	}
-	g.label(dst, wrap(desc, 20), x, y+96, 15, ink)
+	y += 62
+	desc = wrapWidth(desc, g.face(14), float64(r.Dx()-28))
+	g.label(dst, desc, x, y, 14, ink)
+	_, dh := measureLines(g, desc, 14)
+	y += dh + 8
 	worn, where := "—", "전투 · 도구 명령"
 	if isEq {
 		worn, where = "없음", "장비"
@@ -197,15 +163,15 @@ func (g *Game) belongingDetail(dst *ebiten.Image, b belonging, r image.Rectangle
 	if isEq {
 		rows = append([][2]string{{"보정", bonusText(eq.Bonus, nil)}}, rows...)
 	}
-	for i, row := range rows {
-		ry := float64(r.Max.Y) - 76 - float64((len(rows)-i)*28)
-		g.label(dst, row[0], x, ry, 14, muted)
-		g.label(dst, row[1], x+80, ry, 14, ink)
+	for _, row := range rows {
+		g.label(dst, row[0], x, y, 13, muted)
+		g.label(dst, ellipsis(g, row[1], 13, r.Dx()-100), x+70, y, 13, ink)
+		y += 22
 	}
 	if !isEq {
 		return
 	}
-	g.centeredBtn(dst, image.Rect(r.Min.X+20, r.Max.Y-58, r.Max.X-20, r.Max.Y-20), "장비 바꾸기", func() {
+	g.mBtn(dst, image.Rect(r.Min.X+14, r.Max.Y-touchH-12, r.Max.X-14, r.Max.Y-12), "장비 바꾸기", false, func() {
 		for _, c := range g.roster(g.S.View()) {
 			if slices.Contains(b.wearer, g.name(c.ID)) {
 				g.selected = c.ID

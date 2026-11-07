@@ -114,7 +114,7 @@ func (g *Game) drawOverlay(dst *ebiten.Image) {
 	cursor := cursorPos
 	defer func() { cursorPos = cursor }()
 	for i, name := range g.overlays {
-		g.buttons, g.blocks = nil, nil
+		g.buttons, g.blocks, g.wheelAreas = nil, nil, nil
 		cursorPos = cursor
 		if i < len(g.overlays)-1 {
 			cursorPos = func() (int, int) { return -1000, -1000 }
@@ -149,8 +149,13 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 	case "difficulty":
 		w, h = 640, 84+len(g.S.Data.Rules.Difficulties)*difficultyRowH
 	}
-	// the window in a frame with room for its title plate and shadow
-	g.popup(dst, "overlay:"+name, 150, w+40, h+40, image.Rect(0, 0, w+40, h+40), func(dst *ebiten.Image) { g.overlayWindow(dst, name, w, h) })
+	// the window in a frame with room for its title plate and shadow; a sheet has no plate
+	pad := 40
+	if sheetWindows[name] {
+		w, h = sheetSize()
+		pad = 16
+	}
+	g.popup(dst, "overlay:"+name, 150, w+pad, h+pad, image.Rect(0, 0, w+pad, h+pad), func(dst *ebiten.Image) { g.overlayWindow(dst, name, w, h) })
 	if name == "equipment" && g.equip.slot != "" {
 		g.drawEquipPicker(dst)
 	}
@@ -168,12 +173,17 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h int) {
 	x, y := uiW/2-w/2, uiH/2-h/2
 	r := image.Rect(x, y, x+w, y+h)
-	if name == "confirm" {
+	switch {
+	case sheetWindows[name]:
+		g.window(dst, r)
+	case name == "confirm":
 		g.titledPattern(dst, r, g.confirmTitle)
-	} else {
+	default:
 		g.titled(dst, r, overlayTitles[name])
 	}
-	g.btn(dst, image.Rect(x+w-96, y+16, x+w-18, y+44), "닫기", g.closeOverlay)
+	if !sheetWindows[name] {
+		g.btn(dst, image.Rect(x+w-96, y+16, x+w-18, y+44), "닫기", g.closeOverlay)
+	}
 	left := x + 32
 	switch name {
 	case "confirm":

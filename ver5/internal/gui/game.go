@@ -106,7 +106,7 @@ type Game struct {
 	skipping                  *scenes.Scene // the scene the skip button is paging through
 	skipUntil                 float64       // clicks wait until then after a skip stops
 	Verify                    bool
-	Debug                     bool  // the tools for checking the game: scene jumps, duels, the map editor, damage and XP scales
+	Debug                     bool  // the tools for checking the game: duels, the map editor, damage and XP scales
 	Shots                     []int // capture the screen at these ticks while autoplaying, then quit
 	verified                  map[string]bool
 	verifyDone                int
@@ -115,6 +115,7 @@ type Game struct {
 	brushFont, serifFont      *text.GoTextFaceSource // display faces beside the body font
 	buttons                   []button
 	blocks                    []image.Rectangle
+	wheelAreas                []wheelArea
 	ord                       order
 	menuAnim, subAnim         panelAnim
 	hover                     hoverCell
@@ -698,7 +699,7 @@ func (g *Game) Update() error {
 			g.exploreInput()
 		}
 	}
-	logInput := g.updateTableDrag() || g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker() || g.updateWaypoints() || g.updateDeputyList() || g.updateShopList()
+	logInput := g.updateTableDrag() || g.updateWheelLists() || g.updateBattleLog() || g.updateUnitList() || g.updateEquipPicker() || g.updateWaypoints() || g.updateDeputyList() || g.updateShopList()
 	g.updateDeploymentPanel()
 	g.updateHover()
 	g.keys()
@@ -932,7 +933,7 @@ func (g *Game) drawScreen(dst *ebiten.Image) {
 		g.publishBattleLog()
 	}
 	dst.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
-	g.buttons, g.blocks = nil, nil
+	g.buttons, g.blocks, g.wheelAreas = nil, nil, nil
 	if g.player.Duel != nil {
 		g.drawDuel(dst)
 		g.showWindows(dst) // a window open when the duel began closes over it
@@ -1039,10 +1040,7 @@ func (g *Game) titleMenu(dst *ebiten.Image) {
 			return
 		}
 		g.openOverlay("difficulty")
-	}}}
-	if g.Debug {
-		items = append(items, menuItem{"장면 이동", func() { g.waypoints.top = 0; g.openOverlay("waypoints") }})
-	}
+	}}, {"장면 이동", func() { g.waypoints.top = 0; g.openOverlay("waypoints") }}}
 	cont := menuItem{label: "이어하기"}
 	if slot, ok := g.S.Store.Latest(); ok {
 		cont.click = func() { g.request(session.Request{Op: "load", Slot: slot}) }

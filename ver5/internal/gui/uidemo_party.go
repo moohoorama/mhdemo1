@@ -41,8 +41,12 @@ func demoParty(d *Demo) error {
 			})
 		case 130:
 			g.openOverlay("party")
+		case 145, 160, 175:
+			g.party.tab = (f - 130) / 15
 		case 190:
-			g.party.items = true
+			g.party.table = true
+		case 205:
+			g.party.table, g.party.items = false, true
 		case 250:
 			g.party.filter = "무기"
 		case 310:
