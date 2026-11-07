@@ -1,0 +1,750 @@
+{
+ "Nodes": [
+  {
+   "ID": "c13-start",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-zhugexuan"
+     ],
+     "Next": "c13-gate"
+    }
+   ],
+   "Else": "c13-hall"
+  },
+  {
+   "ID": "c13-gate",
+   "Kind": "scene",
+   "Place": "서주성 앞"
+  },
+  {
+   "ID": "c13-g01",
+   "Kind": "say",
+   "Speaker": "zhugexuan",
+   "Text": "장군, 걸음을 멈춰 주시겠습니까. 낭야 사람 제갈현이라 합니다."
+  },
+  {
+   "ID": "c13-g02",
+   "Kind": "say",
+   "Speaker": "zhugexuan",
+   "Text": "다리 앞에서 장군의 군사가 오지 않았으면, 이 아이들과 함께 사수에 묻혔을 것입니다."
+  },
+  {
+   "ID": "c13-g03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "탁군 사람 유비, 자는 현덕이오. 이쪽은 아우 관운장, 장익덕이오. 아이들이 무사하니 다행이외다."
+  },
+  {
+   "ID": "c13-g04",
+   "Kind": "say",
+   "Speaker": "zhugexuan",
+   "Text": "일찍 세상을 뜬 형님의 아이들입니다. 제가 거두고 있지요."
+  },
+  {
+   "ID": "c13-g05",
+   "Kind": "say",
+   "Speaker": "zhugexuan",
+   "Text": "피난 보따리에서 이것 하나만은 놓지 않았습니다. 옛날 장량이 하비에서 한 노인에게 얻었다는 병법서, 『삼략』입니다. 받아 주십시오."
+  },
+  {
+   "ID": "c13-g06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "피난길에 지켜 오신 것을 어찌 받겠소. 사람이 살았으면 그걸로 되었소."
+  },
+  {
+   "ID": "c13-g07",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형~ 우리도 좋은 일 했으니께, 이런 거라도 좀 받으면서 삽시다!"
+  },
+  {
+   "ID": "c13-g08",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "익덕……."
+  },
+  {
+   "ID": "c13-g09",
+   "Kind": "say",
+   "Speaker": "zhugexuan",
+   "Text": "(웃으며) 장 장군께서 제 마음을 알아주시니 오히려 감사합니다."
+  },
+  {
+   "ID": "c13-g10",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……허허. 그럼 고맙게 받겠소."
+  },
+  {
+   "ID": "c13-g11",
+   "Kind": "grant",
+   "Item": "sanlue",
+   "Count": 1,
+   "Event": "grant-sanlue"
+  },
+  {
+   "ID": "c13-g12",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "앞으로는 어디로 가시오?"
+  },
+  {
+   "ID": "c13-g13",
+   "Kind": "say",
+   "Speaker": "zhugexuan",
+   "Text": "낭야는 이미 짓밟혀 돌아갈 곳이 없습니다. 남쪽 원술 공의 진영에 아는 이들이 있어, 그리로 몸을 의탁할까 합니다."
+  },
+  {
+   "ID": "c13-g14",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "먼 길이오. 아이들과 몸 성히 가시오."
+  },
+  {
+   "ID": "c13-hall",
+   "Kind": "scene",
+   "Place": "서주 관청"
+  },
+  {
+   "ID": "c13-h01",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "현덕, 팽성에서 헤어진 지 얼마나 되었다고 또 신세를 지는구먼. 이 늙은이가 갚을 길이 없네."
+  },
+  {
+   "ID": "c13-h02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "사군께서 무사하시니 다행입니다."
+  },
+  {
+   "ID": "c13-h03",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "서주를 함께 지키는 사람들일세. 인사들 하게."
+  },
+  {
+   "ID": "c13-h04",
+   "Kind": "say",
+   "Speaker": "chendeng",
+   "Text": "하비 사람 진등, 자는 원룡입니다."
+  },
+  {
+   "ID": "c13-h05",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "동해 사람 미축, 자는 자중이옵니다. 이쪽은 아우입니다."
+  },
+  {
+   "ID": "c13-h06",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "미방, 자는 자방이옵니다."
+  },
+  {
+   "ID": "c13-h07",
+   "Kind": "say",
+   "Speaker": "caobao",
+   "Text": "조표요."
+  },
+  {
+   "ID": "c13-h08",
+   "Kind": "say",
+   "Speaker": "xutan",
+   "Text": "단양병을 맡은 허탐이오."
+  },
+  {
+   "ID": "c13-h09",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-gaoshun"
+     ],
+     "Next": "c13-h10"
+    }
+   ],
+   "Else": "c13-h11"
+  },
+  {
+   "ID": "c13-h10",
+   "Kind": "say",
+   "Speaker": "gaoshun",
+   "Text": "현덕 공. 고맙습니다. 많은 사람이 살았습니다."
+  },
+  {
+   "ID": "c13-h11",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "사군, 조조군이 아직 서주 땅에 있습니다. 싸움이 이어지면 더 많은 백성이 죽습니다."
+  },
+  {
+   "ID": "c13-h12",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "제가 조조에게 군사를 거두라는 서신을 보내 보겠습니다."
+  },
+  {
+   "ID": "c13-h13",
+   "Kind": "say",
+   "Speaker": "caobao",
+   "Text": "서신? 조조 그놈 손에 내 아들이 죽었소. 그 잔혹무도한 놈에게 목숨을 구걸하자는 거요?"
+  },
+  {
+   "ID": "c13-h14",
+   "Kind": "say",
+   "Speaker": "caobao",
+   "Text": "떠돌이가 남의 땅에 와서 무슨 소리를!"
+  },
+  {
+   "ID": "c13-h15",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "조 장군의 원통함은 압니다. 그래도 피를 덜 흘릴 길이 있다면 마다할 까닭이 없지 않겠습니까."
+  },
+  {
+   "ID": "c13-h16",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "싸움이 길어지면 군량이며 화살이며…… 그게 다 돈입니다."
+  },
+  {
+   "ID": "c13-h17",
+   "Kind": "say",
+   "Speaker": "chendeng",
+   "Text": "조조도 서주 하나에 오래 매여 있을 처지는 아닐 것이오. 글 한 장 보내 손해 볼 일은 없습니다."
+  },
+  {
+   "ID": "c13-h18",
+   "Kind": "say",
+   "Speaker": "xutan",
+   "Text": "조조에게 숙이는 것도, 굴러온 객장에게 기대는 것도 단양 사내가 할 일은 아니오."
+  },
+  {
+   "ID": "c13-h19",
+   "Kind": "say",
+   "Speaker": "caobao",
+   "Text": "(탁자를 내리치며) 그렇소! 서주 일을 어찌 떠돌이 하나에게 맡긴단 말이오!"
+  },
+  {
+   "ID": "c13-h20",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "(기침하며) ……그만들 하게. 조조는 아직 서주 땅에 있고, 우리에겐 맞설 힘이 없네."
+  },
+  {
+   "ID": "c13-h21",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "무엇이든 해 보기는 해야 하지 않겠소. 현덕, 부탁하네."
+  },
+  {
+   "ID": "c13-h22",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "지금 바로 쓰겠습니다."
+  },
+  {
+   "ID": "c13-reply",
+   "Kind": "scene",
+   "Place": "서주 관청 · 며칠 뒤"
+  },
+  {
+   "ID": "c13-r01",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "아뢰오! 조조군이 진채를 거두고 있습니다! 조조가 현덕 공의 글을 받고, 군사를 물려 연주로 돌아간다 하였습니다!"
+  },
+  {
+   "ID": "c13-r02",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "물러간다고……? 그리 쉽게?"
+  },
+  {
+   "ID": "c13-r03",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "지금까지 사자를 몇이나 보냈는데, 답 한 장 없던 자가……."
+  },
+  {
+   "ID": "c13-r04",
+   "Kind": "say",
+   "Speaker": "chendeng",
+   "Text": "조건 하나 내걸지 않았다니. 이상한 일이오."
+  },
+  {
+   "ID": "c13-r05",
+   "Kind": "say",
+   "Speaker": "caobao",
+   "Text": "이상할 것 없소. 듣자니 저 귀 큰 떠돌이는 동탁을 치던 연합군에서 조조와 한 술잔을 나누던 사이라더군."
+  },
+  {
+   "ID": "c13-r06",
+   "Kind": "say",
+   "Speaker": "caobao",
+   "Text": "오늘은 글 한 장에 물러가지만, 언제 또 조조와 손잡고 서주에 피를 뿌릴지 누가 아오!"
+  },
+  {
+   "ID": "c13-r07",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "뭐여? 이 양반이 아까부터 말을 해도—"
+  },
+  {
+   "ID": "c13-r08",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "(장비 앞을 막아서며) 장 장군, 참으십시오. 사군의 관청입니다."
+  },
+  {
+   "ID": "c13-r09",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "조표! 자중하게. 현덕은 서주를 구하러 온 손님일세."
+  },
+  {
+   "ID": "c13-r10",
+   "Kind": "say",
+   "Speaker": "caobao",
+   "Text": "……."
+  },
+  {
+   "ID": "c13-r11",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "현덕, 실례가 많았네. 아들을 잃고 나서 저리 되었어."
+  },
+  {
+   "ID": "c13-r12",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "괜찮습니다. 자식 잃은 아비의 마음을 어찌 탓하겠습니까."
+  },
+  {
+   "ID": "c13-r13",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "……허나 저런 말이 조표 혼자만의 생각은 아닐세. 조조가 물러갔어도 백성들은 언제 또 올지 몰라 불안해하네."
+  },
+  {
+   "ID": "c13-r14",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "서주 북쪽 소패에 머물며 조조를 살펴 주지 않겠나. 군량은 서주에서 대겠네."
+  },
+  {
+   "ID": "c13-r15",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그리하겠습니다."
+  },
+  {
+   "ID": "c13-r16",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-gaoshun"
+     ],
+     "Next": "c13-r17"
+    }
+   ],
+   "Else": "c13-r20"
+  },
+  {
+   "ID": "c13-r17",
+   "Kind": "say",
+   "Speaker": "taoqian",
+   "Text": "고순, 자네가 단양병을 이끌고 현덕을 따라가게."
+  },
+  {
+   "ID": "c13-r18",
+   "Kind": "say",
+   "Speaker": "gaoshun",
+   "Text": "……예."
+  },
+  {
+   "ID": "c13-r19",
+   "Kind": "join",
+   "Character": "gaoshun",
+   "Event": "join-gaoshun"
+  },
+  {
+   "ID": "c13-r20",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "소패까지는 제가 모시겠습니다."
+  },
+  {
+   "ID": "c13-r21",
+   "Kind": "join",
+   "Character": "sunqian",
+   "Event": "join-sunqian"
+  },
+  {
+   "ID": "c13-xiaopei",
+   "Kind": "scene",
+   "Place": "소패 관청"
+  },
+  {
+   "ID": "c13-x01",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "손 공, 좋게 말해 견제이지, 우리가 서주에 있으면 불편하니 나가 달라는 것 아니오?"
+  },
+  {
+   "ID": "c13-x02",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "……솔직히, 그런 면이 없지 않습니다."
+  },
+  {
+   "ID": "c13-x03",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "그동안 서주는 조조에게 몇 번이고 사자를 보냈지만, 조조는 대꾸조차 하지 않았습니다. 이번에도 안 되겠지 하고 다들 체념하고 있었지요."
+  },
+  {
+   "ID": "c13-x04",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "그런데 흥정 한마디 없이 덜컥 물러가겠다니, 이런저런 말이 나오는 것도 무리는 아닙니다."
+  },
+  {
+   "ID": "c13-x05",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "글 한 장에 대군이 물러갔는데 칭찬은커녕 의심이라. 탁현에서 외상값 받으러 다닐 때 그 글솜씨를 빌렸어야 했는데."
+  },
+  {
+   "ID": "c13-x06",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형~~~~!"
+  },
+  {
+   "ID": "c13-x07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "익덕, 답답하다고 나가더니 뭘 그리 급하게 오느냐?"
+  },
+  {
+   "ID": "c13-x08",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형, 들었슈? 여포가 조조네 본거지 연주를 쳤대유! 그래서 조조가 협상하는 척하고 내뺀 거래유!"
+  },
+  {
+   "ID": "c13-x09",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……허. 하하하!"
+  },
+  {
+   "ID": "c13-x10",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "그렇게 된 거였군요. 이제 이상한 소문들은 싹 사라지겠습니다. 다행입니다."
+  },
+  {
+   "ID": "c13-x11",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "그 급한 와중에도 잔꾀라니. 역시 조조답습니다."
+  },
+  {
+   "ID": "c13-x12",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "일이 일단락되었으니, 드릴 말씀이 있습니다."
+  },
+  {
+   "ID": "c13-x13",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "무엇이오, 자룡?"
+  },
+  {
+   "ID": "c13-x14",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "……이제 북평으로 돌아가려 합니다."
+  },
+  {
+   "ID": "c13-x15",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "뭐여, 벌써유?"
+  },
+  {
+   "ID": "c13-x16",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "마음 같아서는 공의 곁에 남아 함께하고 싶습니다. 허나 공손 장군께서 저를 믿고 보내셨습니다."
+  },
+  {
+   "ID": "c13-x17",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "그 명을 끝까지 다하지 못하는 자라면, 누구를 섬긴들 같은 사람일 것입니다."
+  },
+  {
+   "ID": "c13-x18",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……아쉽구려. 허나 자룡이 그런 사람이니, 더 붙잡을 수가 없구려. 언젠가 꼭 다시 봅시다."
+  },
+  {
+   "ID": "c13-x19",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "그날이 오면, 그때는 오래 곁에 있겠습니다."
+  },
+  {
+   "ID": "c13-x20",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "몸조심하시오, 자룡."
+  },
+  {
+   "ID": "c13-x21",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "이대로 보낼 수야 있나. 송별연은 해야지! 내 얼른 술 가지러 가겠네."
+  },
+  {
+   "ID": "c13-x22",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "역시 헌화 형님이 내 맘을 안다니께!"
+  },
+  {
+   "ID": "c13-farewell",
+   "Kind": "scene",
+   "Place": "소패 성문 앞 · 이튿날"
+  },
+  {
+   "ID": "c13-f01",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "……."
+  },
+  {
+   "ID": "c13-f02",
+   "Kind": "leave",
+   "Character": "zhaoyun",
+   "Event": "leave-zhaoyun"
+  },
+  {
+   "ID": "c13-walk",
+   "Kind": "explore",
+   "Explore": "explore13"
+  },
+  {
+   "ID": "c13-battle",
+   "Kind": "battle",
+   "Stage": "B13",
+   "Text": "태산 전투 — 출전 준비"
+  },
+  {
+   "ID": "c13-doctor",
+   "Kind": "scene",
+   "Place": "소패 관아"
+  },
+  {
+   "ID": "c13-d01",
+   "Kind": "say",
+   "Speaker": "fanya",
+   "Text": "팽성 사람 번아라 합니다. 화타 선생께 의술을 배웠습니다. 구해 주셔서 고맙습니다."
+  },
+  {
+   "ID": "c13-d02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "다친 데는 없으시오?"
+  },
+  {
+   "ID": "c13-d03",
+   "Kind": "say",
+   "Speaker": "fanya",
+   "Text": "저는 괜찮습니다. 산채에서 함께 내려온 사람들 가운데 아직 낫지 않은 이들이 있습니다."
+  },
+  {
+   "ID": "c13-d04",
+   "Kind": "say",
+   "Speaker": "fanya",
+   "Text": "소패에 머물며 군사와 백성을 돌보게 해 주십시오."
+  },
+  {
+   "ID": "c13-d05",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "거 봐, 남는 장사라니까. 익덕 술병 고칠 사람이 생겼구먼."
+  },
+  {
+   "ID": "c13-d06",
+   "Kind": "say",
+   "Speaker": "fanya",
+   "Text": "술병은 술을 끊으면 낫습니다."
+  },
+  {
+   "ID": "c13-d07",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "……."
+  },
+  {
+   "ID": "c13-d09",
+   "Kind": "say",
+   "Speaker": "fanya",
+   "Text": "구해 주신 은혜를 갚을 길이 없습니다. 스승님께 받은 약낭입니다. 쓰실 데가 있을 겁니다."
+  },
+  {
+   "ID": "c13-d10",
+   "Kind": "grant",
+   "Item": "medicine_pouch",
+   "Count": 1,
+   "Event": "grant-medicine_pouch"
+  },
+  {
+   "ID": "c13-d11",
+   "Kind": "join",
+   "Character": "fanya",
+   "Event": "join-fanya"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "c13-e-merchant",
+   "Kind": "scene",
+   "Place": "소패 · 저잣거리"
+  },
+  {
+   "ID": "c13-m1",
+   "Kind": "say",
+   "Speaker": "refugee_merchant",
+   "Text": "태산 쪽 산길로는 못 다니오. 장패라는 자가 산적들을 모아 길목을 막고, 피난 가는 사람들 짐을 다 털어 간다오."
+  },
+  {
+   "ID": "c13-m-set",
+   "Kind": "set",
+   "Flags": {
+    "c13-rumor-bandit": 1
+   }
+  },
+  {
+   "ID": "c13-m-back",
+   "Kind": "back"
+  },
+  {
+   "ID": "c13-e-woman",
+   "Kind": "scene",
+   "Place": "소패 · 약방 앞"
+  },
+  {
+   "ID": "c13-w1",
+   "Kind": "say",
+   "Speaker": "herb_woman",
+   "Text": "팽성 사람들 돌보러 다니던 의원 선생이 있었는데, 태산 도적들이 끌고 갔대요. 다친 놈들 고치라고……."
+  },
+  {
+   "ID": "c13-w2",
+   "Kind": "say",
+   "Speaker": "herb_woman",
+   "Text": "화타라는 명의의 제자라던데."
+  },
+  {
+   "ID": "c13-w-set",
+   "Kind": "set",
+   "Flags": {
+    "c13-rumor-doctor": 1
+   }
+  },
+  {
+   "ID": "c13-w-back",
+   "Kind": "back"
+  },
+  {
+   "ID": "c13-council",
+   "Kind": "scene",
+   "Place": "소패 관아"
+  },
+  {
+   "ID": "c13-c01",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "다들 들었는가. 태산 도적들이 의원을 끌고 갔다는군."
+  },
+  {
+   "ID": "c13-c02",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "장패라는 자입니다. 태산 일대 산적의 우두머리인데, 조조가 서주를 휩쓰는 틈에 세를 크게 불렸습니다."
+  },
+  {
+   "ID": "c13-c03",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "의원을 끌고 갔으면 지들 다친 놈들 고치려는 거겄지. 고치고 나면 그 의원은 어떻게 되겄슈."
+  },
+  {
+   "ID": "c13-c04",
+   "Kind": "say",
+   "Speaker": "fangong",
+   "Text": "태산 길은 골짜기가 깊고 굽어 있습니다. 산채로 곧장 오르면 위에서 내려다보고 칩니다. 길을 골라 가야 합니다."
+  },
+  {
+   "ID": "c13-c05",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-gaoshun"
+     ],
+     "Next": "c13-c06"
+    }
+   ],
+   "Else": "c13-c07"
+  },
+  {
+   "ID": "c13-c06",
+   "Kind": "say",
+   "Speaker": "gaoshun",
+   "Text": "……저도 가겠습니다."
+  },
+  {
+   "ID": "c13-c07",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "의원 하나 구해 두면 우리한테도 남는 장사지. 익덕이 술병 나면 누가 고치겠나."
+  },
+  {
+   "ID": "c13-c08",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "헌화 형님!"
+  },
+  {
+   "ID": "c13-c09",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "장패를 치고 의원을 데려온다. 채비하게."
+  },
+  {
+   "ID": "c13-c-set",
+   "Kind": "set",
+   "Flags": {
+    "c13-council": 1
+   }
+  },
+  {
+   "ID": "c13-c-back",
+   "Kind": "back",
+   "Area": "office"
+  }
+ ]
+}

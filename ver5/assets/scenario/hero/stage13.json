@@ -1,0 +1,491 @@
+{
+ "ID": "B13",
+ "Name": "태산 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 7,
+ "Required": [
+  "liubei"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "defeated:zangba"
+   ],
+   "Text": "장패를 물리친다"
+  }
+ ],
+ "TurnLimit": 25,
+ "Map": "map13.json",
+ "Allies": [
+  {
+   "X": 1,
+   "Y": 13
+  },
+  {
+   "X": 0,
+   "Y": 12
+  },
+  {
+   "X": 1,
+   "Y": 12
+  },
+  {
+   "X": 0,
+   "Y": 13
+  },
+  {
+   "X": 0,
+   "Y": 14
+  },
+  {
+   "X": 2,
+   "Y": 14
+  },
+  {
+   "X": 0,
+   "Y": 15
+  },
+  {
+   "X": 2,
+   "Y": 13
+  }
+ ],
+ "Recommend": {
+  "liubei": {
+   "X": 1,
+   "Y": 13
+  }
+ },
+ "Party": [],
+ "Enemies": [
+  {
+   "Character": "zangba",
+   "X": 14,
+   "Y": 3,
+   "Facing": "SW",
+   "Group": "zang",
+   "Policy": "hold",
+   "Rank": "commander",
+   "Faction": "taishan"
+  },
+  {
+   "Character": "sunguan",
+   "X": 10,
+   "Y": 5,
+   "Facing": "SW",
+   "Group": "gate",
+   "Policy": "hold",
+   "Faction": "taishan"
+  },
+  {
+   "Character": "troop_bandit",
+   "X": 9,
+   "Y": 5,
+   "Facing": "SW",
+   "Group": "gate",
+   "Policy": "hold",
+   "Faction": "taishan"
+  },
+  {
+   "Character": "troop_bandit",
+   "X": 12,
+   "Y": 5,
+   "Facing": "SW",
+   "Group": "gate",
+   "Policy": "hold",
+   "Faction": "taishan"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 4,
+   "Y": 7,
+   "Facing": "SE",
+   "Group": "cliff",
+   "Policy": "react",
+   "Faction": "taishan"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 5,
+   "Y": 6,
+   "Facing": "SE",
+   "Group": "cliff",
+   "Policy": "react",
+   "Faction": "taishan"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 10,
+   "Y": 7,
+   "Facing": "SW",
+   "Group": "cliff",
+   "Policy": "react",
+   "Faction": "taishan"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 11,
+   "Y": 7,
+   "Facing": "SW",
+   "Group": "cliff",
+   "Policy": "react",
+   "Faction": "taishan"
+  },
+  {
+   "Character": "troop_bandit",
+   "X": 5,
+   "Y": 8,
+   "Facing": "SW",
+   "Group": "valley",
+   "Policy": "assault",
+   "Faction": "taishan"
+  },
+  {
+   "Character": "troop_bandit",
+   "X": 4,
+   "Y": 10,
+   "Facing": "SW",
+   "Group": "valley",
+   "Policy": "assault",
+   "Faction": "taishan"
+  },
+  {
+   "Character": "troop_bandit",
+   "X": 13,
+   "Y": 12,
+   "Facing": "SW",
+   "Group": "field",
+   "Policy": "react",
+   "Faction": "taishan"
+  },
+  {
+   "Character": "troop_bandit",
+   "X": 15,
+   "Y": 12,
+   "Facing": "SW",
+   "Group": "field",
+   "Policy": "react",
+   "Faction": "taishan"
+  }
+ ],
+ "Reward": {
+  "money": 2000
+ },
+ "Areas": [
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 12,
+    "Y": 2,
+    "W": 4,
+    "H": 3
+   },
+   "Name": "장패의 산채",
+   "Description": "목책 안"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "opening",
+   "If": [
+    "round>=1"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zangba",
+       "Text": "서주 놈들이 감히 태산에 발을 들여? 끌어온 것들은 다 내 재산이다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "fangong",
+       "Text": "길 위쪽 언덕에 활 든 놈들이 있습니다. 산채 문까지는 이 길 하나뿐이니, 한꺼번에 몰려가지 마십시오."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "sunguan-down",
+   "If": [
+    "defeated:sunguan"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zangba",
+       "Text": "손관이 밀렸다고? ……좋다, 내가 직접 나가 주마!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "zang"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  }
+ ],
+ "Faction": "taishan",
+ "Duels": [
+  {
+   "ID": "taishan-guanyu-zangba",
+   "Ally": "guanyu",
+   "Enemy": "zangba",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "장패가 관우의 청룡도를 받아 내지 못하고 산채 뒤로 물러났다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "장패가 길을 막다",
+     "Speech": "조조가 휩쓴 서주에서 굶는 놈들을 내가 거뒀다. 이 산의 사람은 다 내 사람이다!",
+     "Side": 1,
+     "Duration": 4.4
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 답하다",
+     "Speech": "거둔 사람을 우리에 가두지는 않소.",
+     "Side": 0,
+     "Duration": 2.5
+    },
+    {
+     "Kind": "approach",
+     "Title": "장패가 말을 몰아 달려들다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 장패의 칼을 받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장패가 거듭 내리치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "장패가 돌진하며 몰아치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 청룡도를 휘두르다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장패가 청룡도에 밀리다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장패가 다시 덤벼들다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "관우가 말머리를 돌려 흘리다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "관우가 청룡도를 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장패가 크게 밀리다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장패가 칼을 거두다",
+     "Speech": "……말로도 칼로도 못 당하겠군.",
+     "Side": 1,
+     "Duration": 2.4
+    },
+    {
+     "Kind": "talk",
+     "Title": "장패가 백성을 내주다",
+     "Speech": "데려가라. 의원도 함께. 태산 장패는 두 말 하지 않는다!",
+     "Side": 1,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "retreat",
+     "Title": "장패가 산채 뒤로 물러나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "장패가 퇴각하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    }
+   ]
+  },
+  {
+   "ID": "taishan-gaoshun-sunguan",
+   "Ally": "gaoshun",
+   "Enemy": "sunguan",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "고순이 말없이 손관의 칼을 쳐 내고, 손관이 물러났다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "손관이 고순을 도발하다",
+     "Speech": "함진영의 고순이라더니, 말 한마디 없구나!",
+     "Side": 1,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "approach",
+     "Title": "손관이 달려들다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "고순이 묵묵히 칼을 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "손관이 거듭 베다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "고순이 또 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "손관이 성내다",
+     "Speech": "말도 못 하냐!",
+     "Side": 1,
+     "Duration": 2.0
+    },
+    {
+     "Kind": "talk",
+     "Title": "고순이 답하다",
+     "Speech": "칼로 하겠다.",
+     "Side": 0,
+     "Duration": 2.0
+    },
+    {
+     "Kind": "block",
+     "Title": "고순이 칼을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "손관이 밀리다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "고순이 한 걸음 들어가며 베다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "손관이 크게 밀리다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "손관이 물러서다",
+     "Speech": "이놈, 소리 하나 없이……! 물러나라!",
+     "Side": 1,
+     "Duration": 2.7
+    },
+    {
+     "Kind": "retreat",
+     "Title": "손관이 산채로 물러나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "손관이 퇴각하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    }
+   ]
+  }
+ ],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "han",
+   "Name": "백성",
+   "Ally": true
+  },
+  {
+   "Faction": "taishan",
+   "Name": "태산 도적"
+  }
+ ]
+}

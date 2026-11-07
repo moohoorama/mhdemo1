@@ -1,0 +1,19 @@
+# B13 태산 (20x16): 장패의 산채는 북동쪽 목책 안(x 12~15, y 2~4), 아래 문(11~13,5) 하나로만 든다.
+# 골짜기 길(l)이 남서 출발 지점에서 산채 문까지 오르고, 길 위쪽은 구릉과 작은 바위산(4,8 · 6,6 · 3,10 근처), 아래쪽은 트인 들이다.
+# 높은 지형은 화면 위쪽에만 둔다(아래쪽에 두면 유닛을 가린다). 서쪽 능선 우회로와 백성 우리는 없앴다.
+n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n--
+n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- gz- gz- gz- gz- gz- gz- n-- n-- n--
+n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- gz- gk- g-- gk- g-- gz- n-- n-- n--
+n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- gz- g-- g-- g-- g-- gz- n-- n-- n--
+n-- n-- n-- n-- u-- u-- u-- u-- n-- u-- u-- gz- g-- g-- gk- g-- gz- n-- n-- n--
+gt- gt- n-- u-- u-- u-- u-- u-- l-- l-- l-- g-- g-- g-- gz- gz- gz- n-- n-- n--
+gt- u-- n-- u-- u-- u-- n-- l-- l-- g-- g-- g-- u-- u-- u-- n-- n-- n-- n-- n--
+gt- u-- u-- u-- u-- u-- l-- l-- g-- u-- u-- u-- g-- g-- g-- g-- n-- n-- n-- n--
+gt- u-- gt- u-- u-- l-- l-- g-- u-- u-- u-- g-- g-- g-- g-- g-- g-- n-- n-- n--
+gt- u-- gt- u-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- n-- n-- n--
+gt- u-- gt- n-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- n-- n--
+gt- u-- g-- l-- l-- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- n-- n--
+g-- g-- l-- l-- g-- g-- g-- gt- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- n-- n--
+g-- l-- l-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- n--
+g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- n--
+g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--

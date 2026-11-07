@@ -1,0 +1,274 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   19,
+   5
+  ],
+  "Face": "SW"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_xiaopei",
+   "Name": "소패",
+   "At": [
+    19,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "관아",
+     "At": [
+      5,
+      11
+     ],
+     "Object": [
+      2,
+      11
+     ],
+     "To": "office"
+    }
+   ],
+   "People": {
+    "관우@town": {
+     "At": [
+      7,
+      13
+     ],
+     "Face": "SE",
+     "If": [
+      "!flag:c13-council"
+     ],
+     "Talk": [
+      [
+       "guanyu",
+       "형님, 성 안 사정부터 살펴보시지요."
+      ]
+     ],
+     "Event": [
+      {
+       "If": [
+        "flag:c13-rumor-bandit",
+        "flag:c13-rumor-doctor"
+       ],
+       "Node": "c13-council"
+      }
+     ]
+    },
+    "피난 상인": {
+     "At": [
+      24,
+      16
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Event": [
+      {
+       "If": [
+        "!flag:c13-rumor-bandit"
+       ],
+       "Node": "c13-e-merchant"
+      }
+     ],
+     "Talk": [
+      [
+       "refugee_merchant",
+       "태산 길만 뚫리면 짐을 팔러 갈 텐데……."
+      ]
+     ]
+    },
+    "피난민#1": {
+     "At": [
+      26,
+      17
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant"
+    },
+    "피난민#2": {
+     "At": [
+      22,
+      17
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant"
+    },
+    "약방 아낙": {
+     "At": [
+      13,
+      10
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Event": [
+      {
+       "If": [
+        "!flag:c13-rumor-doctor"
+       ],
+       "Node": "c13-e-woman"
+      }
+     ],
+     "Talk": [
+      [
+       "herb_woman",
+       "그 의원 선생, 무사해야 할 텐데요."
+      ]
+     ]
+    },
+    "창고 병사": {
+     "At": [
+      24,
+      9
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "han",
+     "Talk": [
+      [
+       "창고 병사",
+       "서주에서 군량은 꼬박꼬박 옵니다. 다만 수레를 끄는 사람들이 어째 조표 장군 쪽이라……."
+      ]
+     ]
+    },
+    "번궁@town": {
+     "At": [
+      17,
+      12
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "fangong",
+       "소패는 사방이 트인 들판이라 지키기가 어렵습니다. 성벽이라도 손봐 둬야겠습니다."
+      ]
+     ]
+    },
+    "간옹@town": {
+     "At": [
+      11,
+      17
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "jianyong",
+       "어젯밤 송별연 술값은 서주에서 대 준다는 군량에 넣어 두었네. 하하!"
+      ]
+     ]
+    },
+    "고순@town": {
+     "At": [
+      16,
+      5
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:flag-gaoshun"
+     ],
+     "Talk": [
+      [
+       "gaoshun",
+       "……단양병은 모두 무사히 왔습니다."
+      ]
+     ]
+    },
+    "단양병#1": {
+     "At": [
+      15,
+      4
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:flag-gaoshun"
+     ],
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    },
+    "단양병#2": {
+     "At": [
+      17,
+      4
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:flag-gaoshun"
+     ],
+     "Sprite": "light_infantry",
+     "Faction": "han"
+    },
+    "행인#1": {
+     "At": [
+      8,
+      15
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Move": {
+      "Patrol": [
+       [
+        8,
+        15
+       ],
+       [
+        30,
+        15
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "office": {
+   "Map": "S_xiaopei_office",
+   "Name": "소패 관아",
+   "At": [
+    5,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      5,
+      11
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "관우@office": {
+     "At": [
+      3,
+      7
+     ],
+     "Face": "SE",
+     "If": [
+      "flag:c13-council"
+     ],
+     "Sortie": {
+      "Ask": "형님, 태산으로 출격하시겠습니까?"
+     }
+    },
+    "손건": {
+     "At": [
+      7,
+      7
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "sunqian",
+       "장패의 산채는 태산 골짜기 깊숙이 있다 합니다. 채비를 마치시면 관 장군께 말씀하십시오."
+      ]
+     ]
+    }
+   }
+  }
+ }
+}
