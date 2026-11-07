@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"slices"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/core"
@@ -88,84 +89,90 @@ func (g *Game) unitWindow(dst *ebiten.Image, x, y, w, h int) {
 	g.actionRow(dst, x+w-16, y+h-60, all...)
 }
 
-// unitPower is the 전투력 tab: who leads and who serves, the deputy's weight, the attributes of both and the
-// unit's, and the battle stats alone, the bonus and the unit's.
-func (g *Game) unitPower(dst *ebiten.Image, o core.Observation, of *core.Character, r image.Rectangle) {
+// unitHead is the top of the 전투력 and 열전 tabs: the lead's and the deputy's faces and the deputy's weight. It
+// gives where the tab's body starts.
+func (g *Game) unitHead(dst *ebiten.Image, o core.Observation, of *core.Character, r image.Rectangle) float64 {
 	x, y := float64(r.Min.X), float64(r.Min.Y)
 	g.portrait(dst, of.ID, of.Class, x, y, 40)
 	g.label(dst, g.name(of.ID), x+48, y+8, 16, ink)
 	g.label(dst, "주장", x+56+g.width(g.name(of.ID), 16), y+12, 12, muted)
-	alone, aloneAttrs, err := g.S.Engine.DeputyStats(of.ID, "")
-	if err != nil {
-		return
-	}
 	if of.Deputy == "" {
 		g.label(dst, "부관이 없습니다. 부관을 두면 부관이 앞선 열전 능력을 가중치만큼 섞습니다.", x+160, y+10, 14, muted)
-		g.officerPower(dst, o, of, image.Rect(r.Min.X, r.Min.Y+56, r.Max.X, r.Max.Y))
-		return
+		return y + 56
 	}
-	d := g.officer(o, of.Deputy)
 	dx := x + 120 + g.width(g.name(of.ID), 16)
-	if d != nil {
+	if d := g.officer(o, of.Deputy); d != nil {
 		g.portrait(dst, d.ID, d.Class, dx, y, 40)
 	}
 	g.label(dst, g.name(of.Deputy), dx+48, y+8, 16, ink)
 	g.label(dst, "부관", dx+56+g.width(g.name(of.Deputy), 16), y+12, 12, muted)
 	wr, charm := g.S.Engine.DeputyBlend(of.ID, of.Deputy)
 	_, depAttrs, _ := g.S.Engine.DeputyStats(of.Deputy, "")
-	unit, unitAttrs, _ := g.S.Engine.DeputyStats(of.ID, of.Deputy)
 	wx := dx + 120 + g.width(g.name(of.Deputy), 16)
 	ws := fmt.Sprintf("부관 가중치 %.0f%%", wr*100)
 	g.label(dst, ws, wx, y+8, 16, ink)
 	g.label(dst, fmt.Sprintf("= (%.0f × %d + %d) ÷ %d", charm, g.S.Data.Rules.DeputyWeight, depAttrs[5], g.S.Data.Rules.DeputyDivisor), wx+g.width(ws, 16)+8, y+11, 13, muted)
-	y += 56
-	colW := float64(r.Dx()-24) / 2
-	head := func(cx float64, cols []string) {
-		for i, c := range cols {
-			px := cx + float64(i)*colW/4
-			if i > 0 {
-				px += colW/4 - g.width(c, 12) - 12
-			}
-			g.label(dst, c, px, y, 12, muted)
+	return y + 56
+}
+
+// statTable draws a table of rows under heads in w from (x, y), 26 a row: the first column left, the others right
+// aligned; a cell lit says is green.
+func (g *Game) statTable(dst *ebiten.Image, x, y, w float64, heads []string, rows [][]string, lit func(row, col int) bool) {
+	cols := float64(len(heads))
+	at := func(i int, s string, size float64) float64 {
+		if i == 0 {
+			return x
 		}
-		rect(dst, float32(cx), float32(y+22), float32(colW), 1, goldDim)
+		return x + float64(i+1)*w/cols - g.width(s, size) - 10
 	}
-	cell := func(cx float64, i int, s string, c any) {
-		px := cx + float64(i)*colW/4
-		if i > 0 {
-			px += colW/4 - g.width(s, 14) - 12
-		}
-		col := ink
-		switch v := c.(type) {
-		case bool:
-			if v {
+	for i, h := range heads {
+		g.label(dst, h, at(i, h, 12), y, 12, muted)
+	}
+	rect(dst, float32(x), float32(y+22), float32(w), 1, goldDim)
+	y += 28
+	for ri, row := range rows {
+		for ci, c := range row {
+			col := ink
+			switch {
+			case ci == 0:
+				col = muted
+			case lit != nil && lit(ri, ci):
 				col = good
 			}
+			g.label(dst, c, at(ci, c, 14), y, 14, col)
 		}
-		g.label(dst, s, px, y, 14, col)
+		y += 26
 	}
-	head(x, []string{"열전", g.name(of.ID), g.name(of.Deputy), "부대"})
-	head(x+colW+24, []string{"전투", "혼자", "보정", "부대"})
-	y += 28
-	for i := range 7 {
-		if i < 6 {
-			cell(x, 0, attrNames[i], nil)
-			cell(x, 1, fmt.Sprint(aloneAttrs[i]), nil)
-			cell(x, 2, fmt.Sprint(depAttrs[i]), nil)
-			cell(x, 3, fmt.Sprint(unitAttrs[i]), unitAttrs[i] > aloneAttrs[i])
-		}
-		s := statRows[i]
+}
+
+// unitPower is the 전투력 tab: the unit's battle stats — the hexagon (the lead alone dashed in gold) beside the
+// table of the lead alone, the deputy's bonus and the unit. The attributes the bonus comes from are on 열전.
+func (g *Game) unitPower(dst *ebiten.Image, o core.Observation, of *core.Character, r image.Rectangle) {
+	y := g.unitHead(dst, o, of, r)
+	alone, _, err := g.S.Engine.DeputyStats(of.ID, "")
+	if err != nil {
+		return
+	}
+	unit, _, _ := g.S.Engine.DeputyStats(of.ID, of.Deputy)
+	radius := max(30, min(72.0, (float64(r.Max.Y)-y-40)/2))
+	var dashed *core.Stats
+	if of.Deputy != "" {
+		dashed = &alone
+	}
+	g.hexChart(dst, float64(r.Min.X)+radius+64, y+radius+20, radius, unit, dashed, g.rosterBest(o))
+	tx := float64(r.Min.X) + 2*radius + 150
+	rows := [][]string{}
+	for _, s := range statRows {
 		a, b := s.get(alone), s.get(unit)
 		bonus := "—"
 		if b != a {
 			bonus = fmt.Sprintf("%+d", b-a)
 		}
-		cell(x+colW+24, 0, s.name, nil)
-		cell(x+colW+24, 1, fmt.Sprint(a), nil)
-		cell(x+colW+24, 2, bonus, b != a)
-		cell(x+colW+24, 3, fmt.Sprint(b), nil)
-		y += 26
+		rows = append(rows, []string{s.name, fmt.Sprint(a), bonus, fmt.Sprint(b)})
 	}
+	g.statTable(dst, tx, y, float64(r.Max.X)-tx, []string{"전투", "혼자", "보정", "부대"}, rows, func(ri, ci int) bool {
+		return ci == 2 && rows[ri][2] != "—"
+	})
 }
 
 // unitTraits is the 특성 tab: the lead's shelves (고유, 병종, 장비) or the deputy's (부관 고유, 부관 병종), the
@@ -241,33 +248,59 @@ func (g *Game) unitTraits(dst *ebiten.Image, o core.Observation, of *core.Charac
 	return []action{{label, true, learn}}
 }
 
-// unitBio is the 열전 tab: the lead's and the deputy's attributes and biographies side by side.
+// unitBio is the 열전 tab: the deputy's weight, the attributes of the lead, the deputy and the unit (raised ones
+// in green) and both biographies.
 func (g *Game) unitBio(dst *ebiten.Image, o core.Observation, of *core.Character, r image.Rectangle) {
+	y := g.unitHead(dst, o, of, r)
+	_, aloneAttrs, err := g.S.Engine.DeputyStats(of.ID, "")
+	if err != nil {
+		return
+	}
+	heads := []string{"열전", g.name(of.ID)}
+	var depAttrs, unitAttrs [6]int
+	if of.Deputy != "" {
+		_, depAttrs, _ = g.S.Engine.DeputyStats(of.Deputy, "")
+		_, unitAttrs, _ = g.S.Engine.DeputyStats(of.ID, of.Deputy)
+		heads = append(heads, g.name(of.Deputy), "부대")
+	}
+	rows := [][]string{}
+	for i, a := range attrNames {
+		row := []string{a, fmt.Sprint(aloneAttrs[i])}
+		if of.Deputy != "" {
+			row = append(row, fmt.Sprint(depAttrs[i]), fmt.Sprint(unitAttrs[i]))
+		}
+		rows = append(rows, row)
+	}
+	tw := float64(r.Dx()) * .46
+	g.statTable(dst, float64(r.Min.X), y, tw, heads, rows, func(ri, ci int) bool { return ci == 3 && unitAttrs[ri] > aloneAttrs[ri] })
 	ids := []string{of.ID}
 	if of.Deputy != "" {
 		ids = append(ids, of.Deputy)
 	}
-	colW := (r.Dx() - 24) / 2
+	bx, bw := float64(r.Min.X)+tw+24, float64(r.Max.X)-float64(r.Min.X)-tw-24
+	room := (float64(r.Max.Y) - y) / float64(len(ids))
 	for i, id := range ids {
 		c := g.officer(o, id)
 		if c == nil {
 			continue
 		}
-		x, y := float64(r.Min.X+i*(colW+24)), float64(r.Min.Y)
-		g.label(dst, g.name(id), x, y, 18, gold)
-		role := "주장"
-		if i == 1 {
-			role = "부관"
-		}
-		g.label(dst, role, x+g.width(g.name(id), 18)+8, y+5, 12, muted)
-		_, attrs, _ := g.S.Engine.DeputyStats(id, "")
-		y += 30
-		for j, a := range attrNames {
-			px, py := x+float64(j%3)*float64(colW)/3, y+float64(j/3)*24
-			g.label(dst, a, px, py, 14, muted)
-			g.label(dst, fmt.Sprint(attrs[j]), px+40, py, 14, ink)
-		}
-		y += 56
-		g.label(dst, wrapWidth(g.S.Data.Characters[c.Def].Biography, g.face(14), float64(colW)), x, y, 14, ink)
+		by := y + float64(i)*room
+		g.label(dst, g.name(id), bx, by, 16, gold)
+		lines := int((room - 30) / (14 * 1.45))
+		g.label(dst, clipLines(wrapWidth(g.S.Data.Characters[c.Def].Biography, g.face(14), bw), lines), bx, by+24, 14, ink)
 	}
+}
+
+// clipLines keeps the first n lines of s, the last cut short with "…" when there were more.
+func clipLines(s string, n int) string {
+	lines := strings.Split(s, "\n")
+	if n <= 0 {
+		return ""
+	}
+	if len(lines) <= n {
+		return s
+	}
+	lines = lines[:n]
+	lines[n-1] = strings.TrimRight(lines[n-1], " ") + "…"
+	return strings.Join(lines, "\n")
 }

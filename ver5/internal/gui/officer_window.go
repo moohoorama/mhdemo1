@@ -121,9 +121,9 @@ func (g *Game) hasAffordable(c core.Character) bool {
 	return false
 }
 
-// officerPower is the 전투력 tab: the hexagon, the battle stats and the six attributes of the officer alone.
+// officerPower is the 전투력 tab: the hexagon and the battle stats of the officer alone; the attributes are on 열전.
 func (g *Game) officerPower(dst *ebiten.Image, o core.Observation, of *core.Character, r image.Rectangle) {
-	stats, attrs, err := g.S.Engine.DeputyStats(of.ID, "")
+	stats, _, err := g.S.Engine.DeputyStats(of.ID, "")
 	if err != nil {
 		return
 	}
@@ -136,17 +136,8 @@ func (g *Game) officerPower(dst *ebiten.Image, o core.Observation, of *core.Char
 		g.label(dst, s.name, px, py, 15, muted)
 		g.label(dst, fmt.Sprint(s.get(stats)), px+60, py, 15, ink)
 	}
-	y += 4*28 + 10
-	rect(dst, float32(x), float32(y), 300, 1, goldDim)
-	y += 10
-	for i, a := range attrNames {
-		col, row := i%3, i/3
-		px, py := x+float64(col*100), y+float64(row*28)
-		g.label(dst, a, px, py, 15, muted)
-		g.label(dst, fmt.Sprint(attrs[i]), px+44, py, 15, ink)
-	}
 	progress := core.ExperienceProgress(of.XP)
-	y += 2*28 + 12
+	y += 4*28 + 12
 	bar(dst, float32(x), float32(y+6), 180, 8, progress/100, xpC)
 	g.label(dst, fmt.Sprintf("경험치 %.0f / 100", progress), x+190, y, 13, muted)
 }

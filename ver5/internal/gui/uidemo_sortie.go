@@ -12,7 +12,7 @@ func init() { demos["sortie"] = demoSortie }
 // demoSortie jumps to the -node battle node (default c14-battle) with every officer's level-up learning closed,
 // names 손건 고순's deputy and walks the sortie preparation for cmd/_uidemo-vm: the list with the lord picked (20),
 // 고순 with his deputy (50), the last officer called back to wait (80), the deputy window (110), the officer's
-// trait tab (140) and, after 출진, the deployment (200).
+// trait tab (140), the unit detail on 전투력 (155), 열전 (180) and the deputy's traits (190) and, after 출진, the deployment (215).
 func demoSortie(d *Demo) error {
 	g := d.g
 	node := d.node
@@ -47,11 +47,13 @@ func demoSortie(d *Demo) error {
 			g.closeOverlay()
 			g.selected = "gaoshun"
 			g.openUnit(false)
-		case 165:
+		case 180:
+			g.unitWin.tab = 2
+		case 190:
 			g.unitWin.tab, g.unitWin.side = 1, 1
-		case 175:
+		case 200:
 			g.closeOverlay()
-		case 185:
+		case 210:
 			if slices.Contains(o.Deployment, "liubei") {
 				g.startSortie()
 			}
