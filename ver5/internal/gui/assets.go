@@ -29,6 +29,11 @@ type propEntry struct {
 	Pivot  [2]float64
 	Layer  string
 	Shadow *bool // false: no ground shadow under it in a story scene (shadows and overlays, cliffs); unset is true
+	// ShadowMask is where a 3D prop's shadow falls, laid from its model (tools/build_extra.py), in place of its cast silhouette
+	ShadowMask *struct {
+		Rect  [4]int
+		Pivot [2]int
+	} `json:"shadow_mask"`
 }
 
 type Assets struct {
@@ -347,7 +352,11 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			r := image.Rect(p.Rect[0], p.Rect[1], p.Rect[0]+p.Rect[2], p.Rect[1]+p.Rect[3])
 			pr := Prop{Sprite: Sprite{prSheet.SubImage(r).(*ebiten.Image), p.Pivot[0], p.Pivot[1]}, Ground: p.Layer == "ground",
 				NoShadow: p.Shadow != nil && !*p.Shadow}
-			if !pr.Ground && !pr.NoShadow {
+			if m := p.ShadowMask; m != nil && !pr.Ground && !pr.NoShadow {
+				mr := image.Rect(m.Rect[0], m.Rect[1], m.Rect[0]+m.Rect[2], m.Rect[1]+m.Rect[3])
+				sd := sprite.MaskShadow(pix.SubImage(mr).(*image.RGBA), m.Pivot)
+				pr.Shadow = Sprite{ebiten.NewImageFromImage(sprite.Tint(sd.Image, shade)), float64(sd.Pivot[0]), float64(sd.Pivot[1])}
+			} else if !pr.Ground && !pr.NoShadow {
 				pr.Shadow = castShadow(pix.SubImage(r).(*image.RGBA), p.Pivot, shade)
 			}
 			a.Props[name] = pr

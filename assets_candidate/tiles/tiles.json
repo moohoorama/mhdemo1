@@ -990,14 +990,21 @@
   "map_table": {
    "file": "tiles/map_table.png",
    "size": [
-    48,
-    36
+    43,
+    35
    ],
    "pivot": [
-    24,
-    20
+    22,
+    24
    ],
-   "layer": "object"
+   "layer": "object",
+   "shadow_mask": {
+    "file": "tiles/map_table_shadow.png",
+    "pivot": [
+     20,
+     10
+    ]
+   }
   },
   "gate_floor_u": {
    "file": "tiles/gate_floor_u.png",
@@ -1480,15 +1487,21 @@
   "bed": {
    "file": "tiles/bed.png",
    "size": [
-    52,
-    40
+    39,
+    27
    ],
    "pivot": [
-    26,
-    34
+    20,
+    17
    ],
    "layer": "object",
-   "scale": "scene"
+   "shadow_mask": {
+    "file": "tiles/bed_shadow.png",
+    "pivot": [
+     18,
+     9
+    ]
+   }
   },
   "lantern": {
    "file": "tiles/lantern.png",

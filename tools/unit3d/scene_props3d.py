@@ -25,7 +25,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw
 
 import base_model as m
 import props as P
@@ -51,6 +51,44 @@ def draw(cell=(96, 120), pivot=(48, 96)):
     im = S.draw(m.meshes, cell=cell, pivot=pivot)
     x0, y0, x1, y1 = im.getbbox()
     return im.crop((x0, y0, x1, y1)), [pivot[0] + 1 - x0, pivot[1] + 1 - y0]
+
+
+SLOPE = (.6, .3)  # ground travel of a shadow per pixel of height, as the game's (tools/spritebuild/shadows.py)
+
+
+def cast_shadow(im):
+    """Lay m.meshes flat on the ground along the game's light and keep the result on im as im.shadow = (mask, pivot):
+    the opaque pixels are where the shadow falls, the pivot is the footprint centre. The game softens the mask as it
+    softens a cast silhouette; unlike a silhouette, every leg and the near edge cast where they stand."""
+    lift = R.project([0, 0, 0], S.VIEW, S.SCALE, (0, 0))[1] - R.project([0, 0, 1], S.VIEW, S.SCALE, (0, 0))[1]
+
+    def flat(p):
+        gx, gy = R.project([p[0], p[1], 0], S.VIEW, S.SCALE, (0, 0))
+        h = max(p[2], 0) * lift
+        return gx + h * SLOPE[0], gy + h * SLOPE[1]
+
+    polys = [[flat(p) for p in v] for v, _ in m.meshes]
+    xs = [x for q in polys for x, _ in q]
+    ys = [y for q in polys for _, y in q]
+    x0, y0 = math.floor(min(xs)), math.floor(min(ys))
+    mask = Image.new('L', (math.ceil(max(xs)) - x0 + 1, math.ceil(max(ys)) - y0 + 1))
+    d = ImageDraw.Draw(mask)
+    for q in polys:
+        d.polygon([(x - x0, y - y0) for x, y in q], fill=255)
+    gx, gy = R.project([0, 0, 0], S.VIEW, S.SCALE, (0, 0))
+    white = Image.new('RGBA', mask.size, (255, 255, 255, 255))
+    out = Image.new('RGBA', mask.size)
+    out.paste(white, mask=mask)
+    im.shadow = (out, [round(gx - x0), round(gy - y0)])
+    return im
+
+
+def on_top(im, pivot, points, key):
+    """Paint the model-space points (x, y, z) on the trimmed render as dots of palette key (a map's ink, too fine to
+    model)."""
+    for p in points:
+        x, y = R.project(p, S.VIEW, S.SCALE, (pivot[0] - 1, pivot[1] - 1))
+        im.putpixel((int(x), int(y)), (*R.COLOR[key], 255))
 
 
 def disc(a, b, r, color, n=14, ends=True):
@@ -737,6 +775,40 @@ def counter():
     return draw(cell=(120, 140), pivot=(60, 110))
 
 
+def map_table():
+    """A war-map table: a square plank top on an apron and four corner legs, a map spread on it with a river and the
+    two sides' markers."""
+    m.meshes = []
+    w, h, top = 1.3, .64, .06
+    m.box(V(0, 0, h - top / 2), V(w, w, top), P.PLANK)
+    m.box(V(0, 0, h - top - .05), V(w - .1, w - .1, .1), P.PLANK_DARK)
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            m.box(V(sx * (w / 2 - .09), sy * (w / 2 - .09), (h - top) / 2), V(.1, .1, h - top), P.PLANK_DARK)
+    m.box(V(0, 0, h + .005), V(w - .26, w - .26, .01), STRAW)
+    for x, y, c in ((-.3, .34, RED), (.28, -.3, RED), (.18, .36, P.INK), (-.22, -.3, P.INK)):
+        m.box(V(x, y, h + .04), V(.08, .08, .07), c)
+    im, pivot = draw()
+    on_top(im, pivot, [(-.48 + t * .96, .05 + .1 * math.sin(t * 8), h + .011) for t in np.linspace(0, 1, 40)], 'a')
+    return cast_shadow(im), pivot
+
+
+def bed():
+    """A low bed (평상) along v: a plank platform on a deep apron and four short legs, a red quilt over most of it,
+    a white pillow at the near end."""
+    m.meshes = []
+    w, L, h = .8, 1.5, .32
+    m.box(V(0, 0, h - .03), V(w, L, .06), P.PLANK)
+    m.box(V(0, 0, h - .12), V(w - .06, L - .06, .12), P.PLANK_DARK)
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            m.box(V(sx * (w / 2 - .07), sy * (L / 2 - .07), (h - .06) / 2), V(.08, .08, h - .06), P.PLANK_DARK)
+    m.box(V(0, .18, h + .05), V(w - .08, L - .5, .1), RED)
+    m.box(V(0, -L / 2 + .2, h + .06), V(w - .2, .24, .12), LINEN)
+    im, pivot = draw()
+    return cast_shadow(im), pivot
+
+
 PLASTER, TILE_ROOF, TILE_ROOF_DARK, SCORCH = S.PLASTER, S.TILE, S.TILE_DARK, '#6c583c'
 R.add_ramps({SCORCH: 'fUUT'})
 
@@ -1074,7 +1146,7 @@ PROPS = {'weapon_rack': weapon_rack, 'armor_stand': armor_stand, 'candle_stand':
          'rock_pile_0': rock_pile, 'rock_pile_1': lambda: rock_pile(1), 'rock_pile_2': lambda: rock_pile(2), 'beacon': beacon,
          'shrine': shrine, 'granary_round': granary_round, 'granary_raised': granary_raised,
          'field_bare': field, 'field_sprout': lambda: field('sprout'), 'field_ripe': lambda: field('ripe'),
-         'field_trampled': lambda: field('trampled')}
+         'field_trampled': lambda: field('trampled'), 'map_table': map_table, 'bed': bed}
 GROUND = {'bloody_cloth', 'broken_spear', 'fallen_flag', 'straw_mat', 'fallen_petals', 'flagstones_0', 'flagstones_1',
           'field_bare', 'field_sprout', 'field_ripe', 'field_trampled'}  # drawn under the units
 
@@ -1147,6 +1219,10 @@ def main():
         im.save(CAND / 'tiles' / f'{name}.png')
         layer = 'ground' if name in GROUND else 'object'
         tiles['sprites'][name] = {'file': f'tiles/{name}.png', 'size': list(im.size), 'pivot': pivot, 'layer': layer}
+        if hasattr(im, 'shadow'):  # its own ground shadow, laid from the model (cast_shadow)
+            mask, mpv = im.shadow
+            mask.save(CAND / 'tiles' / f'{name}_shadow.png')
+            tiles['sprites'][name]['shadow_mask'] = {'file': f'tiles/{name}_shadow.png', 'pivot': mpv}
         print(name, im.size)
     json.dump(tiles, open(path, 'w'), ensure_ascii=False, indent=1)
     open(path, 'a').write('\n')

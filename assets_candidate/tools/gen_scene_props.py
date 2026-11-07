@@ -1,4 +1,4 @@
-"""Props for the scenario scenes (real scale, not the deformed battle map): folding screen, bed, lantern, curtains, stairs,
+"""Props for the scenario scenes (real scale, not the deformed battle map): folding screen, lantern, curtains, stairs,
 garden rock, plum tree, pavilion, milestone, incense burner. Drawn procedurally in the game's pixel style (dark outline, three tones).
 Pivots: footprint centre on the ground (wall-like pieces: the top vertex of their edge, like wall_canvas_*)."""
 import random
@@ -53,18 +53,6 @@ def screen(orient):
         d.line([(xa, ya - ph), (xb, yb - ph)], fill=WOOD[1])
         d.line([(xa, ya - 1), (xb, yb - 1)], fill=WOOD[1])
     return im, (25, 44)
-
-
-def bed():
-    im = Image.new("RGBA", (52, 40))
-    d = ImageDraw.Draw(im)
-    box(d, 26, 34, 24, 14, 6, WOOD[0], WOOD[1], WOOD[2])                    # the frame
-    # the quilt lies on the frame, the pillow at the far end
-    d.polygon([(14, 24), (26, 28), (40, 21), (28, 17)], fill=RED[0], outline=OL)
-    d.polygon([(26, 28), (40, 21), (40, 23), (26, 30)], fill=RED[1], outline=OL)
-    d.polygon([(14, 24), (22, 20), (28, 23), (20, 27)], fill=(236, 232, 224, 255), outline=OL)
-    d.line([(26, 27), (33, 23)], fill=GOLD[0])
-    return im, (26, 34)
 
 
 def lantern():
@@ -284,7 +272,6 @@ def run():
     for o in ("u", "v"):
         reg("screen_" + o, screen(o))
         reg("stairs_" + o, stairs(o))
-    reg("bed", bed())
     reg("lantern", lantern(), glow=[8, 8])
     for sd in ("nw", "ne"):
         reg("curtain_" + sd, curtain(sd))

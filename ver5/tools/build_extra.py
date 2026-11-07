@@ -5,7 +5,8 @@
 
 Every sprite of assets_candidate/tiles/tiles.json except the old pillar gate (gate_*) and the forest-cover idea
 (cover_bush_*), and the hay hut of structures.png (as "hut", for the scenario scenes), goes into one sheet, assets/graphics/map/extra.png, and is listed in assets/graphics/index.json under
-"extra" the way "props" is (rect, pivot, layer). A sprite marked "frame": 128 is drawn in a 128 x 128 frame centred on
+"extra" the way "props" is (rect, pivot, layer). A sprite with a "shadow_mask" (a 3D prop's own ground shadow, see
+tools/unit3d/scene_props3d.py cast_shadow) has the mask packed beside it and its rect and pivot listed under it. A sprite marked "frame": 128 is drawn in a 128 x 128 frame centred on
 its small tile (docs/plan-tile-floors.md): it goes in trimmed to what it paints, its pivot moved to match. The flame and smoke strips of assets_candidate/effects are copied to
 assets/graphics/effects/, and the looping strips of assets_candidate/anims/anims.json (ASCII frames laid over a still
 tile, e.g. the smoke over the incense burner) are drawn there; both are listed under "anims", the game's one table of
@@ -40,7 +41,10 @@ def main():
     tiles['hut'] = {'pivot': structures['pivot'], 'layer': structures['layer']['village']}
     pivots['hut'] = structures['pivot']
     names.append('hut')
-    order = sorted(names, key=lambda n: (-ims[n].height, n))
+    masks = {n: Image.open(CAND / tiles[n]['shadow_mask']['file']).convert('RGBA') for n in names if 'shadow_mask' in tiles[n]}
+    for n, im in masks.items():  # a prop's own ground shadow, laid from its 3D model: packed beside it, not a sprite
+        ims[n + '#shadow'] = im
+    order = sorted(ims, key=lambda n: (-ims[n].height, n))
     x = y = row = 0
     place = {}
     for n in order:
@@ -58,8 +62,12 @@ def main():
         sprites[n] = {'rect': [*place[n], w, h], 'pivot': pivots[n], 'layer': tiles[n]['layer']}
         if tiles[n].get('shadow') is False:  # no ground shadow under it in a story scene (shadows, overlays, cliffs)
             sprites[n]['shadow'] = False
+        if n in masks:
+            sprites[n]['shadow_mask'] = {'rect': [*place[n + '#shadow'], *masks[n].size], 'pivot': tiles[n]['shadow_mask']['pivot']}
         if 'gate_offset' in tiles[n]:  # a scene gatehouse slice: game cells along its wall from the gate's point
             sprites[n]['gate_offset'] = tiles[n]['gate_offset']
+    for n, im in masks.items():
+        sheet.paste(im, place[n + '#shadow'])
     sheet.save(GFX / 'map/extra.png', optimize=True)
 
     effects = json.load(open(CAND / 'effects/effects.json'))

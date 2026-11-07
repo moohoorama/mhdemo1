@@ -126,6 +126,31 @@ func castShadow(w, h, py int, opaque func(x, y int) bool) []uint8 {
 			}
 		}
 	}
+	return soften(flat, sw, sh)
+}
+
+// MaskShadow is the shadow of a prop that knows where its shadow falls (a 3D prop's, laid flat from its model): the
+// opaque pixels of mask, softened as a cast silhouette is. pivot is the prop's footprint centre in mask.
+func MaskShadow(mask *image.RGBA, pivot [2]int) *Shadow {
+	b := mask.Bounds()
+	sw, sh := b.Dx()+2*shadowPad, b.Dy()+2*shadowPad
+	flat := make([]uint8, sw*sh)
+	for y := 0; y < b.Dy(); y++ {
+		for x := 0; x < b.Dx(); x++ {
+			if mask.Pix[mask.PixOffset(b.Min.X+x, b.Min.Y+y)+3] != 0 {
+				flat[(y+shadowPad)*sw+x+shadowPad] = 255
+			}
+		}
+	}
+	sd := &Shadow{Image: image.NewRGBA(image.Rect(0, 0, sw, sh)), Cell: [2]int{sw, sh}, Pivot: [2]int{pivot[0] + shadowPad, pivot[1] + shadowPad}}
+	for i, v := range soften(flat, sw, sh) {
+		sd.Image.Pix[4*i+3] = v
+	}
+	return sd
+}
+
+// soften grows the shadow's shape and fills it with core alpha inside a blurred halo, in place.
+func soften(flat []uint8, sw, sh int) []uint8 {
 	grown := boxMax(flat, sw, sh)
 	blurred := boxBlur(boxBlur(grown, sw, sh), sw, sh)
 	for i := range blurred {

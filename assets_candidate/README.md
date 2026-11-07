@@ -27,8 +27,8 @@
 | 장면 | 불길·연기 | `effects/flame.png`(14×26), `flame_small.png`, `smoke.png` | 같은 방식의 큰 크기 |
 | 장면 | 허리 높이 울타리 | `tiles/sfence_00..15.png` | 시나리오 마을 등 |
 | 장면 | 불탄 주막·큰 나무·초가 | `tiles/burnt_tavern.png`, `burnt_oak_0..2.png`, `burnt_hut.png` | 주막과 큰 나무는 장면 전용 (전투맵은 소나무뿐) |
-| 장면 | 화로·지도 탁자 | `tiles/brazier.png`, `map_table.png` | 군막 내부용 |
-| 장면 | 새 소품 | `tiles/screen_{u,v}.png`(병풍), `bed.png`(침상), `lantern.png`(등롱), `curtain_{nw,ne}.png`(휘장), `stairs_{u,v}.png`(계단), `throne_{u,v}.png`(옥좌 단상, 3×2칸: 벽에 붙여 u는 SW, v는 SE를 향함), `milestone.png`(이정표), `incense.png`(향로) | 시나리오 장면 소품. 장면 크기(실제 크기)로 그렸고 기준점은 바닥 중심(벽 조각은 성벽 소품처럼 변의 위쪽 꼭짓점) |
+| 장면 | 화로 | `tiles/brazier.png` | 군막 내부용 |
+| 장면 | 새 소품 | `tiles/screen_{u,v}.png`(병풍), `lantern.png`(등롱), `curtain_{nw,ne}.png`(휘장), `stairs_{u,v}.png`(계단), `throne_{u,v}.png`(옥좌 단상, 3×2칸: 벽에 붙여 u는 SW, v는 SE를 향함), `milestone.png`(이정표), `incense.png`(향로) | 시나리오 장면 소품. 장면 크기(실제 크기)로 그렸고 기준점은 바닥 중심(벽 조각은 성벽 소품처럼 변의 위쪽 꼭짓점) |
 | 장면 | 3D 모델로 만든 소품 | `tiles/hall_{u,v}.png`(기와지붕 관청: 돌 기단, 회벽, 붉은 기둥, 문 달린 정면), `plum_tree.png`(매화: 굽은 줄기와 가지 끝의 흰·분홍·붉은 꽃송이), `taihu_rock.png`(태호석: 높이 다른 뾰족한 돌 다섯에 구멍), `pavilion.png`(정자, 2×2칸: 붉은 기둥 네 개, 기와지붕) | 게임의 3D 셀 렌더러(`tools/unit3d`: 같은 카메라·팔레트·1px 외곽선, 주막·복숭아나무를 만든 방식)로 모델을 만들어 그림. `tools/gen_3d_props.py`가 `tools/unit3d`를 읽기 전용으로 불러 쓴다. `_u`는 정면이 SW면, `_v`는 SE면 |
 | 장면(성 밖) | 큰 성벽 세트(3D 모델) | `tiles/swall_{u,v}.png`(성가퀴 달린 높은 성벽, 한 칸 길이·16px 폭 조각, 칸 안에서 끝나는 성가퀴 하나·활구멍, 두께 한 칸), `sgate_{closed,open}_{first,second}_{u,v}.png`(성문 누각: 네 칸 폭, 통로 두 칸, 기와지붕 2층. 가로로 반씩 두 조각: first(화면 위쪽 반)는 유닛 앞에, second(아래쪽 반, 지붕 포함)는 유닛 뒤에 그린다. 한 모델을 통째로 그린 뒤 화소만 나눠 자름 — 잘린 곳에 외곽선이 없다) | 전투맵 성벽은 데포르메되어 낮아서 성 밖 장면만 큰 성벽을 쓴다. 성 안·성루 장면은 기존 전투맵 성벽(`wall_clean_*`)이 더 어울려 그것을 쓴다. 다리는 전투맵 `bridge_v` 한 칸 그대로(해자 두 칸 폭) |
 | 숲 속 병력 | 발치 덤불 `tiles/cover_bush_{0,1,2}.png` | 숲 칸에 선 병력이 숲에 있다는 느낌을 내는 아이디어 시연(`viewer.html`의 "숲 속 병력"): 현재(나무 앞에 온전히 섬) / ① 발치 덤불 / ② 숲을 병력 앞에 그려 반투명 / ③ 덤불 + 녹색 물들임 + 바닥 그늘 | 게임 코드는 아직 안 바뀜. 현재는 숲 그림 깊이값이 칸 중심보다 0.1 앞이라 칸 중심의 병력이 숲보다 나중에 그려짐 |
@@ -49,6 +49,6 @@ python3 spr.py light_infantry light_cavalry liubei_noncombat bandit guanyu_nonco
 python3 build_all.py      # 모든 후보 그림 + tiles.json + viewer.html (한 프로세스로 돌려야 목록이 한 곳에 모인다)
 ```
 
-`gen_all.py`(문·불탄 것·그을음·장면 울타리·다리·불길·연기), `gen_interior.py`(화로·지도 탁자), `gen_gate.py`(성문 A), `gen_scene_props.py`(2D 장면 소품), `gen_3d_props.py`(3D 모델 소품), `gen_3d_castle.py`(장면용 큰 성벽 세트)는 `build_all.py`가 불러 쓴다. `gen_pixel_castle.py`·`gen_pixel_kit.py`는 따로 `--write`로 돌린다(`build_all.py`가 tiles.json을 새로 쓰므로 그 뒤에 다시). 따로 돌리면 `tiles/tiles.json`에 일부만 남아 시연 화면이 깨진다.
+`gen_all.py`(문·불탄 것·그을음·장면 울타리·다리·불길·연기), `gen_interior.py`(화로), `gen_gate.py`(성문 A), `gen_scene_props.py`(2D 장면 소품), `gen_3d_props.py`(3D 모델 소품), `gen_3d_castle.py`(장면용 큰 성벽 세트)는 `build_all.py`가 불러 쓴다. `gen_pixel_castle.py`·`gen_pixel_kit.py`는 따로 `--write`로 돌린다(`build_all.py`가 tiles.json을 새로 쓰므로 그 뒤에 다시). 따로 돌리면 `tiles/tiles.json`에 일부만 남아 시연 화면이 깨진다.
 
 Pillow가 필요하다. 그림은 게임 그림을 읽어 바탕으로 쓰므로 `ver5/assets/graphics`가 있어야 한다.

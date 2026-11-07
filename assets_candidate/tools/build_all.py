@@ -1,7 +1,7 @@
 """Regenerate every candidate sprite and the manifest in one process (the manifest is shared), then the viewer."""
 import json
 import gen_all
-import gen_interior  # registers brazier and map_table on import
+import gen_interior  # registers brazier on import
 import gen_gate
 import gen_scene_props
 import gen_3d_props
