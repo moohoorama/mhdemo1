@@ -12,25 +12,13 @@ import (
 	"srpg/internal/session"
 )
 
-// deploymentBar is the height of the deployment cards along the bottom, in UI px.
-const deploymentBar = Height / 4
-
-// deploymentTop is the top of the deployment cards, in UI px.
-func deploymentTop() int { return uiH - deploymentBar }
-
-const deploymentCardWidth = 172
-
 func (g *Game) deploying() bool { return g.S != nil && g.S.Engine != nil && g.S.Engine.Deploying() }
 func (g *Game) battleViewport() image.Rectangle {
-	if g.deploying() {
-		return image.Rect(0, 0, worldW, int(float64(deploymentTop())*uiPx/worldPx))
-	}
 	return image.Rect(0, 0, worldW, worldH) // the whole window, HUD drawn over it
 }
 func deploymentPulse(seconds float64) float64 { return .12 + .18*(math.Sin(2*math.Pi*seconds)+1)/2 }
 func (g *Game) resetDeployment() {
 	g.deploymentSelected = ""
-	g.deploymentScroll = 0
 	g.sortieTried = ""
 	g.dragging, g.dragMoved = false, false
 	g.clearOrder()
@@ -97,33 +85,6 @@ func (g *Game) servedBy(o core.Observation, id string) string {
 		}
 	}
 	return ""
-}
-
-// toggleSortie sends a waiting officer out onto the field or calls one back; a locked officer is
-// only selected.
-func (g *Game) toggleSortie(id string) {
-	o := g.S.View()
-	if lead := g.servedBy(o, id); lead != "" {
-		g.toast(g.name(lead)+"의 부관이라 출전할 수 없습니다", bad)
-		return
-	}
-	if g.sortieLocked(id) {
-		g.selectDeployment(id, true)
-		return
-	}
-	if i := slices.Index(o.Deployment, id); i >= 0 {
-		if r := g.request(session.Request{Op: "command", Command: core.Command{Kind: "deploy", Deployment: slices.Delete(slices.Clone(o.Deployment), i, i+1)}}); r.OK && g.deploymentSelected == id {
-			g.deploymentSelected = ""
-		}
-		return
-	}
-	if len(o.Deployment) >= g.S.Data.Stages[o.Stage].Max {
-		g.toast("출전 인원이 찼습니다", bad)
-		return
-	}
-	if r := g.request(session.Request{Op: "command", Command: core.Command{Kind: "deploy", Deployment: append(slices.Clone(o.Deployment), id)}}); r.OK {
-		g.selectDeployment(id, true)
-	}
 }
 
 // selectDeployment selects a placed officer, or clears the selection when it is picked again; picked
@@ -243,35 +204,12 @@ func (g *Game) drawDeploymentPreview(o core.Observation) {
 		return
 	}
 }
-func (g *Game) deploymentCardsRect() image.Rectangle {
-	return image.Rect(48, deploymentTop()+48, uiW-48, uiH-52)
-}
-func (g *Game) scrollDeployment(delta int) {
-	if !g.deploying() {
-		return
-	}
-	maxScroll := max(0, len(g.sortieCards(g.S.View()))*deploymentCardWidth-g.deploymentCardsRect().Dx())
-	g.deploymentScroll = max(0, min(maxScroll, g.deploymentScroll+delta))
-}
-func (g *Game) updateDeploymentPanel() bool {
-	if !g.deploying() {
-		return false
-	}
-	if g.equip.alone && g.equip.slot == "" && g.overlay() == "equipment" {
-		g.closeOverlay()
-	}
-	g.equip.alone = g.equip.alone && g.overlay() == "equipment"
-	x, y := cursorPos()
-	if y < deploymentTop() || g.popupPending() {
-		return false
-	}
-	if mouseJustPressed(ebiten.MouseButtonRight) {
+
+// updateDeploymentPanel drops the selection on a right click.
+func (g *Game) updateDeploymentPanel() {
+	if g.deploying() && !g.popupPending() && mouseJustPressed(ebiten.MouseButtonRight) {
 		g.deploymentSelected = ""
 	}
-	if wx, wy := ebiten.Wheel(); wx != 0 || wy != 0 {
-		g.scrollDeployment(int(-(wx + wy) * 70))
-	}
-	return x >= 0 && x < uiW
 }
 func (g *Game) deploymentKeys() {
 	pressed := keyJustPressed
@@ -289,183 +227,73 @@ func (g *Game) deploymentKeys() {
 		next := ids[(slices.Index(ids, g.deploymentSelected)+1)%len(ids)]
 		g.deploymentSelected = ""
 		g.selectDeployment(next, true)
-		g.scrollDeployment(slices.Index(g.sortieCards(g.S.View()), next)*deploymentCardWidth - g.deploymentScroll)
 	}
 }
+
+// deploymentListRect is the sortie's list at the bottom right, as tall as its rows up to the top-right bar.
+func (g *Game) deploymentListRect(o core.Observation) image.Rectangle {
+	top := hudTop() + 64 + 12
+	h := min(uiH-12-top, 48+len(o.Deployment)*touchH+8)
+	return image.Rect(uiW-12-300, uiH-12-h, uiW-12, uiH-12)
+}
+
+// drawDeployment lays the deployment out like the battle: the help (speed, zoom, the goal) at the top left, the
+// count with 메뉴 and 전투 시작 at the top right, and the sortie at the bottom right, a row picking an officer to
+// place. Who goes, gear and deputies were settled in the sortie preparation.
 func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 	limit := g.S.Data.Stages[o.Stage].Max
-	head := fmt.Sprintf("출전 %d / %d", len(o.Deployment), limit)
-	g.battleLeftPanel(dst, o, head)
-	bottom := g.rightPanel(dst, g.partySummary(o), func() { g.openOverlay("roster") })
-	if g.deploymentSelected != "" && g.unitView(o, g.deploymentSelected) != nil {
-		g.deploymentOfficer(dst, o, g.deploymentSelected, image.Rect(uiW-12-infoW, bottom+12, uiW-12, deploymentTop()-12))
-	} else {
-		g.minimap(dst, o, bottom+20)
+	g.battleLeftPanel(dst, o, fmt.Sprintf("출전 %d / %d", len(o.Deployment), limit))
+	bar := image.Rect(uiW-12-infoW, hudTop(), uiW-12, hudTop()+64)
+	g.window(dst, bar)
+	g.block(bar)
+	placed := 0
+	for _, id := range o.Deployment {
+		if g.unitView(o, id) != nil {
+			placed++
+		}
 	}
-	r := image.Rect(0, deploymentTop(), uiW, uiH)
-	rect(dst, 0, float32(deploymentTop()), float32(uiW), float32(uiH-deploymentTop()), color.NRGBA{R: 28, G: 23, B: 20, A: 255})
-	rect(dst, 0, float32(deploymentTop()), float32(uiW), 2, gold)
-	g.block(r)
-	hint := "장수 카드: 출전 · 대기 · 전장의 아군 클릭: 선택 후 밝은 빈칸으로 옮기기 · Tab: 다음 장수 · 우클릭/Esc: 선택 취소"
-	if g.hover.ok {
-		hint += fmt.Sprintf("   지형: %s", g.S.Data.CellName(g.engine().Cell(g.hover.x, g.hover.y)))
-	}
-	g.label(dst, hint, 16, float64(deploymentTop()+12), 14, ink)
-	cards := g.deploymentCardsRect()
-	clip := dst.SubImage(image.Rect(int(float64(cards.Min.X)*drawPx), int(float64(cards.Min.Y)*drawPx), int(float64(cards.Max.X)*drawPx), int(float64(cards.Max.Y)*drawPx))).(*ebiten.Image)
-	for i, id := range g.sortieCards(o) {
-		x := cards.Min.X + i*deploymentCardWidth - g.deploymentScroll
-		card := image.Rect(x, cards.Min.Y, x+deploymentCardWidth-10, cards.Max.Y)
-		if !card.Overlaps(cards) {
-			continue
-		}
-		out := slices.Contains(o.Deployment, id)
-		state, tint := "대기 · 누르면 출전", muted
-		lead := g.servedBy(o, id)
-		switch {
-		case lead != "":
-			state, tint = g.name(lead)+"의 부관 · 출전 불가", bad
-		case out && g.sortieLocked(id):
-			state, tint = "필수 출전", good
-		case out:
-			state, tint = "출전 · 누르면 대기", good
-		}
-		if g.deploymentSelected == id {
-			tint = gold
-		}
-		g.window(clip, card)
-		strokeRect(clip, float32(card.Min.X), float32(card.Min.Y), float32(card.Dx()), float32(card.Dy()), 2, tint)
-		of := g.officer(o, id)
-		g.portrait(clip, id, of.Class, float64(x+10), float64(cards.Min.Y+10), 54)
-		if !out {
-			rect(clip, float32(card.Min.X+2), float32(card.Min.Y+2), float32(card.Dx()-4), float32(card.Dy()-4), color.NRGBA{R: 20, G: 16, B: 14, A: 120})
-		}
-		name := ink
-		if !out {
-			name = muted
-		}
-		g.label(clip, g.name(id), float64(x+74), float64(cards.Min.Y+10), 17, name)
-		g.label(clip, fmt.Sprintf("Lv%d", of.Level), float64(x+74), float64(cards.Min.Y+38), 13, muted)
-		g.label(clip, g.className(of.Class), float64(x+10), float64(cards.Min.Y+72), 13, name)
-		g.label(clip, state, float64(x+10), float64(cards.Max.Y-24), 12, tint)
-		g.addButton(card.Intersect(cards), "", func() { g.toggleSortie(id) })
-	}
-	g.btn(dst, image.Rect(8, cards.Min.Y+32, 40, cards.Min.Y+66), "‹", func() { g.scrollDeployment(-deploymentCardWidth) })
-	g.btn(dst, image.Rect(uiW-40, cards.Min.Y+32, uiW-8, cards.Min.Y+66), "›", func() { g.scrollDeployment(deploymentCardWidth) })
+	g.label(dst, fmt.Sprintf("배치 %d / %d", placed, len(o.Deployment)), float64(bar.Min.X+14), float64(bar.Min.Y+20), 15, ink)
 	var finish func()
 	if len(g.S.Engine.LegalActions("").Commands) > 0 {
 		finish = g.finishDeployment
 	}
-	g.btn(dst, image.Rect(uiW-180, uiH-42, uiW-16, uiH-8), "전투 시작 Enter", finish)
-	g.label(dst, head, 16, float64(uiH-34), 16, gold)
-	if g.editorReturn != nil {
-		g.btn(dst, image.Rect(uiW-336, uiH-42, uiW-192, uiH-8), "에디터로 돌아가기", g.endEditorTrial)
-	}
-}
+	g.actionRow(dst, bar.Max.X-8, bar.Min.Y+8, action{"메뉴", false, func() { g.openOverlay("menu") }}, action{"전투 시작", true, finish})
 
-// deploymentOfficer is the window of the selected officer on the right: who it is, then its gear and
-// deputy, each row opening the window that changes it. Where the screen is too short for that column (a phone),
-// the window widens into two: who it is and its stats on the left, the gear, deputy and 대기로 돌리기 on the right,
-// the rows shrinking to one line as far as needed.
-func (g *Game) deploymentOfficer(dst *ebiten.Image, o core.Observation, id string, r image.Rectangle) {
-	of := g.officer(o, id)
-	rows := len(equipSlots)
-	if g.S.Engine.CanDeputize(id) {
-		rows++
-	}
-	button := 0
-	if !g.sortieLocked(id) {
-		button = 46
-	}
-	head := 14 + 80 + 4*24 + 8
-	rowH := 50
-	wide := r.Dy() < head+rows*rowH+6+button
-	if wide {
-		r.Min.X = r.Max.X - 2*infoW
-		rowH = min(50, max(34, (r.Dy()-20-button)/rows))
-		r.Max.Y = min(r.Max.Y, r.Min.Y+max(head, 10+rows*rowH+button+4))
-	} else {
-		r.Max.Y = min(r.Max.Y, r.Min.Y+head+rows*rowH+6+button)
-	}
+	r := g.deploymentListRect(o)
 	g.window(dst, r)
 	g.block(r)
-	x, y := float64(r.Min.X+14), float64(r.Min.Y+14)
-	g.portrait(dst, id, of.Class, x, y, 64)
-	g.label(dst, g.name(id), x+78, y+2, 20, gold)
-	g.label(dst, fmt.Sprintf("%s · Lv%d", g.className(of.Class), of.Level), x+78, y+34, 14, ink)
-	if g.sortieLocked(id) {
-		g.label(dst, "필수 출전", float64(r.Min.X+infoW-14)-g.width("필수 출전", 12), y+4, 12, good)
-	}
-	y += 80
-	if stats, err := g.S.Engine.CharacterStats(id); err == nil {
-		for i, s := range statRows {
-			sx, sy := x+float64(i%2*148), y+float64(i/2*24)
-			g.label(dst, s.name, sx, sy, 13, muted)
-			g.label(dst, fmt.Sprint(s.get(stats)), sx+64, sy, 13, ink)
+	g.label(dst, "출전 부대", float64(r.Min.X+14), float64(r.Min.Y+12), 15, gold)
+	g.label(dst, "고르고 칸을 누름", float64(r.Max.X-14)-g.width("고르고 칸을 누름", 12), float64(r.Min.Y+15), 12, muted)
+	ids := o.Deployment
+	g.listRows(dst, &g.party.placing, image.Rect(r.Min.X+4, r.Min.Y+44, r.Max.X-4, r.Max.Y-6), len(ids), touchH, func(i int, rr image.Rectangle) {
+		id := ids[i]
+		of := g.officer(o, id)
+		if of == nil {
+			return
 		}
-	}
-	col := image.Rect(r.Min.X+10, int(y)+4*24+8, r.Max.X-10, r.Max.Y)
-	if wide {
-		col = image.Rect(r.Min.X+infoW, r.Min.Y+10, r.Max.X-10, r.Max.Y)
-	}
-	y = float64(col.Min.Y)
-	oneLine := rowH < 44
-	row := func(label string, icon string, dim bool, value string, click func()) {
-		rr := image.Rect(col.Min.X, int(y), col.Max.X, int(y)+rowH-6)
-		g.equipPanel(dst, rr, click != nil && hovered(rr), false)
-		if click != nil {
-			g.addButton(rr, "", click)
-		}
-		iy := float64(rr.Min.Y + 6)
-		if oneLine {
-			iy = float64(rr.Min.Y + rr.Dy()/2 - 16)
-		}
-		if icon != "" {
-			g.itemIcon(dst, icon, float64(rr.Min.X+8), iy, 1, dim)
-		}
-		c := ink
-		if dim {
-			c = muted
-		}
-		if oneLine {
-			ty := float64(rr.Min.Y + rr.Dy()/2 - 9)
-			g.label(dst, label, float64(rr.Min.X+50), ty+2, 12, muted)
-			g.label(dst, value, float64(rr.Min.X+50)+g.width(label, 12)+10, ty, 15, c)
-		} else {
-			g.label(dst, label, float64(rr.Min.X+50), float64(rr.Min.Y+4), 12, muted)
-			g.label(dst, value, float64(rr.Min.X+50), float64(rr.Min.Y+20), 15, c)
-		}
-		if click != nil {
-			g.label(dst, "›", float64(rr.Max.X-20), float64(rr.Min.Y+rr.Dy()/2-11), 18, muted)
-		}
-		y += float64(rowH)
-	}
-	for _, slot := range equipSlots {
-		s := slot
-		open := func() {
-			g.selected = id
-			g.openOverlay("equipment")
-			g.openPicker(s)
-			g.equip.alone = true
-		}
-		if item, ok := of.Equipment[slot]; ok {
-			row(slotNames[slot], g.S.Data.Equipment[item].Icon, false, g.itemName(item), open)
-		} else {
-			row(slotNames[slot], slotIcons[slot], true, "비어 있음", open)
-		}
-	}
-	if g.S.Engine.CanDeputize(id) {
-		deputy := "없음"
+		rowBack(dst, rr, id == g.deploymentSelected)
+		g.portrait(dst, id, of.Class, float64(rr.Min.X+10), float64(rr.Min.Y+7), 34)
+		name := g.name(id)
+		g.label(dst, name, float64(rr.Min.X+54), float64(rr.Min.Y+13), 16, ink)
 		if of.Deputy != "" {
-			deputy = g.name(of.Deputy)
+			g.label(dst, "· "+g.name(of.Deputy), float64(rr.Min.X+60)+g.width(name, 16), float64(rr.Min.Y+17), 12, muted)
 		}
-		row("부관", "", of.Deputy == "", deputy, func() {
-			g.selected = id
-			g.page = 0
-			g.openOverlay("deputy")
-		})
+		state, c := "배치됨", muted
+		switch {
+		case id == g.deploymentSelected:
+			state, c = "선택", gold
+		case g.unitView(o, id) == nil:
+			state, c = "미배치", gold
+		}
+		g.label(dst, state, float64(rr.Max.X-12)-g.width(state, 12), float64(rr.Min.Y+17), 12, c)
+	}, func(i int) { g.selectDeployment(ids[i], true) })
+
+	hint := "아군을 누르고 밝은 칸을 누르면 옮깁니다 · Tab 다음 장수 · 우클릭 선택 취소"
+	if g.hover.ok {
+		hint += "   지형: " + g.S.Data.CellName(g.engine().Cell(g.hover.x, g.hover.y))
 	}
-	if !g.sortieLocked(id) {
-		g.btn(dst, image.Rect(col.Min.X, r.Max.Y-46, col.Max.X, r.Max.Y-10), "대기로 돌리기", func() { g.toggleSortie(id) })
+	g.outlined(dst, hint, 16, float64(uiH-30), 13)
+	if g.editorReturn != nil {
+		g.btn(dst, image.Rect(12, uiH-90, 192, uiH-42), "에디터로 돌아가기", g.endEditorTrial)
 	}
 }

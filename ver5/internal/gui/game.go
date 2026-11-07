@@ -54,7 +54,6 @@ type Game struct {
 	editorReturn              *mapEditor
 	editorSession             *session.Session
 	deploymentSelected        string
-	deploymentScroll          int
 	sortieTried               string // the battle node startSortie last tried to leave for its deployment
 	edgeDir                   int    // the edge_arrow frame under the cursor while edgeOn (edge_scroll.go)
 	edgeOn                    bool

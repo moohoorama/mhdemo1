@@ -13,11 +13,10 @@ func init() {
 }
 
 // demoDeploy opens a battle at its deployment, where the sortie already stands on the field, and walks
-// it for cmd/_uidemo-vm: the field (frame 20), the lord picked from its card with the officer window
-// (60), the last officer called back to wait (80) and sent out again (130), its weapon picker (150),
-// the second officer picked on the map and then the third over it, its empty cells lit and the cursor
-// on one (172), the third moved there (185), and the edge arrows on the right (200), bottom (215), left (230) and lower
-// right (245).
+// it for cmd/_uidemo-vm: the field with the sortie listed at the bottom right (frame 20), the lord picked
+// from its row (40), the second officer picked on the map and then the third over it, its empty cells lit
+// and the cursor on one (100), the third moved there (115), and the edge arrows on the right (130), bottom
+// (145), left (160) and lower right (175).
 func demoDeploy(d *Demo) error {
 	g := d.g
 	if err := demoDeploySetup(d); err != nil {
@@ -40,41 +39,30 @@ func demoDeploy(d *Demo) error {
 		}
 		g.updateDeploymentPanel() // the demo only advances the game, so the panel and the edge arrow
 		g.edgeDir, g.edgeOn = g.edgeArrow(false)
-		last := ids[len(ids)-1]
 		switch f {
-		case 25:
-			g.toggleSortie(ids[0])
-		case 70:
-			g.toggleSortie(last)
+		case 30:
+			g.selectDeployment(ids[0], true)
 		case 85:
-			g.toggleSortie(last)
-			g.selected = last
-			g.openOverlay("equipment")
-			g.openPicker("weapon")
-			g.equip.alone = true
-		case 155:
-			g.equip.slot = ""
-		case 160:
 			g.deploymentSelected = ""
 			g.mapClick(cell(ids[1]))
-		case 165:
+		case 92:
 			g.mapClick(cell(ids[2]))
 			if moves := g.repositions(); len(moves) > 0 {
 				aim(moves[0].X, moves[0].Y)
 			}
-		case 175:
+		case 105:
 			if moves := g.repositions(); len(moves) > 0 {
 				g.mapClick(moves[0].X, moves[0].Y)
 			}
-		case 190:
+		case 120:
 			g.deploymentSelected = ""
 			at(uiW-12, 380)
-		case 205:
-			at(640, deploymentTop()-8)
-		case 220:
+		case 135:
+			at(640, uiH-8)
+		case 150:
 			at(8, 230)
-		case 235:
-			at(uiW-12, deploymentTop()-8)
+		case 165:
+			at(uiW-12, uiH-8)
 		}
 	}
 	return nil
@@ -138,8 +126,6 @@ func demoDeployDeputy(d *Demo) error {
 		g.updateDeploymentPanel()
 		bench, last := cards[len(ids)], ids[len(ids)-1]
 		switch f {
-		case 20:
-			g.toggleSortie(ids[1])
 		case 55:
 			g.selected = ids[1]
 			g.openOverlay("deputy")
@@ -164,7 +150,6 @@ func demoDeployDeputy(d *Demo) error {
 		case 180:
 			g.command(core.Command{Kind: "deputy", Actor: ids[2], Target: last})
 			g.deploymentSelected = ""
-			g.toggleSortie(ids[2])
 		}
 	}
 	return nil

@@ -36,7 +36,7 @@ func cellOf(g *Game, id string) [2]int {
 func TestDeploymentCardsAndMap(t *testing.T) {
 	g := deploymentController(t)
 	require.False(t, g.battleLogVisible())
-	require.Equal(t, deploymentTop(), g.battleViewport().Max.Y)
+	require.Equal(t, image.Rect(0, 0, worldW, worldH), g.battleViewport(), "the map fills the screen under the panels")
 	t.Run("the sortie stands on the field at once", func(t *testing.T) {
 		assert.Equal(t, [2]int{1, 3}, cellOf(g, "hero"))
 		assert.Equal(t, [2]int{1, 2}, cellOf(g, "archer1"))
@@ -64,18 +64,11 @@ func TestDeploymentCardsAndMap(t *testing.T) {
 			assert.NotEqual(t, [2]int{2, 2}, [2]int{m.U, m.V}, "no ally's cell is lit as a move")
 		}
 	})
-	t.Run("a card calls an officer back and sends it out again", func(t *testing.T) {
-		g.toggleSortie("archer1")
-		assert.Equal(t, [2]int{-1, -1}, cellOf(g, "archer1"))
-		assert.Equal(t, []string{"hero", "archer1"}, g.sortieCards(g.S.View()))
-		g.toggleSortie("archer1")
-		assert.NotEqual(t, [2]int{-1, -1}, cellOf(g, "archer1"))
-		assert.Equal(t, "archer1", g.deploymentSelected)
-	})
-	t.Run("the lord stays in the sortie", func(t *testing.T) {
-		g.toggleSortie("hero")
-		assert.Contains(t, g.S.View().Deployment, "hero")
-		assert.Equal(t, "hero", g.deploymentSelected)
+	t.Run("the sortie is listed at the bottom right", func(t *testing.T) {
+		r := g.deploymentListRect(g.S.View())
+		assert.True(t, r.In(image.Rect(0, 0, uiW, uiH)), "on screen: %v", r)
+		assert.Equal(t, uiH-12, r.Max.Y)
+		assert.GreaterOrEqual(t, r.Dy(), 48+len(g.S.View().Deployment)*touchH)
 	})
 	g.finishDeployment()
 	if g.deploying() || !g.battleLogVisible() || g.battleViewport() != image.Rect(0, 0, worldW, worldH) || g.ord.actor != "" {
@@ -146,16 +139,14 @@ func TestDeploymentLoadAndPanel(t *testing.T) {
 	}
 	old := cursorPos
 	defer func() { cursorPos = old }()
-	cursorPos = func() (int, int) { return 500, Height - 30 }
+	list := g.deploymentListRect(g.S.View())
+	g.block(list)
+	cursorPos = func() (int, int) { return list.Min.X + 40, list.Max.Y - 30 }
 	g.hover = hoverCell{1, 3, true}
 	g.deploymentSelected = "archer1"
 	g.mapRelease()
 	if cellOf(g, "archer1") != [2]int{1, 2} {
 		t.Fatal("panel click reached map")
-	}
-	g.scrollDeployment(10000)
-	if g.deploymentScroll != 0 {
-		t.Fatal("short list scrolled outside")
 	}
 }
 
@@ -180,15 +171,9 @@ func TestLongDeploymentList(t *testing.T) {
 		t.Fatal(err)
 	}
 	g.S.Engine = e
-	g.scrollDeployment(100000)
-	want := len(snap.Deployment)*deploymentCardWidth - g.deploymentCardsRect().Dx()
-	if g.deploymentScroll != want {
-		t.Fatalf("scroll %d want %d", g.deploymentScroll, want)
-	}
-	g.scrollDeployment(-100000)
-	if g.deploymentScroll != 0 {
-		t.Fatal("negative scroll")
-	}
+	r := g.deploymentListRect(g.S.View())
+	assert.GreaterOrEqual(t, r.Min.Y, hudTop()+64+12, "a long sortie stops under the top-right bar and scrolls")
+	assert.Equal(t, uiH-12, r.Max.Y)
 }
 
 func TestStartSortie(t *testing.T) {

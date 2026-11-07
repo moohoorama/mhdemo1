@@ -196,11 +196,12 @@ func (p *editorRenderTest) Update() error {
 		g.ensureField(g.S.Engine.Observe())
 		g.modals = nil
 	case 6:
-		cursorPos = func() (int, int) { return 120, deploymentTop() + 65 }
+		list := g.deploymentListRect(g.S.Engine.Observe())
+		cursorPos = func() (int, int) { return list.Min.X + 40, list.Min.Y + 44 + touchH/2 }
 		g.leftClick()
 		cursorPos = func() (int, int) { return 0, 0 }
 		if g.deploymentSelected == "" || len(g.deploymentMarks()) == 0 {
-			p.err = fmt.Errorf("card click did not expose placements")
+			p.err = fmt.Errorf("list click did not expose placements")
 			return ebiten.Termination
 		}
 		g.uiSeconds = .25

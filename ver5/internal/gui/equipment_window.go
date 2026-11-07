@@ -32,11 +32,10 @@ const (
 
 // equipState is the equipment window's state beyond the overlay name.
 type equipState struct {
-	slot  string // the slot whose picker is open, "" when closed
-	pick  string // the picked piece, pickNothing to take the slot's piece off
-	list  tableList
-	info  equipChip
-	alone bool // the picker was opened from the deployment's officer window: closing it closes the window too
+	slot string // the slot whose picker is open, "" when closed
+	pick string // the picked piece, pickNothing to take the slot's piece off
+	list tableList
+	info equipChip
 }
 
 // equipRow is one row of the picker: a piece, or taking the slot's piece off (id pickNothing).
