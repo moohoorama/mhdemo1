@@ -36,7 +36,7 @@ var (
 
 // sheetWindows are the windows that fill the screen up to sheetMax×sheetMaxH, with no title plate and no 닫기 at the
 // top: they close from their own action row.
-var sheetWindows = map[string]bool{"party": true}
+var sheetWindows = map[string]bool{"party": true, "unit": true}
 
 func sheetSize() (int, int) { return min(uiW-16, sheetMax), min(uiH-16, sheetMaxH) }
 

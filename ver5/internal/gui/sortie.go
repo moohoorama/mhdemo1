@@ -62,9 +62,9 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 		g.party.items, g.party.table, g.party.tab, g.party.trait = false, false, 1, ""
 		g.openOverlay("party")
 	}
-	detail := func() {
-		g.party.items, g.party.table, g.party.tab = false, false, 0
-		g.openOverlay("party")
+	var detail func()
+	if going {
+		detail = func() { g.openUnit(false) }
 	}
 	bw := (right - rx - 18) / 4
 	for i, b := range []struct {

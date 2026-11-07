@@ -116,6 +116,7 @@ type Game struct {
 	buttons                   []button
 	blocks                    []image.Rectangle
 	wheelAreas                []wheelArea
+	unitWin                   unitWindowState
 	ord                       order
 	menuAnim, subAnim         panelAnim
 	hover                     hoverCell

@@ -43,9 +43,15 @@ func demoSortie(d *Demo) error {
 		case 140:
 			g.party.tab = 1
 			g.openOverlay("party")
-		case 170:
+		case 155:
 			g.closeOverlay()
-		case 180:
+			g.selected = "gaoshun"
+			g.openUnit(false)
+		case 165:
+			g.unitWin.tab, g.unitWin.side = 1, 1
+		case 175:
+			g.closeOverlay()
+		case 185:
 			if slices.Contains(o.Deployment, "liubei") {
 				g.startSortie()
 			}

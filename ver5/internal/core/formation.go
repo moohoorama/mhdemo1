@@ -104,6 +104,18 @@ func (e *Engine) DeputyTraits(id string) []string {
 	return append(slices.Clone(innate(d)), d.Learned...)
 }
 
+// DeputyBlend is how much of deputy's attributes actor takes in where deputy's are higher, and the charm of actor
+// it counts (인덕 included); zero when either is missing.
+func (e *Engine) DeputyBlend(actor, deputy string) (r, charm float64) {
+	o, d := e.char(actor), e.char(deputy)
+	if o == nil || d == nil {
+		return 0, 0
+	}
+	R := e.data.Rules
+	charm = float64(e.def(o).Stats[5]) + e.ownFx(o, content.FxDeputyCharm)
+	return (charm*float64(R.DeputyWeight) + float64(e.def(d).Stats[5])) / float64(R.DeputyDivisor), charm
+}
+
 // attributes are the character's six attributes with the deputy's blended in where the deputy's are higher.
 func (e *Engine) attributes(o *Character) [6]float64 {
 	R := e.data.Rules

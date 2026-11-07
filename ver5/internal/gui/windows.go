@@ -16,7 +16,7 @@ import (
 )
 
 var overlayTitles = map[string]string{"menu": "메뉴", "save": "저장", "load": "불러오기", "settings": "설정",
-	"confirm": "확인", "equipment": "장비", "deputy": "부관 임명", "roster": "병력일람", "shop": "상점", "party": "관리", "waypoints": "장면 이동", "difficulty": "난이도"}
+	"confirm": "확인", "equipment": "장비", "deputy": "부관 임명", "roster": "병력일람", "shop": "상점", "party": "관리", "unit": "부대", "waypoints": "장면 이동", "difficulty": "난이도"}
 
 func (g *Game) popupPending() bool {
 	return len(g.overlays) > 0 || len(g.modals) > 0 || len(g.learn) > 0 ||
@@ -285,6 +285,8 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h int) {
 		g.shopWindow(dst, x, y, w, h)
 	case "party":
 		g.partyWindow(dst, x, y, w, h)
+	case "unit":
+		g.unitWindow(dst, x, y, w, h)
 	}
 }
 
