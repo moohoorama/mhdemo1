@@ -225,7 +225,7 @@
    ]
   ]
  },
- "item_horse": {
+ "item_yanyuedao": {
   "anchor": [
    8,
    8
@@ -239,7 +239,7 @@
    ]
   ]
  },
- "item_jueying": {
+ "item_horse": {
   "anchor": [
    8,
    8
@@ -253,7 +253,7 @@
    ]
   ]
  },
- "item_baima": {
+ "item_jueying": {
   "anchor": [
    8,
    8
@@ -267,7 +267,7 @@
    ]
   ]
  },
- "item_sanlue": {
+ "item_baima": {
   "anchor": [
    8,
    8
@@ -281,7 +281,7 @@
    ]
   ]
  },
- "item_knuckles": {
+ "item_sanlue": {
   "anchor": [
    8,
    8
@@ -295,7 +295,7 @@
    ]
   ]
  },
- "item_leather": {
+ "item_knuckles": {
   "anchor": [
    8,
    8
@@ -309,7 +309,7 @@
    ]
   ]
  },
- "item_map": {
+ "item_leather": {
   "anchor": [
    8,
    8
@@ -323,7 +323,7 @@
    ]
   ]
  },
- "item_medicine": {
+ "item_map": {
   "anchor": [
    8,
    8
@@ -337,7 +337,7 @@
    ]
   ]
  },
- "item_primer": {
+ "item_medicine": {
   "anchor": [
    8,
    8
@@ -351,7 +351,7 @@
    ]
   ]
  },
- "item_qinggang": {
+ "item_primer": {
   "anchor": [
    8,
    8
@@ -365,7 +365,7 @@
    ]
   ]
  },
- "item_ration": {
+ "item_qinggang": {
   "anchor": [
    8,
    8
@@ -379,7 +379,7 @@
    ]
   ]
  },
- "item_bean_pouch": {
+ "item_ration": {
   "anchor": [
    8,
    8
@@ -393,7 +393,7 @@
    ]
   ]
  },
- "item_redhare": {
+ "item_bean_pouch": {
   "anchor": [
    8,
    8
@@ -407,7 +407,7 @@
    ]
   ]
  },
- "item_robe": {
+ "item_redhare": {
   "anchor": [
    8,
    8
@@ -421,7 +421,7 @@
    ]
   ]
  },
- "item_seal": {
+ "item_robe": {
   "anchor": [
    8,
    8
@@ -435,7 +435,7 @@
    ]
   ]
  },
- "item_spear": {
+ "item_seal": {
   "anchor": [
    8,
    8
@@ -449,7 +449,7 @@
    ]
   ]
  },
- "item_sword": {
+ "item_spear": {
   "anchor": [
    8,
    8
@@ -463,7 +463,7 @@
    ]
   ]
  },
- "item_yitian": {
+ "item_sword": {
   "anchor": [
    8,
    8
@@ -477,7 +477,7 @@
    ]
   ]
  },
- "item_treasure_sword": {
+ "item_yitian": {
   "anchor": [
    8,
    8
@@ -491,7 +491,7 @@
    ]
   ]
  },
- "item_bean": {
+ "item_treasure_sword": {
   "anchor": [
    8,
    8
@@ -505,7 +505,7 @@
    ]
   ]
  },
- "item_barley": {
+ "item_bean": {
   "anchor": [
    8,
    8
@@ -519,7 +519,7 @@
    ]
   ]
  },
- "item_rice": {
+ "item_barley": {
   "anchor": [
    8,
    8
@@ -533,7 +533,7 @@
    ]
   ]
  },
- "item_liquor": {
+ "item_rice": {
   "anchor": [
    8,
    8
@@ -547,7 +547,7 @@
    ]
   ]
  },
- "item_fine_liquor": {
+ "item_liquor": {
   "anchor": [
    8,
    8
@@ -561,7 +561,7 @@
    ]
   ]
  },
- "item_baijiu": {
+ "item_fine_liquor": {
   "anchor": [
    8,
    8
@@ -575,7 +575,7 @@
    ]
   ]
  },
- "item_scroll": {
+ "item_baijiu": {
   "anchor": [
    8,
    8
@@ -589,7 +589,7 @@
    ]
   ]
  },
- "item_insu": {
+ "item_scroll": {
   "anchor": [
    8,
    8
@@ -603,6 +603,20 @@
    ]
   ]
  },
+ "item_insu": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    5241,
+    144,
+    144
+   ]
+  ]
+ },
  "bar_frame": {
   "anchor": [
    1,
@@ -611,7 +625,7 @@
   "frames": [
    [
     0,
-    5241,
+    5385,
     26,
     9
    ]
@@ -625,13 +639,13 @@
   "frames": [
    [
     0,
-    5250,
+    5394,
     22,
     3
    ],
    [
     22,
-    5250,
+    5394,
     22,
     3
    ]
@@ -645,7 +659,7 @@
   "frames": [
    [
     0,
-    5253,
+    5397,
     22,
     3
    ]
@@ -659,7 +673,7 @@
   "frames": [
    [
     0,
-    5256,
+    5400,
     22,
     3
    ]
@@ -673,7 +687,7 @@
   "frames": [
    [
     0,
-    5259,
+    5403,
     22,
     1
    ]
@@ -687,7 +701,7 @@
   "frames": [
    [
     0,
-    5260,
+    5404,
     6,
     1
    ]
@@ -701,7 +715,7 @@
   "frames": [
    [
     0,
-    5261,
+    5405,
     1,
     4
    ]
@@ -715,49 +729,49 @@
   "frames": [
    [
     0,
-    5265,
+    5409,
     96,
     96
    ],
    [
     96,
-    5265,
+    5409,
     96,
     96
    ],
    [
     192,
-    5265,
+    5409,
     96,
     96
    ],
    [
     288,
-    5265,
+    5409,
     96,
     96
    ],
    [
     384,
-    5265,
+    5409,
     96,
     96
    ],
    [
     480,
-    5265,
+    5409,
     96,
     96
    ],
    [
     576,
-    5265,
+    5409,
     96,
     96
    ],
    [
     672,
-    5265,
+    5409,
     96,
     96
    ]

@@ -15,6 +15,7 @@
     "item_fan",
     "item_firebook",
     "item_halberd",
+    "item_yanyuedao",
     "item_horse",
     "item_jueying",
     "item_baima",
@@ -717,6 +718,42 @@
             "R": "#74201a",
             "r": "#b83c2e",
             "q": "#e07a5e"
+          }
+        }
+      }
+    },
+    "item_yanyuedao": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_yanyuedao.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "d": "#4f555b",
+            "b": "#868d93",
+            "l": "#bcc2c6",
+            "h": "#eef1f2",
+            "W": "#5a1e14",
+            "w": "#8a3020",
+            "v": "#b85238",
+            "G": "#1d5a3a",
+            "g": "#2f8c56",
+            "j": "#6cc58a",
+            "R": "#8a1a18",
+            "r": "#d0302a",
+            "y": "#a87a22",
+            "O": "#f2d78a"
           }
         }
       }

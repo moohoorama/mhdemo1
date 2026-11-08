@@ -5,6 +5,10 @@
 
 ---
 
+## 2026-11-08 청룡언월도 아이콘을 언월도로
+- `tools/spritetool/assets/ver5-ui/settings.json`·`pixels.json`·`sources/item_yanyuedao.png`, `assets/graphics/ui/ui.{png,json}`: 청룡언월도 전용 아이콘 `item_yanyuedao`(codex 그림 → 도트 변환) — 붉은 긴 자루 끝에 초승달 날, 날 밑 청록 용머리와 붉은 술, 금 물미. 극·창과 같은 대각선 구도
+- `assets/data/equipment.json` `qinglong_blade` `Icon`: `dao` → `yanyuedao` — 고정도와 같은 손잡이 짧은 도 아이콘이라 자루에 단 월도로 보이지 않았다(사용자 지적). 고정도는 `dao` 그대로
+
 ## 2026-11-07 큰 창은 960 폭으로 가운데
 - `internal/gui/ui_kit.go`(`sheetMax` 1180→960), `officer_window.go`, `unit_window.go`: 화면을 채우던 창(장수 창·출전 준비·부대 상세·부관 임명·장비)을 960 폭으로 묶어 넓은 화면에서는 가운데, 좁은 화면에서는 꽉 차게; 장수 창 전투력은 큰 육각형과 능력별 막대·이동·사거리로 채우고, 열전 글은 창 안에서 줄바꿈 — 사용자 "창이 무의미하게 가로로 긴 거 같은데", "열전이나 전투력 … 뭔가 훵한 거 같았거든"
 
