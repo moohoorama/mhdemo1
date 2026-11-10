@@ -28,8 +28,17 @@ type MapDocument struct {
 	Play, Visual MapRect
 	Cells        map[string]string // "x,y" of a cell: its three layers
 	Default      string
-	StageFile    string `json:",omitempty"` // file names the document was loaded from; empty for a new one
-	MapFile      string `json:",omitempty"`
+	Grass        *GrassTint `json:",omitempty"` // the map's own shade of grass (its climate); the tileset's when nil
+	StageFile    string     `json:",omitempty"` // file names the document was loaded from; empty for a new one
+	MapFile      string     `json:",omitempty"`
+}
+
+// GrassTint turns a map's grass toward its climate: Hue degrees round the colour wheel, Sat and Val scale the
+// saturation and brightness (0 keeps them). Only green pixels change; soil, water and stone stay as drawn.
+type GrassTint struct {
+	Hue float64 `json:"hue,omitempty"`
+	Sat float64 `json:"sat,omitempty"`
+	Val float64 `json:"val,omitempty"`
 }
 
 func cloneMap[T any](v T) T {

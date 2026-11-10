@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"math"
+	"slices"
 
 	"srpg/internal/content"
 	"srpg/internal/core"
@@ -244,6 +245,8 @@ type Player struct {
 	aimed int
 	// from is the state the AI turn started in, whose army the HUD names while it plays
 	from core.Observation
+	// sounds wait to be played so they peak on the moment they belong to
+	sounds []delayedSfx
 }
 
 func (p *Player) Busy() bool { return len(p.waiting)+len(p.running) > 0 }
@@ -293,11 +296,14 @@ func (p *Player) play(actions []*replay.Action, final core.Observation, ai bool)
 }
 
 func (p *Player) Update(dt float64) {
+	p.updateSounds(dt)
 	if !p.Busy() {
 		return
 	}
 	if p.Duel != nil {
+		from := p.Duel.Time
 		p.Duel.Advance(p.cutInStep(dt)) // the duel's clock waits for the cut-in
+		p.g.duelSounds(p.Duel, from)
 	}
 	p.gap += dt
 	p.clock += dt
@@ -376,7 +382,7 @@ func (p *Player) Skip() {
 	for _, i := range p.waiting {
 		p.logAction(i)
 	}
-	p.waiting, p.running, p.Duel = nil, nil, nil
+	p.waiting, p.running, p.Duel, p.sounds = nil, nil, nil, nil
 	p.g.dropSpeech()
 	p.looks = nil
 	p.g.popups = nil
@@ -498,10 +504,17 @@ func (g *Game) perform(a *replay.Action) []beat {
 			add(.1, func() {})
 		}
 		// forced moves (an event action) walk together, and a cutscene plays its groups of steps
-		var walks []timedFn
+		var walkCells []content.Point
 		for _, e := range events {
 			if e.Kind == "move" && (c.Kind != "move" || e.Actor != c.Actor) {
-				walks = append(walks, g.walkTimeline(e.Actor, e.Path, e.Facing, 0)...)
+				walkCells = append(walkCells, g.walkCells(e.Path)...)
+			}
+		}
+		cam := [2]float64{g.camX, g.camY}
+		walks, start := g.glideFirst(&cam, walkCells, 0)
+		for _, e := range events {
+			if e.Kind == "move" && (c.Kind != "move" || e.Actor != c.Actor) {
+				walks = append(walks, g.walkTimeline(e.Actor, e.Path, e.Facing, start)...)
 			}
 		}
 		if len(walks) > 0 {
@@ -516,10 +529,13 @@ func (g *Game) perform(a *replay.Action) []beat {
 		// the camera goes first to where a run of arrivals or of terrain changes happens, so the
 		// player sees an army come in or a fire start instead of a screen that seems to wait
 		looking := ""
-		look := func(kind string, x, y int) {
+		look := func(kind string, x, y int, cue string) {
 			if looking != kind {
 				looking = kind
-				add(panTime, func() { g.panToCell(x, y) })
+				add(panTime, func() {
+					g.panToCell(x, y)
+					g.sfx(cue)
+				})
 			}
 		}
 		for i, e := range events {
@@ -530,7 +546,7 @@ func (g *Game) perform(a *replay.Action) []beat {
 			case "duel":
 				view := g.duelView(e)
 				ev := events[i+1:]
-				add(view.Length()+cutInLength(view), func() { g.player.Duel = view })
+				add(view.Length()+cutInLength(view), func() { g.player.Duel = view; g.sfx("duel-start") })
 				add(blinkTime, func() { g.player.Duel = nil; g.strike(nil, ev) })
 			case "status":
 				// an event's stat change on many units at once shows on all of them together
@@ -559,13 +575,21 @@ func (g *Game) perform(a *replay.Action) []beat {
 				entries, total := g.cutsceneTimeline(e.Cutscene)
 				addTimeline(add, entries, total)
 			case "goals":
-				add(.3, func() { g.modals = append(g.modals, &modal{kind: "objective"}) })
+				add(.3, func() {
+					g.modals = append(g.modals, &modal{kind: "objective"})
+					g.sfx("goals")
+				})
 			case "terrain":
 				event := e
 				if x, y, ok := g.areaCenter(e.Amount); ok {
-					look("terrain", x, y)
+					look("terrain", x, y, "")
 				}
-				add(.4, func() { g.changeLooks(event) })
+				add(.4, func() {
+					if g.S.Data.States[event.Target].Blaze > 0 { // an event's fire sounds like the big fire spells
+						g.sfx("fire-big")
+					}
+					g.changeLooks(event)
+				})
 			case "mark":
 				// the marks one spell leaves come up together
 				event, wait := e, .3
@@ -576,7 +600,11 @@ func (g *Game) perform(a *replay.Action) []beat {
 			case "unit-arrival":
 				event := e
 				if e.Unit != nil {
-					look("arrival", e.Unit.X, e.Unit.Y)
+					cue := "reinforce-ally"
+					if e.Unit.Faction == "enemy" {
+						cue = "reinforce-enemy"
+					}
+					look("arrival", e.Unit.X, e.Unit.Y, cue)
 				}
 				add(.15, func() {
 					if event.Unit == nil {
@@ -695,6 +723,30 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	}
 	look := actor.art
 	tint := buffTint[g.S.Data.Skills[c.Skill].Effect]
+	aimed := target != nil && target != actor
+	// seconds from the motion's start to the blow leaving (the end of the gathering frames) and to it landing
+	release := gather
+	if crit {
+		release += chargeTime
+	}
+	var flight float64
+	switch {
+	case kind == "stone" && aimed:
+		flight = g.lobFlight(actor, target)
+	case kind == "arrow" && aimed:
+		flight = math.Max(.12, math.Hypot(target.u-actor.u, target.v-actor.v)*arrowSecPerCell)
+	case isSpell(kind) && target != nil:
+		flight = g.assets.FX[kind].Hit
+	}
+	var hits, heals []core.Event
+	for _, e := range events {
+		if e.Kind == "pouch-heal" {
+			heals = append(heals, e)
+		} else {
+			hits = append(hits, e)
+		}
+	}
+	spell := c.Kind == "skill" && g.S.Data.Skills[c.Skill].Kind != "physical"
 	start := func() {
 		if target != nil && target != actor {
 			actor.face(target.u, target.v)
@@ -703,6 +755,26 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 			actor.art = actor.shoot
 		}
 		actor.play("attack")
+		// each sound peaks on its moment: the swing halfway through it, a shot as it leaves, the blow as it lands
+		p := &g.player
+		switch {
+		case spell: // a spell is heard when it lands
+		case kind == "arrow" || kind == "stone":
+			p.sfxAt("shoot", release)
+		case crit:
+			p.sfxAt("swing-crit", release-gather/2)
+		default:
+			p.sfxAt("swing", release-gather/2)
+		}
+		if spell {
+			p.sfxAt(g.skillCue(c.Skill), release+flight)
+		}
+		for _, cue := range strikeCues(hits) {
+			if spell && cue == "block" { // a stratagem is not blocked but misses
+				cue = "spell-miss"
+			}
+			p.sfxAt(cue, release+flight)
+		}
 		if c.Kind == "skill" {
 			g.say(actor, g.skillName(c.Skill))
 		}
@@ -726,20 +798,18 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 			start()
 		}
 	})
-	if kind == "stone" && target != nil && target != actor {
+	if kind == "stone" && aimed {
 		// leaves the bucket as attack frame 2 starts, and the blow lands with it
-		flight := g.lobFlight(actor, target)
 		add(flight, func() { g.throw(actor, target, flight) })
 	}
-	if kind == "arrow" && target != nil && target != actor {
+	if kind == "arrow" && aimed {
 		// released on the third frame, it lands after its flight
-		flight := math.Max(.12, math.Hypot(target.u-actor.u, target.v-actor.v)*arrowSecPerCell)
 		add(flight, func() { g.spawn("arrow", actor, target, flight, spark) })
 	}
 	if isSpell(kind) && target != nil {
 		// the look starts as the cast is released; the blow lands (and the damage shows) at its Hit
 		sh := g.assets.FX[kind]
-		add(sh.Hit, func() { g.spawn(kind, actor, target, sh.length(), tint) })
+		add(flight, func() { g.spawn(kind, actor, target, sh.length(), tint) })
 	}
 	wait := follow
 	for _, e := range events {
@@ -752,18 +822,10 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	if crit {
 		wait = math.Max(wait, shakeTime*1.6)
 	}
-	var hits, heals []core.Event
-	for _, e := range events {
-		if e.Kind == "pouch-heal" {
-			heals = append(heals, e)
-		} else {
-			hits = append(hits, e)
-		}
-	}
 	add(wait, func() {
 		actor.art = look
 		g.impact(kind, actor, target, hits, tint)
-		g.strike(actor, hits)
+		g.showStrike(actor, hits)
 	})
 	if len(heals) == 0 {
 		return
@@ -834,7 +896,15 @@ func (g *Game) leaveField(u *unitVis, dir image.Point) {
 	u.leave = &walkState{fu: u.u, fv: u.v, tu: tu, tv: tv}
 }
 
-func (g *Game) stepTo(u *unitVis, p content.Point) { g.walkTo(u, float64(p.X), float64(p.Y)) }
+// stepTo walks a unit one cell on the battle map, a footstep or, for a rider, a hoof beat with it.
+func (g *Game) stepTo(u *unitVis, p content.Point) {
+	if u.mounted {
+		g.sfx("hoof")
+	} else {
+		g.sfx("step")
+	}
+	g.walkTo(u, float64(p.X), float64(p.Y))
+}
 
 // walkTo starts one walking step to a (fractional) cell position.
 func (g *Game) walkTo(u *unitVis, tu, tv float64) {
@@ -867,9 +937,43 @@ func (g *Game) expShown(id string, raw int) int {
 	return raw
 }
 
-// strike shows the outcome events of a blow: damage with a hit reaction that shakes away
-// from the attacker, misses, healing and effects, retreats blinking out.
+// strike plays and shows the outcome events of a blow.
 func (g *Game) strike(attacker *unitVis, events []core.Event) {
+	for _, cue := range strikeCues(events) {
+		g.sfx(cue)
+	}
+	g.showStrike(attacker, events)
+}
+
+// strikeCues are the sounds of a blow's outcome: a hit, a critical hit or a block.
+func strikeCues(events []core.Event) []string {
+	crit := map[string]bool{}
+	for _, e := range events {
+		if e.Kind == "critical" {
+			crit[e.Target] = true
+		}
+	}
+	var out []string
+	for _, e := range events {
+		cue := ""
+		switch {
+		case e.Kind == "damage" && crit[e.Target]:
+			cue = "crit"
+		case e.Kind == "damage":
+			cue = "hit"
+		case e.Kind == "miss":
+			cue = "block"
+		}
+		if cue != "" && !slices.Contains(out, cue) {
+			out = append(out, cue)
+		}
+	}
+	return out
+}
+
+// showStrike shows the outcome events of a blow: damage with a hit reaction that shakes away
+// from the attacker, misses, healing and effects, retreats blinking out.
+func (g *Game) showStrike(attacker *unitVis, events []core.Event) {
 	crit := map[string]bool{}
 	for _, e := range events {
 		if e.Kind == "critical" {
@@ -883,7 +987,11 @@ func (g *Game) strike(attacker *unitVis, events []core.Event) {
 			if t == nil {
 				continue
 			}
-			t.shownHP = max(0, t.shownHP-e.Amount)
+			was := t.shownHP
+			t.shownHP = max(0, was-e.Amount)
+			if t.ally && t.shownHP > 0 && t.shownHP*4 <= t.maxHP && was*4 > t.maxHP { // one of ours down to a quarter
+				g.sfx("danger")
+			}
 			t.play("hit")
 			t.flash = .25
 			src := g.unitAt(e.Actor)
@@ -940,6 +1048,7 @@ func (g *Game) strike(attacker *unitVis, events []core.Event) {
 			}
 		case "retreat", "death":
 			if u := g.unitAt(e.Actor); u != nil && e.Text != "flight" {
+				g.sfx(g.fallCue(e.Actor))
 				u.shownHP = 0
 				u.dying = 0
 			}
@@ -967,7 +1076,10 @@ func (g *Game) promotion(add func(float64, func()), u *unitVis) {
 		u.bleachTo, u.bleachRate = 1, 1
 		g.spawn("promote_gather", nil, u, 1.0, white)
 	})
-	add(.15, func() { g.hitFlashT, g.hitFlashCrit = hitFlash, false })
+	add(.15, func() {
+		g.hitFlashT, g.hitFlashCrit = hitFlash, false
+		g.sfx("promote")
+	})
 	add(.9, func() {
 		if final := g.unitView(g.player.final, u.id); final != nil {
 			g.syncUnit(*final, g.player.final)

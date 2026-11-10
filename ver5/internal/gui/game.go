@@ -29,12 +29,17 @@ import (
 	"srpg/internal/replay"
 	"srpg/internal/scenes"
 	"srpg/internal/session"
+	"srpg/internal/sprite"
 )
 
 const Width, Height = 1280, 850
 
 type Game struct {
 	layer           int
+	sound           *soundBank // nil: silent (EnableSound)
+	tracedTheme     string     // the theme last written to sfxTrace
+	sfxCalls        int        // cues asked for so far: a plain click sounds only when what it did made none
+	musicTab        *musicTable
 	duelPreview     func() error
 	previewIdle     int
 	previewRate     float64
@@ -60,6 +65,7 @@ type Game struct {
 	deputyPick                string    // the candidate the deputy window previews
 	deputyInfo                equipChip // the deputy window's trait badge last pressed
 	edgeHeld                  float64   // seconds the left button has been held on an edge arrow
+	textSeconds               float64   // the clock lines come out on: uiSeconds run at the replay speed
 	cursorHidden              bool
 	uiSeconds                 float64
 	moneyShown                int  // the money as the screen counts it toward the real sum
@@ -84,6 +90,7 @@ type Game struct {
 	hitFlashCrit              bool
 	camX, camY                float64
 	pan                       *camPan
+	follow                    string // the unit whose walk the camera eases after during a replay (camera_pan.go)
 	zoom                      float64
 	zoomFrom, zoomTo          float64
 	zoomT                     float64
@@ -120,10 +127,11 @@ type Game struct {
 	menuAnim, subAnim         panelAnim
 	hover                     hoverCell
 	threatAll                 bool
-	threats                   map[string][]content.Point
+	threats                   map[string]core.Ranges
 	itemEffects               map[string]itemEffect // itemEffect results by revision, officer, slot and piece
 	equip                     equipState
 	waypoints                 waypointList
+	jumpNode                  string // the waypoint the difficulty window starts at; none starts a new game
 	question, yes, no         string
 	confirmTitle              string
 	answer                    func()
@@ -175,8 +183,9 @@ type Game struct {
 	shopFrom                  string       // the person of the walk whose shop is open
 	intro                     *officerIntro
 	introImg                  introImages
-	battleXP, startLevel      map[string]int
-	resultPage                int
+	resultSkip                bool    // the victory window's show was clicked through
+	meritHeard                float64 // seconds into the victory window's show whose sounds have played
+	subsMet                   subWatch
 	saves                     saveList
 	selected                  string
 	overlays                  []string // the open windows, the top one last
@@ -212,8 +221,7 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 		return nil, err
 	}
 	g := &Game{S: s, font: source, brushFont: brush, serifFont: serif, seed: seed, verified: map[string]bool{}, slot: 1, auditDir: auditDir,
-		vis: map[string]*unitVis{}, zoom: 1, zoomFrom: 1, zoomTo: 1, zoomT: .5, speed: 1, threats: map[string][]content.Point{}, itemEffects: map[string]itemEffect{},
-		battleXP: map[string]int{}, startLevel: map[string]int{}}
+		vis: map[string]*unitVis{}, zoom: 1, zoomFrom: 1, zoomTo: 1, zoomT: .5, speed: 1, threats: map[string]core.Ranges{}, itemEffects: map[string]itemEffect{}}
 	g.root = filepath.Dir(filepath.Dir(filepath.Dir(fontPath)))
 	g.player.g = g
 	g.names = nameIndex(s.Data)
@@ -317,7 +325,8 @@ func (g *Game) send(q session.Request) session.Response {
 	g.notice = "완료"
 	switch q.Op {
 	case "save":
-		g.closeOverlays()
+		g.overlays = nil // the save's bell, not the window's closing
+		g.sfx("save")
 		g.toast(fmt.Sprintf("슬롯 %s 저장 완료", q.Slot), gold)
 	case "load":
 		g.toast("불러오기 완료", gold)
@@ -354,6 +363,7 @@ func (g *Game) request(q session.Request) session.Response {
 		g.sync(g.S.View())
 	}
 	if r.OK && before != nil && before.Phase != "battle" && q.Op == "command" && g.S.View().Phase == "battle" {
+		g.sfx("sortie")
 		g.replayOpening(q.Command, r.Events)
 		g.openingTurn = true
 	}
@@ -410,9 +420,6 @@ func (g *Game) record(before *core.Observation, events []core.Event) {
 	order := []string{}
 	for _, e := range events {
 		line, important := g.eventText(e)
-		if e.Kind == "experience" && g.battleXP != nil {
-			g.battleXP[e.Actor] += e.Amount
-		}
 		if e.Kind == "level" {
 			l, ok := levels[e.Actor]
 			if !ok {
@@ -448,10 +455,18 @@ func (g *Game) record(before *core.Observation, events []core.Event) {
 			}
 		}
 		g.modals = append(g.modals, &modal{kind: "levelup", level: up})
+		g.sfx("levelup")
 	}
 	for _, e := range events {
 		if e.Kind == "promotion" {
-			g.modals = append(g.modals, &modal{kind: "promotion", promo: g.promotionUp(before, e.Actor)})
+			id := e.Actor
+			if e.Text != "" {
+				id = e.Text // the officer or the deputy riding with it
+			}
+			g.modals = append(g.modals, &modal{kind: "promotion", promo: g.promotionUp(before, id)})
+			if before == nil || before.Phase != "battle" { // on the field the promotion's own show has sounded it
+				g.sfx("promote")
+			}
 		}
 	}
 	if gains := acquireGains(before, events); len(gains) > 0 {
@@ -467,9 +482,13 @@ func (g *Game) promotionUp(before *core.Observation, id string) promotionUp {
 	return g.promotionBetween(before, g.S.View(), id)
 }
 
-// promotionBetween is unit id's promotion from observation before to after.
+// promotionBetween is unit id's promotion from observation before to after; a deputy, who has no unit,
+// is shown by its own record and stats.
 func (g *Game) promotionBetween(before *core.Observation, after core.Observation, id string) promotionUp {
 	p := promotionUp{id: id}
+	if g.unitView(after, id) == nil {
+		return g.characterPromotion(before, after, id)
+	}
 	if u := g.unitView(after, id); u != nil {
 		p.to, p.after, p.new = u.Class, u.Stats, g.battleClassArt(u.Def, u.Class, u.Weapon, u.Mount, u.Color)
 		p.from, p.before, p.old = p.to, p.after, p.new
@@ -479,6 +498,48 @@ func (g *Game) promotionBetween(before *core.Observation, after core.Observation
 			p.from, p.before, p.old = u.Class, u.Stats, g.battleClassArt(u.Def, u.Class, u.Weapon, u.Mount, u.Color)
 		}
 	}
+	return p
+}
+
+// characterRecord is the character's record in observation o, or nil.
+func (g *Game) characterRecord(o core.Observation, id string) *core.Character {
+	for i := range o.Characters {
+		if o.Characters[i].ID == id {
+			return &o.Characters[i]
+		}
+	}
+	return nil
+}
+
+// mountOf is the horse a mounted character rides, or "".
+func (g *Game) mountOf(ch core.Character) string {
+	if slices.Contains(g.S.Data.Classes[ch.Class].Tags, content.TagMounted) {
+		return ch.Equipment["accessory"]
+	}
+	return ""
+}
+
+// characterPromotion is the promotion of a character with no unit on the field (a deputy).
+func (g *Game) characterPromotion(before *core.Observation, after core.Observation, id string) promotionUp {
+	p := promotionUp{id: id}
+	ch := g.characterRecord(after, id)
+	if ch == nil {
+		return p
+	}
+	p.from, p.to = ch.Class, ch.Class
+	if before != nil {
+		if b := g.characterRecord(*before, id); b != nil {
+			p.from = b.Class
+		}
+	}
+	art := func(class string) *sprite.Art {
+		c := *ch
+		c.Class = class
+		return g.battleClassArt(ch.Def, class, g.S.Data.Equipment[ch.Equipment["weapon"]].Type, g.mountOf(c), g.S.Data.Characters[ch.Def].Look.Faction)
+	}
+	p.old, p.new = art(p.from), art(p.to)
+	p.before, _ = g.engine().CharacterStatsAs(id, p.from)
+	p.after, _ = g.engine().CharacterStatsAs(id, p.to)
 	return p
 }
 
@@ -630,6 +691,7 @@ func (g *Game) rightClick() {
 func (g *Game) Update() error {
 	g.updatePointer()
 	g.ticks++
+	g.updateMusic(1.0 / 60)
 	defer g.watchScreen()
 	if g.holdForTransition() {
 		return nil
@@ -783,6 +845,8 @@ func (g *Game) keys() {
 		g.request(session.Request{Op: "load", Slot: fmt.Sprint(g.slot)})
 	}
 	if pressed(ebiten.KeyEscape) {
+		before := g.sfxCalls
+		defer g.sfxUnless(before, "ui-back")
 		switch {
 		case g.equip.info.id != "":
 			g.equip.info = equipChip{}
@@ -847,7 +911,12 @@ func (g *Game) leftClick() {
 	x, y := cursorPos()
 	for i := len(g.buttons) - 1; i >= 0; i-- {
 		if b := g.buttons[i]; image.Pt(x, y).In(b.rect) {
+			if b.denied {
+				g.sfx("ui-denied")
+			}
+			before := g.sfxCalls
 			b.click()
+			g.sfxUnless(before, "ui-select")
 			return
 		}
 	}
@@ -878,8 +947,12 @@ func (g *Game) mapRelease() {
 		return
 	}
 	if g.hover.ok {
+		before := g.sfxCalls
 		g.mapClick(g.hover.x, g.hover.y)
-	} else if !g.cancel() {
+		g.sfxUnless(before, "ui-select")
+	} else if g.cancel() {
+		g.sfx("ui-back")
+	} else {
 		g.selected = ""
 	}
 }
@@ -1038,6 +1111,7 @@ func (g *Game) titleMenu(dst *ebiten.Image) {
 			g.request(session.Request{Op: "new", Seed: g.seed})
 			return
 		}
+		g.jumpNode = ""
 		g.openOverlay("difficulty")
 	}}, {"장면 이동", func() { g.waypoints.top = 0; g.openOverlay("waypoints") }}}
 	cont := menuItem{label: "이어하기"}
@@ -1093,11 +1167,23 @@ func (g *Game) complete(dst *ebiten.Image, o core.Observation) {
 	g.inDesign(dst, image.Rect(Width/2-320, 180, Width/2+320, 620), func(dst *ebiten.Image) { g.completeWindow(dst, o) })
 }
 
+// lastWon names the last battle of the campaign the player has won; a story started past every battle
+// (a jump to a later chapter) has none, and the window speaks of the story instead.
+func (g *Game) lastWon() string {
+	stages := g.S.Data.Stages
+	for i := len(stages) - 1; i >= 0; i-- {
+		if g.S.Engine.Holds([]string{"won:" + stages[i].ID}) {
+			return stages[i].Name
+		}
+	}
+	return "이야기"
+}
+
 // completeWindow is the campaign's closing window, laid out on the Width×Height design.
 func (g *Game) completeWindow(dst *ebiten.Image, o core.Observation) {
 	r := image.Rect(uiW/2-320, 180, uiW/2+320, 620)
 	g.titled(dst, r, "완료")
-	g.centered(dst, g.S.Data.Stages[o.Stage].Name+" 완료", float64(uiW/2), 220, 34, gold)
+	g.centered(dst, g.lastWon()+" 완료", float64(uiW/2), 220, 34, gold)
 	g.centered(dst, fmt.Sprintf("%d번의 싸움을 마쳤습니다.", len(g.S.Data.Stages)), float64(uiW/2), 276, 19, ink)
 	y := 336
 	for _, c := range g.roster(o)[:min(4, len(g.roster(o)))] {
@@ -1150,6 +1236,7 @@ func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 	}
 	g.field.setNight(o.Map.Night, lightCells(o.Map.Lights))
 	g.field.setGoals(g.goalShapes(o))
+	g.field.RangeBorder = g.rangeBorder(o)
 	g.field.Draw(g.clockMS, units, g.marks(o))
 	g.drawDeploymentPreview(o)
 	if g.field.Map.Native && g.shakeT > 0 {

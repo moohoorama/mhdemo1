@@ -217,8 +217,7 @@ func (g *Game) officerTraits(dst *ebiten.Image, of *core.Character, r image.Rect
 	default:
 		note = fmt.Sprintf("특성치 %d → %d", of.Points, of.Points-picked.cost)
 	}
-	cardY := min(r.Min.Y+used+6, r.Max.Y-84)
-	g.traitCard(dst, image.Rect(r.Min.X, cardY, r.Max.X, cardY+84), picked.id, picked.group, note)
+	g.traitCardBelow(dst, r, used, picked.id, picked.group, note)
 	if picked.have || !picked.learnable {
 		return nil
 	}
@@ -230,31 +229,25 @@ func (g *Game) officerTraits(dst *ebiten.Image, of *core.Character, r image.Rect
 	return []action{{fmt.Sprintf("%s 배우기 · %d", g.traitName(picked.id), picked.cost), true, learn}}
 }
 
-// officerBio is the 열전 tab: the biography, the six attributes and the officer's own traits with what they do.
+// officerBio is the 열전 tab: the portrait at the top left and, beside it, the biography over the six attributes on
+// a hexagon out of 100, each where the battle stat it feeds sits on the 전투력 hexagon. The traits are on 특성.
 func (g *Game) officerBio(dst *ebiten.Image, of *core.Character, r image.Rectangle) {
 	x, y := float64(r.Min.X), float64(r.Min.Y)
-	bio := wrapWidth(g.S.Data.Characters[of.Def].Biography, g.face(14), float64(r.Dx()-16))
-	g.label(dst, bio, x, y, 14, ink)
-	_, h := measureLines(g, bio, 14)
-	y += h + 12
+	size := min(240, float64(r.Dx())*.38, float64(r.Dy())-8)
+	g.portrait(dst, of.ID, "", x+2, y+2, size)
+	bx := x + size + 28
+	bio := wrapWidth(g.S.Data.Characters[of.Def].Biography, g.face(14), float64(r.Max.X)-bx-8)
+	g.label(dst, bio, bx, y, 14, ink)
+	_, bh := measureLines(g, bio, 14)
 	_, attrs, _ := g.S.Engine.DeputyStats(of.ID, "")
-	for i, a := range attrNames {
-		px := x + float64(i)*float64(r.Dx())/6
-		g.label(dst, a, px, y, 15, muted)
-		g.label(dst, fmt.Sprint(attrs[i]), px+44, y, 15, ink)
+	var names [6]string
+	var vals, rim [6]int
+	for i, a := range hexAxes {
+		names[i], vals[i], rim[i] = a.attr, attrs[a.attrIdx], 100
 	}
-	y += 34
-	rect(dst, float32(x), float32(y), float32(r.Dx()), 1, goldDim)
-	y += 8
-	own := g.shelvesOf(of)[0]
-	for _, e := range own.traits {
-		if y+touchH > float64(r.Max.Y) {
-			break
-		}
-		w := g.traitChip(dst, int(x), int(y), e, false, nil)
-		g.label(dst, ellipsis(g, g.traitDesc(e.id), 14, r.Dx()-w-16), x+float64(w)+12, y+14, 14, muted)
-		y += touchH
-	}
+	top := y + bh + 16
+	radius := max(48, min(110, (float64(r.Max.Y)-top-40)/2, (float64(r.Max.X)-bx-130)/2))
+	g.hexagon(dst, (bx+float64(r.Max.X))/2, top+24+radius, radius, names, vals, nil, rim, []float64{1, .5})
 }
 
 // measureLines is the width and height of text s at size.

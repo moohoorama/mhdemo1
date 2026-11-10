@@ -1,0 +1,281 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   19,
+   5
+  ],
+  "Face": "SW"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_xiaopei",
+   "Name": "소패",
+   "At": [
+    19,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "관아",
+     "At": [
+      5,
+      11
+     ],
+     "Object": [
+      2,
+      11
+     ],
+     "Node": "c15-alarm",
+     "If": [
+      "!flag:c15-alarm"
+     ]
+    },
+    {
+     "Name": "관아",
+     "At": [
+      5,
+      11
+     ],
+     "Object": [
+      2,
+      11
+     ],
+     "To": "office",
+     "If": [
+      "flag:c15-alarm"
+     ]
+    }
+   ],
+   "People": {
+    "장비@town": {
+     "At": [
+      17,
+      6
+     ],
+     "Face": "SW",
+     "If": [
+      "!flag:c15-alarm"
+     ],
+     "Talk": [
+      [
+       "zhangfei",
+       "형, 관아에 짐부터 풀고 쉬자구유. 배고파서 눈앞이 핑핑 도는구먼."
+      ]
+     ]
+    },
+    "장비@alarm": {
+     "At": [
+      17,
+      6
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:c15-alarm"
+     ],
+     "Talk": [
+      [
+       "zhangfei",
+       "소패를 준다 해 놓고 군사를 끌고 와? 여포 이놈, 또 무슨 꿍꿍이여!"
+      ]
+     ]
+    },
+    "간옹@town": {
+     "At": [
+      11,
+      17
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "jianyong",
+       "소패 사람들이 아직 우리 얼굴을 기억하더군. 반갑다고 술을 내오길래 사양하느라 혼났네."
+      ]
+     ]
+    },
+    "미방@town": {
+     "At": [
+      23,
+      9
+     ],
+     "Face": "SW",
+     "If": [
+      "!flag:c15-alarm"
+     ],
+     "Talk": [
+      [
+       "mifang",
+       "창고 곡식은 제가 셈해 두겠습니다. ……이번에는 상인을 부르지 않겠습니다."
+      ]
+     ]
+    },
+    "고순@town": {
+     "At": [
+      16,
+      5
+     ],
+     "Face": "SW",
+     "If": [
+      "party:gaoshun"
+     ],
+     "Talk": [
+      [
+       "gaoshun",
+       "……군사들은 모두 성 안에 들였습니다."
+      ]
+     ]
+    },
+    "창고 병사": {
+     "At": [
+      24,
+      9
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "han",
+     "Talk": [
+      [
+       "창고 병사",
+       "여포군이 있을 때도 창고는 손대지 않았습니다. 곧 비울 데라 그랬는지……."
+      ]
+     ]
+    },
+    "피난민#1": {
+     "At": [
+      26,
+      17
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c15-alarm"
+     ],
+     "Talk": [
+      [
+       "피난민",
+       "여포군이 있는 동안엔 다들 문을 걸어 잠그고 지냈어요. 사군이 돌아오셔서 다행이에요."
+      ]
+     ]
+    },
+    "피난민#1@alarm": {
+     "At": [
+      26,
+      17
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "If": [
+      "flag:c15-alarm"
+     ],
+     "Talk": [
+      [
+       "피난민",
+       "여포군이 또 온다고요? 아이들을 데리고 어디로 가야 하나……."
+      ]
+     ]
+    },
+    "피난민#2": {
+     "At": [
+      22,
+      17
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant"
+    },
+    "행인#1": {
+     "At": [
+      8,
+      15
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "If": [
+      "!flag:c15-alarm"
+     ],
+     "Move": {
+      "Patrol": [
+       [
+        8,
+        15
+       ],
+       [
+        30,
+        15
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "office": {
+   "Map": "S_xiaopei_office",
+   "Name": "소패 관아",
+   "At": [
+    5,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      5,
+      11
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "관우@office": {
+     "At": [
+      3,
+      7
+     ],
+     "Face": "SE",
+     "If": [
+      "flag:c15-alarm"
+     ],
+     "Sortie": {
+      "Ask": "형님, 군사를 정비했습니다. 여포를 만나러 나가시겠습니까?"
+     }
+    },
+    "손건": {
+     "At": [
+      7,
+      7
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:c15-alarm"
+     ],
+     "Talk": [
+      [
+       "sunqian",
+       "소패 성벽은 낮고 사방이 들판입니다. 오래 버티기는 어렵습니다. 채비를 마치시면 관 장군께 말씀하십시오."
+      ]
+     ]
+    },
+    "미축@office": {
+     "At": [
+      6,
+      4
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:c15-alarm"
+     ],
+     "Talk": [
+      [
+       "mizhu",
+       "군량은 열흘 치도 안 됩니다. 데려갈 수 있는 군사는 많지 않을 것입니다."
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

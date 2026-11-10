@@ -298,7 +298,27 @@
    "Group": "hunt",
    "Policy": "assault",
    "Faction": "wei",
-   "Rank": "recruit"
+   "Rank": "rabble"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 21,
+   "Y": 11,
+   "Facing": "NW",
+   "Group": "yu",
+   "Policy": "assault",
+   "Rank": "recruit",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 3,
+   "Y": 11,
+   "Facing": "SW",
+   "Group": "hunt",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Rank": "rabble"
   }
  ],
  "Reward": {
@@ -350,6 +370,31 @@
        "Text": "저 다리 건너 깃발…… 고순이다! 다리를 뚫고 서주성으로 간다!"
       }
      ]
+    }
+   ]
+  },
+  {
+   "ID": "yujin-advance",
+   "If": [
+    "round>=2"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yujin",
+       "Text": "화살로는 끝이 안 나는군. 내가 직접 다리를 건넌다. 기병은 뒤를 따르라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "yujin",
+      "yu-rear"
+     ],
+     "Policy": "assault"
     }
    ]
   },

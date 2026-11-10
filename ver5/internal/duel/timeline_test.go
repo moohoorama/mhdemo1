@@ -3,6 +3,8 @@ package duel
 import (
 	"math"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func at(s Story, kind string, local float64) State {
@@ -130,4 +132,30 @@ func TestNewDuelMotionsOnEitherSide(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestFeignedFlightTakesUpTheBowAndTheShotStrikesFromAfar(t *testing.T) {
+	story := prepareStory([]Beat{
+		{Kind: "approach", Side: 0, Duration: 1},
+		{Kind: "feigned-flight", Side: 1, Duration: 2},
+		{Kind: "shoot", Side: 1, Duration: 1},
+	})
+	start := story.Start(1)
+	t.Run("the runner rides off and takes up the bow halfway", func(t *testing.T) {
+		assert.False(t, story.Sample(start+.4).Actors[1].Alt)
+		late := story.Sample(start + 1.9)
+		assert.True(t, late.Actors[1].Alt)
+		assert.Greater(t, late.Actors[1].Position, 200.0)
+	})
+	shot := story.Start(2)
+	t.Run("the arrow flies, then strikes the target", func(t *testing.T) {
+		flying := story.Sample(shot + .5)
+		assert.True(t, flying.Arrowing)
+		assert.InDelta(t, (0.5-.35)/.35, flying.Arrow, 1e-9)
+		struck := story.Sample(shot + .75)
+		assert.False(t, struck.Arrowing)
+		assert.True(t, struck.OnTarget)
+		assert.Equal(t, "hit", struck.Actors[0].Animation)
+		assert.True(t, struck.Actors[1].Alt, "the bow stays in hand")
+	})
 }

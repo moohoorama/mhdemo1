@@ -88,7 +88,7 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 				if o := e.char(sp.Character); e.unit(sp.Character) != nil || o != nil && o.Dead {
 					continue // already on the map, or fallen
 				}
-				e.joinAt(e.addCharacter(sp.Character, sp.Character), e.data.Rules.StageLevel(e.stageOrder()))
+				e.joinAt(e.addCharacter(sp.Character, sp.Character), e.joinLevel(e.stageOrder()))
 				u := e.spawn(sp.Character, sp.Character, "ally", p.X, p.Y, sp)
 				e.faceObjective(u, nil)
 				snapshot := copyOf(*u)
@@ -118,8 +118,8 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 				if d.ID != a.Duel || e.state.Executed["duel-"+d.ID] {
 					continue
 				}
-				if x, y := e.unit(d.Ally), e.unit(d.Enemy); x != nil && y != nil && x.HP > 0 && y.HP > 0 && x.Faction != y.Faction {
-					e.duel(x, y, d)
+				if x, y := e.fieldUnit(d.Ally), e.unit(d.Enemy); x != nil && y != nil && y.HP > 0 && x.Faction != y.Faction {
+					e.duel(x, d.Ally, y, d)
 				}
 			}
 		case "say":

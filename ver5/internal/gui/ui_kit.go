@@ -129,17 +129,18 @@ func (g *Game) updateWheelLists() bool {
 }
 
 // listRows draws the rows of a list n long in r, rowH each from l.top: draw paints row i in rr, a press on it
-// that is let go without dragging picks it, and dragging or the wheel scrolls.
+// that is let go without dragging picks it, and dragging or the wheel scrolls. A button draw adds inside the row
+// (a status pill) is registered after the row's own and so takes the press first.
 func (g *Game) listRows(dst *ebiten.Image, l *tableList, r image.Rectangle, n, rowH int, draw func(i int, rr image.Rectangle), pick func(i int)) {
 	fit := max(1, r.Dy()/rowH)
 	l.top = max(0, min(l.top, n-fit))
 	for i := l.top; i < n && i < l.top+fit; i++ {
 		rr := image.Rect(r.Min.X, r.Min.Y+(i-l.top)*rowH, r.Max.X, r.Min.Y+(i-l.top+1)*rowH)
-		draw(i, rr)
 		if pick != nil {
 			i := i
 			g.addButton(rr, "", func() { g.pressTable(l, rowH, func() { pick(i) }) })
 		}
+		draw(i, rr)
 	}
 	if n > fit {
 		track := image.Rect(r.Max.X-4, r.Min.Y+2, r.Max.X-1, r.Min.Y+fit*rowH-2)
@@ -284,6 +285,28 @@ func ellipsis(g *Game, s string, size float64, w int) string {
 	return string(r) + "…"
 }
 
+// traitCardBelow draws traitCard for trait id under the used height of r, as tall as its description and note
+// need, raised to stay inside r.
+func (g *Game) traitCardBelow(dst *ebiten.Image, r image.Rectangle, used int, id, from, note string) {
+	h := g.traitCardHeight(id, note, r.Dx())
+	y := min(r.Min.Y+used+6, r.Max.Y-h)
+	g.traitCard(dst, image.Rect(r.Min.X, y, r.Max.X, y+h), id, from, note)
+}
+
+// traitCardHeight is the height traitCard needs at width w: the head, every line of the description and the note.
+func (g *Game) traitCardHeight(id, note string, w int) int {
+	_, h := measureLines(g, g.traitCardDesc(id, w), 14)
+	h += 36 + 10
+	if note != "" {
+		h += 20
+	}
+	return max(84, int(math.Ceil(h)))
+}
+
+func (g *Game) traitCardDesc(id string, w int) string {
+	return wrapWidth(g.traitDesc(id), g.face(14), float64(w-68))
+}
+
 // traitCard describes trait id in r: its icon, name, kind and where it comes from, what it does, and a note.
 func (g *Game) traitCard(dst *ebiten.Image, r image.Rectangle, id, from, note string) {
 	card(dst, r)
@@ -292,8 +315,7 @@ func (g *Game) traitCard(dst *ebiten.Image, r image.Rectangle, id, from, note st
 	name := g.traitName(id)
 	g.label(dst, name, x+44, y-2, 18, gold)
 	g.label(dst, g.traitKindName(id)+" · "+from, x+52+g.width(name, 18), y+4, 12, muted)
-	desc := wrapWidth(g.traitDesc(id), g.face(14), float64(r.Dx()-68))
-	g.label(dst, desc, x+44, y+26, 14, ink)
+	g.label(dst, g.traitCardDesc(id, r.Dx()), x+44, y+26, 14, ink)
 	if note != "" {
 		g.label(dst, note, x+44, float64(r.Max.Y-24), 12, muted)
 	}
@@ -359,13 +381,32 @@ func joinNames(s []string) string {
 // hexChart is the six battle stats on a hexagon at cx, cy: rim at the best of the roster, cur in white and, when
 // given, alone (the lead without the deputy) dashed in gold. Labels are 12.
 func (g *Game) hexChart(dst *ebiten.Image, cx, cy, radius float64, cur core.Stats, alone *core.Stats, best [6]int) {
+	var names [6]string
+	var c, al [6]int
+	for i, a := range hexAxes {
+		names[i], c[i] = a.stat, a.get(cur)
+		if alone != nil {
+			al[i] = a.get(*alone)
+		}
+	}
+	var ap *[6]int
+	if alone != nil && *alone != cur {
+		ap = &al
+	}
+	g.hexagon(dst, cx, cy, radius, names, c, ap, best, []float64{1, 2.0 / 3, 1.0 / 3})
+}
+
+// hexagon draws six values clockwise from the top on a hexagon at cx, cy, each against its rim value, with guide
+// rings at the given shares of the rim: cur filled in white and, when given, other outlined in gold. Each corner is
+// labelled with its name and value at 12.
+func (g *Game) hexagon(dst *ebiten.Image, cx, cy, radius float64, names [6]string, cur [6]int, other *[6]int, rim [6]int, rings []float64) {
 	corner := func(i int, k float64) (float32, float32) {
 		t := -math.Pi/2 + float64(i)*math.Pi/3
 		return float32(cx + radius*k*math.Cos(t)), float32(cy + radius*k*math.Sin(t))
 	}
 	ring := func(k float64) *vector.Path {
 		var p vector.Path
-		for i := range hexAxes {
+		for i := range 6 {
 			px, py := corner(i, k)
 			if i == 0 {
 				p.MoveTo(px, py)
@@ -379,15 +420,15 @@ func (g *Game) hexChart(dst *ebiten.Image, cx, cy, radius float64, cur core.Stat
 	op := &vector.DrawPathOptions{AntiAlias: true}
 	op.ColorScale.ScaleWithColor(color.NRGBA{R: 18, G: 14, B: 12, A: 200})
 	fillPath(dst, ring(1), op)
-	for _, k := range []float64{1, 2.0 / 3, 1.0 / 3} {
+	for _, k := range rings {
 		op := &vector.DrawPathOptions{AntiAlias: true}
 		op.ColorScale.ScaleWithColor(goldDim)
 		strokePath(dst, ring(k), vector.StrokeOptions{Width: 1}, op)
 	}
-	shape := func(s core.Stats, c color.NRGBA, fill bool) {
+	shape := func(v [6]int, c color.NRGBA, fill bool) {
 		var p vector.Path
-		for i, a := range hexAxes {
-			px, py := corner(i, max(.04, min(1, float64(a.get(s))/float64(max(1, best[i])))))
+		for i := range 6 {
+			px, py := corner(i, max(.04, min(1, float64(v[i])/float64(max(1, rim[i])))))
 			if i == 0 {
 				p.MoveTo(px, py)
 			} else {
@@ -404,12 +445,12 @@ func (g *Game) hexChart(dst *ebiten.Image, cx, cy, radius float64, cur core.Stat
 		e.ColorScale.ScaleWithColor(c)
 		strokePath(dst, &p, vector.StrokeOptions{Width: 1.6, LineJoin: vector.LineJoinRound}, e)
 	}
-	if alone != nil && *alone != cur {
-		shape(*alone, gold, false)
+	if other != nil {
+		shape(*other, gold, false)
 	}
 	shape(cur, color.NRGBA{R: 255, G: 255, B: 255, A: 255}, true)
-	for i, a := range hexAxes {
-		s := fmt.Sprintf("%s %d", a.stat, a.get(cur))
+	for i := range 6 {
+		s := fmt.Sprintf("%s %d", names[i], cur[i])
 		ex, ey := corner(i, 1.14)
 		lx, ly := float64(ex), float64(ey)
 		tw := g.width(s, 12)

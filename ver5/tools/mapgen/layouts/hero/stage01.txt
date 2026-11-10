@@ -1,12 +1,12 @@
 # B01  stage01.json  map01.json  origin 0 0
 TRETRE...............Che'''............TRETRETRE
-TRE...............tu3'''tu4...............TRETRE
+TRE...............tu2''''''...............TRETRE
 .....................''''''..................TRE
 .........TRE.........''''''.....................
-............tu7...tu1Den'''tu2...tu8TRE.........
+............tu4...tu1Den'''.........TRE.........
 .....................''''''.....................
-.....................ZSPSus.........tu5...TRE...
-............TRE......''''''............tu6......
+.....................ZSPSus.........tu3...TRE...
+............TRE......''''''.....................
 ..................pl2''''''pl3..................
 ..................pl1''''''.....................
 #####################PAS########################
@@ -20,14 +20,10 @@ ZSP Party[0]  zhangshiping, ally, group merchants, policy run, faction merchant
 Sus Party[1]  sushuang, ally, group merchants, policy run, faction merchant
 Zou Party[2]  zoujing, ally, group garrison, policy hold, faction han
 Den Enemies[0]  dengmao, enemy, group chase, policy assault
-tu1 Enemies[1]  troop_turban, enemy, group chase, policy assault
-tu2 Enemies[2]  troop_turban, enemy, group chase, policy assault
-Che Enemies[3]  chengyuanzhi, enemy, group rear, policy hold, rank commander
-tu3 Enemies[4]  troop_turban, enemy, group rear, policy hold
-tu4 Enemies[5]  troop_turban, enemy, group rear, policy hold
-tu5 Enemies[6]  troop_turban, enemy, group east1, policy react
-tu6 Enemies[7]  troop_turban, enemy, group east2, policy react
-tu7 Enemies[8]  troop_turban, enemy, group road1, policy react
-tu8 Enemies[9]  troop_turban, enemy, group road2, policy react
+tu1 Enemies[1]  troop_turban, enemy, group chase, policy assault, rank rabble
+Che Enemies[2]  chengyuanzhi, enemy, group rear, policy hold, rank commander
+tu2 Enemies[3]  troop_turban, enemy, group rear, policy hold, rank rabble
+tu3 Enemies[4]  troop_turban, enemy, group east1, policy react, rank rabble
+tu4 Enemies[5]  troop_turban, enemy, group road1, policy react, rank rabble
 
 # area 1 탁현 성문: x 7..7, y 10..10

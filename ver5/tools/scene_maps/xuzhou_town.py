@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Make S_xuzhou_town, the streets inside 서주성 (하비) that 유비 walks as the new 서주목 after 도겸's funeral (chapter
-14, explore14): the provincial capital on the 사수, so bigger, richer and busier than 소패 and 평원.
+14, explore14): the provincial capital, so bigger, richer and busier than 소패 and 평원.
 
   python3 ver5/tools/scene_maps/xuzhou_town.py
 
@@ -8,14 +8,15 @@ Format 2 (internal/scenemap): small tiles, the playing area from (0, 0) to (W-1,
 it; u runs down to the right on screen, v down to the left. Ground: d packed earth, i paving, . grass, ~ water.
 A house's door is on its +v face (house_tile, tavern, hall_u) or +u face (house_tile_x, hall_v).
 
-Plan: the walls run along the two back sides, the gate in the northern (-v) wall, its road paved down to the main
-avenue. The paved avenue runs across the town (along u) from the 관청 at its back end, a great hall behind a paved
-court with banners, lanterns, an old pine and a garden rock, to the 사수 on the near-right side, where it ends at a
-boat landing with moored boats and stalls on the towpath. North of the avenue, between the 관청 and the gate road,
-the storehouse yard of the 미 family's trading house (granaries, sacks, carts); east of the gate road the tavern and
-the general store face the avenue, the smithy further on. South of the avenue the paved market square with rows of
-stalls and the well in the middle; south-west of it a garden with a pavilion, plum trees and willows; the houses of
-the lanes fill the south and east. Willows and lanterns line the avenue.
+Plan: the walls run along the two back sides, the northern (-v) one from the corner to the map's edge with the gate
+in it, its road paved down to the main avenue. The paved avenue runs across the town (along u) from the 관청 at its
+back end, a great hall behind a paved court with banners, lanterns, an old pine and a garden rock, out past the near-
+right edge to the rest of the town. North of the avenue, between the 관청 and the gate road, the storehouse yard of
+the 미 family's trading house (granaries, sacks, carts); east of the gate road the tavern and the general store face
+the avenue, the smithy further on and the houses of the east lanes beyond it. South of the avenue the paved market
+square with rows of stalls and the well in the middle; south-west of it a garden with a pavilion, plum trees and
+willows; the houses of the lanes fill the south and east, the town's vegetable plots at the east edge. Willows and
+lanterns line the avenue.
 """
 import json
 import subprocess
@@ -27,7 +28,6 @@ W, H, M = 48, 40, 12
 AVE = (16, 19)     # the paved avenue across the town, v from, to
 GATE = 25          # the gate in the northern wall (v = -1); its road runs down u 24-26
 ROAD = (24, 26)
-RIVER = (44, 47)   # the 사수 along the near-right side, u from, to
 
 g = [['.'] * (W + 2 * M) for _ in range(H + 2 * M)]
 obj = []
@@ -43,14 +43,12 @@ def put(name, u, v):
     obj.append([name, u, v])
 
 
-# outside the walls: trodden fields; the north road through the gate; the river and its towpath
+# outside the walls: trodden fields; the north road through the gate
 paint(-M, -M, W + M, -2, 'd')
 paint(-M, -M, -2, H + M, 'd')
 paint(ROAD[0], -M, ROAD[1], -2, 'd')
 paint(ROAD[0], 0, ROAD[1], AVE[0] - 1, 'i')
-paint(RIVER[0], -M, RIVER[1], H + M, '~')
-paint(RIVER[0] - 2, 0, RIVER[0] - 1, H + M, 'd')
-paint(0, AVE[0], RIVER[0] - 1, AVE[1], 'i')
+paint(0, AVE[0], W + M, AVE[1], 'i')
 
 # 관청: the great hall at the back end of the avenue behind a paved court, its door to the avenue
 # (the main hall, and a wing hall either side of the court: the north one opens onto it, the south one onto the avenue)
@@ -85,11 +83,11 @@ for i, u in enumerate((18, 22, 30, 34, 38)):
 put('well', 27, 25), put('water_bucket', 28, 26), put('grain_cart_v', 40, 24), put('straw_mat', 15, 26)
 put('grain_sack', 16, 27), put('water_jar', 39, 27)
 
-# the boat landing where the avenue meets the river: stalls on the towpath, boats moored
-put('boat_v', 45, 14), put('boat_v', 46, 22), put('boat_v', 45, 31)
-put('market_stall_jar', 42, 21), put('grain_sack', 43, 24), put('grain_sack', 42, 14)
-for v in (2, 24, 46):
-    put('stree_willow', 49, v)
+# the east lanes past the smithy and the market: houses either side of the avenue, a porter's sacks by the way
+for u, v, name in [(46, 4, 'house_tile'), (47, 11, 'house_tile_x'), (45, 23, 'house_tile_x'), (46, 30, 'house_tile'),
+                   (52, 9, 'house_thatch'), (53, 24, 'house_tile'), (52, 31, 'house_thatch_x')]:
+    put(name, u, v)
+put('grain_sack', 43, 14), put('grain_cart_v', 43, 21)
 
 # the garden south-west of the market: a pavilion among plum trees and willows
 paint(1, 30, 11, 38, '.')
@@ -105,9 +103,9 @@ for u, v, name in [(13, 44, 'house_tile_x'), (30, 45, 'house_tile_x'), (20, 46, 
                    (6, 42, 'house_thatch_x'), (28, 50, 'house_thatch'), (36, 49, 'house_tile_x')]:
     put(name, u, v)
 put('well', 23, 43), put('water_bucket', 24, 44), put('stree_broad_0', 10, 48), put('stree_willow', 33, 47)
-# the far bank of the 사수: fields and trees
-for u, v, name in ((52, 6, 'field_ripe'), (52, 18, 'field_sprout'), (54, 30, 'field_ripe'), (52, 42, 'field_bare'),
-                   (56, 12, 'stree_broad_1'), (57, 36, 'stree_pine_0'), (55, 48, 'stree_broad_0')):
+# the vegetable plots at the town's east edge, and trees
+for u, v, name in ((57, 4, 'field_sprout'), (58, 10, 'field_ripe'), (57, 38, 'field_bare'), (50, 42, 'field_ripe'),
+                   (55, 46, 'stree_broad_1'), (59, 30, 'stree_pine_0'), (52, 50, 'stree_broad_0')):
     put(name, u, v)
 
 # trees in the fields behind the walls
@@ -118,7 +116,7 @@ put('sgate_open', GATE, -1)
 
 art = {'id': ID, 'name': '서주성', 'format': 2, 'size': [W // 2, H // 2], 'origin': [-M, -M],
        'ground': [''.join(r) for r in g], 'objects': obj,
-       'walls': [['swall', [-1, -1], [RIVER[0] - 3, -1]], ['swall', [-1, 0], [-1, H + M - 1]]]}
+       'walls': [['swall', [-1, -1], [W + M - 1, -1]], ['swall', [-1, 0], [-1, H + M - 1]]]}
 
 if __name__ == '__main__':
     json.dump(art, open(GFX / f'maps/{ID}.json', 'w'), ensure_ascii=False, indent=1)

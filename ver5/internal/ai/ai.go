@@ -91,8 +91,8 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 				}
 			}
 		case "item":
-			if me.Policy == "run" {
-				continue // a running unit does not stop even to tend its wounds
+			if !me.UseItems || me.Policy == "run" {
+				continue // only a unit told to may eat what it carries, and a running one never stops for it
 			}
 			p, err := e.Preview(c)
 			if err != nil {

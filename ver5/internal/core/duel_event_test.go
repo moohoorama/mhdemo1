@@ -16,7 +16,7 @@ func TestStructuredDuelEvent(t *testing.T) {
 				first = boss.ID
 			}
 			e.lastActor = first
-			e.duel(hero, boss, d)
+			e.duel(hero, hero.Character, boss, d)
 			event := e.events[0]
 			if event.Kind != "duel" || event.DuelID != d.ID || event.Outcome != d.Outcome || event.Actor != hero.ID || event.Target != boss.ID || event.First != first {
 				t.Fatalf("wrong structured event: %+v", event)

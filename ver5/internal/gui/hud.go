@@ -32,6 +32,9 @@ func (g *Game) toast(s string, c color.Color) {
 	if s == "" {
 		return
 	}
+	if c == bad {
+		g.sfx("ui-denied")
+	}
 	g.toasts = append(g.toasts, &toast{text: s, col: c})
 	if len(g.toasts) > 4 {
 		g.toasts = g.toasts[len(g.toasts)-4:]
@@ -101,6 +104,44 @@ func subState(sub content.Objective, done bool, battle bool) (string, bool) {
 		return "달성", true
 	}
 	return "미달성", false
+}
+
+// subWatch is which of a battle's bonus goals have been met, so each sounds once.
+type subWatch struct {
+	stage string
+	round int
+	met   []bool
+}
+
+// watchSubs sounds a bonus goal met on the field once the replay that met it is over, with its text on a toast. One
+// that only keeps someone alive is judged at the victory and stays silent; so do the goals already met when a
+// battle is first seen (a loaded save, a retry).
+func (g *Game) watchSubs(o core.Observation) {
+	if o.Phase != "battle" || o.Map == nil || g.S.Engine == nil {
+		g.subsMet = subWatch{}
+		return
+	}
+	g.noteSubs(o, g.S.Engine.SubDone())
+}
+
+// noteSubs is watchSubs with which of the bonus goals hold now.
+func (g *Game) noteSubs(o core.Observation, done []bool) {
+	w := &g.subsMet
+	fresh := w.stage != o.Map.ID || o.Round < w.round || len(w.met) != len(done)
+	w.stage, w.round = o.Map.ID, o.Round
+	if fresh {
+		w.met = make([]bool, len(done))
+	}
+	for i, sub := range o.Map.Sub {
+		if i >= len(done) || w.met[i] || !done[i] {
+			continue
+		}
+		w.met[i] = true
+		if state, _ := subState(sub, true, true); state == "달성" && !fresh {
+			g.sfx("subgoal")
+			g.toast("부목표 달성 · "+sub.Text, gold)
+		}
+	}
 }
 
 func (g *Game) objective(o core.Observation) briefing {
@@ -216,13 +257,15 @@ func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
 		return
 	}
 	u := g.hoveredUnit(o)
-	family, class := "", "병종"
+	var move *content.Terrain
+	class := "병종"
 	if iu := g.infoUnit(o); iu != nil {
-		c := g.S.Data.Classes[iu.Class]
-		family, class = c.Terrain, c.Name
+		if t, ok := g.engine().Terrain(iu.ID, g.hover.x, g.hover.y); ok {
+			move, class = &t, g.S.Data.Classes[iu.Class].Name
+		}
 	}
 	cell := g.engine().Cell(g.hover.x, g.hover.y)
-	lines := terrainInfoLines(g.S.Data, cell, g.engine().Boats(), family, class)
+	lines := terrainInfoLines(g.S.Data, cell, move, class)
 	w, uh := 226, 0
 	if u != nil {
 		uh = 74
@@ -348,10 +391,7 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 	body := image.Rect(x+16, y+180, x+w-16, y+h-12)
 	switch g.detailTab {
 	case 0:
-		// the hexagon shrinks on a short panel so the status line still shows under it
-		radius := max(24, min(48, float64(body.Dy()-96)/2))
-		top := body.Min.Y + int(radius) + 40
-		g.statHexagon(dst, o, u, float64(x+w/2), float64(top), radius)
+		// the statuses stand two (three when many) to a row under the hexagon, which shrinks to leave them room
 		status := []string{}
 		for _, k := range sorted(u.Status) {
 			status = append(status, statusText(k, u.Status[k]))
@@ -359,7 +399,23 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 		if len(status) == 0 {
 			status = append(status, "상태 이상 없음")
 		}
-		g.detailText(dst, image.Rect(body.Min.X, top+int(radius)+42, body.Max.X, body.Max.Y), strings.Join(status, " · "))
+		const statusRowH = 18
+		cols := 2
+		if len(status) > 6 {
+			cols = 3
+		}
+		rows := (len(status) + cols - 1) / cols
+		radius := max(32, min(48, float64(body.Dy()-rows*statusRowH-96)/2))
+		top := body.Min.Y + int(radius) + 40
+		g.statHexagon(dst, o, u, float64(x+w/2), float64(top), radius)
+		sy := top + int(radius) + 42
+		for i, s := range status {
+			ry := sy + i/cols*statusRowH
+			if ry+statusRowH > body.Max.Y+4 {
+				break
+			}
+			g.label(dst, s, float64(body.Min.X+i%cols*body.Dx()/cols), float64(ry), 12, ink)
+		}
 	case 1:
 		g.detailTraits(dst, body, g.unitTraitRows(o, u))
 	case 2:
@@ -741,13 +797,13 @@ func (g *Game) unitRecovery(id string, revision uint64) core.RecoveryPreview {
 	return g.recovery
 }
 
-func terrainInfoLines(data *content.Data, cell content.Cell, boats bool, family, class string) []string {
+// terrainInfoLines describes the cell; t is what it is to the chosen unit, nil when none is chosen.
+func terrainInfoLines(data *content.Data, cell content.Cell, t *content.Terrain, class string) []string {
 	d := data.Props(cell)
 	var lines []string
-	if family == "" {
+	if t == nil {
 		lines = []string{"이동·보정: 유닛 선택 시 표시"}
 	} else {
-		t := data.Move(family, cell, boats)
 		move := "진입 불가"
 		if t.Cost > 0 {
 			move = fmt.Sprintf("이동 비용 %d", t.Cost)
@@ -767,5 +823,13 @@ func terrainInfoLines(data *content.Data, cell content.Cell, boats bool, family,
 	if d.RestHP == 0 && d.RestMP <= 1 {
 		lines = append(lines, "지형 회복 효과 없음")
 	}
+	for _, el := range elementNames {
+		if p := data.ElementTerrain(cell, el.key); p != 0 {
+			lines = append(lines, fmt.Sprintf("%s 책략 피해 %+d%%", el.name, p))
+		}
+	}
 	return lines
 }
+
+// elementNames are the spell elements the terrain card names, in the order it lists them.
+var elementNames = []struct{ key, name string }{{"fire", "불"}, {"water", "물"}, {"earth", "땅"}}

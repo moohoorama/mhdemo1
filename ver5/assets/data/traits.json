@@ -298,12 +298,12 @@
   },
   "opening": {
    "Name": "개전",
-   "Desc": "대상의 병력이 50%를 넘은 만큼, 그 절반을 피해 배율에 더한다(병력 100%면 +25%, 50% 이하면 0).",
+   "Desc": "대상의 병력이 50%를 넘은 만큼 피해 배율에 더한다(병력 100%면 +50%, 75%면 +25%, 50% 이하면 0).",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 1000,
    "Effects": {
-    "opening": 0.5
+    "opening": 1
    }
   },
   "vanguard": {
@@ -483,6 +483,16 @@
     "bulwark": 0.1
    }
   },
+  "iron_armor": {
+   "Name": "철갑",
+   "Desc": "한 번의 피격에서 최대 병력 20%를 넘는 피해는 절반만 받는다.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 500,
+   "Effects": {
+    "bulwark": 0.2
+   }
+  },
   "diamond": {
    "Name": "금강",
    "Desc": "치명타로 판정된 공격을 막아낸다.",
@@ -515,7 +525,7 @@
   },
   "castle_defense": {
    "Name": "수성",
-   "Desc": "성·성내·관문에 있으면 매 자기 차례 자신에게 방어력 버프.",
+   "Desc": "매 자기 차례 자신에게 방어력 버프. 성·성내·관문에서는 두 배.",
    "Kind": "talent",
    "Tone": "guard",
    "Cost": 500,
@@ -859,9 +869,19 @@
     "deputy_charm": 20
    }
   },
+  "dispirit": {
+   "Name": "사기꺾기",
+   "Desc": "물리 공격이 명중하면 대상에게 사기 저하.",
+   "Kind": "talent",
+   "Tone": "debuff",
+   "Cost": 700,
+   "Effects": {
+    "hit_debuff:morale": 1
+   }
+  },
   "medicine": {
    "Name": "의술",
-   "Desc": "모든 병력 회복량 +50%.",
+   "Desc": "회복 책략의 병력 회복량 +50%.",
    "Kind": "talent",
    "Tone": "heal",
    "Cost": 500,
@@ -884,12 +904,12 @@
   },
   "generosity": {
    "Name": "물심양면",
-   "Desc": "회복 아이템이 두 번 적용되어 회복량과 경험치가 2배.",
+   "Desc": "회복 아이템의 회복량 1.5배.",
    "Kind": "talent",
    "Tone": "heal",
    "Cost": 500,
    "Effects": {
-    "item_double": 1
+    "item_power": 0.5
    }
   },
   "lecture": {
@@ -1068,7 +1088,7 @@
   },
   "bean_pouch": {
    "Name": "콩주머니",
-   "Desc": "공격을 받고 버티면 콩을 하나 먹어 병력을 400 회복한다.",
+   "Desc": "공격을 받고 버틴 뒤 잃은 병력이 400 이상이면 콩 1개를 먹어 병력을 400 회복한다. 콩이 없으면 먹지 못한다.",
    "Kind": "talent",
    "Tone": "heal",
    "Cost": 0,
@@ -1318,7 +1338,7 @@
   },
   "brace_prep": {
    "Name": "대비",
-   "Desc": "대비 책략 사용 가능. 자신의 방어력을 2턴 높인다.",
+   "Desc": "대비 책략 사용 가능. 자신의 방어력과 정신력을 2턴 높인다.",
    "Kind": "strategy",
    "Tone": "guard",
    "Cost": 500
@@ -1421,6 +1441,43 @@
    "Desc": "팔진도 사용 가능. 3×3 범위의 아군은 공격·방어 버프, 적은 공격·방어 디버프.",
    "Kind": "strategy",
    "Tone": "buff",
+   "Cost": 500
+  },
+  "ranged_ward": {
+   "Name": "원거리피해감소",
+   "Desc": "원거리 물리 공격으로 받는 피해 −30%.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 500,
+   "Effects": {
+    "ranged_ward": 0.3
+   }
+  },
+  "counter_ward": {
+   "Name": "반격피해감소",
+   "Desc": "공격하고 받는 반격 피해가 절반.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 500,
+   "Effects": {
+    "counter_ward": 0.5
+   }
+  },
+  "foresight": {
+   "Name": "선견",
+   "Desc": "전투를 병법치 최대치의 1/4로 시작한다.",
+   "Kind": "talent",
+   "Tone": "craft",
+   "Cost": 500,
+   "Effects": {
+    "start_mana": 0.25
+   }
+  },
+  "meditate_art": {
+   "Name": "명상",
+   "Desc": "명상 책략 사용 가능. 자신의 병력을 최대치의 5% 깎아 병법치를 최대치의 20% 채운다.",
+   "Kind": "strategy",
+   "Tone": "craft",
    "Cost": 500
   }
  }

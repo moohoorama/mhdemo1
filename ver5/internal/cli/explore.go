@@ -56,6 +56,10 @@ func (p *player) exploreScreen(o core.Observation) {
 			continue
 		}
 		p.add("→ "+ex.Name, func() {
+			if ex.Node != "" {
+				p.command(core.Command{Kind: "walk", X: ex.At[0], Y: ex.At[1], Target: o.Spot.Face})
+				return
+			}
 			s := x.Arrival(ex.To, o.Spot.Area)
 			p.command(core.Command{Kind: "walk", Option: ex.To, X: s.At[0], Y: s.At[1], Target: s.Face})
 		})

@@ -4,8 +4,9 @@ People: court officials in wide-sleeved robes holding a tablet (홀) in the fact
 wounded soldier, and two stretcher bearers with a man on the stretcher. Poses
 added to scene sheets: sit (on a stool), throne (on the imperial chair), bow (읍),
 prostrate (부복), lie (on the back), sitground (slumped on the ground), and two threats (2026-10-29): fist (a fist
-thrown up as after an uppercut) and point (an arm thrust out, jabbing a finger); draw (2026-11-02): a sword drawn
-and levelled at someone before him, for an officer whose sheet carries no weapon.
+thrown up as after an uppercut) and point (an arm thrust out, jabbing a finger); draw (2026-11-02, held upright
+2026-11-08): a sword drawn and held upright before him like the infantry's idle, for an officer whose sheet carries
+no weapon.
 
 The model is the civilian soldier of units.py. Bending and lying rotate the finished meshes about the hip (or the
 ground) instead of adding joints; a figure lying down stamps its 2D head turned on its side (turned()), and a
@@ -264,12 +265,11 @@ def posed(walk_build, kit, held=False, extra=None):
             p['lean'] = -.1
             faces, head = body(p)
             return U.result(faces, head, 0, f)
-        if name == 'draw':
+        if name == 'draw':  # the sword hand, elbow and blade of the infantry's idle: drawn and held upright
             p = standing()
-            p['hands'][0], p['elbows'][0] = [-.22, -.62, 1.32], [-.42, -.3, 1.25]
+            idle = U.pose(0, 0)
+            p['hands'][0], p['elbows'][0], p['blade'] = idle['hands'][0], idle['elbows'][0], idle['blade']
             p['hands'][1], p['elbows'][1] = [.4, .02, 1.0], [.56, .06, 1.2]
-            p['blade'] = [.05, -1, .35]  # levelled forward, the point a little up
-            p['lean'] = -.06
             faces, head = body(p)
             m.meshes = []
             U.sword(p, U.transform(p))

@@ -1,0 +1,25 @@
+# map15 소패 전투. Screen north = (0,0); 소패 in the south corner.
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g--
+g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- gt- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- gt- g-- g-- g-- g-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gv- g-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- gt- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- u-- u-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- gt- g--
+g-- g-- g-- d-- d-- g-- g-- g-- g-- g-- u-- u-- u-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g--
+g-- g-- g-- d-- g-- g-- g-- gt- g-- g-- g-- u-- g-- g-- g-- g-- g-- gt- g-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- gz- gz- g-- gz- gz- gz- g--
+g-- g-- g-- g-- g-- g-- g-- g-- gv- g-- g-- g-- gt- g-- g-- g-- gz- g-- g-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- g-- l-- g-- g-- g-- g--
+l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- g-- l-- l-- go- g-- g-- g-- g--
+g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- g-- g--
+g-- g-- l-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- g-- g--
+g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- g-- g--
+g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--

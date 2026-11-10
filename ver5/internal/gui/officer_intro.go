@@ -60,6 +60,7 @@ func (g *Game) startIntro(ref string) {
 		})
 	}
 	g.intro = in
+	g.sfx("intro")
 }
 
 func (g *Game) advanceIntro(dt float64) {

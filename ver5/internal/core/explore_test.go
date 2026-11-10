@@ -118,6 +118,31 @@ func TestOpeningPlaysOnceAsTheWalkOpens(t *testing.T) {
 	assert.Equal(t, "walk", e.Observe().Node, "it does not play again")
 }
 
+func TestExitIntoAnEventEndsTheWalk(t *testing.T) {
+	e := walkEngine(t)
+	d := e.Data()
+	d.Nodes = append(d.Nodes, content.Node{ID: "gate", Kind: "back", Leave: true})
+	d.Chapters[0].Events = append(d.Chapters[0].Events, "gate")
+	street := d.Explores["explore01"].Areas["street"]
+	street.Exits = append(street.Exits, content.ExploreExit{Name: "성문", At: [2]int{5, 0}, Node: "gate", If: []string{"flag:oath"}})
+	require.NoError(t, d.Validate())
+	e = New(d, 1)
+	_, err := e.Apply(Command{Kind: "walk", X: 5, Y: 0, Target: "NE"})
+	assert.EqualError(t, err, "ExitShut", "the gate opens only after the oath")
+
+	applyOK(t, e, Command{Kind: "talk", Target: "장비"})
+	next(t, e)
+	applyOK(t, e, Command{Kind: "walk", Option: "street", X: 5, Y: 1, Target: "NE"})
+	goals := e.Goals()
+	require.NotEmpty(t, goals)
+	assert.Equal(t, Goal{Area: "street", First: 1}, Goal{Area: goals[0].Area, Person: goals[0].Person, First: goals[0].First}, "the gate is the main goal, ahead of the sortie")
+	assert.Equal(t, Command{Kind: "walk", X: 5, Y: 0, Target: "NE"}, e.ExploreNext()[0])
+	applyOK(t, e, Command{Kind: "walk", X: 5, Y: 0, Target: "NE"})
+	o := e.Observe()
+	assert.Equal(t, "pre", o.Node, "going through the gate ends the walk")
+	assert.Empty(t, o.Explore)
+}
+
 func TestGoalsGuideToTheMainEventThenTheSortie(t *testing.T) {
 	e := walkEngine(t)
 	x := e.ExploreFile()

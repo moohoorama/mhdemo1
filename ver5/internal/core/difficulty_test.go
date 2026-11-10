@@ -26,9 +26,11 @@ func TestDifficultyLeadsEnemiesAndScalesExperience(t *testing.T) {
 		assert.Less(t, lv(easy), lv(normal))
 		assert.Less(t, lv(normal), lv(hard))
 	})
-	t.Run("allies and the party keep the stage level", func(t *testing.T) {
-		assert.Equal(t, normal.char("gongsunzan").Level, hard.char("gongsunzan").Level)
-		assert.Equal(t, normal.char("zhaoyun").Level, hard.char("zhaoyun").Level)
+	t.Run("an allied army and a joining officer follow the difficulty like the enemy", func(t *testing.T) {
+		assert.Less(t, easy.char("gongsunzan").Level, normal.char("gongsunzan").Level)
+		assert.Less(t, normal.char("gongsunzan").Level, hard.char("gongsunzan").Level)
+		assert.Less(t, easy.char("zhaoyun").Level, normal.char("zhaoyun").Level)
+		assert.Greater(t, hard.char("zhaoyun").Level, normal.char("zhaoyun").Level)
 	})
 	t.Run("experience follows the difficulty", func(t *testing.T) {
 		assert.Greater(t, easy.xpScale(), normal.xpScale())

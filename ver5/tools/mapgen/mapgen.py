@@ -16,7 +16,8 @@ starting with # are ignored. All rows must have the same number of cells (the ma
 A row without spaces is the older one-character form (. d ~ f v c i b g k h o); each character is
 read as the cell the layouts of chapters 1-9 meant by it (LEGACY below).
 
-Outside the play area the picture runs on with the edge cells (as the map editor's import does), and
+Outside the play area the picture runs on with the edge cells (as the map editor's import does) — a camp, castle,
+village or gate on the edge is not repeated there, only its ground — and
 the document has no decorations or props. Decorations can be added later in the map editor.
 """
 import json
@@ -24,6 +25,7 @@ import sys
 
 LEGACY = {".": "g--", "d": "d--", "~": "w--", "f": "gt-", "v": "dv-", "k": "dk-", "c": "c--", "i": "i--",
           "b": "wb-", "g": "ip-", "o": "go-", "h": "h--"}
+SINGLE = "kovp"  # camps, castles, villages and gates stand once; the edge copies outside keep only the ground
 
 
 def make(rows, pad=4):
@@ -32,7 +34,10 @@ def make(rows, pad=4):
     assert 4 <= w <= 64 and 4 <= h <= 64, "a map is 4..64 cells each way"
 
     def cell(x, y):
-        return rows[max(0, min(h - 1, y))][max(0, min(w - 1, x))]
+        c = rows[max(0, min(h - 1, y))][max(0, min(w - 1, x))]
+        if (0 <= x < w and 0 <= y < h) or c[1] not in SINGLE:
+            return c
+        return c[0] + "-" + c[2]
 
     cells = {}
     for y in range(-pad, h + pad):

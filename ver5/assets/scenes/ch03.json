@@ -2,6 +2,7 @@
  "Scenes": {
   "c03-start": {
    "Map": "S_road",
+   "Music": "sad-melody",
    "Backdrop": "mountains",
    "Nodes": ["c03-start", "c03-a1", "c03-a2", "c03-a3", "c03-a4", "c03-a5", "c03-a6", "c03-a7", "c03-a8", "c03-a9", "c03-a10", "c03-a11", "c03-a12"],
    "Ambient": [{"Prop": ["prison_cart", 5.3, 2.3]}],

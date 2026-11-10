@@ -138,7 +138,7 @@ func (e *Engine) DuelMarks() []DuelMark {
 			continue
 		}
 		for _, id := range append([]string{d.Ally, d.Enemy}, d.Supports...) {
-			if u := e.unit(id); u != nil && u.HP > 0 && !seen[u.ID] {
+			if u := e.fieldUnit(id); u != nil && !seen[u.ID] { // a deputy's mark stands on his officer
 				seen[u.ID] = true
 				out = append(out, DuelMark{Unit: u.ID, Group: groups[i]})
 			}

@@ -9,8 +9,8 @@ import (
 	"srpg/internal/session"
 )
 
-// The waypoint window lists every chapter's start and every battle; picking one starts a game there
-// (core.NewAt) to check the story or a battle without playing up to it.
+// The waypoint window lists every chapter's start and every battle; picking one asks the difficulty, then
+// starts a game there (core.NewAt) to check the story or a battle without playing up to it.
 const (
 	waypointW, waypointH = 760, 700
 	waypointRowH         = 48
@@ -34,7 +34,7 @@ type waypointRow struct {
 }
 
 func (g *Game) waypointWindow(dst *ebiten.Image, x, y, w, h int) {
-	g.label(dst, "고른 곳에서 새로 시작합니다. 레벨은 다음 전투 기준, 아이템은 모두 가진 채입니다.", float64(x+32), float64(y+56), 14, muted)
+	g.label(dst, "고른 곳에서 새로 시작합니다. 레벨·승급은 다음 전투 기준, 아이템은 모두 가진 채입니다.", float64(x+32), float64(y+56), 14, muted)
 	view := image.Rect(x+24, y+86, x+w-24, y+h-24)
 	ways := g.S.Data.Waypoints()
 	content := len(ways)*(waypointRowH+waypointGap) - waypointGap
@@ -109,8 +109,13 @@ func (g *Game) updateWaypoints() bool {
 	if !l.moved {
 		for _, r := range l.rows {
 			if l.press.In(r.r) {
-				g.closeOverlays()
-				g.request(session.Request{Op: "jump", Node: r.node, Seed: g.seed})
+				if len(g.S.Data.Rules.Difficulties) == 0 {
+					g.closeOverlays()
+					g.request(session.Request{Op: "jump", Node: r.node, Seed: g.seed})
+					break
+				}
+				g.jumpNode = r.node
+				g.openOverlay("difficulty")
 				break
 			}
 		}

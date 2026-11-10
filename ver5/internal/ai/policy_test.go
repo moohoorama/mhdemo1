@@ -124,10 +124,20 @@ func TestFleeRunsToItsGoalNeverFightsAndLeavesTheField(t *testing.T) {
 }
 
 func TestRunKeepsWalkingWhereFleeStopsToHeal(t *testing.T) {
-	for policy, want := range map[string]string{"flee": "item", "run": "move"} {
-		t.Run(policy, func(t *testing.T) {
+	for _, tc := range []struct {
+		name, policy, want string
+		items              bool
+	}{
+		{"flee", "flee", "item", true},
+		{"run", "run", "move", true},
+		{"flee without items", "flee", "move", false},
+	} {
+		policy, want := tc.policy, tc.want
+		t.Run(tc.name, func(t *testing.T) {
 			goal := content.Point{X: 10, Y: 7}
-			e := battle(t, func(s *content.Stage) { s.Enemies[0].Policy, s.Enemies[0].Goal = policy, &goal })
+			e := battle(t, func(s *content.Stage) {
+				s.Enemies[0].Policy, s.Enemies[0].Goal, s.Enemies[0].UseItems = policy, &goal, tc.items
+			})
 			snap := e.Snapshot()
 			for i := range snap.Units {
 				if snap.Units[i].ID == "boss" {

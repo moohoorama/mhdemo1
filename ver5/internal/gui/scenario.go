@@ -102,7 +102,7 @@ func (t *typing) hurry(now float64) {
 // shownText is the typed-out part of the current line.
 func (g *Game) shownText(l line) (string, bool) {
 	r := []rune(l.text)
-	n := g.letters(g.lineTyping, len(r), g.uiSeconds)
+	n := g.letters(g.lineTyping, len(r), g.textSeconds)
 	return string(r[:n]), n == len(r)
 }
 
@@ -137,12 +137,12 @@ func (g *Game) advanceDialogue() {
 	}
 	lines := g.nodeLines(o.Dialogue)
 	if _, done := g.shownText(lines[min(g.lineIndex, len(lines)-1)]); !done {
-		g.lineTyping.hurry(g.uiSeconds)
+		g.lineTyping.hurry(g.textSeconds)
 		return
 	}
 	if g.lineIndex+1 < len(lines) {
 		g.lineIndex++
-		g.lineTyping = startTyping(g.uiSeconds)
+		g.lineTyping = startTyping(g.textSeconds)
 		g.startLine(g.lineIndex)
 		return
 	}
@@ -223,10 +223,10 @@ func (g *Game) autoPage() {
 		return
 	}
 	if g.autoKey != key {
-		g.autoKey, g.autoAt = key, g.uiSeconds
+		g.autoKey, g.autoAt = key, g.textSeconds
 		return
 	}
-	if g.uiSeconds-g.autoAt >= autoWait {
+	if g.textSeconds-g.autoAt >= autoWait {
 		g.autoKey = ""
 		next()
 	}
@@ -317,7 +317,7 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 	}
 	g.backdrop(dst, o)
 	if g.shownNode != o.Node {
-		g.shownNode, g.lineIndex, g.lineTyping = o.Node, 0, startTyping(g.uiSeconds)
+		g.shownNode, g.lineIndex, g.lineTyping = o.Node, 0, startTyping(g.textSeconds)
 		if g.scene != nil {
 			g.scene.node = ""
 		}
@@ -335,7 +335,7 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 		g.drawScene(dst, l.speakers)
 		g.blackOut(dst, g.scene.fade)
 		if g.sceneBusy() { // the line waits for its beats
-			g.lineTyping = startTyping(g.uiSeconds)
+			g.lineTyping = startTyping(g.textSeconds)
 			g.label(dst, "클릭: 넘기기", float64(uiW-150), float64(uiH-40), 13, muted)
 			return
 		}

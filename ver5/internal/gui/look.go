@@ -15,6 +15,7 @@ import (
 // portraitArt is the character's own portrait, or else that of the class it serves as (its
 // own class when class is empty).
 func (g *Game) portraitArt(c content.Character, class string) *ebiten.Image {
+	c.Look = g.laterLook(c.Look)
 	if src := g.assets.Portraits[c.Look.Portrait]; src != nil {
 		return src
 	}
@@ -156,6 +157,7 @@ func (g *Game) shootArt(def, class, mount, faction string) *sprite.Art {
 // or class sprite.
 func (g *Game) sceneArt(def, pick, faction string) *sprite.Art {
 	c := g.S.Data.Characters[def]
+	c.Look = g.laterLook(c.Look)
 	class := g.S.Data.Classes[c.Class]
 	for _, id := range []string{pick, c.Look.Scene, class.Scene, c.Look.Sprites[c.Class], c.Look.Sprite, class.Sprite} {
 		if a := g.art(id, faction, c.Look); id != "" && a != nil {
@@ -163,4 +165,22 @@ func (g *Game) sceneArt(def, pick, faction string) *sprite.Art {
 		}
 	}
 	return nil
+}
+
+// laterLook is the look with the portrait and scene sprite of the last later look whose conditions hold.
+func (g *Game) laterLook(l content.Look) content.Look {
+	if g.S == nil || g.S.Engine == nil {
+		return l
+	}
+	for _, later := range l.Later {
+		if g.S.Engine.Holds(later.If) {
+			if later.Portrait != "" {
+				l.Portrait = later.Portrait
+			}
+			if later.Scene != "" {
+				l.Scene = later.Scene
+			}
+		}
+	}
+	return l
 }

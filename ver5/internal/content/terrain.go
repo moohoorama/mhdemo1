@@ -155,6 +155,17 @@ func (d *Data) Glyph(c Cell) byte {
 	return d.Grounds[string(c.Ground)].Glyph[0]
 }
 
+// ElementTerrain is the percent a spell of the element gains on a target standing on the cell: fire in grass
+// and woods, water in fords and on the water, earth on badland and hills (Rules.ElementTerrain). A structure
+// listed for the element decides before the ground under it.
+func (d *Data) ElementTerrain(c Cell, element string) int {
+	bonus := d.Rules.ElementTerrain[element]
+	if p, ok := bonus[string(c.Structure)]; ok {
+		return p
+	}
+	return bonus[string(c.Ground)]
+}
+
 // ValidCell reports why a cell cannot exist: an unknown layer, or a structure on a ground it does not stand on.
 func (d *Data) ValidCell(c Cell) string {
 	if _, ok := d.Grounds[string(c.Ground)]; !ok {

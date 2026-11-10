@@ -408,6 +408,231 @@
    "Kind": "say",
    "Speaker": "lubu",
    "Text": "하하하!"
+  },
+  {
+   "ID": "c15-walk",
+   "Kind": "explore",
+   "Explore": "explore15"
+  },
+  {
+   "ID": "c15-battle",
+   "Kind": "battle",
+   "Stage": "B15",
+   "Text": "소패 전투 — 출전 준비"
+  },
+  {
+   "ID": "c15-cao",
+   "Kind": "scene",
+   "Place": "소패 밖 · 조조의 군막"
+  },
+  {
+   "ID": "c15-k01",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "현덕! 무사했구려."
+  },
+  {
+   "ID": "c15-k02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "승상이 아니었다면 소패에 뼈를 묻을 뻔했습니다."
+  },
+  {
+   "ID": "c15-k03",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "하하, 그런 말 마시오. 원양이 눈 하나를 내주고 건진 목숨이니, 고맙다는 말은 그 녀석에게 하시오."
+  },
+  {
+   "ID": "c15-k04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그런데 승상, 어찌 그리 빨리 군사를 내실 수 있었습니까?"
+  },
+  {
+   "ID": "c15-k05",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "서주는 먹음직스러운 고기였소. 범 세 마리가 그 고기를 두고 으르렁거리니, 나는 어느 범이 먼저 물어뜯는지 지켜보고 있었을 뿐이오."
+  },
+  {
+   "ID": "c15-k06",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "헌데 현덕이 곤란해 보이길래 군사를 일으켰소. 지켜만 보기에는 정이 너무 깊었나 보오."
+  },
+  {
+   "ID": "c15-k07",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "……"
+  },
+  {
+   "ID": "c15-k08",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "공달, 하비 이야기를 해 주게."
+  },
+  {
+   "ID": "c15-k09",
+   "Kind": "say",
+   "Speaker": "xunyou",
+   "Text": "예. 여포는 하비로 들어갔습니다. 하비는 사수와 기수가 성을 감싸 흐르니, 성벽만 보고 달려들면 물에 막히고 성 위에서 화살을 받습니다."
+  },
+  {
+   "ID": "c15-k10",
+   "Kind": "say",
+   "Speaker": "xunyou",
+   "Text": "여포는 들에서 싸우면 당할 자가 없으나, 성에 들어앉으면 결단을 못 내리는 사람입니다. 진궁이 꾀를 내도 받아들이지 않을 것입니다."
+  },
+  {
+   "ID": "c15-k11",
+   "Kind": "say",
+   "Speaker": "guojia",
+   "Text": "그러니 서두를 것 없습니다. 성을 에워싸고 여포가 지치기를 기다리면 됩니다."
+  },
+  {
+   "ID": "c15-k12",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "현덕, 하비는 그대가 다스리던 땅이오. 길을 아는 사람이 앞장서 주시오."
+  },
+  {
+   "ID": "c15-k13",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……알겠습니다."
+  },
+  {
+   "ID": "c15-camp",
+   "Kind": "explore",
+   "Explore": "explore15_camp"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "c15-alarm",
+   "Kind": "scene",
+   "Place": "소패 관아"
+  },
+  {
+   "ID": "c15-a01",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "아이고, 이제야 발 좀 뻗고 자겠구먼."
+  },
+  {
+   "ID": "c15-a02",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "소패 창고에 곡식이 조금 남아 있습니다. 며칠은 군사들을 먹일 수 있겠습니다."
+  },
+  {
+   "ID": "c15-a03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "여포의 속셈이 무엇이든, 군사들을 먹이고 재울 곳이 생겼으니 다행일세."
+  },
+  {
+   "ID": "c15-a04",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "아뢰오! 여포가 군사를 이끌고 소패로 오고 있습니다! 깃발이 끝도 보이지 않습니다!"
+  },
+  {
+   "ID": "c15-a05",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "뭐여? 여기 있으라고 한 게 엊그제인디!"
+  },
+  {
+   "ID": "c15-a06",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "소패를 내준다더니…… 다시 빼앗으려는 겁니까?"
+  },
+  {
+   "ID": "c15-a07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……무슨 일인지 모르겠네. 만나서 물어봐야겠어."
+  },
+  {
+   "ID": "c15-a08",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님, 무슨 일이 벌어질지 모릅니다. 만나시더라도 군사부터 정비해 두시지요."
+  },
+  {
+   "ID": "c15-a09",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그러세. 운장, 채비가 되면 알려 주게."
+  },
+  {
+   "ID": "c15-a-set",
+   "Kind": "set",
+   "Flags": {
+    "c15-alarm": 1
+   }
+  },
+  {
+   "ID": "c15-a-back",
+   "Kind": "back",
+   "Area": "office"
+  },
+  {
+   "ID": "c15-tent",
+   "Kind": "scene",
+   "Place": "하비 근처 · 아군 막사"
+  },
+  {
+   "ID": "c15-t01",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형, 아무래도 이상하우. 조조 군사가 어떻게 딱 그때 나타난 거유?"
+  },
+  {
+   "ID": "c15-t02",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "조표 그자도 여포 앞에서 제 말이 맞았다고 놀라던걸. 제가 지어낸 거짓말이 참말이 되니 저도 어리둥절했겠지."
+  },
+  {
+   "ID": "c15-t03",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "허도에서 소패까지는 아무리 서둘러도 열흘 길입니다. 여포가 움직이기 전에 이미 군사를 내 두었다는 말입니다."
+  },
+  {
+   "ID": "c15-t04",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "덕을 본 이가 하나뿐이니 뻔한 일입니다. 게다가 아까 조조 스스로 말하기도 했지요."
+  },
+  {
+   "ID": "c15-t05",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……지금은 승상의 군사 없이는 하비로 돌아갈 수 없네. 알고도 가야지."
+  },
+  {
+   "ID": "c15-t06",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님 뜻이 그러시면 따르겠습니다. 채비는 제가 해 두겠습니다."
+  },
+  {
+   "ID": "c15-t-set",
+   "Kind": "set",
+   "Flags": {
+    "c15-tent": 1
+   }
+  },
+  {
+   "ID": "c15-t-back",
+   "Kind": "back",
+   "Area": "our_tent"
   }
  ]
 }

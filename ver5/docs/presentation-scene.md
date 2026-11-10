@@ -54,10 +54,12 @@
   `Off`는 무대 밖에서 시작해 `Enter`로 들어온다. `Hold`는 화자 쪽으로 저절로 돌아보지 않는다(성 밖을 보는 장수, 옥좌의 황제).
   `If`는 조건 문자열 목록(`branch`와 같다)이고, 맞지 않으면 그 배우는 장면에 서지 않는다(앞 전투에서 살아남았을 때만 서는 고순).
   `Stay`는 탐험 지역 맵에서 여는 이벤트에서만 쓴다: 탐험에서 서 있던 자리·방향 그대로 서고 `At`·`Face`를 적지 않는다([presentation-explore.md](presentation-explore.md)).
-  `Pose`는 서 있는 대신 쉬는 동작이다(`sit` 의자에 앉음, `throne` 옥좌, `bow` 읍, `prostrate` 부복, `lie` 누움, `prone` 엎드림(죽은 백성, 민중 시트만), `sitground` 땅에 기대 앉음, `fist` 주먹을 치켜듦(하후돈), `point` 삿대질(장비), `draw` 칼을 뽑아 겨눔(공손찬, 무기 없는 비전투 시트용)).
+  `Pose`는 서 있는 대신 쉬는 동작이다(`sit` 의자에 앉음, `throne` 옥좌, `bow` 읍, `prostrate` 부복, `lie` 누움, `prone` 엎드림(죽은 백성, 민중 시트만), `sitground` 땅에 기대 앉음, `fist` 주먹을 치켜듦(하후돈), `point` 삿대질(장비), `draw` 칼을 뽑아 경보병 대기처럼 세워 듦(공손찬, 무기 없는 비전투 시트용)).
   동작(`Play`)이나 걷기가 끝나면 이 자세로 돌아간다. 그 배우의 시트에 있는 동작만 쓴다(시험이 확인한다).
 - `Beats[노드][i]`는 그 노드의 i번째 화자 줄 앞에 재생할 그룹들이다. 한 그룹의 단계는 함께 시작하고(`After`만큼 늦출 수 있다),
   걷기·한 번 동작·말풍선·`Wait`가 다 끝나야 다음 그룹이 시작한다. 비트가 끝나야 그 줄이 나온다. 클릭하면 남은 비트를 끝 상태로 건너뛴다(장수 첫 등장에서 멈춘다).
+  줄 수와 같은 번호(한 줄짜리 `say`면 `[1]`)는 **마지막 줄 뒤** 비트다: 그 줄을 넘기면 재생되고 끝나야 다음 노드로 간다. 말하고 나서 나가는 사람의 `Exit`는
+  여기에 둔다(`[[], [[{"Actor": "조조", "Move": …, "Exit": true}]]]`). 줄 앞(`[0]`)에 두면 화면 밖으로 나간 뒤에 그 줄이 나온다.
 - 화자 줄이 나오면 화자가 한 번 `action`을 하고 점 풍선이 뜨며, 화자 둘레 5칸 안의 이름 있는 배우가 화자 쪽으로 돌아보고 화자는 가장 가까운 배우를 본다.
   `Hold`인 배우, 이 노드의 비트가 `Face`·`Look`·`Move`로 움직인 배우는 그대로 둔다.
 
@@ -156,7 +158,7 @@
 
 형식 2 맵(`"format": 2`)은 사람이 정한 것만 적고, 나머지는 규칙이 그린다. 규칙은 `internal/scenemap` 한 곳에 있고 게임(`internal/gui`)과 뷰어(`go run ./cmd/_scene`)가 같은 그리기 목록을 쓴다. 규칙 데이터는 `assets/graphics/scene.json`이다.
 
-- 맵: `size`(게임 칸), `origin`(격자 첫 칸의 작은 칸 좌표), `ground`(작은 칸마다 글자: `.` 풀, `d` 흙, `~` 물, `i` 포석(흙 위에 작은 칸마다 돌바닥 `floor`), 실내 바닥 `T` 군막 마루·`W` 나무 마루·`P` 궁궐 바닥·`C` 붉은 깔개(게임 칸마다, 바닥 대신)), `height`(작은 칸마다 높이 단계, `2` = 높은 절벽), `objects`(`[이름, U, V]` 또는 `[이름, U, V, dx, dy]`: 작은 칸 (U, V) 중심에서 캔버스 dx, dy 픽셀에 기준점), `walls`(`["swall", [U, V], [U, V]]`: u 또는 v를 따라 한 줄). 성문은 성벽 줄 위의 한 점에 놓은 물체(`sgate_open`·`sgate_closed`)다. 그림 범위(여백)는 `ground` 격자 그대로다.
+- 맵: `size`(게임 칸), `origin`(격자 첫 칸의 작은 칸 좌표), `ground`(작은 칸마다 글자: `.` 풀, `d` 흙, `~` 물, `i` 포석(흙 위에 작은 칸마다 돌바닥 `floor`), 실내 바닥 `T` 군막 마루·`W` 나무 마루·`P` 궁궐 바닥·`C` 붉은 깔개(게임 칸마다, 바닥 대신)), `height`(작은 칸마다 높이 단계, `2` = 높은 절벽), `objects`(`[이름, U, V]` 또는 `[이름, U, V, dx, dy]`: 작은 칸 (U, V) 중심에서 캔버스 dx, dy 픽셀에 기준점), `walls`(`["swall", [U, V], [U, V]]`: u 또는 v를 따라 한 줄). `grass`(선택)는 맵의 풀색이다([data-map.md](data-map.md)의 `Grass`). 성문은 성벽 줄 위의 한 점에 놓은 물체(`sgate_open`·`sgate_closed`)다. 그림 범위(여백)는 `ground` 격자 그대로다.
 - 물체 정보는 맵에 적지 않는다: 그림·기준점·층(`ground`면 바닥에 눕는다)·그림자 여부는 `index.json`, 여러 칸을 차지하는 물체의 footprint(`[du, dv, 폭, 깊이]`, 기준점에서 작은 칸 단위)는 `scene.json`의 `footprints`다. 적지 않은 물체는 기준점 둘레 1×1이다.
 - 그리는 순서는 세 층이다. ① 평면층: 높이 0의 바닥 타일 → 실내 바닥(게임 칸마다 마름모를 테두리 색으로 칠하고 바닥 그림)·포석 → 바닥 물체(큰길, 디딤돌, 거적) → 장식(`map/scenery.png`의 풀·꽃·돌·금, 전투 맵과 같은 `scenemap.Scenery.Decorate`) → 바닥 그림자(절벽 밑동 띠). 게임은 이 층을 한 번 구워 두고, 물체 그림자(`propShadow`, `index.json`의 `"shadow": false`면 없음)는 사람 그림자와 같은 층에 깐다. 정렬하지 않고 이 순서로 전부 먼저 그린다. ② 입체층: 높이 0에 선 것(절벽 옆면, 성벽·성문 조각, 물체, 사람)을 정렬해 그린다. ③ 높은 땅마다(낮은 높이부터): 윗면층(윗면 바닥·윗면 장식·옆면 입술, 한 번 구워 둠) → 그 높이에 떨어진 그림자(윗면 모양으로 잘라 한 번에) → 그 높이에 선 물체·사람을 정렬해 그림. ④ 덧그림층: 가려진 사람의 반투명 표시, 효과, 커서. 바닥은 입체층의 어떤 것도 덮지 않는다. 윗면층은 낮은 땅에 선 모든 것 위에 깔리므로, 낮은 땅의 물체가 자기 뒤가 아닌 윗면까지 솟으면 안 된다(`TestLevelsCoverOnlyWhatStandsBehind`).
 - 입체층 정렬: footprint 앞 모서리(U1+V1) → 높이 → 종류(땅 옆면 < 성벽·성문 < 물체 < 사람) → 화면 x. 여러 칸 물체가 다른 것과 화면에서 겹치면 footprint를 비교해 완전히 뒤(U 또는 V가 작은 쪽)에 있는 것을 먼저 그린다(`scenemap.Order`). 그림의 기준점은 놓는 자리에만 쓴다.
@@ -177,6 +179,7 @@
 ## 장면 스프라이트
 
 - 배우의 스프라이트는 `cast`의 스프라이트 ID, 캐릭터의 `Look.Scene`, 병종의 `Scene`, `Look.Sprites[병종]`, `Look.Sprite`, 병종의 스프라이트 순으로 처음 있는 것이다(`sceneArt`). 기마 병종(`light_cavalry` 등)의 `Scene`은 `infantry_noncombat`이라, 장면용 시트가 없는 기병 장수는 말 대신 걸어서 선다.
+  이야기가 흐르며 외형이 바뀌는 장수는 `Look.Later`(`If` 조건, `Portrait`, `Scene`)를 둔다. 조건이 맞는 마지막 항목의 초상·장면 시트가 원래 것을 대신한다(`laterLook`). 하후돈은 `won:B15` 뒤 애꾸 초상 `xiahoudun_oneeye`와 `xiahoudun_oneeye_noncombat`(안대를 그린 비전투 도트)이 된다.
 - 전투 스프라이트는 `Look.Sprites[병종:무기 종류]`, `Look.Sprites[병종]`, 캐릭터 자신의 병종일 때만 `Look.Sprite`, 병종의 스프라이트(캐릭터 `Palette`로 색만 바뀜) 순이다(`battleClassArt`). 그래서 `Look.Sprite`만 있는 원술·손견은 승급하면 병종 공용 도트로 바뀐다. `Look.Sprites`는 병종 ID(또는 `병종:장착 무기 종류`, 예: `light_cavalry:sword`) → 스프라이트 ID 표라서 병종이 바뀌거나 무기를 바꿔 들면 보이는 모습도 바뀐다(무기 종류는 `UnitView.Weapon`). 조조와 조운은 창이면 `Look.Sprite`, 검이면 `caocao_sword`·`zhaoyun_sword`다. 병종에 `Shoot`가 있고 백마 같은 `mounted_range`가 있는 유닛이 대상의 주변 8칸 밖을 기본 공격하면, 공격 동안 `Look.Sprites[Shoot 병종]`(없으면 그 병종의 스프라이트)로 바뀌어 활을 쏘고 화살이 날아간다(`shootArt`, `shootsFromRange`).
   유비·관우·장비·조조·손견·원소·조운·동탁은 `Look.Scene`이 `<id>_noncombat`이다.
 - 장면 사람(비전투 시트, `tools/doteditor/tools/civ3d.py` + `tools/unit3d/scene_people.py`의 3D 모델을 변환): `official_noncombat`(문관, 조복이 진영색: 제후의 문관), 품계별 조복 `official_crimson`(삼공)·`official_purple`(구경)·`official_blue`(대부)·`official_green`(낭관)`_noncombat`(`tools/doteditor/tools/robe_colors.py`가 진영색 칸을 theme B로 옮겨 만든다; 궁궐에서는 옥좌에 가까울수록 높은 품계), `official_black_noncombat`(검은 조복의 원로), `eunuch_noncombat`(환관), `wounded_noncombat`(부상병: 대기·걷기·`lie`·`sitground`), `stretcher_noncombat`(들것과 두 사람), `yuanshu_noncombat`·`gongsunzan_noncombat`(원술·공손찬 평복), `light_cavalry_white`(백마 기병, 경기병의 말만 흰색).

@@ -34,6 +34,7 @@ func (p Params) Intro() float64 { return p.PanTime + p.ZoomTime + p.UITime }
 type Fighter struct {
 	Name        string
 	Art, Troops *sprite.Art
+	Alt         *sprite.Art // the look he takes in a feigned flight or a shot (his bow), when he duels in another first
 	Portrait    *ebiten.Image
 }
 
@@ -355,6 +356,9 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 			y += dy
 		}
 		art := g.Fighters[i].Art
+		if a.Alt && g.Fighters[i].Alt != nil {
+			art = g.Fighters[i].Alt
+		}
 		frame := art.FrameIndex(a.Animation, a.MS)
 		if a.Hold >= 0 {
 			frame = min(a.Hold, art.Animations[a.Animation].Frames-1)
@@ -368,14 +372,20 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 	for _, u := range units {
 		drawUnit(dst, u, false)
 	}
+	if s.Arrowing && g.Decor != nil && len(g.Decor.Arrow) > 0 {
+		g.drawArrow(dst, s)
+	}
 	if s.Impact > 0 {
 		def := 1
 		if s.Attacker == 1 {
 			def = 0
 		}
 		q := (s.Actors[s.Attacker].Position + s.Actors[def].Position) / 2
-		x, y := point(q)
 		lane := (s.Actors[s.Attacker].Lane + s.Actors[def].Lane) / 2
+		if s.OnTarget {
+			q, lane = s.Actors[def].Position, s.Actors[def].Lane
+		}
+		x, y := point(q)
 		x -= lane * .45
 		y += lane * .89
 		x, y = g.at(x, y)
@@ -385,6 +395,26 @@ func (g *View) draw(dst *ebiten.Image) duel.State {
 		box(dst, 0, 0, float64(g.cw), float64(g.ch), color.NRGBA{255, 255, 245, uint8(s.Flash * 225)})
 	}
 	return s
+}
+
+// drawArrow draws the arrow of a shoot beat on its way from the shooter's chest to the target's, in the frame of
+// its heading.
+func (g *View) drawArrow(dst *ebiten.Image, s duel.State) {
+	const chest = 58
+	ax, ay := g.at(s.Actors[s.Attacker].ScreenPosition())
+	tx, ty := g.at(s.Actors[defenderOf(s.Attacker)].ScreenPosition())
+	ay, ty = ay-chest, ty-chest
+	n := len(g.Decor.Arrow)
+	i := int(math.Round(math.Atan2(ty-ay, tx-ax)/(2*math.Pi)*float64(n)+float64(n))) % n
+	k := s.Arrow
+	drawProp(dst, unitDraw{prop: &g.Decor.Arrow[i], scale: 3, x: ax + (tx-ax)*k, y: ay + (ty-ay)*k})
+}
+
+func defenderOf(side int) int {
+	if side == 1 {
+		return 0
+	}
+	return 1
 }
 
 // Clash is the flash where the duellists' weapons meet at (x, y), impact going from 1 to 0: the

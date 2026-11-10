@@ -55,7 +55,31 @@ func (e *Engine) supportXP(u, q *Unit) int {
 	n *= e.xpScale()
 	return max(1, int(math.Round(n)))
 }
+
+// xp is experience an officer earns in battle. With a deputy beside it the two share it: the officer keeps
+// DeputyLeadShare percent and the deputy gets DeputyShare percent, each carrying its own fraction over.
 func (e *Engine) xp(id string, n int) {
+	R := e.data.Rules
+	o := e.char(id)
+	if o == nil || o.Dead || n <= 0 || (e.unit(id) != nil && e.unit(id).AI) {
+		return
+	}
+	if d := e.char(o.Deputy); d != nil && !d.Dead {
+		e.gainXP(id, shareXP(o, n, R.DeputyLeadShare))
+		e.gainXP(d.ID, shareXP(d, n, R.DeputyShare))
+		return
+	}
+	e.gainXP(id, n)
+}
+
+func shareXP(c *Character, n, percent int) int {
+	s := n*percent + c.XPShareRemainder
+	c.XPShareRemainder = s % 100
+	return s / 100
+}
+
+// gainXP adds experience to the officer alone, levelling it up.
+func (e *Engine) gainXP(id string, n int) {
 	R := e.data.Rules
 	o := e.char(id)
 	if o == nil || o.Dead || n <= 0 || (e.unit(id) != nil && e.unit(id).AI) {
@@ -73,14 +97,15 @@ func (e *Engine) xp(id string, n int) {
 	if o.Level == R.MaxLevel {
 		o.XP = min(o.XP, XPPerLevel-1)
 	}
+	if m := e.state.Merit; m != nil && (e.state.Phase == "battle" || e.state.Phase == "result") {
+		if m.XP == nil {
+			m.XP = map[string]int{}
+		}
+		m.XP[id] += n
+	}
 	e.emit("experience", id, "", n)
 	if leveled && e.def(o).Playable && e.canLearn(o) && !contains(e.state.Learning, id) {
 		e.state.Learning = append(e.state.Learning, id)
-	}
-	if d := e.char(o.Deputy); d != nil && !d.Dead {
-		shared := n*R.DeputyShare + d.XPShareRemainder
-		d.XPShareRemainder = shared % 100
-		e.xp(d.ID, shared/100)
 	}
 }
 
@@ -154,6 +179,11 @@ func (e *Engine) learn(c Command) error {
 		e.state.Learning = append(e.state.Learning[:i], e.state.Learning[i+1:]...)
 	}
 	return nil
+}
+
+// joinLevel is the level an officer who joins before the order-th battle comes in at, at the game's difficulty.
+func (e *Engine) joinLevel(order int) int {
+	return e.data.Rules.JoinLevel(order, e.difficulty().EnemyShift)
 }
 
 // joinAt brings an officer who joins to the level the story has reached, in the class that level reaches on

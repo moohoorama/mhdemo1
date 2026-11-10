@@ -161,6 +161,7 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 			trade = func() {
 				g.askWith(question, yes, "그만두기", func() {
 					g.request(session.Request{Op: "command", Command: core.Command{Kind: kind, Target: g.shopFrom, Item: id, Count: n}})
+					g.sfx("shop-" + kind)
 					v.n = 1
 				})
 			}

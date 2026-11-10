@@ -182,10 +182,12 @@ func (d *Demo) Update() error {
 	if d.frame > 0 {
 		d.saved = false
 	}
+	d.g.ticks = d.frame // the frame number is the clock a capture's sound trace keeps
 	if d.step != nil && d.stepped != d.frame {
 		d.stepped = d.frame
 		d.step(d.frame)
 	}
+	d.g.updateMusic(1.0 / 60)
 	d.g.advance(1.0 / 60)
 	return nil
 }

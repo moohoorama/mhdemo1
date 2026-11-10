@@ -119,7 +119,7 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 		if err := discard(); err != nil {
 			return nil, err
 		}
-		e, err := core.NewAt(s.Data, q.Seed, q.Node)
+		e, err := core.NewAt(s.Data, q.Seed, q.Node, q.Difficulty)
 		if err != nil {
 			return nil, err
 		}

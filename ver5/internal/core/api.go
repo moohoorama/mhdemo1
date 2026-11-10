@@ -92,6 +92,14 @@ func (e *Engine) LegalActions(actor string) Options {
 					out.Commands = append(out.Commands, Command{Kind: "item", Actor: actor, Target: id, Item: item})
 				}
 			}
+			if d := e.char(e.char(u.Character).Deputy); d != nil && e.data.Items[item].Effect == content.ItemPromote {
+				for _, class := range e.data.Promotes(d.Def, d.Class) { // the deputy riding with it
+					c := Command{Kind: "item", Actor: actor, Target: d.ID, Item: item, Option: class}
+					if t := fromState(e.data, e.Snapshot()); t.execute(c) == nil {
+						out.Commands = append(out.Commands, c)
+					}
+				}
+			}
 		}
 	}
 	return out
@@ -483,6 +491,21 @@ func (e *Engine) CharacterStats(id string) (Stats, error) {
 	return e.stats(&Unit{ID: id, Character: id, Faction: "ally", Status: map[string]Status{}}), nil
 }
 
+// CharacterStatsAs is the character's battle stats were it of the given class, for comparing a promotion.
+func (e *Engine) CharacterStatsAs(id, class string) (Stats, error) {
+	c := e.char(id)
+	if c == nil {
+		return Stats{}, fail("InvalidCharacter")
+	}
+	if _, ok := e.data.Classes[class]; !ok {
+		return Stats{}, fail("InvalidClass")
+	}
+	old := c.Class
+	c.Class = class
+	defer func() { c.Class = old }()
+	return e.CharacterStats(id)
+}
+
 // CounterDamage is the most damage the target can return to the actor after c lands,
 // or 0 when c is not a physical action or the actor is out of the target's reach.
 func (e *Engine) CounterDamage(c Command) int {
@@ -494,7 +517,7 @@ func (e *Engine) CounterDamage(c Command) int {
 	if err != nil || s.Kind != content.KindPhysical || !e.has(v, content.FxRetaliate) && !e.inRange(v, u, e.basic()) {
 		return 0
 	}
-	return int(math.Floor(e.damage(v, u, e.basic()) * (e.data.Rules.CritMultiplier + e.fx(v, content.FxCritBoost)) * e.counterShare(v)))
+	return int(math.Floor(e.damage(v, u, e.basic()) * (e.data.Rules.CritMultiplier + e.fx(v, content.FxCritBoost)) * e.counterShare(v) * e.counterTaken(u)))
 }
 
 // Strike is the expected damage of a's best blow on b that a can pay for, its basic attack or a
@@ -612,12 +635,37 @@ func (e *Engine) StepCost(id string, x, y int) int {
 	return e.terrain(u, x, y).Cost
 }
 
+// Terrain is what the cell at (x, y) is to the unit — its class's cost and factor with the unit's own traits.
+func (e *Engine) Terrain(id string, x, y int) (content.Terrain, bool) {
+	u := e.unit(id)
+	if u == nil {
+		return content.Terrain{}, false
+	}
+	return e.terrain(u, x, y), true
+}
+
 // Threat is every cell the unit could attack next time it acts: its movement reach from
 // a fresh turn, widened by its basic attack and damaging skills.
 func (e *Engine) Threat(id string) []content.Point {
+	r := e.Ranges(id)
+	set := map[content.Point]bool{}
+	for _, p := range append(r.Attack, r.Spell...) {
+		set[p] = true
+	}
+	return sortedCells(set)
+}
+
+// Ranges are what a unit can do next time it acts, from a fresh turn: the cells it can end its move on, those
+// its basic attack and physical skills, or its stratagems, reach from anywhere its move gets to, and those its
+// basic attack and physical skills reach from where it stands.
+type Ranges struct {
+	Move, Attack, Spell, Strike []content.Point
+}
+
+func (e *Engine) Ranges(id string) Ranges {
 	v := e.unit(id)
 	if v == nil || v.HP <= 0 || e.state.Phase != "battle" {
-		return nil
+		return Ranges{}
 	}
 	u := copyOf(*v)
 	u.Moved, u.Done = false, false
@@ -625,22 +673,45 @@ func (e *Engine) Threat(id string) []content.Point {
 	if len(cost) == 0 {
 		cost = map[content.Point]int{{X: u.X, Y: u.Y}: 0}
 	}
-	reach := map[content.Point]bool{}
+	attack, spell := map[content.Point]bool{}, map[content.Point]bool{}
 	for _, d := range e.offsets(&u, e.basic()) {
-		reach[d] = true
+		attack[d] = true
 	}
 	for _, name := range e.skills(e.char(u.Character)) {
 		s := e.data.Skills[name]
-		if (s.Kind == content.KindPhysical || s.Kind == content.KindMagic || s.Kind == content.KindStatus) && s.Mode != content.ModeSelf {
+		switch {
+		case s.Mode == content.ModeSelf:
+		case s.Kind == content.KindPhysical:
 			for _, d := range e.offsets(&u, s) {
-				reach[d] = true
+				attack[d] = true
+			}
+		case s.Kind == content.KindMagic || s.Kind == content.KindStatus:
+			for _, d := range e.offsets(&u, s) {
+				spell[d] = true
 			}
 		}
 	}
-	offsets := sortedCells(reach)
-	set := map[content.Point]bool{}
+	move := map[content.Point]bool{}
 	for p := range cost {
-		e.cellsFrom(offsets, p, set)
+		if o := e.occupied(p.X, p.Y); o == nil || o.ID == u.ID {
+			move[p] = true
+		}
 	}
-	return sortedCells(set)
+	from := func(offsets, starts map[content.Point]bool) []content.Point {
+		if len(offsets) == 0 {
+			return nil
+		}
+		ds := sortedCells(offsets)
+		set := map[content.Point]bool{}
+		for p := range starts {
+			e.cellsFrom(ds, p, set)
+		}
+		return sortedCells(set)
+	}
+	moved := map[content.Point]bool{}
+	for p := range cost {
+		moved[p] = true
+	}
+	here := map[content.Point]bool{{X: u.X, Y: u.Y}: true}
+	return Ranges{Move: sortedCells(move), Attack: from(attack, moved), Spell: from(spell, moved), Strike: from(attack, here)}
 }

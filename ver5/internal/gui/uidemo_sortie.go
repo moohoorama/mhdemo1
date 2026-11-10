@@ -11,7 +11,7 @@ func init() { demos["sortie"] = demoSortie }
 
 // demoSortie jumps to the -node battle node (default c14-battle) with every officer's level-up learning closed,
 // names 손건 고순's deputy and walks the sortie preparation for cmd/_uidemo-vm: the list with the lord picked (20),
-// 고순 with his deputy (50), the last officer called back to wait (80), the deputy window (110), the officer's
+// 고순 with his deputy (50), the last officer called back to wait by a press on his 출전 pill (80), the deputy window (110), the officer's
 // trait tab (140), the unit detail on 전투력 (155), 열전 (180) and the deputy's traits (190) and, after 출진, the deployment (215).
 func demoSortie(d *Demo) error {
 	g := d.g
@@ -31,9 +31,15 @@ func demoSortie(d *Demo) error {
 		switch f {
 		case 50:
 			g.selected = "gaoshun"
-		case 80:
-			if n := len(o.Deployment); n > 0 && !g.sortieLocked(o.Deployment[n-1]) {
-				g.togglePrep(o.Deployment[n-1])
+		case 80: // press the last 출전 pill as a player would, so the row under it cannot steal the press
+			for i := len(g.buttons) - 1; i >= 0; i-- {
+				if b := g.buttons[i]; b.label == "출전" {
+					at := b.rect.Min.Add(b.rect.Size().Div(2))
+					cursorPos = func() (int, int) { return at.X, at.Y }
+					g.leftClick()
+					cursorPos = func() (int, int) { return -1000, -1000 }
+					break
+				}
 			}
 		case 110:
 			g.selected = "gaoshun"

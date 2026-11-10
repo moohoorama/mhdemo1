@@ -125,6 +125,10 @@ func (g *Game) acquireCards(dst *ebiten.Image, m *modal) {
 	n := len(m.gains)
 	cardH := g.acqCardHeight(m)
 	x0 := uiW/2 - (n*acqCardW+(n-1)*acqCardGap)/2
+	if !m.heard && m.t >= acqFirst {
+		m.heard = true
+		g.sfx("acquire")
+	}
 	for i, gn := range m.gains {
 		p := phase(m.t, acqFirst+acqEach*float64(i), acqTurn)
 		if p <= 0 {
@@ -151,7 +155,7 @@ func (g *Game) acqCardHeight(m *modal) int {
 		lines, step := 0, 28
 		switch {
 		case gn.officer:
-			lines = len(g.S.Data.Characters[gn.id].Traits)
+			lines = len(g.S.Data.Characters[gn.id].Learn)
 		case gn.id == content.Money:
 		default:
 			if eq, ok := g.S.Data.Equipment[gn.id]; ok {
@@ -265,7 +269,7 @@ func (g *Game) officerCard(dst *ebiten.Image, id string, cx, y, a float64) {
 	g.centered(dst, g.officerRank(id), cx, y+150, 15, fade(gold, a))
 	g.centered(dst, "장수", cx, y+174, 12, fade(muted, a))
 	ty := y + 200
-	for _, t := range c.Traits {
+	for _, t := range c.Learn { // a joining officer holds none yet: what he can learn
 		name := g.traitName(t)
 		cw := traitIconSize*.8 + 6 + g.width(name, 13)
 		kind, tone := g.chipLook(equipChip{"trait", t})
@@ -320,15 +324,15 @@ func (g *Game) officerWindow(dst *ebiten.Image, m *modal, r image.Rectangle) {
 		}
 		y += 36 + float64(len(statRows))*26 + 12
 	}
-	section("특성", x)
+	section("익힐 수 있는 특성", x)
 	y += 36
-	for _, t := range c.Traits {
+	for _, t := range c.Learn {
 		ch := equipChip{"trait", t}
 		g.chip(dst, ch, x, y, func() { m.chip = ch })
 		g.label(dst, g.traitRowDesc(t), x+180, y, 14, ink)
 		y += float64(g.traitRowHeight(t))
 	}
-	if len(c.Traits) == 0 {
+	if len(c.Learn) == 0 {
 		g.label(dst, "없음", x, y, 15, ink)
 	}
 	g.centered(dst, "창 밖을 누르면 닫힙니다", float64(r.Min.X+r.Dx()/2), float64(r.Max.Y-34), 13, muted)
@@ -365,7 +369,7 @@ func (g *Game) pieceKind(id string) string {
 func (g *Game) pieceHeight(id string) int {
 	if g.joined(id) {
 		h := 30 + 132 + 36 + len(statRows)*26 + 12 + 36 + 56 // head, 전투력·열전, 특성 header, footer
-		for _, t := range g.S.Data.Characters[id].Traits {
+		for _, t := range g.S.Data.Characters[id].Learn {
 			h += g.traitRowHeight(t)
 		}
 		return max(560, h)

@@ -2,6 +2,7 @@ package gui
 
 import (
 	"image"
+	"math"
 	"sort"
 
 	"srpg/internal/content"
@@ -69,10 +70,46 @@ func (g *Game) onUnit(id string, f func(*unitVis)) func() {
 	}
 }
 
+// walkCells are the cells the camera shows a walk on: where it starts and ends, or only where it
+// starts when the two do not fit on one screen (the camera then follows the walker, followWalk).
+func (g *Game) walkCells(path []content.Point) []content.Point {
+	n := len(path)
+	if n == 0 || g.field == nil {
+		return nil
+	}
+	both := []content.Point{path[0], path[n-1]}
+	if x, y := g.actionCenter(both); g.onScreenAt(both, x, y) {
+		return both
+	}
+	return both[:1]
+}
+
 // cutsceneTimeline turns a cutscene's groups into one timeline: a group's steps start together
-// and the next group begins when the longest of them is done.
+// and the next group begins when the longest of them is done. A group whose people are off screen
+// first glides the camera to them.
 func (g *Game) cutsceneTimeline(groups [][]core.CutStep) (entries []timedFn, total float64) {
+	cam := [2]float64{g.camX, g.camY}
+	at := map[string]content.Point{} // where the cutscene has walked its people so far
 	for _, group := range groups {
+		var cells []content.Point
+		for _, st := range group {
+			switch st.Kind {
+			case "move", "leave":
+				cells = append(cells, g.walkCells(st.Path)...)
+				if n := len(st.Path); n > 0 {
+					at[st.Unit] = st.Path[n-1]
+				}
+			case "play", "face", "say":
+				if p, ok := at[st.Unit]; ok {
+					cells = append(cells, p)
+				} else if v := g.unitAt(st.Unit); v != nil {
+					cells = append(cells, content.Point{X: int(math.Round(v.u)), Y: int(math.Round(v.v))})
+				}
+			}
+		}
+		glide, wait := g.glideFirst(&cam, cells, total)
+		entries = append(entries, glide...)
+		total += wait
 		longest := 0.0
 		for _, st := range group {
 			st := st

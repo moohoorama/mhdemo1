@@ -18,7 +18,7 @@ type Cond struct {
 
 // Story nodes may use storyConds; battle events may use battleConds.
 var storyConds = map[string]bool{"flag": true, "alive": true, "dead": true, "party": true, "choice": true, "won": true}
-var battleConds = map[string]bool{"flag": true, "choice": true, "won": true, "round": true, "turnstart": true, "defeated": true,
+var battleConds = map[string]bool{"flag": true, "choice": true, "won": true, "party": true, "round": true, "turnstart": true, "defeated": true,
 	"alldefeated": true, "alive": true, "at": true, "allat": true, "adjacent": true, "hp": true, "duel": true, "fled": true, "any": true}
 
 var turnNames = []string{"ally", "support", "enemy"}
@@ -137,7 +137,11 @@ func (d *Data) validateParsed(s string, c Cond, refs *battleRefs) error {
 		return nil
 	}
 	switch c.Op {
-	case "alive", "dead", "party":
+	case "party": // the roster, in a battle too: whether a recruitable officer has joined
+		if c.N > 1 || !d.Has(c.Arg) {
+			return fmt.Errorf("condition %q: no character %s", s, c.Arg)
+		}
+	case "alive", "dead":
 		if refs == nil && c.N > 1 {
 			return fmt.Errorf("condition %q: a count is for battles", s)
 		}

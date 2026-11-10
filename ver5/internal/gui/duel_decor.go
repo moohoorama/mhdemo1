@@ -46,6 +46,7 @@ func (g *Game) duelDecor() *duelview.Decor {
 		return out
 	}
 	d.Clash, d.ClashCrit = shot("clash"), shot("clash_crit")
+	d.Arrow = shot("arrow")
 	if s := shot("speck"); len(s) > 0 {
 		d.Speck = s[0]
 	}

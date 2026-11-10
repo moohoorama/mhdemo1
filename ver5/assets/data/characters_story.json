@@ -389,7 +389,16 @@
      "iron": "#e0c060"
     },
     "Portrait": "xiahoudun",
-    "Scene": "xiahoudun_noncombat"
+    "Scene": "xiahoudun_noncombat",
+    "Later": [
+     {
+      "If": [
+       "won:B15"
+      ],
+      "Portrait": "xiahoudun_oneeye",
+      "Scene": "xiahoudun_oneeye_noncombat"
+     }
+    ]
    }
   },
   "xiahouyuan": {
@@ -1752,7 +1761,10 @@
     87
    ],
    "Level": 9,
-   "Traits": [],
+   "Traits": [
+    "civil_martial",
+    "break_formation"
+   ],
    "Learn": [
     "civil_martial",
     "break_formation"
@@ -1781,8 +1793,13 @@
    ],
    "Level": 20,
    "Playable": true,
-   "Traits": [],
+   "Traits": [
+    "generosity",
+    "hoarding",
+    "supply"
+   ],
    "Learn": [
+    "generosity",
     "hoarding",
     "supply"
    ],
@@ -1814,7 +1831,11 @@
    ],
    "Level": 20,
    "Playable": true,
-   "Traits": [],
+   "Traits": [
+    "brace_prep",
+    "castle_defense",
+    "fortune"
+   ],
    "Learn": [
     "brace_prep",
     "castle_defense",
@@ -1848,7 +1869,10 @@
    ],
    "Level": 20,
    "Playable": true,
-   "Traits": [],
+   "Traits": [
+    "acupuncture",
+    "taoism"
+   ],
    "Learn": [
     "acupuncture",
     "taoism"
@@ -2349,6 +2373,238 @@
    "Look": {
     "Scene": "light_infantry",
     "Faction": "han"
+   }
+  },
+  "lidian": {
+   "Name": "이전",
+   "Biography": "조조군의 장수. 글을 좋아하고 남과 공을 다투지 않는 선비 같은 무장.",
+   "Class": "crossbow",
+   "Stats": [
+    76,
+    72,
+    74,
+    64,
+    62,
+    70
+   ],
+   "Level": 12,
+   "Traits": [
+    "patience"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei",
+    "Palette": {
+     "themeA": "#3a5a8a",
+     "iron": "#9a9aa4"
+    }
+   }
+  },
+  "xuhuang": {
+   "Name": "서황",
+   "Biography": "조조군의 장수. 큰 도끼를 쓰며 진을 무너뜨리는 데 능하다.",
+   "Class": "heavy_cavalry",
+   "Stats": [
+    84,
+    90,
+    70,
+    72,
+    66,
+    62
+   ],
+   "Level": 12,
+   "Traits": [
+    "break_formation"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei",
+    "Palette": {
+     "horseSkin": "#6a4a2a",
+     "saddle": "#2a3a70",
+     "iron": "#b0b0b8"
+    }
+   }
+  },
+  "xuchu": {
+   "Name": "허저",
+   "Biography": "조조의 호위 장수. 범 같은 힘으로 호치라 불린다.",
+   "Class": "ruffian",
+   "Stats": [
+    72,
+    96,
+    36,
+    70,
+    60,
+    52
+   ],
+   "Level": 12,
+   "Traits": [
+    "bodyguard"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "wei",
+    "Palette": {
+     "themeA": "#2a3a6a"
+    }
+   }
+  },
+  "xunyu": {
+   "Name": "순욱",
+   "Biography": "조조의 으뜸 모사. 왕을 보좌할 재목이라 불린다.",
+   "Class": "staff_officer",
+   "Stats": [
+    70,
+    40,
+    96,
+    60,
+    70,
+    92
+   ],
+   "Level": 12,
+   "Traits": [
+    "insight"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_slips",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "wei",
+    "Scene": "official_noncombat",
+    "Palette": {
+     "themeA": "#2a3a6a",
+     "themeC": "#a0a0b0"
+    }
+   }
+  },
+  "xunyou": {
+   "Name": "순유",
+   "Biography": "순욱의 조카이자 조조의 군사. 겉으로는 어리숙해 보이나 꾀가 깊다.",
+   "Class": "sorcerer",
+   "Stats": [
+    72,
+    42,
+    94,
+    62,
+    68,
+    74
+   ],
+   "Level": 12,
+   "Traits": [
+    "flood"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "wei",
+    "Palette": {
+     "themeA": "#3a4a7a"
+    }
+   }
+  },
+  "guojia": {
+   "Name": "곽가",
+   "Biography": "조조의 모사. 젊고 거리낌이 없으나 앞일을 귀신같이 내다본다.",
+   "Class": "staff_officer",
+   "Stats": [
+    64,
+    38,
+    98,
+    66,
+    60,
+    80
+   ],
+   "Level": 12,
+   "Traits": [
+    "deep_scheme"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_slips",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "wei",
+    "Scene": "official_noncombat",
+    "Palette": {
+     "themeA": "#4a5a8a",
+     "themeC": "#b0b0c0"
+    }
+   }
+  },
+  "chengyu": {
+   "Name": "정욱",
+   "Biography": "조조의 모사. 성품이 굳세고 꾀가 모질다.",
+   "Class": "staff_officer",
+   "Stats": [
+    80,
+    52,
+    92,
+    62,
+    68,
+    60
+   ],
+   "Level": 12,
+   "Traits": [
+    "cunning"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_slips",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "wei",
+    "Scene": "official_noncombat",
+    "Palette": {
+     "themeA": "#1a2a5a",
+     "themeC": "#8a8aa0"
+    }
+   }
+  },
+  "gaoshun_lu": {
+   "Name": "고순",
+   "Biography": "여포의 장수. 말수가 적고 술을 마시지 않는다. 그가 이끄는 군사는 치는 곳마다 무너뜨린다.",
+   "Class": "heavy_infantry",
+   "Stats": [
+    82,
+    86,
+    55,
+    82,
+    36,
+    58
+   ],
+   "Level": 20,
+   "Traits": [
+    "break_line"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "dong",
+    "Scene": "gaoshun_noncombat",
+    "Portrait": "gaoshun"
    }
   }
  }

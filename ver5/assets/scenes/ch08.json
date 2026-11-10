@@ -2,6 +2,7 @@
  "Scenes": {
   "c08-start": {
    "Map": "S_cliff_coalition",
+   "Music": "sad-melody",
    "Time": "dusk",
    "Nodes": ["c08-start", "c08-01", "c08-02", "c08-03", "c08-04", "c08-05", "c08-06", "c08-07", "c08-08", "c08-09", "c08-10", "c08-g01", "c08-g02", "c08-g03", "c08-g04", "c08-g05", "c08-h01", "c08-h02", "c08-h03", "c08-h04", "c08-h05"],
    "Ambient": [{"Effect": "smoke", "At": [7.25, 1.25]}],
@@ -161,6 +162,7 @@
   },
   "c08-p1": {
    "Map": "S_pingyuan",
+   "Music": "painted-pavilion",
    "Time": "",
    "Nodes": ["c08-p1", "c08-p2", "c08-p3", "c08-p4"],
    "Ambient": [{"Actor": "행인#1", "Patrol": [12, 13]}, {"Actor": "행인#2", "Patrol": [16, 8]}, {"Actor": "행인#3", "Patrol": [12, 1]}, {"Actor": "상인", "Chatter": "싸오, 싸!|기주 쌀 들어왔소"}],

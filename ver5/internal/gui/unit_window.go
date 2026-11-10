@@ -231,8 +231,7 @@ func (g *Game) unitTraits(dst *ebiten.Image, o core.Observation, of *core.Charac
 	default:
 		note = fmt.Sprintf("%s 특성치 %d → %d", g.name(owner.ID), owner.Points, owner.Points-picked.cost)
 	}
-	cardY := min(area.Min.Y+used+6, area.Max.Y-84)
-	g.traitCard(dst, image.Rect(r.Min.X, cardY, r.Max.X, cardY+84), picked.id, picked.group, note)
+	g.traitCardBelow(dst, area, used, picked.id, picked.group, note)
 	if u.readOnly || picked.have || !picked.learnable {
 		return nil
 	}

@@ -7,13 +7,13 @@ import (
 
 // classPools is the classified trait draft (_newfeature.md section 2) as the data bundle teaches it.
 var classPools = map[string][]string{
-	"light_infantry":     {"diagonal", "fire", "first_aid"},
-	"heavy_infantry":     {"deputy_appoint", "brace_prep", "assist"},
+	"light_infantry":     {"diagonal", "fire", "brace_prep"},
+	"heavy_infantry":     {"deputy_appoint", "assist", "ranged_ward"},
 	"guards":             {"castle_defense", "siegecraft", "composure"},
 	"pikeman":            {"deputy_appoint", "long_spear", "pierce"},
 	"light_cavalry":      {"dash", "accuracy_up", "grass_footing"},
-	"heavy_cavalry":      {"deputy_appoint", "charge_strike", "impact"},
-	"royal_guard":        {"gale", "vital_strike", "diagonal"},
+	"heavy_cavalry":      {"deputy_appoint", "counter_ward", "iron_armor"},
+	"royal_guard":        {"diagonal", "charge_strike", "impact", "vital_strike"},
 	"horse_archer":       {"deputy_appoint", "snipe_prep", "aim_prep"},
 	"horse_crossbow":     {"reload_prep", "fire_arrow_art", "rapid_art"},
 	"archer":             {"relief", "accuracy_up", "aim_prep"},
@@ -21,6 +21,7 @@ var classPools = map[string][]string{
 	"repeating_crossbow": {"exhort", "rapid_art", "penetrate_art"},
 	"catapult":           {"siegecraft", "cross_strike", "far_sight"},
 	"bandit":             {"counter_art", "earth", "provoke_prep", "disrupt_prep"},
+	"scholar":            {"fire", "relief", "focus", "meditate_art", "foresight"},
 }
 
 func TestClassPoolsFollowTraitDesign(t *testing.T) {

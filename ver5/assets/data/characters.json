@@ -143,11 +143,11 @@
    "Playable": true,
    "Traits": [
     "supply",
-    "medicine"
+    "dispirit"
    ],
    "Learn": [
     "supply",
-    "medicine"
+    "dispirit"
    ],
    "Equipment": [
     "short_bow",
@@ -353,7 +353,7 @@
    "Equipment": [
     "fangtian_halberd",
     "red_hare",
-    "diamond_armor"
+    "tangni_armor"
    ],
    "Look": {
     "Sprite": "lubu",
@@ -363,6 +363,7 @@
      "royal_guard": "lubu",
      "horse_archer": "lubu_bow"
     },
+    "Scene": "lubu_noncombat",
     "Portrait": "lubu",
     "Faction": "dong"
    }

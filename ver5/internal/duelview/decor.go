@@ -26,6 +26,7 @@ type Decor struct {
 	DustMS    []float64
 	Clash     []Sprite // the flash of a clash, by how far it has faded
 	ClashCrit []Sprite
+	Arrow     []Sprite // an arrow in flight, one frame per heading, turning clockwise from east
 
 	waves map[*Sprite]*[flagFrames]Sprite
 }

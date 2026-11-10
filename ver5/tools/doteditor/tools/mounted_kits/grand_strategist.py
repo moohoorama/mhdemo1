@@ -1,6 +1,6 @@
 """군사: the top civil rank. The 참모 body (ankle-length faction robe, light sash) under a tall black-lacquer 진현관 with
-a gold plaque and two cap ribbons, a white-edged faction cape (披風) from the shoulders, and a gold 여의 (ruyi) in
-the right hand instead of the 참모's fan.
+a gold plaque and two cap ribbons, a white-edged faction cape (披風) from the shoulders, and the 참모's feather fan (staff_officer.fan_at) in the
+right hand.
 
 Head: the 참모 cap head (looks.CAP) with its 4 cap rows replaced by 8 crown rows (crest=4 keeps the face anchor);
 side views lean the crown back over the nape, front views flare its top. Cape: mantle over the shoulders and a back
@@ -8,12 +8,13 @@ panel whose hem swings back a little in walk and hit; seated (exhausted) it stop
 ground behind. Ruyi: gold rod bent forward at the top, a cloud head of three lobes laid out across the view
 (units.facing) so it shows its width from every side.
 
-Attack (formation casting): ruyi raised (0), lifted high (1), thrust forward and down at the ground (2), held (3);
-frames 2 and 3 draw a formation sigil on the ground in front (two rings), linked to the ruyi head by a line in
-frame 2. Raised (0, 1) and guarding, the ruyi uses GOLD_BACK so it never covers the face. Block: blocks.SWORD 'guard' poses with the ruyi held across.
+Attack (formation casting): fan raised (0), lifted high (1), swept forward and down at the ground (2), held (3);
+frames 2 and 3 draw a formation sigil on the ground in front (two rings), linked to the fan by a line in frame 2.
+Raised (0, 1) and guarding, the fan uses staff_officer.FAN_BACK so it never covers the face. Block: blocks.SWORD
+'guard' poses with the fan held across. (The gold ruyi it held before read as a hammer at 1:1.)
 
 Tags: crown and ribbons 1 2 3 -> iron3/iron2 (black lacquer), cape trim 5 6 -> iron1, gold (plaque, ribbon tips,
-ruyi) k l m -> themeC, hair 7 8 9 -> hair1-3, robe, cape, band -> faction.
+no 3D gold now) k l m -> themeC, fan (grid3d.BUCKLER keys A B C) -> themeB, hair 7 8 9 -> hair1-3, robe, cape, band -> faction.
 """
 import numpy as np
 
@@ -25,9 +26,10 @@ looks = B.looks
 
 BLUE, LIGHT_BLUE, GOLD = U.BLUE, U.LIGHT_BLUE, U.GOLD
 TRIM = '#ede1bd'           # ramp 5566
-GOLD_BACK = '#d5a124'      # the same gold, not a weapon colour: stays behind the stamped head (raised, guarding)
+FAN = G.BUCKLER            # the 참모's feather fan, ramp ABCC
+FAN_BACK = '#d7bc7d'       # staff_officer.FAN_BACK
 UP = V([0, 0, 1])
-OUT = V([-.35, 0, 0])      # tips the held ruyi away from the body
+OUT = V([-.35, 0, 0])      # tips the held fan away from the body
 
 # ---- head ----------------------------------------------------------------------------------
 HAT = {
@@ -96,24 +98,6 @@ def cape(p, T, swing=0.):
         panel(top, T([0, .3 + .1 + swing, .42]), .84)
 
 
-def ruyi(hand, d, gold=GOLD):
-    """Gold rod bent forward at the top, cloud head of three lobes across the view (~6 px wide)."""
-    side = U.facing(d)
-    fwd = np.cross(side, d)
-    fwd = fwd if fwd[1] <= 0 else -fwd                             # the head tips away from the body
-    a, b = hand - d*.2, hand + d*.28
-    c = b + d*.2 + fwd*.08
-    m.rod(a, b, .045, gold)
-    m.rod(b, c, .045, gold)
-    up = A.unit(d + fwd*.5)
-    head = c + up*.12
-    m.ell(head + up*.04, [.15]*3, gold)
-    for s in (-1, 1):
-        m.ell(head - up*.05 + side*s*.17, [.1]*3, gold)
-    m.ell(a, [.06]*3, gold)
-    return head
-
-
 def dressed(p, swing=0.):
     _, head = U.soldier(p, 'grand_strategist', weapon=False)
     T = U.transform(p)
@@ -121,18 +105,23 @@ def dressed(p, swing=0.):
     return T, head
 
 
+def fan(hand, d, feathers):
+    from mounted_kits import staff_officer as SO  # imported here: staff_officer imports this module
+    return SO.fan_at(hand, d, feathers)
+
+
 def holding(p, block=False, swing=0.):
     T, head = dressed(p, swing)
     if block:     # held across in front of the chin: kept behind the face
-        ruyi(T(p['hands'][0]), A.unit(V(p['blade'])), GOLD_BACK)
+        fan(T(p['hands'][0]), A.unit(V(p['blade'])), FAN_BACK)
     elif p.get('seated'):  # propped up beside the knee (lying forward it would leave the cell)
-        ruyi(T(p['hands'][0]), A.unit(V([-.3, -.55, .6])))
+        fan(T(p['hands'][0]), A.unit(V([-.3, -.55, .6])), FAN)
     else:
-        ruyi(T(p['hands'][0]), A.unit(V(p['blade']) + OUT))
+        fan(T(p['hands'][0]), A.unit(V(p['blade']) + OUT), FAN)
     return head
 
 
-# attack: hand, ruyi direction, body
+# attack: hand, fan direction, body
 ATTACK = [dict(hand=[-.45, -.42, 1.32], dir=[-.1, -.25, 1], lean=.02),
           dict(hand=[-.6, -.2, 1.62], dir=[-.25, .15, 1], lean=-.03, crouch=.2, bob=-.02),
           dict(hand=[-.3, -.86, 1.28], dir=[0, -.75, -.55], lean=.18, lunge=.5, bob=-.04),
@@ -156,7 +145,7 @@ def casting(f):
     p['hands'][0] = list(k['hand'])
     p['elbows'][0] = ((SHOULDER + V(k['hand']))/2 + [-.16, .06, -.08]).tolist()
     T, head = dressed(p, swing=.08 if f >= 2 else 0)
-    tip = ruyi(T(k['hand']), A.unit(V(k['dir'])), GOLD_BACK if f < 2 else GOLD)
+    tip = fan(T(k['hand']), A.unit(V(k['dir'])), FAN_BACK if f < 2 else FAN)
     effects = []
     if f == 2:
         effects = sigil(1.) + [dict(kind='lines', segments=[(tip, SIGIL)], alpha=.7, layer='over')]
@@ -187,9 +176,9 @@ def block(f):
 
 def make():
     U.KITS['grand_strategist'] = KIT
-    R.add_ramps({TRIM: '5566', GOLD_BACK: 'kllm'})
+    R.add_ramps({TRIM: '5566', FAN: 'ABCC', FAN_BACK: 'ABCC'})
     M.KEY2TAG.update({'7': 'g', '8': 'h', '9': 'i'})  # hair keys
-    U.WEAPON_COLORS.add(GOLD)  # the ruyi (the only 3D gold) is drawn over the stamped head where it passes in front
+    U.WEAPON_COLORS.add(FAN)  # the fan is drawn over the stamped head where it passes in front
 
     def build(row, f, style=None):
         return block(f) if row == B.BLOCK else grand(row, f)

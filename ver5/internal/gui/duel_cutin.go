@@ -98,6 +98,7 @@ func (g *Game) drawCutIn(dst *ebiten.Image) {
 	t := c.t
 	charge, clash, stampL, stampR, _, flash, open, _ := cutTimes()
 	W, H := float64(uiW), float64(uiH)
+	fullW := W + 1 // uiW rounds the device width down: the fills reach its last pixels
 	bar := cutBarFrac * H
 	top, bandH := bar, H-2*bar
 
@@ -115,16 +116,16 @@ func (g *Game) drawCutIn(dst *ebiten.Image) {
 			s := float64(i) / 15
 			d := math.Abs(s-.5) * 2
 			c := color.NRGBA{R: uint8(26 + 32*(1-d)*.5), G: uint8(8 + 10*(1-d)*.5), B: uint8(5 + 5*(1-d)*.5), A: 255}
-			rect(dst, 0, float32(top+bandH*s), float32(W), float32(bandH/15+1), c)
+			rect(dst, 0, float32(top+bandH*s), float32(fullW), float32(bandH/15+1), c)
 		}
-		band := dst.SubImage(image.Rect(0, int(y0*drawPx), int(W*drawPx), int(y1*drawPx))).(*ebiten.Image)
+		band := dst.SubImage(image.Rect(0, int(y0*drawPx), int(math.Ceil(fullW*drawPx)), int(y1*drawPx))).(*ebiten.Image)
 		g.drawCutPanes(band, v, t, top, bandH, charge, clash)
 		g.drawCutNames(band, v, t, top, bandH, stampL, stampR)
 	}
-	rect(dst, 0, float32(-bar*(1-k)), float32(W), float32(bar), color.NRGBA{R: 6, G: 4, B: 3, A: 255})
-	rect(dst, 0, float32(bar*k-2), float32(W), 2, color.NRGBA{R: gold.R, G: gold.G, B: gold.B, A: 204})
-	rect(dst, 0, float32(H-bar*k), float32(W), float32(bar), color.NRGBA{R: 6, G: 4, B: 3, A: 255})
-	rect(dst, 0, float32(H-bar*k), float32(W), 2, color.NRGBA{R: gold.R, G: gold.G, B: gold.B, A: 204})
+	rect(dst, 0, float32(-bar*(1-k)), float32(fullW), float32(bar), color.NRGBA{R: 6, G: 4, B: 3, A: 255})
+	rect(dst, 0, float32(bar*k-2), float32(fullW), 2, color.NRGBA{R: gold.R, G: gold.G, B: gold.B, A: 204})
+	rect(dst, 0, float32(H-bar*k), float32(fullW), float32(bar+1), color.NRGBA{R: 6, G: 4, B: 3, A: 255})
+	rect(dst, 0, float32(H-bar*k), float32(fullW), 2, color.NRGBA{R: gold.R, G: gold.G, B: gold.B, A: 204})
 
 	// the white flashes: the impact, and the cut back to the duel
 	a := 0.0
@@ -136,7 +137,7 @@ func (g *Game) drawCutIn(dst *ebiten.Image) {
 		a = .9 * keyframe(f, []float64{0, .3, 1}, []float64{0, 1, 0})
 	}
 	if a > 0 {
-		rect(dst, 0, 0, float32(W), float32(H), color.NRGBA{R: 255, G: 255, B: 255, A: uint8(255 * a)})
+		rect(dst, 0, 0, float32(fullW), float32(H+1), color.NRGBA{R: 255, G: 255, B: 255, A: uint8(255 * a)})
 	}
 }
 
@@ -153,7 +154,7 @@ func (g *Game) drawCutPanes(dst *ebiten.Image, v *duelview.View, t, top, bandH, 
 	if t < charge {
 		return
 	}
-	W := float64(uiW)
+	W := float64(uiW) + 1
 	ck := bezier(.55, 0, .9, .6, phase(t, charge, cutCharge))
 	recoil := keyframe(phase(t, clash, .26), []float64{0, .5, 1}, []float64{0, .025, 0})
 	drift := phase(t, clash+cutClash+cutStamp*2+cutBetween, 1.4) * .03

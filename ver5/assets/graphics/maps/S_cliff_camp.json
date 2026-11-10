@@ -4,6 +4,7 @@
  "format": 2,
  "size": [12,10],
  "origin": [-24,-20],
+ "grass": {"hue":-4,"sat":0.95},
  "ground": [
   "cccccccccccccccc........................................dddddddddddddddd",
   "cccccccccccccccc........................................dddddddddddddddd",

@@ -357,6 +357,14 @@ STORY.update({
                             guard=U.RED, tabard=U.GOLD),
                 'light_infantry', tags('hair', ['#7a4e86', '#4e2e5a', '#2c1834'])
                 + tags('themeB', ['#b8484a', '#86282e', '#521a1e'])),
+    # 여포 (2026-11-08): his battle sheet off the horse — the gold helmet with the two pheasant tail feathers (in his
+    # bright red themeB, as on the sheet), beardless; team tunic under dark iron armour, gold shoulders and belt, a
+    # red robe (themeB) and the red cape (themeA) down his back. His tags are the battle sheet's own.
+    'lubu': ('여포', scene('lubu', 1, Hd.heads(Hd.crested(L.GOLD_IRON, {d: Hd.recolor(r, {'h': 'd', 'i': 'c'})
+                                                                      for d, r in Hd.FEATHERS.items()}),
+                                           crest=Hd.FEATHER_ROWS),
+                         cloth=U.STEEL, robe=U.RED, guard=U.BLUE, shoulder=U.GOLD, tabard=U.GOLD, cape=LEATHER),
+             'lubu', HAIR),
 })
 # 제갈현's nephews and niece (13장, 2026-11-04): children of a gentry house on the road, plain but decent and a little
 # worn (tools/unit3d/scene_people.py child): the boy in a slate-blue coat and trousers, the girl in a dusty rose robe
@@ -373,7 +381,7 @@ STORY.update({
 })
 STORY_POSES = {k: ['sit'] for k in ('luzhi', 'huangfusong', 'xiahoudun', 'liuyan', 'taoqian', 'kongrong', 'zoujing',
                                      'gaoshun', 'caocao_hat', 'caocao_plain', 'zhugeliang', 'simayi', 'huangzhong',
-                                     'zhangliao', 'zhouyu', 'luxun', 'lumeng', 'sunquan')}
+                                     'zhangliao', 'zhouyu', 'luxun', 'lumeng', 'sunquan', 'lubu')}
 STORY_POSES['xiahoudun'] = ['sit', 'fist']
 STORY_POSES['jianyong'] = ['sit']
 STORY_POSES['taoqian'] = ['sit', 'bed']  # 도겸 on his sickbed (서주 양도, his last words)

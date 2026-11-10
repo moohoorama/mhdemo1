@@ -244,6 +244,14 @@ func (e *Engine) cost(u *Unit, s content.Skill) int {
 	return n
 }
 
+// hpCost is the HP the skill takes from its user (명상), at least 1 when it asks any.
+func (e *Engine) hpCost(u *Unit, s content.Skill) int {
+	if s.HPCost <= 0 {
+		return 0
+	}
+	return max(1, int(math.Ceil(float64(e.stats(u).MaxHP)*s.HPCost)))
+}
+
 // payable reports whether the unit can pay n spell points, with HP when it has blood cost; the HP owed is returned.
 func (e *Engine) payable(u *Unit, n int) (hp int, ok bool) {
 	if u.MP >= n {
@@ -415,6 +423,9 @@ func (e *Engine) validateSkill(u *Unit, c Command, s content.Skill) (*Unit, erro
 	}
 	if _, ok := e.payable(u, e.cost(u, s)); !ok {
 		return nil, fail("InsufficientMP")
+	}
+	if hp := e.hpCost(u, s); hp > 0 && u.HP <= hp {
+		return nil, fail("InsufficientHP")
 	}
 	if s.Mode == content.ModeMelee && !e.canMelee(u) || s.Mode == content.ModeRanged && !e.canRange(u) {
 		return nil, fail("WrongAttackMode")

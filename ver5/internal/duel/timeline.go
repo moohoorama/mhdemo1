@@ -17,6 +17,7 @@ type Actor struct {
 	Hold                      int     // -1 animates; otherwise a fixed frame
 	Fade                      float64 // 0 opaque, 1 invisible
 	Gray                      float64 // 0 coloured, 1 grayscale
+	Alt                       bool    // drawn in the fighter's other look: the bow he draws in a feigned flight or a shot
 }
 
 // ScreenPosition projects the duel axis and its perpendicular lane onto the arena.
@@ -39,7 +40,13 @@ type State struct {
 	Critical             bool
 	Attacker             int
 	ShakeSide            int // -1 shakes both; otherwise only this actor
-	Done                 bool
+	// Arrow is how far the arrow of a shoot beat has flown, from its Attacker toward the other, 0 to 1; Arrowing
+	// is set while it is in the air.
+	Arrow    float64
+	Arrowing bool
+	// OnTarget puts the impact on the one struck instead of between the two, for a blow that comes from afar.
+	OnTarget bool
+	Done     bool
 }
 
 type Beat struct {
@@ -206,7 +213,7 @@ func apply(s *State, b Beat, t float64) {
 		}
 		a.Facing = a.facingToward(s.Actors[target])
 	}
-	s.Flash, s.Impact, s.Critical = 0, 0, false
+	s.Flash, s.Impact, s.Critical, s.Arrow, s.Arrowing, s.OnTarget = 0, 0, false, 0, false, false
 	s.ShakeSide = -1
 	s.Attacker = b.Side
 	s.Actors[b.Side].Speech = b.Speech
@@ -474,6 +481,47 @@ func apply(s *State, b Beat, t float64) {
 			if sign > 0 {
 				s.Actors[i].Facing = "SE"
 			}
+		}
+	case "feigned-flight":
+		// The runner turns and rides off as if beaten, the other after him; halfway he takes up his bow.
+		runner, chaser := b.Side, defender(b.Side)
+		sign := -1.0
+		if runner == 1 {
+			sign = 1
+		}
+		move(runner, sign*330, min(1, p/.85))
+		s.Actors[runner].Lane = 50 * math.Sin(math.Pi*min(1, p/.85))
+		move(chaser, sign*110, (p-.2)/.65)
+		for i := range 2 {
+			s.Actors[i].Facing = "NW"
+			if sign > 0 {
+				s.Actors[i].Facing = "SE"
+			}
+		}
+		if p >= .5 {
+			s.Actors[runner].Alt = true
+		}
+	case "shoot":
+		// The shooter turns in the saddle and looses; the arrow crosses the gap and strikes hard.
+		const loose, strike = .35, .7
+		att, def := b.Side, defender(b.Side)
+		a, d := &s.Actors[att], &s.Actors[def]
+		a.Alt = true
+		a.Facing, d.Facing = a.facingToward(*d), d.facingToward(*a)
+		a.Animation, a.MS = "attack", max(0, t-.1)*1000
+		if t >= loose && t < strike {
+			s.Arrowing, s.Arrow = true, (t-loose)/(strike-loose)
+		}
+		if t >= strike {
+			d.Animation, d.MS = "hit", (t-strike)*1000
+			direction := 1.0
+			if from[att] > from[def] {
+				direction = -1
+			}
+			d.Position += direction * 40 * math.Sin(math.Pi/2*min(1, (t-strike)/.35))
+			s.Impact = max(0, 1-(t-strike)/.3)
+			s.Critical, s.OnTarget = true, true
+			s.Flash = s.Impact * .65
 		}
 	case "escaped":
 		s.Actors[b.Side].Facing = facing[b.Side]

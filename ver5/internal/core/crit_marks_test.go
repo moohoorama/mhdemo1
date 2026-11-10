@@ -53,7 +53,7 @@ func TestMarksChangeTheGroundTheyLieOn(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 	for family := range d.Terrain {
-		for _, ground := range []byte{'g', 'd'} {
+		for _, ground := range []byte{'g', 'd', 'l', 'u'} {
 			bare := d.Move(family, content.Cell{Ground: ground, Structure: content.NoLayer, State: content.NoLayer}, false)
 			wet := d.Move(family, content.Cell{Ground: ground, Structure: content.NoLayer, State: 'w'}, false)
 			rubble := d.Move(family, content.Cell{Ground: ground, Structure: content.NoLayer, State: 'r'}, false)
@@ -66,6 +66,11 @@ func TestMarksChangeTheGroundTheyLieOn(t *testing.T) {
 		under := d.Move(family, forest, false)
 		forest.State = 'w'
 		assert.InDelta(t, under.Factor-.1, d.Move(family, forest, false).Factor, 1e-9, family+": also under trees")
+	}
+	for _, ground := range []byte{'g', 'd', 'i', 'l', 'u'} {
+		for _, mark := range []byte{'e', 'w', 'r'} {
+			assert.Empty(t, d.ValidCell(content.Cell{Ground: ground, Structure: content.NoLayer, State: mark}), "a mark lies on every open ground")
+		}
 	}
 	assert.Equal(t, map[string]string{"fire": "e", "water": "w", "earth": "r"}, d.Rules.CritMarks)
 	assert.Equal(t, 3, d.Rules.CritMarkTurns)

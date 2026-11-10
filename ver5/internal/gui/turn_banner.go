@@ -34,6 +34,14 @@ const (
 
 func (g *Game) showTurn(round int, faction, army string) {
 	g.turnBanner = &turnBanner{round: round, faction: faction, army: army}
+	if faction == "enemy" {
+		g.sfx("turn-enemy")
+	} else {
+		g.sfx("turn")
+	}
+	if faction == "ally" {
+		g.glideToLead()
+	}
 }
 
 // showOpeningTurn names the first turn once the battle's opening (its cutscene, its briefing) is

@@ -42,6 +42,7 @@ type Settings struct {
 	XPPct       int    `json:"xp_pct,omitempty"`        // experience gained in percent; 0 is DefaultScalePct
 	NoGuide     bool   `json:"no_guide,omitempty"`      // the walk does not mark where the story goes on
 	NoGoalGuide bool   `json:"no_goal_guide,omitempty"` // the battle does not outline what it is won and lost by
+	Sound       string `json:"sound,omitempty"`         // the GUI's sound: "" all, "sfx" effects only, "music" music only, "off"
 }
 
 // ScalePcts are the percents the player may choose for the damage and experience scales.
@@ -68,7 +69,7 @@ func (s Settings) XPScale() int {
 
 func DefaultSettings() Settings { return Settings{Replay: "together", Detail: true} }
 func (s Settings) Validate() error {
-	if s.Replay != "together" && s.Replay != "one" || s.TextDelayMS < 0 || s.TextDelayMS > 1000 || s.UIScale != 0 && (s.UIScale < 80 || s.UIScale > 160) || s.DamagePct != 0 && !slices.Contains(ScalePcts, s.DamagePct) || s.XPPct != 0 && !slices.Contains(ScalePcts, s.XPPct) {
+	if s.Replay != "together" && s.Replay != "one" || s.TextDelayMS < 0 || s.TextDelayMS > 1000 || s.UIScale != 0 && (s.UIScale < 80 || s.UIScale > 160) || s.DamagePct != 0 && !slices.Contains(ScalePcts, s.DamagePct) || s.XPPct != 0 && !slices.Contains(ScalePcts, s.XPPct) || !slices.Contains([]string{"", "sfx", "music", "off"}, s.Sound) {
 		return fmt.Errorf("InvalidSettings")
 	}
 	return nil

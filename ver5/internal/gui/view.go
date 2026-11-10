@@ -24,6 +24,7 @@ func (g *Game) briefed() bool {
 // advance moves the clock, the replay and every unit's animation by one frame.
 func (g *Game) advance(dt float64) {
 	g.uiSeconds += dt
+	g.textSeconds += dt * float64(g.speed)
 	g.advanceTurnBanner(dt)
 	if g.zoomTo != g.zoomFrom && g.zoomT < .5 {
 		g.zoomT = math.Min(.5, g.zoomT+dt)
@@ -33,8 +34,8 @@ func (g *Game) advance(dt float64) {
 		}
 		g.zoom = g.zoomFrom + (g.zoomTo-g.zoomFrom)*t
 	}
-	if g.player.ai && g.player.Busy() {
-		g.advancePan(dt * float64(g.speed)) // an AI turn's camera keeps up with its replay
+	if g.player.Busy() {
+		g.advancePan(dt * float64(g.speed)) // a replay's camera keeps up with its beats
 	} else {
 		g.advancePan(dt)
 	}
@@ -54,6 +55,7 @@ func (g *Game) advance(dt float64) {
 	for _, u := range g.vis {
 		u.update(dt)
 	}
+	g.followWalk(dt)
 	g.updateEffects(dt)
 	g.updateScene(dt)
 	keptToasts := g.toasts[:0]
@@ -84,6 +86,7 @@ func (g *Game) advance(dt float64) {
 		if o.Phase == "deployment" || o.Phase == "battle" || o.Phase == "result" {
 			g.sync(o)
 		}
+		g.watchSubs(o)
 	}
 }
 
@@ -107,11 +110,7 @@ func (g *Game) ensureField(o core.Observation) {
 	g.clearOrder()
 	g.intro = nil
 	g.selected = ""
-	g.battleXP, g.startLevel = map[string]int{}, map[string]int{}
-	g.resultPage = 0
-	for _, c := range o.Characters {
-		g.startLevel[c.ID] = c.Level
-	}
+	g.resultSkip = false
 	if o.Phase == "battle" && o.Round == 1 && o.Turn == "ally" {
 		g.modals = append(g.modals, &modal{kind: "objective"})
 	}

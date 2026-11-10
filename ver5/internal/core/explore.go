@@ -105,7 +105,8 @@ func (e *Engine) visitor(key string) (Visitor, bool) {
 }
 
 // explore runs a command of the walk. walk: the hero stands at small tile (X, Y) of area Option facing Target,
-// another area only through an open exit; talk: talking to Target starts their event; sortie: the confidant
+// another area only through an open exit; with Option empty the hero goes through the open exit at (X, Y) that leads
+// into an event, which starts; talk: talking to Target starts their event; sortie: the confidant
 // Target sends the party on with the story; buy, sell: Count of Item at the shop of the person Target.
 func (e *Engine) explore(c Command) error {
 	if !e.Walking() {
@@ -115,6 +116,9 @@ func (e *Engine) explore(c Command) error {
 	case "walk":
 		if !faces[c.Target] {
 			return fail("InvalidFace")
+		}
+		if c.Option == "" {
+			return e.leaveBy([2]int{c.X, c.Y}, c.Target)
 		}
 		if c.Option != e.state.Spot.Area {
 			open := e.OpenExits()
@@ -182,16 +186,30 @@ func (e *Engine) explore(c Command) error {
 	return nil
 }
 
+// leaveBy sends the hero through the open exit at small tile at that leads into an event, and starts the event.
+func (e *Engine) leaveBy(at [2]int, face string) error {
+	for _, x := range e.area().Exits {
+		if x.Node != "" && x.At == at && e.ExitOpen(x) {
+			e.state.Spot.At, e.state.Spot.Face = at, face
+			e.state.Node = x.Node
+			e.enter()
+			return nil
+		}
+	}
+	return fail("ExitShut")
+}
+
 var faces = map[string]bool{"NE": true, "NW": true, "SE": true, "SW": true}
 
-// Goal is someone the story waits on in the walk, reachable now through open exits: in Area, by key Person. First is
-// the exit of the hero's area that leads toward them, -1 when they stand in it. Side marks a side event, Sortie the
-// confidant (a goal only while no main event is due).
+// Goal is someone the story waits on in the walk, reachable now through open exits: in Area, by key Person, or an
+// exit of Area that leads into an event (Person empty). First is the exit of the hero's area that leads toward them,
+// -1 when they stand in it. Side marks a side event, Sortie the confidant (a goal only while no main event is due).
 type Goal struct {
 	Area, Person string
 	First        int
 	Side, Sortie bool
 	path         []Command
+	do           Command // what reaching the goal does: talk, sortie or the walk through the exit
 }
 
 // Goals are the events due anywhere the hero can walk to now, nearest first, then the confidant's sortie when no
@@ -216,18 +234,27 @@ func (e *Engine) Goals() []Goal {
 			path = append([]Command{{Kind: "walk", Option: at, X: s.At[0], Y: s.At[1], Target: s.Face}}, path...)
 		}
 		for _, v := range t.Visitors() {
-			g := Goal{Area: id, Person: v.Key, First: first[id], Side: v.Side, path: path}
+			g := Goal{Area: id, Person: v.Key, First: first[id], Side: v.Side, path: path, do: Command{Kind: "talk", Target: v.Key}}
 			switch v.Do {
 			case "event":
 				events, main = append(events, g), main || !v.Side
 			case "sortie":
-				g.Sortie = true
+				g.Sortie, g.do.Kind = true, "sortie"
 				sorties = append(sorties, g)
 			}
 		}
 		open := t.OpenExits()
 		for i, ex := range x.Areas[id].Exits {
-			if _, seen := prev[ex.To]; open[i] && !seen {
+			if open[i] && ex.Node != "" {
+				g := Goal{Area: id, First: first[id], path: path, do: Command{Kind: "walk", X: ex.At[0], Y: ex.At[1], Target: "NE"}}
+				if id == start {
+					g.First = i
+				}
+				events, main = append(events, g), true
+			}
+		}
+		for i, ex := range x.Areas[id].Exits {
+			if _, seen := prev[ex.To]; open[i] && ex.To != "" && !seen {
 				prev[ex.To] = id
 				first[ex.To] = first[id]
 				if id == start {
@@ -261,9 +288,5 @@ func (e *Engine) ExploreNext() []Command {
 		return nil
 	}
 	g := goals[pick]
-	kind := "talk"
-	if g.Sortie {
-		kind = "sortie"
-	}
-	return append(append([]Command{}, g.path...), Command{Kind: kind, Target: g.Person})
+	return append(append([]Command{}, g.path...), g.do)
 }

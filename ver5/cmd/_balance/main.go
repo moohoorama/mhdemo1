@@ -25,7 +25,7 @@ import (
 func main() {
 	dir := flag.String("content", "assets/data", "content directory")
 	only := flag.String("stage", "", "only this stage id")
-	player := flag.String("player", "rush", "rush (nearest enemy only) or ai (the game's own AI)")
+	player := flag.String("player", "rush", "rush (nearest enemy only), ai (the game's own AI) or idle (the player's officers only wait: how long the AI allies hold alone)")
 	seeds := flag.Int("seeds", 5, "seeds per stage")
 	first := flag.Int("first", 1, "first seed")
 	damage := flag.Int("damage", storage.DefaultScalePct, "damage scale in percent, as the settings set it")
@@ -106,7 +106,7 @@ func play(d *content.Data, i, level int, seed uint64, player string, damage, xp 
 	dd.Characters = maps.Clone(d.Characters)
 	for id, c := range dd.Characters {
 		if c.Playable {
-			c.Level, c.Points = level, 100*(level-1)
+			c.Level = level
 			dd.Characters[id] = c
 		}
 	}
@@ -149,15 +149,18 @@ func play(d *content.Data, i, level int, seed uint64, player string, damage, xp 
 			}
 		}
 		next := ai.Next
-		if player == "rush" {
+		switch player {
+		case "rush":
 			next = ai.RushNext
+		case "idle":
+			next = idleNext
 		}
 		c, err := next(e)
 		check(err)
 		r, err := e.Apply(c)
 		check(err)
 		for _, ev := range r.Events {
-			if show && (ev.Kind == "retreat" || ev.Kind == "death" || ev.Kind == "duel" || ev.Kind == "speech" || ev.Kind == "damage" || ev.Kind == "critical") {
+			if show && (ev.Kind == "heal" || ev.Kind == "item" || ev.Kind == "recover-hp" || ev.Kind == "pouch-heal" || ev.Kind == "retreat" || ev.Kind == "death" || ev.Kind == "duel" || ev.Kind == "speech" || ev.Kind == "damage" || ev.Kind == "critical") {
 				fmt.Printf("    r%d %s %s %s%s %d", e.Observe().Round, ev.Kind, ev.Actor, ev.Target, ev.DuelID, ev.Amount)
 				if ev.Text == "flight" {
 					for _, u := range e.Observe().UnitViews {
@@ -238,4 +241,17 @@ func check(err error) {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+}
+
+// idleNext lets the player's officers stand where they were deployed; everyone else plays as ai.Next does.
+func idleNext(e *core.Engine) (core.Command, error) {
+	o := e.Observe()
+	if o.Phase == "battle" && len(o.Learning) == 0 {
+		for _, u := range o.UnitViews {
+			if u.ActsIn(o.Turn, o.Army) && u.HP > 0 && !u.Done && u.Faction == "ally" && !u.AI {
+				return core.Command{Kind: "wait", Actor: u.ID}, nil
+			}
+		}
+	}
+	return ai.Next(e)
 }

@@ -33,6 +33,7 @@ func Start(root string) error {
 			startErr = err
 			return
 		}
+		_ = g.EnableSound() // the game plays on silent without it
 		ebitenmobile.SetGame(g)
 	})
 	return startErr

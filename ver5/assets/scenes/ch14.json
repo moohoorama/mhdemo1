@@ -301,6 +301,57 @@
      ]
     ]
    }
+  },
+  "c14-retreat": {
+   "Map": "S_army_camp",
+   "Music": "sad-melody",
+   "Time": "night",
+   "Nodes": ["c14-retreat", "c14-r01", "c14-r02", "c14-r03", "c14-r04", "c14-r05", "c14-r06", "c14-r07"],
+   "Ambient": [{"CamAt": [3, 6]}],
+   "Cast": {
+    "관우": {"At": [1, 5], "Face": "SW"},
+    "유비": {"At": [2, 5], "Face": "SW"},
+    "장비": {"At": [3, 5], "Face": "SW"},
+    "간옹": {"At": [4, 5], "Face": "SW"},
+    "손건": {"At": [5, 5], "Face": "SW"},
+    "미축": {"At": [1, 6], "Face": "SE"},
+    "미방": {"At": [1, 7], "Face": "SE"},
+    "고순": {"At": [0, 5], "Face": "SW", "If": ["party:gaoshun"]},
+    "병사": {"At": [2, 7], "Face": "NE", "Sprite": "wounded_noncombat", "Faction": "shu", "Off": true}
+   },
+   "Beats": {
+    "c14-r01": [
+     [
+      [{"Actor": "병사", "Enter": [6, 7], "Move": [2, 7], "Speed": 0.7}],
+      [{"Actor": "병사", "Face": "NE"}]
+     ]
+    ],
+    "c14-r03": [
+     [
+      [{"Actor": "장비", "Play": "action", "Shake": 0.25}]
+     ]
+    ],
+    "c14-r04": [
+     [
+      [{"Actor": "관우", "Face": "SE"}]
+     ]
+    ],
+    "c14-r05": [
+     [
+      [{"Actor": "미축", "Face": "NE"}, {"Actor": "미축", "Play": "action"}]
+     ]
+    ],
+    "c14-r06": [
+     [
+      [{"Actor": "유비", "Emote": "…"}]
+     ]
+    ],
+    "c14-r07": [
+     [
+      [{"Actor": "유비", "Play": "action"}]
+     ]
+    ]
+   }
   }
  }
 }

@@ -1,0 +1,22 @@
+# c15-alarm  S_xiaopei_office  ch15  origin -1 -1
+Pil#####################Pil
+###...Cdl###Bnr.........Lnt
+###......Liu.........Map...
+###Wpn...Dsk...Jia......Jar
+###WpnGuaSunZhaMifTbl......
+###ArmMiz...Gao............
+PilLnt.....................
+
+Liu 유비
+Gua 관우
+Sun 손건
+Zha 장비
+Jia 간옹
+Miz 미축
+Mif 미방
+Gao 고순
+Mes 전령  (light_infantry, off stage, enters later (cell 2 5))
+
+# c15-a04: Mes -> 2 5
+# c15-a08: Gua -> 1 2
+# c15-a09: Mes -> 2 7 and leaves

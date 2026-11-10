@@ -13,7 +13,7 @@ import (
 type battleBubble struct {
 	actor, name, text string
 	typing            typing
-	fading            float64 // when it began to fade out (uiSeconds); 0 while it is shown
+	fading            float64 // when it began to fade out (textSeconds); 0 while it is shown
 }
 
 // speechFade is how long a battlefield line takes to fade out once it is done with.
@@ -25,7 +25,7 @@ func (g *Game) dropSpeech() {
 		return
 	}
 	for _, b := range g.player.Speech {
-		b.fading = g.uiSeconds
+		b.fading = g.textSeconds
 		g.player.Fading = append(g.player.Fading, b)
 	}
 	g.player.Speech = nil
@@ -36,7 +36,7 @@ func (g *Game) dropSpeech() {
 func (g *Game) rushSpeech() {
 	typing := false
 	for _, b := range g.player.Speech {
-		if n := len([]rune(b.text)); g.letters(b.typing, n, g.uiSeconds) < n {
+		if n := len([]rune(b.text)); g.letters(b.typing, n, g.textSeconds) < n {
 			typing = true
 		}
 	}
@@ -44,41 +44,37 @@ func (g *Game) rushSpeech() {
 		g.player.nextLine = true
 	}
 	for _, b := range g.player.Speech {
-		if n := len([]rune(b.text)); g.letters(b.typing, n, g.uiSeconds) < n && math.IsInf(b.typing.rush, 1) {
-			b.typing.rush = g.uiSeconds
+		if n := len([]rune(b.text)); g.letters(b.typing, n, g.textSeconds) < n && math.IsInf(b.typing.rush, 1) {
+			b.typing.rush = g.textSeconds
 		}
 	}
 }
 
 func (g *Game) showBattleSpeech(lines []content.Speech) {
 	g.dropSpeech()
-	var cx, cy float64
-	count := 0
+	var cells []content.Point
 	for _, line := range lines {
-		g.player.Speech = append(g.player.Speech, &battleBubble{actor: line.Actor, name: g.name(line.Actor), text: line.Text, typing: startTyping(g.uiSeconds)})
+		g.player.Speech = append(g.player.Speech, &battleBubble{actor: line.Actor, name: g.name(line.Actor), text: line.Text, typing: startTyping(g.textSeconds)})
 		if u := g.unitAt(line.Actor); u != nil {
-			x, y := g.field.Center(u.u, u.v)
-			cx += x
-			cy += y
-			count++
+			cells = append(cells, content.Point{X: int(math.Round(u.u)), Y: int(math.Round(u.v))})
 		}
 	}
-	if count > 0 {
-		g.camX, g.camY = cx/float64(count), cy/float64(count)
+	if len(cells) > 0 && g.field != nil && !g.onScreen(cells) {
+		g.panTo(g.actionCenter(cells)) // the speakers glide into view
 	}
 }
 
 func (g *Game) drawBattleSpeech(dst *ebiten.Image) {
 	kept := g.player.Fading[:0]
 	for _, b := range g.player.Fading {
-		if g.uiSeconds-b.fading < speechFade {
+		if g.textSeconds-b.fading < speechFade {
 			kept = append(kept, b)
 		}
 	}
 	g.player.Fading = kept
 	var placed []image.Rectangle
 	for _, bubble := range g.player.Fading {
-		g.drawBubble(dst, bubble, &placed, 1-(g.uiSeconds-bubble.fading)/speechFade)
+		g.drawBubble(dst, bubble, &placed, 1-(g.textSeconds-bubble.fading)/speechFade)
 	}
 	placed = nil
 	for _, bubble := range g.player.Speech {
@@ -111,7 +107,7 @@ func (g *Game) drawBubble(dst *ebiten.Image, bubble *battleBubble, placed *[]ima
 	}
 	*placed = append(*placed, r)
 	shown := -1 // the whole line, once it is out
-	if n, out := len([]rune(bubble.text)), g.letters(bubble.typing, len([]rune(bubble.text)), g.uiSeconds); out < n && bubble.fading == 0 {
+	if n, out := len([]rune(bubble.text)), g.letters(bubble.typing, len([]rune(bubble.text)), g.textSeconds); out < n && bubble.fading == 0 {
 		shown = out
 	}
 	g.assets.Bubble.DrawTyped(dst, bubble.name, bubble.text, shown, duelview.Tail{}, float64(px)*drawPx, float64(py)*drawPx, drawPx*k, alpha)

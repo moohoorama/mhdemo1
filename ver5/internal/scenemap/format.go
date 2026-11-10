@@ -11,6 +11,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+
+	"srpg/internal/content"
 )
 
 // Map is a scene map: what lies on each small tile and what stands where. Everything else comes from the rules.
@@ -28,6 +30,8 @@ type Map struct {
 	Height  []string `json:"height,omitempty"`
 	Objects []Object `json:"objects"`
 	Walls   []Wall   `json:"walls,omitempty"`
+	// Grass turns the map's grass toward its climate (content.GrassTint); nil keeps the tileset's.
+	Grass *content.GrassTint `json:"grass,omitempty"`
 }
 
 // Object stands with its anchor DX, DY canvas pixels from the centre of small tile (U, V).
@@ -117,6 +121,13 @@ func (m *Map) Encode() ([]byte, error) {
 	}{{"id", m.ID}, {"name", m.Name}, {"format", m.Format}, {"size", m.Size}, {"origin", m.Origin}} {
 		fmt.Fprintf(&b, " %q: ", f.key)
 		if err := value(f.v); err != nil {
+			return nil, err
+		}
+		b.WriteString(",\n")
+	}
+	if m.Grass != nil {
+		b.WriteString(` "grass": `)
+		if err := value(m.Grass); err != nil {
 			return nil, err
 		}
 		b.WriteString(",\n")

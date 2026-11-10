@@ -90,7 +90,6 @@ func TestRenderedCombatFollowupsAndResults(t *testing.T) {
 	require.NoError(t, <-finished)
 	require.NoError(t, p.err)
 	require.True(t, p.sawWindup)
-	require.Equal(t, 2, g.resultPage)
 }
 
 type combatResultsRenderTest struct {
@@ -109,21 +108,11 @@ func (p *combatResultsRenderTest) Update() error {
 	}
 	g := p.g
 	if p.results {
-		if !p.drawn {
-			return nil
-		}
-		if g.resultPage == 2 {
+		if p.drawn {
 			return ebiten.Termination
 		}
-		for _, b := range g.buttons {
-			if b.label == "다음" {
-				b.click()
-				p.drawn = false
-				return nil
-			}
-		}
-		p.err = fmt.Errorf("result next-page button missing")
-		return ebiten.Termination
+		g.resultSkip = true
+		return nil
 	}
 	g.player.Update(1.0 / 60)
 	for _, u := range g.vis {
@@ -153,7 +142,7 @@ func (p *combatResultsRenderTest) Draw(dst *ebiten.Image) {
 	if p.results {
 		p.g.result(dst, p.result)
 		if !p.drawn {
-			p.err = saveDuelFrame(dst, filepath.Join(p.out, fmt.Sprintf("result-page-%d.png", p.g.resultPage+1)))
+			p.err = saveDuelFrame(dst, filepath.Join(p.out, "result.png"))
 			p.drawn = true
 		}
 		return

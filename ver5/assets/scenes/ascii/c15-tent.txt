@@ -1,0 +1,18 @@
+# c15-tent  S_tent_mid  ch15  origin -1 -1
+Pil###############Pil
+###.........BnrWpnArm
+###BnrBrzZha...Jia...
+###...Dsk...Map...Sun
+###...Miz......GuaGao
+Pil...BedMif......Brz
+
+Zha 장비
+Jia 간옹
+Sun 손건
+Gua 관우
+Miz 미축
+Mif 미방
+Gao 고순
+Liu 유비  (off stage, enters later (cell 3 3))
+
+# c15-t01: Liu -> 3 3

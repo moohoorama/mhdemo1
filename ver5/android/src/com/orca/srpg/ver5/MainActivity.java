@@ -2,14 +2,17 @@ package com.orca.srpg.ver5;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import com.orca.srpg.mobile.Mobile;
 import com.orca.srpg.mobile.EbitenView;
+import com.orca.srpg.ebitenmobileview.Ebitenmobileview;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -26,6 +29,7 @@ public final class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         immersive();
         TextView loading = new TextView(this);
@@ -42,6 +46,16 @@ public final class MainActivity extends Activity {
                     gameView = new EbitenView(this) {
                         @Override protected void onErrorOnGameUpdate(Exception error) {
                             showError(error);
+                        }
+
+                        // A system gesture (three-finger screenshot swipe, …) cancels the touches, and
+                        // EbitenView ignores ACTION_CANCEL, so the fingers would stay down forever.
+                        @Override public boolean onTouchEvent(MotionEvent e) {
+                            if (e.getActionMasked() != MotionEvent.ACTION_CANCEL) return super.onTouchEvent(e);
+                            for (int i = 0; i < e.getPointerCount(); i++) {
+                                Ebitenmobileview.updateTouchesOnAndroid(MotionEvent.ACTION_UP, e.getPointerId(i), 0, 0);
+                            }
+                            return true;
                         }
                     };
                     setContentView(gameView);
@@ -152,6 +166,13 @@ public final class MainActivity extends Activity {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && gameView != null) {
             if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) Mobile.back();
             return true;
+        }
+        // EbitenView also swallows the volume keys; leave them to the window so they change the volume.
+        switch (event.getKeyCode()) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+            case KeyEvent.KEYCODE_VOLUME_MUTE:
+                return false;
         }
         return super.dispatchKeyEvent(event);
     }

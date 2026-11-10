@@ -1,0 +1,19 @@
+# c15-spy  S_tent_mid  ch15  origin -1 -1
+Pil###############Pil
+###.........BnrWpnArm
+###BnrBrz...Liu......
+###...DskMizMapZha...
+###......Mif.........
+Pil...Bed.........Brz
+
+Liu 유비
+Miz 미축
+Mif 미방
+Zha 장비
+Gua 관우  (off stage, enters later (cell 4 3))
+mn1 첩자#1  (commoner_man, off stage, enters later (cell 5 3))
+
+# c15-s02: mn1 -> 5 3
+# c15-s02: Gua -> 4 3
+# c15-s03: Gua -> 3 3
+# c15-s04: Zha -> 4 3

@@ -389,8 +389,8 @@
     ]
    }
   },
-  "diamond_armor": {
-   "Name": "금강갑",
+  "tangni_armor": {
+   "Name": "당예개갑",
    "Desc": "매 자기 차례 방어력 20% 강화.",
    "Slot": "armor",
    "Type": "armor",

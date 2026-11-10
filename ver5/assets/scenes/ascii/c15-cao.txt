@@ -1,0 +1,32 @@
+# c15-cao  S_council  ch15  origin -1 -1
+Pil#################################Pil
+###...Brz...Bnr...Wpn...Bnr...ArmBrz...
+###Bnr......XunXou...Guo...Che.........
+###Flg......TblTbl...Tbl...Tbl...Xuc...
+###CdlCaoDsk...........................
+###Cdl.................................
+###Bnr......TblTbl...Tbl...Tbl.........
+###Wpn......XHYCen.....................
+Pil...Brz........................Brz...
+
+Cao 조조  (sit)
+Xun 순욱
+Xou 순유
+Guo 곽가
+Che 정욱
+XHY 하후연
+Cen 조인
+Xuc 허저
+Liu 유비  (off stage, enters later (cell 3 3))
+Gua 관우  (off stage, enters later (cell 4 4))
+Zha 장비  (off stage, enters later (cell 4 3))
+Jia 간옹  (off stage, enters later (cell 5 3))
+Sun 손건  (off stage, enters later (cell 5 4))
+
+# c15-k01: Liu -> 3 3
+# c15-k01: Zha -> 4 3
+# c15-k01: Gua -> 4 4
+# c15-k01: Jia -> 5 3
+# c15-k01: Sun -> 5 4
+# c15-k09: Xou -> 5 2
+# c15-k12: Xou -> 4 1

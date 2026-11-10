@@ -50,7 +50,8 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 		out += math.Max(1, float64(a.Mind-b.Mind)+level*R.MagicLevelScale) * s.MagicCoeff
 	}
 	if s.Kind == content.KindMagic {
-		if p := e.elementTerrain(v, s.Element); p != 0 {
+		out *= R.MagicPower
+		if p := e.data.ElementTerrain(e.Cell(v.X, v.Y), s.Element); p != 0 {
 			out *= 1 + float64(p)/100
 		}
 		out *= 1 + e.fx(u, content.FxPower+s.Element)
@@ -60,6 +61,9 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 		if k := e.fx(u, content.FxFinisher); k > 0 {
 			out *= 1 + k*(1-float64(v.HP)/float64(max(1, b.MaxHP)))
 		}
+	}
+	if k := e.fx(v, content.FxRangedWard); k > 0 && s.Kind == content.KindPhysical && e.rangedAttack(u, v, s) {
+		out *= 1 - k
 	}
 	if k := e.fx(u, content.FxOpening); k > 0 {
 		out *= 1 + k*math.Max(0, float64(v.HP)/float64(max(1, b.MaxHP))-.5)
@@ -74,20 +78,6 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 		out = math.Max(1, out*float64(p)/100)
 	}
 	return out
-}
-
-// elementTerrain is the percent a spell of the element gains on the target's cell: fire in grass and woods,
-// water in fords and on the water, earth on badland (Rules.ElementTerrain).
-func (e *Engine) elementTerrain(v *Unit, element string) int {
-	bonus := e.data.Rules.ElementTerrain[element]
-	if bonus == nil {
-		return 0
-	}
-	c := e.Cell(v.X, v.Y)
-	if p, ok := bonus[string(c.Structure)]; ok {
-		return p
-	}
-	return bonus[string(c.Ground)]
 }
 
 // wounded tells whether the unit is down to half its HP or less.
@@ -306,9 +296,16 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 	return n, hit, crit
 }
 
-// bulwark is what a blow of d leaves after v's 철벽, which halves the part above its share of max HP.
+// bulwark is what a blow of d leaves after v's 철벽 or 철갑, which halve the part above a share of max HP;
+// holding both, the lower share counts.
 func (e *Engine) bulwark(v *Unit, d float64) float64 {
-	if k := e.fx(v, content.FxBulwark); k > 0 {
+	k := 0.0
+	for _, t := range e.traits(e.char(v.Character)) {
+		if s := e.data.Traits[t].Effects[content.FxBulwark]; s > 0 && (k == 0 || s < k) {
+			k = s
+		}
+	}
+	if k > 0 {
 		if limit := float64(e.stats(v).MaxHP) * k; d > limit {
 			return limit + (d-limit)/2
 		}
@@ -427,8 +424,11 @@ func (e *Engine) counterBack(u, v *Unit) {
 	if v.HP <= 0 || u.HP <= 0 || !e.has(v, content.FxRetaliate) && !e.inRange(v, u, e.basic()) {
 		return
 	}
-	e.strikeBack(v, []*Unit{u}, e.counterShare(v), false)
+	e.strikeBack(v, []*Unit{u}, e.counterShare(v)*e.counterTaken(u), false)
 }
+
+// counterTaken is the share of a counter that lands on u after its 반격피해감소.
+func (e *Engine) counterTaken(u *Unit) float64 { return math.Max(0, 1-e.fx(u, content.FxCounterWard)) }
 
 // guard is what 호위 does after u's melee attack on the struck: each ally next to one of them that has
 // 호위 and reaches u strikes back once at its share.
@@ -442,7 +442,7 @@ func (e *Engine) guard(u *Unit, struck []*Unit) {
 			}
 			if k := e.fx(w, content.FxGuardian); k > 0 && e.inRange(w, u, e.basic()) {
 				done[w.ID] = true
-				e.strikeBack(w, []*Unit{u}, k, false)
+				e.strikeBack(w, []*Unit{u}, k*e.counterTaken(u), false)
 			}
 		}
 	}
@@ -501,11 +501,14 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 	}
 	k := math.Max(e.fx(u, content.FxPierce), s.Pierce)
 	if k > 0 {
-		dx, dy := v.X-u.X, v.Y-u.Y
-		if abs(dx) >= abs(dy) {
+		dx, dy := v.X-u.X, v.Y-u.Y // onward in the blow's direction, diagonal when it comes diagonally
+		switch {
+		case abs(dx) > abs(dy):
 			dx, dy = sign(dx), 0
-		} else {
+		case abs(dx) < abs(dy):
 			dx, dy = 0, sign(dy)
+		default:
+			dx, dy = sign(dx), sign(dy)
 		}
 		side(e.occupied(v.X+dx, v.Y+dy), k)
 	}
@@ -576,6 +579,10 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 			e.emit("damage", u.ID, u.ID, hp)
 		}
 		e.emit("cost", u.ID, "", n)
+	}
+	if hp := e.hpCost(u, s); hp > 0 {
+		u.HP -= hp
+		e.emit("damage", u.ID, u.ID, hp)
 	}
 	if c.Kind == "attack" {
 		u.Attacked = true
@@ -746,15 +753,20 @@ func (e *Engine) exchange(u, v *Unit, hit []*Unit, share map[string]float64, s c
 	}
 }
 
-// pouchHeal is what a unit with a ration pouch eats once an attack has hurt it and left it standing.
+// pouchHeal is the bean a unit with a ration pouch eats once an attack has hurt it and left it standing:
+// only when a whole bean's heal fits under its full strength, and only while a bean is left to eat.
 func (e *Engine) pouchHeal(v *Unit) {
-	if v.HP <= 0 {
+	n := int(e.fx(v, content.FxPouchHeal))
+	if v.HP <= 0 || n <= 0 || e.stats(v).MaxHP-v.HP < n {
 		return
 	}
-	if n := min(e.stats(v).MaxHP-v.HP, int(e.fx(v, content.FxPouchHeal))); n > 0 {
-		v.HP += n
-		e.emit("pouch-heal", v.ID, "", n)
+	st, item := e.stock(v), e.data.Rules.PouchItem
+	if st[item] < 1 {
+		return
 	}
+	st[item]--
+	v.HP += n
+	e.emit("pouch-heal", v.ID, "", n)
 }
 
 // spell resolves a magic, status, buff, heal or mixed skill on every unit it reaches.
@@ -809,6 +821,9 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 			}
 		case "refill":
 			recovered = min(e.stats(q).MaxMP-q.MP, int(s.Coeff))
+			q.MP += recovered
+		case "meditate": // Coeff is the share of its max spell points it gathers
+			recovered = min(e.stats(q).MaxMP-q.MP, int(float64(e.stats(q).MaxMP)*s.Coeff))
 			q.MP += recovered
 		case "invert":
 			for k, st := range q.Status {
@@ -901,7 +916,7 @@ func stripBuffs(q *Unit) {
 	}
 }
 
-// healAmount is a heal of base points grown by the healer's bonus.
+// healAmount is a heal spell's base points grown by the caster's medicine.
 func (e *Engine) healAmount(u *Unit, base float64) int {
 	return int(base * (1 + e.fx(u, content.FxHealBonus)))
 }
@@ -931,15 +946,11 @@ func (e *Engine) useItem(u *Unit, c Command) error {
 			users = append(users, w)
 		}
 	}
-	times := 1
-	if e.has(u, content.FxItemDouble) {
-		times = 2 // 물심양면: the item works twice, and teaches twice
-	}
-	n := e.healAmount(u, float64(it.Amount*times))
+	n := int(float64(it.Amount) * (1 + e.fx(u, content.FxItemPower)))
 	for _, w := range users {
 		actual := 0
 		if it.Effect == content.ItemMP {
-			actual = min(e.stats(w).MaxMP-w.MP, it.Amount*times)
+			actual = min(e.stats(w).MaxMP-w.MP, n)
 			w.MP += actual
 		} else {
 			actual = min(e.stats(w).MaxHP-w.HP, n)
@@ -947,7 +958,7 @@ func (e *Engine) useItem(u *Unit, c Command) error {
 		}
 		e.emit("item", u.ID, w.ID, actual)
 		if actual > 0 && u.Faction == "ally" {
-			e.xp(u.Character, e.supportXP(u, w)*times) // like a support spell; a full bar teaches nothing
+			e.xp(u.Character, e.supportXP(u, w)) // like a support spell; a full bar teaches nothing
 		}
 	}
 	return nil
@@ -1088,7 +1099,7 @@ func (e *Engine) endFaction() {
 		hp[id], mp[id] = u.HP, u.MP
 		lost := st.MaxHP - u.HP
 		r := int(float64(st.Recovery) * (1 + e.fx(u, content.FxManaRegen)))
-		heal := func(n int) { u.HP = min(st.MaxHP, u.HP+e.healAmount(u, float64(n))) }
+		heal := func(n int) { u.HP = min(st.MaxHP, u.HP+n) }
 		t := e.CellProps(u.X, u.Y)
 		if t.RestHP > 0 {
 			heal(st.MaxHP * t.RestHP / 100)
@@ -1099,7 +1110,10 @@ func (e *Engine) endFaction() {
 		for id, k := range e.turnBuffs(u) {
 			e.applyStatus(u, id, R.BuffTurns, k)
 		}
-		if k := int(e.fx(u, content.FxFortify)); k > 0 && t.Castle {
+		if k := int(e.fx(u, content.FxFortify)); k > 0 {
+			if t.Castle {
+				k *= 2
+			}
 			e.applyStatus(u, "defense", R.BuffTurns, k)
 		}
 		if k := e.fx(u, content.FxRegen); k > 0 {
@@ -1140,7 +1154,7 @@ func (e *Engine) endFaction() {
 			}
 			st := e.stats(v)
 			if k := once(content.FxAura); k > 0 {
-				v.HP = min(st.MaxHP, v.HP+e.healAmount(v, float64(st.MaxHP)*k))
+				v.HP = min(st.MaxHP, v.HP+int(float64(st.MaxHP)*k))
 			}
 			if k := once(content.FxAuraMana); k > 0 {
 				v.MP = min(st.MaxMP, v.MP+int(float64(st.MaxMP)*k))

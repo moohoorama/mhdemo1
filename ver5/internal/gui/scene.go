@@ -53,6 +53,7 @@ type scene struct {
 	shot      *sceneShot              // an arrow chased by the camera (a Shoot step)
 	free      map[string]bool         // walkers whose walk does not hold up the beats
 	follow    string                  // the actor the camera keeps on
+	stride    map[string]float64      // cells walked since each walker's last footfall sounded
 }
 
 type patrol struct {
@@ -140,11 +141,17 @@ func (g *Game) openScene(def *scenes.Scene) {
 	if g.field != nil {
 		g.field.dispose()
 	}
-	g.field = NewField(g.assets, g.assets.Maps[def.Map])
+	art := g.assets.Maps[def.Map]
+	if def.Grass != nil {
+		c := *art
+		c.Grass = def.Grass
+		art = &c
+	}
+	g.field = NewField(g.assets, art)
 	s := &scene{def: def, actors: map[string]*unitVis{}, extra: map[string]bool{}, hold: map[string]bool{}, held: map[string]bool{},
 		paths: map[string][][2]float64{}, speed: map[string]float64{}, exits: map[string]bool{}, plays: map[string]string{},
 		emotes: map[string]*emote{}, looks: map[string]*look{}, fade: 1, patrol: map[string]*patrol{}, chatter: map[string]*chatterLine{},
-		free: map[string]bool{}}
+		free: map[string]bool{}, stride: map[string]float64{}}
 	g.scene = s
 	for key, a := range def.Cast {
 		if v := g.castActor(key, a); v != nil {
@@ -170,7 +177,8 @@ func (g *Game) castActor(key string, a scenes.Actor) *unitVis {
 	if art == nil || len(a.At) != 2 {
 		return nil
 	}
-	v := &unitVis{id: key, ally: true, dir: a.Face, anim: "idle", dying: -1, shownHP: 1, maxHP: 1, actor: true, art: art, top: art.TopOffset(), pose: a.Pose}
+	v := &unitVis{id: key, ally: true, dir: a.Face, anim: "idle", dying: -1, shownHP: 1, maxHP: 1, actor: true, art: art, top: art.TopOffset(), pose: a.Pose,
+		mounted: g.riderArt(art.ID)}
 	v.play(v.rest())
 	v.animT = float64(len(key)*37%100) / 100 // extras do not all nod at once
 	v.u, v.v, v.gone = a.At[0], a.At[1], a.Off
@@ -245,6 +253,7 @@ func (g *Game) updateScene(dt float64) {
 		}
 		v.update(dt * k)
 		if p := s.paths[key]; v.walk == nil && len(p) > 0 {
+			g.sceneFootfall(key, v, p[0])
 			g.walkTo(v, p[0][0], p[0][1])
 			s.paths[key] = p[1:]
 		} else if v.walk == nil && len(p) == 0 {
@@ -261,6 +270,7 @@ func (g *Game) updateScene(dt float64) {
 				v.leave = &walkState{fu: v.u, fv: v.v, tu: v.u + d[0]*leaveCells, tv: v.v + d[1]*leaveCells}
 			}
 			delete(s.speed, key)
+			delete(s.stride, key)
 		}
 	}
 	for key, l := range s.looks {
@@ -428,12 +438,14 @@ func (g *Game) startStep(st scenes.Step) {
 	}
 	if anim := motion(v.art, st.Play); anim != "" {
 		v.play(anim)
+		g.sfxAtCell(sceneMotionCue(v, anim), v.u, v.v)
 		if !v.art.Animations[anim].Loop {
 			s.plays[v.id] = anim
 		}
 	}
 	if st.Emote != "" {
 		s.emotes[v.id] = &emote{text: st.Emote, life: emoteTime}
+		g.sfx(emoteCues[st.Emote])
 	}
 	if st.Say != "" {
 		s.emotes[v.id] = &emote{text: st.Say, life: 1.2 + .07*float64(len([]rune(st.Say))), block: true}

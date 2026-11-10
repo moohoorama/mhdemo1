@@ -43,6 +43,7 @@ type Assets struct {
 	Ruyi          *ebiten.Image // grey ruyi pattern for dialogue
 	Shou          *ebiten.Image // grey shou pattern for central windows
 	groundPattern *ebiten.Image
+	grassTints    map[content.GrassTint]*Assets // the tiles and ground decoration with a map's grass, see grassAssets
 	StatusIcons   map[string]*ebiten.Image
 	Lib           *sprite.Library
 	Tiles         map[int]Sprite
@@ -117,7 +118,8 @@ type MapArt struct {
 	// SceneMap is set for a scene map of format 2, drawn by internal/scenemap's rules (field_scene.go); the fields
 	// above it are filled from it for the code that reads any map (size, grid, glyphs).
 	SceneMap *scenemap.Map
-	Scene    bool // a scenario scene: drawn without the shaded exterior, to the edge of its picture
+	Scene    bool               // a scenario scene: drawn without the shaded exterior, to the edge of its picture
+	Grass    *content.GrassTint // the map's shade of grass, see grassAssets
 }
 
 // MapProp places a prop with its pivot at cell (U, V), fractions allowed. With U1, V1 it
@@ -567,7 +569,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 // sceneMapArt fills the common map fields from a format 2 scene map.
 func sceneMapArt(m *scenemap.Map) *MapArt {
 	b := m.Bounds()
-	art := &MapArt{ID: m.ID, Name: m.Name, W: m.Size[0], H: m.Size[1], Native: true, Scene: true, SceneMap: m,
+	art := &MapArt{ID: m.ID, Name: m.Name, W: m.Size[0], H: m.Size[1], Native: true, Scene: true, SceneMap: m, Grass: m.Grass,
 		Visual: [4]int{m.Origin[0], m.Origin[1], m.W(), m.H()}, SmallTiles: m.Ground, Bounds: image.Rect(b[0], b[1], b[2], b[3])}
 	for v := range m.Size[1] {
 		row := make([]byte, m.Size[0])

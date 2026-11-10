@@ -65,6 +65,12 @@
    "Text": "장군, 소인은 화친의 글이라고만 들었습니다. 봉인을 뜯어 본 적이—"
   },
   {
+   "ID": "c11-e2b",
+   "Kind": "say",
+   "Speaker": "gongsunzan",
+   "Text": "나를 농락하는구나!"
+  },
+  {
    "ID": "c11-e3",
    "Kind": "say",
    "Speaker": "liubei",
@@ -159,6 +165,12 @@
    "Text": "서주까지는 제가 길을 안내하겠습니다. 청주를 지나 북해를 거쳐 가는 길입니다. 북해는 제 고향이라 길이 훤합니다."
   },
   {
+   "ID": "c11-b6",
+   "Kind": "join",
+   "Character": "sunqian",
+   "Event": "join-sunqian"
+  },
+  {
    "ID": "c11-walk",
    "Kind": "explore",
    "Explore": "explore11"
@@ -203,6 +215,47 @@
    "Kind": "battle",
    "Stage": "B11",
    "Text": "북해 전투 — 출전 준비"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "c11-envoy-pingyuan",
+   "Kind": "scene",
+   "Place": "평원현 · 현청"
+  },
+  {
+   "ID": "c11-p1",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "공손 장군께서 급히 찾으십니다. 서주에서 사자가 왔습니다."
+  },
+  {
+   "ID": "c11-p2",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "곧 가겠다."
+  },
+  {
+   "ID": "c11-p-set",
+   "Kind": "set",
+   "Flags": {
+    "c11-envoy": 1
+   }
+  },
+  {
+   "ID": "c11-p-back",
+   "Kind": "back",
+   "Area": "office",
+   "At": [
+    9,
+    5
+   ],
+   "Face": "SW"
+  },
+  {
+   "ID": "c11-gate",
+   "Kind": "back",
+   "Leave": true
   }
  ]
 }

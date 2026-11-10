@@ -88,6 +88,17 @@ func (r Rules) StageLevel(order int) int {
 	return r.StageLevelBase + int(math.Round(r.StageLevelStep*float64(max(order, 1)-1)))
 }
 
+// JoinLevel is the level an officer who joins before the order-th battle is raised to: the stage level with a
+// troop's lead, shifted by the difficulty (EnemyShift), so the newcomer stands to that difficulty's enemy as on normal.
+func (r Rules) JoinLevel(order int, shift float64) int {
+	base := r.StageLevel(order)
+	if base == 0 {
+		return 0
+	}
+	lead := (r.RankLead["troop"] + shift) * float64(base+r.StatLevelBase)
+	return min(max(base+int(math.Round(lead)), 1), r.MaxLevel)
+}
+
 // SpawnLevel is the level a spawn enters the order-th battle at: the stage level plus its rank's
 // lead, or its own Level or its character's where the rules set no stage level.
 func (d *Data) SpawnLevel(order int, s Spawn) int {

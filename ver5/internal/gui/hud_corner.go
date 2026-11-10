@@ -195,7 +195,7 @@ func (g *Game) partySummary(o core.Observation) string {
 	return fmt.Sprintf("장수 %d · 소지품 %d", len(g.roster(o)), len(g.belongings(o)))
 }
 
-// storyPanels are the corner panels of the story: a scene's or the walk's place, its chapter, and on the walk the
+// storyPanels are the corner panels of the story: a scene's place (its node's, else its map's) or the walk's, its chapter, and on the walk the
 // money; the zoom only on the walk, where no scene sets the camera, and the skip only in a scene.
 func (g *Game) storyPanels(dst *ebiten.Image, o core.Observation) {
 	place, money := "", ""
@@ -205,7 +205,9 @@ func (g *Game) storyPanels(dst *ebiten.Image, o core.Observation) {
 		money = fmt.Sprintf("돈 %d", o.Money)
 		zoom = g.zoomSlot(false)
 	} else if g.scene != nil {
-		if art := g.assets.Maps[g.scene.def.Map]; art != nil {
+		if o.Place != "" { // the scene node's own name for where it happens
+			place = o.Place
+		} else if art := g.assets.Maps[g.scene.def.Map]; art != nil {
 			place, _, _ = strings.Cut(art.Name, "(")
 			place = strings.TrimSpace(place)
 		}

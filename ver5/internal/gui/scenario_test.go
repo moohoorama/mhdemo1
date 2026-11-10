@@ -235,6 +235,10 @@ func TestCharacterArt(t *testing.T) {
 		for _, s := range c.Look.Sprites {
 			sprites = append(sprites, s)
 		}
+		portraits := []string{c.Look.Portrait}
+		for _, l := range c.Look.Later {
+			sprites, portraits = append(sprites, l.Scene), append(portraits, l.Portrait)
+		}
 		for _, s := range sprites {
 			if s != "" {
 				if sheets[s] == nil {
@@ -242,9 +246,11 @@ func TestCharacterArt(t *testing.T) {
 				}
 			}
 		}
-		if c.Look.Portrait != "" {
-			if _, err := os.Stat("../../assets/graphics/portraits/" + c.Look.Portrait + ".png"); err != nil {
-				t.Errorf("%s: %v", id, err)
+		for _, p := range portraits {
+			if p != "" {
+				if _, err := os.Stat("../../assets/graphics/portraits/" + p + ".png"); err != nil {
+					t.Errorf("%s: %v", id, err)
+				}
 			}
 		}
 		if c.Look.Faction != "" {

@@ -251,6 +251,17 @@
       11
      ],
      "To": "weapons"
+    },
+    {
+     "Name": "북평으로",
+     "At": [
+      24,
+      -1
+     ],
+     "Node": "c11-gate",
+     "If": [
+      "flag:c11-envoy"
+     ]
     }
    ],
    "People": {
@@ -467,9 +478,38 @@
       5
      ],
      "Face": "SE",
-     "Sortie": {
-      "Ask": "공손 장군께서 유공을 찾으십니다. 서주에서 사자가 왔다 하니, 함께 북평으로 가시겠습니까?"
-     }
+     "Event": [
+      {
+       "If": [
+        "!flag:c11-envoy"
+       ],
+       "Node": "c11-envoy-pingyuan"
+      }
+     ],
+     "Talk": [
+      [
+       "zhaoyun",
+       "채비가 되시면 성문으로 가시지요."
+      ]
+     ]
+    },
+    "전령": {
+     "At": [
+      9,
+      7
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "gongsun",
+     "If": [
+      "flag:c11-envoy"
+     ],
+     "Talk": [
+      [
+       "messenger",
+       "말은 성문 밖에 매어 두었습니다. 북평까지 모시겠습니다."
+      ]
+     ]
     }
    }
   },

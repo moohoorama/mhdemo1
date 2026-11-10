@@ -27,6 +27,7 @@ type ExploreArea struct {
 	Time      string        `json:",omitempty"` // the scene time of day (night, dusk); day when empty
 	Times     []ExploreTime `json:",omitempty"` // the first whose If holds stands in for Time (night falls)
 	Zoom      float64       `json:",omitempty"` // the camera's zoom on arrival, whole numbers; 2 when 0
+	Grass     *GrassTint    `json:",omitempty"` // the grass here when the map stands for another land; nil keeps the map's
 	At        [2]int        // where the hero stands on arriving where no exit leads back
 	Exits     []ExploreExit
 	People    map[string]*ExplorePerson `json:",omitempty"`
@@ -37,11 +38,14 @@ type ExploreArea struct {
 // ExploreExit leads to area To while every If holds: the hero walks to small tile At, then stands at the exit of To
 // that leads back. Object is the anchor of the building it belongs to, whose picture can be clicked too. An exit
 // whose If fails is shut: walking up to it shows Shut. Two exits may share a place with different conditions.
+// An exit with Node instead of To leads out of the area into an event: going through it starts the event at Node
+// (a city gate the party leaves by, its back node with Leave ending the walk).
 type ExploreExit struct {
 	Name   string
 	At     [2]int
-	Object *[2]int `json:",omitempty"`
-	To     string
+	Object *[2]int  `json:",omitempty"`
+	To     string   `json:",omitempty"`
+	Node   string   `json:",omitempty"`
 	If     []string `json:",omitempty"`
 	Shut   []Line   `json:",omitempty"`
 }
@@ -185,8 +189,13 @@ func (d *Data) validateExplores(nodes map[string]Node) error {
 				}
 			}
 			for _, e := range a.Exits {
-				if x.Areas[e.To] == nil || e.Name == "" {
+				if (e.Node == "") == (e.To == "") || e.To != "" && x.Areas[e.To] == nil || e.Name == "" {
 					return fmt.Errorf("%s: exit %q to %q", where, e.Name, e.To)
+				}
+				if e.Node != "" {
+					if err := d.endsWithBack(e.Node, nodes); err != nil {
+						return fmt.Errorf("%s exit %s: %w", where, e.Name, err)
+					}
 				}
 				if err := conds(where+" exit "+e.Name, e.If); err != nil {
 					return err

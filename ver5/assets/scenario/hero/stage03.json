@@ -256,6 +256,31 @@
      ]
     }
    ]
+  },
+  {
+   "ID": "chief-charges",
+   "If": [
+    "alldefeated:main",
+    "alive:turban_chief"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "turban_chief",
+       "Text": "이 쓸모없는 것들……! 내가 직접 간다!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "chief"
+     ],
+     "Policy": "assault"
+    }
+   ]
   }
  ],
  "Areas": [],

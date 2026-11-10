@@ -145,6 +145,22 @@ func (f *Field) dashedDiamond(p *vector.Path, u, v, k, lift float64) {
 	}
 }
 
+// drawRangeBorder rings RangeBorder in red along its outer edges.
+func (f *Field) drawRangeBorder(c *ebiten.Image) {
+	if len(f.RangeBorder) == 0 {
+		return
+	}
+	z := 1.0
+	if f.renderZoom > 0 {
+		z = f.renderZoom
+	}
+	p := &vector.Path{}
+	f.areaBorder(p, f.RangeBorder, .9)
+	op := &vector.DrawPathOptions{AntiAlias: true}
+	op.ColorScale.ScaleWithColor(color.RGBA{230, 30, 20, 255})
+	vector.StrokePath(c, p, &vector.StrokeOptions{Width: float32(2.5 * z), LineJoin: vector.LineJoinRound}, op)
+}
+
 // areaBorder traces the edges of the cells that no other cell of the area shares, drawn inside the area by
 // half of what k takes off a unit's diamond, so a win and a loss on the same area show as two rings.
 func (f *Field) areaBorder(p *vector.Path, cells []content.Point, k float64) {

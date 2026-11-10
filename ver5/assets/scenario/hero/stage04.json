@@ -328,6 +328,21 @@
      ]
     }
    ]
+  },
+  {
+   "ID": "guards-stir",
+   "If": [
+    "round>=3"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "guards"
+     ],
+     "Policy": "react"
+    }
+   ]
   }
  ],
  "Faction": "barbarian",

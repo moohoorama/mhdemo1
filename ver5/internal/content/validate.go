@@ -193,6 +193,16 @@ func (d *Data) Validate() error {
 				return fmt.Errorf("character %s: sprite for unknown class %s", id, key)
 			}
 		}
+		for _, l := range c.Look.Later {
+			if len(l.If) == 0 {
+				return fmt.Errorf("character %s: a later look without a condition", id)
+			}
+			for _, cond := range l.If {
+				if err := d.validateCond(cond, nil); err != nil {
+					return fmt.Errorf("character %s: later look: %w", id, err)
+				}
+			}
+		}
 		if f := c.Look.Faction; f != "" {
 			if _, ok := d.Factions[f]; !ok {
 				return fmt.Errorf("character %s: faction %s", id, f)

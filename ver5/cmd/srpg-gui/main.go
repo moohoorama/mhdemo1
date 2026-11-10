@@ -76,6 +76,11 @@ func main() {
 		}
 	}
 	g.Verify, g.Debug = *verify, *debug
+	if !*verify && *shots == "" && *duelCapture == "" {
+		if err := g.EnableSound(); err != nil {
+			fmt.Fprintln(os.Stderr, "sound:", err) // the game plays on without it
+		}
+	}
 	for _, t := range strings.Split(*shots, ",") {
 		if n, err := strconv.Atoi(strings.TrimSpace(t)); err == nil {
 			g.Shots = append(g.Shots, n)

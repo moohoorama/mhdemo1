@@ -459,7 +459,7 @@ func selfBuff(e *core.Engine, actor string) (core.Command, bool) {
 func offField(t content.Trait) bool {
 	for k := range t.Effects {
 		switch {
-		case k == content.FxDeputyAppoint, k == content.FxDeputyCharm, k == content.FxItemShare, k == content.FxItemDouble,
+		case k == content.FxDeputyAppoint, k == content.FxDeputyCharm, k == content.FxItemShare, k == content.FxItemPower,
 			k == content.FxVillageForage, strings.HasPrefix(k, content.FxWield):
 			return true
 		}

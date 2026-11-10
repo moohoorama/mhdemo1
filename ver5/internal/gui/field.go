@@ -33,7 +33,8 @@ func newLayer(w, h int) *ebiten.Image {
 // ((u - v) * 16, (u + v + 1) * 8) relative to Origin; the canvas is K times that.
 type Field struct {
 	deployment                   bool
-	goals                        []goalShape // the objective guide's outlines
+	goals                        []goalShape     // the objective guide's outlines
+	RangeBorder                  []content.Point // cells ringed in red: what a picked unit strikes from where it stands
 	sceneryLayer                 bool
 	deploymentCells              []content.Point
 	worldSize                    image.Point
@@ -86,6 +87,7 @@ var maxBlend = ebiten.Blend{
 }
 
 func NewField(a *Assets, m *MapArt) *Field {
+	a = a.grassAssets(m.Grass)
 	w, h := (m.Bounds.Dx()+2*margin)*K, (m.Bounds.Dy()+2*margin)*K
 	f := &Field{worldSize: image.Pt(w, h), A: a, Map: m, OriginX: float64(margin - m.Bounds.Min.X), OriginY: float64(margin - m.Bounds.Min.Y),
 		shadows: newLayer(w, h), Canvas: newLayer(w, h), ShowExterior: m.Scene}
@@ -541,6 +543,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		op.ColorScale.ScaleWithColor(color.NRGBA(col)) // Highlight colors are straight alpha
 		vector.FillPath(c, paths[col], nil, op)
 	}
+	f.drawRangeBorder(c)
 	f.drawGoals(c, 1)
 	f.shadows.Clear()
 	for _, l := range f.levels {

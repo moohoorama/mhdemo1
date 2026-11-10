@@ -15,3 +15,7 @@
 - 고르지 않은 안을 쓰게 되면: 파일을 `assets/graphics/maps/S_<이름>.json`으로 옮겨 `id`를 바꾸고 `index.json`에 등록한 뒤,
   `go run ./cmd/_walkmap -fmt S_<이름>`으로 맵 파일 모양을 맞추고 탐험 파일의 사람·출구 자리를 `_walkmap`으로 다시 잡는다.
 - 좌표는 작은 칸, 원점 (0, 0). 위쪽(작은 u+v) 끝이 화면 위.
+
+## 광릉 진영 (2026-11-09)
+
+15장 S#1 `c15-grain`. `gen_guangling.py`가 두 안을 쓴다. A 강가의 패잔 진영 → `S_guangling_camp`(이름·ID만 바꿔 복사, 들머리 길목을 넓히고 깃발을 목책 끝으로), B 불탄 마을 터 `guangling_b.json`은 보관. 비교 페이지: https://claude.ai/artifact/4rJgi9DxFJGe5T7fQpX2NW

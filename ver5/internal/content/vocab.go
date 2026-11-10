@@ -55,9 +55,12 @@ const (
 	FxBulwark            = "bulwark"              // blows above this share of max HP deal half above it
 	FxCritImmune         = "crit_immune"          // a blow that would crit is blocked
 	FxRangedImmune       = "ranged_immune"        // ranged attackers always miss
+	FxRangedWard         = "ranged_ward"          // ranged physical blows on it deal this share less
+	FxCounterWard        = "counter_ward"         // counters struck back at it deal this share less
+	FxStartMana          = "start_mana"           // starts a battle with this share of its max spell points
 	FxReflect            = "reflect"              // returns an attack spell to its caster
 	FxReflectStatus      = "reflect_status"       // returns a harmful status spell to its caster
-	FxFortify            = "fortify"              // on a castle tile, a defense buff of this percent each turn
+	FxFortify            = "fortify"              // a defense buff of this percent each turn, doubled on a castle tile
 	FxMove               = "move"                 // movement points
 	FxIgnoreMoveCost     = "ignore_move_cost"     // terrain never slows
 	FxIgnoreZOC          = "ignore_zoc"           // zone of control never stops
@@ -79,12 +82,12 @@ const (
 	FxDispel             = "dispel"               // enemy attack and status spells never land on it
 	FxStatusImmune       = "status_immune"        // harmful statuses never land
 	FxStatusWard         = "status_ward"          // harmful statuses never land on the allies next to it
-	FxHealBonus          = "heal_bonus"           // healing amounts grow by this share
+	FxHealBonus          = "heal_bonus"           // heal spells it casts grow by this share
 	FxAura               = "aura_heal"            // adjacent allies recover this share at turn start
 	FxAuraMana           = "aura_mana"            // adjacent allies recover this share of their max spell points at turn start
 	FxDeputyCharm        = "deputy_charm"         // added to its charm when the deputy's attributes are blended in
 	FxItemShare          = "item_share"           // items also affect the weakest ally in the eight cells around the target
-	FxItemDouble         = "item_double"          // items it uses work twice
+	FxItemPower          = "item_power"           // items it uses restore this share more
 	FxManaRegen          = "mana_regen"           // spell points regenerate this many times faster
 	FxBloodCost          = "blood_cost"           // missing spell points are paid in HP at this ratio
 	FxRegen              = "regen"                // recovers this share of max HP at turn start
@@ -117,10 +120,10 @@ func init() {
 		FxPierce, FxFlank, FxHeavy, FxCounterBoost, FxKnockback, FxTerrainCap, FxTerrainFloor, FxGrassFactor, FxPoison, FxPoisonBoost, FxLifeSteal,
 		FxMissHalf, FxOutnumbered, FxCompanions, FxLone, FxChargePower, FxChargeShock, FxChargeAccuracy, FxOpening,
 		FxDesperate, FxGrit, FxRangedSure, FxRout,
-		FxHitDebuff, FxTurnBuff, FxAuraBuff, FxBulwark, FxCritImmune, FxRangedImmune, FxReflect, FxReflectStatus, FxFortify,
+		FxHitDebuff, FxTurnBuff, FxAuraBuff, FxBulwark, FxCritImmune, FxRangedImmune, FxRangedWard, FxCounterWard, FxStartMana, FxReflect, FxReflectStatus, FxFortify,
 		FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxAuraHaste, FxRangedReach, FxMountedRange, FxSpellRange,
 		FxSpellSure, FxSpellWard, FxChain, FxSure, FxCritElement, FxPower, FxPatience, FxFinisher, FxDispelBuffs, FxSpellLeech, FxDispel,
-		FxStatusImmune, FxStatusWard, FxHealBonus, FxAura, FxAuraMana, FxDeputyCharm, FxItemShare, FxItemDouble, FxManaRegen,
+		FxStatusImmune, FxStatusWard, FxHealBonus, FxAura, FxAuraMana, FxDeputyCharm, FxItemShare, FxItemPower, FxManaRegen,
 		FxBloodCost, FxRegen, FxWoundRegen, FxBuffExtend, FxSelfGuardHalf, FxLastStand, FxCostHalf, FxCleanse, FxSpellCure, FxAbsorbMana, FxStatusDouble, FxCritAiling, FxPassAilments,
 		FxVillageForage, FxBlendBonus, FxDeputyAppoint, FxWield, FxEvade, FxAccuracy, FxPouchHeal} {
 		TraitEffects[k] = true
@@ -168,7 +171,7 @@ var SkillEffects = map[string]bool{
 	"heal": true, "cure": true, "dispel": true, "steal": true, "counter": true,
 	"mind": true, "attack": true, "defense": true, "morale": true, "agility": true, "speed": true, "range": true,
 	"poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "refill": true,
-	"guard": true, "aim": true, "disrupt": true, "invert": true, "sure_crit": true,
+	"guard": true, "aim": true, "disrupt": true, "invert": true, "sure_crit": true, "meditate": true,
 	"stance_pierce": true, "stance_cross": true, "stance_square": true,
 }
 

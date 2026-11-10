@@ -82,7 +82,7 @@ func (g *Game) layOutExplore(o core.Observation) {
 	}
 	w := &exploreWalk{engine: e, node: o.Node, area: o.Spot.Area, hero: g.S.Data.Characters[x.Hero].Name, people: map[string]string{},
 		homes: map[string]string{}, rest: map[string]float64{}, leg: map[string]int{}, markT: math.Inf(1), rng: rand.New(rand.NewPCG(7, 11))}
-	def := &scenes.Scene{ID: "explore:" + w.area, Map: a.Map, Time: e.AreaTime(), Cast: map[string]scenes.Actor{}}
+	def := &scenes.Scene{ID: "explore:" + w.area, Map: a.Map, Time: e.AreaTime(), Grass: a.Grass, Cast: map[string]scenes.Actor{}}
 	at := func(t [2]int) []float64 { u, v := smallTile(t).cell(); return []float64{u, v} }
 	def.Cast[w.hero] = scenes.Actor{At: at(o.Spot.At), Face: o.Spot.Face}
 	for _, v := range e.Visitors() {
@@ -204,7 +204,10 @@ func (g *Game) updateExplore() {
 	g.blockPeople()
 	if w.going != nil {
 		if w.fade = math.Min(1, w.fade+dt/walkFade); w.fade >= 1 {
-			to := g.S.Engine.ExploreFile().Arrival(w.going.To, w.area)
+			to := content.Spot{At: w.going.At, Face: hero.dir} // an exit into an event: through it, out of the walk
+			if w.going.Node == "" {
+				to = g.S.Engine.ExploreFile().Arrival(w.going.To, w.area)
+			}
 			w.going = nil
 			g.request(session.Request{Op: "command", Command: core.Command{Kind: "walk", Option: to.Area, X: to.At[0], Y: to.At[1], Target: to.Face}})
 		}
@@ -339,6 +342,7 @@ func (g *Game) exploreClick(x, y float64) {
 		if route != nil {
 			g.walkActor(w.hero, route, heroStep)
 			w.aim = &exploreAim{person: key}
+			g.sfx("ok")
 		}
 		return
 	}
@@ -347,6 +351,7 @@ func (g *Game) exploreClick(x, y float64) {
 		if route := w.grid.path(from, w.grid.nearestOpen(ex.At)); route != nil {
 			g.walkActor(w.hero, route, heroStep)
 			w.aim = &exploreAim{exit: ex}
+			g.sfx("ok")
 		}
 		return
 	}
@@ -358,6 +363,7 @@ func (g *Game) exploreClick(x, y float64) {
 			if route := w.grid.path(from, smallTile{t[0] + 2, t[1]}, smallTile{t[0], t[1] + 2}, smallTile{t[0] - 2, t[1]}, smallTile{t[0], t[1] - 2}); route != nil {
 				g.walkActor(w.hero, route, heroStep)
 				w.aim = &exploreAim{sign: sg}
+				g.sfx("ok")
 			}
 			return
 		}
@@ -441,7 +447,7 @@ func (g *Game) startExploreTalk(with string, talk []content.Line) {
 		}
 		w.talk = append(w.talk, line{speakers: []string{name}, text: l[1], portrait: g.explorePortrait(name)})
 	}
-	g.lineTyping = startTyping(g.uiSeconds)
+	g.lineTyping = startTyping(g.textSeconds)
 	g.dialogueAnim = dialogueAnim{}
 	g.scene.spoke, g.scene.held = map[string]bool{}, map[string]bool{w.hero: true, with: true}
 }
@@ -464,12 +470,12 @@ func (g *Game) explorePortrait(name string) string {
 func (g *Game) nextExploreLine() {
 	w := g.explore
 	if _, done := g.shownText(w.talk[w.talkI]); !done {
-		g.lineTyping.hurry(g.uiSeconds)
+		g.lineTyping.hurry(g.textSeconds)
 		return
 	}
 	if w.talkI+1 < len(w.talk) {
 		w.talkI++
-		g.lineTyping = startTyping(g.uiSeconds)
+		g.lineTyping = startTyping(g.textSeconds)
 		g.scene.spoke = map[string]bool{}
 		return
 	}

@@ -31,7 +31,7 @@ func demoJoin(d *Demo) error {
 	at := map[float64]func(){
 		2: func() { m.piece = m.gains[0].id },
 		3: func() {
-			if t := g.S.Data.Characters[m.piece].Traits; len(t) > 0 {
+			if t := g.S.Data.Characters[m.piece].Learn; len(t) > 0 {
 				m.chip = equipChip{"trait", t[0]}
 			}
 		},

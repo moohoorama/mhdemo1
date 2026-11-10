@@ -10,9 +10,9 @@ import (
 )
 
 // sceneShot is the arrow of a Shoot step, flown over the scene map itself. The shooter draws the bow and holds it
-// (a bubble over him, "어디……"), while the camera glides, easing in and out, until he stands at the lower left of
+// (a bubble over him, "어디……"), while the camera glides, easing in and out, until he stands left of the middle of
 // the screen with the way ahead open; he lets go, the camera is caught napping for a few frames, then hurries after
-// the arrow, keeping it at the lower left as it flies on a shallow arc toward the halberd standing on the stage (the
+// the arrow, keeping it left of the middle, clear of the dialogue box, as it flies on a shallow arc toward the halberd standing on the stage (the
 // scene's halberd effect). When it strikes: a white flash, the halberd is knocked over, the arrow spins off and
 // drops slantwise; the camera settles on them, holds, and the scene fades back to the shooter.
 type sceneShot struct {
@@ -21,12 +21,14 @@ type sceneShot struct {
 	shooter    *unitVis
 	t          float64 // seconds since the step started
 	fx, fy     float64 // canvas point the arrow leaves from (the ground under it)
-	tx, ty     float64 // canvas point it strikes (the halberd's foot)
+	tx, ty     float64 // ground point under where it strikes the halberd
+	mark       float64 // how high above that ground it strikes
 	ok         bool    // there is a halberd to aim at
 	panX, panY float64 // the camera when the bow was drawn
 	camX, camY float64
 	tick       float64 // time not yet stepped through the per-frame camera
 	velX, velY float64 // the camera's speed (canvas px per second), carried into the landing spring
+	loosed     bool    // the string let go, its sound played
 	struck     bool
 }
 
@@ -50,24 +52,35 @@ type ShotTuning struct {
 }
 
 // ShotTune is the Shoot timing in use.
-var ShotTune = ShotTuning{Aim: 3, Freeze: 10, Chase: .94, ChaseEnd: .6, Damping: .4, Stiff: 60, Hold: 4,
-	ThrowPeak: 40, ThrowTime: .55, Shooter: [2]float64{.25, .75}, Arrow: [2]float64{.1, .9},
-	DrawHold: .2, Release: .46, Flight: 2.5, Peak: 160}
+var ShotTune = ShotTuning{Aim: 3, Freeze: 10, Chase: .86, ChaseEnd: .6, Damping: .4, Stiff: 60, Hold: 4,
+	ThrowPeak: 40, ThrowTime: .55, Shooter: [2]float64{.3, .6}, Arrow: [2]float64{.4, .5},
+	DrawHold: .2, Release: .46}
 
 const (
 	shotFadeOut = .4
-	shotLaunch  = 30.0 // canvas px above the ground: a rider's bow
-	shotMark    = 34.0 // where it strikes the halberd
+	shotLaunch  = 40.0 // canvas px above the ground: a rider's bow hand
+	shotShaft   = 30.0 // how far up the stuck halberd's shaft from the ground the arrow strikes, canvas px
+	shotStuck   = .12  // seconds the arrow is seen in the shaft before the flash knocks the halberd over
+	shotBite    = 5.0  // canvas px the arrow's point goes into the shaft
 )
 
-func (s *sceneShot) length() float64 { return s.tune.Aim + s.plan.Time + s.tune.Hold }
+func (s *sceneShot) length() float64 { return s.tune.Aim + s.plan.Time + shotStuck + s.tune.Hold }
 func (s *sceneShot) flight() float64 { return s.t - s.tune.Aim }
 func (s *sceneShot) hit() float64    { return s.flight() - s.plan.Time }
 
 // at is the arrow's ground point and height ft seconds after it left: steady speed on a shallow arc.
 func (s *sceneShot) at(ft float64) (float64, float64, float64) {
 	k := math.Max(0, math.Min(1, ft/s.plan.Time))
-	return s.fx + (s.tx-s.fx)*k, s.fy + (s.ty-s.fy)*k, shotLaunch + (shotMark-shotLaunch)*k + s.plan.Peak*4*k*(1-k)
+	return s.fx + (s.tx-s.fx)*k, s.fy + (s.ty-s.fy)*k, shotLaunch + (s.mark-shotLaunch)*k + s.plan.Peak*4*k*(1-k)
+}
+
+// halberdMark is where on the halberd effect the arrow strikes: the ground under that point and its height.
+func halberdMark(e *sceneEffect, x, y float64) (float64, float64, float64) {
+	if e.kind == "halberd" { // upright, the blades on top
+		return x, y, float64(len(halberdArt) - halberdBury)
+	}
+	ox, oy := -shotShaft*math.Sin(halberdLean), shotShaft*math.Cos(halberdLean) // up the slanting shaft
+	return x + ox, y, -oy
 }
 
 // halberd is the scene's halberd effect, the arrow's mark.
@@ -112,7 +125,8 @@ func (g *Game) startShot(v *unitVis, st scenes.Step) {
 		}
 	}
 	if e := g.halberd(); e != nil {
-		sh.tx, sh.ty = g.field.Center(e.u, e.v)
+		x, y := g.field.Center(e.u, e.v)
+		sh.tx, sh.ty, sh.mark = halberdMark(e, x, y)
 		sh.ok = true
 	}
 	s.shot = sh
@@ -146,6 +160,10 @@ func (g *Game) updateShot(dt float64) {
 	if v := sh.shooter; v != nil && v.anim == "attack" && sh.flight() >= 0 && v.animT < tn.Release {
 		v.animT = tn.Release
 	}
+	if !sh.loosed && sh.flight() >= 0 {
+		sh.loosed = true
+		g.sfx("shoot")
+	}
 	if !sh.ok {
 		if sh.t >= sh.length() {
 			s.shot = nil
@@ -159,14 +177,15 @@ func (g *Game) updateShot(dt float64) {
 		sh.camX, sh.camY = sh.panX*(1-n)+ax*n, sh.panY*(1-n)+ay*n
 	} else {
 		var ax, ay float64
-		if sh.hit() < 0 {
+		if sh.hit() < 0 { // halfway between the arrow and its shadow, so the road it flies along scrolls by under it
 			x, y, h := sh.at(ft)
-			ax, ay = g.camFor(x, y-h, tn.Arrow)
+			ax, ay = g.camFor(x, y-h/2, tn.Arrow)
 		} else {
-			ax, ay = g.camFor(sh.tx, sh.ty-20, [2]float64{.5, .55})
-			if !sh.struck {
+			ax, ay = g.camFor(sh.tx, sh.ty-sh.mark, [2]float64{.5, .55})
+			if !sh.struck && sh.hit() >= shotStuck {
 				sh.struck = true
 				s.shake = math.Max(s.shake, .3)
+				g.sfx("block") // the arrowhead rings on the halberd's iron
 				if e := g.halberd(); e != nil {
 					e.hit = 0
 				}
@@ -243,13 +262,21 @@ func (g *Game) drawShot(dst *ebiten.Image) {
 		fx.draw(dst, i, x, y-h, g.toScreen, g.zoom)
 		return
 	}
-	// thrown back off the blades, spinning, then down on the grass beside the halberd
-	hit := sh.hit()
+	// in the shaft for a moment, then thrown back off it, spinning, and down on the grass beside the halberd
+	hit := sh.hit() - shotStuck
+	if hit < 0 {
+		x, y, h := sh.at(sh.plan.Time)
+		x0, y0, h0 := sh.at(sh.plan.Time - .01)
+		ux, uy := x-x0, y-h-(y0-h0)
+		n := math.Max(1e-9, math.Hypot(ux, uy))
+		fx.draw(dst, frame(ux, uy), x+ux/n*shotBite, y-h+uy/n*shotBite, g.toScreen, g.zoom) // its point in the shaft
+		return
+	}
 	const fall, up = .8, 140.0
-	gravity := 2 * (shotMark + up*fall) / (fall * fall)
+	gravity := 2 * (sh.mark + up*fall) / (fall * fall)
 	k := math.Min(hit, fall)
 	x, y := sh.tx-dx/l*22*k/fall, sh.ty-dy/l*22*k/fall
-	h := math.Max(0, shotMark+up*k-gravity*k*k/2)
+	h := math.Max(0, sh.mark+up*k-gravity*k*k/2)
 	i := frame(dx, dy+dx*.25) // lying along its way, tilted
 	if hit < fall {
 		i = (frame(-dx, -dy) + int(hit*30)) % len(fx.Frames)
@@ -264,7 +291,7 @@ func (g *Game) drawShotScreen(dst *ebiten.Image) {
 	if sh == nil || !sh.ok {
 		return
 	}
-	if h := sh.hit(); h >= 0 && h < .5 {
+	if h := sh.hit() - shotStuck; h >= 0 && h < .5 {
 		rect(dst, 0, 0, float32(worldW), float32(worldH), color.NRGBA{255, 255, 255, uint8(255 * (1 - h/.5))})
 	}
 	if k := sh.t - (sh.length() - shotFadeOut); k > 0 {
@@ -372,9 +399,17 @@ func (g *Game) drawHalberdAt(dst, img *ebiten.Image, px, py, x, y, angle float64
 	drawScaled(dst, img, op)
 }
 
+// halberdLean is how the thrown halberd stands once its blades are in the ground, clockwise from straight up: the
+// point down and a little on toward the north-east it flew to, the shaft leaning back up toward the south-west.
+const halberdLean = 150 * math.Pi / 180
+
+// halberdFallen is how it lies once the arrow from the south-west has knocked it over: the shaft pushed over to the
+// north-east, the head toward the south-west where it stood.
+var halberdFallen = math.Atan2(-32, -16) + 2*math.Pi
+
 // drawThrownHalberd draws the "halberd_throw" scene effect at canvas point (x, y), t seconds after it was thrown: it
-// comes in from the south-west on an arc, point first, and drives its blades slantwise into the ground; once the
-// arrow strikes it (hit >= 0) it is knocked out and falls flat.
+// comes in from the south-west on an arc, point first, turns down as it comes and drives its blades slantwise into
+// the ground; once the arrow strikes it (hit >= 0) it is knocked out and falls flat.
 func (g *Game) drawThrownHalberd(dst *ebiten.Image, x, y, t, hit float64) {
 	sx, sy := x-12*32, y+12*16 // twelve cells south-west, where 여포 rides in from
 	pos := func(k float64) (float64, float64) {
@@ -388,21 +423,19 @@ func (g *Game) drawThrownHalberd(dst *ebiten.Image, x, y, t, hit float64) {
 	cx := float64(len(halberdArt[0])) / 2
 	if k := t / halberdThrow(); k < 1 {
 		px, py := pos(k)
-		g.drawHalberdAt(dst, halberdImage, cx, 0, px, py, head(math.Max(.01, k)))
+		a := head(math.Max(.01, k))
+		if s := (k - .5) / .5; s > 0 { // the point dips toward the ground on the way in
+			a += (halberdLean - a) * s * s * (3 - 2*s)
+		}
+		g.drawHalberdAt(dst, halberdImage, cx, 0, px, py, a)
 		return
 	}
-	stuck := head(1)
 	if hit < 0 {
-		g.drawHalberdAt(dst, halberdStuck, cx, 0, x, y, stuck)
+		g.drawHalberdAt(dst, halberdStuck, cx, 0, x, y, halberdLean)
 		return
 	}
-	// knocked out of the ground and over on its side, the head toward the north-east
 	k := math.Min(1, hit/.5)
-	lie := math.Atan2(32, 16)
-	if lie < stuck {
-		lie += 2 * math.Pi
-	}
-	g.drawHalberdAt(dst, halberdImage, cx, halberdBury, x, y, stuck+(lie-stuck)*k*k)
+	g.drawHalberdAt(dst, halberdImage, cx, halberdBury, x, y, halberdLean+(halberdFallen-halberdLean)*k*k)
 }
 
 // halberdDrop is the straight drop of the "halberd" effect: thrown in from the sky, it stands upright.

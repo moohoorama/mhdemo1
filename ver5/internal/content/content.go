@@ -27,6 +27,7 @@ type Rules struct {
 	SpellFloor, SpellCeil float64
 	PhysicalLevelScale    float64 // physical damage = attack - defense + (level+StatLevelBase)*PhysicalLevelScale
 	MagicLevelScale       float64 // spell damage = mind - target mind + (level+StatLevelBase)*MagicLevelScale
+	MagicPower            float64 // every spell's damage is multiplied by this
 	ManaMaxFactor         float64 // max spell points = base + ManaMaxFactor*StatNumerator/(StatDenominator-command)
 	ManaRecoveryFactor    float64 // spell points per turn = base + ManaRecoveryFactor*StatNumerator/(StatDenominator-intellect)
 	Crit, Double          Chance
@@ -48,7 +49,8 @@ type Rules struct {
 	ExpSupportPercent     int
 	PointsPerLevel        int
 	MaxLevel              int
-	DeputyShare           int   // percent of the main officer's experience a deputy also earns
+	DeputyLeadShare       int   // percent of the experience it earns an officer keeps when it has a deputy
+	DeputyShare           int   // percent of the experience the officer earns that its deputy gets
 	DeputyWeight          int   // deputy attribute blend: ratio = (own charm*DeputyWeight + deputy charm) / DeputyDivisor
 	DeputyDivisor         int   // also the percent scale of charm
 	PromoteLevels         []int // minimum level to promote from tier i
@@ -59,6 +61,7 @@ type Rules struct {
 	TraitPlanStep         int                // an NPC officer holds the k-th trait of its own plan (Character.Traits) from level (k−1)×TraitPlanStep+1
 	Difficulties          []Difficulty       // chosen at a new game, in the order the title shows them; "normal" is the default
 	ForageItems           []string                // what 중가 finds in a village at the end of its turn, one of each
+	PouchItem             string // the item a ration pouch eats from the stock
 	EnemyStock            map[string]int
 	AllyStock             map[string]int
 	EdgeTile              string                    // the cell (ground, structure, state) that lies beyond the map's edge
@@ -139,6 +142,13 @@ type Look struct {
 	Portrait string
 	Faction  string
 	Palette  map[string]Colors // tag group -> one base colour or three shades
+	Later    []LaterLook       `json:",omitempty"` // how the character looks once the story has moved on; the last that holds wins
+}
+
+// LaterLook replaces a character's portrait and scene sprite once its story conditions hold (하후돈 after he loses an eye).
+type LaterLook struct {
+	If              []string
+	Portrait, Scene string
 }
 type Character struct {
 	Name, Class, Biography   string
@@ -179,6 +189,7 @@ type Skill struct {
 	Kind, Mode    string
 	Shape, Effect string
 	Element       string
+	Sound         string // the GUI's sound when it lands (assets/sounds); empty picks one by element or kind
 	Item          string // the item a steal takes
 	Requires      []string
 	Cost, Hit     int
@@ -193,6 +204,7 @@ type Skill struct {
 	Sure          bool    // a status skill that always lands (immunities still hold)
 	Reach         int     // cells the skill adds to the attacker's range
 	MagicCoeff    float64 // a physical skill also deals spell damage at this coefficient
+	HPCost        float64 // share of its own max HP the user pays besides the spell points
 	Deprecated    bool
 }
 
@@ -226,6 +238,7 @@ type Spawn struct {
 	Goal              *Point    `json:",omitempty"` // march and flee: the cell the unit makes for
 	GoalArea          int       `json:",omitempty"` // march and flee instead of Goal: any cell of this stage area, the nearest one
 	DuelFirst         bool      `json:",omitempty"` // the AI seeks a pending duel partner before anything else
+	UseItems          bool      `json:",omitempty"` // the AI may use the items it carries; off, it never does
 	Class, Facing     string    `json:",omitempty"`
 	Group             string    `json:",omitempty"` // name events use to address this spawn with others
 	Side              string    `json:",omitempty"` // event spawns only: "ally" (an AI ally, the default) or "enemy"
@@ -260,6 +273,9 @@ type Duel struct {
 	ID, Ally, Enemy, Outcome, AllyResult, EnemyResult, Text string
 	Supports                                                []string      `json:",omitempty"`
 	Beats                                                   []Beat        `json:",omitempty"`
+	// Melee names, for an officer who duels in another class until he takes up his bow (a feigned-flight or shoot beat),
+	// that class: 조성 fights as a light cavalryman, then shoots as the horse archer he is.
+	Melee map[string]string `json:",omitempty"`
 	Variants                                                []DuelVariant `json:",omitempty"`
 }
 type Speech struct{ Actor, Text string }

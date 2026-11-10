@@ -71,13 +71,15 @@
   "PointsPerLevel": 100,
   "TraitPlanStep": 15,
   "MaxLevel": 99,
-  "DeputyShare": 85,
+  "DeputyLeadShare": 80,
+  "DeputyShare": 60,
   "DeputyWeight": 2,
   "DeputyDivisor": 300,
   "PromoteLevels": [
    15,
    30
   ],
+  "PouchItem": "ration",
   "EnemyStock": {
    "ration": 1
   },
@@ -87,6 +89,7 @@
   "EdgeTile": "w--",
   "PhysicalLevelScale": 20,
   "MagicLevelScale": 10,
+  "MagicPower": 1,
   "ManaMaxFactor": 8,
   "ManaRecoveryFactor": 1.5
  },

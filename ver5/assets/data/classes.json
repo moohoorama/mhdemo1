@@ -26,7 +26,7 @@
    "Pool": [
     "diagonal",
     "fire",
-    "first_aid"
+    "brace_prep"
    ],
    "Plan": [
     {
@@ -91,7 +91,7 @@
    "Pool": [
     "deputy_appoint",
     "assist",
-    "brace_prep"
+    "ranged_ward"
    ],
    "Plan": [
     {
@@ -278,8 +278,8 @@
    "Move": 5,
    "Range": 1,
    "Bonus": [
-    16,
-    9,
+    14,
+    11,
     4,
     9,
     9,
@@ -294,8 +294,8 @@
    "Portrait": "heavy_cavalry",
    "Pool": [
     "deputy_appoint",
-    "charge_strike",
-    "impact"
+    "counter_ward",
+    "iron_armor"
    ],
    "Plan": [
     {
@@ -321,8 +321,8 @@
    "Move": 5,
    "Range": 3,
    "Bonus": [
-    14,
-    8,
+    13,
+    7,
     5,
     11,
     9,
@@ -365,7 +365,7 @@
    "Range": 3,
    "Bonus": [
     15,
-    9,
+    7,
     5,
     13,
     9,
@@ -404,8 +404,8 @@
    "Move": 6,
    "Range": 1,
    "Bonus": [
-    18,
-    10,
+    16,
+    12,
     4,
     10,
     9,
@@ -419,9 +419,10 @@
    "Shoot": "horse_archer",
    "Portrait": "royal_guard",
    "Pool": [
-    "gale",
-    "vital_strike",
-    "diagonal"
+    "diagonal",
+    "charge_strike",
+    "impact",
+    "vital_strike"
    ],
    "Plan": [
     {
@@ -593,7 +594,7 @@
     12,
     8,
     9,
-    11
+    13
    ],
    "HPFactor": 3,
    "MPBase": 28,
@@ -607,7 +608,9 @@
    "Pool": [
     "fire",
     "relief",
-    "focus"
+    "focus",
+    "meditate_art",
+    "foresight"
    ],
    "Plan": [
     {
@@ -640,7 +643,7 @@
     14,
     9,
     10,
-    12
+    14
    ],
    "HPFactor": 3,
    "MPBase": 34,
@@ -703,7 +706,7 @@
     16,
     10,
     11,
-    13
+    15
    ],
    "HPFactor": 3,
    "MPBase": 40,
@@ -773,7 +776,7 @@
     13,
     10,
     11,
-    12
+    14
    ],
    "HPFactor": 3,
    "MPBase": 34,
@@ -831,7 +834,7 @@
     15,
     11,
     12,
-    13
+    15
    ],
    "HPFactor": 3,
    "MPBase": 40,
@@ -897,7 +900,7 @@
     14,
     8,
     10,
-    12
+    14
    ],
    "HPFactor": 3,
    "MPBase": 34,
@@ -960,7 +963,7 @@
     16,
     8,
     11,
-    13
+    15
    ],
    "HPFactor": 3,
    "MPBase": 40,

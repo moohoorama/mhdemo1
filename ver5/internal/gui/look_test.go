@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"srpg/internal/content"
 	"srpg/internal/core"
+	"srpg/internal/session"
 )
 
 func TestSpriteFollowsTheClassAndShootsInItsOwnLook(t *testing.T) {
@@ -185,4 +186,23 @@ func TestAnEquippedHorseOfItsOwnColourRecoloursTheRider(t *testing.T) {
 		}
 	}
 	assert.True(t, found, "Guan Yu is on the field")
+}
+
+// 하후돈 wears the eyepatch only once 소패 has been won.
+func TestLaterLookFollowsTheStory(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	s := core.New(d, 1).Snapshot()
+	g := &Game{S: &session.Session{Data: d}}
+	g.S.Engine, err = core.Restore(d, s)
+	require.NoError(t, err)
+	look := d.Characters["xiahoudun"].Look
+	assert.Equal(t, "xiahoudun", g.laterLook(look).Portrait)
+
+	s.Executed = map[string]bool{"won-B15": true}
+	g.S.Engine, err = core.Restore(d, s)
+	require.NoError(t, err)
+	after := g.laterLook(look)
+	assert.Equal(t, "xiahoudun_oneeye", after.Portrait)
+	assert.Equal(t, "xiahoudun_oneeye_noncombat", after.Scene)
 }

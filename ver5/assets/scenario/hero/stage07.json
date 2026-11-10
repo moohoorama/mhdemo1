@@ -19,12 +19,15 @@
  ],
  "Sub": [
   {
-   "ID": "generals",
-   "Text": "조조가 동남쪽 끝으로 무사히 빠져나간다",
+   "ID": "lubu-retreat",
+   "Text": "여포를 퇴각시킨다",
    "If": [
-    "fled:caocao"
+    "defeated:lubu"
    ],
-   "Flag": "flag-bianshui-generals"
+   "Reward": {
+    "tangni_armor": 1
+   },
+   "Flag": "flag-bianshui-lubu"
   }
  ],
  "TurnLimit": 16,
@@ -763,6 +766,13 @@
      "GoalArea": 2
     },
     {
+     "Kind": "ai",
+     "Targets": [
+      "xiahoudun"
+     ],
+     "Policy": "react"
+    },
+    {
      "Kind": "goals",
      "Victory": [
       {
@@ -788,6 +798,20 @@
       "lubu"
      ],
      "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "caocao-escaped",
+   "If": [
+    "fled:caocao"
+   ],
+   "Do": [
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-bianshui-generals": 1
+     }
     }
    ]
   }

@@ -7,6 +7,9 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+
 	"srpg/internal/content"
 	"srpg/internal/core"
 	"srpg/internal/mapedit"
@@ -110,7 +113,7 @@ func TestTerrainWithoutUnitDoesNotClaimBlocked(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, cell := range []content.Cell{{Ground: 'g', Structure: content.NoLayer, State: content.NoLayer}, {Ground: 'w', Structure: content.NoLayer, State: content.NoLayer}, {Ground: 'i', Structure: 'p', State: content.NoLayer}, {Ground: 'g', Structure: 't', State: 'F'}} {
-		text := strings.Join(terrainInfoLines(d, cell, false, "", ""), " ")
+		text := strings.Join(terrainInfoLines(d, cell, nil, ""), " ")
 		if strings.Contains(text, "진입 불가") || regexp.MustCompile(`(^|[^0-9])0%`).MatchString(text) {
 			t.Fatal(text)
 		}
@@ -123,23 +126,54 @@ func TestTerrainRecoverySeparatesHPAndMP(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, family := range []string{"", d.Classes[d.Characters[d.Campaign.Roster[0]].Class].Terrain} {
+		move := func(c content.Cell) *content.Terrain {
+			if family == "" {
+				return nil
+			}
+			m := d.Move(family, c, false)
+			return &m
+		}
 		t.Run(family, func(t *testing.T) {
-			lines := strings.Join(terrainInfoLines(d, content.Cell{Ground: 'i', Structure: content.NoLayer, State: content.NoLayer}, false, family, "보병"), "\n")
+			lines := strings.Join(terrainInfoLines(d, content.Cell{Ground: 'i', Structure: content.NoLayer, State: content.NoLayer}, move(content.Cell{Ground: 'i', Structure: content.NoLayer, State: content.NoLayer}), "보병"), "\n")
 			if !strings.Contains(lines, "지형 회복 효과 없음") {
 				t.Fatal(lines)
 			}
-			lines = strings.Join(terrainInfoLines(d, content.Cell{Ground: 'g', Structure: 'v', State: content.NoLayer}, false, family, "보병"), "\n")
+			lines = strings.Join(terrainInfoLines(d, content.Cell{Ground: 'g', Structure: 'v', State: content.NoLayer}, move(content.Cell{Ground: 'g', Structure: 'v', State: content.NoLayer}), "보병"), "\n")
 			if !strings.Contains(lines, "병력 회복 +10%") || !strings.Contains(lines, "병법치 회복 ×2") {
 				t.Fatal(lines)
 			}
-			lines = strings.Join(terrainInfoLines(d, content.Cell{Ground: 'g', Structure: 'o', State: content.NoLayer}, false, family, "보병"), "\n")
+			lines = strings.Join(terrainInfoLines(d, content.Cell{Ground: 'g', Structure: 'o', State: content.NoLayer}, move(content.Cell{Ground: 'g', Structure: 'o', State: content.NoLayer}), "보병"), "\n")
 			if !strings.Contains(lines, "병력 회복 +20%") || !strings.Contains(lines, "병법치 회복 ×3") {
 				t.Fatal(lines)
 			}
-			lines = strings.Join(terrainInfoLines(d, content.Cell{Ground: 'g', Structure: 'v', State: 'e'}, false, family, "보병"), "\n")
+			lines = strings.Join(terrainInfoLines(d, content.Cell{Ground: 'g', Structure: 'v', State: 'e'}, move(content.Cell{Ground: 'g', Structure: 'v', State: 'e'}), "보병"), "\n")
 			if !strings.Contains(lines, "차례 시작 병력 -10%") || strings.Contains(lines, "병력 회복 +") {
 				t.Fatal("embers on a village:", lines)
 			}
 		})
+	}
+}
+
+func TestTerrainCardNamesSpellBonuses(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	for _, c := range []struct {
+		cell content.Cell
+		want []string
+	}{
+		{content.Cell{Ground: 'g', Structure: 't', State: content.NoLayer}, []string{"불 책략 피해 +30%"}},
+		{content.Cell{Ground: 'g', Structure: content.NoLayer, State: content.NoLayer}, []string{"불 책략 피해 +15%"}},
+		{content.Cell{Ground: 'u', Structure: content.NoLayer, State: content.NoLayer}, []string{"땅 책략 피해 +30%"}},
+		{content.Cell{Ground: 'd', Structure: content.NoLayer, State: content.NoLayer}, []string{"땅 책략 피해 +15%"}},
+		{content.Cell{Ground: 's', Structure: content.NoLayer, State: content.NoLayer}, []string{"물 책략 피해 +15%"}},
+		{content.Cell{Ground: 'i', Structure: content.NoLayer, State: content.NoLayer}, nil},
+	} {
+		var got []string
+		for _, l := range terrainInfoLines(d, c.cell, nil, "") {
+			if strings.Contains(l, "책략") {
+				got = append(got, l)
+			}
+		}
+		assert.Equal(t, c.want, got, d.CellName(c.cell))
 	}
 }

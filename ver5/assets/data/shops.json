@@ -60,6 +60,18 @@
     "war_horse",
     "insu_mid"
    ]
+  },
+  "beihai": {
+   "Name": "도구점",
+   "Items": [
+    "bean",
+    "barley",
+    "liquor",
+    "fine_liquor",
+    "ration_bag",
+    "route_map",
+    "war_horse"
+   ]
   }
  }
 }

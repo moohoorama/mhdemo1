@@ -10,10 +10,10 @@
  "Victory": [
   {
    "If": [
-    "alldefeated:front",
-    "alldefeated:ji"
+    "alldefeated:fort",
+    "alldefeated:bank"
    ],
-   "Text": "다리 앞의 원술군을 물리친다"
+   "Text": "다리 건너편 성의 원술군을 물리친다"
   }
  ],
  "TurnLimit": 30,
@@ -70,8 +70,8 @@
  "Enemies": [
   {
    "Character": "jiling",
-   "X": 10,
-   "Y": 7,
+   "X": 21,
+   "Y": 21,
    "Group": "ji",
    "Policy": "react",
    "Faction": "yuan",
@@ -80,9 +80,9 @@
   },
   {
    "Character": "troop_footman",
-   "X": 7,
-   "Y": 6,
-   "Group": "front",
+   "X": 19,
+   "Y": 20,
+   "Group": "camp",
    "Policy": "react",
    "Faction": "yuan",
    "Shift": -0.12,
@@ -90,9 +90,9 @@
   },
   {
    "Character": "troop_footman",
-   "X": 7,
-   "Y": 8,
-   "Group": "front",
+   "X": 22,
+   "Y": 19,
+   "Group": "camp",
    "Policy": "react",
    "Faction": "yuan",
    "Shift": -0.12,
@@ -100,9 +100,9 @@
   },
   {
    "Character": "troop_footman",
-   "X": 9,
-   "Y": 6,
-   "Group": "front",
+   "X": 20,
+   "Y": 22,
+   "Group": "camp",
    "Policy": "react",
    "Faction": "yuan",
    "Shift": -0.12,
@@ -110,9 +110,9 @@
   },
   {
    "Character": "troop_footman",
-   "X": 9,
-   "Y": 8,
-   "Group": "front",
+   "X": 23,
+   "Y": 21,
+   "Group": "camp",
    "Policy": "react",
    "Faction": "yuan",
    "Shift": -0.12,
@@ -120,10 +120,10 @@
   },
   {
    "Character": "troop_footman",
-   "X": 6,
-   "Y": 5,
-   "Group": "front",
-   "Policy": "assault",
+   "X": 19,
+   "Y": 19,
+   "Group": "camp",
+   "Policy": "react",
    "Faction": "yuan",
    "Class": "brawler",
    "Equipment": [
@@ -135,10 +135,10 @@
   },
   {
    "Character": "troop_footman",
-   "X": 6,
-   "Y": 9,
-   "Group": "front",
-   "Policy": "assault",
+   "X": 20,
+   "Y": 18,
+   "Group": "camp",
+   "Policy": "react",
    "Faction": "yuan",
    "Class": "brawler",
    "Equipment": [
@@ -150,30 +150,30 @@
   },
   {
    "Character": "troop_bandit",
-   "X": 8,
-   "Y": 3,
-   "Group": "front",
-   "Policy": "assault",
+   "X": 18,
+   "Y": 21,
+   "Group": "camp",
+   "Policy": "react",
    "Faction": "yuan",
    "Shift": -0.12,
    "Facing": "NW"
   },
   {
    "Character": "troop_bandit",
-   "X": 8,
-   "Y": 10,
-   "Group": "front",
-   "Policy": "assault",
+   "X": 22,
+   "Y": 23,
+   "Group": "camp",
+   "Policy": "react",
    "Faction": "yuan",
    "Shift": -0.12,
    "Facing": "NW"
   },
   {
    "Character": "troop_bandit",
-   "X": 5,
-   "Y": 7,
-   "Group": "front",
-   "Policy": "assault",
+   "X": 23,
+   "Y": 19,
+   "Group": "camp",
+   "Policy": "react",
    "Faction": "yuan",
    "Shift": -0.12,
    "Facing": "NW"
@@ -262,7 +262,7 @@
     "W": 6,
     "H": 9
    },
-   "Name": "서쪽 성",
+   "Name": "서쪽 진영",
    "Description": "물러날 곳"
   }
  ],
@@ -287,7 +287,7 @@
      "Lines": [
       {
        "Actor": "liubei",
-       "Text": "다리 앞의 적부터 몰아낸다. 그다음 건너편 성이다."
+       "Text": "다리 건너편의 적부터 몰아낸다. 기령의 진채는 그다음이다."
       }
      ]
     }
@@ -296,7 +296,9 @@
   {
    "ID": "bridge",
    "If": [
-    "any:[at:ally:1, alldefeated:front]"
+    "alldefeated:fort",
+    "alldefeated:bank",
+    "!alive:lu-north"
    ],
    "Do": [
     {
@@ -304,10 +306,10 @@
      "Victory": [
       {
        "If": [
-        "alldefeated:fort",
-        "alldefeated:bank"
+        "alldefeated:camp",
+        "alldefeated:ji"
        ],
-       "Text": "건너편 성의 원술군을 물리친다"
+       "Text": "남쪽 진채의 기령군을 물리친다"
       }
      ]
     },
@@ -316,7 +318,7 @@
      "Lines": [
       {
        "Actor": "guanyu",
-       "Text": "형님, 다리를 건넜습니다. 성만 떨어뜨리면 회수를 막을 수 있습니다."
+       "Text": "형님, 건너편 성을 떨어뜨렸습니다. 기령의 본진은 남쪽 진채에 있습니다."
       }
      ]
     }
@@ -325,7 +327,7 @@
   {
    "ID": "lubu",
    "If": [
-    "any:[defeated:fort, defeated:bank, round>=10]"
+    "any:[defeated:camp, defeated:ji, round>=12]"
    ],
    "Do": [
     {
@@ -442,68 +444,68 @@
       },
       {
        "Character": "chengong",
-       "X": 21,
-       "Y": 21,
-       "Group": "lu-south",
-       "Policy": "react",
+       "X": 5,
+       "Y": 0,
+       "Group": "lu-north",
+       "Policy": "assault",
        "Faction": "dong",
        "Rank": "officer",
        "Side": "enemy"
       },
       {
        "Character": "weixu",
-       "X": 19,
-       "Y": 20,
-       "Group": "lu-south",
-       "Policy": "react",
+       "X": 6,
+       "Y": 0,
+       "Group": "lu-north",
+       "Policy": "assault",
        "Faction": "dong",
        "Side": "enemy"
       },
       {
        "Character": "caoxing",
-       "X": 22,
-       "Y": 19,
-       "Group": "lu-south",
-       "Policy": "react",
+       "X": 0,
+       "Y": 5,
+       "Group": "lu-north",
+       "Policy": "assault",
        "Faction": "dong",
        "Side": "enemy"
       },
       {
        "Character": "troop_cavalry",
-       "X": 18,
-       "Y": 21,
-       "Group": "lu-south",
-       "Policy": "react",
+       "X": 0,
+       "Y": 6,
+       "Group": "lu-north",
+       "Policy": "assault",
        "Faction": "dong",
        "Side": "enemy",
        "Shift": -0.07
       },
       {
        "Character": "troop_cavalry",
-       "X": 20,
-       "Y": 19,
-       "Group": "lu-south",
-       "Policy": "react",
+       "X": 5,
+       "Y": 1,
+       "Group": "lu-north",
+       "Policy": "assault",
        "Faction": "dong",
        "Side": "enemy",
        "Shift": -0.07
       },
       {
        "Character": "troop_cavalry",
-       "X": 23,
-       "Y": 21,
-       "Group": "lu-south",
-       "Policy": "react",
+       "X": 1,
+       "Y": 5,
+       "Group": "lu-north",
+       "Policy": "assault",
        "Faction": "dong",
        "Side": "enemy",
        "Shift": -0.07
       },
       {
        "Character": "troop_cavalry",
-       "X": 22,
-       "Y": 22,
-       "Group": "lu-south",
-       "Policy": "react",
+       "X": 6,
+       "Y": 1,
+       "Group": "lu-north",
+       "Policy": "assault",
        "Faction": "dong",
        "Side": "enemy",
        "Shift": -0.07,
@@ -515,10 +517,10 @@
       },
       {
        "Character": "troop_cavalry",
-       "X": 23,
-       "Y": 19,
-       "Group": "lu-south",
-       "Policy": "react",
+       "X": 1,
+       "Y": 6,
+       "Group": "lu-north",
+       "Policy": "assault",
        "Faction": "dong",
        "Side": "enemy",
        "Shift": -0.07,
@@ -571,7 +573,8 @@
      "Targets": [
       "fort",
       "bank",
-      "ji"
+      "ji",
+      "camp"
      ],
      "Policy": "assault"
     },
@@ -582,7 +585,7 @@
        "If": [
         "at:liubei:2"
        ],
-       "Text": "유비가 서쪽 성으로 물러난다"
+       "Text": "유비가 서쪽 진영으로 물러난다"
       }
      ]
     },
@@ -591,7 +594,7 @@
      "Lines": [
       {
        "Actor": "liubei",
-       "Text": "……서쪽 성으로 물러난다! 흩어지지 마라!"
+       "Text": "……서쪽 진영으로 물러난다! 흩어지지 마라!"
       }
      ]
     }

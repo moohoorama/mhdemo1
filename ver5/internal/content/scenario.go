@@ -205,6 +205,7 @@ type mapFile struct {
 	Decorations  [][4]any
 	Props        [][]any
 	Version      int
+	Grass        *GrassTint `json:",omitempty"`
 	Play, Visual MapRect
 	Cells        map[string]string
 	Default      string
@@ -215,7 +216,7 @@ func DecodeMapFile(b []byte) (*MapDocument, error) {
 	if err := strictDecode(b, &f); err != nil {
 		return nil, err
 	}
-	doc := &MapDocument{Decorations: f.Decorations, Props: f.Props, Version: f.Version, Play: f.Play, Visual: f.Visual, Cells: f.Cells, Default: f.Default}
+	doc := &MapDocument{Decorations: f.Decorations, Props: f.Props, Version: f.Version, Grass: f.Grass, Play: f.Play, Visual: f.Visual, Cells: f.Cells, Default: f.Default}
 	if err := doc.ValidateShape(); err != nil {
 		return nil, err
 	}
@@ -233,7 +234,7 @@ func (d *MapDocument) EncodeFiles() (stage, mapDoc []byte, err error) {
 	if stage, err = json.MarshalIndent(s, "", " "); err != nil {
 		return
 	}
-	mapDoc, err = json.MarshalIndent(mapFile{d.Decorations, d.Props, d.Version, d.Play, d.Visual, d.Cells, d.Default}, "", " ")
+	mapDoc, err = json.MarshalIndent(mapFile{d.Decorations, d.Props, d.Version, d.Grass, d.Play, d.Visual, d.Cells, d.Default}, "", " ")
 	return
 }
 

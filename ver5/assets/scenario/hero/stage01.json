@@ -67,15 +67,6 @@
    "Rank": "rabble"
   },
   {
-   "Character": "troop_turban",
-   "X": 9,
-   "Y": 4,
-   "Facing": "SW",
-   "Group": "chase",
-   "Policy": "assault",
-   "Rank": "rabble"
-  },
-  {
    "Character": "chengyuanzhi",
    "X": 7,
    "Y": 0,
@@ -96,15 +87,6 @@
   },
   {
    "Character": "troop_turban",
-   "X": 8,
-   "Y": 1,
-   "Facing": "SW",
-   "Group": "rear",
-   "Policy": "hold",
-   "Rank": "rabble"
-  },
-  {
-   "Character": "troop_turban",
    "X": 12,
    "Y": 6,
    "Facing": "SW",
@@ -114,28 +96,10 @@
   },
   {
    "Character": "troop_turban",
-   "X": 13,
-   "Y": 7,
-   "Facing": "SW",
-   "Group": "east2",
-   "Policy": "react",
-   "Rank": "rabble"
-  },
-  {
-   "Character": "troop_turban",
    "X": 4,
    "Y": 4,
    "Facing": "SE",
    "Group": "road1",
-   "Policy": "react",
-   "Rank": "rabble"
-  },
-  {
-   "Character": "troop_turban",
-   "X": 11,
-   "Y": 4,
-   "Facing": "SW",
-   "Group": "road2",
    "Policy": "react",
    "Rank": "rabble"
   }

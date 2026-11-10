@@ -134,7 +134,7 @@ func TestEquipmentTraitsWorkForEitherFaction(t *testing.T) {
 			attacker := e.unit("lubu")
 			if side == "ally" {
 				attacker = e.unit("guanyu")
-				e.char(attacker.Character).Equipment = map[string]string{"weapon": "fangtian_halberd", "armor": "diamond_armor", "accessory": "red_hare"}
+				e.char(attacker.Character).Equipment = map[string]string{"weapon": "fangtian_halberd", "armor": "tangni_armor", "accessory": "red_hare"}
 			}
 			attacker.HP = e.stats(attacker).MaxHP
 			attacker.Faction = side

@@ -13,6 +13,7 @@ type MapArt struct {
 	Native      bool       `json:"native"`
 	Visual      [4]int     `json:"visual"`
 	SmallTiles  []string   `json:"small_tiles"`
+	Grass       *GrassTint `json:"grass,omitempty"`
 }
 
 // Graphics preserves the existing tile atlas contract on the finer half-cell lattice.
@@ -96,6 +97,7 @@ func (d *MapDocument) Graphics(data *Data) MapArt {
 			}
 		}
 	}
+	a.Grass = d.Grass
 	return a
 }
 

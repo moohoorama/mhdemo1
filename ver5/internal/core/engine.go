@@ -27,23 +27,30 @@ type Engine struct {
 
 func copyOf[T any](v T) T { b, _ := json.Marshal(v); var c T; _ = json.Unmarshal(b, &c); return c }
 func New(d *content.Data, seed uint64) *Engine {
-	e := begin(d, seed)
+	e := begin(d, seed, "normal")
 	e.enter()
 	return e
 }
 
 // NewGame is a new game at the given difficulty ("" is normal).
 func NewGame(d *content.Data, seed uint64, difficulty string) (*Engine, error) {
+	e, err := beginAt(d, seed, difficulty)
+	if err != nil {
+		return nil, err
+	}
+	e.enter()
+	return e, nil
+}
+
+// beginAt is begin at the given difficulty ("" is normal).
+func beginAt(d *content.Data, seed uint64, difficulty string) (*Engine, error) {
 	if difficulty == "" {
 		difficulty = "normal"
 	}
 	if _, ok := d.Rules.DifficultyOf(difficulty); !ok && difficulty != "normal" {
 		return nil, fail("UnknownDifficulty")
 	}
-	e := begin(d, seed)
-	e.state.Difficulty = difficulty
-	e.enter()
-	return e, nil
+	return begin(d, seed, difficulty), nil
 }
 
 // difficulty is what the campaign's difficulty changes; a game whose rules name none plays as normal.
@@ -64,9 +71,9 @@ func (e *Engine) xpScale() float64 {
 }
 
 // begin is a new game before it enters its first node.
-func begin(d *content.Data, seed uint64) *Engine {
+func begin(d *content.Data, seed uint64, difficulty string) *Engine {
 	c := d.Campaign
-	s := State{Format: 5, AI: AIPolicyVersion, Difficulty: "normal", Core: CoreVersion, Rules: RulesVersion, Content: d.Version, ContentHash: d.Hash,
+	s := State{Format: 5, AI: AIPolicyVersion, Difficulty: difficulty, Core: CoreVersion, Rules: RulesVersion, Content: d.Version, ContentHash: d.Hash,
 		Seed: seed, RNG: seed, Phase: "scenario", Node: c.Start, Inventory: copyOf(c.Inventory), Warehouse: copyOf(c.Warehouse),
 		Deployment: append([]string{}, c.Deployment...), Executed: map[string]bool{}, Flags: map[string]int{}, Choices: map[string]string{}, Money: c.Money}
 	if s.Inventory == nil {
@@ -522,7 +529,7 @@ func (e *Engine) once(n content.Node) {
 		return
 	}
 	if n.Kind == "join" {
-		e.joinAt(e.addCharacter(n.Character, n.Character), e.data.Rules.StageLevel(e.joinOrder(n)))
+		e.joinAt(e.addCharacter(n.Character, n.Character), e.joinLevel(e.joinOrder(n)))
 		if !contains(e.state.Deployment, n.Character) {
 			e.state.Deployment = append(e.state.Deployment, n.Character)
 		}
@@ -767,6 +774,7 @@ func (e *Engine) prepare(c Command) error {
 	s.Units = nil
 	s.Characters = nil
 	s.Checkpoint = nil
+	s.Merit = nil
 	for _, id := range keys(e.charIDs) {
 		if o := e.char(id); !o.Temp {
 			s.Characters = append(s.Characters, copyOf(*o))
@@ -776,6 +784,10 @@ func (e *Engine) prepare(c Command) error {
 	*e = *t
 	cp := e.Snapshot()
 	e.state.Checkpoint = &cp
+	e.state.Merit = &Merit{XP: map[string]int{}, From: map[string]int{}, Spoils: map[string]int{}}
+	for _, id := range keys(e.charIDs) {
+		e.state.Merit.From[id] = e.char(id).Level
+	}
 	e.state.Phase = "deployment"
 	e.state.Turn = "ally"
 	e.state.Round = 1
@@ -836,7 +848,7 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 		c.Temp = true
 		c.Placement = true
 	}
-	if side == "enemy" {
+	if side == "enemy" || sp.AI { // an allied army fights beside the player at the enemy's difficulty, not a step behind it
 		sp.Shift += e.difficulty().EnemyShift
 	}
 	if c.Temp || sp.Level > 0 {
@@ -867,7 +879,7 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	if sp.Faction != "" {
 		color = sp.Faction
 	}
-	u := Unit{AI: sp.AI, Policy: sp.Policy, Goal: copyGoal(sp.Goal), GoalArea: sp.GoalArea, DuelFirst: sp.DuelFirst, Group: sp.Group, Rank: sp.Rank, ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
+	u := Unit{AI: sp.AI, Policy: sp.Policy, Goal: copyGoal(sp.Goal), GoalArea: sp.GoalArea, DuelFirst: sp.DuelFirst, UseItems: sp.UseItems, Group: sp.Group, Rank: sp.Rank, ID: id, Character: id, Faction: side, Color: color, Facing: sp.Facing, X: x, Y: y, Status: map[string]Status{}, Items: map[string]int{}}
 	npcStock := e.data.Rules.EnemyStock
 	if side == "ally" {
 		npcStock = e.data.Rules.AllyStock
@@ -879,7 +891,7 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	}
 	st := e.stats(&u)
 	u.HP = st.MaxHP
-	u.MP = 0
+	u.MP = int(float64(st.MaxMP) * e.fx(&u, content.FxStartMana))
 	if sp.HP != nil {
 		u.HP = min(st.MaxHP, max(1, *sp.HP))
 	}
@@ -966,6 +978,7 @@ func (e *Engine) settle() {
 	if !e.state.Executed[key] {
 		for item, n := range stage.Reward {
 			e.gain(item, n)
+			e.spoil(item, n)
 		}
 		e.state.Executed[key] = true
 	}
@@ -974,6 +987,7 @@ func (e *Engine) settle() {
 			e.state.Executed[key] = true
 			for item, n := range o.Reward {
 				e.gain(item, n)
+				e.spoil(item, n)
 			}
 			if o.Flag != "" {
 				if e.state.PendingFlags == nil {
@@ -989,6 +1003,16 @@ func (e *Engine) settle() {
 	}
 	e.state.PendingFlags = nil
 	e.emit("victory", "", stage.ID, 0)
+}
+
+// spoil records an item or money the battle won in its merit.
+func (e *Engine) spoil(item string, n int) {
+	if m := e.state.Merit; m != nil {
+		if m.Spoils == nil {
+			m.Spoils = map[string]int{}
+		}
+		m.Spoils[item] += n
+	}
 }
 
 // midAction tells whether the unit that took the command has moved but not yet acted: nothing that a

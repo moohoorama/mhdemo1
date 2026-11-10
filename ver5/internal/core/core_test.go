@@ -274,6 +274,12 @@ func TestSplashAndPierce(t *testing.T) {
 	if len(hit) != 2 || share["troop#2"] != .75 {
 		t.Fatalf("pierce %v %v", hit, share)
 	}
+	a.X, a.Y = 5, 5 // a diagonal blow carries on diagonally
+	t1.X, t1.Y = 7, 7
+	hit, share = e.victims(a, b, e.basic())
+	if len(hit) != 2 || share["troop#1"] != .75 || share["troop#2"] != 0 {
+		t.Fatalf("diagonal pierce %v %v", hit, share)
+	}
 }
 func TestPreviewDamageIsEachTargetsOwn(t *testing.T) {
 	e, a, b := arena(t)
@@ -496,8 +502,16 @@ func TestHealingBonusItemsAndShare(t *testing.T) {
 	with(e2, "hero", "heal_t")
 	e2.unit("hero").HP = 10
 	apply(t, e2, Command{Kind: "item", Actor: "hero", Target: "hero", Item: "ration"})
-	if hp := e2.unit("hero").HP; hp != 450 {
-		t.Fatalf("ration with heal_bonus healed to %d", hp)
+	if hp := e2.unit("hero").HP; hp != 230 {
+		t.Fatalf("medicine is for heal spells, yet the ration healed to %d", hp)
+	}
+	e4, _, _ := arena(t)
+	e4.data.Traits["power_t"] = content.Trait{Effects: map[string]float64{content.FxItemPower: .5}}
+	with(e4, "hero", "power_t")
+	e4.unit("hero").HP = 10
+	apply(t, e4, Command{Kind: "item", Actor: "hero", Target: "hero", Item: "ration"})
+	if hp := e4.unit("hero").HP; hp != 340 {
+		t.Fatalf("item_power 0.5 makes the ration heal 330, yet it healed to %d", hp)
 	}
 	e3, _, _ := arena(t)
 	with(e3, "hero", "share")
@@ -533,13 +547,13 @@ func TestRegenAuraAndTurnBuffs(t *testing.T) {
 	e.endFaction()
 	e.endFaction()
 	a := e.unit("hero")
-	if a.HP <= 100 || a.Status["speed"].Value != 2 {
+	if a.HP <= 100 || a.Status["speed"].Value != 2 || a.Status["defense"].Value != 20 {
 		t.Fatalf("hp %d %+v", a.HP, a.Status)
 	}
 	a.X, a.Y = 8, 1 // the keep
 	e.state.Turn = "enemy"
 	e.endFaction()
-	if a.Status["defense"].Value != 20 {
+	if a.Status["defense"].Value != 40 {
 		t.Fatalf("fortify on the keep: %+v", a.Status)
 	}
 	if e.movement(a) != e.unitClass(a).Move+2 {

@@ -91,6 +91,7 @@
    ]
   },
   "blaze": {
+   "Sound": "fire-big",
    "Name": "업화",
    "Desc": "초열보다 피해 1.5배.",
    "Kind": "magic",
@@ -108,6 +109,7 @@
    ]
   },
   "fire_array": {
+   "Sound": "fire-big",
    "Name": "화진",
    "Desc": "십자 범위 화염.",
    "Kind": "magic",
@@ -125,6 +127,7 @@
    ]
   },
   "inferno": {
+   "Sound": "fire-big",
    "Name": "폭염",
    "Desc": "일자 6칸 화염.",
    "Kind": "magic",
@@ -144,6 +147,7 @@
    ]
   },
   "fire_dragon": {
+   "Sound": "fire-big",
    "Name": "화룡",
    "Desc": "십자 범위 화염.",
    "Kind": "magic",
@@ -298,6 +302,7 @@
    ]
   },
   "boulder": {
+   "Sound": "boulder",
    "Name": "거암",
    "Desc": "낙석보다 피해 2배.",
    "Kind": "magic",
@@ -603,6 +608,7 @@
    ]
   },
   "unrest": {
+   "Sound": "scheme",
    "Name": "동요",
    "Desc": "십자 범위 적의 사기 -20%.",
    "Kind": "status",
@@ -668,6 +674,7 @@
    ]
   },
   "collapse": {
+   "Sound": "scheme",
    "Name": "와해",
    "Desc": "십자 범위 적의 방어력 -20%.",
    "Kind": "status",
@@ -717,6 +724,7 @@
    ]
   },
   "confuse": {
+   "Sound": "scheme",
    "Name": "혼란",
    "Desc": "적 한 명을 혼란에 빠뜨린다.",
    "Kind": "status",
@@ -767,6 +775,7 @@
    ]
   },
   "great_confusion": {
+   "Sound": "scheme",
    "Name": "대혼란",
    "Desc": "십자 범위 적을 혼란에 빠뜨린다.",
    "Kind": "status",
@@ -816,13 +825,13 @@
   },
   "brace": {
    "Name": "대비",
-   "Desc": "자신의 방어력을 2턴 높인다.",
+   "Desc": "자신의 방어력과 정신력을 2턴 높인다.",
    "Kind": "buff",
    "Mode": "self",
    "Shape": "single",
    "Cost": 24,
    "Hit": 100,
-   "Effect": "defense",
+   "Effect": "defense+mind",
    "Duration": 2,
    "Requires": [
     "brace_prep"
@@ -933,6 +942,7 @@
    ]
   },
   "provoke": {
+   "Sound": "scheme",
    "Name": "도발",
    "Desc": "자신을 중심으로 한 십자 5칸의 적에게 사기 저하.",
    "Kind": "status",
@@ -947,6 +957,7 @@
    ]
   },
   "disrupt": {
+   "Sound": "scheme",
    "Name": "교란",
    "Desc": "적 한 부대의 순발력과 사기를 2턴 낮춘다.",
    "Kind": "status",
@@ -977,6 +988,7 @@
    ]
   },
   "slander": {
+   "Sound": "scheme",
    "Kind": "status",
    "Mode": "any",
    "Shape": "single",
@@ -1108,6 +1120,21 @@
    "Max": 3,
    "Requires": [
     "stance_prep"
+   ]
+  },
+  "meditate": {
+   "Name": "명상",
+   "Desc": "자신의 병력을 최대치의 5% 깎아 병법치를 최대치의 20% 채운다.",
+   "Kind": "heal",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 0,
+   "Hit": 100,
+   "Effect": "meditate",
+   "Coeff": 0.2,
+   "HPCost": 0.05,
+   "Requires": [
+    "meditate_art"
    ]
   }
  }

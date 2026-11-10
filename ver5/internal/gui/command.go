@@ -53,6 +53,15 @@ func (g *Game) unitView(o core.Observation, id string) *core.UnitView {
 	return nil
 }
 
+// targetView is the unit whose cell picks command c: its target, or for an 인수 meant for the deputy riding
+// with the actor (a character with no unit of its own) the actor itself.
+func (g *Game) targetView(o core.Observation, c core.Command) *core.UnitView {
+	if t := g.unitView(o, c.Target); t != nil || c.Kind != "item" {
+		return t
+	}
+	return g.unitView(o, c.Actor)
+}
+
 func (g *Game) clearOrder() { g.ord = order{} }
 
 // begin starts an order for an ally that can still act.
@@ -102,6 +111,7 @@ func (g *Game) tentative(x, y int) {
 		g.toast(koreanError(err.Error()), bad)
 		return
 	}
+	g.sfx("ok") // the destination is given
 	a := replay.New(g.S.View(), c.Actor)
 	a.Add(c, r.Events)
 	g.ord.sandbox, g.ord.move, g.ord.stage, g.ord.armed = sb, &c, "menu", hoverCell{}
@@ -110,6 +120,7 @@ func (g *Game) tentative(x, y int) {
 
 // confirm sends the tentative move followed by the action that completes the unit's turn.
 func (g *Game) confirm(c core.Command) {
+	g.sfx("ok")
 	move := g.ord.move
 	g.clearOrder()
 	if move != nil {
@@ -183,7 +194,7 @@ func (g *Game) mapClick(x, y int) {
 	case "target":
 		var hits []core.Command
 		for _, c := range g.options(g.ord.pick) {
-			if t := g.unitView(g.view(), c.Target); t != nil && t.X == x && t.Y == y {
+			if t := g.targetView(g.view(), c); t != nil && t.X == x && t.Y == y {
 				hits = append(hits, c)
 			}
 		}
@@ -191,7 +202,7 @@ func (g *Game) mapClick(x, y int) {
 			if g.arm(x, y) {
 				return
 			}
-			if len(hits) > 1 { // an 인수 that can make more than one class: pick the class first
+			if len(hits) > 1 { // an 인수 that can make more than one class, or promote the officer or its deputy: pick first
 				g.ord.stage, g.ord.branch = "branch", g.branches(hits)
 				return
 			}
@@ -386,11 +397,9 @@ func (g *Game) orderMarks(o core.Observation) []Highlight {
 			add(p, color.RGBA{235, 40, 30, 92})
 		}
 	}
-	if sel := g.unitView(o, g.selected); sel != nil && sel.HP > 0 && sel.Faction == "enemy" && g.ord.actor == "" {
-		for _, p := range g.threat(sel.ID) {
-			add(p, color.RGBA{240, 60, 30, 110})
-		}
-		add(content.Point{X: sel.X, Y: sel.Y}, color.RGBA{255, 120, 90, 150})
+	if sel := g.unitView(o, g.selected); sel != nil && sel.HP > 0 && g.ord.actor == "" {
+		g.rangeMarks(sel.ID, add)
+		add(content.Point{X: sel.X, Y: sel.Y}, color.RGBA{255, 214, 96, 150})
 	}
 	if g.busy() || g.ord.actor == "" {
 		return out
@@ -417,7 +426,7 @@ func (g *Game) orderMarks(o core.Observation) []Highlight {
 			}
 		}
 		for _, c := range g.options(g.ord.pick) {
-			if t := g.unitView(eo, c.Target); t != nil {
+			if t := g.targetView(eo, c); t != nil {
 				add(content.Point{X: t.X, Y: t.Y}, color.RGBA{240, 70, 50, 150})
 			}
 		}
@@ -515,24 +524,54 @@ func abs(n int) int {
 	return n
 }
 
-func (g *Game) threat(id string) []content.Point {
+// rangeMarks tints what a unit not under orders can do next time it acts: green where it can move, red where it
+// can strike from there, violet where only its stratagems reach.
+func (g *Game) rangeMarks(id string, add func(content.Point, color.RGBA)) {
+	r := g.ranges(id)
+	done := map[content.Point]bool{}
+	for _, layer := range []struct {
+		cells []content.Point
+		c     color.RGBA
+	}{{r.Move, color.RGBA{60, 200, 90, 110}}, {r.Attack, color.RGBA{240, 60, 30, 100}}, {r.Spell, color.RGBA{150, 80, 230, 100}}} {
+		for _, p := range layer.cells {
+			if !done[p] {
+				done[p] = true
+				add(p, layer.c)
+			}
+		}
+	}
+}
+
+// rangeBorder is what the unit picked outside an order strikes from where it stands, to ring in red.
+func (g *Game) rangeBorder(o core.Observation) []content.Point {
+	if g.busy() || g.ord.actor != "" || o.Phase != "battle" {
+		return nil
+	}
+	if sel := g.unitView(o, g.selected); sel != nil && sel.HP > 0 {
+		return g.ranges(sel.ID).Strike
+	}
+	return nil
+}
+
+func (g *Game) ranges(id string) core.Ranges {
 	key := fmt.Sprint(g.S.View().Revision, id)
-	if p, ok := g.threats[key]; ok {
-		return p
+	if r, ok := g.threats[key]; ok {
+		return r
 	}
 	if len(g.threats) > 64 {
-		g.threats = map[string][]content.Point{}
+		g.threats = map[string]core.Ranges{}
 	}
-	p := g.S.Engine.Threat(id)
-	g.threats[key] = p
-	return p
+	r := g.S.Engine.Ranges(id)
+	g.threats[key] = r
+	return r
 }
 
 func (g *Game) threatUnion(o core.Observation) []content.Point {
 	set := map[content.Point]bool{}
 	for _, u := range o.UnitViews {
 		if u.Faction == "enemy" && u.HP > 0 {
-			for _, p := range g.threat(u.ID) {
+			r := g.ranges(u.ID)
+			for _, p := range append(r.Attack, r.Spell...) {
 				set[p] = true
 			}
 		}

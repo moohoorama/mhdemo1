@@ -20,10 +20,10 @@
 
 새 게임은 `Campaign.Start` 노드에서 `scenario` 단계로 시작한다. 히어로 시나리오는 유비만 로스터로 시작하고, 관우·장비는 1장 도원결의 이벤트 끝의 `join` 노드로 합류한다. 시작 노드가 이야기의 뒤쪽이면 그 앞에서 합류하는 인물(걷기 이벤트의 `join` 포함)을 로스터에 미리 넣는다(`joinBefore`). 시작 로스터(`Campaign.Roster`)는 모두 인물로 만들어지고, 시작 출전 명단은 `Campaign.Deployment`, 시작 인벤토리는 `Campaign.Inventory`, 시작 창고는 `Campaign.Warehouse`다. 값은 시나리오 파일(`assets/scenario/<시나리오>/scenario.json`)을 본다.
 
-검증용 **장면 이동**(`-debug` 시작 메뉴, 세션 `jump` 요청에 `node`)은 지점(`Data.Waypoints`: 각 장의 첫 노드와 각 `battle` 노드)에서 새 게임을 연다(`core.NewAt`).
+**장면 이동**(시작 메뉴, 디버그 모드가 아니어도 나온다. 세션 `jump` 요청에 `node`·`difficulty`)은 지점(`Data.Waypoints`: 각 장의 첫 노드와 각 `battle` 노드)을 고르면 새로 시작과 같은 난이도 창을 띄우고, 고른 난이도로 그 지점에서 새 게임을 연다(`core.NewAt`).
 
 - 그 앞의 이야기는 기본 순서대로 지나간 것으로 친다: 장 노드를 순서대로 보며 `set`의 플래그, `join`·`grant`(한 번 실행 키 포함), `explore`를 지나면 그 장의 `Events` 안 `set`·`grant`, `battle`을 지나면 승리(`won-`)와 승리 보상(`reward-`)을 적는다. 분기·선택·부목표는 기본 길(조건 거짓)이다.
-- 모든 인물을 다음 전투의 스테이지 레벨(`StageLevel(NextBattleOrder(지점))`, 곧 3 + round(1.5 × (전투 순번 − 1)))로 올리고, 늘어난 특성치로 배울 것이 있으면 학습 창을 연다.
+- 모든 인물을 다음 전투의 스테이지 레벨(`StageLevel(NextBattleOrder(지점))`, 곧 3 + round(1.5 × (전투 순번 − 1)))로 올리고, 그 레벨이 허락하는 데까지 자기 승급 길의 첫 갈래로 승급시킨다(합류 때와 같은 `joinAt`). 늘어난 특성치로 배울 것이 있으면 학습 창을 연다.
 - 인벤토리는 모든 아이템을 9개 이상, 창고는 아무도 차지 않은 모든 장비를 1개 이상 갖는다. 그다음 `Owner`가 있는 장비를 창고에서 꺼내 그 주인에게 채운다(`Engine.OwnerPiece`, 그 병종이 못 드는 장비는 건너뜀).
 
 ## 2. 노드 종류

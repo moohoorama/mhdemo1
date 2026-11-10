@@ -6,7 +6,7 @@ func init() { demos["opening"] = demoOpening }
 
 // demoOpening plays a stage's opening the way the story reaches it: the battle node is up and its
 // sortie is ordered at frame 5 and the briefing read from frame 40, so a forced stage's placement and
-// opening cutscene play as in the game.
+// opening cutscene play as in the game; a stage the player places starts from its default placement at frame 60.
 func demoOpening(d *Demo) error {
 	g := d.g
 	data := *g.S.Data
@@ -21,6 +21,9 @@ func demoOpening(d *Demo) error {
 	d.step = func(f int) {
 		if f == 5 {
 			g.command(core.Command{Kind: "start"})
+		}
+		if f == 60 && g.S.Engine.Deploying() { // a stage the player places: the default placement
+			g.command(core.Command{Kind: "deployment_finish"})
 		}
 		if f > 40 && g.briefed() {
 			g.modals = g.modals[1:]

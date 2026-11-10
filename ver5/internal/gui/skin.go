@@ -28,9 +28,10 @@ var (
 )
 
 type button struct {
-	rect  image.Rectangle
-	label string
-	click func()
+	rect   image.Rectangle
+	label  string
+	click  func()
+	denied bool // a greyed-out row: a click on it only sounds the refusal
 }
 
 // Screen coordinates are in one of two spaces, each uniform (the same in x and y):
@@ -143,7 +144,7 @@ func unframed(r image.Rectangle) image.Rectangle {
 
 // addButton registers a clickable area drawn this frame.
 func (g *Game) addButton(r image.Rectangle, label string, click func()) {
-	g.buttons = append(g.buttons, button{unframed(r), label, click})
+	g.buttons = append(g.buttons, button{rect: unframed(r), label: label, click: click})
 }
 
 // fit picks the units for a w×h device-pixel window. A world px is as large as fits the

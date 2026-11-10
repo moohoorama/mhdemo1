@@ -73,7 +73,7 @@ When you add or edit a stage (`ver5/assets/scenario/*/stageNN.json`, its map or 
 `ver5/docs/stage_lv_balance.md` first and set the ranks and the enemy count by it: stage files never hold
 levels — each spawn has a `Rank` (rabble, recruit, troop, officer, commander, boss) and an optional `Shift`, and the engine
 computes the level from the stage's place in the story (3 + round(1.5×(n − 1))) with a lead that is a share of
-strength, not a fixed number of levels. Joining officers are raised to the stage level. Then measure with `go run ./cmd/_balance`,
+strength, not a fixed number of levels. Joining officers are raised to the stage level, shifted by the difficulty like a troop (`Rules.JoinLevel`). Then measure with `go run ./cmd/_balance`,
 play it through `go run ./cmd/srpg-cli -slot 9` (numbered menus, letter maps; the slot carries the game
 between runs) to check the placement and the order of the story, and only then capture the GUI.
 

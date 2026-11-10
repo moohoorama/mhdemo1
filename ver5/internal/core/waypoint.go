@@ -11,14 +11,18 @@ const waypointStock = 9
 
 // NewAt starts a game at a waypoint (content.Waypoints) to check the story from there: the story before
 // it counts as played on its default path (its officers joined, its grants and flags set, its battles won
-// without their bonus objectives), every officer is at the level of the next battle with the learning
-// window open for the points that brought, the party owns every item and every piece of equipment, and
-// every piece with an Owner is on that officer.
-func NewAt(d *content.Data, seed uint64, node string) (*Engine, error) {
+// without their bonus objectives), every officer is at the level of the next battle in the class that level
+// reaches on the officer's own promotion path, with the learning window open for the points that brought,
+// the party owns every item and every piece of equipment, and every piece with an Owner is on that officer.
+// The difficulty is NewGame's.
+func NewAt(d *content.Data, seed uint64, node, difficulty string) (*Engine, error) {
 	if !slices.ContainsFunc(d.Waypoints(), func(w content.Waypoint) bool { return w.Node == node }) {
 		return nil, fail("UnknownWaypoint")
 	}
-	e := begin(d, seed)
+	e, err := beginAt(d, seed, difficulty)
+	if err != nil {
+		return nil, err
+	}
 	for _, c := range d.Chapters {
 		for _, id := range c.Nodes {
 			if id == node {
@@ -59,7 +63,7 @@ func (e *Engine) arrive(node string) {
 	level := e.data.Rules.StageLevel(e.data.NextBattleOrder(node))
 	for _, id := range keys(e.charIDs) {
 		o := e.char(id)
-		e.raiseTo(o, level)
+		e.joinAt(o, level)
 		if e.def(o).Playable && e.canLearn(o) {
 			e.state.Learning = append(e.state.Learning, id)
 		}

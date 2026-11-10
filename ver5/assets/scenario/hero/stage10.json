@@ -265,12 +265,66 @@
    ],
    "Do": [
     {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "face",
+        "Unit": "yuanshao",
+        "Facing": "NW"
+       }
+      ]
+     ]
+    },
+    {
      "Kind": "say",
      "Lines": [
       {
        "Actor": "yuanshao",
-       "Text": "공손찬의 백마도 오늘로 끝이다. 국의, 다리 머리를 지켜라. 문추는 내 곁에 있어라."
+       "Text": "공손찬의 백마도 오늘로 끝이다. 국의, 노병을 이끌고 다리 머리를 맡아라."
       }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "tianfeng",
+       "Text": "주공, 노병만 앞에 내놓으시면 위험합니다. 본진을 강가로 붙여 한 놈도 건너오지 못하게 막으셔야 합니다."
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "face",
+        "Unit": "yuanshao",
+        "Facing": "NE"
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshao",
+       "Text": "막으면 공손찬은 또 달아나오. 얇은 앞줄을 보면 백마를 몽땅 몰고 건너올 게요. 노병으로 꺾어 놓은 뒤, 본진이 단번에 쓸어버린다. 문추는 그때까지 내 곁에 있어라."
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "face",
+        "Unit": "quyi",
+        "Facing": "SE"
+       }
+      ]
      ]
     },
     {
@@ -280,6 +334,23 @@
        "Actor": "quyi",
        "Text": "맡겨 두십시오. 내 현묘한 승리 기록이 하나 또 추가되겠군요."
       }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "face",
+        "Unit": "quyi",
+        "Facing": "SW"
+       },
+       {
+        "Kind": "face",
+        "Unit": "yuanshao",
+        "Facing": "SW"
+       }
+      ]
      ]
     },
     {
@@ -452,7 +523,7 @@
      "Lines": [
       {
        "Actor": "tianfeng",
-       "Text": "안 장군은 오지 못합니다. 그러니 더욱 서두르지 마십시오. 다리만 지키면 공손찬이 제풀에 지칩니다."
+       "Text": "안 장군은 오지 못합니다. 돌격할 병력이 모자라니 이제라도 강가를 굳게 지키십시오."
       }
      ]
     },
@@ -488,7 +559,7 @@
      "Lines": [
       {
        "Actor": "tianfeng",
-       "Text": "지금 나서시면 안 됩니다. 노병 뒤에서 버티시면 저들은 다리를 건너지 못합니다."
+       "Text": "노병이 아직 백마를 꺾지 못했습니다. 지금 나서시면 다리 위에서 뒤엉킵니다."
       }
      ]
     },

@@ -199,32 +199,62 @@ func TestEvadeLowersTheHitChanceOfPhysicalAttacks(t *testing.T) {
 	}
 }
 
-func TestPouchHealsAfterABlow(t *testing.T) {
-	e, _, _ := arena(t)
-	with(e, "boss", "pouch_t")
-	for i := 0; i < 8; i++ {
+func TestPouchEatsAWholeBeanFromTheStock(t *testing.T) {
+	setup := func(t *testing.T) (*Engine, *Unit, int) {
+		e, _, _ := arena(t)
+		with(e, "boss", "pouch_t")
 		boss := e.unit("boss")
-		boss.HP = e.stats(boss).MaxHP
-		resetActions(e.unit("hero"))
-		apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
-		e.state.Learning = nil
-		dealt, healed := 0, 0
-		for _, ev := range e.events {
-			if ev.Kind == "damage" && ev.Target == "boss" {
-				dealt += ev.Amount
-			}
-			if ev.Kind == "pouch-heal" && ev.Actor == "boss" {
-				healed += ev.Amount
-			}
-		}
-		if dealt == 0 {
-			continue
-		}
-		assert.Equal(t, min(dealt, 50), healed, "once per attack, never above the full bar")
-		assert.Equal(t, e.stats(e.unit("boss")).MaxHP-dealt+healed, e.unit("boss").HP)
-		return
+		return e, boss, int(e.fx(boss, content.FxPouchHeal))
 	}
-	t.Fatal("no blow landed in 8 swings")
+	t.Run("a loss smaller than a bean leaves the pouch shut", func(t *testing.T) {
+		e, boss, k := setup(t)
+		boss.HP = e.stats(boss).MaxHP - k + 1
+		e.pouchHeal(boss)
+		assert.Equal(t, e.stats(boss).MaxHP-k+1, boss.HP)
+		assert.Equal(t, 1, boss.Items[e.data.Rules.PouchItem])
+	})
+	t.Run("a loss of a whole bean eats one", func(t *testing.T) {
+		e, boss, k := setup(t)
+		boss.HP = e.stats(boss).MaxHP - k - 7
+		e.pouchHeal(boss)
+		assert.Equal(t, e.stats(boss).MaxHP-7, boss.HP)
+		assert.Zero(t, boss.Items[e.data.Rules.PouchItem])
+	})
+	t.Run("an empty pouch heals nothing", func(t *testing.T) {
+		e, boss, k := setup(t)
+		boss.Items[e.data.Rules.PouchItem] = 0
+		boss.HP = e.stats(boss).MaxHP - 2*k
+		e.pouchHeal(boss)
+		assert.Equal(t, e.stats(boss).MaxHP-2*k, boss.HP)
+	})
+	t.Run("a blow that leaves it a bean short makes it eat once", func(t *testing.T) {
+		e, _, k := setup(t)
+		for i := 0; i < 8; i++ {
+			boss := e.unit("boss")
+			boss.HP = e.stats(boss).MaxHP - k
+			boss.Items[e.data.Rules.PouchItem] = 1
+			resetActions(e.unit("hero"))
+			apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
+			e.state.Learning = nil
+			dealt, healed := 0, 0
+			for _, ev := range e.events {
+				if ev.Kind == "damage" && ev.Target == "boss" {
+					dealt += ev.Amount
+				}
+				if ev.Kind == "pouch-heal" && ev.Actor == "boss" {
+					healed += ev.Amount
+				}
+			}
+			boss = e.unit("boss")
+			if dealt == 0 || boss.HP <= 0 {
+				continue
+			}
+			assert.Equal(t, k, healed)
+			assert.Zero(t, boss.Items[e.data.Rules.PouchItem])
+			return
+		}
+		t.Fatal("no blow landed in 8 swings")
+	})
 }
 
 func TestChargeAccuracyGrowsWithTheCellsWalked(t *testing.T) {
@@ -291,4 +321,81 @@ func TestWeakPointCritsAnAilingFoe(t *testing.T) {
 	assert.True(t, e.critForced(hero, boss, flame), "a spell")
 	boss.Status = map[string]Status{"attack": {Turns: 2, Value: -20}}
 	assert.False(t, e.critForced(hero, boss, e.basic()), "a debuff is no ailment")
+}
+
+func TestDeputySharesExperience(t *testing.T) {
+	t.Run("alone the officer keeps all of it", func(t *testing.T) {
+		e, _, _ := arena(t)
+		e.xp("hero", 1000)
+		assert.Equal(t, 1000, e.char("hero").XP)
+	})
+	t.Run("with a deputy the officer keeps 80 and the deputy gets 60", func(t *testing.T) {
+		e, _, _ := arena(t)
+		e.char("hero").Deputy = "archer1"
+		before := e.char("archer1").XP
+		e.xp("hero", 1000)
+		assert.Equal(t, 800, e.char("hero").XP)
+		assert.Equal(t, before+600, e.char("archer1").XP)
+	})
+	t.Run("fractions carry over", func(t *testing.T) {
+		e, _, _ := arena(t)
+		e.char("hero").Deputy = "archer1"
+		before := e.char("archer1").XP
+		for i := 0; i < 5; i++ {
+			e.xp("hero", 1) // 0.8 and 0.6 each time
+		}
+		assert.Equal(t, 4, e.char("hero").XP)
+		assert.Equal(t, before+3, e.char("archer1").XP)
+	})
+}
+
+func TestPromotionItemOnTheDeputy(t *testing.T) {
+	e, _, _ := arena(t)
+	hero, deputy := e.char("hero"), e.char("archer1")
+	deputy.Def, deputy.Class, deputy.Level = hero.Def, hero.Class, 15
+	hero.Deputy = deputy.ID
+	var picks []Command
+	for _, c := range e.LegalActions("hero").Commands {
+		if c.Kind == "item" && c.Item == "promo_guard" {
+			picks = append(picks, c)
+		}
+	}
+	require.Len(t, picks, 1, "only the deputy is high enough")
+	assert.Equal(t, deputy.ID, picks[0].Target)
+	apply(t, e, picks[0])
+	assert.Equal(t, "guard", e.char(deputy.ID).Class)
+	assert.NotEqual(t, "guard", e.char("hero").Class)
+	assert.Zero(t, e.state.Inventory["promo_guard"])
+	var promoted string
+	for _, ev := range e.events {
+		if ev.Kind == "promotion" {
+			promoted = ev.Text
+		}
+	}
+	assert.Equal(t, deputy.ID, promoted)
+	assertRejected(t, e, Command{Kind: "item", Actor: "hero", Target: "boss", Item: "promo_guard"})
+}
+
+func TestDeputyFightsItsDuel(t *testing.T) {
+	e, hero, boss := arena(t)
+	e.unit("archer1").HP = 0 // off the field: it rides with the hero now
+	e.char("hero").Deputy = "archer1"
+	stage := &e.data.Stages[e.state.Stage]
+	stage.Duels = append(stage.Duels, content.Duel{ID: "deputy-duel", Ally: "archer1", Enemy: boss.Character, Outcome: "draw", AllyResult: "stay", EnemyResult: "stay", Text: "t"})
+	assert.Contains(t, e.DuelMarks(), DuelMark{Unit: hero.ID, Group: len(stage.Duels) - 1}, "the deputy's mark stands on his officer")
+	assert.True(t, e.DuelPending(hero.ID, boss.ID))
+	heroLevel, deputyLevel := e.char("hero").Level, e.char("archer1").Level
+	e.events = nil
+	e.autoDuels()
+	var duel Event
+	for _, ev := range e.events {
+		if ev.Kind == "duel" {
+			duel = ev
+		}
+	}
+	require.Equal(t, "deputy-duel", duel.DuelID)
+	assert.Equal(t, hero.ID, duel.Actor)
+	assert.Equal(t, "archer1", duel.Fighter)
+	assert.Equal(t, deputyLevel+1, e.char("archer1").Level, "the deputy who fought earns the duel's level")
+	assert.Equal(t, heroLevel, e.char("hero").Level, "his officer earns nothing from it")
 }

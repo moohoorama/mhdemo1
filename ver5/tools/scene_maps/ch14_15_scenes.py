@@ -12,7 +12,8 @@ from pathlib import Path
 from scene_format import write
 
 ASSETS = Path(__file__).resolve().parents[2] / 'assets'
-story = [n for ch in ('14', '15') for n in json.loads((ASSETS / f'scenario/hero/story{ch}.json').read_text())['Nodes']]
+story = [n for ch in ('14', '15') for d in [json.loads((ASSETS / f'scenario/hero/story{ch}.json').read_text())]
+         for n in d['Nodes'] + d.get('Events', [])]
 # the preview's ids of the scenes that are in chapter 14 now
 RENAME = {'c15-gate': 'c14-gate', 'c15-hall': 'c14-hall', 'c15-envoy': 'c14-envoy', 'c15-yuanshu': 'c14-yuanshu'}
 for p in ('lg', 'lh', 'e', 'y'):
@@ -193,30 +194,60 @@ S['c15-yuanshu'] = {
     },
 }
 
+# 2b. 우이 서쪽 진영, 밤: a soldier who got out of 하비 tells how it fell, and the party falls back to 광릉
+S['c14-retreat'] = {
+    'Map': 'S_army_camp',
+    'Time': 'night',
+    'Cast': {
+        '관우': {'At': [1, 5], 'Face': 'SW'},
+        '유비': {'At': [2, 5], 'Face': 'SW'},
+        '장비': {'At': [3, 5], 'Face': 'SW'},
+        '간옹': {'At': [4, 5], 'Face': 'SW'},
+        '손건': {'At': [5, 5], 'Face': 'SW'},
+        '미축': {'At': [1, 6], 'Face': 'SE'},
+        '미방': {'At': [1, 7], 'Face': 'SE'},
+        '고순': {'At': [0, 5], 'Face': 'SW', 'If': ['party:gaoshun']},
+        '병사': {'At': [2, 7], 'Face': 'NE', 'Sprite': 'wounded_noncombat', 'Faction': 'shu', 'Off': True},
+    },
+    'Ambient': [{'CamAt': [3, 6]}],
+    'Beats': {
+        'c14-r01': [[g({'Actor': '병사', 'Enter': [6, 7], 'Move': [2, 7], 'Speed': .7}),
+                     g({'Actor': '병사', 'Face': 'NE'})]],
+        'c14-r03': [[g({'Actor': '장비', 'Play': 'action', 'Shake': .25})]],
+        'c14-r04': [[g({'Actor': '관우', 'Face': 'SE'})]],
+        'c14-r05': [[g({'Actor': '미축', 'Face': 'NE'}, {'Actor': '미축', 'Play': 'action'})]],
+        'c14-r06': [[g({'Actor': '유비', 'Emote': '…'})]],
+        'c14-r07': [[g({'Actor': '유비', 'Play': 'action'})]],
+    },
+}
+
 # 3. 광릉 진영: grain handed out, then the two brothers at the camp's mouth
 S['c15-grain'] = {
-    'Map': 'S_gongsun_camp',
+    'Map': 'S_guangling_camp',
     'Time': 'dusk',
     'Cast': {
-        '미축': {'At': [1, 5], 'Face': 'SW'},
-        '병사#1': {'At': [1, 6], 'Face': 'NE', 'Sprite': 'light_infantry', 'Faction': 'shu'},
-        '병사#2': {'At': [1, 7], 'Face': 'NE', 'Sprite': 'light_infantry', 'Faction': 'shu'},
-        '병사#3': {'At': [1, 8], 'Face': 'NE', 'Sprite': 'light_infantry', 'Faction': 'shu'},
-        '병사#4': {'At': [2, 8], 'Face': 'NW', 'Sprite': 'light_infantry', 'Faction': 'shu'},
-        '미방': {'At': [12, 6], 'Face': 'NW', 'Off': True},
+        '미축': {'At': [3, 6], 'Face': 'SE'},
+        '병사#1': {'At': [4, 6], 'Face': 'NW', 'Sprite': 'light_infantry', 'Faction': 'shu'},
+        '병사#2': {'At': [5, 6], 'Face': 'NW', 'Sprite': 'light_infantry', 'Faction': 'shu'},
+        '병사#3': {'At': [6, 6], 'Face': 'NW', 'Sprite': 'light_infantry', 'Faction': 'shu'},
+        '병사#4': {'At': [7, 7], 'Face': 'NW', 'Sprite': 'light_infantry', 'Faction': 'shu'},
+        '미방': {'At': [14, 7], 'Face': 'NW', 'Off': True},
     },
-    'Ambient': [{'Effect': 'smallfire', 'At': [7, 10]}, {'CamAt': [3, 6]},
+    'Ambient': [{'Effect': 'smallfire', 'At': [5, 10]}, {'CamAt': [5, 6]},
                 {'Actor': '병사#4', 'Chatter': '배고파…|언제 먹나|꼬르륵'}],
     'Beats': {
-        'c15-g01': [[g({'Actor': '병사#1', 'Move': [2, 6]}, {'Actor': '병사#2', 'Move': [1, 6], 'After': .3},
-                      {'Actor': '병사#3', 'Move': [1, 7], 'After': .6}),
-                     g({'Actor': '병사#1', 'Move': [5, 6], 'Exit': True}, {'Actor': '미축', 'Play': 'action'})]],
-        'c15-g02': [[g({'Actor': '미방', 'Enter': [12, 6], 'Move': [4, 6]}, {'Cam': '미방'}),
-                     g({'Actor': '미축', 'Move': [3, 5]}, {'CamAt': [4, 6]}),
-                     g({'Actor': '미축', 'Face': 'SE'}, {'Actor': '미방', 'Face': 'NW'})]],
+        # the first in line takes his measure and walks off down the road; the line steps up
+        'c15-g01': [[g({'Actor': '미축', 'Play': 'action'}),
+                     g({'Actor': '병사#1', 'Move': [5, 7]}, {'Actor': '병사#2', 'Move': [4, 6], 'After': .3},
+                       {'Actor': '병사#3', 'Move': [5, 6], 'After': .6}, {'Actor': '병사#4', 'Move': [6, 6], 'After': .9}),
+                     g({'Actor': '병사#1', 'Move': [12, 7], 'Exit': True}, {'Actor': '병사#2', 'Face': 'NW'},
+                       {'Actor': '병사#3', 'Face': 'NW'}, {'Actor': '병사#4', 'Face': 'NW'})]],
+        # 미방 comes in at the mouth and up the road to his brother
+        'c15-g02': [[g({'Actor': '미방', 'Enter': [17, 7], 'Move': [4, 7]}, {'Cam': '미방'}),
+                     g({'Actor': '미축', 'Face': 'SE'}, {'Actor': '미방', 'Face': 'NW'}, {'CamAt': [5, 6]})]],
         'c15-g08': [[g({'Actor': '미축', 'Play': 'action'})]],
-        'c15-g09': [[g({'Actor': '미축', 'Move': [1, 5]}, {'Actor': '미축', 'Face': 'SW', 'After': 2}),
-                     g({'Actor': '미방', 'Face': 'SE'}, {'Actor': '미방', 'Emote': '…'})]],
+        'c15-g09': [[g({'Actor': '미방', 'Move': [9, 7]}, {'Actor': '미방', 'Face': 'SE', 'After': 1}),
+                     g({'Actor': '미방', 'Emote': '…'}, {'Actor': '미축', 'Face': 'SE'})]],
     },
 }
 
@@ -308,7 +339,7 @@ S['c15-clash'] = {
                      # the others draw aside out of the arrow's way, left and right; 여포 stands alone on the road
                      g(*[{'Actor': k, 'Move': at} for k, at in ASIDE.items()]),
                      g(*[{'Actor': k, 'Face': 'NE'} for k in ASIDE], {'Wait': .3}),
-                     g({'Actor': '여포', 'Shoot': {'Time': 2.5, 'Peak': 160, 'Say': '어디……'}}),
+                     g({'Actor': '여포', 'Shoot': {'Time': 4, 'Peak': 50, 'Say': '어디……'}}),
                      g({'Actor': '기령', 'Emote': '…'}, {'Actor': '유비', 'Emote': '!'}, {'Actor': '장비', 'Emote': '!'}, {'Wait': .8})]],
         'c15-p13': [[g({'Actor': '기령', 'Move': [9, FAR - 30], 'Speed': 1.5, 'Exit': True})]],
         'c15-p18': [[g({'Actor': '장비', 'Play': 'attack', 'Shake': .3})]],
@@ -344,6 +375,101 @@ for i, (k, a) in enumerate(YUAN.items()):
 # the brothers' men turn and walk back off the field after 관우's order; 기령's after his
 S['c15-clash']['Beats']['c15-c11'] = [[RETREAT_SHU]]
 S['c15-clash']['Beats']['c15-c13'] = [[RETREAT_YUAN]]
+
+
+# 6. 소패 관아: the party settles in, and a messenger runs in — 여포 is coming with an army
+S['c15-alarm'] = {
+    'Map': 'S_xiaopei_office',
+    'Cast': {
+        '유비': {'At': [2, 1], 'Face': 'SW'},
+        '관우': {'At': [1, 3], 'Face': 'NE'},
+        '손건': {'At': [2, 3], 'Face': 'NE'},
+        '장비': {'At': [3, 3], 'Face': 'NW'},
+        '간옹': {'At': [4, 2], 'Face': 'SW'},
+        '미축': {'At': [1, 4], 'Face': 'NE'},
+        '미방': {'At': [4, 3], 'Face': 'NW'},
+        '고순': {'At': [3, 4], 'Face': 'NE', 'If': ['party:gaoshun']},
+        '전령': {'At': [2, 5], 'Face': 'NE', 'Sprite': 'light_infantry', 'Faction': 'shu', 'Off': True},
+    },
+    'Beats': {
+        'c15-a01': [[g({'Actor': '장비', 'Play': 'action'})]],
+        'c15-a03': [[g({'Actor': '유비', 'Play': 'action'})]],
+        'c15-a04': [[g({'Actor': '전령', 'Enter': [2, 7], 'Move': [2, 5], 'Speed': 2},
+                       *[{'Actor': k, 'Look': 'SE'} for k in ('관우', '손건', '장비', '미축', '미방', '고순')]),
+                     g({'Actor': '전령', 'Face': 'NE'}, {'Actor': '유비', 'Emote': '!', 'Shake': .3})]],
+        'c15-a05': [[g({'Actor': '장비', 'Emote': '!'}, {'Actor': '장비', 'Play': 'action'})]],
+        'c15-a06': [[g({'Actor': '미방', 'Emote': '?'})]],
+        'c15-a07': [[g({'Actor': '유비', 'Emote': '…'})]],
+        'c15-a08': [[g({'Actor': '관우', 'Move': [1, 2]}), g({'Actor': '관우', 'Face': 'SE'})]],
+        'c15-a09': [[g({'Actor': '유비', 'Play': 'action'}), g({'Actor': '전령', 'Move': [2, 7], 'Exit': True})]],
+    },
+}
+
+
+# 7. 조조의 군막 (S_council): 조조 on the dais at the far left, his strategists along the back wall and his generals
+# along the front, 허저 at the way in; the party walks in from the lower right and stands in the aisle before him
+S['c15-cao'] = {
+    'Map': 'S_council',
+    'Cast': {
+        '조조': {'At': [1, 3], 'Face': 'SE', 'Pose': 'sit'},
+        '순욱': {'At': [3, 1], 'Face': 'SW'},
+        '순유': {'At': [4, 1], 'Face': 'SW'},
+        '곽가': {'At': [6, 1], 'Face': 'SW'},
+        '정욱': {'At': [8, 1], 'Face': 'SW'},
+        '하후연': {'At': [3, 6], 'Face': 'NE'},
+        '조인': {'At': [4, 6], 'Face': 'NE'},
+        '허저': {'At': [10, 2], 'Face': 'SW'},
+        '유비': {'At': [3, 3], 'Face': 'NW', 'Off': True},
+        '관우': {'At': [4, 4], 'Face': 'NW', 'Off': True},
+        '장비': {'At': [4, 3], 'Face': 'NW', 'Off': True},
+        '간옹': {'At': [5, 3], 'Face': 'NW', 'Off': True},
+        '손건': {'At': [5, 4], 'Face': 'NW', 'Off': True},
+    },
+    'Beats': {
+        'c15-k01': [[g({'Actor': '허저', 'Look': 'SE'},
+                       *[{'Actor': k, 'Enter': [12, 4 if i % 2 else 3], 'Move': at, 'After': .25 * i}
+                         for i, (k, at) in enumerate([('유비', [3, 3]), ('장비', [4, 3]), ('관우', [4, 4]),
+                                                      ('간옹', [5, 3]), ('손건', [5, 4])])]),
+                     g({'Actor': '허저', 'Face': 'SW'}, *[{'Actor': k, 'Face': 'NW'} for k in ('유비', '관우', '장비', '간옹', '손건')]),
+                     g({'Actor': '조조', 'Pose': 'idle'}, {'Actor': '조조', 'Play': 'action'})]],
+        'c15-k02': [[g({'Actor': '유비', 'Pose': 'bow'})]],
+        'c15-k03': [[g({'Actor': '유비', 'Pose': 'idle'}, {'Actor': '조조', 'Play': 'action'})]],
+        'c15-k06': [[g({'Actor': '조조', 'Look': 'SE'})]],
+        'c15-k07': [[g({'Actor': '관우', 'Emote': '…'})]],
+        'c15-k08': [[g({'Actor': '조조', 'Look': 'NE'}, *[{'Actor': k, 'Look': 'NE'} for k in ('유비', '장비', '간옹')])]],
+        'c15-k09': [[g({'Actor': '순유', 'Move': [5, 2]}), g({'Actor': '순유', 'Face': 'SE'})]],
+        'c15-k11': [[g({'Actor': '곽가', 'Play': 'action'})]],
+        'c15-k12': [[g({'Actor': '순유', 'Move': [4, 1]}, {'Actor': '조조', 'Face': 'SE'}),
+                     g({'Actor': '순유', 'Face': 'SW'})]],
+        'c15-k13': [[g({'Actor': '유비', 'Emote': '…'}), g({'Actor': '유비', 'Pose': 'bow'})]],
+    },
+}
+
+
+# 8. 아군 막사 (S_tent_mid): the party round the map table; 유비 comes in from the lower right and they put together
+# what 조조 meant
+S['c15-tent'] = {
+    'Map': 'S_tent_mid',
+    'Cast': {
+        '장비': {'At': [2, 1], 'Face': 'SE'},
+        '간옹': {'At': [4, 1], 'Face': 'SW'},
+        '손건': {'At': [5, 2], 'Face': 'SW'},
+        '관우': {'At': [4, 3], 'Face': 'NW'},
+        '미축': {'At': [1, 3], 'Face': 'NE'},
+        '미방': {'At': [2, 4], 'Face': 'NE'},
+        '고순': {'At': [5, 3], 'Face': 'NW', 'If': ['party:gaoshun']},
+        '유비': {'At': [3, 3], 'Face': 'NW', 'Off': True},
+    },
+    'Beats': {
+        'c15-t01': [[g({'Actor': '유비', 'Enter': [5, 4], 'Move': [3, 3]},
+                       *[{'Actor': k, 'Look': 'SE'} for k in ('장비', '간옹', '미축')]),
+                     g({'Actor': '유비', 'Face': 'NW'}, {'Actor': '장비', 'Play': 'action'})]],
+        'c15-t02': [[g({'Actor': '간옹', 'Play': 'action'})]],
+        'c15-t04': [[g({'Actor': '관우', 'Face': 'NW'}, {'Actor': '유비', 'Face': 'SE'})]],
+        'c15-t05': [[g({'Actor': '유비', 'Emote': '…'})]],
+        'c15-t06': [[g({'Actor': '관우', 'Pose': 'bow'})]],
+    },
+}
 
 
 def renamed(x):

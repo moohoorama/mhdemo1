@@ -5,9 +5,87 @@
 
 ---
 
+## 2026-11-10 특성 카드 높이·열전·남의 부대 범위·간옹 사기꺾기·수성
+- `internal/gui/ui_kit.go`(`traitCardBelow`·`traitCardHeight`·`traitCardDesc`), `officer_window.go`, `unit_window.go`: 특성 카드 높이를 설명 줄 수와 안내 줄에 맞춰 계산하고(최소 84), 두 창이 같은 함수로 놓음 — 관우 개전처럼 설명이 두 줄을 넘으면 고정 84px 카드에서 "특성치 …" 줄과 겹쳤다(사용자 지적). 카드를 그리는 곳은 이제 높이를 직접 정하지 않는다
+- `internal/gui/officer_window.go`(`officerBio`): 열전 탭은 능력치 여섯과 열전 글만, 특성 줄 뺌 — 특성 탭이 따로 있다(사용자)
+- `internal/core/api.go`(`Engine.Ranges`, `Threat`은 그 공격·책략 칸의 합), `internal/gui/command.go`(`rangeMarks`, `ranges`), `game.go`: 명령 중이 아닐 때 고른 부대(적·동맹군·행동 끝난 아군)의 다음 차례 범위를 이동 초록, 이동+공격 빨강, 책략만 닿는 칸 보라로 칠함. 예전엔 적만, 빨간 위협 범위 하나로 보였다(사용자 지적). 이동 칸은 다른 부대가 선 칸을 뺌
+- `internal/gui/uidemo_ranges.go`: 확인용 데모 `ranges`(적을 차례로 골라 범위), `traitcard`(관우·간옹 특성 카드, 관우 열전)
+- `assets/data/traits.json`(`dispirit` 사기꺾기: `hit_debuff:morale`, 비용 700), `characters.json`: 간옹의 의술을 빼고 사기꺾기 — 물리 공격이 명중하면 대상 사기 저하(사용자 요청)
+- `traits.json`(수성 설명), `internal/core/combat.go`, `internal/content/vocab.go`, `internal/core/core_test.go`: 수성(`fortify`)이 어디서나 매 자기 차례 방어 +20%, 성·성내·관문에선 +40% — 성 칸에서만 걸려 늘 걸리는 선봉 같은 특성보다 약했다(사용자 지적)
+
+## 2026-11-10 북해로 가는 길: 일행이 함께 걷고 태사자가 마주 달려옴
+- `assets/scenes/ch11.json`(`c11-road`), `assets/scenes/ascii/c11-road.txt`: 일행 다섯(유비·관우·장비·조운·손건)을 두 칸 아래(v 8·9)에 세우고 `c11-r1` 첫 줄 앞 한 그룹에서 다 같이 북동으로 세 칸 걷게 함(앞줄 관우(4,5)·유비(5,5)·장비(6,5), 뒷줄 조운(4,6)·손건(6,6)), 같은 그룹에서 태사자가 (11,3)에서 나타나 (5,3)까지 달려옴(Speed 2). 다음 그룹에서 태사자 SW, 일행 NE로 마주 봄 — 태사자·손건·유비가 그룹 셋으로 하나씩 차례로 움직이고 관우·장비·조운은 서 있기만 해서 어색했다(사용자 지적)
+
+## 2026-11-09 기병 성격 나누기·동맹군 난이도·서생 병법치 특성
+- 결정: 중기병은 수비, 친위대는 공격. 병종 보너스(공격/방어) 중기병 16/9→14/11, 친위대 18/10→16/12, 궁기병 14/8→13/7(노병과 같게), 노기병 15/9→15/7(연노병과 같게), 경기병 14/8 그대로. 궁기병·노기병은 합계가 2 줄지만 이동력이 있어 돌려주지 않는다(돌려주면 노병·연노병이 너무 약함). · 이유: 중반 이후 선봉·개전·필살 같은 공격 특성이 얹혀 기병의 공격이 과했다(사용자). · 영향받는 문서: `logic-traits.md` 3.3, `balance-battle.md` 병종·특성·병법 표
+- `assets/data/classes.json`: 위 보너스; 풀 — 경보병 대각공격·화계·대비(응급처치 뺌), 중보병 부관임명·협동·원거리피해감소, 중기병 부관임명·반격피해감소, 친위대 대각공격·돌진·충격·급소(질풍 뺌), 서생에 명상·선견 — 철갑(20% 넘는 피해 절반)은 평범한 공격에도 10% 남짓 걸려 병종 특성으론 세서 뺐고, 철벽(조인)·호위(허저)·답파·금강·근성은 장수 고유급으로 풀에 넣지 않음(사용자 결정)
+- `assets/data/traits.json`: `ranged_ward`(원거리피해감소 0.3), `counter_ward`(반격피해감소 0.5), `foresight`(선견, `start_mana` 0.25), `meditate_art`(명상); 대비 설명; 개전 `opening` 0.5→1(병력 100%면 +50%, 비용 1000 그대로) — 개전이 평균 +9%로 필살(늘 ×1.5)이나 초원지형보조보다 값어치가 없었음
+- `assets/data/skills.json`: 대비 `Effect` defense→defense+mind(책략 피해도 줄임 — 잘 안 쓰여서), `meditate`(명상: `Effect: meditate`, `Coeff` 0.2, `HPCost` 0.05, 병법치 0)
+- `internal/content/vocab.go`(`FxRangedWard`·`FxCounterWard`·`FxStartMana`, 병법 효과 `meditate`), `content.go`(`Skill.HPCost`), `internal/core/combat.go`(원거리 물리 피해 감소, `counterTaken`이 반격·호위 반격에 곱함, `hpCost` 지불, `meditate`), `rules.go`(`hpCost`, 병력이 모자라면 `InsufficientHP`), `api.go`(`CounterDamage`에 반격피해감소), `engine.go`(`spawn`: 선견이면 병법치 1/4로 시작), `internal/gui/events.go`("병력이 부족합니다"), `internal/core/guard_traits_test.go`, `internal/content/class_pools_test.go`
+- `internal/core/engine.go`(`spawn`), `difficulty_test.go`, `docs/stage_lv_balance.md`: AI 동맹군 스폰도 적과 같은 난이도 `EnemyShift`를 받음 — 어려움에서 적만 오르고 동맹군은 보통 레벨이라 동맹군이 맥을 못 췄다(사용자 지적)
+- `assets/scenario/hero/stage15.json`: 앞서(같은 날) 보통 기준으로 넣었던 레벨 Shift를 원래대로 되돌림(궁기병 둘로 줄인 것·지형 띠는 유지) — 어려움 기준 불균형은 위 동맹군 난이도 규칙이 원인이었음
+- `stage15.json`: 여포 무리(여포·진궁·조표·조성·고순, 기병 여섯)는 서쪽(x 4~9, y 15~21)에서 조조군을 맞고, 장료 무리(장료·후성·송헌·위속, 기병 여섯)는 동북쪽 끝(y 0~3)에서 늦게 닿게, 둘 다 처음부터 `assault`. 조성은 서쪽 무리 맨 앞 (4,15)이라 하후돈과 1턴에 일기토. 하후돈 선봉·조조 본대는 북서쪽 가장자리(x 0~2)에서 남동쪽을 보고, 본대는 3턴째(하후돈이 물러난 뒤) — 조조군이 여포 바로 옆에서 나와 유비가 가만히 있어도 이겼음(사용자). `_balance` 5판 AI/가만히: 쉬움 2/5·5/5, 보통 5/5·3/5, 어려움 1/5·0/5
+- `stage12.json`: 우금군 궁병 하나 더 (21,11), 제갈현 쪽 조조군 보병 둘(오합지졸) — 고순이 다리목 마을에서 끝까지 버텼음(사용자). 가만히 있을 때 고순은 5~8턴, 제갈현은 4~8턴에 물러남
+- `cmd/_balance/main.go`: `-player idle`(플레이어 장수는 기다리기만: AI 동맹군이 혼자 얼마나 버티나), `-show`에 회복·치료 이벤트
+
+## 2026-11-09 우이 뒤 진영·원문사극 화살·찔러공격 대각·소패 전투 조정·초원 보정 표시
+- `internal/gui/hud.go`(`brief`, `terrainInfoLines`), `internal/core/api.go`(`Engine.Terrain`), `internal/gui/editor_test.go`: 지형 카드의 보정을 병종 기본값이 아니라 엔진이 그 장수에게 계산한 값(특성 포함)으로 보임 — 초원지형보조가 있는 중기병이 초원에서 110%가 아니라 105%로 보였음(사용자 지적)
+- `internal/core/combat.go`(`victims`), `core_test.go`: 찔러공격(관통)이 대각선으로 치면 대각선 뒤 칸을 침. 예전엔 가로 성분 쪽 뒤 칸을 쳤음 — 공격한 방향대로(사용자 지적)
+- `internal/gui/scene_shot.go`, `assets/scenes/ch15.json`·`tools/scene_maps/ch14_15_scenes.py`(`c15-p11` Shoot 4초·높이 50): 원문사극 화살 — 카메라가 화살과 그 그림자의 가운데를 따라가 길이 화면에서 흘러가게(스크롤), 추격 지연을 줄여(Chase .94→.86) 화살이 화면 밖으로 달아나지 않게, 포물선을 낮춰 화살이 길 위를 날게. 화극은 날아오며 끝이 땅을 향해 비스듬히(150°) 박히고, 화살은 그 자루 20px 높이를 맞히며, 맞으면 자루가 북동쪽으로 넘어가 남서쪽에 머리를 두고 누움(예전엔 거의 누운 채 박혀 화살이 빈 공중을 맞히고 250° 가까이 돌았음) — 쏘는 곳·화살·맞는 곳이 다 이상하다, 스크롤해야 한다(사용자 지적)
+- `tools/scene_maps/ch14_15_scenes.py`·`assets/scenes/ch14.json`(`c14-retreat` S_courtyard→S_army_camp, 밤), `story14.json`(장소 "우이 · 서쪽 진영"), `stage14.json`·`maps/map14.json`(서쪽 성 칸 (2,21) 성→주둔지, 지역·승리·대사 "서쪽 진영"), `docs/fullstory.md`: 우이 전투 뒤 성에 있는 것이 어색함 — 진영으로(사용자 지적)
+- `maps/map15.json`: 소패 위(화면 북쪽, 맵 대각선 x≈y)로 숲(x+y 25~31)·구릉(17~24)·산(16 이하, 진입 불가) 띠 — 화면 동서(여포 본대·하후돈 쪽과 장료 쪽)가 쉽게 오가지 못하게(사용자 설계)
+- `stage15.json`: 여포군 궁기병 넷→둘(무리마다 하나) — 궁기병 비율을 낮추라는 사용자 지시. (같은 날 넣은 레벨 Shift는 위 항목에서 되돌림)
+
+## 2026-11-08 합류 레벨에 난이도
+- `internal/content/spawn.go`(`Rules.JoinLevel`), `internal/core/growth.go`(`joinLevel`), `engine.go`(`once`의 join, `begin`이 난이도를 받음), `battle_events.go`(전투 중 join): 합류 장수를 스테이지 레벨에 난이도 `EnemyShift`를 병사(troop) 비율로 더한 레벨로 — 계교 조운이 어려움에서도 17이라 적 졸병(19)보다 낮았다(사용자 "난이도 반영 해야지"). 쉬움 13 · 보통 17 · 어려움 21. `begin`이 난이도를 먼저 정해 시작 지점 앞 합류(`joinBefore`)도 난이도를 따른다
+- `internal/core/campaign_content_test.go`, `difficulty_test.go`: 난이도별 조운 레벨 확인, 옛 규칙(합류는 난이도 무관) 시험을 새 규칙으로
+- `docs/stage_lv_balance.md`, `logic-growth.md`, `AGENTS.md`: 위 규칙
+
+## 2026-11-08 사용자 점검 묶음: 북해 콩, HUD 상태, 계교 진채, 조조 소개, 공훈 시상대, 부관 일기토 컷인, 퇴장 순서, 화극 화살
+- `assets/data/shops.json`(`beihai`), `assets/scenario/hero/explore12.json`(상인 `Shop`): 북해 상인이 콩·보리·술·특급주까지 파는 도구점 — 북해에는 주점이 없어 콩을 살 곳이 없었다(사용자 "상인이 팔아야")
+- `internal/gui/hud.go`(`detail` 능력 탭): 상태를 육각형 아래 두 칸(일곱 개부터 세 칸) 격자로 늘어놓고 육각형을 그만큼 줄임(반지름 32 아래로는 안 줄임) — 상태가 많으면 한 줄짜리 글이 이전/다음 쪽 넘김이 되어 버튼에 가려졌다(사용자 지적)
+- `tools/mapgen/layouts/hero/map10.txt`, `assets/scenario/hero/maps/map10.json`: 공손찬 진채 (0,8)을 길로 — 맵 밖 여백이 가장자리 칸을 복제해 진채가 다섯 칸 이어졌다(사용자 "진영·성은 떨어져서"). `map03.json`(마을)·`map07.json`(진채)의 맵 밖 복제도 땅만 남김
+- `tools/mapgen/mapgen.py`(`SINGLE`): 맵 밖 여백을 채울 때 가장자리의 진채·성·마을·관문은 복제하지 않고 땅만 — 같은 일이 다시 생기지 않게
+- `assets/scenario/hero/story05.json`(`c05-f2`), `docs/fullstory.md`: 조조가 손견을 "영천에서 함께 싸운 그 장사 태수, 꾸밈을 싫어하는 무인이니 있는 그대로 대하면 되오"로 소개 — "공은 그냥 아무 말 마시오" 삭제(사용자 지적)
+- `internal/core/types.go`(`State.Merit`, `Merit`), `engine.go`(`start`·승리·`spoil`), `growth.go`(`gainXP`), `internal/core/merit_test.go`: 전투의 장수별 경험치·시작 레벨·획득물(스테이지 보상+부목표 보상)을 상태에 둠 — GUI 메모리에만 있어 전투 중 저장·불러오기하면 공훈이 비었고, 부목표 보상(여포 퇴각의 당예개갑)은 어디에도 안 나왔다(사용자 지적)
+- `internal/gui/result_merit.go`(새 파일), `windows.go`(`resultWindow`), `game.go`·`view.go`(`battleXP`·`startLevel`·`resultPage` → `resultSkip`), `combat_results_render_test.go`: 승리 창을 공훈 시상대로 — 3위 오른쪽 아래, 2위 왼쪽 아래, 1위 위 가운데 차례로 위에서 떨어지며 메달 색 번쩍임, 4위부터는 짧은 줄(8명 넘으면 "외 n명"), 그 아래 획득(돈 먼저, 아이콘과 개수). 창을 누르면 연출을 건너뜀 — 사용자 요청
+- `internal/gui/duel.go`(`duelView`): 부관이 싸우는 일기토도 `Staged` — 부관은 맵 위 유닛이 없어 전환 연출과 초상 컷인이 빠졌다(사용자: 관우 부관 고순 vs 손관 컷신 안 나옴)
+- `internal/gui/duel_cutin.go`: 검은 막·띠·번쩍임을 UI 폭보다 1px 넓게 — `uiW`가 기기 폭을 내림해 오른쪽(·아래) 끝 1~2 기기 픽셀에 전장이 비쳐 띠처럼 보였다(사용자 지적)
+- `assets/scenes/ch02.json`(`c02-e9`), `ch14.json`(`c14-lh10`): 조조·하후돈, 진궁의 퇴장을 그 줄 뒤 비트(마지막 줄 뒤 비트)로 — 줄 앞 비트에 퇴장이 있어 화면 밖으로 나간 뒤에 대사가 나왔다(사용자 지적). 진궁은 여포가 먼저 나간 뒤 유비에게 읍하고 말한 다음 나간다
+- `internal/gui/scene_shot.go`(`ShotTune`): 원문사극 화살을 화면 (.25, .5)에, 여포를 (.3, .6)에 — (.1, .9)는 화면 맨 아래라 대사창 쪽에 묻혀 안 보였다(사용자 지적)
+- `internal/gui/uidemo_zz_tmp_result.go`: 승리 창 확인용 임시 데모(`meritresult`)
+- `tools/doteditor/tools/civ3d.py`(`lubu`), `tools/doteditor/units/lubu_noncombat.yaml`, `assets/sprites/lubu_noncombat.spr`, `internal/sprite/testdata/units/lubu_noncombat.png`, `assets/data/characters.json`(`lubu.Look.Scene`): 여포 비전투 도트를 civ3d 3D 변환으로 — 꿩깃 두 가닥 금투구(전투 시트의 붉은 themeB), 수염 없음, 철빛 팔·소매, 진영색 가슴, 금 어깨·띠, 붉은 도포와 등의 붉은 망토(themeA), 앉기 자세. 서주 관청에 말 탄 전투 모습으로 걸어 들어와 어색했다(사용자 지적)
+
 ## 2026-11-08 청룡언월도 아이콘을 언월도로
 - `tools/spritetool/assets/ver5-ui/settings.json`·`pixels.json`·`sources/item_yanyuedao.png`, `assets/graphics/ui/ui.{png,json}`: 청룡언월도 전용 아이콘 `item_yanyuedao`(codex 그림 → 도트 변환) — 붉은 긴 자루 끝에 초승달 날, 날 밑 청록 용머리와 붉은 술, 금 물미. 극·창과 같은 대각선 구도
 - `assets/data/equipment.json` `qinglong_blade` `Icon`: `dao` → `yanyuedao` — 고정도와 같은 손잡이 짧은 도 아이콘이라 자루에 단 월도로 보이지 않았다(사용자 지적). 고정도는 `dao` 그대로
+
+## 2026-11-08 장면 이동에 난이도, 승급한 채로
+- `internal/core/waypoint.go`·`engine.go`(`beginAt`)·`session.go`: `NewAt`이 난이도를 받고, 인물을 레벨만 올리던 것(`raiseTo`)을 합류 때처럼 그 레벨의 승급 병종까지(`joinAt`) — 사용자 "장면이동할때 난이도 설정 가능하게", "아군 승급이 안 되어 있는데 승급 시켜 주고"
+- `internal/gui/waypoints.go`·`windows.go`·`game.go`(`jumpNode`): 장면 이동 목록에서 고르면 난이도 창을 거쳐 시작
+- `internal/core/waypoint_test.go`: 승급·난이도 확인
+
+## 2026-11-08 복숭아 숲 맵을 가로세로 두 배로
+- `assets/graphics/maps/S_peach_grove2.json`: 바닥 격자 48×44 → 96×88 작은 칸(`origin` (−14, −14) → (−38, −36), 가운데 그대로), 새로 늘어난 테두리에 복숭아나무 386그루(기존과 같은 간격, 가장 가까운 나무 3.3칸 이상)와 떨어진 꽃잎 14개 — 숲에 들어서자마자 왼쪽 아래로 맵 끝 검은 바탕이 보였다(사용자 지적)
+
+## 2026-11-08 11장 평원 성문으로 떠나기, 손건 11장 합류, 간옹 농담, 계교 전풍, 공손찬 칼 세워 듦, 서주성 강 없앰
+- `internal/content/explore.go`(`ExploreExit.Node`), `internal/core/explore.go`(`leaveBy`, `Goal.do`), `internal/gui/explore.go`(출구 페이드 뒤), `internal/cli/explore.go`, `internal/core/explore_test.go`: `To` 대신 `Node`를 단 출구는 걸어 나가면 그 이벤트를 연다(walk 명령의 `Option`이 비고 X,Y가 출구 칸), 안내는 본 이벤트처럼 — 탐험이 끝나는 길이 출진 질문과 `Leave` 이벤트뿐이라, 성문을 걸어 나가 떠나는 연출을 할 수 없었음
+- `assets/scenario/hero/explore11_camp.json`, `story11.json`(`Events`: `c11-envoy-pingyuan`~`c11-p-back`, `c11-gate`), `assets/scenes/ch11.json`: 현청 조운의 출진 질문을 없애고, 조운에게 말하면 공손찬의 전령이 현청 문으로 달려 들어와 "공손 장군께서 급히 찾으십니다. 서주에서 사자가 왔습니다", 유비 "곧 가겠다." → 평원 북문 `북평으로`가 열리고 걸어 나가면 북평 — 사용자: 조운의 질문이 출진처럼 보임, 성문으로 걸어 나가게
+- `story11.json`(`c11-b6` join sunqian), `story13.json`(`c13-r21` 삭제): 손건 합류를 13장 서주 계승에서 11장 북평(길잡이로 나설 때)으로 — 사용자 결정
+- `story11.json`(`c11-e2b`), `ch11.json`, `tools/unit3d/scene_people.py`(`draw`), `tools/doteditor/units/gongsunzan_noncombat.yaml`, `assets/sprites/gongsunzan_noncombat.spr`, `internal/sprite/testdata/units/gongsunzan_noncombat.png`: 공손찬이 "나를 농락하는구나!" 하고 일어나 진진을 본 뒤 칼을 뽑아 든다; `draw` 자세를 앞으로 겨눈 찌르기에서 경보병 대기처럼 칼을 세워 든 자세로 civ3d 다시 변환 — 사용자 요청
+- `explore01.json`·`explore02.json`(Chatter·대사), `story04.json`(`c04-c3`), `story13.json`(`c13-x05`), `explore13.json`, `explore14.json`, `docs/data-speech-style.md`(간옹 항목): 외상값 농담은 1장 첫 만남 한 번만, 나머지는 지금 상황을 비트는 재치로 — 사용자 "옛 약점을 들추지 말고 재치 있게"
+- `assets/scenario/hero/stage10.json`(`opening`·`vanguard-clear`·`all-out`): 원소·전풍·국의의 시작 대화를 A안으로(전풍은 강가 수비, 원소는 백마를 끌어들여 노병으로 꺾자), 말하는 쪽을 보게 `face` 컷신 단계 — 사용자 승낙 A안
+- `tools/scene_maps/xuzhou_town.py`, `assets/graphics/maps/S_xuzhou_town.json`, `explore14.json`(뱃사공→짐꾼): 서주성 탐험 맵의 사수·나루·배를 없애고, 북쪽 성벽을 맵 끝까지 이어 틈을 막고, 동쪽을 집과 채마밭으로 — 사용자 "강 없애"
+- `internal/gui/uidemo_opening.go`: 배치하는 스테이지는 60프레임에 기본 배치로 시작(B10 시작 캡처용)
+- `docs/fullstory.md`, `presentation-explore.md`, `presentation-scene.md`: 위 내용 반영
+
+## 2026-11-08 재생 카메라가 유닛을 따라가고, 대사가 배속을 따름
+- `internal/gui/camera_pan.go`(`onScreenAt`·`glideFirst`·`followWalk`·`nearMiddle`·`glideToLead`), `view.go`, `game.go`(`follow`): 재생 중 걷는 유닛(적 이동·컷신·강제 이동)이 화면 가운데 영역을 벗어나면 카메라가 걸음이 끝날 때까지 부드럽게 따라감, 재생 중 카메라 이동은 배속을 따름 — 긴 경로가 화면 밖으로 걸어 나가던 문제
+- `internal/gui/cutscene.go`(`walkCells`), `player.go`: 컷신 단계 묶음과 이벤트 강제 이동이 화면 밖이면 먼저 카메라를 그쪽으로 옮기고 시작(이벤트 행동은 주체가 없어 AI 턴 카메라가 가지 않았음, 파재가 두리번거리는 장면 등)
+- `internal/gui/battle_speech.go`: 전장 대사의 카메라 순간 이동을 화면 밖일 때만 미끄러지듯 옮기는 것으로
+- `internal/gui/turn_banner.go`: 아군 차례가 오면 군주(없으면 아직 안 움직인 첫 아군)가 화면 밖일 때 그쪽으로 카메라 이동 — 적이 마지막에 움직인 곳에 카메라가 머물던 문제
+- `internal/gui/game.go`(`textSeconds`), `view.go`, `scenario.go`, `explore.go`, `battle_speech.go`: 글자가 나오는 속도·재촉·자동 넘김·전장 말풍선을 배속이 곱해진 시계로 — 스토리 대사가 ×2·×4를 무시했고, ×4 전장에서는 말풍선이 글자가 다 나오기 전에 사라졌음
+- `internal/gui/uidemo_camfollow.go`(새: `camfollow`, `camfollow-x4`, `textspeed`, `textspeed-x4`), `camera_pan_test.go`(새): 확인용 데모와 시험
 
 ## 2026-11-07 큰 창은 960 폭으로 가운데
 - `internal/gui/ui_kit.go`(`sheetMax` 1180→960), `officer_window.go`, `unit_window.go`: 화면을 채우던 창(장수 창·출전 준비·부대 상세·부관 임명·장비)을 960 폭으로 묶어 넓은 화면에서는 가운데, 좁은 화면에서는 꽉 차게; 장수 창 전투력은 큰 육각형과 능력별 막대·이동·사거리로 채우고, 열전 글은 창 안에서 줄바꿈 — 사용자 "창이 무의미하게 가로로 긴 거 같은데", "열전이나 전투력 … 뭔가 훵한 거 같았거든"
@@ -33,6 +111,10 @@
 - `internal/gui/deployment.go`: 아래 카드 띠와 배치의 장수 창을 없애고 오른쪽 위 `전투 시작`, 오른쪽 아래 출전 부대 — 사용자 "하단을 채워버리니 더 길쭉해서 이상해", 장비·부관·출전 여부는 출전 준비에서
 - `internal/gui/hud_panel.go`, `hud_brief.go`(새), `hud.go`, `battle_log.go`: 전투 HUD를 오른쪽 위(차례·진영 종료·관리·메뉴)와 오른쪽 아래(탭 정보 패널)로 나눔, 장수 탭은 간단 보기와 `자세히 보기`(부대 상세, 보기만), 기록 높이 손잡이는 패널 위쪽, 터치에서는 패널이 흐려지지 않음 — 사용자 "정보나 그런 건 우상단에서 우하단으로, 배속 같은 보조적인 건 좌상단에", 진영 종료는 원래대로 위
 - `internal/gui/levelup.go`(새), `windows.go`: 레벨 업 창에 지금 배울 수 있는 특성 칩과 `나중에`/`특성 배우기 ›`, 학습 창은 배울 장수만
+
+## 2026-11-07 세객·종횡가의 허리 인장 대신 서신
+- `tools/doteditor/tools/mounted_kits/orator.py`, `units/orator.yaml`·`diplomat.yaml`, `assets/sprites/orator.spr`·`diplomat.spr`, `internal/sprite/testdata/units/`: 허리 인장을 빼고, 비어 있던 왼손에 서신(흰 비단 두루마리·붉은 끈·봉인, 종횡가는 금 봉인)을 모든 동작에서 듦. 공격은 부채와 목소리 고리 그대로 — 사용자 "핵심이 말빨", "허리 빼고", "서신은 무기 없는 한팔에 들고있는거고, 종횡가는 봉인을 금색으로"
+- 서신을 iron1(두건·망토 테두리와 같은 칸)에서 말 털색 칸(horseSkin)으로 옮기고 누런 황색으로 — 사용자 "서신이 너무 하예… 머리의 띠랑 종횡가의 망토색이 하예졌어. 테마색 다른거 써서… 누리끼리한 황색으로"
 
 ## 2026-11-07 세객·종횡가는 부채에 두건·인장·목소리 고리
 - `tools/doteditor/tools/mounted_kits/orator.py`, `units/orator.yaml`·`diplomat.yaml`, `assets/sprites/orator.spr`·`diplomat.spr`, `internal/sprite/testdata/units/`: 붓을 버리고 회색 부채로; 세객은 흰 천 두건(복건), 종횡가는 금 장식 관모; 허리 앞에 금 인장과 붉은 끈(말 안장색 키, 걸을 때 흔들림, 종횡가는 두 가닥); 공격은 카메라를 향한 목소리 고리(세객 두 겹, 종횡가 세 겹) — 사용자 "붓이 막상 보니 좀 어색하다. 세객도 책 계열로", 구별은 A(머리)·B(허리 인수)·D(공격 효과)로 승낙
@@ -2466,3 +2548,7 @@
 - 초상 9장 연결: 미축·미방·번아·장패·조표, 새로 진등·허탐·제갈현·손관. 미방은 덜 미형인 A안에 손만 어른 손으로, 미축·번아·조표는 좌우 반전 · 이유: 사용자 "미방 얼굴이 너무 미형", "손이 너무 애기 같아". 미축 열전에서 누이 이야기를 뺌 · 이유: 사용자 "누이를 바친다… 최근 시대에 너무 불편".
 - 제갈현의 선물 병법입문 → 『삼략』(`sanlue`, 화계·수계·지계 확산, "장량이 하비에서 노인에게 얻었다는 병법서") · 이유: 사용자가 확산 책을 원함, 이름은 장량의 『태공병법』→『삼략』.
 - `tools/spritetool/assets/ver5-ui/settings.json`·`pixels.json`·`sources/item_baima.png`·`item_sanlue.png`, `equipment.json` `Icon`: 절영은 이미 그려 둔 검은 말 `jueying`으로, 백마는 흰 말 `baima`(붉은 굴레), 삼략은 남색 끈의 죽간 세 두루마리 `sanlue` — 세 말이 모두 갈색 군마 아이콘이었다 · 이유: 사용자 "절영이니 백마니 아이콘, 색깔이 그 제대로 색이 아니라".
+
+## 2026-11-08 B01 탁군 전투: 적 여섯
+- `assets/scenario/hero/stage01.json`: 적 10 → 6. 추격조 (9,4), 정원지 뒤 (8,1), 길가 react (13,7)·(11,4)를 뺌. 남은 것: 등무·추격 졸개 (7,4)·(6,4), 정원지·뒤 졸개 (7,0)·(6,1), 길가 react (12,6)·(4,4). 개전 연출(상인이 쫓기고 형제가 나서는 컷신)은 원래대로 둠. 상인이 길 끝에서 뛰어 내려오고 황건이 나중에 나타나는 연출을 넣었다가 사용자 요청으로 되돌림 — 사용자 "적이 너무 많다, 반으로", 이어 "개전 애니메이션은 원래대로, 적은 여섯".
+- `tools/mapgen/layouts/hero/stage01.txt` 다시 뽑음, `docs/fullstory.md` B01 맵·세력을 맞춤.

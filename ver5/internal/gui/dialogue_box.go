@@ -174,7 +174,7 @@ func (g *Game) storyPortrait(c content.Character) *ebiten.Image {
 	if c.Template {
 		return nil
 	}
-	return g.assets.Portraits[c.Look.Portrait]
+	return g.assets.Portraits[g.laterLook(c.Look).Portrait]
 }
 
 // drawDialogue draws one line of dialogue in the box with the speaker's portrait and name

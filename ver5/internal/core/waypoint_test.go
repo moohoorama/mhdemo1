@@ -16,7 +16,7 @@ func TestNewAt(t *testing.T) {
 
 	t.Run("every waypoint starts where it names", func(t *testing.T) {
 		for _, w := range ways {
-			e, err := NewAt(d, 1, w.Node)
+			e, err := NewAt(d, 1, w.Node, "")
 			require.NoError(t, err, w.Node)
 			o := e.Observe()
 			level := d.Rules.StageLevel(d.NextBattleOrder(w.Node))
@@ -37,7 +37,7 @@ func TestNewAt(t *testing.T) {
 
 	t.Run("the story before counts as played", func(t *testing.T) {
 		last := ways[len(ways)-1]
-		e, err := NewAt(d, 1, last.Node)
+		e, err := NewAt(d, 1, last.Node, "")
 		require.NoError(t, err)
 		s := e.Snapshot()
 		for _, w := range ways {
@@ -65,7 +65,7 @@ func TestNewAt(t *testing.T) {
 	})
 
 	t.Run("officers wear the pieces they own", func(t *testing.T) {
-		e, err := NewAt(d, 1, ways[0].Node)
+		e, err := NewAt(d, 1, ways[0].Node, "")
 		require.NoError(t, err)
 		_, more := e.OwnerPiece()
 		assert.False(t, more, "nothing is left for an owner to put on")
@@ -78,8 +78,33 @@ func TestNewAt(t *testing.T) {
 		assert.Positive(t, worn)
 	})
 
+	t.Run("officers are promoted as far as the level allows", func(t *testing.T) {
+		last := ways[len(ways)-1]
+		e, err := NewAt(d, 1, last.Node, "")
+		require.NoError(t, err)
+		promoted := 0
+		for _, id := range keys(e.charIDs) {
+			o := e.char(id)
+			assert.Equal(t, e.promotedAt(o.Def, o.Class, o.Level), o.Class, id)
+			if d.Classes[o.Class].Tier > 0 {
+				promoted++
+			}
+		}
+		assert.Positive(t, promoted)
+	})
+
+	t.Run("the difficulty is kept", func(t *testing.T) {
+		require.NotEmpty(t, d.Rules.Difficulties)
+		id := d.Rules.Difficulties[len(d.Rules.Difficulties)-1].ID
+		e, err := NewAt(d, 1, ways[0].Node, id)
+		require.NoError(t, err)
+		assert.Equal(t, id, e.Snapshot().Difficulty)
+		_, err = NewAt(d, 1, ways[0].Node, "nope")
+		assert.EqualError(t, err, "UnknownDifficulty")
+	})
+
 	t.Run("an unknown node is refused", func(t *testing.T) {
-		_, err := NewAt(d, 1, "nowhere")
+		_, err := NewAt(d, 1, "nowhere", "")
 		assert.EqualError(t, err, "UnknownWaypoint")
 	})
 }

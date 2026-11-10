@@ -59,7 +59,7 @@ func main() {
 		}
 		return
 	}
-	e, err := core.NewAt(d, 1, *node)
+	e, err := core.NewAt(d, 1, *node, "")
 	check(err)
 	o := e.Observe()
 	for _, l := range o.Learners {

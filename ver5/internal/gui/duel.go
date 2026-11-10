@@ -16,16 +16,20 @@ func (g *Game) duelView(e core.Event) *duelview.View {
 	// came up to while the duel's ally stood away, or one who fights it because the ally has left; the
 	// ally then joins in that support's place
 	ally := e.Actor
+	var melee map[string]string
 	for _, d := range g.S.Data.Stages[g.player.final.Stage].Duels {
 		if d.ID == e.DuelID {
-			ally = d.Ally
+			ally, melee = d.Ally, d.Melee
 		}
 	}
 	supports := append([]string(nil), g.assets.Duels[e.DuelID].Supports...)
 	lead, key := e.Actor, e.First
+	if e.Fighter != "" { // the deputy riding with the Actor's unit fights it
+		lead = e.Fighter
+	}
 	if slices.Contains(supports, e.First) {
 		lead = e.First
-	} else if t := g.unitView(g.player.final, e.Target); t != nil && !g.besideUnit(lead, t) {
+	} else if t := g.unitView(g.player.final, e.Target); t != nil && !g.besideUnit(e.Actor, t) {
 		for _, id := range supports {
 			if g.besideUnit(id, t) {
 				lead = id
@@ -48,11 +52,22 @@ func (g *Game) duelView(e core.Event) *duelview.View {
 	for i, id := range []string{lead, e.Target} {
 		u := g.unitView(g.player.final, id)
 		if u == nil {
+			if ch := g.characterRecord(g.player.final, id); ch != nil { // a deputy has no unit of his own
+				v.Fighters[i] = g.duelFighter(ch.Def, ch.Class, g.S.Data.Equipment[ch.Equipment["weapon"]].Type, g.mountOf(*ch), g.S.Data.Characters[ch.Def].Look.Faction)
+			}
 			continue
 		}
 		v.Fighters[i] = g.duelFighter(u.Def, u.Class, u.Weapon, u.Mount, u.Color)
+		if class := melee[u.Def]; class != "" {
+			v.Fighters[i].Alt = v.Fighters[i].Art
+			v.Fighters[i].Art = g.battleClassArt(u.Def, class, "", u.Mount, u.Color)
+		}
 	}
-	if a, t := g.unitView(g.player.final, lead), g.unitView(g.player.final, e.Target); a != nil && t != nil {
+	stand := lead
+	if g.unitView(g.player.final, stand) == nil {
+		stand = e.Actor
+	}
+	if a, t := g.unitView(g.player.final, stand), g.unitView(g.player.final, e.Target); a != nil && t != nil {
 		v.Axis = duelAxis(t.X-a.X, t.Y-a.Y)
 	}
 	for i, id := range supports {
@@ -62,7 +77,7 @@ func (g *Game) duelView(e core.Event) *duelview.View {
 			v.Fighters[i+2] = g.duelFighter(u.Def, u.Class, u.Weapon, u.Mount, u.Color)
 		}
 	}
-	if a, t := g.unitView(g.player.final, lead), g.unitView(g.player.final, e.Target); a != nil && t != nil && g.field != nil {
+	if a, t := g.unitView(g.player.final, stand), g.unitView(g.player.final, e.Target); a != nil && t != nil && g.field != nil {
 		v.Staged = true
 		v.Tint = g.groundTint()
 		ax, ay := g.field.Center(float64(a.X), float64(a.Y))
@@ -170,7 +185,11 @@ func (g *Game) drawDuel(dst *ebiten.Image) {
 // groundTint is the average colour of the battle map's ground pattern; structures, props
 // and water are ignored.
 func (g *Game) groundTint() color.NRGBA {
-	tile := g.assets.pattern()
+	assets := g.assets
+	if g.field != nil {
+		assets = g.field.A // the map's own grass
+	}
+	tile := assets.pattern()
 	b := tile.Bounds()
 	pix := make([]byte, 4*b.Dx()*b.Dy())
 	tile.ReadPixels(pix)

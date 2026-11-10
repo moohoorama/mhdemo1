@@ -91,6 +91,9 @@ func winStage(t *testing.T, e *Engine, bonus bool) {
 			for _, o := range stage.Sub {
 				satisfy(t, e, o.If)
 			}
+			if stage.ID == "B07" {
+				satisfy(t, e, []string{"fled:caocao"}) // not an objective, but the story remembers it
+			}
 		}
 		applyOK(t, e, Command{Kind: "end"})
 	}
@@ -141,11 +144,13 @@ func executed(e *Engine, key string) bool { return e.state.Executed[key] }
 
 func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, true)
-	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14"}, fought)
+	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15"}, fought)
 	assert.Equal(t, 1, e.state.Flags["flag-pengcheng-carts"])
 	assert.Positive(t, e.state.Inventory["barley"], "Tao Qian shares the grain from the carts")
 	assert.Equal(t, 1, e.state.Flags["flag-sunjian-alive"])
 	assert.Equal(t, 1, e.state.Flags["flag-bianshui-generals"])
+	assert.Equal(t, 1, e.state.Flags["flag-bianshui-lubu"])
+	assert.Positive(t, e.state.Warehouse["tangni_armor"], "Lu Bu's armour is the reward for driving him off")
 	assert.Equal(t, 1, e.state.Flags["flag-julu-clear"])
 	for _, flag := range []string{"flag-beihai-taishici", "flag-zhugexuan", "flag-gaoshun"} {
 		assert.Equal(t, 1, e.state.Flags[flag], flag)
@@ -164,7 +169,7 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 
 func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, false)
-	assert.Len(t, fought, 14)
+	assert.Len(t, fought, 15)
 	assert.Zero(t, e.state.Flags["flag-julu-clear"])
 	assert.True(t, executed(e, "battle-B10-vanguard-strong"), "Yan Liang comes back at Jiejiao")
 	assert.False(t, executed(e, "battle-B10-vanguard-clear"))
@@ -374,6 +379,15 @@ func TestOfficersJoinInTheClassTheirLevelReaches(t *testing.T) {
 		require.NotNil(t, zy)
 		assert.Equal(t, d.Rules.StageLevel(d.StageOrder("B10")), zy.Level)
 		assert.Equal(t, "heavy_cavalry", zy.Class)
+	})
+	t.Run("the difficulty shifts the join level as it shifts the enemy", func(t *testing.T) {
+		dd := *d
+		dd.Campaign.Start = "c10-battle"
+		for difficulty, level := range map[string]int{"easy": 13, "normal": 17, "hard": 21} {
+			e, err := NewGame(&dd, 1, difficulty)
+			require.NoError(t, err)
+			assert.Equal(t, level, e.char("zhaoyun").Level, difficulty)
+		}
 	})
 	t.Run("a join between battles is at the last battle's level", func(t *testing.T) {
 		assert.Equal(t, d.StageOrder("B13"), d.LastBattleOrder("c14-d16"))

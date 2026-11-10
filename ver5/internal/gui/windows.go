@@ -5,7 +5,6 @@ import (
 	"image"
 	"image/color"
 	"math"
-	"sort"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -54,12 +53,18 @@ func (g *Game) openOverlay(name string) bool {
 // closeOverlay closes the top window.
 func (g *Game) closeOverlay() {
 	if len(g.overlays) > 0 {
+		g.sfx("close")
 		g.overlays = g.overlays[:len(g.overlays)-1]
 	}
 }
 
 // closeOverlays closes every window.
-func (g *Game) closeOverlays() { g.overlays = nil }
+func (g *Game) closeOverlays() {
+	if len(g.overlays) > 0 {
+		g.sfx("close")
+	}
+	g.overlays = nil
+}
 
 // ask opens a confirmation window; ok runs on 확인.
 func (g *Game) ask(message string, ok func()) { g.askWith(message, "확인", "취소", ok) }
@@ -89,6 +94,7 @@ type modal struct {
 	gains  []gain    // acquire: the cards
 	piece  string    // acquire: the card whose window is open
 	chip   equipChip // acquire: the trait open over that window
+	heard  bool      // acquire: its sound has played, with the first card
 	t      float64
 }
 
@@ -137,7 +143,7 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 	case "deputy":
 		w, h = deputyW, deputyH
 	case "settings":
-		w, h = 640, 668
+		w, h = 640, 668+64
 	case "roster":
 		w, h = uiW-100, uiH-90
 	case "shop":
@@ -270,6 +276,12 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h, strip int) {
 			{"대사 속도", []choice{
 				{"한 글자씩", !s.InstantText, set(func(v *storage.Settings) { v.InstantText = false })},
 				{"즉시", s.InstantText, set(func(v *storage.Settings) { v.InstantText = true })},
+			}},
+			{"소리", []choice{
+				{"모두", s.Sound == "", set(func(v *storage.Settings) { v.Sound = "" })},
+				{"효과음만", s.Sound == "sfx", set(func(v *storage.Settings) { v.Sound = "sfx" })},
+				{"음악만", s.Sound == "music", set(func(v *storage.Settings) { v.Sound = "music" })},
+				{"끄기", s.Sound == "off", set(func(v *storage.Settings) { v.Sound = "off" })},
 			}},
 			{"재생 속도", speeds},
 			{"UI 크기", scales},
@@ -423,6 +435,9 @@ func (g *Game) subChip(dst *ebiten.Image, x, y float64, state string, lit bool) 
 
 // closeModal closes the first modal, or the top window stacked inside it.
 func (g *Game) closeModal() {
+	if len(g.modals) > 0 {
+		g.sfx("close")
+	}
 	if len(g.modals) > 0 && g.modals[0].closeAcquire() {
 		return
 	}
@@ -434,6 +449,14 @@ func (g *Game) closeModal() {
 // result is the end-of-battle window.
 func (g *Game) result(dst *ebiten.Image, o core.Observation) {
 	g.buttons, g.blocks = nil, nil
+	if g.windows["result:"+o.Result] == nil {
+		g.meritHeard = 0
+		if o.Result == "victory" {
+			g.sfx("victory")
+		} else {
+			g.sfx("defeat")
+		}
+	}
 	box := image.Rect(Width/2-330, 130, Width/2+330, 760)
 	if o.Result != "victory" {
 		box = image.Rect(Width/2-280, 250, Width/2+280, 560)
@@ -459,52 +482,7 @@ func (g *Game) resultWindow(dst *ebiten.Image, o core.Observation) {
 		g.btn(dst, image.Rect(r.Max.X-260, 466, r.Max.X-40, 502), "시작 메뉴", func() { g.request(session.Request{Op: "title"}) })
 		return
 	}
-	g.titled(dst, r, "승리")
-	g.centered(dst, st.Name+" 승리", float64(uiW/2), 160, 30, gold)
-	allies := resultUnits(o)
-	best, bestXP := "", 0
-	for _, u := range allies {
-		if g.battleXP[u.ID] > bestXP {
-			best, bestXP = u.ID, g.battleXP[u.ID]
-		}
-	}
-	pages := max(1, (len(allies)+4)/5)
-	g.resultPage = max(0, min(g.resultPage, pages-1))
-	start := g.resultPage * 5
-	for i, u := range allies[start:min(start+5, len(allies))] {
-		y := 222 + i*76
-		g.portrait(dst, u.ID, u.Class, float64(r.Min.X+40), float64(y), 60)
-		g.label(dst, u.Name, float64(r.Min.X+116), float64(y), 19, ink)
-		lv := fmt.Sprintf("Lv %d", u.Level)
-		if from, ok := g.startLevel[u.ID]; ok && from < u.Level {
-			lv = fmt.Sprintf("Lv %d → %d", from, u.Level)
-		}
-		g.label(dst, lv, float64(r.Min.X+116), float64(y+28), 15, gold)
-		g.label(dst, fmt.Sprintf("경험치 +%s", xpText(g.battleXP[u.ID])), float64(r.Min.X+260), float64(y+4), 15, ink)
-		bar(dst, float32(r.Min.X+260), float32(y+32), 220, 8, u.XPProgress/100, xpC)
-		if u.ID == best {
-			g.label(dst, "최다 공훈", float64(r.Min.X+510), float64(y+14), 16, good)
-		}
-	}
-	if pages > 1 {
-		g.btn(dst, image.Rect(r.Min.X+40, 604, r.Min.X+140, 636), "이전", func() { g.resultPage = max(0, g.resultPage-1) })
-		g.centered(dst, fmt.Sprintf("%d / %d", g.resultPage+1, pages), float64(uiW/2), 610, 14, muted)
-		g.btn(dst, image.Rect(r.Max.X-140, 604, r.Max.X-40, 636), "다음", func() { g.resultPage = min(pages-1, g.resultPage+1) })
-	}
-	rewards := []string{}
-	reward := g.S.Data.Stages[o.Stage].Reward
-	keys := make([]string, 0, len(reward))
-	for k := range reward {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	for _, k := range keys {
-		rewards = append(rewards, fmt.Sprintf("%s ×%d", g.itemName(k), reward[k]))
-	}
-	g.label(dst, "획득 물품   "+strings.Join(rewards, "  ·  "), float64(r.Min.X+40), float64(r.Max.Y-98), 14, ink)
-	g.btn(dst, image.Rect(r.Min.X+40, r.Max.Y-64, r.Max.X-40, r.Max.Y-26), "다음 이야기", func() {
-		g.command(core.Command{Kind: "continue"})
-	})
+	g.victoryWindow(dst, o, r)
 }
 
 func resultUnits(o core.Observation) []core.UnitView {
@@ -731,7 +709,15 @@ func (g *Game) drawBranches(dst *ebiten.Image) {
 	w := n*cardW + (n-1)*gap + 64
 	r := image.Rect(uiW/2-w/2, 150, uiW/2+w/2, 150+cardH+120)
 	g.titled(dst, r, "승급")
-	g.centered(dst, g.name(g.ord.branch[0].id)+" — 어느 병종으로 올릴까요?", float64(uiW/2), float64(r.Min.Y+26), 17, ink)
+	who := g.name(g.ord.branch[0].id) + " — 어느 병종으로 올릴까요?"
+	mixed := false // the officer and its deputy both can take the 인수
+	for _, p := range g.ord.branch {
+		mixed = mixed || p.id != g.ord.branch[0].id
+	}
+	if mixed {
+		who = "누구를 어느 병종으로 올릴까요?"
+	}
+	g.centered(dst, who, float64(uiW/2), float64(r.Min.Y+26), 17, ink)
 	for i, p := range g.ord.branch {
 		c := image.Rect(r.Min.X+32+i*(cardW+gap), r.Min.Y+62, r.Min.X+32+i*(cardW+gap)+cardW, r.Min.Y+62+cardH)
 		hover := hovered(c)
@@ -754,6 +740,9 @@ func (g *Game) drawBranches(dst *ebiten.Image) {
 			drawScaled(dst, a.Frame("SW", "idle", 0), op)
 		}
 		to, from := g.S.Data.Classes[p.to], g.S.Data.Classes[p.from]
+		if mixed {
+			g.label(dst, g.name(p.id), x-8, float64(c.Min.Y+10), 16, ink)
+		}
 		g.centered(dst, to.Name, cx, float64(c.Min.Y+120), 26, gold)
 		g.label(dst, wrapWidth(to.Desc, g.face(14), cardW-40), x, float64(c.Min.Y+160), 14, ink)
 		g.label(dst, fmt.Sprintf("이동 %d → %d   사거리 %d → %d", from.Move, to.Move, from.Range, to.Range), x, float64(c.Min.Y+206), 13, muted)
@@ -782,13 +771,18 @@ func gainColor(d int) color.NRGBA {
 
 const difficultyRowH = 96
 
-// difficultyWindow picks a new game's difficulty: each one a button with its name over its description.
+// difficultyWindow picks the difficulty of a new game, or of one started at the picked waypoint: each one a
+// button with its name over its description.
 func (g *Game) difficultyWindow(dst *ebiten.Image, x, y, w int) {
 	for i, v := range g.S.Data.Rules.Difficulties {
 		id := v.ID
 		top := y + 64 + i*difficultyRowH
 		g.btn(dst, image.Rect(x+32, top, x+w-32, top+difficultyRowH-14), "", func() {
 			g.closeOverlays()
+			if g.jumpNode != "" {
+				g.request(session.Request{Op: "jump", Node: g.jumpNode, Seed: g.seed, Difficulty: id})
+				return
+			}
 			g.request(session.Request{Op: "new", Seed: g.seed, Difficulty: id})
 		})
 		g.label(dst, v.Name, float64(x+52), float64(top+10), 22, ink)

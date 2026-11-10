@@ -23,7 +23,7 @@ func demoSaves(d *Demo) error {
 			break
 		}
 	}
-	e, err := core.NewAt(data, 1, battleNode)
+	e, err := core.NewAt(data, 1, battleNode, "")
 	if err != nil {
 		return err
 	}

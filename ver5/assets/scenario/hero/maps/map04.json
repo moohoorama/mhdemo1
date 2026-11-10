@@ -2,6 +2,7 @@
  "Decorations": [],
  "Props": [],
  "Version": 2,
+ "Grass": {"hue": -16, "sat": 0.8, "val": 1.04},
  "Play": {
   "X": 0,
   "Y": 0,

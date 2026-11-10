@@ -22,7 +22,7 @@ type Status struct {
 	Source       string
 }
 type Unit struct {
-	AI, DuelFirst                        bool           `json:",omitempty"`
+	AI, DuelFirst, UseItems              bool           `json:",omitempty"`
 	Policy                               string         `json:",omitempty"` // hold, react, assault, march or flee; none only on a player unit
 	Goal                                 *content.Point `json:",omitempty"` // the cell a marching or fleeing unit makes for
 	GoalArea                             int            `json:",omitempty"` // or, instead, the stage area whose nearest cell it makes for
@@ -74,7 +74,14 @@ type State struct {
 	Choices                           map[string]string // choice node -> the option taken
 	DamagePct, XPPct                  int               `json:",omitempty"` // damage dealt and experience gained in percent; 0 is 100
 	Learning                          []string          // characters whose learning window is open, in order
+	Merit                             *Merit            `json:",omitempty"` // what the battle fought last has brought, from its start
 	Checkpoint                        *State            `json:",omitempty"`
+}
+
+// Merit is what a battle has brought, for its result window: each officer's experience, the level each started
+// it at, and the items and money it won. It is kept in the state, so a game loaded in the middle still has it.
+type Merit struct {
+	XP, From, Spoils map[string]int `json:",omitempty"`
 }
 
 // CutStep is one step of a played cutscene as the replay shows it: a move comes with the cells
@@ -134,6 +141,7 @@ type Event struct {
 	DuelID                    string           `json:",omitempty"`
 	Outcome                   string           `json:",omitempty"`
 	First                     string           `json:",omitempty"` // duel: the officer who moved to meet the other
+	Fighter                   string           `json:",omitempty"` // duel: the deputy who fights for the Actor's unit
 	Kind, Actor, Target, Text string
 	Amount                    int
 	Path                      []content.Point `json:",omitempty"` // move: cells walked, both ends included

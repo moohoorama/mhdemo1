@@ -125,6 +125,7 @@
   },
   "c01-e-oath": {
    "Map": "S_peach_grove2",
+   "Music": "china-trailer",
    "Nodes": ["c01-e-oath", "c01-o1", "c01-o2", "c01-o3", "c01-o4", "c01-o5", "c01-o6", "c01-o7", "c01-o8", "c01-o9", "c01-o10", "c01-o11", "c01-o12", "c01-o13", "c01-o14", "c01-o15", "c01-o16", "c01-o17", "c01-o18", "c01-o19", "c01-o20", "c01-o21", "c01-o22"],
    "Ambient": [{"Effect": "petals", "At": [4.75, 3.75]}],
    "Cast": {
