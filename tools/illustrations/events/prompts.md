@@ -31,3 +31,4 @@ Use the reference image ONLY for the drawing style: a simple amateur webtoon lin
 
 - `luoyang-bloodbath-webtoon-amateur-somber.png` (시나리오 2 낙양): 지붕 위 부감으로 본 궁궐 마당. 계단 아래 쓰러진 하진, 계단을 오르는 원소군, 위쪽 문으로 들어오는 서량 기병, 타오르는 지붕.
 - `heroes-chopstick-webtoon-amateur-somber-mature.png` (시나리오 16 허도, 영웅론): 조조의 매화 정원 정자, 번개, 떨어진 젓가락을 줍는 유비와 술잔을 든 조조. 화풍 기준 이미지.
+- `caocao-tent-a.png`, `caocao-tent-b.png` (15장 S#5 조조의 군막, 하비 전투 직전): 조조·순욱·순유·곽가·정욱·하후연·조인·허저와 유관장. A는 입구에서 유관장 어깨 너머로 본 군막(조조가 상석에서 두 팔 벌려 맞음), B는 조조 등 뒤에서 입구 쪽으로 본 구도(유관장이 들어서고 허저가 휘장을 든다). 프롬프트는 위 틀 + 구도 + 인물 외형(유비 작은 금관·흰 도포, 관우 녹건·녹포, 장비 갑옷, 조조 검은 관·남색 도포·어깨 갑옷·붉은 띠).
