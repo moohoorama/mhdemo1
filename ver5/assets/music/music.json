@@ -1,0 +1,42 @@
+{
+ "Title": "imperial-china-cinematic",
+ "World": "china-vol4",
+ "Story": "emerald-peaks",
+ "Explore": "china-vol4",
+ "Sortie": "the-march",
+ "Battle": "chinese-traditional",
+ "Duel": "war-drums-duel",
+ "Victory": "painted-pavilion",
+ "Defeat": "sad-melody",
+ "Maps": {
+  "S_zhuo2": "china-vol4",
+  "S_xindu": "china-vol4",
+  "S_pingyuan": "china-vol4",
+  "S_xuzhou_town": "china-vol4",
+  "S_tavern2": "quiet-water",
+  "S_tool_shop2": "quiet-water",
+  "S_weapon_shop2": "quiet-water",
+  "S_road_town": "mystical-china",
+  "S_beihai": "mystical-china",
+  "S_xiaopei": "mystical-china",
+  "S_mansion2": "china-vol1",
+  "S_council": "china-vol1",
+  "S_council2": "china-vol1",
+  "S_zhuo_office2": "china-vol1",
+  "S_xiaopei_office": "china-vol1",
+  "S_xuzhou_hall": "china-vol1",
+  "S_shouchun_hall": "china-vol1",
+  "S_luoyang": "china-vol2",
+  "S_luoyang_hall": "echoes-empire"
+ },
+ "Stages": {
+  "B02": "chinese-dynasty",
+  "B05": "chinese-dynasty",
+  "B06": "chinese-dynasty",
+  "B07": "chinese-dynasty",
+  "B10": "chinese-dynasty",
+  "B12": "chinese-dynasty",
+  "B14": "chinese-dynasty",
+  "B15": "chinese-dynasty"
+ }
+}

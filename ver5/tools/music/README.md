@@ -71,3 +71,16 @@ python3 ver5/tools/music/compose.py --soundfont /path/to/soundfont.sf2
 - 앱 내 Browser 연결이 도구 메타데이터 오류로 시작되지 않아 기존 Playwright와
   별도 headless Chrome으로 검증했다. 캡처: `../../reports/music/desktop.png`,
   `../../reports/music/mobile.png`.
+
+## 십면매복 (전투)
+
+`assets/music/themes/sipmyeon-maebok.mid`는 사용자가 준 musics.zip의 MIDI 스케치다. 전투 곡
+`sipmyeon-maebok.mp3`는 이 MIDI를 `sipmyeon.py`로 다시 편성해(선율 고토, 받침 현 피치카토, 첼로 베이스,
+태고+팀파니) GeneralUser GS 음색으로 렌더링하고 -15.8 LUFS로 맞춘 것이다(2026-11-09, 시안 B).
+
+```sh
+python3 ver5/tools/music/sipmyeon.py /path/to/GeneralUser-GS.sf2 ver5/assets/music/themes/sipmyeon-maebok.mp3
+```
+
+GeneralUser GS: https://github.com/mrbumpy409/GeneralUser-GS (S. Christian Collins, 어떤 용도로든 무료). 저장소에는
+넣지 않았다. `smf.py`는 표준 라이브러리만 쓰는 최소 MIDI 읽기·쓰기다.
