@@ -2,6 +2,7 @@ package core
 
 import (
 	"math"
+	"slices"
 
 	"srpg/internal/content"
 )
@@ -196,6 +197,27 @@ func (e *Engine) learn(c Command) error {
 		e.state.Learning = append(e.state.Learning[:i], e.state.Learning[i+1:]...)
 	}
 	return nil
+}
+
+// welcome brings an officer into the party before the order-th battle at the level the story has reached. One
+// who left comes back as they left, with the levels the battles they missed raise a stage by, and never below a
+// newcomer.
+func (e *Engine) welcome(id string, order int) *Character {
+	i := slices.IndexFunc(e.state.Away, func(c Character) bool { return c.ID == id })
+	if e.char(id) != nil || i < 0 {
+		o := e.addCharacter(id, id)
+		e.joinAt(o, e.joinLevel(order))
+		return o
+	}
+	c := e.state.Away[i]
+	e.state.Away = slices.Delete(slices.Clone(e.state.Away), i, i+1)
+	missed := e.data.Rules.StageLevel(order) - e.data.Rules.StageLevel(c.Left)
+	c.Left = 0
+	e.charIDs[id] = e.chars.NewEntity(&c)
+	o := e.char(id)
+	e.raiseTo(o, o.Level+max(missed, 0))
+	e.joinAt(o, e.joinLevel(order))
+	return o
 }
 
 // joinLevel is the level an officer who joins before the order-th battle comes in at, at the game's difficulty.

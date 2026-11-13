@@ -1,26 +1,26 @@
-# B18  stage18.json  map18.json  origin 0 0
+# B18  stage18.json  map12.json  origin 0 0
 ......MMMMMM........................TRE.........TRE.....................
-.........MMMMMM............,,,......,,,.........ar1ca2............CST...
-............MMMMMM......EMB......,,,...EMBfo1Liu'''Wanca1'''............
-...............MMMMMM,,,'''...............,,,fo2fo3......'''............
+.........MMMMMM.........p17p13pl9pl5pl2pl6p10p14p18...............CST...
+............MMMMMM......p15p11pl7pl3pl1pl4pl8p12p16'''''''''............
+...............MMMMMM,,,'''...............,,,............'''............
 ..................MMMMMM''''''......~~~~~~~~~............'''TRE.........
 ...............'''''''''''''''...~~~~~~~~~~~~~~~.........'''............
 ...TRE.........'''...... n ......~~~~~~...~~~~~~......,,,'''............
-...............'''............~~~~~~~~~...~~~~~~~~~......'''.........TRE
+...............'''............~~~~~~~~~...~~~~~~~~~......ca1.........TRE
 ...............'''............~~~~~~.........~~~~~~~~~...'''...,,,......
 TRE............'''.........~~~~~~~~~............~~~~~~...'''............
-......TRE......'''......~~~~~~~~~~~~......'''VILBRGBRG''''''...TRE......
-............''''''...~~~~~~~~~~~~~~~......'''...~~~~~~..................
+......TRE......'''......~~~~~~~~~~~~......'''fo3BRGBRG''''''...TRE......
+............''''''...~~~~~~~~~~~~~~~......ar3...~~~~~~..................
 ............'''...~~~~~~~~~~~~~~~TRE......'''...~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~BRG~~~~~~~~~..................'''...~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~BRG~~~~~~..................TRE'''...........................
-............'''............TRE............'''''''''''''''TRE'''......TRE
+............'''............TRE............'''fo4'''''''''TRE'''......TRE
 TRE.........'''VIL..................,,,.....................'''.........
 ............''''''''' n '''''''''..................#########PAS#########
-.........,,,...... n .........'''.........TRE......###pl6pl3pl2pl4pl7___
-..............................,,,..................###pl8pl5pl1___VIL___
-...............TRE............'''''''''''''''''''''PAS__________________
-......TRE...............TRE........................###_________CST______
+.........,,,...... n .........'''.........TRE......###___ar1fo1_________
+..............................,,,..................###____________VIL___
+...............TRE............'''''''''''''''''''''PASfo2______Che______
+......TRE...............TRE........................###ar2______CST______
 .................................TRE...............###___VIL____________
 ..........................................TRE......###__________________
 
@@ -32,16 +32,26 @@ pl5 Allies[4]  player
 pl6 Allies[5]  player
 pl7 Allies[6]  player
 pl8 Allies[7]  player
-Liu Enemies[0]  liudai, enemy, group liuwang, policy assault, faction wei
-Wan Enemies[1]  wangzhong, enemy, group liuwang, policy assault, faction wei
-fo1 Enemies[2]  troop_footman, enemy, group liu, policy assault, rank rabble, faction wei
-fo2 Enemies[3]  troop_footman, enemy, group liu, policy assault, rank rabble, faction wei
-fo3 Enemies[4]  troop_footman, enemy, group liu, policy assault, rank rabble, faction wei
-ar1 Enemies[5]  troop_archer, enemy, group liu, policy assault, rank rabble, faction wei
-ca1 Enemies[6]  troop_cavalry, enemy, group liu, policy assault, rank rabble, faction wei
-ca2 Enemies[7]  troop_cavalry, enemy, group liu, policy assault, rank rabble, faction wei
+pl9 Allies[8]  player
+p10 Allies[9]  player
+p11 Allies[10]  player
+p12 Allies[11]  player
+p13 Allies[12]  player
+p14 Allies[13]  player
+p15 Allies[14]  player
+p16 Allies[15]  player
+p17 Allies[16]  player
+p18 Allies[17]  player
+Che Enemies[0]  chezhou, enemy, group che, policy react, faction wei
+fo1 Enemies[1]  troop_footman, enemy, group gate, policy react, faction wei
+fo2 Enemies[2]  troop_footman, enemy, group gate, policy react, faction wei
+ar1 Enemies[3]  troop_archer, enemy, group wall, policy hold, faction wei
+ar2 Enemies[4]  troop_archer, enemy, group wall, policy hold, faction wei
+fo3 Enemies[5]  troop_footman, enemy, group bridge, policy react, faction wei
+ar3 Enemies[6]  troop_archer, enemy, group bridge, policy react, faction wei
+ca1 Enemies[7]  troop_cavalry, enemy, group patrol, policy react, faction wei
+fo4 Enemies[8]  troop_footman, enemy, group field, policy react, faction wei
 
 # area 1 동쪽 끝 소성: x 21..23, y 0..2
 # area 2 마을과 다리: x 14..18, y 9..11
 # area 3 서주성 안: x 18..23, y 18..23
-# area 4 북동쪽 끝: x 0..23, y 0..0

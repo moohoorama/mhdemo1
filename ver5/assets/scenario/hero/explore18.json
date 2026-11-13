@@ -1,0 +1,400 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   17,
+   26
+  ],
+  "Face": "NE"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_xiapi",
+   "Name": "하비",
+   "At": [
+    17,
+    26
+   ],
+   "Exits": [
+    {
+     "Name": "관청",
+     "At": [
+      17,
+      7
+     ],
+     "Object": [
+      17,
+      4
+     ],
+     "Node": "c18-news",
+     "If": [
+      "!flag:c18-news"
+     ]
+    },
+    {
+     "Name": "관청",
+     "At": [
+      17,
+      7
+     ],
+     "Object": [
+      17,
+      4
+     ],
+     "To": "office",
+     "If": [
+      "flag:c18-news"
+     ]
+    },
+    {
+     "Name": "도구점",
+     "At": [
+      11,
+      17
+     ],
+     "Object": [
+      9,
+      17
+     ],
+     "To": "tools"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      28,
+      15
+     ],
+     "Object": [
+      28,
+      13
+     ],
+     "To": "tavern"
+    },
+    {
+     "Name": "대장간",
+     "At": [
+      28,
+      6
+     ],
+     "Object": [
+      26,
+      6
+     ],
+     "To": "weapons"
+    }
+   ],
+   "People": {
+    "아낙#1": {
+     "At": [
+      13,
+      22
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "아낙",
+       "물이 빠지고 나서야 겨우 집으로 돌아왔다오. 벽에 물자국이 아직도 허리께까지 남았지."
+      ]
+     ]
+    },
+    "노인#1": {
+     "At": [
+      21,
+      18
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "노인",
+       "여포 장군 때는 성문마다 술판이더니, 이제는 조용하구먼. 조용한 게 좋은 게지."
+      ]
+     ]
+    },
+    "농부#1": {
+     "At": [
+      9,
+      20
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Move": {
+      "Wander": 2
+     },
+     "Talk": [
+      [
+       "농부",
+       "올해는 낟알 한 톨 못 거뒀소. 그래도 황숙께서 나눠 주신 곡식 덕에 겨울은 나겠지요."
+      ]
+     ]
+    },
+    "하비병#1": {
+     "At": [
+      15,
+      9
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "shu",
+     "Talk": [
+      [
+       "병사",
+       "관우 장군께서 성벽 무너진 데부터 손보라 하셨습니다."
+      ]
+     ]
+    }
+   }
+  },
+  "office": {
+   "Map": "S_xiaopei_office",
+   "Name": "하비 · 관청",
+   "Zoom": 3,
+   "At": [
+    5,
+    10
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      5,
+      11
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "관우": {
+     "At": [
+      3,
+      7
+     ],
+     "Face": "SE",
+     "If": [
+      "flag:c18-news"
+     ],
+     "Talk": [
+      [
+       "guanyu",
+       "하비는 제가 지키겠습니다."
+      ]
+     ]
+    },
+    "장비": {
+     "At": [
+      8,
+      9
+     ],
+     "Face": "NW",
+     "If": [
+      "flag:c18-news"
+     ],
+     "Talk": [
+      [
+       "zhangfei",
+       "형, 채비는 다 됐슈. 말만 하슈!"
+      ]
+     ],
+     "Sortie": {
+      "Ask": "형, 서주로 가는 거쥬? 차주 놈 목을 따러 출진하시겄슈?"
+     }
+    },
+    "간옹": {
+     "At": [
+      10,
+      9
+     ],
+     "Face": "NW",
+     "If": [
+      "flag:c18-news"
+     ],
+     "Talk": [
+      [
+       "jianyong",
+       "허도 소식은 바람보다 빠르더군. 조조의 군사도 곧 그만큼 빠르겠지."
+      ]
+     ]
+    },
+    "미축": {
+     "At": [
+      6,
+      4
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:c18-news"
+     ],
+     "Talk": [
+      [
+       "mizhu",
+       "원술의 진채에서 거둔 곡식은 고을마다 나누어 실어 보냈습니다. 군량은 넉넉합니다."
+      ]
+     ]
+    },
+    "미방": {
+     "At": [
+      8,
+      4
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:c18-news"
+     ],
+     "Talk": [
+      [
+       "mifang",
+       "하필 이럴 때 조조와 틀어지다니…… 장사꾼들이 다 문을 닫겠습니다."
+      ]
+     ]
+    },
+    "번궁": {
+     "At": [
+      2,
+      9
+     ],
+     "Face": "NE",
+     "If": [
+      "flag:c18-news"
+     ],
+     "Talk": [
+      [
+       "fangong",
+       "서주성은 서문과 북문이 있습니다. 차주가 성벽 위에서 버틸 테니 문을 먼저 노리시지요."
+      ]
+     ]
+    },
+    "고순": {
+     "At": [
+      12,
+      9
+     ],
+     "Face": "NW",
+     "If": [
+      "flag:c18-news",
+      "party:gaoshun"
+     ],
+     "Talk": [
+      [
+       "gaoshun",
+       "……단양병은 언제든 나갈 수 있습니다."
+      ]
+     ]
+    }
+   }
+  },
+  "tools": {
+   "Map": "S_tool_shop2",
+   "Name": "도구점",
+   "Zoom": 3,
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "상인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "xuzhou"
+    }
+   }
+  },
+  "tavern": {
+   "Map": "S_tavern2",
+   "Name": "주점",
+   "Zoom": 3,
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "xuzhou_tavern"
+    },
+    "손님": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "한 잔 더!|크으, 좋다",
+     "Talk": [
+      [
+       "손님",
+       "여포가 망하고 나서야 술맛이 좀 납니다. 물난리 때는 술독까지 떠내려갔지요."
+      ]
+     ]
+    }
+   }
+  },
+  "weapons": {
+   "Map": "S_weapon_shop2",
+   "Name": "대장간",
+   "Zoom": 3,
+   "At": [
+    6,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "대장장이": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons"
+    }
+   }
+  }
+ }
+}

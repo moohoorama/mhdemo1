@@ -4,7 +4,7 @@
    "Map": "S_road",
    "Music": "sad-melody",
    "Backdrop": "mountains",
-   "Nodes": ["c03-start", "c03-a1", "c03-a2", "c03-a3", "c03-a4", "c03-a5", "c03-a6", "c03-a7", "c03-a8", "c03-a9", "c03-a10", "c03-a11", "c03-a12"],
+   "Nodes": ["c03-start", "c03-a1", "c03-a2", "c03-a3", "c03-a4", "c03-a5", "c03-a6", "c03-a7", "c03-a8", "c03-a9", "c03-a10", "c03-a12"],
    "Ambient": [{"Prop": ["prison_cart", 5.3, 2.3]}],
    "Cast": {
     "노식": {"At": [5, 2], "Face": "NW", "Hold": true},
@@ -42,11 +42,6 @@
       [{"Prop": ["prison_cart", "노식"]}, {"Actor": "노식", "Move": [-8, 2], "Speed": 0.6, "Exit": true}, {"Actor": "호송병#1", "Move": [-8, 2], "Speed": 0.6, "Exit": true, "After": 0.5}, {"Actor": "호송병#2", "Move": [-8, 2], "Speed": 0.6, "Exit": true, "After": 1.0}],
       [{"Actor": "관우", "Move": [2, 2]}],
       [{"Actor": "관우", "Move": [4, 2]}],
-      [{"Actor": "관우", "Face": "NE"}, {"Actor": "장비", "Face": "SW"}]
-     ]
-    ],
-    "c03-a11": [
-     [
       [{"Actor": "관우", "Face": "NE"}, {"Actor": "장비", "Face": "SW"}]
      ]
     ]

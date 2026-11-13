@@ -179,7 +179,7 @@ func executed(e *Engine, key string) bool { return e.state.Executed[key] }
 
 func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, true)
-	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19"}, fought)
+	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20"}, fought)
 	assert.Equal(t, 1, e.state.Flags["flag-pengcheng-carts"])
 	assert.Positive(t, e.state.Inventory["barley"], "Tao Qian shares the grain from the carts")
 	assert.Equal(t, 1, e.state.Flags["flag-sunjian-alive"])
@@ -196,18 +196,21 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	for _, id := range []string{"jianyong", "fangong", "sunqian", "gaoshun"} {
 		assert.NotNil(t, e.char(id), id+" joins the party")
 	}
-	assert.Nil(t, e.char("fanya"), "Fan A stays at Xiaopei with the sick")
+	assert.NotNil(t, e.char("fanya"), "Fan A finds Zhang Fei lost in the hills and joins at the Mangdang village")
+	assert.NotNil(t, e.char("chendao"), "Chen Dao joins at the Mangdang village")
 	assert.NotNil(t, e.char("zhaoyun"), "Zhao Yun, wandering since Gongsun Zan fell, joins on the flight from Yuan Shao")
-	assert.Nil(t, e.char("guanyu"), "Guan Yu is cut off at Xiapi and serves Cao Cao for now")
-	assert.Nil(t, e.char("mifang"), "Mi Fang is scattered at Xuzhou")
-	assert.NotNil(t, e.char("chenzhen"), "Chen Zhen leaves Yuan Shao with Liu Bei")
+	for _, id := range []string{"guanyu", "guanping", "zhoucang", "chenzhen"} {
+		assert.NotNil(t, e.char(id), id+" comes with Guan Yu to Mangdang and joins in the battle against Cai Yang")
+	}
+	assert.NotNil(t, e.char("mizhu"), "Mi Zhu finds Liu Bei again at Yuan Shao's camp")
+	assert.NotNil(t, e.char("mifang"), "Mi Fang comes with his brother")
 	assert.True(t, executed(e, "battle-B10-vanguard-clear"), "a quick win at Julu keeps Yan Liang away from Jiejiao")
 	assert.False(t, executed(e, "battle-B10-vanguard-strong"))
 }
 
 func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, false)
-	assert.Len(t, fought, 19)
+	assert.Len(t, fought, 20)
 	assert.Zero(t, e.state.Flags["flag-julu-clear"])
 	assert.True(t, executed(e, "battle-B10-vanguard-strong"), "Yan Liang comes back at Jiejiao")
 	assert.False(t, executed(e, "battle-B10-vanguard-clear"))

@@ -1,0 +1,546 @@
+{
+ "ID": "B20",
+ "Name": "망탕산 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 6,
+ "Required": [
+  "liubei",
+  "zhangfei"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "alldefeated:enemy"
+   ],
+   "Text": "조조군을 모두 물리친다"
+  }
+ ],
+ "Defeat": [
+  {
+   "If": [
+    "defeated:zhangfei"
+   ],
+   "Text": "장비가 쓰러진다"
+  }
+ ],
+ "TurnLimit": 25,
+ "Map": "map20.json",
+ "Allies": [
+  {
+   "X": 2,
+   "Y": 2
+  },
+  {
+   "X": 4,
+   "Y": 3
+  },
+  {
+   "X": 3,
+   "Y": 2
+  },
+  {
+   "X": 1,
+   "Y": 2
+  },
+  {
+   "X": 5,
+   "Y": 3
+  },
+  {
+   "X": 2,
+   "Y": 3
+  },
+  {
+   "X": 3,
+   "Y": 1
+  },
+  {
+   "X": 4,
+   "Y": 2
+  }
+ ],
+ "Recommend": {
+  "liubei": {
+   "X": 2,
+   "Y": 2
+  },
+  "zhangfei": {
+   "X": 4,
+   "Y": 3
+  }
+ },
+ "Party": [],
+ "Enemies": [
+  {
+   "Character": "troop_footman",
+   "X": 7,
+   "Y": 7,
+   "Shift": -0.07,
+   "Group": "front",
+   "Policy": "assault",
+   "Facing": "NW",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 8,
+   "Y": 8,
+   "Shift": -0.07,
+   "Group": "front",
+   "Policy": "assault",
+   "Facing": "NW",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 6,
+   "Y": 9,
+   "Shift": -0.07,
+   "Group": "front",
+   "Policy": "assault",
+   "Facing": "NW",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 12,
+   "Y": 3,
+   "Shift": -0.07,
+   "Group": "gully",
+   "Policy": "react",
+   "Facing": "SW",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 11,
+   "Y": 4,
+   "Shift": -0.07,
+   "Group": "gully",
+   "Policy": "react",
+   "Facing": "SW",
+   "Faction": "wei"
+  },
+  {
+   "Character": "caiyang",
+   "X": 10,
+   "Y": 13,
+   "Group": "cai",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Rank": "commander",
+   "Shift": -0.07,
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 9,
+   "Y": 12,
+   "Shift": -0.07,
+   "Group": "cai",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 11,
+   "Y": 13,
+   "Shift": -0.07,
+   "Group": "cai",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 12,
+   "Y": 13,
+   "Shift": -0.07,
+   "Group": "cai",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 8,
+   "Y": 14,
+   "Shift": -0.07,
+   "Group": "cai",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 16,
+   "Shift": -0.07,
+   "Group": "rear",
+   "Policy": "react",
+   "Facing": "NW",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 16,
+   "Y": 17,
+   "Shift": -0.07,
+   "Group": "rear",
+   "Policy": "react",
+   "Facing": "NW",
+   "Faction": "wei"
+  }
+ ],
+ "Reward": {
+  "money": 1000
+ },
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 3,
+    "Y": 9,
+    "W": 9,
+    "H": 4
+   },
+   "Name": "산길 중턱",
+   "Description": "유비나 장비가 들어서면(아니면 4라운드에) 적 차례에 관우 일행이 조조군 뒤에서 나타난다"
+  },
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 13,
+    "Y": 1,
+    "W": 3,
+    "H": 3
+   },
+   "Name": "동쪽 골짜기 끝",
+   "Description": "채양이 쓰러지면 골짜기의 조조군이 달아나는 곳"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "opening",
+   "If": [
+    "round>=1"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caiyang",
+       "Text": "유비가 이 산에 숨었다! 마을째 쓸어 버려라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "형, 마을까지 올라오게 둘 순 없슈. 내려가서 박살 내유!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "산길을 따라 내려가며 막는다. 마을에 한 놈도 들이지 마라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "cai-pushes",
+   "If": [
+    "any:[round>=3, alldefeated:front]"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caiyang",
+       "Text": "산길 하나 못 뚫느냐! 모두 밀고 올라가라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "cai",
+      "rear"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "second-wave",
+   "If": [
+    "round>=3",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_cavalry",
+       "X": 17,
+       "Y": 18,
+       "Shift": -0.07,
+       "Group": "wave",
+       "Policy": "assault",
+       "Facing": "NW",
+       "Faction": "wei",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 18,
+       "Y": 17,
+       "Shift": -0.07,
+       "Group": "wave",
+       "Policy": "assault",
+       "Facing": "NW",
+       "Faction": "wei",
+       "Side": "enemy"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caiyang",
+       "Text": "뒤에 남은 기병도 올려 보내라! 유비를 놓치지 마라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "guanyu",
+   "If": [
+    "any:[round>=4, at:liubei:1, at:zhangfei:1]",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "join",
+     "Spawns": [
+      {
+       "Character": "guanyu",
+       "X": 19,
+       "Y": 19,
+       "Facing": "NW"
+      },
+      {
+       "Character": "guanping",
+       "X": 18,
+       "Y": 19,
+       "Facing": "NW"
+      },
+      {
+       "Character": "zhoucang",
+       "X": 19,
+       "Y": 18,
+       "Facing": "NW"
+      },
+      {
+       "Character": "chenzhen",
+       "X": 17,
+       "Y": 19,
+       "Facing": "NW"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "guanyu",
+       "Text": "형님! 운장이 왔습니다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "둘째 형!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "cai-duel",
+   "If": [
+    "alive:caiyang",
+    "alive:guanyu"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caiyang",
+       "Text": "관우! 내 조카 진기를 벤 원수, 여기서 갚아 주마!"
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "move",
+        "Unit": "caiyang",
+        "To": {
+         "X": 16,
+         "Y": 16
+        },
+        "Facing": "SE"
+       },
+       {
+        "Kind": "move",
+        "Unit": "guanyu",
+        "To": {
+         "X": 17,
+         "Y": 17
+        },
+        "Facing": "NW"
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "guanyu",
+       "Text": "말이 많구나."
+      }
+     ]
+    },
+    {
+     "Kind": "duel",
+     "Duel": "mangdang-guanyu-caiyang"
+    }
+   ]
+  },
+  {
+   "ID": "caiyang-falls",
+   "If": [
+    "defeated:caiyang"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "채양이 쓰러졌다! 남은 군사를 산 아래로 몰아내라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "gully"
+     ],
+     "Policy": "flee",
+     "GoalArea": 2
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "enemy"
+     ],
+     "Stat": "morale",
+     "Value": -20,
+     "Turns": 0
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "enemy"
+     ],
+     "Stat": "attack",
+     "Value": -10,
+     "Turns": 0
+    }
+   ]
+  }
+ ],
+ "Faction": "wei",
+ "Duels": [
+  {
+   "ID": "mangdang-guanyu-caiyang",
+   "Ally": "guanyu",
+   "Enemy": "caiyang",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "death",
+   "Text": "관우가 단칼에 채양을 베었다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "채양이 관우를 막아서다",
+     "Speech": "승상께서도 너를 잡아 오라 하셨다. 진기의 원수, 오늘 갚는다!",
+     "Side": 1,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "approach",
+     "Title": "두 장수가 말을 몰아 맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 채양의 창을 걷어 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical",
+     "Title": "관우가 단칼에 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "win",
+     "Title": "채양이 말에서 떨어지다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 2.0
+    }
+   ]
+  }
+ ],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "wei",
+   "Name": "조조군"
+  }
+ ]
+}

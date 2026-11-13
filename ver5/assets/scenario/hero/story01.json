@@ -398,36 +398,19 @@
   {
    "ID": "c01-o14",
    "Kind": "narrate",
-   "Text": "장비가 고개를 돌려 눈가를 비빈다."
-  },
-  {
-   "ID": "c01-o15",
-   "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "아이고, 꽃가루가 눈에 들어갔나……."
-  },
-  {
-   "ID": "c01-o16",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "꽃가루는 원래 그렇다."
-  },
-  {
-   "ID": "c01-o17",
-   "Kind": "narrate",
-   "Text": "맏이는 유비, 둘째는 관우."
+   "Text": "장비가 고개를 돌려 소매로 눈가를 훔친다."
   },
   {
    "ID": "c01-o18",
    "Kind": "say",
    "Speaker": "zhangfei",
-   "Text": "그럼 지가 막내유? 술은 지가 제일 잘 마시는디."
+   "Text": "잠깐, 그럼 지가 막내유? 술은 지가 제일 잘 마시는디."
   },
   {
    "ID": "c01-o19",
    "Kind": "say",
    "Speaker": "guanyu",
-   "Text": "익덕."
+   "Text": "익덕아. 술로 형 아우를 가리는 법이 어디 있느냐."
   },
   {
    "ID": "c01-o20",

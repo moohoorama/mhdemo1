@@ -50,9 +50,9 @@ func (g *Game) foldButton(dst *ebiten.Image, x, y int, folded *bool) {
 }
 
 // leftPanel is the panel in the upper left: on its head the fold switch, the place, the chapter and the money;
-// below it the buttons the screen has, in this order — speed, zoom, auto text, skip scene, battle objective — a nil
-// slot left out. The panel is as wide as its buttons and head need; a window too narrow wraps the buttons.
-func (g *Game) leftPanel(dst *ebiten.Image, place, sub, money string, all [5]*cornerSlot) {
+// below it the buttons the screen has, in the order given — speed, zoom, auto text, skip scene, battle objective, end
+// of phase — a nil slot left out. The panel is as wide as its buttons and head need; a window too narrow wraps the buttons.
+func (g *Game) leftPanel(dst *ebiten.Image, place, sub, money string, all ...*cornerSlot) {
 	slots := []*cornerSlot{}
 	for _, s := range all {
 		if s != nil {
@@ -138,7 +138,7 @@ func (g *Game) speedSlot() *cornerSlot {
 // zoomSlot steps the camera through the zooms as the wheel does; nil click while the camera waits.
 func (g *Game) zoomSlot(locked bool) *cornerSlot {
 	cur := g.zoom
-	if !g.exploring() && g.zoomT < .5 {
+	if g.zoomT < .5 {
 		cur = g.zoomTo
 	}
 	s := &cornerSlot{label: fmt.Sprintf("확대 %d배", int(math.Round(cur)))}
@@ -152,11 +152,7 @@ func (g *Game) zoomSlot(locked bool) *cornerSlot {
 					break
 				}
 			}
-			if g.exploring() {
-				g.zoom = next
-			} else {
-				g.setZoom(next)
-			}
+			g.setZoom(next)
 		}
 	}
 	return s
@@ -217,7 +213,7 @@ func (g *Game) storyPanels(dst *ebiten.Image, o core.Observation) {
 		}
 		skip = g.skipSlot()
 	}
-	g.leftPanel(dst, place, g.chapterName(o.Node), money, [5]*cornerSlot{g.speedSlot(), zoom, g.autoSlot(), skip, nil})
+	g.leftPanel(dst, place, g.chapterName(o.Node), money, g.speedSlot(), zoom, g.autoSlot(), skip)
 	var party func()
 	if o.Dialogue.Kind == "explore" && g.explore != nil && g.explore.talk == nil {
 		party = func() { g.openOverlay("party") }
@@ -226,7 +222,16 @@ func (g *Game) storyPanels(dst *ebiten.Image, o core.Observation) {
 }
 
 // battleLeftPanel is the left panel of a battle and of its deployment, where the head counts who is placed. A
-// battle's lines pass on their own, so it has no auto text.
-func (g *Game) battleLeftPanel(dst *ebiten.Image, o core.Observation, sub string) {
-	g.leftPanel(dst, g.S.Data.Stages[o.Stage].Name, sub, "", [5]*cornerSlot{g.speedSlot(), g.zoomSlot(g.cameraLocked()), nil, nil, g.goalSlot()})
+// battle's lines pass on their own, so it has no auto text; end is the battle's 진영 종료, nil in the deployment.
+func (g *Game) battleLeftPanel(dst *ebiten.Image, o core.Observation, sub string, end *cornerSlot) {
+	g.leftPanel(dst, g.S.Data.Stages[o.Stage].Name, sub, "", g.speedSlot(), g.zoomSlot(g.cameraLocked()), g.goalSlot(), end)
+}
+
+// endSlot is 진영 종료, pressable on the player's turn once the playback is done.
+func (g *Game) endSlot(o core.Observation) *cornerSlot {
+	s := &cornerSlot{label: "진영 종료"}
+	if !g.busy() && o.Phase == "battle" && o.Turn == "ally" {
+		s.click = g.endPhase
+	}
+	return s
 }

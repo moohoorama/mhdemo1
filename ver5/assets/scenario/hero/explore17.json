@@ -16,7 +16,7 @@
     {
      "If": [
       "flag:c17-step>=3",
-      "!flag:c17-step>=5"
+      "!flag:c17-step>=6"
      ],
      "Time": "night"
     }
@@ -40,28 +40,6 @@
      "If": [
       "flag:c17-step>=2",
       "!flag:c17-step>=3"
-     ],
-     "Shut": [
-      [
-       "",
-       "궁문 병사가 막아선다. \"부르심 없이는 드실 수 없습니다.\""
-      ]
-     ]
-    },
-    {
-     "Name": "궁궐",
-     "At": [
-      28,
-      7
-     ],
-     "Object": [
-      28,
-      4
-     ],
-     "Node": "c17-edict",
-     "If": [
-      "flag:c17-step>=7",
-      "!flag:c17-step>=8"
      ],
      "Shut": [
       [
@@ -126,8 +104,8 @@
      ],
      "Node": "c17-dong2",
      "If": [
-      "flag:c17-step>=6",
-      "!flag:c17-step>=7"
+      "flag:c17-step>=5",
+      "!flag:c17-step>=6"
      ],
      "Shut": [
       [
@@ -171,7 +149,7 @@
      "To": "home",
      "If": [
       "flag:c17-step>=4",
-      "!flag:c17-step>=6"
+      "!flag:c17-step>=5"
      ],
      "Shut": [
       [
@@ -192,7 +170,7 @@
      ],
      "To": "home",
      "If": [
-      "flag:c17-step>=8"
+      "flag:c17-step>=6"
      ],
      "Shut": [
       [
@@ -235,8 +213,8 @@
      ],
      "Node": "c17-office",
      "If": [
-      "flag:c17-step>=5",
-      "!flag:c17-step>=6"
+      "flag:c17-step>=6",
+      "!flag:c17-step>=7"
      ],
      "Shut": [
       [
@@ -256,6 +234,30 @@
       22
      ],
      "To": "tools"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      52,
+      14
+     ],
+     "Object": [
+      52,
+      12
+     ],
+     "To": "tavern"
+    },
+    {
+     "Name": "대장간",
+     "At": [
+      40,
+      47
+     ],
+     "Object": [
+      40,
+      45
+     ],
+     "To": "weapons"
     }
    ],
    "People": {
@@ -338,6 +340,10 @@
       [
        "노인",
        "들었소? 탁현 돗자리 장수가 황제 폐하의 숙부였다지 뭐요. 유황숙이라 부른다더구먼."
+      ],
+      [
+       "노인",
+       "천자께서 장안에 계실 적엔 종친 도령들을 하나둘 밖으로 내보내셨다지. 다들 그 길로 돌아오지 않았다더구먼."
       ],
       [
        "노인",
@@ -451,13 +457,13 @@
    }
   },
   "home": {
-   "Map": "S_mansion2",
+   "Map": "S_liu_house",
    "Name": "허도 · 유비의 저택",
    "Times": [
     {
      "If": [
       "flag:c17-step>=3",
-      "!flag:c17-step>=5"
+      "!flag:c17-step>=6"
      ],
      "Time": "night"
     }
@@ -627,7 +633,7 @@
   },
   "tools": {
    "Map": "S_tool_shop2",
-   "Name": "허도 · 도구점",
+   "Name": "도구점",
    "Zoom": 3,
    "At": [
     6,
@@ -650,15 +656,87 @@
       3
      ],
      "Face": "SW",
-     "Shop": "luoyang",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "xudu"
+    }
+   }
+  },
+  "tavern": {
+   "Map": "S_tavern2",
+   "Name": "주점",
+   "Zoom": 3,
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "street"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "xudu_tavern"
+    },
+    "손님": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW",
      "Sprite": "commoner_man",
      "Faction": "merchant",
+     "Chatter": "한 잔 더!|크으, 좋다",
      "Talk": [
       [
-       "상인",
-       "허도에서 서주까지 먼 길이오. 콩이며 술이며 넉넉히 챙겨 가시오."
+       "손님",
+       "조 승상께서 황숙을 그리 아끼신다지요? 허도 사람들 입에 늘 오르내립니다."
       ]
      ]
+    }
+   }
+  },
+  "weapons": {
+   "Map": "S_weapon_shop2",
+   "Name": "대장간",
+   "Zoom": 3,
+   "At": [
+    6,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "street"
+    }
+   ],
+   "People": {
+    "대장장이": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons"
     }
    }
   }

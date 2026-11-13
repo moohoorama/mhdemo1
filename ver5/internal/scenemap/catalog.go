@@ -38,11 +38,14 @@ type Sprite struct {
 // WallFamily is how a wall line is drawn: a block on each small tile of it, and on each side (_mu, _mv, _pu, _pv:
 // toward -u, -v, +u, +v in the view) of a block no wall or gate tile touches, a parapet. Under a wall or gate tile
 // lies its shadow on the ground in front, out of each open front side (_pu, _pv) and past the front corner when
-// both are open (_pc).
+// both are open (_pc). A family with Piece (a compound wall) draws instead one picture per small tile chosen by the
+// sides another wall or gate tile closes (or the board's edge along the line): <piece>_<mask>, mask 1 -u, 2 -v,
+// 4 +u, 8 +v in the view, "%02d".
 type WallFamily struct {
 	Block   string `json:"block"`
 	Parapet string `json:"parapet"`
 	Shade   string `json:"shade"`
+	Piece   string `json:"piece"`
 }
 
 // Rules is scene.json.
@@ -68,9 +71,12 @@ type Rules struct {
 		// walk's parapets): <rim>_<side>_<k>, side sw (+v), se (+u), ne (-v) or nw (-u), one small tile of edge each.
 		Rim string `json:"rim"`
 	} `json:"heights"`
-	Walls        map[string]WallFamily `json:"walls"`
-	Gates        map[string]string     `json:"gates"`        // a gate object -> its slices (<slices>_<axis>_<k>)
-	GatePassage  [2]int                `json:"gate_passage"` // the small tiles of a gate's passage, from its point
+	Walls       map[string]WallFamily `json:"walls"`
+	Gates       map[string]string     `json:"gates"`        // a gate object -> its slices (<slices>_<axis>_<k>)
+	GatePassage [2]int                `json:"gate_passage"` // the small tiles of a gate's passage, from its point
+	// Layers are the layers a picture may come with, drawn over it, each its own picture <name>_<layer> taking its
+	// own colour of a tint (Tint.Of): pictures drawn in greys to be tinted part by part.
+	Layers       []string `json:"layers"`
 	CornerShadow struct {
 		Sprite string `json:"sprite"`
 		Offset [2]int `json:"offset"`
@@ -220,7 +226,9 @@ func (c *Catalog) isGate(name string) bool {
 	return ok
 }
 
-// footprint is the ground an object covers, from its anchor: [du, dv, w, d] in small tiles.
+// Footprint is the ground an object covers, from its anchor: [du, dv, w, d] in small tiles.
+func (c *Catalog) Footprint(name string) [4]float64 { return c.footprint(name) }
+
 func (c *Catalog) footprint(name string) [4]float64 {
 	if f, ok := c.Rules.Footprints[name]; ok {
 		return f

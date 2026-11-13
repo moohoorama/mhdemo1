@@ -106,11 +106,11 @@
  "Enemies": [
   {
    "Character": "chezhou",
-   "X": 20,
+   "X": 21,
    "Y": 20,
    "Facing": "NE",
    "Group": "che",
-   "Policy": "hold",
+   "Policy": "react",
    "Faction": "wei"
   },
   {
@@ -120,7 +120,8 @@
    "Facing": "NE",
    "Group": "gate",
    "Policy": "react",
-   "Faction": "wei"
+   "Faction": "wei",
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
@@ -129,7 +130,8 @@
    "Facing": "NW",
    "Group": "gate",
    "Policy": "react",
-   "Faction": "wei"
+   "Faction": "wei",
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
@@ -138,7 +140,8 @@
    "Facing": "NE",
    "Group": "wall",
    "Policy": "hold",
-   "Faction": "wei"
+   "Faction": "wei",
+   "Shift": -0.07
   },
   {
    "Character": "troop_archer",
@@ -147,7 +150,8 @@
    "Facing": "NW",
    "Group": "wall",
    "Policy": "hold",
-   "Faction": "wei"
+   "Faction": "wei",
+   "Shift": -0.07
   },
   {
    "Character": "troop_footman",
@@ -265,6 +269,30 @@
    ]
   },
   {
+   "ID": "chezhou-sorties",
+   "If": [
+    "any:[round>=7, alldefeated:gate]"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "chezhou",
+       "Text": "고작 이만한 군사로 서주를 넘봐? 성문을 열어라, 내가 직접 나가 쓸어 주마!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "che"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
    "ID": "cao-arrives",
    "If": [
     "defeated:chezhou"
@@ -275,9 +303,9 @@
      "Spawns": [
       {
        "Character": "caocao",
-       "X": 0,
-       "Y": 0,
-       "Facing": "SW",
+       "X": 2,
+       "Y": 6,
+       "Facing": "SE",
        "Rank": "commander",
        "Group": "cao",
        "Policy": "march",
@@ -288,8 +316,8 @@
       {
        "Character": "troop_cavalry",
        "X": 1,
-       "Y": 0,
-       "Facing": "SW",
+       "Y": 5,
+       "Facing": "SE",
        "Shift": -0.07,
        "Group": "cao",
        "Policy": "march",
@@ -299,9 +327,9 @@
       },
       {
        "Character": "troop_footman",
-       "X": 0,
-       "Y": 1,
-       "Facing": "SW",
+       "X": 3,
+       "Y": 5,
+       "Facing": "SE",
        "Shift": -0.07,
        "Group": "cao",
        "Policy": "march",
@@ -311,9 +339,9 @@
       },
       {
        "Character": "troop_archer",
-       "X": 1,
-       "Y": 1,
-       "Facing": "SW",
+       "X": 2,
+       "Y": 7,
+       "Facing": "SE",
        "Shift": -0.07,
        "Group": "cao",
        "Policy": "march",
@@ -324,8 +352,8 @@
       {
        "Character": "xuchu",
        "X": 0,
-       "Y": 2,
-       "Facing": "SW",
+       "Y": 5,
+       "Facing": "SE",
        "Group": "xu",
        "Policy": "march",
        "GoalArea": 3,
@@ -335,8 +363,8 @@
       {
        "Character": "troop_footman",
        "X": 0,
-       "Y": 3,
-       "Facing": "SW",
+       "Y": 6,
+       "Facing": "SE",
        "Shift": -0.07,
        "Group": "xu",
        "Policy": "march",
@@ -346,9 +374,9 @@
       },
       {
        "Character": "xuhuang",
-       "X": 1,
-       "Y": 2,
-       "Facing": "SW",
+       "X": 3,
+       "Y": 7,
+       "Facing": "SE",
        "Class": "heavy_cavalry",
        "Group": "xh",
        "Policy": "march",
@@ -358,9 +386,9 @@
       },
       {
        "Character": "troop_footman",
-       "X": 1,
-       "Y": 3,
-       "Facing": "SW",
+       "X": 4,
+       "Y": 7,
+       "Facing": "SE",
        "Shift": -0.07,
        "Group": "xh",
        "Policy": "march",
@@ -370,8 +398,8 @@
       },
       {
        "Character": "zhangliao",
-       "X": 2,
-       "Y": 0,
+       "X": 1,
+       "Y": 8,
        "Facing": "SE",
        "Group": "zl",
        "Policy": "march",
@@ -382,7 +410,7 @@
       {
        "Character": "troop_cavalry",
        "X": 2,
-       "Y": 1,
+       "Y": 8,
        "Facing": "SE",
        "Shift": -0.07,
        "Group": "zl",
@@ -393,18 +421,19 @@
       },
       {
        "Character": "xiahoudun",
-       "X": 3,
-       "Y": 1,
+       "X": 4,
+       "Y": 8,
        "Facing": "SE",
        "Group": "xhd",
-       "Policy": "assault",
+       "Policy": "march",
        "Side": "enemy",
-       "Faction": "wei"
+       "Faction": "wei",
+       "GoalArea": 3
       },
       {
        "Character": "troop_cavalry",
        "X": 3,
-       "Y": 2,
+       "Y": 8,
        "Facing": "SE",
        "Shift": -0.07,
        "Group": "xhd",
@@ -415,7 +444,7 @@
       },
       {
        "Character": "zangba",
-       "X": 1,
+       "X": 0,
        "Y": 21,
        "Facing": "SE",
        "Group": "zang",
@@ -465,6 +494,102 @@
        "Policy": "assault",
        "Side": "enemy",
        "Faction": "wei"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 0,
+       "Y": 9,
+       "Facing": "SE",
+       "Group": "cao2",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Shift": -0.07,
+       "Faction": "wei",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 1,
+       "Y": 9,
+       "Facing": "SE",
+       "Group": "cao2",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Shift": -0.07,
+       "Faction": "wei",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 1,
+       "Y": 10,
+       "Facing": "SE",
+       "Group": "cao2",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Shift": -0.07,
+       "Faction": "wei",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 11,
+       "Facing": "SE",
+       "Group": "cao2",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Shift": -0.07,
+       "Faction": "wei",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 2,
+       "Y": 11,
+       "Facing": "SE",
+       "Group": "cao2",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Shift": -0.07,
+       "Faction": "wei",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 3,
+       "Y": 10,
+       "Facing": "SE",
+       "Group": "cao2",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Shift": -0.07,
+       "Faction": "wei",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 3,
+       "Y": 9,
+       "Facing": "SE",
+       "Group": "cao2",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Shift": -0.07,
+       "Faction": "wei",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 5,
+       "Y": 9,
+       "Facing": "SE",
+       "Group": "cao2",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Shift": -0.07,
+       "Faction": "wei",
+       "Side": "enemy"
       }
      ]
     },
@@ -473,7 +598,7 @@
      "Lines": [
       {
        "Actor": "zhangfei",
-       "Text": "형! 북쪽이 온통 조조 깃발이여! 서쪽에서도 몰려와유!"
+       "Text": "형! 서쪽이 온통 조조 깃발이여! 서쪽 끝에서도 몰려와유!"
       }
      ]
     },
@@ -727,6 +852,14 @@
   {
    "Faction": "wei",
    "Name": "조조군"
+  }
+ ],
+ "Defeat": [
+  {
+   "If": [
+    "defeated:zhangfei"
+   ],
+   "Text": "장비가 쓰러진다"
   }
  ]
 }

@@ -123,6 +123,7 @@ type MapArt struct {
 	SceneMap *scenemap.Map
 	Scene    bool               // a scenario scene: drawn without the shaded exterior, to the edge of its picture
 	Grass    *content.GrassTint // the map's shade of grass, see grassAssets
+	Board    *mapBoard          // the baked diorama edge of a scene map (field_board.go); nil for none
 }
 
 // MapProp places a prop with its pivot at cell (U, V), fractions allowed. With U1, V1 it
@@ -378,6 +379,16 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			a.Props[name] = pr
 		}
 	}
+	// the old scene wall columns (format 1 maps) lay the castle wall's band of shadow out of their open face, not a
+	// shadow cast from each column's picture, whose merlons fall on the ground as a row of spikes
+	for name, band := range map[string]string{"swall_u": "swall2_shade_pv", "swall_v": "swall2_shade_pu"} {
+		if pr, ok := a.Props[name]; ok {
+			if b, ok := a.Props[band]; ok {
+				pr.Shadow = b.Sprite
+				a.Props[name] = pr
+			}
+		}
+	}
 	// the walls of the battle map are the clean ones: no seam where one wall cell meets the next
 	for i := 0; i < 16; i++ {
 		if clean, ok := a.Props[fmt.Sprintf("wall_clean_%02d", i)]; ok {
@@ -434,7 +445,11 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			if _, err := scenemap.Build(sm, a.SceneRules, scenemap.Options{Decor: true}); err != nil {
 				return nil, fmt.Errorf("%s: %w", path, err)
 			}
-			a.Maps[sm.ID] = sceneMapArt(sm)
+			art := sceneMapArt(sm)
+			if art.Board, err = loadBoard(dir, sm.ID); err != nil {
+				return nil, err
+			}
+			a.Maps[sm.ID] = art
 			continue
 		}
 		var m struct {
@@ -546,6 +561,12 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 				}
 			}
 			art.Faces = append(art.Faces, face)
+		}
+		art.trimToBoard(a.SceneRules)
+		if art.Native && art.Scene {
+			if art.Board, err = loadBoard(dir, m.ID); err != nil {
+				return nil, err
+			}
 		}
 		a.Maps[m.ID] = art
 	}

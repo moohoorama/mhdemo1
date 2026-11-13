@@ -1319,7 +1319,7 @@ func (g *Game) battleHUD(dst *ebiten.Image, o core.Observation) {
 		g.messages(dst)
 		return
 	}
-	g.battleLeftPanel(dst, o, g.chapterName(o.Node))
+	g.battleLeftPanel(dst, o, g.chapterName(o.Node), g.endSlot(g.player.shownTurn(o)))
 	g.battleHUDPanel(dst, g.player.shownTurn(o))
 	g.drawMenu(dst)
 	g.forecast(dst)

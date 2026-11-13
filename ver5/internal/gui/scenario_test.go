@@ -98,7 +98,7 @@ func TestScenesData(t *testing.T) {
 	names := nameIndex(d)
 	diagonal := map[string]bool{"NW": true, "NE": true, "SW": true, "SE": true}
 	times := map[string]bool{"": true, "day": true, "dusk": true, "night": true, "dawn": true, "memory": true}
-	effects := map[string]bool{"": true, "none": true, "petals": true, "fire": true, "smallfire": true, "bigfire": true, "smoke": true, "steam": true, "birds": true, "glint": true, "flash": true, "halberd": true, "halberd_throw": true}
+	effects := map[string]bool{"": true, "none": true, "petals": true, "fire": true, "smallfire": true, "bigfire": true, "smoke": true, "steam": true, "birds": true, "glint": true, "flash": true, "lightning": true, "halberd": true, "halberd_throw": true}
 	for id, def := range book.Scenes {
 		t.Run(id, func(t *testing.T) {
 			if !times[def.Time] {

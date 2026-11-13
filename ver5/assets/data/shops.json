@@ -87,6 +87,25 @@
     "liquor",
     "fine_liquor"
    ]
+  },
+  "xudu": {
+   "Name": "도구점",
+   "Items": [
+    "ration_bag",
+    "route_map",
+    "war_horse",
+    "insu_mid"
+   ]
+  },
+  "xudu_tavern": {
+   "Name": "주점",
+   "Items": [
+    "bean",
+    "barley",
+    "liquor",
+    "fine_liquor",
+    "baijiu"
+   ]
   }
  }
 }

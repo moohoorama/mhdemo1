@@ -27,13 +27,13 @@
    "ID": "c17-q02",
    "Kind": "say",
    "Speaker": "mifang",
-   "Text": "이…… 이게 다 오수전입니다. 꿰미째로! 비단에, 농기구까지……"
+   "Text": "이…… 이게 다 돈이고 보물입니다…… 비단에, 농기구까지……"
   },
   {
    "ID": "c17-q03",
    "Kind": "say",
    "Speaker": "mizhu",
-   "Text": "황숙, 궤짝마다 찍힌 표를 보니 여강, 구강, 진국 고을 관아의 것입니다."
+   "Text": "황숙, 궤짝마다 고을 관아의 표가 찍혀 있습니다."
   },
   {
    "ID": "c17-q04",
@@ -69,7 +69,7 @@
    "ID": "c17-q09",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "곡식과 동전은 미 공이 가져가시오."
+   "Text": "돈과 재물은 미 공이 가져가시오. 다만 곡식과 기구들은 고을에 돌려주려 하오."
   },
   {
    "ID": "c17-q10",
@@ -81,7 +81,7 @@
    "ID": "c17-q11",
    "Kind": "say",
    "Speaker": "mizhu",
-   "Text": "황숙…… 이 은혜는 잊지 않겠습니다."
+   "Text": "황숙…… 이 은혜는 잊지 않겠습니다. 곡식과 기구는 마땅히 고을로 돌아가야지요. 실어 나르는 일은 저희 상단이 맡겠습니다."
   }
  ],
  "Events": [
@@ -170,7 +170,7 @@
    "ID": "c17-d01",
    "Kind": "say",
    "Speaker": "servant",
-   "Text": "국구 동승 대감께서 오셨습니다."
+   "Text": "동승 장군께서 오셨습니다."
   },
   {
    "ID": "c17-d02",
@@ -182,7 +182,7 @@
    "ID": "c17-d03",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "국구께서 어인 일로 이 누추한 곳까지……"
+   "Text": "장군께서 어인 일로 이 누추한 곳까지……"
   },
   {
    "ID": "c17-d04",
@@ -519,7 +519,7 @@
    "ID": "c17-h09",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "형주의 유경승은요?"
+   "Text": "형주의 유경승은 어떠십니까?"
   },
   {
    "ID": "c17-h10",
@@ -576,142 +576,104 @@
    "Text": "성인께서도 우레와 거센 바람에는 얼굴빛을 바꾸셨다 했습니다. 하물며 저 같은 사람이야……"
   },
   {
+   "ID": "c17-h18b",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "……현덕, 너스레가 많이 늘었구려."
+  },
+  {
+   "ID": "c17-h18c",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "승상 곁에 오래 있다 보니 배운 것이지요."
+  },
+  {
+   "ID": "c17-h18d",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "하하하하! 좋소, 좋아! 내 스승 노릇을 했다니 술값은 내가 내야겠구려."
+  },
+  {
    "ID": "c17-h19",
    "Kind": "say",
    "Speaker": "xuchu",
-   "Text": "멈추시오! 승상의 후원이오!"
+   "Text": "멈춰라! 승상께서 손님과 술자리 중이시다!"
   },
   {
    "ID": "c17-h20",
    "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "비켜! 형이 안에 있단 말여!"
+   "Speaker": "guanyu",
+   "Text": "형님을 모시러 왔소."
   },
   {
    "ID": "c17-h21",
    "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "중강, 그만두게. 두 장군은 칼을 들고 웬일이오?"
+   "Speaker": "xuchu",
+   "Text": "승상의 허락 없이는 아무도 들일 수 없소."
   },
   {
    "ID": "c17-h22",
    "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "승상께서 형님과 술을 드신다기에, 칼춤이라도 추어 흥을 돋우려 왔습니다."
+   "Speaker": "zhangfei",
+   "Text": "동생이 형 보러 오는 게 무슨 문제 있슈? 뭐 걸리는 거 있슈? 왜 막는 거유?"
   },
   {
    "ID": "c17-h23",
    "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "하하하! 여기가 홍문의 잔치인 줄 아시오? 번쾌도 없고 항장도 없소."
+   "Speaker": "zhangfei",
+   "Text": "막을 수는 있을 것 같슈!"
   },
   {
    "ID": "c17-h24",
    "Kind": "say",
    "Speaker": "caocao",
-   "Text": "중강, 자네도 이리 오게. 두 장군에게도 잔을 드려라. 오늘은 다 같이 마십시다."
+   "Text": "하하. 중강, 들여보내게."
   },
   {
    "ID": "c17-h25",
    "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "……이 집 술이 독하다고 들었는디."
+   "Speaker": "caocao",
+   "Text": "두 장군, 이 밤에 무슨 일이오?"
   },
   {
    "ID": "c17-h26",
    "Kind": "say",
-   "Speaker": "xuchu",
-   "Text": "독하지. 한 잔 받으시오."
-  },
-  {
-   "ID": "c17-hunt",
-   "Kind": "scene",
-   "Place": "허전 · 사냥터"
-  },
-  {
-   "ID": "c17-t01",
-   "Kind": "say",
-   "Speaker": "xiandi",
-   "Text": "황숙, 오늘은 짐과 함께 사냥하십시다."
-  },
-  {
-   "ID": "c17-t02",
-   "Kind": "say",
-   "Speaker": "xiandi",
-   "Text": "……세 번을 쏘아도 맞지 않는구려. 승상이 쏘아 보시오."
-  },
-  {
-   "ID": "c17-t03",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "폐하의 활과 화살을 빌리겠습니다."
-  },
-  {
-   "ID": "c17-t04",
-   "Kind": "narrate",
-   "Text": "금화살이 사슴에 꽂혔다."
-  },
-  {
-   "ID": "c17-t05",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "하하, 내가 맞혔소!"
-  },
-  {
-   "ID": "c17-t06",
-   "Kind": "narrate",
-   "Text": "천자 앞을 가로막고 선 조조에게 만세 소리가 쏟아졌다."
-  },
-  {
-   "ID": "c17-t07",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "운장, 무슨 일이오?"
-  },
-  {
-   "ID": "c17-t08",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "승상의 활 솜씨가 신묘하여, 운장이 감탄한 모양입니다."
-  },
-  {
-   "ID": "c17-t09",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "하하, 그렇소?"
-  },
-  {
-   "ID": "c17-t10",
-   "Kind": "narrate",
-   "Text": "조조는 천자의 활을 돌려주지 않고 제 허리에 찼다. 돌아가는 길."
-  },
-  {
-   "ID": "c17-t11",
-   "Kind": "say",
    "Speaker": "guanyu",
-   "Text": "형님, 어찌 말리셨습니까. 그 자리에서 베었다면……"
+   "Text": "술자리 중이시라 들어, 흥을 돋워 드리려 왔습니다."
   },
   {
-   "ID": "c17-t12",
+   "ID": "c17-h27",
    "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "쥐를 잡으려다 그릇을 깬다 했네. 폐하께서 바로 곁에 계셨고, 둘레는 모두 조조의 사람이었네."
+   "Speaker": "zhangfei",
+   "Text": "맛난 고기랑 술이라면 내가 전문이유!"
   },
   {
-   "ID": "c17-t13",
+   "ID": "c17-h28",
    "Kind": "say",
-   "Speaker": "guanyu",
+   "Speaker": "caocao",
+   "Text": "그러시오? 고기와 술을 가져오셨단 말이오?"
+  },
+  {
+   "ID": "c17-h29",
+   "Kind": "say",
+   "Speaker": "zhangfei",
    "Text": "……"
   },
   {
-   "ID": "c17-hunt-set",
+   "ID": "c17-h30",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "하하하하! 현덕에게는 번쾌가 있구려! 여봐라, 술과 고기를 더 가져오너라!"
+  },
+  {
+   "ID": "c17-garden-set",
    "Kind": "set",
    "Flags": {
     "c17-step": 5
    }
   },
   {
-   "ID": "c17-hunt-back",
+   "ID": "c17-garden-back",
    "Kind": "back",
    "Area": "street",
    "At": [
@@ -783,24 +745,15 @@
    "ID": "c17-o10",
    "Kind": "say",
    "Speaker": "caocao",
-   "Text": "……원술을 막는 데 그만한 사람이 없소."
+   "Text": "무슨 말인지 아오. 하지만 한번 보고 싶소. 늑대인지 개인지."
   },
   {
    "ID": "c17-office-set",
    "Kind": "set",
    "Flags": {
-    "c17-step": 6
-   }
-  },
-  {
-   "ID": "c17-office-back",
-   "Kind": "back",
-   "Area": "street",
-   "At": [
-    41,
-    16
-   ],
-   "Face": "NW"
+    "c17-step": 7
+   },
+   "Next": "c17-edict"
   },
   {
    "ID": "c17-dong2",
@@ -811,7 +764,7 @@
    "ID": "c17-e01",
    "Kind": "say",
    "Speaker": "dongcheng",
-   "Text": "황숙, 원술을 치러 떠나신다 들었소. 떠나시기 전에 반드시 궁에 드셔야 하오."
+   "Text": "황숙, 이 밤에 실례하오. 조 승상 댁에서 돌아오시기를 기다렸소."
   },
   {
    "ID": "c17-e02",
@@ -843,7 +796,7 @@
    "Kind": "say",
    "Speaker": "dongcheng",
    "Text": "폐하께서 손가락을 깨물어 쓰신 조서요. 역적 조조를 치라는.",
-   "Next": "c17-e-set"
+   "Next": "c17-e30"
   },
   {
    "ID": "c17-e20",
@@ -867,13 +820,19 @@
    "ID": "c17-e23",
    "Kind": "say",
    "Speaker": "dongcheng",
-   "Text": "승상부에서 아직 아무 기척이 없으니, 미처 못 보았는지도 모르오. 어서 궁으로 드시오."
+   "Text": "승상부에서 아직 아무 기척이 없으니, 미처 못 보았는지도 모르오."
+  },
+  {
+   "ID": "c17-e30",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……알겠습니다. 때를 엿보겠습니다."
   },
   {
    "ID": "c17-e-set",
    "Kind": "set",
    "Flags": {
-    "c17-step": 7
+    "c17-step": 6
    }
   },
   {
@@ -894,23 +853,17 @@
   {
    "ID": "c17-i01",
    "Kind": "say",
-   "Speaker": "dongcheng",
-   "Text": "황숙, 여기 이름을 올린 이들이 있소. 왕자복, 충집, 오석, 그리고 서량의 마등."
+   "Speaker": "liubei",
+   "Text": "폐하, 신이 원술을 막으러 서주로 가게 되었습니다."
   },
   {
    "ID": "c17-i02",
    "Kind": "say",
-   "Speaker": "dongcheng",
-   "Text": "허도 안에서 우리가 때를 보아 조조를 치겠소. 황숙께서도 이름을 올려 주시오."
+   "Speaker": "liubei",
+   "Text": "신은 밖에서 힘을 기르다가, 안에서 일이 일어나면 밖에서 호응하겠습니다."
   },
   {
    "ID": "c17-i03",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "국구, 저는 원술을 치러 허도를 나갑니다. 밖에서 힘을 기르다가, 안에서 일이 일어나면 밖에서 호응하겠습니다."
-  },
-  {
-   "ID": "c17-i04",
    "Kind": "say",
    "Speaker": "dongcheng",
    "Text": "안에서는 조조를 찔러 죽이는 수밖에 없소. 기회는 머지않아 올 것이오."
@@ -919,7 +872,7 @@
    "ID": "c17-i05",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "국구, 그리해 봐야 우리에겐 힘이 없습니다."
+   "Text": "동 장군, 그리해 봐야 우리에겐 힘이 없습니다."
   },
   {
    "ID": "c17-i06",
@@ -961,7 +914,7 @@
    "ID": "c17-i12",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "……폐하. 신 유비, 이름을 올리겠습니다."
+   "Text": "……폐하. 뜻을 받들겠습니다."
   },
   {
    "ID": "c17-i13",
@@ -973,7 +926,13 @@
    "ID": "c17-i14",
    "Kind": "say",
    "Speaker": "xiandi",
-   "Text": "……기다리겠소, 황숙."
+   "Text": "좋소. 그것이 짐의 뜻이오. 짐은 유화도, 유장도 모두 그렇게 떠나보냈소. 그리고 지금도 기다리고 있소."
+  },
+  {
+   "ID": "c17-i15",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "황숙도…… 기다리겠소."
   },
   {
    "ID": "c17-i-br",

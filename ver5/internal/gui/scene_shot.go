@@ -448,13 +448,15 @@ func (g *Game) drawPlantedHalberd(dst *ebiten.Image, x, y, t float64) {
 	g.drawCanvasSprite(dst, foot, x, y-(1-k*k)*260, 1)
 }
 
-// sceneFlash is how white the screen is from the scene's flashes ("flash" effects and landing halberds).
+// sceneFlash is how white the screen is from the scene's flashes ("flash" and "lightning" effects and landing halberds).
 func (g *Game) sceneFlash() float64 {
 	a := 0.0
 	for _, e := range g.scene.effects {
 		switch e.kind {
 		case "flash":
 			a = math.Max(a, 1-e.t/.5)
+		case "lightning": // white at once, held a moment, then the scene comes back slowly
+			a = math.Max(a, math.Min(1, 1-(e.t-.15)/1.8))
 		case "halberd":
 			if h := e.t - halberdDrop; h >= 0 {
 				a = math.Max(a, .9*(1-h/.45))

@@ -1,0 +1,45 @@
+# B20  stage20.json  map20.json  origin 0 0
+......TRE...... n ^^^ n MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+...VIL'''pl7.........TRE... n MMMMMMMMMMMM n  n ^^^MMMMMMMMM
+...pl4pl1pl3pl8'''.........^^^ n  n TRE...TRETRE n MMMMMMMMM
+TRE...pl6...pl2pl5''''''......TRE...ar2TRE...... n MMMMMMMMM
+..................'''''''''......fo3...TRE...TRE n MMMMMMMMM
+MMMMMM n ^^^...TRE...''''''...TRE......... n ^^^MMMMMMMMMMMM
+MMMMMMMMMMMMMMM n ...TRE'''...... n ^^^MMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMM n ......fo1'''...TRE n MMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMM^^^TRE...''''''fo2...... n MMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMM^^^......ar1'''...TRE n MMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMM n ...TRE''''''......^^^ n  n ^^^ n  n MMMMMMMMMMMMMMM
+MMMMMM n ......''''''......TRE......TRETRE...^^^MMMMMMMMMMMM
+MMMMMM n TRE...'''''''''...fo4......TRE......TRE... n MMMMMM
+MMMMMMMMM^^^......''''''''''''Caifo5ca1''''''...TRE n MMMMMM
+MMMMMMMMMMMM n ...TRE...ar3...TRE......'''''''''......^^^MMM
+MMMMMMMMMMMMMMM n TRE......TRE......TRE...'''''''''...... n 
+MMMMMMMMMMMMMMMMMM^^^ n  n ^^^ n  n ^^^......fo6''''''...TRE
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM n ......ar4''''''...
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM n ......'''''''''
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM^^^......''''''
+
+pl1 Allies[0]  player
+pl2 Allies[1]  player
+pl3 Allies[2]  player
+pl4 Allies[3]  player
+pl5 Allies[4]  player
+pl6 Allies[5]  player
+pl7 Allies[6]  player
+pl8 Allies[7]  player
+fo1 Enemies[0]  troop_footman, enemy, group front, policy assault, faction wei
+fo2 Enemies[1]  troop_footman, enemy, group front, policy assault, faction wei
+ar1 Enemies[2]  troop_archer, enemy, group front, policy assault, faction wei
+ar2 Enemies[3]  troop_archer, enemy, group gully, policy react, faction wei
+fo3 Enemies[4]  troop_footman, enemy, group gully, policy react, faction wei
+Cai Enemies[5]  caiyang, enemy, group cai, policy hold, rank commander, faction wei
+fo4 Enemies[6]  troop_footman, enemy, group cai, policy hold, faction wei
+fo5 Enemies[7]  troop_footman, enemy, group cai, policy hold, faction wei
+ca1 Enemies[8]  troop_cavalry, enemy, group cai, policy hold, faction wei
+ar3 Enemies[9]  troop_archer, enemy, group cai, policy hold, faction wei
+fo6 Enemies[10]  troop_footman, enemy, group rear, policy react, faction wei
+ar4 Enemies[11]  troop_archer, enemy, group rear, policy react, faction wei
+
+# area 1 산길 중턱: x 3..11, y 9..12
+# area 2 동쪽 골짜기 끝: x 13..15, y 1..3

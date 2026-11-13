@@ -197,8 +197,7 @@ func RestoreChanged(d *content.Data, s State) (*Engine, error) {
 // officer whose class the data moved out of his old line takes the new class when his level allows it, and
 // a piece of equipment the officer can no longer wear goes back to the inventory.
 func adaptCharacters(d *content.Data, s *State) {
-	for i := range s.Characters {
-		o := &s.Characters[i]
+	for _, o := range append(pointers(s.Characters), pointers(s.Away)...) {
 		def, ok := d.Characters[o.Def]
 		if !ok || o.Temp || o.Placement {
 			continue
@@ -224,6 +223,14 @@ func adaptCharacters(d *content.Data, s *State) {
 			}
 		}
 	}
+}
+
+func pointers[T any](s []T) []*T {
+	p := make([]*T, len(s))
+	for i := range s {
+		p[i] = &s[i]
+	}
+	return p
 }
 
 // knownDifficulty tells whether a save's difficulty is one the rules still have.
@@ -337,6 +344,13 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 		if _, ok := d.Equipment[id]; !ok || n < 0 {
 			return nil, fail("CorruptSave")
 		}
+	}
+	for _, o := range s.Away {
+		def, ok := d.Characters[o.Def]
+		if _, cl := d.Classes[o.Class]; !ok || !cl || def.Template || o.ID != o.Def || seen[o.ID] || o.Left < 1 || o.Level < 1 || o.Level > R.MaxLevel || o.Equipment == nil {
+			return nil, fail("CorruptSave")
+		}
+		seen[o.ID] = true
 	}
 	if s.Checkpoint != nil {
 		if !checkpoint || s.Checkpoint.Checkpoint != nil || s.Checkpoint.Phase != "scenario" || s.Checkpoint.Stage != s.Stage || d.Node(s.Checkpoint.Node).Kind != "battle" {

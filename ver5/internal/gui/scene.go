@@ -169,7 +169,7 @@ func (g *Game) openScene(def *scenes.Scene) {
 			g.startStep(st)
 		}
 	}
-	g.zoom = 2
+	g.setZoomImmediate(2)
 	g.camX, g.camY = g.sceneCam()
 }
 
@@ -538,7 +538,7 @@ func (g *Game) stageStep(st scenes.Step) {
 		s.camU, s.camV = st.CamAt[0], st.CamAt[1]
 	}
 	if st.Zoom >= 1 {
-		g.zoom = math.Round(st.Zoom)
+		g.setZoomImmediate(math.Round(st.Zoom))
 	}
 	if st.Bound != nil {
 		g.tie(st.Actor, *st.Bound)

@@ -9333,12 +9333,12 @@
   "pwall_u": {
    "file": "tiles/pwall_u.png",
    "size": [
-    120,
-    110
+    26,
+    64
    ],
    "pivot": [
-    60,
-    78
+    17,
+    56
    ],
    "layer": "object",
    "scale": "scene",
@@ -9354,36 +9354,6 @@
    "pivot": [
     125,
     183
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "palace front of 허도, pixel art on the small-tile grid (gen_pixel_palace.py)",
-   "shadow": false
-  },
-  "mansion_cao": {
-   "file": "tiles/mansion_cao.png",
-   "size": [
-    366,
-    241
-   ],
-   "pivot": [
-    183,
-    152
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "palace front of 허도, pixel art on the small-tile grid (gen_pixel_palace.py)",
-   "shadow": false
-  },
-  "mansion_liu": {
-   "file": "tiles/mansion_liu.png",
-   "size": [
-    270,
-    173
-   ],
-   "pivot": [
-    135,
-    108
    ],
    "layer": "object",
    "scale": "scene",
@@ -9692,6 +9662,1282 @@
    ],
    "layer": "object",
    "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "pwall_u_end_m": {
+   "file": "tiles/pwall_u_end_m.png",
+   "size": [
+    26,
+    61
+   ],
+   "pivot": [
+    17,
+    53
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "palace front of 허도, pixel art on the small-tile grid (gen_pixel_palace.py)",
+   "shadow": false
+  },
+  "pwall_u_end_p": {
+   "file": "tiles/pwall_u_end_p.png",
+   "size": [
+    34,
+    64
+   ],
+   "pivot": [
+    17,
+    56
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "palace front of 허도, pixel art on the small-tile grid (gen_pixel_palace.py)",
+   "shadow": false
+  },
+  "pwall_u_gate_m": {
+   "file": "tiles/pwall_u_gate_m.png",
+   "size": [
+    11,
+    9
+   ],
+   "pivot": [
+    11,
+    56
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "palace front of 허도, pixel art on the small-tile grid (gen_pixel_palace.py)",
+   "shadow": false
+  },
+  "pwall_u_gate_p": {
+   "file": "tiles/pwall_u_gate_p.png",
+   "size": [
+    26,
+    61
+   ],
+   "pivot": [
+    17,
+    53
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "palace front of 허도, pixel art on the small-tile grid (gen_pixel_palace.py)",
+   "shadow": false
+  },
+  "cwall_00": {
+   "file": "tiles/cwall_00.png",
+   "size": [
+    14,
+    20
+   ],
+   "pivot": [
+    7,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_00_roof": {
+   "file": "tiles/cwall_00_roof.png",
+   "size": [
+    28,
+    17
+   ],
+   "pivot": [
+    14,
+    31
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_01": {
+   "file": "tiles/cwall_01.png",
+   "size": [
+    24,
+    25
+   ],
+   "pivot": [
+    12,
+    19
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_01_roof": {
+   "file": "tiles/cwall_01_roof.png",
+   "size": [
+    31,
+    22
+   ],
+   "pivot": [
+    15,
+    35
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_02": {
+   "file": "tiles/cwall_02.png",
+   "size": [
+    24,
+    25
+   ],
+   "pivot": [
+    12,
+    19
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_02_roof": {
+   "file": "tiles/cwall_02_roof.png",
+   "size": [
+    31,
+    22
+   ],
+   "pivot": [
+    16,
+    35
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_03": {
+   "file": "tiles/cwall_03.png",
+   "size": [
+    24,
+    26
+   ],
+   "pivot": [
+    12,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_03_roof": {
+   "file": "tiles/cwall_03_roof.png",
+   "size": [
+    30,
+    21
+   ],
+   "pivot": [
+    15,
+    35
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_04": {
+   "file": "tiles/cwall_04.png",
+   "size": [
+    18,
+    24
+   ],
+   "pivot": [
+    12,
+    18
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_04_roof": {
+   "file": "tiles/cwall_04_roof.png",
+   "size": [
+    24,
+    19
+   ],
+   "pivot": [
+    15,
+    32
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_05": {
+   "file": "tiles/cwall_05.png",
+   "size": [
+    18,
+    24
+   ],
+   "pivot": [
+    12,
+    18
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_05_roof": {
+   "file": "tiles/cwall_05_roof.png",
+   "size": [
+    24,
+    22
+   ],
+   "pivot": [
+    15,
+    35
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_06": {
+   "file": "tiles/cwall_06.png",
+   "size": [
+    17,
+    26
+   ],
+   "pivot": [
+    11,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_06_roof": {
+   "file": "tiles/cwall_06_roof.png",
+   "size": [
+    26,
+    22
+   ],
+   "pivot": [
+    14,
+    35
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_07": {
+   "file": "tiles/cwall_07.png",
+   "size": [
+    18,
+    26
+   ],
+   "pivot": [
+    12,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_07_roof": {
+   "file": "tiles/cwall_07_roof.png",
+   "size": [
+    27,
+    22
+   ],
+   "pivot": [
+    15,
+    35
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_08": {
+   "file": "tiles/cwall_08.png",
+   "size": [
+    18,
+    24
+   ],
+   "pivot": [
+    6,
+    18
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_08_roof": {
+   "file": "tiles/cwall_08_roof.png",
+   "size": [
+    24,
+    19
+   ],
+   "pivot": [
+    9,
+    32
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_09": {
+   "file": "tiles/cwall_09.png",
+   "size": [
+    17,
+    26
+   ],
+   "pivot": [
+    6,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_09_roof": {
+   "file": "tiles/cwall_09_roof.png",
+   "size": [
+    26,
+    22
+   ],
+   "pivot": [
+    12,
+    35
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_10": {
+   "file": "tiles/cwall_10.png",
+   "size": [
+    18,
+    24
+   ],
+   "pivot": [
+    6,
+    18
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_10_roof": {
+   "file": "tiles/cwall_10_roof.png",
+   "size": [
+    24,
+    22
+   ],
+   "pivot": [
+    9,
+    35
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_11": {
+   "file": "tiles/cwall_11.png",
+   "size": [
+    18,
+    26
+   ],
+   "pivot": [
+    6,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_11_roof": {
+   "file": "tiles/cwall_11_roof.png",
+   "size": [
+    27,
+    22
+   ],
+   "pivot": [
+    12,
+    35
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_12": {
+   "file": "tiles/cwall_12.png",
+   "size": [
+    12,
+    19
+   ],
+   "pivot": [
+    6,
+    13
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_12_roof": {
+   "file": "tiles/cwall_12_roof.png",
+   "size": [
+    18,
+    18
+   ],
+   "pivot": [
+    9,
+    31
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_13": {
+   "file": "tiles/cwall_13.png",
+   "size": [
+    12,
+    19
+   ],
+   "pivot": [
+    6,
+    13
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_13_roof": {
+   "file": "tiles/cwall_13_roof.png",
+   "size": [
+    21,
+    22
+   ],
+   "pivot": [
+    12,
+    35
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_14": {
+   "file": "tiles/cwall_14.png",
+   "size": [
+    12,
+    19
+   ],
+   "pivot": [
+    6,
+    13
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_14_roof": {
+   "file": "tiles/cwall_14_roof.png",
+   "size": [
+    21,
+    22
+   ],
+   "pivot": [
+    9,
+    35
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_15": {
+   "file": "tiles/cwall_15.png",
+   "size": [
+    12,
+    19
+   ],
+   "pivot": [
+    6,
+    13
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cwall_15_roof": {
+   "file": "tiles/cwall_15_roof.png",
+   "size": [
+    24,
+    22
+   ],
+   "pivot": [
+    12,
+    35
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_u_0": {
+   "file": "tiles/cgate_open_u_0.png",
+   "size": [
+    13,
+    31
+   ],
+   "pivot": [
+    15,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": -1.0
+  },
+  "cgate_open_u_0_wood": {
+   "file": "tiles/cgate_open_u_0_wood.png",
+   "size": [
+    4,
+    41
+   ],
+   "pivot": [
+    3,
+    32
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_u_0_roof": {
+   "file": "tiles/cgate_open_u_0_roof.png",
+   "size": [
+    20,
+    24
+   ],
+   "pivot": [
+    15,
+    40
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_u_1": {
+   "file": "tiles/cgate_open_u_1.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": -0.5
+  },
+  "cgate_open_u_1_wood": {
+   "file": "tiles/cgate_open_u_1_wood.png",
+   "size": [
+    18,
+    47
+   ],
+   "pivot": [
+    15,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_u_1_roof": {
+   "file": "tiles/cgate_open_u_1_roof.png",
+   "size": [
+    25,
+    33
+   ],
+   "pivot": [
+    16,
+    62
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_u_2": {
+   "file": "tiles/cgate_open_u_2.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": 0.0
+  },
+  "cgate_open_u_2_wood": {
+   "file": "tiles/cgate_open_u_2_wood.png",
+   "size": [
+    27,
+    48
+   ],
+   "pivot": [
+    16,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_u_2_roof": {
+   "file": "tiles/cgate_open_u_2_roof.png",
+   "size": [
+    27,
+    29
+   ],
+   "pivot": [
+    16,
+    58
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_u_3": {
+   "file": "tiles/cgate_open_u_3.png",
+   "size": [
+    18,
+    28
+   ],
+   "pivot": [
+    12,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": 0.5
+  },
+  "cgate_open_u_3_wood": {
+   "file": "tiles/cgate_open_u_3_wood.png",
+   "size": [
+    18,
+    47
+   ],
+   "pivot": [
+    15,
+    45
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_u_3_roof": {
+   "file": "tiles/cgate_open_u_3_roof.png",
+   "size": [
+    25,
+    37
+   ],
+   "pivot": [
+    16,
+    51
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_v_0": {
+   "file": "tiles/cgate_open_v_0.png",
+   "size": [
+    13,
+    31
+   ],
+   "pivot": [
+    -2,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": -1.0
+  },
+  "cgate_open_v_0_wood": {
+   "file": "tiles/cgate_open_v_0_wood.png",
+   "size": [
+    4,
+    41
+   ],
+   "pivot": [
+    1,
+    32
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_v_0_roof": {
+   "file": "tiles/cgate_open_v_0_roof.png",
+   "size": [
+    20,
+    24
+   ],
+   "pivot": [
+    5,
+    40
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_v_1": {
+   "file": "tiles/cgate_open_v_1.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": -0.5
+  },
+  "cgate_open_v_1_wood": {
+   "file": "tiles/cgate_open_v_1_wood.png",
+   "size": [
+    18,
+    47
+   ],
+   "pivot": [
+    3,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_v_1_roof": {
+   "file": "tiles/cgate_open_v_1_roof.png",
+   "size": [
+    25,
+    33
+   ],
+   "pivot": [
+    9,
+    62
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_v_2": {
+   "file": "tiles/cgate_open_v_2.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": 0.0
+  },
+  "cgate_open_v_2_wood": {
+   "file": "tiles/cgate_open_v_2_wood.png",
+   "size": [
+    27,
+    48
+   ],
+   "pivot": [
+    11,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_v_2_roof": {
+   "file": "tiles/cgate_open_v_2_roof.png",
+   "size": [
+    27,
+    29
+   ],
+   "pivot": [
+    11,
+    58
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_v_3": {
+   "file": "tiles/cgate_open_v_3.png",
+   "size": [
+    18,
+    28
+   ],
+   "pivot": [
+    6,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": 0.5
+  },
+  "cgate_open_v_3_wood": {
+   "file": "tiles/cgate_open_v_3_wood.png",
+   "size": [
+    18,
+    47
+   ],
+   "pivot": [
+    3,
+    45
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_open_v_3_roof": {
+   "file": "tiles/cgate_open_v_3_roof.png",
+   "size": [
+    25,
+    37
+   ],
+   "pivot": [
+    9,
+    51
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_u_0": {
+   "file": "tiles/cgate_closed_u_0.png",
+   "size": [
+    13,
+    31
+   ],
+   "pivot": [
+    15,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": -1.0
+  },
+  "cgate_closed_u_0_wood": {
+   "file": "tiles/cgate_closed_u_0_wood.png",
+   "size": [
+    4,
+    41
+   ],
+   "pivot": [
+    3,
+    32
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_u_0_roof": {
+   "file": "tiles/cgate_closed_u_0_roof.png",
+   "size": [
+    20,
+    24
+   ],
+   "pivot": [
+    15,
+    40
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_u_1": {
+   "file": "tiles/cgate_closed_u_1.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": -0.5
+  },
+  "cgate_closed_u_1_wood": {
+   "file": "tiles/cgate_closed_u_1_wood.png",
+   "size": [
+    17,
+    47
+   ],
+   "pivot": [
+    15,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_u_1_roof": {
+   "file": "tiles/cgate_closed_u_1_roof.png",
+   "size": [
+    25,
+    33
+   ],
+   "pivot": [
+    16,
+    62
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_u_2": {
+   "file": "tiles/cgate_closed_u_2.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": 0.0
+  },
+  "cgate_closed_u_2_wood": {
+   "file": "tiles/cgate_closed_u_2_wood.png",
+   "size": [
+    16,
+    48
+   ],
+   "pivot": [
+    15,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_u_2_roof": {
+   "file": "tiles/cgate_closed_u_2_roof.png",
+   "size": [
+    27,
+    29
+   ],
+   "pivot": [
+    16,
+    58
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_u_3": {
+   "file": "tiles/cgate_closed_u_3.png",
+   "size": [
+    18,
+    28
+   ],
+   "pivot": [
+    12,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": 0.5
+  },
+  "cgate_closed_u_3_wood": {
+   "file": "tiles/cgate_closed_u_3_wood.png",
+   "size": [
+    18,
+    47
+   ],
+   "pivot": [
+    15,
+    45
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_u_3_roof": {
+   "file": "tiles/cgate_closed_u_3_roof.png",
+   "size": [
+    25,
+    37
+   ],
+   "pivot": [
+    16,
+    51
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_v_0": {
+   "file": "tiles/cgate_closed_v_0.png",
+   "size": [
+    13,
+    31
+   ],
+   "pivot": [
+    -2,
+    25
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": -1.0
+  },
+  "cgate_closed_v_0_wood": {
+   "file": "tiles/cgate_closed_v_0_wood.png",
+   "size": [
+    4,
+    41
+   ],
+   "pivot": [
+    1,
+    32
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_v_0_roof": {
+   "file": "tiles/cgate_closed_v_0_roof.png",
+   "size": [
+    20,
+    24
+   ],
+   "pivot": [
+    5,
+    40
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_v_1": {
+   "file": "tiles/cgate_closed_v_1.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": -0.5
+  },
+  "cgate_closed_v_1_wood": {
+   "file": "tiles/cgate_closed_v_1_wood.png",
+   "size": [
+    17,
+    47
+   ],
+   "pivot": [
+    2,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_v_1_roof": {
+   "file": "tiles/cgate_closed_v_1_roof.png",
+   "size": [
+    25,
+    33
+   ],
+   "pivot": [
+    9,
+    62
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_v_2": {
+   "file": "tiles/cgate_closed_v_2.png",
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": 0.0
+  },
+  "cgate_closed_v_2_wood": {
+   "file": "tiles/cgate_closed_v_2_wood.png",
+   "size": [
+    16,
+    48
+   ],
+   "pivot": [
+    1,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_v_2_roof": {
+   "file": "tiles/cgate_closed_v_2_roof.png",
+   "size": [
+    27,
+    29
+   ],
+   "pivot": [
+    11,
+    58
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_v_3": {
+   "file": "tiles/cgate_closed_v_3.png",
+   "size": [
+    18,
+    28
+   ],
+   "pivot": [
+    6,
+    20
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false,
+   "gate_offset": 0.5
+  },
+  "cgate_closed_v_3_wood": {
+   "file": "tiles/cgate_closed_v_3_wood.png",
+   "size": [
+    18,
+    47
+   ],
+   "pivot": [
+    3,
+    45
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "cgate_closed_v_3_roof": {
+   "file": "tiles/cgate_closed_v_3_roof.png",
+   "size": [
+    25,
+    37
+   ],
+   "pivot": [
+    9,
+    51
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
   }
  }
 }

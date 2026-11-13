@@ -3,6 +3,7 @@ package gui
 import (
 	"fmt"
 	"image"
+	"maps"
 	"slices"
 	"strings"
 	"testing"
@@ -22,9 +23,9 @@ func TestExplorePeopleApart(t *testing.T) {
 	g := d.g
 	g.fit(2400, 1080)
 	g.S.Settings.UIScale = 160
-	for _, name := range slices.Sorted(mapsKeys(g.S.Data.Explores)) {
+	for _, name := range slices.Sorted(maps.Keys(g.S.Data.Explores)) {
 		x := g.S.Data.Explores[name]
-		for _, aid := range slices.Sorted(mapsKeys(x.Areas)) {
+		for _, aid := range slices.Sorted(maps.Keys(x.Areas)) {
 			a := x.Areas[aid]
 			if art := g.assets.Maps[a.Map]; art == nil || art.SceneMap == nil {
 				continue
@@ -34,16 +35,6 @@ func TestExplorePeopleApart(t *testing.T) {
 					t.Error(f)
 				}
 			})
-		}
-	}
-}
-
-func mapsKeys[M ~map[K]V, K comparable, V any](m M) func(func(K) bool) {
-	return func(yield func(K) bool) {
-		for k := range m {
-			if !yield(k) {
-				return
-			}
 		}
 	}
 }
@@ -58,7 +49,7 @@ type exploreBody struct {
 
 func exploreCrowding(g *Game, a *content.ExploreArea) []string {
 	def := &scenes.Scene{ID: "check", Map: a.Map, Cast: map[string]scenes.Actor{}}
-	keys := slices.Sorted(mapsKeys(a.People))
+	keys := slices.Sorted(maps.Keys(a.People))
 	cast := map[string]string{}
 	for i, k := range keys {
 		p := a.People[k]

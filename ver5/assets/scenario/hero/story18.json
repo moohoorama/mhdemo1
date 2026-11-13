@@ -1,44 +1,112 @@
 {
  "Nodes": [
   {
-   "ID": "c18-xiapi",
+   "ID": "c18-walk",
+   "Kind": "explore",
+   "Explore": "explore18"
+  },
+  {
+   "ID": "c18-battle",
+   "Kind": "battle",
+   "Stage": "B18",
+   "Text": "서주성 전투 — 출전 준비"
+  },
+  {
+   "ID": "c18-leave-zhangfei",
+   "Kind": "leave",
+   "Character": "zhangfei",
+   "Event": "leave-zhangfei"
+  },
+  {
+   "ID": "c18-leave-fangong",
+   "Kind": "leave",
+   "Character": "fangong",
+   "Event": "leave-fangong"
+  },
+  {
+   "ID": "c18-leave-mifang",
+   "Kind": "leave",
+   "Character": "mifang",
+   "Event": "leave-mifang"
+  },
+  {
+   "ID": "c18-leave-mizhu",
+   "Kind": "leave",
+   "Character": "mizhu",
+   "Event": "leave-mizhu"
+  },
+  {
+   "ID": "c18-gao-br",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "party:gaoshun"
+     ],
+     "Next": "c18-gao-set"
+    }
+   ],
+   "Else": "c18-flight"
+  },
+  {
+   "ID": "c18-gao-set",
+   "Kind": "set",
+   "Flags": {
+    "c18-gaoshun-left": 1
+   }
+  },
+  {
+   "ID": "c18-leave-gaoshun",
+   "Kind": "leave",
+   "Character": "gaoshun",
+   "Event": "leave-gaoshun"
+  },
+  {
+   "ID": "c18-flight",
    "Kind": "scene",
-   "Place": "하비"
+   "Place": "서주 동쪽 길"
   },
   {
-   "ID": "c18-x01",
-   "Kind": "say",
-   "Speaker": "sunqian",
-   "Text": "원술은 수춘으로 돌아가다, 강정에서 피를 토하고 죽었다 합니다."
+   "ID": "c18-f00",
+   "Kind": "narrate",
+   "Text": "서주성을 빠져나온 밤."
   },
   {
-   "ID": "c18-x02",
+   "ID": "c18-f01",
    "Kind": "say",
    "Speaker": "zhangfei",
-   "Text": "꿀물 한 사발 찾다가 죽었다믄서유? 황제 노릇 한 사람치고는 참 허망하구먼."
+   "Text": "안 되겄슈. 내가 여기서 막을 테니께, 형이랑 헌화는 먼저 가유!"
   },
   {
-   "ID": "c18-x03",
-   "Kind": "say",
-   "Speaker": "mizhu",
-   "Text": "원술의 진채에서 거둔 곡식으로 군량은 넉넉합니다. 하비 사람들 먹일 것도 남겠습니다."
-  },
-  {
-   "ID": "c18-x04",
-   "Kind": "say",
-   "Speaker": "fangong",
-   "Text": "서주성에는 조조가 세운 자사 차주가 앉아 있습니다. 하비만으로는 버티기 어렵습니다."
-  },
-  {
-   "ID": "c18-x05",
+   "ID": "c18-f02",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "서주를 손에 넣어야 하네. 서주를 바탕으로 삼아야 조조에게 맞설 수 있어."
+   "Text": "익덕, 안 된다! 내 너를 어찌 두고 가느냐!"
   },
+  {
+   "ID": "c18-f03",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "아니, 나도 간다니께? 잠깐 저 녀석들 혼 좀 내 줄 테니께 먼저 가랑께!"
+  },
+  {
+   "ID": "c18-f04",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "헌화! 형 잘 모셔야 돼! 절대 죽지 마! 그럼 내가 가서 죽여 버릴 테니께!"
+  },
+  {
+   "ID": "c18-f05",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "현덕! 어서 가세! 난 두 번 죽기 싫어!"
+  }
+ ],
+ "Events": [
   {
    "ID": "c18-news",
    "Kind": "scene",
-   "Place": "하비"
+   "Place": "하비 · 관청"
   },
   {
    "ID": "c18-n01",
@@ -50,7 +118,7 @@
    "ID": "c18-n02",
    "Kind": "say",
    "Speaker": "jianyong",
-   "Text": "국구 동승이 역모로 몰려, 왕자복이며 충집, 오석까지…… 다섯 집안이 모두 목이 달아났다네."
+   "Text": "동승 장군이 역모로 몰려, 왕자복이며 충집, 오석까지…… 다섯 집안이 모두 목이 달아났다네."
   },
   {
    "ID": "c18-n03",
@@ -167,65 +235,16 @@
    "Event": "leave-sunqian"
   },
   {
-   "ID": "c18-battle",
-   "Kind": "battle",
-   "Stage": "B18",
-   "Text": "서주성 전투 — 출전 준비"
-  },
-  {
-   "ID": "c18-leave-zhangfei",
-   "Kind": "leave",
-   "Character": "zhangfei",
-   "Event": "leave-zhangfei"
-  },
-  {
-   "ID": "c18-leave-fangong",
-   "Kind": "leave",
-   "Character": "fangong",
-   "Event": "leave-fangong"
-  },
-  {
-   "ID": "c18-leave-mifang",
-   "Kind": "leave",
-   "Character": "mifang",
-   "Event": "leave-mifang"
-  },
-  {
-   "ID": "c18-gao-br",
-   "Kind": "branch",
-   "Cases": [
-    {
-     "If": [
-      "party:gaoshun"
-     ],
-     "Next": "c18-gao-set"
-    }
-   ],
-   "Else": "c18-flight"
-  },
-  {
-   "ID": "c18-gao-set",
+   "ID": "c18-news-set",
    "Kind": "set",
    "Flags": {
-    "c18-gaoshun-left": 1
+    "c18-news": 1
    }
   },
   {
-   "ID": "c18-leave-gaoshun",
-   "Kind": "leave",
-   "Character": "gaoshun",
-   "Event": "leave-gaoshun"
-  },
-  {
-   "ID": "c18-flight",
-   "Kind": "scene",
-   "Place": "서주 동쪽 길"
-  },
-  {
-   "ID": "c18-end",
-   "Kind": "narrate",
-   "Text": "서주성은 조조의 대군에 다시 떨어지고, 장비와 번궁은 난전 속에 흩어졌다. 유비는 간옹·미축과 함께 동쪽 길로 빠져 원소에게 향했다."
+   "ID": "c18-news-back",
+   "Kind": "back",
+   "Area": "office"
   }
- ],
- "Events": []
+ ]
 }

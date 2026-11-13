@@ -4,14 +4,16 @@ gen_pixel_castle.render, with its own stone, plaster and roof tiles): the palace
   pwall_u        one small tile of the palace wall running along u: a granite footing, vermilion plaster, a dark band
                  and a grey tiled coping. Pivot at the tile's centre on the ground; the wall stands on the tile's
                  middle line (v), 0.6 tile thick. Drawn beside its neighbours so a run meets without a seam.
-  mansion_cao    조조's house: a walled compound 13 x 9 small tiles (white walls, a tall gate with studded leaves, a
-                 two-storey main hall and two side wings). scene.json footprint [-6.5, -4.5, 13, 9]; its gate on the
-                 +v side, in the middle.
-  mansion_liu    the house given to 유비: 9 x 7 (ochre walls, a plain gate, one hall). Footprint [-4.5, -3.5, 9, 7].
+  pwall_u_end_m, pwall_u_end_p   the tile where the wall stops at its -u / +u side: the end face flush with the
+                 tile's side, the coping hipped down onto it (nothing reaches past the tile).
+  pwall_u_gate_m, pwall_u_gate_p the wall tiles against the gate hall's terrace (the gate's tile -5 / +5 along u):
+                 drawn together with the hall, each keeps only what is nearer than the hall, so the hall and the wall
+                 meet exactly whichever the game draws first.
   palace_gate    the gate hall (궁문): a granite terrace 9 × 5 small tiles, a three-bay hall of vermilion columns and
                  walls with three studded doors (the middle one wider), a balcony storey and a two-tier hipped roof,
                  steps down the front. Pivot at the middle tile's centre on the ground; scene.json footprint
-                 [-4.5, -2.5, 9, 5]. Meant to stand on the wall's line with the walls running out from its sides.
+                 [-4.5, -2.5, 9, 5]. Stands on the wall's line: drawn with the wall running across its terrace into
+                 the hall's side walls (that bit of wall is part of the gate's picture), pwall_u_gate_* either side.
 
   python3 gen_pixel_palace.py --preview DIR   # the pieces at 4x and a gate with walls laid out, into DIR
   python3 gen_pixel_palace.py --write         # save them into ../tiles and their entries of tiles.json
@@ -80,20 +82,26 @@ def hip(u0, u1, v0, v1, zb, slope, top=None):
 WALL = (8, 40, .3)         # footing height, plaster top, half thickness (tiles)
 
 
-def wall_bodies(u0, u1, tile):
+def wall_bodies(u0, u1, c=.5, tile=None, end0=False, end1=False):
+    """the wall from u0 to u1 on the line v = c. A run's coping reaches past both ends (its pieces cut it by tile); an
+    end (end0 at u0, end1 at u1) stops flush with the wall's end face, the coping hipped down onto it"""
     foot, top, t = WALL
     B = pc.Body
-    return [B(pc.box(u0, u1, .5 - t - .04, .5 + t + .04, 0, foot), granite, tile),
-            B(pc.box(u0, u1, .5 - t, .5 + t, foot, top), plaster(top), tile),
-            B(hip(u0 - 3, u1 + 3, .5 - t - .22, .5 + t + .22, top - 2, 22, top=top + 9), roof(top - 2), tile),
-            B(pc.box(u0 - 3, u1 + 3, .44, .56, top + 7, top + 11), ridge, tile)]
+    a0, a1 = (u0 if end0 else u0 - 3), (u1 if end1 else u1 + 3)
+    r0, r1 = (u0 + .45 if end0 else u0 - 3), (u1 - .45 if end1 else u1 + 3)
+    return [B(pc.box(u0, u1, c - t - .04, c + t + .04, 0, foot), granite, tile),
+            B(pc.box(u0, u1, c - t, c + t, foot, top), plaster(top), tile),
+            B(hip(a0, a1, c - t - .22, c + t + .22, top - 2, 22, top=top + 9), roof(top - 2), tile),
+            B(pc.box(r0, r1, c - .06, c + .06, top + 7, top + 11), ridge, tile)]
 
 
-def wall():
-    """the tile u in [0, 1], v in [0, 1]; a long wall is drawn and the pixels of tile 0 kept (along = floor(u))"""
-    bodies = wall_bodies(-3, 4, 0)
+def wall(end=None):
+    """the tile u in [0, 1], v in [0, 1] of a run (cut out of a long wall: along = floor(u)); end "m" or "p": the
+    tile where the wall stops at its -u or +u side"""
+    u0, u1 = {None: (-3, 4), "m": (0, 4), "p": (-3, 1)}[end]
+    bodies = wall_bodies(u0, u1, end0=end == "m", end1=end == "p")
     a, own, o = pc.render(bodies, along=lambda u, v: np.floor(u - 1e-6), bounds=(-60, -70, 60, 40))
-    return pc.piece(a, own, o, 0, (16 * (.5 - .5), 8 * (.5 + .5)))
+    return pc.piece(a, own, o, 0, (0, 8))
 
 
 # ---------------------------------------------------------------- the gate hall
@@ -162,99 +170,33 @@ def gate_bodies():
     return out
 
 
-def gate():
-    a, own, o = pc.render(gate_bodies(), along=lambda u, v: np.zeros(u.shape), bounds=(-170, -200, 170, 110))
-    return pc.piece(a, own, o, 0, (0, 0))
+GATE = 99                  # the gate hall's owner in the joint render; the wall tiles own their tile index
 
 
-# ---------------------------------------------------------------- the great houses
-
-pc.PAL.update({
-    # white plaster (조조) and pale ochre plaster (유비) walls; black lacquer posts
-    "HW": (214, 208, 194), "Hw": (164, 158, 146), "HO": (198, 178, 140), "Ho": (150, 132, 102),
-    "HL": (52, 44, 40), "Hl": (36, 30, 28),
-})
-
-
-def walls_paint(lit_key, shade_key, top):
-    def paint(f, u, v, z, s, h):
-        lit = pc.lit(f) or f == "+z"
-        foot = z < 4
-        return np.where(foot, "PG" if lit else "Pg", np.where(z >= top - 2, "PB" if lit else "Pb", lit_key if lit else shade_key))
-    return paint
-
-
-def post(f, u, v, z, s, h):
-    return np.full(u.shape, "HL" if pc.lit(f) or f == "+z" else "Hl")
-
-
-def coping(line, a0, a1, c, t, z, tile=None):
-    """a tiled coping along a wall: a low hip over the wall's top and a dark ridge"""
-    B = pc.Body
-    return [B(line.hip(a0 - .2, a1 + .2, c - t - .2, c + t + .2, z - 2, 18, top=z + 5), roof(z - 2), tile),
-            B(line.box(a0 - .2, a1 + .2, c - .06, c + .06, z + 3, z + 7), ridge, tile)]
-
-
-def house_bodies(hw, hd, wall_z, wall_keys, gate_w, halls, grand):
-    """a walled compound hw x hd half sizes round the anchor: the enclosure (gap in the front for the gate), the gate
-    (posts, red leaves, its own roof), and the halls inside: (u0, u1, v0, v1, eave, keys, two_tier)"""
-    B = pc.Body
-    t = .2
-    U, V = pc.Line("u"), pc.Line("v")
-    wp = walls_paint(*wall_keys, wall_z)
-    out = []
-    # enclosure: back (-v), sides (-u, +u), front (+v) either side of the gate
-    out += [B(pc.box(-hw, hw, -hd, -hd + 2 * t, 0, wall_z), wp)] + coping(U, -hw, hw, -hd + t, t, wall_z)
-    for a in (-hw, hw - 2 * t):
-        out += [B(pc.box(a, a + 2 * t, -hd, hd, 0, wall_z), wp)] + coping(V, -hd, hd, a + t, t, wall_z)
-    g = gate_w / 2
-    for a0, a1 in ((-hw, -g), (g, hw)):
-        out += [B(pc.box(a0, a1, hd - 2 * t, hd, 0, wall_z), wp)] + coping(U, a0, a1, hd - t, t, wall_z)
-    # the gate: two posts, the leaves, a lintel, its roof standing proud of the walls
-    gz = wall_z + (16 if grand else 10)
-    for a in (-g, g - .3):
-        out.append(B(pc.box(a, a + .3, hd - .5, hd + .1, 0, gz - 4), post))
-    out.append(B(pc.box(-g + .3, g - .3, hd - .3, hd - .1, 0, gz - 8), front(gz - 4, [(-g + .3, g - .3)])))
-    out.append(B(pc.box(-g, g, hd - .5, hd + .1, gz - 8, gz - 4), post))
-    out.append(B(hip(-g - .5, g + .5, hd - 1.0, hd + .6, gz - 4, 20, top=gz + 8), roof(gz - 4)))
-    out.append(B(pc.box(-g - .2, g + .2, hd - .26, hd - .14, gz + 6, gz + 11), ridge))
-    # the halls inside
-    for u0, u1, v0, v1, ez, keys, two in halls:
-        plain = walls_paint(*keys, ez)
-        door = front(ez, [((u0 + u1) / 2 - .7, (u0 + u1) / 2 + .7)], plain)
-
-        def hall_paint(f, u, v, z, s, h, plain=plain, door=door, mid=(u0 + u1) / 2, ez=ez):
-            return door(f, u, v, z, s, h) if f == "+v" else plain(f, u, v, z, s, h)
-        out.append(B(pc.box(u0, u1, v0, v1, 0, ez), hall_paint))
-        for a in (u0 + .1, u1 - .4):
-            out.append(B(pc.box(a, a + .3, v1 + .05, v1 + .35, 0, ez), post))
-        slope = 26 if two else min(30, 16 / max(.5, (v1 - v0) / 2 + .5) * 3)
-        out.append(B(hip(u0 - .5, u1 + .5, v0 - .5, v1 + .5, ez - 3, slope, top=ez + 10 if two else None), roof(ez - 3)))
-        if two:
-            out.append(B(pc.box(u0 + .8, u1 - .8, v0 + .6, v1 - .6, ez + 10, ez + 26), lattice(ez + 26)))
-            out.append(B(hip(u0 + .3, u1 - .3, v0 + .1, v1 - .1, ez + 23, 34), roof(ez + 23)))
+def gate_front():
+    """the gate hall and the wall running into its sides, drawn together so every pixel belongs to whichever is
+    nearer: the hall (with the bits of wall inside its terrace, tiles -4..4 along u) and the wall tiles either side
+    of it (-5, +5), whose pictures leave out what the hall hides. Coordinates round the gate's tile centre; tile k of
+    the line spans u in [k - .5, k + .5]."""
+    hall = gate_bodies()
+    for b in hall:
+        b.tile = GATE
+    side = HW - .8         # the hall's side walls; the wall runs up to them across the terrace
+    bodies = hall + wall_bodies(-9, -side, c=0, end1=True) + wall_bodies(side, 9, c=0, end0=True)
+    a, own, o = pc.render(bodies, along=lambda u, v: np.floor(u + .5), bounds=(-200, -240, 200, 110))
+    hall_own = np.where((own == GATE) | ((own >= -4) & (own <= 4)), 0, -1)
+    out = {"palace_gate": pc.piece(a, hall_own, o, 0, (0, 0))}
+    for k, name in ((-5, "pwall_u_gate_m"), (5, "pwall_u_gate_p")):
+        out[name] = pc.piece(a, own, o, k, (16 * k, 8 * k))
     return out
-
-
-def house(name):
-    if name == "mansion_cao":    # 13 x 9: white walls, a tall gate, a two-storey main hall and two side wings
-        hw, hd = 6.5, 4.5
-        bodies = house_bodies(hw, hd, 30, ("HW", "Hw"), 3.0, [
-            (-3.2, 3.2, -3.6, -.6, 52, ("PR", "Pr"), True),
-            (-5.8, -4.0, -3.4, 2.6, 36, ("PR", "Pr"), False),
-            (4.0, 5.8, -3.4, 2.6, 36, ("PR", "Pr"), False)], grand=True)
-    else:                        # 9 x 7: ochre walls, a plain gate, one hall
-        hw, hd = 4.5, 3.5
-        bodies = house_bodies(hw, hd, 24, ("HO", "Ho"), 2.0, [
-            (-2.6, 2.6, -2.7, -.2, 40, ("HO", "Ho"), False)], grand=False)
-    a, own, o = pc.render(bodies, along=lambda u, v: np.zeros(u.shape), bounds=(-260, -200, 260, 180))
-    return pc.piece(a, own, o, 0, (0, 0))
 
 
 # ---------------------------------------------------------------- the kit
 
 def kit():
-    return {"pwall_u": wall(), "palace_gate": gate(), "mansion_cao": house("mansion_cao"), "mansion_liu": house("mansion_liu")}
+    out = {"pwall_u": wall(), "pwall_u_end_m": wall("m"), "pwall_u_end_p": wall("p")}
+    out.update(gate_front())
+    return out
 
 
 MADE = "palace front of 허도, pixel art on the small-tile grid (gen_pixel_palace.py)"
@@ -285,10 +227,15 @@ def preview(out):
         img, (px, py) = k[name]
         x, y = ox + 16 * (u - v), oy + 8 * (u + v + 1)
         cv.alpha_composite(img, (int(x - px), int(y - py)))
-    # the wall's line along v = 0 from u = -12 to 12, the gate on u = 0; drawn back to front
-    items = [("pwall_u", u, 0) for u in range(-12, 13) if abs(u) > 4] + [("palace_gate", 0, 0)]
-    for name, u, v in sorted(items, key=lambda t: (t[1] + t[2] + (7 if t[0] == "palace_gate" else 1))):
-        lay(name, u, v)
+    # the wall's line along v = 0 from u = -12 to 12 with its ends, the gate on u = 0; drawn back to front as the
+    # game orders them: the tiles behind the gate's footprint (u < -4), the gate, the tiles in front (u > 4)
+    def piece_at(u):
+        return {-12: "pwall_u_end_m", 12: "pwall_u_end_p", -5: "pwall_u_gate_m", 5: "pwall_u_gate_p"}.get(u, "pwall_u")
+    for u in range(-12, -4):
+        lay(piece_at(u), u, 0)
+    lay("palace_gate", 0, 0)
+    for u in range(5, 13):
+        lay(piece_at(u), u, 0)
     cv.resize((cv.width * 2, cv.height * 2), Image.NEAREST).save(os.path.join(out, "layout.png"))
 
 

@@ -138,7 +138,7 @@
     "수비병#2": {
      "At": [
       13,
-      26
+      22
      ],
      "Face": "NE",
      "Sprite": "light_infantry",
@@ -147,7 +147,7 @@
     "수비병#1": {
      "At": [
       16,
-      26
+      22
      ],
      "Face": "NE",
      "Sprite": "light_infantry",

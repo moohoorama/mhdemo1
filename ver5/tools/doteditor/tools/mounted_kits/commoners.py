@@ -2,7 +2,7 @@
 her back), 노인 (white hair, long beard, a cane), 노파 (skirt, white hair in a low bun, a
 cane, a deep stoop and a hand on the small of her back).
 
-- body: hemp tunic (themeC) over brown trousers or a floor-length skirt (themeA), dark cord sash (iron), bare feet.
+- body: hemp tunic (themeC) over brown trousers or a floor-length skirt (themeA), dark cord sash and shoes (iron).
   No faction colour at all, so a stage's faction never tints them.
 - heads: the 서생's topknot slimmed in the S view; the 망건 band row and the faction tie become hair. Women: no band.
 - child: simple 3D parts (head, tunic, legs) scaled to about 55%; held by the man's right hand, carried on the
@@ -162,9 +162,9 @@ def body(p, skirt):
         knee, foot = V(p['knees'][i]), V(p['feet'][i])
         if not skirt:
             m.rod(hip, knee, .14, BROWN)
-            m.rod(knee, foot - [0, 0, .06], .11, BROWN)
-        m.rod(foot - [0, 0, .08], foot, .09, SKIN)
-        m.ell(foot + [0, -.035, 0], [.12, .19, .06], SKIN)
+            m.rod(knee, foot + [0, 0, .1], .11, BROWN)
+        m.rod(foot + [0, 0, .1], foot, .09, BROWN)
+        m.ell(foot + [0, -.035, 0], [.13, .2, .1], CORD)
     if skirt:
         m.ell(T([0, -.01, .42]), [.47, .35, .44], BROWN)
         m.ell(T([0, .0, .16]), [.54, .42, .2], BROWN)

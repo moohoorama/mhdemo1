@@ -5,10 +5,99 @@
 
 ---
 
+## 2026-11-14 탁군 성벽 끝·그림자, 물체로 놓은 성벽 단면, 안 쓰는 저택 그림 삭제
+- tools/scene_maps/diorama.py, internal/gui/assets.go: S_zhuo(형식 1)의 v 방향 성벽 기둥(`swall_v`)은 작은 칸에서 반 칸 어긋나 있어 판 앞 변을 걸친 기둥이 빠지면 반 칸이 비었음 → 그 기둥 그림 중 판 안쪽 부분을 단면 조각에 함께 구워 성벽이 판 끝까지 닿고 거기서 잘림. 옛 성벽 기둥(`swall_u`·`swall_v`)의 그림자는 기둥마다 그림에서 떨어뜨린 그림자(타구가 톱니로 찍힘) 대신 형식 2 성벽과 같은 띠(`swall2_shade_pv`·`_pu`) — 사용자: 맨 왼쪽 성벽이 끊어지고 초원이 보임, 성벽 그림자가 뾰족뾰족함
+- internal/scenemap/plan.go(`runsOn`), tools/scene_maps/diorama.py(`kit_cut`, `object_wall_cuts`): 물체로 한 칸씩 놓은 성벽(허도 `pwall_u`, `cwall_<mask>` 조각)이 격자 끝에 닿으면 끝 조각(`_end_m`·`_end_p`) 대신 곧은 조각을 놓아 판 밖으로 이어지게 하고(앞·뒤 변 모두, 뒤 변은 단면 없이 그냥 끝남), 앞 변에서는 그 성벽 키트의 몸체(gen_pixel_palace·gen_pixel_compound)를 판 끝에서 잘라 단면(돌 기초 켜, 회벽 겉칠 속의 다진 흙, 기와 단면)을 구움. 줄로 놓은 담장(`cwall`)도 같은 방식, 줄·물체의 색(tint)을 따름 — 사용자: 물체로 놓은 성벽도 판 앞 변에서 단면을 보이게
+- assets_candidate/tools/gen_pixel_palace.py, assets_candidate/tiles(mansion_cao·mansion_liu.png 삭제), tiles.json, assets/graphics/scene.json(footprints), map/extra.png·index.json(build_extra.py), docs/presentation-explore.md, .claude/skills/pixel-iso-kit/SKILL.md: 쓰지 않는 저택 그림 `mansion_cao`·`mansion_liu`와 그 몸체 코드를 지움 — 두 저택은 이제 hall_u/hall_v 묶음(11-13)
+
+## 2026-11-13 담장·솟을대문 키트와 색 곱하기, 조조 저택에 담
+- assets_candidate/tools/gen_pixel_compound.py(새), assets_candidate/tiles/cwall_*·cgate_*(새), assets/graphics/map/extra.png, index.json: 사람 키만 한 흰 회벽·검은 기와 담(작은 칸마다 이웃 마스크로 고르는 16조각: 직선·모서리·끝·갈림길·기둥)과 솟을대문(열림·닫힘, u·v, 작은 칸 4개, 가운데 2칸 통로)을 회색으로만, 몸체·기와·나무 층을 따로 그림 — 사용자: 성벽·성문 방식 위에 낮은 담과 대문 키트, 색을 곱해 흙담·붉은 담·관청 담으로 쓰게
+- internal/scenemap/format.go, catalog.go, plan.go, assets/graphics/scene.json: 물체·성벽 줄 끝에 색 객체(`{"body","roof","wood"}`), `layers`(`<이름>_wood`·`<이름>_roof` 층 그림을 함께 그림), 성벽 무리 `piece`(칸마다 이웃 마스크 그림), `cwall`·`cgate_open/closed` 등록, `Draw.Tint`; internal/gui/field_scene.go `drawPlan`이 ColorScale로 곱함 — 게임은 미리 그린 그림에 색만 곱하고 따로 계산해 그리지 않음
+- tools/scene_maps/xudu.py, assets/graphics/maps/S_xudu.json: 조조의 저택을 u 2~21·v 10~20 담으로 두르고 앞 담(v 20) 가운데에 열린 솟을대문(문 점 12, 통로 (11, 20)·(12, 20) = 탐험 출구 자리, 나무 #8c5a40), 본채·곁채·디딤돌을 반 칸 +u로 옮겨 문과 일직선, 뒤뜰·정자·태호석을 담 안으로, 문 앞 포석 — 출구·문지기·병사 자리는 그대로
+- tools/scene_maps/scene_ascii.py: 색 객체가 붙은 물체·성벽 줄을 읽음
+- docs/presentation-scene.md(색 곱하기, 담장·솟을대문), .claude/skills/pixel-iso-kit/SKILL.md 조각 표
+
+## 2026-11-13 장면 맵을 디오라마 판으로
+- tools/scene_maps/diorama.py(새), assets/graphics/maps/board/*(새, 81개 맵): 장면 맵의 앞 두 변(+u, +v) 밑에 땅 단면(야외 56px: 풀 뿌리·겉흙·자갈 흙·진흙·자갈층·암반, 실내 40px: 마루 끝·다듬은 돌 기단)과 앞 변에 닿은 성벽·성벽 통로의 잘린 면(겉 벽돌 켜, 속 막돌)을 화소 아이소 키트 방식으로 미리 구워 맵마다 그림 묶음과 자리 json으로 씀 — 사용자: 맵이 검정 위에서 딱 끊기고 성벽이 땅 밖으로 삐져나옴, 시안 4번(디오라마 단면) 선택, 게임에서 벡터로 계산하지 말고 그림을 미리 구울 것
+- internal/scenemap/plan.go, catalog.go: 판(격자) 앞 변을 넘는 물체는 통째로 빼고(방 뒷벽·모서리 기둥은 남김, `OnBoard`), 판 밖 성벽·성문 칸은 놓지 않으며 판 끝으로 이어지는 성벽 줄은 끝 성가퀴·그림자를 두지 않음, 성벽 위 통로 높이는 판 밖으로 이어지는 것으로 보아 앞 변 쪽 옆면·담을 세우지 않음 — 반쯤 잘린 그림 없이 판 끝에서 깔끔히 자르고 그 자리는 구운 단면이 채움
+- internal/gui/field_board.go(새), field.go, assets.go: 판 그림을 불러 단면은 바닥 바로 위에, 잘린 면은 그 칸 성벽 조각 바로 뒤로 정렬해 그림. 형식 1 맵은 불러올 때 같은 규칙으로 소품·풀 장식을 뺌(`trimToBoard`, S_zhuo 성벽이 18·16칸까지 뻗던 것이 판 끝에서 멈춤) — 두 형식을 같은 데이터·같은 그리기로
+- cmd/_walkmap: `-fmt`가 그 맵의 판도 다시 구움; internal/gui/uidemo_scenemap.go: `-node fit`으로 맵 전체 보기; internal/gui/field_board_test.go, internal/scenemap/board_test.go: 판이 맵보다 낡으면 실패, 판 규칙 — 맵 빌드 스크립트가 따로 손대지 않아도 판이 따라오게
+- docs/presentation-scene.md(판 단면), tools-build.md
+
+## 2026-11-13 허도 궁성 벽·궁문 이음, 두 저택을 탁현 저택 방식으로
+- assets_candidate/tools/gen_pixel_palace.py, assets_candidate/tiles/(pwall_u·palace_gate·pwall_u_end_m/p·pwall_u_gate_m/p), assets/graphics/map/extra.png, index.json: pwall_u 한 칸 그림이 몸체 소유를 0으로 고정해 7칸짜리 벽을 통째로 담고 있었음(칸마다 앞뒤 3칸씩 삐져나와 땅 밖·궁문 속으로 겹침) → 칸 소유로 잘라 한 칸만, 땅 끝에서 끝나는 끝 칸(pwall_u_end_m/p, 기와 덮개가 끝면으로 내려앉음) 추가. 궁문은 벽과 함께 한 번에 렌더해 더 가까운 쪽이 픽셀을 갖게 함: 벽이 기단을 건너 문루 옆벽에 닿고(그 부분은 palace_gate 그림), 기단 양옆 칸(pwall_u_gate_m/p)은 문루가 가리는 부분을 빼고 그려 그리는 순서와 상관없이 맞물림 — 사용자: 성벽이 삐져나오고 관문과 성벽이 이상하다
+- tools/scene_maps/xudu.py, assets/graphics/maps/S_xudu.json: 유비의 저택을 탁현 소쌍 저택처럼(hall_u 한 채, 매화 정원·등롱 둘·디딤돌, 곁에 채마밭·우물 — 허도에서 채소를 기르던 연의 장면), 조조의 저택은 같은 집의 확장(본채 hall_u + 마주 보는 곁채 hall_v 둘, 넓은 포석 마당·깃발·등롱, 뒤뜰 소나무·매화·정자·태호석). mansion_cao/mansion_liu 그림은 더 쓰지 않음(키트에 남겨 둠). 출구 자리는 그대로(유비 At 11,40·Object 11,36, 조조 At 11,20·Object 11,15, 궁궐 At 28,7·Object 28,4) — 사용자: 저택이 이상하다, 탁현 소쌍 저택을 유비 저택으로, 조조 저택은 그걸 확장해서
+
+## 2026-11-13 망탕산 마을에서 언덕을 빼고 울타리와 숲으로
+- tools/scene_maps/mangdang.py, assets/graphics/maps/S_mangdang.json: 뒤쪽 높이 2 벼랑(4장 단양 마을에서 물려받음)을 없애 땅을 평평하게, 마을 네 변을 울타리로 두르고(뒤 두 변·모서리 울타리 추가) 놀이 칸 밖 여백에 소나무·활엽수 숲(뒤는 빽빽, 앞은 성기게, 길과 동쪽 들어오는 길목은 비움), 앞으로 내려가는 길과 동쪽 길을 땅 끝까지 이음 — 사용자: 언덕이 더 어색하다, 울타리로 둘러싸인 나무 많은 마을로
+
+## 2026-11-13 허도·하비에 주점·대장간, 19장 남쪽 길·20장 망탕산을 탐험으로
+- 결정(사용자): 허도·하비 정도 도시엔 주점·대장간·도구점이 다 있어야 함. 19장은 원소 진영을 떠나 추격에 대비하는 길에서 종군 상인과 일행 대화, 손건에게 말을 걸면 예외적으로 곧바로 전투. 망탕산은 장비에게 말을 걸어 출진 — 14장 서주 뒤로 B16~B20 다섯 판 동안 주점이 없었다
+- tools/scene_maps/xudu.py·assets/graphics/maps/S_xudu.json: 관청 옆 집을 주점(`tavern`)과 술독으로. tools/scene_maps/xiapi_inner.py `--dry`·S_xiapi.json: 곡물 창고 쪽 집을 주점으로(16장 물에 잠긴 성안은 그대로). assets/data/shops.json: `xudu`(서주 도구점과 같은 물건)·`xudu_tavern`
+- assets/scenario/hero/explore17.json·explore18.json: 도구점·주점·대장간(서주의 가게 실내 다시 씀, 주점 손님 한마디)
+- assets/scenario/hero/explore19.json(새)·story19.json: 막사 뒤 남쪽 밤길(`S_field_road`) — 간옹·미축·미방, 종군 상인, 손건 출진(B19 `Forced`라 출전 준비 없음)
+- assets/scenario/hero/explore20.json(새)·story20.json·assets/scenes/ch20.json, tools/scene_maps/mangdang.py: 채양 소식을 탐험의 Opening으로, 일행 전원 대화, 집 앞 술독 옆 주모(`tavern`), 장비 출진. 진도 대사 "채비가 되면 장 장군께 말씀하십시오"
+- docs/presentation-explore.md 17~20장 줄
+
+## 2026-11-13 떠났다 돌아온 장수는 빠진 판만큼 레벨을 더 받는다
+- 결정(사용자): 이탈했다 다시 들어온 장수(장비·관우·조운 등)는 전투에 빠진 만큼 레벨이 더해져야 함. 예전엔 `leave`가 인물을 지워, 다시 `join`하면 정의 레벨에서 그 판 합류 레벨로 새로 올라오고 배운 특성·레벨이 사라졌다 · 영향: logic-growth.md
+- internal/core/types.go(`State.Away`, `Character.Left`), engine.go(`dismiss`가 Away에 보관), growth.go(`welcome`), battle_events.go(전투 중 join도 welcome), api.go(Away도 데이터 맞춤·세이브 검사), internal/core/away_test.go: 돌아오는 판 스테이지 레벨 − 떠날 때 다음 판 스테이지 레벨만큼 더하고 합류 레벨을 바닥으로. 지금 이야기에선 조운 +9(B13→B19), 관우 +3(B18→B20), 장비·번궁·고순 +2(B19→B20), 손건·미축·미방 +0(빠진 판 없음)
+
+## 2026-11-13 장비는 망탕산 산속 마을에, 20장 망탕산 전투에서 관우가 채양을 벤다
+- 결정(사용자): 장비가 있던 곳을 여남 고성에서 망탕산 산속 마을로. 현령을 내쫓는 일, 유비의 "그때 그 산채에……!", 진도의 따로 된 사연(13장 태산 산채)은 뺌 — 유비가 생색내는 것 같고 괜한 사연이라. 19장은 재회까지, 채양 소식부터 20장. 관우 등장에 장비의 의심은 없음(채양이 급했고 관우가 오자마자 채양을 벴으니). 관우는 관평·주창·진진과 함께, 미방은 미축과 함께 원소 진영에서 합류. 진진은 궁병, 진도는 장창병 · 영향: fullstory 19·20장, 진도·번아 소개
+- tools/scene_maps/mangdang.py(새), assets/graphics/maps/S_mangdang.json, index.json: 망탕산 산속 마을 — 4장 단양 산자락 마을을 평화로운 모습으로(불탄 집을 성한 집으로, 싸움 흔적 뺌, 소나무 더함, 풀빛 조금 어둡게) — 맞는 산골 마을 맵이 이미 있어 다시 씀
+- assets/scenario/hero/story19.json·assets/scenes/ch19.json: 막사에 미방이 미축과 함께 옴("형님 뒤만 따라 산길로 숨어 다녔습니다…"), 미축이 장비의 소식을 망탕산으로, 진진에게 "운장에게 망탕산으로 와 달라", 미방 재합류(`join-mifang-2`). 고성 장면을 망탕산 산속 마을 재회로(진도는 "진도라 합니다. 예주 사람입니다."만, 장비가 "창 솜씨가 보통이 아니길래, 형 찾으러 같이 가자고 했지 뭐유")
+- assets/scenario/hero/story20.json·assets/scenes/ch20.json(새), scenario.json(20장): 마을 사람이 채양의 조조군이 산을 오른다고 알림 → 유비 "마을을 등지고 싸우면 마을이 다친다. 산길을 내려가며 막는다." → B20 → 산기슭에서 관우·관평·주창·진진과 재회, 관우 "그 은혜는 언젠가 갚아야 할 것입니다"
+- assets/data/characters_story.json: 채양(`caiyang`, 위), 주창(`zhoucang`, 중보병, Playable), 마을 사람(`villager`, 대사용 틀), 관평 정의 레벨 3→20, 진진 서생→궁병(단궁·가죽 갑옷), 진도 경보병→장창병(철창), 진도 소개글에서 여남·태산 사연 뺌
+- internal/core/campaign_content_test.go: B20까지, 관우·관평·주창·진진·미방 합류 기대
+- tools/mapgen/layouts/hero/map20.txt → assets/scenario/hero/maps/map20.json: 망탕산 20×20 새 낮 맵 — 위 모서리에 산속 마을 한 칸(1,1)과 빈터, 산·벼랑 사이로 굽이치는 산길(평지)이 아래 모서리까지, 동쪽 숲 골짜기(막다른 곳) 하나·서쪽 숲 웅덩이 하나. 풀색은 영천 값(−4/0.95) — 산이 막아 길 밖으로는 못 가고, 산길에서 밀고 내려가는 싸움이 되게
+- assets/scenario/hero/stage20.json B20 망탕산 전투: 유비·장비 필수(장비가 쓰러지면 패배), 최대 6. 조조군(`wei`, 병사 Shift −0.07) — 산길 앞 무리 셋 곧장 돌격, 동쪽 골짜기 둘 react, 채양(대장)·호위 넷 hold(3라운드나 앞 무리 전멸 때 돌격), 뒤 둘 react, 3라운드 적 차례에 기병 둘 증원. 4라운드(또는 유비·장비가 산길 중턱에 들어서면) 적 차례에 관우·관평·주창·진진이 아래 모서리에서 `join`, 채양이 살아 있으면 관우 앞으로 나와 일기토 — 관우가 한칼에 벰(채양 사망). 채양이 쓰러지면 골짜기 무리는 골짜기 끝으로 도주, 전원 사기 −20·공격 −10. 승리는 조조군 전멸, 보상 1000. 처음 판(증원 셋)은 ai 3/5라 증원 보병을 빼 진도·간옹·손건·조운 편성 9/10, 미축·손건 편성 3/5, 번아·미축·번궁 편성 1/5
+- tools/mapgen/layouts/hero/stage20.txt: `stage_ascii.py dump` 배치 그림 — 배치 확인용
+
+## 2026-11-13 서주에서 장비가 남아 막고, 고성에서 번아·진도
+- assets/scenario/hero/stage18.json: 패배 조건에 "장비가 쓰러진다" — 이 전투는 유비·장비 둘 다 살아야 함(사용자). 난이도는 그대로 두어 AI 5/10(사용자: 5/10이면 됨)
+- assets/scenario/hero/story18.json·assets/scenes/ch18.json: 18장 끝을 장면으로 — 서주를 빠져나온 밤 유비(말, 지친 몸짓)·장비(말)·간옹, 화면 밖 추격 함성, 장비가 남아 막겠다며 "헌화! 형 잘 모셔야 돼!…", 간옹 "난 두 번 죽기 싫어!", 장비가 함성 쪽으로 달려가고 암전 → 원소 진영(사용자 대사)
+- assets/data/characters_story.json(진도 `chendao`, Playable), assets/scenario/hero/story19.json·assets/scenes/ch19.json: 고성에서 장비가 길을 잃었다 번아를 만나 여남에 닿았고 진도의 도움으로 성에 자리 잡았다고 함, 번아·진도 합류 — 진도는 13장 태산 산채에서 번아와 함께 풀려난 예주 사람으로(유비에게 받은 은혜)
+- internal/core/campaign_content_test.go: 번아·진도 합류 기대
+
+## 2026-11-13 18장 하비를 걸어 다니게, 원술 이야기 뺌, 헌제가 떠나보낸 종친
+- assets/scenario/hero/story18.json·explore18.json(새), assets/scenes/ch18.json: 하비 의논 장면(원술의 죽음·꿀물, 서주 의논)을 빼고 18장을 탐험으로 — 물이 빠진 하비 거리를 걷다 관청에 들면 간옹의 급보(음악 바뀜), 출진은 장비에게(관우는 "하비는 제가 지키겠습니다."만) — 사용자 지시
+- assets/scenario/hero/story17.json·explore17.json: 의대조 끝 헌제 "좋소. 그것이 짐의 뜻이오. 짐은 유화도, 유장도 모두 그렇게 떠나보냈소. 그리고 지금도 기다리고 있소." / "황숙도…… 기다리겠소.", 허도 거리 노인의 소문(종친 도령들을 하나둘 밖으로 내보내셨다지) — 헌제가 종친을 일부러 밖에 심는다는 해석을 은근히(사용자)
+- docs/fullstory.md, docs/presentation-explore.md(18장 줄)
+
+## 2026-11-13 의대조에서 동승의 서명 요청 뺌, "국구" 대신 "동 장군"
+- assets/scenario/hero/story17.json·story18.json, docs/fullstory.md: `c17-i04`(동승이 이름 올린 이들을 대며 서명을 청함) 삭제 — 뒤이은 유비의 "그리해 봐야 힘이 없습니다"가 서명을 꺼리는 비겁함으로 읽혔다(사용자). 유비는 밤에 동승이 옥대의 비밀을 알릴 때 이미 이름을 올린 것으로 치고, 의대조 끝은 "……폐하. 뜻을 받들겠습니다."
+- 같은 파일: "국구"(낯선 말) → 동승의 당시 벼슬 거기장군을 따 "동승 장군"·"동 장군"
+- `c17-death` 궁문 앞을 낮으로 — 의대조가 관청 뒤 곧바로라서
+
+## 2026-11-13 유비 저택 안을 수수하게, 장비 "막을 수는 있을 것 같슈!"
+- tools/scene_maps/liu_house.py(새), assets/graphics/maps/S_liu_house.json, assets/scenario/hero/explore17.json·assets/scenes/ch17.json: 유비 저택 안을 3장 조조의 낙양 저택(붉은 칠 벽·금 병풍·단·휘장) 대신 같은 방·같은 가구 자리의 수수한 방(널마루와 갈대 자리, 흰 회벽, 나무 기둥, 종이 병풍, 촛대 하나)으로 — 빨강·금빛이 황실급으로 화려하다(사용자)
+- assets/scenario/hero/story17.json `c17-h23`: "막을 수는 있을 것 같슈!"(사용자)
+
+## 2026-11-13 흩어진 형제들의 소식은 미축이, 진진은 한 번 더 관우에게
+- 결정(사용자): 18장 끝 유비 곁엔 간옹만, 미축도 흩어졌다가 진진이 관우에게 편지를 전할 무렵 원소 진영의 유비를 찾아와 장비(번궁과 고성)의 소식을 전함 → 유비 "두 아우의 소식을 다 알았으니 거리낄 것이 없다", 진진에게 한 번 더 관우를 여남 고성으로 부르게 함(진진은 아직 합류하지 않음) / 안량 소식은 "수염이 긴 장수"로만, 원소는 "현덕 공의 아우 가운데 그런 사람이 있지 않소?"(반동탁 연합에서 본 사이) / 원소의 편지 분부 뒤 곧바로 유비의 막사 / 16장 손건 "성안의 식량 사정을 챙기겠습니다"(잇속을 챙기는 듯해서)
+- assets/scenario/hero/story16.json·story18.json·story19.json, assets/scenes/ch18.json·ch19.json, internal/core/campaign_content_test.go(진진 미합류·미축 재합류), docs/fullstory.md. B19는 넷(유비·간옹·손건·미축)으로 AI 10/10, 6라운드
+
+## 2026-11-13 18장 하비는 물이 빠진 맵으로, 재물 대사
+- tools/scene_maps/xiapi_inner.py(`--dry`), assets/graphics/maps/S_xiapi.json(새), assets/scenes/ch18.json: 18장 하비 의논·급보를 몇 달 뒤의 마른 하비(`S_xiapi`: 마당은 풀, 물웅덩이·바퀴 자국·떠밀린 지푸라기 없음, 진흙 얼룩 없는 집)로 — 16장의 잠긴 뒤 젖은 동네를 그대로 쓰니 이상했다(사용자)
+- assets/scenario/hero/story17.json: 재물 장면 — 고을 이름(여강·구강·진국)과 "오수전"을 빼고 "이게 다 돈이고 보물입니다", 유비는 돈과 재물은 미축에게, 곡식과 기구는 고을에 돌려주려 하고 미축이 상단으로 실어 나르겠다며 호응(사용자)
+
+## 2026-11-13 17장 흐름 다시: 논영회 문밖 목소리, 사냥 뺌, 동승은 밤, 관청 뒤 곧바로 의대조
+- 결정(사용자): 논영회의 관우·장비는 문밖 목소리로(허저가 막고 장비가 따지고 조조가 들임) → "고기와 술을 가져왔소?" → "현덕에게는 번쾌가 있구려!"(홍문연의 번쾌와 백정 번쾌) / 허전 사냥 뺌 / 논영회 뒤 밤에 유비의 저택으로 오면 동승이 옥대의 비밀을 알리고 유비는 "때를 엿보겠다" / 관청에서 원술을 치기로 한 뒤 곧바로 궁궐 의대조(유비가 먼저 원술을 치러 간다고 아뢰고 밖에서 호응하겠다 함) / 정욱의 "범을 산에 놓아 주는 격"에 조조 "무슨 말인지 아오. 하지만 한번 보고 싶소. 늑대인지 개인지." / 안 3 "승상 곁에 오래 있다 보니 배운 것이지요"
+- assets/scenario/hero/story17.json·explore17.json·assets/scenes/ch17.json: 위 흐름, `c17-step` 순서 바꿈(동승 5→6, 관청 6→7 → `c17-edict`로 바로), 밤은 3~5
+- ../assets_candidate/tools/gen_pixel_palace.py, tiles/mansion_liu.png, assets/graphics/map/extra.png: 유비 저택을 회갈색 흙담·나무 판자 문·칠 없는 기둥으로 — 붉은 칠·금징·황토색이 황실급으로 화려하다(사용자)
+
+## 2026-11-13 논영회 번개·너스레, 서주성의 조조군을 서쪽 강 너머로
+- assets/scenario/hero/story17.json·assets/scenes/ch17.json: "형주의 유경승은 어떠십니까?"(말투), 유비의 변명 뒤 조조 "……현덕, 너스레가 많이 늘었구려."(`c17-h18b`), 번개를 `lightning` 효과로 — 사용자 지시
+- internal/gui/scene_shot.go, internal/gui/scenario_test.go, docs/presentation-scene.md: 장면 효과 `lightning`(단번에 하얘졌다가 잠깐 머문 뒤 2초쯤 서서히 돌아옴) — 번개가 "확 밝았다가 서서히 원래 화면으로"(사용자)
+- internal/core/waypoint_test.go: 떠났다 돌아오는 장수(손건 18→19장)를 노드 순서대로 따짐 — 떠남을 영구로 보던 가정이 새 장에서 틀림
+- assets/scenario/hero/stage18.json: 조조 본대(조조·허저·서황·장료·하후돈과 병사 20)를 서쪽 강 북쪽 (0~5, 5~11)에서, 모두 서주성으로 행군(하후돈도), 장패·손관은 서쪽 끝에서 — 대군이 좁은 서쪽 다리로 몰려 성으로 가고 유비는 동쪽 다리로 빠져 마주치는 병력이 적게(사용자). AI 9/10, 14.8라운드
+
 ## 2026-11-13 원소를 바보로 두지 않음·하비 성안은 짧게
 - 결정(사용자): 안량 때 유비는 "운장이라는 보장이 있느냐"로 받고 원소는 직접 확인하겠다고 물림, 문추 때 원소가 제 눈으로 보고 와서 "아닐 수도 있다 하지 않았소?"라고 우아하게 되묻고 유비가 "맞다, 그러니 축하드린다 — 편지 한 통이면 운장이 온다"로 뒤집음, 원소가 웃으며 진진을 붙여 줌. 앞 초안의 "안량은 운장이 아니었고…"라는 원소 대사는 원소를 바보로 만들어 거절됨
 - 결정(사용자): 하비 성안은 짧게 — 수습하러 흩어지고 곧바로 백문루 부름
 - assets/scenario/hero/story19.json·assets/scenes/ch19.json(`c19-y-c1`·`c19-y10`~`y27`·`c19-dead1/2`), story16.json·ch16.json(`c16-inner` 7줄), docs/fullstory.md 16장 S#2·19장 S#2·S#3
+- assets/scenario/hero/maps/map12.json·stage18.json: (22,1) 나무를 성 한 칸(동쪽 끝 소성)으로 바꿔 B18이 map12를 함께 씀, map18.json·layouts/hero/map18.txt 삭제. B18을 새로 짬 — 유비·장비가 북쪽(B12 출진 칸)에서 서주성의 차주(장수, 성안 react, 7라운드나 문지기 둘이 쓰러지면 직접 나와 assault)를 치고, 차주가 쓰러지는 순간 북쪽 끝에서 조조·허저·서황·장료(성으로 march)와 하후돈(assault), 서쪽 끝에서 장패·손관 무리(assault)가 나타나며 전령 둘(하비 포위, 손건 "원소가 손을 잡겠다, 청주로")이 컷신으로 와서 말하고 떠난 뒤 목표가 "유비가 동쪽 끝 소성에 닿는다"로 바뀜. 유비가 마을과 다리에 있으면 다음 차례에 우금·이전이 소성 앞에 매복. 유대·왕충 삭제. 성문 칸이 아니라 문 안쪽에 문지기를 둠(문 칸 위의 수비병은 회복·방어 보정으로 AI가 10라운드 넘게 막혔다), 차주는 commander가 아닌 officer(근위병 승급 Lv35에 성 칸 회복이 붙어 유비를 혼자 쓰러뜨렸다) — 사용자 설계(하비에서 관우·손건이 갈라진 뒤 차주를 치러 감). `_balance -player ai` 10시드 8/10(시드 11~20 7/10), 평균 14.7라운드
 
 ## 2026-11-13 인수는 전투 밖에서만, 승급으로 벗겨진 무기는 초록 안내로
 - 결정: 인수는 탐험·출전 준비·배치 중에만 쓴다. 전투 중에는 거부하고, 도구 메뉴에서 인수를 고르면 쓰는 곳을 알리는 알림(부목표 달성 알림과 같은 금색)만 뜬다. 승급해서 새 병종이 들 수 없게 된 장비는 창고로 돌리고, 새 장비는 저절로 끼우지 않고 초록 안내로 이끈다 · 이유: 사용자 "인수는 비전투시 … 보병이 창병으로 갔을때의 무기, 경기병이 궁기병으로 갔을때의 무기, 이때 생기는 딜레마가 사라질거같아", "전투 중 인수는 그냥 거부되고 … toast". 전투 중 승급은 병종만 바꾸고 무기는 두어 검 든 장창병·창 든 궁기병이 생겼고, 전투 중엔 장비를 못 바꿨다. 잃는 것: 승급으로 병력·병법을 채우는 전투 중 회복 전술 · 영향 문서: design.md, logic-growth.md 4절, logic-combat.md, data-item.md, presentation-ui.md

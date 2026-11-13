@@ -11,6 +11,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"strconv"
+	"strings"
 
 	"srpg/internal/content"
 )
@@ -34,17 +36,60 @@ type Map struct {
 	Grass *content.GrassTint `json:"grass,omitempty"`
 }
 
-// Object stands with its anchor DX, DY canvas pixels from the centre of small tile (U, V).
+// Object stands with its anchor DX, DY canvas pixels from the centre of small tile (U, V), its pictures multiplied by
+// Tint when set. In the map file: [name, U, V], [name, U, V, dx, dy], either with a tint object last.
 type Object struct {
 	Name   string
 	U, V   int
 	DX, DY int
+	Tint   *Tint
 }
 
-// Wall is a wall line laid one piece per small tile from From to To, along u or v.
+// Wall is a wall line laid one piece per small tile from From to To, along u or v; in the map file [family, from,
+// to] or [family, from, to, tint]. A gate on the line takes its own object's tint.
 type Wall struct {
 	Family   string
 	From, To [2]int
+	Tint     *Tint
+}
+
+// Tint is the colour each layer of a picture is multiplied by, "#rrggbb" (a picture drawn in greys takes the colour
+// as it is; "" or left out draws the layer as painted). Body is the picture itself, Roof and Wood its layers
+// <name>_roof and <name>_wood (scene.json "layers"): a compound wall's plaster and coping, a gate's woodwork.
+type Tint struct {
+	Body string `json:"body,omitempty"`
+	Roof string `json:"roof,omitempty"`
+	Wood string `json:"wood,omitempty"`
+}
+
+// Of is the colour of a layer ("" the body); "" for none.
+func (t *Tint) Of(layer string) string {
+	switch {
+	case t == nil:
+		return ""
+	case layer == "roof":
+		return t.Roof
+	case layer == "wood":
+		return t.Wood
+	}
+	return t.Body
+}
+
+// splitTint takes a trailing tint object off a map file entry.
+func splitTint(raw []json.RawMessage) ([]json.RawMessage, *Tint, error) {
+	if n := len(raw); n > 0 && bytes.HasPrefix(bytes.TrimSpace(raw[n-1]), []byte("{")) {
+		t := &Tint{}
+		if err := json.Unmarshal(raw[n-1], t); err != nil {
+			return nil, nil, err
+		}
+		for _, c := range []string{t.Body, t.Roof, t.Wood} {
+			if _, err := strconv.ParseUint(strings.TrimPrefix(c, "#"), 16, 24); c != "" && (len(c) != 7 || c[0] != '#' || err != nil) {
+				return nil, nil, fmt.Errorf("tint colour %q: want #rrggbb", c)
+			}
+		}
+		return raw[:n-1], t, nil
+	}
+	return raw, nil, nil
 }
 
 // Format is the format number of the maps this package reads.
@@ -202,8 +247,13 @@ func (o *Object) UnmarshalJSON(b []byte) error {
 	if err := json.Unmarshal(b, &raw); err != nil {
 		return err
 	}
+	raw, tint, err := splitTint(raw)
+	if err != nil {
+		return fmt.Errorf("object %s: %w", b, err)
+	}
+	o.Tint = tint
 	if len(raw) != 3 && len(raw) != 5 {
-		return fmt.Errorf("object %s: want [name, U, V] or [name, U, V, dx, dy]", b)
+		return fmt.Errorf("object %s: want [name, U, V] or [name, U, V, dx, dy], a tint object last or not", b)
 	}
 	targets := []any{&o.Name, &o.U, &o.V, &o.DX, &o.DY}
 	for i := range raw {
@@ -215,10 +265,14 @@ func (o *Object) UnmarshalJSON(b []byte) error {
 }
 
 func (o Object) MarshalJSON() ([]byte, error) {
-	if o.DX == 0 && o.DY == 0 {
-		return json.Marshal([]any{o.Name, o.U, o.V})
+	out := []any{o.Name, o.U, o.V}
+	if o.DX != 0 || o.DY != 0 {
+		out = append(out, o.DX, o.DY)
 	}
-	return json.Marshal([]any{o.Name, o.U, o.V, o.DX, o.DY})
+	if o.Tint != nil {
+		out = append(out, o.Tint)
+	}
+	return json.Marshal(out)
 }
 
 func (w *Wall) UnmarshalJSON(b []byte) error {
@@ -226,8 +280,13 @@ func (w *Wall) UnmarshalJSON(b []byte) error {
 	if err := json.Unmarshal(b, &raw); err != nil {
 		return err
 	}
+	raw, tint, err := splitTint(raw)
+	if err != nil {
+		return fmt.Errorf("wall %s: %w", b, err)
+	}
+	w.Tint = tint
 	if len(raw) != 3 {
-		return fmt.Errorf("wall %s: want [family, [U, V], [U, V]]", b)
+		return fmt.Errorf("wall %s: want [family, [U, V], [U, V]], a tint object last or not", b)
 	}
 	for i, t := range []any{&w.Family, &w.From, &w.To} {
 		if err := json.Unmarshal(raw[i], t); err != nil {
@@ -240,4 +299,9 @@ func (w *Wall) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-func (w Wall) MarshalJSON() ([]byte, error) { return json.Marshal([]any{w.Family, w.From, w.To}) }
+func (w Wall) MarshalJSON() ([]byte, error) {
+	if w.Tint != nil {
+		return json.Marshal([]any{w.Family, w.From, w.To, w.Tint})
+	}
+	return json.Marshal([]any{w.Family, w.From, w.To})
+}

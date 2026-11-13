@@ -1,0 +1,24 @@
+# map20 망탕산 전투 (20x20, day). Screen north = (0,0): 장비's mountain village (one village cell, 1,1) with a
+# little open ground in the top corner; a winding mountain path (l) runs down to the bottom corner where 조조's
+# troops came up. Mountains (n) and cliffs (h) wall the path; a wooded side gully opens east at (8~14,2~6),
+# and a wooded pocket west of the path at (4~12,13~15).
+g-- g-- gt- g-- g-- u-- h-- u-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n--
+g-- gv- l-- g-- g-- g-- g-- gt- g-- u-- n-- n-- n-- n-- u-- u-- h-- n-- n-- n--
+g-- g-- l-- l-- l-- l-- g-- g-- g-- h-- u-- u-- gt- g-- gt- gt- u-- n-- n-- n--
+gt- g-- g-- g-- l-- l-- l-- l-- g-- g-- gt- g-- gt- gt- g-- g-- u-- n-- n-- n--
+g-- g-- g-- g-- g-- g-- l-- l-- l-- g-- g-- gt- g-- gt- g-- gt- u-- n-- n-- n--
+n-- n-- u-- h-- g-- gt- g-- l-- l-- g-- gt- g-- g-- g-- u-- h-- n-- n-- n-- n--
+n-- n-- n-- n-- n-- u-- g-- gt- l-- g-- g-- u-- h-- n-- n-- n-- n-- n-- n-- n--
+n-- n-- n-- n-- u-- g-- g-- l-- l-- g-- gt- u-- n-- n-- n-- n-- n-- n-- n-- n--
+n-- n-- n-- h-- gt- g-- l-- l-- l-- g-- g-- u-- n-- n-- n-- n-- n-- n-- n-- n--
+n-- n-- n-- h-- g-- g-- l-- l-- g-- gt- u-- n-- n-- n-- n-- n-- n-- n-- n-- n--
+n-- n-- u-- g-- gt- l-- l-- g-- g-- h-- u-- u-- h-- u-- u-- n-- n-- n-- n-- n--
+n-- n-- u-- g-- g-- l-- l-- g-- g-- gt- g-- g-- gt- gt- g-- h-- n-- n-- n-- n--
+n-- n-- u-- gt- g-- l-- l-- l-- g-- g-- g-- g-- gt- g-- g-- gt- g-- u-- n-- n--
+n-- n-- n-- h-- g-- g-- l-- l-- l-- l-- l-- l-- l-- l-- l-- g-- gt- u-- n-- n--
+n-- n-- n-- n-- u-- g-- gt- g-- g-- g-- gt- g-- g-- l-- l-- l-- g-- g-- h-- n--
+n-- n-- n-- n-- n-- u-- gt- g-- g-- gt- g-- g-- gt- g-- l-- l-- l-- g-- g-- u--
+n-- n-- n-- n-- n-- n-- h-- u-- u-- h-- u-- u-- h-- g-- g-- l-- l-- l-- g-- gt-
+n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- u-- g-- g-- l-- l-- l-- g--
+n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- u-- g-- g-- l-- l-- l--
+n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- h-- g-- g-- l-- l--

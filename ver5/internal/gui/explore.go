@@ -111,10 +111,11 @@ func (g *Game) layOutExplore(o core.Observation) {
 	} else {
 		g.toast(a.Map+"은 형식 2 장면 맵이 아니라 걸을 수 없습니다", bad)
 	}
-	g.zoom = 2
+	zoom := 2.0
 	if a.Zoom >= 1 {
-		g.zoom = math.Round(a.Zoom)
+		zoom = math.Round(a.Zoom)
 	}
+	g.setZoomImmediate(zoom)
 	s := g.scene
 	hero := s.actors[w.hero]
 	if left != nil && !left.gone && (left.u != hero.u || left.v != hero.v) { // he stays where the event walked him
@@ -309,7 +310,7 @@ func (g *Game) exploreInput() {
 		w.show = !w.show
 	}
 	if _, wheel := ebiten.Wheel(); wheel != 0 {
-		g.zoom = math.Max(1, math.Min(4, g.zoom+math.Copysign(1, wheel)))
+		g.setZoom(math.Max(1, math.Min(4, g.zoomTo+math.Copysign(1, wheel))))
 	}
 	if w.talk != nil && (keyJustPressed(ebiten.KeyEnter) || keyJustPressed(ebiten.KeySpace)) {
 		g.nextExploreLine()
@@ -555,9 +556,12 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 	}
 	x, y := g.toCanvas(cursorWorld())
 	idle := w.talk == nil && w.going == nil && !g.popupPending()
-	hover := g.exploreExitAt(x, y)
-	person := g.explorePersonAt(x, y)
-	if idle && hover == nil && person == "" {
+	var hover *content.ExploreExit
+	var person string
+	if !pointer.used { // a finger leaves no pointer resting over the map: its last touch would ride along with the scroll
+		hover, person = g.exploreExitAt(x, y), g.explorePersonAt(x, y)
+	}
+	if idle && !pointer.used && hover == nil && person == "" {
 		if t := smallTileAt(g.cellAt(x, y)); w.grid.open(t) {
 			g.smallDiamond(dst, t, cursorFill, cursorRim)
 		}

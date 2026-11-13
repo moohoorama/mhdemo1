@@ -218,6 +218,9 @@ func (f *Field) drawPlan(dst *ebiten.Image, d scenemap.Draw, ox, oy float64, op 
 		return
 	}
 	op.GeoM.Translate(ox+float64(d.X+at.X), oy+float64(d.Y+at.Y))
+	if d.Tint != "" { // a picture in greys takes its colour (scenemap.Tint)
+		op.ColorScale.ScaleWithColor(hexColor(d.Tint))
+	}
 	f.renderOp(dst, op)
 	if len(d.Clip) == 0 {
 		dst.DrawImage(img, op)

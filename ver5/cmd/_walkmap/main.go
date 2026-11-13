@@ -2,12 +2,14 @@
 // anchors of its standing objects, to place people and exits on the explore files.
 //
 //	go run ./cmd/_walkmap S_peach_grove2
-//	go run ./cmd/_walkmap -fmt S_militia_camp   rewrite the map file laid out as the map files are
+//	go run ./cmd/_walkmap -fmt S_militia_camp   rewrite the map file laid out as the map files are, and bake its
+//	                                             diorama board edge (tools/scene_maps/diorama.py)
 package main
 
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"sort"
 
 	"srpg/internal/scenemap"
@@ -36,6 +38,11 @@ func main() {
 			out, err := m.Encode()
 			if err == nil {
 				err = os.WriteFile(path, out, 0o644)
+			}
+			if err == nil {
+				bake := exec.Command("python3", "tools/scene_maps/diorama.py", id)
+				bake.Stdout, bake.Stderr = os.Stdout, os.Stderr
+				err = bake.Run()
 			}
 			if err != nil {
 				fail(err)

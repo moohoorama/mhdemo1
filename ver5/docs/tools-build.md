@@ -22,6 +22,7 @@ python3 tools/scene_maps/backdrops.py                          # 장면 원경 �
 python3 tools/scene_maps/scene_props.py                        # 색만 바꾼 장면 그림(누런 깃발, 금빛 병풍)과 새·반짝임 → ../assets_candidate/tiles
 python3 tools/scene_maps/join_overlay.py                       # 알파만 쓴 그림자: 모서리 삼각형 jshade_*, 절벽 밑동 cfoot_* → ../assets_candidate/tiles
 python3 tools/scene_maps/tall_cliff.py                         # 높은 장면 절벽 tcliff_*: 전투 맵 절벽 블록의 바위 면 행을 쌓음 → ../assets_candidate/tiles (그 뒤 build_extra.py, compose.py)
+python3 tools/scene_maps/diorama.py --all                     # 장면 맵의 판 단면(앞 두 변의 땅 단면·성벽 잘린 면) → assets/graphics/maps/board/<ID>.png·.json. 맵 하나는 ID, `--check`는 낡은 판 목록. 맵을 고치면 다시 돌린다(`go run ./cmd/_walkmap -fmt <ID>`가 그 맵을 굽는다)
 python3 ../assets_candidate/tools/gen_3d_castle.py --write      # 옛 형식 장면용 성벽·성문(성문은 아치 가운데에서 갈라 반 칸 조각) → ../assets_candidate/tiles
 python3 ../assets_candidate/tools/gen_pixel_castle.py --write    # 형식 2 성벽 칸·성가퀴·밑동 그림자·성문 조각(도트로 직접) → ../assets_candidate/tiles (--preview 경로: 확인 그림; 그 뒤 build_extra.py)
 python3 ../assets_candidate/tools/gen_pixel_kit.py --write       # 전투 성벽 wall_clean_*·성문 gatehouse_{closed,open}_{u,v}_{0..3}, 울타리 fence_*·마을 village_0..3·주둔지 camp와 불탄 판, 실내 벽 wall_*_{nw,ne}·바닥 floor_*(같은 방식) → ../assets_candidate/tiles (--compare 경로: 지금 그림과 비교; 그 뒤 build_extra.py. 스킬 pixel-iso-kit)

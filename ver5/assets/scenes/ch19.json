@@ -2,7 +2,7 @@
  "Scenes": {
   "c19-yuan": {
    "Map": "S_tent_lux2",
-   "Nodes": ["c19-yuan", "c19-y01", "c19-y02", "c19-y03", "c19-y04", "c19-y05", "c19-y06", "c19-y07", "c19-y08", "c19-y-c1", "c19-y10", "c19-y11", "c19-y12", "c19-y13", "c19-y14", "c19-y15", "c19-y-c2", "c19-y20", "c19-y21", "c19-y22", "c19-y23", "c19-y24", "c19-y25", "c19-y26", "c19-y27", "c19-dead1", "c19-dead2", "c19-dead"],
+   "Nodes": ["c19-yuan", "c19-y01", "c19-y02", "c19-y03", "c19-y04", "c19-y05", "c19-y06", "c19-y07", "c19-y08", "c19-y-c1", "c19-y10", "c19-y11", "c19-y12", "c19-y13", "c19-y14", "c19-y15", "c19-y-c2", "c19-y20", "c19-y21", "c19-y22", "c19-y23", "c19-y24", "c19-y25", "c19-dead1", "c19-dead2", "c19-dead"],
    "Cast": {
     "원소": {"At": [1, 2], "Face": "SE", "Pose": "sit", "Hold": true},
     "곽도": {"At": [2, 0], "Face": "SW"},
@@ -11,14 +11,13 @@
     "유비": {"At": [5, 3], "Face": "NW", "Off": true},
     "간옹": {"At": [5, 4], "Face": "NW", "Off": true},
     "손건": {"At": [4, 3], "Face": "SE"},
-    "미축": {"At": [5, 4], "Face": "NW", "Off": true},
     "전령": {"At": [5, 4], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "yuan"},
     "호위#1": {"At": [5, 0], "Face": "SW", "Sprite": "guards", "Faction": "yuan"}
    },
    "Beats": {
     "c19-y01": [
      [
-      [{"Actor": "유비", "Enter": [6, 5], "Move": [3, 2], "Face": "NW"}, {"Actor": "간옹", "Enter": [6, 5], "Move": [3, 4], "Face": "NW", "After": 0.6}, {"Actor": "미축", "Enter": [6, 5], "Move": [4, 4], "Face": "NW", "After": 1.4}]
+      [{"Actor": "유비", "Enter": [6, 5], "Move": [3, 2], "Face": "NW"}, {"Actor": "간옹", "Enter": [6, 5], "Move": [3, 4], "Face": "NW", "After": 0.6}]
      ]
     ],
     "c19-y02": [
@@ -91,11 +90,6 @@
       [{"Actor": "진진", "Move": [4, 1], "Face": "SW"}]
      ]
     ],
-    "c19-y26": [
-     [
-      [{"Actor": "유비", "Face": "NE"}]
-     ]
-    ],
     "c19-dead1": [
      [
       [{"Actor": "원소", "Pose": "idle"}, {"Shake": 0.3}]
@@ -117,46 +111,76 @@
   "c19-night": {
    "Map": "S_tent_mid",
    "Time": "night",
-   "Nodes": ["c19-night", "c19-n01", "c19-n02", "c19-n03", "c19-n03b", "c19-n04", "c19-n05", "c19-n06", "c19-n07"],
+   "Nodes": ["c19-night", "c19-m01", "c19-m02", "c19-m03", "c19-m03b", "c19-m04", "c19-m05", "c19-n00", "c19-n00b", "c19-n01", "c19-n02", "c19-n03", "c19-n03b", "c19-n04", "c19-n05", "c19-n06", "c19-n07"],
    "Cast": {
-    "유비": {"At": [3, 3], "Face": "NW"},
+    "유비": {"At": [3, 3], "Face": "SW"},
     "간옹": {"At": [4, 3], "Face": "NW"},
     "손건": {"At": [2, 2], "Face": "SE"},
-    "미축": {"At": [2, 3], "Face": "NE"},
-    "진진": {"At": [3, 4], "Face": "NE", "Off": true}
+    "미축": {"At": [3, 4], "Face": "NE", "Off": true},
+    "미방": {"At": [2, 4], "Face": "NE", "Off": true},
+    "진진": {"At": [4, 4], "Face": "NE", "Off": true}
    },
    "Beats": {
-    "c19-n01": [
+    "c19-m01": [
      [
-      [{"Actor": "진진", "Enter": [3, 6], "Move": [3, 4], "Face": "NE"}],
-      [{"Actor": "유비", "Face": "SW"}]
+      [{"Actor": "미축", "Enter": [3, 6], "Move": [3, 4], "Face": "NE", "Speed": 1.4}, {"Actor": "미방", "Enter": [2, 6], "Move": [2, 4], "Face": "NE", "Speed": 1.4, "After": 0.3}]
+     ]
+    ],
+    "c19-m02": [
+     [
+      [{"Actor": "유비", "Emote": "!"}]
+     ]
+    ],
+    "c19-m05": [
+     [
+      [{"Actor": "유비", "Emote": "…", "Wait": 0.6}]
+     ]
+    ],
+    "c19-n00": [
+     [
+      [{"Actor": "진진", "Enter": [4, 6], "Move": [4, 4], "Face": "NE"}],
+      [{"Actor": "유비", "Face": "SE"}]
+     ]
+    ],
+    "c19-n06": [
+     [
+      [{"Actor": "유비", "Face": "SE"}]
+     ]
+    ],
+    "c19-n07": [
+     [
+     ],
+     [
+      [{"Actor": "진진", "Move": [4, 6], "Exit": true}]
      ]
     ]
    }
   },
-  "c19-gucheng": {
-   "Map": "S_castle_town",
-   "Nodes": ["c19-gucheng", "c19-k01", "c19-k02", "c19-k03", "c19-k04", "c19-k05", "c19-k06", "c19-k07", "c19-k08", "c19-k09", "c19-fin"],
-   "Ambient": [{"CamAt": [2, 3]}],
+  "c19-mangdang": {
+   "Map": "S_mangdang",
+   "Nodes": ["c19-mangdang", "c19-k01", "c19-k02", "c19-k03", "c19-k03b", "c19-k03c", "c19-k03d", "c19-k04", "c19-k05", "c19-k06", "c19-k07", "c19-k08", "c19-k09"],
+   "Ambient": [{"CamAt": [9, 4]}],
    "Cast": {
-    "유비": {"At": [-1, 3], "Face": "SE", "Off": true},
-    "간옹": {"At": [-1, 3], "Face": "SE", "Off": true},
-    "손건": {"At": [-1, 3], "Face": "SE", "Off": true},
-    "미축": {"At": [-1, 3], "Face": "SE", "Off": true},
-    "진진": {"At": [-1, 3], "Face": "SE", "Off": true},
-    "조운": {"At": [-1, 3], "Face": "SE", "Off": true},
-    "장비": {"At": [5, 3], "Face": "NW"},
-    "번궁": {"At": [4, 2], "Face": "NW"},
-    "고순": {"At": [4, 4], "Face": "NW", "If": ["party:gaoshun"]},
-    "병사#1": {"At": [0, 1], "Face": "SE", "Sprite": "light_infantry", "Faction": "shu"},
-    "병사#2": {"At": [0, 6], "Face": "NE", "Sprite": "light_infantry", "Faction": "shu"}
+    "유비": {"At": [17, 4], "Face": "NW", "Off": true},
+    "간옹": {"At": [17, 4], "Face": "NW", "Off": true},
+    "손건": {"At": [17, 4], "Face": "NW", "Off": true},
+    "미축": {"At": [17, 4], "Face": "NW", "Off": true},
+    "미방": {"At": [17, 4], "Face": "NW", "Off": true},
+    "조운": {"At": [17, 4], "Face": "NW", "Off": true},
+    "장비": {"At": [5, 4], "Face": "SE"},
+    "번궁": {"At": [6, 3], "Face": "SE"},
+    "고순": {"At": [6, 5], "Face": "SE", "If": ["party:gaoshun"]},
+    "번아": {"At": [4, 5], "Face": "SE"},
+    "진도": {"At": [7, 4], "Face": "SE"},
+    "마을사람#1": {"At": [3, 2], "Face": "SE", "Sprite": "commoner_man", "Faction": "han"},
+    "마을사람#2": {"At": [2, 4], "Face": "SE", "Sprite": "commoner_woman", "Faction": "han"}
    },
    "Beats": {
     "c19-k01": [
      [
-      [{"Actor": "유비", "Enter": [-1, 3], "Move": [0, 3], "Face": "SE"}, {"Actor": "조운", "Enter": [-1, 3], "Move": [0, 4], "Face": "SE", "After": 0.5}, {"Actor": "간옹", "Enter": [-1, 3], "Move": [0, 2], "Face": "SE", "After": 1.0}, {"Actor": "손건", "Enter": [-1, 3], "Move": [1, 2], "Face": "SE", "After": 1.5}, {"Actor": "미축", "Enter": [-1, 3], "Move": [0, 5], "Face": "SE", "After": 2.0}, {"Actor": "진진", "Enter": [-1, 3], "Move": [1, 5], "Face": "SE", "After": 2.5}],
+      [{"Actor": "유비", "Enter": [17, 4], "Move": [11, 4], "Face": "NW"}, {"Actor": "조운", "Enter": [17, 4], "Move": [12, 5], "Face": "NW", "After": 0.5}, {"Actor": "간옹", "Enter": [17, 4], "Move": [12, 3], "Face": "NW", "After": 1.0}, {"Actor": "손건", "Enter": [17, 4], "Move": [13, 4], "Face": "NW", "After": 1.5}, {"Actor": "미축", "Enter": [17, 4], "Move": [13, 5], "Face": "NW", "After": 2.0}, {"Actor": "미방", "Enter": [17, 4], "Move": [14, 4], "Face": "NW", "After": 2.5}],
       [{"Actor": "장비", "Emote": "!"}],
-      [{"Actor": "장비", "Move": [1, 4], "Face": "NW", "Speed": 2}]
+      [{"Actor": "장비", "Move": [10, 4], "Face": "SE", "Speed": 2}]
      ]
     ],
     "c19-k02": [
@@ -166,14 +190,29 @@
       [{"Actor": "장비", "Play": "action"}, {"Actor": "유비", "Play": "action"}]
      ]
     ],
+    "c19-k03": [
+     [
+      [{"Actor": "번궁", "Move": [8, 3], "Face": "SE"}, {"Actor": "번아", "Move": [8, 4], "Face": "SE"}, {"Actor": "진도", "Move": [8, 5], "Face": "SE"}, {"Actor": "고순", "Move": [7, 5], "Face": "SE"}]
+     ]
+    ],
+    "c19-k03c": [
+     [
+      [{"Actor": "장비", "Look": "NW"}]
+     ]
+    ],
+    "c19-k03d": [
+     [
+      [{"Actor": "진도", "Play": "action"}]
+     ]
+    ],
     "c19-k05": [
      [
-      [{"Actor": "장비", "Look": "SW"}]
+      [{"Actor": "장비", "Look": "SE"}]
      ]
     ],
     "c19-k07": [
      [
-      [{"Actor": "장비", "Face": "NW"}]
+      [{"Actor": "장비", "Face": "SE"}]
      ]
     ],
     "c19-k09": [

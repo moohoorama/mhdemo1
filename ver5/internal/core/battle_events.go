@@ -88,7 +88,7 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 				if o := e.char(sp.Character); e.unit(sp.Character) != nil || o != nil && o.Dead {
 					continue // already on the map, or fallen
 				}
-				e.joinAt(e.addCharacter(sp.Character, sp.Character), e.joinLevel(e.stageOrder()))
+				e.welcome(sp.Character, e.stageOrder())
 				u := e.spawn(sp.Character, sp.Character, "ally", p.X, p.Y, sp)
 				e.faceObjective(u, nil)
 				snapshot := copyOf(*u)

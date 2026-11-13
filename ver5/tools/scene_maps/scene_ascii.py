@@ -80,9 +80,9 @@ def load_map(map_id):
     if art.get('format') == 2:  # objects stand dx, dy canvas pixels from their small tile's centre
         ground = art['ground']
         ox, oy = art['origin']
-        objects = [[n, (U - .5) / 2 + dx / 64 + dy / 32, (V - .5) / 2 - dx / 64 + dy / 32]
-                   for n, U, V, *d in art['objects'] for dx, dy in [d or (0, 0)]]
-        for _, (u0, v0), (u1, v1) in art.get('walls', []):
+        objects = [[n, (U - .5) / 2 + dx / 64 + dy / 32, (V - .5) / 2 - dx / 64 + dy / 32]  # a tint object last
+                   for n, U, V, *d in art['objects'] for dx, dy in [[x for x in d if not isinstance(x, dict)] or (0, 0)]]
+        for _, (u0, v0), (u1, v1), *_ in art.get('walls', []):
             for su in range(min(u0, u1), max(u0, u1) + 1):
                 for sv in range(min(v0, v1), max(v0, v1) + 1):
                     walls.add((su // 2, sv // 2))

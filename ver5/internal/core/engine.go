@@ -528,13 +528,13 @@ func (e *Engine) once(n content.Node) {
 		return
 	}
 	if n.Kind == "leave" {
-		e.dismiss(n.Character)
+		e.dismiss(n.Character, e.joinOrder(n))
 		e.state.Executed[n.Event] = true
 		e.emit(n.Kind, "", n.Character, 0)
 		return
 	}
 	if n.Kind == "join" {
-		e.joinAt(e.addCharacter(n.Character, n.Character), e.joinLevel(e.joinOrder(n)))
+		e.welcome(n.Character, e.joinOrder(n))
 		if !contains(e.state.Deployment, n.Character) {
 			e.state.Deployment = append(e.state.Deployment, n.Character)
 		}
@@ -547,19 +547,24 @@ func (e *Engine) once(n content.Node) {
 	e.emit(n.Kind, "", n.Item, n.Count)
 }
 
-// dismiss takes an officer out of the party. The pieces they wear beyond their own starting gear go to the
-// warehouse, and the officer they kept as deputy is free again.
-func (e *Engine) dismiss(id string) {
+// dismiss takes an officer out of the party before the order-th battle. The pieces they wear beyond their own
+// starting gear go to the warehouse, the officer they kept as deputy is free again, and they wait in Away as
+// they were, to come back in welcome.
+func (e *Engine) dismiss(id string, order int) {
 	o := e.char(id)
 	if o == nil {
 		return
 	}
 	own := e.data.Characters[o.Def].Equipment
-	for _, item := range o.Equipment {
+	away := copyOf(*o)
+	for slot, item := range o.Equipment {
 		if !contains(own, item) {
 			e.state.Warehouse[item]++
+			delete(away.Equipment, slot)
 		}
 	}
+	away.Deputy, away.Left = "", order
+	e.state.Away = append(slices.Clone(e.state.Away), away)
 	for _, k := range keys(e.charIDs) {
 		if c := e.char(k); c.Deputy == id {
 			c.Deputy = ""

@@ -242,7 +242,7 @@ func (g *Game) deploymentListRect(o core.Observation) image.Rectangle {
 // place. Who goes, gear and deputies were settled in the sortie preparation.
 func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 	limit := g.S.Data.Stages[o.Stage].Max
-	g.battleLeftPanel(dst, o, fmt.Sprintf("출전 %d / %d", len(o.Deployment), limit))
+	g.battleLeftPanel(dst, o, fmt.Sprintf("출전 %d / %d", len(o.Deployment), limit), nil)
 	bar := image.Rect(uiW-12-infoW, hudTop(), uiW-12, hudTop()+64)
 	g.window(dst, bar)
 	g.block(bar)

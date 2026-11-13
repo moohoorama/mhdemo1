@@ -77,7 +77,7 @@ const hudFadeAlpha = .55
 // hudGripH is the strip along the top of the info panel that drags the log's height.
 const hudGripH = 12
 
-// battleHUDPanel draws the HUD in two: at the top right the side to move with 진영 종료 and the 관리 and 메뉴
+// battleHUDPanel draws the HUD in two: at the top right the side to move with the 관리 and 메뉴
 // buttons, and at the bottom right the info panel with its tabs, whose height eases to the tab's. Folding leaves
 // the head; the info panel fades while the pointer is elsewhere.
 func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
@@ -176,8 +176,7 @@ func (g *Game) battleHUDPanel(dst *ebiten.Image, o core.Observation) {
 	}
 }
 
-// hudHead is the side to move with the turn, the end-of-phase button, and on the enemy's turn
-// that waits for the player the buttons that advance it.
+// hudHead is the side to move with the turn and the fold switch.
 func (g *Game) hudHead(dst *ebiten.Image, o core.Observation, r image.Rectangle) {
 	side := g.armyName(o.Turn, o.Army) + " 차례"
 	c := g.armyColor(o.Turn, o.Army)
@@ -188,13 +187,6 @@ func (g *Game) hudHead(dst *ebiten.Image, o core.Observation, r image.Rectangle)
 	g.label(dst, side, float64(r.Min.X+12), float64(r.Min.Y+8), 15, c)
 	g.label(dst, turn, float64(r.Min.X+12)+g.width(side, 15)+8, float64(r.Min.Y+10), 13, muted)
 	g.foldButton(dst, r.Max.X-32, r.Min.Y, &g.hudFolded)
-
-	idle := !g.busy() && o.Phase == "battle"
-	var end func()
-	if idle && o.Turn == "ally" {
-		end = g.endPhase
-	}
-	g.btn(dst, image.Rect(r.Max.X-138, r.Min.Y+5, r.Max.X-40, r.Min.Y+hudHeaderH-5), "진영 종료", end)
 }
 
 // hudTabRow draws the tabs: the unit tab is always there and shows itself with a selection, and a click on another

@@ -45,22 +45,25 @@ func TestNewAt(t *testing.T) {
 				assert.True(t, s.Executed["won-"+w.Stage], w.Stage)
 			}
 		}
-		left := map[string]bool{}
+		// in story order, the last join or leave of each officer before the waypoint says whether they are with the party
+		with := map[string]bool{}
 		for _, n := range d.Nodes {
 			if n.ID == last.Node {
 				break
 			}
-			if n.Kind == "leave" {
-				left[n.Character] = true
+			switch {
+			case n.Kind == "leave":
+				with[n.Character] = false
+			case n.Kind == "join":
+				with[n.Character] = true
 			}
 		}
-		for _, n := range d.Nodes {
-			if n.Kind == "join" && d.ChapterIndex(n.ID) < d.ChapterIndex(last.Node) && !left[n.Character] {
-				assert.NotNil(t, e.char(n.Character), n.Character)
+		for id, in := range with {
+			if in {
+				assert.NotNil(t, e.char(id), id)
+			} else {
+				assert.Nil(t, e.char(id), id+" has left")
 			}
-		}
-		for id := range left {
-			assert.Nil(t, e.char(id), id+" has left")
 		}
 	})
 

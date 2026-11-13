@@ -1,0 +1,114 @@
+{
+ "Scenes": {
+  "c20-alarm": {
+   "Map": "S_mangdang",
+   "Nodes": ["c20-alarm", "c20-a01", "c20-a02", "c20-a03", "c20-a04", "c20-a05", "c20-a06"],
+   "Ambient": [{"CamAt": [8, 4]}],
+   "Cast": {
+    "유비": {"At": [7, 4], "Face": "SE"},
+    "장비": {"At": [8, 4], "Face": "NW"},
+    "간옹": {"At": [6, 3], "Face": "SE"},
+    "손건": {"At": [6, 5], "Face": "NE"},
+    "미축": {"At": [5, 4], "Face": "SE"},
+    "미방": {"At": [5, 5], "Face": "NE"},
+    "조운": {"At": [8, 3], "Face": "SW"},
+    "번궁": {"At": [8, 5], "Face": "NW"},
+    "고순": {"At": [6, 6], "Face": "NE", "If": ["party:gaoshun"]},
+    "번아": {"At": [4, 3], "Face": "SE"},
+    "진도": {"At": [7, 2], "Face": "SE"},
+    "마을 사람": {"At": [17, 4], "Face": "NW", "Off": true, "Sprite": "commoner_man", "Faction": "han"}
+   },
+   "Beats": {
+    "c20-a01": [
+     [
+      [{"Actor": "마을 사람", "Enter": [17, 4], "Move": [11, 4], "Face": "NW", "Speed": 1.6}],
+      [{"Actor": "유비", "Emote": "!"}, {"Actor": "장비", "Face": "SE"}]
+     ]
+    ],
+    "c20-a04": [
+     [
+      [{"Actor": "장비", "Play": "action"}]
+     ]
+    ],
+    "c20-a05": [
+     [
+      [{"Actor": "유비", "Face": "SE"}]
+     ]
+    ],
+    "c20-a06": [
+     [
+      [{"Actor": "진도", "Via": [[8, 2], [8, 4]], "Move": [10, 4], "Face": "SE"}]
+     ]
+    ]
+   }
+  },
+  "c20-reunion": {
+   "Map": "S_mangdang",
+   "Nodes": ["c20-reunion", "c20-r01", "c20-r02", "c20-r03", "c20-r04", "c20-r05", "c20-r06", "c20-r07", "c20-r08", "c20-r09", "c20-r10", "c20-r11", "c20-r12"],
+   "Ambient": [{"CamAt": [12, 7]}],
+   "Cast": {
+    "유비": {"At": [11, 7], "Face": "SE"},
+    "장비": {"At": [12, 6], "Face": "SE"},
+    "조운": {"At": [11, 6], "Face": "SE"},
+    "간옹": {"At": [11, 8], "Face": "SE"},
+    "손건": {"At": [10, 7], "Face": "SE"},
+    "미축": {"At": [10, 8], "Face": "SE"},
+    "미방": {"At": [10, 9], "Face": "SE"},
+    "번궁": {"At": [11, 5], "Face": "SE"},
+    "고순": {"At": [10, 6], "Face": "SE", "If": ["party:gaoshun"]},
+    "번아": {"At": [10, 5], "Face": "SE"},
+    "진도": {"At": [11, 9], "Face": "SE"},
+    "관우": {"At": [17, 7], "Face": "NW", "Off": true},
+    "관평": {"At": [17, 6], "Face": "NW", "Off": true},
+    "주창": {"At": [17, 9], "Face": "NW", "Off": true},
+    "진진": {"At": [17, 7], "Face": "NW", "Off": true}
+   },
+   "Beats": {
+    "c20-r01": [
+     [
+      [{"Actor": "관우", "Enter": [17, 7], "Move": [14, 7], "Face": "NW"}, {"Actor": "관평", "Enter": [17, 6], "Move": [15, 6], "Face": "NW", "After": 0.3}, {"Actor": "주창", "Enter": [17, 9], "Move": [14, 9], "Face": "NW", "After": 0.3}, {"Actor": "진진", "Enter": [17, 7], "Move": [15, 7], "Face": "NW", "After": 0.9}]
+     ]
+    ],
+    "c20-r02": [
+     [
+     ],
+     [
+      [{"Actor": "관우", "Pose": "bow"}],
+      [{"Actor": "유비", "Play": "action"}],
+      [{"Actor": "관우", "Pose": "idle"}]
+     ]
+    ],
+    "c20-r03": [
+     [
+      [{"Actor": "장비", "Move": [13, 6], "Face": "SW"}]
+     ]
+    ],
+    "c20-r05": [
+     [
+      [{"Actor": "관우", "Look": "SE"}]
+     ]
+    ],
+    "c20-r06": [
+     [
+      [{"Actor": "관평", "Play": "action"}]
+     ]
+    ],
+    "c20-r07": [
+     [
+      [{"Actor": "주창", "Play": "action"}]
+     ]
+    ],
+    "c20-r11": [
+     [
+      [{"Actor": "관우", "Look": "NE", "Wait": 0.8}]
+     ]
+    ],
+    "c20-r12": [
+     [
+      [{"Actor": "유비", "Face": "SE"}]
+     ]
+    ]
+   }
+  }
+ }
+}

@@ -16,6 +16,7 @@ type Character struct {
 	TraitsOverride         *[]string `json:",omitempty"`
 	Placement              bool      `json:",omitempty"`
 	Equipment              map[string]string
+	Left                   int `json:",omitempty"` // away from the party: the order of the battle they were to fight next
 }
 type Status struct {
 	Turns, Value int
@@ -59,6 +60,7 @@ type State struct {
 	Army                              string `json:",omitempty"` // in an AI turn (support, enemy): the faction color of the army moving now
 	Stage, Round                      int
 	Characters                        []Character
+	Away                              []Character `json:",omitempty"` // officers who left the party, kept as they left until they come back
 	Units                             []Unit
 	Inventory                         map[string]int
 	Warehouse                         map[string]int

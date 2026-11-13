@@ -645,7 +645,7 @@
   "chenzhen": {
    "Name": "진진",
    "Biography": "자는 공위. 원소의 사자. 신중하고 눈치 빠른 선비로, 계교 뒤 화친의 글을 들고 공손찬의 진영에 온다.",
-   "Class": "scholar",
+   "Class": "archer",
    "Stats": [
     68,
     64,
@@ -658,8 +658,8 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "bamboo_fan",
-    "plain_clothes"
+    "short_bow",
+    "leather_armor"
    ],
    "Look": {
     "Faction": "yuan",
@@ -1571,7 +1571,7 @@
     73,
     81
    ],
-   "Level": 3,
+   "Level": 20,
    "Playable": true,
    "Traits": [],
    "Learn": [],
@@ -2793,6 +2793,111 @@
     "Scene": "official_noncombat",
     "Faction": "wei"
    }
+  },
+  "chendao": {
+   "Name": "진도",
+   "Biography": "예주 사람. 망탕산 산속 마을에서 서주에서 흩어진 장비 일행과 지내다 유비를 따른다. 훗날 백이병을 이끌고 유비 곁을 지킨다.",
+   "Class": "pikeman",
+   "Stats": [
+    79,
+    83,
+    60,
+    80,
+    66,
+    74
+   ],
+   "Level": 20,
+   "Playable": true,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "shu",
+    "Scene": "infantry_noncombat"
+   }
+  },
+  "zhoucang": {
+   "Name": "주창",
+   "Biography": "관서 출신의 장사. 황건의 잔당으로 와우산에 숨어 있다가, 관우를 만나 그 칼을 받들고 평생 곁을 지킨다. 맥성에서 관우의 죽음을 듣고 스스로 목숨을 끊는다.",
+   "Class": "heavy_infantry",
+   "Stats": [
+    84,
+    86,
+    40,
+    84,
+    50,
+    72
+   ],
+   "Level": 20,
+   "Playable": true,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "shu",
+    "Scene": "infantry_noncombat",
+    "Palette": {
+     "themeA": "#3a3a40",
+     "hair": "#1a1a1a"
+    }
+   }
+  },
+  "caiyang": {
+   "Name": "채양",
+   "Biography": "조조의 장수. 관우가 다섯 관문을 지나며 벤 진기의 외숙으로, 원수를 갚겠다며 관우를 뒤쫓는다.",
+   "Class": "heavy_cavalry",
+   "Stats": [
+    80,
+    84,
+    45,
+    76,
+    60,
+    60
+   ],
+   "Level": 20,
+   "Traits": [
+    "spirit_prep"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei",
+    "Scene": "official_noncombat",
+    "Palette": {
+     "themeA": "#3a4a6a",
+     "iron": "#8a8a94"
+    }
+   }
+  },
+  "villager": {
+   "Name": "마을 사람",
+   "Biography": "산골 마을에 사는 사람.",
+   "Class": "commoner",
+   "Stats": [
+    30,
+    30,
+    30,
+    40,
+    30,
+    30
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [],
+   "Look": {
+    "Faction": "han"
+   },
+   "Template": true
   }
  }
 }

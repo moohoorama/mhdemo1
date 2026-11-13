@@ -513,6 +513,9 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			}
 		}
 	}
+	if f.shows("ground") {
+		f.drawBoardSection(c)
+	}
 	if !f.shows("objects") {
 		return
 	}
@@ -571,6 +574,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	if f.Map.SceneMap != nil {
 		items = append(items, f.sceneItems()...)
 	}
+	items = append(items, f.boardItems()...)
 	if f.Map.Native {
 		for _, it := range append(append([]drawItem{}, f.nativeItems...), f.stateItems(clockMS)...) {
 			if f.DrawBounds.Empty() || it.rect.Empty() || it.rect.Overlaps(f.DrawBounds) {

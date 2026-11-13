@@ -1,0 +1,147 @@
+{
+ "Nodes": [
+  {
+   "ID": "c20-walk",
+   "Kind": "explore",
+   "Explore": "explore20",
+   "Opening": "c20-alarm"
+  },
+  {
+   "ID": "c20-battle",
+   "Kind": "battle",
+   "Stage": "B20",
+   "Text": "망탕산 전투 — 출전 준비"
+  },
+  {
+   "ID": "c20-reunion",
+   "Kind": "scene",
+   "Place": "망탕산 · 산기슭"
+  },
+  {
+   "ID": "c20-r01",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님!"
+  },
+  {
+   "ID": "c20-r02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "운장!"
+  },
+  {
+   "ID": "c20-r03",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "둘째 형! 오자마자 채양 모가지를 베 버리다니, 역시 둘째 형이유!"
+  },
+  {
+   "ID": "c20-r04",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "익덕도 무사했구나. 형님 곁을 지켜 주었다니 고맙다."
+  },
+  {
+   "ID": "c20-r05",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님, 오는 길에 만난 이들입니다. 관평은 제가 아들로 삼았고, 주창은 와우산에서부터 저를 따랐습니다."
+  },
+  {
+   "ID": "c20-r06",
+   "Kind": "say",
+   "Speaker": "guanping",
+   "Text": "관평이라 합니다. 백부님을 뵙습니다."
+  },
+  {
+   "ID": "c20-r07",
+   "Kind": "say",
+   "Speaker": "zhoucang",
+   "Text": "주창이올시다! 장군의 칼을 들고 어디든 따르겠습니다!"
+  },
+  {
+   "ID": "c20-r08",
+   "Kind": "say",
+   "Speaker": "chenzhen",
+   "Text": "황숙, 말씀대로 운장 장군을 모시고 왔습니다."
+  },
+  {
+   "ID": "c20-r09",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "진진, 두 번이나 먼 길을 맡아 주었구려."
+  },
+  {
+   "ID": "c20-r10",
+   "Kind": "say",
+   "Speaker": "chenzhen",
+   "Text": "이제 원소 공께는 돌아갈 수 없습니다. 황숙 곁에 있게 해 주십시오."
+  },
+  {
+   "ID": "c20-r11",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "승상은 끝까지 저를 후하게 대했습니다. ……그 은혜는 언젠가 갚아야 할 것입니다."
+  },
+  {
+   "ID": "c20-r12",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그 마음은 내가 아네. 오늘은 우리 셋이 다시 모인 날일세."
+  },
+  {
+   "ID": "c20-done",
+   "Kind": "set",
+   "Flags": {
+    "c20-reunion": 1
+   }
+  }
+ ],
+ "Events": [
+  {
+   "ID": "c20-alarm",
+   "Kind": "scene",
+   "Place": "망탕산 · 산속 마을"
+  },
+  {
+   "ID": "c20-a01",
+   "Kind": "say",
+   "Speaker": "villager",
+   "Text": "크, 큰일 났습니다! 조조의 군사가 산을 올라오고 있습니다!"
+  },
+  {
+   "ID": "c20-a02",
+   "Kind": "say",
+   "Speaker": "villager",
+   "Text": "앞장선 장수가 채양이라고들 합니다."
+  },
+  {
+   "ID": "c20-a03",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "채양이라면 조조의 장수입니다. 황숙께서 이 산에 계신 것을 벌써 안 모양입니다."
+  },
+  {
+   "ID": "c20-a04",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "잘됐슈. 쫓겨 다니느라 몸이 근질근질했는디, 한바탕 해 보지 뭐유!"
+  },
+  {
+   "ID": "c20-a05",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "마을을 등지고 싸우면 마을이 다친다. 산길을 내려가며 막는다."
+  },
+  {
+   "ID": "c20-a06",
+   "Kind": "say",
+   "Speaker": "chendao",
+   "Text": "산길은 제가 압니다. 채비가 되면 장 장군께 말씀하십시오. 앞장서겠습니다."
+  },
+  {
+   "ID": "c20-alarm-back",
+   "Kind": "back"
+  }
+ ]
+}

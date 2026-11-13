@@ -4,7 +4,9 @@
 ruts full of water in its lane, the drift line of straw and twigs where the water stood, and the houses' walls stained
 to the flood's mark. The party comes in by the street from the south gate and looks round.
 
-  python3 ver5/tools/scene_maps/xiapi_inner.py
+  python3 ver5/tools/scene_maps/xiapi_inner.py          # S_xiapi_inner, the day 여포 falls (chapter 16)
+  python3 ver5/tools/scene_maps/xiapi_inner.py --dry    # S_xiapi, the same streets months later (chapter 18): grass
+                                                        # in the yards, no wet ground, the houses' walls clean
 
 Format 2 (internal/scenemap): small tiles, the playing area from (0, 0) to (W-1, H-1) with a margin of M drawn round
 it; u runs down to the right on screen, v down to the left. Ground: d soil, i paving. The wet ground is flat
@@ -17,10 +19,13 @@ grain spread on mats to dry, carts.
 """
 import json
 import subprocess
+import sys
 from pathlib import Path
 
+DRY = '--dry' in sys.argv
+
 GFX = Path(__file__).resolve().parents[2] / 'assets/graphics'
-ID = 'S_xiapi_inner'
+ID = 'S_xiapi' if DRY else 'S_xiapi_inner'
 W, H, M = 32, 28, 10
 
 g = [['d'] * (W + 2 * M) for _ in range(H + 2 * M)]
@@ -34,11 +39,17 @@ def paint(u0, v0, u1, v1, ch):
 
 
 def put(name, u, v):
+    if DRY:      # months later: the flood's traces are gone
+        if name.startswith(('wet_patch', 'puddle', 'rut_', 'wrack')):
+            return
+        name = name.removesuffix('_mud')
     obj.append([name, u, v])
 
 
 # the low quarter, left (large v is the left of the screen): its yards and lane, wet where the flood stood
-paint(-M, 14, 12, H + M, 'd')     # silt over what was grass; the lane shows by its ruts
+paint(-M, 14, 12, H + M, '.' if DRY else 'd')     # silt over what was grass; the lane shows by its ruts
+if DRY:
+    paint(4, 14, 6, H + M, 'd')
 for u, v, name in [(-2, 14, 'wet_patch_3'), (6, 15, 'wet_patch_0'), (0, 20, 'wet_patch_1'), (7, 21, 'wet_patch_1'),
                    (-2, 27, 'wet_patch_0'), (7, 27, 'wet_patch_3'), (2, 33, 'wet_patch_2'), (10, 25, 'wet_patch_2'),
                    (-6, 20, 'wet_patch_3'), (-5, 31, 'wet_patch_1'), (9, 32, 'wet_patch_0'), (3, 17, 'wet_patch_2')]:
@@ -66,11 +77,11 @@ for u, v, name in [(17, 15, 'puddle_0'), (16, 22, 'puddle_3'), (18, 27, 'puddle_
     put(name, u, v)
 
 # the granary side, right: sacks, grain spread on mats to dry, carts
-put('house_tile_x', 26, 6), put('house_tile', 28, 13)
+put('house_tile_x', 26, 6), put('tavern' if DRY else 'house_tile', 28, 13)   # dry: the 대장간 and the 주점
 put('straw_mat', 23, 14), put('straw_mat', 23, 17), put('grain_sack', 25, 15), put('grain_sack', 26, 16),
 put('grain_cart', 25, 21), put('puddle_3', 24, 19), put('wet_patch_2', 26, 17), put('water_jar', 22, 11), put('stree_broad_0', 30, 22)
 
-art = {'id': ID, 'name': '하비 성안', 'format': 2, 'size': [W // 2, H // 2], 'origin': [-M, -M],
+art = {'id': ID, 'name': '하비' if DRY else '하비 성안', 'format': 2, 'size': [W // 2, H // 2], 'origin': [-M, -M],
        'ground': [''.join(r) for r in g], 'objects': obj}
 
 if __name__ == '__main__':

@@ -33,7 +33,7 @@
    "People": {
     "관우@town": {
      "At": [
-      7,
+      5,
       13
      ],
      "Face": "SE",
@@ -82,7 +82,7 @@
     "피난민#1": {
      "At": [
       26,
-      17
+      16
      ],
      "Face": "NW",
      "Sprite": "commoner_woman",

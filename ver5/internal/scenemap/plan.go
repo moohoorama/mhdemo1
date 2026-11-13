@@ -6,6 +6,7 @@ import (
 	"math"
 	"sort"
 	"strconv"
+	"strings"
 )
 
 // Draw is one picture of a plan, in canvas pixels from the map's origin.
@@ -20,6 +21,8 @@ type Draw struct {
 	X     int    `json:"x"`
 	Y     int    `json:"y"`
 	Color string `json:"c,omitempty"`
+	// Tint, "#rrggbb", multiplies a sprite's colours (Tint.Of).
+	Tint string `json:"tint,omitempty"`
 	// Object is 1 + the index in the map's objects of the object this draws, 0 for none (for the editor to pick it).
 	Object int `json:"o,omitempty"`
 	// Clip, when set, is the convex polygon (canvas points) the picture is cut to.
@@ -220,8 +223,19 @@ func (w *view) point(cu, cv float64) (float64, float64) {
 }
 
 func (w *view) inside(u, v int) bool { return w.m.Inside(w.orig(u, v)) }
-func (w *view) glyph(u, v int) byte  { return w.m.Glyph(w.orig(u, v)) }
-func (w *view) step(u, v int) int    { return w.m.Step(w.orig(u, v)) }
+
+// beside is the height step of small tile (u, v) as seen from a raised tile of step s next to it. The map's picture
+// is a board cut out of a larger land: a city wall top (a height with a rim) runs on past the grid's edge, where the
+// board's section shows its cut (docs/presentation-scene.md, 판 단면), so it takes no face, rim or foot toward off the
+// grid; other heights drop to the ground there and show their faces at the board's edge.
+func (w *view) beside(u, v, s int) int {
+	if !w.inside(u, v) && w.c.Rules.Heights[strconv.Itoa(s)].Rim != "" {
+		return s
+	}
+	return w.step(u, v)
+}
+func (w *view) glyph(u, v int) byte { return w.m.Glyph(w.orig(u, v)) }
+func (w *view) step(u, v int) int   { return w.m.Step(w.orig(u, v)) }
 
 // center is the canvas point of a small tile's centre.
 func center(u, v int) (int, int) { return 16 * (u - v), 8 * (u + v + 1) }
@@ -464,7 +478,7 @@ func (w *view) blocks() (blocks []Piece, levels []Level, feet []Draw, err error)
 			}
 			open, footLift := 0, lift // the faces looking at lower ground: 4 toward +u, 8 toward +v
 			for bit, d := range map[int][2]int{4: {1, 0}, 8: {0, 1}} {
-				if n := w.step(u+d[0], v+d[1]); n < s {
+				if n := w.beside(u+d[0], v+d[1], s); n < s {
 					open |= bit
 					l, _, _, err := w.height(n)
 					if err != nil {
@@ -600,7 +614,7 @@ func (w *view) rims(u, v, s, lift int) []Piece {
 		{0, -1, "ne", [4]float64{fu, fv, fu + 1, fv + rimDepth}},
 		{-1, 0, "nw", [4]float64{fu, fv, fu + rimDepth, fv + 1}},
 	} {
-		if w.step(u+e.du, v+e.dv) >= s {
+		if w.beside(u+e.du, v+e.dv, s) >= s {
 			continue
 		}
 		name := fmt.Sprintf("%s_%s_%d", rim, e.side, hashTile(ou, ov)%4)
@@ -626,7 +640,9 @@ func (w *view) walls() ([]Piece, error) {
 	type tile struct {
 		at   [2]int // original small tile
 		name string // the gate slice, or "" for a block
+		tint *Tint
 		fam  WallFamily
+		axis string // the line's axis in the view
 	}
 	laidAt := map[[2]int]tile{} // by view tile
 	seated := map[int]bool{}
@@ -648,6 +664,7 @@ func (w *view) walls() ([]Piece, error) {
 		}
 		type laid struct {
 			gate   string // "" for a wall block; else the gate's slices
+			tint   *Tint  // the gate's
 			slice  int
 			mirror int // the slice in its place when the turn runs the gate the other way along the line
 		}
@@ -673,7 +690,7 @@ func (w *view) walls() ([]Piece, error) {
 				return nil, fmt.Errorf("%s: no slices of gate %s along %s", w.m.ID, gate, axis)
 			}
 			for k, s := range slices {
-				pieces[gt+round(2**s.GateOffset)] = laid{gate, k, len(slices) - 1 - k}
+				pieces[gt+round(2**s.GateOffset)] = laid{gate, ob.Tint, k, len(slices) - 1 - k}
 			}
 		}
 		fu, fv := at(t0)
@@ -686,8 +703,8 @@ func (w *view) walls() ([]Piece, error) {
 		reverse := axis == "v" && w.turn >= 2 || axis == "u" && (w.turn == 1 || w.turn == 2)
 		for t, l := range pieces {
 			ou, ov := at(t)
-			if w.m.Step(ou, ov) > foot {
-				continue
+			if w.m.Step(ou, ov) > foot || !w.m.Inside(ou, ov) {
+				continue // inside a rise, or off the board
 			}
 			u, v := w.rot(ou, ov)
 			name := ""
@@ -701,7 +718,11 @@ func (w *view) walls() ([]Piece, error) {
 			if prev, ok := laidAt[[2]int{u, v}]; ok && (prev.name != "" || name == "") {
 				continue // where lines cross, one block; a gate slice before a block
 			}
-			laidAt[[2]int{u, v}] = tile{[2]int{ou, ov}, name, family}
+			tint := line.Tint
+			if l.gate != "" {
+				tint = l.tint
+			}
+			laidAt[[2]int{u, v}] = tile{[2]int{ou, ov}, name, tint, family, turned}
 		}
 	}
 	for i, ob := range w.m.Objects {
@@ -713,8 +734,13 @@ func (w *view) walls() ([]Piece, error) {
 	for vt, l := range laidAt {
 		u, v := vt[0], vt[1]
 		x, y := center(u, v)
-		_, closedU := laidAt[[2]int{u + 1, v}]
-		_, closedV := laidAt[[2]int{u, v + 1}]
+		// a line running into the grid's edge runs on past the board: no end parapet or shadow there
+		closed := func(du, dv int) bool {
+			_, ok := laidAt[[2]int{u + du, v + dv}]
+			off := !w.inside(u+du, v+dv) && (du != 0) == (l.axis == "u")
+			return ok || off
+		}
+		closedU, closedV := closed(1, 0), closed(0, 1)
 		var names []string
 		for _, sh := range []struct {
 			open   bool
@@ -724,31 +750,45 @@ func (w *view) walls() ([]Piece, error) {
 				names = append(names, l.fam.Shade+sh.suffix)
 			}
 		}
-		if l.name != "" {
-			names = append(names, l.name)
-		} else {
-			names = append(names, l.fam.Block)
+		shades := len(names)
+		name := l.name
+		switch {
+		case name != "":
+			names = append(names, name)
+		case l.fam.Piece != "": // one picture for the tile by the sides that join it
+			mask := 0
+			for bit, d := range [4][2]int{{-1, 0}, {0, -1}, {1, 0}, {0, 1}} {
+				if closed(d[0], d[1]) {
+					mask |= 1 << bit
+				}
+			}
+			name = fmt.Sprintf("%s_%02d", l.fam.Piece, mask)
+			names = append(names, name)
+		default:
+			name = l.fam.Block
+			names = append(names, name)
 			for _, side := range []struct {
 				du, dv int
 				suffix string
 			}{{-1, 0, "_mu"}, {0, -1, "_mv"}, {1, 0, "_pu"}, {0, 1, "_pv"}} {
-				if _, ok := laidAt[[2]int{u + side.du, v + side.dv}]; !ok {
+				if !closed(side.du, side.dv) {
 					names = append(names, l.fam.Parapet+side.suffix)
 				}
 			}
 		}
-		name := l.name
-		if name == "" {
-			name = l.fam.Block
-		}
 		p := Piece{Key: Key{Box: [4]float64{float64(u), float64(v), float64(u + 1), float64(v + 1)}, Rank: RankWall,
 			X: float64(x)}, Name: name, At: l.at, Anchor: [2]float64{float64(x), float64(y)}}
-		for _, name := range names {
+		for i, name := range names {
 			sp, ok := w.c.Sprites[name]
 			if !ok {
 				return nil, fmt.Errorf("%s: no picture %s", w.m.ID, name)
 			}
-			p.Draws = append(p.Draws, Draw{Kind: DrawSprite, Name: name, X: x - sp.Pivot[0], Y: y - sp.Pivot[1]})
+			d := Draw{Kind: DrawSprite, Name: name, X: x - sp.Pivot[0], Y: y - sp.Pivot[1]}
+			if i < shades {
+				p.Draws = append(p.Draws, d)
+				continue
+			}
+			p.Draws = append(p.Draws, w.c.layered(d, l.tint)...)
 		}
 		out = append(out, p)
 	}
@@ -756,6 +796,25 @@ func (w *view) walls() ([]Piece, error) {
 		return out[a].At[0] < out[b].At[0] || out[a].At[0] == out[b].At[0] && out[a].At[1] < out[b].At[1]
 	})
 	return out, nil
+}
+
+// layered is a sprite's draw and its layers' (Rules.Layers: <name>_<layer>, pivots matched), each with its colour of
+// the tint.
+func (c *Catalog) layered(d Draw, t *Tint) []Draw {
+	d.Tint = t.Of("")
+	out := []Draw{d}
+	base := c.Sprites[d.Name]
+	for _, l := range c.Rules.Layers {
+		s, ok := c.Sprites[d.Name+"_"+l]
+		if !ok {
+			continue
+		}
+		e := d
+		e.Name, e.Tint = d.Name+"_"+l, t.Of(l)
+		e.X, e.Y = d.X+base.Pivot[0]-s.Pivot[0], d.Y+base.Pivot[1]-s.Pivot[1]
+		out = append(out, e)
+	}
+	return out
 }
 
 // gateSlices are a gate's slices along axis, by index.
@@ -782,6 +841,7 @@ func (w *view) objects() (pieces []Piece, flat []Draw, err error) {
 		if w.c.isGate(ob.Name) {
 			continue // set into its wall by walls
 		}
+		ob.Name = w.c.runsOn(w.m, ob)
 		s, ok := w.c.Sprites[ob.Name]
 		if !ok {
 			return nil, nil, fmt.Errorf("%s: no picture %s", w.m.ID, ob.Name)
@@ -795,15 +855,19 @@ func (w *view) objects() (pieces []Piece, flat []Draw, err error) {
 			return nil, nil, err
 		}
 		d := Draw{Kind: DrawSprite, Name: ob.Name, X: round(x - float64(s.Pivot[0])), Y: round(y - float64(s.Pivot[1]) - float64(lift)), Object: i + 1}
-		if s.Ground {
-			flats = append(flats, flatDraw{d, y})
-			continue
-		}
 		f := w.c.footprint(ob.Name)
 		au, av := w.point(cu+f[0], cv+f[1])
 		bu, bv := w.point(cu+f[0]+f[2], cv+f[1]+f[3])
 		box := [4]float64{min(au, bu), min(av, bv), max(au, bu), max(av, bv)}
-		draws := []Draw{d}
+		if !w.onBoard(box, ob.U, ob.V) {
+			continue // the board ends at the grid: what would stand across its edge is left out whole
+		}
+		if s.Ground {
+			flats = append(flats, flatDraw{d, y})
+			continue
+		}
+		d.Tint = ob.Tint.Of("")
+		draws := w.c.layered(d, ob.Tint)
 		if fu, fv := int(math.Floor(ru)), int(math.Floor(rv)); lift == 0 && w.c.flooded(w.glyph(fu, fv)) {
 			at := func(u, v float64) [2]float64 { return [2]float64{16 * (u - v), 8 * (u + v)} }
 			draws = w.sunk(d, ob.Name, at(box[0], box[3]), at(box[2], box[3]), at(box[2], box[1]), [2]float64{x, y})
@@ -818,6 +882,54 @@ func (w *view) objects() (pieces []Piece, flat []Draw, err error) {
 		flat = append(flat, f.d)
 	}
 	return pieces, flat, nil
+}
+
+// runsOn is the picture of a wall laid as objects (a run of <name>_u or <name>_v tiles with end tiles <name>_end_m
+// and <name>_end_p at its -u/-v and +u/+v ends) on the board: an end tile whose next tile along the run is off the
+// grid takes the run's straight picture, since the wall runs on past the board's edge, where the board's section
+// shows its cut (docs/presentation-scene.md, 판 단면).
+func (c *Catalog) runsOn(m *Map, ob Object) string {
+	for _, end := range []struct {
+		suffix string
+		step   int
+	}{{"_end_m", -1}, {"_end_p", 1}} {
+		base, ok := strings.CutSuffix(ob.Name, end.suffix)
+		if !ok {
+			continue
+		}
+		if _, ok := c.Sprites[base]; !ok {
+			return ob.Name
+		}
+		du, dv := end.step, 0
+		if strings.HasSuffix(base, "_v") {
+			du, dv = 0, end.step
+		}
+		if !m.Inside(ob.U+du, ob.V+dv) {
+			return base
+		}
+	}
+	return ob.Name
+}
+
+// onBoard reports whether an object of the map's small tile (u, v) covering box (view small tiles) stands on the
+// board (OnBoard).
+func (w *view) onBoard(box [4]float64, u, v int) bool {
+	return OnBoard(box, [4]int{w.u0, w.v0, w.u1, w.v1}, w.inside(u, v))
+}
+
+// OnBoard reports whether an object covering box (small tiles: u0, v0, u1, v1) on a map's small tile that is on the
+// board or not (tileOn) stands on a board ([u0, v0, u1, v1]). What crosses a front edge (+u, +v), where the section
+// shows, is left out, unless it stands across a back edge too (a room's corner post); what lies wholly off the board is
+// left out unless its tile is on it (a room's back walls, set just behind the floor's back edges).
+func OnBoard(box [4]float64, board [4]int, tileOn bool) bool {
+	const eps = 1e-6
+	b := [4]float64{float64(board[0]), float64(board[1]), float64(board[2]), float64(board[3])}
+	if box[0] >= b[2]-eps || box[1] >= b[3]-eps || box[2] <= b[0]+eps || box[3] <= b[1]+eps {
+		return tileOn && box[0] < b[2]-eps && box[1] < b[3]-eps
+	}
+	front := box[2] > b[2]+eps || box[3] > b[3]+eps
+	back := box[0] < b[0]-eps || box[1] < b[1]-eps
+	return !front || back
 }
 
 // cornerShadows lays the triangular shadow a standing face throws on the face to its right where the two meet in a
@@ -842,10 +954,10 @@ func (w *view) cornerShadows(pieces []Piece) error {
 		case RankFace:
 			open := 0
 			s := w.step(u, v)
-			if w.step(u+1, v) < s {
+			if w.beside(u+1, v, s) < s {
 				open |= 4
 			}
-			if w.step(u, v+1) < s {
+			if w.beside(u, v+1, s) < s {
 				open |= 8
 			}
 			lift, _, _, _ := w.height(s)

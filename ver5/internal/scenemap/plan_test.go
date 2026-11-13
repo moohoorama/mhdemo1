@@ -136,7 +136,11 @@ func TestParapets(t *testing.T) {
 		assert.Equal(t, []string{"swall2", "sparapet_mu", "sparapet_mv"}, got[[2]int{-1, -1}], "the outer corner")
 		assert.Equal(t, []string{"swall2_shade_pv", "swall2", "sparapet_mv", "sparapet_pv"}, got[[2]int{5, -1}], "along u")
 		assert.Equal(t, []string{"swall2_shade_pu", "swall2", "sparapet_mu", "sparapet_pu"}, got[[2]int{-1, 20}], "along v")
-		assert.Equal(t, []string{"swall2_shade_pu", "swall2_shade_pv", "swall2_shade_pc", "swall2", "sparapet_mv", "sparapet_pu", "sparapet_pv"}, got[[2]int{32, -1}], "the line's end")
+	})
+	t.Run("a line running into the board's edge stops there, open: no end parapet, no shadow past it", func(t *testing.T) {
+		got := draws(0)
+		assert.NotContains(t, got, [2]int{32, -1}, "past the grid's edge (u 32)")
+		assert.Equal(t, []string{"swall2_shade_pv", "swall2", "sparapet_mv", "sparapet_pv"}, got[[2]int{31, -1}], "the last tile on the board")
 	})
 	t.Run("sides are taken in the view", func(t *testing.T) {
 		assert.Equal(t, []string{"swall2_shade_pu", "swall2", "sparapet_mu", "sparapet_pu"}, draws(1)[[2]int{5, -1}], "turned a quarter, the u line runs along v")
