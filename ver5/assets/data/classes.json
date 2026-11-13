@@ -90,13 +90,17 @@
    "Portrait": "heavy_infantry",
    "Pool": [
     "deputy_appoint",
-    "assist",
+    "block_up",
     "ranged_ward"
    ],
    "Plan": [
     {
      "Level": 10,
      "Trait": "diagonal"
+    },
+    {
+     "Level": 20,
+     "Trait": "brace_prep"
     }
    ],
    "Promotes": [
@@ -129,7 +133,8 @@
    "Pool": [
     "deputy_appoint",
     "long_spear",
-    "pierce"
+    "pierce",
+    "assist"
    ],
    "Plan": [
     {
@@ -137,7 +142,7 @@
      "Trait": "diagonal"
     },
     {
-     "Level": 15,
+     "Level": 20,
      "Trait": "long_spear"
     }
    ],
@@ -180,8 +185,24 @@
      "Trait": "diagonal"
     },
     {
-     "Level": 15,
+     "Level": 20,
      "Trait": "long_spear"
+    },
+    {
+     "Level": 30,
+     "Trait": "siegecraft"
+    },
+    {
+     "Level": 40,
+     "Trait": "charge_strike"
+    },
+    {
+     "Level": 50,
+     "Trait": "assist"
+    },
+    {
+     "Level": 60,
+     "Trait": "pierce"
     }
    ],
    "Tags": [
@@ -220,6 +241,26 @@
     {
      "Level": 10,
      "Trait": "diagonal"
+    },
+    {
+     "Level": 20,
+     "Trait": "brace_prep"
+    },
+    {
+     "Level": 30,
+     "Trait": "ranged_ward"
+    },
+    {
+     "Level": 40,
+     "Trait": "castle_defense"
+    },
+    {
+     "Level": 50,
+     "Trait": "composure"
+    },
+    {
+     "Level": 60,
+     "Trait": "block_up"
     }
    ]
   },
@@ -301,6 +342,10 @@
     {
      "Level": 10,
      "Trait": "grass_footing"
+    },
+    {
+     "Level": 20,
+     "Trait": "dash"
     }
    ],
    "Tags": [
@@ -344,6 +389,10 @@
     {
      "Level": 10,
      "Trait": "grass_footing"
+    },
+    {
+     "Level": 20,
+     "Trait": "dash"
     }
    ],
    "Tags": [
@@ -387,6 +436,26 @@
     {
      "Level": 10,
      "Trait": "grass_footing"
+    },
+    {
+     "Level": 20,
+     "Trait": "dash"
+    },
+    {
+     "Level": 30,
+     "Trait": "fire_arrow_art"
+    },
+    {
+     "Level": 40,
+     "Trait": "aim_prep"
+    },
+    {
+     "Level": 50,
+     "Trait": "snipe_prep"
+    },
+    {
+     "Level": 60,
+     "Trait": "rapid_art"
     }
    ],
    "Tags": [
@@ -430,8 +499,24 @@
      "Trait": "grass_footing"
     },
     {
+     "Level": 20,
+     "Trait": "dash"
+    },
+    {
      "Level": 30,
      "Trait": "diagonal"
+    },
+    {
+     "Level": 40,
+     "Trait": "accuracy_up"
+    },
+    {
+     "Level": 50,
+     "Trait": "iron_armor"
+    },
+    {
+     "Level": 60,
+     "Trait": "vital_strike"
     }
    ],
    "Tags": [
@@ -469,6 +554,12 @@
    ],
    "Promotes": [
     "crossbow"
+   ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "accuracy_up"
+    }
    ]
   },
   "crossbow": {
@@ -504,6 +595,16 @@
    "Promotes": [
     "repeating_crossbow",
     "catapult"
+   ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "accuracy_up"
+    },
+    {
+     "Level": 20,
+     "Trait": "fire_arrow_art"
+    }
    ]
   },
   "repeating_crossbow": {
@@ -534,6 +635,32 @@
     "exhort",
     "penetrate_art",
     "rapid_art"
+   ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "accuracy_up"
+    },
+    {
+     "Level": 20,
+     "Trait": "fire_arrow_art"
+    },
+    {
+     "Level": 30,
+     "Trait": "relief"
+    },
+    {
+     "Level": 40,
+     "Trait": "penetrate_art"
+    },
+    {
+     "Level": 50,
+     "Trait": "exhort"
+    },
+    {
+     "Level": 60,
+     "Trait": "rapid_art"
+    }
    ]
   },
   "catapult": {
@@ -567,12 +694,28 @@
    ],
    "Plan": [
     {
+     "Level": 10,
+     "Trait": "accuracy_up"
+    },
+    {
+     "Level": 20,
+     "Trait": "fire_arrow_art"
+    },
+    {
      "Level": 30,
-     "Trait": "far_sight"
+     "Trait": "relief"
     },
     {
      "Level": 40,
+     "Trait": "far_sight"
+    },
+    {
+     "Level": 50,
      "Trait": "cross_strike"
+    },
+    {
+     "Level": 60,
+     "Trait": "siegecraft"
     }
    ],
    "Tags": [
@@ -609,7 +752,6 @@
     "fire",
     "relief",
     "focus",
-    "meditate_art",
     "foresight"
    ],
    "Plan": [
@@ -675,16 +817,12 @@
      "Trait": "water"
     },
     {
-     "Level": 15,
+     "Level": 20,
      "Trait": "earth"
     },
     {
-     "Level": 18,
-     "Trait": "spread"
-    },
-    {
-     "Level": 21,
-     "Trait": "crush"
+     "Level": 25,
+     "Trait": "foresight"
     }
    ],
    "Promotes": [
@@ -736,28 +874,24 @@
      "Trait": "water"
     },
     {
-     "Level": 15,
+     "Level": 20,
      "Trait": "earth"
     },
     {
-     "Level": 18,
-     "Trait": "spread"
-    },
-    {
-     "Level": 21,
-     "Trait": "crush"
+     "Level": 25,
+     "Trait": "foresight"
     },
     {
      "Level": 30,
+     "Trait": "spread"
+    },
+    {
+     "Level": 40,
      "Trait": "fire_boost"
     },
     {
-     "Level": 33,
+     "Level": 60,
      "Trait": "water_boost"
-    },
-    {
-     "Level": 36,
-     "Trait": "earth_boost"
     }
    ]
   },
@@ -1108,6 +1242,48 @@
    ],
    "Promotes": [
     "ruffian"
+   ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "counter_art"
+    }
+   ]
+  },
+  "turban": {
+   "Name": "황건적",
+   "Desc": "누런 두건을 두른 농민 무리. 적병보다 굼뜨고 쉽게 흩어진다.",
+   "Terrain": "bandit",
+   "Attack": "melee",
+   "Weapon": "sword",
+   "Armor": "robe",
+   "Move": 4,
+   "Range": 1,
+   "Bonus": [
+    10,
+    5,
+    4,
+    6,
+    9,
+    24
+   ],
+   "HPFactor": 3,
+   "MPBase": 14,
+   "RecoveryBase": 2,
+   "Tier": 0,
+   "Sprite": "bandit",
+   "Portrait": "bandit",
+   "Pool": [
+    "counter_art",
+    "earth",
+    "provoke_prep",
+    "disrupt_prep"
+   ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "counter_art"
+    }
    ]
   },
   "ruffian": {
@@ -1141,7 +1317,11 @@
    ],
    "Plan": [
     {
-     "Level": 15,
+     "Level": 10,
+     "Trait": "counter_art"
+    },
+    {
+     "Level": 20,
      "Trait": "diagonal"
     }
    ],
@@ -1179,8 +1359,28 @@
    ],
    "Plan": [
     {
-     "Level": 15,
+     "Level": 10,
+     "Trait": "counter_art"
+    },
+    {
+     "Level": 20,
      "Trait": "diagonal"
+    },
+    {
+     "Level": 30,
+     "Trait": "earth"
+    },
+    {
+     "Level": 40,
+     "Trait": "venom"
+    },
+    {
+     "Level": 50,
+     "Trait": "relief"
+    },
+    {
+     "Level": 60,
+     "Trait": "vital_strike"
     }
    ]
   },
@@ -1214,6 +1414,12 @@
    ],
    "Promotes": [
     "pugilist"
+   ],
+   "Plan": [
+    {
+     "Level": 10,
+     "Trait": "counter_art"
+    }
    ]
   },
   "pugilist": {
@@ -1246,7 +1452,11 @@
    ],
    "Plan": [
     {
-     "Level": 15,
+     "Level": 10,
+     "Trait": "counter_art"
+    },
+    {
+     "Level": 20,
      "Trait": "diagonal"
     }
    ],
@@ -1284,12 +1494,28 @@
    ],
    "Plan": [
     {
-     "Level": 15,
+     "Level": 10,
+     "Trait": "counter_art"
+    },
+    {
+     "Level": 20,
      "Trait": "diagonal"
     },
     {
      "Level": 30,
+     "Trait": "fire"
+    },
+    {
+     "Level": 40,
+     "Trait": "press_prep"
+    },
+    {
+     "Level": 50,
      "Trait": "palm_wind"
+    },
+    {
+     "Level": 60,
+     "Trait": "fire_boost"
     }
    ]
   }

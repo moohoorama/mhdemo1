@@ -13,6 +13,9 @@ import (
 )
 
 // shopView is the shop window's state: whose shop, the tab, its table, the thing picked and how many.
+// byPrice is the shop tables' first order: the dearest first.
+var byPrice = tableSort{"price", 2}
+
 type shopView struct {
 	of   string
 	sell bool
@@ -62,7 +65,7 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 	}
 	v := &g.shopView
 	if v.of != g.shopFrom {
-		*v = shopView{of: g.shopFrom}
+		*v = shopView{of: g.shopFrom, list: tableList{order: byPrice}}
 	}
 	shop := g.S.Data.Shops[person.Shop]
 	left, right := x+28, x+w-28
@@ -71,7 +74,7 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 	for i, tab := range []string{"사기", "팔기 (반값)"} {
 		sell := i == 1
 		g.choiceBtn(dst, image.Rect(left+i*146, y+74, left+i*146+140, y+106), tab, v.sell == sell, func() {
-			*v = shopView{of: v.of, sell: sell}
+			*v = shopView{of: v.of, sell: sell, list: tableList{order: byPrice}}
 		})
 	}
 
@@ -92,7 +95,6 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 	}
 	drawTable(g, dst, &v.list, table[goodsRow]{
 		cols: cols, rowH: 36, headH: 32, size: 15, center: true, empty: empty,
-		rank:     func(r *goodsRow) int { return b2i(!r.ok) },
 		dim:      func(r *goodsRow) bool { return !r.ok },
 		selected: func(r *goodsRow) bool { return r.id == v.pick },
 		pick: func(r *goodsRow) {

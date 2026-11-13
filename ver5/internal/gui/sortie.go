@@ -31,51 +31,64 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 		g.selected = ids[0]
 	}
 	st := g.S.Data.Stages[o.Stage]
-	listW := min(470, w/2)
+	listW := min(340, w*9/25)
 	rect(dst, float32(x+listW), float32(y+8), 1, float32(h-16), goldDim)
 	g.label(dst, "출전 준비", float64(x+16), float64(y+12), 18, gold)
 	tx := float64(x+28) + g.width("출전 준비", 18)
 	g.label(dst, fmt.Sprintf("출전 %d / %d", len(o.Deployment), st.Max), tx, float64(y+17), 13, muted)
-	g.mBtn(dst, image.Rect(x+listW-168, y+4, x+listW-86, y+4+touchH), "목표", false, g.openObjective)
+	g.mBtn(dst, image.Rect(x+listW-160, y+4, x+listW-84, y+4+touchH), "목표", false, g.openObjective)
 	g.mBtn(dst, image.Rect(x+listW-80, y+4, x+listW-8, y+4+touchH), "메뉴", false, func() { g.openOverlay("menu") })
 	rect(dst, float32(x+8), float32(y+56), float32(listW-16), 1, goldDim)
+	_, gearOwner, _, guide := g.gearStep()
+	guide = guide && g.overlay() == ""
 	g.listRows(dst, &g.party.officers, image.Rect(x+6, y+58, x+listW-4, y+h-6), len(ids), listRowH, func(i int, rr image.Rectangle) {
 		g.sortieRow(dst, o, rr, ids[i])
-	}, func(i int) { g.selected = ids[i] })
+		if guide && ids[i] == gearOwner && ids[i] != g.selected {
+			g.guideRim(dst, rr.Inset(4))
+		}
+	}, func(i int) { g.selected, g.party.trait, g.party.tip = ids[i], "", "" })
 
 	of := g.officer(o, g.selected)
 	if of == nil {
 		return
 	}
+	// the picked officer as in the officers' window, with a 부관 tab
 	rx, right := x+listW+16, x+w-16
-	g.sortieBrief(dst, o, of, image.Rect(rx, y+10, right, y+h-128))
-	going := slices.Contains(o.Deployment, of.ID)
-	var deputy func()
-	if going && g.S.Engine.CanDeputize(of.ID) {
-		deputy = func() { g.openOverlay("deputy") }
+	g.label(dst, g.name(of.ID), float64(rx), float64(y+12), 18, gold)
+	p := &g.party
+	p.sortieTab = min(p.sortieTab, len(sortieTabs)-1)
+	g.tabRow(dst, rx+int(g.width(g.name(of.ID), 18))+18, y+4, sortieTabs, p.sortieTab, func(i int) { p.sortieTab, p.tip = i, "" })
+	if tx := rx + int(g.width(g.name(of.ID), 18)) + 18; guide && of.ID == gearOwner && p.sortieTab != 2 {
+		g.guideRim(dst, g.tabRect(tx, y+4, sortieTabs, 2))
 	}
-	var equip, traits func()
-	if g.servedBy(o, of.ID) == "" {
-		equip = func() { g.openOverlay("equipment") }
+	rect(dst, float32(rx), float32(y+52), float32(right-rx), 1, goldDim)
+	body := image.Rect(rx, y+60, right, y+h-64)
+	var acts []action
+	switch p.sortieTab {
+	case 0:
+		g.officerBio(dst, o, of, body)
+	case 1:
+		acts = g.officerTraits(dst, of, body)
+	case 2:
+		if lead := g.servedBy(o, of.ID); lead != "" { // a deputy wears nothing
+			c := image.Rect(body.Min.X, body.Min.Y, body.Max.X, body.Min.Y+64)
+			g.card(dst, c)
+			g.label(dst, g.name(lead)+"의 부관이라 장비를 들지 않습니다. 장비는 창고에 있습니다.", float64(c.Min.X+18), float64(c.Min.Y+22), 14, muted)
+		} else {
+			g.officerEquipment(dst, of, body)
+		}
+	case 3:
+		acts = g.officerDeputy(dst, o, of, body)
 	}
-	traits = func() {
-		g.party.items, g.party.table, g.party.tab, g.party.trait = false, false, 1, ""
+	belongings := action{"소지품", false, func() { // the seals can be used before the battle too
+		p.items, p.table, p.insu = true, false, insuState{}
 		g.openOverlay("party")
-	}
-	var detail func()
-	if going {
-		detail = func() { g.openUnit(false) }
-	}
-	bw := (right - rx - 18) / 4
-	for i, b := range []struct {
-		label string
-		click func()
-	}{{"장비", equip}, {"부관", deputy}, {"특성", traits}, {"상세", detail}} {
-		bx := rx + i*(bw+6)
-		g.mBtn(dst, image.Rect(bx, y+h-120, bx+bw, y+h-120+touchH), b.label, false, b.click)
-	}
-	g.actionRow(dst, right, y+h-60, action{"출진 ›", true, g.startSortie})
+	}}
+	g.actionRow(dst, right, y+h-60, append(append(acts, belongings), action{"출진 ›", true, g.startSortie})...)
 }
+
+// sortieTabs are the tabs of the picked officer in the sortie preparation: the officers' window's and 부관.
+var sortieTabs = append(append([]string{}, officerTabs...), "부관")
 
 // sortieRow is an officer's row: the state cell (출전, 부관 · whom, 대기), pressed to send out or call back, then the
 // officer as in the officers' list.
@@ -110,6 +123,9 @@ func (g *Game) sortieRow(dst *ebiten.Image, o core.Observation, rr image.Rectang
 		noteC = good
 	}
 	g.officerRow(dst, row, *of, false, note, noteC)
+	if g.servedBy(o, id) == "" { // a deputy wears nothing
+		g.missingGear(dst, of.Class, of.Equipment, float64(row.Min.X+70)+g.width(g.name(id), 16), float64(row.Min.Y+5))
+	}
 }
 
 // togglePrep sends a waiting officer out or calls one back; the lord and the stage's required officers always go,
@@ -135,65 +151,4 @@ func (g *Game) togglePrep(id string) {
 		deploy = append(deploy, id)
 	}
 	g.request(session.Request{Op: "command", Command: core.Command{Kind: "deploy", Deployment: deploy}})
-}
-
-// sortieBrief is the picked officer in short: the face, name and state, the deputy's face, the hexagon (the lead
-// alone dashed in gold when a deputy serves) and the traits the unit carries.
-func (g *Game) sortieBrief(dst *ebiten.Image, o core.Observation, of *core.Character, r image.Rectangle) {
-	x, y := float64(r.Min.X), float64(r.Min.Y)
-	g.portrait(dst, of.ID, of.Class, x, y, 48)
-	g.label(dst, g.name(of.ID), x+60, y-2, 20, gold)
-	state := "대기"
-	switch {
-	case g.servedBy(o, of.ID) != "":
-		state = g.name(g.servedBy(o, of.ID)) + "의 부관"
-	case slices.Contains(o.Deployment, of.ID):
-		state = "출전"
-	}
-	g.label(dst, fmt.Sprintf("%s · Lv%d · %s", g.className(of.Class), of.Level, state), x+60, y+28, 12, muted)
-	if of.Deputy != "" {
-		d := g.officer(o, of.Deputy)
-		dx := float64(r.Max.X) - 36 - g.width(g.name(of.Deputy), 14) - 8
-		if d != nil {
-			g.portrait(dst, d.ID, d.Class, dx, y+6, 36)
-		}
-		g.label(dst, "부관", dx+44, y+4, 12, muted)
-		g.label(dst, g.name(of.Deputy), dx+44, y+20, 14, ink)
-	}
-	stats, _, err := g.S.Engine.DeputyStats(of.ID, of.Deputy)
-	if err != nil {
-		return
-	}
-	var alone *core.Stats
-	if of.Deputy != "" {
-		if s, _, err := g.S.Engine.DeputyStats(of.ID, ""); err == nil {
-			alone = &s
-		}
-	}
-	radius := min(46.0, float64(r.Dy()-90)/2)
-	g.hexChart(dst, x+radius+60, y+radius+84, radius, stats, alone, g.rosterBest(o))
-	tx, ty := x+2*radius+140, y+64
-	traits := slices.Clone(of.Learned)
-	for _, slot := range equipSlots {
-		if id, ok := of.Equipment[slot]; ok {
-			traits = append(traits, g.S.Data.Equipment[id].Traits...)
-		}
-	}
-	if of.Deputy != "" {
-		for _, t := range g.S.Engine.DeputyTraits(of.Deputy) {
-			if !slices.Contains(traits, t) {
-				traits = append(traits, t)
-			}
-		}
-	}
-	g.label(dst, fmt.Sprintf("특성 %d", len(traits)), tx, ty, 12, muted)
-	ty += 22
-	for _, t := range traits {
-		if ty+22 > float64(r.Max.Y) {
-			break
-		}
-		g.traitIconOf(dst, t, tx, ty, 20)
-		g.label(dst, g.traitName(t), tx+26, ty, 13, ink)
-		ty += 23
-	}
 }

@@ -423,6 +423,7 @@ type drawItem struct {
 	rect  image.Rectangle   // canvas area the sprite's image covers
 	ghost func(float32)     // units: redraw at this opacity when scenery drawn later covers it
 	hides bool              // scenery a unit behind it shows through faintly (castle walls and gates)
+	low   bool              // scenery that only hides the feet of a unit behind it, which stays hidden (a parapet)
 	key   *scenemap.Key     // a format 2 scene map's sort key; nil: made from y and rect (orderScene)
 	level int               // the ground a format 2 scene map's item stands on: 0, or 1 + its index in levels
 	tops  []image.Rectangle // a raised level's tops, drawn as one item: the areas that hide what lies behind
@@ -711,7 +712,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		}
 		var alpha float32
 		for _, later := range items[i+1:] {
-			if later.kind == 0 && later.covers(it.rect) {
+			if later.kind == 0 && !later.low && later.covers(it.rect) {
 				if later.hides {
 					alpha = .3
 					break
@@ -840,7 +841,7 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost float32) {
 	} else {
 		f.blit(f.Canvas, s, x, y, op)
 	}
-	if k := max(.9*u.charge, u.bleach); k > 0 && ghost == 0 { // gathering a critical blow or being promoted: a white silhouette fades in over the sprite
+	if k := .9 * u.charge; k > 0 && ghost == 0 { // gathering a critical blow: a white silhouette fades in over the sprite
 		var cm colorm.ColorM
 		cm.Scale(0, 0, 0, k)
 		cm.Translate(1, 1, 1, 0)

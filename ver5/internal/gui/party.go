@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"srpg/internal/content"
 	"srpg/internal/core"
 )
 
@@ -19,11 +20,16 @@ type partyView struct {
 	learning     bool // opened by a level-up for the officers still learning; closing it ends their learning
 	filter, item string
 	trait        string
+	tip          string    // the equipment trait whose description shows on 장비, as "slot|trait"
+	sortieTab    int       // the sortie's tab of the picked officer (sortieTabs)
+	depLead      string    // the lead the 부관 tab last showed, so another lead starts on their own deputy
+	shelves      tableList // the 특성 tab's shelves scrolled, in steps of shelfStep
 	list         tableList
 	officers     tableList
 	officerList  tableList
 	deputies     tableList
 	placing      tableList // the deployment's list of the sortie
+	insu         insuState // the seal being used from the belongings
 }
 
 // belonging is a kind of thing the party has: how many are carried or stored, and who wears the rest.
@@ -78,7 +84,7 @@ func (g *Game) belongingKind(id string) string {
 	if eq, ok := g.S.Data.Equipment[id]; ok {
 		return slotNames[eq.Slot]
 	}
-	if g.S.Data.Items[id].Effect == "promote" {
+	if g.S.Data.Items[id].Effect == content.ItemPromote {
 		return "인수"
 	}
 	return "소모품"
@@ -112,6 +118,7 @@ func (g *Game) belongingsTab(dst *ebiten.Image, o core.Observation, x, y, w, h i
 		}
 		rows[i] = g.goodsRow(b.id)
 		rows[i].count = b.count()
+		rows[i].ok = g.insuUsable(o, b.id) // only what can be used here is lit
 		switch {
 		case len(b.wearer) == 1:
 			rows[i].wear = b.wearer[0]
@@ -127,8 +134,14 @@ func (g *Game) belongingsTab(dst *ebiten.Image, o core.Observation, x, y, w, h i
 		cols: g.goodsColumns(goodsNumber("count", "수량", func(r *goodsRow) int { return r.count }),
 			column[goodsRow]{key: "wear", label: "장착", w: 150, text: true, get: func(r *goodsRow) (string, float64) { return r.wear, 0 }}),
 		rowH: touchH, headH: 32, size: 15, center: true,
+		dim:      func(r *goodsRow) bool { return !r.ok },
 		selected: func(r *goodsRow) bool { return r.id == cur.id },
-		pick:     func(r *goodsRow) { p.item = r.id },
+		pick: func(r *goodsRow) {
+			p.item = r.id
+			if r.ok {
+				g.openInsu(r.id)
+			}
+		},
 	}, rows, image.Rect(x+16, y+56, x+16+tableW, y+h))
 	g.belongingDetail(dst, cur, image.Rect(x+16+tableW+16, y, x+w-16, y+h))
 }
@@ -136,7 +149,7 @@ func (g *Game) belongingsTab(dst *ebiten.Image, o core.Observation, x, y, w, h i
 // belongingDetail describes a thing: its picture, name and kind, what it does, how many there are and who wears
 // them; equipment gets the button to the equipment window of its first wearer or of the officer picked.
 func (g *Game) belongingDetail(dst *ebiten.Image, b belonging, r image.Rectangle) {
-	card(dst, r)
+	g.card(dst, r)
 	x, y := float64(r.Min.X+14), float64(r.Min.Y+14)
 	g.itemIcon(dst, g.itemIconOf(b.id), x+3, y+3, 1.5, false)
 	g.label(dst, g.itemName(b.id), x+64, y, 18, gold)
@@ -152,6 +165,9 @@ func (g *Game) belongingDetail(dst *ebiten.Image, b belonging, r image.Rectangle
 	_, dh := measureLines(g, desc, 14)
 	y += dh + 8
 	worn, where := "—", "전투 · 도구 명령"
+	if g.S.Data.Items[b.id].Effect == content.ItemPromote {
+		where = "탐험 · 관리 · 소지품, 출전 준비 · 소지품"
+	}
 	if isEq {
 		worn, where = "없음", "장비"
 		if len(b.wearer) > 0 {

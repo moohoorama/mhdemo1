@@ -63,6 +63,7 @@ make android ANDROID_SDK=/path/to/Android/sdk
 - 결과는 `bin/android/srpg-ver5-debug.apk`. ARM64 휴대폰과 x86_64 에뮬레이터를 지원한다. 최소 Android 6.0(API 23), OpenGL ES 3.0, 가로 화면.
 - 테스트 서명 APK이며 Play Store 배포용 서명·AAB는 없다. 서명 키는 `bin/android/debug.keystore`에 있으므로 같은 기기에 업데이트하려면 이 파일을 유지한다.
 - 조작: 한 손가락은 버튼·유닛 클릭과 전장 드래그 이동, 두 손가락은 지도 이동·핀치 확대/축소. 에디터에서는 한 손가락 드래그로 칠하고 두 손가락으로 이동한다. 뒤로 가기는 Escape와 같다.
+- 앱 아이콘은 `android/res/mipmap-*/ic_launcher.png`(48~192px)다. 데스크톱 창 아이콘은 `assets/graphics/ui/app_icon.png`(256px)이고 Windows·Linux에서만 보인다(macOS 창에는 아이콘이 없다). 두 곳 모두 같은 그림을 줄인 것이다.
 - 세이브는 앱 내부 저장소에 유지된다. 에셋이 변경된 APK 업데이트는 배포 에셋을 다시 풀기 때문에 앱에서 편집한 맵이 덮어써질 수 있다.
 
 ## Android 설계

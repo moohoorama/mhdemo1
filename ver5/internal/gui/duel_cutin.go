@@ -75,6 +75,7 @@ func (p *Player) cutInStep(dt float64) float64 {
 		return dt
 	}
 	use := min(dt, cutInLength(v)-c.t)
+	p.g.cutInSounds(c.t, c.t+use)
 	c.t += use
 	if c.t >= cutInLength(v) {
 		c.done = true
@@ -82,11 +83,33 @@ func (p *Player) cutInStep(dt float64) float64 {
 	return dt - use
 }
 
-// skipCutIn ends the cut-in at once (the duel's skip button and keys).
-func (g *Game) skipCutIn() {
-	if g.cutIn.view != nil {
-		g.cutIn.done = true
+// cutInSounds strikes the cut-in's cues that fall in (from, to]: the gong and the ring of iron as the
+// portraits meet, then a thud for each name stamped.
+func (g *Game) cutInSounds(from, to float64) {
+	_, clash, stampL, stampR, _, _, _, _ := cutTimes()
+	cues := []struct {
+		at  float64
+		cue string
+		vol float64
+	}{{clash, "duel-start", 1}, {clash, "block", .8}, {stampL, "hit", .7}, {stampR, "hit", .7}}
+	for _, c := range cues {
+		if from < c.at && c.at <= to {
+			g.sfxVol(c.cue, c.vol)
+		}
 	}
+}
+
+// skipCutIn ends the cut-in at once (the duel's skip button and keys); a skip before the portraits
+// meet still sounds the gong.
+func (g *Game) skipCutIn() {
+	c := &g.cutIn
+	if c.view == nil || c.done {
+		return
+	}
+	if _, clash, _, _, _, _, _, _ := cutTimes(); c.t < clash {
+		g.sfx("duel-start")
+	}
+	c.done = true
 }
 
 func (g *Game) drawCutIn(dst *ebiten.Image) {

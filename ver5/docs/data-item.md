@@ -18,7 +18,7 @@
 | `Learn` | 착용하는 동안 학습 후보에 더해지는 특성. 모두 배울 수 있는 특성(`Cost >= 1`)이어야 한다. |
 | `Palette` | 고유한 색을 가진 말: 도트 태그 묶음(`horseSkin`·`horseMane`·`saddle` 등) → 색. 기마 병종이 이 장신구를 차면 전투 도트(배치·전투·일기토)의 말이 이 색으로 칠해진다(장수 `Look.Palette` 위에 덮음). 도보 병종은 그대로다. 예: 백마는 흰 털·흰 갈기, 절영은 검은 말, 적토마는 붉은 말. |
 | `Skills` | 착용하는 동안 쓸 수 있는 기술. 모두 `skills.json`에 있어야 한다. |
-| `Owner` | 추천 주인. `Playable` 인물이고 그 시작 병종이 들 수 있어야 한다. 이야기로 받은 장비는 언제나 창고로 가고, 플레이어가 아니라 게임 AI(자동 진행·`_campaign`·`_balance`)와 장면 이동 게임이 출전 전에 창고에서 꺼내 이 인물에게 채운다(`Engine.OwnerPiece`). 그 칸에 이미 자기 주인 장비를 찬 인물에게는 채우지 않는다. |
+| `Owner` | 추천 주인. `Playable` 인물이고 그 시작 병종이 들 수 있어야 한다. 이야기로 받은 장비는 언제나 창고로 가고 저절로 차지 않는다. 게임 AI(자동 진행·검증 실행·`_campaign`·`_balance`)만 출전 전에 창고에서 꺼내 이 인물에게 채우고(`Engine.OwnerPiece`; 플레이어의 `Space`는 채우지 않는다), 장면 이동 게임은 그 지점까지 이야기가 준 것만 채운다. 그 칸에 이미 자기 주인 장비를 찬 인물에게는 채우지 않는다. 탐험 이벤트가 준 주인 장비는 초록 안내가 장착까지 이끈다([presentation-explore.md](presentation-explore.md)). |
 
 ```json
 "fangtian_halberd": {"Name": "방천화극", "Slot": "weapon", "Type": "spear", "Bonus": [3, 0, 0, 0, 0, 0], "Traits": ["halberd_sweep"]}
@@ -85,7 +85,7 @@
 아이템은 전투 중 `item` 명령으로 쓴다. 성공하면 쓴 유닛의 이동과 행동이 모두 끝난다. 플레이어 아군은 공용 `Inventory`에서, 적과 동맹군(`AI` 아군)은 자기 `Items`에서 소모한다. 시작 재고는 적이 `Rules.EnemyStock`, 동맹군이 `Rules.AllyStock`이다.
 
 - `hp`, `mp`: 쓰는 유닛과 같은 진영이고 거리가 1 이하(자기 자신 포함)인 살아 있는 대상 하나에게 쓴다. `hp`는 `Amount`를, `mp`는 `Amount`를 최대 병력·병법까지 채운다. 쓴 유닛에게 `item_power`(물심양면 0.5)가 있으면 `Amount`가 그만큼 늘어난다. 의술(`heal_bonus`)은 회복 책략에만 붙고 아이템에는 붙지 않는다. 특성 `item_share`가 있으면 대상 옆의 같은 진영 유닛 한 명에게도 같은 효과가 간다. 이미 행동했으면 `ActionSpent`.
-- `promote`: 자기 자신에게만, 아군만 쓴다(`InvalidTarget`). 명령의 `Option`이 고른 병종이다. 현재 병종의 `Promotes`에 있어야 하고(갈래가 하나면 비워도 그 병종) 인수의 `Tier`가 현재 병종 `Tier` + 1이어야 하며(`InvalidPromotion`), 인물 레벨이 `Rules.PromoteLevels[현재 병종 Tier]` 이상이어야 하며(`InsufficientLevel`), 인수가 인벤토리에 있어야 한다(`MissingItem`). 쓰면 인수 하나가 줄고 병종이 바뀌며 병력과 병법이 최대로 찬다. `promotion` 이벤트가 나간다. 전투 중 가능한 행동이라 이미 행동했으면 `ActionSpent`.
+- `promote`(인수): 전투 밖에서만 쓴다 — 탐험에서 걸을 때, 전투 노드의 출전 준비, 배치 중(`CanLearn`과 같은 때, 이벤트 대사 중은 아님). 전투 중에는 `PromoteAway`로 거부되고 전투의 합법 명령에도 없다. 명령은 `{Kind: "item", Target: 장수, Item, Option}`이고 `Target`이 승급할 장수(부관이어도 됨), `Option`이 고른 병종이다. 현재 병종의 `Promotes`에 있어야 하고(갈래가 하나면 비워도 그 병종) 인수의 `Tier`가 현재 병종 `Tier` + 1이어야 하며(`InvalidPromotion`), 인물 레벨이 `Rules.PromoteLevels[현재 병종 Tier]` 이상이어야 하며(`InsufficientLevel`), 인수가 인벤토리에 있어야 한다(`MissingItem`). 쓰면 인수 하나가 줄고 병종이 바뀌며, 배치 중이면 그 유닛의 병력·병법이 찬다. `promotion` 이벤트(`Actor`·`Text` 모두 그 장수)가 나가고, 새 병종이 들 수 없는 장비는 창고로 돌아가며 장비마다 `unequip` 이벤트(`Actor` 장수, `Target` 장비)가 나간다. 다른 아이템은 전투 밖에서 `WrongPhase`. `Engine.PromotionsAway(item, 장수)`가 지금 쓸 수 있는 병종(또는 이유)을 준다.
 - `steal` 기술은 대상의 `Items` 하나를 30% 확률로 가져온다. 아군이 가져오면 `Inventory`에, 적이 가져오면 적 유닛의 `Items`에 들어간다.
 
 ## 4. 얻는 길

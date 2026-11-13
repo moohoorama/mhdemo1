@@ -1,0 +1,32 @@
+# c19-yuan  S_tent_lux2  ch19  origin -1 -1
+Pil###############Pil
+###......GuoSheBnrgu1
+###Cdl......TblCheJar
+######YuaTbl.........
+###Cdl......Tbl......
+PilBnr...............
+
+Yua 원소  (sit)
+Guo 곽도
+She 심배
+Che 진진
+Liu 유비  (off stage, enters later (cell 5 3))
+Jia 간옹  (off stage, enters later (cell 5 4))
+Sun 손건  (off stage, enters later (cell 4 4))
+Miz 미축  (off stage, enters later (cell 5 4))
+Mes 전령  (light_infantry, off stage, enters later (cell 5 4))
+gu1 호위#1  (guards)
+
+# c19-y01: Liu -> 3 2
+# c19-y01: Jia -> 3 4
+# c19-y01: Sun -> 2 3
+# c19-y01: Miz -> 4 3
+# c19-y05: Mes -> 4 2
+# c19-y06: Mes -> 6 5 and leaves
+# c19-y12: Guo -> 2 0
+# c19-y13: Mes -> 4 2
+# c19-y14: gu1 -> 2 1
+# c19-y23: gu1 -> 5 0
+# c19-y25: Che -> 4 1
+# c19-dead2: gu1 -> 2 1
+# c19-dead: gu1 -> 2 1

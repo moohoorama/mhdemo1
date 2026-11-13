@@ -15,6 +15,12 @@ func TestStageLevelFollowsTheStoryOrder(t *testing.T) {
 		assert.Equal(t, i+1, d.StageOrder(id), id)
 		assert.Equal(t, levels[i], d.Rules.StageLevel(d.StageOrder(id)), id)
 	}
+	t.Run("the flat debug curve climbs one level a battle", func(t *testing.T) {
+		flat := d.ForDifficulty("flat_normal").Rules
+		for i := range 10 {
+			assert.Equal(t, i+3, flat.StageLevel(i+1))
+		}
+	})
 	assert.Equal(t, 4, d.NextBattleOrder("c04-c6"), "Jian Yong joins at Pengcheng, before its battle")
 }
 

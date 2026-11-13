@@ -134,7 +134,7 @@ func (e *Engine) DuelMarks() []DuelMark {
 	var out []DuelMark
 	seen := map[string]bool{}
 	for i, d := range stage.Duels {
-		if e.state.Executed["duel-"+d.ID] {
+		if !e.duelOpen(d) {
 			continue
 		}
 		for _, id := range append([]string{d.Ally, d.Enemy}, d.Supports...) {

@@ -1,0 +1,221 @@
+{
+ "Scenes": {
+  "c16-flood": {
+   "Map": "S_xiapi_flood",
+   "Nodes": ["c16-flood", "c16-f01", "c16-f02", "c16-f03", "c16-f04", "c16-f-gao", "c16-f05", "c16-f06", "c16-f07", "c16-f08"],
+   "Ambient": [{"CamAt": [2, 1]}],
+   "Cast": {
+    "미방": {"At": [3, 8], "Face": "NE", "Off": true},
+    "장비": {"At": [4, 8], "Face": "NE", "Off": true},
+    "유비": {"At": [5, 8], "Face": "NE", "Off": true},
+    "관우": {"At": [6, 8], "Face": "NE", "Off": true, "Hold": true},
+    "손건": {"At": [7, 8], "Face": "NE", "Off": true},
+    "미축": {"At": [3, 9], "Face": "NE", "Off": true},
+    "고순": {"At": [6, 9], "Face": "NE", "Off": true, "If": ["party:gaoshun"]}
+   },
+   "Beats": {
+    "c16-f01": [
+     [
+      [{"Actor": "유비", "Enter": [5, 16], "Move": [5, 8], "After": 0.0}, {"Actor": "관우", "Enter": [6, 16], "Move": [6, 8], "After": 0.3}, {"Actor": "장비", "Enter": [4, 16], "Move": [4, 8], "After": 0.6}, {"Actor": "손건", "Enter": [7, 16], "Move": [7, 8], "After": 1.2}, {"Actor": "미축", "Enter": [3, 16], "Move": [3, 9], "After": 1.5}, {"Actor": "미방", "Enter": [2, 16], "Move": [3, 8], "After": 0.9}, {"Actor": "고순", "Enter": [7, 16], "Move": [6, 9], "After": 1.8}],
+      [{"Actor": "미방", "Face": "NE"}, {"Actor": "장비", "Face": "NE"}, {"Actor": "유비", "Face": "NE"}, {"Actor": "관우", "Face": "NE"}, {"Actor": "손건", "Face": "NE"}, {"Actor": "미축", "Face": "NE"}, {"Actor": "고순", "Face": "NE"}]
+     ]
+    ],
+    "c16-f04": [
+     [
+      [{"Actor": "장비", "Face": "SE"}]
+     ]
+    ],
+    "c16-f06": [
+     [
+      [{"Actor": "관우", "Emote": "…"}]
+     ]
+    ],
+    "c16-f07": [
+     [
+      [{"Actor": "유비", "Face": "NE"}, {"Actor": "장비", "Face": "NE"}]
+     ]
+    ],
+    "c16-f08": [
+     [
+      [{"Actor": "관우", "Face": "NW"}],
+      [{"Actor": "관우", "Pose": "bow"}]
+     ]
+    ]
+   }
+  },
+  "c16-baimen": {
+   "Map": "S_baimen",
+   "Nodes": ["c16-baimen", "c16-b-gao", "c16-b01", "c16-b02", "c16-b03", "c16-b04", "c16-b05", "c16-b06", "c16-b07", "c16-b08", "c16-b09", "c16-b10", "c16-b11", "c16-b12", "c16-b13", "c16-b14", "c16-b15", "c16-b16", "c16-b17", "c16-b18", "c16-b19", "c16-b20", "c16-b21", "c16-b22"],
+   "Ambient": [{"CamAt": [2.6, 0.6]}],
+   "Cast": {
+    "조조": {"At": [5, 3], "Face": "SW", "Pose": "sit", "Hold": true},
+    "허저": {"At": [6, 3], "Face": "SW"},
+    "유비": {"At": [4, 4], "Face": "SE"},
+    "관우": {"At": [4, 3], "Face": "SE"},
+    "장비": {"At": [4, 5], "Face": "SE"},
+    "위병#1": {"At": [6, 4], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "위병#2": {"At": [7, 4], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "고순": {"At": [5, 5], "Face": "NE", "Off": true, "If": ["!party:gaoshun"], "Bound": true},
+    "진궁": {"At": [5, 5], "Face": "NE", "Off": true, "Bound": true},
+    "여포": {"At": [5, 5], "Face": "NE", "Off": true, "Bound": true},
+    "장료": {"At": [5, 5], "Face": "NE", "Off": true, "Bound": true},
+    "호송병#1": {"At": [6, 5], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei", "Off": true},
+    "호송병#2": {"At": [7, 5], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei", "Off": true}
+   },
+   "Beats": {
+    "c16-b01": [
+     [
+      [{"Actor": "고순", "Enter": [12, 5], "Move": [5, 5]}, {"Actor": "호송병#1", "Enter": [13, 5], "Move": [6, 5]}, {"Actor": "호송병#2", "Enter": [14, 5], "Move": [7, 5]}],
+      [{"Actor": "고순", "Face": "NE"}, {"Actor": "호송병#1", "Face": "NW"}, {"Actor": "호송병#2", "Face": "NW"}]
+     ]
+    ],
+    "c16-b03": [
+     [
+     ],
+     [
+      [{"Actor": "호송병#2", "Move": [14, 5], "Exit": true}, {"Actor": "호송병#1", "Move": [13, 5], "Exit": true}, {"Actor": "고순", "Move": [12, 5], "Exit": true}]
+     ]
+    ],
+    "c16-b04": [
+     [
+      [{"Actor": "진궁", "Enter": [12, 5], "Move": [5, 5]}, {"Actor": "호송병#1", "Enter": [13, 5], "Move": [6, 5]}, {"Actor": "호송병#2", "Enter": [14, 5], "Move": [7, 5]}],
+      [{"Actor": "진궁", "Face": "NE"}, {"Actor": "호송병#1", "Face": "NW"}, {"Actor": "호송병#2", "Face": "NW"}]
+     ]
+    ],
+    "c16-b08": [
+     [
+     ],
+     [
+      [{"Actor": "호송병#2", "Move": [14, 5], "Exit": true}, {"Actor": "호송병#1", "Move": [13, 5], "Exit": true}, {"Actor": "진궁", "Move": [12, 5], "Exit": true}]
+     ]
+    ],
+    "c16-b09": [
+     [
+      [{"Actor": "여포", "Enter": [12, 5], "Move": [5, 5]}, {"Actor": "호송병#1", "Enter": [13, 5], "Move": [6, 5]}, {"Actor": "호송병#2", "Enter": [14, 5], "Move": [7, 5]}],
+      [{"Actor": "여포", "Face": "NE"}, {"Actor": "호송병#1", "Face": "NW"}, {"Actor": "호송병#2", "Face": "NW"}]
+     ]
+    ],
+    "c16-b10": [
+     [
+      [{"Actor": "조조", "Emote": "…"}]
+     ]
+    ],
+    "c16-b12": [
+     [
+      [{"Actor": "조조", "Emote": "…"}]
+     ]
+    ],
+    "c16-b14": [
+     [
+      [{"Actor": "유비", "Face": "SE"}]
+     ]
+    ],
+    "c16-b15": [
+     [
+      [{"Actor": "여포", "Face": "NW"}]
+     ]
+    ],
+    "c16-b16": [
+     [
+     ],
+     [
+      [{"Actor": "호송병#2", "Move": [14, 5], "Exit": true}, {"Actor": "호송병#1", "Move": [13, 5], "Exit": true}, {"Actor": "여포", "Move": [12, 5], "Exit": true}]
+     ]
+    ],
+    "c16-b17": [
+     [
+      [{"Actor": "장료", "Enter": [12, 5], "Move": [5, 5]}, {"Actor": "호송병#1", "Enter": [13, 5], "Move": [6, 5]}, {"Actor": "호송병#2", "Enter": [14, 5], "Move": [7, 5]}],
+      [{"Actor": "장료", "Face": "NE"}, {"Actor": "호송병#1", "Face": "NW"}, {"Actor": "호송병#2", "Face": "NW"}]
+     ]
+    ],
+    "c16-b18": [
+     [
+      [{"Actor": "조조", "Pose": "idle"}, {"Actor": "조조", "Play": "action"}]
+     ]
+    ],
+    "c16-b19": [
+     [
+      [{"Actor": "관우", "Move": [5, 4]}],
+      [{"Actor": "관우", "Face": "NE"}]
+     ]
+    ],
+    "c16-b20": [
+     [
+      [{"Actor": "조조", "Play": "action"}]
+     ],
+     [
+      [{"Wait": 0.4}],
+      [{"Actor": "장료", "Bound": false}],
+      [{"Actor": "호송병#1", "Move": [13, 5], "Exit": true}, {"Actor": "호송병#2", "Move": [14, 5], "Exit": true}]
+     ]
+    ],
+    "c16-b21": [
+     [
+      [{"Actor": "관우", "Move": [4, 3]}],
+      [{"Actor": "관우", "Face": "SE"}]
+     ]
+    ]
+   }
+  },
+  "c16-inner": {
+   "Map": "S_xiapi_inner",
+   "Nodes": ["c16-inner", "c16-i01", "c16-i02", "c16-i03", "c16-i04", "c16-i05", "c16-i06", "c16-i07"],
+   "Ambient": [{"CamAt": [8, 9]}],
+   "Cast": {
+    "유비": {"At": [8, 15], "Face": "NE", "Off": true},
+    "관우": {"At": [9, 15], "Face": "NE", "Off": true},
+    "장비": {"At": [7, 15], "Face": "NE", "Off": true},
+    "손건": {"At": [9, 16], "Face": "NE", "Off": true},
+    "간옹": {"At": [7, 16], "Face": "NE", "Off": true},
+    "미축": {"At": [8, 16], "Face": "NE", "Off": true},
+    "미방": {"At": [9, 16], "Face": "NE", "Off": true},
+    "고순": {"At": [7, 16], "Face": "NE", "Off": true, "If": ["party:gaoshun"]},
+    "병사": {"At": [8, 16], "Face": "NE", "Off": true, "Sprite": "light_infantry", "Faction": "wei"},
+    "조조군#1": {"At": [7, 3], "Face": "SW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조조군#2": {"At": [9, 3], "Face": "SW", "Sprite": "light_infantry", "Faction": "wei"}
+   },
+   "Beats": {
+    "c16-i01": [
+     [
+      [{"Actor": "유비", "Enter": [8, 15], "Move": [8, 10], "Face": "NE"}, {"Actor": "관우", "Enter": [9, 15], "Move": [9, 10], "After": 0.2}, {"Actor": "장비", "Enter": [7, 15], "Move": [7, 10], "After": 0.4}, {"Actor": "손건", "Enter": [9, 15], "Move": [9, 11], "After": 0.6}, {"Actor": "미축", "Enter": [8, 15], "Move": [8, 12], "After": 0.8}, {"Actor": "미방", "Enter": [9, 15], "Move": [9, 12], "After": 1.0}, {"Actor": "간옹", "Enter": [7, 15], "Move": [7, 11], "After": 1.2}, {"Actor": "고순", "Enter": [8, 15], "Move": [8, 13], "After": 1.4}],
+      [{"Actor": "유비", "Face": "SW"}]
+     ]
+    ],
+    "c16-i02": [
+     [
+     ],
+     [
+      [{"Actor": "미축", "Move": [8, 15], "Exit": true}, {"Actor": "미방", "Move": [9, 15], "Exit": true, "After": 0.2}]
+     ]
+    ],
+    "c16-i03": [
+     [
+     ],
+     [
+      [{"Actor": "손건", "Move": [12, 11], "Exit": true}]
+     ]
+    ],
+    "c16-i04": [
+     [
+     ],
+     [
+      [{"Actor": "간옹", "Via": [[7, 9]], "Move": [8, 4], "Exit": true}]
+     ]
+    ],
+    "c16-i05": [
+     [
+     ],
+     [
+      [{"Actor": "고순", "Move": [7, 13], "Face": "NW", "Exit": true}]
+     ]
+    ],
+    "c16-i06": [
+     [
+      [{"Actor": "병사", "Enter": [8, 15], "Move": [8, 12], "Face": "NE", "Speed": 1.6}],
+      [{"Actor": "유비", "Face": "SW"}]
+     ]
+    ]
+   }
+  }
+ }
+}

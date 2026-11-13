@@ -13,7 +13,6 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2/audio"
-	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
 	"github.com/hajimehoshi/ebiten/v2/audio/vorbis"
 	"srpg/internal/content"
 	"srpg/internal/duel"
@@ -27,6 +26,9 @@ const (
 	musicVolume  = .35
 	musicFadeOut = .8 // seconds for the old theme to die away before the next starts
 	musicFadeIn  = 1.5
+	// a looping theme dies away over its last seconds and comes back in, so its end does not cut off into its start
+	musicLoopFadeOut = 6.0
+	musicLoopFadeIn  = 1.0
 	sfxGapTicks  = 3 // the same cue struck again within this many ticks is not doubled
 )
 
@@ -44,6 +46,9 @@ type soundBank struct {
 	player   *audio.Player
 	file     *os.File
 	vol      float64
+	length   float64 // seconds of the theme playing
+	lastPos  float64 // where in the loop the theme was last update
+	looped   bool    // the theme has come round to its start at least once
 }
 
 var cueVariant = regexp.MustCompile(`-\d+$`)
@@ -125,6 +130,18 @@ func (p *Player) sfxAt(cue string, at float64) {
 	p.g.sfx(cue)
 }
 
+// sfxFrom starts a cue `at` seconds into the replay from now.
+func (p *Player) sfxFrom(cue string, at float64) {
+	if cue == "" {
+		return
+	}
+	if at > 0 {
+		p.sounds = append(p.sounds, delayedSfx{at, cue})
+		return
+	}
+	p.g.sfx(cue)
+}
+
 type delayedSfx struct {
 	left float64
 	cue  string
@@ -166,13 +183,16 @@ func (g *Game) sfx(cue string) { g.sfxVol(cue, 1) }
 
 // sfxAtCell plays a cue made by someone standing at cell (u, v) of the field, quieter the farther it is from the
 // middle of the screen.
-func (g *Game) sfxAtCell(cue string, u, v float64) {
+func (g *Game) sfxAtCell(cue string, u, v float64) { g.sfxVolAtCell(cue, u, v, 1) }
+
+// sfxVolAtCell is sfxAtCell at a share of the volume.
+func (g *Game) sfxVolAtCell(cue string, u, v, vol float64) {
 	if g.field == nil {
-		g.sfx(cue)
+		g.sfxVol(cue, vol)
 		return
 	}
 	x, y := g.field.Center(u, v)
-	g.sfxVol(cue, distanceGain((x-g.camX)*g.zoom/(float64(worldW)/2), (y-g.camY)*g.zoom/(float64(worldH)/2)))
+	g.sfxVol(cue, vol*distanceGain((x-g.camX)*g.zoom/(float64(worldW)/2), (y-g.camY)*g.zoom/(float64(worldH)/2)))
 }
 
 // distanceGain is the volume of a sound at (dx, dy) from the middle of the screen, in halves of its width and
@@ -262,8 +282,24 @@ func (g *Game) updateMusic(dt float64) {
 		s.vol = min(1, s.vol+dt/musicFadeIn)
 	}
 	if s.player != nil {
-		s.player.SetVolume(s.vol * musicVolume)
+		s.player.SetVolume(s.vol * s.loopEnvelope() * musicVolume)
 	}
+}
+
+// loopEnvelope is the volume share the theme plays at where it is in its loop: down to nothing over its last
+// musicLoopFadeOut seconds, back up over the first musicLoopFadeIn of the next time round.
+func (s *soundBank) loopEnvelope() float64 {
+	if s.length < 3*musicLoopFadeOut {
+		return 1
+	}
+	pos := math.Mod(s.player.Position().Seconds(), s.length)
+	s.looped = s.looped || pos < s.lastPos
+	s.lastPos = pos
+	k := min(1, (s.length-pos)/musicLoopFadeOut)
+	if s.looped && pos < musicLoopFadeIn {
+		k = min(k, pos/musicLoopFadeIn)
+	}
+	return max(0, k)
 }
 
 func (s *soundBank) stop() {
@@ -271,7 +307,7 @@ func (s *soundBank) stop() {
 		s.player.PauseAndStopReading()
 		s.file.Close()
 	}
-	s.player, s.file, s.theme, s.vol = nil, nil, "", 0
+	s.player, s.file, s.theme, s.vol, s.length, s.lastPos, s.looped = nil, nil, "", 0, 0, 0, false
 }
 
 // start plays a theme from its beginning, looping; a theme that cannot be read stays silent.
@@ -280,11 +316,11 @@ func (s *soundBank) start(theme string) {
 	if theme == "" {
 		return
 	}
-	f, err := os.Open(filepath.Join(s.music, theme+".mp3"))
+	f, err := os.Open(filepath.Join(s.music, theme+".ogg"))
 	if err != nil {
 		return
 	}
-	stream, err := mp3.DecodeWithSampleRate(sampleRate, f)
+	stream, err := vorbis.DecodeWithSampleRate(sampleRate, f)
 	if err != nil {
 		f.Close()
 		return
@@ -295,6 +331,7 @@ func (s *soundBank) start(theme string) {
 		return
 	}
 	s.player, s.file = p, f
+	s.length = float64(stream.Length()) / (4 * sampleRate)
 	p.SetVolume(0)
 	p.Play()
 }
@@ -327,6 +364,9 @@ func (g *Game) musicFor() string {
 		return m.World
 	case g.S.Screen == "title" || g.S.Engine == nil:
 		return m.Title
+	case g.player.Duel != nil && m.Duel != "":
+		// the duel on screen, even when the engine has already moved on to the victory it won
+		return m.Duel
 	}
 	byMap := func(name, fallback string) string {
 		if t := m.Maps[name]; t != "" {
@@ -353,9 +393,6 @@ func (g *Game) musicFor() string {
 	case "deployment":
 		return m.Sortie
 	case "battle":
-		if g.player.Duel != nil && m.Duel != "" {
-			return m.Duel
-		}
 		if o.Map != nil && m.Stages[o.Map.ID] != "" {
 			return m.Stages[o.Map.ID]
 		}
@@ -486,7 +523,11 @@ func (g *Game) sceneFootfall(key string, v *unitVis, to [2]float64) {
 	if v.mounted {
 		cue = "hoof"
 	}
-	g.sfxAtCell(cue, v.u, v.v)
+	vol := 1.0
+	if s.def.Steps > 0 {
+		vol = s.def.Steps
+	}
+	g.sfxVolAtCell(cue, v.u, v.v, vol)
 }
 
 // fallCue is the sound of a unit beaten off the field: an officer of ours with the erhu's sigh, an enemy officer

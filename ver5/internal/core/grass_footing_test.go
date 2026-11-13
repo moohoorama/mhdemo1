@@ -27,3 +27,19 @@ func TestGrassFootingRaisesTheFactorOnlyOnBareGrass(t *testing.T) {
 		assert.Equal(t, before[cell], after[cell], cell)
 	}
 }
+
+func TestTerrainFootingRaisesTheFactorEverywhere(t *testing.T) {
+	e, a, _ := arena(t)
+	cells := []string{"g--", "gt-", "gv-", "l--"}
+	before := map[string]float64{}
+	for _, cell := range cells {
+		setCell(e, a.X, a.Y, cell)
+		before[cell] = e.terrain(a, a.X, a.Y).Factor
+	}
+	e.data.Traits["terrain_footing"] = content.Trait{Effects: map[string]float64{content.FxTerrainFactor: .05}}
+	with(e, "hero", "terrain_footing")
+	for _, cell := range cells {
+		setCell(e, a.X, a.Y, cell)
+		assert.InDelta(t, before[cell]+.05, e.terrain(a, a.X, a.Y).Factor, 1e-9, cell)
+	}
+}

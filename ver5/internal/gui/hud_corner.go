@@ -107,6 +107,9 @@ func (g *Game) cornerButtons(dst *ebiten.Image, x, y int, party func()) {
 	sw := (infoW - 2*cornerPad - cornerGap) / 2
 	by := y + 1 + cornerPad
 	g.centeredBtn(dst, image.Rect(x+cornerPad, by, x+cornerPad+sw, by+cornerBtnH), "관리", party)
+	if _, _, _, ok := g.gearStep(); ok && party != nil && g.overlay() == "" {
+		g.guideRim(dst, image.Rect(x+cornerPad, by, x+cornerPad+sw, by+cornerBtnH))
+	}
 	g.centeredBtn(dst, image.Rect(x+cornerPad+sw+cornerGap, by, x+cornerPad+2*sw+cornerGap, by+cornerBtnH), "메뉴", func() { g.openOverlay("menu") })
 }
 
@@ -129,7 +132,7 @@ func (g *Game) rightPanel(dst *ebiten.Image, summary string, party func()) int {
 }
 
 func (g *Game) speedSlot() *cornerSlot {
-	return &cornerSlot{label: fmt.Sprintf("배속 ×%d", g.speed), click: func() { g.speed = nextSpeed[g.speed] }}
+	return &cornerSlot{label: fmt.Sprintf("배속 ×%d", g.speed), click: func() { g.setSpeed(nextSpeed[g.speed]) }}
 }
 
 // zoomSlot steps the camera through the zooms as the wheel does; nil click while the camera waits.
@@ -141,8 +144,9 @@ func (g *Game) zoomSlot(locked bool) *cornerSlot {
 	s := &cornerSlot{label: fmt.Sprintf("확대 %d배", int(math.Round(cur)))}
 	if !locked {
 		s.click = func() {
-			next := zooms[0]
-			for _, z := range zooms {
+			steps := g.zoomSteps()
+			next := steps[0]
+			for _, z := range steps {
 				if z > cur+.01 {
 					next = z
 					break

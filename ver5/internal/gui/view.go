@@ -149,15 +149,54 @@ func (g *Game) sync(o core.Observation) {
 }
 
 // zooms are the battle's canvas scales, which the wheel steps through and a pinch settles on;
-// 1 shows unit pixels 1:1. A battle opens at battleZoom.
+// 1 shows unit pixels 1:1. A battle opens at battleZoom. A battle map smaller than the screen
+// starts its steps higher, see zoomSteps.
 var zooms = []float64{1, 2, 4}
 
 const battleZoom = 2
 
-// nearestZoom is the step of zooms nearest z, by ratio.
-func nearestZoom(z float64) float64 {
-	best := zooms[0]
-	for _, s := range zooms {
+// zoomSteps are the zooms this field steps through: on a battle map none so far out that the view
+// passes the rectangle round the battle area. They stay whole numbers, so the dots stay even.
+func (g *Game) zoomSteps() []float64 {
+	fit := g.fitZoom()
+	var steps []float64
+	for _, z := range zooms {
+		if z >= fit {
+			steps = append(steps, z)
+		}
+	}
+	if len(steps) == 0 {
+		steps = []float64{math.Ceil(fit)}
+	}
+	return steps
+}
+
+// fitZoom is the least zoom at which the view stays inside the rectangle round the battle area, or 0
+// where the camera is not held to it (see battleBox).
+func (g *Game) fitZoom() float64 {
+	box, ok := g.battleBox()
+	if !ok {
+		return 0
+	}
+	vp := g.battleViewport()
+	return max(float64(vp.Dx())/(box[0][1]-box[0][0]), float64(vp.Dy())/(box[1][1]-box[1][0]))
+}
+
+// battleBox is the rectangle round the battle area's diamond in canvas px, as {left, right} and {top,
+// bottom}, on a battle map (not a story scene's or an old-format one).
+func (g *Game) battleBox() ([2][2]float64, bool) {
+	f := g.field
+	if f == nil || !f.Map.Native || f.ShowExterior || g.scene != nil || g.exploring() {
+		return [2][2]float64{}, false
+	}
+	c := f.mapOutline()
+	return [2][2]float64{{c[3][0], c[1][0]}, {c[0][1], c[2][1]}}, true
+}
+
+// nearestZoom is the step of steps nearest z, by ratio.
+func nearestZoom(steps []float64, z float64) float64 {
+	best := steps[0]
+	for _, s := range steps {
 		if math.Abs(math.Log(z/s)) < math.Abs(math.Log(z/best)) {
 			best = s
 		}
@@ -246,17 +285,46 @@ func (g *Game) camera() {
 		if g.zoomT < .5 {
 			current = g.zoomTo
 		}
+		steps := g.zoomSteps()
 		i := 0
-		for j, z := range zooms {
-			if z <= current {
+		for j, z := range steps {
+			if z <= current+.01 {
 				i = j
 			}
 		}
-		g.setZoom(zooms[max(0, min(len(zooms)-1, i+int(math.Copysign(1, wheel))))])
+		g.setZoom(steps[max(0, min(len(steps)-1, i+int(math.Copysign(1, wheel))))])
 	}
-	size := g.field.Size()
-	g.camX = math.Max(0, math.Min(float64(size.X), g.camX))
-	g.camY = math.Max(0, math.Min(float64(size.Y), g.camY))
+	g.camX, g.camY = g.clampCam(g.camX, g.camY)
+}
+
+// camRange is how far the camera's centre may go on a battle map: the view stays inside the rectangle
+// round the battle area's diamond, so the outside shows only in its four corner triangles; a view wider
+// or taller than that rectangle is centred on it. Other fields keep the centre on the canvas.
+func (g *Game) camRange() (lo, hi [2]float64) {
+	box, ok := g.battleBox()
+	if !ok {
+		size := g.field.Size()
+		return [2]float64{}, [2]float64{float64(size.X), float64(size.Y)}
+	}
+	vp := g.battleViewport()
+	half := [2]float64{float64(vp.Dx()) / 2 / g.zoom, float64(vp.Dy()) / 2 / g.zoom}
+	for i := range 2 {
+		lo[i], hi[i] = box[i][0]+half[i], box[i][1]-half[i]
+		if lo[i] > hi[i] {
+			lo[i] = (box[i][0] + box[i][1]) / 2
+			hi[i] = lo[i]
+		}
+	}
+	return lo, hi
+}
+
+// clampCam is (x, y) moved into camRange.
+func (g *Game) clampCam(x, y float64) (float64, float64) {
+	if g.field == nil {
+		return x, y
+	}
+	lo, hi := g.camRange()
+	return math.Max(lo[0], math.Min(hi[0], x)), math.Max(lo[1], math.Min(hi[1], y))
 }
 
 // onMap reports whether the cursor is over the battlefield and not over a HUD panel.

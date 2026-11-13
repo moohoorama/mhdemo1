@@ -29,4 +29,4 @@ Sun 손건  (off stage, enters later (cell 5 4))
 # c15-k01: Jia -> 5 3
 # c15-k01: Sun -> 5 4
 # c15-k09: Xou -> 5 2
-# c15-k12: Xou -> 4 1
+# c15-k17: Xou -> 4 1

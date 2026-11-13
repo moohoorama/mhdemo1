@@ -36,7 +36,7 @@ func demoRanges(d *Demo) error {
 }
 
 // demoTraitCard opens the officers' 특성 tab in a battle of the stage (-stage) on 관우, then 간옹, each on its own
-// trait with the longest description (frames 130 and 160), then 관우's 열전 tab (frame 190).
+// trait with the longest description (frames 130 and 160), then the 열전 tab of 관우 (frame 190) and 간옹 (220).
 func demoTraitCard(d *Demo) error {
 	if err := d.battle(d.stage); err != nil {
 		return err
@@ -66,7 +66,9 @@ func demoTraitCard(d *Demo) error {
 			show("jianyong")
 		case 190:
 			show("guanyu")
-			g.party.tab = 2
+			g.party.tab = 0
+		case 220:
+			show("jianyong")
 		}
 	}
 	return nil

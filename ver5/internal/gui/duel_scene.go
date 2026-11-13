@@ -94,7 +94,7 @@ func (g *Game) startDuelScene(stage int, duel content.Duel, enemyAttacks bool) e
 	if enemyAttacks {
 		snap.Turn = "enemy"
 	}
-	g.S.Engine, err = core.Restore(g.S.Data, snap)
+	g.S.Engine, err = core.Restore(openDuel(g.S.Data, stage, duel.ID), snap)
 	if err != nil {
 		return err
 	}
@@ -245,4 +245,17 @@ func (g *Game) updateDuelPreview() {
 		g.duelPreview = nil
 		g.toast(err.Error(), bad)
 	}
+}
+
+// openDuel is the data with the stage duel's conditions dropped, so the scene can stage it whatever has happened.
+func openDuel(d *content.Data, stage int, id string) *content.Data {
+	dd := *d
+	dd.Stages = slices.Clone(d.Stages)
+	dd.Stages[stage].Duels = slices.Clone(d.Stages[stage].Duels)
+	for i := range dd.Stages[stage].Duels {
+		if dd.Stages[stage].Duels[i].ID == id {
+			dd.Stages[stage].Duels[i].If = nil
+		}
+	}
+	return &dd
 }

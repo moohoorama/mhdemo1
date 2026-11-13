@@ -247,3 +247,17 @@ func TestFleeToAnAreaLeavesByTheNearestCellAndCountsAsFled(t *testing.T) {
 	s := e.Snapshot()
 	assert.Equal(t, 1, s.Flags["boss-away"]+s.PendingFlags["boss-away"])
 }
+
+func TestSpentCasterWaitsInsteadOfCharging(t *testing.T) {
+	zero := 0
+	e := battle(t, func(s *content.Stage) {
+		s.Enemies[0].Policy, s.Enemies[0].Class = "assault", "mage"
+		s.Enemies[0].Traits, s.Enemies[0].MP = &[]string{"fire"}, &zero
+		s.Enemies[0].Equipment = &[]string{}
+	})
+	start := unit(e, "boss")
+	require.Greater(t, start.Stats.Mind, start.Stats.Attack)
+	enemyTurn(t, e)
+	b := unit(e, "boss")
+	assert.Equal(t, [2]int{start.X, start.Y}, [2]int{b.X, b.Y}, "with no spell points left a caster stays")
+}

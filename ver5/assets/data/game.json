@@ -58,6 +58,7 @@
    "earth": "r"
   },
   "CritMarkTurns": 3,
+  "CritMarkPower": 45,
   "ElementTerrain": {
    "fire": {"g": 15, "t": 30},
    "water": {"s": 15, "w": 30},
@@ -70,8 +71,11 @@
   "ExpSpell": 2,
   "ExpDefeat": 2,
   "ExpLevelStep": 0.12,
+  "ExpRatioPower": 0,
   "ExpMinFactor": 0.25,
   "ExpMaxFactor": 2,
+  "DuelXPPct": 100,
+  "JoinShift": true,
   "ExpSupportPercent": 16,
   "PointsPerLevel": 100,
   "MaxLevel": 99,
@@ -86,12 +90,17 @@
   "StageLevelBase": 3,
   "StageLevelStep": 1.5,
   "SideShareMax": 0.5,
-  "ForageItems": ["barley", "bean"],
   "TraitPlanStep": 15,
   "Difficulties": [
    {"ID": "easy", "Name": "쉬움", "Desc": "SRPG 장르에 익숙하지 않은 분들을 위한 난이도입니다.", "EnemyShift": -0.15, "XPPct": 130},
    {"ID": "normal", "Name": "보통", "Desc": "SRPG 장르와 코에이 삼국지에 익숙한 분들을 위한 난이도입니다.", "EnemyShift": 0, "XPPct": 100},
-   {"ID": "hard", "Name": "어려움", "Desc": "이 게임에 익숙한 분들을 위한 난이도입니다.", "EnemyShift": 0.15, "XPPct": 85}
+   {"ID": "hard", "Name": "어려움", "Desc": "이 게임에 익숙한 분들을 위한 난이도입니다.", "EnemyShift": 0.15, "XPPct": 85},
+   {"ID": "flat_easy", "Name": "완만 쉬움", "Desc": "2026-11-11~12 완만한 성장 곡선의 쉬움입니다(디버그).", "EnemyShift": -0.05, "XPPct": 150, "Debug": true,
+    "Rules": {"StageLevelStep": 1, "ExpAction": 16, "ExpRatioPower": 4, "ExpMaxFactor": 3, "DuelXPPct": 70, "JoinShift": false}},
+   {"ID": "flat_normal", "Name": "완만 보통", "Desc": "2026-11-11~12 완만한 성장 곡선의 보통입니다(디버그).", "EnemyShift": 0, "XPPct": 110, "Debug": true,
+    "Rules": {"StageLevelStep": 1, "ExpAction": 16, "ExpRatioPower": 4, "ExpMaxFactor": 3, "DuelXPPct": 70, "JoinShift": false}},
+   {"ID": "flat_hard", "Name": "완만 어려움", "Desc": "2026-11-11~12 완만한 성장 곡선의 어려움입니다(디버그).", "EnemyShift": 0.12, "XPPct": 65, "Debug": true,
+    "Rules": {"StageLevelStep": 1, "ExpAction": 16, "ExpRatioPower": 4, "ExpMaxFactor": 3, "DuelXPPct": 70, "JoinShift": false}}
   ],
   "RankLead": {
    "rabble": -0.14,
@@ -184,9 +193,9 @@
   "han": {
    "Name": "한 황실",
    "Colors": [
-    "#ffd85a",
-    "#e0a81e",
-    "#9a6a10"
+    "#bdb5aa",
+    "#948b7f",
+    "#625a50"
    ]
   },
   "barbarian": {
@@ -278,8 +287,7 @@
    "Glyph": "v",
    "Grounds": "gdil",
    "RestHP": 10,
-   "RestMP": 2,
-   "Village": true
+   "RestMP": 2
   },
   "k": {
    "Name": "주둔지",
@@ -327,7 +335,6 @@
   "w": {
    "Name": "물웅덩이",
    "Look": "wet",
-   "Factor": -0.1,
    "Grounds": "gdilu"
   },
   "r": {

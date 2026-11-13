@@ -17,12 +17,13 @@ type Key struct {
 }
 
 // Ranks of the kinds of standing items, for items on the same ground: a block's faces, then walls and gates, then
-// objects, then people.
+// objects, then people, then a top's rims: a rim stands on its tile's edge, in front of whoever stands on the tile.
 const (
 	RankFace = iota
 	RankWall
 	RankObject
 	RankPerson
+	RankRim
 )
 
 func (k Key) front() float64 { return k.Box[2] + k.Box[3] }

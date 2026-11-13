@@ -80,7 +80,7 @@ func (g *Game) updatePointer() {
 	if !pointer.multi {
 		if g.pinched {
 			g.pinched = false
-			g.setZoom(nearestZoom(g.zoom)) // a pinch settles on the nearest of the battle's zooms
+			g.setZoom(nearestZoom(g.zoomSteps(), g.zoom)) // a pinch settles on the nearest of the battle's zooms
 		}
 		return
 	}
@@ -97,7 +97,8 @@ func (g *Game) updatePointer() {
 		e.clampCamera()
 	} else if g.field != nil && !g.popupPending() && !g.input && g.onMap() && !g.cameraLocked() {
 		g.pinched = true
-		g.setZoomImmediate(max(zooms[0], min(zooms[len(zooms)-1], g.zoom*pointer.ratio)))
+		steps := g.zoomSteps()
+		g.setZoomImmediate(max(steps[0], min(steps[len(steps)-1], g.zoom*pointer.ratio)))
 		g.camX -= pointer.dx / worldPx / g.zoom
 		g.camY -= pointer.dy / worldPx / g.zoom
 	}

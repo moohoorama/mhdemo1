@@ -1,0 +1,20 @@
+# c17-ask  S_council  ch17  origin -1 -1
+Pil#################################Pil
+###...Brz...Bnr...Wpn...Bnr...ArmBrz...
+###Bnr...Xuc...........................
+###Flg......TblTbl...Tbl...Tbl......gu1
+###CdlCaoDsk...........................
+###Cdl.................................
+###Bnr......TblTbl...Tbl...Tbl......gu2
+###Wpn.................................
+Pil...Brz........................Brz...
+
+Cao 조조  (sit)
+Xuc 허저
+Liu 유비  (off stage, enters later (cell 10 3))
+gu1 호위#1  (guards)
+gu2 호위#2  (guards)
+
+# c17-a01: Liu -> 4 3
+# c17-a04: Cao -> 3 3
+# c17-g02: Xuc -> 2 2

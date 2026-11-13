@@ -1,0 +1,24 @@
+# c18-hall  S_xuzhou_hall  ch18  origin -1 -1
+###########################
+###......BnrCdl###CdlBnr...Lnt
+###Wpn.........Liu............
+###......Miz...Dsk...Sun......
+###......Jia...###...Fan......
+###Arm...MifGua###ZhaGao......
+###............###............
+###...in1......###......in2...
+   Lnt.........###............
+
+Liu 유비
+Miz 미축
+Jia 간옹
+Mif 미방
+Sun 손건
+Fan 번궁
+Gao 고순
+Gua 관우
+Zha 장비
+in1 서주병#1  (light_infantry)
+in2 서주병#2  (light_infantry)
+
+# c18-h08: Gua -> 4 8 and leaves

@@ -62,11 +62,12 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 	case "recover-hp":
 		return fmt.Sprintf("%s: 병력 +%d", a, e.Amount), false
 	case "pouch-heal":
+		if e.Target != "" {
+			return fmt.Sprintf("%s: %s의 콩을 나눠 받음 병력 +%d", a, t, e.Amount), false
+		}
 		return fmt.Sprintf("%s: 주머니의 콩을 먹음 병력 +%d", a, e.Amount), false
 	case "knockback":
 		return fmt.Sprintf("%s: %s을(를) 밀어냄", a, t), false
-	case "forage":
-		return a + ": 마을에서 보리·콩을 얻음", false
 	case "recover-mp":
 		return fmt.Sprintf("%s: 병법치 +%d", a, e.Amount), false
 	case "move", "place":
@@ -175,7 +176,7 @@ func statusText(id string, s core.Status) string {
 var errorNames = map[string]string{
 	"StaleRevision": "화면이 최신 상태가 아닙니다", "NotYourTurn": "지금은 행동할 수 없습니다",
 	"OutOfRange": "범위 밖입니다", "InvalidTarget": "대상이 올바르지 않습니다", "ActionSpent": "이미 행동했습니다",
-	"InsufficientMP": "병법치가 부족합니다", "InsufficientHP": "병력이 부족합니다", "MoveSpent": "이미 이동했습니다", "WrongPhase": "지금은 할 수 없습니다",
+	"InsufficientMP": "병법치가 부족합니다", "InsufficientHP": "병력이 부족합니다", "MoveSpent": "이미 이동했습니다", "WrongPhase": "지금은 할 수 없습니다", "PromoteAway": insuWhere,
 	"DeploymentIncomplete": "출전 장수를 모두 배치해 주세요", "InvalidPlacement": "이 칸에는 배치할 수 없습니다",
 	"AlreadyPlaced": "이미 배치된 장수입니다", "NoDeploymentSpace": "모든 장수를 배치할 수 있는 빈칸이 없습니다",
 	"InvalidSlot": "슬롯이 올바르지 않습니다", "NoGame": "진행 중인 게임이 없습니다",

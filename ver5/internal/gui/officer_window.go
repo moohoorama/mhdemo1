@@ -11,10 +11,10 @@ import (
 )
 
 // officerTabs are the tabs of an officer's detail.
-var officerTabs = []string{"전투력", "특성", "열전", "장비"}
+var officerTabs = []string{"열전", "특성", "장비"}
 
 // partyWindow is the officers' window of the walk, filling the screen: the officers listed on the left and the
-// picked one on the right in four tabs (전투력, 특성, 열전, 장비), where traits are learned and equipment changed.
+// picked one on the right in three tabs (열전, 특성, 장비), where traits are learned and equipment changed.
 // It can show the officers as a table instead, or the belongings.
 func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 	if g.S.Engine == nil {
@@ -42,11 +42,21 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 	case p.table:
 		view = 1
 	}
-	viewsEnd := g.tabRow(dst, x+8, y+4, []string{"목록", "표", "소지품"}, view, func(i int) { p.table, p.items = i == 1, i == 2 })
+	viewsEnd := g.tabRow(dst, x+8, y+4, []string{"목록", "표", "소지품"}, view, func(i int) { p.table, p.items, p.insu = i == 1, i == 2, insuState{} })
+	_, gearOwner, _, guide := g.gearStep()
+	guide = guide && g.overlay() == "party"
+	if guide && view != 0 {
+		g.guideRim(dst, g.tabRect(x+8, y+4, []string{"목록", "표", "소지품"}, 0))
+	}
 	switch {
 	case p.items:
 		rect(dst, float32(x+8), float32(y+52), float32(w-16), 1, goldDim)
 		g.moneyLabel(dst, float64(x+w-16), float64(y+16), 15)
+		if p.insu.item != "" {
+			g.insuPicker(dst, o, x, y+64, w, h-64-64)
+			g.closeRow(dst, x+w-16, y+h-60, func() { p.insu = insuState{} }, g.insuActs()...)
+			return
+		}
 		g.belongingsTab(dst, o, x, y+64, w, h-64-64)
 		g.closeRow(dst, x+w-16, y+h-60, g.closeOverlay)
 		return
@@ -69,6 +79,9 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 			noteC = good
 		}
 		g.officerRow(dst, rr, c, c.ID == g.selected, note, noteC)
+		if guide && c.ID == gearOwner && c.ID != g.selected {
+			g.guideRim(dst, rr.Inset(4))
+		}
 	}, func(i int) { g.selected, p.trait = roster[i].ID, "" })
 
 	var of *core.Character
@@ -88,19 +101,19 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 	}
 	g.label(dst, g.name(of.ID), nx, float64(y+12), 18, gold)
 	g.tabRow(dst, int(nx+g.width(g.name(of.ID), 18))+18, y+4, officerTabs, p.tab, func(i int) { p.tab = i })
+	if guide && of.ID == gearOwner && p.tab != 2 {
+		g.guideRim(dst, g.tabRect(int(nx+g.width(g.name(of.ID), 18))+18, y+4, officerTabs, 2))
+	}
 	rect(dst, float32(rx), float32(y+52), float32(x+w-16-rx), 1, goldDim)
 	body := image.Rect(rx, y+60, x+w-16, y+h-64)
 	var acts []action
 	switch p.tab {
 	case 0:
-		g.officerPower(dst, o, of, body)
+		g.officerBio(dst, o, of, body)
 	case 1:
 		acts = append(acts, g.officerTraits(dst, of, body)...)
 	case 2:
-		g.officerBio(dst, of, body)
-	case 3:
 		g.officerEquipment(dst, of, body)
-		acts = append(acts, action{"장비 변경", true, func() { g.openOverlay("equipment") }})
 	}
 	g.closeRow(dst, x+w-16, y+h-60, g.closeOverlay, acts...)
 }
@@ -123,132 +136,7 @@ func (g *Game) hasAffordable(c core.Character) bool {
 	return false
 }
 
-// officerPower is the 전투력 tab: the hexagon, and down its right each battle stat with a bar against the
-// roster's best, the move and range, and the experience — all of the officer alone; the attributes are on 열전.
-func (g *Game) officerPower(dst *ebiten.Image, o core.Observation, of *core.Character, r image.Rectangle) {
-	stats, _, err := g.S.Engine.DeputyStats(of.ID, "")
-	if err != nil {
-		return
-	}
-	radius := max(50, min(100, (float64(r.Dy())-70)/2))
-	cx, cy := float64(r.Min.X)+radius+70, float64(r.Min.Y)+radius+28
-	g.hexChart(dst, cx, cy, radius, stats, nil, g.rosterBest(o))
-	g.statBars(dst, o, stats, cx+radius+84, float64(r.Min.Y+4), float64(r.Max.X), min(34, float64(r.Dy()-84)/7))
-	y := float64(r.Min.Y+4) + 7*min(34, float64(r.Dy()-84)/7) + 10
-	x := cx + radius + 84
-	cl := g.S.Data.Classes[of.Class]
-	reach := fmt.Sprint(cl.Range)
-	if cl.MinRange > 1 {
-		reach = fmt.Sprintf("%d~%d", cl.MinRange, cl.Range)
-	}
-	g.label(dst, fmt.Sprintf("이동 %d · 사거리 %s", cl.Move, reach), x, y, 14, muted)
-	progress := core.ExperienceProgress(of.XP)
-	y += 28
-	bar(dst, float32(x), float32(y+6), float32(float64(r.Max.X)-x-130), 8, progress/100, xpC)
-	g.label(dst, fmt.Sprintf("경험치 %.0f / 100", progress), float64(r.Max.X)-120, y, 13, muted)
-}
-
-// statBars lists the battle stats from (x, y) to right, rowH apart: the name, the value and a bar against the best
-// of the roster.
-func (g *Game) statBars(dst *ebiten.Image, o core.Observation, s core.Stats, x, y, right, rowH float64) {
-	best := map[string]int{}
-	for _, c := range g.roster(o) {
-		cs, _, err := g.S.Engine.DeputyStats(c.ID, c.Deputy)
-		if err != nil {
-			continue
-		}
-		for _, row := range statRows {
-			best[row.name] = max(best[row.name], row.get(cs))
-		}
-	}
-	for i, row := range statRows {
-		py := y + float64(i)*rowH
-		v := row.get(s)
-		g.label(dst, row.name, x, py, 15, muted)
-		vs := fmt.Sprint(v)
-		g.label(dst, vs, x+112-g.width(vs, 15), py, 15, ink)
-		c := color.Color(gold)
-		switch row.name {
-		case "병력":
-			c = hpC
-		case "병법치":
-			c = mpC
-		}
-		bar(dst, float32(x+124), float32(py+8), float32(right-x-124), 8, float64(v)/float64(max(1, best[row.name], v)), c)
-	}
-}
-
 var attrNames = []string{"통솔", "무력", "지력", "민첩", "운", "매력"}
-
-// officerTraits is the 특성 tab: the shelves 고유, 병종 and 장비 and the picked trait described under them. It gives
-// the action that learns the picked trait when it can be learned.
-func (g *Game) officerTraits(dst *ebiten.Image, of *core.Character, r image.Rectangle) []action {
-	p := &g.party
-	shelves := g.shelvesOf(of)
-	var picked *traitEntry
-	all := []traitEntry{}
-	for _, s := range shelves {
-		all = append(all, s.traits...)
-	}
-	if i := slices.IndexFunc(all, func(e traitEntry) bool { return e.id == p.trait }); i >= 0 {
-		picked = &all[i]
-	} else if i := slices.IndexFunc(all, func(e traitEntry) bool { return e.affordable }); i >= 0 {
-		picked = &all[i]
-	} else if len(all) > 0 {
-		picked = &all[0]
-	}
-	pick := ""
-	if picked != nil {
-		pick = picked.id
-	}
-	used := g.traitShelves(dst, r, shelves, pick, func(id string) { p.trait = id })
-	if picked == nil {
-		return nil
-	}
-	note := ""
-	switch {
-	case picked.have:
-	case !picked.learnable && picked.requires != "":
-		note = "선행 특성 " + picked.requires + "을 먼저 배워야 합니다"
-	case !picked.affordable:
-		note = fmt.Sprintf("특성치가 %d 모자랍니다 (%d 필요, %d 있음)", picked.cost-of.Points, picked.cost, of.Points)
-	case !g.canLearnNow(of.ID):
-		note = "탐험이나 출전 준비 중에 배울 수 있습니다"
-	default:
-		note = fmt.Sprintf("특성치 %d → %d", of.Points, of.Points-picked.cost)
-	}
-	g.traitCardBelow(dst, r, used, picked.id, picked.group, note)
-	if picked.have || !picked.learnable {
-		return nil
-	}
-	var learn func()
-	if picked.affordable && g.canLearnNow(of.ID) {
-		id, trait := of.ID, picked.id
-		learn = func() { g.command(core.Command{Kind: "learn", Actor: id, Trait: trait}) }
-	}
-	return []action{{fmt.Sprintf("%s 배우기 · %d", g.traitName(picked.id), picked.cost), true, learn}}
-}
-
-// officerBio is the 열전 tab: the portrait at the top left and, beside it, the biography over the six attributes on
-// a hexagon out of 100, each where the battle stat it feeds sits on the 전투력 hexagon. The traits are on 특성.
-func (g *Game) officerBio(dst *ebiten.Image, of *core.Character, r image.Rectangle) {
-	x, y := float64(r.Min.X), float64(r.Min.Y)
-	size := min(240, float64(r.Dx())*.38, float64(r.Dy())-8)
-	g.portrait(dst, of.ID, "", x+2, y+2, size)
-	bx := x + size + 28
-	bio := wrapWidth(g.S.Data.Characters[of.Def].Biography, g.face(14), float64(r.Max.X)-bx-8)
-	g.label(dst, bio, bx, y, 14, ink)
-	_, bh := measureLines(g, bio, 14)
-	_, attrs, _ := g.S.Engine.DeputyStats(of.ID, "")
-	var names [6]string
-	var vals, rim [6]int
-	for i, a := range hexAxes {
-		names[i], vals[i], rim[i] = a.attr, attrs[a.attrIdx], 100
-	}
-	top := y + bh + 16
-	radius := max(48, min(110, (float64(r.Max.Y)-top-40)/2, (float64(r.Max.X)-bx-130)/2))
-	g.hexagon(dst, (bx+float64(r.Max.X))/2, top+24+radius, radius, names, vals, nil, rim, []float64{1, .5})
-}
 
 // measureLines is the width and height of text s at size.
 func measureLines(g *Game, s string, size float64) (float64, float64) {
@@ -261,13 +149,13 @@ func measureLines(g *Game, s string, size float64) (float64, float64) {
 	return g.width(s, size), float64(n) * size * 1.45
 }
 
-// officerEquipment is the 장비 tab: a card for each slot with the piece, what it adds and the traits it gives;
-// pressing a card opens that slot's picker.
-func (g *Game) officerEquipment(dst *ebiten.Image, of *core.Character, r image.Rectangle) {
+// unitEquipment is the unit detail's 장비 tab: a card for each slot with the piece, what it adds and the traits it
+// gives; pressing a card opens that slot's picker.
+func (g *Game) unitEquipment(dst *ebiten.Image, of *core.Character, r image.Rectangle) {
 	cw := (r.Dx() - 16) / 3
 	for i, slot := range equipSlots {
 		c := image.Rect(r.Min.X+i*(cw+8), r.Min.Y, r.Min.X+i*(cw+8)+cw, r.Min.Y+190)
-		card(dst, c)
+		g.card(dst, c)
 		slot := slot
 		g.addButton(c, slotNames[slot], func() {
 			g.openOverlay("equipment")
@@ -327,7 +215,13 @@ func (g *Game) officerTable(dst *ebiten.Image, o core.Observation, roster []core
 		}}}
 	switch p.view {
 	case 0:
-		cols = append(cols, column[row]{key: "class", label: "병종", text: true, get: func(r *row) (string, float64) { return g.className(r.c.Class), 0 }},
+		cols = append(cols, column[row]{key: "class", label: "병종", text: true, get: func(r *row) (string, float64) { return g.className(r.c.Class), 0 },
+			show: func(r *row, ink color.Color, w float64) (string, color.Color) {
+				if g.canPromote(r.c.Def, r.c.Class, r.c.Level) {
+					return g.className(r.c.Class), promoteC
+				}
+				return g.className(r.c.Class), ink
+			}},
 			num("level", "레벨", func(r *row) int { return r.c.Level }), num("hp", "병력", func(r *row) int { return r.s.MaxHP }),
 			num("mp", "병법치", func(r *row) int { return r.s.MaxMP }), num("points", "특성치", func(r *row) int { return r.c.Points }))
 	case 1:

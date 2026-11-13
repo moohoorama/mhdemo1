@@ -76,7 +76,7 @@ def main():
                 continue
             start = int(frame / 60 * SR)
             stop = int(themes[j + 1][0] / 60 * SR) if j + 1 < len(themes) else n
-            x = decode(ROOT / 'assets/music/themes' / f'{theme}.mp3')
+            x = decode(ROOT / 'assets/music/themes' / f'{theme}.ogg')
             m = min(stop + int(FADE_OUT * SR), n) - start
             x = np.resize(x, (m, 2))
             t = np.arange(m) / SR

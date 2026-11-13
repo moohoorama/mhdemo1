@@ -42,6 +42,19 @@ type officer struct {
 	Move, Range                                               int
 	Equipment                                                 []equip
 	Traits                                                    []trait
+	AttrsAlone                                                [6]int
+	Candidates                                                []candidate `json:",omitempty"`
+}
+
+// candidate is another officer as this one's deputy: the weight, what the unit would be and why it cannot be.
+type candidate struct {
+	ID, Name, Class, Portrait, Error string
+	Level                            int
+	Weight                           float64
+	Charm                            int
+	Stats                            core.Stats
+	Attrs                            [6]int
+	Traits                           []string
 }
 
 func main() {
@@ -50,6 +63,7 @@ func main() {
 	list := flag.Bool("list", false, "list the waypoints")
 	deputies := flag.String("deputy", "", "lord:deputy pairs, comma separated")
 	keep := flag.Int("keep", 0, "trait points every officer keeps unspent")
+	cands := flag.Bool("candidates", false, "list every other officer as each one's deputy")
 	flag.Parse()
 	d, err := content.Load(*dir)
 	check(err)
@@ -107,6 +121,26 @@ func main() {
 			}
 		}
 		of.Stats, _ = e.CharacterStats(c.ID)
+		_, of.AttrsAlone, _ = e.DeputyStats(c.ID, "")
+		for _, x := range o.Characters {
+			xd := d.Characters[x.Def]
+			if !*cands || x.ID == c.ID || !xd.Playable || x.Dead || x.Temp {
+				continue
+			}
+			st, at, err := e.DeputyStats(c.ID, x.ID)
+			if err != nil {
+				continue
+			}
+			k := candidate{ID: x.ID, Name: xd.Name, Class: d.Classes[x.Class].Name, Portrait: xd.Look.Portrait, Level: x.Level, Stats: st, Attrs: at, Charm: xd.Stats[5]}
+			k.Weight, _ = e.DeputyBlend(c.ID, x.ID)
+			if err := e.DeputyCheck(c.ID, x.ID); err != nil {
+				k.Error = err.Error()
+			}
+			for _, t := range e.DeputyTraits(x.ID) {
+				k.Traits = append(k.Traits, d.Traits[t].Name)
+			}
+			of.Candidates = append(of.Candidates, k)
+		}
 		if s, ok := alone[c.ID]; ok {
 			of.StatsAlone = &s
 		}

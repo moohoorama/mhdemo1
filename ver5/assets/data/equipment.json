@@ -404,7 +404,7 @@
     1
    ],
    "Traits": [
-    "diamond_guard"
+    "castle_defense"
    ]
   },
   "fire_manual": {
@@ -531,6 +531,24 @@
    ],
    "Traits": [
     "bean_pouch"
+   ]
+  },
+  "sanjian_blade": {
+   "Name": "삼첨도",
+   "Desc": "기령이 쓰던 세 갈래 날의 큰 칼. 예리: 물리 공격 명중률 +15%p.",
+   "Slot": "weapon",
+   "Type": "spear",
+   "Icon": "yanyuedao",
+   "Bonus": [
+    3,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "keen_edge"
    ]
   }
  }

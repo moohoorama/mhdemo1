@@ -27,14 +27,23 @@ func TestDifficultyLeadsEnemiesAndScalesExperience(t *testing.T) {
 		assert.Less(t, lv(normal), lv(hard))
 	})
 	t.Run("an allied army and a joining officer follow the difficulty like the enemy", func(t *testing.T) {
-		assert.Less(t, easy.char("gongsunzan").Level, normal.char("gongsunzan").Level)
-		assert.Less(t, normal.char("gongsunzan").Level, hard.char("gongsunzan").Level)
-		assert.Less(t, easy.char("zhaoyun").Level, normal.char("zhaoyun").Level)
-		assert.Greater(t, hard.char("zhaoyun").Level, normal.char("zhaoyun").Level)
+		for _, id := range []string{"gongsunzan", "zhaoyun"} {
+			assert.Less(t, easy.char(id).Level, normal.char(id).Level, id)
+			assert.Less(t, normal.char(id).Level, hard.char(id).Level, id)
+		}
 	})
 	t.Run("experience follows the difficulty", func(t *testing.T) {
 		assert.Greater(t, easy.xpScale(), normal.xpScale())
 		assert.Greater(t, normal.xpScale(), hard.xpScale())
+	})
+	t.Run("a debug difficulty plays by its own rules and keeps them through a save", func(t *testing.T) {
+		flat := at(t, "flat_hard")
+		assert.Equal(t, 16.0, flat.data.Rules.ExpAction)
+		assert.Equal(t, 24.0, hard.data.Rules.ExpAction)
+		assert.Less(t, flat.char("yuanshao").Level, hard.char("yuanshao").Level, "the flat curve's B10 is 12, the story curve's 17")
+		e, err := Restore(&dd, flat.Snapshot())
+		require.NoError(t, err)
+		assert.Equal(t, 16.0, e.data.Rules.ExpAction)
 	})
 	t.Run("a save keeps its difficulty", func(t *testing.T) {
 		e, err := Restore(&dd, hard.Snapshot())

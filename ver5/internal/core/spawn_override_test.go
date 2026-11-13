@@ -21,8 +21,11 @@ func TestSpawnOverrides(t *testing.T) {
 	e := fromState(d, State{Difficulty: "normal"})
 	a := e.spawn(sp.Character, sp.Character, "enemy", 1, 1, sp)
 	other := e.spawn(sp.Character, sp.Character, "enemy", 2, 1, content.Spawn{})
-	if a.HP != 10 || a.MP != 0 || a.Facing != "SW" || e.char(a.Character).Class != "heavy_cavalry" || a.ID == other.ID || e.char(other.Character).Class != "light_cavalry" {
+	if a.HP != 10 || a.MP != 0 || a.Facing != "SW" || a.ID == other.ID || e.char(other.Character).Class != "light_cavalry" {
 		t.Fatalf("overrides %+v / %+v", a, other)
+	}
+	if c := e.char(a.Character); c.Class != "light_cavalry" {
+		t.Fatalf("a class the level %d has not reached should step back to its first tier, got %s", c.Level, c.Class)
 	}
 	preview := SpawnPreview(d, d.Stages[0].ID, sp)
 	if preview.Stats != e.stats(a) || preview.HP != a.HP {
@@ -42,7 +45,7 @@ func TestEditedBattleSaveRestore(t *testing.T) {
 	hp, mp := 17, 0
 	traits := []string{}
 	eq := []string{}
-	d.Stages[0].Enemies = append(d.Stages[0].Enemies, content.Spawn{Character: "troop_footman", Class: "guards", Level: 1, X: 12, Y: 2, Facing: "NE", HP: &hp, MP: &mp, Traits: &traits, Equipment: &eq})
+	d.Stages[0].Enemies = append(d.Stages[0].Enemies, content.Spawn{Character: "troop_footman", Class: "brawler", Level: 1, X: 12, Y: 2, Facing: "NE", HP: &hp, MP: &mp, Traits: &traits, Equipment: &eq})
 	e := New(d, 1)
 	for n := 0; e.Observe().Phase != "battle"; n++ {
 		if n > 100 {
@@ -80,7 +83,7 @@ func TestEditedBattleSaveRestore(t *testing.T) {
 		t.Fatal(err)
 	}
 	u := restored.unit("troop_footman#1")
-	if u == nil || u.HP != 17 || u.MP != 0 || u.Facing != "NE" || restored.char(u.Character).Class != "guards" {
+	if u == nil || u.HP != 17 || u.MP != 0 || u.Facing != "NE" || restored.char(u.Character).Class != "brawler" {
 		t.Fatalf("restored %+v", u)
 	}
 }

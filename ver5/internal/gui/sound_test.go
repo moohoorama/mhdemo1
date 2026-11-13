@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -177,4 +178,19 @@ func TestDistanceGain(t *testing.T) {
 	assert.InDelta(t, .2, distanceGain(0, -1), 1e-9)
 	assert.Less(t, distanceGain(.8, 0), distanceGain(.5, 0))
 	assert.Zero(t, distanceGain(2, 0), "silent well off the screen")
+}
+
+func TestEverySkillSoundIsAFile(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	for id, s := range d.Skills {
+		for _, cue := range []string{s.Sound, s.Lead} {
+			if cue == "" {
+				continue
+			}
+			_, plain := os.Stat("../../assets/sounds/" + cue + ".ogg")
+			_, variant := os.Stat("../../assets/sounds/" + cue + "-1.ogg")
+			assert.True(t, plain == nil || variant == nil, "%s: no sound %s", id, cue)
+		}
+	}
 }

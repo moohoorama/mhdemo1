@@ -223,7 +223,16 @@
    "Group": "garrison",
    "AI": true,
    "Policy": "hold",
-   "Faction": "han"
+   "Faction": "han",
+   "Traits": [
+    "fire_god",
+    "half_cost"
+   ],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor",
+    "fire_manual"
+   ]
   },
   {
    "Character": "zhujun",

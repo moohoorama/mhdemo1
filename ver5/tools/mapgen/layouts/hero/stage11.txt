@@ -1,0 +1,39 @@
+# B11  stage11.json  map11.json  origin 0 0
+......~~~###_________Kon______###~~~............
+......~~~###______fo1___fo2___###~~~TRE.........
+...TRE~~~###__________________###~~~......TRE...
+......~~~############[ ]#########~~~............
+TRE...~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~...TRE......
+...TRE......,,,tu3tu1tu2Guaar2''''''ar1,,,...TRE
+......TRE.........,,,......tu4tu5'''tu6.........
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;;;;;;~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;;;;;;~~~~~~~~~~~~
+......,,,.....................'''...............
+...TRE.........TRE......TRE...'''...............
+............,,,...............CST...............
+.........TRE... n  n ...,,,...''''''''''''...pl5
+TRE......... n  n  n  n ...TRE.........pl6pl3pl4
+............ n  n  n  n ............pl7'''pl1pl2
+
+pl1 Allies[0]  player
+pl2 Allies[1]  player
+pl3 Allies[2]  player
+pl4 Allies[3]  player
+pl5 Allies[4]  player
+pl6 Allies[5]  player
+pl7 Allies[6]  player
+Kon Party[0]  kongrong, ally, group kong, policy hold, faction han
+fo1 Party[1]  troop_footman, ally, group kong, policy hold, faction han
+fo2 Party[2]  troop_footman, ally, group kong, policy hold, faction han
+Gua Enemies[0]  guanhai, enemy, group hq, policy hold, rank commander
+tu1 Enemies[1]  troop_turban, enemy, group gate, policy hold, rank recruit
+tu2 Enemies[2]  troop_turban, enemy, group gate, policy hold, rank recruit
+tu3 Enemies[3]  troop_turban, enemy, group gate, policy hold, rank recruit
+tu4 Enemies[4]  troop_turban, enemy, group gate, policy hold, rank recruit
+ar1 Enemies[5]  troop_archer, enemy, group bank, policy react, rank recruit
+ar2 Enemies[6]  troop_archer, enemy, group bank, policy react, rank recruit
+tu5 Enemies[7]  troop_turban, enemy, group ford, policy react
+tu6 Enemies[8]  troop_turban, enemy, group ford, policy react
+
+# area 1 강 북쪽: x 0..15, y 0..6
+# area 2 북해성 성문: x 7..7, y 3..3

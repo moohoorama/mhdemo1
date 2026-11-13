@@ -3,6 +3,7 @@ package gui
 import (
 	"image"
 	"math"
+	"slices"
 
 	"srpg/internal/content"
 	"srpg/internal/replay"
@@ -73,6 +74,14 @@ func (p *Player) nextShown(ready []int) int {
 	if g.pan != nil || g.field == nil || g.S.Settings.Replay == "one" && len(p.running) > 0 {
 		return -1
 	}
+	if g.S.Settings.Replay == "spells" && len(p.running) > 0 {
+		for _, r := range p.running {
+			if p.spell(r.index) {
+				return -1
+			}
+		}
+		ready = slices.DeleteFunc(slices.Clone(ready), func(k int) bool { return p.spell(p.waiting[k]) })
+	}
 	for _, k := range ready {
 		if cells := actionCells(p.actions[p.waiting[k]]); len(cells) == 0 || g.onScreen(cells) || p.waiting[k] == p.aimed {
 			return k
@@ -91,6 +100,17 @@ func (p *Player) nextShown(ready []int) int {
 	p.aimed = p.waiting[best]
 	g.panTo(g.actionCenter(actionCells(p.actions[p.aimed])))
 	return -1
+}
+
+// spell reports whether action i casts a stratagem (a skill that is not a weapon strike): on the "spells" replay
+// setting it plays alone, with no other action of the turn beside it.
+func (p *Player) spell(i int) bool {
+	for _, st := range p.actions[i].Steps {
+		if c := st.Command; c.Kind == "skill" && p.g.S.Data.Skills[c.Skill].Kind != content.KindPhysical {
+			return true
+		}
+	}
+	return false
 }
 
 // cameraLocked reports whether the player's camera (scroll, zoom, minimap) waits: on an AI

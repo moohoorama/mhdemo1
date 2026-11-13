@@ -8610,6 +8610,1088 @@
    "scale": "scene",
    "file": "tiles/dais_plain.png",
    "made": "palette swap of the palace piece (plain_hall_props.py)"
+  },
+  "blip_ne_0": {
+   "file": "tiles/blip_ne_0.png",
+   "size": [
+    20,
+    22
+   ],
+   "pivot": [
+    2,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "cliff back edge lip (cliff_lip.py)",
+   "shadow": false
+  },
+  "blip_nw_0": {
+   "file": "tiles/blip_nw_0.png",
+   "size": [
+    20,
+    22
+   ],
+   "pivot": [
+    18,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "cliff back edge lip (cliff_lip.py)",
+   "shadow": false
+  },
+  "blip_ne_1": {
+   "file": "tiles/blip_ne_1.png",
+   "size": [
+    20,
+    22
+   ],
+   "pivot": [
+    2,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "cliff back edge lip (cliff_lip.py)",
+   "shadow": false
+  },
+  "blip_nw_1": {
+   "file": "tiles/blip_nw_1.png",
+   "size": [
+    20,
+    22
+   ],
+   "pivot": [
+    18,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "cliff back edge lip (cliff_lip.py)",
+   "shadow": false
+  },
+  "blip_ne_2": {
+   "file": "tiles/blip_ne_2.png",
+   "size": [
+    20,
+    22
+   ],
+   "pivot": [
+    2,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "cliff back edge lip (cliff_lip.py)",
+   "shadow": false
+  },
+  "blip_nw_2": {
+   "file": "tiles/blip_nw_2.png",
+   "size": [
+    20,
+    22
+   ],
+   "pivot": [
+    18,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "cliff back edge lip (cliff_lip.py)",
+   "shadow": false
+  },
+  "blip_ne_3": {
+   "file": "tiles/blip_ne_3.png",
+   "size": [
+    20,
+    22
+   ],
+   "pivot": [
+    2,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "cliff back edge lip (cliff_lip.py)",
+   "shadow": false
+  },
+  "blip_nw_3": {
+   "file": "tiles/blip_nw_3.png",
+   "size": [
+    20,
+    22
+   ],
+   "pivot": [
+    18,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "cliff back edge lip (cliff_lip.py)",
+   "shadow": false
+  },
+  "rwall_04_0": {
+   "file": "tiles/rwall_04_0.png",
+   "size": [
+    32,
+    137
+   ],
+   "pivot": [
+    15,
+    128
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rwall_04_1": {
+   "file": "tiles/rwall_04_1.png",
+   "size": [
+    32,
+    137
+   ],
+   "pivot": [
+    15,
+    128
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rwall_04_2": {
+   "file": "tiles/rwall_04_2.png",
+   "size": [
+    32,
+    137
+   ],
+   "pivot": [
+    15,
+    128
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rwall_08_0": {
+   "file": "tiles/rwall_08_0.png",
+   "size": [
+    17,
+    129
+   ],
+   "pivot": [
+    17,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rwall_08_1": {
+   "file": "tiles/rwall_08_1.png",
+   "size": [
+    17,
+    129
+   ],
+   "pivot": [
+    17,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rwall_08_2": {
+   "file": "tiles/rwall_08_2.png",
+   "size": [
+    17,
+    129
+   ],
+   "pivot": [
+    17,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rwall_12_0": {
+   "file": "tiles/rwall_12_0.png",
+   "size": [
+    34,
+    129
+   ],
+   "pivot": [
+    17,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rwall_12_1": {
+   "file": "tiles/rwall_12_1.png",
+   "size": [
+    34,
+    129
+   ],
+   "pivot": [
+    17,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rwall_12_2": {
+   "file": "tiles/rwall_12_2.png",
+   "size": [
+    34,
+    129
+   ],
+   "pivot": [
+    17,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "floor_rampart": {
+   "file": "tiles/floor_rampart.png",
+   "size": [
+    64,
+    32
+   ],
+   "pivot": [
+    32,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)"
+  },
+  "baimen_tower": {
+   "file": "tiles/baimen_tower.png",
+   "size": [
+    264,
+    215
+   ],
+   "pivot": [
+    132,
+    157
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_sw_0": {
+   "file": "tiles/rrim_sw_0.png",
+   "size": [
+    21,
+    28
+   ],
+   "pivot": [
+    16,
+    21
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_sw_1": {
+   "file": "tiles/rrim_sw_1.png",
+   "size": [
+    21,
+    28
+   ],
+   "pivot": [
+    16,
+    21
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_sw_2": {
+   "file": "tiles/rrim_sw_2.png",
+   "size": [
+    21,
+    28
+   ],
+   "pivot": [
+    16,
+    21
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_sw_3": {
+   "file": "tiles/rrim_sw_3.png",
+   "size": [
+    21,
+    28
+   ],
+   "pivot": [
+    16,
+    21
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_se_0": {
+   "file": "tiles/rrim_se_0.png",
+   "size": [
+    21,
+    28
+   ],
+   "pivot": [
+    5,
+    21
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_se_1": {
+   "file": "tiles/rrim_se_1.png",
+   "size": [
+    21,
+    28
+   ],
+   "pivot": [
+    5,
+    21
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_se_2": {
+   "file": "tiles/rrim_se_2.png",
+   "size": [
+    21,
+    28
+   ],
+   "pivot": [
+    5,
+    21
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_se_3": {
+   "file": "tiles/rrim_se_3.png",
+   "size": [
+    21,
+    28
+   ],
+   "pivot": [
+    5,
+    21
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_ne_0": {
+   "file": "tiles/rrim_ne_0.png",
+   "size": [
+    19,
+    30
+   ],
+   "pivot": [
+    5,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_ne_1": {
+   "file": "tiles/rrim_ne_1.png",
+   "size": [
+    19,
+    30
+   ],
+   "pivot": [
+    5,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_ne_2": {
+   "file": "tiles/rrim_ne_2.png",
+   "size": [
+    19,
+    30
+   ],
+   "pivot": [
+    5,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_ne_3": {
+   "file": "tiles/rrim_ne_3.png",
+   "size": [
+    19,
+    30
+   ],
+   "pivot": [
+    5,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_nw_0": {
+   "file": "tiles/rrim_nw_0.png",
+   "size": [
+    19,
+    30
+   ],
+   "pivot": [
+    14,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_nw_1": {
+   "file": "tiles/rrim_nw_1.png",
+   "size": [
+    19,
+    30
+   ],
+   "pivot": [
+    14,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_nw_2": {
+   "file": "tiles/rrim_nw_2.png",
+   "size": [
+    19,
+    30
+   ],
+   "pivot": [
+    14,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rrim_nw_3": {
+   "file": "tiles/rrim_nw_3.png",
+   "size": [
+    19,
+    30
+   ],
+   "pivot": [
+    14,
+    28
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "baimen_gate_0": {
+   "file": "tiles/baimen_gate_0.png",
+   "size": [
+    16,
+    77
+   ],
+   "pivot": [
+    8,
+    76
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "baimen_gate_1": {
+   "file": "tiles/baimen_gate_1.png",
+   "size": [
+    16,
+    73
+   ],
+   "pivot": [
+    8,
+    76
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "baimen_gate_2": {
+   "file": "tiles/baimen_gate_2.png",
+   "size": [
+    16,
+    73
+   ],
+   "pivot": [
+    8,
+    76
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "baimen_gate_3": {
+   "file": "tiles/baimen_gate_3.png",
+   "size": [
+    16,
+    81
+   ],
+   "pivot": [
+    8,
+    76
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rdwall_04_0": {
+   "file": "tiles/rdwall_04_0.png",
+   "size": [
+    32,
+    137
+   ],
+   "pivot": [
+    15,
+    128
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rdwall_04_1": {
+   "file": "tiles/rdwall_04_1.png",
+   "size": [
+    32,
+    137
+   ],
+   "pivot": [
+    15,
+    128
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rdwall_04_2": {
+   "file": "tiles/rdwall_04_2.png",
+   "size": [
+    32,
+    137
+   ],
+   "pivot": [
+    15,
+    128
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rdwall_08_0": {
+   "file": "tiles/rdwall_08_0.png",
+   "size": [
+    17,
+    129
+   ],
+   "pivot": [
+    17,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rdwall_08_1": {
+   "file": "tiles/rdwall_08_1.png",
+   "size": [
+    17,
+    129
+   ],
+   "pivot": [
+    17,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rdwall_08_2": {
+   "file": "tiles/rdwall_08_2.png",
+   "size": [
+    17,
+    129
+   ],
+   "pivot": [
+    17,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rdwall_12_0": {
+   "file": "tiles/rdwall_12_0.png",
+   "size": [
+    34,
+    129
+   ],
+   "pivot": [
+    17,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rdwall_12_1": {
+   "file": "tiles/rdwall_12_1.png",
+   "size": [
+    34,
+    129
+   ],
+   "pivot": [
+    17,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "rdwall_12_2": {
+   "file": "tiles/rdwall_12_2.png",
+   "size": [
+    34,
+    129
+   ],
+   "pivot": [
+    17,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "city wall top, pixel art on the small-tile grid (gen_pixel_rampart.py)",
+   "shadow": false
+  },
+  "pwall_u": {
+   "file": "tiles/pwall_u.png",
+   "size": [
+    120,
+    110
+   ],
+   "pivot": [
+    60,
+    78
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "palace front of 허도, pixel art on the small-tile grid (gen_pixel_palace.py)",
+   "shadow": false
+  },
+  "palace_gate": {
+   "file": "tiles/palace_gate.png",
+   "size": [
+    250,
+    240
+   ],
+   "pivot": [
+    125,
+    183
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "palace front of 허도, pixel art on the small-tile grid (gen_pixel_palace.py)",
+   "shadow": false
+  },
+  "mansion_cao": {
+   "file": "tiles/mansion_cao.png",
+   "size": [
+    366,
+    241
+   ],
+   "pivot": [
+    183,
+    152
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "palace front of 허도, pixel art on the small-tile grid (gen_pixel_palace.py)",
+   "shadow": false
+  },
+  "mansion_liu": {
+   "file": "tiles/mansion_liu.png",
+   "size": [
+    270,
+    173
+   ],
+   "pivot": [
+    135,
+    108
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "palace front of 허도, pixel art on the small-tile grid (gen_pixel_palace.py)",
+   "shadow": false
+  },
+  "hoard_coin_chest": {
+   "file": "tiles/hoard_coin_chest.png",
+   "size": [
+    24,
+    29
+   ],
+   "pivot": [
+    11,
+    23
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "원술's hoard (17장), pixel art on the small-tile grid (gen_pixel_hoard.py)"
+  },
+  "hoard_chests": {
+   "file": "tiles/hoard_chests.png",
+   "size": [
+    26,
+    28
+   ],
+   "pivot": [
+    13,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "원술's hoard (17장), pixel art on the small-tile grid (gen_pixel_hoard.py)"
+  },
+  "hoard_tools": {
+   "file": "tiles/hoard_tools.png",
+   "size": [
+    25,
+    40
+   ],
+   "pivot": [
+    10,
+    35
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "원술's hoard (17장), pixel art on the small-tile grid (gen_pixel_hoard.py)"
+  },
+  "hoard_silk": {
+   "file": "tiles/hoard_silk.png",
+   "size": [
+    24,
+    23
+   ],
+   "pivot": [
+    12,
+    18
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "원술's hoard (17장), pixel art on the small-tile grid (gen_pixel_hoard.py)"
+  },
+  "wet_patch_0": {
+   "file": "tiles/wet_patch_0.png",
+   "size": [
+    112,
+    56
+   ],
+   "pivot": [
+    48,
+    0
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "shadow": false,
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "wet_patch_1": {
+   "file": "tiles/wet_patch_1.png",
+   "size": [
+    144,
+    72
+   ],
+   "pivot": [
+    64,
+    0
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "shadow": false,
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "wet_patch_2": {
+   "file": "tiles/wet_patch_2.png",
+   "size": [
+    80,
+    40
+   ],
+   "pivot": [
+    32,
+    0
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "shadow": false,
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "wet_patch_3": {
+   "file": "tiles/wet_patch_3.png",
+   "size": [
+    144,
+    72
+   ],
+   "pivot": [
+    48,
+    0
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "shadow": false,
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "puddle_0": {
+   "file": "tiles/puddle_0.png",
+   "size": [
+    40,
+    20
+   ],
+   "pivot": [
+    24,
+    20
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "shadow": false,
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "puddle_1": {
+   "file": "tiles/puddle_1.png",
+   "size": [
+    56,
+    28
+   ],
+   "pivot": [
+    32,
+    28
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "shadow": false,
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "puddle_2": {
+   "file": "tiles/puddle_2.png",
+   "size": [
+    80,
+    40
+   ],
+   "pivot": [
+    48,
+    40
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "shadow": false,
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "puddle_3": {
+   "file": "tiles/puddle_3.png",
+   "size": [
+    32,
+    16
+   ],
+   "pivot": [
+    16,
+    16
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "shadow": false,
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "puddle_4": {
+   "file": "tiles/puddle_4.png",
+   "size": [
+    56,
+    28
+   ],
+   "pivot": [
+    40,
+    28
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "shadow": false,
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "puddle_5": {
+   "file": "tiles/puddle_5.png",
+   "size": [
+    56,
+    28
+   ],
+   "pivot": [
+    16,
+    28
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "shadow": false,
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "rut_v": {
+   "file": "tiles/rut_v.png",
+   "size": [
+    84,
+    42
+   ],
+   "pivot": [
+    20,
+    42
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "shadow": false,
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "wrack_u": {
+   "file": "tiles/wrack_u.png",
+   "size": [
+    73,
+    36
+   ],
+   "pivot": [
+    63,
+    36
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "shadow": false,
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "wrack_v": {
+   "file": "tiles/wrack_v.png",
+   "size": [
+    73,
+    36
+   ],
+   "pivot": [
+    9,
+    36
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "shadow": false,
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "house_thatch_mud": {
+   "file": "tiles/house_thatch_mud.png",
+   "size": [
+    67,
+    75
+   ],
+   "pivot": [
+    35,
+    58
+   ],
+   "layer": "object",
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "house_thatch_x_mud": {
+   "file": "tiles/house_thatch_x_mud.png",
+   "size": [
+    67,
+    75
+   ],
+   "pivot": [
+    33,
+    58
+   ],
+   "layer": "object",
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "house_tile_mud": {
+   "file": "tiles/house_tile_mud.png",
+   "size": [
+    67,
+    77
+   ],
+   "pivot": [
+    35,
+    60
+   ],
+   "layer": "object",
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
+  },
+  "house_tile_x_mud": {
+   "file": "tiles/house_tile_x_mud.png",
+   "size": [
+    67,
+    77
+   ],
+   "pivot": [
+    33,
+    60
+   ],
+   "layer": "object",
+   "made": "after the flood (16장 하비 성안), pixel art on the small-tile grid (gen_pixel_wet.py)"
   }
  }
 }

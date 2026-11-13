@@ -55,9 +55,6 @@ type unitVis struct {
 	shakeAmp     float64
 	charge       float64    // 0..1: how white the sprite is drawn while gathering a critical blow
 	charging     bool       // holds the first attack frame and whitens
-	bleach       float64    // 0..1: how white the sprite is drawn while it is promoted
-	bleachTo     float64    // where bleach is heading, at bleachRate a second
-	bleachRate   float64
 	dying        float64    // < 0: alive
 	leave        *walkState // walking off the battle area, fading out; t runs to leaveTime
 	arriving     float64    // a scene actor walking on: seconds left of fading in, from leaveTime
@@ -83,10 +80,10 @@ type unitVis struct {
 }
 type walkState struct {
 	fu, fv, tu, tv, fl, tl, t float64
-	dur                       float64              // seconds for the cell, stepTime when 0
-	ease                      bool                 // fast at first and slowing to a stop (sin of 0..90°), else even
-	marks                     []float64            // shares of dur at which mark is called, in order
-	mark                      func(u, v float64)   // called at each mark with where the unit is
+	dur                       float64            // seconds for the cell, stepTime when 0
+	ease                      bool               // fast at first and slowing to a stop (sin of 0..90°), else even
+	marks                     []float64          // shares of dur at which mark is called, in order
+	mark                      func(u, v float64) // called at each mark with where the unit is
 }
 
 func (u *unitVis) frozenRest() bool {
@@ -142,11 +139,6 @@ func (u *unitVis) update(dt float64) {
 			u.animT += dt
 		}
 		u.charge = math.Max(0, u.charge-dt*5)
-	}
-	if u.bleach < u.bleachTo {
-		u.bleach = math.Min(u.bleachTo, u.bleach+dt*u.bleachRate)
-	} else {
-		u.bleach = math.Max(u.bleachTo, u.bleach-dt*u.bleachRate)
 	}
 	if w := u.walk; w != nil {
 		dur := w.dur
@@ -468,10 +460,6 @@ func (g *Game) perform(a *replay.Action) []beat {
 				}
 			}
 		case "item":
-			if g.S.Data.Items[c.Item].Effect == content.ItemPromote {
-				g.promotion(add, actor)
-				break
-			}
 			ev := events
 			add(.6, func() {
 				for _, e := range ev {
@@ -481,7 +469,7 @@ func (g *Game) perform(a *replay.Action) []beat {
 					}
 					g.spawn("heal", nil, t, 1.1, healC)
 					if g.S.Data.Items[c.Item].Effect == content.ItemMP {
-						t.shownMP = min(t.maxMP, t.shownMP+e.Amount)
+						t.shownMP += e.Amount // a drink pours past the max
 						g.say(t, fmt.Sprintf("MP +%d", e.Amount))
 					} else {
 						t.shownHP = min(t.maxHP, t.shownHP+e.Amount)
@@ -546,7 +534,12 @@ func (g *Game) perform(a *replay.Action) []beat {
 			case "duel":
 				view := g.duelView(e)
 				ev := events[i+1:]
-				add(view.Length()+cutInLength(view), func() { g.player.Duel = view; g.sfx("duel-start") })
+				add(view.Length()+cutInLength(view), func() {
+					g.player.Duel = view
+					if !view.Staged { // a staged duel's gong waits for its cut-in's clash
+						g.sfx("duel-start")
+					}
+				})
 				add(blinkTime, func() { g.player.Duel = nil; g.strike(nil, ev) })
 			case "status":
 				// an event's stat change on many units at once shows on all of them together
@@ -721,6 +714,11 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	if shooting && kind == "slash" {
 		kind = "arrow"
 	}
+	// 화시: a burning arrow flies like a shot (from the shoot look of a unit that has one) and bursts into flame where it lands
+	sk := g.S.Data.Skills[c.Skill]
+	fireShot := kind == "fire" && c.Kind == "skill" && sk.Kind == content.KindPhysical && sk.Mode == content.ModeRanged &&
+		target != nil && target != actor && (actor.ranged || actor.shoot != nil)
+	shooting = shooting || fireShot && actor.shoot != nil
 	look := actor.art
 	tint := buffTint[g.S.Data.Skills[c.Skill].Effect]
 	aimed := target != nil && target != actor
@@ -733,7 +731,7 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	switch {
 	case kind == "stone" && aimed:
 		flight = g.lobFlight(actor, target)
-	case kind == "arrow" && aimed:
+	case (kind == "arrow" || fireShot) && aimed:
 		flight = math.Max(.12, math.Hypot(target.u-actor.u, target.v-actor.v)*arrowSecPerCell)
 	case isSpell(kind) && target != nil:
 		flight = g.assets.FX[kind].Hit
@@ -759,7 +757,7 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 		p := &g.player
 		switch {
 		case spell: // a spell is heard when it lands
-		case kind == "arrow" || kind == "stone":
+		case kind == "arrow" || kind == "stone" || fireShot:
 			p.sfxAt("shoot", release)
 		case crit:
 			p.sfxAt("swing-crit", release-gather/2)
@@ -767,7 +765,11 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 			p.sfxAt("swing", release-gather/2)
 		}
 		if spell {
+			p.sfxFrom(g.S.Data.Skills[c.Skill].Lead, release)
 			p.sfxAt(g.skillCue(c.Skill), release+flight)
+		}
+		if fireShot && slices.ContainsFunc(hits, func(e core.Event) bool { return e.Kind == "damage" }) {
+			p.sfxAt(g.skillCue(c.Skill), release+flight) // the flame takes with 초열's sound
 		}
 		for _, cue := range strikeCues(hits) {
 			if spell && cue == "block" { // a stratagem is not blocked but misses
@@ -805,6 +807,9 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	if kind == "arrow" && aimed {
 		// released on the third frame, it lands after its flight
 		add(flight, func() { g.spawn("arrow", actor, target, flight, spark) })
+	}
+	if fireShot && aimed {
+		add(flight, func() { g.spawn("burning_shot", actor, target, flight, fireArrowC) })
 	}
 	if isSpell(kind) && target != nil {
 		// the look starts as the cast is released; the blow lands (and the damage shows) at its Hit
@@ -860,6 +865,9 @@ func (g *Game) shootsFromRange(actor, target *unitVis, c core.Command, events []
 	for _, e := range events {
 		if e.Kind == "knockback" && e.Target == target.id && len(e.Path) == 2 {
 			tx, ty = e.Path[0].X, e.Path[0].Y
+		}
+		if e.Kind == "knockback" && e.Target == actor.id && len(e.Path) == 2 { // pushed by a counter (돌파)
+			ax, ay = e.Path[0].X, e.Path[0].Y
 		}
 	}
 	return g.S.Engine.ShootsAt(actor.id, content.Point{X: ax, Y: ay}, tx, ty)
@@ -1061,32 +1069,3 @@ func (g *Game) showStrike(attacker *unitVis, events []core.Event) {
 		}
 	}
 }
-
-// promotion plays a unit taking its new rank: the seal rises over its head, it turns white while gold
-// rings and motes close in, the screen flashes, it takes its new look in a pillar of light and the
-// white drains away. The promotion window follows the replay.
-func (g *Game) promotion(add func(float64, func()), u *unitVis) {
-	if u == nil {
-		add(.1, func() {})
-		return
-	}
-	add(panTime, func() { g.panToCell(int(u.u), int(u.v)) })
-	add(.5, func() { g.spawn("insu", nil, u, 1.1, white) })
-	add(1.0, func() {
-		u.bleachTo, u.bleachRate = 1, 1
-		g.spawn("promote_gather", nil, u, 1.0, white)
-	})
-	add(.15, func() {
-		g.hitFlashT, g.hitFlashCrit = hitFlash, false
-		g.sfx("promote")
-	})
-	add(.9, func() {
-		if final := g.unitView(g.player.final, u.id); final != nil {
-			g.syncUnit(*final, g.player.final)
-		}
-		u.play("idle")
-		u.bleachTo, u.bleachRate = 0, 1.25
-		g.spawn("promote", nil, u, 1.0, white)
-	})
-}
-

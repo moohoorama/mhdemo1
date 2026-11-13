@@ -283,7 +283,12 @@ func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
 	g.window(dst, image.Rect(x, y, x+w, y+h))
 	if u != nil {
 		g.label(dst, u.Name, float64(x+14), float64(y+9), 15, teamColor(u))
-		g.label(dst, fmt.Sprintf("Lv%d", u.Level), float64(x+22)+g.width(u.Name, 15), float64(y+12), 12, ink)
+		lv := fmt.Sprintf("Lv%d", u.Level)
+		g.label(dst, lv, float64(x+22)+g.width(u.Name, 15), float64(y+12), 12, ink)
+		if of := g.officer(o, u.Character); of != nil && of.Deputy != "" {
+			dx := float64(x+32) + g.width(u.Name, 15) + g.width(lv, 12)
+			g.label(dst, ellipsis(g, "부관 "+g.name(of.Deputy), 12, x+w-14-int(dx)), dx, float64(y+12), 12, muted)
+		}
 		row := func(i int, name string, now, maxV int, k float64, c color.Color) {
 			ry := float64(y + 36 + i*16)
 			g.label(dst, name, float64(x+14), ry-4, 11, muted)
@@ -292,7 +297,7 @@ func (g *Game) brief(dst *ebiten.Image, o core.Observation) {
 		}
 		k := float64(u.HP) / float64(max(1, u.Stats.MaxHP))
 		row(0, "병력", u.HP, u.Stats.MaxHP, k, hpColor(k))
-		row(1, "병법치", u.MP, u.Stats.MaxMP, float64(u.MP)/float64(max(1, u.Stats.MaxMP)), mpC)
+		row(1, "병법치", u.MP, u.Stats.MaxMP, float64(u.MP)/float64(max(1, u.Stats.MaxMP)), mpColor(u.MP, u.Stats.MaxMP, g.uiSeconds))
 		if u.Faction == "ally" {
 			row(2, "경험치", int(u.XPProgress), 100, u.XPProgress/100, xpC)
 		}
@@ -341,7 +346,11 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 	x, y, w, h := r.Min.X, r.Min.Y, r.Dx(), r.Dy()
 	g.portrait(dst, u.ID, u.Class, float64(x+14), float64(y+14), 56)
 	g.label(dst, u.Name, float64(x+82), float64(y+10), 19, teamColor(u))
-	g.label(dst, fmt.Sprintf("%s  Lv%d", g.className(u.Class), u.Level), float64(x+82), float64(y+40), 13, ink)
+	def := ""
+	if u.Faction == "ally" && !u.AI {
+		def = u.Def
+	}
+	g.classRank(dst, def, u.Class, u.Level, fmt.Sprintf("  Lv%d", u.Level), float64(x+82), float64(y+40), 13, ink)
 	state := ""
 	switch {
 	case u.AI:
@@ -371,12 +380,16 @@ func (g *Game) detail(dst *ebiten.Image, o core.Observation) {
 		g.label(dst, v, left, float64(by), 12, ink)
 	}
 	k := float64(u.HP) / float64(max(1, u.Stats.MaxHP))
-	gauge(y+78, "병력", u.HP, u.Stats.MaxHP, k, hpColor(k), recovery.HP, recovery.TerrainHP || recovery.HP > 0)
-	gauge(y+96, "병법치", u.MP, u.Stats.MaxMP, float64(u.MP)/float64(max(1, u.Stats.MaxMP)), mpC, recovery.MP, true)
+	gauge(y+81, "병력", u.HP, u.Stats.MaxHP, k, hpColor(k), recovery.HP, recovery.TerrainHP || recovery.HP > 0)
+	gauge(y+99, "병법치", u.MP, u.Stats.MaxMP, float64(u.MP)/float64(max(1, u.Stats.MaxMP)), mpColor(u.MP, u.Stats.MaxMP, g.uiSeconds), recovery.MP, true)
 	if u.Faction == "ally" {
-		gauge(y+114, "경험치", int(u.XPProgress), 100, u.XPProgress/100, xpC, 0, false)
+		gauge(y+117, "경험치", int(u.XPProgress), 100, u.XPProgress/100, xpC, 0, false)
 	}
-	g.label(dst, "+수치: 다음 자기 턴 회복 · 현재 위치", float64(x+82), float64(y+62), 10, muted)
+	if of := g.officer(o, u.Character); of != nil && of.Deputy != "" { // the deputy riding with it, in place of the hint
+		g.deputyTag(dst, o, of.Deputy, float64(x+82), float64(y+61), float64(x+w-16))
+	} else {
+		g.label(dst, "+수치: 다음 자기 턴 회복 · 현재 위치", float64(x+82), float64(y+62), 10, muted)
+	}
 	for i, title := range []string{"능력", "특성", "장비", "열전"} {
 		bx := x + 12 + i*75
 		var click func()

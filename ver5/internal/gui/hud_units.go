@@ -173,6 +173,14 @@ func (t unitTable) table(g *Game, o core.Observation) table[core.UnitView] {
 			col.w = t.widths[i]
 		}
 		switch c.key {
+		case "class":
+			col.show = func(u *core.UnitView, ink color.Color, w float64) (string, color.Color) {
+				s, _ := c.get(g, o, u)
+				if u.Faction == "ally" && !u.AI && g.canPromote(u.Def, u.Class, u.Level) {
+					return s, promoteC
+				}
+				return s, ink
+			}
 		case "order":
 			col.show = func(u *core.UnitView, ink color.Color, w float64) (string, color.Color) {
 				if s, _ := c.get(g, o, u); s == "O" {

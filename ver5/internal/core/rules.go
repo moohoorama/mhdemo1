@@ -114,6 +114,7 @@ func (e *Engine) terrain(u *Unit, x, y int) content.Terrain {
 	if c.Ground == content.GroundGrass && c.Structure == content.NoLayer {
 		t.Factor += e.fx(u, content.FxGrassFactor)
 	}
+	t.Factor += e.fx(u, content.FxTerrainFactor)
 	return t
 }
 func (e *Engine) occupied(x, y int) *Unit {
@@ -242,6 +243,24 @@ func (e *Engine) cost(u *Unit, s content.Skill) int {
 		n = max(1, (n+1)/2)
 	}
 	return n
+}
+
+// SkillCost is the spell points the actor pays for the skill now.
+func (e *Engine) SkillCost(actor, skill string) int {
+	u := e.unit(actor)
+	if u == nil {
+		return 0
+	}
+	return e.cost(u, e.data.Skills[skill])
+}
+
+// HPCost is the HP the skill takes from the actor (명상).
+func (e *Engine) HPCost(actor, skill string) int {
+	u := e.unit(actor)
+	if u == nil {
+		return 0
+	}
+	return e.hpCost(u, e.data.Skills[skill])
 }
 
 // hpCost is the HP the skill takes from its user (명상), at least 1 when it asks any.

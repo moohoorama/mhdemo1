@@ -19,13 +19,12 @@ import (
 // sandbox engine so it can be taken back; nothing reaches the session until confirmed.
 type order struct {
 	actor   string
-	stage   string // move, menu, sub, target, branch
+	stage   string // move, menu, sub, target
 	sandbox *core.Engine
 	move    *core.Command
 	sub     string       // skill, item
 	pick    core.Command // the chosen action, Target unset
 	armed   hoverCell    // touch: the cell tapped once, waiting for a second tap
-	branch  []promotionUp // branch: the classes an 인수 can make, each with its command
 }
 
 // engine is where the order's options are computed: the sandbox after a tentative move.
@@ -76,8 +75,6 @@ func (g *Game) begin(u core.UnitView) {
 // deselects the actor, as deselecting any other unit does.
 func (g *Game) cancel() bool {
 	switch g.ord.stage {
-	case "branch":
-		g.ord.stage, g.ord.branch = "target", nil
 	case "target", "sub":
 		g.ord.stage, g.ord.sub, g.ord.armed = "menu", "", hoverCell{}
 	case "menu":
@@ -202,16 +199,12 @@ func (g *Game) mapClick(x, y int) {
 			if g.arm(x, y) {
 				return
 			}
-			if len(hits) > 1 { // an 인수 that can make more than one class, or promote the officer or its deputy: pick first
-				g.ord.stage, g.ord.branch = "branch", g.branches(hits)
-				return
-			}
 			g.confirm(hits[0])
 			return
 		}
 		g.cancel() // a cell that is not a target steps back, like a click outside the menu
 		return
-	case "menu", "sub", "branch":
+	case "menu", "sub":
 		g.cancel()
 		return
 	}
@@ -319,7 +312,10 @@ func (g *Game) subItems() []entry {
 			}
 			pick := core.Command{Kind: "item", Item: id}
 			var click func()
-			if ok[id] {
+			switch {
+			case g.S.Data.Items[id].Effect == content.ItemPromote: // seals are used off the field, where the weapon can change too
+				click = func() { g.toast(insuWhere, gold) }
+			case ok[id]:
 				click = func() { g.ord.pick, g.ord.stage = pick, "target" }
 			}
 			out = append(out, entry{menuItem: menuItem{g.itemName(id), click}, help: g.itemHelp(id), note: fmt.Sprintf("×%d", o.Inventory[id])})
@@ -691,13 +687,18 @@ func (g *Game) side(dst *ebiten.Image, u *core.UnitView, x, y int, ch sideChange
 		team = bad
 	}
 	g.label(dst, u.Name, float64(x), float64(y), 16, team)
-	g.label(dst, fmt.Sprintf("Lv%d  %s", u.Level, g.className(u.Class)), float64(x)+g.width(u.Name, 16)+8, float64(y+3), 12, muted)
+	lv, def := fmt.Sprintf("Lv%d  ", u.Level), ""
+	if u.Faction == "ally" && !u.AI {
+		def = u.Def
+	}
+	g.label(dst, lv, float64(x)+g.width(u.Name, 16)+8, float64(y+3), 12, muted)
+	g.classRank(dst, def, u.Class, u.Level, "", float64(x)+g.width(u.Name, 16)+8+g.width(lv, 12), float64(y+3), 12, muted)
 	y += 26
 	clamp := func(v, hi int) int { return max(0, min(hi, v)) }
 	hp := u.Stats.MaxHP
 	g.gauge(dst, x, y, "병력", u.HP, clamp(u.HP+ch.hp[0], hp), clamp(u.HP+ch.hp[1], hp), hp, hpColor(float64(u.HP)/float64(max(1, hp))), "")
-	mp := clamp(u.MP+ch.mp, u.Stats.MaxMP)
-	g.gauge(dst, x, y+20, "병법치", u.MP, mp, mp, u.Stats.MaxMP, mpC, "")
+	mp := max(0, u.MP+ch.mp) // a drink may pour past the max
+	g.gauge(dst, x, y+20, "병법치", u.MP, mp, mp, u.Stats.MaxMP, mpColor(max(u.MP, mp), u.Stats.MaxMP, g.uiSeconds), "")
 	if u.Faction == "ally" {
 		now := int(u.XPProgress)
 		gain := func(n int) int { return now + n*100/max(1, u.XPRequired) }

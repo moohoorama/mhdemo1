@@ -1,0 +1,231 @@
+{
+ "Nodes": [
+  {
+   "ID": "c18-xiapi",
+   "Kind": "scene",
+   "Place": "하비"
+  },
+  {
+   "ID": "c18-x01",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "원술은 수춘으로 돌아가다, 강정에서 피를 토하고 죽었다 합니다."
+  },
+  {
+   "ID": "c18-x02",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "꿀물 한 사발 찾다가 죽었다믄서유? 황제 노릇 한 사람치고는 참 허망하구먼."
+  },
+  {
+   "ID": "c18-x03",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "원술의 진채에서 거둔 곡식으로 군량은 넉넉합니다. 하비 사람들 먹일 것도 남겠습니다."
+  },
+  {
+   "ID": "c18-x04",
+   "Kind": "say",
+   "Speaker": "fangong",
+   "Text": "서주성에는 조조가 세운 자사 차주가 앉아 있습니다. 하비만으로는 버티기 어렵습니다."
+  },
+  {
+   "ID": "c18-x05",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "서주를 손에 넣어야 하네. 서주를 바탕으로 삼아야 조조에게 맞설 수 있어."
+  },
+  {
+   "ID": "c18-news",
+   "Kind": "scene",
+   "Place": "하비"
+  },
+  {
+   "ID": "c18-n01",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "현덕! 큰일 났네. 허도가 발칵 뒤집혔다는군!"
+  },
+  {
+   "ID": "c18-n02",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "국구 동승이 역모로 몰려, 왕자복이며 충집, 오석까지…… 다섯 집안이 모두 목이 달아났다네."
+  },
+  {
+   "ID": "c18-n03",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "동귀비마저 아이를 가진 몸으로 끌려 나가셨다지."
+  },
+  {
+   "ID": "c18-n04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……"
+  },
+  {
+   "ID": "c18-n05",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "그, 그럼 그 조서에 이름을 올린 다른 사람들은……"
+  },
+  {
+   "ID": "c18-n06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……나도 그 조서에 이름을 올렸네."
+  },
+  {
+   "ID": "c18-n07",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "뭐여?!"
+  },
+  {
+   "ID": "c18-n08",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님, 이대로는 안 됩니다. 조조는 반드시 군사를 보낼 것입니다."
+  },
+  {
+   "ID": "c18-n09",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "서주를 차주에게 맡겨 둔 채로는 앞뒤로 적을 두게 됩니다. 어서 차주를 베고 서주를 온전히 손에 넣으셔야 합니다."
+  },
+  {
+   "ID": "c18-n10",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "그래도 우리 힘만으로는 조조를 당하기 어렵습니다. 지금 조조와 맞서고 있는 이는 하북의 원소입니다."
+  },
+  {
+   "ID": "c18-n11",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "제가 원소에게 가서 손을 잡자고 하겠습니다."
+  },
+  {
+   "ID": "c18-n12",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "으음……"
+  },
+  {
+   "ID": "c18-n13",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형! 뭘 망설여유! 조조 놈이 먼저 칼을 뽑았는디, 앉아서 목 내밀 거유?"
+  },
+  {
+   "ID": "c18-n14",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……좋네. 허나 하비를 비워 둘 수는 없지. 운장, 하비를 맡아 주게. 처자와 군량도 여기 두겠네."
+  },
+  {
+   "ID": "c18-n15",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님. 알겠습니다."
+  },
+  {
+   "ID": "c18-n16",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "손 공은 원소에게 가 주시오."
+  },
+  {
+   "ID": "c18-n17",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "오늘 밤으로 떠나겠습니다."
+  },
+  {
+   "ID": "c18-n18",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "익덕, 나와 함께 서주로 가세. 차주를 친다."
+  },
+  {
+   "ID": "c18-n19",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "그 말 기다렸슈!"
+  },
+  {
+   "ID": "c18-leave-guan",
+   "Kind": "leave",
+   "Character": "guanyu",
+   "Event": "leave-guanyu"
+  },
+  {
+   "ID": "c18-leave-sun",
+   "Kind": "leave",
+   "Character": "sunqian",
+   "Event": "leave-sunqian"
+  },
+  {
+   "ID": "c18-battle",
+   "Kind": "battle",
+   "Stage": "B18",
+   "Text": "서주성 전투 — 출전 준비"
+  },
+  {
+   "ID": "c18-leave-zhangfei",
+   "Kind": "leave",
+   "Character": "zhangfei",
+   "Event": "leave-zhangfei"
+  },
+  {
+   "ID": "c18-leave-fangong",
+   "Kind": "leave",
+   "Character": "fangong",
+   "Event": "leave-fangong"
+  },
+  {
+   "ID": "c18-leave-mifang",
+   "Kind": "leave",
+   "Character": "mifang",
+   "Event": "leave-mifang"
+  },
+  {
+   "ID": "c18-gao-br",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "party:gaoshun"
+     ],
+     "Next": "c18-gao-set"
+    }
+   ],
+   "Else": "c18-flight"
+  },
+  {
+   "ID": "c18-gao-set",
+   "Kind": "set",
+   "Flags": {
+    "c18-gaoshun-left": 1
+   }
+  },
+  {
+   "ID": "c18-leave-gaoshun",
+   "Kind": "leave",
+   "Character": "gaoshun",
+   "Event": "leave-gaoshun"
+  },
+  {
+   "ID": "c18-flight",
+   "Kind": "scene",
+   "Place": "서주 동쪽 길"
+  },
+  {
+   "ID": "c18-end",
+   "Kind": "narrate",
+   "Text": "서주성은 조조의 대군에 다시 떨어지고, 장비와 번궁은 난전 속에 흩어졌다. 유비는 간옹·미축과 함께 동쪽 길로 빠져 원소에게 향했다."
+  }
+ ],
+ "Events": []
+}

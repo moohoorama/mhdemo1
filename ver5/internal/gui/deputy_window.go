@@ -88,7 +88,7 @@ func (g *Game) deputyRows(o core.Observation) []deputyRow {
 		switch err := g.S.Engine.DeputyCheck(actor, c.ID); {
 		case r.current:
 		case err == nil:
-			if g.deploying() && slices.Contains(o.Deployment, c.ID) {
+			if slices.Contains(o.Deployment, c.ID) {
 				r.note = "출전 중입니다. 임명하면 전장에서 빠집니다."
 			}
 		case served[c.ID] != "":

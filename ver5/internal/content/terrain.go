@@ -26,7 +26,6 @@ type Structure struct {
 	Grounds        string
 	Ambush         bool `json:",omitempty"`
 	Castle         bool `json:",omitempty"`
-	Village        bool `json:",omitempty"` // 중가 forages in it
 	RestHP, RestMP *int `json:",omitempty"` // percent of max HP restored (or lost, below zero) at turn start; multiplier of spell point regeneration
 }
 
@@ -43,7 +42,6 @@ type State struct {
 	Grounds string  `json:",omitempty"`
 	Look    string  `json:",omitempty"`
 	Blaze   float64 `json:",omitempty"`
-	Factor  float64 `json:",omitempty"`
 	RestHP  *int    `json:",omitempty"`
 }
 
@@ -52,6 +50,7 @@ type State struct {
 type TerrainRule struct {
 	Factor *float64 `json:",omitempty"`
 	Cost   *int     `json:",omitempty"`
+	Shift  float64  `json:",omitempty"` // added to the factor the layers below give: a puddle that weakens only cavalry
 }
 
 // TerrainSet is one movement group's rules, per layer glyph.
@@ -81,8 +80,8 @@ func (s Stage) Cell(x, y int) Cell {
 
 // CellProps is what a cell does besides costing steps.
 type CellProps struct {
-	RestHP, RestMP                 int
-	Water, Ambush, Castle, Village bool
+	RestHP, RestMP        int
+	Water, Ambush, Castle bool
 }
 
 // Move is what the group pays and gets on the cell: the topmost layer that says a value wins. On a stage
@@ -109,8 +108,8 @@ func (d *Data) Move(group string, c Cell, boats bool) Terrain {
 		if r.Cost != nil {
 			t.Cost = *r.Cost
 		}
+		t.Factor += r.Shift
 	}
-	t.Factor += d.States[string(c.State)].Factor
 	return t
 }
 
@@ -121,7 +120,7 @@ func (d *Data) Props(c Cell) CellProps {
 	g := d.Grounds[string(c.Ground)]
 	p.Water, p.Ambush, p.Castle = g.Water, g.Ambush, g.Castle
 	if st, ok := d.Structures[string(c.Structure)]; ok {
-		p.Ambush, p.Castle, p.Village = p.Ambush || st.Ambush, p.Castle || st.Castle, st.Village
+		p.Ambush, p.Castle = p.Ambush || st.Ambush, p.Castle || st.Castle
 		if st.RestHP != nil {
 			p.RestHP = *st.RestHP
 		}
@@ -160,10 +159,14 @@ func (d *Data) Glyph(c Cell) byte {
 // listed for the element decides before the ground under it.
 func (d *Data) ElementTerrain(c Cell, element string) int {
 	bonus := d.Rules.ElementTerrain[element]
-	if p, ok := bonus[string(c.Structure)]; ok {
-		return p
+	p, ok := bonus[string(c.Structure)]
+	if !ok {
+		p = bonus[string(c.Ground)]
 	}
-	return bonus[string(c.Ground)]
+	if m, ok := d.Rules.CritMarks[element]; ok && string(c.State) == m {
+		p = max(p, d.Rules.CritMarkPower)
+	}
+	return p
 }
 
 // ValidCell reports why a cell cannot exist: an unknown layer, or a structure on a ground it does not stand on.

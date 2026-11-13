@@ -31,7 +31,7 @@ func IsManualSlot(slot string) bool { return slices.Contains(ManualSlots(), slot
 func IsAutoSlot(slot string) bool   { return slices.Contains(AutoSlots(), slot) }
 
 type Settings struct {
-	Replay      string `json:"replay"` // how an AI army's turn plays: "together" or "one" action at a time
+	Replay      string `json:"replay"` // how an AI army's turn plays: "together", "spells" (a stratagem plays alone) or "one" action at a time
 	Color       bool   `json:"color"`
 	Detail      bool   `json:"detail"`
 	TextDelayMS int    `json:"text_delay_ms"`           // the CLI's pause after each letter
@@ -43,6 +43,7 @@ type Settings struct {
 	NoGuide     bool   `json:"no_guide,omitempty"`      // the walk does not mark where the story goes on
 	NoGoalGuide bool   `json:"no_goal_guide,omitempty"` // the battle does not outline what it is won and lost by
 	Sound       string `json:"sound,omitempty"`         // the GUI's sound: "" all, "sfx" effects only, "music" music only, "off"
+	Speed       int    `json:"speed,omitempty"`         // the GUI's replay speed (×1, 2, 4, 8); 0 is ×1
 }
 
 // ScalePcts are the percents the player may choose for the damage and experience scales.
@@ -69,7 +70,7 @@ func (s Settings) XPScale() int {
 
 func DefaultSettings() Settings { return Settings{Replay: "together", Detail: true} }
 func (s Settings) Validate() error {
-	if s.Replay != "together" && s.Replay != "one" || s.TextDelayMS < 0 || s.TextDelayMS > 1000 || s.UIScale != 0 && (s.UIScale < 80 || s.UIScale > 160) || s.DamagePct != 0 && !slices.Contains(ScalePcts, s.DamagePct) || s.XPPct != 0 && !slices.Contains(ScalePcts, s.XPPct) || !slices.Contains([]string{"", "sfx", "music", "off"}, s.Sound) {
+	if !slices.Contains([]string{"together", "spells", "one"}, s.Replay) || s.TextDelayMS < 0 || s.TextDelayMS > 1000 || s.UIScale != 0 && (s.UIScale < 80 || s.UIScale > 160) || s.DamagePct != 0 && !slices.Contains(ScalePcts, s.DamagePct) || s.XPPct != 0 && !slices.Contains(ScalePcts, s.XPPct) || !slices.Contains([]string{"", "sfx", "music", "off"}, s.Sound) {
 		return fmt.Errorf("InvalidSettings")
 	}
 	return nil

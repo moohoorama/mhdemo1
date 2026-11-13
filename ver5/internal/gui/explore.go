@@ -571,13 +571,7 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 			continue
 		}
 		seen[e.At] = true
-		px, py := g.field.Center(smallTile(e.At).cell())
-		py -= 24
-		if e.Object != nil {
-			if ox, oy, ok := g.objectTop(*e.Object); ok {
-				px, py = ox, oy
-			}
-		}
+		px, py := g.exitPlatePoint(e.At)
 		style := plateDim
 		for j, o := range a.Exits {
 			if o.At == e.At && guideExit[j] != plateDim {
@@ -622,8 +616,8 @@ type namedPlate struct {
 }
 
 // exploreGuide is how the guide marks the exits of the hero's area (by index) and its people (by key): the main
-// story's way green, a side story's yellow, the main one winning where both lead. Nothing when the player turned the
-// guide off.
+// story's way green, a side story's and a shop's (the shopkeeper and the door into their shop) yellow, the main one
+// winning where both lead. Nothing when the player turned the guide off.
 func (g *Game) exploreGuide() (map[int]plate, map[string]plate) {
 	exits, people := map[int]plate{}, map[string]plate{}
 	if g.S.Settings.NoGuide {
@@ -642,7 +636,37 @@ func (g *Game) exploreGuide() (map[int]plate, map[string]plate) {
 			people[goal.Person] = map[bool]plate{false: plateMain, true: plateSide}[goal.Side]
 		}
 	}
+	x := g.S.Engine.ExploreFile()
+	a := x.Areas[g.explore.area]
+	hasShop := func(area string) bool {
+		if to := x.Areas[area]; to != nil {
+			for _, p := range to.People {
+				if p.Shop != "" {
+					return true
+				}
+			}
+		}
+		return false
+	}
+	for i, ex := range a.Exits {
+		if g.S.Engine.ExitOpen(ex) && hasShop(ex.To) {
+			mark(exits, i, true)
+		}
+	}
+	for key, p := range a.People {
+		if p.Shop != "" && people[key] != plateMain {
+			people[key] = plateSide
+		}
+	}
 	return exits, people
+}
+
+// exitPlatePoint is the canvas point an exit's plate stands over: its doorway, a little above the ground, so the
+// plate marks where the hero goes in rather than floating over the roof.
+func (g *Game) exitPlatePoint(at [2]int) (float64, float64) {
+	u, v := smallTile(at).cell()
+	x, y := g.field.Center(u, v)
+	return x, y - g.field.Lift(int(u), int(v)) - 24
 }
 
 // exitName is the name an exit's plate shows: of the one open now among those sharing its spot.

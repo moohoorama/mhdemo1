@@ -1,0 +1,732 @@
+{
+ "ID": "B18",
+ "Name": "서주성 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 6,
+ "Required": [
+  "liubei",
+  "zhangfei"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "defeated:chezhou"
+   ],
+   "Text": "차주 격파"
+  }
+ ],
+ "TurnLimit": 30,
+ "Map": "map12.json",
+ "Allies": [
+  {
+   "X": 12,
+   "Y": 2
+  },
+  {
+   "X": 12,
+   "Y": 1
+  },
+  {
+   "X": 11,
+   "Y": 2
+  },
+  {
+   "X": 13,
+   "Y": 2
+  },
+  {
+   "X": 11,
+   "Y": 1
+  },
+  {
+   "X": 13,
+   "Y": 1
+  },
+  {
+   "X": 10,
+   "Y": 2
+  },
+  {
+   "X": 14,
+   "Y": 2
+  },
+  {
+   "X": 10,
+   "Y": 1
+  },
+  {
+   "X": 14,
+   "Y": 1
+  },
+  {
+   "X": 9,
+   "Y": 2
+  },
+  {
+   "X": 15,
+   "Y": 2
+  },
+  {
+   "X": 9,
+   "Y": 1
+  },
+  {
+   "X": 15,
+   "Y": 1
+  },
+  {
+   "X": 8,
+   "Y": 2
+  },
+  {
+   "X": 16,
+   "Y": 2
+  },
+  {
+   "X": 8,
+   "Y": 1
+  },
+  {
+   "X": 16,
+   "Y": 1
+  }
+ ],
+ "Recommend": {
+  "liubei": {
+   "X": 12,
+   "Y": 2
+  },
+  "zhangfei": {
+   "X": 12,
+   "Y": 1
+  }
+ },
+ "Party": [],
+ "Enemies": [
+  {
+   "Character": "chezhou",
+   "X": 20,
+   "Y": 20,
+   "Facing": "NE",
+   "Group": "che",
+   "Policy": "hold",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 20,
+   "Y": 18,
+   "Facing": "NE",
+   "Group": "gate",
+   "Policy": "react",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 18,
+   "Y": 20,
+   "Facing": "NW",
+   "Group": "gate",
+   "Policy": "react",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 19,
+   "Y": 18,
+   "Facing": "NE",
+   "Group": "wall",
+   "Policy": "hold",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 18,
+   "Y": 21,
+   "Facing": "NW",
+   "Group": "wall",
+   "Policy": "hold",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 10,
+   "Facing": "SE",
+   "Shift": -0.07,
+   "Group": "bridge",
+   "Policy": "react",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 14,
+   "Y": 11,
+   "Facing": "SE",
+   "Shift": -0.07,
+   "Group": "bridge",
+   "Policy": "react",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 19,
+   "Y": 7,
+   "Facing": "NE",
+   "Shift": -0.07,
+   "Group": "patrol",
+   "Policy": "react",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 15,
+   "Facing": "NE",
+   "Shift": -0.07,
+   "Group": "field",
+   "Policy": "react",
+   "Faction": "wei"
+  }
+ ],
+ "Reward": {
+  "money": 1000
+ },
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 21,
+    "Y": 0,
+    "W": 3,
+    "H": 3
+   },
+   "Name": "동쪽 끝 소성",
+   "Description": "청주를 거쳐 원소에게 가는 길목. 차주가 쓰러진 뒤 유비가 닿으면 승리"
+  },
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 14,
+    "Y": 9,
+    "W": 5,
+    "H": 3
+   },
+   "Name": "마을과 다리",
+   "Description": "조조 대군이 나타난 뒤 유비가 들어서 있으면 다음 차례에 다리와 소성 사이에서 우금·이전이 매복에서 나온다"
+  },
+  {
+   "ID": 3,
+   "Rect": {
+    "X": 18,
+    "Y": 18,
+    "W": 6,
+    "H": 6
+   },
+   "Name": "서주성 안",
+   "Description": "조조와 장수들이 성을 되찾으러 들어가는 곳"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "opening",
+   "If": [
+    "round>=1"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "chezhou",
+       "Text": "유비가 돌아왔다고? 성문을 걸어라! 성벽 위에서 쏘아 떨어뜨려라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "문 걸어 잠그면 못 들어갈 줄 아는겨? 차주 이놈, 목 씻고 기다려유!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "차주만 베면 서주는 다시 우리 것일세. 성안 백성은 다치지 않게 하게."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "cao-arrives",
+   "If": [
+    "defeated:chezhou"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "caocao",
+       "X": 0,
+       "Y": 0,
+       "Facing": "SW",
+       "Rank": "commander",
+       "Group": "cao",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 1,
+       "Y": 0,
+       "Facing": "SW",
+       "Shift": -0.07,
+       "Group": "cao",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 0,
+       "Y": 1,
+       "Facing": "SW",
+       "Shift": -0.07,
+       "Group": "cao",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 1,
+       "Y": 1,
+       "Facing": "SW",
+       "Shift": -0.07,
+       "Group": "cao",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "xuchu",
+       "X": 0,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "xu",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 0,
+       "Y": 3,
+       "Facing": "SW",
+       "Shift": -0.07,
+       "Group": "xu",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "xuhuang",
+       "X": 1,
+       "Y": 2,
+       "Facing": "SW",
+       "Class": "heavy_cavalry",
+       "Group": "xh",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 1,
+       "Y": 3,
+       "Facing": "SW",
+       "Shift": -0.07,
+       "Group": "xh",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "zhangliao",
+       "X": 2,
+       "Y": 0,
+       "Facing": "SE",
+       "Group": "zl",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 2,
+       "Y": 1,
+       "Facing": "SE",
+       "Shift": -0.07,
+       "Group": "zl",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "xiahoudun",
+       "X": 3,
+       "Y": 1,
+       "Facing": "SE",
+       "Group": "xhd",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 3,
+       "Y": 2,
+       "Facing": "SE",
+       "Shift": -0.07,
+       "Group": "xhd",
+       "Policy": "march",
+       "GoalArea": 3,
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "zangba",
+       "X": 1,
+       "Y": 21,
+       "Facing": "SE",
+       "Group": "zang",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "sunguan",
+       "X": 0,
+       "Y": 22,
+       "Facing": "SE",
+       "Group": "zang",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "troop_bandit",
+       "X": 0,
+       "Y": 20,
+       "Facing": "SE",
+       "Shift": -0.07,
+       "Group": "zang",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "troop_bandit",
+       "X": 1,
+       "Y": 23,
+       "Facing": "SE",
+       "Shift": -0.07,
+       "Group": "zang",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "troop_bandit",
+       "X": 2,
+       "Y": 22,
+       "Facing": "SE",
+       "Shift": -0.07,
+       "Group": "zang",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "wei"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "형! 북쪽이 온통 조조 깃발이여! 서쪽에서도 몰려와유!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caocao",
+       "Text": "현덕. 조서에 이름을 올린 값은 치러야 하지 않겠소."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zangba",
+       "Text": "유비! 태산에서 네 아우 청룡도에 밀린 빚, 오늘 받아 가겠다!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "xiapi-news",
+   "If": [
+    "defeated:chezhou"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "messenger",
+       "X": 23,
+       "Y": 15,
+       "Facing": "NW",
+       "Group": "msg-xiapi",
+       "Policy": "run",
+       "Goal": {
+        "X": 23,
+        "Y": 15
+       },
+       "AI": true,
+       "Faction": "shu"
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "move",
+        "Unit": "msg-xiapi",
+        "To": {
+         "X": 21,
+         "Y": 16
+        },
+        "Facing": "SW"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "msg-xiapi",
+        "Text": "주공! 하비가 조조군에게 에워싸였습니다! 관 장군께서 성안에 갇히셨습니다!"
+       }
+      ],
+      [
+       {
+        "Kind": "leave",
+        "Unit": "msg-xiapi"
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "운장이……!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "sunqian-news",
+   "If": [
+    "defeated:chezhou"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "messenger",
+       "X": 23,
+       "Y": 15,
+       "Facing": "NW",
+       "Group": "msg-sun",
+       "Policy": "run",
+       "Goal": {
+        "X": 23,
+        "Y": 15
+       },
+       "AI": true,
+       "Faction": "shu"
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "move",
+        "Unit": "msg-sun",
+        "To": {
+         "X": 21,
+         "Y": 16
+        },
+        "Facing": "SW"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "msg-sun",
+        "Text": "손 공의 전갈입니다! 원소 공께서 손을 잡겠다 하셨습니다. 동쪽 소성을 지나 청주로 오시랍니다!"
+       }
+      ],
+      [
+       {
+        "Kind": "leave",
+        "Unit": "msg-sun"
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "jianyong",
+       "Text": "현덕, 운장은 하비에서 버틸 걸세. 우리가 살아 있어야 운장도 돌아올 데가 있지."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "……성을 버리세. 동쪽 소성으로 빠져나가 원소에게 가세!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "에잇, 알았슈! 길은 내가 뚫어유!"
+      }
+     ]
+    },
+    {
+     "Kind": "goals",
+     "Victory": [
+      {
+       "If": [
+        "at:liubei:1"
+       ],
+       "Text": "유비가 동쪽 끝 소성에 닿는다"
+      }
+     ]
+    },
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-b18-cao": 1
+     }
+    }
+   ]
+  },
+  {
+   "ID": "ambush",
+   "If": [
+    "flag:flag-b18-cao",
+    "at:liubei:2",
+    "turnstart:ally"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "yujin",
+       "X": 20,
+       "Y": 4,
+       "Facing": "SW",
+       "Group": "yl",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "wei"
+      },
+      {
+       "Character": "lidian",
+       "X": 22,
+       "Y": 3,
+       "Facing": "SW",
+       "Class": "crossbow",
+       "Group": "yl",
+       "Policy": "assault",
+       "Side": "enemy",
+       "Faction": "wei"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yujin",
+       "Text": "승상께서 이 길로 오리라 하셨다. 유비, 여기서 멈춰라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "매복이다! 멈추지 말고 뚫고 나가라!"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "Faction": "wei",
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "wei",
+   "Name": "조조군"
+  }
+ ]
+}

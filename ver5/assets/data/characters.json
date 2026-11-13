@@ -177,7 +177,7 @@
    ],
    "Level": 4,
    "Traits": [
-    "vanguard"
+    "intimidate"
    ],
    "Learn": [],
    "Equipment": [
@@ -419,8 +419,7 @@
    "Level": 7,
    "Traits": [
     "siegecraft",
-    "venom",
-    "hoarding"
+    "venom"
    ],
    "Learn": [],
    "Equipment": [
@@ -497,13 +496,13 @@
     "breakthrough",
     "versatile",
     "lone_warrior",
-    "missile_immunity"
+    "terrain_footing"
    ],
    "Learn": [
     "versatile",
     "lone_warrior",
     "breakthrough",
-    "missile_immunity"
+    "terrain_footing"
    ],
    "Equipment": [
     "iron_spear",
@@ -895,8 +894,7 @@
    ],
    "Level": 8,
    "Traits": [
-    "four_generations",
-    "hoarding"
+    "four_generations"
    ],
    "Learn": [],
    "Equipment": [
@@ -1046,7 +1044,7 @@
   },
   "troop_turban": {
    "Name": "황건 도적",
-   "Class": "bandit",
+   "Class": "turban",
    "Stats": [
     35,
     45,

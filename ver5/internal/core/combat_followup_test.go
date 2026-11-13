@@ -313,7 +313,7 @@ func TestHeavyBlowRaisesShares(t *testing.T) {
 				with(e, "boss", "full_share_t")
 			}
 			e.events = nil
-			e.attackOn(b, a, []*Unit{a}, e.basic(), map[string]float64{a.ID: 1}, true, true)
+			e.attackOn(b, a, []*Unit{a}, e.basic(), map[string]float64{a.ID: 1}, true, false, true)
 			got := dealt(e, b.ID)
 			require.Len(t, got, 2)
 			assert.Equal(t, full, got[0] == got[1], "full %t: %v", full, got)

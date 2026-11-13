@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"slices"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/core"
@@ -214,7 +215,37 @@ func (g *Game) equipmentWindow(dst *ebiten.Image, x, y, w, h int) {
 			g.equip.pick = equipCurrent
 		}
 	}
-	g.closeRow(dst, right, y+h-60, g.closeOverlay, action{label, true, confirm})
+	act := action{label, true, confirm}
+	g.closeRow(dst, right, y+h-60, g.closeOverlay, act)
+	g.guideEquip(dst, of, rows, image.Rect(x+6, y+58, x+slotW, y+58), image.Rect(listX, y+58, listX+listW, y+h-6), right, y+h-60, act)
+}
+
+// guideEquip puts the gear guide's rim on the next thing to press in the equipment window: 닫기 when another
+// officer's piece is waiting, the guided slot, the piece in the picker (the list when any piece fits), then the
+// button that puts it on.
+func (g *Game) guideEquip(dst *ebiten.Image, of *core.Character, rows []equipRow, slots, list image.Rectangle, right, y int, act action) {
+	piece, owner, slot, ok := g.gearStep()
+	switch {
+	case !ok:
+	case owner != of.ID:
+		g.guideRim(dst, image.Rect(right-96, y, right, y+touchH))
+	case g.equip.slot != slot:
+		i := slices.Index(equipSlots, slot)
+		g.guideRim(dst, image.Rect(slots.Min.X, slots.Min.Y+i*72, slots.Max.X, slots.Min.Y+(i+1)*72).Inset(4))
+	case piece == "" && g.equip.pick == equipCurrent: // any piece that fits: the list
+		g.guideRim(dst, list.Inset(4))
+	case piece != "" && g.equip.pick != piece:
+		i := slices.IndexFunc(rows, func(r equipRow) bool { return r.id == piece })
+		if top := g.equip.list.top; i >= top && i < top+max(1, list.Dy()/listRowH) {
+			r := image.Rect(list.Min.X, list.Min.Y+(i-top)*listRowH, list.Max.X, list.Min.Y+(i-top+1)*listRowH)
+			if len(rows) > max(1, list.Dy()/listRowH) {
+				r.Max.X -= tableBarW + 4
+			}
+			g.guideRim(dst, r.Inset(4))
+		}
+	default:
+		g.guideRim(dst, g.actionRect(right, y, act.label, act))
+	}
 }
 
 func itemChips(traits, learn, skills []string) []equipChip {

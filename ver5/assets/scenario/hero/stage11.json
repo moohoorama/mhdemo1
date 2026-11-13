@@ -18,16 +18,6 @@
    "Text": "관해를 물리친다"
   }
  ],
- "Sub": [
-  {
-   "ID": "taishici",
-   "Text": "태사자가 살아남는다",
-   "If": [
-    "alive:taishici"
-   ],
-   "Flag": "flag-beihai-taishici"
-  }
- ],
  "TurnLimit": 25,
  "Map": "map11.json",
  "Allies": [
@@ -62,19 +52,9 @@
  ],
  "Party": [
   {
-   "Character": "taishici",
-   "X": 13,
-   "Y": 12,
-   "Facing": "NW",
-   "Group": "tai",
-   "Policy": "assault",
-   "AI": true,
-   "Faction": "han"
-  },
-  {
    "Character": "kongrong",
    "X": 7,
-   "Y": 1,
+   "Y": 0,
    "Facing": "SW",
    "Group": "kong",
    "Policy": "hold",
@@ -84,7 +64,7 @@
   {
    "Character": "troop_footman",
    "X": 6,
-   "Y": 2,
+   "Y": 1,
    "Facing": "SW",
    "Group": "kong",
    "Policy": "hold",
@@ -95,7 +75,7 @@
   {
    "Character": "troop_footman",
    "X": 8,
-   "Y": 2,
+   "Y": 1,
    "Facing": "SW",
    "Group": "kong",
    "Policy": "hold",
@@ -118,20 +98,22 @@
   {
    "Character": "troop_turban",
    "X": 6,
-   "Y": 4,
+   "Y": 5,
    "Facing": "NE",
    "Group": "gate",
    "Policy": "hold",
-   "Rank": "recruit"
+   "Rank": "recruit",
+   "Class": "bandit"
   },
   {
    "Character": "troop_turban",
-   "X": 8,
-   "Y": 4,
+   "X": 7,
+   "Y": 5,
    "Facing": "NE",
    "Group": "gate",
    "Policy": "hold",
-   "Rank": "recruit"
+   "Rank": "recruit",
+   "Class": "bandit"
   },
   {
    "Character": "troop_turban",
@@ -140,7 +122,8 @@
    "Facing": "NE",
    "Group": "gate",
    "Policy": "hold",
-   "Rank": "recruit"
+   "Rank": "recruit",
+   "Class": "bandit"
   },
   {
    "Character": "troop_turban",
@@ -149,7 +132,8 @@
    "Facing": "SE",
    "Group": "gate",
    "Policy": "hold",
-   "Rank": "recruit"
+   "Rank": "recruit",
+   "Class": "bandit"
   },
   {
    "Character": "troop_archer",
@@ -175,7 +159,8 @@
    "Y": 6,
    "Facing": "SW",
    "Group": "ford",
-   "Policy": "react"
+   "Policy": "react",
+   "Class": "bandit"
   },
   {
    "Character": "troop_turban",
@@ -183,7 +168,8 @@
    "Y": 6,
    "Facing": "SW",
    "Group": "ford",
-   "Policy": "react"
+   "Policy": "react",
+   "Class": "bandit"
   }
  ],
  "Reward": {
@@ -232,17 +218,8 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "taishici",
-       "Text": "여울만 건너면 성문 앞이오! 내가 먼저 가겠소!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
        "Actor": "liubei",
-       "Text": "자의를 따라 여울을 건넌다! 길가의 성은 비워 두지 마라."
+       "Text": "여울을 건너 성문 앞 진채를 친다! 길가의 성은 비워 두지 마라."
       }
      ]
     },
@@ -274,7 +251,8 @@
        "Facing": "NE",
        "Group": "rear",
        "Policy": "assault",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Class": "bandit"
       },
       {
        "Character": "troop_turban",
@@ -283,7 +261,8 @@
        "Facing": "NE",
        "Group": "rear",
        "Policy": "assault",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Class": "bandit"
       },
       {
        "Character": "troop_turban",
@@ -292,7 +271,8 @@
        "Facing": "NE",
        "Group": "rear",
        "Policy": "assault",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Class": "bandit"
       },
       {
        "Character": "troop_turban",
@@ -301,7 +281,8 @@
        "Facing": "NE",
        "Group": "rear",
        "Policy": "assault",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Class": "bandit"
       },
       {
        "Character": "troop_turban",
@@ -310,7 +291,8 @@
        "Facing": "NE",
        "Group": "rear",
        "Policy": "assault",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Class": "bandit"
       }
      ]
     },

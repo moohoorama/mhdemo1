@@ -14,7 +14,7 @@ import (
 // relative to the target's feet (fx, fy for the source) and scale with the camera zoom like
 // the units do.
 type effect struct {
-	kind   string // arrow, slash, fire, water, heal, buff, debuff, block, insu, promote_gather, promote, spell_<skill>
+	kind   string // arrow, slash, fire, water, heal, buff, debuff, block, spell_<skill>
 	tu, tv float64
 	fu, fv float64
 	lift   float64 // target cell surface height
@@ -40,6 +40,9 @@ var (
 	hot   = color.NRGBA{R: 255, G: 248, B: 220, A: 255}
 	spark = color.NRGBA{R: 255, G: 214, B: 110, A: 255}
 	healC = color.NRGBA{R: 150, G: 255, B: 150, A: 255}
+	// fireArrowC tints 화시's arrow; fireArrowGlow its trail of embers
+	fireArrowC    = color.NRGBA{R: 255, G: 96, B: 48, A: 255}
+	fireArrowGlow = color.NRGBA{R: 255, G: 170, B: 70, A: 255}
 )
 
 // buffTint is the color of a support effect.
@@ -164,22 +167,6 @@ func (g *Game) spawn(kind string, from, to *unitVis, dur float64, tint color.NRG
 			add(particle{x: 0, y: chest, vx: math.Cos(a) * v, vy: math.Sin(a)*v*.7 - 50, g: 320,
 				life: .3 + r.Float64()*.35, sprite: "spark", col: col})
 		}
-	case "promote_gather":
-		// motes come in from all round to the chest, ending where they meet
-		for i := 0; i < 24; i++ {
-			a := r.Float64() * 2 * math.Pi
-			d := 34 + r.Float64()*26
-			life := .7 + r.Float64()*.3
-			x, y := math.Cos(a)*d, math.Sin(a)*d*.5+chest*.6
-			add(particle{x: x, y: y, vx: -x / life, vy: (chest*.6 - y) / life, life: life, sprite: "promote_mote", in: true})
-		}
-	case "promote":
-		for i := 0; i < 26; i++ {
-			a := r.Float64() * 2 * math.Pi
-			v := 50 + r.Float64()*70
-			add(particle{x: 0, y: chest * .6, vx: math.Cos(a) * v, vy: math.Sin(a)*v*.5 - 30, g: -40,
-				life: .5 + r.Float64()*.4, sprite: "promote_mote"})
-		}
 	case "block":
 		// sparks fly back toward the attacker's side
 		fx, _ := g.field.Center(e.fu, e.fv)
@@ -295,14 +282,26 @@ func (g *Game) drawEffects(dst *ebiten.Image) {
 		x, y := g.field.Center(e.tu, e.tv)
 		chest := y - e.lift - e.height*.55
 		switch e.kind {
-		case "arrow": // a flat shot from the shooter's chest to the target's
+		case "arrow", "burning_shot": // a flat shot from the shooter's chest to the target's; 화시's burns red and sheds embers
 			fx, fy := g.field.Center(e.fu, e.fv)
 			ax, ay := fx, fy-e.flift-e.fh*.55
 			bx, by := x, chest
 			sh := g.assets.FX["arrow"]
 			n := float64(len(sh.Frames))
 			i := int(math.Round(math.Atan2(by-ay, bx-ax)/(2*math.Pi)*n+n)) % len(sh.Frames)
-			sh.draw(dst, i, ax+(bx-ax)*k, ay+(by-ay)*k, g.toScreen, z)
+			if e.kind == "arrow" {
+				sh.draw(dst, i, ax+(bx-ax)*k, ay+(by-ay)*k, g.toScreen, z)
+				break
+			}
+			ember := g.assets.FX["ember"]
+			for j := 1; j <= 5; j++ { // the trail, fading behind the head
+				t := k - float64(j)*.045
+				if t < 0 {
+					break
+				}
+				ember.drawTint(dst, j%len(ember.Frames), ax+(bx-ax)*t, ay+(by-ay)*t+float64(j)*.6, g.toScreen, z, fireArrowGlow, 1-float64(j)/6)
+			}
+			sh.drawTint(dst, i, ax+(bx-ax)*k, ay+(by-ay)*k, g.toScreen, z, e.tint, 1)
 		case "slash":
 			sh := g.assets.FX["slash"]
 			sh.draw(dst, sh.frameOver(k), x, chest, g.toScreen, z)
@@ -316,20 +315,6 @@ func (g *Game) drawEffects(dst *ebiten.Image) {
 			fx, _ := g.field.Center(e.fu, e.fv)
 			sh := g.assets.FX["block"]
 			sh.blit(dst, sh.frameOver(k), x, chest, g.toScreen, z, white, 1, fx < x)
-		case "insu": // the seal of the new rank rises over the head, dot for dot with the sprites
-			k := 1 - math.Pow(1-min(1, e.t/.35), 2)
-			a := min(1, e.t/.15, (e.dur-e.t)/.2)
-			sh := g.assets.UI["item_insu"]
-			sx, sy := g.toScreen(x, y-e.lift-e.height-14-6*k)
-			op := &ebiten.DrawImageOptions{}
-			op.GeoM.Translate(-float64(sh.Frames[0].Bounds().Dx())/2, -float64(sh.Frames[0].Bounds().Dy())/2)
-			op.GeoM.Scale(z/4, z/4)
-			op.GeoM.Translate(math.Round(sx), math.Round(sy))
-			op.ColorScale.ScaleAlpha(float32(a))
-			drawScaled(dst, sh.Frames[0], op)
-		case "promote_gather", "promote":
-			sh := g.assets.FX[e.kind]
-			sh.draw(dst, sh.frameOver(k), x, y-e.lift, g.toScreen, z)
 		default:
 			if isSpell(e.kind) {
 				g.drawSpell(dst, e, x, y)

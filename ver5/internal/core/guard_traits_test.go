@@ -12,8 +12,9 @@ import (
 func TestWardsMeditationAndForesight(t *testing.T) {
 	traits := map[string]map[string]float64{
 		"ranged_ward_t":  {content.FxRangedWard: .3},
-		"counter_ward_t": {content.FxCounterWard: .5},
+		"counter_ward_t": {content.FxCounterWard: .3},
 		"foresight_t":    {content.FxStartMana: .25},
+		"heavy_t":        {content.FxHeavy: .3},
 	}
 	setup := func(t *testing.T) (*Engine, *Unit, *Unit) {
 		e, a, b := arena(t)
@@ -35,13 +36,22 @@ func TestWardsMeditationAndForesight(t *testing.T) {
 		assert.InDelta(t, melee, e.damage(hero, b, e.basic()), 1e-6)
 	})
 
-	t.Run("counter ward halves the counter the attacker takes", func(t *testing.T) {
+	t.Run("counter ward takes 30 points off the counter's share", func(t *testing.T) {
 		e, a, b := setup(t)
 		c := Command{Kind: "attack", Actor: a.ID, Target: b.ID}
 		full := e.CounterDamage(c)
 		require.Positive(t, full)
 		with(e, "hero", "counter_ward_t")
-		assert.InDelta(t, float64(full)/2, float64(e.CounterDamage(c)), 1)
+		assert.InDelta(t, float64(full)*.2/.5, float64(e.CounterDamage(c)), 1)
+	})
+
+	t.Run("a 30-point heavy counter cancels the ward", func(t *testing.T) {
+		e, a, b := setup(t)
+		c := Command{Kind: "attack", Actor: a.ID, Target: b.ID}
+		full := e.CounterDamage(c)
+		with(e, "hero", "counter_ward_t")
+		with(e, "boss", "heavy_t")
+		assert.InDelta(t, float64(full), float64(e.CounterDamage(c)), 1)
 	})
 
 	t.Run("iron armour halves the part above a fifth, and with iron wall the lower share counts", func(t *testing.T) {

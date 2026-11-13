@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 )
 
 // Catalog is what the rules know of the pictures (assets/graphics/index.json) and of the scene rules
@@ -60,6 +61,12 @@ type Rules struct {
 		Lift  int    `json:"lift"`
 		Faces string `json:"faces"`
 		Foot  string `json:"foot"`
+		// Back is the family of the brink drawn on a top's edges that drop away from the camera (toward -v, -u),
+		// whose faces the view does not show: <back>_ne_<k>, <back>_nw_<k>, one small tile of edge each.
+		Back string `json:"back"`
+		// Rim is the family of what stands on a top's edges over lower ground, among the people on the top (a wall
+		// walk's parapets): <rim>_<side>_<k>, side sw (+v), se (+u), ne (-v) or nw (-u), one small tile of edge each.
+		Rim string `json:"rim"`
 	} `json:"heights"`
 	Walls        map[string]WallFamily `json:"walls"`
 	Gates        map[string]string     `json:"gates"`        // a gate object -> its slices (<slices>_<axis>_<k>)
@@ -71,6 +78,26 @@ type Rules struct {
 	Footprints map[string][4]float64 `json:"footprints"`
 	// Attachments are what an object carries wherever it stands: the flames of a campfire, the light of a lantern.
 	Attachments map[string][]Attachment `json:"attachments"`
+	Flood       Flood                   `json:"flood"`
+}
+
+// Flood is ground under flood water: its glyphs draw the ground Surfaces gives them with a sheet of muddy water over
+// each small tile, a rim of foam where it meets dry ground. An object standing in it sinks Sink pixels (SinkDefault
+// for one not listed) and is cut off at the waterline along the front of its footprint; a thin one listed in Ring
+// (a tree's trunk, a post) is cut off round its anchor instead, that many pixels to each side.
+type Flood struct {
+	Glyphs      string         `json:"glyphs"`
+	Color       string         `json:"color"` // the water, "#rrggbb"
+	Alpha       float64        `json:"alpha"` // how much of the ground it hides
+	Foam        string         `json:"foam"`  // the rim and the waterline round what stands in it
+	Sink        map[string]int `json:"sink"`
+	SinkDefault int            `json:"sink_default"`
+	Ring        map[string]int `json:"ring"`
+}
+
+// flooded reports whether glyph g is flooded ground.
+func (c *Catalog) flooded(g byte) bool {
+	return g != 0 && strings.IndexByte(c.Rules.Flood.Glyphs, g) >= 0
 }
 
 // Attachment is a looping strip drawn over an object (a flame), the light it casts at night, or both, at At canvas

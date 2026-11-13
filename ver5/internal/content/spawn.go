@@ -2,6 +2,7 @@ package content
 
 import (
 	"fmt"
+	"maps"
 	"math"
 	"slices"
 	"strings"
@@ -24,6 +25,16 @@ func (d *Data) Promotes(character, class string) []string {
 		}
 	}
 	return out
+}
+
+// PromotedFrom is the class whose promotions lead to class, or "" for a first-tier class.
+func (d *Data) PromotedFrom(class string) string {
+	for _, id := range slices.Sorted(maps.Keys(d.Classes)) {
+		if slices.Contains(d.Classes[id].Promotes, class) {
+			return id
+		}
+	}
+	return ""
 }
 
 func (d *Data) ClassFamily(id string) string {

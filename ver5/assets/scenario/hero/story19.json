@@ -1,0 +1,356 @@
+{
+ "Nodes": [
+  {
+   "ID": "c19-join-sun",
+   "Kind": "join",
+   "Character": "sunqian",
+   "Event": "join-sunqian-2"
+  },
+  {
+   "ID": "c19-yuan",
+   "Kind": "scene",
+   "Place": "원소의 진영 · 큰 막사"
+  },
+  {
+   "ID": "c19-y01",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "현덕 공, 고생이 많았소. 사수관 아래에서 함께 맹약을 맺던 일이 엊그제 같구려."
+  },
+  {
+   "ID": "c19-y02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "몸 둘 곳이 없어 명공께 의탁하러 왔습니다."
+  },
+  {
+   "ID": "c19-y03",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "무슨 말씀이오. 황숙께서 오셨으니 내 진영이 다 환해졌소. 마음 놓고 머무르시오."
+  },
+  {
+   "ID": "c19-y04",
+   "Kind": "narrate",
+   "Text": "며칠 뒤."
+  },
+  {
+   "ID": "c19-y05",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "아뢰오! 백마에서 안량 장군이 적장에게 베였습니다!"
+  },
+  {
+   "ID": "c19-y06",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "얼굴이 대춧빛처럼 붉고 수염이 긴 장수가, 큰 칼을 들고 단칼에……"
+  },
+  {
+   "ID": "c19-y07",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "붉은 얼굴에 긴 수염이라…… 현덕 공의 아우 가운데 그런 사람이 있다 들었소만."
+  },
+  {
+   "ID": "c19-y08",
+   "Kind": "say",
+   "Speaker": "guotu",
+   "Text": "유비의 아우 관우가 틀림없습니다! 유비가 조조와 짜고 들어온 것입니다!"
+  },
+  {
+   "ID": "c19-y-c1",
+   "Kind": "choice",
+   "Text": "원소가 묻는다. 안량을 벤 자가 관우인가?",
+   "Choices": {
+    "운장이 맞을 것이오": "c19-dead1",
+    "운장이라는 보장은 없소": "c19-y10"
+   }
+  },
+  {
+   "ID": "c19-y10",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "명공, 붉은 얼굴에 긴 수염이 천하에 어찌 하나뿐이겠습니까. 그 장수가 운장이라는 보장이 어디 있습니까."
+  },
+  {
+   "ID": "c19-y11",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "직접 보신 분도 없는데, 소문 한 자락에 옛 맹약을 끊으시렵니까."
+  },
+  {
+   "ID": "c19-y12",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "……그 말도 옳소. 다음 싸움에 나가는 장수들에게 똑똑히 보고 오라 하겠소."
+  },
+  {
+   "ID": "c19-y13",
+   "Kind": "narrate",
+   "Text": "며칠 뒤, 연진의 싸움에서 장수들이 돌아왔다."
+  },
+  {
+   "ID": "c19-y14",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "돌아온 장수들이 입을 모아 말하더군. 붉은 얼굴, 석 자 수염, 큰 칼. 그 장수가 문추를 베고, 스스로 관운장이라 외쳤다고."
+  },
+  {
+   "ID": "c19-y15",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "현덕 공. 운장이 아닐 수도 있다 하지 않았소?"
+  },
+  {
+   "ID": "c19-y-c2",
+   "Kind": "choice",
+   "Text": "원소가 웃으며 묻는다. 그 장수는 관우인가?",
+   "Choices": {
+    "운장이 맞소": "c19-y20",
+    "아직 모르는 일이오": "c19-dead2"
+   }
+  },
+  {
+   "ID": "c19-y20",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "예, 운장이 맞습니다. 그러니 명공께 축하드립니다."
+  },
+  {
+   "ID": "c19-y21",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "……축하라니?"
+  },
+  {
+   "ID": "c19-y22",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "운장이 조조 밑에 있었던 것은 제가 어디 있는지 몰라서입니다. 제가 편지 한 통만 보내면 밤낮을 가리지 않고 달려올 것입니다."
+  },
+  {
+   "ID": "c19-y23",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "명공께서는 안량과 문추를 잃으셨지만, 그 둘보다 더한 운장을 얻게 되시는 것 아니겠습니까."
+  },
+  {
+   "ID": "c19-y24",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "……하하하! 현덕 공의 말솜씨는 여전하구려. 좋소, 편지를 쓰시오."
+  },
+  {
+   "ID": "c19-y25",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "진진, 그대가 가져가게."
+  },
+  {
+   "ID": "c19-y26",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그대는…… 계교에서……"
+  },
+  {
+   "ID": "c19-y27",
+   "Kind": "say",
+   "Speaker": "chenzhen",
+   "Text": "예. 그때 받은 목숨, 이번에 갚겠습니다.",
+   "Next": "c19-night"
+  },
+  {
+   "ID": "c19-dead1",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "제 아우가 내 장수를 베었다고 제 입으로 말하는가! 끌어내 베어라!",
+   "Next": "c19-dead"
+  },
+  {
+   "ID": "c19-dead2",
+   "Kind": "say",
+   "Speaker": "yuanshao",
+   "Text": "모두가 본 것을 아니라 하는가! 끌어내 베어라!",
+   "Next": "c19-dead"
+  },
+  {
+   "ID": "c19-dead",
+   "Kind": "narrate",
+   "Text": "유비는 원소의 진중에서 목숨을 잃었다."
+  },
+  {
+   "ID": "c19-end1",
+   "Kind": "end",
+   "Text": "원소의 진중에서"
+  },
+  {
+   "ID": "c19-night",
+   "Kind": "scene",
+   "Place": "원소의 진영 · 유비의 막사"
+  },
+  {
+   "ID": "c19-n01",
+   "Kind": "say",
+   "Speaker": "chenzhen",
+   "Text": "운장 장군께 편지를 전했습니다. 장군께서는 조 승상께 하직을 고하고 길을 나서실 겁니다."
+  },
+  {
+   "ID": "c19-n02",
+   "Kind": "say",
+   "Speaker": "chenzhen",
+   "Text": "그런데 황숙, 명공께서 크게 웃으실 때가 가장 두렵습니다. 국의 장군을 기억하십니까. 계교에서 백마의종을 꺾은 그분입니다."
+  },
+  {
+   "ID": "c19-n03",
+   "Kind": "say",
+   "Speaker": "chenzhen",
+   "Text": "그분도 공을 세우고 잔치에 불려 갔다가, 그 자리에서 베였습니다. 명공께서는 공을 믿고 교만했다고만 하셨지요."
+  },
+  {
+   "ID": "c19-n03b",
+   "Kind": "say",
+   "Speaker": "chenzhen",
+   "Text": "운장 장군께서 오신 뒤에 명공께서 어떤 얼굴을 하실지는, 아무도 모릅니다."
+  },
+  {
+   "ID": "c19-n04",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "웃는 얼굴로 칼을 가는 사람이라…… 안량·문추의 원수를 운장에게 갚지 않으리란 법이 없군."
+  },
+  {
+   "ID": "c19-n05",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "여남의 유벽이 조조에게 등을 돌렸다 합니다. 남쪽으로 가시지요."
+  },
+  {
+   "ID": "c19-n06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "오늘 밤 떠나세. 진진, 그대는……"
+  },
+  {
+   "ID": "c19-n07",
+   "Kind": "say",
+   "Speaker": "chenzhen",
+   "Text": "이미 원소의 칼끝 위에 섰습니다. 함께 가겠습니다."
+  },
+  {
+   "ID": "c19-join-chen",
+   "Kind": "join",
+   "Character": "chenzhen",
+   "Event": "join-chenzhen"
+  },
+  {
+   "ID": "c19-battle",
+   "Kind": "battle",
+   "Stage": "B19",
+   "Text": "연주 전투 — 출전 준비"
+  },
+  {
+   "ID": "c19-gucheng",
+   "Kind": "scene",
+   "Place": "고성"
+  },
+  {
+   "ID": "c19-k01",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형! 형이여? 살아 있었구먼유!"
+  },
+  {
+   "ID": "c19-k02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "익덕!"
+  },
+  {
+   "ID": "c19-k03",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "서주에서 흩어지고 나서 이 산 저 산 헤매다가, 이 성 현령 놈을 쫓아내고 군량 모아 기다렸슈. 형이 꼭 올 줄 알았슈."
+  },
+  {
+   "ID": "c19-k04",
+   "Kind": "say",
+   "Speaker": "fangong",
+   "Text": "장 장군께서 날마다 성루에 올라 북쪽 길만 보셨습니다."
+  },
+  {
+   "ID": "c19-k05",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "어? 이 양반은…… 계교의 그 조자룡 아녀?"
+  },
+  {
+   "ID": "c19-k06",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "익덕 장군, 오랜만입니다."
+  },
+  {
+   "ID": "c19-k07",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "그런디 둘째 형은유? 둘째 형은 어디 있대유?"
+  },
+  {
+   "ID": "c19-k08",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……운장은 조조에게 몸을 의탁했다가, 지금 이리로 오고 있다 하네."
+  },
+  {
+   "ID": "c19-k09",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "……조조한테?"
+  },
+  {
+   "ID": "c19-fin",
+   "Kind": "narrate",
+   "Text": "장비와 번궁이 다시 유비의 곁에 섰다. 고성의 성루에서, 이제 남은 한 사람을 기다린다."
+  },
+  {
+   "ID": "c19-join-zhangfei",
+   "Kind": "join",
+   "Character": "zhangfei",
+   "Event": "join-zhangfei-2"
+  },
+  {
+   "ID": "c19-join-fangong",
+   "Kind": "join",
+   "Character": "fangong",
+   "Event": "join-fangong-2"
+  },
+  {
+   "ID": "c19-gao-br",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:c18-gaoshun-left"
+     ],
+     "Next": "c19-join-gaoshun"
+    }
+   ],
+   "Else": "c19-done"
+  },
+  {
+   "ID": "c19-join-gaoshun",
+   "Kind": "join",
+   "Character": "gaoshun",
+   "Event": "join-gaoshun-2"
+  },
+  {
+   "ID": "c19-done",
+   "Kind": "set",
+   "Flags": {
+    "c19-gucheng": 1
+   }
+  }
+ ],
+ "Events": []
+}

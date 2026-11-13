@@ -17,7 +17,6 @@ import (
 	"path/filepath"
 	"slices"
 	"sort"
-	"strings"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -119,6 +118,7 @@ type Game struct {
 	font                      *text.GoTextFaceSource
 	brushFont, serifFont      *text.GoTextFaceSource // display faces beside the body font
 	buttons                   []button
+	buttonClip                image.Rectangle // when set, buttons added are cut to it (a scrolled area)
 	blocks                    []image.Rectangle
 	wheelAreas                []wheelArea
 	unitWin                   unitWindowState
@@ -196,6 +196,7 @@ type Game struct {
 	seed                      uint64
 	log                       *os.File
 	auditDir                  string
+	gear                      gearGuide // the green guide to wearing the pieces an event of the walk handed over
 }
 
 func loadFont(path string) (*text.GoTextFaceSource, error) {
@@ -221,7 +222,7 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 		return nil, err
 	}
 	g := &Game{S: s, font: source, brushFont: brush, serifFont: serif, seed: seed, verified: map[string]bool{}, slot: 1, auditDir: auditDir,
-		vis: map[string]*unitVis{}, zoom: 1, zoomFrom: 1, zoomTo: 1, zoomT: .5, speed: 1, threats: map[string]core.Ranges{}, itemEffects: map[string]itemEffect{}}
+		vis: map[string]*unitVis{}, zoom: 1, zoomFrom: 1, zoomTo: 1, zoomT: .5, speed: savedSpeed(s.Settings.Speed), threats: map[string]core.Ranges{}, itemEffects: map[string]itemEffect{}}
 	g.root = filepath.Dir(filepath.Dir(filepath.Dir(fontPath)))
 	g.player.g = g
 	g.names = nameIndex(s.Data)
@@ -469,6 +470,7 @@ func (g *Game) record(before *core.Observation, events []core.Event) {
 			}
 		}
 	}
+	g.noteGearGrants(events)
 	if gains := acquireGains(before, events); len(gains) > 0 {
 		g.modals = append(g.modals, &modal{kind: "acquire", gains: gains})
 		if before != nil && before.Phase == "scenario" && g.held == nil {
@@ -608,7 +610,7 @@ func (g *Game) assist() {
 				break
 			}
 		case "battle":
-			if c, ok := g.S.Engine.OwnerPiece(); ok {
+			if c, ok := g.S.Engine.OwnerPiece(); ok && (g.autoplay || g.auditDir != "") { // Space leaves the gear to the player
 				g.command(c)
 				return
 			}
@@ -662,6 +664,22 @@ func (g *Game) assist() {
 
 // nextSpeed is the replay speed the F key steps to.
 var nextSpeed = map[int]int{1: 2, 2: 4, 4: 8, 8: 1}
+
+// savedSpeed is the settings' replay speed, ×1 when none or not one of the steps.
+func savedSpeed(n int) int {
+	if _, ok := nextSpeed[n]; ok {
+		return n
+	}
+	return 1
+}
+
+// setSpeed sets the replay speed and keeps it in the settings, so it holds across saves and restarts.
+func (g *Game) setSpeed(n int) {
+	g.speed = n
+	v := g.S.Settings
+	v.Speed = n
+	g.request(session.Request{Op: "settings", Settings: &v})
+}
 
 func (g *Game) openObjective() { g.modals = append(g.modals, &modal{kind: "objective", manual: true}) }
 
@@ -852,6 +870,8 @@ func (g *Game) keys() {
 			g.equip.info = equipChip{}
 		case g.overlay() == "shop" && g.shopView.info.id != "":
 			g.shopView.info = equipChip{}
+		case g.promotionOverWindow():
+			g.closeModal()
 		case g.overlay() != "":
 			g.closeOverlay()
 		case len(g.modals) > 0:
@@ -896,7 +916,7 @@ func (g *Game) keys() {
 		g.player.Skip()
 	}
 	if pressed(ebiten.KeyF) {
-		g.speed = nextSpeed[g.speed]
+		g.setSpeed(nextSpeed[g.speed])
 		g.toast(fmt.Sprintf("재생 속도 ×%d", g.speed), gold)
 	}
 	if o.Phase == "deployment" {
@@ -1032,6 +1052,9 @@ func (g *Game) drawScreen(dst *ebiten.Image) {
 
 	if g.overlay() != "" {
 		g.drawOverlay(dst)
+		if g.promotionOverWindow() {
+			g.drawModal(dst)
+		}
 	} else if len(g.modals) > 0 && (!g.busy() || g.briefed()) && g.S.Engine != nil {
 		g.drawModal(dst)
 	}
@@ -1101,11 +1124,6 @@ func (g *Game) titleMenu(dst *ebiten.Image) {
 	for i, id := range g.titleCast() {
 		g.portrait(dst, id, "", float64(650+i*190), float64(205+i%2*50), 170)
 	}
-	names := make([]string, len(g.S.Data.Stages))
-	for i, st := range g.S.Data.Stages {
-		names[i] = st.Name
-	}
-	g.label(dst, strings.Join(names, " → "), 104, 214, 16, muted)
 	items := []menuItem{{"새로 시작", func() {
 		if len(g.S.Data.Rules.Difficulties) == 0 {
 			g.request(session.Request{Op: "new", Seed: g.seed})
@@ -1182,9 +1200,15 @@ func (g *Game) lastWon() string {
 // completeWindow is the campaign's closing window, laid out on the Width×Height design.
 func (g *Game) completeWindow(dst *ebiten.Image, o core.Observation) {
 	r := image.Rect(uiW/2-320, 180, uiW/2+320, 620)
-	g.titled(dst, r, "완료")
-	g.centered(dst, g.lastWon()+" 완료", float64(uiW/2), 220, 34, gold)
-	g.centered(dst, fmt.Sprintf("%d번의 싸움을 마쳤습니다.", len(g.S.Data.Stages)), float64(uiW/2), 276, 19, ink)
+	if end := g.S.Engine.Ending(); end != "" { // the hero fell: the story ends here, a save takes it back
+		g.titled(dst, r, "끝")
+		g.centered(dst, end, float64(uiW/2), 220, 34, gold)
+		g.centered(dst, "유비의 이야기가 여기서 끝났습니다. 저장한 곳에서 다시 할 수 있습니다.", float64(uiW/2), 276, 19, ink)
+	} else {
+		g.titled(dst, r, "완료")
+		g.centered(dst, g.lastWon()+" 완료", float64(uiW/2), 220, 34, gold)
+		g.centered(dst, fmt.Sprintf("%d번의 싸움을 마쳤습니다.", len(g.S.Data.Stages)), float64(uiW/2), 276, 19, ink)
+	}
 	y := 336
 	for _, c := range g.roster(o)[:min(4, len(g.roster(o)))] {
 		g.portrait(dst, c.ID, c.Class, float64(r.Min.X+80), float64(y), 48)
@@ -1225,6 +1249,12 @@ func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 		}
 	}
 	vp := g.battleViewport()
+	if least := g.zoomSteps()[0]; g.zoom < least && g.zoomTo < least {
+		g.setZoomImmediate(least) // a battle opening (or a window grown) wider than the map
+	}
+	if g.scene == nil {
+		g.camX, g.camY = g.clampCam(g.camX, g.camY) // also while a popup holds the camera input back
+	}
 	hw, hh := float64(vp.Dx())/2/g.zoom, float64(vp.Dy())/2/g.zoom
 	g.field.prepareRender(g.zoom, g.camX-hw, g.camY-hh, vp.Dx(), vp.Dy())
 	g.field.DrawBounds = image.Rect(int(g.camX-hw)-64, int(g.camY-hh)-96, int(g.camX+hw)+64, int(g.camY+hh)+96)
@@ -1292,7 +1322,6 @@ func (g *Game) battleHUD(dst *ebiten.Image, o core.Observation) {
 	g.battleLeftPanel(dst, o, g.chapterName(o.Node))
 	g.battleHUDPanel(dst, g.player.shownTurn(o))
 	g.drawMenu(dst)
-	g.drawBranches(dst)
 	g.forecast(dst)
 	g.brief(dst, o)
 	g.messages(dst)

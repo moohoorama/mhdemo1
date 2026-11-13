@@ -46,7 +46,7 @@ func main() {
 		if *only != "" && st.ID != *only {
 			continue
 		}
-		level := d.Rules.StageLevel(st.Order) + *offset
+		level := d.ForDifficulty(difficulty).Rules.StageLevel(st.Order) + *offset
 		var wins, rounds int
 		gain := map[string][]float64{}
 		var lost []string
@@ -217,6 +217,9 @@ chapters:
 			if n.Kind == "explore" {
 				for _, ev := range c.Events {
 					grant(d.Node(ev))
+					if x := d.Node(ev); x.Kind == "join" && !slices.Contains(joined, x.Character) {
+						joined = append(joined, x.Character)
+					}
 				}
 			}
 			if n.Kind == "join" {

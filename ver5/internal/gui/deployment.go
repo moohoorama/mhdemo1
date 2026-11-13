@@ -275,9 +275,12 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 		g.portrait(dst, id, of.Class, float64(rr.Min.X+10), float64(rr.Min.Y+7), 34)
 		name := g.name(id)
 		g.label(dst, name, float64(rr.Min.X+54), float64(rr.Min.Y+13), 16, ink)
+		gx := float64(rr.Min.X+62) + g.width(name, 16)
 		if of.Deputy != "" {
-			g.label(dst, "· "+g.name(of.Deputy), float64(rr.Min.X+60)+g.width(name, 16), float64(rr.Min.Y+17), 12, muted)
+			g.label(dst, "· "+g.name(of.Deputy), gx-2, float64(rr.Min.Y+17), 12, muted)
+			gx += g.width("· "+g.name(of.Deputy), 12) + 4
 		}
+		g.missingGear(dst, of.Class, of.Equipment, gx, float64(rr.Min.Y+11))
 		state, c := "배치됨", muted
 		switch {
 		case id == g.deploymentSelected:

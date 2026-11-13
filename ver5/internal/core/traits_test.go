@@ -255,6 +255,24 @@ func TestPouchEatsAWholeBeanFromTheStock(t *testing.T) {
 		}
 		t.Fatal("no blow landed in 8 swings")
 	})
+	t.Run("물심양면 makes the bean heal more", func(t *testing.T) {
+		e, boss, k := setup(t)
+		with(e, "boss", "bounty_t")
+		boss.HP = e.stats(boss).MaxHP - 2*k
+		e.pouchHeal(boss)
+		assert.Equal(t, e.stats(boss).MaxHP-2*k+k*3/2, boss.HP)
+	})
+	t.Run("보급 shares the bean with the weakest ally around", func(t *testing.T) {
+		e, boss, k := setup(t)
+		with(e, "boss", "share")
+		mate := e.unit("troop#1")
+		mate.X, mate.Y, mate.HP = boss.X, boss.Y+1, 1
+		boss.HP = e.stats(boss).MaxHP - k
+		e.pouchHeal(boss)
+		assert.Equal(t, e.stats(boss).MaxHP, boss.HP)
+		assert.Equal(t, min(e.stats(mate).MaxHP, 1+k), mate.HP)
+		assert.Zero(t, boss.Items[e.data.Rules.PouchItem], "one bean feeds both")
+	})
 }
 
 func TestChargeAccuracyGrowsWithTheCellsWalked(t *testing.T) {
@@ -349,33 +367,6 @@ func TestDeputySharesExperience(t *testing.T) {
 	})
 }
 
-func TestPromotionItemOnTheDeputy(t *testing.T) {
-	e, _, _ := arena(t)
-	hero, deputy := e.char("hero"), e.char("archer1")
-	deputy.Def, deputy.Class, deputy.Level = hero.Def, hero.Class, 15
-	hero.Deputy = deputy.ID
-	var picks []Command
-	for _, c := range e.LegalActions("hero").Commands {
-		if c.Kind == "item" && c.Item == "promo_guard" {
-			picks = append(picks, c)
-		}
-	}
-	require.Len(t, picks, 1, "only the deputy is high enough")
-	assert.Equal(t, deputy.ID, picks[0].Target)
-	apply(t, e, picks[0])
-	assert.Equal(t, "guard", e.char(deputy.ID).Class)
-	assert.NotEqual(t, "guard", e.char("hero").Class)
-	assert.Zero(t, e.state.Inventory["promo_guard"])
-	var promoted string
-	for _, ev := range e.events {
-		if ev.Kind == "promotion" {
-			promoted = ev.Text
-		}
-	}
-	assert.Equal(t, deputy.ID, promoted)
-	assertRejected(t, e, Command{Kind: "item", Actor: "hero", Target: "boss", Item: "promo_guard"})
-}
-
 func TestDeputyFightsItsDuel(t *testing.T) {
 	e, hero, boss := arena(t)
 	e.unit("archer1").HP = 0 // off the field: it rides with the hero now
@@ -398,4 +389,18 @@ func TestDeputyFightsItsDuel(t *testing.T) {
 	assert.Equal(t, "archer1", duel.Fighter)
 	assert.Equal(t, deputyLevel+1, e.char("archer1").Level, "the deputy who fought earns the duel's level")
 	assert.Equal(t, heroLevel, e.char("hero").Level, "his officer earns nothing from it")
+}
+
+func TestChargeEndsWithTheWalkersTurn(t *testing.T) {
+	e, _, _ := arena(t)
+	e.data.Traits["rush_t"] = content.Trait{Name: "돌진", Kind: "talent", Tone: "attack", Effects: map[string]float64{content.FxChargePower: .05}}
+	with(e, "hero", "rush_t")
+	hero := e.unit("hero")
+	still := e.stats(hero).Attack
+	hero.Steps = 6
+	require.Greater(t, e.stats(hero).Attack, still, "six cells walked charge the attack")
+	applyOK(t, e, Command{Kind: "end"})
+	hero = e.unit("hero")
+	assert.Zero(t, hero.Steps)
+	assert.Equal(t, still, e.stats(hero).Attack, "the enemy's turn meets the walker uncharged")
 }

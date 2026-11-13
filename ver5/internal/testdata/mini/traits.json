@@ -275,7 +275,7 @@
    "Cost": 300,
    "Requires": [],
    "Effects": {
-    "fortify": 20
+    "turn_buff:defense": 20
    }
   },
   "dash": {
@@ -687,6 +687,17 @@
    "Requires": [],
    "Effects": {
     "flank": 0.5
+   }
+  },
+  "bounty_t": {
+   "Name": "Bounty",
+   "Kind": "talent",
+   "Tone": "heal",
+   "Desc": "",
+   "Cost": 0,
+   "Requires": [],
+   "Effects": {
+    "item_power": 0.5
    }
   },
   "pouch_t": {

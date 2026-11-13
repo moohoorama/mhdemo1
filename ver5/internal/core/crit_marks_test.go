@@ -57,15 +57,22 @@ func TestMarksChangeTheGroundTheyLieOn(t *testing.T) {
 			bare := d.Move(family, content.Cell{Ground: ground, Structure: content.NoLayer, State: content.NoLayer}, false)
 			wet := d.Move(family, content.Cell{Ground: ground, Structure: content.NoLayer, State: 'w'}, false)
 			rubble := d.Move(family, content.Cell{Ground: ground, Structure: content.NoLayer, State: 'r'}, false)
-			assert.InDelta(t, bare.Factor-.1, wet.Factor, 1e-9, family+": wet ground takes ten points off whatever the ground gives")
-			assert.Equal(t, bare.Cost, wet.Cost, family)
+			if family == "cavalry" { // horses bog down in the mud; men on foot wade through
+				assert.InDelta(t, bare.Factor-.1, wet.Factor, 1e-9, family+": wet ground takes ten points off whatever the ground gives")
+				assert.Equal(t, 3, wet.Cost, family+": wet ground costs three steps")
+			} else {
+				assert.Equal(t, bare.Factor, wet.Factor, family)
+				assert.Equal(t, bare.Cost, wet.Cost, family)
+			}
 			assert.Equal(t, bare.Factor, rubble.Factor, family)
 			assert.Equal(t, 3, rubble.Cost, family+": rubble costs three steps")
 		}
 		forest := content.Cell{Ground: 'g', Structure: 't', State: content.NoLayer}
 		under := d.Move(family, forest, false)
 		forest.State = 'w'
-		assert.InDelta(t, under.Factor-.1, d.Move(family, forest, false).Factor, 1e-9, family+": also under trees")
+		if family == "cavalry" {
+			assert.InDelta(t, under.Factor-.1, d.Move(family, forest, false).Factor, 1e-9, family+": also under trees")
+		}
 	}
 	for _, ground := range []byte{'g', 'd', 'i', 'l', 'u'} {
 		for _, mark := range []byte{'e', 'w', 'r'} {
@@ -91,4 +98,23 @@ func TestMarksLieOnlyOnOpenGroundAndLeaveEventStatesAlone(t *testing.T) {
 	assert.Equal(t, byte('w'), e.Cell(7, 6).State, "a mark covers another")
 	e.markCell(8, 6, "wind")
 	assert.Equal(t, byte(content.NoLayer), e.Cell(8, 6).State, "an element without a mark leaves none")
+}
+
+func TestAMarkingArrowLeavesEmbersWhereItHits(t *testing.T) {
+	e, a, boss := arena(t)
+	s := e.data.Skills["arrow_s"]
+	s.Element, s.Mark = "fire", true
+	x, y := boss.X, boss.Y
+	t.Run("a miss leaves nothing", func(t *testing.T) {
+		e.data.Rules.HitFloor, e.data.Rules.HitCeil = 0, 0
+		e.attackOn(a, boss, []*Unit{boss}, s, map[string]float64{boss.ID: 1}, false, false, false)
+		assert.NotEqual(t, byte('e'), e.Cell(x, y).State)
+	})
+	t.Run("a hit marks without a critical", func(t *testing.T) {
+		e.data.Rules.Crit = content.Chance{}
+		e.data.Rules.HitFloor, e.data.Rules.HitCeil = 100, 100
+		boss.HP = 999
+		e.attackOn(a, boss, []*Unit{boss}, s, map[string]float64{boss.ID: 1}, false, false, false)
+		assert.Equal(t, byte('e'), e.Cell(x, y).State)
+	})
 }

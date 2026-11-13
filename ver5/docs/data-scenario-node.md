@@ -44,7 +44,7 @@ assets/scenario/
 |---|---|---|
 | `ID` | 모두 | 비어 있지 않고 유일해야 한다. |
 | `Kind` | 모두 | `say` `narrate` `choice` `battle` `scene` `set` `branch` `join` `leave` `grant` `end` 중 하나. 다른 값은 로드 오류. |
-| `Text` | `say` `narrate` `choice` `battle` | 화면에 보이는 글. `say`·`narrate`는 비어 있을 수 없다. |
+| `Text` | `say` `narrate` `choice` `battle` `end` | 화면에 보이는 글. `say`·`narrate`는 비어 있을 수 없다. `end`의 `Text`는 주인공이 쓰러져 이야기가 끝나는 곳(사망 끝)의 제목으로, 완료 창 대신 `끝` 창에 보인다(17장 「허도의 궁문 앞에서」). 이런 `end`는 탐험 이벤트의 갈래를 `back` 대신 닫을 수 있다. |
 | `Speaker` | `say` | 말하는 인물 ID. 여럿이 함께 말하면 `·`로 잇는다. 모두 인물이어야 한다. `narrate`에는 쓰지 않는다. |
 | `Place` | `scene` | 이야기가 지금 있는 장소. 비어 있을 수 없고 화면 배경 위에 표시된다. |
 | `Next` | `say` `narrate` `battle` `scene` `set` `join` `leave` `grant` | 다음 노드 ID. 비어 있지 않으면 노드에 있어야 한다. 비어 있으면 아래의 기본 순서를 따른다. |

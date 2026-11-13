@@ -24,6 +24,8 @@ type Draw struct {
 	Object int `json:"o,omitempty"`
 	// Clip, when set, is the convex polygon (canvas points) the picture is cut to.
 	Clip [][2]int `json:"clip,omitempty"`
+	// Line is a DrawWaterline's course: canvas points, left to right.
+	Line [][2]int `json:"line,omitempty"`
 }
 
 // Kinds of Draw.
@@ -32,6 +34,21 @@ const (
 	DrawSprite = "sprite" // a prop or scenery picture
 	DrawFill   = "fill"   // a game cell's diamond filled with Color, 64 x 32 (DiamondRow)
 	DrawAnim   = "anim"   // frame 0 of a looping strip (Catalog.Anims); the game plays it
+	// DrawFlood is the flood water over one small tile (Rules.Flood), X, Y its diamond's top vertex, 32 x 16; Tile
+	// holds the sides that meet dry ground (FloodSides) and, from bit 4 up, which of FloodVariants it takes.
+	DrawFlood = "flood"
+	// DrawWaterline is the foam along where the flood meets what stands in it: a line through the Line points.
+	DrawWaterline = "waterline"
+)
+
+// FloodSides are the bits of a DrawFlood's Tile for the sides of its diamond that meet dry ground: its upper right
+// (toward -v), lower right (+u), lower left (+v) and upper left (-u) edges.
+const (
+	FloodNE = 1 << iota
+	FloodSE
+	FloodSW
+	FloodNW
+	FloodVariants = 4
 )
 
 // Piece is one item of the standing layer: a raised block's faces, a wall piece, an object. Its draws go out
@@ -93,7 +110,7 @@ func DiamondRow(x, k int) (int, int) {
 func Build(m *Map, c *Catalog, o Options) (*Plan, error) {
 	w := newView(m, c, o.Turn)
 	p := &Plan{Bounds: m.Bounds(), Tall: m.Tall()}
-	p.Flat = append(w.ground(), w.floors()...)
+	p.Flat = append(append(w.ground(), w.floors()...), w.flood()...)
 	if o.Decor {
 		w.tops = w.topStamps()
 	}
@@ -305,6 +322,86 @@ func (w *view) ground() []Draw {
 	return out
 }
 
+// flood is the water over each flooded small tile at height 0, in screen order.
+func (w *view) flood() []Draw {
+	var out []Draw
+	wet := func(u, v int) bool { return !w.inside(u, v) || w.c.flooded(w.glyph(u, v)) && w.step(u, v) == 0 }
+	for v := w.v0; v < w.v1; v++ {
+		for u := w.u0; u < w.u1; u++ {
+			if !w.c.flooded(w.glyph(u, v)) || w.step(u, v) > 0 {
+				continue
+			}
+			sides := 0
+			for bit, d := range [][2]int{{0, -1}, {1, 0}, {0, 1}, {-1, 0}} {
+				if !wet(u+d[0], v+d[1]) {
+					sides |= 1 << bit
+				}
+			}
+			mu, mv := w.orig(u, v)
+			variant := int(hashTile(mu, mv) % FloodVariants)
+			x, y := center(u, v)
+			out = append(out, Draw{Kind: DrawFlood, Tile: sides | variant<<4, X: x, Y: y - 8})
+		}
+	}
+	return out
+}
+
+// hashTile is a number fixed to a small tile of the map.
+func hashTile(u, v int) uint32 {
+	h := uint32(u)*374761393 + uint32(v)*668265263
+	h = (h ^ h>>13) * 1274126177
+	return h ^ h>>16
+}
+
+// sunk sinks a standing object's picture d into the flood: down by the object's depth and cut off along the front
+// edges of its footprint (canvas box corners w, s, e: its left, bottom and right), or round its anchor for a thin
+// one, with a foam line there.
+func (w *view) sunk(d Draw, name string, west, south, east, anchor [2]float64) []Draw {
+	depth, ok := w.c.Rules.Flood.Sink[name]
+	if !ok {
+		depth = w.c.Rules.Flood.SinkDefault
+	}
+	if r, ok := w.c.Rules.Flood.Ring[name]; ok {
+		k := float64(r)
+		west, south, east = [2]float64{anchor[0] - k, anchor[1]}, [2]float64{anchor[0], anchor[1] + k/2}, [2]float64{anchor[0] + k, anchor[1]}
+	}
+	d.Y += depth
+	s := w.c.Sprites[name]
+	r := [][2]float64{{float64(d.X), float64(d.Y)}, {float64(d.X + s.Rect[2]), float64(d.Y)},
+		{float64(d.X + s.Rect[2]), float64(d.Y + s.Rect[3])}, {float64(d.X), float64(d.Y + s.Rect[3])}}
+	// keep what lies above both front edges, running on past the footprint's corners
+	r = clipAbove(r, west, south)
+	r = clipAbove(r, south, east)
+	if len(r) < 3 {
+		return nil
+	}
+	d.Clip = make([][2]int, len(r))
+	for i, p := range r {
+		d.Clip[i] = [2]int{round(p[0]), round(p[1])}
+	}
+	line := Draw{Kind: DrawWaterline, Line: [][2]int{{round(west[0]), round(west[1])}, {round(south[0]), round(south[1])},
+		{round(east[0]), round(east[1])}}}
+	return []Draw{d, line}
+}
+
+// clipAbove cuts convex polygon poly to the side of the line through a and b (a left of b on screen) above it.
+func clipAbove(poly [][2]float64, a, b [2]float64) [][2]float64 {
+	side := func(p [2]float64) float64 { return (b[0]-a[0])*(p[1]-a[1]) - (b[1]-a[1])*(p[0]-a[0]) } // < 0 above
+	var out [][2]float64
+	for i, p := range poly {
+		q := poly[(i+1)%len(poly)]
+		sp, sq := side(p), side(q)
+		if sp <= 0 {
+			out = append(out, p)
+		}
+		if sp < 0 && sq > 0 || sp > 0 && sq < 0 {
+			t := sp / (sp - sq)
+			out = append(out, [2]float64{p[0] + t*(q[0]-p[0]), p[1] + t*(q[1]-p[1])})
+		}
+	}
+	return out
+}
+
 // floors lays a floor picture on each game cell whose small tiles are mostly that floor, over its diamond filled
 // with the floor's edge colour, so neighbouring floors meet without a seam; and paving on each of its small tiles,
 // over the ground.
@@ -327,7 +424,7 @@ func (w *view) floors() []Draw {
 			var best byte
 			for _, d := range [][2]int{{0, 0}, {1, 0}, {0, 1}, {1, 1}} {
 				u, v := 2*gu+d[0], 2*gv+d[1]
-				if g := w.glyph(u, v); w.inside(u, v) && w.isFloor(g) {
+				if g := w.glyph(u, v); w.inside(u, v) && w.isFloor(g) && w.step(u, v) == 0 {
 					count[g]++
 					if count[g] > count[best] || count[g] == count[best] && g < best {
 						best = g
@@ -379,8 +476,7 @@ func (w *view) blocks() (blocks []Piece, levels []Level, feet []Draw, err error)
 			x, y := center(u, v)
 			ou, ov := w.orig(u, v)
 			t := top{front: u + v, x: x}
-			t.draws = w.quarters(u, v, lift, nil)
-			t.draws = append(t.draws, w.stampDraws(w.tops[[2]int{ou, ov}], lift)...)
+			t.draws = append(w.topFloor(u, v, lift), w.stampDraws(w.tops[[2]int{ou, ov}], lift)...)
 			if open&12 != 0 {
 				name := fmt.Sprintf("%s_%02d_%d", faces, open&12, ((ou*7+ov*3)%3+3)%3)
 				sp, ok := w.c.Sprites[name]
@@ -396,6 +492,8 @@ func (w *view) blocks() (blocks []Piece, levels []Level, feet []Draw, err error)
 				d.Clip = [][2]int{{x - 16, d.Y}, {x + 16, d.Y}, {x + 16, c}, {x, c + 8}, {x - 16, c}}
 				t.draws = append(t.draws, d)
 			}
+			t.draws = append(t.draws, w.brinks(u, v, s, lift)...)
+			blocks = append(blocks, w.rims(u, v, s, lift)...)
 			byLift[lift] = append(byLift[lift], t)
 			for _, f := range []struct {
 				bit, du, dv int
@@ -425,6 +523,97 @@ func (w *view) blocks() (blocks []Piece, levels []Level, feet []Draw, err error)
 	sort.Slice(levels, func(a, b int) bool { return levels[a].Lift < levels[b].Lift })
 	sort.SliceStable(feet, func(a, b int) bool { return feet[a].Y < feet[b].Y })
 	return blocks, levels, feet, nil
+}
+
+// topFloor is the ground of raised small tile (u, v), lift pixels up, as floors lays it at height 0: its ground
+// pieces with paving over them, or, for a floor that takes a game cell's place, nothing but the cell's floor picture,
+// laid once with the cell's first small tile.
+func (w *view) topFloor(u, v, lift int) []Draw {
+	g := w.glyph(u, v)
+	f, ok := w.c.Rules.Floors[string(g)]
+	if !ok {
+		return w.quarters(u, v, lift, nil)
+	}
+	if f.Tile {
+		s := w.c.Structures[f.Sprite]
+		x, y := center(u, v)
+		return append(w.quarters(u, v, lift, nil), Draw{Kind: DrawSprite, Sheet: f.Sheet, Name: f.Sprite, X: x - s.Pivot[0], Y: y - lift - s.Pivot[1]})
+	}
+	gu, gv := floorHalf(u), floorHalf(v)
+	if u != 2*gu || v != 2*gv {
+		return nil
+	}
+	s := w.c.Sprites[f.Sprite]
+	x, y := 32*(gu-gv), 16*(gu+gv+1)-lift
+	return []Draw{{Kind: DrawFill, X: x, Y: y - 16, Color: f.Edge}, {Kind: DrawSprite, Name: f.Sprite, X: x - s.Pivot[0], Y: y - s.Pivot[1]}}
+}
+
+// brinks are the lips on the edges of raised small tile (u, v), step s, that drop away from the camera: toward -v
+// (its upper right edge) and -u (its upper left), where the view shows no face; a variant picked by the map's tile.
+func (w *view) brinks(u, v, s, lift int) []Draw {
+	back := w.c.Rules.Heights[strconv.Itoa(s)].Back
+	if back == "" {
+		return nil
+	}
+	var out []Draw
+	x, y := center(u, v)
+	ou, ov := w.orig(u, v)
+	for _, b := range []struct {
+		du, dv int
+		side   string
+	}{{0, -1, "ne"}, {-1, 0, "nw"}} {
+		if !w.inside(u+b.du, v+b.dv) || w.step(u+b.du, v+b.dv) >= s {
+			continue
+		}
+		name := fmt.Sprintf("%s_%s_%d", back, b.side, hashTile(ou, ov)%4)
+		sp, ok := w.c.Sprites[name]
+		if !ok {
+			name = fmt.Sprintf("%s_%s_0", back, b.side)
+			sp = w.c.Sprites[name]
+		}
+		out = append(out, Draw{Kind: DrawSprite, Name: name, X: x - sp.Pivot[0], Y: y - lift - sp.Pivot[1]})
+	}
+	return out
+}
+
+// rimDepth is how far into its tile a rim's footprint reaches, small tiles.
+const rimDepth = .25
+
+// rims stand on the edges of raised small tile (u, v), step s, over lower ground: one piece per edge, standing on the
+// top among what else stands there, so the top's ground never covers them; a variant picked by the map's tile.
+func (w *view) rims(u, v, s, lift int) []Piece {
+	rim := w.c.Rules.Heights[strconv.Itoa(s)].Rim
+	if rim == "" {
+		return nil
+	}
+	var out []Piece
+	x, y := center(u, v)
+	ou, ov := w.orig(u, v)
+	fu, fv := float64(u), float64(v)
+	for _, e := range []struct {
+		du, dv int
+		side   string
+		box    [4]float64
+	}{
+		{0, 1, "sw", [4]float64{fu, fv + 1 - rimDepth, fu + 1, fv + 1}},
+		{1, 0, "se", [4]float64{fu + 1 - rimDepth, fv, fu + 1, fv + 1}},
+		{0, -1, "ne", [4]float64{fu, fv, fu + 1, fv + rimDepth}},
+		{-1, 0, "nw", [4]float64{fu, fv, fu + rimDepth, fv + 1}},
+	} {
+		if w.step(u+e.du, v+e.dv) >= s {
+			continue
+		}
+		name := fmt.Sprintf("%s_%s_%d", rim, e.side, hashTile(ou, ov)%4)
+		sp, ok := w.c.Sprites[name]
+		if !ok {
+			name = fmt.Sprintf("%s_%s_0", rim, e.side)
+			sp = w.c.Sprites[name]
+		}
+		out = append(out, Piece{Key: Key{Box: e.box, Lift: lift, Rank: RankRim, X: float64(x)}, Name: name,
+			At: [2]int{ou, ov}, Anchor: [2]float64{float64(x), float64(y - lift)},
+			Draws: []Draw{{Kind: DrawSprite, Name: name, X: x - sp.Pivot[0], Y: y - lift - sp.Pivot[1]}}})
+	}
+	return out
 }
 
 // walls lays each wall line one block per small tile, and sets the gates standing on it into it: a gate is a run of
@@ -613,10 +802,16 @@ func (w *view) objects() (pieces []Piece, flat []Draw, err error) {
 		f := w.c.footprint(ob.Name)
 		au, av := w.point(cu+f[0], cv+f[1])
 		bu, bv := w.point(cu+f[0]+f[2], cv+f[1]+f[3])
+		box := [4]float64{min(au, bu), min(av, bv), max(au, bu), max(av, bv)}
+		draws := []Draw{d}
+		if fu, fv := int(math.Floor(ru)), int(math.Floor(rv)); lift == 0 && w.c.flooded(w.glyph(fu, fv)) {
+			at := func(u, v float64) [2]float64 { return [2]float64{16 * (u - v), 8 * (u + v)} }
+			draws = w.sunk(d, ob.Name, at(box[0], box[3]), at(box[2], box[3]), at(box[2], box[1]), [2]float64{x, y})
+		}
 		anims, lights := w.c.Attach(ob.Name, x, y-float64(lift))
-		pieces = append(pieces, Piece{Key: Key{Box: [4]float64{min(au, bu), min(av, bv), max(au, bu), max(av, bv)},
+		pieces = append(pieces, Piece{Key: Key{Box: box,
 			Lift: lift, Rank: RankObject, X: x}, Name: ob.Name, At: [2]int{ob.U, ob.V}, Anchor: [2]float64{x, y - float64(lift)},
-			Draws: append([]Draw{d}, anims...), Lights: lights})
+			Draws: append(draws, anims...), Lights: lights})
 	}
 	sort.SliceStable(flats, func(a, b int) bool { return flats[a].y < flats[b].y })
 	for _, f := range flats {
@@ -788,6 +983,12 @@ func (w *view) rect(draws []Draw) image.Rectangle {
 			b = image.Rect(d.X, d.Y, d.X+s.Rect[2], d.Y+s.Rect[3])
 		case DrawFill:
 			b = image.Rect(d.X-32, d.Y, d.X+32, d.Y+32)
+		case DrawFlood:
+			b = image.Rect(d.X-16, d.Y, d.X+16, d.Y+16)
+		case DrawWaterline:
+			for _, p := range d.Line {
+				b = b.Union(image.Rect(p[0]-1, p[1]-1, p[0]+2, p[1]+3))
+			}
 		}
 		r = r.Union(b)
 	}

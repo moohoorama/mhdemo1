@@ -11,7 +11,8 @@ import (
 func init() { demos["scenenode"] = demoSceneNode }
 
 // demoSceneNode plays story nodes as the story screen shows them (-stage c02-t1,c02-t2,...):
-// each node's scene and lines, the next line 120 frames after the beats before a line have played out.
+// each node's scene and lines, the next line 120 frames after the beats before a line have played out, and the
+// beats set after a node's last line (exits) before the next node, as nextNode plays them.
 func demoSceneNode(d *Demo) error {
 	g := d.g
 	g.request(session.Request{Op: "new", Seed: 1})
@@ -31,6 +32,9 @@ func demoSceneNode(d *Demo) error {
 		switch {
 		case g.lineIndex+1 < len(lines):
 			g.lineIndex++
+			g.startLine(g.lineIndex)
+		case g.lineIndex < len(lines) && g.scene != nil && len(g.scene.def.Line(nodes[ni], len(lines))) > 0:
+			g.lineIndex = len(lines)
 			g.startLine(g.lineIndex)
 		case ni+1 < len(nodes):
 			ni++

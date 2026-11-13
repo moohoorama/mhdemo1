@@ -1,0 +1,437 @@
+{
+ "ID": "B17",
+ "Name": "광릉 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 6,
+ "Required": [
+  "liubei",
+  "zhangfei"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "alldefeated:enemy"
+   ],
+   "Text": "원술군을 모두 물리친다"
+  }
+ ],
+ "Sub": [
+  {
+   "ID": "jiling-duel",
+   "Text": "장비가 일기토로 기령을 벤다",
+   "If": [
+    "duel:guangling-zhangfei-jiling"
+   ],
+   "Flag": "flag-b17-jiling-duel",
+   "Reward": {
+    "sanjian_blade": 1
+   }
+  }
+ ],
+ "TurnLimit": 25,
+ "Map": "map17.json",
+ "Allies": [
+  {
+   "X": 4,
+   "Y": 7
+  },
+  {
+   "X": 6,
+   "Y": 8
+  },
+  {
+   "X": 5,
+   "Y": 8
+  },
+  {
+   "X": 3,
+   "Y": 7
+  },
+  {
+   "X": 5,
+   "Y": 9
+  },
+  {
+   "X": 4,
+   "Y": 8
+  },
+  {
+   "X": 6,
+   "Y": 6
+  },
+  {
+   "X": 3,
+   "Y": 8
+  }
+ ],
+ "Recommend": {
+  "liubei": {
+   "X": 4,
+   "Y": 7
+  },
+  "zhangfei": {
+   "X": 6,
+   "Y": 8
+  }
+ },
+ "Party": [],
+ "Enemies": [
+  {
+   "Character": "troop_footman",
+   "X": 10,
+   "Y": 8,
+   "Rank": "rabble",
+   "Group": "front",
+   "Policy": "assault",
+   "Facing": "NW",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 11,
+   "Y": 10,
+   "Rank": "rabble",
+   "Group": "front",
+   "Policy": "assault",
+   "Facing": "NW",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 12,
+   "Y": 8,
+   "Rank": "rabble",
+   "Group": "front",
+   "Policy": "assault",
+   "Facing": "NW",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "jiling",
+   "X": 14,
+   "Y": 10,
+   "Rank": "commander",
+   "Shift": -0.07,
+   "Group": "ji",
+   "Policy": "react",
+   "Facing": "NW",
+   "DuelFirst": true,
+   "Equipment": [
+    "sanjian_blade",
+    "leather_armor"
+   ],
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 13,
+   "Y": 11,
+   "Rank": "rabble",
+   "Group": "ji",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 9,
+   "Rank": "rabble",
+   "Group": "ji",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 17,
+   "Y": 11,
+   "Rank": "rabble",
+   "Group": "rear",
+   "Policy": "react",
+   "Facing": "NW",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 16,
+   "Y": 12,
+   "Rank": "rabble",
+   "Group": "rear",
+   "Policy": "react",
+   "Facing": "NW",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_bandit",
+   "X": 12,
+   "Y": 12,
+   "Rank": "rabble",
+   "Group": "bandit",
+   "Policy": "react",
+   "Facing": "NW",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_bandit",
+   "X": 12,
+   "Y": 13,
+   "Rank": "rabble",
+   "Group": "bandit",
+   "Policy": "react",
+   "Facing": "NW",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_bandit",
+   "X": 11,
+   "Y": 14,
+   "Rank": "rabble",
+   "Group": "bandit",
+   "Policy": "react",
+   "Facing": "NE",
+   "Faction": "yuan"
+  }
+ ],
+ "Reward": {
+  "money": 1000
+ },
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 0,
+    "Y": 15,
+    "W": 20,
+    "H": 1
+   },
+   "Name": "남서쪽 끝",
+   "Description": "기령이 쓰러지면 뇌박·진란의 무리가 달아나는 가장자리"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "opening",
+   "If": [
+    "round>=1"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "원술의 군사가 원소에게 가려는군. 익덕, 이 길을 막세!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "맡겨 두슈, 형! 둘째 형이 못다 벤 그놈, 이번엔 내 차례여!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "jiling",
+       "Text": "유비 따위가 길을 막아? 이 기령의 삼첨도가 길을 연다!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "bandits",
+   "If": [
+    "round>=2"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "jianyong",
+       "Text": "저 마을 터는 무리는 원술을 버린 뇌박·진란의 졸개일세. 곡식부터 챙기는구먼."
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "bandit"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "jiling-charges",
+   "If": [
+    "any:[round>=4, alldefeated:front]"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "jiling",
+       "Text": "길 하나 못 여느냐! 모두 밀어붙여라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "ji",
+      "rear"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "jiling-falls",
+   "If": [
+    "defeated:jiling"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "기령이 쓰러졌다! 원술의 군사는 이제 흩어진다. 몰아쳐라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "bandit"
+     ],
+     "Policy": "flee",
+     "GoalArea": 1
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "enemy"
+     ],
+     "Stat": "morale",
+     "Value": -20,
+     "Turns": 0
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "enemy"
+     ],
+     "Stat": "attack",
+     "Value": -10,
+     "Turns": 0
+    }
+   ]
+  }
+ ],
+ "Faction": "yuan",
+ "Duels": [
+  {
+   "ID": "guangling-zhangfei-jiling",
+   "Ally": "zhangfei",
+   "Enemy": "jiling",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "death",
+   "Text": "장비가 기령을 사모로 베었다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "기령이 장비를 막아서다",
+     "Speech": "장비냐! 관운장은 지난번에 꽁무니를 뺐지. 네 목이라도 받아 가겠다!",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 발끈하다",
+     "Speech": "뭐여? 둘째 형이 꽁무니를 빼? 이 자식, 말 다 했냐!",
+     "Side": 0,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "approach",
+     "Title": "두 장수가 말을 몰아 맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 삼첨도를 받아 내다",
+     "Speech": "간지럽구먼! 그게 다여?",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "기령이 거푸 몰아치다",
+     "Speech": "세 갈래 날이면 뭐혀!",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "block",
+     "Title": "기령이 사모를 막다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "기령이 크게 밀리다",
+     "Speech": "(이놈…… 팔이 저려 온다!)",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 웃다",
+     "Speech": "하하하! 원술 밑에서 배만 불렸구먼!",
+     "Side": 0,
+     "Duration": 2.4
+    },
+    {
+     "Kind": "critical",
+     "Title": "장비가 사모를 내지르다",
+     "Speech": "으라앗! 사모 맛 좀 봐라!",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "win",
+     "Title": "기령이 말에서 떨어지다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 2.0
+    }
+   ]
+  }
+ ],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "yuan",
+   "Name": "원술군"
+  }
+ ]
+}

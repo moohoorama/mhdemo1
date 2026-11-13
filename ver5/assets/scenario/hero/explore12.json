@@ -111,6 +111,16 @@
      "Faction": "merchant",
      "Shop": "beihai"
     },
+    "술장수": {
+     "At": [
+      11,
+      5
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "beihai_tavern"
+    },
     "대장장이": {
      "At": [
       12,

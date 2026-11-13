@@ -480,13 +480,15 @@ func (p *player) events(evs []core.Event) {
 		case "heal":
 			p.printf("  %s → %s %d 회복\n", name(e.Actor), name(e.Target), e.Amount)
 		case "pouch-heal":
-			p.printf("  %s 주머니의 콩 %d 회복\n", name(e.Actor), e.Amount)
+			if e.Target != "" {
+				p.printf("  %s %s의 콩 나눠 받아 %d 회복\n", name(e.Actor), name(e.Target), e.Amount)
+			} else {
+				p.printf("  %s 주머니의 콩 %d 회복\n", name(e.Actor), e.Amount)
+			}
 		case "knockback":
 			if len(e.Path) == 2 {
 				p.printf("  %s → %s 밀어냄 (%d,%d)\n", name(e.Actor), name(e.Target), e.Path[1].X, e.Path[1].Y)
 			}
-		case "forage":
-			p.printf("  %s 마을에서 보리·콩 획득\n", name(e.Actor))
 		case "goals":
 			if m := p.obs().Map; m != nil {
 				for _, g := range m.Victory {

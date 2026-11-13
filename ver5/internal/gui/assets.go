@@ -41,6 +41,7 @@ type Assets struct {
 	Bubble        *duelview.Bubble
 	Dragon        *ebiten.Image // grey dragon pattern for narration
 	Ruyi          *ebiten.Image // grey ruyi pattern for dialogue
+	RuyiMean      float64       // the ruyi pattern's mean grey, 0–1, so a tint can set its mean colour (see ruyiPanel)
 	Shou          *ebiten.Image // grey shou pattern for central windows
 	groundPattern *ebiten.Image
 	grassTints    map[content.GrassTint]*Assets // the tiles and ground decoration with a map's grass, see grassAssets
@@ -58,6 +59,8 @@ type Assets struct {
 	Props         map[string]Prop
 	Scenery       *Scenery                 // ground decoration and pines; nil when graphics/map/scenery.json is absent
 	diamonds      map[string]*ebiten.Image // game cell diamonds by colour (field_scene.go)
+	floods        map[int]*ebiten.Image    // flood water over a small tile by its scenemap.DrawFlood tile (field_flood.go)
+	waterlines    map[[4]int]*ebiten.Image // foam lines round what stands in a flood, by shape (field_flood.go)
 	SceneRules    *scenemap.Catalog        // the scene map rules (internal/scenemap) and the decoration's scatter
 	Projectiles   Shots                    // thrown stones, their shadows and their landing dust
 	FX            Shots                    // effects and their particles
@@ -162,6 +165,16 @@ func loadRGBA(path string) (*image.RGBA, error) {
 	return out, nil
 }
 
+// meanGrey is the mean of a grey picture's red channel, 0–1.
+func meanGrey(im *image.RGBA) float64 {
+	sum, n := 0, 0
+	for i := 0; i < len(im.Pix); i += 4 {
+		sum += int(im.Pix[i])
+		n++
+	}
+	return float64(sum) / float64(max(1, n)) / 255
+}
+
 func patternGrey(im *image.RGBA) *image.RGBA {
 	out := image.NewRGBA(im.Bounds())
 	for i := 0; i < len(im.Pix); i += 4 {
@@ -259,7 +272,8 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 	if err = json.Unmarshal(b, &index); err != nil {
 		return nil, err
 	}
-	a := &Assets{Bubble: bubble, Dragon: ebiten.NewImageFromImage(dragon), Ruyi: ebiten.NewImageFromImage(patternGrey(ruyi)), Shou: ebiten.NewImageFromImage(patternGrey(shou)), Duels: scripts, Tiles: map[int]Sprite{}, TileShadow: map[int]Sprite{},
+	ruyiGrey := patternGrey(ruyi)
+	a := &Assets{Bubble: bubble, Dragon: ebiten.NewImageFromImage(dragon), Ruyi: ebiten.NewImageFromImage(ruyiGrey), RuyiMean: meanGrey(ruyiGrey), Shou: ebiten.NewImageFromImage(patternGrey(shou)), Duels: scripts, Tiles: map[int]Sprite{}, TileShadow: map[int]Sprite{},
 		Animations: map[string]TileAnimation{}, Structures: map[string]Sprite{}, Sites: map[string]Sprite{}, Maps: map[string]*MapArt{},
 		Rise: index.Structures.Rise, CliffRise: index.Structures.CliffRise, Portraits: map[string]*ebiten.Image{}, Props: map[string]Prop{}}
 	statusPixels, err := loadRGBA(filepath.Join(dir, "status", "icons.png"))

@@ -60,6 +60,7 @@
    ]
   },
   "eightfold": {
+   "Sound": "eightfold",
    "Name": "팔진도",
    "Desc": "3×3 범위의 아군은 공격·방어 버프, 적은 공격·방어 디버프.",
    "Kind": "mixed",
@@ -148,6 +149,7 @@
   },
   "fire_dragon": {
    "Sound": "fire-big",
+   "Lead": "fire",
    "Name": "화룡",
    "Desc": "십자 범위 화염.",
    "Kind": "magic",
@@ -234,6 +236,8 @@
    ]
   },
   "water_dragon": {
+   "Sound": "water-big",
+   "Lead": "water",
    "Name": "수룡",
    "Desc": "십자 범위 물.",
    "Kind": "magic",
@@ -321,6 +325,8 @@
    ]
   },
   "earth_dragon": {
+   "Sound": "boulder",
+   "Lead": "earth",
    "Name": "지룡",
    "Desc": "십자 범위 대지.",
    "Kind": "magic",
@@ -489,11 +495,11 @@
    "Kind": "buff",
    "Mode": "any",
    "Shape": "cross",
-   "Cost": 48,
+   "Cost": 20,
    "Hit": 95,
    "Effect": "agility",
    "Max": 3,
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "exhort"
    ]
@@ -504,11 +510,11 @@
    "Kind": "buff",
    "Mode": "any",
    "Shape": "cross",
-   "Cost": 48,
+   "Cost": 20,
    "Hit": 95,
    "Effect": "morale",
    "Max": 3,
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "exhort"
    ]
@@ -519,11 +525,11 @@
    "Kind": "buff",
    "Mode": "any",
    "Shape": "single",
-   "Cost": 24,
+   "Cost": 20,
    "Hit": 95,
    "Effect": "attack",
    "Max": 3,
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "exhort"
    ]
@@ -534,11 +540,11 @@
    "Kind": "buff",
    "Mode": "any",
    "Shape": "single",
-   "Cost": 24,
+   "Cost": 20,
    "Hit": 95,
    "Effect": "defense",
    "Max": 3,
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "exhort"
    ]
@@ -568,7 +574,7 @@
    "Hit": 90,
    "Effect": "defense",
    "Max": 3,
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "exhort",
     "exhort_boost"
@@ -584,7 +590,7 @@
    "Hit": 95,
    "Effect": "speed",
    "Max": 3,
-   "Duration": 2,
+   "Duration": 3,
    "Coeff": 2,
    "Requires": [
     "exhort",
@@ -602,7 +608,7 @@
    "Effect": "agility",
    "Min": 1,
    "Max": 3,
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "hinder"
    ]
@@ -619,7 +625,7 @@
    "Effect": "morale",
    "Min": 1,
    "Max": 3,
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "hinder"
    ]
@@ -635,7 +641,7 @@
    "Effect": "attack",
    "Min": 1,
    "Max": 3,
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "hinder"
    ]
@@ -651,7 +657,7 @@
    "Effect": "defense",
    "Min": 1,
    "Max": 3,
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "hinder"
    ]
@@ -667,7 +673,7 @@
    "Effect": "attack",
    "Min": 1,
    "Max": 3,
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "hinder",
     "stratagem_spread"
@@ -685,7 +691,7 @@
    "Effect": "defense",
    "Min": 1,
    "Max": 3,
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "hinder",
     "stratagem_spread"
@@ -825,28 +831,28 @@
   },
   "brace": {
    "Name": "대비",
-   "Desc": "자신의 방어력과 정신력을 2턴 높인다.",
+   "Desc": "자신의 방어력과 정신력을 3턴 높인다.",
    "Kind": "buff",
    "Mode": "self",
    "Shape": "single",
-   "Cost": 24,
+   "Cost": 20,
    "Hit": 100,
    "Effect": "defense+mind",
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "brace_prep"
    ]
   },
   "reload": {
    "Name": "장전",
-   "Desc": "자신의 공격력을 2턴 높인다.",
+   "Desc": "자신의 공격력을 3턴 높인다.",
    "Kind": "buff",
    "Mode": "self",
    "Shape": "single",
-   "Cost": 24,
+   "Cost": 20,
    "Hit": 100,
    "Effect": "attack",
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "reload_prep"
    ]
@@ -883,7 +889,7 @@
   },
   "fire_arrow": {
    "Name": "화시",
-   "Desc": "물리 70%와 정신력 기반 화염 70% 피해를 준다.",
+   "Desc": "물리 70%와 정신력 기반 화염 70% 피해를 주고, 맞힌 칸에 불씨를 남긴다.",
    "Kind": "physical",
    "Mode": "ranged",
    "Shape": "single",
@@ -895,7 +901,8 @@
    "MagicCoeff": 0.7,
    "Requires": [
     "fire_arrow_art"
-   ]
+   ],
+   "Mark": true
   },
   "guard": {
    "Name": "경계",
@@ -913,15 +920,14 @@
   },
   "aim": {
    "Name": "조준",
-   "Desc": "겨누어 쏜다. 이 공격은 순발력·사기가 높아져 명중·치명·연타가 잘 난다.",
-   "Kind": "physical",
-   "Mode": "ranged",
+   "Desc": "자신의 순발·사기를 3턴 높인다.",
+   "Kind": "buff",
+   "Mode": "self",
    "Shape": "single",
-   "Cost": 18,
-   "Hit": 90,
-   "Min": 1,
-   "Coeff": 1,
-   "Effect": "aim",
+   "Cost": 20,
+   "Hit": 100,
+   "Effect": "agility+morale",
+   "Duration": 3,
    "Requires": [
     "aim_prep"
    ]
@@ -959,7 +965,7 @@
   "disrupt": {
    "Sound": "scheme",
    "Name": "교란",
-   "Desc": "적 한 부대의 순발력과 사기를 2턴 낮춘다.",
+   "Desc": "적 한 부대의 순발력과 사기를 3턴 낮춘다.",
    "Kind": "status",
    "Mode": "melee",
    "Shape": "single",
@@ -968,7 +974,7 @@
    "Effect": "disrupt",
    "Min": 1,
    "Max": 1,
-   "Duration": 2,
+   "Duration": 3,
    "Requires": [
     "disrupt_prep"
    ]
@@ -1008,7 +1014,7 @@
    "Kind": "buff",
    "Mode": "self",
    "Shape": "single",
-   "Cost": 18,
+   "Cost": 20,
    "Hit": 100,
    "Duration": 3,
    "Name": "집중",
@@ -1022,7 +1028,7 @@
    "Kind": "buff",
    "Mode": "self",
    "Shape": "single",
-   "Cost": 18,
+   "Cost": 20,
    "Hit": 100,
    "Duration": 3,
    "Name": "기합",

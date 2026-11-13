@@ -1,0 +1,100 @@
+{
+ "Scenes": {
+  "c18-xiapi": {
+   "Map": "S_xiapi_inner",
+   "Nodes": ["c18-xiapi", "c18-x01", "c18-x02", "c18-x03", "c18-x04", "c18-x05"],
+   "Ambient": [{"CamAt": [8, 7]}],
+   "Cast": {
+    "유비": {"At": [8, 5], "Face": "SW"},
+    "관우": {"At": [7, 6], "Face": "SE"},
+    "장비": {"At": [9, 6], "Face": "SW"},
+    "손건": {"At": [10, 7], "Face": "NW"},
+    "미축": {"At": [7, 8], "Face": "NE"},
+    "미방": {"At": [8, 9], "Face": "NE"},
+    "번궁": {"At": [10, 8], "Face": "NW"},
+    "고순": {"At": [9, 9], "Face": "NE", "If": ["party:gaoshun"]},
+    "간옹": {"At": [8, 15], "Face": "NE", "Off": true},
+    "병사#1": {"At": [7, 3], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#2": {"At": [9, 3], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"}
+   },
+   "Beats": {
+   }
+  },
+  "c18-news": {
+   "Map": "S_xiapi_inner",
+   "Music": "mystical-china",
+   "Nodes": ["c18-news", "c18-n01", "c18-n02", "c18-n03", "c18-n04", "c18-n05", "c18-n06", "c18-n07", "c18-n08", "c18-n09", "c18-n10", "c18-n11", "c18-n12", "c18-n13", "c18-n14", "c18-n15", "c18-n16", "c18-n17", "c18-n18", "c18-n19"],
+   "Ambient": [{"CamAt": [8, 7]}],
+   "Cast": {
+    "유비": {"At": [8, 5], "Face": "SW"},
+    "관우": {"At": [7, 6], "Face": "SE"},
+    "장비": {"At": [9, 6], "Face": "SW"},
+    "손건": {"At": [10, 7], "Face": "NW"},
+    "미축": {"At": [7, 8], "Face": "NE"},
+    "미방": {"At": [8, 9], "Face": "NE"},
+    "번궁": {"At": [10, 8], "Face": "NW"},
+    "고순": {"At": [9, 9], "Face": "NE", "If": ["party:gaoshun"]},
+    "간옹": {"At": [8, 15], "Face": "NE", "Off": true},
+    "병사#1": {"At": [7, 3], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"},
+    "병사#2": {"At": [9, 3], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"}
+   },
+   "Beats": {
+    "c18-n01": [
+     [
+      [{"Actor": "간옹", "Enter": [8, 15], "Move": [8, 7], "Face": "NE", "Speed": 2}],
+      [{"Actor": "유비", "Face": "SW"}]
+     ]
+    ],
+    "c18-n04": [
+     [
+      [{"Actor": "유비", "Emote": "…", "Wait": 0.8}]
+     ]
+    ],
+    "c18-n07": [
+     [
+      [{"Actor": "장비", "Emote": "!"}]
+     ]
+    ],
+    "c18-n08": [
+     [
+      [{"Actor": "관우", "Face": "NE"}]
+     ]
+    ],
+    "c18-n13": [
+     [
+      [{"Actor": "장비", "Play": "action"}]
+     ]
+    ],
+    "c18-n17": [
+     [
+     ],
+     [
+      [{"Actor": "손건", "Move": [8, 15], "Exit": true}]
+     ]
+    ],
+    "c18-n18": [
+     [
+      [{"Actor": "유비", "Face": "SE"}]
+     ]
+    ]
+   }
+  },
+  "c18-flight": {
+   "Map": "S_field_road",
+   "Time": "night",
+   "Nodes": ["c18-flight", "c18-end"],
+   "Cast": {
+    "유비": {"At": [5, 11], "Face": "NE", "Sprite": "liubei_mounted", "Off": true},
+    "간옹": {"At": [4, 12], "Face": "NE", "Off": true},
+    "미축": {"At": [6, 12], "Face": "NE", "Off": true}
+   },
+   "Beats": {
+    "c18-end": [
+     [
+      [{"Actor": "유비", "Enter": [5, 11], "Move": [5, 6], "Speed": 0.8}, {"Actor": "간옹", "Enter": [4, 12], "Move": [4, 7], "Speed": 0.8}, {"Actor": "미축", "Enter": [6, 12], "Move": [6, 7], "Speed": 0.8}]
+     ]
+    ]
+   }
+  }
+ }
+}

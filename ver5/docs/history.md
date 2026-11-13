@@ -5,6 +5,257 @@
 
 ---
 
+## 2026-11-13 원소를 바보로 두지 않음·하비 성안은 짧게
+- 결정(사용자): 안량 때 유비는 "운장이라는 보장이 있느냐"로 받고 원소는 직접 확인하겠다고 물림, 문추 때 원소가 제 눈으로 보고 와서 "아닐 수도 있다 하지 않았소?"라고 우아하게 되묻고 유비가 "맞다, 그러니 축하드린다 — 편지 한 통이면 운장이 온다"로 뒤집음, 원소가 웃으며 진진을 붙여 줌. 앞 초안의 "안량은 운장이 아니었고…"라는 원소 대사는 원소를 바보로 만들어 거절됨
+- 결정(사용자): 하비 성안은 짧게 — 수습하러 흩어지고 곧바로 백문루 부름
+- assets/scenario/hero/story19.json·assets/scenes/ch19.json(`c19-y-c1`·`c19-y10`~`y27`·`c19-dead1/2`), story16.json·ch16.json(`c16-inner` 7줄), docs/fullstory.md 16장 S#2·19장 S#2·S#3
+
+## 2026-11-13 인수는 전투 밖에서만, 승급으로 벗겨진 무기는 초록 안내로
+- 결정: 인수는 탐험·출전 준비·배치 중에만 쓴다. 전투 중에는 거부하고, 도구 메뉴에서 인수를 고르면 쓰는 곳을 알리는 알림(부목표 달성 알림과 같은 금색)만 뜬다. 승급해서 새 병종이 들 수 없게 된 장비는 창고로 돌리고, 새 장비는 저절로 끼우지 않고 초록 안내로 이끈다 · 이유: 사용자 "인수는 비전투시 … 보병이 창병으로 갔을때의 무기, 경기병이 궁기병으로 갔을때의 무기, 이때 생기는 딜레마가 사라질거같아", "전투 중 인수는 그냥 거부되고 … toast". 전투 중 승급은 병종만 바꾸고 무기는 두어 검 든 장창병·창 든 궁기병이 생겼고, 전투 중엔 장비를 못 바꿨다. 잃는 것: 승급으로 병력·병법을 채우는 전투 중 회복 전술 · 영향 문서: design.md, logic-growth.md 4절, logic-combat.md, data-item.md, presentation-ui.md
+- internal/core/combat.go(`useItem`), api.go(`LegalActions`), formation.go: 전투 중 인수는 `PromoteAway`, 합법 명령에서 뺌, 전투 중 승급(`promote`) 삭제. `promoteAway`가 새 병종이 못 드는 장비를 창고로 돌리고 `unequip` 이벤트
+- internal/gui/command.go·events.go·insu.go(`insuWhere`)·party.go: 전투 도구 메뉴의 인수는 누르면 알림, `PromoteAway` 한국어 문구, 소지품의 쓰는 곳 "탐험 · 관리 · 소지품, 출전 준비 · 소지품"
+- internal/gui/gear_guide.go·equipment_window.go·officer_cards.go·sortie.go: 초록 안내가 "그 칸에 맞는 아무 장비"(`gearTarget.piece` 빈 값)도 이끔 — 승급으로 벗겨진 무기 칸, 장비 창에서는 목록 전체에 테두리. 안내 자리(`guidePlace`)에 출전 준비 추가, 출전 준비 화면에서는 장수 줄 → `장비` 탭에 테두리
+- internal/gui/command.go·windows.go·game.go·player.go·effects.go·field.go, uidemo_branch.go·uidemo_branch_deputy.go(삭제): 전투 중 갈래 고르기 단계, 전투 중 승급 연출(인수가 머리 위로, 흰 실루엣, 빛 알갱이)과 그 데모 삭제 — 쓰이는 곳이 없어짐. 효과 그림(`promote_gather`·`promote` FX 시트)은 assets에 남아 있음
+- docs/archive-battle-promotion-fx.md(새), git 태그 `archive/battle-promotion-fx`(5147a31): 지운 승급 연출 코드와 흐름을 보관 — 탐험·출전 준비 승급에 다시 쓸 수 있게
+- internal/core/promotion_away_test.go·core_test.go·traits_test.go, internal/gui/look_test.go: 전투 중 거부, 승급 시 장비 반환, 탐험에서 갈래 둘 고르기와 벗겨진 무기 칸 안내를 시험
+
+## 2026-11-13 하비 성안·원술의 재물·국의로 푸는 원소의 웃음
+- 결정(사용자): 16장 전투 뒤 성 안을 먼저 살피고 백성을 구하라 명한 뒤 조조의 부름으로 백문루로 / 광릉 전투 뒤 원술이 약탈해 쌓은 재물을 찾아 미축에게 빚을 갚음 / 19장 원소는 겉으로 유비의 말에 넘어간 듯 웃고, 진진이 국의의 일(공을 세우고 잔치에서 베임)로 그 웃음을 풀어 경고함
+- tools/scene_maps/xiapi_inner.py(새), assets/graphics/maps/S_xiapi_inner.json: 하비 성안 — 왼쪽 아직 잠긴 단양 사람들 동네(초가), 가운데 마른 거리, 뒤 관아, 오른쪽 곡식 창고
+- assets/scenario/hero/story16.json, assets/scenes/ch16.json: `c16-inner` 장면(백문루 앞)
+- assets/scenario/hero/story17.json, assets/scenes/ch17.json: 광릉 전투 뒤 `c17-hoard` 장면(광릉 진영 맵 + 재물 소품)
+- assets/scenario/hero/story19.json, assets/scenes/ch19.json: 원소 `c19-y23`·`c19-y23b`, 진진 `c19-n02`~`n03b`, 간옹 `c19-n04` — 원소가 곽도와 흉계를 짰다는 직접 전언 대신 국의의 선례로
+- docs/fullstory.md: 16장 S#2, 17장 S#12, 19장 S#3·S#4 반영
+
+## 2026-11-13 원술의 재물 소품(17장)
+- ../assets_candidate/tools/gen_pixel_hoard.py(새 파일), tiles.json·map/extra.png·index.json: 장면 소품 `hoard_coin_chest`(오수전 꿰미가 쌓인 열린 칠기 궤짝)·`hoard_chests`(쇠띠·자물쇠 칠기 궤짝 더미)·`hoard_tools`(괭이·삽·낫을 기댄 농기구 시렁)·`hoard_silk`(비단 필 다섯 단)를 아이소 픽셀 키트로, 각 작은 칸 하나·피벗은 칸 중심·땅 그림자는 엔진이 깖 — 광릉 뒤 원술이 쌓아 둔 재물 장면(곡식은 기존 `grain_*`)
+
+## 2026-11-12 전투 밖 인수 쓰기 · 주인 장비 자동 장착 없애고 초록 안내
+- 결정: 인수는 탐험(걸을 때)과 출전 준비(배치 중 포함)에서도 쓴다. 소지품에서 지금 쓸 수 있는 것만 진하게, 누르면 장수 표(이름·병종·레벨)에서 골라 `승급하기`, 승급 창은 전투와 같은 것 · 이유: 사용자 "일반 탐험, 또는 출진상태에서도 인수를 사용할 수 있게 하자" · 영향 문서: data-item.md 3절, presentation-ui.md 장수 창·출전 준비, presentation-explore.md
+- 결정: 주인(`Owner`) 있는 장비는 플레이어 게임에서 저절로 차지 않는다. 탐험 이벤트가 주면 그 지역에 있는 동안 초록 안내가 관리 → 장비 → 장착으로 이끈다 · 이유: 사용자 "장팔사모,청룡언월도는 자동장착 아닌데, 화계서는 자동장착되니 이상함 … 대장간을 나가면 그 가이드는 사라지고" · 영향 문서: data-item.md `Owner`, logic-campaign.md 장면 이동, presentation-ui.md, presentation-explore.md
+- internal/core/formation.go: `promote`의 검사(갈래·단계·레벨·재고)를 `promotion`으로 떼고, 전투 밖 `promoteAway`(`Target`이 승급할 장수, 배치 중이면 그 유닛 병력·병법을 채움)·`awayPromotion`·공개 `PromotionsAway(item, id)`를 더함 — 전투와 같은 규칙을 한 곳에서
+- internal/core/engine.go(`execute`): 전투 밖의 `item` 명령은 `promoteAway`로(인수가 아니면 `WrongPhase`) — 위 결정
+- internal/core/growth.go: `CanLearn`의 "준비할 수 있는 때"를 `preparing`으로 떼어 인수와 같이 씀 — 학습과 인수가 같은 때 열리게
+- internal/core/promotion_away_test.go(새 파일): 탐험·출전 준비에서 승급, 레벨·재고 부족, 다른 아이템, 이벤트 대사 중 거절 — 위 규칙 시험
+- internal/core/waypoint.go(`arrive`), waypoint_test.go: 장면 이동은 아이템·장비를 채우기 전에 `OwnerPiece`를 돌려 그 지점까지 이야기가 준 주인 장비만 채움(1·2장 시작에 받지도 않은 화계서를 유비가 차고 있던 것), 시험은 3장 시작은 화계서·청룡언월도를 차고 1장 시작은 화계서가 창고에 — 자동 장착이 이상하다는 지적
+- internal/gui/game.go(`assist`): 출전 노드의 `OwnerPiece`는 자동 진행·검증 실행에서만. 플레이어의 `Space`(추천 명령)가 화계서를 채우던 것을 막음. `record`가 `noteGearGrants`를 부름, 장수 창이 열려 있어도 승급 창(모달)을 그 위에 그림(`promotionOverWindow`, Esc는 승급 창부터 닫음) — 위 결정
+- internal/gui/insu.go(새 파일): 소지품의 인수 쓰기 — `insuUsable`(진하게/여리게), 장수 표 `insuPicker`, `승급하기`(`insuActs`, 갈래가 여럿이면 병종 카드 `drawInsuBranches`), `useInsu` — 요청 A
+- internal/gui/party.go, officer_window.go: 소지품 표가 쓸 수 있는 줄만 진하게(`dim`), 쓸 수 있는 인수를 누르면 인수 쓰기 보기, 인수의 쓰는 곳에 `관리 · 소지품`. 전환 탭이 인수 쓰기를 닫음 — 요청 A
+- internal/gui/windows.go: 병종 카드 그리기를 `branchCards(dst, branch, pick)`로 떼어 전투(`drawBranches`)와 소지품이 같이 씀, 장수 창 위에 인수의 병종 카드 — 같은 창을 두 번 그리지 않게
+- internal/gui/sortie.go: 출전 준비 할 일 줄 `출진` 왼쪽에 `소지품`(장수 창을 소지품 보기로) — 출진 전 인수 쓰기
+- internal/gui/gear_guide.go(새 파일), hud_corner.go, officer_window.go, officer_cards.go, equipment_window.go: 초록 안내(`gearStep`·`guideRim`) — 관리 버튼, 주인 줄, `장비` 탭, 칸의 `바꾸기`, 장비 창의 칸·장비 줄·`○○로 바꾸기`(다른 장수 창이면 `닫기`, 표·소지품이면 `목록`). 지역을 나가거나 다 차면 끝, `길 안내` 끄면 숨김 — 요청 B
+- internal/gui/gear_guide_test.go(새 파일): 2장 대장간 이벤트를 실제로 돌려 무기가 창고에 남고 안내가 관우→장비 순으로 가며, 길 안내 끄기·지역 떠나기에 사라짐을 시험
+- internal/gui/uidemo_insu.go(새 파일): 데모 `insu`(소지품 → 장수 표 → 병종 카드 → 승급 창, `-node`가 전투 노드면 출전 준비의 `소지품`부터)·`gearguide`(주인 장비를 주는 첫 탐험 이벤트를 돌리고 안내를 따라 장착) — 화면 확인
+- docs/data-item.md, logic-campaign.md, presentation-ui.md, presentation-explore.md: 위 규칙·화면
+
+## 2026-11-12 장창병 남동(SE) 창 보이기
+- internal/sprite/testdata/units/guanyu_heavy_cavalry.png: 기준 그림을 지금 시트로 다시 뽑음 — c68f7ca(관우 중기병 SE 탈진)가 `.spr`·yaml만 바꾸고 기준 그림을 두고 가서 `TestRenderMatchesExporter`가 실패했다
+- tools/doteditor/units/pikeman.yaml, assets/sprites/pikeman.spr, internal/sprite/testdata/units/pikeman.png: SE 대기·걷기 전 프레임과 피격 1·2프레임에 창대 윗부분과 창날(철 `b`·붉은 술 `r`·외곽선)을 손에서 투구 왼쪽 바깥으로 기울여 그림. 피격 3·4(창을 내림)·공격·탈진·막기와 다른 방향은 그대로 — 사용자 "고순 장창병으로써 우하로 볼때, 창이 안보임". 원인: 3D 변환(grid3d.py) 때 SE에서 세운 창이 얼굴 한가운데(x=40, 17~28행)를 지나는데, 경보병에서 복사해 덮은 머리 상자(12행×15열)가 그 부분을 통째로 가려 손 아래 창 자루 끝만 남았다(장창병은 `front_weapon` 다시 그리기도 안 함). 얼굴을 가리지 않도록 창을 투구 바깥으로 빼서 SW·S처럼 읽히게 함
+- 같은 파일들: 위 손 그림을 버리고 SE 대기·걷기 8프레임만 SW 프레임의 좌우 반전(x → 79−x)으로 바꾸고, 공격·피격·탈진·막기는 원래 그림으로 되돌림. 반전으로 뒤바뀌는 명암은 고치지 않음 — 사용자 "장창병 남동의 창 완전 이상해. 차라리 남서를 좌우 flip해", "대기,걷기만 그렇게 하고 창 공격은 냅둬. 그늘도 그대로 냅두고". 다시 만들 때: 스크래치 `pike/flip.py` 후 `tools/spritebuild/build.py units/pikeman.yaml`, golden `render()`
+
+## 2026-11-12 난이도·병종 레벨 규칙·AI 동시 진행·전투 손보기(사용자 피드백 묶음)
+- 결정: 난이도를 11-11 이전의 쉬움·보통·어려움으로 되돌린다(기준 레벨 기울기 1.5, 행동 XP 24%, 칸 수 보정, 일기토 1레벨, 합류 장수도 난이도만큼 옮김). 11-11~12의 완만한 곡선은 디버그 난이도 `flat_*`로 남김 · 이유: 사용자 "기존의 쉬움,보통,어려움(스테이지당 레벨이 2씩 오르고, 경험치 지금보단 잘주는거)으로 돌아가자" · 영향 문서: stage_lv_balance.md 1·1.2·2절, logic-growth.md 1·2절, logic-duel.md
+- assets/data/game.json: 기본 `Rules`를 옛 값으로, `Difficulties` 쉬움 −0.15·130 / 보통 0·100 / 어려움 +0.15·85, `old_*` → `flat_*`(완만 쉬움·보통·어려움, 디버그) — 위 결정
+- internal/content/stage_level_test.go, internal/core/difficulty_test.go·campaign_content_test.go·coalition_test.go·story_test.go: 기대값을 옛 곡선으로, 완만 곡선은 `flat_*`로 시험. 캠페인 시험의 차례 넘기기가 레벨업 학습 창을 닫고 넘김(`endTurn`) — 경험치가 늘어 전투 중 학습 창이 떠 `LearningPending`으로 멈췄다
+- internal/core/engine.go(`promotedAt`), internal/content/spawn.go(`Data.PromotedFrom`): 병종은 레벨이 정한다 — 정해진 병종(인물·스폰 `Class`)보다 레벨이 낮으면 앞 단계로 내리고, 넘으면 첫 갈래로 올린다. 적·AI 동맹·템플릿 배치, 합류, 웨이포인트가 모두 이 하나를 쓴다 — 사용자 "고순이 레벨9인데 장창병으로 나옴 … 동맹군 또한 설정된 병종 그대로 나오는게 아니라 레벨을 고려 … 적도 마찬가지, 명확한 하나의 규칙으로". 지금 데이터에서 바뀌는 배치: 보통·어려움은 B03·B04 고순(경보병), 쉬움은 그 밖에 B09 장창병 셋·봉기(서생), B10 국의·노병 둘(궁병) · 영향 문서: logic-growth.md 4절, logic-traits.md
+- internal/core/spawn_override_test.go: 레벨이 못 미치는 `Class` 덮어쓰기는 앞 단계로 내려옴을 시험, 저장 복원 시험은 0단계 병종(무도가)으로
+- assets/data/classes.json(`Plan`): 보병 계열 Lv10 대비 → 대각공격(경보병·중보병·장창병·전차대·근위병), 중보병·근위병은 Lv20 대비 — 사용자 "적의 plan 특성으로 보병은 레벨 10에 대각공격"
+- assets/data/classes.json(`turban` 황건적 새 병종), characters.json(`troop_turban` 병종), stage11.json(북해 황건 도적은 `Class: bandit`), internal/content/class_pools_test.go: 적병과 같되 순발 10→6·사기 15→9, 승급 없음. B01~B03 황건 잡병 전용 — 사용자 "황건적 병종을 따로 분리, 순발/사기를 낮추자, 1,2,3탄까지만 … 초반 난이도 낮추기용"
+- internal/gui/ai_view.go, windows.go, internal/storage/storage.go: 설정 "AI 동시 진행" 항상(`together`)·보통(`spells`, 책략은 다른 행동과 겹쳐 재생하지 않음)·안 함(`one`) — 사용자
+- assets/scenario/hero/stage16.json: 하비에 여포군 기병 다섯(북서·남동 각 하나, 남동 궁기병 하나, 남쪽 둘) — 사용자 "하비전투 너무 쉬움, 적 기병을 늘리자". `_balance -stage B16 -player ai -seeds 4`: 3/4·9.2라운드 → 2/4·15라운드
+- assets/scenario/hero/maps/map09.json, stage09.json: 거록 (12~14, 10~11) 여섯 칸 산, (8~9, 6) 황무지 → 초원, 심배와 그 대사 삭제 — 사용자 "아래쪽으로 활을 공격하니 어렵다", "심배는 빼자, 너무 쌔다"
+- assets/scenario/hero/maps/map10.json, stage10.json: 계교 여울 동남쪽 줄(13, 15~17)을 초원으로(기병이 건너는 여울 4칸 → 3칸), 패배 조건 "공손찬 퇴각" 삭제 — 사용자
+- assets/scenario/hero/story16.json: 조조 "칼을 뽑은 보람" → "한번 떠본 보람"(칼을 들지 않으므로), 장료 "……살려주셨으니, 목숨값은 하겠습니다." — 사용자
+- internal/gui/sound.go: 반복하는 배경음이 마지막 6초 동안 줄어들고 다시 돌 때 1초 동안 커짐(`loopEnvelope`) — 사용자 "백문루 bgm 마무리가 갑자기 끊어지는 느낌". 60초짜리 emerald-peaks가 끝 2초에 뚝 떨어진 뒤 바로 처음으로 돌았다
+- assets/graphics/maps/S_road.json: 길 바닥 조각을 길 방향(16,8 픽셀)으로 복사해 바닥 끝까지 이음 — 사용자 "단양전 직전 시나리오에서 우하단 길이 잘려보임"(3장 c03-depart, 5·7장도 같은 맵)
+- assets/graphics/maps/S_road.json: 풀 장식·나무가 바닥 가운데 마름모에만 있어 바닥 가장자리(오른쪽 길 끝 둘레 포함)가 맨 초원으로 잘려 보였다. 장식이 없는 바닥 칸 562개에 기존 밀도대로 풀 1~4포기(1032개)를, 길 줄(sy −1~3) 밖에는 나무 41그루(기존 나무 종류, 서로 3칸 이상 떨어짐)를 시드 고정으로 심음 — 사용자 "길만 늘어났고 우측에 초원의 꾸밈이라던가 나무는 여전히 쑥 잘려있어"
+- docs/fullstory.md: 거록(심배 삭제·산), 계교(패배 조건), 백문루 대사
+
+## 2026-11-12 백문루 포로: 밧줄 도트·호송병
+- 결정: 백문루의 고순·진궁·여포·장료가 묶이지 않고 혼자 걸어 들어와 손짓까지 했다(사용자). 포로는 밧줄에 묶인 채 걷고 돌아보기만 하며, 호송병이 데리고 들고 난다. 밧줄은 사람마다 그리지 않고 팔~엉덩이를 두르는 고리 한 벌을 모든 비전투 시트에 얹는다(사용자 제안)
+- internal/scenes/scenes.go: 배역 `Bound`(묶인 포로), 단계 `Bound`(false면 풀어 줌, true면 묶음) — 포로를 데이터로 표시하고 "결박을 풀어라" 뒤에 풀 수 있게
+- internal/gui/scene_rope.go(새): 밧줄 아스키 도트(두 겹, 꼬인 가닥·그늘·1px 외곽선, 끝이 몸 뒤로 한 점 올라감)를 시트의 모든 칸에 피벗 기준으로 찍고, 밧줄 바깥으로 흔들려 나온 손은 지운다 — 비전투 시트는 몸 틀이 같아 한 무늬로 여포·장료·진궁·고순의 네 방향·걷기에 다 맞고, 시트에 구워 넣어 깊이 정렬·밤·흐려짐이 유닛과 같다
+- internal/sprite/art.go: `Art.Variant(이름, Edit)` — 같은 시트·팔레트를 칸마다 고쳐 한 번 굽고 보관하는 변형(그림자는 공유)
+- internal/gui/scene.go: 묶인 배우는 화자 줄의 저절로 하는 `action`, 비트 `Play`, `Pose`를 받지 않고 서 있으며 걷기·돌아보기만 한다. `Sprite` 단계도 밧줄을 유지한다(`tie`)
+- internal/gui/scenario_test.go: 묶인 배역에 `Pose`가 있으면 실패 — 묶인 포로는 선다
+- assets/scenes/ch16.json: 네 포로 `Bound`, 호송병#1·#2(경보병, 위) 추가 — 포로 뒤 한 칸씩 (13, 5)·(14, 5)에서 들어와 (6, 5)·(7, 5)에서 `NW`로 포로를 지키고, 나갈 때 앞장서 오른쪽으로 퇴장. c16-b20 마지막 줄 뒤 장료 `Bound: false` 후 호송병 퇴장, c16-b21의 장료 `Play: action` 삭제
+- docs/presentation-scene.md, docs/fullstory.md(16장 S#3): 묶인 포로·호송병 연출 기록
+- 확인: reports/rope/lubu-walk-in.png, lubu-bound-escorts.png, zhangliao-untied.png
+
+## 2026-11-12 허도 새 맵: 궁문·조조 저택·유비 저택을 아이소 픽셀로
+- 결정: 17장 허도 거리를 낙양 거리 재사용에서 새 맵 `S_xudu`로. 저택이 둘(조조·유비) 있어야 하고, 황궁 입구를 아이소 픽셀 방식으로 새로 그린다(사용자)
+- ../assets_candidate/tools/gen_pixel_palace.py(새): `pwall_u`(붉은 궁성 담, 화강암 굽·회색 기와 지붕), `palace_gate`(9×5 화강암 기단 위 세 칸 문루, 징 박힌 붉은 문 셋, 2층 격자창, 겹처마 우진각 지붕, 앞 계단), `mansion_cao`(13×9 흰 담·높은 대문·2층 안채·곁채 둘), `mansion_liu`(9×7 황토 담·작은 대문·안채 하나) — 기존 `hall_u`가 작아 저택으로 읽히지 않았음
+- ../assets_candidate/tiles/(그림 넷·tiles.json), assets/graphics/map/extra.png·index.json(build_extra), assets/graphics/scene.json(`footprints` 셋) — 새 그림을 장면 맵 물체로
+- tools/scene_maps/xudu.py(새), assets/graphics/maps/S_xudu.json — 뒤쪽 궁성 담과 궁문, 궁문 앞 광장, 가운데 대로, 뒤 왼쪽 조조 저택 앞마당, 앞 왼쪽 유비 저택, 뒤 오른쪽 관청, 앞 오른쪽 장터
+- assets/scenario/hero/explore17.json, assets/scenes/ch17.json(`c17-death`), story17.json: 거리를 `S_xudu`로, 출구 이름 `거처`→`유비의 저택`, 저택 문지기 둘 — 새 맵에 맞춤
+
+## 2026-11-12 17~19장 초안: 허도의 황숙·서주 공방전·원소의 진영 (사용자 흐름대로 한 벌)
+- 결정: 사용자가 준 흐름(알현 → 거처·궁궐·조조의 저택·관청을 오가는 허도 탐험, 옥대 선택, 논영회 번개 컷신, 허전 사냥, 의대조 → 광릉 → 서주성 → 원소의 진영 선택 둘 → 연주 → 고성 장비 합류)을 대본·데이터로 한 번에 만들었다. 승낙 전 초안이며 사용자가 보고 고친다.
+- 이유: 사용자가 "좌악 만들어 봐, 보고 피드백" — 한 단락씩 승낙하는 평소 순서 대신 전체를 먼저 보이기로 함
+- 선택지: 이야기 쓰는 법은 "선택지를 만들지 않는다"이지만, 사용자 지시로 옥대(주지 않는다 두 번)와 원소의 물음(안량 아니오·문추 맞소) 두 곳만 둔다. 틀리면 사망 끝
+- docs/fullstory.md: 17·18·19장을 새 대본으로, 옛 19(고성)~24장을 20~25장으로 번호 이동, 진진·번아·단복 장 번호 참조 고침, 20장 고성은 관우 도착으로 다시 쓸 것을 적음 — 새 흐름에 맞춤
+- assets/scenario/hero/story17.json·explore17.json·story18.json·story19.json, assets/scenes/ch17.json·ch18.json·ch19.json, scenario.json(17~19장): 새 장 — 허도 탐험은 플래그 `c17-step` 1~8로 건물 출구의 이벤트를 차례로 연다
+- assets/data/characters_story.json: 동승·유대·왕충·곽도·종정 추가, 진진 `Playable` — 새 장의 인물, 진진은 19장에 합류
+- assets/data/equipment.json: 삼첨도(`sanjian_blade`, 공격 B·예리) — 기령의 칼, B17 부목표 보상(그림은 청룡언월도 아이콘을 임시로 씀)
+- 논영회 번개: 처음엔 codex 그림을 화면 가운데 띄우는 장면 단계(`Picture`)를 만들었으나 사용자가 그림이 별로라며 장면 연출로 하자고 함 → 단계·그림 모두 지우고, 번쩍임·흔들림 뒤 유비가 엎드렸다가(`prostrate`) 변명하며 다시 앉는 연출로(ch17 `c17-h14`~`h16`)
+- internal/core/engine.go·types.go·api.go, internal/gui/game.go, internal/content/explore.go: `end` 노드에 `Text`가 있으면 사망 끝 — 완료 창 대신 `끝` 창(제목 = Text), 상태 `Ending`, 탐험 이벤트의 갈래를 닫을 수 있음 — 옥대를 준 길·원소 앞 오답의 끝
+- internal/gui/scenario_test.go: 장면 효과 목록에 `flash`(이미 엔진에 있음) — 시험이 빠뜨리고 있었음
+- cmd/_c17walk: 임시 도구 — 장 웨이포인트에서 탐험 안내·선택지를 따라 끝까지 걸어 흐름·끝을 확인
+- tools/mapgen/layouts/hero/map17.txt → assets/scenario/hero/maps/map17.json: 광릉 20×16 새 맵 — 남동 모서리에서 북서로 가는 길, 길을 끊는 개울(다리 8,8·여울 8,3·끝은 늪 여울), 마을 하나(11,12), 숲, 구릉·산은 위 모서리에만. 풀색은 서주 맵 값
+- tools/mapgen/layouts/hero/map18.txt → assets/scenario/hero/maps/map18.json: map12(서주) 지형 그대로에 (22,1) 나무 자리를 성 한 칸으로(동쪽 끝 소성) — B12와 같은 땅에서 다시 싸우고, 원소 쪽으로 빠지는 출구 하나만 더함
+- tools/mapgen/layouts/hero/map19.txt → assets/scenario/hero/maps/map19.json: 연주 20×20 새 밤 맵 — 위 모서리 울타리 안 원소 진영(주둔지 한 칸, 틈 둘), 남쪽 모서리 연주 경계까지 길, 화면 가로로 지나는 개울(x+y 16~17, 다리 8~9,8·여울 둘)
+- assets/scenario/hero/stage17.json B17 광릉 전투: 기령(대장 −0.07, 삼첨도, DuelFirst, react)·원술군 보병·궁병·뇌박·진란 무리 산적 셋, 병사는 모두 오합지졸 11명. 장비 대 기령 일기토(기령 사망), 부목표 보상 삼첨도. 승리는 원술군 전멸 — 기령이 쓰러지면 대사·산적 도주(남서쪽 끝)·사기 −20·공격 −10. 사용자 "수는 좀 있지만 보병에 산적 위주로 비교적 쉽게": 굶주려 흩어지는 원술군이라 오합지졸, 처음 판(대장 그대로·병사 신병 14명)은 ai 0/5였고 기령이 hold→assault면 유비를 쳐서 7/10이라 react로 둠. 승리를 `defeated:jiling`으로 두지 않은 것은 기령이 쓰러진 뒤의 사기 붕괴·도주가 보이도록
+- assets/scenario/hero/stage18.json B18 서주성 전투: 서주성 안 출진, 북쪽에서 유대·왕충(장수)과 오합지졸 여섯. 둘이 꺾이면(또는 7라운드) 조조 본대 — 허저·장료·서황 무리가 성벽에 붙어 서주성 안으로 march(성을 차지), 조조는 북쪽 모서리에서 서주성으로, 하후돈과 기병 둘은 유비를 쫓음 — 와 손건의 하비 포위 소식, `goals`로 승리가 "유비가 동쪽 끝 소성에 닿는다". 조조 본대 뒤 유비가 마을·다리에 들어서면 다음 아군 차례 시작에 다리 동쪽 위(소성 앞)에 이전·우금 매복. 유대 둘이 꺾이면 남은 병사는 북동쪽 끝으로 도주. 처음 판(조조 무리까지 전부 assault, 매복이 다리 끝)은 ai 0/5 — 다리 끝에서 매복과 남은 병사에 막혀 조조군에 갇힘. 지금 ai 7/10
+- assets/scenario/hero/stage19.json B19 연주 전투(밤, 강제 출전): 원소 진영에서 장합(DuelFirst)·기병 셋은 곧장, 곽도(대장)·보병 셋·궁병 둘은 2라운드부터 추격, 3라운드 적 차례에 기병 셋 더, 개울 건너 초병 둘. 2라운드 적 차례(또는 유비가 개울 건너)에 조운이 `join`으로 합류해 세 마디, 장합이 조운 앞으로 돌아서고 `duel` 동작으로 조운 대 장합 무승부 — 자리 맞닿음만으로는 기병이 조운 둘레를 먼저 막아 장합이 닿지 못했다(6시드 0회). 연주 경계는 남쪽 모서리 3×3, ai 10/10·6라운드
+- tools/mapgen/layouts/hero/stage17.txt·stage18.txt·stage19.txt: `stage_ascii.py dump` 배치 그림 — 배치 확인용
+
+## 2026-11-11 북해: 태사자 빼고 해자로 북해군을 전장에서 떼어 냄
+- 결정: B11에서 태사자를 빼고(11장 길에서 먼저 성으로 돌아감, `c11-r6`·`c11-r7`), 북해성 남·동·서 바깥에 해자(`map11.json` x 2·11, y 4), 공융은 (7,0)·북해병은 (6,1)·(8,1)에 hold, 부목표(태사자 생존) 삭제, 12장 인수는 조건 없이 줌
+- 이유: 공융이 책략으로 적을 치고 태사자가 멀리서 막타를 가져가 주력 경험치가 모자랐다(사용자). 해자 너머 가장 가까운 칸까지 공융 5칸(초열 사거리 4), 북해병 4칸(궁병 사거리 3)이라 서로 닿지 않는다
+- 측정: `_balance -stage B11 -player ai -seeds 6` 주력 평균 +0.67 → +0.88(조운 +1.4, 장비 +0.4), 퇴각 장비 1 → 주력 넷이 한 번씩. 관해 `DuelFirst`로 4.7라운드에 끝나는 것은 그대로
+- 영향 문서: fullstory.md 11장 S#4·북해 전투·12장 S#1
+
+## 2026-11-11 성장 곡선 낮춤·경험치 보정을 능력치 비율로·구 난이도 보존
+- 결정: 기준 레벨 `StageLevelStep` 1.5→1, `ExpAction` 24→16, 일기토 경험치 1→0.7레벨(`DuelXPPct` 70), 경험치 레벨 보정을 칸 수 대신 능력치 비율 `((대상+10)/(행동자+10))⁴`(`ExpRatioPower` 4, 상한 `ExpMaxFactor` 3)로, 합류 장수는 난이도 보정 없이 기준 레벨(`JoinShift` false), 난이도는 쉬움 −0.05·150% / 보통 0·110% / 어려움 +0.12·65%
+- 이유: 어려움에서 서주 관우·장비 25, 소패 33~34(사용자). 목표는 어려움 서주 최강 14~15, 조운 Lv10 안팎 합류(12도 됨). 기울기 1.5 자체가 높았고, 어려움이 적 레벨을 올리면 칸 수 보정 때문에 아군이 적 레벨까지 따라붙어 오히려 레벨이 더 높았다. 적 Shift는 비율인데 보정은 칸 수라 후반엔 같은 비율 차에 경험치를 훨씬 많이 줬다(10칸 차가 Lv10에서 50%, Lv50에서 17%인데 같은 2.82배). 비율 보정이면 경험치 배율 하나로 아군이 적과 일정한 비율 격차에 머문다. 상한이 없으면 저레벨에 막타를 몰아 한 판에 수십 레벨이 뛰어 3배로
+- 측정: `cmd/_chain`(새 임시 도구, 판마다 장수 레벨을 이어 받음) 4시드, 지금 규칙 어려움이 서주 최고 26.4·소패 33.3으로 사용자 체감과 맞음 → 새 규칙 서주 출전 평균 쉬움 15.7·보통 15.0·어려움 13.7, 최고 17~18. 승률은 AI 플레이어가 지금 규칙에서도 호로관·계교·서주를 자주 져 판단 근거 아님
+- 구 규칙 보존: `Difficulty.Debug`·`Difficulty.Rules`(규칙 덮어쓰기, `Data.ForDifficulty`, 엔진은 `fromState`에서 그 난이도의 규칙을 씀). 구 쉬움·보통·어려움은 GUI 디버그 모드에서만
+- 영향: 조운이 계교에 Lv12로 들어와 1차 승급(15) 전이라 경기병(예전 Lv17 중기병). `PromoteLevels` 15·30은 그대로 — 어려움 기준 첫 승급이 서주~태산 무렵. 기존 세이브의 easy/normal/hard는 새 규칙으로 이어진다
+- 파일: `internal/content/content.go`(`ExpRatioPower`·`DuelXPPct`·`JoinShift`·`Difficulty.Debug/Rules`·`ForDifficulty`), `validate.go`, `internal/core/growth.go`(`levelFactor`·`joinLevel`), `formation.go`(일기토), `engine.go`(`fromState`), `internal/gui/windows.go`(디버그 난이도 숨김), `assets/data/game.json`, `testdata/mini/game.json`, `cmd/_chain`(새), `cmd/_balance`(탐험 이벤트 합류 장수 빠지던 것·난이도 규칙), 테스트 `level_factor_test.go`·`difficulty_test.go`·`campaign_content_test.go`·`coalition_test.go`·`story_test.go`·`stage_level_test.go`
+- 문서: `logic-growth.md` 1·2절, `stage_lv_balance.md` 1·1.2절
+
+## 2026-11-11 13~15판 장수 고유 특성 채움·정원지 선봉→위압
+- `assets/data/characters.json`·`characters_story.json`(`Traits`): `hero_ver5.md` 등급(A 3·B 2)보다 모자랐던 서황(충격·군율·위압, 파진 뺌)·순욱(간파·강론·지균)·곽가(심모·귀모)·순유(수공·백출)·진등(간파·계략)·여포군 고순(함진·군율·돌파)을 채우고, 15판에서 둘째 칸이 비던 정욱(귀모→유계·짐독)·이전(+침착)·후성(기마술→기습·근성)·위속(초원지형보조→호위·결사)·송헌(+급소)·조표(+침착)·조성(+저격). 후성·위속의 옛 특성은 병종 Plan과 겹쳐 실제로는 0개였다. 정원지 선봉→위압(1판 총대장에게 상시 공격 +20%는 셈). 손견·악진 선봉은 그대로 — 사용자
+- 문서: `logic-traits.md` 4.1(13~15판 표), 메모리 고유 특기 예약(연환=방통, 괄목상대=여몽)
+
+## 2026-11-11 돌진은 자기 차례에만
+- `internal/core/combat.go`(차례 끝), `internal/core/traits_test.go`, `docs/logic-traits.md`: 걸은 칸 수(`Steps`)를 그 유닛 쪽 차례가 끝날 때 0으로. 예전엔 다음 자기 차례 시작에야 지워서, 6칸 달려온 송헌(친위대 Lv32, 어려움)이 상대 차례 내내 공격 954→1240(+30%)으로 병력 일람에 여포 다음으로 뜨고 반격도 그 값으로 했다 — 사용자 스샷(소패 전투)
+
+## 2026-11-11 화시는 맞힌 칸에 불씨
+- `internal/content/content.go`(`Skill.Mark`), `internal/core/combat.go`(`attackOn`), `assets/data/skills.json`(화시 `Mark`·설명), `internal/core/crit_marks_test.go`, `docs/logic-combat.md`: 화시가 맞힌 대상의 칸에 치명타가 아니어도 화계 치명 흔적과 같은 불씨(3라운드)를 남김. 두 번 치기까지 끝난 뒤에 놓아 화시 자신은 +45%를 받지 않고, 뒤따르는 화계가 받음 — 사용자
+
+## 2026-11-11 병종 특성 계획 Lv10~60 (무관·군사계·적병·무도가)
+- `assets/data/classes.json`(`Plan`): 보병·창병·기병·궁기병·궁병·발석거 계열에 Lv10~60 열 단위로 하나씩(보병 대비·대각공격·원거리피해감소·중갑·침착·방어확률증가 등), 각 병종엔 그 병종이 나오는 레벨까지만 — 일반병이 레벨이 올라도 대각공격·초원지형보조 하나뿐이었다(사용자 표)
+- `classes.json`(`Plan`): 군사계 Lv1 화계·10 구휼·15 수계·20 지계·25 선견·30 확산·40 화계강화·50 명상·60 수계강화(옛 참모 확산·격파·지계강화 뺌), 적병 반격술·대각공격·지계·독공·구휼·급소, 무도가 반격술·대각공격·화계·압박·장풍·화계강화, 궁병 40 관통·발석거 40 원시. 세객·방술사·도독은 그대로 — 사용자
+- `internal/content/validate.go`: 병종 특성 계획 안에서 선행 특성이 그것을 요구하는 특성보다 늦게 오면 데이터 오류 — 30 중갑·60 대비 같은 거꾸로 된 안이 걸리지 않았다
+- 문서: `logic-traits.md` 4.1.1(계열 표), 4.2(부관임명 비용 700으로 바로잡음)
+
+## 2026-11-10 수성→중갑(금흉갑·백이 통합)·허저 특성·출진 표시·화시 연출
+- `assets/data/traits.json`, `equipment.json`, `internal/core/combat.go`, `internal/content/vocab.go`(`fortify` 삭제), `testdata/mini/traits.json`, `core_test.go`: 수성을 중갑(매 차례 방어력 +20%, 성 두 배 없음)으로 바꾸고, 같은 효과인 금흉갑·백이를 없앰. 당예개갑은 중갑을 준다 — 사용자
+- `characters_story.json`: 허저 고유 특성 계획 호위·철갑·철벽·필살(Lv1·16·31·46), 고순 정의 레벨 5→20(장창병은 1차 병종이라 15 미만이면 세이브 검사에 걸려 편집기 시험판이 CorruptSave) — 사용자
+- `internal/gui/officer_marks.go`(새 파일), `hud.go`, `command.go`, `ui_kit.go`, `sortie.go`, `deployment.go`, `hud_units.go`, `officer_window.go`: 승급할 수 있는 장수의 병종 이름을 주황으로, 출전 준비·배치 목록에서 빈 무기·갑옷 칸을 병종 무기·갑옷 아이콘에 빨간 X로, 전투 HUD 장수 칸에 부관 얼굴과 이름 — 사용자
+- `internal/gui/player.go`, `effects.go`: 화시는 붉은 불화살이 날아가 불꽃으로 터지고, 쏘는 소리와 불 소리를 냄(예전엔 화살 없이 불꽃만, 휘두르는 소리). 반격 돌파로 밀린 공격자의 원거리 판정은 밀리기 전 자리로 — 사용자
+
+## 2026-11-10 특성 정리(중가 삭제·협동 장창병·방어확률증가)·돌파 반격·콩주머니·빈 병법치 책사 AI
+- `assets/data/traits.json`, `characters.json`, `characters_story.json`, `game.json`(`ForageItems`·마을 `Village`), `internal/content/{vocab,content,terrain,validate}.go`, `internal/core/combat.go`, `internal/cli/play.go`, `internal/gui/events.go`, `cmd/_traitsim`: 중가(마을에서 보리·콩) 삭제, 미축·이각·원술에서 뺌 — 남에게서 뺏어 오는 느낌(사용자)
+- `traits.json`·`classes.json`: 부관임명 500→700, 협동 500→700에 중보병 풀에서 장창병 풀로 옮김, 중보병엔 새 특성 방어확률증가(`block_up`, 적 물리 명중률 −10%p, 700), 인덕 선행을 독려→부관임명 — 사용자
+- `traits.json` 수성 설명: 어디서나 매 차례 방어 버프, 성·관문 위에서 두 배임을 밝힘(엔진은 원래 어디서나 걸었다) — 사용자 "항상 동작해야"
+- `characters_story.json`, `assets/scenario/hero/stage15.json`: 고순(합류·여포군 둘 다) 장창병·철창, 스테이지 15의 중보병 덮어쓰기 뺌. 미방 수성 → 응급처치(수성은 근위병 풀) — 사용자
+- `internal/core/api.go`(`adaptCharacters`): 데이터가 바뀐 세이브를 열 때 없어진 특성은 잊고, 병종 줄이 바뀐 장수(고순)는 레벨이 되면 새 병종으로, 못 드는 장비는 소지품으로 — 진행 중인 세이브가 CorruptSave로 막히지 않게
+- `internal/core/combat.go`(`attackOn`·`strikeBack`): 돌파가 반격에서도 공격자를 밀어냄(협동·호위는 그대로 안 밂) — 반격 때 돌파가 안 됐다(사용자)
+- `internal/core/combat.go`(`pouchHeal`), `traits.json` 콩주머니 설명, `events.go`·`cli/play.go`: 콩주머니에도 물심양면(회복량 ×1.5)과 보급(주변 가장 약한 아군도 회복, `pouch-heal` 이벤트의 Target이 콩 주인) 적용 — 사용자
+- `internal/ai/ai.go`(`spentCaster`), `internal/core/rules.go`(`SkillCost`·`HPCost`): 정신력이 공격력보다 큰 책사가 책략은 있는데 병법치가 모자라면 앞으로 걸어 나가지 않고 제자리, 명상할 수 있고 명상 뒤 병력이 1/5 넘게 남으면 명상 — 병법치 없는 서생·군사가 돌진했다(사용자)
+- 테스트: `core_test.go`(반격 돌파, 세이브 맞춤), `traits_test.go`(콩주머니 물심양면·보급), `combat_followup_test.go`, `ai/policy_test.go`(빈 병법치 책사 대기), `content/class_pools_test.go`, `terrain_test.go`, `testdata/mini/traits.json`(`bounty_t`)
+- 문서: `logic-traits.md`, `logic-combat.md`, `data-character.md`
+
+## 2026-11-12 영천 장사성 성루를 성벽 띠로
+- 결정: 2장 `c02-castle`(황보숭·주준, 밤)을 백문루와 같은 성벽 띠 구도로, 수공 흔적 없이, 성루(문루)는 두지 않음 · 이유: 사용자 "영천전투에서의 성곽에, 현 구성의 아이디어를 살릴 수는 없나? 수공 흔적만 없애면", "단층만 없게, 진행해봐"
+- `assets_candidate/tools/gen_pixel_rampart.py`: `rdwall_{04,08,12}_{0..2}` 마른 벽면(물 자국·이끼 없음, 이끼 변형은 벽돌 하나 빠진 것으로). `assets/graphics/scene.json` 높이 4 = 120px `rdwall`·`rim: rrim`
+- `tools/scene_maps/changshe_wall.py`(새)·`maps/S_changshe_wall.json`: 14×5칸 통로(포석 Q), 성가퀴 따라 등롱·깃발·지휘기, 군량 자루·화로·향로, 부상병 거적·피 묻은 천·약탕기(옛 S_rampart_siege 배치를 u+6, 앉은 부상병은 앞 담에 걸쳐 보여 (3,3)으로). 성 밖은 마른 풀·흙, 황건 군막 13·노란 지휘기 2·모닥불 11이 어둠 속으로 퍼지고, 성벽에서 3~4칸 노란 깃발 다섯은 끝만 성가퀴 위로. 성 안은 맨땅에 기와집 다섯
+- `assets/scenes/ch02.json` `c02-castle`: 맵 교체, 배역 u+6(황보숭 (6,1), 주준 (11,4)→(7,2) 등), 순찰 (12,1), 화톳불 효과를 성가퀴에 가리지 않는 6~15칸 밖으로, 카메라 c0 (7,−5)(성 밖 진영)·c1 (3.6,−1.4)
+- 확인: `go test ./internal/scenemap/`, `./internal/gui -run 'Scene|Tour'` 통과, `_uidemo-vm -ui scenenode -stage c02-castle,…`로 reports/uidemo/c02_castle 0200·0450·0700·1000·1290
+
+## 2026-11-12 장면 노드 캡처가 마지막 줄 뒤 박자를 건너뜀
+- `internal/gui/uidemo_scenenode.go`: `-ui scenenode`가 노드의 마지막 줄 뒤에 둔 박자(퇴장 등, `Beats[node][줄 수]`)를 재생하지 않아, 백문루 캡처에서 앞서 나간 포로(고순·진궁·여포)가 포로 자리에 남아 다음 포로와 겹쳐 보였다(사용자 "진궁, 공대, 장료들이 겹쳐있는거 같은데"). 게임(`nextNode`)은 그 박자를 재생한다 — 캡처 도구만 고침: 마지막 줄 다음에 그 박자를 한 번 재생하고 다음 노드로
+- 확인: c16_baimen 다시 캡처(0900·2100·2700·3300·3690), 포로 자리에 한 사람씩
+
+## 2026-11-12 백문루를 성벽 띠로 다시
+- 결정: 성벽 위 장면은 폭 6칸 성벽 띠가 화면을 대각선으로 가로지르고, 우상단 성가퀴 너머로 물이 빠진 젖은 성 밖(흙·풀·물웅덩이, 해자는 여울), 좌하단은 안쪽 담 아래로 벽돌 면이 성 안 맨땅까지 떨어지며 문루 아래로 성문 통로가 뚫리고, 통로 가운데 뒤쪽에 2층 문루. 조각은 모두 새로 그리고 기존 성벽(전투 성벽·장면 성곽 그림)은 쓰지 않는다 · 이유: 사용자 "물이 어느정도 빠져서 병력이 들어갔고 전투한거잖아… 우상단으로 성밖이 보이는데 젖어있는 땅, 남서쪽은 성벽의 윗부분이 보이는 식", 검증은 "기존 성벽을 쓰지 않아야 하고, 이음매가 보이지 않게, 그림을 subagent에게 물어봤을 때 예상한 묘사가 나와야"
+- `assets_candidate/tools/gen_pixel_rampart.py`(다시 씀): 하비 성벽 전용 회색 벽돌(4px 단, 8점 벽돌, 벽돌 색은 단과 타일 안 짝으로 정해 타일을 건너도 같은 색), 물 빠진 자국(물결선 아래 짙은 젖은 벽돌·흰 자국선), 변형 셋은 타일 가장자리를 피한 금·이끼·배수구 얼룩만 달라 어느 변형끼리 붙어도 이음매 없음. `rwall_{04,08,12}_{0..2}` 120px 벽면(윗면 비움, 꼭대기에 돌출 돌띠), `rrim_{sw,se}_{0..3}` 안쪽 담(돌띠에서 조금 물러선 흰 회벽 15px에 검은 기와 머리), `rrim_{ne,nw}_{0..3}` 바깥 성가퀴(타일마다 가운데 타구 하나·활구멍, 이빨 빠진 것·이끼 변형), `floor_rampart`(통로 포석, 글자 `Q`), `baimen_tower`(돌 기단 위 2층 문루: 앞 회랑 붉은 기둥·격자문, 아래 처마 위 마루와 난간, 위층 현판, 우진각 지붕·용마루), `baimen_gate_{0..3}`(안쪽 벽면에 뚫린 성문 통로: 돌 테 아치, 어두운 안쪽, 양쪽으로 젖혀 둔 문짝. 작은 칸 하나 폭으로 네 쪽 — 한 장이면 사각 범위가 통로 윗면과 겹쳐 시험이 막음. 픽셀은 시선이 벽면을 지나는 칸이 가져감: 깊은 안쪽이 옆 칸 벽면에 덮이지 않게). 옛 `bwall_*`(장면 성곽 그림을 쓰던 것)과 첫 시안 `rbat_*`은 지움
+- `internal/scenemap/catalog.go`·`plan.go`(`rims`)·`order.go`(`RankRim`): 높이 규칙에 `rim` — 높은 땅 가장자리 위에 서는 것(담·성가퀴)을 그 땅의 바닥(flat)이 아니라 서 있는 조각으로 그린다. 바닥에 깔면 다음 칸 바닥이 담 윗부분을 덮어 앞 담이 톱니처럼 끊겼다. 같은 앞줄 순서에서는 사람보다 뒤에 그려(그 칸에 선 사람은 담 뒤)
+- `internal/gui/field.go`·`field_scene.go`(`drawItem.low`): 담 뒤 사람의 발이 반투명 유령으로 비치지 않게(담은 발만 가림)
+- `assets/graphics/scene.json`: 높이 3 = 120px `rwall`·`rim: rrim`, 바닥 `Q`, `walkable`에 Q, 발자리 `baimen_tower` [-5,-2.2,10,4.4]·`baimen_gate_*` [-0.5,0,1,0.2]
+- `tools/scene_maps/xiapi_baimen.py`·`maps/S_baimen.json`: 12×6칸 통로가 그림 끝까지 이어지고, 뒤 36·앞 12 작은 칸 그림. 성 밖은 흙·풀 무늬, 성벽 발치 해자는 잠긴 흙(여울), 덩어리진 물웅덩이 30개(`~`), 문에서 나가는 흙길, 성벽에서 3~4칸 나무(줄기는 성가퀴에 가리고 머리만 보여 성 밖이 낮은 것이 읽힘 — 계산: 120px 통로·21px 성가퀴면 2.5~4.4칸), 풀색은 젖어 어둡게(`grass`). 성 안은 맨땅. 문루 (5,0.9), 단 (5,2.9), 성문 (5,5.5) 벽면, 화로는 포로 길(5행) 밖
+- `assets/scenes/ch16.json` `c16-baimen`: 조조 (5,3)·허저 (6,3), 관우 (4,3)·유비 (4,4)·장비 (4,5), 위병 (6,4)·(7,4), 포로 (5,5), 입·퇴장 (12,5), 관우 (5,4)↔(4,3), 카메라 (2.6,0.6)(카메라는 땅 높이 기준이라 통로 높이만큼 당김)
+- 확인: `go test ./internal/scenemap/`, `./internal/gui -run 'Scene|Tour'` 통과. `_uidemo-vm -ui scenenode`로 c16_baimen 0240·0900·2100·2700·3300. 확대 크롭으로 벽면·성가퀴·바닥 이음매 없음 확인. 맥락 없는 서브에이전트에게 0240을 묘사시킴 — 1·2차: "넓은 성벽 꼭대기 통로, 2층 누각, 바깥쪽 세로면"은 맞혔고 "앞 가장자리에 여장이 없어 낭떠러지 같다", "성 밖 풀밭이 낮은지 모호", "광장처럼 넓다", "문루 아래 성문 통로가 없다" 지적 → 안쪽 담을 돌띠·흰 회벽·기와 머리로, 통로 7→6칸, 나무를 성벽 가까이, 성문 통로를 추가
+
+## 2026-11-12 백문루를 성벽 위로
+- `assets_candidate/tools/gen_pixel_rampart.py`(새), `assets_candidate/tiles/bwall_*.png`·`tiles.json`, `assets/graphics/map/extra.png`·`index.json`(build_extra), `assets/graphics/scene.json`(높이 3: 66px, `bwall`), `internal/scenemap/plan.go`(`topFloor`: 높은 땅 윗면에도 포석·칸 바닥), `tools/scene_maps/xiapi_baimen.py`·`maps/S_baimen.json`, `assets/scenes/ch16.json`(카메라 (4,1)), `docs/presentation-scene.md`, `.claude/skills/pixel-iso-kit/SKILL.md`: 성문 앞마당처럼 보였다(사용자) — pixel-iso-kit으로 성 돌·벽돌·성가퀴 면을 그려 사람이 선 바닥을 성벽 높이로 올리고, 앞으로 성가퀴와 벽돌 면이 거리로 떨어지게. 낮은 땅 성벽 줄은 돌려 본 시점에서 통로를 가려(`TestLevelsCoverOnlyWhatStandsBehind`) 빼고, 백문루는 통로 위 건물(`hall_u`)로. 포로는 거리(통로 아래)에서 올라올 수 없어 통로를 따라 오른쪽 (12,3)에서 들어오고 나가며, 그 길을 비우려 위병을 (6,2)·(6,4)로
+
+## 2026-11-11 백문루 장면 맵 S_baimen
+- `tools/scene_maps/xiapi_baimen.py`, `assets/graphics/maps/S_baimen.json`, `index.json`, `assets/scenes/ch16.json`(`c16-baimen` 배역·박자), `docs/fullstory.md`: 영천 장사성 성루와 같은 S_rampart는 너무 허했고 화로가 조조와 포로 사이에 있어 관우가 끼어들 때 어색했다(사용자) — 새 맵: 뒤로 성벽과 백문루 문루, 그 앞 금 병풍·단(조조 앉음), 거적 길을 따라 포로가 앞쪽에서 들어와 단 앞 두 칸에 서고, 관우는 그 사이 빈칸으로 나선다. 유관장은 길 왼쪽, 허저·위병은 오른쪽, 깃발·병기가·갑옷걸이는 가장자리, 화로는 네 귀퉁이
+
+## 2026-11-11 16장 S#3 백문루
+- `assets/scenario/hero/story16.json`(c16-baimen·c16-b-gao·c16-b01~b22), `assets/scenes/ch16.json`(`c16-baimen`, S_rampart), `assets/scenes/ascii/c16-baimen.txt`, `docs/fullstory.md`: 〔고순〕→진궁→여포→장료가 계단에서 끌려와 조조 앞에 섰다가 나감. 연의 19회와 너무 같다 하여 우리 이야기의 말투로 — 진궁은 짧게 거절하고 스스로 나가며 조조가 집안을 돌보겠다 함, 여포는 적반하장으로 녹봉을 챙기다 유비의 "정원과 동탁, 그리고 나의 일"에 "귀 큰 놈"으로 돌아섬, 관우가 "주인에게 충성을 다한 것뿐"이라 막아서 장료를 살림(사용자 대본). 장료 비전투 시트에 읍(bow)이 없어 마지막 감사는 `action` 동작
+
+## 2026-11-11 B16 보상에 방천화극
+- `assets/scenario/hero/stage16.json` `Reward`: 돈 2500에 방천화극(`fangtian_halberd`) — 하비 전투의 보상(사용자)
+
+## 2026-11-11 B16 수공에 지친 여포군, 조조군 증원 뺌
+- `assets/scenario/hero/stage16.json`, `docs/fullstory.md`: 여포군 전원 약화를 세 단계로 — 개전 민첩 −20(수공에 지침), 후성·송헌·위속 항복 때 사기 −20, 장료 일기토 패배 때 방어 −20(새 이벤트 `zhangliao-beaten`, 여포 한마디). 배신 때 가운데 무리 공격·방어 −15%는 뺌. 일기토 끝 관우가 지친 장료를 꺾고 싶지 않았다고 말함(사용자). 조조군 증원(조인·우금·순유·궁병)을 빼고 여포군 기병 하나 더함 — AI 4/6·9.2턴, 주력 레벨 +0.7~+2.5(증원 있을 때 +0.8에서 늘어남). 적을 넷 더하면 3/6이라 하나만
+
+## 2026-11-11 B16 해자 한 칸
+- `tools/mapgen/layouts/hero/map16gen.py`(`MOAT` 1), `map16.txt`·`map16.json`, `docs/fullstory.md`: 해자를 두 칸에서 한 칸으로(사용자). AI 5/6·7.2턴 → 6/6·6.2턴
+
+## 2026-11-11 B16을 성 밖에서 돌입하는 판으로
+- `tools/mapgen/layouts/hero/map16gen.py`·`map16.txt`, `assets/scenario/hero/maps/map16.json`, `stage16.json`, `docs/fullstory.md`: 성 밖에서 돌입(사용자) — 28×28, 해자는 여울(수공), 밖은 초원·평지·나무·물웅덩이, 성 안은 성내 칸을 깔지 않고 바둑판(포석 큰길·성벽 안 길, 평지 구역에 민가·뜰·연못)으로 규격화된 성처럼(사용자). 문 곁 무너진 성벽 틈(돌무더기) 넷. 유비·조조군은 해자 밖에서 시작, 적 배치는 성 안으로 옮김
+- 밸런스: 성 밖에서 시작하니 AI 2/6(외길 문·여울에서 조조군 8기가 녹고 유비 혼자 여포에게) → 조조군에 조인·우금·순유(방술사)·궁병 둘을 더해 AI 5/6·7.2턴, 돌격 0/6. 여포는 boss 그대로
+
+## 2026-11-11 명상을 책사 병종에서 뺌
+- `assets/data/classes.json`(서생 `Pool`, 군사 `Plan` Lv50), `internal/content/class_pools_test.go`, `docs/logic-traits.md`, `docs/balance-battle.md`: 명상(병력 5% → 병법치 20%)을 서생 배움 목록과 군사 Lv50에서 뺌 — 너무 세서 장수들의 병법치 회복이 무의미해졌다(사용자). 특성·책략 자체는 남김(가진 장수 없음)
+- 허사의 선견은 고유가 아니라 서생·참모·군사와 함께 쓰는 특성으로 둠(사용자)
+- `internal/core/campaign_content_test.go`: 캠페인 끝까지 치르는 시험에 B16, `internal/gui/uidemo_mpover.go`: 술 이름을 쓰지 않고 병법치 도구를 데이터에서 찾음(엔진 코드에 게임 내용 이름 금지 시험)
+
+## 2026-11-11 B16 하비 전투
+- `assets/scenario/hero/stage16.json`, `maps/map16.json`, `tools/mapgen/layouts/hero/map16gen.py`·`map16.txt`, `story16.json`(c16-battle), `assets/data/characters_story.json`(허사 `xusi`), `docs/fullstory.md`: 사용자 설계 — 유비 남서문, 조조군 북서·남동문에서 돌입(세 문 처음부터 열림), 여포·기병 둘 가운데에서 버팀, 북서 장료·위속, 남동 진궁·조성, 남서 송헌·후성, 가운데 허사(무도가, 화계·화계강화·선견, 초상 없음), 여포군은 기병·궁기병(넷)·보병, 승리는 여포군 전멸. 후성·송헌·위속은 아군이 닿으면 셋이 함께 퇴각(`adjacent` → 컷신 `leave`). 일기토 관우 대 장료
+- 밸런스: 첫 안은 게임 AI 1/6 승(여포 boss가 관아 칸 방어 보정을 받으며 유비를 두 대에) → 여포를 관아 옆 칸, 허사를 관아로, 북서·남동 병사는 `react`, 남서 보병 하나 뺌, 배신 때 가운데 공격·방어 −15%(배신에 기가 꺾임) → AI 5/6·7.8턴, 돌격 2/6
+- 맵: 바깥 그림이 성벽 칸 복사로 두꺼운 벽 덩어리가 되어 `--flood`로 놀이 칸 밖을 물로, 두 칸 성문이 문루 덩어리로 보여 문은 한 칸씩
+
+## 2026-11-11 16장 S#1 물에 잠긴 하비성 밖
+- `assets/scenario/hero/story16.json`(c16-flood·c16-f01~f08, 〔고순〕 줄은 `branch` party:gaoshun), `scenario.json`(16장), `assets/scenes/ch16.json`, `docs/fullstory.md`: 조조군이 수공을 마친 뒤 유비·관우·장비·손건·미축·미방·〔고순〕이 벼랑 끝에 올라 잠긴 성 밖을 내려다봄 — 미방 장터, 미축 거래하던 장터 사람들, 손건 논·곡식, 장비 군사 식구, 고순 단양 사람들, 유비 "하루라도 빨리 끝내야 하네"(사용자). 일행은 아래 왼쪽에서 걸어 올라 북동(물)을 보고 서고, 관우는 `Hold`로 물을 보다가 마지막 줄에 유비에게 돌아서 읍한다. 카메라는 `CamAt (2,1)`: 벼랑 위 사람은 146px 높이 그려져 칸보다 위를 겨눈다
+
+## 2026-11-11 장면 절벽의 뒤쪽 벼랑 끝, 하비성 맵을 좌하 절벽 구도로
+- `tools/scene_maps/cliff_lip.py`, `assets_candidate/tiles/blip_*.png`·`tiles.json`, `assets/graphics/map/extra.png`·`index.json`(build_extra), `internal/scenemap/plan.go`(`brinks`), `catalog.go`(`Heights.Back`), `assets/graphics/scene.json`(높이 2 `"back": "blip"`), `docs/presentation-scene.md`: 높은 땅이 화면 뒤쪽(우상·좌상)으로 떨어지는 변에 닳아 둥글게 넘어가는 벼랑 끝 도트 — 그 방향 절벽 면은 그려지지 않아 윗면과 아래 물이 구별 없이 맞닿았다(사용자). 솟은 바위·세로 줄무늬안은 "발딱 솟은", "울타리 같다"로 거절, 변을 따라 어두워지는 띠로(사용자)
+- `tools/scene_maps/xiapi_flood.py`, `assets/graphics/maps/S_xiapi_flood.json`, `assets/graphics/scene.json`(노점 `sink`): 성벽·해자를 빼고 좌하에 영천 철벽 높이의 맨흙 벼랑, 우상에 잠긴 성 밖 장터·지붕 줄 — 해자와 성벽이 남으니 어색했다(사용자)
+
+## 2026-11-11 물에 잠긴 땅(장면 맵), 물에 잠긴 하비성 맵
+- `internal/scenemap/plan.go`(`flood`·`sunk`·`clipAbove`, `DrawFlood`·`DrawWaterline`, `Draw.Line`), `catalog.go`(`Rules.Flood`), `assets/graphics/scene.json`(`flood`, `surfaces`의 `F`·`R`), `internal/gui/field_flood.go`(흙탕물 칸·거품 줄 그림), `field_scene.go`(잠긴 물체는 땅 그림자 없음), `assets.go`, `docs/presentation-scene.md`: 잠긴 땅 바닥 — 원래 땅 위에 흙탕물을 덮고, 선 물체는 가라앉혀 물높이에서 자르고 거품 줄을 붙임. 물에 비친 거꾸로 그림은 쿼터뷰에서 어색해 뺌(사용자). 풀밭을 물 칸으로 바꾸기만 하니 "물 모양 코팅 위에 집과 나무"로 보였다(사용자)
+- `tools/scene_maps/xiapi_flood.py`, `assets/graphics/maps/S_xiapi_flood.json`, `assets/graphics/index.json`: 물에 잠긴 하비성 — 성벽·닫힌 남문, 성 밑 해자(원래 물), 잠긴 들판의 초가·짚더미·수레·울타리·버드나무·이정표, 성 안 기와지붕, 앞쪽 마른 둑. 16장 S#1과 뒤의 수공 이야기에 다시 쓸 맵(사용자). 처음 안의 배는 원래 물이 없던 곳이라 뺌(사용자)
+
+## 2026-11-11 물웅덩이는 기병만 묶는다, 16장 장면 목록
+- `assets/data/terrain.json`(기병 `State.w`: `Cost 3`·`Shift −0.1`), `assets/data/game.json`(물웅덩이 `Factor` 뺌), `internal/content/terrain.go`(`TerrainRule.Shift`, `State.Factor` 지움), `internal/testdata/mini/game.json`, `internal/core/crit_marks_test.go`, `docs/balance-battle.md`: 물웅덩이는 기병만 이동 비용 3·방어 보정 −10%, 다른 병종은 바닥 그대로 — 드문드문 깔린 웅덩이를 비용 2면 그냥 돌아가니 3, 수공이 기병을 묶는다는 순유의 말대로(사용자). 병종별 규칙은 값을 덮어쓰기만 해서 더하는 `Shift`를 둠
+- `docs/fullstory.md`: 16장 장면 목록(S#1 둑 / 하비 전투 / S#3 백문루, 여포 진영 막간 없음), 후성·송헌·위속은 아군이 닿으면 셋이 바로 퇴각, 일기토 관우 대 장료, 백문루를 17장에서 16장 S#3으로(〔고순〕→진궁→여포→장료 순)
+
+## 2026-11-11 15장 S#6 아군 막사·조조군 장수들의 수공 이야기
+- `assets/scenario/hero/story15.json`(c15-t01~t07), `assets/scenes/ch15.json`(`c15-tent` 노드·박자), `docs/fullstory.md`: 막사 장면을 손건·미축·간옹이 조조군이 너무 빨리 온 것을 짚고, 장비가 "다들 그놈 손바닥 위에서 놀아난 거여!", 관우가 수공에 노하고, 유비가 "손쓸 도리가 없다"로 — 장비가 못 알아듣던 줄과 간옹의 조표 이야기는 뺌(장비가 너무 멍청해 보였다, 사용자)
+- `assets/scenario/hero/explore15_camp.json`: 순유·곽가·조인·서황 대사를 수공 쪽으로, 고순(말을 걸면)은 단양 사람들이 서주를 지키려 여포를 들였는데 그 서주가 물에 잠긴다는 말로. 순욱의 곡식 줄은 넣지 않음 — 조조의 "준비하고 있다"는 '신경 쓰지 마시오'일 뿐(사용자)
+
+## 2026-11-11 15장 S#5 조조의 군막: 순유의 수공
+- `assets/scenario/hero/story15.json`(c15-k11~k18), `assets/scenes/ch15.json`(`c15-cao` 노드·박자), `assets/scenes/ascii/c15-cao.txt`, `docs/fullstory.md`: 순유가 사수·기수를 성 안으로 끌어들이는 수공을 꺼내고(땅이 젖으면 여포 기병이 묶인다), 곽가가 거들고(안에서 무너진다), 유비가 백성 피해를, 순유가 빨리 끝내는 편이 덜하다고, 관우가 둘레 논밭을 걱정하자 조조가 "따로 준비하고 있다, 여포만 잡으면 끝난다"로 덮음. 옛 곽가 "서두를 것 없다"는 뺌, 옛 k12·k13은 k17·k18로 — 소패 뒤 회의부터 수공 이야기가 나오게(사용자)
+
+## 2026-11-10 치명 자국 위 속성 책략 +45%, 조조 진영 하후연·이전 대사 나눔, 하비 수공 설계
+- `internal/content/terrain.go`(`ElementTerrain`), `content.go`(`Rules.CritMarkPower`), `assets/data/game.json`(`CritMarkPower: 45`), `internal/core/core_test.go`, `docs/logic-combat.md`: 치명 책략이 남긴 자국(불씨·물웅덩이·돌무더기) 위의 대상은 그 속성 책략에 +45%, 땅 보정보다 크면 이것으로 — 하비 수공 전투의 물웅덩이와 같은 규칙(사용자)
+- `assets/scenario/hero/explore15_camp.json`: 하후연은 하후돈 이야기만(눈값, 형이 누워 있는 꼴), 여포의 기사(말 달리며 쏘기) 이야기는 이전에게로 옮기고 "성문이 열리면 우리 노병이 먼저 쏘겠소" — 하후연 혼자 두 이야기를 다 하니 이상했다(사용자)
+- `docs/fullstory.md`: 16장 하비 전투를 수공으로(성 안 곳곳 물웅덩이로 시작), S#6 하후연·이전 줄
+
+## 2026-11-10 상점 첫 정렬은 비싼 순, 재생 배속은 설정으로 저장
+- `internal/gui/shop.go`(`byPrice`): 사기·팔기 표가 처음엔 가격 내림차순, 살 돈이 모자란 물건을 아래로 내리던 띠(`rank`)를 뺌(흐리게만) — 새로 넣은 중급 인수(2000)가 맨 아래에 묻혀 잘 안 보였다(사용자)
+- `internal/storage/storage.go`(`Settings.Speed`), `internal/gui/game.go`(`setSpeed`·`savedSpeed`), `hud_corner.go`, `windows.go`, `duel.go`: 재생 배속(×1·2·4·8)을 설정 파일에 저장하고 켤 때 불러옴 — 바꾼 배속이 자꾸 풀렸다(사용자)
+
+## 2026-11-10 상점 노란 표시·상점 갈래 정리·술은 최대치를 넘어 오른다
+- `assets/scenario/hero/explore14.json`: 서주 장터 상인 둘의 "새 목백 나리" → "새 사군 나리" — 목백은 문어라 백성 입에 어색, 자사·목은 사군(사용자)
+- `internal/gui/explore.go`(`exploreGuide`): 상인(가게 주인)과 가게로 들어가는 문을 노란 이름표로 — 이야기 목적지 초록처럼 상점도 보이게, 초록이 이김(사용자)
+- `assets/data/shops.json`, `explore03.json`·`explore14.json`(주점 주인 `Shop`), `explore12.json`(술장수 새로): 대장간=무기·갑옷, 주점=콩·보리·술, 도구점=장신구·인수로 갈래를 나눔. 낙양·서주·북해 도구점이 먹을거리와 술까지 팔던 것을 `luoyang_tavern`·`xuzhou_tavern`·`beihai_tavern`으로 떼고, 북해성엔 술장수를 (11,5)에 세움 — 세 가게가 파는 것이 불분명했다(사용자)
+- `internal/core/combat.go`(도구 사용, 턴 회복·기운 오라·refill·meditate), `api.go`(저장 검사): 병법치 회복 도구는 최대치를 넘어서도 그만큼 오르고(70/80에 술 +30 → 100), 턴 회복·오라는 넘친 값을 깎지 않음, 저장 검사도 넘친 값을 받음. `assets/data/items.json` 술·특급주·빼갈 설명에 "최대치를 넘어서도 오른다" — 사용자
+- `internal/gui/skin.go`(`mpColor`·`overMPPulse`), `hud.go`, `command.go`, `menu_panel.go`, `unit_bar.go`, `player.go`: 병법치가 최대치를 넘으면 게이지 색이 sin으로 2초에 한 바퀴 밝아졌다 어두워짐(맵 막대·HUD·예측·병법 메뉴 머리) — 넘친 걸 알아보게(사용자)
+- `internal/gui/uidemo_mpover.go`, `internal/core/recovery_events_test.go`: 넘친 병법치 확인용 데모와 테스트
+
+## 2026-11-10 열전 탭 초상·능력치 육각형, 고른 부대의 제자리 공격 테두리
+- `internal/gui/officer_window.go`(`officerBio`): 열전 탭을 위쪽은 초상(왼쪽)·열전 글(오른쪽), 아래쪽은 탭 가로 가운데에 능력치 육각형(0~100 고정, 50·100 보조선)으로 바꿈. 능력치 꼭짓점은 전투력 육각형에서 그 능력치가 만드는 전투 수치 자리(무력=공격 …) — 능력치 한 줄과 글뿐이라 허했다(사용자)
+- `internal/gui/ui_kit.go`(`hexagon`): 값 여섯·테두리 값·보조선 비율을 받는 육각형으로 나누고 `hexChart`(전투력)는 그걸 부름
+- `internal/core/api.go`(`Ranges.Strike`), `internal/gui/command.go`(`rangeBorder`), `field.go`(`Field.RangeBorder`), `field_goals.go`(`drawRangeBorder`, `areaBorder` 재사용), `game.go`: 명령 중이 아닐 때 고른 부대가 제자리에서 기본 공격·물리 병법으로 칠 수 있는 칸을 빨간 테두리로 두름 — 이동 범위 칠과 별도로 사거리를 보이게(사용자)
+- `internal/gui/uidemo_ranges.go`: `traitcard` 데모에 간옹 열전(프레임 220)
+
 ## 2026-11-10 특성 카드 높이·열전·남의 부대 범위·간옹 사기꺾기·수성
 - `internal/gui/ui_kit.go`(`traitCardBelow`·`traitCardHeight`·`traitCardDesc`), `officer_window.go`, `unit_window.go`: 특성 카드 높이를 설명 줄 수와 안내 줄에 맞춰 계산하고(최소 84), 두 창이 같은 함수로 놓음 — 관우 개전처럼 설명이 두 줄을 넘으면 고정 84px 카드에서 "특성치 …" 줄과 겹쳤다(사용자 지적). 카드를 그리는 곳은 이제 높이를 직접 정하지 않는다
 - `internal/gui/officer_window.go`(`officerBio`): 열전 탭은 능력치 여섯과 열전 글만, 특성 줄 뺌 — 특성 탭이 따로 있다(사용자)
@@ -2552,3 +2803,7 @@
 ## 2026-11-08 B01 탁군 전투: 적 여섯
 - `assets/scenario/hero/stage01.json`: 적 10 → 6. 추격조 (9,4), 정원지 뒤 (8,1), 길가 react (13,7)·(11,4)를 뺌. 남은 것: 등무·추격 졸개 (7,4)·(6,4), 정원지·뒤 졸개 (7,0)·(6,1), 길가 react (12,6)·(4,4). 개전 연출(상인이 쫓기고 형제가 나서는 컷신)은 원래대로 둠. 상인이 길 끝에서 뛰어 내려오고 황건이 나중에 나타나는 연출을 넣었다가 사용자 요청으로 되돌림 — 사용자 "적이 너무 많다, 반으로", 이어 "개전 애니메이션은 원래대로, 적은 여섯".
 - `tools/mapgen/layouts/hero/stage01.txt` 다시 뽑음, `docs/fullstory.md` B01 맵·세력을 맞춤.
+
+## 2026-11-11 거록 안량 일기토 부목표에도 중급 인수
+- 결정: B09 부목표 "장비가 안량을 일기토로 물리친다"에 중급 인수 1을 더한다(`flag-julu-clear`는 그대로). 장합 부목표의 중급 인수 1과 합쳐 거록에서 인수 둘 · 이유: 사용자 "안량도 인수 주자". 일기토 부목표는 계교에 안량이 오지 않는 것 말고는 보상 화면에 받는 게 없었음
+- `assets/scenario/hero/stage09.json` `Sub[duel].Reward`, `docs/fullstory.md` 거록 부목표

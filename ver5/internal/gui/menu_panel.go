@@ -112,7 +112,12 @@ func (g *Game) drawPanel(dst *ebiten.Image, p panelSpec) image.Rectangle {
 			gx, gw := float32(x)+fw-82+float32(dx), float32(68)
 			rect(cd, gx, float32(top+8), gw, 6, color.NRGBA{A: a})
 			rect(cd, gx+1, float32(top+9), gw-2, 4, color.NRGBA{R: 16, G: 23, B: 34, A: a})
-			rect(cd, gx+1, float32(top+9), (gw-2)*float32(min(1, p.gauge)), 4, color.NRGBA{R: 93, G: 154, B: 216, A: a})
+			fill := color.NRGBA{R: 93, G: 154, B: 216, A: a}
+			if p.gauge > 1 {
+				fill = mpColor(2, 1, g.uiSeconds)
+				fill.A = a
+			}
+			rect(cd, gx+1, float32(top+9), (gw-2)*float32(min(1, p.gauge)), 4, fill)
 		}
 		rect(cd, float32(x+6), float32(top+21), fw-12, 1, color.NRGBA{R: 61, G: 44, B: 31, A: a})
 		top += 24

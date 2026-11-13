@@ -3,6 +3,7 @@ package core
 import (
 	"encoding/json"
 	"math"
+	"slices"
 	"srpg/internal/content"
 	"testing"
 )
@@ -528,18 +529,6 @@ func TestItemCompletesTheAction(t *testing.T) {
 	assertRejected(t, e, Command{Kind: "item", Actor: "hero", Target: "hero", Item: "ration"})
 	assertRejected(t, e, Command{Kind: "move", Actor: "hero", X: 4, Y: 6})
 }
-func TestPromotionItem(t *testing.T) {
-	e, _, _ := arena(t)
-	assertRejected(t, e, Command{Kind: "item", Actor: "hero", Target: "hero", Item: "promo_guard"}) // level 1
-	e.char("hero").Level = 15
-	apply(t, e, Command{Kind: "item", Actor: "hero", Target: "hero", Item: "promo_guard"})
-	if e.char("hero").Class != "guard" || e.state.Inventory["promo_guard"] != 0 {
-		t.Fatal("promotion")
-	}
-	if u := e.unit("hero"); !u.Done || !u.Moved || !u.Acted {
-		t.Fatal("promotion did not complete the turn")
-	}
-}
 func TestRegenAuraAndTurnBuffs(t *testing.T) {
 	e, _, _ := arena(t)
 	with(e, "hero", "regen_t", "haste_t", "sight_t", "fort")
@@ -549,12 +538,6 @@ func TestRegenAuraAndTurnBuffs(t *testing.T) {
 	a := e.unit("hero")
 	if a.HP <= 100 || a.Status["speed"].Value != 2 || a.Status["defense"].Value != 20 {
 		t.Fatalf("hp %d %+v", a.HP, a.Status)
-	}
-	a.X, a.Y = 8, 1 // the keep
-	e.state.Turn = "enemy"
-	e.endFaction()
-	if a.Status["defense"].Value != 40 {
-		t.Fatalf("fortify on the keep: %+v", a.Status)
 	}
 	if e.movement(a) != e.unitClass(a).Move+2 {
 		t.Fatal("haste movement")
@@ -797,9 +780,24 @@ func TestKnockbackPushesOrHitsHarder(t *testing.T) {
 	n, _, _ := e2.strike(a2, b2, e2.basic(), blow{share: 1})
 	e3, a3, b3 := setup(t)
 	e3.unit("troop#2").HP, e3.unit("troop#2").X, e3.unit("troop#2").Y = 1000, 7, 6
-	dealt := e3.attackOn(a3, b3, []*Unit{b3}, e3.basic(), map[string]float64{b3.ID: 1}, false, false)
+	dealt := e3.attackOn(a3, b3, []*Unit{b3}, e3.basic(), map[string]float64{b3.ID: 1}, false, true, false)
 	if b3.X != 6 || float64(dealt[b3.ID]) < math.Floor(free*1.25)-1 || n == 0 {
 		t.Fatalf("blocked: stays at %d, deals %d (free blow %.0f)", b3.X, dealt[b3.ID], free)
+	}
+}
+func TestKnockbackOnCounter(t *testing.T) {
+	e, a, b := arena(t)
+	e.data.Rules.HitFloor, e.data.Rules.HitCeil = 100, 100
+	a.HP, b.HP = 10000, 10000
+	with(e, "boss", "boost_t")
+	x, y := a.X, a.Y
+	r := apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
+	pushed := false
+	for _, ev := range r.Events {
+		pushed = pushed || ev.Kind == "knockback" && ev.Actor == "boss" && ev.Target == "hero"
+	}
+	if h := e.unit("hero"); !pushed || h.X == x && h.Y == y {
+		t.Fatalf("the boss's counter should push the hero: event %t, at (%d,%d)", pushed, h.X, h.Y)
 	}
 }
 func TestSkillNeedsItsWeapon(t *testing.T) {
@@ -851,6 +849,17 @@ func TestSpellGainsOnItsElementsTerrain(t *testing.T) {
 	if got := e.damage(a, b, fire); got != plain {
 		t.Fatalf("another element's terrain: %v, want %v", got, plain)
 	}
+	e.data.Rules.ElementTerrain = map[string]map[string]int{"fire": {ground: 30}}
+	e.data.Rules.CritMarks, e.data.Rules.CritMarkPower = map[string]string{"fire": "e", "water": "w"}, 45
+	e.state.TileStates = append(e.state.TileStates, TileState{X: b.X, Y: b.Y, State: "w"})
+	water := content.Skill{Kind: content.KindMagic, Coeff: 1, Element: "water"}
+	if got := e.damage(a, b, water); math.Abs(got-plain*1.45) > 1e-9 {
+		t.Fatalf("water on its own mark: %v, want %v", got, plain*1.45)
+	}
+	if got := e.damage(a, b, fire); math.Abs(got-plain*1.3) > 1e-9 {
+		t.Fatalf("fire on water's mark keeps its ground's bonus: %v, want %v", got, plain*1.3)
+	}
+	e.state.TileStates = nil
 	strike := content.Skill{Kind: content.KindPhysical, Coeff: 1, Element: "fire"}
 	before := e.damage(a, b, strike)
 	e.data.Rules.ElementTerrain = map[string]map[string]int{"fire": {ground: 30}}
@@ -899,7 +908,7 @@ func TestGuardDoesNotStopRangedAttacks(t *testing.T) {
 		t.Fatal("guard stops melee only")
 	}
 }
-func TestAimAndSnipeAreShots(t *testing.T) {
+func TestAimBuffsItselfAndSnipeShoots(t *testing.T) {
 	archer := func(t *testing.T) (*Engine, *Unit, *Unit) {
 		e, a, b := arena(t)
 		e.char("hero").Class = "archer"
@@ -909,20 +918,12 @@ func TestAimAndSnipeAreShots(t *testing.T) {
 		return e, a, b
 	}
 	e, a, b := archer(t)
-	aim, R := e.data.Skills["aim_s"], e.data.Rules
-	if st := e.attackStats(a, aim); st.Agility != percent(e.stats(a).Agility, R.BuffPercent) || st.Morale != percent(e.stats(a).Morale, R.BuffPercent) {
-		t.Fatalf("aimed stats %+v", st)
-	}
-	if e.critChance(a, b, aim) <= e.critChance(a, b, e.basic()) || e.doubleChance(a, b, aim) <= e.doubleChance(a, b, e.basic()) {
-		t.Fatal("an aimed shot must crit and double more often")
-	}
-	r := apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "boss", Skill: "aim_s"})
-	struck := false
-	for _, ev := range r.Events {
-		struck = struck || (ev.Kind == "damage" || ev.Kind == "miss") && ev.Target == "boss"
-	}
-	if !struck || !e.unit("hero").Acted {
-		t.Fatal("aim is a shot that ends the action")
+	R := e.data.Rules
+	agility, morale := e.stats(a).Agility, e.stats(a).Morale
+	apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "hero", Skill: "aim_s"})
+	h := e.unit("hero")
+	if st := e.stats(h); st.Agility != percent(agility, R.BuffPercent) || st.Morale != percent(morale, R.BuffPercent) || h.Status["agility"].Turns != 3 {
+		t.Fatalf("aim must raise its own agility and morale for 3 turns: %+v %+v", st, h.Status)
 	}
 
 	e, a, b = archer(t)
@@ -992,5 +993,26 @@ func TestSideHitsNeverPassTheRulesShare(t *testing.T) {
 	_, share := e.victims(e.unit("hero"), b, e.basic())
 	if share["behind"] != 0.5 || share[b.ID] != 1 {
 		t.Fatalf("shares %v", share)
+	}
+}
+
+func TestRestoreChangedFitsThePartyToTheData(t *testing.T) {
+	e := battle(t)
+	s := e.Snapshot()
+	h := &s.Characters[0]
+	for i := range s.Characters {
+		if s.Characters[i].ID == "hero" {
+			h = &s.Characters[i]
+		}
+	}
+	h.Learned = append(h.Learned, "dropped_trait")
+	h.Equipment["weapon"] = "dropped_blade"
+	r, err := RestoreChanged(e.data, s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	c := r.char("hero")
+	if slices.Contains(c.Learned, "dropped_trait") || c.Equipment["weapon"] != "" {
+		t.Fatalf("hero keeps what the data dropped: %v %v", c.Learned, c.Equipment)
 	}
 }

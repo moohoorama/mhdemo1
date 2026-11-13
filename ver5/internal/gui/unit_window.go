@@ -18,6 +18,9 @@ type unitWindowState struct {
 	readOnly  bool
 }
 
+// unitTabs are the tabs of a unit's detail.
+var unitTabs = []string{"전투력", "특성", "열전", "장비"}
+
 // openUnit opens the detail of the unit led by g.selected; readOnly leaves out every button but 닫기.
 func (g *Game) openUnit(readOnly bool) {
 	g.unitWin = unitWindowState{readOnly: readOnly}
@@ -58,7 +61,7 @@ func (g *Game) unitWindow(dst *ebiten.Image, x, y, w, h int) {
 	g.label(dst, name, float64(x+touchH+18), float64(y+12), 18, gold)
 	nx := x + touchH + 28 + int(g.width(name, 18))
 	g.mBtn(dst, image.Rect(nx, y+4, nx+touchH, y+4+touchH), "›", false, step(1))
-	g.tabRow(dst, nx+touchH+20, y+4, officerTabs, u.tab, func(i int) { u.tab = i })
+	g.tabRow(dst, nx+touchH+20, y+4, unitTabs, u.tab, func(i int) { u.tab = i })
 	rect(dst, float32(x+8), float32(y+52), float32(w-16), 1, goldDim)
 	body := image.Rect(x+16, y+62, x+w-16, y+h-66)
 	var acts []action
@@ -70,7 +73,7 @@ func (g *Game) unitWindow(dst *ebiten.Image, x, y, w, h int) {
 	case 2:
 		g.unitBio(dst, o, of, body)
 	case 3:
-		g.officerEquipment(dst, of, body)
+		g.unitEquipment(dst, of, body)
 		g.label(dst, "부관은 장비를 들지 않습니다. 임명하면 부관의 장비는 창고로 갑니다.", float64(body.Min.X), float64(body.Min.Y+226), 13, muted)
 	}
 	if u.readOnly {

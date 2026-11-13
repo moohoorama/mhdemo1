@@ -612,7 +612,7 @@
       3
      ],
      "Face": "SW",
-     "Shop": "tavern",
+     "Shop": "luoyang_tavern",
      "Sprite": "innkeeper_noncombat",
      "Faction": "merchant"
     },

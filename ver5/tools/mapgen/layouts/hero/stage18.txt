@@ -1,0 +1,47 @@
+# B18  stage18.json  map18.json  origin 0 0
+......MMMMMM........................TRE.........TRE.....................
+.........MMMMMM............,,,......,,,.........ar1ca2............CST...
+............MMMMMM......EMB......,,,...EMBfo1Liu'''Wanca1'''............
+...............MMMMMM,,,'''...............,,,fo2fo3......'''............
+..................MMMMMM''''''......~~~~~~~~~............'''TRE.........
+...............'''''''''''''''...~~~~~~~~~~~~~~~.........'''............
+...TRE.........'''...... n ......~~~~~~...~~~~~~......,,,'''............
+...............'''............~~~~~~~~~...~~~~~~~~~......'''.........TRE
+...............'''............~~~~~~.........~~~~~~~~~...'''...,,,......
+TRE............'''.........~~~~~~~~~............~~~~~~...'''............
+......TRE......'''......~~~~~~~~~~~~......'''VILBRGBRG''''''...TRE......
+............''''''...~~~~~~~~~~~~~~~......'''...~~~~~~..................
+............'''...~~~~~~~~~~~~~~~TRE......'''...~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~BRG~~~~~~~~~..................'''...~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~BRG~~~~~~..................TRE'''...........................
+............'''............TRE............'''''''''''''''TRE'''......TRE
+TRE.........'''VIL..................,,,.....................'''.........
+............''''''''' n '''''''''..................#########PAS#########
+.........,,,...... n .........'''.........TRE......###pl6pl3pl2pl4pl7___
+..............................,,,..................###pl8pl5pl1___VIL___
+...............TRE............'''''''''''''''''''''PAS__________________
+......TRE...............TRE........................###_________CST______
+.................................TRE...............###___VIL____________
+..........................................TRE......###__________________
+
+pl1 Allies[0]  player
+pl2 Allies[1]  player
+pl3 Allies[2]  player
+pl4 Allies[3]  player
+pl5 Allies[4]  player
+pl6 Allies[5]  player
+pl7 Allies[6]  player
+pl8 Allies[7]  player
+Liu Enemies[0]  liudai, enemy, group liuwang, policy assault, faction wei
+Wan Enemies[1]  wangzhong, enemy, group liuwang, policy assault, faction wei
+fo1 Enemies[2]  troop_footman, enemy, group liu, policy assault, rank rabble, faction wei
+fo2 Enemies[3]  troop_footman, enemy, group liu, policy assault, rank rabble, faction wei
+fo3 Enemies[4]  troop_footman, enemy, group liu, policy assault, rank rabble, faction wei
+ar1 Enemies[5]  troop_archer, enemy, group liu, policy assault, rank rabble, faction wei
+ca1 Enemies[6]  troop_cavalry, enemy, group liu, policy assault, rank rabble, faction wei
+ca2 Enemies[7]  troop_cavalry, enemy, group liu, policy assault, rank rabble, faction wei
+
+# area 1 동쪽 끝 소성: x 21..23, y 0..2
+# area 2 마을과 다리: x 14..18, y 9..11
+# area 3 서주성 안: x 18..23, y 18..23
+# area 4 북동쪽 끝: x 0..23, y 0..0

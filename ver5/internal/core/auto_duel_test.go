@@ -52,6 +52,19 @@ func TestEndingTheTurnNextToTheDuelPartnerStartsTheDuel(t *testing.T) {
 	assert.Empty(t, e.DuelAt("hero", 3, 2), "a duel is held once")
 }
 
+func TestADuelWaitsForItsConditions(t *testing.T) {
+	e := battleWith(t, func(s *content.Stage) {
+		neverWon(s)
+		s.Duels[0].If = []string{"round>=2"}
+		s.Enemies[0].X, s.Enemies[0].Y = 4, 2
+	})
+	assert.Empty(t, e.DuelAt("hero", 3, 2), "the duel is not open in the first round")
+	assert.Empty(t, duelsIn(moveAndWait(t, e, "hero", 3, 2)), "standing next to the boss sets nothing off yet")
+	assert.False(t, e.state.Executed["duel-D"])
+	e.state.Round = 2
+	assert.Equal(t, "D", e.DuelAt("hero", 3, 2), "the duel opens once its condition holds")
+}
+
 func TestADuelHappensOnceAndSurvivesSaveAndRestore(t *testing.T) {
 	e := battleWith(t, func(s *content.Stage) {
 		neverWon(s)

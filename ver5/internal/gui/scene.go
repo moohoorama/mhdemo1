@@ -54,6 +54,7 @@ type scene struct {
 	free      map[string]bool         // walkers whose walk does not hold up the beats
 	follow    string                  // the actor the camera keeps on
 	stride    map[string]float64      // cells walked since each walker's last footfall sounded
+	tied      map[string]*sprite.Art  // bound prisoners, with the art they stand in once untied
 }
 
 type patrol struct {
@@ -158,6 +159,7 @@ func (g *Game) openScene(def *scenes.Scene) {
 			v.gone = v.gone || g.S != nil && !g.S.Engine.Holds(a.If)
 			s.actors[key] = v
 			s.extra[key], s.hold[key] = scenes.Extra(key), a.Hold
+			g.tie(key, a.Bound)
 		}
 	}
 	g.setSceneTime(def.Time)
@@ -436,7 +438,7 @@ func (g *Game) startStep(st scenes.Step) {
 		}
 		v.dir, s.looks[st.Actor], s.held[st.Actor] = st.Look, &look{back: back, t: lookTime}, true
 	}
-	if anim := motion(v.art, st.Play); anim != "" {
+	if anim := motion(v.art, st.Play); anim != "" && s.tied[st.Actor] == nil {
 		v.play(anim)
 		g.sfxAtCell(sceneMotionCue(v, anim), v.u, v.v)
 		if !v.art.Animations[anim].Loop {
@@ -450,7 +452,7 @@ func (g *Game) startStep(st scenes.Step) {
 	if st.Say != "" {
 		s.emotes[v.id] = &emote{text: st.Say, life: 1.2 + .07*float64(len([]rune(st.Say))), block: true}
 	}
-	if st.Pose != "" {
+	if st.Pose != "" && s.tied[st.Actor] == nil {
 		v.pose = strings.TrimPrefix(st.Pose, "idle")
 		if v.walk == nil && len(s.paths[v.id]) == 0 {
 			v.play(v.rest())
@@ -538,12 +540,38 @@ func (g *Game) stageStep(st scenes.Step) {
 	if st.Zoom >= 1 {
 		g.zoom = math.Round(st.Zoom)
 	}
+	if st.Bound != nil {
+		g.tie(st.Actor, *st.Bound)
+	}
 	if v != nil && st.Sprite != "" {
 		a := s.def.Cast[st.Actor]
 		if art := g.actorArt(st.Actor, st.Sprite, a.Faction); art != nil {
+			if s.tied[st.Actor] != nil {
+				s.tied[st.Actor], art = art, boundArt(art)
+			}
 			v.art, v.top = art, art.TopOffset()
 			v.play(v.rest())
 		}
+	}
+}
+
+// tie binds an actor with the prisoner's rope or unties him: bound, he walks and turns but never gestures, bows
+// or plays a motion, and stands rather than resting in a pose.
+func (g *Game) tie(key string, bound bool) {
+	s := g.scene
+	v := s.actors[key]
+	free, tied := s.tied[key]
+	switch {
+	case v == nil:
+	case bound && !tied:
+		if s.tied == nil {
+			s.tied = map[string]*sprite.Art{}
+		}
+		s.tied[key], v.art, v.pose = v.art, boundArt(v.art), ""
+		v.play(v.rest())
+	case !bound && tied:
+		v.art = free
+		delete(s.tied, key)
 	}
 }
 
@@ -601,7 +629,7 @@ func (g *Game) settleNode(node string) {
 				if st.Face != "" {
 					v.dir = st.Face
 				}
-				if st.Pose != "" {
+				if st.Pose != "" && s.tied[st.Actor] == nil {
 					v.pose = strings.TrimPrefix(st.Pose, "idle")
 					v.play(v.rest())
 				}
@@ -779,7 +807,7 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 		if talking[name] && !s.spoke[name] && v.walk == nil && v.anim == v.rest() && !v.gone {
 			s.spoke[name] = true
 			g.faceSpeaker(name)
-			if v.anim == "idle" {
+			if v.anim == "idle" && s.tied[name] == nil {
 				v.play("action")
 			}
 		}

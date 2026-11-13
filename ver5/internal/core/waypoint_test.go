@@ -64,18 +64,25 @@ func TestNewAt(t *testing.T) {
 		}
 	})
 
-	t.Run("officers wear the pieces they own", func(t *testing.T) {
-		e, err := NewAt(d, 1, ways[0].Node, "")
-		require.NoError(t, err)
-		_, more := e.OwnerPiece()
-		assert.False(t, more, "nothing is left for an owner to put on")
-		worn := 0
-		for id, eq := range d.Equipment {
-			if o := e.char(eq.Owner); o != nil && o.Equipment[eq.Slot] == id {
-				worn++
+	t.Run("officers wear the pieces the story has handed them", func(t *testing.T) {
+		at := func(chapter int) *Engine {
+			for _, w := range ways {
+				if w.Chapter == chapter && w.Stage == "" {
+					e, err := NewAt(d, 1, w.Node, "")
+					require.NoError(t, err)
+					return e
+				}
 			}
+			t.Fatalf("no waypoint opens chapter %d", chapter)
+			return nil
 		}
-		assert.Positive(t, worn)
+		e := at(3)
+		assert.Equal(t, "fire_manual", e.char("liubei").Equipment["accessory"])
+		assert.Equal(t, "qinglong_blade", e.char("guanyu").Equipment["weapon"])
+
+		e = at(1)
+		assert.NotEqual(t, "fire_manual", e.char("liubei").Equipment["accessory"], "화계서 comes after the second battle")
+		assert.Positive(t, e.state.Warehouse["fire_manual"], "the pieces to come wait in the warehouse")
 	})
 
 	t.Run("officers are promoted as far as the level allows", func(t *testing.T) {

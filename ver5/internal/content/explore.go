@@ -258,7 +258,7 @@ func (d *Data) validateExplores(nodes map[string]Node) error {
 }
 
 // endsWithBack checks that an event starting at node id comes back to the walk on every way it can take, waiting
-// for nothing but lines and choices on the way.
+// for nothing but lines and choices on the way. An end node with a Text (the hero falls) may close a way too.
 func (d *Data) endsWithBack(id string, nodes map[string]Node) error {
 	seen := map[string]bool{}
 	var walk func(id string) error
@@ -267,7 +267,7 @@ func (d *Data) endsWithBack(id string, nodes map[string]Node) error {
 		switch {
 		case n.ID == "":
 			return fmt.Errorf("event at %q runs out before a back node", id)
-		case seen[id] || n.Kind == "back":
+		case seen[id] || n.Kind == "back" || n.Kind == "end" && n.Text != "": // or the hero falls and the story ends
 			return nil
 		case n.Kind == "battle" || n.Kind == "explore" || n.Kind == "end":
 			return fmt.Errorf("event reaches %s node %s", n.Kind, id)

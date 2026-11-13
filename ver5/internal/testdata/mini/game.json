@@ -67,6 +67,8 @@
   "ExpLevelStep": 0.12,
   "ExpMinFactor": 0.25,
   "ExpMaxFactor": 2,
+  "DuelXPPct": 100,
+  "JoinShift": true,
   "ExpSupportPercent": 16,
   "PointsPerLevel": 100,
   "TraitPlanStep": 15,
@@ -166,7 +168,6 @@
   },
   "w": {
    "Name": "wet",
-   "Factor": -0.1,
    "Grounds": "gi"
   },
   "r": {

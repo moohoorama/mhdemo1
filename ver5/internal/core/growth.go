@@ -1,6 +1,10 @@
 package core
 
-import "math"
+import (
+	"math"
+
+	"srpg/internal/content"
+)
 
 // XPPerLevel is the experience between two levels at every level: Character.XP is the
 // progress through the current level's bar in 1/100 percent, so a surplus keeps its meaning
@@ -25,8 +29,7 @@ func (e *Engine) actionXPAmount(u, v *Unit, spell, defeated bool) int {
 		return 0
 	}
 	a, b := e.char(u.Character), e.char(v.Character)
-	factor := clamp(1+R.ExpLevelStep*float64(b.Level-a.Level), R.ExpMinFactor, R.ExpMaxFactor)
-	n := R.ExpAction * XPPerLevel / 100 * factor * math.Pow(R.ExpGrowth, float64(b.Level-a.Level))
+	n := R.ExpAction * XPPerLevel / 100 * levelFactor(R, a.Level, b.Level)
 	n *= e.xpScale()
 	if spell {
 		n *= R.ExpSpell
@@ -35,6 +38,18 @@ func (e *Engine) actionXPAmount(u, v *Unit, spell, defeated bool) int {
 		n *= R.ExpDefeat
 	}
 	return max(1, int(math.Round(n)))
+}
+
+// levelFactor is how much more experience an action against (or for) an officer of the target's level teaches
+// than one against an equal: the strength ratio of the two levels to the ExpRatioPower, or, without one, the
+// older curve of their difference in levels.
+func levelFactor(R content.Rules, actor, target int) float64 {
+	if R.ExpRatioPower > 0 {
+		r := float64(target+R.StatLevelBase) / float64(actor+R.StatLevelBase)
+		return clamp(math.Pow(r, R.ExpRatioPower), R.ExpMinFactor, R.ExpMaxFactor)
+	}
+	diff := float64(target - actor)
+	return clamp(1+R.ExpLevelStep*diff, R.ExpMinFactor, R.ExpMaxFactor) * math.Pow(R.ExpGrowth, diff)
 }
 
 // defenseXP is awarded once per incoming strike, including a successfully avoided one.
@@ -49,9 +64,7 @@ func (e *Engine) defenseXP(v, u *Unit, spell bool) {
 // so helping a stronger officer teaches more.
 func (e *Engine) supportXP(u, q *Unit) int {
 	R := e.data.Rules
-	diff := float64(e.char(q.Character).Level - e.char(u.Character).Level)
-	factor := clamp(1+R.ExpLevelStep*diff, R.ExpMinFactor, R.ExpMaxFactor)
-	n := float64(XPPerLevel*R.ExpSupportPercent/100) * factor * math.Pow(R.ExpGrowth, diff)
+	n := float64(XPPerLevel*R.ExpSupportPercent/100) * levelFactor(R, e.char(u.Character).Level, e.char(q.Character).Level)
 	n *= e.xpScale()
 	return max(1, int(math.Round(n)))
 }
@@ -123,9 +136,13 @@ func (e *Engine) canLearn(c *Character) bool {
 // the officer is a living player officer with points for a trait.
 func (e *Engine) CanLearn(id string) bool {
 	o := e.char(id)
+	return e.preparing() && o != nil && !o.Dead && e.def(o).Playable && e.canLearn(o)
+}
+
+// preparing reports whether the party may be readied: on the walk, before a battle and in its deployment.
+func (e *Engine) preparing() bool {
 	kind := e.data.Node(e.state.Node).Kind
-	inPrep := (e.state.Phase == "scenario" || e.Deploying()) && (kind == "battle" || kind == "explore")
-	return inPrep && o != nil && !o.Dead && e.def(o).Playable && e.canLearn(o)
+	return (e.state.Phase == "scenario" || e.Deploying()) && (kind == "battle" || kind == "explore")
 }
 
 // Learnable lists the traits the officer may learn now: not held, prerequisites met (cost aside).
@@ -183,7 +200,11 @@ func (e *Engine) learn(c Command) error {
 
 // joinLevel is the level an officer who joins before the order-th battle comes in at, at the game's difficulty.
 func (e *Engine) joinLevel(order int) int {
-	return e.data.Rules.JoinLevel(order, e.difficulty().EnemyShift)
+	shift := 0.0
+	if e.data.Rules.JoinShift {
+		shift = e.difficulty().EnemyShift
+	}
+	return e.data.Rules.JoinLevel(order, shift)
 }
 
 // joinAt brings an officer who joins to the level the story has reached, in the class that level reaches on

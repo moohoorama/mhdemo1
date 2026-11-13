@@ -71,6 +71,14 @@ func satisfy(t *testing.T, e *Engine, conds []string) {
 	}
 }
 
+// endTurn ends the side's turn, first closing the trait windows the officers who levelled up opened.
+func endTurn(t *testing.T, e *Engine) {
+	for len(e.state.Learning) > 0 {
+		applyOK(t, e, Command{Kind: "learn_close", Actor: e.state.Learning[0]})
+	}
+	applyOK(t, e, Command{Kind: "end"})
+}
+
 // winStage sorties for the stage the engine stands at and wins it the way its first victory goal now asks;
 // with bonus it also does what every bonus objective asks.
 func winStage(t *testing.T, e *Engine, bonus bool) {
@@ -83,7 +91,7 @@ func winStage(t *testing.T, e *Engine, bonus bool) {
 	}
 	// let a few rounds pass first, so that the events that wait for time or for a place have happened
 	for i := 0; i < 10 && e.Observe().Phase == "battle" && e.state.Round < 5; i++ {
-		applyOK(t, e, Command{Kind: "end"})
+		endTurn(t, e)
 	}
 	for i := 0; i < 14 && e.Observe().Phase == "battle"; i++ {
 		satisfy(t, e, e.battleGoals().Victory[0].If) // an event may have changed the goals
@@ -95,7 +103,7 @@ func winStage(t *testing.T, e *Engine, bonus bool) {
 				satisfy(t, e, []string{"fled:caocao"}) // not an objective, but the story remembers it
 			}
 		}
-		applyOK(t, e, Command{Kind: "end"})
+		endTurn(t, e)
 	}
 	require.Equal(t, "result", e.Observe().Phase, "%s was not won", stage.ID)
 	require.Equal(t, "victory", e.Observe().Result, stage.ID)
@@ -121,7 +129,14 @@ func playCampaign(t *testing.T, bonus bool) (*Engine, []string) {
 				options = append(options, k)
 			}
 			sort.Strings(options)
-			applyOK(t, e, Command{Kind: "choose", Option: options[0]})
+			pick := options[0]
+			for _, k := range options { // the first that does not lead to the hero's fall
+				if !falls(d, o.Dialogue.Choices[k]) {
+					pick = k
+					break
+				}
+			}
+			applyOK(t, e, Command{Kind: "choose", Option: pick})
 		case e.Walking():
 			plan := e.ExploreNext()
 			require.NotEmpty(t, plan, "the walk at %s is stuck in %s", o.Node, o.Spot.Area)
@@ -140,11 +155,31 @@ func playCampaign(t *testing.T, bonus bool) (*Engine, []string) {
 	return nil, nil
 }
 
+// falls reports whether the story from node id runs straight, without another choice, into an end node with a
+// Text: the hero falls there.
+func falls(d *content.Data, id string) bool {
+	for i := 0; i < 50 && id != ""; i++ {
+		n := d.Node(id)
+		switch n.Kind {
+		case "end":
+			return n.Text != ""
+		case "choice", "battle", "explore", "back":
+			return false
+		}
+		if n.Next != "" {
+			id = n.Next
+		} else {
+			id = d.After(id)
+		}
+	}
+	return false
+}
+
 func executed(e *Engine, key string) bool { return e.state.Executed[key] }
 
 func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, true)
-	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15"}, fought)
+	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19"}, fought)
 	assert.Equal(t, 1, e.state.Flags["flag-pengcheng-carts"])
 	assert.Positive(t, e.state.Inventory["barley"], "Tao Qian shares the grain from the carts")
 	assert.Equal(t, 1, e.state.Flags["flag-sunjian-alive"])
@@ -152,7 +187,7 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	assert.Equal(t, 1, e.state.Flags["flag-bianshui-lubu"])
 	assert.Positive(t, e.state.Warehouse["tangni_armor"], "Lu Bu's armour is the reward for driving him off")
 	assert.Equal(t, 1, e.state.Flags["flag-julu-clear"])
-	for _, flag := range []string{"flag-beihai-taishici", "flag-zhugexuan", "flag-gaoshun"} {
+	for _, flag := range []string{"flag-zhugexuan", "flag-gaoshun"} {
 		assert.Equal(t, 1, e.state.Flags[flag], flag)
 	}
 	for _, item := range []string{"fire_manual", "gujeong_blade", "jueying", "baima", "sanlue", "medicine_pouch"} {
@@ -162,14 +197,17 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 		assert.NotNil(t, e.char(id), id+" joins the party")
 	}
 	assert.Nil(t, e.char("fanya"), "Fan A stays at Xiaopei with the sick")
-	assert.Nil(t, e.char("zhaoyun"), "Zhao Yun goes back to Gongsun Zan at Xiaopei")
+	assert.NotNil(t, e.char("zhaoyun"), "Zhao Yun, wandering since Gongsun Zan fell, joins on the flight from Yuan Shao")
+	assert.Nil(t, e.char("guanyu"), "Guan Yu is cut off at Xiapi and serves Cao Cao for now")
+	assert.Nil(t, e.char("mifang"), "Mi Fang is scattered at Xuzhou")
+	assert.NotNil(t, e.char("chenzhen"), "Chen Zhen leaves Yuan Shao with Liu Bei")
 	assert.True(t, executed(e, "battle-B10-vanguard-clear"), "a quick win at Julu keeps Yan Liang away from Jiejiao")
 	assert.False(t, executed(e, "battle-B10-vanguard-strong"))
 }
 
 func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, false)
-	assert.Len(t, fought, 15)
+	assert.Len(t, fought, 19)
 	assert.Zero(t, e.state.Flags["flag-julu-clear"])
 	assert.True(t, executed(e, "battle-B10-vanguard-strong"), "Yan Liang comes back at Jiejiao")
 	assert.False(t, executed(e, "battle-B10-vanguard-clear"))
@@ -250,7 +288,7 @@ func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
 				}
 				enterAreas(e, stage)
 				for i := 0; i < 6 && e.Observe().Phase == "battle"; i++ {
-					applyOK(t, e, Command{Kind: "end"})
+					endTurn(t, e)
 				}
 				if e.Observe().Phase != "battle" {
 					t.Skip("the battle was decided by the clearing alone")
@@ -371,7 +409,7 @@ func TestSwornBrothersJoinWhenTheOathEnds(t *testing.T) {
 func TestOfficersJoinInTheClassTheirLevelReaches(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
-	t.Run("Zhao Yun joins Jiejiao as heavy cavalry", func(t *testing.T) {
+	t.Run("Zhao Yun joins Jiejiao at its level, as heavy cavalry", func(t *testing.T) {
 		dd := *d
 		dd.Campaign.Start = "c10-battle"
 		e := New(&dd, 1)
@@ -380,10 +418,10 @@ func TestOfficersJoinInTheClassTheirLevelReaches(t *testing.T) {
 		assert.Equal(t, d.Rules.StageLevel(d.StageOrder("B10")), zy.Level)
 		assert.Equal(t, "heavy_cavalry", zy.Class)
 	})
-	t.Run("the difficulty shifts the join level as it shifts the enemy", func(t *testing.T) {
+	t.Run("the difficulty shifts the join level as it shifts the enemy; the flat debug curve does not", func(t *testing.T) {
 		dd := *d
 		dd.Campaign.Start = "c10-battle"
-		for difficulty, level := range map[string]int{"easy": 13, "normal": 17, "hard": 21} {
+		for difficulty, level := range map[string]int{"easy": 13, "normal": 17, "hard": 21, "flat_easy": 12, "flat_normal": 12, "flat_hard": 12} {
 			e, err := NewGame(&dd, 1, difficulty)
 			require.NoError(t, err)
 			assert.Equal(t, level, e.char("zhaoyun").Level, difficulty)

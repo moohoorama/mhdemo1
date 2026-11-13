@@ -90,6 +90,7 @@ func begin(d *content.Data, seed uint64, difficulty string) *Engine {
 	return e
 }
 func fromState(d *content.Data, s State) *Engine {
+	d = d.ForDifficulty(s.Difficulty)
 	e := &Engine{data: d, state: s, world: ecs.NewWorld(), charIDs: map[string]ecs.Entity{}, unitIDs: map[string]ecs.Entity{}}
 	e.chars = ecs.NewMap1[Character](e.world)
 	e.units = ecs.NewMap1[Unit](e.world)
@@ -459,7 +460,10 @@ func (e *Engine) enter() {
 			}
 			e.state.Node = e.state.Explore
 		case "end":
-			e.state.Phase, e.state.Node = "complete", ""
+			if n.Text != "" {
+				e.state.Ending = n.ID
+			}
+			e.state.Phase, e.state.Node, e.state.Explore = "complete", "", ""
 			return
 		default:
 			return
@@ -656,6 +660,9 @@ func (e *Engine) execute(c Command) error {
 		}
 		e.endFaction()
 		return nil
+	}
+	if c.Kind == "item" && e.state.Phase != "battle" {
+		return e.promoteAway(c)
 	}
 	if e.state.Phase != "battle" {
 		return fail("WrongPhase")
@@ -903,9 +910,17 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	return e.unit(id)
 }
 
-// promotedAt is the class a character reaches from class after every promotion the level allows, each time to its
-// first branch.
+// promotedAt is the class of the line through class that the level allows: a class the level has not reached
+// steps back to the class it was promoted from, and one the level has passed goes on through every promotion
+// the level allows, each time to its first branch.
 func (e *Engine) promotedAt(def, class string, level int) string {
+	for t := e.data.Classes[class].Tier; t > 0 && level < e.data.Rules.PromoteLevels[t-1]; t = e.data.Classes[class].Tier {
+		prev := e.data.PromotedFrom(class)
+		if prev == "" {
+			break
+		}
+		class = prev
+	}
 	for {
 		cl, next := e.data.Classes[class], e.data.Promotes(def, class)
 		if cl.Tier >= len(e.data.Rules.PromoteLevels) || level < e.data.Rules.PromoteLevels[cl.Tier] || len(next) == 0 {
@@ -1129,4 +1144,12 @@ func (e *Engine) leaveByFlight() {
 		e.state.Executed["fled-"+stage.ID+"-"+u.ID] = true
 		e.events = append(e.events, Event{Kind: "retreat", Actor: u.ID, Text: "flight"})
 	}
+}
+
+// Ending is the Text of the end node the story stopped at, when it had one: the hero fell before the campaign's end.
+func (e *Engine) Ending() string {
+	if e.state.Phase != "complete" || e.state.Ending == "" {
+		return ""
+	}
+	return e.data.Node(e.state.Ending).Text
 }

@@ -1,0 +1,15 @@
+# c19-night  S_tent_mid  ch19  origin -1 -1
+Pil###############Pil
+###.........BnrWpnArm
+###BnrBrz............
+###...DskSunMap......
+###......MizLiuJia...
+Pil...Bed.........Brz
+
+Liu 유비
+Jia 간옹
+Sun 손건
+Miz 미축
+Che 진진  (off stage, enters later (cell 3 4))
+
+# c19-n01: Che -> 3 4

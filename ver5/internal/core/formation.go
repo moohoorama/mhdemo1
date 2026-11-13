@@ -136,47 +136,91 @@ func (e *Engine) attributes(o *Character) [6]float64 {
 	}
 	return out
 }
-// promote spends an 인수 on the unit's officer (Target is the actor) or on the deputy riding with it (Target is
-// the deputy's character). The promotion event names the unit as Actor, the new class as Target and the
-// promoted character as Text.
-func (e *Engine) promote(u *Unit, c Command, it content.Item) error {
-	if u.Faction != "ally" {
-		return fail("InvalidTarget")
-	}
-	o := e.char(u.Character)
-	switch d := e.char(o.Deputy); {
-	case c.Target == c.Actor:
-	case d != nil && !d.Dead && c.Target == d.ID:
-		o = d
-	default:
-		return fail("InvalidTarget")
-	}
+
+// promotion is the class an 인수 makes officer o by command c (its Option, or the only class there is), or why it
+// cannot: the seal must be of the tier after o's class, o's level must reach that promotion and the party must
+// carry one. It gives the level the promotion asks for too.
+func (e *Engine) promotion(o *Character, c Command, it content.Item) (string, int, error) {
 	cl := e.class(o)
 	next := e.data.Promotes(o.Def, o.Class)
 	class := c.Option
 	if class == "" && len(next) == 1 {
 		class = next[0]
 	}
-	if it.Tier != cl.Tier+1 || !contains(next, class) {
-		return fail("InvalidPromotion")
+	if it.Effect != content.ItemPromote || it.Tier != cl.Tier+1 || !contains(next, class) {
+		return "", 0, fail("InvalidPromotion")
 	}
 	required := e.data.Rules.PromoteLevels[cl.Tier]
 	if o.Level < required {
-		return fail("InsufficientLevel")
+		return "", 0, fail("InsufficientLevel")
 	}
 	if e.state.Inventory[c.Item] < 1 {
-		return fail("MissingItem")
+		return "", 0, fail("MissingItem")
 	}
-	if u.Acted {
-		return fail("ActionSpent")
+	return class, required, nil
+}
+
+// promoteAway spends an 인수 outside a battle, where officers may change their gear (the walk and a battle's
+// preparation, CanLearn's places): Target is the officer promoted, Option the class picked. An officer already
+// on the deployment's field gets the new class's full HP and MP. A piece the new class cannot carry (a sword on a
+// 장창병, a spear on a 궁기병) goes back to the warehouse with an unequip event. The promotion event names the
+// officer as Actor and Text and the new class as Target.
+func (e *Engine) promoteAway(c Command) error {
+	o, class, required, err := e.awayPromotion(c)
+	if err != nil {
+		return err
 	}
 	e.state.Inventory[c.Item]--
 	o.Class = class
-	st := e.stats(u)
-	u.HP = st.MaxHP
-	u.MP = st.MaxMP
-	e.events = append(e.events, Event{Kind: "promotion", Actor: u.ID, Target: class, Text: o.ID, Amount: required})
+	if u := e.unit(o.ID); u != nil {
+		st := e.stats(u)
+		u.HP, u.MP = st.MaxHP, st.MaxMP
+	}
+	e.events = append(e.events, Event{Kind: "promotion", Actor: o.ID, Target: class, Text: o.ID, Amount: required})
+	for _, slot := range keys(o.Equipment) {
+		if id := o.Equipment[slot]; !e.carries(o, e.data.Equipment[id]) {
+			delete(o.Equipment, slot)
+			e.state.Warehouse[id]++
+			e.events = append(e.events, Event{Kind: "unequip", Actor: o.ID, Target: id})
+		}
+	}
 	return nil
+}
+
+// awayPromotion is the officer promoteAway would promote, into which class at which level, or why it cannot.
+func (e *Engine) awayPromotion(c Command) (*Character, string, int, error) {
+	it, ok := e.data.Items[c.Item]
+	if !ok || it.Effect != content.ItemPromote || !e.preparing() {
+		return nil, "", 0, fail("WrongPhase") // off the field only a seal is used
+	}
+	o := e.char(c.Target)
+	if !e.playable(o) || o.Dead || o.Temp {
+		return nil, "", 0, fail("InvalidTarget")
+	}
+	class, required, err := e.promotion(o, c, it)
+	return o, class, required, err
+}
+
+// PromotionsAway are the classes the 인수 would make the officer now outside a battle (promoteAway), or why it
+// cannot be used on them.
+func (e *Engine) PromotionsAway(item, id string) ([]string, error) {
+	o := e.char(id)
+	if o == nil {
+		return nil, fail("InvalidTarget")
+	}
+	var out []string
+	var last error = fail("InvalidPromotion")
+	for _, class := range e.data.Promotes(o.Def, o.Class) {
+		if _, _, _, err := e.awayPromotion(Command{Kind: "item", Target: id, Item: item, Option: class}); err != nil {
+			last = err
+			continue
+		}
+		out = append(out, class)
+	}
+	if len(out) == 0 {
+		return nil, last
+	}
+	return out, nil
 }
 
 // pendingDuel is the stage duel still waiting between two living units of opposite sides, wherever they stand.
@@ -186,7 +230,7 @@ func (e *Engine) pendingDuel(u, v *Unit) (content.Duel, bool) {
 	}
 	for _, d := range e.data.Stages[e.state.Stage].Duels {
 		pair := e.duelistOn(d, u) != "" && d.Enemy == v.Character || d.Enemy == u.Character && e.duelistOn(d, v) != ""
-		if a, _ := e.duelAlly(d); pair && !e.state.Executed["duel-"+d.ID] && a != nil {
+		if a, _ := e.duelAlly(d); pair && e.duelOpen(d) && a != nil {
 			return d, true
 		}
 	}
@@ -214,7 +258,7 @@ func (e *Engine) DuelAt(id string, x, y int) string {
 			continue
 		}
 		for _, other := range others {
-			if v := e.fieldUnit(other); v != nil && v.Faction != u.Faction && dist(x, y, v.X, v.Y) <= 1 && !e.state.Executed["duel-"+d.ID] {
+			if v := e.fieldUnit(other); v != nil && v.Faction != u.Faction && dist(x, y, v.X, v.Y) <= 1 && e.duelOpen(d) {
 				if a, _ := e.duelAlly(d); a != nil {
 					return d.ID
 				}
@@ -222,6 +266,11 @@ func (e *Engine) DuelAt(id string, x, y int) string {
 		}
 	}
 	return ""
+}
+
+// duelOpen reports whether the stage duel is still to be fought and its conditions hold.
+func (e *Engine) duelOpen(d content.Duel) bool {
+	return !e.state.Executed["duel-"+d.ID] && e.holdsIn(d.If, true)
 }
 
 // duelist reports whether the character starts the duel on the ally side by meeting its enemy:
@@ -287,7 +336,7 @@ func (e *Engine) autoDuels() {
 		for _, d := range duels {
 			a, fighter := e.duelAlly(d)
 			b := e.unit(d.Enemy)
-			if a == nil || b == nil || b.HP <= 0 || a.Faction == b.Faction || e.state.Executed["duel-"+d.ID] {
+			if a == nil || b == nil || b.HP <= 0 || a.Faction == b.Faction || !e.duelOpen(d) {
 				continue
 			}
 			for _, id := range append([]string{d.Ally}, d.Supports...) {
@@ -349,7 +398,7 @@ func (e *Engine) duel(ally *Unit, fighter string, enemy *Unit, d content.Duel) {
 		if fighter != "" {
 			who = fighter
 		}
-		e.gainXP(who, XPPerLevel) // the duellist alone, never shared between an officer and its deputy
+		e.gainXP(who, XPPerLevel*e.data.Rules.DuelXPPct/100) // the duellist alone, never shared between an officer and its deputy
 	}
 }
 

@@ -15,7 +15,7 @@ import tempfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
-OUTPUT = ROOT / "assets/music/themes"
+OUTPUT = ROOT / "tools/music/sources"
 PPQ = 480
 PITCHES = {"C": 0, "D": 2, "E": 4, "G": 7, "A": 9}
 

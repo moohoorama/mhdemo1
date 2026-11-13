@@ -98,7 +98,7 @@ func TestScenesData(t *testing.T) {
 	names := nameIndex(d)
 	diagonal := map[string]bool{"NW": true, "NE": true, "SW": true, "SE": true}
 	times := map[string]bool{"": true, "day": true, "dusk": true, "night": true, "dawn": true, "memory": true}
-	effects := map[string]bool{"": true, "none": true, "petals": true, "fire": true, "smallfire": true, "bigfire": true, "smoke": true, "steam": true, "birds": true, "glint": true, "halberd": true, "halberd_throw": true}
+	effects := map[string]bool{"": true, "none": true, "petals": true, "fire": true, "smallfire": true, "bigfire": true, "smoke": true, "steam": true, "birds": true, "glint": true, "flash": true, "halberd": true, "halberd_throw": true}
 	for id, def := range book.Scenes {
 		t.Run(id, func(t *testing.T) {
 			if !times[def.Time] {
@@ -121,6 +121,9 @@ func TestScenesData(t *testing.T) {
 				}
 				if _, ok := names[scenes.Base(key)]; !ok && a.Sprite == "" && !a.Stay { // a walk's person brings its own
 					t.Errorf("%s: not a character name and no sprite given", key)
+				}
+				if a.Bound && a.Pose != "" {
+					t.Errorf("%s: a bound prisoner stands, no pose %q", key, a.Pose)
 				}
 			}
 			// the sheet an actor stands in, as sceneArt picks it, so a pose names a motion the sheet has

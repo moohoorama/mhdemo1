@@ -1,0 +1,287 @@
+{
+ "Nodes": [
+  {
+   "ID": "c16-flood",
+   "Kind": "scene",
+   "Place": "물에 잠긴 하비성 밖"
+  },
+  {
+   "ID": "c16-f01",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "저 길 끝이 남문 장터였습니다. 이제는 지붕만 보이는군요."
+  },
+  {
+   "ID": "c16-f02",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "장터 사람들 가운데 저희 집안과 거래하던 이가 많습니다. 높은 데로 피했으면 좋으련만……"
+  },
+  {
+   "ID": "c16-f03",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "성 밖 논도 다 잠겼습니다. 올해 하비 둘레에서는 낟알 한 톨 거두기 어렵겠습니다."
+  },
+  {
+   "ID": "c16-f04",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형, 저 안에 우리 군사 식구들도 남아 있을 텐디……"
+  },
+  {
+   "ID": "c16-f-gao",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "party:gaoshun"
+     ],
+     "Next": "c16-f05"
+    }
+   ],
+   "Else": "c16-f06"
+  },
+  {
+   "ID": "c16-f05",
+   "Kind": "say",
+   "Speaker": "gaoshun",
+   "Text": "단양 사람들은 성 안 낮은 데 모여 살았습니다. 거기부터 잠겼을 겁니다."
+  },
+  {
+   "ID": "c16-f06",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "……"
+  },
+  {
+   "ID": "c16-f07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……성문이 열리면 지체하지 말고 들어가세. 하루라도 빨리 끝내야 하네."
+  },
+  {
+   "ID": "c16-f08",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님. 알겠습니다."
+  },
+  {
+   "ID": "c16-battle",
+   "Kind": "battle",
+   "Stage": "B16",
+   "Text": "하비 전투 — 출전 준비"
+  },
+  {
+   "ID": "c16-inner",
+   "Kind": "scene",
+   "Place": "하비 성안"
+  },
+  {
+   "ID": "c16-i01",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "싸움은 끝났네. 어서 수습부터 하세."
+  },
+  {
+   "ID": "c16-i02",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "저희는 남문 장터로 가 보겠습니다. 거래하던 이들이 많습니다."
+  },
+  {
+   "ID": "c16-i03",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "저는 창고의 곡식을 셈해 두겠습니다."
+  },
+  {
+   "ID": "c16-i04",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "나는 다친 사람들을 관아로 모으지."
+  },
+  {
+   "ID": "c16-i-gao",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "party:gaoshun"
+     ],
+     "Next": "c16-i05"
+    }
+   ],
+   "Else": "c16-i06"
+  },
+  {
+   "ID": "c16-i05",
+   "Kind": "say",
+   "Speaker": "gaoshun",
+   "Text": "단양 사람들이 모여 살던 데로 가 보겠습니다."
+  },
+  {
+   "ID": "c16-i06",
+   "Kind": "say",
+   "Speaker": "soldier",
+   "Text": "유 장군! 승상께서 백문루로 오시랍니다."
+  },
+  {
+   "ID": "c16-i07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……알겠소. 운장, 익덕. 함께 가세."
+  },
+  {
+   "ID": "c16-baimen",
+   "Kind": "scene",
+   "Place": "하비성 · 백문루"
+  },
+  {
+   "ID": "c16-b-gao",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "!party:gaoshun"
+     ],
+     "Next": "c16-b01"
+    }
+   ],
+   "Else": "c16-b04"
+  },
+  {
+   "ID": "c16-b01",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "고순, 할 말이 있느냐."
+  },
+  {
+   "ID": "c16-b02",
+   "Kind": "say",
+   "Speaker": "gaoshun_lu",
+   "Text": "……"
+  },
+  {
+   "ID": "c16-b03",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "……끌고 나가라."
+  },
+  {
+   "ID": "c16-b04",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "공대, 그대의 진언을 귀담아들을 주인을 모셔 보는 게 어떻겠소?"
+  },
+  {
+   "ID": "c16-b05",
+   "Kind": "say",
+   "Speaker": "chengong",
+   "Text": "그럴 생각은 없소."
+  },
+  {
+   "ID": "c16-b06",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "노모가 걱정되지 않소?"
+  },
+  {
+   "ID": "c16-b07",
+   "Kind": "say",
+   "Speaker": "chengong",
+   "Text": "그건 명공이 정하실 일이오. 나는 내 갈 길을 가겠소."
+  },
+  {
+   "ID": "c16-b08",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "……그대의 집안 사람들은 허도로 모셔 와, 먹고사는 데 모자람이 없게 하겠소."
+  },
+  {
+   "ID": "c16-b09",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "공대는 참 바보 같구려. 좋소! 이제 명공은 천하 제일의 기병대장을 얻었소."
+  },
+  {
+   "ID": "c16-b10",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "……"
+  },
+  {
+   "ID": "c16-b11",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "이제 천하에 우리를 막을 자는 없을 것이오. 하지만 이 여포, 값싼 몸은 아니오. 녹봉은 두둑이 챙겨 주셔야 하오."
+  },
+  {
+   "ID": "c16-b12",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "……"
+  },
+  {
+   "ID": "c16-b13",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "명공, 왜 말이 없으시오?"
+  },
+  {
+   "ID": "c16-b14",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "봉선 공을 받아 준 정원과 동탁, 그리고 나의 일을 생각하시는 중인 듯하오."
+  },
+  {
+   "ID": "c16-b15",
+   "Kind": "say",
+   "Speaker": "lubu",
+   "Text": "이 귀 큰 놈이……! 내가 화극에 화살을 쏘지 않았으면 네 목은 벌써 기령의 손에 있었다!"
+  },
+  {
+   "ID": "c16-b16",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "끌고 나가라."
+  },
+  {
+   "ID": "c16-b17",
+   "Kind": "say",
+   "Speaker": "zhangliao",
+   "Text": "묶인 몸이라 할 말은 없소. 어서 베시오."
+  },
+  {
+   "ID": "c16-b18",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "패장이 입은 살았구나."
+  },
+  {
+   "ID": "c16-b19",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "승상, 장문원의 죄라면 주인에게 충성을 다한 것뿐입니다."
+  },
+  {
+   "ID": "c16-b20",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "하하, 운장이 그리 말하니 한번 떠본 보람이 있구려. 여봐라, 어서 문원의 결박을 풀어라."
+  },
+  {
+   "ID": "c16-b21",
+   "Kind": "say",
+   "Speaker": "zhangliao",
+   "Text": "……살려주셨으니, 목숨값은 하겠습니다."
+  },
+  {
+   "ID": "c16-b22",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "하하하!"
+  }
+ ],
+ "Events": []
+}

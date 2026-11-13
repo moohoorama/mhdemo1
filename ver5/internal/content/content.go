@@ -39,13 +39,16 @@ type Rules struct {
 	BurnPercent           int
 	BuffPercent           int     // the size of an attack/defense/morale/agility buff or debuff
 	BuffTurns             int     // how long a trait's automatic buff lasts
-	ExpGrowth             float64 // action XP is scaled by this per level the target is above the actor
+	ExpGrowth             float64 // level-difference curve (ExpRatioPower 0): action XP is scaled by this per level the target is above the actor
 	ExpAction, ExpSpell   float64 // action XP in percent of the actor's level bar at equal levels, and its spell multiplier
 	ExpDefenseShare       float64 // received strike or successful defense XP, relative to action XP
 	ExpDefeat             float64
 	ExpLevelStep          float64
+	ExpRatioPower         float64 // above 0, action XP is scaled by ((target level + StatLevelBase) / (actor level + StatLevelBase))^this, a strength ratio meaning the same at any level, instead of the level-difference curve
 	ExpMinFactor          float64
 	ExpMaxFactor          float64
+	DuelXPPct             int  // a won duel's experience in percent of a level bar
+	JoinShift             bool // a joining officer takes the difficulty's EnemyShift as the enemy's troops do; otherwise it comes in at the stage level
 	ExpSupportPercent     int
 	PointsPerLevel        int
 	MaxLevel              int
@@ -60,16 +63,17 @@ type Rules struct {
 	RankLead              map[string]float64 // a rank's lead over the stage level, as a share of (stage level + StatLevelBase) so it means the same strength at any level
 	TraitPlanStep         int                // an NPC officer holds the k-th trait of its own plan (Character.Traits) from level (k−1)×TraitPlanStep+1
 	Difficulties          []Difficulty       // chosen at a new game, in the order the title shows them; "normal" is the default
-	ForageItems           []string                // what 중가 finds in a village at the end of its turn, one of each
-	PouchItem             string // the item a ration pouch eats from the stock
+	PouchItem             string             // the item a ration pouch eats from the stock
 	EnemyStock            map[string]int
 	AllyStock             map[string]int
 	EdgeTile              string                    // the cell (ground, structure, state) that lies beyond the map's edge
 	CritMarks             map[string]string         // the state a critical spell of the element leaves on each critically struck target's cell
 	CritMarkTurns         int                       // how many rounds that state lasts
+	CritMarkPower         int                       // percent more a spell deals to a target standing on its own element's mark (a water spell on a puddle)
 	ElementTerrain        map[string]map[string]int // percent more a spell of the element deals to a target on the structure or, without one listed, the ground letter
 	AuraHeal              int
 }
+
 // LevelTrait is a trait held from a level on.
 type LevelTrait struct {
 	Level int
@@ -173,8 +177,8 @@ type Item struct {
 	Icon       string // the UI sheet's item_<Icon> picture
 	Effect     string
 	Amount     int
-	Tier       int    // promotion item: the tier of the class it makes (1 중급, 2 상급); the class is picked on use
-	Price      int    `json:",omitempty"` // what a shop asks in money; it buys it back for half
+	Tier       int // promotion item: the tier of the class it makes (1 중급, 2 상급); the class is picked on use
+	Price      int `json:",omitempty"` // what a shop asks in money; it buys it back for half
 }
 type Trait struct {
 	Name, Desc string
@@ -190,6 +194,7 @@ type Skill struct {
 	Shape, Effect string
 	Element       string
 	Sound         string // the GUI's sound when it lands (assets/sounds); empty picks one by element or kind
+	Lead          string // the GUI's quieter sound as its effect starts, filling a long effect until Sound strikes
 	Item          string // the item a steal takes
 	Requires      []string
 	Cost, Hit     int
@@ -205,6 +210,7 @@ type Skill struct {
 	Reach         int     // cells the skill adds to the attacker's range
 	MagicCoeff    float64 // a physical skill also deals spell damage at this coefficient
 	HPCost        float64 // share of its own max HP the user pays besides the spell points
+	Mark          bool    // every cell it lands on takes its element's critical mark (화시's embers), critical or not
 	Deprecated    bool
 }
 
@@ -267,16 +273,17 @@ type DuelVariant struct {
 	Beats []Beat
 }
 
-// Duel is a pending fight between two officers: it starts when they stand next to each other,
-// its result is fixed here and Beats (with Supports who join in) stage it.
+// Duel is a pending fight between two officers: it starts when they stand next to each other
+// once its If conditions hold, its result is fixed here and Beats (with Supports who join in) stage it.
 type Duel struct {
 	ID, Ally, Enemy, Outcome, AllyResult, EnemyResult, Text string
-	Supports                                                []string      `json:",omitempty"`
-	Beats                                                   []Beat        `json:",omitempty"`
+	If                                                      []string `json:",omitempty"`
+	Supports                                                []string `json:",omitempty"`
+	Beats                                                   []Beat   `json:",omitempty"`
 	// Melee names, for an officer who duels in another class until he takes up his bow (a feigned-flight or shoot beat),
 	// that class: 조성 fights as a light cavalryman, then shoots as the horse archer he is.
-	Melee map[string]string `json:",omitempty"`
-	Variants                                                []DuelVariant `json:",omitempty"`
+	Melee    map[string]string `json:",omitempty"`
+	Variants []DuelVariant     `json:",omitempty"`
 }
 type Speech struct{ Actor, Text string }
 
@@ -557,6 +564,7 @@ type Data struct {
 	Explores       map[string]*Explore `json:"-"` // explore file name without .json -> its areas
 	Stages         []Stage
 	Nodes          []Node
+	difficulty     string // the difficulty whose Rules this copy took (ForDifficulty)
 }
 
 // Load reads the bundle with the first scenario of the scenario folder; see LoadScenario.
@@ -599,6 +607,9 @@ func LoadScenario(dir, id string) (*Data, error) {
 	}
 	d.Hash = fmt.Sprintf("%x", h.Sum(nil))
 	d.link()
+	if err := d.linkDifficulties(); err != nil {
+		return nil, err
+	}
 	if err := d.Validate(); err != nil {
 		return nil, err
 	}
@@ -691,11 +702,52 @@ func (d *Data) NextBattleOrder(id string) int {
 }
 
 // Difficulty is what a campaign's difficulty changes, unseen by the player: a lead added to every enemy's
-// rank (a share of strength, as RankLead) and the experience the party earns in percent.
+// rank (a share of strength, as RankLead), the experience the party earns in percent, and Rules: fields of
+// the rules it plays by instead (the old growth curve kept for comparison). A Debug one is offered only in
+// the debug mode.
 type Difficulty struct {
 	ID, Name, Desc string
 	EnemyShift     float64
 	XPPct          int
+	Debug          bool            `json:",omitempty"`
+	Rules          json.RawMessage `json:",omitempty"`
+	rules          *Rules
+}
+
+// ForDifficulty is the data a game at the difficulty plays by: d itself, or a copy with the difficulty's rules.
+func (d *Data) ForDifficulty(id string) *Data {
+	v, ok := d.Rules.DifficultyOf(id)
+	if !ok || v.rules == nil || d.difficulty == id {
+		return d
+	}
+	c := *d
+	c.Rules, c.difficulty = *v.rules, id
+	return &c
+}
+
+// linkDifficulties lays each difficulty's Rules over a copy of the rules.
+func (d *Data) linkDifficulties() error {
+	base, err := json.Marshal(d.Rules)
+	if err != nil {
+		return err
+	}
+	for i := range d.Rules.Difficulties {
+		v := &d.Rules.Difficulties[i]
+		v.rules = nil
+		if len(v.Rules) == 0 {
+			continue
+		}
+		var r Rules
+		if err := json.Unmarshal(base, &r); err != nil {
+			return err
+		}
+		if err := strictDecode(v.Rules, &r); err != nil {
+			return fmt.Errorf("rules: difficulty %s: %w", v.ID, err)
+		}
+		r.Difficulties = d.Rules.Difficulties
+		v.rules = &r
+	}
+	return nil
 }
 
 // DifficultyOf is the difficulty with the given id.

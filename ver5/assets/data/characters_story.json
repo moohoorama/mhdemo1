@@ -669,7 +669,8 @@
     },
     "Portrait": "chenzhen",
     "Scene": "official_noncombat"
-   }
+   },
+   "Playable": true
   },
   "tiankai": {
    "Name": "전해",
@@ -973,7 +974,7 @@
   "gaoshun": {
    "Name": "고순",
    "Biography": "단양 산골 마을의 무인. 말수가 적고 술을 마시지 않는다. 황건 잔당 앞에서 혼자 마을 입구를 막아선다.",
-   "Class": "light_infantry",
+   "Class": "pikeman",
    "Stats": [
     82,
     86,
@@ -982,7 +983,7 @@
     36,
     58
    ],
-   "Level": 5,
+   "Level": 20,
    "Traits": [
     "break_line",
     "discipline",
@@ -994,7 +995,7 @@
     "breakthrough"
    ],
    "Equipment": [
-    "iron_sword",
+    "iron_spear",
     "leather_armor"
    ],
    "Look": {
@@ -1795,12 +1796,10 @@
    "Playable": true,
    "Traits": [
     "generosity",
-    "hoarding",
     "supply"
    ],
    "Learn": [
     "generosity",
-    "hoarding",
     "supply"
    ],
    "Equipment": [
@@ -1833,12 +1832,12 @@
    "Playable": true,
    "Traits": [
     "brace_prep",
-    "castle_defense",
+    "first_aid",
     "fortune"
    ],
    "Learn": [
     "brace_prep",
-    "castle_defense",
+    "first_aid",
     "fortune"
    ],
    "Equipment": [
@@ -2007,7 +2006,8 @@
    ],
    "Level": 20,
    "Traits": [
-    "shift_blame"
+    "shift_blame",
+    "composure"
    ],
    "Learn": [],
    "Equipment": [
@@ -2038,7 +2038,8 @@
    ],
    "Level": 10,
    "Traits": [
-    "insight"
+    "insight",
+    "stratagem"
    ],
    "Learn": [],
    "Equipment": [
@@ -2170,7 +2171,8 @@
    ],
    "Level": 20,
    "Traits": [
-    "dash"
+    "charge_aim",
+    "grit"
    ],
    "Learn": [],
    "Equipment": [
@@ -2206,7 +2208,8 @@
    ],
    "Level": 20,
    "Traits": [
-    "charge_strike"
+    "charge_strike",
+    "vital_strike"
    ],
    "Learn": [],
    "Equipment": [
@@ -2242,7 +2245,8 @@
    ],
    "Level": 20,
    "Traits": [
-    "grass_footing"
+    "bodyguard",
+    "do_or_die"
    ],
    "Learn": [],
    "Equipment": [
@@ -2264,6 +2268,33 @@
     }
    }
   },
+  "xusi": {
+   "Name": "허사",
+   "Biography": "여포의 모사. 하비가 에워싸이자 왕해와 함께 원술에게 구원을 청하러 다녀왔다. 맨주먹으로도 싸우고 불을 다룬다.",
+   "Class": "brawler",
+   "Stats": [
+    52,
+    61,
+    71,
+    64,
+    48,
+    50
+   ],
+   "Level": 20,
+   "Traits": [
+    "fire",
+    "fire_boost",
+    "foresight"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "iron_knuckles",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "dong"
+   }
+  },
   "caoxing": {
    "Name": "조성",
    "Biography": "여포의 궁기병 장수. 말 위에서 활을 잘 쏜다.",
@@ -2278,7 +2309,8 @@
    ],
    "Level": 20,
    "Traits": [
-    "accuracy_up"
+    "accuracy_up",
+    "snipe_prep"
    ],
    "Learn": [],
    "Equipment": [
@@ -2389,7 +2421,8 @@
    ],
    "Level": 12,
    "Traits": [
-    "patience"
+    "patience",
+    "composure"
    ],
    "Learn": [],
    "Equipment": [
@@ -2418,7 +2451,9 @@
    ],
    "Level": 12,
    "Traits": [
-    "break_formation"
+    "impact",
+    "discipline",
+    "intimidate"
    ],
    "Learn": [],
    "Equipment": [
@@ -2448,7 +2483,10 @@
    ],
    "Level": 12,
    "Traits": [
-    "bodyguard"
+    "bodyguard",
+    "iron_armor",
+    "ironwall",
+    "deadly"
    ],
    "Learn": [],
    "Equipment": [
@@ -2476,7 +2514,9 @@
    ],
    "Level": 12,
    "Traits": [
-    "insight"
+    "insight",
+    "lecture",
+    "even_hand"
    ],
    "Learn": [],
    "Equipment": [
@@ -2506,7 +2546,8 @@
    ],
    "Level": 12,
    "Traits": [
-    "flood"
+    "flood",
+    "half_cost"
    ],
    "Learn": [],
    "Equipment": [
@@ -2534,7 +2575,8 @@
    ],
    "Level": 12,
    "Traits": [
-    "deep_scheme"
+    "deep_scheme",
+    "cunning"
    ],
    "Learn": [],
    "Equipment": [
@@ -2564,7 +2606,8 @@
    ],
    "Level": 12,
    "Traits": [
-    "cunning"
+    "spell_leech",
+    "deadly_poison"
    ],
    "Learn": [],
    "Equipment": [
@@ -2583,7 +2626,7 @@
   "gaoshun_lu": {
    "Name": "고순",
    "Biography": "여포의 장수. 말수가 적고 술을 마시지 않는다. 그가 이끄는 군사는 치는 곳마다 무너뜨린다.",
-   "Class": "heavy_infantry",
+   "Class": "pikeman",
    "Stats": [
     82,
     86,
@@ -2594,17 +2637,161 @@
    ],
    "Level": 20,
    "Traits": [
-    "break_line"
+    "break_line",
+    "discipline",
+    "breakthrough"
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "iron_spear",
     "leather_armor"
    ],
    "Look": {
     "Faction": "dong",
     "Scene": "gaoshun_noncombat",
     "Portrait": "gaoshun"
+   }
+  },
+  "dongcheng": {
+   "Name": "동승",
+   "Biography": "헌제의 장인인 국구. 허도에서 황제의 밀조를 받들어 조조를 칠 사람들을 모은다.",
+   "Class": "scholar",
+   "Stats": [
+    62,
+    48,
+    64,
+    58,
+    60,
+    58
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_slips",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Scene": "official_crimson_noncombat",
+    "Faction": "han"
+   }
+  },
+  "liudai": {
+   "Name": "유대",
+   "Biography": "연주자사를 지낸 조조의 장수. 왕충과 함께 승상의 깃발을 앞세우고 서주로 온다.",
+   "Class": "light_infantry",
+   "Stats": [
+    58,
+    56,
+    52,
+    55,
+    50,
+    52
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "wangzhong": {
+   "Name": "왕충",
+   "Biography": "조조의 중랑장. 유대와 함께 서주로 온다.",
+   "Class": "light_cavalry",
+   "Stats": [
+    54,
+    60,
+    40,
+    56,
+    48,
+    50
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "guotu": {
+   "Name": "곽도",
+   "Biography": "원소의 모사. 남의 공을 시기하고 원소의 귀에 듣기 좋은 말만 넣는다.",
+   "Class": "scholar",
+   "Stats": [
+    58,
+    40,
+    76,
+    62,
+    52,
+    56
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_slips",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Scene": "official_green_noncombat",
+    "Faction": "yuan"
+   }
+  },
+  "zongzheng": {
+   "Name": "종정",
+   "Biography": "황실의 족보와 종친의 일을 맡은 관리.",
+   "Class": "scholar",
+   "Stats": [
+    30,
+    20,
+    60,
+    40,
+    40,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_slips",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Scene": "official_purple_noncombat",
+    "Faction": "han"
+   }
+  },
+  "chezhou": {
+   "Name": "차주",
+   "Biography": "조조가 여포를 깨뜨린 뒤 서주에 세운 자사. 서주성을 지킨다.",
+   "Class": "light_infantry",
+   "Stats": [
+    60,
+    58,
+    50,
+    56,
+    48,
+    50
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Scene": "official_noncombat",
+    "Faction": "wei"
    }
   }
  }

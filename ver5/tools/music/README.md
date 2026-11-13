@@ -23,7 +23,7 @@
   FluidSynth와 로컬 GM SoundFont로 렌더링, FFmpeg로 MP3를 만든다.
 - `player.html`: 감상 페이지 원본. 외부 라이브러리·폰트·네트워크 요청 없이
   재생/일시정지/탐색, 곡 반복, 전체 연속 재생, 음량, 개별 저장을 제공한다.
-- `../../assets/music/themes/`: 여섯 곡의 `.mid`, `.mp3`, 전체 MIDI ZIP.
+- `sources/`: 여섯 곡의 `.mid`, `.mp3`, 전체 MIDI ZIP.
 - `../../docs/music-themes.html`: MP3·MIDI·ZIP을 내장한 독립 HTML.
   이 파일 하나만 복사해도 오프라인으로 감상하고 저장할 수 있다.
 
@@ -74,13 +74,23 @@ python3 ver5/tools/music/compose.py --soundfont /path/to/soundfont.sf2
 
 ## 십면매복 (전투)
 
-`assets/music/themes/sipmyeon-maebok.mid`는 사용자가 준 musics.zip의 MIDI 스케치다. 전투 곡
+`tools/music/sources/sipmyeon-maebok.mid`는 사용자가 준 musics.zip의 MIDI 스케치다. 전투 곡
 `sipmyeon-maebok.mp3`는 이 MIDI를 `sipmyeon.py`로 다시 편성해(선율 고토, 받침 현 피치카토, 첼로 베이스,
 태고+팀파니) GeneralUser GS 음색으로 렌더링하고 -15.8 LUFS로 맞춘 것이다(2026-11-09, 시안 B).
 
 ```sh
-python3 ver5/tools/music/sipmyeon.py /path/to/GeneralUser-GS.sf2 ver5/assets/music/themes/sipmyeon-maebok.mp3
+python3 ver5/tools/music/sipmyeon.py /path/to/GeneralUser-GS.sf2 ver5/tools/music/sources/sipmyeon-maebok.mp3
 ```
 
 GeneralUser GS: https://github.com/mrbumpy409/GeneralUser-GS (S. Christian Collins, 어떤 용도로든 무료). 저장소에는
 넣지 않았다. `smf.py`는 표준 라이브러리만 쓰는 최소 MIDI 읽기·쓰기다.
+
+## 게임에 넣기
+
+`sources/`는 원본(MP3·MIDI)이고 APK에 들어가지 않는다. 게임은 `assets/music/themes/*.ogg`만 읽는다.
+곡을 추가하거나 `music.json`·장면의 `Music`을 바꾸면 다음을 돌린다. 쓰는 곡만 Ogg Vorbis 96kbps로 만들고 안 쓰는 `.ogg`는 지운다.
+
+```bash
+python3 ver5/tools/music/encode.py            # 없는 곡만
+python3 ver5/tools/music/encode.py --force    # 전부 다시
+```

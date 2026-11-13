@@ -1,0 +1,19 @@
+# c17-xuchu  S_mansion2  ch17  origin -1 -1
+Pil#####################Pil
+###......Cdl...###Cdl...Lnt
+###............Dai.........
+###Lnt...Tbl......Tbl......
+###.........Gua............
+###......TblZha...Tbl......
+PilJar...............Ser...
+
+Gua 관우
+Zha 장비
+Liu 유비  (off stage, enters later (cell 7 4))
+Ser 하인  (infantry_noncombat)
+Xuc 허저  (off stage, enters later (cell 7 4))
+
+# c17-x01: Liu -> 4 3
+# c17-x01: Xuc -> 6 3
+# c17-x02: Zha -> 4 4
+# c17-x06: Xuc -> 7 4 and leaves

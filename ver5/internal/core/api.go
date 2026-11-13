@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"maps"
 	"math"
+	"slices"
 	"sort"
 	"srpg/internal/content"
 )
@@ -73,31 +74,13 @@ func (e *Engine) LegalActions(actor string) Options {
 	if !u.Acted {
 		stock := e.stock(u)
 		for _, item := range keys(stock) {
-			if stock[item] < 1 {
+			if stock[item] < 1 || e.data.Items[item].Effect == content.ItemPromote { // seals are used off the field
 				continue
 			}
 			for _, id := range keys(e.unitIDs) {
 				v := e.unit(id)
 				if v.HP > 0 && v.Faction == u.Faction && dist(u.X, u.Y, v.X, v.Y) <= 1 {
-					if e.data.Items[item].Effect == content.ItemPromote { // one command per class it can make
-						o := e.char(v.Character)
-						for _, class := range e.data.Promotes(o.Def, o.Class) {
-							c := Command{Kind: "item", Actor: actor, Target: id, Item: item, Option: class}
-							if t := fromState(e.data, e.Snapshot()); t.execute(c) == nil {
-								out.Commands = append(out.Commands, c)
-							}
-						}
-						continue
-					}
 					out.Commands = append(out.Commands, Command{Kind: "item", Actor: actor, Target: id, Item: item})
-				}
-			}
-			if d := e.char(e.char(u.Character).Deputy); d != nil && e.data.Items[item].Effect == content.ItemPromote {
-				for _, class := range e.data.Promotes(d.Def, d.Class) { // the deputy riding with it
-					c := Command{Kind: "item", Actor: actor, Target: d.ID, Item: item, Option: class}
-					if t := fromState(e.data, e.Snapshot()); t.execute(c) == nil {
-						out.Commands = append(out.Commands, c)
-					}
 				}
 			}
 		}
@@ -202,10 +185,45 @@ func Restore(d *content.Data, s State) (*Engine, error) { return restore(d, copy
 func RestoreChanged(d *content.Data, s State) (*Engine, error) {
 	s = copyOf(s)
 	s.ContentHash = d.Hash
+	adaptCharacters(d, &s)
 	if s.Checkpoint != nil {
 		s.Checkpoint.ContentHash = d.Hash
+		adaptCharacters(d, s.Checkpoint)
 	}
 	return restore(d, s, true)
+}
+
+// adaptCharacters fits the party of a save to edited data: a learned trait the data dropped is forgotten, an
+// officer whose class the data moved out of his old line takes the new class when his level allows it, and
+// a piece of equipment the officer can no longer wear goes back to the inventory.
+func adaptCharacters(d *content.Data, s *State) {
+	for i := range s.Characters {
+		o := &s.Characters[i]
+		def, ok := d.Characters[o.Def]
+		if !ok || o.Temp || o.Placement {
+			continue
+		}
+		o.Learned = slices.DeleteFunc(o.Learned, func(t string) bool { _, ok := d.Traits[t]; return !ok })
+		if _, ok := d.Classes[o.Class]; !ok || !classReachable(d, def.Class, o.Class) {
+			if t := d.Classes[def.Class].Tier; t == 0 || o.Level >= d.Rules.PromoteLevels[t-1] {
+				o.Class = def.Class
+			}
+		}
+		held := append(append([]string{}, innate(o)...), o.Learned...)
+		for _, slot := range slices.Sorted(maps.Keys(o.Equipment)) {
+			eq := o.Equipment[slot]
+			if v, ok := d.Equipment[eq]; ok && v.Slot == slot && d.Carries(d.Classes[o.Class], held, v) {
+				continue
+			}
+			delete(o.Equipment, slot)
+			if _, ok := d.Equipment[eq]; ok {
+				if s.Inventory == nil {
+					s.Inventory = map[string]int{}
+				}
+				s.Inventory[eq]++
+			}
+		}
+	}
 }
 
 // knownDifficulty tells whether a save's difficulty is one the rules still have.
@@ -251,7 +269,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	if s.Money < 0 || s.Explore != "" && (s.Phase != "scenario" || d.Node(s.Explore).Kind != "explore" || d.Explores[d.Node(s.Explore).Explore].Areas[s.Spot.Area] == nil) {
 		return nil, fail("CorruptSave")
 	}
-	if s.Phase == "complete" && s.Node != "" {
+	if s.Phase == "complete" && s.Node != "" || s.Ending != "" && (s.Phase != "complete" || d.Node(s.Ending).Kind != "end") {
 		return nil, fail("CorruptSave")
 	}
 	seen := map[string]bool{}
@@ -418,7 +436,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 			positions[p] = true
 		}
 		st := e.stats(&u)
-		if e.char(u.Character).Dead && u.HP != 0 || u.HP < 0 || u.HP > st.MaxHP || u.MP < 0 || u.MP > st.MaxMP || u.Attacked && !u.Acted || u.Done && (!u.Acted || !u.Moved) {
+		if e.char(u.Character).Dead && u.HP != 0 || u.HP < 0 || u.HP > st.MaxHP || u.MP < 0 || u.Attacked && !u.Acted || u.Done && (!u.Acted || !u.Moved) {
 			return nil, fail("CorruptSave")
 		}
 		for id, v := range u.Status {
@@ -517,7 +535,7 @@ func (e *Engine) CounterDamage(c Command) int {
 	if err != nil || s.Kind != content.KindPhysical || !e.has(v, content.FxRetaliate) && !e.inRange(v, u, e.basic()) {
 		return 0
 	}
-	return int(math.Floor(e.damage(v, u, e.basic()) * (e.data.Rules.CritMultiplier + e.fx(v, content.FxCritBoost)) * e.counterShare(v) * e.counterTaken(u)))
+	return int(math.Floor(e.damage(v, u, e.basic()) * (e.data.Rules.CritMultiplier + e.fx(v, content.FxCritBoost)) * e.counterTaken(u, e.counterShare(v))))
 }
 
 // Strike is the expected damage of a's best blow on b that a can pay for, its basic attack or a

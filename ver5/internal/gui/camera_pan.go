@@ -17,6 +17,7 @@ const panTime = .56
 
 // panTo starts gliding the camera to world point (x, y).
 func (g *Game) panTo(x, y float64) {
+	x, y = g.clampCam(x, y)
 	if math.Hypot(x-g.camX, y-g.camY) < 1 {
 		return
 	}
@@ -93,7 +94,7 @@ func (g *Game) followWalk(dt float64) {
 	}
 	x, y := g.field.Center(v.u, v.v)
 	ease := math.Min(1, dt*camEase)
-	g.camX, g.camY = g.camX+(x-g.camX)*ease, g.camY+(y-v.lift-g.camY)*ease
+	g.camX, g.camY = g.clampCam(g.camX+(x-g.camX)*ease, g.camY+(y-v.lift-g.camY)*ease)
 }
 
 // nearMiddle reports whether a unit stands inside the middle of the battle view (a fifth of it in

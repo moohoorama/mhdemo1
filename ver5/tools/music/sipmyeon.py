@@ -1,4 +1,4 @@
-"""Re-voices the user's 십면매복 MIDI (assets/music/themes/sipmyeon-maebok.mid, from musics.zip) for the battle theme and
+"""Re-voices the user's 십면매복 MIDI (tools/music/sources/sipmyeon-maebok.mid, from musics.zip) for the battle theme and
 renders it: the lead on the koto (a guzheng's stand-in), the plucked part as pizzicato strings, the bass on the cello,
 the taiko doubled by timpani, each with its own reverb and pan. Loudness is matched to -15.8 LUFS, the old render's.
 
@@ -13,7 +13,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 import smf  # noqa: E402
 
-SRC = Path(__file__).parents[2] / 'assets/music/themes/sipmyeon-maebok.mid'
+SRC = Path(__file__).parent / 'sources/sipmyeon-maebok.mid'
 
 
 def program(events, ch, prog):

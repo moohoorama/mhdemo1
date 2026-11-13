@@ -1,0 +1,551 @@
+{
+ "ID": "B19",
+ "Name": "연주 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 5,
+ "Required": [
+  "liubei"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "at:liubei:1"
+   ],
+   "Text": "유비가 연주 경계에 닿는다"
+  }
+ ],
+ "TurnLimit": 20,
+ "Map": "map19.json",
+ "Night": true,
+ "Forced": true,
+ "Lights": [
+  {
+   "X": 2,
+   "Y": 2
+  },
+  {
+   "X": 5,
+   "Y": 3
+  },
+  {
+   "X": 8,
+   "Y": 8
+  },
+  {
+   "X": 17,
+   "Y": 17
+  }
+ ],
+ "Allies": [
+  {
+   "X": 6,
+   "Y": 6
+  },
+  {
+   "X": 5,
+   "Y": 6
+  },
+  {
+   "X": 6,
+   "Y": 5
+  },
+  {
+   "X": 5,
+   "Y": 7
+  },
+  {
+   "X": 7,
+   "Y": 5
+  },
+  {
+   "X": 4,
+   "Y": 7
+  },
+  {
+   "X": 7,
+   "Y": 4
+  },
+  {
+   "X": 6,
+   "Y": 7
+  }
+ ],
+ "Recommend": {
+  "liubei": {
+   "X": 6,
+   "Y": 6
+  }
+ },
+ "Party": [],
+ "Enemies": [
+  {
+   "Character": "zhanghe",
+   "X": 3,
+   "Y": 2,
+   "Group": "zh",
+   "Policy": "assault",
+   "Facing": "SE",
+   "DuelFirst": true,
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 3,
+   "Y": 3,
+   "Shift": -0.07,
+   "Group": "zh",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 2,
+   "Y": 3,
+   "Shift": -0.07,
+   "Group": "zh",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 3,
+   "Y": 1,
+   "Shift": -0.07,
+   "Group": "zh",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "guotu",
+   "X": 1,
+   "Y": 1,
+   "Rank": "commander",
+   "Group": "guo",
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 2,
+   "Y": 2,
+   "Shift": -0.07,
+   "Group": "guo",
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 2,
+   "Y": 1,
+   "Shift": -0.07,
+   "Group": "guo",
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 1,
+   "Y": 3,
+   "Shift": -0.07,
+   "Group": "guo",
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 0,
+   "Y": 3,
+   "Shift": -0.07,
+   "Group": "guo",
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 2,
+   "Y": 0,
+   "Shift": -0.07,
+   "Group": "guo",
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 14,
+   "Y": 10,
+   "Shift": -0.07,
+   "Group": "picket",
+   "Policy": "react",
+   "Facing": "NW",
+   "Faction": "yuan"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 15,
+   "Y": 11,
+   "Shift": -0.07,
+   "Group": "picket",
+   "Policy": "react",
+   "Facing": "NW",
+   "Faction": "yuan"
+  }
+ ],
+ "Reward": {
+  "money": 1000
+ },
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 17,
+    "Y": 17,
+    "W": 3,
+    "H": 3
+   },
+   "Name": "연주 경계",
+   "Description": "유비가 닿으면 승리"
+  },
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 9,
+    "Y": 9,
+    "W": 11,
+    "H": 11
+   },
+   "Name": "개울 건너",
+   "Description": "유비가 들어서면(아니면 2라운드에) 적 차례에 조운이 나타난다"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "opening",
+   "If": [
+    "round>=1"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhanghe",
+       "Text": "횃불을 들어라! 유비는 남쪽 길로 갔다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "guotu",
+       "Text": "놓치면 주공께서 크게 노하신다. 반드시 잡아 와라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "jianyong",
+       "Text": "인사도 없이 떠나는 손님이니, 주인이 서운할 만도 하지."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "쉬지 말고 가세. 연주 경계만 넘으면 되네!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "guotu-moves",
+   "If": [
+    "round>=2"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "guo"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "more-horse",
+   "If": [
+    "round>=3",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_cavalry",
+       "X": 4,
+       "Y": 2,
+       "Shift": -0.07,
+       "Group": "horse",
+       "Policy": "assault",
+       "Facing": "SE",
+       "Side": "enemy",
+       "Faction": "yuan"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 2,
+       "Y": 4,
+       "Shift": -0.07,
+       "Group": "horse",
+       "Policy": "assault",
+       "Facing": "SE",
+       "Side": "enemy",
+       "Faction": "yuan"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 3,
+       "Y": 3,
+       "Shift": -0.07,
+       "Group": "horse",
+       "Policy": "assault",
+       "Facing": "SE",
+       "Side": "enemy",
+       "Faction": "yuan"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "guotu",
+       "Text": "기병을 더 풀어라! 개울을 건너기 전에 따라잡아라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "zhaoyun",
+   "If": [
+    "any:[round>=2, at:liubei:2]",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "join",
+     "Spawns": [
+      {
+       "Character": "zhaoyun",
+       "X": 9,
+       "Y": 4,
+       "Facing": "NW"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhaoyun",
+       "Text": "현덕 공! 상산의 조자룡이 왔습니다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "자룡! 어찌 여기에……"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhaoyun",
+       "Text": "공손 장군께서 돌아가신 뒤 섬길 분을 찾아다녔습니다. 이번에는 곁을 떠나지 않겠습니다."
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "move",
+        "Unit": "zhanghe",
+        "To": {
+         "X": 8,
+         "Y": 4
+        },
+        "Facing": "SE"
+       }
+      ],
+      [
+       {
+        "Kind": "face",
+        "Unit": "zhaoyun",
+        "Facing": "NW"
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "duel",
+     "Duel": "yanzhou-zhaoyun-zhanghe"
+    }
+   ]
+  }
+ ],
+ "Faction": "yuan",
+ "Duels": [
+  {
+   "ID": "yanzhou-zhaoyun-zhanghe",
+   "Ally": "zhaoyun",
+   "Enemy": "zhanghe",
+   "Outcome": "draw",
+   "AllyResult": "stay",
+   "EnemyResult": "stay",
+   "Text": "조운과 장합이 수십 합을 겨루었으나 승부가 나지 않았다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "장합이 조운을 막아서다",
+     "Speech": "하간의 장합이다. 네가 공손찬 밑에 있던 조자룡이냐.",
+     "Side": 1,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 답하다",
+     "Speech": "상산의 조자룡이오. 현덕 공을 쫓으려거든 이 창부터 넘으시오!",
+     "Side": 0,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "approach",
+     "Title": "두 장수가 말을 몰아 맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "조운이 장합의 창을 받다",
+     "Speech": "(빠르다……!)",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장합이 조운의 창을 막다",
+     "Speech": "(이 창끝…… 소문 이상이군.)",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "장합이 거푸 몰아치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "dodge",
+     "Title": "장합이 조운의 찌르기를 피하다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "장합이 감탄하다",
+     "Speech": "좋은 창이다. 떠돌게 두기 아깝군.",
+     "Side": 1,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 받아치다",
+     "Speech": "그대 같은 장수가 원소를 섬기다니, 나도 아깝소.",
+     "Side": 0,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "block",
+     "Title": "장합이 막다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "조운이 막다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "장합이 숨을 고르다",
+     "Speech": "(끝이 나지 않는다…… 이대로면 날이 새겠군.)",
+     "Side": 1,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 창을 거두다",
+     "Speech": "현덕 공은 이미 멀리 가셨소. 오늘은 여기까지요.",
+     "Side": 0,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "backstep",
+     "Title": "조운이 말머리를 돌려 물러서다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.6
+    },
+    {
+     "Kind": "draw",
+     "Title": "두 장수가 승부를 내지 못하고 갈라서다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 2.5
+    }
+   ]
+  }
+ ],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "yuan",
+   "Name": "원소군"
+  }
+ ]
+}

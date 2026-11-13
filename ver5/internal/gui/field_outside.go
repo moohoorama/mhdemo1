@@ -254,28 +254,44 @@ func (f *Field) drawOutsideGround(clockMS float64) {
 	f.drawHaze(o.layer)
 	f.cutBattleArea(o.layer)
 	c.DrawImage(o.layer, nil)
-	// a dark drop just outside the edge, then a faintly pulsing pale rim on it
-	f.drawBorder(c, o.drop, 4*z, 9*z, color.NRGBA{A: 255})
+	// a dark drop just outside the edge, then a faintly pulsing pale rim on it, both off the tiles so the
+	// edge reads as the battle area's outline on every side
+	f.drawBorder(c, o.drop, 0, 9*z, color.NRGBA{A: 255})
 	pulse := .35 + .08*math.Sin(clockMS/1000*1.6)
 	f.drawBorder(c, o.rim, 0, math.Max(1, 1.1*z)/.8, color.NRGBA{R: 240, G: 225, B: 170, A: uint8(255 * pulse)})
 }
 
-// drawHaze lays the haze over dst: its texture round the map's centre, the even haze around that.
+// drawHaze lays the haze over dst as one 3×3 mesh: the texture's square round the map's centre and
+// eight quads of even haze around it sharing its edge vertices, so no pixel along the seam is covered twice
+// or missed. The square's outer half texel is left to the quads, so the linear filter never reads
+// past the texture's edge (where it would fade to transparent).
 func (f *Field) drawHaze(dst *ebiten.Image) {
 	o := &f.outside
 	mx, my := f.renderPoint(o.cx, o.cy)
-	r := hazeReach * f.renderZoom
-	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
-	op.GeoM.Scale(2*r/256, 2*r/256)
-	op.GeoM.Translate(mx-r, my-r)
-	dst.DrawImage(o.haze, op)
-	w, h := float32(dst.Bounds().Dx()), float32(dst.Bounds().Dy())
-	x0, y0, x1, y1 := float32(mx-r), float32(my-r), float32(mx+r), float32(my+r)
-	even := haze(hazeReach)
-	vector.FillRect(dst, 0, 0, w, max(0, y0), even, false)
-	vector.FillRect(dst, 0, y1, w, max(0, h-y1), even, false)
-	vector.FillRect(dst, 0, y0, max(0, x0), y1-y0, even, false)
-	vector.FillRect(dst, x1, y0, max(0, w-x1), y1-y0, even, false)
+	const n = 256
+	r := hazeReach * f.renderZoom * (1 - 1.0/n) // to the outer texels' centres
+	w, h := float64(dst.Bounds().Dx()), float64(dst.Bounds().Dy())
+	xs := [4]float64{min(0, mx-r), mx - r, mx + r, max(w, mx+r)}
+	ys := [4]float64{min(0, my-r), my - r, my + r, max(h, my+r)}
+	var vs []ebiten.Vertex
+	var is []uint16
+	for j := range 3 {
+		for i := range 3 {
+			// the middle quad samples the texture between its outer texels' centres; the others sit on
+			// a corner texel, all of which are the even haze
+			sx := [2]float32{.5, .5}
+			sy := [2]float32{.5, .5}
+			if i == 1 && j == 1 {
+				sx, sy = [2]float32{.5, n - .5}, [2]float32{.5, n - .5}
+			}
+			at := uint16(len(vs))
+			for _, c := range [4][2]int{{0, 0}, {1, 0}, {1, 1}, {0, 1}} {
+				vs = append(vs, ebiten.Vertex{DstX: float32(xs[i+c[0]]), DstY: float32(ys[j+c[1]]), SrcX: sx[c[0]], SrcY: sy[c[1]], ColorR: 1, ColorG: 1, ColorB: 1, ColorA: 1})
+			}
+			is = append(is, at, at+1, at+2, at, at+2, at+3)
+		}
+	}
+	dst.DrawTriangles(vs, is, o.haze, &ebiten.DrawTrianglesOptions{Filter: ebiten.FilterLinear})
 }
 
 // cutBattleArea clears the battle area out of a canvas-size dst: two triangles, no path to fill.
@@ -289,16 +305,16 @@ func (f *Field) cutBattleArea(dst *ebiten.Image) {
 }
 
 // drawBorder stretches band across a strip width canvas px wide along each side of the battle area,
-// dy below it, tinted c. Neighbouring strips meet on the corners' bisectors, so none overlaps another.
-func (f *Field) drawBorder(dst, band *ebiten.Image, dy, width float64, c color.NRGBA) {
+// off canvas px out from it, tinted c. Neighbouring strips meet on the corners' bisectors, so none
+// overlaps another.
+func (f *Field) drawBorder(dst, band *ebiten.Image, off, width float64, c color.NRGBA) {
 	var p [4][2]float64
 	var mid [2]float64
 	for i, q := range f.mapOutline() {
 		p[i][0], p[i][1] = f.renderPoint(q[0], q[1])
-		p[i][1] += dy
 		mid[0], mid[1] = mid[0]+p[i][0]/4, mid[1]+p[i][1]/4
 	}
-	// each side's outward normal, then each corner's offset to where the two strips' edges cross
+	// each side's outward normal, then each corner's offset to where lines t px out from its two sides cross
 	var n [4][2]float64
 	for i := range 4 {
 		a, b := p[i], p[(i+1)%4]
@@ -311,9 +327,11 @@ func (f *Field) drawBorder(dst, band *ebiten.Image, dy, width float64, c color.N
 	var out, in [4][2]float64
 	for i := range 4 {
 		m, q := n[(i+3)%4], n[i]
-		k := width / 2 / (1 + m[0]*q[0] + m[1]*q[1])
-		out[i] = [2]float64{p[i][0] + (m[0]+q[0])*k, p[i][1] + (m[1]+q[1])*k}
-		in[i] = [2]float64{p[i][0] - (m[0]+q[0])*k, p[i][1] - (m[1]+q[1])*k}
+		at := func(t float64) [2]float64 {
+			k := t / (1 + m[0]*q[0] + m[1]*q[1])
+			return [2]float64{p[i][0] + (m[0]+q[0])*k, p[i][1] + (m[1]+q[1])*k}
+		}
+		out[i], in[i] = at(off+width), at(off)
 	}
 	r, g, b, a := float32(c.R)/255, float32(c.G)/255, float32(c.B)/255, float32(c.A)/255
 	vertex := func(q [2]float64, v float32) ebiten.Vertex {

@@ -73,7 +73,7 @@ func (b *barState) update(target, dt float64) {
 // cut to the share it shows; z is the canvas pixels per game pixel.
 func (f *Field) drawUnitBar(u *unitVis, x, top, z float32) {
 	l := float64(x - barWidth*z/2)
-	part := func(name string, frame int, share float64, at, y float64) {
+	part := func(name string, frame int, share float64, at, y float64, bright ...float32) {
 		s := f.A.UI[name]
 		im := s.Frames[frame]
 		b := im.Bounds()
@@ -87,6 +87,9 @@ func (f *Field) drawUnitBar(u *unitVis, x, top, z float32) {
 		op.GeoM.Translate(at, y)
 		if f.deployment && !u.ally {
 			op.ColorScale.Scale(.45, .45, .45, 1)
+		}
+		for _, k := range bright {
+			op.ColorScale.Scale(k, k, k, 1)
 		}
 		f.Canvas.DrawImage(im.SubImage(image.Rect(b.Min.X, b.Min.Y, b.Min.X+w, b.Max.Y)).(*ebiten.Image), op)
 	}
@@ -103,7 +106,9 @@ func (f *Field) drawUnitBar(u *unitVis, x, top, z float32) {
 	}
 	part("bar_fill", side, fill, in, y+float64(z))
 	part("bar_ticks", 0, 1, in, y+float64(z))
-	if u.shownMP > 0 {
+	if u.shownMP > u.maxMP { // a drink poured past the max: the full bar brightens and dims
+		part("bar_mp", 0, 1, in, y+5*float64(z), float32(.55+1.2*overMPPulse(f.clockMS/1000)))
+	} else if u.shownMP > 0 {
 		part("bar_mp", 0, max(1/float64(barWidth-2), float64(u.shownMP)/float64(max(1, u.maxMP))), in, y+5*float64(z))
 	}
 }

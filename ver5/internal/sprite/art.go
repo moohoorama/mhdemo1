@@ -20,17 +20,24 @@ type Art struct {
 	sheet       *ebiten.Image
 	shadow      *ebiten.Image
 	top         float64
+	src         *Sheet
+	pal         Palette
+	mu          sync.Mutex
+	variants    map[string]*Art
 }
 
-func newArt(s *Sheet, p Palette, shadow *ebiten.Image) *Art {
+func newArt(s *Sheet, p Palette, shadow *ebiten.Image, edit Edit) *Art {
 	sd := s.Shadow()
 	a := &Art{ID: s.ID, Name: s.Name, Pivot: [2]float64{float64(s.Pivot[0]), float64(s.Pivot[1])},
 		ShadowPivot: [2]float64{float64(sd.Pivot[0]), float64(sd.Pivot[1])}, Animations: s.Animations,
-		cell: s.Cell, shadowCell: sd.Cell, rows: map[string]int{}, shadow: shadow}
+		cell: s.Cell, shadowCell: sd.Cell, rows: map[string]int{}, shadow: shadow, src: s, pal: p}
 	for i, d := range s.Rows {
 		a.rows[d] = i
 	}
 	img := s.Render(p)
+	if edit != nil {
+		edit(img, s.Cell, s.Pivot)
+	}
 	a.sheet = ebiten.NewImageFromImage(img)
 	a.top = a.Pivot[1]
 	w, h := s.Cell[0], s.Cell[1]
@@ -98,6 +105,25 @@ func (a *Art) Shadow(dir, anim string, i int) *ebiten.Image {
 	return a.shadow.SubImage(image.Rect(col*w, row*h, (col+1)*w, (row+1)*h)).(*ebiten.Image)
 }
 
+// Edit changes a rendered sheet in place: every cell is cell pixels with its pivot at pivot.
+type Edit func(img *image.RGBA, cell, pivot [2]int)
+
+// Variant is the same sprite with edit applied to every cell (a prisoner's rope), made once per name and kept;
+// it shares the shadow.
+func (a *Art) Variant(name string, edit Edit) *Art {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	if v, ok := a.variants[name]; ok {
+		return v
+	}
+	if a.variants == nil {
+		a.variants = map[string]*Art{}
+	}
+	v := newArt(a.src, a.pal, a.shadow, edit)
+	a.variants[name] = v
+	return v
+}
+
 // TopOffset is how far above the pivot the idle south frame's first opaque row is (for HP bars).
 func (a *Art) TopOffset() float64 { return a.top }
 
@@ -134,7 +160,7 @@ func (l *Library) Art(id string, p Palette) *Art {
 		sh = ebiten.NewImageFromImage(Tint(s.Shadow().Image, l.shadowRGB))
 		l.shadows[id] = sh
 	}
-	a := newArt(s, p, sh)
+	a := newArt(s, p, sh, nil)
 	l.arts[key] = a
 	return a
 }

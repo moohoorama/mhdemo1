@@ -85,7 +85,7 @@
    "Desc": "자기 차례에 공격범위 안의 적이 아군의 물리 공격을 받으면 같은 대상을 50% 피해로 추가 공격.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 700,
    "Effects": {
     "assist": 0.5
    }
@@ -397,6 +397,16 @@
     "grass_factor": 0.05
    }
   },
+  "terrain_footing": {
+   "Name": "전지형보조",
+   "Desc": "어느 지형에 서든 지형 보정 +5%(공격·방어 모두).",
+   "Kind": "talent",
+   "Tone": "move",
+   "Cost": 700,
+   "Effects": {
+    "terrain_factor": 0.05
+   }
+  },
   "gale": {
    "Name": "질풍",
    "Desc": "이동력 +2.",
@@ -524,8 +534,8 @@
    }
   },
   "castle_defense": {
-   "Name": "수성",
-   "Desc": "매 자기 차례 자신에게 방어력 버프. 성·성내·관문에서는 두 배.",
+   "Name": "중갑",
+   "Desc": "매 자기 차례 자신에게 방어력 버프(+20%).",
    "Kind": "talent",
    "Tone": "guard",
    "Cost": 500,
@@ -533,7 +543,7 @@
     "brace_prep"
    ],
    "Effects": {
-    "fortify": 20
+    "turn_buff:defense": 20
    }
   },
   "composure": {
@@ -650,19 +660,6 @@
    "Cost": 500,
    "Effects": {
     "self_guard_half": 1
-   }
-  },
-  "white_ear": {
-   "Name": "백이",
-   "Desc": "매 자기 차례 자신에게 방어력 버프.",
-   "Kind": "talent",
-   "Tone": "guard",
-   "Cost": 500,
-   "Requires": [
-    "self_ward"
-   ],
-   "Effects": {
-    "turn_buff:defense": 20
    }
   },
   "half_cost": {
@@ -863,7 +860,7 @@
    "Tone": "buff",
    "Cost": 700,
    "Requires": [
-    "exhort"
+    "deputy_appoint"
    ],
    "Effects": {
     "deputy_charm": 20
@@ -922,16 +919,6 @@
     "aura_mana": 0.1
    }
   },
-  "hoarding": {
-   "Name": "중가",
-   "Desc": "마을에서 자기 차례를 마치면 보리·콩을 하나씩 얻는다.",
-   "Kind": "talent",
-   "Tone": "craft",
-   "Cost": 500,
-   "Effects": {
-    "village_forage": 1
-   }
-  },
   "even_hand": {
    "Name": "지균",
    "Desc": "매 자기 차례 인접 아군에게 순발·사기 버프.",
@@ -948,7 +935,7 @@
    "Desc": "부관을 둘 수 있다. 부관의 능력치와 특성이 주장을 돕는다.",
    "Kind": "talent",
    "Tone": "craft",
-   "Cost": 500,
+   "Cost": 700,
    "Effects": {
     "deputy_appoint": 1
    }
@@ -1055,16 +1042,6 @@
     "ignore_zoc": 1
    }
   },
-  "diamond_guard": {
-   "Name": "금흉갑",
-   "Desc": "매 자기 차례 방어력 버프.",
-   "Kind": "talent",
-   "Tone": "guard",
-   "Cost": 0,
-   "Effects": {
-    "turn_buff:defense": 20
-   }
-  },
   "resolve_strike": {
    "Name": "회심",
    "Desc": "일반 공격과 공격 책략이 반드시 치명타.",
@@ -1088,7 +1065,7 @@
   },
   "bean_pouch": {
    "Name": "콩주머니",
-   "Desc": "공격을 받고 버틴 뒤 잃은 병력이 400 이상이면 콩 1개를 먹어 병력을 400 회복한다. 콩이 없으면 먹지 못한다.",
+   "Desc": "공격을 받고 버틴 뒤 잃은 병력이 400 이상이면 콩 1개를 먹어 병력을 400 회복한다. 콩이 없으면 먹지 못한다. 물심양면이면 회복량이 늘고, 보급이면 주변 아군 1기도 함께 회복한다.",
    "Kind": "talent",
    "Tone": "heal",
    "Cost": 0,
@@ -1119,7 +1096,7 @@
   },
   "aim_prep": {
    "Name": "조준",
-   "Desc": "조준 병법 사용 가능. 순발·사기를 높여 겨누어 쏜다.",
+   "Desc": "조준 병법 사용 가능. 자신의 순발·사기를 높인다.",
    "Kind": "tactic",
    "Tone": "attack",
    "Cost": 500
@@ -1143,7 +1120,7 @@
   },
   "fire_arrow_art": {
    "Name": "화시",
-   "Desc": "화시 병법 사용 가능. 물리 70%와 정신력 기반 화염 70% 피해.",
+   "Desc": "화시 병법 사용 가능. 물리 70%와 정신력 기반 화염 70% 피해, 맞힌 칸에 불씨.",
    "Kind": "tactic",
    "Tone": "attack",
    "Cost": 500
@@ -1279,7 +1256,7 @@
   },
   "disrupt_prep": {
    "Name": "교란",
-   "Desc": "교란 책략 사용 가능. 인접 적 1기의 순발·사기를 2턴 낮춘다.",
+   "Desc": "교란 책략 사용 가능. 인접 적 1기의 순발·사기를 3턴 낮춘다.",
    "Kind": "strategy",
    "Tone": "debuff",
    "Cost": 500
@@ -1338,7 +1315,7 @@
   },
   "brace_prep": {
    "Name": "대비",
-   "Desc": "대비 책략 사용 가능. 자신의 방어력과 정신력을 2턴 높인다.",
+   "Desc": "대비 책략 사용 가능. 자신의 방어력과 정신력을 3턴 높인다.",
    "Kind": "strategy",
    "Tone": "guard",
    "Cost": 500
@@ -1352,7 +1329,7 @@
   },
   "reload_prep": {
    "Name": "장전",
-   "Desc": "장전 책략 사용 가능. 자신의 공격력을 2턴 높인다.",
+   "Desc": "장전 책략 사용 가능. 자신의 공격력을 3턴 높인다.",
    "Kind": "strategy",
    "Tone": "buff",
    "Cost": 500
@@ -1453,14 +1430,24 @@
     "ranged_ward": 0.3
    }
   },
+  "block_up": {
+   "Name": "방어확률증가",
+   "Desc": "적의 물리 공격 명중률 −10%p.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 700,
+   "Effects": {
+    "evade": 10
+   }
+  },
   "counter_ward": {
    "Name": "반격피해감소",
-   "Desc": "공격하고 받는 반격 피해가 절반.",
+   "Desc": "공격하고 받는 반격의 피해 비율 −30%p(기본 반격 50% → 20%). 청룡언월도의 +30%p와 맞비긴다.",
    "Kind": "talent",
    "Tone": "guard",
    "Cost": 500,
    "Effects": {
-    "counter_ward": 0.5
+    "counter_ward": 0.3
    }
   },
   "foresight": {

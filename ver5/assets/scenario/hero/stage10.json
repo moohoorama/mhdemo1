@@ -18,14 +18,6 @@
    "Text": "원소를 물리친다"
   }
  ],
- "Defeat": [
-  {
-   "If": [
-    "defeated:gongsunzan"
-   ],
-   "Text": "공손찬 퇴각"
-  }
- ],
  "TurnLimit": 25,
  "Map": "map10.json",
  "Allies": [

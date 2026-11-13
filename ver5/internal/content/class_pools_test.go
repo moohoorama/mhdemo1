@@ -8,9 +8,9 @@ import (
 // classPools is the classified trait draft (_newfeature.md section 2) as the data bundle teaches it.
 var classPools = map[string][]string{
 	"light_infantry":     {"diagonal", "fire", "brace_prep"},
-	"heavy_infantry":     {"deputy_appoint", "assist", "ranged_ward"},
+	"heavy_infantry":     {"deputy_appoint", "block_up", "ranged_ward"},
 	"guards":             {"castle_defense", "siegecraft", "composure"},
-	"pikeman":            {"deputy_appoint", "long_spear", "pierce"},
+	"pikeman":            {"deputy_appoint", "long_spear", "pierce", "assist"},
 	"light_cavalry":      {"dash", "accuracy_up", "grass_footing"},
 	"heavy_cavalry":      {"deputy_appoint", "counter_ward", "iron_armor"},
 	"royal_guard":        {"diagonal", "charge_strike", "impact", "vital_strike"},
@@ -21,7 +21,8 @@ var classPools = map[string][]string{
 	"repeating_crossbow": {"exhort", "rapid_art", "penetrate_art"},
 	"catapult":           {"siegecraft", "cross_strike", "far_sight"},
 	"bandit":             {"counter_art", "earth", "provoke_prep", "disrupt_prep"},
-	"scholar":            {"fire", "relief", "focus", "meditate_art", "foresight"},
+	"turban":             {"counter_art", "earth", "provoke_prep", "disrupt_prep"},
+	"scholar":            {"fire", "relief", "focus", "foresight"},
 }
 
 func TestClassPoolsFollowTraitDesign(t *testing.T) {

@@ -143,6 +143,13 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 	if err := d.validateObjectives(s, refs); err != nil {
 		return nil, nil, err
 	}
+	for _, duel := range s.Duels {
+		for _, cond := range duel.If {
+			if err := d.validateCond(cond, refs); err != nil {
+				return nil, nil, fmt.Errorf("duel %s: %w", duel.ID, err)
+			}
+		}
+	}
 	for _, event := range s.Events {
 		for _, cond := range event.If {
 			if err := d.validateCond(cond, refs); err != nil {

@@ -42,7 +42,7 @@ func demoParty(d *Demo) error {
 		case 130:
 			g.openOverlay("party")
 		case 145, 160, 175:
-			g.party.tab = (f - 130) / 15
+			g.party.tab = (f - 145) / 15
 		case 190:
 			g.party.table = true
 		case 205:

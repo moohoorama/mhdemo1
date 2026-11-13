@@ -12,19 +12,6 @@
    "Text": "옛말에 이르기를, 어려울 때 온 벗이 참된 벗이라 하였소. 현덕 공께 큰 빚을 졌구려."
   },
   {
-   "ID": "c12-g2",
-   "Kind": "branch",
-   "Cases": [
-    {
-     "If": [
-      "flag:flag-beihai-taishici"
-     ],
-     "Next": "c12-g3"
-    }
-   ],
-   "Else": "c12-walk"
-  },
-  {
    "ID": "c12-g3",
    "Kind": "say",
    "Speaker": "taishici",

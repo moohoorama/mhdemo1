@@ -5,6 +5,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
+	"image"
+	_ "image/png"
 	"net"
 	"net/http"
 	_ "net/http/pprof"
@@ -94,11 +96,24 @@ func main() {
 	}
 	ebiten.SetWindowSize(gui.Width, gui.Height)
 	ebiten.SetWindowTitle(d.Title)
+	if icon, err := loadIcon(filepath.Join(*path, "..", "graphics/ui/app_icon.png")); err == nil {
+		ebiten.SetWindowIcon([]image.Image{icon})
+	}
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 	if err = ebiten.RunGame(g); err != nil {
 		fail(err)
 	}
 }
+func loadIcon(path string) (image.Image, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	icon, _, err := image.Decode(f)
+	return icon, err
+}
+
 func fail(err error) { fmt.Fprintln(os.Stderr, err); os.Exit(1) }
 
 const debugAddr = "127.0.0.1:6060"

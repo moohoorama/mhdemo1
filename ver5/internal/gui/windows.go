@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"srpg/internal/content"
 	"srpg/internal/core"
 	"srpg/internal/session"
 	"srpg/internal/sprite"
@@ -153,7 +154,7 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 	case "waypoints":
 		w, h = waypointW, waypointH
 	case "difficulty":
-		w, h = 640, 84+len(g.S.Data.Rules.Difficulties)*difficultyRowH
+		w, h = 640, 84+len(g.difficulties())*difficultyRowH
 	}
 	// the window in a frame with room for its title plate and shadow; a sheet has no plate
 	pad, strip := 40, closeStrip
@@ -167,6 +168,9 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 	g.popup(dst, "overlay:"+name, 150, w+pad, h+strip+pad, image.Rect(0, 0, w+pad, h+strip+pad), func(dst *ebiten.Image) { g.overlayWindow(dst, name, w, h, strip) })
 	if name == "equipment" && g.equip.info.id != "" {
 		g.drawEquipInfo(dst)
+	}
+	if name == "party" && len(g.party.insu.branch) > 0 {
+		g.drawInsuBranches(dst)
 	}
 	if name == "shop" && g.shopView.info.id != "" {
 		g.chipWindow(dst, "overlay:shop-info", g.shopView.info, func() { g.shopView.info = equipChip{} })
@@ -245,7 +249,7 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h, strip int) {
 		speeds, scales, damages, xps := []choice{}, []choice{}, []choice{}, []choice{}
 		for _, n := range []int{1, 2, 4, 8} {
 			n := n
-			speeds = append(speeds, choice{fmt.Sprintf("×%d", n), g.speed == n, func() { g.speed = n }})
+			speeds = append(speeds, choice{fmt.Sprintf("×%d", n), g.speed == n, func() { g.setSpeed(n) }})
 		}
 		for _, n := range uiScales {
 			n := n
@@ -261,9 +265,10 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h, strip int) {
 			opts  []choice
 		}
 		rows := []row{
-			{"AI 차례", []choice{
-				{"동시에 보기", s.Replay != "one", set(func(v *storage.Settings) { v.Replay = "together" })},
-				{"하나씩 보기", s.Replay == "one", set(func(v *storage.Settings) { v.Replay = "one" })},
+			{"AI 동시 진행", []choice{
+				{"항상", s.Replay == "together", set(func(v *storage.Settings) { v.Replay = "together" })},
+				{"보통", s.Replay == "spells", set(func(v *storage.Settings) { v.Replay = "spells" })},
+				{"안 함", s.Replay == "one", set(func(v *storage.Settings) { v.Replay = "one" })},
 			}},
 			{"전투 기록", []choice{
 				{"상세", s.Detail, set(func(v *storage.Settings) { v.Detail = true })},
@@ -679,7 +684,7 @@ func (g *Game) promotionWindow(dst *ebiten.Image, p promotionUp, t float64) {
 	g.closeRow(dst, r.Max.X-16, r.Max.Y-touchH-12, g.closeModal)
 }
 
-// branches are the promotions the commands would make, each worked out on a copy of the battle.
+// branches are the promotions the commands would make, each worked out on a copy of the game.
 func (g *Game) branches(cmds []core.Command) []promotionUp {
 	var out []promotionUp
 	before := g.view()
@@ -698,27 +703,23 @@ func (g *Game) branches(cmds []core.Command) []promotionUp {
 	return out
 }
 
-// drawBranches is the 인수's class picker: one card per class it can make, with the officer's new look, the class's
-// description, move and reach, and the stats it would have. A card promotes into it; outside steps back.
-func (g *Game) drawBranches(dst *ebiten.Image) {
-	if g.ord.stage != "branch" || len(g.ord.branch) == 0 {
-		return
-	}
+// branchCards lays out the cards of the promotions in branch; pressing one gives its command to pick.
+func (g *Game) branchCards(dst *ebiten.Image, branch []promotionUp, pick func(core.Command)) {
 	const cardW, cardH, gap = 300, 400, 24
-	n := len(g.ord.branch)
+	n := len(branch)
 	w := n*cardW + (n-1)*gap + 64
 	r := image.Rect(uiW/2-w/2, 150, uiW/2+w/2, 150+cardH+120)
 	g.titled(dst, r, "승급")
-	who := g.name(g.ord.branch[0].id) + " — 어느 병종으로 올릴까요?"
+	who := g.name(branch[0].id) + " — 어느 병종으로 올릴까요?"
 	mixed := false // the officer and its deputy both can take the 인수
-	for _, p := range g.ord.branch {
-		mixed = mixed || p.id != g.ord.branch[0].id
+	for _, p := range branch {
+		mixed = mixed || p.id != branch[0].id
 	}
 	if mixed {
 		who = "누구를 어느 병종으로 올릴까요?"
 	}
 	g.centered(dst, who, float64(uiW/2), float64(r.Min.Y+26), 17, ink)
-	for i, p := range g.ord.branch {
+	for i, p := range branch {
 		c := image.Rect(r.Min.X+32+i*(cardW+gap), r.Min.Y+62, r.Min.X+32+i*(cardW+gap)+cardW, r.Min.Y+62+cardH)
 		hover := hovered(c)
 		body := lacquer
@@ -756,7 +757,7 @@ func (g *Game) drawBranches(dst *ebiten.Image) {
 			}
 		}
 		cmd := p.cmd
-		g.addButton(c, "", func() { g.confirm(cmd) })
+		g.addButton(c, "", func() { pick(cmd) })
 	}
 	g.centered(dst, "창 밖을 누르면 돌아갑니다", float64(uiW/2), float64(r.Max.Y-36), 13, muted)
 }
@@ -771,10 +772,21 @@ func gainColor(d int) color.NRGBA {
 
 const difficultyRowH = 96
 
+// difficulties are the difficulties a new game offers: the debug ones only in the debug mode.
+func (g *Game) difficulties() []content.Difficulty {
+	var out []content.Difficulty
+	for _, v := range g.S.Data.Rules.Difficulties {
+		if !v.Debug || g.Debug {
+			out = append(out, v)
+		}
+	}
+	return out
+}
+
 // difficultyWindow picks the difficulty of a new game, or of one started at the picked waypoint: each one a
 // button with its name over its description.
 func (g *Game) difficultyWindow(dst *ebiten.Image, x, y, w int) {
-	for i, v := range g.S.Data.Rules.Difficulties {
+	for i, v := range g.difficulties() {
 		id := v.ID
 		top := y + 64 + i*difficultyRowH
 		g.btn(dst, image.Rect(x+32, top, x+w-32, top+difficultyRowH-14), "", func() {

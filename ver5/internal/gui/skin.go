@@ -144,6 +144,11 @@ func unframed(r image.Rectangle) image.Rectangle {
 
 // addButton registers a clickable area drawn this frame.
 func (g *Game) addButton(r image.Rectangle, label string, click func()) {
+	if !g.buttonClip.Empty() {
+		if r = r.Intersect(g.buttonClip); r.Empty() {
+			return
+		}
+	}
 	g.buttons = append(g.buttons, button{rect: unframed(r), label: label, click: click})
 }
 
@@ -382,18 +387,29 @@ func with(name string) string {
 	return name + "와"
 }
 
-// window draws the shared frame: the lacquered body with a top-lit wash, under the UI sheet's
-// gold double rim and corner studs sliced nine ways.
+// window draws the shared frame: the lacquered body laid with the dialogue box's ruyi clouds at their full
+// contrast, a top-lit wash, under the UI sheet's gold double rim and corner studs sliced nine ways.
 func (g *Game) window(dst *ebiten.Image, r image.Rectangle) {
 	x, y, w, h := float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy())
 	rect(dst, x+3, y+4, w, h, color.NRGBA{A: 90})
 	rect(dst, x, y, w, h, lacquer)
+	g.ruyiPanel(dst, float64(x+4), float64(y+4), float64(w-8), float64(h-8), lacquer, 1)
 	op := &ebiten.DrawImageOptions{} // the wash: eight bands, each 1/16 of the body high
 	op.GeoM.Scale(float64(w-8), float64(h-8)/16)
 	op.GeoM.Translate(float64(x+4), float64(y+4))
 	drawScaled(dst, g.assets.UI["window_glow"].Frames[0], op)
-	g.drawPattern(dst, g.assets.Shou, float64(x+8), float64(y+8), float64(w-16), float64(h-16), 0, 0, 1, [3]float32{.52, .35, .25}, .18)
 	nineSlice(dst, g.assets.UI["window_rim"].Frames[0], 8, r)
+}
+
+// ruyiPanel lays the ruyi clouds over x, y, w, h so that they average to c, their light and dark spread by k
+// (1 keeps the dialogue box's contrast): c laid at 1-k and the clouds tinted c/mean over it at k.
+func (g *Game) ruyiPanel(dst *ebiten.Image, x, y, w, h float64, c color.NRGBA, k float32) {
+	if k < 1 {
+		rect(dst, float32(x), float32(y), float32(w), float32(h), c)
+	}
+	m := float32(max(.01, g.assets.RuyiMean)) * 255
+	tint := [3]float32{float32(c.R) / m, float32(c.G) / m, float32(c.B) / m}
+	g.drawPattern(dst, g.assets.Ruyi, x, y, w, h, 0, 0, 1, tint, k)
 }
 
 // nineSlice stretches UI picture im (one art pixel per UI pixel) over r: its corner UI px
@@ -564,6 +580,18 @@ func bar(dst *ebiten.Image, x, y, w, h float32, k float64, c color.Color) {
 	k = max(0, min(1, k))
 	rect(dst, x+1, y+1, (w-2)*float32(k), h-2, c)
 }
+
+// mpColor is the spell point colour: mpC up to the max, and past it (a drink poured over the brim)
+// a blue that brightens and dims smoothly once every two seconds.
+func mpColor(mp, maxMP int, seconds float64) color.NRGBA {
+	if mp <= maxMP {
+		return mpC
+	}
+	return lighten(mpC, -.35+.95*overMPPulse(seconds))
+}
+
+// overMPPulse runs 0 → 1 → 0 once every two seconds: sin turning 360° in 2 s.
+func overMPPulse(seconds float64) float64 { return (1 + math.Sin(seconds*math.Pi)) / 2 }
 
 func hpColor(k float64) color.NRGBA {
 	switch {

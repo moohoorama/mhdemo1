@@ -3,7 +3,7 @@
  "Name": "우이 전투",
  "Width": 0,
  "Height": 0,
- "Max": 8,
+ "Max": 7,
  "Required": [
   "liubei"
  ],
@@ -20,50 +20,38 @@
  "Map": "map14.json",
  "Allies": [
   {
-   "X": 2,
-   "Y": 2
+   "X": 5,
+   "Y": 7
   },
   {
-   "X": 3,
-   "Y": 2
+   "X": 6,
+   "Y": 7
   },
   {
-   "X": 2,
-   "Y": 3
+   "X": 5,
+   "Y": 6
   },
   {
-   "X": 1,
-   "Y": 2
+   "X": 5,
+   "Y": 8
   },
   {
-   "X": 3,
-   "Y": 3
+   "X": 4,
+   "Y": 7
   },
   {
-   "X": 1,
-   "Y": 3
+   "X": 6,
+   "Y": 6
   },
   {
-   "X": 2,
-   "Y": 4
-  },
-  {
-   "X": 3,
-   "Y": 4
-  },
-  {
-   "X": 1,
-   "Y": 4
-  },
-  {
-   "X": 2,
-   "Y": 1
+   "X": 6,
+   "Y": 8
   }
  ],
  "Recommend": {
   "liubei": {
-   "X": 2,
-   "Y": 2
+   "X": 5,
+   "Y": 7
   }
  },
  "Party": [],
@@ -294,42 +282,21 @@
    ]
   },
   {
-   "ID": "bridge",
+   "ID": "lubu",
    "If": [
     "alldefeated:fort",
-    "alldefeated:bank",
-    "!alive:lu-north"
+    "alldefeated:bank"
    ],
    "Do": [
-    {
-     "Kind": "goals",
-     "Victory": [
-      {
-       "If": [
-        "alldefeated:camp",
-        "alldefeated:ji"
-       ],
-       "Text": "남쪽 진채의 기령군을 물리친다"
-      }
-     ]
-    },
     {
      "Kind": "say",
      "Lines": [
       {
        "Actor": "guanyu",
-       "Text": "형님, 건너편 성을 떨어뜨렸습니다. 기령의 본진은 남쪽 진채에 있습니다."
+       "Text": "형님, 건너편 성을 떨어뜨렸습니다."
       }
      ]
-    }
-   ]
-  },
-  {
-   "ID": "lubu",
-   "If": [
-    "any:[defeated:camp, defeated:ji, round>=12]"
-   ],
-   "Do": [
+    },
     {
      "Kind": "spawn",
      "Spawns": [
@@ -610,7 +577,7 @@
    "Outcome": "draw",
    "AllyResult": "stay",
    "EnemyResult": "stay",
-   "Text": "관우와 기령이 삼십 합을 겨루었으나 승부가 나지 않았다.",
+   "Text": "관우가 기령을 몰아붙였으나, 여포군에 쫓기는 유비를 두고 볼 수 없어 말머리를 돌렸다.",
    "Beats": [
     {
      "Kind": "talk",
@@ -635,10 +602,31 @@
     },
     {
      "Kind": "block",
-     "Title": "관우가 삼첨도를 받다",
-     "Speech": "",
+     "Title": "관우가 삼첨도를 가볍게 받다",
+     "Speech": "가볍군.",
      "Side": 1,
      "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "기령이 돌진하며 거듭 몰아치다",
+     "Speech": "그것이 전부냐.",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "청룡도 한 번에 기령이 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "기령이 이를 악물다",
+     "Speech": "(이놈… 팔이 저려 온다.)",
+     "Side": 1,
+     "Duration": 2.4
     },
     {
      "Kind": "block",
@@ -648,47 +636,58 @@
      "Duration": 1.05
     },
     {
-     "Kind": "block",
-     "Title": "기령이 받아 내다",
-     "Speech": "",
+     "Kind": "critical-dodge",
+     "Title": "관우의 일격을 기령이 간신히 피하다",
+     "Speech": "크윽…!",
      "Side": 0,
-     "Duration": 1.05
+     "Duration": 1.2
     },
     {
-     "Kind": "rush-block",
-     "Title": "기령이 돌진하며 몰아치다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 1.1
-    },
-    {
-     "Kind": "dodge",
-     "Title": "관우가 말머리를 돌려 흘리다",
-     "Speech": "",
-     "Side": 1,
-     "Duration": 1.05
-    },
-    {
-     "Kind": "critical-block",
-     "Title": "관우가 크게 내리치나 기령이 버티다",
+     "Kind": "yielding-block",
+     "Title": "관우가 다시 밀어붙이다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.2
     },
     {
      "Kind": "talk",
-     "Title": "기령이 숨을 고르다",
-     "Speech": "……과연 소문대로구나.",
+     "Title": "관우가 뒤쪽 북소리를 듣다",
+     "Speech": "(여포의 군사가 형님의 뒤를 친다…)",
+     "Side": 0,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 승부를 미루다",
+     "Speech": "기령, 오래 상대해 줄 수 없다. 네 목은 다음에 받겠다.",
+     "Side": 0,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "기령이 소리치다",
+     "Speech": "어딜 가느냐! 승부는 아직 나지 않았다!",
      "Side": 1,
-     "Duration": 2.4
+     "Duration": 2.6
+    },
+    {
+     "Kind": "backstep",
+     "Title": "관우가 말머리를 돌려 물러서다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.6
     },
     {
      "Kind": "draw",
-     "Title": "두 장수가 승부를 내지 못하고 물러서다",
+     "Title": "두 장수가 승부를 내지 못하고 갈라서다",
      "Speech": "",
      "Side": 0,
      "Duration": 2.5
     }
+   ],
+   "If": [
+    "alldefeated:fort",
+    "alldefeated:bank"
    ]
   }
  ],

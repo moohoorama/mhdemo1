@@ -25,7 +25,7 @@ const (
 
 var (
 	selBg    = color.NRGBA{R: 58, G: 42, B: 30, A: 255}
-	cardBg   = color.NRGBA{R: 34, G: 24, B: 18, A: 255}
+	cardBg   = color.NRGBA{R: 60, G: 36, B: 28, A: 255}
 	cardRim  = color.NRGBA{R: 74, G: 56, B: 40, A: 255}
 	faintInk = color.NRGBA{R: 125, G: 115, B: 102, A: 255}
 	pillOut  = color.NRGBA{R: 74, G: 58, B: 28, A: 255}
@@ -129,13 +129,18 @@ func (g *Game) updateWheelLists() bool {
 }
 
 // listRows draws the rows of a list n long in r, rowH each from l.top: draw paints row i in rr, a press on it
-// that is let go without dragging picks it, and dragging or the wheel scrolls. A button draw adds inside the row
-// (a status pill) is registered after the row's own and so takes the press first.
+// that is let go without dragging picks it, and dragging, the wheel or the scrollbar on the right (shown when
+// the rows do not all fit) scrolls. A button draw adds inside the row (a status pill) is registered after the
+// row's own and so takes the press first.
 func (g *Game) listRows(dst *ebiten.Image, l *tableList, r image.Rectangle, n, rowH int, draw func(i int, rr image.Rectangle), pick func(i int)) {
 	fit := max(1, r.Dy()/rowH)
 	l.top = max(0, min(l.top, n-fit))
+	right := r.Max.X
+	if n > fit {
+		right -= tableBarW + 4
+	}
 	for i := l.top; i < n && i < l.top+fit; i++ {
-		rr := image.Rect(r.Min.X, r.Min.Y+(i-l.top)*rowH, r.Max.X, r.Min.Y+(i-l.top+1)*rowH)
+		rr := image.Rect(r.Min.X, r.Min.Y+(i-l.top)*rowH, right, r.Min.Y+(i-l.top+1)*rowH)
 		if pick != nil {
 			i := i
 			g.addButton(rr, "", func() { g.pressTable(l, rowH, func() { pick(i) }) })
@@ -143,10 +148,7 @@ func (g *Game) listRows(dst *ebiten.Image, l *tableList, r image.Rectangle, n, r
 		draw(i, rr)
 	}
 	if n > fit {
-		track := image.Rect(r.Max.X-4, r.Min.Y+2, r.Max.X-1, r.Min.Y+fit*rowH-2)
-		th := max(24, track.Dy()*fit/n)
-		ty := track.Min.Y + (track.Dy()-th)*l.top/(n-fit)
-		rect(dst, float32(track.Min.X), float32(ty), 3, float32(th), color.NRGBA{R: 160, G: 130, B: 90, A: 200})
+		g.tableBar(dst, l, image.Rect(r.Max.X-tableBarW, r.Min.Y+2, r.Max.X, r.Min.Y+fit*rowH-2), fit, n)
 	}
 	g.wheelAreas = append(g.wheelAreas, wheelArea{unframed(r), l})
 }
@@ -166,16 +168,21 @@ func (g *Game) officerRow(dst *ebiten.Image, rr image.Rectangle, c core.Characte
 	x, y := float64(rr.Min.X+12), float64(rr.Min.Y)
 	g.portrait(dst, c.ID, c.Class, x, y+8, 40)
 	g.label(dst, g.name(c.ID), x+50, y+7, 16, ink)
-	g.label(dst, fmt.Sprintf("%s · Lv%d", g.className(c.Class), c.Level), x+50, y+31, 12, muted)
+	g.classRank(dst, c.Def, c.Class, c.Level, fmt.Sprintf(" · Lv%d", c.Level), x+50, y+31, 12, muted)
 	if note != "" {
 		g.label(dst, note, float64(rr.Max.X-14)-g.width(note, 13), y+19, 13, noteC)
 	}
 }
 
-// card paints a framed panel.
-func card(dst *ebiten.Image, r image.Rectangle) {
-	rect(dst, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy()), cardBg)
-	strokeRect(dst, float32(r.Min.X)+.5, float32(r.Min.Y)+.5, float32(r.Dx()-1), float32(r.Dy()-1), 1, cardRim)
+// card paints a framed panel: a drop shadow, the ruyi clouds at half contrast on a red-brown, a gold rim and
+// inside it a dark line and a faint gold one.
+func (g *Game) card(dst *ebiten.Image, r image.Rectangle) {
+	x, y, w, h := float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy())
+	rect(dst, x, y+h, w, 3, color.NRGBA{A: 90})
+	g.ruyiPanel(dst, float64(x), float64(y), float64(w), float64(h), cardBg, .5)
+	strokeRect(dst, x+.5, y+.5, w-1, h-1, 1, goldDim)
+	strokeRect(dst, x+2.5, y+2.5, w-5, h-5, 3, color.NRGBA{A: 70})
+	strokeRect(dst, x+4.5, y+4.5, w-9, h-9, 1, color.NRGBA{R: 226, G: 182, B: 93, A: 46})
 }
 
 // dashedRect strokes r with a dashed line, for what can be learned.
@@ -309,7 +316,7 @@ func (g *Game) traitCardDesc(id string, w int) string {
 
 // traitCard describes trait id in r: its icon, name, kind and where it comes from, what it does, and a note.
 func (g *Game) traitCard(dst *ebiten.Image, r image.Rectangle, id, from, note string) {
-	card(dst, r)
+	g.card(dst, r)
 	x, y := float64(r.Min.X+12), float64(r.Min.Y+10)
 	g.traitIconOf(dst, id, x, y+2, 32)
 	name := g.traitName(id)
@@ -393,13 +400,32 @@ func (g *Game) hexChart(dst *ebiten.Image, cx, cy, radius float64, cur core.Stat
 	if alone != nil && *alone != cur {
 		ap = &al
 	}
-	g.hexagon(dst, cx, cy, radius, names, c, ap, best, []float64{1, 2.0 / 3, 1.0 / 3})
+	g.hexagon(dst, cx, cy, radius, names, c, ap, best, []float64{1, 2.0 / 3, 1.0 / 3}, nil)
+}
+
+// hexChartAttrs is hexChart of the officer alone with, under each battle stat, the attribute that feeds it in gold
+// (공격 over 무력, 방어 over 통솔, …), the labels a size up.
+func (g *Game) hexChartAttrs(dst *ebiten.Image, cx, cy, radius float64, cur core.Stats, attrs [6]int, best [6]int) {
+	var names [6]string
+	var c [6]int
+	var subs hexSubs
+	for i, a := range hexAxes {
+		names[i], c[i] = a.stat, a.get(cur)
+		subs.text[i], subs.c[i] = fmt.Sprintf("%s %d", a.attr, attrs[a.attrIdx]), gold
+	}
+	g.hexagon(dst, cx, cy, radius, names, c, nil, best, []float64{1, 2.0 / 3, 1.0 / 3}, &subs)
+}
+
+// hexSubs are the second lines of a hexagon's labels and their colours.
+type hexSubs struct {
+	text [6]string
+	c    [6]color.Color
 }
 
 // hexagon draws six values clockwise from the top on a hexagon at cx, cy, each against its rim value, with guide
 // rings at the given shares of the rim: cur filled in white and, when given, other outlined in gold. Each corner is
-// labelled with its name and value at 12.
-func (g *Game) hexagon(dst *ebiten.Image, cx, cy, radius float64, names [6]string, cur [6]int, other *[6]int, rim [6]int, rings []float64) {
+// labelled with its name and value at 12, or, given subs, at 14 over its sub line at 13.
+func (g *Game) hexagon(dst *ebiten.Image, cx, cy, radius float64, names [6]string, cur [6]int, other *[6]int, rim [6]int, rings []float64, subs *hexSubs) {
 	corner := func(i int, k float64) (float32, float32) {
 		t := -math.Pi/2 + float64(i)*math.Pi/3
 		return float32(cx + radius*k*math.Cos(t)), float32(cy + radius*k*math.Sin(t))
@@ -452,19 +478,42 @@ func (g *Game) hexagon(dst *ebiten.Image, cx, cy, radius float64, names [6]strin
 	for i := range 6 {
 		s := fmt.Sprintf("%s %d", names[i], cur[i])
 		ex, ey := corner(i, 1.14)
-		lx, ly := float64(ex), float64(ey)
-		tw := g.width(s, 12)
+		if subs == nil {
+			lx, ly := float64(ex), float64(ey)
+			tw := g.width(s, 12)
+			switch i {
+			case 0:
+				lx, ly = lx-tw/2, ly-16
+			case 3:
+				lx, ly = lx-tw/2, ly-2
+			case 1, 2:
+				ly -= 9
+			default:
+				lx, ly = lx-tw, ly-9
+			}
+			g.label(dst, s, lx, ly, 12, ink)
+			continue
+		}
+		// two lines, 20 + 19 high: above the top corner, below the bottom one, beside the others
+		sub := subs.text[i]
+		at := func(t string, size float64) float64 {
+			switch i {
+			case 0, 3:
+				return float64(ex) - g.width(t, size)/2
+			case 1, 2:
+				return float64(ex) + 2
+			}
+			return float64(ex) - 2 - g.width(t, size)
+		}
+		ly := float64(ey) - 20
 		switch i {
 		case 0:
-			lx, ly = lx-tw/2, ly-16
+			ly = float64(ey) - 40
 		case 3:
-			lx, ly = lx-tw/2, ly-2
-		case 1, 2:
-			ly -= 9
-		default:
-			lx, ly = lx-tw, ly-9
+			ly = float64(ey)
 		}
-		g.label(dst, s, lx, ly, 12, ink)
+		g.label(dst, s, at(s, 14), ly, 14, ink)
+		g.label(dst, sub, at(sub, 13), ly+20, 13, subs.c[i])
 	}
 }
 

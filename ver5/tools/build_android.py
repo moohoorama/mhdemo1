@@ -95,9 +95,11 @@ def main() -> None:
                     archive.write(path, path.relative_to(ROOT))
         revision = hashlib.sha256((assets / "runtime.zip").read_bytes()).hexdigest()
         (assets / "runtime.sha256").write_text(revision, encoding="ascii")
+        resources = work / "res.zip"
+        run(build_tools / "aapt2", "compile", "--dir", ROOT / "android/res", "-o", resources, env=env)
         unsigned = work / "unsigned.apk"
         run(build_tools / "aapt2", "link", "-I", android_jar, "--manifest",
-            ROOT / "android/AndroidManifest.xml", "-A", assets, "-o", unsigned, env=env)
+            ROOT / "android/AndroidManifest.xml", "-A", assets, "-o", unsigned, resources, env=env)
         classes = work / "classes"
         classes.mkdir()
         run("javac", "--release", "8", "-classpath",

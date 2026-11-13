@@ -13,7 +13,8 @@ const waypointStock = 9
 // it counts as played on its default path (its officers joined, its grants and flags set, its battles won
 // without their bonus objectives), every officer is at the level of the next battle in the class that level
 // reaches on the officer's own promotion path, with the learning window open for the points that brought,
-// the party owns every item and every piece of equipment, and every piece with an Owner is on that officer.
+// every piece with an Owner the story has handed over is on that officer, and the party owns every item and
+// every piece of equipment (the pieces not handed over yet in the warehouse).
 // The difficulty is NewGame's.
 func NewAt(d *content.Data, seed uint64, node, difficulty string) (*Engine, error) {
 	if !slices.ContainsFunc(d.Waypoints(), func(w content.Waypoint) bool { return w.Node == node }) {
@@ -68,6 +69,9 @@ func (e *Engine) arrive(node string) {
 			e.state.Learning = append(e.state.Learning, id)
 		}
 	}
+	for c, ok := e.OwnerPiece(); ok; c, ok = e.OwnerPiece() { // only what the story has handed over so far
+		e.wear(e.char(c.Actor), c.Item)
+	}
 	for id := range e.data.Items {
 		e.state.Inventory[id] = max(e.state.Inventory[id], waypointStock)
 	}
@@ -81,9 +85,6 @@ func (e *Engine) arrive(node string) {
 		if !worn[id] {
 			e.state.Warehouse[id] = max(e.state.Warehouse[id], 1)
 		}
-	}
-	for c, ok := e.OwnerPiece(); ok; c, ok = e.OwnerPiece() {
-		e.wear(e.char(c.Actor), c.Item)
 	}
 	e.state.Node = node
 	e.events = nil

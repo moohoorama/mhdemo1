@@ -30,12 +30,17 @@
   "luoyang": {
    "Name": "도구점",
    "Items": [
+    "ration_bag",
+    "route_map"
+   ]
+  },
+  "luoyang_tavern": {
+   "Name": "주점",
+   "Items": [
     "bean",
     "barley",
     "liquor",
-    "fine_liquor",
-    "ration_bag",
-    "route_map"
+    "fine_liquor"
    ]
   },
   "camp": {
@@ -50,27 +55,37 @@
   "xuzhou": {
    "Name": "도구점",
    "Items": [
-    "bean",
-    "barley",
-    "liquor",
-    "fine_liquor",
-    "baijiu",
     "ration_bag",
     "route_map",
     "war_horse",
     "insu_mid"
    ]
   },
-  "beihai": {
-   "Name": "도구점",
+  "xuzhou_tavern": {
+   "Name": "주점",
    "Items": [
     "bean",
     "barley",
     "liquor",
     "fine_liquor",
+    "baijiu"
+   ]
+  },
+  "beihai": {
+   "Name": "도구점",
+   "Items": [
     "ration_bag",
     "route_map",
     "war_horse"
+   ]
+  },
+  "beihai_tavern": {
+   "Name": "주점",
+   "Items": [
+    "bean",
+    "barley",
+    "liquor",
+    "fine_liquor"
    ]
   }
  }

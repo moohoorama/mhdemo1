@@ -2,7 +2,7 @@
  "Scenes": {
   "c12-start": {
    "Map": "S_castle_out",
-   "Nodes": ["c12-start", "c12-g1", "c12-g2", "c12-g3", "c12-g4", "c12-g5"],
+   "Nodes": ["c12-start", "c12-g1", "c12-g3", "c12-g4", "c12-g5"],
    "Cast": {
     "공융": {"At": [3, 4], "Face": "SW"},
     "태사자": {"At": [4, 4], "Face": "SW", "Sprite": "light_infantry", "Faction": "han", "Off": true},

@@ -97,6 +97,7 @@
   "c15-clash": {
    "Map": "S_long_field",
    "Backdrop": "mountains",
+   "Steps": 0.33,
    "Nodes": ["c15-clash", "c15-c01", "c15-c02", "c15-c03", "c15-c04", "c15-c05", "c15-c06", "c15-c07", "c15-c08", "c15-c09", "c15-c10", "c15-c11", "c15-c12", "c15-c13", "c15-r01", "c15-r02", "c15-r03", "c15-r04", "c15-r05", "c15-r06", "c15-r07", "c15-r08", "c15-r09", "c15-r10", "c15-r11", "c15-r12", "c15-r13", "c15-r14", "c15-r15", "c15-r16", "c15-r17", "c15-r18", "c15-r19", "c15-p11", "c15-p12", "c15-p13", "c15-p14", "c15-p15", "c15-p16", "c15-p17", "c15-p18", "c15-p19", "c15-p20", "c15-p21"],
    "Ambient": [{"CamAt": [6, 9]}],
    "Cast": {
@@ -345,7 +346,7 @@
   },
   "c15-cao": {
    "Map": "S_council",
-   "Nodes": ["c15-cao", "c15-k01", "c15-k02", "c15-k03", "c15-k04", "c15-k05", "c15-k06", "c15-k07", "c15-k08", "c15-k09", "c15-k10", "c15-k11", "c15-k12", "c15-k13"],
+   "Nodes": ["c15-cao", "c15-k01", "c15-k02", "c15-k03", "c15-k04", "c15-k05", "c15-k06", "c15-k07", "c15-k08", "c15-k09", "c15-k10", "c15-k11", "c15-k12", "c15-k13", "c15-k14", "c15-k15", "c15-k16", "c15-k17", "c15-k18"],
    "Cast": {
     "조조": {"At": [1, 3], "Face": "SE", "Pose": "sit"},
     "순욱": {"At": [3, 1], "Face": "SW"},
@@ -400,16 +401,41 @@
     ],
     "c15-k11": [
      [
-      [{"Actor": "곽가", "Play": "action"}]
+      [{"Actor": "순유", "Play": "action"}]
      ]
     ],
     "c15-k12": [
+     [
+      [{"Actor": "곽가", "Play": "action"}]
+     ]
+    ],
+    "c15-k13": [
+     [
+      [{"Actor": "유비", "Face": "NW"}]
+     ]
+    ],
+    "c15-k14": [
+     [
+      [{"Actor": "순유", "Face": "NW"}]
+     ]
+    ],
+    "c15-k15": [
+     [
+      [{"Actor": "관우", "Face": "NW"}]
+     ]
+    ],
+    "c15-k16": [
+     [
+      [{"Actor": "조조", "Look": "SE"}, {"Actor": "조조", "Play": "action"}]
+     ]
+    ],
+    "c15-k17": [
      [
       [{"Actor": "순유", "Move": [4, 1]}, {"Actor": "조조", "Face": "SE"}],
       [{"Actor": "순유", "Face": "SW"}]
      ]
     ],
-    "c15-k13": [
+    "c15-k18": [
      [
       [{"Actor": "유비", "Emote": "…"}],
       [{"Actor": "유비", "Pose": "bow"}]
@@ -419,7 +445,7 @@
   },
   "c15-tent": {
    "Map": "S_tent_mid",
-   "Nodes": ["c15-tent", "c15-t01", "c15-t02", "c15-t03", "c15-t04", "c15-t05", "c15-t06"],
+   "Nodes": ["c15-tent", "c15-t01", "c15-t02", "c15-t03", "c15-t04", "c15-t05", "c15-t06", "c15-t07"],
    "Cast": {
     "장비": {"At": [2, 1], "Face": "SE"},
     "간옹": {"At": [4, 1], "Face": "SW"},
@@ -434,25 +460,35 @@
     "c15-t01": [
      [
       [{"Actor": "유비", "Enter": [5, 4], "Move": [3, 3]}, {"Actor": "장비", "Look": "SE"}, {"Actor": "간옹", "Look": "SE"}, {"Actor": "미축", "Look": "SE"}],
-      [{"Actor": "유비", "Face": "NW"}, {"Actor": "장비", "Play": "action"}]
+      [{"Actor": "유비", "Face": "NW"}, {"Actor": "손건", "Look": "NW"}, {"Actor": "손건", "Play": "action"}]
      ]
     ],
     "c15-t02": [
      [
-      [{"Actor": "간옹", "Play": "action"}]
+      [{"Actor": "미축", "Play": "action"}]
+     ]
+    ],
+    "c15-t03": [
+     [
+      [{"Actor": "간옹", "Emote": "…"}]
      ]
     ],
     "c15-t04": [
      [
-      [{"Actor": "관우", "Face": "NW"}, {"Actor": "유비", "Face": "SE"}]
+      [{"Actor": "장비", "Emote": "!"}, {"Actor": "장비", "Play": "action"}]
      ]
     ],
     "c15-t05": [
      [
-      [{"Actor": "유비", "Emote": "…"}]
+      [{"Actor": "관우", "Face": "NW"}, {"Actor": "유비", "Face": "SE"}]
      ]
     ],
     "c15-t06": [
+     [
+      [{"Actor": "유비", "Emote": "…"}]
+     ]
+    ],
+    "c15-t07": [
      [
       [{"Actor": "관우", "Pose": "bow"}]
      ]

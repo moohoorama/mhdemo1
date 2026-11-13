@@ -1,0 +1,45 @@
+# c16-inner  S_xiapi_inner  ch16  origin 0 0
+................................................
+................................................
+........................Hal.....................
+..................Bnrin1......in2......Hse......
+................................................
+.................................Jar............
+..........................................Hse...
+#####################el1......wm1MatSck.........
+Hse#########Hse######............Mat...Sck......
+#####################............wd1............
+##################Tre...........................
+Hse##################........................Tre
+############Hse######...........................
+#####################...........................
+
+Liu 유비  (off stage, enters later (cell 8 15))
+Gua 관우  (off stage, enters later (cell 9 15))
+Zha 장비  (off stage, enters later (cell 7 15))
+Sun 손건  (off stage, enters later (cell 9 16))
+Jia 간옹  (off stage, enters later (cell 7 16))
+Miz 미축  (off stage, enters later (cell 8 16))
+Mif 미방  (off stage, enters later (cell 9 16))
+Gao 고순  (off stage, enters later (cell 7 16))
+Sol 병사  (light_infantry, off stage, enters later (cell 8 16))
+in1 조조군#1  (light_infantry)
+in2 조조군#2  (light_infantry)
+el1 백성#1  (commoner_elder)
+wm1 백성#2  (commoner_woman)
+wd1 부상병#1  (wounded_noncombat)
+
+# c16-i01: Liu -> 8 10
+# c16-i01: Gua -> 9 9
+# c16-i01: Zha -> 7 10
+# c16-i01: Sun -> 9 10
+# c16-i01: Miz -> 8 12
+# c16-i01: Mif -> 9 12
+# c16-i01: Jia -> 7 12
+# c16-i01: Gao -> 8 13
+# c16-i04: Zha -> 7 13 and leaves
+# c16-i06: Gua -> 9 15 and leaves
+# c16-i10: Miz -> 11 12
+# c16-i10: Mif -> 11 13
+# c16-i12: Gao -> 7 13 and leaves
+# c16-i15: Sol -> 8 11

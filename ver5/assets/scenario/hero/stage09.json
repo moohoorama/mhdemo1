@@ -25,7 +25,10 @@
    "If": [
     "duel:julu-zhangfei-yanliang"
    ],
-   "Flag": "flag-julu-clear"
+   "Flag": "flag-julu-clear",
+   "Reward": {
+    "insu_mid": 1
+   }
   },
   {
    "ID": "zhanghe",
@@ -193,14 +196,6 @@
    "Y": 13,
    "Facing": "SW",
    "Group": "fort",
-   "Policy": "hold"
-  },
-  {
-   "Character": "shenpei",
-   "X": 16,
-   "Y": 8,
-   "Facing": "SW",
-   "Group": "reserve",
    "Policy": "hold"
   }
  ],
@@ -389,8 +384,7 @@
     {
      "Kind": "ai",
      "Targets": [
-      "gaolan",
-      "reserve"
+      "gaolan"
      ],
      "Policy": "assault"
     }
@@ -428,19 +422,9 @@
      ]
     },
     {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "shenpei",
-       "Text": "한 걸음도 물러서지 마라! 주공께 부끄럽지 않게 싸워라!"
-      }
-     ]
-    },
-    {
      "Kind": "ai",
      "Targets": [
-      "gaolan",
-      "reserve"
+      "gaolan"
      ],
      "Policy": "assault"
     }
@@ -476,7 +460,6 @@
       "bridge",
       "pikes",
       "gaolan",
-      "reserve",
       "fort"
      ],
      "Policy": "assault"
@@ -504,7 +487,6 @@
       "vanguard",
       "gaolan",
       "pikes",
-      "reserve",
       "bridge"
      ],
      "Policy": "assault"

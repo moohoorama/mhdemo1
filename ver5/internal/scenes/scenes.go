@@ -51,6 +51,7 @@ type Step struct {
 	Follow    string    // the camera keeps on this actor from now on ("-" stops)
 	Place     []float64 // the actor is at [u, v] at once (in the dark of a fade: time has passed)
 	IfWalking bool      // the step runs only while its actor is still on its way (a line for players who read fast)
+	Bound     *bool     // false unties a bound prisoner (the rope comes off and he may gesture again), true binds one
 }
 
 // Shoot is an arrow loosed at the halberd standing on the stage (the scene's halberd effect), flown over the map with
@@ -73,6 +74,7 @@ type Actor struct {
 	Pose    string   // the motion it rests in (sit, lie, kneel …) instead of standing idle
 	Stay    bool     // on an explore walk's own stage: stands where the walk left it, with no At or Face of its own
 	If      []string // stands only when these story conditions hold (an officer who lived through an earlier battle)
+	Bound   bool     // a prisoner with a rope round his arms: walks and turns, but never gestures, bows or plays a motion
 }
 
 // Scene is one stretch of story nodes staged on one map.
@@ -84,6 +86,7 @@ type Scene struct {
 	Glow     string             // a far light washing over the screen from one corner: "fire_nw" (a city burning beyond the north-west)
 	Music    string             // the theme while it plays (assets/music/themes, no extension): a light-hearted scene's own; empty goes by the map
 	Grass    *content.GrassTint `json:",omitempty"` // the grass here when the map stands for another land; nil keeps the map's
+	Steps    float64            `json:",omitempty"` // the walkers' footsteps and hoof beats at this share of their volume; 0 keeps them whole
 	Nodes    []string
 	Ambient  []Step // run once as the scene opens (fires, braziers, smoke, sentries, chatter)
 	Cast     map[string]Actor

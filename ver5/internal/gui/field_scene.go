@@ -4,6 +4,7 @@ import (
 	"image"
 	"image/color"
 	"math"
+	"slices"
 	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -164,7 +165,8 @@ func (f *Field) addScenePieces(pieces []scenemap.Piece, level int) {
 				f.drawPlan(sp.image, d, ox-float64(p.Rect.Min.X), oy-float64(p.Rect.Min.Y), nil)
 			}
 		}
-		if pr, ok := f.A.Props[p.Name]; ok && p.Rank == scenemap.RankObject && !pr.NoShadow {
+		sunk := slices.ContainsFunc(p.Draws, func(d scenemap.Draw) bool { return d.Kind == scenemap.DrawWaterline })
+		if pr, ok := f.A.Props[p.Name]; ok && p.Rank == scenemap.RankObject && !pr.NoShadow && !sunk { // the flood takes no shadow
 			sp.shadow = pr.Shadow
 		}
 		f.scenePieces = append(f.scenePieces, sp)
@@ -188,6 +190,10 @@ func (f *Field) planImage(d scenemap.Draw) (*ebiten.Image, image.Point) {
 		}
 	case scenemap.DrawFill:
 		return f.A.diamond(d.Color), image.Pt(-32, 0)
+	case scenemap.DrawFlood:
+		return f.A.floodTile(d.Tile), image.Pt(-16, 0)
+	case scenemap.DrawWaterline:
+		return f.A.waterline(d.Line)
 	}
 	return nil, image.Point{}
 }
@@ -286,7 +292,7 @@ func (f *Field) sceneItems() []drawItem {
 			f.castShadow(float64(p.Lift), sh, p.Anchor[0], p.Anchor[1], &ebiten.DrawImageOptions{Blend: maxBlend})
 		}
 		ox, oy := f.OriginX*K, f.OriginY*K
-		items = append(items, drawItem{y: p.Anchor[1], rect: p.Rect, key: &p.Key, level: p.level, draw: func() {
+		items = append(items, drawItem{y: p.Anchor[1], rect: p.Rect, key: &p.Key, level: p.level, low: p.Rank == scenemap.RankRim, draw: func() {
 			if p.image != nil {
 				op := &ebiten.DrawImageOptions{}
 				f.shadeScenery(f.Canvas, op, p.Anchor[0], p.Anchor[1])

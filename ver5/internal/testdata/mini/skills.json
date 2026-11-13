@@ -306,14 +306,13 @@
   "aim_s": {
    "Name": "Aim",
    "Desc": "",
-   "Kind": "physical",
-   "Mode": "ranged",
+   "Kind": "buff",
+   "Mode": "self",
    "Shape": "single",
    "Cost": 10,
-   "Hit": 90,
-   "Min": 1,
-   "Coeff": 1,
-   "Effect": "aim",
+   "Hit": 100,
+   "Effect": "agility+morale",
+   "Duration": 3,
    "Requires": [
     "aim_t"
    ]

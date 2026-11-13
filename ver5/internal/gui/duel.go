@@ -123,7 +123,7 @@ func (g *Game) updateDuel() {
 		g.player.SkipDuel()
 	}
 	if keyJustPressed(ebiten.KeyF) {
-		g.speed = nextSpeed[g.speed]
+		g.setSpeed(nextSpeed[g.speed])
 	}
 	if keyJustPressed(ebiten.KeyF12) {
 		g.capture = true

@@ -97,55 +97,47 @@ func TestBattleUnitTakesItsNewLookWhenItsWeaponOrClassChanges(t *testing.T) {
 	assert.Equal(t, "crossbow", shown("jianyong", "crossbow", "bow").art.ID, "promoted mid-battle: the new class's sprite")
 }
 
-// One 인수 per tier: on a class with two ways up it offers both, the officer's pick decides, and the picker shows each
-// class with the look and stats it would bring.
+// One 인수 per tier, used on the walk: on a class with two ways up it offers both, the officer's pick decides, the
+// picker shows each class with the look and stats it would bring, and a weapon the new class cannot carry goes back
+// to the warehouse with the gear guide leading to one that fits.
 func TestInsuOffersEachClassAndThePickDecides(t *testing.T) {
-	g, _, _, _, _ := stoneGame(t)
-	// a light cavalry officer without looks of his own for the classes (관평) takes the place of the first
-	// one that has a line of them (an officer with named looks promotes only into those classes)
-	snap := g.S.Engine.Snapshot()
-	officer, rider := "", ""
+	g := smithyGame(t)
+	// a light cavalry officer without looks of his own for the classes (관평) joins the party: an officer with
+	// named looks promotes only into those classes
+	officer := ""
 	for id, c := range g.S.Data.Characters {
 		if c.Playable && c.Class == "light_cavalry" && len(c.Look.Sprites) == 0 && (officer == "" || id < officer) {
 			officer = id
 		}
 	}
 	require.NotEmpty(t, officer, "no light cavalry officer without looks of his own")
-	for j, c := range snap.Characters {
-		if c.Class == "light_cavalry" && slices.Contains(snap.Deployment, c.ID) && rider == "" {
-			rider = c.ID
-			o := c
-			o.ID, o.Def, o.Level = officer, officer, 15
-			snap.Characters = append(snap.Characters, o)
-			snap.Characters[j].Equipment = map[string]string{}
-		}
-	}
-	require.NotEmpty(t, rider)
-	for i, id := range snap.Deployment {
-		if id == rider {
-			snap.Deployment[i] = officer
-		}
-	}
-	for i := range snap.Units {
-		if snap.Units[i].ID == rider {
-			snap.Units[i].ID, snap.Units[i].Character = officer, officer
-		}
+	snap := g.S.Engine.Snapshot()
+	i := slices.IndexFunc(snap.Characters, func(c core.Character) bool { return c.ID == "zhangfei" })
+	require.GreaterOrEqual(t, i, 0)
+	o := snap.Characters[i]
+	o.ID, o.Def, o.Class, o.Level = officer, officer, "light_cavalry", 15
+	o.Equipment = map[string]string{"weapon": "iron_spear"}
+	if j := slices.IndexFunc(snap.Characters, func(c core.Character) bool { return c.ID == officer }); j >= 0 {
+		snap.Characters[j] = o
+	} else {
+		snap.Characters = append(snap.Characters, o)
 	}
 	snap.Inventory["insu_mid"], snap.Inventory["insu_high"] = 1, 1
+	snap.Warehouse["short_bow"] = 1
 	e, err := core.Restore(g.S.Data, snap)
 	require.NoError(t, err)
-	g.S.Engine = e
-	var picks []core.Command
-	for _, c := range e.LegalActions(officer).Commands {
-		if c.Kind == "item" && (c.Item == "insu_mid" || c.Item == "insu_high") {
-			picks = append(picks, c)
-		}
-	}
-	require.Len(t, picks, 2, "the 중급 인수 once per class, the 상급 not at all")
-	assert.ElementsMatch(t, []string{"heavy_cavalry", "horse_archer"}, []string{picks[0].Option, picks[1].Option})
+	g.S.Engine, g.gear = e, gearGuide{} // the smith's weapons are not this test's
 
-	g.ord = order{actor: officer}
-	branches := g.branches(picks)
+	classes, err := e.PromotionsAway("insu_mid", officer)
+	require.NoError(t, err)
+	assert.ElementsMatch(t, []string{"heavy_cavalry", "horse_archer"}, classes)
+	_, err = e.PromotionsAway("insu_high", officer)
+	assert.Error(t, err, "the 상급 not at all")
+	g.party.insu = insuState{item: "insu_mid", pick: officer}
+	acts := g.insuActs()
+	require.Len(t, acts, 1)
+	acts[0].click()
+	branches := g.party.insu.branch
 	require.Len(t, branches, 2)
 	for _, b := range branches {
 		assert.Equal(t, "light_cavalry", b.from)
@@ -153,11 +145,20 @@ func TestInsuOffersEachClassAndThePickDecides(t *testing.T) {
 		assert.NotNil(t, b.new)
 	}
 
-	_, err = e.Apply(core.Command{Kind: "item", Actor: officer, Target: officer, Item: "insu_mid"})
+	_, err = e.Apply(core.Command{Kind: "item", Target: officer, Item: "insu_mid"})
 	assert.Error(t, err, "two ways up: the class must be named")
-	_, err = e.Apply(core.Command{Kind: "item", Actor: officer, Target: officer, Item: "insu_mid", Option: "horse_archer"})
-	require.NoError(t, err)
-	assert.Equal(t, "horse_archer", g.unitView(e.Observe(), officer).Class)
+	require.True(t, g.request(session.Request{Op: "command", Command: core.Command{Kind: "item", Actor: officer, Target: officer, Item: "insu_mid", Option: "horse_archer"}}).OK)
+	v := g.S.View()
+	of := g.officer(v, officer)
+	assert.Equal(t, "horse_archer", of.Class)
+	assert.Empty(t, of.Equipment["weapon"], "a 궁기병 carries no spear")
+	assert.Equal(t, 1, v.Warehouse["iron_spear"])
+	piece, owner, slot, ok := g.gearStep()
+	require.True(t, ok)
+	assert.Equal(t, []string{"", officer, "weapon"}, []string{piece, owner, slot}, "any piece that fits")
+	require.True(t, g.request(session.Request{Op: "command", Command: core.Command{Kind: "equip", Actor: officer, Item: "short_bow"}}).OK)
+	_, _, _, ok = g.gearStep()
+	assert.False(t, ok, "the bow is on")
 }
 
 func TestAnEquippedHorseOfItsOwnColourRecoloursTheRider(t *testing.T) {

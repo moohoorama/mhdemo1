@@ -88,6 +88,7 @@
   },
   "c07-council": {
    "Map": "S_council",
+   "Music": "azure-cloud",
    "Time": "night",
    "Nodes": ["c07-council", "c07-c1", "c07-c2", "c07-c3", "c07-c4", "c07-c5", "c07-c6"],
    "Cast": {

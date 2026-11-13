@@ -120,20 +120,25 @@
   },
   "c11-road": {
    "Map": "S_field_road",
-   "Nodes": ["c11-road", "c11-r1", "c11-r2", "c11-r3", "c11-r4", "c11-r5"],
+   "Nodes": ["c11-road", "c11-r1", "c11-r2", "c11-r3", "c11-r4", "c11-r5", "c11-r6", "c11-r7"],
    "Cast": {
-    "유비": {"At": [5, 8], "Face": "NE"},
-    "관우": {"At": [4, 8], "Face": "NE"},
-    "장비": {"At": [6, 8], "Face": "NE"},
-    "조운": {"At": [4, 9], "Face": "NE"},
-    "손건": {"At": [6, 9], "Face": "NE"},
+    "유비": {"At": [5, 11], "Face": "NE", "Sprite": "liubei_mounted", "Off": true},
+    "관우": {"At": [4, 11], "Face": "NE", "Sprite": "guanyu", "Off": true},
+    "장비": {"At": [6, 11], "Face": "NE", "Sprite": "zhangfei", "Off": true},
+    "조운": {"At": [4, 12], "Face": "NE", "Sprite": "zhaoyun_light", "Off": true},
+    "손건": {"At": [6, 12], "Face": "NE", "Off": true},
     "태사자": {"At": [11, 3], "Face": "SW", "Sprite": "horse_archer", "Faction": "han", "Off": true}
    },
    "Beats": {
     "c11-r1": [
      [
-      [{"Actor": "유비", "Move": [5, 5]}, {"Actor": "관우", "Move": [4, 5]}, {"Actor": "장비", "Move": [6, 5]}, {"Actor": "조운", "Move": [4, 6]}, {"Actor": "손건", "Move": [6, 6]}, {"Actor": "태사자", "Enter": [11, 3], "Move": [5, 3], "Speed": 2}],
+      [{"Actor": "유비", "Enter": [5, 11], "Move": [5, 5]}, {"Actor": "관우", "Enter": [4, 11], "Move": [4, 5]}, {"Actor": "장비", "Enter": [6, 11], "Move": [6, 5]}, {"Actor": "조운", "Enter": [4, 12], "Move": [4, 6]}, {"Actor": "손건", "Enter": [6, 12], "Move": [6, 6]}, {"Actor": "태사자", "Enter": [11, 3], "Move": [5, 3], "Speed": 2, "After": 1.2}],
       [{"Actor": "태사자", "Face": "SW"}, {"Actor": "유비", "Face": "NE"}, {"Actor": "관우", "Face": "NE"}, {"Actor": "장비", "Face": "NE"}, {"Actor": "조운", "Face": "NE"}, {"Actor": "손건", "Face": "NE"}]
+     ]
+    ],
+    "c11-r7": [
+     [
+      [{"Actor": "태사자", "Move": [11, 3], "Speed": 2, "Exit": true}]
      ]
     ]
    }

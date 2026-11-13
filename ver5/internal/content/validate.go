@@ -26,9 +26,16 @@ func (d *Data) Validate() error {
 	if r.StageLevelBase > 0 && (r.StageLevelStep < 0 || !troop || !officer) {
 		return fmt.Errorf("rules: a stage level needs a step and the troop and officer ranks")
 	}
+	growth := func(r Rules) bool { return r.DuelXPPct > 0 && r.ExpRatioPower >= 0 && r.ExpMinFactor <= r.ExpMaxFactor }
+	if !growth(r) {
+		return fmt.Errorf("rules: growth incomplete")
+	}
 	for _, v := range r.Difficulties {
 		if v.ID == "" || v.Name == "" || v.XPPct <= 0 {
 			return fmt.Errorf("rules: difficulty %q incomplete", v.ID)
+		}
+		if v.rules != nil && (!growth(*v.rules) || v.rules.StageLevelStep < 0) {
+			return fmt.Errorf("rules: difficulty %q: growth incomplete", v.ID)
 		}
 	}
 	if _, ok := r.DifficultyOf("normal"); !ok && len(r.Difficulties) > 0 {
@@ -85,7 +92,7 @@ func (d *Data) Validate() error {
 	for id, s := range d.Skills {
 		if s.Name == "" || !in(s.Kind, KindPhysical, KindMagic, KindStatus, KindBuff, KindHeal, KindMixed) || !in(s.Mode, ModeMelee, ModeRanged, ModeSelf, ModeAny) ||
 			!in(s.Shape, ShapeSingle, ShapeCross, ShapeSquare, ShapeLine, ShapeAll) || s.Cost < 0 || s.Hit < 0 || s.Min < 0 || s.Max < 0 ||
-			s.Shape == ShapeLine && s.Length < 1 || s.Strikes < 0 || s.Strikes > 2 || s.Reach < 0 || s.Effect == "aim" && s.Kind != KindPhysical || s.Sure && s.Kind != KindStatus || s.Each && (s.Kind != KindPhysical || s.Shape == ShapeSingle) || s.Pierce < 0 || s.Pierce > 1 || s.Pierce > 0 && s.Shape != ShapeSingle || s.MagicCoeff < 0 || s.MagicCoeff > 0 && s.Kind != KindPhysical || s.Effect != "" && !validSkillEffect(s) || s.Kind != KindPhysical && s.Kind != KindMagic && s.Effect == "" {
+			s.Shape == ShapeLine && s.Length < 1 || s.Strikes < 0 || s.Strikes > 2 || s.Reach < 0 || s.Sure && s.Kind != KindStatus || s.Each && (s.Kind != KindPhysical || s.Shape == ShapeSingle) || s.Pierce < 0 || s.Pierce > 1 || s.Pierce > 0 && s.Shape != ShapeSingle || s.MagicCoeff < 0 || s.MagicCoeff > 0 && s.Kind != KindPhysical || s.Effect != "" && !validSkillEffect(s) || s.Kind != KindPhysical && s.Kind != KindMagic && s.Effect == "" {
 			return fmt.Errorf("skill %s", id)
 		}
 		for _, t := range s.Requires {
@@ -209,11 +216,6 @@ func (d *Data) Validate() error {
 			}
 		}
 	}
-	for _, item := range r.ForageItems {
-		if _, ok := d.Items[item]; !ok {
-			return fmt.Errorf("forage item %s", item)
-		}
-	}
 	if r.TraitPlanStep < 1 {
 		return fmt.Errorf("trait plan step %d", r.TraitPlanStep)
 	}
@@ -221,6 +223,13 @@ func (d *Data) Validate() error {
 		for _, lt := range cl.Plan {
 			if _, ok := d.Traits[lt.Trait]; !ok || lt.Level < 1 {
 				return fmt.Errorf("trait plan of %s: %s from level %d", class, lt.Trait, lt.Level)
+			}
+			for _, q := range d.Traits[lt.Trait].Requires {
+				for _, pre := range cl.Plan {
+					if pre.Trait == q && pre.Level > lt.Level {
+						return fmt.Errorf("trait plan of %s: %s at level %d before its prerequisite %s at %d", class, lt.Trait, lt.Level, q, pre.Level)
+					}
+				}
 			}
 		}
 	}

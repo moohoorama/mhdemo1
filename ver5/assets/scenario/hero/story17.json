@@ -1,0 +1,1101 @@
+{
+ "Nodes": [
+  {
+   "ID": "c17-walk",
+   "Kind": "explore",
+   "Explore": "explore17",
+   "Opening": "c17-court"
+  },
+  {
+   "ID": "c17-battle",
+   "Kind": "battle",
+   "Stage": "B17",
+   "Text": "광릉 전투 — 출전 준비"
+  },
+  {
+   "ID": "c17-hoard",
+   "Kind": "scene",
+   "Place": "광릉 · 원술의 진채"
+  },
+  {
+   "ID": "c17-q01",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형! 이것 좀 보슈! 수레마다 곡식이고, 궤짝마다 동전이 그득하구먼!"
+  },
+  {
+   "ID": "c17-q02",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "이…… 이게 다 오수전입니다. 꿰미째로! 비단에, 농기구까지……"
+  },
+  {
+   "ID": "c17-q03",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "황숙, 궤짝마다 찍힌 표를 보니 여강, 구강, 진국 고을 관아의 것입니다."
+  },
+  {
+   "ID": "c17-q04",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "원술이 수춘에서 황제 노릇을 하는 동안 이 고을 저 고을에서 빼앗아 쌓아 둔 것들이지요."
+  },
+  {
+   "ID": "c17-q05",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "호미와 괭이까지 거둬 갔으니, 그 고을 사람들은 봄에 씨도 뿌리지 못했을 겁니다."
+  },
+  {
+   "ID": "c17-q06",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "원술은 군사들이 굶는데도 끝까지 이것만은 끌고 다녔군요."
+  },
+  {
+   "ID": "c17-q07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……"
+  },
+  {
+   "ID": "c17-q08",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "미 공. 광릉에서 굶는 사람들을 먹이느라 그대 집안 곳간을 다 비웠지요. 그 빚을 이제야 갚게 되었소."
+  },
+  {
+   "ID": "c17-q09",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "곡식과 동전은 미 공이 가져가시오."
+  },
+  {
+   "ID": "c17-q10",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "정말이십니까?! 형님, 들으셨습니까? 이걸로 곳간을 다시 채울 수 있습니다!"
+  },
+  {
+   "ID": "c17-q11",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "황숙…… 이 은혜는 잊지 않겠습니다."
+  }
+ ],
+ "Events": [
+  {
+   "ID": "c17-court",
+   "Kind": "scene",
+   "Place": "허도 · 궁궐"
+  },
+  {
+   "ID": "c17-c01",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "폐하, 서주에서 여포를 사로잡는 데 큰 공을 세운 유비라는 장수입니다."
+  },
+  {
+   "ID": "c17-c02",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "유비라…… 그대의 조상은 누구요?"
+  },
+  {
+   "ID": "c17-c03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "신은 중산정왕의 후손이옵니다. 아비를 일찍 여의고, 탁현에서 어미와 돗자리를 엮어 팔며 자랐습니다."
+  },
+  {
+   "ID": "c17-c04",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "중산정왕이라면 효경황제의 아드님이시오. 종정은 황실 족보를 가져와 읽으라."
+  },
+  {
+   "ID": "c17-c05",
+   "Kind": "say",
+   "Speaker": "zongzheng",
+   "Text": "……중산정왕 유승의 아들 육성정후 유정…… 유웅의 아들 유홍, 유홍의 아들이 유비이옵니다."
+  },
+  {
+   "ID": "c17-c06",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "항렬을 따지면…… 짐의 숙부뻘이 아니오."
+  },
+  {
+   "ID": "c17-c07",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "황숙. 짐에게 아직 이런 집안 어른이 계셨구려."
+  },
+  {
+   "ID": "c17-c08",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "폐하……"
+  },
+  {
+   "ID": "c17-c09",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "경하드리오, 황숙. 오늘은 한실에 좋은 날이오."
+  },
+  {
+   "ID": "c17-court-set",
+   "Kind": "set",
+   "Flags": {
+    "c17-step": 1
+   }
+  },
+  {
+   "ID": "c17-court-back",
+   "Kind": "back",
+   "Area": "street",
+   "At": [
+    28,
+    8
+   ],
+   "Face": "SE"
+  },
+  {
+   "ID": "c17-dong1",
+   "Kind": "scene",
+   "Place": "허도 · 유비의 저택"
+  },
+  {
+   "ID": "c17-d01",
+   "Kind": "say",
+   "Speaker": "servant",
+   "Text": "국구 동승 대감께서 오셨습니다."
+  },
+  {
+   "ID": "c17-d02",
+   "Kind": "say",
+   "Speaker": "dongcheng",
+   "Text": "황숙, 갑자기 찾아와 실례하오. 동승이라 하오. 폐하의 장인 되는 사람이오."
+  },
+  {
+   "ID": "c17-d03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "국구께서 어인 일로 이 누추한 곳까지……"
+  },
+  {
+   "ID": "c17-d04",
+   "Kind": "say",
+   "Speaker": "dongcheng",
+   "Text": "폐하께서 황숙을 따로 뵙고자 하시오. 지금 궁으로 드시오."
+  },
+  {
+   "ID": "c17-d05",
+   "Kind": "say",
+   "Speaker": "dongcheng",
+   "Text": "……사사로운 자리이니, 홀로 오시오."
+  },
+  {
+   "ID": "c17-d06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "알겠습니다. 곧 뒤따르겠습니다."
+  },
+  {
+   "ID": "c17-d07",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형, 저 양반 눈이 왜 저리 바빠유? 들어올 때부터 문간만 힐끔거리든디."
+  },
+  {
+   "ID": "c17-d08",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "……허도에서는 벽에도 귀가 있다 하더이다."
+  },
+  {
+   "ID": "c17-dong1-set",
+   "Kind": "set",
+   "Flags": {
+    "c17-step": 2
+   }
+  },
+  {
+   "ID": "c17-dong1-back",
+   "Kind": "back",
+   "Area": "street",
+   "At": [
+    11,
+    41
+   ],
+   "Face": "SE"
+  },
+  {
+   "ID": "c17-belt",
+   "Kind": "scene",
+   "Place": "허도 · 궁궐 안전"
+  },
+  {
+   "ID": "c17-b01",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "황숙, 가까이 오시오."
+  },
+  {
+   "ID": "c17-b02",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "짐은 장안에서도, 불탄 낙양에서도 곁에 집안 어른이 없었소. 오늘에야 숙부를 만났구려."
+  },
+  {
+   "ID": "c17-b03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "신이 미천하여 이제야 뵙습니다."
+  },
+  {
+   "ID": "c17-b04",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "이 옥대는 짐이 두르던 것이오. 황숙께 드리리다."
+  },
+  {
+   "ID": "c17-b05",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "……돌아가거든, 홀로 찬찬히 살펴보시오. 짐이 손수 매만진 것이니."
+  },
+  {
+   "ID": "c17-b06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "성은이 망극하옵니다."
+  },
+  {
+   "ID": "c17-b07",
+   "Kind": "say",
+   "Speaker": "dongcheng",
+   "Text": "폐하, 바깥에 승상부 사람들이 있습니다. 이만 물러가시지요."
+  },
+  {
+   "ID": "c17-belt-set",
+   "Kind": "set",
+   "Flags": {
+    "c17-step": 3
+   }
+  },
+  {
+   "ID": "c17-belt-back",
+   "Kind": "back",
+   "Area": "street",
+   "At": [
+    28,
+    8
+   ],
+   "Face": "SE"
+  },
+  {
+   "ID": "c17-xuchu",
+   "Kind": "scene",
+   "Place": "허도 · 유비의 저택"
+  },
+  {
+   "ID": "c17-x01",
+   "Kind": "say",
+   "Speaker": "xuchu",
+   "Text": "황숙. 승상께서 부르시오. 지금 바로 저택으로 오시라 하오."
+  },
+  {
+   "ID": "c17-x02",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "이 밤에? 무슨 일인디?"
+  },
+  {
+   "ID": "c17-x03",
+   "Kind": "say",
+   "Speaker": "xuchu",
+   "Text": "나는 모시러 왔을 뿐이오."
+  },
+  {
+   "ID": "c17-x04",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님, 저희도 따라가겠습니다."
+  },
+  {
+   "ID": "c17-x05",
+   "Kind": "say",
+   "Speaker": "xuchu",
+   "Text": "황숙 혼자 오시라 하셨소."
+  },
+  {
+   "ID": "c17-x06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "운장, 괜찮네. 허 장군, 먼저 가시오. 곧 뒤따르리다."
+  },
+  {
+   "ID": "c17-xuchu-set",
+   "Kind": "set",
+   "Flags": {
+    "c17-step": 4
+   }
+  },
+  {
+   "ID": "c17-xuchu-back",
+   "Kind": "back",
+   "Area": "street",
+   "At": [
+    11,
+    41
+   ],
+   "Face": "SE"
+  },
+  {
+   "ID": "c17-ask",
+   "Kind": "scene",
+   "Place": "허도 · 조조의 저택"
+  },
+  {
+   "ID": "c17-a01",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "오셨구려, 현덕. 아니, 이제는 황숙이라 불러야 하나? 하하."
+  },
+  {
+   "ID": "c17-a02",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "오늘 또 궁에 드셨다 들었소. 폐하께서 무얼 내리셨소?"
+  },
+  {
+   "ID": "c17-a03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……폐하께서 두르시던 옥대를 내리셨습니다."
+  },
+  {
+   "ID": "c17-a04",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "옥대라! 어디 좀 봅시다."
+  },
+  {
+   "ID": "c17-a05",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "과연 좋은 물건이오. 이것을 내게 주지 않겠소?"
+  },
+  {
+   "ID": "c17-a-c1",
+   "Kind": "choice",
+   "Text": "조조에게 옥대를 주겠는가?",
+   "Choices": {
+    "준다": "c17-give",
+    "주지 않는다": "c17-keep1"
+   }
+  },
+  {
+   "ID": "c17-keep1",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "폐하께서 손수 내리신 것입니다. 신하가 남에게 넘길 수는 없습니다."
+  },
+  {
+   "ID": "c17-k02",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "하하, 옥대 하나에 그리 굳게 구시오? 황숙이 되더니 인색해지셨구려. 금 백 근이면 어떻소?"
+  },
+  {
+   "ID": "c17-a-c2",
+   "Kind": "choice",
+   "Text": "그래도 주지 않겠는가?",
+   "Choices": {
+    "준다": "c17-give",
+    "주지 않는다": "c17-keep2"
+   }
+  },
+  {
+   "ID": "c17-keep2",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "금 천 근이라도 폐하의 정을 팔 수는 없습니다."
+  },
+  {
+   "ID": "c17-k04",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "……"
+  },
+  {
+   "ID": "c17-k05",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "하하하! 농이었소. 황숙의 충심을 한번 보았을 뿐이오.",
+   "Next": "c17-a09"
+  },
+  {
+   "ID": "c17-give",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……승상께서 그리 원하신다면."
+  },
+  {
+   "ID": "c17-g02",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "하하, 고맙소. 대신 내 다른 보물로 갚으리다."
+  },
+  {
+   "ID": "c17-g-set",
+   "Kind": "set",
+   "Flags": {
+    "c17-belt-given": 1
+   }
+  },
+  {
+   "ID": "c17-a09",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "자, 후원에 매실이 익었소. 술을 데워 두었으니 함께 갑시다."
+  },
+  {
+   "ID": "c17-garden",
+   "Kind": "scene",
+   "Place": "허도 · 조조의 후원"
+  },
+  {
+   "ID": "c17-h01",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "매실을 보니 생각나는구려. 전에 장수를 치러 갈 때 물이 떨어져 군사들이 목말라했소."
+  },
+  {
+   "ID": "c17-h02",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "내가 \"저 앞에 매화 숲이 있다!\" 하자 군사들 입에 침이 고여 끝까지 걸었지. 하하."
+  },
+  {
+   "ID": "c17-h03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "승상의 꾀는 늘 들어도 놀랍습니다."
+  },
+  {
+   "ID": "c17-h04",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "현덕, 그대는 오래 사방을 떠돌았으니 영웅을 많이 보았겠지. 지금 천하에 누가 영웅이오?"
+  },
+  {
+   "ID": "c17-h05",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "회남의 원술은 군사가 많고 군량이 넉넉하니, 영웅이라 할 만하지 않겠습니까."
+  },
+  {
+   "ID": "c17-h06",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "무덤 속 해골이오. 머지않아 내가 사로잡을 것이오."
+  },
+  {
+   "ID": "c17-h07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "하북의 원소는 사세삼공 집안에, 거느린 인재가 많습니다."
+  },
+  {
+   "ID": "c17-h08",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "겉은 사나우나 담이 작고, 꾀를 좋아하나 결단이 없소. 큰일 앞에선 몸을 아끼고 작은 이익엔 목숨을 거는 자요."
+  },
+  {
+   "ID": "c17-h09",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "형주의 유경승은요?"
+  },
+  {
+   "ID": "c17-h10",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "이름뿐이오."
+  },
+  {
+   "ID": "c17-h11",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그렇다면…… 저는 더 모르겠습니다."
+  },
+  {
+   "ID": "c17-h12",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "영웅이란 가슴에 큰 뜻을 품고, 배 속에 좋은 꾀를 감추고, 천지를 삼키고 뱉을 기개를 지닌 자요."
+  },
+  {
+   "ID": "c17-h13",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "누가 그런 사람이겠습니까."
+  },
+  {
+   "ID": "c17-h14",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "지금 천하의 영웅은, 그대와 이 조조뿐이오."
+  },
+  {
+   "ID": "c17-h15",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "앗……! 숟가락이……"
+  },
+  {
+   "ID": "c17-h16",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……천둥이 이리 가까이 칠 줄이야. 어려서부터 천둥이 그렇게 무서웠습니다."
+  },
+  {
+   "ID": "c17-h17",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "하하하! 대장부가 천둥을 무서워하오?"
+  },
+  {
+   "ID": "c17-h18",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "성인께서도 우레와 거센 바람에는 얼굴빛을 바꾸셨다 했습니다. 하물며 저 같은 사람이야……"
+  },
+  {
+   "ID": "c17-h19",
+   "Kind": "say",
+   "Speaker": "xuchu",
+   "Text": "멈추시오! 승상의 후원이오!"
+  },
+  {
+   "ID": "c17-h20",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "비켜! 형이 안에 있단 말여!"
+  },
+  {
+   "ID": "c17-h21",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "중강, 그만두게. 두 장군은 칼을 들고 웬일이오?"
+  },
+  {
+   "ID": "c17-h22",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "승상께서 형님과 술을 드신다기에, 칼춤이라도 추어 흥을 돋우려 왔습니다."
+  },
+  {
+   "ID": "c17-h23",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "하하하! 여기가 홍문의 잔치인 줄 아시오? 번쾌도 없고 항장도 없소."
+  },
+  {
+   "ID": "c17-h24",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "중강, 자네도 이리 오게. 두 장군에게도 잔을 드려라. 오늘은 다 같이 마십시다."
+  },
+  {
+   "ID": "c17-h25",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "……이 집 술이 독하다고 들었는디."
+  },
+  {
+   "ID": "c17-h26",
+   "Kind": "say",
+   "Speaker": "xuchu",
+   "Text": "독하지. 한 잔 받으시오."
+  },
+  {
+   "ID": "c17-hunt",
+   "Kind": "scene",
+   "Place": "허전 · 사냥터"
+  },
+  {
+   "ID": "c17-t01",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "황숙, 오늘은 짐과 함께 사냥하십시다."
+  },
+  {
+   "ID": "c17-t02",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "……세 번을 쏘아도 맞지 않는구려. 승상이 쏘아 보시오."
+  },
+  {
+   "ID": "c17-t03",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "폐하의 활과 화살을 빌리겠습니다."
+  },
+  {
+   "ID": "c17-t04",
+   "Kind": "narrate",
+   "Text": "금화살이 사슴에 꽂혔다."
+  },
+  {
+   "ID": "c17-t05",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "하하, 내가 맞혔소!"
+  },
+  {
+   "ID": "c17-t06",
+   "Kind": "narrate",
+   "Text": "천자 앞을 가로막고 선 조조에게 만세 소리가 쏟아졌다."
+  },
+  {
+   "ID": "c17-t07",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "운장, 무슨 일이오?"
+  },
+  {
+   "ID": "c17-t08",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "승상의 활 솜씨가 신묘하여, 운장이 감탄한 모양입니다."
+  },
+  {
+   "ID": "c17-t09",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "하하, 그렇소?"
+  },
+  {
+   "ID": "c17-t10",
+   "Kind": "narrate",
+   "Text": "조조는 천자의 활을 돌려주지 않고 제 허리에 찼다. 돌아가는 길."
+  },
+  {
+   "ID": "c17-t11",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님, 어찌 말리셨습니까. 그 자리에서 베었다면……"
+  },
+  {
+   "ID": "c17-t12",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "쥐를 잡으려다 그릇을 깬다 했네. 폐하께서 바로 곁에 계셨고, 둘레는 모두 조조의 사람이었네."
+  },
+  {
+   "ID": "c17-t13",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "……"
+  },
+  {
+   "ID": "c17-hunt-set",
+   "Kind": "set",
+   "Flags": {
+    "c17-step": 5
+   }
+  },
+  {
+   "ID": "c17-hunt-back",
+   "Kind": "back",
+   "Area": "street",
+   "At": [
+    11,
+    21
+   ],
+   "Face": "SE"
+  },
+  {
+   "ID": "c17-office",
+   "Kind": "scene",
+   "Place": "허도 · 관청"
+  },
+  {
+   "ID": "c17-o01",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "아뢰오! 원소가 역경을 깨뜨렸습니다. 공손찬은 성루에 불을 지르고 처자와 함께 스스로 목숨을 끊었습니다."
+  },
+  {
+   "ID": "c17-o02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……백규 형님이."
+  },
+  {
+   "ID": "c17-o03",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "이제 하북은 원소 한 사람의 땅이 되었구려."
+  },
+  {
+   "ID": "c17-o04",
+   "Kind": "say",
+   "Speaker": "guojia",
+   "Text": "그것만이 아닙니다. 수춘의 원술이 황제 노릇에 군량을 다 써 버리고, 황제의 칭호를 원소에게 넘기겠다며 북으로 간답니다."
+  },
+  {
+   "ID": "c17-o05",
+   "Kind": "say",
+   "Speaker": "chengyu",
+   "Text": "서주를 지나 청주의 원담에게로 가는 길입니다. 두 원씨가 하나로 합치면 성가시게 됩니다."
+  },
+  {
+   "ID": "c17-o06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "승상. 원술이 북으로 가려면 반드시 서주를 지나야 합니다. 저는 서주의 길을 잘 압니다."
+  },
+  {
+   "ID": "c17-o07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "군사를 빌려 주시면, 길목에서 원술을 막겠습니다."
+  },
+  {
+   "ID": "c17-o08",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "……좋소. 폐하께 아뢰고, 군사를 내어 주리다."
+  },
+  {
+   "ID": "c17-o09",
+   "Kind": "say",
+   "Speaker": "chengyu",
+   "Text": "명공, 유비를 내보내시면 범을 산에 놓아 주는 격입니다."
+  },
+  {
+   "ID": "c17-o10",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "……원술을 막는 데 그만한 사람이 없소."
+  },
+  {
+   "ID": "c17-office-set",
+   "Kind": "set",
+   "Flags": {
+    "c17-step": 6
+   }
+  },
+  {
+   "ID": "c17-office-back",
+   "Kind": "back",
+   "Area": "street",
+   "At": [
+    41,
+    16
+   ],
+   "Face": "NW"
+  },
+  {
+   "ID": "c17-dong2",
+   "Kind": "scene",
+   "Place": "허도 · 유비의 저택"
+  },
+  {
+   "ID": "c17-e01",
+   "Kind": "say",
+   "Speaker": "dongcheng",
+   "Text": "황숙, 원술을 치러 떠나신다 들었소. 떠나시기 전에 반드시 궁에 드셔야 하오."
+  },
+  {
+   "ID": "c17-e02",
+   "Kind": "say",
+   "Speaker": "dongcheng",
+   "Text": "폐하께서 내리신 옥대는…… 살펴보셨소?"
+  },
+  {
+   "ID": "c17-e-br",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:c17-belt-given"
+     ],
+     "Next": "c17-e20"
+    }
+   ],
+   "Else": "c17-e10"
+  },
+  {
+   "ID": "c17-e10",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……안에 무엇이 있습니다. ……피로 쓴 글?"
+  },
+  {
+   "ID": "c17-e11",
+   "Kind": "say",
+   "Speaker": "dongcheng",
+   "Text": "폐하께서 손가락을 깨물어 쓰신 조서요. 역적 조조를 치라는.",
+   "Next": "c17-e-set"
+  },
+  {
+   "ID": "c17-e20",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "승상이 탐을 내어…… 드렸습니다."
+  },
+  {
+   "ID": "c17-e21",
+   "Kind": "say",
+   "Speaker": "dongcheng",
+   "Text": "……그 안에 폐하의 혈서가 있었소!"
+  },
+  {
+   "ID": "c17-e22",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……!"
+  },
+  {
+   "ID": "c17-e23",
+   "Kind": "say",
+   "Speaker": "dongcheng",
+   "Text": "승상부에서 아직 아무 기척이 없으니, 미처 못 보았는지도 모르오. 어서 궁으로 드시오."
+  },
+  {
+   "ID": "c17-e-set",
+   "Kind": "set",
+   "Flags": {
+    "c17-step": 7
+   }
+  },
+  {
+   "ID": "c17-dong2-back",
+   "Kind": "back",
+   "Area": "street",
+   "At": [
+    11,
+    41
+   ],
+   "Face": "SE"
+  },
+  {
+   "ID": "c17-edict",
+   "Kind": "scene",
+   "Place": "허도 · 궁궐 안전"
+  },
+  {
+   "ID": "c17-i01",
+   "Kind": "say",
+   "Speaker": "dongcheng",
+   "Text": "황숙, 여기 이름을 올린 이들이 있소. 왕자복, 충집, 오석, 그리고 서량의 마등."
+  },
+  {
+   "ID": "c17-i02",
+   "Kind": "say",
+   "Speaker": "dongcheng",
+   "Text": "허도 안에서 우리가 때를 보아 조조를 치겠소. 황숙께서도 이름을 올려 주시오."
+  },
+  {
+   "ID": "c17-i03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "국구, 저는 원술을 치러 허도를 나갑니다. 밖에서 힘을 기르다가, 안에서 일이 일어나면 밖에서 호응하겠습니다."
+  },
+  {
+   "ID": "c17-i04",
+   "Kind": "say",
+   "Speaker": "dongcheng",
+   "Text": "안에서는 조조를 찔러 죽이는 수밖에 없소. 기회는 머지않아 올 것이오."
+  },
+  {
+   "ID": "c17-i05",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "국구, 그리해 봐야 우리에겐 힘이 없습니다."
+  },
+  {
+   "ID": "c17-i06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "왕 사도께서 동탁을 베었지만 힘이 없어, 이각과 곽사가 장안을 짓밟지 않았습니까."
+  },
+  {
+   "ID": "c17-i07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "설령 조조를 몰아낸다 해도, 이번에는 원소가 똑같은 짓을 할 것입니다."
+  },
+  {
+   "ID": "c17-i08",
+   "Kind": "say",
+   "Speaker": "dongcheng",
+   "Text": "……"
+  },
+  {
+   "ID": "c17-i09",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "안다. 짐도 안다, 황숙. 실패할 가능성이 높다는 것도."
+  },
+  {
+   "ID": "c17-i10",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "허나 이렇게라도 해서, 저 조서들에 찍힌 뜻이 조조의 뜻이지 한의 뜻이 아님을 보여야 하오."
+  },
+  {
+   "ID": "c17-i11",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "짐이 할 수 있는 일은 이것뿐이오."
+  },
+  {
+   "ID": "c17-i12",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……폐하. 신 유비, 이름을 올리겠습니다."
+  },
+  {
+   "ID": "c17-i13",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "다만 신은 밖으로 나가겠습니다. 언젠가 힘을 갖추어 돌아와 폐하를 모시겠습니다."
+  },
+  {
+   "ID": "c17-i14",
+   "Kind": "say",
+   "Speaker": "xiandi",
+   "Text": "……기다리겠소, 황숙."
+  },
+  {
+   "ID": "c17-i-br",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:c17-belt-given"
+     ],
+     "Next": "c17-death"
+    }
+   ],
+   "Else": "c17-council"
+  },
+  {
+   "ID": "c17-death",
+   "Kind": "scene",
+   "Place": "허도 · 궁문 앞"
+  },
+  {
+   "ID": "c17-z01",
+   "Kind": "say",
+   "Speaker": "xuchu",
+   "Text": "황숙. 승상께서 이것을 돌려 드리라 하셨소."
+  },
+  {
+   "ID": "c17-z02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……!"
+  },
+  {
+   "ID": "c17-z03",
+   "Kind": "say",
+   "Speaker": "xuchu",
+   "Text": "이름을 올린 분들은 한 사람도 빠짐없이 모셔 오라 하셨소."
+  },
+  {
+   "ID": "c17-z04",
+   "Kind": "narrate",
+   "Text": "그 밤, 의대조에 이름을 올린 이들은 모두 붙잡혔다. 황숙 유비의 이름도 허도의 궁문 앞에서 끝났다."
+  },
+  {
+   "ID": "c17-z-end",
+   "Kind": "end",
+   "Text": "허도의 궁문 앞에서"
+  },
+  {
+   "ID": "c17-council",
+   "Kind": "scene",
+   "Place": "허도 · 유비의 저택"
+  },
+  {
+   "ID": "c17-u01",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "내일 아침 원술을 막으러 서주로 떠나네. 다들 채비하게."
+  },
+  {
+   "ID": "c17-u02",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "드디어! 이놈의 허도, 숨 막혀 죽는 줄 알았슈."
+  },
+  {
+   "ID": "c17-u03",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "숨이 막힌 건 술집마다 승상부 사람이 앉아 있어서겠지."
+  },
+  {
+   "ID": "c17-u04",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "하비와 소패의 옛 군사들에게는 미리 기별을 넣어 두겠습니다."
+  },
+  {
+   "ID": "c17-u05",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "허도에서 장만한 살림은 어찌합니까. 들인 지 한 달도 안 되었는데…… 그게 다 돈입니다."
+  },
+  {
+   "ID": "c17-u06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "두고 가세."
+  },
+  {
+   "ID": "c17-u07",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님, 궁에서 무슨 일이 있었습니까."
+  },
+  {
+   "ID": "c17-u08",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……지금은 묻지 말게. 허도를 벗어나면 이야기하겠네."
+  },
+  {
+   "ID": "c17-u09",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "……알겠습니다. 채비는 제가 해 두겠습니다."
+  },
+  {
+   "ID": "c17-council-set",
+   "Kind": "set",
+   "Flags": {
+    "c17-step": 8
+   }
+  },
+  {
+   "ID": "c17-council-back",
+   "Kind": "back",
+   "Area": "home",
+   "At": [
+    9,
+    6
+   ],
+   "Face": "SE"
+  }
+ ]
+}

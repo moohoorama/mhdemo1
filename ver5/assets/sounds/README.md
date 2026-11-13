@@ -1,7 +1,7 @@
 # Sounds
 
 Sound effects the GUI plays (`internal/gui/sound.go`). A file is a cue by its name; `name-N.ogg` files are variants of
-the cue `name`, one picked at random each time. A duel plays swing, swing-crit, hit, crit and block at its exchanges and duel-fall when it is won. A skill's cue is its `Sound` in skills.json, else its element (fire,
+the cue `name`, one picked at random each time. A duel plays swing, swing-crit, hit, crit and block at its exchanges and duel-fall when it is won. A skill's cue is its `Sound` in skills.json (a long spell also starts its quieter `Lead` as the effect begins, so 화룡·수룡·지룡 are heard while they coil and strike with fire-big, water-big, boulder), else its element (fire,
 water, earth) or kind (heal, buff, status → debuff); a physical skill has none of its own (its swing and blows). All files are 44.1 kHz stereo Vorbis.
 
 ## Recordings from Pixabay
@@ -19,12 +19,14 @@ and noise floor cut, 30 Hz highpass, loudest 20 ms matched to the level) unless 
 | shoot | arrow.mp3 | .14 |
 | fire | fire.mp3 | .14 |
 | fire-big | fire.mp3, three layers 0.12 s apart | .17 |
+| water-big | water.ogg (water.mp3 already fitted), three layers 0.12 s apart | .18 |
 | earth | stone.mp3 | .14 |
 | boulder | huge_stone.mp3 | .17 |
 | water | water.mp3 | .15 |
 | heal | heal.mp3, cut at 3.5 s | .11 |
 | buff | buff.mp3 | .12 |
 | debuff | buff.mp3 played backwards | .12 |
+| eightfold | buff and debuff mixed from the same start ×0.75 (팔진도: allies buffed, enemies debuffed at once) | – |
 | scheme | dark.mp3 | .12 |
 | crit | heavy_blade.mp3 | .20 |
 | coins | coin.mp3 | .10 |

@@ -34,6 +34,7 @@ const (
 	FxTerrainCap         = "terrain_cap"          // the target's terrain factor counts at most 1
 	FxTerrainFloor       = "terrain_floor"        // its own terrain factor counts at least 1
 	FxGrassFactor        = "grass_factor"         // its own terrain factor grows by this much on bare grassland
+	FxTerrainFactor      = "terrain_factor"       // its own terrain factor grows by this much on any ground
 	FxPoison             = "poison_on_hit"        // landed physical hits poison
 	FxPoisonBoost        = "poison_boost"         // the poison it puts on deals this many times more
 	FxLifeSteal          = "life_steal"           // heals this share of damage dealt
@@ -56,11 +57,10 @@ const (
 	FxCritImmune         = "crit_immune"          // a blow that would crit is blocked
 	FxRangedImmune       = "ranged_immune"        // ranged attackers always miss
 	FxRangedWard         = "ranged_ward"          // ranged physical blows on it deal this share less
-	FxCounterWard        = "counter_ward"         // counters struck back at it deal this share less
+	FxCounterWard        = "counter_ward"         // counters struck back at it lose this much of their share
 	FxStartMana          = "start_mana"           // starts a battle with this share of its max spell points
 	FxReflect            = "reflect"              // returns an attack spell to its caster
 	FxReflectStatus      = "reflect_status"       // returns a harmful status spell to its caster
-	FxFortify            = "fortify"              // a defense buff of this percent each turn, doubled on a castle tile
 	FxMove               = "move"                 // movement points
 	FxIgnoreMoveCost     = "ignore_move_cost"     // terrain never slows
 	FxIgnoreZOC          = "ignore_zoc"           // zone of control never stops
@@ -102,7 +102,6 @@ const (
 	FxStatusDouble       = "status_double"        // the debuffs and ailments it casts last twice as long
 	FxCritAiling         = "crit_vs_ailing"       // attacks and spells on a foe with an ailment always crit
 	FxPassAilments       = "pass_ailments"        // at turn start its harmful statuses pass to an adjacent ally
-	FxVillageForage      = "village_forage"       // ending its turn in a village finds a barley and a bean
 	FxBlendBonus         = "blend_bonus"          // the lower of the class attack and mind bonuses rises to their average
 	FxDeputyAppoint      = "deputy_appoint"       // may name a deputy
 	FxWield              = "wield:"               // + weapon type: may also equip weapons of that type
@@ -117,15 +116,15 @@ var TraitEffects = map[string]bool{}
 func init() {
 	for _, k := range []string{FxDiagonal, FxLongReach, FxRetreatSweep, FxCritAlways, FxCritBoost, FxSpellCrit, FxCritAmbush, FxCritScholar,
 		FxCritMounted, FxCritWounded, FxLoneCritLeader, FxDoubleAlways, FxAssist, FxRetaliate, FxGuardian, FxSplashCross, FxSplashCrossRanged, FxSplashSquare, FxSplashSquareRanged,
-		FxPierce, FxFlank, FxHeavy, FxCounterBoost, FxKnockback, FxTerrainCap, FxTerrainFloor, FxGrassFactor, FxPoison, FxPoisonBoost, FxLifeSteal,
+		FxPierce, FxFlank, FxHeavy, FxCounterBoost, FxKnockback, FxTerrainCap, FxTerrainFloor, FxGrassFactor, FxTerrainFactor, FxPoison, FxPoisonBoost, FxLifeSteal,
 		FxMissHalf, FxOutnumbered, FxCompanions, FxLone, FxChargePower, FxChargeShock, FxChargeAccuracy, FxOpening,
 		FxDesperate, FxGrit, FxRangedSure, FxRout,
-		FxHitDebuff, FxTurnBuff, FxAuraBuff, FxBulwark, FxCritImmune, FxRangedImmune, FxRangedWard, FxCounterWard, FxStartMana, FxReflect, FxReflectStatus, FxFortify,
+		FxHitDebuff, FxTurnBuff, FxAuraBuff, FxBulwark, FxCritImmune, FxRangedImmune, FxRangedWard, FxCounterWard, FxStartMana, FxReflect, FxReflectStatus,
 		FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxAuraHaste, FxRangedReach, FxMountedRange, FxSpellRange,
 		FxSpellSure, FxSpellWard, FxChain, FxSure, FxCritElement, FxPower, FxPatience, FxFinisher, FxDispelBuffs, FxSpellLeech, FxDispel,
 		FxStatusImmune, FxStatusWard, FxHealBonus, FxAura, FxAuraMana, FxDeputyCharm, FxItemShare, FxItemPower, FxManaRegen,
 		FxBloodCost, FxRegen, FxWoundRegen, FxBuffExtend, FxSelfGuardHalf, FxLastStand, FxCostHalf, FxCleanse, FxSpellCure, FxAbsorbMana, FxStatusDouble, FxCritAiling, FxPassAilments,
-		FxVillageForage, FxBlendBonus, FxDeputyAppoint, FxWield, FxEvade, FxAccuracy, FxPouchHeal} {
+		FxBlendBonus, FxDeputyAppoint, FxWield, FxEvade, FxAccuracy, FxPouchHeal} {
 		TraitEffects[k] = true
 	}
 }
@@ -171,7 +170,7 @@ var SkillEffects = map[string]bool{
 	"heal": true, "cure": true, "dispel": true, "steal": true, "counter": true,
 	"mind": true, "attack": true, "defense": true, "morale": true, "agility": true, "speed": true, "range": true,
 	"poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "refill": true,
-	"guard": true, "aim": true, "disrupt": true, "invert": true, "sure_crit": true, "meditate": true,
+	"guard": true, "disrupt": true, "invert": true, "sure_crit": true, "meditate": true,
 	"stance_pierce": true, "stance_cross": true, "stance_square": true,
 }
 

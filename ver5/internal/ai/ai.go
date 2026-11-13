@@ -39,6 +39,7 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 	}
 	best := options[0]
 	score := -1e9
+	dry := spentCaster(e, me)
 	var walk, goal map[content.Point]int
 	var threat map[content.Point]int
 	for _, c := range options {
@@ -82,6 +83,12 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 			}
 			if skill.Effect == "heal" && p.Healing <= 0 {
 				s = -5
+			}
+			if skill.Effect == "meditate" {
+				s = -5
+				if dry && (me.HP-e.HPCost(me.ID, c.Skill))*5 > me.Stats.MaxHP {
+					s = 30 // out of spell points, it gathers them again where it stands, while that leaves it a fifth of its strength
+				}
 			}
 			if skill.Effect == "counter" && me.Status["counter"].Turns == 0 {
 				for _, v := range o.UnitViews {
@@ -133,6 +140,10 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 				s = float64(far(goal, me.X, me.Y)-far(goal, c.X, c.Y))*3 - .1 - .01*float64(distance(me.X, me.Y, c.X, c.Y)) // of equal cells, the one fewest steps away
 				break
 			}
+			if dry {
+				s = -1 // a caster with no spell left does not walk into a melee: it waits
+				break
+			}
 			if walk == nil {
 				walk = walking(e, o, me)
 			}
@@ -156,6 +167,25 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 		}
 	}
 	return best, nil
+}
+
+// spentCaster tells a caster (a unit whose mind outweighs its attack, as 서생 and 군사 do) that has attack or
+// status spells but too few spell points for any of them now.
+func spentCaster(e *core.Engine, me *core.UnitView) bool {
+	if me.Stats.Mind <= me.Stats.Attack {
+		return false
+	}
+	has := false
+	for _, id := range me.Skills {
+		if k := e.Data().Skills[id].Kind; k != content.KindMagic && k != content.KindStatus {
+			continue
+		}
+		has = true
+		if e.SkillCost(me.ID, id) <= me.MP {
+			return false
+		}
+	}
+	return has
 }
 
 // inReach reports whether an opposing unit stands where me could strike it this turn (its move

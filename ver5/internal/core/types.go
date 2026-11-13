@@ -76,6 +76,7 @@ type State struct {
 	Learning                          []string          // characters whose learning window is open, in order
 	Merit                             *Merit            `json:",omitempty"` // what the battle fought last has brought, from its start
 	Checkpoint                        *State            `json:",omitempty"`
+	Ending                            string            `json:",omitempty"` // the end node the story stopped at, when it has a Text (the hero fell)
 }
 
 // Merit is what a battle has brought, for its result window: each officer's experience, the level each started

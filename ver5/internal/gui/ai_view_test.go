@@ -14,7 +14,7 @@ func TestNearestZoom(t *testing.T) {
 	for _, tc := range []struct{ in, want float64 }{
 		{.7, 1}, {1.3, 1}, {1.5, 2}, {2.7, 2}, {3, 4}, {6, 4},
 	} {
-		assert.Equal(t, tc.want, nearestZoom(tc.in), "zoom %v", tc.in)
+		assert.Equal(t, tc.want, nearestZoom(zooms, tc.in), "zoom %v", tc.in)
 	}
 }
 

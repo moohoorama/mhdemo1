@@ -26,7 +26,7 @@
   },
   "liquor": {
    "Name": "술",
-   "Desc": "병법치를 30 회복한다.",
+   "Desc": "병법치를 30 회복한다. 최대치를 넘어서도 오른다.",
    "Icon": "liquor",
    "Effect": "mp",
    "Amount": 30,
@@ -34,7 +34,7 @@
   },
   "fine_liquor": {
    "Name": "특급주",
-   "Desc": "병법치를 60 회복한다.",
+   "Desc": "병법치를 60 회복한다. 최대치를 넘어서도 오른다.",
    "Icon": "fine_liquor",
    "Effect": "mp",
    "Amount": 60,
@@ -42,7 +42,7 @@
   },
   "baijiu": {
    "Name": "빼갈",
-   "Desc": "병법치를 120 회복한다.",
+   "Desc": "병법치를 120 회복한다. 최대치를 넘어서도 오른다.",
    "Icon": "baijiu",
    "Effect": "mp",
    "Amount": 120,
