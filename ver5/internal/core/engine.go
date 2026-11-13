@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/mlange-42/ark/ecs"
+	"maps"
 	"slices"
 	"sort"
 	"srpg/internal/content"
@@ -877,6 +878,9 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 			c.Equipment[e.data.Equipment[id].Slot] = id
 		}
 	}
+	if c.Temp {
+		e.refitGear(c)
+	}
 	color := d.Look.Faction
 	if side == "enemy" && e.state.Stage >= 0 && e.state.Stage < len(e.data.Stages) {
 		if f := e.data.Stages[e.state.Stage].Faction; f != "" && sp.Faction == "" {
@@ -908,6 +912,33 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	u.Status = e.startStatus(&u)
 	e.unitIDs[id] = e.units.NewEntity(&u)
 	return e.unit(id)
+}
+
+// refitGear swaps the gear a class stepped back to its level cannot carry (a 철창 on a 경보병) for the shop
+// piece of that slot it can, nearest in price, or drops it when there is none.
+func (e *Engine) refitGear(c *Character) {
+	cl := e.data.Classes[c.Class]
+	held := append(append([]string{}, innate(c)...), c.Learned...)
+	for _, slot := range slices.Sorted(maps.Keys(c.Equipment)) {
+		old := e.data.Equipment[c.Equipment[slot]]
+		if e.data.Carries(cl, held, old) {
+			continue
+		}
+		delete(c.Equipment, slot)
+		best, gap := "", 0
+		for _, id := range slices.Sorted(maps.Keys(e.data.Equipment)) {
+			v := e.data.Equipment[id]
+			if v.Slot != slot || v.Price <= 0 || v.Owner != "" || len(v.Traits) > 0 || !e.data.Carries(cl, held, v) {
+				continue
+			}
+			if g := abs(v.Price - old.Price); best == "" || g < gap {
+				best, gap = id, g
+			}
+		}
+		if best != "" {
+			c.Equipment[slot] = best
+		}
+	}
 }
 
 // promotedAt is the class of the line through class that the level allows: a class the level has not reached

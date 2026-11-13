@@ -67,3 +67,37 @@ func TestBonusGoalMarksWhereUnitsFlee(t *testing.T) {
 	assert.Equal(t, 2, carts, "each loot cart once")
 	assert.Equal(t, 1, areas, "the corner the carts flee to, once")
 }
+
+func TestEveryStageRestoresOnceDeployed(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	for _, n := range d.Nodes {
+		if n.Kind != "battle" {
+			continue
+		}
+		t.Run(n.Stage, func(t *testing.T) {
+			d.Campaign.Start = n.ID
+			e := New(d, 1)
+			apply(t, e, Command{Kind: "start"})
+			_, err := Restore(d, e.Snapshot())
+			assert.NoError(t, err, "an NPC stepped back to a lower class carries only what that class can")
+		})
+	}
+}
+
+func TestASteppedBackNPCTakesTheShopWeaponOfItsClass(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	for _, n := range d.Nodes {
+		if n.Kind == "battle" && n.Stage == "B03" {
+			d.Campaign.Start = n.ID
+		}
+	}
+	e := New(d, 1)
+	apply(t, e, Command{Kind: "start"})
+	g := e.char("gaoshun")
+	require.NotNil(t, g)
+	assert.Equal(t, "light_infantry", g.Class)
+	assert.Equal(t, "iron_sword", g.Equipment["weapon"], "철창 becomes 철검")
+	assert.Equal(t, "leather_armor", g.Equipment["armor"])
+}
