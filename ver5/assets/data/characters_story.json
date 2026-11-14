@@ -22,6 +22,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "bocai",
     "Faction": "turban",
     "Palette": {
      "themeA": "#6a2a2a",
@@ -52,6 +53,7 @@
     "plain_clothes"
    ],
    "Look": {
+    "Portrait": "zhangliang",
     "Faction": "turban",
     "Palette": {
      "themeC": "#7a2a1a",
@@ -82,6 +84,7 @@
     "plain_clothes"
    ],
    "Look": {
+    "Portrait": "zhangbao",
     "Faction": "turban",
     "Palette": {
      "themeC": "#8a2a20",
@@ -174,6 +177,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "zhujun",
     "Faction": "han",
     "Palette": {
      "themeA": "#3a5a3a",
@@ -205,6 +209,7 @@
     "war_horse"
    ],
    "Look": {
+    "Portrait": "chengpu",
     "Faction": "wu",
     "Palette": {
      "horseSkin": "#a8402a",
@@ -266,6 +271,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "handang",
     "Faction": "wu",
     "Palette": {
      "themeA": "#202020",
@@ -294,6 +300,7 @@
     "war_horse"
    ],
    "Look": {
+    "Portrait": "caocen",
     "Faction": "dong",
     "Palette": {
      "horseSkin": "#2a2a30",
@@ -323,6 +330,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "lisu",
     "Faction": "dong",
     "Palette": {
      "horseSkin": "#9a9aa0",
@@ -354,6 +362,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "xurong",
     "Faction": "dong"
    }
   },
@@ -459,6 +468,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "caoren",
     "Faction": "wei",
     "Palette": {
      "horseSkin": "#b8b8c0",
@@ -489,6 +499,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "caohong",
     "Faction": "wei",
     "Palette": {
      "themeA": "#4a2a60",
@@ -518,6 +529,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "qiaomao",
     "Faction": "yuan",
     "Palette": {
      "themeA": "#6a8a3a"
@@ -546,6 +558,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "hanfu",
     "Faction": "yuan",
     "Palette": {
      "themeA": "#d8d0b0",
@@ -573,6 +586,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "gongzhou",
     "Faction": "yuan",
     "Palette": {
      "themeA": "#8a5a9a"
@@ -773,6 +787,7 @@
     "war_horse"
    ],
    "Look": {
+    "Portrait": "zumao",
     "Faction": "wu",
     "Palette": {
      "themeA": "#7a2a1a"
@@ -825,6 +840,7 @@
     "iron_sword"
    ],
    "Look": {
+    "Portrait": "zuofeng",
     "Faction": "han",
     "Scene": "eunuch_noncombat"
    }
@@ -1580,6 +1596,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "guanping",
     "Faction": "shu"
    }
   },
@@ -1632,6 +1649,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "taishici",
     "Faction": "han",
     "Palette": {
      "horseSkin": "#7a5030",
@@ -1692,6 +1710,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "yujin",
     "Faction": "wei"
    }
   },
@@ -1913,6 +1932,7 @@
     "plain_clothes"
    ],
    "Look": {
+    "Portrait": "chengong",
     "Faction": "dong",
     "Scene": "official_noncombat",
     "Palette": {
@@ -2032,6 +2052,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "jiling",
     "Faction": "yuan",
     "Scene": "official_noncombat",
     "Palette": {
@@ -2484,6 +2505,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "lidian",
     "Faction": "wei",
     "Palette": {
      "themeA": "#3a5a8a",
@@ -2515,6 +2537,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "xuhuang",
     "Faction": "wei",
     "Palette": {
      "horseSkin": "#6a4a2a",
@@ -2548,6 +2571,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "xuchu",
     "Faction": "wei",
     "Palette": {
      "themeA": "#2a3a6a",
@@ -2580,6 +2604,7 @@
     "plain_clothes"
    ],
    "Look": {
+    "Portrait": "xunyu",
     "Faction": "wei",
     "Scene": "official_noncombat",
     "Palette": {
@@ -2611,6 +2636,7 @@
     "plain_clothes"
    ],
    "Look": {
+    "Portrait": "xunyou",
     "Faction": "wei",
     "Palette": {
      "themeA": "#3a4a7a"
@@ -2640,6 +2666,7 @@
     "plain_clothes"
    ],
    "Look": {
+    "Portrait": "guojia",
     "Faction": "wei",
     "Scene": "official_noncombat",
     "Palette": {
@@ -2671,6 +2698,7 @@
     "plain_clothes"
    ],
    "Look": {
+    "Portrait": "chengyu",
     "Faction": "wei",
     "Scene": "official_noncombat",
     "Palette": {
@@ -2728,6 +2756,7 @@
     "plain_clothes"
    ],
    "Look": {
+    "Portrait": "dongcheng",
     "Scene": "official_crimson_noncombat",
     "Faction": "han"
    }
@@ -2798,6 +2827,7 @@
     "plain_clothes"
    ],
    "Look": {
+    "Portrait": "guotu",
     "Scene": "official_green_noncombat",
     "Faction": "yuan"
    }
@@ -2871,6 +2901,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "chendao",
     "Faction": "shu",
     "Scene": "infantry_noncombat"
    }
@@ -2896,6 +2927,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "zhoucang",
     "Faction": "shu",
     "Scene": "infantry_noncombat",
     "Palette": {

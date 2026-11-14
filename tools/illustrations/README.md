@@ -106,6 +106,8 @@ Square 1:1 image, plain dark navy background, no text, no watermark, no border.
   - E-dong 동탁군: dongzhuo, liru, lubu, huaxiong, lijue, huzhen
   - F-gongsun-turban 공손찬군 + 황건: zhaoyun, yangang, zhangjiao, chengyuanzhi, dengmao, turban_soldier
   - K-others 시나리오 보강: sunjian, huangfusong, luzhi, huanggai, xiandi, chenzhen (헌제는 도트 조형 기준: 관과 금장 흑포. 손견은 시트 칸이 해적 같고 늙어 보여 따로 다시 그렸다 — 아래 프롬프트)
+- 단독 초상(시트 없이 `sheets/<키>-single.png`): 진등·허탐·제갈현·손관(11-04), 조조군 8인(11-10), 기령·동승·진궁·태사자·곽도·진도·관평·주창(11-14). 프롬프트는 `prompts.md`.
+- 게임은 장수의 `Look.Portrait`로만 초상을 찾는다(장수 키로 찾지 않음). 새 초상을 넣으면 `characters*.json`의 `Look`에 `"Portrait": "<키>"`를 꼭 적는다.
 - 전체 비교: `output/portraits-c1-all.png`
 - 참조 이미지를 넘길 때 `codex exec -i`가 프롬프트까지 이미지 경로로 먹는 문제가 있었다. 스킬 스크립트에서 프롬프트 앞에 `--`를 넣어 고쳤다(2026-10-05).
 

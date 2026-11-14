@@ -5,6 +5,10 @@
 
 ---
 
+## 2026-11-14 초상 8인, 초상 연결 누락 34명
+- tools/illustrations/portraits/(sheets/)jiling·dongcheng·chengong·taishici·guotu·chendao·guanping·zhoucang.png, assets/graphics/portraits/같은 이름(256px), sheets/prompts.md, tools/illustrations/README.md: 대사는 있는데 초상이 없던 기령·동승·진궁·태사자·곽도·진도·관평·주창을 수묵 담채 단독 초상으로 — 사용자 요청
+- assets/data/characters.json·characters_story.json `Look.Portrait`: 초상 그림이 있는데 Look에 연결이 없어 대화창에 얼굴이 안 나오던 34명(목순·무안국, 파재·장량·장보·주준, 정보·한당, 조잠·이숙·서영, 조인·조홍, 교모·한복·공주·조무·사신, 조조군 8인 등)과 새 8인에 `"Portrait": "<키>"`를 넣음 — GUI는 Look.Portrait로만 초상을 찾음
+
 ## 2026-11-14 돌아오는 장수는 병종 그대로
 - internal/core/growth.go `welcome`, away_test.go, docs/logic-growth.md: leave 뒤 돌아오는 장수는 빠진 판만큼(그리고 합류 레벨까지) 레벨만 오르고 병종은 떠날 때 그대로, 자동 승급 없음(승급은 인수로). 새로 합류하는 장수만 레벨에 맞는 병종으로 들어옴 — 사용자: 신규 입사와 잠깐 이탈했다 돌아오는 건 다르다(조운·관우·장비가 상급 인수 없이 친위대로 돌아오던 것)
 

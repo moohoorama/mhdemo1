@@ -1188,6 +1188,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "mushun",
     "Faction": "yuan",
     "Palette": {
      "horseSkin": "#5a3020",
@@ -1215,6 +1216,7 @@
     "leather_armor"
    ],
    "Look": {
+    "Portrait": "wuanguo",
     "Faction": "yuan",
     "Palette": {
      "horseSkin": "#a09078",
