@@ -134,13 +134,10 @@ func pick(weights []float64, u float64) int {
 	return len(weights) - 1
 }
 
-// makeScenery bakes the ground decoration (scenemap.Scenery.Decorate) into one picture, drawn once per frame over
-// the ground and floors; the cliff tops go into a second picture drawn with their blocks.
-// Tree shadows are collected apart while the trees are placed and folded into it by finishScenery.
+// makeScenery places the ground decoration (scenemap.Scenery.Decorate), drawn at each frame over the ground and
+// floors; the cliff tops are kept apart and drawn with their blocks. Tree shadows are collected while the trees
+// are placed (nativeForest).
 func (f *Field) makeScenery() {
-	w, h := f.Canvas.Bounds().Dx(), f.Canvas.Bounds().Dy()
-	f.decor = newLayer(w, h)
-	f.treeShadow = newLayer(w, h)
 	floored := map[[2]int]bool{} // an old room map's boards, mats and carpets lie over plain ground: no grass under them
 	for _, p := range f.Map.Props {
 		if strings.HasPrefix(p.Name, "floor_") && !p.Fill {
@@ -166,17 +163,12 @@ func (f *Field) makeScenery() {
 	}
 	f.waterFX = ripples
 	for _, st := range stamps {
-		s := f.A.Scenery.sprites[st.Name]
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(math.Round(st.X-s.PivotX), math.Round(st.Y-s.PivotY))
-		dst := f.decor
+		p := placeAt(f.A.Scenery.sprites[st.Name], st.X, st.Y)
 		if st.Top {
-			if f.cliffTop == nil {
-				f.cliffTop = newLayer(w, h)
-			}
-			dst = f.cliffTop
+			f.cliffTops = append(f.cliffTops, p)
+		} else {
+			f.decor = append(f.decor, p)
 		}
-		dst.DrawImage(s.Image, op)
 	}
 }
 
@@ -212,18 +204,33 @@ func (f *Field) drawWaterFX() {
 	}
 }
 
-// drawCliffTop draws the decoration of the cliff block whose ground cell centre is (cx, cy), on top of that block.
+// drawCliffTop draws the decoration of the cliff block whose ground cell centre is (cx, cy), on top of that block:
+// the part of each cliff top stamp inside the block's box.
 func (f *Field) drawCliffTop(cx, cy float64) {
-	if f.cliffTop == nil {
+	if len(f.cliffTops) == 0 {
 		return
 	}
 	top := cy - float64(f.A.CliffRise)
 	r := image.Rect(int(cx)-16, int(top)-17, int(cx)+16, int(top)+9)
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(r.Min.X), float64(r.Min.Y))
-	f.shadeScenery(f.Canvas, op, cx, cy)
-	f.renderOp(f.Canvas, op)
-	f.Canvas.DrawImage(f.cliffTop.SubImage(r).(*ebiten.Image), op)
+	ps, ok := f.cliffTopsAt[r]
+	if !ok {
+		for _, p := range f.cliffTops {
+			if part := p.rect.Intersect(r); !part.Empty() {
+				ps = append(ps, placed{img: p.img.SubImage(part.Sub(p.rect.Min).Add(p.img.Bounds().Min)).(*ebiten.Image), rect: part})
+			}
+		}
+		if f.cliffTopsAt == nil {
+			f.cliffTopsAt = map[image.Rectangle][]placed{}
+		}
+		f.cliffTopsAt[r] = ps
+	}
+	for _, p := range ps {
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(float64(p.rect.Min.X), float64(p.rect.Min.Y))
+		f.shadeScenery(f.Canvas, op, cx, cy)
+		f.renderOp(f.Canvas, op)
+		f.Canvas.DrawImage(p.img, op)
+	}
 }
 
 // nativeForest fills every forest cell with several pines of different heights, tones and positions instead of one
@@ -297,33 +304,47 @@ func (f *Field) nativeForest(items *[]drawItem) {
 					}
 					f.blit(f.Canvas, sway.Frames[(int((f.clockMS+lag)/float64(sway.MS))+phase)%len(sway.Frames)], px, py, nil)
 				}})
-				op := &ebiten.DrawImageOptions{Blend: maxBlend}
-				op.GeoM.Translate(math.Round(px-pine.shadow.PivotX), math.Round(py-pine.shadow.PivotY))
-				f.treeShadow.DrawImage(pine.shadow.Image, op)
+				f.treeShadows = append(f.treeShadows, placeAt(pine.shadow, px, py))
 			}
 		}
 	}
 }
 
-// finishScenery lays the tree shadows over the baked decoration, so they cost nothing per frame.
-func (f *Field) finishScenery() {
-	f.decor.DrawImage(f.treeShadow, nil)
-	f.treeShadow.Deallocate()
-	f.treeShadow = nil
+// placed is a picture put down on the canvas, its corner on a whole pixel.
+type placed struct {
+	img  *ebiten.Image
+	rect image.Rectangle // canvas pixels
 }
 
-// drawBaked draws a world-size picture over dst, only the part in view once the camera is known.
-func (f *Field) drawBaked(dst, img *ebiten.Image) {
-	op := &ebiten.DrawImageOptions{}
-	if r := f.DrawBounds.Intersect(img.Bounds()); !f.DrawBounds.Empty() {
-		if r.Empty() {
-			return
+// placeAt puts s with its pivot at canvas point (x, y).
+func placeAt(s Sprite, x, y float64) placed {
+	at := image.Pt(int(math.Round(x-s.PivotX)), int(math.Round(y-s.PivotY)))
+	return placed{img: s.Image, rect: image.Rectangle{Min: at, Max: at.Add(s.Image.Bounds().Size())}}
+}
+
+// drawPlaced draws the pictures of ps that are in view over dst.
+func (f *Field) drawPlaced(dst *ebiten.Image, ps []placed, blend ebiten.Blend) {
+	for _, p := range ps {
+		if !f.DrawBounds.Empty() && !p.rect.Overlaps(f.DrawBounds) {
+			continue
 		}
-		img = img.SubImage(r).(*ebiten.Image)
-		op.GeoM.Translate(float64(r.Min.X), float64(r.Min.Y))
+		op := &ebiten.DrawImageOptions{Blend: blend}
+		op.GeoM.Translate(float64(p.rect.Min.X), float64(p.rect.Min.Y))
+		f.renderOp(dst, op)
+		dst.DrawImage(p.img, op)
 	}
-	f.renderOp(dst, op)
-	dst.DrawImage(img, op)
+}
+
+// drawDecor draws the ground decoration, then the tree shadows over it: those meet on the shadow layer first
+// (taking the darker where they overlap), which is free until the units' shadows are cast later in the frame.
+func (f *Field) drawDecor(c *ebiten.Image) {
+	f.drawPlaced(c, f.decor, ebiten.BlendSourceOver)
+	if len(f.treeShadows) == 0 {
+		return
+	}
+	f.shadows.Clear()
+	f.drawPlaced(f.shadows, f.treeShadows, maxBlend)
+	c.DrawImage(f.shadows, nil)
 }
 
 // drawSite draws a strongpoint with its life: the still picture and the looping overlays. u and v are its cell,

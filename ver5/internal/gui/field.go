@@ -55,9 +55,10 @@ type Field struct {
 	outside                      outsideLayers
 	night                        nightLayers
 	looks                        map[image.Point]string // the look of the state on a cell, by cell
-	decor                        *ebiten.Image          // baked ground decoration, see makeScenery
-	treeShadow                   *ebiten.Image          // tree shadows while the field is built, then folded into decor
-	cliffTop                     *ebiten.Image          // baked decoration of the cliff tops, drawn with each cliff block
+	decor                        []placed               // ground decoration, see makeScenery
+	treeShadows                  []placed               // the pines' ground shadows, laid over the decoration as one
+	cliffTops                    []placed               // decoration of the cliff tops, drawn with each cliff block
+	cliffTopsAt                  map[image.Rectangle][]placed
 	waterFX                      []scenemap.Ripple
 	floorTiles                   []floorTile     // a battle map's small tiles far to near, see makeFloors
 	bridges                      []drawItem      // bridge decks, over the walls under their ends
@@ -157,9 +158,6 @@ func NewField(a *Assets, m *MapArt) *Field {
 			f.makeScenery()
 		}
 		f.nativeObjects(&f.nativeItems)
-		if f.treeShadow != nil {
-			f.finishScenery()
-		}
 	}
 	f.eachProp(false, func(name string, _ Sprite, x, y float64) {
 		_, lights := a.SceneRules.Attach(name, x, y)
@@ -387,9 +385,9 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		if f.shows("walls") {
 			f.drawWalls(c)
 		}
-		if f.decor != nil {
+		if f.A.Scenery != nil {
 			if f.shows("decor") {
-				f.drawBaked(c, f.decor)
+				f.drawDecor(c)
 			}
 			if f.shows("waterfx") {
 				f.drawWaterFX()

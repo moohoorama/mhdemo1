@@ -7,7 +7,6 @@ import (
 	"math/rand/v2"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 // The ground outside the battle area (docs/ui-mockup, idea 1): the same grass, darker and
@@ -32,7 +31,7 @@ type cloudShadow struct{ x, y, r, v float64 }
 
 // outsideLayers holds what the outside ground needs between frames.
 type outsideLayers struct {
-	decor       *ebiten.Image // stones and groves in world space, empty over the map
+	decor       []placed      // stones and groves, cut off the battle area with the rest of the outside
 	tiles       *ebiten.Image // repeating quarter-tile grass with tufts, see outsideTiles
 	layer       *ebiten.Image // screen-size scratch layer
 	haze        *ebiten.Image // the fog under the vignette round the map's centre, see hazeTexture
@@ -63,13 +62,10 @@ func (f *Field) makeOutside() {
 		o.cy += c[1] / 4
 	}
 	o.rad = math.Hypot(corners[0][0]-corners[2][0], corners[0][1]-corners[2][1]) / 2
-	o.decor = newLayer(w, h)
 	r := rand.New(rand.NewPCG(uint64(f.Map.W*131+f.Map.H), 7))
 	put := func(name string, frame int, x, y float64) {
 		sh := f.A.Outside[name]
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(math.Round(x-sh.Anchor[0]), math.Round(y-sh.Anchor[1]))
-		o.decor.DrawImage(sh.Frames[frame], op)
+		o.decor = append(o.decor, placeAt(Sprite{Image: sh.Frames[frame], PivotX: sh.Anchor[0], PivotY: sh.Anchor[1]}, x, y))
 	}
 	area := float64(w * h)
 	o.tiles = outsideTiles(r)
@@ -83,17 +79,6 @@ func (f *Field) makeOutside() {
 			put("pine", int(math.Round(s))-7, x, y)
 		}
 	}
-	// nothing outside-only may show over the battle area
-	var p vector.Path
-	for i, c := range corners {
-		if i == 0 {
-			p.MoveTo(float32(c[0]), float32(c[1]))
-		} else {
-			p.LineTo(float32(c[0]), float32(c[1]))
-		}
-	}
-	p.Close()
-	vector.FillPath(o.decor, &p, nil, &vector.DrawPathOptions{ColorScale: colorScaleWhite(), Blend: ebiten.BlendDestinationOut})
 	o.haze = hazeTexture()
 	o.drop, o.rim = dropBand(), rimBand()
 	o.cloud = softEllipse()
@@ -222,7 +207,7 @@ func softEllipse() *ebiten.Image {
 // the battle area. It runs after the ground and before scenery and units.
 func (f *Field) drawOutsideGround(clockMS float64) {
 	o := &f.outside
-	if o.decor == nil || f.renderZoom <= 0 {
+	if o.tiles == nil || f.renderZoom <= 0 {
 		return
 	}
 	c := f.Canvas
@@ -247,10 +232,15 @@ func (f *Field) drawOutsideGround(clockMS float64) {
 			o.layer.DrawImage(o.tiles, top)
 		}
 	}
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(-f.renderX, -f.renderY)
-	op.GeoM.Scale(z, z)
-	o.layer.DrawImage(o.decor, op)
+	for _, p := range o.decor {
+		if !f.DrawBounds.Empty() && !p.rect.Overlaps(f.DrawBounds) {
+			continue
+		}
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(float64(p.rect.Min.X)-f.renderX, float64(p.rect.Min.Y)-f.renderY)
+		op.GeoM.Scale(z, z)
+		o.layer.DrawImage(p.img, op)
+	}
 	f.drawHaze(o.layer)
 	f.cutBattleArea(o.layer)
 	c.DrawImage(o.layer, nil)
