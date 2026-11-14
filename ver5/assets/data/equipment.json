@@ -285,7 +285,7 @@
    ]
   },
   "medicine_pouch": {
-   "Name": "약낭",
+   "Name": "약주머니",
    "Desc": "약을 담은 주머니. 구휼 책략을 쓰게 한다.",
    "Slot": "accessory",
    "Type": "any",
@@ -299,8 +299,7 @@
     0
    ],
    "Traits": [
-    "relief",
-    "medicine"
+    "relief"
    ]
   },
   "tactics_primer": {
@@ -318,9 +317,7 @@
     0
    ],
    "Traits": [
-    "exhort",
-    "composure",
-    "swiftness"
+    "exhort"
    ]
   },
   "imperial_seal": {
