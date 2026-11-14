@@ -836,6 +836,29 @@ func TestMagicCoefficientAddsSpellDamage(t *testing.T) {
 	}
 }
 
+func TestSpellWardedByTargetsIntelligence(t *testing.T) {
+	e, a, b := arena(t)
+	fire := content.Skill{Kind: content.KindMagic, Coeff: 1, Element: "fire"}
+	e.data.Rules.MagicWardSpan = 0
+	plain := e.damage(a, b, fire)
+	wits := e.attributes(e.char(b.Character))[2]
+	e.data.Rules.MagicWardFrom, e.data.Rules.MagicWardSpan = wits-30, 150
+	if got := e.damage(a, b, fire); math.Abs(got-plain*0.8) > 1e-9 {
+		t.Fatalf("30 points of 지력 above the floor take a fifth off: %v, want %v", got, plain*0.8)
+	}
+	e.data.Rules.MagicWardFrom = wits + 1
+	if got := e.damage(a, b, fire); math.Abs(got-plain) > 1e-9 {
+		t.Fatalf("지력 under the floor takes nothing off: %v, want %v", got, plain)
+	}
+	strike := content.Skill{Kind: content.KindPhysical, Coeff: 1}
+	e.data.Rules.MagicWardFrom = wits - 30
+	ward := e.damage(a, b, strike)
+	e.data.Rules.MagicWardSpan = 0
+	if got := e.damage(a, b, strike); got != ward {
+		t.Fatalf("physical blows are not warded: %v, want %v", ward, got)
+	}
+}
+
 func TestSpellGainsOnItsElementsTerrain(t *testing.T) {
 	e, a, b := arena(t)
 	fire := content.Skill{Kind: content.KindMagic, Coeff: 1, Element: "fire"}

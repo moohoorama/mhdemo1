@@ -3,7 +3,7 @@
   python3 ver5/plan/draft_maps/road_town/gen.py      -> ver5/plan/draft_maps/road_town/road_town.json
 
 One dirt road runs through from the east (where the brothers come in) to the west (toward Luoyang); the tavern on its
-north side opens into S_tavern2; a few thatched houses, a market corner and a well. Copied into the game as
+north side opens into S_tavern; a few thatched houses, a market corner and a well. Copied into the game as
 assets/graphics/maps/S_road_town.json. Uses the kit of ../danyang_village/gen.py."""
 import sys
 from pathlib import Path

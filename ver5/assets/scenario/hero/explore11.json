@@ -156,7 +156,7 @@
    }
   },
   "office": {
-   "Map": "S_zhuo_office2",
+   "Map": "S_zhuo_office",
    "Exits": [
     {
      "Name": "거리로",
@@ -194,7 +194,7 @@
    }
   },
   "tools": {
-   "Map": "S_tool_shop2",
+   "Map": "S_tool_shop",
    "Name": "도구점",
    "At": [
     6,
@@ -224,7 +224,7 @@
    }
   },
   "tavern": {
-   "Map": "S_tavern2",
+   "Map": "S_tavern",
    "Name": "주점",
    "At": [
     7,

@@ -137,10 +137,11 @@ func TestParapets(t *testing.T) {
 		assert.Equal(t, []string{"swall2_shade_pv", "swall2", "sparapet_mv", "sparapet_pv"}, got[[2]int{5, -1}], "along u")
 		assert.Equal(t, []string{"swall2_shade_pu", "swall2", "sparapet_mu", "sparapet_pu"}, got[[2]int{-1, 20}], "along v")
 	})
-	t.Run("a line running into the board's edge stops there, open: no end parapet, no shadow past it", func(t *testing.T) {
+	t.Run("a line running into the board's edge stops there, cut: no end parapet, no shadow past it", func(t *testing.T) {
 		got := draws(0)
 		assert.NotContains(t, got, [2]int{32, -1}, "past the grid's edge (u 32)")
-		assert.Equal(t, []string{"swall2_shade_pv", "swall2", "sparapet_mv", "sparapet_pv"}, got[[2]int{31, -1}], "the last tile on the board")
+		assert.Equal(t, []string{"swall2_shade_pv", "swall2", "sparapet_mv", "sparapet_pv", "swall2_cut_pu"}, got[[2]int{31, -1}],
+			"the last tile on the board, its cut on the +u edge")
 	})
 	t.Run("sides are taken in the view", func(t *testing.T) {
 		assert.Equal(t, []string{"swall2_shade_pu", "swall2", "sparapet_mu", "sparapet_pu"}, draws(1)[[2]int{5, -1}], "turned a quarter, the u line runs along v")
@@ -185,7 +186,7 @@ func TestWalkable(t *testing.T) {
 
 // Within the walls of Zhuo the hero reaches the open gate but not the grass outside it.
 func TestWalkWithin(t *testing.T) {
-	m, c := load(t, "S_zhuo2")
+	m, c := load(t, "S_zhuo")
 	w := Walkable(m, c)
 	require.True(t, w.Open(-3, 11), "the gate leads out before Within")
 	w.Within(7, 11)

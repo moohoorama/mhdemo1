@@ -6,8 +6,6 @@ import (
 	"image/color"
 	"math"
 	"sort"
-	"strconv"
-	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/colorm"
@@ -42,7 +40,6 @@ type Field struct {
 	DrawBounds                   image.Rectangle
 	nativeWater                  []GroundTile
 	nativeItems                  []drawItem
-	ceilingItems                 []drawItem
 	nativeGround                 []drawItem
 	A                            *Assets
 	Map                          *MapArt
@@ -110,7 +107,7 @@ func NewField(a *Assets, m *MapArt) *Field {
 			continue
 		}
 		g := newLayer(w, h)
-		if m.Native && !m.Scene {
+		if m.Native {
 			f.fillGround(g)
 		}
 		for _, t := range m.Ground {
@@ -151,7 +148,6 @@ func NewField(a *Assets, m *MapArt) *Field {
 	if f.clip != nil {
 		f.clip.DrawImage(f.ground[0], nil)
 	}
-	f.makeHighlandCeiling()
 	if m.Native {
 		f.makeNativeFloors()
 		f.makeFloors()
@@ -172,102 +168,12 @@ func NewField(a *Assets, m *MapArt) *Field {
 	return f
 }
 
-func hiddenCliffFace(name string) bool {
-	if !strings.HasPrefix(name, "tcliff_") || len(name) < 9 {
-		return false
-	}
-	mask, err := strconv.Atoi(name[7:9])
-	return err == nil && mask&12 == 0
-}
-
-const highlandLift = 146 // canvas pixels: top of the tile diamond meets the tall cliff's opaque top
-
-func (f *Field) highlandAt(u, v int) bool {
-	x, y := u-f.Map.Visual[0], v-f.Map.Visual[1]
-	return y >= 0 && y < len(f.Map.Highland) && x >= 0 && x < len(f.Map.Highland[y]) && f.Map.Highland[y][x] == '1'
-}
-
-func (f *Field) makeHighlandCeiling() {
-	if len(f.Map.Highland) == 0 {
-		return
-	}
-	type ceilingBand struct {
-		xs       []int
-		min, max int
-	}
-	bands := map[int]*ceilingBand{}
-	s := f.A.Tiles[8]
-	for _, t := range f.Map.Ground {
-		u := int(math.Floor(float64(t.X)/16 + float64(t.Y)/8 + 1e-6))
-		v := int(math.Floor(float64(t.Y)/8 - float64(t.X)/16 + 1e-6))
-		if !f.highlandAt(u, v) {
-			continue
-		}
-		x := int(math.Round((f.OriginX+float64(t.X))*K - s.PivotX))
-		band := bands[t.Y]
-		if band == nil {
-			band = &ceilingBand{min: x, max: x}
-			bands[t.Y] = band
-		}
-		band.xs = append(band.xs, x)
-		if x < band.min {
-			band.min = x
-		}
-		if x > band.max {
-			band.max = x
-		}
-	}
-	for ty, band := range bands {
-		w, h := band.max-band.min+s.Image.Bounds().Dx(), s.Image.Bounds().Dy()
-		img := ebiten.NewImage(w, h)
-		for _, x := range band.xs {
-			op := &ebiten.DrawImageOptions{}
-			op.GeoM.Translate(float64(x-band.min), 0)
-			img.DrawImage(s.Image, op)
-		}
-		x, y := float64(band.min), (f.OriginY+float64(ty))*K-highlandLift
-		piece := Sprite{Image: img}
-		f.ceilingItems = append(f.ceilingItems, drawItem{y: y + highlandLift,
-			draw: func() { f.blit(f.Canvas, piece, x, y, nil) }, rect: image.Rect(int(x), int(y), int(x)+w, int(y)+h)})
-	}
-	for v, row := range f.Map.Highland {
-		for u, c := range row {
-			if c != '1' {
-				continue
-			}
-			U, V := u+f.Map.Visual[0], v+f.Map.Visual[1]
-			mask := 0
-			if !f.highlandAt(U-1, V) {
-				mask |= 1
-			}
-			if !f.highlandAt(U, V-1) {
-				mask |= 2
-			}
-			if mask == 0 {
-				continue
-			}
-			rim := ebiten.NewImage(33, 17)
-			if mask&1 != 0 {
-				vector.StrokeLine(rim, 16, 0, 0, 8, 1, color.RGBA{74, 58, 37, 255}, false)
-			}
-			if mask&2 != 0 {
-				vector.StrokeLine(rim, 16, 0, 32, 8, 1, color.RGBA{74, 58, 37, 255}, false)
-			}
-			s := Sprite{Image: rim, PivotX: 16, PivotY: 8}
-			x, y := f.Center((float64(U)-.5)/2, (float64(V)-.5)/2)
-			y -= highlandLift
-			f.ceilingItems = append(f.ceilingItems, drawItem{y: y + highlandLift,
-				draw: func() { f.blit(f.Canvas, s, x, y, nil) }, rect: image.Rect(int(x)-16, int(y)-8, int(x)+17, int(y)+9)})
-		}
-	}
-}
-
 // eachProp calls fn with every placed prop of one layer at its canvas position; fills repeat
 // the prop on every cell of their range.
 func (f *Field) eachProp(ground bool, fn func(name string, s Sprite, x, y float64)) {
 	for _, p := range f.Map.Props {
 		pr, ok := f.A.Props[p.Name]
-		if !ok || pr.Ground != ground || hiddenCliffFace(p.Name) {
+		if !ok || pr.Ground != ground {
 			continue
 		}
 		if !p.Fill {
@@ -281,24 +187,6 @@ func (f *Field) eachProp(ground bool, fn func(name string, s Sprite, x, y float6
 				fn(p.Name, pr.Sprite, x, y)
 			}
 		}
-	}
-	for _, face := range f.Map.Faces {
-		pr, ok := f.A.Props[face.Name]
-		if !ok || pr.Ground != ground || hiddenCliffFace(face.Name) {
-			continue
-		}
-		x, y := f.Center((float64(face.U)-.5)/2, (float64(face.V)-.5)/2)
-		switch face.Side {
-		case "SW":
-			x, y = x-8, y+4
-		case "SE":
-			x, y = x+8, y+4
-		case "NW":
-			x, y = x-8, y-4
-		case "NE":
-			x, y = x+8, y-4
-		}
-		fn(face.Name, pr.Sprite, x+float64(face.DX), y+float64(face.DY))
 	}
 }
 
@@ -513,9 +401,6 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			}
 		}
 	}
-	if f.shows("ground") {
-		f.drawBoardSection(c)
-	}
 	if !f.shows("objects") {
 		return
 	}
@@ -554,11 +439,6 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		l.shadows.Clear()
 	}
 	items := []drawItem{}
-	for _, it := range f.ceilingItems {
-		if f.DrawBounds.Empty() || it.rect.Overlaps(f.DrawBounds) {
-			items = append(items, it)
-		}
-	}
 	for _, d := range f.Map.Decorations {
 		sid := f.A.TileFrame(d.Animation, clockMS+float64(d.Phase)*125)
 		x, y := f.OriginX+float64(d.X), f.OriginY+float64(d.Y)
@@ -574,7 +454,6 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	if f.Map.SceneMap != nil {
 		items = append(items, f.sceneItems()...)
 	}
-	items = append(items, f.boardItems()...)
 	if f.Map.Native {
 		for _, it := range append(append([]drawItem{}, f.nativeItems...), f.stateItems(clockMS)...) {
 			if f.DrawBounds.Empty() || it.rect.Empty() || it.rect.Overlaps(f.DrawBounds) {
@@ -622,27 +501,16 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	f.eachProp(false, func(name string, s Sprite, x, y float64) {
 		b := s.Image.Bounds()
 		rx, ry := int(math.Round(x-s.PivotX)), int(math.Round(y-s.PivotY))
-		cliff := f.Map.CliffRepeat && strings.HasPrefix(name, "tcliff_")
-		top := ry
-		if cliff {
-			top -= 8
-		}
 		anims, _ := f.A.SceneRules.Attach(name, x, y)
-		rect := image.Rect(rx, top, rx+b.Dx(), ry+b.Dy())
+		rect := image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy())
 		for _, d := range anims {
 			rect = rect.Union(f.A.Anims[d.Name].Frames[0].Image.Bounds().Add(image.Pt(d.X, d.Y)))
-		}
-		if sh := f.A.Props[name].Shadow; f.Map.Scene && sh.Image != nil {
-			f.blit(f.shadows, sh, x, y, &ebiten.DrawImageOptions{Blend: maxBlend})
 		}
 		if !f.DrawBounds.Empty() && !rect.Overlaps(f.DrawBounds) {
 			return
 		}
 		items = append(items, drawItem{y: y, draw: func() {
 			f.blit(c, s, x, y, nil)
-			if cliff {
-				f.blit(c, s, x, y-8, nil)
-			}
 			for _, d := range anims {
 				f.drawStrip(d, 0, 0)
 			}

@@ -137,7 +137,7 @@ func Build(m *Map, c *Catalog, o Options) (*Plan, error) {
 	if o.Decor {
 		p.Flat = append(p.Flat, w.decoration()...)
 	}
-	p.Flat = append(p.Flat, feet...)
+	p.Flat = append(append(p.Flat, feet...), w.section()...)
 	p.Levels = levels
 	grounds := map[int]*[]Piece{0: &p.Solid}
 	for i := range p.Levels {
@@ -507,7 +507,7 @@ func (w *view) blocks() (blocks []Piece, levels []Level, feet []Draw, err error)
 				t.draws = append(t.draws, d)
 			}
 			t.draws = append(t.draws, w.brinks(u, v, s, lift)...)
-			blocks = append(blocks, w.rims(u, v, s, lift)...)
+			blocks = append(append(blocks, w.rims(u, v, s, lift)...), w.topCuts(u, v, s)...)
 			byLift[lift] = append(byLift[lift], t)
 			for _, f := range []struct {
 				bit, du, dv int
@@ -776,6 +776,14 @@ func (w *view) walls() ([]Piece, error) {
 				}
 			}
 		}
+		if l.fam.Cut != "" && l.name == "" { // a line running into a front edge shows its cut there
+			if l.axis == "u" && !w.inside(u+1, v) {
+				names = append(names, l.fam.Cut+"_pu")
+			}
+			if l.axis == "v" && !w.inside(u, v+1) {
+				names = append(names, l.fam.Cut+"_pv")
+			}
+		}
 		p := Piece{Key: Key{Box: [4]float64{float64(u), float64(v), float64(u + 1), float64(v + 1)}, Rank: RankWall,
 			X: float64(x)}, Name: name, At: l.at, Anchor: [2]float64{float64(x), float64(y)}}
 		for i, name := range names {
@@ -872,6 +880,18 @@ func (w *view) objects() (pieces []Piece, flat []Draw, err error) {
 			at := func(u, v float64) [2]float64 { return [2]float64{16 * (u - v), 8 * (u + v)} }
 			draws = w.sunk(d, ob.Name, at(box[0], box[3]), at(box[2], box[3]), at(box[2], box[1]), [2]float64{x, y})
 		}
+		if cut, ok := w.c.Rules.Cuts[ob.Name]; ok && w.turn == 0 { // a wall laid as objects running into a front edge
+			for _, e := range []struct {
+				suffix, side string
+				du, dv       int
+			}{{"_u", "_pu", 1, 0}, {"_v", "_pv", 0, 1}} {
+				if strings.HasSuffix(ob.Name, e.suffix) && !w.m.Inside(ob.U+e.du, ob.V+e.dv) {
+					sp := w.c.Sprites[cut+e.side]
+					tx, ty := center(ob.U, ob.V)
+					draws = append(draws, Draw{Kind: DrawSprite, Name: cut + e.side, X: tx - sp.Pivot[0], Y: ty - lift - sp.Pivot[1]})
+				}
+			}
+		}
 		anims, lights := w.c.Attach(ob.Name, x, y-float64(lift))
 		pieces = append(pieces, Piece{Key: Key{Box: box,
 			Lift: lift, Rank: RankObject, X: x}, Name: ob.Name, At: [2]int{ob.U, ob.V}, Anchor: [2]float64{x, y - float64(lift)},
@@ -882,6 +902,86 @@ func (w *view) objects() (pieces []Piece, flat []Draw, err error) {
 		flat = append(flat, f.d)
 	}
 	return pieces, flat, nil
+}
+
+// section is the board's cross-section under its front edges (Rules.Board): a piece under each small tile of the
+// +u edge (u1 - 1) and of the +v edge (v1 - 1), by its ground glyph, and the outline down the two side corners.
+func (w *view) section() []Draw {
+	b := w.c.Rules.Board
+	if b.Default == "" {
+		return nil
+	}
+	var out []Draw
+	lay := func(name string, u, v int) {
+		sp, ok := w.c.Sprites[name]
+		if !ok {
+			return
+		}
+		x, y := center(u, v)
+		out = append(out, Draw{Kind: DrawSprite, Name: name, X: x - sp.Pivot[0], Y: y - sp.Pivot[1]})
+	}
+	family := func(u, v int) string {
+		if w.step(u, v) > 0 {
+			return b.Under
+		}
+		if f, ok := b.Sections[string(w.glyph(u, v))]; ok {
+			return f
+		}
+		return b.Default
+	}
+	k := func(u, v int) int {
+		ou, ov := w.orig(u, v)
+		return int(hashTile(ou, ov) % uint32(max(1, b.Variants)))
+	}
+	for u := w.u0; u < w.u1; u++ {
+		lay(fmt.Sprintf("%s_pv_%d", family(u, w.v1-1), k(u, w.v1-1)), u, w.v1-1)
+	}
+	for v := w.v0; v < w.v1; v++ {
+		lay(fmt.Sprintf("%s_pu_%d", family(w.u1-1, v), k(w.u1-1, v)), w.u1-1, v)
+	}
+	lay(b.End+"_pv", w.u0, w.v1-1)
+	lay(b.End+"_pu", w.u1-1, w.v0)
+	return out
+}
+
+// topCuts are the cuts of a raised tile of step s on a front edge whose height has a Cut (a city wall top running
+// on past the board): one piece standing on the ground at the edge, by the tile's place in its run along the edge.
+func (w *view) topCuts(u, v, s int) []Piece {
+	cut := w.c.Rules.Heights[strconv.Itoa(s)].Cut
+	if cut == "" {
+		return nil
+	}
+	var out []Piece
+	x, y := center(u, v)
+	ou, ov := w.orig(u, v)
+	for _, e := range []struct {
+		edge   bool
+		side   string
+		du, dv int // along the edge
+	}{{u == w.u1-1, "_pu_", 0, 1}, {v == w.v1-1, "_pv_", 1, 0}} {
+		if !e.edge {
+			continue
+		}
+		place := ""
+		if !w.inside(u-e.du, v-e.dv) || w.step(u-e.du, v-e.dv) != s {
+			place += "a"
+		}
+		if !w.inside(u+e.du, v+e.dv) || w.step(u+e.du, v+e.dv) != s {
+			place += "b"
+		}
+		if place == "" {
+			place = "m"
+		}
+		name := cut + e.side + place
+		sp, ok := w.c.Sprites[name]
+		if !ok {
+			continue
+		}
+		out = append(out, Piece{Key: Key{Box: [4]float64{float64(u), float64(v), float64(u + 1), float64(v + 1)}, Rank: RankFace,
+			X: float64(x) + .5}, Name: name, At: [2]int{ou, ov}, Anchor: [2]float64{float64(x), float64(y)},
+			Draws: []Draw{{Kind: DrawSprite, Name: name, X: x - sp.Pivot[0], Y: y - sp.Pivot[1]}}})
+	}
+	return out
 }
 
 // runsOn is the picture of a wall laid as objects (a run of <name>_u or <name>_v tiles with end tiles <name>_end_m
@@ -1005,7 +1105,7 @@ func (w *view) cornerShadows(pieces []Piece) error {
 // tiles and turned with the map. Raised tiles take none and keep it off their feet, like cliffs; what lies on a
 // cliff block's top belongs to battle maps' blocks and is left out.
 func (w *view) decoration() []Draw {
-	sc := w.c.Scenery
+	sc := w.c.sceneScenery()
 	if sc == nil {
 		return nil
 	}
@@ -1065,9 +1165,18 @@ func (w *view) stampDraws(stamps []Stamp, lift int) []Draw {
 	var out []Draw
 	for _, st := range stamps {
 		ru, rv := w.point((st.X/16+st.Y/8)/2, (st.Y/8-st.X/16)/2)
+		x, y := round(16*(ru-rv)), round(8*(ru+rv))-lift
+		if anim, ok := strings.CutPrefix(st.Name, "tile:"); ok { // a tileset animation's first frame
+			frames := w.c.Animations[anim]
+			if len(frames) == 0 {
+				continue
+			}
+			t := w.c.Tiles[frames[0]]
+			out = append(out, Draw{Kind: DrawTile, Tile: frames[0], X: x - t.Pivot[0], Y: y - t.Pivot[1]})
+			continue
+		}
 		s := w.c.Scenery.Sprites[st.Name]
-		out = append(out, Draw{Kind: DrawSprite, Sheet: "scenery", Name: st.Name,
-			X: round(16*(ru-rv)) - s.Pivot[0], Y: round(8*(ru+rv)) - s.Pivot[1] - lift})
+		out = append(out, Draw{Kind: DrawSprite, Sheet: "scenery", Name: st.Name, X: x - s.Pivot[0], Y: y - s.Pivot[1]})
 	}
 	return out
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"slices"
+	"strconv"
 	"testing"
 
 	"srpg/internal/scenemap"
@@ -13,7 +14,7 @@ import (
 // TestSceneWalksStayOnOpenGround walks every scene's moves and patrols the way the scene screen does (scenePath:
 // along u first, then v, through each Via) on the scene maps of format 2, and fails a walk that passes over a
 // small tile the map's walking rules close (scenemap.Footing: through a fence, a wall, a tent, a table) or climbs
-// from one height to another (up or off a cliff).
+// from one height to another (up or off a cliff) by more than a stair's step (stepLift).
 func TestSceneWalksStayOnOpenGround(t *testing.T) {
 	book, err := scenes.Load("../../assets/scenes")
 	if err != nil {
@@ -36,7 +37,8 @@ func TestSceneWalksStayOnOpenGround(t *testing.T) {
 		if art == nil || art.SceneMap == nil {
 			continue
 		}
-		for _, p := range sceneWalkProblems(def, art.SceneMap, scenemap.Footing(art.SceneMap, a.SceneRules)) {
+		lift := func(step int) int { return a.SceneRules.Rules.Heights[strconv.Itoa(step)].Lift }
+		for _, p := range sceneWalkProblems(def, art.SceneMap, scenemap.Footing(art.SceneMap, a.SceneRules), lift) {
 			n++
 			t.Errorf("%s %s", id, p)
 		}
@@ -44,9 +46,13 @@ func TestSceneWalksStayOnOpenGround(t *testing.T) {
 	t.Logf("%d problems", n)
 }
 
-// sceneWalkProblems are the walks of the scene that cross closed small tiles of walk or change height on m, one line
-// each.
-func sceneWalkProblems(def *scenes.Scene, m *scenemap.Map, walk *scenemap.Walk) []string {
+// stepLift is the most a walk may go up or down from one small tile to the next: a stair's step (the pavilion's
+// steps, scene.json heights 5 and 6), not a cliff or a wall.
+const stepLift = 8
+
+// sceneWalkProblems are the walks of the scene that cross closed small tiles of walk or change height on m by more
+// than a step (lift gives a height level's pixels), one line each.
+func sceneWalkProblems(def *scenes.Scene, m *scenemap.Map, walk *scenemap.Walk, lift func(int) int) []string {
 	pos := map[string][2]float64{}
 	for key, c := range def.Cast {
 		if !c.Off && len(c.At) == 2 {
@@ -74,7 +80,7 @@ func sceneWalkProblems(def *scenes.Scene, m *scenemap.Map, walk *scenemap.Walk) 
 				if t == prev || !inside(t) {
 					continue
 				}
-				if inside(prev) && m.Step(t[0], t[1]) != m.Step(prev[0], prev[1]) {
+				if d := lift(m.Step(t[0], t[1])) - lift(m.Step(prev[0], prev[1])); inside(prev) && (d > stepLift || d < -stepLift) {
 					return t, "climbs to another height"
 				}
 				prev = t

@@ -102,7 +102,7 @@
    }
   },
   "c03-e-in": {
-   "Map": "S_mansion2",
+   "Map": "S_mansion",
    "Nodes": ["c03-e-in", "c03-i1", "c03-i2"],
    "Cast": {
     "조조": {"Stay": true},
@@ -118,7 +118,7 @@
    }
   },
   "c03-e-rumor": {
-   "Map": "S_tavern2",
+   "Map": "S_tavern",
    "Time": "dusk",
    "Nodes": ["c03-e-rumor", "c03-r1", "c03-r2", "c03-r3", "c03-r4", "c03-r5", "c03-r6", "c03-r7", "c03-r8", "c03-r9"],
    "Cast": {
@@ -155,7 +155,7 @@
    }
   },
   "c03-e-night": {
-   "Map": "S_mansion2",
+   "Map": "S_mansion",
    "Time": "night",
    "Nodes": ["c03-e-night", "c03-n1", "c03-n2", "c03-n3"],
    "Cast": {
@@ -223,7 +223,7 @@
    }
   },
   "c03-e-night2": {
-   "Map": "S_mansion2",
+   "Map": "S_mansion",
    "Time": "night",
    "Nodes": ["c03-e-night2", "c03-m1", "c03-m2", "c03-m3", "c03-m4", "c03-m5", "c03-m6"],
    "Cast": {

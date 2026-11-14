@@ -43,7 +43,7 @@ def main():
         g, h = [], []
         for u in range(U0, U1 + 1):
             high = v < LIP
-            soil = high or v in ROAD or (AVENUE[0] <= u < AVENUE[1] and FENCE[2] <= v <= FENCE[3])
+            soil = high or v in ROAD or (AVENUE[0] <= u < AVENUE[1] and ROAD[1] < v <= FENCE[3])   # the avenue meets the cliff road
             g.append('d' if soil else '.')
             h.append('2' if high else '0')
         ground.append(''.join(g))
@@ -81,6 +81,7 @@ def main():
     objs += [['stree_broad_1', -20, 30], ['stree_pine_1', -19, 44], ['stree_broad_0', 62, 24], ['stree_pine_0', 64, 40]]
 
     art = {'id': 'S_cliff_coalition', 'name': '연합 진영 위 벼랑', 'format': 2, 'size': [24, 16], 'origin': [U0, V0],
+           'grass': {'hue': -4, 'sat': 0.95},
            'ground': ground, 'height': height, 'objects': objs}
     assert len(ground) == H and len(ground[0]) == W
     json.dump(art, open(GFX / 'maps/S_cliff_coalition.json', 'w'), ensure_ascii=False, separators=(',', ':'))

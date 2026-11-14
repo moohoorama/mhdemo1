@@ -51,6 +51,9 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	}
 	if s.Kind == content.KindMagic {
 		out *= R.MagicPower
+		if R.MagicWardSpan > 0 {
+			out *= 1 - clamp((e.attributes(e.char(v.Character))[2]-R.MagicWardFrom)/R.MagicWardSpan, 0, 1)
+		}
 		out *= 1 + e.fx(u, content.FxPower+s.Element)
 		if mp := e.castingMP(u); mp > 50 && e.has(u, content.FxPatience) {
 			out *= 1 + float64(mp-50)/100

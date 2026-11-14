@@ -3,7 +3,7 @@
 
   python3 ver5/tools/scene_maps/scene_v2.py S_tent_mid S_castle_town                    # the map files as they are
   python3 ver5/tools/scene_maps/scene_v2.py --rev scene-render-base S_checkpoint        # the maps of a git revision
-  python3 ver5/tools/scene_maps/scene_v2.py --copy 2 S_zhuo                               # a format 2 copy S_zhuo2 beside the old map
+  python3 ver5/tools/scene_maps/scene_v2.py --copy 2 S_zhuo                               # a format 2 copy S_zhuo beside the old map
 
 An old map stored the picture: every ground piece, cliff face, foot and corner shadow and grass tuft. Format 2 keeps
 what was decided by hand and lets the rules make the rest:
@@ -83,17 +83,38 @@ def convert(old, sprites, floors):
             raise SystemExit(f'{old["id"]}: {name} slices disagree on the gate point {ts}')
         t = ts.pop()
         objects.append([name, t, line] if axis == 'u' else [name, line, t])
+    # the battle map's glyphs the old maps drew themselves: a bridge deck on each `b` tile (an object, the deck at the
+    # old size), the castle wall blocks `c` as wall lines on grass, the cliff blocks `h` as the tall cliff (height 2, the scene cliff the old maps' highland became)
+    height = [list(r.replace('1', '2')) for r in old['highland']] if 'highland' in old else None
+    at = lambda U, V: ground[V - vy][U - vx] if 0 <= V - vy < len(ground) and 0 <= U - vx < len(ground[0]) else ''
+    for y, row in enumerate(ground):
+        for x, g in enumerate(row):
+            U, V = x + vx, y + vy
+            if g == 'b':
+                objects.append(['sbridge_v' if 'b' in (at(U, V - 1), at(U, V + 1)) else 'sbridge_u', U, V])
+            elif g == 'c':
+                if 'c' in (at(U - 1, V), at(U + 1, V)):
+                    walls.setdefault(('u', V), set()).add(U)
+                if 'c' in (at(U, V - 1), at(U, V + 1)) or 'c' not in (at(U - 1, V), at(U + 1, V)):
+                    walls.setdefault(('v', U), set()).add(V)
+            elif g == 'h':
+                if height is None:
+                    height = [['0'] * len(r) for r in ground]
+                height[y][x] = '2'
+    ground = [['.' if g == 'c' else g for g in row] for row in ground]
     lines = []
     for (axis, line), ts in sorted(walls.items()):
         ts = sorted(ts)
-        if ts != list(range(ts[0], ts[-1] + 1)):
-            raise SystemExit(f'{old["id"]}: wall {axis} {line} has gaps {ts}')
-        a, b = (ts[0], line), (ts[-1], line)
-        lines.append(['swall', list(a), list(b)] if axis == 'u' else ['swall', [line, ts[0]], [line, ts[-1]]])
+        runs = [[ts[0]]]
+        for t in ts[1:]:   # a line with gaps is several lines
+            runs[-1].append(t) if t == runs[-1][-1] + 1 else runs.append([t])
+        for run in runs:
+            a, b = run[0], run[-1]
+            lines.append(['swall', [a, line], [b, line]] if axis == 'u' else ['swall', [line, a], [line, b]])
     out = {'id': old['id'], 'name': old['name'], 'format': 2, 'size': old['size'], 'origin': [vx, vy],
            'ground': [''.join(r) for r in ground]}
-    if 'highland' in old:
-        out['height'] = [r.replace('1', '2') for r in old['highland']]
+    if height:
+        out['height'] = [''.join(r) for r in height]
     out['objects'] = objects
     if lines:
         out['walls'] = lines

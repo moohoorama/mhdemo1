@@ -331,7 +331,7 @@
    }
   },
   "tools": {
-   "Map": "S_tool_shop2",
+   "Map": "S_tool_shop",
    "Name": "도구점",
    "At": [
     6,
@@ -361,7 +361,7 @@
    }
   },
   "tavern": {
-   "Map": "S_tavern2",
+   "Map": "S_tavern",
    "Name": "주점",
    "At": [
     7,
@@ -420,7 +420,7 @@
    }
   },
   "weapons": {
-   "Map": "S_weapon_shop2",
+   "Map": "S_weapon_shop",
    "Name": "대장간",
    "At": [
     6,

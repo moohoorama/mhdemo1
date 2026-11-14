@@ -1,4 +1,4 @@
-# c01-e-tavern  S_tavern2  ch01  origin -1 -1
+# c01-e-tavern  S_tavern  ch01  origin -1 -1
 Pil##################Pil
 ###...Bch...Jar...CtrJar
 ###...Tbl............Jar

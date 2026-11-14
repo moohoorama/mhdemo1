@@ -122,6 +122,8 @@
   "PhysicalLevelScale": 20,
   "MagicLevelScale": 10,
   "MagicPower": 1.5,
+  "MagicWardFrom": 40,
+  "MagicWardSpan": 150,
   "ManaMaxFactor": 8,
   "ManaRecoveryFactor": 1.5
  },

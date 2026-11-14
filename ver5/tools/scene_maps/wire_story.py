@@ -26,8 +26,6 @@ PLACES = {
     '계교 · 공손찬의 막사': 'S_tent',
     '광종 · 노식의 진영': 'S_army_camp',
     '영천 · 장사성 밖 관군 진영': 'S_army_camp',
-    '영천 · 장사성 밖 황건 진영': 'S_turban_camp',
-    '영천 · 장사성 성루': 'S_rampart_siege',
     '하북 · 관군 진영': 'S_army_camp',
     '호로관 · 연합 진영': 'S_army_camp',
     '호로관 · 연합 진영 저녁': 'S_army_camp',
@@ -35,15 +33,12 @@ PLACES = {
     '변수 동쪽 · 연합 진영 근처': 'S_army_camp',
     '계교 · 원소의 본진': 'S_army_camp',
     '계교 · 공손찬의 진영': 'S_army_camp',
-    '영천 · 장사성 북쪽 언덕': 'S_hill',
-    '산조 · 진영 밖 언덕': 'S_hill',
     '영천 · 장사 외곽 마을': 'S_vil_peace',
     '낙양으로 가는 길': 'S_road',
     '하북으로 가는 길': 'S_road',
     '사수관 · 동쪽 들판': 'S_road',
     '거록 · 들판': 'S_road',
     '낙양 · 궁궐 옥좌 앞': 'S_hall',
-    '신도성 안': 'S_courtyard',
 }
 STAGED = ('scene', 'say', 'narrate', 'choice')
 

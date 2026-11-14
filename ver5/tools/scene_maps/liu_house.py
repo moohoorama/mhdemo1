@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Make S_liu_house, the house 조조 gave 유비 in 허도 (chapter 17), from the hall of S_mansion2 with the same room and
+"""Make S_liu_house, the house 조조 gave 유비 in 허도 (chapter 17), from the hall of S_mansion with the same room and
 furniture places (so the scenes and the walk keep their spots) but plain: plank floor with a reed mat, white plaster
 walls, bare wooden pillars, a paper screen instead of the gold one and no dais, curtains or incense — a borrowed house
 of a guest, not a lord's hall.
@@ -13,7 +13,7 @@ from pathlib import Path
 GFX = Path(__file__).resolve().parents[2] / 'assets/graphics'
 ID = 'S_liu_house'
 
-src = json.load(open(GFX / 'maps/S_mansion2.json'))
+src = json.load(open(GFX / 'maps/S_mansion.json'))
 swap = {'wall_lacquer_nw': 'wall_plaster_nw', 'wall_lacquer_ne': 'wall_plaster_ne', 'pillar_red': 'pillar_wood',
         'screen_gold': 'screen_paper'}
 drop = {'curtain_nw', 'curtain_ne', 'dais', 'incense'}

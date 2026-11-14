@@ -1,4 +1,4 @@
-# c02-e-mansion  S_mansion2  ch02  origin -1 -1
+# c02-e-mansion  S_mansion  ch02  origin -1 -1
 Pil#####################Pil
 ###......Cdl...###Cdl...Lnt
 ###............Dai.........

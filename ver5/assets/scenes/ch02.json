@@ -241,7 +241,7 @@
    }
   },
   "c02-e-zoujing": {
-   "Map": "S_zhuo_office2",
+   "Map": "S_zhuo_office",
    "Nodes": ["c02-e-zoujing", "c02-z1", "c02-z2", "c02-z3", "c02-z4", "c02-z5", "c02-z6", "c02-z7", "c02-z8", "c02-z9"],
    "Cast": {
     "유비": {"Stay": true},
@@ -328,7 +328,7 @@
    }
   },
   "c02-e-mansion": {
-   "Map": "S_mansion2",
+   "Map": "S_mansion",
    "Nodes": ["c02-e-mansion", "c02-m1", "c02-m2", "c02-m3", "c02-m4", "c02-m5", "c02-m6", "c02-m7"],
    "Cast": {
     "유비": {"Stay": true},
@@ -361,7 +361,7 @@
    }
   },
   "c02-e-smith": {
-   "Map": "S_weapon_shop2",
+   "Map": "S_weapon_shop",
    "Nodes": ["c02-e-smith", "c02-k1", "c02-k2", "c02-k4", "c02-k6", "c02-k7", "c02-k8"],
    "Cast": {
     "유비": {"Stay": true},

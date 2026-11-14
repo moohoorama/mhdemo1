@@ -1,4 +1,4 @@
-# c02-e-smith  S_weapon_shop2  ch02  origin -1 -1
+# c02-e-smith  S_weapon_shop  ch02  origin -1 -1
 Pil###############Pil
 ###...WpnWpnWpnArmArm
 ###WpnBrz.........Sck

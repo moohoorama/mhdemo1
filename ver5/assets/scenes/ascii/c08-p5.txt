@@ -1,4 +1,4 @@
-# c08-p5  S_zhuo_office2  ch08  origin -1 -1
+# c08-p5  S_zhuo_office  ch08  origin -1 -1
 Pil##################Pil
 ###...BnrCdl###CdlBnrLnt
 ###.........Dai.........

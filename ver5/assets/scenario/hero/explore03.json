@@ -10,7 +10,7 @@
  },
  "Areas": {
   "mansion": {
-   "Map": "S_mansion2",
+   "Map": "S_mansion",
    "Name": "낙양 · 조조의 저택",
    "Times": [
     {
@@ -542,7 +542,7 @@
    ]
   },
   "tools": {
-   "Map": "S_tool_shop2",
+   "Map": "S_tool_shop",
    "Name": "낙양 · 도구점",
    "Zoom": 3,
    "At": [
@@ -579,7 +579,7 @@
    }
   },
   "tavern": {
-   "Map": "S_tavern2",
+   "Map": "S_tavern",
    "Name": "낙양 · 술집",
    "Zoom": 3,
    "Time": "dusk",

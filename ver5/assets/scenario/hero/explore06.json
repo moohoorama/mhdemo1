@@ -542,7 +542,7 @@
    }
   },
   "meng_tent": {
-   "Map": "S_council2",
+   "Map": "S_council",
    "Name": "맹주의 막사",
    "Zoom": 3,
    "At": [
@@ -561,7 +561,7 @@
    ]
   },
   "yuanshu_tent": {
-   "Map": "S_tent_lux2",
+   "Map": "S_tent_lux",
    "Name": "원술의 막사",
    "Zoom": 3,
    "At": [
@@ -599,7 +599,7 @@
    ]
   },
   "our_tent": {
-   "Map": "S_tent2",
+   "Map": "S_tent",
    "Name": "삼형제의 막사",
    "Zoom": 3,
    "At": [

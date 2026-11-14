@@ -1,7 +1,7 @@
 {
  "Scenes": {
   "c01-e-notice": {
-   "Map": "S_zhuo2",
+   "Map": "S_zhuo",
    "Nodes": ["c01-e-notice", "c01-n1", "c01-n2", "c01-n3", "c01-n4", "c01-n5", "c01-n6", "c01-n7", "c01-n8", "c01-n9", "c01-n10"],
    "Cast": {
     "유비": {"Stay": true},
@@ -31,7 +31,7 @@
    }
   },
   "c01-e-tavern": {
-   "Map": "S_tavern2",
+   "Map": "S_tavern",
    "Time": "dusk",
    "Nodes": ["c01-e-tavern", "c01-t1", "c01-t2", "c01-t3", "c01-t4", "c01-t5", "c01-t6", "c01-t7", "c01-t8", "c01-t9", "c01-t10", "c01-t11", "c01-t12", "c01-t13", "c01-t14", "c01-t15", "c01-t16", "c01-t17", "c01-t18", "c01-t19", "c01-t20", "c01-t21", "c01-t22", "c01-t23", "c01-t24", "c01-t25", "c01-t26", "c01-t27", "c01-t28", "c01-t29", "c01-t30", "c01-t31", "c01-t32"],
    "Cast": {
@@ -124,7 +124,7 @@
    }
   },
   "c01-e-oath": {
-   "Map": "S_peach_grove2",
+   "Map": "S_peach_grove",
    "Music": "china-trailer",
    "Nodes": ["c01-e-oath", "c01-o1", "c01-o2", "c01-o3", "c01-o4", "c01-o5", "c01-o6", "c01-o7", "c01-o8", "c01-o9", "c01-o10", "c01-o11", "c01-o12", "c01-o13", "c01-o14", "c01-o18", "c01-o19", "c01-o20", "c01-o21", "c01-o22"],
    "Ambient": [{"Effect": "petals", "At": [4.75, 3.75]}],

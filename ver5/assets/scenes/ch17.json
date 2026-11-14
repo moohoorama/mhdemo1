@@ -203,7 +203,7 @@
    }
   },
   "c17-ask": {
-   "Map": "S_mansion2",
+   "Map": "S_mansion",
    "Time": "night",
    "Nodes": ["c17-ask", "c17-a01", "c17-a02", "c17-a03", "c17-a04", "c17-a05", "c17-a-c1", "c17-keep1", "c17-k02", "c17-a-c2", "c17-keep2", "c17-k04", "c17-k05", "c17-give", "c17-g02", "c17-a09"],
    "Cast": {

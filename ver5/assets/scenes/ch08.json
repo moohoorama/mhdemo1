@@ -186,7 +186,7 @@
    }
   },
   "c08-p5": {
-   "Map": "S_zhuo_office2",
+   "Map": "S_zhuo_office",
    "Nodes": ["c08-p5", "c08-p6", "c08-p7", "c08-p8", "c08-p9", "c08-p10", "c08-p11", "c08-p12"],
    "Cast": {
     "유비": {"At": [4, 2], "Face": "SW", "Pose": "sit"},

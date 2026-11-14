@@ -80,7 +80,7 @@
    }
   },
   "c11-envoy-pingyuan": {
-   "Map": "S_zhuo_office2",
+   "Map": "S_zhuo_office",
    "Nodes": ["c11-envoy-pingyuan", "c11-p1", "c11-p2", "c11-p-set", "c11-p-back"],
    "Cast": {
     "유비": {"Stay": true},

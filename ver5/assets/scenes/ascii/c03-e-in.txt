@@ -1,4 +1,4 @@
-# c03-e-in  S_mansion2  ch03  origin -1 -1
+# c03-e-in  S_mansion  ch03  origin -1 -1
 Pil#####################Pil
 ###......Cdl...###Cdl...Lnt
 ###............Dai.........

@@ -10,7 +10,7 @@
  },
  "Areas": {
   "zhuo": {
-   "Map": "S_zhuo2",
+   "Map": "S_zhuo",
    "Name": "탁현",
    "At": [
     7,
@@ -265,7 +265,7 @@
    ]
   },
   "office": {
-   "Map": "S_zhuo_office2",
+   "Map": "S_zhuo_office",
    "Name": "관청",
    "Zoom": 3,
    "At": [
@@ -317,7 +317,7 @@
    }
   },
   "weapons": {
-   "Map": "S_weapon_shop2",
+   "Map": "S_weapon_shop",
    "Name": "대장간",
    "Zoom": 3,
    "At": [
@@ -348,7 +348,7 @@
    }
   },
   "tools": {
-   "Map": "S_tool_shop2",
+   "Map": "S_tool_shop",
    "Name": "도구점",
    "Zoom": 3,
    "At": [
@@ -394,7 +394,7 @@
    }
   },
   "tavern": {
-   "Map": "S_tavern2",
+   "Map": "S_tavern",
    "Name": "장비의 주점",
    "Zoom": 3,
    "Time": "dusk",
@@ -548,7 +548,7 @@
    }
   },
   "grove": {
-   "Map": "S_peach_grove2",
+   "Map": "S_peach_grove",
    "Name": "복숭아 숲",
    "At": [
     10,
@@ -756,7 +756,7 @@
    }
   },
   "camp_tent": {
-   "Map": "S_tent2",
+   "Map": "S_tent",
    "Name": "삼형제의 막사",
    "Zoom": 3,
    "At": [

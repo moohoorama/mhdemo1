@@ -4,8 +4,8 @@
 A battle cliff block (assets/graphics/map/structures.png, cliff_<mask>_<variant>, one small tile, its top 26 px above
 the ground) is cut at its plain face rows (where the silhouette's sides run straight down) and those rows are stacked
 again and again, each tier taken from the same mask's next variant, so the top and the foot stay the original picture
-and only the rock face grows. Writes assets_candidate/tiles/tcliff_<mask>_<variant>.png and lcliff_<mask>_<variant>
-(the block unchanged, sorted later) and their tiles.json entries (only these); ver5/tools/build_extra.py packs them. compose.tall_cliffs() turns a map's cliff tiles into them.
+and only the rock face grows. Writes assets_candidate/tiles/tcliff_<mask>_<variant>.png (scene.json height 2's faces)
+and their tiles.json entries (only these); ver5/tools/build_extra.py packs them.
 """
 import json
 from pathlib import Path
@@ -17,7 +17,6 @@ CAND = ROOT / 'assets_candidate'
 GFX = ROOT / 'ver5/assets/graphics'
 BAND = (21, 31)  # the block's plain face rows: below its top diamond, above its foot's slant
 TIERS = 12       # extra bands: the top stands 26 + 120 px up, a little above the scene gate's roof
-LATE = 16        # lcliff: px the pivot sits below the block's own (its anchor half a cell further along u and v)
 
 
 def blocks():
@@ -56,20 +55,6 @@ def main():
         t.save(CAND / 'tiles' / f'{n}.png')
         made[n] = dict(file=f'tiles/{n}.png', size=list(t.size), pivot=[pivot[0], pivot[1] + (BAND[1] - BAND[0]) * TIERS],
                        layer='object', scale='scene', made='battle cliff block, face rows stacked (tall_cliff.py)', shadow=False)
-        # the same block at its own height, sorted half a cell later: the lip of a low cliff in front that must draw
-        # over what stands right behind it (a gatehouse post), placed by compose.tall_cliffs(..., kind='lcliff')
-        n = f'lcliff_{mask}_{var}'
-        im.save(CAND / 'tiles' / f'{n}.png')
-        made[n] = dict(file=f'tiles/{n}.png', size=list(im.size), pivot=[pivot[0], pivot[1] + LATE], layer='object',
-                       scale='scene', made='battle cliff block, sorted later (tall_cliff.py)', shadow=False)
-    # the scene wall pieces raised onto a cliff block's top (the wall running on over a low cliff), pivot a cliff rise low
-    rise = json.load(open(GFX / 'index.json'))['structures']['cliff_rise']
-    for axis in 'uv':
-        src = json.load(open(path))['sprites'][f'swall_{axis}']
-        n = f'swall_{axis}_up'
-        Image.open(CAND / src['file']).save(CAND / 'tiles' / f'{n}.png')
-        made[n] = dict(file=f'tiles/{n}.png', size=src['size'], pivot=[src['pivot'][0], src['pivot'][1] + rise], layer='object',
-                       scale='scene', made='scene wall piece standing on a cliff top (tall_cliff.py)', shadow=False)
     man = json.load(open(path))  # read just before writing: other tools write this file too
     man['sprites'].update(made)
     json.dump(man, open(path, 'w'), ensure_ascii=False, indent=1)

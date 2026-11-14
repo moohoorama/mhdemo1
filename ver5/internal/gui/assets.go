@@ -109,13 +109,9 @@ type MapArt struct {
 	Ground      []GroundTile
 	Decorations []Decoration
 	Props       []MapProp
-	Faces       []MapFace
 	Native      bool
 	Visual      [4]int
 	SmallTiles  []string
-	Highland    []string
-	SmallSnap   bool
-	CliffRepeat bool
 	Deformed    bool // battle map: forests drawn as deformed cells, like villages
 	SunkWater   bool // battle map: water lies sunkDepth below the ground behind earth banks (field_water.go)
 	// SceneMap is set for a scene map of format 2, drawn by internal/scenemap's rules (field_scene.go); the fields
@@ -123,7 +119,6 @@ type MapArt struct {
 	SceneMap *scenemap.Map
 	Scene    bool               // a scenario scene: drawn without the shaded exterior, to the edge of its picture
 	Grass    *content.GrassTint // the map's shade of grass, see grassAssets
-	Board    *mapBoard          // the baked diorama edge of a scene map (field_board.go); nil for none
 }
 
 // MapProp places a prop with its pivot at cell (U, V), fractions allowed. With U1, V1 it
@@ -134,13 +129,6 @@ type MapProp struct {
 	Fill         bool
 }
 
-// MapFace attaches a picture to one edge of a small ground tile; offsets use canvas pixels.
-type MapFace struct {
-	Name   string
-	U, V   int
-	Side   string
-	DX, DY int
-}
 type GroundTile struct {
 	X, Y   int
 	Layers []int
@@ -379,16 +367,6 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			a.Props[name] = pr
 		}
 	}
-	// the old scene wall columns (format 1 maps) lay the castle wall's band of shadow out of their open face, not a
-	// shadow cast from each column's picture, whose merlons fall on the ground as a row of spikes
-	for name, band := range map[string]string{"swall_u": "swall2_shade_pv", "swall_v": "swall2_shade_pu"} {
-		if pr, ok := a.Props[name]; ok {
-			if b, ok := a.Props[band]; ok {
-				pr.Shadow = b.Sprite
-				a.Props[name] = pr
-			}
-		}
-	}
 	// the walls of the battle map are the clean ones: no seam where one wall cell meets the next
 	for i := 0; i < 16; i++ {
 		if clean, ok := a.Props[fmt.Sprintf("wall_clean_%02d", i)]; ok {
@@ -439,136 +417,17 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		if err != nil {
 			return nil, err
 		}
-		if sm, ok, err := scenemap.Parse(b); err != nil {
-			return nil, fmt.Errorf("%s: %w", path, err)
-		} else if ok {
-			if _, err := scenemap.Build(sm, a.SceneRules, scenemap.Options{Decor: true}); err != nil {
-				return nil, fmt.Errorf("%s: %w", path, err)
-			}
-			art := sceneMapArt(sm)
-			if art.Board, err = loadBoard(dir, sm.ID); err != nil {
-				return nil, err
-			}
-			a.Maps[sm.ID] = art
-			continue
-		}
-		var m struct {
-			ID, Name    string
-			Size        [2]int
-			Tiles       []string
-			Bounds      [4]int
-			Ground      [][3]json.RawMessage
-			Decorations [][4]json.RawMessage
-			Props       [][]json.RawMessage
-			SmallProps  [][]json.RawMessage `json:"small_props"`
-			SmallFaces  [][]json.RawMessage `json:"small_faces"`
-			Deformed    bool
-			Native      bool
-			Scene       bool
-			Visual      [4]int
-			SmallTiles  []string `json:"small_tiles"`
-			Highland    []string `json:"highland"`
-			SmallSnap   bool     `json:"small_snap"`
-			CliffRepeat bool     `json:"cliff_repeat"`
-		}
-		if err = json.Unmarshal(b, &m); err != nil {
+		sm, ok, err := scenemap.Parse(b)
+		if err != nil {
 			return nil, fmt.Errorf("%s: %w", path, err)
 		}
-		art := &MapArt{ID: m.ID, Name: m.Name, W: m.Size[0], H: m.Size[1], Tiles: m.Tiles, Deformed: m.Deformed,
-			Native: m.Native, Scene: m.Scene, Visual: m.Visual, SmallTiles: m.SmallTiles, Highland: m.Highland,
-			SmallSnap: m.SmallSnap, CliffRepeat: m.CliffRepeat,
-			Bounds: image.Rect(m.Bounds[0], m.Bounds[1], m.Bounds[2], m.Bounds[3])}
-		for _, g := range m.Ground {
-			var t GroundTile
-			_ = json.Unmarshal(g[0], &t.X)
-			_ = json.Unmarshal(g[1], &t.Y)
-			_ = json.Unmarshal(g[2], &t.Layers)
-			art.Ground = append(art.Ground, t)
+		if !ok {
+			return nil, fmt.Errorf("%s: a scene map is of format %d", path, scenemap.Format)
 		}
-		for _, d := range m.Decorations {
-			var t Decoration
-			_ = json.Unmarshal(d[0], &t.X)
-			_ = json.Unmarshal(d[1], &t.Y)
-			_ = json.Unmarshal(d[2], &t.Animation)
-			_ = json.Unmarshal(d[3], &t.Phase)
-			art.Decorations = append(art.Decorations, t)
+		if _, err := scenemap.Build(sm, a.SceneRules, scenemap.Options{Decor: true}); err != nil {
+			return nil, fmt.Errorf("%s: %w", path, err)
 		}
-		for _, p := range m.Props {
-			var mp MapProp
-			if len(p) < 3 {
-				return nil, fmt.Errorf("%s: prop %s needs [name, u, v]", path, p)
-			}
-			_ = json.Unmarshal(p[0], &mp.Name)
-			_ = json.Unmarshal(p[1], &mp.U)
-			_ = json.Unmarshal(p[2], &mp.V)
-			if len(p) >= 5 {
-				mp.Fill = true
-				_ = json.Unmarshal(p[3], &mp.U1)
-				_ = json.Unmarshal(p[4], &mp.V1)
-			}
-			art.Props = append(art.Props, mp)
-		}
-		if len(m.Props) > 0 && len(m.SmallProps) > 0 {
-			return nil, fmt.Errorf("%s: props and small_props cannot both be set", path)
-		}
-		for _, p := range m.SmallProps {
-			if len(p) != 3 && len(p) != 5 {
-				return nil, fmt.Errorf("%s: small prop needs [name, U, V] or [name, U, V, dx, dy]", path)
-			}
-			var name string
-			var u, v, dx, dy int
-			for i, target := range []any{&name, &u, &v} {
-				if err := json.Unmarshal(p[i], target); err != nil {
-					return nil, fmt.Errorf("%s: small prop coordinate: %w", path, err)
-				}
-			}
-			if len(p) == 5 {
-				if err := json.Unmarshal(p[3], &dx); err != nil {
-					return nil, fmt.Errorf("%s: small prop dx: %w", path, err)
-				}
-				if err := json.Unmarshal(p[4], &dy); err != nil {
-					return nil, fmt.Errorf("%s: small prop dy: %w", path, err)
-				}
-			}
-			if m.SmallSnap && !strings.HasPrefix(name, "tcliff_") && !strings.HasPrefix(name, "lcliff_") {
-				dx, dy = 0, 0
-			}
-			art.Props = append(art.Props, MapProp{
-				Name: name,
-				U:    (float64(u)-.5)/2 + float64(dx)/64 + float64(dy)/32,
-				V:    (float64(v)-.5)/2 - float64(dx)/64 + float64(dy)/32,
-			})
-		}
-		for _, p := range m.SmallFaces {
-			if len(p) != 4 && len(p) != 6 {
-				return nil, fmt.Errorf("%s: small face needs [name, U, V, side] or [name, U, V, side, dx, dy]", path)
-			}
-			var face MapFace
-			for i, target := range []any{&face.Name, &face.U, &face.V, &face.Side} {
-				if err := json.Unmarshal(p[i], target); err != nil {
-					return nil, fmt.Errorf("%s: small face coordinate: %w", path, err)
-				}
-			}
-			if face.Side != "SW" && face.Side != "SE" && face.Side != "NW" && face.Side != "NE" {
-				return nil, fmt.Errorf("%s: invalid small face side %q", path, face.Side)
-			}
-			if len(p) == 6 {
-				if err := json.Unmarshal(p[4], &face.DX); err != nil {
-					return nil, fmt.Errorf("%s: small face dx: %w", path, err)
-				}
-				if err := json.Unmarshal(p[5], &face.DY); err != nil {
-					return nil, fmt.Errorf("%s: small face dy: %w", path, err)
-				}
-			}
-			art.Faces = append(art.Faces, face)
-		}
-		art.trimToBoard(a.SceneRules)
-		if art.Native && art.Scene {
-			if art.Board, err = loadBoard(dir, m.ID); err != nil {
-				return nil, err
-			}
-		}
-		a.Maps[m.ID] = art
+		a.Maps[sm.ID] = sceneMapArt(sm)
 	}
 	if a.Scenery, err = loadScenery(dir); err != nil {
 		return nil, err

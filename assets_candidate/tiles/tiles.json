@@ -5363,756 +5363,6 @@
    "made": "alpha-only shadow (join_overlay.py)",
    "shadow": false
   },
-  "lcliff_00_0": {
-   "file": "tiles/lcliff_00_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_00_1": {
-   "file": "tiles/lcliff_00_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_00_2": {
-   "file": "tiles/lcliff_00_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_01_0": {
-   "file": "tiles/lcliff_01_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_01_1": {
-   "file": "tiles/lcliff_01_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_01_2": {
-   "file": "tiles/lcliff_01_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_02_0": {
-   "file": "tiles/lcliff_02_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_02_1": {
-   "file": "tiles/lcliff_02_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_02_2": {
-   "file": "tiles/lcliff_02_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_03_0": {
-   "file": "tiles/lcliff_03_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_03_1": {
-   "file": "tiles/lcliff_03_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_03_2": {
-   "file": "tiles/lcliff_03_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_04_0": {
-   "file": "tiles/lcliff_04_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_04_1": {
-   "file": "tiles/lcliff_04_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_04_2": {
-   "file": "tiles/lcliff_04_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_05_0": {
-   "file": "tiles/lcliff_05_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_05_1": {
-   "file": "tiles/lcliff_05_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_05_2": {
-   "file": "tiles/lcliff_05_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_06_0": {
-   "file": "tiles/lcliff_06_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_06_1": {
-   "file": "tiles/lcliff_06_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_06_2": {
-   "file": "tiles/lcliff_06_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_07_0": {
-   "file": "tiles/lcliff_07_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_07_1": {
-   "file": "tiles/lcliff_07_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_07_2": {
-   "file": "tiles/lcliff_07_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_08_0": {
-   "file": "tiles/lcliff_08_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_08_1": {
-   "file": "tiles/lcliff_08_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_08_2": {
-   "file": "tiles/lcliff_08_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_09_0": {
-   "file": "tiles/lcliff_09_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_09_1": {
-   "file": "tiles/lcliff_09_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_09_2": {
-   "file": "tiles/lcliff_09_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_10_0": {
-   "file": "tiles/lcliff_10_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_10_1": {
-   "file": "tiles/lcliff_10_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_10_2": {
-   "file": "tiles/lcliff_10_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_11_0": {
-   "file": "tiles/lcliff_11_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_11_1": {
-   "file": "tiles/lcliff_11_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_11_2": {
-   "file": "tiles/lcliff_11_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_12_0": {
-   "file": "tiles/lcliff_12_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_12_1": {
-   "file": "tiles/lcliff_12_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_12_2": {
-   "file": "tiles/lcliff_12_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_13_0": {
-   "file": "tiles/lcliff_13_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_13_1": {
-   "file": "tiles/lcliff_13_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_13_2": {
-   "file": "tiles/lcliff_13_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_14_0": {
-   "file": "tiles/lcliff_14_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_14_1": {
-   "file": "tiles/lcliff_14_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_14_2": {
-   "file": "tiles/lcliff_14_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_15_0": {
-   "file": "tiles/lcliff_15_0.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_15_1": {
-   "file": "tiles/lcliff_15_1.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "lcliff_15_2": {
-   "file": "tiles/lcliff_15_2.png",
-   "size": [
-    40,
-    48
-   ],
-   "pivot": [
-    21,
-    55
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "battle cliff block, sorted later (tall_cliff.py)",
-   "shadow": false
-  },
-  "swall_u_up": {
-   "file": "tiles/swall_u_up.png",
-   "size": [
-    16,
-    93
-   ],
-   "pivot": [
-    16,
-    109
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "scene wall piece standing on a cliff top (tall_cliff.py)",
-   "shadow": false
-  },
-  "swall_v_up": {
-   "file": "tiles/swall_v_up.png",
-   "size": [
-    16,
-    93
-   ],
-   "pivot": [
-    0,
-    110
-   ],
-   "layer": "object",
-   "scale": "scene",
-   "made": "scene wall piece standing on a cliff top (tall_cliff.py)",
-   "shadow": false
-  },
   "sgate2_closed_u_0": {
    "file": "tiles/sgate2_closed_u_0.png",
    "size": [
@@ -10937,6 +10187,1521 @@
    "layer": "object",
    "scale": "scene",
    "made": "compound wall and gate, greys to be tinted, pixel art on the small-tile grid (gen_pixel_compound.py)",
+   "shadow": false
+  },
+  "board_grass_pu_0": {
+   "file": "tiles/board_grass_pu_0.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_grass_pu_1": {
+   "file": "tiles/board_grass_pu_1.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_grass_pu_2": {
+   "file": "tiles/board_grass_pu_2.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_grass_pu_3": {
+   "file": "tiles/board_grass_pu_3.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_grass_pv_0": {
+   "file": "tiles/board_grass_pv_0.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_grass_pv_1": {
+   "file": "tiles/board_grass_pv_1.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_grass_pv_2": {
+   "file": "tiles/board_grass_pv_2.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_grass_pv_3": {
+   "file": "tiles/board_grass_pv_3.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_road_pu_0": {
+   "file": "tiles/board_road_pu_0.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_road_pu_1": {
+   "file": "tiles/board_road_pu_1.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_road_pu_2": {
+   "file": "tiles/board_road_pu_2.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_road_pu_3": {
+   "file": "tiles/board_road_pu_3.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_road_pv_0": {
+   "file": "tiles/board_road_pv_0.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_road_pv_1": {
+   "file": "tiles/board_road_pv_1.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_road_pv_2": {
+   "file": "tiles/board_road_pv_2.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_road_pv_3": {
+   "file": "tiles/board_road_pv_3.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_water_pu_0": {
+   "file": "tiles/board_water_pu_0.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_water_pu_1": {
+   "file": "tiles/board_water_pu_1.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_water_pu_2": {
+   "file": "tiles/board_water_pu_2.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_water_pu_3": {
+   "file": "tiles/board_water_pu_3.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_water_pv_0": {
+   "file": "tiles/board_water_pv_0.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_water_pv_1": {
+   "file": "tiles/board_water_pv_1.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_water_pv_2": {
+   "file": "tiles/board_water_pv_2.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_water_pv_3": {
+   "file": "tiles/board_water_pv_3.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_tent_pu_0": {
+   "file": "tiles/board_tent_pu_0.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_tent_pu_1": {
+   "file": "tiles/board_tent_pu_1.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_tent_pu_2": {
+   "file": "tiles/board_tent_pu_2.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_tent_pu_3": {
+   "file": "tiles/board_tent_pu_3.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_tent_pv_0": {
+   "file": "tiles/board_tent_pv_0.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_tent_pv_1": {
+   "file": "tiles/board_tent_pv_1.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_tent_pv_2": {
+   "file": "tiles/board_tent_pv_2.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_tent_pv_3": {
+   "file": "tiles/board_tent_pv_3.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_hall_pu_0": {
+   "file": "tiles/board_hall_pu_0.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_hall_pu_1": {
+   "file": "tiles/board_hall_pu_1.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_hall_pu_2": {
+   "file": "tiles/board_hall_pu_2.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_hall_pu_3": {
+   "file": "tiles/board_hall_pu_3.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_hall_pv_0": {
+   "file": "tiles/board_hall_pv_0.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_hall_pv_1": {
+   "file": "tiles/board_hall_pv_1.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_hall_pv_2": {
+   "file": "tiles/board_hall_pv_2.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_hall_pv_3": {
+   "file": "tiles/board_hall_pv_3.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_under_pu_0": {
+   "file": "tiles/board_under_pu_0.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_under_pu_1": {
+   "file": "tiles/board_under_pu_1.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_under_pu_2": {
+   "file": "tiles/board_under_pu_2.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_under_pu_3": {
+   "file": "tiles/board_under_pu_3.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    0,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_under_pv_0": {
+   "file": "tiles/board_under_pv_0.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_under_pv_1": {
+   "file": "tiles/board_under_pv_1.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_under_pv_2": {
+   "file": "tiles/board_under_pv_2.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_under_pv_3": {
+   "file": "tiles/board_under_pv_3.png",
+   "size": [
+    16,
+    64
+   ],
+   "pivot": [
+    16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_end_pu": {
+   "file": "tiles/board_end_pu.png",
+   "size": [
+    1,
+    56
+   ],
+   "pivot": [
+    -16,
+    -1
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "swall2_cut_pu": {
+   "file": "tiles/swall2_cut_pu.png",
+   "size": [
+    17,
+    79
+   ],
+   "pivot": [
+    0,
+    70
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "cwall_cut_pu": {
+   "file": "tiles/cwall_cut_pu.png",
+   "size": [
+    14,
+    32
+   ],
+   "pivot": [
+    -2,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "cwall_cut_pu_roof": {
+   "file": "tiles/cwall_cut_pu_roof.png",
+   "size": [
+    13,
+    12
+   ],
+   "pivot": [
+    -2,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "rwall_cut_pu_a": {
+   "file": "tiles/rwall_cut_pu_a.png",
+   "size": [
+    16,
+    127
+   ],
+   "pivot": [
+    0,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "rwall_cut_pu_m": {
+   "file": "tiles/rwall_cut_pu_m.png",
+   "size": [
+    16,
+    127
+   ],
+   "pivot": [
+    0,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "rwall_cut_pu_b": {
+   "file": "tiles/rwall_cut_pu_b.png",
+   "size": [
+    16,
+    127
+   ],
+   "pivot": [
+    0,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "rwall_cut_pu_ab": {
+   "file": "tiles/rwall_cut_pu_ab.png",
+   "size": [
+    16,
+    127
+   ],
+   "pivot": [
+    0,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "board_end_pv": {
+   "file": "tiles/board_end_pv.png",
+   "size": [
+    1,
+    56
+   ],
+   "pivot": [
+    17,
+    -9
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "swall2_cut_pv": {
+   "file": "tiles/swall2_cut_pv.png",
+   "size": [
+    17,
+    79
+   ],
+   "pivot": [
+    17,
+    70
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "cwall_cut_pv": {
+   "file": "tiles/cwall_cut_pv.png",
+   "size": [
+    14,
+    32
+   ],
+   "pivot": [
+    16,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "cwall_cut_pv_roof": {
+   "file": "tiles/cwall_cut_pv_roof.png",
+   "size": [
+    13,
+    12
+   ],
+   "pivot": [
+    15,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "rwall_cut_pv_a": {
+   "file": "tiles/rwall_cut_pv_a.png",
+   "size": [
+    16,
+    127
+   ],
+   "pivot": [
+    16,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "rwall_cut_pv_m": {
+   "file": "tiles/rwall_cut_pv_m.png",
+   "size": [
+    16,
+    127
+   ],
+   "pivot": [
+    16,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "rwall_cut_pv_b": {
+   "file": "tiles/rwall_cut_pv_b.png",
+   "size": [
+    16,
+    127
+   ],
+   "pivot": [
+    16,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "rwall_cut_pv_ab": {
+   "file": "tiles/rwall_cut_pv_ab.png",
+   "size": [
+    16,
+    127
+   ],
+   "pivot": [
+    16,
+    120
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "pwall_u_cut_pu": {
+   "file": "tiles/pwall_u_cut_pu.png",
+   "size": [
+    17,
+    54
+   ],
+   "pivot": [
+    0,
+    47
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "diorama board edge, pixel art on the small-tile grid (tools/scene_maps/diorama.py)",
+   "shadow": false
+  },
+  "sbridge_u": {
+   "file": "tiles/sbridge_u.png",
+   "size": [
+    32,
+    17
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "bridge_u at half size (tools/scene_maps/small_bridge.py)",
+   "shadow": false
+  },
+  "sbridge_v": {
+   "file": "tiles/sbridge_v.png",
+   "size": [
+    32,
+    17
+   ],
+   "pivot": [
+    16,
+    8
+   ],
+   "layer": "ground",
+   "scale": "scene",
+   "made": "bridge_v at half size (tools/scene_maps/small_bridge.py)",
+   "shadow": false
+  },
+  "pdeck_04_0": {
+   "file": "tiles/pdeck_04_0.png",
+   "size": [
+    31,
+    33
+   ],
+   "pivot": [
+    15,
+    24
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pdeck_04_1": {
+   "file": "tiles/pdeck_04_1.png",
+   "size": [
+    31,
+    33
+   ],
+   "pivot": [
+    15,
+    24
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pdeck_04_2": {
+   "file": "tiles/pdeck_04_2.png",
+   "size": [
+    31,
+    33
+   ],
+   "pivot": [
+    15,
+    24
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pdeck_08_0": {
+   "file": "tiles/pdeck_08_0.png",
+   "size": [
+    16,
+    25
+   ],
+   "pivot": [
+    16,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pdeck_08_1": {
+   "file": "tiles/pdeck_08_1.png",
+   "size": [
+    16,
+    25
+   ],
+   "pivot": [
+    16,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pdeck_08_2": {
+   "file": "tiles/pdeck_08_2.png",
+   "size": [
+    16,
+    25
+   ],
+   "pivot": [
+    16,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pdeck_12_0": {
+   "file": "tiles/pdeck_12_0.png",
+   "size": [
+    32,
+    25
+   ],
+   "pivot": [
+    16,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pdeck_12_1": {
+   "file": "tiles/pdeck_12_1.png",
+   "size": [
+    32,
+    25
+   ],
+   "pivot": [
+    16,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pdeck_12_2": {
+   "file": "tiles/pdeck_12_2.png",
+   "size": [
+    32,
+    25
+   ],
+   "pivot": [
+    16,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pstep_04_0": {
+   "file": "tiles/pstep_04_0.png",
+   "size": [
+    36,
+    35
+   ],
+   "pivot": [
+    15,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pstep_04_1": {
+   "file": "tiles/pstep_04_1.png",
+   "size": [
+    36,
+    35
+   ],
+   "pivot": [
+    15,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pstep_04_2": {
+   "file": "tiles/pstep_04_2.png",
+   "size": [
+    36,
+    35
+   ],
+   "pivot": [
+    15,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pstep_08_0": {
+   "file": "tiles/pstep_08_0.png",
+   "size": [
+    37,
+    35
+   ],
+   "pivot": [
+    16,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pstep_08_1": {
+   "file": "tiles/pstep_08_1.png",
+   "size": [
+    37,
+    35
+   ],
+   "pivot": [
+    16,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pstep_08_2": {
+   "file": "tiles/pstep_08_2.png",
+   "size": [
+    37,
+    35
+   ],
+   "pivot": [
+    16,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pstep_12_0": {
+   "file": "tiles/pstep_12_0.png",
+   "size": [
+    37,
+    35
+   ],
+   "pivot": [
+    16,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pstep_12_1": {
+   "file": "tiles/pstep_12_1.png",
+   "size": [
+    37,
+    35
+   ],
+   "pivot": [
+    16,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "pstep_12_2": {
+   "file": "tiles/pstep_12_2.png",
+   "size": [
+    37,
+    35
+   ],
+   "pivot": [
+    16,
+    26
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_sw_0": {
+   "file": "tiles/prail_sw_0.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    14,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_sw_1": {
+   "file": "tiles/prail_sw_1.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    14,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_sw_2": {
+   "file": "tiles/prail_sw_2.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    14,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_sw_3": {
+   "file": "tiles/prail_sw_3.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    14,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_se_0": {
+   "file": "tiles/prail_se_0.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    3,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_se_1": {
+   "file": "tiles/prail_se_1.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    3,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_se_2": {
+   "file": "tiles/prail_se_2.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    3,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_se_3": {
+   "file": "tiles/prail_se_3.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    3,
+    16
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_ne_0": {
+   "file": "tiles/prail_ne_0.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    3,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_ne_1": {
+   "file": "tiles/prail_ne_1.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    3,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_ne_2": {
+   "file": "tiles/prail_ne_2.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    3,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_ne_3": {
+   "file": "tiles/prail_ne_3.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    3,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_nw_0": {
+   "file": "tiles/prail_nw_0.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    14,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_nw_1": {
+   "file": "tiles/prail_nw_1.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    14,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_nw_2": {
+   "file": "tiles/prail_nw_2.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    14,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
+   "shadow": false
+  },
+  "prail_nw_3": {
+   "file": "tiles/prail_nw_3.png",
+   "size": [
+    17,
+    23
+   ],
+   "pivot": [
+    14,
+    22
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
    "shadow": false
   }
  }

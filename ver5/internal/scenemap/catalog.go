@@ -3,6 +3,7 @@ package scenemap
 import (
 	"encoding/json"
 	"fmt"
+	"maps"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -46,6 +47,20 @@ type WallFamily struct {
 	Parapet string `json:"parapet"`
 	Shade   string `json:"shade"`
 	Piece   string `json:"piece"`
+	// Cut is the family of the line's cut where it runs into a front edge of the board: <cut>_pu, <cut>_pv.
+	Cut string `json:"cut"`
+}
+
+// Board is how the board's front edges are drawn (docs/presentation-scene.md, 판 단면): under each small tile of the
+// +u and +v edges a piece of the ground's cross-section, <family>_pu_<k> or <family>_pv_<k> (k by the tile, of
+// Variants), the family by the tile's ground glyph (Default for one not listed, Under below a raised tile); End_pu
+// and End_pv close the two side corners.
+type Board struct {
+	Sections map[string]string `json:"sections"`
+	Default  string            `json:"default"`
+	Under    string            `json:"under"`
+	End      string            `json:"end"`
+	Variants int               `json:"variants"`
 }
 
 // Rules is scene.json.
@@ -70,6 +85,9 @@ type Rules struct {
 		// Rim is the family of what stands on a top's edges over lower ground, among the people on the top (a wall
 		// walk's parapets): <rim>_<side>_<k>, side sw (+v), se (+u), ne (-v) or nw (-u), one small tile of edge each.
 		Rim string `json:"rim"`
+		// Cut is the family of the cut where such a top runs into a front edge: <cut>_pu_<place>, <cut>_pv_<place>,
+		// place a, m or b (the first, a middle or the last tile of the run along the edge) or ab (a run of one).
+		Cut string `json:"cut"`
 	} `json:"heights"`
 	Walls       map[string]WallFamily `json:"walls"`
 	Gates       map[string]string     `json:"gates"`        // a gate object -> its slices (<slices>_<axis>_<k>)
@@ -82,6 +100,17 @@ type Rules struct {
 		Offset [2]int `json:"offset"`
 	} `json:"corner_shadow"`
 	Footprints map[string][4]float64 `json:"footprints"`
+	// Decor is the scene maps' own ground decoration over the scenery's (map/scenery.json): per surface the expected
+	// stamps per small tile of each group (Scatter, replacing the scenery's rate for that group), and groups of their
+	// own (Groups, "<surface>.<group>"); a name "tile:<animation>" is the tileset animation's first frame.
+	Decor struct {
+		Scatter map[string]map[string]float64 `json:"scatter"`
+		Groups  map[string][]string           `json:"groups"`
+	} `json:"decor"`
+	Board      Board                 `json:"board"`
+	// Cuts are the cuts of walls laid as objects, one small tile each (<name>_u along u, <name>_v along v), where
+	// the run reaches a front edge: object name -> <cut>_pu or <cut>_pv.
+	Cuts map[string]string `json:"cuts"`
 	// Attachments are what an object carries wherever it stands: the flames of a campfire, the light of a lantern.
 	Attachments map[string][]Attachment `json:"attachments"`
 	Flood       Flood                   `json:"flood"`
@@ -211,6 +240,27 @@ func NewCatalog(index, rules, scenery []byte) (*Catalog, error) {
 		}
 	}
 	return c, nil
+}
+
+// sceneScenery is the scenery with the scene maps' decoration rates and groups (Rules.Decor) over its own.
+func (c *Catalog) sceneScenery() *Scenery {
+	if c.Scenery == nil || c.Rules.Decor.Scatter == nil {
+		return c.Scenery
+	}
+	s := *c.Scenery
+	s.Scatter = map[string]map[string]float64{}
+	for surf, groups := range c.Scenery.Scatter {
+		s.Scatter[surf] = maps.Clone(groups)
+	}
+	for surf, groups := range c.Rules.Decor.Scatter {
+		if s.Scatter[surf] == nil {
+			s.Scatter[surf] = map[string]float64{}
+		}
+		maps.Copy(s.Scatter[surf], groups)
+	}
+	s.Groups = maps.Clone(c.Scenery.Groups)
+	maps.Copy(s.Groups, c.Rules.Decor.Groups)
+	return &s
 }
 
 // surface is how a glyph joins its neighbours: 0 water, 1 grass, 2 soil (build.py's SURFACE). Floors join as grass.

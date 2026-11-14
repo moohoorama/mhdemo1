@@ -28,6 +28,8 @@ type Rules struct {
 	PhysicalLevelScale    float64 // physical damage = attack - defense + (level+StatLevelBase)*PhysicalLevelScale
 	MagicLevelScale       float64 // spell damage = mind - target mind + (level+StatLevelBase)*MagicLevelScale
 	MagicPower            float64 // every spell's damage is multiplied by this
+	MagicWardFrom         float64 // a target's own 지력 above this takes off spell damage …
+	MagicWardSpan         float64 // … all of it at MagicWardFrom+MagicWardSpan: × (1 − (지력 − From)/Span)
 	ManaMaxFactor         float64 // max spell points = base + ManaMaxFactor*StatNumerator/(StatDenominator-command)
 	ManaRecoveryFactor    float64 // spell points per turn = base + ManaRecoveryFactor*StatNumerator/(StatDenominator-intellect)
 	Crit, Double          Chance

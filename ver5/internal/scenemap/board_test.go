@@ -31,6 +31,35 @@ func TestBoard(t *testing.T) {
 			assert.Equal(t, tc.want, OnBoard(tc.box, board, tc.tileOn))
 		})
 	}
+	t.Run("a section piece under every small tile of the front edges, by its ground", func(t *testing.T) {
+		m, c := load(t, "S_tavern")
+		p, err := Build(m, c, Options{})
+		require.NoError(t, err)
+		count := map[string]int{}
+		for _, d := range p.Flat {
+			if strings.HasPrefix(d.Name, "board_") {
+				count[d.Name[:strings.LastIndexByte(d.Name, '_')]]++
+			}
+		}
+		assert.Equal(t, m.H(), count["board_hall_pu"], "+u edge: one per tile of floor")
+		assert.Equal(t, m.W(), count["board_hall_pv"], "+v edge")
+		assert.Equal(t, 2, count["board_end"], "the two side corners")
+	})
+	t.Run("a city wall top on a front edge stands its cut, by its place in the run", func(t *testing.T) {
+		m, c := load(t, "S_baimen")
+		p, err := Build(m, c, Options{})
+		require.NoError(t, err)
+		var places []string
+		for _, piece := range p.Pieces() {
+			if strings.HasPrefix(piece.Name, "rwall_cut_pu_") {
+				places = append(places, strings.TrimPrefix(piece.Name, "rwall_cut_pu_"))
+			}
+		}
+		require.NotEmpty(t, places)
+		assert.Contains(t, places, "a")
+		assert.Contains(t, places, "b")
+		assert.Contains(t, places, "m")
+	})
 	t.Run("a city wall top running into a front edge takes no face, rim or foot there", func(t *testing.T) {
 		m, c := load(t, "S_baimen")
 		p, err := Build(m, c, Options{})

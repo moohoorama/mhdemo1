@@ -10,7 +10,7 @@
  },
  "Areas": {
   "zhuo": {
-   "Map": "S_zhuo2",
+   "Map": "S_zhuo",
    "Name": "탁현",
    "At": [
     7,
@@ -260,7 +260,7 @@
    ]
   },
   "office": {
-   "Map": "S_zhuo_office2",
+   "Map": "S_zhuo_office",
    "Name": "관청",
    "Zoom": 3,
    "At": [
@@ -386,7 +386,7 @@
    }
   },
   "weapons": {
-   "Map": "S_weapon_shop2",
+   "Map": "S_weapon_shop",
    "Name": "대장간",
    "Zoom": 3,
    "At": [
@@ -426,7 +426,7 @@
    }
   },
   "tools": {
-   "Map": "S_tool_shop2",
+   "Map": "S_tool_shop",
    "Name": "도구점",
    "Zoom": 3,
    "At": [
@@ -472,7 +472,7 @@
    }
   },
   "tavern": {
-   "Map": "S_tavern2",
+   "Map": "S_tavern",
    "Name": "주점",
    "Zoom": 3,
    "At": [
@@ -731,7 +731,7 @@
    }
   },
   "mansion": {
-   "Map": "S_mansion2",
+   "Map": "S_mansion",
    "Name": "소쌍과 장세평의 저택",
    "Zoom": 3,
    "At": [

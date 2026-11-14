@@ -9,7 +9,7 @@ import (
 
 func init() { demos["scenemap"] = demoSceneMap }
 
-// demoSceneMap shows one scenario scene map (-stage S_village, S_road, ...) on its own, fitted to the screen,
+// demoSceneMap shows one scenario scene map (-stage S_road, S_zhuo, ...) on its own, fitted to the screen,
 // as the scene camera sees it: at twice the canvas size around the middle of its playing area, or around game cell
 // "u,v" given with -node; -node fit shows the whole map.
 func demoSceneMap(d *Demo) error {

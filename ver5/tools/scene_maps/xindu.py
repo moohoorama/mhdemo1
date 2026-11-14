@@ -38,7 +38,7 @@ def put(name, u, v):
 
 paint(-M, -M, -2, H + M, 'd')          # fields outside the north-west wall
 paint(-M, H + 1, W + M, H + M, 'd')    # and outside the south-west wall
-paint(MAIN[0], 0, MAIN[1], H + M, 'd')
+paint(MAIN[0], -M, MAIN[1], H + M, 'd')   # the main street runs on past the 관아 to both ends of the ground
 paint(0, CROSS[0], W + M, CROSS[1], 'd')
 paint(9, 4, 20, 8, 'i')                # the 관아 yard
 
@@ -59,6 +59,7 @@ for u, v, name in ((6, -7, 'stree_pine_0'), (20, -9, 'stree_broad_1'), (37, 3, '
 put('sgate_open', GATE, H)
 
 art = {'id': 'S_xindu', 'name': '신도성 안', 'format': 2, 'size': [W // 2, H // 2], 'origin': [-M, -M],
+       'grass': {'hue': 10, 'sat': 0.72, 'val': 0.96},   # the map's grass tint (docs: 맵별 초원 색조)
        'ground': [''.join(r) for r in g], 'objects': obj,
        'walls': [['swall', [-1, -M], [-1, H]], ['swall', [0, H], [W + M - 1, H]]]}
 

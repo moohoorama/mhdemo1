@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Make S_luoyang, the street of 낙양 the 3rd chapter walks (assets/scenario/hero/explore03.json): the capital, so
-unlike the county towns (S_zhuo2, S_castle_town) it is paved, wide and crowded, under the palace wall.
+unlike the county towns (S_zhuo, S_castle_town) it is paved, wide and crowded, under the palace wall.
 
   python3 ver5/tools/scene_maps/luoyang.py
 
