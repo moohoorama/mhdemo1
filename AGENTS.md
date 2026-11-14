@@ -42,12 +42,21 @@ standing shown before it is claimed, actions over explanations), the staging rul
 drafts side by side in an html page, the user picks, then data, then a game capture). Per-officer speech is in
 `ver5/docs/data-speech-style.md`.
 
+To check what the story already says (who said what where, earlier foreshadowing, how someone was addressed), search
+the story index instead of reading whole files: from `ver5/`, `uv run tools/storydb/storydb.py search "<what happened>"`
+finds scenes by meaning across `docs/fullstory.md` and the story, explore and stage files, `... grep <word> [--speaker 관우]`
+lists exact lines, both with file:line. Run `... index` first after story edits (only changed chunks are embedded;
+needs Ollama with `bge-m3`).
+
 The core of this game's story (`ver5/docs/fullstory.md` and every scene, explore line and battle line drawn from it) is
 that it satisfies both the 삼국지 enthusiast and the player who enjoys 삼국지 lightly — in its wording and in its plot:
 - Wording keeps a fitting distance from the period. Not the language of papers, reference works or specialist
   sources (no bare official titles like 상시 or 낭중, no 태학생 or 당고 in a passing line), but words a player today
   understands that still sit naturally next to 연의's phrasing (십상시, 환관, 대장군, 벼슬을 돈 주고 산다).
-  Titles 연의 readers know well and a newcomer still reads as "some post" stay (기도위, 북부위, 태수, 자사).
+  Titles 연의 readers know well and a newcomer still reads as "some post" stay (기도위, 북부위, 태수, 자사, and also 상서, 사공, 사도, 거기장군, 상국, 승상, 삼공).
+  What to avoid is dictionary-only old words and forms (목백, 부중, 막하, 약낭, "공 북해"); the user's keep/replace
+  list is `ver5/tools/storydb/jargon.tsv` and `storydb.py jargon` lists lines that use a replace word (see
+  `ver5/docs/story-writing.md` 어휘).
 - Show the times as a feeling, not a thesis. The player only needs to sense that things are rotten (벼슬을 사고팔고,
   뇌물을 바라고, 그 값을 세금으로 짜낸다); don't lecture on causes such as "the Yellow Turbans rose because of the
   십상시".

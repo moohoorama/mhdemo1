@@ -13,3 +13,4 @@ __pycache__/
 /ver5/_balance
 /ver5/gui.test
 /ver5/srpg-gui
+/ver5/tools/storydb/storydb.sqlite
