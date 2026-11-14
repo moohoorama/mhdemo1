@@ -24,6 +24,7 @@ type Engine struct {
 	lastActor        string // who the command in progress is for, so a duel knows who moved to meet whom
 	caster           string // who is using a skill now, and the spell points it began with (인내)
 	castMP           int
+	immortal         string // who no blow brings below 1 HP (SetImmortal, simulators only)
 }
 
 func copyOf[T any](v T) T { b, _ := json.Marshal(v); var c T; _ = json.Unmarshal(b, &c); return c }
@@ -231,16 +232,23 @@ func (e *Engine) Apply(c Command) (r Result, err error) {
 		}
 	}()
 	t := fromState(e.data, e.Snapshot())
-	t.lastActor = c.Actor
+	t.lastActor, t.immortal = c.Actor, e.immortal
 	if err = t.execute(c); err != nil {
 		return Result{}, err
 	}
 	t.settle()
 	t.state.Revision++
 	r = Result{t.state.Revision, t.events}
-	*e = *t
+	e.replace(t)
 	return r, nil
 }
+
+// replace makes e the engine t, keeping what lives outside the state (SetImmortal).
+func (e *Engine) replace(t *Engine) {
+	t.immortal = e.immortal
+	*e = *t
+}
+
 func (e *Engine) Retry() error {
 	if e.state.Phase != "result" || e.state.Result != "defeat" || e.state.Checkpoint == nil {
 		return fail("WrongPhase")
@@ -251,7 +259,7 @@ func (e *Engine) Retry() error {
 		return err
 	}
 	t.state.Revision = rev
-	*e = *t
+	e.replace(t)
 	return nil
 }
 func (e *Engine) rand(n int) int {
@@ -795,7 +803,7 @@ func (e *Engine) prepare(c Command) error {
 		}
 	}
 	t := fromState(e.data, s)
-	*e = *t
+	e.replace(t)
 	cp := e.Snapshot()
 	e.state.Checkpoint = &cp
 	e.state.Merit = &Merit{XP: map[string]int{}, From: map[string]int{}, Spoils: map[string]int{}}
@@ -1098,7 +1106,7 @@ func (e *Engine) clearBattle() {
 		}
 	}
 	s.Characters = kept
-	*e = *fromState(e.data, s)
+	e.replace(fromState(e.data, s))
 }
 
 // SpawnPreview uses the battle initialization path for editor stat previews.

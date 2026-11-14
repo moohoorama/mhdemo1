@@ -240,6 +240,9 @@ func (e *Engine) hurt(v *Unit, n int, u *Unit) int {
 		n = v.HP - 1
 		v.Spared = true
 	}
+	if e.undying(v) {
+		n = min(n, v.HP-1)
+	}
 	v.HP -= n
 	e.emit("damage", u.ID, v.ID, n)
 	if v.HP == 0 && n > 0 {
@@ -1256,6 +1259,9 @@ func (e *Engine) dot(v *Unit, id string, n int) {
 		return
 	}
 	n = min(v.HP, n)
+	if e.undying(v) {
+		n = min(n, v.HP-1)
+	}
 	v.HP -= n
 	e.emit("damage", "", v.ID, n)
 	if v.HP == 0 {

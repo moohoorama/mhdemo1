@@ -412,14 +412,15 @@ func TestSwornBrothersJoinWhenTheOathEnds(t *testing.T) {
 func TestOfficersJoinInTheClassTheirLevelReaches(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
-	t.Run("Zhao Yun joins Jiejiao at its level, as heavy cavalry", func(t *testing.T) {
+	t.Run("Zhao Yun joins Jiejiao at its level, still light cavalry: short of the first promotion", func(t *testing.T) {
 		dd := *d
 		dd.Campaign.Start = "c10-battle"
 		e := New(&dd, 1)
 		zy := e.char("zhaoyun")
 		require.NotNil(t, zy)
 		assert.Equal(t, d.Rules.StageLevel(d.StageOrder("B10")), zy.Level)
-		assert.Equal(t, "heavy_cavalry", zy.Class)
+		require.Less(t, zy.Level, d.Rules.PromoteLevels[0])
+		assert.Equal(t, "light_cavalry", zy.Class)
 	})
 	t.Run("the difficulty shifts the join level as it shifts the enemy; the flat debug curve does not", func(t *testing.T) {
 		dd := *d
@@ -439,8 +440,8 @@ func TestOfficersJoinInTheClassTheirLevelReaches(t *testing.T) {
 			level int
 			want  string
 		}{
-			{"gongsunzan", 5, "light_cavalry"}, {"gongsunzan", 20, "heavy_cavalry"}, {"gongsunzan", 30, "royal_guard"},
-			{"xiahouyuan", 20, "horse_archer"}, {"xiahouyuan", 30, "horse_crossbow"}, {"zhoucang", 14, "bandit"},
+			{"gongsunzan", 19, "light_cavalry"}, {"gongsunzan", 20, "heavy_cavalry"}, {"gongsunzan", 39, "heavy_cavalry"}, {"gongsunzan", 40, "royal_guard"},
+			{"xiahouyuan", 20, "horse_archer"}, {"xiahouyuan", 40, "horse_crossbow"}, {"zhoucang", 14, "bandit"},
 		} {
 			assert.Equal(t, c.want, d.PromotedAt(c.def, d.Characters[c.def].Class, c.level), "%s at %d", c.def, c.level)
 		}
@@ -452,8 +453,9 @@ func TestOfficersJoinInTheClassTheirLevelReaches(t *testing.T) {
 	t.Run("Zhou Cang joins at 망탕산 on the bandit line, in the robe his class wears", func(t *testing.T) {
 		e := New(d, 1)
 		o := e.welcome("zhoucang", d.StageOrder("B20"))
-		require.GreaterOrEqual(t, o.Level, d.Rules.PromoteLevels[1])
-		assert.Equal(t, "outlaw", o.Class)
+		require.GreaterOrEqual(t, o.Level, d.Rules.PromoteLevels[0])
+		require.Less(t, o.Level, d.Rules.PromoteLevels[1])
+		assert.Equal(t, "ruffian", o.Class)
 		assert.True(t, d.Carries(d.Classes[o.Class], nil, d.Equipment[o.Equipment["armor"]]), o.Equipment["armor"])
 	})
 }

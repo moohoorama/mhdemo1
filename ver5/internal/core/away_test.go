@@ -52,9 +52,13 @@ func TestAwayOfficerComesBack(t *testing.T) {
 	})
 
 	t.Run("keeps the class they left in", func(t *testing.T) {
-		e := leave(20)
+		e := leave(R.PromoteLevels[0])
 		class := e.state.Away[0].Class
-		o := e.welcome("zhangfei", 20)
+		back := 20
+		for e.joinLevel(back) < R.PromoteLevels[1] {
+			back++ // a battle late enough that a newcomer would join a tier higher
+		}
+		o := e.welcome("zhangfei", back)
 		assert.GreaterOrEqual(t, o.Level, R.PromoteLevels[1])
 		assert.Equal(t, class, o.Class)
 	})

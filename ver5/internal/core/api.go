@@ -7,6 +7,7 @@ import (
 	"slices"
 	"sort"
 	"srpg/internal/content"
+	"strings"
 )
 
 func (e *Engine) LegalActions(actor string) Options {
@@ -172,6 +173,27 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 // SetDamagePct scales the damage of every blow to pct percent; the setting travels with snapshots,
 // so previews and trial copies deal the same damage.
 func (e *Engine) SetDamagePct(pct int) { e.state.DamagePct = pct }
+
+// SetImmortal keeps units standing: no blow brings them below 1 HP. who is a comma-separated list of characters,
+// "ally" for every unit of the player's side. Only the simulators use it (cmd/_campaign -immortal), to follow a
+// campaign past battles its AI player would lose; it is not saved.
+func (e *Engine) SetImmortal(who string) { e.immortal = who }
+
+// SimGrant gives the party n of an item, a piece of equipment or money, as a reward would. Only the simulators use it
+// (cmd/_campaign -subs, the bonus objectives its AI player misses).
+func (e *Engine) SimGrant(item string, n int) { e.gain(item, n) }
+
+func (e *Engine) undying(v *Unit) bool {
+	if e.immortal == "" {
+		return false
+	}
+	for _, w := range strings.Split(e.immortal, ",") {
+		if w == v.Character || w == "ally" && v.Faction == "ally" {
+			return true
+		}
+	}
+	return false
+}
 
 // SetXPPct scales the experience every battle action earns to pct percent.
 func (e *Engine) SetXPPct(pct int) { e.state.XPPct = pct }

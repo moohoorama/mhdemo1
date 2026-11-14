@@ -84,8 +84,8 @@
   "DeputyWeight": 2,
   "DeputyDivisor": 300,
   "PromoteLevels": [
-   15,
-   30
+   20,
+   40
   ],
   "StageLevelBase": 3,
   "StageLevelStep": 1.5,

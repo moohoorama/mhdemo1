@@ -109,7 +109,7 @@
   },
   "pikeman": {
    "Name": "장창병",
-   "Desc": "긴 창으로 두 칸 앞의 적까지 찌르는 중급 창병.",
+   "Desc": "긴 창을 쓰는 중급 창병. '장창'을 익히면 두 칸 앞의 적까지 찌른다.",
    "Terrain": "infantry",
    "Attack": "melee",
    "Weapon": "spear",
@@ -1425,7 +1425,7 @@
   },
   "pugilist": {
    "Name": "권사",
-   "Desc": "철 장갑을 낀 주먹으로 연타를 퍼붓는 무술가.",
+   "Desc": "철 장갑을 낀 주먹으로 싸우는 중급 무술가.",
    "Terrain": "infantry",
    "Attack": "melee",
    "Weapon": "fist",
@@ -1467,7 +1467,7 @@
   },
   "fist_saint": {
    "Name": "권성",
-   "Desc": "사자 갑주를 두르고 장풍을 쏘는 권법의 달인.",
+   "Desc": "사자 갑주를 두른 권법의 달인. '장풍'을 익히면 두 칸 앞의 적까지 친다.",
    "Terrain": "infantry",
    "Attack": "melee",
    "Weapon": "fist",
