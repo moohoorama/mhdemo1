@@ -7,6 +7,7 @@ import (
 	"slices"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"srpg/internal/content"
 	"srpg/internal/core"
 )
 
@@ -48,17 +49,37 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 	if guide && view != 0 {
 		g.guideRim(dst, g.tabRect(x+8, y+4, []string{"목록", "표", "소지품"}, 0))
 	}
+	seal, promote := g.promoteGuide()
+	promote = promote && g.overlay() == "party"
+	if promote && !guide && view != 2 {
+		g.promoteRim(dst, g.tabRect(x+8, y+4, []string{"목록", "표", "소지품"}, 2))
+	}
 	switch {
 	case p.items:
 		rect(dst, float32(x+8), float32(y+52), float32(w-16), 1, goldDim)
 		g.moneyLabel(dst, float64(x+w-16), float64(y+16), 15)
 		if p.insu.item != "" {
 			g.insuPicker(dst, o, x, y+64, w, h-64-64)
-			g.closeRow(dst, x+w-16, y+h-60, func() { p.insu = insuState{} }, g.insuActs()...)
+			acts := g.insuActs()
+			g.closeRow(dst, x+w-16, y+h-60, func() { p.insu = insuState{} }, acts...)
+			if promote && p.insu.item == seal && p.insu.pick != "" {
+				g.promoteRim(dst, g.actionRect(x+w-16, y+h-60, "승급하기", acts...))
+			}
 			return
 		}
-		g.belongingsTab(dst, o, x, y+64, w, h-64-64)
-		g.closeRow(dst, x+w-16, y+h-60, g.closeOverlay)
+		cur := g.belongingsTab(dst, o, x, y+64, w, h-64-64)
+		var acts []action
+		if g.S.Data.Items[cur].Effect == content.ItemPromote {
+			var open func()
+			if g.insuUsable(o, cur) {
+				open = func() { g.openInsu(cur) }
+			}
+			acts = append(acts, action{"승급하기", true, open})
+		}
+		g.closeRow(dst, x+w-16, y+h-60, g.closeOverlay, acts...)
+		if promote && cur == seal {
+			g.promoteRim(dst, g.actionRect(x+w-16, y+h-60, "승급하기", acts...))
+		}
 		return
 	case p.table:
 		g.officerTable(dst, o, roster, image.Rect(x, y, x+w, y+h), viewsEnd)

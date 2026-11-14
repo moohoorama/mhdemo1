@@ -22,6 +22,14 @@ func TestHoldGroundHalvesBlowsAfterAStill(t *testing.T) {
 		assert.InDelta(t, raw/2, e.damage(b, a, e.basic()), 1e-6)
 	})
 
+	t.Run("a state holding it restores", func(t *testing.T) {
+		e, a, _, _ := setup(t)
+		require.NoError(t, e.execute(Command{Kind: "wait", Actor: a.ID}))
+		require.Positive(t, a.Status[holdGround].Turns)
+		_, err := Restore(e.data, e.Snapshot())
+		assert.NoError(t, err)
+	})
+
 	t.Run("a turn that walked leaves them whole", func(t *testing.T) {
 		e, a, b, raw := setup(t)
 		require.NoError(t, e.execute(Command{Kind: "move", Actor: a.ID, X: 5, Y: 7}))

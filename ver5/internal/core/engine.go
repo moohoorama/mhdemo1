@@ -10,6 +10,7 @@ import (
 	"srpg/internal/content"
 	"strconv"
 	"strings"
+	"testing"
 )
 
 type Engine struct {
@@ -25,6 +26,7 @@ type Engine struct {
 	caster           string // who is using a skill now, and the spell points it began with (인내)
 	castMP           int
 	immortal         string // who no blow brings below 1 HP (SetImmortal, simulators only)
+	unchecked        bool   // a test fixture that bends the rules: Apply skips the restore check of tests
 }
 
 func copyOf[T any](v T) T { b, _ := json.Marshal(v); var c T; _ = json.Unmarshal(b, &c); return c }
@@ -174,6 +176,7 @@ func (e *Engine) addCharacter(id, def string) *Character {
 	e.refitGear(o)
 	return o
 }
+
 // Observe is what a screen shows of the state. It shares the state's and the content's maps and
 // slices instead of copying them: callers only read it.
 func (e *Engine) Observe() Observation {
@@ -232,12 +235,18 @@ func (e *Engine) Apply(c Command) (r Result, err error) {
 		}
 	}()
 	t := fromState(e.data, e.Snapshot())
-	t.lastActor, t.immortal = c.Actor, e.immortal
+	t.lastActor, t.immortal, t.unchecked = c.Actor, e.immortal, e.unchecked
 	if err = t.execute(c); err != nil {
 		return Result{}, err
 	}
 	t.settle()
 	t.state.Revision++
+	if testing.Testing() && !e.unchecked {
+		// Every state a command leaves must load again, or a save of it (or the move preview) breaks.
+		if _, err := Restore(t.data, t.Snapshot()); err != nil {
+			return Result{}, fmt.Errorf("%w (after %s by %s)", err, c.Kind, c.Actor)
+		}
+	}
 	r = Result{t.state.Revision, t.events}
 	e.replace(t)
 	return r, nil
@@ -245,7 +254,7 @@ func (e *Engine) Apply(c Command) (r Result, err error) {
 
 // replace makes e the engine t, keeping what lives outside the state (SetImmortal).
 func (e *Engine) replace(t *Engine) {
-	t.immortal = e.immortal
+	t.immortal, t.unchecked = e.immortal, e.unchecked
 	*e = *t
 }
 
@@ -328,7 +337,7 @@ func (e *Engine) fxOf(c *Character, key string) float64 {
 	}
 	return n
 }
-func (e *Engine) has(u *Unit, key string) bool         { return e.fx(u, key) != 0 }
+func (e *Engine) has(u *Unit, key string) bool { return e.fx(u, key) != 0 }
 
 // ownFx totals one trait effect over the traits the character holds itself, leaving out its deputy's and
 // its equipment's.
@@ -956,7 +965,9 @@ func (e *Engine) refitGear(c *Character) {
 }
 
 // promotedAt is the class an officer of def in class serves in at the level (content.Data.PromotedAt).
-func (e *Engine) promotedAt(def, class string, level int) string { return e.data.PromotedAt(def, class, level) }
+func (e *Engine) promotedAt(def, class string, level int) string {
+	return e.data.PromotedAt(def, class, level)
+}
 
 // startStatus is what a unit is placed with: the buffs its traits grant every turn.
 func (e *Engine) startStatus(u *Unit) map[string]Status {

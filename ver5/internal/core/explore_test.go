@@ -214,7 +214,7 @@ func TestWalkSavesAndRestores(t *testing.T) {
 	s := e.Snapshot()
 	s.Spot.Area = "nowhere"
 	_, err = Restore(e.Data(), s)
-	assert.EqualError(t, err, "CorruptSave")
+	assert.ErrorContains(t, err, "CorruptSave")
 }
 
 func TestExploreNextFindsTheEventThenTheSortie(t *testing.T) {

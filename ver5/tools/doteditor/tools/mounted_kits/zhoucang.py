@@ -17,16 +17,19 @@ FUR, FUR_LIGHT, TUFT = RK.PELT, RK.PELT_LIGHT, RK.STRIPE
 
 
 def vest(T):
-    """Open fur vest: a shaggy body over the hemp top, the chest bare down the front, a ragged hem, fur shoulders."""
-    m.ell(T([0, .03, 1.2]), [.4, .32, .36], FUR)
+    """Open fur vest: a bulky shaggy body over the hemp top, the chest bare down the front, a fur collar and fur
+    shoulders standing out past the arms, a ragged hem of uneven tufts."""
+    m.ell(T([0, .04, 1.2]), [.45, .36, .38], FUR)
+    m.ell(T([0, .04, 1.5]), [.36, .29, .1], FUR_LIGHT)
     for s in (-1, 1):
-        m.ell(T([s*.36, .02, 1.5]), [.21, .25, .14], FUR_LIGHT)
-    for i, x in enumerate((-.32, -.2, -.07, .07, .2, .32)):
-        drop = .08 if i % 2 else 0
-        m.box(T([x, .02, .9 - drop/2]), [.13, .56, .1 + drop], FUR)
-    for x, y, z in ((-.22, .3, 1.32), (.18, .31, 1.12), (-.05, .32, .98), (.3, .2, 1.0), (-.33, .1, 1.18)):
-        m.box(T([x, y, z]), [.08, .04, .12], TUFT)
-    m.ell(T([0, -.28, 1.3]), [.11, .06, .17], U.SKIN)
+        m.ell(T([s*.39, .02, 1.52]), [.25, .29, .16], FUR_LIGHT)
+    for i, x in enumerate((-.36, -.24, -.12, 0, .12, .24, .36)):
+        drop = .1 if i % 2 else 0
+        m.box(T([x, .03, .9 - drop/2]), [.14, .62, .12 + drop], FUR)
+    for x, y, z in ((-.24, .33, 1.34), (.2, .34, 1.12), (-.06, .35, .98), (.32, .24, 1.0), (-.36, .12, 1.18),
+                    (.38, .1, 1.3), (-.3, -.2, 1.06), (.3, -.22, 1.1)):
+        m.box(T([x, y, z]), [.08, .05, .13], TUFT)
+    m.ell(T([0, -.3, 1.3]), [.11, .06, .17], U.SKIN)
 
 
 def mantle(T):
@@ -47,9 +50,9 @@ def tier(name, base, extra):
         soldier = U.soldier
 
         def dressed(p, k, weapon=True):
+            out = soldier(p, k, weapon)
             if k != name:
-                return soldier(p, k, weapon)
-            out = soldier(p, 'outlaw' if base is OK else 'ruffian', weapon)
+                return out
             T = U.transform(p)
             vest(T)
             extra(p, T)
@@ -76,4 +79,4 @@ def tier(name, base, extra):
 
 M.register('zhoucang', tier('zhoucang', RK, lambda p, T: None))
 M.register('zhoucang_ruffian', tier('zhoucang_ruffian', RK, lambda p, T: mantle(T)))
-M.register('zhoucang_outlaw', tier('zhoucang_outlaw', OK, lambda p, T: (OK.armour(T), mantle(T))))
+M.register('zhoucang_outlaw', tier('zhoucang_outlaw', OK, lambda p, T: (OK.armour(T), OK.cape(p, T), mantle(T))))

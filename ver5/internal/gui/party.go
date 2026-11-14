@@ -79,27 +79,28 @@ func (g *Game) belongings(o core.Observation) []belonging {
 	return out
 }
 
-// belongingKind is the filter a thing falls under: an equipment slot's name, 인수 or 소모품.
+// belongingKind is the filter a thing falls under: an equipment slot's name or 소모품, the seals among them.
 func (g *Game) belongingKind(id string) string {
 	if eq, ok := g.S.Data.Equipment[id]; ok {
 		return slotNames[eq.Slot]
 	}
-	if g.S.Data.Items[id].Effect == content.ItemPromote {
-		return "인수"
-	}
 	return "소모품"
 }
 
-var belongingKinds = []string{"전체", "소모품", "인수", "무기", "방어구", "장신구"}
+var belongingKinds = []string{"전체", "무기", "방어구", "장신구", "소모품"}
 
 // belongingsTab lists the party's things of the kind picked in a table on the left, the one looked at described on
-// the right.
-func (g *Game) belongingsTab(dst *ebiten.Image, o core.Observation, x, y, w, h int) {
+// the right, and gives that one's id ("" when there is nothing).
+func (g *Game) belongingsTab(dst *ebiten.Image, o core.Observation, x, y, w, h int) string {
 	p := &g.party
 	if p.filter == "" {
 		p.filter = belongingKinds[0]
 	}
 	g.tabRow(dst, x+16, y, belongingKinds, slices.Index(belongingKinds, p.filter), func(i int) { p.filter, p.item, p.list.top = belongingKinds[i], "", 0 })
+	seal, guide := g.promoteGuide()
+	if consumables := slices.Index(belongingKinds, "소모품"); guide && p.filter != belongingKinds[consumables] {
+		g.promoteRim(dst, g.tabRect(x+16, y, belongingKinds, consumables))
+	}
 	var shown []belonging
 	for _, b := range g.belongings(o) {
 		if p.filter == belongingKinds[0] || g.belongingKind(b.id) == p.filter {
@@ -108,7 +109,7 @@ func (g *Game) belongingsTab(dst *ebiten.Image, o core.Observation, x, y, w, h i
 	}
 	if len(shown) == 0 {
 		g.label(dst, "가진 물건이 없습니다", float64(x+20), float64(y+64), 15, muted)
-		return
+		return ""
 	}
 	cur := shown[0]
 	rows := make([]goodsRow, len(shown))
@@ -136,14 +137,11 @@ func (g *Game) belongingsTab(dst *ebiten.Image, o core.Observation, x, y, w, h i
 		rowH: touchH, headH: 32, size: 15, center: true,
 		dim:      func(r *goodsRow) bool { return !r.ok },
 		selected: func(r *goodsRow) bool { return r.id == cur.id },
-		pick: func(r *goodsRow) {
-			p.item = r.id
-			if r.ok {
-				g.openInsu(r.id)
-			}
-		},
+		pick:     func(r *goodsRow) { p.item = r.id },
+		guide:    func(r *goodsRow) bool { return guide && r.id == seal && cur.id != seal },
 	}, rows, image.Rect(x+16, y+56, x+16+tableW, y+h))
 	g.belongingDetail(dst, cur, image.Rect(x+16+tableW+16, y, x+w-16, y+h))
+	return cur.id
 }
 
 // belongingDetail describes a thing: its picture, name and kind, what it does, how many there are and who wears
@@ -153,7 +151,11 @@ func (g *Game) belongingDetail(dst *ebiten.Image, b belonging, r image.Rectangle
 	x, y := float64(r.Min.X+14), float64(r.Min.Y+14)
 	g.itemIcon(dst, g.itemIconOf(b.id), x+3, y+3, 1.5, false)
 	g.label(dst, g.itemName(b.id), x+64, y, 18, gold)
-	g.label(dst, g.belongingKind(b.id), x+64, y+28, 12, muted)
+	kind := g.belongingKind(b.id)
+	if g.S.Data.Items[b.id].Effect == content.ItemPromote {
+		kind += " · 인수"
+	}
+	g.label(dst, kind, x+64, y+28, 12, muted)
 	desc := g.S.Data.Items[b.id].Desc
 	eq, isEq := g.S.Data.Equipment[b.id]
 	if isEq {

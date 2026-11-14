@@ -13,11 +13,15 @@ import (
 // battle starts the mini stage S1 (heroes at (1,2) and (1,3), the boss at (9,2)) after tweak,
 // with a victory that cannot come by itself so the battle runs on.
 func battle(t *testing.T, tweak func(*content.Stage)) *core.Engine {
+	return battleIn(t, func(d *content.Data) { tweak(&d.Stages[0]) })
+}
+
+// battleIn is battle with a tweak to the whole data, for a change the stage alone cannot make.
+func battleIn(t *testing.T, tweak func(*content.Data)) *core.Engine {
 	d, err := content.Load("../testdata/mini")
 	require.NoError(t, err)
-	st := &d.Stages[0]
-	st.Victory = []content.Goal{{If: []string{"round>=99"}, Text: "never"}}
-	tweak(st)
+	d.Stages[0].Victory = []content.Goal{{If: []string{"round>=99"}, Text: "never"}}
+	tweak(d)
 	for _, n := range d.Nodes {
 		if n.Kind == "battle" && n.Stage == "S1" {
 			d.Campaign.Start = n.ID
@@ -186,8 +190,12 @@ func TestAnAIEventChangesTheNextTurnsBehaviour(t *testing.T) {
 }
 
 func TestAnArcherShootsFromTheFullReachOfItsBow(t *testing.T) {
-	e := battle(t, func(s *content.Stage) {
-		s.Enemies[0].X, s.Enemies[0].Policy, s.Enemies[0].Class = 6, "assault", "archer"
+	e := battleIn(t, func(d *content.Data) {
+		boss := d.Characters["boss"]
+		boss.Class = "archer"
+		d.Characters["boss"] = boss
+		s := &d.Stages[0]
+		s.Enemies[0].X, s.Enemies[0].Policy = 6, "assault"
 	})
 	shot := false
 	for _, ev := range enemyTurn(t, e) {

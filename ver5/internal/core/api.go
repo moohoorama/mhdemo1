@@ -200,7 +200,7 @@ func (e *Engine) SetXPPct(pct int) { e.state.XPPct = pct }
 
 // Restore rebuilds an engine from a state saved with this data; one saved before the data changed fails
 // with ChangedContent, which RestoreChanged takes anyway.
-func Restore(d *content.Data, s State) (*Engine, error) { return restore(d, copyOf(s), true) }
+func Restore(d *content.Data, s State) (*Engine, error) { return reported(restore(d, copyOf(s), true)) }
 
 // RestoreChanged restores a state saved before the data last changed (while the game is still being
 // made, a save should outlive an edited line or map); the engine carries the data's hash from then on.
@@ -212,7 +212,18 @@ func RestoreChanged(d *content.Data, s State) (*Engine, error) {
 		s.Checkpoint.ContentHash = d.Hash
 		adaptCharacters(d, s.Checkpoint)
 	}
-	return restore(d, s, true)
+	return reported(restore(d, s, true))
+}
+
+// RestoreWarned, when set, hears the rule mismatches a release build lets a restore pass with (lenientRestore),
+// with the state they were found in.
+var RestoreWarned func(warnings []string, s State)
+
+func reported(e *Engine, warnings []string, err error) (*Engine, error) {
+	if err == nil && len(warnings) > 0 && RestoreWarned != nil {
+		RestoreWarned(warnings, e.Snapshot())
+	}
+	return e, err
 }
 
 // adaptCharacters fits the party of a save to edited data: a learned trait the data dropped is forgotten, an
@@ -259,13 +270,33 @@ func knownDifficulty(d *content.Data, id string) bool {
 	return ok || id == "normal"
 }
 
-func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
+// corrupt is a restore failure: the code the screens translate, then what in the state broke the check.
+func corrupt(code, format string, a ...any) error {
+	return fmt.Errorf("%s: %s", code, fmt.Sprintf(format, a...))
+}
+
+// restore checks a saved state and builds its engine. A broken shape (an unknown id, a unit off the map, two on
+// one cell) always fails. A state that only breaks a rule (gear the class cannot carry, a status the list lacks)
+// fails too, unless lenientRestore: then the engine runs it and the mismatch comes back as a warning.
+func restore(d *content.Data, s State, checkpoint bool) (*Engine, []string, error) {
 	R := d.Rules
 	if s.AI != AIPolicyVersion || !knownDifficulty(d, s.Difficulty) || s.Format != 5 || s.Core != CoreVersion || s.Rules != RulesVersion || s.Content != d.Version {
-		return nil, fail("IncompatibleSave")
+		return nil, nil, fail("IncompatibleSave")
 	}
 	if s.ContentHash != d.Hash {
-		return nil, fail("ChangedContent")
+		return nil, nil, fail("ChangedContent")
+	}
+	var warnings []string
+	bad := func(format string, a ...any) (*Engine, []string, error) {
+		return nil, nil, corrupt("CorruptSave", format, a...)
+	}
+	// soft is a rule mismatch: nil when lenientRestore takes it as a warning, else the failure.
+	soft := func(code, format string, a ...any) error {
+		if lenientRestore {
+			warnings = append(warnings, corrupt(code, format, a...).Error())
+			return nil
+		}
+		return corrupt(code, format, a...)
 	}
 	for i, t := range s.TileStates {
 		if s.Stage < 0 || s.Stage >= len(d.Stages) {
@@ -273,48 +304,83 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 		}
 		st := d.Stages[s.Stage]
 		if _, ok := d.States[t.State]; !ok && t.State != string(content.NoLayer) || t.X < 0 || t.Y < 0 || t.X >= st.Width || t.Y >= st.Height || t.Turns < 0 {
-			return nil, fail("CorruptSave")
+			return bad("tile state %q at (%d,%d) for %d turns", t.State, t.X, t.Y, t.Turns)
 		}
 		for _, o := range s.TileStates[:i] {
 			if o.X == t.X && o.Y == t.Y {
-				return nil, fail("CorruptSave")
+				return bad("two tile states at (%d,%d)", t.X, t.Y)
 			}
 		}
 	}
-	if s.Stage < 0 || s.Stage >= len(d.Stages) || s.Inventory == nil || s.Warehouse == nil || s.Executed == nil || s.Flags == nil || s.Choices == nil {
-		return nil, fail("CorruptSave")
+	if s.Stage < 0 || s.Stage >= len(d.Stages) {
+		return bad("stage %d of %d", s.Stage, len(d.Stages))
+	}
+	if s.Inventory == nil || s.Warehouse == nil || s.Executed == nil || s.Flags == nil || s.Choices == nil {
+		return bad("a nil map among inventory, warehouse, executed, flags and choices")
 	}
 	if !contains([]string{"scenario", "deployment", "battle", "result", "complete"}, s.Phase) {
-		return nil, fail("CorruptSave")
+		return bad("phase %q", s.Phase)
 	}
 	if s.Phase == "scenario" {
 		n := d.Node(s.Node)
 		if !content.Waiting(n.Kind) || n.Kind == "battle" && d.StageIndex(n.Stage) != s.Stage || n.Kind == "explore" && s.Explore != n.ID {
-			return nil, fail("CorruptSave")
+			return bad("scenario at node %q (%s) with stage %d and explore %q", s.Node, n.Kind, s.Stage, s.Explore)
 		}
 	}
-	if s.Money < 0 || s.Explore != "" && (s.Phase != "scenario" || d.Node(s.Explore).Kind != "explore" || d.Explores[d.Node(s.Explore).Explore].Areas[s.Spot.Area] == nil) {
-		return nil, fail("CorruptSave")
+	if s.Money < 0 {
+		return bad("money %d", s.Money)
+	}
+	if s.Explore != "" && (s.Phase != "scenario" || d.Node(s.Explore).Kind != "explore" || d.Explores[d.Node(s.Explore).Explore].Areas[s.Spot.Area] == nil) {
+		return bad("explore %q in phase %s at area %q", s.Explore, s.Phase, s.Spot.Area)
 	}
 	if s.Phase == "complete" && s.Node != "" || s.Ending != "" && (s.Phase != "complete" || d.Node(s.Ending).Kind != "end") {
-		return nil, fail("CorruptSave")
+		return bad("phase %s at node %q with ending %q", s.Phase, s.Node, s.Ending)
 	}
 	seen := map[string]bool{}
 	for _, o := range s.Characters {
 		def, ok := d.Characters[o.Def]
-		_, cl := d.Classes[o.Class]
-		if !ok || !cl || o.Temp != (def.Template || o.Placement) || !o.Temp && o.ID != o.Def || (!o.Placement && !classReachable(d, d.ClassLine(def.Class)[0], o.Class) || o.Placement && !slices.ContainsFunc(d.ClassLine(def.Class), func(c string) bool { return d.ClassFamily(c) == d.ClassFamily(o.Class) })) || seen[o.ID] || o.Level < 1 || o.Level > R.MaxLevel ||
-			o.XP < 0 || o.XP >= XPPerLevel || o.Points < 0 || o.XPShareRemainder < 0 || o.XPShareRemainder >= 100 || o.Equipment == nil {
-			return nil, fail("CorruptSave")
+		switch _, cl := d.Classes[o.Class]; {
+		case !ok:
+			return bad("character %s: unknown def %q", o.ID, o.Def)
+		case !cl:
+			return bad("character %s: unknown class %q", o.ID, o.Class)
+		case o.Temp != (def.Template || o.Placement):
+			return bad("character %s: temp %v, template %v, placement %v", o.ID, o.Temp, def.Template, o.Placement)
+		case !o.Temp && o.ID != o.Def:
+			return bad("character %s: def %s differs", o.ID, o.Def)
+		case seen[o.ID]:
+			return bad("character %s twice", o.ID)
+		case o.Level < 1 || o.Level > R.MaxLevel:
+			return bad("character %s: level %d", o.ID, o.Level)
+		case o.Equipment == nil:
+			return bad("character %s: nil equipment", o.ID)
 		}
-		if t := d.Classes[o.Class].Tier; !o.Placement && t > 0 && o.Level < R.PromoteLevels[t-1] {
-			return nil, fail("CorruptSave")
+		for slot, eq := range o.Equipment {
+			if _, ok := d.Equipment[eq]; !ok {
+				return bad("character %s: unknown equipment %q in %s", o.ID, eq, slot)
+			}
+		}
+		var err error
+		switch t := d.Classes[o.Class].Tier; {
+		case !o.Placement && !classReachable(d, d.ClassLine(def.Class)[0], o.Class):
+			err = soft("CorruptSave", "character %s: class %s is off the line of %s", o.ID, o.Class, def.Class)
+		case o.Placement && !slices.ContainsFunc(d.ClassLine(def.Class), func(c string) bool { return d.ClassFamily(c) == d.ClassFamily(o.Class) }):
+			err = soft("CorruptSave", "character %s: placed class %s is off the families of %s", o.ID, o.Class, def.Class)
+		case o.XP < 0 || o.XP >= XPPerLevel || o.Points < 0 || o.XPShareRemainder < 0 || o.XPShareRemainder >= 100:
+			err = soft("CorruptSave", "character %s: xp %d, points %d, share remainder %d", o.ID, o.XP, o.Points, o.XPShareRemainder)
+		case !o.Placement && t > 0 && o.Level < R.PromoteLevels[t-1]:
+			err = soft("CorruptSave", "character %s: class %s (tier %d) at level %d, below %d", o.ID, o.Class, t, o.Level, R.PromoteLevels[t-1])
+		}
+		if err != nil {
+			return nil, nil, err
 		}
 		if o.TraitsOverride != nil {
 			set := map[string]bool{}
 			for _, id := range *o.TraitsOverride {
 				if _, ok := d.Traits[id]; !ok || set[id] {
-					return nil, fail("CorruptSave")
+					if err := soft("CorruptSave", "character %s: innate trait %q unknown or repeated", o.ID, id); err != nil {
+						return nil, nil, err
+					}
 				}
 				set[id] = true
 			}
@@ -323,61 +389,80 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 		learned := map[string]bool{}
 		for _, t := range o.Learned {
 			if _, ok := d.Traits[t]; !ok || learned[t] {
-				return nil, fail("CorruptSave")
+				if err := soft("CorruptSave", "character %s: learned trait %q unknown or repeated", o.ID, t); err != nil {
+					return nil, nil, err
+				}
 			}
 			learned[t] = true
 		}
 		held := append(append([]string{}, innate(&o)...), o.Learned...)
 		for slot, eq := range o.Equipment {
-			v, ok := d.Equipment[eq]
-			if !ok || v.Slot != slot || !d.Carries(d.Classes[o.Class], held, v) {
-				return nil, fail("CorruptSave")
+			v := d.Equipment[eq]
+			var err error
+			if v.Slot != slot {
+				err = soft("CorruptSave", "character %s: %s (a %s) in %s", o.ID, eq, v.Slot, slot)
+			} else if !d.Carries(d.Classes[o.Class], held, v) {
+				err = soft("CorruptSave", "character %s: class %s cannot carry %s in %s", o.ID, o.Class, eq, slot)
+			}
+			if err != nil {
+				return nil, nil, err
 			}
 		}
 	}
 	for _, id := range d.Campaign.Roster {
 		if !seen[id] {
-			return nil, fail("CorruptSave")
+			return bad("roster officer %s missing", id)
 		}
 	}
 	deploy := map[string]bool{}
-	if len(s.Deployment) < 1 || len(s.Deployment) > d.Stages[s.Stage].Max && s.Phase != "scenario" {
-		return nil, fail("CorruptSave")
+	if len(s.Deployment) < 1 {
+		return bad("no one deployed")
+	}
+	if len(s.Deployment) > d.Stages[s.Stage].Max && s.Phase != "scenario" {
+		if err := soft("CorruptSave", "%d deployed, at most %d", len(s.Deployment), d.Stages[s.Stage].Max); err != nil {
+			return nil, nil, err
+		}
 	}
 	for _, id := range s.Deployment {
 		if !seen[id] || deploy[id] || !d.Characters[id].Playable {
-			return nil, fail("CorruptSave")
+			return bad("deployed %s unknown, repeated or not playable", id)
 		}
 		deploy[id] = true
 	}
 	for id, c := range d.Characters {
 		if c.Lord && seen[id] && !deploy[id] && s.Phase != "scenario" {
-			return nil, fail("CorruptSave")
+			if err := soft("CorruptSave", "lord %s not deployed in phase %s", id, s.Phase); err != nil {
+				return nil, nil, err
+			}
 		}
 	}
 	for id, n := range s.Inventory {
 		if _, ok := d.Items[id]; !ok || n < 0 {
-			return nil, fail("CorruptSave")
+			return bad("inventory item %q ×%d", id, n)
 		}
 	}
 	for id, n := range s.Warehouse {
 		if _, ok := d.Equipment[id]; !ok || n < 0 {
-			return nil, fail("CorruptSave")
+			return bad("warehouse equipment %q ×%d", id, n)
 		}
 	}
 	for _, o := range s.Away {
 		def, ok := d.Characters[o.Def]
 		if _, cl := d.Classes[o.Class]; !ok || !cl || def.Template || o.ID != o.Def || seen[o.ID] || o.Left < 1 || o.Level < 1 || o.Level > R.MaxLevel || o.Equipment == nil {
-			return nil, fail("CorruptSave")
+			return bad("away officer %s (def %s, class %s, level %d, left %d)", o.ID, o.Def, o.Class, o.Level, o.Left)
 		}
 		seen[o.ID] = true
 	}
 	if s.Checkpoint != nil {
 		if !checkpoint || s.Checkpoint.Checkpoint != nil || s.Checkpoint.Phase != "scenario" || s.Checkpoint.Stage != s.Stage || d.Node(s.Checkpoint.Node).Kind != "battle" {
-			return nil, fail("CorruptCheckpoint")
+			return nil, nil, corrupt("CorruptCheckpoint", "checkpoint at node %q in phase %s, stage %d (state's %d)", s.Checkpoint.Node, s.Checkpoint.Phase, s.Checkpoint.Stage, s.Stage)
 		}
-		if _, err := restore(d, *s.Checkpoint, false); err != nil {
-			return nil, err
+		_, w, err := restore(d, *s.Checkpoint, false)
+		if err != nil {
+			return nil, nil, fmt.Errorf("%w (in the checkpoint)", err)
+		}
+		for _, x := range w {
+			warnings = append(warnings, x+" (in the checkpoint)")
 		}
 	}
 	e := fromState(d, s)
@@ -387,19 +472,26 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 			continue
 		}
 		q := e.char(o.Deputy)
-		if o.Dead || !e.playable(e.char(o.ID)) || e.fxOf(&o, content.FxDeputyAppoint) == 0 || q == nil || !e.playable(q) || e.def(q).Lord || q.ID == o.ID || q.Dead || q.Deputy != "" || deputies[q.ID] || deploy[q.ID] || len(q.Equipment) > 0 {
-			return nil, fail("CorruptDeputy")
+		if q == nil || q.ID == o.ID || deputies[q.ID] {
+			return nil, nil, corrupt("CorruptDeputy", "%s cannot have %s as deputy", o.ID, o.Deputy)
+		}
+		if o.Dead || !e.playable(e.char(o.ID)) || e.fxOf(&o, content.FxDeputyAppoint) == 0 || !e.playable(q) || e.def(q).Lord || q.Dead || q.Deputy != "" || deploy[q.ID] || len(q.Equipment) > 0 {
+			if err := soft("CorruptDeputy", "%s cannot have %s as deputy", o.ID, o.Deputy); err != nil {
+				return nil, nil, err
+			}
 		}
 		deputies[q.ID] = true
 	}
 	for _, id := range s.Deployment {
 		if e.char(id).Dead && s.Phase != "battle" && s.Phase != "result" {
-			return nil, fail("CorruptDeployment")
+			if err := soft("CorruptDeployment", "%s deployed dead in phase %s", id, s.Phase); err != nil {
+				return nil, nil, err
+			}
 		}
 	}
 	for _, id := range s.Learning {
 		if !seen[id] || !d.Characters[e.char(id).Def].Playable {
-			return nil, fail("CorruptSave")
+			return bad("learning %s", id)
 		}
 	}
 	ids := map[string]bool{}
@@ -407,9 +499,10 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	stage := d.Stages[s.Stage]
 	fixed := map[string]string{}
 	fixedUnits := map[string]Unit{}
+	joined := map[string]bool{} // a join skips an officer already on the map or fallen, so its unit may be missing
 	if s.Phase == "deployment" || s.Phase == "battle" || s.Phase == "result" {
 		if s.Checkpoint == nil {
-			return nil, fail("CorruptSave")
+			return bad("phase %s without a checkpoint", s.Phase)
 		}
 		expected := fromState(d, copyOf(*s.Checkpoint))
 		for _, side := range []struct {
@@ -419,7 +512,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 			for _, sp := range side.spawns {
 				u := expected.spawn(sp.Character, sp.Character, side.faction, sp.X, sp.Y, sp)
 				if deploy[u.ID] {
-					return nil, fail("CorruptSave")
+					return bad("stage unit %s also deployed", u.ID)
 				}
 				fixed[u.ID] = side.faction
 				fixedUnits[u.ID] = copyOf(*u)
@@ -437,6 +530,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 							u := expected.spawn(sp.Character, sp.Character, side, sp.X, sp.Y, sp)
 							fixed[u.ID] = side
 							fixedUnits[u.ID] = copyOf(*u)
+							joined[u.ID] = joined[u.ID] || a.Kind == "join"
 						}
 					}
 				}
@@ -444,94 +538,132 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 		}
 	}
 
-	for _, u := range s.Units {
-		if base, ok := fixedUnits[u.ID]; ok {
-			if u.AI != base.AI || u.DuelFirst != base.DuelFirst {
-				return nil, fail("CorruptSave")
+	// first is the first rule mismatch among checks, each a soft call or nil; a lenient restore makes them all nil.
+	first := func(errs ...error) error {
+		for _, err := range errs {
+			if err != nil {
+				return err
 			}
-		} else if u.AI || u.DuelFirst {
-			return nil, fail("CorruptSave")
 		}
+		return nil
+	}
+	for _, u := range s.Units {
 		if !stage.ValidPolicy(u.Policy, u.Goal, u.GoalArea) {
-			return nil, fail("CorruptSave") // an event may change a unit's policy, so only its shape is checked
+			return bad("unit %s: policy %q, goal %v, area %d", u.ID, u.Policy, u.Goal, u.GoalArea) // an event may change a unit's policy, so only its shape is checked
 		}
-		if u.Facing != "" && !contains([]string{"N", "NE", "E", "SE", "S", "SW", "W", "NW"}, u.Facing) {
-			return nil, fail("CorruptSave")
+		switch {
+		case ids[u.ID]:
+			return bad("unit %s twice", u.ID)
+		case u.ID != u.Character || !seen[u.Character]:
+			return bad("unit %s: character %q", u.ID, u.Character)
+		case u.Status == nil || u.Items == nil:
+			return bad("unit %s: nil status or items", u.ID)
+		case !contains([]string{"ally", "enemy"}, u.Faction):
+			return bad("unit %s: faction %q", u.ID, u.Faction)
+		case u.X < 0 || u.Y < 0 || u.X >= stage.Width || u.Y >= stage.Height:
+			return bad("unit %s at (%d,%d) off the %d×%d map", u.ID, u.X, u.Y, stage.Width, stage.Height)
 		}
-		if ids[u.ID] || u.ID != u.Character || !seen[u.Character] || u.Status == nil || u.Items == nil || !contains([]string{"ally", "enemy"}, u.Faction) || u.Faction == "ally" && !deploy[u.ID] && fixed[u.ID] != "ally" || u.X < 0 || u.Y < 0 || u.X >= stage.Width || u.Y >= stage.Height || !stage.Boats && e.openWater(u.X, u.Y) {
-			return nil, fail("CorruptSave")
+		for id, n := range u.Items {
+			if _, ok := d.Items[id]; !ok || n < 0 {
+				return bad("unit %s: item %q ×%d", u.ID, id, n)
+			}
 		}
 		ids[u.ID] = true
 		p := content.Point{X: u.X, Y: u.Y}
 		if u.HP > 0 && positions[p] {
-			return nil, fail("CorruptSave")
+			return bad("unit %s shares (%d,%d)", u.ID, u.X, u.Y)
 		}
 		if u.HP > 0 {
 			positions[p] = true
 		}
+		var errs []error
+		if base, ok := fixedUnits[u.ID]; ok && (u.AI != base.AI || u.DuelFirst != base.DuelFirst) {
+			errs = append(errs, soft("CorruptSave", "unit %s: ai %v, duel first %v; the stage gives %v, %v", u.ID, u.AI, u.DuelFirst, base.AI, base.DuelFirst))
+		} else if !ok && (u.AI || u.DuelFirst) {
+			errs = append(errs, soft("CorruptSave", "unit %s: ai %v, duel first %v off the stage's units", u.ID, u.AI, u.DuelFirst))
+		}
+		if u.Facing != "" && !contains([]string{"N", "NE", "E", "SE", "S", "SW", "W", "NW"}, u.Facing) {
+			errs = append(errs, soft("CorruptSave", "unit %s: facing %q", u.ID, u.Facing))
+		}
+		if u.Faction == "ally" && !deploy[u.ID] && fixed[u.ID] != "ally" {
+			errs = append(errs, soft("CorruptSave", "unit %s: an ally neither deployed nor the stage's", u.ID))
+		}
+		if !stage.Boats && e.openWater(u.X, u.Y) {
+			errs = append(errs, soft("CorruptSave", "unit %s on open water at (%d,%d)", u.ID, u.X, u.Y))
+		}
 		st := e.stats(&u)
-		if e.char(u.Character).Dead && u.HP != 0 || u.HP < 0 || u.HP > st.MaxHP || u.MP < 0 || u.Attacked && !u.Acted || u.Done && (!u.Acted || !u.Moved) {
-			return nil, fail("CorruptSave")
+		if e.char(u.Character).Dead && u.HP != 0 {
+			errs = append(errs, soft("CorruptSave", "unit %s: dead with %d HP", u.ID, u.HP))
+		}
+		if u.HP < 0 || u.HP > st.MaxHP {
+			errs = append(errs, soft("CorruptSave", "unit %s: HP %d of %d", u.ID, u.HP, st.MaxHP))
+		}
+		if u.MP < 0 {
+			errs = append(errs, soft("CorruptSave", "unit %s: MP %d", u.ID, u.MP))
+		}
+		if u.Attacked && !u.Acted || u.Done && (!u.Acted || !u.Moved) {
+			errs = append(errs, soft("CorruptSave", "unit %s: moved %v, acted %v, attacked %v, done %v", u.ID, u.Moved, u.Acted, u.Attacked, u.Done))
 		}
 		for id, v := range u.Status {
 			if !content.Statuses[id] || v.Turns < 1 || v.Turns > 99 || abs(v.Value) > 100 || (v.Source != "" && !ids[v.Source] && e.unit(v.Source) == nil) {
-				return nil, fail("CorruptSave")
+				errs = append(errs, soft("CorruptSave", "unit %s: status %q %+v", u.ID, id, v))
 			}
 		}
-		for id, n := range u.Items {
-			if _, ok := d.Items[id]; !ok || n < 0 {
-				return nil, fail("CorruptSave")
-			}
+		if err := first(errs...); err != nil {
+			return nil, nil, err
 		}
 	}
 	if s.Phase == "deployment" || s.Phase == "battle" || s.Phase == "result" {
-		if s.Round < 1 || !contains([]string{"ally", "support", "enemy"}, s.Turn) || s.Checkpoint == nil {
-			return nil, fail("CorruptSave")
+		if s.Round < 1 || !contains([]string{"ally", "support", "enemy"}, s.Turn) {
+			return bad("round %d, turn %q", s.Round, s.Turn)
 		}
+		if s.Phase == "result" && !contains([]string{"victory", "defeat"}, s.Result) {
+			return bad("result %q", s.Result)
+		}
+		for id := range fixed {
+			if !ids[id] && !joined[id] {
+				return bad("stage unit %s missing", id)
+			}
+		}
+		var errs []error
 		for id := range deploy {
 			if !ids[id] && s.Phase != "deployment" {
-				return nil, fail("CorruptSave")
+				errs = append(errs, soft("CorruptSave", "deployed %s has no unit", id))
 			}
 		}
 		for id, faction := range fixed {
-			if !ids[id] || e.unit(id).Faction != faction {
-				return nil, fail("CorruptSave")
+			if u := e.unit(id); u != nil && u.Faction != faction && !deploy[id] {
+				errs = append(errs, soft("CorruptSave", "stage unit %s on side %s, not %s", id, u.Faction, faction))
 			}
 		}
-		count := len(fixed)
-		for id := range deploy {
-			if ids[id] {
-				count++
+		for id := range ids {
+			if fixed[id] == "" && !deploy[id] {
+				errs = append(errs, soft("CorruptSave", "unit %s comes from neither the stage, its events nor the deployment", id))
 			}
-		}
-		if len(ids) != count {
-			return nil, fail("CorruptSave")
 		}
 		if s.Phase == "deployment" {
 			if s.Round != 1 || s.Turn != "ally" || s.Result != "" || len(s.Learning) != 0 {
-				return nil, fail("CorruptSave")
+				errs = append(errs, soft("CorruptSave", "deployment at round %d, turn %q, result %q, %d learning", s.Round, s.Turn, s.Result, len(s.Learning)))
 			}
 			for _, u := range s.Units {
-				if base, ok := fixedUnits[u.ID]; ok {
-					if u.X != base.X || u.Y != base.Y || u.HP != base.HP || u.MP != base.MP {
-						return nil, fail("CorruptSave")
-					}
+				if base, ok := fixedUnits[u.ID]; ok && (u.X != base.X || u.Y != base.Y || u.HP != base.HP || u.MP != base.MP) {
+					errs = append(errs, soft("CorruptSave", "stage unit %s at (%d,%d) %d HP %d MP before the battle; the stage gives (%d,%d) %d %d", u.ID, u.X, u.Y, u.HP, u.MP, base.X, base.Y, base.HP, base.MP))
 				}
 				if u.Moved || u.Acted || u.Attacked || u.Done || u.HP <= 0 || !maps.Equal(u.Status, e.startStatus(&u)) {
-					return nil, fail("CorruptSave")
+					errs = append(errs, soft("CorruptSave", "unit %s acted, fell or changed status before the battle", u.ID))
 				}
-				if deploy[u.ID] {
-					if !containsPoint(stage.Allies, content.Point{X: u.X, Y: u.Y}) || e.terrain(&u, u.X, u.Y).Cost <= 0 || u.HP != e.stats(&u).MaxHP || u.MP != 0 {
-						return nil, fail("CorruptSave")
+				if deploy[u.ID] { // MP may start above 0 (start_mana) or be full after a promotion on the field
+					if st := e.stats(&u); !containsPoint(stage.Allies, content.Point{X: u.X, Y: u.Y}) || e.terrain(&u, u.X, u.Y).Cost <= 0 || u.HP != st.MaxHP || u.MP > st.MaxMP {
+						errs = append(errs, soft("CorruptSave", "deployed %s at (%d,%d) with %d HP %d MP", u.ID, u.X, u.Y, u.HP, u.MP))
 					}
 				}
 			}
 		}
-		if s.Phase == "result" && !contains([]string{"victory", "defeat"}, s.Result) {
-			return nil, fmt.Errorf("CorruptSave: result")
+		if err := first(errs...); err != nil {
+			return nil, nil, err
 		}
 	}
-	return e, nil
+	return e, warnings, nil
 }
 
 // CharacterStats is a character's battle stats with their current class, equipment and deputy,

@@ -2,11 +2,13 @@ package session
 
 import (
 	"fmt"
+	"log"
 	"srpg/internal/ai"
 	"srpg/internal/content"
 	"srpg/internal/core"
 	"srpg/internal/replay"
 	"srpg/internal/storage"
+	"strings"
 	"time"
 )
 
@@ -48,6 +50,12 @@ type Response struct {
 
 func New(d *content.Data, dir string) (*Session, error) {
 	s := &Session{Data: d, Store: storage.Store{Dir: dir}, Screen: "title"}
+	core.RestoreWarned = func(warnings []string, st core.State) {
+		log.Printf("restore warnings: %s", strings.Join(warnings, "; "))
+		if err := s.Store.ReportRestore(warnings, st); err != nil {
+			log.Printf("restore report: %v", err)
+		}
+	}
 	v, err := s.Store.LoadSettings()
 	s.Settings = v
 	return s, err

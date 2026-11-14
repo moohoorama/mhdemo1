@@ -115,7 +115,7 @@ func TestInsuOffersEachClassAndThePickDecides(t *testing.T) {
 	i := slices.IndexFunc(snap.Characters, func(c core.Character) bool { return c.ID == "zhangfei" })
 	require.GreaterOrEqual(t, i, 0)
 	o := snap.Characters[i]
-	o.ID, o.Def, o.Class, o.Level = officer, officer, "light_cavalry", 15
+	o.ID, o.Def, o.Class, o.Level = officer, officer, "light_cavalry", g.S.Data.Rules.PromoteLevels[0]
 	o.Equipment = map[string]string{"weapon": "iron_spear"}
 	if j := slices.IndexFunc(snap.Characters, func(c core.Character) bool { return c.ID == officer }); j >= 0 {
 		snap.Characters[j] = o

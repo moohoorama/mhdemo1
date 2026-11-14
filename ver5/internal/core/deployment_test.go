@@ -70,9 +70,7 @@ func TestDeploymentRestore(t *testing.T) {
 			}
 			s := e.Snapshot()
 			s.Round = 2
-			if _, err := Restore(e.data, s); err == nil {
-				t.Fatal("invalid deployment turn accepted")
-			}
+			assertCaught(t, e.data, s)
 		})
 	}
 }
@@ -164,9 +162,7 @@ func TestDeploymentRejectsCorruptPlacement(t *testing.T) {
 		t.Run(change.name, func(t *testing.T) {
 			s := e.Snapshot()
 			change.mutate(&s)
-			if _, err := Restore(e.data, s); err == nil {
-				t.Fatal("corrupt state accepted")
-			}
+			assertCaught(t, e.data, s)
 		})
 	}
 }
@@ -328,4 +324,29 @@ func TestDeploymentStandsRecommendedOfficersOnTheirCells(t *testing.T) {
 	e.data.Stages[0].Recommend = map[string]content.Point{"archer1": {X: 5, Y: 5}}
 	finishDeployment(t, e)
 	assert.NotNil(t, e.unit("archer1"), "a recommendation off the ally cells is passed over")
+}
+
+func TestAnOfficerPlacedWithStartingSpellPointsRestores(t *testing.T) {
+	e := deployment(t)
+	e.data.Traits["start_t"] = content.Trait{Effects: map[string]float64{content.FxStartMana: .5}}
+	with(e, "hero", "start_t")
+	apply(t, e, Command{Kind: "place", Actor: "hero", X: 1, Y: 2})
+	require.Positive(t, e.unit("hero").MP)
+	_, err := Restore(e.data, e.Snapshot())
+	assert.NoError(t, err)
+}
+
+// assertCaught checks a state a restore must not take quietly: a development build rejects it, a release build
+// either rejects it or plays on with a warning (lenientRestore).
+func assertCaught(t *testing.T, d *content.Data, s State) {
+	t.Helper()
+	var heard []string
+	RestoreWarned = func(w []string, _ State) { heard = w }
+	defer func() { RestoreWarned = nil }()
+	_, err := Restore(d, s)
+	if lenientRestore {
+		assert.True(t, err != nil || len(heard) > 0, "accepted without a warning")
+	} else {
+		assert.Error(t, err)
+	}
 }

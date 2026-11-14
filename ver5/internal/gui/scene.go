@@ -947,10 +947,15 @@ func (g *Game) bubble(dst *ebiten.Image, v *unitVis, mark string, talking bool) 
 	x, y := g.field.Center(v.u, v.v)
 	sx, sy := worldToUI(g.toScreen(x, y-v.lift-g.field.groundLift(v.u, v.v)-v.top))
 	w, h := g.assets.Bubble.Size("", mark)
-	// a speaker off the screen talks from its edge, the tail turned toward where they stand
+	// a speaker off the screen talks from its edge, the tail turned toward where they stand; above the dialogue box,
+	// or on the walk, where no box is open, from the screen's bottom
 	const margin = 12.0
+	floor := dialogueBox().top
+	if w := g.explore; w != nil && w.talk == nil {
+		floor = float64(uiH)
+	}
 	bx := max(margin, min(float64(uiW)-margin-w, sx-28))
-	by := max(margin, min(dialogueBox().top-margin-h, sy-h))
+	by := max(margin, min(floor-margin-h, sy-h))
 	tail := duelview.Tail{Up: by > sy}
 	if bx != sx-28 {
 		tail.X = sx - bx

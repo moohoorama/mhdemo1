@@ -30,8 +30,13 @@ def main() -> None:
         "ANDROID_HOME", os.environ.get("ANDROID_SDK_ROOT", str(Path.home() / "Library/Android/sdk")))))
     parser.add_argument("--api", type=int, default=33, help="installed compile SDK (default: 33)")
     parser.add_argument("--targets", default="android/arm64,android/amd64")
-    parser.add_argument("--output", type=Path, default=ROOT / "bin/android/srpg-ver5-debug.apk")
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--release", action="store_true",
+                        help="build with the release tag: a save that only breaks a game rule plays on and is "
+                             "reported under saves/reports instead of failing (still signed with the debug key)")
     args = parser.parse_args()
+    if args.output is None:
+        args.output = ROOT / ("bin/android/srpg-ver5-release.apk" if args.release else "bin/android/srpg-ver5-debug.apk")
     sdk = args.sdk.expanduser().resolve()
     env = dict(os.environ, ANDROID_HOME=str(sdk))
     if not env.get("JAVA_HOME") and sys.platform == "darwin":
@@ -76,7 +81,8 @@ def main() -> None:
         f"github.com/ebitengine/gomobile/cmd/gobind@{gomobile[1]}", env=env)
     run(tool_dir / "gomobile", "init", env=env)
     aar = out / "srpg.aar"
-    run(tool_dir / "ebitenmobile", "bind", "-target", args.targets, "-androidapi", "23",
+    tags = ["-tags", "release"] if args.release else []
+    run(tool_dir / "ebitenmobile", "bind", "-target", args.targets, "-androidapi", "23", *tags,
         "-javapkg", "com.orca.srpg", "-trimpath",
         "-ldflags=-s -w -extldflags=-Wl,-z,max-page-size=16384", "-o", aar, "./mobile", env=env)
 

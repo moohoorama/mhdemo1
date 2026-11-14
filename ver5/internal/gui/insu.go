@@ -10,8 +10,8 @@ import (
 	"srpg/internal/core"
 )
 
-// An 인수 is used outside a battle from the belongings (관리 · 소지품, also opened from the sortie preparation):
-// pressing a seal someone can take now opens the picker, a table of the officers (이름 · 병종 · 레벨) where only
+// An 인수 is used outside a battle from the belongings (관리 · 소지품 · 소모품, also opened from the sortie
+// preparation): a seal someone can take now, picked, lights 승급하기 left of 닫기, which opens the picker, a table of the officers (이름 · 병종 · 레벨) where only
 // those it can promote are lit; 승급하기 promotes the one picked, through the class cards when the seal leads to
 // more than one class, and the promotion window follows (core promoteAway). In battle the seal is refused.
 
@@ -97,6 +97,10 @@ func (g *Game) insuPicker(dst *ebiten.Image, o core.Observation, x, y, w, h int)
 		dim:      func(r *row) bool { return !open(r) },
 		selected: func(r *row) bool { return picked != nil && r.c.ID == picked.c.ID },
 		pick:     func(r *row) { s.pick = r.c.ID },
+		guide: func(r *row) bool {
+			seal, ok := g.promoteGuide()
+			return ok && seal == s.item && picked == nil && open(r)
+		},
 	}, rows, image.Rect(x+16, y+56, x+16+tableW, y+h))
 
 	card := image.Rect(x+16+tableW+16, y, x+w-16, y+h)
@@ -104,7 +108,7 @@ func (g *Game) insuPicker(dst *ebiten.Image, o core.Observation, x, y, w, h int)
 	cx, cy := float64(card.Min.X+14), float64(card.Min.Y+14)
 	g.itemIcon(dst, g.itemIconOf(s.item), cx+3, cy+3, 1.5, false)
 	g.label(dst, it.Name, cx+64, cy, 18, gold)
-	g.label(dst, "인수", cx+64, cy+28, 12, muted)
+	g.label(dst, "소모품 · 인수", cx+64, cy+28, 12, muted)
 	cy += 62
 	desc := wrapWidth(it.Desc, g.face(14), float64(card.Dx()-28))
 	g.label(dst, desc, cx, cy, 14, ink)

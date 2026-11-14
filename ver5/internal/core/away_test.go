@@ -80,5 +80,5 @@ func TestAwayInSaveIsChecked(t *testing.T) {
 	s.Away = []Character{copyOf(s.Characters[0])}
 	s.Away[0].Left = 3
 	_, err = Restore(d, s)
-	assert.EqualError(t, err, "CorruptSave", "an officer cannot be in the party and away at once")
+	assert.ErrorContains(t, err, "CorruptSave", "an officer cannot be in the party and away at once")
 }

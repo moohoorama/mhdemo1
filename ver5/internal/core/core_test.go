@@ -46,8 +46,10 @@ func assertRejected(t *testing.T, e *Engine, c Command) {
 
 // arena sets up the hero and the boss side by side on open ground, the rest of the enemy gone.
 // A successful Apply replaces the engine's state, so tests fetch units again with e.unit after each one.
+// Its tests bend the rules freely (a boss of 9999 HP, an undeployed sage), so Apply skips the restore check.
 func arena(t *testing.T) (*Engine, *Unit, *Unit) {
 	e := battle(t)
+	e.unchecked = true
 	for _, id := range keys(e.unitIDs) {
 		if u := e.unit(id); u.Faction == "enemy" && id != "boss" {
 			u.HP = 0

@@ -96,15 +96,27 @@ func (g *Game) gearStep() (piece, owner, slot string, ok bool) {
 // guideGreen is the guide's rim, the colours of the walk's green plates (plateMain) at rest and lit.
 var guideGreen = [2]color.NRGBA{{R: 100, G: 150, B: 100, A: 255}, {R: 190, G: 236, B: 190, A: 255}}
 
+// guideOrange is the promotion guide's rim (promote_guide.go) at rest and lit, and its glow.
+var guideOrange = [3]color.NRGBA{{R: 214, G: 92, B: 20, A: 255}, {R: 255, G: 150, B: 50, A: 255}, {R: 255, G: 120, B: 30}}
+
 // guideRim draws the guide's green rim around r, breathing between the plate's rim and its lit rim.
 func (g *Game) guideRim(dst *ebiten.Image, r image.Rectangle) {
+	g.breathingRim(dst, r, guideGreen[0], guideGreen[1], color.NRGBA{R: 120, G: 220, B: 120})
+}
+
+// promoteRim draws the promotion guide's orange rim around r.
+func (g *Game) promoteRim(dst *ebiten.Image, r image.Rectangle) {
+	g.breathingRim(dst, r, guideOrange[0], guideOrange[1], guideOrange[2])
+}
+
+func (g *Game) breathingRim(dst *ebiten.Image, r image.Rectangle, a, b, glow color.NRGBA) {
 	k := .5 + .5*math.Sin(g.uiSeconds*2*math.Pi/1.4)
-	a, b := guideGreen[0], guideGreen[1]
 	mix := func(p, q uint8) uint8 { return uint8(float64(p) + (float64(q)-float64(p))*k) }
 	c := color.NRGBA{R: mix(a.R, b.R), G: mix(a.G, b.G), B: mix(a.B, b.B), A: 255}
 	r = r.Inset(-3)
 	strokeRect(dst, float32(r.Min.X)+1, float32(r.Min.Y)+1, float32(r.Dx()-2), float32(r.Dy()-2), 2.5, c)
-	strokeRect(dst, float32(r.Min.X)-1.5, float32(r.Min.Y)-1.5, float32(r.Dx()+3), float32(r.Dy()+3), 2, color.NRGBA{R: 120, G: 220, B: 120, A: uint8(40 + 60*k)})
+	glow.A = uint8(40 + 60*k)
+	strokeRect(dst, float32(r.Min.X)-1.5, float32(r.Min.Y)-1.5, float32(r.Dx()+3), float32(r.Dy()+3), 2, glow)
 }
 
 // tabRect is the rect of tab i of a tabRow drawn from x, y.
@@ -121,7 +133,12 @@ func (g *Game) tabRect(x, y int, labels []string, i int) image.Rectangle {
 
 // actionRect is the rect of the action labelled label in a closeRow ending at right, y with acts.
 func (g *Game) actionRect(right, y int, label string, acts ...action) image.Rectangle {
-	x := right - 96 - closeGap
+	return g.rowActionRect(right-96-closeGap, y, label, acts...)
+}
+
+// rowActionRect is the rect of the action labelled label in an actionRow ending at right, y with acts.
+func (g *Game) rowActionRect(right, y int, label string, acts ...action) image.Rectangle {
+	x := right
 	for i := len(acts) - 1; i >= 0; i-- {
 		w := max(96, int(g.width(acts[i].label, 15))+36)
 		if acts[i].label == label {

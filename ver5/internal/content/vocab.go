@@ -189,7 +189,7 @@ var Statuses = map[string]bool{
 	"speed": true, "range": true, "counter": true, "sure_crit": true,
 	"stance_pierce": true, "stance_cross": true, "stance_square": true,
 	"attack": true, "defense": true, "mind": true, "morale": true, "agility": true,
-	"guard": true, "disrupt": true,
+	"guard": true, "disrupt": true, "hold_ground": true,
 }
 
 // Class tags the engine reads.

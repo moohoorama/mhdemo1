@@ -2,6 +2,7 @@ package gui
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	"srpg/internal/core"
@@ -155,7 +156,7 @@ var statusLabels = map[string]string{"speed": "신속", "range": "사거리", "c
 	"stance_pierce": "찔러", "stance_cross": "사방", "stance_square": "팔방",
 	"mind": "정신", "morale": "사기", "attack": "공격", "defense": "방어", "agility": "순발", "poison": "중독", "burn": "화상",
 	"confusion": "혼란", "seal": "봉책", "root": "속박", "disarm": "봉격", "weak": "약화",
-	"guard": "경계", "disrupt": "교란"}
+	"guard": "경계", "disrupt": "교란", "hold_ground": "고수"}
 
 // percentStatus lists the statuses whose value is a signed percent.
 var percentStatus = map[string]bool{"attack": true, "defense": true, "mind": true, "morale": true, "agility": true}
@@ -193,11 +194,17 @@ func errorText(err error) string {
 	return err.Error()
 }
 
-func koreanError(code string) string {
+// koreanError names an engine error for the player. An error may carry what broke after its code
+// ("CorruptSave: unit … status …"): the screen shows only the code's name, the log keeps the whole.
+func koreanError(msg string) string {
+	code, detail, _ := strings.Cut(msg, ": ")
+	if detail != "" {
+		log.Printf("error: %s", msg)
+	}
 	if s, ok := errorNames[code]; ok {
 		return s
 	}
-	return code
+	return msg
 }
 
 type statRow struct {

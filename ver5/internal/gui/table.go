@@ -68,6 +68,7 @@ type table[R any] struct {
 	dim         func(r *R) bool
 	selected    func(r *R) bool
 	pick        func(r *R)
+	guide       func(r *R) bool // rows the promotion guide rims in orange
 }
 
 // widths are the columns' widths over w, the free columns sharing what the others leave.
@@ -151,7 +152,11 @@ func drawTable[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], rows
 
 	ry := hy + t.headH
 	for i := l.top; i < len(rows) && i < l.top+fit; i++ {
-		tableRow(g, dst, l, t, ws, &rows[i], image.Rect(r.Min.X, ry+(i-l.top)*t.rowH, r.Min.X+tw, ry+(i-l.top+1)*t.rowH))
+		rr := image.Rect(r.Min.X, ry+(i-l.top)*t.rowH, r.Min.X+tw, ry+(i-l.top+1)*t.rowH)
+		tableRow(g, dst, l, t, ws, &rows[i], rr)
+		if t.guide != nil && t.guide(&rows[i]) {
+			g.promoteRim(dst, rr.Inset(3))
+		}
 	}
 	if len(rows) == 0 && t.empty != "" {
 		g.label(dst, t.empty, float64(r.Min.X+4), float64(ry+8), t.size, muted)

@@ -13,7 +13,7 @@ GARBLE_FLAGS := -tiny -literals
 DESKTOP_ENV := CGO_ENABLED=0
 DESKTOP_PKG := ./cmd/srpg-gui
 
-.PHONY: help android android-arm64 android-install \
+.PHONY: help android android-arm64 android-release android-install \
 	desktop desktop-mac desktop-mac-intel desktop-win
 
 help:
@@ -23,6 +23,7 @@ help:
 	@echo 'make desktop-win     Build obfuscated Windows amd64 binary (bin/win/srpg.exe)'
 	@echo 'make android         Build APK for ARM64 phones and x86_64 emulators'
 	@echo 'make android-arm64   Build APK for ARM64 phones only'
+	@echo 'make android-release Build the release-tagged ARM64 APK: rule mismatches in saves are reported, not failed'
 	@echo 'make android-install Install the existing APK on a connected device'
 	@echo 'Override SDK path:   make android ANDROID_SDK=/path/to/sdk'
 
@@ -30,21 +31,24 @@ desktop: desktop-mac desktop-win
 
 desktop-mac:
 	$(DESKTOP_ENV) GOOS=darwin GOARCH=arm64 $(GARBLE) $(GARBLE_FLAGS) build \
-		-trimpath -ldflags="-s -w" -o bin/mac/srpg $(DESKTOP_PKG)
+		-tags release -trimpath -ldflags="-s -w" -o bin/mac/srpg $(DESKTOP_PKG)
 
 desktop-mac-intel:
 	$(DESKTOP_ENV) GOOS=darwin GOARCH=amd64 $(GARBLE) $(GARBLE_FLAGS) build \
-		-trimpath -ldflags="-s -w" -o bin/mac-intel/srpg $(DESKTOP_PKG)
+		-tags release -trimpath -ldflags="-s -w" -o bin/mac-intel/srpg $(DESKTOP_PKG)
 
 desktop-win:
 	$(DESKTOP_ENV) GOOS=windows GOARCH=amd64 $(GARBLE) $(GARBLE_FLAGS) build \
-		-trimpath -ldflags="-s -w -H=windowsgui" -o bin/win/srpg.exe $(DESKTOP_PKG)
+		-tags release -trimpath -ldflags="-s -w -H=windowsgui" -o bin/win/srpg.exe $(DESKTOP_PKG)
 
 android:
 	$(PYTHON) tools/build_android.py --sdk "$(ANDROID_SDK)"
 
 android-arm64:
 	$(PYTHON) tools/build_android.py --sdk "$(ANDROID_SDK)" --targets android/arm64
+
+android-release:
+	$(PYTHON) tools/build_android.py --sdk "$(ANDROID_SDK)" --targets android/arm64 --release
 
 android-install:
 	"$(ADB)" install -r "$(APK)"

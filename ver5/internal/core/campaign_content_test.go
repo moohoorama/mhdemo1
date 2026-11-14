@@ -270,6 +270,7 @@ func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
 					}
 				}
 				e := New(&dd, 5)
+				e.unchecked = true // the officer of the duel is sent out whether or not he can be
 				require.Equal(t, si, e.state.Stage)
 				if !slices.Contains(e.state.Deployment, duel.Ally) { // not a required officer: in for the last of the sortie when it is full
 					if len(e.state.Deployment) >= stage.Max {
@@ -372,6 +373,7 @@ func TestYingchuanGuanYuAttackDoesNotSummonLiuBeiDuel(t *testing.T) {
 	dd := *d
 	dd.Campaign.Start = "c02-battle"
 	e := New(&dd, 3)
+	e.unchecked = true // the officers are set down on cells the rules do not allow
 	applyOK(t, e, Command{Kind: "start"})
 
 	bocai, guanyu, liubei := e.unit("bocai"), e.unit("guanyu"), e.unit("liubei")

@@ -84,7 +84,11 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 		p.items, p.table, p.insu = true, false, insuState{}
 		g.openOverlay("party")
 	}}
-	g.actionRow(dst, right, y+h-60, append(append(acts, belongings), action{"출진 ›", true, g.startSortie})...)
+	row := append(append(acts, belongings), action{"출진 ›", true, g.startSortie})
+	g.actionRow(dst, right, y+h-60, row...)
+	if _, ok := g.promoteGuide(); ok && g.overlay() == "" && !guide {
+		g.promoteRim(dst, g.rowActionRect(right, y+h-60, belongings.label, row...))
+	}
 }
 
 // sortieTabs are the tabs of the picked officer in the sortie preparation: the officers' window's and 부관.

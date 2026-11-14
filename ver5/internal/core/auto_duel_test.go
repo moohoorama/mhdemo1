@@ -119,10 +119,10 @@ func TestARangedAttackOnTheDuelPartnerIsNoDuel(t *testing.T) {
 }
 
 func TestASupportMeetingTheEnemyStartsTheDuel(t *testing.T) {
-	e := battleWith(t, func(s *content.Stage) {
+	e := bentBattleWith(t, func(s *content.Stage) {
 		neverWon(s)
 		s.Duels[0].Supports = []string{"archer1", "nobody"}
-		s.Enemies[0].X, s.Enemies[0].Y = 4, 3
+		s.Enemies[0].X, s.Enemies[0].Y = 4, 3 // on water
 	})
 	assert.Equal(t, "D", e.DuelAt("archer1", 3, 3), "the archer joins the hero's duel")
 	r := moveAndWait(t, e, "archer1", 3, 3)
@@ -152,6 +152,7 @@ func TestAnAttackAfterTheMoveIsCarriedOutBeforeTheDuel(t *testing.T) {
 		s.Enemies[0].X, s.Enemies[0].Y = 4, 2
 	})
 	e.unit("boss").HP = 9999 // outlives one blow, so the duel still has someone to meet
+	e.unchecked = true
 	applyOK(t, e, Command{Kind: "move", Actor: "hero", X: 3, Y: 2})
 	for _, c := range e.LegalActions("hero").Commands {
 		if c.Kind == "attack" && c.Target == "boss" {

@@ -5,6 +5,16 @@
 
 ---
 
+## 2026-11-14 AI 동시 진행 기본값은 보통
+- internal/storage/storage.go `DefaultSettings`: Replay "together"(항상) → "spells"(보통: 책략은 따로 보여 줌). settings.json이 없는 새 설치에만 적용, 이미 고른 값은 그대로 — 사용자 요청
+
+## 2026-11-14 인수는 소모품, 승급하기 버튼과 주황 안내, 평원의 동탁 소문
+- internal/gui/party.go·officer_window.go·insu.go: 소지품 분류를 전체·무기·방어구·장신구·소모품으로(인수는 소모품, 설명엔 "소모품 · 인수"). 인수를 눌러도 바로 장수 표로 넘어가지 않고, 고르면 닫기 왼쪽의 승급하기로 연다 — 사용자: 중급 인수를 쓸 수 있다는 게 UI에서 너무 안 보임
+- internal/gui/promote_guide.go(새)·gear_guide.go·table.go·hud_corner.go·sortie.go: 승급할 수 있는 장수와 맞는 인수가 있으면 장비 안내(초록)처럼 주황 테두리로 관리(출전 준비에선 소지품) → 소지품 → 소모품 → 그 인수 → 승급하기 → 장수 표의 밝은 장수 → 승급하기를 짚음. 길 안내 설정이 끄고, 쓸 수 있는 동안 계속 보임. 장비 안내가 있으면 관리 버튼은 초록이 먼저
+- internal/gui/look_test.go: 인수 테스트의 레벨 15를 PromoteLevels[0]으로
+- assets/scenario/hero/explore11_camp.json: 계교 뒤 평원 거리의 아낙·뱃사공·행인 하나가 동탁이 죽었다는 소문을 혼잣말 말풍선(Chatter)으로 — 사용자: 말을 걸지 않아도 그런 소문이 도는구나 알게, 여덟은 많으니 셋쯤
+- internal/gui/scene.go `bubble`: 화면 밖 인물의 말풍선을 대사창 윗선(화면 65%쯤)까지만 내리던 것을, 대사창이 없는 탐험에선 화면 바닥까지 — 사용자: 화면 밖 아래에서 말한 말풍선이 너무 위에 찍힘
+
 ## 2026-11-14 승급 레벨 20·40, 규칙을 잘못 말하던 대사
 - assets/data/game.json `PromoteLevels` 15·30 → 20·40. 레벨에 맞춰 내려 배치되는 적·동맹·합류 장수도 따라 한 단계씩 늦어짐(어려움 B07까지·매우 어려움 B07까지 1단계, 1부에 3단계 적 없음, 조운은 계교에 경기병으로 합류). 여포·하후연·거록 창병 등은 고정하지 않고 레벨대로 — 사용자: 매우 어려움에서 신도성 Lv20, 버프 경험치 몰이는 의도한 것, 상징 유닛 고정 없이 자연스럽게
 - internal/core/campaign_content_test.go·away_test.go: 15·30을 박아 둔 기대값을 20·40에 맞춤

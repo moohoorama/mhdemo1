@@ -53,9 +53,10 @@ func (g *Game) pressLabel(label string) {
 // demoInsu uses an 인수 outside a battle (-node, default the walk of the gearguide demo's event; a battle node such as
 // c14-battle opens the belongings from the sortie preparation's 소지품 at 40): the lord and the first officer a seal
 // takes into more than one class (else the lord alone) are raised to the promotion level and the party carries two of
-// every seal, the belongings show with only what can be used lit (90), the seal opens the officer table (120), that
-// officer is picked (150), 승급하기 brings the class cards when there are several (190) and the first one promotes
-// him, the promotion window over the belongings (240).
+// every seal; the promotion guide rims 관리 in orange (before 60), the belongings show with only what can be used lit
+// (60), 소모품 (80), the seal picked (100) and its 승급하기 pressed opens the officer table (115), that officer is
+// picked (130), 승급하기 brings the class cards when there are several (160) and the first one promotes him, the
+// promotion window over the belongings (200).
 func demoInsu(d *Demo) error {
 	data := d.g.S.Data
 	node := d.node
@@ -108,8 +109,12 @@ func demoInsu(d *Demo) error {
 				g.openOverlay("party")
 			}
 			g.party.items, g.party.table, g.party.filter = true, false, ""
+		case 80:
+			g.party.filter = "소모품"
 		case 100:
-			g.openInsu(seal)
+			g.party.item = seal
+		case 115:
+			g.pressLabel("승급하기")
 		case 130:
 			g.party.insu.pick = who
 		case 160:

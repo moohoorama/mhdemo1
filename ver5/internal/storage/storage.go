@@ -68,7 +68,7 @@ func (s Settings) XPScale() int {
 	return s.XPPct
 }
 
-func DefaultSettings() Settings { return Settings{Replay: "together", Detail: true} }
+func DefaultSettings() Settings { return Settings{Replay: "spells", Detail: true} }
 func (s Settings) Validate() error {
 	if !slices.Contains([]string{"together", "spells", "one"}, s.Replay) || s.TextDelayMS < 0 || s.TextDelayMS > 1000 || s.UIScale != 0 && (s.UIScale < 80 || s.UIScale > 160) || s.DamagePct != 0 && !slices.Contains(ScalePcts, s.DamagePct) || s.XPPct != 0 && !slices.Contains(ScalePcts, s.XPPct) || !slices.Contains([]string{"", "sfx", "music", "off"}, s.Sound) {
 		return fmt.Errorf("InvalidSettings")

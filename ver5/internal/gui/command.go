@@ -100,7 +100,7 @@ func (g *Game) tentative(x, y int) {
 	c := core.Command{Kind: "move", Actor: g.ord.actor, X: x, Y: y}
 	sb, err := core.Restore(g.S.Data, g.S.Engine.Snapshot())
 	if err != nil {
-		g.toast(err.Error(), bad)
+		g.toast(koreanError(err.Error()), bad)
 		return
 	}
 	r, err := sb.Apply(c)

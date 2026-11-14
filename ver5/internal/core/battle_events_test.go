@@ -12,6 +12,16 @@ import (
 // battleWith starts the mini stage S1 after tweaking it: heroes at (1,2),(1,3); boss (9,2);
 // troops #1 (9,4) and #2 (10,3).
 func battleWith(t *testing.T, tweak func(*content.Stage)) *Engine {
+	return battleOn(t, tweak, false)
+}
+
+// bentBattleWith is battleWith for a tweak the rules do not allow (a unit set on water), so Apply skips the
+// restore check.
+func bentBattleWith(t *testing.T, tweak func(*content.Stage)) *Engine {
+	return battleOn(t, tweak, true)
+}
+
+func battleOn(t *testing.T, tweak func(*content.Stage), bent bool) *Engine {
 	d, err := content.Load("../testdata/mini")
 	require.NoError(t, err)
 	tweak(&d.Stages[0])
@@ -21,6 +31,7 @@ func battleWith(t *testing.T, tweak func(*content.Stage)) *Engine {
 		}
 	}
 	e := New(d, 1)
+	e.unchecked = bent
 	_, err = e.Apply(Command{Kind: "start"})
 	require.NoError(t, err)
 	plan, err := e.DeploymentPlan()

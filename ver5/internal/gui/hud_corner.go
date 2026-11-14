@@ -107,8 +107,13 @@ func (g *Game) cornerButtons(dst *ebiten.Image, x, y int, party func()) {
 	sw := (infoW - 2*cornerPad - cornerGap) / 2
 	by := y + 1 + cornerPad
 	g.centeredBtn(dst, image.Rect(x+cornerPad, by, x+cornerPad+sw, by+cornerBtnH), "관리", party)
-	if _, _, _, ok := g.gearStep(); ok && party != nil && g.overlay() == "" {
-		g.guideRim(dst, image.Rect(x+cornerPad, by, x+cornerPad+sw, by+cornerBtnH))
+	manage := image.Rect(x+cornerPad, by, x+cornerPad+sw, by+cornerBtnH)
+	if party != nil && g.overlay() == "" {
+		if _, _, _, ok := g.gearStep(); ok {
+			g.guideRim(dst, manage)
+		} else if _, ok := g.promoteGuide(); ok {
+			g.promoteRim(dst, manage)
+		}
 	}
 	g.centeredBtn(dst, image.Rect(x+cornerPad+sw+cornerGap, by, x+cornerPad+2*sw+cornerGap, by+cornerBtnH), "메뉴", func() { g.openOverlay("menu") })
 }
