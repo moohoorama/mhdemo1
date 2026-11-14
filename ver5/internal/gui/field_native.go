@@ -7,7 +7,6 @@ import (
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 	"srpg/internal/content"
 )
 
@@ -264,23 +263,6 @@ func (f *Field) drawNativeWater(dst *ebiten.Image, ms float64) {
 			f.blitMap(dst, f.A.Tiles[id], f.OriginX+float64(t.X), f.OriginY+float64(t.Y), nil)
 		}
 	}
-}
-func (f *Field) makeExterior() {
-	w, h := f.Canvas.Bounds().Dx(), f.Canvas.Bounds().Dy()
-	f.exterior = newLayer(w, h)
-	f.exterior.Fill(color.NRGBA{A: 140})
-	var p vector.Path
-	// Grid vertices differ from cell centers by half a cell along both axes.
-	for i, uv := range [][2]float64{{-.5, -.5}, {float64(f.Map.W) - .5, -.5}, {float64(f.Map.W) - .5, float64(f.Map.H) - .5}, {-.5, float64(f.Map.H) - .5}} {
-		x, y := f.Center(uv[0], uv[1])
-		if i == 0 {
-			p.MoveTo(float32(x), float32(y))
-		} else {
-			p.LineTo(float32(x), float32(y))
-		}
-	}
-	p.Close()
-	vector.FillPath(f.exterior, &p, nil, &vector.DrawPathOptions{ColorScale: colorScaleWhite(), Blend: ebiten.BlendDestinationOut})
 }
 func colorScaleWhite() ebiten.ColorScale {
 	var c ebiten.ColorScale

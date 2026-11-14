@@ -50,7 +50,7 @@ type Field struct {
 	levels                       []sceneLevel // a format 2 scene map's raised grounds, lowest first (makeScenePlan)
 	Canvas                       *ebiten.Image
 	ShowExterior                 bool
-	exterior                     *ebiten.Image
+	dimOutside                   bool // a battle map: past the battle area lies the dark outside (makeOutside)
 	outside                      outsideLayers
 	night                        nightLayers
 	looks                        map[image.Point]string // the look of the state on a cell, by cell
@@ -145,7 +145,6 @@ func NewField(a *Assets, m *MapArt) *Field {
 	if m.Native {
 		f.makeNativeFloors()
 		f.makeFloors()
-		f.makeExterior()
 		f.makeOutside()
 		if a.Scenery != nil {
 			f.makeScenery()
@@ -395,11 +394,8 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	if !f.shows("objects") {
 		return
 	}
-	// Shade the out-of-battle ground only; scenery and units are drawn afterward.
-	if f.exterior != nil && !f.ShowExterior {
-		op := &ebiten.DrawImageOptions{}
-		f.renderOp(c, op)
-		c.DrawImage(f.exterior, op)
+	// The dark outside covers the ground past the battle area; scenery and units are drawn afterward.
+	if f.dimOutside && !f.ShowExterior {
 		f.drawOutsideGround(clockMS)
 	}
 	if f.Map.Native {

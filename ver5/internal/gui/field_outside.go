@@ -55,6 +55,7 @@ func (f *Field) mapOutline() [4][2]float64 {
 
 func (f *Field) makeOutside() {
 	o := &f.outside
+	f.dimOutside = true
 	w, h := f.Canvas.Bounds().Dx(), f.Canvas.Bounds().Dy()
 	corners := f.mapOutline()
 	for _, c := range corners {
@@ -345,7 +346,7 @@ const exteriorDim = .55
 // sprite takes it, so a tree on the border is not cut in two by the edge. Scenery inside the battle area is
 // untouched; outside it is dimmed like the ground, darker toward the edge of the picture (the vignette's curve).
 func (f *Field) exteriorShade(x, y float64) float64 {
-	if f.exterior == nil || f.ShowExterior {
+	if !f.dimOutside || f.ShowExterior {
 		return 1
 	}
 	if u, v := f.Cell(x, y); f.Inside(u, v) {
@@ -358,7 +359,7 @@ func (f *Field) exteriorShade(x, y float64) float64 {
 // edgeShade is the brightness of a unit at fractional cell (u, v) walking off the battle area: 1 inside,
 // falling smoothly to the ground's exteriorDim over the first cell past the edge.
 func (f *Field) edgeShade(u, v float64) float64 {
-	if f.exterior == nil || f.ShowExterior {
+	if !f.dimOutside || f.ShowExterior {
 		return 1
 	}
 	d := max(-.5-u, -.5-v, u-(float64(f.Map.W)-.5), v-(float64(f.Map.H)-.5))
