@@ -136,12 +136,24 @@ func TestFallCue(t *testing.T) {
 }
 
 func TestSceneMotionCue(t *testing.T) {
+	g := &Game{S: &session.Session{Data: &content.Data{
+		Classes: map[string]content.Class{
+			"light_cavalry": {Sprite: "light_cavalry", Attack: content.AttackMelee},
+			"horse_archer":  {Sprite: "horse_archer", Attack: content.AttackRanged},
+			"archer":        {Sprite: "archer", Attack: content.AttackRanged},
+		},
+		Characters: map[string]content.Character{
+			"lubu":     {Look: content.Look{Sprites: map[string]string{"horse_archer": "lubu_bow"}}},
+			"zhangfei": {Look: content.Look{Sprites: map[string]string{"light_cavalry": "zhangfei"}}},
+		},
+	}}}
 	for _, c := range []struct{ art, anim, want string }{
 		{"guanyu", "attack", "swing"}, {"lubu_bow", "attack", "shoot"}, {"horse_archer", "attack", "shoot"},
-		{"zhangfei", "hit", "hit"}, {"zhangfei", "block", "block"}, {"zhangfei", "action", ""},
+		{"archer", "attack", "shoot"}, {"archer_white", "attack", "shoot"}, {"light_cavalry_white", "attack", "swing"},
+		{"zhangfei", "attack", "swing"}, {"zhangfei", "hit", "hit"}, {"zhangfei", "block", "block"}, {"zhangfei", "action", ""},
 	} {
 		v := &unitVis{art: &sprite.Art{ID: c.art}}
-		assert.Equal(t, c.want, sceneMotionCue(v, c.anim), c.art+" "+c.anim)
+		assert.Equal(t, c.want, g.sceneMotionCue(v, c.anim), c.art+" "+c.anim)
 	}
 }
 

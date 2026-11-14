@@ -440,7 +440,7 @@ func (g *Game) startStep(st scenes.Step) {
 	}
 	if anim := motion(v.art, st.Play); anim != "" && s.tied[st.Actor] == nil {
 		v.play(anim)
-		g.sfxAtCell(sceneMotionCue(v, anim), v.u, v.v)
+		g.sfxAtCell(g.sceneMotionCue(v, anim), v.u, v.v)
 		if !v.art.Animations[anim].Loop {
 			s.plays[v.id] = anim
 		}

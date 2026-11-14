@@ -1,6 +1,10 @@
 package gui
 
-import "slices"
+import (
+	"slices"
+
+	"srpg/internal/content"
+)
 
 func init() {
 	demos["ranges"] = demoRanges
@@ -35,13 +39,24 @@ func demoRanges(d *Demo) error {
 	return nil
 }
 
-// demoTraitCard opens the officers' 특성 tab in a battle of the stage (-stage) on 관우, then 간옹, each on its own
-// trait with the longest description (frames 130 and 160), then the 열전 tab of 관우 (frame 190) and 간옹 (220).
+// demoTraitCard opens the officers' 특성 tab in a battle of the stage (-stage) on the first officer of a fighting
+// class who is not the lord (관우), then the first of a civil class (간옹), each on its own trait with the longest
+// description (frames 130 and 160), then the 열전 tab of the first (frame 190) and the second (220).
 func demoTraitCard(d *Demo) error {
 	if err := d.battle(d.stage); err != nil {
 		return err
 	}
 	g := d.g
+	var fighter, civil string
+	for _, of := range g.S.View().Characters {
+		c := g.S.Data.Characters[of.Def]
+		switch civilClass := slices.Contains(g.S.Data.Classes[of.Class].Tags, content.TagCivil); {
+		case civilClass && civil == "":
+			civil = of.Def
+		case !civilClass && !c.Lord && fighter == "":
+			fighter = of.Def
+		}
+	}
 	show := func(def string) {
 		for _, of := range g.S.View().Characters {
 			if of.Def != def {
@@ -61,14 +76,14 @@ func demoTraitCard(d *Demo) error {
 			g.openOverlay("party")
 			g.party.tab = 1
 		case 130:
-			show("guanyu")
+			show(fighter)
 		case 160:
-			show("jianyong")
+			show(civil)
 		case 190:
-			show("guanyu")
+			show(fighter)
 			g.party.tab = 0
 		case 220:
-			show("jianyong")
+			show(civil)
 		}
 	}
 	return nil

@@ -29,6 +29,7 @@ func TestEngineSourceNamesNoGameContent(t *testing.T) {
 	for k := range TraitEffects {
 		engine[strings.TrimSuffix(k, ":")] = true
 	}
+	engine["flood"] = true // a scene map's draw kind (scenemap.DrawFlood), also a trait id
 	// Korean words the screens use as labels of engine vocabulary (statuses, the equipment tab) may coincide with data names.
 	for _, w := range []string{"장비", "신속", "원시", "반격", "혼란", "봉책", "봉격", "약화", "경계", "조준", "저격", "도발", "교란", "관리", "이전"} {
 		engine[w] = true

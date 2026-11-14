@@ -482,25 +482,40 @@ func (g *Game) riderArt(id string) bool {
 	if g.S == nil || g.S.Data == nil {
 		return false
 	}
-	if strings.Contains(id, "cavalry") || strings.Contains(id, "mounted") || strings.HasPrefix(id, "horse_") {
+	if strings.Contains(id, "mounted") || strings.HasPrefix(id, "horse_") {
 		return true
 	}
-	mounted := func(class string) bool {
-		return slices.Contains(g.S.Data.Classes[class].Tags, content.TagMounted)
+	c, ok := g.artClass(id)
+	return ok && slices.Contains(c.Tags, content.TagMounted)
+}
+
+// artClass is the class a sprite sheet draws: a class's own sheet, an officer's sheet for a class, or a variant of a
+// class's sheet named after it (light_cavalry_white).
+func (g *Game) artClass(id string) (content.Class, bool) {
+	if g.S == nil || g.S.Data == nil {
+		return content.Class{}, false
 	}
-	for class, c := range g.S.Data.Classes {
-		if c.Sprite == id && mounted(class) {
-			return true
+	d := g.S.Data
+	for _, c := range d.Classes {
+		if c.Sprite == id {
+			return c, true
 		}
 	}
-	for _, c := range g.S.Data.Characters {
-		for class, sheet := range c.Look.Sprites {
-			if sheet == id && mounted(strings.SplitN(class, ":", 2)[0]) {
-				return true
+	for _, ch := range d.Characters {
+		for class, sheet := range ch.Look.Sprites {
+			if sheet == id {
+				c, ok := d.Classes[strings.SplitN(class, ":", 2)[0]]
+				return c, ok
 			}
 		}
 	}
-	return false
+	best := content.Class{}
+	for _, c := range d.Classes {
+		if c.Sprite != "" && strings.HasPrefix(id, c.Sprite+"_") && len(c.Sprite) > len(best.Sprite) {
+			best = c
+		}
+	}
+	return best, best.Sprite != ""
 }
 
 // sceneFootfall sounds a scene walker's steps, about one per cell, hoof beats for a rider; the people who wander
@@ -549,10 +564,10 @@ func (g *Game) fallCue(id string) string {
 }
 
 // sceneMotionCue is the sound of a motion a scene plays: a swing, or a shot from a bow; a blow taken or blocked.
-func sceneMotionCue(v *unitVis, anim string) string {
+func (g *Game) sceneMotionCue(v *unitVis, anim string) string {
 	switch anim {
 	case "attack":
-		if strings.Contains(v.art.ID, "bow") || strings.Contains(v.art.ID, "archer") {
+		if c, ok := g.artClass(v.art.ID); ok && c.Attack == content.AttackRanged {
 			return "shoot"
 		}
 		return "swing"
