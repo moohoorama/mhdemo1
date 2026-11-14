@@ -10,7 +10,9 @@
 - 문서의 쉬움·보통·어려움은 ID easy·normal·hard를 뜻한다(docs/stage_lv_balance.md 1.2)
 
 ## 2026-11-14 초상 8인, 초상 연결 누락 34명
-- tools/illustrations/portraits/(sheets/)jiling·dongcheng·chengong·taishici·guotu·chendao·guanping·zhoucang.png, assets/graphics/portraits/같은 이름(256px), sheets/prompts.md, tools/illustrations/README.md: 대사는 있는데 초상이 없던 기령·동승·진궁·태사자·곽도·진도·관평·주창을 수묵 담채 단독 초상으로 — 사용자 요청
+- tools/illustrations/portraits/(sheets/)jiling·dongcheng·chengong·taishici·guotu·chendao·guanping·zhoucang.png, assets/graphics/portraits/같은 이름(256px), sheets/prompts.md, tools/illustrations/README.md: 대사는 있는데 초상이 없던 기령·동승·진궁·태사자·곽도·진도·관평·주창을 수묵 담채 단독 초상으로 — 사용자 요청. 주창은 더 와일드하게 늑대 모피 망토·가죽 조끼의 산적 차림으로 다시 그림(첫 판은 sheets/zhoucang-v1-single.png)
+- tools/illustrations/portraits/candidates/(새), portraits/yuejin.png, assets/graphics/portraits/yuejin.png, characters_story.json yuejin `Look.Portrait`: 악진 초상(전엔 없음)을 넣고, 정보·한당·조인·조홍·허저·곽가·순욱·순유·우금·이전·서황·정욱 12명은 기존 그림을 그대로 두고 새 후보만 candidates/에 — 사용자가 고르면 교체
+- portraits/zhoucang.png·xuhuang.png·lidian.png(원본·게임용): 사용자 선택 — 주창은 챙 넓은 삿갓에 정면(모피 산적 차림 유지, 이전 판 sheets/zhoucang-v2-single.png), 서황·이전은 새 후보로 교체(예전 그림 sheets/*-old.png), 나머지 10명은 기존 유지
 - assets/data/characters.json·characters_story.json `Look.Portrait`: 초상 그림이 있는데 Look에 연결이 없어 대화창에 얼굴이 안 나오던 34명(목순·무안국, 파재·장량·장보·주준, 정보·한당, 조잠·이숙·서영, 조인·조홍, 교모·한복·공주·조무·사신, 조조군 8인 등)과 새 8인에 `"Portrait": "<키>"`를 넣음 — GUI는 Look.Portrait로만 초상을 찾음
 
 ## 2026-11-14 돌아오는 장수는 병종 그대로
