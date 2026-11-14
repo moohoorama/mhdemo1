@@ -409,7 +409,7 @@ func (g *Game) ruyiPanel(dst *ebiten.Image, x, y, w, h float64, c color.NRGBA, k
 	}
 	m := float32(max(.01, g.assets.RuyiMean)) * 255
 	tint := [3]float32{float32(c.R) / m, float32(c.G) / m, float32(c.B) / m}
-	g.drawPattern(dst, g.assets.Ruyi, x, y, w, h, 0, 0, 1, tint, k)
+	g.drawPattern(dst, g.assets.Ruyi, x, y, w, h, 0, 0, patternScale, tint, k)
 }
 
 // nineSlice stretches UI picture im (one art pixel per UI pixel) over r: its corner UI px
@@ -450,7 +450,7 @@ func (g *Game) titlePlate(dst *ebiten.Image, r image.Rectangle, title string) {
 
 func (g *Game) titledPattern(dst *ebiten.Image, r image.Rectangle, title string) {
 	g.window(dst, r)
-	g.drawPattern(dst, g.assets.Shou, float64(r.Min.X+9), float64(r.Min.Y+9), float64(r.Dx()-18), float64(r.Dy()-18), 0, 0, 1, [3]float32{.52, .35, .25}, .62)
+	g.drawPattern(dst, g.assets.Shou, float64(r.Min.X+9), float64(r.Min.Y+9), float64(r.Dx()-18), float64(r.Dy()-18), 0, 0, patternScale, [3]float32{.52, .35, .25}, .62)
 	g.titlePlate(dst, r, title)
 }
 

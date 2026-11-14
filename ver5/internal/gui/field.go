@@ -46,7 +46,6 @@ type Field struct {
 	OriginX                      float64
 	OriginY                      float64
 	ground                       [8]*ebiten.Image // per water frame; castle floor baked in
-	clip                         *ebiten.Image    // opaque where there is ground
 	shadows                      *ebiten.Image
 	levels                       []sceneLevel // a format 2 scene map's raised grounds, lowest first (makeScenePlan)
 	Canvas                       *ebiten.Image
@@ -89,9 +88,6 @@ func NewField(a *Assets, m *MapArt) *Field {
 	w, h := (m.Bounds.Dx()+2*margin)*K, (m.Bounds.Dy()+2*margin)*K
 	f := &Field{worldSize: image.Pt(w, h), A: a, Map: m, OriginX: float64(margin - m.Bounds.Min.X), OriginY: float64(margin - m.Bounds.Min.Y),
 		shadows: newLayer(w, h), Canvas: newLayer(w, h), ShowExterior: m.Scene}
-	if !m.SunkWater {
-		f.clip = newLayer(w, h) // a battle map draws its floors tile by tile (makeFloors), no map-wide ground
-	}
 	if m.SceneMap != nil {
 		if err := f.makeScenePlan(); err != nil {
 			panic(err) // the map loaded, so its plan builds: LoadAssets builds every format 2 map once
@@ -145,9 +141,6 @@ func NewField(a *Assets, m *MapArt) *Field {
 		}
 		f.eachProp(true, func(_ string, s Sprite, x, y float64) { f.blit(g, s, x, y, nil) })
 		f.ground[i] = g
-	}
-	if f.clip != nil {
-		f.clip.DrawImage(f.ground[0], nil)
 	}
 	if m.Native {
 		f.makeNativeFloors()
@@ -550,10 +543,10 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		items = append(items, it)
 	}
 	// one layer so overlapping shadows do not darken each other, kept on the ground
-	if f.clip != nil {
+	if f.ground[0] != nil { // a battle map draws its floors tile by tile (makeFloors) and has no map-wide ground
 		clipOp := &ebiten.DrawImageOptions{Blend: ebiten.BlendDestinationIn}
 		f.renderOp(f.shadows, clipOp)
-		f.shadows.DrawImage(f.clip, clipOp)
+		f.shadows.DrawImage(f.ground[0], clipOp)
 	}
 	c.DrawImage(f.shadows, nil)
 	for _, m := range f.groundMarks {

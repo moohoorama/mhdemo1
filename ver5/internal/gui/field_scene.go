@@ -54,7 +54,6 @@ func (f *Field) makeScenePlan() error {
 		f.ground[i] = g
 	}
 	f.makeWaterChunks(plan.Flat)
-	f.clip.DrawImage(f.ground[0], nil)
 	f.addScenePieces(plan.Solid, 0)
 	for i, l := range plan.Levels {
 		lv := sceneLevel{lift: float64(l.Lift), top: newLayer(f.worldSize.X, f.worldSize.Y),

@@ -133,7 +133,7 @@ func (f *Field) dispose() {
 			}
 		}
 	}
-	for _, im := range append(f.ground[:], f.Canvas, f.clip, f.shadows, f.exterior, f.night.dark, f.night.light, f.afloat, f.wading, o.tiles, o.layer, o.haze, o.drop, o.rim, o.cloud) {
+	for _, im := range append(f.ground[:], f.Canvas, f.shadows, f.exterior, f.night.dark, f.night.light, f.afloat, f.wading, o.tiles, o.layer, o.haze, o.drop, o.rim, o.cloud) {
 		if im != nil && !seen[im] {
 			im.Deallocate()
 			seen[im] = true

@@ -126,6 +126,10 @@ func (g *Game) factionTint(speakers []string) [3]float32 {
 	return t
 }
 
+// patternScale is how many UI px one texel of the ruyi and shou patterns covers: they were painted finer than the
+// screen needs and are kept at three quarters of that size.
+const patternScale = 1254.0 / 940
+
 // drawPattern fills the layout rectangle with a repeated tile in colour scale tint, the
 // pattern shifted by (ox, oy). One quad repeats the tile, so linear filtering wraps across its
 // seams instead of fading to the transparent outside.
@@ -157,7 +161,7 @@ func (g *Game) drawBoxBody(dst *ebiten.Image, x, y, w, h float64, tint [3]float3
 	}
 	x0, y0, fw, fh := float32(x), float32(y), float32(w), float32(h)
 	rect(dst, x0+9, y0+15, fw, fh, color.NRGBA{A: 107})
-	g.drawPattern(dst, g.assets.Ruyi, x, y, w, h, 0, 0, 1, tint, 1)
+	g.drawPattern(dst, g.assets.Ruyi, x, y, w, h, 0, 0, patternScale, tint, 1)
 	if w > 12 {
 		strokeRect(dst, x0+5.5, y0+5.5, fw-11, fh-11, 1, color.NRGBA{R: 170, G: 195, B: 185, A: 71})
 	}
