@@ -5,6 +5,16 @@
 
 ---
 
+## 2026-11-14 맵 크기 층을 매 프레임 그리기로 (GPU 메모리 최대 900 → 618MB)
+- 결정: 맵 전체를 미리 한 장으로 구워 두던 층을 없애고, 그림 시트에서 매 프레임 화면에 보이는 것만 시트별 `DrawTriangles32` 한 번으로 그린다(internal/gui/batch.go). 이유: 큰 맵은 층 하나가 15~109MB였다. 사용자: 텍스처가 너무 크다, 점이 너무 많다.
+- internal/gui/field_scenery.go·field_outside.go: 전투맵 장식·절벽 위 장식·바깥 돌과 소나무를 굽지 않고 좌표만 들고 그림. 나무 그림자는 화면 크기 그림자 층에서 먼저 합침(겹쳐도 안 진해지게). B16 상시 −29MB. 처음엔 장식마다 DrawImage라 프레임 +2.3ms였다가 시트별 한 번으로 묶어 원래보다 빨라짐(B02 ×1 8.5 → 7.6ms)
+- internal/gui/field.go·field_native.go: 전투 구역 밖을 어둡게 덮던 exterior 층 삭제. 바깥 풀밭 층이 이미 덮고 있어 보이는 건 경계 몇 픽셀뿐이었음. 확대 ×2·×4에서 경계 안쪽 계단 모양 진한 테두리가 사라짐(픽셀 기준은 넘었지만 사용자가 더 낫다고 승낙)
+- internal/gui/field_scene.go: 장면 맵 땅을 굽지 않고 작은 타일(32×16)마다 16×8 조각 4개의 조합을 맵을 열 때 시트 한 장에 한 번씩 그려 두고(전체 장면 맵 139가지, 맵당 1.2MB 이하) 매 프레임 그림. 물이 든 조합은 물 프레임마다 따로. 물 조각을 굽던 waterChunks 삭제. 그림자는 투명 캔버스 위 땅에 SourceAtop으로 얹고 배경은 DestinationOver로 깔아 땅 마스크 텍스처 없이 자름. 16×8 그대로는 화면 안 2만여 장이라 +2~5ms, 64×32 칸 조합은 물 맵에서 시트가 5MB까지 커져 32×16을 고름. 확대가 정수배가 아닐 때 타일 사이 틈이 생겨 모든 조각을 1/512px 같은 쪽으로 밀어 해결. S_long_field −108MB
+- internal/gui/field.go·field_scene.go: 장면 맵 그림자 마스크 clip 층 삭제(땅 층 복사본이었음)
+- assets/graphics/ui/ruyi-cloud-tile.png·shou-tile.png: 3/4 크기로 줄이고 1.334배로 그림(patternScale). 반 크기는 폰 배율 2.625에서 구름무늬 하이라이트가 뭉개져(최대 182/255) 버림
+- internal/gui/field_grass.go·batch.go: 풀 색조 사본을 그림마다가 아니라 시트째로 만들고 다시 자름(cut·sheetFor) — 색조 맵에서도 한 시트로 묶어 그리게
+- 검증: 수정 전후를 같은 카메라·확대·시각으로 찍어 픽셀 비교(internal/gui/measure_render_test.go), 정수배 확대는 모든 픽셀 10% 이내. 남은 일(켤 때 512MB 바닥, 아틀라스): docs/todo/vram.md
+
 ## 2026-11-14 AI 동시 진행 기본값은 보통
 - internal/storage/storage.go `DefaultSettings`: Replay "together"(항상) → "spells"(보통: 책략은 따로 보여 줌). settings.json이 없는 새 설치에만 적용, 이미 고른 값은 그대로 — 사용자 요청
 

@@ -79,5 +79,6 @@
 | [todo/graphics.md](todo/graphics.md) | 일러스트·초상·스프라이트·배경·타일·효과 |
 | [todo/data.md](todo/data.md) | 시나리오·장수·일기토·아이템·맵·밸런스 데이터 |
 | [todo/treasure-ideas.md](todo/treasure-ideas.md) | 보물 아이디어 참고 자료 |
+| [todo/vram.md](todo/vram.md) | GPU 메모리(텍스처)·아틀라스 줄이기, 재는 도구 |
 
 정리 전 옛 문서는 `../docs_old/`에 있다.
