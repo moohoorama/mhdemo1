@@ -255,8 +255,8 @@
     },
     "관병": {
      "At": [
-      26,
-      6
+      25,
+      7
      ],
      "Face": "SW",
      "Sprite": "light_infantry",
@@ -271,7 +271,7 @@
     "관병#2": {
      "At": [
       31,
-      6
+      7
      ],
      "Face": "SW",
      "Sprite": "light_infantry",

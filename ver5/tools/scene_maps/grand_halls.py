@@ -14,7 +14,9 @@ outside the files (u = 1 and 11).
 The two differ in their furnishing:
 - 수춘: 원술 apes an emperor's hall: a gold screen behind the gilded seat (the dais), yellow banners all along the back wall,
   and the wine tables and jars of a lord who lives well.
-- 업: a warlord's hall on the eve of 백마: red banners along the back wall, braziers, weapon racks and armour by the
+- 업: a warlord's hall on the eve of 백마, not a throne hall: umber walls and pillars, a paper screen behind a plain
+  dais, a mat for the way in (as 서주 관청, xuzhou_hall.py) — the vermilion lacquer and the gold screen are kept for
+  the emperor's hall and 원술 who apes it; red banners along the back wall, braziers, weapon racks and armour by the
   side wall, a map table near the front; no wine.
 - 낙양: the real throne hall: the gold screen and the dais (the emperor's sheet brings its own throne), curtains
   over the lacquer walls, candle stands, incense and lanterns; no wine.
@@ -29,7 +31,11 @@ W, H = 13, 12        # game cells
 DOOR = 6             # the carpet and the way in, u
 
 
-def hall(map_id, name, furnish):
+LACQUER = {'wall': 'wall_lacquer', 'pillar': 'pillar_red', 'screen': 'screen_gold', 'dais': 'dais', 'carpet': 'C'}
+UMBER = {'wall': 'wall_umber', 'pillar': 'pillar_umber', 'screen': 'screen_paper', 'dais': 'dais_plain', 'carpet': 'M'}
+
+
+def hall(map_id, name, furnish, look=LACQUER):
     obj = []
 
     def put(prop, u, v):
@@ -41,16 +47,17 @@ def hall(map_id, name, furnish):
 
     ground = [['P'] * (2 * W) for _ in range(2 * H)]
     for V in range(4, 2 * H):
-        ground[V][2 * DOOR] = ground[V][2 * DOOR + 1] = 'C'
+        ground[V][2 * DOOR] = ground[V][2 * DOOR + 1] = look['carpet']
     for V in range(0, 2 * H, 2):
-        obj.append(['wall_lacquer_nw', 0, V, 0, -8])
+        obj.append([look['wall'] + '_nw', 0, V, 0, -8])
     for U in range(0, 2 * W, 2):
-        obj.append(['wall_lacquer_ne', U, 0, 0, -8])
-    obj.extend([['pillar_red', 0, 0, 0, -8], ['pillar_red', 2 * W, 0, 0, -8], ['pillar_red', 0, 2 * H, 0, -8]])
-    put('screen_gold', DOOR, .35), put('dais', DOOR, 1.0)
+        obj.append([look['wall'] + '_ne', U, 0, 0, -8])
+    pillar = look['pillar']
+    obj.extend([[pillar, 0, 0, 0, -8], [pillar, 2 * W, 0, 0, -8], [pillar, 0, 2 * H, 0, -8]])
+    put(look['screen'], DOOR, .35), put(look['dais'], DOOR, 1.0)
     for v in (2.5, 5.5, 8.5):
-        put('pillar_red', 1, v), put('pillar_red', W - 2, v)
-    put('pillar_red', DOOR - 1, H - .25), put('pillar_red', DOOR + 1, H - .25)
+        put(pillar, 1, v), put(pillar, W - 2, v)
+    put(pillar, DOOR - 1, H - .25), put(pillar, DOOR + 1, H - .25)
     furnish(put, obj)
     art = {'id': map_id, 'name': name, 'format': 2, 'size': [W, H], 'origin': [0, 0],
            'ground': [''.join(r) for r in ground], 'objects': obj}
@@ -105,6 +112,6 @@ def ye(put, obj):
 if __name__ == '__main__':
     import sys
     halls = {'S_shouchun_hall': ('수춘 대전', shouchun), 'S_luoyang_hall': ('낙양 궁궐 대전', luoyang),
-             'S_ye_hall': ('업 관청 대전', ye)}
+             'S_ye_hall': ('업 관청 대전', ye, UMBER)}
     for map_id in sys.argv[1:] or halls:
         hall(map_id, *halls[map_id])

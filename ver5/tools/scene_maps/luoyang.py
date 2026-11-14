@@ -8,7 +8,8 @@ Writes format 2 (internal/scenemap) straight: small tiles from origin 0, 0; u ru
 v down to the left. Ground: d packed earth, i paving, . grass. A house's door is on its +v face (house_tile,
 tavern) or +u face (house_tile_x); a hall_u's on its +v face.
 
-Plan: the palace wall along the back (v = 4) with its open gate on the avenue; a paved square before it; the
+Plan: the palace wall along the back (v = 4), vermilion with the great gate hall (palace_gate) on the avenue — the
+emperor still sits here, so 낙양 and 허도 (S_xudu) alone get the palace wall; 업 (S_ye), a governor's seat, a stone one; a paved square before it; the
 paved avenue (u 25..31) down the middle lined with willows and lanterns; the cross street (v 24..27). Back left
 조조's house, a hall behind a paved yard with a pine and a garden rock; back right the 관아 by the notice board;
 near left the houses of the lanes; near right the market. The tavern and the general store face the cross street
@@ -20,6 +21,8 @@ from pathlib import Path
 
 GFX = Path(__file__).resolve().parents[2] / 'assets/graphics'
 W, H = 56, 48
+WALL_V = 4
+GATE_U = 28
 
 g = [['d'] * W for _ in range(H)]
 obj = []
@@ -38,7 +41,13 @@ def put(name, u, v):
 # behind the palace wall: the paved court and the roofs of the palace
 paint(0, 0, W - 1, 3, 'i')
 put('hall_u', 18, 1), put('pavilion', 38, 1), put('hall_u', 48, 1), put('hall_u', 8, 1)
-put('sgate_open', 28, 4)
+for u in range(W):
+    d = u - GATE_U
+    if abs(d) > 5:
+        put({0: 'pwall_u_end_m', W - 1: 'pwall_u_end_p'}.get(u, 'pwall_u'), u, WALL_V)
+    elif abs(d) == 5:
+        put('pwall_u_gate_m' if d < 0 else 'pwall_u_gate_p', u, WALL_V)
+put('palace_gate', GATE_U, WALL_V)
 # the square before the gate, the avenue, the cross street, the lanes
 paint(16, 5, 40, 10, 'i')
 paint(25, 5, 31, H - 1, 'i')
@@ -93,7 +102,7 @@ for u, v, name in [(40, 45, 'house_tile'), (47, 46, 'house_tile'), (53, 44, 'hou
     put(name, u, v)
 
 art = {'id': 'S_luoyang', 'name': '낙양 저잣거리', 'format': 2, 'size': [W // 2, H // 2], 'origin': [0, 0],
-       'ground': [''.join(r) for r in g], 'objects': obj, 'walls': [['swall', [0, 4], [W - 1, 4]]]}
+       'grass': {'hue': -4, 'sat': 0.95}, 'ground': [''.join(r) for r in g], 'objects': obj, 'walls': []}
 
 if __name__ == '__main__':
     json.dump(art, open(GFX / 'maps/S_luoyang.json', 'w'), ensure_ascii=False, indent=1)

@@ -2994,3 +2994,8 @@
 - 대사: 손건 "새 목백께" → "새 사군께"(explore14), 장면 제목 "공손찬의 부중" → "관저"(story11, 세계 지도 메모 han.json·gen_hanmap.py도), 간옹 "원소 공 막하엔" → "밑에는"(explore19_ye), 국의 "현묘한" → "눈부신"(stage10), 북해 손님 "공 북해께서" → "공융 공께서"(explore12). 경하드리오·영채·달포·너나들이·군심을 게을리는 그대로 — 사용자 "이 정도는 들을 만한 어휘"
 - 아이템 `medicine_pouch` 이름 약낭 → 약주머니(`equipment.json`, 번아 대사 story13, fullstory·balance-battle·logic-traits) — 사용자 "약낭도 약주머니로 바꾸자"
 - `assets/data/equipment.json`: 약주머니 특성 구휼·의술 → 구휼만, 병법입문 독려·침착·신속 → 독려만(`balance-battle.md` 특성·장비·유비 줄도) — 사용자 "약주머니는 구휼만, 병법입문은 독려만"
+
+## 2026-11-14 궁궐 표현은 황제가 있는 곳만: 낙양에 붉은 궁장, 업은 석축 성벽
+- `tools/scene_maps/luoyang.py`·`S_luoyang.json`: 3장 낙양 저잣거리의 회색 석벽·성문 → 붉은 궁장(`pwall_u`)과 2층 궁궐 문(`palace_gate`), 맵에만 있던 초원 색조를 스크립트에도. `explore03.json` 관병 둘을 궁궐 문 앞 (25,7)·(31,7)로
+- `tools/scene_maps/ye.py`·`S_ye.json`: 19장 업 거리의 붉은 궁장·궁궐 문 → 석축 성벽(`swall`)·성문(`sgate_open`). `explore19_ye.json` 장교를 소나무 뒤에서 (46,11)로
+- `tools/scene_maps/grand_halls.py`·`S_ye_hall.json`: 업 관청 대전을 서주 관청처럼 고동색 벽·기둥, 종이 병풍, 수수한 단상, 돗자리 길로(`UMBER`). 붉은 옻칠·금 병풍은 낙양 궁궐 대전과 원술의 수춘만 — 사용자 "업 관청이 너무 화려, 낙양이나 허도 같이 황제가 있는 곳만 저렇게"

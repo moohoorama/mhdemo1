@@ -9,8 +9,9 @@ Writes format 2 (internal/scenemap) straight: small tiles from origin 0, 0; u ru
 v down to the left. Ground: d packed earth, i paving, . grass. A hall_u's door is on its +v face, a house_tile's
 and a tavern's on its +v face.
 
-Plan: 원소's 관부 behind a vermilion wall along the back (v = 5) with the great gate hall (palace_gate) on the avenue,
-a paved square before it lined with banners. The paved avenue (u 29..35) runs down the middle under willows and
+Plan: 원소's 관부 behind a stone wall along the back (v = 5) with its gate on the avenue, a paved square before it
+lined with banners. The wall is the plain one 낙양 used to have: the vermilion palace wall and its two-roofed gate hall
+are kept for where the emperor sits (S_luoyang, S_xudu); 업 is a governor's seat, however great. The paved avenue (u 29..35) runs down the middle under willows and
 lanterns, the paved cross street along v 27..30.
   back left   the drill ground: troops mustering for 백마 — weapon racks, armour stands, command flags, braziers.
   back right  a general's house: a hall inside a white compound wall with an open gate (cwall, cgate_open).
@@ -45,13 +46,8 @@ def put(name, u, v):
 # behind the wall: paved courts and the roofs of 원소's halls
 paint(0, 0, W - 1, WALL_V + 2, 'i')
 put('hall_u', 12, 1), put('pavilion', 22, 1), put('hall_u', 43, 1), put('hall_u', 55, 1)
-for u in range(W):
-    d = u - GATE_U
-    if abs(d) > 5:
-        put({0: 'pwall_u_end_m', W - 1: 'pwall_u_end_p'}.get(u, 'pwall_u'), u, WALL_V)
-    elif abs(d) == 5:
-        put('pwall_u_gate_m' if d < 0 else 'pwall_u_gate_p', u, WALL_V)
-put('palace_gate', GATE_U, WALL_V)
+walls.append(['swall', [0, WALL_V], [W - 1, WALL_V]])
+put('sgate_open', GATE_U, WALL_V)
 
 # the square before the gate, the avenue, the cross street
 paint(16, 8, 48, 13, 'i')
