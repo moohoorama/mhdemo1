@@ -116,11 +116,6 @@ func (f *Field) dispose() {
 			p.image.Deallocate()
 		}
 	}
-	for _, c := range f.waterChunks {
-		for _, im := range c.frames {
-			im.Deallocate()
-		}
-	}
 	for _, l := range f.levels {
 		l.top.Deallocate()
 		l.shadows.Deallocate()
@@ -133,7 +128,7 @@ func (f *Field) dispose() {
 			}
 		}
 	}
-	for _, im := range append(f.ground[:], f.Canvas, f.shadows, f.night.dark, f.night.light, f.afloat, f.wading, o.tiles, o.layer, o.haze, o.drop, o.rim, o.cloud) {
+	for _, im := range append(f.ground[:], f.Canvas, f.shadows, f.groundSheet, f.night.dark, f.night.light, f.afloat, f.wading, o.tiles, o.layer, o.haze, o.drop, o.rim, o.cloud) {
 		if im != nil && !seen[im] {
 			im.Deallocate()
 			seen[im] = true

@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"math"
@@ -34,8 +35,8 @@ type sceneLevel struct {
 	shadows *ebiten.Image     // render size, like the ground's shadows
 }
 
-// makeScenePlan bakes the flat layer into the ground picture once (its water at the first frame; makeWaterChunks
-// keeps where it plays) and each raised level's tops into a picture of its own, and keeps the standing pieces.
+// makeScenePlan keeps the flat layer, drawn at each frame (drawSceneFlat), bakes each raised level's tops into a
+// picture of its own, and keeps the standing pieces.
 func (f *Field) makeScenePlan() error {
 	plan, err := scenemap.Build(f.Map.SceneMap, f.A.SceneRules, scenemap.Options{Decor: true})
 	if err != nil {
@@ -43,17 +44,26 @@ func (f *Field) makeScenePlan() error {
 	}
 	ox, oy := f.OriginX*K, f.OriginY*K
 	water := f.A.Animations["water"].Frames
-	g := newLayer(f.worldSize.X, f.worldSize.Y)
-	for _, d := range plan.Flat {
-		if d.Name == "water" {
+	for _, d := range f.makeSceneGround(plan.Flat, ox, oy) {
+		isWater := d.Name == "water"
+		if isWater {
 			d.Tile = water[0]
 		}
-		f.drawPlan(g, d, ox, oy, nil)
+		img, at := f.planImage(d)
+		if img == nil {
+			continue
+		}
+		fl := sceneFlat{sheet: sheetFor(img), src: img.Bounds(), rect: f.planRect(d, ox, oy), color: noTint, water: isWater}
+		if d.Tint != "" { // a picture in greys takes its colour (scenemap.Tint)
+			var cs ebiten.ColorScale
+			cs.ScaleWithColor(hexColor(d.Tint))
+			fl.color = [4]float32{cs.R(), cs.G(), cs.B(), cs.A()}
+		}
+		for _, p := range d.Clip {
+			fl.clip = append(fl.clip, image.Pt(p[0]-d.X-at.X, p[1]-d.Y-at.Y))
+		}
+		f.sceneFlat = append(f.sceneFlat, fl)
 	}
-	for i := range f.ground {
-		f.ground[i] = g
-	}
-	f.makeWaterChunks(plan.Flat)
 	f.addScenePieces(plan.Solid, 0)
 	for i, l := range plan.Levels {
 		lv := sceneLevel{lift: float64(l.Lift), top: newLayer(f.worldSize.X, f.worldSize.Y),
@@ -70,77 +80,176 @@ func (f *Field) makeScenePlan() error {
 	return nil
 }
 
-// waterChunk is a square of the ground picture water shows in, baked at every water frame: the ground is baked
-// once and a frame copies its chunks over it, where eight pictures the size of the map, one per water frame, would
-// weigh on a phone's memory and take the scene's opening to bake.
-type waterChunk struct {
-	rect   image.Rectangle
-	frames []*ebiten.Image
-}
-
-const waterChunkSize = 128
-
-// makeWaterChunks bakes the chunks of the ground that water shows in, each with the flat pictures over it in the
-// order drawn.
-func (f *Field) makeWaterChunks(flat []scenemap.Draw) {
-	ox, oy := f.OriginX*K, f.OriginY*K
-	index := map[image.Point]int{}
-	var draws [][]scenemap.Draw
-	cells := func(r image.Rectangle) (image.Point, image.Point) {
-		return image.Pt(r.Min.X/waterChunkSize, r.Min.Y/waterChunkSize), image.Pt((r.Max.X-1)/waterChunkSize, (r.Max.Y-1)/waterChunkSize)
+// makeSceneGround puts the four 16 x 8 quarters of each small tile of the ground (the plan's flat layer opens with
+// them) together: the few different small tiles of a map (a few dozen) are drawn once on a sheet of their own, one
+// picture per water frame for one holding water, and each small tile is kept as one flat picture. A quarter of the
+// pictures to draw at each frame, all from one sheet; a game cell's (64 x 32) would draw a quarter again but take
+// several times the sheet where water runs. It returns the rest of the flat layer.
+func (f *Field) makeSceneGround(flat []scenemap.Draw, ox, oy float64) []scenemap.Draw {
+	n := 0
+	for n < len(flat) && f.isQuarter(flat[n]) {
+		n++
 	}
-	for _, d := range flat {
-		if d.Name != "water" {
+	if n == 0 {
+		return flat
+	}
+	type piece struct {
+		at   image.Point // from the small tile's top vertex
+		tile int         // -1: water
+	}
+	type spot struct {
+		origin image.Point
+		pieces []piece
+	}
+	var order []image.Point
+	spots := map[image.Point]*spot{}
+	for _, d := range flat[:n] {
+		s := f.A.Tiles[d.Tile]
+		a, b := (d.X+int(s.PivotX))/8, (d.Y+int(s.PivotY))/4 // the quarter's top vertex: a = 2(u-v)+(i-j), b = 2(u+v)+(i+j)
+		k := image.Pt(floorDiv(a+b, 4), floorDiv(b-a, 4))    // the small tile (u, v)
+		sp := spots[k]
+		if sp == nil {
+			sp = &spot{origin: image.Pt(16*(k.X-k.Y), 8*(k.X+k.Y))}
+			spots[k] = sp
+			order = append(order, k)
+		}
+		t := d.Tile
+		if d.Name == "water" {
+			t = -1
+		}
+		sp.pieces = append(sp.pieces, piece{at: image.Pt(d.X, d.Y).Sub(sp.origin), tile: t})
+	}
+	type combo struct {
+		box    image.Rectangle // from the small tile's top vertex
+		frames []image.Rectangle
+	}
+	water := f.A.Animations["water"].Frames
+	combos := map[string]*combo{}
+	var keys []string
+	keyOf := func(ps []piece) string { return fmt.Sprint(ps) }
+	for _, k := range order {
+		sp := spots[k]
+		key := keyOf(sp.pieces)
+		if combos[key] != nil {
 			continue
 		}
-		lo, hi := cells(f.planRect(d, ox, oy))
-		for y := lo.Y; y <= hi.Y; y++ {
-			for x := lo.X; x <= hi.X; x++ {
-				if _, ok := index[image.Pt(x, y)]; !ok {
-					index[image.Pt(x, y)] = len(f.waterChunks)
-					r := image.Rect(x*waterChunkSize, y*waterChunkSize, (x+1)*waterChunkSize, (y+1)*waterChunkSize)
-					f.waterChunks = append(f.waterChunks, waterChunk{rect: r.Intersect(f.ground[0].Bounds())})
-					draws = append(draws, nil)
+		c := &combo{}
+		wet := false
+		for _, p := range sp.pieces {
+			c.box = c.box.Union(image.Rectangle{Min: p.at, Max: p.at.Add(image.Pt(16, 8))})
+			wet = wet || p.tile < 0
+		}
+		c.frames = make([]image.Rectangle, 1)
+		if wet {
+			c.frames = make([]image.Rectangle, len(water))
+		}
+		combos[key] = c
+		keys = append(keys, key)
+	}
+	// shelves on a sheet 1024 wide
+	const sheetW = 1024
+	x, y, row := 0, 0, 0
+	for _, key := range keys {
+		c := combos[key]
+		for i := range c.frames {
+			w, h := c.box.Dx(), c.box.Dy()
+			if x+w > sheetW {
+				x, y, row = 0, y+row, 0
+			}
+			c.frames[i] = image.Rect(x, y, x+w, y+h)
+			x, row = x+w, max(row, h)
+		}
+	}
+	f.groundSheet = ebiten.NewImage(sheetW, y+row)
+	drawn := map[string]bool{}
+	for _, k := range order {
+		sp := spots[k]
+		key := keyOf(sp.pieces)
+		c := combos[key]
+		if !drawn[key] {
+			drawn[key] = true
+			for i, r := range c.frames {
+				for _, p := range sp.pieces {
+					t := p.tile
+					if t < 0 {
+						t = water[i%len(water)]
+					}
+					op := &ebiten.DrawImageOptions{}
+					op.GeoM.Translate(float64(r.Min.X+p.at.X-c.box.Min.X), float64(r.Min.Y+p.at.Y-c.box.Min.Y))
+					f.groundSheet.DrawImage(f.A.Tiles[t].Image, op)
 				}
 			}
 		}
-	}
-	for _, d := range flat {
-		lo, hi := cells(f.planRect(d, ox, oy))
-		for y := lo.Y; y <= hi.Y; y++ {
-			for x := lo.X; x <= hi.X; x++ {
-				if i, ok := index[image.Pt(x, y)]; ok {
-					draws[i] = append(draws[i], d)
-				}
-			}
+		fl := sceneFlat{sheet: f.groundSheet, src: c.frames[0], rect: c.box.Add(sp.origin).Add(image.Pt(int(ox), int(oy))), color: noTint}
+		if len(c.frames) > 1 {
+			fl.frames = c.frames
 		}
+		f.sceneFlat = append(f.sceneFlat, fl)
 	}
-	for i := range f.waterChunks {
-		c := &f.waterChunks[i]
-		for _, tile := range f.A.Animations["water"].Frames {
-			img := ebiten.NewImage(c.rect.Dx(), c.rect.Dy())
-			for _, d := range draws[i] {
-				if d.Name == "water" {
-					d.Tile = tile
-				}
-				f.drawPlan(img, d, ox-float64(c.rect.Min.X), oy-float64(c.rect.Min.Y), nil)
-			}
-			c.frames = append(c.frames, img)
-		}
-	}
+	return flat[n:]
 }
 
-// playWater lays the water chunks at this water frame on the ground.
-func (f *Field) playWater(frame int) {
-	if len(f.waterChunks) == 0 || frame == f.waterFrame {
-		return
+// isQuarter reports whether d is a plain 16 x 8 quarter of a small tile's ground.
+func (f *Field) isQuarter(d scenemap.Draw) bool {
+	return d.Kind == scenemap.DrawTile && d.Clip == nil && d.Tint == "" && f.A.Tiles[d.Tile].Image.Bounds().Size() == image.Pt(16, 8)
+}
+
+// sceneFlat is a picture of a scene map's flat layer: the src part of sheet laid on rect of the canvas, in colour
+// scale color, cut to the polygon clip (picture pixels from rect's corner) when it has one. A water tile shows the
+// water frame of the moment instead of src.
+type sceneFlat struct {
+	sheet  *ebiten.Image
+	src    image.Rectangle
+	rect   image.Rectangle
+	color  [4]float32
+	clip   []image.Point
+	water  bool              // a water tile: the water frame of the moment instead of src
+	frames []image.Rectangle // ground put together with water (makeSceneGround): its src at each water frame
+}
+
+// drawSceneFlat draws the flat pictures in view over dst, the water at water frame frame, in one call for each run
+// of pictures from one sheet. The canvas is clear under them, so the shadows can be laid on what they cover alone.
+func (f *Field) drawSceneFlat(dst *ebiten.Image, frame int) {
+	tiles := f.A.Animations["water"].Frames
+	w := f.A.Tiles[tiles[frame%len(tiles)]].Image
+	wSheet, wSrc := sheetFor(w), w.Bounds()
+	op := &ebiten.DrawImageOptions{}
+	f.renderOp(dst, op)
+	geo := op.GeoM
+	// At a zoom between whole steps a pixel can sample right on the border of two texels; nudged alike, every
+	// picture takes the same side there, so a tile and the one it lies over never part and show a seam.
+	geo.Translate(1.0/512, 1.0/512)
+	b := &f.batch
+	b.begin(dst, ebiten.BlendSourceOver)
+	for i := range f.sceneFlat {
+		fl := &f.sceneFlat[i]
+		if !f.DrawBounds.Empty() && !fl.rect.Overlaps(f.DrawBounds) {
+			continue
+		}
+		sheet, src := fl.sheet, fl.src
+		if fl.water {
+			sheet, src = wSheet, wSrc
+		} else if fl.frames != nil {
+			src = fl.frames[frame%len(fl.frames)]
+		}
+		b.use(sheet)
+		if fl.clip == nil {
+			x0, y0 := geo.Apply(float64(fl.rect.Min.X), float64(fl.rect.Min.Y))
+			x1, y1 := geo.Apply(float64(fl.rect.Max.X), float64(fl.rect.Max.Y))
+			b.quad(x0, y0, x1, y1, src, fl.color)
+			continue
+		}
+		n := uint32(len(b.vs))
+		for _, p := range fl.clip {
+			x, y := geo.Apply(float64(fl.rect.Min.X+p.X), float64(fl.rect.Min.Y+p.Y))
+			b.vs = append(b.vs, ebiten.Vertex{DstX: float32(x), DstY: float32(y), SrcX: float32(src.Min.X + p.X), SrcY: float32(src.Min.Y + p.Y),
+				ColorR: fl.color[0], ColorG: fl.color[1], ColorB: fl.color[2], ColorA: fl.color[3]})
+		}
+		for j := 2; j < len(fl.clip); j++ { // a fan from the first corner: the clip is convex
+			b.is = append(b.is, n, n+uint32(j-1), n+uint32(j))
+		}
 	}
-	f.waterFrame = frame
-	for _, c := range f.waterChunks {
-		op := &ebiten.DrawImageOptions{Blend: ebiten.BlendCopy}
-		op.GeoM.Translate(float64(c.rect.Min.X), float64(c.rect.Min.Y))
-		f.ground[0].DrawImage(c.frames[frame%len(c.frames)], op)
-	}
+	b.flush()
 }
 
 // addScenePieces keeps the standing pieces of one ground of the plan.

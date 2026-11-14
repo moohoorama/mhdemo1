@@ -35,14 +35,14 @@ func (f *Field) renderPoint(x, y float64) (float64, float64) {
 	}
 	return x, y
 }
-func (f *Field) renderBackground(dst *ebiten.Image) {
+func (f *Field) renderBackground(dst *ebiten.Image, blend ebiten.Blend) {
 	p := f.A.pattern()
 	z := f.renderZoom
 	w, h := 64*z, 32*z
 	ox, oy := -f.renderX*z, -f.renderY*z
 	for y := math.Mod(oy, h) - h; y < float64(dst.Bounds().Dy()); y += h {
 		for x := math.Mod(ox, w) - w; x < float64(dst.Bounds().Dx()); x += w {
-			op := &ebiten.DrawImageOptions{}
+			op := &ebiten.DrawImageOptions{Blend: blend}
 			op.GeoM.Scale(z, z)
 			op.GeoM.Translate(x, y)
 			if !f.ShowExterior {

@@ -66,8 +66,8 @@ type Field struct {
 	afloat                       *ebiten.Image   // viewport scratch where a boat and its crew are put together
 	wading                       *ebiten.Image   // viewport scratch where a unit standing in a ford is put together
 	scenePieces                  []scenePiece    // a format 2 scene map's standing layer, see makeScenePlan
-	waterChunks                  []waterChunk    // where a format 2 scene map's water plays on its ground, see playWater
-	waterFrame                   int             // the water frame the ground shows
+	sceneFlat                    []sceneFlat     // a format 2 scene map's flat layer, see drawSceneFlat
+	groundSheet                  *ebiten.Image   // its ground's pictures, see makeSceneGround
 	clockMS                      float64
 
 	// beatShadows are the ground shadows of the props a story scene's beats put down (canvas point, shadow):
@@ -352,15 +352,16 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		c.Fill(fieldGround)
 	}
 	water := f.A.Animations["water"]
-	if f.Map.Native && f.renderZoom > 0 && f.shows("background") {
-		f.renderBackground(c)
+	if f.Map.Native && f.renderZoom > 0 && f.shows("background") && f.Map.SceneMap == nil {
+		f.renderBackground(c, ebiten.BlendSourceOver)
 	}
 	if f.shows("ground") {
 		if f.Map.SunkWater {
 			f.drawFloors(c, clockMS)
+		} else if f.Map.SceneMap != nil {
+			f.drawSceneFlat(c, int(clockMS/float64(water.MS))%len(f.ground))
 		} else {
 			frame := int(clockMS/float64(water.MS)) % len(f.ground)
-			f.playWater(frame)
 			groundOp := &ebiten.DrawImageOptions{}
 			f.renderOp(c, groundOp)
 			c.DrawImage(f.ground[frame], groundOp)
@@ -540,12 +541,20 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		items = append(items, it)
 	}
 	// one layer so overlapping shadows do not darken each other, kept on the ground
-	if f.ground[0] != nil { // a battle map draws its floors tile by tile (makeFloors) and has no map-wide ground
+	switch {
+	case f.Map.SceneMap != nil: // the canvas is clear past the ground: the shadows go on the ground alone, then the background under it
+		c.DrawImage(f.shadows, &ebiten.DrawImageOptions{Blend: ebiten.BlendSourceAtop})
+		if f.renderZoom > 0 && f.shows("background") {
+			f.renderBackground(c, ebiten.BlendDestinationOver)
+		}
+	case f.ground[0] != nil: // a battle map draws its floors tile by tile (makeFloors) and has no map-wide ground
 		clipOp := &ebiten.DrawImageOptions{Blend: ebiten.BlendDestinationIn}
 		f.renderOp(f.shadows, clipOp)
 		f.shadows.DrawImage(f.ground[0], clipOp)
+		c.DrawImage(f.shadows, nil)
+	default:
+		c.DrawImage(f.shadows, nil)
 	}
-	c.DrawImage(f.shadows, nil)
 	for _, m := range f.groundMarks {
 		f.blit(c, m.s, m.x, m.y, nil)
 	}
