@@ -207,7 +207,7 @@ func (g *Game) storyPanels(dst *ebiten.Image, o core.Observation) {
 	} else if g.scene != nil {
 		if o.Place != "" { // the scene node's own name for where it happens
 			place = o.Place
-		} else if art := g.assets.Maps[g.scene.def.Map]; art != nil {
+		} else if art := g.mapArt(g.scene.def.Map); art != nil {
 			place, _, _ = strings.Cut(art.Name, "(")
 			place = strings.TrimSpace(place)
 		}

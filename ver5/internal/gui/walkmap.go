@@ -214,7 +214,7 @@ func (g *Game) objectHit(at smallTile, x, y float64) bool {
 // clickRing puts the spreading click ring on small tile at, t seconds after the click.
 func (g *Game) clickRing(at smallTile, t float64) {
 	g.field.groundMarks = g.field.groundMarks[:0]
-	if ring := g.assets.FX["click_ring"]; t < markTime && len(ring.Frames) > 0 {
+	if ring := g.assets.effect("click_ring"); t < markTime && len(ring.Frames) > 0 {
 		x, y := g.field.Center(at.cell())
 		f := ring.Frames[ring.frameOver(t/markTime)]
 		g.field.groundMarks = append(g.field.groundMarks, groundMark{Sprite{f, ring.Anchor[0], ring.Anchor[1]}, x, y})

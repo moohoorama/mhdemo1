@@ -735,7 +735,7 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	case (kind == "arrow" || fireShot) && aimed:
 		flight = math.Max(.12, math.Hypot(target.u-actor.u, target.v-actor.v)*arrowSecPerCell)
 	case isSpell(kind) && target != nil:
-		flight = g.assets.FX[kind].Hit
+		flight = g.assets.effect(kind).Hit
 	}
 	var hits, heals []core.Event
 	for _, e := range events {
@@ -814,7 +814,7 @@ func (g *Game) swing(add func(float64, func()), actor, target *unitVis, c core.C
 	}
 	if isSpell(kind) && target != nil {
 		// the look starts as the cast is released; the blow lands (and the damage shows) at its Hit
-		sh := g.assets.FX[kind]
+		sh := g.assets.effect(kind)
 		add(flight, func() { g.spawn(kind, actor, target, sh.length(), tint) })
 	}
 	wait := follow

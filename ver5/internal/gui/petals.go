@@ -91,7 +91,7 @@ func (g *Game) drawPetals(dst *ebiten.Image, t float64) {
 			rect(dst, float32(math.Round(x)), float32(math.Round(y+2*z)), float32(3*z), float32(z), color.NRGBA{R: 20, G: 32, B: 14, A: uint8(255 * a)})
 		}
 	}
-	fx := g.assets.FX["petal"]
+	fx := g.assets.effect("petal")
 	for _, p := range s.petals {
 		f := 1 / (1 - p.z/petalEye)
 		x, y := g.toScreen(p.x, p.y)

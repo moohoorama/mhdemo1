@@ -174,7 +174,7 @@ func (g *Game) storyPortrait(c content.Character) *ebiten.Image {
 	if c.Template {
 		return nil
 	}
-	return g.assets.Portraits[g.laterLook(c.Look).Portrait]
+	return g.assets.portrait(g.laterLook(c.Look).Portrait)
 }
 
 // drawDialogue draws one line of dialogue in the box with the speaker's portrait and name
@@ -206,7 +206,7 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 	if len(l.speakers) > 0 {
 		size := b.portrait
 		px, py := 36.0, b.top+b.h-size+8*(1-in)
-		src := g.assets.Portraits[l.portrait]
+		src := g.assets.portrait(l.portrait)
 		if _, c, ok := g.character(l.speakers[0]); ok && l.portrait == "" {
 			src = g.storyPortrait(c)
 		}

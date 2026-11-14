@@ -52,7 +52,7 @@ var buffTint = map[string]color.NRGBA{
 	"defense": {100, 160, 255, 255},
 }
 
-// A spell with a baked look (assets/graphics/effects/spells, made by tools/spellsim.py) plays it as one
+// A spell with a baked look (assets/graphics/effects/spells/spell_<skill>, made by tools/spellsim.py) plays it as one
 // effect over its whole area: drawn on the target cell, or for 폭염 from the first cell of its line.
 // It starts as the cast is released and the damage waits for its Hit (a rock landing, a dragon diving).
 const spellPrefix = "spell_"
@@ -83,7 +83,7 @@ func (g *Game) effectKind(actor *unitVis, c core.Command) string {
 		}
 		return "slash"
 	}
-	if _, ok := g.assets.FX[spellPrefix+c.Skill]; ok {
+	if _, ok := g.assets.lookupEffect(spellPrefix + c.Skill); ok {
 		return spellPrefix + c.Skill
 	}
 	s := g.S.Data.Skills[c.Skill]
@@ -286,14 +286,14 @@ func (g *Game) drawEffects(dst *ebiten.Image) {
 			fx, fy := g.field.Center(e.fu, e.fv)
 			ax, ay := fx, fy-e.flift-e.fh*.55
 			bx, by := x, chest
-			sh := g.assets.FX["arrow"]
+			sh := g.assets.effect("arrow")
 			n := float64(len(sh.Frames))
 			i := int(math.Round(math.Atan2(by-ay, bx-ax)/(2*math.Pi)*n+n)) % len(sh.Frames)
 			if e.kind == "arrow" {
 				sh.draw(dst, i, ax+(bx-ax)*k, ay+(by-ay)*k, g.toScreen, z)
 				break
 			}
-			ember := g.assets.FX["ember"]
+			ember := g.assets.effect("ember")
 			for j := 1; j <= 5; j++ { // the trail, fading behind the head
 				t := k - float64(j)*.045
 				if t < 0 {
@@ -303,24 +303,24 @@ func (g *Game) drawEffects(dst *ebiten.Image) {
 			}
 			sh.drawTint(dst, i, ax+(bx-ax)*k, ay+(by-ay)*k, g.toScreen, z, e.tint, 1)
 		case "slash":
-			sh := g.assets.FX["slash"]
+			sh := g.assets.effect("slash")
 			sh.draw(dst, sh.frameOver(k), x, chest, g.toScreen, z)
 		case "fire", "water", "heal", "debuff":
-			sh := g.assets.FX[e.kind]
+			sh := g.assets.effect(e.kind)
 			sh.draw(dst, sh.frameOver(k), x, y-e.lift, g.toScreen, z)
 		case "buff":
-			sh := g.assets.FX["buff"]
+			sh := g.assets.effect("buff")
 			sh.drawTint(dst, sh.frameOver(k), x, y-e.lift, g.toScreen, z, e.tint, 1)
 		case "block": // the shield faces the blow
 			fx, _ := g.field.Center(e.fu, e.fv)
-			sh := g.assets.FX["block"]
+			sh := g.assets.effect("block")
 			sh.blit(dst, sh.frameOver(k), x, chest, g.toScreen, z, white, 1, fx < x)
 		default:
 			if isSpell(e.kind) {
 				g.drawSpell(dst, e, x, y)
 			}
 		case "critical": // a white burst and rays at the chest, a shockwave on the ground
-			sh, wave := g.assets.FX["critical"], g.assets.FX["critical_wave"]
+			sh, wave := g.assets.effect("critical"), g.assets.effect("critical_wave")
 			wave.draw(dst, wave.frameOver(k), x, y-e.lift, g.toScreen, z)
 			sh.draw(dst, sh.frameOver(k), x, chest, g.toScreen, z)
 		}
@@ -328,7 +328,7 @@ func (g *Game) drawEffects(dst *ebiten.Image) {
 			if e.t > q.life {
 				continue
 			}
-			sh := g.assets.FX[q.sprite]
+			sh := g.assets.effect(q.sprite)
 			qx, qy := x+q.x+q.vx*e.t, y-e.lift+q.y+q.vy*e.t+.5*q.g*e.t*e.t
 			c := white
 			if q.col.A > 0 {
@@ -353,7 +353,7 @@ func (g *Game) spellPiece(kind string, actor, t *unitVis) {
 	if t.ally == actor.ally {
 		piece = kind + "_ally"
 	}
-	if sh, ok := g.assets.FX[piece]; ok {
+	if sh, ok := g.assets.lookupEffect(piece); ok {
 		g.spawn(piece, actor, t, sh.length(), white)
 	}
 }
@@ -366,7 +366,7 @@ func (g *Game) groundSpells() {
 		if !spellOnGround[e.kind] {
 			continue
 		}
-		sh := g.assets.FX[e.kind]
+		sh := g.assets.effect(e.kind)
 		i := sh.frameAt(e.t)
 		if i < 0 {
 			continue
@@ -405,7 +405,7 @@ func (g *Game) drawSpell(dst *ebiten.Image, e *effect, x, y float64) {
 	} else if spellFromSide[kind] {
 		mirror = e.flip(g)
 	}
-	sh, ok := g.assets.FX[kind]
+	sh, ok := g.assets.lookupEffect(kind)
 	if !ok {
 		return
 	}

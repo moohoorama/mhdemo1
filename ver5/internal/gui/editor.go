@@ -698,7 +698,7 @@ func (g *Game) editorTrial() {
 		e.message = err.Error()
 		return
 	}
-	e.trialArt = g.assets.Maps[st.ID]
+	e.trialArt = g.mapArt(st.ID)
 	e.trialID = st.ID
 	g.editorSession = g.S
 	g.editorReturn = e

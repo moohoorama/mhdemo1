@@ -14,7 +14,7 @@ func init() { demos["scenemap"] = demoSceneMap }
 // "u,v" given with -node; -node fit shows the whole map.
 func demoSceneMap(d *Demo) error {
 	id := d.stage
-	art := d.g.assets.Maps[id]
+	art := d.g.mapArt(id)
 	if art == nil {
 		return fmt.Errorf("no scene map %q (pass one with -stage)", id)
 	}

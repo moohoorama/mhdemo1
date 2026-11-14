@@ -1101,44 +1101,45 @@ def baked():
 
 
 def bake():
-    WRAP = 2048
+    """Writes each spell to its own sheet, assets/graphics/effects/spells/<sprite>.{png,json}: the game reads a
+    spell's sheet the first time it plays, so a battle holds only the spells it uses."""
+    WRAP = 1024
     ox, oy = ORIGIN
-    crops, index = [], {}
+    out = ROOT / "assets/graphics/effects/spells"
+    out.mkdir(parents=True, exist_ok=True)
+    for old in out.glob("spell_*.*"):
+        old.unlink()
     for sprite, frames, hit, trim in baked():
         if trim:
             frames = frames[next(i for i, f in enumerate(frames) if f[:, :, 3].any()):]
-        anchors = []
-        for i, f in enumerate(frames):
+        crops, anchors = [], []
+        for f in frames:
             ys, xs = np.nonzero(f[:, :, 3])
             if len(xs):
                 x0, x1 = max(xs.min(), ox - 190), min(xs.max() + 1, ox + 200)
                 y0, y1 = max(ys.min(), oy - 240), min(ys.max() + 1, oy + 90)
             else:
                 x0, x1, y0, y1 = ox, ox + 1, oy, oy + 1
-            crops.append((sprite, i, f[y0:y1, x0:x1]))
+            crops.append(f[y0:y1, x0:x1])
             anchors.append([int(ox - x0), int(oy - y0)])
         ms = [round((i + 1) * 1000 / FPS) - round(i * 1000 / FPS) for i in range(len(frames))]
-        index[sprite] = {"anchor": anchors[0], "anchors": anchors, "frames": [None] * len(frames), "ms": ms,
-                         "hit": round(hit, 3)}
-        print(f"{sprite}: {len(frames)} frames, hit {hit:.2f}s")
-    x = y = row_h = 0
-    placed = []
-    for sprite, i, img in sorted(crops, key=lambda c: -c[2].shape[0]):  # shelves, tallest first
-        h, w = img.shape[:2]
-        if x + w > WRAP:
-            x, y, row_h = 0, y + row_h, 0
-        placed.append((img, x, y))
-        index[sprite]["frames"][i] = [int(x), int(y), int(w), int(h)]
-        x += w
-        row_h = max(row_h, h)
-    height = y + row_h
-    sheet = np.zeros((height, WRAP, 4), np.uint8)
-    for img, px, py in placed:
-        sheet[py:py + img.shape[0], px:px + img.shape[1]] = img
-    out = ROOT / "assets/graphics/effects/spells"
-    Image.fromarray(sheet, "RGBA").save(out.with_suffix(".png"), optimize=True)
-    out.with_suffix(".json").write_text(json.dumps(index, indent=1) + "\n")
-    print(out.with_suffix(".png"), WRAP, "x", height)
+        rects = [None] * len(crops)
+        x = y = row_h = width = 0
+        for i in sorted(range(len(crops)), key=lambda i: -crops[i].shape[0]):  # shelves, tallest first
+            h, w = crops[i].shape[:2]
+            if x + w > WRAP:
+                x, y, row_h = 0, y + row_h, 0
+            rects[i] = [int(x), int(y), int(w), int(h)]
+            x += w
+            row_h = max(row_h, h)
+            width = max(width, x)
+        sheet = np.zeros((y + row_h, width, 4), np.uint8)
+        for img, (px, py, w, h) in zip(crops, rects):
+            sheet[py:py + h, px:px + w] = img
+        Image.fromarray(sheet, "RGBA").save(out / f"{sprite}.png", optimize=True)
+        entry = {"anchor": anchors[0], "anchors": anchors, "frames": rects, "ms": ms, "hit": round(hit, 3)}
+        (out / f"{sprite}.json").write_text(json.dumps({sprite: entry}, indent=1) + "\n")
+        print(f"{sprite}: {len(frames)} frames, hit {hit:.2f}s, {width}x{y + row_h}")
 
 
 def main():
@@ -1146,7 +1147,7 @@ def main():
     ap.add_argument("names", nargs="*")
     ap.add_argument("--out", default=str(ROOT / "reports/spellsim"))
     ap.add_argument("--slow", type=float, default=1.0, help="slow motion: this many times the frames")
-    ap.add_argument("--bake", action="store_true", help="pack every spell the game plays into assets/graphics/effects/spells")
+    ap.add_argument("--bake", action="store_true", help="write every spell the game plays to assets/graphics/effects/spells/<sprite>.{png,json}")
     args = ap.parse_args()
     if args.bake:
         bake()

@@ -64,7 +64,7 @@ func (g *Game) OpenTour(path string) error {
 		return fmt.Errorf("%s: %w", path, err)
 	}
 	for id, a := range t.Areas {
-		art := g.assets.Maps[a.Map]
+		art := g.mapArt(a.Map)
 		if art == nil || art.SceneMap == nil {
 			return fmt.Errorf("%s: area %s: %s is no scene map of format 2", path, id, a.Map)
 		}
@@ -90,7 +90,7 @@ func (g *Game) OpenTour(path string) error {
 func (g *Game) enterTourArea(id, from string) {
 	w := g.tour
 	a := w.t.Areas[id]
-	art := g.assets.Maps[a.Map]
+	art := g.mapArt(a.Map)
 	w.area, w.aim, w.going, w.fade, w.markT = id, nil, nil, 0, math.Inf(1)
 	w.grid = walkGrid{walk: scenemap.Walkable(art.SceneMap, g.assets.SceneRules)}
 	at, face := a.At, "SE"

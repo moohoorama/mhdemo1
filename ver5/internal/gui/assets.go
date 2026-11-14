@@ -7,6 +7,7 @@ import (
 	"image/color"
 	"image/draw"
 	_ "image/png"
+	"log"
 	"maps"
 	"math"
 	"os"
@@ -55,7 +56,7 @@ type Assets struct {
 	Rise          int
 	CliffRise     int // how far a cliff block's top stands above its ground cell
 	Maps          map[string]*MapArt
-	Portraits     map[string]*ebiten.Image // Look.Portrait -> ink-wash portrait
+	portraits     map[string]*ebiten.Image // Look.Portrait -> ink-wash portrait, read through portrait on first use
 	Props         map[string]Prop
 	Scenery       *Scenery                 // ground decoration and pines; nil when graphics/map/scenery.json is absent
 	diamonds      map[string]*ebiten.Image // game cell diamonds by colour (field_scene.go)
@@ -63,7 +64,9 @@ type Assets struct {
 	waterlines    map[[4]int]*ebiten.Image // foam lines round what stands in a flood, by shape (field_flood.go)
 	SceneRules    *scenemap.Catalog        // the scene map rules (internal/scenemap) and the decoration's scatter
 	Projectiles   Shots                    // thrown stones, their shadows and their landing dust
-	FX            Shots                    // effects and their particles
+	effects       Shots                    // effects and their particles; read through effect, which adds a spell on first use
+	spells        map[string]bool          // spell effects on disk under effects/spells, read the first time one plays
+	dir           string                   // the graphics directory
 	Outside       Shots                    // pines and stones outside the battle area
 	UI            Shots                    // UI pictures: window frame, marks, icons, unit bar
 	Backdrops     map[string]*ebiten.Image // far pictures behind outdoor scene maps (index.json "backdrops")
@@ -264,7 +267,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 	ruyiGrey := patternGrey(ruyi)
 	a := &Assets{Bubble: bubble, Dragon: ebiten.NewImageFromImage(dragon), Ruyi: ebiten.NewImageFromImage(ruyiGrey), RuyiMean: meanGrey(ruyiGrey), Shou: ebiten.NewImageFromImage(patternGrey(shou)), Duels: scripts, Tiles: map[int]Sprite{}, TileShadow: map[int]Sprite{},
 		Animations: map[string]TileAnimation{}, Structures: map[string]Sprite{}, Sites: map[string]Sprite{}, Maps: map[string]*MapArt{},
-		Rise: index.Structures.Rise, CliffRise: index.Structures.CliffRise, Portraits: map[string]*ebiten.Image{}, Props: map[string]Prop{}}
+		Rise: index.Structures.Rise, CliffRise: index.Structures.CliffRise, portraits: map[string]*ebiten.Image{}, Props: map[string]Prop{}}
 	statusPixels, err := loadRGBA(filepath.Join(dir, "status", "icons.png"))
 	if err != nil {
 		return nil, err
@@ -424,9 +427,6 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		if !ok {
 			return nil, fmt.Errorf("%s: a scene map is of format %d", path, scenemap.Format)
 		}
-		if _, err := scenemap.Build(sm, a.SceneRules, scenemap.Options{Decor: true}); err != nil {
-			return nil, fmt.Errorf("%s: %w", path, err)
-		}
 		a.Maps[sm.ID] = sceneMapArt(sm)
 	}
 	if a.Scenery, err = loadScenery(dir); err != nil {
@@ -435,29 +435,61 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 	if a.Projectiles, err = LoadShots(dir, "effects/projectiles"); err != nil {
 		return nil, err
 	}
-	if a.FX, err = LoadShots(dir, "effects/fx"); err != nil {
+	if a.effects, err = LoadShots(dir, "effects/fx"); err != nil {
 		return nil, err
 	}
-	spells, err := LoadShots(dir, "effects/spells")
-	if err != nil {
-		return nil, err
+	spellFiles, _ := filepath.Glob(filepath.Join(dir, "effects", "spells", "*.json"))
+	a.spells = map[string]bool{}
+	for _, f := range spellFiles {
+		a.spells[strings.TrimSuffix(filepath.Base(f), ".json")] = true
 	}
-	maps.Copy(a.FX, spells)
+	a.dir = dir
 	if a.Outside, err = LoadShots(dir, "map/outside"); err != nil {
 		return nil, err
 	}
 	if a.UI, err = LoadShots(dir, "ui/ui"); err != nil {
 		return nil, err
 	}
-	files, _ := filepath.Glob(filepath.Join(dir, "portraits", "*.png"))
-	for _, file := range files {
-		im, err := loadRGBA(file)
-		if err != nil {
-			return nil, err
-		}
-		a.Portraits[strings.TrimSuffix(filepath.Base(file), ".png")] = ebiten.NewImageFromImage(im)
-	}
 	return a, nil
+}
+
+// portrait is the ink-wash portrait of that name (graphics/portraits/<name>.png), read the first time it is shown:
+// there are more than a hundred and a scene shows a few. nil when there is none.
+func (a *Assets) portrait(name string) *ebiten.Image {
+	if im, ok := a.portraits[name]; ok || name == "" {
+		return im
+	}
+	var im *ebiten.Image
+	if pix, err := loadRGBA(filepath.Join(a.dir, "portraits", name+".png")); err == nil {
+		im = ebiten.NewImageFromImage(pix)
+	} else if !os.IsNotExist(err) {
+		log.Printf("portrait %s: %v", name, err)
+	}
+	a.portraits[name] = im
+	return im
+}
+
+// lookupEffect is the effect of that name. A spell's sheet (effects/spells/<name>) is read the first time it is asked
+// for: the spells together are larger than every other picture, and a battle plays only a few of them.
+func (a *Assets) lookupEffect(name string) (Shot, bool) {
+	if s, ok := a.effects[name]; ok || !a.spells[name] {
+		return s, ok
+	}
+	shots, err := LoadShots(a.dir, "effects/spells/"+name)
+	if err != nil {
+		log.Printf("spell effect %s: %v", name, err)
+		delete(a.spells, name)
+		return Shot{}, false
+	}
+	maps.Copy(a.effects, shots)
+	s, ok := a.effects[name]
+	return s, ok
+}
+
+// effect is lookupEffect without the found flag; a missing effect has no frames.
+func (a *Assets) effect(name string) Shot {
+	s, _ := a.lookupEffect(name)
+	return s
 }
 
 // sceneMapArt fills the common map fields from a format 2 scene map.

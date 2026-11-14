@@ -73,7 +73,7 @@ func (g *Game) drawNumber(dst *ebiten.Image, p *popup, x, y float64) {
 		g.drawSlash(dst, x, y+34*z, t)
 		g.drawSpatter(dst, p, x, y+35*z, t)
 		if p.kind == numberCrit && t < .5 {
-			ring := g.assets.FX["crit_ring"]
+			ring := g.assets.effect("crit_ring")
 			g.screenFX(dst, "crit_ring", ring.frameOver(bezier(0, 0, .58, 1, t/.5)), x, y, 0, 18, white, 1)
 		}
 		k := bezier(0, 0, .58, 1, min(1, t/numberLife))
@@ -156,7 +156,7 @@ func (g *Game) drawNumberImage(dst, img *ebiten.Image, x, y, sc, deg, alpha floa
 
 // drawSlash is the white and gold cut across the target in the first quarter second.
 func (g *Game) drawSlash(dst *ebiten.Image, x, y, t float64) {
-	cut := g.assets.FX["hit_slash"]
+	cut := g.assets.effect("hit_slash")
 	if k := t / .27; k < 1 {
 		g.screenFX(dst, "hit_slash", cut.frameOver(k), x, y, 0, 0, white, 1)
 	}

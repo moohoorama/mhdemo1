@@ -55,7 +55,7 @@ func demoSceneSpots(d *Demo) error {
 	var jobs []job
 	for _, r := range sc.Renders {
 		def := d.g.scenes.Scenes[r.Scene]
-		if def == nil || d.g.assets.Maps[def.Map] == nil {
+		if def == nil || d.g.mapArt(def.Map) == nil {
 			return fmt.Errorf("%s: no scene %q with a known map", path, r.Scene)
 		}
 		if len(r.Shots) == 0 {

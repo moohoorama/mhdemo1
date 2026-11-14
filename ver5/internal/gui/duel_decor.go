@@ -39,7 +39,7 @@ func (g *Game) duelDecor() *duelview.Decor {
 	}
 	shot := func(name string) []duelview.Sprite {
 		var out []duelview.Sprite
-		s := a.FX[name]
+		s := a.effect(name)
 		for _, f := range s.Frames {
 			out = append(out, duelview.Sprite{Image: f, PivotX: s.Anchor[0], PivotY: s.Anchor[1]})
 		}

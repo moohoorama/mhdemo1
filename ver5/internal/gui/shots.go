@@ -15,8 +15,8 @@ import (
 // additive layers (built by tools/build_effects.py): "effects/projectiles" (the flying stone, its
 // ground shadow and its landing dust) and "effects/fx" (effects and their particles) at the
 // characters' pixel scale, "map/outside" (scenery outside the battle area) and "ui/ui" (UI
-// pictures, drawn at four art pixels per UI pixel); also "effects/spells", the simulated spell
-// effects baked by tools/spellsim.py, each frame cropped tight with an anchor of its own.
+// pictures, drawn at four art pixels per UI pixel); also "effects/spells/<spell>", one sheet per simulated spell
+// effect baked by tools/spellsim.py, each frame cropped tight with an anchor of its own.
 type Shots map[string]Shot
 
 // Shot is one sprite: its frames, the additive frames drawn over them (nil if it has none), the
@@ -121,7 +121,7 @@ var white = color.NRGBA{R: 255, G: 255, B: 255, A: 255}
 func (g *Game) screenFX(dst *ebiten.Image, name string, i int, x, y, dx, dy float64, c color.NRGBA, a float64) {
 	z := g.zoom
 	at := func(cx, cy float64) (float64, float64) { return x + cx*z, y + cy*z }
-	g.assets.FX[name].drawTint(dst, i, dx, dy, at, z, c, a)
+	g.assets.effect(name).drawTint(dst, i, dx, dy, at, z, c, a)
 }
 
 // drawUI draws frame i of UI picture name (four art pixels per UI pixel) with its anchor at UI

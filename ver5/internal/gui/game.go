@@ -241,9 +241,6 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 			}
 		}
 	}
-	for id, doc := range s.Data.Maps {
-		g.assets.Maps[id] = artFromDocument(doc, s.Data)
-	}
 
 	if auditDir != "" {
 		if err = os.MkdirAll(auditDir, 0755); err != nil {
@@ -383,7 +380,7 @@ func (g *Game) replayOpening(c core.Command, events []core.Event) {
 			shown = true
 		}
 	}
-	if !shown || g.assets.Maps[final.Map.ID] == nil {
+	if !shown || g.mapArt(final.Map.ID) == nil {
 		return
 	}
 	g.ensureField(final)
@@ -1327,4 +1324,19 @@ func (g *Game) battleHUD(dst *ebiten.Image, o core.Observation) {
 	g.messages(dst)
 	g.drawBattleSpeech(dst)
 	g.drawTurnBanner(dst)
+}
+
+// mapArt is the map of that id: a scene map from the graphics, or a battle map turned into map art from its
+// document the first time it is asked for, so starting the game does not build every battle's map.
+func (g *Game) mapArt(id string) *MapArt {
+	if art := g.assets.Maps[id]; art != nil {
+		return art
+	}
+	doc, ok := g.S.Data.Maps[id]
+	if !ok {
+		return nil
+	}
+	art := artFromDocument(doc, g.S.Data)
+	g.assets.Maps[id] = art
+	return art
 }

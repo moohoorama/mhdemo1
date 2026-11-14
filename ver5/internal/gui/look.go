@@ -16,13 +16,13 @@ import (
 // own class when class is empty).
 func (g *Game) portraitArt(c content.Character, class string) *ebiten.Image {
 	c.Look = g.laterLook(c.Look)
-	if src := g.assets.Portraits[c.Look.Portrait]; src != nil {
+	if src := g.assets.portrait(c.Look.Portrait); src != nil {
 		return src
 	}
 	if class == "" {
 		class = c.Class
 	}
-	return g.assets.Portraits[g.S.Data.Classes[class].Portrait]
+	return g.assets.portrait(g.S.Data.Classes[class].Portrait)
 }
 
 // character finds a character definition by id, troop id (<template>#<n>) or display name.

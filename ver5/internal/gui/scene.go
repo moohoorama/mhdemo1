@@ -119,7 +119,7 @@ const (
 // enterScene sets up the scene of a dialogue node; false when the node has none.
 func (g *Game) enterScene(o core.Observation) bool {
 	def, at := g.scenes.For(o.Node)
-	if def == nil || g.assets.Maps[def.Map] == nil {
+	if def == nil || g.mapArt(def.Map) == nil {
 		return false
 	}
 	if g.scene != nil && g.scene.node == o.Node {
@@ -142,7 +142,7 @@ func (g *Game) openScene(def *scenes.Scene) {
 	if g.field != nil {
 		g.field.dispose()
 	}
-	art := g.assets.Maps[def.Map]
+	art := g.mapArt(def.Map)
 	if def.Grass != nil {
 		c := *art
 		c.Grass = def.Grass
@@ -1004,7 +1004,7 @@ func (g *Game) drawSceneEffects(dst *ebiten.Image) {
 // tongues in a small ring (or one small tongue) and smoke puffs rising above.
 func (g *Game) flames(dst *ebiten.Image, x, y, t float64, big bool) {
 	z := g.zoom
-	glow := g.assets.FX["campfire_glow"]
+	glow := g.assets.effect("campfire_glow")
 	glow.drawAlpha(dst, 0, x, y-8, g.toScreen, z, .7+.2*math.Sin(t*9))
 	tall, small := g.assets.Anims["flame"], g.assets.Anims["flame_small"]
 	spots := [][3]float64{{-6, -2, 0}, {6, -2, 0}, {0, -3, 1}, {-3, 2, 1}, {4, 2, 1}} // back ones first

@@ -37,7 +37,7 @@ func demoSceneFile(d *Demo) error {
 		}
 	}
 	def := f.Scenes[id]
-	if def == nil || d.g.assets.Maps[def.Map] == nil {
+	if def == nil || d.g.mapArt(def.Map) == nil {
 		return fmt.Errorf("no scene %q with a known map in %s", id, path)
 	}
 	def.ID = id

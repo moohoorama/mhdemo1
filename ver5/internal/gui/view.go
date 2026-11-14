@@ -101,7 +101,7 @@ func (g *Game) ensureField(o core.Observation) {
 	if g.field != nil {
 		g.field.dispose()
 	}
-	g.field = NewField(g.assets, g.assets.Maps[o.Map.ID])
+	g.field = NewField(g.assets, g.mapArt(o.Map.ID))
 	g.vis, g.scene = map[string]*unitVis{}, nil
 	g.setZoomImmediate(battleZoom)
 	g.pan = nil

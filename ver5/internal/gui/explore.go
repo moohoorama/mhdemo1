@@ -105,7 +105,7 @@ func (g *Game) layOutExplore(o core.Observation) {
 	g.openScene(def)
 	g.scene.fade = fade
 	w.grid = walkGrid{walk: &scenemap.Walk{}}
-	if art := g.assets.Maps[a.Map]; art != nil && art.SceneMap != nil {
+	if art := g.mapArt(a.Map); art != nil && art.SceneMap != nil {
 		w.grid.walk = scenemap.Walkable(art.SceneMap, g.assets.SceneRules)
 		w.grid.walk.Within(a.At[0], a.At[1]) // the hero leaves by an exit, not by walking out of the gate
 	} else {

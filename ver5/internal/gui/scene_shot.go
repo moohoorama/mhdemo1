@@ -231,7 +231,7 @@ func (g *Game) drawShot(dst *ebiten.Image) {
 	if sh == nil || !sh.ok || sh.flight() < 0 {
 		return
 	}
-	fx := g.assets.FX["arrow"]
+	fx := g.assets.effect("arrow")
 	if len(fx.Frames) == 0 {
 		return
 	}

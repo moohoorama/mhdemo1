@@ -104,7 +104,7 @@ How it got here (2026-11-02), so the same mistakes aren't made again:
    - invisible dust: raise its alpha and amount;
    - clipped crop: stray drops; the bake and previews cut beyond ±190 px.
 4. **Bake.** Water, fire and earth bake in 2× slow motion (`ELEMENT_SLOW`): at their own speed they were over too
-   soon. Preview with `--slow 2` to see the game's length. Run `tools/spellsim.py --bake` to write `assets/graphics/effects/spells.{png,json}`. `baked()` lists
+   soon. Preview with `--slow 2` to see the game's length. Run `tools/spellsim.py --bake` to write one sheet per spell, `assets/graphics/effects/spells/<sprite>.{png,json}` (the game reads a spell's sheet the first time it plays). `baked()` lists
    everything that goes in: this file's spells, plus the picks from the other modules.
    - Frames are cropped tight, each with its own anchor, and packed 2048 wide.
    - `hit` is when the blow lands: the first fast landing, or set `s.hit` yourself, as for a geyser whose blow is
