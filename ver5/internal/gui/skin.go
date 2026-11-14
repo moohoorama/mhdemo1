@@ -172,8 +172,9 @@ func (g *Game) fixedLayout() bool { return g.editor != nil || g.gallery != nil }
 
 // inWorld draws f in world px.
 func inWorld(f func()) {
+	old := drawPx
 	drawPx = worldPx
-	defer func() { drawPx = uiPx }()
+	defer func() { drawPx = old }()
 	f()
 }
 

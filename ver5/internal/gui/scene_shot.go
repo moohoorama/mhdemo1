@@ -244,9 +244,7 @@ func (g *Game) drawShot(dst *ebiten.Image) {
 	shadow := func(x, y float64) { // a thin dark line on the ground under the arrow, along its way
 		for p := -4.0; p <= 4; p++ {
 			px, py := g.toScreen(math.Round(x+dx/l*p*1.6), math.Round(y+dy/l*p*1.6))
-			inWorld(func() {
-				rect(dst, float32(px), float32(py), float32(g.zoom), float32(g.zoom), color.NRGBA{20, 26, 12, 90})
-			})
+			rect(dst, float32(px), float32(py), float32(g.zoom), float32(g.zoom), color.NRGBA{20, 26, 12, 90})
 		}
 	}
 	ft := sh.flight()
