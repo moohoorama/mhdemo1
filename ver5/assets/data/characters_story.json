@@ -1831,12 +1831,12 @@
    "Level": 20,
    "Playable": true,
    "Traits": [
-    "brace_prep",
+    "hold_ground",
     "first_aid",
     "fortune"
    ],
    "Learn": [
-    "brace_prep",
+    "hold_ground",
     "first_aid",
     "fortune"
    ],
@@ -1953,6 +1953,60 @@
      "iron": "#8a6a40"
     },
     "Portrait": "zangba"
+   }
+  },
+  "leibo": {
+   "Name": "뇌박",
+   "Biography": "원술의 부장. 원술이 기울자 진란과 함께 숭산으로 들어가 산적이 된다.",
+   "Class": "bandit",
+   "Stats": [
+    66,
+    72,
+    38,
+    62,
+    56,
+    48
+   ],
+   "Level": 10,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "yuan",
+    "Palette": {
+     "themeA": "#7a5a2a",
+     "hair": "#2a2a2a"
+    }
+   }
+  },
+  "chenlan": {
+   "Name": "진란",
+   "Biography": "원술의 부장. 뇌박과 함께 원술을 따르다 떨어져 나가 숭산의 산적이 된다.",
+   "Class": "bandit",
+   "Stats": [
+    64,
+    68,
+    42,
+    66,
+    54,
+    50
+   ],
+   "Level": 10,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "yuan",
+    "Palette": {
+     "themeA": "#5a4a2a",
+     "hair": "#2a2a2a"
+    }
    }
   },
   "jiling": {
@@ -2472,7 +2526,7 @@
   "xuchu": {
    "Name": "허저",
    "Biography": "조조의 호위 장수. 범 같은 힘으로 호치라 불린다.",
-   "Class": "ruffian",
+   "Class": "light_infantry",
    "Stats": [
     72,
     96,
@@ -2491,12 +2545,14 @@
    "Learn": [],
    "Equipment": [
     "iron_sword",
-    "plain_clothes"
+    "leather_armor"
    ],
    "Look": {
     "Faction": "wei",
     "Palette": {
-     "themeA": "#2a3a6a"
+     "themeA": "#2a3a6a",
+     "themeB": ["#d97a1e", "#9c4c12", "#5a2a10"],
+     "themeC": ["#c2a878", "#977c52", "#6a5336"]
     }
    }
   },
@@ -2747,7 +2803,7 @@
    }
   },
   "zongzheng": {
-   "Name": "종정",
+   "Name": "신하",
    "Biography": "황실의 족보와 종친의 일을 맡은 관리.",
    "Class": "scholar",
    "Stats": [

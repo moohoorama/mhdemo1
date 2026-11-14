@@ -45,7 +45,7 @@ func demoShop(d *Demo) error {
 		}
 		v := &g.shopView
 		pickAt := func(i int) {
-			rows := g.shopRows(g.S.View(), g.S.Data.Shops[g.S.Engine.ExploreFile().Areas[g.S.View().Spot.Area].People[g.shopFrom].Shop].Items, v.sell)
+			rows := g.shopRows(g.S.View(), g.S.Engine.ExploreFile().Areas[g.S.View().Spot.Area].People[g.shopFrom].Shop, v.sell)
 			sortRows(rows, g.goodsColumns(goodsNumber("count", "", func(r *goodsRow) int { return r.count })), v.list.order, func(r *goodsRow) int { return b2i(!r.ok) })
 			if len(rows) > i {
 				v.pick, v.n = rows[i].id, 1

@@ -230,6 +230,7 @@ type entry struct {
 	help string
 	icon string // line icon of a main command
 	note string // right-aligned: › for a sub-list, a cost or a count
+	tip  string // shown beside the panel while the pointer rests on the row, for a row that cannot be used now
 }
 
 // menuItems is the action menu: actions that are unavailable stay listed, greyed out.
@@ -258,10 +259,10 @@ func (g *Game) menuItems() []entry {
 		attack = fmt.Sprintf("무기로 공격합니다(사거리 %d–%d).\n정해진 상대와 맞붙으면 일기토가 벌어집니다.", lo, hi)
 	}
 	return []entry{
-		{menuItem{"공격", pick("attack")}, attack, "attack", ""},
-		{menuItem{"병법", sub("skill")}, "병법치를 써서 병법을 사용합니다.", "skill", "›"},
-		{menuItem{"도구", sub("item")}, "군량·병법단 등 도구를 자신이나 인접 부대에 씁니다.", "item", "›"},
-		{menuItem{"대기", func() { g.confirm(core.Command{Kind: "wait", Actor: g.ord.actor}) }}, "이번 턴 행동을 마칩니다.", "wait", ""},
+		{menuItem{"공격", pick("attack")}, attack, "attack", "", ""},
+		{menuItem{"병법", sub("skill")}, "병법치를 써서 병법을 사용합니다.", "skill", "›", ""},
+		{menuItem{"도구", sub("item")}, "군량·병법단 등 도구를 자신이나 인접 부대에 씁니다.", "item", "›", ""},
+		{menuItem{"대기", func() { g.confirm(core.Command{Kind: "wait", Actor: g.ord.actor}) }}, "이번 턴 행동을 마칩니다.", "wait", "", ""},
 	}
 }
 
@@ -311,14 +312,15 @@ func (g *Game) subItems() []entry {
 				continue
 			}
 			pick := core.Command{Kind: "item", Item: id}
-			var click func()
+			it := entry{help: g.itemHelp(id), note: fmt.Sprintf("×%d", o.Inventory[id])}
+			it.label = g.itemName(id)
 			switch {
 			case g.S.Data.Items[id].Effect == content.ItemPromote: // seals are used off the field, where the weapon can change too
-				click = func() { g.toast(insuWhere, gold) }
+				it.help, it.tip = insuInBattle+"\n"+g.S.Data.Items[id].Desc, insuInBattle
 			case ok[id]:
-				click = func() { g.ord.pick, g.ord.stage = pick, "target" }
+				it.click = func() { g.ord.pick, g.ord.stage = pick, "target" }
 			}
-			out = append(out, entry{menuItem: menuItem{g.itemName(id), click}, help: g.itemHelp(id), note: fmt.Sprintf("×%d", o.Inventory[id])})
+			out = append(out, it)
 		}
 	}
 	if len(out) == 0 {
@@ -363,7 +365,12 @@ func (g *Game) drawMenuAt(dst *ebiten.Image, sx, sy float64) {
 		} else {
 			spec.header = "도구"
 		}
-		g.drawPanel(dst, spec)
+		tip := ""
+		spec.tipOut = &tip
+		sr := g.drawPanel(dst, spec)
+		if tip != "" {
+			g.tooltip(dst, tip, sr.Max.X+6, sr.Min.Y)
+		}
 	} else {
 		g.subAnim = panelAnim{}
 	}

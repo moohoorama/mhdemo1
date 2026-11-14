@@ -172,7 +172,7 @@
    "ID": "c18-n11",
    "Kind": "say",
    "Speaker": "sunqian",
-   "Text": "제가 원소에게 가서 손을 잡자고 하겠습니다."
+   "Text": "원소에게 사람을 보내 손을 잡자고 하시지요. 서신은 제가 쓰겠습니다."
   },
   {
    "ID": "c18-n12",
@@ -190,7 +190,7 @@
    "ID": "c18-n14",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "……좋네. 허나 하비를 비워 둘 수는 없지. 운장, 하비를 맡아 주게. 처자와 군량도 여기 두겠네."
+   "Text": "……좋네. 허나 하비를 비워 둘 수는 없지. 운장, 하비를 맡아 주게. 군량도 여기 두겠네."
   },
   {
    "ID": "c18-n15",
@@ -202,13 +202,13 @@
    "ID": "c18-n16",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "손 공은 원소에게 가 주시오."
+   "Text": "손 공은 원소에게 보낼 서신을 써 주시오."
   },
   {
    "ID": "c18-n17",
    "Kind": "say",
    "Speaker": "sunqian",
-   "Text": "오늘 밤으로 떠나겠습니다."
+   "Text": "오늘 밤 안으로 사람을 띄우겠습니다."
   },
   {
    "ID": "c18-n18",
@@ -227,12 +227,6 @@
    "Kind": "leave",
    "Character": "guanyu",
    "Event": "leave-guanyu"
-  },
-  {
-   "ID": "c18-leave-sun",
-   "Kind": "leave",
-   "Character": "sunqian",
-   "Event": "leave-sunqian"
   },
   {
    "ID": "c18-news-set",

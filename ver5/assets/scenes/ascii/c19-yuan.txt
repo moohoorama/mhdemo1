@@ -1,25 +1,31 @@
-# c19-yuan  S_tent_lux2  ch19  origin -1 -1
-Pil###############Pil
-###......GuoSheBnrgu1
-###Cdl......TblCheJar
-######YuaTbl.........
-###Cdl......TblSun...
-PilBnr...............
+# c19-yuan  S_ye_hall  ch19  origin -1 -1
+Pil####################################Pil
+###......Bnr...Bnr...###CdlBnr...Bnr......
+###.........Brzgu2...Yua...gu1Brz.........
+###BnrPil...........................Pil...
+###.........of1Guo.........Che............
+###.........of2She.........Gao............
+###...Pil...........................Pil...
+###Bnr....................................
+###.......................................
+###...Pil...........................Pil...
+###Wpn....................................
+###Arm...........................Map......
+Pil.......................................
 
 Yua 원소  (sit)
 Guo 곽도
 She 심배
+of1 문관#1  (official_green_noncombat)
+of2 문관#2  (official_crimson_noncombat)
 Che 진진
-Liu 유비  (off stage, enters later (cell 5 3))
-Jia 간옹  (off stage, enters later (cell 5 4))
-Sun 손건
-Mes 전령  (light_infantry, off stage, enters later (cell 5 4))
+Gao 고람
 gu1 호위#1  (guards)
+gu2 호위#2  (guards)
+Liu 유비  (off stage, enters later (cell 6 5))
+Jia 간옹  (off stage, enters later (cell 5 6))
+Sun 손건  (off stage, enters later (cell 7 6))
 
-# c19-y01: Liu -> 3 2
-# c19-y01: Jia -> 3 4
-# c19-y05: Mes -> 4 2
-# c19-y06: Mes -> 6 5 and leaves
-# c19-y12: Guo -> 2 0
-# c19-y15: gu1 -> 2 1
-# c19-y25: Che -> 4 1
+# c19-y01: Liu -> 6 5
+# c19-y01: Jia -> 5 6
+# c19-y01: Sun -> 7 6

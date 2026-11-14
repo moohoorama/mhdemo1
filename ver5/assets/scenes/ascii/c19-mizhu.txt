@@ -1,0 +1,20 @@
+# c19-mizhu  S_liu_house  ch19  origin -1 -1
+Pil#####################Pil
+###......Cdl...###......Lnt
+###.........Sun###.........
+###Lnt...Tbl...###Tbl......
+###...Jia...Miz###.........
+###......TblMif###Tbl......
+PilJar.........###.........
+
+Miz 미축
+Mif 미방
+Jia 간옹
+Sun 손건
+Liu 유비  (off stage, enters later (cell 5 3))
+Mes 전령  (light_infantry, off stage, enters later (cell 6 3))
+
+# c19-m01: Liu -> 5 3
+# c19-m01: Miz -> 4 3
+# c19-m06: Mes -> 6 3
+# c19-m07: Mes -> 8 3 and leaves

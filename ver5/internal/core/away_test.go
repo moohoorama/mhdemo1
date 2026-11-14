@@ -33,10 +33,17 @@ func TestAwayOfficerComesBack(t *testing.T) {
 		assert.Empty(t, e.state.Away)
 	})
 
-	t.Run("pieces not their own stay in the warehouse", func(t *testing.T) {
+	t.Run("comes back wearing what they wore", func(t *testing.T) {
 		e := leave(30)
-		assert.Equal(t, 1, e.state.Warehouse["qinglong_blade"])
-		assert.NotEqual(t, "qinglong_blade", e.welcome("zhangfei", 20).Equipment["weapon"])
+		assert.Zero(t, e.state.Warehouse["qinglong_blade"])
+		assert.Equal(t, "qinglong_blade", e.welcome("zhangfei", 20).Equipment["weapon"])
+	})
+
+	t.Run("a join brings them back quietly", func(t *testing.T) {
+		e := leave(30)
+		e.once(content.Node{Kind: "join", Character: "zhangfei", Event: "join-zhangfei-back"})
+		require.NotNil(t, e.char("zhangfei"))
+		assert.Equal(t, "return", e.events[len(e.events)-1].Kind)
 	})
 
 	t.Run("never below a newcomer", func(t *testing.T) {

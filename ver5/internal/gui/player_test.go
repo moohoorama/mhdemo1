@@ -92,16 +92,19 @@ func TestRestAnimationShowsActionAvailability(t *testing.T) {
 		anim     string
 		inactive bool
 		actor    bool
+		still    bool
 		want     int
 	}{
-		{"ready", "idle", false, false, 1},
-		{"completed", "idle", true, false, 0},
-		{"completed exhausted", "exhausted", true, false, 0},
-		{"attack still plays", "attack", true, false, 1},
-		{"scene actor still plays", "idle", true, true, 1},
+		{"ready", "idle", false, false, false, 1},
+		{"completed", "idle", true, false, false, 0},
+		{"completed exhausted", "exhausted", true, false, false, 0},
+		{"attack still plays", "attack", true, false, false, 1},
+		{"scene actor still plays", "idle", true, true, false, 1},
+		{"story cast stands still", "idle", false, true, true, 0},
+		{"story cast gesture plays", "attack", false, true, true, 1},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			u := &unitVis{art: art, anim: tc.anim, inactive: tc.inactive, actor: tc.actor, dying: -1, shownHP: 100, maxHP: 100}
+			u := &unitVis{art: art, anim: tc.anim, inactive: tc.inactive, actor: tc.actor, still: tc.still, dying: -1, shownHP: 100, maxHP: 100}
 			u.update(.15)
 			check(t, u.frame(), tc.want)
 			if tc.anim == "idle" && tc.inactive && !tc.actor {

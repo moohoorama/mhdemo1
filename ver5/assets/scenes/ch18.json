@@ -41,13 +41,6 @@
       [{"Actor": "장비", "Play": "action"}]
      ]
     ],
-    "c18-n17": [
-     [
-     ],
-     [
-      [{"Actor": "손건", "Move": [2, 7], "Exit": true}]
-     ]
-    ],
     "c18-n18": [
      [
       [{"Actor": "유비", "Face": "SE"}]
@@ -56,48 +49,55 @@
    }
   },
   "c18-flight": {
-   "Map": "S_field_road",
+   "Map": "S_road",
    "Time": "night",
+   "Backdrop": "mountains",
    "Nodes": ["c18-flight", "c18-f00", "c18-f01", "c18-f02", "c18-f03", "c18-f04", "c18-f05"],
-   "Ambient": [{"CamAt": [5, 8]}],
+   "Ambient": [{"CamAt": [3, 2]}],
    "Cast": {
-    "유비": {"At": [5, 13], "Face": "NE", "Sprite": "liubei_mounted", "Off": true},
-    "장비": {"At": [4, 13], "Face": "NE", "Sprite": "zhangfei", "Off": true},
-    "간옹": {"At": [6, 13], "Face": "NE", "Off": true},
-    "조조군#1": {"At": [5, 20], "Face": "NE", "Sprite": "light_cavalry", "Faction": "wei", "Off": true},
-    "조조군#2": {"At": [9, 19], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei", "Off": true}
+    "유비": {"At": [8, 2], "Face": "NW", "Sprite": "liubei_mounted", "Off": true},
+    "장비": {"At": [8, 3], "Face": "NW", "Sprite": "zhangfei", "Off": true},
+    "간옹": {"At": [9, 2], "Face": "NW", "Off": true},
+    "손건": {"At": [9, 3], "Face": "NW", "Off": true},
+    "조조군#1": {"At": [18, 2], "Face": "NW", "Sprite": "light_cavalry", "Faction": "wei", "Off": true},
+    "조조군#2": {"At": [18, 4], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei", "Off": true}
    },
    "Beats": {
     "c18-f00": [
      [
-      [{"Actor": "유비", "Enter": [5, 13], "Move": [5, 8], "Speed": 1.6}, {"Actor": "장비", "Enter": [4, 13], "Move": [4, 8], "Speed": 1.6, "After": 0.2}, {"Actor": "간옹", "Enter": [6, 13], "Move": [6, 8], "Speed": 1.3, "After": 0.4}],
-      [{"Actor": "유비", "Play": "exhausted"}, {"Actor": "간옹", "Emote": "…"}, {"Actor": "장비", "Face": "SW"}],
-      [{"Actor": "조조군#1", "Enter": [5, 15], "Say": "저놈 잡아라!"}],
-      [{"Actor": "조조군#2", "Enter": [9, 15], "Say": "저쪽으로 도망갔다!"}]
+      [{"Actor": "유비", "Enter": [8, 2], "Move": [3, 2], "Speed": 1.6}, {"Actor": "장비", "Enter": [8, 3], "Move": [4, 3], "Speed": 1.6, "After": 0.2}, {"Actor": "간옹", "Enter": [9, 2], "Move": [4, 1], "Speed": 1.3, "After": 0.4}, {"Actor": "손건", "Enter": [9, 3], "Move": [3, 3], "Speed": 1.3, "After": 0.5}],
+      [{"Actor": "유비", "Face": "SE"}, {"Actor": "간옹", "Emote": "…"}, {"Actor": "손건", "Face": "SE"}, {"Actor": "장비", "Face": "SE"}],
+      [{"Actor": "조조군#1", "Enter": [18, 2], "Say": "저놈 잡아라!"}],
+      [{"Actor": "조조군#2", "Enter": [18, 4], "Say": "저쪽으로 도망갔다!"}]
+     ]
+    ],
+    "c18-f01": [
+     [
+      [{"Actor": "장비", "Face": "NW"}]
      ]
     ],
     "c18-f02": [
      [
-      [{"Actor": "유비", "Face": "SW"}]
+      [{"Actor": "유비", "Emote": "!"}]
      ]
     ],
     "c18-f03": [
      [
-      [{"Actor": "장비", "Face": "NE"}]
+      [{"Actor": "장비", "Face": "SE"}]
      ]
     ],
     "c18-f04": [
      [
-      [{"Actor": "장비", "Face": "SE"}]
+      [{"Actor": "장비", "Face": "NW"}]
      ]
     ],
     "c18-f05": [
      [
-      [{"Actor": "간옹", "Face": "NW"}]
+      [{"Actor": "간옹", "Face": "SE"}]
      ],
      [
-      [{"Actor": "장비", "Face": "SW"}, {"Actor": "장비", "Play": "attack"}],
-      [{"Actor": "장비", "Move": [5, 18], "Speed": 2.2, "Exit": true}, {"Actor": "유비", "Move": [5, 2], "Speed": 1.4, "Exit": true, "After": 0.6}, {"Actor": "간옹", "Move": [6, 2], "Speed": 1.4, "Exit": true, "After": 0.8}]
+      [{"Actor": "장비", "Face": "SE"}, {"Actor": "장비", "Play": "attack"}],
+      [{"Actor": "장비", "Move": [9, 3], "Speed": 2.2, "Exit": true}, {"Actor": "유비", "Move": [-2, 2], "Speed": 1.4, "Exit": true, "After": 0.6}, {"Actor": "간옹", "Move": [-2, 1], "Speed": 1.4, "Exit": true, "After": 0.8}, {"Actor": "손건", "Move": [-2, 3], "Speed": 1.4, "Exit": true, "After": 0.9}]
      ]
     ]
    }

@@ -190,7 +190,7 @@ func TestJoiningOfficerCatchesUpWithTheStory(t *testing.T) {
 	assert.Equal(t, 1100, o.Points, "100 per level like the brothers")
 }
 
-func TestLeavingOfficerGoesWithHisOwnGearOnly(t *testing.T) {
+func TestLeavingOfficerIsHiddenWithHisGear(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 	d.Nodes = append(d.Nodes,
@@ -208,8 +208,9 @@ func TestLeavingOfficerGoesWithHisOwnGearOnly(t *testing.T) {
 	assert.Nil(t, e.char("jianyong"))
 	assert.NotContains(t, e.state.Deployment, "jianyong")
 	assert.Empty(t, e.char("liubei").Deputy)
-	assert.Equal(t, 1, e.state.Warehouse["medicine_pouch"], "a piece the party gave him stays")
-	assert.Zero(t, e.state.Warehouse["short_bow"], "his own bow goes with him")
+	assert.Zero(t, e.state.Warehouse["medicine_pouch"], "a piece the party gave him stays on him")
+	require.Len(t, e.state.Away, 1)
+	assert.Equal(t, "medicine_pouch", e.state.Away[0].Equipment["accessory"])
 	assert.Equal(t, "leave", e.events[len(e.events)-1].Kind)
 }
 

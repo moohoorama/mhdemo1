@@ -45,7 +45,7 @@
   },
   "c16-baimen": {
    "Map": "S_baimen",
-   "Nodes": ["c16-baimen", "c16-b-gao", "c16-b01", "c16-b02", "c16-b03", "c16-b04", "c16-b05", "c16-b06", "c16-b07", "c16-b08", "c16-b09", "c16-b10", "c16-b11", "c16-b12", "c16-b13", "c16-b14", "c16-b15", "c16-b16", "c16-b17", "c16-b18", "c16-b19", "c16-b20", "c16-b21", "c16-b22"],
+   "Nodes": ["c16-baimen", "c16-b-gao", "c16-b01", "c16-b02", "c16-b03", "c16-b04", "c16-b05", "c16-b06", "c16-b07", "c16-b08", "c16-b09", "c16-b10", "c16-b11", "c16-b12", "c16-b13", "c16-b14", "c16-b15", "c16-b16", "c16-b17", "c16-b18", "c16-b19", "c16-b20", "c16-b21", "c16-b22", "c16-b23", "c16-b24"],
    "Ambient": [{"CamAt": [2.6, 0.6]}],
    "Cast": {
     "조조": {"At": [5, 3], "Face": "SW", "Pose": "sit", "Hold": true},
@@ -154,6 +154,11 @@
       [{"Actor": "관우", "Move": [4, 3]}],
       [{"Actor": "관우", "Face": "SE"}]
      ]
+    ],
+    "c16-b23": [
+     [
+      [{"Actor": "조조", "Face": "NW"}, {"Actor": "유비", "Face": "SE"}]
+     ]
     ]
    }
   },
@@ -213,6 +218,40 @@
      [
       [{"Actor": "병사", "Enter": [8, 15], "Move": [8, 12], "Face": "NE", "Speed": 1.6}],
       [{"Actor": "유비", "Face": "SW"}]
+     ]
+    ]
+   }
+  },
+  "c16-march": {
+   "Map": "S_road",
+   "Backdrop": "mountains",
+   "Nodes": ["c16-march", "c16-m01"],
+   "Ambient": [{"CamAt": [7, 4]}],
+   "Cast": {
+    "조조": {"At": [14, 2], "Face": "NW", "Off": true},
+    "유비": {"At": [14, 3], "Face": "NW", "Off": true},
+    "관우": {"At": [15, 2], "Face": "NW", "Off": true},
+    "장비": {"At": [15, 3], "Face": "NW", "Off": true},
+    "위병#1": {"At": [17.0, 2], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "wei"},
+    "위병#2": {"At": [17.0, 3], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "wei"},
+    "위병#3": {"At": [18.0, 2], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "wei"},
+    "위병#4": {"At": [18.0, 3], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "wei"},
+    "위병#5": {"At": [19.0, 2], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "wei"},
+    "위병#6": {"At": [19.0, 3], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "wei"},
+    "위병#7": {"At": [20.0, 2], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "wei"},
+    "위병#8": {"At": [20.0, 3], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "wei"},
+    "위병#9": {"At": [21.0, 2], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "wei"},
+    "위병#10": {"At": [21.0, 3], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "wei"},
+    "위병#11": {"At": [22.0, 2], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "wei"},
+    "위병#12": {"At": [22.0, 3], "Face": "NW", "Off": true, "Sprite": "light_infantry", "Faction": "wei"}
+   },
+   "Beats": {
+    "c16-m01": [
+     [
+      [{"Actor": "조조", "Enter": [14, 2], "Move": [3, 2], "Speed": 0.7}, {"Actor": "유비", "Enter": [14, 3], "Move": [3, 3], "Speed": 0.7}, {"Actor": "관우", "Enter": [15, 2], "Move": [4, 2], "Speed": 0.7}, {"Actor": "장비", "Enter": [15, 3], "Move": [4, 3], "Speed": 0.7}, {"Actor": "위병#1", "Enter": [17.0, 2], "Move": [6.0, 2], "Speed": 0.7}, {"Actor": "위병#2", "Enter": [17.0, 3], "Move": [6.0, 3], "Speed": 0.7}, {"Actor": "위병#3", "Enter": [18.0, 2], "Move": [7.0, 2], "Speed": 0.7}, {"Actor": "위병#4", "Enter": [18.0, 3], "Move": [7.0, 3], "Speed": 0.7}, {"Actor": "위병#5", "Enter": [19.0, 2], "Move": [8.0, 2], "Speed": 0.7}, {"Actor": "위병#6", "Enter": [19.0, 3], "Move": [8.0, 3], "Speed": 0.7}, {"Actor": "위병#7", "Enter": [20.0, 2], "Move": [9.0, 2], "Speed": 0.7}, {"Actor": "위병#8", "Enter": [20.0, 3], "Move": [9.0, 3], "Speed": 0.7}, {"Actor": "위병#9", "Enter": [21.0, 2], "Move": [10.0, 2], "Speed": 0.7}, {"Actor": "위병#10", "Enter": [21.0, 3], "Move": [10.0, 3], "Speed": 0.7}, {"Actor": "위병#11", "Enter": [22.0, 2], "Move": [11.0, 2], "Speed": 0.7}, {"Actor": "위병#12", "Enter": [22.0, 3], "Move": [11.0, 3], "Speed": 0.7}]
+     ],
+     [
+      [{"Actor": "조조", "Move": [-9, 2], "Speed": 0.7, "Exit": true}, {"Actor": "유비", "Move": [-9, 3], "Speed": 0.7, "Exit": true}, {"Actor": "관우", "Move": [-8, 2], "Speed": 0.7, "Exit": true}, {"Actor": "장비", "Move": [-8, 3], "Speed": 0.7, "Exit": true}, {"Actor": "위병#1", "Move": [-6.0, 2], "Speed": 0.7, "Exit": true}, {"Actor": "위병#2", "Move": [-6.0, 3], "Speed": 0.7, "Exit": true}, {"Actor": "위병#3", "Move": [-5.0, 2], "Speed": 0.7, "Exit": true}, {"Actor": "위병#4", "Move": [-5.0, 3], "Speed": 0.7, "Exit": true}, {"Actor": "위병#5", "Move": [-4.0, 2], "Speed": 0.7, "Exit": true}, {"Actor": "위병#6", "Move": [-4.0, 3], "Speed": 0.7, "Exit": true}, {"Actor": "위병#7", "Move": [-3.0, 2], "Speed": 0.7, "Exit": true}, {"Actor": "위병#8", "Move": [-3.0, 3], "Speed": 0.7, "Exit": true}, {"Actor": "위병#9", "Move": [-2.0, 2], "Speed": 0.7, "Exit": true}, {"Actor": "위병#10", "Move": [-2.0, 3], "Speed": 0.7, "Exit": true}, {"Actor": "위병#11", "Move": [-1.0, 2], "Speed": 0.7, "Exit": true}, {"Actor": "위병#12", "Move": [-1.0, 3], "Speed": 0.7, "Exit": true}]
      ]
     ]
    }

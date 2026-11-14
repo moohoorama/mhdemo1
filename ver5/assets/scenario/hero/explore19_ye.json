@@ -1,0 +1,845 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "street",
+  "At": [
+   32,
+   8
+  ],
+  "Face": "SE"
+ },
+ "Areas": {
+  "street": {
+   "Map": "S_ye",
+   "Name": "업 · 거리",
+   "Times": [
+    {
+     "If": [
+      "flag:c19-step>=5"
+     ],
+     "Time": "night"
+    }
+   ],
+   "At": [
+    32,
+    10
+   ],
+   "Exits": [
+    {
+     "Name": "관청",
+     "At": [
+      32,
+      8
+     ],
+     "Object": [
+      32,
+      5
+     ],
+     "Node": "c19-yan",
+     "If": [
+      "flag:c19-step>=2",
+      "!flag:c19-step>=3"
+     ],
+     "Shut": [
+      [
+       "관청 문지기",
+       "주공께서 부르실 때 드시지요."
+      ]
+     ]
+    },
+    {
+     "Name": "관청",
+     "At": [
+      32,
+      8
+     ],
+     "Object": [
+      32,
+      5
+     ],
+     "Node": "c19-wen",
+     "If": [
+      "flag:c19-step>=4",
+      "!flag:c19-step>=5"
+     ],
+     "Shut": [
+      [
+       "관청 문지기",
+       "주공께서 부르실 때 드시지요."
+      ]
+     ]
+    },
+    {
+     "Name": "유비의 거처",
+     "At": [
+      13,
+      42
+     ],
+     "Object": [
+      13,
+      38
+     ],
+     "Node": "c19-home1",
+     "If": [
+      "flag:c19-step>=1",
+      "!flag:c19-step>=2"
+     ]
+    },
+    {
+     "Name": "유비의 거처",
+     "At": [
+      13,
+      42
+     ],
+     "Object": [
+      13,
+      38
+     ],
+     "Node": "c19-mizhu",
+     "If": [
+      "flag:c19-step>=3",
+      "!flag:c19-step>=4"
+     ]
+    },
+    {
+     "Name": "유비의 거처",
+     "At": [
+      13,
+      42
+     ],
+     "Object": [
+      13,
+      38
+     ],
+     "Node": "c19-night",
+     "If": [
+      "flag:c19-step>=5"
+     ]
+    },
+    {
+     "Name": "유비의 거처",
+     "At": [
+      13,
+      42
+     ],
+     "Object": [
+      13,
+      38
+     ],
+     "To": "home",
+     "If": [
+      "flag:c19-step>=2",
+      "!flag:c19-step>=3"
+     ]
+    },
+    {
+     "Name": "유비의 거처",
+     "At": [
+      13,
+      42
+     ],
+     "Object": [
+      13,
+      38
+     ],
+     "To": "home",
+     "If": [
+      "flag:c19-step>=4",
+      "!flag:c19-step>=5"
+     ]
+    },
+    {
+     "Name": "도구점",
+     "At": [
+      41,
+      27
+     ],
+     "Object": [
+      41,
+      25
+     ],
+     "To": "tools"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      23,
+      27
+     ],
+     "Object": [
+      23,
+      25
+     ],
+     "To": "tavern"
+    },
+    {
+     "Name": "대장간",
+     "At": [
+      43,
+      50
+     ],
+     "Object": [
+      43,
+      48
+     ],
+     "To": "weapons"
+    }
+   ],
+   "People": {
+    "관청 문지기#1": {
+     "At": [
+      29,
+      7
+     ],
+     "Face": "SE",
+     "Sprite": "guards",
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "문지기",
+       "……"
+      ]
+     ]
+    },
+    "관청 문지기#2": {
+     "At": [
+      35,
+      7
+     ],
+     "Face": "SW",
+     "Sprite": "guards",
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "문지기",
+       "……"
+      ]
+     ]
+    },
+    "인수 관리": {
+     "At": [
+      24,
+      11
+     ],
+     "Face": "SE",
+     "Sprite": "official_purple_noncombat",
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "관리",
+       "인수는 관인과 인끈이오. 받은 장수는 한 단계 위의 군사를 거느리게 되지."
+      ],
+      [
+       "관리",
+       "중급 병종으로 오래 싸워 이름이 난 장수라야 상급 인수를 받소. 중기병은 친위대가, 중보병은 근위병이 되지요."
+      ],
+      [
+       "관리",
+       "상급 인수는 저자에서 사고팔지 않소. 주공께서 큰 공을 세운 장수에게만 내리시오."
+      ]
+     ]
+    },
+    "장교": {
+     "At": [
+      40,
+      11
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "장교",
+       "인수는 걸어 다닐 때나 출전 준비를 할 때 쓰는 것이오."
+      ],
+      [
+       "장교",
+       "칼끝이 오가는 싸움 한가운데서 관인을 새로 받을 수야 없지 않소."
+      ]
+     ]
+    },
+    "원소군 병사#1": {
+     "At": [
+      10,
+      20
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "If": [
+      "flag:c19-step>=1",
+      "!flag:c19-step>=3"
+     ],
+     "Play": "attack",
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "병사",
+       "안량 장군 부대가 백마로 떠난 뒤로 연병장이 하루도 쉬지 않소. 다음은 문추 장군 부대 차례라오."
+      ]
+     ]
+    },
+    "원소군 병사#1@3": {
+     "At": [
+      10,
+      20
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "If": [
+      "flag:c19-step>=3",
+      "!flag:c19-step>=5"
+     ],
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "병사",
+       "안량 장군이 단칼에…… 믿을 수가 없소. 하북에서 안량 장군을 당할 자가 없었는데."
+      ]
+     ]
+    },
+    "원소군 병사#1@5": {
+     "At": [
+      10,
+      20
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "If": [
+      "flag:c19-step>=5"
+     ],
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "병사",
+       "문추 장군마저 연진에서 돌아오지 못하셨소. 관운장이라는 자가 그리 무섭다오?"
+      ]
+     ]
+    },
+    "원소군 병사#2": {
+     "At": [
+      16,
+      21
+     ],
+     "Face": "NW",
+     "Sprite": "light_infantry",
+     "Play": "attack",
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "병사",
+       "하북 네 고을의 군사가 다 모였다오. 들판을 덮을 만하지."
+      ]
+     ]
+    },
+    "기병 장교": {
+     "At": [
+      6,
+      21
+     ],
+     "Face": "NE",
+     "Sprite": "light_cavalry",
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "장교",
+       "하북에서는 안량·문추를 첫손에 꼽지만, 장합·고람 두 장군의 솜씨도 그에 못지않다오."
+      ],
+      [
+       "장교",
+       "장합 장군은 원래 한복의 장수였는데, 주공께서 기주를 얻으실 때 함께 오셨지."
+      ]
+     ]
+    },
+    "선비": {
+     "At": [
+      26,
+      30
+     ],
+     "Face": "SE",
+     "Sprite": "official_blue_noncombat",
+     "Faction": "merchant",
+     "If": [
+      "flag:c19-step>=1",
+      "!flag:c19-step>=3"
+     ],
+     "Talk": [
+      [
+       "선비",
+       "전풍 어른이 지금 조조와 싸울 때가 아니라고 간했다가 옥에 갇혔다지."
+      ],
+      [
+       "선비",
+       "저수 어른도 안량은 성미가 좁으니 혼자 맡기면 안 된다 했는데, 주공께서 듣지 않으셨다더군."
+      ]
+     ]
+    },
+    "선비@3": {
+     "At": [
+      26,
+      30
+     ],
+     "Face": "SE",
+     "Sprite": "official_blue_noncombat",
+     "Faction": "merchant",
+     "If": [
+      "flag:c19-step>=3"
+     ],
+     "Talk": [
+      [
+       "선비",
+       "저수 어른 말씀이 맞았소. 안량 장군 혼자 보낸 것이 탈이었지."
+      ],
+      [
+       "선비",
+       "옥에 갇힌 전풍 어른 말까지 들었다면…… 아니오, 내 입이 방정이오."
+      ]
+     ]
+    },
+    "행인#1": {
+     "At": [
+      30,
+      22
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Move": {
+      "Patrol": [
+       [
+        30,
+        22
+       ],
+       [
+        30,
+        40
+       ]
+      ]
+     },
+     "Talk": [
+      [
+       "행인",
+       "곽도, 심배, 봉기…… 주공 곁에는 꾀 많은 분이 많은데, 서로 말이 달라 탈이라오."
+      ]
+     ]
+    },
+    "아낙#1": {
+     "At": [
+      44,
+      39
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "아낙",
+       "관도 쪽으로 군량 수레가 날마다 나가오. 우리 집 양반도 수레꾼으로 뽑혀 갔지 뭐요."
+      ]
+     ]
+    },
+    "상인#1": {
+     "At": [
+      47,
+      36
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "골라 보시오|하북 물건이 제일이오",
+     "Talk": [
+      [
+       "상인",
+       "업에는 하북 물건이 다 모이오. 유주 모피, 청주 소금, 병주 말까지."
+      ]
+     ]
+    },
+    "노인#1": {
+     "At": [
+      34,
+      44
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "If": [
+      "flag:c19-step>=1",
+      "!flag:c19-step>=3"
+     ],
+     "Talk": [
+      [
+       "노인",
+       "유황숙이 업에 오셨다지. 조조에게 쫓겨 왔다더니, 주공께서 성문 밖까지 나가 맞으셨다더구먼."
+      ]
+     ]
+    },
+    "노인#1@3": {
+     "At": [
+      34,
+      44
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "If": [
+      "flag:c19-step>=3"
+     ],
+     "Talk": [
+      [
+       "노인",
+       "안량 장군을 벤 장수가 유황숙의 아우라는 소문이 있더이다. 황숙은 괜찮으시려나."
+      ]
+     ]
+    },
+    "아이#1": {
+     "At": [
+      52,
+      44
+     ],
+     "Face": "SW",
+     "Sprite": "child_boy_noncombat",
+     "Faction": "merchant",
+     "If": [
+      "flag:c19-step>=1",
+      "!flag:c19-step>=3"
+     ],
+     "Talk": [
+      [
+       "아이",
+       "안량 장군님은 큰 칼 한 번에 적장을 둘씩 베신대요!"
+      ]
+     ]
+    },
+    "장군 댁 문지기#1": {
+     "At": [
+      49,
+      26
+     ],
+     "Face": "SE",
+     "Sprite": "guards",
+     "If": [
+      "flag:c19-step>=1",
+      "!flag:c19-step>=3"
+     ],
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "문지기",
+       "문추 장군 댁이오. 장군께서는 연진으로 나가실 채비 중이시오."
+      ]
+     ]
+    },
+    "장군 댁 문지기#1@3": {
+     "At": [
+      49,
+      26
+     ],
+     "Face": "SE",
+     "Sprite": "guards",
+     "If": [
+      "flag:c19-step>=3",
+      "!flag:c19-step>=5"
+     ],
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "문지기",
+       "문추 장군 댁이오. 장군께서는 안량 장군의 원수를 갚겠다고 연진으로 나가셨소."
+      ]
+     ]
+    },
+    "장군 댁 문지기#1@5": {
+     "At": [
+      49,
+      26
+     ],
+     "Face": "SE",
+     "Sprite": "guards",
+     "If": [
+      "flag:c19-step>=5"
+     ],
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "문지기",
+       "……돌아가시오. 오늘은 아무도 들일 수 없소."
+      ]
+     ]
+    },
+    "순찰병#1": {
+     "At": [
+      20,
+      28
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Move": {
+      "Patrol": [
+       [
+        20,
+        28
+       ],
+       [
+        50,
+        28
+       ]
+      ]
+     },
+     "Faction": "yuan",
+     "Talk": [
+      [
+       "병사",
+       "성안에서는 소란을 피우지 마시오."
+      ]
+     ]
+    }
+   }
+  },
+  "home": {
+   "Map": "S_liu_house",
+   "Name": "업 · 유비의 거처",
+   "Zoom": 3,
+   "At": [
+    9,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      15,
+      9
+     ],
+     "To": "street"
+    }
+   ],
+   "People": {
+    "간옹": {
+     "At": [
+      7,
+      10
+     ],
+     "Face": "NE",
+     "Talk": [
+      [
+       "jianyong",
+       "원소 공 막하엔 꾀 많은 사람이 많지만, 서로 헐뜯기 바쁘다더군. 곽도와 심배가 특히 그렇다네."
+      ]
+     ]
+    },
+    "손건": {
+     "At": [
+      9,
+      4
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:c19-step>=2",
+      "!flag:c19-step>=4"
+     ],
+     "Talk": [
+      [
+       "sunqian",
+       "주공께서 원소 공께 의탁하신 줄은 사방에 알려졌을 겁니다. 흩어진 이들도 곧 소식을 듣겠지요."
+      ]
+     ]
+    },
+    "손건@4": {
+     "At": [
+      9,
+      4
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:c19-step>=4"
+     ],
+     "Talk": [
+      [
+       "sunqian",
+       "원소 공의 웃음이 예전 같지 않습니다. 말씀을 조심하셔야 합니다."
+      ]
+     ]
+    },
+    "미축": {
+     "At": [
+      13,
+      3
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:c19-step>=4"
+     ],
+     "Talk": [
+      [
+       "mizhu",
+       "업에도 저희 상단과 거래하던 이들이 있습니다. 필요한 것이 있으면 말씀하십시오."
+      ]
+     ]
+    },
+    "미방": {
+     "At": [
+      14,
+      5
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:c19-step>=4"
+     ],
+     "Talk": [
+      [
+       "mifang",
+       "업은 쌀값이 허도보다 싸군요. 하북이 넉넉하긴 넉넉합니다."
+      ]
+     ]
+    },
+    "하인": {
+     "At": [
+      13,
+      10
+     ],
+     "Face": "NW",
+     "Talk": [
+      [
+       "servant",
+       "원소 공께서 보내신 하인입니다. 필요한 것이 있으시면 말씀만 하십시오."
+      ]
+     ]
+    }
+   }
+  },
+  "tools": {
+   "Map": "S_tool_shop2",
+   "Name": "도구점",
+   "Zoom": 3,
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "street"
+    }
+   ],
+   "People": {
+    "상인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "ye"
+    }
+   }
+  },
+  "tavern": {
+   "Map": "S_tavern2",
+   "Name": "주점",
+   "Zoom": 3,
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "street"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "ye_tavern"
+    },
+    "손님": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "한 잔 더!|크으, 좋다",
+     "If": [
+      "flag:c19-step>=1",
+      "!flag:c19-step>=3"
+     ],
+     "Talk": [
+      [
+       "손님",
+       "안량 장군이 나가셨으니 백마는 사흘이면 떨어질 거요. 자, 한 잔 받으시오."
+      ]
+     ]
+    },
+    "손님@3": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "If": [
+      "flag:c19-step>=3"
+     ],
+     "Talk": [
+      [
+       "손님",
+       "백마에서 조조 쪽 장수 하나가 안량 장군 목을 베어 말 안장에 매달고 돌아갔다던데……"
+      ],
+      [
+       "손님",
+       "쉿, 이런 말 하다 끌려가오."
+      ]
+     ]
+    }
+   }
+  },
+  "weapons": {
+   "Map": "S_weapon_shop2",
+   "Name": "대장간",
+   "Zoom": 3,
+   "At": [
+    6,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "street"
+    }
+   ],
+   "People": {
+    "대장장이": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons"
+    }
+   }
+  }
+ }
+}

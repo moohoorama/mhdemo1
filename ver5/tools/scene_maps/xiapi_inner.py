@@ -5,8 +5,7 @@ ruts full of water in its lane, the drift line of straw and twigs where the wate
 to the flood's mark. The party comes in by the street from the south gate and looks round.
 
   python3 ver5/tools/scene_maps/xiapi_inner.py          # S_xiapi_inner, the day 여포 falls (chapter 16)
-  python3 ver5/tools/scene_maps/xiapi_inner.py --dry    # S_xiapi, the same streets months later (chapter 18): grass
-                                                        # in the yards, no wet ground, the houses' walls clean
+  (--dry once made S_xiapi, these streets months later; chapter 18's 하비 is now xiapi_town.py)
 
 Format 2 (internal/scenemap): small tiles, the playing area from (0, 0) to (W-1, H-1) with a margin of M drawn round
 it; u runs down to the right on screen, v down to the left. Ground: d soil, i paving. The wet ground is flat
@@ -22,7 +21,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-DRY = '--dry' in sys.argv
+DRY = False
+if '--dry' in sys.argv:
+    sys.exit('S_xiapi is made by xiapi_town.py now')
 
 GFX = Path(__file__).resolve().parents[2] / 'assets/graphics'
 ID = 'S_xiapi' if DRY else 'S_xiapi_inner'

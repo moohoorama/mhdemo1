@@ -285,7 +285,13 @@ type Duel struct {
 	Melee    map[string]string `json:",omitempty"`
 	Variants []DuelVariant     `json:",omitempty"`
 }
-type Speech struct{ Actor, Text string }
+
+// Speech is a battlefield line. An Offstage line is said by someone not on the field (a messenger's report): it
+// is shown in a box at the top of the screen instead of a bubble over the speaker.
+type Speech struct {
+	Actor, Text string
+	Offstage    bool `json:",omitempty"`
+}
 
 // Area is a numbered rectangle of the stage that events and objectives point at by id; Name and
 // Description are for people reading the data.

@@ -68,6 +68,7 @@ type unitVis struct {
 	wade         float64 // 0..1: how far it has sunk into a ford it stands on (field_wade.go)
 	inactive     bool
 	actor        bool   // a scene actor: no HP bar, rests standing or in its pose
+	still        bool   // a story cast member: stands on the idle's first frame, without the battle idle's loop
 	pose         string // a scene actor's resting motion (sit, lie …); "" stands
 	shownHP      int
 	shownMP      int
@@ -87,7 +88,7 @@ type walkState struct {
 }
 
 func (u *unitVis) frozenRest() bool {
-	return !u.actor && u.inactive && (u.anim == "idle" || u.anim == "exhausted")
+	return u.still && u.anim == "idle" || !u.actor && u.inactive && (u.anim == "idle" || u.anim == "exhausted")
 }
 
 func (u *unitVis) frame() int {

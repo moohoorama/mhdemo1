@@ -215,13 +215,27 @@ func (x *evaluator) action(c core.Command, duels bool) (float64, bool) {
 				mine = append(mine, q)
 			}
 		}
+		used, urgent := 0, false
 		for _, q := range mine {
 			h := x.standing(q)
 			heal := min(p.Healing/max(1, len(mine)), q.Stats.MaxHP-q.HP)
 			gain += x.worth(q, h+heal) - x.worth(q, h)
-			if p.MPRecovery > 0 && q.Stats.MaxMP > 0 {
-				gain += .02 * float64(max(q.Stats.Attack, q.Stats.Mind)) * float64(p.MPRecovery) / float64(q.Stats.MaxMP)
+			// liquor fills past the maximum, but what lies above it only waits for the next spell
+			mp := min(p.MPRecovery, q.Stats.MaxMP-q.MP)
+			if !x.nearFight(q) {
+				mp = 0 // far from any opponent the points come back by themselves before they are needed
 			}
+			if mp > 0 {
+				gain += .02 * float64(max(q.Stats.Attack, q.Stats.Mind)) * float64(mp) / float64(q.Stats.MaxMP)
+			}
+			used += max(0, heal) + max(0, mp)
+			urgent = urgent || h*10 < q.Stats.MaxHP*3
+		}
+		if gain <= 0 {
+			return 0, false // a draught or a meal that changes nothing is not worth an action and a piece
+		}
+		if it, ok := x.e.Data().Items[c.Item]; c.Kind == "item" && ok && used*2 < it.Amount && !urgent {
+			return 0, false // a piece is spent when at least half of it counts, or to save someone in danger
 		}
 	case skill.Kind == content.KindBuff:
 		k := float64(x.e.Data().Rules.BuffPercent) / 100
@@ -248,7 +262,8 @@ func (x *evaluator) action(c core.Command, duels bool) (float64, bool) {
 // move scores a cell by the best blow it opens, a little below the blow itself, halved for every
 // further turn of walking it needs; a cell that starts a stage duel the officer comes out of standing
 // is worth half of him (the duel teaches a whole level), and a victory goal's area pulls its unit the
-// harder the fewer rounds are left for the walk. Less what the mover risks standing there.
+// harder the fewer rounds are left for the walk. The turns of walking count the way around walls and rivers,
+// as far as the walk to the nearest opponent tells it. Less what the mover risks standing there.
 func (x *evaluator) move(c core.Command, walk map[content.Point]int, duels bool) float64 {
 	me := x.me
 	if duels && me.DuelFirst {
@@ -267,7 +282,12 @@ func (x *evaluator) move(c core.Command, walk map[content.Point]int, duels bool)
 			continue
 		}
 		hit := int(x.e.Strike(me.ID, v.ID))
-		turns := (max(0, d-hi) + step - 1) / step
+		turns := 0
+		if d > hi {
+			// out of reach from c: the walk there is at least the walk to the nearest opponent, so a cell
+			// near by line but behind a wall or a river does not pull the unit back and forth along it
+			turns = (max(d, far(walk, c.X, c.Y)) - hi + step - 1) / step
+		}
 		best = max(best, .9*(x.worth(&v, v.HP)-x.worth(&v, v.HP-hit))*math.Pow(.5, float64(turns)))
 	}
 	best += .01 * float64(far(walk, me.X, me.Y)-far(walk, c.X, c.Y)) // walls: a step that walks nearer breaks ties
@@ -295,6 +315,18 @@ func (x *evaluator) move(c core.Command, walk map[content.Point]int, duels bool)
 		best += escortPull * x.worth(me, me.HP) * float64(far(x.escort, me.X, me.Y)-far(x.escort, c.X, c.Y))
 	}
 	return best - x.risk(me, content.Point{X: c.X, Y: c.Y}, me.HP)
+}
+
+// nearFight reports whether an opponent stands within two turns' walk and reach of u.
+func (x *evaluator) nearFight(u *core.UnitView) bool {
+	_, hi := x.reach(u)
+	far := 2*max(1, x.e.Data().Classes[u.Class].Move) + hi
+	for _, v := range x.opponents(u) {
+		if distance(u.X, u.Y, v.X, v.Y) <= far {
+			return true
+		}
+	}
+	return false
 }
 
 // escortPull is how much a step nearer the way ahead of a unit walking to a goal is worth, in shares of

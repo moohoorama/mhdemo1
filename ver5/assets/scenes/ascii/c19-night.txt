@@ -1,19 +1,18 @@
-# c19-night  S_tent_mid  ch19  origin -1 -1
-Pil###############Pil
-###.........BnrWpnArm
-###BnrBrz............
-###...DskSunMap......
-###.........LiuJia...
-Pil...Bed.........Brz
+# c19-night  S_liu_house  ch19  origin -1 -1
+Pil#####################Pil
+###......Cdl...###......Lnt
+###......MizSun###.........
+###Lnt...Tbl...###Tbl......
+###...Mif......Liu.........
+###......TblJia###Tbl......
+PilJar.........###.........
 
 Liu 유비
 Jia 간옹
 Sun 손건
-Miz 미축  (off stage, enters later (cell 3 4))
-Mif 미방  (off stage, enters later (cell 2 4))
-Che 진진  (off stage, enters later (cell 4 4))
+Miz 미축
+Mif 미방
+Che 진진  (off stage, enters later (cell 5 3))
 
-# c19-m01: Miz -> 3 4
-# c19-m01: Mif -> 2 4
-# c19-n00: Che -> 4 4
-# c19-n07: Che -> 4 6 and leaves
+# c19-n00: Che -> 5 3
+# c19-n07: Che -> 8 3 and leaves

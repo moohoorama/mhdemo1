@@ -153,7 +153,7 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 				k = share[q.ID]
 			}
 			d := e.damage(u, q, s) * k
-			normal, crit := int(math.Floor(e.bulwark(q, d))), int(math.Floor(e.bulwark(q, d*e.data.Rules.CritMultiplier)))
+			normal, crit := int(math.Floor(e.bulwark(q, d*e.boost(u, q, s, false)))), int(math.Floor(e.bulwark(q, d*e.boost(u, q, s, true))))
 			p.MaxDamage += crit
 			if p.Damage == nil {
 				p.Damage, p.CritDamage = map[string]int{}, map[string]int{}
@@ -564,7 +564,7 @@ func (e *Engine) Strike(a, b string) float64 {
 	for _, name := range e.skills(e.char(u.Character)) {
 		s := e.data.Skills[name]
 		if (s.Kind == content.KindPhysical || s.Kind == content.KindMagic) && e.cost(u, s) <= u.MP {
-			best = max(best, e.damage(u, v, s)*e.hitChance(u, v, s)/100)
+			best = max(best, e.damage(u, v, s)*e.boost(u, v, s, false)*e.hitChance(u, v, s)/100)
 		}
 	}
 	return best

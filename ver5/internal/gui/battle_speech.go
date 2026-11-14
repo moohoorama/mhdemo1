@@ -12,6 +12,7 @@ import (
 // battleBubble is a line a unit says on the battlefield, coming out letter by letter.
 type battleBubble struct {
 	actor, name, text string
+	offstage          bool // said by someone not on the field: a box at the top of the screen
 	typing            typing
 	fading            float64 // when it began to fade out (textSeconds); 0 while it is shown
 }
@@ -54,7 +55,10 @@ func (g *Game) showBattleSpeech(lines []content.Speech) {
 	g.dropSpeech()
 	var cells []content.Point
 	for _, line := range lines {
-		g.player.Speech = append(g.player.Speech, &battleBubble{actor: line.Actor, name: g.name(line.Actor), text: line.Text, typing: startTyping(g.textSeconds)})
+		g.player.Speech = append(g.player.Speech, &battleBubble{actor: line.Actor, name: g.name(line.Actor), text: line.Text, offstage: line.Offstage, typing: startTyping(g.textSeconds)})
+		if line.Offstage {
+			continue
+		}
 		if u := g.unitAt(line.Actor); u != nil {
 			cells = append(cells, content.Point{X: int(math.Round(u.u)), Y: int(math.Round(u.v))})
 		}
@@ -84,16 +88,19 @@ func (g *Game) drawBattleSpeech(dst *ebiten.Image) {
 
 // drawBubble draws one battlefield line over its speaker, clear of the bubbles already placed.
 func (g *Game) drawBubble(dst *ebiten.Image, bubble *battleBubble, placed *[]image.Rectangle, alpha float64) {
-	u := g.unitAt(bubble.actor)
-	if u == nil {
-		return
-	}
-	x, y := g.field.Center(u.u, u.v)
-	x, y = worldToUI(g.toScreen(x, y-u.lift-u.top))
 	bw, bh := g.assets.Bubble.Size(bubble.name, bubble.text)
 	k := 2.0 / 3 / smallScreen()
 	w, h := int(bw*k), int(bh*k)
-	px, py := max(16, min(uiW-w-16, int(x)-32)), max(62, min(uiH-h-190, int(y)-h-10))
+	px, py := (uiW-w)/2, 62
+	if !bubble.offstage {
+		u := g.unitAt(bubble.actor)
+		if u == nil {
+			return
+		}
+		x, y := g.field.Center(u.u, u.v)
+		x, y = worldToUI(g.toScreen(x, y-u.lift-u.top))
+		px, py = max(16, min(uiW-w-16, int(x)-32)), max(62, min(uiH-h-190, int(y)-h-10))
+	}
 	r := image.Rect(px, py, px+w, py+h)
 	for _, other := range *placed {
 		if r.Overlaps(other) {

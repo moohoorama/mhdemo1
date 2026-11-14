@@ -9,10 +9,10 @@ Tre.......................................BshTre...Tre
 ...Jar................................................
 Bsh....................................BnrSckStl...Stl
 .........MatMat...MatMat...............###............
-...Bsh...MatMatFirMatMat...Sun........................
-Tre.........MifMizZhaLiuGuaPot.........###...Tre...Bsh
+...Bsh...MatMatFirMatMat...SunGao.....................
+Tre.........MifMizZhaLiuGuaPotJia......###...Tre...Bsh
 ...#######################################............
-BshBsh.........BshBsh...JiaGaoBsh...Bsh...Bsh......Bsh
+BshBsh.........BshBsh.........Bsh...Bsh...Bsh......Bsh
 
 Liu 유비
 Gua 관우
@@ -24,5 +24,5 @@ Jia 간옹
 Gao 고순
 
 # c17-q01: Zha -> 6 9
-# c17-q02: Mif -> 4 10
+# c17-q02: Mif -> 5 9
 # c17-q07: Liu -> 7 10

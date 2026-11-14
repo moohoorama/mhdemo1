@@ -338,7 +338,7 @@
        "Faction": "wei",
        "Side": "ally",
        "Facing": "SE",
-       "Class": "ruffian"
+       "Class": "light_infantry"
       },
       {
        "Character": "troop_footman",
@@ -603,6 +603,33 @@
      "Turns": 0
     }
    ]
+  },
+  {
+   "ID": "lu-sortie",
+   "If": [
+    "round>=3"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "lubu",
+       "Text": "웅크리고 있어 봐야 물에 잠겨 죽을 뿐이다! 모두 나가 싸워라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "lu-c",
+      "lu-nw",
+      "lu-se",
+      "lu-sw"
+     ],
+     "Policy": "assault"
+    }
+   ]
   }
  ],
  "Faction": "dong",
@@ -619,16 +646,16 @@
     {
      "Kind": "talk",
      "Title": "장료가 관우를 막아서다",
-     "Speech": "관운장이시오? 안문 사람 장료, 자는 문원이오. 한 수 겨뤄 봅시다!",
+     "Speech": "관우! 내 진작부터 너와 승부를 겨루고 싶었다!",
      "Side": 1,
      "Duration": 3.0
     },
     {
      "Kind": "talk",
      "Title": "관우가 답하다",
-     "Speech": "좋다. 관운장이 상대하마.",
+     "Speech": "장료, 나 또한 그러했다. 오너라!",
      "Side": 0,
-     "Duration": 2.2
+     "Duration": 2.4
     },
     {
      "Kind": "approach",

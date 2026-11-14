@@ -25,6 +25,9 @@ func unitStatusIcons(status map[string]core.Status) []statusIcon {
 		}
 		icons = append(icons, statusIcon{kind: id, down: down})
 	}
+	if status["hold_ground"].Turns > 0 && status["defense"].Value <= 0 { // 진지고수 shows as a defense raise
+		icons = append(icons, statusIcon{kind: "defense"})
+	}
 	return icons
 }
 

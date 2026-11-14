@@ -1,23 +1,23 @@
-# map19 연주 전투 (20x20, night). Screen north = (0,0): 원소's camp behind a fence in the top corner, the road runs
-# from its south gap down to the 연주 border in the bottom corner. A stream crosses the middle as a level band
-# on screen (x+y = 16..17) with a bridge on the road (8~9,8) and fords at (3~4,13) and (13~14,3).
-n-- n-- g-- g-- gz- g-- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- g-- g--
-n-- g-- g-- g-- gz- g-- u-- g-- g-- g-- g-- g-- g-- d-- g-- w-- w-- g-- g-- g--
-g-- gk- g-- g-- g-- l-- g-- g-- gt- gt- g-- g-- d-- g-- w-- w-- g-- g-- g-- g--
-g-- g-- g-- g-- gz- l-- g-- g-- g-- g-- g-- g-- g-- s-- s-- g-- g-- g-- g-- g--
-gz- gz- g-- gz- gz- l-- g-- g-- g-- g-- g-- g-- w-- w-- g-- g-- g-- g-- g-- g--
-g-- g-- l-- l-- l-- l-- l-- g-- g-- g-- g-- w-- w-- g-- g-- g-- g-- g-- g-- g--
-u-- u-- g-- g-- g-- g-- l-- l-- g-- g-- w-- w-- gt- g-- g-- g-- g-- g-- gt- g--
-u-- g-- g-- g-- g-- g-- g-- l-- l-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- wb- wb- g-- g-- g-- g-- gt- gt- g-- g-- g-- g--
-g-- g-- gt- gt- g-- g-- g-- w-- w-- l-- l-- g-- g-- g-- g-- gt- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- w-- w-- g-- g-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- gt- w-- w-- g-- g-- g-- gt- l-- l-- g-- g-- g-- g-- gt- gt- g--
-g-- d-- d-- g-- w-- w-- g-- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- g--
-g-- g-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- l-- l-- g-- g-- g-- g--
-g-- w-- w-- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- d-- l-- l-- g-- g-- g--
-w-- w-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- g-- g--
-w-- g-- g-- g-- g-- g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- l-- l-- g--
-g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l--
+# map19 연주 전투 (20x20, night). Screen north = (0,0): 원소's camp behind a fence in the top corner (1,2); 유비
+# halts near (10,2) between river A (0,8)~(14,6) and river B (14,4)~(17,0), the only way on is the ford (14,5)
+# east, then south-west round the west end of river C (19,11)~(11,14), then east to the 연주 border: an S.
+n-- n-- g-- g-- gz- g-- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- g--
+n-- g-- g-- g-- gz- g-- u-- g-- g-- g-- g-- g-- g-- d-- g-- g-- w-- w-- g-- g--
+g-- gk- g-- g-- g-- l-- l-- l-- l-- l-- l-- g-- d-- g-- g-- w-- w-- g-- g-- g--
+g-- g-- g-- g-- gz- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- w-- w-- g-- g-- g--
+gz- gz- g-- gz- gz- g-- g-- g-- g-- g-- g-- l-- l-- l-- w-- w-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- s-- l-- g-- g-- g-- g--
+u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- l-- g-- g-- gt- g--
+u-- g-- g-- g-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- l-- g-- g-- g-- g--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- g-- g-- g-- l-- gt- g-- g-- g-- g--
+w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- gt- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- gt- l-- l-- g-- g-- g-- g-- gt- w-- w--
+g-- d-- d-- g-- g-- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- w-- w-- w-- w-- w--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- w-- w-- w-- w-- w-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- w-- w-- w-- w-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- gt- gt- g-- g-- g-- l-- w-- w-- g-- d-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- gt- g-- g-- l-- l-- l-- l-- g-- g-- g--
+g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- g--
 g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l--

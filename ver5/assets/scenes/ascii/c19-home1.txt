@@ -1,0 +1,18 @@
+# c19-home1  S_liu_house  ch19  origin -1 -1
+Pil#####################Pil
+###......Cdl...###......Lnt
+###.........Sun###.........
+###Lnt...Tbl...###Tbl......
+###.........Jia###.........
+###......Tbl...###Tbl......
+PilJar.........###...Ser...
+
+Jia 간옹
+Sun 손건
+Ser 하인  (infantry_noncombat)
+Liu 유비  (off stage, enters later (cell 5 3))
+Mes 전령  (light_infantry, off stage, enters later (cell 6 3))
+
+# c19-h01: Liu -> 5 3
+# c19-h08: Mes -> 6 3
+# c19-h09: Mes -> 8 3 and leaves

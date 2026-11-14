@@ -27,12 +27,12 @@ type shopView struct {
 
 // shopRows are what the shop sells with what the party has of each, or what the party owns that it buys
 // back for half.
-func (g *Game) shopRows(o core.Observation, items []string, sell bool) []goodsRow {
+func (g *Game) shopRows(o core.Observation, shop string, sell bool) []goodsRow {
 	rows := []goodsRow{}
 	if !sell {
-		for _, id := range items {
+		for _, id := range g.S.Data.Shops[shop].Items {
 			r := g.goodsRow(id)
-			r.price, r.count = g.S.Data.Price(id), o.Inventory[id]+o.Warehouse[id]
+			r.price, r.count = g.S.Data.Ask(shop, id), o.Inventory[id]+o.Warehouse[id]
 			r.ok = o.Money >= r.price
 			rows = append(rows, r)
 		}
@@ -78,7 +78,7 @@ func (g *Game) shopWindow(dst *ebiten.Image, x, y, w, h int) {
 		})
 	}
 
-	rows := g.shopRows(o, shop.Items, v.sell)
+	rows := g.shopRows(o, person.Shop, v.sell)
 	at := slices.IndexFunc(rows, func(r goodsRow) bool { return r.id == v.pick })
 	var picked *goodsRow
 	if at >= 0 {

@@ -179,7 +179,7 @@ func (g *Game) castActor(key string, a scenes.Actor) *unitVis {
 	if art == nil || len(a.At) != 2 {
 		return nil
 	}
-	v := &unitVis{id: key, ally: true, dir: a.Face, anim: "idle", dying: -1, shownHP: 1, maxHP: 1, actor: true, art: art, top: art.TopOffset(), pose: a.Pose,
+	v := &unitVis{id: key, ally: true, dir: a.Face, anim: "idle", dying: -1, shownHP: 1, maxHP: 1, actor: true, still: true, art: art, top: art.TopOffset(), pose: a.Pose,
 		mounted: g.riderArt(art.ID)}
 	v.play(v.rest())
 	v.animT = float64(len(key)*37%100) / 100 // extras do not all nod at once

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Make the two great halls where a whole court stands: S_shouchun_hall (원술's hall at 수춘, chapter 14) and
-S_luoyang_hall (the throne hall at 낙양 where 동탁 stands by the boy emperor, chapter 5).
+"""Make the great halls where a whole court stands: S_shouchun_hall (원술's hall at 수춘, chapter 14),
+S_luoyang_hall (the throne hall at 낙양 where 동탁 stands by the boy emperor, chapter 5) and S_ye_hall (원소's
+관청 at 업, chapter 19).
 
-  python3 ver5/tools/scene_maps/grand_halls.py
+  python3 ver5/tools/scene_maps/grand_halls.py [map id …]
 
 Format 2 (internal/scenemap), a room like xuzhou_hall.py: walls on the two back sides (-u, -v), the front open to the
 camera. Both are 13 x 12 cells, larger than 서주 관청 (9 x 8), so the court fills them: the seat on a dais against the
@@ -13,6 +14,8 @@ outside the files (u = 1 and 11).
 The two differ in their furnishing:
 - 수춘: 원술 apes an emperor's hall: a gold screen behind the gilded seat (the dais), yellow banners all along the back wall,
   and the wine tables and jars of a lord who lives well.
+- 업: a warlord's hall on the eve of 백마: red banners along the back wall, braziers, weapon racks and armour by the
+  side wall, a map table near the front; no wine.
 - 낙양: the real throne hall: the gold screen and the dais (the emperor's sheet brings its own throne), curtains
   over the lacquer walls, candle stands, incense and lanterns; no wine.
 """
@@ -88,6 +91,20 @@ def luoyang(put, obj):
     put('candle_stand', 2.0, 1.0), put('candle_stand', 10.0, 1.0)
 
 
+def ye(put, obj):
+    for u in (1.6, 3.6, 8.4, 10.4):
+        put('banner', u, -.2)
+    for v in (2.0, 6.0):
+        put('banner', -.2, v)
+    put('weapon_rack', -.1, 9.0), put('armor_stand', -.1, 10.3)
+    put('candle_stand', DOOR - 1.5, .4), put('candle_stand', DOOR + 1.5, .4)
+    put('brazier', 3.0, 1.0), put('brazier', 9.0, 1.0)
+    put('map_table', 10.0, 9.6)
+
+
 if __name__ == '__main__':
-    hall('S_shouchun_hall', '수춘 대전', shouchun)
-    hall('S_luoyang_hall', '낙양 궁궐 대전', luoyang)
+    import sys
+    halls = {'S_shouchun_hall': ('수춘 대전', shouchun), 'S_luoyang_hall': ('낙양 궁궐 대전', luoyang),
+             'S_ye_hall': ('업 관청 대전', ye)}
+    for map_id in sys.argv[1:] or halls:
+        hall(map_id, *halls[map_id])

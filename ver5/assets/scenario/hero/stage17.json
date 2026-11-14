@@ -11,9 +11,9 @@
  "Victory": [
   {
    "If": [
-    "alldefeated:enemy"
+    "defeated:yuanshu"
    ],
-   "Text": "원술군을 모두 물리친다"
+   "Text": "원술을 물리친다"
   }
  ],
  "Sub": [
@@ -29,24 +29,32 @@
    }
   }
  ],
- "TurnLimit": 25,
+ "TurnLimit": 30,
  "Map": "map17.json",
  "Allies": [
   {
-   "X": 4,
-   "Y": 7
-  },
-  {
    "X": 6,
    "Y": 8
+  },
+  {
+   "X": 7,
+   "Y": 7
   },
   {
    "X": 5,
    "Y": 8
   },
   {
-   "X": 3,
+   "X": 6,
+   "Y": 9
+  },
+  {
+   "X": 5,
    "Y": 7
+  },
+  {
+   "X": 4,
+   "Y": 8
   },
   {
    "X": 5,
@@ -54,67 +62,95 @@
   },
   {
    "X": 4,
-   "Y": 8
-  },
-  {
-   "X": 6,
-   "Y": 6
-  },
-  {
-   "X": 3,
-   "Y": 8
+   "Y": 7
   }
  ],
  "Recommend": {
   "liubei": {
-   "X": 4,
-   "Y": 7
-  },
-  "zhangfei": {
    "X": 6,
    "Y": 8
+  },
+  "zhangfei": {
+   "X": 7,
+   "Y": 7
   }
  },
  "Party": [],
  "Enemies": [
   {
    "Character": "troop_footman",
-   "X": 10,
-   "Y": 8,
-   "Rank": "rabble",
-   "Group": "front",
-   "Policy": "assault",
-   "Facing": "NW",
-   "Faction": "yuan"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 11,
-   "Y": 10,
-   "Rank": "rabble",
-   "Group": "front",
-   "Policy": "assault",
-   "Facing": "NW",
-   "Faction": "yuan"
-  },
-  {
-   "Character": "troop_archer",
    "X": 12,
    "Y": 8,
    "Rank": "rabble",
    "Group": "front",
-   "Policy": "assault",
+   "Policy": "react",
    "Facing": "NW",
-   "Faction": "yuan"
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_footman",
+   "X": 13,
+   "Y": 9,
+   "Rank": "rabble",
+   "Group": "front",
+   "Policy": "react",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_archer",
+   "X": 13,
+   "Y": 7,
+   "Rank": "rabble",
+   "Group": "front",
+   "Policy": "react",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 9,
+   "Rank": "rabble",
+   "Group": "front",
+   "Policy": "react",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_archer",
+   "X": 14,
+   "Y": 8,
+   "Rank": "rabble",
+   "Group": "front",
+   "Policy": "react",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_footman",
+   "X": 11,
+   "Y": 9,
+   "Rank": "rabble",
+   "Group": "front",
+   "Policy": "react",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
   },
   {
    "Character": "jiling",
-   "X": 14,
+   "X": 16,
    "Y": 10,
    "Rank": "commander",
    "Shift": -0.07,
    "Group": "ji",
-   "Policy": "react",
+   "Policy": "hold",
    "Facing": "NW",
    "DuelFirst": true,
    "Equipment": [
@@ -125,73 +161,233 @@
   },
   {
    "Character": "troop_footman",
-   "X": 13,
-   "Y": 11,
-   "Rank": "rabble",
-   "Group": "ji",
-   "Policy": "hold",
-   "Facing": "NW",
-   "Faction": "yuan"
-  },
-  {
-   "Character": "troop_footman",
    "X": 15,
    "Y": 9,
    "Rank": "rabble",
    "Group": "ji",
    "Policy": "hold",
    "Facing": "NW",
-   "Faction": "yuan"
+   "Faction": "yuan",
+   "Shift": -0.2
   },
   {
    "Character": "troop_footman",
    "X": 17,
    "Y": 11,
    "Rank": "rabble",
-   "Group": "rear",
-   "Policy": "react",
+   "Group": "ji",
+   "Policy": "hold",
    "Facing": "NW",
-   "Faction": "yuan"
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 11,
+   "Rank": "rabble",
+   "Group": "ji",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
   },
   {
    "Character": "troop_archer",
-   "X": 16,
+   "X": 17,
+   "Y": 9,
+   "Rank": "rabble",
+   "Group": "ji",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_footman",
+   "X": 17,
+   "Y": 10,
+   "Rank": "rabble",
+   "Group": "ji",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_archer",
+   "X": 15,
+   "Y": 11,
+   "Rank": "rabble",
+   "Group": "ji",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_footman",
+   "X": 19,
+   "Y": 11,
+   "Rank": "rabble",
+   "Group": "rear",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_archer",
+   "X": 20,
    "Y": 12,
    "Rank": "rabble",
    "Group": "rear",
-   "Policy": "react",
+   "Policy": "hold",
    "Facing": "NW",
-   "Faction": "yuan"
+   "Faction": "yuan",
+   "Shift": -0.2
   },
   {
-   "Character": "troop_bandit",
-   "X": 12,
+   "Character": "troop_footman",
+   "X": 21,
    "Y": 12,
    "Rank": "rabble",
-   "Group": "bandit",
-   "Policy": "react",
+   "Group": "rear",
+   "Policy": "hold",
    "Facing": "NW",
-   "Faction": "yuan"
+   "Faction": "yuan",
+   "Shift": -0.2
   },
   {
-   "Character": "troop_bandit",
-   "X": 12,
+   "Character": "troop_footman",
+   "X": 20,
    "Y": 13,
    "Rank": "rabble",
-   "Group": "bandit",
-   "Policy": "react",
+   "Group": "rear",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_archer",
+   "X": 21,
+   "Y": 13,
+   "Rank": "rabble",
+   "Group": "rear",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_footman",
+   "X": 19,
+   "Y": 13,
+   "Rank": "rabble",
+   "Group": "rear",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 22,
+   "Y": 13,
+   "Rank": "rabble",
+   "Group": "rear",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_footman",
+   "X": 20,
+   "Y": 14,
+   "Rank": "rabble",
+   "Group": "rear",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "yuanshu",
+   "X": 23,
+   "Y": 15,
+   "Rank": "commander",
+   "Group": "yuan",
+   "Policy": "hold",
    "Facing": "NW",
    "Faction": "yuan"
   },
   {
-   "Character": "troop_bandit",
-   "X": 11,
+   "Character": "troop_footman",
+   "X": 22,
    "Y": 14,
    "Rank": "rabble",
-   "Group": "bandit",
-   "Policy": "react",
-   "Facing": "NE",
-   "Faction": "yuan"
+   "Group": "guard",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_footman",
+   "X": 23,
+   "Y": 14,
+   "Rank": "rabble",
+   "Group": "guard",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_archer",
+   "X": 22,
+   "Y": 15,
+   "Rank": "rabble",
+   "Group": "guard",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_footman",
+   "X": 23,
+   "Y": 16,
+   "Rank": "rabble",
+   "Group": "guard",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_footman",
+   "X": 22,
+   "Y": 16,
+   "Rank": "rabble",
+   "Group": "guard",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
+  },
+  {
+   "Character": "troop_archer",
+   "X": 21,
+   "Y": 15,
+   "Rank": "rabble",
+   "Group": "guard",
+   "Policy": "hold",
+   "Facing": "NW",
+   "Faction": "yuan",
+   "Shift": -0.2
   }
  ],
  "Reward": {
@@ -202,8 +398,8 @@
    "ID": 1,
    "Rect": {
     "X": 0,
-    "Y": 15,
-    "W": 20,
+    "Y": 17,
+    "W": 24,
     "H": 1
    },
    "Name": "남서쪽 끝",
@@ -253,11 +449,128 @@
    ],
    "Do": [
     {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "leibo",
+       "X": 1,
+       "Y": 16,
+       "Facing": "NE",
+       "Rank": "officer",
+       "Group": "bandit",
+       "Policy": "hold",
+       "Side": "enemy",
+       "Faction": "yuan"
+      },
+      {
+       "Character": "chenlan",
+       "X": 2,
+       "Y": 17,
+       "Facing": "NE",
+       "Rank": "officer",
+       "Group": "bandit",
+       "Policy": "hold",
+       "Side": "enemy",
+       "Faction": "yuan"
+      },
+      {
+       "Character": "troop_bandit",
+       "X": 0,
+       "Y": 16,
+       "Facing": "NE",
+       "Rank": "rabble",
+       "Group": "bandit",
+       "Policy": "hold",
+       "Side": "enemy",
+       "Faction": "yuan",
+       "Shift": -0.2
+      },
+      {
+       "Character": "troop_bandit",
+       "X": 0,
+       "Y": 17,
+       "Facing": "NE",
+       "Rank": "rabble",
+       "Group": "bandit",
+       "Policy": "hold",
+       "Side": "enemy",
+       "Faction": "yuan",
+       "Shift": -0.2
+      },
+      {
+       "Character": "troop_bandit",
+       "X": 2,
+       "Y": 16,
+       "Facing": "NE",
+       "Rank": "rabble",
+       "Group": "bandit",
+       "Policy": "hold",
+       "Side": "enemy",
+       "Faction": "yuan",
+       "Shift": -0.2
+      },
+      {
+       "Character": "troop_bandit",
+       "X": 3,
+       "Y": 17,
+       "Facing": "NE",
+       "Rank": "rabble",
+       "Group": "bandit",
+       "Policy": "hold",
+       "Side": "enemy",
+       "Faction": "yuan",
+       "Shift": -0.2
+      },
+      {
+       "Character": "troop_bandit",
+       "X": 1,
+       "Y": 17,
+       "Facing": "NE",
+       "Rank": "rabble",
+       "Group": "bandit",
+       "Policy": "hold",
+       "Side": "enemy",
+       "Faction": "yuan",
+       "Shift": -0.2
+      },
+      {
+       "Character": "troop_bandit",
+       "X": 3,
+       "Y": 16,
+       "Facing": "NE",
+       "Rank": "rabble",
+       "Group": "bandit",
+       "Policy": "hold",
+       "Side": "enemy",
+       "Faction": "yuan",
+       "Shift": -0.2
+      }
+     ]
+    },
+    {
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "jianyong",
-       "Text": "저 마을 터는 무리는 원술을 버린 뇌박·진란의 졸개일세. 곡식부터 챙기는구먼."
+       "Actor": "yuanshu",
+       "Text": "뇌박! 진란! 왜 이렇게 늦었느냐!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "leibo",
+       "Text": "헤헤, 폐하. 오는 길에 마을이 있어서요. 털 게 좀 많더란 말입니다."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "chenlan",
+       "Text": "으헤헤…… 폐하 드실 것도 좀 챙겼습니다요."
       }
      ]
     },
@@ -288,8 +601,7 @@
     {
      "Kind": "ai",
      "Targets": [
-      "ji",
-      "rear"
+      "ji"
      ],
      "Policy": "assault"
     }
@@ -337,6 +649,37 @@
      "Turns": 0
     }
    ]
+  },
+  {
+   "ID": "rear-moves",
+   "If": [
+    "any:[round>=7, defeated:jiling]"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshu",
+       "Text": "무얼 하느냐! 짐의 길을 막는 놈들을 쓸어버려라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "rear"
+     ],
+     "Policy": "assault"
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "guard"
+     ],
+     "Policy": "react"
+    }
+   ]
   }
  ],
  "Faction": "yuan",
@@ -379,13 +722,6 @@
      "Duration": 1.05
     },
     {
-     "Kind": "rush-block",
-     "Title": "기령이 거푸 몰아치다",
-     "Speech": "세 갈래 날이면 뭐혀!",
-     "Side": 1,
-     "Duration": 1.1
-    },
-    {
      "Kind": "block",
      "Title": "기령이 사모를 막다",
      "Speech": "",
@@ -393,18 +729,67 @@
      "Duration": 1.05
     },
     {
-     "Kind": "yielding-block",
-     "Title": "기령이 크게 밀리다",
-     "Speech": "(이놈…… 팔이 저려 온다!)",
+     "Kind": "rush-block",
+     "Title": "기령이 거푸 몰아치다",
+     "Speech": "세 갈래 날이면 뭐혀!",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "hit",
+     "Title": "장비의 일격에 기령이 뒤로 밀리다",
+     "Speech": "어딜!",
      "Side": 0,
-     "Duration": 1.2
+     "Duration": 1.1
     },
     {
      "Kind": "talk",
-     "Title": "장비가 웃다",
+     "Title": "기령이 이를 악물다",
+     "Speech": "이, 이까짓 것……!",
+     "Side": 1,
+     "Duration": 2.0
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "기령이 다시 몰아치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "hit",
+     "Title": "다시 장비의 일격, 기령이 밀리다",
+     "Speech": "으랏차!",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "기령이 숨을 몰아쉬다",
+     "Speech": "(이놈…… 팔이 저려 온다!)",
+     "Side": 1,
+     "Duration": 2.2
+    },
+    {
+     "Kind": "block",
+     "Title": "기령이 힘을 짜내 내려치나 장비가 받아 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "hit",
+     "Title": "세 번째 일격, 기령이 크게 밀리다",
      "Speech": "하하하! 원술 밑에서 배만 불렸구먼!",
      "Side": 0,
-     "Duration": 2.4
+     "Duration": 1.3
+    },
+    {
+     "Kind": "talk",
+     "Title": "기령이 마지막으로 덤비다",
+     "Speech": "으아아아!",
+     "Side": 1,
+     "Duration": 1.6
     },
     {
      "Kind": "critical",

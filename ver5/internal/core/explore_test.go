@@ -189,6 +189,17 @@ func TestShopBuysAndSellsForHalf(t *testing.T) {
 	assert.Equal(t, 1, e.Observe().Warehouse["spear"], "bought equipment goes to the warehouse")
 }
 
+func TestShopRateLowersWhatItAsksNotWhatItPays(t *testing.T) {
+	e := walkEngine(t)
+	s := e.data.Shops["tools"]
+	s.Rate = 50
+	e.data.Shops["tools"] = s
+	applyOK(t, e, Command{Kind: "buy", Target: "상인", Item: "tonic", Count: 2})
+	assert.Equal(t, 70, e.Observe().Money, "two tonics at half of 30")
+	applyOK(t, e, Command{Kind: "sell", Target: "상인", Item: "tonic", Count: 1})
+	assert.Equal(t, 85, e.Observe().Money, "it still buys back for half the full price")
+}
+
 func TestWalkSavesAndRestores(t *testing.T) {
 	e := walkEngine(t)
 	applyOK(t, e, Command{Kind: "walk", Option: "street", X: 3, Y: 8, Target: "NE"})

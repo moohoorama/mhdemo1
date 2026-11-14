@@ -18,4 +18,4 @@ Don 동승
 Liu 유비  (off stage, enters later (cell 6 9))
 
 # c17-i01: Liu -> 6 3
-# c17-i14: Liu -> 6 9 and leaves
+# c17-i15: Liu -> 6 9 and leaves

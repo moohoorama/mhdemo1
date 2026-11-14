@@ -29,8 +29,12 @@
    "Y": 3
   },
   {
-   "X": 8,
-   "Y": 8
+   "X": 13,
+   "Y": 5
+  },
+  {
+   "X": 10,
+   "Y": 13
   },
   {
    "X": 17,
@@ -39,83 +43,83 @@
  ],
  "Allies": [
   {
-   "X": 6,
-   "Y": 6
+   "X": 10,
+   "Y": 2
   },
   {
-   "X": 5,
-   "Y": 6
+   "X": 9,
+   "Y": 2
   },
   {
-   "X": 6,
-   "Y": 5
+   "X": 10,
+   "Y": 3
   },
   {
-   "X": 5,
-   "Y": 7
+   "X": 11,
+   "Y": 2
   },
   {
-   "X": 7,
-   "Y": 5
+   "X": 9,
+   "Y": 3
   },
   {
-   "X": 4,
-   "Y": 7
+   "X": 11,
+   "Y": 3
   },
   {
-   "X": 7,
-   "Y": 4
+   "X": 10,
+   "Y": 1
   },
   {
-   "X": 6,
-   "Y": 7
+   "X": 8,
+   "Y": 2
   }
  ],
  "Recommend": {
   "liubei": {
-   "X": 6,
-   "Y": 6
+   "X": 10,
+   "Y": 2
   }
  },
  "Party": [],
  "Enemies": [
   {
    "Character": "zhanghe",
-   "X": 3,
-   "Y": 2,
+   "X": 6,
+   "Y": 17,
    "Group": "zh",
-   "Policy": "assault",
+   "Policy": "react",
    "Facing": "SE",
    "DuelFirst": true,
    "Faction": "yuan"
   },
   {
    "Character": "troop_cavalry",
-   "X": 3,
-   "Y": 3,
+   "X": 7,
+   "Y": 17,
    "Shift": -0.07,
    "Group": "zh",
-   "Policy": "assault",
+   "Policy": "react",
    "Facing": "SE",
    "Faction": "yuan"
   },
   {
    "Character": "troop_cavalry",
-   "X": 2,
-   "Y": 3,
+   "X": 6,
+   "Y": 16,
    "Shift": -0.07,
    "Group": "zh",
-   "Policy": "assault",
+   "Policy": "react",
    "Facing": "SE",
    "Faction": "yuan"
   },
   {
    "Character": "troop_cavalry",
-   "X": 3,
-   "Y": 1,
+   "X": 5,
+   "Y": 17,
    "Shift": -0.07,
    "Group": "zh",
-   "Policy": "assault",
+   "Policy": "react",
    "Facing": "SE",
    "Faction": "yuan"
   },
@@ -123,10 +127,10 @@
    "Character": "guotu",
    "X": 1,
    "Y": 1,
-   "Rank": "commander",
    "Group": "guo",
    "Policy": "hold",
    "Facing": "SE",
+   "Rank": "commander",
    "Faction": "yuan"
   },
   {
@@ -180,23 +184,33 @@
    "Faction": "yuan"
   },
   {
+   "Character": "troop_cavalry",
+   "X": 3,
+   "Y": 2,
+   "Shift": -0.07,
+   "Group": "guo",
+   "Policy": "hold",
+   "Facing": "SE",
+   "Faction": "yuan"
+  },
+  {
    "Character": "troop_footman",
-   "X": 14,
-   "Y": 10,
+   "X": 9,
+   "Y": 12,
    "Shift": -0.07,
    "Group": "picket",
    "Policy": "react",
-   "Facing": "NW",
+   "Facing": "NE",
    "Faction": "yuan"
   },
   {
    "Character": "troop_archer",
-   "X": 15,
-   "Y": 11,
+   "X": 8,
+   "Y": 13,
    "Shift": -0.07,
    "Group": "picket",
    "Policy": "react",
-   "Facing": "NW",
+   "Facing": "NE",
    "Faction": "yuan"
   }
  ],
@@ -214,17 +228,6 @@
    },
    "Name": "연주 경계",
    "Description": "유비가 닿으면 승리"
-  },
-  {
-   "ID": 2,
-   "Rect": {
-    "X": 9,
-    "Y": 9,
-    "W": 11,
-    "H": 11
-   },
-   "Name": "개울 건너",
-   "Description": "유비가 들어서면(아니면 2라운드에) 적 차례에 조운이 나타난다"
   }
  ],
  "Events": [
@@ -239,7 +242,7 @@
      "Lines": [
       {
        "Actor": "zhanghe",
-       "Text": "횃불을 들어라! 유비는 남쪽 길로 갔다!"
+       "Text": "횃불을 들어라! 유비는 연주로 가는 길을 탔다!"
       }
      ]
     },
@@ -256,8 +259,8 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "jianyong",
-       "Text": "인사도 없이 떠나는 손님이니, 주인이 서운할 만도 하지."
+       "Actor": "sunqian",
+       "Text": "장합이 저 아래로 돌아 앞을 막으려는 모양이군. 앞뒤로 갇히겠어."
       }
      ]
     },
@@ -266,7 +269,7 @@
      "Lines": [
       {
        "Actor": "liubei",
-       "Text": "쉬지 말고 가세. 연주 경계만 넘으면 되네!"
+       "Text": "여울로 강을 건너 동쪽으로 돌아가세. 연주 경계만 넘으면 되네!"
       }
      ]
     }
@@ -284,6 +287,30 @@
       "guo"
      ],
      "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "zhanghe-moves",
+   "If": [
+    "round>=4"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "zh"
+     ],
+     "Policy": "assault"
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhanghe",
+       "Text": "유비가 강을 끼고 동쪽으로 돈다. 앞질러 길을 막아라!"
+      }
+     ]
     }
    ]
   },
@@ -318,17 +345,6 @@
        "Facing": "SE",
        "Side": "enemy",
        "Faction": "yuan"
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 3,
-       "Y": 3,
-       "Shift": -0.07,
-       "Group": "horse",
-       "Policy": "assault",
-       "Facing": "SE",
-       "Side": "enemy",
-       "Faction": "yuan"
       }
      ]
     },
@@ -337,7 +353,7 @@
      "Lines": [
       {
        "Actor": "guotu",
-       "Text": "기병을 더 풀어라! 개울을 건너기 전에 따라잡아라!"
+       "Text": "기병을 더 풀어라! 여울을 건너기 전에 따라잡아라!"
       }
      ]
     }
@@ -346,8 +362,8 @@
   {
    "ID": "zhaoyun",
    "If": [
-    "any:[round>=2, at:liubei:2]",
-    "turnstart:enemy"
+    "round>=2",
+    "turnstart:ally"
    ],
    "Do": [
     {
@@ -355,9 +371,9 @@
      "Spawns": [
       {
        "Character": "zhaoyun",
-       "X": 9,
-       "Y": 4,
-       "Facing": "NW"
+       "X": 18,
+       "Y": 3,
+       "Facing": "SW"
       }
      ]
     },
@@ -366,7 +382,7 @@
      "Lines": [
       {
        "Actor": "zhaoyun",
-       "Text": "현덕 공! 상산의 조자룡이 왔습니다!"
+       "Text": "저 깃발은…… 현덕 공이시다! 위태로우신 것 같으니, 어서 합류하자!"
       }
      ]
     },
@@ -387,33 +403,6 @@
        "Text": "공손 장군께서 돌아가신 뒤 섬길 분을 찾아다녔습니다. 이번에는 곁을 떠나지 않겠습니다."
       }
      ]
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "move",
-        "Unit": "zhanghe",
-        "To": {
-         "X": 8,
-         "Y": 4
-        },
-        "Facing": "SE"
-       }
-      ],
-      [
-       {
-        "Kind": "face",
-        "Unit": "zhaoyun",
-        "Facing": "NW"
-       }
-      ]
-     ]
-    },
-    {
-     "Kind": "duel",
-     "Duel": "yanzhou-zhaoyun-zhanghe"
     }
    ]
   }

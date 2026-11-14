@@ -18,6 +18,9 @@ import (
 // insuWhere tells where a seal is used: off the field, where the promoted officer can change weapons.
 const insuWhere = "인수는 탐험과 출전 준비의 소지품에서 쓸 수 있습니다"
 
+// insuInBattle is the note on a seal in the battle's item list, where it is greyed out.
+const insuInBattle = "전투 중에는 쓸 수 없습니다. 탐험이나 출전 준비에서 소지품을 열어 쓰십시오."
+
 // insuState is the seal picker of the party window: the seal, the officer picked and, while the class is chosen,
 // the cards of the classes.
 type insuState struct {

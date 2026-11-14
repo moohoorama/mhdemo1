@@ -160,7 +160,9 @@ func (e *Engine) explore(c Command) error {
 		return fail("InvalidItem")
 	}
 	if c.Kind == "buy" {
-		if !slices.Contains(e.data.Shops[e.area().People[c.Target].Shop].Items, c.Item) {
+		shop := e.area().People[c.Target].Shop
+		price = e.data.Ask(shop, c.Item)
+		if !slices.Contains(e.data.Shops[shop].Items, c.Item) {
 			return fail("NotSold")
 		}
 		if e.state.Money < price*c.Count {

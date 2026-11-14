@@ -48,6 +48,7 @@ const (
 	FxOpening            = "opening"              // its blows deal this share more of the target's HP share above half
 	FxDesperate          = "desperate"            // at half HP or less its blows deal this share more
 	FxGrit               = "grit"                 // at half HP or less blows on it deal this share less
+	FxHoldGround         = "hold_ground"          // ending its own turn without walking, blows on it deal this share less until its next turn
 	FxRangedSure         = "ranged_sure"          // its ranged attacks always hit
 	FxRout               = "rout:"                // + status: defeating a foe lowers that stat of the foes around it
 	FxHitDebuff          = "hit_debuff:"          // + status: a landed physical hit lowers that stat of the target
@@ -118,7 +119,7 @@ func init() {
 		FxCritMounted, FxCritWounded, FxLoneCritLeader, FxDoubleAlways, FxAssist, FxRetaliate, FxGuardian, FxSplashCross, FxSplashCrossRanged, FxSplashSquare, FxSplashSquareRanged,
 		FxPierce, FxFlank, FxHeavy, FxCounterBoost, FxKnockback, FxTerrainCap, FxTerrainFloor, FxGrassFactor, FxTerrainFactor, FxPoison, FxPoisonBoost, FxLifeSteal,
 		FxMissHalf, FxOutnumbered, FxCompanions, FxLone, FxChargePower, FxChargeShock, FxChargeAccuracy, FxOpening,
-		FxDesperate, FxGrit, FxRangedSure, FxRout,
+		FxDesperate, FxGrit, FxHoldGround, FxRangedSure, FxRout,
 		FxHitDebuff, FxTurnBuff, FxAuraBuff, FxBulwark, FxCritImmune, FxRangedImmune, FxRangedWard, FxCounterWard, FxStartMana, FxReflect, FxReflectStatus,
 		FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxAuraHaste, FxRangedReach, FxMountedRange, FxSpellRange,
 		FxSpellSure, FxSpellWard, FxChain, FxSure, FxCritElement, FxPower, FxPatience, FxFinisher, FxDispelBuffs, FxSpellLeech, FxDispel,

@@ -839,31 +839,35 @@ func TestMagicCoefficientAddsSpellDamage(t *testing.T) {
 func TestSpellGainsOnItsElementsTerrain(t *testing.T) {
 	e, a, b := arena(t)
 	fire := content.Skill{Kind: content.KindMagic, Coeff: 1, Element: "fire"}
-	plain := e.damage(a, b, fire)
+	land := func(s content.Skill, crit bool) float64 { return e.damage(a, b, s) * e.boost(a, b, s, crit) }
+	plain := land(fire, false)
 	ground := string(e.Cell(b.X, b.Y).Ground)
 	e.data.Rules.ElementTerrain = map[string]map[string]int{"fire": {ground: 30}, "water": {ground: 15}}
-	if got := e.damage(a, b, fire); math.Abs(got-plain*1.3) > 1e-9 {
+	if got := land(fire, false); math.Abs(got-plain*1.3) > 1e-9 {
 		t.Fatalf("fire on its terrain: %v, want %v", got, plain*1.3)
 	}
+	if got, want := land(fire, true), plain*(1.3+e.data.Rules.CritMultiplier-1); math.Abs(got-want) > 1e-9 {
+		t.Fatalf("a critical on its terrain adds the two bonuses: %v, want %v", got, want)
+	}
 	e.data.Rules.ElementTerrain = map[string]map[string]int{"water": {ground: 15}}
-	if got := e.damage(a, b, fire); got != plain {
+	if got := land(fire, false); got != plain {
 		t.Fatalf("another element's terrain: %v, want %v", got, plain)
 	}
 	e.data.Rules.ElementTerrain = map[string]map[string]int{"fire": {ground: 30}}
 	e.data.Rules.CritMarks, e.data.Rules.CritMarkPower = map[string]string{"fire": "e", "water": "w"}, 45
 	e.state.TileStates = append(e.state.TileStates, TileState{X: b.X, Y: b.Y, State: "w"})
 	water := content.Skill{Kind: content.KindMagic, Coeff: 1, Element: "water"}
-	if got := e.damage(a, b, water); math.Abs(got-plain*1.45) > 1e-9 {
+	if got := land(water, false); math.Abs(got-plain*1.45) > 1e-9 {
 		t.Fatalf("water on its own mark: %v, want %v", got, plain*1.45)
 	}
-	if got := e.damage(a, b, fire); math.Abs(got-plain*1.3) > 1e-9 {
+	if got := land(fire, false); math.Abs(got-plain*1.3) > 1e-9 {
 		t.Fatalf("fire on water's mark keeps its ground's bonus: %v, want %v", got, plain*1.3)
 	}
 	e.state.TileStates = nil
 	strike := content.Skill{Kind: content.KindPhysical, Coeff: 1, Element: "fire"}
-	before := e.damage(a, b, strike)
+	before := land(strike, false)
 	e.data.Rules.ElementTerrain = map[string]map[string]int{"fire": {ground: 30}}
-	if got := e.damage(a, b, strike); got != before {
+	if got := land(strike, false); got != before {
 		t.Fatalf("a strike with an element: %v, want %v", got, before)
 	}
 }

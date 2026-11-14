@@ -125,7 +125,7 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 		case "say":
 			speech := []content.Speech{}
 			for _, line := range a.Lines {
-				if u := e.unit(line.Actor); u != nil && u.HP > 0 {
+				if u := e.unit(line.Actor); line.Offstage || u != nil && u.HP > 0 {
 					speech = append(speech, line)
 				}
 			}

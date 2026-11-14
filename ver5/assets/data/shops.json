@@ -106,6 +106,34 @@
     "fine_liquor",
     "baijiu"
    ]
+  },
+  "ye": {
+   "Name": "도구점",
+   "Items": [
+    "ration_bag",
+    "route_map",
+    "war_horse",
+    "insu_mid"
+   ]
+  },
+  "ye_tavern": {
+   "Name": "주점",
+   "Items": [
+    "bean",
+    "barley",
+    "liquor",
+    "fine_liquor",
+    "baijiu"
+   ]
+  },
+  "mizhu": {
+   "Name": "미축 상단",
+   "Items": [
+    "bean",
+    "barley",
+    "liquor"
+   ],
+   "Rate": 75
   }
  }
 }

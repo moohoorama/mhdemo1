@@ -85,7 +85,7 @@ func (p *player) shopScreen(o core.Observation, person *content.ExplorePerson) {
 		return func() { p.command(core.Command{Kind: kind, Target: p.actor, Item: item, Count: 1}) }
 	}
 	for _, id := range shop.Items {
-		p.add(fmt.Sprintf("사기: %s %d", p.itemName(id), p.d.Price(id)), trade("buy", id))
+		p.add(fmt.Sprintf("사기: %s %d", p.itemName(id), p.d.Ask(person.Shop, id)), trade("buy", id))
 	}
 	for _, store := range []map[string]int{o.Inventory, o.Warehouse} {
 		for _, id := range slices.Sorted(maps.Keys(store)) {

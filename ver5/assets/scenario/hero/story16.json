@@ -281,6 +281,28 @@
    "Kind": "say",
    "Speaker": "caocao",
    "Text": "하하하!"
+  },
+  {
+   "ID": "c16-b23",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "수고했네, 현덕. 여포를 토벌하는 데 공이 컸으니, 나와 함께 폐하를 알현하러 가세."
+  },
+  {
+   "ID": "c16-b24",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "예, 승상."
+  },
+  {
+   "ID": "c16-march",
+   "Kind": "scene",
+   "Place": "허도로 가는 길"
+  },
+  {
+   "ID": "c16-m01",
+   "Kind": "narrate",
+   "Text": "유비 일행은 조조와 함께 황제가 있는 수도, 허도로 향했다."
   }
  ],
  "Events": []

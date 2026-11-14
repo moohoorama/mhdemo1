@@ -24,7 +24,7 @@ func curve(x float64, pts content.Curve) float64 {
 }
 func chance(c content.Chance, r float64) float64 { return clamp(c.Base+c.Per*(r-1), 0, c.Max) }
 
-// damage is the unrounded damage of one blow before critical, share and armor-like reductions.
+// damage is the unrounded damage of one blow before its terrain and critical boost, share and armor-like reductions.
 func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	R := e.data.Rules
 	a, b := e.stats(u), e.stats(v)
@@ -51,9 +51,6 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	}
 	if s.Kind == content.KindMagic {
 		out *= R.MagicPower
-		if p := e.data.ElementTerrain(e.Cell(v.X, v.Y), s.Element); p != 0 {
-			out *= 1 + float64(p)/100
-		}
 		out *= 1 + e.fx(u, content.FxPower+s.Element)
 		if mp := e.castingMP(u); mp > 50 && e.has(u, content.FxPatience) {
 			out *= 1 + float64(mp-50)/100
@@ -74,10 +71,26 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	if k := e.fx(v, content.FxGrit); k > 0 && e.wounded(v) {
 		out *= 1 - k
 	}
+	if s := v.Status[holdGround]; s.Turns > 0 {
+		out *= 1 - float64(s.Value)/100
+	}
 	if p := e.state.DamagePct; p > 0 && p != 100 {
 		out = math.Max(1, out*float64(p)/100)
 	}
 	return out
+}
+
+// boost is what a landed blow is multiplied by: its element's terrain bonus and, when critical, the critical
+// bonus, added together rather than multiplied.
+func (e *Engine) boost(u, v *Unit, s content.Skill, crit bool) float64 {
+	k := 1.0
+	if s.Kind == content.KindMagic {
+		k += float64(e.data.ElementTerrain(e.Cell(v.X, v.Y), s.Element)) / 100
+	}
+	if crit {
+		k += e.data.Rules.CritMultiplier - 1 + e.fx(u, content.FxCritBoost)
+	}
+	return k
 }
 
 // wounded tells whether the unit is down to half its HP or less.
@@ -264,9 +277,11 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 			return 0, false, false
 		}
 		d *= half
-	} else if crit {
-		d *= R.CritMultiplier + e.fx(u, content.FxCritBoost)
-		e.emit("critical", u.ID, v.ID, 0)
+	} else {
+		d *= e.boost(u, v, s, crit)
+		if crit {
+			e.emit("critical", u.ID, v.ID, 0)
+		}
 	}
 	n := e.hurt(v, int(math.Floor(e.bulwark(v, d))), u)
 	if hit && n > 0 && phys {
@@ -284,6 +299,20 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 		}
 	}
 	return n, hit, crit
+}
+
+// holdGround is the status 진지고수 leaves on a unit that ended its own turn without walking: blows on it deal
+// Value percent less until its next turn starts.
+const holdGround = "hold_ground"
+
+// standFast gives u 진지고수's guard when it ends its turn where the turn began.
+func (e *Engine) standFast(u *Unit) {
+	if k := e.fx(u, content.FxHoldGround); k > 0 && u.Steps == 0 && u.HP > 0 {
+		if u.Status == nil {
+			u.Status = map[string]Status{}
+		}
+		u.Status[holdGround] = Status{Turns: 1, Value: int(math.Round(k * 100))}
+	}
 }
 
 // bulwark is what a blow of d leaves after v's 철벽 or 철갑, which halve the part above a share of max HP;
@@ -915,7 +944,7 @@ func (e *Engine) weakestAround(v *Unit, faction string) *Unit {
 }
 
 // buffStatuses are the statuses that help their holder besides stat raises: 파진 strips them with those.
-var buffStatuses = map[string]bool{"speed": true, "range": true, "counter": true, "guard": true, "sure_crit": true,
+var buffStatuses = map[string]bool{"speed": true, "range": true, "counter": true, "guard": true, "sure_crit": true, holdGround: true,
 	"stance_pierce": true, "stance_cross": true, "stance_square": true}
 
 // stripBuffs removes every buff the unit holds.
@@ -1032,11 +1061,14 @@ func (e *Engine) endFaction() {
 		if !u.ActsIn(ending, endingArmy) {
 			continue
 		}
+		if !u.Done {
+			e.standFast(u) // a unit left standing when its side ends the turn holds its ground too
+		}
 		u.Steps = 0 // 돌진 and 기습 count the walk of the unit's own turn: no charged counters on the other side's
 		for _, k := range keys(u.Status) {
 			s := u.Status[k]
-			if k == "counter" {
-				continue // counter ends on its own
+			if k == "counter" || k == holdGround {
+				continue // counter and 진지고수 end on their own, at the unit's next turn
 			}
 			s.Turns--
 			if s.Turns <= 0 {
@@ -1088,6 +1120,7 @@ func (e *Engine) endFaction() {
 			e.passAilments(u)
 		}
 		delete(u.Status, "counter")
+		delete(u.Status, holdGround)
 		u.Steps = 0
 		st := e.stats(u)
 		if u.Status["poison"].Turns > 0 {

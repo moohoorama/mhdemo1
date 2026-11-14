@@ -109,10 +109,12 @@ type ExploreSign struct {
 	Talk []Line
 }
 
-// Shop sells Items (equipment or item ids) for their Price.
+// Shop sells Items (equipment or item ids) for their Price, or for Rate percent of it when Rate is set (미축 selling
+// to his own lord below the market).
 type Shop struct {
 	Name  string
 	Items []string
+	Rate  int `json:",omitempty"`
 }
 
 // PersonName is the shown name of a person key: the part before @ and #.
@@ -146,6 +148,15 @@ func (d *Data) Gainable(id string) bool {
 const Money = "money"
 
 // Price is what a shop asks for an equipment or item id; 0 when it is not sold.
+// Ask is what shop asks for id: its Price, at the shop's Rate.
+func (d *Data) Ask(shop, id string) int {
+	p := d.Price(id)
+	if r := d.Shops[shop].Rate; r > 0 {
+		p = p * r / 100
+	}
+	return p
+}
+
 func (d *Data) Price(id string) int {
 	if e, ok := d.Equipment[id]; ok {
 		return e.Price

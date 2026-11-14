@@ -164,7 +164,7 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 				}
 				seen := map[string]bool{}
 				for _, line := range a.Lines {
-					if !actors[line.Actor] || line.Text == "" || seen[line.Actor] {
+					if _, known := d.Characters[line.Actor]; !(actors[line.Actor] || line.Offstage && known) || line.Text == "" || seen[line.Actor] {
 						return nil, nil, fmt.Errorf("battle dialogue %s", event.ID)
 					}
 					seen[line.Actor] = true

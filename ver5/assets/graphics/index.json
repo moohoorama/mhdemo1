@@ -1687,7 +1687,10 @@
   "maps/S_xiapi_inner.json",
   "maps/S_xiapi.json",
   "maps/S_liu_house.json",
-  "maps/S_mangdang.json"
+  "maps/S_mangdang.json",
+  "maps/S_ye.json",
+  "maps/S_ye_hall.json",
+  "maps/S_pond_deck.json"
  ],
  "extra": {
   "version": 1,

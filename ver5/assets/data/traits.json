@@ -523,6 +523,16 @@
     "grit": 0.5
    }
   },
+  "hold_ground": {
+   "Name": "진지고수",
+   "Desc": "자기 차례에 이동하지 않고 끝내면, 다음 자기 차례까지 받는 피해가 절반.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 700,
+   "Effects": {
+    "hold_ground": 0.5
+   }
+  },
   "sure_footing": {
    "Name": "답파",
    "Desc": "자신의 지형 보정이 100 미만이면 100으로 본다(공격·방어 모두).",
