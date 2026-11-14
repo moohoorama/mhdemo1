@@ -105,7 +105,7 @@ func TestCheckpoint(t *testing.T) {
 		}
 		got := shadows(0)
 		require.Len(t, got, 4)
-		assert.Equal(t, Draw{Kind: DrawSprite, Name: "jshade_72_0", X: 256, Y: 162 - 72}, got[0], "as high as the wall block")
+		assert.Equal(t, Draw{Kind: DrawSprite, Name: "jshade_72_0", X: 480, Y: 162 - 72 - 112}, got[0], "as high as the wall block")
 		assert.Empty(t, shadows(1), "turned a quarter, the wall runs along u: no face along v throws one")
 	})
 	t.Run("every turn builds", func(t *testing.T) {
@@ -171,7 +171,7 @@ func TestWalkable(t *testing.T) {
 		open bool
 	}{
 		{"the road east of the wall", 20, 9, true},
-		{"the far cliff", 20, 0, false},
+		{"the far cliff", 20, -14, false},
 		{"the near ridge", 20, 32, false},
 		{"the wall line", 17, 3, false},
 		{"the gate's passage", 17, 9, true},

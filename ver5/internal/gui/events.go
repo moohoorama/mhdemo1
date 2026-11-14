@@ -84,6 +84,8 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 		return fmt.Sprintf("일기토  %s VS %s", a, t), true
 	case "victory":
 		return "승리!", true
+	case "objective":
+		return "부목표 달성: " + e.Text, true
 	case "turn":
 		return fmt.Sprintf("%d턴 · %s 차례", e.Amount, g.armyName(e.Target, e.Text)), false
 	case "join":

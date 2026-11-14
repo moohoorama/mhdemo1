@@ -24,6 +24,7 @@ func main() {
 	seed := flag.Uint64("seed", 1, "seed")
 	stages := flag.Int("stages", 7, "battles to fight")
 	xp := flag.Int("xp", storage.DefaultScalePct, "experience scale in percent, as the settings set it")
+	difficulty := flag.String("difficulty", "normal", "difficulty id (game.json Difficulties)")
 	eval := flag.String("eval", "", "other weights for the player's units as n,m,threat,top,w (ai.ParseEval)")
 	flag.Parse()
 	if *eval != "" {
@@ -33,7 +34,8 @@ func main() {
 	}
 	d, err := content.Load(*dir)
 	check(err)
-	e := core.New(d, *seed)
+	e, err := core.NewGame(d, *seed, *difficulty)
+	check(err)
 	e.SetDamagePct(storage.DefaultScalePct)
 	e.SetXPPct(*xp)
 	apply := func(c core.Command) {

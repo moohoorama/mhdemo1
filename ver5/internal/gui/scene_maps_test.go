@@ -37,7 +37,7 @@ func TestScenePlanInField(t *testing.T) {
 		var items []drawItem
 		wall := -1
 		for _, it := range f.sceneItems() {
-			if wall < 0 && f.scenePieces[len(items)].Name == "swall2" {
+			if p := f.scenePieces[len(items)]; p.Name == "swall2" && p.At == [2]int{17, 2} {
 				wall = len(items)
 			}
 			items = append(items, it)

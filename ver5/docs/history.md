@@ -5,6 +5,10 @@
 
 ---
 
+## 2026-11-14 난이도 이름: 일반·어려움·매우 어려움
+- assets/data/game.json `Difficulties` Name: easy 쉬움→일반, normal 보통→어려움, hard 어려움→매우 어려움(디버그 완만 셋도 같은 이름으로). ID·수치는 그대로라 저장 파일은 영향 없음 — 사용자: 버프 책략을 여럿에게 거는 경험치 몰이는 의도한 것(시스템을 잘 써서 키우라는 뜻)이고, 그렇게 해야 넘는 hard(신도성 시작 주력 Lv20 안팎)는 "매우 어려움"이 맞다
+- 문서의 쉬움·보통·어려움은 ID easy·normal·hard를 뜻한다(docs/stage_lv_balance.md 1.2)
+
 ## 2026-11-14 초상 8인, 초상 연결 누락 34명
 - tools/illustrations/portraits/(sheets/)jiling·dongcheng·chengong·taishici·guotu·chendao·guanping·zhoucang.png, assets/graphics/portraits/같은 이름(256px), sheets/prompts.md, tools/illustrations/README.md: 대사는 있는데 초상이 없던 기령·동승·진궁·태사자·곽도·진도·관평·주창을 수묵 담채 단독 초상으로 — 사용자 요청
 - assets/data/characters.json·characters_story.json `Look.Portrait`: 초상 그림이 있는데 Look에 연결이 없어 대화창에 얼굴이 안 나오던 34명(목순·무안국, 파재·장량·장보·주준, 정보·한당, 조잠·이숙·서영, 조인·조홍, 교모·한복·공주·조무·사신, 조조군 8인 등)과 새 8인에 `"Portrait": "<키>"`를 넣음 — GUI는 Look.Portrait로만 초상을 찾음

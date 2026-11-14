@@ -1030,7 +1030,7 @@ func (e *Engine) settle() {
 				}
 				e.state.PendingFlags[o.Flag] = 1
 			}
-			e.emit("objective", "", o.ID, 0)
+			e.events = append(e.events, Event{Kind: "objective", Target: o.ID, Text: o.Text})
 		}
 	}
 	for k, v := range e.state.PendingFlags {
