@@ -31,6 +31,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime/pprof"
 	"strconv"
 	"strings"
 	"sync"
@@ -55,6 +56,7 @@ var (
 	size   = flag.String("size", "1280x850", "screen size in device pixels, e.g. 2400x1080 for a phone")
 	uiPct  = flag.Int("uiscale", 0, "UI size setting in percent (80-160); 0 keeps the default")
 	sheet  = flag.Bool("sheet", false, "capture the -at frames on every reference screen into one sheet each")
+	prof   = flag.String("cpuprofile", "", "write CPU profiles to <this>.guest.pprof (the game) and <this>.host.pprof (the capture)")
 	still  = flag.Float64("still", 0, "stop once the screen has not changed for this many seconds; 0 plays every frame")
 )
 
@@ -219,12 +221,25 @@ func run() error {
 	// one more frame than captured: the guest stops itself after its last frame
 	guestCmd := exec.Command(guestBin, "-ui", *ui, "-frames", strconv.Itoa(*frames+1), "-every", "0", "-stage", *stage, "-duel", *duel, "-node", *node,
 		"-size", *size, "-uiscale", strconv.Itoa(*uiPct))
+	if *prof != "" {
+		guestCmd.Args = append(guestCmd.Args, "-cpuprofile", *prof+".guest.pprof")
+	}
 	guestCmd.Env = append(os.Environ(), "EBITENGINE_VM_ENDPOINT="+endpoint)
 	guestCmd.Stdout, guestCmd.Stderr = os.Stderr, os.Stderr
 	if err := guestCmd.Start(); err != nil {
 		return fmt.Errorf("starting the guest: %w", err)
 	}
-	defer func() { _ = guestCmd.Process.Kill(); _ = guestCmd.Wait() }()
+	defer func() {
+		// the guest ends itself after its last frame; give it time to flush its profile before killing it
+		exited := make(chan struct{})
+		go func() { _ = guestCmd.Wait(); close(exited) }()
+		select {
+		case <-exited:
+		case <-time.After(5 * time.Second):
+			_ = guestCmd.Process.Kill()
+			<-exited
+		}
+	}()
 
 	if dl, ok := ln.(interface{ SetDeadline(time.Time) error }); ok {
 		_ = dl.SetDeadline(time.Now().Add(60 * time.Second)) // loading the game data takes a while
@@ -264,6 +279,16 @@ func run() error {
 		}
 	}
 
+	if *prof != "" {
+		f, err := os.Create(*prof + ".host.pprof")
+		if err != nil {
+			return err
+		}
+		if err := pprof.StartCPUProfile(f); err != nil {
+			return err
+		}
+		defer pprof.StopCPUProfile()
+	}
 	start := time.Now()
 	ebiten.SetWindowVisible(false)
 	runErr := ebiten.RunGame(h)
