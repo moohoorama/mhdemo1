@@ -215,8 +215,7 @@ func (e *Engine) welcome(id string, order int) *Character {
 	c.Left = 0
 	e.charIDs[id] = e.chars.NewEntity(&c)
 	o := e.char(id)
-	e.raiseTo(o, o.Level+max(missed, 0))
-	e.joinAt(o, e.joinLevel(order))
+	e.raiseTo(o, max(o.Level+max(missed, 0), e.joinLevel(order)))
 	return o
 }
 

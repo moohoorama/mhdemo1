@@ -51,6 +51,14 @@ func TestAwayOfficerComesBack(t *testing.T) {
 		assert.Equal(t, e.joinLevel(20), e.welcome("zhangfei", 20).Level)
 	})
 
+	t.Run("keeps the class they left in", func(t *testing.T) {
+		e := leave(20)
+		class := e.state.Away[0].Class
+		o := e.welcome("zhangfei", 20)
+		assert.GreaterOrEqual(t, o.Level, R.PromoteLevels[1])
+		assert.Equal(t, class, o.Class)
+	})
+
 	t.Run("a save keeps who is away", func(t *testing.T) {
 		e := leave(30)
 		r, err := Restore(d, e.Snapshot())
