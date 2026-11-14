@@ -233,15 +233,10 @@ func (f *Field) drawOutsideGround(clockMS float64) {
 			o.layer.DrawImage(o.tiles, top)
 		}
 	}
-	for _, p := range o.decor {
-		if !f.DrawBounds.Empty() && !p.rect.Overlaps(f.DrawBounds) {
-			continue
-		}
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(float64(p.rect.Min.X)-f.renderX, float64(p.rect.Min.Y)-f.renderY)
-		op.GeoM.Scale(z, z)
-		o.layer.DrawImage(p.img, op)
-	}
+	var geo ebiten.GeoM
+	geo.Translate(-f.renderX, -f.renderY)
+	geo.Scale(z, z)
+	f.batch.draw(o.layer, o.decor, f.DrawBounds, geo, ebiten.BlendSourceOver)
 	f.drawHaze(o.layer)
 	f.cutBattleArea(o.layer)
 	c.DrawImage(o.layer, nil)

@@ -78,9 +78,9 @@ func LoadShots(dir, name string) (Shots, error) {
 		}
 		for _, r := range s.Frames {
 			rect := image.Rect(r[0], r[1], r[0]+r[2], r[1]+r[3])
-			shot.Frames = append(shot.Frames, sheet.SubImage(rect).(*ebiten.Image))
+			shot.Frames = append(shot.Frames, cut(sheet, rect))
 			if s.Light {
-				shot.Light = append(shot.Light, light.SubImage(rect).(*ebiten.Image))
+				shot.Light = append(shot.Light, cut(light, rect))
 			}
 		}
 		p[id] = shot

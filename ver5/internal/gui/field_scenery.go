@@ -88,7 +88,7 @@ func loadScenery(dir string) (*Scenery, error) {
 	s := &Scenery{sprites: map[string]Sprite{}, anim: map[string]FrameStrip{}}
 	for name, v := range meta.Sprites {
 		r := image.Rect(v.Rect[0], v.Rect[1], v.Rect[0]+v.Rect[2], v.Rect[1]+v.Rect[3])
-		s.sprites[name] = Sprite{sheet.SubImage(r).(*ebiten.Image), v.Pivot[0], v.Pivot[1]}
+		s.sprites[name] = Sprite{cut(sheet, r), v.Pivot[0], v.Pivot[1]}
 	}
 	for kind, a := range meta.Anim {
 		if a.MS <= 0 || len(a.Frames) == 0 {
@@ -216,7 +216,7 @@ func (f *Field) drawCliffTop(cx, cy float64) {
 	if !ok {
 		for _, p := range f.cliffTops {
 			if part := p.rect.Intersect(r); !part.Empty() {
-				ps = append(ps, placed{img: p.img.SubImage(part.Sub(p.rect.Min).Add(p.img.Bounds().Min)).(*ebiten.Image), rect: part})
+				ps = append(ps, placed{img: p.img.SubImage(part.Sub(p.rect.Min).Add(p.img.Bounds().Min)).(*ebiten.Image), sheet: p.sheet, rect: part})
 			}
 		}
 		if f.cliffTopsAt == nil {
@@ -312,27 +312,21 @@ func (f *Field) nativeForest(items *[]drawItem) {
 
 // placed is a picture put down on the canvas, its corner on a whole pixel.
 type placed struct {
-	img  *ebiten.Image
-	rect image.Rectangle // canvas pixels
+	img, sheet *ebiten.Image   // sheet: what img was cut from (cut), so pictures of one sheet draw in one call
+	rect       image.Rectangle // canvas pixels
 }
 
 // placeAt puts s with its pivot at canvas point (x, y).
 func placeAt(s Sprite, x, y float64) placed {
 	at := image.Pt(int(math.Round(x-s.PivotX)), int(math.Round(y-s.PivotY)))
-	return placed{img: s.Image, rect: image.Rectangle{Min: at, Max: at.Add(s.Image.Bounds().Size())}}
+	return placed{img: s.Image, sheet: sheetFor(s.Image), rect: image.Rectangle{Min: at, Max: at.Add(s.Image.Bounds().Size())}}
 }
 
-// drawPlaced draws the pictures of ps that are in view over dst.
+// drawPlaced draws the pictures of ps that are in view over dst, in one call for each sheet they come from.
 func (f *Field) drawPlaced(dst *ebiten.Image, ps []placed, blend ebiten.Blend) {
-	for _, p := range ps {
-		if !f.DrawBounds.Empty() && !p.rect.Overlaps(f.DrawBounds) {
-			continue
-		}
-		op := &ebiten.DrawImageOptions{Blend: blend}
-		op.GeoM.Translate(float64(p.rect.Min.X), float64(p.rect.Min.Y))
-		f.renderOp(dst, op)
-		dst.DrawImage(p.img, op)
-	}
+	op := &ebiten.DrawImageOptions{}
+	f.renderOp(dst, op)
+	f.batch.draw(dst, ps, f.DrawBounds, op.GeoM, blend)
 }
 
 // drawDecor draws the ground decoration, then the tree shadows over it: those meet on the shadow layer first

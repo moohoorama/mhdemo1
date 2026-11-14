@@ -51,7 +51,8 @@ func Fragment(dst vec4, src vec2, color vec4) vec4 {
 var grassShader *ebiten.Shader
 
 // grassAssets is a with the map's grass: the same assets when the map keeps the tileset's, else a copy whose
-// ground tiles and ground decoration are turned, made once per tint.
+// ground tiles and ground decoration are turned, made once per tint. Whole sheets are turned and the pictures cut
+// again from them, so the turned pictures of one sheet still draw in one call (batch).
 func (a *Assets) grassAssets(t *content.GrassTint) *Assets {
 	if t == nil || *t == (content.GrassTint{}) {
 		return a
@@ -84,18 +85,34 @@ func (a *Assets) grassAssets(t *content.GrassTint) *Assets {
 		out.DrawRectShader(b.Dx(), b.Dy(), grassShader, op)
 		return out
 	}
+	turned := map[*ebiten.Image]*ebiten.Image{}
+	recut := func(img *ebiten.Image) *ebiten.Image {
+		if img == nil {
+			return nil
+		}
+		sheet := sheetFor(img)
+		t, ok := turned[sheet]
+		if !ok {
+			t = turn(sheet)
+			turned[sheet] = t
+		}
+		if sheet == img {
+			return t
+		}
+		return cut(t, img.Bounds())
+	}
 	c := *a
 	c.groundPattern, c.grassTints = nil, nil
 	c.Tiles = make(map[int]Sprite, len(a.Tiles))
 	for id, s := range a.Tiles {
-		s.Image = turn(s.Image)
+		s.Image = recut(s.Image)
 		c.Tiles[id] = s
 	}
 	if a.Scenery != nil {
 		sc := *a.Scenery
 		sc.sprites = make(map[string]Sprite, len(a.Scenery.sprites))
 		for name, s := range a.Scenery.sprites {
-			s.Image = turn(s.Image)
+			s.Image = recut(s.Image)
 			sc.sprites[name] = s
 		}
 		c.Scenery = &sc

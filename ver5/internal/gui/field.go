@@ -58,6 +58,7 @@ type Field struct {
 	treeShadows                  []placed               // the pines' ground shadows, laid over the decoration as one
 	cliffTops                    []placed               // decoration of the cliff tops, drawn with each cliff block
 	cliffTopsAt                  map[image.Rectangle][]placed
+	batch                        batch // vertices of the decoration drawn in one call per sheet
 	waterFX                      []scenemap.Ripple
 	floorTiles                   []floorTile     // a battle map's small tiles far to near, see makeFloors
 	bridges                      []drawItem      // bridge decks, over the walls under their ends

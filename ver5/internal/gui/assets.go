@@ -298,7 +298,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 	sheet := ebiten.NewImageFromImage(tiles)
 	for id, r := range index.Tileset.Sprites {
 		n, _ := strconv.Atoi(id)
-		a.Tiles[n] = Sprite{sheet.SubImage(image.Rect(r[0], r[1], r[0]+r[2], r[1]+r[3])).(*ebiten.Image), float64(r[4]), float64(r[5])}
+		a.Tiles[n] = Sprite{cut(sheet, image.Rect(r[0], r[1], r[0]+r[2], r[1]+r[3])), float64(r[4]), float64(r[5])}
 	}
 	for name, v := range index.Tileset.Animations {
 		a.Animations[name] = TileAnimation{v.Frames, v.MS}
@@ -310,7 +310,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 	shadowSheet := shadowed(shadowTiles, shade)
 	for id, r := range index.Shadows.Tileset.Sprites {
 		n, _ := strconv.Atoi(id)
-		a.TileShadow[n] = Sprite{shadowSheet.SubImage(image.Rect(r[0], r[1], r[0]+r[2], r[1]+r[3])).(*ebiten.Image), float64(r[4]), float64(r[5])}
+		a.TileShadow[n] = Sprite{cut(shadowSheet, image.Rect(r[0], r[1], r[0]+r[2], r[1]+r[3])), float64(r[4]), float64(r[5])}
 	}
 	st, err := loadRGBA(filepath.Join(dir, index.Structures.Image))
 	if err != nil {
@@ -319,7 +319,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 	stSheet := ebiten.NewImageFromImage(st)
 	w, h := index.Structures.Cell[0], index.Structures.Cell[1]
 	for name, i := range index.Structures.Sprites {
-		a.Structures[name] = Sprite{stSheet.SubImage(image.Rect(i*w, 0, (i+1)*w, h)).(*ebiten.Image),
+		a.Structures[name] = Sprite{cut(stSheet, image.Rect(i*w, 0, (i+1)*w, h)),
 			index.Structures.Pivot[0], index.Structures.Pivot[1]}
 	}
 	si, err := loadRGBA(filepath.Join(dir, index.Sites.Image))
@@ -329,7 +329,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 	siSheet := ebiten.NewImageFromImage(si)
 	for name, i := range index.Sites.Sprites {
 		w, h := index.Sites.Cell[0], index.Sites.Cell[1]
-		a.Sites[name] = Sprite{siSheet.SubImage(image.Rect(i*w, 0, (i+1)*w, h)).(*ebiten.Image), index.Sites.Pivot[0], index.Sites.Pivot[1]}
+		a.Sites[name] = Sprite{cut(siSheet, image.Rect(i*w, 0, (i+1)*w, h)), index.Sites.Pivot[0], index.Sites.Pivot[1]}
 	}
 	type propSheet struct {
 		Image   string
@@ -358,7 +358,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		prSheet := ebiten.NewImageFromImage(pix)
 		for name, p := range sheet.Sprites {
 			r := image.Rect(p.Rect[0], p.Rect[1], p.Rect[0]+p.Rect[2], p.Rect[1]+p.Rect[3])
-			pr := Prop{Sprite: Sprite{prSheet.SubImage(r).(*ebiten.Image), p.Pivot[0], p.Pivot[1]}, Ground: p.Layer == "ground",
+			pr := Prop{Sprite: Sprite{cut(prSheet, r), p.Pivot[0], p.Pivot[1]}, Ground: p.Layer == "ground",
 				NoShadow: p.Shadow != nil && !*p.Shadow}
 			if m := p.ShadowMask; m != nil && !pr.Ground && !pr.NoShadow {
 				mr := image.Rect(m.Rect[0], m.Rect[1], m.Rect[0]+m.Rect[2], m.Rect[1]+m.Rect[3])
@@ -397,7 +397,7 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		x, y, w, h := e.Rect[0], e.Rect[1], e.Rect[2], e.Rect[3]
 		for i := range e.Frames {
 			r := image.Rect(x+i*w, y, x+(i+1)*w, y+h)
-			strip.Frames = append(strip.Frames, Sprite{sheet.SubImage(r).(*ebiten.Image), e.Pivot[0], e.Pivot[1]})
+			strip.Frames = append(strip.Frames, Sprite{cut(sheet, r), e.Pivot[0], e.Pivot[1]})
 			if e.Shadows {
 				strip.Shadows = append(strip.Shadows, castShadow(im.SubImage(r).(*image.RGBA), e.Pivot, shade))
 			}
