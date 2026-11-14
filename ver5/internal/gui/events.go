@@ -101,10 +101,7 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 	case "attack-hit", "spell-hit", "deployment_finish", "return":
 		return "", false
 	}
-	if e.Text != "" {
-		return e.Text, false
-	}
-	return fmt.Sprintf("%s %s %s %d", e.Kind, a, t, e.Amount), false
+	return e.Text, false
 }
 
 // itemName is the shown name of an item or piece of equipment.

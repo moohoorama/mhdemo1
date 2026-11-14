@@ -344,6 +344,21 @@
      "Sprite": "blacksmith_noncombat",
      "Faction": "han",
      "Shop": "weapons"
+    },
+    "견습공": {
+     "At": [
+      5,
+      7
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "견습공",
+       "무기는 병종마다 드는 게 다르우. 보병은 칼, 창병은 창, 궁병은 활, 서생은 부채를 쥐니, 장수 병종부터 보고 고르시구려."
+      ]
+     ]
     }
    }
   },

@@ -220,6 +220,21 @@
      "Sprite": "innkeeper_noncombat",
      "Faction": "merchant",
      "Shop": "tools"
+    },
+    "늙은 점원": {
+     "At": [
+      4,
+      5
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "늙은 점원",
+       "인수로 승급하면 병력과 병법치 그릇이 커지오. 다만 새 병종이 못 드는 무기는 벗겨지니, 승급하고 나면 장비부터 살피시오."
+      ]
+     ]
     }
    }
   },
@@ -250,6 +265,22 @@
      "Sprite": "innkeeper_noncombat",
      "Faction": "merchant",
      "Shop": "tavern"
+    },
+    "술꾼": {
+     "At": [
+      5,
+      6
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "한 잔 더!",
+     "Talk": [
+      [
+       "술꾼",
+       "콩은 병력을 400, 보리는 700 채우오. 크게 깎인 장수에겐 보리를 먹이시구려."
+      ]
+     ]
     }
    }
   }

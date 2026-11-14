@@ -110,7 +110,7 @@ func (g *Game) battleClassArt(def, class, weapon, mount, faction string) *sprite
 	c := g.S.Data.Characters[def]
 	c.Look = g.mountLook(c.Look, mount)
 	ids := []string{c.Look.Sprites[class]}
-	if class == c.Class {
+	if class == g.S.Data.ClassLine(c.Class)[0] {
 		ids = append(ids, c.Look.Sprite)
 	}
 	if weapon != "" {
@@ -158,8 +158,9 @@ func (g *Game) shootArt(def, class, mount, faction string) *sprite.Art {
 func (g *Game) sceneArt(def, pick, faction string) *sprite.Art {
 	c := g.S.Data.Characters[def]
 	c.Look = g.laterLook(c.Look)
-	class := g.S.Data.Classes[c.Class]
-	for _, id := range []string{pick, c.Look.Scene, class.Scene, c.Look.Sprites[c.Class], c.Look.Sprite, class.Sprite} {
+	first := g.S.Data.ClassLine(c.Class)[0]
+	class := g.S.Data.Classes[first]
+	for _, id := range []string{pick, c.Look.Scene, class.Scene, c.Look.Sprites[first], c.Look.Sprite, class.Sprite} {
 		if a := g.art(id, faction, c.Look); id != "" && a != nil {
 			return a
 		}

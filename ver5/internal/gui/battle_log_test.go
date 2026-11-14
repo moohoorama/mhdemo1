@@ -75,6 +75,18 @@ func TestUnitArrivalLogNamesTheSide(t *testing.T) {
 	}
 }
 
+func TestUnwordedEventsStayOutOfTheLog(t *testing.T) {
+	g := logTestGame(t)
+	for _, kind := range []string{"unplace", "objective"} {
+		t.Run(kind, func(t *testing.T) {
+			line, _ := g.eventText(core.Event{Kind: kind, Actor: "caocao"})
+			if line != "" {
+				t.Errorf("got %q, want no line", line)
+			}
+		})
+	}
+}
+
 func TestLogWindow(t *testing.T) {
 	for _, tc := range []struct {
 		name         string

@@ -167,8 +167,7 @@
    "Policy": "assault",
    "Faction": "dong",
    "Facing": "SW",
-   "Rank": "commander",
-   "Class": "heavy_cavalry"
+   "Rank": "commander"
   },
   {
    "Character": "houcheng",
@@ -425,7 +424,6 @@
        "Faction": "wei",
        "Side": "ally",
        "Facing": "SE",
-       "Class": "heavy_cavalry",
        "DuelFirst": true
       },
       {
@@ -567,7 +565,6 @@
        "Faction": "wei",
        "Side": "ally",
        "Facing": "SE",
-       "Class": "horse_archer",
        "Equipment": [
         "short_bow",
         "leather_armor"
@@ -582,8 +579,7 @@
        "Policy": "assault",
        "Faction": "wei",
        "Side": "ally",
-       "Facing": "SE",
-       "Class": "heavy_cavalry"
+       "Facing": "SE"
       },
       {
        "Character": "xuhuang",
@@ -594,8 +590,7 @@
        "Policy": "assault",
        "Faction": "wei",
        "Side": "ally",
-       "Facing": "SE",
-       "Class": "heavy_cavalry"
+       "Facing": "SE"
       },
       {
        "Character": "yujin",
@@ -606,8 +601,7 @@
        "Policy": "assault",
        "Faction": "wei",
        "Side": "ally",
-       "Facing": "SE",
-       "Class": "heavy_infantry"
+       "Facing": "SE"
       },
       {
        "Character": "xuchu",
@@ -618,8 +612,7 @@
        "Policy": "assault",
        "Faction": "wei",
        "Side": "ally",
-       "Facing": "SE",
-       "Class": "light_infantry"
+       "Facing": "SE"
       },
       {
        "Character": "lidian",
@@ -630,8 +623,7 @@
        "Policy": "assault",
        "Faction": "wei",
        "Side": "ally",
-       "Facing": "SE",
-       "Class": "crossbow"
+       "Facing": "SE"
       },
       {
        "Character": "xunyu",
@@ -653,8 +645,7 @@
        "Policy": "assault",
        "Faction": "wei",
        "Side": "ally",
-       "Facing": "SE",
-       "Class": "sorcerer"
+       "Facing": "SE"
       },
       {
        "Character": "guojia",

@@ -100,11 +100,6 @@ func (d *Data) Validate() error {
 				return fmt.Errorf("skill %s: unknown trait %s", id, t)
 			}
 		}
-		if s.Item != "" {
-			if _, ok := d.Items[s.Item]; !ok {
-				return fmt.Errorf("skill %s: unknown item %s", id, s.Item)
-			}
-		}
 	}
 	for id, c := range d.Classes {
 		if _, ok := d.Terrain[c.Terrain]; !ok || !in(c.Attack, AttackMelee, AttackRanged) || c.Move < 1 || c.Range < 0 || c.HPFactor < 1 ||

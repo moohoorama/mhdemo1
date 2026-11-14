@@ -1135,12 +1135,15 @@
    "Tone": "attack",
    "Cost": 500
   },
-  "steal_art": {
+  "plunder": {
    "Name": "탈취",
-   "Desc": "탈취 병법 사용 가능. 적이 가진 아이템을 빼앗는다.",
-   "Kind": "tactic",
-   "Tone": "attack",
-   "Cost": 500
+   "Desc": "물리 공격(반격·두 번째 타격 포함)이 명중할 때마다 10원을 얻는다.",
+   "Kind": "talent",
+   "Tone": "craft",
+   "Cost": 500,
+   "Effects": {
+    "plunder": 10
+   }
   },
   "fire": {
    "Name": "화계",
@@ -1435,9 +1438,19 @@
    "Desc": "원거리 물리 공격으로 받는 피해 −30%.",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "ranged_ward": 0.3
+   }
+  },
+  "magic_ward": {
+   "Name": "책략피해감소",
+   "Desc": "적의 공격 책략으로 받는 피해 −30%.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 1000,
+   "Effects": {
+    "magic_ward": 0.3
    }
   },
   "block_up": {

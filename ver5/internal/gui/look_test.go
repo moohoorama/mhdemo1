@@ -106,7 +106,7 @@ func TestInsuOffersEachClassAndThePickDecides(t *testing.T) {
 	// named looks promotes only into those classes
 	officer := ""
 	for id, c := range g.S.Data.Characters {
-		if c.Playable && c.Class == "light_cavalry" && len(c.Look.Sprites) == 0 && (officer == "" || id < officer) {
+		if c.Playable && g.S.Data.ClassLine(c.Class)[0] == "light_cavalry" && len(c.Look.Sprites) == 0 && (officer == "" || id < officer) {
 			officer = id
 		}
 	}

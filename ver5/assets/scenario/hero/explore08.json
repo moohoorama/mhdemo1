@@ -324,6 +324,21 @@
      "Sprite": "blacksmith_noncombat",
      "Faction": "merchant",
      "Shop": "weapons"
+    },
+    "견습공": {
+     "At": [
+      5,
+      7
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "견습공",
+       "변수에서 여포를 물리치고 그 갑옷을 얻으셨다고요? 당예개갑이오. 중갑 특성이 있어서 입은 장수는 제 차례마다 방어가 2할씩 더 단단해지지."
+      ]
+     ]
     }
    }
   },
@@ -354,6 +369,21 @@
      "Sprite": "innkeeper_noncombat",
      "Faction": "merchant",
      "Shop": "tools"
+    },
+    "늙은 점원": {
+     "At": [
+      4,
+      5
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "늙은 점원",
+       "지도를 지닌 장수는 숲이든 산이든 발이 무뎌지지 않소. 험한 길로 돌아 들어갈 때 요긴하지."
+      ]
+     ]
     }
    }
   },

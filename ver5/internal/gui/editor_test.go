@@ -44,10 +44,11 @@ func TestEditorOfficerFiltersAndCounts(t *testing.T) {
 			}
 			for _, id := range all {
 				c := d.Characters[id]
-				if c.Template || d.ClassFamily(c.Class) != family.ID || d.MapEditor.CharacterArmies[id] != army.ID {
+				first := d.ClassLine(c.Class)[0]
+				if c.Template || d.ClassFamily(first) != family.ID || d.MapEditor.CharacterArmies[id] != army.ID {
 					t.Fatal("filter leaked")
 				}
-				if !slices.Contains(editorOfficers(d, family.ID, c.Class, army.ID, c.Name), id) {
+				if !slices.Contains(editorOfficers(d, family.ID, first, army.ID, c.Name), id) {
 					t.Fatal("search lost officer")
 				}
 			}

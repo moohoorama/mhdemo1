@@ -27,6 +27,45 @@ func (d *Data) Promotes(character, class string) []string {
 	return out
 }
 
+// ClassLine is the promotion line that ends in class, from its first-tier class to class itself.
+func (d *Data) ClassLine(class string) []string {
+	line := []string{class}
+	for c := d.PromotedFrom(class); c != ""; c = d.PromotedFrom(c) {
+		line = append([]string{c}, line...)
+	}
+	return line
+}
+
+// PromotedAt is the class an officer of def in class serves in at the level. A character's data names its final
+// class: on that line the officer takes the furthest class the level reaches, stepping back or on. Off it (a branch
+// an 인수 chose, a stage's own class) a class the level has not reached steps back to the class it was promoted
+// from, and one the level has passed goes on through every promotion the level allows, each time to its first
+// branch.
+func (d *Data) PromotedAt(def, class string, level int) string {
+	if line := d.ClassLine(d.Characters[def].Class); slices.Contains(line, class) {
+		for i := len(line) - 1; i > 0; i-- {
+			if t := d.Classes[line[i]].Tier; t <= len(d.Rules.PromoteLevels) && level >= d.Rules.PromoteLevels[t-1] {
+				return line[i]
+			}
+		}
+		return line[0]
+	}
+	for t := d.Classes[class].Tier; t > 0 && level < d.Rules.PromoteLevels[t-1]; t = d.Classes[class].Tier {
+		prev := d.PromotedFrom(class)
+		if prev == "" {
+			break
+		}
+		class = prev
+	}
+	for {
+		cl, next := d.Classes[class], d.Promotes(def, class)
+		if cl.Tier >= len(d.Rules.PromoteLevels) || level < d.Rules.PromoteLevels[cl.Tier] || len(next) == 0 {
+			return class
+		}
+		class = next[0]
+	}
+}
+
 // PromotedFrom is the class whose promotions lead to class, or "" for a first-tier class.
 func (d *Data) PromotedFrom(class string) string {
 	for _, id := range slices.Sorted(maps.Keys(d.Classes)) {

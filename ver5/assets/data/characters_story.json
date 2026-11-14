@@ -3,7 +3,7 @@
   "bocai": {
    "Name": "파재",
    "Biography": "황건적 장수. 영천에서 관군을 포위해 한때 황보숭·주준을 곤경에 몰았으나 화공에 무너진다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     72,
     76,
@@ -33,7 +33,7 @@
   "zhangliang": {
    "Name": "장량",
    "Biography": "황건적 장수. 장각의 아우로 영천에서 방화를 명한다.",
-   "Class": "scholar",
+   "Class": "mystic",
    "Stats": [
     66,
     40,
@@ -64,7 +64,7 @@
   "zhangbao": {
    "Name": "장보",
    "Biography": "황건적 장수. 장각의 아우로 장량과 함께 본진 뒤를 지킨다.",
-   "Class": "bandit",
+   "Class": "mystic",
    "Stats": [
     64,
     60,
@@ -80,7 +80,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "bamboo_fan",
     "plain_clothes"
    ],
    "Look": {
@@ -96,7 +96,7 @@
   "luzhi": {
    "Name": "노식",
    "Biography": "한의 중랑장. 유비의 스승으로 황건 토벌을 이끌다 모함을 받아 압송된다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     84,
     70,
@@ -124,7 +124,7 @@
   "huangfusong": {
    "Name": "황보숭",
    "Biography": "한의 중랑장. 영천에서 화공으로 황건을 무찌르고 유비에게 병서를 건넨다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     90,
     66,
@@ -157,7 +157,7 @@
   "zhujun": {
    "Name": "주준",
    "Biography": "한의 중랑장. 황보숭과 함께 영천에서 황건을 친다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     86,
     68,
@@ -188,7 +188,7 @@
   "chengpu": {
    "Name": "정보",
    "Biography": "손견의 오른팔. 사수관에서 화웅에게 쫓기는 손견을 지킨다.",
-   "Class": "light_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     78,
     82,
@@ -220,7 +220,7 @@
   "huanggai": {
    "Name": "황개",
    "Biography": "손견을 따르는 노장. 몸을 아끼지 않는 충직한 사람.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     76,
     80,
@@ -251,7 +251,7 @@
   "handang": {
    "Name": "한당",
    "Biography": "손견을 따르는 장수. 활을 잘 쏜다.",
-   "Class": "archer",
+   "Class": "repeating_crossbow",
    "Stats": [
     68,
     74,
@@ -282,7 +282,7 @@
   "caocen": {
    "Name": "조잠",
    "Biography": "동탁군 장수. 서량 병사를 이끌고 사수관 앞에서 손견군을 몰아붙인다.",
-   "Class": "light_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     62,
     72,
@@ -311,7 +311,7 @@
   "lisu": {
    "Name": "이숙",
    "Biography": "동탁의 부하. 말솜씨로 여포를 동탁에게 데려온 책사이자 장수.",
-   "Class": "light_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     64,
     58,
@@ -341,7 +341,7 @@
   "xurong": {
    "Name": "서영",
    "Biography": "동탁군 장수. 변수에서 복병으로 조조를 쫓는다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     78,
     86,
@@ -369,7 +369,7 @@
   "xiahoudun": {
    "Name": "하후돈",
    "Biography": "조조의 족제. 외눈의 맹장으로 조조군의 선봉을 맡는다.",
-   "Class": "light_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     86,
     93,
@@ -413,7 +413,7 @@
   "xiahouyuan": {
    "Name": "하후연",
    "Biography": "조조의 족제. 날랜 기마로 이름이 높다.",
-   "Class": "light_cavalry",
+   "Class": "horse_crossbow",
    "Stats": [
     82,
     90,
@@ -430,7 +430,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "short_bow",
     "leather_armor",
     "war_horse"
    ],
@@ -447,7 +447,7 @@
   "caoren": {
    "Name": "조인",
    "Biography": "조조의 족제. 굳세고 침착한 장수.",
-   "Class": "light_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     85,
     84,
@@ -479,7 +479,7 @@
   "caohong": {
    "Name": "조홍",
    "Biography": "조조의 족제. 조조를 위해 목숨을 내놓는 충성스러운 장수.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     80,
     82,
@@ -510,7 +510,7 @@
   "qiaomao": {
    "Name": "교모",
    "Biography": "연맹에 가담한 동군 태수. 변수에서 조조를 따르지 않고 물러난다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     56,
     50,
@@ -539,7 +539,7 @@
   "hanfu": {
    "Name": "한복",
    "Biography": "기주목. 연합의 군량을 대지만 몸을 사린다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     54,
     46,
@@ -569,7 +569,7 @@
   "gongzhou": {
    "Name": "공주",
    "Biography": "연맹에 가담한 제후. 변수에서 원술과 함께 물러난다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     52,
     48,
@@ -596,7 +596,7 @@
   "fangong": {
    "Name": "번궁",
    "Biography": "신도성주. 원소의 별동대에 맞서 성을 지키고, 구원하러 온 유비를 따른다. 주먹 못지않게 지형을 읽어 불을 놓는 데 밝다.",
-   "Class": "brawler",
+   "Class": "fist_saint",
    "Stats": [
     62,
     72,
@@ -627,7 +627,7 @@
   "quyi": {
    "Name": "국의",
    "Biography": "원소군 장수. 쇠뇌 노병대를 숨겨 두었다가 백마의종을 쏘는 지휘관.",
-   "Class": "crossbow",
+   "Class": "repeating_crossbow",
    "Stats": [
     85,
     70,
@@ -659,7 +659,7 @@
   "chenzhen": {
    "Name": "진진",
    "Biography": "자는 공위. 원소의 사자. 신중하고 눈치 빠른 선비로, 계교 뒤 화친의 글을 들고 공손찬의 진영에 온다.",
-   "Class": "archer",
+   "Class": "repeating_crossbow",
    "Stats": [
     68,
     64,
@@ -689,7 +689,7 @@
   "tiankai": {
    "Name": "전해",
    "Biography": "공손찬의 부장. 백마의종을 이끌고 위기에 몰린 공손찬을 구하러 달려온다.",
-   "Class": "light_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     66,
     70,
@@ -767,7 +767,7 @@
   "zumao": {
    "Name": "조무",
    "Biography": "손견의 부장. 주공의 붉은 두건을 대신 써서라도 주공을 지키겠다는 충직한 사내.",
-   "Class": "light_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     64,
     74,
@@ -797,7 +797,7 @@
   "zoujing": {
    "Name": "추정",
    "Biography": "유주의 교위. 태수 유언의 명으로 탁군을 지키며 의병을 모은다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     70,
     62,
@@ -990,7 +990,7 @@
   "gaoshun": {
    "Name": "고순",
    "Biography": "단양 산골 마을의 무인. 말수가 적고 술을 마시지 않는다. 황건 잔당 앞에서 혼자 마을 입구를 막아선다.",
-   "Class": "pikeman",
+   "Class": "chariot",
    "Stats": [
     82,
     86,
@@ -1024,7 +1024,7 @@
   "taoqian": {
    "Name": "도겸",
    "Biography": "자는 공조. 단양 사람으로 서주의 난을 수습하다 고향이 짓밟힌다는 말에 군사를 이끌고 달려온다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     72,
     55,
@@ -1051,7 +1051,7 @@
   "zhangchun": {
    "Name": "장순",
    "Biography": "오환과 손잡고 청주·서주·유주·기주를 노략질한 반란의 우두머리. 공손찬에게 쫓겨 팽성까지 내려온다.",
-   "Class": "light_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     74,
     72,
@@ -1082,7 +1082,7 @@
   "kongrong": {
    "Name": "공융",
    "Biography": "자는 문거. 공자의 후손으로 북해를 다스린다. 옛말을 즐겨 꺼낸다.",
-   "Class": "scholar",
+   "Class": "diplomat",
    "Stats": [
     60,
     30,
@@ -1110,7 +1110,7 @@
   "hejin": {
    "Name": "하진",
    "Biography": "황후의 오라비인 대장군. 셈이 빠르고 체면을 안다. 십상시와 서로 눈을 흘긴다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     70,
     60,
@@ -1134,7 +1134,7 @@
   "turban_chief": {
    "Name": "황건 두목",
    "Biography": "단양 산골 마을들을 휩쓰는 황건 잔당의 우두머리.",
-   "Class": "bandit",
+   "Class": "outlaw",
    "Stats": [
     60,
     70,
@@ -1384,7 +1384,7 @@
   "zhugeliang": {
    "Name": "제갈량",
    "Biography": "자는 공명, 호는 와룡. 삼고초려로 출사해 천하삼분을 제시하고 촉한의 승상이 된다. 연의 최고의 지략가.",
-   "Class": "scholar",
+   "Class": "strategist",
    "Stats": [
     98,
     38,
@@ -1416,7 +1416,7 @@
   "simayi": {
    "Name": "사마의",
    "Biography": "자는 중달. 조조에게 발탁되어 위의 기둥이 된 지략가. 의심이 많고 신중하다.",
-   "Class": "scholar",
+   "Class": "strategist",
    "Stats": [
     98,
     63,
@@ -1508,7 +1508,7 @@
   "huangzhong": {
    "Name": "황충",
    "Biography": "자는 한승. 장사의 노장으로 관우와 일기토를 벌인 뒤 유비에게 귀순한다. 정군산에서 하후연을 베어 오호대장에 오른다.",
-   "Class": "archer",
+   "Class": "repeating_crossbow",
    "Stats": [
     89,
     94,
@@ -1578,7 +1578,7 @@
   "guanping": {
    "Name": "관평",
    "Biography": "관우의 양자. 아버지를 따라 형주를 지키며 방덕과 겨룬다. 맥성에서 관우와 함께 사로잡혀 죽는다. 효성과 충의로 아버지를 끝까지 따른다.",
-   "Class": "light_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     82,
     85,
@@ -1603,7 +1603,7 @@
   "sunquan": {
    "Name": "손권",
    "Biography": "자는 중모. 형 손책의 뒤를 이은 강동의 주인. 푸른 눈에 붉은 수염을 가졌다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     88,
     67,
@@ -1628,7 +1628,7 @@
   "taishici": {
    "Name": "태사자",
    "Biography": "자는 자의. 동래 사람. 어머니가 공융에게 입은 은혜를 갚으려 북해의 포위를 뚫고 구원을 청하러 나온 활의 명수.",
-   "Class": "horse_archer",
+   "Class": "horse_crossbow",
    "Stats": [
     80,
     88,
@@ -1660,7 +1660,7 @@
   "guanhai": {
    "Name": "관해",
    "Biography": "북해를 에워싼 황건 잔당의 우두머리. 성 안의 양식이 떨어지기를 기다린다.",
-   "Class": "bandit",
+   "Class": "outlaw",
    "Stats": [
     70,
     84,
@@ -1689,7 +1689,7 @@
   "yujin": {
    "Name": "우금",
    "Biography": "조조군의 장수. 군령이 엄해 명을 어기는 법이 없다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     84,
     80,
@@ -1717,7 +1717,7 @@
   "yuejin": {
    "Name": "악진",
    "Biography": "조조군의 장수. 작은 체구에 담이 커 언제나 앞장서 싸운다.",
-   "Class": "light_infantry",
+   "Class": "chariot",
    "Stats": [
     78,
     82,
@@ -1734,7 +1734,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "iron_spear",
     "leather_armor"
    ],
    "Look": {
@@ -1744,7 +1744,7 @@
   "zhugexuan": {
    "Name": "제갈현",
    "Biography": "낭야 사람. 피난 중에도 품위를 잃지 않는 선비.",
-   "Class": "sorcerer",
+   "Class": "mystic",
    "Stats": [
     30,
     20,
@@ -1802,7 +1802,7 @@
   "mizhu": {
    "Name": "미축",
    "Biography": "자는 자중. 서주의 거부로 도겸 사후 유비를 섬기고, 여포에게 근거지를 잃은 유비에게 가산을 털어 군자금을 댄다.",
-   "Class": "sorcerer",
+   "Class": "mystic",
    "Stats": [
     48,
     30,
@@ -1838,7 +1838,7 @@
   "mifang": {
    "Name": "미방",
    "Biography": "자는 자방. 미축의 동생으로 형과 함께 유비를 따른다. 형주 남군을 지키다 관우와 불화한다.",
-   "Class": "heavy_infantry",
+   "Class": "guards",
    "Stats": [
     54,
     62,
@@ -1876,7 +1876,7 @@
   "fanya": {
    "Name": "번아",
    "Biography": "화타의 제자. 의술로 병사를 고치고, 훗날 독화살을 맞은 관우의 팔을 치료한다.",
-   "Class": "sorcerer",
+   "Class": "mystic",
    "Stats": [
     52,
     30,
@@ -1912,7 +1912,7 @@
   "chengong": {
    "Name": "진궁",
    "Biography": "중모현령. 동탁 암살에 실패한 조조를 놓아주고 따랐으나 떠나 여포의 모사가 된다.",
-   "Class": "staff_officer",
+   "Class": "strategist",
    "Stats": [
     84,
     54,
@@ -1944,7 +1944,7 @@
   "zangba": {
    "Name": "장패",
    "Biography": "태산 일대의 도적 두목. 손관·윤례·오돈 등을 거느리고 여포를 돕다 조조에게 귀순한다.",
-   "Class": "ruffian",
+   "Class": "outlaw",
    "Stats": [
     85,
     82,
@@ -1978,7 +1978,7 @@
   "leibo": {
    "Name": "뇌박",
    "Biography": "원술의 부장. 원술이 기울자 진란과 함께 숭산으로 들어가 산적이 된다.",
-   "Class": "bandit",
+   "Class": "outlaw",
    "Stats": [
     66,
     72,
@@ -2005,7 +2005,7 @@
   "chenlan": {
    "Name": "진란",
    "Biography": "원술의 부장. 뇌박과 함께 원술을 따르다 떨어져 나가 숭산의 산적이 된다.",
-   "Class": "bandit",
+   "Class": "outlaw",
    "Stats": [
     64,
     68,
@@ -2032,7 +2032,7 @@
   "jiling": {
    "Name": "기령",
    "Biography": "원술군 대장. 삼첨양인도를 쓰며 우이에서 관우와 30합을 겨룬다.",
-   "Class": "heavy_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     83,
     89,
@@ -2070,7 +2070,7 @@
   "caobao": {
    "Name": "조표",
    "Biography": "도겸의 옛 부하이자 여포의 장인. 취한 장비에게 매를 맞자 원한을 품고 여포를 끌어들인다.",
-   "Class": "heavy_infantry",
+   "Class": "guards",
    "Stats": [
     60,
     67,
@@ -2102,7 +2102,7 @@
   "chendeng": {
    "Name": "진등",
    "Biography": "자는 원룡. 하비 사람으로 도겸 아래에서 둔전을 일으킨다. 말은 공손하나 속으로 셈이 깊다.",
-   "Class": "staff_officer",
+   "Class": "strategist",
    "Stats": [
     72,
     48,
@@ -2130,7 +2130,7 @@
   "xutan": {
    "Name": "허탐",
    "Biography": "도겸의 중랑장. 단양병을 거느리며, 굴러온 객장을 반기지 않는다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     62,
     68,
@@ -2157,7 +2157,7 @@
   "sunguan": {
    "Name": "손관",
    "Biography": "자는 중대. 태산의 무리를 이끄는 장패의 동료. 훗날 조조에게 귀순해 청주·서주 바닷가를 맡는다.",
-   "Class": "bandit",
+   "Class": "outlaw",
    "Stats": [
     70,
     78,
@@ -2235,7 +2235,7 @@
   "houcheng": {
    "Name": "후성",
    "Biography": "여포의 기병 장수. 병주 시절부터 여포를 따랐다.",
-   "Class": "heavy_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     66,
     73,
@@ -2272,7 +2272,7 @@
   "songxian": {
    "Name": "송헌",
    "Biography": "여포의 기병 장수. 후성·위속과 함께 여포 곁을 지킨다.",
-   "Class": "heavy_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     69,
     70,
@@ -2309,7 +2309,7 @@
   "weixu": {
    "Name": "위속",
    "Biography": "여포의 기병 장수. 여포의 처족이다.",
-   "Class": "heavy_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     63,
     68,
@@ -2346,7 +2346,7 @@
   "xusi": {
    "Name": "허사",
    "Biography": "여포의 모사. 하비가 에워싸이자 왕해와 함께 원술에게 구원을 청하러 다녀왔다. 맨주먹으로도 싸우고 불을 다룬다.",
-   "Class": "brawler",
+   "Class": "fist_saint",
    "Stats": [
     52,
     61,
@@ -2373,7 +2373,7 @@
   "caoxing": {
    "Name": "조성",
    "Biography": "여포의 궁기병 장수. 말 위에서 활을 잘 쏜다.",
-   "Class": "horse_archer",
+   "Class": "horse_crossbow",
    "Stats": [
     67,
     74,
@@ -2485,7 +2485,7 @@
   "lidian": {
    "Name": "이전",
    "Biography": "조조군의 장수. 글을 좋아하고 남과 공을 다투지 않는 선비 같은 무장.",
-   "Class": "crossbow",
+   "Class": "repeating_crossbow",
    "Stats": [
     76,
     72,
@@ -2516,7 +2516,7 @@
   "xuhuang": {
    "Name": "서황",
    "Biography": "조조군의 장수. 큰 도끼를 쓰며 진을 무너뜨리는 데 능하다.",
-   "Class": "heavy_cavalry",
+   "Class": "guards",
    "Stats": [
     84,
     90,
@@ -2533,7 +2533,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "iron_sword",
     "leather_armor"
    ],
    "Look": {
@@ -2549,7 +2549,7 @@
   "xuchu": {
    "Name": "허저",
    "Biography": "조조의 호위 장수. 범 같은 힘으로 호치라 불린다.",
-   "Class": "light_infantry",
+   "Class": "outlaw",
    "Stats": [
     72,
     96,
@@ -2568,7 +2568,7 @@
    "Learn": [],
    "Equipment": [
     "iron_sword",
-    "leather_armor"
+    "plain_clothes"
    ],
    "Look": {
     "Portrait": "xuchu",
@@ -2583,7 +2583,7 @@
   "xunyu": {
    "Name": "순욱",
    "Biography": "조조의 으뜸 모사. 왕을 보좌할 재목이라 불린다.",
-   "Class": "staff_officer",
+   "Class": "strategist",
    "Stats": [
     70,
     40,
@@ -2616,7 +2616,7 @@
   "xunyou": {
    "Name": "순유",
    "Biography": "순욱의 조카이자 조조의 군사. 겉으로는 어리숙해 보이나 꾀가 깊다.",
-   "Class": "sorcerer",
+   "Class": "mystic",
    "Stats": [
     72,
     42,
@@ -2646,7 +2646,7 @@
   "guojia": {
    "Name": "곽가",
    "Biography": "조조의 모사. 젊고 거리낌이 없으나 앞일을 귀신같이 내다본다.",
-   "Class": "staff_officer",
+   "Class": "strategist",
    "Stats": [
     64,
     38,
@@ -2678,7 +2678,7 @@
   "chengyu": {
    "Name": "정욱",
    "Biography": "조조의 모사. 성품이 굳세고 꾀가 모질다.",
-   "Class": "staff_officer",
+   "Class": "strategist",
    "Stats": [
     80,
     52,
@@ -2710,7 +2710,7 @@
   "gaoshun_lu": {
    "Name": "고순",
    "Biography": "여포의 장수. 말수가 적고 술을 마시지 않는다. 그가 이끄는 군사는 치는 곳마다 무너뜨린다.",
-   "Class": "pikeman",
+   "Class": "chariot",
    "Stats": [
     82,
     86,
@@ -2739,7 +2739,7 @@
   "dongcheng": {
    "Name": "동승",
    "Biography": "헌제의 장인인 국구. 허도에서 황제의 밀조를 받들어 조조를 칠 사람들을 모은다.",
-   "Class": "scholar",
+   "Class": "strategist",
    "Stats": [
     62,
     48,
@@ -2764,7 +2764,7 @@
   "liudai": {
    "Name": "유대",
    "Biography": "연주자사를 지낸 조조의 장수. 왕충과 함께 승상의 깃발을 앞세우고 서주로 온다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     58,
     56,
@@ -2787,7 +2787,7 @@
   "wangzhong": {
    "Name": "왕충",
    "Biography": "조조의 중랑장. 유대와 함께 서주로 온다.",
-   "Class": "light_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     54,
     60,
@@ -2810,7 +2810,7 @@
   "guotu": {
    "Name": "곽도",
    "Biography": "원소의 모사. 남의 공을 시기하고 원소의 귀에 듣기 좋은 말만 넣는다.",
-   "Class": "scholar",
+   "Class": "strategist",
    "Stats": [
     58,
     40,
@@ -2859,7 +2859,7 @@
   "chezhou": {
    "Name": "차주",
    "Biography": "조조가 여포를 깨뜨린 뒤 서주에 세운 자사. 서주성을 지킨다.",
-   "Class": "light_infantry",
+   "Class": "guards",
    "Stats": [
     60,
     58,
@@ -2883,7 +2883,7 @@
   "chendao": {
    "Name": "진도",
    "Biography": "예주 사람. 망탕산 산속 마을에서 서주에서 흩어진 장비 일행과 지내다 유비를 따른다. 훗날 백이병을 이끌고 유비 곁을 지킨다.",
-   "Class": "pikeman",
+   "Class": "chariot",
    "Stats": [
     79,
     83,
@@ -2909,7 +2909,7 @@
   "zhoucang": {
    "Name": "주창",
    "Biography": "관서 출신의 장사. 황건의 잔당으로 와우산에 숨어 있다가, 관우를 만나 그 칼을 받들고 평생 곁을 지킨다. 맥성에서 관우의 죽음을 듣고 스스로 목숨을 끊는다.",
-   "Class": "heavy_infantry",
+   "Class": "outlaw",
    "Stats": [
     84,
     86,
@@ -2924,7 +2924,7 @@
    "Learn": [],
    "Equipment": [
     "iron_sword",
-    "leather_armor"
+    "plain_clothes"
    ],
    "Look": {
     "Portrait": "zhoucang",
@@ -2939,7 +2939,7 @@
   "caiyang": {
    "Name": "채양",
    "Biography": "조조의 장수. 관우가 다섯 관문을 지나며 벤 진기의 외숙으로, 원수를 갚겠다며 관우를 뒤쫓는다.",
-   "Class": "heavy_cavalry",
+   "Class": "royal_guard",
    "Stats": [
     80,
     84,

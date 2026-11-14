@@ -177,8 +177,7 @@
    "Group": "lu-se",
    "Policy": "assault",
    "Faction": "dong",
-   "Facing": "SE",
-   "Class": "horse_archer"
+   "Facing": "SE"
   },
   {
    "Character": "troop_cavalry",
@@ -325,8 +324,7 @@
        "Policy": "assault",
        "Faction": "wei",
        "Side": "ally",
-       "Facing": "SE",
-       "Class": "heavy_cavalry"
+       "Facing": "SE"
       },
       {
        "Character": "xuchu",
@@ -337,8 +335,7 @@
        "Policy": "assault",
        "Faction": "wei",
        "Side": "ally",
-       "Facing": "SE",
-       "Class": "light_infantry"
+       "Facing": "SE"
       },
       {
        "Character": "troop_footman",
@@ -374,7 +371,6 @@
        "Faction": "wei",
        "Side": "ally",
        "Facing": "NW",
-       "Class": "horse_archer",
        "Equipment": [
         "short_bow",
         "leather_armor"
@@ -389,8 +385,7 @@
        "Policy": "assault",
        "Faction": "wei",
        "Side": "ally",
-       "Facing": "NW",
-       "Class": "crossbow"
+       "Facing": "NW"
       },
       {
        "Character": "troop_footman",

@@ -164,12 +164,14 @@ func (e *Engine) addCharacter(id, def string) *Character {
 		return c
 	}
 	d := e.data.Characters[def]
-	c := Character{ID: id, Def: def, Class: d.Class, Level: d.Level, Points: e.data.Rules.PointsPerLevel * (d.Level - 1), Temp: d.Template, Equipment: map[string]string{}, Learned: []string{}}
+	c := Character{ID: id, Def: def, Class: e.promotedAt(def, d.Class, d.Level), Level: d.Level, Points: e.data.Rules.PointsPerLevel * (d.Level - 1), Temp: d.Template, Equipment: map[string]string{}, Learned: []string{}}
 	for _, eq := range d.Equipment {
 		c.Equipment[e.data.Equipment[eq].Slot] = eq
 	}
 	e.charIDs[id] = e.chars.NewEntity(&c)
-	return e.char(id)
+	o := e.char(id)
+	e.refitGear(o)
+	return o
 }
 // Observe is what a screen shows of the state. It shares the state's and the content's maps and
 // slices instead of copying them: callers only read it.
@@ -945,25 +947,8 @@ func (e *Engine) refitGear(c *Character) {
 	}
 }
 
-// promotedAt is the class of the line through class that the level allows: a class the level has not reached
-// steps back to the class it was promoted from, and one the level has passed goes on through every promotion
-// the level allows, each time to its first branch.
-func (e *Engine) promotedAt(def, class string, level int) string {
-	for t := e.data.Classes[class].Tier; t > 0 && level < e.data.Rules.PromoteLevels[t-1]; t = e.data.Classes[class].Tier {
-		prev := e.data.PromotedFrom(class)
-		if prev == "" {
-			break
-		}
-		class = prev
-	}
-	for {
-		cl, next := e.data.Classes[class], e.data.Promotes(def, class)
-		if cl.Tier >= len(e.data.Rules.PromoteLevels) || level < e.data.Rules.PromoteLevels[cl.Tier] || len(next) == 0 {
-			return class
-		}
-		class = next[0]
-	}
-}
+// promotedAt is the class an officer of def in class serves in at the level (content.Data.PromotedAt).
+func (e *Engine) promotedAt(def, class string, level int) string { return e.data.PromotedAt(def, class, level) }
 
 // startStatus is what a unit is placed with: the buffs its traits grant every turn.
 func (e *Engine) startStatus(u *Unit) map[string]Status {

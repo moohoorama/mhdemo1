@@ -232,7 +232,10 @@ func (e *Engine) joinLevel(order int) int {
 // the officer's own promotion path.
 func (e *Engine) joinAt(o *Character, level int) {
 	e.raiseTo(o, level)
-	o.Class = e.promotedAt(o.Def, o.Class, o.Level)
+	if class := e.promotedAt(o.Def, o.Class, o.Level); class != o.Class {
+		o.Class = class
+		e.refitGear(o)
+	}
 }
 
 // raiseTo lifts an officer who joins below the level the story has reached, with the trait points the

@@ -90,7 +90,7 @@
    "Portrait": "heavy_infantry",
    "Pool": [
     "deputy_appoint",
-    "block_up",
+    "iron_armor",
     "ranged_ward"
    ],
    "Plan": [
@@ -256,11 +256,11 @@
     },
     {
      "Level": 50,
-     "Trait": "composure"
+     "Trait": "iron_armor"
     },
     {
      "Level": 60,
-     "Trait": "block_up"
+     "Trait": "composure"
     }
    ]
   },
@@ -336,7 +336,7 @@
    "Pool": [
     "deputy_appoint",
     "counter_ward",
-    "iron_armor"
+    "magic_ward"
    ],
    "Plan": [
     {
@@ -512,7 +512,7 @@
     },
     {
      "Level": 50,
-     "Trait": "iron_armor"
+     "Trait": "impact"
     },
     {
      "Level": 60,
@@ -782,7 +782,7 @@
    "Bonus": [
     6,
     7,
-    13,
+    14,
     9,
     10,
     14
@@ -841,7 +841,7 @@
    "Bonus": [
     6,
     7,
-    14,
+    16,
     10,
     11,
     15
@@ -965,7 +965,7 @@
    "Bonus": [
     6,
     7,
-    14,
+    15,
     11,
     12,
     15
@@ -1031,7 +1031,7 @@
    "Bonus": [
     6,
     8,
-    13,
+    14,
     8,
     10,
     14
@@ -1094,7 +1094,7 @@
    "Bonus": [
     6,
     9,
-    14,
+    16,
     8,
     11,
     15
@@ -1238,7 +1238,8 @@
     "counter_art",
     "earth",
     "provoke_prep",
-    "disrupt_prep"
+    "disrupt_prep",
+    "plunder"
    ],
    "Promotes": [
     "ruffian"

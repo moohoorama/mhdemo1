@@ -586,6 +586,21 @@
      "Sprite": "innkeeper_noncombat",
      "Faction": "merchant",
      "Shop": "tools"
+    },
+    "군리": {
+     "At": [
+      4,
+      5
+     ],
+     "Face": "NE",
+     "Sprite": "official_noncombat",
+     "Faction": "gongsun",
+     "Talk": [
+      [
+       "군리",
+       "공손 장군께 인수를 받으셨다고요? 관인과 인끈, 그게 중급 인수요. 레벨 15를 넘긴 장수에게 쓰면 한 단계 높은 병종으로 오르지요. 갈래가 여럿이면 쓸 때 고르시고, 싸움터에선 못 쓰니 진중에 있을 때 쓰십시오."
+      ]
+     ]
     }
    }
   },
@@ -616,6 +631,21 @@
      "Sprite": "blacksmith_noncombat",
      "Faction": "merchant",
      "Shop": "weapons"
+    },
+    "견습공": {
+     "At": [
+      5,
+      7
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "견습공",
+       "철권갑은 맨주먹으로 싸우는 무도가 몫이오. 주먹에 쇠를 감으면 한 방이 두 방 몫이지."
+      ]
+     ]
     }
    }
   }

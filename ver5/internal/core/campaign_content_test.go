@@ -433,4 +433,27 @@ func TestOfficersJoinInTheClassTheirLevelReaches(t *testing.T) {
 	t.Run("a join between battles is at the last battle's level", func(t *testing.T) {
 		assert.Equal(t, d.StageOrder("B13"), d.LastBattleOrder("c14-d16"))
 	})
+	t.Run("the data names the final class and a level steps back along its line", func(t *testing.T) {
+		for _, c := range []struct {
+			def   string
+			level int
+			want  string
+		}{
+			{"gongsunzan", 5, "light_cavalry"}, {"gongsunzan", 20, "heavy_cavalry"}, {"gongsunzan", 30, "royal_guard"},
+			{"xiahouyuan", 20, "horse_archer"}, {"xiahouyuan", 30, "horse_crossbow"}, {"zhoucang", 14, "bandit"},
+		} {
+			assert.Equal(t, c.want, d.PromotedAt(c.def, d.Characters[c.def].Class, c.level), "%s at %d", c.def, c.level)
+		}
+	})
+	t.Run("Liu Bei starts as light infantry though his line ends in the guards", func(t *testing.T) {
+		require.Equal(t, "guards", d.Characters["liubei"].Class)
+		assert.Equal(t, "light_infantry", New(d, 1).char("liubei").Class)
+	})
+	t.Run("Zhou Cang joins at 망탕산 on the bandit line, in the robe his class wears", func(t *testing.T) {
+		e := New(d, 1)
+		o := e.welcome("zhoucang", d.StageOrder("B20"))
+		require.GreaterOrEqual(t, o.Level, d.Rules.PromoteLevels[1])
+		assert.Equal(t, "outlaw", o.Class)
+		assert.True(t, d.Carries(d.Classes[o.Class], nil, d.Equipment[o.Equipment["armor"]]), o.Equipment["armor"])
+	})
 }

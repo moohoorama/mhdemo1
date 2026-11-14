@@ -594,6 +594,21 @@
      "Sprite": "innkeeper_noncombat",
      "Faction": "merchant",
      "Shop": "xuzhou"
+    },
+    "늙은 점원": {
+     "At": [
+      4,
+      5
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "늙은 점원",
+       "물난리 통에 군량낭만 잔뜩 남았소. 보급 특성이 붙어 있으니, 콩을 먹일 장수에게 채워 두시구려."
+      ]
+     ]
     }
    }
   },
@@ -672,6 +687,21 @@
      "Sprite": "blacksmith_noncombat",
      "Faction": "merchant",
      "Shop": "weapons"
+    },
+    "견습공": {
+     "At": [
+      5,
+      7
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "견습공",
+       "하비에서 여포의 방천화극을 거두셨다지요? 그 극엔 요극 특성이 있어서, 한 놈을 물리치면 사거리 안의 다른 놈을 이어 치고, 그놈도 쓰러지면 또 친다오. 창을 드는 장수라야 쥘 수 있소."
+      ]
+     ]
     }
    }
   }

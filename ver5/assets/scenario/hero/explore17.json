@@ -772,6 +772,21 @@
      "Sprite": "innkeeper_noncombat",
      "Faction": "merchant",
      "Shop": "xudu"
+    },
+    "늙은 점원": {
+     "At": [
+      4,
+      5
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "늙은 점원",
+       "인수는 레벨 15에 첫 승급, 30에 다음 승급이오. 다음 단계의 상급 인수는 아직 시중에서 구경하기 어렵소."
+      ]
+     ]
     }
    }
   },
@@ -889,6 +904,21 @@
      "Sprite": "blacksmith_noncombat",
      "Faction": "merchant",
      "Shop": "weapons"
+    },
+    "견습공": {
+     "At": [
+      5,
+      7
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "견습공",
+       "무기를 고를 땐 공격 수치만 보지 마시오. 이름난 병기엔 특성이 붙어 있어서, 같은 창이라도 특성 하나가 싸움을 바꾼다오."
+      ]
+     ]
     }
    }
   }

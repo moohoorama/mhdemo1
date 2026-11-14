@@ -312,7 +312,7 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 				e.popup = ""
 				e.message = "장수 선택: " + data.Characters[id].Name
 				for i, c := range family.Classes {
-					if c.ID == data.Characters[id].Class {
+					if c.ID == data.ClassLine(data.Characters[id].Class)[0] {
 						e.classIndex = i
 						break
 					}
@@ -373,7 +373,7 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 	s := e.draft
 	data := g.S.Data
 	if kind == "classes" {
-		family := data.ClassFamily(data.Characters[s.Character].Class)
+		family := data.ClassFamily(data.ClassLine(data.Characters[s.Character].Class)[0])
 		for _, f := range data.MapEditor.Families {
 			if f.ID != family {
 				continue
@@ -532,7 +532,8 @@ func editorOfficers(data *content.Data, family, class, army, query string) []str
 	ids := []string{}
 	for _, id := range sorted(data.Characters) {
 		c := data.Characters[id]
-		if !c.Template && data.ClassFamily(c.Class) == family && (class == "" || c.Class == class) && data.MapEditor.CharacterArmies[id] == army && strings.Contains(c.Name, query) {
+		first := data.ClassLine(c.Class)[0]
+		if !c.Template && data.ClassFamily(first) == family && (class == "" || first == class) && data.MapEditor.CharacterArmies[id] == army && strings.Contains(c.Name, query) {
 			ids = append(ids, id)
 		}
 	}

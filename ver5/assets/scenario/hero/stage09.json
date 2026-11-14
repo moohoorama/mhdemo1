@@ -153,8 +153,7 @@
    "Y": 7,
    "Facing": "SW",
    "Group": "bridge",
-   "Policy": "hold",
-   "Class": "orator"
+   "Policy": "hold"
   },
   {
    "Character": "troop_footman",

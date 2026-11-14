@@ -65,6 +65,9 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	if k := e.fx(v, content.FxRangedWard); k > 0 && s.Kind == content.KindPhysical && e.rangedAttack(u, v, s) {
 		out *= 1 - k
 	}
+	if k := e.fx(v, content.FxMagicWard); k > 0 && s.Kind == content.KindMagic {
+		out *= 1 - k
+	}
 	if k := e.fx(u, content.FxOpening); k > 0 {
 		out *= 1 + k*math.Max(0, float64(v.HP)/float64(max(1, b.MaxHP))-.5)
 	}
@@ -288,6 +291,9 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 	}
 	n := e.hurt(v, int(math.Floor(e.bulwark(v, d))), u)
 	if hit && n > 0 && phys {
+		if k := e.fx(u, content.FxPlunder); k > 0 && !u.NPC() {
+			e.state.Money += int(k)
+		}
 		if e.has(u, content.FxPoison) {
 			e.applyStatus(v, "poison", 3, 0)
 			if status, ok := v.Status["poison"]; ok {
@@ -768,10 +774,6 @@ func (e *Engine) exchange(u, v *Unit, hit []*Unit, share map[string]float64, s c
 		if n := dealt[q.ID]; n > 0 {
 			e.emit("attack-hit", u.ID, q.ID, n)
 			e.actionXP(u, q, c.Kind == "skill", q.HP == 0)
-		}
-		if s.Effect == "steal" && q.Items[s.Item] > 0 && e.rand(100) < 30 {
-			q.Items[s.Item]--
-			e.stock(u)[s.Item]++
 		}
 	}
 	e.leech(u, total)

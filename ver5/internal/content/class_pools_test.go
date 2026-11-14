@@ -8,11 +8,11 @@ import (
 // classPools is the classified trait draft (_newfeature.md section 2) as the data bundle teaches it.
 var classPools = map[string][]string{
 	"light_infantry":     {"diagonal", "fire", "brace_prep"},
-	"heavy_infantry":     {"deputy_appoint", "block_up", "ranged_ward"},
+	"heavy_infantry":     {"deputy_appoint", "iron_armor", "ranged_ward"},
 	"guards":             {"castle_defense", "siegecraft", "composure"},
 	"pikeman":            {"deputy_appoint", "long_spear", "pierce", "assist"},
 	"light_cavalry":      {"dash", "accuracy_up", "grass_footing"},
-	"heavy_cavalry":      {"deputy_appoint", "counter_ward", "iron_armor"},
+	"heavy_cavalry":      {"deputy_appoint", "counter_ward", "magic_ward"},
 	"royal_guard":        {"diagonal", "charge_strike", "impact", "vital_strike"},
 	"horse_archer":       {"deputy_appoint", "snipe_prep", "aim_prep"},
 	"horse_crossbow":     {"reload_prep", "fire_arrow_art", "rapid_art"},
@@ -20,7 +20,7 @@ var classPools = map[string][]string{
 	"crossbow":           {"deputy_appoint", "water", "fire_arrow_art", "reload_prep"},
 	"repeating_crossbow": {"exhort", "rapid_art", "penetrate_art"},
 	"catapult":           {"siegecraft", "cross_strike", "far_sight"},
-	"bandit":             {"counter_art", "earth", "provoke_prep", "disrupt_prep"},
+	"bandit":             {"counter_art", "earth", "provoke_prep", "disrupt_prep", "plunder"},
 	"turban":             {"counter_art", "earth", "provoke_prep", "disrupt_prep"},
 	"scholar":            {"fire", "relief", "focus", "foresight"},
 }
@@ -64,7 +64,7 @@ func TestEveryLearnableSkillTraitOpensASkill(t *testing.T) {
 		}
 	}
 	for _, trait := range []string{"guard_prep", "brace_prep", "first_aid", "disrupt_prep", "provoke_prep", "press_prep",
-		"slander_prep", "focus", "spirit_prep", "ambition", "inspire_prep", "extend_prep", "stance_prep", "steal_art",
+		"slander_prep", "focus", "spirit_prep", "ambition", "inspire_prep", "extend_prep", "stance_prep",
 		"snipe_prep", "aim_prep", "fire_arrow_art", "reload_prep", "rapid_art", "penetrate_art"} {
 		if !opens[trait] {
 			t.Errorf("trait %s opens no skill", trait)

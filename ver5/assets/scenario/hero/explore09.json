@@ -233,6 +233,21 @@
      "Sprite": "innkeeper_noncombat",
      "Faction": "merchant",
      "Shop": "tools"
+    },
+    "늙은 점원": {
+     "At": [
+      4,
+      5
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "늙은 점원",
+       "군마를 달면 민첩이 올라 먼저 움직이고 잘 피하오. 말이 없는 장수에게 하나쯤 사 주시구려."
+      ]
+     ]
     }
    }
   },
@@ -263,6 +278,22 @@
      "Sprite": "innkeeper_noncombat",
      "Faction": "merchant",
      "Shop": "tavern"
+    },
+    "술꾼": {
+     "At": [
+      5,
+      6
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "한 잔 더!",
+     "Talk": [
+      [
+       "술꾼",
+       "술은 병법치를 채워 주는데, 그릇이 넘쳐도 더 들어간다오. 큰 싸움 앞에 책사에게 한 잔씩 미리 먹여 두시오."
+      ]
+     ]
     }
    }
   }

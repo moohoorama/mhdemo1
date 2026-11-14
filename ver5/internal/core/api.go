@@ -194,7 +194,7 @@ func RestoreChanged(d *content.Data, s State) (*Engine, error) {
 }
 
 // adaptCharacters fits the party of a save to edited data: a learned trait the data dropped is forgotten, an
-// officer whose class the data moved out of his old line takes the new class when his level allows it, and
+// officer whose class the data moved out of his old line takes the class his level reaches on the new one, and
 // a piece of equipment the officer can no longer wear goes back to the inventory.
 func adaptCharacters(d *content.Data, s *State) {
 	for _, o := range append(pointers(s.Characters), pointers(s.Away)...) {
@@ -203,10 +203,8 @@ func adaptCharacters(d *content.Data, s *State) {
 			continue
 		}
 		o.Learned = slices.DeleteFunc(o.Learned, func(t string) bool { _, ok := d.Traits[t]; return !ok })
-		if _, ok := d.Classes[o.Class]; !ok || !classReachable(d, def.Class, o.Class) {
-			if t := d.Classes[def.Class].Tier; t == 0 || o.Level >= d.Rules.PromoteLevels[t-1] {
-				o.Class = def.Class
-			}
+		if _, ok := d.Classes[o.Class]; !ok || !classReachable(d, d.ClassLine(def.Class)[0], o.Class) {
+			o.Class = d.PromotedAt(o.Def, def.Class, o.Level)
 		}
 		held := append(append([]string{}, innate(o)...), o.Learned...)
 		for _, slot := range slices.Sorted(maps.Keys(o.Equipment)) {
@@ -283,7 +281,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, error) {
 	for _, o := range s.Characters {
 		def, ok := d.Characters[o.Def]
 		_, cl := d.Classes[o.Class]
-		if !ok || !cl || o.Temp != (def.Template || o.Placement) || !o.Temp && o.ID != o.Def || (!o.Placement && !classReachable(d, def.Class, o.Class) || o.Placement && d.ClassFamily(def.Class) != d.ClassFamily(o.Class)) || seen[o.ID] || o.Level < 1 || o.Level > R.MaxLevel ||
+		if !ok || !cl || o.Temp != (def.Template || o.Placement) || !o.Temp && o.ID != o.Def || (!o.Placement && !classReachable(d, d.ClassLine(def.Class)[0], o.Class) || o.Placement && !slices.ContainsFunc(d.ClassLine(def.Class), func(c string) bool { return d.ClassFamily(c) == d.ClassFamily(o.Class) })) || seen[o.ID] || o.Level < 1 || o.Level > R.MaxLevel ||
 			o.XP < 0 || o.XP >= XPPerLevel || o.Points < 0 || o.XPShareRemainder < 0 || o.XPShareRemainder >= 100 || o.Equipment == nil {
 			return nil, fail("CorruptSave")
 		}

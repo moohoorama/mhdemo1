@@ -142,7 +142,7 @@ func (c *Colors) UnmarshalJSON(b []byte) error {
 
 // Look is how a character is drawn.
 type Look struct {
-	Sprite   string            // battle sprite in the character's own class when Sprites does not name it; the class's when empty
+	Sprite   string            // battle sprite in the first class of the character's line when Sprites does not name it; the class's when empty
 	Sprites  map[string]string `json:",omitempty"` // class id, or class id:weapon type -> battle sprite while the character serves in that class (with that weapon); a character with any only promotes into the classes named
 	Scene    string            // non-combat sprite for scenes; Sprite when empty
 	Portrait string
@@ -197,7 +197,6 @@ type Skill struct {
 	Element       string
 	Sound         string // the GUI's sound when it lands (assets/sounds); empty picks one by element or kind
 	Lead          string // the GUI's quieter sound as its effect starts, filling a long effect until Sound strikes
-	Item          string // the item a steal takes
 	Requires      []string
 	Cost, Hit     int
 	Min, Max      int

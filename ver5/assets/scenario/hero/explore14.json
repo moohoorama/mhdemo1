@@ -357,6 +357,21 @@
      "Sprite": "innkeeper_noncombat",
      "Faction": "merchant",
      "Shop": "xuzhou"
+    },
+    "늙은 점원": {
+     "At": [
+      4,
+      5
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "늙은 점원",
+       "서주는 큰 고을이라 중급 인수도 들여놓았소. 값이 2000이오만, 장수 하나를 한 단계 끌어올리는 값이면 싼 거지."
+      ]
+     ]
     }
    }
   },
@@ -416,6 +431,22 @@
        "형, 서주 술은 소패 술보다 훨씬 낫구먼유! 한 잔만…… 딱 한 잔만유."
       ]
      ]
+    },
+    "술꾼": {
+     "At": [
+      8,
+      7
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "한 잔 더!",
+     "Talk": [
+      [
+       "술꾼",
+       "서주엔 빼갈이 들어왔소. 병법치를 120이나 채우니, 큰 책략을 쓰기 전에 딱이지."
+      ]
+     ]
     }
    }
   },
@@ -446,6 +477,21 @@
      "Sprite": "blacksmith_noncombat",
      "Faction": "merchant",
      "Shop": "weapons"
+    },
+    "견습공": {
+     "At": [
+      5,
+      7
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "견습공",
+       "승급해서 병종이 바뀌면 들던 무기를 못 드는 수가 있소. 장창병이 되면 칼 대신 창을 쥐어야 하지."
+      ]
+     ]
     }
    }
   }

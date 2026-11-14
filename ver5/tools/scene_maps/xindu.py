@@ -43,10 +43,11 @@ paint(0, CROSS[0], W + M, CROSS[1], 'd')
 paint(9, 4, 20, 8, 'i')                # the 관아 yard
 
 put('hall_u', 14, 3), put('banner', 10, 5), put('banner', 19, 5), put('lantern', 12, 8), put('lantern', 17, 8)
-put('house_tile_x', 5, 4), put('house_tile', 24, 4), put('stree_old', 27, 1)
+put('house_tile_x', 5, 4), put('stree_old', 27, 1)
 put('tavern', 6, 12), put('wine_jar', 3, 13), put('bench', 9, 13)
 put('house_tile', 22, 12), put('market_stall_jar', 19, 13), put('grain_sack', 25, 13)
-put('house_tile_x', 7, 20), put('house_thatch', 23, 20), put('house_thatch_x', 27, 19), put('hut', 3, 21)
+put('house_tile_x', 7, 20), put('hut', 3, 21)
+put('house_thatch', 34, 22)   # a lone farmhouse a way off from the town's houses, in the open east
 put('well', 20, 20), put('water_bucket', 21, 21), put('market_stall', 10, 18), put('stree_willow', 4, 18)
 # the siege inside the gate
 put('rubble_1', 11, 25), put('rubble_3', 18, 26), put('broken_spear', 17, 23), put('fallen_flag', 10, 22)

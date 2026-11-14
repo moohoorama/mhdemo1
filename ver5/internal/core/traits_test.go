@@ -404,3 +404,25 @@ func TestChargeEndsWithTheWalkersTurn(t *testing.T) {
 	assert.Zero(t, hero.Steps)
 	assert.Equal(t, still, e.stats(hero).Attack, "the enemy's turn meets the walker uncharged")
 }
+
+func TestPlunderPaysPerLandedBlow(t *testing.T) {
+	e, _, _ := arena(t)
+	e.data.Traits["plunder_t"] = content.Trait{Name: "탈취", Kind: "talent", Effects: map[string]float64{content.FxPlunder: 10}}
+	with(e, "hero", "plunder_t")
+	with(e, "boss", "plunder_t")
+	e.unit("boss").HP = e.stats(e.unit("boss")).MaxHP
+	for i := 0; i < 8 && e.state.Money == 0; i++ {
+		resetActions(e.unit("hero"))
+		apply(t, e, Command{Kind: "attack", Actor: "hero", Target: "boss"})
+		e.state.Learning = nil
+	}
+	if e.state.Money == 0 || e.state.Money%10 != 0 {
+		t.Fatalf("money after the hero's landed blows: %d, want a positive multiple of 10", e.state.Money)
+	}
+	before := e.state.Money
+	e.unit("hero").HP = e.stats(e.unit("hero")).MaxHP
+	e.strike(e.unit("boss"), e.unit("hero"), e.basic(), blow{share: 1})
+	if e.state.Money != before {
+		t.Fatalf("an enemy's blow paid the party: %d, want %d", e.state.Money, before)
+	}
+}

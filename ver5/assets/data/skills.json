@@ -43,22 +43,6 @@
     "counter_art"
    ]
   },
-  "steal": {
-   "Name": "탈취",
-   "Desc": "적이 가진 아이템을 빼앗는다.",
-   "Kind": "physical",
-   "Mode": "melee",
-   "Shape": "single",
-   "Cost": 24,
-   "Hit": 90,
-   "Effect": "steal",
-   "Item": "bean",
-   "Min": 1,
-   "Coeff": 0.7,
-   "Requires": [
-    "steal_art"
-   ]
-  },
   "eightfold": {
    "Sound": "eightfold",
    "Name": "팔진도",

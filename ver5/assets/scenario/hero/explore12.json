@@ -101,36 +101,6 @@
       ]
      ]
     },
-    "상인": {
-     "At": [
-      9,
-      6
-     ],
-     "Face": "SW",
-     "Sprite": "commoner_man",
-     "Faction": "merchant",
-     "Shop": "beihai"
-    },
-    "술장수": {
-     "At": [
-      11,
-      5
-     ],
-     "Face": "SW",
-     "Sprite": "innkeeper_noncombat",
-     "Faction": "merchant",
-     "Shop": "beihai_tavern"
-    },
-    "대장장이": {
-     "At": [
-      12,
-      8
-     ],
-     "Face": "SW",
-     "Sprite": "blacksmith_noncombat",
-     "Faction": "merchant",
-     "Shop": "weapons"
-    },
     "북해병#1": {
      "At": [
       5,
@@ -139,6 +109,183 @@
      "Face": "NE",
      "Sprite": "light_infantry",
      "Faction": "han"
+    }
+   },
+   "Exits": [
+    {
+     "Name": "도구점",
+     "At": [
+      22,
+      14
+     ],
+     "Object": [
+      22,
+      12
+     ],
+     "To": "tools"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      5,
+      19
+     ],
+     "Object": [
+      5,
+      17
+     ],
+     "To": "tavern"
+    },
+    {
+     "Name": "대장간",
+     "At": [
+      30,
+      18
+     ],
+     "Object": [
+      28,
+      18
+     ],
+     "To": "weapons"
+    }
+   ]
+  },
+  "tools": {
+   "Map": "S_tool_shop",
+   "Name": "북해성 · 도구점",
+   "Zoom": 3,
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "city"
+    }
+   ],
+   "People": {
+    "상인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "beihai"
+    },
+    "늙은 점원": {
+     "At": [
+      4,
+      5
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "늙은 점원",
+       "부관임명 특성을 익힌 장수는 다른 장수를 부관으로 둘 수 있소. 부관의 힘이 장수에게 보태지고, 싸움에서 얻은 경험도 나눠 받지."
+      ]
+     ]
+    }
+   }
+  },
+  "tavern": {
+   "Map": "S_tavern",
+   "Name": "북해성 · 주점",
+   "Zoom": 3,
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "city"
+    }
+   ],
+   "People": {
+    "술장수": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "beihai_tavern"
+    },
+    "손님": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "한 잔 더!|크으, 좋다",
+     "Talk": [
+      [
+       "손님",
+       "황건 놈들이 성 밖을 에워쌌어도 공 북해께서 계시니 술은 떨어지지 않는다오."
+      ]
+     ]
+    }
+   }
+  },
+  "weapons": {
+   "Map": "S_weapon_shop",
+   "Name": "북해성 · 대장간",
+   "Zoom": 3,
+   "At": [
+    6,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "city"
+    }
+   ],
+   "People": {
+    "대장장이": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "blacksmith_noncombat",
+     "Faction": "merchant",
+     "Shop": "weapons"
+    },
+    "견습공": {
+     "At": [
+      5,
+      7
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "견습공",
+       "황건이 성을 에워싼 뒤로 창 주문만 밀렸소. 창은 손이 길어 말 탄 놈을 막기에 좋으니까."
+      ]
+     ]
     }
    }
   }

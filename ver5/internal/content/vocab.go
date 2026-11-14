@@ -38,6 +38,7 @@ const (
 	FxPoison             = "poison_on_hit"        // landed physical hits poison
 	FxPoisonBoost        = "poison_boost"         // the poison it puts on deals this many times more
 	FxLifeSteal          = "life_steal"           // heals this share of damage dealt
+	FxPlunder            = "plunder"              // each landed physical blow of a player's unit brings the party this much money
 	FxMissHalf           = "miss_half"            // a missed physical blow still deals this share
 	FxOutnumbered        = "outnumbered"          // attack and defense grow by this share for each foe in the eight cells around
 	FxCompanions         = "companions"           // attack and defense grow by this share for each ally in the eight cells around
@@ -58,6 +59,7 @@ const (
 	FxCritImmune         = "crit_immune"          // a blow that would crit is blocked
 	FxRangedImmune       = "ranged_immune"        // ranged attackers always miss
 	FxRangedWard         = "ranged_ward"          // ranged physical blows on it deal this share less
+	FxMagicWard          = "magic_ward"           // enemy attack spells on it deal this share less
 	FxCounterWard        = "counter_ward"         // counters struck back at it lose this much of their share
 	FxStartMana          = "start_mana"           // starts a battle with this share of its max spell points
 	FxReflect            = "reflect"              // returns an attack spell to its caster
@@ -117,10 +119,10 @@ var TraitEffects = map[string]bool{}
 func init() {
 	for _, k := range []string{FxDiagonal, FxLongReach, FxRetreatSweep, FxCritAlways, FxCritBoost, FxSpellCrit, FxCritAmbush, FxCritScholar,
 		FxCritMounted, FxCritWounded, FxLoneCritLeader, FxDoubleAlways, FxAssist, FxRetaliate, FxGuardian, FxSplashCross, FxSplashCrossRanged, FxSplashSquare, FxSplashSquareRanged,
-		FxPierce, FxFlank, FxHeavy, FxCounterBoost, FxKnockback, FxTerrainCap, FxTerrainFloor, FxGrassFactor, FxTerrainFactor, FxPoison, FxPoisonBoost, FxLifeSteal,
+		FxPierce, FxFlank, FxHeavy, FxCounterBoost, FxKnockback, FxTerrainCap, FxTerrainFloor, FxGrassFactor, FxTerrainFactor, FxPoison, FxPoisonBoost, FxLifeSteal, FxPlunder,
 		FxMissHalf, FxOutnumbered, FxCompanions, FxLone, FxChargePower, FxChargeShock, FxChargeAccuracy, FxOpening,
 		FxDesperate, FxGrit, FxHoldGround, FxRangedSure, FxRout,
-		FxHitDebuff, FxTurnBuff, FxAuraBuff, FxBulwark, FxCritImmune, FxRangedImmune, FxRangedWard, FxCounterWard, FxStartMana, FxReflect, FxReflectStatus,
+		FxHitDebuff, FxTurnBuff, FxAuraBuff, FxBulwark, FxCritImmune, FxRangedImmune, FxRangedWard, FxMagicWard, FxCounterWard, FxStartMana, FxReflect, FxReflectStatus,
 		FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxAuraHaste, FxRangedReach, FxMountedRange, FxSpellRange,
 		FxSpellSure, FxSpellWard, FxChain, FxSure, FxCritElement, FxPower, FxPatience, FxFinisher, FxDispelBuffs, FxSpellLeech, FxDispel,
 		FxStatusImmune, FxStatusWard, FxHealBonus, FxAura, FxAuraMana, FxDeputyCharm, FxItemShare, FxItemPower, FxManaRegen,
@@ -168,7 +170,7 @@ const (
 // Skill effects: a heal's kind, the status a buff or status skill applies, or what a physical skill adds to its blow.
 // A buff, status or mixed skill may join several stat statuses with '+' ("attack+defense").
 var SkillEffects = map[string]bool{
-	"heal": true, "cure": true, "dispel": true, "steal": true, "counter": true,
+	"heal": true, "cure": true, "dispel": true, "counter": true,
 	"mind": true, "attack": true, "defense": true, "morale": true, "agility": true, "speed": true, "range": true,
 	"poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "refill": true,
 	"guard": true, "disrupt": true, "invert": true, "sure_crit": true, "meditate": true,

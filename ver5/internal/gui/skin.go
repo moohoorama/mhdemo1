@@ -433,6 +433,11 @@ func nineSlice(dst, im *ebiten.Image, corner int, r image.Rectangle) {
 // titled draws a window with a title plate on its top edge.
 func (g *Game) titled(dst *ebiten.Image, r image.Rectangle, title string) {
 	g.window(dst, r)
+	g.titlePlate(dst, r, title)
+}
+
+// titlePlate draws the title plate on r's top edge, over whatever the window's inside holds.
+func (g *Game) titlePlate(dst *ebiten.Image, r image.Rectangle, title string) {
 	if title == "" {
 		return
 	}
@@ -444,8 +449,9 @@ func (g *Game) titled(dst *ebiten.Image, r image.Rectangle, title string) {
 }
 
 func (g *Game) titledPattern(dst *ebiten.Image, r image.Rectangle, title string) {
-	g.titled(dst, r, title)
+	g.window(dst, r)
 	g.drawPattern(dst, g.assets.Shou, float64(r.Min.X+9), float64(r.Min.Y+9), float64(r.Dx()-18), float64(r.Dy()-18), 0, 0, 1, [3]float32{.52, .35, .25}, .62)
+	g.titlePlate(dst, r, title)
 }
 
 // cursorPos is the mouse position in UI px; screenshot drivers replace it.

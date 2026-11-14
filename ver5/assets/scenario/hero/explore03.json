@@ -575,6 +575,21 @@
      ],
      "Sprite": "commoner_man",
      "Faction": "merchant"
+    },
+    "늙은 점원": {
+     "At": [
+      4,
+      5
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "늙은 점원",
+       "군량낭을 찬 장수가 콩이나 술을 먹이면, 곁에 있는 아군 가운데 가장 지친 이도 함께 덕을 본다오. 보급이란 게 그런 거요."
+      ]
+     ]
     }
    }
   },

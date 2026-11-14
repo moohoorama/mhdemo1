@@ -308,8 +308,7 @@
        "Policy": "assault",
        "Faction": "dong",
        "Rank": "commander",
-       "Side": "enemy",
-       "Class": "heavy_cavalry"
+       "Side": "enemy"
       },
       {
        "Character": "houcheng",
