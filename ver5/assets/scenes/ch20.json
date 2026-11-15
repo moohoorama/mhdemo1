@@ -44,7 +44,7 @@
   },
   "c20-reunion": {
    "Map": "S_mangdang",
-   "Nodes": ["c20-reunion", "c20-r01", "c20-r02", "c20-r03", "c20-r04", "c20-r05", "c20-r06", "c20-r07", "c20-r08", "c20-r09", "c20-r10", "c20-r10b", "c20-r11", "c20-r12"],
+   "Nodes": ["c20-reunion", "c20-r01", "c20-r02", "c20-r03", "c20-r04", "c20-r05", "c20-r06", "c20-r07", "c20-r08", "c20-r09", "c20-r10", "c20-r10b", "c20-r10c", "c20-r10d", "c20-r11", "c20-r12"],
    "Ambient": [{"CamAt": [12, 7]}],
    "Cast": {
     "유비": {"At": [11, 7], "Face": "SE"},
@@ -54,11 +54,11 @@
     "손건": {"At": [10, 7], "Face": "SE"},
     "미축": {"At": [10, 8], "Face": "SE"},
     "미방": {"At": [10, 9], "Face": "SE"},
-    "번궁": {"At": [11, 5], "Face": "SE"},
+    "번궁": {"At": [11, 3], "Face": "SE"},
     "고순": {"At": [10, 6], "Face": "SE", "If": ["party:gaoshun"]},
     "번아": {"At": [10, 5], "Face": "SE"},
     "진도": {"At": [11, 9], "Face": "SE"},
-    "관우": {"At": [17, 5], "Face": "NW", "Off": true},
+    "관우": {"At": [17, 5], "Face": "NW", "Off": true, "Sprite": "guanyu_royal_guard", "Mount": "red_hare"},
     "관평": {"At": [17, 5], "Face": "NW", "Off": true},
     "주창": {"At": [17, 4], "Face": "NW", "Off": true},
     "진진": {"At": [17, 4], "Face": "NW", "Off": true}
@@ -73,14 +73,12 @@
      [
      ],
      [
-      [{"Actor": "관우", "Pose": "bow"}],
-      [{"Actor": "유비", "Play": "action"}],
-      [{"Actor": "관우", "Pose": "idle"}]
+      [{"Actor": "유비", "Play": "action"}]
      ]
     ],
     "c20-r03": [
      [
-      [{"Actor": "장비", "Move": [13, 4], "Face": "SE"}]
+      [{"Actor": "장비", "Move": [11, 4], "Face": "SE"}]
      ]
     ],
     "c20-r05": [
@@ -100,7 +98,12 @@
     ],
     "c20-r10b": [
      [
-      [{"Actor": "장비", "Face": "SE"}]
+      [{"Actor": "장비", "Move": [13, 5], "Face": "SE", "Speed": 0.7}]
+     ]
+    ],
+    "c20-r10c": [
+     [
+      [{"Actor": "관우", "Face": "NW"}]
      ]
     ],
     "c20-r11": [

@@ -69,6 +69,7 @@ type Actor struct {
 	Face    string
 	Faction string
 	Sprite  string
+	Mount   string   // an equipped horse (equipment id) whose colours a mounted sprite takes, as in battle
 	Off     bool     // starts off the stage, until a step Enters it
 	Hold    bool     // never turns by itself toward whoever speaks
 	Pose    string   // the motion it rests in (sit, lie, kneel …) instead of standing idle

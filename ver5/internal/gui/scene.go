@@ -175,7 +175,7 @@ func (g *Game) openScene(def *scenes.Scene) {
 
 // castActor is a cast member standing where the cast puts it; nil without a place or a sprite.
 func (g *Game) castActor(key string, a scenes.Actor) *unitVis {
-	art := g.actorArt(key, a.Sprite, a.Faction)
+	art := g.actorArt(key, a.Sprite, a.Faction, a.Mount)
 	if art == nil || len(a.At) != 2 {
 		return nil
 	}
@@ -221,13 +221,13 @@ func (g *Game) setSceneTime(t string) {
 
 // actorArt is the sprite a cast member stands in: the cast's own pick (any sprite id: extras, soldiers, or a
 // battle sprite), else the character's scene, battle or class sprite, in the character's faction colour unless
-// the cast names another.
-func (g *Game) actorArt(key, pick, faction string) *sprite.Art {
+// the cast names another, ridden on the cast's mount.
+func (g *Game) actorArt(key, pick, faction, mount string) *sprite.Art {
 	def, c, _ := g.character(scenes.Base(key))
 	if faction == "" {
 		faction = c.Look.Faction
 	}
-	return g.sceneArt(def, pick, faction)
+	return g.sceneArt(def, pick, faction, mount)
 }
 
 // startLine queues the beats that come before speaker line i of the current node.
@@ -545,7 +545,7 @@ func (g *Game) stageStep(st scenes.Step) {
 	}
 	if v != nil && st.Sprite != "" {
 		a := s.def.Cast[st.Actor]
-		if art := g.actorArt(st.Actor, st.Sprite, a.Faction); art != nil {
+		if art := g.actorArt(st.Actor, st.Sprite, a.Faction, a.Mount); art != nil {
 			if s.tied[st.Actor] != nil {
 				s.tied[st.Actor], art = art, boundArt(art)
 			}

@@ -154,10 +154,10 @@ func (g *Game) shootArt(def, class, mount, faction string) *sprite.Art {
 
 // sceneArt is the sprite a character stands on a scene in: the cast's own pick, else the
 // character's scene sprite, the scene sprite of its class (an officer on foot instead of a horseman), battle sprite
-// or class sprite.
-func (g *Game) sceneArt(def, pick, faction string) *sprite.Art {
+// or class sprite, with the colours of the horse it rides (mount, an equipment id) when it rides one.
+func (g *Game) sceneArt(def, pick, faction, mount string) *sprite.Art {
 	c := g.S.Data.Characters[def]
-	c.Look = g.laterLook(c.Look)
+	c.Look = g.mountLook(g.laterLook(c.Look), mount)
 	first := g.S.Data.ClassLine(c.Class)[0]
 	class := g.S.Data.Classes[first]
 	for _, id := range []string{pick, c.Look.Scene, class.Scene, c.Look.Sprites[first], c.Look.Sprite, class.Sprite} {
