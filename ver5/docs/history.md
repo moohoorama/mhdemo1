@@ -3058,3 +3058,4 @@
 - `internal/scenes/scenes.go`·`internal/gui/scene.go`·`internal/gui/look.go`·`internal/gui/scenario_test.go`: 장면 배역에 `Mount`(장비 id) — 말 탄 도트가 그 말의 색을 입는다(전투의 mountLook과 같은 방식), 시험은 색 있는 말인지 확인 — 망탕산 재회에 적토마를 탄 관우를 보이려고
 - `assets/scenario/hero/story20.json`·`assets/scenes/ch20.json`·`docs/fullstory.md`: 재회 대화를 적토마로 — 장비 "그 말은 뭐유? …이거 적토마 아니유?" / 관우 "조조가 주었다." / 장비 "조조한테 많이도 받았구먼유. 거 조조한테 마음이 남아 있는 거 아니유?" / 관우 "걱정 마라, 익덕. 안량과 문추의 목으로 그 말 값은 치르고 왔다." 관우는 친위대 도트에 적토마 색으로 말 타고 들어오고(절 대신), 장비는 말 쪽으로 다가가 (13,5)에서 마주 봄, 번궁은 소나무 뒤에서 (11,3)으로 — 사용자 제안(2026-11-15)
 - `assets/scenes/ch20.json`(c20-reunion): 관우 도트를 친위대→중기병(guanyu_heavy_cavalry)으로 — 떠났던 장수는 떠날 때 병종 그대로 돌아오므로 20장 관우는 중기병(사용자 지적)
+- `assets/scenes/ch20.json`(c20-reunion): 관우 장면 도트를 중기병→경기병(guanyu)으로 — 마갑 없이 적토마 몸통 전체가 붉게 보이게. 장면 도트는 병종과 무관하게 고른다(사용자 11-15)
