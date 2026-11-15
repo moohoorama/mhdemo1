@@ -66,6 +66,7 @@
 | 문서 | 내용 |
 |---|---|
 | [tools-editor.md](tools-editor.md) | 맵 에디터, 도트 에디터 |
+| [tools-autoplay.md](tools-autoplay.md) | 자동 플레이 AI: 매우 어려움 캠페인을 두는 네 AI, 평가 기준, 결과 |
 | [tools-scene-viewer.md](tools-scene-viewer.md) | 모든 장면 맵을 같은 기준으로 보는 브라우저 뷰어 |
 | [tools-build.md](tools-build.md) | 에셋 빌드 명령, Android 빌드 |
 | [system-architecture.md](system-architecture.md) | 패키지 구조, 데이터 번들, 결정성 |

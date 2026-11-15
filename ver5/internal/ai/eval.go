@@ -17,11 +17,16 @@ import (
 // the blows that can reach it: "lord" only the lord, "officers" every named officer, each opponent that
 // reaches counting with Top its strongest few (0 all of them), the loss weighed by W. With a "-lethal"
 // suffix only a cell where those blows could make the unit fall counts, at its whole worth.
+//
+// XP and Grow steer the experience: an action's expected experience is worth XP × Grow[officer] × the
+// actor's own worth per level it brings, so the blows go to the officers the party means to raise.
 type Eval struct {
 	N, M   float64
 	Threat string
 	Top    int
 	W      float64
+	XP     float64
+	Grow   map[string]float64
 }
 
 // Player scores the choices of the player's own units (auto battle, the balance tools; not the AI
@@ -263,6 +268,9 @@ func (x *evaluator) action(c core.Command, duels bool) (float64, bool) {
 		return 0, false
 	}
 	gain -= .1 * float64(p.Cost)
+	if x.XP > 0 {
+		gain += x.XP * x.Grow[me.Character] * float64(p.XP) / 10000 * p.Hit / 100 * x.worth(me, me.HP)
+	}
 	return gain - x.risk(me, here, me.HP), true
 }
 
@@ -397,7 +405,32 @@ func (x *evaluator) nearFight(u *core.UnitView) bool {
 const escortPull = .2
 
 func chooseEval(e *core.Engine, o core.Observation, me *core.UnitView, options []core.Command, duels bool) core.Command {
-	x := &evaluator{Eval: Player, e: e, o: o, me: me, victory: o.Map.VictoryTargets(), vital: content.DefeatTargets(o.Map.Defeat)}
+	if r := rankEval(e, o, me, options, duels, Player); len(r) > 0 {
+		return r[0].Command
+	}
+	return options[0]
+}
+
+// Scored is a command with the score the evaluator gave it.
+type Scored struct {
+	Command core.Command
+	Score   float64
+}
+
+// Rank scores the legal commands of the actor's unit by the weights x, best first (ties keep the engine's
+// order). Commands the evaluator rules out are left out; nil when the unit cannot act.
+func Rank(e *core.Engine, actor string, x *Eval, duels bool) []Scored {
+	o := e.Observe()
+	for i := range o.UnitViews {
+		if o.UnitViews[i].ID == actor {
+			return rankEval(e, o, &o.UnitViews[i], e.LegalActions(actor).Commands, duels, x)
+		}
+	}
+	return nil
+}
+
+func rankEval(e *core.Engine, o core.Observation, me *core.UnitView, options []core.Command, duels bool, weights *Eval) []Scored {
+	x := &evaluator{Eval: weights, e: e, o: o, me: me, victory: o.Map.VictoryTargets(), vital: content.DefeatTargets(o.Map.Defeat)}
 	marks := e.GoalMarks()
 	var cells []content.Point
 	for _, n := range marks {
@@ -430,7 +463,7 @@ func chooseEval(e *core.Engine, o core.Observation, me *core.UnitView, options [
 			}
 		}
 	}
-	best, score := options[0], math.Inf(-1)
+	var out []Scored
 	var walk map[content.Point]int
 	for _, c := range options {
 		s, ok := 0.0, true
@@ -455,9 +488,10 @@ func chooseEval(e *core.Engine, o core.Observation, me *core.UnitView, options [
 		default:
 			ok = false
 		}
-		if ok && s > score {
-			best, score = c, s
+		if ok {
+			out = append(out, Scored{c, s})
 		}
 	}
-	return best
+	sort.SliceStable(out, func(i, j int) bool { return out[i].Score > out[j].Score })
+	return out
 }
