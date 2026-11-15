@@ -260,12 +260,12 @@ func TestSplashAndPierce(t *testing.T) {
 	t1.X, t1.Y = 6, 5 // above the target
 	t2.X, t2.Y = 7, 5 // diagonal
 	with(e, "hero", "cross_t")
-	hit, share := e.victims(a, b, e.basic())
+	hit, share, _ := e.victims(a, b, e.basic())
 	if len(hit) != 2 || share["troop#1"] != .75 || share["troop#2"] != 0 {
 		t.Fatalf("cross %v %v", hit, share)
 	}
 	with(e, "hero", "square_t")
-	hit, share = e.victims(a, b, e.basic())
+	hit, share, _ = e.victims(a, b, e.basic())
 	if len(hit) != 3 || share["troop#2"] != .75 {
 		t.Fatalf("square %v %v", hit, share)
 	}
@@ -273,13 +273,13 @@ func TestSplashAndPierce(t *testing.T) {
 	t2.X, t2.Y = 7, 6 // behind the target
 	e.char("hero").Class = "rider"
 	e.char("hero").Equipment = map[string]string{"weapon": "spear"}
-	hit, share = e.victims(a, b, e.basic())
+	hit, share, _ = e.victims(a, b, e.basic())
 	if len(hit) != 2 || share["troop#2"] != .75 {
 		t.Fatalf("pierce %v %v", hit, share)
 	}
 	a.X, a.Y = 5, 5 // a diagonal blow carries on diagonally
 	t1.X, t1.Y = 7, 7
-	hit, share = e.victims(a, b, e.basic())
+	hit, share, _ = e.victims(a, b, e.basic())
 	if len(hit) != 2 || share["troop#1"] != .75 || share["troop#2"] != 0 {
 		t.Fatalf("diagonal pierce %v %v", hit, share)
 	}
@@ -1019,7 +1019,7 @@ func TestSideHitsNeverPassTheRulesShare(t *testing.T) {
 	behind := *b
 	behind.ID, behind.X, behind.Y = "behind", b.X+(b.X-a.X), b.Y+(b.Y-a.Y)
 	e.unitIDs[behind.ID] = e.units.NewEntity(&behind)
-	_, share := e.victims(e.unit("hero"), b, e.basic())
+	_, share, _ := e.victims(e.unit("hero"), b, e.basic())
 	if share["behind"] != 0.5 || share[b.ID] != 1 {
 		t.Fatalf("shares %v", share)
 	}

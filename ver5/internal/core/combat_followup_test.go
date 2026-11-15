@@ -173,7 +173,7 @@ func TestAreaSkillTargetsSplashLikeBasicAttacks(t *testing.T) {
 			with(e, "hero", "cross_t")
 			s := e.basic()
 			s.Shape, s.Each = content.ShapeAll, each
-			hit, share := e.victims(a, b, s)
+			hit, share, _ := e.victims(a, b, s)
 			assert.Len(t, hit, 3)
 			assert.Equal(t, 1.0, share[t1.ID])
 			assert.Equal(t, .75, share[t2.ID])
@@ -327,10 +327,10 @@ func TestHeavyBlowRaisesShares(t *testing.T) {
 	})
 	t.Run("beside the target", func(t *testing.T) {
 		e, a, b := setup(t, "cross_t")
-		_, share := e.victims(b, a, e.basic())
+		_, share, _ := e.victims(b, a, e.basic())
 		before := share["archer1"]
 		with(e, "boss", "full_share_t")
-		_, share = e.victims(b, a, e.basic())
+		_, share, _ = e.victims(b, a, e.basic())
 		assert.InDelta(t, before+.3, share["archer1"], 1e-9)
 	})
 }
@@ -344,7 +344,7 @@ func TestRangedCrossSplash(t *testing.T) {
 		with(e, a.ID, "cross_ranged_t")
 		s := e.basic()
 		s.Mode = mode
-		hit, _ := e.victims(a, b, s)
+		hit, _, _ := e.victims(a, b, s)
 		return hit
 	}
 	t.Run("a ranged attack hits the cross", func(t *testing.T) {
@@ -362,7 +362,7 @@ func TestRangedCrossSplash(t *testing.T) {
 		s := e.basic()
 		for mode, n := range map[string]int{content.ModeRanged: 2, content.ModeMelee: 1} {
 			s.Mode = mode
-			hit, _ := e.victims(a, b, s)
+			hit, _, _ := e.victims(a, b, s)
 			assert.Len(t, hit, n, mode)
 		}
 	})

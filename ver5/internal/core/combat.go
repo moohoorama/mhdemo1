@@ -434,16 +434,19 @@ func (e *Engine) pushCell(u, v *Unit) (content.Point, bool) {
 // attack (돌파). u heals by what it deals.
 func (e *Engine) strikeBack(u *Unit, aims []*Unit, k float64, counter, twice bool) {
 	var vs []*Unit
+	var area []content.Point
 	share := map[string]float64{}
 	for _, aim := range aims {
-		hit, sh := e.victims(u, aim, e.basic())
+		hit, sh, ar := e.victims(u, aim, e.basic())
 		for _, q := range hit {
 			if share[q.ID] == 0 {
 				vs = append(vs, q)
 			}
 			share[q.ID] = math.Max(share[q.ID], sh[q.ID]*k)
 		}
+		area = append(area, ar...)
 	}
+	e.emitArea(u, area)
 	for _, n := range e.attackOn(u, aims[0], vs, e.basic(), share, true, counter, twice) {
 		e.leech(u, n)
 	}
@@ -489,8 +492,9 @@ func (e *Engine) guard(u *Unit, struck []*Unit) {
 	}
 }
 
-// victims are the units a physical action strikes with the share of full damage each takes.
-func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[string]float64) {
+// victims are the units a physical action strikes with the share of full damage each takes, and the area:
+// every cell its blow reaches besides its target's (splash, flank, pierce), taken or not.
+func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[string]float64, area []content.Point) {
 	share = map[string]float64{}
 	add := func(q *Unit, k float64) {
 		if q != nil && q.HP > 0 && q.Faction != u.Faction && k > share[q.ID] {
@@ -500,17 +504,25 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 			share[q.ID] = k
 		}
 	}
-	side := func(q *Unit, k float64) { // struck besides the target: never more than the rules' share, raised by 참격
+	side := func(x, y int, k float64) { // struck besides the target: never more than the rules' share, raised by 참격
+		if p := (content.Point{X: x, Y: y}); !slices.Contains(area, p) {
+			area = append(area, p)
+		}
 		if m := e.data.Rules.SideShareMax; m > 0 {
 			k = math.Min(k, m)
 		}
-		add(q, k+e.fx(u, content.FxHeavy))
+		add(e.occupied(x, y), k+e.fx(u, content.FxHeavy))
 	}
 	if s.Shape != content.ShapeSingle {
 		for _, aim := range e.targets(u, v, s) {
-			hit, sh := e.victims(u, aim, single(s))
+			hit, sh, ar := e.victims(u, aim, single(s))
 			for _, q := range hit {
 				add(q, sh[q.ID])
+			}
+			for _, p := range ar {
+				if !slices.Contains(area, p) {
+					area = append(area, p)
+				}
 			}
 		}
 		return
@@ -531,14 +543,14 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 				k = math.Max(k, cross)
 			}
 			if k > 0 {
-				side(e.occupied(v.X+dx, v.Y+dy), k)
+				side(v.X+dx, v.Y+dy, k)
 			}
 		}
 	}
 	if k := e.fx(u, content.FxFlank); k > 0 && !e.rangedAttack(u, v, s) {
 		dx, dy := sign(v.X-u.X), sign(v.Y-u.Y)
-		side(e.occupied(v.X-dy, v.Y+dx), k)
-		side(e.occupied(v.X+dy, v.Y-dx), k)
+		side(v.X-dy, v.Y+dx, k)
+		side(v.X+dy, v.Y-dx, k)
 	}
 	k := math.Max(e.fx(u, content.FxPierce), s.Pierce)
 	if k > 0 {
@@ -551,9 +563,17 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 		default:
 			dx, dy = sign(dx), sign(dy)
 		}
-		side(e.occupied(v.X+dx, v.Y+dy), k)
+		side(v.X+dx, v.Y+dy, k)
 	}
 	return
+}
+
+// emitArea tells the replay which cells u's coming blow reaches besides its target's, so that nobody is
+// shown walking into them while it lands.
+func (e *Engine) emitArea(u *Unit, area []content.Point) {
+	if len(area) > 0 {
+		e.events = append(e.events, Event{Kind: "area", Actor: u.ID, Path: area})
+	}
 }
 
 // ring is the eight cells around a unit.
@@ -706,7 +726,8 @@ func single(s content.Skill) content.Skill {
 // target on its own, a blow with its own exchange on each of them in turn, the aimed one first.
 func (e *Engine) physical(u, v *Unit, s content.Skill, c Command) {
 	if !s.Each {
-		hit, share := e.victims(u, v, s)
+		hit, share, area := e.victims(u, v, s)
+		e.emitArea(u, area)
 		e.exchange(u, v, hit, share, s, c)
 		return
 	}
@@ -722,7 +743,8 @@ func (e *Engine) physical(u, v *Unit, s content.Skill, c Command) {
 		if i > 0 {
 			e.emit("next-strike", u.ID, q.ID, 0)
 		}
-		hit, share := e.victims(u, q, single(s))
+		hit, share, area := e.victims(u, q, single(s))
+		e.emitArea(u, area)
 		e.exchange(u, q, hit, share, s, c)
 	}
 }

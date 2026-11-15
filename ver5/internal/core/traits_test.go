@@ -184,7 +184,7 @@ func TestFlankStrikesBesideTheTarget(t *testing.T) {
 	up := e.spawn(sp.Character, sp.Character, "enemy", 9, 7, sp)
 	down := e.spawn(sp.Character, sp.Character, "enemy", 9, 9, sp)
 	behind := e.spawn(sp.Character, sp.Character, "enemy", 10, 8, sp)
-	_, share := e.victims(hero, boss, e.basic())
+	_, share, _ := e.victims(hero, boss, e.basic())
 	if share[boss.ID] != 1 || share[up.ID] != .5 || share[down.ID] != .5 || share[behind.ID] != 0 {
 		t.Fatalf("shares %v", share)
 	}

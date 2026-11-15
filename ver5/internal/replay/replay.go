@@ -78,9 +78,10 @@ type Claim struct {
 }
 
 // Claims are the units and cells the action touches: its actor and the cell it starts on,
-// every cell of its walk, and every unit an event names (targets, counter-attackers,
-// retreats) together with that unit's cell. A walk that opens the action claims its cells
-// for the time the actor is on them; the rest is claimed whole.
+// every cell of its walk, every unit an event names (targets, counter-attackers, retreats)
+// together with that unit's cell, and every cell an event lists (a blow's area among them).
+// A walk that opens the action claims its cells for the time the actor is on them; the rest
+// is claimed whole.
 func (a *Action) Claims() []Claim {
 	set := map[string]Claim{}
 	whole := func(k string) { set[k] = Claim{Key: k} }

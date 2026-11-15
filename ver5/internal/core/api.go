@@ -137,7 +137,7 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 	var hit []*Unit
 	share := map[string]float64{}
 	if phys {
-		hit, share = e.victims(u, v, s)
+		hit, share, _ = e.victims(u, v, s)
 	} else {
 		hit = e.targets(u, v, s)
 	}

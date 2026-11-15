@@ -558,7 +558,7 @@ func (p *player) events(evs []core.Event) {
 			p.printf("  ★ %s\n", map[string]string{"victory": "승리", "defeat": "패배"}[e.Kind])
 		case "objective":
 			p.printf("  ◎ %s\n", e.Text)
-		case "place", "deployment_finish", "experience", "cost", "recover-mp", "attack-hit", "end":
+		case "place", "deployment_finish", "experience", "cost", "recover-mp", "attack-hit", "end", "area":
 		default:
 			if p.s.Settings.Detail {
 				p.printf("  (%s %s %s %d)\n", e.Kind, name(e.Actor), name(e.Target), e.Amount)

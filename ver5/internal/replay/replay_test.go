@@ -81,6 +81,15 @@ func TestLink(t *testing.T) {
 			t.Fatalf("b: after %v trail %v", b.After, b.Trail)
 		}
 	})
+	t.Run("a walk into a cell an earlier blow reaches waits for the blow", func(t *testing.T) {
+		// a's counter pierces through to (3,0), empty while it was resolved; b only walks there afterwards
+		a := act("a", pt(1, 0), core.Event{Kind: "damage", Actor: "a", Target: "t1"}, core.Event{Kind: "area", Actor: "a", Path: []content.Point{pt(3, 0)}})
+		b := walker("b", pt(5, 0), pt(4, 0), pt(3, 0))
+		Link([]*Action{a, b})
+		if !reflect.DeepEqual(b.After, []int{0}) {
+			t.Fatalf("b: after %v trail %v", b.After, b.Trail)
+		}
+	})
 	t.Run("a unit hit earlier moves after the blow", func(t *testing.T) {
 		a := act("a", content.Point{X: 0, Y: 0}, core.Event{Kind: "damage", Actor: "a", Target: "b"})
 		a.Before["b"] = content.Point{X: 1, Y: 0}
