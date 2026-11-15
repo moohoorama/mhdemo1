@@ -58,15 +58,15 @@
     "고순": {"At": [10, 6], "Face": "SE", "If": ["party:gaoshun"]},
     "번아": {"At": [10, 5], "Face": "SE"},
     "진도": {"At": [11, 9], "Face": "SE"},
-    "관우": {"At": [17, 7], "Face": "NW", "Off": true},
-    "관평": {"At": [17, 6], "Face": "NW", "Off": true},
-    "주창": {"At": [17, 9], "Face": "NW", "Off": true},
-    "진진": {"At": [17, 7], "Face": "NW", "Off": true}
+    "관우": {"At": [17, 5], "Face": "NW", "Off": true},
+    "관평": {"At": [17, 5], "Face": "NW", "Off": true},
+    "주창": {"At": [17, 4], "Face": "NW", "Off": true},
+    "진진": {"At": [17, 4], "Face": "NW", "Off": true}
    },
    "Beats": {
     "c20-r01": [
      [
-      [{"Actor": "관우", "Enter": [17, 7], "Move": [14, 7], "Face": "NW"}, {"Actor": "관평", "Enter": [17, 6], "Move": [15, 6], "Face": "NW", "After": 0.3}, {"Actor": "주창", "Enter": [17, 9], "Move": [14, 9], "Face": "NW", "After": 0.3}, {"Actor": "진진", "Enter": [17, 7], "Move": [15, 7], "Face": "NW", "After": 0.9}]
+      [{"Actor": "관우", "Enter": [17, 5], "Move": [14, 5], "Face": "NW"}, {"Actor": "관평", "Enter": [17, 5], "Move": [15, 5], "Face": "NW", "After": 0.3}, {"Actor": "주창", "Enter": [17, 4], "Move": [14, 4], "Face": "NW", "After": 0.3}, {"Actor": "진진", "Enter": [17, 4], "Move": [15, 4], "Face": "NW", "After": 0.9}]
      ]
     ],
     "c20-r02": [
@@ -80,7 +80,7 @@
     ],
     "c20-r03": [
      [
-      [{"Actor": "장비", "Move": [13, 6], "Face": "SW"}]
+      [{"Actor": "장비", "Move": [13, 4], "Face": "SE"}]
      ]
     ],
     "c20-r05": [
