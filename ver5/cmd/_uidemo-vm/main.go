@@ -57,6 +57,7 @@ var (
 	uiPct  = flag.Int("uiscale", 0, "UI size setting in percent (80-160); 0 keeps the default")
 	sheet  = flag.Bool("sheet", false, "capture the -at frames on every reference screen into one sheet each")
 	prof   = flag.String("cpuprofile", "", "write CPU profiles to <this>.guest.pprof (the game) and <this>.host.pprof (the capture)")
+	timing = flag.Bool("timing", false, "print how long each step of the run took")
 	still  = flag.Float64("still", 0, "stop once the screen has not changed for this many seconds; 0 plays every frame")
 )
 
@@ -164,8 +165,19 @@ func atFrames() []int {
 	return out
 }
 
+var started = time.Now()
+
+// step prints how far into the run a step ended, with -timing.
+func step(name string) {
+	if *timing {
+		fmt.Fprintf(os.Stderr, "[%5.2fs] %s\n", time.Since(started).Seconds(), name)
+	}
+}
+
 func main() {
-	if err := run(); err != nil {
+	err := run()
+	step("exit")
+	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -218,6 +230,7 @@ func run() error {
 	if err := build.Run(); err != nil {
 		return fmt.Errorf("building the guest: %w", err)
 	}
+	step("guest built")
 	// one more frame than captured: the guest stops itself after its last frame
 	guestCmd := exec.Command(guestBin, "-ui", *ui, "-frames", strconv.Itoa(*frames+1), "-every", "0", "-stage", *stage, "-duel", *duel, "-node", *node,
 		"-size", *size, "-uiscale", strconv.Itoa(*uiPct))
@@ -229,6 +242,7 @@ func run() error {
 	if err := guestCmd.Start(); err != nil {
 		return fmt.Errorf("starting the guest: %w", err)
 	}
+	step("guest started")
 	defer func() {
 		// the guest ends itself after its last frame; give it time to flush its profile before killing it
 		exited := make(chan struct{})
@@ -245,6 +259,7 @@ func run() error {
 		_ = dl.SetDeadline(time.Now().Add(60 * time.Second)) // loading the game data takes a while
 	}
 	conn, err := ln.Accept()
+	step("guest connected")
 	if err != nil {
 		return fmt.Errorf("waiting for the guest: %w", err)
 	}
@@ -291,9 +306,12 @@ func run() error {
 	}
 	start := time.Now()
 	ebiten.SetWindowVisible(false)
+	step("host window")
 	runErr := ebiten.RunGame(h)
+	step("frames played")
 	_ = h.guest.Close()
 	h.writers.Wait()
+	step("pngs written")
 	if h.video != nil {
 		h.video.Close()
 		if err := ffmpeg.Wait(); err != nil {
