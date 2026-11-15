@@ -1890,11 +1890,11 @@
    "Playable": true,
    "Traits": [
     "acupuncture",
-    "taoism"
+    "medicine"
    ],
    "Learn": [
     "acupuncture",
-    "taoism"
+    "medicine"
    ],
    "Equipment": [
     "bamboo_fan",
@@ -2584,7 +2584,7 @@
   "xunyu": {
    "Name": "순욱",
    "Biography": "조조의 으뜸 모사. 왕을 보좌할 재목이라 불린다.",
-   "Class": "strategist",
+   "Class": "mystic",
    "Stats": [
     70,
     40,
@@ -2617,7 +2617,7 @@
   "xunyou": {
    "Name": "순유",
    "Biography": "순욱의 조카이자 조조의 군사. 겉으로는 어리숙해 보이나 꾀가 깊다.",
-   "Class": "mystic",
+   "Class": "strategist",
    "Stats": [
     72,
     42,
@@ -2679,7 +2679,7 @@
   "chengyu": {
    "Name": "정욱",
    "Biography": "조조의 모사. 성품이 굳세고 꾀가 모질다.",
-   "Class": "strategist",
+   "Class": "diplomat",
    "Stats": [
     80,
     52,
@@ -2811,7 +2811,8 @@
   "guotu": {
    "Name": "곽도",
    "Biography": "원소의 모사. 남의 공을 시기하고 원소의 귀에 듣기 좋은 말만 넣는다.",
-   "Class": "strategist",
+   "Class": "diplomat",
+   "Prefer": "status",
    "Stats": [
     58,
     40,
@@ -2821,7 +2822,10 @@
     56
    ],
    "Level": 1,
-   "Traits": [],
+   "Traits": [
+    "stratagem",
+    "stratagem_boost"
+   ],
    "Learn": [],
    "Equipment": [
     "bamboo_slips",
@@ -2909,7 +2913,7 @@
   },
   "zhoucang": {
    "Name": "주창",
-   "Biography": "관서 출신의 장사. 황건의 잔당으로 와우산에 숨어 있다가, 관우를 만나 그 칼을 받들고 평생 곁을 지킨다. 맥성에서 관우의 죽음을 듣고 스스로 목숨을 끊는다.",
+   "Biography": "관서 출신의 장사. 황건의 잔당으로 와우산에서 산적 노릇을 하다가, 관우를 만나 손을 씻고 평생 곁을 지킨다. 맥성에서 관우의 죽음을 듣고 스스로 목숨을 끊는다.",
    "Class": "outlaw",
    "Stats": [
     84,

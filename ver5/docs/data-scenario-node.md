@@ -53,7 +53,7 @@ assets/scenario/
 | `Else` | `branch` | 어느 칸도 참이 아닐 때 갈 노드(없으면 기본 순서). |
 | `Flags` | `set` | 플래그 이름 → 값(정수). 비어 있을 수 없다. |
 | `Stage` | `battle` | 출전할 스테이지 ID. 스테이지에 있어야 한다. |
-| `Character` | `join` | 합류하는 인물 ID. `Playable`이어야 한다. `grant`에 쓰면 로드 오류다 — 받은 장비는 언제나 창고로 간다(누가 찰지는 장비 `Owner`, [data-item.md](data-item.md)). |
+| `Character` | `join`, `grant` | `join`: 합류하는 인물 ID. `Playable`이어야 한다. `grant`: 받은 장비를 곧바로 채울 `Playable` 인물(편성에 있든 `leave`로 떠나 있든). 그 칸에 있던 장비는 창고로 가고, 그 인물이 들 수 없거나 전사했으면 창고에 남는다. 장비가 아닌 아이템에 쓰면 로드 오류다. 비우면 받은 장비는 창고로 간다(누가 찰지는 장비 `Owner`, [data-item.md](data-item.md)). 예: 20장 `c20-red-hare`가 B20 직전 관우에게 적토마를 채운다. |
 | `Item` | `grant` | 주는 아이템 또는 장비 ID. 둘 중 하나에 있어야 한다. |
 | `Count` | `grant` | 개수. |
 | `Event` | `join`, `leave`, `grant` | 한 번만 실행하기 위한 `Executed` 키. 규칙은 `join-<인물ID>`, `leave-<인물ID>`, `grant-<아이템ID>`. |
@@ -139,6 +139,7 @@ assets/scenario/
 | `Group` | 같은 이름을 가진 스폰을 이벤트 조건·`remove`가 한꺼번에 가리킨다(이름 있는 인물은 인물 ID로도 가리킬 수 있다). |
 | `Side` | 이벤트가 만드는 스폰만: `ally`(기본, AI 아군) 또는 `enemy`. |
 | `DuelFirst` | 이번 차례에 아직 안 치른 일기토 상대와 맞닿을 칸에 닿으면 AI가 그 칸으로 먼저 간다. 닿지 않으면 평소대로 움직이고, 상대를 멀리서 치지는 않는다. |
+| `Deputy` | 적·AI 동맹 장수의 부관(인물 ID). 이름 있는 NPC 장수만 둔다. 부관은 유닛 없이 주장의 레벨로 따라와 특성과 더 높은 능력치를 빌려준다([logic-traits.md](logic-traits.md) 4.2절). |
 
 `Traits`·`Equipment` 검증은 다음과 같다. 특성은 모두 정의에 있어야 한다. 장비는 모두 정의에 있고, 같은 칸(`Slot`)에 둘 이상 없으며, 무기·방어구는 결과 병종의 `Weapon`·`Armor` 형식과 맞아야 한다. 덮어쓴 특성이 `Requires`로 요구하는 선행 특성은 (덮어쓴 특성 + 장비가 주는 특성) 안에 있어야 한다. 병력·병법 최대치는 엔진이 계산하며 저장하지 않는다.
 

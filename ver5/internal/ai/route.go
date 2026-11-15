@@ -79,6 +79,54 @@ func goalRoute(e *core.Engine, o core.Observation, me *core.UnitView, goal []con
 	return best, bestWay
 }
 
+// planCost is what a planned walk pays for entering p besides the ground: an opponent's cell, which the walk
+// cannot pass but has to clear first, four turns of walking; a cell beside one, where a turn's walk ends, one.
+// Own units are walked through, as the engine lets them be.
+func planCost(e *core.Engine, o core.Observation, me *core.UnitView) func(content.Point) int {
+	step := max(1, e.Data().Classes[me.Class].Move)
+	foes := map[content.Point]bool{}
+	for _, v := range o.UnitViews {
+		if v.Faction != me.Faction && v.HP > 0 {
+			foes[content.Point{X: v.X, Y: v.Y}] = true
+		}
+	}
+	return func(p content.Point) int {
+		if foes[p] {
+			return 4 * step
+		}
+		for _, d := range []content.Point{{X: 1}, {X: -1}, {Y: 1}, {Y: -1}} {
+			if foes[content.Point{X: p.X + d.X, Y: p.Y + d.Y}] {
+				return step
+			}
+		}
+		return 0
+	}
+}
+
+// plan is how far each cell is from the goal cells along the walk me would plan there (the ground's costs,
+// around opponents and their reach as planCost prices them), and that whole walk from me's cell.
+func plan(e *core.Engine, o core.Observation, me *core.UnitView, goal []content.Point) (map[content.Point]int, []content.Point) {
+	dist := walkingFromWith(e, o, me, goal, planCost(e, o, me))
+	return dist, downhill(dist, content.Point{X: me.X, Y: me.Y})
+}
+
+// farthest is the cell of way farthest along it that one of the move commands ends on: where me gets this
+// turn following its whole planned walk. False when no move reaches the way.
+func farthest(way []content.Point, options []core.Command) (content.Point, bool) {
+	can := map[content.Point]bool{}
+	for _, c := range options {
+		if c.Kind == "move" {
+			can[content.Point{X: c.X, Y: c.Y}] = true
+		}
+	}
+	for i := len(way) - 1; i >= 0; i-- {
+		if can[way[i]] {
+			return way[i], true
+		}
+	}
+	return content.Point{}, false
+}
+
 // downhill is the way down the field from p to a cell at 0, without p; nil when p is off the field.
 func downhill(dist map[content.Point]int, p content.Point) []content.Point {
 	if _, ok := dist[p]; !ok {

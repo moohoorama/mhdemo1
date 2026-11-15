@@ -7,6 +7,14 @@
    "Opening": "c20-alarm"
   },
   {
+   "ID": "c20-red-hare",
+   "Kind": "grant",
+   "Item": "red_hare",
+   "Count": 1,
+   "Character": "guanyu",
+   "Event": "grant-red_hare"
+  },
+  {
    "ID": "c20-battle",
    "Kind": "battle",
    "Stage": "B20",
@@ -57,7 +65,7 @@
    "ID": "c20-r07",
    "Kind": "say",
    "Speaker": "zhoucang",
-   "Text": "주창이올시다! 장군의 칼을 들고 어디든 따르겠습니다!"
+   "Text": "주창이올시다! 한동안 산적 노릇을 했습니다만, 장군을 뵙고 손을 씻었습니다. 이제 어디든 따르겠습니다!"
   },
   {
    "ID": "c20-r08",
@@ -78,10 +86,16 @@
    "Text": "이제 원소 공께는 돌아갈 수 없습니다. 황숙 곁에 있게 해 주십시오."
   },
   {
+   "ID": "c20-r10b",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "그런디 둘째 형, 거 조조한테 마음이 남아 있는 거 아니유?"
+  },
+  {
    "ID": "c20-r11",
    "Kind": "say",
    "Speaker": "guanyu",
-   "Text": "승상은 끝까지 저를 후하게 대했습니다. ……그 은혜는 언젠가 갚아야 할 것입니다."
+   "Text": "익덕, 걱정하지 마라. 조조가 나를 후하게 대하려 한 것은 맞다. 그 값은 안량과 문추의 목으로 치르고 왔다."
   },
   {
    "ID": "c20-r12",

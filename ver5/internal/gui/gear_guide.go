@@ -52,7 +52,7 @@ func (g *Game) noteGearGrants(events []core.Event) {
 	for _, e := range events {
 		var t gearTarget
 		switch eq := g.S.Data.Equipment[e.Target]; {
-		case e.Kind == "grant" && eq.Owner != "":
+		case e.Kind == "grant" && eq.Owner != "" && e.Actor == "": // a grant with an Actor came already worn
 			t = gearTarget{e.Target, eq.Owner, eq.Slot}
 		case e.Kind == "unequip":
 			t = gearTarget{"", e.Actor, eq.Slot}

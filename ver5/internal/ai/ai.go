@@ -42,6 +42,8 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 	dry := spentCaster(e, me)
 	var walk, goal map[content.Point]int
 	var threat map[content.Point]int
+	var stop content.Point
+	onWay := false
 	for _, c := range options {
 		s := -1.0
 		switch c.Kind {
@@ -64,6 +66,18 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 				s = -5
 			}
 			skill := e.Data().Skills[c.Skill]
+			schemer := e.Data().Characters[me.Def].Prefer == content.KindStatus
+			if skill.Kind == content.KindStatus && me.Stats.Mind > me.Stats.Attack {
+				s = hinder(e, o, me, skill, p)
+				if s > 0 && schemer {
+					s *= 3 // a schemer's own way of fighting comes before a plain blow
+				}
+			}
+			if schemer && skill.Kind == content.KindMagic {
+				if least := schemeCost(e, me); least > 0 && me.MP >= least {
+					s = -5 // while it can pay for a scheme, it keeps its points for one
+				}
+			}
 			if skill.Effect == "heal" {
 				for _, v := range o.UnitViews {
 					if v.ID == c.Target {
@@ -135,9 +149,14 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 			}
 			if me.Policy == "march" || content.Leaves(me.Policy) {
 				if goal == nil {
-					goal = walkingFrom(e, o, me, o.Map.GoalCells(me.Goal, me.GoalArea))
+					var way []content.Point
+					goal, way = plan(e, o, me, o.Map.GoalCells(me.Goal, me.GoalArea))
+					stop, onWay = farthest(way, options)
 				}
 				s = float64(far(goal, me.X, me.Y)-far(goal, c.X, c.Y))*3 - .1 - .01*float64(distance(me.X, me.Y, c.X, c.Y)) // of equal cells, the one fewest steps away
+				if onWay && stop == (content.Point{X: c.X, Y: c.Y}) {
+					s += 3 // as far along the whole planned walk as this turn goes
+				}
 				break
 			}
 			if dry {
@@ -167,6 +186,57 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 		}
 	}
 	return best, nil
+}
+
+// hinder is what a status spell is worth to a caster: for every opponent it lands on that is not under it
+// yet, the blows that opponent would deal over the turns it lasts (two at most) that the status takes away
+// or weakens — all of them for confusion, an officer's own kind of blow for disarm and seal, a share for a
+// lowered stat — or the poison it bleeds.
+func hinder(e *core.Engine, o core.Observation, me *core.UnitView, skill content.Skill, p core.Preview) float64 {
+	rules := e.Data().Rules
+	sum := 0.0
+	for _, v := range o.UnitViews {
+		if !slices.Contains(p.Targets, v.ID) || v.Faction == me.Faction || v.HP <= 0 || v.Status[skill.Effect].Turns > 0 {
+			continue
+		}
+		harm := 0.0
+		for _, u := range o.UnitViews {
+			if u.Faction == me.Faction && u.HP > 0 {
+				harm = max(harm, e.Strike(v.ID, u.ID))
+			}
+		}
+		w := float64(rules.BuffPercent) / 100
+		switch skill.Effect {
+		case "confusion":
+			w = 1
+		case "disarm":
+			w = map[bool]float64{true: 1, false: .1}[v.Stats.Attack >= v.Stats.Mind]
+		case "seal":
+			w = map[bool]float64{true: 1, false: .1}[v.Stats.Mind > v.Stats.Attack]
+		case "root":
+			w = .3
+		case "poison":
+			harm, w = float64(v.Stats.MaxHP*rules.PoisonPercent/100), 1
+		}
+		sum += w * harm * float64(min(max(skill.Duration, 1), 2))
+	}
+	if sum <= 0 {
+		return -5
+	}
+	return sum*p.Hit/100 - float64(p.Cost)*.3
+}
+
+// schemeCost is what the cheapest of me's status spells costs it; 0 without one.
+func schemeCost(e *core.Engine, me *core.UnitView) int {
+	least := 0
+	for _, id := range me.Skills {
+		if e.Data().Skills[id].Kind == content.KindStatus {
+			if c := e.SkillCost(me.ID, id); least == 0 || c < least {
+				least = c
+			}
+		}
+	}
+	return least
 }
 
 // spentCaster tells a caster (a unit whose mind outweighs its attack, as 서생 and 군사 do) that has attack or

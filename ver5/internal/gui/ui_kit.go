@@ -162,16 +162,160 @@ func rowBack(dst *ebiten.Image, rr image.Rectangle, picked bool) {
 	rect(dst, float32(rr.Min.X), float32(rr.Max.Y-1), float32(rr.Dx()), 1, cardRim)
 }
 
-// officerRow is an officer's list row: the face, the name over the class and level, and right a note.
-func (g *Game) officerRow(dst *ebiten.Image, rr image.Rectangle, c core.Character, picked bool, note string, noteC color.Color) {
-	rowBack(dst, rr, picked)
-	x, y := float64(rr.Min.X+12), float64(rr.Min.Y)
-	g.portrait(dst, c.ID, c.Class, x, y+8, 40)
-	g.label(dst, g.name(c.ID), x+50, y+7, 16, ink)
-	g.classRank(dst, c.Def, c.Class, c.Level, fmt.Sprintf(" · Lv%d", c.Level), x+50, y+31, 12, muted)
-	if note != "" {
-		g.label(dst, note, float64(rr.Max.X-14)-g.width(note, 13), y+19, 13, noteC)
+// depBand paints the ground of a row that serves or will serve as a deputy: blue, with a blue band on the left, or
+// a gold one when the row is picked.
+func depBand(dst *ebiten.Image, rr image.Rectangle, picked bool) {
+	rect(dst, float32(rr.Min.X), float32(rr.Min.Y), float32(rr.Dx()), float32(rr.Dy()-1), pillDep)
+	band := depRim
+	if picked {
+		band = gold
 	}
+	rect(dst, float32(rr.Min.X), float32(rr.Min.Y), 4, float32(rr.Dy()-1), band)
+}
+
+// depPlate is a small blue plate 20 high with s at 12 from x, y, the mark of a deputy; it gives its width.
+func (g *Game) depPlate(dst *ebiten.Image, s string, x, y float64) float64 {
+	w := g.width(s, 12) + 12
+	rect(dst, float32(x), float32(y), float32(w), 20, pillDep)
+	strokeRect(dst, float32(x)+.5, float32(y)+.5, float32(w-1), 19, 1, depRim)
+	g.label(dst, s, x+6, y+(20-12*1.45)/2, 12, depInk)
+	return w
+}
+
+// officerRow is an officer's list row in two lines: the face, the name and level over the class and a note on the
+// right. A deputy's row is blue; beside the name a blue plate says whose deputy it is (unless the row's own pill
+// says so, served) or which deputy the officer leads. It gives where the class ends, for what the row adds after it.
+func (g *Game) officerRow(dst *ebiten.Image, o core.Observation, rr image.Rectangle, c core.Character, picked bool, note string, noteC color.Color) float64 {
+	g.officerGround(dst, o, rr, c.ID, picked)
+	return g.officerLines(dst, o, rr, c, false, note, noteC)
+}
+
+// officerGround paints an officer row's ground: lit with a gold band when picked, blue when the officer is a deputy.
+func (g *Game) officerGround(dst *ebiten.Image, o core.Observation, rr image.Rectangle, id string, picked bool) {
+	rowBack(dst, rr, picked)
+	if g.servedBy(o, id) != "" {
+		depBand(dst, rr, picked)
+	}
+}
+
+// officerLines is officerRow without the ground; served leaves out whose deputy the officer is.
+func (g *Game) officerLines(dst *ebiten.Image, o core.Observation, rr image.Rectangle, c core.Character, served bool, note string, noteC color.Color) float64 {
+	lead := g.servedBy(o, c.ID)
+	x, y := float64(rr.Min.X+12), float64(rr.Min.Y)
+	right := float64(rr.Max.X - 12)
+	g.portrait(dst, c.ID, c.Class, x, y+8, 40)
+	name := g.name(c.ID)
+	g.label(dst, name, x+50, y+6, 16, ink)
+	lv := fmt.Sprintf("Lv%d", c.Level)
+	g.label(dst, lv, right-g.width(lv, 12), y+10, 12, muted)
+	plate := ""
+	switch {
+	case lead != "" && !served:
+		plate = "부관 · " + g.name(lead)
+	case c.Deputy != "":
+		plate = "부관 " + g.name(c.Deputy)
+	}
+	if px := x + 58 + g.width(name, 16); plate != "" {
+		if room := int(right - g.width(lv, 12) - 8 - px - 12); room > 24 {
+			g.depPlate(dst, ellipsis(g, plate, 12, room), px, y+9)
+		}
+	}
+	w := g.classRank(dst, c.Def, c.Class, c.Level, "", x+50, y+31, 12, muted)
+	if note != "" {
+		g.label(dst, note, right-g.width(note, 12), y+31, 12, noteC)
+	}
+	return x + 50 + w
+}
+
+// Small trait chips show what a deputy brings: 30 high on lines 36 apart, wrapping, and when they do not all fit,
+// a last chip "+n" that shows them all (then "접기").
+const (
+	smallChipH     = 30
+	smallChipPitch = 36
+)
+
+func (g *Game) smallChipW(name string) int {
+	return int(math.Ceil(8 + 18 + 5 + g.width(name, 13) + 10))
+}
+
+// smallChipAt is a placed chip: its trait, or "" for the chip that shows more or fewer, and where, from y 0.
+type smallChipAt struct {
+	id, label string
+	r         image.Rectangle
+}
+
+// layoutSmallChips places the chips of ids from x0 to right on at most lines lines, the "+n" chip last when some
+// are left out; when all, every chip on as many lines as they take, then "접기" (when fold) if they take more than
+// lines. It gives the chips and the lines used.
+func (g *Game) layoutSmallChips(ids []string, x0, right, lines int, all, fold bool) ([]smallChipAt, int) {
+	place := func(labels []string, keys []string) ([]smallChipAt, int) {
+		out := []smallChipAt{}
+		x, line := x0, 0
+		for i, l := range labels {
+			w := g.smallChipW(l)
+			if keys[i] == "" {
+				w -= 18 + 5
+			}
+			if x+w > right && x > x0 {
+				x, line = x0, line+1
+			}
+			out = append(out, smallChipAt{keys[i], l, image.Rect(x, line*smallChipPitch, x+w, line*smallChipPitch+smallChipH)})
+			x += w + 6
+		}
+		return out, line + 1
+	}
+	names := make([]string, len(ids))
+	for i, id := range ids {
+		names[i] = g.traitName(id)
+	}
+	out, used := place(names, ids)
+	if used <= lines {
+		return out, used
+	}
+	if all {
+		if fold {
+			return place(append(names, "접기"), append(slices.Clone(ids), ""))
+		}
+		return out, used
+	}
+	for n := len(ids) - 1; n >= 0; n-- {
+		more := fmt.Sprintf("+%d", len(ids)-n)
+		out, used = place(append(slices.Clone(names[:n]), more), append(slices.Clone(ids[:n]), ""))
+		if used <= lines {
+			return out, used
+		}
+	}
+	return out, used
+}
+
+// smallChips draws the chips laid out by layoutSmallChips from r's top left within r's width: pressing a trait
+// calls press, pressing "+n" or "접기" calls toggle. It gives the height used and the chips where they were drawn.
+func (g *Game) smallChips(dst *ebiten.Image, ids []string, r image.Rectangle, lines int, all bool, toggle func(), press func(id string)) (int, []smallChipAt) {
+	chips, used := g.layoutSmallChips(ids, r.Min.X, r.Max.X, lines, all, toggle != nil)
+	for i := range chips {
+		chips[i].r = chips[i].r.Add(image.Pt(0, r.Min.Y))
+		c := chips[i]
+		cr := c.r
+		rect(dst, float32(cr.Min.X), float32(cr.Min.Y), float32(cr.Dx()), smallChipH, color.NRGBA{R: 46, G: 32, B: 25, A: 255})
+		hit := image.Rect(cr.Min.X, cr.Min.Y-(smallChipPitch-smallChipH)/2, cr.Max.X, cr.Max.Y+(smallChipPitch-smallChipH)/2)
+		ty := float64(cr.Min.Y) + (smallChipH-13*1.45)/2
+		if c.id == "" {
+			strokeRect(dst, float32(cr.Min.X)+.5, float32(cr.Min.Y)+.5, float32(cr.Dx()-1), smallChipH-1, 1, muted)
+			g.label(dst, c.label, float64(cr.Min.X+8), ty, 13, muted)
+			if toggle != nil {
+				g.addButton(hit, c.label, toggle)
+			}
+			continue
+		}
+		strokeRect(dst, float32(cr.Min.X)+.5, float32(cr.Min.Y)+.5, float32(cr.Dx()-1), smallChipH-1, 1, goldDim)
+		g.traitIconOf(dst, c.id, float64(cr.Min.X+8), float64(cr.Min.Y)+(smallChipH-18)/2, 18)
+		g.label(dst, c.label, float64(cr.Min.X+31), ty, 13, ink)
+		if press != nil {
+			id := c.id
+			g.addButton(hit, c.label, func() { press(id) })
+		}
+	}
+	return used*smallChipPitch - (smallChipPitch - smallChipH), chips
 }
 
 // card paints a framed panel: a drop shadow, the ruyi clouds at half contrast on a red-brown, a gold rim and

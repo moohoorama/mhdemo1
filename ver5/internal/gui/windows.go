@@ -42,7 +42,7 @@ func (g *Game) openOverlay(name string) bool {
 		g.equip = equipState{}
 	}
 	if name == "deputy" {
-		g.deputyPick, g.deputyInfo, g.party.deputies.top = "", equipChip{}, 0
+		g.deputyFresh()
 	}
 	g.autoplay = false
 	if name == "save" || name == "load" {

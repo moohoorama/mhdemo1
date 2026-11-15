@@ -566,8 +566,34 @@ func (e *Engine) once(n content.Node) {
 		return
 	}
 	e.gain(n.Item, n.Count)
+	if n.Character != "" {
+		e.dress(n.Character, n.Item)
+	}
 	e.state.Executed[n.Event] = true
-	e.emit(n.Kind, "", n.Item, n.Count)
+	e.emit(n.Kind, n.Character, n.Item, n.Count)
+}
+
+// dress puts a piece the story just granted on the officer it names, in the party or away, when they can carry
+// it; the piece it replaces goes to the warehouse.
+func (e *Engine) dress(id, piece string) {
+	eq := e.data.Equipment[piece]
+	if o := e.char(id); o != nil {
+		if !o.Dead && e.carries(o, eq) {
+			e.wear(o, piece)
+		}
+		return
+	}
+	i := slices.IndexFunc(e.state.Away, func(c Character) bool { return c.ID == id })
+	if i < 0 || !e.carries(&e.state.Away[i], eq) {
+		return
+	}
+	e.state.Away = slices.Clone(e.state.Away)
+	o := &e.state.Away[i]
+	o.Equipment = maps.Clone(o.Equipment)
+	if o.Equipment == nil {
+		o.Equipment = map[string]string{}
+	}
+	e.wear(o, piece)
 }
 
 // dismiss hides an officer from the party before the order-th battle: off the sortie and the party screens, but
@@ -892,6 +918,9 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 		c.Class = e.promotedAt(def, c.Class, c.Level)
 		held := e.data.PlannedTraits(def, c.Class, c.Level, sp.Traits)
 		c.TraitsOverride = &held
+		if sp.Deputy != "" && e.char(sp.Deputy) == nil {
+			e.spawnDeputy(c, sp.Deputy)
+		}
 	} else if sp.Traits != nil {
 		c.TraitsOverride = copyOf(sp.Traits)
 	}
@@ -935,6 +964,18 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	u.Status = e.startStatus(&u)
 	e.unitIDs[id] = e.units.NewEntity(&u)
 	return e.unit(id)
+}
+
+// spawnDeputy makes the NPC officer def ride with c as its deputy for this battle: a character with no unit of its
+// own, at c's level, holding its plan for that level and the class it reaches there, and no equipment.
+func (e *Engine) spawnDeputy(c *Character, def string) {
+	q := e.addCharacter(def, def)
+	q.Temp, q.Placement, q.Level = true, true, c.Level
+	q.Class = e.promotedAt(def, e.data.Characters[def].Class, q.Level)
+	held := e.data.PlannedTraits(def, q.Class, q.Level, nil)
+	q.TraitsOverride = &held
+	q.Equipment = map[string]string{}
+	c.Deputy = q.ID
 }
 
 // refitGear swaps the gear a class stepped back to its level cannot carry (a 철창 on a 경보병) for the shop

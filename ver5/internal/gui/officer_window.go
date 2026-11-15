@@ -99,7 +99,7 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 		if g.hasAffordable(c) {
 			noteC = good
 		}
-		g.officerRow(dst, rr, c, c.ID == g.selected, note, noteC)
+		g.officerRow(dst, o, rr, c, c.ID == g.selected, note, noteC)
 		if guide && c.ID == gearOwner && c.ID != g.selected {
 			g.guideRim(dst, rr.Inset(4))
 		}

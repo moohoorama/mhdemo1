@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"srpg/internal/content"
 	"srpg/internal/scenes"
@@ -76,7 +77,7 @@ func exploreCrowding(g *Game, a *content.ExploreArea) []string {
 		}
 		fx, fy := g.field.Center(v.u, v.v)
 		bodies[k] = exploreBody{key: k, box: [4]float64{fx - 12, fy - v.lift - v.top, fx + 12, fy + 6},
-			plate: plateAt(content.PersonName(k), fx, fy-v.lift-v.top-4), named: !strings.Contains(k, "#")}
+			plate: plateAt(content.PersonName(k), fx, fy-v.lift-v.top-4), named: !strings.Contains(k, "#") || talkable(a.People[k])}
 	}
 	var found []string
 	for i, k1 := range keys {
@@ -102,7 +103,7 @@ func exploreCrowding(g *Game, a *content.ExploreArea) []string {
 		}
 	}
 	for _, e := range a.Exits {
-		px, py := g.exitPlatePoint(e.At)
+		px, py := g.exitPlatePoint(e)
 		r := plateAt(e.Name, px, py)
 		for _, k := range keys {
 			b, ok := bodies[k]
@@ -132,7 +133,8 @@ func covered(b, f [4]float64) float64 {
 
 // together reports whether two people of an area may stand there at once.
 func together(p, q *content.ExplorePerson, k1, k2 string) bool {
-	if !strings.Contains(k1, "#") && content.PersonName(k1) == content.PersonName(k2) {
+	stand := func(k string) string { k, _, _ = strings.Cut(k, "@"); return k } // an extra's other stand is the same extra
+	if !strings.Contains(k1, "#") && content.PersonName(k1) == content.PersonName(k2) || stand(k1) == stand(k2) {
 		return false
 	}
 	return openTogether(p.If, q.If)
@@ -147,4 +149,33 @@ func openTogether(a, b []string) bool {
 		}
 	}
 	return true
+}
+
+// TestExploreExitPlatesOnBuildings checks that the plate of every exit into a building stands on the building's
+// picture, not on the bare ground before a yard or a gate where its door spot may lie.
+func TestExploreExitPlatesOnBuildings(t *testing.T) {
+	d, err := NewDemo("../..", DemoOptions{Name: "hudpanel"})
+	require.NoError(t, err)
+	g := d.g
+	for _, name := range slices.Sorted(maps.Keys(g.S.Data.Explores)) {
+		x := g.S.Data.Explores[name]
+		for _, aid := range slices.Sorted(maps.Keys(x.Areas)) {
+			a := x.Areas[aid]
+			if art := g.assets.Maps[a.Map]; art == nil || art.SceneMap == nil {
+				continue
+			}
+			g.openScene(&scenes.Scene{ID: "check", Map: a.Map, Cast: map[string]scenes.Actor{}})
+			for _, e := range a.Exits {
+				if e.Object == nil {
+					continue
+				}
+				r, ok := g.objectRect(*e.Object)
+				if !assert.True(t, ok, "%s/%s: exit %s names no object at %v", name, aid, e.Name, *e.Object) {
+					continue
+				}
+				px, py := g.exitPlatePoint(e)
+				assert.True(t, image.Pt(int(px), int(py)).In(r), "%s/%s: plate of %s at (%.0f, %.0f) is off its building %v", name, aid, e.Name, px, py, r)
+			}
+		}
+	}
 }

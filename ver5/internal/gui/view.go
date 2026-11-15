@@ -337,34 +337,26 @@ func (g *Game) camera() {
 	g.camX, g.camY = g.clampCam(g.camX, g.camY)
 }
 
-// camRange is how far the camera's centre may go on a battle map: the view stays inside the rectangle
-// round the battle area's diamond, so the outside shows only in its four corner triangles; a view wider
-// or taller than that rectangle is centred on it. Other fields keep the centre on the canvas.
-func (g *Game) camRange() (lo, hi [2]float64) {
-	box, ok := g.battleBox()
-	if !ok {
-		size := g.field.Size()
-		return [2]float64{}, [2]float64{float64(size.X), float64(size.Y)}
-	}
-	vp := g.battleViewport()
-	half := [2]float64{float64(vp.Dx()) / 2 / g.zoom, float64(vp.Dy()) / 2 / g.zoom}
-	for i := range 2 {
-		lo[i], hi[i] = box[i][0]+half[i], box[i][1]-half[i]
-		if lo[i] > hi[i] {
-			lo[i] = (box[i][0] + box[i][1]) / 2
-			hi[i] = lo[i]
-		}
-	}
-	return lo, hi
-}
-
-// clampCam is (x, y) moved into camRange.
+// clampCam is (x, y) moved to where the camera's centre may go. On a battle map that is the battle area's diamond:
+// the view reaches half its own size past each edge, so a cell on the edge can be brought out from under the HUD
+// panels, and goes no farther. Other fields keep the centre on the canvas.
 func (g *Game) clampCam(x, y float64) (float64, float64) {
-	if g.field == nil {
+	f := g.field
+	if f == nil {
 		return x, y
 	}
-	lo, hi := g.camRange()
-	return math.Max(lo[0], math.Min(hi[0], x)), math.Max(lo[1], math.Min(hi[1], y))
+	if _, ok := g.battleBox(); !ok {
+		size := f.Size()
+		return math.Max(0, math.Min(float64(size.X), x)), math.Max(0, math.Min(float64(size.Y), y))
+	}
+	u, v := g.cellAt(x, y)
+	return f.Center(math.Max(-.5, math.Min(float64(f.Map.W)-.5, u)), math.Max(-.5, math.Min(float64(f.Map.H)-.5, v)))
+}
+
+// camCanGo reports whether the camera can move a little way (dx, dy) from where it is.
+func (g *Game) camCanGo(dx, dy float64) bool {
+	x, y := g.clampCam(g.camX+dx, g.camY+dy)
+	return math.Abs(x-g.camX)+math.Abs(y-g.camY) > .5
 }
 
 // onMap reports whether the cursor is over the battlefield and not over a HUD panel.

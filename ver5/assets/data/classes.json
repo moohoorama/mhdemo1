@@ -133,7 +133,7 @@
    "Pool": [
     "deputy_appoint",
     "long_spear",
-    "pierce",
+    "siegecraft",
     "assist"
    ],
    "Plan": [
@@ -175,7 +175,7 @@
    "Sprite": "chariot",
    "Portrait": "chariot",
    "Pool": [
-    "siegecraft",
+    "vital_strike",
     "charge_strike",
     "impact"
    ],
@@ -190,7 +190,7 @@
     },
     {
      "Level": 30,
-     "Trait": "siegecraft"
+     "Trait": "vital_strike"
     },
     {
      "Level": 40,
@@ -1049,8 +1049,7 @@
     "deputy_appoint",
     "exhort",
     "relief_boost",
-    "relief_spread",
-    "medicine"
+    "relief_spread"
    ],
    "Plan": [
     {
@@ -1072,10 +1071,6 @@
     {
      "Level": 21,
      "Trait": "relief_spread"
-    },
-    {
-     "Level": 25,
-     "Trait": "medicine"
     }
    ],
    "Promotes": [
@@ -1132,10 +1127,6 @@
     {
      "Level": 21,
      "Trait": "relief_spread"
-    },
-    {
-     "Level": 25,
-     "Trait": "medicine"
     },
     {
      "Level": 30,

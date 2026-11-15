@@ -164,6 +164,7 @@ type Character struct {
 	Traits                   []string // own trait plan for an NPC appearance, in order, one more every Rules.TraitPlanStep levels; officers in the party start with none
 	Learn, Equipment         []string
 	Look                     Look
+	Prefer                   string `json:",omitempty"` // the AI's favoured kind of skill: "status" puts its status spells before its damaging ones
 }
 type Equipment struct {
 	Name, Desc, Slot, Type string
@@ -251,6 +252,7 @@ type Spawn struct {
 	Side              string    `json:",omitempty"` // event spawns only: "ally" (an AI ally, the default) or "enemy"
 	HP, MP            *int      `json:",omitempty"`
 	Traits, Equipment *[]string `json:",omitempty"`
+	Deputy            string    `json:",omitempty"` // an NPC officer's deputy: a named officer who rides with it, lending its traits and higher attributes
 	Character         string
 	X, Y              int
 	Level             int     `json:",omitempty"` // overrides the character's level; only where Rules set no stage level

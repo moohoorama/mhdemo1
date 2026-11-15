@@ -192,23 +192,56 @@ func (g *Game) objectTop(at smallTile) (float64, float64, bool) {
 	return 0, 0, false
 }
 
-// objectHit reports whether canvas point (x, y) falls on the picture of the object anchored on small tile at.
+// objectPiece reports whether p is (a part of) the map object anchored on small tile at: a building or prop, or a
+// gate set in a wall, which the plan lays as wall pieces, one a tile, each naming the gate's anchor.
+func objectPiece(p scenePiece, at smallTile) bool {
+	return (p.Rank == scenemap.RankObject || p.Rank == scenemap.RankWall) && p.At == [2]int(at)
+}
+
+// objectHit reports whether canvas point (x, y) falls on the picture of the object anchored on small tile at: on
+// any of its pieces and pictures, a gate's shade and its gatehouse alike, not only the first.
 func (g *Game) objectHit(at smallTile, x, y float64) bool {
 	f := g.field
-	ox, oy := f.OriginX*K, f.OriginY*K
+	pt := image.Pt(int(math.Floor(x)), int(math.Floor(y)))
 	for _, p := range f.scenePieces {
-		if p.Rank != scenemap.RankObject || p.At != [2]int(at) || len(p.Draws) == 0 {
+		if !objectPiece(p, at) || !pt.In(p.Rect) {
 			continue
 		}
-		d := p.Draws[0]
-		img := g.assets.Props[d.Name].Image
-		px, py := int(x-ox)-d.X, int(y-oy)-d.Y
-		if image.Pt(px, py).In(img.Bounds().Sub(img.Bounds().Min)) {
-			_, _, _, alpha := img.At(img.Bounds().Min.X+px, img.Bounds().Min.Y+py).RGBA()
-			return alpha > 0
+		if p.image != nil {
+			if opaqueAt(p.image, pt.Sub(p.Rect.Min)) {
+				return true
+			}
+			continue
+		}
+		ox, oy := int(f.OriginX*K), int(f.OriginY*K)
+		for _, d := range p.Draws {
+			if img, off := f.planImage(d); img != nil && opaqueAt(img, pt.Sub(image.Pt(ox+d.X+off.X, oy+d.Y+off.Y))) {
+				return true
+			}
 		}
 	}
 	return false
+}
+
+// opaqueAt reports whether img has a pixel that is not clear at p, counted from its top left.
+func opaqueAt(img *ebiten.Image, p image.Point) bool {
+	b := img.Bounds()
+	if !p.In(b.Sub(b.Min)) {
+		return false
+	}
+	_, _, _, alpha := img.At(b.Min.X+p.X, b.Min.Y+p.Y).RGBA()
+	return alpha > 0
+}
+
+// objectRect is the canvas area the picture of the map object anchored on small tile at covers.
+func (g *Game) objectRect(at smallTile) (image.Rectangle, bool) {
+	var r image.Rectangle
+	for _, p := range g.field.scenePieces {
+		if objectPiece(p, at) {
+			r = r.Union(p.Rect)
+		}
+	}
+	return r, !r.Empty()
 }
 
 // clickRing puts the spreading click ring on small tile at, t seconds after the click.
@@ -292,7 +325,8 @@ var plateColors = map[plate][2][3]color.NRGBA{
 }
 
 // namePlate is a small plate with a name, centred on UI point (x, y)'s bottom edge; hover when the cursor is on it.
-func (g *Game) namePlate(dst *ebiten.Image, name string, x, y float64, style plate, hover bool) {
+// It returns the area the plate covers.
+func (g *Game) namePlate(dst *ebiten.Image, name string, x, y float64, style plate, hover bool) image.Rectangle {
 	f := g.serif(15, 800)
 	tw := measure(name, f)
 	px, py := x-tw/2-10, y-26
@@ -303,4 +337,5 @@ func (g *Game) namePlate(dst *ebiten.Image, name string, x, y float64, style pla
 	rect(dst, float32(px), float32(py), float32(tw+20), 24, c[0])
 	strokeRect(dst, float32(px)+.5, float32(py)+.5, float32(tw+19), 23, 1, c[1])
 	write(dst, name, f, px+10, py+1, c[2])
+	return image.Rect(int(px), int(py), int(math.Ceil(px+tw+20)), int(py+24))
 }

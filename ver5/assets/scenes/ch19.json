@@ -309,8 +309,7 @@
       8,
       5
      ],
-     "Face": "NW",
-     "Off": true,
+     "Face": "NE",
      "Sprite": "light_infantry",
      "Faction": "yuan"
     }
@@ -356,25 +355,6 @@
         ],
         "Face": "NE",
         "After": 1.2
-       }
-      ]
-     ]
-    ],
-    "c19-y05": [
-     [
-      [
-       {
-        "Actor": "전령",
-        "Enter": [
-         8,
-         11
-        ],
-        "Move": [
-         8,
-         5
-        ],
-        "Face": "NW",
-        "Speed": 2
        }
       ]
      ]
@@ -1634,6 +1614,24 @@
          7,
          5
         ],
+        "Face": "SE"
+       }
+      ],
+      [
+       {
+        "Actor": "번궁",
+        "Face": "SE"
+       },
+       {
+        "Actor": "번아",
+        "Face": "SE"
+       },
+       {
+        "Actor": "진도",
+        "Face": "SE"
+       },
+       {
+        "Actor": "고순",
         "Face": "SE"
        }
       ]

@@ -40,3 +40,49 @@ func TestPlayerFollowsAChangedGoal(t *testing.T) {
 	assert.Equal(t, "victory", e.Observe().Result)
 	assert.LessOrEqual(t, e.Observe().Round, 8)
 }
+
+// An ally healer ends a fighting ally's confusion before it bolsters anyone.
+func TestPlayerCuresAConfusedAlly(t *testing.T) {
+	e := battleIn(t, func(d *content.Data) {
+		d.Skills["cure"] = content.Skill{Name: "Cure", Kind: content.KindHeal, Mode: content.ModeAny, Shape: content.ShapeSingle, Hit: 100, Effect: "cure", Cost: 10, Max: 3, Requires: []string{"mercy"}}
+		d.Stages[0].Enemies[0].X, d.Stages[0].Enemies[0].Y = 3, 3
+	})
+	snap := e.Snapshot()
+	for i := range snap.Characters {
+		if snap.Characters[i].ID == "hero" {
+			snap.Characters[i].Learned = append(snap.Characters[i].Learned, "mercy")
+		}
+	}
+	for i := range snap.Units {
+		switch snap.Units[i].ID {
+		case "hero":
+			snap.Units[i].MP = 40
+		case "archer1":
+			snap.Units[i].Status = map[string]core.Status{"confusion": {Turns: 2}}
+		}
+	}
+	e, err := core.Restore(e.Data(), snap)
+	require.NoError(t, err)
+	require.Contains(t, unit(e, "hero").Skills, "cure")
+	require.Contains(t, unit(e, "hero").Skills, "bolster")
+
+	t.Run("cures the confused ally", func(t *testing.T) {
+		c, err := Choose(e, "hero")
+		require.NoError(t, err)
+		assert.Equal(t, "cure", c.Skill)
+		assert.Equal(t, "archer1", c.Target)
+	})
+	t.Run("nothing to cure without a status", func(t *testing.T) {
+		snap := e.Snapshot()
+		for i := range snap.Units {
+			if snap.Units[i].ID == "archer1" {
+				snap.Units[i].Status = map[string]core.Status{}
+			}
+		}
+		e, err := core.Restore(e.Data(), snap)
+		require.NoError(t, err)
+		c, err := Choose(e, "hero")
+		require.NoError(t, err)
+		assert.NotEqual(t, "cure", c.Skill)
+	})
+}

@@ -357,6 +357,7 @@
    ]
   },
   "red_hare": {
+   "Owner": "guanyu",
    "Name": "적토마",
    "Desc": "이동력 +2. 마중적토: 적의 견제(ZOC)에 막히지 않는다.",
    "Slot": "accessory",

@@ -47,11 +47,13 @@ type evaluator struct {
 	me      *core.UnitView
 	reaches map[string]map[content.Point]bool // opponent → the cells it can strike next turn, as asked
 	victory []string
-	vital   []string // own units whose fall loses the battle besides the lord (a defeat goal's defeated:X)
+	vital   []string              // own units whose fall loses the battle besides the lord (a defeat goal's defeated:X)
 	goal    map[content.Point]int // walking distance to the area a victory goal sends me to; nil without one
 	escort  map[content.Point]int // walking distance to the stretch of way ahead of another unit a victory goal sends somewhere
 	clear   []string              // opponents near that stretch
 	pending bool                  // that goal's story condition does not hold yet
+	stop    content.Point         // the farthest cell this turn's move reaches along my whole walk to that goal
+	onWay   bool                  // a move reaches that walk at all
 }
 
 func (x *evaluator) opponents(u *core.UnitView) []core.UnitView {
@@ -237,19 +239,24 @@ func (x *evaluator) action(c core.Command, duels bool) (float64, bool) {
 		if it, ok := x.e.Data().Items[c.Item]; c.Kind == "item" && ok && used*2 < it.Amount && !urgent {
 			return 0, false // a piece is spent when at least half of it counts, or to save someone in danger
 		}
+	case skill.Effect == "cure":
+		for _, id := range p.Targets {
+			if q := x.unit(id); q != nil && q.Faction == me.Faction {
+				gain += x.relief(q)
+			}
+		}
+		if gain <= 0 {
+			return 0, false
+		}
+		gain *= p.Hit / 100
 	case skill.Kind == content.KindBuff:
 		k := float64(x.e.Data().Rules.BuffPercent) / 100
 		for _, id := range p.Targets {
 			q := x.unit(id)
-			if q == nil || q.Faction != me.Faction || q.Status[skill.Effect].Turns > 0 {
+			if q == nil || q.Faction != me.Faction || q.Status[skill.Effect].Turns > 0 || q.Status["confusion"].Turns > 0 || !x.engaged(q) {
 				continue
 			}
-			for _, v := range x.opponents(q) {
-				if distance(q.X, q.Y, v.X, v.Y) <= 5 {
-					gain += x.worth(q, q.HP) * k
-					break
-				}
-			}
+			gain += x.worth(q, q.HP) * k
 		}
 		gain *= p.Hit / 100
 	default:
@@ -310,11 +317,67 @@ func (x *evaluator) move(c core.Command, walk map[content.Point]int, duels bool)
 		if far(x.goal, c.X, c.Y) == 0 {
 			best += 10 * w
 		}
+		if x.onWay && x.stop == (content.Point{X: c.X, Y: c.Y}) {
+			best += pull * w // as far along the whole planned walk as this turn goes
+		}
 	}
 	if x.escort != nil {
 		best += escortPull * x.worth(me, me.HP) * float64(far(x.escort, me.X, me.Y)-far(x.escort, c.X, c.Y))
 	}
 	return best - x.risk(me, content.Point{X: c.X, Y: c.Y}, me.HP)
+}
+
+// relief is what ending q's harmful statuses is worth, weighed as hinder weighs casting them and on the
+// scale a buff is scored on here (a buff of BuffPercent over its two turns is worth that share of q): over
+// the turns each status has left (two at most), all of q for confusion, q's own kind of fighting when
+// disarmed or sealed, a share of it when rooted or its stats are lowered, or the HP poison and fire take.
+// Away from any fight only the bleeding counts.
+func (x *evaluator) relief(q *core.UnitView) float64 {
+	rules := x.e.Data().Rules
+	fighting := x.nearFight(q)
+	physical := q.Stats.Attack >= q.Stats.Mind
+	whole := x.worth(q, q.HP)
+	sum := 0.0
+	for k, st := range q.Status {
+		if !content.Harmful[k] || st.Turns <= 0 {
+			continue
+		}
+		turns := float64(min(st.Turns, 2))
+		share := float64(rules.BuffPercent) / 100
+		switch k {
+		case "poison", "burn":
+			pct := map[string]int{"poison": rules.PoisonPercent, "burn": rules.BurnPercent}[k]
+			sum += (whole - x.worth(q, q.HP-q.Stats.MaxHP*pct/100)) * turns
+			continue
+		case "confusion":
+			share = 1
+		case "disarm":
+			share = map[bool]float64{true: 1, false: .1}[physical]
+		case "seal":
+			share = map[bool]float64{true: .1, false: 1}[physical]
+		case "root":
+			share = .3
+		}
+		if fighting {
+			sum += share * whole * turns / 2
+		}
+	}
+	return sum
+}
+
+// engaged reports whether u meets an opponent by the next turn: one can strike u where it stands, or u can
+// strike one. A buff on a unit with nobody in reach either way (across a river, behind a wall) is wasted.
+func (x *evaluator) engaged(u *core.UnitView) bool {
+	mine := map[content.Point]bool{}
+	for _, p := range x.e.Threat(u.ID) {
+		mine[p] = true
+	}
+	for _, v := range x.opponents(u) {
+		if x.reachOf(v.ID)[content.Point{X: u.X, Y: u.Y}] || mine[content.Point{X: v.X, Y: v.Y}] {
+			return true
+		}
+	}
+	return false
 }
 
 // nearFight reports whether an opponent stands within two turns' walk and reach of u.
@@ -349,6 +412,10 @@ func chooseEval(e *core.Engine, o core.Observation, me *core.UnitView, options [
 		if m.Unit == me.ID {
 			x.goal, _ = goalRoute(e, o, me, cells)
 			x.pending, x.escort, x.clear = m.Pending, nil, nil
+			if !x.pending {
+				_, way := plan(e, o, me, cells)
+				x.stop, x.onWay = farthest(way, options)
+			}
 			break
 		}
 		// another unit walks to the goal: keep up with it and clear its way
@@ -369,6 +436,10 @@ func chooseEval(e *core.Engine, o core.Observation, me *core.UnitView, options [
 		s, ok := 0.0, true
 		switch c.Kind {
 		case "attack", "skill", "item":
+			if x.onWay {
+				ok = false // a unit walking to its goal walks first and acts where it stops
+				break
+			}
 			s, ok = x.action(c, duels)
 		case "move":
 			if !duels && e.DuelAt(me.ID, c.X, c.Y) != "" {

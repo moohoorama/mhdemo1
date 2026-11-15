@@ -191,6 +191,11 @@ func (d *Data) ValidateSpawn(s Spawn) error {
 	if _, ok := d.Rules.RankLead[s.Rank]; s.Rank != "" && !ok {
 		return fmt.Errorf("%s: 알 수 없는 직급 %s", s.Character, s.Rank)
 	}
+	if s.Deputy != "" {
+		if q, ok := d.Characters[s.Deputy]; !ok || q.Template || q.Playable || c.Template || c.Playable || s.Deputy == s.Character {
+			return fmt.Errorf("%s: 부관 %s는 플레이어 장수가 아닌 이름 있는 장수끼리만 둔다", s.Character, s.Deputy)
+		}
+	}
 	if s.Facing != "" && !in(s.Facing, "NE", "SE", "SW", "NW") {
 		return fmt.Errorf("방향 오류")
 	}

@@ -168,6 +168,9 @@ func (d *Data) Validate() error {
 		if !ok || c.Name == "" || c.Level < 1 || c.Level > r.MaxLevel || c.Lord && !c.Playable || c.Template && (c.Lord || c.Playable) {
 			return fmt.Errorf("character %s", id)
 		}
+		if c.Prefer != "" && c.Prefer != KindStatus {
+			return fmt.Errorf("character %s: unknown preference %s", id, c.Prefer)
+		}
 		for _, s := range c.Stats {
 			if s < 1 || s > 100 {
 				return fmt.Errorf("stats %s", id)
@@ -337,8 +340,8 @@ func (d *Data) Validate() error {
 			if !d.Gainable(n.Item) {
 				return fmt.Errorf("node %s grants %s", n.ID, n.Item)
 			}
-			if n.Character != "" {
-				return fmt.Errorf("node %s puts %s on %s: grants go to the warehouse", n.ID, n.Item, n.Character)
+			if _, piece := d.Equipment[n.Item]; n.Character != "" && (!piece || !d.Characters[n.Character].Playable) {
+				return fmt.Errorf("node %s puts %s on %s", n.ID, n.Item, n.Character)
 			}
 		case "choice", "explore", "back":
 		default:

@@ -15,7 +15,7 @@
    "Desc": "상하좌우로 2칸까지 찌른다(근접 판정). 공격 범위가 큰 십자가 된다.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "long_reach": 1
    }
@@ -25,7 +25,7 @@
    "Desc": "상하좌우로 2칸까지 친다(근접 판정). 공격 범위가 큰 십자가 된다.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1200,
    "Effects": {
     "long_reach": 1
    }
@@ -55,7 +55,7 @@
    "Desc": "치명타 피해 배율 +75%p(150% → 225%).",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "crit_boost": 0.75
    }
@@ -85,7 +85,7 @@
    "Desc": "자기 차례에 공격범위 안의 적이 아군의 물리 공격을 받으면 같은 대상을 50% 피해로 추가 공격.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 700,
+   "Cost": 1200,
    "Effects": {
     "assist": 0.5
    }
@@ -95,7 +95,7 @@
    "Desc": "산·숲에 있으면 물리 공격이 반드시 치명타.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "crit_ambush": 1
    }
@@ -105,7 +105,7 @@
    "Desc": "원거리 물리 공격이 십자 범위가 된다. 주변 칸의 적은 50% 피해.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1200,
    "Effects": {
     "splash_cross_ranged": 0.5
    }
@@ -148,7 +148,7 @@
    "Desc": "물리 공격 때 대상의 지형 보정이 100을 넘으면 100으로 본다.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "terrain_cap": 1
    }
@@ -158,7 +158,7 @@
    "Desc": "물리 공격이 명중하면 독을 건다.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 700,
    "Effects": {
     "poison_on_hit": 1
    }
@@ -178,7 +178,7 @@
    "Desc": "물리 공격이 빗나가도 피해의 절반이 들어간다.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "miss_half": 0.5
    }
@@ -241,7 +241,7 @@
    "Desc": "이번 차례에 이동한 칸 수 × 공격력 +5%.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "charge_power": 0.05
    }
@@ -261,7 +261,7 @@
    "Desc": "4칸 이상 이동한 뒤 근접 공격하면 대상에게 방어력 저하.",
    "Kind": "talent",
    "Tone": "debuff",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "charge_shock": 4
    }
@@ -468,7 +468,7 @@
    "Desc": "원거리 공격의 사거리 +2.",
    "Kind": "talent",
    "Tone": "move",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "ranged_reach": 2
    }
@@ -498,7 +498,7 @@
    "Desc": "한 번의 피격에서 최대 병력 20%를 넘는 피해는 절반만 받는다.",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "bulwark": 0.2
    }
@@ -548,7 +548,7 @@
    "Desc": "매 자기 차례 자신에게 방어력 버프(+20%).",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 500,
+   "Cost": 1000,
    "Requires": [
     "brace_prep"
    ],
@@ -561,7 +561,7 @@
    "Desc": "자기 차례가 돌아오면 모든 상태이상이 풀린다.",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 500,
+   "Cost": 1200,
    "Effects": {
     "cleanse": 1
    }
@@ -739,15 +739,15 @@
   },
   "lasting": {
    "Name": "장구",
-   "Desc": "자신이 건 2턴 이상 버프의 지속이 1턴 늘어난다.",
+   "Desc": "자신이 건 2턴 이상 버프의 지속이 3턴 늘어난다.",
    "Kind": "talent",
    "Tone": "craft",
-   "Cost": 500,
+   "Cost": 1000,
    "Requires": [
     "exhort"
    ],
    "Effects": {
-    "buff_extend": 1
+    "buff_extend": 3
    }
   },
   "blood_pay": {
@@ -1102,7 +1102,7 @@
    "Desc": "저격 병법 사용 가능. 사거리가 2 늘어난 원거리 공격.",
    "Kind": "tactic",
    "Tone": "attack",
-   "Cost": 500
+   "Cost": 700
   },
   "aim_prep": {
    "Name": "조준",
@@ -1116,7 +1116,7 @@
    "Desc": "관통 병법 사용 가능. 원거리 공격이 목표 뒤의 적까지 닿는다.",
    "Kind": "tactic",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Requires": [
     "snipe_prep"
    ]
@@ -1126,7 +1126,7 @@
    "Desc": "연발 병법 사용 가능. 원거리 공격을 두 번 한다.",
    "Kind": "tactic",
    "Tone": "attack",
-   "Cost": 500
+   "Cost": 1000
   },
   "fire_arrow_art": {
    "Name": "화시",
@@ -1171,7 +1171,7 @@
    "Desc": "화계 책략의 강한 갈래를 연다. 확산과 함께 있으면 최상위 책략이 열린다.",
    "Kind": "strategy",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Requires": [
     "fire"
    ]
@@ -1181,14 +1181,14 @@
    "Desc": "화계·수계·지계 책략의 범위 갈래를 연다. 강화와 함께 있으면 최상위 책략이 열린다.",
    "Kind": "strategy",
    "Tone": "attack",
-   "Cost": 500
+   "Cost": 1000
   },
   "water_boost": {
    "Name": "수계강화",
    "Desc": "수계 책략의 강한 갈래를 연다. 확산과 함께 있으면 최상위 책략이 열린다.",
    "Kind": "strategy",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Requires": [
     "water"
    ]
@@ -1198,7 +1198,7 @@
    "Desc": "지계 책략의 강한 갈래를 연다. 확산과 함께 있으면 최상위 책략이 열린다.",
    "Kind": "strategy",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Requires": [
     "earth"
    ]
@@ -1208,21 +1208,21 @@
    "Desc": "디버프계 책략을 쓴다.",
    "Kind": "strategy",
    "Tone": "debuff",
-   "Cost": 500
+   "Cost": 700
   },
   "stratagem": {
    "Name": "계략",
    "Desc": "방해계 책략을 쓴다.",
    "Kind": "strategy",
    "Tone": "debuff",
-   "Cost": 500
+   "Cost": 700
   },
   "stratagem_boost": {
    "Name": "계략강화",
    "Desc": "계략 계통의 상위 책략을 연다.",
    "Kind": "strategy",
    "Tone": "debuff",
-   "Cost": 500,
+   "Cost": 1000,
    "Requires": [
     "stratagem"
    ]
@@ -1232,7 +1232,7 @@
    "Desc": "계략·견제 책략의 범위 갈래를 연다. 대혼란·독무·위축·와해를 쓴다.",
    "Kind": "strategy",
    "Tone": "debuff",
-   "Cost": 500,
+   "Cost": 1200,
    "Requires": [
     "stratagem"
    ]
@@ -1242,7 +1242,7 @@
    "Desc": "적을 퇴각시키면 그 적이 가진 병법치를 빨아들인다.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 700,
    "Effects": {
     "absorb_mana": 1
    }
@@ -1262,7 +1262,7 @@
    "Desc": "상태이상이 걸린 적에게는 공격과 병법이 반드시 치명타가 된다.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1200,
    "Effects": {
     "crit_vs_ailing": 1
    }
@@ -1300,14 +1300,14 @@
    "Desc": "버프계 책략을 쓴다.",
    "Kind": "strategy",
    "Tone": "buff",
-   "Cost": 500
+   "Cost": 700
   },
   "exhort_boost": {
    "Name": "독려강화",
    "Desc": "독려 계통의 상위 책략을 연다.",
    "Kind": "strategy",
    "Tone": "buff",
-   "Cost": 500,
+   "Cost": 1000,
    "Requires": [
     "exhort"
    ]
@@ -1359,17 +1359,24 @@
    "Desc": "기합이 자신을 포함한 십자 5칸의 아군에게 걸린다.",
    "Kind": "strategy",
    "Tone": "buff",
-   "Cost": 500,
+   "Cost": 1000,
    "Requires": [
     "spirit_prep"
    ]
   },
   "ambition": {
    "Name": "패기",
-   "Desc": "패기 책략 사용 가능. 자신에게 공격·정신·방어·순발·사기 버프.",
-   "Kind": "strategy",
+   "Desc": "매 자기 차례 자신에게 공격·정신·방어·순발·사기 버프(+20%).",
+   "Kind": "talent",
    "Tone": "buff",
-   "Cost": 500
+   "Cost": 500,
+   "Effects": {
+    "turn_buff:attack": 20,
+    "turn_buff:mind": 20,
+    "turn_buff:defense": 20,
+    "turn_buff:agility": 20,
+    "turn_buff:morale": 20
+   }
   },
   "inspire_prep": {
    "Name": "휘기",
@@ -1404,7 +1411,7 @@
    "Desc": "구휼 책략의 강한 갈래를 연다. 확산과 함께 있으면 최상위 책략이 열린다.",
    "Kind": "strategy",
    "Tone": "heal",
-   "Cost": 500,
+   "Cost": 700,
    "Requires": [
     "relief"
    ]
@@ -1414,7 +1421,7 @@
    "Desc": "구휼 책략의 범위 갈래를 연다. 강화와 함께 있으면 최상위 책략이 열린다.",
    "Kind": "strategy",
    "Tone": "heal",
-   "Cost": 500,
+   "Cost": 700,
    "Requires": [
     "relief"
    ]

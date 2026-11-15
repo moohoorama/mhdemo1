@@ -18,48 +18,74 @@ import (
 // the gear adds in all and a card for each slot.
 
 // officerBio is the 열전 tab: the face card (class, level, move, range, spell points and their recovery,
-// experience) and beside it, as tall, the hexagon card; the biography card fills what is left under them.
+// experience) and beside it, as tall, the hexagon card; the biography card fills what is left under them. On a
+// short screen (a phone) the face is small with the class and move beside it, the hexagon smaller and the
+// biography a size down, so that everything stays inside its card.
 func (g *Game) officerBio(dst *ebiten.Image, o core.Observation, of *core.Character, r image.Rectangle) {
 	stats, attrs, err := g.S.Engine.DeputyStats(of.ID, "")
 	if err != nil {
 		return
 	}
 	const faceW, gap = 184, 12
+	compact := r.Dy() < 400
 	topH := min(290, r.Dy()-120)
+	if compact {
+		topH = r.Dy() - 96
+	}
 	face := image.Rect(r.Min.X, r.Min.Y, r.Min.X+faceW, r.Min.Y+topH)
 	g.card(dst, face)
-	size := float64(max(56, min(150, topH-140)))
 	x, y := float64(face.Min.X+16), float64(face.Min.Y+16)
-	g.portrait(dst, of.ID, "", x, y, size)
-	y += size + 12
-	g.classRank(dst, of.Def, of.Class, of.Level, fmt.Sprintf(" · Lv%d", of.Level), x, y, 13, muted)
 	cl := g.S.Data.Classes[of.Class]
 	reach := fmt.Sprint(cl.Range)
 	if cl.MinRange > 1 {
 		reach = fmt.Sprintf("%d~%d", cl.MinRange, cl.Range)
 	}
-	g.label(dst, fmt.Sprintf("이동 %d · 사거리 %s", cl.Move, reach), x, y+22, 13, muted)
+	if compact {
+		const size = 56
+		g.portrait(dst, of.ID, "", x, y-2, size)
+		g.classRank(dst, of.Def, of.Class, of.Level, fmt.Sprintf(" · Lv%d", of.Level), x+size+10, y-2, 13, muted)
+		g.label(dst, fmt.Sprintf("이동 %d", cl.Move), x+size+10, y+17, 13, muted)
+		g.label(dst, "사거리 "+reach, x+size+10, y+36, 13, muted)
+		y += size + 8
+	} else {
+		size := float64(max(56, min(150, topH-140)))
+		g.portrait(dst, of.ID, "", x, y, size)
+		y += size + 12
+		g.classRank(dst, of.Def, of.Class, of.Level, fmt.Sprintf(" · Lv%d", of.Level), x, y, 13, muted)
+		g.label(dst, fmt.Sprintf("이동 %d · 사거리 %s", cl.Move, reach), x, y+22, 13, muted)
+		y += 44
+	}
 	mp := fmt.Sprintf("병법치 %d", stats.MaxMP)
-	g.label(dst, mp, x, y+44, 13, muted)
-	g.label(dst, fmt.Sprintf("(+%d)", stats.Recovery), x+g.width(mp, 13)+5, y+44, 13, good)
+	g.label(dst, mp, x, y, 13, muted)
+	g.label(dst, fmt.Sprintf("(+%d)", stats.Recovery), x+g.width(mp, 13)+5, y, 13, good)
 	progress := core.ExperienceProgress(of.XP)
-	g.label(dst, fmt.Sprintf("경험치 %.0f / 100", progress), x, y+66, 13, muted)
-	bar(dst, float32(x), float32(y+88), float32(faceW-32), 8, progress/100, xpC)
+	g.label(dst, fmt.Sprintf("경험치 %.0f / 100", progress), x, y+22, 13, muted)
+	bar(dst, float32(x), float32(y+44), float32(faceW-32), 8, progress/100, xpC)
 
 	hex := image.Rect(face.Max.X+gap, r.Min.Y, r.Max.X, r.Min.Y+topH)
 	g.card(dst, hex)
 	radius := max(40, min(84, float64(topH-120)/2, float64(hex.Dx()-220)/2))
-	g.hexChartAttrs(dst, float64(hex.Min.X+hex.Max.X)/2, float64(hex.Min.Y+hex.Max.Y)/2+4, radius, stats, attrs, g.rosterBest(o))
+	cy := float64(hex.Min.Y+hex.Max.Y)/2 + 4
+	if compact { // the labels, two lines above the top corner and below the bottom one, inside the card
+		radius = max(24, min(84, (float64(topH)-2*42-12)/2/1.14, float64(hex.Dx()-220)/2))
+		cy = float64(hex.Min.Y+hex.Max.Y) / 2
+	}
+	g.hexChartAttrs(dst, float64(hex.Min.X+hex.Max.X)/2, cy, radius, stats, attrs, g.rosterBest(o))
 
 	bio := image.Rect(r.Min.X, face.Max.Y+gap, r.Max.X, r.Max.Y)
 	g.card(dst, bio)
-	g.label(dst, "열전", float64(bio.Min.X+18), float64(bio.Min.Y+14), 13, gold)
+	head, size, lead := 14.0, 15.0, 1.75
+	if compact {
+		head, size, lead = 10, 14, 1.5
+	}
+	g.label(dst, "열전", float64(bio.Min.X+18), float64(bio.Min.Y)+head, 13, gold)
 	text := g.S.Data.Characters[of.Def].Biography
 	if text == "" {
 		text = "등록된 열전이 없습니다."
 	}
-	lines := int((float64(bio.Dy()) - 50) / (15 * 1.75))
-	g.labelSpaced(dst, clipLines(wrapWidth(text, g.face(15), float64(bio.Dx()-36)), lines), float64(bio.Min.X+18), float64(bio.Min.Y+38), 15, 1.75, ink)
+	top := head + 24
+	lines := int((float64(bio.Dy()) - top - 8) / (size * lead))
+	g.labelSpaced(dst, clipLines(wrapWidth(text, g.face(size), float64(bio.Dx()-36)), lines), float64(bio.Min.X+18), float64(bio.Min.Y)+top, size, lead, ink)
 }
 
 // labelSpaced draws s line by line, lead times the size apart.
@@ -207,6 +233,7 @@ func clipped(dst *ebiten.Image, r image.Rectangle) *ebiten.Image {
 
 // officerEquipment is the 장비 tab: on the left a card of what the gear adds in all, each battle stat's grade with a
 // bar, and the traits it gives; on the right a card for each slot with the piece, its grades, its traits and 바꾸기.
+// On a short screen the slot cards take the whole width, the traits small chips beside the grades.
 // Pressing a gear trait shows its description in a card under it until pressed again or elsewhere.
 func (g *Game) officerEquipment(dst *ebiten.Image, of *core.Character, r image.Rectangle) {
 	p := &g.party
@@ -258,41 +285,51 @@ func (g *Game) officerEquipment(dst *ebiten.Image, of *core.Character, r image.R
 			}
 		}
 	}
-	g.card(dst, sum)
-	x, y := float64(sum.Min.X+18), float64(sum.Min.Y+16)
-	g.label(dst, "장비로 오른 능력", x, y, 13, gold)
-	y += 30
-	most := 5.0
-	for _, v := range total {
-		most = max(most, v)
-	}
-	for i, a := range hexAxes {
-		g.label(dst, a.stat, x, y, 13, ink)
-		grade := "–"
-		if total[i] != 0 {
-			grade = bonusGrade(total[i])
-		}
-		g.label(dst, grade, x+44, y, 13, gold)
-		bar(dst, float32(x+76), float32(y+6), float32(sumW-112), 8, max(0, total[i])/most, gold)
-		y += 26
-	}
-	y += 14
-	g.label(dst, "장비 특성", x, y, 13, gold)
-	y += 22
-	if len(gearTraits) == 0 {
-		g.label(dst, "없음", x, y, 12, faintInk)
-	}
-	for i, t := range gearTraits { // one chip a line keeps each one's source
-		chips(dst, "sum", gearFrom[i], []string{t}, int(x)-4, int(y), sum.Max.X-12)
-		y += touchH
-	}
-
+	// a short screen (a phone) leaves out the sum, which the slots' grades tell too, and gives the slots the width:
+	// a smaller icon, the traits as small chips beside the grades
+	rowH := min(128, (r.Dy()-2*10)/3)
+	compact := rowH < 120
 	rows := image.Rect(sum.Max.X+gap, r.Min.Y, r.Max.X, r.Max.Y)
-	rowH := min(128, (rows.Dy()-2*10)/3)
+	if compact {
+		rows = r
+	} else {
+		g.card(dst, sum)
+		x, y := float64(sum.Min.X+18), float64(sum.Min.Y+16)
+		g.label(dst, "장비로 오른 능력", x, y, 13, gold)
+		y += 30
+		most := 5.0
+		for _, v := range total {
+			most = max(most, v)
+		}
+		for i, a := range hexAxes {
+			g.label(dst, a.stat, x, y, 13, ink)
+			grade := "–"
+			if total[i] != 0 {
+				grade = bonusGrade(total[i])
+			}
+			g.label(dst, grade, x+44, y, 13, gold)
+			bar(dst, float32(x+76), float32(y+6), float32(sumW-112), 8, max(0, total[i])/most, gold)
+			y += 26
+		}
+		y += 14
+		g.label(dst, "장비 특성", x, y, 13, gold)
+		y += 22
+		if len(gearTraits) == 0 {
+			g.label(dst, "없음", x, y, 12, faintInk)
+		}
+		for i, t := range gearTraits { // one chip a line keeps each one's source
+			chips(dst, "sum", gearFrom[i], []string{t}, int(x)-4, int(y), sum.Max.X-12)
+			y += touchH
+		}
+	}
 	for i, slot := range equipSlots {
 		c := image.Rect(rows.Min.X, rows.Min.Y+i*(rowH+10), rows.Max.X, rows.Min.Y+i*(rowH+10)+rowH)
 		g.card(dst, c)
-		ix, iy := float64(c.Min.X+16), float64(c.Min.Y+(rowH-64)/2)
+		iconK, iconW := 1.8, 64.0
+		if compact {
+			iconK, iconW = 1.3, 48
+		}
+		ix, iy := float64(c.Min.X+16), float64(c.Min.Y)+(float64(rowH)-iconW)/2
 		id, worn := of.Equipment[slot]
 		bx := c.Max.X - 14 - 96
 		slot := slot
@@ -303,28 +340,52 @@ func (g *Game) officerEquipment(dst *ebiten.Image, of *core.Character, r image.R
 		if _, owner, gearSlot, ok := g.gearStep(); ok && owner == of.ID && gearSlot == slot && (g.overlay() == "party" || g.overlay() == "") { // the party window or the sortie preparation
 			g.guideRim(dst, image.Rect(bx, c.Min.Y+(rowH-touchH)/2, bx+96, c.Min.Y+(rowH+touchH)/2))
 		}
-		tx := ix + 64 + 18
+		tx := ix + iconW + 18
 		if !worn {
-			g.itemIcon(dst, slotIcons[slot], ix+3, iy+3, 1.8, true)
+			g.itemIcon(dst, slotIcons[slot], ix+3, iy+3, iconK, true)
 			g.label(dst, "비어 있음", tx, float64(c.Min.Y+14), 16, muted)
 			g.label(dst, slotNames[slot], tx+g.width("비어 있음", 16)+8, float64(c.Min.Y+18), 12, muted)
 			continue
 		}
 		eq := g.S.Data.Equipment[id]
-		g.itemIcon(dst, eq.Icon, ix+3, iy+3, 1.8, false)
-		g.label(dst, eq.Name, tx, float64(c.Min.Y+12), 16, ink)
-		g.label(dst, slotNames[slot], tx+g.width(eq.Name, 16)+8, float64(c.Min.Y+16), 12, muted)
+		g.itemIcon(dst, eq.Icon, ix+3, iy+3, iconK, false)
+		top := c.Min.Y + 12
+		if compact {
+			top = c.Min.Y + 8
+		}
+		g.label(dst, eq.Name, tx, float64(top), 16, ink)
+		g.label(dst, slotNames[slot], tx+g.width(eq.Name, 16)+8, float64(top+4), 12, muted)
 		px := tx
 		for k, v := range eq.Bonus {
 			if v == 0 {
 				continue
 			}
-			px += g.gradePill(dst, hexAxes[k].stat, bonusGrade(v), px, float64(c.Min.Y+40)) + 6
+			px += g.gradePill(dst, hexAxes[k].stat, bonusGrade(v), px, float64(top+28)) + 6
 		}
 		if px == tx {
-			g.label(dst, "능력 변화 없음", tx, float64(c.Min.Y+42), 12, faintInk)
+			none := "능력 변화 없음"
+			if compact && len(eq.Traits) > 0 {
+				none = ""
+			}
+			g.label(dst, none, tx, float64(top+30), 12, faintInk)
 		}
-		chips(dst, slot, eq.Name, eq.Traits, int(tx)-4, c.Min.Y+66, bx-10)
+		if !compact {
+			chips(dst, slot, eq.Name, eq.Traits, int(tx)-4, c.Min.Y+66, bx-10)
+			continue
+		}
+		key, from := slot, eq.Name
+		_, placed := g.smallChips(dst, eq.Traits, image.Rect(int(px), top+24, bx-10, top+24+smallChipH), 1, false, nil, func(id string) {
+			if p.tip == key+"|"+id {
+				p.tip = ""
+			} else {
+				p.tip = key + "|" + id
+			}
+		})
+		for _, sc := range placed {
+			if sc.id != "" && p.tip == key+"|"+sc.id {
+				tip = &tipAt{sc.id, from, sc.r}
+			}
+		}
 	}
 	if tip != nil {
 		note := tip.from + "에 딸린 특성 · 벗으면 사라집니다"
@@ -353,10 +414,10 @@ func (g *Game) gradePill(dst *ebiten.Image, name, grade string, x, y float64) fl
 	return w
 }
 
-// officerDeputy is the sortie's 부관 tab for a lead going out: on the left a card listing who could serve, each
-// with where they are, their charm and the weight they would get; on the right a card of the one picked — what it
-// raises, the unit's hexagon with it (white) over the lead alone (dashed gold) with each stat's bonus, and the
-// traits it would bring. It gives the actions that dismiss the deputy and appoint the one picked.
+// officerDeputy is the sortie's 부관 tab for a lead going out: the candidates in a table (deputyTable), sorted by
+// the weight they would get, and under it a card of the one picked — class, level and weight, what naming it does
+// or why it cannot be, and every trait it would bring as a small chip ("+n" when they need more lines than the
+// card gets). It gives the actions that dismiss the deputy and appoint the one picked.
 func (g *Game) officerDeputy(dst *ebiten.Image, o core.Observation, of *core.Character, r image.Rectangle) []action {
 	note := ""
 	switch lead := g.servedBy(o, of.ID); {
@@ -373,164 +434,32 @@ func (g *Game) officerDeputy(dst *ebiten.Image, o core.Observation, of *core.Cha
 		g.label(dst, note, float64(c.Min.X+18), float64(c.Min.Y+22), 14, muted)
 		return nil
 	}
-	alone, aloneAttrs, err := g.S.Engine.DeputyStats(of.ID, "")
-	if err != nil {
-		return nil
-	}
 	p := &g.party
 	if p.depLead != of.ID {
-		p.depLead, g.deputyPick = of.ID, ""
+		p.depLead, p.depAll = of.ID, false
+		g.deputyFresh()
 	}
 	rows := g.deputyRows(o)
-	slices.SortStableFunc(rows, func(a, b deputyRow) int {
-		if a.current != b.current {
-			return b2i(b.current) - b2i(a.current)
-		}
-		return b2i(a.reason != "") - b2i(b.reason != "")
-	})
-	pick := g.deputyPick
-	if pick == "" {
-		pick = of.Deputy
+	// the card of the one picked takes what the table leaves, its chips on the lines that fit in half of r unless
+	// all are asked for; the pick comes from the table, so the card is first sized for the pick of the last frame
+	var last *deputyRow
+	if i := slices.IndexFunc(rows, func(d deputyRow) bool { return d.id == g.deputyShown(of) }); i >= 0 {
+		last = &rows[i]
 	}
-	at := slices.IndexFunc(rows, func(r deputyRow) bool { return r.id == pick })
-	if at < 0 && len(rows) > 0 {
-		at, pick = 0, rows[0].id
+	lines := func(d *deputyRow) int {
+		return max(1, (r.Dy()/2-deputyCardTop(d)-8+smallChipPitch-smallChipH)/smallChipPitch)
 	}
-	const listW, gap, rowH = 210, 12, 52
-	list := image.Rect(r.Min.X, r.Min.Y, r.Min.X+listW, r.Max.Y)
-	g.card(dst, list)
-	g.listRows(dst, &p.deputies, list.Inset(5), len(rows), rowH, func(i int, rr image.Rectangle) {
-		d := rows[i]
-		c := g.officer(o, d.id)
-		if c == nil {
-			return
-		}
-		rowBack(dst, rr, d.id == pick)
-		fg := color.Color(ink)
-		if d.reason != "" {
-			fg = faintInk
-		}
-		x, y := float64(rr.Min.X+10), float64(rr.Min.Y)
-		g.portrait(dst, c.ID, c.Class, x, y+8, 36)
-		g.label(dst, d.name, x+44, y+6, 14, fg)
-		if d.current {
-			g.label(dst, "지금", x+50+g.width(d.name, 14), y+9, 11, depInk)
-		}
-		where := "대기"
-		switch {
-		case d.current:
-			where = g.name(of.ID) + " 부관"
-		case g.servedBy(o, d.id) != "":
-			where = g.name(g.servedBy(o, d.id)) + " 부관"
-		case slices.Contains(o.Deployment, d.id):
-			where = "출전"
-		}
-		_, depAttrs, _ := g.S.Engine.DeputyStats(d.id, "")
-		g.label(dst, ellipsis(g, fmt.Sprintf("%s · 매력 %d", where, depAttrs[5]), 11, rr.Dx()-110), x+44, y+28, 11, muted)
-		if d.reason == "" {
-			wr, _ := g.S.Engine.DeputyBlend(of.ID, d.id)
-			ws := fmt.Sprintf("%.0f%%", wr*100)
-			g.label(dst, ws, float64(rr.Max.X-10)-g.width(ws, 15), y+15, 15, gold)
-		}
-	}, func(i int) { g.deputyPick = rows[i].id })
-
-	main := image.Rect(list.Max.X+gap, r.Min.Y, r.Max.X, r.Max.Y)
-	g.card(dst, main)
-	var picked *deputyRow
-	if at >= 0 {
-		picked = &rows[at]
-	}
-	if picked == nil {
-		g.label(dst, "부관이 될 장수가 없습니다.", float64(main.Min.X+18), float64(main.Min.Y+20), 14, muted)
+	cardH := g.deputyCardHeight(last, r.Dx(), lines(last), p.depAll)
+	pick := g.deputyTable(dst, &p.deputies, of, rows, image.Rect(r.Min.X, r.Min.Y, r.Max.X, r.Max.Y-cardH-6))
+	at := slices.IndexFunc(rows, func(d deputyRow) bool { return d.id == pick })
+	if at < 0 {
 		return nil
 	}
-	x, y := float64(main.Min.X+16), float64(main.Min.Y+16)
-	if c := g.officer(o, picked.id); c != nil {
-		g.portrait(dst, c.ID, c.Class, x, y, 52)
-		g.label(dst, picked.name, x+64, y, 17, ink)
-		g.classRank(dst, c.Def, c.Class, c.Level, fmt.Sprintf(" · Lv%d", c.Level), x+72+g.width(picked.name, 17), y+4, 12, muted)
+	picked := &rows[at]
+	if picked != last {
+		cardH = g.deputyCardHeight(picked, r.Dx(), lines(picked), p.depAll)
 	}
-	ups := ""
-	for k, a := range attrNames {
-		if d := picked.attrs[k] - aloneAttrs[k]; d > 0 {
-			if ups != "" {
-				ups += " · "
-			}
-			ups += fmt.Sprintf("%s +%d", a, d)
-		}
-	}
-	upsC := color.Color(good)
-	switch {
-	case picked.reason != "":
-		ups, upsC = picked.reason, faintInk
-	case ups == "":
-		ups, upsC = "오르는 능력 없음", faintInk
-	}
-	lines := clipLines(wrapWidth(ups, g.face(13), float64(main.Dx()-170)), 2)
-	g.label(dst, lines, x+64, y+24, 13, upsC)
-	if picked.note != "" {
-		_, lh := measureLines(g, lines, 13)
-		g.label(dst, ellipsis(g, picked.note, 12, main.Dx()-170), x+64, y+26+lh, 12, color.NRGBA{R: 224, G: 160, B: 112, A: 255})
-	}
-	if picked.reason == "" {
-		wr, _ := g.S.Engine.DeputyBlend(of.ID, picked.id)
-		ws := fmt.Sprintf("%.0f%%", wr*100)
-		g.label(dst, ws, float64(main.Max.X-18)-g.width(ws, 24), y-2, 24, gold)
-		g.label(dst, "가중치", float64(main.Max.X-18)-g.width("가중치", 11), y+30, 11, muted)
-	}
-
-	traitsH := 84
-	hexTop, hexBot := y+90, float64(main.Max.Y-traitsH-24)
-	var names [6]string
-	var unit [6]int
-	var dashed [6]int
-	var subs hexSubs
-	for i, a := range hexAxes {
-		names[i], unit[i], dashed[i] = a.stat, a.get(picked.stats), a.get(alone)
-		if d := unit[i] - dashed[i]; d != 0 {
-			subs.text[i], subs.c[i] = fmt.Sprintf("%+d", d), good
-		} else {
-			subs.text[i], subs.c[i] = "—", faintInk
-		}
-	}
-	var other *[6]int
-	if unit != dashed {
-		other = &dashed
-	}
-	best := g.rosterBest(o)
-	for i := range best {
-		best[i] = max(best[i], unit[i])
-	}
-	radius := max(40, min(96, (hexBot-hexTop-90)/2, float64(main.Dx()-190)/2))
-	cy := (hexTop+hexBot)/2 + 4
-	g.hexagon(dst, float64(main.Min.X+main.Max.X)/2, cy, radius, names, unit, other, best, []float64{1, 2.0 / 3, 1.0 / 3}, &subs)
-	ly := hexBot + 2
-	lx := x
-	rect(dst, float32(lx), float32(ly+8), 18, 2, white)
-	g.label(dst, "부대", lx+24, ly, 12, muted)
-	lx += 24 + g.width("부대", 12) + 16
-	for k := 0; k < 18; k += 6 {
-		rect(dst, float32(lx)+float32(k), float32(ly+8), 3, 2, gold)
-	}
-	g.label(dst, g.name(of.ID)+" 혼자", lx+24, ly, 12, muted)
-	lx += 24 + g.width(g.name(of.ID)+" 혼자", 12) + 16
-	mp := fmt.Sprintf("병법치 %d → ", alone.MaxMP)
-	g.label(dst, mp, lx, ly, 12, muted)
-	g.label(dst, fmt.Sprint(picked.stats.MaxMP), lx+g.width(mp, 12), ly, 12, gold)
-
-	ty := float64(main.Max.Y - traitsH)
-	g.label(dst, "부대에 더해지는 특성", x, ty, 12, muted)
-	tx := int(x) - 4
-	if len(picked.traits) == 0 {
-		g.label(dst, "없음", x, ty+24, 12, faintInk)
-	}
-	for _, t := range picked.traits {
-		e := traitEntry{id: t, have: true}
-		if tx+g.traitChipW(e) > main.Max.X-12 {
-			break
-		}
-		tx += g.traitChip(dst, tx, int(ty)+18, e, false, nil) + 6
-	}
+	g.deputyCard(dst, o, picked, image.Rect(r.Min.X, r.Max.Y-cardH, r.Max.X, r.Max.Y), lines(picked), p.depAll)
 
 	var appoint, release func()
 	if pick != of.Deputy && picked.reason == "" {
@@ -554,4 +483,67 @@ func (g *Game) officerDeputy(dst *ebiten.Image, o core.Observation, of *core.Cha
 		label = "지금 부관"
 	}
 	return []action{{"부관 해임", false, release}, {label, true, appoint}}
+}
+
+// deputyShown is the candidate the table showed picked: the one previewed, else the deputy now.
+func (g *Game) deputyShown(of *core.Character) string {
+	if g.deputyPick != "" {
+		return g.deputyPick
+	}
+	return of.Deputy
+}
+
+// deputyCardTop is the height of the picked candidate's card above its chips: the name line and, when there is
+// one, the line of what naming it does or why it cannot be.
+func deputyCardTop(d *deputyRow) int {
+	if d != nil && (d.reason != "" || d.note != "") {
+		return 8 + 24 + 20 + 4
+	}
+	return 8 + 24 + 4
+}
+
+// deputyCardHeight is how tall deputyCard is at width w for d, its chips on at most lines lines unless all.
+func (g *Game) deputyCardHeight(d *deputyRow, w, lines int, all bool) int {
+	if d == nil || len(d.traits) == 0 {
+		return deputyCardTop(d) + 20 + 8
+	}
+	_, used := g.layoutSmallChips(d.traits, 16, w-16, lines, all, true)
+	return deputyCardTop(d) + used*smallChipPitch - (smallChipPitch - smallChipH) + 8
+}
+
+// deputyCard is the candidate picked in the 부관 tab: name, class and level, the weight in gold, the traits it would
+// bring counted on the right; what naming it does or why it cannot be; then the traits as small chips, each opening
+// its description, "+n" showing the rest.
+func (g *Game) deputyCard(dst *ebiten.Image, o core.Observation, d *deputyRow, r image.Rectangle, lines int, all bool) {
+	p := &g.party
+	g.card(dst, r)
+	x, y := float64(r.Min.X+16), float64(r.Min.Y+8)
+	g.label(dst, d.name, x, y, 16, ink)
+	lx := x + g.width(d.name, 16) + 10
+	if c := g.officer(o, d.id); c != nil {
+		lx += g.classRank(dst, c.Def, c.Class, c.Level, fmt.Sprintf(" · Lv%d", c.Level), lx, y+4, 12, muted)
+	}
+	if d.reason == "" {
+		ws := fmt.Sprintf("가중치 %.0f%%", d.weight*100)
+		g.label(dst, ws, lx+12, y+3, 13, gold)
+	}
+	count := fmt.Sprintf("더해지는 특성 %d", len(d.traits))
+	g.label(dst, count, float64(r.Max.X-16)-g.width(count, 12), y+4, 12, muted)
+	y += 24
+	switch {
+	case d.reason != "":
+		g.label(dst, ellipsis(g, d.reason, 12, r.Dx()-32), x, y, 12, faintInk)
+		y += 20
+	case d.note != "":
+		g.label(dst, ellipsis(g, d.note, 12, r.Dx()-32), x, y, 12, color.NRGBA{R: 224, G: 160, B: 112, A: 255})
+		y += 20
+	}
+	y += 4
+	if len(d.traits) == 0 {
+		g.label(dst, "더해지는 특성이 없습니다", x, y, 12, faintInk)
+		return
+	}
+	g.smallChips(dst, d.traits, image.Rect(r.Min.X+16, int(y), r.Max.X-16, r.Max.Y), lines, all,
+		func() { p.depAll = !p.depAll },
+		func(id string) { g.deputyInfo = equipChip{"deputy", id} })
 }

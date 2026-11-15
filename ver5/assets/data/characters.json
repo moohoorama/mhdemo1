@@ -236,7 +236,9 @@
     93
    ],
    "Level": 2,
-   "Traits": [],
+   "Traits": [
+    "taoism"
+   ],
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
@@ -954,9 +956,9 @@
    "Level": 14,
    "Traits": [
     "versatile",
+    "ambition",
     "civil_martial",
-    "feint",
-    "ambition"
+    "feint"
    ],
    "Learn": [],
    "Equipment": [

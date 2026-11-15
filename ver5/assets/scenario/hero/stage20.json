@@ -24,6 +24,19 @@
    "Text": "장비가 쓰러진다"
   }
  ],
+ "Sub": [
+  {
+   "ID": "caiyang-duel",
+   "Text": "관우가 일기토로 채양을 벤다",
+   "If": [
+    "duel:mangdang-guanyu-caiyang"
+   ],
+   "Flag": "flag-b20-caiyang-duel",
+   "Reward": {
+    "insu_high": 1
+   }
+  }
+ ],
  "TurnLimit": 25,
  "Map": "map20.json",
  "Allies": [

@@ -31,8 +31,9 @@ func newLayer(w, h int) *ebiten.Image {
 // ((u - v) * 16, (u + v + 1) * 8) relative to Origin; the canvas is K times that.
 type Field struct {
 	deployment                   bool
-	goals                        []goalShape     // the objective guide's outlines
-	RangeBorder                  []content.Point // cells ringed in red: what a picked unit strikes from where it stands
+	goals                        []goalShape                // the objective guide's outlines
+	siteMarks                    map[image.Point]color.RGBA // this frame's highlights by cell, for tinting a village or castle standing on its cell
+	RangeBorder                  []content.Point            // cells ringed in red: what a picked unit strikes from where it stands
 	sceneryLayer                 bool
 	deploymentCells              []content.Point
 	worldSize                    image.Point
@@ -407,7 +408,12 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	// highlights of one colour share a path, so neighbouring cells meet without seams
 	paths := map[color.RGBA]*vector.Path{}
 	var colors []color.RGBA
+	clear(f.siteMarks)
 	for _, m := range marks {
+		if f.siteMarks == nil {
+			f.siteMarks = map[image.Point]color.RGBA{}
+		}
+		f.siteMarks[image.Pt(m.U, m.V)] = m.Color
 		p := paths[m.Color]
 		if p == nil {
 			p = &vector.Path{}
@@ -459,7 +465,11 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			switch t {
 			case 'v':
 				s := f.A.Structures["village"]
-				items = append(items, drawItem{y: y*K - .1, draw: func() { f.blitMap(c, s, x, y, nil) }, rect: f.mapRect(s, x, y)})
+				at := image.Pt(u, v)
+				items = append(items, drawItem{y: y*K - .1, draw: func() {
+					f.blitMap(c, s, x, y, nil)
+					f.tintSite(Sprite{s.Image, s.PivotX * f.artScale(), s.PivotY * f.artScale()}, x*K, y*K, at, f.artScale())
+				}, rect: f.mapRect(s, x, y)})
 			case 'f':
 				if !f.Map.Deformed {
 					break // scenario stages keep the big trees

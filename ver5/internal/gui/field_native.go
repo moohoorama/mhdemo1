@@ -7,6 +7,7 @@ import (
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/colorm"
 	"srpg/internal/content"
 )
 
@@ -241,13 +242,38 @@ func (f *Field) nativeSites(items *[]drawItem) {
 			*items = append(*items, drawItem{y: py - .1, rect: f.mapRect(s, px/K, py/K), draw: func() {
 				if burnt, ok := f.A.Props[burntName]; ok && f.look(at.X, at.Y) == "soot" {
 					f.blit(f.Canvas, burnt.Sprite, px, py, nil)
+					f.tintSite(burnt.Sprite, px, py, at, 1)
 					return
 				}
 				still()
+				f.tintSite(s, px, py, at, 1)
 			}})
 		}
 	}
 }
+
+// tintSite lays the highlight of cell at (move range, targets) over the village, camp or castle standing on it,
+// drawn k times its size with its pivot on canvas point (x, y): the tint on the ground lies under the picture.
+func (f *Field) tintSite(s Sprite, x, y float64, at image.Point, k float64) {
+	col, ok := f.siteMarks[at]
+	if !ok {
+		return
+	}
+	var cm colorm.ColorM
+	cm.Scale(0, 0, 0, float64(col.A)/255*siteTint)
+	cm.Translate(float64(col.R)/255, float64(col.G)/255, float64(col.B)/255, 0)
+	op := &colorm.DrawImageOptions{}
+	op.GeoM.Scale(k, k)
+	op.GeoM.Translate(math.Round(x-s.PivotX), math.Round(y-s.PivotY))
+	if f.renderZoom > 0 {
+		op.GeoM.Translate(-f.renderX, -f.renderY)
+		op.GeoM.Scale(f.renderZoom, f.renderZoom)
+	}
+	colorm.DrawImage(f.Canvas, s.Image, cm, op)
+}
+
+// siteTint is how strongly a cell's highlight colours the site on it, against its strength on bare ground.
+const siteTint = .8
 
 func (f *Field) drawNativeWater(dst *ebiten.Image, ms float64) {
 	water := f.A.Animations["water"]

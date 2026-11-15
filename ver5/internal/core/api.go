@@ -475,6 +475,10 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, []string, erro
 		if q == nil || q.ID == o.ID || deputies[q.ID] {
 			return nil, nil, corrupt("CorruptDeputy", "%s cannot have %s as deputy", o.ID, o.Deputy)
 		}
+		if o.Temp && q.Temp { // an NPC officer's deputy, set by its spawn
+			deputies[q.ID] = true
+			continue
+		}
 		if o.Dead || !e.playable(e.char(o.ID)) || e.fxOf(&o, content.FxDeputyAppoint) == 0 || !e.playable(q) || e.def(q).Lord || q.Dead || q.Deputy != "" || deploy[q.ID] || len(q.Equipment) > 0 {
 			if err := soft("CorruptDeputy", "%s cannot have %s as deputy", o.ID, o.Deputy); err != nil {
 				return nil, nil, err

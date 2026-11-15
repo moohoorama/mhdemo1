@@ -68,7 +68,8 @@ type table[R any] struct {
 	dim         func(r *R) bool
 	selected    func(r *R) bool
 	pick        func(r *R)
-	guide       func(r *R) bool // rows the promotion guide rims in orange
+	guide       func(r *R) bool                                   // rows the promotion guide rims in orange
+	back        func(dst *ebiten.Image, r *R, rr image.Rectangle) // paints a row's ground under its cells
 }
 
 // widths are the columns' widths over w, the free columns sharing what the others leave.
@@ -245,6 +246,9 @@ func tableRow[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], ws []
 		pick = func() { t.pick(row) }
 	}
 	g.addButton(rr, "", func() { g.pressTable(l, t.rowH, pick) })
+	if t.back != nil {
+		t.back(dst, row, rr)
+	}
 	switch {
 	case t.selected != nil && t.selected(row):
 		strokeRect(dst, float32(rr.Min.X), float32(rr.Min.Y+1), float32(rr.Dx()-2), float32(rr.Dy()-2), 1.5, gold)

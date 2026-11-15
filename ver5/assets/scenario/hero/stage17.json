@@ -393,19 +393,7 @@
  "Reward": {
   "money": 1000
  },
- "Areas": [
-  {
-   "ID": 1,
-   "Rect": {
-    "X": 0,
-    "Y": 17,
-    "W": 24,
-    "H": 1
-   },
-   "Name": "남서쪽 끝",
-   "Description": "기령이 쓰러지면 뇌박·진란의 무리가 달아나는 가장자리"
-  }
- ],
+ "Areas": [],
  "Events": [
   {
    "ID": "opening",
@@ -599,9 +587,21 @@
      ]
     },
     {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshu",
+       "Text": "무얼 하느냐! 짐의 길을 막는 놈들을 쓸어버려라!"
+      }
+     ]
+    },
+    {
      "Kind": "ai",
      "Targets": [
-      "ji"
+      "front",
+      "ji",
+      "rear",
+      "guard"
      ],
      "Policy": "assault"
     }
@@ -618,17 +618,38 @@
      "Lines": [
       {
        "Actor": "liubei",
-       "Text": "기령이 쓰러졌다! 원술의 군사는 이제 흩어진다. 몰아쳐라!"
+       "Text": "기령이 쓰러졌다! 이대로 원술까지 몰아쳐라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "leibo",
+       "Text": "기령이 뻗었으면 공은 우리 차지다! 얘들아, 마저 털어라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuanshu",
+       "Text": "그래, 유비의 목을 가져오면 짐이 후히 상을 내리마!"
       }
      ]
     },
     {
      "Kind": "ai",
      "Targets": [
+      "front",
+      "ji",
+      "rear",
+      "guard",
       "bandit"
      ],
-     "Policy": "flee",
-     "GoalArea": 1
+     "Policy": "assault"
     },
     {
      "Kind": "buff",
@@ -647,37 +668,6 @@
      "Stat": "attack",
      "Value": -10,
      "Turns": 0
-    }
-   ]
-  },
-  {
-   "ID": "rear-moves",
-   "If": [
-    "any:[round>=7, defeated:jiling]"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "yuanshu",
-       "Text": "무얼 하느냐! 짐의 길을 막는 놈들을 쓸어버려라!"
-      }
-     ]
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "rear"
-     ],
-     "Policy": "assault"
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "guard"
-     ],
-     "Policy": "react"
     }
    ]
   }

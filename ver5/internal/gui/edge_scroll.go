@@ -30,18 +30,17 @@ func (g *Game) edgeArrow(locked bool) (int, bool) {
 		return 0, false
 	}
 	edge := float64(worldW) * .05
-	lo, hi := g.camRange()
 	dx, dy := 0, 0
 	switch {
-	case wx < float64(vp.Min.X)+edge && g.camX > lo[0]:
+	case wx < float64(vp.Min.X)+edge && g.camCanGo(-2, 0):
 		dx = -1
-	case wx >= float64(vp.Max.X)-edge && g.camX < hi[0]:
+	case wx >= float64(vp.Max.X)-edge && g.camCanGo(2, 0):
 		dx = 1
 	}
 	switch {
-	case wy < float64(vp.Min.Y)+edge && g.camY > lo[1]:
+	case wy < float64(vp.Min.Y)+edge && g.camCanGo(0, -2):
 		dy = -1
-	case wy >= float64(vp.Max.Y)-edge && g.camY < hi[1]:
+	case wy >= float64(vp.Max.Y)-edge && g.camCanGo(0, 2):
 		dy = 1
 	}
 	for i, w := range edgeWays {

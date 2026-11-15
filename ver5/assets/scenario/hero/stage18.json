@@ -17,7 +17,7 @@
   }
  ],
  "TurnLimit": 30,
- "Map": "map18.json",
+ "Map": "map12.json",
  "Allies": [
   {
    "X": 20,
@@ -187,8 +187,8 @@
     "W": 6,
     "H": 4
    },
-   "Name": "북쪽 여울목",
-   "Description": "조조 대군이 나타난 뒤 유비가 들어서 있으면 다음 차례에 소성 앞 길에서 우금·이전이 중보병과 함께 매복에서 나온다"
+   "Name": "동쪽 다리목",
+   "Description": "서주성에서 동쪽 소성으로 가려면 건너는 다리의 동쪽 끝. 조조 대군이 나타난 뒤 유비가 들어서 있으면 다음 차례에 소성 앞 길에서 우금·이전이 중보병과 함께 매복에서 나온다"
   }
  ],
  "Events": [
@@ -266,6 +266,7 @@
        "Y": 6,
        "Facing": "SE",
        "Rank": "commander",
+       "Deputy": "xunyou",
        "Group": "cao",
        "Policy": "assault",
        "Side": "enemy",

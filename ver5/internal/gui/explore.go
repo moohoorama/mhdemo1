@@ -2,6 +2,7 @@ package gui
 
 import (
 	"fmt"
+	"image"
 	"maps"
 	"math"
 	"math/rand/v2"
@@ -41,6 +42,15 @@ type exploreWalk struct {
 	leg        map[string]int // the patrol point each patroller walks to
 	walked     bool           // the hero walked since the story was last told where he stands
 	rng        *rand.Rand
+	plates     []explorePlate // the name plates as last drawn, top last
+}
+
+// explorePlate is a name plate of the walk as last drawn (UI px) and what a click on it picks: a person (cast key)
+// or an exit.
+type explorePlate struct {
+	rect   image.Rectangle
+	person string
+	exit   *content.ExploreExit
 }
 
 // exploreAim is what the hero is walking to, and what happens on arrival.
@@ -331,7 +341,8 @@ func (g *Game) exploreClick(x, y float64) {
 	}
 	w.aim = nil
 	from := g.actorTile(w.hero)
-	if key := g.explorePersonAt(x, y); key != "" {
+	key, ex := g.exploreTargetAt(x, y)
+	if key != "" {
 		s.paths[key] = nil // a walker stops on the small tile it is stepping to
 		at := g.actorTile(key)
 		var route []smallTile
@@ -348,7 +359,7 @@ func (g *Game) exploreClick(x, y float64) {
 		return
 	}
 	a := g.S.Engine.ExploreFile().Areas[w.area]
-	if ex := g.exploreExitAt(x, y); ex != nil {
+	if ex != nil {
 		if route := w.grid.path(from, w.grid.nearestOpen(ex.At)); route != nil {
 			g.walkActor(w.hero, route, heroStep)
 			w.aim = &exploreAim{exit: ex}
@@ -499,6 +510,27 @@ func (g *Game) turnBack(key string) {
 	g.scene.looks[key].back = home
 }
 
+// exploreTargetAt is what a click on canvas point (x, y) picks: the person (cast key) or the exit whose name plate
+// lies there, else the person whose figure covers it, else the exit whose spot or building does.
+func (g *Game) exploreTargetAt(x, y float64) (string, *content.ExploreExit) {
+	w := g.explore
+	sx, sy := worldToUI(g.toScreen(x, y))
+	for i := len(w.plates) - 1; i >= 0; i-- {
+		if p := w.plates[i]; image.Pt(int(sx), int(sy)).In(p.rect) {
+			if p.exit != nil {
+				return "", g.exitOpenAt(p.exit)
+			}
+			if v := g.scene.actors[p.person]; v != nil && !v.gone {
+				return p.person, nil
+			}
+		}
+	}
+	if key := g.explorePersonAt(x, y); key != "" {
+		return key, nil
+	}
+	return "", g.exploreExitAt(x, y)
+}
+
 // explorePersonAt is the person whose figure covers canvas point (x, y), the nearest in front.
 func (g *Game) explorePersonAt(x, y float64) string {
 	w := g.explore
@@ -508,7 +540,8 @@ func (g *Game) explorePersonAt(x, y float64) string {
 			continue
 		}
 		fx, fy := g.field.Center(v.u, v.v)
-		if x >= fx-12 && x <= fx+12 && y >= fy-v.lift-v.top && y <= fy+6 && fy > bestY {
+		top := fy - v.lift - g.field.groundLift(v.u, v.v) - v.top
+		if x >= fx-14 && x <= fx+14 && y >= top-2 && y <= fy+6 && fy > bestY {
 			best, bestY = key, fy
 		}
 	}
@@ -559,7 +592,7 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 	var hover *content.ExploreExit
 	var person string
 	if !pointer.used { // a finger leaves no pointer resting over the map: its last touch would ride along with the scroll
-		hover, person = g.exploreExitAt(x, y), g.explorePersonAt(x, y)
+		person, hover = g.exploreTargetAt(x, y)
 	}
 	if idle && !pointer.used && hover == nil && person == "" {
 		if t := smallTileAt(g.cellAt(x, y)); w.grid.open(t) {
@@ -575,7 +608,7 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 			continue
 		}
 		seen[e.At] = true
-		px, py := g.exitPlatePoint(e.At)
+		px, py := g.exitPlatePoint(*e)
 		style := plateDim
 		for j, o := range a.Exits {
 			if o.At == e.At && guideExit[j] != plateDim {
@@ -583,17 +616,17 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 			}
 		}
 		sx, sy := worldToUI(g.toScreen(px, py))
-		plates = append(plates, namedPlate{g.exitName(a, e), sx, sy - 6, style, idle && hover != nil && hover.At == e.At})
+		plates = append(plates, namedPlate{g.exitName(a, e), sx, sy - 6, style, idle && hover != nil && hover.At == e.At, "", e})
 	}
-	for key := range w.people {
+	for key, pk := range w.people {
 		v := g.scene.actors[key]
-		if v == nil || v.gone || scenes.Extra(key) || w.talk != nil {
+		if v == nil || v.gone || w.talk != nil || scenes.Extra(key) && !talkable(a.People[pk]) {
 			continue
 		}
-		style := guidePerson[w.people[key]]
+		style := guidePerson[pk]
 		x, y := g.field.Center(v.u, v.v)
-		sx, sy := worldToUI(g.toScreen(x, y-v.lift-v.top-4))
-		plates = append(plates, namedPlate{key, sx, sy, style, idle && person == key})
+		sx, sy := worldToUI(g.toScreen(x, y-v.lift-g.field.groundLift(v.u, v.v)-v.top-4))
+		plates = append(plates, namedPlate{content.PersonName(pk), sx, sy, style, idle && person == key, key, nil})
 	}
 	slices.SortStableFunc(plates, func(p, q namedPlate) int { // the guide's plates on top, the one pointed at over all
 		if p.hover != q.hover {
@@ -601,8 +634,9 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 		}
 		return int(p.style) - int(q.style)
 	})
+	w.plates = w.plates[:0]
 	for _, p := range plates {
-		g.namePlate(dst, p.name, p.x, p.y, p.style, p.hover)
+		w.plates = append(w.plates, explorePlate{g.namePlate(dst, p.name, p.x, p.y, p.style, p.hover), p.person, p.exit})
 	}
 	if w.talk != nil {
 		l := w.talk[w.talkI]
@@ -613,10 +647,17 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 }
 
 type namedPlate struct {
-	name  string
-	x, y  float64
-	style plate
-	hover bool
+	name   string
+	x, y   float64
+	style  plate
+	hover  bool
+	person string               // the cast key of the person it names
+	exit   *content.ExploreExit // or the exit
+}
+
+// talkable reports whether talking to a person does anything: an extra who does shows a name plate like the named.
+func talkable(p *content.ExplorePerson) bool {
+	return p != nil && (len(p.Talk) > 0 || len(p.Event) > 0 || p.Sortie != nil || p.Shop != "")
 }
 
 // exploreGuide is how the guide marks the exits of the hero's area (by index) and its people (by key): the main
@@ -666,11 +707,33 @@ func (g *Game) exploreGuide() (map[int]plate, map[string]plate) {
 }
 
 // exitPlatePoint is the canvas point an exit's plate stands over: its doorway, a little above the ground, so the
-// plate marks where the hero goes in rather than floating over the roof.
-func (g *Game) exitPlatePoint(at [2]int) (float64, float64) {
-	u, v := smallTile(at).cell()
+// plate marks where the hero goes in rather than floating over the roof; an exit into a building keeps it on the
+// building's picture, over the side of it nearest the door, where a door spot out in a yard or before a gate
+// would leave it on bare ground beside it.
+func (g *Game) exitPlatePoint(e content.ExploreExit) (float64, float64) {
+	u, v := smallTile(e.At).cell()
 	x, y := g.field.Center(u, v)
-	return x, y - g.field.Lift(int(u), int(v)) - 24
+	y -= g.field.groundLift(u, v) + 24
+	if e.Object == nil {
+		return x, y
+	}
+	r, ok := g.objectRect(*e.Object)
+	if !ok {
+		return x, y
+	}
+	inX, inY := float64(r.Dx())/8, math.Min(24, float64(r.Dy())/3)
+	return math.Max(float64(r.Min.X)+inX, math.Min(float64(r.Max.X)-inX, x)), math.Max(float64(r.Min.Y)+inY, math.Min(float64(r.Max.Y)-inY, y))
+}
+
+// exitOpenAt is the exit open now among those sharing e's spot, else e.
+func (g *Game) exitOpenAt(e *content.ExploreExit) *content.ExploreExit {
+	a := g.S.Engine.ExploreFile().Areas[g.explore.area]
+	for i := range a.Exits {
+		if o := &a.Exits[i]; o.At == e.At && g.S.Engine.ExitOpen(*o) {
+			return o
+		}
+	}
+	return e
 }
 
 // exitName is the name an exit's plate shows: of the one open now among those sharing its spot.

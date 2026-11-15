@@ -23,6 +23,7 @@ type partyView struct {
 	tip          string    // the equipment trait whose description shows on 장비, as "slot|trait"
 	sortieTab    int       // the sortie's tab of the picked officer (sortieTabs)
 	depLead      string    // the lead the 부관 tab last showed, so another lead starts on their own deputy
+	depAll       bool      // the traits the candidate picked brings are all shown, past the lines they get
 	shelves      tableList // the 특성 tab's shelves scrolled, in steps of shelfStep
 	list         tableList
 	officers     tableList

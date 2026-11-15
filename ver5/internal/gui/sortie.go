@@ -36,12 +36,14 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 	g.label(dst, "출전 준비", float64(x+16), float64(y+12), 18, gold)
 	tx := float64(x+28) + g.width("출전 준비", 18)
 	g.label(dst, fmt.Sprintf("출전 %d / %d", len(o.Deployment), st.Max), tx, float64(y+17), 13, muted)
-	g.mBtn(dst, image.Rect(x+listW-160, y+4, x+listW-84, y+4+touchH), "목표", false, g.openObjective)
-	g.mBtn(dst, image.Rect(x+listW-80, y+4, x+listW-8, y+4+touchH), "메뉴", false, func() { g.openOverlay("menu") })
 	rect(dst, float32(x+8), float32(y+56), float32(listW-16), 1, goldDim)
+	// 목표 and 메뉴 under the list, on the line of the actions, so the title row holds only the title and the count
+	foot := y + h - 60
+	g.mBtn(dst, image.Rect(x+8, foot, x+8+88, foot+touchH), "목표", false, g.openObjective)
+	g.mBtn(dst, image.Rect(x+8+96, foot, x+8+96+88, foot+touchH), "메뉴", false, func() { g.openOverlay("menu") })
 	_, gearOwner, _, guide := g.gearStep()
 	guide = guide && g.overlay() == ""
-	g.listRows(dst, &g.party.officers, image.Rect(x+6, y+58, x+listW-4, y+h-6), len(ids), listRowH, func(i int, rr image.Rectangle) {
+	g.listRows(dst, &g.party.officers, image.Rect(x+6, y+58, x+listW-4, foot-6), len(ids), listRowH, func(i int, rr image.Rectangle) {
 		g.sortieRow(dst, o, rr, ids[i])
 		if guide && ids[i] == gearOwner && ids[i] != g.selected {
 			g.guideRim(dst, rr.Inset(4))
@@ -84,53 +86,75 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 		p.items, p.table, p.insu = true, false, insuState{}
 		g.openOverlay("party")
 	}}
-	row := append(append(acts, belongings), action{"출진 ›", true, g.startSortie})
-	g.actionRow(dst, right, y+h-60, row...)
+	// the tab's actions on the left, apart from 소지품 and 출진 at the right
+	row := []action{belongings, {"출진 ›", true, g.startSortie}}
+	if left := g.actionRow(dst, right, y+h-60, row...); len(acts) > 0 {
+		g.actionRow(dst, left-closeGap, y+h-60, acts...)
+	}
 	if _, ok := g.promoteGuide(); ok && g.overlay() == "" && !guide {
 		g.promoteRim(dst, g.rowActionRect(right, y+h-60, belongings.label, row...))
+	}
+	if g.overlay() == "" && g.deputyInfo.id != "" {
+		g.chipWindow(dst, "sortie:deputy-info", g.deputyInfo, func() { g.deputyInfo = equipChip{} })
 	}
 }
 
 // sortieTabs are the tabs of the picked officer in the sortie preparation: the officers' window's and 부관.
 var sortieTabs = append(append([]string{}, officerTabs...), "부관")
 
-// sortieRow is an officer's row: the state cell (출전, 부관 · whom, 대기), pressed to send out or call back, then the
-// officer as in the officers' list.
+// sortieRow is an officer's row: the state pill (출전, 필수, 부관 over whom, 대기), pressed to send out or call
+// back, then the officer as in the officers' list, the missing gear after the class.
 func (g *Game) sortieRow(dst *ebiten.Image, o core.Observation, rr image.Rectangle, id string) {
 	of := g.officer(o, id)
 	if of == nil {
 		return
 	}
 	picked := id == g.selected
-	rowBack(dst, rr, picked)
+	lead := g.servedBy(o, id)
 	label, body, rim, fg := "대기", color.NRGBA{}, color.NRGBA{R: 90, G: 70, B: 48, A: 255}, faintInk
-	switch lead := g.servedBy(o, id); {
+	switch {
 	case lead != "":
-		label, body, rim, fg = "부관 · "+g.name(lead), pillDep, depRim, depInk
+		label, body, rim, fg = "부관", pillDep, depRim, depInk
 	case slices.Contains(o.Deployment, id):
 		label, body, rim, fg = "출전", pillOut, gold, gold
 		if g.sortieLocked(id) {
-			label = "출전 · 필수"
+			label = "필수"
 		}
 	}
-	pill := image.Rect(rr.Min.X+10, rr.Min.Y+(listRowH-36)/2, rr.Min.X+10+96, rr.Min.Y+(listRowH+36)/2)
-	if body.A > 0 {
-		rect(dst, float32(pill.Min.X), float32(pill.Min.Y), float32(pill.Dx()), float32(pill.Dy()), body)
-	}
-	strokeRect(dst, float32(pill.Min.X)+.5, float32(pill.Min.Y)+.5, float32(pill.Dx()-1), float32(pill.Dy()-1), 1, rim)
-	g.label(dst, ellipsis(g, label, 13, pill.Dx()-8), float64(pill.Min.X)+(float64(pill.Dx())-g.width(ellipsis(g, label, 13, pill.Dx()-8), 13))/2, float64(pill.Min.Y)+(36-13*1.45)/2, 13, fg)
-	g.addButton(image.Rect(rr.Min.X, rr.Min.Y, pill.Max.X+6, rr.Max.Y), label, func() { g.togglePrep(id) })
+	// the officer's lines right of the state pill
+	pill := image.Rect(rr.Min.X+10, rr.Min.Y+(listRowH-40)/2, rr.Min.X+10+sortiePillW, rr.Min.Y+(listRowH+40)/2)
 	row := rr
 	row.Min.X = pill.Max.X - 2
+	g.officerGround(dst, o, rr, id, picked)
 	note, noteC := fmt.Sprintf("특성치 %d", of.Points), muted
 	if g.hasAffordable(*of) {
 		noteC = good
 	}
-	g.officerRow(dst, row, *of, false, note, noteC)
-	if g.servedBy(o, id) == "" { // a deputy wears nothing
-		g.missingGear(dst, of.Class, of.Equipment, float64(row.Min.X+70)+g.width(g.name(id), 16), float64(row.Min.Y+5))
+	classEnd := g.officerLines(dst, o, row, *of, true, note, noteC)
+	if lead == "" { // a deputy wears nothing
+		g.missingGear(dst, of.Class, of.Equipment, classEnd+6, float64(row.Min.Y+28))
 	}
+	if body.A > 0 {
+		rect(dst, float32(pill.Min.X), float32(pill.Min.Y), float32(pill.Dx()), float32(pill.Dy()), body)
+	}
+	strokeRect(dst, float32(pill.Min.X)+.5, float32(pill.Min.Y)+.5, float32(pill.Dx()-1), float32(pill.Dy()-1), 1, rim)
+	cx := float64(pill.Min.X+pill.Max.X) / 2
+	if lead != "" { // 부관 over whom it serves
+		who := ellipsis(g, g.name(lead), 12, pill.Dx()-8)
+		g.label(dst, label, cx-g.width(label, 13)/2, float64(pill.Min.Y+2), 13, fg)
+		g.label(dst, who, cx-g.width(who, 12)/2, float64(pill.Min.Y+21), 12, fg)
+	} else {
+		g.label(dst, label, cx-g.width(label, 13)/2, float64(pill.Min.Y)+(40-13*1.45)/2, 13, fg)
+	}
+	tag := label
+	if lead != "" {
+		tag = "부관 · " + g.name(lead)
+	}
+	g.addButton(image.Rect(rr.Min.X, rr.Min.Y, pill.Max.X+6, rr.Max.Y), tag, func() { g.togglePrep(id) })
 }
+
+// sortiePillW is how wide the state pill of a sortie row is.
+const sortiePillW = 64
 
 // togglePrep sends a waiting officer out or calls one back; the lord and the stage's required officers always go,
 // and a deputy cannot go while serving.
