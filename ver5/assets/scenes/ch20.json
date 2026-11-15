@@ -58,7 +58,7 @@
     "고순": {"At": [10, 6], "Face": "SE", "If": ["party:gaoshun"]},
     "번아": {"At": [10, 5], "Face": "SE"},
     "진도": {"At": [11, 9], "Face": "SE"},
-    "관우": {"At": [17, 5], "Face": "NW", "Off": true, "Sprite": "guanyu_royal_guard", "Mount": "red_hare"},
+    "관우": {"At": [17, 5], "Face": "NW", "Off": true, "Sprite": "guanyu_heavy_cavalry", "Mount": "red_hare"},
     "관평": {"At": [17, 5], "Face": "NW", "Off": true},
     "주창": {"At": [17, 4], "Face": "NW", "Off": true},
     "진진": {"At": [17, 4], "Face": "NW", "Off": true}
