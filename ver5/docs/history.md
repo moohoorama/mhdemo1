@@ -5,6 +5,17 @@
 
 ---
 
+## 2026-11-15 하비 미씨 저택 A안과 미축 자리 적용
+- `docs/plan-xiapi-manor-a.md`: 선택한 A안의 대문·생성 원본·NPC 배치 및 검증 범위 설계 — 새 출입구에 맞춰 사람 자리도 함께 정하려고.
+- `tools/scene_maps/xiapi_town.py`·`assets/graphics/maps/S_xiapi.json`: 대문을 장터 쪽 `(13,34)`로 옮기고 안채·별당·나무·등·깃발과 포석을 A안대로 재배치 — 저택 부지는 유지하며 성벽 사이 골목으로 들어가던 인상을 고치려고. 생성 결과가 선택한 `reports/xiapi-manor-options/a.json`과 같은 구성임을 대조.
+- `assets/scenario/hero/explore18.json`: 미축을 옛 대문 앞 `(7,39)`에서 새 문 옆 `(16,35)`로 이동, 장터 쪽을 보는 `NE` 방향 명시 — 출입구와 연결길을 비워 두면서 저택 앞에서 플레이어를 맞게 하려고. 주변 NPC와 대사는 유지.
+- 검증: 하비 탐험 접근성·NPC/이름표 간격, 건물 출입구 이름표, 장면 렌더 계획 기존 시험 통과. `reports/uidemo/xiapi-manor-a/`의 실제 탐험 데모 1800프레임에서 북문→미축 대화→새 대문 앞 접근 캡처 — 새 문 주변의 통행·인물 가림·마주 보는 방향을 확인하려고. 탐험은 기존 문 경계 규칙을 유지한다.
+
+## 2026-11-15 하비 미씨 저택 재배치 제안
+- `reports/xiapi-manor-options/plan.md`·`render.mjs`·`current.json`·`a.json`·`b.json`·`c.json`: 현행과 장터 쪽 대문·부지 이격과 진입마당·남서 대문과 넓은 앞길의 세 후보, 기존 `_scene` 미리보기와 같은 렌더 계획을 쓰는 재생성 절차 — 남서 모서리의 비좁은 인상을 고칠 안을 게임 맵에 반영하기 전에 실제 그림으로 비교하려고.
+- `reports/xiapi-manor-options/index.html`·`comparison.png`·`current-proposal.png`·`a-proposal.png`·`b-proposal.png`·`c-proposal.png`·`*-map.png`: 기존 건물·담·나무를 같은 시점/배율로 렌더한 자립형 HTML, 접근 방향 표시와 전체/후보별 브라우저 캡처 — 대문 방향·성벽과의 간격·문 앞 여유를 함께 판단하게 하려고. B안 추천은 제안이며 원본 맵·그림·탐험 인물·대사는 수정하지 않음.
+- `reports/xiapi-manor-options/checks.json`: 현행과 세 후보의 장터↔안마당 보행 연결, 건물/담 겹침 0건, 원본 맵 SHA-256 확인 — C안의 담에 닿던 노점을 옮기고 도달 가능한 후보만 제시하려고. 채택 후 탐험 인물의 위치·방향과 카메라는 별도로 맞춘다.
+
 ## 2026-11-15 음악 원본과 음량 정리
 - tools/music/encode.py: ffmpeg 2회 측정으로 −16 LUFS·true peak −1.5 dB 음량 보정 추가 — 곡을 바꿀 때 음량 차이를 줄이려고
 - assets/music/CREDITS.md: 사용 곡·미사용 원본·새 Suno 후보의 출처와 사용 조건, 인코딩 절차 정리 — 원본 보관과 게임 연결 여부를 구분하려고

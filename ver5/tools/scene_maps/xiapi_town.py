@@ -10,7 +10,7 @@ Format 2 (internal/scenemap), the layout of xuzhou_town.py with these changes:
   - the town wall on all four sides: the two back walls as before, the near ones past the playing area
     (v = NEAR_V, u = NEAR_U); what stood beyond them is taken away and the ground there is trodden fields.
   - the 미 house: a white compound wall (cwall) round a hall in the south-west, its open gate (cgate_open) on the
-    near (+v) wall, where the pavilion garden was.
+    market-side (+u) wall, where the pavilion garden was.
   - wattle fences (sfence) between the yards of the south lanes and round the market square's back.
   - the flood's last traces: two houses with the stain still on their walls, rubble by them.
 """
@@ -24,7 +24,7 @@ ID = 'S_xiapi'
 W, H, M = base.W, base.H, base.M
 NEAR_V, NEAR_U = H + 4, W + 4
 MI = (0, 13, 29, 38)     # the 미 house compound: u0, u1, v0, v1 of its wall lines
-MI_GATE = 7
+MI_GATE = (MI[1], 34)
 
 g = [list(r) for r in base.g]
 
@@ -58,15 +58,16 @@ def put(name, u, v, *rest):
 paint(-M, NEAR_V, W + M, H + M, 'd')     # fields outside the near walls
 paint(NEAR_U, -M, W + M, H + M, 'd')
 
-# the 미 house: the hall at the back of a paved court, a side hall, plum trees; the open gate on the near wall
-paint(MI[0] + 1, MI[2] + 1, MI[1] - 1, MI[3] - 1, '.')
-paint(MI[0] + 2, MI[2] + 4, MI[1] - 2, MI[3] - 1, 'i')
-paint(MI_GATE - 2, MI[3], MI_GATE + 1, MI[3] + 2, 'i')
-obj.append(['cgate_open', MI_GATE, MI[3], {'wood': '#6a4a36'}])
-obj.extend([['hall_u', 7, 32, 8, 4], ['hall_v', 3, 35, 8, 4], ['flagstones_0', 7, 35, 8, 4]])
-put('stree_plum_0', 2, 30), put('stree_plum_1', 12, 30), put('stree_pine_1', 12, 36)
-put('lantern', 5, 34), put('lantern', 10, 34), put('grain_sack', 11, 37), put('water_jar', 2, 37)
-put('banner', 4, 40), put('banner', 11, 40)
+# the 미 house: the hall and gate face the market, with a paved approach outside the compound
+paint(MI[0], MI[2], MI[1], MI[3] + 2, '.')
+paint(4, 31, 12, 37, 'i')
+paint(13, 33, 17, 35, 'i')
+paint(15, 30, 17, 37, 'i')
+obj.append(['cgate_open', *MI_GATE, {'wood': '#6a4a36'}])
+obj.extend([['hall_v', 3, 33, 8, 4], ['hall_u', 8, 31, 8, 4], ['flagstones_0', 9, 34, 8, 4]])
+put('stree_plum_0', 2, 30), put('stree_plum_1', 12, 30), put('stree_pine_1', 2, 37)
+put('lantern', 10, 32), put('lantern', 10, 36), put('grain_sack', 11, 37), put('water_jar', 4, 37)
+put('banner', 15, 32), put('banner', 15, 37)
 
 # the flood's last traces: two houses still stained to the waterline, rubble beside them
 for i, o in enumerate(obj):
