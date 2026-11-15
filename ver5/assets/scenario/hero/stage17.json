@@ -85,19 +85,7 @@
    "Group": "front",
    "Policy": "react",
    "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
-  },
-  {
-   "Character": "troop_footman",
-   "X": 13,
-   "Y": 9,
-   "Rank": "rabble",
-   "Group": "front",
-   "Policy": "react",
-   "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
+   "Faction": "yuan"
   },
   {
    "Character": "troop_archer",
@@ -107,19 +95,7 @@
    "Group": "front",
    "Policy": "react",
    "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
-  },
-  {
-   "Character": "troop_footman",
-   "X": 12,
-   "Y": 9,
-   "Rank": "rabble",
-   "Group": "front",
-   "Policy": "react",
-   "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
+   "Faction": "yuan"
   },
   {
    "Character": "troop_archer",
@@ -129,25 +105,13 @@
    "Group": "front",
    "Policy": "react",
    "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
-  },
-  {
-   "Character": "troop_footman",
-   "X": 11,
-   "Y": 9,
-   "Rank": "rabble",
-   "Group": "front",
-   "Policy": "react",
-   "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
+   "Faction": "yuan"
   },
   {
    "Character": "jiling",
    "X": 16,
    "Y": 10,
-   "Rank": "commander",
+   "Rank": "officer",
    "Shift": -0.07,
    "Group": "ji",
    "Policy": "hold",
@@ -167,19 +131,7 @@
    "Group": "ji",
    "Policy": "hold",
    "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
-  },
-  {
-   "Character": "troop_footman",
-   "X": 17,
-   "Y": 11,
-   "Rank": "rabble",
-   "Group": "ji",
-   "Policy": "hold",
-   "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
+   "Faction": "yuan"
   },
   {
    "Character": "troop_footman",
@@ -189,19 +141,7 @@
    "Group": "ji",
    "Policy": "hold",
    "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
-  },
-  {
-   "Character": "troop_archer",
-   "X": 17,
-   "Y": 9,
-   "Rank": "rabble",
-   "Group": "ji",
-   "Policy": "hold",
-   "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
+   "Faction": "yuan"
   },
   {
    "Character": "troop_footman",
@@ -211,19 +151,7 @@
    "Group": "ji",
    "Policy": "hold",
    "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
-  },
-  {
-   "Character": "troop_archer",
-   "X": 15,
-   "Y": 11,
-   "Rank": "rabble",
-   "Group": "ji",
-   "Policy": "hold",
-   "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
+   "Faction": "yuan"
   },
   {
    "Character": "troop_footman",
@@ -233,19 +161,7 @@
    "Group": "rear",
    "Policy": "hold",
    "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
-  },
-  {
-   "Character": "troop_archer",
-   "X": 20,
-   "Y": 12,
-   "Rank": "rabble",
-   "Group": "rear",
-   "Policy": "hold",
-   "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
+   "Faction": "yuan"
   },
   {
    "Character": "troop_footman",
@@ -255,19 +171,7 @@
    "Group": "rear",
    "Policy": "hold",
    "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
-  },
-  {
-   "Character": "troop_footman",
-   "X": 20,
-   "Y": 13,
-   "Rank": "rabble",
-   "Group": "rear",
-   "Policy": "hold",
-   "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
+   "Faction": "yuan"
   },
   {
    "Character": "troop_archer",
@@ -277,19 +181,7 @@
    "Group": "rear",
    "Policy": "hold",
    "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
-  },
-  {
-   "Character": "troop_footman",
-   "X": 19,
-   "Y": 13,
-   "Rank": "rabble",
-   "Group": "rear",
-   "Policy": "hold",
-   "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
+   "Faction": "yuan"
   },
   {
    "Character": "troop_cavalry",
@@ -299,19 +191,7 @@
    "Group": "rear",
    "Policy": "hold",
    "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
-  },
-  {
-   "Character": "troop_footman",
-   "X": 20,
-   "Y": 14,
-   "Rank": "rabble",
-   "Group": "rear",
-   "Policy": "hold",
-   "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
+   "Faction": "yuan"
   },
   {
    "Character": "yuanshu",
@@ -331,19 +211,7 @@
    "Group": "guard",
    "Policy": "hold",
    "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
-  },
-  {
-   "Character": "troop_footman",
-   "X": 23,
-   "Y": 14,
-   "Rank": "rabble",
-   "Group": "guard",
-   "Policy": "hold",
-   "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
+   "Faction": "yuan"
   },
   {
    "Character": "troop_archer",
@@ -353,19 +221,7 @@
    "Group": "guard",
    "Policy": "hold",
    "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
-  },
-  {
-   "Character": "troop_footman",
-   "X": 23,
-   "Y": 16,
-   "Rank": "rabble",
-   "Group": "guard",
-   "Policy": "hold",
-   "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
+   "Faction": "yuan"
   },
   {
    "Character": "troop_footman",
@@ -375,19 +231,7 @@
    "Group": "guard",
    "Policy": "hold",
    "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
-  },
-  {
-   "Character": "troop_archer",
-   "X": 21,
-   "Y": 15,
-   "Rank": "rabble",
-   "Group": "guard",
-   "Policy": "hold",
-   "Facing": "NW",
-   "Faction": "yuan",
-   "Shift": -0.2
+   "Faction": "yuan"
   }
  ],
  "Reward": {
@@ -448,7 +292,8 @@
        "Group": "bandit",
        "Policy": "hold",
        "Side": "enemy",
-       "Faction": "yuan"
+       "Faction": "yuan",
+       "Shift": -0.07
       },
       {
        "Character": "chenlan",
@@ -459,7 +304,8 @@
        "Group": "bandit",
        "Policy": "hold",
        "Side": "enemy",
-       "Faction": "yuan"
+       "Faction": "yuan",
+       "Shift": -0.07
       },
       {
        "Character": "troop_bandit",
@@ -470,20 +316,7 @@
        "Group": "bandit",
        "Policy": "hold",
        "Side": "enemy",
-       "Faction": "yuan",
-       "Shift": -0.2
-      },
-      {
-       "Character": "troop_bandit",
-       "X": 0,
-       "Y": 17,
-       "Facing": "NE",
-       "Rank": "rabble",
-       "Group": "bandit",
-       "Policy": "hold",
-       "Side": "enemy",
-       "Faction": "yuan",
-       "Shift": -0.2
+       "Faction": "yuan"
       },
       {
        "Character": "troop_bandit",
@@ -494,20 +327,7 @@
        "Group": "bandit",
        "Policy": "hold",
        "Side": "enemy",
-       "Faction": "yuan",
-       "Shift": -0.2
-      },
-      {
-       "Character": "troop_bandit",
-       "X": 3,
-       "Y": 17,
-       "Facing": "NE",
-       "Rank": "rabble",
-       "Group": "bandit",
-       "Policy": "hold",
-       "Side": "enemy",
-       "Faction": "yuan",
-       "Shift": -0.2
+       "Faction": "yuan"
       },
       {
        "Character": "troop_bandit",
@@ -518,20 +338,7 @@
        "Group": "bandit",
        "Policy": "hold",
        "Side": "enemy",
-       "Faction": "yuan",
-       "Shift": -0.2
-      },
-      {
-       "Character": "troop_bandit",
-       "X": 3,
-       "Y": 16,
-       "Facing": "NE",
-       "Rank": "rabble",
-       "Group": "bandit",
-       "Policy": "hold",
-       "Side": "enemy",
-       "Faction": "yuan",
-       "Shift": -0.2
+       "Faction": "yuan"
       }
      ]
     },

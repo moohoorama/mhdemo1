@@ -1,5 +1,6 @@
 # map17 광릉 전투 (24x18). Screen north = (0,0). 원술's column marches the road from his wagon camp at the
-# south-east edge (23,15) north-west toward 원소; 유비 waits west of the stream (bridge 10,8, fords 10,3 and 10~12,10~11).
+# south-east edge (23,15) north-west toward 원소; 유비 waits west of the stream (bridge 10,8, fords 10,3 and 11,10); the stream bends at 11~12,11 and runs south to the edge
+# along x 12 with one more ford at 12,13.
 # A fenced village at the west corner (1,14) burnt by 뇌박·진란's men; a village south of the road (14,12); hills north.
 n-- n-- n-- u-- u-- g-- gt- gt- g-- w-- g-- g-- g-- g-- g-- u-- u-- g-- g-- g-- gt- gt- g-- g--
 n-- n-- u-- g-- g-- gt- g-- g-- g-- w-- g-- g-- g-- g-- g-- g-- u-- u-- g-- g-- gt- g-- g-- g--
@@ -11,11 +12,11 @@ g-- g-- l-- l-- l-- l-- g-- g-- g-- g-- w-- g-- g-- g-- g-- gt- gt- g-- g-- g-- 
 g-- g-- g-- g-- g-- l-- l-- l-- g-- g-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
 g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- wb- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
 g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- w-- g-- l-- l-- l-- l-- g-- g-- gt- gt- g-- g-- g-- g--
-g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- s-- s-- s-- g-- g-- l-- l-- l-- l-- g-- gt- g-- g-- g--
-g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- g-- g-- g-- g-- g-- l-- l-- l-- g-- g-- g--
-g-- gz- gz- gz- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gv- g-- g-- g-- g-- g-- l-- l-- g-- g--
-gz- g-- g-- gz- g-- gt- g-- g-- g-- g-- g-- g-- g-- d-- d-- g-- g-- gt- gt- g-- g-- l-- l-- g--
-gz- gvs g-s gz- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- gt- gt- g-- g-- l-- l--
-g-- gz- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- u-- u-- g-- g-- g-- g-- g-- g-- g-- d-- dk-
-g-- g-- g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- u-- u-- g-- g-- g-- g-- gt- g-- g-- d-- d--
-g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d--
+g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- w-- s-- g-- g-- g-- l-- l-- l-- l-- g-- gt- g-- g-- g--
+g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- g-- g-- g-- g-- g-- l-- l-- l-- g-- g-- g--
+g-- gz- gz- gz- g-- g-- g-- g-- g-- g-- g-- g-- w-- g-- gv- g-- g-- g-- g-- g-- l-- l-- g-- g--
+gz- g-- g-- gz- g-- gt- g-- g-- g-- g-- g-- g-- s-- d-- d-- g-- g-- gt- gt- g-- g-- l-- l-- g--
+gz- gvs g-s gz- g-- g-- gt- g-- g-- g-- g-- g-- w-- g-- d-- g-- g-- g-- gt- gt- g-- g-- l-- l--
+g-- gz- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- u-- u-- g-- g-- g-- g-- g-- g-- g-- d-- dk-
+g-- g-- g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- w-- u-- u-- g-- g-- g-- g-- gt- g-- g-- d-- d--
+g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d--

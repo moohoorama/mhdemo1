@@ -8,15 +8,15 @@ MMM n .....................~~~~~~.....................TRE...............
 ......''''''''''''............~~~............TRETRE.....................
 ............pl8pl5'''pl2......~~~......ar1..............................
 ............pl6pl3pl1'''''''''BRG'''fo1...ar2...........................
-.........TRE...pl7pl4.........~~~fo4fo3fo2'''fo5...ar3TRETRE............
-.........TRETRE...............;;;;;;;;;......'''Jilfo8'''...TRE.........
-......TRE........................;;;;;;......ar4fo7fo6'''fo9'''.........
-...FNCFNCFNC..............................VIL...............ar5f10......
-FNC......FNC...TRE.....................,,,,,,......TRETREf12f11ar6ca1...
-FNCvil...FNC......TRE.....................,,,.........TRETREf13...f14f15
-...FNC................................. n  n ..................ar8ar7YSh
-..................TRETRE............... n  n ............TRE......f17f16
-.....................TRE.............................................,,,
+.........TRE...pl7pl4.........~~~...'''''''''fo2......TRETRE............
+.........TRETRE...............~~~;;;.........'''Jilfo4'''...TRE.........
+......TRE........................~~~~~~.........fo3...'''fo5'''.........
+...FNCFNCFNC........................~~~...VIL...............'''fo6......
+FNC......FNC...TRE..................;;;,,,,,,......TRETRE......ar3ca1...
+FNCvil...FNC......TRE...............~~~...,,,.........TRETRE......fo7'''
+...FNC..............................~~~ n  n .....................ar4YSh
+..................TRETRE............~~~ n  n ............TRE......fo8,,,
+.....................TRE............~~~..............................,,,
 
 pl1 Allies[0]  player
 pl2 Allies[1]  player
@@ -26,33 +26,18 @@ pl5 Allies[4]  player
 pl6 Allies[5]  player
 pl7 Allies[6]  player
 pl8 Allies[7]  player
-fo1 Enemies[0]  troop_footman, enemy, group front, policy assault, rank rabble, faction yuan
-fo2 Enemies[1]  troop_footman, enemy, group front, policy assault, rank rabble, faction yuan
-ar1 Enemies[2]  troop_archer, enemy, group front, policy assault, rank rabble, faction yuan
-fo3 Enemies[3]  troop_footman, enemy, group front, policy assault, rank rabble, faction yuan
-ar2 Enemies[4]  troop_archer, enemy, group front, policy assault, rank rabble, faction yuan
-fo4 Enemies[5]  troop_footman, enemy, group front, policy assault, rank rabble, faction yuan
-Jil Enemies[6]  jiling, enemy, group ji, policy react, rank commander, faction yuan
-fo5 Enemies[7]  troop_footman, enemy, group ji, policy hold, rank rabble, faction yuan
-fo6 Enemies[8]  troop_footman, enemy, group ji, policy hold, rank rabble, faction yuan
-fo7 Enemies[9]  troop_footman, enemy, group ji, policy hold, rank rabble, faction yuan
-ar3 Enemies[10]  troop_archer, enemy, group ji, policy hold, rank rabble, faction yuan
-fo8 Enemies[11]  troop_footman, enemy, group ji, policy hold, rank rabble, faction yuan
-ar4 Enemies[12]  troop_archer, enemy, group ji, policy hold, rank rabble, faction yuan
-fo9 Enemies[13]  troop_footman, enemy, group rear, policy react, rank rabble, faction yuan
-ar5 Enemies[14]  troop_archer, enemy, group rear, policy react, rank rabble, faction yuan
-f10 Enemies[15]  troop_footman, enemy, group rear, policy react, rank rabble, faction yuan
-f11 Enemies[16]  troop_footman, enemy, group rear, policy react, rank rabble, faction yuan
-ar6 Enemies[17]  troop_archer, enemy, group rear, policy react, rank rabble, faction yuan
-f12 Enemies[18]  troop_footman, enemy, group rear, policy react, rank rabble, faction yuan
-ca1 Enemies[19]  troop_cavalry, enemy, group rear, policy react, rank rabble, faction yuan
-f13 Enemies[20]  troop_footman, enemy, group rear, policy react, rank rabble, faction yuan
-YSh Enemies[21]  yuanshu, enemy, group yuan, policy hold, rank commander, faction yuan
-f14 Enemies[22]  troop_footman, enemy, group guard, policy react, rank rabble, faction yuan
-f15 Enemies[23]  troop_footman, enemy, group guard, policy react, rank rabble, faction yuan
-ar7 Enemies[24]  troop_archer, enemy, group guard, policy react, rank rabble, faction yuan
-f16 Enemies[25]  troop_footman, enemy, group guard, policy react, rank rabble, faction yuan
-f17 Enemies[26]  troop_footman, enemy, group guard, policy react, rank rabble, faction yuan
-ar8 Enemies[27]  troop_archer, enemy, group guard, policy react, rank rabble, faction yuan
-
-# area 1 남서쪽 끝: x 0..23, y 17..17
+fo1 Enemies[0]  troop_footman, enemy, group front, policy react, rank rabble, faction yuan
+ar1 Enemies[1]  troop_archer, enemy, group front, policy react, rank rabble, faction yuan
+ar2 Enemies[2]  troop_archer, enemy, group front, policy react, rank rabble, faction yuan
+Jil Enemies[3]  jiling, enemy, group ji, policy hold, rank officer, faction yuan
+fo2 Enemies[4]  troop_footman, enemy, group ji, policy hold, rank rabble, faction yuan
+fo3 Enemies[5]  troop_footman, enemy, group ji, policy hold, rank rabble, faction yuan
+fo4 Enemies[6]  troop_footman, enemy, group ji, policy hold, rank rabble, faction yuan
+fo5 Enemies[7]  troop_footman, enemy, group rear, policy hold, rank rabble, faction yuan
+fo6 Enemies[8]  troop_footman, enemy, group rear, policy hold, rank rabble, faction yuan
+ar3 Enemies[9]  troop_archer, enemy, group rear, policy hold, rank rabble, faction yuan
+ca1 Enemies[10]  troop_cavalry, enemy, group rear, policy hold, rank rabble, faction yuan
+YSh Enemies[11]  yuanshu, enemy, group yuan, policy hold, rank commander, faction yuan
+fo7 Enemies[12]  troop_footman, enemy, group guard, policy hold, rank rabble, faction yuan
+ar4 Enemies[13]  troop_archer, enemy, group guard, policy hold, rank rabble, faction yuan
+fo8 Enemies[14]  troop_footman, enemy, group guard, policy hold, rank rabble, faction yuan
