@@ -9,6 +9,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/content"
 	"srpg/internal/core"
+	"srpg/internal/session"
 )
 
 // busy is true while something plays that the next command must wait for, the turn
@@ -103,7 +104,7 @@ func (g *Game) ensureField(o core.Observation) {
 	}
 	g.field = NewField(g.assets, g.mapArt(o.Map.ID))
 	g.vis, g.scene = map[string]*unitVis{}, nil
-	g.setZoomImmediate(battleZoom)
+	g.setZoomImmediate(g.savedZoom(false, battleZoom))
 	g.pan = nil
 	size := g.field.Size()
 	g.camX, g.camY = float64(size.X)/2, float64(size.Y)/2
@@ -204,6 +205,43 @@ func nearestZoom(steps []float64, z float64) float64 {
 	return best
 }
 
+// walkView is whether the field is a walk or a story scene rather than a battle, for the zoom the player keeps.
+func (g *Game) walkView() bool { return g.scene != nil || g.exploring() }
+
+// savedZoom is the zoom the player last chose on the walk and in scenes (walk) or on a battle map, or
+// fallback when none was chosen.
+func (g *Game) savedZoom(walk bool, fallback float64) float64 {
+	if g.S == nil {
+		return fallback
+	}
+	z := g.S.Settings.BattleZoom
+	if walk {
+		z = g.S.Settings.ExploreZoom
+	}
+	if z <= 0 {
+		return fallback
+	}
+	return float64(z)
+}
+
+// rememberZoom saves z, the zoom the player settled on, as the walk's or the battle's.
+func (g *Game) rememberZoom(z float64) {
+	if g.S == nil {
+		return
+	}
+	n := max(1, min(4, int(math.Round(z))))
+	v := g.S.Settings
+	p := &v.BattleZoom
+	if g.walkView() {
+		p = &v.ExploreZoom
+	}
+	if *p == n {
+		return
+	}
+	*p = n
+	g.request(session.Request{Op: "settings", Settings: &v})
+}
+
 func (g *Game) setZoom(target float64) {
 	if target == g.zoom {
 		return
@@ -292,7 +330,9 @@ func (g *Game) camera() {
 				i = j
 			}
 		}
-		g.setZoom(steps[max(0, min(len(steps)-1, i+int(math.Copysign(1, wheel))))])
+		z := steps[max(0, min(len(steps)-1, i+int(math.Copysign(1, wheel))))]
+		g.setZoom(z)
+		g.rememberZoom(z)
 	}
 	g.camX, g.camY = g.clampCam(g.camX, g.camY)
 }

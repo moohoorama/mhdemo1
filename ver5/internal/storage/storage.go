@@ -44,6 +44,8 @@ type Settings struct {
 	NoGoalGuide bool   `json:"no_goal_guide,omitempty"` // the battle does not outline what it is won and lost by
 	Sound       string `json:"sound,omitempty"`         // the GUI's sound: "" all, "sfx" effects only, "music" music only, "off"
 	Speed       int    `json:"speed,omitempty"`         // the GUI's replay speed (×1, 2, 4, 8); 0 is ×1
+	ExploreZoom int    `json:"explore_zoom,omitempty"`  // the zoom the player last chose on the walk and in story scenes; 0 is the area's own
+	BattleZoom  int    `json:"battle_zoom,omitempty"`   // the zoom the player last chose on a battle map; 0 is the default
 }
 
 // ScalePcts are the percents the player may choose for the damage and experience scales.
@@ -70,7 +72,7 @@ func (s Settings) XPScale() int {
 
 func DefaultSettings() Settings { return Settings{Replay: "spells", Detail: true} }
 func (s Settings) Validate() error {
-	if !slices.Contains([]string{"together", "spells", "one"}, s.Replay) || s.TextDelayMS < 0 || s.TextDelayMS > 1000 || s.UIScale != 0 && (s.UIScale < 80 || s.UIScale > 160) || s.DamagePct != 0 && !slices.Contains(ScalePcts, s.DamagePct) || s.XPPct != 0 && !slices.Contains(ScalePcts, s.XPPct) || !slices.Contains([]string{"", "sfx", "music", "off"}, s.Sound) {
+	if !slices.Contains([]string{"together", "spells", "one"}, s.Replay) || s.TextDelayMS < 0 || s.TextDelayMS > 1000 || s.UIScale != 0 && (s.UIScale < 80 || s.UIScale > 160) || s.DamagePct != 0 && !slices.Contains(ScalePcts, s.DamagePct) || s.XPPct != 0 && !slices.Contains(ScalePcts, s.XPPct) || !slices.Contains([]string{"", "sfx", "music", "off"}, s.Sound) || s.ExploreZoom < 0 || s.ExploreZoom > 4 || s.BattleZoom < 0 || s.BattleZoom > 4 {
 		return fmt.Errorf("InvalidSettings")
 	}
 	return nil

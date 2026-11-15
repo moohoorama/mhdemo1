@@ -80,7 +80,9 @@ func (g *Game) updatePointer() {
 	if !pointer.multi {
 		if g.pinched {
 			g.pinched = false
-			g.setZoom(nearestZoom(g.zoomSteps(), g.zoom)) // a pinch settles on the nearest of the battle's zooms
+			z := nearestZoom(g.zoomSteps(), g.zoom) // a pinch settles on the nearest of the battle's zooms
+			g.setZoom(z)
+			g.rememberZoom(z)
 		}
 		return
 	}

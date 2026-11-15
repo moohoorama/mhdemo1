@@ -115,7 +115,7 @@ func (g *Game) layOutExplore(o core.Observation) {
 	if a.Zoom >= 1 {
 		zoom = math.Round(a.Zoom)
 	}
-	g.setZoomImmediate(zoom)
+	g.setZoomImmediate(g.savedZoom(true, zoom))
 	s := g.scene
 	hero := s.actors[w.hero]
 	if left != nil && !left.gone && (left.u != hero.u || left.v != hero.v) { // he stays where the event walked him

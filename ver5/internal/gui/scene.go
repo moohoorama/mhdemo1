@@ -169,7 +169,7 @@ func (g *Game) openScene(def *scenes.Scene) {
 			g.startStep(st)
 		}
 	}
-	g.setZoomImmediate(2)
+	g.setZoomImmediate(g.savedZoom(true, 2))
 	g.camX, g.camY = g.sceneCam()
 }
 
