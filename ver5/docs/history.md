@@ -5,6 +5,11 @@
 
 ---
 
+## 2026-11-15 음악 원본과 음량 정리
+- tools/music/encode.py: ffmpeg 2회 측정으로 −16 LUFS·true peak −1.5 dB 음량 보정 추가 — 곡을 바꿀 때 음량 차이를 줄이려고
+- assets/music/CREDITS.md: 사용 곡·미사용 원본·새 Suno 후보의 출처와 사용 조건, 인코딩 절차 정리 — 원본 보관과 게임 연결 여부를 구분하려고
+- tools/music/sources/suno-story.m4a·suno-journey.m4a·suno-farewell.m4a·suno-defeat.m4a·suno-intrigue.m4a·suno-boss-battle.m4a·suno-last-stand.m4a: 아직 게임에 연결하지 않은 음악 원본 7곡 보관 — 후속 선곡과 변환에 사용할 마스터를 남기려고
+
 ## 2026-11-15 서황 초상 도끼 수정
 - tools/illustrations/portraits/xuhuang.png·assets/graphics/portraits/xuhuang.png: 서황의 무기를 옆으로 날이 달린 큰 도끼로 교체 — 낫·언월도처럼 보이던 모양을 바로잡으려고
 - tools/illustrations/portraits/candidates/xuhuang-axefix-edit.png·xuhuang-axefix-new.png·sheets/prompts.md: 채택한 수정안과 새 그림 후보, 실제 프롬프트 보관 — 선택한 그림의 출처와 다음 도끼 묘사 기준을 남기려고
