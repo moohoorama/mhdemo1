@@ -5,6 +5,10 @@
 
 ---
 
+## 2026-11-15 서황 초상 도끼 수정
+- tools/illustrations/portraits/xuhuang.png·assets/graphics/portraits/xuhuang.png: 서황의 무기를 옆으로 날이 달린 큰 도끼로 교체 — 낫·언월도처럼 보이던 모양을 바로잡으려고
+- tools/illustrations/portraits/candidates/xuhuang-axefix-edit.png·xuhuang-axefix-new.png·sheets/prompts.md: 채택한 수정안과 새 그림 후보, 실제 프롬프트 보관 — 선택한 그림의 출처와 다음 도끼 묘사 기준을 남기려고
+
 ## 2026-11-15 UI 데모 실행 시간 확인
 - cmd/_uidemo-vm/main.go: `-timing`으로 게스트 빌드·연결·프레임 재생·PNG 저장 시점 출력 — 캡처 실행에서 시간이 걸리는 단계를 확인하려고
 
