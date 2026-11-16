@@ -76,7 +76,12 @@ const closeGap = 24
 // closeRow is a window's bottom row ending at right, y: 닫기 always at the far right, and left of it, a little
 // apart, the window's actions, the main one nearest 닫기. It gives the row's left edge.
 func (g *Game) closeRow(dst *ebiten.Image, right, y int, close func(), acts ...action) int {
-	g.mBtn(dst, image.Rect(right-96, y, right, y+touchH), "닫기", false, close)
+	return g.endRow(dst, right, y, "닫기", close, acts...)
+}
+
+// endRow is closeRow with another word than 닫기 at the far right, 취소 where 닫기 could be read as going ahead.
+func (g *Game) endRow(dst *ebiten.Image, right, y int, end string, close func(), acts ...action) int {
+	g.mBtn(dst, image.Rect(right-96, y, right, y+touchH), end, false, close)
 	if len(acts) == 0 {
 		return right - 96
 	}

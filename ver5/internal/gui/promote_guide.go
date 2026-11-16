@@ -8,7 +8,7 @@ import (
 
 // The promotion guide leads the eye in orange, as the gear guide does in green, to a seal an officer can take now:
 // 관리 (or the sortie preparation's 소지품), the 소지품 view, the 소모품 filter, the seal's row, 승급하기, then in the
-// picker the officers it can promote and 승급하기 again. It shows wherever a seal can be used (the walk and a
+// picker the officers it can promote, 미리 보기 and the preview's 승급하기. It shows wherever a seal can be used (the walk and a
 // battle's sortie preparation) for as long as one can, and the 길 안내 setting hides it.
 
 // promoteGuide is the seal the guide leads to, lowest tier first; ok is false when none can be used now.

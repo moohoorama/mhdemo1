@@ -137,7 +137,7 @@ func TestInsuOffersEachClassAndThePickDecides(t *testing.T) {
 	acts := g.insuActs()
 	require.Len(t, acts, 1)
 	acts[0].click()
-	branches := g.party.insu.branch
+	branches := g.party.insu.preview
 	require.Len(t, branches, 2)
 	for _, b := range branches {
 		assert.Equal(t, "light_cavalry", b.from)

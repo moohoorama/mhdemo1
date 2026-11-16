@@ -3,6 +3,7 @@ package gui
 import (
 	"fmt"
 	"image"
+	"slices"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -12,8 +13,9 @@ import (
 
 // An 인수 is used outside a battle from the belongings (관리 · 소지품 · 소모품, also opened from the sortie
 // preparation): a seal someone can take now, picked, lights 승급하기 left of 닫기, which opens the picker, a table of the officers (이름 · 병종 · 레벨) where only
-// those it can promote are lit; 승급하기 promotes the one picked, through the class cards when the seal leads to
-// more than one class, and the promotion window follows (core promoteAway). In battle the seal is refused.
+// those it can promote are lit; 미리 보기 shows the promotion window of the one picked, a tab for each class when the
+// seal leads to more than one, with the traits the new class teaches, and its 승급하기 promotes him (core
+// promoteAway). In battle the seal is refused.
 
 // insuWhere tells where a seal is used: off the field, where the promoted officer can change weapons.
 const insuWhere = "인수는 탐험과 출전 준비의 소지품에서 쓸 수 있습니다"
@@ -21,12 +23,13 @@ const insuWhere = "인수는 탐험과 출전 준비의 소지품에서 쓸 수 
 // insuInBattle is the note on a seal in the battle's item list, where it is greyed out.
 const insuInBattle = "전투 중에는 쓸 수 없습니다. 탐험이나 출전 준비에서 소지품을 열어 쓰십시오."
 
-// insuState is the seal picker of the party window: the seal, the officer picked and, while the class is chosen,
-// the cards of the classes.
+// insuState is the seal picker of the party window: the seal, the officer picked, the
+// promotions it would make looked at before one is made, and the one shown.
 type insuState struct {
 	item, pick string
 	list       tableList
-	branch     []promotionUp
+	preview    []promotionUp
+	at         int
 }
 
 // insuClasses are the classes the seal would make the officer now, or nothing.
@@ -57,7 +60,7 @@ func (g *Game) openInsu(item string) {
 }
 
 // insuPicker is the party window's 소지품 while a seal is being used: the officers in a table on the left, the seal and
-// the officer picked with the classes ahead on the right, and 승급하기 left of 닫기, which goes back to the belongings.
+// the officer picked with the classes ahead on the right, and 미리 보기 left of 닫기, which goes back to the belongings.
 func (g *Game) insuPicker(dst *ebiten.Image, o core.Observation, x, y, w, h int) {
 	s := &g.party.insu
 	it := g.S.Data.Items[s.item]
@@ -129,48 +132,65 @@ func (g *Game) insuPicker(dst *ebiten.Image, o core.Observation, x, y, w, h int)
 	}
 }
 
-// insuActs is the picker's 승급하기: straight into the one class there is, through the class cards otherwise.
+// insuActs is the picker's 미리 보기: the promotion window, with a tab for each class when the seal leads to several.
 func (g *Game) insuActs() []action {
 	s := &g.party.insu
 	classes := g.insuClasses(s.item, s.pick)
 	if len(classes) == 0 {
-		return []action{{"승급하기", true, nil}}
+		return []action{{insuPreviewLabel, true, nil}}
 	}
 	cmds := make([]core.Command, len(classes))
 	for i, c := range classes {
 		cmds[i] = core.Command{Kind: "item", Actor: s.pick, Target: s.pick, Item: s.item, Option: c}
 	}
-	return []action{{"승급하기", true, func() {
-		if len(cmds) == 1 {
-			g.useInsu(cmds[0])
-			return
-		}
-		s.branch = g.branches(cmds)
-	}}}
+	return []action{{insuPreviewLabel, true, func() { s.preview, s.at = g.branches(cmds), 0 }}}
 }
 
-// useInsu sends the seal's command and goes back to the belongings, where the promotion window opens.
+const insuPreviewLabel = "미리 보기"
+
+// useInsu sends the seal's command and goes back to the belongings; the promotion was seen in its preview, so
+// its window does not open again.
 func (g *Game) useInsu(c core.Command) {
 	g.party.insu = insuState{}
 	g.party.item = c.Item
 	g.sfx("ok")
 	g.command(c)
+	g.modals = slices.DeleteFunc(g.modals, func(m *modal) bool { return m.kind == "promotion" })
 }
 
-// drawInsuBranches lays the class cards of the seal over the party window; outside them steps back to the table.
-func (g *Game) drawInsuBranches(dst *ebiten.Image) {
+// drawInsuPreview lays the promotion window of the seal over the party window, before anything is spent: the
+// classes it leads to as tabs over the one shown, 승급하기 making that one, 취소 or outside stepping back to the table.
+func (g *Game) drawInsuPreview(dst *ebiten.Image) {
 	s := &g.party.insu
-	g.addButton(image.Rect(0, 0, uiW, uiH), "", func() { s.branch = nil })
-	const cardW, gap = 300, 24
-	n := len(s.branch)
-	w := n*cardW + (n-1)*gap + 64
-	g.popup(dst, "overlay:insu-branch", 120, w, 690, image.Rect(0, 120, w, 690), func(dst *ebiten.Image) {
-		g.branchCards(dst, s.branch, g.useInsu)
+	back := func() { s.preview = nil }
+	g.addButton(image.Rect(0, 0, uiW, uiH), "", back)
+	p := s.preview[s.at]
+	head := 0
+	if len(s.preview) > 1 {
+		head = promotionTabsH
+	}
+	r := g.promotionBox(p, uiW, head)
+	g.popup(dst, "overlay:insu-preview", 120, uiW, uiH, r.Inset(-24), func(dst *ebiten.Image) {
+		g.titled(dst, r, "승급")
+		if head > 0 {
+			labels := make([]string, len(s.preview))
+			for i, b := range s.preview {
+				labels[i] = g.className(b.to)
+			}
+			g.tabRow(dst, r.Min.X+40, r.Min.Y+28, labels, s.at, func(i int) { s.at = i; g.sfx("ok") })
+			rect(dst, float32(r.Min.X+40), float32(r.Min.Y+28+touchH), float32(r.Dx()-80), 1, goldDim)
+		}
+		g.promotionBody(dst, p, 1, r, float64(r.Min.Y+head))
+		act := action{"승급하기", true, func() { g.useInsu(p.cmd) }}
+		g.endRow(dst, r.Max.X-16, r.Max.Y-touchH-12, "취소", back, act)
+		if seal, ok := g.promoteGuide(); ok && seal == p.cmd.Item {
+			g.promoteRim(dst, g.actionRect(r.Max.X-16, r.Max.Y-touchH-12, act.label, act))
+		}
 	})
 }
 
-// promotionOverWindow reports whether a seal used from the belongings has its promotion window waiting: it shows
-// over the party window, which stays open beneath it.
-func (g *Game) promotionOverWindow() bool {
-	return g.overlay() == "party" && len(g.modals) > 0 && g.modals[0].kind == "promotion"
+// traitOverWindow reports whether a trait opened from the seal's preview is showing over the party window, which
+// stays open beneath it.
+func (g *Game) traitOverWindow() bool {
+	return g.overlay() == "party" && len(g.modals) > 0 && g.modals[0].kind == "trait"
 }

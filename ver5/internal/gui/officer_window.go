@@ -63,7 +63,7 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 			acts := g.insuActs()
 			g.closeRow(dst, x+w-16, y+h-60, func() { p.insu = insuState{} }, acts...)
 			if promote && p.insu.item == seal && p.insu.pick != "" {
-				g.promoteRim(dst, g.actionRect(x+w-16, y+h-60, "승급하기", acts...))
+				g.promoteRim(dst, g.actionRect(x+w-16, y+h-60, insuPreviewLabel, acts...))
 			}
 			return
 		}

@@ -55,8 +55,9 @@ func (g *Game) pressLabel(label string) {
 // takes into more than one class (else the lord alone) are raised to the promotion level and the party carries two of
 // every seal; the promotion guide rims 관리 in orange (before 60), the belongings show with only what can be used lit
 // (60), 소모품 (80), the seal picked (100) and its 승급하기 pressed opens the officer table (115), that officer is
-// picked (130), 승급하기 brings the class cards when there are several (160) and the first one promotes him, the
-// promotion window over the belongings (200).
+// picked (130), 미리 보기 brings the promotion window with a tab for each class and the traits the class teaches
+// (160), the second tab when there are several (190), whose first trait shows its description (220), and 승급하기
+// promotes him back on the belongings (260).
 func demoInsu(d *Demo) error {
 	data := d.g.S.Data
 	node := d.node
@@ -123,9 +124,21 @@ func demoInsu(d *Demo) error {
 					a.click()
 				}
 			}
-		case 200:
-			if b := g.party.insu.branch; len(b) > 0 {
-				g.useInsu(b[0].cmd)
+		case 190:
+			if len(g.party.insu.preview) > 1 {
+				g.party.insu.at = 1
+			}
+		case 220:
+			if s := g.party.insu; len(s.preview) > 0 {
+				if pool := data.Classes[s.preview[s.at].to].Pool; len(pool) > 0 {
+					g.modals = append([]*modal{{kind: "trait", trait: pool[0]}}, g.modals...)
+				}
+			}
+		case 240:
+			g.closeModal()
+		case 260:
+			if s := g.party.insu; len(s.preview) > 0 {
+				g.useInsu(s.preview[s.at].cmd)
 			}
 		}
 	}

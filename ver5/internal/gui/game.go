@@ -867,8 +867,10 @@ func (g *Game) keys() {
 			g.equip.info = equipChip{}
 		case g.overlay() == "shop" && g.shopView.info.id != "":
 			g.shopView.info = equipChip{}
-		case g.promotionOverWindow():
+		case g.traitOverWindow():
 			g.closeModal()
+		case g.overlay() == "party" && len(g.party.insu.preview) > 0:
+			g.party.insu.preview = nil
 		case g.overlay() != "":
 			g.closeOverlay()
 		case len(g.modals) > 0:
@@ -1049,7 +1051,7 @@ func (g *Game) drawScreen(dst *ebiten.Image) {
 
 	if g.overlay() != "" {
 		g.drawOverlay(dst)
-		if g.promotionOverWindow() {
+		if g.traitOverWindow() {
 			g.drawModal(dst)
 		}
 	} else if len(g.modals) > 0 && (!g.busy() || g.briefed()) && g.S.Engine != nil {
