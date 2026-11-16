@@ -131,6 +131,19 @@ Square 1:1 image, plain dark navy background, no text, no watermark, no border.
 - **새 병종을 추가할 때**: 같은 공통 문장으로 초상을 그린다. 그다음 `classes.json`에 `Portrait`를 적는다.
 - 실제 프롬프트는 [`portraits/sheets/prompts.md`](portraits/sheets/prompts.md)의 "병종 초상"에 있다.
 
+## 시기별 초상 (2026-11-16)
+
+유비·관우·장비·조조는 이야기가 흐르면 초상이 바뀐다. 장수의 `Look.Later`가 조건에 맞는 마지막 초상을 고른다.
+
+| 단계 | 바뀌는 때 | 조건 | 초상 키 |
+|---|---|---|---|
+| 2 | 유관장: 17장 허도 궁궐 장면 시작 (`c17-court-looks`) | `flag:looks-mid` | `liubei_mid`, `guanyu_mid`, `zhangfei_mid` |
+| 2 | 조조: 서주 대학살 뒤(12장 불탄 마을부터) | `won:B11` | `caocao_mid` |
+| 3 | 3장 시작 (아직 깃발을 세우는 노드 없음) | `flag:chapter3` | `*_late` |
+| 3 | 3장 가상 모드의 유비 | `flag:chapter3`, `flag:ideal` | `liubei_late_ideal` |
+
+원본·버린 판·프롬프트는 `portraits/ages/`(`prompts.tsv`, `jobs*.sh`)에 있다. 새 판은 지금 초상을 참조로 넘겨 얼굴을 잇고, 고칠 때는 채택한 판을 참조로 넘겨 편집한다.
+
 ## 남은 일
 
 - 유비는 `style-samples/4-ink-wash.png`에서 옷깃의 금색 자수만 아이보리 옷깃으로 바꾼 `portraits/liubei.png`를 쓴다(2026-10-31, 첫 장은 화풍 기준으로 그대로 둔다).

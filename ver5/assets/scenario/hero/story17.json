@@ -97,6 +97,13 @@
    "Place": "허도 · 궁궐"
   },
   {
+   "ID": "c17-court-looks",
+   "Kind": "set",
+   "Flags": {
+    "looks-mid": 1
+   }
+  },
+  {
    "ID": "c17-c01",
    "Kind": "say",
    "Speaker": "caocao",

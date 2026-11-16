@@ -40,6 +40,27 @@
     },
     "Scene": "liubei_noncombat",
     "Portrait": "liubei",
+    "Later": [
+     {
+      "If": [
+       "flag:looks-mid"
+      ],
+      "Portrait": "liubei_mid"
+     },
+     {
+      "If": [
+       "flag:chapter3"
+      ],
+      "Portrait": "liubei_late"
+     },
+     {
+      "If": [
+       "flag:chapter3",
+       "flag:ideal"
+      ],
+      "Portrait": "liubei_late_ideal"
+     }
+    ],
     "Faction": "shu"
    }
   },
@@ -82,6 +103,20 @@
     },
     "Scene": "guanyu_noncombat",
     "Portrait": "guanyu",
+    "Later": [
+     {
+      "If": [
+       "flag:looks-mid"
+      ],
+      "Portrait": "guanyu_mid"
+     },
+     {
+      "If": [
+       "flag:chapter3"
+      ],
+      "Portrait": "guanyu_late"
+     }
+    ],
     "Faction": "shu"
    }
   },
@@ -124,6 +159,20 @@
     },
     "Scene": "zhangfei_noncombat",
     "Portrait": "zhangfei",
+    "Later": [
+     {
+      "If": [
+       "flag:looks-mid"
+      ],
+      "Portrait": "zhangfei_mid"
+     },
+     {
+      "If": [
+       "flag:chapter3"
+      ],
+      "Portrait": "zhangfei_late"
+     }
+    ],
     "Faction": "shu"
    }
   },
@@ -967,6 +1016,20 @@
    ],
    "Look": {
     "Portrait": "caocao",
+    "Later": [
+     {
+      "If": [
+       "won:B11"
+      ],
+      "Portrait": "caocao_mid"
+     },
+     {
+      "If": [
+       "flag:chapter3"
+      ],
+      "Portrait": "caocao_late"
+     }
+    ],
     "Faction": "wei",
     "Sprite": "caocao",
     "Scene": "caocao_noncombat",
