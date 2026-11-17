@@ -19,7 +19,7 @@
   "6": {"lift": 8, "faces": "pstep", "foot": "cfoot"}
  },
  "walls": {"swall": {"block": "swall2", "parapet": "sparapet", "shade": "swall2_shade", "cut": "swall2_cut"}, "cwall": {"piece": "cwall", "cut": "cwall_cut"}},
- "board": {"default": "board_grass", "under": "board_under", "end": "board_end", "variants": 4,
+ "board": {"indoor": "TWPCM", "default": "board_grass", "under": "board_under", "end": "board_end", "variants": 4,
   "sections": {"d": "board_road", "i": "board_road", "h": "board_road", "v": "board_road", "k": "board_road", "R": "board_water", "F": "board_water", "~": "board_water", "b": "board_water", "T": "board_tent", "W": "board_hall", "P": "board_hall", "C": "board_hall", "M": "board_hall", "Q": "board_road"}},
  "cuts": {"pwall_u": "pwall_u_cut"},
  "decor": {

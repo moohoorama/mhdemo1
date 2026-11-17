@@ -3,6 +3,8 @@ package gui
 import (
 	"strings"
 
+	"srpg/internal/core"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"image/color"
 	"srpg/internal/session"
@@ -17,6 +19,9 @@ func demoSceneNode(d *Demo) error {
 	g := d.g
 	g.request(session.Request{Op: "new", Seed: 1})
 	nodes := strings.Split(d.stage, ",")
+	if err := storySoFar(g, nodes[0]); err != nil {
+		return err
+	}
 	ni, shown := 0, 0
 	g.S.Settings.InstantText = true
 	d.replace = true
@@ -47,5 +52,27 @@ func demoSceneNode(d *Demo) error {
 		g.scenario(dst, o)
 		g.drawIntro(dst)
 	}
+	return nil
+}
+
+// storySoFar sets the flags every set node before the node does, as a player reaching it would have them (the
+// portraits that change as the story ages, the explore's steps).
+func storySoFar(g *Game, node string) error {
+	st := g.S.Engine.Snapshot()
+	for _, n := range g.S.Data.Nodes {
+		if n.ID == node {
+			break
+		}
+		if n.Kind == "set" {
+			for k, v := range n.Flags {
+				st.Flags[k] = v
+			}
+		}
+	}
+	e, err := core.Restore(g.S.Data, st)
+	if err != nil {
+		return err
+	}
+	g.S.Engine = e
 	return nil
 }

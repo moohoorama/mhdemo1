@@ -9,9 +9,9 @@
   "alpha": [0, 255],
   "outline": "#24252b",
   "palette": {
-    "poison": ["#7da84f", "#d3e790"], "root": ["#939eab", "#dce2df"],
-    "disarm": ["#da6354", "#ffc49a"], "burn": ["#e7823d", "#ffe39a"],
-    "confusion": ["#bb88cf", "#efc8ec"], "seal": ["#d3af6b", "#f6df9b", "#ab5256"],
+    "poison": ["#7da84f", "#d3e790"], "root": ["#96643c", "#cea062", "#ec2822"],
+    "disarm": ["#939eab", "#dce2df", "#ec2822"], "burn": ["#e7823d", "#ffe39a"],
+    "confusion": ["#ffde4a", "#fffcd6"], "seal": ["#c49654", "#f6df9b", "#ec2822"],
     "attack": ["#e67360", "#ffbd91"], "defense": ["#699ed8", "#b4d9ed"],
     "agility": ["#dcba56", "#fff0a1"], "mind": ["#71b579", "#b5e5a0"],
     "morale": ["#dcba56", "#fff0a1"], "speed": ["#c7cdd2", "#f4f0dd"],

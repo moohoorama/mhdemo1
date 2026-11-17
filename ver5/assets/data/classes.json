@@ -796,6 +796,7 @@
    "Tags": [
     "civil"
    ],
+   "Prefer": "magic",
    "Pool": [
     "deputy_appoint",
     "spread",
@@ -855,6 +856,7 @@
    "Tags": [
     "civil"
    ],
+   "Prefer": "magic",
    "Pool": [
     "fire_boost",
     "water_boost",
@@ -921,6 +923,7 @@
    "Tags": [
     "civil"
    ],
+   "Prefer": "status",
    "Pool": [
     "deputy_appoint",
     "hinder",
@@ -979,6 +982,7 @@
    "Tags": [
     "civil"
    ],
+   "Prefer": "status",
    "Pool": [
     "stratagem_spread",
     "stratagem_boost",
@@ -1045,9 +1049,11 @@
    "Tags": [
     "civil"
    ],
+   "Prefer": "heal",
    "Pool": [
     "deputy_appoint",
     "exhort",
+    "status_cure",
     "relief_boost",
     "relief_spread"
    ],
@@ -1059,6 +1065,10 @@
     {
      "Level": 1,
      "Trait": "fire"
+    },
+    {
+     "Level": 12,
+     "Trait": "status_cure"
     },
     {
      "Level": 15,
@@ -1103,9 +1113,11 @@
    "Tags": [
     "civil"
    ],
+   "Prefer": "heal",
    "Pool": [
     "exhort_boost",
-    "lasting"
+    "lasting",
+    "terrain_mend"
    ],
    "Plan": [
     {
@@ -1115,6 +1127,10 @@
     {
      "Level": 1,
      "Trait": "fire"
+    },
+    {
+     "Level": 12,
+     "Trait": "status_cure"
     },
     {
      "Level": 15,
@@ -1161,6 +1177,7 @@
    "Tier": 2,
    "Sprite": "grand_strategist",
    "Portrait": "strategist",
+   "Prefer": "magic",
    "Pool": [
     "deputy_appoint",
     "fire",
@@ -1228,7 +1245,6 @@
    "Pool": [
     "counter_art",
     "earth",
-    "provoke_prep",
     "disrupt_prep",
     "plunder"
    ],
@@ -1268,7 +1284,6 @@
    "Pool": [
     "counter_art",
     "earth",
-    "provoke_prep",
     "disrupt_prep"
    ],
    "Plan": [

@@ -63,10 +63,13 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 		}
 	}
 	if k := e.fx(v, content.FxRangedWard); k > 0 && s.Kind == content.KindPhysical && e.rangedAttack(u, v, s) {
-		out *= 1 - k
+		out *= 1 - min(k, 1) // shares from different traits (own 원거리피해감소, 거울) add up
 	}
 	if k := e.fx(v, content.FxMagicWard); k > 0 && s.Kind == content.KindMagic {
 		out *= 1 - k
+	}
+	if k := e.fx(v, content.FxWard+s.Element); k > 0 && s.Kind == content.KindMagic {
+		out *= 1 - min(k, 1) // 수영: water spells
 	}
 	if k := e.fx(u, content.FxOpening); k > 0 {
 		out *= 1 + k*math.Max(0, float64(v.HP)/float64(max(1, b.MaxHP))-.5)
@@ -79,6 +82,17 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	}
 	if s := v.Status[holdGround]; s.Turns > 0 {
 		out *= 1 - float64(s.Value)/100
+	}
+	if k := e.fx(v, content.FxScorn); k > 0 && s.Kind == content.KindPhysical && e.def(e.char(u.Character)).Stats[1]+10 <= e.def(e.char(v.Character)).Stats[1] {
+		out *= 1 - k // 안하무인: a foe ten 무력 below it
+	}
+	if d := e.difficulty(); u.Faction != v.Faction { // 쉬움: the player's side hits harder and is hit softer
+		if p := d.DealtPct; p > 0 && u.Faction == "ally" {
+			out *= float64(p) / 100
+		}
+		if p := d.TakenPct; p > 0 && v.Faction == "ally" {
+			out *= float64(p) / 100
+		}
 	}
 	if p := e.state.DamagePct; p > 0 && p != 100 {
 		out = math.Max(1, out*float64(p)/100)
@@ -131,7 +145,7 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 	switch s.Kind {
 	case content.KindPhysical:
 		ranged := e.rangedAttack(u, v, s)
-		if v.Status["guard"].Turns > 0 && !ranged {
+		if v.Status["guard"].Turns > 0 && !ranged && !confused(v) {
 			return 0
 		}
 		if e.has(v, content.FxRangedImmune) && ranged {
@@ -224,15 +238,26 @@ func (e *Engine) statusImmune(v *Unit) bool {
 }
 
 // applyStatus puts a status on v. A stat percentage replaces an opposite one and otherwise keeps the stronger.
-func (e *Engine) applyStatus(v *Unit, id string, turns, value int) {
+// applyStatus puts status id on v and reports whether that changed anything. A buff and a debuff of one stat cancel
+// out, the later one ending the earlier, so a stat steps from down to even to up; one of the same side keeps the
+// stronger value and the longer of the two durations.
+func (e *Engine) applyStatus(v *Unit, id string, turns, value int) bool {
 	if content.Harmful[id] && e.statusImmune(v) {
-		return
+		return false
 	}
 	old := v.Status[id]
-	if old.Turns > 0 && (value >= 0) == (old.Value >= 0) && abs(old.Value) > abs(value) {
-		value = old.Value
+	if old.Turns > 0 && value != 0 && old.Value != 0 && (value > 0) != (old.Value > 0) {
+		delete(v.Status, id)
+		return true
+	}
+	if old.Turns > 0 && (value >= 0) == (old.Value >= 0) {
+		if abs(old.Value) > abs(value) {
+			value = old.Value
+		}
+		turns = max(turns, old.Turns)
 	}
 	v.Status[id] = Status{Turns: turns, Value: value, Source: old.Source}
+	return old.Turns <= 0 || value != old.Value || turns > old.Turns
 }
 func (e *Engine) hurt(v *Unit, n int, u *Unit) int {
 	n = min(v.HP, max(0, n))
@@ -267,6 +292,10 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 	R := e.data.Rules
 	phys := s.Kind == content.KindPhysical
 	d := e.damage(u, v, s) * b.share
+	if s.Kind == content.KindMagic && e.has(v, content.FxImmune+s.Element) {
+		e.hurt(v, 0, u) // 화덕성군: the fire does not touch it
+		return 0, true, false
+	}
 	hit := float64(e.rand(100)) < e.hitChance(u, v, s)
 	crit := false
 	if hit {
@@ -465,7 +494,7 @@ func (e *Engine) counterShare(v *Unit) float64 {
 // counterBack is the target's counter-attack after it took u's physical action: every unit strikes back
 // at an attacker in its reach, and one with 응징 at an attacker anywhere.
 func (e *Engine) counterBack(u, v *Unit) {
-	if v.HP <= 0 || u.HP <= 0 || !e.has(v, content.FxRetaliate) && !e.inRange(v, u, e.basic()) {
+	if v.HP <= 0 || u.HP <= 0 || confused(v) || !e.has(v, content.FxRetaliate) && !e.inRange(v, u, e.basic()) {
 		return
 	}
 	e.strikeBack(v, []*Unit{u}, e.counterTaken(u, e.counterShare(v)), true, false)
@@ -481,7 +510,7 @@ func (e *Engine) guard(u *Unit, struck []*Unit) {
 	for _, q := range struck {
 		for _, p := range ring {
 			w := e.occupied(q.X+p.X, q.Y+p.Y)
-			if w == nil || done[w.ID] || w.Faction != q.Faction || u.HP <= 0 {
+			if w == nil || done[w.ID] || w.Faction != q.Faction || u.HP <= 0 || confused(w) {
 				continue
 			}
 			if k := e.fx(w, content.FxGuardian); k > 0 && e.inRange(w, u, e.basic()) {
@@ -662,6 +691,7 @@ func (e *Engine) useSkill(u *Unit, c Command) error {
 		}
 		for j := i - 1; j >= 0; j-- {
 			if hit := events[j]; hit.Kind == "damage" && hit.Target == event.Actor {
+				e.crush(e.unit(hit.Actor), e.unit(event.Actor))
 				e.rout(e.unit(hit.Actor), e.unit(event.Actor))
 				e.absorbMana(e.unit(hit.Actor), e.unit(event.Actor))
 				e.retreatSweep(e.unit(hit.Actor), e.unit(event.Actor), false)
@@ -687,6 +717,17 @@ func (e *Engine) absorbMana(u, v *Unit) {
 }
 
 // ailing tells whether the unit carries a harmful status (약점공략).
+// confused tells whether the unit is under 혼란: it neither moves nor acts, and answers no blow (counter, assist,
+// guardian, reflection, 경계, 역계).
+func confused(u *Unit) bool { return u.Status["confusion"].Turns > 0 }
+
+// cure lifts every harmful status off the unit.
+func cure(v *Unit) {
+	for k := range content.Harmful {
+		delete(v.Status, k)
+	}
+}
+
 func ailing(v *Unit) bool {
 	for k, st := range v.Status {
 		if content.Harmful[k] && st.Turns > 0 {
@@ -711,6 +752,22 @@ func (e *Engine) rout(u, v *Unit) {
 				e.applyStatus(q, id, R.BuffTurns, -R.BuffPercent)
 				e.emit("effect", u.ID, q.ID, 0)
 			}
+		}
+	}
+}
+
+// crush is what 위진화하 does when u fells v: every stat of the foes in the eight cells around v drops.
+func (e *Engine) crush(u, v *Unit) {
+	if u == nil || v == nil || u.HP <= 0 || !e.has(u, content.FxCrush) {
+		return
+	}
+	R := e.data.Rules
+	for _, p := range ring {
+		if q := e.occupied(v.X+p.X, v.Y+p.Y); q != nil && q.Faction != u.Faction && q.HP > 0 {
+			for _, id := range keys(content.StatStatuses) {
+				e.applyStatus(q, id, R.BuffTurns, -R.BuffPercent)
+			}
+			e.emit("effect", u.ID, q.ID, 0)
 		}
 	}
 }
@@ -770,7 +827,7 @@ func (e *Engine) exchange(u, v *Unit, hit []*Unit, share map[string]float64, s c
 	for _, id := range keys(e.unitIDs) {
 		w := e.unit(id)
 		k := e.fx(w, content.FxAssist)
-		if k == 0 || w.ID == u.ID || w.HP <= 0 || w.Faction != u.Faction || !u.ActsIn(e.state.Turn, e.state.Army) {
+		if k == 0 || w.ID == u.ID || w.HP <= 0 || w.Faction != u.Faction || confused(w) || !u.ActsIn(e.state.Turn, e.state.Army) {
 			continue
 		}
 		var reach []*Unit
@@ -856,7 +913,7 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 			if hit && q.HP > 0 && e.has(u, content.FxDispelBuffs) {
 				stripBuffs(q)
 			}
-			if !derived && e.has(q, content.FxReflect) && q.HP > 0 && u.HP > 0 {
+			if !derived && e.has(q, content.FxReflect) && q.HP > 0 && u.HP > 0 && !confused(q) {
 				e.strike(q, u, s, blow{share: 1, derived: true})
 			}
 			return
@@ -865,7 +922,7 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 			e.emit("miss", u.ID, q.ID, 0)
 			return
 		}
-		if s.Kind == content.KindStatus && !derived && q.Faction != u.Faction && e.has(q, content.FxReflectStatus) {
+		if s.Kind == content.KindStatus && !derived && q.Faction != u.Faction && e.has(q, content.FxReflectStatus) && !confused(q) {
 			e.emit("effect", q.ID, u.ID, 0)
 			q = u // 역계: the status turns back on its caster
 		}
@@ -886,24 +943,26 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 			useful = actual > 0
 			e.emit("heal", u.ID, q.ID, actual)
 		case "cure":
-			for k := range content.Harmful {
-				delete(q.Status, k)
-			}
+			useful = ailing(q)
+			cure(q)
 		case "refill":
 			recovered = max(0, min(e.stats(q).MaxMP-q.MP, int(s.Coeff)))
 			q.MP += recovered
+			useful = recovered > 0
 		case "meditate": // Coeff is the share of its max spell points it gathers
 			recovered = max(0, min(e.stats(q).MaxMP-q.MP, int(float64(e.stats(q).MaxMP)*s.Coeff)))
 			q.MP += recovered
+			useful = recovered > 0
 		case "invert":
 			for k, st := range q.Status {
 				if content.StatStatuses[k] && st.Value > 0 {
 					st.Value = -st.Value
 					q.Status[k] = st
+					useful = true
 				}
 			}
 		case "speed", "range":
-			e.applyStatus(q, s.Effect, turns, int(s.Coeff))
+			useful = e.applyStatus(q, s.Effect, turns, int(s.Coeff))
 		default:
 			if parts := strings.Split(s.Effect, "+"); content.StatStatuses[parts[0]] || s.Effect == "disrupt" {
 				p := R.BuffPercent
@@ -911,25 +970,33 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 					p = -p
 				}
 				for _, id := range parts {
-					e.applyStatus(q, id, turns, p)
+					useful = e.applyStatus(q, id, turns, p) || useful
 				}
 			} else {
-				e.applyStatus(q, s.Effect, turns, 0)
+				useful = e.applyStatus(q, s.Effect, turns, 0)
 			}
 		}
 		if s.Kind == content.KindStatus && q.Faction != u.Faction && e.has(u, content.FxDispelBuffs) {
-			stripBuffs(q)
+			useful = stripBuffs(q) || useful
 		}
 		if q.Faction == u.Faction && s.Kind != content.KindStatus && e.has(u, content.FxSpellCure) {
-			for k := range content.Harmful {
-				delete(q.Status, k)
-			}
+			useful = ailing(q) || useful
+			cure(q)
 		}
 		e.emit("effect", u.ID, q.ID, recovered)
-		// Support spells provide training too. Full-health healing does not.
-		if u.Faction == "ally" && (s.Effect != "heal" || useful) {
+		// Support spells provide training only when they did something: a heal on a full unit, a buff on one that
+		// already has it as long, a debuff an enemy already carries teach nothing.
+		if u.Faction == "ally" && useful {
 			e.xp(u.Character, e.supportXP(u, q))
 		}
+	}
+	if s.Effect == "clear_marks" { // 지형정비: the embers, wet patches and rubble in the 3x3 round the target go
+		cleared := e.clearMarks(v.X, v.Y)
+		e.emit("effect", u.ID, v.ID, 0)
+		if cleared && u.Faction == "ally" {
+			e.xp(u.Character, e.supportXP(u, v))
+		}
+		return
 	}
 	reached := e.targets(u, v, s)
 	for _, q := range reached {
@@ -978,12 +1045,16 @@ var buffStatuses = map[string]bool{"speed": true, "range": true, "counter": true
 	"stance_pierce": true, "stance_cross": true, "stance_square": true}
 
 // stripBuffs removes every buff the unit holds.
-func stripBuffs(q *Unit) {
+// stripBuffs ends q's buffs, reporting whether it had any.
+func stripBuffs(q *Unit) bool {
+	any := false
 	for k, st := range q.Status {
 		if buffStatuses[k] || content.StatStatuses[k] && st.Value > 0 {
 			delete(q.Status, k)
+			any = true
 		}
 	}
+	return any
 }
 
 // healAmount is a heal spell's base points grown by the caster's medicine.
@@ -1000,6 +1071,9 @@ func (e *Engine) useItem(u *Unit, c Command) error {
 	}
 	if u.Acted {
 		return fail("ActionSpent")
+	}
+	if confused(u) {
+		return fail("Confused")
 	}
 	v := e.unit(c.Target)
 	if v == nil || v.HP <= 0 || v.Faction != u.Faction || dist(u.X, u.Y, v.X, v.Y) > 1 {
@@ -1018,16 +1092,20 @@ func (e *Engine) useItem(u *Unit, c Command) error {
 	}
 	n := int(float64(it.Amount) * (1 + e.fx(u, content.FxItemPower)))
 	for _, w := range users {
-		actual := 0
-		if it.Effect == content.ItemMP { // a drink pours past the brim: what it holds is all added
+		actual, useful := 0, false
+		switch it.Effect {
+		case content.ItemMP: // a drink pours past the brim: what it holds is all added
 			actual = n
 			w.MP += actual
-		} else {
+		case content.ItemCure:
+			useful = ailing(w)
+			cure(w)
+		default:
 			actual = min(e.stats(w).MaxHP-w.HP, n)
 			w.HP += actual
 		}
 		e.emit("item", u.ID, w.ID, actual)
-		if actual > 0 && u.Faction == "ally" {
+		if (actual > 0 || useful) && u.Faction == "ally" {
 			e.xp(u.Character, e.supportXP(u, w)) // like a support spell; a full bar teaches nothing
 		}
 	}

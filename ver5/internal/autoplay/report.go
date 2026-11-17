@@ -67,8 +67,20 @@ func Summary(r Report) string {
 			total += s.SubsTotal
 		}
 	}
-	return fmt.Sprintf("%-8s seed %d  cleared %-5v battles %2d  first-try %2d/%-2d  tries %3d  subs %2d/%-2d  level score %5.1f",
-		r.Player, r.Seed, r.Cleared, len(r.Stages), first, len(r.Stages), tries, subs, total, r.LevelScore)
+	streak, lost := r.FirstLossProgress()
+	return fmt.Sprintf("%-8s seed %d  cleared %-5v battles %2d  streak %2d first-loss %s  first-try %2d/%-2d  tries %3d  subs %2d/%-2d  level score %5.1f",
+		r.Player, r.Seed, r.Cleared, len(r.Stages), streak, lost, first, len(r.Stages), tries, subs, total, r.LevelScore)
+}
+
+// FirstLossProgress also reads reports made before the explicit first-defeat fields existed.
+func (r Report) FirstLossProgress() (wins int, lost string) {
+	for _, s := range r.Stages {
+		if !s.Won || s.Tries != 1 {
+			return wins, s.Stage
+		}
+		wins++
+	}
+	return wins, r.FirstDefeat
 }
 
 // Totals sums campaigns of one player.

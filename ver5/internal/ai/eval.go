@@ -51,6 +51,7 @@ type evaluator struct {
 	o       core.Observation
 	me      *core.UnitView
 	reaches map[string]map[content.Point]bool // opponent → the cells it can strike next turn, as asked
+	strikes map[[2]string]float64             // damage for a unit pair during this evaluation only
 	victory []string
 	vital   []string              // own units whose fall loses the battle besides the lord (a defeat goal's defeated:X)
 	goal    map[content.Point]int // walking distance to the area a victory goal sends me to; nil without one
@@ -59,6 +60,19 @@ type evaluator struct {
 	pending bool                  // that goal's story condition does not hold yet
 	stop    content.Point         // the farthest cell this turn's move reaches along my whole walk to that goal
 	onWay   bool                  // a move reaches that walk at all
+}
+
+func (x *evaluator) strike(actor, target string) float64 {
+	key := [2]string{actor, target}
+	if damage, ok := x.strikes[key]; ok {
+		return damage
+	}
+	damage := x.e.Strike(actor, target)
+	if x.strikes == nil {
+		x.strikes = make(map[[2]string]float64)
+	}
+	x.strikes[key] = damage
+	return damage
 }
 
 func (x *evaluator) opponents(u *core.UnitView) []core.UnitView {
@@ -125,7 +139,7 @@ func (x *evaluator) incoming(u *core.UnitView, p content.Point) int {
 	var blows []float64
 	for _, v := range x.opponents(x.me) {
 		if x.reachOf(v.ID)[p] {
-			blows = append(blows, x.e.Strike(v.ID, u.ID))
+			blows = append(blows, x.strike(v.ID, u.ID))
 		}
 	}
 	sort.Sort(sort.Reverse(sort.Float64Slice(blows)))
@@ -296,7 +310,7 @@ func (x *evaluator) move(c core.Command, walk map[content.Point]int, duels bool)
 		if d < lo || duels && me.DuelFirst && x.e.DuelPending(me.ID, v.ID) {
 			continue
 		}
-		hit := int(x.e.Strike(me.ID, v.ID))
+		hit := int(x.strike(me.ID, v.ID))
 		turns := 0
 		if d > hi {
 			// out of reach from c: the walk there is at least the walk to the nearest opponent, so a cell

@@ -9,10 +9,14 @@ import (
 	"srpg/internal/session"
 )
 
-// The waypoint window lists every chapter's start and every battle; picking one asks the difficulty, then
-// starts a game there (core.NewAt) to check the story or a battle without playing up to it.
+// The waypoint window lists every chapter's start and every battle on its left; picking one asks the
+// difficulty, then starts a game there (core.NewAtWith) to check the story or a battle without playing up to
+// it. Its right side sets what that game is told first: the party's level and the flags the battles before
+// left (content.StoryFlags).
 const (
-	waypointW, waypointH = 760, 700
+	waypointW, waypointH = 1160, 700
+	waypointListW        = 712 // the list's share of the window; the rest is the setup
+	waypointFlagH        = 40
 	waypointRowH         = 48
 	waypointGap          = 6
 )
@@ -34,8 +38,9 @@ type waypointRow struct {
 }
 
 func (g *Game) waypointWindow(dst *ebiten.Image, x, y, w, h int) {
-	g.label(dst, "고른 곳에서 새로 시작합니다. 레벨·승급은 다음 전투 기준, 아이템은 모두 가진 채입니다.", float64(x+32), float64(y+56), 14, muted)
-	view := image.Rect(x+24, y+86, x+w-24, y+h-24)
+	g.label(dst, "오른쪽에서 레벨과 앞선 전투 결과를 정한 뒤, 왼쪽에서 시작할 곳을 고릅니다. 아이템은 모두 가진 채입니다.", float64(x+32), float64(y+56), 14, muted)
+	view := image.Rect(x+24, y+86, x+24+waypointListW, y+h-24)
+	g.waypointSetup(dst, image.Rect(view.Max.X+24, view.Min.Y, x+w-24, view.Max.Y))
 	ways := g.S.Data.Waypoints()
 	content := len(ways)*(waypointRowH+waypointGap) - waypointGap
 	l := &g.waypoints
@@ -56,7 +61,10 @@ func (g *Game) waypointWindow(dst *ebiten.Image, x, y, w, h int) {
 		}
 		rect(clip, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy()), body)
 		strokeRect(clip, float32(r.Min.X)+.5, float32(r.Min.Y)+.5, float32(r.Dx())-1, float32(r.Dy())-1, 1, rim)
-		level := g.S.Data.Rules.StageLevel(g.S.Data.NextBattleOrder(wp.Node))
+		level := g.jumpLevel
+		if level == 0 {
+			level = g.S.Data.Rules.StageLevel(g.S.Data.NextBattleOrder(wp.Node))
+		}
 		ty := float64(top + 13)
 		if wp.Stage == "" {
 			g.label(clip, fmt.Sprintf("제 %d 장", wp.Chapter), float64(r.Min.X+16), ty, 17, gold)
@@ -111,7 +119,7 @@ func (g *Game) updateWaypoints() bool {
 			if l.press.In(r.r) {
 				if len(g.S.Data.Rules.Difficulties) == 0 {
 					g.closeOverlays()
-					g.request(session.Request{Op: "jump", Node: r.node, Seed: g.seed})
+					g.jump(r.node, "")
 					break
 				}
 				g.jumpNode = r.node
@@ -121,4 +129,78 @@ func (g *Game) updateWaypoints() bool {
 		}
 	}
 	return true
+}
+
+// waypointLevels are the levels the setup offers at a press; the steps beside them reach the ones between.
+var waypointLevels = []int{10, 20, 30, 40, 50, 60}
+
+// waypointSetup draws the setup in r: the party's level (none is each waypoint's own) over the battle flags,
+// each a switch that names its battle and objective over what it changes later. A flag of a battle after the picked waypoint
+// is not used.
+func (g *Game) waypointSetup(dst *ebiten.Image, r image.Rectangle) {
+	x, y, w := r.Min.X, r.Min.Y, r.Dx()
+	levels := []choice{{"기본", g.jumpLevel == 0, func() { g.jumpLevel = 0 }}}
+	for _, n := range waypointLevels {
+		levels = append(levels, choice{fmt.Sprint(n), g.jumpLevel == n, func() { g.jumpLevel = n }})
+	}
+	g.choiceRow(dst, x, y, w, "아군 레벨", levels)
+	step := func(d int) func() {
+		if g.jumpLevel == 0 {
+			return nil
+		}
+		return func() { g.jumpLevel = max(1, min(g.jumpLevel+d, g.S.Data.Rules.MaxLevel)) }
+	}
+	now := "다음 전투 기준"
+	if g.jumpLevel > 0 {
+		now = fmt.Sprintf("Lv %d", g.jumpLevel)
+	}
+	g.centeredBtn(dst, image.Rect(x, y+64, x+56, y+96), "-1", step(-1))
+	g.centeredBtn(dst, image.Rect(x+w-56, y+64, x+w, y+96), "+1", step(1))
+	g.centered(dst, now, float64(x+w/2), float64(y+69), 16, ink)
+
+	flags := g.S.Data.StoryFlags()
+	top := y + 120
+	g.label(dst, "앞선 전투 결과", float64(x), float64(top), 14, muted)
+	g.centeredBtn(dst, image.Rect(x+w-136, top-6, x+w-72, top+22), "모두", func() {
+		g.jumpFlags = map[string]bool{}
+		for _, f := range flags {
+			g.jumpFlags[f.Flag] = true
+		}
+	})
+	g.centeredBtn(dst, image.Rect(x+w-64, top-6, x+w, top+22), "없음", func() { g.jumpFlags = nil })
+	for i, f := range flags {
+		b := image.Rect(x, top+30+i*(waypointFlagH+4), x+w, top+30+i*(waypointFlagH+4)+waypointFlagH)
+		on := g.jumpFlags[f.Flag]
+		toggle := func() {
+			if g.jumpFlags == nil {
+				g.jumpFlags = map[string]bool{}
+			}
+			g.jumpFlags[f.Flag] = !on
+		}
+		g.choiceBtn(dst, b, "", on, toggle)
+		fg := ink
+		if on {
+			g.addButton(b, "", toggle) // a lit choice is not a button of its own
+			fg = gold
+			rect(dst, float32(b.Min.X+13), float32(b.Min.Y+13), 14, 14, gold)
+		}
+		strokeRect(dst, float32(b.Min.X)+12.5, float32(b.Min.Y)+12.5, 15, 15, 1, goldDim)
+		later := f.Later
+		if later == "" {
+			later = "뒤에 달라지는 것 없음"
+		}
+		g.label(dst, g.S.Data.Stages[g.S.Data.StageIndex(f.Stage)].Name+" · "+f.Text, float64(b.Min.X+40), float64(b.Min.Y+3), 12, muted)
+		g.label(dst, later, float64(b.Min.X+40), float64(b.Min.Y+17), 14, fg)
+	}
+}
+
+// jump starts a game at the waypoint as the setup says.
+func (g *Game) jump(node, difficulty string) {
+	var flags []string
+	for _, f := range g.S.Data.StoryFlags() {
+		if g.jumpFlags[f.Flag] {
+			flags = append(flags, f.Flag)
+		}
+	}
+	g.request(session.Request{Op: "jump", Node: node, Seed: g.seed, Difficulty: difficulty, Flags: flags, Level: g.jumpLevel})
 }

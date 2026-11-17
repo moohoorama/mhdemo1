@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,6 +10,51 @@ import (
 	"srpg/internal/core"
 	"srpg/internal/session"
 )
+
+func TestSmithGiftsConfirmSound(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	s := core.New(d, 1).Snapshot()
+	s.Node = "c02-k2"
+	g := &Game{S: &session.Session{Data: d}}
+	g.S.Engine, err = core.Restore(d, s)
+	require.NoError(t, err)
+
+	trace, err := os.CreateTemp(t.TempDir(), "sfx")
+	require.NoError(t, err)
+	previous := sfxTrace
+	sfxTrace = trace
+	t.Cleanup(func() { sfxTrace = previous; trace.Close() })
+
+	for _, gift := range []struct{ item, next string }{
+		{"qinglong_blade", "c02-k4"},
+		{"serpent_spear", "c02-k6"},
+	} {
+		t.Run(gift.item, func(t *testing.T) {
+			r := g.send(session.Request{Op: "command", Command: core.Command{Kind: "next"}})
+			require.True(t, r.OK, r.Error)
+			require.Len(t, g.modals, 1)
+			m := g.modals[0]
+			assert.Equal(t, []gain{{id: gift.item, n: 1, first: true}}, m.gains)
+			assert.Equal(t, 1, g.S.View().Warehouse[gift.item])
+			assert.Equal(t, gift.next, g.S.View().Node)
+
+			m.piece, m.chip = gift.item, equipChip{"trait", "keen"}
+			g.closeModal()
+			assert.Empty(t, m.chip.id)
+			assert.Equal(t, gift.item, m.piece)
+			g.closeModal()
+			assert.Empty(t, m.piece)
+			require.Len(t, g.modals, 1)
+			g.closeModal()
+			assert.Empty(t, g.modals)
+		})
+	}
+	g.closeModal()
+	b, err := os.ReadFile(trace.Name())
+	require.NoError(t, err)
+	assert.Equal(t, "0 close\n0 close\n0 ok\n0 close\n0 close\n0 ok\n", string(b))
+}
 
 func TestAcquireGains(t *testing.T) {
 	before := &core.Observation{State: core.State{

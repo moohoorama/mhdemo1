@@ -53,10 +53,12 @@ func TestExploreAreasCanBeWalked(t *testing.T) {
 // flag sends the branch straight on to the walk) keeps the line before it on screen: the walk is not laid out
 // under it, or the two would take the scene from each other every frame and the window would never show.
 func TestHeldStoryKeepsTheWalkAway(t *testing.T) {
-	d, err := NewDemo("../..", DemoOptions{Name: "mapfx"})
+	// the campaign's own data: the map demos put every officer on the roster, and 조운 would be there before he joins
+	d, err := NewDemo("../..", DemoOptions{Name: "scenenode", Stage: "c10-start"})
 	require.NoError(t, err)
 	g := d.g
-	require.True(t, g.send(session.Request{Op: "jump", Seed: 1, Node: "c10-start"}).OK)
+	r := g.send(session.Request{Op: "jump", Seed: 1, Node: "c10-start", Discard: true})
+	require.True(t, r.OK, r.Error)
 	st := g.S.Engine.Snapshot()
 	st.Learning, st.Flags["flag-julu-clear"] = nil, 1
 	g.S.Engine, err = core.Restore(g.S.Data, st)
@@ -70,4 +72,33 @@ func TestHeldStoryKeepsTheWalkAway(t *testing.T) {
 	assert.False(t, g.exploring())
 	g.held = nil // the screen lets go of the line once the window is closed
 	assert.True(t, g.exploring())
+}
+
+func TestMansionDialogueReturnsToExploreWithoutErrorSound(t *testing.T) {
+	d, err := NewDemo("../..", DemoOptions{Name: "explore", Stage: "start:c03-walk"})
+	require.NoError(t, err)
+	g := d.g
+	s := g.S.Engine.Snapshot()
+	s.Node = "c03-m6"
+	s.Flags["c03-in"], s.Flags["c03-rumor"] = 1, 1
+	g.S.Engine, err = core.Restore(g.S.Data, s)
+	require.NoError(t, err)
+	require.True(t, g.enterScene(g.S.View()))
+	g.faceSpeaker("장비")
+	require.Equal(t, "E", g.scene.actors["유비"].dir)
+
+	g.nextNode()
+	require.True(t, g.scene.leaving)
+	g.advance(fadeTime)
+	require.True(t, g.exploring())
+	assert.Equal(t, 1, g.S.View().Flags["c03-orders"])
+	g.ensureExplore(g.S.View())
+	require.True(t, g.explore.walked, "the scene left the hero facing another person")
+	before := g.sfxCalls
+	g.reportSpot()
+
+	assert.Empty(t, g.toasts)
+	assert.Equal(t, before, g.sfxCalls, "saving the returned position plays no error sound")
+	assert.Equal(t, "E", g.S.View().Spot.Face)
+	assert.Equal(t, [2]int(g.actorTile(g.explore.hero)), g.S.View().Spot.At)
 }

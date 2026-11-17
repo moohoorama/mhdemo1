@@ -72,7 +72,7 @@ func (e *Engine) LegalActions(actor string) Options {
 			}
 		}
 	}
-	if !u.Acted {
+	if !u.Acted && !confused(u) {
 		stock := e.stock(u)
 		for _, item := range keys(stock) {
 			if stock[item] < 1 || e.data.Items[item].Effect == content.ItemPromote { // seals are used off the field
@@ -418,7 +418,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, []string, erro
 	if len(s.Deployment) < 1 {
 		return bad("no one deployed")
 	}
-	if len(s.Deployment) > d.Stages[s.Stage].Max && s.Phase != "scenario" {
+	if len(s.Deployment) > d.Stages[s.Stage].Max && s.Phase != "scenario" && s.Phase != "complete" { // the story may add officers after the last battle
 		if err := soft("CorruptSave", "%d deployed, at most %d", len(s.Deployment), d.Stages[s.Stage].Max); err != nil {
 			return nil, nil, err
 		}
@@ -679,6 +679,19 @@ func (e *Engine) CharacterStats(id string) (Stats, error) {
 	return e.stats(&Unit{ID: id, Character: id, Faction: "ally", Status: map[string]Status{}}), nil
 }
 
+// CharacterView describes the officer's equipment, traits and skills outside battle, without temporary statuses.
+func (e *Engine) CharacterView(id string) (UnitView, error) {
+	c := e.char(id)
+	if c == nil {
+		return UnitView{}, fail("InvalidCharacter")
+	}
+	s, err := e.CharacterStats(id)
+	if err != nil {
+		return UnitView{}, err
+	}
+	return UnitView{Unit: Unit{ID: id, Character: id, Faction: "ally", HP: s.MaxHP, MP: s.MaxMP}, Name: e.name(c), Class: c.Class, Def: c.Def, Level: c.Level, XP: c.XP, Points: c.Points, Stats: s, Traits: e.traits(c), Skills: e.skills(c)}, nil
+}
+
 // CharacterStatsAs is the character's battle stats were it of the given class, for comparing a promotion.
 func (e *Engine) CharacterStatsAs(id, class string) (Stats, error) {
 	c := e.char(id)
@@ -698,7 +711,7 @@ func (e *Engine) CharacterStatsAs(id, class string) (Stats, error) {
 // or 0 when c is not a physical action or the actor is out of the target's reach.
 func (e *Engine) CounterDamage(c Command) int {
 	u, v := e.unit(c.Actor), e.unit(c.Target)
-	if u == nil || v == nil || v.HP <= 0 || v.Faction == u.Faction {
+	if u == nil || v == nil || v.HP <= 0 || v.Faction == u.Faction || confused(v) {
 		return 0
 	}
 	s, err := e.skillDef(c)
@@ -739,6 +752,13 @@ func (e *Engine) AttackRange(id string) (lo, hi int) {
 func (e *Engine) CanStrikeFrom(id string, from content.Point, x, y int) bool {
 	u := e.unit(id)
 	return u != nil && e.reachesFrom(u, e.basic(), from, x, y)
+}
+
+// CanCastFrom tells whether the unit's skill would reach (x, y) from `from`, as it would from where it stands.
+func (e *Engine) CanCastFrom(id, skill string, from content.Point, x, y int) bool {
+	u := e.unit(id)
+	s, ok := e.data.Skills[skill]
+	return u != nil && ok && e.reachesFrom(u, s, from, x, y)
 }
 
 // ShootsAt tells whether the unit's basic attack from `from` on (x, y) would be a shot rather than a

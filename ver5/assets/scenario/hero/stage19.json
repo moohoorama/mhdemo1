@@ -15,6 +15,19 @@
    "Text": "유비가 연주 경계에 닿는다"
   }
  ],
+ "Sub": [
+  {
+   "ID": "zhanghe-duel",
+   "Text": "조운이 장합과 일기토를 치른다",
+   "If": [
+    "duel:yanzhou-zhaoyun-zhanghe"
+   ],
+   "Flag": "flag-b19-zhanghe-duel",
+   "Reward": {
+    "insu_high": 1
+   }
+  }
+ ],
  "TurnLimit": 20,
  "Map": "map19.json",
  "Night": true,
@@ -88,7 +101,7 @@
    "X": 6,
    "Y": 17,
    "Group": "zh",
-   "Policy": "react",
+   "Policy": "assault",
    "Facing": "SE",
    "DuelFirst": true,
    "Faction": "yuan"
@@ -99,7 +112,7 @@
    "Y": 17,
    "Shift": -0.07,
    "Group": "zh",
-   "Policy": "react",
+   "Policy": "assault",
    "Facing": "SE",
    "Faction": "yuan"
   },
@@ -109,7 +122,7 @@
    "Y": 16,
    "Shift": -0.07,
    "Group": "zh",
-   "Policy": "react",
+   "Policy": "assault",
    "Facing": "SE",
    "Faction": "yuan"
   },
@@ -119,7 +132,7 @@
    "Y": 17,
    "Shift": -0.07,
    "Group": "zh",
-   "Policy": "react",
+   "Policy": "assault",
    "Facing": "SE",
    "Faction": "yuan"
   },
@@ -128,7 +141,7 @@
    "X": 1,
    "Y": 1,
    "Group": "guo",
-   "Policy": "hold",
+   "Policy": "assault",
    "Facing": "SE",
    "Rank": "commander",
    "Faction": "yuan"
@@ -139,7 +152,7 @@
    "Y": 2,
    "Shift": -0.07,
    "Group": "guo",
-   "Policy": "hold",
+   "Policy": "assault",
    "Facing": "SE",
    "Faction": "yuan"
   },
@@ -149,7 +162,7 @@
    "Y": 1,
    "Shift": -0.07,
    "Group": "guo",
-   "Policy": "hold",
+   "Policy": "assault",
    "Facing": "SE",
    "Faction": "yuan"
   },
@@ -159,7 +172,7 @@
    "Y": 3,
    "Shift": -0.07,
    "Group": "guo",
-   "Policy": "hold",
+   "Policy": "assault",
    "Facing": "SE",
    "Faction": "yuan"
   },
@@ -169,7 +182,7 @@
    "Y": 3,
    "Shift": -0.07,
    "Group": "guo",
-   "Policy": "hold",
+   "Policy": "assault",
    "Facing": "SE",
    "Faction": "yuan"
   },
@@ -179,7 +192,7 @@
    "Y": 0,
    "Shift": -0.07,
    "Group": "guo",
-   "Policy": "hold",
+   "Policy": "assault",
    "Facing": "SE",
    "Faction": "yuan"
   },
@@ -189,7 +202,7 @@
    "Y": 2,
    "Shift": -0.07,
    "Group": "guo",
-   "Policy": "hold",
+   "Policy": "assault",
    "Facing": "SE",
    "Faction": "yuan"
   },
@@ -199,7 +212,7 @@
    "Y": 12,
    "Shift": -0.07,
    "Group": "picket",
-   "Policy": "react",
+   "Policy": "assault",
    "Facing": "NE",
    "Faction": "yuan"
   },
@@ -209,7 +222,7 @@
    "Y": 13,
    "Shift": -0.07,
    "Group": "picket",
-   "Policy": "react",
+   "Policy": "assault",
    "Facing": "NE",
    "Faction": "yuan"
   }
@@ -276,33 +289,11 @@
    ]
   },
   {
-   "ID": "guotu-moves",
-   "If": [
-    "round>=2"
-   ],
-   "Do": [
-    {
-     "Kind": "ai",
-     "Targets": [
-      "guo"
-     ],
-     "Policy": "assault"
-    }
-   ]
-  },
-  {
    "ID": "zhanghe-moves",
    "If": [
     "round>=4"
    ],
    "Do": [
-    {
-     "Kind": "ai",
-     "Targets": [
-      "zh"
-     ],
-     "Policy": "assault"
-    },
     {
      "Kind": "say",
      "Lines": [

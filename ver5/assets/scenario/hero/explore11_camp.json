@@ -123,7 +123,7 @@
     "백마병#5": {
      "At": [
       40,
-      14
+      15
      ],
      "Face": "SE",
      "Sprite": "light_infantry",
@@ -588,7 +588,7 @@
      "Face": "SW",
      "Sprite": "innkeeper_noncombat",
      "Faction": "merchant",
-     "Shop": "tools"
+     "Shop": "tools_cure"
     },
     "군리": {
      "At": [

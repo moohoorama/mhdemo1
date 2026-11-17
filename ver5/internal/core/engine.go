@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/mlange-42/ark/ecs"
 	"maps"
+	"runtime/debug"
 	"slices"
 	"sort"
 	"srpg/internal/content"
@@ -27,6 +28,10 @@ type Engine struct {
 	castMP           int
 	immortal         string // who no blow brings below 1 HP (SetImmortal, simulators only)
 	unchecked        bool   // a test fixture that bends the rules: Apply skips the restore check of tests
+	// the experience a command earns, gathered by officer and given at its end in one sum each (Apply)
+	pooling bool
+	pool    map[string]int
+	pooled  []string
 }
 
 func copyOf[T any](v T) T { b, _ := json.Marshal(v); var c T; _ = json.Unmarshal(b, &c); return c }
@@ -232,13 +237,18 @@ func (e *Engine) Apply(c Command) (r Result, err error) {
 	defer func() {
 		if p := recover(); p != nil {
 			err = fmt.Errorf("InternalError: %v", p)
+			if testing.Testing() { // a test that hits it says where
+				err = fmt.Errorf("%w\n%s", err, debug.Stack())
+			}
 		}
 	}()
 	t := fromState(e.data, e.Snapshot())
 	t.lastActor, t.immortal, t.unchecked = c.Actor, e.immortal, e.unchecked
+	t.pooling = true
 	if err = t.execute(c); err != nil {
 		return Result{}, err
 	}
+	t.flushXP()
 	t.settle()
 	t.state.Revision++
 	if testing.Testing() && !e.unchecked {
@@ -553,6 +563,10 @@ func (e *Engine) once(n content.Node) {
 		return
 	}
 	if n.Kind == "join" {
+		if e.char(n.Character) != nil { // already back, by a battle's join event: nothing to show
+			e.state.Executed[n.Event] = true
+			return
+		}
 		kind := "join"
 		if slices.ContainsFunc(e.state.Away, func(c Character) bool { return c.ID == n.Character }) {
 			kind = "return" // back from a leave: shown again without the newcomer's welcome
@@ -736,7 +750,7 @@ func (e *Engine) execute(c Command) error {
 		if u.Moved {
 			return fail("MoveSpent")
 		}
-		if u.Status["confusion"].Turns > 0 || u.Status["root"].Turns > 0 {
+		if confused(u) || u.Status["root"].Turns > 0 {
 			return fail("Immobilized")
 		}
 		p := content.Point{X: c.X, Y: c.Y}
@@ -1015,6 +1029,11 @@ func (e *Engine) startStatus(u *Unit) map[string]Status {
 	s := map[string]Status{}
 	for id, k := range e.turnBuffs(u) {
 		s[id] = Status{Turns: e.data.Rules.BuffTurns, Value: k}
+	}
+	for id := range content.StatStatuses { // 패기: once, as it takes the field
+		if k := int(e.fx(u, content.FxStartBuff+id)); k > s[id].Value {
+			s[id] = Status{Turns: e.data.Rules.BuffTurns, Value: k}
+		}
 	}
 	return s
 }

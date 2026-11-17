@@ -141,7 +141,7 @@ func TestScenarioNodesAreStaged(t *testing.T) {
 		case "battle":
 			continue
 		case "say", "narrate", "choice":
-			if placed {
+			if placed && !n.Card { // a part's closing card stands on black between scenes
 				if def, _ := scenes.For(n.ID); def == nil {
 					t.Errorf("node %s has a place but no scene", n.ID)
 				}

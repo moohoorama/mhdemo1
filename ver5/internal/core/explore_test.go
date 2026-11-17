@@ -217,6 +217,35 @@ func TestWalkSavesAndRestores(t *testing.T) {
 	assert.ErrorContains(t, err, "CorruptSave")
 }
 
+func TestWalkFacing(t *testing.T) {
+	for _, face := range []string{"N", "NE", "E", "SE", "S", "SW", "W", "NW"} {
+		t.Run(face, func(t *testing.T) {
+			e := walkEngine(t)
+			applyOK(t, e, Command{Kind: "walk", Option: "street", X: 3, Y: 8, Target: face})
+			want := content.Spot{Area: "street", At: [2]int{3, 8}, Face: face}
+			assert.Equal(t, want, e.Observe().Spot)
+			restored, err := Restore(e.Data(), e.Snapshot())
+			require.NoError(t, err)
+			assert.Equal(t, want, restored.Observe().Spot)
+
+			street := e.Data().Explores["explore01"].Areas["street"]
+			street.Exits = append(street.Exits, content.ExploreExit{At: [2]int{5, 0}, Node: "oath"})
+			applyOK(t, e, Command{Kind: "walk", X: 5, Y: 0, Target: face})
+			assert.Equal(t, "oath-1", e.Observe().Node)
+			assert.Equal(t, content.Spot{Area: "street", At: [2]int{5, 0}, Face: face}, e.Observe().Spot)
+		})
+	}
+	t.Run("invalid direction", func(t *testing.T) {
+		e := walkEngine(t)
+		before := e.Observe().Spot
+		for _, face := range []string{"", "north", "ne"} {
+			_, err := e.Apply(Command{Kind: "walk", Option: "street", Target: face})
+			assert.EqualError(t, err, "InvalidFace")
+			assert.Equal(t, before, e.Observe().Spot)
+		}
+	})
+}
+
 func TestExploreNextFindsTheEventThenTheSortie(t *testing.T) {
 	e := walkEngine(t)
 	applyOK(t, e, Command{Kind: "unequip", Actor: "hero", Item: "jerkin"})

@@ -583,11 +583,11 @@ func TestDeputyBlend(t *testing.T) {
 	if a := e.attributes(c); a[0] <= 91 || a[0] >= 100 {
 		t.Fatalf("blend %v", a)
 	}
-	with(e, "hero", "lead") // 인덕: the main officer's charm counts 20 higher
+	with(e, "hero", "lead") // 용인술: the deputy's attributes count 10 higher
 	R, own := e.data.Rules, e.def(c).Stats
-	n := (float64(own[5]+20)*float64(R.DeputyWeight) + 100) / float64(R.DeputyDivisor)
-	if a := e.attributes(c); math.Abs(a[0]-(n*100+(1-n)*float64(own[0]))) > 1e-9 {
-		t.Fatalf("인덕 blend %v, n %.3f", a, n)
+	n := (float64(own[5])*float64(R.DeputyWeight) + 110) / float64(R.DeputyDivisor)
+	if a := e.attributes(c); math.Abs(a[0]-(n*110+(1-n)*float64(own[0]))) > 1e-9 {
+		t.Fatalf("용인술 blend %v, n %.3f", a, n)
 	}
 }
 func TestExperienceBarIsLevelIndependent(t *testing.T) {

@@ -21,7 +21,7 @@ import (
 var rendererMain = make(chan func())
 
 func TestMain(m *testing.M) {
-	if os.Getenv("SRPG_RENDER_TEST") != "1" {
+	if os.Getenv("SRPG_RENDER_TEST") != "1" && os.Getenv("SRPG_E2E") != "1" {
 		os.Exit(m.Run())
 	}
 	done := make(chan int, 1)

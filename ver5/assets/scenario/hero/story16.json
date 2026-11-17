@@ -172,7 +172,7 @@
    "ID": "c16-b04",
    "Kind": "say",
    "Speaker": "caocao",
-   "Text": "공대, 그대의 진언을 귀담아들을 주인을 모셔 보는 게 어떻겠소?"
+   "Text": "공대, 여포는 좋은 장수이긴 하나 좋은 주인이라 하기는 어렵소. 이제 나를 섬기는 게 어떻겠소?"
   },
   {
    "ID": "c16-b05",
@@ -293,6 +293,12 @@
    "Kind": "say",
    "Speaker": "liubei",
    "Text": "예, 승상."
+  },
+  {
+   "ID": "c16-end",
+   "Kind": "narrate",
+   "Text": "1장 난세도래\n끝",
+   "Card": true
   },
   {
    "ID": "c16-march",

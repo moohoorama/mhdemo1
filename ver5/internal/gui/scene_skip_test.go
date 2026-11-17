@@ -1,6 +1,8 @@
 package gui
 
 import (
+	"math"
+	"srpg/internal/sprite"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -84,4 +86,84 @@ func TestSkipScene(t *testing.T) {
 		assert.Equal(t, "battle", o.Dialogue.Kind)
 		assert.Equal(t, "c04-battle", o.Node)
 	})
+}
+
+// storyNode is a game standing on any dialogue node of the story, its scene laid out without a map.
+func storyNode(t *testing.T, node string) *Game {
+	t.Helper()
+	g := storyAt(t, "c03-start")
+	st := g.S.Engine.Snapshot()
+	st.Phase, st.Node, st.Explore = "scenario", node, ""
+	e, err := core.Restore(g.S.Data, st)
+	require.NoError(t, err)
+	g.S.Engine, g.scene = e, nil
+	g.stage(t)
+	return g
+}
+
+func TestSceneNoSkip(t *testing.T) {
+	t.Run("a click waits for a NoSkip node's beats", func(t *testing.T) {
+		g := storyNode(t, "c19-yj11")
+		require.Contains(t, g.scene.def.NoSkip, "c19-yj11")
+		require.True(t, g.sceneBusy())
+		g.advanceDialogue()
+		assert.True(t, g.sceneBusy(), "관우's charge on 문추 plays out whole")
+	})
+	t.Run("a click still hurries other beats", func(t *testing.T) {
+		g := storyNode(t, "c19-yj05")
+		require.True(t, g.sceneBusy())
+		g.advanceDialogue()
+		assert.False(t, g.sceneBusy())
+	})
+}
+
+func TestSceneKeepInView(t *testing.T) {
+	newGame := func(zoom float64) *Game {
+		g := &Game{field: &Field{Map: &MapArt{}}, zoom: zoom}
+		g.scene = &scene{def: &scenes.Scene{}, actors: map[string]*unitVis{"관우": {u: 6, v: 68, top: 40}}}
+		return g
+	}
+	t.Run("an actor already on screen leaves the shot as framed", func(t *testing.T) {
+		g := newGame(2)
+		g.scene.focus = "관우"
+		x, y := g.field.Center(6, 67)
+		tx, ty := g.keepInView(x, y)
+		assert.Equal(t, x, tx)
+		assert.Equal(t, y, ty)
+	})
+	t.Run("an actor far off screen is brought just inside it", func(t *testing.T) {
+		g := newGame(4)
+		g.scene.focus = "관우"
+		x, y := g.field.Center(5, 50)
+		tx, ty := g.keepInView(x, y)
+		ax, ay := g.field.Center(6, 68)
+		hw, hh := float64(worldW)/2/4, float64(worldH)/2/4
+		assert.InDelta(t, ax, tx, hw, "관우 is within the screen's width")
+		assert.Less(t, ty-hh, ay-40, "his head is below the top edge")
+		assert.Greater(t, ty+hh, ay, "his feet are above the bottom edge")
+		assert.Greater(t, math.Abs(ax-tx), hw/2, "the camera moved only as far as it had to")
+	})
+	t.Run("no focus keeps the shot", func(t *testing.T) {
+		g := newGame(4)
+		tx, ty := g.keepInView(10, 20)
+		assert.Equal(t, 10.0, tx)
+		assert.Equal(t, 20.0, ty)
+	})
+}
+
+// A NoFocus node's beats leave the camera on the shot it had ("문추, 네 이놈!" in c19-yj10b does not swing to 관우
+// riding in and back); other nodes follow their actors.
+func TestSceneNoFocus(t *testing.T) {
+	g := storyNode(t, "c19-yj10b")
+	require.Contains(t, g.scene.def.NoFocus, "c19-yj10b")
+	s := &scene{def: g.scene.def, node: "c19-yj10b", actors: map[string]*unitVis{"관우": {u: 6, v: 68, art: &sprite.Art{}}, "문추": {u: 6, v: 40, art: &sprite.Art{}}},
+		extra: map[string]bool{}, emotes: map[string]*emote{}, looks: map[string]*look{}, plays: map[string]string{},
+		paths: map[string][][2]float64{}, speed: map[string]float64{}}
+	g.scene, s.focus = s, "문추"
+	g.startStep(scenes.Step{Actor: "관우", Emote: "!"})
+	assert.Equal(t, "문추", s.focus, "관우's beat does not draw the camera")
+
+	s.node = "c19-yj11"
+	g.startStep(scenes.Step{Actor: "관우", Emote: "!"})
+	assert.Equal(t, "관우", s.focus, "an ordinary node follows its actors")
 }

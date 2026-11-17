@@ -30,6 +30,8 @@ type Request struct {
 	Actor, Slot string
 	Node        string            `json:"node,omitempty"`       // the waypoint a jump starts at
 	Difficulty  string            `json:"difficulty,omitempty"` // a new game's difficulty; none is normal
+	Flags       []string          `json:"flags,omitempty"`      // a jump: the battle flags the story before left
+	Level       int               `json:"level,omitempty"`      // a jump: the party's level; none is the next battle's
 	Overwrite   bool              `json:"overwrite"`
 	Discard     bool              `json:"discard_current"`
 	Changed     bool              `json:"load_changed"` // load a save made before the data changed
@@ -127,7 +129,7 @@ func (s *Session) handle(q Request, r *Response) ([]core.Event, error) {
 		if err := discard(); err != nil {
 			return nil, err
 		}
-		e, err := core.NewAt(s.Data, q.Seed, q.Node, q.Difficulty)
+		e, err := core.NewAtWith(s.Data, q.Seed, q.Node, q.Difficulty, core.Start{Flags: q.Flags, Level: q.Level})
 		if err != nil {
 			return nil, err
 		}

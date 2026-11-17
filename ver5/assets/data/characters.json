@@ -19,13 +19,15 @@
     "exhort",
     "chivalry",
     "benevolence",
-    "fortune"
+    "fortune",
+    "ambition"
    ],
    "Learn": [
     "chivalry",
     "exhort",
     "benevolence",
-    "fortune"
+    "fortune",
+    "ambition"
    ],
    "Equipment": [
     "iron_sword",
@@ -82,13 +84,15 @@
     "opening",
     "charge_aim",
     "intimidate",
-    "deadly"
+    "deadly",
+    "awe"
    ],
    "Learn": [
     "intimidate",
     "deadly",
     "opening",
-    "charge_aim"
+    "charge_aim",
+    "awe"
    ],
    "Equipment": [
     "iron_spear",
@@ -138,13 +142,15 @@
     "roar",
     "grit",
     "hundred_foes",
-    "sweep_art"
+    "sweep_art",
+    "arrogance"
    ],
    "Learn": [
     "sweep_art",
     "grit",
     "hundred_foes",
-    "roar"
+    "roar",
+    "arrogance"
    ],
    "Equipment": [
     "iron_spear",
@@ -192,11 +198,13 @@
    "Playable": true,
    "Traits": [
     "supply",
-    "dispirit"
+    "dispirit",
+    "cheer"
    ],
    "Learn": [
     "supply",
-    "dispirit"
+    "dispirit",
+    "cheer"
    ],
    "Equipment": [
     "short_bow",
@@ -412,7 +420,8 @@
      "light_cavalry": "lubu",
      "heavy_cavalry": "lubu",
      "royal_guard": "lubu",
-     "horse_archer": "lubu_bow"
+     "horse_archer": "lubu_bow",
+     "light_cavalry:unarmed": "lubu_unarmed"
     },
     "Scene": "lubu_noncombat",
     "Portrait": "lubu",
@@ -504,11 +513,13 @@
    "Level": 3,
    "Traits": [
     "lecture",
-    "even_hand"
+    "even_hand",
+    "swiftness"
    ],
    "Learn": [
     "lecture",
-    "even_hand"
+    "even_hand",
+    "swiftness"
    ],
    "Equipment": [
     "bamboo_fan",
@@ -547,13 +558,15 @@
     "breakthrough",
     "versatile",
     "lone_warrior",
-    "terrain_footing"
+    "terrain_footing",
+    "daring"
    ],
    "Learn": [
     "versatile",
     "lone_warrior",
     "breakthrough",
-    "terrain_footing"
+    "terrain_footing",
+    "daring"
    ],
    "Equipment": [
     "iron_spear",
@@ -1005,10 +1018,13 @@
    "Level": 14,
    "Traits": [
     "versatile",
-    "ambition",
     "civil_martial",
     "feint"
    ],
+   "TraitAt": {
+    "ambition": 15,
+    "hegemony": 35
+   },
    "Learn": [],
    "Equipment": [
     "iron_spear",

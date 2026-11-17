@@ -29,8 +29,9 @@ func main() {
 	shots := flag.String("shots", "", "autoplay a new game and save screens at these ticks (60/s), e.g. 600,1200; needs -audit")
 	duelID := flag.String("duel", "", "open a duel directly by its scenario ID")
 	duelCapture := flag.String("duel-capture", "", "capture each beat of -duel and exit")
-	debug := flag.Bool("debug", false, "checking tools: scene jumps, duels, map editor, damage/XP scales, duel authoring view, pprof on "+debugAddr)
+	debug := flag.Bool("debug", gui.DebugBuild, "checking tools (non-release builds): scene jumps, duels, map editor, damage/XP scales, autoplay, pprof on "+debugAddr)
 	flag.Parse()
+	*debug = gui.DebugBuild && *debug
 	// Finder launches apps with an arbitrary working directory. Resolve bundled
 	// runtime assets beside the executable while respecting explicit flags.
 	if exe, err := os.Executable(); err == nil {

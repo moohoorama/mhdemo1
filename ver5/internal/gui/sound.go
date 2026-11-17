@@ -573,6 +573,10 @@ func (g *Game) sceneMotionCue(v *unitVis, anim string) string {
 		return "swing"
 	case "hit", "block":
 		return anim
+	case "cleave", "slash_l", "slash_r": // 관우's scene-only overhead cleave and flat sweeps
+		return "swing"
+	case "brace": // a block held overhead against it
+		return "block"
 	}
 	return ""
 }

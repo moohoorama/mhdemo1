@@ -92,6 +92,7 @@
   "SideShareMax": 0.5,
   "TraitPlanStep": 15,
   "Difficulties": [
+   {"ID": "casual", "Name": "쉬움", "Desc": "이야기를 편하게 따라가고 싶은 분들을 위한 난이도입니다.", "EnemyShift": -0.3, "XPPct": 150, "DealtPct": 120, "TakenPct": 80},
    {"ID": "easy", "Name": "일반", "Desc": "SRPG 장르에 익숙하지 않은 분들을 위한 난이도입니다.", "EnemyShift": -0.15, "XPPct": 130},
    {"ID": "normal", "Name": "어려움", "Desc": "SRPG 장르와 코에이 삼국지에 익숙한 분들을 위한 난이도입니다.", "EnemyShift": 0, "XPPct": 100},
    {"ID": "hard", "Name": "매우 어려움", "Desc": "이 게임에 익숙한 분들을 위한 난이도입니다.", "EnemyShift": 0.15, "XPPct": 85},
@@ -232,7 +233,8 @@
    "Name": "물",
    "Glyph": "~",
    "Surface": 0,
-   "Water": true
+   "Water": true,
+   "Wet": true
   },
   "c": {
    "Name": "성벽",
@@ -258,7 +260,8 @@
   "s": {
    "Name": "여울",
    "Glyph": "s",
-   "Surface": 1
+   "Surface": 1,
+   "Wet": true
   },
   "l": {
    "Name": "평지",
@@ -337,6 +340,7 @@
   "w": {
    "Name": "물웅덩이",
    "Look": "wet",
+   "Wet": true,
    "Grounds": "gdilu"
   },
   "r": {

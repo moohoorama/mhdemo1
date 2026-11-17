@@ -347,14 +347,16 @@
    }
   },
   "awe": {
-   "Name": "위풍",
-   "Desc": "적을 퇴각시키면 그 적의 주변 8칸에 있던 적에게 사기·순발 저하.",
+   "Name": "위진화하",
+   "Desc": "적을 퇴각시키면 그 적의 주변 8칸 적에게 공격·정신·방어·순발·사기 저하(-20%).",
    "Kind": "talent",
    "Tone": "debuff",
-   "Cost": 500,
+   "Cost": 1500,
+   "Requires": [
+    "intimidate"
+   ],
    "Effects": {
-    "rout:morale": 1,
-    "rout:agility": 1
+    "crush": 1
    }
   },
   "bodyguard": {
@@ -525,12 +527,12 @@
   },
   "hold_ground": {
    "Name": "진지고수",
-   "Desc": "자기 차례에 이동하지 않고 끝내면, 다음 자기 차례까지 받는 피해가 절반.",
+   "Desc": "자기 차례에 이동하지 않고 끝내면, 다음 자기 차례까지 받는 피해 30% 감소.",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 700,
+   "Cost": 1200,
    "Effects": {
-    "hold_ground": 0.5
+    "hold_ground": 0.3
    }
   },
   "sure_footing": {
@@ -864,8 +866,8 @@
    }
   },
   "benevolence": {
-   "Name": "인덕",
-   "Desc": "부관 능력치를 섞을 때 주장의 매력을 +20으로 본다.",
+   "Name": "용인술",
+   "Desc": "부관 능력치를 섞을 때 부관의 모든 능력치를 +10으로 본다.",
    "Kind": "talent",
    "Tone": "buff",
    "Cost": 700,
@@ -873,7 +875,7 @@
     "deputy_appoint"
    ],
    "Effects": {
-    "deputy_charm": 20
+    "deputy_plus": 10
    }
   },
   "dispirit": {
@@ -924,20 +926,19 @@
    "Desc": "자기 차례 시작에 인접 아군이 최대 병법치의 10%를 회복한다.",
    "Kind": "talent",
    "Tone": "heal",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "aura_mana": 0.1
    }
   },
   "even_hand": {
    "Name": "지균",
-   "Desc": "매 자기 차례 인접 아군에게 순발·사기 버프.",
+   "Desc": "매 자기 차례 인접 아군에게 순발 버프.",
    "Kind": "talent",
    "Tone": "buff",
-   "Cost": 500,
+   "Cost": 1500,
    "Effects": {
-    "aura_buff:agility": 20,
-    "aura_buff:morale": 20
+    "aura_buff:agility": 20
    }
   },
   "deputy_appoint": {
@@ -1269,7 +1270,7 @@
   },
   "disrupt_prep": {
    "Name": "교란",
-   "Desc": "교란 책략 사용 가능. 인접 적 1기의 순발·사기를 3턴 낮춘다.",
+   "Desc": "교란 책략 사용 가능. 2칸 안의 적 1기의 순발·사기를 3턴 낮춘다.",
    "Kind": "strategy",
    "Tone": "debuff",
    "Cost": 500
@@ -1277,13 +1278,6 @@
   "press_prep": {
    "Name": "압박",
    "Desc": "압박 책략 사용 가능. 자신을 중심으로 한 십자 5칸의 적에게 순발 저하.",
-   "Kind": "strategy",
-   "Tone": "debuff",
-   "Cost": 500
-  },
-  "provoke_prep": {
-   "Name": "도발",
-   "Desc": "도발 책략 사용 가능. 자신을 중심으로 한 십자 5칸의 적에게 사기 저하.",
    "Kind": "strategy",
    "Tone": "debuff",
    "Cost": 500
@@ -1366,16 +1360,16 @@
   },
   "ambition": {
    "Name": "패기",
-   "Desc": "매 자기 차례 자신에게 공격·정신·방어·순발·사기 버프(+20%).",
+   "Desc": "전투에 나설 때 자신에게 공격·정신·방어·순발·사기 버프(+20%).",
    "Kind": "talent",
    "Tone": "buff",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
-    "turn_buff:attack": 20,
-    "turn_buff:mind": 20,
-    "turn_buff:defense": 20,
-    "turn_buff:agility": 20,
-    "turn_buff:morale": 20
+    "start_buff:attack": 20,
+    "start_buff:mind": 20,
+    "start_buff:defense": 20,
+    "start_buff:agility": 20,
+    "start_buff:morale": 20
    }
   },
   "inspire_prep": {
@@ -1426,6 +1420,16 @@
     "relief"
    ]
   },
+  "status_cure": {
+   "Name": "상태이상치료",
+   "Desc": "상태이상을 푸는 책략 각성을 쓴다. 구휼확산과 함께 있으면 십자 범위의 대각성도 쓴다.",
+   "Kind": "strategy",
+   "Tone": "heal",
+   "Cost": 500,
+   "Requires": [
+    "relief"
+   ]
+  },
   "first_aid": {
    "Name": "응급처치",
    "Desc": "응급처치 사용 가능. 자신의 병력을 회복한다.",
@@ -1448,6 +1452,16 @@
    "Cost": 1000,
    "Effects": {
     "ranged_ward": 0.3
+   }
+  },
+  "mirror_plate": {
+   "Name": "거울",
+   "Desc": "원거리 물리 공격으로 받는 피해 −50%. 원거리피해감소와 합산된다.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 0,
+   "Effects": {
+    "ranged_ward": 0.5
    }
   },
   "magic_ward": {
@@ -1496,6 +1510,97 @@
    "Kind": "strategy",
    "Tone": "craft",
    "Cost": 500
+  },
+  "hegemony": {
+   "Name": "패도",
+   "Desc": "매 자기 차례 자신에게 공격·정신·방어·순발·사기 버프(+20%).",
+   "Kind": "talent",
+   "Tone": "buff",
+   "Cost": 1500,
+   "Requires": [
+    "ambition"
+   ],
+   "Effects": {
+    "turn_buff:attack": 20,
+    "turn_buff:mind": 20,
+    "turn_buff:defense": 20,
+    "turn_buff:agility": 20,
+    "turn_buff:morale": 20
+   }
+  },
+  "arrogance": {
+   "Name": "안하무인",
+   "Desc": "무력이 자신보다 10 이상 낮은 적의 물리 공격 피해 절반.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 1500,
+   "Requires": [
+    "roar"
+   ],
+   "Effects": {
+    "scorn": 0.5
+   }
+  },
+  "daring": {
+   "Name": "일신시담",
+   "Desc": "주변 8칸에 아군이 없으면 공격력·방어력 +10%(일기당천과 합쳐 +20%).",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 1500,
+   "Requires": [
+    "lone_warrior"
+   ],
+   "Effects": {
+    "lone": 0.1
+   }
+  },
+  "fire_star": {
+   "Name": "화덕성군",
+   "Desc": "화염 책략에 피해를 입지 않고, 치명타도 불씨도 생기지 않는다.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 1500,
+   "Effects": {
+    "immune:fire": 1
+   }
+  },
+  "cheer": {
+   "Name": "호인",
+   "Desc": "매 자기 차례 인접 아군에게 사기 버프.",
+   "Kind": "talent",
+   "Tone": "buff",
+   "Cost": 1500,
+   "Effects": {
+    "aura_buff:morale": 20
+   }
+  },
+  "terrain_mend": {
+   "Name": "지형정비",
+   "Desc": "지형정비 사용 가능. 아군 한 명 주변 3×3의 불씨·물웅덩이·돌무더기를 걷어 낸다.",
+   "Kind": "strategy",
+   "Tone": "craft",
+   "Cost": 1000
+  },
+  "swim": {
+   "Name": "수영",
+   "Desc": "물·여울·물웅덩이에서 지형 보정 +20%, 수계 책략 피해 절반.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 1000,
+   "Effects": {
+    "wet_factor": 0.2,
+    "ward:water": 0.5
+   }
+  },
+  "mountain_footing": {
+   "Name": "산악지형보조",
+   "Desc": "산·숲에 서면 지형 보정 +5%(공격·방어 모두).",
+   "Kind": "talent",
+   "Tone": "move",
+   "Cost": 1000,
+   "Effects": {
+    "ambush_factor": 0.05
+   }
   }
  }
 }

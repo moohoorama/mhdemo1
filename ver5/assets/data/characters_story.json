@@ -1735,7 +1735,7 @@
    "Learn": [],
    "Equipment": [
     "iron_spear",
-    "leather_armor"
+    "mirror_armor"
    ],
    "Look": {
     "Portrait": "yuejin",
@@ -1816,11 +1816,13 @@
    "Playable": true,
    "Traits": [
     "generosity",
-    "supply"
+    "supply",
+    "fire_star"
    ],
    "Learn": [
     "generosity",
-    "supply"
+    "supply",
+    "fire_star"
    ],
    "Equipment": [
     "bamboo_fan",
@@ -1924,7 +1926,7 @@
    ],
    "Level": 20,
    "Traits": [
-    "feint",
+    "spell_reflect",
     "stratagem"
    ],
    "Learn": [],
@@ -2049,7 +2051,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "sanjian_blade",
     "leather_armor"
    ],
    "Look": {
@@ -2812,7 +2814,6 @@
    "Name": "곽도",
    "Biography": "원소의 모사. 남의 공을 시기하고 원소의 귀에 듣기 좋은 말만 넣는다.",
    "Class": "diplomat",
-   "Prefer": "status",
    "Stats": [
     58,
     40,
@@ -2925,8 +2926,14 @@
    ],
    "Level": 20,
    "Playable": true,
-   "Traits": [],
-   "Learn": [],
+   "Traits": [
+    "swim",
+    "swiftness"
+   ],
+   "Learn": [
+    "swim",
+    "swiftness"
+   ],
    "Equipment": [
     "iron_sword",
     "plain_clothes"
@@ -2969,6 +2976,86 @@
      "themeA": "#3a4a6a",
      "iron": "#8a8a94"
     }
+   }
+  },
+  "manchong": {
+   "Name": "만총",
+   "Biography": "허도의 현령. 법을 엄히 세워 권세가도 봐주지 않는다. 뒤에 여남 태수가 되어 원소 편에 선 무리를 평정한다.",
+   "Class": "strategist",
+   "Stats": [
+    84,
+    64,
+    82,
+    66,
+    70,
+    72
+   ],
+   "Level": 12,
+   "Traits": [
+    "strict_order",
+    "discipline"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Scene": "official_black_noncombat",
+    "Faction": "wei"
+   }
+  },
+  "liupi": {
+   "Name": "유벽",
+   "Biography": "여남의 옛 황건 두령. 관도 싸움 때 원소 편에 서서 허도 뒤를 쳤고, 예주목 유비를 여남으로 맞아들였다.",
+   "Class": "outlaw",
+   "Stats": [
+    68,
+    70,
+    42,
+    60,
+    56,
+    60
+   ],
+   "Level": 20,
+   "Playable": true,
+   "Traits": [
+    "mountain_footing",
+    "earth_boost"
+   ],
+   "Learn": [
+    "mountain_footing",
+    "earth_boost"
+   ],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "shu"
+   }
+  },
+  "gongdu": {
+   "Name": "공도",
+   "Biography": "여남의 옛 황건 두령. 유벽과 함께 여남에서 군사를 일으켰다.",
+   "Class": "outlaw",
+   "Stats": [
+    60,
+    68,
+    36,
+    62,
+    50,
+    52
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "iron_sword",
+    "plain_clothes"
+   ],
+   "Look": {
+    "Faction": "shu"
    }
   },
   "villager": {

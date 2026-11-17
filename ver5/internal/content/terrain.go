@@ -14,6 +14,7 @@ type Ground struct {
 	Glyph   string
 	Surface int  `json:",omitempty"` // how the ground is drawn: its level from 0 water, 1 ford, 2 grass, 3 plain to 4 soil
 	Water   bool `json:",omitempty"` // spells that need water look for it beside the caster or target
+	Wet     bool `json:",omitempty"` // one stands in water on it (water, a ford): 수영
 	Ambush  bool `json:",omitempty"` // 기습 crits from it (mountains)
 	Castle  bool `json:",omitempty"` // 수성 holds on it (the town inside the walls)
 }
@@ -41,6 +42,7 @@ type State struct {
 	On      string  `json:",omitempty"`
 	Grounds string  `json:",omitempty"`
 	Look    string  `json:",omitempty"`
+	Wet     bool    `json:",omitempty"` // one stands in water on it (a wet patch): 수영
 	Blaze   float64 `json:",omitempty"`
 	RestHP  *int    `json:",omitempty"`
 }
@@ -82,6 +84,7 @@ func (s Stage) Cell(x, y int) Cell {
 type CellProps struct {
 	RestHP, RestMP        int
 	Water, Ambush, Castle bool
+	Wet                   bool // the ground or the state on it is water one stands in
 }
 
 // Move is what the group pays and gets on the cell: the topmost layer that says a value wins. On a stage
@@ -119,6 +122,7 @@ func (d *Data) Props(c Cell) CellProps {
 	var p CellProps
 	g := d.Grounds[string(c.Ground)]
 	p.Water, p.Ambush, p.Castle = g.Water, g.Ambush, g.Castle
+	p.Wet = g.Wet || d.States[string(c.State)].Wet
 	if st, ok := d.Structures[string(c.Structure)]; ok {
 		p.Ambush, p.Castle = p.Ambush || st.Ambush, p.Castle || st.Castle
 		if st.RestHP != nil {

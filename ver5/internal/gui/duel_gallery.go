@@ -8,10 +8,12 @@ import (
 	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"srpg/internal/content"
 	"srpg/internal/duelview"
 )
 
 type duelGallery struct {
+	list          tableList
 	view          *duelview.View
 	id            string
 	debug, paused bool
@@ -25,6 +27,9 @@ type duelGallery struct {
 // An empty ID opens the selection menu.
 func (g *Game) OpenDuel(id, captureDir string, debug bool) error {
 	gallery := &duelGallery{debug: debug, captureDir: captureDir}
+	if g.gallery != nil {
+		gallery.list = g.gallery.list
+	}
 	if id == "" {
 		if captureDir != "" {
 			return fmt.Errorf("duel capture requires a duel ID")
@@ -103,6 +108,9 @@ func (g *Game) updateDuelGallery() error {
 		p.prepareCapture()
 		return nil
 	}
+	if p.view == nil && (g.updateTableDrag() || g.updateWheelLists()) {
+		return nil
+	}
 	if p.view != nil {
 		if !p.paused {
 			p.view.Time += duelview.PlaybackSpeed / 60
@@ -123,6 +131,7 @@ func (g *Game) updateDuelGallery() error {
 		}
 		if p.view.Time >= p.view.Story.Duration() || keyJustPressed(ebiten.KeyEscape) || keyJustPressed(ebiten.KeyEnter) || !p.debug && keyJustPressed(ebiten.KeySpace) {
 			p.view = nil
+			return nil
 		}
 	} else if keyJustPressed(ebiten.KeyEscape) {
 		g.gallery = nil
@@ -133,7 +142,8 @@ func (g *Game) updateDuelGallery() error {
 	}
 	if mouseJustPressed(ebiten.MouseButtonLeft) {
 		x, y := cursorPos()
-		for _, b := range g.buttons {
+		for i := len(g.buttons) - 1; i >= 0; i-- {
+			b := g.buttons[i]
 			if image.Pt(x, y).In(b.rect) {
 				b.click()
 				break
@@ -146,22 +156,31 @@ func (g *Game) updateDuelGallery() error {
 func (g *Game) drawDuelGallery(dst *ebiten.Image) {
 	p := g.gallery
 	if p.view == nil {
-		g.label(dst, "일기토", 96, 70, 48, gold)
-		n := 0
+		type entry struct {
+			stage string
+			duel  content.Duel
+		}
+		entries := []entry{}
 		for _, stage := range g.S.Data.Stages {
 			for _, d := range stage.Duels {
-				duelID := d.ID
-				x, y := 65+(n%3)*390, 180+(n/3)*180
-				label := stage.Name + "\n" + g.S.Data.Characters[d.Ally].Name + " · " + g.S.Data.Characters[d.Enemy].Name
-				g.btn(dst, image.Rect(x, y, x+360, y+135), label, func() {
-					if err := g.OpenDuel(duelID, "", p.debug); err != nil {
-						g.toast(err.Error(), bad)
-					}
-				})
-				n++
+				entries = append(entries, entry{stage.Name, d})
 			}
 		}
-		g.btn(dst, image.Rect(1000, 805, 1254, 839), "시작 메뉴", func() { g.gallery = nil })
+		r := g.browserPanel(dst, "일기토", len(entries), func() { g.gallery = nil })
+		g.listRows(dst, &p.list, r, len(entries), 80, func(i int, rr image.Rectangle) {
+			e := entries[i]
+			rowBack(dst, rr, hovered(rr))
+			g.portrait(dst, e.duel.Ally, "", float64(rr.Min.X+12), float64(rr.Min.Y+14), 48)
+			g.portrait(dst, e.duel.Enemy, "", float64(rr.Min.X+68), float64(rr.Min.Y+14), 48)
+			x := float64(rr.Min.X + 132)
+			label := g.name(e.duel.Ally) + " · " + g.name(e.duel.Enemy)
+			g.label(dst, ellipsis(g, label, 16, rr.Dx()-148), x, float64(rr.Min.Y+14), 16, ink)
+			g.label(dst, ellipsis(g, e.stage, 12, rr.Dx()-148), x, float64(rr.Min.Y+45), 12, muted)
+		}, func(i int) {
+			if err := g.OpenDuel(entries[i].duel.ID, "", p.debug); err != nil {
+				g.toast(err.Error(), bad)
+			}
+		})
 		return
 	}
 	p.view.Draw(dst)

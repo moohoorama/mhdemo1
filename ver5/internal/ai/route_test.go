@@ -116,14 +116,17 @@ func TestAWalkerDoesNotStallBuffing(t *testing.T) {
 	assert.LessOrEqual(t, e.Observe().Round, 3)
 }
 
-// A caster who prefers schemes (곽도) puts its status spells before its fire while it can pay for one.
+// A caster whose class prefers schemes (세객·종횡가, 곽도) puts its status spells before its fire while it can pay for one.
 func TestASchemerCastsStatusSpellsFirst(t *testing.T) {
 	cast := func(prefer string) []string {
 		e := battleIn(t, func(d *content.Data) {
 			boss := d.Characters["boss"]
-			boss.Class, boss.Prefer = "mage", prefer
+			boss.Class = "mage"
 			boss.Stats[2] = 95
 			d.Characters["boss"] = boss
+			mage := d.Classes["mage"]
+			mage.Prefer = prefer
+			d.Classes["mage"] = mage
 			s := &d.Stages[0]
 			s.Enemies[0].X, s.Enemies[0].Y, s.Enemies[0].Policy = 4, 2, "assault"
 			s.Enemies[0].Traits, s.Enemies[0].Equipment = &[]string{"fire"}, &[]string{}

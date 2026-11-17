@@ -9,6 +9,7 @@
   grid.py import liubei                                # every grid file back into units/liubei.yaml
   grid.py colors guanyu themeA1=#5fae5a themeA2=#3d8a45 themeA3=#24573a
   grid.py poses liubei_noncombat sit bow               # add one-frame motions (a copy of idle in every row to draw over)
+  grid.py rows guanyu cleave 6 140,220,70,320,160,200  # add a multi-frame motion (copies of idle) to convert or draw into
   grid.py cell taoqian_noncombat 64 50 32 36           # every frame onto a 64x50 cell, pivot moved to (32, 36)
 
 Each grid file starts with ';' comment lines (frame, cell, pivot, legend, column ruler); pixel lines are 'NN|<row>'.
@@ -83,6 +84,26 @@ def add_poses(doc, poses):
             doc['frames'].append(f)
         added.append(name)
     return added
+
+
+def cmd_rows(a):
+    """Append a multi-frame motion (frame n starts as a copy of idle frame n % 4 in every row) to draw or convert into."""
+    doc = dots.with_alpha(dots.load(a.id))
+    u = doc['unit']
+    if a.name in u['animations']:
+        raise SystemExit(f'{a.name} exists')
+    ms = [int(v) for v in a.ms.split(',')]
+    if len(ms) != a.frames:
+        raise SystemExit('one ms value per frame')
+    idle = u['animations']['idle']['frames']
+    col = max(an['first_column'] + an['frames'] for an in u['animations'].values())
+    u['animations'][a.name] = dict(first_column=col, frames=a.frames, ms=ms, loop=False)
+    for d in u['rows']:
+        for n in range(a.frames):
+            f = copy.deepcopy(dots.frame(doc, 'idle', d, n % idle))
+            f.update(animation=a.name, frame=n)
+            doc['frames'].append(f)
+    print('added', a.name, '->', dots.save(doc))
 
 
 def cmd_poses(a):
@@ -173,9 +194,11 @@ def main():
     z.add_argument('px', type=int), z.add_argument('py', type=int)
     q = sub.add_parser('poses')
     q.add_argument('id'), q.add_argument('poses', nargs='+')
+    r = sub.add_parser('rows')
+    r.add_argument('id'), r.add_argument('name'), r.add_argument('frames', type=int), r.add_argument('ms')
     a = p.parse_args()
     {'new': cmd_new, 'export': cmd_export, 'import': cmd_import, 'colors': cmd_colors, 'poses': cmd_poses,
-     'cell': cmd_cell}[a.cmd](a)
+     'cell': cmd_cell, 'rows': cmd_rows}[a.cmd](a)
 
 
 if __name__ == '__main__':

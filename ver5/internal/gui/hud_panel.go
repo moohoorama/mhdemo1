@@ -227,7 +227,7 @@ func (g *Game) hudMisc(dst *ebiten.Image, r image.Rectangle) {
 		click func()
 	}{
 		{"위협 범위" + mark(g.threatAll), func() { g.threatAll = !g.threatAll }},
-		{"자동 전투" + mark(g.autoplay), func() { g.autoplay = !g.autoplay }},
+		{"자동 전투" + mark(g.autoplay), func() { g.stopCampaignAuto(); g.autoplay = !g.autoplay }},
 		{"병력일람", func() { g.openOverlay("roster") }},
 	}
 	for i, it := range items {

@@ -91,6 +91,18 @@ def horse_armour(row, f):
     m.ell(H([0, .55, .86]), [.52, .46, .06], GOLD)  # with a gold hem
 
 
+# Scene row `brace` (19장 연진: 문추 takes 관우's cleaves): the spear held crosswise in both hands above the helmet,
+# the rider leaning INTO the blow (forward, lean < 0) and crushed down by it while the horse is driven back on its
+# haunches (shift > 0 slides it back, rear > 0 sinks the hindquarters about the hind hooves), then the arms give and
+# he recoils. off = the second hand on the shaft. Impact is frame 1.
+BRACE = [
+    dict(hand=[-.48, -.45, 2.5], off=[.45, -.43, 2.52], dir=[1, .02, .04], lean=-.12),
+    dict(hand=[-.46, -.45, 2.38], off=[.43, -.43, 2.38], dir=[1, .02, 0], lean=-.4, bob=-.1, rear=.12, shift=.28),
+    dict(hand=[-.46, -.42, 2.32], off=[.43, -.4, 2.3], dir=[1, .04, -.02], lean=-.32, bob=-.12, rear=.18, shift=.45),
+    dict(hand=[-.5, -.3, 2.05], off=[.38, -.32, 2.2], dir=[.93, 0, .3], lean=.1, bob=-.03, rear=.06, shift=.14)]
+A.SPEAR['brace'] = dict(name='창대로 막아 버티기', effect='none', frames=BRACE)
+
+
 def make():
     U.KITS[KIT] = dict(U.KITS['rider'], shoulder=BLUE)
     soldier, cavalry = U.soldier, U.cavalry
@@ -116,8 +128,25 @@ def make():
         res['faces'] = list(res['faces']) + extra
         return res
 
-    U.soldier, U.cavalry = armoured_soldier, royal
-    return M.rider_build(KIT), M.Hd.heads(M.Hd.IRON, M.Hd.PLUME)
+    rider_pose = U.rider_pose
+
+    def two_hands(row, f, k=None):
+        p = rider_pose(row, f, k)
+        if k is not None and 'off' in k:
+            p['hands'][1] = list(k['off'])
+            p['elbows'][1] = ((V([.4, 0, 1.42]) + V(k['off']))/2 + [.2, .02, -.08]).tolist()
+        return p
+
+    U.soldier, U.cavalry, U.rider_pose = armoured_soldier, royal, two_hands
+    inner = M.rider_build(KIT)
+
+    def build(row, f, style=None):
+        if row != 'brace':
+            return inner(row, f, style)
+        res = U.cavalry(U.ATTACK, f, 'brace', kit=KIT, coat='dot', weapon='spear')
+        res.update(effects=[], face='hurt' if f in (1, 2) else 'normal')
+        return res
+    return build, M.Hd.heads(M.Hd.IRON, M.Hd.PLUME)
 
 
 M.register('royal_guard', make, vertical_spear=True)

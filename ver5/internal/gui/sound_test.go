@@ -13,6 +13,63 @@ import (
 	"srpg/internal/sprite"
 )
 
+func TestConfirmationSounds(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		run  func(*Game)
+		want string
+	}{
+		{"plain approval", nil, "0 ok\n"},
+		{"cleanup before purchase sound", func(g *Game) { g.closeOverlays(); g.sfx("shop-buy") }, "0 shop-buy\n"},
+		{"cleanup after save sound", func(g *Game) { g.sfx("save"); g.closeOverlays() }, "0 save\n"},
+		{"action refused", func(g *Game) { g.toast("실행할 수 없습니다", bad) }, "0 ui-denied\n"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			trace, err := os.CreateTemp(t.TempDir(), "sfx")
+			require.NoError(t, err)
+			old := sfxTrace
+			sfxTrace = trace
+			t.Cleanup(func() { sfxTrace = old; trace.Close() })
+			g := &Game{S: &session.Session{}, overlays: []string{"menu"}}
+			require.True(t, g.askWith("진행하시겠습니까?", "예", "아니오", func() {
+				assert.Equal(t, "menu", g.overlay(), "the action runs after its question closes")
+				if tc.run != nil {
+					tc.run(g)
+				}
+			}))
+			g.acceptConfirmation()
+			assert.False(t, g.accepting)
+			b, err := os.ReadFile(trace.Name())
+			require.NoError(t, err)
+			assert.Equal(t, tc.want, string(b))
+
+			require.True(t, g.askWith("취소하시겠습니까?", "예", "아니오", nil))
+			g.closeOverlay()
+			b, err = os.ReadFile(trace.Name())
+			require.NoError(t, err)
+			assert.Equal(t, tc.want+"0 close\n", string(b), "a later cancellation keeps its own feedback")
+		})
+	}
+}
+
+func TestModalAcknowledgementSounds(t *testing.T) {
+	for _, kind := range []string{"objective", "levelup", "promotion", "trait", "acquire"} {
+		t.Run(kind, func(t *testing.T) {
+			trace, err := os.CreateTemp(t.TempDir(), "sfx")
+			require.NoError(t, err)
+			old := sfxTrace
+			sfxTrace = trace
+			t.Cleanup(func() { sfxTrace = old; trace.Close() })
+			g := &Game{modals: []*modal{{kind: kind}}}
+			g.closeModal()
+			assert.Empty(t, g.modals)
+			b, err := os.ReadFile(trace.Name())
+			require.NoError(t, err)
+			assert.Equal(t, "0 ok\n", string(b))
+		})
+	}
+}
+
 func TestDuelCues(t *testing.T) {
 	story := duel.Story{Beats: []duel.Beat{
 		{Kind: "talk", Duration: 1},

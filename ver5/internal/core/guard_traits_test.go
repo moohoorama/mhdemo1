@@ -12,6 +12,7 @@ import (
 func TestWardsMeditationAndForesight(t *testing.T) {
 	traits := map[string]map[string]float64{
 		"ranged_ward_t":  {content.FxRangedWard: .3},
+		"mirror_plate_t": {content.FxRangedWard: .5},
 		"counter_ward_t": {content.FxCounterWard: .3},
 		"foresight_t":    {content.FxStartMana: .25},
 		"heavy_t":        {content.FxHeavy: .3},
@@ -34,6 +35,8 @@ func TestWardsMeditationAndForesight(t *testing.T) {
 		with(e, "boss", "ranged_ward_t")
 		assert.InDelta(t, shot*.7, e.damage(arch, b, e.basic()), 1e-6)
 		assert.InDelta(t, melee, e.damage(hero, b, e.basic()), 1e-6)
+		with(e, "boss", "mirror_plate_t") // a second trait with the same effect adds its share
+		assert.InDelta(t, shot*.2, e.damage(arch, b, e.basic()), 1e-6)
 	})
 
 	t.Run("counter ward takes 30 points off the counter's share", func(t *testing.T) {

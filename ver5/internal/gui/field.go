@@ -713,12 +713,30 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost float32) {
 	}
 	anim, frame := f.pose(u)
 	s := Sprite{u.art.Frame(u.dir, anim, frame), u.art.Pivot[0], u.art.Pivot[1]}
+	if ghost == 0 {
+		f.drawStatusMarks(u, x, y, true)
+	}
 	if boat, k := f.boat(u); k > 0 {
 		f.drawAfloat(u, s, boat, k, x, y, op)
 	} else if u.wade > .01 {
 		f.drawWading(u, s, x, y, op)
 	} else {
 		f.blit(f.Canvas, s, x, y, op)
+	}
+	if ghost == 0 {
+		f.drawStatusMarks(u, x, y, false)
+	}
+	if u.grey > 0 && ghost == 0 { // slain: the same sprite drawn over it drained of colour and dimmed
+		var cm colorm.ColorM
+		cm.ChangeHSV(0, 0, .72)
+		cm.Scale(1, 1, 1, u.grey)
+		gop := &colorm.DrawImageOptions{}
+		gop.GeoM.Translate(math.Round(x-s.PivotX), math.Round(y-s.PivotY))
+		if f.renderZoom > 0 {
+			gop.GeoM.Translate(-f.renderX, -f.renderY)
+			gop.GeoM.Scale(f.renderZoom, f.renderZoom)
+		}
+		colorm.DrawImage(f.Canvas, s.Image, cm, gop)
 	}
 	if k := .9 * u.charge; k > 0 && ghost == 0 { // gathering a critical blow: a white silhouette fades in over the sprite
 		var cm colorm.ColorM

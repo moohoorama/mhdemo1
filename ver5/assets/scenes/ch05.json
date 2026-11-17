@@ -106,7 +106,7 @@
    "Beats": {
     "c05-c2": [
      [
-      [{"Actor": "유비", "Move": [2.25, 2.25]}, {"Actor": "장비", "Enter": [6.75, 4.75], "Via": [[5.75, 4.75], [5.75, 2.25]], "Move": [3.25, 2.25], "After": 0.3}, {"Actor": "관우", "Enter": [6.75, 4.75], "Via": [[5.75, 4.75], [5.75, 3.25]], "Move": [3.25, 3.25], "After": 0.9}],
+      [{"Actor": "유비", "Move": [2.25, 2.25]}, {"Actor": "장비", "Enter": [6.75, 4.75], "Via": [[5.75, 4.75], [5.75, 1.75]], "Move": [3.25, 1.75], "After": 0.3}, {"Actor": "관우", "Enter": [6.75, 4.75], "Via": [[5.75, 4.75], [5.75, 3.25]], "Move": [3.25, 3.25], "After": 0.9}],
       [{"Actor": "유비", "Face": "NW"}, {"Actor": "장비", "Face": "NW", "Play": "action", "Emote": "!"}, {"Actor": "관우", "Face": "NW"}]
      ]
     ],
@@ -119,7 +119,7 @@
     "c05-c13": [
      [
       [{"Actor": "조조", "Play": "action"}],
-      [{"Actor": "유비", "Move": [1.75, 2.25]}],
+      [{"Actor": "유비", "Move": [2.25, 2.25]}],
       [{"Actor": "유비", "Face": "NW"}]
      ]
     ],
@@ -135,8 +135,8 @@
     ],
     "c05-c18": [
      [
-      [{"Actor": "조조", "Move": [1.25, 3.75]}],
-      [{"Actor": "조조", "Via": [[1.25, 4.25]], "Move": [6.25, 3.75], "Exit": true}, {"Actor": "유비", "Look": "SE"}],
+      [{"Actor": "조조", "Move": [0.75, 3.75]}],
+      [{"Actor": "조조", "Via": [[0.75, 4.25]], "Move": [6.25, 3.75], "Exit": true}, {"Actor": "유비", "Look": "SE"}],
       [{"Wait": 0.6}],
       [{"Actor": "유비", "Face": "SE"}, {"Actor": "관우", "Face": "NW"}]
      ]
@@ -244,7 +244,7 @@
     "대신#34": {"At": [8, 8], "Face": "NE", "Sprite": "official_black_noncombat", "Pose": "bow", "Faction": "han"},
     "대신#35": {"At": [9, 8], "Face": "NE", "Sprite": "official_black_noncombat", "Pose": "bow", "Faction": "han"},
     "대신#36": {"At": [10, 8], "Face": "NE", "Sprite": "official_black_noncombat", "Pose": "bow", "Faction": "han"},
-    "서량병#1": {"At": [0, 3], "Face": "SE", "Sprite": "heavy_infantry", "Faction": "dong"},
+    "서량병#1": {"At": [0, 2], "Face": "SE", "Sprite": "heavy_infantry", "Faction": "dong"},
     "서량병#2": {"At": [0, 6], "Face": "SE", "Sprite": "heavy_infantry", "Faction": "dong"},
     "서량병#3": {"At": [0, 9], "Face": "SE", "Sprite": "heavy_infantry", "Faction": "dong"},
     "서량병#4": {"At": [12, 3], "Face": "NW", "Sprite": "heavy_infantry", "Faction": "dong"},

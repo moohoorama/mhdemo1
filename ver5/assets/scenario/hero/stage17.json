@@ -26,7 +26,8 @@
    "Flag": "flag-b17-jiling-duel",
    "Reward": {
     "sanjian_blade": 1
-   }
+   },
+   "Later": "18장 병사들의 말이 달라진다"
   }
  ],
  "TurnLimit": 30,
@@ -117,10 +118,6 @@
    "Policy": "hold",
    "Facing": "NW",
    "DuelFirst": true,
-   "Equipment": [
-    "sanjian_blade",
-    "leather_armor"
-   ],
    "Faction": "yuan"
   },
   {

@@ -40,7 +40,7 @@ public final class MainActivity extends Activity {
         new Thread(() -> {
             try {
                 unpackAssets();
-                Mobile.start(getFilesDir().getAbsolutePath());
+                Mobile.start(getFilesDir().getAbsolutePath(), java.util.TimeZone.getDefault().getID());
                 runOnUiThread(() -> {
                     if (isFinishing() || isDestroyed()) return;
                     gameView = new EbitenView(this) {

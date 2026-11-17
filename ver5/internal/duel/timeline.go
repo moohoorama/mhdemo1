@@ -53,6 +53,7 @@ type Beat struct {
 	Kind, Title, Speech string
 	Side                int
 	Duration            float64
+	Tired               string // see content.Beat
 }
 
 type Story struct {
@@ -121,41 +122,41 @@ func screenOffset(x, y float64) (float64, float64) {
 func New(ending int) Story {
 	ending = max(0, min(6, ending))
 	b := []Beat{
-		{"talk", "진영에서 마주 서다", "내 칼을 받아 보아라!", 0, 2.2},
-		{"talk", "적장의 도발", "말보다 실력을 보여라!", 1, 1.8},
-		{"approach", "대열 앞으로 · 접근", "", 0, 1.4},
-		{"block", "첫 공방 · 방어", "어림없다!", 0, 1.15},
-		{"hit", "반격 · 피격", "", 1, 1.15},
-		{"dodge", "한 발 뒤로 · 회피", "너무 느리다!", 1, 1.15},
-		{"hit", "연속 공격 · 첫 타", "", 0, 1.05},
-		{"block", "연속 공격 · 두 번째", "", 0, 1.05},
-		{"hit", "연속 공격 · 세 번째", "받아라!", 0, 1.05},
-		{"rest", "숨을 고르다", "헉… 헉…", 1, 1.8},
-		{"backstep", "서로를 보며 뒷걸음질", "이번에는 끝을 보자!", 0, 1.6},
-		{"talk", "돌진 전의 정적", "간다!", 1, .8},
-		{"crossing-charge", "동시 돌진 · 섬광 · 교차", "", 0, 1.6},
-		{"turn", "관성으로 지나친 뒤 돌아서다", "", 0, .8},
+		{"talk", "진영에서 마주 서다", "내 칼을 받아 보아라!", 0, 2.2, ""},
+		{"talk", "적장의 도발", "말보다 실력을 보여라!", 1, 1.8, ""},
+		{"approach", "대열 앞으로 · 접근", "", 0, 1.4, ""},
+		{"block", "첫 공방 · 방어", "어림없다!", 0, 1.15, ""},
+		{"hit", "반격 · 피격", "", 1, 1.15, ""},
+		{"dodge", "한 발 뒤로 · 회피", "너무 느리다!", 1, 1.15, ""},
+		{"hit", "연속 공격 · 첫 타", "", 0, 1.05, ""},
+		{"block", "연속 공격 · 두 번째", "", 0, 1.05, ""},
+		{"hit", "연속 공격 · 세 번째", "받아라!", 0, 1.05, ""},
+		{"rest", "숨을 고르다", "헉… 헉…", 1, 1.8, ""},
+		{"backstep", "서로를 보며 뒷걸음질", "이번에는 끝을 보자!", 0, 1.6, ""},
+		{"talk", "돌진 전의 정적", "간다!", 1, .8, ""},
+		{"crossing-charge", "동시 돌진 · 섬광 · 교차", "", 0, 1.6, ""},
+		{"turn", "관성으로 지나친 뒤 돌아서다", "", 0, .8, ""},
 	}
 	switch ending {
 	case 0, 1:
-		b = append(b, Beat{"close", "다시 맞붙다", "", 0, 1.1}, Beat{"critical", "결정타", "이것으로 끝이다!", ending, 1.3}, Beat{"win", Endings[ending], "내가 이겼다!", ending, 3})
+		b = append(b, Beat{"close", "다시 맞붙다", "", 0, 1.1, ""}, Beat{"critical", "결정타", "이것으로 끝이다!", ending, 1.3, ""}, Beat{"win", Endings[ending], "내가 이겼다!", ending, 3, ""})
 	case 2:
-		b = append(b, Beat{"draw", Endings[ending], "오늘은 여기까지다…", 0, 3})
+		b = append(b, Beat{"draw", Endings[ending], "오늘은 여기까지다…", 0, 3, ""})
 	default:
 		runner := 0
 		if ending >= 5 {
 			runner = 1
 		}
-		b = append(b, Beat{"close", "진영 쪽으로 물러날 틈", "", 0, 1.1})
+		b = append(b, Beat{"close", "진영 쪽으로 물러날 틈", "", 0, 1.1, ""})
 		kind := "escape"
 		if ending == 4 || ending == 6 {
 			kind = "catch"
 		}
-		b = append(b, Beat{kind, "도주와 추격", "물러난다!", runner, 2.4})
+		b = append(b, Beat{kind, "도주와 추격", "물러난다!", runner, 2.4, ""})
 		if kind == "catch" {
-			b = append(b, Beat{"backhit", "진영 직전 · 추격자의 일격", "놓칠 줄 아느냐!", 1 - runner, 1.3}, Beat{"win", Endings[ending], "승부는 끝났다!", 1 - runner, 3})
+			b = append(b, Beat{"backhit", "진영 직전 · 추격자의 일격", "놓칠 줄 아느냐!", 1 - runner, 1.3, ""}, Beat{"win", Endings[ending], "승부는 끝났다!", 1 - runner, 3, ""})
 		} else {
-			b = append(b, Beat{"escaped", Endings[ending], "다음에 다시 겨루자!", runner, 3})
+			b = append(b, Beat{"escaped", Endings[ending], "다음에 다시 겨루자!", runner, 3, ""})
 		}
 	}
 	return prepareStory(b)
@@ -445,7 +446,9 @@ func apply(s *State, b Beat, t float64) {
 		s.Impact = max(0, 1-(t-contact)/.28)
 	case "rest", "draw":
 		for i := range 2 {
-			s.Actors[i].Animation = "exhausted"
+			if tired(b.Tired, i) {
+				s.Actors[i].Animation = "exhausted"
+			}
 		}
 	case "win":
 		for i := range 2 {
@@ -527,4 +530,17 @@ func apply(s *State, b Beat, t float64) {
 		s.Actors[b.Side].Facing = facing[b.Side]
 		s.Actors[b.Side].Animation = "exhausted"
 	}
+}
+
+// tired reports whether side i is spent under a rest or draw beat's Tired.
+func tired(who string, i int) bool {
+	switch who {
+	case "ally":
+		return i == 0
+	case "enemy":
+		return i == 1
+	case "none":
+		return false
+	}
+	return true
 }

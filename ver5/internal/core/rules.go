@@ -114,6 +114,12 @@ func (e *Engine) terrain(u *Unit, x, y int) content.Terrain {
 	if c.Ground == content.GroundGrass && c.Structure == content.NoLayer {
 		t.Factor += e.fx(u, content.FxGrassFactor)
 	}
+	if k := e.fx(u, content.FxWetFactor); k > 0 && e.data.Props(c).Wet {
+		t.Factor += k
+	}
+	if k := e.fx(u, content.FxAmbushFactor); k > 0 && e.data.Props(c).Ambush {
+		t.Factor += k
+	}
 	t.Factor += e.fx(u, content.FxTerrainFactor)
 	return t
 }
@@ -165,7 +171,7 @@ func (e *Engine) reach(u *Unit) (map[content.Point]int, map[content.Point]conten
 	start := content.Point{X: u.X, Y: u.Y}
 	cost := map[content.Point]int{start: 0}
 	prev := map[content.Point]content.Point{}
-	if u.Policy == "hold" || u.Moved || u.Done || u.Status["confusion"].Turns > 0 || u.Status["root"].Turns > 0 {
+	if u.Policy == "hold" || u.Moved || u.Done || confused(u) || u.Status["root"].Turns > 0 {
 		return map[content.Point]int{}, prev
 	}
 	budget := e.movement(u)
@@ -419,7 +425,7 @@ func (e *Engine) rangeFor(u *Unit, s content.Skill) (int, int) {
 }
 
 func (e *Engine) validateSkill(u *Unit, c Command, s content.Skill) (*Unit, error) {
-	if u.Status["confusion"].Turns > 0 {
+	if confused(u) {
 		return nil, fail("Confused")
 	}
 	if s.Kind == content.KindPhysical && u.Status["disarm"].Turns > 0 {

@@ -386,7 +386,23 @@
    "Max": 3,
    "Requires": [
     "relief",
-    "relief_boost"
+    "status_cure"
+   ]
+  },
+  "great_awaken": {
+   "Name": "대각성",
+   "Desc": "십자 범위 아군의 모든 상태이상을 푼다.",
+   "Kind": "heal",
+   "Mode": "any",
+   "Shape": "cross",
+   "Cost": 60,
+   "Hit": 100,
+   "Effect": "cure",
+   "Max": 3,
+   "Requires": [
+    "relief",
+    "status_cure",
+    "relief_spread"
    ]
   },
   "reinforce": {
@@ -687,7 +703,7 @@
    "Mode": "any",
    "Shape": "single",
    "Cost": 36,
-   "Hit": 75,
+   "Hit": 60,
    "Effect": "seal",
    "Min": 1,
    "Max": 3,
@@ -703,7 +719,7 @@
    "Mode": "any",
    "Shape": "single",
    "Cost": 36,
-   "Hit": 75,
+   "Hit": 60,
    "Effect": "poison",
    "Min": 1,
    "Max": 3,
@@ -720,7 +736,7 @@
    "Mode": "any",
    "Shape": "single",
    "Cost": 60,
-   "Hit": 70,
+   "Hit": 40,
    "Effect": "confusion",
    "Min": 1,
    "Max": 3,
@@ -736,7 +752,7 @@
    "Mode": "any",
    "Shape": "single",
    "Cost": 44,
-   "Hit": 75,
+   "Hit": 60,
    "Effect": "root",
    "Min": 1,
    "Max": 3,
@@ -753,7 +769,7 @@
    "Mode": "any",
    "Shape": "single",
    "Cost": 44,
-   "Hit": 75,
+   "Hit": 60,
    "Effect": "disarm",
    "Min": 1,
    "Max": 3,
@@ -771,7 +787,7 @@
    "Mode": "any",
    "Shape": "cross",
    "Cost": 60,
-   "Hit": 65,
+   "Hit": 35,
    "Effect": "confusion",
    "Min": 1,
    "Max": 3,
@@ -788,7 +804,7 @@
    "Mode": "any",
    "Shape": "cross",
    "Cost": 72,
-   "Hit": 65,
+   "Hit": 50,
    "Effect": "poison",
    "Min": 1,
    "Max": 3,
@@ -804,7 +820,7 @@
    "Kind": "heal",
    "Mode": "self",
    "Shape": "single",
-   "Cost": 20,
+   "Cost": 10,
    "Hit": 100,
    "Effect": "heal",
    "Coeff": 1.5,
@@ -930,33 +946,18 @@
     "snipe_prep"
    ]
   },
-  "provoke": {
-   "Sound": "scheme",
-   "Name": "도발",
-   "Desc": "자신을 중심으로 한 십자 5칸의 적에게 사기 저하.",
-   "Kind": "status",
-   "Mode": "self",
-   "Shape": "cross",
-   "Cost": 12,
-   "Hit": 85,
-   "Effect": "morale",
-   "Duration": 3,
-   "Requires": [
-    "provoke_prep"
-   ]
-  },
   "disrupt": {
    "Sound": "scheme",
    "Name": "교란",
-   "Desc": "적 한 부대의 순발력과 사기를 3턴 낮춘다.",
+   "Desc": "2칸 안의 적 한 부대의 순발력과 사기를 3턴 낮춘다.",
    "Kind": "status",
-   "Mode": "melee",
+   "Mode": "any",
    "Shape": "single",
    "Cost": 12,
    "Hit": 80,
    "Effect": "disrupt",
    "Min": 1,
-   "Max": 1,
+   "Max": 2,
    "Duration": 3,
    "Requires": [
     "disrupt_prep"
@@ -1110,6 +1111,20 @@
    "HPCost": 0.05,
    "Requires": [
     "meditate_art"
+   ]
+  },
+  "terrain_mend": {
+   "Name": "지형정비",
+   "Desc": "아군 한 명 주변 3×3의 불씨·물웅덩이·돌무더기를 걷어 낸다.",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "square",
+   "Cost": 20,
+   "Hit": 100,
+   "Effect": "clear_marks",
+   "Max": 3,
+   "Requires": [
+    "terrain_mend"
    ]
   }
  }

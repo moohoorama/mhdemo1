@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"sort"
 	"strings"
 
@@ -17,31 +18,41 @@ import (
 // Step is one thing a beat does. Steps of a group start together; the group ends when every walk, motion, bubble
 // and wait of it has ended.
 type Step struct {
-	Actor  string
-	Move   []float64   // walk to [u, v], along u first, then v
-	Via    [][]float64 // corners [u, v] the walk to Move passes first, in order, each reached along u first
-	Enter  []float64   // appear at [u, v] first (an actor that starts off the stage), then walk to Move
-	Exit   bool        // leave the stage when the walk ends
-	Speed  float64     // walking speed, 1 when 0 (2 runs, .6 drags)
-	After  float64     // seconds after the group starts
-	Face   string
-	Look   string // turn this way for a moment, then back
-	Play   string
-	Emote  string
-	Say    string // a speech bubble on the map, without the dialogue scroll
-	Wait   float64
-	Intro  string // an officer's first appearance
-	Effect string // petals, fire, smallfire, smoke, steam, birds, glint, flash, halberd, halberd_throw, none
-	At     []float64
-	Shake  float64 // seconds of screen shake
-	Cam    string  // look at this actor
-	CamAt  []float64
-	Zoom   float64 // camera zoom, whole numbers only (pixel art)
-	Time   string  // day (""), dusk, night or dawn from now on
-	Sprite string  // the actor stands as this sprite from now on
-	Prop   []any   // [name, u, v] puts a map prop down, [name] takes it away, [name, actor] makes it move with that actor; "name#2" is one more of that prop
-	Pose   string  // the motion the actor rests in from now on (sit, lie, kneel …); "idle" stands again
-	Patrol []float64
+	Actor   string
+	Move    []float64   // walk to [u, v], along u first, then v
+	Via     [][]float64 // corners [u, v] the walk to Move passes first, in order, each reached along u first
+	Enter   []float64   // appear at [u, v] first (an actor that starts off the stage), then walk to Move
+	Exit    bool        // leave the stage when the walk ends
+	Back    bool        // the walk keeps the way the actor faces: giving ground to a blow, backing away
+	Strike  string      // the actor strikes this cast member: its motion, then the target's React, sparks, a flash and a shake as the blow lands
+	Motion  string      // the striker's motion for a Strike ("attack" when empty or not on the sheet)
+	React   string      // the target's motion as a Strike lands ("block" when empty): block, hit or a sheet's own
+	Push    float64     // cells a Strike drives its target back along the blow, still bracing
+	Crit    bool        // a Strike is a critical blow: a burst of sparks and a double flash as it lands
+	Gather  float64     // seconds a Strike's striker gathers itself, whitening, before the motion
+	Through float64     // a Strike dealt dashing through: the striker comes out this many cells beyond the target as it lands
+	Speed   float64     // walking speed, 1 when 0 (2 runs, .6 drags)
+	After   float64     // seconds after the group starts
+	Face    string
+	Look    string // turn this way for a moment, then back
+	Play    string
+	Emote   string
+	Say     string // a speech bubble on the map, without the dialogue scroll
+	Wait    float64
+	Intro   string // an officer's first appearance
+	Effect  string // petals, fire, smallfire, smoke, steam, birds, glint, flash, halberd, halberd_throw, none
+	At      []float64
+	Shake   float64 // seconds of screen shake
+	Cam     string  // look at this actor
+	CamAt   []float64
+	Zoom    float64 // camera zoom, whole numbers only (pixel art)
+	Time    string  // day (""), dusk, night or dawn from now on
+	Sprite  string  // the actor stands as this sprite from now on
+	Prop    []any   // [name, u, v] puts a map prop down, [name] takes it away, [name, actor] makes it move with that actor; "name#2" is one more of that prop
+	Pose    string  // the motion the actor rests in from now on (sit, lie, kneel …); "idle" stands again
+	Ease    string  // with Move: one stroke straight to the end at Speed on average, "line" even, "in" checked then gathering speed (a rider closing for the next blow), "out" fast then slowing to a stop
+	Dead    bool    // the actor is killed where it is: its colours drain to grey and stay so
+	Patrol  []float64
 	// walk to [u, v] and back, over and over, without holding up the beats (a sentry); a Move ends it
 	Chatter   string    // short bubbles the actor keeps saying now and then, "|" between them; "-" stops
 	If        []string  // Ambient only: the step runs when these story conditions hold (carts there only once won back)
@@ -89,7 +100,10 @@ type Scene struct {
 	Grass    *content.GrassTint `json:",omitempty"` // the grass here when the map stands for another land; nil keeps the map's
 	Steps    float64            `json:",omitempty"` // the walkers' footsteps and hoof beats at this share of their volume; 0 keeps them whole
 	Nodes    []string
-	Ambient  []Step // run once as the scene opens (fires, braziers, smoke, sentries, chatter)
+	NoSkip   []string `json:",omitempty"` // nodes whose beats play out whole: a click waits for them (a duel whose blows and pushes land in turn)
+	Mute     []string `json:",omitempty"` // nodes whose speakers get no talking bubble on the map: the dialogue scroll alone carries the line
+	NoFocus  []string `json:",omitempty"` // nodes whose beats and lines do not draw the camera to their actor: it keeps the shot it had
+	Ambient  []Step   // run once as the scene opens (fires, braziers, smoke, sentries, chatter)
 	Cast     map[string]Actor
 	Beats    map[string][][][]Step // node -> per speaker line -> groups of steps
 }
@@ -144,6 +158,11 @@ func (b *Book) Add(path string) error {
 				return fmt.Errorf("node %s is in scenes %s and %s", n, other.ID, id)
 			}
 			b.byNode[n] = s
+		}
+		for _, n := range slices.Concat(s.NoSkip, s.Mute, s.NoFocus) {
+			if !slices.Contains(s.Nodes, n) {
+				return fmt.Errorf("%s: scene %s names node %s that it does not stage", filepath.Base(path), id, n)
+			}
 		}
 	}
 	return nil

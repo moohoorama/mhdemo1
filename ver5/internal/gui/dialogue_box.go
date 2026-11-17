@@ -272,6 +272,43 @@ func (g *Game) drawDialogue(dst *ebiten.Image, l line, text string, done bool, k
 const narrationIn = .52
 
 // drawNarration shows the whole line at once; the box and its text fade in and out together.
+// cardIn is how long a closing card takes to come out of the black: a held breath, then the words.
+const cardIn = 2.2
+
+// riseTime is how long a narration node takes to come in before a click turns it.
+func riseTime(n content.Node) float64 {
+	if n.Card {
+		return cardIn
+	}
+	return narrationIn
+}
+
+// drawCard is a part's closing card: the screen stays black (the scene before has darkened into it) and the words
+// come up in the middle, the first line large ("1장 난세도래"), the rest below it ("끝").
+func (g *Game) drawCard(dst *ebiten.Image, l line, key string) {
+	a := &g.dialogueAnim
+	if a.key != key {
+		a.key, a.shownAt = key, g.uiSeconds
+	}
+	g.blackOut(dst, 1)
+	alpha := phase(g.uiSeconds-a.shownAt, .7, cardIn)
+	if g.narrationLeaving {
+		alpha = 1 - phase(g.uiSeconds-g.narrationExitAt, 0, .43)
+	}
+	lines := strings.Split(l.text, "\n")
+	title, rest := g.serif(46, 700), g.serif(34, 700)
+	h := title.Size*1.6 + float64(len(lines)-1)*rest.Size*1.6
+	y := (float64(uiH) - h) / 2
+	for i, s := range lines {
+		f := title
+		if i > 0 {
+			f, y = rest, y+title.Size*.3
+		}
+		write(dst, s, f, (float64(uiW)-measure(s, f))/2, y, color.NRGBA{R: 238, G: 226, B: 196, A: uint8(255 * alpha)})
+		y += f.Size * 1.6
+	}
+}
+
 func (g *Game) drawNarration(dst *ebiten.Image, l line, key string) {
 	a := &g.dialogueAnim
 	if a.key != key {

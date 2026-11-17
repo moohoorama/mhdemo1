@@ -1077,39 +1077,56 @@ def compose(name, frames, layout, out):
 
 
 def baked():
-    """(sprite, frames, hit, trim) for every spell the game plays: this file's, the gas and seal spells picked from
-    spellsim_gas / spellsim_seal, and 팔진도 from spellsim_formation as three pieces (the formation drawn on the
-    ground under the units, and an ally and an enemy piece the game puts on each cell it reaches). trim drops a
-    piece's empty lead-in, since the game starts it at the formation's hit."""
+    """{sprite: () -> (frames, hit, trim)} for every look the game plays: this file's spells, the gas and seal
+    spells picked from spellsim_gas / spellsim_seal, 혼란 and 대혼란 from spellsim_confuse with the status marks the
+    game turns round the head of a unit under a status (status_mark_<status>), and 팔진도 from spellsim_formation as three pieces (the formation
+    drawn on the ground under the units, and an ally and an enemy piece the game puts on each cell it reaches). trim
+    drops a piece's empty lead-in, since the game starts it at the formation's hit."""
+    import spellsim_confuse as confuse
     import spellsim_formation as formation
     import spellsim_gas as gas
     import spellsim_seal as seal
-    out = []
+    out = {}
     for name in SPELLS:
-        frames, _ = run(name, ELEMENT_SLOW)
-        out.append(("spell_" + SKILL[name], frames, run.hit, False))
-    picked = {"confuse": gas.honran_a, "great_confusion": gas.daehonran_a, "poison_mist": gas.dokyeon_b,
-              "poison_fog": gas.dokmu_b, "seal_spell": seal.bongchaek_c, "root_spell": seal.bongswae_a,
-              "disarm_spell": seal.bonggyeok_c}
+        def element(name=name):
+            frames, _ = run(name, ELEMENT_SLOW)
+            return frames, run.hit, False
+        out["spell_" + SKILL[name]] = element
+    picked = {"poison_mist": gas.dokyeon_b, "poison_fog": gas.dokmu_b, "seal_spell": seal.bongchaek_c,
+              "root_spell": seal.bongswae_a, "disarm_spell": seal.bonggyeok_c}
     for skill, fn in picked.items():
-        frames, _ = simulate(fn)
-        out.append(("spell_" + skill, frames, run.hit, False))
-    out.append(("spell_eightfold", formation.ground_frames("b"), .55, False))
+        def status(fn=fn):
+            frames, _ = simulate(fn)
+            return frames, run.hit, False
+        out["spell_" + skill] = status
+    for skill, name in {"confuse": "honran_q", "great_confusion": "daehonran_q"}.items():
+        def marks(name=name):
+            frames, _ = confuse.run(name)
+            return frames, confuse.run.hit, False
+        out["spell_" + skill] = marks
+    for sprite, frames in confuse.status_marks().items():
+        out[sprite] = lambda frames=frames: (frames, 0, False)
+    out["spell_eightfold"] = lambda: (formation.ground_frames("b"), .55, False)
     for side in ("ally", "enemy"):
-        out.append((f"spell_eightfold_{side}", formation.piece_frames("b", side), 0, True))
+        out[f"spell_eightfold_{side}"] = lambda side=side: (formation.piece_frames("b", side), 0, True)
     return out
 
 
-def bake():
-    """Writes each spell to its own sheet, assets/graphics/effects/spells/<sprite>.{png,json}: the game reads a
-    spell's sheet the first time it plays, so a battle holds only the spells it uses."""
+def bake(only=()):
+    """Writes each look to its own sheet, assets/graphics/effects/spells/<sprite>.{png,json}: the game reads a
+    sheet the first time it plays it, so a battle holds only the looks it uses. only limits it to those sprites."""
     WRAP = 1024
     ox, oy = ORIGIN
     out = ROOT / "assets/graphics/effects/spells"
     out.mkdir(parents=True, exist_ok=True)
-    for old in out.glob("spell_*.*"):
-        old.unlink()
-    for sprite, frames, hit, trim in baked():
+    looks = baked()
+    if only:
+        looks = {k: v for k, v in looks.items() if k in only}
+    else:
+        for old in out.glob("*.*"):
+            old.unlink()
+    for sprite, make in looks.items():
+        frames, hit, trim = make()
         if trim:
             frames = frames[next(i for i, f in enumerate(frames) if f[:, :, 3].any()):]
         crops, anchors = [], []
@@ -1147,10 +1164,10 @@ def main():
     ap.add_argument("names", nargs="*")
     ap.add_argument("--out", default=str(ROOT / "reports/spellsim"))
     ap.add_argument("--slow", type=float, default=1.0, help="slow motion: this many times the frames")
-    ap.add_argument("--bake", action="store_true", help="write every spell the game plays to assets/graphics/effects/spells/<sprite>.{png,json}")
+    ap.add_argument("--bake", action="store_true", help="write every look the game plays to assets/graphics/effects/spells/<sprite>.{png,json}, or only the sprites named")
     args = ap.parse_args()
     if args.bake:
-        bake()
+        bake(set(args.names))
         return
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)

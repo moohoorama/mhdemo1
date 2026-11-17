@@ -6,6 +6,7 @@ import (
 	"image/color"
 	"math"
 	"regexp"
+	"slices"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -122,7 +123,9 @@ func (g *Game) advanceDialogue() {
 		return
 	}
 	if g.sceneBusy() {
-		g.skipBeats()
+		if !slices.Contains(g.scene.def.NoSkip, g.scene.node) {
+			g.skipBeats()
+		}
 		return
 	}
 	if g.busy() {
@@ -130,7 +133,7 @@ func (g *Game) advanceDialogue() {
 	}
 	if o.Dialogue.Kind == "narrate" {
 		a := &g.dialogueAnim
-		if a.key == lineKey(nil, o.Node, 0) && g.uiSeconds-a.shownAt >= narrationIn {
+		if a.key == lineKey(nil, o.Node, 0) && g.uiSeconds-a.shownAt >= riseTime(o.Dialogue) {
 			g.narrationLeaving, g.narrationExitAt = true, g.uiSeconds
 		}
 		return
@@ -218,7 +221,7 @@ const autoWait = 2.0
 // when the player turned it on.
 func (g *Game) autoPage() {
 	key, next := g.pageReady()
-	if !g.S.Settings.AutoText || next == nil {
+	if !g.S.Settings.AutoText && !g.campaignActive() || next == nil {
 		g.autoKey = ""
 		return
 	}
@@ -253,7 +256,7 @@ func (g *Game) pageReady() (string, func()) {
 	}
 	if o.Dialogue.Kind == "narrate" {
 		a := &g.dialogueAnim
-		if a.key != lineKey(nil, o.Node, 0) || g.uiSeconds-a.shownAt < narrationIn {
+		if a.key != lineKey(nil, o.Node, 0) || g.uiSeconds-a.shownAt < riseTime(o.Dialogue) {
 			return "", nil
 		}
 		return a.key, g.advanceDialogue
@@ -348,7 +351,9 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 		return
 	}
 	key := lineKey(l.speakers, o.Node, g.lineIndex)
-	if o.Dialogue.Kind == "narrate" {
+	if o.Dialogue.Card {
+		g.drawCard(dst, l, key)
+	} else if o.Dialogue.Kind == "narrate" {
 		if !staged || !g.scene.leaving { // it already faded out before the scene darkens
 			g.drawNarration(dst, l, key)
 		}

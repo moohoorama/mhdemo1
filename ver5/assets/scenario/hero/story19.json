@@ -335,7 +335,7 @@
    "ID": "c19-y12",
    "Kind": "say",
    "Speaker": "yuanshao",
-   "Text": "……그 말도 옳소. 다음 싸움에 나가는 장수들에게 똑똑히 보고 오라 하겠소."
+   "Text": "……그 말도 옳소. 그렇다면 다음 싸움에는 현덕 공이 문추와 함께 나가, 그 눈으로 똑똑히 보고 오시오."
   },
   {
    "ID": "c19-yan-set",
@@ -428,7 +428,7 @@
    "ID": "c19-m06",
    "Kind": "say",
    "Speaker": "messenger",
-   "Text": "황숙, 주공께서 다시 찾으십니다. 연진에서 장수들이 돌아왔다 합니다."
+   "Text": "황숙, 문추 장군이 연진으로 출진합니다. 황숙께서는 후군을 이끌고 함께 나가시랍니다."
   },
   {
    "ID": "c19-m07",
@@ -444,14 +444,93 @@
    }
   },
   {
-   "ID": "c19-mizhu-back",
-   "Kind": "back",
-   "Area": "street",
-   "At": [
-    13,
-    42
-   ],
-   "Face": "SE"
+   "ID": "c19-yj",
+   "Kind": "scene",
+   "Place": "연진 · 황하 남쪽 기슭"
+  },
+  {
+   "ID": "c19-yj01",
+   "Kind": "say",
+   "Speaker": "wenchou",
+   "Text": "황숙, 여기서부터는 내 선봉이 맡겠소."
+  },
+  {
+   "ID": "c19-yj02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "장군, 안량 장군을 벤 그 장수가 아직 저 너머에 있을 것이오."
+  },
+  {
+   "ID": "c19-yj03",
+   "Kind": "say",
+   "Speaker": "wenchou",
+   "Text": "싸울 때마다 지고 남의 집에 몸을 맡긴 분께 들을 말은 아니오."
+  },
+  {
+   "ID": "c19-yj04",
+   "Kind": "say",
+   "Speaker": "wenchou",
+   "Text": "황숙께서는 뒤에서 구경이나 하시오."
+  },
+  {
+   "ID": "c19-yj05",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "……황숙."
+  },
+  {
+   "ID": "c19-yj06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "됐소. 우리는 우리 자리를 지킵시다."
+  },
+  {
+   "ID": "c19-yj07",
+   "Kind": "say",
+   "Speaker": "zhangliao",
+   "Text": "하북의 문추냐! 장문원이 상대해 주마!"
+  },
+  {
+   "ID": "c19-yj08",
+   "Kind": "say",
+   "Speaker": "zhangliao",
+   "Text": "물러나라! 수레는 버리고 가라!"
+  },
+  {
+   "ID": "c19-yj09",
+   "Kind": "say",
+   "Speaker": "wenchou",
+   "Text": "하하! 조조의 장수라는 게 겨우 이 정도냐!"
+  },
+  {
+   "ID": "c19-yj10",
+   "Kind": "say",
+   "Speaker": "wenchou",
+   "Text": "얘들아, 저건 다 너희 것이다! 실어 가라!"
+  },
+  {
+   "ID": "c19-yj10b",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "문추, 네 이놈!"
+  },
+  {
+   "ID": "c19-yj11",
+   "Kind": "say",
+   "Speaker": "wenchou",
+   "Text": "크윽……! 이, 이 힘은……!"
+  },
+  {
+   "ID": "c19-yj12",
+   "Kind": "say",
+   "Speaker": "wenchou",
+   "Text": "당해 낼 수가 없구나……. 달려라, 말아!"
+  },
+  {
+   "ID": "c19-yj13",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "운장……!!"
   },
   {
    "ID": "c19-wen",
@@ -462,34 +541,40 @@
    "ID": "c19-y13",
    "Kind": "say",
    "Speaker": "yuanshao",
-   "Text": "현덕 공. 문추가 연진에서 죽었소."
+   "Text": "현덕 공, 먼 길에 수고했소."
   },
   {
    "ID": "c19-y14",
    "Kind": "say",
    "Speaker": "yuanshao",
-   "Text": "돌아온 장수들이 입을 모아 말하더군. 붉은 얼굴, 석 자 수염, 큰 칼. 그 장수가 문추를 베고, 스스로 관운장이라 외쳤다고."
+   "Text": "문추가 죽었소. 그대도 언덕 위에서 보았겠지."
   },
   {
    "ID": "c19-y15",
    "Kind": "say",
    "Speaker": "yuanshao",
-   "Text": "현덕 공. 운장이 아닐 수도 있다 하지 않았소?"
+   "Text": "붉은 얼굴, 석 자 수염, 큰 칼. ……그대 눈으로 보았지? 그 장수가 누구였소?"
+  },
+  {
+   "ID": "c19-y15b",
+   "Kind": "say",
+   "Speaker": "guotu",
+   "Text": "이번에는 발뺌하지 못할 것입니다!"
   },
   {
    "ID": "c19-y-c2",
    "Kind": "choice",
-   "Text": "원소가 웃으며 묻는다. 그 장수는 관우인가?",
+   "Text": "원소가 웃으며 묻는다. 연진에서 본 그 장수는 누구였는가?",
    "Choices": {
-    "운장이 맞소": "c19-y20",
-    "아직 모르는 일이오": "c19-dead2"
+    "운장이었습니다": "c19-y20",
+    "멀어서 똑똑히 보지 못했습니다": "c19-dead2"
    }
   },
   {
    "ID": "c19-y20",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "예, 운장이 맞습니다. 그러니 명공께 축하드립니다."
+   "Text": "예, 운장이었습니다. 그러니 명공께 축하드립니다."
   },
   {
    "ID": "c19-y21",
@@ -542,7 +627,7 @@
    "ID": "c19-dead2",
    "Kind": "say",
    "Speaker": "yuanshao",
-   "Text": "모두가 본 것을 아니라 하는가! 끌어내 베어라!",
+   "Text": "제 아우의 얼굴을 몰라본다? 나를 우롱하는가! 끌어내 베어라!",
    "Next": "c19-dead"
   },
   {

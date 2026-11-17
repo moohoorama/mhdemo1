@@ -908,7 +908,7 @@ func (w *view) objects() (pieces []Piece, flat []Draw, err error) {
 // +u edge (u1 - 1) and of the +v edge (v1 - 1), by its ground glyph, and the outline down the two side corners.
 func (w *view) section() []Draw {
 	b := w.c.Rules.Board
-	if b.Default == "" {
+	if b.Default == "" || w.indoor() {
 		return nil
 	}
 	var out []Draw
@@ -942,6 +942,22 @@ func (w *view) section() []Draw {
 	lay(b.End+"_pv", w.u0, w.v1-1)
 	lay(b.End+"_pu", w.u1-1, w.v0)
 	return out
+}
+
+// indoor reports whether every tile of the board is an indoor floor (Board.Indoor).
+func (w *view) indoor() bool {
+	in := w.c.Rules.Board.Indoor
+	if in == "" {
+		return false
+	}
+	for u := w.u0; u < w.u1; u++ {
+		for v := w.v0; v < w.v1; v++ {
+			if !strings.ContainsRune(in, rune(w.glyph(u, v))) {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 // topCuts are the cuts of a raised tile of step s on a front edge whose height has a Cut (a city wall top running

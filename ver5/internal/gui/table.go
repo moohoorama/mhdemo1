@@ -38,6 +38,14 @@ func (s tableSort) cycle(key string) tableSort {
 type tableList struct {
 	top   int
 	order tableSort
+	wheel float64
+}
+
+func (l *tableList) scroll(wheel float64) {
+	l.wheel += wheel
+	rows := int(l.wheel)
+	l.top -= rows
+	l.wheel -= float64(rows)
 }
 
 // column is one column of a table: how a row fills it and sorts by it.

@@ -1,0 +1,337 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   19,
+   24
+  ],
+  "Face": "NE"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_runan",
+   "Name": "여남성",
+   "At": [
+    19,
+    24
+   ],
+   "Exits": [
+    {
+     "Name": "관청",
+     "At": [
+      21,
+      23
+     ],
+     "Object": [
+      21,
+      20
+     ],
+     "To": "office"
+    },
+    {
+     "Name": "도구점",
+     "At": [
+      9,
+      17
+     ],
+     "Object": [
+      9,
+      15
+     ],
+     "To": "tools"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      25,
+      17
+     ],
+     "Object": [
+      25,
+      15
+     ],
+     "To": "tavern"
+    }
+   ],
+   "People": {
+    "관우@town": {
+     "At": [
+      17,
+      22
+     ],
+     "Face": "SE",
+     "Sortie": {
+      "Ask": "형님, 날이 저뭅니다. 관청으로 돌아가시겠습니까?"
+     }
+    },
+    "장비@town": {
+     "At": [
+      11,
+      17
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "zhangfei",
+       "형, 유벽이고 공도고 황건 출신이라더니 군사들 꼴은 제법 갖췄슈. 그래도 영 낯이 설어유."
+      ]
+     ]
+    },
+    "조운@town": {
+     "At": [
+      17,
+      4
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "zhaoyun",
+       "성벽이 낮고 문이 넷입니다. 지킬 사람에 비해 문이 많습니다."
+      ]
+     ]
+    },
+    "고순@town": {
+     "At": [
+      13,
+      23
+     ],
+     "Face": "SE",
+     "If": [
+      "party:gaoshun"
+     ],
+     "Talk": [
+      [
+       "gaoshun",
+       "유벽의 군사를 보았습니다. 수는 되나 진을 짜 본 적이 없는 군사입니다."
+      ]
+     ]
+    },
+    "유벽@town": {
+     "At": [
+      29,
+      10
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "liupi",
+       "성벽은 사흘이면 손볼 수 있소. 공도가 군량만 제때 거둬 오면 한 철은 버티오."
+      ]
+     ]
+    },
+    "미축@town": {
+     "At": [
+      23,
+      10
+     ],
+     "Face": "SW",
+     "If": [
+      "party:mizhu"
+     ],
+     "Talk": [
+      [
+       "mizhu",
+       "여남은 장이 작습니다. 군량을 사들이려 해도 팔 사람이 없습니다."
+      ]
+     ]
+    },
+    "장사꾼": {
+     "At": [
+      20,
+      11
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "장사꾼",
+       "북쪽이 정리되면 조조는 어디를 보겠소. 허도에서 여남은 지척이오."
+      ]
+     ]
+    },
+    "유벽의 군사": {
+     "At": [
+      15,
+      2
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "shu",
+     "Talk": [
+      [
+       "유벽의 군사",
+       "조조 밑의 악진이란 장수는 갑옷이 거울처럼 번쩍여서 활로 맞히기가 쉽지 않답디다."
+      ]
+     ]
+    },
+    "유벽의 군사#1": {
+     "At": [
+      19,
+      2
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    },
+    "노인": {
+     "At": [
+      12,
+      9
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "노인",
+       "황건 때도, 원술 때도 이 성은 주인이 바뀌었지. 이번엔 얼마나 갈는지."
+      ]
+     ]
+    }
+   }
+  },
+  "office": {
+   "Map": "S_zhuo_office",
+   "Name": "여남성 · 관청",
+   "At": [
+    9,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "군사#1": {
+     "At": [
+      3,
+      5
+     ],
+     "Face": "SE",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    },
+    "군사#2": {
+     "At": [
+      13,
+      5
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    }
+   }
+  },
+  "tools": {
+   "Map": "S_tool_shop",
+   "Name": "도구점",
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "상인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "beihai"
+    }
+   }
+  },
+  "tavern": {
+   "Map": "S_tavern",
+   "Name": "주점",
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "점원": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Shop": "beihai_tavern"
+    },
+    "주점 주인": {
+     "At": [
+      8,
+      4
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "주점 주인",
+       "오소의 군량이 하룻밤에 다 탔다지요. 허유라는 자가 조조에게 넘어가 길을 일러 줬답니다."
+      ]
+     ]
+    },
+    "간옹@tavern": {
+     "At": [
+      9,
+      7
+     ],
+     "Face": "NW",
+     "Talk": [
+      [
+       "jianyong",
+       "손건이 형주까지 다녀오자면 달포는 걸릴 걸세. 조조가 그 달포를 줄지 모르겠네."
+      ]
+     ]
+    },
+    "주점 손님": {
+     "At": [
+      5,
+      6
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "주점 손님",
+       "들었소? 관도에서 원 대장군이 크게 졌다 하오."
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

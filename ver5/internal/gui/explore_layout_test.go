@@ -40,6 +40,31 @@ func TestExplorePeopleApart(t *testing.T) {
 	}
 }
 
+// TestExplorePeopleSpaced fails where two people who can stand in an area at once are laid out on small tiles next
+// to each other (a side or a corner): every pair keeps at least one small tile between them, so that neither the
+// figures nor the name plates pile up when the area opens. They may come close later, walking about.
+func TestExplorePeopleSpaced(t *testing.T) {
+	d, err := NewDemo("../..", DemoOptions{Name: "hudpanel"})
+	require.NoError(t, err)
+	for _, name := range slices.Sorted(maps.Keys(d.g.S.Data.Explores)) {
+		x := d.g.S.Data.Explores[name]
+		for _, aid := range slices.Sorted(maps.Keys(x.Areas)) {
+			a := x.Areas[aid]
+			keys := slices.Sorted(maps.Keys(a.People))
+			for i, k1 := range keys {
+				for _, k2 := range keys[i+1:] {
+					p, q := a.People[k1], a.People[k2]
+					if !together(p, q, k1, k2) {
+						continue
+					}
+					assert.GreaterOrEqual(t, max(abs(p.At[0]-q.At[0]), abs(p.At[1]-q.At[1])), 2,
+						"%s/%s: %s %v and %s %v stand on neighbouring small tiles", name, aid, k1, p.At, k2, q.At)
+				}
+			}
+		}
+	}
+}
+
 // exploreBody is a person's figure (canvas px, what a click picks) and name plate (UI px).
 type exploreBody struct {
 	key   string
@@ -134,7 +159,8 @@ func covered(b, f [4]float64) float64 {
 // together reports whether two people of an area may stand there at once.
 func together(p, q *content.ExplorePerson, k1, k2 string) bool {
 	stand := func(k string) string { k, _, _ = strings.Cut(k, "@"); return k } // an extra's other stand is the same extra
-	if !strings.Contains(k1, "#") && content.PersonName(k1) == content.PersonName(k2) || stand(k1) == stand(k2) {
+	named := !strings.Contains(k1, "#") && !strings.Contains(k2, "#")          // 피난민 and 피난민#1 are two people
+	if named && content.PersonName(k1) == content.PersonName(k2) || stand(k1) == stand(k2) {
 		return false
 	}
 	return openTogether(p.If, q.If)

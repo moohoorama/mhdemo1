@@ -79,3 +79,51 @@ func drawStatusIcon(dst, icon *ebiten.Image, x, y, z float64) {
 	op.GeoM.Translate(math.Round(x-4*z), math.Round(y))
 	dst.DrawImage(icon, op)
 }
+
+// statusMarks are the statuses whose marks turn round a unit's head (status_mark_<status>, baked by
+// tools/spellsim_confuse.py), in the order they take places on the ring.
+var statusMarks = []string{"confusion", "disarm", "seal", "root", "poison"}
+
+const (
+	statusMarkRadius = 13.0 // the ring's radius in map units, round the top of the sprite
+	statusMarkTurn   = 1.2  // seconds a mark takes round the ring
+)
+
+// drawStatusMarks draws the marks of the unit's statuses turning round its head, upright, on one ring: four of a
+// lone status, two of each of two or three, one of each of four or more, taking turns round it. back draws the half behind the unit (before
+// its sprite), otherwise the half in front (after it).
+func (f *Field) drawStatusMarks(u *unitVis, x, y float64, back bool) {
+	if u.gone || u.shownHP <= 0 {
+		return
+	}
+	var kinds []string
+	for _, k := range statusMarks {
+		if u.status[k].Turns > 0 {
+			kinds = append(kinds, k)
+		}
+	}
+	if len(kinds) == 0 {
+		return
+	}
+	n := 4
+	switch k := len(kinds); {
+	case k >= 4: // one each: two of every one crowded the ring
+		n = k
+	case k > 1:
+		n = 2 * k
+	}
+	turn := f.clockMS / 1000 / statusMarkTurn
+	for i := range n {
+		a := 2 * math.Pi * (turn + float64(i)/float64(n))
+		wx, wy := math.Cos(a)*statusMarkRadius, math.Sin(a)*statusMarkRadius
+		if (wx+wy < 0) != back {
+			continue
+		}
+		sh, ok := f.A.lookupEffect("status_mark_" + kinds[i%len(kinds)])
+		if !ok || len(sh.Frames) == 0 {
+			continue
+		}
+		an := sh.anchor(0)
+		f.blit(f.Canvas, Sprite{sh.Frames[0], an[0], an[1]}, math.Round(x+u.shakeOffset()+wx-wy), math.Round(y-u.top+(wx+wy)/2), nil)
+	}
+}

@@ -32,7 +32,8 @@
    "If": [
     "alive:sunjian"
    ],
-   "Flag": "flag-sunjian-alive"
+   "Flag": "flag-sunjian-alive",
+   "Later": "5장에서 손견이 고정도를 준다"
   }
  ],
  "TurnLimit": 20,

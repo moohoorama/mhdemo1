@@ -113,13 +113,21 @@ func (d *Data) SpawnTraits(s Spawn) []string {
 }
 
 // PlannedTraits are the traits an NPC officer of the character holds in the class at the level: the first of its
-// own plan, one more every Rules.TraitPlanStep levels (or own in full when the stage sets it), then the class plan's.
+// own plan, one more every Rules.TraitPlanStep levels, and those of its TraitAt it has the level for (or own in full
+// when the stage sets it), then the class plan's.
 func (d *Data) PlannedTraits(def, class string, level int, own *[]string) []string {
 	var out []string
 	if own != nil {
 		out = slices.Clone(*own)
 	} else if plan := d.Characters[def].Traits; len(plan) > 0 && d.Rules.TraitPlanStep > 0 {
 		out = slices.Clone(plan[:min(len(plan), (max(level, 1)-1)/d.Rules.TraitPlanStep+1)])
+	}
+	if own == nil {
+		for _, t := range slices.Sorted(maps.Keys(d.Characters[def].TraitAt)) {
+			if level >= d.Characters[def].TraitAt[t] && !slices.Contains(out, t) {
+				out = append(out, t)
+			}
+		}
 	}
 	for _, lt := range d.Classes[class].Plan {
 		if level >= lt.Level && !slices.Contains(out, lt.Trait) {

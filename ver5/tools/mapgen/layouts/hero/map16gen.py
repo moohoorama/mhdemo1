@@ -2,9 +2,8 @@
 
 하비성 stands in the middle of the field, its walls a square from L to R on both axes. 조조's dykes have flooded it:
 the moat round the walls has filled into a broad ford, puddles lie on the fields outside and in the streets inside.
-Three gates stand open — the south-west (middle of the y = R wall), the north-west (x = L) and the south-east (x = R);
-the north-east wall has none. Beside them the wall has slumped into rubble here and there, breaches a man can
-climb. 유비 storms in from the field beyond the south-west moat, 조조's army from beyond the
+Three gates, shut until the stage's opening event opens them — the south-west (middle of the y = R wall), the north-west (x = L) and the south-east (x = R);
+the north-east wall has none; the wall has no breaches, so the gates are the only way in. 유비 enters from the field beyond the south-west moat, 조조's army from beyond the
 north-west and south-east ones. Inside, the town is laid out on a grid: paved main streets from each gate meet at
 여포's hall in the middle, a paved lane runs inside the walls, and the blocks between are plain ground with houses,
 gardens and a pond.
@@ -42,13 +41,10 @@ for y in range(L - MOAT, R + MOAT + 1):
         if not (L <= x <= R and L <= y <= R):
             g[y][x] = 's--'
 
-# the walls and the three open gates
+# the walls and the three gates, shut until the opening event opens them
 for k in range(L, R + 1):
     g[L][k] = g[R][k] = g[k][L] = g[k][R] = 'c--'
-g[R][MID] = g[MID][L] = g[MID][R] = 'm-O'
-# where the flood undercut the wall it has slumped into rubble: breaches beside the gates that can be climbed
-for x, y in ((9, R), (17, R), (L, 17), (R, 9)):
-    g[y][x] = 'd-r'
+g[R][MID] = g[MID][L] = g[MID][R] = 'm--'
 
 # inside: plain ground blocks, the lane along the walls and the main streets paved, the hall at the crossing
 for y in range(L + 1, R):

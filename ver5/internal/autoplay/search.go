@@ -1,6 +1,7 @@
 package autoplay
 
 import (
+	"context"
 	"slices"
 	"sync"
 
@@ -12,8 +13,8 @@ import (
 // Searcher plays by trying things out in the engine itself.
 //
 // In battle, at the start of each of its unit's turns, it takes the evaluator's K best commands and plays each
-// on through the rest of its side's turn and the other sides' turns (R times, each with its own dice, the same
-// dice for every candidate), then keeps the one whose outcome is worth most by Value. The rest of a unit's turn
+// on through Depth rounds (R times, each with its own dice, the same dice for every candidate), then keeps the
+// one whose outcome is worth most by Value. The rest of a unit's turn
 // (the action after a move) goes by the evaluator.
 //
 // Before each battle it builds P preparations — the genome's own and ones with its preparation weights
@@ -23,10 +24,12 @@ type Searcher struct {
 	D          *content.Data
 	G          Genome
 	K, R       int
+	Depth      int // rounds to look ahead, including the current round; 0 means 1
 	P, B       int
 	Par        int
 	Seed       uint64
-	OnDecision func(Decision) // when set, every searched decision is handed over (the policy model learns from them)
+	Context    context.Context // optional cancellation for interactive play
+	OnDecision func(Decision)  // when set, every searched decision is handed over (the policy model learns from them)
 	OnPrep     func(PrepTrial)
 }
 
@@ -46,9 +49,14 @@ type PrepTrial struct {
 
 func (s *Searcher) Name() string { return s.Label }
 
+func (s *Searcher) stopped() bool { return s.Context != nil && s.Context.Err() != nil }
+
 func (s *Searcher) Learn(e *core.Engine) core.Command { return s.G.Learn(s.D, e) }
 
 func (s *Searcher) Act(e *core.Engine, actor string) core.Command {
+	if s.stopped() {
+		return core.Command{Kind: "wait", Actor: actor}
+	}
 	o := e.Observe()
 	for _, u := range o.UnitViews {
 		if u.ID == actor && u.Moved {
@@ -99,8 +107,11 @@ func Candidates(ranked []ai.Scored, k int) []ai.Scored {
 // dice gives the r-th trial its own dice, the same for every candidate tried.
 func dice(rng, r uint64) uint64 { return rng ^ (r+1)*0x9e3779b97f4a7c15 }
 
-// rollout plays c and the rest of the round from the snapshot with the r-th dice and values where it ends.
+// rollout plays c and the lookahead rounds from the snapshot with the r-th dice and values where it ends.
 func (s *Searcher) rollout(snap core.State, r uint64, c core.Command, grow map[string]float64) float64 {
+	if s.stopped() {
+		return -1e9
+	}
 	snap.RNG = dice(snap.RNG, r)
 	eng, err := core.Restore(s.D, snap)
 	if err != nil {
@@ -112,8 +123,11 @@ func (s *Searcher) rollout(snap core.State, r uint64, c core.Command, grow map[s
 	base := &RulePlayer{D: s.D, G: s.G}
 	r0 := eng.Observe().Round
 	for range 2000 {
+		if s.stopped() {
+			return -1e9
+		}
 		o := eng.Observe()
-		if o.Phase == "result" || o.Turn == "ally" && o.Round > r0 {
+		if o.Phase == "result" || o.Turn == "ally" && o.Round >= r0+max(1, s.Depth) {
 			break
 		}
 		cmd, err := next(eng, o, base)
@@ -129,6 +143,20 @@ func (s *Searcher) rollout(snap core.State, r uint64, c core.Command, grow map[s
 
 // Prepare tries the preparations and keeps the best.
 func (s *Searcher) Prepare(e *core.Engine, try int) {
+	s.prepare(e, try, nil)
+}
+
+// PrepareCommands prepares a copy of a game and returns the accepted commands, for a GUI to play in its real session.
+func (s *Searcher) PrepareCommands(e *core.Engine, try int) []core.Command {
+	var commands []core.Command
+	s.prepare(e, try, func(c core.Command) { commands = append(commands, c) })
+	return commands
+}
+
+func (s *Searcher) prepare(e *core.Engine, try int, record func(core.Command)) {
+	if s.stopped() {
+		return
+	}
 	snap := e.Snapshot()
 	genomes := PrepVariants(s.G, s.P, s.Seed^uint64(e.Observe().Stage)<<8^uint64(try))
 	type trial struct {
@@ -139,6 +167,9 @@ func (s *Searcher) Prepare(e *core.Engine, try int) {
 	}
 	trials := make([]trial, len(genomes))
 	for i, g := range genomes {
+		if s.stopped() {
+			return
+		}
 		eng, _ := core.Restore(s.D, snap)
 		g.Prepare(s.D, eng)
 		trials[i] = trial{state: eng.Snapshot(), key: PrepKey(eng)}
@@ -154,7 +185,7 @@ func (s *Searcher) Prepare(e *core.Engine, try int) {
 		var mu sync.Mutex
 		parallel(len(uniq)*s.B, s.Par, func(job int) {
 			t := &trials[uniq[job/s.B]]
-			v, feat := PlayOut(s.D, t.state, s.G, uint64(job%s.B))
+			v, feat := playOut(s.D, t.state, s.G, uint64(job%s.B), s.stopped)
 			mu.Lock()
 			t.value += v / float64(s.B)
 			t.feat = feat
@@ -162,6 +193,9 @@ func (s *Searcher) Prepare(e *core.Engine, try int) {
 		})
 	}
 	best := uniq[0]
+	if s.stopped() {
+		return
+	}
 	for _, i := range uniq {
 		if trials[i].value > trials[best].value {
 			best = i
@@ -173,12 +207,19 @@ func (s *Searcher) Prepare(e *core.Engine, try int) {
 		}
 	}
 	// carry the chosen preparation over to the real engine by replaying its weights there
-	genomes[best].Prepare(s.D, e)
+	genomes[best].prepare(s.D, e, record)
 }
 
 // PlayOut starts the battle from a prepared state with the r-th dice, plays it through by the genome and
 // values the end; it also gives the features of the state the battle starts in.
 func PlayOut(d *content.Data, prepared core.State, g Genome, r uint64) (float64, []float64) {
+	return playOut(d, prepared, g, r, func() bool { return false })
+}
+
+func playOut(d *content.Data, prepared core.State, g Genome, r uint64, stopped func() bool) (float64, []float64) {
+	if stopped() {
+		return -1e9, nil
+	}
 	prepared.RNG = dice(prepared.RNG, r)
 	eng, err := core.Restore(d, prepared)
 	if err != nil {
@@ -191,6 +232,9 @@ func PlayOut(d *content.Data, prepared core.State, g Genome, r uint64) (float64,
 	base := &RulePlayer{D: d, G: g}
 	var feat []float64
 	for range 20000 {
+		if stopped() {
+			return -1e9, nil
+		}
 		o := eng.Observe()
 		if o.Phase == "result" {
 			break

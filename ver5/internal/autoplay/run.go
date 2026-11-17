@@ -4,6 +4,7 @@
 package autoplay
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"sort"
@@ -28,11 +29,14 @@ type Player interface {
 
 // Options sets how a campaign is played.
 type Options struct {
-	Difficulty string
-	Seed       uint64
-	Tries      int       // attempts per battle before the campaign counts as stuck (5)
-	Stages     int       // battles to fight at most; 0 all
-	Log        io.Writer // one line per battle; nil quiet
+	Difficulty   string
+	Seed         uint64
+	Tries        int                // attempts per battle before the campaign counts as stuck (5)
+	Stages       int                // battles to fight at most; 0 all
+	Log          io.Writer          // one line per battle; nil quiet
+	Trace        io.Writer          // optional JSONL: prepared snapshot, commands, events and units after each command
+	TraceStage   string             // stage ID to trace; empty traces every stage
+	BeforeBattle func(*core.Engine) // observe the real, unprepared campaign state; must not mutate it
 }
 
 // StageReport is how one battle went.
@@ -48,12 +52,17 @@ type StageReport struct {
 
 // Report is how a whole campaign went.
 type Report struct {
-	Player     string
-	Seed       uint64
-	Stages     []StageReport
-	Cleared    bool
-	Levels     map[string]int
-	LevelScore float64
+	Player          string
+	Seed            uint64
+	ContentHash     string
+	ExpectedBattles int
+	EndNode         string
+	Stages          []StageReport
+	Cleared         bool
+	Levels          map[string]int
+	LevelScore      float64
+	UnbeatenStages  int
+	FirstDefeat     string
 }
 
 // Run plays the campaign from its start with p as the player.
@@ -61,7 +70,7 @@ func Run(d *content.Data, p Player, opt Options) (Report, error) {
 	if opt.Tries == 0 {
 		opt.Tries = 5
 	}
-	rep := Report{Player: p.Name(), Seed: opt.Seed}
+	rep := Report{Player: p.Name(), Seed: opt.Seed, ContentHash: d.Hash, ExpectedBattles: len(BattleNodes(d))}
 	e, err := core.NewGame(d, opt.Seed, opt.Difficulty)
 	if err != nil {
 		return rep, err
@@ -76,9 +85,15 @@ func Run(d *content.Data, p Player, opt Options) (Report, error) {
 	}
 	for range 20000 {
 		o := e.Observe()
+		if o.Node != "" {
+			rep.EndNode = o.Node
+		}
 		switch {
 		case o.Phase == "complete":
-			rep.Cleared = true
+			rep.Cleared = len(rep.Stages) == rep.ExpectedBattles
+			if o.Ending != "" {
+				rep.EndNode = o.Ending
+			}
 			rep.Levels = Levels(d, e)
 			rep.LevelScore = LevelScore(d, rep.Levels)
 			return rep, nil
@@ -91,18 +106,19 @@ func Run(d *content.Data, p Player, opt Options) (Report, error) {
 				return rep, err
 			}
 		case e.Walking():
-			for _, c := range e.ExploreNext() {
+			commands := e.ExploreNext()
+			if p, ok := p.(interface {
+				Explore(*core.Engine) []core.Command
+			}); ok {
+				commands = p.Explore(e)
+			}
+			for _, c := range commands {
 				if err := apply(c); err != nil {
 					return rep, err
 				}
 			}
 		case o.Phase == "scenario" && o.Dialogue.Kind == "choice":
-			options := []string{}
-			for k := range o.Dialogue.Choices {
-				options = append(options, k)
-			}
-			sort.Strings(options)
-			if err := apply(core.Command{Kind: "choose", Option: options[0]}); err != nil {
+			if err := apply(ChooseStory(e, p)); err != nil {
 				return rep, err
 			}
 		case o.Phase == "scenario" && o.Dialogue.Kind == "battle":
@@ -112,16 +128,36 @@ func Run(d *content.Data, p Player, opt Options) (Report, error) {
 				return rep, nil
 			}
 			st := d.Stages[o.Stage]
+			if opt.BeforeBattle != nil {
+				opt.BeforeBattle(e)
+			}
 			sr := StageReport{Stage: st.ID, Order: st.Order}
 			before := e.Snapshot()
 			for try := 1; ; try++ {
 				sr.Tries = try
 				p.Prepare(e, try)
+				if checked, ok := p.(interface{ AutoplayError() error }); ok && checked.AutoplayError() != nil {
+					return rep, checked.AutoplayError()
+				}
+				var trace *json.Encoder
+				if opt.Trace != nil && (opt.TraceStage == "" || opt.TraceStage == st.ID) {
+					trace = json.NewEncoder(opt.Trace)
+					if err := trace.Encode(struct {
+						Stage    string
+						Try      int
+						Snapshot core.State
+					}{st.ID, try, e.Snapshot()}); err != nil {
+						return rep, err
+					}
+				}
 				if err := apply(core.Command{Kind: "start"}); err != nil {
 					return rep, err
 				}
-				if err := Battle(e, p, 20000); err != nil {
+				if err := battle(e, p, 20000, trace); err != nil {
 					return rep, err
+				}
+				if e.Observe().Result != "victory" && rep.FirstDefeat == "" {
+					rep.FirstDefeat = st.ID
 				}
 				if e.Observe().Result == "victory" || try == opt.Tries {
 					break
@@ -146,6 +182,9 @@ func Run(d *content.Data, p Player, opt Options) (Report, error) {
 			}
 			sr.Levels = Levels(d, e)
 			rep.Stages = append(rep.Stages, sr)
+			if rep.FirstDefeat == "" && sr.FirstWin {
+				rep.UnbeatenStages++
+			}
 			if opt.Log != nil {
 				fmt.Fprintf(opt.Log, "%-8s %-4s s%d %-4s tries %d subs %d/%d round %d score %.1f\n", p.Name(), st.ID, opt.Seed,
 					map[bool]string{true: "win", false: "LOSS"}[sr.Won], sr.Tries, sr.Subs, sr.SubsTotal, sr.Rounds, LevelScore(d, sr.Levels))
@@ -167,6 +206,10 @@ func Run(d *content.Data, p Player, opt Options) (Report, error) {
 
 // Battle plays the battle on until its result, the player's units by p and every other unit by the game's AI.
 func Battle(e *core.Engine, p Player, limit int) error {
+	return battle(e, p, limit, nil)
+}
+
+func battle(e *core.Engine, p Player, limit int, trace *json.Encoder) error {
 	for range limit {
 		o := e.Observe()
 		if o.Phase == "result" {
@@ -176,8 +219,21 @@ func Battle(e *core.Engine, p Player, limit int) error {
 		if err != nil {
 			return err
 		}
-		if _, err := e.Apply(c); err != nil {
+		r, err := e.Apply(c)
+		if err != nil {
 			return fmt.Errorf("%s round %d %+v: %w", o.Node, o.Round, c, err)
+		}
+		if trace != nil {
+			after := e.Observe()
+			if err := trace.Encode(struct {
+				Command                   core.Command
+				Round                     int
+				Turn, Army, Phase, Result string
+				Units                     []core.UnitView
+				Events                    []core.Event
+			}{c, after.Round, after.Turn, after.Army, after.Phase, after.Result, after.UnitViews, r.Events}); err != nil {
+				return err
+			}
 		}
 	}
 	return fmt.Errorf("battle did not end in %d commands", limit)

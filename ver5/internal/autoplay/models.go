@@ -1,6 +1,8 @@
 package autoplay
 
 import (
+	"fmt"
+	"io"
 	"math/rand/v2"
 	"sync"
 
@@ -137,7 +139,7 @@ func StartFeatures(d *content.Data, prepared core.State, grow map[string]float64
 // CollectPolicy plays every battle node once per seed with the searcher and turns its decisions into rows for the
 // policy model (state and candidate → how much better than the decision's mean the search found it) and its
 // preparation trials into rows for the preparation model.
-func CollectPolicy(d *content.Data, nodes []string, seeds []uint64, difficulty string, s Searcher, par int) (acts, preps []Sample) {
+func CollectPolicy(d *content.Data, nodes []string, seeds []uint64, difficulty string, s Searcher, par int, log io.Writer) (acts, preps []Sample) {
 	var mu sync.Mutex
 	parallel(len(nodes)*len(seeds), par, func(job int) {
 		node, seed := nodes[job%len(nodes)], seeds[job/len(nodes)]
@@ -169,7 +171,12 @@ func CollectPolicy(d *content.Data, nodes []string, seeds []uint64, difficulty s
 		if _, err := e.Apply(core.Command{Kind: "start"}); err != nil {
 			return
 		}
-		Battle(e, &me, 20000)
+		err = Battle(e, &me, 20000)
+		if log != nil {
+			mu.Lock()
+			fmt.Fprintf(log, "policy battle %s seed %d: %s round %d (error %v)\n", node, seed, e.Observe().Result, e.Observe().Round, err)
+			mu.Unlock()
+		}
 	})
 	return acts, preps
 }
@@ -247,6 +254,12 @@ func (v *ValuePlayer) Act(e *core.Engine, actor string) core.Command {
 	for i, c := range cands {
 		eng := After(v.D, snap, c.Command)
 		if eng == nil {
+			continue
+		}
+		switch eng.Observe().Result {
+		case "victory":
+			return c.Command
+		case "defeat":
 			continue
 		}
 		if s := v.Net.Predict(StateFeatures(v.D, eng, grow))[0]; s > score {

@@ -11,26 +11,26 @@
     "...ooo..."
   ],
   "root": [
-    "..ooo....",
-    ".ohhmo...",
-    "oh..omo..",
-    "om.ohmo..",
-    ".omomomo.",
-    "..omho.mo",
-    "..omo..mo",
-    "...omhmo.",
-    "....ooo.."
+    ".ooo.....",
+    "ommmo.o..",
+    "omrmooro.",
+    "omhroro..",
+    "omhmrmo..",
+    "omhrhrmo.",
+    "omrhhhrmo",
+    "ommmmmmmo",
+    ".ooooooo."
   ],
   "disarm": [
-    ".........",
-    ".oo...oo.",
-    ".oho.omo.",
-    "..ohomo..",
-    "...omo...",
-    "..omomo..",
-    ".omo.omo.",
-    ".oo...oo.",
-    "........."
+    "......oo.",
+    "..o..ohho",
+    ".oroohrmo",
+    "..orhrmo.",
+    ".oohrmo..",
+    "omormro..",
+    ".ormooro.",
+    "omomo.o..",
+    ".o.o....."
   ],
   "burn": [
     "....o....",
@@ -46,24 +46,24 @@
   "confusion": [
     "..oooo...",
     ".ohhhmo..",
-    ".om.ommo.",
-    "....ommo.",
-    "...ommo..",
-    "...omo...",
-    "....o....",
-    "...oho...",
-    "....o...."
+    ".omommo..",
+    "..oommo..",
+    "..ommo...",
+    "..omo....",
+    "...o.....",
+    "..oho....",
+    "...o....."
   ],
   "seal": [
-    "..oooo...",
-    ".ohhhmo..",
-    ".ohrrmo..",
-    ".ohrhmo..",
-    ".ohrrmo..",
-    ".ohrhmo..",
-    ".ohhhmo..",
-    ".ommmoo..",
-    "..ooo...."
+    "..ooooo..",
+    ".ohhhhho.",
+    "ohrhmhrho",
+    "ohmrmrmho",
+    ".ohmrmho.",
+    "..ormro..",
+    ".oromoro.",
+    "..oomoo..",
+    "....o...."
   ],
   "up": [
     "..h..",

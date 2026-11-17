@@ -22,10 +22,12 @@
     "item_sanlue",
     "item_knuckles",
     "item_leather",
+    "item_mirror",
     "item_map",
     "item_medicine",
     "item_primer",
     "item_qinggang",
+    "item_twin",
     "item_ration",
     "item_bean_pouch",
     "item_redhare",
@@ -41,6 +43,7 @@
     "item_liquor",
     "item_fine_liquor",
     "item_baijiu",
+    "item_cure_all",
     "item_scroll",
     "item_insu",
     "bar_frame",
@@ -223,6 +226,39 @@
             "R": "#e04838",
             "r": "#b02a22",
             "q": "#7a1a16"
+          }
+        }
+      }
+    },
+    "item_cure_all": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_cure_all.png",
+      "frames": 1,
+      "timing": "an item icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "w": "#f0f0ea",
+            "g": "#c4c6cc",
+            "G": "#8a8e9a",
+            "B": "#5a86e0",
+            "b": "#2c4fb0",
+            "n": "#1c2c70",
+            "R": "#e04838",
+            "r": "#b02a22",
+            "q": "#7a1a16",
+            "o": "#c08050",
+            "p": "#9a5a32",
+            "P": "#6a3a1e"
           }
         }
       }
@@ -792,8 +828,14 @@
       }
     },
     "item_knuckles": {
-      "cell": [144, 144],
-      "anchor": [8, 8],
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
       "dot": 4,
       "source": "sources/item_knuckles.png",
       "frames": 1,
@@ -845,8 +887,14 @@
       }
     },
     "item_baima": {
-      "cell": [144, 144],
-      "anchor": [8, 8],
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
       "dot": 4,
       "source": "sources/item_baima.png",
       "frames": 1,
@@ -869,8 +917,14 @@
       }
     },
     "item_sanlue": {
-      "cell": [144, 144],
-      "anchor": [8, 8],
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
       "dot": 4,
       "source": "sources/item_sanlue.png",
       "frames": 1,
@@ -1011,6 +1065,39 @@
         }
       }
     },
+    "item_twin": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_twin.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "d": "#4f555b",
+            "b": "#868d93",
+            "l": "#bcc2c6",
+            "h": "#eef1f2",
+            "Y": "#6b4a14",
+            "y": "#a87a22",
+            "o": "#d6aa45",
+            "O": "#f2d78a",
+            "R": "#74201a",
+            "r": "#b83c2e",
+            "q": "#e07a5e"
+          }
+        }
+      }
+    },
     "item_qinggang": {
       "cell": [
         144,
@@ -1076,8 +1163,14 @@
       }
     },
     "item_bean_pouch": {
-      "cell": [144, 144],
-      "anchor": [8, 8],
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
       "dot": 4,
       "source": "sources/item_bean_pouch.png",
       "frames": 1,
@@ -1403,8 +1496,14 @@
       }
     },
     "edge_arrow": {
-      "cell": [96, 96],
-      "anchor": [48, 48],
+      "cell": [
+        96,
+        96
+      ],
+      "anchor": [
+        48,
+        48
+      ],
       "dot": 4,
       "frames": 8,
       "timing": "the battle map's edge-scroll cursor, N NE E SE S SW W NW: 24x24 dot art drawn by hand as ASCII (E and NE; the rest turned or mirrored, then lit again from above), a 1-dot outline and 1:1 slopes, at 4 art px per dot; the game draws it at two UI px per dot, nearest, the anchor at the centre",
@@ -1416,6 +1515,25 @@
             "g": "#d9b056",
             "d": "#9a6e2c"
           }
+        }
+      }
+    },
+    "item_mirror": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_mirror.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {"k": "#1c120c", "W": "#ffffff", "h": "#e4ecf4", "l": "#b4d4ee", "a": "#a4aebc", "b": "#76829a", "c": "#4e5870", "d": "#2e3444"}
         }
       }
     }

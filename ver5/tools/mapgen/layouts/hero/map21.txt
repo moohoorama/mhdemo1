@@ -1,0 +1,35 @@
+# map21 여남 전투 (20x32, night). Grid compass: north = row 0. 여남성 fills the top half (walls x 2..17, y 1..15,
+# gates north (10,1), west (2,8), east (17,8), south (10,15), all open). South of it the field, the 여수 across
+# rows 24-25 with one bridge (10) and one ford (16), and the small castle on the road to 형주 at (10,30).
+gt- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g--
+g-- g-- c-- c-- c-- c-- c-- c-- c-- c-- m-O c-- c-- c-- c-- c-- c-- c-- g-- g--
+g-- g-- c-- l-- l-- l-- l-- l-- l-- l-- i-- l-- l-- l-- l-- l-- l-- c-- g-- g--
+g-- g-- c-- l-- l-- l-- l-- l-- l-- l-- i-- l-- l-- l-- l-- l-- l-- c-- g-- gt-
+g-- g-- c-- l-- l-- lv- l-- l-- l-- l-- i-- l-- l-- lv- l-- l-- l-- c-- g-- g--
+g-- g-- c-- l-- l-- l-- l-- lv- l-- l-- i-- l-- l-- l-- l-- l-- l-- c-- g-- g--
+g-- g-- c-- l-- lv- l-- l-- l-- l-- l-- i-- l-- l-- l-- l-- lv- l-- c-- g-- g--
+g-- g-- c-- l-- l-- l-- l-- l-- l-- l-- i-- l-- l-- l-- l-- l-- l-- c-- g-- g--
+g-- g-- m-O i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- m-O g-- g--
+g-- g-- c-- l-- l-- l-- l-- l-- l-- l-- i-- l-- l-- l-- l-- l-- l-- c-- g-- g--
+g-- g-- c-- l-- l-- l-- l-- l-- l-- l-- i-- l-- l-- l-- l-- l-- l-- c-- g-- g--
+gt- g-- c-- l-- l-- lv- l-- l-- l-- l-- i-- l-- l-- lv- l-- l-- l-- c-- g-- g--
+g-- g-- c-- l-- l-- l-- l-- lv- l-- l-- i-- l-- l-- l-- l-- lv- l-- c-- g-- g--
+g-- g-- c-- l-- l-- l-- l-- l-- l-- l-- i-- l-- l-- l-- lv- l-- l-- c-- g-- gt-
+g-- g-- c-- l-- l-- l-- l-- l-- l-- l-- i-- l-- l-- l-- l-- l-- l-- c-- g-- g--
+g-- g-- c-- c-- c-- c-- c-- c-- c-- c-- m-O c-- c-- c-- c-- c-- c-- c-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- d-- g-- l-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- gt- g-- g-- g-- g-- l-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- l-- gt- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- gt- g-- g-- l-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- l-- g-- gt- g-- g-- g-- g-- gt- g--
+g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- wb- w-- w-- w-- w-- w-- s-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- wb- w-- w-- w-- w-- w-- s-- w-- w-- w--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- gt- g-- g-- g-- g-- g-- g-- g-- l-- d-- g-- g-- g-- g-- g-- g-- gt- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- d-- l-- g-- g-- gt- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- gt- g-- g-- l-- g-- d-- g-- l-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- go- g-- g-- g-- g-- g-- g-- g-- gt- g--
+g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--

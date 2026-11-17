@@ -503,15 +503,20 @@ def cavalry(row, f, style=None, kit='rider', coat='bay', weapon='spear'):
         m.ell(H([x*1.5, -1.13, 1.92]), [.032, .034, .032], '#15191b')
     for y, z in [(-.64, 1.53), (-.76, 1.73), (-.89, 1.98)]:
         m.ell(H([0, y + .13, z]), [.12, .15, .2], dark)
+    gait = k.get('gait') if k else None  # a riding attack: legs keep striding (phase in radians)
+    stride_row = row == 1 or gait is not None
+    amp = float(k.get('stride', 1)) if k else 1.  # a planted horse only shifts its legs a little
     for i, (x, y) in enumerate([(-.3, -.5), (.3, -.5), (-.3, .55), (.3, .55)]):
-        phase = f*math.pi/2 + (0 if i < 2 else math.pi) + (.28 if i % 2 else 0)
-        stride = .43*math.cos(phase) if row == 1 else 0
+        phase = (f*math.pi/2 if gait is None else float(gait)) + (0 if i < 2 else math.pi) + (.28 if i % 2 else 0)
+        stride = .43*amp*math.cos(phase) if stride_row else 0
         if row == 1:
             lift = .12 + max(0, math.sin(phase))*.28 if f == 2 else max(0, math.sin(phase))*.24
+        elif gait is not None:
+            lift = max(0, math.sin(phase))*.24*amp
         else:
             lift = 0
         hip, knee, foot = H([x, y, 1.12]), H([x, y + stride*.5, .58]), V([x, y + stride, .11 + lift])
-        if row == 1:
+        if stride_row:
             knee[1] -= .15*math.sin(phase)
             knee[2] += .08
         m.rod(hip, knee, .10, chest_c)

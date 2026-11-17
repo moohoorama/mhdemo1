@@ -96,11 +96,8 @@ func winStage(t *testing.T, e *Engine, bonus bool) {
 	for i := 0; i < 14 && e.Observe().Phase == "battle"; i++ {
 		satisfy(t, e, e.battleGoals().Victory[0].If) // an event may have changed the goals
 		if bonus {
-			for _, o := range stage.Sub {
+			for _, o := range e.battleGoals().Sub {
 				satisfy(t, e, o.If)
-			}
-			if stage.ID == "B07" {
-				satisfy(t, e, []string{"fled:caocao"}) // not an objective, but the story remembers it
 			}
 		}
 		endTurn(t, e)
@@ -179,7 +176,9 @@ func executed(e *Engine, key string) bool { return e.state.Executed[key] }
 
 func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, true)
-	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20"}, fought)
+	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21"}, fought)
+	assert.Positive(t, e.state.Warehouse["mirror_armor"], "driving Yue Jin off at Runan wins his armour")
+	assert.NotNil(t, e.char("liupi"), "Liu Pi, kept alive at Runan, joins")
 	assert.Equal(t, 1, e.state.Flags["flag-pengcheng-carts"])
 	assert.Positive(t, e.state.Inventory["barley"], "Tao Qian shares the grain from the carts")
 	assert.Equal(t, 1, e.state.Flags["flag-sunjian-alive"])
@@ -210,7 +209,7 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 
 func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, false)
-	assert.Len(t, fought, 20)
+	assert.Len(t, fought, 21)
 	assert.Zero(t, e.state.Flags["flag-julu-clear"])
 	assert.True(t, executed(e, "battle-B10-vanguard-strong"), "Yan Liang comes back at Jiejiao")
 	assert.False(t, executed(e, "battle-B10-vanguard-clear"))

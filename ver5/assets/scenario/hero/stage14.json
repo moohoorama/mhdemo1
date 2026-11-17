@@ -678,10 +678,11 @@
     },
     {
      "Kind": "draw",
-     "Title": "두 장수가 승부를 내지 못하고 갈라서다",
+     "Title": "관우가 물러나고 기령은 숨을 몰아쉬다",
      "Speech": "",
      "Side": 0,
-     "Duration": 2.5
+     "Duration": 2.5,
+     "Tired": "enemy"
     }
    ],
    "If": [

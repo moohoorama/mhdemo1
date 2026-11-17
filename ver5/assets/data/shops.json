@@ -20,6 +20,15 @@
     "route_map"
    ]
   },
+  "tools_cure": {
+   "Name": "도구점",
+   "Items": [
+    "war_horse",
+    "ration_bag",
+    "route_map",
+    "cure_all"
+   ]
+  },
   "tavern": {
    "Name": "주점",
    "Items": [
@@ -58,7 +67,8 @@
     "ration_bag",
     "route_map",
     "war_horse",
-    "insu_mid"
+    "insu_mid",
+    "cure_all"
    ]
   },
   "xuzhou_tavern": {
@@ -76,7 +86,8 @@
    "Items": [
     "ration_bag",
     "route_map",
-    "war_horse"
+    "war_horse",
+    "cure_all"
    ]
   },
   "beihai_tavern": {
@@ -94,7 +105,8 @@
     "ration_bag",
     "route_map",
     "war_horse",
-    "insu_mid"
+    "insu_mid",
+    "cure_all"
    ]
   },
   "xudu_tavern": {
@@ -113,7 +125,8 @@
     "ration_bag",
     "route_map",
     "war_horse",
-    "insu_mid"
+    "insu_mid",
+    "cure_all"
    ]
   },
   "ye_tavern": {

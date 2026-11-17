@@ -45,7 +45,7 @@ func (g *Game) editorToolbar(dst *ebiten.Image) {
 	}
 	g.btn(dst, image.Rect(152, 708, 284, 738), "아군 배치 칸", func() { e.ally = true })
 	g.btn(dst, image.Rect(292, 708, 408, 738), "일반병", func() { e.ally = false; e.officer = false; e.pick = "" })
-	g.btn(dst, image.Rect(416, 708, 530, 738), "장수 선택", func() { e.ally = false; e.officer = true; e.popup = "officers"; e.page = 0; e.entry = "" })
+	g.btn(dst, image.Rect(416, 708, 530, 738), "장수 선택", func() { e.ally = false; e.officer = true; e.popup = "officers"; e.choices = tableList{}; e.entry = "" })
 	for i, f := range g.S.Data.MapEditor.Families {
 		i, f := i, f
 		g.btn(dst, image.Rect(540+i*112, 708, 648+i*112, 738), f.Name, func() { e.family = i; e.classIndex = 0; e.pick = ""; e.officerClass = "" })
@@ -173,7 +173,7 @@ func (g *Game) editorDetail(dst *ebiten.Image) {
 			g.label(dst, fmt.Sprintf("지형 회복 HP %d%% / MP ×%d", t.RestHP, max(1, t.RestMP)), 1018, 230, 13, muted)
 		}
 	}
-	g.btn(dst, image.Rect(1018, 646, 1252, 676), "승리 조건 / 일기토", func() { e.popup = "scenario" })
+	g.btn(dst, image.Rect(1018, 646, 1252, 676), "승리 조건 / 일기토", func() { e.popup = "scenario"; e.choices = tableList{} })
 	g.btn(dst, image.Rect(1018, 254, 1252, 284), "외곽 어둡게 보기 전환", func() { e.field.ShowExterior = !e.field.ShowExterior })
 	if e.draft == nil {
 		g.label(dst, "병력을 클릭하면 상세 설정", 1018, 310, 16, muted)
@@ -186,7 +186,7 @@ func (g *Game) editorDetail(dst *ebiten.Image) {
 	if class == "" {
 		class = c.Class
 	}
-	g.btn(dst, image.Rect(1018, 340, 1252, 372), d.Classes[class].Name+" · 병종 변경", func() { e.popup = "classes"; e.page = 0 })
+	g.btn(dst, image.Rect(1018, 340, 1252, 372), d.Classes[class].Name+" · 병종 변경", func() { e.popup = "classes"; e.choices = tableList{} })
 	v := g.editorPreview(*s)
 	if d.Rules.StageLevelBase > 0 {
 		g.btn(dst, image.Rect(1018, 382, 1148, 412), fmt.Sprintf("%s · LV %d", editorRankNames[s.Rank], v.Level), func() { s.Rank = nextRank(s.Rank) })
@@ -209,7 +209,7 @@ func (g *Game) editorDetail(dst *ebiten.Image) {
 			s.Traits = &traits
 		}
 		e.popup = "traits"
-		e.page = 0
+		e.choices = tableList{}
 	})
 	g.btn(dst, image.Rect(1018, 542, 1252, 572), "장비 설정", func() {
 		if s.Equipment == nil {
@@ -217,7 +217,7 @@ func (g *Game) editorDetail(dst *ebiten.Image) {
 			s.Equipment = &eq
 		}
 		e.popup = "equipment"
-		e.page = 0
+		e.choices = tableList{}
 	})
 	g.btn(dst, image.Rect(1018, 596, 1132, 632), "적용", g.editorApply)
 	g.btn(dst, image.Rect(1140, 596, 1252, 632), "초기화", func() {
@@ -228,10 +228,9 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 	e := g.editor
 	kind := e.popup
 	rect(dst, 0, 0, Width, Height, color.NRGBA{A: 185})
-	g.buttons = nil
-	r := image.Rect(160, 110, 1120, 740)
-	g.titled(dst, r, "편집 · "+map[string]string{"officers": "장수 선택", "classes": "병종 선택", "traits": "특성 선택", "equipment": "장비 선택", "leave": "저장하지 않은 변경", "maps": "맵 목록으로"}[kind])
-	g.btn(dst, image.Rect(990, 125, 1094, 157), "닫기", func() { e.popup = "" })
+	g.buttons, g.wheelAreas = nil, nil
+	r := g.browserPanel(dst, map[string]string{"officers": "장수 선택", "classes": "병종 선택", "traits": "특성 선택", "equipment": "장비 선택", "scenario": "승리 조건 / 일기토", "leave": "저장하지 않은 변경", "maps": "맵 목록으로"}[kind], -1, func() { e.popup = "" })
+	choices := []editorChoice{}
 	if kind == "leave" || kind == "maps" {
 		g.label(dst, "저장하지 않은 변경이 있습니다.", 200, 210, 23, ink)
 		exit := func() {
@@ -264,7 +263,7 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 			if e.army == i {
 				label = "✓ " + label
 			}
-			g.btn(dst, image.Rect(182+i*148, 176, 324+i*148, 210), label, func() { e.army = i; e.page = 0 })
+			g.btn(dst, image.Rect(182+i*148, 150, 324+i*148, 198), label, func() { e.army = i; e.choices = tableList{} })
 		}
 		for i, f := range families {
 			count := len(editorOfficers(data, f.ID, "", army, e.query))
@@ -272,34 +271,30 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 			if e.family == i {
 				label = "✓ " + label
 			}
-			g.btn(dst, image.Rect(182+i*148, 218, 324+i*148, 252), label, func() { e.family = i; e.classIndex = 0; e.officerClass = ""; e.page = 0 })
+			g.btn(dst, image.Rect(182+i*148, 206, 324+i*148, 254), label, func() { e.family = i; e.classIndex = 0; e.officerClass = ""; e.choices = tableList{} })
 		}
 		all := len(editorOfficers(data, family.ID, "", army, e.query))
 		label := fmt.Sprintf("전체 %d", all)
 		if e.officerClass == "" {
 			label = "✓ " + label
 		}
-		g.btn(dst, image.Rect(182, 260, 324, 294), label, func() { e.officerClass = ""; e.page = 0 })
+		g.btn(dst, image.Rect(182, 262, 290, 310), label, func() { e.officerClass = ""; e.choices = tableList{} })
 		for i, c := range family.Classes {
 			count := len(editorOfficers(data, family.ID, c.ID, army, e.query))
 			label := fmt.Sprintf("%s %d", c.Name, count)
 			if e.officerClass == c.ID {
 				label = "✓ " + label
 			}
-			fn := func() { e.officerClass = c.ID; e.classIndex = i; e.page = 0 }
+			fn := func() { e.officerClass = c.ID; e.classIndex = i; e.choices = tableList{} }
 			if _, ok := data.Classes[c.ID]; !ok {
 				label = c.Name + "(미구현)"
 				fn = nil
 			}
-			g.btn(dst, image.Rect(330+i*148, 260, 472+i*148, 294), label, fn)
+			g.btn(dst, image.Rect(297+i*115, 262, 405+i*115, 310), label, fn)
 		}
-		g.btn(dst, image.Rect(182, 302, 500, 333), "이름 검색: "+e.query, func() { e.entry = e.query; e.editing = "search" })
+		g.btn(dst, image.Rect(182, 318, 690, 366), "이름 검색: "+e.query, func() { e.entry = e.query; e.editing = "search" })
 		ids := editorOfficers(data, family.ID, e.officerClass, army, e.query)
-		e.page = min(e.page, max(0, (len(ids)-1)/18))
-		start := min(e.page*18, len(ids))
-		for j, id := range ids[start:min(start+18, len(ids))] {
-			x, y := 182+j%6*150, 346+j/6*105
-			g.portrait(dst, id, "", float64(x+42), float64(y), 60)
+		for _, id := range ids {
 			used := false
 			for _, sp := range append(append([]content.Spawn{}, e.doc.Stage.Enemies...), e.doc.Stage.Party...) {
 				used = used || sp.Character == id
@@ -323,9 +318,10 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 				label += " (배치됨)"
 				fn = nil
 			}
-			g.btn(dst, image.Rect(x, y+63, x+144, y+95), label, fn)
+			choices = append(choices, editorChoice{label: label, detail: data.Classes[data.Characters[id].Class].Name, portrait: id, pick: fn})
 		}
-		g.editorPage(dst, len(ids), 18)
+		r.Min.Y = 378
+		g.editorChoices(dst, r, choices)
 		return
 	}
 	if kind == "scenario" {
@@ -344,27 +340,28 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 			}
 			e.dirty = true
 		})
-		choices := []string{""}
+		bosses := []string{""}
 		for _, s := range st.Enemies {
 			if !g.S.Data.Characters[s.Character].Template {
-				choices = append(choices, s.Character)
+				bosses = append(bosses, s.Character)
 			}
 		}
 		g.btn(dst, image.Rect(200, 238, 1020, 278), "보스: "+g.name(bossID), func() {
 			e.history.Push(e.doc)
 			n := 0
-			for i, id := range choices {
+			for i, id := range bosses {
 				if id == bossID {
 					n = i + 1
 				}
 			}
-			st.Victory = bossVictory(g, choices[n%len(choices)])
+			st.Victory = bossVictory(g, bosses[n%len(bosses)])
 			e.dirty = true
 		})
 		for i, event := range st.Duels {
-			i, event := i, event
-			g.btn(dst, image.Rect(200, 306+i*54, 1020, 348+i*54), event.ID+" · 삭제", func() { e.history.Push(e.doc); st.Duels = append(st.Duels[:i], st.Duels[i+1:]...); e.dirty = true })
+			choices = append(choices, editorChoice{label: event.ID + " · 삭제", pick: func() { e.history.Push(e.doc); st.Duels = append(st.Duels[:i], st.Duels[i+1:]...); e.dirty = true }})
 		}
+		r.Min.Y = 306
+		g.editorChoices(dst, r, choices)
 		return
 	}
 	if e.draft == nil {
@@ -378,8 +375,7 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 			if f.ID != family {
 				continue
 			}
-			for i, c := range f.Classes {
-				c := c
+			for _, c := range f.Classes {
 				fn := func() {
 					s.Class = c.ID
 					if s.Equipment != nil {
@@ -399,9 +395,10 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 				if _, ok := data.Classes[c.ID]; !ok {
 					fn = nil
 				}
-				g.btn(dst, image.Rect(200, 190+i*56, 1040, 235+i*56), c.Name, fn)
+				choices = append(choices, editorChoice{label: c.Name, pick: fn})
 			}
 		}
+		g.editorChoices(dst, r, choices)
 		return
 	}
 	ids := []string{}
@@ -423,21 +420,12 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 			ids = append(ids, id)
 		}
 	}
-	e.page = min(e.page, max(0, (len(ids)-1)/14))
-	start := min(e.page*14, len(ids))
-	help := ""
-	for j, id := range ids[start:min(start+14, len(ids))] {
-		id := id
-		x, y := 190+j%2*450, 190+j/2*67
+	for _, id := range ids {
 		label := ""
 		checked := false
 		var fn func()
 		if kind == "traits" {
 			label = data.Traits[id].Name
-			class := s.Class
-			if class == "" {
-				class = data.Characters[s.Character].Class
-			}
 			var given []string
 			eq := data.Characters[s.Character].Equipment
 			if s.Equipment != nil {
@@ -495,30 +483,59 @@ func (g *Game) editorPopup(dst *ebiten.Image) {
 				s.Equipment = &list
 			}
 		}
-		if checked {
+		detail := ""
+		if kind == "traits" {
+			detail = g.traitDesc(id)
+		}
+		choices = append(choices, editorChoice{label: label, detail: detail, checked: checked, pick: fn})
+	}
+	g.editorChoices(dst, r, choices)
+}
+
+type editorChoice struct {
+	label, detail, portrait string
+	checked                 bool
+	pick                    func()
+}
+
+func (g *Game) editorChoices(dst *ebiten.Image, r image.Rectangle, choices []editorChoice) {
+	help := ""
+	if len(choices) == 0 {
+		g.label(dst, "선택할 항목이 없습니다", float64(r.Min.X+12), float64(r.Min.Y+16), 14, muted)
+	}
+	g.listRows(dst, &g.editor.choices, r, len(choices), listRowH, func(i int, rr image.Rectangle) {
+		c := choices[i]
+		rowBack(dst, rr, c.checked || hovered(rr))
+		x := rr.Min.X + 12
+		if c.portrait != "" {
+			g.portrait(dst, c.portrait, "", float64(x), float64(rr.Min.Y+8), 40)
+			x += 52
+		}
+		label, fg := c.label, ink
+		if c.checked {
 			label = "✓ " + label
 		}
-		g.btn(dst, image.Rect(x, y, x+432, y+52), label, fn)
-		mx, my := cursorPos()
-		if kind == "traits" && image.Pt(mx, my).In(image.Rect(x, y, x+432, y+52)) {
-			help = data.Traits[id].Name + "\n" + g.traitDesc(id)
+		if c.pick == nil {
+			fg = faintInk
 		}
-	}
-	g.editorPage(dst, len(ids), 14)
-	if help != "" {
-		mx, my := cursorPos()
-		g.tooltip(dst, help, mx+16, my+16)
-	}
-}
-func (g *Game) editorPage(dst *ebiten.Image, total, size int) {
-	e := g.editor
-	g.btn(dst, image.Rect(700, 692, 820, 724), "이전", func() { e.page = max(0, e.page-1) })
-	g.label(dst, fmt.Sprintf("%d / %d", e.page+1, max(1, (total+size-1)/size)), 840, 698, 16, ink)
-	g.btn(dst, image.Rect(964, 692, 1084, 724), "다음", func() {
-		if (e.page+1)*size < total {
-			e.page++
+		y := rr.Min.Y + 16
+		if c.detail != "" {
+			y = rr.Min.Y + 6
+			g.label(dst, ellipsis(g, strings.ReplaceAll(c.detail, "\n", " · "), 12, rr.Max.X-x-12), float64(x), float64(rr.Min.Y+31), 12, muted)
+			if c.portrait == "" && hovered(rr) {
+				help = c.label + "\n" + c.detail
+			}
+		}
+		g.label(dst, ellipsis(g, label, 16, rr.Max.X-x-12), float64(x), float64(y), 16, fg)
+	}, func(i int) {
+		if choices[i].pick != nil {
+			choices[i].pick()
 		}
 	})
+	if help != "" {
+		x, y := cursorPos()
+		g.tooltip(dst, help, x+16, y+16)
+	}
 }
 
 func editorLevel(base, override int) int {

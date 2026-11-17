@@ -4,19 +4,19 @@
   python3 .claude/skills/scene-staging/check_scenes.py [scene-or-node-id-prefix ...]
 
 Plays each scene's beats in order (enter, move, exit) and checks the stage after every group: everyone on the
-stage stands on open floor, away from standing props, and at least MIN_GAP cells from everyone else. Prints one
+stage stands on open floor, off the small tiles of standing props, and at least MIN_GAP cells from everyone else. Prints one
 line per problem and a count; exits 1 when there are problems.
 """
 import json
+import math
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3] / 'ver5'
-FREE_GLYPHS = '.diTWPC'  # ground, paving and the format 2 floors (assets/graphics/scene.json)
+FREE_GLYPHS = json.load(open(ROOT / 'assets/graphics/scene.json'))['walkable']  # ground, paving and the format 2 floors
 NOT_STANDING = ('floor', 'avenue', 'ash', 'carpet', 'wall', 'curtain', 'bridge', 'dais', 'throne', 'straw_mat',
-                'bloody_cloth', 'broken_spear', 'fallen_flag')  # under, behind or seating the feet
+                'bloody_cloth', 'broken_spear', 'fallen_flag', 'field_bare', 'puddle', 'rubble')  # under, behind or seating the feet
 MIN_GAP = 1.0   # cells between two actors' feet; closer than this the iso sprites overlap
-PROP_GAP = 0.45  # cells from a standing prop's anchor
 
 
 def load_map(cache, map_id):
@@ -26,7 +26,8 @@ def load_map(cache, map_id):
             ground = art['ground']
             art = {'visual': [*art['origin'], len(ground[0]), len(ground)], 'small_tiles': ground,
                    'props': [[n, (U - .5) / 2 + dx / 64 + dy / 32, (V - .5) / 2 - dx / 64 + dy / 32]
-                             for n, U, V, *d in art['objects'] for dx, dy in [d or (0, 0)]]}
+                             for n, U, V, *d in art['objects']
+                             for dx, dy in [[x for x in d if not isinstance(x, dict)] or (0, 0)]]}  # a colour object may end it
         props = [(p[0], p[1], p[2]) for p in art.get('props', []) if len(p) == 3 and not p[0].startswith(NOT_STANDING)]
         cache[map_id] = (art, props)
     return cache[map_id]
@@ -40,9 +41,17 @@ def spot_problems(art, props, u, v):
     if art['small_tiles'][sv][su] not in FREE_GLYPHS:
         return ['not on open floor']
     for name, a, b in props:
-        if ((u - a) ** 2 + (v - b) ** 2) ** .5 < PROP_GAP:
+        if on_prop(u, v, a, b):
             return [f'on prop {name} ({a}, {b})']
     return []
+
+
+def on_prop(u, v, a, b):
+    """An actor in the middle of a small tile is on a prop only in that tile (one at the table beside is not); one on
+    a game cell's centre stands where four small tiles meet, so a prop in any of them is at its feet."""
+    if (2 * u) % 1 and (2 * v) % 1:
+        return (math.floor(2 * u), math.floor(2 * v)) == (math.floor(2 * a), math.floor(2 * b))
+    return ((u - a) ** 2 + (v - b) ** 2) ** .5 < .45
 
 
 def main():
@@ -75,6 +84,7 @@ def main():
             for node in sc['Nodes']:
                 for li, line in enumerate(sc.get('Beats', {}).get(node, [])):
                     for gi, group in enumerate(line):
+                        before = dict(pos)  # a striker riding in this group strikes from where its ride began
                         for st in group:
                             a = st.get('Actor')
                             if not a:
@@ -83,6 +93,13 @@ def main():
                                 pos[a] = tuple(st['Enter'])
                             if st.get('Move'):
                                 pos[a] = tuple(st['Move'])
+                            if st.get('Place'):
+                                pos[a] = tuple(st['Place'])
+                            t = st.get('Strike')
+                            if st.get('Push') and t in pos and a in pos:  # the target is driven back along the blow
+                                (bu, bv), (tu, tv) = before.get(a, pos[a]), pos[t]
+                                d = max(1e-9, ((tu - bu) ** 2 + (tv - bv) ** 2) ** .5)
+                                pos[t] = (round(tu + (tu - bu) / d * st['Push']), round(tv + (tv - bv) / d * st['Push']))
                             if st.get('Exit'):
                                 pos.pop(a, None)
                         check(f'{node} line {li} group {gi}')

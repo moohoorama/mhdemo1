@@ -290,6 +290,30 @@ func (e *Engine) markCell(x, y int, element string) {
 	e.events = append(e.events, Event{Kind: "mark", Target: state, Path: []content.Point{{X: x, Y: y}}})
 }
 
+// clearMarks takes the marks of critical spells (and what they turned into) off the 3x3 cells round (x, y), the
+// ground back as the stage has it; it reports whether there was any.
+func (e *Engine) clearMarks(x, y int) bool {
+	stage := e.data.Stages[e.state.Stage]
+	any := false
+	for dy := -1; dy <= 1; dy++ {
+		for dx := -1; dx <= 1; dx++ {
+			cx, cy := x+dx, y+dy
+			if cx < 0 || cy < 0 || cx >= stage.Width || cy >= stage.Height {
+				continue
+			}
+			c := e.Cell(cx, cy)
+			if c.State == content.NoLayer || !e.markState(string(c.State)) {
+				continue
+			}
+			base := string(stage.Cell(cx, cy).State)
+			e.setState(stage, cx, cy, base, 0)
+			e.events = append(e.events, Event{Kind: "mark", Target: base, Path: []content.Point{{X: cx, Y: cy}}})
+			any = true
+		}
+	}
+	return any
+}
+
 // markState reports whether a critical spell may cover the state: a mark, or what one turns into.
 func (e *Engine) markState(k string) bool {
 	for _, m := range e.data.Rules.CritMarks {

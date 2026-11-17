@@ -110,3 +110,18 @@ func TestTableDrag(t *testing.T) {
 		assert.Equal(t, 1, picked)
 	})
 }
+
+func TestTableFractionalWheel(t *testing.T) {
+	l := &tableList{top: 5}
+	for range 3 {
+		l.scroll(-.25)
+	}
+	assert.Equal(t, 5, l.top)
+	l.scroll(-.25)
+	assert.Equal(t, 6, l.top, "small trackpad deltas accumulate to a row")
+	for range 4 {
+		l.scroll(.25)
+	}
+	assert.Equal(t, 5, l.top)
+	assert.Zero(t, l.wheel)
+}

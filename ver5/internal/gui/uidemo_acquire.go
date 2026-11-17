@@ -1,11 +1,44 @@
 package gui
 
 import (
+	"fmt"
+
 	"srpg/internal/content"
+	"srpg/internal/core"
 	"srpg/internal/session"
 )
 
-func init() { demos["acquire"] = demoAcquire }
+func init() {
+	demos["acquire"] = demoAcquire
+	demos["smith-gifts"] = demoSmithGifts
+}
+
+func demoSmithGifts(d *Demo) error {
+	g := d.g
+	r := g.request(session.Request{Op: "new", Seed: 1})
+	if !r.OK {
+		return fmt.Errorf("smith gifts: %s", r.Error)
+	}
+	s := g.S.Engine.Snapshot()
+	s.Node = "c02-k2"
+	e, err := core.Restore(g.S.Data, s)
+	if err != nil {
+		return err
+	}
+	g.S.Engine = e
+	g.S.Settings.InstantText = true
+	d.step = func(f int) {
+		if f == 0 || f%180 != 0 {
+			return
+		}
+		if len(g.modals) > 0 {
+			g.closeModal()
+		} else if node := g.S.View().Node; node == "c02-k2" || node == "c02-k4" {
+			g.advanceDialogue()
+		}
+	}
+	return nil
+}
 
 // demoAcquire walks the acquire window on a new game's first scene, timed from when the window shows (after the
 // scene's beats): an equipment with a trait (first), an item of each use and money turn up (0–1.3 s), the equipment's window

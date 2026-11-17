@@ -4,6 +4,7 @@
   python3 grid3d_mounted.py <id> --unit light_cavalry [--base cavalry] [--anims ..] [--dirs ..]
   python3 grid3d_mounted.py <id> --unit K --denoise          # also clean the shading noise (denoise.py), head kept
   python3 grid3d_mounted.py <id> --unit K --denoise-only     # clean the existing grid files in place (no re-convert)
+  python3 grid3d_mounted.py <id> --unit K --origin          # model origin on the pivot (lying figures), not the hooves
   python3 grid3d_mounted.py resize <id> LEFT RIGHT TOP BOTTOM     # grow the cell, pivot follows (negative shrinks)
 
 Same idea as grid3d.py (tools/unit3d renders, this file converts), but for units whose head is a real 3D-stamped
@@ -15,6 +16,9 @@ A unit is a module in mounted_kits/ that calls register(name, make). make() appl
 A scene pose row (--anims prone, added first with `grid.py poses <id> prone`) calls build(name, f) and stamps
 heads['poses'][name](direction) when the kit gives one (e.g. the head turned on its side).
 Attack effects come from the 3D render (stamped as effect tags); other animations paste the base sheet's effects.
+A kit whose sheet was hand-cleaned after its conversion (관우) can add rows to it: heads['tags'] overrides KEY2TAG
+for its own materials, and heads['sheet_head'] puts the sheet's own head (idle frame 0 of the direction, old weapon
+pixels dropped) where the 2D head stamp lands, moved with the head, instead of the stamp.
 """
 import argparse
 import copy
@@ -138,6 +142,36 @@ def read(path):
     return [l[3:] for l in path.read_text().split('\n') if re.match(r'^\d\d\|', l)]
 
 
+class Tag(str):
+    """A sheet tag pasted into a render grid (kept apart from the render keys, which share letters with tags)."""
+
+
+EFFECT_NAMES = {tag: name for _, tag, name in G.EFFECT_RGB.values()}
+WEAPON_TAGS = set('abcpqrt')  # the 관우 sheet's glaive: blade iron, shaft and tassel themeB, collar themeC2
+
+
+def own_head(path, stamped, dx, dy):
+    """The sheet's head pixels where idle frame 0's 2D head stamp landed, relative to the stamp centre; the old
+    weapon (and outline touching only it) is dropped, so the new frame's own weapon or body shows there."""
+    ref = read(path)
+    sx, sy = stamped['at']
+    out = {}
+    for y, (r0, r1) in enumerate(zip(stamped['body'], stamped['head'])):
+        for x, (c0, c1) in enumerate(zip(r0, r1)):
+            if c0 == c1 or not (0 <= y + dy < len(ref) and 0 <= x + dx < len(ref[0])):
+                continue
+            tag = ref[y + dy][x + dx]
+            if tag in WEAPON_TAGS or tag == '.':
+                continue
+            if tag == '#':
+                near = [ref[y + dy + j][x + dx + i] for i, j in ((1, 0), (-1, 0), (0, 1), (0, -1))
+                        if 0 <= y + dy + j < len(ref) and 0 <= x + dx + i < len(ref[0])]
+                if not any(c not in WEAPON_TAGS and c not in '.#' for c in near):
+                    continue
+            out[x - sx, y - sy] = Tag(tag)
+    return out
+
+
 def convert(a):
     load_units()
     build, heads = UNITS[a.unit]()
@@ -152,13 +186,15 @@ def convert(a):
     draw = B.E.draw
     B.E.draw = lambda *args: effects.append(draw(*args)) or effects[-1]
     head_px = []  # pixels the 2D head stamp changed (render coordinates): never denoised
-    stamp = Hd.stamp
+    stamp, stamped = Hd.stamp, {}
 
-    def tracked_stamp(g, *args):
+    def tracked_stamp(g, head_set, d, face, cx, cy):
         before = [r[:] for r in g]
-        stamp(g, *args)
+        stamp(g, head_set, d, face, cx, cy)
         head_px[:] = [(x, y) for y, (r0, r1) in enumerate(zip(before, g)) for x, (c0, c1) in enumerate(zip(r0, r1)) if c0 != c1]
+        stamped.update(body=before, head=[r[:] for r in g], at=(round(cx), round(cy)))
     Hd.stamp = tracked_stamp
+    key2tag = dict(KEY2TAG, **heads.get('tags', {}))
     out_root, ref_root = dots.HEROES / a.id / 'grid', dots.HEROES / a.base / 'grid'
     bw, bh = base['cell']
     for d in a.dirs.split(','):
@@ -167,6 +203,9 @@ def convert(a):
         B.frame(build, heads, B.SPEC, d, 0, 0, lift=0)
         bottom = max(y for y, row in enumerate(captured[-1]) for c in row if c != '.')
         dx, dy = px - B.SPEC['pivot'][0], py - bottom  # idle frame 0 puts the hooves on the pivot row
+        if a.origin:  # a lying figure: the model origin (the body's middle) on the pivot
+            dy = py - B.SPEC['pivot'][1]
+        sheet_head = heads.get('sheet_head') and own_head(out_root / 'idle' / f'{d}-0.txt', stamped, dx, dy)
         for anim in a.anims.split(','):
             row = B.ANIMATIONS.index(anim) if anim in B.ANIMATIONS else anim
             head_set = heads['poses'][anim](d) if anim in heads.get('poses', {}) else heads
@@ -184,20 +223,38 @@ def convert(a):
                     G.write_grid(path, denoise.clean(read(path), protect)[0])
                     continue
                 out = [['.'] * w for _ in range(h)]
-                for y, line in enumerate(captured[-1]):
+                final = captured[-1]
+                if sheet_head:
+                    final = [r[:] for r in final]
+                    for y, line in enumerate(final):
+                        for x, c in enumerate(line):
+                            if stamped['head'][y][x] != stamped['body'][y][x] and c == stamped['head'][y][x]:
+                                line[x] = stamped['body'][y][x]  # the stamp's pixel (not a weapon in front of it)
+                    sx, sy = stamped['at']
+                    for (hx, hy), tag in sheet_head.items():
+                        x, y = sx + hx, sy + hy
+                        if captured[-1][y][x] == stamped['head'][y][x]:  # no weapon drawn in front of the head here
+                            final[y][x] = tag
+                for y, line in enumerate(final):
                     for x, c in enumerate(line):
                         if c == '.':
                             continue
-                        if c not in KEY2TAG:
+                        if c not in key2tag and not (sheet_head and c in dots.TAG_CHARS):
                             sys.exit(f'unknown palette key {c!r} in {anim} {d} {n}')
                         if 0 <= x + dx < w and 0 <= y + dy < h:
-                            out[y + dy][x + dx] = KEY2TAG[c]
+                            out[y + dy][x + dx] = c if isinstance(c, Tag) else key2tag[c]
                         else:
                             print('clipped', anim, d, n, x + dx, y + dy)
                 if anim == 'attack' or a.base == 'none':
                     for under, over in effects:
                         for layer in (over, under):
                             G.stamp(layer, out, dx, dy)
+                    trail = heads.get('trail', {})  # effect tag -> (tag, alpha): a hand-cleaned sheet's own trail shades
+                    for line in out:
+                        for x, c in enumerate(line):
+                            if isinstance(c, tuple) and c[1] in trail:
+                                tag, alpha = trail[c[1]]
+                                line[x] = ('t', tag, alpha, EFFECT_NAMES[tag])
                 if anim != 'attack' and a.base != 'none' and anim in B.ANIMATIONS:
                     ref = read(ref_root / anim / f'{d}-{n}.txt')
                     for y in range(bh):
@@ -234,6 +291,8 @@ def main():
     ap.add_argument('--denoise', action='store_true', help='clean the converted frames with denoise.clean (head kept)')
     ap.add_argument('--mirror', action='store_true',
                     help='write NE, E and SE as the NW, W and SW grids flipped about the pivot (render only the W side)')
+    ap.add_argument('--origin', action='store_true',
+                    help='put the model origin on the pivot instead of the lowest idle pixel (a figure lying down)')
     ap.add_argument('--denoise-only', action='store_true',
                     help='render only to locate the head, then clean the existing grid files in place')
     convert(ap.parse_args())

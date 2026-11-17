@@ -31,7 +31,7 @@ func (d *Data) Validate() error {
 		return fmt.Errorf("rules: growth incomplete")
 	}
 	for _, v := range r.Difficulties {
-		if v.ID == "" || v.Name == "" || v.XPPct <= 0 {
+		if v.ID == "" || v.Name == "" || v.XPPct <= 0 || v.DealtPct < 0 || v.TakenPct < 0 {
 			return fmt.Errorf("rules: difficulty %q incomplete", v.ID)
 		}
 		if v.rules != nil && (!growth(*v.rules) || v.rules.StageLevelStep < 0) {
@@ -122,6 +122,9 @@ func (d *Data) Validate() error {
 				return fmt.Errorf("class %s: pool trait %s is not learnable", id, t)
 			}
 		}
+		if !in(c.Prefer, "", KindMagic, KindStatus, KindHeal) {
+			return fmt.Errorf("class %s: unknown preference %s", id, c.Prefer)
+		}
 		if s, ok := d.Classes[c.Shoot]; c.Shoot != "" && (!ok || s.Attack != AttackRanged) {
 			return fmt.Errorf("class %s: shoot form %s is not a ranged class", id, c.Shoot)
 		}
@@ -155,6 +158,7 @@ func (d *Data) Validate() error {
 			if it.Amount < 1 {
 				return fmt.Errorf("item %s", id)
 			}
+		case ItemCure:
 		case ItemPromote:
 			if it.Tier < 1 || it.Tier > len(r.PromoteLevels) {
 				return fmt.Errorf("item %s: tier %d", id, it.Tier)
@@ -168,12 +172,14 @@ func (d *Data) Validate() error {
 		if !ok || c.Name == "" || c.Level < 1 || c.Level > r.MaxLevel || c.Lord && !c.Playable || c.Template && (c.Lord || c.Playable) {
 			return fmt.Errorf("character %s", id)
 		}
-		if c.Prefer != "" && c.Prefer != KindStatus {
-			return fmt.Errorf("character %s: unknown preference %s", id, c.Prefer)
-		}
 		for _, s := range c.Stats {
 			if s < 1 || s > 100 {
 				return fmt.Errorf("stats %s", id)
+			}
+		}
+		for t, l := range c.TraitAt {
+			if d.Traits[t].Name == "" || l < 1 || l > r.MaxLevel {
+				return fmt.Errorf("character %s: trait %s at level %d", id, t, l)
 			}
 		}
 		for _, t := range append(append([]string{}, c.Traits...), c.Learn...) {
@@ -285,6 +291,9 @@ func (d *Data) Validate() error {
 			if nodes[v].ID == "" {
 				return fmt.Errorf("node %s choice %s", n.ID, v)
 			}
+		}
+		if n.Card && n.Kind != "narrate" {
+			return fmt.Errorf("node %s: only a narrate node is a card", n.ID)
 		}
 		switch n.Kind {
 		case "battle":

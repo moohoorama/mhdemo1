@@ -16,7 +16,7 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 	allies := map[string]bool{}
 	enemies := map[string]bool{}
 	actors := map[string]bool{}
-	targets := map[string]bool{"ally": true, "enemy": true} // every unit of a side
+	targets := map[string]bool{"ally": true, "enemy": true, "player": true} // every unit of a side; player: the ally units the player commands
 	for id, c := range d.Characters {
 		if c.Playable {
 			actors[id] = true
@@ -37,7 +37,7 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 		}
 	}
 	for _, sp := range append(append([]Spawn{}, s.Party...), s.Enemies...) {
-		if sp.Group == "ally" || sp.Group == "enemy" || sp.Group == "support" {
+		if sp.Group == "ally" || sp.Group == "enemy" || sp.Group == "support" || sp.Group == "player" {
 			return nil, nil, fmt.Errorf("group name %q is reserved", sp.Group)
 		}
 	}

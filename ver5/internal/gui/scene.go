@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"maps"
 	"math"
 	"slices"
 	"strings"
@@ -53,7 +54,12 @@ type scene struct {
 	shot      *sceneShot              // an arrow chased by the camera (a Shoot step)
 	free      map[string]bool         // walkers whose walk does not hold up the beats
 	follow    string                  // the actor the camera keeps on
+	focus     string                  // the named actor of the latest beat or line since the last camera step: the camera keeps them in view
 	stride    map[string]float64      // cells walked since each walker's last footfall sounded
+	back      map[string]string       // walkers backing away, with the way they keep facing
+	strikes   []*sceneStrike          // Strike steps playing out
+	swing     map[string]string       // riders dealing a blow on the move: the motion the walk must not cut short
+	dust      []dustPuff              // dust kicked up by targets driven back by a blow
 	tied      map[string]*sprite.Art  // bound prisoners, with the art they stand in once untied
 }
 
@@ -152,7 +158,7 @@ func (g *Game) openScene(def *scenes.Scene) {
 	s := &scene{def: def, actors: map[string]*unitVis{}, extra: map[string]bool{}, hold: map[string]bool{}, held: map[string]bool{},
 		paths: map[string][][2]float64{}, speed: map[string]float64{}, exits: map[string]bool{}, plays: map[string]string{},
 		emotes: map[string]*emote{}, looks: map[string]*look{}, fade: 1, patrol: map[string]*patrol{}, chatter: map[string]*chatterLine{},
-		free: map[string]bool{}, stride: map[string]float64{}}
+		free: map[string]bool{}, stride: map[string]float64{}, back: map[string]string{}, swing: map[string]string{}}
 	g.scene = s
 	for key, a := range def.Cast {
 		if v := g.castActor(key, a); v != nil {
@@ -253,10 +259,34 @@ func (g *Game) updateScene(dt float64) {
 		if v.walk != nil && s.speed[key] > 0 {
 			k = s.speed[key]
 		}
-		v.update(dt * k)
+		swinging := s.swing[key] != "" && v.anim == s.swing[key]
+		if swinging { // a blow dealt on the move plays at its own pace; the ride keeps the walk's speed (walkTo's dur)
+			if w := v.walk; w != nil && w.dur <= 0 && k > 1 { // the cell it was in the middle of goes on at the ride's pace
+				w.dur = stepTime / k
+				w.t /= k
+			}
+			v.update(dt)
+		} else {
+			v.update(dt * k)
+		}
 		if p := s.paths[key]; v.walk == nil && len(p) > 0 {
 			g.sceneFootfall(key, v, p[0])
+			anim, at := v.anim, v.animT
 			g.walkTo(v, p[0][0], p[0][1])
+			if swinging = s.swing[key] != "" && anim == s.swing[key]; swinging {
+				v.anim, v.animT = anim, at
+			}
+			if s.swing[key] != "" {
+				v.walk.dur = stepTime / math.Max(1, s.speed[key])
+			}
+			if dir, ok := s.back[key]; ok {
+				v.dir = dir
+			}
+			if v.walk.dur > 0 { // the time the last cell ran over goes into this one, so a long ride keeps its pace
+				v.walk.t = v.over * v.walk.dur
+			} else {
+				v.walk.t = v.over * stepTime
+			}
 			s.paths[key] = p[1:]
 		} else if v.walk == nil && len(p) == 0 {
 			if pt := s.patrol[key]; pt != nil {
@@ -273,6 +303,7 @@ func (g *Game) updateScene(dt float64) {
 			}
 			delete(s.speed, key)
 			delete(s.stride, key)
+			delete(s.back, key)
 		}
 	}
 	for key, l := range s.looks {
@@ -325,9 +356,12 @@ func (g *Game) updateScene(dt float64) {
 		s.camU, s.camV = a.u, a.v
 	}
 	tx, ty := g.sceneCam()
-	ease := math.Min(1, dt*camEase)
-	g.camX, g.camY = g.camX+(tx-g.camX)*ease, g.camY+(ty-g.camY)*ease
+	if len(s.def.Nodes) > 0 { // a story scene, not a walk the hero leads
+		tx, ty = g.keepInView(tx, ty)
+	}
+	g.panCamera(tx, ty, dt, len(s.def.Nodes) > 0)
 	g.updateShot(dt)
+	g.updateStrikes(dt)
 	if !g.sceneBusy() {
 		return
 	}
@@ -378,6 +412,56 @@ func (g *Game) updateScene(dt float64) {
 	s.begun = false
 }
 
+// keepInView moves the camera target (tx, ty) as little as it takes to bring the latest beat's or line's actor
+// inside the screen, clear of its edges and of the dialogue scroll; a shot that already shows them stays as framed.
+// Zoomed in, the cells a scene frames by CamAt no longer fit, and the one acting or speaking would be off screen.
+func (g *Game) keepInView(tx, ty float64) (float64, float64) {
+	s := g.scene
+	v := s.actors[s.focus]
+	if v == nil || v.gone || g.zoom <= 0 {
+		return tx, ty
+	}
+	x, feet := g.field.Center(v.u, v.v)
+	feet -= v.lift + g.field.groundLift(v.u, v.v)
+	head := feet - v.top
+	vp := g.battleViewport()
+	hw, hh := float64(vp.Dx())/2/g.zoom, float64(vp.Dy())/2/g.zoom
+	box := dialogueBox().top * uiPx / worldPx
+	floor := (box-float64(vp.Min.Y+vp.Dy()/2))/g.zoom - math.Max(8, hh*.2) // a little above the scroll's top edge
+	mx, my := math.Min(96, hw*.4), math.Min(24, hh*.15)                    // well inside the sides, not pressed to them
+	switch {
+	case x < tx-hw+mx:
+		tx = x + hw - mx
+	case x > tx+hw-mx:
+		tx = x - hw + mx
+	}
+	if head < ty-hh+my {
+		ty = head + hh - my
+	}
+	if feet > ty+floor { // with no room for both, the feet stay above the scroll
+		ty = feet - floor
+	}
+	return tx, ty
+}
+
+// camPanSpeed caps a story scene's camera, in screen widths a second, so a shot far from the last one glides
+// there rather than whipping across the map; a cut in the dark of a fade lands at once.
+const camPanSpeed = 1.2
+
+// panCamera eases the camera toward (tx, ty).
+func (g *Game) panCamera(tx, ty, dt float64, story bool) {
+	if story && g.scene.fade > .9 {
+		g.camX, g.camY = tx, ty
+		return
+	}
+	ease := math.Min(1, dt*camEase)
+	dx, dy := (tx-g.camX)*ease, (ty-g.camY)*ease
+	if d, most := math.Hypot(dx, dy), camPanSpeed*float64(g.battleViewport().Dx())/g.zoom*dt; story && d > most && most > 0 {
+		dx, dy = dx*most/d, dy*most/d
+	}
+	g.camX, g.camY = g.camX+dx, g.camY+dy
+}
+
 // changesTime reports whether a group of steps turns the time of day: the scene goes dark first and opens on it.
 func changesTime(group []scenes.Step) bool {
 	for _, st := range group {
@@ -403,6 +487,9 @@ func (g *Game) startStep(st scenes.Step) {
 		s.wait = math.Max(s.wait, g.intro.length)
 	}
 	g.stageStep(st)
+	if st.Strike != "" {
+		g.startStrike(st)
+	}
 	if st.Effect == "halberd_throw" { // the beats wait until it has landed
 		s.wait = math.Max(s.wait, halberdThrow())
 	}
@@ -415,6 +502,10 @@ func (g *Game) startStep(st scenes.Step) {
 	if v == nil {
 		return
 	}
+	if !s.extra[st.Actor] && !slices.Contains(s.def.NoFocus, s.node) && (len(st.Enter) == 2 || len(st.Move) == 2 || len(st.Place) == 2 || st.Strike != "" || st.Emote != "" ||
+		st.Say != "" || st.Play != "") {
+		s.focus = st.Actor
+	}
 	if len(st.Enter) == 2 || len(st.Move) == 2 || st.Exit {
 		g.walkStep(v, st)
 	}
@@ -423,7 +514,7 @@ func (g *Game) startStep(st scenes.Step) {
 		delete(s.free, v.id)
 	}
 	if len(st.Place) == 2 {
-		v.u, v.v, v.walk, v.gone = st.Place[0], st.Place[1], nil, false
+		v.u, v.v, v.walk, v.gone, v.leave, v.arriving = st.Place[0], st.Place[1], nil, false, nil, 0 // an actor that left stands again
 		s.paths[v.id] = nil
 		v.lift = g.field.Lift(int(v.u), int(v.v))
 		v.play(v.rest())
@@ -451,6 +542,9 @@ func (g *Game) startStep(st scenes.Step) {
 	}
 	if st.Say != "" {
 		s.emotes[v.id] = &emote{text: st.Say, life: 1.2 + .07*float64(len([]rune(st.Say))), block: true}
+	}
+	if st.Dead {
+		v.killed = true
 	}
 	if st.Pose != "" && s.tied[st.Actor] == nil {
 		v.pose = strings.TrimPrefix(st.Pose, "idle")
@@ -532,6 +626,9 @@ func (g *Game) stageStep(st scenes.Step) {
 	case st.Follow != "":
 		s.follow = st.Follow
 	}
+	if st.Follow != "" || st.Cam != "" || len(st.CamAt) == 2 { // the scene frames its own shot from here
+		s.focus = ""
+	}
 	if a := s.actors[st.Cam]; a != nil {
 		s.camU, s.camV = a.u, a.v
 	} else if len(st.CamAt) == 2 {
@@ -586,7 +683,29 @@ func (g *Game) walkStep(v *unitVis, st scenes.Step) {
 		v.u, v.v, v.gone, v.walk, v.leave, v.arriving = st.Enter[0], st.Enter[1], false, nil, nil, leaveTime
 		v.lift = g.field.Lift(int(v.u), int(v.v))
 	}
-	if len(st.Move) == 2 {
+	if len(st.Move) == 2 && st.Ease != "" { // one stroke straight there, at its own pace
+		delete(s.patrol, v.id)
+		tu, tv := st.Move[0], st.Move[1]
+		speed := st.Speed
+		if speed <= 0 {
+			speed = 1
+		}
+		g.sceneFootfall(v.id, v, [2]float64{tu, tv})
+		anim, at := v.anim, v.animT
+		g.walkTo(v, tu, tv)
+		if s.swing[v.id] != "" && anim == s.swing[v.id] { // a blow under way plays on
+			v.anim, v.animT = anim, at
+		}
+		v.walk.dur = math.Max(.01, math.Hypot(tu-v.u, tv-v.v)*stepTime/speed)
+		switch st.Ease {
+		case "in":
+			v.walk.accel = .3
+		case "out":
+			v.walk.ease = true
+		}
+		s.paths[v.id] = nil
+		s.held[v.id] = true
+	} else if len(st.Move) == 2 {
 		delete(s.patrol, v.id)
 		u, w, path := v.u, v.v, [][2]float64{}
 		for _, c := range append(st.Via, st.Move) {
@@ -596,10 +715,13 @@ func (g *Game) walkStep(v *unitVis, st scenes.Step) {
 		s.paths[v.id] = path
 		s.held[v.id] = true
 	}
-	if st.Speed > 0 {
+	if st.Speed > 0 && st.Ease == "" {
 		s.speed[v.id] = st.Speed
 	}
 	s.exits[v.id] = st.Exit
+	if st.Back && len(st.Move) == 2 {
+		s.back[v.id] = v.dir
+	}
 	if s.free == nil {
 		s.free = map[string]bool{}
 	}
@@ -628,6 +750,9 @@ func (g *Game) settleNode(node string) {
 				}
 				if st.Face != "" {
 					v.dir = st.Face
+				}
+				if st.Dead {
+					v.killed, v.grey = true, 1
 				}
 				if st.Pose != "" && s.tied[st.Actor] == nil {
 					v.pose = strings.TrimPrefix(st.Pose, "idle")
@@ -690,10 +815,19 @@ func (g *Game) skipBeats() {
 				g.startStep(st)
 			}
 		}
+		for _, k := range s.strikes { // a blow being dealt lands at once
+			g.updateStrike(k, strikeLength(k))
+			if v := s.actors[k.by]; v != nil {
+				v.charging = false
+			}
+		}
+		s.strikes = nil
 		for key, v := range s.actors {
 			if p := s.paths[key]; len(p) > 0 {
 				last := p[len(p)-1]
-				v.face(last[0], last[1])
+				if _, backing := s.back[key]; !backing {
+					v.face(last[0], last[1])
+				}
 				v.u, v.v = last[0], last[1]
 			} else if v.walk != nil {
 				v.u, v.v = v.walk.tu, v.walk.tv
@@ -794,9 +928,15 @@ func (g *Game) addressee(name string) string {
 func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	s := g.scene
 	actors := make([]*unitVis, 0, len(s.actors))
-	for _, v := range s.actors {
-		actors = append(actors, v)
+	for _, key := range slices.Sorted(maps.Keys(s.actors)) {
+		actors = append(actors, s.actors[key])
 	}
+	// overlapping people keep one order from frame to frame: the lower on screen later, then the one further right
+	slices.SortStableFunc(actors, func(a, b *unitVis) int {
+		ax, ay := g.field.Center(a.u, a.v)
+		bx, by := g.field.Center(b.u, b.v)
+		return cmp.Or(cmp.Compare(ay, by), cmp.Compare(ax, bx))
+	})
 	talking := map[string]bool{}
 	if !g.sceneBusy() {
 		for _, name := range speakers {
@@ -806,6 +946,9 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	for name, v := range s.actors { // a speaker turns and, standing, gestures once when their line comes up
 		if talking[name] && !s.spoke[name] && v.walk == nil && v.anim == v.rest() && !v.gone {
 			s.spoke[name] = true
+			if !slices.Contains(s.def.NoFocus, s.node) {
+				s.focus = name
+			}
 			g.faceSpeaker(name)
 			if v.anim == "idle" && s.tied[name] == nil {
 				v.play("action")
@@ -846,6 +989,8 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 			}
 		}
 		g.drawSceneEffects(dst)
+		g.drawDust(dst)
+		g.drawEffects(dst)
 		g.drawShot(dst)
 		g.drawGlow(dst)
 		if a := g.sceneFlash(); a > 0 {
@@ -860,7 +1005,7 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	}
 	var balloons []balloon
 	for name := range talking {
-		if v := s.actors[name]; v != nil && !v.gone && s.emotes[name] == nil {
+		if v := s.actors[name]; v != nil && !v.gone && s.emotes[name] == nil && !slices.Contains(s.def.Mute, s.node) {
 			balloons = append(balloons, balloon{name, "", v, true})
 		}
 	}
@@ -883,8 +1028,9 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 // drawBackdrop lays the scene's far picture (mountains, a pass, a burning city) across the top of the screen,
 // behind the map, darkened with the scene's time of day.
 func (g *Game) drawBackdrop(dst *ebiten.Image) {
-	im := g.assets.Backdrops[g.scene.def.Backdrop]
-	if im == nil {
+	bd, ok := g.assets.Backdrops[g.scene.def.Backdrop]
+	im := bd.Image
+	if !ok {
 		return
 	}
 	w, h := im.Bounds().Dx(), im.Bounds().Dy()
@@ -904,8 +1050,8 @@ func (g *Game) drawBackdrop(dst *ebiten.Image) {
 	}
 	drawScaled(dst, im, op)
 	// the near ground of the picture runs on down behind the map, so the backdrop has no bottom edge
-	r, gr, b, _ := im.At(w/2, h-1).RGBA()
-	ground := color.NRGBA{R: uint8(float32(r>>8) * shade), G: uint8(float32(gr>>8) * shade), B: uint8(math.Min(255, float64(float32(b>>8)*shade*1.05))), A: 255}
+	r, gr, b := bd.ground.R, bd.ground.G, bd.ground.B
+	ground := color.NRGBA{R: uint8(float32(r) * shade), G: uint8(float32(gr) * shade), B: uint8(math.Min(255, float64(float32(b)*shade*1.05))), A: 255}
 	rect(dst, 0, float32(bottom), float32(worldW), float32(worldH)-float32(bottom), ground)
 }
 

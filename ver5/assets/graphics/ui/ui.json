@@ -323,7 +323,7 @@
    ]
   ]
  },
- "item_map": {
+ "item_mirror": {
   "anchor": [
    8,
    8
@@ -337,7 +337,7 @@
    ]
   ]
  },
- "item_medicine": {
+ "item_map": {
   "anchor": [
    8,
    8
@@ -351,7 +351,7 @@
    ]
   ]
  },
- "item_primer": {
+ "item_medicine": {
   "anchor": [
    8,
    8
@@ -365,7 +365,7 @@
    ]
   ]
  },
- "item_qinggang": {
+ "item_primer": {
   "anchor": [
    8,
    8
@@ -379,7 +379,7 @@
    ]
   ]
  },
- "item_ration": {
+ "item_qinggang": {
   "anchor": [
    8,
    8
@@ -393,7 +393,7 @@
    ]
   ]
  },
- "item_bean_pouch": {
+ "item_twin": {
   "anchor": [
    8,
    8
@@ -407,7 +407,7 @@
    ]
   ]
  },
- "item_redhare": {
+ "item_ration": {
   "anchor": [
    8,
    8
@@ -421,7 +421,7 @@
    ]
   ]
  },
- "item_robe": {
+ "item_bean_pouch": {
   "anchor": [
    8,
    8
@@ -435,7 +435,7 @@
    ]
   ]
  },
- "item_seal": {
+ "item_redhare": {
   "anchor": [
    8,
    8
@@ -449,7 +449,7 @@
    ]
   ]
  },
- "item_spear": {
+ "item_robe": {
   "anchor": [
    8,
    8
@@ -463,7 +463,7 @@
    ]
   ]
  },
- "item_sword": {
+ "item_seal": {
   "anchor": [
    8,
    8
@@ -477,7 +477,7 @@
    ]
   ]
  },
- "item_yitian": {
+ "item_spear": {
   "anchor": [
    8,
    8
@@ -491,7 +491,7 @@
    ]
   ]
  },
- "item_treasure_sword": {
+ "item_sword": {
   "anchor": [
    8,
    8
@@ -505,7 +505,7 @@
    ]
   ]
  },
- "item_bean": {
+ "item_yitian": {
   "anchor": [
    8,
    8
@@ -519,7 +519,7 @@
    ]
   ]
  },
- "item_barley": {
+ "item_treasure_sword": {
   "anchor": [
    8,
    8
@@ -533,7 +533,7 @@
    ]
   ]
  },
- "item_rice": {
+ "item_bean": {
   "anchor": [
    8,
    8
@@ -547,7 +547,7 @@
    ]
   ]
  },
- "item_liquor": {
+ "item_barley": {
   "anchor": [
    8,
    8
@@ -561,7 +561,7 @@
    ]
   ]
  },
- "item_fine_liquor": {
+ "item_rice": {
   "anchor": [
    8,
    8
@@ -575,7 +575,7 @@
    ]
   ]
  },
- "item_baijiu": {
+ "item_liquor": {
   "anchor": [
    8,
    8
@@ -589,7 +589,7 @@
    ]
   ]
  },
- "item_scroll": {
+ "item_fine_liquor": {
   "anchor": [
    8,
    8
@@ -603,7 +603,7 @@
    ]
   ]
  },
- "item_insu": {
+ "item_baijiu": {
   "anchor": [
    8,
    8
@@ -617,6 +617,48 @@
    ]
   ]
  },
+ "item_cure_all": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    5385,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_scroll": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    5529,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_insu": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    5673,
+    144,
+    144
+   ]
+  ]
+ },
  "bar_frame": {
   "anchor": [
    1,
@@ -625,7 +667,7 @@
   "frames": [
    [
     0,
-    5385,
+    5817,
     26,
     9
    ]
@@ -639,13 +681,13 @@
   "frames": [
    [
     0,
-    5394,
+    5826,
     22,
     3
    ],
    [
     22,
-    5394,
+    5826,
     22,
     3
    ]
@@ -659,7 +701,7 @@
   "frames": [
    [
     0,
-    5397,
+    5829,
     22,
     3
    ]
@@ -673,7 +715,7 @@
   "frames": [
    [
     0,
-    5400,
+    5832,
     22,
     3
    ]
@@ -687,7 +729,7 @@
   "frames": [
    [
     0,
-    5403,
+    5835,
     22,
     1
    ]
@@ -701,7 +743,7 @@
   "frames": [
    [
     0,
-    5404,
+    5836,
     6,
     1
    ]
@@ -715,7 +757,7 @@
   "frames": [
    [
     0,
-    5405,
+    5837,
     1,
     4
    ]
@@ -729,49 +771,49 @@
   "frames": [
    [
     0,
-    5409,
+    5841,
     96,
     96
    ],
    [
     96,
-    5409,
+    5841,
     96,
     96
    ],
    [
     192,
-    5409,
+    5841,
     96,
     96
    ],
    [
     288,
-    5409,
+    5841,
     96,
     96
    ],
    [
     384,
-    5409,
+    5841,
     96,
     96
    ],
    [
     480,
-    5409,
+    5841,
     96,
     96
    ],
    [
     576,
-    5409,
+    5841,
     96,
     96
    ],
    [
     672,
-    5409,
+    5841,
     96,
     96
    ]

@@ -368,7 +368,7 @@
      "Face": "SW",
      "Sprite": "innkeeper_noncombat",
      "Faction": "merchant",
-     "Shop": "tools"
+     "Shop": "tools_cure"
     },
     "늙은 점원": {
      "At": [

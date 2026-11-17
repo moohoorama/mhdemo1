@@ -1,4 +1,309 @@
 {
+ "TurnLimit": 25,
+ "Events": [
+  {
+   "ID": "opening",
+   "If": [
+    "round\u003e=1"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yujin",
+       "Text": "다리 건너 마을 하나다. 쏘아라. 저 장수만 꺾으면 서주성까지 막을 것이 없다."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "gaoshun",
+       "Text": "…………"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "저 다리 건너 깃발…… 고순이다! 다리를 뚫고 서주성으로 간다!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "yujin-advance",
+   "If": [
+    "round\u003e=2"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yujin",
+       "Text": "화살로는 끝이 안 나는군. 내가 직접 다리를 건넌다. 기병은 뒤를 따르라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "yujin",
+      "yu-rear"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "caoren",
+   "If": [
+    "round\u003e=3"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Policy": "march",
+       "GoalArea": 2,
+       "Facing": "SW",
+       "Group": "cao",
+       "Side": "enemy",
+       "Character": "caoren",
+       "X": 0,
+       "Y": 0,
+       "Rank": "commander",
+       "Faction": "wei"
+      },
+      {
+       "Policy": "march",
+       "GoalArea": 2,
+       "Facing": "SW",
+       "Group": "cao",
+       "Side": "enemy",
+       "Character": "troop_cavalry",
+       "X": 1,
+       "Y": 0,
+       "Rank": "troop",
+       "Faction": "wei"
+      },
+      {
+       "Policy": "march",
+       "GoalArea": 2,
+       "Facing": "SW",
+       "Group": "cao",
+       "Side": "enemy",
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 1,
+       "Rank": "troop",
+       "Faction": "wei"
+      },
+      {
+       "Policy": "march",
+       "GoalArea": 2,
+       "Facing": "SW",
+       "Group": "cao",
+       "Side": "enemy",
+       "Character": "troop_footman",
+       "X": 1,
+       "Y": 1,
+       "Rank": "troop",
+       "Faction": "wei"
+      },
+      {
+       "Policy": "march",
+       "GoalArea": 2,
+       "Facing": "SW",
+       "Group": "cao",
+       "Side": "enemy",
+       "Character": "troop_footman",
+       "X": 0,
+       "Y": 2,
+       "Rank": "troop",
+       "Faction": "wei"
+      },
+      {
+       "Policy": "march",
+       "GoalArea": 2,
+       "Facing": "SW",
+       "Group": "cao",
+       "Side": "enemy",
+       "Character": "troop_archer",
+       "X": 1,
+       "Y": 2,
+       "Rank": "troop",
+       "Faction": "wei"
+      },
+      {
+       "Policy": "march",
+       "GoalArea": 2,
+       "Facing": "SW",
+       "Group": "cao",
+       "Side": "enemy",
+       "Character": "troop_archer",
+       "X": 2,
+       "Y": 1,
+       "Rank": "troop",
+       "Faction": "wei"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caoren",
+       "Text": "서쪽 다리를 건넌다. 성까지 길을 쓸어라."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "yuejin",
+   "If": [
+    "round\u003e=5"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Policy": "march",
+       "GoalArea": 2,
+       "Facing": "SW",
+       "Group": "yue",
+       "Side": "enemy",
+       "Character": "yuejin",
+       "X": 18,
+       "Y": 1,
+       "Rank": "commander",
+       "Faction": "wei"
+      },
+      {
+       "Policy": "march",
+       "GoalArea": 2,
+       "Facing": "SW",
+       "Group": "yue",
+       "Side": "enemy",
+       "Character": "troop_cavalry",
+       "X": 19,
+       "Y": 1,
+       "Rank": "troop",
+       "Faction": "wei"
+      },
+      {
+       "Policy": "march",
+       "GoalArea": 2,
+       "Facing": "SW",
+       "Group": "yue",
+       "Side": "enemy",
+       "Character": "troop_cavalry",
+       "X": 19,
+       "Y": 2,
+       "Rank": "troop",
+       "Faction": "wei"
+      },
+      {
+       "Policy": "march",
+       "GoalArea": 2,
+       "Facing": "SW",
+       "Group": "yue",
+       "Side": "enemy",
+       "Character": "troop_footman",
+       "X": 17,
+       "Y": 1,
+       "Rank": "troop",
+       "Faction": "wei"
+      },
+      {
+       "Policy": "march",
+       "GoalArea": 2,
+       "Facing": "SW",
+       "Group": "yue",
+       "Side": "enemy",
+       "Character": "troop_footman",
+       "X": 18,
+       "Y": 2,
+       "Rank": "troop",
+       "Faction": "wei"
+      },
+      {
+       "Policy": "march",
+       "GoalArea": 2,
+       "Facing": "SW",
+       "Group": "yue",
+       "Side": "enemy",
+       "Character": "troop_archer",
+       "X": 17,
+       "Y": 2,
+       "Rank": "troop",
+       "Faction": "wei"
+      },
+      {
+       "Policy": "march",
+       "GoalArea": 2,
+       "Facing": "SW",
+       "Group": "yue",
+       "Side": "enemy",
+       "Character": "troop_archer",
+       "X": 20,
+       "Y": 1,
+       "Rank": "troop",
+       "Faction": "wei"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuejin",
+       "Text": "동쪽 다리로 밀고 들어간다. 선봉은 내가 선다, 뒤처지지 마라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "scholar",
+   "If": [
+    "round\u003e=2"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhugexuan",
+       "Text": "(마을 안) ……여기서 끝날 수는 없다."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "Areas": [
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 18,
+    "Y": 18,
+    "W": 6,
+    "H": 6
+   },
+   "Name": "서주성 안",
+   "Description": "유비가 들어가면 승리, 조조군이 들어가면 패배"
+  }
+ ],
  "ID": "B12",
  "Name": "서주 전투",
  "Width": 0,
@@ -30,25 +335,26 @@
   {
    "ID": "scholar",
    "Text": "제갈현이 끝까지 살아남는다",
+   "Flag": "flag-zhugexuan",
    "If": [
     "alive:zhugexuan"
    ],
-   "Flag": "flag-zhugexuan",
    "Reward": {
     "insu_mid": 1
-   }
+   },
+   "Later": "13장이 제갈현을 만나며 시작한다"
   },
   {
    "ID": "gaoshun",
    "Text": "고순이 끝까지 살아남는다",
+   "Flag": "flag-gaoshun",
    "If": [
     "alive:gaoshun"
    ],
-   "Flag": "flag-gaoshun"
+   "Later": "13장에서 고순이 합류한다"
   }
  ],
- "TurnLimit": 25,
- "Map": "map12.json",
+ "Tiles": null,
  "Allies": [
   {
    "X": 12,
@@ -123,512 +429,108 @@
    "Y": 1
   }
  ],
- "Party": [
-  {
-   "Character": "gaoshun",
-   "X": 15,
-   "Y": 10,
-   "Facing": "SE",
-   "Group": "gao",
-   "Policy": "hold",
-   "AI": true,
-   "Faction": "han"
-  },
-  {
-   "Character": "troop_commoner_woman",
-   "X": 14,
-   "Y": 10,
-   "Facing": "SE",
-   "Group": "refugees",
-   "Policy": "run",
-   "GoalArea": 2,
-   "AI": true,
-   "Faction": "han"
-  },
-  {
-   "Character": "troop_commoner_elder",
-   "X": 15,
-   "Y": 11,
-   "Facing": "NE",
-   "Group": "refugees",
-   "Policy": "run",
-   "GoalArea": 2,
-   "AI": true,
-   "Faction": "han"
-  },
-  {
-   "Character": "zhugexuan",
-   "X": 5,
-   "Y": 16,
-   "Facing": "NE",
-   "Group": "scholar",
-   "Policy": "hold",
-   "AI": true,
-   "Faction": "han"
-  },
-  {
-   "Character": "troop_commoner_man",
-   "X": 8,
-   "Y": 16,
-   "Facing": "SE",
-   "Group": "refugees",
-   "Policy": "run",
-   "GoalArea": 2,
-   "AI": true,
-   "Faction": "han"
-  },
-  {
-   "Character": "troop_commoner_woman",
-   "X": 9,
-   "Y": 17,
-   "Facing": "SE",
-   "Group": "refugees",
-   "Policy": "run",
-   "GoalArea": 2,
-   "AI": true,
-   "Faction": "han"
-  },
-  {
-   "Character": "troop_commoner_elder",
-   "X": 8,
-   "Y": 18,
-   "Facing": "SE",
-   "Group": "refugees",
-   "Policy": "run",
-   "GoalArea": 2,
-   "AI": true,
-   "Faction": "han"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 17,
-   "Y": 20,
-   "Facing": "NW",
-   "Group": "xuzhou",
-   "Policy": "hold",
-   "AI": true,
-   "Faction": "han",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_footman",
-   "X": 21,
-   "Y": 19,
-   "Facing": "NE",
-   "Group": "xuzhou",
-   "Policy": "hold",
-   "AI": true,
-   "Faction": "han",
-   "Shift": -0.07
-  }
- ],
  "Enemies": [
   {
+   "Policy": "hold",
+   "Facing": "NW",
+   "Group": "yu",
    "Character": "yujin",
    "X": 20,
    "Y": 9,
-   "Facing": "NW",
-   "Group": "yu",
-   "Policy": "hold",
    "Rank": "commander",
    "Faction": "wei"
   },
   {
+   "Policy": "assault",
+   "Facing": "NW",
+   "Group": "yu",
    "Character": "troop_footman",
    "X": 18,
    "Y": 10,
-   "Facing": "NW",
-   "Group": "yu",
-   "Policy": "assault",
    "Faction": "wei"
   },
   {
+   "Policy": "assault",
+   "Facing": "NW",
+   "Group": "yu",
    "Character": "troop_footman",
    "X": 19,
    "Y": 11,
-   "Facing": "NW",
-   "Group": "yu",
-   "Policy": "assault",
    "Faction": "wei"
   },
   {
+   "Policy": "assault",
+   "Facing": "NW",
+   "Group": "yu",
    "Character": "troop_footman",
    "X": 19,
    "Y": 9,
-   "Facing": "NW",
-   "Group": "yu",
-   "Policy": "assault",
    "Faction": "wei"
   },
   {
+   "Policy": "assault",
+   "Facing": "NW",
+   "Group": "yu",
    "Character": "troop_archer",
    "X": 21,
    "Y": 10,
-   "Facing": "NW",
-   "Group": "yu",
-   "Policy": "assault",
    "Rank": "recruit",
    "Faction": "wei"
   },
   {
+   "Policy": "react",
+   "Facing": "SE",
+   "Group": "yu-rear",
    "Character": "troop_cavalry",
    "X": 17,
    "Y": 7,
-   "Facing": "SE",
-   "Group": "yu-rear",
-   "Policy": "react",
    "Rank": "recruit",
    "Faction": "wei"
   },
   {
+   "Policy": "react",
+   "Facing": "SE",
+   "Group": "yu-rear",
    "Character": "troop_cavalry",
    "X": 16,
    "Y": 6,
-   "Facing": "SE",
-   "Group": "yu-rear",
-   "Policy": "react",
    "Rank": "recruit",
    "Faction": "wei"
   },
   {
+   "Policy": "assault",
+   "Facing": "SW",
+   "Group": "hunt",
    "Character": "troop_footman",
    "X": 4,
    "Y": 11,
-   "Facing": "SW",
-   "Group": "hunt",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Rank": "rabble"
+   "Rank": "rabble",
+   "Faction": "wei"
   },
   {
+   "Policy": "assault",
+   "Facing": "NW",
+   "Group": "yu",
    "Character": "troop_archer",
    "X": 21,
    "Y": 11,
-   "Facing": "NW",
-   "Group": "yu",
-   "Policy": "assault",
    "Rank": "recruit",
    "Faction": "wei"
   },
   {
+   "Policy": "assault",
+   "Facing": "SW",
+   "Group": "hunt",
    "Character": "troop_footman",
    "X": 3,
    "Y": 11,
-   "Facing": "SW",
-   "Group": "hunt",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Rank": "rabble"
+   "Rank": "rabble",
+   "Faction": "wei"
   }
  ],
  "Reward": {
   "money": 2000
  },
- "Areas": [
-  {
-   "ID": 2,
-   "Rect": {
-    "X": 18,
-    "Y": 18,
-    "W": 6,
-    "H": 6
-   },
-   "Name": "서주성 안",
-   "Description": "유비가 들어가면 승리, 조조군이 들어가면 패배"
-  }
- ],
- "Events": [
-  {
-   "ID": "opening",
-   "If": [
-    "round>=1"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "yujin",
-       "Text": "다리 건너 마을 하나다. 쏘아라. 저 장수만 꺾으면 서주성까지 막을 것이 없다."
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "gaoshun",
-       "Text": "…………"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "liubei",
-       "Text": "저 다리 건너 깃발…… 고순이다! 다리를 뚫고 서주성으로 간다!"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "yujin-advance",
-   "If": [
-    "round>=2"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "yujin",
-       "Text": "화살로는 끝이 안 나는군. 내가 직접 다리를 건넌다. 기병은 뒤를 따르라!"
-      }
-     ]
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "yujin",
-      "yu-rear"
-     ],
-     "Policy": "assault"
-    }
-   ]
-  },
-  {
-   "ID": "caoren",
-   "If": [
-    "round>=3"
-   ],
-   "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "caoren",
-       "Rank": "commander",
-       "X": 0,
-       "Y": 0,
-       "Facing": "SW",
-       "Group": "cao",
-       "Policy": "march",
-       "Faction": "wei",
-       "Side": "enemy",
-       "GoalArea": 2
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 1,
-       "Y": 0,
-       "Facing": "SW",
-       "Group": "cao",
-       "Policy": "march",
-       "Rank": "troop",
-       "Faction": "wei",
-       "Side": "enemy",
-       "GoalArea": 2
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 0,
-       "Y": 1,
-       "Facing": "SW",
-       "Group": "cao",
-       "Policy": "march",
-       "Rank": "troop",
-       "Faction": "wei",
-       "Side": "enemy",
-       "GoalArea": 2
-      },
-      {
-       "Character": "troop_footman",
-       "X": 1,
-       "Y": 1,
-       "Facing": "SW",
-       "Group": "cao",
-       "Policy": "march",
-       "Rank": "troop",
-       "Faction": "wei",
-       "Side": "enemy",
-       "GoalArea": 2
-      },
-      {
-       "Character": "troop_footman",
-       "X": 0,
-       "Y": 2,
-       "Facing": "SW",
-       "Group": "cao",
-       "Policy": "march",
-       "Rank": "troop",
-       "Faction": "wei",
-       "Side": "enemy",
-       "GoalArea": 2
-      },
-      {
-       "Character": "troop_archer",
-       "X": 1,
-       "Y": 2,
-       "Facing": "SW",
-       "Group": "cao",
-       "Policy": "march",
-       "Rank": "troop",
-       "Faction": "wei",
-       "Side": "enemy",
-       "GoalArea": 2
-      },
-      {
-       "Character": "troop_archer",
-       "X": 2,
-       "Y": 1,
-       "Facing": "SW",
-       "Group": "cao",
-       "Policy": "march",
-       "Rank": "troop",
-       "Faction": "wei",
-       "Side": "enemy",
-       "GoalArea": 2
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "caoren",
-       "Text": "서쪽 다리를 건넌다. 성까지 길을 쓸어라."
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "yuejin",
-   "If": [
-    "round>=5"
-   ],
-   "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "yuejin",
-       "Rank": "commander",
-       "X": 18,
-       "Y": 1,
-       "Facing": "SW",
-       "Group": "yue",
-       "Policy": "march",
-       "Faction": "wei",
-       "Side": "enemy",
-       "GoalArea": 2
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 19,
-       "Y": 1,
-       "Facing": "SW",
-       "Group": "yue",
-       "Policy": "march",
-       "Rank": "troop",
-       "Faction": "wei",
-       "Side": "enemy",
-       "GoalArea": 2
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 19,
-       "Y": 2,
-       "Facing": "SW",
-       "Group": "yue",
-       "Policy": "march",
-       "Rank": "troop",
-       "Faction": "wei",
-       "Side": "enemy",
-       "GoalArea": 2
-      },
-      {
-       "Character": "troop_footman",
-       "X": 17,
-       "Y": 1,
-       "Facing": "SW",
-       "Group": "yue",
-       "Policy": "march",
-       "Rank": "troop",
-       "Faction": "wei",
-       "Side": "enemy",
-       "GoalArea": 2
-      },
-      {
-       "Character": "troop_footman",
-       "X": 18,
-       "Y": 2,
-       "Facing": "SW",
-       "Group": "yue",
-       "Policy": "march",
-       "Rank": "troop",
-       "Faction": "wei",
-       "Side": "enemy",
-       "GoalArea": 2
-      },
-      {
-       "Character": "troop_archer",
-       "X": 17,
-       "Y": 2,
-       "Facing": "SW",
-       "Group": "yue",
-       "Policy": "march",
-       "Rank": "troop",
-       "Faction": "wei",
-       "Side": "enemy",
-       "GoalArea": 2
-      },
-      {
-       "Character": "troop_archer",
-       "X": 20,
-       "Y": 1,
-       "Facing": "SW",
-       "Group": "yue",
-       "Policy": "march",
-       "Rank": "troop",
-       "Faction": "wei",
-       "Side": "enemy",
-       "GoalArea": 2
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "yuejin",
-       "Text": "동쪽 다리로 밀고 들어간다. 선봉은 내가 선다, 뒤처지지 마라!"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "scholar",
-   "If": [
-    "round>=2"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "zhugexuan",
-       "Text": "(마을 안) ……여기서 끝날 수는 없다."
-      }
-     ]
-    }
-   ]
-  }
- ],
- "Faction": "wei",
  "Duels": [
   {
    "ID": "xuzhou-zhangfei-yujin",
@@ -756,7 +658,7 @@
      "Title": "우금이 대오를 지키며 물러나다",
      "Speech": "",
      "Side": 1,
-     "Duration": 3.0
+     "Duration": 3
     },
     {
      "Kind": "withdrawn",
@@ -768,6 +670,107 @@
    ]
   }
  ],
+ "Party": [
+  {
+   "AI": true,
+   "Policy": "hold",
+   "Facing": "SE",
+   "Group": "gao",
+   "Character": "gaoshun",
+   "X": 15,
+   "Y": 10,
+   "Faction": "han"
+  },
+  {
+   "AI": true,
+   "Policy": "run",
+   "GoalArea": 2,
+   "Facing": "SE",
+   "Group": "refugees",
+   "Character": "troop_commoner_woman",
+   "X": 14,
+   "Y": 10,
+   "Faction": "han"
+  },
+  {
+   "AI": true,
+   "Policy": "run",
+   "GoalArea": 2,
+   "Facing": "NE",
+   "Group": "refugees",
+   "Character": "troop_commoner_elder",
+   "X": 15,
+   "Y": 11,
+   "Faction": "han"
+  },
+  {
+   "AI": true,
+   "Policy": "hold",
+   "Facing": "NE",
+   "Group": "scholar",
+   "Character": "zhugexuan",
+   "X": 5,
+   "Y": 16,
+   "Faction": "han"
+  },
+  {
+   "AI": true,
+   "Policy": "run",
+   "GoalArea": 2,
+   "Facing": "SE",
+   "Group": "refugees",
+   "Character": "troop_commoner_man",
+   "X": 8,
+   "Y": 16,
+   "Faction": "han"
+  },
+  {
+   "AI": true,
+   "Policy": "run",
+   "GoalArea": 2,
+   "Facing": "SE",
+   "Group": "refugees",
+   "Character": "troop_commoner_woman",
+   "X": 9,
+   "Y": 17,
+   "Faction": "han"
+  },
+  {
+   "AI": true,
+   "Policy": "run",
+   "GoalArea": 2,
+   "Facing": "SE",
+   "Group": "refugees",
+   "Character": "troop_commoner_elder",
+   "X": 8,
+   "Y": 18,
+   "Faction": "han"
+  },
+  {
+   "AI": true,
+   "Policy": "hold",
+   "Facing": "NW",
+   "Group": "xuzhou",
+   "Character": "troop_footman",
+   "X": 17,
+   "Y": 20,
+   "Shift": -0.07,
+   "Faction": "han"
+  },
+  {
+   "AI": true,
+   "Policy": "hold",
+   "Facing": "NE",
+   "Group": "xuzhou",
+   "Character": "troop_footman",
+   "X": 21,
+   "Y": 19,
+   "Shift": -0.07,
+   "Faction": "han"
+  }
+ ],
+ "Map": "map12.json",
+ "Faction": "wei",
  "Armies": [
   {
    "Faction": "shu",

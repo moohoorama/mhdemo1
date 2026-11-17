@@ -1,0 +1,7 @@
+name: metering-gauge-recording
+interval: 1m
+rules:
+- record: account:metad_series_index_key_count_seidtoname:sum
+  expr: sum by (account) (metad_series_index_key_count_by_account or metad_series_index_key_count{index="seIDToName", account!=""})
+- record: account:tscoke_segment_group_usage_count:sum
+  expr: sum by (account) (tscoke_segment_group_usage{attr="count"})

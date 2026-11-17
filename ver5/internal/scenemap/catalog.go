@@ -54,8 +54,10 @@ type WallFamily struct {
 // Board is how the board's front edges are drawn (docs/presentation-scene.md, 판 단면): under each small tile of the
 // +u and +v edges a piece of the ground's cross-section, <family>_pu_<k> or <family>_pv_<k> (k by the tile, of
 // Variants), the family by the tile's ground glyph (Default for one not listed, Under below a raised tile); End_pu
-// and End_pv close the two side corners.
+// and End_pv close the two side corners. A board whose every tile is an Indoor floor (a room, a tent) shows no
+// section: a room is no diorama, and walking out of it the cut under its floor looks odd.
 type Board struct {
+	Indoor   string            `json:"indoor"`
 	Sections map[string]string `json:"sections"`
 	Default  string            `json:"default"`
 	Under    string            `json:"under"`

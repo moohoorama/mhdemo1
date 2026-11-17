@@ -104,19 +104,21 @@ func (e *Engine) DeputyTraits(id string) []string {
 	return append(slices.Clone(innate(d)), d.Learned...)
 }
 
-// DeputyBlend is how much of deputy's attributes actor takes in where deputy's are higher, and the charm of actor
-// it counts (인덕 included); zero when either is missing.
-func (e *Engine) DeputyBlend(actor, deputy string) (r, charm float64) {
+// DeputyBlend is how much of deputy's attributes actor takes in where deputy's are higher, the charm of actor
+// and the deputy's charm it counts (용인술 included); zero when either is missing.
+func (e *Engine) DeputyBlend(actor, deputy string) (r, charm, depCharm float64) {
 	o, d := e.char(actor), e.char(deputy)
 	if o == nil || d == nil {
-		return 0, 0
+		return 0, 0, 0
 	}
 	R := e.data.Rules
-	charm = float64(e.def(o).Stats[5]) + e.ownFx(o, content.FxDeputyCharm)
-	return (charm*float64(R.DeputyWeight) + float64(e.def(d).Stats[5])) / float64(R.DeputyDivisor), charm
+	charm = float64(e.def(o).Stats[5])
+	depCharm = float64(e.def(d).Stats[5]) + e.ownFx(o, content.FxDeputyPlus)
+	return (charm*float64(R.DeputyWeight) + depCharm) / float64(R.DeputyDivisor), charm, depCharm
 }
 
-// attributes are the character's six attributes with the deputy's blended in where the deputy's are higher.
+// attributes are the character's six attributes with the deputy's blended in where the deputy's are higher; 용인술
+// counts every attribute of the deputy higher (deputy_plus), which can carry the blend past the deputy's own.
 func (e *Engine) attributes(o *Character) [6]float64 {
 	R := e.data.Rules
 	a := e.def(o).Stats
@@ -125,12 +127,15 @@ func (e *Engine) attributes(o *Character) [6]float64 {
 		out[i] = float64(n)
 	}
 	if d := e.char(o.Deputy); d != nil && !d.Dead {
-		b := e.def(d).Stats
-		charm := float64(a[5]) + e.ownFx(o, content.FxDeputyCharm)
-		r := (charm*float64(R.DeputyWeight) + float64(b[5])) / float64(R.DeputyDivisor) // past 1 with 인덕 (deputy_charm), on purpose
+		plus := e.ownFx(o, content.FxDeputyPlus)
+		var b [6]float64
+		for i, n := range e.def(d).Stats {
+			b[i] = float64(n) + plus
+		}
+		r := (float64(a[5])*float64(R.DeputyWeight) + b[5]) / float64(R.DeputyDivisor)
 		for i := range a {
-			if b[i] > a[i] {
-				out[i] = float64(a[i])*(1-r) + float64(b[i])*r
+			if b[i] > float64(a[i]) {
+				out[i] = float64(a[i])*(1-r) + b[i]*r
 			}
 		}
 	}

@@ -1,259 +1,10 @@
 {
- "ID": "B10",
- "Name": "계교 전투",
- "Width": 0,
- "Height": 0,
- "Max": 6,
- "Required": [
-  "liubei",
-  "guanyu",
-  "zhangfei",
-  "zhaoyun"
- ],
- "Victory": [
-  {
-   "If": [
-    "defeated:yuanshao"
-   ],
-   "Text": "원소를 물리친다"
-  }
- ],
  "TurnLimit": 25,
- "Map": "map10.json",
- "Allies": [
-  {
-   "X": 9,
-   "Y": 14
-  },
-  {
-   "X": 9,
-   "Y": 15
-  },
-  {
-   "X": 9,
-   "Y": 16
-  },
-  {
-   "X": 8,
-   "Y": 14
-  },
-  {
-   "X": 8,
-   "Y": 15
-  },
-  {
-   "X": 8,
-   "Y": 16
-  },
-  {
-   "X": 7,
-   "Y": 16
-  }
- ],
- "Party": [
-  {
-   "Character": "gongsunzan",
-   "X": 1,
-   "Y": 8,
-   "Facing": "SE",
-   "Group": "white",
-   "Policy": "hold",
-   "AI": true,
-   "Faction": "gongsun"
-  },
-  {
-   "Character": "tiankai",
-   "X": 0,
-   "Y": 8,
-   "Facing": "SE",
-   "Group": "white",
-   "Policy": "hold",
-   "AI": true,
-   "Faction": "gongsun"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 2,
-   "Y": 7,
-   "Facing": "SE",
-   "Group": "white",
-   "Policy": "hold",
-   "AI": true,
-   "Faction": "gongsun",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 2,
-   "Y": 8,
-   "Facing": "SE",
-   "Group": "white",
-   "Policy": "hold",
-   "AI": true,
-   "Faction": "gongsun",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 2,
-   "Y": 9,
-   "Facing": "SE",
-   "Group": "white",
-   "Policy": "hold",
-   "AI": true,
-   "Faction": "gongsun",
-   "Shift": -0.07
-  }
- ],
- "Enemies": [
-  {
-   "Character": "yuanshao",
-   "X": 21,
-   "Y": 8,
-   "Facing": "SW",
-   "Group": "hq",
-   "Policy": "hold",
-   "Rank": "commander"
-  },
-  {
-   "Character": "tianfeng",
-   "X": 21,
-   "Y": 7,
-   "Facing": "SW",
-   "Group": "hq",
-   "Policy": "react",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_footman",
-   "X": 20,
-   "Y": 8,
-   "Facing": "SW",
-   "Group": "hq-guard",
-   "Policy": "hold",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 21,
-   "Y": 9,
-   "Facing": "SW",
-   "Group": "hq-guard",
-   "Policy": "hold",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "quyi",
-   "X": 16,
-   "Y": 8,
-   "Facing": "SW",
-   "Group": "crossbows",
-   "Policy": "hold",
-   "Shift": -0.08
-  },
-  {
-   "Character": "troop_archer",
-   "X": 14,
-   "Y": 7,
-   "Facing": "SW",
-   "Group": "xbows",
-   "Policy": "hold",
-   "Class": "crossbow"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 14,
-   "Y": 9,
-   "Facing": "SW",
-   "Group": "xbows",
-   "Policy": "hold",
-   "Class": "crossbow"
-  },
-  {
-   "Character": "wenchou",
-   "X": 21,
-   "Y": 11,
-   "Facing": "NW",
-   "Group": "wen",
-   "Policy": "hold",
-   "Rank": "commander"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 20,
-   "Y": 11,
-   "Facing": "NW",
-   "Group": "wen",
-   "Policy": "hold",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 21,
-   "Y": 12,
-   "Facing": "NW",
-   "Group": "wen",
-   "Policy": "hold",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 20,
-   "Y": 12,
-   "Facing": "NW",
-   "Group": "wen",
-   "Policy": "hold",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 16,
-   "Y": 11,
-   "Facing": "SW",
-   "Group": "line",
-   "Policy": "hold",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 18,
-   "Y": 7,
-   "Facing": "SW",
-   "Group": "line",
-   "Policy": "hold",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 18,
-   "Y": 9,
-   "Facing": "SW",
-   "Group": "line",
-   "Policy": "hold",
-   "Rank": "recruit"
-  }
- ],
- "Reward": {
-  "money": 1500
- },
- "Areas": [
-  {
-   "ID": 1,
-   "Rect": {
-    "X": 13,
-    "Y": 6,
-    "W": 3,
-    "H": 5
-   },
-   "Name": "다리 동쪽 머리",
-   "Description": "유비군이 여울로 돌아 닿으면 문추가 나온다"
-  }
- ],
  "Events": [
   {
    "ID": "opening",
    "If": [
-    "round>=1"
+    "round\u003e=1"
    ],
    "Do": [
     {
@@ -263,7 +14,9 @@
        {
         "Kind": "face",
         "Unit": "yuanshao",
-        "Facing": "NW"
+        "Motion": "",
+        "Facing": "NW",
+        "Text": ""
        }
       ]
      ]
@@ -293,7 +46,9 @@
        {
         "Kind": "face",
         "Unit": "yuanshao",
-        "Facing": "NE"
+        "Motion": "",
+        "Facing": "NE",
+        "Text": ""
        }
       ]
      ]
@@ -314,7 +69,9 @@
        {
         "Kind": "face",
         "Unit": "quyi",
-        "Facing": "SE"
+        "Motion": "",
+        "Facing": "SE",
+        "Text": ""
        }
       ]
      ]
@@ -335,12 +92,16 @@
        {
         "Kind": "face",
         "Unit": "quyi",
-        "Facing": "SW"
+        "Motion": "",
+        "Facing": "SW",
+        "Text": ""
        },
        {
         "Kind": "face",
         "Unit": "yuanshao",
-        "Facing": "SW"
+        "Motion": "",
+        "Facing": "SW",
+        "Text": ""
        }
       ]
      ]
@@ -388,7 +149,7 @@
   {
    "ID": "pincer",
    "If": [
-    "any:[at:liubei:1, at:guanyu:1, at:zhangfei:1, at:zhaoyun:1, round>=4]"
+    "any:[at:liubei:1, at:guanyu:1, at:zhangfei:1, at:zhaoyun:1, round\u003e=4]"
    ],
    "Do": [
     {
@@ -421,8 +182,8 @@
   {
    "ID": "white-charge",
    "If": [
-    "any:[at:liubei:1, at:guanyu:1, at:zhangfei:1, at:zhaoyun:1, round>=5]",
-    "round>=4"
+    "any:[at:liubei:1, at:guanyu:1, at:zhangfei:1, at:zhaoyun:1, round\u003e=5]",
+    "round\u003e=4"
    ],
    "Do": [
     {
@@ -446,7 +207,7 @@
   {
    "ID": "vanguard-strong",
    "If": [
-    "round>=4",
+    "round\u003e=4",
     "!flag:flag-julu-clear"
    ],
    "Do": [
@@ -454,22 +215,22 @@
      "Kind": "spawn",
      "Spawns": [
       {
-       "Character": "yanliang",
-       "X": 22,
-       "Y": 2,
+       "Policy": "assault",
        "Facing": "SW",
        "Group": "van",
-       "Policy": "assault",
-       "Side": "enemy"
+       "Side": "enemy",
+       "Character": "yanliang",
+       "X": 22,
+       "Y": 2
       },
       {
+       "Policy": "assault",
+       "Facing": "SW",
+       "Group": "van",
+       "Side": "enemy",
        "Character": "troop_cavalry",
        "X": 21,
        "Y": 2,
-       "Facing": "SW",
-       "Group": "van",
-       "Policy": "assault",
-       "Side": "enemy",
        "Rank": "recruit"
       }
      ]
@@ -497,7 +258,7 @@
   {
    "ID": "vanguard-clear",
    "If": [
-    "round>=4",
+    "round\u003e=4",
     "flag:flag-julu-clear"
    ],
    "Do": [
@@ -673,7 +434,200 @@
    ]
   }
  ],
- "Faction": "yuan",
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 13,
+    "Y": 6,
+    "W": 3,
+    "H": 5
+   },
+   "Name": "다리 동쪽 머리",
+   "Description": "유비군이 여울로 돌아 닿으면 문추가 나온다"
+  }
+ ],
+ "ID": "B10",
+ "Name": "계교 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 6,
+ "Required": [
+  "liubei",
+  "guanyu",
+  "zhangfei",
+  "zhaoyun"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "defeated:yuanshao"
+   ],
+   "Text": "원소를 물리친다"
+  }
+ ],
+ "Tiles": null,
+ "Allies": [
+  {
+   "X": 9,
+   "Y": 14
+  },
+  {
+   "X": 9,
+   "Y": 15
+  },
+  {
+   "X": 9,
+   "Y": 16
+  },
+  {
+   "X": 8,
+   "Y": 14
+  },
+  {
+   "X": 8,
+   "Y": 15
+  },
+  {
+   "X": 8,
+   "Y": 16
+  },
+  {
+   "X": 7,
+   "Y": 16
+  }
+ ],
+ "Enemies": [
+  {
+   "Policy": "hold",
+   "Facing": "SW",
+   "Group": "hq",
+   "Character": "yuanshao",
+   "X": 21,
+   "Y": 8,
+   "Rank": "commander"
+  },
+  {
+   "Policy": "react",
+   "Facing": "SW",
+   "Group": "hq",
+   "Character": "tianfeng",
+   "X": 21,
+   "Y": 7,
+   "Shift": -0.07
+  },
+  {
+   "Policy": "hold",
+   "Facing": "SW",
+   "Group": "hq-guard",
+   "Character": "troop_footman",
+   "X": 20,
+   "Y": 8,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "hold",
+   "Facing": "SW",
+   "Group": "hq-guard",
+   "Character": "troop_footman",
+   "X": 21,
+   "Y": 9,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "hold",
+   "Facing": "SW",
+   "Group": "crossbows",
+   "Character": "quyi",
+   "X": 16,
+   "Y": 8,
+   "Shift": -0.08
+  },
+  {
+   "Policy": "hold",
+   "Class": "crossbow",
+   "Facing": "SW",
+   "Group": "xbows",
+   "Character": "troop_archer",
+   "X": 14,
+   "Y": 7
+  },
+  {
+   "Policy": "hold",
+   "Class": "crossbow",
+   "Facing": "SW",
+   "Group": "xbows",
+   "Character": "troop_archer",
+   "X": 14,
+   "Y": 9
+  },
+  {
+   "Policy": "hold",
+   "Facing": "NW",
+   "Group": "wen",
+   "Character": "wenchou",
+   "X": 21,
+   "Y": 11,
+   "Rank": "commander"
+  },
+  {
+   "Policy": "hold",
+   "Facing": "NW",
+   "Group": "wen",
+   "Character": "troop_cavalry",
+   "X": 20,
+   "Y": 11,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "hold",
+   "Facing": "NW",
+   "Group": "wen",
+   "Character": "troop_cavalry",
+   "X": 21,
+   "Y": 12,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "hold",
+   "Facing": "NW",
+   "Group": "wen",
+   "Character": "troop_cavalry",
+   "X": 20,
+   "Y": 12,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "hold",
+   "Facing": "SW",
+   "Group": "line",
+   "Character": "troop_archer",
+   "X": 16,
+   "Y": 11,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "hold",
+   "Facing": "SW",
+   "Group": "line",
+   "Character": "troop_footman",
+   "X": 18,
+   "Y": 7,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "hold",
+   "Facing": "SW",
+   "Group": "line",
+   "Character": "troop_footman",
+   "X": 18,
+   "Y": 9,
+   "Rank": "recruit"
+  }
+ ],
+ "Reward": {
+  "money": 1500
+ },
  "Duels": [
   {
    "ID": "jiejiao-zhangfei-wenchou",
@@ -857,7 +811,7 @@
      "Title": "문추가 본진 쪽으로 물러나다",
      "Speech": "물러난다!",
      "Side": 1,
-     "Duration": 3.0
+     "Duration": 3
     },
     {
      "Kind": "withdrawn",
@@ -869,6 +823,63 @@
    ]
   }
  ],
+ "Party": [
+  {
+   "AI": true,
+   "Policy": "hold",
+   "Facing": "SE",
+   "Group": "white",
+   "Character": "gongsunzan",
+   "X": 1,
+   "Y": 8,
+   "Faction": "gongsun"
+  },
+  {
+   "AI": true,
+   "Policy": "hold",
+   "Facing": "SE",
+   "Group": "white",
+   "Character": "tiankai",
+   "X": 0,
+   "Y": 8,
+   "Faction": "gongsun"
+  },
+  {
+   "AI": true,
+   "Policy": "hold",
+   "Facing": "SE",
+   "Group": "white",
+   "Character": "troop_cavalry",
+   "X": 2,
+   "Y": 7,
+   "Shift": -0.07,
+   "Faction": "gongsun"
+  },
+  {
+   "AI": true,
+   "Policy": "hold",
+   "Facing": "SE",
+   "Group": "white",
+   "Character": "troop_cavalry",
+   "X": 2,
+   "Y": 8,
+   "Shift": -0.07,
+   "Faction": "gongsun"
+  },
+  {
+   "AI": true,
+   "Policy": "hold",
+   "Facing": "SE",
+   "Group": "white",
+   "Character": "troop_cavalry",
+   "X": 2,
+   "Y": 9,
+   "Shift": -0.07,
+   "Faction": "gongsun"
+  }
+ ],
+ "Map": "map10.json",
+ "Faction": "yuan",
  "Armies": [
   {
    "Faction": "shu",

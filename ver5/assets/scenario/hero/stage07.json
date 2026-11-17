@@ -1,297 +1,10 @@
 {
- "ID": "B07",
- "Name": "동탁 추격전",
- "Width": 0,
- "Height": 0,
- "Max": 4,
- "Required": [
-  "liubei",
-  "guanyu",
-  "zhangfei"
- ],
- "Victory": [
-  {
-   "If": [
-    "alldefeated:enemy"
-   ],
-   "Text": "동탁군 후위를 모두 물리친다"
-  }
- ],
- "Sub": [
-  {
-   "ID": "lubu-retreat",
-   "Text": "여포를 퇴각시킨다",
-   "If": [
-    "defeated:lubu"
-   ],
-   "Reward": {
-    "tangni_armor": 1
-   },
-   "Flag": "flag-bianshui-lubu"
-  }
- ],
  "TurnLimit": 16,
- "Tiles": null,
- "Map": "map07.json",
- "Night": true,
- "Lights": [
-  {
-   "X": 6,
-   "Y": 5
-  },
-  {
-   "X": 9,
-   "Y": 5
-  },
-  {
-   "X": 27,
-   "Y": 7
-  }
- ],
- "Allies": [
-  {
-   "X": 22,
-   "Y": 4
-  },
-  {
-   "X": 22,
-   "Y": 5
-  },
-  {
-   "X": 22,
-   "Y": 6
-  },
-  {
-   "X": 22,
-   "Y": 7
-  },
-  {
-   "X": 23,
-   "Y": 4
-  },
-  {
-   "X": 23,
-   "Y": 5
-  },
-  {
-   "X": 23,
-   "Y": 6
-  },
-  {
-   "X": 23,
-   "Y": 7
-  }
- ],
- "Party": [
-  {
-   "Character": "caocao",
-   "X": 14,
-   "Y": 5,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "assault",
-   "Equipment": [
-    "yitian_sword",
-    "leather_armor"
-   ]
-  },
-  {
-   "Character": "xiahoudun",
-   "X": 14,
-   "Y": 6,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "assault"
-  },
-  {
-   "Character": "xiahouyuan",
-   "X": 13,
-   "Y": 4,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "assault"
-  },
-  {
-   "Character": "caoren",
-   "X": 13,
-   "Y": 7,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "assault"
-  },
-  {
-   "Character": "caohong",
-   "X": 15,
-   "Y": 5,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "assault"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 15,
-   "Y": 4,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "assault",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_footman",
-   "X": 15,
-   "Y": 6,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "assault",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_archer",
-   "X": 16,
-   "Y": 5,
-   "Facing": "NW",
-   "AI": true,
-   "Faction": "wei",
-   "Group": "wei",
-   "Policy": "assault",
-   "Shift": -0.07
-  }
- ],
- "Enemies": [
-  {
-   "Character": "xurong",
-   "X": 10,
-   "Y": 5,
-   "Facing": "SE",
-   "Group": "rear",
-   "Policy": "assault",
-   "Rank": "commander"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 12,
-   "Y": 4,
-   "Facing": "SE",
-   "Group": "rear",
-   "Policy": "assault",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 11,
-   "Y": 5,
-   "Facing": "SE",
-   "Group": "rear",
-   "Policy": "assault",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 12,
-   "Y": 5,
-   "Facing": "SE",
-   "Group": "rear",
-   "Policy": "assault",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 11,
-   "Y": 4,
-   "Facing": "SE",
-   "Group": "rear",
-   "Policy": "assault",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 11,
-   "Y": 7,
-   "Facing": "SE",
-   "Group": "rear",
-   "Policy": "assault",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 12,
-   "Y": 6,
-   "Facing": "SE",
-   "Group": "rear",
-   "Policy": "assault",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 11,
-   "Y": 6,
-   "Facing": "SE",
-   "Group": "rear",
-   "Policy": "assault",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 12,
-   "Y": 7,
-   "Facing": "SE",
-   "Group": "rear",
-   "Policy": "assault",
-   "Rank": "recruit"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 10,
-   "Y": 6,
-   "Facing": "SE",
-   "Group": "rear",
-   "Policy": "assault",
-   "Rank": "recruit"
-  }
- ],
- "Areas": [
-  {
-   "ID": 1,
-   "Rect": {
-    "X": 25,
-    "Y": 3,
-    "W": 3,
-    "H": 6
-   },
-   "Name": "연합 진영 방향",
-   "Description": "시작과 퇴각의 지점. 유비가 닿아야 하는 동쪽 끝"
-  },
-  {
-   "ID": 2,
-   "Rect": {
-    "X": 27,
-    "Y": 0,
-    "W": 1,
-    "H": 12
-   },
-   "Name": "동남쪽 끝",
-   "Description": "제후군과 조조군이 맵 밖으로 빠져나가는 가장자리 전체"
-  }
- ],
  "Events": [
   {
    "ID": "rear-guard",
    "If": [
-    "round>=1"
+    "round\u003e=1"
    ],
    "Do": [
     {
@@ -317,175 +30,175 @@
   {
    "ID": "lords-and-lubu",
    "If": [
-    "round>=3"
+    "round\u003e=3"
    ],
    "Do": [
     {
      "Kind": "spawn",
      "Spawns": [
       {
+       "AI": true,
+       "Policy": "assault",
+       "Facing": "NW",
+       "Group": "lords",
+       "Side": "ally",
        "Character": "yuanshu",
        "X": 25,
        "Y": 5,
-       "Facing": "NW",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
+       "Faction": "yuan"
       },
       {
+       "AI": true,
+       "Policy": "assault",
+       "Facing": "NW",
+       "Group": "lords",
+       "Side": "ally",
        "Character": "qiaomao",
        "X": 25,
        "Y": 4,
-       "Facing": "NW",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
+       "Faction": "yuan"
       },
       {
+       "AI": true,
+       "Policy": "assault",
+       "Facing": "NW",
+       "Group": "lords",
+       "Side": "ally",
        "Character": "hanfu",
        "X": 25,
        "Y": 6,
-       "Facing": "NW",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
+       "Faction": "yuan"
       },
       {
+       "AI": true,
+       "Policy": "assault",
+       "Facing": "NW",
+       "Group": "lords",
+       "Side": "ally",
        "Character": "gongzhou",
        "X": 25,
        "Y": 7,
-       "Facing": "NW",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally"
+       "Faction": "yuan"
       },
       {
+       "AI": true,
+       "Policy": "assault",
+       "Facing": "NW",
+       "Group": "lords",
+       "Side": "ally",
        "Character": "troop_footman",
        "X": 26,
        "Y": 4,
-       "Facing": "NW",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally",
-       "Rank": "recruit"
+       "Rank": "recruit",
+       "Faction": "yuan"
       },
       {
+       "AI": true,
+       "Policy": "assault",
+       "Facing": "NW",
+       "Group": "lords",
+       "Side": "ally",
        "Character": "troop_footman",
        "X": 26,
        "Y": 5,
-       "Facing": "NW",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally",
-       "Rank": "recruit"
+       "Rank": "recruit",
+       "Faction": "yuan"
       },
       {
+       "AI": true,
+       "Policy": "assault",
+       "Facing": "NW",
+       "Group": "lords",
+       "Side": "ally",
        "Character": "troop_footman",
        "X": 26,
        "Y": 6,
-       "Facing": "NW",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally",
-       "Rank": "recruit"
+       "Rank": "recruit",
+       "Faction": "yuan"
       },
       {
+       "AI": true,
+       "Policy": "assault",
+       "Facing": "NW",
+       "Group": "lords",
+       "Side": "ally",
        "Character": "troop_footman",
        "X": 26,
        "Y": 7,
-       "Facing": "NW",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally",
-       "Rank": "recruit"
+       "Rank": "recruit",
+       "Faction": "yuan"
       },
       {
+       "AI": true,
+       "Policy": "assault",
+       "Facing": "NW",
+       "Group": "lords",
+       "Side": "ally",
        "Character": "troop_archer",
        "X": 27,
        "Y": 4,
-       "Facing": "NW",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally",
-       "Rank": "recruit"
+       "Rank": "recruit",
+       "Faction": "yuan"
       },
       {
+       "AI": true,
+       "Policy": "assault",
+       "Facing": "NW",
+       "Group": "lords",
+       "Side": "ally",
        "Character": "troop_archer",
        "X": 27,
        "Y": 5,
-       "Facing": "NW",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally",
-       "Rank": "recruit"
+       "Rank": "recruit",
+       "Faction": "yuan"
       },
       {
+       "AI": true,
+       "Policy": "assault",
+       "Facing": "NW",
+       "Group": "lords",
+       "Side": "ally",
        "Character": "troop_archer",
        "X": 27,
        "Y": 6,
-       "Facing": "NW",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally",
-       "Rank": "recruit"
+       "Rank": "recruit",
+       "Faction": "yuan"
       },
       {
+       "AI": true,
+       "Policy": "assault",
+       "Facing": "NW",
+       "Group": "lords",
+       "Side": "ally",
        "Character": "troop_footman",
        "X": 27,
        "Y": 3,
-       "Facing": "NW",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally",
-       "Rank": "recruit"
+       "Rank": "recruit",
+       "Faction": "yuan"
       },
       {
+       "AI": true,
+       "Policy": "assault",
+       "Facing": "NW",
+       "Group": "lords",
+       "Side": "ally",
        "Character": "troop_footman",
        "X": 27,
        "Y": 8,
-       "Facing": "NW",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally",
-       "Rank": "recruit"
+       "Rank": "recruit",
+       "Faction": "yuan"
       },
       {
+       "AI": true,
+       "Policy": "assault",
+       "Facing": "NW",
+       "Group": "lords",
+       "Side": "ally",
        "Character": "troop_archer",
        "X": 26,
        "Y": 3,
-       "Facing": "NW",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "yuan",
-       "Group": "lords",
-       "Side": "ally",
-       "Rank": "recruit"
+       "Rank": "recruit",
+       "Faction": "yuan"
       }
      ]
     },
@@ -511,159 +224,159 @@
      "Kind": "spawn",
      "Spawns": [
       {
+       "Policy": "assault",
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
        "Character": "troop_cavalry",
        "X": 2,
        "Y": 4,
-       "Class": "light_cavalry",
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
        "Faction": "dong"
       },
       {
+       "Policy": "assault",
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
        "Character": "troop_cavalry",
        "X": 2,
        "Y": 5,
-       "Class": "light_cavalry",
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
        "Faction": "dong"
       },
       {
+       "Policy": "assault",
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
        "Character": "troop_cavalry",
        "X": 2,
        "Y": 6,
-       "Class": "light_cavalry",
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
        "Faction": "dong"
       },
       {
+       "Policy": "assault",
+       "Class": "light_cavalry",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
        "Character": "troop_cavalry",
        "X": 2,
        "Y": 7,
-       "Class": "light_cavalry",
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
        "Faction": "dong"
       },
       {
+       "Policy": "react",
+       "DuelFirst": true,
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
        "Character": "lubu",
        "X": 1,
        "Y": 5,
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "react",
-       "Side": "enemy",
-       "Faction": "dong",
-       "DuelFirst": true,
-       "Rank": "boss"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 2,
-       "Y": 3,
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
+       "Rank": "boss",
        "Faction": "dong"
       },
       {
+       "Policy": "assault",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
+       "Character": "troop_footman",
+       "X": 2,
+       "Y": 3,
+       "Faction": "dong"
+      },
+      {
+       "Policy": "assault",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
        "Character": "troop_footman",
        "X": 2,
        "Y": 8,
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
        "Faction": "dong"
       },
       {
+       "Policy": "assault",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
        "Character": "troop_footman",
        "X": 1,
        "Y": 3,
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
        "Faction": "dong"
       },
       {
+       "Policy": "assault",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
        "Character": "troop_footman",
        "X": 1,
        "Y": 4,
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
        "Faction": "dong"
       },
       {
+       "Policy": "assault",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
        "Character": "troop_footman",
        "X": 1,
        "Y": 6,
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
        "Faction": "dong"
       },
       {
+       "Policy": "assault",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
        "Character": "troop_footman",
        "X": 1,
        "Y": 7,
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
        "Faction": "dong"
       },
       {
+       "Policy": "assault",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
        "Character": "troop_footman",
        "X": 0,
        "Y": 3,
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
        "Faction": "dong"
       },
       {
+       "Policy": "assault",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
        "Character": "troop_footman",
        "X": 0,
        "Y": 5,
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
        "Faction": "dong"
       },
       {
+       "Policy": "assault",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
        "Character": "troop_footman",
        "X": 0,
        "Y": 6,
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
        "Faction": "dong"
       },
       {
+       "Policy": "assault",
+       "Facing": "SE",
+       "Group": "lubu",
+       "Side": "enemy",
        "Character": "troop_footman",
        "X": 0,
        "Y": 7,
-       "Facing": "SE",
-       "Group": "lubu",
-       "Policy": "assault",
-       "Side": "enemy",
        "Faction": "dong"
       }
      ]
@@ -698,7 +411,10 @@
       [
        {
         "Kind": "leave",
-        "Unit": "lords"
+        "Unit": "lords",
+        "Motion": "",
+        "Facing": "",
+        "Text": ""
        }
       ]
      ]
@@ -781,6 +497,28 @@
        ],
        "Text": "유비가 동쪽 끝으로 빠져나간다"
       }
+     ],
+     "Sub": [
+      {
+       "ID": "lubu-retreat",
+       "Text": "여포를 퇴각시킨다",
+       "Flag": "flag-bianshui-lubu",
+       "If": [
+        "defeated:lubu"
+       ],
+       "Reward": {
+        "tangni_armor": 1
+       }
+      },
+      {
+       "ID": "caocao-escape",
+       "Text": "조조가 무사히 빠져나간다",
+       "Flag": "flag-bianshui-generals",
+       "If": [
+        "fled:caocao"
+       ],
+       "Later": "8장에서 조조가 절영을 준다"
+      }
      ]
     }
    ]
@@ -789,7 +527,7 @@
    "ID": "lubu-charges",
    "If": [
     "flag:flag-b04-lubu",
-    "round>=4"
+    "round\u003e=4"
    ],
    "Do": [
     {
@@ -800,23 +538,191 @@
      "Policy": "assault"
     }
    ]
-  },
-  {
-   "ID": "caocao-escaped",
-   "If": [
-    "fled:caocao"
-   ],
-   "Do": [
-    {
-     "Kind": "flag",
-     "Flags": {
-      "flag-bianshui-generals": 1
-     }
-    }
-   ]
   }
  ],
- "Faction": "dong",
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 25,
+    "Y": 3,
+    "W": 3,
+    "H": 6
+   },
+   "Name": "연합 진영 방향",
+   "Description": "시작과 퇴각의 지점. 유비가 닿아야 하는 동쪽 끝"
+  },
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 27,
+    "Y": 0,
+    "W": 1,
+    "H": 12
+   },
+   "Name": "동남쪽 끝",
+   "Description": "제후군과 조조군이 맵 밖으로 빠져나가는 가장자리 전체"
+  }
+ ],
+ "ID": "B07",
+ "Name": "동탁 추격전",
+ "Width": 0,
+ "Height": 0,
+ "Max": 4,
+ "Required": [
+  "liubei",
+  "guanyu",
+  "zhangfei"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "alldefeated:enemy"
+   ],
+   "Text": "동탁군 후위를 모두 물리친다"
+  }
+ ],
+ "Sub": [
+  {
+   "ID": "lubu-retreat",
+   "Text": "여포를 퇴각시킨다",
+   "Flag": "flag-bianshui-lubu",
+   "If": [
+    "defeated:lubu"
+   ],
+   "Reward": {
+    "tangni_armor": 1
+   }
+  }
+ ],
+ "Tiles": null,
+ "Allies": [
+  {
+   "X": 22,
+   "Y": 4
+  },
+  {
+   "X": 22,
+   "Y": 5
+  },
+  {
+   "X": 22,
+   "Y": 6
+  },
+  {
+   "X": 22,
+   "Y": 7
+  },
+  {
+   "X": 23,
+   "Y": 4
+  },
+  {
+   "X": 23,
+   "Y": 5
+  },
+  {
+   "X": 23,
+   "Y": 6
+  },
+  {
+   "X": 23,
+   "Y": 7
+  }
+ ],
+ "Enemies": [
+  {
+   "Policy": "assault",
+   "Facing": "SE",
+   "Group": "rear",
+   "Character": "xurong",
+   "X": 10,
+   "Y": 5,
+   "Rank": "commander"
+  },
+  {
+   "Policy": "assault",
+   "Facing": "SE",
+   "Group": "rear",
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 4,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "assault",
+   "Facing": "SE",
+   "Group": "rear",
+   "Character": "troop_archer",
+   "X": 11,
+   "Y": 5,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "assault",
+   "Facing": "SE",
+   "Group": "rear",
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 5,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "assault",
+   "Facing": "SE",
+   "Group": "rear",
+   "Character": "troop_cavalry",
+   "X": 11,
+   "Y": 4,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "assault",
+   "Facing": "SE",
+   "Group": "rear",
+   "Character": "troop_cavalry",
+   "X": 11,
+   "Y": 7,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "assault",
+   "Facing": "SE",
+   "Group": "rear",
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 6,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "assault",
+   "Facing": "SE",
+   "Group": "rear",
+   "Character": "troop_archer",
+   "X": 11,
+   "Y": 6,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "assault",
+   "Facing": "SE",
+   "Group": "rear",
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 7,
+   "Rank": "recruit"
+  },
+  {
+   "Policy": "assault",
+   "Facing": "SE",
+   "Group": "rear",
+   "Character": "troop_archer",
+   "X": 10,
+   "Y": 6,
+   "Rank": "recruit"
+  }
+ ],
+ "Reward": null,
  "Duels": [
   {
    "ID": "bianshui-zhangfei-lubu",
@@ -895,7 +801,7 @@
      "Title": "여포가 혼자임을 짚다",
      "Speech": "그때는 네 형들이 곁에 있었지. 지금은 너 하나다.",
      "Side": 1,
-     "Duration": 3.0
+     "Duration": 3
     },
     {
      "Kind": "yielding-block",
@@ -1021,7 +927,7 @@
      "Title": "장비가 숨을 몰아쉬다",
      "Speech": "헉, 헉… 아직 안 끝났슈!",
      "Side": 0,
-     "Duration": 2.0
+     "Duration": 2
     },
     {
      "Kind": "block",
@@ -1073,6 +979,112 @@
      "Duration": 2.5
     }
    ]
+  }
+ ],
+ "Party": [
+  {
+   "AI": true,
+   "Policy": "assault",
+   "Facing": "NW",
+   "Group": "wei",
+   "Equipment": [
+    "yitian_sword",
+    "leather_armor"
+   ],
+   "Character": "caocao",
+   "X": 14,
+   "Y": 5,
+   "Faction": "wei"
+  },
+  {
+   "AI": true,
+   "Policy": "assault",
+   "Facing": "NW",
+   "Group": "wei",
+   "Character": "xiahoudun",
+   "X": 14,
+   "Y": 6,
+   "Faction": "wei"
+  },
+  {
+   "AI": true,
+   "Policy": "assault",
+   "Facing": "NW",
+   "Group": "wei",
+   "Character": "xiahouyuan",
+   "X": 13,
+   "Y": 4,
+   "Faction": "wei"
+  },
+  {
+   "AI": true,
+   "Policy": "assault",
+   "Facing": "NW",
+   "Group": "wei",
+   "Character": "caoren",
+   "X": 13,
+   "Y": 7,
+   "Faction": "wei"
+  },
+  {
+   "AI": true,
+   "Policy": "assault",
+   "Facing": "NW",
+   "Group": "wei",
+   "Character": "caohong",
+   "X": 15,
+   "Y": 5,
+   "Faction": "wei"
+  },
+  {
+   "AI": true,
+   "Policy": "assault",
+   "Facing": "NW",
+   "Group": "wei",
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 4,
+   "Shift": -0.07,
+   "Faction": "wei"
+  },
+  {
+   "AI": true,
+   "Policy": "assault",
+   "Facing": "NW",
+   "Group": "wei",
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 6,
+   "Shift": -0.07,
+   "Faction": "wei"
+  },
+  {
+   "AI": true,
+   "Policy": "assault",
+   "Facing": "NW",
+   "Group": "wei",
+   "Character": "troop_archer",
+   "X": 16,
+   "Y": 5,
+   "Shift": -0.07,
+   "Faction": "wei"
+  }
+ ],
+ "Map": "map07.json",
+ "Faction": "dong",
+ "Night": true,
+ "Lights": [
+  {
+   "X": 6,
+   "Y": 5
+  },
+  {
+   "X": 9,
+   "Y": 5
+  },
+  {
+   "X": 27,
+   "Y": 7
   }
  ],
  "Armies": [

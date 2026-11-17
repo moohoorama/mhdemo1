@@ -25,13 +25,14 @@ import (
 func main() {
 	dir := flag.String("content", "assets/data", "content directory")
 	only := flag.String("stage", "", "only this stage id")
-	player := flag.String("player", "rush", "rush (nearest enemy only), ai (the game's own AI) or idle (the player's officers only wait: how long the AI allies hold alone)")
+	player := flag.String("player", "rush", "rush (nearest enemy only), ai (the game's own AI) idle (the player's officers only wait: how long the AI allies hold alone) or idle-late (the AI until 여포 appears, then idle)")
 	seeds := flag.Int("seeds", 5, "seeds per stage")
 	first := flag.Int("first", 1, "first seed")
 	damage := flag.Int("damage", storage.DefaultScalePct, "damage scale in percent, as the settings set it")
 	xp := flag.Int("xp", storage.DefaultScalePct, "experience scale in percent, as the settings set it")
 	offset := flag.Int("offset", 0, "the player's officers this many levels off the stage level")
 	show := flag.Bool("show", false, "print every unit's numbers when the battle starts (seed 1)")
+	flag.StringVar(&acts, "acts", "", "print every action these units (comma-separated ids, \"all\" for everyone) take, with its skill and target")
 	flag.StringVar(&difficulty, "difficulty", "normal", "the campaign's difficulty (easy, normal, hard)")
 	eval := flag.String("eval", "", "other weights for the player's units as n,m,threat,top,w (ai.ParseEval)")
 	flag.Parse()
@@ -99,6 +100,9 @@ func count(ids []string) []string {
 // difficulty is the campaign difficulty every battle is fought at.
 var difficulty string
 
+// acts lists the units whose actions -acts prints.
+var acts string
+
 // play fights stage i with the sortie at level, and returns the result, the last round,
 // the levels each of the player's officers gained (fractions from experience) and who retreated.
 func play(d *content.Data, i, level int, seed uint64, player string, damage, xp int, show bool) (string, int, map[string]float64, []string) {
@@ -154,9 +158,22 @@ func play(d *content.Data, i, level int, seed uint64, player string, damage, xp 
 			next = ai.RushNext
 		case "idle":
 			next = idleNext
+		case "idle-late": // fights as the AI until 여포 takes the field, then only waits: the enemy comes on
+			next = ai.Next
+			for _, u := range o.UnitViews {
+				if u.ID == "lubu" {
+					next = idleNext
+				}
+			}
 		}
 		c, err := next(e)
 		check(err)
+		if acts != "" && c.Kind != "end" && (acts == "all" || slices.Contains(strings.Split(acts, ","), c.Actor)) {
+			fmt.Printf("    r%d %s %s %s %s (%d,%d)\n", o.Round, c.Actor, c.Kind, d.Skills[c.Skill].Name, c.Target, c.X, c.Y)
+			if d.Skills[c.Skill].Kind == content.KindMagic {
+				printSpellChoices(e, d, c)
+			}
+		}
 		r, err := e.Apply(c)
 		check(err)
 		for _, ev := range r.Events {
@@ -214,6 +231,22 @@ chapters:
 				break chapters
 			}
 			grant(n)
+			if n.Kind == "battle" { // officers who join in the middle of an earlier battle (조운 in B19, 관우 in B20)
+				for _, s := range d.Stages {
+					if s.ID != n.Stage {
+						continue
+					}
+					for _, ev := range s.Events {
+						for _, a := range ev.Do {
+							for _, sp := range a.Spawns {
+								if a.Kind == "join" && !slices.Contains(joined, sp.Character) {
+									joined = append(joined, sp.Character)
+								}
+							}
+						}
+					}
+				}
+			}
 			if n.Kind == "explore" {
 				for _, ev := range c.Events {
 					grant(d.Node(ev))
@@ -257,4 +290,32 @@ func idleNext(e *core.Engine) (core.Command, error) {
 		}
 	}
 	return ai.Next(e)
+}
+
+// printSpellChoices lists, for a spell cast at a cell, every attack spell the caster could have cast at that cell
+// instead: the damage it would deal (critical in brackets), its hit, and the ground, structure and state there.
+func printSpellChoices(e *core.Engine, d *content.Data, c core.Command) {
+	x, y := c.X, c.Y
+	for _, v := range e.Observe().UnitViews {
+		if c.Target != "" && v.ID == c.Target {
+			x, y = v.X, v.Y
+		}
+	}
+	cell := e.Cell(x, y)
+	fmt.Printf("      at (%d,%d) cell %c%c%c:", x, y, cell.Ground, cell.Structure, cell.State)
+	for _, alt := range e.LegalActions(c.Actor).Commands {
+		if alt.Kind != "skill" || d.Skills[alt.Skill].Kind != content.KindMagic || alt.Target != c.Target || alt.X != c.X || alt.Y != c.Y {
+			continue
+		}
+		p, err := e.Preview(alt)
+		if err != nil {
+			continue
+		}
+		sum := 0
+		for _, v := range p.Damage {
+			sum += v
+		}
+		fmt.Printf(" %s %d(%d) %.0f%%", d.Skills[alt.Skill].Name, sum, p.MaxDamage, p.Hit)
+	}
+	fmt.Println()
 }

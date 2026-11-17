@@ -3,6 +3,7 @@
   "c14-death": {
    "Map": "S_xuzhou_room",
    "Time": "dusk",
+   "Music": "suno-farewell",
    "Nodes": ["c14-death", "c14-d00", "c14-d01", "c14-d02", "c14-d03", "c14-d04", "c14-d05", "c14-d06", "c14-d07", "c14-d08", "c14-d09", "c14-d10", "c14-d11", "c14-d12", "c14-d13", "c14-d14", "c14-d15", "c14-d16", "c14-d17", "c14-d18"],
    "Ambient": [{"CamAt": [3, 2]}],
    "Cast": {
@@ -31,6 +32,27 @@
      [
       [{"Actor": "조표", "Emote": "…"}],
       [{"Actor": "조표", "Look": "SE"}]
+     ]
+    ]
+   }
+  },
+  "c14-e-sword": {
+   "Map": "S_xuzhou_town",
+   "Nodes": ["c14-e-sword", "c14-sw01", "c14-sw02", "c14-sw03", "c14-sw04", "c14-sw05", "c14-sw06"],
+   "Cast": {
+    "유비": {"At": [8, 7], "Face": "NW"},
+    "미축": {"At": [8, 6], "Face": "SE"},
+    "미방": {"At": [10, 6], "Face": "SW"}
+   },
+   "Beats": {
+    "c14-sw05": [
+     [
+      [{"Actor": "미방", "Emote": "…"}]
+     ]
+    ],
+    "c14-sw06": [
+     [
+      [{"Actor": "미축", "Look": "NE"}]
      ]
     ]
    }
@@ -64,7 +86,7 @@
     ],
     "c14-lg02": [
      [
-      [{"Actor": "유비", "Enter": [13, 6], "Move": [9, 6]}, {"Actor": "관우", "Enter": [13, 6], "Move": [10, 5], "After": 0.3}, {"Actor": "장비", "Enter": [13, 6], "Move": [10, 7], "After": 0.5}, {"Actor": "진등", "Enter": [13, 6], "Move": [11, 4], "After": 0.8}, {"Actor": "미축", "Enter": [13, 6], "Move": [11, 8], "After": 1}, {"Actor": "여포", "Enter": [-1, 6], "Move": [5, 6]}, {"Actor": "장료", "Enter": [-1, 5], "Move": [4, 5], "After": 0.3}, {"Actor": "진궁", "Enter": [-1, 7], "Move": [5, 7], "After": 0.4}, {"Actor": "기병#1", "Enter": [-1, 6], "Move": [3, 6], "After": 0.8}, {"Actor": "기병#2", "Enter": [-1, 6], "Move": [2, 5], "After": 1.1}, {"Actor": "기병#3", "Enter": [-1, 6], "Move": [2, 7], "After": 1.4}],
+      [{"Actor": "유비", "Enter": [13, 6], "Move": [9, 6]}, {"Actor": "관우", "Enter": [13, 6], "Move": [10, 5], "After": 0.3}, {"Actor": "장비", "Enter": [13, 6], "Move": [10, 7], "After": 0.5}, {"Actor": "진등", "Enter": [13, 6], "Move": [10, 4], "After": 0.8}, {"Actor": "미축", "Enter": [13, 6], "Move": [11, 8], "After": 1}, {"Actor": "여포", "Enter": [-1, 6], "Move": [5, 6]}, {"Actor": "장료", "Enter": [-1, 5], "Move": [4, 5], "After": 0.3}, {"Actor": "진궁", "Enter": [-1, 7], "Move": [5, 7], "After": 0.4}, {"Actor": "기병#1", "Enter": [-1, 6], "Move": [3, 6], "After": 0.8}, {"Actor": "기병#2", "Enter": [-1, 6], "Move": [2, 5], "After": 1.1}, {"Actor": "기병#3", "Enter": [-1, 6], "Move": [2, 7], "After": 1.4}],
       [{"Actor": "유비", "Face": "NW"}, {"Actor": "관우", "Face": "NW"}, {"Actor": "장비", "Face": "NW"}, {"Actor": "진등", "Face": "NW"}, {"Actor": "미축", "Face": "NW"}, {"Actor": "여포", "Face": "SE"}, {"Actor": "장료", "Face": "SE"}, {"Actor": "진궁", "Face": "SE"}, {"Actor": "기병#1", "Face": "SE"}, {"Actor": "기병#2", "Face": "SE"}, {"Actor": "기병#3", "Face": "SE"}]
      ]
     ],
@@ -131,7 +153,9 @@
     ],
     "c14-lh10": [
      [
-      [{"Actor": "진궁", "Pose": "bow"}, {"Wait": 0.8}],
+      [{"Actor": "진궁", "Pose": "bow"}, {"Wait": 0.8}]
+     ],
+     [
       [{"Actor": "여포", "Move": [4, 10], "Exit": true}, {"Actor": "진궁", "Pose": "idle"}],
       [{"Actor": "진궁", "Move": [4, 10], "Exit": true}]
      ]
@@ -304,8 +328,8 @@
   },
   "c14-retreat": {
    "Map": "S_army_camp",
-   "Music": "sad-melody",
    "Time": "night",
+   "Music": "suno-farewell",
    "Nodes": ["c14-retreat", "c14-r01", "c14-r02", "c14-r03", "c14-r04", "c14-r05", "c14-r06", "c14-r07"],
    "Ambient": [{"CamAt": [3, 6]}],
    "Cast": {

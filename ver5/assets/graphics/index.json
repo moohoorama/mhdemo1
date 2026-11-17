@@ -1670,7 +1670,9 @@
   "maps/S_mangdang.json",
   "maps/S_ye.json",
   "maps/S_ye_hall.json",
-  "maps/S_pond_deck.json"
+  "maps/S_pond_deck.json",
+  "maps/S_yanjin.json",
+  "maps/S_runan.json"
  ],
  "extra": {
   "version": 1,

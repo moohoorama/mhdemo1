@@ -3,9 +3,11 @@ package ai
 
 import (
 	"fmt"
+	"hash/fnv"
 	"slices"
 	"srpg/internal/content"
 	"srpg/internal/core"
+	"sync"
 )
 
 const Version = core.AIPolicyVersion
@@ -39,7 +41,12 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 	}
 	best := options[0]
 	score := -1e9
+	ties := 0
 	dry := spentCaster(e, me)
+	prefer := e.Data().Classes[me.Class].Prefer
+	spells := offense(e, me)
+	scheme := prefer == content.KindStatus && schemes(e, o, me, options)
+	reaches := sync.OnceValue(func() bool { return casts(e, o, me, options, spells) })
 	var walk, goal map[content.Point]int
 	var threat map[content.Point]int
 	var stop content.Point
@@ -66,37 +73,33 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 				s = -5
 			}
 			skill := e.Data().Skills[c.Skill]
-			schemer := e.Data().Characters[me.Def].Prefer == content.KindStatus
-			if skill.Kind == content.KindStatus && me.Stats.Mind > me.Stats.Attack {
+			switch {
+			case skill.Kind == content.KindMagic:
+				if prefer == content.KindMagic && s > 0 {
+					s *= 1.5 // a staff officer burns, floods and buries before it hinders
+				}
+				if scheme {
+					s = -5 // a schemer keeps its points for the scheme that still lands on someone
+				}
+			case skill.Kind == content.KindStatus && me.Stats.Mind > me.Stats.Attack:
 				s = hinder(e, o, me, skill, p)
-				if s > 0 && schemer {
+				switch {
+				case s <= 0:
+				case prefer == content.KindStatus:
 					s *= 3 // a schemer's own way of fighting comes before a plain blow
+				case prefer != "":
+					s *= .5 // the other casters hinder only where it is worth twice their own spell
 				}
-			}
-			if schemer && skill.Kind == content.KindMagic {
-				if least := schemeCost(e, me); least > 0 && me.MP >= least {
-					s = -5 // while it can pay for a scheme, it keeps its points for one
+			case skill.Effect == "heal":
+				s = mend(e, o, me, p, prefer)
+				if s > 0 && (prefer == content.KindMagic || prefer == content.KindStatus) && reaches() {
+					s = -5 // a caster that fights with spells heals only while none of them reaches an opponent this turn
 				}
+			case skill.Effect == "cure":
+				s = relieve(e, o, me, p, prefer)
 			}
-			if skill.Effect == "heal" {
-				for _, v := range o.UnitViews {
-					if v.ID == c.Target {
-						if v.Faction != me.Faction {
-							s = -5
-							continue
-						}
-						s = float64(p.Healing) * p.Hit / 100 * .9
-						if lord(e, v) && v.HP*2 < v.Stats.MaxHP {
-							s *= 3
-						}
-						if me.Faction == "enemy" {
-							s *= .25
-						}
-					}
-				}
-			}
-			if skill.Effect == "heal" && p.Healing <= 0 {
-				s = -5
+			if prefer == content.KindHeal && skill.Kind == content.KindHeal && s > 0 {
+				s += 50 // a healer tends the wounded before it takes a step toward the fight (approach gives 40 and a bit)
 			}
 			if skill.Effect == "meditate" {
 				s = -5
@@ -166,7 +169,7 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 			if walk == nil {
 				walk = walking(e, o, me)
 			}
-			s = approach(e, o, me, c.X, c.Y, walk, duels)
+			s = approach(e, o, me, c.X, c.Y, walk, duels, spells)
 			if lord(e, *me) {
 				if threat == nil {
 					threat = threatened(e, o, me.Faction)
@@ -181,44 +184,37 @@ func ChooseWithDuels(e *core.Engine, actor string, duels bool) (core.Command, er
 			s = -.5
 		}
 		if s > score {
-			score = s
-			best = c
+			score, best, ties = s, c, 1
+		} else if s == score {
+			ties++
+			if tieBreak(o, me.ID, ties)%uint64(ties) == 0 {
+				best = c // of equally good actions, a different one each round and battle: a player sees every spell
+			}
 		}
 	}
 	return best, nil
 }
 
+// tieBreak is the n-th draw among an actor's equally scored actions, fixed by the battle's seed and the round so a
+// reloaded turn plays the same, without touching the engine's own random state.
+func tieBreak(o core.Observation, actor string, n int) uint64 {
+	h := fnv.New64a()
+	fmt.Fprintf(h, "%d/%d/%s/%d", o.Seed, o.Round, actor, n)
+	x := h.Sum64()
+	x ^= x >> 31 // spread the low bits the modulo reads
+	x *= 0x9e3779b97f4a7c15
+	return x ^ x>>29
+}
+
 // hinder is what a status spell is worth to a caster: for every opponent it lands on that is not under it
-// yet, the blows that opponent would deal over the turns it lasts (two at most) that the status takes away
-// or weakens — all of them for confusion, an officer's own kind of blow for disarm and seal, a share for a
-// lowered stat — or the poison it bleeds.
+// yet, what the status takes from that opponent over the turns it lasts (burden).
 func hinder(e *core.Engine, o core.Observation, me *core.UnitView, skill content.Skill, p core.Preview) float64 {
-	rules := e.Data().Rules
 	sum := 0.0
 	for _, v := range o.UnitViews {
 		if !slices.Contains(p.Targets, v.ID) || v.Faction == me.Faction || v.HP <= 0 || v.Status[skill.Effect].Turns > 0 {
 			continue
 		}
-		harm := 0.0
-		for _, u := range o.UnitViews {
-			if u.Faction == me.Faction && u.HP > 0 {
-				harm = max(harm, e.Strike(v.ID, u.ID))
-			}
-		}
-		w := float64(rules.BuffPercent) / 100
-		switch skill.Effect {
-		case "confusion":
-			w = 1
-		case "disarm":
-			w = map[bool]float64{true: 1, false: .1}[v.Stats.Attack >= v.Stats.Mind]
-		case "seal":
-			w = map[bool]float64{true: 1, false: .1}[v.Stats.Mind > v.Stats.Attack]
-		case "root":
-			w = .3
-		case "poison":
-			harm, w = float64(v.Stats.MaxHP*rules.PoisonPercent/100), 1
-		}
-		sum += w * harm * float64(min(max(skill.Duration, 1), 2))
+		sum += burden(e, o, v, skill.Effect, skill.Duration)
 	}
 	if sum <= 0 {
 		return -5
@@ -226,17 +222,154 @@ func hinder(e *core.Engine, o core.Observation, me *core.UnitView, skill content
 	return sum*p.Hit/100 - float64(p.Cost)*.3
 }
 
-// schemeCost is what the cheapest of me's status spells costs it; 0 without one.
-func schemeCost(e *core.Engine, me *core.UnitView) int {
-	least := 0
-	for _, id := range me.Skills {
-		if e.Data().Skills[id].Kind == content.KindStatus {
-			if c := e.SkillCost(me.ID, id); least == 0 || c < least {
-				least = c
+// burden is what a status takes from v over the turns it lasts (two at most): the blows v would deal that it
+// takes away or weakens — all of them for confusion, an officer's own kind of blow for disarm and seal, a share
+// for a lowered stat — or the strength poison and burns bleed.
+func burden(e *core.Engine, o core.Observation, v core.UnitView, status string, turns int) float64 {
+	rules := e.Data().Rules
+	n := float64(min(max(turns, 1), 2))
+	switch status {
+	case "poison":
+		return float64(v.Stats.MaxHP*rules.PoisonPercent/100) * n
+	case "burn":
+		return float64(v.Stats.MaxHP*rules.BurnPercent/100) * n
+	}
+	harm := 0.0
+	for _, u := range o.UnitViews {
+		if u.Faction != v.Faction && u.HP > 0 {
+			harm = max(harm, e.Strike(v.ID, u.ID))
+		}
+	}
+	w := float64(rules.BuffPercent) / 100
+	switch status {
+	case "confusion":
+		w = 1
+	case "disarm":
+		w = map[bool]float64{true: 1, false: .1}[v.Stats.Attack >= v.Stats.Mind]
+	case "seal":
+		w = map[bool]float64{true: 1, false: .1}[v.Stats.Mind > v.Stats.Attack]
+	case "root":
+		w = .3
+	}
+	return w * harm * n
+}
+
+// schemes tells a schemer that one of its status spells this turn lands on an opponent not under it yet;
+// while none does (all already hindered, or none in reach) its attack spells are free to burn its points.
+func schemes(e *core.Engine, o core.Observation, me *core.UnitView, options []core.Command) bool {
+	if me.Stats.Mind <= me.Stats.Attack {
+		return false
+	}
+	for _, c := range options {
+		skill := e.Data().Skills[c.Skill]
+		if c.Kind != "skill" || skill.Kind != content.KindStatus {
+			continue
+		}
+		if p, err := e.Preview(c); err == nil && hinder(e, o, me, skill, p) > 0 {
+			return true
+		}
+	}
+	return false
+}
+
+// mend is what a healing spell is worth: the strength it gives back to allies worn down enough to need it, a
+// quarter of their strength gone — half for a caster whose class fights with spells, so a staff officer does
+// not stand behind its line topping up scratches instead of casting. Three times for a lord under half.
+// An enemy only heals at a quarter of that (half for a healer's class): its own line is not worth the
+// player's time to wear down twice.
+func mend(e *core.Engine, o core.Observation, me *core.UnitView, p core.Preview, prefer string) float64 {
+	sum := 0.0
+	for _, v := range o.UnitViews {
+		if !slices.Contains(p.Targets, v.ID) || v.Faction != me.Faction || v.HP <= 0 {
+			continue
+		}
+		worn := v.HP*4 < v.Stats.MaxHP*3
+		if prefer == content.KindMagic || prefer == content.KindStatus {
+			worn = v.HP*2 < v.Stats.MaxHP
+		}
+		if !worn {
+			continue
+		}
+		h := float64(min(p.Healing/max(1, len(p.Targets)), v.Stats.MaxHP-v.HP))
+		if lord(e, v) && v.HP*2 < v.Stats.MaxHP {
+			h *= 3
+		}
+		sum += h
+	}
+	if sum <= 0 {
+		return -5
+	}
+	s := sum * p.Hit / 100 * .9
+	if me.Faction == "enemy" {
+		s *= map[bool]float64{true: .5, false: .25}[prefer == content.KindHeal]
+	}
+	return s
+}
+
+// relieve is what a cure is worth: for every ally it reaches, what its harmful statuses still take from it over
+// the turns they have left (burden). Twice for a healer's class, whose own work it is.
+func relieve(e *core.Engine, o core.Observation, me *core.UnitView, p core.Preview, prefer string) float64 {
+	sum := 0.0
+	for _, v := range o.UnitViews {
+		if !slices.Contains(p.Targets, v.ID) || v.Faction != me.Faction || v.HP <= 0 {
+			continue
+		}
+		for k, st := range v.Status {
+			if content.Harmful[k] && st.Turns > 0 {
+				sum += burden(e, o, v, k, st.Turns)
 			}
 		}
 	}
-	return least
+	if sum <= 0 {
+		return -5
+	}
+	s := sum*p.Hit/100 - float64(p.Cost)*.3
+	if prefer == content.KindHeal {
+		s *= 2
+	}
+	return s
+}
+
+// casts tells whether one of spells reaches an opponent this turn, from where me stands or from a cell it
+// can move to.
+func casts(e *core.Engine, o core.Observation, me *core.UnitView, options []core.Command, spells []string) bool {
+	for _, c := range options {
+		if k := e.Data().Skills[c.Skill].Kind; c.Kind == "skill" && slices.Contains(spells, c.Skill) && (k == content.KindMagic || k == content.KindStatus) {
+			return true
+		}
+	}
+	for _, c := range options {
+		if c.Kind != "move" {
+			continue
+		}
+		for _, v := range o.UnitViews {
+			if v.Faction == me.Faction || v.HP <= 0 {
+				continue
+			}
+			for _, id := range spells {
+				if e.CanCastFrom(me.ID, id, content.Point{X: c.X, Y: c.Y}, v.X, v.Y) {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}
+
+// offense lists the attack and status spells a caster (a unit whose mind outweighs its attack) can pay for now:
+// a cell they reach an opponent from is where it walks to, as a cell to strike from is for a warrior.
+func offense(e *core.Engine, me *core.UnitView) []string {
+	if me.Stats.Mind <= me.Stats.Attack {
+		return nil
+	}
+	var out []string
+	for _, id := range me.Skills {
+		s := e.Data().Skills[id]
+		if (s.Kind == content.KindMagic || s.Kind == content.KindStatus) && s.Mode != content.ModeSelf && e.SkillCost(me.ID, id) <= me.MP {
+			out = append(out, id)
+		}
+	}
+	return out
 }
 
 // spentCaster tells a caster (a unit whose mind outweighs its attack, as 서생 and 군사 do) that has attack or
@@ -316,11 +449,11 @@ func threatened(e *core.Engine, o core.Observation, faction string) map[content.
 	return cells
 }
 
-// approach scores a move toward the other side. A cell to strike from comes first, the farther from
-// the nearest opponent the better, so an archer shoots from the full reach of its bow; then a cell
-// nearer the closest opponent. A cell inside the unit's least reach of an opponent is never taken:
-// from there it could not strike that one at all.
-func approach(e *core.Engine, o core.Observation, me *core.UnitView, x, y int, walk map[content.Point]int, duels bool) float64 {
+// approach scores a move toward the other side. A cell to strike from comes first (or, for a caster, to cast
+// one of spells from), the farther from the nearest opponent the better, so an archer shoots from the full
+// reach of its bow; then a cell nearer the closest opponent. A cell inside the unit's least reach of an
+// opponent is never taken: from there it could not strike that one at all.
+func approach(e *core.Engine, o core.Observation, me *core.UnitView, x, y int, walk map[content.Point]int, duels bool, spells []string) float64 {
 	lo, _ := e.AttackRange(me.ID)
 	near, strike := 999, false
 	for _, v := range o.UnitViews {
@@ -333,6 +466,9 @@ func approach(e *core.Engine, o core.Observation, me *core.UnitView, x, y int, w
 		}
 		near = min(near, d)
 		strike = strike || e.CanStrikeFrom(me.ID, content.Point{X: x, Y: y}, v.X, v.Y) && !(duels && me.DuelFirst && e.DuelPending(me.ID, v.ID))
+		for _, id := range spells {
+			strike = strike || e.CanCastFrom(me.ID, id, content.Point{X: x, Y: y}, v.X, v.Y)
+		}
 	}
 	if strike {
 		return 40 + float64(near) // above any approach (3 a cell), under any blow from where it stands

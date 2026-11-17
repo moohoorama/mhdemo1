@@ -9,31 +9,85 @@ import (
 // waypointStock is how many of every item a game started at a waypoint carries.
 const waypointStock = 9
 
-// NewAt starts a game at a waypoint (content.Waypoints) to check the story from there: the story before
-// it counts as played on its default path (its officers joined, its grants and flags set, its battles won
-// without their bonus objectives), every officer is at the level of the next battle in the class that level
-// reaches on the officer's own promotion path, with the learning window open for the points that brought,
-// every piece with an Owner the story has handed over is on that officer, and the party owns every item and
-// every piece of equipment (the pieces not handed over yet in the warehouse).
-// The difficulty is NewGame's.
+// Start is what a game started at a waypoint is told about the story before it.
+type Start struct {
+	Flags []string // the battle flags (content.StoryFlags) the battles before the waypoint left
+	Level int      // the level every officer is raised to; none is the level of the next battle
+}
+
+// NewAt starts a game at a waypoint as NewAtWith does with nothing told: no battle left a flag.
 func NewAt(d *content.Data, seed uint64, node, difficulty string) (*Engine, error) {
+	return NewAtWith(d, seed, node, difficulty, Start{})
+}
+
+// NewAtWith starts a game at a waypoint (content.Waypoints) to check the story from there: the story before
+// it counts as played along the path its branches take (its officers joined, its grants and flags set, its
+// battles won with the bonus flags start names and no others), every officer is at the level of the next
+// battle (or start's) in the class that level reaches on the officer's own promotion path, with the learning
+// window open for the points that brought, every piece with an Owner the story has handed over is on that
+// officer, and the party owns every item and every piece of equipment (the pieces not handed over yet in
+// the warehouse). The difficulty is NewGame's.
+func NewAtWith(d *content.Data, seed uint64, node, difficulty string, start Start) (*Engine, error) {
 	if !slices.ContainsFunc(d.Waypoints(), func(w content.Waypoint) bool { return w.Node == node }) {
 		return nil, fail("UnknownWaypoint")
+	}
+	if start.Level < 0 || start.Level > d.Rules.MaxLevel {
+		return nil, fail("BadLevel")
 	}
 	e, err := beginAt(d, seed, difficulty)
 	if err != nil {
 		return nil, err
 	}
+	left := map[string][]string{} // stage → the flags it leaves
+	for _, f := range d.StoryFlags() {
+		if slices.Contains(start.Flags, f.Flag) {
+			left[f.Stage] = append(left[f.Stage], f.Flag)
+		}
+	}
 	for _, c := range d.Chapters {
-		for _, id := range c.Nodes {
-			if id == node {
-				e.arrive(node)
+		at := slices.Index(c.Nodes, node)
+		for j := 0; j < len(c.Nodes); {
+			if j == at {
+				e.arrive(node, start.Level)
 				return e, nil
 			}
-			e.pass(d.Node(id), c)
+			n := d.Node(c.Nodes[j])
+			e.pass(n, c)
+			if n.Kind == "battle" {
+				for _, f := range left[n.Stage] {
+					e.state.Flags[f] = 1
+				}
+			}
+			// the nodes a branch or a jump goes over are not played; one that goes nowhere ahead reads on
+			k := slices.Index(c.Nodes, e.passed(n))
+			if k <= j {
+				k = j + 1
+			}
+			if at > j && at < k { // the waypoint is on an arm the story does not take: start there all the same
+				k = at
+			}
+			j = k
 		}
 	}
 	return nil, fail("UnknownWaypoint")
+}
+
+// passed is the node the story goes to after a node it passes, as far as that is known without the player.
+func (e *Engine) passed(n content.Node) string {
+	switch n.Kind {
+	case "choice", "end":
+		return ""
+	case "branch":
+		for _, c := range n.Cases {
+			if e.holdsAll(c.If) {
+				return c.Next
+			}
+		}
+		if n.Else != "" {
+			return n.Else
+		}
+	}
+	return e.data.After(n.ID)
 }
 
 // pass plays what a story node leaves behind, without stopping at it.
@@ -56,12 +110,29 @@ func (e *Engine) pass(n content.Node, c content.Chapter) {
 		for item, k := range stage.Reward {
 			e.gain(item, k)
 		}
+		for _, ev := range stage.Events { // officers who join on the field (조운 at B19, 관우's party at B20)
+			for _, a := range ev.Do {
+				if a.Kind != "join" {
+					continue
+				}
+				for _, sp := range a.Spawns {
+					if e.char(sp.Character) == nil {
+						e.welcome(sp.Character, stage.Order)
+					}
+					if !contains(e.state.Deployment, sp.Character) {
+						e.state.Deployment = append(e.state.Deployment, sp.Character)
+					}
+				}
+			}
+		}
 	}
 }
 
-// arrive equips the party for the waypoint node and enters it.
-func (e *Engine) arrive(node string) {
-	level := e.data.Rules.StageLevel(e.data.NextBattleOrder(node))
+// arrive equips the party for the waypoint node and enters it, at the level given or else the next battle's.
+func (e *Engine) arrive(node string, level int) {
+	if level == 0 {
+		level = e.data.Rules.StageLevel(e.data.NextBattleOrder(node))
+	}
 	for _, id := range keys(e.charIDs) {
 		o := e.char(id)
 		e.joinAt(o, level)

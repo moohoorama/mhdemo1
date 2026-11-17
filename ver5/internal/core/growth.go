@@ -73,6 +73,18 @@ func (e *Engine) supportXP(u, q *Unit) int {
 // xp is experience an officer earns in battle. With a deputy beside it the two share it: the officer keeps
 // DeputyLeadShare percent and the deputy gets DeputyShare percent, each carrying its own fraction over.
 func (e *Engine) xp(id string, n int) {
+	if e.pooling {
+		if n > 0 {
+			if e.pool == nil {
+				e.pool = map[string]int{}
+			}
+			if e.pool[id] == 0 {
+				e.pooled = append(e.pooled, id)
+			}
+			e.pool[id] += n
+		}
+		return
+	}
 	R := e.data.Rules
 	o := e.char(id)
 	if o == nil || o.Dead || n <= 0 || (e.unit(id) != nil && e.unit(id).AI) {
@@ -84,6 +96,16 @@ func (e *Engine) xp(id string, n int) {
 		return
 	}
 	e.gainXP(id, n)
+}
+
+// flushXP gives the experience pooled over a command, one sum per officer in the order they first earned it: an
+// action that buffs five allies or trades blows shows its experience once, when the action is over.
+func (e *Engine) flushXP() {
+	e.pooling = false
+	for _, id := range e.pooled {
+		e.xp(id, e.pool[id])
+	}
+	e.pool, e.pooled = nil, nil
 }
 
 func shareXP(c *Character, n, percent int) int {

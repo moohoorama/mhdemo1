@@ -32,18 +32,28 @@ func TestBoard(t *testing.T) {
 		})
 	}
 	t.Run("a section piece under every small tile of the front edges, by its ground", func(t *testing.T) {
-		m, c := load(t, "S_tavern")
+		m, c := load(t, "S_zhuo")
 		p, err := Build(m, c, Options{})
 		require.NoError(t, err)
 		count := map[string]int{}
 		for _, d := range p.Flat {
-			if strings.HasPrefix(d.Name, "board_") {
-				count[d.Name[:strings.LastIndexByte(d.Name, '_')]]++
+			if strings.HasPrefix(d.Name, "board_end") {
+				count["end"]++
+			} else if strings.HasPrefix(d.Name, "board_") {
+				count[d.Name[strings.LastIndex(d.Name[:strings.LastIndexByte(d.Name, '_')], "_")+1:strings.LastIndexByte(d.Name, '_')]]++
 			}
 		}
-		assert.Equal(t, m.H(), count["board_hall_pu"], "+u edge: one per tile of floor")
-		assert.Equal(t, m.W(), count["board_hall_pv"], "+v edge")
-		assert.Equal(t, 2, count["board_end"], "the two side corners")
+		assert.Equal(t, m.H(), count["pu"], "+u edge: one per small tile")
+		assert.Equal(t, m.W(), count["pv"], "+v edge")
+		assert.Equal(t, 2, count["end"], "the two side corners")
+	})
+	t.Run("a room shows no section", func(t *testing.T) {
+		m, c := load(t, "S_tavern")
+		p, err := Build(m, c, Options{})
+		require.NoError(t, err)
+		for _, d := range p.Flat {
+			assert.False(t, strings.HasPrefix(d.Name, "board_"), d.Name)
+		}
 	})
 	t.Run("a city wall top on a front edge stands its cut, by its place in the run", func(t *testing.T) {
 		m, c := load(t, "S_baimen")

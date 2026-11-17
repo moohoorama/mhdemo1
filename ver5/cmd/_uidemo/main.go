@@ -26,9 +26,11 @@ func main() {
 	stage := flag.String("stage", "", "battle stage the demos play (default: the first)")
 	duel := flag.String("duel", "", "stage duel the duel demo plays (default: the first)")
 	node := flag.String("node", "", "story node the scene demos jump to")
+	trace := flag.String("trace", "", "autoplay: battle trace JSONL to replay")
 	size := flag.String("size", "1280x850", "window size in device pixels, e.g. 2400x1080 for a phone")
 	uiScale := flag.Int("uiscale", 0, "UI size setting in percent (80-160); 0 keeps the default")
 	debug := flag.Bool("debug", false, "show what srpg-gui -debug shows")
+	root := flag.String("root", ".", "game asset root")
 	cpuProfile := flag.String("cpuprofile", "", "write a CPU profile of the whole run (loading included) to this file")
 	flag.Parse()
 	if *cpuProfile != "" {
@@ -43,14 +45,14 @@ func main() {
 		}
 		defer pprof.StopCPUProfile()
 	}
-	if err := run(*name, *out, *stage, *duel, *node, *size, *frames, *every, *uiScale, *debug); err != nil {
+	if err := run(*root, *name, *out, *stage, *duel, *node, *trace, *size, *frames, *every, *uiScale, *debug); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		pprof.StopCPUProfile()
 		os.Exit(1)
 	}
 }
 
-func run(name, out, stage, duel, node, size string, frames, every, uiScale int, debug bool) error {
+func run(root, name, out, stage, duel, node, trace, size string, frames, every, uiScale int, debug bool) error {
 	var w, h int
 	if _, err := fmt.Sscanf(size, "%dx%d", &w, &h); err != nil {
 		return fmt.Errorf("bad -size: %w", err)
@@ -59,7 +61,7 @@ func run(name, out, stage, duel, node, size string, frames, every, uiScale int, 
 		out = "reports/uidemo/" + name
 	}
 	start := time.Now()
-	d, err := gui.NewDemo(".", gui.DemoOptions{Name: name, Out: out, Stage: stage, Duel: duel, Node: node,
+	d, err := gui.NewDemo(root, gui.DemoOptions{Name: name, Out: out, Stage: stage, Duel: duel, Node: node, Trace: trace,
 		Frames: frames, Every: every, UIScale: uiScale, Debug: debug})
 	if err != nil {
 		return err

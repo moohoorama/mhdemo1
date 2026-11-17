@@ -109,12 +109,11 @@ func (g *Game) unitHead(dst *ebiten.Image, o core.Observation, of *core.Characte
 	}
 	g.label(dst, g.name(of.Deputy), dx+48, y+8, 16, ink)
 	g.label(dst, "부관", dx+56+g.width(g.name(of.Deputy), 16), y+12, 12, muted)
-	wr, charm := g.S.Engine.DeputyBlend(of.ID, of.Deputy)
-	_, depAttrs, _ := g.S.Engine.DeputyStats(of.Deputy, "")
+	wr, charm, depCharm := g.S.Engine.DeputyBlend(of.ID, of.Deputy)
 	wx := dx + 120 + g.width(g.name(of.Deputy), 16)
 	ws := fmt.Sprintf("부관 가중치 %.0f%%", wr*100)
 	g.label(dst, ws, wx, y+8, 16, ink)
-	g.label(dst, fmt.Sprintf("= (%.0f × %d + %d) ÷ %d", charm, g.S.Data.Rules.DeputyWeight, depAttrs[5], g.S.Data.Rules.DeputyDivisor), wx+g.width(ws, 16)+8, y+11, 13, muted)
+	g.label(dst, fmt.Sprintf("= (%.0f × %d + %.0f) ÷ %d", charm, g.S.Data.Rules.DeputyWeight, depCharm, g.S.Data.Rules.DeputyDivisor), wx+g.width(ws, 16)+8, y+11, 13, muted)
 	return y + 56
 }
 

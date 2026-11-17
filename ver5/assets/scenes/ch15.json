@@ -42,6 +42,7 @@
   },
   "c15-spy": {
    "Map": "S_tent_mid",
+   "Music": "suno-intrigue",
    "Nodes": ["c15-spy", "c15-s01", "c15-s02", "c15-s03", "c15-s04", "c15-s05", "c15-s06", "c15-s07", "c15-s08", "c15-s09", "c15-s10", "c15-s11", "c15-s12", "c15-s13"],
    "Cast": {
     "유비": {"At": [3, 1], "Face": "SW"},

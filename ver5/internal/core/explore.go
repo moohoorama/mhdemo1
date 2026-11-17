@@ -201,7 +201,7 @@ func (e *Engine) leaveBy(at [2]int, face string) error {
 	return fail("ExitShut")
 }
 
-var faces = map[string]bool{"NE": true, "NW": true, "SE": true, "SW": true}
+var faces = map[string]bool{"N": true, "NE": true, "E": true, "SE": true, "S": true, "SW": true, "W": true, "NW": true}
 
 // Goal is someone the story waits on in the walk, reachable now through open exits: in Area, by key Person, or an
 // exit of Area that leads into an event (Person empty). First is the exit of the hero's area that leads toward them,

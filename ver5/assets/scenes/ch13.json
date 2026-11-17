@@ -16,10 +16,10 @@
     "아이#1": {"At": [13, 6], "Face": "NW", "Sprite": "child_girl_noncombat", "Faction": "han", "Off": true},
     "아이#2": {"At": [13, 6], "Face": "NW", "Sprite": "child_boy_noncombat", "Faction": "han", "Off": true},
     "아이#3": {"At": [13, 6], "Face": "NW", "Sprite": "child_boy_noncombat", "Faction": "han", "Off": true},
-    "피난민#1": {"At": [8, 2], "Face": "SE", "Sprite": "commoner_elder", "Faction": "merchant"},
+    "피난민#1": {"At": [7, 2], "Face": "SE", "Sprite": "commoner_elder", "Faction": "merchant"},
     "피난민#2": {"At": [10, 3], "Face": "SW", "Sprite": "commoner_woman", "Faction": "merchant"},
     "피난민#3": {"At": [7, 1], "Face": "SE", "Sprite": "commoner_man", "Faction": "merchant"},
-    "피난민#4": {"At": [9, 10], "Face": "NE", "Sprite": "commoner_oldwoman", "Faction": "merchant"},
+    "피난민#4": {"At": [8, 10], "Face": "NE", "Sprite": "commoner_oldwoman", "Faction": "merchant"},
     "서주병#1": {"At": [12, 5], "Face": "NW", "Sprite": "light_infantry", "Faction": "han"},
     "서주병#2": {"At": [12, 7], "Face": "NW", "Sprite": "light_infantry", "Faction": "han"}
    },

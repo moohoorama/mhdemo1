@@ -8,20 +8,20 @@
 ......TRE...;;;###________________________________________________###;;;''''''''''''
 '''.........;;;###___''''''''''''''''''___'''''''''''''''''''''___###;;;'''...'''...
 ......'''''';;;###___'''VIL'''VIL''''''___''''''VIL''''''''''''___###;;;'''TRE...'''
-'''TRE'''...;;;###___''''''''''''...'''___''';;;;;;'''VIL''''''___,,,;;;............
+'''TRE'''...;;;###___''''''''''''...'''___''';;;;;;'''VIL''''''___###;;;............
 ...'''......;;;###___'''VIL'''...''''''___''';;;VIL''''''''''''___###;;;'''...''''''
-'''''''''...;;;###___'''ca4''''''''''''___'''''''''''''''ca6'''___###;;;............
-...''''''...;;;###___'''''''''ca5'''ca3___ca2'''''''''Cao''''''___###;;;'''.........
-'''''''''''';;;[O]______Zha____________Xus________________________[O];;;''''''''''''
-......'''''';;;###___'''''''''ca8'''ca1___Lub''''''''''''Che'''___###;;;'''...'''...
-............;;;###___fo1'''Wei'''''''''___''''''''''''''''''fo2___###;;;............
-'''......''';;;###___'''VIL''''''VIL'''___''''''VIL'''VIL''''''___###;;;'''......'''
-'''.........;;;,,,___''''''''''''''''''___'''''''''...'''''''''___###;;;'''.........
-......'''...;;;###___''''''VIL'''''''''___ca7'''VIL'''...''''''___###;;;............
-'''...'''...;;;###___'''''''''VIL'''Son___'''Hou'''''''''VIL'''___###;;;'''......TRE
-TRE'''...''';;;###___'''''''''''''''fo3___'''''''''''''''''''''___###;;;...'''''''''
+'''''''''...;;;###___''''''''''''''''''___'''''''''''''''...'''___###;;;............
+...''''''...;;;###___''''''''''''''''''___'''''''''''''''''''''___###;;;'''.........
+'''''''''''';;;[ ]_____________________CST________________________[ ];;;''''''''''''
+......'''''';;;###___''''''''''''''''''___'''''''''''''''''''''___###;;;'''...'''...
+............;;;###___''''''...'''''''''___'''''''''''''''''''''___###;;;............
+'''......''';;;###___'''VIL''''''VILSonHouWei'''VIL'''VIL''''''___###;;;'''......'''
+'''.........;;;###___''''''''''''''''''___'''''''''...'''''''''___###;;;'''.........
+......'''...;;;###___''''''VIL'''''''''___''''''VIL'''...''''''___###;;;............
+'''...'''...;;;###___'''''''''VIL''''''___'''''''''''''''VIL'''___###;;;'''......TRE
+TRE'''...''';;;###___''''''''''''''''''___'''''''''''''''''''''___###;;;...'''''''''
 ......'''''';;;###________________________________________________###;;;''''''''''''
-.........''';;;############,,,#########[O]#########,,,###############;;;''''''...'''
+.........''';;;########################[ ]###########################;;;''''''...'''
 '''...'''''';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;''''''...'''
 '''......'''...'''.........'''.........'''...''''''......'''...'''............'''...
 '''......TRE'''''''''...'''.........pl3pl1pl2pl4......'''...'''......''''''...TRE...
@@ -36,22 +36,10 @@ pl5 Allies[4]  player
 pl6 Allies[5]  player
 pl7 Allies[6]  player
 pl8 Allies[7]  player
-Lub Enemies[0]  lubu, enemy, group lu-c, policy hold, rank boss, faction dong
-Xus Enemies[1]  xusi, enemy, group lu-c, policy hold, faction dong
-ca1 Enemies[2]  troop_cavalry, enemy, group lu-c, policy hold, faction dong
-ca2 Enemies[3]  troop_cavalry, enemy, group lu-c, policy hold, faction dong
-ca3 Enemies[4]  troop_cavalry, enemy, group lu-c, policy hold, faction dong
-Zha Enemies[5]  zhangliao, enemy, group lu-nw, policy assault, rank commander, faction dong
-Wei Enemies[6]  weixu, enemy, group lu-nw, policy hold, faction dong
-ca4 Enemies[7]  troop_cavalry, enemy, group lu-nw, policy react, faction dong
-ca5 Enemies[8]  troop_cavalry, enemy, group lu-nw, policy react, faction dong
-fo1 Enemies[9]  troop_footman, enemy, group lu-nw, policy react, faction dong
-Che Enemies[10]  chengong, enemy, group lu-se, policy react, faction dong
-Cao Enemies[11]  caoxing, enemy, group lu-se, policy assault, faction dong
-ca6 Enemies[12]  troop_cavalry, enemy, group lu-se, policy react, faction dong
-fo2 Enemies[13]  troop_footman, enemy, group lu-se, policy react, faction dong
-Son Enemies[14]  songxian, enemy, group lu-sw, policy hold, faction dong
-Hou Enemies[15]  houcheng, enemy, group lu-sw, policy hold, faction dong
-ca7 Enemies[16]  troop_cavalry, enemy, group lu-sw, policy assault, faction dong
-fo3 Enemies[17]  troop_footman, enemy, group lu-sw, policy assault, faction dong
-ca8 Enemies[18]  troop_cavalry, enemy, group lu-nw, policy react, faction dong
+Hou Enemies[0]  houcheng, enemy, group lu-gate, policy assault, faction dong
+Son Enemies[1]  songxian, enemy, group lu-gate, policy assault, faction dong
+Wei Enemies[2]  weixu, enemy, group lu-gate, policy assault, faction dong
+
+# area 1 남서문: x 13..13, y 22..22
+# area 2 북서문: x 5..5, y 13..13
+# area 3 남동문: x 22..22, y 13..13

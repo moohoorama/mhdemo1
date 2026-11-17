@@ -62,249 +62,72 @@
  "Party": [],
  "Enemies": [
   {
-   "Character": "lubu",
-   "X": 14,
-   "Y": 14,
-   "Group": "lu-c",
-   "Policy": "hold",
-   "Faction": "dong",
-   "Facing": "SW",
-   "Rank": "boss"
-  },
-  {
-   "Character": "xusi",
+   "Character": "houcheng",
    "X": 13,
-   "Y": 13,
-   "Group": "lu-c",
-   "Policy": "hold",
+   "Y": 16,
+   "Group": "lu-gate",
+   "Policy": "assault",
    "Faction": "dong",
    "Facing": "SW"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 12,
-   "Y": 14,
-   "Group": "lu-c",
-   "Policy": "hold",
-   "Faction": "dong",
-   "Facing": "SW",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 14,
-   "Y": 12,
-   "Group": "lu-c",
-   "Policy": "hold",
-   "Faction": "dong",
-   "Facing": "SE",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 12,
-   "Y": 12,
-   "Group": "lu-c",
-   "Policy": "hold",
-   "Faction": "dong",
-   "Facing": "NW",
-   "Class": "horse_archer",
-   "Shift": -0.07
-  },
-  {
-   "Character": "zhangliao",
-   "X": 8,
-   "Y": 13,
-   "Group": "lu-nw",
-   "Policy": "assault",
-   "Faction": "dong",
-   "Facing": "NW",
-   "Rank": "commander"
-  },
-  {
-   "Character": "weixu",
-   "X": 9,
-   "Y": 15,
-   "Group": "lu-nw",
-   "Policy": "hold",
-   "Faction": "dong",
-   "Facing": "NW"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 8,
-   "Y": 11,
-   "Group": "lu-nw",
-   "Policy": "react",
-   "Faction": "dong",
-   "Facing": "NW",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 10,
-   "Y": 12,
-   "Group": "lu-nw",
-   "Policy": "react",
-   "Faction": "dong",
-   "Facing": "NW",
-   "Class": "horse_archer",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_footman",
-   "X": 7,
-   "Y": 15,
-   "Group": "lu-nw",
-   "Policy": "react",
-   "Faction": "dong",
-   "Facing": "NW",
-   "Shift": -0.07
-  },
-  {
-   "Character": "chengong",
-   "X": 19,
-   "Y": 14,
-   "Group": "lu-se",
-   "Policy": "react",
-   "Faction": "dong",
-   "Facing": "SE"
-  },
-  {
-   "Character": "caoxing",
-   "X": 18,
-   "Y": 12,
-   "Group": "lu-se",
-   "Policy": "assault",
-   "Faction": "dong",
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 19,
-   "Y": 11,
-   "Group": "lu-se",
-   "Policy": "react",
-   "Faction": "dong",
-   "Facing": "SE",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_footman",
-   "X": 20,
-   "Y": 15,
-   "Group": "lu-se",
-   "Policy": "react",
-   "Faction": "dong",
-   "Facing": "SE",
-   "Shift": -0.07
   },
   {
    "Character": "songxian",
    "X": 12,
-   "Y": 19,
-   "Group": "lu-sw",
-   "Policy": "hold",
+   "Y": 16,
+   "Group": "lu-gate",
+   "Policy": "assault",
    "Faction": "dong",
    "Facing": "SW"
   },
   {
-   "Character": "houcheng",
-   "X": 15,
-   "Y": 19,
-   "Group": "lu-sw",
-   "Policy": "hold",
-   "Faction": "dong",
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_cavalry",
+   "Character": "weixu",
    "X": 14,
-   "Y": 18,
-   "Group": "lu-sw",
+   "Y": 16,
+   "Group": "lu-gate",
    "Policy": "assault",
    "Faction": "dong",
-   "Facing": "SW",
-   "Class": "horse_archer",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_footman",
-   "X": 12,
-   "Y": 20,
-   "Group": "lu-sw",
-   "Policy": "assault",
-   "Faction": "dong",
-   "Facing": "SW",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 10,
-   "Y": 14,
-   "Group": "lu-nw",
-   "Policy": "react",
-   "Faction": "dong",
-   "Facing": "NW",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 9,
-   "Y": 11,
-   "Group": "lu-nw",
-   "Policy": "react",
-   "Faction": "dong",
-   "Facing": "NW",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 16,
-   "Y": 11,
-   "Group": "lu-se",
-   "Policy": "assault",
-   "Faction": "dong",
-   "Facing": "SE",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 17,
-   "Y": 14,
-   "Group": "lu-se",
-   "Policy": "react",
-   "Faction": "dong",
-   "Facing": "SE",
-   "Class": "horse_archer",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 11,
-   "Y": 17,
-   "Group": "lu-sw",
-   "Policy": "assault",
-   "Faction": "dong",
-   "Facing": "SW",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 17,
-   "Y": 17,
-   "Group": "lu-sw",
-   "Policy": "assault",
-   "Faction": "dong",
-   "Facing": "SW",
-   "Shift": -0.07
+   "Facing": "SW"
   }
  ],
  "Reward": {
   "money": 2500,
   "fangtian_halberd": 1
  },
- "Areas": [],
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 13,
+    "Y": 22,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "남서문",
+   "Description": "유비군이 들어서는 하비성 남서쪽 성문"
+  },
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 5,
+    "Y": 13,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "북서문",
+   "Description": "조조군이 맡은 하비성 북서쪽 성문"
+  },
+  {
+   "ID": 3,
+   "Rect": {
+    "X": 22,
+    "Y": 13,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "남동문",
+   "Description": "조조군이 맡은 하비성 남동쪽 성문"
+  }
+ ],
  "Events": [
   {
    "ID": "cao-gates",
@@ -416,23 +239,414 @@
    ]
   },
   {
-   "ID": "gaoshun",
+   "ID": "opening",
    "If": [
-    "round>=1",
-    "!party:gaoshun"
+    "round>=1"
    ],
    "Do": [
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "move",
+        "Unit": "liubei",
+        "To": {
+         "X": 13,
+         "Y": 23
+        },
+        "Facing": "NE"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "liubei",
+        "Text": "후성, 약속대로 문을 열어 주시오."
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "terrain",
+     "Area": 1,
+     "State": "O"
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "wait",
+        "Seconds": 0.8
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "terrain",
+     "Area": 2,
+     "State": "O"
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "wait",
+        "Seconds": 0.8
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "terrain",
+     "Area": 3,
+     "State": "O"
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "wait",
+        "Seconds": 0.8
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "cao-se",
+        "To": {
+         "X": 20,
+         "Y": 13
+        },
+        "Facing": "NW"
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "cao-nw",
+        "To": {
+         "X": 7,
+         "Y": 13
+        },
+        "Facing": "SE"
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "player",
+        "To": {
+         "X": 13,
+         "Y": 20
+        },
+        "Facing": "NE"
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "liubei",
+        "To": {
+         "X": 13,
+         "Y": 19
+        },
+        "Facing": "NE"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "liubei",
+        "Text": "수고했소. 약속대로 목숨은 보장하겠소."
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "houcheng",
+        "Text": "……지금이다!"
+       }
+      ]
+     ]
+    },
     {
      "Kind": "spawn",
      "Spawns": [
       {
-       "Character": "gaoshun_lu",
-       "X": 13,
+       "Character": "troop_footman",
+       "X": 9,
+       "Y": 12,
+       "Group": "lu-nw",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "NW",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 9,
+       "Y": 14,
+       "Group": "lu-nw",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "NW",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 8,
+       "Y": 11,
+       "Group": "lu-nw",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "NW",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 8,
        "Y": 15,
+       "Group": "lu-nw",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "NW",
+       "Shift": -0.07,
+       "Side": "enemy"
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "wait",
+        "Seconds": 0.5
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_footman",
+       "X": 18,
+       "Y": 12,
+       "Group": "lu-se",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "SE",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 18,
+       "Y": 14,
+       "Group": "lu-se",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "SE",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 19,
+       "Y": 11,
+       "Group": "lu-se",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "SE",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 19,
+       "Y": 15,
+       "Group": "lu-se",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "SE",
+       "Shift": -0.07,
+       "Side": "enemy"
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "wait",
+        "Seconds": 0.5
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_cavalry",
+       "X": 8,
+       "Y": 18,
+       "Group": "lu-w",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "SE",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 7,
+       "Y": 20,
+       "Group": "lu-w",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "SE",
+       "Class": "horse_archer",
+       "Shift": -0.07,
+       "Side": "enemy"
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "wait",
+        "Seconds": 0.5
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_cavalry",
+       "X": 18,
+       "Y": 18,
+       "Group": "lu-e",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "NW",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 19,
+       "Y": 20,
+       "Group": "lu-e",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "NW",
+       "Class": "horse_archer",
+       "Shift": -0.07,
+       "Side": "enemy"
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "wait",
+        "Seconds": 0.5
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "lubu",
+       "X": 13,
+       "Y": 11,
        "Group": "lu-c",
-       "Policy": "hold",
+       "Policy": "assault",
        "Faction": "dong",
        "Facing": "SW",
+       "Rank": "boss",
+       "Side": "enemy"
+      },
+      {
+       "Character": "zhangliao",
+       "X": 12,
+       "Y": 12,
+       "Group": "lu-c",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "SW",
+       "Rank": "commander",
+       "Side": "enemy"
+      },
+      {
+       "Character": "chengong",
+       "X": 13,
+       "Y": 10,
+       "Group": "lu-c",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "SW",
+       "Side": "enemy"
+      },
+      {
+       "Character": "xusi",
+       "X": 14,
+       "Y": 11,
+       "Group": "lu-c",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "SW",
+       "Side": "enemy"
+      },
+      {
+       "Character": "caoxing",
+       "X": 12,
+       "Y": 11,
+       "Group": "lu-c",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "SW",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 11,
+       "Y": 12,
+       "Group": "lu-c",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "SW",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 15,
+       "Y": 11,
+       "Group": "lu-c",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "SW",
+       "Class": "horse_archer",
+       "Shift": -0.07,
        "Side": "enemy"
       }
      ]
@@ -441,43 +655,8 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "gaoshun_lu",
-       "Text": "……"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "opening",
-   "If": [
-    "round>=1"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "liubei",
-       "Text": "성문이 열렸다! 운장, 익덕, 들어가세!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "xiahouyuan",
-       "Text": "조성 놈은 어디 있느냐! 형님 눈값을 받으러 왔다!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "lubu",
-       "Text": "물이 차오른들 무슨 상관이냐! 이 여포가 있는 한 하비는 떨어지지 않는다!"
+       "Actor": "xuhuang",
+       "Text": "매복이다! 항복은 거짓이었다!"
       }
      ]
     },
@@ -486,7 +665,52 @@
      "Lines": [
       {
        "Actor": "chengong",
-       "Text": "주공, 진작 성 밖에 진을 쳤어야 했습니다……"
+       "Text": "잘했소, 후성! 여포님, 장료님! 가장 약한 고리인 유비군을 전멸시키십시오!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "lubu",
+       "Text": "좋다! 달려라, 적토마! 장문원, 적을 밟아 버리자!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangliao",
+       "Text": "네!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "모두 겁먹지 마라! 상처 입은 호랑이의 마지막 발악이다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "guanyu",
+       "Text": "맞습니다. 적들은 수공에 지쳤고 바닥은 물바다입니다."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "어찌 됐건 내가 다 쓸어버리면 되는겨!"
       }
      ]
     },
@@ -502,17 +726,24 @@
    ]
   },
   {
-   "ID": "defection",
+   "ID": "gaoshun",
    "If": [
-    "any:[adjacent:ally:houcheng, adjacent:ally:songxian, adjacent:ally:weixu]"
+    "round>=1",
+    "!party:gaoshun"
    ],
    "Do": [
     {
-     "Kind": "say",
-     "Lines": [
+     "Kind": "spawn",
+     "Spawns": [
       {
-       "Actor": "houcheng",
-       "Text": "더는 못 싸우겠다! 물에 잠긴 성에서 개죽음할 수는 없다!"
+       "Character": "gaoshun_lu",
+       "X": 14,
+       "Y": 12,
+       "Group": "lu-c",
+       "Policy": "assault",
+       "Faction": "dong",
+       "Facing": "SW",
+       "Side": "enemy"
       }
      ]
     },
@@ -520,56 +751,10 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "songxian",
-       "Text": "후성, 나도 가겠네. 여포를 위해 물귀신이 될 수는 없지."
+       "Actor": "gaoshun_lu",
+       "Text": "……"
       }
      ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "weixu",
-       "Text": "기다리게! 나도 함께 가겠네!"
-      }
-     ]
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "leave",
-        "Unit": "houcheng"
-       },
-       {
-        "Kind": "leave",
-        "Unit": "songxian"
-       },
-       {
-        "Kind": "leave",
-        "Unit": "weixu"
-       }
-      ]
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "lubu",
-       "Text": "후성, 송헌, 위속……! 이 배은망덕한 놈들이!"
-      }
-     ]
-    },
-    {
-     "Kind": "buff",
-     "Targets": [
-      "enemy"
-     ],
-     "Stat": "morale",
-     "Value": -20,
-     "Turns": 0
     }
    ]
   },
@@ -593,36 +778,18 @@
      "Targets": [
       "enemy"
      ],
+     "Stat": "attack",
+     "Value": -20,
+     "Turns": 0
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "enemy"
+     ],
      "Stat": "defense",
      "Value": -20,
      "Turns": 0
-    }
-   ]
-  },
-  {
-   "ID": "lu-sortie",
-   "If": [
-    "round>=3"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "lubu",
-       "Text": "웅크리고 있어 봐야 물에 잠겨 죽을 뿐이다! 모두 나가 싸워라!"
-      }
-     ]
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "lu-c",
-      "lu-nw",
-      "lu-se",
-      "lu-sw"
-     ],
-     "Policy": "assault"
     }
    ]
   }
@@ -636,7 +803,7 @@
    "Outcome": "victory",
    "AllyResult": "stay",
    "EnemyResult": "retreat",
-   "Text": "장료는 관우의 청룡도를 끝내 받아 내지 못하고 물러났다.",
+   "Text": "수공에 지친 장료는 관우의 청룡도를 끝내 받아 내지 못하고 물러났다.",
    "Beats": [
     {
      "Kind": "talk",
@@ -690,7 +857,7 @@
     {
      "Kind": "talk",
      "Title": "장료가 이를 악물다",
-     "Speech": "(과연…… 소문 그대로다.)",
+     "Speech": "(몸이 무겁다……. 여러 날 물에 잠겨 지낸 탓인가.)",
      "Side": 1,
      "Duration": 2.2
     },
@@ -704,14 +871,14 @@
     {
      "Kind": "talk",
      "Title": "관우가 칼을 거두다",
-     "Speech": "장문원, 물에 여러 날 갇혀 지친 몸이로군. 이런 그대를 꺾고 싶지는 않았다.",
+     "Speech": "이기긴 했으나 아쉽구나. 물에 지치지 않은 그대와 겨루고 싶었다.",
      "Side": 0,
      "Duration": 3.4
     },
     {
      "Kind": "talk",
      "Title": "장료가 말머리를 돌리다",
-     "Speech": "……사정을 봐줄 것은 없소. 오늘은 물러나겠소.",
+     "Speech": "……진 것은 진 것이오. 오늘은 물러나겠소.",
      "Side": 1,
      "Duration": 2.6
     },

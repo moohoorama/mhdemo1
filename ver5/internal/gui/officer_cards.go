@@ -64,13 +64,7 @@ func (g *Game) officerBio(dst *ebiten.Image, o core.Observation, of *core.Charac
 
 	hex := image.Rect(face.Max.X+gap, r.Min.Y, r.Max.X, r.Min.Y+topH)
 	g.card(dst, hex)
-	radius := max(40, min(84, float64(topH-120)/2, float64(hex.Dx()-220)/2))
-	cy := float64(hex.Min.Y+hex.Max.Y)/2 + 4
-	if compact { // the labels, two lines above the top corner and below the bottom one, inside the card
-		radius = max(24, min(84, (float64(topH)-2*42-12)/2/1.14, float64(hex.Dx()-220)/2))
-		cy = float64(hex.Min.Y+hex.Max.Y) / 2
-	}
-	g.hexChartAttrs(dst, float64(hex.Min.X+hex.Max.X)/2, cy, radius, stats, attrs, g.rosterBest(o))
+	g.statsCard(dst, hex, compact, stats, attrs, g.rosterBest(o))
 
 	bio := image.Rect(r.Min.X, face.Max.Y+gap, r.Max.X, r.Max.Y)
 	g.card(dst, bio)
@@ -86,6 +80,68 @@ func (g *Game) officerBio(dst *ebiten.Image, o core.Observation, of *core.Charac
 	top := head + 24
 	lines := int((float64(bio.Dy()) - top - 8) / (size * lead))
 	g.labelSpaced(dst, clipLines(wrapWidth(text, g.face(size), float64(bio.Dx()-36)), lines), float64(bio.Min.X+18), float64(bio.Min.Y)+top, size, lead, ink)
+}
+
+// statBarStep is how far apart statBars' lines are.
+const statBarStep = 26
+
+// statBars draws hexAxes' six stats a line each from x, y, w wide: the stat's name, its value in valueC, a bar of
+// its share from barX on and, when given, a tail in gold at the right end.
+func (g *Game) statBars(dst *ebiten.Image, x, y, w, barX float64, values, tails [6]string, valueC color.Color, shares [6]float64) {
+	tailW := 0.0
+	for _, t := range tails {
+		if t != "" {
+			tailW = max(tailW, g.width(t, 13)+10)
+		}
+	}
+	for i, a := range hexAxes {
+		g.label(dst, a.stat, x, y, 13, ink)
+		g.label(dst, values[i], x+44, y, 13, valueC)
+		bar(dst, float32(x+barX), float32(y+6), float32(w-barX-tailW), 8, shares[i], gold)
+		if tails[i] != "" {
+			g.label(dst, tails[i], x+w-g.width(tails[i], 13), y, 13, gold)
+		}
+		y += statBarStep
+	}
+}
+
+// statsCard fills the 열전 tab's card c with the battle stats over the attributes that feed them: a hexagon with its
+// labels beside the corners, or, when c is too narrow for the labels to clear the hexagon, a bar a stat as in the
+// 장비 tab's sum.
+func (g *Game) statsCard(dst *ebiten.Image, c image.Rectangle, compact bool, stats core.Stats, attrs, best [6]int) {
+	side := 0.0 // the widest label beside a corner: the stat over its attribute
+	for i, a := range hexAxes {
+		if i != 0 && i != 3 {
+			side = max(side, g.width(fmt.Sprintf("%s %d", a.stat, a.get(stats)), 14), g.width(fmt.Sprintf("%s %d", a.attr, attrs[a.attrIdx]), 13))
+		}
+	}
+	// a side label starts 2 past its corner, 1.14 radius out at 30°
+	byWidth := (float64(c.Dx())/2 - 16 - 2 - side) / (1.14 * math.Cos(math.Pi/6))
+	radius := min(84, float64(c.Dy()-120)/2, byWidth)
+	cy := float64(c.Min.Y+c.Max.Y)/2 + 4
+	if compact { // the labels, two lines above the top corner and below the bottom one, inside the card
+		radius = min(84, (float64(c.Dy())-2*42-12)/2/1.14, byWidth)
+		cy = float64(c.Min.Y+c.Max.Y) / 2
+	}
+	if radius >= 44 {
+		g.hexChartAttrs(dst, float64(c.Min.X+c.Max.X)/2, cy, radius, stats, attrs, best)
+		return
+	}
+	var values, tails [6]string
+	var shares [6]float64
+	valueW := 0.0
+	for i, a := range hexAxes {
+		v := a.get(stats)
+		values[i], tails[i] = fmt.Sprint(v), fmt.Sprintf("%s %d", a.attr, attrs[a.attrIdx])
+		shares[i] = float64(v) / float64(max(1, best[i]))
+		valueW = max(valueW, g.width(values[i], 13))
+	}
+	const head = 30
+	w := float64(c.Dx() - 36)
+	h := head + 6*statBarStep - (statBarStep - 18)
+	x, y := float64(c.Min.X+18), float64(c.Min.Y)+max(16, float64(c.Dy()-h)/2)
+	g.label(dst, "능력", x, y, 13, gold)
+	g.statBars(dst, x, y+head, w, 44+valueW+10, values, tails, ink, shares)
 }
 
 // labelSpaced draws s line by line, lead times the size apart.
@@ -233,7 +289,9 @@ func clipped(dst *ebiten.Image, r image.Rectangle) *ebiten.Image {
 
 // officerEquipment is the 장비 tab: on the left a card of what the gear adds in all, each battle stat's grade with a
 // bar, and the traits it gives; on the right a card for each slot with the piece, its grades, its traits and 바꾸기.
-// On a short screen the slot cards take the whole width, the traits small chips beside the grades.
+// On a short or narrow screen the slot cards take the whole width. Inside a slot card the icon shrinks with the
+// card's width and the grades and traits wrap short of 바꾸기, as small chips when touch chips do not fit, and with
+// 바꾸기 at the bottom when even those do not.
 // Pressing a gear trait shows its description in a card under it until pressed again or elsewhere.
 func (g *Game) officerEquipment(dst *ebiten.Image, of *core.Character, r image.Rectangle) {
 	p := &g.party
@@ -285,10 +343,10 @@ func (g *Game) officerEquipment(dst *ebiten.Image, of *core.Character, r image.R
 			}
 		}
 	}
-	// a short screen (a phone) leaves out the sum, which the slots' grades tell too, and gives the slots the width:
-	// a smaller icon, the traits as small chips beside the grades
+	// a short or narrow screen (a phone) leaves out the sum, which the slots' grades tell too, and gives the slots
+	// the width
 	rowH := min(128, (r.Dy()-2*10)/3)
-	compact := rowH < 120
+	compact := rowH < 120 || r.Dx()-sumW-gap < 300
 	rows := image.Rect(sum.Max.X+gap, r.Min.Y, r.Max.X, r.Max.Y)
 	if compact {
 		rows = r
@@ -301,17 +359,16 @@ func (g *Game) officerEquipment(dst *ebiten.Image, of *core.Character, r image.R
 		for _, v := range total {
 			most = max(most, v)
 		}
-		for i, a := range hexAxes {
-			g.label(dst, a.stat, x, y, 13, ink)
-			grade := "–"
+		var grades, none [6]string
+		var shares [6]float64
+		for i := range hexAxes {
+			grades[i], shares[i] = "–", max(0, total[i])/most
 			if total[i] != 0 {
-				grade = bonusGrade(total[i])
+				grades[i] = bonusGrade(total[i])
 			}
-			g.label(dst, grade, x+44, y, 13, gold)
-			bar(dst, float32(x+76), float32(y+6), float32(sumW-112), 8, max(0, total[i])/most, gold)
-			y += 26
 		}
-		y += 14
+		g.statBars(dst, x, y, sumW-36, 76, grades, none, gold, shares)
+		y += 6*statBarStep + 14
 		g.label(dst, "장비 특성", x, y, 13, gold)
 		y += 22
 		if len(gearTraits) == 0 {
@@ -325,66 +382,97 @@ func (g *Game) officerEquipment(dst *ebiten.Image, of *core.Character, r image.R
 	for i, slot := range equipSlots {
 		c := image.Rect(rows.Min.X, rows.Min.Y+i*(rowH+10), rows.Max.X, rows.Min.Y+i*(rowH+10)+rowH)
 		g.card(dst, c)
-		iconK, iconW := 1.8, 64.0
-		if compact {
-			iconK, iconW = 1.3, 48
-		}
-		ix, iy := float64(c.Min.X+16), float64(c.Min.Y)+(float64(rowH)-iconW)/2
+		// the icon a share of the card's width, so that a narrow card keeps room for the name and the chips
+		iconW := max(40, min(64, c.Dx()*16/100, rowH-24))
+		ix, iy := c.Min.X+14, c.Min.Y+(rowH-iconW)/2
+		tx := ix + iconW + max(10, min(18, c.Dx()/24))
 		id, worn := of.Equipment[slot]
-		bx := c.Max.X - 14 - 96
-		slot := slot
-		g.mBtn(dst, image.Rect(bx, c.Min.Y+(rowH-touchH)/2, bx+96, c.Min.Y+(rowH+touchH)/2), "바꾸기", false, func() {
-			g.openOverlay("equipment")
-			g.openPicker(slot)
-		})
-		if _, owner, gearSlot, ok := g.gearStep(); ok && owner == of.ID && gearSlot == slot && (g.overlay() == "party" || g.overlay() == "") { // the party window or the sortie preparation
-			g.guideRim(dst, image.Rect(bx, c.Min.Y+(rowH-touchH)/2, bx+96, c.Min.Y+(rowH+touchH)/2))
-		}
-		tx := ix + iconW + 18
-		if !worn {
-			g.itemIcon(dst, slotIcons[slot], ix+3, iy+3, iconK, true)
-			g.label(dst, "비어 있음", tx, float64(c.Min.Y+14), 16, muted)
-			g.label(dst, slotNames[slot], tx+g.width("비어 있음", 16)+8, float64(c.Min.Y+18), 12, muted)
-			continue
-		}
 		eq := g.S.Data.Equipment[id]
-		g.itemIcon(dst, eq.Icon, ix+3, iy+3, iconK, false)
-		top := c.Min.Y + 12
-		if compact {
-			top = c.Min.Y + 8
+		name, nameC, icon := eq.Name, ink, eq.Icon
+		if !worn {
+			name, nameC, icon = "비어 있음", muted, slotIcons[slot]
 		}
-		g.label(dst, eq.Name, tx, float64(top), 16, ink)
-		g.label(dst, slotNames[slot], tx+g.width(eq.Name, 16)+8, float64(top+4), 12, muted)
-		px := tx
+		g.itemIcon(dst, icon, float64(ix+3), float64(iy+3), float64(iconW-6)/32, !worn)
+		var grades []gearPiece
 		for k, v := range eq.Bonus {
 			if v == 0 {
 				continue
 			}
-			px += g.gradePill(dst, hexAxes[k].stat, bonusGrade(v), px, float64(top+28)) + 6
+			stat, grade := hexAxes[k].stat, bonusGrade(v)
+			grades = append(grades, gearPiece{int(math.Ceil(g.width(stat, 12) + g.width(grade, 12) + 18)), 22, func(x, y int) {
+				g.gradePill(dst, stat, grade, float64(x), float64(y))
+			}})
 		}
-		if px == tx {
-			none := "능력 변화 없음"
-			if compact && len(eq.Traits) > 0 {
-				none = ""
-			}
-			g.label(dst, none, tx, float64(top+30), 12, faintInk)
+		if worn && len(grades) == 0 {
+			grades = append(grades, gearPiece{int(math.Ceil(g.width("능력 변화 없음", 12))), 22, func(x, y int) {
+				g.label(dst, "능력 변화 없음", float64(x), float64(y+2), 12, faintInk)
+			}})
 		}
-		if !compact {
-			chips(dst, slot, eq.Name, eq.Traits, int(tx)-4, c.Min.Y+66, bx-10)
-			continue
-		}
+		big, small := slices.Clone(grades), slices.Clone(grades)
 		key, from := slot, eq.Name
-		_, placed := g.smallChips(dst, eq.Traits, image.Rect(int(px), top+24, bx-10, top+24+smallChipH), 1, false, nil, func(id string) {
-			if p.tip == key+"|"+id {
-				p.tip = ""
-			} else {
-				p.tip = key + "|" + id
+		for _, t := range eq.Traits {
+			big = append(big, gearPiece{g.traitChipW(traitEntry{id: t, have: true}), touchH, func(x, y int) {
+				chips(dst, key, from, []string{t}, x, y, x)
+			}})
+			w := g.smallChipW(g.traitName(t))
+			small = append(small, gearPiece{w, smallChipH, func(x, y int) {
+				_, placed := g.smallChips(dst, []string{t}, image.Rect(x, y, x+w, y+smallChipH), 1, false, nil, func(id string) {
+					if p.tip == key+"|"+id {
+						p.tip = ""
+					} else {
+						p.tip = key + "|" + id
+					}
+				})
+				if len(placed) > 0 && p.tip == key+"|"+t {
+					tip = &tipAt{t, from, placed[0].r}
+				}
+			}})
+		}
+		// 바꾸기 beside the lines as long as they fit there, the traits as touch chips, else as small chips, else
+		// with 바꾸기 at the bottom so that the lines above it take the card's whole width
+		top := c.Min.Y + 12
+		if rowH < 120 {
+			top = c.Min.Y + 8
+		}
+		bx := c.Max.X - 14 - 96
+		var btn image.Rectangle
+		var at []image.Point
+		var right func(y0, y1 int) int
+		var pieces []gearPiece
+		for _, try := range []struct {
+			pieces []gearPiece
+			btnY   int
+		}{{big, (rowH - touchH) / 2}, {small, (rowH - touchH) / 2}, {small, rowH - 10 - touchH}} {
+			btn = image.Rect(bx, c.Min.Y+try.btnY, bx+96, c.Min.Y+try.btnY+touchH)
+			right = func(y0, y1 int) int {
+				if y0 < btn.Max.Y+4 && y1 > btn.Min.Y-4 {
+					return bx - 10
+				}
+				return c.Max.X - 14
 			}
+			pieces = try.pieces
+			var bottom int
+			var fits bool
+			at, bottom, fits = gearLines(pieces, tx, top+28, right)
+			if fits && bottom <= c.Max.Y-6 && g.width(name, 16) <= float64(right(top, top+22)-tx) {
+				break
+			}
+		}
+		g.mBtn(dst, btn, "바꾸기", false, func() {
+			g.openOverlay("equipment")
+			g.openPicker(slot)
 		})
-		for _, sc := range placed {
-			if sc.id != "" && p.tip == key+"|"+sc.id {
-				tip = &tipAt{sc.id, from, sc.r}
-			}
+		if _, owner, gearSlot, ok := g.gearStep(); ok && owner == of.ID && gearSlot == slot && (g.overlay() == "party" || g.overlay() == "") { // the party window or the sortie preparation
+			g.guideRim(dst, btn)
+		}
+		nameW := right(top, top+22) - tx
+		shown := ellipsis(g, name, 16, nameW)
+		g.label(dst, shown, float64(tx), float64(top), 16, nameC)
+		if kx := float64(tx) + g.width(shown, 16) + 8; kx+g.width(slotNames[slot], 12) <= float64(tx+nameW) {
+			g.label(dst, slotNames[slot], kx, float64(top+4), 12, muted)
+		}
+		for k, pc := range pieces {
+			pc.draw(at[k].X, at[k].Y)
 		}
 	}
 	if tip != nil {
@@ -412,6 +500,39 @@ func (g *Game) gradePill(dst *ebiten.Image, name, grade string, x, y float64) fl
 	g.label(dst, name, x+7, y+3, 12, ink)
 	g.label(dst, grade, x+11+g.width(name, 12), y+3, 12, gold)
 	return w
+}
+
+// gearPiece is one thing on a slot card's lines under the piece's name: a grade pill, the note of no grades or a
+// trait chip, w by h from x, y.
+type gearPiece struct {
+	w, h int
+	draw func(x, y int)
+}
+
+// gearLines flows the pieces from x0, y0 in lines 4 apart, each piece centred in its line's height, a line ending
+// at right of its top and bottom (short of a button beside it). It gives where each piece goes, the bottom of the
+// last line and whether every piece fits within its line.
+func gearLines(pieces []gearPiece, x0, y0 int, right func(y0, y1 int) int) ([]image.Point, int, bool) {
+	at := make([]image.Point, len(pieces))
+	x, top, h, first, fits := x0, y0, 0, 0, true
+	centre := func(end int) {
+		for k := first; k < end; k++ {
+			at[k].Y = top + (h-pieces[k].h)/2
+		}
+	}
+	for i, pc := range pieces {
+		if x > x0 && x+pc.w > right(top, top+max(h, pc.h)) {
+			centre(i)
+			x, top, h, first = x0, top+h+4, 0, i
+		}
+		if x+pc.w > right(top, top+max(h, pc.h)) {
+			fits = false
+		}
+		at[i] = image.Pt(x, top)
+		x, h = x+pc.w+6, max(h, pc.h)
+	}
+	centre(len(pieces))
+	return at, top + h, fits
 }
 
 // officerDeputy is the sortie's 부관 tab for a lead going out: the candidates in a table (deputyTable), sorted by

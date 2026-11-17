@@ -154,8 +154,8 @@ func (g *Game) addButton(r image.Rectangle, label string, click func()) {
 
 // fit picks the units for a w×h device-pixel window. A world px is as large as fits the
 // Width×Height design in the window, so the design is never cut off and a window of another
-// shape just shows more of the field and spreads the UI to its edges. The map editor and the
-// duel gallery keep their fixed Width×Height layout, centred, at UI size 100%.
+// shape just shows more of the field and spreads the UI to its edges. Map editing and duel
+// playback keep their fixed Width×Height layout, centred, at UI size 100%.
 func (g *Game) fit(w, h float64) {
 	base := min(w/Width, h/Height)
 	fixedAt = image.Point{}
@@ -168,7 +168,9 @@ func (g *Game) fit(w, h float64) {
 }
 
 // fixedLayout reports whether the screen is one laid out on a fixed Width×Height canvas.
-func (g *Game) fixedLayout() bool { return g.editor != nil || g.gallery != nil }
+func (g *Game) fixedLayout() bool {
+	return g.editor != nil && g.editor.doc != nil || g.gallery != nil && g.gallery.view != nil
+}
 
 // inWorld draws f in world px.
 func inWorld(f func()) {

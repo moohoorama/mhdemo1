@@ -126,7 +126,7 @@ func (g *Game) updateWheelLists() bool {
 	x, y := cursorPos()
 	for _, a := range g.wheelAreas {
 		if image.Pt(x, y).In(a.r) {
-			a.l.top -= int(wheel)
+			a.l.scroll(wheel)
 			return true
 		}
 	}

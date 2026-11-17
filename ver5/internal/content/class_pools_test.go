@@ -20,8 +20,8 @@ var classPools = map[string][]string{
 	"crossbow":           {"deputy_appoint", "water", "fire_arrow_art", "reload_prep"},
 	"repeating_crossbow": {"exhort", "rapid_art", "penetrate_art"},
 	"catapult":           {"siegecraft", "cross_strike", "far_sight"},
-	"bandit":             {"counter_art", "earth", "provoke_prep", "disrupt_prep", "plunder"},
-	"turban":             {"counter_art", "earth", "provoke_prep", "disrupt_prep"},
+	"bandit":             {"counter_art", "earth", "disrupt_prep", "plunder"},
+	"turban":             {"counter_art", "earth", "disrupt_prep"},
 	"scholar":            {"fire", "relief", "focus", "foresight"},
 }
 
@@ -63,7 +63,7 @@ func TestEveryLearnableSkillTraitOpensASkill(t *testing.T) {
 			}
 		}
 	}
-	for _, trait := range []string{"guard_prep", "brace_prep", "first_aid", "disrupt_prep", "provoke_prep", "press_prep",
+	for _, trait := range []string{"guard_prep", "brace_prep", "first_aid", "disrupt_prep", "press_prep",
 		"slander_prep", "focus", "spirit_prep", "inspire_prep", "extend_prep", "stance_prep",
 		"snipe_prep", "aim_prep", "fire_arrow_art", "reload_prep", "rapid_art", "penetrate_art"} {
 		if !opens[trait] {

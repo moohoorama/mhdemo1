@@ -5,16 +5,216 @@
 
 ---
 
+## 2026-11-17 장면 배치 검사 바로잡기와 소품에 겹친 배역 옮기기
+- `.claude/skills/scene-staging/check_scenes.py`: 걸을 수 있는 바닥 글자를 `scene.json`의 `walkable`에서 읽음(돗자리 `M` 등이 빠져 있었다), 색 객체로 끝나는 맵 물체에서 멈추던 것 고침, 납작한 소품(`field_bare`·`puddle`·`rubble`)은 밟는 땅으로, 작은 칸 가운데 선 배역은 같은 작은 칸의 소품에만 걸리게(탁자 옆 작은 칸은 괜찮다) — 그동안 검사가 중간에 멈춰 22건이 묻혀 있었고, 그 가운데 9건은 잘못 걸린 것이었다.
+- 소품과 같은 칸에 서 있던 배역 13명을 한 칸(작은 칸 장면은 반 칸) 옮김: `ch02` 하후돈(군기), `ch05` 객잔의 장비·유비·조조와 낙양 궁의 서량병(등롱), `ch11` 조운, `ch12` 손건·주검, `ch13` 피난민 둘(모닥불·방문), `ch14` 진등(깃발), `c14-e-sword`의 미축·유비. 하후돈·조조의 퇴장 길도 고쳐 소품을 지나지 않게 했다.
+- `internal/gui/explore_test.go`: 조운 합류 테스트가 지도 데모(모든 장수가 명단에 있음) 대신 실제 캠페인 데이터로 돌게 함 — 이미 있는 장수의 합류를 건너뛰는 엔진 규칙 뒤로 조운이 합류 전부터 파티에 있어서 실패했다.
+
+## 2026-11-17 19장 연진: 문추의 최후를 이야기 장면으로
+- 결정 · 이유: 안량 다음 문추의 죽음을 전령의 보고가 아니라 유비가 언덕 위 후군에서 직접 보는 장면으로 만든다(사용자 연출). 원소가 유비를 문추와 함께 내보내고(S#3 끝·S#4 전령), 연진에서 곧장 관청 S#5로 가서 원소가 "그대 눈으로 보았지?"라고 묻는다. 틀린 선택지는 "멀어서 똑똑히 보지 못했습니다". 관우는 유비를 보지 못한 채 문추를 돌아보며 끝난다(진진의 편지가 살도록).
+- `tools/scene_maps/yanjin.py`, `assets/graphics/maps/S_yanjin.json`: 연진 강가(언덕·평지·길·버려진 수레와 재물)
+- `assets/scenario/hero/story19.json`: 연진 노드 `c19-yj`~`c19-yj13`, S#3 끝·S#4 전령 대사, S#5 대사와 선택지, `c19-mizhu-back` 지움(거리로 돌아가지 않고 연진으로); `explore19_ye.json`: 걸음 4의 관청·거처 입구 지움(이제 지나지 않는다)
+- `assets/scenes/ch19.json`: `c19-yj` 연출(스크래치 스크립트로 생성 — 재물 줍는 하마 기병, 휘하 기병의 습격, 달리며 네 번 베기, 뒤쫓아 베기), S#5 곽도 줄
+- `internal/gui/scene_strike.go` 외: 장면 `Strike`(동작·막기·밀림·흙먼지·크리티컬 번쩍임, 달리며 치기, `Through`), 이동 `Ease`(line/in/out), `Dead`(잿빛), 엑스트라의 칼은 화면을 번쩍이지 않음, 칸을 넘을 때의 지체와 휘두르기 시작 칸의 감속 제거, 장면 배역의 `Pose: exhausted`는 첫 프레임에 멈춤(15장 한 명에도 적용)
+- 새 도트: 관우 `cleave`·`slash_l`·`slash_r`, 친위대 `brace`, 빈 경기병 말 `light_cavalry_horse`; 4판에서 만든 `royal_guard_horse`·`fallen_royal_guard`는 지금 쓰지 않는다
+- `internal/gui/uidemo_scenenode.go`: 장면 녹화가 그 노드 앞의 `set` 깃발을 세우고 시작(17장 뒤의 2단계 초상 등이 녹화에도 보이게)
+
+## 2026-11-17 자동 플레이 AI 학습 결과 종합
+- `docs/autoplay-learning-summary.md`: 규칙·탐색 자동실행부터 모방/PPO·성공 재학습·20전투 무패 완주까지의 구현과 실험, 미사용 시드 성능·1탄 경험치 비교·데이터 버전·GUI 검증 한계·근거 파일 정리 — 흩어진 기록을 Markdown 한 파일에서 읽고, 당시 20전투 성과를 현재 B21/최신 규칙의 검증 결과로 오해하지 않게 하려고. 학습은 재개하지 않음.
+
+## 2026-11-17 21장 여남: 성 맵·탐험·장면 연출
+- 결정 · 이유: 여남성은 신도성 배치를 반 바퀴 돌려 만든다(사용자: 제작 비용을 줄이자, 배치만 180도). 돌린 그대로는 관청이 큰길을 등지고 버드나무가 집을 가려, 관청을 돌마당 동북쪽으로 올리고 성벽에 붙은 기와집을 우물 옆으로 옮겼다. 성 밖은 황무지가 아니라 풀밭 평지(사용자).
+- `tools/scene_maps/runan.py`, `assets/graphics/maps/S_runan.json`: 여남성 맵(북문 (17, −1), 큰길 u 15~18, 가로길 v 11~13, 관청 (21, 20)과 마당)
+- `assets/scenario/hero/explore21.json`(`tools/mapgen/layouts/hero/stage21gen.py`가 씀): 여남성 탐험 — 관도 소문을 말하는 주민, 악진의 거울갑옷 소문을 말하는 유벽의 군사, 아군 여섯의 한마디, 관우의 "관청으로 돌아가시겠습니까?"가 S#2로 넘긴다. 상점 인물은 대사를 못 가져 주점은 점원이 팔고 주인은 소문만 말한다
+- `tools/scene_maps/ch21_scenes.py`, `assets/scenes/ch21.json`: S#1·S#2 관청(`S_zhuo_office`), S#3 북문 안 밤(`S_runan`; 문지기는 달아난다), S#4 남쪽 길 새벽(`S_road`; 여남성 맵을 다시 쓰면 같은 성 안으로 보여서). 관우의 무릎 꿇기는 뺐다(사용자)
+- `assets/data/characters_story.json`: 악진 기본 갑옷 거울갑옷(B12부터 입고 나온다), 기령 기본 무기 삼첨도(B14부터 든다; `stage17.json`의 따로 적은 장비는 지움)
+
+## 2026-11-17 거울갑옷(B21 부목표 2 보상)와 원거리 피해 감소 합산
+- 결정 · 이유: 악진을 물리친 보상으로 갑옷을 준다(그동안 갑옷·활 보상이 없었다). 장비가 `ranged_ward`(원거리피해감소) 특성을 그대로 달면, 특성은 id로 합쳐지므로 그 특성을 배운 장수(중보병 계열)는 30%를 한 번만 받는다. 사용자: 합산돼야 하고 갑옷은 50%로 세게. 그래서 갑옷은 같은 효과 키를 가진 전용 특성을 단다 — 효과 키가 같은 서로 다른 특성은 더해진다(30+50=80%).
+- `assets/data/traits.json`: `mirror_plate` 거울(`ranged_ward` 0.5, 비용 0, 장비 고유); `assets/data/equipment.json`: `mirror_armor` 거울갑옷(방어 +2·병력 +1, 특성 거울, 아이콘 `mirror`)
+- `internal/core/combat.go`: 원거리 피해 감소 합을 1로 자름 — 더해도 피해가 음수가 되지 않게; `internal/core/guard_traits_test.go`: 두 특성 합산 검사
+- `tools/spritetool/assets/ver5-ui`(`item_mirror`, 원화 `sources/item_mirror.png`): 거울판 둘이 큰 검은 흉갑 — 첫 원화(찰갑·붉은 매듭)는 도트로 줄이면 거울판이 뭉개져 단순한 구도로 다시 그림
+- `internal/core/engine.go`(`once`): 전투의 합류 이벤트로 이미 돌아온 장수는 스토리 `join`이 말없이 지나감; `story21.json`: 전투 뒤 손건·관우·관평·주창·장비·진도·번궁 `join` — 그들이 나타나기 전에 전투가 끝나면 영영 빠져 있던 것을 막음; `internal/core/api.go`: 마지막 전투 뒤(`complete`)에는 출전 인원 상한을 검사하지 않음
+
+## 2026-11-16 문관 AI의 책략 선호를 병종으로, 상태이상치료·대각성
+- 결정 · 이유: 우이(B14)의 진궁(군사)이 소보급만 되풀이했다. 원인 두 가지 — ① 문관이 이동할 칸을 근접 기본 공격이 닿는지로만 골라 책략 사거리(3~4칸) 안으로 들어갈 칸을 따로 치지 않았고, ② 회복 점수(회복량×0.9, 적 ×0.25)가 조금만 다친 아군에게도 수백 점이 나와(병력 2000대라 소보급 한 번이 1000 넘게 찬다) 다가서기(칸당 3점, 칠 칸 40점대)를 늘 이겼다. 그래서 책략이 안 닿는 자리에 선 채 매 차례 소보급을 썼다. 사용자: 참모·군사는 지형에 맞는 화계·수계·지계, 세객·종횡가는 디버프·상태이상(독연·봉쇄), 방술사·선술사는 소보급·각성을 우선, 각성을 주는 특성이 없다.
+- `assets/data/classes.json`: 문관 병종에 `Prefer` — 참모·군사·도독 `magic`, 세객·종횡가 `status`, 방술사·선술사 `heal`; 방술사 풀과 방술사·선술사 계획(Lv12)에 `status_cure` — 선호가 인물이 아니라 갈래를 따르게
+- `internal/content/content.go`·`validate.go`: `Class.Prefer`(magic·status·heal만) 추가, `Character.Prefer` 삭제; `assets/data/characters_story.json`: 곽도의 `Prefer` 삭제(종횡가라 병종이 status) — 같은 뜻을 두 곳에 두지 않게
+- `assets/data/traits.json`: 새 특성 `status_cure` 상태이상치료(책략·회복, 500, 선행 구휼) — 각성을 여는 전용 특성. 이름은 상태이상연장처럼 효과가 읽히게
+- `assets/data/skills.json`: 각성 `Requires` 구휼+구휼강화 → 구휼+상태이상치료, 새 책략 `great_awaken` 대각성(회복, 십자, MP 60, 명중 100, 사거리 0~3, `Effect: cure`, 구휼+상태이상치료+구휼확산) — 원군(소보급의 십자판)과 같은 꼴. 그림은 각성처럼 회복 효과
+- `internal/ai/ai.go`: 선호는 병종 `Prefer`로. `magic` 공격 책략 ×1.5·상태 ×0.5, `status` 상태 ×3(공격 책략 금지는 이번 차례 아직 안 걸린 적에게 닿는 상태 책략이 있을 때만 — 모두 걸려 있으면 화계를 쓴다), `heal` 회복·해제 +50·해제 ×2. 회복(`mend`)은 대상이 1/4 이상 깎였을 때만(`magic`·`status`는 절반 아래 + 이번 차례 공격·상태 책략이 닿는 적이 없을 때만). 해제(`relieve`)는 아군의 해로운 상태가 남은 차례에 빼앗는 것을 상태 책략과 같은 `burden`으로 침(전에는 −5점이라 AI가 각성을 안 썼다). 문관은 쓸 수 있는 공격·상태 책략이 적에게 닿는 칸을 칠 칸처럼 침(`offense`, `approach`). 지형 속성은 미리보기 피해에 이미 들어 있어(`ElementTerrain`) 물가에선 탁류를 고른다 — 진궁이 책략 사거리로 걸어 들어가 공격 책략을 쓰고, 회복은 정말 필요할 때만
+- `internal/core/api.go`: `CanCastFrom(id, skill, from, x, y)` — AI가 이동 후보 칸에서 책략이 닿는지 묻게
+- `internal/ai/caster_test.go`(새): 참모가 닿는 영웅을 태움·책략 칸으로 걸어감, 방술사가 1/4 깎인 아군 회복·살짝 다친 아군은 안 함, 혼란 걸린 아군 해제·상태이상 없으면 안 함; `route_test.go`: 상태 선호를 병종으로
+- `cmd/_balance/main.go`: `-acts 이름,…`(또는 all) — 그 유닛의 행동(이동·대기·책략과 대상)을 줄마다 찍음, AI 행동 확인용
+- 측정(`_balance -player ai -seeds 10`, 전→후): B14 3/10→3/10(진궁 소보급 8회 → 소보급 4회·초열 1회; 여포군 등장 직후 퇴각 목표라 대부분 진궁이 닿기 전에 끝남), B09 0/10→0/10, B19 9/10→7/10(곽도 등이 걸 데 없을 때 화계를 씀), B16 2/10→0/10. B14에서 여포군이 오면 플레이어가 기다리게 한 임시 확인(시드 1~5, 12라운드): 진궁 소보급 10회였던 시드 3이 8회 — 이 시드는 강 건너라 책략이 닿는 칸이 없어 절반 아래 아군을 고침, 다른 시드는 낙석·탁류만
+- 영향받는 문서: `docs/logic-traits.md`(회복 계통 표, 방술사 풀·계획, 특성 수 145, AI 선호), `docs/balance-battle.md`(각성·대각성), `docs/system-architecture.md`(AI 절)
+
+## 2026-11-16 장수 상세 카드가 좁은 화면에서 겹치지 않게
+- `internal/gui/officer_cards.go`(`officerEquipment`, `gearPiece`·`gearLines`, `statsCard`, `statBars`): 장비 탭 슬롯 카드의 아이콘을 카드 너비의 16%(40~64)로, 이름은 줄 너비로 자르고 종류는 남는 자리에만, 능력 등급·장비 특성은 줄 끝(바꾸기 옆이면 그 앞)에서 줄바꿈해 흐르게 — 큰 특성 칩이 안 들어가면 작은 칩, 그래도 안 되면 바꾸기를 카드 아래로 내려 윗줄이 카드 너비를 다 쓰게. 열전 탭 능력 카드는 옆 꼭짓점 이름(실제 글자 너비)이 육각형과 안 겹칠 반지름이 40 아래면 장비 탭 "장비로 오른 능력"과 같은 막대(능력값, 오른쪽에 원 능력치)로 — 폰에서 등급 칩·특성 칩이 바꾸기를 덮고 육각형과 이름이 겹친다는 사용자 보고(11-16), 글자는 못 줄이니 아이콘과 배치가 비율로 줄게
+- `internal/gui/uidemo_officercards.go`(새 데모 `officercards`): 출전 준비·부대 창에서 군주에게 병종이 들 수 있는 등급·특성 많은 장비를 입혀 열전·장비 탭을 보여 줌 — 폰 크기 캡처로 겹침 확인용
+
+## 2026-11-16 혼란은 모든 대응을 막고, 만능약 판매
+- `tools/spritetool/assets/ver5-status/pixels.json`·`settings.json`, `assets/graphics/status/icons.png`: 바 밑 상태 아이콘(9×9)을 머리 위 공전 표시와 같은 그림으로 — 혼란 노란 물음표, 봉격 칼·봉책 부채·속박 부츠 위 빨간 X(독은 그대로). 사용자: "새 아이콘이 더 직관적이다"(11-16). 같은 상태가 두 그림으로 보이지 않게
+- `assets/data/skills.json`·`docs/balance-battle.md`: 봉책·독연·봉쇄·봉격 `Hit` 75→60, 독무 65→50 — 사용자 지시(11-16, "60,50 정도로"를 단일 60·범위 50으로 읽음). `assets/data/characters_story.json`: 진궁 허실(`feint`, 모든 책략 필중)→반계(`spell_reflect`) — 혼란이 강해진 뒤 필중 혼란이 지나쳐서, 사용자가 반계만 고름(역계는 반계 위 단계라 주지 않음)
+- `internal/core/combat.go`·`rules.go`·`engine.go`·`api.go`(`confused`, `cure`), `internal/core/confusion_test.go`: 혼란 중인 유닛은 이동·병법에 더해 도구를 못 쓰고, 반격(반격 태세·응징 포함)·원호·호위·반사·역계·경계도 하지 않는다 — 혼란 걸린 관우가 반격에 성공하는 것을 본 사용자 결정(11-16): "혼란은 반격/도구사용/방어/원호/수호 등 모든 걸 막게. 그만큼 강력한 거지." 예전 "반격 무효 특성 금지"는 반격이 특성이던 때의 규칙이라 지금은 해당하지 않음(사용자). 성공률은 `assets/data/skills.json`·`docs/balance-battle.md`에서 혼란 `Hit` 70→40, 대혼란 65→35(사용자 A안 승낙 11-16: 관우 상대 봉기 혼란 54%→24%). 성공률은 기본값 + (시전자 운 − 대상 운)×0.5 그대로
+- `internal/content/vocab.go`·`validate.go`(`ItemCure`), `assets/data/items.json`(`cure_all` 만능약 300, 해로운 상태 전부 해제), `internal/gui/player.go`·`battle_log.go`(상태 회복 표시), `assets/data/shops.json`(`tools_cure` = 도구점 + 만능약, 북해·서주·허도·업 도구점에도 추가), `assets/scenario/hero/explore08·09·11·11_camp.json`(도구점 `tools`→`tools_cure`): 평원(8장)부터 만능약을 판다 — 사용자 지시. 1·2장 도구점은 그대로
+
+## 2026-11-15 호로관 출진 대화 연결 세 안
+- `docs/story-ch06-camp-options.html`: 손견의 고정도 대목 뒤 진영 마당에서 조조·원술의 신경전, 여포 급보, 원소의 선봉 물색, 원술의 되받기와 유비의 수락을 중간 암전 없이 잇는 A(칭찬을 되돌리기)·B(군량 수레와 가벼운 웃음)·C(선봉과 지원 약속) 비교 대본 — 끊기는 두 장면을 같은 사건의 인과로 연결하자는 사용자 제안을 선택 가능한 세 결로 다듬으려고. 정사 손견전·연의 5회 대조와 새 각색의 범위, 조건부 고정도·후속 탐험 대사·등장/시선 메모 포함. 게임 대사와 장면 데이터는 선택 후 반영.
+- `reports/story-ch06-camp/options.png`: 비교 HTML의 브라우저 캡처 확인 — 세 판의 열 배치·본문·연출 메모를 함께 읽을 수 있게 하려고.
+
+## 2026-11-15 반동탁연합 원소와 화로 겹침
+- `docs/plan-coalition-yuanshao-placement.md`·`assets/scenario/hero/explore06.json`: 화로와 같던 원소의 작은 칸 `(37,38)`을 5장과 같은 빈 자리 `(40,40)`으로 이동, `SE` 방향 유지 — 6장 연합 진영에서 몸이 불과 겹치던 문제를 원본 맵을 바꾸지 않고 고치려고.
+- 검증: `TestExplorePeopleApart/explore06/camp`·`TestExploreAreasCanBeWalked/explore06/camp` 통과. `reports/uidemo/coalition-yuanshao-before/`·`coalition-yuanshao-after/`의 140프레임 게임 PNG에서 화로·원소 분리와 주변 인물/이름표 간격 확인 — 정상 탐험에서 말 걸러 갈 수 있고 불에 서 있지 않게 하려고.
+
+## 2026-11-15 승인·안내 확인 시 취소음 제거
+- `docs/plan-confirm-feedback.md`·`internal/gui/game.go`·`windows.go`: 승인 처리 중 창 정리는 무음, 작업 자체 효과음 우선·없으면 `ok` 한 번, 실패음이 나면 확인음 생략; 목표·레벨업·승급·특성 안내 확인도 `ok` — 긍정 동작에서 창이 닫혔다는 이유로 취소음이 함께 나지 않게 하려고. 일반 취소와 획득 위 설명 닫기는 `close` 유지.
+- `internal/gui/sound_test.go`·`sound_audit_test.go`: 자체 효과음 전/후 중첩 창 정리·단순 승인·거부·이후 취소·다섯 종류 안내 확인 검사, 조사 시험도 공통 승인 함수를 호출 — 정상 소리는 한 번만 나고 승인 범위 밖의 취소음까지 사라지지 않게 하려고.
+- `docs/audit-denied-sound.md`·`reports/uidemo/confirmation-after/`: 조사 당시 기록과 후속 수정 구분, 실제 `sound-audit` 게임 캡처 및 효과음 기록 — 210프레임 질문 승인·330프레임 목표 확인의 `close → ok`를 확인하려고. 관련 회귀 검사와 `go vet ./internal/gui` 통과.
+- 검증: `go test ./internal/gui -count=1` 전체 통과 — 승인/취소·중첩 창·안내 확인 변경이 기존 GUI 흐름을 깨뜨리지 않는지 확인하려고.
+
 ## 2026-11-15 하비 미씨 저택 A안과 미축 자리 적용
 - `docs/plan-xiapi-manor-a.md`: 선택한 A안의 대문·생성 원본·NPC 배치 및 검증 범위 설계 — 새 출입구에 맞춰 사람 자리도 함께 정하려고.
 - `tools/scene_maps/xiapi_town.py`·`assets/graphics/maps/S_xiapi.json`: 대문을 장터 쪽 `(13,34)`로 옮기고 안채·별당·나무·등·깃발과 포석을 A안대로 재배치 — 저택 부지는 유지하며 성벽 사이 골목으로 들어가던 인상을 고치려고. 생성 결과가 선택한 `reports/xiapi-manor-options/a.json`과 같은 구성임을 대조.
 - `assets/scenario/hero/explore18.json`: 미축을 옛 대문 앞 `(7,39)`에서 새 문 옆 `(16,35)`로 이동, 장터 쪽을 보는 `NE` 방향 명시 — 출입구와 연결길을 비워 두면서 저택 앞에서 플레이어를 맞게 하려고. 주변 NPC와 대사는 유지.
 - 검증: 하비 탐험 접근성·NPC/이름표 간격, 건물 출입구 이름표, 장면 렌더 계획 기존 시험 통과. `reports/uidemo/xiapi-manor-a/`의 실제 탐험 데모 1800프레임에서 북문→미축 대화→새 대문 앞 접근 캡처 — 새 문 주변의 통행·인물 가림·마주 보는 방향을 확인하려고. 탐험은 기존 문 경계 규칙을 유지한다.
 
+## 2026-11-15 잘못 누름·취소 효과음 전수 조사
+- `docs/plan-denied-sound-audit.md`·`docs/audit-denied-sound.md`: 거부음 직접 재생 2곳·빨간 알림 20곳·취소음 원본 직접 재생 4곳의 조건과 상위 경로, 정상 거부·내부 오류·확인 피드백 구분 및 검증 한계 — 다른 장에서도 정상 진행 중 같은 소리가 나는지 전체 호출 경로를 조사해 달라는 요청에 답하려고.
+- `internal/gui/sound_audit_test.go`: 명시적으로 켜는 조사 시험, 실제 클릭 처리의 효과음 순서·안내 확인음·89개 탐험 영역의 712개 방향 기록·151개 출구의 1,208개 명령·19개 출진 질문의 네 기준 화면 76개 배치·21개 일기토 열기 검사 — 3장 방향 오류와 같은 경로를 현재 전체 탐험 데이터에서 확인하고 관찰된 동작을 회귀 요구사항과 구분하려고.
+- `internal/gui/uidemo_soundaudit.go`: `sound-audit` 데모에서 실제 비활성 메뉴·확인 질문·목표 안내 입력과 게임 캡처 — 비활성 메뉴의 `ui-denied`+`ui-select` 중복 및 정상 승인·안내 확인의 취소음 `close` 사용을 화면과 효과음 기록으로 재현하려고. 게임의 효과음 동작은 이번 조사에서 변경하지 않음.
+- `reports/sfx-audit/static.json`·`runtime.txt`·`regression.txt`·`capture/`: 정적 위치 목록·조사 시험·관련 회귀 시험·실제 PNG 및 효과음 요청 기록 — 조사 결과의 근거와 반복 실행 절차를 남기려고. 조사 시험·관련 core/gui 회귀 시험·`go vet ./internal/gui` 통과.
+
+## 2026-11-15 3장 조조 저택 대화 종료 오류음
+- `docs/plan-explore-facing-sound.md`: 원인·수정 범위·검증 설계 — 하진 회상 뒤 저택 대화가 끝나면 잘못 누름 효과음이 난다는 제보를 정상 탐험 경로로 재현하고 수정 범위를 정하려고.
+- `internal/core/explore.go`: 탐험 `walk` 명령의 허용 방향을 8방향으로 확장 — 마지막 대사에서 장비를 보는 유비의 `E` 방향을 위치와 함께 저장할 때 `InvalidFace` 오류와 `ui-denied`가 나던 원인을 고치고 실제 방향을 저장·복원하려고.
+- `internal/core/explore_test.go`: 8방향 위치 기록·저장 복원·이벤트 출구 통과와 잘못된 방향 거부 검사 — 장면 자동 회전과 탐험 이동의 방향이 모두 기록되면서 유효하지 않은 값은 계속 거부되게 하려고.
+- `internal/gui/explore_test.go`: 실제 `c03-m6`의 회전·암전·탐험 복귀·위치 기록 회귀 검사 — 정상 복귀에 오류 알림과 효과음이 없고 유비의 위치·방향이 함께 남게 하려고. 수정 전 검사 실패와 실제 탐험 데모 4980프레임의 `ui-denied`로 원인 재현.
+- 검증: `go test ./internal/core ./internal/gui -count=1`·`go vet ./internal/core ./internal/gui` 통과. `reports/uidemo/ch03-mansion-before/`·`ch03-mansion-after/`의 같은 탐험 경로 효과음 대조에서 `4980 ui-denied`만 제거되고 나머지 효과음은 일치. 수정 후 4900·5040프레임 PNG로 마지막 대사와 탐험 복귀 화면 확인 — 오류음을 감추지 않고 정상 위치 기록으로 해결됐는지 확인하려고.
+
 ## 2026-11-15 하비 미씨 저택 재배치 제안
 - `reports/xiapi-manor-options/plan.md`·`render.mjs`·`current.json`·`a.json`·`b.json`·`c.json`: 현행과 장터 쪽 대문·부지 이격과 진입마당·남서 대문과 넓은 앞길의 세 후보, 기존 `_scene` 미리보기와 같은 렌더 계획을 쓰는 재생성 절차 — 남서 모서리의 비좁은 인상을 고칠 안을 게임 맵에 반영하기 전에 실제 그림으로 비교하려고.
 - `reports/xiapi-manor-options/index.html`·`comparison.png`·`current-proposal.png`·`a-proposal.png`·`b-proposal.png`·`c-proposal.png`·`*-map.png`: 기존 건물·담·나무를 같은 시점/배율로 렌더한 자립형 HTML, 접근 방향 표시와 전체/후보별 브라우저 캡처 — 대문 방향·성벽과의 간격·문 앞 여유를 함께 판단하게 하려고. B안 추천은 제안이며 원본 맵·그림·탐험 인물·대사는 수정하지 않음.
 - `reports/xiapi-manor-options/checks.json`: 현행과 세 후보의 장터↔안마당 보행 연결, 건물/담 겹침 0건, 원본 맵 SHA-256 확인 — C안의 담에 닿던 노점을 옮기고 도달 가능한 후보만 제시하려고. 채택 후 탐험 인물의 위치·방향과 카메라는 별도로 맞춘다.
+
+## 2026-11-15 무기 획득 확인 효과음
+- `docs/plan-acquire-confirm-sound.md`: 원인·수정 범위·검증 설계 — 첫 전투 뒤 두 무기를 받는 과정에서 취소음처럼 들리는 소리를 추적하고 확인과 설명 창 닫기를 구분하려고.
+- `internal/gui/windows.go`: 획득 카드 확인은 `ok`, 장비·특성 설명 창 닫기는 기존 `close` 재생 — 정상 획득 확인에 취소음 원본이 울리지 않게 하려고.
+- `internal/gui/acquire_test.go`: 실제 대장간 노드의 청룡언월도·장팔사모 지급 및 중첩 창 닫기/확인 효과음 회귀 검사 — 연속 획득과 설명 창의 소리를 함께 검증하려고.
+- `internal/gui/uidemo_acquire.go`: 대장간에서 두 무기를 차례로 받는 `smith-gifts` 데모 — 실제 게임 화면과 효과음 기록으로 재현하려고.
+- 검증: `go test ./internal/gui -count=1`·`go vet ./internal/gui` 통과. `reports/uidemo/smith-gifts/`의 두 무기 획득 및 대사 복귀 PNG 확인, `reports/uidemo/smith-gifts-sfx.txt`의 `acquire → ok → acquire → ok` 확인 — 두 번째 무기도 취소/거부음 없이 확인되도록.
+
+## 2026-11-15 일기토 감상·맵 목록과 에디터 선택 창 스크롤
+- `docs/plan-scrollable-browsers.md`: 고정 좌표 목록의 범위·입력 경로·기존 편집 캔버스 보존과 검증 설계 — 화면 밖으로 밀린 항목에 접근할 수 없다는 사용자 요청을 고치기 전에 영향 범위를 정하려고.
+- `internal/gui/browser.go`·`duel_gallery.go`·`editor.go`·`skin.go`·`game.go`: 두 목록을 UI 배율에 맞는 판과 공통 스크롤 목록으로 교체, 제목·개수·하단 닫기 고정, 독립 화면의 목록 입력 연결·매 프레임 휠 영역 갱신·복귀 시 위치 보존 — 일기토 21개·맵 20개 모두 화면 밖으로 잘리지 않고 선택되게 하려고.
+- `internal/gui/editor_ui.go`: 장수·병종·특성·장비·일기토 편집을 공통 스크롤 목록으로, 하단 닫기·배치된 장수 표시·필터/검색 변경 시 처음으로 이동, 서생 계열 병종 필터 폭 수정 — 페이지별 별도 조작과 창 밖으로 넘치던 필터를 정리하려고.
+- `internal/gui/ui_kit.go`·`table.go`: 소수 단위 휠 이동량을 누적 — 트랙패드의 작은 입력이 정수 변환으로 매번 사라지던 것을 고치려고.
+- `internal/gui/browser_test.go`·`table_test.go`·`duel_gallery_render_test.go`: 화면별 마지막 항목 접근·독립 화면 드래그/선택 구분·실제 마지막 항목 열기·위치 보존·선택 창 필터 겹침·소수 휠 회귀 검사, 고정 대진 수를 가정하던 렌더 검사 갱신 — 목록이 늘어나도 항목과 닫기에 접근할 수 있게 하려고.
+- `internal/gui/uidemo_browsers.go`·`docs/presentation-ui.md`·`docs/tools-editor.md`·`docs/presentation-duel.md`: 두 목록의 처음/끝과 에디터 선택 창 캡처 데모·현재 조작 문서 — PC·폰 130/160%·태블릿 화면으로 실제 배치를 확인하고 재현하려고.
+
+- 검증: `go test ./internal/gui ./internal/mapedit -count=1`·해당 패키지 `go vet`·`SRPG_RENDER_TEST=1` 감상 메뉴 렌더 시험 통과. `reports/uidemo/duel-list/`·`map-list/`의 처음/끝 4개 기준 화면과 `editor-choices/`의 선택 창 PNG를 직접 확인 — 목록 끝 접근·선택·복귀와 화면 겹침을 실제 출력으로 확인하려고.
+
+## 2026-11-15 첫 패배 기준과 특성·장비 공동 학습
+- `docs/plan-campaign-finale-learning.md`·`reports/autoplay/goal20/content-transition.json`·`live-transfer17/`·`data-snapshot/`: 탐험 인물 위치 변경에 따른 콘텐츠 해시 불일치 감지, 무학습 명시적 전이·전 가중치 동일성/현재 데이터 17탄 무패 검증, 새 복사본으로 자동 반복 재개 — 게임 편집을 보존하면서 서로 다른 데이터 조건의 기록이 섞이지 않게 하려고.
+- `cmd/_frontierlearn/main.go`·`main_test.go`·`tools/autoplay/finale.py`·`reports/autoplay/goal10/*teachers.json`·`reports/autoplay/goal20/b12-teacher/*json`: 새 교사/성공 표본 gzip 저장·읽기·감독 도구 연결과 형식 왕복 검사, 옛 표본은 JSON 공백만 제거 — 학습 내용이나 가중치 바이트를 바꾸지 않고 최종전 자동 반복의 저장 공간을 확보하려고.
+- `internal/autoplay/battle_effects.go`·`battle_effects_test.go`·`battle_goals.go`·`battle_model.go`·`cmd/_frontierlearn/main.go`·`docs/plan-campaign-finale-learning.md`: 선택적 강화 효과·지속·원래 아이템 양/재고 관측 16개, 기존 예측/입력 확장 순서·저장/로드 검사, 옛 표본 차원 불일치 거부 — 공격/방어 강화와 회복량이 같은 아이템을 구별해 새 전투를 학습할 수 있게 하려고. 기존 배포 가중치는 바꾸지 않음.
+- `docs/tools-autoplay.md`·`reports/autoplay/goal10/b01-comparison/summary.json`: 사용자의 경험치 기본 배율 80% 확인 반영 — 배율 차이를 가정하지 않고 실제 1탄 경험치 수급의 약 28.5% 격차로 기록하려고.
+- `tools/autoplay/finale.py`·`tools/autoplay/test_finale.py`·`docs/plan-campaign-finale-learning.md`·`cmd/_frontierlearn/main.go`: 병렬 구간 학습과 성공 모방 감독, 더 긴 기록의 정상 새 게임 재검증·다음 실패 전투로 진행, 완주/재시도/중단 구분 검사, 보존 성공 표본에 대응하는 가중치만 고정 저장 — 사람의 수동 재시작 없이도 실제 20전투 무패 완주까지 이어가고 저장 공간을 보존하려고.
+- `cmd/_frontierlearn/main.go`: 새 구간 기록을 압축된 JSON으로 원자적 저장하고 성공 표본 파일을 작업당 4묶음까지 보존 — 최종전 학습의 많은 후보 기록이 남은 저장 공간을 소진하거나 동시에 읽는 평가에 불완전하게 보이지 않게 하려고.
+- `docs/plan-campaign-finale-learning.md`·`cmd/_frontierlearn/main.go`: 현재 모델부터 정상 새 게임 20전투 무패 완주 설계와 목표 진척 인자 — 사용자가 최종전까지 요청했으므로 이전 10탄 목표 파일을 완주 증거로 혼동하지 않고 실제 20탄 성공을 따로 확인하려고.
+- `docs/tools-autoplay.md`·`reports/autoplay/goal10/b01-comparison/`: 현재 배포 모델의 정상 새 게임 1탄 10회 경험치 이벤트/레벨 차이 대조, 장수별 표시 경험치와 소모품·남은 적 기록 — 사용자의 무소모품 관우 232·장비 198.3·유비 147 기록에 비해 모델 평균 160.2·162.3·90.0임을 같은 표시 단위로 확인하고, 사용자 배율이 미확인임을 밝히려고.
+- `assets/autoplay/battle.json`·`assets/autoplay/README.md`·`README.md`·`docs/tools-autoplay.md`·`internal/gui/uidemo_campaign_auto.go`·`reports/autoplay/goal10/`: 새 게임 11탄 무패·12탄 첫 패배 모델 배포, 현재 데이터 10탄 무패 재현, 미사용 8시드 평균 5.0→5.5/최고 6→8 대조·전체 실험량·출처/해시 보존, GUI의 준비망 로딩 로그·실제 캡처 — 10탄 목표를 재도전/자원 보정 없이 달성한 결과를 게임에서 쓰게 하되 낮은 안정성과 동일 입력 한계를 함께 밝히려고.
+- `cmd/_frontierlearn/main.go`·`internal/autoplay/frontier_learning.go`: 신경망의 구간 승리 명령과 해당 가중치 별도 보존·선택적 성공 기록 재학습, 보고서 콘텐츠 해시 기록 — 드문 10탄 승리 표본이 이후 갱신에 묻히지 않도록 재현·비교하려고.
+- `internal/autoplay/frontier_reward.go`·`frontier_reward_test.go`·`frontier_learning.go`·`cmd/_frontierlearn/main.go`·`docs/plan-campaign-learning.md`: 구간 패배 사이의 실제 목표 피해/접근 보조 보상(최대 0.25), 명시적 PPO 학습률·온도·반복 설정과 읽기 전용 실제 피해 관측 검사 — 모두 패배하는 10탄의 학습 신호를 구별하되 한 탄 승리를 더 높은 기준으로 유지하려고.
+- `internal/autoplay/battle_model.go`·`frontier_learning.go`·`cmd/_frontierlearn/main.go`: 교사의 일기토 장수 우선 순서·주군의 초반 이동 유예 설정 — 9탄 부가 목표 누락이 10탄 지원군으로 이어지는 실제 게임 경로와 협공을 성공 사례로 탐색하려고. 실제 신경망의 합법 명령은 제한하지 않음.
+- `internal/autoplay/battle_model.go`·`frontier_learning.go`·`frontier_learning_test.go`·`cmd/_frontierlearn/main.go`: 교사가 모든 행동 가능한 장수의 상위 합법 명령을 함께 비교하는 선택지와 실행 검사 — 고정된 장수 순서에서 놓치는 협공 사례를 수집하려고. 실제 신경망 추론은 교사 점수를 사용하지 않음.
+- `internal/autoplay/preparation_model.go`·`frontier_learning.go`·`campaign_learning.go`·`battle_model.go`·`frontier_learning_test.go`·`cmd/_frontierlearn/main.go`·`docs/plan-campaign-learning.md`·`docs/tools-autoplay.md`: 전투별 준비망과 공통 준비망 복귀, 교사 기록 재사용·준비망 동결 비교, 준비 가중치 독립성/저장/로드 검사와 실험 재현 문서 — 9탄 준비 추가 학습이 앞 전투의 선택까지 바꾸어 무패 진척을 낮춘 결과를 해결하려고.
+- `internal/autoplay/battle_goals.go`·`battle_goals_test.go`·`battle_model.go`·`battle_train.go`·`cmd/_frontierlearn/main.go`·`docs/plan-campaign-learning.md`: 선택적 승리 구역·필수 장수·거리·방향 입력, 0 가중치 확장과 저장/로드·초기 예측 보존 검사 — 8탄 무패 이후 도착형 목표를 관측할 수 있게 하되 이동 명령은 모델이 고르게 하려고.
+- `internal/autoplay/frontier_learning.go`·`frontier_learning_test.go`·`campaign_learning.go`·`battle_model.go`·`cmd/_frontierlearn/main.go`: 교사의 위험/경험치 계수·일반 피격 위험·장수 행동 순서·상위 후보 탐색·병렬 반복, 성공 명령과 최종 상태 보존, 실제 준비 전 상태/가중치 독립성 검사 — 9탄의 유비 조기 패배를 분석하고 실제 자원의 성공 사례를 찾으려고. 교사 시도는 전체 새 게임 무패 기록에 포함하지 않음.
+- `internal/autoplay/run.go`·`report.go`·`cmd/_autoplay/main.go`: 첫 패배와 무패 연속 승리 기록, 옛 재시도 보고서에서도 첫 패배 이전만 계산, `-tries 1` 실제 평가 — 재도전 이후 진척이 학습의 주 지표를 부풀리지 않게 하려고.
+- `internal/autoplay/preparation_model.go`·`campaign_learning.go`·`battle_model.go`·`battle_features.go`·`battle_train.go`·`prep.go`·`internal/core/api.go`: 실제 장비 유지/해제/교체·특성/저축을 고르는 준비망, 장비·특성의 실제 능력 변화와 열리는 병법 정보, 온도별 행동 확률과 경사, 전투/준비 공동 캠페인 PPO·읽기 전용 장수 미리보기 — 규칙 점수표 대신 같은 첫 패배 결과로 준비와 전투를 학습하려고. 기존 모델의 추가 입력 가중치는 0에서 시작해 초기 예측 보존.
+- `cmd/_campaignlearn/main.go`·`internal/gui/campaign_auto.go`·`internal/autoplay/campaign_learning_test.go`: 데이터 고정/명시적 전이·개발/최종 시드 분리·무패 진척으로 체크포인트 선택, GUI의 준비망 명령과 해제 창 표시, 첫 패배/재도전·실제 자원·장비 명령 재생·저장/로드·초기 예측 보존 시험 — CLI 학습과 실제 게임이 같은 선택 경로를 사용하게 하려고.
+- `internal/autoplay/frontier_learning.go`·`cmd/_frontierlearn/main.go`·`run.go`·`battle_model.go`·`docs/plan-campaign-learning.md`: 정상 무패 캠페인의 준비 전 상태 수집, 실제 합법 교사 명령과 구간별 정책 학습, 전체 새 게임 재검증, 병렬 10탄 목표 — 전투 지점 지급이나 교사 승리를 모델의 무패 진척으로 세지 않고 반복 실패 구간을 집중 개선하려고.
+- `docs/plan-campaign-learning.md`: 첫 패배 전 연속 승리 수를 최우선으로 한 실제 새 게임 평가, 특성/장비 준비망과 전투망의 공동 PPO, 실제 자원·학습/평가 시드 분리·배포 조건 설계 — 재도전 끝 도달 전투 대신 안정적인 진척을 배우고 준비 선택도 모델에 포함하라는 사용자 요청.
+
+## 2026-11-15 첫 전투 집중 강화학습
+- `docs/tools-autoplay.md`·`bin/android/srpg-ver5-debug.apk`: B01 별도 모델을 포함한 ARM64·x86_64 debug APK 재빌드·서명 검증, 패키지 모델 바이트/런타임의 모델 묶음 지원 대조 — 실제 게임에서도 추가 학습 가중치를 사용하게 하려고. 설치·실기 플레이는 하지 않음.
+- `assets/autoplay/battle.json`·`assets/autoplay/README.md`·`README.md`·`docs/tools-autoplay.md`: 본 추가 학습 20,608전투 후 승리 우선 개발 평가로 고른 B01 PPO 가중치(추가 10,240회)를 배포, 다른 전투의 공통 가중치 보존 — 무소모품·일반 적 1기 이하 승리를 미사용 시드 0/512→415/512로 높이면서 더 패배가 잦은 성공 재학습 모델과 구분. 선택 모델 511승 1패, 승리당 경험치 약 3% 감소도 함께 기록.
+- `docs/tools-autoplay.md`·`reports/autoplay/b01-focus/`: 정상 새 게임 첫 전투 10전승(9판 무소모품·1기 잔존), 실제 GUI의 B01 별도 모델/2장 연결 캡처, 두 최종 모델의 정상 캠페인 3시드 비교 기록 — PPO는 6·6·6탄, 성공 재학습은 5·6·6탄까지이며 완주 모두 0/3, 재시도 포함 승률도 18/40·17/36임을 명시하려고.
+- `internal/autoplay/battle_train.go`·`cmd/_battlelearn/main.go`: 실제 소모품·승리 대상 외 잔존 적 기록, `growth` 보상·주기적 개발 평가·승리/목표/경험치 순 체크포인트 보존·성공 전투 자기 모방·학습률/탐색 계수 설정 — 단순 경험치 합산에서 물자를 쓰며 일찍 끝내던 행동을 학습으로 개선하고 충분한 반복을 관찰하려고.
+- `internal/autoplay/battle_model.go`·`internal/gui/uidemo_campaign_auto.go`: 전투별 학습 가중치 묶음과 검증, 학습된 첫 전투 모델 사용 로그 — B01만 추가 학습하고 나머지 정책 가중치를 보존하며 실제 GUI가 어떤 모델을 쓰는지 확인하려고.
+- `internal/autoplay/battle_model_test.go`: 물자·일반 적·경험치·패배/시간 보상, 전투별 가중치 선택과 저장·불일치·중첩 거부 시험 — 행동을 금지하는 규칙 없이 학습 목적과 배포 범위가 맞는지 검증하려고.
+- `docs/tools-autoplay.md`: 정상 첫 전투 상태로 B01 집중 PPO, 소모품/일반 적 잔존 측정과 보상, 개발 체크포인트 선택·미사용 시드 평가·B01 가중치만 배포 설계 — 사용자가 요구한 무소모품·보스 외 적 1기 이하 경험치 습득을 실제 학습 목표와 평가에 반영하려고.
+
+## 2026-11-15 전투 모델 평가 표현 정정
+- `docs/tools-autoplay.md`·`assets/autoplay/README.md`: B06 준비를 포괄적으로 ‘약하다’고 부른 표현을 실제 출처·레벨·보급 비교로 정정, 정상 새 게임 호로관 총 7전 3승 4패(42.9%)·첫 시도 0/3 명시 — 사용자 지적에 따라 재도전 후 시드 통과를 높은 전투 승률로 오해하게 한 설명을 바로잡고, 준비 상태가 패배 원인이라는 입증되지 않은 해석을 제거하려고.
+
+## 2026-11-15 전투 전용 강화학습 모델
+- `docs/tools-autoplay.md`·`bin/android/srpg-ver5-debug.apk`: ARM64·x86_64 debug APK 재빌드·서명 검증, APK 모델과 소스 모델 일치 대조, release 자동실행 분기 시험 완료 기록 — Android에서도 수정한 버튼과 같은 전투 신경망을 사용하게 하려고. 기기 설치·실기 플레이는 이번 시험 범위에 포함하지 않음.
+- `internal/autoplay/battle_features.go`·`battle_model.go`·`battle_train.go`·`mlp.go`: 현재 장수들의 합법 행동 전체를 점수화하는 2개 은닉층 정책/가치망, 실제 기록 검증·승리 모방·최종 승리/경험치 PPO·Adam·공유 역전파, 기존 준비를 계승하는 `NeuralPlayer` — 상위 후보/한 라운드 교사 점수 모방과 확정 승리 강제를 벗어나 실제 전투 결과를 학습하려고. 난이도·소모품·레벨·전투 규칙은 변경하지 않음.
+- `cmd/_battlelearn/main.go`·`cmd/_autoplay/main.go`: 모방/PPO 재학습·고정 준비 비교·장수별 실제 XP/일기토 라운드 보고서, `-player neural` 정상 캠페인 평가 — 실제 캠페인 상태 재사용과 첫 장부터 성장한 결과를 분리해 검증하려고.
+- `assets/autoplay/battle.json`·`README.md`: 정상 캠페인 기록으로 모방 후 PPO 640전투를 학습한 초기 모델과 출처/구조/한계 보존 — 보고서 폴더나 외부 추론 라이브러리 없이 데스크톱·Android에서 같은 모델을 관전하려고.
+- `internal/gui/campaign_auto.go`·`game.go`·`hud_corner.go`·`sortie.go`·`uidemo_campaign_auto.go`·`README.md`·`docs/presentation-ui.md`: `학습(시험)` 기본 전투·중지 중 기존 탐색 선택, 준비/이야기는 기존 규칙 유지, 모델 불일치 시 시작 거부와 실제 GUI 모델 로그 — 사용자가 게임 안에서 신경망을 확인하고 기존 AI와 구분하도록. 캡처에서 긴 선택 문구가 옆 버튼과 겹쳐 짧게 고침.
+- `internal/autoplay/battle_model_test.go`·`internal/gui/campaign_auto_test.go`: 합법 명령·상태 불변·PPO 유한차분/클리핑/수익 확률 증가·모델 검증·즉시 승리 강제 없음·불완전/변조 기록 제외·실제 GUI 모델 계획과 모드 변경 제한 검사 — 신경망 대신 기존 전투 규칙이 답을 고르는 일을 막고 학습/적용의 기본 정합성을 확인하려고.
+- `docs/tools-autoplay.md`·`reports/autoplay/rl/`: 관련 시험·vet·신경망 race 검사, 실제 GUI 첫 전투 승리와 4개 화면 배치 캡처, 최종 고정 준비 B01 8/8·경험치 +41.3%, B06 두 정책 모두 1/8, 정상 새 게임 3시드 B06 통과(2·2·3회), 이후 두 시드 B07 5패 중단 기록 — 경험치 개선·호로관 통과와 아직 낮은 안정성/미완주를 함께 남기려고.
+- `docs/tools-autoplay.md`: 준비 로직 유지·합법 전투 행동 전체 선택·정책/가치망 PPO·실제 캠페인 상태 학습과 검증 설계 — 기존 탐색 AI의 단기 판단 모방을 넘어 승리와 장수 성장의 최종 결과로 전투 행동을 개선하려는 사용자 요청.
+
+## 2026-11-15 Suno 배경음 일곱 곡, 음량 −16 LUFS 맞춤
+- 결정: Suno(무료 v6-mini)로 만든 곡을 기존 곡과 섞어 쓴다 — 스토리 기본 suno-story, 패배 suno-defeat, 길(S_road·S_field_road) suno-journey(21초), 죽음·이별 suno-farewell, 밀모·첩자·백문루 suno-intrigue, 여포 전투(B06·B16) suno-boss-battle, 밀리는 전투(B14·B18·B19) suno-last-stand. 빠진 emerald-peaks는 유비의 거처·복숭아 숲, sad-melody는 c03-start·c08-start에 남김 · 이유: 사용자 "원본 음악만 있어서 단조로우니까 suno 음악도 적절히", ACE-Step 시안은 "다 별로" · 영향 문서: assets/music/CREDITS.md
+- `tools/music/encode.py`: ffmpeg 두 번 loudnorm(−16 LUFS, true peak −1.5 dB, 선형 이득)으로 인코딩 — CREDITS에 −16 LUFS라 적혀 있었지만 맞추는 단계가 없어 원본 −14.1~−16 LUFS가 그대로 나갔다. `--force`로 25곡 다시 인코딩
+- `assets/music/music.json`: 위 결정, S_ye_hall(empty-mountain)·S_xudu(echoes-empire) 추가, 두 번 적힌 S_council 정리
+- `assets/scenes/ch14~17.json`: c14-death·c14-retreat·c17-death `Music` suno-farewell, c15-spy·c16-baimen·c17-dong1·c17-dong2·c17-edict suno-intrigue
+- `assets/music/CREDITS.md`: 한국어 음악 목록으로 다시 씀 — 쓰는 곡·Suno 곡(무료 플랜이라 개인·비상업만)·원본만 보관하는 곡을 성격·출처·쓰는 곳과 함께
+- `tools/music/sources/suno-*.m4a`: Suno 원본 일곱 곡
+
+## 2026-11-15 자동실행 명령 사이 고정 지연 제거
+- `docs/tools-autoplay.md`: 회귀 시험·GUI vet 통과, 정상 새 게임 GUI의 첫 전투 3라운드 승리 캡처, Android ARM64·x86_64 debug APK 재빌드·서명 검증 완료 기록 — 수정한 실행 경로와 설치할 산출물을 함께 확인.
+- `internal/gui/campaign_auto.go`·`docs/tools-autoplay.md`: 명령 전 0.8초·후 0.6초 및 재도전 후 0.8초 고정 대기와 `nextAt` 제거, 선택 표시는 한 프레임 뒤 바로 적용 — 계산이 끝나도 약 1.4초마다 클릭하는 것처럼 느려 보이던 관전 동작을 고침. 실제 재생/AI 계산을 기다리는 조건과 경험치 결과 창 읽기 시간은 유지.
+- `internal/gui/campaign_auto_test.go`: 벽시계를 진행하지 않아도 준비된 두 명령이 실행되고, 앞 명령의 애니메이션이 남아 있을 때에는 다음 명령이 실행되지 않는지 검증 — 인위적인 대기 제거와 실제 연출 순서 보존을 함께 확인하려고.
+
+## 2026-11-15 Android 자동실행용 debug 빌드 선택
+- `Makefile`·`README.md`·`docs/tools-build.md`: `ANDROID_MODE=debug`로 release 태그 제외·debug APK 경로를 빌드와 설치에 함께 반영, 기본 release 유지, 실제 ARM64·x86_64 debug APK 빌드·서명 검증 및 모드별 경로 일치 확인 — `make android android-install`로 설치한 release에서 debug 전용 자동실행 버튼이 보이지 않는 이유를 명확히 하고 Android에서도 직접 관전하게 하려고.
+
+## 2026-11-15 게임 안의 탐색 AI 자동실행
+- `docs/tools-autoplay.md`: 실제 GUI 새 게임→첫 전투 3라운드 승리→경험치 결산→2장·두 번째 전투 연결, 데스크톱·폰 버튼 캡처와 검사 결과 기록 — CLI 완주와 GUI의 검증 범위를 구분. 관련 6개 패키지 시험·vet, release 버튼 시험·일반 release 빌드·실제 garble mac 빌드 통과.
+- `Makefile`·`cmd/srpg-gui/main.go`·`internal/gui/build_debug.go`·`build_release.go`·`game.go`·`README.md`·`docs/tools-build.md`: 무태그 GUI는 debug 기본, release 태그에서는 디버그 활성화 차단, Make 기본 목표를 release 데스크톱으로·Android도 release로 — 개발 실행과 배포 빌드를 명시적으로 나누려는 사용자 요청.
+- `internal/autoplay/campaign.go`·`prep.go`·`search.go`·`story.go`·`run.go`·`run_test.go`: 완주 평가의 고정 탐색 프로필, 선택한 준비안의 성공 명령 반환, 탐색 취소 컨텍스트, 이야기 선택 규칙 공유 — 보고서 폴더·전투 지점 지급 없이 실제 게임에서 같은 준비·판단을 사용하려고.
+- `internal/gui/campaign_auto.go`·`game.go`·`hud_corner.go`·`hud_panel.go`·`scenario.go`·`sortie.go`·`windows.go`·`docs/presentation-ui.md`: 진행판 맨 오른쪽 자동실행·출전 준비 토글, 별도 콘텐츠/엔진 복사본에서 계산 후 리비전 확인, 실제 세션 명령과 학습/장비/상점 창으로 진행, 메뉴·Esc·새 게임·로드로 중지 — GUI가 계산 중에도 반응하고 준비 과정과 경험치 결산을 관전하게 하려는 것. 실제 준비 전 체크포인트로 RNG만 바꿔 최대 5회 재도전.
+- `internal/autoplay/campaign_test.go`·`internal/gui/campaign_auto_test.go`: 선택한 준비의 명령 재현, 취소 시 원본 보존, 엔진/리비전이 바뀐 결과 폐기, 실제 체크포인트 자원 복원·재도전 상한, debug 버튼 분기 검증 — 자원 지급이나 오래된 계산 결과가 끼어들지 않게 하려고.
+- `internal/gui/uidemo.go`·`uidemo_campaign_auto.go`: 정상 새 게임에서 실제 GUI 업데이트와 자동실행을 돌리는 캡처 데모 — 첫 장의 이야기부터 탐험·준비·전투 연결을 실제 화면으로 확인하려고.
+- `docs/tools-autoplay.md`: debug 기본·Make release, 진행판 토글, 탐색 AI의 비동기 계산과 실제 준비 명령 적용 설계 — 사용자가 영상 대신 실제 게임에서 이야기·보급·장비·승급·학습·전투를 관전하도록 하려는 요청. 실제 캠페인 자원과 최대 5회 재도전 조건 유지.
+
+## 2026-11-15 자동 플레이 관전
+- `docs/tools-autoplay.md`·`reports/autoplay/watch/preview-b05.mp4`: B05 168명령·승리·경험치 결산을 대조한 2분 36초 관전 영상, B06 165명령 창 재생 확인과 B09 승리 기록 보존 — 사용자가 실제 AI 판단과 성장을 보게 하되 준비 중 특성 선택 화면은 생략됨을 명시. 녹화 재실행의 경로·결과가 이전 완주와 달라져 원본 평가와 구분하고, 필요한 전투 기록 확보 후 추가 실행 종료.
+- `internal/gui/uidemo_autoplay.go`·`uidemo_autoplay_test.go`: 전투별 마지막 시도의 준비 상태와 명령을 2배속 GUI로 재생, 명령마다 이벤트·부대·진영·라운드 대조, 불완전한 기록 거부 — AI를 다시 두지 않고 실제 행동을 보여 주며 기록 변조·불일치를 조용히 넘기지 않으려고. 배치 명령도 대조한 뒤 원래 개전 연출을 사용.
+- `internal/gui/uidemo.go`·`cmd/_uidemo/main.go`·`cmd/_uidemo-vm/main.go`·`sheet.go`: 관전 데모의 `-trace` 파일 옵션 연결 — 창 관전과 PNG·MP4 녹화에 같은 명령 기록을 사용하려고.
+- `docs/tools-autoplay.md`: 실제 준비 스냅샷·명령을 검증하며 GUI에서 재생하는 데모 설계 — 사용자가 AI의 움직임·공격·책략을 볼 수 있게 하고, 원본 완주 보고서와 새 녹화 실행을 구분하려고.
+
+## 2026-11-15 자동 플레이 후속 분석
+- `docs/tools-autoplay.md`·`reports/autoplay/summary.md`·`reports/autoplay/followup/summary.md`: 수정 후 4개 AI의 3시드 평가 완료, S2 시드 12의 B01~B20 실제 승리·정상 종료 확인 — 난이도를 바꾸지 않고 1/3 완주(총 37/57 시도 승리)를 달성했으며, 이전 조기 엔딩 오집계와 구분. 완주 시드 총 27시도·첫 승리 15/20·부목표 6/10, 추가 두 시드 36분 24초. 원본과 합친 `run-search-reserve.json` 보존, 재현 명령·검증 결과 기록.
+- `docs/tools-autoplay.md`: 시드 11·12·13을 후속 구현 선택에도 쓴 개발·회귀 평가로 명시 — 학습 시드와 분리했다는 사실을 새로운 미사용 평가라는 뜻으로 오해하지 않게 함.
+- `docs/tools-autoplay.md`: M1 종국 처리 수정 후 24/46 시도 승리·세 시드 B09 도달, M2 교사 40전투·7,774/183행·최종 21/38 시도 승리와 손실 기록 — 모델 검증 손실과 실제 캠페인 성능을 나누어 남기고 준비망은 검증 손실 1.041로 개선이 확인되지 않았음을 명시.
+- `internal/autoplay/models.go`·`models_test.go`: 1수 뒤 확정 승리는 우선하고 확정 패배는 가치망으로 평가하지 않음 — 학습 자료에 없던 종국의 승패 특징이 임의 가중치로 확정 결과를 뒤집던 문제를 막고, 승리에 음수를 주는 망으로 회귀 시험.
+- `internal/autoplay/story.go`·`run_test.go`: 선택 뒤 탐험으로 돌아와 다음 방문에서 드러나는 조기 엔딩도 다음 전투까지 미리 확인 — 17장처럼 선택으로 세운 플래그가 나중에 판정되는 경우까지 같은 규칙으로 처리.
+- `docs/tools-autoplay.md`·`reports/autoplay/followup/feature-probe/main.go`: 실제 B09 후보의 가치망 입력·출력·엔진 위협 추정 비교 — 같은 18개 특징이 서로 다른 위치 위험을 구별하지 못함을 확인하고, 이를 실제 패배 원인으로 단정하지 않고 모델 한계로 기록.
+- `internal/autoplay/prep.go`·`docs/tools-autoplay.md`: 출전 순서 유지와 레벨순 편성을 별도 비교, 레벨순을 채택 — 즉시 구매·상점 없음·시드 11에서 유지안은 B06, 정렬안은 B16까지 진행했다. 필수 장수는 먼저 포함하며, 이 한 시드 비교가 모든 경우의 우세를 보장하지는 않음.
+- `cmd/_autoplay/main.go`·`internal/autoplay/models.go`: 보급 구매를 끄는 비교 옵션 `-shop=false`와 정책망 기록 생성의 전투별 진행 로그 — 준비 변경의 효과를 분리하고 장시간 교사 데이터 생성의 완료·오류를 확인하기 위해.
+- `internal/autoplay/story.go`·`run.go`: 선택지 첫 키를 무조건 고르던 것을 대화·중첩 선택 뒤의 조기 엔딩 여부를 엔진 복사본에서 확인해 피함 — 19장 탐험의 사망 엔딩으로 B19·B20을 건너뛰던 진행 문제를 고침. 장수·노드 이름 하드코딩 없음.
+- `internal/autoplay/run.go`·`run_test.go`·`cmd/_autoplay/main.go`: 콘텐츠 해시·예상 전투 수·종료 노드를 남기고 `complete`여도 예상 전투를 전부 이기지 않았으면 완주로 세지 않음, 옛 보고서 집계도 전투 수 확인 — 이전 바이너리가 B18 뒤 B19·B20 없이 다음 시드로 넘어간 것을 발견해 20전투 완주 오판을 막음.
+- `internal/autoplay/prep.go`·`prep_test.go`: 저축 여부를 CEM으로 튜닝하는 28번째 유전자로 분리 — 저축한 S1은 B06 첫 승리가 늘었지만 탐색 시드 11은 B09에서 막혀 일괄 강제하지 않음. 기존 27개 유전자는 0(즉시 구매)으로 학습 당시의 선택을 유지하고 기본 유전자는 1(저축)에서 시작. 준비안 변이는 이전 유전자들의 난수 순서를 유지.
+- `internal/ai/eval.go`·`eval_test.go`: `Rank` 한 번의 유닛 쌍 피해량을 기억하고 새 평가에서는 버림 — 후보 칸마다 같은 `Strike`를 반복하던 비용을 줄이며, 직접 엔진 계산 및 상태 변경 뒤 계산과 비교해 점수 보존을 확인.
+- `internal/ai/eval_bench_test.go`: 1000회 측정 결과 주석 — B16 수 평가 유비 481→167ms, 관우 611→128ms, 할당량 59→30MB·83→32MB. 실제 B09 재생의 최종 관측값도 캐시 전후 완전히 같음을 확인.
+- `internal/ai/eval_bench_test.go`·`docs/tools-autoplay.md`: B16 실제 부대로 `Rank`의 1000회 벤치마크·프로파일 준비 — 장시간 학습 기록 생성에서 같은 유닛 쌍 피해량 반복 계산을 측정하고, 판단을 바꾸지 않는 지역 캐시만 검토하기 위해.
+- `docs/tools-autoplay.md`: B09 고정 상태에서 K=6·깊이 2는 7라운드 패배, 후보에 대기를 남기면 8라운드 패배한 비교 기록 — 성공하지 못한 대기 후보 변경은 기본 정책에 적용하지 않고 실험 결과만 남김.
+- `docs/tools-autoplay.md`: 준비 수정 전후 실제 캠페인 3시드 비교와 B06 패배 원인 기록 — 보급 구매로 B06 0/3→3/3, 특성 저축까지 하면 B06 첫 시도 3/3이지만 B09에서는 모두 패배했음을 구분. 장면 이동은 모든 장비·물자도 지급하므로 캠페인과 직접 비교하지 않음.
+- `internal/autoplay/prep.go`: 필수 장수·군주를 넣고 남은 출전 자리는 레벨 순으로 다시 고름 — 합류 당시 편성을 유지하느라 나중에 들어온 강한 장수를 쓰지 못하던 준비 누락을 고침. 부상도 위험으로 치는 실험(W 1·2·4)은 같은 B09 준비 상태에서 모두 실패해 채택하지 않음.
+- `cmd/_autoplay/main.go`: `replay -checkpoint <추적 JSONL>`로 실제 캠페인의 준비 상태부터 전투 정책을 비교 — 장면 이동의 자동 레벨·전체 장비 지급 없이 탐색 후보 수·깊이를 빠르게 검증하기 위해.
+- `internal/autoplay/search.go`·`cmd/_autoplay/main.go`·`run_test.go`: 탐색 깊이 `-depth`(기본 1라운드, 2 이상 비교 가능) — 한 차례 뒤 적 반격만 보던 탐색과 두 라운드 탐색을 같은 규칙에서 비교하기 위해.
+- `internal/autoplay/run_test.go`·`prep_test.go`: 추적 명령 재생·닫힌 출구의 상점 제외·할인 가격 지불·구매 종료·비싼 권장 특성 저축을 검증 — 준비 개선이 실제 자원과 RNG를 그대로 쓰는지 확인하기 위해.
+- `internal/autoplay/prep.go`: 배울 수 있는 특성을 비용과 무관하게 먼저 비교하고 최선의 특성이 아직 비싸면 특성치를 모음 — 500점마다 기마술·초원지형보조를 사느라 700~1500점의 장수 권장 특성을 한 번도 배우지 못하던 준비 문제를 고침.
+- `internal/autoplay/explore.go`·`run.go`: 네 AI가 열린 출구를 따라 상인을 찾아 실제 돈으로 사용 가능한 인수와 회복 재고를 마련함 — B06 도착 시 돈 5,000을 남긴 채 회복 물자가 0이던 준비 누락을 고침. 기존 기본 AI 비교는 유지.
+- `internal/autoplay/run.go`·`cmd/_autoplay/main.go`: 선택한 전투의 시도별 준비 스냅샷·명령·이벤트·명령 뒤 부대를 JSONL로 기록하는 `-trace`·`-trace-stage` — 캠페인 상태 그대로 패배 원인을 재현하기 위해.
+- `docs/tools-autoplay.md`: 진행 중 평가 보존·캠페인 전투 추적·원인별 개선·재평가 설계 — 사용자의 매우 어려움 완주를 전제로 AI의 준비·판단을 개선하기 위해.
 
 ## 2026-11-15 음악 원본과 음량 정리
 - tools/music/encode.py: ffmpeg 2회 측정으로 −16 LUFS·true peak −1.5 dB 음량 보정 추가 — 곡을 바꿀 때 음량 차이를 줄이려고
@@ -3096,3 +3296,58 @@
 - `assets/scenario/hero/story20.json`·`assets/scenes/ch20.json`·`docs/fullstory.md`: 재회 대화를 적토마로 — 장비 "그 말은 뭐유? …이거 적토마 아니유?" / 관우 "조조가 주었다." / 장비 "조조한테 많이도 받았구먼유. 거 조조한테 마음이 남아 있는 거 아니유?" / 관우 "걱정 마라, 익덕. 안량과 문추의 목으로 그 말 값은 치르고 왔다." 관우는 친위대 도트에 적토마 색으로 말 타고 들어오고(절 대신), 장비는 말 쪽으로 다가가 (13,5)에서 마주 봄, 번궁은 소나무 뒤에서 (11,3)으로 — 사용자 제안(2026-11-15)
 - `assets/scenes/ch20.json`(c20-reunion): 관우 도트를 친위대→중기병(guanyu_heavy_cavalry)으로 — 떠났던 장수는 떠날 때 병종 그대로 돌아오므로 20장 관우는 중기병(사용자 지적)
 - `assets/scenes/ch20.json`(c20-reunion): 관우 장면 도트를 중기병→경기병(guanyu)으로 — 마갑 없이 적토마 몸통 전체가 붉게 보이게. 장면 도트는 병종과 무관하게 고른다(사용자 11-15)
+- `assets/scenario/hero/stage16.json`·`assets/scenario/hero/maps/map16.json`·`docs/fullstory.md`: 하비 전투(B16)를 거짓 항복·매복으로 — 세 성문을 닫힌 채 시작(map16 `m-O`→`m--`, 구역 1~3), 개전 사건에서 유비가 남서문 앞으로 가 "후성, 약속대로 문을 열어 주시오." → 세 문이 차례로 열리고(문마다 카메라 이동) 유비군이 문 안으로 → 후성 "……지금이다!" → 서쪽·동쪽 옆구리와 큰길 위쪽에 여포·장료·진궁·허사·조성·기병이 나타나 진궁·여포·장료·유비·관우·장비 대사. 여포군은 전원 돌격, 북서·남동문 안 보병 둘씩만 hold. 후성·송헌·위속 항복 사건과 3턴 총출격 사건 삭제. 관우-장료 일기토 대사를 "수공에 지친 상대를 이겨 아쉽다"로, 장료 퇴각 때 여포군 공격·방어 −20. 매복 기병은 옆구리 둘씩(여포군 19)으로 줄임 — 사용자 설계(2026-11-16): 조조 참모들이 거짓 항복을 내다보고 유비군을 여포의 돌격을 받는 방패로 쓴 구도. 학습형 AI 어려움 5/10
+- `internal/core/cond.go`·`internal/content/battle_events.go`·`docs/logic-battle-event.md`·`docs/data-scenario-node.md`: 전투 이벤트 대상 `player`(플레이어가 조작하는 아군 전부, 그룹 이름으로는 예약) — 출전 명단이 판마다 달라도 유비군만 컷신으로 옮기려고(`ally`는 조조군 AI까지 움직임)
+- `cmd/_stageneural/main.go`: 전투 노드 하나를 학습형 AI(neural)·탐색·규칙 플레이어로 여러 시드 두어 보는 임시 도구(모델의 콘텐츠 해시는 검사하지 않음) — 스테이지를 고친 뒤 학습형 AI로 난이도를 재려고
+- `tools/spritetool/assets/ver5-ui/`(settings·pixels·sources/item_cure_all.png)·`assets/graphics/ui/ui.{json,png}`: 만능약 아이콘 `item_cure_all` — codex 그림(흰 자기 약병·푸른 띠·붉은 천 마개·환약 세 알)→pixelize_icon 변환. 술·특급주·빼갈이 모두 붉은 마개 항아리라 흰·청 자기로 구별
+- `tools/spellsim_confuse.py`(새)·`tools/spellsim.py`(`baked()`를 시트 이름→만드는 함수로, `--bake 이름…`은 그 시트만)·`assets/graphics/effects/spells/spell_confuse`·`spell_great_confusion`·`status_confusion_back`·`_front`·`internal/gui/status_visual.go`(`drawConfusion`)·`internal/gui/field.go`(`drawUnit`)·`docs/tools-build.md`: 혼란·대혼란 효과를 보라 안개에서 물음표 넷으로 — 대상 위 두 칸 높이에서 뱅그르르 돌며 내려와 머리 둘레 고리(아이소 타원)에 앉고, 몸 뒤로 지날 땐 가려진다. 혼란인 동안은 같은 물음표 넷이 머리 둘레를 계속 돈다(몸 뒤 절반은 스프라이트 전에, 앞 절반은 뒤에). 빗나가면 기존대로 대상이 막기 모션·"막음!"(확인함) — 사용자 11-16: 혼란은 물음표 넷이 하늘에서 돌며 내려와 머리 쪽에서 돌고, 걸리면 계속 돈다
+- `assets/scenario/hero/maps/map16.json`·`docs/fullstory.md`: 하비성 성벽의 돌무더기 틈 네 곳((22,9)·(5,17)·(9,22)·(17,22))을 성벽으로 메움 — 문이 닫혀 있다가 열리는 거짓 항복 장면과 어긋나고, 좁은 성문에 기대 막는 전술이 헐거워진다는 사용자 결정(2026-11-16)
+- `tools/spellsim_confuse.py`(`MARKS`·`status_marks`)·`assets/graphics/effects/spells/status_mark_{confusion,disarm,seal,root,poison}`(새, `status_confusion_back`·`_front` 삭제)·`spell_confuse`·`spell_great_confusion`(다시 구움)·`internal/gui/status_visual.go`(`drawConfusion`→`drawStatusMarks`)·`docs/presentation-ui.md`·`docs/tools-build.md`: 상태 표시가 머리 둘레를 공전하되 자전하지 않고 똑바로 선다(시전 효과도 궤도에 앉은 뒤엔 똑바로) — 사용자 11-16, 앞으로 상태 표시의 기본 규칙. 같은 궤도로 봉격(칼+빨간 X)·봉책(부채+X)·속박(신발+X)·독(독 아이콘 물방울) 추가, 여럿이면 한 궤도에 번갈아(하나 넷·둘셋 둘씩·넷 이상 하나씩), 물음표는 한 단계 키움(8×9→9×11). 궤도는 구운 루프가 아니라 게임이 그려서 상태 조합마다 시트가 필요 없다
+- `internal/core/waypoint.go`(`RaiseParty`)·`cmd/_stageneural/main.go`(`-level`)·`tools/mapgen/layouts/hero/map16gen.py`: 전투 지점에서 시작한 파티를 지정 레벨로 올려 재는 옵션, 맵 생성 스크립트도 닫힌 문·틈 없는 성벽으로 맞춤 — 매우 어려움은 아군 Lv38쯤으로 재라는 사용자 지시(2026-11-16, 직접 깬 레벨). B16 학습형 AI: 어려움 Lv26 5/10, 매우 어려움 Lv38 10/10
+- `assets/scenario/hero/stage16.json`·`docs/fullstory.md`: 하비 전투에서 조조군도 속은 것으로 — 문이 열리면 북서·남동의 조조군도 컷신으로 문 안에 들어서고, 문을 지키던 보병 대신 조조군을 붙잡는 매복 보병을 문마다 넷씩, 서황 "매복이다! 항복은 거짓이었다!" 추가, 큰길 기병 하나를 궁기병으로(여포군 22) — 사용자 결정(2026-11-16): 조조 참모들이 내다봤다는 구도를 버리고 여포군을 늘려 학습형 AI 어려움 5/10쯤으로(잰 값 16/30, 매우 어려움은 Lv40에서 10/10)
+- `internal/core/waypoint.go`(`Start`·`NewAtWith`·`passed`, `RaiseParty` 삭제)·`internal/content/scenario.go`(`StoryFlags`)·`internal/content/content.go`(`Action.Text`)·`internal/session/session.go`(`jump`의 `flags`·`level`)·`internal/gui/waypoints.go`(`waypointSetup`·`jump`)·`assets/scenario/hero/stage07.json`(플래그 글)·`cmd/_stageneural`·`docs/logic-campaign.md`·`docs/logic-battle-event.md`: 장면 이동 창 오른쪽에 아군 레벨과 앞선 전투 결과(고순 생존·제갈현 생존 같은 전투 플래그) 설정을 두고, 왼쪽에서 지점을 고르면 그 설정대로 시작 — 사용자 요청(2026-11-16). 플래그가 뜻을 가지도록 지점 앞 이야기를 분기 따라 지나가게 바꿈: 플래그를 켜지 않은 장면 이동에서는 고순이 합류해 있지 않다(전에는 갈래와 상관없이 합류)
+- `assets/scenes/ch14.json`(`c14-lh10`): 여포·진궁의 퇴장 비트를 줄 앞(`[0]`)에서 마지막 줄 뒤(`[1]`)로 옮김 — 진궁이 관청을 나간 뒤에 "장군의 뜻, 잊지 않겠습니다"가 나오던 오류(사용자 11-16)
+- `internal/content/content.go`·`internal/duel/timeline.go`(`Beat.Tired`, `tired`)·`internal/duel/scripts.go`·`assets/scenario/hero/stage14.json`(`xuyi-guanyu-jiling`)·`docs/presentation-duel.md`: 일기토 `rest`·`draw` 비트에 지친 쪽을 고르는 `Tired`(`ally`·`enemy`·`none`, 비우면 둘 다) 추가, 우이의 관우·기령 무승부는 기령만 탈진 — 무승부라고 늘 둘 다 지친 게 아니다(관우는 멀쩡한데 유비가 걱정되어 물러남, 사용자 11-16)
+- `assets/data/characters.json`(여포 `Look.Sprites`의 `light_cavalry:unarmed`): 화극 없는 기마 시트 `lubu_unarmed`를 여포의 경기병 그림으로 등록 — 장면 배우의 말 탄 여부(`riderArt`)가 이 시트를 못 알아봐 광릉 들판에서 여포가 남서쪽으로 갈 때 말발굽 대신 발소리가 났다(사용자 11-16)
+- `internal/content/content.go`(`Node.Card`)·`internal/content/validate.go`·`internal/gui/dialogue_box.go`(`drawCard`·`riseTime`)·`internal/gui/scenario.go`·`assets/scenario/hero/story16.json`(`c16-end`)·`docs/fullstory.md`: 장 끝 카드 — `narrate`에 `Card`를 켜면 앞 장면이 어두워진 검은 화면 가운데 큰 첫 줄과 아랫줄이 떠오른다. 백문루(장료가 살아남) 뒤 「1장 난세도래 / 끝」, 2장 제목 없이 허도로 가는 길로 이어짐 — 사용자 11-16(2장은 삼고초려 뒤 「2장 주유천하 / 끝」, 그 장면은 다른 세션에서 작성 중)
+- `assets/scenario/hero/story15.json`(`c15-k10`·`k11`)·`story16.json`(`c16-b04`)·`docs/fullstory.md`: 하비에서 진궁이 꾀를 쓰는 것으로 바뀌었으니, 순유의 "진궁이 꾀를 내도 받아들이지 않을 것"을 "성 안에서는 기병이 제 힘을 못 쓰고 말은 젖은 땅에 더 약하니 수공"으로, 백문루 조조의 "진언을 귀담아들을 주인"을 "여포는 좋은 장수이나 좋은 주인이라 하기 어렵다, 나를 섬기라"로 — 사용자 11-16
+- `internal/gui/scene.go`(`drawScene`)·`internal/gui/explore.go`(`namedPlate.footX·footY`, 이름표 정렬)·`internal/gui/explore_layout_test.go`(`TestExplorePeopleSpaced` 새, `together`)·`assets/scenario/hero/explore10·11_camp·12·13·14·15·20.json`: 탐험에서 겹친 사람과 이름표가 프레임마다 앞뒤가 바뀌며 깜빡이던 것을 고침 — 배우는 이름순으로 모은 뒤 화면 y가 큰(아래) 쪽, 같으면 x가 큰 쪽을 나중에 그리는 안정 정렬, 이름표도 가리킴·안내 색 다음에 같은 순서(발 위치). 탐험 처음 배치에서 함께 설 수 있는 두 사람은 작은 칸 체비셰프 거리 2 이상(사이에 작은 칸 하나)이어야 하고 시험이 어기면 실패(돌아다니다 붙는 건 허용); `together`가 `피난민`과 `피난민#1`을 같은 사람으로 보던 것도 고침. 옮긴 사람: 12장 피난민 (2,5)→(3,4)·피난민#2 (3,6)→(1,6), 15장 미방 (23,9)→(22,10), 13장 단양병#1 (15,4)→(14,4)·#2 (17,4)→(17,3), 14장 행인#1 (14,17)→(14,15), 20장 고순 (13,11)→(14,11), 10장·11장 진영 백마병#5 (40,14)→(40,15) — 사용자 11-16: 북해성 피난민, 소패 미방·창고 병사 이름표가 겹쳐 깜빡임
+- `docs/logic-combat.md`: 지계 지형 보정에 빠져 있던 구릉 +30%를 적고, 보정은 더하기만 한다는 것과 AI가 이 보정이 든 예상 피해로 속성을 고른다는 것을 덧붙임 — 사용자 질문(11-16)
+- `cmd/_balance/main.go`(`printSpellChoices`, `-player idle-late`): `-acts`로 찍는 공격 책략마다 그 대상에게 쓸 수 있던 다른 책략의 예상 피해·명중과 대상 칸의 땅을 함께 찍고, 여포가 나온 뒤에만 아군이 기다리는 시험 모드를 더함 — 진궁이 풀밭이 많은 우이에서 왜 탁류·낙석을 골랐는지 확인(사용자 질문 11-16)
+- `assets/scenario/hero/stage07.json`·`stage04·05·06·09·12·17.json`(`Later`)·`internal/content/content.go`(`Objective.Later`, `Action.Text` 삭제)·`internal/content/scenario.go`(`StoryFlags`는 부목표 플래그만)·`internal/gui/waypoints.go`·`docs/data-scenario-node.md`·`docs/logic-battle-event.md`·`docs/logic-campaign.md`: 동탁 추격전의 숨은 조건 "조조가 무사히 빠져나간다"(8장 절영)를 부목표로 올리고(조조가 나타나는 3라운드 목표 갱신 때 등장, `caocao-escaped` 이벤트 삭제), 장면 이동 창의 전투 결과 줄마다 뒤에 달라지는 일을 적음 — 사용자 결정(2026-11-16): 절영이 걸린 조건인데 화면에 안 보였음
+- `internal/ai/ai.go`(`tieBreak`)·`internal/ai/caster_test.go`(`TestEqualSpellsTakeTurns`)·`docs/logic-combat.md`: AI가 점수가 똑같은 행동 중 늘 목록 첫 번째(평지 대상엔 늘 낙석)를 고르던 것을, 전투 시드·라운드·행동자로 정해지는 값으로 고르게 함 — 다시 불러와 같은 수를 두면 같은 선택, 판·라운드가 바뀌면 낙석·탁류·초열이 골고루. 엔진 난수 상태는 건드리지 않음. 다리 위 탁류 +30%는 그대로 — 사용자 11-16: 플레이어에게 다양한 책략을 보여 주게
+- `assets/data/equipment.json`(`twin_swords` 새)·`assets/scenario/hero/story14.json`(`Events`: `c14-e-sword`)·`explore14.json`(미축 이벤트, 미방 (21,25)→(20,12), `관우@sword`·`장비@sword`)·`assets/scenes/ch14.json`(`c14-e-sword`)·`tools/spritetool/assets/ver5-ui`(`item_twin`: codex 그림→pixelize_icon, 칼 둘 X자)·`docs/fullstory.md`·`docs/logic-traits.md`: 14장 서주 순시에서 미축이 장세평이 맡긴 자웅일대검(무력 +4, 연전)을 전하고 유비가 곧바로 참. 2장 대장장이 "나리 몫도 벼리는 중"과 4장 "장세평이 서주에 말을 판다"를 회수 — 사용자 결정(11-17): 고정도 뒤 미방 합류 즈음, 효과는 칼 두 자루라 연속 공격 100%
+- `internal/gui/battle_speech.go`·`internal/gui/game.go`(`play`)·`internal/content/content.go`·`docs/data-scenario-node.md`·`docs/fullstory.md`: 전장에 없는 사람의 대사(`Offstage`, B18 전령)를 화면 위 가운데 말풍선 대신 스토리 대사창(초상 없이 이름판만)으로 띄움. 전투 중 매 프레임 대사창 애니메이션을 초기화하던 것은 전령 대사가 떠 있는 동안 멈춤 — 사용자 11-17: 말풍선 꼬리가 성벽을 가리켜 성벽이 말하는 것처럼 보였음
+- `assets/scenes/ch19.json`(`c19-yj`): 연진 장면의 `Backdrop: mountains`를 지움 — 사용자 11-17: 연진 문추 장면 뒤로 보이는 먼 산 그림 삭제
+- `internal/gui/scene.go`(`scene.focus`, `startStep`, `stageStep`, `drawScene`, `keepInView`·`panCamera` 새)·`internal/gui/scene_skip_test.go`(`TestSceneKeepInView`)·`internal/gui/uidemo_zz_tmpyanjin.go`(임시 `scenenode4`): 장면 카메라가 마지막으로 움직이거나(들어옴·걷기·치기·감정·말풍선·동작) 말한 이름 있는 배우를 기억하고, 그가 화면 안쪽 영역(좌우 가장자리에서 화면 반폭의 40%·최대 96px, 대사창 위 여백) 밖에 있으면 그 영역에 들어올 만큼만 카메라 목표를 옮김(가장자리에 딱 붙이면 대사창 초상에 가려 답답해서 여백을 둠). `CamAt`·`Cam`·`Follow`가 나오면 다시 연출 구도를 따름. 이야기 장면의 카메라는 초당 화면 너비 1.2배보다 빨리 움직이지 않아 먼 곳으로는 휙 넘어가지 않고 미끄러지며, 화면이 어두운 동안(fade > .9)에는 바로 옮김 — 사용자 11-17: 4배 확대에서 연진 장면 초점이 이상함, 최신 이벤트 위치로 스크롤하되 이벤트 간격이 큰 경우도 어색하지 않게
+- `internal/scenes/scenes.go`(`Scene.NoSkip`·`Scene.Mute` 새, 장면에 없는 노드를 적으면 읽기 오류)·`internal/gui/scenario.go`(`advanceDialogue`)·`internal/gui/scene.go`(`drawScene`)·`assets/scenes/ch19.json`(`NoSkip: c19-yj11`, `Mute: c19-yj10b`)·`internal/gui/scene_skip_test.go`(`TestSceneNoSkip`): `NoSkip` 노드의 동작은 클릭해도 서둘러 끝내지 않고 끝까지 재생(관우가 문추를 몰아치는 연진 일기토 — 건너뛰면 밀려나는 거리가 한 번만 들어가 관우가 문추보다 12칸 앞에 서 있었음), `Mute` 노드의 화자는 맵 위 말풍선(•••) 없이 대사창만 — 사용자 11-17: 일기토 건너뛰기 막기, "문추, 네 이놈!"은 대화창만
+- `internal/gui/game.go`(`acquire` 창의 `held`)·`internal/gui/walk_leave_draw_test.go`(`TestEveryWalkSortieDraws`·`TestStoryDrawsFromEveryWaypoint` 새): 출진하자마자 아이템 창이 뜨면(망탕산 적토마) 화면이 이미 떠난 탐험의 관측값을 붙잡고 탐험을 그리다 nil 역참조로 죽던 것을, 탐험을 떠난 뒤에는 붙잡지 않게 고침. 모든 탐험의 출진을 화면 요청으로 실행해 프레임을 그려 보는 시험과, 모든 웨이포인트에서 이야기를 넘기며 매번 그려 보는 시험을 더함 — 사용자 11-17: 망탕산 출진 시 항상 멈추거나 죽음, 이런 버그는 시험으로 막아야 함
+- `internal/gui/assets.go`(`backdrop`)·`internal/gui/scene.go`(`drawBackdrop`)·`internal/gui/walk_leave_draw_test.go`(커서를 멀리): 먼 배경 그림 아래 땅 색을 매 프레임 GPU에서 읽지 않고 읽을 때 한 번 계산 — 게임이 돌기 전(시험)에도 장면을 그릴 수 있게, 매 프레임 픽셀 읽기도 없앰
+- `internal/core/waypoint.go`(`pass`)·`internal/core/waypoint_test.go`: 장면 이동이 지나간 전투의 합류 이벤트(B19 조운, B20 관우·관평·주창)를 반영 — 사용자 11-17: 여남·망탕산으로 장면 이동하면 관우·조운·관평·주창·진진이 명단에 없음
+- `mobile/mobile.go`(`Start(root, zone)`, `time/tzdata`)·`android/src/com/orca/srpg/ver5/MainActivity.java`: 안드로이드에서 Go가 시간대를 못 읽어 세이브 시각이 UTC로 보이던 것을, 폰의 시간대 ID를 넘겨 `time.Local`로 씀 — 사용자 11-17
+- `internal/gui/view.go`(`fitZoom`, `clampCam`): 전투 최소 확대를 "화면이 전투 영역 사각형 안"에서 "화면이 맵 캔버스(전투 영역과 바깥 어두운 땅) 안"으로 넓히고, 멀리 볼 때 카메라가 캔버스 밖으로 나가지 않게 함 — 데스크톱은 모든 전투 맵에서 1배 가능, 폰 130%는 큰 맵에서 1배 — 사용자 11-17: 맵이 넓어도 1배가 안 됨
+- `internal/scenemap/catalog.go`(`Board.Indoor`)·`internal/scenemap/plan.go`(`indoor`)·`assets/graphics/scene.json`(`board.indoor: TWPCM`)·`internal/scenemap/board_test.go`: 바닥이 모두 실내 바닥(천막·목재·궁전·카펫·자리)인 장면 맵은 판 단면을 그리지 않음 — 사용자 11-17: 실내에서는 디오라마 느낌의 바닥 밑 장식을 없애자, 나갈 때 이상함
+- `internal/core/combat.go`(`applyStatus`가 바뀌었는지 돌려줌, 반대 버프·디버프 상쇄, 같은 쪽은 센 값·긴 턴 유지; `spell`의 `useful`; `stripBuffs`)·`internal/core/status_step_test.go`: 버프가 걸린 능력에 디버프를 걸면 버프가 사라지고(반대도), 버프·디버프 책략은 대상에게 무언가 달라졌을 때만 경험치(같은 버프를 같은 턴으로 다시 걸면 없음, 장구로 더 길면 있음, 회복·병법 회복·해제도 같음) — 사용자 11-17
+- `internal/core/engine.go`(`Engine.pooling·pool·pooled`, `Apply`)·`internal/core/growth.go`(`xp`, `flushXP`): 한 명령(공격·책략·아이템) 동안 얻은 경험치를 장수별로 모아 명령 끝에 한 번씩 줌 — 사용자 11-17: 5명에게 버프를 걸면 경험치가 5번 뜨던 것을 행동이 끝날 때 한 번에, 공격·방어도 마지막에
+- `internal/content/vocab.go`(`start_buff:`·`crush`·`scorn`·`plain:` 효과, `clear_marks` 책략 효과)·`internal/core/engine.go`(`startStatus`)·`internal/core/combat.go`(`crush`, `damage`의 안하무인, `boost`·`strike`의 화덕성군, `spell`의 지형정비)·`internal/core/battle_events.go`(`clearMarks`)·`internal/gui/battle_log.go`·`internal/core/officer_traits_test.go`: 패기(나설 때 한 번 5능력 +20%), 위진화하(가득 찬 적을 한 번에 퇴각시키면 주변 8칸 적 5능력 -20%), 안하무인(무력 10 이상 낮은 적의 물리 피해 절반), 화덕성군(화염 책략에 지형 보정·치명·불씨 없음), 지형정비(아군 주변 3×3 불씨·물웅덩이·돌무더기 제거) — 사용자 11-17
+- `internal/content/content.go`(`Character.TraitAt`)·`internal/content/spawn.go`(`PlannedTraits`)·`internal/content/validate.go`: NPC가 정해진 레벨부터 갖는 특성 — 조조 패기 15, 패도 35(전에는 첫 전투부터 매턴 패기)
+- `assets/data/traits.json`·`skills.json`·`classes.json`·`characters.json`·`characters_story.json`: 패기(`ambition`, 1000)를 나설 때 한 번으로, 매턴 버프는 패도(`hegemony`, 1500, 패기 선행)로 분리; 유비 패기, 관우 위진화하(1500, 위압 선행), 장비 안하무인(1500, 호통 선행), 조운 일신시담(1500, 일기당천 선행, 홀로일 때 +20%), 미축 화덕성군(1500), 간옹 흥돋우기(1500, 인접 사기), 손건 발빠른사신(1000, 이동력 +2), 지균은 순발만·1500, 강론 1000, 진지고수 30%·1200, 응급처치 병법치 10, 선술사 배울 거리에 지형정비(1000, 책략 병법치 20) — 사용자 11-17
+- `internal/content/spell_costs_test.go`: 응급처치만 병법치 12 아래(10)를 허용
+- `assets/scenario/hero/stage19.json`: 연주 전투의 적이 처음부터 모두 공세(곽도·장합 부대가 2·4라운드에 공세로 바뀌던 이벤트의 `ai` 동작 삭제) — 사용자 11-17
+- `internal/core/combat.go`(`crush`)·`assets/data/traits.json`(`awe`): 위진화하를 위압 선행으로 두고, 조건 없이 적을 퇴각시키면 주변 8칸 적에게 역패기(5능력 -20%) — 사용자 11-17
+- `internal/content/vocab.go`(`plain:` → `immune:`)·`internal/core/combat.go`(`strike`)·`assets/data/traits.json`(`fire_star`): 화덕성군은 화염 책략에 피해 자체를 입지 않음 — 사용자 11-17: 이름이 화덕성군이니
+- `assets/data/traits.json`·`characters.json`: 일신시담 +10%(일기당천과 합쳐 +20%), 흥돋우기 → 호인, 인덕 → 용인술, 손건은 발빠른사신 대신 기존 신속(매 자기 차례 이동력 +2 버프) — 사용자 11-17
+- `internal/scenes/scenes.go`(`Scene.NoFocus`)·`internal/gui/scene.go`·`assets/scenes/ch19.json`(`NoFocus: c19-yj10b`): 초점을 따라가지 않는 노드 목록 — 기본은 마지막 동작·대사의 배우를 따라가고, 적힌 노드에서는 카메라가 하던 구도를 지킴. "문추, 네 이놈!"에서 관우→문추→관우로 오가던 것 — 사용자 11-17
+- `internal/core/formation.go`(`attributes`, `DeputyBlend`이 부관 매력도 돌려줌)·`internal/content/vocab.go`(`deputy_charm` → `deputy_plus`)·`internal/gui/unit_window.go`·`deputy_window.go`·`assets/data/traits.json`(`benevolence`)·`internal/testdata/mini/traits.json`·`internal/core/core_test.go`: 용인술은 주장 매력 +20 대신 부관의 모든 능력치를 +10으로 보고 섞음 — 관우 부관일 때 유비 공격 999→1268(전에는 1163). 부관이 낮던 능력도 +10으로 넘으면 섞임 — 사용자 11-17: 용인술이 너무 약함
+- `internal/content/terrain.go`(`Ground.Wet`·`State.Wet`·`CellProps.Wet`)·`assets/data/game.json`(물·여울·물웅덩이 `Wet`)·`internal/testdata/mini/game.json`·`internal/content/vocab.go`(`wet_factor`, `ward:`)·`internal/core/rules.go`(`terrain`)·`internal/core/combat.go`(`damage`)·`assets/data/traits.json`(`swim`)·`characters_story.json`(주창)·`internal/core/officer_traits_test.go`: 주창 고유 특성 수영(1000) — 물·여울·물웅덩이에서 지형 보정 +20%, 수계 책략 피해 절반 — 사용자 11-17
+- `assets/scenes/ch19.json`(`c19-yj13`): 문추를 쓰러뜨리는 관우의 마지막 일격을 좌베기에서 첫 공격과 같은 내려치기(`cleave`)로 — 사용자 11-17
+- `assets/data/characters_story.json`(주창): 고유 특성에 신속(매 자기 차례 이동력 +2 버프) 추가 — 사용자 11-17
+- `assets/data/skills.json`·`traits.json`·`classes.json`·`internal/content/class_pools_test.go`: 도발(책략·특성) 삭제, 교란은 인접 1기에서 2칸 안 1기로(근접 → 사거리 1~2) — 사용자 11-17: 적병 특성 도발·교란이 너무 약함
+- `internal/content/vocab.go`(`ambush_factor`)·`internal/core/rules.go`(`terrain`)·`assets/data/traits.json`(`mountain_footing`)·`characters_story.json`(유벽)·`internal/core/officer_traits_test.go`: 유벽 고유 특성 산악지형보조(1000, 산·숲에서 지형 보정 +5%)와 지계강화 — 사용자 11-17
+- `internal/core/engine.go`(`Apply`): 시험 중 엔진이 패닉으로 `InternalError`를 내면 호출 스택을 오류에 붙임 — 한 번만 나고 재현 안 된 B15·B16 nil 오류를 다음에 잡도록
+- `internal/gui/campaign_e2e_test.go`(`TestCampaignEndToEnd` 새, `SRPG_E2E=1`)·`internal/gui/render_test.go`(`TestMain`)·`internal/gui/game.go`(`fastTest`)·`internal/gui/campaign_auto.go`(`campaignPrep`, 시험 모드에서 결과 화면·창 대기 생략): srpg-gui와 같은 게임 루프(`ebiten.RunGame`)에서 새 게임(일반)을 디버그 자동실행으로 엔딩까지 플레이하는 통합 시험. 재생 32배, 학습 모델이 이 데이터로 학습되지 않았으면 탐색 플레이어가 후보 하나(바로 1순위)로 둠 — 사용자 11-17: 스토리 끝까지 깨는 최종 통합 테스트
+- `internal/autoplay/variety.go`·`variety_test.go`(새): 통합 시험의 출진 준비 — 시드 하나로 출전 장수·부관 무작위, 아직 안 끼운 보물 먼저, 부관임명 최우선, 나머지 특성은 무작위 목표(선행부터, 특성치 모으기), 다시 할 때 새로 뽑고 다섯 번째는 탐색 플레이어 준비. 끝나면 찍은 특성·끼운 보물·부관·출전 횟수를 보고 — 사용자 11-17
+- `assets/data/game.json`(`casual` 쉬움: 적 강도 -0.30, 경험치 150%, 목록 맨 앞)·`internal/gui/campaign_e2e_test.go`: 쉬움 난이도 추가, 통합 시험은 쉬움으로 — 사용자 11-17: GUI 시험은 흐름만 통과하면 되고 쉬움 모드도 필요(불사는 생존·사망 갈림길을 막아서 쓰지 않음)
+- `Makefile`(`e2e`, `E2E_SEED`·`E2E_MINUTES`): `make e2e`로 쉬움 처음부터 엔딩까지 통합 시험 — 사용자 11-17
+- `internal/content/content.go`(`Difficulty.DealtPct`·`TakenPct`)·`validate.go`·`internal/core/combat.go`(`damage`)·`assets/data/game.json`(쉬움 120%·80%)·`internal/core/officer_traits_test.go`·`internal/content/officer_traits_data_test.go`·`internal/gui/campaign_e2e_test.go`(패배 이유 기록): 쉬움에서 아군이 주는 피해 +20%, 받는 피해 -20%(일기토는 따로 진행되어 그대로) — 사용자 11-17: 쉬움이 별로 안 쉬움
+- `assets/scenario/hero/stage21.json`(유벽·남문 군사 `flee` GoalArea 2, 부목표 `fled:liupi` "유벽이 남쪽 성으로 무사히 빠져나간다", `liupi-falls`는 빠져나가면 나오지 않음)·`docs/fullstory.md`·`internal/core/b21_liupi_test.go`: 유벽이 남쪽 성 칸을 차지해 유비가 승리 칸에 못 들어가던 것을, 유벽은 성에 닿으면 싸움터를 떠나게 — 사용자 11-17

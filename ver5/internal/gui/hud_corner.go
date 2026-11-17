@@ -59,6 +59,12 @@ func (g *Game) leftPanel(dst *ebiten.Image, place, sub, money string, all ...*co
 			slots = append(slots, s)
 		}
 	}
+	if s := g.campaignPolicySlot(); s != nil {
+		slots = append(slots, s)
+	}
+	if s := g.campaignSlot(); s != nil {
+		slots = append(slots, s)
+	}
 	const slotW = (leftPanelW - 2*cornerPad - 4*cornerGap) / 5
 	need := 2*cornerPad + len(slots)*slotW + max(0, len(slots)-1)*cornerGap
 	head := 42 + 12.0

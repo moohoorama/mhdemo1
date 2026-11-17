@@ -30,7 +30,8 @@ const (
 	gW         = 24 // battle evaluator W
 	gXP        = 25 // battle evaluator XP
 	gGearTrait = 26 // a piece's traits and skills, each
-	GenomeLen  = 27
+	gReserve   = 27 // at least .5: save points for the best trait, even when not yet affordable
+	GenomeLen  = 28
 )
 
 var tones = []string{"attack", "guard", "craft", "buff", "debuff", "heal", "move"}
@@ -49,6 +50,7 @@ func DefaultGenome() Genome {
 	g[gDeputy] = .02
 	g[gN], g[gM], g[gW], g[gXP] = .5, 1, 1, 0
 	g[gGearTrait] = 3
+	g[gReserve] = 1
 	return g
 }
 
@@ -83,12 +85,15 @@ func (g *Genome) bestTrait(d *content.Data, e *core.Engine, id string) string {
 	}
 	best, score := "", g[gBuy]
 	for _, t := range e.Learnable(id) {
-		if d.Traits[t].Cost > c.Points || d.Traits[t].Cost < 1 {
+		if d.Traits[t].Cost < 1 || d.Traits[t].Cost > c.Points && g[gReserve] < .5 {
 			continue
 		}
 		if s := g.traitScore(d, c, t); s > score {
 			best, score = t, s
 		}
+	}
+	if d.Traits[best].Cost > c.Points {
+		return "" // keep saving instead of spending the next trait's points on a cheaper substitute
 	}
 	return best
 }
@@ -127,14 +132,18 @@ func (g *Genome) gearScore(eq content.Equipment) float64 {
 // Prepare readies the party by the genome: seals to the highest officers, owners' pieces, the rest of the gear
 // by score to the highest officers, deputies where they add enough, and traits bought with the points saved.
 func (g *Genome) Prepare(d *content.Data, e *core.Engine) {
-	apply := func(c core.Command) bool { _, err := e.Apply(c); return err == nil }
-	g.promote(d, e, apply)
-	for c, ok := e.OwnerPiece(); ok; c, ok = e.OwnerPiece() {
-		if !apply(c) {
-			break
+	g.prepare(d, e, nil)
+}
+
+func (g *Genome) prepare(d *content.Data, e *core.Engine, record func(core.Command)) {
+	apply := func(c core.Command) bool {
+		_, err := e.Apply(c)
+		if err == nil && record != nil {
+			record(c)
 		}
+		return err == nil
 	}
-	g.deputies(d, e, apply)
+	g.prepareBase(d, e, apply)
 	g.gear(d, e, apply)
 	for _, c := range Officers(d, e) {
 		for range 10 {
@@ -144,6 +153,38 @@ func (g *Genome) Prepare(d *content.Data, e *core.Engine) {
 			}
 		}
 	}
+}
+
+func (g *Genome) prepareBase(d *content.Data, e *core.Engine, apply func(core.Command) bool) {
+	g.sortie(d, e, apply)
+	g.promote(d, e, apply)
+	for c, ok := e.OwnerPiece(); ok; c, ok = e.OwnerPiece() {
+		if !apply(c) {
+			break
+		}
+	}
+	g.deputies(d, e, apply)
+}
+
+func (g *Genome) sortie(d *content.Data, e *core.Engine, apply func(core.Command) bool) {
+	o := e.Observe()
+	st := d.Stages[o.Stage]
+	var ids []string
+	party := Officers(d, e)
+	for _, c := range party {
+		if slices.Contains(st.Required, c.ID) || d.Characters[c.Def].Lord {
+			ids = append(ids, c.ID)
+		}
+	}
+	for _, c := range party {
+		if len(ids) >= st.Max {
+			break
+		}
+		if !slices.Contains(ids, c.ID) && !isDeputy(e, c.ID) {
+			ids = append(ids, c.ID)
+		}
+	}
+	apply(core.Command{Kind: "deploy", Deployment: ids})
 }
 
 func (g *Genome) promote(d *content.Data, e *core.Engine, apply func(core.Command) bool) {

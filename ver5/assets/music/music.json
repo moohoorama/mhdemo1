@@ -1,18 +1,22 @@
 {
  "Title": "imperial-china-cinematic",
  "World": "mountains-rivers",
- "Story": "emerald-peaks",
+ "Story": "suno-story",
  "Explore": "golden-bamboo",
  "Sortie": "the-march",
  "Battle": "chinese-traditional",
  "Duel": "war-drums-duel",
  "Victory": "painted-pavilion",
- "Defeat": "sad-melody",
+ "Defeat": "suno-defeat",
  "Maps": {
   "S_zhuo": "golden-bamboo",
   "S_xindu": "golden-bamboo",
   "S_pingyuan": "golden-bamboo",
   "S_xuzhou_town": "golden-bamboo",
+  "S_road": "suno-journey",
+  "S_field_road": "suno-journey",
+  "S_liu_house": "emerald-peaks",
+  "S_peach_grove": "emerald-peaks",
   "S_tavern": "quiet-water",
   "S_tool_shop": "quiet-water",
   "S_weapon_shop": "quiet-water",
@@ -21,22 +25,26 @@
   "S_xiaopei": "mystical-china",
   "S_mansion": "empty-mountain",
   "S_council": "empty-mountain",
-  "S_council": "empty-mountain",
   "S_zhuo_office": "empty-mountain",
   "S_xiaopei_office": "empty-mountain",
   "S_xuzhou_hall": "empty-mountain",
   "S_shouchun_hall": "empty-mountain",
+  "S_ye_hall": "empty-mountain",
   "S_luoyang": "forbidden-city",
-  "S_luoyang_hall": "echoes-empire"
+  "S_luoyang_hall": "echoes-empire",
+  "S_xudu": "echoes-empire"
  },
  "Stages": {
   "B02": "empress-joy",
   "B05": "chinese-dynasty",
-  "B06": "chinese-dynasty",
+  "B06": "suno-boss-battle",
   "B07": "chinese-dynasty",
   "B10": "chinese-dynasty",
   "B12": "chinese-dynasty",
-  "B14": "chinese-dynasty",
-  "B15": "chinese-dynasty"
+  "B14": "suno-last-stand",
+  "B15": "chinese-dynasty",
+  "B16": "suno-boss-battle",
+  "B18": "suno-last-stand",
+  "B19": "suno-last-stand"
  }
 }

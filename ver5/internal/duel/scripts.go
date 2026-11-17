@@ -113,6 +113,9 @@ func (s Script) Validate() error {
 		default:
 			return fmt.Errorf("unknown motion %q", b.Kind)
 		}
+		if b.Tired != "" && (b.Kind != "rest" && b.Kind != "draw" || b.Tired != "ally" && b.Tired != "enemy" && b.Tired != "none") {
+			return fmt.Errorf("beat %d: tired %q only names ally, enemy or none on a rest or draw", i, b.Tired)
+		}
 		if i != len(s.Beats)-1 && (b.Kind == "win" || b.Kind == "draw" || b.Kind == "escaped" || b.Kind == "withdrawn") {
 			return fmt.Errorf("terminal beat %d before ending", i)
 		}

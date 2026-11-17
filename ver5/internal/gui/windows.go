@@ -36,6 +36,7 @@ func (g *Game) openOverlay(name string) bool {
 	if len(g.overlays) == 0 && g.popupPending() {
 		return false
 	}
+	g.stopCampaignAuto()
 	g.overlays = append(g.overlays, name)
 	g.page = 0
 	if name == "equipment" {
@@ -53,18 +54,37 @@ func (g *Game) openOverlay(name string) bool {
 
 // closeOverlay closes the top window.
 func (g *Game) closeOverlay() {
+	g.stopCampaignAuto()
 	if len(g.overlays) > 0 {
-		g.sfx("close")
+		if !g.accepting {
+			g.sfx("close")
+		}
 		g.overlays = g.overlays[:len(g.overlays)-1]
 	}
 }
 
 // closeOverlays closes every window.
 func (g *Game) closeOverlays() {
-	if len(g.overlays) > 0 {
+	if len(g.overlays) > 0 && !g.accepting {
 		g.sfx("close")
 	}
 	g.overlays = nil
+}
+
+// acceptConfirmation lets the approved action sound; window cleanup is silent, with ok as the fallback.
+func (g *Game) acceptConfirmation() {
+	if g.overlay() != "confirm" {
+		return
+	}
+	before, previous := g.sfxCalls, g.accepting
+	g.accepting = true
+	defer func() { g.accepting = previous }()
+	f := g.answer
+	g.closeOverlay()
+	if f != nil {
+		f()
+	}
+	g.sfxUnless(before, "ok")
 }
 
 // ask opens a confirmation window; ok runs on 확인.
@@ -206,13 +226,7 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h, strip int) {
 	switch name {
 	case "confirm":
 		g.label(dst, wrapWidth(g.question, g.face(18), float64(w-64)), float64(left), float64(y+44), 18, ink)
-		g.btn(dst, image.Rect(left, y+h-62, left+190, y+h-28), g.yes, func() {
-			f := g.answer
-			g.closeOverlay()
-			if f != nil {
-				f()
-			}
-		})
+		g.btn(dst, image.Rect(left, y+h-62, left+190, y+h-28), g.yes, g.acceptConfirmation)
 		g.btn(dst, image.Rect(x+w-222, y+h-62, x+w-32, y+h-28), g.no, g.closeOverlay)
 	case "menu":
 		items := []menuItem{
@@ -440,15 +454,16 @@ func (g *Game) subChip(dst *ebiten.Image, x, y float64, state string, lit bool) 
 
 // closeModal closes the first modal, or the top window stacked inside it.
 func (g *Game) closeModal() {
-	if len(g.modals) > 0 {
-		g.sfx("close")
-	}
-	if len(g.modals) > 0 && g.modals[0].closeAcquire() {
+	if len(g.modals) == 0 {
 		return
 	}
-	if len(g.modals) > 0 {
-		g.modals = g.modals[1:]
+	m := g.modals[0]
+	if m.closeAcquire() {
+		g.sfx("close")
+		return
 	}
+	g.sfx("ok")
+	g.modals = g.modals[1:]
 }
 
 // result is the end-of-battle window.
@@ -527,6 +542,9 @@ func (g *Game) objectiveDuels(o core.Observation) []objectiveRow {
 	groups := st.DuelGroups()
 	out := []objectiveRow{}
 	for i, d := range st.Duels {
+		if d.Unlisted {
+			continue
+		}
 		if len(out) == 3 {
 			out = append(out, objectiveRow{text: fmt.Sprintf("외 %d건", len(st.Duels)-3)})
 			break
@@ -778,7 +796,7 @@ func (g *Game) difficultyWindow(dst *ebiten.Image, x, y, w int) {
 		g.btn(dst, image.Rect(x+32, top, x+w-32, top+difficultyRowH-14), "", func() {
 			g.closeOverlays()
 			if g.jumpNode != "" {
-				g.request(session.Request{Op: "jump", Node: g.jumpNode, Seed: g.seed, Difficulty: id})
+				g.jump(g.jumpNode, id)
 				return
 			}
 			g.request(session.Request{Op: "new", Seed: g.seed, Difficulty: id})

@@ -12,7 +12,7 @@ import (
 // battleBubble is a line a unit says on the battlefield, coming out letter by letter.
 type battleBubble struct {
 	actor, name, text string
-	offstage          bool // said by someone not on the field: a box at the top of the screen
+	offstage          bool // said by someone not on the field: the story's dialogue box, name plate only
 	typing            typing
 	fading            float64 // when it began to fade out (textSeconds); 0 while it is shown
 }
@@ -84,23 +84,31 @@ func (g *Game) drawBattleSpeech(dst *ebiten.Image) {
 	for _, bubble := range g.player.Speech {
 		g.drawBubble(dst, bubble, &placed, 1)
 	}
+	for _, bubble := range g.player.Speech {
+		if bubble.offstage {
+			n := len([]rune(bubble.text))
+			out := g.letters(bubble.typing, n, g.textSeconds)
+			g.drawDialogue(dst, line{speakers: []string{bubble.name}, text: bubble.text}, string([]rune(bubble.text)[:out]), out >= n, "offstage|"+bubble.actor+"|"+bubble.text)
+			return
+		}
+	}
 }
 
 // drawBubble draws one battlefield line over its speaker, clear of the bubbles already placed.
 func (g *Game) drawBubble(dst *ebiten.Image, bubble *battleBubble, placed *[]image.Rectangle, alpha float64) {
+	if bubble.offstage {
+		return
+	}
 	bw, bh := g.assets.Bubble.Size(bubble.name, bubble.text)
 	k := 2.0 / 3 / smallScreen()
 	w, h := int(bw*k), int(bh*k)
-	px, py := (uiW-w)/2, 62
-	if !bubble.offstage {
-		u := g.unitAt(bubble.actor)
-		if u == nil {
-			return
-		}
-		x, y := g.field.Center(u.u, u.v)
-		x, y = worldToUI(g.toScreen(x, y-u.lift-u.top))
-		px, py = max(16, min(uiW-w-16, int(x)-32)), max(62, min(uiH-h-190, int(y)-h-10))
+	u := g.unitAt(bubble.actor)
+	if u == nil {
+		return
 	}
+	x, y := g.field.Center(u.u, u.v)
+	x, y = worldToUI(g.toScreen(x, y-u.lift-u.top))
+	px, py := max(16, min(uiW-w-16, int(x)-32)), max(62, min(uiH-h-190, int(y)-h-10))
 	r := image.Rect(px, py, px+w, py+h)
 	for _, other := range *placed {
 		if r.Overlaps(other) {

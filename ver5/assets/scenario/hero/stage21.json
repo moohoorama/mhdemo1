@@ -1,0 +1,1157 @@
+{
+ "ID": "B21",
+ "Name": "여남 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 6,
+ "Required": [
+  "liubei",
+  "zhaoyun"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "at:liubei:1"
+   ],
+   "Text": "유비가 남문을 나선다"
+  }
+ ],
+ "Sub": [
+  {
+   "ID": "liupi",
+   "Text": "유벽이 남쪽 성으로 무사히 빠져나간다",
+   "If": [
+    "fled:liupi"
+   ],
+   "Flag": "flag-b21-liupi",
+   "Reward": {
+    "insu_high": 1
+   }
+  },
+  {
+   "ID": "yuejin",
+   "Text": "악진을 물리친다",
+   "If": [
+    "defeated:yuejin"
+   ],
+   "Flag": "flag-b21-yuejin",
+   "Reward": {
+    "mirror_armor": 1
+   }
+  }
+ ],
+ "TurnLimit": 25,
+ "Map": "map21.json",
+ "Night": true,
+ "Lights": [
+  {
+   "X": 10,
+   "Y": 1
+  },
+  {
+   "X": 2,
+   "Y": 8
+  },
+  {
+   "X": 17,
+   "Y": 8
+  },
+  {
+   "X": 10,
+   "Y": 15
+  },
+  {
+   "X": 10,
+   "Y": 8
+  },
+  {
+   "X": 10,
+   "Y": 23
+  },
+  {
+   "X": 10,
+   "Y": 30
+  }
+ ],
+ "Allies": [
+  {
+   "X": 10,
+   "Y": 4
+  },
+  {
+   "X": 10,
+   "Y": 6
+  },
+  {
+   "X": 9,
+   "Y": 5
+  },
+  {
+   "X": 11,
+   "Y": 5
+  },
+  {
+   "X": 9,
+   "Y": 6
+  },
+  {
+   "X": 11,
+   "Y": 6
+  },
+  {
+   "X": 9,
+   "Y": 7
+  },
+  {
+   "X": 11,
+   "Y": 7
+  }
+ ],
+ "Recommend": {
+  "zhaoyun": {
+   "X": 10,
+   "Y": 4
+  },
+  "liubei": {
+   "X": 10,
+   "Y": 6
+  }
+ },
+ "Party": [
+  {
+   "AI": true,
+   "Policy": "hold",
+   "Facing": "NE",
+   "Group": "liupi",
+   "Character": "liupi",
+   "X": 10,
+   "Y": 13,
+   "Faction": "shu"
+  },
+  {
+   "AI": true,
+   "Policy": "hold",
+   "Facing": "NE",
+   "Group": "pigate",
+   "Character": "troop_footman",
+   "X": 9,
+   "Y": 14,
+   "Faction": "shu",
+   "Shift": -0.07
+  },
+  {
+   "AI": true,
+   "Policy": "hold",
+   "Facing": "NE",
+   "Group": "pigate",
+   "Character": "troop_footman",
+   "X": 11,
+   "Y": 14,
+   "Faction": "shu",
+   "Shift": -0.07
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "yuejin",
+   "X": 10,
+   "Y": 3,
+   "Facing": "SW",
+   "Group": "yue",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Rank": "commander",
+   "Deputy": "manchong",
+   "DuelFirst": true
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 9,
+   "Y": 3,
+   "Facing": "SW",
+   "Group": "yue",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 11,
+   "Y": 3,
+   "Facing": "SW",
+   "Group": "yue",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 10,
+   "Y": 2,
+   "Facing": "SW",
+   "Group": "yue",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.07
+  },
+  {
+   "Character": "xuchu",
+   "X": 10,
+   "Y": 20,
+   "Facing": "NE",
+   "Group": "xu",
+   "Policy": "react",
+   "Faction": "wei"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 9,
+   "Y": 20,
+   "Facing": "NE",
+   "Group": "xu",
+   "Policy": "react",
+   "Faction": "wei",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 11,
+   "Y": 20,
+   "Facing": "NE",
+   "Group": "xu",
+   "Policy": "react",
+   "Faction": "wei",
+   "Shift": -0.07
+  }
+ ],
+ "Reward": {
+  "money": 1000
+ },
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 8,
+    "Y": 16,
+    "W": 5,
+    "H": 3
+   },
+   "Name": "남문 밖",
+   "Description": "유벽의 군사가 쥐고 있는 남문 바로 밖. 유비가 여기까지 나오면 성을 빠져나온 것이다"
+  },
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 10,
+    "Y": 30,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "남쪽 성",
+   "Description": "형주로 가는 길목의 작은 성. 손건이 돌아온 뒤 유비가 닿으면 승리"
+  },
+  {
+   "ID": 4,
+   "Rect": {
+    "X": 0,
+    "Y": 18,
+    "W": 20,
+    "H": 2
+   },
+   "Name": "들판 가운데",
+   "Description": "남문과 강 사이의 들판. 유비가 여기 닿으면 동쪽 숲에서 조조의 복병이 나온다"
+  },
+  {
+   "ID": 5,
+   "Rect": {
+    "X": 0,
+    "Y": 26,
+    "W": 20,
+    "H": 2
+   },
+   "Name": "강 남쪽 기슭",
+   "Description": "다리를 건넌 바로 남쪽. 유비가 여기 닿으면 양쪽에서 조조의 복병이 나온다"
+  },
+  {
+   "ID": 3,
+   "Rect": {
+    "X": 0,
+    "Y": 20,
+    "W": 20,
+    "H": 4
+   },
+   "Name": "여수 강가",
+   "Description": "다리와 여울 앞 강가. 유비가 여기 닿으면 다음 차례에 관우와 장비가 맵 끝에 나타난다"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "opening",
+   "If": [
+    "round>=1"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuejin",
+       "Text": "성문은 넷 다 우리 것이다! 유비를 놓치지 마라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhaoyun",
+       "Text": "공, 남문까지 멈추지 마십시오. 뒤는 제가 막겠습니다."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liupi",
+       "Text": "남문 밖 길은 내가 먼저 뚫어 놓겠소! 유 예주는 뒤따라오시오!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "유 장군, 혼자는 위험하오! ……모두 남문으로 간다. 유 장군을 따라붙어라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "liupi",
+      "pigate"
+     ],
+     "Policy": "flee",
+     "GoalArea": 2
+    }
+   ]
+  },
+  {
+   "ID": "south-blocked",
+   "If": [
+    "round>=2",
+    "turnstart:ally"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "xuchu",
+       "Text": "남문으로 나올 줄 알았다. 승상께서 예까지 내다보셨다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "jianyong",
+       "Text": "남쪽 길에도 벌써 조조군이네! 유 장군이 저 속으로 들어가고 있네!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "flanks",
+   "If": [
+    "round>=2",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_footman",
+       "X": 3,
+       "Y": 8,
+       "Facing": "SE",
+       "Group": "west",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 4,
+       "Y": 8,
+       "Facing": "SE",
+       "Group": "west",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 16,
+       "Y": 8,
+       "Facing": "NW",
+       "Group": "east",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 15,
+       "Y": 8,
+       "Facing": "NW",
+       "Group": "east",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "jianyong",
+       "Text": "현덕, 서문과 동문으로도 들어오네! 가운데 길이 끊기기 전에 지나가야 하네!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "north-3",
+   "If": [
+    "round>=3",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_cavalry",
+       "X": 9,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "more",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 11,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "more",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "yuejin",
+       "Text": "뒤의 기병도 다 들여라! 성 안에서 끝낸다!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "north-5",
+   "If": [
+    "round>=5",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_cavalry",
+       "X": 9,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "more",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 11,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "more",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "north-7",
+   "If": [
+    "round>=7",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_cavalry",
+       "X": 9,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "more",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 11,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "more",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "north-9",
+   "If": [
+    "round>=9",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_cavalry",
+       "X": 9,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "more",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 11,
+       "Y": 2,
+       "Facing": "SW",
+       "Group": "more",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "out",
+   "If": [
+    "at:liubei:1"
+   ],
+   "Do": [
+    {
+     "Kind": "join",
+     "Spawns": [
+      {
+       "Character": "sunqian",
+       "X": 10,
+       "Y": 28,
+       "Facing": "NE"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "sunqian",
+       "Text": "황숙! 유경승께서 받아 주시겠답니다! 강 건너 남쪽 성으로 오십시오. 형주로 가는 길입니다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "손 공이 돌아왔다! 다리를 건너 남쪽 성으로 간다!"
+      }
+     ]
+    },
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "zhanghe",
+       "X": 1,
+       "Y": 19,
+       "Facing": "SE",
+       "Group": "zh",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 18,
+       "Facing": "SE",
+       "Group": "zh",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 20,
+       "Facing": "SE",
+       "Group": "zh",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhanghe",
+       "Text": "기병은 나를 따르라. 다리목을 먼저 잡는다!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "xu"
+     ],
+     "Policy": "assault"
+    },
+    {
+     "Kind": "goals",
+     "Victory": [
+      {
+       "If": [
+        "at:liubei:2"
+       ],
+       "Text": "유비가 남쪽 성에 닿는다"
+      }
+     ]
+    },
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-b21-out": 1
+     }
+    }
+   ]
+  },
+  {
+   "ID": "ambush-field",
+   "If": [
+    "flag:flag-b21-out",
+    "at:liubei:4",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_footman",
+       "X": 18,
+       "Y": 19,
+       "Facing": "NW",
+       "Group": "amb1",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 19,
+       "Y": 20,
+       "Facing": "NW",
+       "Group": "amb1",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 19,
+       "Y": 19,
+       "Facing": "NW",
+       "Group": "amb1",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "jianyong",
+       "Text": "동쪽 숲에서도 나오네! 들판에까지 군사를 묻어 뒀구먼!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "ambush-south",
+   "If": [
+    "flag:flag-b21-out",
+    "at:liubei:5",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_cavalry",
+       "X": 1,
+       "Y": 27,
+       "Facing": "SE",
+       "Group": "amb2",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 18,
+       "Y": 28,
+       "Facing": "NW",
+       "Group": "amb2",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 19,
+       "Y": 29,
+       "Facing": "NW",
+       "Group": "amb2",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "강 건너에도 복병인가……. 멈추지 마라! 성이 눈앞이다!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "brothers",
+   "If": [
+    "flag:flag-b21-out",
+    "at:liubei:3",
+    "turnstart:ally"
+   ],
+   "Do": [
+    {
+     "Kind": "join",
+     "Spawns": [
+      {
+       "Character": "guanyu",
+       "X": 1,
+       "Y": 22,
+       "Facing": "SE"
+      },
+      {
+       "Character": "guanping",
+       "X": 0,
+       "Y": 22,
+       "Facing": "SE"
+      },
+      {
+       "Character": "zhoucang",
+       "X": 0,
+       "Y": 23,
+       "Facing": "SE"
+      },
+      {
+       "Character": "zhangfei",
+       "X": 18,
+       "Y": 21,
+       "Facing": "NW"
+      },
+      {
+       "Character": "chendao",
+       "X": 19,
+       "Y": 21,
+       "Facing": "NW"
+      },
+      {
+       "Character": "fangong",
+       "X": 19,
+       "Y": 22,
+       "Facing": "NW"
+      }
+     ]
+    },
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "gongdu",
+       "X": 19,
+       "Y": 19,
+       "Facing": "NE",
+       "Group": "gongdu",
+       "AI": true,
+       "Policy": "run",
+       "GoalArea": 2,
+       "Faction": "shu",
+       "Side": "ally"
+      },
+      {
+       "Character": "xiahouyuan",
+       "X": 19,
+       "Y": 18,
+       "Facing": "SW",
+       "Group": "yuan",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 18,
+       "Y": 16,
+       "Facing": "SW",
+       "Group": "yuan",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 18,
+       "Y": 17,
+       "Facing": "SW",
+       "Group": "yuan",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07,
+       "Side": "enemy"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "guanyu",
+       "Text": "형님! 하후돈은 허깨비였습니다. 속았습니다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "형! 공도는 데려왔슈! 근디 하후연이 꼬리에 붙었슈!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "xiahouyuan",
+       "Text": "도적놈이 어디까지 달아나느냐! 군량 도둑의 목은 내가 벤다!"
+      }
+     ]
+    },
+    {
+     "Kind": "duel",
+     "Duel": "runan-gongdu-xiahouyuan"
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "공도! ……하후연 이놈!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "……운장, 익덕! 뒤를 막아 다오. 모두 남쪽 성으로 간다!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "liupi-falls",
+   "If": [
+    "defeated:liupi",
+    "!fled:liupi"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liupi",
+       "Text": "도적이 아니라…… 예주의 장수로…… 죽는 거요……."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "Faction": "wei",
+ "Duels": [
+  {
+   "ID": "runan-gongdu-xiahouyuan",
+   "Ally": "gongdu",
+   "Enemy": "xiahouyuan",
+   "Outcome": "defeat",
+   "AllyResult": "death",
+   "EnemyResult": "stay",
+   "Text": "공도가 하후연의 칼에 쓰러졌다.",
+   "Melee": {
+    "xiahouyuan": "light_cavalry"
+   },
+   "Unlisted": true,
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "하후연이 공도를 따라잡다",
+     "Speech": "거기 서라!",
+     "Side": 1,
+     "Duration": 2.0
+    },
+    {
+     "Kind": "talk",
+     "Title": "공도가 돌아서다",
+     "Speech": "에잇, 더는 못 뛰겠수. 덤벼 보슈!",
+     "Side": 0,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "approach",
+     "Title": "하후연이 말을 몰아 들이치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "공도가 가까스로 막다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "하후연이 거푸 내리치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "공도가 이를 악물다",
+     "Speech": "유벽 형님…… 먼저 가우…….",
+     "Side": 0,
+     "Duration": 2.4
+    },
+    {
+     "Kind": "critical",
+     "Title": "하후연이 공도를 베다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "win",
+     "Title": "공도가 쓰러지다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 2.0
+    }
+   ]
+  },
+  {
+   "ID": "runan-zhaoyun-yuejin",
+   "Ally": "zhaoyun",
+   "Enemy": "yuejin",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "조운의 창에 밀린 악진이 북문 쪽으로 물러났다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "악진이 조운을 막아서다",
+     "Speech": "비켜라! 내 창은 유비의 목만 찾는다!",
+     "Side": 1,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 답하다",
+     "Speech": "상산의 조자룡이다. 이 창을 넘어야 갈 수 있다!",
+     "Side": 0,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "approach",
+     "Title": "두 장수가 좁은 길에서 맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "조운이 악진의 창을 받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "악진이 거푸 찔러 들어오다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "dodge",
+     "Title": "조운이 몸을 틀어 피하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "조운이 되받아 몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "악진이 크게 밀리다",
+     "Speech": "(이놈, 창끝이 보이지 않는다……!)",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "조운이 창을 내리찍다",
+     "Speech": "하앗!",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "악진이 이를 갈다",
+     "Speech": "……오늘은 네 창에 막혔다. 허나 유비는 못 빠져나간다!",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "retreat",
+     "Title": "악진이 북문 쪽으로 물러나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "악진이 퇴각하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    }
+   ]
+  }
+ ],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "wei",
+   "Name": "조조군"
+  }
+ ]
+}

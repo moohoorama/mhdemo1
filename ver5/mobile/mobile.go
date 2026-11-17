@@ -4,6 +4,8 @@ package mobile
 import (
 	"path/filepath"
 	"sync"
+	"time"
+	_ "time/tzdata" // Android has no zoneinfo where Go looks for it
 
 	ebitenmobile "github.com/hajimehoshi/ebiten/v2/mobile"
 	"srpg/internal/content"
@@ -14,9 +16,11 @@ import (
 var startOnce sync.Once
 var startErr error
 
-// Start initializes one game per Android process. Assets and saves are private to the app.
-func Start(root string) error {
+// Start initializes one game per Android process. Assets and saves are private to the app. zone is the phone's
+// time zone (Java's TimeZone ID): Go reads no TZ on Android and would show save times in UTC.
+func Start(root, zone string) error {
 	startOnce.Do(func() {
+		setZone(zone)
 		data, err := content.Load(filepath.Join(root, "runtime", "assets", "data"))
 		if err != nil {
 			startErr = err
@@ -37,6 +41,13 @@ func Start(root string) error {
 		ebitenmobile.SetGame(g)
 	})
 	return startErr
+}
+
+// setZone makes zone (an IANA ID such as "Asia/Seoul") the local time zone; an unknown one leaves it as it is.
+func setZone(zone string) {
+	if loc, err := time.LoadLocation(zone); err == nil {
+		time.Local = loc
+	}
 }
 
 // Back queues Escape on the game thread instead of mutating GUI state from Java.

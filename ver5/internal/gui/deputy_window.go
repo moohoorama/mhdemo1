@@ -118,7 +118,7 @@ func (g *Game) deputyRows(o core.Observation) []deputyRow {
 		_, own, _ := g.S.Engine.DeputyStats(c.ID, "")
 		r.charm = own[5]
 		if r.reason == "" {
-			r.weight, _ = g.S.Engine.DeputyBlend(actor, c.ID)
+			r.weight, _, _ = g.S.Engine.DeputyBlend(actor, c.ID)
 		}
 		ups := 0
 		for k, a := range attrNames {

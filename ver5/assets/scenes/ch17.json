@@ -83,6 +83,7 @@
   },
   "c17-dong1": {
    "Map": "S_liu_house",
+   "Music": "suno-intrigue",
    "Nodes": ["c17-dong1", "c17-d01", "c17-d02", "c17-d03", "c17-d04", "c17-d05", "c17-d06", "c17-d07", "c17-d08"],
    "Cast": {
     "관우": {"At": [3, 3], "Face": "SE"},
@@ -379,6 +380,7 @@
   "c17-dong2": {
    "Map": "S_liu_house",
    "Time": "night",
+   "Music": "suno-intrigue",
    "Nodes": ["c17-dong2", "c17-e01", "c17-e02", "c17-e10", "c17-e11", "c17-e20", "c17-e21", "c17-e22", "c17-e23", "c17-e30"],
    "Cast": {
     "관우": {"At": [3, 3], "Face": "SE"},
@@ -417,6 +419,7 @@
   },
   "c17-edict": {
    "Map": "S_luoyang_hall",
+   "Music": "suno-intrigue",
    "Nodes": ["c17-edict", "c17-i01", "c17-i02", "c17-i03", "c17-i05", "c17-i06", "c17-i07", "c17-i08", "c17-i09", "c17-i10", "c17-i11", "c17-i12", "c17-i13", "c17-i14", "c17-i15"],
    "Ambient": [{"CamAt": [6, 3]}],
    "Cast": {
@@ -467,6 +470,7 @@
   },
   "c17-death": {
    "Map": "S_xudu",
+   "Music": "suno-farewell",
    "Nodes": ["c17-death", "c17-z01", "c17-z02", "c17-z03", "c17-z04"],
    "Ambient": [{"CamAt": [14, 4]}],
    "Cast": {

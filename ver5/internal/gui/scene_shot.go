@@ -453,6 +453,18 @@ func (g *Game) sceneFlash() float64 {
 		switch e.kind {
 		case "flash":
 			a = math.Max(a, 1-e.t/.5)
+		case "pop": // a blow parried: a short pale pop
+			a = math.Max(a, .35*(1-e.t/.12))
+		case "strobe": // a critical blow: white, a blink of the scene, white again, then back
+			switch {
+			case e.t < .06:
+				a = math.Max(a, 1)
+			case e.t < .12:
+			case e.t < .18:
+				a = math.Max(a, .9)
+			default:
+				a = math.Max(a, .9*(1-(e.t-.18)/.3))
+			}
 		case "lightning": // white at once, held a moment, then the scene comes back slowly
 			a = math.Max(a, math.Min(1, 1-(e.t-.15)/1.8))
 		case "halberd":

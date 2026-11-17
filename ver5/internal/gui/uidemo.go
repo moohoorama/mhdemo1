@@ -32,9 +32,11 @@ type Demo struct {
 	overlay       func(dst *ebiten.Image)
 	replace       bool // the overlay draws the whole screen; the game's own screen is skipped
 	err           error
+	playGame      bool // drive the ordinary input/controller loop as well as animations
 	// stage, duel and node are the data ids the demos play; the engine never names content, so
 	// cmd/_uidemo passes them in
 	stage, duel, node string
+	trace             string
 }
 
 // DemoOptions say which demo to play and how. Frames go to Out every Every frames; Every <= 0
@@ -44,6 +46,7 @@ type DemoOptions struct {
 	Name, Out   string
 	Stage, Duel string
 	Node        string // story node the scene demos jump to
+	Trace       string // autoplay JSONL recording to replay
 	Frames      int
 	Every       int
 	UIScale     int
@@ -104,7 +107,7 @@ func NewDemo(root string, o DemoOptions) (*Demo, error) {
 		}
 	}
 	g.Debug = o.Debug
-	demo := &Demo{g: g, frames: frames, every: every, out: out, stepped: -1, stage: stage, duel: duel, node: o.Node}
+	demo := &Demo{g: g, frames: frames, every: every, out: out, stepped: -1, stage: stage, duel: duel, node: o.Node, trace: o.Trace}
 	if err = setup(demo); err != nil {
 		return nil, err
 	}
@@ -186,6 +189,9 @@ func (d *Demo) Update() error {
 	if d.step != nil && d.stepped != d.frame {
 		d.stepped = d.frame
 		d.step(d.frame)
+	}
+	if d.playGame {
+		return d.g.Update()
 	}
 	d.g.updateMusic(1.0 / 60)
 	d.g.advance(1.0 / 60)

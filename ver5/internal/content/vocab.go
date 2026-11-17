@@ -35,6 +35,10 @@ const (
 	FxTerrainFloor       = "terrain_floor"        // its own terrain factor counts at least 1
 	FxGrassFactor        = "grass_factor"         // its own terrain factor grows by this much on bare grassland
 	FxTerrainFactor      = "terrain_factor"       // its own terrain factor grows by this much on any ground
+	FxWetFactor          = "wet_factor"           // its own terrain factor grows by this much in water, a ford or a wet patch
+	FxAmbushFactor       = "ambush_factor"        // its own terrain factor grows by this much on an ambush cell (woods, mountains)
+	FxWard               = "ward:"                // + element: spells of the element on it deal this share less
+	FxDeputyPlus         = "deputy_plus"          // its deputy's attributes count this much higher when they are blended in
 	FxPoison             = "poison_on_hit"        // landed physical hits poison
 	FxPoisonBoost        = "poison_boost"         // the poison it puts on deals this many times more
 	FxLifeSteal          = "life_steal"           // heals this share of damage dealt
@@ -54,6 +58,10 @@ const (
 	FxRout               = "rout:"                // + status: defeating a foe lowers that stat of the foes around it
 	FxHitDebuff          = "hit_debuff:"          // + status: a landed physical hit lowers that stat of the target
 	FxTurnBuff           = "turn_buff:"           // + status: a buff of this percent on itself each own turn
+	FxStartBuff          = "start_buff:"          // + status: a buff of this percent on itself when it takes the field
+	FxCrush              = "crush"                // felling a foe lowers every stat of the foes around it
+	FxScorn              = "scorn"                // physical blows from a foe at least 10 below its 무력 deal this share less
+	FxImmune             = "immune:"              // + element: spells of the element deal it no damage, no critical, no mark
 	FxAuraBuff           = "aura_buff:"           // + status: a buff of this percent on the allies around it each own turn
 	FxBulwark            = "bulwark"              // blows above this share of max HP deal half above it
 	FxCritImmune         = "crit_immune"          // a blow that would crit is blocked
@@ -88,7 +96,6 @@ const (
 	FxHealBonus          = "heal_bonus"           // heal spells it casts grow by this share
 	FxAura               = "aura_heal"            // adjacent allies recover this share at turn start
 	FxAuraMana           = "aura_mana"            // adjacent allies recover this share of their max spell points at turn start
-	FxDeputyCharm        = "deputy_charm"         // added to its charm when the deputy's attributes are blended in
 	FxItemShare          = "item_share"           // items also affect the weakest ally in the eight cells around the target
 	FxItemPower          = "item_power"           // items it uses restore this share more
 	FxManaRegen          = "mana_regen"           // spell points regenerate this many times faster
@@ -119,13 +126,13 @@ var TraitEffects = map[string]bool{}
 func init() {
 	for _, k := range []string{FxDiagonal, FxLongReach, FxRetreatSweep, FxCritAlways, FxCritBoost, FxSpellCrit, FxCritAmbush, FxCritScholar,
 		FxCritMounted, FxCritWounded, FxLoneCritLeader, FxDoubleAlways, FxAssist, FxRetaliate, FxGuardian, FxSplashCross, FxSplashCrossRanged, FxSplashSquare, FxSplashSquareRanged,
-		FxPierce, FxFlank, FxHeavy, FxCounterBoost, FxKnockback, FxTerrainCap, FxTerrainFloor, FxGrassFactor, FxTerrainFactor, FxPoison, FxPoisonBoost, FxLifeSteal, FxPlunder,
+		FxPierce, FxFlank, FxHeavy, FxCounterBoost, FxKnockback, FxTerrainCap, FxTerrainFloor, FxGrassFactor, FxTerrainFactor, FxWetFactor, FxAmbushFactor, FxWard, FxDeputyPlus, FxPoison, FxPoisonBoost, FxLifeSteal, FxPlunder,
 		FxMissHalf, FxOutnumbered, FxCompanions, FxLone, FxChargePower, FxChargeShock, FxChargeAccuracy, FxOpening,
 		FxDesperate, FxGrit, FxHoldGround, FxRangedSure, FxRout,
-		FxHitDebuff, FxTurnBuff, FxAuraBuff, FxBulwark, FxCritImmune, FxRangedImmune, FxRangedWard, FxMagicWard, FxCounterWard, FxStartMana, FxReflect, FxReflectStatus,
+		FxHitDebuff, FxTurnBuff, FxStartBuff, FxCrush, FxScorn, FxImmune, FxAuraBuff, FxBulwark, FxCritImmune, FxRangedImmune, FxRangedWard, FxMagicWard, FxCounterWard, FxStartMana, FxReflect, FxReflectStatus,
 		FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxAuraHaste, FxRangedReach, FxMountedRange, FxSpellRange,
 		FxSpellSure, FxSpellWard, FxChain, FxSure, FxCritElement, FxPower, FxPatience, FxFinisher, FxDispelBuffs, FxSpellLeech, FxDispel,
-		FxStatusImmune, FxStatusWard, FxHealBonus, FxAura, FxAuraMana, FxDeputyCharm, FxItemShare, FxItemPower, FxManaRegen,
+		FxStatusImmune, FxStatusWard, FxHealBonus, FxAura, FxAuraMana, FxItemShare, FxItemPower, FxManaRegen,
 		FxBloodCost, FxRegen, FxWoundRegen, FxBuffExtend, FxSelfGuardHalf, FxLastStand, FxCostHalf, FxCleanse, FxSpellCure, FxAbsorbMana, FxStatusDouble, FxCritAiling, FxPassAilments,
 		FxBlendBonus, FxDeputyAppoint, FxWield, FxEvade, FxAccuracy, FxPouchHeal} {
 		TraitEffects[k] = true
@@ -165,6 +172,7 @@ const (
 	ItemHP      = "hp"
 	ItemMP      = "mp"
 	ItemPromote = "promote"
+	ItemCure    = "cure" // lifts every harmful status
 )
 
 // Skill effects: a heal's kind, the status a buff or status skill applies, or what a physical skill adds to its blow.
@@ -174,7 +182,7 @@ var SkillEffects = map[string]bool{
 	"mind": true, "attack": true, "defense": true, "morale": true, "agility": true, "speed": true, "range": true,
 	"poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "refill": true,
 	"guard": true, "disrupt": true, "invert": true, "sure_crit": true, "meditate": true,
-	"stance_pierce": true, "stance_cross": true, "stance_square": true,
+	"stance_pierce": true, "stance_cross": true, "stance_square": true, "clear_marks": true,
 }
 
 // StatStatuses are the statuses that raise or lower a battle stat by a percentage.

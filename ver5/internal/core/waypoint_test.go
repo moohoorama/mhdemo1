@@ -37,7 +37,11 @@ func TestNewAt(t *testing.T) {
 
 	t.Run("the story before counts as played", func(t *testing.T) {
 		last := ways[len(ways)-1]
-		e, err := NewAt(d, 1, last.Node, "")
+		var all []string
+		for _, f := range d.StoryFlags() {
+			all = append(all, f.Flag)
+		}
+		e, err := NewAtWith(d, 1, last.Node, "", Start{Flags: all}) // 고순 stays only if he lived through his battle
 		require.NoError(t, err)
 		s := e.Snapshot()
 		for _, w := range ways {
@@ -56,6 +60,16 @@ func TestNewAt(t *testing.T) {
 				with[n.Character] = false
 			case n.Kind == "join":
 				with[n.Character] = true
+			case n.Kind == "battle": // officers who join on the field
+				for _, ev := range d.Stages[d.StageIndex(n.Stage)].Events {
+					for _, a := range ev.Do {
+						for _, sp := range a.Spawns {
+							if a.Kind == "join" {
+								with[sp.Character] = true
+							}
+						}
+					}
+				}
 			}
 		}
 		for id, in := range with {
@@ -63,6 +77,28 @@ func TestNewAt(t *testing.T) {
 				assert.NotNil(t, e.char(id), id)
 			} else {
 				assert.Nil(t, e.char(id), id+" has left")
+			}
+		}
+	})
+
+	t.Run("officers who join on the field are with the party after the battle", func(t *testing.T) {
+		first := func(chapter int) string {
+			for _, w := range ways {
+				if w.Chapter == chapter && w.Stage == "" {
+					return w.Node
+				}
+			}
+			t.Fatalf("no waypoint opens chapter %d", chapter)
+			return ""
+		}
+		for chapter, ids := range map[int][]string{
+			20: {"zhaoyun"},                                    // B19
+			21: {"zhaoyun", "guanyu", "guanping", "zhoucang"}, // B20 brings 관우's party back
+		} {
+			e, err := NewAt(d, 1, first(chapter), "")
+			require.NoError(t, err)
+			for _, id := range ids {
+				assert.NotNil(t, e.char(id), "%s in chapter %d", id, chapter)
 			}
 		}
 	})
@@ -111,6 +147,34 @@ func TestNewAt(t *testing.T) {
 		assert.Equal(t, id, e.Snapshot().Difficulty)
 		_, err = NewAt(d, 1, ways[0].Node, "nope")
 		assert.EqualError(t, err, "UnknownDifficulty")
+	})
+
+	t.Run("the battle flags told are kept and the branches follow them", func(t *testing.T) {
+		at := func(node string, start Start) *Engine {
+			e, err := NewAtWith(d, 1, node, "", start)
+			require.NoError(t, err)
+			return e
+		}
+		e := at("c16-battle", Start{})
+		assert.Zero(t, e.state.Flags["flag-gaoshun"])
+		assert.Nil(t, e.char("gaoshun"), "no flag: the branch that brings him is not taken")
+
+		e = at("c16-battle", Start{Flags: []string{"flag-gaoshun"}})
+		assert.Equal(t, 1, e.state.Flags["flag-gaoshun"])
+		assert.NotNil(t, e.char("gaoshun"))
+
+		e = at("c12-battle", Start{Flags: []string{"flag-gaoshun"}})
+		assert.Zero(t, e.state.Flags["flag-gaoshun"], "the battle that leaves it is not fought yet")
+	})
+
+	t.Run("the level told is the party's", func(t *testing.T) {
+		e, err := NewAtWith(d, 1, "c16-battle", "", Start{Level: 38})
+		require.NoError(t, err)
+		for _, c := range e.Observe().Characters {
+			assert.GreaterOrEqual(t, c.Level, 38, c.ID)
+		}
+		_, err = NewAtWith(d, 1, "c16-battle", "", Start{Level: d.Rules.MaxLevel + 1})
+		assert.EqualError(t, err, "BadLevel")
 	})
 
 	t.Run("an unknown node is refused", func(t *testing.T) {

@@ -172,15 +172,14 @@ func (g *Game) zoomSteps() []float64 {
 	return steps
 }
 
-// fitZoom is the least zoom at which the view stays inside the rectangle round the battle area, or 0
-// where the camera is not held to it (see battleBox).
+// fitZoom is the least zoom at which the view stays inside the battle map's canvas, the battle area and the dark
+// outside round it, or 0 where the camera is not held to the battle area (see battleBox).
 func (g *Game) fitZoom() float64 {
-	box, ok := g.battleBox()
-	if !ok {
+	if _, ok := g.battleBox(); !ok {
 		return 0
 	}
-	vp := g.battleViewport()
-	return max(float64(vp.Dx())/(box[0][1]-box[0][0]), float64(vp.Dy())/(box[1][1]-box[1][0]))
+	vp, size := g.battleViewport(), g.field.Size()
+	return max(float64(vp.Dx())/float64(size.X), float64(vp.Dy())/float64(size.Y))
 }
 
 // battleBox is the rectangle round the battle area's diamond in canvas px, as {left, right} and {top,
@@ -339,7 +338,7 @@ func (g *Game) camera() {
 
 // clampCam is (x, y) moved to where the camera's centre may go. On a battle map that is the battle area's diamond:
 // the view reaches half its own size past each edge, so a cell on the edge can be brought out from under the HUD
-// panels, and goes no farther. Other fields keep the centre on the canvas.
+// panels, and goes no farther, nor past the canvas. Other fields keep the centre on the canvas.
 func (g *Game) clampCam(x, y float64) (float64, float64) {
 	f := g.field
 	if f == nil {
@@ -350,7 +349,16 @@ func (g *Game) clampCam(x, y float64) (float64, float64) {
 		return math.Max(0, math.Min(float64(size.X), x)), math.Max(0, math.Min(float64(size.Y), y))
 	}
 	u, v := g.cellAt(x, y)
-	return f.Center(math.Max(-.5, math.Min(float64(f.Map.W)-.5, u)), math.Max(-.5, math.Min(float64(f.Map.H)-.5, v)))
+	x, y = f.Center(math.Max(-.5, math.Min(float64(f.Map.W)-.5, u)), math.Max(-.5, math.Min(float64(f.Map.H)-.5, v)))
+	// zoomed far out, the view also stays on the canvas
+	vp, size := g.battleViewport(), f.Size()
+	within := func(c, view, size float64) float64 {
+		if view >= size {
+			return size / 2
+		}
+		return math.Max(view/2, math.Min(size-view/2, c))
+	}
+	return within(x, float64(vp.Dx())/g.zoom, float64(size.X)), within(y, float64(vp.Dy())/g.zoom, float64(size.Y))
 }
 
 // camCanGo reports whether the camera can move a little way (dx, dy) from where it is.

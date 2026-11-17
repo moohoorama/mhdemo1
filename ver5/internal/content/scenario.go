@@ -7,6 +7,7 @@ import (
 	"hash"
 	"os"
 	"path/filepath"
+	"slices"
 	"sort"
 	"strings"
 )
@@ -265,6 +266,36 @@ func (d *Data) Waypoints() []Waypoint {
 		for _, id := range c.Nodes {
 			if n := d.Node(id); n.Kind == "battle" {
 				out = append(out, Waypoint{Node: id, Chapter: i + 1, Stage: n.Stage})
+			}
+		}
+	}
+	return out
+}
+
+// StoryFlag is a flag a battle leaves for what comes after it: a bonus objective's.
+type StoryFlag struct {
+	Flag, Stage string // Stage is the stage id
+	Text        string // the objective that leaves it
+	Later       string // what it changes afterwards; none when nothing reads it
+}
+
+// StoryFlags lists the flags the battles leave, in story order.
+func (d *Data) StoryFlags() []StoryFlag {
+	out := []StoryFlag{}
+	for _, w := range d.Waypoints() {
+		if w.Stage == "" {
+			continue
+		}
+		s := d.Stages[d.StageIndex(w.Stage)]
+		subs := slices.Clone(s.Sub)
+		for _, ev := range s.Events {
+			for _, a := range ev.Do {
+				subs = append(subs, a.Sub...)
+			}
+		}
+		for _, o := range subs {
+			if o.Flag != "" && !slices.ContainsFunc(out, func(f StoryFlag) bool { return f.Flag == o.Flag }) {
+				out = append(out, StoryFlag{o.Flag, s.ID, o.Text, o.Later})
 			}
 		}
 	}

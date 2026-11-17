@@ -466,7 +466,7 @@
    "Cost": 300,
    "Requires": [],
    "Effects": {
-    "deputy_charm": 20
+    "deputy_plus": 10
    }
   },
   "share": {

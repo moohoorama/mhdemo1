@@ -9,7 +9,7 @@ import (
 func init() { demos["offstage"] = demoOffstage }
 
 // demoOffstage opens a stage (-stage B18) as demoOpening does and, at frame 90, shows a battlefield line said by
-// someone not on the field (an Offstage line: the messenger's box at the top of the screen) and an ordinary one,
+// someone not on the field (an Offstage line: the story's dialogue box with the messenger's name) and an ordinary one,
 // spoken by the two characters -node names as "offstage,onstage" (default: the first of the stage's speeches with an
 // Offstage line, then the lord).
 func demoOffstage(d *Demo) error {

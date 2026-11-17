@@ -176,6 +176,10 @@ func (m *MLP) backward(x, y []float64, gw, gb [][]float64, scale float64) {
 	for i := range top {
 		delta[i] = 2 * (top[i] - y[i]) * scale
 	}
+	m.backprop(acts, delta, gw, gb)
+}
+
+func (m *MLP) backprop(acts [][]float64, delta []float64, gw, gb [][]float64) {
 	for l := len(m.W) - 1; l >= 0; l-- {
 		in := m.Sizes[l]
 		prev := acts[l]

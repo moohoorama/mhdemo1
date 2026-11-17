@@ -1568,7 +1568,8 @@
        "If": [
         "alive:coalition>=3"
        ],
-       "Flag": "flag-hulao-coalition"
+       "Flag": "flag-hulao-coalition",
+       "Later": "7장 진영 문에서 병사가 콩주머니를 준다"
       }
      ]
     }

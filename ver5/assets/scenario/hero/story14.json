@@ -469,5 +469,62 @@
    "Speaker": "liubei",
    "Text": "흩어진 군사들을 거두게. 한 사람도 버리지 말고."
   }
+ ],
+ "Events": [
+  {
+   "ID": "c14-e-sword",
+   "Kind": "scene",
+   "Place": "서주성 · 미씨 상단 곳간"
+  },
+  {
+   "ID": "c14-sw01",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "저희 상단의 곳간입니다. 서주의 곳간이 모자라면 언제든 열겠습니다."
+  },
+  {
+   "ID": "c14-sw02",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "그리고 사군께 드릴 것이 있습니다. 중산의 장세평 공이 말을 팔러 왔다가 맡기고 간 물건입니다."
+  },
+  {
+   "ID": "c14-sw03",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "탁현 대장장이가 사군 몫으로 벼린 것이라 했습니다. 서주에서 사군을 뵙거든 전해 달라고요."
+  },
+  {
+   "ID": "c14-sw04",
+   "Kind": "grant",
+   "Item": "twin_swords",
+   "Count": 1,
+   "Character": "liubei",
+   "Event": "grant-twin_swords"
+  },
+  {
+   "ID": "c14-sw05",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "몇 해를 곳간에 두었으니 보관료만 쳐도……"
+  },
+  {
+   "ID": "c14-sw06",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "보관료는 장 공이 말값에서 이미 셈해 두었다."
+  },
+  {
+   "ID": "c14-sw-set",
+   "Kind": "set",
+   "Flags": {
+    "c14-sword": 1
+   }
+  },
+  {
+   "ID": "c14-sw-back",
+   "Kind": "back",
+   "Area": "town"
+  }
  ]
 }

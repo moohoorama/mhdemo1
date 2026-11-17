@@ -33,7 +33,7 @@ func (e *Engine) flag(name string) int {
 func (e *Engine) matching(target string) []*Unit {
 	var out []*Unit
 	for _, id := range keys(e.unitIDs) {
-		if u := e.unit(id); u.ID == target || u.Group == target || u.Faction == target {
+		if u := e.unit(id); u.ID == target || u.Group == target || u.Faction == target || target == "player" && u.Faction == "ally" && !u.AI {
 			out = append(out, u)
 		}
 	}

@@ -144,11 +144,14 @@ func (g *Game) logCommand(c core.Command, events []core.Event) {
 		case "effect":
 			line = g.skillEffectText(c.Skill, e)
 		case "item":
-			unit := "병력"
-			if g.S.Data.Items[c.Item].Effect == content.ItemMP {
-				unit = "병법치"
+			switch g.S.Data.Items[c.Item].Effect {
+			case content.ItemMP:
+				line = fmt.Sprintf("%s → %s: 병법치 +%d", g.name(e.Actor), g.name(e.Target), e.Amount)
+			case content.ItemCure:
+				line = fmt.Sprintf("%s → %s: 해로운 상태 해제", g.name(e.Actor), g.name(e.Target))
+			default:
+				line = fmt.Sprintf("%s → %s: 병력 +%d", g.name(e.Actor), g.name(e.Target), e.Amount)
 			}
-			line = fmt.Sprintf("%s → %s: %s +%d", g.name(e.Actor), g.name(e.Target), unit, e.Amount)
 		}
 		if line != "" {
 			lines = append(lines, line)
@@ -179,6 +182,8 @@ func (g *Game) skillEffectText(id string, e core.Event) string {
 		return prefix + fmt.Sprintf("이동력 +%d", int(s.Coeff))
 	case "range":
 		return prefix + fmt.Sprintf("사거리 +%d", int(s.Coeff))
+	case "clear_marks":
+		return prefix + "주변 지형 정비"
 	}
 	if label := statusLabels[s.Effect]; label != "" {
 		return prefix + label + " 적용"

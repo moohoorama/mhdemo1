@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"cmp"
 	"fmt"
 	"image"
 	"maps"
@@ -616,7 +617,7 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 			}
 		}
 		sx, sy := worldToUI(g.toScreen(px, py))
-		plates = append(plates, namedPlate{g.exitName(a, e), sx, sy - 6, style, idle && hover != nil && hover.At == e.At, "", e})
+		plates = append(plates, namedPlate{g.exitName(a, e), sx, sy - 6, style, idle && hover != nil && hover.At == e.At, "", e, px, py})
 	}
 	for key, pk := range w.people {
 		v := g.scene.actors[key]
@@ -626,13 +627,15 @@ func (g *Game) drawExplore(dst *ebiten.Image, o core.Observation) {
 		style := guidePerson[pk]
 		x, y := g.field.Center(v.u, v.v)
 		sx, sy := worldToUI(g.toScreen(x, y-v.lift-g.field.groundLift(v.u, v.v)-v.top-4))
-		plates = append(plates, namedPlate{content.PersonName(pk), sx, sy, style, idle && person == key, key, nil})
+		plates = append(plates, namedPlate{content.PersonName(pk), sx, sy, style, idle && person == key, key, nil, x, y})
 	}
-	slices.SortStableFunc(plates, func(p, q namedPlate) int { // the guide's plates on top, the one pointed at over all
+	// the one pointed at over all, then the guide's plates; among the rest the plate of whoever stands lower on screen,
+	// then further right, on top, so that overlapping plates keep one order from frame to frame
+	slices.SortStableFunc(plates, func(p, q namedPlate) int {
 		if p.hover != q.hover {
 			return map[bool]int{false: -1, true: 1}[p.hover]
 		}
-		return int(p.style) - int(q.style)
+		return cmp.Or(int(p.style)-int(q.style), cmp.Compare(p.footY, q.footY), cmp.Compare(p.footX, q.footX), strings.Compare(p.name, q.name))
 	})
 	w.plates = w.plates[:0]
 	for _, p := range plates {
@@ -653,6 +656,8 @@ type namedPlate struct {
 	hover  bool
 	person string               // the cast key of the person it names
 	exit   *content.ExploreExit // or the exit
+	footX  float64              // canvas point of the person's feet, or of the exit's plate: what plates are layered by
+	footY  float64
 }
 
 // talkable reports whether talking to a person does anything: an extra who does shows a name plate like the named.

@@ -9,6 +9,35 @@ import (
 	"srpg/internal/core"
 )
 
+func TestStrikeCacheMatchesEngineWithinOneEvaluation(t *testing.T) {
+	e := battleIn(t, func(d *content.Data) {})
+	check := func(t *testing.T, e *core.Engine) {
+		x := &evaluator{e: e}
+		units := e.Observe().UnitViews
+		for repeat := range 3 {
+			for _, a := range units {
+				for _, b := range units {
+					assert.Equal(t, e.Strike(a.ID, b.ID), x.strike(a.ID, b.ID), "repeat %d, %s -> %s", repeat, a.ID, b.ID)
+				}
+			}
+			assert.Zero(t, x.strike("missing", "hero"))
+		}
+	}
+	t.Run("repeated pairs", func(t *testing.T) { check(t, e) })
+	t.Run("changed state starts a fresh evaluation", func(t *testing.T) {
+		snap := e.Snapshot()
+		for i := range snap.Characters {
+			if snap.Characters[i].ID == "hero" {
+				snap.Characters[i].Level += 10
+			}
+		}
+		other, err := core.Restore(e.Data(), snap)
+		require.NoError(t, err)
+		assert.NotEqual(t, e.Strike("hero", "boss"), other.Strike("hero", "boss"))
+		check(t, other)
+	})
+}
+
 // TestPlayerFollowsAChangedGoal: at the Bian River the player's side first fights Xu Rong's rear guard,
 // and once Lu Bu comes and the goal turns to the east end, Liu Bei gets there.
 func TestPlayerFollowsAChangedGoal(t *testing.T) {

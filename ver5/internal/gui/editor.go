@@ -20,37 +20,38 @@ import (
 )
 
 type mapEditor struct {
-	previews                                   map[string]core.UnitView
-	units                                      []*unitVis
-	unitsKey                                   string
-	brushOffset                                int
-	brushSize                                  int
-	officerClass                               string
-	trialArt                                   *MapArt
-	trialID                                    string
-	doc                                        *mapedit.Document
-	history                                    mapedit.History
-	field                                      *Field
-	dirty, rebuild                             bool
-	tab, brush, family, classIndex, army, page int
-	ally, officer                              bool
-	pick                                       string
-	level                                      int
-	rank                                       string
-	facing                                     string
-	selected                                   int
-	draft                                      *content.Spawn
-	popup, entry, editing, message, query      string
-	cx, cy, zoom                               float64
-	stroke                                     bool
-	pan                                        bool
-	rightPending, rightMoved                   bool
-	rightStart, rightLast                      image.Point
-	lastX, lastY                               int
-	lastCell                                   image.Point
-	corner                                     int
-	resizing                                   bool
-	proposed                                   mapedit.Rect
+	maps, choices                         tableList
+	previews                              map[string]core.UnitView
+	units                                 []*unitVis
+	unitsKey                              string
+	brushOffset                           int
+	brushSize                             int
+	officerClass                          string
+	trialArt                              *MapArt
+	trialID                               string
+	doc                                   *mapedit.Document
+	history                               mapedit.History
+	field                                 *Field
+	dirty, rebuild                        bool
+	tab, brush, family, classIndex, army  int
+	ally, officer                         bool
+	pick                                  string
+	level                                 int
+	rank                                  string
+	facing                                string
+	selected                              int
+	draft                                 *content.Spawn
+	popup, entry, editing, message, query string
+	cx, cy, zoom                          float64
+	stroke                                bool
+	pan                                   bool
+	rightPending, rightMoved              bool
+	rightStart, rightLast                 image.Point
+	lastX, lastY                          int
+	lastCell                              image.Point
+	corner                                int
+	resizing                              bool
+	proposed                              mapedit.Rect
 }
 
 var editorViewport = image.Rect(16, 64, 992, 688)
@@ -209,6 +210,9 @@ func (g *Game) updateEditor() error {
 		}
 		return nil
 	}
+	if g.updateTableDrag() || g.updateWheelLists() {
+		return nil
+	}
 	if left {
 		for i := len(g.buttons) - 1; i >= 0; i-- {
 			b := g.buttons[i]
@@ -227,10 +231,6 @@ func (g *Game) updateEditor() error {
 	if e.popup != "" {
 		if pressed(ebiten.KeyEscape) {
 			e.popup = ""
-		}
-		_, wheel := ebiten.Wheel()
-		if wheel != 0 {
-			e.page = max(0, e.page-int(wheel))
 		}
 		return nil
 	}
@@ -742,6 +742,7 @@ func (g *Game) editorFinishEntry() {
 	e.editing = ""
 	if kind == "search" {
 		e.query = e.entry
+		e.choices = tableList{}
 		return
 	}
 	if kind == "id" {
@@ -805,13 +806,7 @@ func (g *Game) drawEditor(dst *ebiten.Image) {
 	e := g.editor
 	rect(dst, 0, 0, Width, Height, color.NRGBA{R: 22, G: 27, B: 31, A: 255})
 	if e.doc == nil {
-		g.label(dst, "전투맵 선택", 64, 44, 30, gold)
-		for i, st := range g.S.Data.Stages {
-			i, st := i, st
-			g.btn(dst, image.Rect(64, 108+i*64, 680, 156+i*64), fmt.Sprintf("%s · %s · %d×%d", st.ID, st.Name, st.Width, st.Height), func() { g.editorOpen(i) })
-		}
-		g.btn(dst, image.Rect(1060, 20, 1250, 54), "시작 메뉴", func() { g.editor = nil })
-		g.label(dst, e.message, 64, 680, 18, bad)
+		g.editorMapList(dst)
 		return
 	}
 	d := e.doc

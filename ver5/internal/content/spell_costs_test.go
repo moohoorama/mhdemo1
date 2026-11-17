@@ -16,6 +16,10 @@ func TestSpellCosts(t *testing.T) {
 			if s.Kind == KindPhysical || s.Effect == "meditate" {
 				continue
 			}
+			if id == "first_aid" { // tied to its user, it costs 10 so that it stands next to 소보급 (user, 2026-11-17)
+				assert.Equal(t, 10, s.Cost)
+				continue
+			}
 			assert.GreaterOrEqual(t, s.Cost, 12, id)
 			assert.LessOrEqual(t, s.Cost, 84, id)
 			assert.Zero(t, s.Cost%2, id)

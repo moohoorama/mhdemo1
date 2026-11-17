@@ -21,6 +21,7 @@ const (
 	shakePx         = 3.0
 	critShake       = 2.8 // a critical blow shakes the target this many times harder
 	chargeTime      = .75 // seconds a unit gathers itself, whitening, before a critical blow
+	greyTime        = .6  // seconds a slain scene actor's colours take to drain
 	shakeHz         = 11.0
 	blinkTime       = 1.2
 	leaveTime       = 1.0 // seconds a unit takes to walk off the battle area when it leaves by flight
@@ -55,6 +56,8 @@ type unitVis struct {
 	shakeAmp     float64
 	charge       float64    // 0..1: how white the sprite is drawn while gathering a critical blow
 	charging     bool       // holds the first attack frame and whitens
+	killed       bool       // a scene actor slain: its colours drain to grey
+	grey         float64    // 0..1: how far they have drained
 	dying        float64    // < 0: alive
 	leave        *walkState // walking off the battle area, fading out; t runs to leaveTime
 	arriving     float64    // a scene actor walking on: seconds left of fading in, from leaveTime
@@ -67,9 +70,10 @@ type unitVis struct {
 	boatAxis     string  // "u" or "v": how its boat lies, kept while it faces straight N, E, S or W
 	wade         float64 // 0..1: how far it has sunk into a ford it stands on (field_wade.go)
 	inactive     bool
-	actor        bool   // a scene actor: no HP bar, rests standing or in its pose
-	still        bool   // a story cast member: stands on the idle's first frame, without the battle idle's loop
-	pose         string // a scene actor's resting motion (sit, lie …); "" stands
+	actor        bool    // a scene actor: no HP bar, rests standing or in its pose
+	over         float64 // share of a cell the last step of a walk ran past its end: a path's next step starts that far in
+	still        bool    // a story cast member: stands on the idle's first frame, without the battle idle's loop (and slumps on the exhausted one's)
+	pose         string  // a scene actor's resting motion (sit, lie …); "" stands
 	shownHP      int
 	shownMP      int
 	maxMP        int
@@ -83,12 +87,13 @@ type walkState struct {
 	fu, fv, tu, tv, fl, tl, t float64
 	dur                       float64            // seconds for the cell, stepTime when 0
 	ease                      bool               // fast at first and slowing to a stop (sin of 0..90°), else even
+	accel                     float64            // when > 0: setting off at this share of the mean pace and gathering speed to the end
 	marks                     []float64          // shares of dur at which mark is called, in order
 	mark                      func(u, v float64) // called at each mark with where the unit is
 }
 
 func (u *unitVis) frozenRest() bool {
-	return u.still && u.anim == "idle" || !u.actor && u.inactive && (u.anim == "idle" || u.anim == "exhausted")
+	return u.still && (u.anim == "idle" || u.anim == "exhausted" && u.pose == "exhausted") || !u.actor && u.inactive && (u.anim == "idle" || u.anim == "exhausted")
 }
 
 func (u *unitVis) frame() int {
@@ -131,6 +136,9 @@ func (u *unitVis) shakeOffset() float64 {
 	return u.shakeSign * shakePx * max(1, u.shakeAmp) * math.Sin(2*math.Pi*shakeHz*t) * min(1, u.shakeT/shakeTime)
 }
 func (u *unitVis) update(dt float64) {
+	if u.killed {
+		u.grey = math.Min(1, u.grey+dt/greyTime)
+	}
 	if u.charging {
 		u.charge = math.Min(1, u.charge+dt/chargeTime)
 	} else {
@@ -141,16 +149,22 @@ func (u *unitVis) update(dt float64) {
 		}
 		u.charge = math.Max(0, u.charge-dt*5)
 	}
+	if u.walk == nil {
+		u.over = 0
+	}
 	if w := u.walk; w != nil {
 		dur := w.dur
 		if dur <= 0 {
 			dur = stepTime
 		}
+		u.over = math.Max(0, w.t+dt-dur) / dur
 		w.t = math.Min(dur, w.t+dt)
 		raw := w.t / dur
 		k := raw
 		if w.ease {
 			k = math.Sin(raw * math.Pi / 2)
+		} else if w.accel > 0 {
+			k = w.accel*raw + (1-w.accel)*raw*raw
 		}
 		u.u, u.v = w.fu+(w.tu-w.fu)*k, w.fv+(w.tv-w.fv)*k
 		u.lift = w.fl + (w.tl-w.fl)*k
@@ -469,10 +483,13 @@ func (g *Game) perform(a *replay.Action) []beat {
 						continue
 					}
 					g.spawn("heal", nil, t, 1.1, healC)
-					if g.S.Data.Items[c.Item].Effect == content.ItemMP {
+					switch g.S.Data.Items[c.Item].Effect {
+					case content.ItemMP:
 						t.shownMP += e.Amount // a drink pours past the max
 						g.say(t, fmt.Sprintf("MP +%d", e.Amount))
-					} else {
+					case content.ItemCure:
+						g.say(t, "상태 회복")
+					default:
 						t.shownHP = min(t.maxHP, t.shownHP+e.Amount)
 						g.say(t, fmt.Sprintf("HP +%d", e.Amount))
 					}

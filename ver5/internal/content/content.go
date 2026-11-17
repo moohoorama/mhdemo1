@@ -127,6 +127,7 @@ type Class struct {
 	Scene                           string `json:",omitempty"` // non-combat sprite for scenes of officers in this class that have none of their own
 	Shoot                           string // class whose look a unit takes when FxMountedRange lets it shoot from range
 	Portrait                        string // stands in for officers without a portrait of their own
+	Prefer                          string `json:",omitempty"` // the kind of skill an AI caster of the class reaches for first: magic, status or heal
 	pool                            []string
 }
 type Colors []string
@@ -162,9 +163,9 @@ type Character struct {
 	Level                    int
 	Lord, Playable, Template bool
 	Traits                   []string // own trait plan for an NPC appearance, in order, one more every Rules.TraitPlanStep levels; officers in the party start with none
+	TraitAt                  map[string]int `json:",omitempty"` // traits an NPC appearance holds from a level on, besides its plan (조조: 패기 at 15, 패도 at 35)
 	Learn, Equipment         []string
 	Look                     Look
-	Prefer                   string `json:",omitempty"` // the AI's favoured kind of skill: "status" puts its status spells before its damaging ones
 }
 type Equipment struct {
 	Name, Desc, Slot, Type string
@@ -268,6 +269,9 @@ type Beat struct {
 	Kind, Title, Speech string
 	Side                int
 	Duration            float64
+	// Tired names who is spent in a rest or draw beat: "" both, "ally" side 0, "enemy" side 1, "none" neither.
+	// A draw is not always a stalemate of two exhausted men: 관우 leaves 기령 spent to turn back for 유비.
+	Tired string `json:",omitempty"`
 }
 
 // DuelVariant is the staging used when First is the officer who moved to meet the other.
@@ -287,10 +291,13 @@ type Duel struct {
 	// that class: 조성 fights as a light cavalryman, then shoots as the horse archer he is.
 	Melee    map[string]string `json:",omitempty"`
 	Variants []DuelVariant     `json:",omitempty"`
+	// Unlisted keeps a duel a story event plays out of the briefing's duel list (공도 falling to 하후연 in B21 is
+	// not something the player is asked to bring about, and listing it would give the turn away).
+	Unlisted bool `json:",omitempty"`
 }
 
 // Speech is a battlefield line. An Offstage line is said by someone not on the field (a messenger's report): it
-// is shown in a box at the top of the screen instead of a bubble over the speaker.
+// is shown in the story's dialogue box with the speaker's name only, instead of a bubble over the speaker.
 type Speech struct {
 	Actor, Text string
 	Offstage    bool `json:",omitempty"`
@@ -420,6 +427,7 @@ type Objective struct {
 	ID, Text, Flag string
 	If             []string
 	Reward         map[string]int `json:",omitempty"`
+	Later          string         `json:",omitempty"` // what its Flag changes after the battle, for the waypoint window; never shown in play
 }
 
 // VictoryTargets are the units a victory goal asks to defeat (defeated:X), whom the AI goes after.
@@ -535,6 +543,7 @@ type Node struct {
 	At                                                  *[2]int `json:",omitempty"` // back: his small tile there
 	Face                                                string  `json:",omitempty"` // back: the way he faces there
 	Leave                                               bool    `json:",omitempty"` // back: the walk is over; the story goes on after the explore node
+	Card                                                bool    `json:",omitempty"` // narrate: alone in the middle of a black screen, a part's closing card ("1장 난세도래 / 끝")
 }
 type EditorChoice struct{ ID, Name string }
 type EditorFamily struct {
@@ -718,6 +727,8 @@ type Difficulty struct {
 	ID, Name, Desc string
 	EnemyShift     float64
 	XPPct          int
+	DealtPct       int             `json:",omitempty"` // the player's side deals this percent of its damage to the other (0: 100)
+	TakenPct       int             `json:",omitempty"` // and takes this percent of the damage dealt to it (0: 100); duels keep their own
 	Debug          bool            `json:",omitempty"`
 	Rules          json.RawMessage `json:",omitempty"`
 	rules          *Rules

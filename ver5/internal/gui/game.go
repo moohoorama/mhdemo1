@@ -38,6 +38,7 @@ type Game struct {
 	sound           *soundBank // nil: silent (EnableSound)
 	tracedTheme     string     // the theme last written to sfxTrace
 	sfxCalls        int        // cues asked for so far: a plain click sounds only when what it did made none
+	accepting       bool       // window cleanup inside an approved action is silent
 	musicTab        *musicTable
 	duelPreview     func() error
 	previewIdle     int
@@ -132,6 +133,8 @@ type Game struct {
 	equip                     equipState
 	waypoints                 waypointList
 	jumpNode                  string // the waypoint the difficulty window starts at; none starts a new game
+	jumpLevel                 int             // the waypoint setup: the party's level; none is the next battle's
+	jumpFlags                 map[string]bool // the waypoint setup: the battle flags left on
 	question, yes, no         string
 	confirmTitle              string
 	answer                    func()
@@ -192,6 +195,9 @@ type Game struct {
 	notice, entry             string
 	page, slot, ticks         int
 	input, autoplay           bool
+	campaign                  *campaignAuto
+	campaignRule              bool
+	fastTest                  bool // the end-to-end test: the campaign's own waits (result screen, windows) are skipped
 	capture                   bool
 	seed                      uint64
 	log                       *os.File
@@ -224,6 +230,7 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 	g := &Game{S: s, font: source, brushFont: brush, serifFont: serif, seed: seed, verified: map[string]bool{}, slot: 1, auditDir: auditDir,
 		vis: map[string]*unitVis{}, zoom: 1, zoomFrom: 1, zoomTo: 1, zoomT: .5, speed: savedSpeed(s.Settings.Speed), threats: map[string]core.Ranges{}, itemEffects: map[string]itemEffect{}}
 	g.root = filepath.Dir(filepath.Dir(filepath.Dir(fontPath)))
+	g.Debug = DebugBuild
 	g.player.g = g
 	g.names = nameIndex(s.Data)
 	g.scenes, _ = scenes.Load(filepath.Join(filepath.Dir(fontPath), "..", "scenes"))
@@ -254,6 +261,7 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 	return g, nil
 }
 func (g *Game) Close() {
+	g.stopCampaignAuto()
 	fields := []*Field{g.field}
 	if g.editor != nil {
 		fields = append(fields, g.editor.field)
@@ -276,6 +284,10 @@ func (g *Game) Close() {
 // send passes one request to the session: logging, confirmations, autosave and the
 // battle log. It does not replay anything.
 func (g *Game) send(q session.Request) session.Response {
+	switch q.Op {
+	case "new", "load", "jump", "title", "quit":
+		g.stopCampaignAuto()
+	}
 	var before *core.Observation
 	c := q.Command
 	if g.S.Engine != nil {
@@ -470,7 +482,8 @@ func (g *Game) record(before *core.Observation, events []core.Event) {
 	g.noteGearGrants(events)
 	if gains := acquireGains(before, events); len(gains) > 0 {
 		g.modals = append(g.modals, &modal{kind: "acquire", gains: gains})
-		if before != nil && before.Phase == "scenario" && g.held == nil {
+		// the line before the window stays on screen; a walk the story has left (a sortie that grants a horse) can not
+		if before != nil && before.Phase == "scenario" && g.held == nil && (before.Dialogue.Kind != "explore" || g.S.Engine.ExploreFile() != nil) {
 			g.held = before
 		}
 	}
@@ -789,7 +802,8 @@ func (g *Game) Update() error {
 		g.leftClick()
 	}
 	playing := g.S.Screen == "playing"
-	if playing && !g.autoplay && !g.popupPending() {
+	g.updateCampaignAuto()
+	if playing && !g.autoplay && !g.campaignActive() && !g.popupPending() {
 		if o := g.S.View(); o.Phase == "scenario" && o.Dialogue.Kind == "battle" && g.sortieForced(o) {
 			g.startSortie()
 		}
@@ -797,7 +811,7 @@ func (g *Game) Update() error {
 	if g.autoplay && len(g.modals) > 0 && g.modals[0].t > 1.2 {
 		g.closeModal()
 	}
-	if playing && g.overlay() == "" && len(g.modals) == 0 && g.ticks%12 == 0 {
+	if playing && !g.campaignActive() && g.overlay() == "" && len(g.modals) == 0 && g.ticks%12 == 0 {
 		if g.autoplay {
 			g.assist()
 		} else {
@@ -860,6 +874,10 @@ func (g *Game) keys() {
 		g.request(session.Request{Op: "load", Slot: fmt.Sprint(g.slot)})
 	}
 	if pressed(ebiten.KeyEscape) {
+		if g.campaignActive() {
+			g.stopCampaignAuto()
+			return
+		}
 		before := g.sfxCalls
 		defer g.sfxUnless(before, "ui-back")
 		switch {
@@ -1012,7 +1030,7 @@ func (g *Game) Draw(dst *ebiten.Image) {
 func (g *Game) drawScreen(dst *ebiten.Image) {
 	if g.gallery != nil {
 		dst.Fill(color.NRGBA{R: 16, G: 13, B: 12, A: 255})
-		g.buttons, g.blocks = nil, nil
+		g.buttons, g.blocks, g.wheelAreas = nil, nil, nil
 		g.drawDuelGallery(dst)
 		if g.capture {
 			g.capture = false
@@ -1157,8 +1175,8 @@ func (g *Game) play(dst *ebiten.Image) {
 	if g.held != nil {
 		o = *g.held
 	}
-	if o.Phase != "scenario" {
-		g.dialogueAnim = dialogueAnim{} // the next story opens a fresh box
+	if o.Phase != "scenario" && !slices.ContainsFunc(g.player.Speech, func(b *battleBubble) bool { return b.offstage }) {
+		g.dialogueAnim = dialogueAnim{} // the next story (or offstage line) opens a fresh box
 	}
 	switch o.Phase {
 	case "complete":

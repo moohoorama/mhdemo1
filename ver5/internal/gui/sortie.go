@@ -39,11 +39,20 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 	rect(dst, float32(x+8), float32(y+56), float32(listW-16), 1, goldDim)
 	// 목표 and 메뉴 under the list, on the line of the actions, so the title row holds only the title and the count
 	foot := y + h - 60
+	listFoot := foot
+	if s := g.campaignSlot(); s != nil {
+		listFoot -= 44
+		g.cornerButton(dst, image.Rect(x+8, listFoot, x+listW-8, listFoot+34), s)
+	}
+	if s := g.campaignPolicySlot(); s != nil {
+		listFoot -= 44
+		g.cornerButton(dst, image.Rect(x+8, listFoot, x+listW-8, listFoot+34), s)
+	}
 	g.mBtn(dst, image.Rect(x+8, foot, x+8+88, foot+touchH), "목표", false, g.openObjective)
 	g.mBtn(dst, image.Rect(x+8+96, foot, x+8+96+88, foot+touchH), "메뉴", false, func() { g.openOverlay("menu") })
 	_, gearOwner, _, guide := g.gearStep()
 	guide = guide && g.overlay() == ""
-	g.listRows(dst, &g.party.officers, image.Rect(x+6, y+58, x+listW-4, foot-6), len(ids), listRowH, func(i int, rr image.Rectangle) {
+	g.listRows(dst, &g.party.officers, image.Rect(x+6, y+58, x+listW-4, listFoot-6), len(ids), listRowH, func(i int, rr image.Rectangle) {
 		g.sortieRow(dst, o, rr, ids[i])
 		if guide && ids[i] == gearOwner && ids[i] != g.selected {
 			g.guideRim(dst, rr.Inset(4))

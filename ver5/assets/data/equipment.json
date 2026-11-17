@@ -115,6 +115,25 @@
     "keen_edge"
    ]
   },
+  "twin_swords": {
+   "Owner": "liubei",
+   "Name": "자웅일대검",
+   "Desc": "탁현 대장장이가 청룡언월도·장팔사모와 같은 강철로 한 쌍을 맞춰 벼린 두 자루 칼. 반드시 연속 공격한다.",
+   "Slot": "weapon",
+   "Type": "sword",
+   "Icon": "twin",
+   "Bonus": [
+    4,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "relentless"
+   ]
+  },
   "qinggang_sword": {
    "Name": "청공검",
    "Desc": "조조가 아끼던 보검. 철을 진흙처럼 벤다. 청공: 앞을 치면 그 대상의 양옆 두 칸의 적도 50% 피해를 받는다.",
@@ -403,6 +422,24 @@
    ],
    "Traits": [
     "castle_defense"
+   ]
+  },
+  "mirror_armor": {
+   "Name": "거울갑옷",
+   "Desc": "거울처럼 매끈하게 닦아 빛을 되쏘는 조조군의 은빛 갑옷. 원거리 물리 공격으로 받는 피해 50% 감소(원거리피해감소 특성과 합산).",
+   "Slot": "armor",
+   "Type": "armor",
+   "Icon": "mirror",
+   "Bonus": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    1
+   ],
+   "Traits": [
+    "mirror_plate"
    ]
   },
   "fire_manual": {
