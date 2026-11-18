@@ -145,6 +145,14 @@ func play(d *content.Data, i, level int, seed uint64, player string, damage, xp 
 				fmt.Printf("  %-6s %-18s %-15s Lv%-2d HP%5d atk%4d def%4d mind%4d agi%4d mor%4d\n", u.Faction+map[bool]string{true: "+ai"}[u.AI], u.ID, u.Class, u.Level, u.Stats.MaxHP, u.Stats.Attack, u.Stats.Defense, u.Stats.Mind, u.Stats.Agility, u.Stats.Morale)
 			}
 		}
+		if o.Phase == "battle" {
+			st := d.Stages[i]
+			for _, u := range o.UnitViews {
+				if u.HP > 0 && (u.X < 0 || u.Y < 0 || u.X >= st.Width || u.Y >= st.Height) {
+					fmt.Printf("OUT OF MAP %s seed %d round %d: %s at (%d,%d), map %dx%d\n", st.ID, seed, o.Round, u.ID, u.X, u.Y, st.Width, st.Height)
+				}
+			}
+		}
 		for _, u := range o.UnitViews {
 			if u.Faction == "ally" && !u.AI {
 				if _, ok := start[u.ID]; !ok {

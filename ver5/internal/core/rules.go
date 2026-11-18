@@ -108,6 +108,9 @@ func (e *Engine) CellProps(x, y int) content.CellProps { return e.data.Props(e.C
 func (e *Engine) terrain(u *Unit, x, y int) content.Terrain {
 	c := e.Cell(x, y)
 	t := e.data.Move(e.unitClass(u).Terrain, c, e.Boats())
+	if s := e.data.Stages[e.state.Stage]; x < 0 || y < 0 || x >= s.Width || y >= s.Height {
+		return content.Terrain{} // the edge cell is only scenery: nobody enters it, even by boat
+	}
 	if e.has(u, content.FxIgnoreMoveCost) && t.Cost > 0 {
 		t.Cost = 1
 	}

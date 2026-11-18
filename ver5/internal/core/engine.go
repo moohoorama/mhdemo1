@@ -250,6 +250,9 @@ func (e *Engine) Apply(c Command) (r Result, err error) {
 	}
 	t.flushXP()
 	t.settle()
+	if err = t.checkInMap(); err != nil {
+		return Result{}, fmt.Errorf("%w (after %s by %s)", err, c.Kind, c.Actor)
+	}
 	t.state.Revision++
 	if testing.Testing() && !e.unchecked {
 		// Every state a command leaves must load again, or a save of it (or the move preview) breaks.
@@ -260,6 +263,20 @@ func (e *Engine) Apply(c Command) (r Result, err error) {
 	r = Result{t.state.Revision, t.events}
 	e.replace(t)
 	return r, nil
+}
+
+// checkInMap fails if a living unit stands outside the map: no command may leave one there.
+func (e *Engine) checkInMap() error {
+	if e.state.Phase != "battle" {
+		return nil
+	}
+	s := e.data.Stages[e.state.Stage]
+	for _, id := range keys(e.unitIDs) {
+		if u := e.unit(id); u.HP > 0 && (u.X < 0 || u.Y < 0 || u.X >= s.Width || u.Y >= s.Height) {
+			return fmt.Errorf("InternalError: unit %s at (%d,%d) is outside the %dx%d map", u.ID, u.X, u.Y, s.Width, s.Height)
+		}
+	}
+	return nil
 }
 
 // replace makes e the engine t, keeping what lives outside the state (SetImmortal).
