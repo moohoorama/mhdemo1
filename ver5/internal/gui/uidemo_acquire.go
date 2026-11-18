@@ -15,12 +15,15 @@ func init() {
 
 func demoSmithGifts(d *Demo) error {
 	g := d.g
+	if d.node == "" {
+		return fmt.Errorf("smith gifts: -node names the gift talk to start from")
+	}
 	r := g.request(session.Request{Op: "new", Seed: 1})
 	if !r.OK {
 		return fmt.Errorf("smith gifts: %s", r.Error)
 	}
 	s := g.S.Engine.Snapshot()
-	s.Node = "c02-k2"
+	s.Node = d.node
 	e, err := core.Restore(g.S.Data, s)
 	if err != nil {
 		return err
@@ -33,7 +36,7 @@ func demoSmithGifts(d *Demo) error {
 		}
 		if len(g.modals) > 0 {
 			g.closeModal()
-		} else if node := g.S.View().Node; node == "c02-k2" || node == "c02-k4" {
+		} else {
 			g.advanceDialogue()
 		}
 	}

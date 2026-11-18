@@ -9,13 +9,13 @@ import (
 
 func init() { demos["officercards"] = demoOfficerCards }
 
-// demoOfficerCards jumps to the -node battle node (c14-battle by default), dresses the lord in the gear his class
+// demoOfficerCards jumps to the -node battle node, dresses the lord in the gear his class
 // carries with the most grades and traits in every slot and shows, in the sortie preparation, his 열전 (frame 20)
 // and 장비 (40) tabs, then the same two tabs in the officers' window (60, 80), for checking the cards on a phone.
 func demoOfficerCards(d *Demo) error {
 	g := d.g
 	if d.node == "" {
-		d.node = "c14-battle"
+		return fmt.Errorf("officercards: -node names the battle node to jump to")
 	}
 	g.request(session.Request{Op: "jump", Seed: 1, Node: d.node})
 	for l := g.S.View().Learners; len(l) > 0; l = g.S.View().Learners {
