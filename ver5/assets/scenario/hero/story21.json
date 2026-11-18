@@ -226,34 +226,10 @@
    "Event": "leave-guanyu-21"
   },
   {
-   "ID": "c21-leave-guanping",
-   "Kind": "leave",
-   "Character": "guanping",
-   "Event": "leave-guanping-21"
-  },
-  {
-   "ID": "c21-leave-zhoucang",
-   "Kind": "leave",
-   "Character": "zhoucang",
-   "Event": "leave-zhoucang-21"
-  },
-  {
    "ID": "c21-leave-zhangfei",
    "Kind": "leave",
    "Character": "zhangfei",
    "Event": "leave-zhangfei-21"
-  },
-  {
-   "ID": "c21-leave-chendao",
-   "Kind": "leave",
-   "Character": "chendao",
-   "Event": "leave-chendao-21"
-  },
-  {
-   "ID": "c21-leave-fangong",
-   "Kind": "leave",
-   "Character": "fangong",
-   "Event": "leave-fangong-21"
   },
   {
    "ID": "c21-gate",
@@ -351,34 +327,10 @@
    "Event": "back-guanyu-21"
   },
   {
-   "ID": "c21-back-guanping",
-   "Kind": "join",
-   "Character": "guanping",
-   "Event": "back-guanping-21"
-  },
-  {
-   "ID": "c21-back-zhoucang",
-   "Kind": "join",
-   "Character": "zhoucang",
-   "Event": "back-zhoucang-21"
-  },
-  {
    "ID": "c21-back-zhangfei",
    "Kind": "join",
    "Character": "zhangfei",
    "Event": "back-zhangfei-21"
-  },
-  {
-   "ID": "c21-back-chendao",
-   "Kind": "join",
-   "Character": "chendao",
-   "Event": "back-chendao-21"
-  },
-  {
-   "ID": "c21-back-fangong",
-   "Kind": "join",
-   "Character": "fangong",
-   "Event": "back-fangong-21"
   },
   {
    "ID": "c21-south",

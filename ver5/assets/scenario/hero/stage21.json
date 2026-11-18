@@ -576,33 +576,9 @@
        "Facing": "SE"
       },
       {
-       "Character": "guanping",
-       "X": 1,
-       "Y": 24,
-       "Facing": "SE"
-      },
-      {
-       "Character": "zhoucang",
-       "X": 1,
-       "Y": 26,
-       "Facing": "SE"
-      },
-      {
        "Character": "zhangfei",
        "X": 18,
        "Y": 20,
-       "Facing": "NW"
-      },
-      {
-       "Character": "chendao",
-       "X": 19,
-       "Y": 21,
-       "Facing": "NW"
-      },
-      {
-       "Character": "fangong",
-       "X": 18,
-       "Y": 21,
        "Facing": "NW"
       }
      ]
@@ -1036,7 +1012,7 @@
    "Outcome": "defeat",
    "AllyResult": "death",
    "EnemyResult": "stay",
-   "Text": "공도가 하후연의 칼에 쓰러졌다.",
+   "Text": "공도가 열 합을 버티다 달아났으나 하후연의 화살에 쓰러졌다.",
    "Melee": {
     "xiahouyuan": "light_cavalry"
    },
@@ -1115,7 +1091,7 @@
     {
      "Kind": "dodge",
      "Title": "공도가 크게 휘둘렀으나 하후연이 몸을 틀어 피하다",
-     "Speech": "",
+     "Speech": "이얍!",
      "Side": 0,
      "Duration": 1.05
     },
@@ -1134,25 +1110,74 @@
      "Duration": 1.2
     },
     {
-     "Kind": "talk",
-     "Title": "공도가 이를 악물다",
-     "Speech": "유벽 형님…… 먼저 가우…….",
+     "Kind": "block",
+     "Title": "공도가 칼을 내리치다",
+     "Speech": "",
      "Side": 0,
-     "Duration": 2.7
+     "Duration": 1.05
     },
     {
-     "Kind": "rush-block",
-     "Title": "하후연이 말을 몰아 들이치다",
+     "Kind": "block",
+     "Title": "하후연이 맞받아 쳐 내다",
      "Speech": "",
      "Side": 1,
-     "Duration": 1.1
+     "Duration": 1.05
     },
     {
-     "Kind": "critical",
-     "Title": "하후연이 결정타를 넣다",
+     "Kind": "talk",
+     "Title": "하후연이 코웃음 치다",
+     "Speech": "칼질이 거칠구나. 기운만 앞서서야 내 말 한 필도 못 넘는다.",
+     "Side": 1,
+     "Duration": 3.5
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "하후연이 힘껏 내려치나 공도가 막아 내다",
+     "Speech": "흥!",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "hit",
+     "Title": "하후연의 일격에 공도가 크게 밀리다",
      "Speech": "",
      "Side": 1,
      "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "공도가 이를 악물다",
+     "Speech": "(안 되겠수…… 이대로는 길을 못 지키우. 빠져서 형님께 알려야겠수!)",
+     "Side": 0,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "straight-chase",
+     "Title": "공도가 칼을 휘둘러 뿌리치고 달아나자 하후연이 뒤쫓다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.9
+    },
+    {
+     "Kind": "talk",
+     "Title": "하후연이 활을 뽑다",
+     "Speech": "등을 보이는 놈에게 칼은 아깝다. 활로 끝내주마!",
+     "Side": 1,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "shoot",
+     "Title": "하후연이 달아나는 공도의 등에 화살을 쏘다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.5
+    },
+    {
+     "Kind": "talk",
+     "Title": "공도가 쓰러지며 되뇌다",
+     "Speech": "유벽 형님…… 먼저 가우…….",
+     "Side": 0,
+     "Duration": 2.7
     },
     {
      "Kind": "win",
