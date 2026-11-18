@@ -328,3 +328,43 @@ func TestLoadChecksSceneActions(t *testing.T) {
 		t.Run(name, func(t *testing.T) { assert.Error(t, loadWithStage(t, edit)) })
 	}
 }
+
+func TestLoadChecksReserve(t *testing.T) {
+	join := obj("Kind", "join", "Spawns", objs(obj("Character", "archer1", "X", 2, "Y", 2)))
+	ok := map[string]func(map[string]any){
+		"a reserve officer a join calls in": func(st map[string]any) {
+			st["Reserve"] = objs("archer1")
+			st["Events"] = objs(obj("ID", "e", "Do", objs(join)))
+		},
+	}
+	bad := map[string]func(map[string]any){
+		"reserve no join calls in": func(st map[string]any) { st["Reserve"] = objs("archer1") },
+		"reserve not playable": func(st map[string]any) {
+			st["Reserve"] = objs("boss")
+			st["Events"] = objs(obj("ID", "e", "Do", objs(join)))
+		},
+		"reserve repeated": func(st map[string]any) {
+			st["Reserve"] = objs("archer1", "archer1")
+			st["Events"] = objs(obj("ID", "e", "Do", objs(join)))
+		},
+		"reserve also required": func(st map[string]any) {
+			st["Reserve"], st["Required"] = objs("archer1"), objs("archer1")
+			st["Events"] = objs(obj("ID", "e", "Do", objs(join)))
+		},
+		"reserve with a recommended cell": func(st map[string]any) {
+			st["Reserve"] = objs("archer1")
+			st["Recommend"] = obj("archer1", obj("X", 1, "Y", 3))
+			st["Events"] = objs(obj("ID", "e", "Do", objs(join)))
+		},
+		"reserve join overrides the preparation": func(st map[string]any) {
+			st["Reserve"] = objs("archer1")
+			st["Events"] = objs(obj("ID", "e", "Do", objs(obj("Kind", "join", "Spawns", objs(obj("Character", "archer1", "X", 2, "Y", 2, "Level", 9))))))
+		},
+	}
+	for name, edit := range ok {
+		t.Run("accepts "+name, func(t *testing.T) { require.NoError(t, loadWithStage(t, edit)) })
+	}
+	for name, edit := range bad {
+		t.Run("rejects "+name, func(t *testing.T) { assert.Error(t, loadWithStage(t, edit)) })
+	}
+}

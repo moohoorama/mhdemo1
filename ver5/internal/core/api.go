@@ -418,7 +418,14 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, []string, erro
 	if len(s.Deployment) < 1 {
 		return bad("no one deployed")
 	}
-	if len(s.Deployment) > d.Stages[s.Stage].Max && s.Phase != "scenario" && s.Phase != "complete" { // the story may add officers after the last battle
+	reserve := d.Stages[s.Stage].Reserve // they sortie on top of Max and stand on no cell until a join event calls them in
+	sortie := len(s.Deployment)
+	for _, id := range s.Deployment {
+		if contains(reserve, id) {
+			sortie--
+		}
+	}
+	if sortie > d.Stages[s.Stage].Max && s.Phase != "scenario" && s.Phase != "complete" { // the story may add officers after the last battle
 		if err := soft("CorruptSave", "%d deployed, at most %d", len(s.Deployment), d.Stages[s.Stage].Max); err != nil {
 			return nil, nil, err
 		}
@@ -636,7 +643,7 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, []string, erro
 		}
 		var errs []error
 		for id := range deploy {
-			if !ids[id] && s.Phase != "deployment" {
+			if !ids[id] && s.Phase != "deployment" && !contains(reserve, id) {
 				errs = append(errs, soft("CorruptSave", "deployed %s has no unit", id))
 			}
 		}

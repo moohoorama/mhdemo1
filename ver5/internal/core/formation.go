@@ -54,7 +54,7 @@ func (e *Engine) assignDeputy(c Command) error {
 // releaseRequired frees the officers a stage requires from serving as deputies, so they go into the battle.
 func (e *Engine) releaseRequired(s content.Stage) {
 	for _, id := range keys(e.charIDs) {
-		if o := e.char(id); o.Deputy != "" && contains(s.Required, o.Deputy) {
+		if o := e.char(id); o.Deputy != "" && (contains(s.Required, o.Deputy) || contains(s.Reserve, o.Deputy)) {
 			e.emit("undeputy", o.ID, o.Deputy, 0)
 			o.Deputy = ""
 		}
@@ -76,7 +76,7 @@ func (e *Engine) DeputyCheck(actor, target string) error {
 		return fail("LordDeputy")
 	}
 	if e.state.Stage >= 0 && e.state.Stage < len(e.data.Stages) && (e.Deploying() || e.state.Phase == "scenario" && e.data.Node(e.state.Node).Kind == "battle") &&
-		contains(e.data.Stages[e.state.Stage].Required, d.ID) {
+		(contains(e.data.Stages[e.state.Stage].Required, d.ID) || contains(e.data.Stages[e.state.Stage].Reserve, d.ID)) {
 		return fail("RequiredDeputy")
 	}
 	return nil

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -265,7 +266,11 @@ func (p *player) storyScreen(o core.Observation) {
 	case "battle":
 		var names []string
 		for _, id := range o.Deployment {
-			names = append(names, p.d.Characters[id].Name)
+			name := p.d.Characters[id].Name
+			if slices.Contains(p.d.Stages[o.Stage].Reserve, id) {
+				name += "(복병)"
+			}
+			names = append(names, name)
 		}
 		p.printf("편성: %s\n", strings.Join(names, ", "))
 		p.add("출전", func() { p.command(core.Command{Kind: "start"}) })

@@ -4,6 +4,23 @@ import "srpg/internal/content"
 
 func (e *Engine) Deploying() bool { return e.state.Phase == "deployment" }
 
+// reserved reports whether the stage holds the officer back from the battle's start (Stage.Reserve): they
+// sortie and prepare like the rest, but stand on no cell until a join event calls them in.
+func (e *Engine) reserved(id string) bool {
+	return e.state.Stage >= 0 && e.state.Stage < len(e.data.Stages) && contains(e.data.Stages[e.state.Stage].Reserve, id)
+}
+
+// sortieSize is how many of the officers count against the stage's Max: all but the reserve.
+func (e *Engine) sortieSize(ids []string) int {
+	n := 0
+	for _, id := range ids {
+		if !e.reserved(id) {
+			n++
+		}
+	}
+	return n
+}
+
 func (e *Engine) deploymentCell(id string, p content.Point) bool {
 	return e.deploymentGround(id, p) && e.occupied(p.X, p.Y) == nil
 }
@@ -12,7 +29,7 @@ func (e *Engine) deploymentCell(id string, p content.Point) bool {
 func (e *Engine) deploymentGround(id string, p content.Point) bool {
 	c := e.char(id)
 	st := e.data.Stages[e.state.Stage]
-	if c == nil || c.Dead || !contains(e.state.Deployment, id) || p.X < 0 || p.Y < 0 || p.X >= st.Width || p.Y >= st.Height || !containsPoint(st.Allies, p) {
+	if c == nil || c.Dead || e.reserved(id) || !contains(e.state.Deployment, id) || p.X < 0 || p.Y < 0 || p.X >= st.Width || p.Y >= st.Height || !containsPoint(st.Allies, p) {
 		return false
 	}
 	if g, ok := st.GroupOf(id); ok && !st.InArea(p, g.Area) { // a split sortie keeps each group's leader on its cells
@@ -34,12 +51,11 @@ func (e *Engine) canReposition(id string, p content.Point) bool {
 
 func (e *Engine) deploymentReady() bool {
 	for _, id := range e.state.Deployment {
-		u := e.unit(id)
-		if u == nil || u.HP <= 0 || u.Faction != "ally" {
+		if u := e.unit(id); !e.reserved(id) && (u == nil || u.HP <= 0 || u.Faction != "ally") {
 			return false
 		}
 	}
-	return len(e.state.Deployment) > 0
+	return e.sortieSize(e.state.Deployment) > 0
 }
 
 func (e *Engine) deployCommand(c Command) error {
@@ -224,13 +240,13 @@ func (e *Engine) placements() ([]Command, error) {
 		placed[id] = true
 	}
 	for _, id := range e.state.Deployment {
-		if e.unit(id) == nil && !placed[id] && !assign(id, map[int]bool{}) {
+		if e.unit(id) == nil && !e.reserved(id) && !placed[id] && !assign(id, map[int]bool{}) {
 			return nil, fail("NoDeploymentSpace")
 		}
 	}
 	out := []Command{}
 	for _, id := range e.state.Deployment {
-		if e.unit(id) != nil {
+		if e.unit(id) != nil || e.reserved(id) {
 			continue
 		}
 		for i, p := range cells {

@@ -180,7 +180,7 @@ func (g *Genome) sortie(d *content.Data, e *core.Engine, apply func(core.Command
 		if len(ids) >= st.Max {
 			break
 		}
-		if !slices.Contains(ids, c.ID) && !isDeputy(e, c.ID) {
+		if !slices.Contains(ids, c.ID) && !isDeputy(e, c.ID) && !slices.Contains(st.Reserve, c.ID) { // the reserve goes on top of the count
 			ids = append(ids, c.ID)
 		}
 	}

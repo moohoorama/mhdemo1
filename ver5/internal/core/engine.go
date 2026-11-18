@@ -814,7 +814,7 @@ func (e *Engine) prepare(c Command) error {
 	}
 	if c.Kind == "deploy" {
 		s := e.data.Stages[e.state.Stage]
-		if len(c.Deployment) < 1 || len(c.Deployment) > s.Max || !e.requiredIn(s, c.Deployment) {
+		if n := e.sortieSize(c.Deployment); n < 1 || n > s.Max || !e.requiredIn(s, c.Deployment) {
 			return fail("InvalidDeployment")
 		}
 		seen := map[string]bool{}
@@ -830,6 +830,7 @@ func (e *Engine) prepare(c Command) error {
 			}
 		}
 		e.state.Deployment = append([]string{}, c.Deployment...)
+		e.addReserve(s)
 		return nil
 	}
 	if c.Kind == "equip" || c.Kind == "unequip" {
@@ -862,7 +863,7 @@ func (e *Engine) prepare(c Command) error {
 	if c.Kind != "start" {
 		return fail("UnknownCommand")
 	}
-	if st := e.data.Stages[e.state.Stage]; len(e.state.Deployment) < 1 || len(e.state.Deployment) > st.Max || !e.requiredIn(st, e.state.Deployment) {
+	if st := e.data.Stages[e.state.Stage]; e.sortieSize(e.state.Deployment) < 1 || e.sortieSize(e.state.Deployment) > st.Max || !e.requiredIn(st, e.state.Deployment) {
 		return fail("InvalidDeployment")
 	}
 	// Remove prior transient units and enemies from the preparation checkpoint.
@@ -1242,10 +1243,20 @@ func (e *Engine) requiredIn(s content.Stage, sortie []string) bool {
 	return true
 }
 
+// addReserve puts the stage's reserve officers who are able to go into the sortie, behind the rest.
+func (e *Engine) addReserve(s content.Stage) {
+	for _, id := range s.Reserve {
+		if o := e.char(id); o != nil && !o.Dead && !e.isDeputy(id) && !contains(e.state.Deployment, id) {
+			e.state.Deployment = append(e.state.Deployment, id)
+		}
+	}
+}
+
 // fitSortie puts the officers a stage requires into the sortie and, when more have joined than the stage takes,
-// keeps the highest-levelled of the rest (the lord always goes); the player changes it from there.
+// keeps the highest-levelled of the rest (the lord always goes); the player changes it from there. The stage's
+// reserve officers go on top of Max.
 func (e *Engine) fitSortie(s content.Stage) {
-	ids := append([]string{}, e.state.Deployment...)
+	ids := slices.DeleteFunc(slices.Clone(e.state.Deployment), func(id string) bool { return contains(s.Reserve, id) })
 	for i := len(s.Required) - 1; i >= 0; i-- {
 		id := s.Required[i]
 		if o := e.char(id); o != nil && !o.Dead && !e.isDeputy(id) && !contains(ids, id) {
@@ -1263,6 +1274,7 @@ func (e *Engine) fitSortie(s content.Stage) {
 		ids = ids[:max(s.Max, len(slices.DeleteFunc(slices.Clone(ids), func(id string) bool { return !must(id) })))]
 	}
 	e.state.Deployment = ids
+	e.addReserve(s)
 }
 
 func copyGoal(p *content.Point) *content.Point {

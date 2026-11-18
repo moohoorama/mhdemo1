@@ -49,6 +49,7 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 		duels[duel.ID] = true
 	}
 	ids := map[string]bool{}
+	joins := map[string]bool{} // officers a join action calls in
 	for _, event := range s.Events {
 		if event.ID == "" || ids[event.ID] || len(event.Do) == 0 || event.Every < 0 || event.Every > 0 && event.Repeat {
 			return nil, nil, fmt.Errorf("battle event %s", event.ID)
@@ -72,6 +73,10 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 						return nil, nil, fmt.Errorf("battle event %s: join %s", event.ID, sp.Character)
 					}
 					allies[sp.Character] = true
+					joins[sp.Character] = true
+					if contains(s.Reserve, sp.Character) && (sp.Class != "" || sp.Level != 0 || sp.Equipment != nil || sp.Traits != nil) {
+						return nil, nil, fmt.Errorf("battle event %s: join %s keeps the class, level, gear and traits of the preparation", event.ID, sp.Character)
+					}
 					note(sp)
 				}
 			case "spawn":
@@ -146,6 +151,9 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 				return nil, nil, fmt.Errorf("battle event %s: action %q", event.ID, a.Kind)
 			}
 		}
+	}
+	if err := d.validateReserve(s, joins); err != nil {
+		return nil, nil, err
 	}
 	refs := &battleRefs{targets: targets, areas: areas, duels: duels, events: ids}
 	if err := d.validateObjectives(s, refs); err != nil {
@@ -222,6 +230,23 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 		}
 	}
 	return allies, enemies, nil
+}
+
+// validateReserve checks the officers who wait out of the battle's start: playable, not otherwise bound to the
+// sortie or its cells, and called in by one of the stage's join actions.
+func (d *Data) validateReserve(s Stage, joins map[string]bool) error {
+	seen := map[string]bool{}
+	for _, id := range s.Reserve {
+		_, recommended := s.Recommend[id]
+		if !d.Characters[id].Playable || d.Characters[id].Lord || seen[id] || contains(s.Required, id) || recommended {
+			return fmt.Errorf("stage %s: reserve officer %s", s.ID, id)
+		}
+		if !joins[id] {
+			return fmt.Errorf("stage %s: reserve officer %s is called in by no join action", s.ID, id)
+		}
+		seen[id] = true
+	}
+	return nil
 }
 
 // validateGoals checks a list of win (needText) or loss goals.

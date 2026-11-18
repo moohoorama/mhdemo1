@@ -102,7 +102,11 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 				if o := e.char(sp.Character); e.unit(sp.Character) != nil || o != nil && o.Dead {
 					continue // already on the map, or fallen
 				}
-				e.welcome(sp.Character, e.stageOrder())
+				if !e.reserved(sp.Character) {
+					e.welcome(sp.Character, e.stageOrder())
+				} else if e.char(sp.Character) == nil {
+					continue // a reserve officer who is not in the roster does not come
+				}
 				u := e.spawn(sp.Character, sp.Character, "ally", p.X, p.Y, sp)
 				e.faceObjective(u, nil)
 				snapshot := copyOf(*u)

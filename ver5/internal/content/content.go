@@ -514,6 +514,7 @@ type Stage struct {
 	GearTier           int         `json:"-"` // the tier of plain gear the stage's soldiers wear (Rules.GearTiers by chapter); 0 when no battle node leads here
 	Width, Height, Max int         // Max is how many officers may sortie
 	Required           []string    `json:",omitempty"` // officers who must sortie, if the player has them
+	Reserve            []string    `json:",omitempty"` // officers who sortie without a starting cell and come in by a join event; they do not count against Max
 	Victory            []Goal      // the battle is won when any goal holds
 	Defeat             []Goal      `json:",omitempty"` // extra ways to lose; the fall of the lord or of every ally always loses
 	Sub                []Objective `json:",omitempty"` // bonus objectives judged at the victory

@@ -22,7 +22,7 @@ func TestEngineCookbook(t *testing.T) {
 	d, err := Load("../../assets/data")
 	require.NoError(t, err)
 	base := cloneMap(d.Stages[d.StageIndex("B21")])
-	base.Areas, base.Events, base.Defeat, base.Sub, base.Duels, base.Party, base.Groups, base.Recommend = nil, nil, nil, nil, nil, nil, nil, nil
+	base.Areas, base.Events, base.Defeat, base.Sub, base.Duels, base.Party, base.Groups, base.Recommend, base.Reserve = nil, nil, nil, nil, nil, nil, nil, nil, nil
 	base.Required = []string{"liubei"}
 	base.Victory = []Goal{{If: []string{"alldefeated:enemy"}, Text: "적 전멸"}}
 	base.Enemies = []Spawn{{Character: "troop_footman", X: 19, Y: 31, Policy: "hold"}}

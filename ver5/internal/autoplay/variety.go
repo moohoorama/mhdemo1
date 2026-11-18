@@ -91,7 +91,7 @@ func (v *Variety) sortie(e *core.Engine, apply func(core.Command) bool) {
 	for _, c := range Officers(v.D, e) {
 		if slices.Contains(st.Required, c.ID) || v.D.Characters[c.Def].Lord {
 			ids = append(ids, c.ID)
-		} else {
+		} else if !slices.Contains(st.Reserve, c.ID) { // the reserve goes on top of the count
 			rest = append(rest, c.ID)
 		}
 	}
