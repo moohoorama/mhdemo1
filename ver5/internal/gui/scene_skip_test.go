@@ -118,6 +118,10 @@ func TestSceneNoSkip(t *testing.T) {
 
 func TestSceneKeepInView(t *testing.T) {
 	newGame := func(zoom float64) *Game {
+		// the screen size and scale are package globals other tests change (phone sizes): pin the reference screen
+		sw, sh, sp, up, uw, uh := worldW, worldH, worldPx, uiPx, uiW, uiH
+		worldW, worldH, worldPx, uiPx, uiW, uiH = Width, Height, 1, 1, Width, Height
+		t.Cleanup(func() { worldW, worldH, worldPx, uiPx, uiW, uiH = sw, sh, sp, up, uw, uh })
 		g := &Game{field: &Field{Map: &MapArt{}}, zoom: zoom}
 		g.scene = &scene{def: &scenes.Scene{}, actors: map[string]*unitVis{"관우": {u: 6, v: 68, top: 40}}}
 		return g
