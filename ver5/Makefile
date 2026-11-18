@@ -20,7 +20,7 @@ DESKTOP_ENV := CGO_ENABLED=0
 DESKTOP_PKG := ./cmd/srpg-gui
 
 .PHONY: help android android-arm64 android-release android-install \
-	desktop desktop-mac desktop-mac-intel desktop-win e2e
+	desktop desktop-mac desktop-mac-intel desktop-win e2e scenario-doc
 
 help:
 	@echo 'make desktop         Build obfuscated macOS (arm64) and Windows (amd64) binaries'
@@ -33,6 +33,7 @@ help:
 	@echo 'make android-install Install the existing APK on a connected device'
 	@echo 'make android android-install ANDROID_MODE=debug  Build and install with debug tools and autoplay'
 	@echo 'Override SDK path:   make android ANDROID_SDK=/path/to/sdk'
+	@echo 'make scenario-doc    Write the whole story as readable scripts to output/ (scenes, exploration, battles)'
 	@echo 'make e2e             Play a new game on 쉬움 from start to the ending through the GUI (about 6 min)'
 	@echo 'make e2e E2E_SEED=7  Another seed: other sorties, deputies, pieces and traits'
 
@@ -70,3 +71,6 @@ E2E_MINUTES ?= 60
 e2e:
 	SRPG_E2E=1 SRPG_E2E_SEED=$(E2E_SEED) SRPG_E2E_MINUTES=$(E2E_MINUTES) caffeinate -d -i \
 		go test -p 1 ./internal/gui -run TestCampaignEndToEnd -count=1 -timeout 0 -v
+
+scenario-doc:
+	$(PYTHON) tools/scenario_doc/build.py --out output
