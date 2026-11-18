@@ -60,7 +60,7 @@ open_rows(46, 51, 5, 13)
 road = [(10, y) for y in range(16, 28)] + [(10, y) for y in range(30, 36)] + [(9, 36), (8, 37)] + \
        [(7, y) for y in range(38, 44)] + [(8, 44), (9, 45)] + [(9, y) for y in range(46, 49)]
 for x, y in road:
-    put(x, y, 'd--')
+    put(x, y, 'l--' if y >= 36 else 'd--')  # the south-west stretch is packed earth, not wasteland
 put(9, 49, 'go-')
 
 trees = ((3, 17), (6, 19), (14, 17), (15, 18), (16, 19), (13, 21), (17, 21), (4, 22), (5, 23), (12, 22), (14, 23),
