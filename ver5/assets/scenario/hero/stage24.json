@@ -6,6 +6,7 @@
  "Max": 8,
  "Required": [
   "liubei",
+  "zhugeliang",
   "zhaoyun",
   "guanyu",
   "zhangfei"
@@ -44,6 +45,10 @@
    "Y": 20
   },
   {
+   "X": 3,
+   "Y": 21
+  },
+  {
    "X": 8,
    "Y": 7
   },
@@ -73,9 +78,13 @@
    "X": 2,
    "Y": 20
   },
-  "zhaoyun": {
+  "zhugeliang": {
    "X": 3,
    "Y": 20
+  },
+  "zhaoyun": {
+   "X": 3,
+   "Y": 21
   },
   "guanyu": {
    "X": 9,
@@ -92,6 +101,7 @@
    "Area": 1,
    "Required": [
     "liubei",
+    "zhugeliang",
     "zhaoyun"
    ]
   },
@@ -113,216 +123,180 @@
  "Enemies": [
   {
    "Character": "xiahoudun",
-   "X": 6,
-   "Y": 13,
-   "Group": "road",
+   "X": 11,
+   "Y": 9,
+   "Group": "van",
    "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
+   "Policy": "hold",
    "Rank": "commander",
    "Facing": "SW"
   },
   {
+   "Character": "troop_cavalry",
+   "X": 12,
+   "Y": 9,
+   "Group": "van",
+   "Faction": "wei",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 11,
+   "Y": 8,
+   "Group": "van",
+   "Faction": "wei",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 12,
+   "Y": 8,
+   "Group": "van",
+   "Faction": "wei",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 11,
+   "Y": 7,
+   "Group": "van",
+   "Faction": "wei",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 12,
+   "Y": 7,
+   "Group": "van",
+   "Faction": "wei",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 11,
+   "Y": 6,
+   "Group": "van",
+   "Faction": "wei",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 12,
+   "Y": 6,
+   "Group": "van",
+   "Faction": "wei",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 11,
+   "Y": 5,
+   "Group": "van",
+   "Faction": "wei",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
    "Character": "yujin",
-   "X": 7,
-   "Y": 13,
-   "Group": "road",
-   "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 6,
-   "Y": 12,
-   "Group": "road",
-   "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
-   "Shift": -0.07,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 7,
-   "Y": 12,
-   "Group": "road",
-   "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
-   "Shift": -0.07,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 6,
-   "Y": 11,
-   "Group": "road",
-   "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
-   "Shift": -0.07,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 7,
-   "Y": 11,
-   "Group": "road",
-   "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
-   "Shift": -0.07,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 8,
-   "Y": 10,
-   "Group": "road",
-   "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
-   "Shift": -0.07,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 8,
-   "Y": 11,
-   "Group": "road",
-   "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
-   "Shift": -0.07,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 9,
-   "Y": 10,
-   "Group": "road",
-   "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
-   "Shift": -0.07,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 9,
-   "Y": 11,
-   "Group": "road",
-   "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
-   "Shift": -0.07,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 10,
-   "Y": 10,
-   "Group": "road",
-   "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
-   "Shift": -0.07,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 10,
-   "Y": 11,
-   "Group": "road",
-   "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
-   "Shift": -0.07,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 11,
-   "Y": 10,
-   "Group": "road",
-   "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
-   "Shift": -0.07,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 11,
-   "Y": 11,
-   "Group": "road",
-   "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
-   "Shift": -0.07,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_footman",
    "X": 12,
-   "Y": 10,
-   "Group": "road",
+   "Y": 5,
+   "Group": "main",
    "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 13,
+   "Y": 5,
+   "Group": "main",
+   "Faction": "wei",
+   "Policy": "hold",
    "Shift": -0.07,
    "Facing": "SW"
   },
   {
    "Character": "troop_footman",
-   "X": 12,
-   "Y": 11,
-   "Group": "road",
+   "X": 13,
+   "Y": 6,
+   "Group": "main",
    "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
+   "Policy": "hold",
    "Shift": -0.07,
    "Facing": "SW"
   },
   {
    "Character": "troop_footman",
-   "X": 11,
-   "Y": 9,
-   "Group": "road",
+   "X": 14,
+   "Y": 5,
+   "Group": "main",
    "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
+   "Policy": "hold",
    "Shift": -0.07,
    "Facing": "SW"
   },
   {
    "Character": "troop_footman",
-   "X": 12,
-   "Y": 9,
-   "Group": "road",
+   "X": 14,
+   "Y": 6,
+   "Group": "main",
    "Faction": "wei",
-   "HPPct": 50,
-   "Policy": "flee",
-   "GoalArea": 9,
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 5,
+   "Group": "main",
+   "Faction": "wei",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 6,
+   "Group": "main",
+   "Faction": "wei",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 5,
+   "Group": "main",
+   "Faction": "wei",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 6,
+   "Group": "main",
+   "Faction": "wei",
+   "Policy": "hold",
    "Shift": -0.07,
    "Facing": "SW"
   },
@@ -332,7 +306,6 @@
    "Y": 3,
    "Group": "ford",
    "Faction": "wei",
-   "HPPct": 50,
    "Policy": "hold",
    "Facing": "SW",
    "DuelFirst": true
@@ -343,7 +316,6 @@
    "Y": 3,
    "Group": "ford",
    "Faction": "wei",
-   "HPPct": 50,
    "Policy": "hold",
    "Shift": -0.07,
    "Facing": "SW"
@@ -354,7 +326,6 @@
    "Y": 3,
    "Group": "ford",
    "Faction": "wei",
-   "HPPct": 50,
    "Policy": "hold",
    "Shift": -0.07,
    "Facing": "SW"
@@ -365,7 +336,6 @@
    "Y": 0,
    "Group": "ford",
    "Faction": "wei",
-   "HPPct": 50,
    "Policy": "hold",
    "Shift": -0.07,
    "Facing": "SW"
@@ -376,7 +346,6 @@
    "Y": 0,
    "Group": "ford",
    "Faction": "wei",
-   "HPPct": 50,
    "Policy": "hold",
    "Shift": -0.07,
    "Facing": "SW"
@@ -387,7 +356,6 @@
    "Y": 0,
    "Group": "ford",
    "Faction": "wei",
-   "HPPct": 50,
    "Policy": "hold",
    "Shift": -0.07,
    "Facing": "SW"
@@ -398,7 +366,6 @@
    "Y": 3,
    "Group": "ford",
    "Faction": "wei",
-   "HPPct": 50,
    "Policy": "hold",
    "Shift": -0.07,
    "Facing": "SW"
@@ -415,10 +382,10 @@
     "X": 2,
     "Y": 20,
     "W": 2,
-    "H": 1
+    "H": 2
    },
    "Name": "남서쪽 길 끝",
-   "Description": "유비와 조운. 신야로 가는 길"
+   "Description": "유비·제갈량과 조운. 곁에 신야성"
   },
   {
    "ID": 2,
@@ -441,6 +408,17 @@
    },
    "Name": "안림",
    "Description": "길 남동쪽 숲. 장비의 복병"
+  },
+  {
+   "ID": 4,
+   "Rect": {
+    "X": 6,
+    "Y": 12,
+    "W": 2,
+    "H": 3
+   },
+   "Name": "덫 어귀",
+   "Description": "하후돈의 선봉이 조운을 쫓아 닿는 길목"
   },
   {
    "ID": 9,
@@ -566,7 +544,7 @@
  ],
  "Events": [
   {
-   "ID": "feint",
+   "ID": "lure",
    "Do": [
     {
      "Kind": "cutscene",
@@ -576,8 +554,8 @@
         "Kind": "move",
         "Unit": "zhaoyun",
         "To": {
-         "X": 6,
-         "Y": 14
+         "X": 11,
+         "Y": 10
         },
         "Facing": "NE"
        }
@@ -643,12 +621,8 @@
         "Facing": "SW"
        },
        {
-        "Kind": "move",
+        "Kind": "face",
         "Unit": "xiahoudun",
-        "To": {
-         "X": 6,
-         "Y": 15
-        },
         "Facing": "SW"
        }
       ]
@@ -659,7 +633,7 @@
      "Lines": [
       {
        "Actor": "xiahoudun",
-       "Text": "유비가 군사를 얻었다더니, 겨우 이것이냐! 쫓아라!"
+       "Text": "유비가 군사를 얻었다더니, 겨우 이것이냐! 선봉도 중군도 따르라! 쫓아라!"
       }
      ]
     },
@@ -690,6 +664,23 @@
       }
      ]
     },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "van",
+      "main"
+     ],
+     "Policy": "march",
+     "GoalArea": 4
+    }
+   ]
+  },
+  {
+   "ID": "fire",
+   "If": [
+    "any:[at:xiahoudun:4, round>=3]"
+   ],
+   "Do": [
     {
      "Kind": "cutscene",
      "Steps": [
@@ -818,6 +809,32 @@
      "Turns": 3
     },
     {
+     "Kind": "damage",
+     "Targets": [
+      "van",
+      "main"
+     ],
+     "Value": 50
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "van",
+      "main"
+     ],
+     "Stat": "confusion",
+     "Turns": 2
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "van",
+      "main"
+     ],
+     "Policy": "flee",
+     "GoalArea": 9
+    },
+    {
      "Kind": "cutscene",
      "Steps": [
       [
@@ -833,28 +850,8 @@
         "Unit": "xiahoudun",
         "Text": "……불? 물러나라! 돌아서라!"
        }
-      ],
-      [
-       {
-        "Kind": "move",
-        "Unit": "xiahoudun",
-        "To": {
-         "X": 12,
-         "Y": 8
-        },
-        "Facing": "NE"
-       }
       ]
      ]
-    },
-    {
-     "Kind": "buff",
-     "Targets": [
-      "road",
-      "ford"
-     ],
-     "Stat": "confusion",
-     "Turns": 2
     },
     {
      "Kind": "say",
