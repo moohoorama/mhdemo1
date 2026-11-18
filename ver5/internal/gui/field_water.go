@@ -42,26 +42,49 @@ func (f *Field) bridgeEdges(x, y int, at image.Point, px, py float64) []drawItem
 	return items
 }
 
-// boat is the boat a unit stands in and how much of it shows (0 none, 1 whole): on sunk water, fading in
-// with the unit's drop below the shallower end of its step, the bank or a ford. A step that neither leaves
-// nor reaches water, as onto a ford, has none.
-func (f *Field) boat(u *unitVis) (string, float64) {
-	if !f.Map.SunkWater || u.lift >= 0 || u.actor {
-		return "", 0
+// afloat is the boat a unit is in: its sprite name, how much of it shows (0 none, 1 whole) and where it lies relative
+// to the unit's own draw point (nonzero only while the unit steps between the bank and the water).
+type afloat struct {
+	name   string
+	k      float64
+	dx, dy float64
+	cu, cv int  // the cell the boat lies in
+	walks  bool // the unit steps over land at this moment: it walks rather than stands in the boat
+}
+
+// boat is the boat a unit stands in, on sunk water. Afloat the unit does not walk and the boat carries it, whole from
+// the moment the unit steps in. A step between the bank and the water leaves the boat where the water is, shown
+// whole while the unit crosses to it or from it (the unit walks over the land half of that step and stands in the
+// boat over the water half); the boat sinks out of sight once the unit has left it. A step onto a ford has none.
+func (f *Field) boat(u *unitVis) afloat {
+	if !f.Map.SunkWater || u.actor {
+		return afloat{}
 	}
 	water := func(u, v float64) bool { return f.Tile(int(math.Round(u)), int(math.Round(v))) == '~' }
-	shallow := 0.0
+	out := afloat{k: 1, cu: int(math.Round(u.u)), cv: int(math.Round(u.v))}
 	if w := u.walk; w != nil {
-		if !water(w.fu, w.fv) && !water(w.tu, w.tv) {
-			return "", 0
+		from, to := water(w.fu, w.fv), water(w.tu, w.tv)
+		switch {
+		case !from && !to:
+			return afloat{}
+		case from != to:
+			du, dv := w.tu-w.fu, w.tv-w.fv
+			p := math.Max(0, math.Min(1, ((u.u-w.fu)*du+(u.v-w.fv)*dv)/(du*du+dv*dv)))
+			wu, wv := w.fu, w.fv
+			out.walks = p < .5 && to || p >= .5 && from
+			if to {
+				wu, wv = w.tu, w.tv
+				out.k = math.Min(1, .25+p*3) // lies ready at the water and shows quickly as the unit sets off
+			} else {
+				out.k = math.Min(1, (1-p)*5/2) // sinks once the unit is well clear of it
+			}
+			out.cu, out.cv = int(math.Round(wu)), int(math.Round(wv))
+			cx, cy := f.Center(u.u, u.v)
+			bx, by := f.Center(wu, wv)
+			out.dx, out.dy = bx-cx, (by-f.Lift(int(math.Round(wu)), int(math.Round(wv))))-(cy-u.lift)
 		}
-		shallow = min(0, max(w.fl, w.tl))
-	} else if !water(u.u, u.v) {
-		return "", 0
-	}
-	k := min(1, (shallow-u.lift)/(sunkDepth+shallow))
-	if k <= 0 {
-		return "", 0
+	} else if !water(u.u, u.v) || u.lift >= 0 {
+		return afloat{}
 	}
 	switch u.dir {
 	case "SE", "NW":
@@ -72,24 +95,26 @@ func (f *Field) boat(u *unitVis) (string, float64) {
 	if u.boatAxis == "" {
 		u.boatAxis = "u"
 	}
-	name := "boat_"
+	out.name = "boat_"
 	if u.mounted {
-		name = "boat_l_"
+		out.name = "boat_l_"
 	}
-	return name + u.boatAxis, k
+	out.name += u.boatAxis
+	return out
 }
 
 // pose is the animation and frame a unit is drawn in: afloat it does not walk, the boat carries it.
 func (f *Field) pose(u *unitVis) (string, int) {
-	if _, k := f.boat(u); k > 0 && u.anim == "walk" {
+	if b := f.boat(u); b.k > 0 && !b.walks && u.anim == "walk" {
 		return "idle", u.art.FrameIndex("idle", u.animT*1000)
 	}
 	return u.anim, u.frame()
 }
 
 // drawAfloat draws boat, crew and the boat's front rim, rocking a little, then hides what the ground of the land
-// cells in front covers (the boat rides lower than they stand) and puts it on the canvas.
-func (f *Field) drawAfloat(u *unitVis, s Sprite, boat string, k, x, y float64, op *ebiten.DrawImageOptions) {
+// cells in front covers (the boat rides lower than they stand) and puts it on the canvas. A unit stepping over land
+// toward or from its boat is drawn over the canvas afterwards, so that the ground cut away does not take it too.
+func (f *Field) drawAfloat(u *unitVis, s Sprite, bt afloat, x, y float64, op *ebiten.DrawImageOptions) {
 	cb := f.Canvas.Bounds()
 	if f.afloat == nil || f.afloat.Bounds() != cb {
 		if f.afloat != nil {
@@ -97,37 +122,43 @@ func (f *Field) drawAfloat(u *unitVis, s Sprite, boat string, k, x, y float64, o
 		}
 		f.afloat = newLayer(cb.Dx(), cb.Dy())
 	}
-	y += math.Round(math.Sin(f.clockMS/420 + (u.u+u.v)*1.7))
-	hull, rim := f.A.Props[boat].Sprite, f.A.Props[boat+"_rim"].Sprite
+	rock := math.Round(math.Sin(f.clockMS/420 + (u.u+u.v)*1.7))
+	bx, by := x+bt.dx, y+bt.dy+rock
+	y += rock
+	hull, rim := f.A.Props[bt.name].Sprite, f.A.Props[bt.name+"_rim"].Sprite
 	b := hull.Image.Bounds()
-	x0, y0 := f.renderPoint(x-hull.PivotX, y-hull.PivotY)
-	x1, y1 := f.renderPoint(x-hull.PivotX+float64(b.Dx()), y-hull.PivotY+float64(b.Dy()))
+	x0, y0 := f.renderPoint(bx-hull.PivotX, by-hull.PivotY)
+	x1, y1 := f.renderPoint(bx-hull.PivotX+float64(b.Dx()), by-hull.PivotY+float64(b.Dy()))
 	sb := s.Image.Bounds()
 	_, sy := f.renderPoint(x, y-3-s.PivotY)
 	sx0, _ := f.renderPoint(x-s.PivotX, y)
 	sx1, _ := f.renderPoint(x-s.PivotX+float64(sb.Dx()), y)
-	area := image.Rect(int(min(x0, sx0))-2, int(min(y0, sy))-2, int(max(x1, sx1))+2, int(y1)+2).Intersect(cb)
+	area := image.Rect(int(min(x0, sx0))-2, int(min(y0, sy))-2, int(max(x1, sx1))+2, int(max(y1, 0))+2).Intersect(cb)
 	if area.Empty() {
 		return
 	}
 	layer := f.afloat.SubImage(area).(*ebiten.Image)
 	layer.Clear()
 	hop := &ebiten.DrawImageOptions{}
-	hop.ColorScale.ScaleAlpha(float32(k))
-	f.blit(f.afloat, hull, x, y, hop)
-	f.blit(f.afloat, s, x, y-3, op)
+	hop.ColorScale.ScaleAlpha(float32(bt.k))
+	f.blit(f.afloat, hull, bx, by, hop)
+	if !bt.walks {
+		f.blit(f.afloat, s, x, y-3, op)
+	}
 	rop := &ebiten.DrawImageOptions{}
-	rop.ColorScale.ScaleAlpha(float32(k))
-	f.blit(f.afloat, rim, x, y, rop)
-	cu, cv := int(math.Round(u.u)), int(math.Round(u.v))
+	rop.ColorScale.ScaleAlpha(float32(bt.k))
+	f.blit(f.afloat, rim, bx, by, rop)
 	var front vector.Path
 	for _, d := range [][2]int{{1, 0}, {0, 1}, {1, 1}} {
-		if t := f.Tile(cu+d[0], cv+d[1]); t != '~' && t != 'b' {
-			f.cellPath(&front, cu+d[0], cv+d[1], 0)
+		if t := f.Tile(bt.cu+d[0], bt.cv+d[1]); t != '~' && t != 'b' {
+			f.cellPath(&front, bt.cu+d[0], bt.cv+d[1], 0)
 		}
 	}
 	vector.FillPath(layer, &front, nil, &vector.DrawPathOptions{ColorScale: colorScaleWhite(), Blend: ebiten.BlendDestinationOut})
 	cop := &ebiten.DrawImageOptions{}
 	cop.GeoM.Translate(float64(area.Min.X), float64(area.Min.Y))
 	f.Canvas.DrawImage(layer, cop)
+	if bt.walks {
+		f.blit(f.Canvas, s, x, y, op)
+	}
 }

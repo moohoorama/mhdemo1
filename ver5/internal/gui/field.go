@@ -533,10 +533,10 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 			sop := &ebiten.DrawImageOptions{Blend: maxBlend}
 			sop.ColorScale.ScaleAlpha(float32((1 - u.leaving()) * (1 - .7*u.wade)))
 			f.castShadow(ground, sh, x, y-lift, sop)
-			if boat, k := f.boat(u); k > 0 {
+			if bt := f.boat(u); bt.k > 0 {
 				bop := &ebiten.DrawImageOptions{Blend: maxBlend}
-				bop.ColorScale.ScaleAlpha(float32(k * (1 - u.leaving())))
-				f.castShadow(ground, f.A.Props[boat].Shadow, x, y-lift, bop)
+				bop.ColorScale.ScaleAlpha(float32(bt.k * (1 - u.leaving())))
+				f.castShadow(ground, f.A.Props[bt.name].Shadow, x+bt.dx, y-lift+bt.dy, bop)
 			}
 		}
 		unit := u
@@ -716,8 +716,8 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost float32) {
 	if ghost == 0 {
 		f.drawStatusMarks(u, x, y, true)
 	}
-	if boat, k := f.boat(u); k > 0 {
-		f.drawAfloat(u, s, boat, k, x, y, op)
+	if bt := f.boat(u); bt.k > 0 {
+		f.drawAfloat(u, s, bt, x, y, op)
 	} else if u.wade > .01 {
 		f.drawWading(u, s, x, y, op)
 	} else {
