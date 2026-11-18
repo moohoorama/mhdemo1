@@ -85,6 +85,7 @@ assets/scenario/
 | `Name` | 표시 이름. |
 | `Max` | 출전 인원 상한. 1 이상이고 `Allies`(배치 칸)가 이 값 이상이어야 한다. |
 | `Required` | 반드시 출전해야 하는 인물 ID(선택). 플레이어블이고 중복이 없어야 하며 `Max` 이하여야 한다. |
+| `Reserve` | 복병 인물 ID(선택). 출전 명단에는 자동으로 들어가 출전 준비에서 장비·병종·특성을 손볼 수 있지만 배치에서는 칸에 서지 않고, 이 스테이지의 이벤트 `join`이 부를 때 그 칸에 나타나 플레이어가 조작한다(B21 여남: 관우·장비가 5라운드에 남쪽에서 온다). `Max`에 세지 않는다(고정 출연). 검증: 플레이어블이고 군주가 아니며, 목록 안에서도 `Required`와도 겹치지 않고, `Recommend`가 없고, 이 스테이지 이벤트의 `join` 스폰에 한 번 이상 나와야 하고(안 나오면 로드 오류), 그 `join` 스폰은 `Class`·`Level`·`Equipment`·`Traits`로 출전 준비를 덮어쓸 수 없다. 6.2절 |
 | `Victory` | 승리 목표 `[{If, Text}]`. 하나라도 있어야 하고 `Text`는 필수. 하나의 `If`가 모두 참이면 승리([logic-battle-event.md](logic-battle-event.md) 3절). |
 | `Defeat` | 추가 패배 목표 `[{If, Text}]`(선택, `Text`는 선택). 군주의 퇴각과 아군 전멸은 늘 패배다. |
 | `Sub` | 부목표 `[{ID, Text, If, Flag, Reward, Later}]`(선택). `ID`는 유일, `Text`·`If` 필수, `Reward`는 아이템 ID → 1 이상 개수. `Later`는 `Flag`가 전투 뒤에 바꾸는 일을 적은 글로, 장면 이동 창의 "앞선 전투 결과"에만 나오고 플레이 중에는 보이지 않는다. |
@@ -204,6 +205,19 @@ assets/scenario/
 "Groups": [{"Name": "본군", "Area": 1, "Required": ["liubei"]}, {"Name": "별동대", "Area": 2, "Required": ["guanyu", "gaoshun"]}]
 ```
 
+### 6.2 복병(`Stage.Reserve`)
+
+복병은 출전 준비에서는 다른 출전 장수와 같고(명단에 보이고 장비·병종·특성·부관 지정 가능, 단 부관으로 삼을 수는 없다), 배치에서만 칸을 받지 않는다. 전투는 그 장수 없이 시작하고, 이벤트 `join`이 부르는 순간 `Spawns`의 칸 주변에 출전 준비의 레벨·병종·장비 그대로 나타나 조작할 수 있다. 출전 인원 `Max`에는 세지 않는다.
+
+- 출전 준비에 들어서면(`fitSortie`) 로스터에 살아 있고 부관이 아닌 복병이 명단 뒤에 자동으로 붙고, 플레이어는 뺄 수 없다. 로스터에 없거나 전사한 복병은 건너뛰며, `join`도 그런 인물은 부르지 않는다. 복병 장수는 `join`의 환영(레벨 끌어올림)도 받지 않는다.
+- 배치(수동·자동·`Recommend`·강제 출전·`DeploymentPlan`)는 복병을 칸에 놓지 않는다. 저장 복원은 "명단에 있고 지도에 유닛이 없는" 상태를 그대로 받아들이고, `join`이 지나간 뒤에는 지도에 있는 상태로 복원한다.
+
+```json
+"Reserve": ["guanyu", "zhangfei"],
+"Events": [{"ID": "brothers", "If": ["round>=5", "turnstart:ally"], "Do": [
+  {"Kind": "join", "Spawns": [{"Character": "guanyu", "X": 2, "Y": 25, "Facing": "SE"}, {"Character": "zhangfei", "X": 18, "Y": 20, "Facing": "NW"}]}]}]
+```
+
 ## 7. 전투 이벤트 기록(`Stage.Events`)
 
 | 필드 | 뜻 |
@@ -216,7 +230,7 @@ assets/scenario/
 
 `spawn`의 스폰은 일반 스폰 규칙에 더해 다음을 요구한다. `Side`는 비어 있거나 `ally`/`enemy`이고, `ally`이면 `AI`가 참이며, 좌표가 영역 안이고, 인물이 `Playable`도 `Lord`도 아니고, 이름 있는 인물은 이 스테이지의 다른 스폰·이전 이벤트 스폰·플레이어블 인물과 겹치지 않는다. `Faction`은 있다면 `Factions`에 있어야 한다. 스폰의 `Group`은 조건과 `remove`가 가리킬 수 있는 이름이 된다.
 
-`say` 검증은 다음과 같다. `Lines`가 비어 있을 수 없고, 줄의 `Text`가 비어 있을 수 없으며, 한 줄에 같은 `Actor`가 둘 있을 수 없다. `Actor`는 플레이어블 인물, 이 스테이지의 `Enemies`·`Party` 인물, 이 스테이지 이벤트가 만드는 인물 중 하나여야 한다. 줄에 `"Offstage": true`를 주면 필드에 없는 사람(전령 등)이 하는 말로, `Actor`는 아무 인물이나 되고 유닛이 없어도 나오며 스토리 대사창(초상 없이 이름판만)으로 보인다(18장 서주성 전투의 전령). `remove`·`ai`의 `Targets`는 유닛 ID나 그룹이어야 하고, `ai`의 `Policy`는 필수이며 `Goal`은 정책에 맞아야 하고, `join`은 반복 이벤트에 쓸 수 없고 스폰이 `Playable`이며 군주가 아니고 `AI`·`Side`·`Policy`가 없고 맵 안이며 이 스테이지의 다른 스폰에 없는 인물이어야 한다. `buff`는 `Stat`이 `attack` `defense` `mind` `morale` `agility` `speed` `range` 중 하나이고 `Value`가 0이 아닌 -100~100이거나, 상태이상 `confusion` `seal` `root` `disarm` 중 하나이고 `Value`가 없어야(0) 하며, `Turns`가 0~99이고 대상이 있어야 한다. `move`의 `Moves`는 비어 있을 수 없고 `Unit`은 유닛·그룹, `To`는 맵 안, `Facing`(선택)은 NE SE SW NW여야 한다. `cutscene`의 `Steps`는 비어 있지 않은 묶음들이고, 단계는 `move`(`Unit`·`To`·`Facing` 선택, 또는 `To` 대신 `By`: 그 유닛이 그때 서 있는 곳 옆 칸으로 걸어가 그쪽을 봄) `play`(`Unit`·`Motion`) `face`(`Unit`·`Facing`: NE SE SW NW, 또는 `Facing` 대신 `By`: 그 유닛 쪽을 봄) `say`(`Unit`·`Text`) `leave`(`Unit`) `wait`(`Seconds` 0 초과 30 이하)이며 `Unit`은 유닛·그룹이다. `duel`의 `Duel`은 이 스테이지의 일기토 ID여야 한다. `terrain`의 `Area`는 이 스테이지의 구역이고 `State`는 `game.json`의 `States`에 있는 글자이거나 `-`이며 `Turns`는 0 이상이어야 하고, `flag`의 `Flags`는 비어 있을 수 없다.
+`say` 검증은 다음과 같다. `Lines`가 비어 있을 수 없고, 줄의 `Text`가 비어 있을 수 없으며, 한 줄에 같은 `Actor`가 둘 있을 수 없다. `Actor`는 플레이어블 인물, 이 스테이지의 `Enemies`·`Party` 인물, 이 스테이지 이벤트가 만드는 인물 중 하나여야 한다. 줄에 `"Offstage": true`를 주면 필드에 없는 사람(전령 등)이 하는 말로, `Actor`는 아무 인물이나 되고 유닛이 없어도 나오며 스토리 대사창(초상 없이 이름판만)으로 보인다(18장 서주성 전투의 전령). `remove`·`ai`·`buff`·`damage`의 `Targets` 항목은 유닛 ID·그룹·진영(`ally` `enemy` `player`)이거나, 구역 안의 유닛을 뜻하는 `area:번호`(그 구역 안의 모든 유닛) 또는 `대상@area:번호`(그 대상 중 그 구역 안에 선 유닛, 예 `enemy@area:11`)여야 하고 구역 번호는 이 스테이지 `Areas`에 있어야 하며([logic-battle-event.md](logic-battle-event.md) 5.2절), `ai`의 `Policy`는 필수이며 `Goal`은 정책에 맞아야 하고, `join`은 반복 이벤트에 쓸 수 없고 스폰이 `Playable`이며 군주가 아니고 `AI`·`Side`·`Policy`가 없고 맵 안이며 이 스테이지의 다른 스폰에 없는 인물이어야 한다. `buff`는 `Stat`이 `attack` `defense` `mind` `morale` `agility` `speed` `range` 중 하나이고 `Value`가 0이 아닌 -100~100이거나, 상태이상 `confusion` `seal` `root` `disarm` 중 하나이고 `Value`가 없어야(0) 하며, `Turns`가 0~99이고 대상이 있어야 한다. `move`의 `Moves`는 비어 있을 수 없고 `Unit`은 유닛·그룹, `To`는 맵 안, `Facing`(선택)은 NE SE SW NW여야 한다. `cutscene`의 `Steps`는 비어 있지 않은 묶음들이고, 단계는 `move`(`Unit`·`To`·`Facing` 선택, 또는 `To` 대신 `By`: 그 유닛이 그때 서 있는 곳 옆 칸으로 걸어가 그쪽을 봄) `play`(`Unit`·`Motion`) `face`(`Unit`·`Facing`: NE SE SW NW, 또는 `Facing` 대신 `By`: 그 유닛 쪽을 봄) `say`(`Unit`·`Text`) `leave`(`Unit`) `wait`(`Seconds` 0 초과 30 이하)이며 `Unit`은 유닛·그룹이다. `duel`의 `Duel`은 이 스테이지의 일기토 ID여야 한다. `terrain`의 `Area`는 이 스테이지의 구역이고 `State`는 `game.json`의 `States`에 있는 글자이거나 `-`이며 `Turns`는 0 이상이어야 하고, `flag`의 `Flags`는 비어 있을 수 없다.
 
 ```json
 {"ID": "brothers-challenge", "If": ["any:[duel:hulao-mushun, duel:hulao-wuanguo]"],

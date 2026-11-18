@@ -84,7 +84,7 @@
 - `deployment_finish`: 출전 명단 전원이 놓였고 살아 있어야 한다(아니면 `DeploymentIncomplete`). 단계를 `battle`로 바꾸고 `deployment_finish` 이벤트를 낸다.
 - `DeploymentPlan`: 남은 장수에게 칸을 최대한 겹치지 않게 배정하는 명령열을 만든다(자동 진행용). `Stage.Recommend`에 권장 칸이 있는 장수는 그 칸에 먼저 세우고(비어 있고 설 수 있을 때), 나머지는 `Allies` 순서대로 채운다. 무리의 필수 장수는 제 무리 칸 안에서만 맞춘다(먼저 자리를 차지한 다른 장수를 다른 칸으로 옮겨서라도). 자리가 모자라면 `NoDeploymentSpace`.
 
-`Allies` 칸 수는 `Max` 이상이어야 로드된다([data-scenario-node.md](data-scenario-node.md)). 스테이지의 `Required`(필수 출전)에 든 인물은 출전 준비에 들어서면 출전 명단에 자동으로 들어가고(전사했거나 부관이면 건너뜀) 명단에서 뺄 수 없다. 합류한 장수가 `Max`보다 많으면 필수 인물과 군주를 남기고 레벨이 높은 순으로 `Max`명까지 기본 출전 명단을 채우며(`fitSortie`), 플레이어가 거기서 바꾼다. `deploy`·`start`는 명단이 `Max`를 넘거나 필수 인물이 빠지면 `InvalidDeployment`다.
+`Allies` 칸 수는 `Max` 이상이어야 로드된다([data-scenario-node.md](data-scenario-node.md)). 스테이지의 `Required`(필수 출전)에 든 인물은 출전 준비에 들어서면 출전 명단에 자동으로 들어가고(전사했거나 부관이면 건너뜀) 명단에서 뺄 수 없다. 합류한 장수가 `Max`보다 많으면 필수 인물과 군주를 남기고 레벨이 높은 순으로 `Max`명까지 기본 출전 명단을 채우며(`fitSortie`), 플레이어가 거기서 바꾼다. `deploy`·`start`는 명단이 `Max`를 넘거나 필수 인물이 빠지면 `InvalidDeployment`다. 스테이지의 `Reserve`(복병, [data-scenario-node.md](data-scenario-node.md) 6.2절)에 든 인물도 출전 준비에 들어서면 명단에 자동으로 들어가고(로스터에 없거나 전사했거나 부관이면 건너뜀) 뺄 수 없지만 `Max`에는 세지 않는다. `deploy`는 복병을 빼고 보내도 엔진이 다시 붙이고, 복병은 `place`(`InvalidPlacement`)·`DeploymentPlan`·`placements`·`deploymentReady`에서 제외되어 처음 맵에 서지 않는다. 이벤트 `join`이 부르면 출전 준비 그대로(레벨·병종·장비) 나타난다.
 
 ## 5. 전투 뒤
 

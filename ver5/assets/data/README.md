@@ -62,4 +62,6 @@ The GUI saves exactly one map document. The game reads that same file; see
 
 Equipment can grant `retreat_sweep` (after the wearer defeats a foe, one normal attack on every living foe within the wearer’s basic attack range), `counter_always` (a counter against every physical attack in reach), and `turn_defense` (defense percentage renewed at the start of each own phase). The effects follow the wearer’s faction. Additional sweep blows do not cascade.
 
+`Stage.Reserve` lists playable officers who sortie on top of `Max` but stand on no deployment cell; a `join` event of the stage calls each in with the level, class and gear of the sortie preparation. Event `Targets` may also name `area:N` or `<target>@area:N`, the units standing in area N when the event runs. See `docs/data-scenario-node.md` 6.2 and `docs/logic-battle-event.md` 5.2.
+
 `Stage.TurnLimit` sets the battle round deadline. Zero or omitted means unlimited. A positive value allows the entire final round (including the enemy phase); entering the next allied round loses the battle. B01–B03 currently use 30 rounds.
