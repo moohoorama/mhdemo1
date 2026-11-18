@@ -121,6 +121,16 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 					}
 				}
 			}
+		case "damage":
+			for _, t := range a.Targets {
+				for _, u := range e.matching(t) {
+					// the cut never fells a unit
+					if n := min(e.stats(u).MaxHP*a.Value/100, u.HP-1); u.HP > 0 && n > 0 {
+						u.HP -= n
+						e.emit("damage", "", u.ID, n)
+					}
+				}
+			}
 		case "move":
 			for _, m := range e.moveTogether(a.Moves) {
 				e.events = append(e.events, Event{Kind: "move", Actor: m.u.ID, Path: m.path, Facing: m.facing})

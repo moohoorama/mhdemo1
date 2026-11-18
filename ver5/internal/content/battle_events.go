@@ -117,6 +117,10 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 				if !ailment && !contains(BuffStats, a.Stat) || ailment != (a.Value == 0) || a.Value < -100 || a.Value > 100 || a.Turns < 0 || a.Turns > 99 || len(a.Targets) == 0 {
 					return nil, nil, fmt.Errorf("battle event %s: buff action", event.ID)
 				}
+			case "damage":
+				if a.Value < 1 || a.Value > 99 || len(a.Targets) == 0 {
+					return nil, nil, fmt.Errorf("battle event %s: damage action", event.ID)
+				}
 			case "move":
 				if len(a.Moves) == 0 {
 					return nil, nil, fmt.Errorf("battle event %s: move without units", event.ID)
@@ -183,7 +187,7 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 				if err := validateCutscene(s, event.ID, a.Steps, refs); err != nil {
 					return nil, nil, err
 				}
-			case "remove", "ai", "buff":
+			case "remove", "ai", "buff", "damage":
 				if len(a.Targets) == 0 {
 					return nil, nil, fmt.Errorf("battle event %s: %s without targets", event.ID, a.Kind)
 				}

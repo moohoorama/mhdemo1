@@ -277,6 +277,7 @@ func TestLoadChecksSceneActions(t *testing.T) {
 		act("Kind", "join", "Spawns", objs(spawn())),
 		act("Kind", "move", "Moves", objs(obj("Unit", "boss", "To", at), obj("Unit", "hero", "To", at))),
 		act("Kind", "duel", "Duel", "none-needed"),
+		act("Kind", "damage", "Targets", objs("boss"), "Value", 50),
 	)
 	assert.Error(t, loadWithStage(t, good), "the stage has no such duel")
 	assert.NoError(t, loadWithStage(t, event(
@@ -294,6 +295,10 @@ func TestLoadChecksSceneActions(t *testing.T) {
 		"buff negative turns":  event(act("Kind", "buff", "Targets", objs("boss"), "Stat", "attack", "Value", 5, "Turns", -1)),
 		"buff unknown target":  event(act("Kind", "buff", "Targets", objs("ghost"), "Stat", "attack", "Value", 5)),
 		"buff no target":       event(act("Kind", "buff", "Stat", "attack", "Value", 5)),
+		"damage no value":      event(act("Kind", "damage", "Targets", objs("boss"))),
+		"damage all of it":     event(act("Kind", "damage", "Targets", objs("boss"), "Value", 100)),
+		"damage no target":     event(act("Kind", "damage", "Value", 50)),
+		"damage unknown":       event(act("Kind", "damage", "Targets", objs("ghost"), "Value", 50)),
 		"join nobody":          event(act("Kind", "join")),
 		"join an enemy":        event(act("Kind", "join", "Spawns", objs(spawn("Character", "boss")))),
 		"join the lord":        event(act("Kind", "join", "Spawns", objs(spawn("Character", "hero")))),

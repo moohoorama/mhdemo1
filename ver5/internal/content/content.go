@@ -325,7 +325,7 @@ type Action struct {
 	Targets  []string       `json:",omitempty"`
 	Flags    map[string]int `json:",omitempty"`
 	Stat     string         `json:",omitempty"` // buff: attack, defense, mind, morale, agility (percent), speed, range (cells) or an ailment (BuffAilments)
-	Value    int            `json:",omitempty"` // buff: how much, negative for a debuff; none for an ailment
+	Value    int            `json:",omitempty"` // buff: how much, negative for a debuff; none for an ailment. damage: percent of full strength to take off, 1-99
 	Moves    []Move         `json:",omitempty"` // move: who goes where, all at once
 	Steps    [][]Step       `json:",omitempty"` // cutscene: groups of steps; a group's steps run together, the next group waits for them
 	Duel     string         `json:",omitempty"` // duel: the stage duel to hold now, wherever its officers stand

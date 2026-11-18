@@ -73,6 +73,23 @@ func TestABuffLaysAnAilment(t *testing.T) {
 	assert.NoError(t, err)
 }
 
+func TestADamageCutsStrengthButNeverFellsAUnit(t *testing.T) {
+	e := battleWith(t, func(s *content.Stage) {
+		s.Enemies[0].Group = "front"
+		s.Events = []content.BattleEvent{
+			{ID: "scorch", Do: []content.Action{{Kind: "damage", Targets: []string{"front"}, Value: 40}}},
+			{ID: "again", If: []string{"round>=2"}, Do: []content.Action{{Kind: "damage", Targets: []string{"front"}, Value: 99}}},
+		}
+	})
+	u := e.unit("boss")
+	full := e.stats(u).MaxHP
+	assert.Equal(t, full-full*40/100, u.HP)
+	nextRound(t, e)
+	assert.Equal(t, 1, e.unit("boss").HP, "99% more would fell it: it keeps one")
+	_, err := Restore(e.Data(), e.Snapshot())
+	assert.NoError(t, err)
+}
+
 func TestASpawnStartsWithAShareOfItsStrength(t *testing.T) {
 	e := battleWith(t, func(s *content.Stage) { s.Enemies[0].HPPct = 50 })
 	u := e.unit("boss")

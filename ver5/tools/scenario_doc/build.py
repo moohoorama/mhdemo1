@@ -446,6 +446,8 @@ class Stage:
         if k == "buff":
             return ["상태: %s %s %s%s" % (",".join(d.name(t) for t in do["Targets"]), STAT.get(do["Stat"], do["Stat"]),
                                          do.get("Value", ""), " (%d턴)" % do["Turns"] if do.get("Turns") else "")]
+        if k == "damage":
+            return ["병력 깎음: %s 최대 병력의 %s%%" % (",".join(d.name(t) for t in do["Targets"]), do["Value"])]
         if k == "ai":
             return ["행동 변경: %s → %s" % (",".join(do["Targets"]), POLICY.get(do["Policy"], do["Policy"]) +
                                          (" %s" % xy(self.rel(do["Goal"]["X"], do["Goal"]["Y"])) if do.get("Goal") else ""))]
