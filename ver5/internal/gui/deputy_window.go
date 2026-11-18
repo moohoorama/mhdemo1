@@ -103,7 +103,7 @@ func (g *Game) deputyRows(o core.Observation) []deputyRow {
 		case err.Error() == "LordDeputy":
 			r.reason = "군주라 부관이 될 수 없습니다."
 		case err.Error() == "RequiredDeputy":
-			r.reason = "이번 전투 필수 출전 장수라 부관이 될 수 없습니다."
+			r.reason = "이번 전투 필수 출전·복병 장수라 부관이 될 수 없습니다."
 		default:
 			r.reason = koreanError(err.Error())
 		}

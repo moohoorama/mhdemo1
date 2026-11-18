@@ -35,11 +35,11 @@ func (g *Game) startSortie() {
 	}
 	g.sortieTried = o.Node
 	st := g.S.Data.Stages[o.Stage]
-	if len(o.Deployment) > st.Max {
+	if g.sortieCount(o, o.Deployment) > st.Max {
 		ids := []string{}
 		for _, keep := range []bool{true, false} {
 			for _, id := range o.Deployment {
-				if g.sortieLocked(id) == keep && len(ids) < st.Max {
+				if g.sortieLocked(id) == keep && !g.sortieReserve(o, id) && len(ids) < st.Max {
 					ids = append(ids, id)
 				}
 			}
@@ -56,11 +56,27 @@ func (g *Game) placeSortie() {
 	}
 }
 
+// sortieReserve reports whether the stage holds the officer back as an ambush: in the sortie, but on no cell
+// until an event calls them in.
+func (g *Game) sortieReserve(o core.Observation, id string) bool {
+	return slices.Contains(g.S.Data.Stages[o.Stage].Reserve, id)
+}
+
+// sortieCount is how many of the officers count against the stage's limit: all but the ambush.
+func (g *Game) sortieCount(o core.Observation, ids []string) int {
+	return len(ids) - len(slices.DeleteFunc(slices.Clone(ids), func(id string) bool { return !g.sortieReserve(o, id) }))
+}
+
+// placeable are the officers of the sortie who stand on a cell at the start.
+func (g *Game) placeable(o core.Observation) []string {
+	return slices.DeleteFunc(slices.Clone(o.Deployment), func(id string) bool { return g.sortieReserve(o, id) })
+}
+
 // sortieLocked reports whether the officer always goes: the lord and those the stage requires.
 func (g *Game) sortieLocked(id string) bool {
 	o := g.S.View()
 	of := g.officer(o, id)
-	return of != nil && g.S.Data.Characters[of.Def].Lord || slices.Contains(g.S.Data.Stages[o.Stage].Required, id)
+	return of != nil && g.S.Data.Characters[of.Def].Lord || slices.Contains(g.S.Data.Stages[o.Stage].Required, id) || g.sortieReserve(o, id)
 }
 
 // sortieCards are the living officers: those in the sortie first, in its order, then those waiting,
@@ -220,7 +236,7 @@ func (g *Game) deploymentKeys() {
 		return
 	}
 	if pressed(ebiten.KeyTab) {
-		ids := g.S.View().Deployment
+		ids := g.placeable(g.S.View())
 		if len(ids) == 0 {
 			return
 		}
@@ -233,7 +249,7 @@ func (g *Game) deploymentKeys() {
 // deploymentListRect is the sortie's list at the bottom right, as tall as its rows up to the top-right bar.
 func (g *Game) deploymentListRect(o core.Observation) image.Rectangle {
 	top := hudTop() + 64 + 12
-	h := min(uiH-12-top, 48+len(o.Deployment)*touchH+8)
+	h := min(uiH-12-top, 48+len(g.placeable(o))*touchH+8)
 	return image.Rect(uiW-12-300, uiH-12-h, uiW-12, uiH-12)
 }
 
@@ -242,17 +258,18 @@ func (g *Game) deploymentListRect(o core.Observation) image.Rectangle {
 // place. Who goes, gear and deputies were settled in the sortie preparation.
 func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 	limit := g.S.Data.Stages[o.Stage].Max
-	g.battleLeftPanel(dst, o, fmt.Sprintf("출전 %d / %d", len(o.Deployment), limit), nil)
+	g.battleLeftPanel(dst, o, fmt.Sprintf("출전 %d / %d", g.sortieCount(o, o.Deployment), limit), nil)
 	bar := image.Rect(uiW-12-infoW, hudTop(), uiW-12, hudTop()+64)
 	g.window(dst, bar)
 	g.block(bar)
+	ids := g.placeable(o)
 	placed := 0
-	for _, id := range o.Deployment {
+	for _, id := range ids {
 		if g.unitView(o, id) != nil {
 			placed++
 		}
 	}
-	g.label(dst, fmt.Sprintf("배치 %d / %d", placed, len(o.Deployment)), float64(bar.Min.X+14), float64(bar.Min.Y+20), 15, ink)
+	g.label(dst, fmt.Sprintf("배치 %d / %d", placed, len(ids)), float64(bar.Min.X+14), float64(bar.Min.Y+20), 15, ink)
 	var finish func()
 	if len(g.S.Engine.LegalActions("").Commands) > 0 {
 		finish = g.finishDeployment
@@ -264,7 +281,6 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 	g.block(r)
 	g.label(dst, "출전 부대", float64(r.Min.X+14), float64(r.Min.Y+12), 15, gold)
 	g.label(dst, "고르고 칸을 누름", float64(r.Max.X-14)-g.width("고르고 칸을 누름", 12), float64(r.Min.Y+15), 12, muted)
-	ids := o.Deployment
 	g.listRows(dst, &g.party.placing, image.Rect(r.Min.X+4, r.Min.Y+44, r.Max.X-4, r.Max.Y-6), len(ids), touchH, func(i int, rr image.Rectangle) {
 		id := ids[i]
 		of := g.officer(o, id)

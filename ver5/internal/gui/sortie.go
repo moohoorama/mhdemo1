@@ -35,7 +35,11 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 	rect(dst, float32(x+listW), float32(y+8), 1, float32(h-16), goldDim)
 	g.label(dst, "출전 준비", float64(x+16), float64(y+12), 18, gold)
 	tx := float64(x+28) + g.width("출전 준비", 18)
-	g.label(dst, fmt.Sprintf("출전 %d / %d", len(o.Deployment), st.Max), tx, float64(y+17), 13, muted)
+	count := fmt.Sprintf("출전 %d / %d", g.sortieCount(o, o.Deployment), st.Max)
+	if len(st.Reserve) > 0 {
+		count += " (복병 제외)"
+	}
+	g.label(dst, count, tx, float64(y+17), 13, muted)
 	rect(dst, float32(x+8), float32(y+56), float32(listW-16), 1, goldDim)
 	// 목표 and 메뉴 under the list, on the line of the actions, so the title row holds only the title and the count
 	foot := y + h - 60
@@ -126,7 +130,9 @@ func (g *Game) sortieRow(dst *ebiten.Image, o core.Observation, rr image.Rectang
 		label, body, rim, fg = "부관", pillDep, depRim, depInk
 	case slices.Contains(o.Deployment, id):
 		label, body, rim, fg = "출전", pillOut, gold, gold
-		if g.sortieLocked(id) {
+		if g.sortieReserve(o, id) {
+			label = "복병"
+		} else if g.sortieLocked(id) {
 			label = "필수"
 		}
 	}
@@ -138,6 +144,9 @@ func (g *Game) sortieRow(dst *ebiten.Image, o core.Observation, rr image.Rectang
 	note, noteC := fmt.Sprintf("특성치 %d", of.Points), muted
 	if g.hasAffordable(*of) {
 		noteC = good
+	}
+	if g.sortieReserve(o, id) && lead == "" {
+		note, noteC = "복병 · 전투 중 출현", gold
 	}
 	classEnd := g.officerLines(dst, o, row, *of, true, note, noteC)
 	if lead == "" { // a deputy wears nothing
@@ -174,6 +183,10 @@ func (g *Game) togglePrep(id string) {
 		g.toast(g.name(lead)+"의 부관이라 출전할 수 없습니다", bad)
 		return
 	}
+	if g.sortieReserve(o, id) {
+		g.toast("복병은 전투 중에 나타나 반드시 출전합니다", muted)
+		return
+	}
 	if g.sortieLocked(id) {
 		g.toast("반드시 출전합니다", muted)
 		return
@@ -181,7 +194,7 @@ func (g *Game) togglePrep(id string) {
 	deploy := slices.Clone(o.Deployment)
 	if i := slices.Index(deploy, id); i >= 0 {
 		deploy = slices.Delete(deploy, i, i+1)
-	} else if len(deploy) >= g.S.Data.Stages[o.Stage].Max {
+	} else if g.sortieCount(o, deploy) >= g.S.Data.Stages[o.Stage].Max {
 		g.toast("출전 인원이 찼습니다", bad)
 		return
 	} else {
