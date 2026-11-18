@@ -116,13 +116,14 @@ func TestInsuOffersEachClassAndThePickDecides(t *testing.T) {
 	require.GreaterOrEqual(t, i, 0)
 	o := snap.Characters[i]
 	o.ID, o.Def, o.Class, o.Level = officer, officer, "light_cavalry", g.S.Data.Rules.PromoteLevels[0]
-	o.Equipment = map[string]string{"weapon": "iron_spear"}
+	o.Equipment = map[string]string{"weapon": "copper_spear"}
 	if j := slices.IndexFunc(snap.Characters, func(c core.Character) bool { return c.ID == officer }); j >= 0 {
 		snap.Characters[j] = o
 	} else {
 		snap.Characters = append(snap.Characters, o)
 	}
 	snap.Inventory["insu_mid"], snap.Inventory["insu_high"] = 1, 1
+	snap.Warehouse["copper_spear"] = 0
 	snap.Warehouse["short_bow"] = 1
 	e, err := core.Restore(g.S.Data, snap)
 	require.NoError(t, err)
@@ -152,7 +153,7 @@ func TestInsuOffersEachClassAndThePickDecides(t *testing.T) {
 	of := g.officer(v, officer)
 	assert.Equal(t, "horse_archer", of.Class)
 	assert.Empty(t, of.Equipment["weapon"], "a 궁기병 carries no spear")
-	assert.Equal(t, 1, v.Warehouse["iron_spear"])
+	assert.Equal(t, 1, v.Warehouse["copper_spear"])
 	piece, owner, slot, ok := g.gearStep()
 	require.True(t, ok)
 	assert.Equal(t, []string{"", officer, "weapon"}, []string{piece, owner, slot}, "any piece that fits")
