@@ -54,9 +54,17 @@ func demoMapFX(d *Demo) error {
 				gates = append(gates, [2]float64{float64(at[0]), float64(at[1])})
 			}
 		}
+		allied := func(x, y int) bool { // the fence must not close a cell the allies deploy on
+			for _, p := range doc.Stage.Allies {
+				if p.X == x && p.Y == y {
+					return true
+				}
+			}
+			return false
+		}
 		for x := 8; x <= 13; x++ { // a fenced yard with a gap to the south
 			for y := 6; y <= 11; y++ {
-				if (x == 8 || x == 13 || y == 6 || y == 11) && !(y == 11 && (x == 10 || x == 11)) {
+				if (x == 8 || x == 13 || y == 6 || y == 11) && !(y == 11 && (x == 10 || x == 11)) && !allied(x, y) {
 					paint(x, y, structure, 'z')
 				}
 			}
