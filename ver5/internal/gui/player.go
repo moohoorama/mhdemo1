@@ -932,7 +932,7 @@ func (g *Game) stepTo(u *unitVis, p content.Point) {
 }
 
 // stepCue is the sound of u's step onto cell p: a footstep or hoof beat, but the boat's water sound from water to water,
-// where the boat glides (a second long: each cell's wave overlaps the last and the tail rings on). A step between the bank and the
+// where the boat glides (2.5 s long: each cell's swell overlaps the last into one wave and the tail rings on). A step between the bank and the
 // water keeps its footstep, as the unit walks its land half.
 func (f *Field) stepCue(u *unitVis, p content.Point) string {
 	water := func(x, y int) bool { return f.Tile(x, y) == '~' }

@@ -27,7 +27,7 @@ func TestStepCueIsSilentAfloat(t *testing.T) {
 	assert.Equal(t, "step", f.stepCue(foot, content.Point{X: 2}), "without sunk water there are no boats")
 }
 
-// The boat's cue decodes and runs about a second, several steps (stepTime), so that each cell's wave rolls over the
+// The boat's cue decodes and runs about two and a half seconds, many steps (stepTime), so that each cell's wave rolls over the
 // last and the tail rings on after the boat stops.
 func TestBoatCueLoads(t *testing.T) {
 	f, err := os.Open("../../assets/sounds/boat.ogg")
@@ -36,6 +36,6 @@ func TestBoatCueLoads(t *testing.T) {
 	pcm, err := decodeAll(vorbis.DecodeWithSampleRate(sampleRate, f))
 	require.NoError(t, err)
 	seconds := float64(len(pcm)/4) / sampleRate
-	assert.Greater(t, seconds, 3*stepTime)
-	assert.Less(t, seconds, 1.2)
+	assert.Greater(t, seconds, 8*stepTime)
+	assert.Less(t, seconds, 2.8)
 }
