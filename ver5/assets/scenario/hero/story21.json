@@ -220,18 +220,6 @@
    "Text": "성은 제가 지키겠습니다. 두 분은 마음 놓고 다녀오십시오."
   },
   {
-   "ID": "c21-leave-guanyu",
-   "Kind": "leave",
-   "Character": "guanyu",
-   "Event": "leave-guanyu-21"
-  },
-  {
-   "ID": "c21-leave-zhangfei",
-   "Kind": "leave",
-   "Character": "zhangfei",
-   "Event": "leave-zhangfei-21"
-  },
-  {
    "ID": "c21-gate",
    "Kind": "scene",
    "Place": "여남 · 북문 안"
@@ -319,18 +307,6 @@
    "Kind": "join",
    "Character": "sunqian",
    "Event": "back-sunqian-21"
-  },
-  {
-   "ID": "c21-back-guanyu",
-   "Kind": "join",
-   "Character": "guanyu",
-   "Event": "back-guanyu-21"
-  },
-  {
-   "ID": "c21-back-zhangfei",
-   "Kind": "join",
-   "Character": "zhangfei",
-   "Event": "back-zhangfei-21"
   },
   {
    "ID": "c21-south",
