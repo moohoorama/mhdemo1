@@ -3478,3 +3478,4 @@
 - `assets/data/game.json`(`liuqi` 진영)·`stage27v.json`(유기 함대 `Faction: liuqi`, 군 이름 유기군)
 - 결정: 22장 강하의 정체불명 무리는 태산 도적 진영 대신 새 진영 "복면군"(`masked`, 회색)으로 · 이유: 13장 장패의 태산 도적과 이름·색이 겹쳐 어색하다(사용자 지적)
 - `assets/data/game.json`(`masked` 진영)·`assets/scenario/hero/stage22.json`(복면 유닛 `Faction: masked`, 군 이름 복면군)
+- `stage23.json`, `maps/map23.json`, `tools/mapgen/layouts/hero/map23.txt`: B23 팔문금쇄진을 큰 진영(북쪽 모서리가 전투 영역 밖으로 이어짐)으로 다시 설계 — 울타리에 둘러싸인 남서(분기)·남동(견고) 군사 둘이 서 있는 동안 적 전군 공격·방어 +20%, 퇴각하면 매 턴 −20%, 둘 다 퇴각하면 정신·순발·사기 −15%와 조인의 놀람. 단복이 개전 때 설명. 자동 AI(5시드) 군사 처치 전 0/5 → 둘 다 처치 5/5, 학습 AI 0/4 → 4/4.
