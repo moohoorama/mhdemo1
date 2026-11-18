@@ -1,3 +1,14 @@
+## 2026-11-19 23·24장 삼고초려를 탐험으로 다시 짜기
+
+- `assets/scenario/hero/story23.json`, `story24.json`, `explore23.json`, `explore23b.json`, `explore24.json`, `explore24b.json`, `assets/scenes/ch23.json`, `ch24.json`, `assets/scenes/ascii/c23-*.txt`·`c24-*.txt`: 사용자가 승낙한 새 대본 반영 — 삼고초려의 세 방문과 양양 연회 길을 이벤트로 넘기지 않고 플레이어가 신야·융중·양양을 걸어 다니게 함. 영천 회상(`c23-flash`)·재회 통성명·서서 천거 관청 장면·수어지교·성문 뒤 유기 누각(`c24-pavilion`)은 삭제. 서서는 저잣거리에서 본명을 밝히고(단복 `danfu`는 그 앞 줄만, 그 뒤는 `xushu`), 합류(`join`)는 B23 뒤로 둠(손님 서서가 전투 안에 있어 명단에 같이 있으면 둘이 됨).
+- 탐험 구조: `explore23`(신야성 `S_xiaopei`·관청·융중 `S_vil_peace` 가을, 플래그 `c23-visit1`→`c23-alarm`, 관우 출진), `explore23b`(눈 오는 날, 플래그 `c23-visit2`, 관청 문 이벤트 `c23-snow-end`가 `back Leave`로 24장 첫 장면으로 이어 줌), `explore24`(관청→신야성→양양 `S_xindu`→관청 연회→신야 성문 `c24-street`→융중 봄, 플래그 `c24-banquet`·`c24-zhang`), `explore24b`(관청의 제갈량 출진). 탐험 주인공은 늘 유비 혼자.
+- 눈 오는 날 초원 색조 `{"hue": 0, "sat": 0.04, "val": 1.8}`(전엔 `0.25`·`1.3`이라 초록이 비쳤다): `assets/scenes/ch23.json` `c23-visit2`와 `explore23b`의 신야성·융중 지역에 같이 둠 — 사용자 "초원 타일에 아직 초록색이 조금 보임, 더 하얗게".
+- `assets/data/characters_story.json`, `assets/scenario/hero/stage23.json`: B23 손님 장수의 이름을 단복에서 서서로 — 새 대본에서 본명을 밝힌 뒤의 전투라, 선례(`gaoshun`·`gaoshun_lu`)대로 이름만 다른 화면용 인물 `xushu_guest`를 두고 `Party`·패배 목표·이벤트 대사의 `danfu`를 바꿈(엔진 무변경).
+- `assets/scenes/ch23.json` `c23-start`·`c23-whisper`: 성문 밖 장면 앞에 양양 관청(`S_ye_hall`) 적로 헌상 장면 추가. 장면 `Music`은 장면 단위라 괴월이 들어오는 뒷부분을 따로 장면으로 나눠 `suno-intrigue`를 줌. 옛 성문 밖 장면은 `c23-gate`.
+- `assets/scenario/hero/story24.json` `c24-gate`: 하인이 유기의 청을 전하고 제갈량이 혼자 성문 밖으로 걸어 나가는 끝을 붙이고, 플래그 `c24-bowang`을 이 끝으로 옮김(읽는 곳 없음). 누각 장면 삭제.
+- `assets/scenario/hero/story25.json`·`story25v.json`, `assets/scenes/ch25.json`·`ch25v.json`: 신야 관청 첫머리에 유비의 물음과 제갈량의 답("처지가 곤란하시다기에 강하로 몸을 피하시라 말씀드렸을 뿐입니다") 한 줄 — 25장에는 탐험이 없어 NPC 대신 장면 안에 둠(사용자 지시의 대안).
+- `docs/fullstory.md` 23~25장 절을 새 흐름으로 고침.
+
 # 결정 기록
 
 이 문서가 맡는 범위: 설계 결정과 그 이유. 현재 규칙은 각 분야 문서(`logic-*`, `data-*`, `presentation-*`, `tools-*`, `system-*`)가 말하고, 여기에는 **왜 바꿨는가**만 적는다.
