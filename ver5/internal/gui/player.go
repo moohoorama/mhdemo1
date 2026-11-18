@@ -922,8 +922,8 @@ func (g *Game) leaveField(u *unitVis, dir image.Point) {
 	u.leave = &walkState{fu: u.u, fv: u.v, tu: tu, tv: tv}
 }
 
-// stepTo walks a unit one cell on the battle map, a footstep or, for a rider, a hoof beat with it; none while a boat
-// carries it over water.
+// stepTo walks a unit one cell on the battle map, a footstep or, for a rider, a hoof beat with it; the boat's water
+// sound while a boat carries it over water.
 func (g *Game) stepTo(u *unitVis, p content.Point) {
 	if cue := g.field.stepCue(u, p); cue != "" {
 		g.sfx(cue)
@@ -931,12 +931,13 @@ func (g *Game) stepTo(u *unitVis, p content.Point) {
 	g.walkTo(u, float64(p.X), float64(p.Y))
 }
 
-// stepCue is the sound of u's step onto cell p: a footstep or hoof beat, but none from water to water, where the boat
-// glides. A step between the bank and the water has one, as the unit walks its land half.
+// stepCue is the sound of u's step onto cell p: a footstep or hoof beat, but the boat's water sound from water to water,
+// where the boat glides (0.35 s, a little over a step, so each fades into the next). A step between the bank and the
+// water keeps its footstep, as the unit walks its land half.
 func (f *Field) stepCue(u *unitVis, p content.Point) string {
 	water := func(x, y int) bool { return f.Tile(x, y) == '~' }
 	if f.Map.SunkWater && water(int(math.Round(u.u)), int(math.Round(u.v))) && water(p.X, p.Y) {
-		return ""
+		return "boat"
 	}
 	if u.mounted {
 		return "hoof"

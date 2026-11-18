@@ -34,6 +34,7 @@ and noise floor cut, 30 Hz highpass, loudest 20 ms matched to the level) unless 
 | arrival | short_impact.mp3 sped up ×8.8 to 0.3 s | .16 |
 | step-1..7 | freesound_community-running-in-grass-6237.mp3, its seven steps cut 0.22 s each by `tools/sfx/steps.py` (one per cell walked; a variant never twice running) | .05 |
 | hoof-1..6 | universfield-horse-walking-123782.mp3: ten single hoof beats cut 0.1 s each (at 2.12 2.34 2.60 3.33 3.84 4.10 4.35 5.12 5.37 5.62 s), paired into six 따각s by `steps.py … --pairs 6` (one per cell a rider walks) | .05 |
+| boat | boat_wave.mp3 (user's download, 30 s), 0.35 s from 15.0 s (a steady stretch, −31 to −36 dB per 0.25 s), 80 ms fade in and 200 ms fade out, loudest 20 ms .04, `match.py` at 60% against chinese-traditional, empty-mountain and golden-bamboo (the music's earlier themes are gone); one per cell a unit rides a boat over water, a little over a step so each fades into the next | .04 |
 | ok | ok.mp3 (an order given: a battle command's cell, target or 대기, or an explore destination — a person, exit or sign) | .064 |
 | close | cancel.mp3 (a window or modal closing), sped up ×1.35 to 0.2 s | .056 |
 | ui-denied | denied.mp3 (a greyed-out menu row clicked, a warning toast), sped up ×1.55 to 0.2 s | .07 |
