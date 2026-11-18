@@ -119,6 +119,30 @@ type battleRefs struct {
 	events  map[string]bool // the stage's battle event ids
 }
 
+// AreaTarget splits an event target that names the units standing in an area, "area:N" or "<target>@area:N"
+// (a unit, group or side; none: any unit). ok is false for a plain target.
+func AreaTarget(t string) (base string, area int, ok bool) {
+	base, num, found := strings.Cut(t, "@area:")
+	if !found {
+		if num, found = strings.CutPrefix(t, "area:"); !found {
+			return "", 0, false
+		}
+		base = ""
+	}
+	n, err := strconv.Atoi(num)
+	return base, n, err == nil
+}
+
+// validTarget reports whether an event target names units: a known unit, group or side, or the units of one standing
+// in a known area.
+func (r *battleRefs) validTarget(t string) bool {
+	base, area, ok := AreaTarget(t)
+	if !ok {
+		return r.targets[t]
+	}
+	return r.areas[area] && (base == "" || r.targets[base])
+}
+
 // validateCond checks one condition string: story nodes pass refs nil, battle events the stage's refs.
 func (d *Data) validateCond(s string, refs *battleRefs) error {
 	c, err := ParseCond(s)

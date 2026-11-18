@@ -200,7 +200,7 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 					return nil, nil, fmt.Errorf("battle event %s: %s without targets", event.ID, a.Kind)
 				}
 				for _, t := range a.Targets {
-					if !refs.targets[t] {
+					if !refs.validTarget(t) {
 						return nil, nil, fmt.Errorf("battle event %s: %s %s", event.ID, a.Kind, t)
 					}
 				}

@@ -1,6 +1,10 @@
 package core
 
-import "srpg/internal/content"
+import (
+	"slices"
+
+	"srpg/internal/content"
+)
 
 // holdsAll reports whether every story condition holds (nodes pick branches with it).
 func (e *Engine) holdsAll(conds []string) bool { return e.holdsIn(conds, false) }
@@ -29,9 +33,19 @@ func (e *Engine) flag(name string) int {
 }
 
 // matching are the units a condition or action names: the unit with that id, every unit of that
-// group, or every unit of a side ("ally", "enemy").
+// group, or every unit of a side ("ally", "enemy"). "area:N" and "<target>@area:N" narrow it to the units standing
+// in that area now.
 func (e *Engine) matching(target string) []*Unit {
 	var out []*Unit
+	if base, area, ok := content.AreaTarget(target); ok {
+		named := e.matching(base)
+		for _, id := range keys(e.unitIDs) {
+			if u := e.unit(id); e.inArea(u, area) && (base == "" || slices.Contains(named, u)) {
+				out = append(out, u)
+			}
+		}
+		return out
+	}
 	for _, id := range keys(e.unitIDs) {
 		if u := e.unit(id); u.ID == target || u.Group == target || u.Faction == target || target == "player" && u.Faction == "ally" && !u.AI {
 			out = append(out, u)
