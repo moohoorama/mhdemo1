@@ -499,7 +499,6 @@
    "Kind": "grant",
    "Item": "twin_swords",
    "Count": 1,
-   "Character": "liubei",
    "Event": "grant-twin_swords"
   },
   {
