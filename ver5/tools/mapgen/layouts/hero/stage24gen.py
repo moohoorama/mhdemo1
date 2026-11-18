@@ -6,11 +6,13 @@ is one straight line from the screen's NE corner to its SW corner. The road is 3
 class), the river crosses it near the NE end (a ford, 'w' and 's'), forest and hills line both sides, mountains wall
 the rest in. 신야 (one castle tile) lies beside the SW end of the road.
 
-Flow: the Wei column (Xiahou Dun and the vanguard, Yu Jin and the center) waits on the road, the ford guard (Li Dian)
-at the river. Zhao Yun walks up and baits Xiahou Dun (area LURE, or any damage to the column); the column then marches
-for the trap (area GOAL). When Xiahou Dun stands in GOAL and the whole column is inside the fire zone, Zhuge Liang
-lights the fire: the zone's cells burn, Guan Yu and Zhang Fei come out of the woods, and the Wei troops standing in the
-zone lose half their strength and are confused; they flee for the ford. The ford guard is never touched.
+Flow: the Wei column (Xiahou Dun and the vanguard, Yu Jin and the center, the rear guard with three supply carts)
+waits on the road, the ford guard (Li Dian) at the river. Zhao Yun walks up and baits Xiahou Dun (area LURE, or any
+damage to the column); Xiahou Dun then chases on his Jueying with the vanguard and center behind him (assault), the
+rear guard marches to its place. The fire zone covers the whole stretch of road the column stands on. When Xiahou Dun
+reaches the deep part of it (area DEEP) with the vanguard and center inside, Zhuge Liang lights the fire: Guan Yu
+comes out of the woods in the middle of the stretch and Zhang Fei behind it, at the rear guard, and the Wei troops
+standing in the zone lose half their strength and are confused; they flee for the ford. The ford guard is never touched.
 """
 import json
 import subprocess
@@ -86,23 +88,27 @@ def wait(sec):
 
 
 # Areas. 11..15 are the fire strips, lit from the NE side (cutting the way back) to the SW.
-LURE, GOAL, TRAP, FLEE, FORD = 4, 5, 6, 9, 10
-FIRE_X, FIRE_W, FIRE_Y0, FIRE_ROWS, STRIP = 5, 7, 18, 12, 2
+LURE, DEEP, TRAP, FLEE, FORD, REAR = 4, 5, 6, 9, 10, 7
+FIRE_X, FIRE_W, FIRE_Y0, FIRE_ROWS, STRIP = 5, 7, 9, 20, 2
 STRIPS = [11 + i for i in range(FIRE_ROWS // STRIP)]
 areas = [
     rect(1, 7, 37, 3, 3, '신야 앞 길', '유비·제갈량과 조운. 곁에 신야성'),
-    rect(LURE, RX0, 23, 3, 3, '유인 자리', '여기까지 오면 하후돈이 조운을 쫓는다'),
-    rect(GOAL, 6, 22, 5, 5, '덫 한가운데', '하후돈의 군사가 조운을 쫓아 닿는 길'),
+    rect(LURE, RX0, 24, 3, 3, '유인 자리', '여기까지 오면 하후돈이 조운을 쫓는다'),
+    rect(DEEP, 6, 21, 5, 7, '덫 깊은 곳', '하후돈이 여기까지 쫓아 들어오면 불이 붙는다'),
     rect(TRAP, FIRE_X, FIRE_Y0, FIRE_W, FIRE_ROWS, '불 놓을 길', '길과 양옆 숲. 화공이 번지는 곳'),
+    rect(REAR, 6, 17, 5, 3, '후방 자리', '보급 수레와 후미 병졸이 따라 닿는 길'),
     rect(FLEE, 6, 0, 5, 2, '여울 너머', '하후돈이 닿으면 강을 건너 달아난다'),
     rect(FORD, 6, 5, 5, 4, '여울 앞', '이전이 남은 군사를 거두는 강가'),
 ]
 for i, a in enumerate(STRIPS):
     areas.append(rect(a, FIRE_X, FIRE_Y0 + i * STRIP, FIRE_W, STRIP, '불 %d' % (i + 1), '화공으로 불이 붙는 길가'))
 
-# The column waits on the road, vanguard (선봉) at the head, center (중군) behind, 3 abreast.
+# The column waits on the road, vanguard (선봉) at the head, center (중군) behind, then the rear guard (후방) with
+# the supply carts (군량 수레) last; 3 abreast.
 van_cells = [(8, 16), (7, 16), (9, 16), (7, 15), (8, 15), (9, 15), (7, 14), (8, 14), (9, 14)]
-main_cells = [(8, 13), (7, 13), (9, 13), (7, 12), (8, 12), (9, 12), (7, 11), (8, 11), (9, 11)]
+main_cells = [(8, 13), (7, 13), (9, 13), (7, 12), (9, 12)]
+rear_cells = [(7, 11), (8, 11), (9, 11), (8, 10)]
+cart_cells = [(7, 9), (8, 9), (9, 9)]
 road_units = [enemy('xiahoudun', *van_cells[0], 'van', Rank='commander',
                     Equipment=['copper_spear', 'leather_armor', 'jueying'])]
 for x, y in van_cells[1:]:
@@ -110,13 +116,17 @@ for x, y in van_cells[1:]:
 road_units.append(enemy('yujin', *main_cells[0], 'main'))
 for x, y in main_cells[1:]:
     road_units.append(enemy('troop_footman', x, y, 'main'))
+for x, y in rear_cells:
+    road_units.append(enemy('troop_footman', x, y, 'rear'))
+for x, y in cart_cells:
+    road_units.append(enemy('loot_cart', x, y, 'rear'))
 ford_units = [enemy('lidian', 8, 7, 'ford', DuelFirst=True)]
 for x, y in ((7, 7), (9, 7), (7, 5), (9, 5)):
     ford_units.append(enemy('troop_footman', x, y, 'ford'))
 for x, y in ((8, 5), (8, 3)):
     ford_units.append(enemy('troop_archer', x, y, 'ford'))
 
-COLUMN = ['van', 'main']
+COLUMN = ['van', 'main', 'rear']
 BURNT = ['enemy@area:%d' % a for a in STRIPS]  # the Wei troops standing in the fire zone
 
 fire_actions = []
@@ -130,8 +140,8 @@ def fire_event(event_id, cond):
         say('zhugeliang', '이때입니다! 불을 놓으십시오!'),
     ] + fire_actions + [
         {'Kind': 'join', 'Spawns': [
-            {'Character': 'guanyu', 'X': 6, 'Y': 9, 'Facing': 'SE'},
-            {'Character': 'zhangfei', 'X': 11, 'Y': 17, 'Facing': 'SW'}]},
+            {'Character': 'guanyu', 'X': 5, 'Y': 19, 'Facing': 'SE'},
+            {'Character': 'zhangfei', 'X': 11, 'Y': 14, 'Facing': 'SW'}]},
         {'Kind': 'damage', 'Targets': BURNT, 'Value': 50},
         {'Kind': 'buff', 'Targets': BURNT, 'Stat': 'confusion', 'Turns': 2},
         {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'flee', 'GoalArea': FLEE},
@@ -140,14 +150,17 @@ def fire_event(event_id, cond):
 
 
 events = [
+    # Zhao Yun baits Xiahou Dun (or anyone strikes the column): he gives chase on his Jueying, the vanguard and the
+    # center follow, the rear guard walks to its place behind the fire zone.
     {'ID': 'lure', 'If': ['any:[at:zhaoyun:%d, hp:van<100, hp:main<100]' % LURE], 'Do': [
         say('xiahoudun', '겨우 이것이냐! 선봉도 중군도 따르라! 쫓아라!'),
-        {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'march', 'GoalArea': GOAL},
+        {'Kind': 'ai', 'Targets': ['van', 'main'], 'Policy': 'assault'},
+        {'Kind': 'ai', 'Targets': ['rear'], 'Policy': 'march', 'GoalArea': REAR},
     ]},
-    # Xiahou Dun reaches the heart of the trap with the whole column inside the fire zone. The fire itself waits on
+    # Xiahou Dun and the whole vanguard are in the fire zone with the head of the center. The fire itself waits on
     # this or, as a safety net, on five rounds after the lure (a join may stand in one event only, hence the relay).
-    {'ID': 'column-in-trap', 'If': ['at:xiahoudun:%d' % TRAP, 'allat:van:%d' % TRAP, 'allat:main:%d' % TRAP], 'Do': [
-        {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'march', 'GoalArea': GOAL}]},
+    {'ID': 'column-in-trap', 'If': ['since:lure>=0', 'at:xiahoudun:%d' % DEEP, 'allat:van:%d' % TRAP, 'allat:main:%d' % TRAP], 'Do': [
+        {'Kind': 'ai', 'Targets': ['van', 'main'], 'Policy': 'assault'}]},
     fire_event('fire', ['any:[since:column-in-trap>=0, since:lure>=5]']),
     {'ID': 'advance-late', 'If': ['round>=10', '!since:lure'], 'Do': [
         {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'assault'}]},
