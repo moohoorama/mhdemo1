@@ -10,8 +10,12 @@ Gua 관우  (off stage, enters later (cell 2 4))
 Zha 장비  (off stage, enters later (cell 4 4))
 Liu 유비  (off stage, enters later (cell 3 5))
 Zun 조운  (off stage, enters later (cell 1 5))
+Ser 하인  (off stage, enters later (cell 3 2))
 
 # c24-g01: Gua -> 2 4
 # c24-g01: Zha -> 4 4
 # c24-g01: Liu -> 3 5
 # c24-g01: Zun -> 1 5
+# c24-h01: Ser -> 3 2
+# c24-h04: Ser -> 3 1 and leaves
+# c24-h04: Zhu -> 3 1 and leaves

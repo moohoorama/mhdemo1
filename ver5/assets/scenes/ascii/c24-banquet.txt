@@ -1,0 +1,24 @@
+# c24-banquet  S_mansion  ch24  origin -1 -1
+Pil#####################Pil
+###......Cdl...###Cdl...Lnt
+###............Liu.........
+###Lnt...Tbl......TblCai...
+###...in1...............in2
+###......Tbl......TblKua...
+PilJar.....................
+
+Liu 유표  (sit)
+Cai 채모
+Kua 괴월
+Lei 유비  (off stage, enters later (cell 3 6))
+Lqi 유기  (off stage, enters later (cell 3 6))
+in1 하인#1  (infantry_noncombat)
+in2 하인#2  (infantry_noncombat)
+
+# c24-q01: Lei -> 3 3
+# c24-q07: Lqi -> 3 4
+# c24-q10: Lqi -> 3 7 and leaves
+# c24-q10: Cai -> 7 7 and leaves
+# c24-q10: Kua -> 7 7 and leaves
+# c24-q10: in1 -> 1 8 and leaves
+# c24-q10: in2 -> 7 8 and leaves

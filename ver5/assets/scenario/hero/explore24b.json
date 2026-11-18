@@ -1,0 +1,34 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "office",
+  "At": [
+   5,
+   9
+  ],
+  "Face": "NE"
+ },
+ "Areas": {
+  "office": {
+   "Map": "S_xiaopei_office",
+   "Name": "신야 · 관청",
+   "At": [
+    5,
+    5
+   ],
+   "Exits": [],
+   "People": {
+    "제갈량": {
+     "At": [
+      5,
+      6
+     ],
+     "Face": "SW",
+     "Sortie": {
+      "Ask": "준비는 끝났습니다. 주공, 신야 앞 길로 나가시지요."
+     }
+    }
+   }
+  }
+ }
+}

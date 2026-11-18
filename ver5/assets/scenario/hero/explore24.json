@@ -1,0 +1,292 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "office",
+  "At": [
+   5,
+   6
+  ],
+  "Face": "SW"
+ },
+ "Areas": {
+  "office": {
+   "Map": "S_xiaopei_office",
+   "Name": "신야 · 관청",
+   "At": [
+    5,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      5,
+      11
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {}
+  },
+  "town": {
+   "Map": "S_xiaopei",
+   "Name": "신야성",
+   "At": [
+    19,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "관청",
+     "At": [
+      5,
+      11
+     ],
+     "Object": [
+      2,
+      11
+     ],
+     "To": "office"
+    },
+    {
+     "Name": "양양 가는 길",
+     "At": [
+      19,
+      -1
+     ],
+     "To": "xiangyang",
+     "If": [
+      "!flag:c24-zhang"
+     ]
+    },
+    {
+     "Name": "융중 가는 길",
+     "At": [
+      19,
+      -1
+     ],
+     "To": "longzhong",
+     "If": [
+      "flag:c24-zhang"
+     ]
+    }
+   ],
+   "People": {
+    "서서": {
+     "At": [
+      17,
+      6
+     ],
+     "Face": "SE",
+     "If": [
+      "flag:c24-zhang"
+     ],
+     "Talk": [
+      [
+       "xushu",
+       "이번에는 계실 것입니다. 부디 서두르지 마십시오."
+      ]
+     ]
+    },
+    "신야 백성": {
+     "At": [
+      15,
+      13
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "세 번째라지요. 어지간히 귀한 선생인가 봅니다."
+      ]
+     ],
+     "If": [
+      "flag:c24-zhang"
+     ]
+    }
+   }
+  },
+  "xiangyang": {
+   "Map": "S_xindu",
+   "Name": "양양",
+   "At": [
+    14,
+    10
+   ],
+   "Exits": [
+    {
+     "Name": "관청",
+     "At": [
+      14,
+      6
+     ],
+     "Object": [
+      14,
+      3
+     ],
+     "Node": "c24-banquet",
+     "If": [
+      "!flag:c24-banquet"
+     ]
+    },
+    {
+     "Name": "신야 가는 길",
+     "At": [
+      14,
+      28
+     ],
+     "To": "town",
+     "If": [
+      "!flag:c24-banquet"
+     ]
+    },
+    {
+     "Name": "신야 가는 길",
+     "At": [
+      14,
+      28
+     ],
+     "Node": "c24-street",
+     "If": [
+      "flag:c24-banquet",
+      "!flag:c24-zhang"
+     ]
+    }
+   ],
+   "People": {
+    "양양 문지기": {
+     "At": [
+      16,
+      8
+     ],
+     "Face": "NW",
+     "Sprite": "guards",
+     "Faction": "jing",
+     "Talk": [
+      [
+       "",
+       "신야의 황숙이시군요. 주공께서 기다리십니다. 관청으로 드시지요."
+      ]
+     ],
+     "If": [
+      "!flag:c24-banquet"
+     ]
+    },
+    "양양 백성@pre": {
+     "At": [
+      20,
+      14
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "조인을 물리친 신야 분이 오셨다네. 오늘 연회가 크게 열린다더군."
+      ]
+     ],
+     "If": [
+      "!flag:c24-banquet"
+     ]
+    },
+    "양양 백성@post": {
+     "At": [
+      20,
+      14
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "연회가 길었나 보오. 해가 많이 기울었는데 조심해서 가시오."
+      ]
+     ],
+     "If": [
+      "flag:c24-banquet"
+     ]
+    },
+    "양양 병사": {
+     "At": [
+      12,
+      9
+     ],
+     "Face": "SE",
+     "Sprite": "guards",
+     "Faction": "jing",
+     "Talk": [
+      [
+       "",
+       "채 장군께서 관청 안팎을 챙기고 계십니다. 소란 피우지 마십시오."
+      ]
+     ]
+    }
+   }
+  },
+  "longzhong": {
+   "Map": "S_vil_peace",
+   "Name": "융중",
+   "Grass": {
+    "hue": 0,
+    "sat": 1.1,
+    "val": 1.0
+   },
+   "At": [
+    24,
+    8
+   ],
+   "Exits": [
+    {
+     "Name": "신야로",
+     "At": [
+      24,
+      8
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "동자": {
+     "At": [
+      7,
+      4
+     ],
+     "Face": "SE",
+     "Event": [
+      {
+       "Node": "c24-cottage3"
+      }
+     ]
+    },
+    "융중 농부": {
+     "At": [
+      16,
+      12
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "봄이 되니 매화가 피었습니다. 선생 댁 앞에도 한창일 겁니다."
+      ]
+     ]
+    }
+   },
+   "Effects": [
+    {
+     "Effect": "petals",
+     "At": [
+      7,
+      4
+     ]
+    }
+   ]
+  }
+ }
+}

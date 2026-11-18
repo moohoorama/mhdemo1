@@ -1,17 +1,20 @@
-# c24-start  S_mansion  ch24  origin -1 -1
+# c24-start  S_xiaopei_office  ch24  origin -1 -1
 Pil#####################Pil
-###......Cdl...###Cdl...Lnt
-###............Liu.........
-###Lnt...Tbl......TblCai...
-###...in1...............in2
-###......Tbl......TblKua...
-PilJar.....................
+###...Cdl###Bnr.........Lnt
+###......Liu.........Map...
+###Wpn...Dsk...Zha......Jar
+###WpnGuaYijXusTblTbl......
+###ArmZun..................
+PilLnt.....................
 
-Liu 유표  (sit)
-Cai 채모
-Kua 괴월
-Lei 유비  (off stage, enters later (cell 3 6))
-in1 하인#1  (infantry_noncombat)
-in2 하인#2  (infantry_noncombat)
+Liu 유비
+Xus 서서
+Gua 관우
+Zha 장비
+Zun 조운
+Yij 이적
+Mes 전령  (light_infantry, off stage, enters later (cell 2 5))
 
-# c24-f01: Lei -> 3 3
+# c24-s01: Mes -> 2 5
+# c24-s03: Mes -> 2 7 and leaves
+# c24-s08: Zun -> 2 4

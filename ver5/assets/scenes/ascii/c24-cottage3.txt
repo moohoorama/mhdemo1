@@ -1,17 +1,16 @@
 # c24-cottage3  S_vil_peace  ch24  origin 0 0
 #########Tav...Bsh
 ###Hse###.........
-###Hse###Pag......
+###Hse###.........
 TreNtc............
 ..................
 
-Liu 유비  (off stage, enters later (cell 4 2))
+Liu 유비  (stands where the walk left them)
+Pag 동자  (stands where the walk left them)
 Gua 관우  (off stage, enters later (cell 5 1))
 Zha 장비  (off stage, enters later (cell 5 3))
-Pag 동자
 Zhu 제갈량  (off stage, enters later (cell 3 1))
 
-# c24-c01: Liu -> 4 2
 # c24-c01: Gua -> 5 1
 # c24-c01: Zha -> 5 3
 # c24-c04: Gua -> 5 4
