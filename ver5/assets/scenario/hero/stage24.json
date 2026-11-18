@@ -7,7 +7,9 @@
  "Required": [
   "liubei",
   "zhugeliang",
-  "zhaoyun",
+  "zhaoyun"
+ ],
+ "Reserve": [
   "guanyu",
   "zhangfei"
  ],
@@ -37,62 +39,54 @@
  "Map": "map24.json",
  "Allies": [
   {
-   "X": 2,
-   "Y": 20
+   "X": 8,
+   "Y": 39
   },
   {
-   "X": 3,
-   "Y": 20
-  },
-  {
-   "X": 3,
-   "Y": 21
+   "X": 9,
+   "Y": 39
   },
   {
    "X": 8,
-   "Y": 7
+   "Y": 38
+  },
+  {
+   "X": 7,
+   "Y": 39
+  },
+  {
+   "X": 7,
+   "Y": 38
   },
   {
    "X": 9,
-   "Y": 7
+   "Y": 38
+  },
+  {
+   "X": 7,
+   "Y": 37
+  },
+  {
+   "X": 8,
+   "Y": 37
   },
   {
    "X": 9,
-   "Y": 8
-  },
-  {
-   "X": 14,
-   "Y": 9
-  },
-  {
-   "X": 15,
-   "Y": 9
-  },
-  {
-   "X": 14,
-   "Y": 10
+   "Y": 37
   }
  ],
  "Recommend": {
   "liubei": {
-   "X": 2,
-   "Y": 20
+   "X": 8,
+   "Y": 39
   },
   "zhugeliang": {
-   "X": 3,
-   "Y": 20
+   "X": 9,
+   "Y": 39
   },
   "zhaoyun": {
-   "X": 3,
-   "Y": 21
-  },
-  "guanyu": {
-   "X": 9,
-   "Y": 8
-  },
-  "zhangfei": {
-   "X": 14,
-   "Y": 9
+   "X": 8,
+   "Y": 37
   }
  },
  "Groups": [
@@ -104,37 +98,28 @@
     "zhugeliang",
     "zhaoyun"
    ]
-  },
-  {
-   "Name": "예산",
-   "Area": 2,
-   "Required": [
-    "guanyu"
-   ]
-  },
-  {
-   "Name": "안림",
-   "Area": 3,
-   "Required": [
-    "zhangfei"
-   ]
   }
  ],
  "Enemies": [
   {
    "Character": "xiahoudun",
-   "X": 11,
-   "Y": 9,
+   "X": 8,
+   "Y": 16,
    "Group": "van",
    "Faction": "wei",
    "Policy": "hold",
+   "Facing": "SW",
    "Rank": "commander",
-   "Facing": "SW"
+   "Equipment": [
+    "copper_spear",
+    "leather_armor",
+    "jueying"
+   ]
   },
   {
    "Character": "troop_cavalry",
-   "X": 12,
-   "Y": 9,
+   "X": 7,
+   "Y": 16,
    "Group": "van",
    "Faction": "wei",
    "Policy": "hold",
@@ -143,8 +128,8 @@
   },
   {
    "Character": "troop_cavalry",
-   "X": 11,
-   "Y": 8,
+   "X": 9,
+   "Y": 16,
    "Group": "van",
    "Faction": "wei",
    "Policy": "hold",
@@ -153,8 +138,8 @@
   },
   {
    "Character": "troop_cavalry",
-   "X": 12,
-   "Y": 8,
+   "X": 7,
+   "Y": 15,
    "Group": "van",
    "Faction": "wei",
    "Policy": "hold",
@@ -163,8 +148,8 @@
   },
   {
    "Character": "troop_cavalry",
-   "X": 11,
-   "Y": 7,
+   "X": 8,
+   "Y": 15,
    "Group": "van",
    "Faction": "wei",
    "Policy": "hold",
@@ -173,8 +158,8 @@
   },
   {
    "Character": "troop_cavalry",
-   "X": 12,
-   "Y": 7,
+   "X": 9,
+   "Y": 15,
    "Group": "van",
    "Faction": "wei",
    "Policy": "hold",
@@ -183,8 +168,8 @@
   },
   {
    "Character": "troop_cavalry",
-   "X": 11,
-   "Y": 6,
+   "X": 7,
+   "Y": 14,
    "Group": "van",
    "Faction": "wei",
    "Policy": "hold",
@@ -193,8 +178,8 @@
   },
   {
    "Character": "troop_cavalry",
-   "X": 12,
-   "Y": 6,
+   "X": 8,
+   "Y": 14,
    "Group": "van",
    "Faction": "wei",
    "Policy": "hold",
@@ -203,8 +188,8 @@
   },
   {
    "Character": "troop_cavalry",
-   "X": 11,
-   "Y": 5,
+   "X": 9,
+   "Y": 14,
    "Group": "van",
    "Faction": "wei",
    "Policy": "hold",
@@ -213,8 +198,8 @@
   },
   {
    "Character": "yujin",
-   "X": 12,
-   "Y": 5,
+   "X": 8,
+   "Y": 13,
    "Group": "main",
    "Faction": "wei",
    "Policy": "hold",
@@ -222,18 +207,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 13,
-   "Y": 5,
-   "Group": "main",
-   "Faction": "wei",
-   "Policy": "hold",
-   "Shift": -0.07,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 13,
-   "Y": 6,
+   "X": 7,
+   "Y": 13,
    "Group": "main",
    "Faction": "wei",
    "Policy": "hold",
@@ -242,8 +217,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 14,
-   "Y": 5,
+   "X": 9,
+   "Y": 13,
    "Group": "main",
    "Faction": "wei",
    "Policy": "hold",
@@ -252,8 +227,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 14,
-   "Y": 6,
+   "X": 7,
+   "Y": 12,
    "Group": "main",
    "Faction": "wei",
    "Policy": "hold",
@@ -262,8 +237,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 15,
-   "Y": 5,
+   "X": 8,
+   "Y": 12,
    "Group": "main",
    "Faction": "wei",
    "Policy": "hold",
@@ -272,8 +247,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 15,
-   "Y": 6,
+   "X": 9,
+   "Y": 12,
    "Group": "main",
    "Faction": "wei",
    "Policy": "hold",
@@ -282,8 +257,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 16,
-   "Y": 5,
+   "X": 7,
+   "Y": 11,
    "Group": "main",
    "Faction": "wei",
    "Policy": "hold",
@@ -292,8 +267,18 @@
   },
   {
    "Character": "troop_footman",
-   "X": 16,
-   "Y": 6,
+   "X": 8,
+   "Y": 11,
+   "Group": "main",
+   "Faction": "wei",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 9,
+   "Y": 11,
    "Group": "main",
    "Faction": "wei",
    "Policy": "hold",
@@ -302,8 +287,8 @@
   },
   {
    "Character": "lidian",
-   "X": 21,
-   "Y": 3,
+   "X": 8,
+   "Y": 7,
    "Group": "ford",
    "Faction": "wei",
    "Policy": "hold",
@@ -312,8 +297,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 20,
-   "Y": 3,
+   "X": 7,
+   "Y": 7,
    "Group": "ford",
    "Faction": "wei",
    "Policy": "hold",
@@ -322,8 +307,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 22,
-   "Y": 3,
+   "X": 9,
+   "Y": 7,
    "Group": "ford",
    "Faction": "wei",
    "Policy": "hold",
@@ -332,8 +317,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 19,
-   "Y": 0,
+   "X": 7,
+   "Y": 5,
    "Group": "ford",
    "Faction": "wei",
    "Policy": "hold",
@@ -342,8 +327,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 20,
-   "Y": 0,
+   "X": 9,
+   "Y": 5,
    "Group": "ford",
    "Faction": "wei",
    "Policy": "hold",
@@ -352,8 +337,8 @@
   },
   {
    "Character": "troop_archer",
-   "X": 18,
-   "Y": 0,
+   "X": 8,
+   "Y": 5,
    "Group": "ford",
    "Faction": "wei",
    "Policy": "hold",
@@ -362,7 +347,7 @@
   },
   {
    "Character": "troop_archer",
-   "X": 19,
+   "X": 8,
    "Y": 3,
    "Group": "ford",
    "Faction": "wei",
@@ -379,51 +364,51 @@
   {
    "ID": 1,
    "Rect": {
-    "X": 2,
-    "Y": 20,
-    "W": 2,
-    "H": 2
+    "X": 7,
+    "Y": 37,
+    "W": 3,
+    "H": 3
    },
-   "Name": "남서쪽 길 끝",
+   "Name": "신야 앞 길",
    "Description": "유비·제갈량과 조운. 곁에 신야성"
-  },
-  {
-   "ID": 2,
-   "Rect": {
-    "X": 8,
-    "Y": 7,
-    "W": 2,
-    "H": 2
-   },
-   "Name": "예산",
-   "Description": "길 북서쪽 산자락. 관우의 복병"
-  },
-  {
-   "ID": 3,
-   "Rect": {
-    "X": 14,
-    "Y": 9,
-    "W": 2,
-    "H": 2
-   },
-   "Name": "안림",
-   "Description": "길 남동쪽 숲. 장비의 복병"
   },
   {
    "ID": 4,
    "Rect": {
-    "X": 6,
-    "Y": 12,
-    "W": 2,
+    "X": 7,
+    "Y": 23,
+    "W": 3,
     "H": 3
    },
-   "Name": "덫 어귀",
-   "Description": "하후돈의 선봉이 조운을 쫓아 닿는 길목"
+   "Name": "유인 자리",
+   "Description": "여기까지 오면 하후돈이 조운을 쫓는다"
+  },
+  {
+   "ID": 5,
+   "Rect": {
+    "X": 6,
+    "Y": 22,
+    "W": 5,
+    "H": 5
+   },
+   "Name": "덫 한가운데",
+   "Description": "하후돈의 군사가 조운을 쫓아 닿는 길"
+  },
+  {
+   "ID": 6,
+   "Rect": {
+    "X": 5,
+    "Y": 18,
+    "W": 7,
+    "H": 12
+   },
+   "Name": "불 놓을 길",
+   "Description": "길과 양옆 숲. 화공이 번지는 곳"
   },
   {
    "ID": 9,
    "Rect": {
-    "X": 25,
+    "X": 6,
     "Y": 0,
     "W": 5,
     "H": 2
@@ -434,9 +419,9 @@
   {
    "ID": 10,
    "Rect": {
-    "X": 19,
-    "Y": 0,
-    "W": 6,
+    "X": 6,
+    "Y": 5,
+    "W": 5,
     "H": 4
    },
    "Name": "여울 앞",
@@ -446,221 +431,82 @@
    "ID": 11,
    "Rect": {
     "X": 5,
-    "Y": 10,
-    "W": 1,
-    "H": 5
+    "Y": 18,
+    "W": 7,
+    "H": 2
    },
-   "Name": "불 앞 길 서쪽",
-   "Description": "개전에 불이 붙는 길가"
+   "Name": "불 1",
+   "Description": "화공으로 불이 붙는 길가"
   },
   {
    "ID": 12,
    "Rect": {
-    "X": 8,
-    "Y": 12,
-    "W": 1,
-    "H": 3
+    "X": 5,
+    "Y": 20,
+    "W": 7,
+    "H": 2
    },
-   "Name": "불 앞 길 동쪽",
-   "Description": "개전에 불이 붙는 길가"
+   "Name": "불 2",
+   "Description": "화공으로 불이 붙는 길가"
   },
   {
    "ID": 13,
    "Rect": {
-    "X": 6,
-    "Y": 9,
-    "W": 2,
-    "H": 1
+    "X": 5,
+    "Y": 22,
+    "W": 7,
+    "H": 2
    },
-   "Name": "불 가운데 길 북쪽",
-   "Description": "개전에 불이 붙는 길가"
+   "Name": "불 3",
+   "Description": "화공으로 불이 붙는 길가"
   },
   {
    "ID": 14,
    "Rect": {
-    "X": 9,
-    "Y": 12,
-    "W": 4,
-    "H": 1
+    "X": 5,
+    "Y": 24,
+    "W": 7,
+    "H": 2
    },
-   "Name": "불 가운데 길 남쪽",
-   "Description": "개전에 불이 붙는 길가"
+   "Name": "불 4",
+   "Description": "화공으로 불이 붙는 길가"
   },
   {
    "ID": 15,
    "Rect": {
-    "X": 10,
-    "Y": 6,
-    "W": 1,
-    "H": 4
+    "X": 5,
+    "Y": 26,
+    "W": 7,
+    "H": 2
    },
-   "Name": "불 굽이 서쪽",
-   "Description": "개전에 불이 붙는 길가"
+   "Name": "불 5",
+   "Description": "화공으로 불이 붙는 길가"
   },
   {
    "ID": 16,
    "Rect": {
-    "X": 13,
-    "Y": 11,
-    "W": 1,
+    "X": 5,
+    "Y": 28,
+    "W": 7,
     "H": 2
    },
-   "Name": "불 굽이 동쪽 아래",
-   "Description": "개전에 불이 붙는 길가"
-  },
-  {
-   "ID": 17,
-   "Rect": {
-    "X": 13,
-    "Y": 7,
-    "W": 1,
-    "H": 2
-   },
-   "Name": "불 굽이 동쪽 위",
-   "Description": "개전에 불이 붙는 길가"
-  },
-  {
-   "ID": 18,
-   "Rect": {
-    "X": 10,
-    "Y": 4,
-    "W": 6,
-    "H": 1
-   },
-   "Name": "불 뒤 길 북쪽",
-   "Description": "개전에 불이 붙는 길가"
-  },
-  {
-   "ID": 19,
-   "Rect": {
-    "X": 14,
-    "Y": 7,
-    "W": 4,
-    "H": 1
-   },
-   "Name": "불 뒤 길 남쪽",
-   "Description": "개전에 불이 붙는 길가"
+   "Name": "불 6",
+   "Description": "화공으로 불이 붙는 길가"
   }
  ],
  "Events": [
   {
    "ID": "lure",
+   "If": [
+    "any:[at:zhaoyun:4, hp:van<100, hp:main<100]"
+   ],
    "Do": [
     {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "move",
-        "Unit": "zhaoyun",
-        "To": {
-         "X": 11,
-         "Y": 10
-        },
-        "Facing": "NE"
-       }
-      ],
-      [
-       {
-        "Kind": "say",
-        "Unit": "zhaoyun",
-        "Text": "하후돈! 상산 조자룡이 길을 막는다!"
-       }
-      ],
-      [
-       {
-        "Kind": "play",
-        "Unit": "zhaoyun",
-        "Motion": "attack"
-       },
-       {
-        "Kind": "play",
-        "Unit": "xiahoudun",
-        "Motion": "block"
-       }
-      ],
-      [
-       {
-        "Kind": "play",
-        "Unit": "xiahoudun",
-        "Motion": "attack"
-       },
-       {
-        "Kind": "play",
-        "Unit": "zhaoyun",
-        "Motion": "block"
-       }
-      ],
-      [
-       {
-        "Kind": "play",
-        "Unit": "zhaoyun",
-        "Motion": "attack"
-       },
-       {
-        "Kind": "play",
-        "Unit": "xiahoudun",
-        "Motion": "block"
-       }
-      ],
-      [
-       {
-        "Kind": "say",
-        "Unit": "zhaoyun",
-        "Text": "……당해 낼 수가 없구나. 물러나라!"
-       }
-      ],
-      [
-       {
-        "Kind": "move",
-        "Unit": "zhaoyun",
-        "To": {
-         "X": 3,
-         "Y": 18
-        },
-        "Facing": "SW"
-       },
-       {
-        "Kind": "face",
-        "Unit": "xiahoudun",
-        "Facing": "SW"
-       }
-      ]
-     ]
-    },
-    {
      "Kind": "say",
      "Lines": [
       {
        "Actor": "xiahoudun",
-       "Text": "유비가 군사를 얻었다더니, 겨우 이것이냐! 선봉도 중군도 따르라! 쫓아라!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "yujin",
-       "Text": "장군, 길이 좁고 한쪽은 산, 한쪽은 숲입니다. 풀이 바짝 말랐습니다. 불이 무섭습니다!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "xiahoudun",
-       "Text": "불이 무서워 다 잡은 적을 놓치겠느냐! 밀어붙여라!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "lidian",
-       "Text": "원양! 멈추시오! ……늦었구나."
+       "Text": "겨우 이것이냐! 선봉도 중군도 따르라! 쫓아라!"
       }
      ]
     },
@@ -671,56 +517,66 @@
       "main"
      ],
      "Policy": "march",
-     "GoalArea": 4
+     "GoalArea": 5
+    }
+   ]
+  },
+  {
+   "ID": "column-in-trap",
+   "If": [
+    "at:xiahoudun:6",
+    "allat:van:6",
+    "allat:main:6"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "van",
+      "main"
+     ],
+     "Policy": "march",
+     "GoalArea": 5
     }
    ]
   },
   {
    "ID": "fire",
    "If": [
-    "any:[at:xiahoudun:4, round>=3]"
+    "any:[since:column-in-trap>=0, since:lure>=5]"
    ],
    "Do": [
     {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "face",
-        "Unit": "guanyu",
-        "Facing": "SW"
-       },
-       {
-        "Kind": "face",
-        "Unit": "zhangfei",
-        "Facing": "NE"
-       }
-      ],
-      [
-       {
-        "Kind": "play",
-        "Unit": "guanyu",
-        "Motion": "attack"
-       },
-       {
-        "Kind": "play",
-        "Unit": "zhangfei",
-        "Motion": "attack"
-       }
-      ]
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhugeliang",
+       "Text": "이때입니다! 불을 놓으십시오!"
+      }
      ]
     },
     {
      "Kind": "terrain",
      "Area": 11,
      "State": "F",
-     "Turns": 3
+     "Turns": 2
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "wait",
+        "Seconds": 0.3
+       }
+      ]
+     ]
     },
     {
      "Kind": "terrain",
      "Area": 12,
      "State": "F",
-     "Turns": 3
+     "Turns": 2
     },
     {
      "Kind": "cutscene",
@@ -737,13 +593,24 @@
      "Kind": "terrain",
      "Area": 13,
      "State": "F",
-     "Turns": 3
+     "Turns": 2
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "wait",
+        "Seconds": 0.3
+       }
+      ]
+     ]
     },
     {
      "Kind": "terrain",
      "Area": 14,
      "State": "F",
-     "Turns": 3
+     "Turns": 2
     },
     {
      "Kind": "cutscene",
@@ -760,13 +627,24 @@
      "Kind": "terrain",
      "Area": 15,
      "State": "F",
-     "Turns": 3
+     "Turns": 2
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "wait",
+        "Seconds": 0.3
+       }
+      ]
+     ]
     },
     {
      "Kind": "terrain",
      "Area": 16,
      "State": "F",
-     "Turns": 3
+     "Turns": 2
     },
     {
      "Kind": "cutscene",
@@ -780,47 +658,43 @@
      ]
     },
     {
-     "Kind": "terrain",
-     "Area": 17,
-     "State": "F",
-     "Turns": 3
-    },
-    {
-     "Kind": "terrain",
-     "Area": 18,
-     "State": "F",
-     "Turns": 3
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "wait",
-        "Seconds": 0.3
-       }
-      ]
+     "Kind": "join",
+     "Spawns": [
+      {
+       "Character": "guanyu",
+       "X": 6,
+       "Y": 9,
+       "Facing": "SE"
+      },
+      {
+       "Character": "zhangfei",
+       "X": 11,
+       "Y": 17,
+       "Facing": "SW"
+      }
      ]
-    },
-    {
-     "Kind": "terrain",
-     "Area": 19,
-     "State": "F",
-     "Turns": 3
     },
     {
      "Kind": "damage",
      "Targets": [
-      "van",
-      "main"
+      "enemy@area:11",
+      "enemy@area:12",
+      "enemy@area:13",
+      "enemy@area:14",
+      "enemy@area:15",
+      "enemy@area:16"
      ],
      "Value": 50
     },
     {
      "Kind": "buff",
      "Targets": [
-      "van",
-      "main"
+      "enemy@area:11",
+      "enemy@area:12",
+      "enemy@area:13",
+      "enemy@area:14",
+      "enemy@area:15",
+      "enemy@area:16"
      ],
      "Stat": "confusion",
      "Turns": 2
@@ -835,70 +709,30 @@
      "GoalArea": 9
     },
     {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "face",
-        "Unit": "xiahoudun",
-        "Facing": "NE"
-       }
-      ],
-      [
-       {
-        "Kind": "say",
-        "Unit": "xiahoudun",
-        "Text": "……불? 물러나라! 돌아서라!"
-       }
-      ]
-     ]
-    },
-    {
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "zhangfei",
-       "Text": "진짜로 왔슈……! 서생 말대로 왔어유!"
+       "Actor": "xiahoudun",
+       "Text": "불이다……! 물러나라! 여울까지 물러나라!"
       }
      ]
-    },
+    }
+   ]
+  },
+  {
+   "ID": "advance-late",
+   "If": [
+    "round>=10",
+    "!since:lure"
+   ],
+   "Do": [
     {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "guanyu",
-       "Text": "불이 올랐다. 내려간다!"
-      }
-     ]
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "face",
-        "Unit": "zhaoyun",
-        "Facing": "NE"
-       },
-       {
-        "Kind": "face",
-        "Unit": "guanyu",
-        "Facing": "SE"
-       },
-       {
-        "Kind": "face",
-        "Unit": "zhangfei",
-        "Facing": "NW"
-       }
-      ],
-      [
-       {
-        "Kind": "say",
-        "Unit": "zhaoyun",
-        "Text": "돌아서라! 이제 우리가 쫓는다!"
-       }
-      ]
-     ]
+     "Kind": "ai",
+     "Targets": [
+      "van",
+      "main"
+     ],
+     "Policy": "assault"
     }
    ]
   },

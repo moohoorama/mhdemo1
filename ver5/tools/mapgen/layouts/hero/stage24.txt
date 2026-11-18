@@ -1,28 +1,46 @@
 # B24  stage24.json  map24.json  origin 0 0
-TREMMMMMMMMMMMM n MMMMMMMMMMMM n MMMMMM n  n ,,,......ar1f11f12~~~~~~...TRE...TRE...TRE...
-MMM n  n MMMMMMMMMMMMMMMMMMTREMMM n  n TRE,,,...,,,,,,,,,,,,,,,,,,;;;;;;,,,,,,,,,,,,,,,,,,
-MMMMMMMMMMMMMMM n TRE n MMMMMM n  n  n  n ,,,...,,,,,,,,,,,,,,,,,,,,,;;;;;;,,,,,,,,,,,,,,,
-MMMMMMMMMMMMMMMMMMMMMMMMTRE n TRE,,,,,, n  n ,,,,,,,,,,,,ar2fo9Lidf10,,,~~~~~~TRE...TRE...
-MMMMMMMMM n MMMMMMMMMMMM n  n  n ...,,,...,,,,,,,,,,,,......TRETRETRETRETRE~~~~~~.........
-TREMMMMMMMMMTRE n MMM n TRE,,,...,,,,,,,,,,,,,,,,,,,,,,,,TRETRETRE...TRE......~~~~~~......
-MMMMMMMMMMMMMMM n  n TRE n  n ...,,,,,,,,,,,,,,,,,,,,,,,,TRETRE...TRE...TRETRETRE~~~~~~...
-MMMMMMMMMMMMMMM n TRE n pl3pl4...,,,,,,,,,.........,,,TRETRE......TRETRETRETRETRETRE~~~~~~
-MMM n MMMTRETRETRE n ,,, n pl5...,,,,,,.........TRETRETRETRE...TRETRETRE...TRETRETRETRE~~~
-MMMMMMMMM n  n  n ......,,,...,,,fo7fo8...pl6pl7TRETRE.........TRE...TRE...TRE...TRETRETRE
-TREMMM n  n ,,,...,,,,,,ca5ca7fo1fo3fo5...pl8TRETRETRETRE...TRE...TRETRETRE...TRETRE......
-MMMMMM n  n ,,,...ca3ca4ca6ca8fo2fo4fo6...TRETRETRE...TRE...TRETRETRE...TRETRETRETRETRETRE
-MMMTRETRE n ,,,,,,ca1ca2,,,............TRE......TRE...TRETRETRETRE...TRE...TRETRETRETRETRE
-TRE n ,,, n  n ...XHDYuj,,,......TRE......TRETRETRE...TRETRE...TRETRETRE......TRETRETRETRE
-TRE n ,,,...,,,...,,,,,,...TRE......TRETRETRETRETRETRETRETRETRETRETRE...TRETRETRE...TRETRE
-,,,,,,,,,,,,,,,,,,,,,,,,...TRETRETRETRE...TRETRE...TRE...TRETRETRETRE...TRETRE...TRETRETRE
-,,,,,,,,,,,,,,,,,,,,,,,,......TRETRETRETRE...TRETRETRETRETRETRETRE...TRETRE...TRE......TRE
- n ...,,,,,,......,,,,,,TRETRETRE......TRE......TRETRETRETRETRETRE...TRE...TRETRETRETRE...
- n ...,,,,,,,,,TRE...TRETRETRETRETRE...TRETRETRETRE...TRETRETRETRETRETRETRE...TRETRETRE...
- n ...,,,,,,......TRETRETRE...TRETRE............TRE.........TRE......TRETRE...TRETRETRETRE
- n ...pl1pl2...TRE...TRETRE...TRETRE.........TRE............TRETRE......TRETRETRE...TRETRE
- n ,,,,,,,,,,,,TRETRE......TRE...TRETRE...TRETRETRE...TRE...TRETRE......TRE...TRETRETRE...
- n ,,,,,,,,,......TRETRE...TRETRETRETRETRE...TRETRETRETRETRETRETRETRETRETRETRETRE...TRETRE
- n ,,,,,,,,,...TRETRE...TRETRETRETRETRETRE.........TRETRETRETRE......TRE......TRETRETRETRE
+MMMMMMMMM...TRE...TRE'''''''''TRE...TRE...MMMMMMMMM
+MMMMMMMMMTRETRE......'''''''''.........TREMMMMMMMMM
+MMMMMMMMM............'''''''''...TRETRETREMMMMMMMMM
+~~~~~~~~~~~~~~~~~~~~~;;;ar2;;;~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~;;;;;;;;;~~~~~~~~~~~~~~~~~~~~~
+MMMMMMMMMMMMMMM...TREf11ar1f12TRETREMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMM...TRE'''''''''TRETREMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMTRE...fo9Lidf10TRETRE n MMMMMMMMMMMM
+MMMMMMMMMMMMMMMTRETRE'''''''''...TREMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMTRETRE'''''''''TRE... n MMMMMMMMMMMM
+MMMMMMMMMMMM n TRETRE'''''''''...... n MMMMMMMMMMMM
+MMMMMMMMMMMM n TRETREfo6fo7fo8TRETREMMMMMMMMMMMMMMM
+MMMMMMMMMMMM n TRE...fo3fo4fo5......MMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMTRETREfo1Yujfo2TRETRE n MMMMMMMMMMMM
+MMMMMMMMMMMM n TRE...ca6ca7ca8TRETRE n MMMMMMMMMMMM
+MMMMMMMMMMMMMMMTRETREca3ca4ca5TRETRE n MMMMMMMMMMMM
+MMMMMMMMMMMMMMMTRETREca1XHDca2...TRE n MMMMMMMMMMMM
+MMMMMMMMMMMMMMMTRE...'''''''''TRE...MMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMM...TRE'''''''''TRETREMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMTRETRE'''''''''...... n MMMMMMMMMMMM
+MMMMMMMMMMMMMMM...TRE'''''''''TRETREMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMTRETRE'''''''''TRETRE n MMMMMMMMMMMM
+MMMMMMMMMMMMMMM...TRE'''''''''TRE...MMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMTRETRE'''''''''TRETRE n MMMMMMMMMMMM
+MMMMMMMMMMMMMMMTRETRE'''''''''TRETRE n MMMMMMMMMMMM
+MMMMMMMMMMMMMMMTRETRE'''''''''TRETREMMMMMMMMMMMMMMM
+MMMMMMMMMMMM n TRETRE'''''''''TRETREMMMMMMMMMMMMMMM
+MMMMMMMMMMMM n TRETRE'''''''''TRETREMMMMMMMMMMMMMMM
+MMMMMMMMMMMM n ...TRE'''''''''TRETREMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMTRETRE'''''''''TRE... n MMMMMMMMMMMM
+MMMMMMMMMMMM n TRE...'''''''''TRETREMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMM...TRE'''''''''TRETRE n MMMMMMMMMMMM
+MMMMMMMMMMMM n ...TRE'''''''''TRE... n MMMMMMMMMMMM
+MMMMMMMMMMMMMMM...TRE'''''''''...TREMMMMMMMMMMMMMMM
+MMMMMMMMM.........TRE'''''''''TRETRE......MMMMMMMMM
+MMMMMMMMM......TRETRE'''''''''TRETRE......MMMMMMMMM
+MMMMMMMMM............'''''''''...TRE......MMMMMMMMM
+MMMMMMMMM......TRETREpl7pl8pl9TRE.........MMMMMMMMM
+MMMMMMMMM......TRETREpl5pl3pl6CSTTRE......MMMMMMMMM
+MMMMMMMMM......TRETREpl4pl1pl2TRE.........MMMMMMMMM
+MMMMMMMMM......TRETRE'''''''''............MMMMMMMMM
+MMMMMMMMM.........TRE'''''''''TRETRE......MMMMMMMMM
 
 pl1 Allies[0]  player
 pl2 Allies[1]  player
@@ -32,24 +50,25 @@ pl5 Allies[4]  player
 pl6 Allies[5]  player
 pl7 Allies[6]  player
 pl8 Allies[7]  player
-XHD Enemies[0]  xiahoudun, enemy, group road, policy flee, rank commander, faction wei
-Yuj Enemies[1]  yujin, enemy, group road, policy flee, faction wei
-ca1 Enemies[2]  troop_cavalry, enemy, group road, policy flee, faction wei
-ca2 Enemies[3]  troop_cavalry, enemy, group road, policy flee, faction wei
-ca3 Enemies[4]  troop_cavalry, enemy, group road, policy flee, faction wei
-ca4 Enemies[5]  troop_cavalry, enemy, group road, policy flee, faction wei
-ca5 Enemies[6]  troop_cavalry, enemy, group road, policy flee, faction wei
-ca6 Enemies[7]  troop_cavalry, enemy, group road, policy flee, faction wei
-ca7 Enemies[8]  troop_cavalry, enemy, group road, policy flee, faction wei
-ca8 Enemies[9]  troop_cavalry, enemy, group road, policy flee, faction wei
-fo1 Enemies[10]  troop_footman, enemy, group road, policy flee, faction wei
-fo2 Enemies[11]  troop_footman, enemy, group road, policy flee, faction wei
-fo3 Enemies[12]  troop_footman, enemy, group road, policy flee, faction wei
-fo4 Enemies[13]  troop_footman, enemy, group road, policy flee, faction wei
-fo5 Enemies[14]  troop_footman, enemy, group road, policy flee, faction wei
-fo6 Enemies[15]  troop_footman, enemy, group road, policy flee, faction wei
-fo7 Enemies[16]  troop_footman, enemy, group road, policy flee, faction wei
-fo8 Enemies[17]  troop_footman, enemy, group road, policy flee, faction wei
+pl9 Allies[8]  player
+XHD Enemies[0]  xiahoudun, enemy, group van, policy hold, rank commander, faction wei
+ca1 Enemies[1]  troop_cavalry, enemy, group van, policy hold, faction wei
+ca2 Enemies[2]  troop_cavalry, enemy, group van, policy hold, faction wei
+ca3 Enemies[3]  troop_cavalry, enemy, group van, policy hold, faction wei
+ca4 Enemies[4]  troop_cavalry, enemy, group van, policy hold, faction wei
+ca5 Enemies[5]  troop_cavalry, enemy, group van, policy hold, faction wei
+ca6 Enemies[6]  troop_cavalry, enemy, group van, policy hold, faction wei
+ca7 Enemies[7]  troop_cavalry, enemy, group van, policy hold, faction wei
+ca8 Enemies[8]  troop_cavalry, enemy, group van, policy hold, faction wei
+Yuj Enemies[9]  yujin, enemy, group main, policy hold, faction wei
+fo1 Enemies[10]  troop_footman, enemy, group main, policy hold, faction wei
+fo2 Enemies[11]  troop_footman, enemy, group main, policy hold, faction wei
+fo3 Enemies[12]  troop_footman, enemy, group main, policy hold, faction wei
+fo4 Enemies[13]  troop_footman, enemy, group main, policy hold, faction wei
+fo5 Enemies[14]  troop_footman, enemy, group main, policy hold, faction wei
+fo6 Enemies[15]  troop_footman, enemy, group main, policy hold, faction wei
+fo7 Enemies[16]  troop_footman, enemy, group main, policy hold, faction wei
+fo8 Enemies[17]  troop_footman, enemy, group main, policy hold, faction wei
 Lid Enemies[18]  lidian, enemy, group ford, policy hold, faction wei
 fo9 Enemies[19]  troop_footman, enemy, group ford, policy hold, faction wei
 f10 Enemies[20]  troop_footman, enemy, group ford, policy hold, faction wei
@@ -58,17 +77,15 @@ f12 Enemies[22]  troop_footman, enemy, group ford, policy hold, faction wei
 ar1 Enemies[23]  troop_archer, enemy, group ford, policy hold, faction wei
 ar2 Enemies[24]  troop_archer, enemy, group ford, policy hold, faction wei
 
-# area 1 남서쪽 길 끝: x 2..3, y 20..20
-# area 2 예산: x 8..9, y 7..8
-# area 3 안림: x 14..15, y 9..10
-# area 9 여울 너머: x 25..29, y 0..1
-# area 10 여울 앞: x 19..24, y 0..3
-# area 11 불 앞 길 서쪽: x 5..5, y 10..14
-# area 12 불 앞 길 동쪽: x 8..8, y 12..14
-# area 13 불 가운데 길 북쪽: x 6..7, y 9..9
-# area 14 불 가운데 길 남쪽: x 9..12, y 12..12
-# area 15 불 굽이 서쪽: x 10..10, y 6..9
-# area 16 불 굽이 동쪽 아래: x 13..13, y 11..12
-# area 17 불 굽이 동쪽 위: x 13..13, y 7..8
-# area 18 불 뒤 길 북쪽: x 10..15, y 4..4
-# area 19 불 뒤 길 남쪽: x 14..17, y 7..7
+# area 1 신야 앞 길: x 7..9, y 37..39
+# area 4 유인 자리: x 7..9, y 23..25
+# area 5 덫 한가운데: x 6..10, y 22..26
+# area 6 불 놓을 길: x 5..11, y 18..29
+# area 9 여울 너머: x 6..10, y 0..1
+# area 10 여울 앞: x 6..10, y 5..8
+# area 11 불 1: x 5..11, y 18..19
+# area 12 불 2: x 5..11, y 20..21
+# area 13 불 3: x 5..11, y 22..23
+# area 14 불 4: x 5..11, y 24..25
+# area 15 불 5: x 5..11, y 26..27
+# area 16 불 6: x 5..11, y 28..29

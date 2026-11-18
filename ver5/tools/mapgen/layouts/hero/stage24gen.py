@@ -1,63 +1,26 @@
 #!/usr/bin/env python3
 """Chapter 24 (박망파): the map24 layout, map24.json and stage24.json. Run from ver5/. Rewrites its outputs every time.
 
-Grid compass: north = row 0. A road crosses the map from the NE corner (beyond the river, over the ford) to the SW
-corner in axis-aligned steps, so the fire lines along its sides are rectangles (stage24's fire areas). North-west of
-the road is the 예산 (hills, mountains inside), south-east the 안림 (forest). The river cuts off the NE corner.
+Grid compass: the map's +y axis runs screen SW and -y screen NE (docs/presentation-facing.md), so a road of constant x
+is one straight line from the screen's NE corner to its SW corner. The road is 3 cells wide ('l' plain, cost 1 for every
+class), the river crosses it near the NE end (a ford, 'w' and 's'), forest and hills line both sides, mountains wall
+the rest in. 신야 (one castle tile) lies beside the SW end of the road.
+
+Flow: the Wei column (Xiahou Dun and the vanguard, Yu Jin and the center) waits on the road, the ford guard (Li Dian)
+at the river. Zhao Yun walks up and baits Xiahou Dun (area LURE, or any damage to the column); the column then marches
+for the trap (area GOAL). When Xiahou Dun stands in GOAL and the whole column is inside the fire zone, Zhuge Liang
+lights the fire: the zone's cells burn, Guan Yu and Zhang Fei come out of the woods, and the Wei troops standing in the
+zone lose half their strength and are confused; they flee for the ford. The ford guard is never touched.
 """
 import json
 import subprocess
-from collections import deque
 from pathlib import Path
 
 ROOT = Path('.')
 HERO = ROOT / 'assets/scenario/hero'
-W, H = 30, 24
-
-# Road: 2-wide segments, each (x0, y0, x1, y1) inclusive.
-SEGMENTS = [
-    (16, 1, 29, 2),   # A  far bank, ford, toward the bend
-    (16, 1, 17, 6),   # B
-    (11, 5, 17, 6),   # C
-    (11, 5, 12, 11),  # D
-    (6, 10, 12, 11),  # E
-    (6, 10, 7, 16),   # F
-    (2, 15, 7, 16),   # G
-    (2, 15, 3, 23),   # H  toward 신야
-]
-
-
-def river(x, y):
-    return x - y in (21, 22)
-
-
-def far_bank(x, y):
-    return x - y >= 23
-
-
-road = set()
-for x0, y0, x1, y1 in SEGMENTS:
-    for y in range(y0, y1 + 1):
-        for x in range(x0, x1 + 1):
-            road.add((x, y))
-
-
-def bfs(starts, passable):
-    dist = {s: 0 for s in starts}
-    q = deque(starts)
-    while q:
-        x, y = q.popleft()
-        for nx, ny in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
-            if 0 <= nx < W and 0 <= ny < H and (nx, ny) not in dist and passable(nx, ny):
-                dist[(nx, ny)] = dist[(x, y)] + 1
-                q.append((nx, ny))
-    return dist
-
-
-open_land = lambda x, y: (x, y) not in road and not river(x, y) and not far_bank(x, y)  # noqa: E731
-nw = bfs([(0, 0)], open_land)
-se = bfs([(W - 1, H - 1)], open_land)
-dist = bfs(sorted(road), lambda x, y: (x, y) not in road)
+W, H = 17, 42
+RX0, RX1 = 7, 9          # road columns
+FORD_Y = (3, 4)          # river rows; the road crosses them as a ford
 
 
 def h(x, y):
@@ -65,39 +28,35 @@ def h(x, y):
     return (x * 73856093 ^ y * 19349663) % 97
 
 
-g = [['g--'] * W for _ in range(H)]
-for y in range(H):
-    for x in range(W):
-        d = dist.get((x, y), 99)
-        if (x, y) in road:
-            c = 's--' if river(x, y) else 'd--'
-        elif river(x, y):
-            c = 'w--'
-        elif far_bank(x, y):
-            c = 'gt-' if h(x, y) % 4 == 0 else 'g--'
-        elif (x, y) in nw:
-            if d >= 5 and h(x, y) % 5 != 0:
-                c = 'n--'
-            elif d >= 3:
-                c = 'u--' if h(x, y) % 3 else 'gt-'
-            elif d == 2:
-                c = 'u--' if h(x, y) % 2 else 'd--'
-            else:
-                c = 'd--' if h(x, y) % 3 == 0 else 'g--'  # dry grass along the road: the fire line
-        elif (x, y) in se:
-            if d >= 2:
-                c = 'gt-' if h(x, y) % 3 else 'g--'
-            else:
-                c = 'd--' if h(x, y) % 3 == 0 else 'g--'
-        g[y][x] = c
+def cell(x, y):
+    on_road = RX0 <= x <= RX1
+    if y in FORD_Y:
+        return 's--' if on_road else 'w--'
+    if on_road:
+        return 'l--'
+    d = RX0 - x if x < RX0 else x - RX1  # distance from the road's edge
+    if y < FORD_Y[0]:  # far bank: open ground, mountains at the corners
+        return 'n--' if d >= 5 else ('gt-' if h(x, y) % 4 == 0 else 'g--')
+    if d <= 2:  # woods along the road: the fire line
+        return 'gt-' if h(x, y) % 5 else 'g--'
+    if d == 3:  # hills, a mountain here and there
+        return 'n--' if h(x, y) % 5 < 3 else 'u--'
+    return 'n--'
 
-g[20][4] = 'go-'  # 신야성: one castle tile beside the deployment, where 유비 and 제갈량 stand
+
+g = [[cell(x, y) for x in range(W)] for y in range(H)]
+CASTLE = (10, 38)
+g[CASTLE[1]][CASTLE[0]] = 'go-'  # 신야: one castle tile beside the deployment, where 유비 and 제갈량 stand
+for y in range(34, H):  # the road's SW end opens into the grounds before the castle
+    for x in range(3, 14):
+        if g[y][x][0] in 'nu' and not (x, y) == CASTLE:
+            g[y][x] = 'g--'
 
 layout = ROOT / 'tools/mapgen/layouts/hero/map24.txt'
 layout.write_text(
-    '# map24 박망파 (30x24). Grid compass: north = row 0. The road runs from the NE corner (beyond the river, ford at\n'
-    '# (22..24, 1..2)) to the SW corner in steps; NW of it the 예산 hills and mountains, SE the 안림 forest.\n'
-    '# Generated by stage24gen.py. The castle at (4,20) is 신야.\n'
+    '# map24 박망파 (17x42). Grid compass: +y is screen SW. The road (x 7..9, plain) is one straight line from the NE end,\n'
+    '# over the ford (y 3..4), to the SW end; forest and hills line both sides, mountains beyond.\n'
+    '# Generated by stage24gen.py. The castle at (10,38) is 신야.\n'
     + '\n'.join(' '.join(r) for r in g) + '\n', encoding='utf-8')
 subprocess.run(['python3', 'tools/mapgen/mapgen.py', str(layout), str(HERO / 'maps/map24.json')], check=True)
 
@@ -105,14 +64,15 @@ subprocess.run(['python3', 'tools/mapgen/mapgen.py', str(layout), str(HERO / 'ma
 P = lambda x, y: {'X': x, 'Y': y}  # noqa: E731
 
 
-def rect(i, x, y, w, h, name, desc=''):
-    return {'ID': i, 'Rect': {'X': x, 'Y': y, 'W': w, 'H': h}, 'Name': name, 'Description': desc}
+def rect(i, x, y, w, h_, name, desc=''):
+    return {'ID': i, 'Rect': {'X': x, 'Y': y, 'W': w, 'H': h_}, 'Name': name, 'Description': desc}
 
 
 def enemy(ch, x, y, group, **kw):
     e = {'Character': ch, 'X': x, 'Y': y, 'Group': group, 'Faction': 'wei', 'Policy': 'hold'}
     if ch.startswith('troop_'):
         e['Shift'] = -0.07
+    e['Facing'] = 'SW'
     e.update(kw)
     return e
 
@@ -125,94 +85,73 @@ def wait(sec):
     return {'Kind': 'cutscene', 'Steps': [[{'Kind': 'wait', 'Seconds': sec}]]}
 
 
-# Fire lines along the stretched column, in the order the fire runs (front to back); gaps at (8..9, 9) for the
-# 예산 group and (13, 9..10) for the 안림 group.
-FIRES = [
-    (5, 10, 1, 5, '앞 길 서쪽'), (8, 12, 1, 3, '앞 길 동쪽'),
-    (6, 9, 2, 1, '가운데 길 북쪽'), (9, 12, 4, 1, '가운데 길 남쪽'),
-    (10, 6, 1, 4, '굽이 서쪽'), (13, 11, 1, 2, '굽이 동쪽 아래'), (13, 7, 1, 2, '굽이 동쪽 위'),
-    (10, 4, 6, 1, '뒤 길 북쪽'), (14, 7, 4, 1, '뒤 길 남쪽'),
-]
+# Areas. 11..15 are the fire strips, lit from the NE side (cutting the way back) to the SW.
+LURE, GOAL, TRAP, FLEE, FORD = 4, 5, 6, 9, 10
+FIRE_X, FIRE_W, FIRE_Y0, FIRE_ROWS, STRIP = 5, 7, 18, 12, 2
+STRIPS = [11 + i for i in range(FIRE_ROWS // STRIP)]
 areas = [
-    rect(1, 2, 20, 2, 2, '남서쪽 길 끝', '유비·제갈량과 조운. 곁에 신야성'),
-    rect(2, 8, 7, 2, 2, '예산', '길 북서쪽 산자락. 관우의 복병'),
-    rect(3, 14, 9, 2, 2, '안림', '길 남동쪽 숲. 장비의 복병'),
-    rect(4, 6, 12, 2, 3, '덫 어귀', '하후돈의 선봉이 조운을 쫓아 닿는 길목'),
-    rect(9, 25, 0, 5, 2, '여울 너머', '하후돈이 닿으면 강을 건너 달아난다'),
-    rect(10, 19, 0, 6, 4, '여울 앞', '이전이 남은 군사를 거두는 강가'),
+    rect(1, 7, 37, 3, 3, '신야 앞 길', '유비·제갈량과 조운. 곁에 신야성'),
+    rect(LURE, RX0, 23, 3, 3, '유인 자리', '여기까지 오면 하후돈이 조운을 쫓는다'),
+    rect(GOAL, 6, 22, 5, 5, '덫 한가운데', '하후돈의 군사가 조운을 쫓아 닿는 길'),
+    rect(TRAP, FIRE_X, FIRE_Y0, FIRE_W, FIRE_ROWS, '불 놓을 길', '길과 양옆 숲. 화공이 번지는 곳'),
+    rect(FLEE, 6, 0, 5, 2, '여울 너머', '하후돈이 닿으면 강을 건너 달아난다'),
+    rect(FORD, 6, 5, 5, 4, '여울 앞', '이전이 남은 군사를 거두는 강가'),
 ]
-for i, (x, y, w, h_, name) in enumerate(FIRES):
-    areas.append(rect(11 + i, x, y, w, h_, '불 ' + name, '개전에 불이 붙는 길가'))
+for i, a in enumerate(STRIPS):
+    areas.append(rect(a, FIRE_X, FIRE_Y0 + i * STRIP, FIRE_W, STRIP, '불 %d' % (i + 1), '화공으로 불이 붙는 길가'))
 
-# The column waits in the 예산-안림 pass, vanguard (선봉) at the head, center (중군) behind.
-van_cells = [(11, 9), (12, 9), (11, 8), (12, 8), (11, 7), (12, 7), (11, 6), (12, 6), (11, 5)]
-main_cells = [(12, 5), (13, 5), (13, 6), (14, 5), (14, 6), (15, 5), (15, 6), (16, 5), (16, 6)]
-road_units = [enemy('xiahoudun', *van_cells[0], 'van', Rank='commander', Facing='SW')]
+# The column waits on the road, vanguard (선봉) at the head, center (중군) behind, 3 abreast.
+van_cells = [(8, 16), (7, 16), (9, 16), (7, 15), (8, 15), (9, 15), (7, 14), (8, 14), (9, 14)]
+main_cells = [(8, 13), (7, 13), (9, 13), (7, 12), (8, 12), (9, 12), (7, 11), (8, 11), (9, 11)]
+road_units = [enemy('xiahoudun', *van_cells[0], 'van', Rank='commander',
+                    Equipment=['copper_spear', 'leather_armor', 'jueying'])]
 for x, y in van_cells[1:]:
-    road_units.append(enemy('troop_cavalry', x, y, 'van', Facing='SW'))
-road_units.append(enemy('yujin', *main_cells[0], 'main', Facing='SW'))
+    road_units.append(enemy('troop_cavalry', x, y, 'van'))
+road_units.append(enemy('yujin', *main_cells[0], 'main'))
 for x, y in main_cells[1:]:
-    road_units.append(enemy('troop_footman', x, y, 'main', Facing='SW'))
-ford_units = [enemy('lidian', 21, 3, 'ford', Facing='SW', DuelFirst=True)]
-for x, y in ((20, 3), (22, 3), (19, 0), (20, 0)):
-    ford_units.append(enemy('troop_footman', x, y, 'ford', Facing='SW'))
-for x, y in ((18, 0), (19, 3)):
-    ford_units.append(enemy('troop_archer', x, y, 'ford', Facing='SW'))
-
-fire_actions = []
-for i in range(len(FIRES)):
-    fire_actions.append({'Kind': 'terrain', 'Area': 11 + i, 'State': 'F', 'Turns': 3})
-    if i % 2 == 1:
-        fire_actions.append(wait(0.3))
+    road_units.append(enemy('troop_footman', x, y, 'main'))
+ford_units = [enemy('lidian', 8, 7, 'ford', DuelFirst=True)]
+for x, y in ((7, 7), (9, 7), (7, 5), (9, 5)):
+    ford_units.append(enemy('troop_footman', x, y, 'ford'))
+for x, y in ((8, 5), (8, 3)):
+    ford_units.append(enemy('troop_archer', x, y, 'ford'))
 
 COLUMN = ['van', 'main']
+BURNT = ['enemy@area:%d' % a for a in STRIPS]  # the Wei troops standing in the fire zone
 
-lure = {'ID': 'lure', 'Do': [
-    {'Kind': 'cutscene', 'Steps': [
-        [{'Kind': 'move', 'Unit': 'zhaoyun', 'To': P(11, 10), 'Facing': 'NE'}],
-        [{'Kind': 'say', 'Unit': 'zhaoyun', 'Text': '하후돈! 상산 조자룡이 길을 막는다!'}],
-        [{'Kind': 'play', 'Unit': 'zhaoyun', 'Motion': 'attack'}, {'Kind': 'play', 'Unit': 'xiahoudun', 'Motion': 'block'}],
-        [{'Kind': 'play', 'Unit': 'xiahoudun', 'Motion': 'attack'}, {'Kind': 'play', 'Unit': 'zhaoyun', 'Motion': 'block'}],
-        [{'Kind': 'play', 'Unit': 'zhaoyun', 'Motion': 'attack'}, {'Kind': 'play', 'Unit': 'xiahoudun', 'Motion': 'block'}],
-        [{'Kind': 'say', 'Unit': 'zhaoyun', 'Text': '……당해 낼 수가 없구나. 물러나라!'}],
-        [{'Kind': 'move', 'Unit': 'zhaoyun', 'To': P(3, 18), 'Facing': 'SW'},
-         {'Kind': 'face', 'Unit': 'xiahoudun', 'Facing': 'SW'}],
-    ]},
-    say('xiahoudun', '유비가 군사를 얻었다더니, 겨우 이것이냐! 선봉도 중군도 따르라! 쫓아라!'),
-    say('yujin', '장군, 길이 좁고 한쪽은 산, 한쪽은 숲입니다. 풀이 바짝 말랐습니다. 불이 무섭습니다!'),
-    say('xiahoudun', '불이 무서워 다 잡은 적을 놓치겠느냐! 밀어붙여라!'),
-    say('lidian', '원양! 멈추시오! ……늦었구나.'),
-    {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'march', 'GoalArea': 4},
-]}
+fire_actions = []
+for i, a in enumerate(STRIPS):
+    fire_actions.append({'Kind': 'terrain', 'Area': a, 'State': 'F', 'Turns': 2})
+    fire_actions.append(wait(0.3))
 
-# The fire waits until Xiahou Dun, at the head, reaches the mouth of the trap (or round 3 comes), then burns it: half its
-# strength is lost and it panics. The rear guard at the ford (이전) is never touched.
-fire = {'ID': 'fire', 'If': ['any:[at:xiahoudun:4, round>=3]'], 'Do': [
-    {'Kind': 'cutscene', 'Steps': [
-        [{'Kind': 'face', 'Unit': 'guanyu', 'Facing': 'SW'}, {'Kind': 'face', 'Unit': 'zhangfei', 'Facing': 'NE'}],
-        [{'Kind': 'play', 'Unit': 'guanyu', 'Motion': 'attack'}, {'Kind': 'play', 'Unit': 'zhangfei', 'Motion': 'attack'}],
-    ]},
-] + fire_actions + [
-    {'Kind': 'damage', 'Targets': COLUMN, 'Value': 50},
-    {'Kind': 'buff', 'Targets': COLUMN, 'Stat': 'confusion', 'Turns': 2},
-    {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'flee', 'GoalArea': 9},
-    {'Kind': 'cutscene', 'Steps': [
-        [{'Kind': 'face', 'Unit': 'xiahoudun', 'Facing': 'NE'}],
-        [{'Kind': 'say', 'Unit': 'xiahoudun', 'Text': '……불? 물러나라! 돌아서라!'}],
-    ]},
-    say('zhangfei', '진짜로 왔슈……! 서생 말대로 왔어유!'),
-    say('guanyu', '불이 올랐다. 내려간다!'),
-    {'Kind': 'cutscene', 'Steps': [
-        [{'Kind': 'face', 'Unit': 'zhaoyun', 'Facing': 'NE'}, {'Kind': 'face', 'Unit': 'guanyu', 'Facing': 'SE'},
-         {'Kind': 'face', 'Unit': 'zhangfei', 'Facing': 'NW'}],
-        [{'Kind': 'say', 'Unit': 'zhaoyun', 'Text': '돌아서라! 이제 우리가 쫓는다!'}],
-    ]},
-]}
+
+def fire_event(event_id, cond):
+    return {'ID': event_id, 'If': cond, 'Do': [
+        say('zhugeliang', '이때입니다! 불을 놓으십시오!'),
+    ] + fire_actions + [
+        {'Kind': 'join', 'Spawns': [
+            {'Character': 'guanyu', 'X': 6, 'Y': 9, 'Facing': 'SE'},
+            {'Character': 'zhangfei', 'X': 11, 'Y': 17, 'Facing': 'SW'}]},
+        {'Kind': 'damage', 'Targets': BURNT, 'Value': 50},
+        {'Kind': 'buff', 'Targets': BURNT, 'Stat': 'confusion', 'Turns': 2},
+        {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'flee', 'GoalArea': FLEE},
+        say('xiahoudun', '불이다……! 물러나라! 여울까지 물러나라!'),
+    ]}
+
 
 events = [
-    lure,
-    fire,
-    {'ID': 'ford-near', 'If': ['at:xiahoudun:10'], 'Do': [
+    {'ID': 'lure', 'If': ['any:[at:zhaoyun:%d, hp:van<100, hp:main<100]' % LURE], 'Do': [
+        say('xiahoudun', '겨우 이것이냐! 선봉도 중군도 따르라! 쫓아라!'),
+        {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'march', 'GoalArea': GOAL},
+    ]},
+    # Xiahou Dun reaches the heart of the trap with the whole column inside the fire zone. The fire itself waits on
+    # this or, as a safety net, on five rounds after the lure (a join may stand in one event only, hence the relay).
+    {'ID': 'column-in-trap', 'If': ['at:xiahoudun:%d' % TRAP, 'allat:van:%d' % TRAP, 'allat:main:%d' % TRAP], 'Do': [
+        {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'march', 'GoalArea': GOAL}]},
+    fire_event('fire', ['any:[since:column-in-trap>=0, since:lure>=5]']),
+    {'ID': 'advance-late', 'If': ['round>=10', '!since:lure'], 'Do': [
+        {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'assault'}]},
+    {'ID': 'ford-near', 'If': ['at:xiahoudun:%d' % FORD], 'Do': [
         say('xiahoudun', '여울만 건너면 된다! 만백, 뒤를 막아라!'),
         say('lidian', '어서 건너시오! 남은 군사는 내가 거두겠소!')]},
     {'ID': 'lidian-falls', 'If': ['defeated:lidian', '!duel:bowang-guanyu-lidian'], 'Do': [
@@ -222,10 +161,11 @@ events = [
 # The duel is tuned with tools/duel_flow; keep what the stage file has.
 duel = json.loads((HERO / 'stage24.json').read_text(encoding='utf-8'))['Duels'][0]
 
-allies = [P(2, 20), P(3, 20), P(3, 21), P(8, 7), P(9, 7), P(9, 8), P(14, 9), P(15, 9), P(14, 10)]
+allies = [P(8, 39), P(9, 39), P(8, 38), P(7, 39), P(7, 38), P(9, 38), P(7, 37), P(8, 37), P(9, 37)]
 stage = {
     'ID': 'B24', 'Name': '박망파 전투', 'Width': 0, 'Height': 0, 'Max': 8,
-    'Required': ['liubei', 'zhugeliang', 'zhaoyun', 'guanyu', 'zhangfei'],
+    'Required': ['liubei', 'zhugeliang', 'zhaoyun'],
+    'Reserve': ['guanyu', 'zhangfei'],
     'Victory': [{'If': ['defeated:xiahoudun'], 'Text': '하후돈을 물리치거나 여울 너머로 쫓아낸다'}],
     'Sub': [{'ID': 'before-ford', 'Text': '하후돈이 여울을 건너기 전에 물리친다',
              'If': ['defeated:xiahoudun', '!fled:xiahoudun'], 'Flag': 'flag-b24-xiahoudun',
@@ -233,10 +173,8 @@ stage = {
     'TurnLimit': 20,
     'Map': 'map24.json',
     'Allies': allies,
-    'Recommend': {'liubei': P(2, 20), 'zhugeliang': P(3, 20), 'zhaoyun': P(3, 21), 'guanyu': P(9, 8), 'zhangfei': P(14, 9)},
-    'Groups': [{'Name': '본대', 'Area': 1, 'Required': ['liubei', 'zhugeliang', 'zhaoyun']},
-               {'Name': '예산', 'Area': 2, 'Required': ['guanyu']},
-               {'Name': '안림', 'Area': 3, 'Required': ['zhangfei']}],
+    'Recommend': {'liubei': P(8, 39), 'zhugeliang': P(9, 39), 'zhaoyun': P(8, 37)},
+    'Groups': [{'Name': '본대', 'Area': 1, 'Required': ['liubei', 'zhugeliang', 'zhaoyun']}],
     'Enemies': road_units + ford_units,
     'Reward': {'money': 2000, 'meteor_hammer': 1},
     'Areas': areas,
@@ -248,7 +186,6 @@ stage = {
 (HERO / 'stage24.json').write_text(json.dumps(stage, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
 
 if __name__ == '__main__':
-    sym = {'d': ',', 'g': '.', 'w': '~', 's': ';', 'u': 'n', 'n': 'M'}
+    sym = {'l': '#', 'g': '.', 'w': '~', 's': ';', 'u': 'h', 'n': 'M'}
     for y in range(H):
-        print(''.join('T' if c[1] == 't' else ('#' if (x, y) in road and c[0] == 'd' else sym[c[0]])
-                      for x, c in enumerate(g[y])))
+        print(''.join('T' if c[1] == 't' else ('C' if c[1] == 'o' else sym[c[0]]) for c in g[y]))
