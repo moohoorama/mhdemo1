@@ -14,6 +14,18 @@
    }
   },
   {
+   "ID": "c25v-z01",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "군사, 며칠 전 유기 공자께 다녀온 일은 어찌 된 것이오?"
+  },
+  {
+   "ID": "c25v-z02",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "유기 공자께 다녀온 일 말씀이십니까? 처지가 곤란하시다기에 강하로 몸을 피하시라 말씀드렸을 뿐입니다."
+  },
+  {
    "ID": "c25v-o01",
    "Kind": "say",
    "Speaker": "zhugeliang",

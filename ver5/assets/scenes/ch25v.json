@@ -2,7 +2,7 @@
  "Scenes": {
   "c25v-start": {
    "Map": "S_xiaopei_office",
-   "Nodes": ["c25v-start", "c25v-o01", "c25v-o02", "c25v-o03", "c25v-o04", "c25v-o05", "c25v-o06", "c25v-o07", "c25v-o08", "c25v-o09"],
+   "Nodes": ["c25v-start", "c25v-z01", "c25v-z02", "c25v-o01", "c25v-o02", "c25v-o03", "c25v-o04", "c25v-o05", "c25v-o06", "c25v-o07", "c25v-o08", "c25v-o09"],
    "Cast": {
     "유비": {"At": [2, 1], "Face": "SW"},
     "제갈량": {"At": [2, 3], "Face": "NE"},
@@ -14,6 +14,11 @@
     "서서": {"At": [4, 3], "Face": "NW"}
    },
    "Beats": {
+    "c25v-z02": [
+     [
+      [{"Actor": "제갈량", "Play": "action"}]
+     ]
+    ],
     "c25v-o02": [
      [
       [{"Actor": "유비", "Play": "action"}]
