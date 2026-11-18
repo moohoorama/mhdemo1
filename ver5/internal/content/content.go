@@ -108,9 +108,10 @@ type ScenarioFile struct {
 	Chapters []Chapter
 }
 type Faction struct {
-	Name          string
-	Colors        []string // light, middle, dark
-	OfficerColors []string `json:",omitempty"` // the same three shades for its named officers and its commanders, so they stand apart from the troops
+	Name           string
+	Colors         []string          // light, middle, dark
+	OfficerColors  []string          `json:",omitempty"` // the same three shades for its named officers and its commanders, so they stand apart from the troops
+	OfficerPalette map[string]Colors `json:",omitempty"` // palette groups shared by the faction's officers
 }
 
 type Class struct {

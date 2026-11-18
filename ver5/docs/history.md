@@ -5,6 +5,31 @@
 
 ---
 
+## 2026-11-19 조조군 흑마와 채도 재조정
+
+- `assets/data/game.json`: 장수의 말·테마 A를 장비의 회흑색 계열로, 진영색 채도를 장수 40%·병사 90%로 조정 — 사용자 요청.
+- `internal/gui/uidemo_wei.go`: 양양 공방전의 조조군을 비추는 캡처 추가 — 박망파와 양양의 실제 화면 비교.
+- `reports/uidemo/wei-comparison/index.html`: 두 전투 캡처를 한 화면에 배치 — 바뀐 색을 나란히 확인.
+
+## 2026-11-19 조조군 장수·병사 색과 조인 병종
+
+- `assets/data/game.json`: 조조군 장수는 기존 파랑, 병사는 그 파랑과 흰색의 중간색을 사용 — 장수와 병사를 구분하고 요청한 진영색을 적용.
+- `assets/data/characters_story.json`: 조인을 기병 친위대에서 보병 근위병으로 바꾸고 병종에 맞는 검을 지급 — 조인의 병종 요청.
+- `internal/gui/uidemo_wei.go`: 신야 전투에서 조인과 주변 조조군을 비추는 캡처 데모 — 게임에서 바뀐 색과 병종을 확인.
+- `docs/history.md`: 변경 이유와 범위 기록 — 색과 병종 변경의 의도를 남김.
+- `assets/data/game.json`: 조조군 병사 색을 기존 파랑 50%에서 75%로 진하게 조정 — 사용자 요청.
+
+## 2026-11-19 조조군 채도와 장수의 검은 가죽·말
+
+- `assets/data/game.json`: 병사 진영색은 장수색의 색상·명도를 유지하고 HSV 채도를 80%로, 장수의 테마 A와 말 몸·갈기는 절영 팔레트로 지정 — 사용자 요청.
+- `internal/content/content.go`·`internal/gui/look.go`·`internal/gui/look_palette_test.go`: 진영별 장수 팔레트를 데이터로 받고 캐릭터·장비 팔레트 위에 적용하고 회귀 시험 — 조조군 장수에게 일관된 색을 적용.
+- `internal/gui/uidemo_wei.go`: 조인과 기병 장수를 차례로 비추는 캡처 — 변경된 색을 게임 화면에서 확인.
+
+## 2026-11-19 캠페인 자동실행 실패 로그
+
+- `internal/gui/campaign_e2e_test.go`: 중단 시 마지막 실행 명령과 특성 학습 대상·학습 가능 목록·장비·부관·선행 조건을 기록 — `make e2e` 실패 원인을 확인하기 위해.
+- `internal/autoplay/variety.go`·`internal/autoplay/variety_test.go`: 장비·부관이 주는 특성을 보유 및 선행 조건에 반영하고 엔진의 학습 가능 목록으로 최종 확인, 회귀 시험 추가 — 이미 가진 특성을 다시 배우려다 자동실행이 중단되는 문제를 막기 위해.
+
 ## 2026-11-18 병법창 분류
 - `plan/skill_tabs.md`: 병법 분류와 배치 설계 — 선택을 쉽게 하려고.
 - `internal/gui/command.go`·`menu_panel.go`: 보유 병법의 분류 탭과 소모치순 목록, 확장된 창 — 많은 병법을 찾아 쓰기 쉽게.

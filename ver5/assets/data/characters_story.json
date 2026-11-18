@@ -447,7 +447,7 @@
   "caoren": {
    "Name": "조인",
    "Biography": "조조의 족제. 굳세고 침착한 장수.",
-   "Class": "royal_guard",
+   "Class": "guards",
    "Stats": [
     85,
     84,
@@ -464,7 +464,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "copper_spear",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {

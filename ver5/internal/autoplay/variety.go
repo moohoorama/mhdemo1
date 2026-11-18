@@ -167,7 +167,22 @@ func (v *Variety) gear(e *core.Engine, apply func(core.Command) bool) {
 // a goal's missing prerequisites are bought before it.
 func (v *Variety) next(e *core.Engine, id string) string {
 	o := charOf(e, id)
-	owned := func(t string) bool { return slices.Contains(o.Learned, t) }
+	owned := func(t string) bool {
+		if slices.Contains(o.Learned, t) || o.TraitsOverride != nil && slices.Contains(*o.TraitsOverride, t) {
+			return true
+		}
+		for _, item := range o.Equipment {
+			if slices.Contains(v.D.Equipment[item].Traits, t) {
+				return true
+			}
+		}
+		for _, deputy := range e.Observe().Characters {
+			if deputy.ID == o.Deputy && !deputy.Dead {
+				return slices.Contains(deputy.Learned, t) || deputy.TraitsOverride != nil && slices.Contains(*deputy.TraitsOverride, t)
+			}
+		}
+		return false
+	}
 	pool := v.pool(o)
 	goal := v.goals[id]
 	for _, t := range pool { // the trait that lets an officer name a deputy comes first
@@ -196,7 +211,7 @@ func (v *Variety) next(e *core.Engine, id string) string {
 	}
 	v.goals[id] = goal
 	step := v.step(goal, owned)
-	if o.Points < v.D.Traits[step].Cost {
+	if o.Points < v.D.Traits[step].Cost || !slices.Contains(e.Learnable(id), step) {
 		return "" // saving for it
 	}
 	return step

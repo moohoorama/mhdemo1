@@ -101,7 +101,13 @@ func (g *Game) palette(faction string, look content.Look) sprite.Palette {
 	for group, c := range look.Palette {
 		own[group] = colorsOf(c)
 	}
-	return p.Merge(own)
+	p = p.Merge(own)
+	if f, ok := g.S.Data.Factions[name]; ok && officer {
+		for group, c := range f.OfficerPalette {
+			p[group] = colorsOf(c)
+		}
+	}
+	return p
 }
 
 // art draws a sprite in a faction's colours over the character's palette.

@@ -164,12 +164,38 @@ type campaignRun struct {
 	route    string
 	opened   map[string]bool
 	err      error
+	command  string
 }
 
 func (r *campaignRun) Layout(w, h int) (int, int) { return r.g.Layout(w, h) }
 func (r *campaignRun) Draw(dst *ebiten.Image)     { r.g.Draw(dst) }
 func (r *campaignRun) Update() error {
 	g := r.g
+	if a := g.campaign; a != nil && len(a.queue) > 0 && a.presented {
+		c := a.queue[0]
+		r.command = fmt.Sprintf("command=%+v", c)
+		if c.Kind == "learn" {
+			e := g.S.Engine
+			for _, ch := range e.Observe().Characters {
+				if ch.ID == c.Actor || ch.ID == c.Target {
+					r.command += fmt.Sprintf("\ncharacter=%+v learnable=%v", ch, e.Learnable(ch.ID))
+					if ch.Deputy != "" {
+						for _, deputy := range e.Observe().Characters {
+							if deputy.ID == ch.Deputy {
+								r.command += fmt.Sprintf("\ndeputy=%+v", deputy)
+							}
+						}
+					}
+					for slot, id := range ch.Equipment {
+						r.command += fmt.Sprintf("\nequipment[%s]=%s traits=%v learn=%v", slot, id, g.S.Data.Equipment[id].Traits, g.S.Data.Equipment[id].Learn)
+					}
+				}
+			}
+			if trait, ok := g.S.Data.Traits[c.Trait]; ok {
+				r.command += fmt.Sprintf("\ntrait=%s cost=%d requires=%v", c.Trait, trait.Cost, trait.Requires)
+			}
+		}
+	}
 	g.speed = 32 // past the speeds a player picks: the playback keeps its order, only faster
 	if err := g.Update(); err != nil {
 		r.err = err
@@ -206,7 +232,7 @@ func (r *campaignRun) Update() error {
 	}
 	switch {
 	case !g.campaignActive():
-		r.err = fmt.Errorf("자동실행 stopped at %s %s (round %d, result %q): %v", o.Phase, o.Node, o.Round, o.Result, g.toastTexts())
+		r.err = fmt.Errorf("자동실행 stopped at %s %s (round %d, result %q): %v\nlast attempted %s", o.Phase, o.Node, o.Round, o.Result, g.toastTexts(), r.command)
 	case time.Now().After(r.deadline):
 		r.err = fmt.Errorf("still at %s %s after %d minutes", o.Phase, o.Node, r.minutes)
 	}

@@ -65,3 +65,41 @@ func TestVariety(t *testing.T) {
 		assert.Contains(t, v.Log[0], "search")
 	})
 }
+
+func TestVarietyLearningUsesGrantedTraits(t *testing.T) {
+	for _, source := range []string{"equipment", "deputy"} {
+		t.Run(source, func(t *testing.T) {
+			d, err := content.Load("../../assets/data")
+			require.NoError(t, err)
+			def := d.Characters["liubei"]
+			def.Learn = append(def.Learn, "fire", "fire_boost")
+			d.Characters["liubei"] = def
+			e, err := core.NewAt(d, 1, "c16-battle", "easy")
+			require.NoError(t, err)
+			s := e.Snapshot()
+			for i := range s.Characters {
+				c := &s.Characters[i]
+				if c.ID == "liubei" {
+					c.Points = 2000
+					c.Learned = []string{"deputy_appoint"}
+					if source == "equipment" {
+						c.Equipment["accessory"] = "fire_manual"
+					} else {
+						c.Deputy = "sunqian"
+					}
+				} else if c.ID == "sunqian" && source == "deputy" {
+					c.Learned = append(c.Learned, "fire")
+					c.Equipment = map[string]string{}
+				}
+			}
+			s.Deployment = slices.DeleteFunc(s.Deployment, func(id string) bool { return id == "sunqian" })
+			e, err = core.Restore(d, s)
+			require.NoError(t, err)
+			v := NewVariety(d, nil, 1, 5)
+			v.goals["liubei"] = "fire_boost"
+			assert.Equal(t, "fire_boost", v.next(e, "liubei"))
+			_, err = e.Apply(core.Command{Kind: "learn", Actor: "liubei", Trait: "fire_boost"})
+			require.NoError(t, err)
+		})
+	}
+}
