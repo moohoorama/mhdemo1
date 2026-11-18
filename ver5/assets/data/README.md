@@ -7,7 +7,7 @@ Scenes live in `assets/scenes.json`, not here.
 
 | File | Section |
 |---|---|
-| `game.json` | Title, Version, Rules, Campaign, Factions (3 shades: light, mid, dark), `Grounds` / `Structures` / `States` legends (one glyph each; `Glyph` is the map-art character) |
+| `game.json` | Title, Version, Rules, Campaign, Factions (3 shades: light, mid, dark; optional `OfficerColors`, the same three shades for named officers and commander/boss/officer-rank troops), `Grounds` / `Structures` / `States` legends (one glyph each; `Glyph` is the map-art character) |
 | `terrain.json` | Terrain rules per movement group (`cavalry infantry archer machine scholar bandit`; `machine` = catapult), per layer: `Ground`, `Structure`, `State`. A layer lists `Factor`/`Cost` only where it says one; the topmost layer that does wins |
 | `classes.json` | Classes (Tier/Promotes chain, Grants = given traits, Pool = learnable traits of that tier, Skills = given skills) |
 | `characters.json` | Officers and `Template: true` soldier templates (`troop_*`) |

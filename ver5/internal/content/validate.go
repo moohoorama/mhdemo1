@@ -48,8 +48,8 @@ func (d *Data) Validate() error {
 		return fmt.Errorf("%s", why)
 	}
 	for id, f := range d.Factions {
-		if len(f.Colors) != 3 {
-			return fmt.Errorf("faction %s needs three colors", id)
+		if len(f.Colors) != 3 || len(f.OfficerColors) != 0 && len(f.OfficerColors) != 3 {
+			return fmt.Errorf("faction %s needs three colors, and three for its officers if any", id)
 		}
 	}
 	for id, t := range d.Traits {

@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"srpg/internal/content"
+	"srpg/internal/core"
 	"srpg/internal/sprite"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -69,11 +70,32 @@ func colorsOf(c []string) []color.RGBA {
 	return out
 }
 
-// palette is the faction's colours with the character's own over them.
+// officerMark follows a faction colour's name when the sprite takes the faction's officer shades.
+const officerMark = "*"
+
+// officerColor is the faction colour of a unit: the officer shades for a named officer or a template led as an
+// officer, commander or boss, the troop shades for the rest.
+func (g *Game) officerColor(def, faction, rank string) string {
+	c := g.S.Data.Characters[def]
+	if strings.HasSuffix(faction, officerMark) || c.Template && rank != "officer" && rank != "commander" && rank != "boss" {
+		return faction
+	}
+	return faction + officerMark
+}
+
+// unitColor is the faction colour a battle unit is drawn in.
+func (g *Game) unitColor(u core.UnitView) string { return g.officerColor(u.Def, u.Color, u.Rank) }
+
+// palette is the faction's colours (its officer shades for a colour marked with officerMark) with the character's own over them.
 func (g *Game) palette(faction string, look content.Look) sprite.Palette {
 	p := sprite.Palette{}
-	if f, ok := g.S.Data.Factions[faction]; ok && len(f.Colors) > 0 {
-		p["faction"] = colorsOf(f.Colors)
+	name, officer := strings.CutSuffix(faction, officerMark)
+	if f, ok := g.S.Data.Factions[name]; ok && len(f.Colors) > 0 {
+		cols := f.Colors
+		if officer && len(f.OfficerColors) > 0 {
+			cols = f.OfficerColors
+		}
+		p["faction"] = colorsOf(cols)
 	}
 	own := sprite.Palette{}
 	for group, c := range look.Palette {
@@ -108,6 +130,7 @@ func (g *Game) startingWeapon(c content.Character) string {
 // A mount (an equipped horse of its own colour, UnitView.Mount) lays its colours over the character's.
 func (g *Game) battleClassArt(def, class, weapon, mount, faction string) *sprite.Art {
 	c := g.S.Data.Characters[def]
+	faction = g.officerColor(def, faction, "")
 	c.Look = g.mountLook(c.Look, mount)
 	ids := []string{c.Look.Sprites[class]}
 	if class == g.S.Data.ClassLine(c.Class)[0] {
@@ -143,6 +166,7 @@ func (g *Game) mountLook(look content.Look, mount string) content.Look {
 // shoot class, else that class's own (never the sprite the character carries into every class).
 func (g *Game) shootArt(def, class, mount, faction string) *sprite.Art {
 	c := g.S.Data.Characters[def]
+	faction = g.officerColor(def, faction, "")
 	c.Look = g.mountLook(c.Look, mount)
 	if id := c.Look.Sprites[class]; id != "" {
 		if a := g.art(id, faction, c.Look); a != nil {
@@ -157,6 +181,7 @@ func (g *Game) shootArt(def, class, mount, faction string) *sprite.Art {
 // or class sprite, with the colours of the horse it rides (mount, an equipment id) when it rides one.
 func (g *Game) sceneArt(def, pick, faction, mount string) *sprite.Art {
 	c := g.S.Data.Characters[def]
+	faction = g.officerColor(def, faction, "")
 	c.Look = g.mountLook(g.laterLook(c.Look), mount)
 	first := g.S.Data.ClassLine(c.Class)[0]
 	class := g.S.Data.Classes[first]

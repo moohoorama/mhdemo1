@@ -149,6 +149,11 @@
     "#6faefc",
     "#4985d0",
     "#304e7b"
+   ],
+   "OfficerColors": [
+    "#c692f2",
+    "#9b5cd3",
+    "#592e86"
    ]
   },
   "shu": {
@@ -165,14 +170,24 @@
     "#f47065",
     "#c6453e",
     "#712722"
+   ],
+   "OfficerColors": [
+    "#ff7a3a",
+    "#ea5418",
+    "#8a2e0c"
    ]
   },
   "turban": {
    "Name": "황건적",
    "Colors": [
-    "#ffb84f",
-    "#d38e11",
-    "#895d14"
+    "#f0d23a",
+    "#d6b610",
+    "#8a710a"
+   ],
+   "OfficerColors": [
+    "#fffbe6",
+    "#efe7b6",
+    "#a9a166"
    ]
   },
   "taishan": {
@@ -202,9 +217,14 @@
   "yuan": {
    "Name": "원소·원술",
    "Colors": [
-    "#fff059",
-    "#d4c513",
-    "#938a27"
+    "#ffc25e",
+    "#f09c26",
+    "#a5670f"
+   ],
+   "OfficerColors": [
+    "#fff25a",
+    "#e6d814",
+    "#9a8e18"
    ]
   },
   "han": {
