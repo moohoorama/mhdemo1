@@ -1,0 +1,132 @@
+{
+ "Nodes": [
+  {
+   "ID": "c27v-start",
+   "Kind": "scene",
+   "Place": "양양 남쪽 · 연합 진영"
+  },
+  {
+   "ID": "c27v-back-zhugeliang",
+   "Kind": "join",
+   "Character": "zhugeliang",
+   "Event": "back-zhugeliang-27v"
+  },
+  {
+   "ID": "c27v-a01",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "양양은 북쪽과 동쪽이 한수입니다. 뭍으로 닿는 길은 서쪽과 남쪽뿐입니다. 성 안에는 조인이 있습니다."
+  },
+  {
+   "ID": "c27v-a02",
+   "Kind": "say",
+   "Speaker": "zhouyu",
+   "Text": "물은 강동이 맡겠소. 채모의 배는 수만 많지 노 젓는 손이 겁을 먹었소. 그것을 치우고 동쪽 수문을 두드리겠소."
+  },
+  {
+   "ID": "c27v-a03",
+   "Kind": "say",
+   "Speaker": "liuqi",
+   "Text": "성 안 수군은 아버님이 기른 사람들입니다. 제가 뱃머리에 서겠습니다."
+  },
+  {
+   "ID": "c27v-a04",
+   "Kind": "say",
+   "Speaker": "xushu",
+   "Text": "문제는 뭍입니다. 조조의 본대가 한수 상류를 건너 서쪽으로 돌아오고 있습니다."
+  },
+  {
+   "ID": "c27v-a05",
+   "Kind": "say",
+   "Speaker": "xushu",
+   "Text": "서쪽 진채가 뚫리면 포위가 풀리고, 우리는 성과 대군 사이에 낍니다."
+  },
+  {
+   "ID": "c27v-a06",
+   "Kind": "say",
+   "Speaker": "zhouyu",
+   "Text": "유 예주, 뭍에서 조조를 이길 수 있소?"
+  },
+  {
+   "ID": "c27v-a07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "이길 수는 없소. 도독이 성을 떨어뜨릴 때까지 버틸 수는 있소."
+  },
+  {
+   "ID": "c27v-a08",
+   "Kind": "say",
+   "Speaker": "zhouyu",
+   "Text": "그럼 누가 먼저 뚫느냐의 싸움이군. 조조가 그대의 진채를 먼저 뚫느냐, 내가 양양을 먼저 뚫느냐."
+  },
+  {
+   "ID": "c27v-a09",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "도독, 늦으면 우리가 성까지 뚫어 버릴 거유."
+  },
+  {
+   "ID": "c27v-battle",
+   "Kind": "battle",
+   "Stage": "B27V",
+   "Text": "양양 공방전 — 출전 준비"
+  },
+  {
+   "ID": "c27v-hall",
+   "Kind": "scene",
+   "Place": "양양 · 관청"
+  },
+  {
+   "ID": "c27v-b01",
+   "Kind": "say",
+   "Speaker": "liuqi",
+   "Text": "숙부, 저 자리는 제가 앉기에는 큽니다. 몸도 따르지 않습니다."
+  },
+  {
+   "ID": "c27v-b02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "조카의 자리일세. 앉게. 일은 우리가 거들겠네."
+  },
+  {
+   "ID": "c27v-b03",
+   "Kind": "say",
+   "Speaker": "zhouyu",
+   "Text": "성은 강동의 배가 뚫었소. 그 셈은 따로 해야 할 것이오."
+  },
+  {
+   "ID": "c27v-b04",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "목책은 저희가 지켰습니다. 셈은 조조가 완으로 물러간 뒤에 하시지요."
+  },
+  {
+   "ID": "c27v-b05",
+   "Kind": "say",
+   "Speaker": "lusu",
+   "Text": "도독, 오늘은 술부터 듭시다."
+  },
+  {
+   "ID": "c27v-b06",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형, 지난달엔 저 문 밖에서 화살 받던 성이유."
+  },
+  {
+   "ID": "c27v-b07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "이번에는 안에서 문을 닫는군. ……가세, 할 일이 많네."
+  },
+  {
+   "ID": "c27v-card",
+   "Kind": "narrate",
+   "Text": "2장 주유천하\n끝",
+   "Card": true
+  },
+  {
+   "ID": "c27v-end",
+   "Kind": "end"
+  }
+ ]
+}

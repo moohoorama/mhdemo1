@@ -58,7 +58,6 @@ const (
 	FxRout               = "rout:"                // + status: defeating a foe lowers that stat of the foes around it
 	FxHitDebuff          = "hit_debuff:"          // + status: a landed physical hit lowers that stat of the target
 	FxTurnBuff           = "turn_buff:"           // + status: a buff of this percent on itself each own turn
-	FxStartBuff          = "start_buff:"          // + status: a buff of this percent on itself when it takes the field
 	FxCrush              = "crush"                // felling a foe lowers every stat of the foes around it
 	FxScorn              = "scorn"                // physical blows from a foe at least 10 below its 무력 deal this share less
 	FxImmune             = "immune:"              // + element: spells of the element deal it no damage, no critical, no mark
@@ -118,6 +117,11 @@ const (
 	FxEvade              = "evade"                // physical attacks on it hit this many percentage points less often
 	FxAccuracy           = "accuracy"             // its physical attacks hit this many percentage points more often
 	FxPouchHeal          = "pouch_heal"           // after an attack hurts it and leaves it standing, it recovers this many HP
+	FxHitStatus          = "hit_status:"          // + harmful status: a landed physical hit puts that status on the target for this many turns
+	FxDoubleWard         = "double_ward"          // the second strike of an attack on it is blocked
+	FxCharm              = "charm"                // its 매력 counts this much higher (max HP, deputy blend)
+	FxManaMax            = "mana_max"             // its max spell points grow by this many
+	FxManaPlus           = "mana_plus"            // it recovers this many more spell points each turn
 )
 
 // TraitEffects lists every trait effect key; keys ending in ':' take a status, element or weapon type after it.
@@ -129,12 +133,13 @@ func init() {
 		FxPierce, FxFlank, FxHeavy, FxCounterBoost, FxKnockback, FxTerrainCap, FxTerrainFloor, FxGrassFactor, FxTerrainFactor, FxWetFactor, FxAmbushFactor, FxWard, FxDeputyPlus, FxPoison, FxPoisonBoost, FxLifeSteal, FxPlunder,
 		FxMissHalf, FxOutnumbered, FxCompanions, FxLone, FxChargePower, FxChargeShock, FxChargeAccuracy, FxOpening,
 		FxDesperate, FxGrit, FxHoldGround, FxRangedSure, FxRout,
-		FxHitDebuff, FxTurnBuff, FxStartBuff, FxCrush, FxScorn, FxImmune, FxAuraBuff, FxBulwark, FxCritImmune, FxRangedImmune, FxRangedWard, FxMagicWard, FxCounterWard, FxStartMana, FxReflect, FxReflectStatus,
+		FxHitDebuff, FxTurnBuff, FxCrush, FxScorn, FxImmune, FxAuraBuff, FxBulwark, FxCritImmune, FxRangedImmune, FxRangedWard, FxMagicWard, FxCounterWard, FxStartMana, FxReflect, FxReflectStatus,
 		FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxAuraHaste, FxRangedReach, FxMountedRange, FxSpellRange,
 		FxSpellSure, FxSpellWard, FxChain, FxSure, FxCritElement, FxPower, FxPatience, FxFinisher, FxDispelBuffs, FxSpellLeech, FxDispel,
 		FxStatusImmune, FxStatusWard, FxHealBonus, FxAura, FxAuraMana, FxItemShare, FxItemPower, FxManaRegen,
 		FxBloodCost, FxRegen, FxWoundRegen, FxBuffExtend, FxSelfGuardHalf, FxLastStand, FxCostHalf, FxCleanse, FxSpellCure, FxAbsorbMana, FxStatusDouble, FxCritAiling, FxPassAilments,
-		FxBlendBonus, FxDeputyAppoint, FxWield, FxEvade, FxAccuracy, FxPouchHeal} {
+		FxBlendBonus, FxDeputyAppoint, FxWield, FxEvade, FxAccuracy, FxPouchHeal,
+		FxHitStatus, FxDoubleWard, FxCharm, FxManaMax, FxManaPlus} {
 		TraitEffects[k] = true
 	}
 }

@@ -15,13 +15,19 @@ func give(e *Engine, id, trait string, fx map[string]float64) {
 }
 
 func TestOfficerTraits(t *testing.T) {
-	t.Run("패기 buffs every stat once, as the unit takes the field", func(t *testing.T) {
+	t.Run("패기 is a spell that buffs every stat of the caster", func(t *testing.T) {
 		e, hero, _ := arena(t)
-		give(e, "hero", "ambition", map[string]float64{"start_buff:attack": 20, "start_buff:morale": 20})
-		s := e.startStatus(hero)
-		assert.Equal(t, 20, s["attack"].Value)
-		assert.Equal(t, 20, s["morale"].Value)
-		assert.Empty(t, e.turnBuffs(hero), "not every turn")
+		e.state.Learning = nil
+		e.data.Traits["ambition"] = content.Trait{Name: "패기", Kind: "strategy", Cost: 1}
+		e.data.Skills["ambition"] = content.Skill{Name: "패기", Kind: content.KindBuff, Mode: content.ModeSelf, Shape: content.ShapeSingle,
+			Cost: 1, Hit: 100, Duration: 3, Effect: "attack+defense+mind+agility+morale", Requires: []string{"ambition"}}
+		with(e, "hero", "ambition")
+		hero.MP = 500
+		assert.Empty(t, e.startStatus(hero), "nothing as it takes the field")
+		apply(t, e, Command{Kind: "skill", Actor: "hero", Target: "hero", Skill: "ambition"})
+		for id := range content.StatStatuses {
+			assert.Positive(t, e.unit("hero").Status[id].Value, id)
+		}
 	})
 
 	t.Run("안하무인 halves physical blows from a foe ten 무력 below", func(t *testing.T) {

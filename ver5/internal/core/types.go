@@ -71,6 +71,7 @@ type State struct {
 	Executed                          map[string]bool
 	Flags                             map[string]int    // story flags set by set nodes
 	PendingFlags                      map[string]int    `json:",omitempty"` // flags a battle sets; they join Flags when it is won
+	Fired                             map[string][]int  `json:",omitempty"` // battle event key -> the rounds an event with Every ran in
 	TileStates                        []TileState       `json:",omitempty"` // states an event put on cells, for Turns more rounds (0: for good)
 	Goals                             *content.Goals    `json:",omitempty"` // the battle's goals once an event changed them; nil keeps the stage's
 	Choices                           map[string]string // choice node -> the option taken

@@ -1,0 +1,332 @@
+{
+ "Nodes": [
+  {
+   "ID": "c27-start",
+   "Kind": "scene",
+   "Place": "강하 · 나루"
+  },
+  {
+   "ID": "c27-back-guanyu",
+   "Kind": "join",
+   "Character": "guanyu",
+   "Event": "back-guanyu-27"
+  },
+  {
+   "ID": "c27-back-zhugeliang",
+   "Kind": "join",
+   "Character": "zhugeliang",
+   "Event": "back-zhugeliang-27"
+  },
+  {
+   "ID": "c27-a01",
+   "Kind": "say",
+   "Speaker": "liuqi",
+   "Text": "숙부, 강하는 작지만 군사 일만과 배가 있습니다. 숙부의 것처럼 쓰십시오."
+  },
+  {
+   "ID": "c27-a02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "조카의 성일세. 나는 잠깐 머무는 손님이고."
+  },
+  {
+   "ID": "c27-a03",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "주공, 공자는 병이 깊습니다."
+  },
+  {
+   "ID": "c27-a04",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "강하의 군사는 공자의 이름으로 움직이되, 움직이는 손은 주공이셔야 합니다."
+  },
+  {
+   "ID": "c27-a05",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……또 남의 이름인가."
+  },
+  {
+   "ID": "c27-a06",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "남의 이름이기에 형주 사람들이 문을 엽니다."
+  },
+  {
+   "ID": "c27-chaisang",
+   "Kind": "scene",
+   "Place": "시상 · 손권의 막부"
+  },
+  {
+   "ID": "c27-b00",
+   "Kind": "say",
+   "Speaker": "lusu",
+   "Text": "주공, 유 예주께서 보내신 제갈량입니다. 자는 공명이라 합니다."
+  },
+  {
+   "ID": "c27-b01",
+   "Kind": "say",
+   "Speaker": "sunquan",
+   "Text": "조조가 팔십만이라 한다. 유 예주는 왜 항복하지 않았소?"
+  },
+  {
+   "ID": "c27-b02",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "유 예주는 한실의 후예라 남의 밑에 설 수 없습니다."
+  },
+  {
+   "ID": "c27-b03",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "장군께서는 사정이 다르니, 일찍 갑옷을 벗고 북쪽을 향해 절하시지요."
+  },
+  {
+   "ID": "c27-b04",
+   "Kind": "say",
+   "Speaker": "sunquan",
+   "Text": "다시 항복을 말하는 자는 이 책상과 같을 것이다!"
+  },
+  {
+   "ID": "c27-b05",
+   "Kind": "say",
+   "Speaker": "zhouyu",
+   "Text": "공명 선생, 싸움은 강동이 하오. 유 예주께서는 번구에서 구경이나 하시라 전하시오."
+  },
+  {
+   "ID": "c27-b06",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "구경하는 김에 강 위쪽은 저희가 막겠습니다. 양양의 수군이 그리로 내려옵니다."
+  },
+  {
+   "ID": "c27-camp",
+   "Kind": "scene",
+   "Place": "강하 · 진영"
+  },
+  {
+   "ID": "c27-c01",
+   "Kind": "say",
+   "Speaker": "huojun",
+   "Text": "남군 지강 사람 곽준입니다. 강릉은 싸워 보지도 않고 조조에게 문을 열었습니다."
+  },
+  {
+   "ID": "c27-c02",
+   "Kind": "say",
+   "Speaker": "huojun",
+   "Text": "그 꼴은 못 보겠어서 형의 부곡을 데리고 나왔습니다."
+  },
+  {
+   "ID": "c27-c03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "강릉 사람들은 어찌 되었소?"
+  },
+  {
+   "ID": "c27-c04",
+   "Kind": "say",
+   "Speaker": "huojun",
+   "Text": "조조의 수군이 되었습니다. 채모가 그들을 이끌고 내려옵니다."
+  },
+  {
+   "ID": "c27-join-huojun",
+   "Kind": "join",
+   "Character": "huojun",
+   "Event": "join-huojun"
+  },
+  {
+   "ID": "c27-chibi",
+   "Kind": "scene",
+   "Place": "적벽 · 강 위"
+  },
+  {
+   "ID": "c27-d01",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "조조는 뭍으로 달아납니다. 오림 뒤는 갈대 늪이고, 늪을 벗어나는 길은 화용도 하나입니다."
+  },
+  {
+   "ID": "c27-d02",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "익덕은 먼저 건너가 늪 어귀를 막으십시오. 주공께서는 뒤에서 쫓으십시오."
+  },
+  {
+   "ID": "c27-d03",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "운장은 화용도 끝에 서십시오."
+  },
+  {
+   "ID": "c27-d04",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "알겠소."
+  },
+  {
+   "ID": "c27-d05",
+   "Kind": "say",
+   "Speaker": "liuqi",
+   "Text": "채모! 아버님의 부고를 감춘 값을……!"
+  },
+  {
+   "ID": "c27-leave-guanyu",
+   "Kind": "leave",
+   "Character": "guanyu",
+   "Event": "leave-guanyu-27"
+  },
+  {
+   "ID": "c27-battle",
+   "Kind": "battle",
+   "Stage": "B27",
+   "Text": "화용도 전투 — 출전 준비"
+  },
+  {
+   "ID": "c27-huarong",
+   "Kind": "scene",
+   "Place": "화용도 · 길 끝"
+  },
+  {
+   "ID": "c27-e01",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "승상. 오랜만이오."
+  },
+  {
+   "ID": "c27-e02",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "……운장. 허도에서 술을 데워 주던 일을 기억하는가."
+  },
+  {
+   "ID": "c27-e03",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "백문루에서 문원의 목숨을 청하던 것도 자네였지."
+  },
+  {
+   "ID": "c27-e04",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "그 빚은 안량과 문추의 목으로 갚았소."
+  },
+  {
+   "ID": "c27-e05",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "갚았지. 다섯 관문의 일은 어떤가. 그때 나는 쫓지 않았네."
+  },
+  {
+   "ID": "c27-e06",
+   "Kind": "say",
+   "Speaker": "zhangliao",
+   "Text": "운장."
+  },
+  {
+   "ID": "c27-e07",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "……문원."
+  },
+  {
+   "ID": "c27-e08",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "흩어져 길을 열어라."
+  },
+  {
+   "ID": "c27-end-camp",
+   "Kind": "scene",
+   "Place": "강하 · 진영"
+  },
+  {
+   "ID": "c27-back-guanyu2",
+   "Kind": "join",
+   "Character": "guanyu",
+   "Event": "back-guanyu-27b"
+  },
+  {
+   "ID": "c27-f01",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님, 조조를 놓쳤습니다. 군령을 어겼으니 벌을 받겠습니다."
+  },
+  {
+   "ID": "c27-f02",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "놓친 것이 아니라 놓아준 것이지요."
+  },
+  {
+   "ID": "c27-f03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "군사, 운장을 그 길에 세운 것도 그대였소. 벌은 나중에 정하겠소."
+  },
+  {
+   "ID": "c27-f04",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "채모 그놈도 살아서 내뺐슈. 조카님만 화살 맞고."
+  },
+  {
+   "ID": "c27-f05",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "조카는 어떤가."
+  },
+  {
+   "ID": "c27-f06",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "의원 말로는 일어나 앉기도 어렵다네. 강하의 일은 당분간 우리가 봐야 하네."
+  },
+  {
+   "ID": "c27-f07",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "주공, 조조는 북으로 갔고 주유는 강릉의 조인에게 묶일 것입니다."
+  },
+  {
+   "ID": "c27-f08",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "강하의 군사와 배는 이제 주공의 손에 있습니다."
+  },
+  {
+   "ID": "c27-f09",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "강동에서 사람이 와 형주가 누구 땅이냐 묻거든 이렇게 답하시면 됩니다."
+  },
+  {
+   "ID": "c27-f10",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "\"유경승의 아들이 살아 있는 한, 형주는 그 아들의 땅이다.\""
+  },
+  {
+   "ID": "c27-f11",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……조카가 안채에서 나오지 못하는 동안은, 그 말이 내 방패가 되겠군."
+  },
+  {
+   "ID": "c27-f12",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "방패이고, 땅입니다. 스무 해 만에 처음 얻으신 땅입니다."
+  },
+  {
+   "ID": "c27-card",
+   "Kind": "narrate",
+   "Text": "2장 주유천하\n끝",
+   "Card": true
+  },
+  {
+   "ID": "c27-end",
+   "Kind": "end"
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+# c24-cottage2  S_vil_peace  ch24  origin 0 0
+#########Tav...Bsh
+###Hse###.........
+###Hse###Zhu......
+TreNtc............
+..................
+
+Liu 유비  (off stage, enters later (cell 4 2))
+Gua 관우  (off stage, enters later (cell 5 1))
+Zha 장비  (off stage, enters later (cell 5 3))
+Zhu 제갈균
+
+# c24-b01: Liu -> 4 2
+# c24-b01: Gua -> 5 1
+# c24-b01: Zha -> 5 3

@@ -45,7 +45,8 @@ type panelSpec struct {
 	items      []entry
 	header     string  // gold header line; empty for none
 	gauge      float64 // MP fraction shown in the header, < 0 for none
-	descLines  int     // reserved lines of the description strip; 0 for none
+	minRows    int
+	descLines  int // reserved lines of the description strip; 0 for none
 	x, y, w    int
 	anim       *panelAnim
 	hoveredOut *string // receives the hovered row's help when there is no strip
@@ -54,7 +55,7 @@ type panelSpec struct {
 }
 
 func (g *Game) panelHeight(p panelSpec) int {
-	h := panelPad*2 + len(p.items)*rowHeight
+	h := panelPad*2 + max(len(p.items), p.minRows)*rowHeight
 	if p.header != "" {
 		h += 24
 	}

@@ -1,6 +1,7 @@
 package core
 
 import (
+	"slices"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -44,8 +45,9 @@ func TestNewAt(t *testing.T) {
 		e, err := NewAtWith(d, 1, last.Node, "", Start{Flags: all}) // 고순 stays only if he lived through his battle
 		require.NoError(t, err)
 		s := e.Snapshot()
+		leads := d.Leads(last.Node) // the last waypoint is of the other telling (가상 27v장): 연의 25~27장 are not played
 		for _, w := range ways {
-			if w.Stage != "" && w.Node != last.Node {
+			if w.Stage != "" && w.Node != last.Node && leads[w.Node] {
 				assert.True(t, s.Executed["won-"+w.Stage], w.Stage)
 			}
 		}
@@ -54,6 +56,12 @@ func TestNewAt(t *testing.T) {
 		for _, n := range d.Nodes {
 			if n.ID == last.Node {
 				break
+			}
+			if ci := d.ChapterIndex(n.ID); ci >= 0 {
+				nodes := d.Chapters[ci].Nodes
+				if slices.Contains(nodes, n.ID) && !leads[n.ID] || !slices.ContainsFunc(nodes, func(id string) bool { return leads[id] }) {
+					continue // a node off the route, or an explore event of a chapter off it
+				}
 			}
 			switch {
 			case n.Kind == "leave":
@@ -92,7 +100,7 @@ func TestNewAt(t *testing.T) {
 			return ""
 		}
 		for chapter, ids := range map[int][]string{
-			20: {"zhaoyun"},                                    // B19
+			20: {"zhaoyun"},                                   // B19
 			21: {"zhaoyun", "guanyu", "guanping", "zhoucang"}, // B20 brings 관우's party back
 		} {
 			e, err := NewAt(d, 1, first(chapter), "")
@@ -181,4 +189,32 @@ func TestNewAt(t *testing.T) {
 		_, err := NewAt(d, 1, "nowhere", "")
 		assert.EqualError(t, err, "UnknownWaypoint")
 	})
+}
+
+// TestJumpIntoTheOtherTelling starts at the 가상 chapters, which the story reaches only by 「느린 길」 at 융중: the walk
+// there takes 25장's branch into 25v장 and never plays 연의 25~27장 (서서 stays, 곽준 does not join, the mode is 가상).
+func TestJumpIntoTheOtherTelling(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	for _, node := range []string{"c25v-start", "c26v-start", "c27v-start"} {
+		t.Run(node, func(t *testing.T) {
+			e, err := NewAt(d, 1, node, "casual")
+			require.NoError(t, err)
+			assert.NotNil(t, e.char("xushu"), "Xu Shu leaves only after the romance's Changban")
+			if node != "c27v-start" { // he joins after 강릉 (B26V) in this telling
+				assert.Nil(t, e.char("huojun"), "Huo Jun joins only in the romance's chapter 27")
+			}
+			assert.False(t, e.state.Executed["won-B25"], "the romance's battles are not played")
+			assert.False(t, e.state.Executed["won-B27"])
+			if node != "c25v-start" {
+				assert.Equal(t, 1, e.state.Flags["flag-mode-virtual"])
+				assert.Zero(t, e.state.Flags["flag-mode-yanyi"])
+				assert.True(t, e.state.Executed["won-B25V"])
+			}
+		})
+	}
+	e, err := NewAt(d, 1, "c27-start", "casual")
+	require.NoError(t, err)
+	assert.True(t, e.state.Executed["won-B26"], "the romance's own chapters are played on the way to its chapter 27")
+	assert.False(t, e.state.Executed["won-B25V"])
 }

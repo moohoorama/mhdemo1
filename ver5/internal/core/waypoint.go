@@ -44,7 +44,9 @@ func NewAtWith(d *content.Data, seed uint64, node, difficulty string, start Star
 			left[f.Stage] = append(left[f.Stage], f.Flag)
 		}
 	}
-	for _, c := range d.Chapters {
+	leads := d.Leads(node)
+	for ci := 0; ci < len(d.Chapters); ci++ {
+		c := d.Chapters[ci]
 		at := slices.Index(c.Nodes, node)
 		for j := 0; j < len(c.Nodes); {
 			if j == at {
@@ -58,8 +60,15 @@ func NewAtWith(d *content.Data, seed uint64, node, difficulty string, start Star
 					e.state.Flags[f] = 1
 				}
 			}
+			next := e.toward(n, leads)
+			if ni := d.ChapterIndex(next); ni > ci && slices.Contains(d.Chapters[ni].Nodes, next) {
+				// a branch into another telling's chapter (25장 → 25v장): the chapters between are not played
+				ci, c, at = ni, d.Chapters[ni], slices.Index(d.Chapters[ni].Nodes, node)
+				j = slices.Index(c.Nodes, next)
+				continue
+			}
 			// the nodes a branch or a jump goes over are not played; one that goes nowhere ahead reads on
-			k := slices.Index(c.Nodes, e.passed(n))
+			k := slices.Index(c.Nodes, next)
 			if k <= j {
 				k = j + 1
 			}
@@ -70,6 +79,25 @@ func NewAtWith(d *content.Data, seed uint64, node, difficulty string, start Star
 		}
 	}
 	return nil, fail("UnknownWaypoint")
+}
+
+// toward is where the walk to a waypoint goes after n: where the story goes (passed), unless that can no longer
+// come to the waypoint and another way out of n can (leads, content.Leads) — a jump into 가상 25v장 takes 25장's
+// branch to it even though no 「느린 길」 was chosen; the chapter's own nodes then set its flags.
+func (e *Engine) toward(n content.Node, leads map[string]bool) string {
+	next := e.passed(n)
+	if next == "" && n.Kind == "choice" { // a choice reads on, unless its next node goes away from the waypoint
+		next = e.data.After(n.ID)
+	}
+	if leads[next] {
+		return next
+	}
+	for _, s := range e.data.Successors(n) {
+		if leads[s] {
+			return s
+		}
+	}
+	return e.passed(n)
 }
 
 // passed is the node the story goes to after a node it passes, as far as that is known without the player.

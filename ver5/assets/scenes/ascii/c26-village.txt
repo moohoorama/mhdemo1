@@ -1,0 +1,23 @@
+# c26-village  S_village_burnt  ch26  origin 0 0
+Tre...............Tre.........
+...Hse...JarHse...............
+.........Bkt.........Hse......
+..................Bkt.........
+............Zha.........LadSck
+#########............###Wel###
+...Hse...MatBch.........Hse...
+..............................
+
+Zha 조운
+Lad 미 부인  (sitground)
+Xia 하후은  (off stage, enters later (cell 4 0))
+cv1 조조군#1  (light_cavalry, off stage, enters later (cell 3 0))
+cv2 조조군#2  (light_cavalry, off stage, enters later (cell 5 0))
+
+# c26-b01: Zha -> 7 4
+# c26-b05: Lad -> 9 4 and leaves
+# c26-b06: Xia -> 8 3
+# c26-b06: cv1 -> 9 2
+# c26-b06: cv2 -> 8 2
+# c26-b06: cv1 -> 12 2 and leaves
+# c26-b06: cv2 -> 12 3 and leaves

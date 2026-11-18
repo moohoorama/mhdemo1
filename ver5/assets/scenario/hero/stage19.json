@@ -414,14 +414,14 @@
      "Title": "장합이 조운을 막아서다",
      "Speech": "하간의 장합이다. 네가 공손찬 밑에 있던 조자룡이냐.",
      "Side": 1,
-     "Duration": 2.8
+     "Duration": 3.3
     },
     {
      "Kind": "talk",
      "Title": "조운이 답하다",
      "Speech": "상산의 조자룡이오. 현덕 공을 쫓으려거든 이 창부터 넘으시오!",
      "Side": 0,
-     "Duration": 2.8
+     "Duration": 3.5
     },
     {
      "Kind": "approach",
@@ -432,56 +432,252 @@
     },
     {
      "Kind": "block",
-     "Title": "조운이 장합의 창을 받다",
+     "Title": "장합이 창 끝으로 떠 보자 조운이 가볍게 받아 넘기다",
      "Speech": "(빠르다……!)",
      "Side": 1,
      "Duration": 1.05
     },
     {
      "Kind": "block",
-     "Title": "장합이 조운의 창을 막다",
-     "Speech": "(이 창끝…… 소문 이상이군.)",
+     "Title": "조운이 곧바로 되받아 치다",
+     "Speech": "",
      "Side": 0,
      "Duration": 1.05
     },
     {
+     "Kind": "press",
+     "Title": "장합이 몰아붙이자 조운이 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.3
+    },
+    {
      "Kind": "rush-block",
-     "Title": "장합이 거푸 몰아치다",
+     "Title": "장합이 거푸 창을 휘몰아치다",
      "Speech": "",
      "Side": 1,
      "Duration": 1.1
     },
     {
+     "Kind": "yielding-block",
+     "Title": "조운이 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장합이 창을 몰아치다",
+     "Speech": "소문대로 빠르군. 허나 내 창도 하간에서 무뎌지지는 않았다!",
+     "Side": 1,
+     "Duration": 3.5
+    },
+    {
      "Kind": "dodge",
-     "Title": "장합이 조운의 찌르기를 피하다",
+     "Title": "조운이 크게 휘둘렀으나 장합이 몸을 틀어 피하다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장합이 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 창을 맞대다",
+     "Speech": "백마 위에서 익힌 창이오. 가볍게 보지 마시오!",
+     "Side": 0,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "block",
+     "Title": "조운이 창을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장합이 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "장합이 크게 휘둘렀으나 조운이 몸을 틀어 피하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "press",
+     "Title": "조운이 몰아붙이자 장합이 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "조운이 거푸 창을 휘몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장합이 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
     },
     {
      "Kind": "talk",
      "Title": "장합이 감탄하다",
      "Speech": "좋은 창이다. 떠돌게 두기 아깝군.",
      "Side": 1,
-     "Duration": 2.6
+     "Duration": 2.9
     },
     {
      "Kind": "talk",
      "Title": "조운이 받아치다",
      "Speech": "그대 같은 장수가 원소를 섬기다니, 나도 아깝소.",
      "Side": 0,
-     "Duration": 2.6
+     "Duration": 3.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "조운이 힘을 실어 내려치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "장합이 정면으로 맞받아 불꽃이 튀다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "backstep",
+     "Title": "장합이 말을 물려 거리를 벌리다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.6
+    },
+    {
+     "Kind": "talk",
+     "Title": "장합이 땀을 닦다",
+     "Speech": "공손찬이 죽던 날 네가 곁에 있었다면 판이 달랐겠지.",
+     "Side": 1,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 씁쓸해하다",
+     "Speech": "……그 이야기는 하지 마시오. 지금은 현덕 공의 길을 열 뿐이오.",
+     "Side": 0,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "close",
+     "Title": "장합이 다시 거리를 좁히다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "장합이 말을 몰아 들이치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
     },
     {
      "Kind": "block",
-     "Title": "장합이 막다",
+     "Title": "조운이 장합의 창과 맞물려 힘겨루기를 하다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.05
     },
     {
+     "Kind": "dodge",
+     "Title": "장합이 크게 휘둘렀으나 조운이 몸을 틀어 피하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
      "Kind": "block",
-     "Title": "조운이 막다",
+     "Title": "조운이 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "장합이 말을 가까이 몰다",
+     "Speech": "한 번만 묻겠다. 원 공께 오겠느냐. 대접은 후할 것이다.",
+     "Side": 1,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "block",
+     "Title": "장합이 창을 내리치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "조운이 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 고개를 젓다",
+     "Speech": "주군은 이미 정했소. 창으로 답하겠소!",
+     "Side": 0,
+     "Duration": 2.9
+    },
+    {
+     "Kind": "press",
+     "Title": "조운이 몰아붙이자 장합이 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "조운이 거푸 창을 휘몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장합이 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-dodge",
+     "Title": "조운의 일격을 장합이 간신히 피하다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장합이 빈틈을 파고들어 되받다",
      "Speech": "",
      "Side": 1,
      "Duration": 1.05
@@ -491,14 +687,14 @@
      "Title": "장합이 숨을 고르다",
      "Speech": "(끝이 나지 않는다…… 이대로면 날이 새겠군.)",
      "Side": 1,
-     "Duration": 2.6
+     "Duration": 3.2
     },
     {
      "Kind": "talk",
      "Title": "조운이 창을 거두다",
      "Speech": "현덕 공은 이미 멀리 가셨소. 오늘은 여기까지요.",
      "Side": 0,
-     "Duration": 2.8
+     "Duration": 3.2
     },
     {
      "Kind": "backstep",

@@ -164,7 +164,7 @@ type Character struct {
 	Stats                    [6]int
 	Level                    int
 	Lord, Playable, Template bool
-	Traits                   []string // own trait plan for an NPC appearance, in order, one more every Rules.TraitPlanStep levels; officers in the party start with none
+	Traits                   []string       // own trait plan for an NPC appearance, in order, one more every Rules.TraitPlanStep levels; officers in the party start with none
 	TraitAt                  map[string]int `json:",omitempty"` // traits an NPC appearance holds from a level on, besides its plan (조조: 패기 at 15, 패도 at 35)
 	Learn, Equipment         []string
 	Look                     Look
@@ -173,9 +173,9 @@ type Equipment struct {
 	Name, Desc, Slot, Type string
 	Icon                   string // the UI sheet's item_<Icon> picture
 	Price                  int    `json:",omitempty"` // what a shop asks in money; it buys it back for half
-	Bonus                  [6]float64
 	Line                   string `json:",omitempty"` // a family of plain gear that comes in tiers (sword, armor, robe …)
 	Tier                   int    `json:",omitempty"` // which step of its Line it is: 1 (D) in the first chapter, 2 (C) and 3 (B) after
+	Bonus                  [6]float64
 	Traits, Learn, Skills  []string
 	Palette                map[string]Colors `json:",omitempty"` // a horse of its own colour: tag group -> colours laid over the wearer's look while a mounted class rides it
 	Owner                  string            `json:",omitempty"` // the officer it suits; the AI and the waypoint games put it on them
@@ -256,6 +256,7 @@ type Spawn struct {
 	Group             string    `json:",omitempty"` // name events use to address this spawn with others
 	Side              string    `json:",omitempty"` // event spawns only: "ally" (an AI ally, the default) or "enemy"
 	HP, MP            *int      `json:",omitempty"`
+	HPPct             int       `json:",omitempty"` // instead of HP: the share of its full strength the unit starts with, 1-99
 	Traits, Equipment *[]string `json:",omitempty"`
 	Deputy            string    `json:",omitempty"` // an NPC officer's deputy: a named officer who rides with it, lending its traits and higher attributes
 	Character         string
@@ -323,8 +324,8 @@ type Action struct {
 	Spawns   []Spawn        `json:",omitempty"`
 	Targets  []string       `json:",omitempty"`
 	Flags    map[string]int `json:",omitempty"`
-	Stat     string         `json:",omitempty"` // buff: attack, defense, mind, morale, agility (percent) or speed, range (cells)
-	Value    int            `json:",omitempty"` // buff: how much, negative for a debuff
+	Stat     string         `json:",omitempty"` // buff: attack, defense, mind, morale, agility (percent), speed, range (cells) or an ailment (BuffAilments)
+	Value    int            `json:",omitempty"` // buff: how much, negative for a debuff; none for an ailment
 	Moves    []Move         `json:",omitempty"` // move: who goes where, all at once
 	Steps    [][]Step       `json:",omitempty"` // cutscene: groups of steps; a group's steps run together, the next group waits for them
 	Duel     string         `json:",omitempty"` // duel: the stage duel to hold now, wherever its officers stand
@@ -349,15 +350,22 @@ type Move struct {
 
 // Step is one thing that happens in a cutscene: Unit moves to To (a group fills the cells around it)
 // and turns to Facing there (none: the way its last step went), plays Motion (attack, hit, block, exhausted), turns to Facing, says Text,
-// leaves the field across the nearest edge as if fled, or the scene waits Seconds.
+// leaves the field across the nearest edge as if fled, or the scene waits Seconds. A move or a turn may
+// name By, a unit, instead of To or Facing: the mover walks up beside that unit wherever it stands then and
+// turns to it, and a turn faces it.
 type Step struct {
 	Kind, Unit, Motion, Facing, Text string
+	By                               string  `json:",omitempty"`
 	To                               *Point  `json:",omitempty"`
 	Seconds                          float64 `json:",omitempty"`
 }
 
 // BuffStats are the stats a buff can change; speed and range count cells, the rest percent.
 var BuffStats = []string{"attack", "defense", "mind", "morale", "agility", "speed", "range"}
+
+// BuffAilments are the ailments a buff action can lay on its targets for Turns, without a value: confusion stops
+// the unit, seal its spells, root its moves and disarm its attacks.
+var BuffAilments = []string{"confusion", "seal", "root", "disarm"}
 
 // Policies are the behaviours an AI-driven unit can be given: hold stands its ground and strikes what
 // comes within reach, react stands until an opponent is within its move and reach and then goes for
@@ -405,9 +413,12 @@ func (s Stage) GoalCells(goal *Point, area int) []Point {
 }
 
 // BattleEvent runs its Do once (or each time its If turns true again when Repeat) as soon as all of If hold.
+// With Every it runs again whenever If holds and Every rounds have passed since it last ran (a wave of
+// reinforcements each third round while a condition lasts).
 type BattleEvent struct {
 	ID     string
 	Repeat bool     `json:",omitempty"`
+	Every  int      `json:",omitempty"`
 	If     []string `json:",omitempty"`
 	Do     []Action
 }
@@ -498,6 +509,7 @@ type Stage struct {
 	Areas              []Area        `json:",omitempty"`
 	ID, Name           string
 	Order              int         `json:"-"` // which battle of the story this is, from 1; 0 when no battle node leads here
+	GearTier           int         `json:"-"` // the tier of plain gear the stage's soldiers wear (Rules.GearTiers by chapter); 0 when no battle node leads here
 	Width, Height, Max int         // Max is how many officers may sortie
 	Required           []string    `json:",omitempty"` // officers who must sortie, if the player has them
 	Victory            []Goal      // the battle is won when any goal holds
@@ -506,11 +518,11 @@ type Stage struct {
 	Tiles              []string
 	Allies             []Point
 	Recommend          map[string]Point `json:",omitempty"` // officer -> the Allies cell the default placement stands them on when they sortie
+	Groups             []AllyGroup      `json:",omitempty"` // start groups: the Allies cells inside an area, each with the officers who must start there
 	Enemies            []Spawn
 	Reward             map[string]int
 	Duels              []Duel
 	Party              []Spawn `json:",omitempty"` // a skirmish's allies
-	GearTier           int         `json:"-"` // the tier of plain gear the stage's soldiers wear (Rules.GearTiers by chapter); 0 when no battle node leads here
 	Map                string  `json:",omitempty"` // map document under maps/ that supplies the tiles; none means Tiles is inline
 	Faction            string  `json:",omitempty"` // color of this stage's enemies without a faction of their own
 	Forced             bool    `json:",omitempty"` // the officers sortie straight onto the Allies cells in order: no deployment screen
@@ -518,6 +530,45 @@ type Stage struct {
 	Boats              bool    `json:",omitempty"` // water is crossed in boats (terrain.json Boats); without it water stops every unit
 	Lights             []Point `json:",omitempty"` // cells that light the night around them (torches)
 	Armies             []Army  `json:",omitempty"` // the stage's armies in turn order; colors not listed follow in order of appearance
+}
+
+// AllyGroup is one start group of a split sortie (본군 and 별동대): the Allies cells inside the stage area Area.
+// Its Required officers may stand only on those cells; the rest of the sortie may stand in any group, so the
+// player picks who goes where by placing them, and a group holds as many officers as it has cells.
+type AllyGroup struct {
+	Name     string
+	Area     int
+	Required []string `json:",omitempty"`
+}
+
+// GroupAt is the start group whose area holds the cell, if any.
+func (s Stage) GroupAt(p Point) (AllyGroup, bool) {
+	for _, g := range s.Groups {
+		if s.InArea(p, g.Area) {
+			return g, true
+		}
+	}
+	return AllyGroup{}, false
+}
+
+// GroupOf is the start group that requires the officer, if any.
+func (s Stage) GroupOf(id string) (AllyGroup, bool) {
+	for _, g := range s.Groups {
+		if slices.Contains(g.Required, id) {
+			return g, true
+		}
+	}
+	return AllyGroup{}, false
+}
+
+// InArea reports whether the cell lies in the stage area with that id.
+func (s Stage) InArea(p Point, id int) bool {
+	for _, a := range s.Areas {
+		if a.ID == id {
+			return p.X >= a.Rect.X && p.Y >= a.Rect.Y && p.X < a.Rect.X+a.Rect.W && p.Y < a.Rect.Y+a.Rect.H
+		}
+	}
+	return false
 }
 
 // Army is one side's force in a stage, by its faction color: the player's army moves first, then
@@ -587,7 +638,8 @@ type Data struct {
 	Explores       map[string]*Explore `json:"-"` // explore file name without .json -> its areas
 	Stages         []Stage
 	Nodes          []Node
-	difficulty     string // the difficulty whose Rules this copy took (ForDifficulty)
+	nodeAt         map[string]int // node id -> its index in Nodes when loaded; Node checks it still holds there
+	difficulty     string         // the difficulty whose Rules this copy took (ForDifficulty)
 }
 
 // Load reads the bundle with the first scenario of the scenario folder; see LoadScenario.
@@ -629,6 +681,10 @@ func LoadScenario(dir, id string) (*Data, error) {
 		return nil, err
 	}
 	d.Hash = fmt.Sprintf("%x", h.Sum(nil))
+	d.nodeAt = make(map[string]int, len(d.Nodes))
+	for i, n := range d.Nodes {
+		d.nodeAt[n.ID] = i
+	}
 	d.link()
 	if err := d.linkDifficulties(); err != nil {
 		return nil, err
@@ -686,10 +742,15 @@ func sortedKeys[V any](m map[string]V) []string {
 
 // Pool is every trait the class and the classes below it teach.
 func (c Class) AllPool() []string { return c.pool }
+
+// Node is the story node with the given id, or the zero node.
 func (d *Data) Node(id string) Node {
-	for _, n := range d.Nodes {
-		if n.ID == id {
-			return n
+	if i, ok := d.nodeAt[id]; ok && i < len(d.Nodes) && d.Nodes[i].ID == id {
+		return d.Nodes[i]
+	}
+	for i := range d.Nodes {
+		if d.Nodes[i].ID == id {
+			return d.Nodes[i]
 		}
 	}
 	return Node{}
@@ -788,8 +849,9 @@ func (r Rules) DifficultyOf(id string) (Difficulty, bool) {
 // LastBattleOrder is the order of the last battle the story has fought by node id (a chapter's walk event
 // counts from its walk); 0 when none came before.
 func (d *Data) LastBattleOrder(id string) int {
-	last := 0
+	last, opened := 0, map[int]int{}
 	for _, c := range d.Chapters {
+		last = d.chapterOpens(c, last, opened)
 		for _, nid := range c.Nodes {
 			n := d.Node(nid)
 			if nid == id || n.Kind == "explore" && slices.Contains(c.Events, id) {

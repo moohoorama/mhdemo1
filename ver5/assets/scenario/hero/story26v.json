@@ -1,0 +1,193 @@
+{
+ "Nodes": [
+  {
+   "ID": "c26v-start",
+   "Kind": "scene",
+   "Place": "강릉 · 성문 앞"
+  },
+  {
+   "ID": "c26v-a01",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "신야의 유비요. 백성이 사흘을 굶었소. 문을 열어 주시오."
+  },
+  {
+   "ID": "c26v-a02",
+   "Kind": "say",
+   "Speaker": "zhangyun",
+   "Text": "주공의 명 없이는 열 수 없소. 양양에서 영이 올 때까지 기다리시오."
+  },
+  {
+   "ID": "c26v-a03",
+   "Kind": "say",
+   "Speaker": "huojun",
+   "Text": "장 장군, 양양의 영이 열흘째 없습니다. 주공께서 편찮으시다는 것 말고는 아무 말이 없습니다."
+  },
+  {
+   "ID": "c26v-a04",
+   "Kind": "say",
+   "Speaker": "zhangyun",
+   "Text": "채 장군께서 이르셨소. 유비를 성에 들이면 서주의 일이 되풀이된다고."
+  },
+  {
+   "ID": "c26v-a05",
+   "Kind": "say",
+   "Speaker": "huojun",
+   "Text": "……서주의 일. 서주는 주인이 죽은 뒤에 유 사군이 맡은 땅이오. 주공께서 살아 계신데 왜 그 말이 나옵니까?"
+  },
+  {
+   "ID": "c26v-a06",
+   "Kind": "say",
+   "Speaker": "zhangyun",
+   "Text": "……."
+  },
+  {
+   "ID": "c26v-a07",
+   "Kind": "say",
+   "Speaker": "huojun",
+   "Text": "주공께서 돌아가셨군. 그리고 양양은 조조에게 문을 열었고. 그것을 숨기고 우리더러 이 문을 지키라 한 것이오!"
+  },
+  {
+   "ID": "c26v-a08",
+   "Kind": "say",
+   "Speaker": "zhangyun",
+   "Text": "문을 지켜라! 누구든 열면 벤다! ……너희는 배로 간다, 따라와!"
+  },
+  {
+   "ID": "c26v-a09",
+   "Kind": "say",
+   "Speaker": "huojun",
+   "Text": "남군 지강 사람 곽준이오. 문은 열지만, 강릉이 사군을 따르겠다는 뜻은 아니오. 백성을 먹이고, 그다음을 봅시다."
+  },
+  {
+   "ID": "c26v-a10",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그것으로 충분하오."
+  },
+  {
+   "ID": "c26v-office",
+   "Kind": "scene",
+   "Place": "강릉 · 관청"
+  },
+  {
+   "ID": "c26v-b01",
+   "Kind": "say",
+   "Speaker": "magnate",
+   "Text": "조조가 양양을 얻었으면 강릉도 조조 것이오. 싸워서 무엇을 얻소?"
+  },
+  {
+   "ID": "c26v-b02",
+   "Kind": "say",
+   "Speaker": "weiyan",
+   "Text": "싸우지도 않고 내주면 강릉 군사는 조조의 노꾼이 되오. 장윤이 그러려고 배를 끌고 나간 것 아니오."
+  },
+  {
+   "ID": "c26v-b03",
+   "Kind": "say",
+   "Speaker": "huojun",
+   "Text": "조인의 선봉이 이틀 거리요. 성 밖 진채 셋을 지킬 사람이 모자라오."
+  },
+  {
+   "ID": "c26v-b04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "진채는 우리가 앞에 서겠소. 강릉 군사는 진채 안에서 활만 쏘아 주시오. 물러나고 싶으면 물러나도 좋소."
+  },
+  {
+   "ID": "c26v-b05",
+   "Kind": "say",
+   "Speaker": "weiyan",
+   "Text": "물러나도 좋다고? 별난 장수로군."
+  },
+  {
+   "ID": "c26v-b06",
+   "Kind": "say",
+   "Speaker": "xushu",
+   "Text": "관 장군의 배가 강하에서 올라오고 있습니다. 주 도독과 유 공자는 양양으로 갑니다. 열닷새만 버티면 조인은 돌아가야 합니다."
+  },
+  {
+   "ID": "c26v-b07",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "열닷새면 금방이여. 신야서 여기까지 걸어온 것보다는 짧구먼."
+  },
+  {
+   "ID": "c26v-battle",
+   "Kind": "battle",
+   "Stage": "B26V",
+   "Text": "강릉 수비전 — 출전 준비"
+  },
+  {
+   "ID": "c26v-back-guanyu",
+   "Kind": "join",
+   "Character": "guanyu",
+   "Event": "back-guanyu-26v"
+  },
+  {
+   "ID": "c26v-back-guanping",
+   "Kind": "join",
+   "Character": "guanping",
+   "Event": "back-guanping-26v"
+  },
+  {
+   "ID": "c26v-back-zhoucang",
+   "Kind": "join",
+   "Character": "zhoucang",
+   "Event": "back-zhoucang-26v"
+  },
+  {
+   "ID": "c26v-gate",
+   "Kind": "scene",
+   "Place": "강릉 · 성문"
+  },
+  {
+   "ID": "c26v-c01",
+   "Kind": "say",
+   "Speaker": "huojun",
+   "Text": "강릉은 돌아가신 주공께서 맡기신 것을 지켰소. 사군이 앞에 서지 않았으면 못 지켰을 것이오."
+  },
+  {
+   "ID": "c26v-c02",
+   "Kind": "say",
+   "Speaker": "weiyan",
+   "Text": "부곡장 위연이오. 물러나도 좋다는 장수 밑에서는 처음 싸워 봤소. 계속 그 밑에 있어 보겠소."
+  },
+  {
+   "ID": "c26v-c03",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형, 이번엔 문 닫고 내쫓는 사람이 없슈."
+  },
+  {
+   "ID": "c26v-c04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "스무 해를 떠돌았는데, 지켜 달라고 맡긴 성을 끝까지 지킨 것은 처음이네."
+  },
+  {
+   "ID": "c26v-c05",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "양양이 남았습니다, 형님. 공자와 주 도독이 기다립니다."
+  },
+  {
+   "ID": "c26v-c06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "가세. 이번에는 쫓겨서 가는 길이 아니네."
+  },
+  {
+   "ID": "c26v-join-huojun",
+   "Kind": "join",
+   "Character": "huojun",
+   "Event": "join-huojun"
+  },
+  {
+   "ID": "c26v-join-weiyan",
+   "Kind": "join",
+   "Character": "weiyan",
+   "Event": "join-weiyan"
+  }
+ ]
+}

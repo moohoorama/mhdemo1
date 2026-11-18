@@ -36,6 +36,7 @@ help:
 	@echo 'make scenario-doc    Write the whole story as readable scripts to output/ (scenes, exploration, battles)'
 	@echo 'make e2e             Play a new game on 쉬움 from start to the ending through the GUI (about 6 min)'
 	@echo 'make e2e E2E_SEED=7  Another seed: other sorties, deputies, pieces and traits'
+	@echo 'make e2e E2E_ROUTE=virtual  The 가상 telling from 24장 (「느린 길」) instead of 연의'
 
 desktop: desktop-mac desktop-win
 
@@ -66,10 +67,14 @@ android-install:
 # The end-to-end test: srpg-gui's own game loop plays a new game on 쉬움 (casual) to the ending with the debug
 # 자동실행, the preparations drawn from the seed (internal/gui/campaign_e2e_test.go). Run it alone: it opens a window
 # and keeps the machine busy.
+# E2E_ROUTE picks the telling from 24장 융중대: yanyi (「빠른 길」, ends at c27-end) or virtual (「느린 길」, ends at
+# c27v-end; the test sets flag-zhugexuan/flag-guanyu-mifang the run missed so that the choice comes, and fails
+# when 고순 is no longer in the party).
 E2E_SEED ?= 1
 E2E_MINUTES ?= 60
+E2E_ROUTE ?= yanyi
 e2e:
-	SRPG_E2E=1 SRPG_E2E_SEED=$(E2E_SEED) SRPG_E2E_MINUTES=$(E2E_MINUTES) caffeinate -d -i \
+	SRPG_E2E=1 SRPG_E2E_SEED=$(E2E_SEED) SRPG_E2E_MINUTES=$(E2E_MINUTES) SRPG_E2E_ROUTE=$(E2E_ROUTE) caffeinate -d -i \
 		go test -p 1 ./internal/gui -run TestCampaignEndToEnd -count=1 -timeout 0 -v
 
 scenario-doc:

@@ -1,0 +1,18 @@
+# c25-flash2  S_castle_out  ch25  origin -1 0
+.........Bnr...Bnr............
+##############################
+~~~~~~~~~~~~===~~~~~~~~~~~~~~~
+......Bnr...in1GuaBnrin2......
+...pi1.....................pi2
+Tre...in3...............in4...
+
+Gua 관우
+in1 병사#1  (light_infantry)
+in2 병사#2  (light_infantry)
+Zha 장료  (off stage, enters later (cell 4 5))
+in3 조조군#1  (light_infantry)
+in4 조조군#2  (light_infantry)
+pi1 조조군#3  (pikeman)
+pi2 조조군#4  (pikeman)
+
+# c25-d10: Zha -> 4 5

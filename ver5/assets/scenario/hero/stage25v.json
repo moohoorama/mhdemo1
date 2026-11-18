@@ -1,0 +1,848 @@
+{
+ "ID": "B25V",
+ "Name": "장판파 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 8,
+ "Required": [
+  "liubei",
+  "zhangfei",
+  "zhaoyun"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "fled:ref1",
+    "fled:ref2",
+    "fled:ref3",
+    "fled:ref4",
+    "fled:ref5",
+    "fled:ref6"
+   ],
+   "Text": "피난민 여섯 무리가 모두 다리를 건넌다"
+  }
+ ],
+ "Defeat": [
+  {
+   "If": [
+    "defeated:ref1",
+    "!fled:ref1"
+   ],
+   "Text": "피난민이 한 무리라도 쓰러진다"
+  },
+  {
+   "If": [
+    "defeated:ref2",
+    "!fled:ref2"
+   ]
+  },
+  {
+   "If": [
+    "defeated:ref3",
+    "!fled:ref3"
+   ]
+  },
+  {
+   "If": [
+    "defeated:ref4",
+    "!fled:ref4"
+   ]
+  },
+  {
+   "If": [
+    "defeated:ref5",
+    "!fled:ref5"
+   ]
+  },
+  {
+   "If": [
+    "defeated:ref6",
+    "!fled:ref6"
+   ]
+  },
+  {
+   "If": [
+    "any:[defeated:zhangfei, defeated:zhaoyun]"
+   ],
+   "Text": "장비나 조운이 쓰러진다"
+  },
+  {
+   "If": [
+    "at:enemy:50"
+   ],
+   "Text": "적이 진영에 선다"
+  }
+ ],
+ "Sub": [
+  {
+   "ID": "caocao",
+   "Text": "조조를 물리친다",
+   "If": [
+    "defeated:caocao"
+   ],
+   "Flag": "flag-b25v-caocao",
+   "Reward": {
+    "mengde_book": 1,
+    "yitian_sword": 1
+   }
+  },
+  {
+   "ID": "qinggang",
+   "Text": "조운이 일기토로 하후은을 벤다",
+   "If": [
+    "duel:changban-v-zhaoyun-xiahouen"
+   ],
+   "Flag": "flag-b25v-qinggang",
+   "Later": "전투 뒤 조운이 하후은의 검을 거둔다"
+  }
+ ],
+ "TurnLimit": 20,
+ "Map": "map_changban.json",
+ "Allies": [
+  {
+   "X": 14,
+   "Y": 9
+  },
+  {
+   "X": 15,
+   "Y": 8
+  },
+  {
+   "X": 13,
+   "Y": 10
+  },
+  {
+   "X": 13,
+   "Y": 8
+  },
+  {
+   "X": 15,
+   "Y": 10
+  },
+  {
+   "X": 14,
+   "Y": 7
+  },
+  {
+   "X": 16,
+   "Y": 9
+  },
+  {
+   "X": 14,
+   "Y": 11
+  }
+ ],
+ "Recommend": {
+  "liubei": {
+   "X": 14,
+   "Y": 9
+  },
+  "zhangfei": {
+   "X": 15,
+   "Y": 8
+  },
+  "zhaoyun": {
+   "X": 13,
+   "Y": 10
+  }
+ },
+ "Party": [
+  {
+   "Character": "villager",
+   "X": 8,
+   "Y": 5,
+   "AI": true,
+   "Rank": "officer",
+   "Group": "ref1",
+   "Policy": "run",
+   "GoalArea": 53,
+   "Faction": "han",
+   "Facing": "SE"
+  },
+  {
+   "Character": "villager_woman",
+   "X": 8,
+   "Y": 4,
+   "AI": true,
+   "Rank": "officer",
+   "Group": "ref2",
+   "Policy": "run",
+   "GoalArea": 53,
+   "Faction": "han",
+   "Facing": "SE"
+  },
+  {
+   "Character": "villager_elder",
+   "X": 8,
+   "Y": 3,
+   "AI": true,
+   "Rank": "officer",
+   "Group": "ref3",
+   "Policy": "run",
+   "GoalArea": 53,
+   "Faction": "han",
+   "Facing": "SE"
+  },
+  {
+   "Character": "villager_woman",
+   "X": 7,
+   "Y": 3,
+   "AI": true,
+   "Rank": "officer",
+   "Group": "ref4",
+   "Policy": "run",
+   "GoalArea": 53,
+   "Faction": "han",
+   "Facing": "SE"
+  },
+  {
+   "Character": "villager",
+   "X": 6,
+   "Y": 3,
+   "AI": true,
+   "Rank": "officer",
+   "Group": "ref5",
+   "Policy": "run",
+   "GoalArea": 53,
+   "Faction": "han",
+   "Facing": "SE"
+  },
+  {
+   "Character": "villager_elder",
+   "X": 5,
+   "Y": 3,
+   "AI": true,
+   "Rank": "officer",
+   "Group": "ref6",
+   "Policy": "run",
+   "GoalArea": 53,
+   "Faction": "han",
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 29,
+   "Y": 9,
+   "AI": true,
+   "Group": "camp-guard",
+   "Policy": "react",
+   "Faction": "shu",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 31,
+   "Y": 9,
+   "AI": true,
+   "Group": "camp-guard",
+   "Policy": "react",
+   "Faction": "shu",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 30,
+   "Y": 8,
+   "AI": true,
+   "Group": "camp-guard",
+   "Policy": "react",
+   "Faction": "shu",
+   "Shift": -0.07,
+   "Facing": "SW"
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "caochun",
+   "X": 1,
+   "Y": 17,
+   "Rank": "commander",
+   "Group": "tiger",
+   "Policy": "assault",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 0,
+   "Y": 17,
+   "Group": "tiger",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 2,
+   "Y": 17,
+   "Group": "tiger",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 0,
+   "Y": 18,
+   "Group": "tiger",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 1,
+   "Y": 18,
+   "Group": "tiger",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 2,
+   "Y": 18,
+   "Group": "tiger",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 3,
+   "Y": 18,
+   "Group": "tiger",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 4,
+   "Y": 18,
+   "Group": "tiger",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 5,
+   "Y": 18,
+   "Group": "tiger",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "NE"
+  },
+  {
+   "Character": "xiahouen",
+   "X": 3,
+   "Y": 9,
+   "Policy": "react",
+   "Facing": "SE"
+  }
+ ],
+ "Reward": {
+  "money": 2000
+ },
+ "Areas": [
+  {
+   "ID": 50,
+   "Rect": {
+    "X": 30,
+    "Y": 5,
+    "W": 3,
+    "H": 3
+   },
+   "Name": "다리 동쪽 진영",
+   "Description": "피난민이 닿으면 강을 건넌 것이다. 적이 서면 패배"
+  },
+  {
+   "ID": 51,
+   "Rect": {
+    "X": 27,
+    "Y": 6,
+    "W": 2,
+    "H": 1
+   },
+   "Name": "장판교",
+   "Description": "한 칸 폭의 나무다리. 마지막 무리가 건너면 장비가 끊는다"
+  },
+  {
+   "ID": 53,
+   "Rect": {
+    "X": 27,
+    "Y": 5,
+    "W": 6,
+    "H": 3
+   },
+   "Name": "장판교와 진영",
+   "Description": "피난민이 다리에 오르면 건넌 것이다"
+  },
+  {
+   "ID": 52,
+   "Rect": {
+    "X": 24,
+    "Y": 16,
+    "W": 6,
+    "H": 3
+   },
+   "Name": "여울 어귀",
+   "Description": "남쪽 숲길 끝의 얕은 여울. 돌아온 호표기가 여기서 강을 건넌다"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "opening",
+   "Do": [
+    {
+     "Kind": "buff",
+     "Targets": [
+      "ref1",
+      "ref2",
+      "ref3",
+      "ref4",
+      "ref5",
+      "ref6"
+     ],
+     "Stat": "speed",
+     "Value": -1
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "ref1",
+      "ref2",
+      "ref3",
+      "ref4",
+      "ref5",
+      "ref6"
+     ],
+     "Stat": "defense",
+     "Value": 100
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "jianyong",
+       "Text": "현덕, 먼지가 하늘을 덮었네. 저건 셀 수 있는 군사가 아닐세."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "이길 싸움이 아니네. 저 사람들이 다리를 건널 때까지만 버티세."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "xushu",
+       "Text": "주공, 남쪽 숲 끝의 물빛이 옅습니다. 말이 건널 여울입니다. 그리로 도는 군사가 있을 것입니다."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "xushu",
+       "Text": "맨 뒤 무리에 제 노모가 계십니다. ……다른 무리와 똑같이만 지켜 주십시오."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caochun",
+       "Text": "유비는 백성 뒤에 숨었다! 행렬부터 끊어라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "tiger-riders",
+   "Every": 1,
+   "If": [
+    "turnstart:enemy",
+    "round>=3",
+    "!round>=10"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 17,
+       "Group": "tiger",
+       "Side": "enemy",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.12
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 1,
+       "Y": 17,
+       "Group": "tiger",
+       "Side": "enemy",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.12
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 2,
+       "Y": 17,
+       "Group": "tiger",
+       "Side": "enemy",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.12
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "wenpin-4",
+   "If": [
+    "round>=4",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "wenpin",
+       "X": 1,
+       "Y": 17,
+       "Side": "enemy",
+       "Policy": "assault",
+       "Faction": "wei"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "wenpin",
+       "Text": "형주의 문빙이다. ……유 황숙, 길을 비키시오. 백성까지 칼을 받게 하지 마시오."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "문 장군, 지키라고 맡긴 형주를 넘기고 이제 그 칼로 형주 백성을 쫓는가."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "ford-riders",
+   "If": [
+    "round>=5",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 18,
+       "Group": "ford",
+       "Side": "enemy",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 1,
+       "Y": 18,
+       "Group": "ford",
+       "Side": "enemy",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "xushu",
+       "Text": "남쪽 숲길에 먼지가 입니다! 호표기가 여울로 돌아 진영 뒤를 칩니다!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "ford-near",
+   "If": [
+    "at:ford:52"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "형, 저놈들이 여울로 올라오는구먼! 진영에 발 들이게 두면 안 되여!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "zhanghe-7",
+   "If": [
+    "round>=7",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "zhanghe",
+       "X": 2,
+       "Y": 17,
+       "Side": "enemy",
+       "Policy": "assault",
+       "Faction": "wei"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhanghe",
+       "Text": "하북의 장합이 왔다. 행렬 꼬리부터 잘라 낸다!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "caocao-10",
+   "If": [
+    "round>=10",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "caocao",
+       "X": 1,
+       "Y": 7,
+       "Rank": "boss",
+       "Side": "enemy",
+       "Policy": "assault",
+       "Faction": "wei"
+      },
+      {
+       "Character": "xuchu",
+       "X": 1,
+       "Y": 6,
+       "Side": "enemy",
+       "Policy": "assault",
+       "Faction": "wei"
+      },
+      {
+       "Character": "zhangliao",
+       "X": 1,
+       "Y": 8,
+       "Side": "enemy",
+       "Policy": "assault",
+       "Faction": "wei"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caocao",
+       "Text": "현덕은 백성을 성벽 삼아 걷는군. ……허저, 장료. 그 성벽을 허물어라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "승상이 직접 왔군. 물러서지 마라! 저 사람들이 다리에 닿을 때까지다!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "bridge-cut",
+   "If": [
+    "fled:ref1",
+    "fled:ref2",
+    "fled:ref3",
+    "fled:ref4",
+    "fled:ref5",
+    "fled:ref6"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "연인 장익덕이 여기 있다! 죽고 싶은 놈은 나와라!"
+      }
+     ]
+    },
+    {
+     "Kind": "terrain",
+     "Area": 51,
+     "State": "x"
+    }
+   ]
+  }
+ ],
+ "Faction": "wei",
+ "Duels": [
+  {
+   "ID": "changban-v-zhaoyun-xiahouen",
+   "Ally": "zhaoyun",
+   "Enemy": "xiahouen",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "death",
+   "Text": "조운이 다섯 합 만에 하후은을 떨어뜨리고 그가 메고 있던 검을 거뒀다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "하후은이 막아서다",
+     "Speech": "하후은이다! 비켜라!",
+     "Side": 1,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 답하다",
+     "Speech": "그 검, 메기만 했지 뽑아 본 적은 없겠군.",
+     "Side": 0,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "approach",
+     "Title": "두 장수가 말을 몰아 맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "하후은이 칼자루에 손을 대다",
+     "Speech": "승상께서 하사하신 청강검이다! 뽑기 전에 항복해라!",
+     "Side": 1,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "block",
+     "Title": "하후은이 칼 끝으로 떠 보자 조운이 가볍게 받아 넘기다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "조운이 곧바로 되받아 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 창을 바로 잡다",
+     "Speech": "메고만 다니는 검이 무슨 소용이오. 길이나 비키시오!",
+     "Side": 0,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "조운이 힘으로 누르자 하후은이 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "하후은이 말 위에서 휘청이다",
+     "Speech": "이, 이놈이……! 내 뒤에는 승상의 호위대가 있다!",
+     "Side": 1,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "block",
+     "Title": "하후은이 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical",
+     "Title": "조운이 결정타를 넣다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "win",
+     "Title": "하후은이 말에서 떨어지다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.6
+    }
+   ]
+  }
+ ],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "han",
+   "Name": "민중",
+   "Ally": true
+  },
+  {
+   "Faction": "wei",
+   "Name": "조조군"
+  }
+ ]
+}

@@ -112,16 +112,17 @@ func (e *Engine) DeputyBlend(actor, deputy string) (r, charm, depCharm float64) 
 		return 0, 0, 0
 	}
 	R := e.data.Rules
-	charm = float64(e.def(o).Stats[5])
+	charm = float64(e.def(o).Stats[5]) + e.fxOf(o, content.FxCharm)
 	depCharm = float64(e.def(d).Stats[5]) + e.ownFx(o, content.FxDeputyPlus)
 	return (charm*float64(R.DeputyWeight) + depCharm) / float64(R.DeputyDivisor), charm, depCharm
 }
 
-// attributes are the character's six attributes with the deputy's blended in where the deputy's are higher; 용인술
+// attributes are the character's six attributes, 매력 raised by its charm traits, with the deputy's blended in where the deputy's are higher; 용인술
 // counts every attribute of the deputy higher (deputy_plus), which can carry the blend past the deputy's own.
 func (e *Engine) attributes(o *Character) [6]float64 {
 	R := e.data.Rules
 	a := e.def(o).Stats
+	a[5] += int(e.fxOf(o, content.FxCharm))
 	var out [6]float64
 	for i, n := range a {
 		out[i] = float64(n)

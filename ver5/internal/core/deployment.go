@@ -15,6 +15,9 @@ func (e *Engine) deploymentGround(id string, p content.Point) bool {
 	if c == nil || c.Dead || !contains(e.state.Deployment, id) || p.X < 0 || p.Y < 0 || p.X >= st.Width || p.Y >= st.Height || !containsPoint(st.Allies, p) {
 		return false
 	}
+	if g, ok := st.GroupOf(id); ok && !st.InArea(p, g.Area) { // a split sortie keeps each group's leader on its cells
+		return false
+	}
 	return e.terrain(&Unit{Character: id, Status: map[string]Status{}}, p.X, p.Y).Cost > 0
 }
 

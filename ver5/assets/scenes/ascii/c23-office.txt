@@ -1,0 +1,20 @@
+# c23-office  S_xiaopei_office  ch23  origin -1 -1
+Pil#####################Pil
+###...Cdl###Bnr.........Lnt
+###......Liu.........Map...
+###Wpn...Dsk...Jia......Jar
+###WpnGuaSunZhaYijTbl......
+###ArmZun...Dan............
+PilLnt.....................
+
+Liu 유비
+Gua 관우
+Zha 장비
+Zun 조운
+Jia 간옹
+Sun 손건
+Yij 이적
+Dan 단복
+Mes 전령  (light_infantry, off stage, enters later (cell 2 5))
+
+# c23-o01: Mes -> 2 5

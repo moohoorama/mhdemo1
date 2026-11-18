@@ -11,6 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"srpg/internal/autoplay"
 	"srpg/internal/content"
+	"srpg/internal/core"
 	"srpg/internal/session"
 )
 
@@ -27,6 +28,18 @@ import (
 // SRPG_E2E_MINUTES caps the wall clock (default 120), SRPG_E2E_SEED picks the game's seed (default 1). Without the
 // learned model the search player takes its first choice for every command and preparation, with no playouts ahead
 // (a second where it would think one to three); SRPG_E2E_PLAYER=search lets it search as srpg-gui does.
+//
+// SRPG_E2E_ROUTE picks the telling from 24장 융중대 on (make e2e E2E_ROUTE=virtual):
+//   - yanyi (default): 자동실행 takes 「빠른 길」 whenever the 융중 choice comes; without the choice (고순 gone, 12장's
+//     부목표 missed) the story is 연의 by itself. The run ends at c27-end.
+//   - virtual: 자동실행 takes 「느린 길」, and the run makes sure the choice comes. The choice needs 고순 in the party,
+//     flag-zhugexuan (12장's bonus objective) and flag-guanyu-mifang, which 22장 c22-mifang sets only while 고순 is
+//     in the party. When the story reaches c22-start (and again at c24-start), the test sets each missing flag on the
+//     engine's state (Snapshot → core.Restore, as a save edited by hand) and logs what it set; 22장 then plays its
+//     관우·미방 scene by its own branch. A 고순 who is no longer in the party cannot be brought back this way: the run
+//     fails there, since that is a seed where 12장 or 18장 lost him. The run ends at c27v-end.
+//
+// Either way the mode flags (flag-mode-yanyi, flag-mode-virtual) are logged at the end and checked against the route.
 func TestCampaignEndToEnd(t *testing.T) {
 	if os.Getenv("SRPG_E2E") != "1" {
 		t.Skip("set SRPG_E2E=1 to play the whole story")
@@ -68,6 +81,17 @@ func TestCampaignEndToEnd(t *testing.T) {
 		player = "search"
 	}
 	t.Logf("player: %s", player)
+	route := os.Getenv("SRPG_E2E_ROUTE")
+	switch route {
+	case "", "yanyi":
+		route = "yanyi"
+		g.campaign.prefer = []string{"빠른 길"}
+	case "virtual":
+		g.campaign.prefer = []string{"느린 길"}
+	default:
+		t.Fatalf("SRPG_E2E_ROUTE %q: yanyi or virtual", route)
+	}
+	t.Logf("route: %s", route)
 	var variety *autoplay.Variety
 	if os.Getenv("SRPG_E2E_PREP") != "search" {
 		// preparations drawn from the seed, so that one run tries many traits, pieces, deputies and sorties; the fourth
@@ -78,7 +102,7 @@ func TestCampaignEndToEnd(t *testing.T) {
 		defer func() { logVariety(t, variety) }()
 	}
 
-	run := &campaignRun{t: t, g: g, deadline: time.Now().Add(time.Duration(minutes) * time.Minute), minutes: minutes}
+	run := &campaignRun{t: t, g: g, deadline: time.Now().Add(time.Duration(minutes) * time.Minute), minutes: minutes, route: route, opened: map[string]bool{}}
 	ebiten.SetWindowSize(Width, Height)
 	ebiten.SetWindowTitle("SRPG end-to-end")
 	ebiten.SetTPS(600) // many game frames to each drawn one
@@ -89,7 +113,43 @@ func TestCampaignEndToEnd(t *testing.T) {
 	if run.err != nil {
 		t.Fatal(run.err)
 	}
-	t.Logf("the story ends after %d battles, %d frames", run.battles, run.frame)
+	flags := g.S.Engine.Snapshot().Flags
+	t.Logf("the story ends after %d battles, %d frames; mode flags: flag-mode-yanyi=%d flag-mode-virtual=%d",
+		run.battles, run.frame, flags["flag-mode-yanyi"], flags["flag-mode-virtual"])
+	want := map[string]string{"yanyi": "flag-mode-yanyi", "virtual": "flag-mode-virtual"}[route]
+	require.Equal(t, 1, flags[want], "the %s route was played", route)
+}
+
+// openVirtual makes the 융중 choice come on the virtual route: on the first scenario frame of 22장 and of 24장 it sets the flags the
+// choice needs that the run has not earned (see TestCampaignEndToEnd), on the engine's state.
+func (r *campaignRun) openVirtual(at string) error {
+	g := r.g
+	s := g.S.Engine.Snapshot()
+	if !g.S.Engine.Holds([]string{"party:gaoshun"}) {
+		return fmt.Errorf("고순 is not in the party at %s: the 가상 route cannot open on this seed", at)
+	}
+	need := []string{"flag-zhugexuan"}
+	if at == "c24-start" {
+		need = append(need, "flag-guanyu-mifang")
+	}
+	var set []string
+	for _, f := range need {
+		if s.Flags[f] == 0 {
+			s.Flags[f] = 1
+			set = append(set, f)
+		}
+	}
+	if len(set) == 0 {
+		r.t.Logf("route virtual: at %s (%s) the conditions already hold", at, g.S.View().Node)
+		return nil
+	}
+	e, err := core.Restore(g.S.Data, s)
+	if err != nil {
+		return err
+	}
+	g.S.Engine, g.S.Dirty = e, true
+	r.t.Logf("route virtual: at %s (%s) set %v", at, g.S.View().Node, set)
+	return nil
 }
 
 // campaignRun is srpg-gui's game loop for the end-to-end test: the game's own Update and Draw, watched each frame.
@@ -101,6 +161,8 @@ type campaignRun struct {
 	frame    int
 	battles  int
 	last     string
+	route    string
+	opened   map[string]bool
 	err      error
 }
 
@@ -125,6 +187,15 @@ func (r *campaignRun) Update() error {
 			why = fmt.Sprintf("the turn limit (%d)", st.TurnLimit)
 		}
 		r.t.Logf("defeat at %s round %d: %s", st.ID, o.Round, why)
+	}
+	for _, at := range []string{"c22-start", "c24-start"} { // the first scenario frame in each chapter
+		if r.route == "virtual" && !r.opened[at] && o.Phase == "scenario" && g.S.Data.ChapterIndex(o.Node) >= g.S.Data.ChapterIndex(at) {
+			r.opened[at] = true
+			if r.err = r.openVirtual(at); r.err != nil {
+				return ebiten.Termination
+			}
+			o = g.S.View()
+		}
 	}
 	if key := fmt.Sprintf("%s %s", o.Phase, o.Node); key != r.last {
 		if o.Phase == "battle" && r.last != "" {

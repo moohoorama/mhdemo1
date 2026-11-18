@@ -11,48 +11,7 @@ HERO = ROOT / 'assets/scenario/hero'
 W, H = 20, 32
 
 # ---------------------------------------------------------------- map
-g = [['g--'] * W for _ in range(H)]
-
-
-def put(x, y, c):
-    g[y][x] = c
-
-
-for y in range(1, 16):
-    for x in range(2, 18):
-        edge = x in (2, 17) or y in (1, 15)
-        put(x, y, 'c--' if edge else 'l--')
-for x in range(3, 17):          # the two main streets
-    put(x, 8, 'i--')
-for y in range(2, 15):
-    put(10, y, 'i--')
-for x, y in ((10, 1), (2, 8), (17, 8), (10, 15)):
-    put(x, y, 'm-O')
-for x, y in ((5, 4), (7, 5), (13, 4), (15, 6), (5, 11), (7, 12), (13, 11), (15, 12), (4, 6), (14, 13)):
-    put(x, y, 'lv-')
-for y in range(16, 31):          # the road south
-    put(10, y, 'd--')
-for x in range(W):
-    put(x, 24, 'w--')
-    put(x, 25, 'w--')
-put(10, 24, 'wb-')
-put(10, 25, 'wb-')
-put(16, 24, 's--')
-put(16, 25, 's--')
-put(10, 30, 'go-')
-for x, y in ((0, 0), (5, 0), (15, 0), (19, 3), (0, 11), (19, 13), (3, 18), (6, 21), (14, 19), (18, 22), (1, 27),
-             (5, 29), (14, 28), (18, 30), (7, 31), (13, 22), (4, 23), (17, 27)):
-    put(x, y, 'gt-')
-for x, y in ((7, 17), (8, 18), (12, 17), (13, 19), (9, 21), (11, 22), (9, 27), (11, 28), (8, 29), (12, 29)):
-    put(x, y, 'l--')
-
-layout = ROOT / 'tools/mapgen/layouts/hero/map21.txt'
-layout.write_text(
-    '# map21 여남 전투 (20x32, night). Grid compass: north = row 0. 여남성 fills the top half (walls x 2..17, y 1..15,\n'
-    '# gates north (10,1), west (2,8), east (17,8), south (10,15), all open). South of it the field, the 여수 across\n'
-    '# rows 24-25 with one bridge (10) and one ford (16), and the small castle on the road to 형주 at (10,30).\n'
-    + '\n'.join(' '.join(r) for r in g) + '\n', encoding='utf-8')
-subprocess.run(['python3', 'tools/mapgen/mapgen.py', str(layout), str(HERO / 'maps/map21.json')], check=True)
+subprocess.run(['python3', 'tools/mapgen/layouts/hero/map21gen.py'], check=True)
 
 # ---------------------------------------------------------------- characters
 chars = {

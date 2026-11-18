@@ -1,0 +1,1128 @@
+{
+ "ID": "B23",
+ "Name": "신야 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 8,
+ "Required": [
+  "liubei",
+  "zhaoyun"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "alldefeated:bearer",
+    "defeated:caoren"
+   ],
+   "Text": "진의 축(깃발수)을 깨고 조인을 물리친다"
+  }
+ ],
+ "Defeat": [
+  {
+   "If": [
+    "defeated:danfu"
+   ],
+   "Text": "단복이 쓰러진다"
+  },
+  {
+   "If": [
+    "at:enemy:1"
+   ],
+   "Text": "적이 신야성에 선다"
+  }
+ ],
+ "Sub": [
+  {
+   "ID": "axis-first",
+   "Text": "조인과 싸우기 전에 진의 축(깃발수)을 깬다",
+   "If": [
+    "flag:flag-b23-axis-first"
+   ],
+   "Flag": "flag-b23-axis",
+   "Reward": {
+    "formation_manual": 1
+   }
+  }
+ ],
+ "TurnLimit": 25,
+ "Map": "map23.json",
+ "Faction": "wei",
+ "Allies": [
+  {
+   "X": 20,
+   "Y": 18
+  },
+  {
+   "X": 21,
+   "Y": 18
+  },
+  {
+   "X": 19,
+   "Y": 18
+  },
+  {
+   "X": 22,
+   "Y": 18
+  },
+  {
+   "X": 20,
+   "Y": 19
+  },
+  {
+   "X": 21,
+   "Y": 19
+  },
+  {
+   "X": 19,
+   "Y": 19
+  },
+  {
+   "X": 22,
+   "Y": 19
+  },
+  {
+   "X": 20,
+   "Y": 17
+  },
+  {
+   "X": 21,
+   "Y": 17
+  }
+ ],
+ "Recommend": {
+  "zhaoyun": {
+   "X": 20,
+   "Y": 17
+  },
+  "liubei": {
+   "X": 21,
+   "Y": 19
+  }
+ },
+ "Party": [
+  {
+   "Character": "danfu",
+   "X": 19,
+   "Y": 21,
+   "AI": true,
+   "Policy": "hold",
+   "Facing": "NE",
+   "Faction": "shu"
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "troop_footman",
+   "X": 9,
+   "Y": 8,
+   "Facing": "NW",
+   "Group": "gate1",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 8,
+   "Y": 9,
+   "Facing": "NW",
+   "Group": "gate1",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_archer",
+   "X": 9,
+   "Y": 9,
+   "Facing": "NW",
+   "Group": "gate1",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 8,
+   "Facing": "NE",
+   "Group": "gate2",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 9,
+   "Facing": "NE",
+   "Group": "gate2",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_archer",
+   "X": 13,
+   "Y": 9,
+   "Facing": "NE",
+   "Group": "gate2",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 8,
+   "Facing": "NE",
+   "Group": "gate3",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 9,
+   "Facing": "NE",
+   "Group": "gate3",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_archer",
+   "X": 15,
+   "Y": 9,
+   "Facing": "NE",
+   "Group": "gate3",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 12,
+   "Facing": "SE",
+   "Group": "gate4",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 13,
+   "Facing": "SE",
+   "Group": "gate4",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_archer",
+   "X": 15,
+   "Y": 11,
+   "Facing": "SE",
+   "Group": "gate4",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 16,
+   "Facing": "SE",
+   "Group": "gate5",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 15,
+   "Facing": "SE",
+   "Group": "gate5",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_archer",
+   "X": 15,
+   "Y": 15,
+   "Facing": "SE",
+   "Group": "gate5",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 16,
+   "Facing": "SW",
+   "Group": "gate6",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 15,
+   "Facing": "SW",
+   "Group": "gate6",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_archer",
+   "X": 11,
+   "Y": 15,
+   "Facing": "SW",
+   "Group": "gate6",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 9,
+   "Y": 16,
+   "Facing": "SW",
+   "Group": "gate7",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 8,
+   "Y": 15,
+   "Facing": "SW",
+   "Group": "gate7",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_archer",
+   "X": 9,
+   "Y": 15,
+   "Facing": "SW",
+   "Group": "gate7",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 8,
+   "Y": 12,
+   "Facing": "NW",
+   "Group": "gate8",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 9,
+   "Y": 12,
+   "Facing": "NW",
+   "Group": "gate8",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_archer",
+   "X": 9,
+   "Y": 13,
+   "Facing": "NW",
+   "Group": "gate8",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 11,
+   "Y": 12,
+   "Facing": "NW",
+   "Group": "axis",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Class": "pikeman",
+   "Equipment": [
+    "iron_spear",
+    "bronze_armor"
+   ]
+  },
+  {
+   "Character": "troop_footman",
+   "X": 13,
+   "Y": 12,
+   "Facing": "SE",
+   "Group": "axis",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Class": "pikeman",
+   "Equipment": [
+    "iron_spear",
+    "bronze_armor"
+   ]
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 11,
+   "Facing": "NE",
+   "Group": "axis",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Class": "pikeman",
+   "Equipment": [
+    "iron_spear",
+    "bronze_armor"
+   ]
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 13,
+   "Facing": "SW",
+   "Group": "axis",
+   "Policy": "hold",
+   "Shift": -0.07,
+   "Class": "pikeman",
+   "Equipment": [
+    "iron_spear",
+    "bronze_armor"
+   ]
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 12,
+   "Facing": "SE",
+   "Group": "bearer",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "caoren",
+   "X": 5,
+   "Y": 5,
+   "Facing": "SE",
+   "Group": "cao",
+   "Policy": "hold",
+   "Rank": "commander"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 6,
+   "Y": 5,
+   "Facing": "SE",
+   "Group": "cao",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 5,
+   "Y": 6,
+   "Facing": "SE",
+   "Group": "cao",
+   "Policy": "hold"
+  },
+  {
+   "Character": "lidian",
+   "X": 10,
+   "Y": 3,
+   "Facing": "SW",
+   "Group": "li",
+   "Policy": "hold",
+   "DuelFirst": true
+  },
+  {
+   "Character": "troop_footman",
+   "X": 9,
+   "Y": 3,
+   "Facing": "SW",
+   "Group": "li",
+   "Policy": "hold",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 11,
+   "Y": 3,
+   "Facing": "SW",
+   "Group": "li",
+   "Policy": "hold",
+   "Shift": -0.07
+  }
+ ],
+ "Reward": {
+  "money": 1500
+ },
+ "Duels": [
+  {
+   "ID": "xinye-zhaoyun-lidian",
+   "Ally": "zhaoyun",
+   "Enemy": "lidian",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "이전이 조인을 빼내려 조운을 막아섰다가, 다섯 합 만에 물러났다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "이전이 길을 막다",
+     "Speech": "조 장군께는 못 간다. 이전이 상대하겠다!",
+     "Side": 1,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 답하다",
+     "Speech": "상산의 조자룡이다. 비켜서면 쫓지 않겠다.",
+     "Side": 0,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "approach",
+     "Title": "두 장수가 맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "1합: 조운이 이전의 칼을 받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "2합: 조운이 몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "block",
+     "Title": "3합: 이전이 버티다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "4합: 이전이 간신히 피하다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "5합: 이전이 크게 밀리다",
+     "Speech": "크윽……!",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "이전이 물러서다",
+     "Speech": "더는 못 버틴다……. 장군을 모셔라, 물러난다!",
+     "Side": 1,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "retreat",
+     "Title": "이전이 북쪽으로 물러나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "이전이 퇴각하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    }
+   ]
+  }
+ ],
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 22,
+    "Y": 22,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "신야성",
+   "Description": "유비군의 성. 적이 여기 서면 패배"
+  },
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 11,
+    "Y": 11,
+    "W": 3,
+    "H": 3
+   },
+   "Name": "진의 축",
+   "Description": "장창병 넷이 깃발수를 둘러싼 진의 한가운데. 깃발수가 서 있는 동안 진 안의 조조군 모두가 방어 버프를 받는다"
+  },
+  {
+   "ID": 10,
+   "Rect": {
+    "X": 8,
+    "Y": 8,
+    "W": 2,
+    "H": 2
+   },
+   "Name": "사문(북)",
+   "Description": "북쪽 모서리 문. 들어서면 뒤에서 매복 기병이 나온다"
+  },
+  {
+   "ID": 11,
+   "Rect": {
+    "X": 11,
+    "Y": 8,
+    "W": 3,
+    "H": 2
+   },
+   "Name": "휴문(북동)",
+   "Description": "문 하나. 맞으면 양옆 문이 안쪽 길로 돕는다"
+  },
+  {
+   "ID": 12,
+   "Rect": {
+    "X": 15,
+    "Y": 8,
+    "W": 2,
+    "H": 2
+   },
+   "Name": "개문(동)",
+   "Description": "문 하나. 맞으면 양옆 문이 안쪽 길로 돕는다"
+  },
+  {
+   "ID": 13,
+   "Rect": {
+    "X": 15,
+    "Y": 11,
+    "W": 2,
+    "H": 3
+   },
+   "Name": "생문(동남)",
+   "Description": "살 길. 들어서면 진의 축까지 곧은 길이 나 있다"
+  },
+  {
+   "ID": 14,
+   "Rect": {
+    "X": 15,
+    "Y": 15,
+    "W": 2,
+    "H": 2
+   },
+   "Name": "두문(남)",
+   "Description": "문 하나. 맞으면 양옆 문이 안쪽 길로 돕는다"
+  },
+  {
+   "ID": 15,
+   "Rect": {
+    "X": 11,
+    "Y": 15,
+    "W": 3,
+    "H": 2
+   },
+   "Name": "상문(서남)",
+   "Description": "서남쪽 문. 들어서면 뒤에서 매복 기병이 나온다"
+  },
+  {
+   "ID": 16,
+   "Rect": {
+    "X": 8,
+    "Y": 15,
+    "W": 2,
+    "H": 2
+   },
+   "Name": "경문(서)",
+   "Description": "문 하나. 맞으면 양옆 문이 안쪽 길로 돕는다"
+  },
+  {
+   "ID": 17,
+   "Rect": {
+    "X": 8,
+    "Y": 11,
+    "W": 2,
+    "H": 3
+   },
+   "Name": "경문(북서)",
+   "Description": "문 하나. 맞으면 양옆 문이 안쪽 길로 돕는다"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "formation",
+   "Do": [
+    {
+     "Kind": "buff",
+     "Targets": [
+      "gate1",
+      "gate2",
+      "gate3",
+      "gate4",
+      "gate5",
+      "gate6",
+      "gate7",
+      "gate8",
+      "axis",
+      "bearer"
+     ],
+     "Stat": "defense",
+     "Value": 20
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "face",
+        "Unit": "danfu",
+        "Facing": "NE"
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "danfu",
+        "Text": "팔문금쇄진입니다. 휴·생·상·두·경·사·경·개. 동남쪽 생문으로 들어가 한가운데 깃발을 꺾으면 여덟 문이 따로 놉니다."
+       }
+      ],
+      [
+       {
+        "Kind": "say",
+        "Unit": "danfu",
+        "Text": "북쪽 사문과 서남쪽 상문으로는 들지 마십시오. 들어서는 순간 뒤가 막힙니다."
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caoren",
+       "Text": "촌구석 떠돌이가 이 진을 알 리 없다. 들어오는 대로 가둬라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "gate1-help",
+   "If": [
+    "hp:gate1<100",
+    "alive:bearer"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "gate8",
+      "gate2"
+     ],
+     "Policy": "march",
+     "GoalArea": 10
+    }
+   ]
+  },
+  {
+   "ID": "gate2-help",
+   "If": [
+    "hp:gate2<100",
+    "alive:bearer"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "gate1",
+      "gate3"
+     ],
+     "Policy": "march",
+     "GoalArea": 11
+    }
+   ]
+  },
+  {
+   "ID": "gate3-help",
+   "If": [
+    "hp:gate3<100",
+    "alive:bearer"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "gate2",
+      "gate4"
+     ],
+     "Policy": "march",
+     "GoalArea": 12
+    }
+   ]
+  },
+  {
+   "ID": "gate4-help",
+   "If": [
+    "hp:gate4<100",
+    "alive:bearer"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "gate3",
+      "gate5"
+     ],
+     "Policy": "march",
+     "GoalArea": 13
+    }
+   ]
+  },
+  {
+   "ID": "gate5-help",
+   "If": [
+    "hp:gate5<100",
+    "alive:bearer"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "gate4",
+      "gate6"
+     ],
+     "Policy": "march",
+     "GoalArea": 14
+    }
+   ]
+  },
+  {
+   "ID": "gate6-help",
+   "If": [
+    "hp:gate6<100",
+    "alive:bearer"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "gate5",
+      "gate7"
+     ],
+     "Policy": "march",
+     "GoalArea": 15
+    }
+   ]
+  },
+  {
+   "ID": "gate7-help",
+   "If": [
+    "hp:gate7<100",
+    "alive:bearer"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "gate6",
+      "gate8"
+     ],
+     "Policy": "march",
+     "GoalArea": 16
+    }
+   ]
+  },
+  {
+   "ID": "gate8-help",
+   "If": [
+    "hp:gate8<100",
+    "alive:bearer"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "gate7",
+      "gate1"
+     ],
+     "Policy": "march",
+     "GoalArea": 17
+    }
+   ]
+  },
+  {
+   "ID": "ambush-north",
+   "If": [
+    "at:player:10"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_cavalry",
+       "X": 7,
+       "Y": 6,
+       "Facing": "SE",
+       "Side": "enemy",
+       "Group": "ambush",
+       "Policy": "assault"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 6,
+       "Y": 7,
+       "Facing": "SE",
+       "Side": "enemy",
+       "Group": "ambush",
+       "Policy": "assault"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 6,
+       "Y": 6,
+       "Facing": "SE",
+       "Side": "enemy",
+       "Group": "ambush",
+       "Policy": "assault"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "danfu",
+       "Text": "사문입니다! 뒤를 보십시오, 기병이 길을 막습니다!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "ambush-southwest",
+   "If": [
+    "at:player:15"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_cavalry",
+       "X": 11,
+       "Y": 19,
+       "Facing": "NE",
+       "Side": "enemy",
+       "Group": "ambush2",
+       "Policy": "assault"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 12,
+       "Y": 19,
+       "Facing": "NE",
+       "Side": "enemy",
+       "Group": "ambush2",
+       "Policy": "assault"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 13,
+       "Y": 19,
+       "Facing": "NE",
+       "Side": "enemy",
+       "Group": "ambush2",
+       "Policy": "assault"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "danfu",
+       "Text": "상문입니다! 뒤에서 기병이 나옵니다!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "axis-first",
+   "If": [
+    "alldefeated:bearer",
+    "!hp:caoren<100"
+   ],
+   "Do": [
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-b23-axis-first": 1
+     }
+    }
+   ]
+  },
+  {
+   "ID": "axis-falls",
+   "If": [
+    "alldefeated:bearer"
+   ],
+   "Do": [
+    {
+     "Kind": "buff",
+     "Targets": [
+      "gate1",
+      "gate2",
+      "gate3",
+      "gate4",
+      "gate5",
+      "gate6",
+      "gate7",
+      "gate8",
+      "axis"
+     ],
+     "Stat": "defense",
+     "Value": -20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "gate1",
+      "gate2",
+      "gate3",
+      "gate4",
+      "gate5",
+      "gate6",
+      "gate7",
+      "gate8",
+      "axis"
+     ],
+     "Stat": "confusion",
+     "Turns": 1
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "gate1",
+      "gate2",
+      "gate3",
+      "gate4",
+      "gate5",
+      "gate6",
+      "gate7",
+      "gate8",
+      "axis"
+     ],
+     "Policy": "assault"
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caoren",
+       "Text": "깃발이 꺾였다고? 누구냐. 유비 밑에 누가 있기에!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "lidian",
+       "Text": "장군, 저쪽에 진을 아는 자가 있습니다. 깊이 드시면 안 됩니다. 물러나 번성을 지키시지요!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caoren",
+       "Text": "진을 깨이고 물러나면 무슨 낯으로 승상을 뵙겠느냐. 내가 직접 나간다!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "cao"
+     ],
+     "Policy": "assault"
+    },
+    {
+     "Kind": "goals",
+     "Victory": [
+      {
+       "If": [
+        "defeated:caoren"
+       ],
+       "Text": "조인을 물리친다"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "caoren-impatient",
+   "If": [
+    "round>=16",
+    "alive:bearer"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caoren",
+       "Text": "언제까지 문 앞에서 맴돌게 둘 셈이냐. 진은 그대로 두고, 내가 나가 저놈들을 쓸어 버리겠다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "lidian",
+       "Text": "장군, 깊이 드시면 안 됩니다! 저쪽에 진을 아는 자가 있습니다!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "cao"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "lidian-rescue",
+   "If": [
+    "hp:caoren<30",
+    "alive:lidian"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "lidian",
+       "Text": "장군이 위태롭다! 길은 내가 막는다, 장군을 모셔라!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "li"
+     ],
+     "Policy": "assault"
+    }
+   ]
+  }
+ ]
+}

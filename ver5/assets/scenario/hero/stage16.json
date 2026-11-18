@@ -810,14 +810,14 @@
      "Title": "장료가 관우를 막아서다",
      "Speech": "관우! 내 진작부터 너와 승부를 겨루고 싶었다!",
      "Side": 1,
-     "Duration": 3.0
+     "Duration": 3.2
     },
     {
      "Kind": "talk",
      "Title": "관우가 답하다",
      "Speech": "장료, 나 또한 그러했다. 오너라!",
      "Side": 0,
-     "Duration": 2.4
+     "Duration": 2.9
     },
     {
      "Kind": "approach",
@@ -828,42 +828,168 @@
     },
     {
      "Kind": "block",
-     "Title": "장료가 청룡도를 받아 내다",
+     "Title": "장료가 칼 끝으로 떠 보자 관우가 가볍게 받아 넘기다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 곧바로 되받아 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "장료가 칼을 맞대다",
+     "Speech": "하비에서 물에 잠겼어도 이 칼은 무뎌지지 않았소. 받아 보시오!",
+     "Side": 1,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 청룡도을 내리치다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.05
     },
     {
      "Kind": "block",
-     "Title": "관우가 장료의 칼을 막다",
+     "Title": "장료가 맞받아 쳐 내다",
      "Speech": "",
      "Side": 1,
      "Duration": 1.05
     },
     {
+     "Kind": "talk",
+     "Title": "관우가 짧게 이르다",
+     "Speech": "좋다. 문원, 그 칼이면 충분하다.",
+     "Side": 0,
+     "Duration": 2.9
+    },
+    {
+     "Kind": "press",
+     "Title": "관우가 몰아붙이자 장료가 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
      "Kind": "rush-block",
-     "Title": "관우가 거푸 몰아치다",
+     "Title": "관우가 거푸 청룡도을 휘몰아치다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.1
     },
     {
      "Kind": "yielding-block",
-     "Title": "장료가 크게 밀리다",
+     "Title": "장료가 막아 내나 밀려나다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장료가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "장료가 힘껏 내려치나 관우가 막아 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장료가 칼을 내리치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 눈썹을 올리다",
+     "Speech": "……제법이군. 물 속에서 이만한 힘을 내다니.",
+     "Side": 0,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 청룡도을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장료가 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
     },
     {
      "Kind": "talk",
      "Title": "장료가 이를 악물다",
      "Speech": "(몸이 무겁다……. 여러 날 물에 잠겨 지낸 탓인가.)",
      "Side": 1,
-     "Duration": 2.2
+     "Duration": 3.3
+    },
+    {
+     "Kind": "talk",
+     "Title": "장료가 숨을 몰아쉬다",
+     "Speech": "관 장군…… 물에 지쳤다고 칼까지 버렸다고 생각하지 마시오!",
+     "Side": 1,
+     "Duration": 3.5
+    },
+    {
+     "Kind": "dodge",
+     "Title": "장료가 크게 휘둘렀으나 관우가 몸을 틀어 피하다",
+     "Speech": "그 몸으로 잘 버티는군.",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 낮게 이르다",
+     "Speech": "장료. 쉬어라. 힘 빠진 사람을 베고 싶지 않다.",
+     "Side": 0,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장료가 거절하다",
+     "Speech": "쉬라니…… 마지막까지 서 있는 것이 무장이오!",
+     "Side": 1,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "관우가 힘으로 누르자 장료가 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
     },
     {
      "Kind": "critical-block",
-     "Title": "관우가 청룡도를 내려치다",
+     "Title": "관우가 힘껏 내려치나 장료가 막아 내다",
      "Speech": "하앗!",
      "Side": 0,
      "Duration": 1.2
@@ -873,14 +999,14 @@
      "Title": "관우가 칼을 거두다",
      "Speech": "이기긴 했으나 아쉽구나. 물에 지치지 않은 그대와 겨루고 싶었다.",
      "Side": 0,
-     "Duration": 3.4
+     "Duration": 3.6
     },
     {
      "Kind": "talk",
      "Title": "장료가 말머리를 돌리다",
      "Speech": "……진 것은 진 것이오. 오늘은 물러나겠소.",
      "Side": 1,
-     "Duration": 2.6
+     "Duration": 3.1
     },
     {
      "Kind": "retreat",

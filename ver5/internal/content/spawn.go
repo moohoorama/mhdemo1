@@ -254,7 +254,7 @@ func (d *Data) ValidateSpawn(s Spawn) error {
 	if s.Facing != "" && !in(s.Facing, "NE", "SE", "SW", "NW") {
 		return fmt.Errorf("방향 오류")
 	}
-	if s.HP != nil && *s.HP < 1 || s.MP != nil && *s.MP < 0 {
+	if s.HP != nil && *s.HP < 1 || s.MP != nil && *s.MP < 0 || s.HPPct < 0 || s.HPPct > 99 || s.HPPct > 0 && s.HP != nil {
 		return fmt.Errorf("HP/MP 범위 오류")
 	}
 	if s.Traits != nil {

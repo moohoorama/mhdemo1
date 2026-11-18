@@ -281,7 +281,7 @@
    "Desc": "기병을 물리 공격하면 근접·원거리 모두 반드시 치명타.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "crit_vs_mounted": 1
    }
@@ -291,7 +291,7 @@
    "Desc": "병력이 절반 이하인 대상에게 반드시 치명타.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "crit_vs_wounded": 1
    }
@@ -321,7 +321,7 @@
    "Desc": "병력이 절반 이하면 주는 피해 +50%.",
    "Kind": "talent",
    "Tone": "attack",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "desperate": 0.5
    }
@@ -364,7 +364,7 @@
    "Desc": "인접 아군이 근접 공격을 받으면, 공격자가 자신의 공격범위 안일 때 50%로 반격.",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "guardian": 0.5
    }
@@ -447,7 +447,7 @@
    "Desc": "매 자기 차례 자신에게 이동력 +2 버프.",
    "Kind": "talent",
    "Tone": "move",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
     "haste": 2
    }
@@ -1318,7 +1318,7 @@
    "Desc": "경계 책략 사용 가능. 다음 근접 물리 공격 1회를 완전히 피한다.",
    "Kind": "strategy",
    "Tone": "guard",
-   "Cost": 500
+   "Cost": 700
   },
   "brace_prep": {
    "Name": "대비",
@@ -1360,17 +1360,10 @@
   },
   "ambition": {
    "Name": "패기",
-   "Desc": "전투에 나설 때 자신에게 공격·정신·방어·순발·사기 버프(+20%).",
-   "Kind": "talent",
+   "Desc": "패기 책략 사용 가능. 자신에게 공격·정신·방어·순발·사기 버프.",
+   "Kind": "strategy",
    "Tone": "buff",
-   "Cost": 1000,
-   "Effects": {
-    "start_buff:attack": 20,
-    "start_buff:mind": 20,
-    "start_buff:defense": 20,
-    "start_buff:agility": 20,
-    "start_buff:morale": 20
-   }
+   "Cost": 1000
   },
   "inspire_prep": {
    "Name": "휘기",
@@ -1600,6 +1593,77 @@
    "Cost": 1000,
    "Effects": {
     "ambush_factor": 0.05
+   }
+  },
+  "hundred_paces": {
+   "Name": "백보천양",
+   "Desc": "원거리 공격의 사거리 +2. 원시와 합산된다.",
+   "Kind": "talent",
+   "Tone": "move",
+   "Cost": 0,
+   "Effects": {
+    "ranged_reach": 2
+   }
+  },
+  "silk_grace": {
+   "Name": "풍채",
+   "Desc": "매력 +10(최대 병력과 부관 보정률이 오른다).",
+   "Kind": "talent",
+   "Tone": "buff",
+   "Cost": 0,
+   "Effects": {
+    "charm": 10
+   }
+  },
+  "golden_guard": {
+   "Name": "금흉",
+   "Desc": "적의 치명타와 연속 공격의 둘째 타를 반드시 막아낸다.",
+   "Kind": "talent",
+   "Tone": "guard",
+   "Cost": 0,
+   "Effects": {
+    "crit_immune": 1,
+    "double_ward": 1
+   }
+  },
+  "mengde_notes": {
+   "Name": "신서",
+   "Desc": "매 차례 병법치 회복량 +10.",
+   "Kind": "talent",
+   "Tone": "craft",
+   "Cost": 0,
+   "Effects": {
+    "mana_plus": 10
+   }
+  },
+  "meteor_strike": {
+   "Name": "유성",
+   "Desc": "물리 공격이 명중하면 대상을 반드시 봉격(2턴, 물리 공격 불가)한다. 상태이상 면역은 막는다.",
+   "Kind": "talent",
+   "Tone": "debuff",
+   "Cost": 0,
+   "Effects": {
+    "hit_status:disarm": 2
+   }
+  },
+  "crane_calm": {
+   "Name": "학창",
+   "Desc": "매 자기 차례 자신에게 정신력 버프(+20%).",
+   "Kind": "talent",
+   "Tone": "buff",
+   "Cost": 0,
+   "Effects": {
+    "turn_buff:mind": 20
+   }
+  },
+  "silk_kerchief": {
+   "Name": "윤건",
+   "Desc": "최대 병법치 +30.",
+   "Kind": "talent",
+   "Tone": "craft",
+   "Cost": 0,
+   "Effects": {
+    "mana_max": 30
    }
   }
  }

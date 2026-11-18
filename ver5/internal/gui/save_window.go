@@ -104,7 +104,7 @@ func (g *Game) readSlots() map[string]saveRow {
 					r.place = s.Place
 				}
 			}
-			r.chapter = d.ChapterIndex(s.Node) + 1
+			r.chapter = d.ChapterNumber(s.Node)
 			r.lv = lordLevel(d.Characters, s)
 			out[slot] = r
 		}

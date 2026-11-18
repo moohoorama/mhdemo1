@@ -537,11 +537,19 @@ func (e *Engine) joinOrder(n content.Node) int {
 }
 
 // joinBefore has every officer who joins in the story before the start node already in the party, so a game
-// started at a later node has the party that story brings there.
+// started at a later node has the party that story brings there; the chapters of the other telling (연의 26장
+// before 가상 26v장) do not count.
 func (e *Engine) joinBefore(start string) {
 	var joins []content.Node
+	var leads map[string]bool
+	if len(e.data.Chapters) > 0 && len(e.data.Chapters[0].Nodes) > 0 && e.data.Chapters[0].Nodes[0] != start {
+		leads = e.data.Leads(start)
+	}
 	for _, c := range e.data.Chapters {
 		for _, id := range c.Nodes {
+			if leads != nil && !leads[id] {
+				continue
+			}
 			if id == start {
 				for _, n := range joins {
 					if e.char(n.Character) == nil {
@@ -961,6 +969,9 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 			c.Equipment[e.data.Equipment[id].Slot] = id
 		}
 	}
+	if sp.Equipment == nil && c.Temp {
+		e.tierGear(c, e.stageGearTier())
+	}
 	if c.Temp {
 		e.refitGear(c)
 	}
@@ -969,9 +980,6 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 		if f := e.data.Stages[e.state.Stage].Faction; f != "" && sp.Faction == "" {
 			color = f
 		}
-	if sp.Equipment == nil && c.Temp {
-		e.tierGear(c, e.stageGearTier())
-	}
 	}
 	if sp.Faction != "" {
 		color = sp.Faction
@@ -991,6 +999,9 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 	u.MP = int(float64(st.MaxMP) * e.fx(&u, content.FxStartMana))
 	if sp.HP != nil {
 		u.HP = min(st.MaxHP, max(1, *sp.HP))
+	}
+	if sp.HPPct > 0 {
+		u.HP = max(1, st.MaxHP*sp.HPPct/100)
 	}
 	if sp.MP != nil {
 		u.MP = min(st.MaxMP, max(0, *sp.MP))
@@ -1012,17 +1023,6 @@ func (e *Engine) spawnDeputy(c *Character, def string) {
 	c.Deputy = q.ID
 }
 
-// refitGear swaps the gear a class stepped back to its level cannot carry (a 철창 on a 경보병) for the shop
-// piece of that slot it can, nearest in price, or drops it when there is none.
-func (e *Engine) refitGear(c *Character) {
-	cl := e.data.Classes[c.Class]
-	held := append(append([]string{}, innate(c)...), c.Learned...)
-	for _, slot := range slices.Sorted(maps.Keys(c.Equipment)) {
-		old := e.data.Equipment[c.Equipment[slot]]
-		if e.data.Carries(cl, held, old) {
-			continue
-		}
-		delete(c.Equipment, slot)
 // stageGearTier is the tier of plain gear the current battle's soldiers wear.
 func (e *Engine) stageGearTier() int {
 	if e.state.Stage < 0 || e.state.Stage >= len(e.data.Stages) {
@@ -1039,6 +1039,17 @@ func (e *Engine) tierGear(c *Character, tier int) {
 	}
 }
 
+// refitGear swaps the gear a class stepped back to its level cannot carry (a 철창 on a 경보병) for the shop
+// piece of that slot it can, nearest in price, or drops it when there is none.
+func (e *Engine) refitGear(c *Character) {
+	cl := e.data.Classes[c.Class]
+	held := append(append([]string{}, innate(c)...), c.Learned...)
+	for _, slot := range slices.Sorted(maps.Keys(c.Equipment)) {
+		old := e.data.Equipment[c.Equipment[slot]]
+		if e.data.Carries(cl, held, old) {
+			continue
+		}
+		delete(c.Equipment, slot)
 		best, gap := "", 0
 		for _, id := range slices.Sorted(maps.Keys(e.data.Equipment)) {
 			v := e.data.Equipment[id]
@@ -1065,11 +1076,6 @@ func (e *Engine) startStatus(u *Unit) map[string]Status {
 	s := map[string]Status{}
 	for id, k := range e.turnBuffs(u) {
 		s[id] = Status{Turns: e.data.Rules.BuffTurns, Value: k}
-	}
-	for id := range content.StatStatuses { // 패기: once, as it takes the field
-		if k := int(e.fx(u, content.FxStartBuff+id)); k > s[id].Value {
-			s[id] = Status{Turns: e.data.Rules.BuffTurns, Value: k}
-		}
 	}
 	return s
 }
@@ -1201,6 +1207,7 @@ func (e *Engine) clearBattle() {
 	s.Checkpoint = nil
 	s.Learning = nil
 	s.PendingFlags = nil
+	s.Fired = nil
 	s.TileStates = nil
 	s.Goals = nil
 	s.Round = 0

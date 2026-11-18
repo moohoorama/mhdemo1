@@ -579,7 +579,7 @@ func (g *Game) perform(a *replay.Action) []beat {
 							kind, tint = "buff", healC
 						}
 						g.spawn(kind, nil, t, 1.1, tint)
-						g.say(t, fmt.Sprintf("%s %+d%%", statusLabels[f.Text], f.Amount))
+						g.say(t, statusChange(f.Text, f.Amount))
 					}
 				})
 			case "cutscene":

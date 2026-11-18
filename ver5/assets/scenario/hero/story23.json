@@ -1,0 +1,214 @@
+{
+ "Nodes": [
+  {
+   "ID": "c23-start",
+   "Kind": "scene",
+   "Place": "양양 · 성문 밖"
+  },
+  {
+   "ID": "c23-g01",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "현덕 아우, 이 말은 도로 가져가게. 나는 성 안에만 있는 사람이라 이런 말은 아깝네."
+  },
+  {
+   "ID": "c23-g02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "형님께 드린 것을 어찌 도로 받겠습니까."
+  },
+  {
+   "ID": "c23-g03",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "싸움터에 설 사람이 타야 말도 제 값을 하지. 받게."
+  },
+  {
+   "ID": "c23-g04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그럼 감사히 타겠습니다. 걸음이 참 좋은 말입니다."
+  },
+  {
+   "ID": "c23-g05",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "(속으로) ……모르는 모양이구나."
+  },
+  {
+   "ID": "c23-g06",
+   "Kind": "say",
+   "Speaker": "yiji",
+   "Text": "주공, 괴 별가가 그 말을 두고 눈 밑에 눈물 자국이 있어 주인을 해친다고 했답니다."
+  },
+  {
+   "ID": "c23-g07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "사람이 죽고 사는 것이 말 한 마리에 달렸겠소. 그리고 이 공, 그 말을 내게 왜 전하시오?"
+  },
+  {
+   "ID": "c23-g08",
+   "Kind": "say",
+   "Speaker": "yiji",
+   "Text": "말이 아니라, 말을 돌려보내게 한 사람을 조심하시라는 뜻입니다."
+  },
+  {
+   "ID": "c23-market",
+   "Kind": "scene",
+   "Place": "신야 · 저잣거리"
+  },
+  {
+   "ID": "c23-m01",
+   "Kind": "say",
+   "Speaker": "danfu",
+   "Text": "(노래) 하늘과 땅이 뒤집히니 불이 꺼지려 하고, 큰 집이 기우니 나무 하나로는 받치기 어렵구나."
+  },
+  {
+   "ID": "c23-m02",
+   "Kind": "say",
+   "Speaker": "danfu",
+   "Text": "(노래) 산골에 어진 이가 있어 밝은 주인을 찾건만, 밝은 주인은 어진 이를 찾으면서 나를 알아보지 못하네."
+  },
+  {
+   "ID": "c23-flash",
+   "Kind": "scene",
+   "Place": "영천 · 그날 밤"
+  },
+  {
+   "ID": "c23-f01",
+   "Kind": "say",
+   "Speaker": "xufu",
+   "Text": "그 마을에 내 어머니가 계시오. 부탁이오, 손을 빌려 주시오."
+  },
+  {
+   "ID": "c23-market2",
+   "Kind": "scene",
+   "Place": "신야 · 저잣거리"
+  },
+  {
+   "ID": "c23-m03",
+   "Kind": "say",
+   "Speaker": "danfu",
+   "Text": "영천 사람 단복이라 합니다. 노모를 모시고 형주로 피난 와 있습니다."
+  },
+  {
+   "ID": "c23-m04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……단 공. 어머님은 평안하시오?"
+  },
+  {
+   "ID": "c23-m05",
+   "Kind": "say",
+   "Speaker": "danfu",
+   "Text": "평안하십니다. 사군께서 신야를 맡으셨다기에, 빚을 갚으러 왔습니다."
+  },
+  {
+   "ID": "c23-m06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "내게 빚진 사람이 있었던가."
+  },
+  {
+   "ID": "c23-m07",
+   "Kind": "say",
+   "Speaker": "danfu",
+   "Text": "있습니다. 갚는 쪽이 기억하면 되는 빚입니다."
+  },
+  {
+   "ID": "c23-m08",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형, 아는 사람이유? 서로 다 아는 얼굴인데 왜 통성명을 새로 한대유?"
+  },
+  {
+   "ID": "c23-m09",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "익덕, 단 공이라 부르게."
+  },
+  {
+   "ID": "c23-office",
+   "Kind": "scene",
+   "Place": "신야 · 관청"
+  },
+  {
+   "ID": "c23-o01",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "급보요! 번성의 조인이 이전과 함께 이만을 이끌고 내려옵니다! 성 북쪽 들에 진을 쳤는데, 생전 처음 보는 진입니다!"
+  },
+  {
+   "ID": "c23-o02",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "진이 어떻더냐."
+  },
+  {
+   "ID": "c23-o03",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "둥글게 여덟 군데로 문이 났는데, 어디로 들어가도 사방에서 군사가 나옵니다!"
+  },
+  {
+   "ID": "c23-o04",
+   "Kind": "say",
+   "Speaker": "danfu",
+   "Text": "높은 곳에서 한 번 보겠습니다. 싸움은 그 뒤에 하시지요."
+  },
+  {
+   "ID": "c23-battle",
+   "Kind": "battle",
+   "Stage": "B23",
+   "Text": "신야 전투 — 출전 준비"
+  },
+  {
+   "ID": "c23-tower",
+   "Kind": "scene",
+   "Place": "신야 · 성루"
+  },
+  {
+   "ID": "c23-t01",
+   "Kind": "say",
+   "Speaker": "danfu",
+   "Text": "사군, 제 이름은 단복이 아닙니다. 영천에서 남의 원수를 갚아 주고 쫓기는 몸이 되어 이름을 버렸습니다."
+  },
+  {
+   "ID": "c23-t02",
+   "Kind": "say",
+   "Speaker": "xushu",
+   "Text": "서서, 자는 원직입니다. 그날 밤 영천에서는 서복이라 불렸습니다."
+  },
+  {
+   "ID": "c23-t03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "알고 있었소. 불길 속에서 어머님을 모시고 나오던 얼굴을 잊을 수는 없었소."
+  },
+  {
+   "ID": "c23-t04",
+   "Kind": "say",
+   "Speaker": "xushu",
+   "Text": "……처음부터 아셨습니까. 그런데 왜 묻지 않으셨습니까."
+  },
+  {
+   "ID": "c23-t05",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "이름을 바꾼 사람에게는 까닭이 있을 것이고, 말할 날은 그 사람이 정하는 것이오."
+  },
+  {
+   "ID": "c23-t06",
+   "Kind": "say",
+   "Speaker": "xushu",
+   "Text": "그럼 오늘부터는 원직이라 불러 주십시오."
+  },
+  {
+   "ID": "c23-join-xushu",
+   "Kind": "join",
+   "Character": "xushu",
+   "Event": "join-xushu"
+  }
+ ]
+}

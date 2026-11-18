@@ -376,7 +376,7 @@
      "Title": "손관이 고순을 도발하다",
      "Speech": "함진영의 고순이라더니, 말 한마디 없구나!",
      "Side": 1,
-     "Duration": 2.8
+     "Duration": 3.0
     },
     {
      "Kind": "approach",
@@ -387,21 +387,49 @@
     },
     {
      "Kind": "block",
-     "Title": "고순이 묵묵히 칼을 쳐 내다",
+     "Title": "손관이 칼 끝으로 떠 보자 고순이 가볍게 받아 넘기다",
      "Speech": "",
      "Side": 1,
      "Duration": 1.05
     },
     {
      "Kind": "block",
-     "Title": "손관이 거듭 베다",
+     "Title": "고순이 곧바로 되받아 치다",
      "Speech": "",
-     "Side": 1,
+     "Side": 0,
      "Duration": 1.05
     },
     {
-     "Kind": "block",
-     "Title": "고순이 또 쳐 내다",
+     "Kind": "talk",
+     "Title": "손관이 비웃다",
+     "Speech": "함진영이라더니 방패 뒤에 숨는 법만 배웠느냐!",
+     "Side": 1,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "press",
+     "Title": "손관이 몰아붙이자 고순이 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "손관이 거푸 칼을 휘몰아치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "고순이 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "dodge",
+     "Title": "손관이 크게 휘둘렀으나 고순이 몸을 틀어 피하다",
      "Speech": "",
      "Side": 1,
      "Duration": 1.05
@@ -411,39 +439,158 @@
      "Title": "손관이 성내다",
      "Speech": "말도 못 하냐!",
      "Side": 1,
-     "Duration": 2.0
+     "Duration": 2.4
     },
     {
      "Kind": "talk",
      "Title": "고순이 답하다",
-     "Speech": "칼로 하겠다.",
+     "Speech": "창으로 하겠다.",
      "Side": 0,
-     "Duration": 2.0
+     "Duration": 2.4
     },
     {
      "Kind": "block",
-     "Title": "고순이 칼을 내리치다",
+     "Title": "고순이 빈틈을 파고들어 되받다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.05
     },
     {
+     "Kind": "block",
+     "Title": "고순이 창을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "손관이 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "손관이 놀라다",
+     "Speech": "(말은 없는데 창은 쉬지 않는다……!)",
+     "Side": 1,
+     "Duration": 2.9
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "손관이 힘을 실어 내려치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "고순이 정면으로 맞받아 불꽃이 튀다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "고순이 짧게 이르다",
+     "Speech": "……비켜라.",
+     "Side": 0,
+     "Duration": 2.3
+    },
+    {
+     "Kind": "press",
+     "Title": "고순이 몰아붙이자 손관이 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "고순이 거푸 창을 휘몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
      "Kind": "yielding-block",
-     "Title": "손관이 밀리다",
+     "Title": "손관이 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "손관이 소리치다",
+     "Speech": "태산 도적을 상대로 물러서란 말이냐! 천만에!",
+     "Side": 1,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "block",
+     "Title": "손관이 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "고순이 창을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "손관이 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "손관이 발악하다",
+     "Speech": "장 두령과 내가 이 길을 연다! 여기서 물러설 수 없다!",
+     "Side": 1,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "손관이 말을 몰아 들이치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "고순이 창끝을 겨누다",
+     "Speech": "……끝이다.",
+     "Side": 0,
+     "Duration": 2.3
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "고순이 힘껏 내려치나 손관이 막아 내다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "고순이 힘으로 누르자 손관이 밀려나다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.2
     },
     {
      "Kind": "critical-block",
-     "Title": "고순이 한 걸음 들어가며 베다",
+     "Title": "고순이 힘껏 내려치나 손관이 막아 내다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.2
     },
     {
      "Kind": "yielding-block",
-     "Title": "손관이 크게 밀리다",
+     "Title": "고순이 힘으로 누르자 손관이 밀려나다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.2
@@ -453,7 +600,7 @@
      "Title": "손관이 물러서다",
      "Speech": "이놈, 소리 하나 없이……! 물러나라!",
      "Side": 1,
-     "Duration": 2.7
+     "Duration": 2.9
     },
     {
      "Kind": "retreat",

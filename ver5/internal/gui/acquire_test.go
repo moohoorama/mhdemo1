@@ -73,6 +73,10 @@ func TestAcquireGains(t *testing.T) {
 	assert.Equal(t, []gain{{"spear", 1, true, false}, {"tonic", 3, false, false}, {"sword", 1, false, false}, {content.Money, 50, false, false}}, acquireGains(before, events))
 	joined := append(events, core.Event{Kind: "join", Target: "zhaoyun"})
 	assert.Equal(t, gain{id: "zhaoyun", n: 1, officer: true}, acquireGains(before, joined)[0], "the officer who joined comes before the pieces")
+	worn := []core.Event{{Kind: "grant", Actor: "guanyu", Target: "red_hare", Amount: 1}}
+	assert.Empty(t, acquireGains(before, worn), "a piece put on an officer away comes in with them, no card")
+	before.Characters[0].ID = "guanyu"
+	assert.Len(t, acquireGains(before, worn), 1, "one in the party is shown what they got")
 }
 
 // Closing takes off the trait window, then the piece's, and only then the cards.

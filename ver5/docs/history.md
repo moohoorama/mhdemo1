@@ -5,6 +5,11 @@
 
 ---
 
+## 2026-11-18 병법창 분류
+- `plan/skill_tabs.md`: 병법 분류와 배치 설계 — 선택을 쉽게 하려고.
+- `internal/gui/command.go`·`menu_panel.go`: 보유 병법의 분류 탭과 소모치순 목록, 확장된 창 — 많은 병법을 찾아 쓰기 쉽게.
+- `assets/data/classes.json`·`internal/content/class_pools_test.go`: 궁병 특성 풀에 저격 추가 및 기대값 갱신 — 관통의 선행 특성을 습득할 수 있게.
+
 ## 2026-11-18 장비 단계(D·C·B)·고유 장비 수치·단복/제갈량 수치
 - 결정 · 이유: 일반 장비를 장 단계별로 나눈다 — 1장 D(구리검·구리창·단궁·천장갑·가죽갑옷·무명옷), 2장 C(철검·철창·대궁·가죽장갑·구리갑옷·가죽옷), 3장 B(강검·강창·강궁·철장갑·철갑옷·호피복). 등급 글자는 D=1·C=2·B=3·A=4(내부 값은 숫자 그대로, 글자 표시는 GUI 몫). 적 일반 부대는 장 단계의 장비를 처음부터 입고(스폰 `Equipment`가 있으면 그것이 우선), 상점은 업(19장)부터 철 계열을 판다 · 사용자 "숫자가 레벨에 따라 다르게 느껴져 글자로", 적이 장 따라 장비가 좋아져야 한다.
 - 결정 · 이유: 무도가 무기는 장갑 계열(`fist`), 방어구는 갑옷(`armor`, 무장)과 옷(`robe`, 문관·적병 계열·무도가) 두 계열이다 — 병종 `Armor`가 이미 적병 계열·무도가를 `robe`로 두고 있어 사용자의 "산적·무도가도 옷"과 맞다(어긋남 없음).
@@ -3392,6 +3397,72 @@
 - `Makefile`(`e2e`, `E2E_SEED`·`E2E_MINUTES`): `make e2e`로 쉬움 처음부터 엔딩까지 통합 시험 — 사용자 11-17
 - `internal/content/content.go`(`Difficulty.DealtPct`·`TakenPct`)·`validate.go`·`internal/core/combat.go`(`damage`)·`assets/data/game.json`(쉬움 120%·80%)·`internal/core/officer_traits_test.go`·`internal/content/officer_traits_data_test.go`·`internal/gui/campaign_e2e_test.go`(패배 이유 기록): 쉬움에서 아군이 주는 피해 +20%, 받는 피해 -20%(일기토는 따로 진행되어 그대로) — 사용자 11-17: 쉬움이 별로 안 쉬움
 - `assets/scenario/hero/stage21.json`(유벽·남문 군사 `flee` GoalArea 2, 부목표 `fled:liupi` "유벽이 남쪽 성으로 무사히 빠져나간다", `liupi-falls`는 빠져나가면 나오지 않음)·`docs/fullstory.md`·`internal/core/b21_liupi_test.go`: 유벽이 남쪽 성 칸을 차지해 유비가 승리 칸에 못 들어가던 것을, 유벽은 성에 닿으면 싸움터를 떠나게 — 사용자 11-17
+- `assets/data/equipment.json`(`dilu` 적로·`yang_youji_bow` 양유기의 활·`formation_manual` 진법서·`silk_robe` 비단 도포·`golden_breastplate` 금흉갑·`mengde_book` 맹덕신서·`meteor_hammer` 유성추·`white_feather_fan` 백우선·`crane_robe` 학창의·`zhuge_kerchief` 제갈건, 청공검 → 청홍검 이름, 의천검 설명에 보법 30%p)·`assets/data/traits.json`(장비 전용 백보천양·풍채·금흉·신서·유성·학창·윤건): 22~27장 새 장비, 아이콘은 기존 그림을 빌림(D5) — 설계 _design_22_27.md "새 장비"
+- `internal/content/vocab.go`(`hit_status:`·`double_ward`·`charm`·`mana_max`·`mana_plus`)·`internal/core/combat.go`(`blow.second`, `strike`)·`rules.go`(`stats`)·`formation.go`(`attributes`, `DeputyBlend`)·`internal/core/gear_ch22_test.go`(새): 맞히면 반드시 상태이상(유성추 봉격 2턴), 연타 둘째 타 막기(금흉갑), 매력 +(비단 도포, 최대 병력·부관 보정률), 최대 병법치 +(제갈건), 차례마다 병법치 회복 +(맹덕신서) — 새 장비 효과를 일반 효과 키로
+- `docs/data-item.md`·`logic-traits.md`·`logic-combat.md`·`logic-growth.md`·`plan/_decision_22_27.md`: 새 효과 키와 22~27장 장비, 구현 결정(칸 배치·청홍검·제갈량 주인 보류) 기록
+- `assets/data/characters_story.json`(새 인물 28: 이적·곽준·위연(합류), 단복, 유표·채모·채중·채화·괴월·향랑·유기·장무·진손·송충·문빙·장윤, 조순·하후은·하후걸, 감녕·노숙, 미 부인·감 부인·동자·제갈균·군량관·노파·호족; 서서·제갈량 Playable과 배울 특성, 제갈량 시작 장비 백우선·학창의·제갈건)·`assets/data/equipment.json`(양유기의 활 `Owner: yiji`)·`assets/data/game.json`(진영 `jing` 형주)·`assets/data/characters.json`(유비 3장 초상 조건 `flag:ideal` → `flag:flag-mode-virtual`): 22~27장 인물 기반, 그림은 빌림 — 설계 _design_22_27.md, 결정 _decision_22_27.md [기반]
+- `assets/scenario/hero/scenario.json`·`story22~27.json`·`story25v~27v.json`(새): 22~27장 뼈대(장면·자리 표시 나레이션, 합류·떠남), 24장 융중대 대사와 모드 판정(`flag-mode-yanyi`·`flag-mode-virtual`, 「빠른 길」/「느린 길」), 25장 공통 S#1·S#2와 갈래, 두 결말의 「2장 주유천하 / 끝」과 `end` — 장 담당 에이전트가 채울 틀
+- `internal/content/scenario.go`(`Chapter.Number`·`ChapterNumber`, 갈래 장 전투 순번)·`content.go`(`LastBattleOrder`)·`internal/gui/hud_corner.go`·`scenario.go`·`save_window.go`·`internal/content/scenario_test.go`·`internal/core/mode_longzhong_test.go`(새)·`docs/data-scenario-node.md`: 장 번호를 ID 숫자로, `25v` 같은 갈래 장은 같은 번호 장이 열릴 때의 순번에서 전투를 다시 세 가상 B25V~B27V도 연의와 같은 레벨 — 갈래 장이 「제 28 장」·28번째 전투로 잡히던 것
+- `docs/data-speech-style.md`: 형주·적벽 사람들 말투 표
+- `internal/content/content.go`(`Stage.Groups`·`AllyGroup`·`GroupAt`·`GroupOf`·`InArea`, `BattleEvent.Every`, `Spawn.HPPct`, `BuffAilments`)·`validate.go`(`validateGroups`)·`battle_events.go`·`cond.go`(조건 `since:`)·`spawn.go`·`internal/core/deployment.go`·`battle_events.go`·`cond.go`·`engine.go`·`api.go`·`types.go`(`State.Fired`)·`internal/gui/deployment.go`·`events.go`·`player.go`·`internal/cli/play.go`: 출전 무리(무리의 필수 장수는 제 구역 칸에만), N라운드마다 다시 도는 이벤트 `Every`, 이벤트 뒤 라운드를 세는 `since:`, 처음 병력 비율 `HPPct`, `buff`로 혼란·봉책·속박·봉격 — 22~27장 강하·박망파·신야·장판파·강릉 전투(설계 _design_22_27.md)를 데이터로 쓰려고
+- `internal/core/split_sortie_test.go`·`event_waves_test.go`·`internal/content/stage_mechanics_test.go`·`cookbook_test.go`(새): 위 기능 테스트와 요리책 JSON 블록 로드 검증 — 장 담당이 그대로 옮겨 쓸 수 있게
+- `plan/_engine_22_27.md`(새)·`plan/_decision_22_27.md`([엔진] 결정)·`docs/data-scenario-node.md`·`docs/logic-battle-event.md`·`docs/logic-campaign.md`: 22~27장 전투 장치를 스테이지 JSON으로 쓰는 요리책, 새 필드·조건 문서 — 장 담당 에이전트의 기준
+
+## 2026-11-17 24장 삼고초려·박망파 구현
+
+- `assets/scenario/hero/story24.json`: 자리표시 줄을 설계(`plan/_design_22_27.md` 24장) 대사로 채움 — S#1 양양 연회(비육지탄), S#2 신야 관청(서서의 천거, "주공"으로 고침), S#3 초가 앞 세 방문을 장면 셋(가을·눈 오는 날·이듬해 봄)으로, 셋째에 공명의 「큰 꿈을 누가 먼저 깨는가」, S#4 융중대는 기존 `c24-mode`·`c24-path`·`c24-join` 그대로, S#5 박망 출전(검과 인수를 넘김), 전투 노드 `c24-battle`(B24), S#6 성문의 술상, S#7 유기의 누각(사다리), 끝 `c24-bowang` 플래그 — 22~27 설계 반영
+- `assets/scenario/hero/stage24.json`·`maps/map24.json`(새, 원본 `tools/mapgen/layouts/hero/stage24gen.py`·`map24.txt`·`stage24.txt`): B24 박망파 30×24. 북동 여울→남서 길(2칸 폭 계단), 북서 예산(구릉·산), 남동 안림(숲), 북동 강. 무리 셋(본대 유비·조운, 예산 관우와 둘, 안림 장비와 둘). 개전 컷신: 조운이 하후돈과 세 합 뒤 거짓으로 물러나고 하후돈이 쫓고, 우금이 말리고 이전이 늦고, 관우·장비가 불을 질러 길가 아홉 구역에 불이 번지고(3라운드 뒤 그을음, 복병 틈 둘), 하후돈이 대열 가운데로 물러나며 전원 혼란 2턴. 적 모두 병력 절반, 길 무리는 여울 너머로 달아남. 승리 하후돈 격퇴(달아남 포함), 부목표 건너기 전에 격퇴 → 상급 인수, 관우 대 이전 일기토(이전 퇴각), 보상 2000·유성추 — 설계의 "가벼운 전투"
+- `assets/scenes/ch24.json`(새): 아홉 장면 배치(연회 `S_mansion`, 관청 `S_xiaopei_office`, 초가 `S_vil_peace` 셋은 장면 `Grass`로 계절, 초가 안 `S_house`, 성문 `S_castle_out_open` 술상 소품, 누각 `S_garden`) — 기존 장면 맵 재사용
+- `plan/_decision_22_27.md`: [24장] 결정 넷(제갈량 출전은 선택, 세 방문과 계절, 박망파 맵과 불, 서서 호칭)
+
+## 2026-11-18 연의 25~27장(불타는 신야·장판파·적벽과 화용도) 구현
+
+- `assets/scenario/hero/story25.json`: 연의 25장 자리표시를 설계 대사로 채움 — S#3 신야 관청(공명의 "빠른 길" 줄은 `choice:c24-path=빠른 길`일 때만, 아니면 융중대 설득을 되받는 줄로 갈래 `c25-c-path`), S#4 백하 둑(하비 거리·하비 성 밖 회상 장면 둘을 끼움), S#5 신야 성 안 밤과 백하 나루(관우 "……터라."를 더함), B25 출전, S#6 강 건너 언덕, 끝에 관우·제갈량 `leave`(강하로 먼저 감) — 설계 연의 25장
+- `assets/scenario/hero/story26.json`: S#1 양양 성문, S#2 당양 무너진 마을(미 부인은 화면 밖으로, 하후은을 한 번에 베고 `grant` 청홍검 → 조운, "……부인?"·"청홍……" 두 줄을 더함), B26 출전, S#3 장판교 동쪽 진영(손건이 서서가 잡혔다고 전함) 뒤 기존 `c26-leave-xushu` — 설계 연의 26장
+- `assets/scenario/hero/story27.json`: S#1 강하 나루(관우·제갈량 `join`), S#2 시상, S#3 곽준(기존 `c27-join-huojun`), S#4 적벽 강 위(관우 `leave`, 화용도 끝), B27 출전, S#5 화용도 길 끝, S#6 강하 진영(관우 `join`) 뒤 기존 끝 카드 — 설계 연의 27장
+- `assets/scenario/hero/stage25.json`·`maps/map25.json`(새, 원본 `tools/mapgen/layouts/hero/stage25gen.py`·`map25.txt`): B25 신야 26×24. 북동 신야성을 불타는 울타리·집이 두르고, 들판에 물웅덩이, 남동쪽에 넘친 백하(물·여울). 무리 둘(본대 남서 유비와 다섯, 둑의 군사 남동 관우·미축과 둘). 조인군 전원 병력 70%·능력 −30%·`flee`로 북서쪽 끝(구역 20), 조인 무리는 이동 −2, 허저는 약화 한 턴. 들판에 아군이 들면 허저·기병이 `react`로 돌아섬. 승리 조인 격퇴(빠져나가도), 부목표 빠지기 전 격퇴 → 금흉갑, 장비 대 허저 일기토(허저 퇴각), 보상 2000 — 화공·수공 뒤의 추격전
+- `assets/scenario/hero/stage26.json`(새, 원본 `tools/mapgen/layouts/hero/stage26gen.py`): B26 장판파, 맵은 가상 담당이 만든 공유 `maps/map_changban.json`. 조운 혼자 서북쪽 마을(칸 하나짜리 무리), 본군 일곱 다리 동쪽 어귀. 들판에 문빙·장합·허저와 병사(대부분 `hold`), 남쪽 숲길 셋, 조순의 호표기가 다리 서쪽 머리로 `march`·3·6라운드에 넷씩(`Every`). 승리 조운이 진영 도착, 패배 조운·장비 퇴각·적이 진영·20턴. 부목표 여울로 돌지 않기 → 거울갑옷. 끝에 장비가 다리 위에서 호통, 하후걸이 떨어지는 컷신 — 조운의 돌파
+- `assets/scenario/hero/stage27.json`·`maps/map27.json`(새, 원본 `tools/mapgen/layouts/hero/stage27gen.py`·`map27.txt`): B27 화용도 28×26 밤. 남동 불타는 오림 수채, 가운데 갈대 늪(여울·갈대·진흙 물웅덩이)과 둑길, 북서 세 칸 길목. 무리 둘(본군 남동 유비와 다섯, 복병 북서 장비와 둘). 조조·허저·장료·서황, 보병 열, 기병 넷 모두 병력 60%·`flee`. 조조가 길목 앞에 오거나 3라운드면 장비가 외치고 허저·장료가 덤빔, 본군이 늪에 들면 서황·기병이 돌아섬. 일기토 장비 대 허저(무승부), 조운 대 서황(서황 퇴각). 부목표 빠지기 전 격퇴 → 맹덕신서·의천검, 보상 2500 — 적벽에서 진 조조를 붙들고 쫓는 싸움
+- `assets/scenes/ch25.json`·`ch26.json`·`ch27.json`(새): 장면 배치(25장 공통 S#1 유표의 침소 `S_xuzhou_room`·S#2 신야 길목 `S_road` 포함). 기존 장면 맵 재사용(관청 `S_xiaopei_office`, 둑·나루·강하 나루·적벽 `S_bridge`, 회상 `S_xiapi`·`S_castle_out`(`memory`), 신야 성 안 `S_castle_town` 밤 큰불, 언덕 `S_road` 원경 `burning_city`, 양양 성문 `S_castle_out`, 당양 `S_village_burnt`, 진영 `S_guangling_camp`, 시상 `S_xuzhou_hall`, 화용도 `S_field_road` 밤)
+- `plan/_decision_22_27.md`: [25장]·[26장]·[27장]·[25~27장] 결정 여덟(공명의 갈래 줄, 장면 맵, B25 이동 −2, 관우·제갈량 leave/join, B26 부목표와 보상, 하후은 장면, B26 수 줄임, B27 복병 조건)
+- `story25v.json`: 가상 25장 S#3 신야 관청(신야를 태우지 않음, 제갈량·관우·관평·주창 떠남)·S#4 양양 성문 앞·B25V 출전·S#5 장판교 동쪽 진영(하후은 일기토를 치렀으면 조운이 청홍검을 찬다)을 채웠다 — 설계 `plan/_design_22_27.md` 가상 25장을 게임에 넣음
+- `stage25v.json, maps/map_changban.json, tools/mapgen/layouts/hero/map_changban.txt`: B25V 장판파(36×22, 연의 B26과 같은 맵) — 피난민 여섯 무리(동맹 `run`)가 다리를 건너면 승리·하나라도 잃으면 패배, 호표기 매 턴 셋, 4턴 문빙·5턴 여울 호표기·7턴 장합·10턴 조조·허저·장료, 조운 대 하후은 일기토, 조조 격퇴 → 맹덕신서·의천검, 끝에 장비가 다리를 끊음 — 들판에서 버티는 가상 장판파
+- `story26v.json`: 가상 26장 S#1 강릉 성문(곽준이 문을 엶)·S#2 강릉 관청(위연)·B26V·S#3 강릉 성문(곽준·위연 합류), 관우 셋이 전투에서 못 돌아왔을 때의 이야기 `join` — 강릉 수비전 대본
+- `stage26v.json, maps/map26v.json, tools/mapgen/layouts/hero/map26v.txt`: B26V 강릉 수비전(28×26) — 목책 진채 셋과 강릉군 동맹 AI(진채 무너짐 규칙), 위연·곽준 동맹 AI, 3턴마다 보병 넷, 6턴 장윤의 배, 9턴 관우·관평·주창 합류, 13턴 급보·15턴 조인 퇴각, 위연 대 문빙·관우 대 조인(13턴 뒤) 일기토, 부목표 진채 지킴 → 상급 인수·장윤 → 비단 도포 — 설계 B26V
+- `story27v.json`: 가상 27장 S#1 연합 진영(제갈량 복귀)·B27V·S#2 양양 관청·2장 끝 카드 — 가상모드 2장의 끝
+- `stage27v.json, maps/map27v.json, tools/mapgen/layouts/hero/map27v.txt`: B27V 양양 공방전(34×28) — 성벽·서문·남문·수문, 진채 넷, 주유·감녕·황개·유기 동맹 수군, 채모 수군, 조조 본대(3턴마다 여섯, 10턴 조조), 감녕이 채중·채화를 벰, 유기 대사로 수문 수군 둘이 돌아서고 수문이 열림, 장비 대 허저·관우 대 장료 일기토, 부목표 진채 넷 → 상급 인수·채모 → 보검 — 설계 B27V
+- `assets/scenes/ch25v.json, ch26v.json, ch27v.json`: 가상 25~27장 장면(신야 관청·양양 성문·장판교 진영·강릉 성문·강릉 관청·연합 진영·양양 관청), 기존 장면 맵 재사용 — 대본 장면 배치
+- `plan/_decision_22_27.md`: [25v장]~[27v장] 구현 결정(공유 맵, 피난민·진영 손질, 청홍검, 강릉·양양 짜임, 채모 보상 보검, 시험 길) — 설계에 없던 선택 기록
+
+## 2026-11-18 22장 유표의 손님·강하 전투 구현
+
+- `assets/scenario/hero/story22.json`: 자리표시를 설계(`plan/_design_22_27.md` 22장) 대사로 채움 — S#1 양양 관저 대청, S#2 환영 연회, S#3 유표의 서재, S#4 신야 관청(관우 별동대, 군량관 "추가 배급 없음", `party:gaoshun`이면 고순이 미방을 믿어 달라 말려 관우가 참고 아니면 꾸짖는 서신), 탐험 뒤 `c22-rice`(군량 도착: 고순 갈래는 "장부에 없는 쌀"), B22, S#5 강하 싸움터(채중을 물리쳤는지 `flag-b22-caizhong`로 활 있는/없는 판본), 이적 합류, 적로 `grant`(조운 일기토 여부로 대사만 갈림), `c22-mifang` 곳간 앞(고순 갈래: 관우가 절하고 `flag-guanyu-mifang`) — 22장 구현
+- `assets/scenario/hero/stage22.json`·`maps/map22.json`(새, 원본 `tools/mapgen/layouts/hero/map22.txt`): B22 강하 24×28, 가운데 강(배로만), 북쪽 언덕 장무 진채·남쪽 갈대밭 뒤 진손 진채·동쪽 끝 나루·북서 숲. `Groups` 본군 6(유비)·별동대 4(배 위, 관우·고순), 기각지세 `Every: 3` 증원, 대장이 쓰러지면 나루로 `flee`·물길을 막으면 항복(`remove`), 두 대장 뒤 아군 차례에 복면 습격(채중·채화·궁병 넷·보병 셋, `taishan`)·이적 전투 `join`·목표 바꿈(여섯 턴 `since:ambush>=6` 또는 둘 격퇴), 채중이 쓰러지면 복면 무리가 숲으로 달아남, 일기토 조운 대 장무·관우 대 진손(사망), 부목표 배 → 상급 인수·채중 → 양유기의 활, 보상 1500 — 1단계 승리는 `since:ambush`를 붙여 습격 전에 끝나지 않게
+- `assets/scenario/hero/explore22.json`(새): 신야성 탐험(소패 맵 `S_xiaopei`·`S_xiaopei_office` 재사용) — 미방 곳간 앞 "쌀은 제가 셉니다", 양양 감시역 관리, 주민, 행상(`ye`), 관우에게 말을 걸어 출진
+- `assets/scenes/ch22.json`(새): 일곱 장면(`S_ye_hall` 관저, `S_council` 연회, `S_xuzhou_room` 밤 서재, `S_xiaopei_office` 관청 둘, `S_field_road` 싸움터, `S_xiaopei` 곳간 앞)
+- `plan/_decision_22_27.md`: [22장] 결정 여섯(적로 grant, 복면 부목표, 이적 join, 적 수 줄임, 군량 도착·탐험 맵, 복면 진영색). 측정(_balance ai, 시험 묶음은 23장 이후를 뺀 사본): 어려움 3/6, 쉬움 4/4
+
+- `assets/scenario/hero/story23.json`: 23장 자리표시 줄을 대본으로 채움 — S#1 양양 성문 밖(유표가 적로를 돌려줌·이적의 귀띔), S#2 신야 저잣거리(단복의 노래 → 회상 장면 `c23-flash` 영천 → 단복의 통성명), S#3 신야 관청(조인의 진 급보), 전투 `c23-battle`(B23), S#4 신야 성루(서서의 본명) 뒤 `c23-join-xushu` — 설계 `plan/_design_22_27.md` 23장을 게임에 넣음
+- stage23.json(새): B23 신야 전투·팔문금쇄진 — 문 여덟(보병 둘·궁병 하나, `hold`, 맞으면 양옆 문이 `march`), 축(장창병 넷)·깃발수, 개전 방어 +20, 사문·상문 매복 기병 셋, 깃발수가 쓰러지면 버프 걷기·혼란 한 턴·`assault`·조인 출진·`goals`로 목표 "조인을 물리친다", 16턴에 조인이 참지 못하고 나옴, 조인 병력 30% 아래면 이전이 구하러 옴, 조운 대 이전 일기토(이전 퇴각, `DuelFirst`), 단복 `Party` AI 손님, 패배 단복·신야성, 25턴, 부목표 진법서, 보상 1500 — 설계 B23
+- maps/map23.json(새), tools/mapgen/layouts/hero/map23.txt(새): 26×26 들판, 울타리 두 겹의 팔문진(바깥 문 여덟, 안쪽은 동남쪽만 열림), 남쪽 신야성과 언덕, 북쪽 조인 본진·북동쪽 이전 진채 — B23 맵
+- assets/scenes/ch23.json(새): 23장 장면 여섯(양양 성문 밖=서주성 앞 맵, 저잣거리=소패 성 안, 회상=불탄 마을 memory, 관청=소패 관청, 성루=백문루 노을) — 장면 맵은 있는 것을 다시 씀(D5)
+- plan/_decision_22_27.md: [23장] 결정 여섯 덧붙임 — 진 모양·두 단계 목표·조인 출진 턴·깃발수·적로·회상과 본명
+
+## 2026-11-18 망탕산 일기토는 채양이 선 자리에서
+
+- `internal/content/content.go`(`Step.By`), `battle_events.go`(`validateCutscene`), `internal/core/battle_events.go`(`playCutscene`·`standing`·`shift`): 컷신 `move`가 `To` 대신 `By`(유닛)를 받으면 그 유닛이 그때 서 있는 곳 옆 칸으로 걸어가 그쪽을 보고, `face`도 `By`로 그 유닛을 봄. 같은 거리의 빈칸이 여럿이면 걷는 유닛 쪽 칸 — 사용자: 채양이 북쪽에서 "기병도 올려 보내라" 하다가 관우가 나타나면 일기토 전에 고정 칸(16,16)으로 사라짐
+- `assets/scenario/hero/stage20.json`(`cai-duel`): 채양은 제자리, 관우가 채양 옆으로 걸어가 서로 마주 보고 일기토
+
+## 2026-11-18 장비 찬 채 들어오는 장수는 획득 카드 없이, 여남 악진은 기병 뒤로
+
+- `internal/gui/acquire.go`(`wornAway`), `game.go`(`record`): 이야기가 일행에 없는 장수에게 곧바로 채운 장비(`grant`의 `Character`)는 획득 카드·알림을 띄우지 않음 — 사용자: 출진하는데 갑자기 적토마 습득이 뜸(관우는 B20 도중 합류). 일행에 있는 장수(적로·청홍검)는 그대로 보임
+- `assets/scenario/hero/stage21.json`: 악진을 (10,3)→(10,2) 성문 앞으로 물리고 기병 셋을 그 앞 한 줄로 — 시작하자마자 유비 옆에 붙어 첫 턴에 조운 일기토(악진 퇴각)로 끝나던 문제(사용자: 악진 일기토가 지나치게 쉬움). `_stageneural -node c21-battle -player neural -seeds 6 -difficulty normal` 5/6 → 3/6; 일기토에 `hp:yuejin<50`까지 걸면 0/6이라 빼 둠
+
+## 2026-11-18 여남 성 밖 병력은 라운드로, 거록 고람은 떠벌이
+
+- `assets/scenario/hero/stage21.json`: 허저 "남문을 통과할 수 있을 것 같으냐!"(남문밖에 길이 없어 "나올 줄 알았다"가 뻔함). "남문 밖" 구역을 문 앞 5×3에서 성벽 남쪽 강 북쪽 전체(0,16 20×10)로 — 유비가 지나쳐 버림. 들판·여수 강가·남쪽 기슭 도착으로 나오던 동쪽 숲 복병·관우 장비 합류와 하후연·강 건너 복병을 3·5·6라운드로, 장합 기병을 남문 밖 도착에서 떼어 4라운드로; 구역 3·4·5 삭제 — 사용자: 가만히 있다가 유벽 퇴각 뒤 천천히 내려가니 너무 쉬움
+- `assets/scenario/hero/stage09.json`(`gaolan-boast`·`zhanghe-out`·`gaolan-blurts`): 고람 대사 셋 — 2라운드 허세, 4라운드 장합 출진 뒤 허세와 봉기의 "자중하시오", 처음 맞으면(`hp:gaolan<100`) 계교의 국의 노병 팔백을 흘리고 봉기가 막고 유비가 서두름. 21장 여남에서 고람이 만총 대신 떠벌이가 될 복선 — 사용자 승낙
+- `tools/mapgen/layouts/hero/map21gen.py`(새), `map21.txt`, `maps/map21.json`, `stage21.json`: B21 맵을 20×32에서 20×52로 — 성(0~15행)은 그대로, 남문 밖 들판에서 산에 둘린 골짜기로 좁아져 동쪽 샛길·서쪽 골짜기·여수(다리 10, 여울 14)·서쪽 굽이를 지나 (9,49)의 작은 성까지. 복병 3(동쪽 숲)·4(장합)·5(관우·장비·하후연)·6(강 건너)·7(굽이, 새)·8(성 앞, 새)라운드, 북문 증원 3·5·7·9 → 3·6·9, 턴 제한 25 → 30, 유비·간옹 대사 넷 — 사용자: 맵이 너무 짧음, 좁고 길게. 측정: `_balance ai` 0/3, `_stageneural neural` 어려움 0/6·쉬움 0/4(쉬움은 네 판 모두 31라운드 시간 초과로 유비 생존 — 학습형 AI가 새 맵에서 남쪽으로 가지 않음). `stage21gen.py`는 맵을 빼면 더는 지금 stage21.json을 만들지 않음(오래된 생성기)
 
 ## 2026-11-18 여남 조조군 부관을 만총에서 고람으로
 
@@ -3399,3 +3470,11 @@
 - `assets/scenario/hero/story21.json`·`tools/mapgen/layouts/hero/stage21gen.py`: `c21-g05`(유비 "……악진. 원소 밑에 있던 고람까지.")·`c21-g06`·`g07`·`g09`(고람이 허도의 깃발·군호와 관우·장비를 떼어 놓는 계책을 자랑하다 "진짜는……"에서 끊김)·`c21-g10`(악진 "고 장군, 말은 그쯤 하시오!")
 - `assets/scenario/hero/stage21.json`(`Deputy: gaolan`)·`assets/scenes/ch21.json`·`tools/scene_maps/ch21_scenes.py`(장면 캐스트 `고람`, `Faction: wei`): 부관·장면 인물 교체. `characters_story.json`의 `manchong`은 다른 곳에 쓰이지 않아 삭제
 - `docs/fullstory.md`·`logic-traits.md`·`data-speech-style.md`(고람 항목 새로)
+
+- 결정: 패기(`ambition`)는 책략 — 패기를 가진 장수가 패기 책략으로 자신에게 공격·정신·방어·순발·사기 버프를 건다 · 이유: 개전 시 자동 버프가 아니라 직접 쓰는 책략이어야 한다는 사용자 지시. 매 차례 버프는 패도가 맡는다
+- `assets/data/traits.json`(패기: `strategy`, 효과 없음)·`skills.json`(`ambition` 책략, MP 36, 3턴, 자신)·`internal/content/vocab.go`·`internal/core/engine.go`(쓰는 데가 없어진 `start_buff:` 효과와 `startStatus` 안의 반복 삭제)·관련 시험 셋
+- 결정: 장판파(25v) 피난민은 민중 도트와 "민중" 군으로, 양양 공방전(27v)의 유기 함대는 "유기군"으로 · 이유: 피난민이 경보병 도트·유비군 차례로, 유기 함대가 유비군으로 나왔다(사용자 지적)
+- `assets/data/characters_story.json`(`villager`에 `Sprite: commoner_man`, `villager_woman`·`villager_elder` 새로)·`assets/scenario/hero/stage25v.json`(피난민 여섯을 세 모습으로, `Faction: han`, `Armies`에 민중)
+- `assets/data/game.json`(`liuqi` 진영)·`stage27v.json`(유기 함대 `Faction: liuqi`, 군 이름 유기군)
+- 결정: 22장 강하의 정체불명 무리는 태산 도적 진영 대신 새 진영 "복면군"(`masked`, 회색)으로 · 이유: 13장 장패의 태산 도적과 이름·색이 겹쳐 어색하다(사용자 지적)
+- `assets/data/game.json`(`masked` 진영)·`assets/scenario/hero/stage22.json`(복면 유닛 `Faction: masked`, 군 이름 복면군)

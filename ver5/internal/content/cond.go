@@ -19,14 +19,15 @@ type Cond struct {
 // Story nodes may use storyConds; battle events may use battleConds.
 var storyConds = map[string]bool{"flag": true, "alive": true, "dead": true, "party": true, "choice": true, "won": true}
 var battleConds = map[string]bool{"flag": true, "choice": true, "won": true, "party": true, "round": true, "turnstart": true, "defeated": true,
-	"alldefeated": true, "alive": true, "at": true, "allat": true, "adjacent": true, "hp": true, "duel": true, "fled": true, "any": true}
+	"alldefeated": true, "alive": true, "at": true, "allat": true, "adjacent": true, "hp": true, "duel": true, "fled": true, "since": true, "any": true}
 
 var turnNames = []string{"ally", "support", "enemy"}
 
 // ParseCond reads "!?op:args". The forms are flag:key[>=N], alive:X[>=N] (in battle, at least N of X
 // stand), dead|party|defeated|alldefeated:X,
 // choice:node=option, won:stage, round>=N, turnstart:faction, at|allat:X:area, adjacent:A:B,
-// hp:X<N, duel:id, fled:X (left the field by flight) and any:[cond, cond]. A leading ! negates.
+// hp:X<N, duel:id, fled:X (left the field by flight), since:event>=N (N rounds or more since the battle event
+// last ran) and any:[cond, cond]. A leading ! negates.
 func ParseCond(s string) (Cond, error) {
 	bad := func() (Cond, error) { return Cond{}, fmt.Errorf("condition %q", s) }
 	c := Cond{N: 1}
@@ -47,7 +48,7 @@ func ParseCond(s string) (Cond, error) {
 	}
 	c.Op, c.Arg = op, arg
 	switch op {
-	case "flag", "alive":
+	case "flag", "alive", "since":
 		if name, n, ok := strings.Cut(arg, ">="); ok {
 			v, err := strconv.Atoi(n)
 			if err != nil || name == "" {
@@ -115,6 +116,7 @@ type battleRefs struct {
 	targets map[string]bool // unit ids and group names
 	areas   map[int]bool
 	duels   map[string]bool
+	events  map[string]bool // the stage's battle event ids
 }
 
 // validateCond checks one condition string: story nodes pass refs nil, battle events the stage's refs.
@@ -173,6 +175,10 @@ func (d *Data) validateParsed(s string, c Cond, refs *battleRefs) error {
 	case "duel":
 		if !refs.duels[c.Arg] {
 			return fmt.Errorf("condition %q: no duel %s", s, c.Arg)
+		}
+	case "since":
+		if !refs.events[c.Arg] || c.N < 0 {
+			return fmt.Errorf("condition %q: no battle event %s", s, c.Arg)
 		}
 	case "any":
 		for _, sub := range c.Any {

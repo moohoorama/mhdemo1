@@ -18,13 +18,14 @@ import (
 // tentatively, then choose an action and its target. The tentative move lives in a
 // sandbox engine so it can be taken back; nothing reaches the session until confirmed.
 type order struct {
-	actor   string
-	stage   string // move, menu, sub, target
-	sandbox *core.Engine
-	move    *core.Command
-	sub     string       // skill, item
-	pick    core.Command // the chosen action, Target unset
-	armed   hoverCell    // touch: the cell tapped once, waiting for a second tap
+	actor    string
+	stage    string // move, menu, sub, target
+	sandbox  *core.Engine
+	move     *core.Command
+	sub      string // skill, item
+	skillTab string
+	pick     core.Command // the chosen action, Target unset
+	armed    hoverCell    // touch: the cell tapped once, waiting for a second tap
 }
 
 // engine is where the order's options are computed: the sandbox after a tentative move.
@@ -281,8 +282,13 @@ func (g *Game) subItems() []entry {
 				ok[c.Skill] = true
 			}
 		}
-		for _, id := range u.Skills {
+		ids := append([]string(nil), u.Skills...)
+		sort.SliceStable(ids, func(i, j int) bool { return g.S.Data.Skills[ids[i]].Cost < g.S.Data.Skills[ids[j]].Cost })
+		for _, id := range ids {
 			s := g.S.Data.Skills[id]
+			if skillCategory(s) != g.ord.skillTab {
+				continue
+			}
 			var click func()
 			if ok[id] {
 				pick := core.Command{Kind: "skill", Skill: id}
@@ -329,6 +335,23 @@ func (g *Game) subItems() []entry {
 	return out
 }
 
+func skillCategory(s content.Skill) string {
+	switch {
+	case s.Kind == "physical" || s.Name == "조준" || s.Name == "장전" || s.Name == "반격":
+		return "무예"
+	case s.Kind == "magic":
+		return "공격"
+	case s.Kind == "status":
+		return "계략"
+	case s.Kind == "heal":
+		return "회복"
+	case s.Kind == "buff":
+		return "고무"
+	default:
+		return "진법"
+	}
+}
+
 // drawMenu draws the action menu (and an open sub-list) beside the acting unit.
 func (g *Game) drawMenu(dst *ebiten.Image) {
 	if g.ord.stage != "menu" && g.ord.stage != "sub" || g.busy() {
@@ -355,7 +378,36 @@ func (g *Game) drawMenuAt(dst *ebiten.Image, sx, sy float64) {
 	r := g.drawPanel(dst, panelSpec{items: g.menuItems(), x: x, y: int(sy) - 110, w: 112, gauge: -1, anim: &g.menuAnim, hoveredOut: &help, held: held})
 	if g.ord.stage == "sub" {
 		g.subAnim.touch(key+"/"+g.ord.sub, g.uiSeconds)
-		spec := panelSpec{items: g.subItems(), x: r.Max.X + 4, y: r.Min.Y + 32, w: 200, gauge: -1, descLines: 3, anim: &g.subAnim, held: -1}
+		tabWidth := 0
+		var tabs []entry
+		if g.ord.sub == "skill" {
+			present := map[string]bool{}
+			if u := g.unitView(g.view(), g.ord.actor); u != nil {
+				for _, id := range u.Skills {
+					present[skillCategory(g.S.Data.Skills[id])] = true
+				}
+			}
+			if !present[g.ord.skillTab] {
+				g.ord.skillTab = ""
+			}
+			for _, name := range []string{"무예", "공격", "계략", "회복", "고무", "진법"} {
+				if !present[name] {
+					continue
+				}
+				if g.ord.skillTab == "" {
+					g.ord.skillTab = name
+				}
+				category := name
+				tabs = append(tabs, entry{menuItem: menuItem{name, func() { g.ord.skillTab = category }}, icon: "skill"})
+			}
+			if len(tabs) > 0 {
+				tabWidth = 76
+			}
+		}
+		spec := panelSpec{items: g.subItems(), x: r.Max.X + 4 + tabWidth, y: r.Min.Y + 32, w: 230, gauge: -1, descLines: 3, anim: &g.subAnim, held: -1}
+		if tabWidth > 0 {
+			spec.minRows = len(tabs)
+		}
 		if spec.x+spec.w > g.panelBounds().Max.X {
 			spec.x = r.Min.X - 4 - spec.w // no room on the right: open to the left
 		}
@@ -367,6 +419,21 @@ func (g *Game) drawMenuAt(dst *ebiten.Image, sx, sy float64) {
 		}
 		tip := ""
 		spec.tipOut = &tip
+		if tabWidth > 0 {
+			bounds := g.panelBounds()
+			spec.x = max(bounds.Min.X+tabWidth, min(bounds.Max.X-spec.w, spec.x))
+			tabSpec := panelSpec{items: tabs, x: spec.x - tabWidth, y: spec.y, w: tabWidth, gauge: -1, anim: &g.subAnim, held: -1, minRows: max(len(tabs), len(spec.items))}
+			for i, tab := range tabs {
+				if tab.label == g.ord.skillTab {
+					tabSpec.held = i
+				}
+			}
+			// Both panels share their top edge even when the list is taller.
+			h := max(g.panelHeight(spec), g.panelHeight(tabSpec))
+			spec.y = max(bounds.Min.Y, min(bounds.Max.Y-h, spec.y))
+			tabSpec.y = spec.y
+			g.drawPanel(dst, tabSpec)
+		}
 		sr := g.drawPanel(dst, spec)
 		if tip != "" {
 			g.tooltip(dst, tip, sr.Max.X+6, sr.Min.Y)

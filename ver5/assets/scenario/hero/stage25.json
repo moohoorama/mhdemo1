@@ -1,0 +1,930 @@
+{
+ "ID": "B25",
+ "Name": "신야 전투",
+ "Width": 0,
+ "Height": 0,
+ "Max": 10,
+ "Required": [
+  "liubei",
+  "guanyu",
+  "mizhu"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "defeated:caoren"
+   ],
+   "Text": "조인을 물리치거나 북서쪽 끝으로 쫓아낸다"
+  }
+ ],
+ "Defeat": [
+  {
+   "If": [
+    "defeated:guanyu"
+   ],
+   "Text": "관우 퇴각"
+  },
+  {
+   "If": [
+    "defeated:mizhu"
+   ],
+   "Text": "미축 퇴각"
+  }
+ ],
+ "Sub": [
+  {
+   "ID": "caoren",
+   "Text": "조인이 북서쪽 끝에 닿기 전에 물리친다",
+   "If": [
+    "defeated:caoren",
+    "!fled:caoren"
+   ],
+   "Flag": "flag-b25-caoren",
+   "Reward": {
+    "golden_breastplate": 1
+   }
+  }
+ ],
+ "TurnLimit": 0,
+ "Map": "map25.json",
+ "Allies": [
+  {
+   "X": 2,
+   "Y": 19
+  },
+  {
+   "X": 3,
+   "Y": 19
+  },
+  {
+   "X": 2,
+   "Y": 20
+  },
+  {
+   "X": 3,
+   "Y": 20
+  },
+  {
+   "X": 4,
+   "Y": 19
+  },
+  {
+   "X": 4,
+   "Y": 20
+  },
+  {
+   "X": 16,
+   "Y": 17
+  },
+  {
+   "X": 17,
+   "Y": 17
+  },
+  {
+   "X": 16,
+   "Y": 18
+  },
+  {
+   "X": 15,
+   "Y": 17
+  }
+ ],
+ "Recommend": {
+  "liubei": {
+   "X": 2,
+   "Y": 19
+  },
+  "guanyu": {
+   "X": 16,
+   "Y": 17
+  },
+  "mizhu": {
+   "X": 15,
+   "Y": 17
+  }
+ },
+ "Groups": [
+  {
+   "Name": "본대",
+   "Area": 1,
+   "Required": [
+    "liubei"
+   ]
+  },
+  {
+   "Name": "둑의 군사",
+   "Area": 2,
+   "Required": [
+    "guanyu",
+    "mizhu"
+   ]
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "caoren",
+   "X": 16,
+   "Y": 7,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Rank": "boss"
+  },
+  {
+   "Character": "caohong",
+   "X": 14,
+   "Y": 7,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Rank": "officer"
+  },
+  {
+   "Character": "xuchu",
+   "X": 17,
+   "Y": 8,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 60,
+   "Rank": "troop"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 13,
+   "Y": 6,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 6,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 8,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 14,
+   "Y": 8,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 9,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 13,
+   "Y": 9,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 11,
+   "Y": 9,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 9,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 10,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 10,
+   "Y": 7,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 11,
+   "Y": 10,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 14,
+   "Y": 10,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 18,
+   "Y": 8,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rearguard",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 18,
+   "Y": 10,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rearguard",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 17,
+   "Y": 10,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rearguard",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 19,
+   "Y": 9,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rearguard",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 16,
+   "Y": 11,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rearguard",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 19,
+   "Y": 7,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rearguard",
+   "Shift": -0.12
+  }
+ ],
+ "Reward": {
+  "money": 2000
+ },
+ "Duels": [
+  {
+   "ID": "xinye-zhangfei-xuchu",
+   "Ally": "zhangfei",
+   "Enemy": "xuchu",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "허저가 장비와 수십 합을 겨루다 불과 물에 지친 군사를 끌고 물러났다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "장비가 허저를 막아서다",
+     "Speech": "거기 뚱보! 박망에서 못 본 얼굴이구먼. 한판 붙자!",
+     "Side": 0,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "talk",
+     "Title": "허저가 받다",
+     "Speech": "장익덕이냐. 뒤를 막는 김에 네 목도 가져가마!",
+     "Side": 1,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "approach",
+     "Title": "두 장수가 물웅덩이를 차며 맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 사모 끝으로 떠 보자 허저가 가볍게 받아 넘기다",
+     "Speech": "(이게 장비의 사모인가…… 소문보다 빠르다.)",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "허저가 곧바로 되받아 치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "허저가 낮게 웃다",
+     "Speech": "호치라 불리는 몸이다. 네 힘이 얼마나 되는지 보자.",
+     "Side": 1,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "press",
+     "Title": "장비가 몰아붙이자 허저가 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "장비가 거푸 사모을 휘몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "허저가 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "dodge",
+     "Title": "허저가 크게 휘둘렀으나 장비가 몸을 틀어 피하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 신이 나다",
+     "Speech": "하하! 뚱보, 힘 하나는 제법이구먼! 진작 이런 놈이랑 붙어 보고 싶었슈!",
+     "Side": 0,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "block",
+     "Title": "허저가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "허저가 칼을 내리치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "허저가 물을 차며 소리치다",
+     "Speech": "물이 불어난다! 이 자리에서 오래 끌 수 없다!",
+     "Side": 1,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "장비가 힘을 실어 내려치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "허저가 정면으로 맞받아 불꽃이 튀다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "backstep",
+     "Title": "허저가 말을 물려 거리를 벌리다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.6
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 이를 갈다",
+     "Speech": "불에 물에 휩쓸렸는데도 혼자 버티고 서 있구먼! 대단한 뚱보여!",
+     "Side": 0,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "close",
+     "Title": "허저가 다시 거리를 좁히다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "장비가 말을 몰아 들이치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "dodge",
+     "Title": "허저가 크게 휘둘렀으나 장비가 몸을 틀어 피하다",
+     "Speech": "어딜 쑤셔!",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "허저가 발을 구르다",
+     "Speech": "호치를 얕보지 마라! 군사 앞에서 물러설 수 없다!",
+     "Side": 1,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "press",
+     "Title": "허저가 몰아붙이자 장비가 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "허저가 거푸 칼을 휘몰아치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장비가 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 허저의 칼과 맞물려 힘겨루기를 하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 크게 웃다",
+     "Speech": "하하! 안 물러나면 어쩔겨! 오늘 끝장을 볼 테니께!",
+     "Side": 0,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 사모을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "허저가 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "허저가 힘껏 내려치나 장비가 막아 내다",
+     "Speech": "이 칼을 받아라!",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-dodge",
+     "Title": "허저의 일격을 장비가 간신히 피하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "허저가 숨을 몰아쉬다",
+     "Speech": "(불에 물에 다 지쳤는데도…… 이 사내는 지치지 않는군.)",
+     "Side": 1,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "press",
+     "Title": "장비가 몰아붙이자 허저가 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "장비가 거푸 사모을 휘몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "허저가 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 사모를 고쳐 잡다",
+     "Speech": "힘이 빠진 것 같구먼, 뚱보. 슬슬 끝내 볼랑께!",
+     "Side": 0,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "block",
+     "Title": "허저가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장비가 힘으로 누르자 허저가 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "허저가 주위를 둘러보다",
+     "Speech": "(말이 빠진다…… 군사들도 지쳐 있다. 이 이상은 무리다!)",
+     "Side": 1,
+     "Duration": 3.5
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 사모을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "허저가 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장비가 힘으로 누르자 허저가 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "허저가 물러서다",
+     "Speech": "……오늘은 불과 물이 네 편이다. 다음엔 맨땅에서 보자!",
+     "Side": 1,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "retreat",
+     "Title": "허저가 북서쪽으로 물러나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "허저가 퇴각하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    }
+   ]
+  }
+ ],
+ "Areas": [
+  {
+   "ID": 1,
+   "Rect": {
+    "X": 2,
+    "Y": 19,
+    "W": 3,
+    "H": 2
+   },
+   "Name": "본대 자리",
+   "Description": "남서쪽. 유비와 다섯"
+  },
+  {
+   "ID": 2,
+   "Rect": {
+    "X": 15,
+    "Y": 17,
+    "W": 3,
+    "H": 2
+   },
+   "Name": "여울 가",
+   "Description": "남동쪽 백하 여울 가. 관우·미축과 둘"
+  },
+  {
+   "ID": 20,
+   "Rect": {
+    "X": 0,
+    "Y": 0,
+    "W": 4,
+    "H": 2
+   },
+   "Name": "완으로 가는 길",
+   "Description": "북서쪽 끝. 조인군이 닿으면 빠져나간다"
+  },
+  {
+   "ID": 21,
+   "Rect": {
+    "X": 0,
+    "Y": 8,
+    "W": 26,
+    "H": 8
+   },
+   "Name": "들판 가운데",
+   "Description": "아군이 들어서면 허저와 기병이 돌아서서 막는다"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "routed",
+   "Do": [
+    {
+     "Kind": "buff",
+     "Targets": [
+      "rout",
+      "rearguard"
+     ],
+     "Stat": "attack",
+     "Value": -30
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "rout",
+      "rearguard"
+     ],
+     "Stat": "defense",
+     "Value": -30
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "rout",
+      "rearguard"
+     ],
+     "Stat": "mind",
+     "Value": -30
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "rout",
+      "rearguard"
+     ],
+     "Stat": "agility",
+     "Value": -30
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "rout",
+      "rearguard"
+     ],
+     "Stat": "morale",
+     "Value": -30
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "xuchu"
+     ],
+     "Stat": "attack",
+     "Value": -30,
+     "Turns": 1
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "xuchu"
+     ],
+     "Stat": "defense",
+     "Value": -30,
+     "Turns": 1
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "xuchu"
+     ],
+     "Stat": "mind",
+     "Value": -30,
+     "Turns": 1
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "xuchu"
+     ],
+     "Stat": "agility",
+     "Value": -30,
+     "Turns": 1
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "xuchu"
+     ],
+     "Stat": "morale",
+     "Value": -30,
+     "Turns": 1
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "rout"
+     ],
+     "Stat": "speed",
+     "Value": -2
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caoren",
+       "Text": "불에 물까지……. 완으로 물러난다. 대오는 버려라, 살아서 가는 것이 먼저다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "jianyong",
+       "Text": "현덕, 그냥 둬도 달아날 군사일세."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "달아나게 두면 열흘 뒤에 다시 오네. 조인만은 잡아야 하네."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "mizhu",
+       "Text": "운장, 여울이 얕은 데는 저쪽입니다. 자루를 쌓으며 보아 두었습니다."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "guanyu",
+       "Text": "앞장서시오, 자중."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "rearguard-turns",
+   "If": [
+    "at:player:21"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "xuchu",
+      "rearguard"
+     ],
+     "Policy": "react"
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "xuchu",
+       "Text": "자효는 먼저 가시오! 뒤는 이 허저가 막소!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "caoren-gone",
+   "If": [
+    "fled:caoren"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caoren",
+       "Text": "신야에서 두 번이나……. 유비, 이 빚은 잊지 않는다!",
+       "Offstage": true
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "Faction": "wei",
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "wei",
+   "Name": "조조군"
+  }
+ ]
+}

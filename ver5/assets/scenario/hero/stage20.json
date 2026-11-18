@@ -418,21 +418,15 @@
       [
        {
         "Kind": "move",
-        "Unit": "caiyang",
-        "To": {
-         "X": 16,
-         "Y": 16
-        },
-        "Facing": "SE"
-       },
-       {
-        "Kind": "move",
         "Unit": "guanyu",
-        "To": {
-         "X": 17,
-         "Y": 17
-        },
-        "Facing": "NW"
+        "By": "caiyang"
+       }
+      ],
+      [
+       {
+        "Kind": "face",
+        "Unit": "caiyang",
+        "By": "guanyu"
        }
       ]
      ]
@@ -505,14 +499,14 @@
    "Outcome": "victory",
    "AllyResult": "stay",
    "EnemyResult": "death",
-   "Text": "관우가 단칼에 채양을 베었다.",
+   "Text": "관우가 채양을 베었다.",
    "Beats": [
     {
      "Kind": "talk",
      "Title": "채양이 관우를 막아서다",
      "Speech": "승상께서도 너를 잡아 오라 하셨다. 진기의 원수, 오늘 갚는다!",
      "Side": 1,
-     "Duration": 2.8
+     "Duration": 3.6
     },
     {
      "Kind": "approach",
@@ -523,24 +517,178 @@
     },
     {
      "Kind": "block",
-     "Title": "관우가 채양의 창을 걷어 내다",
+     "Title": "채양이 창 끝으로 떠 보자 관우가 가볍게 받아 넘기다",
      "Speech": "",
      "Side": 1,
      "Duration": 1.05
     },
     {
-     "Kind": "critical",
-     "Title": "관우가 단칼에 내리치다",
+     "Kind": "block",
+     "Title": "관우가 곧바로 되받아 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "채양이 소리치다",
+     "Speech": "승상의 은혜를 입고도 인사 한마디 없이 떠난 의리 없는 놈!",
+     "Side": 1,
+     "Duration": 3.5
+    },
+    {
+     "Kind": "press",
+     "Title": "채양이 몰아붙이자 관우가 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "채양이 거푸 창을 휘몰아치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "관우가 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "dodge",
+     "Title": "채양이 크게 휘둘렀으나 관우가 몸을 틀어 피하다",
+     "Speech": "가볍군.",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 담담히 받다",
+     "Speech": "은혜는 갚았다. 안량과 문추의 목으로 값은 치렀다.",
+     "Side": 0,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "press",
+     "Title": "관우가 몰아붙이자 채양이 뒷걸음질 치다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "관우가 거푸 청룡도을 휘몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "채양이 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "채양이 이를 악물다",
+     "Speech": "(이놈, 소문보다 무겁다……!)",
+     "Side": 1,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "채양이 말을 몰아 들이치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 청룡도을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "채양이 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "채양이 악을 쓰다",
+     "Speech": "진기를 벤 죄는 네 목으로 갚아야 한다!",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "채양이 힘을 실어 내려치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "관우가 정면으로 맞받아 불꽃이 튀다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 고삐를 당기다",
+     "Speech": "채양. 길을 비켜라. 네 목을 벨 생각은 없었다.",
+     "Side": 0,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "관우가 힘으로 누르자 채양이 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "관우가 힘껏 내려치나 채양이 막아 내다",
+     "Speech": "하앗!",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "채양이 비웃다",
+     "Speech": "비키라니, 끝까지 거만한 놈……! 죽어라!",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "critical",
+     "Title": "관우가 결정타를 넣다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
     },
     {
      "Kind": "win",
      "Title": "채양이 말에서 떨어지다",
      "Speech": "",
      "Side": 0,
-     "Duration": 2.0
+     "Duration": 1.6
     }
    ]
   }

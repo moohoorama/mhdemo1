@@ -1,0 +1,176 @@
+{
+ "Scenes": {
+  "c27-start": {
+   "Map": "S_bridge",
+   "Nodes": ["c27-start", "c27-a01", "c27-a02", "c27-a03", "c27-a04", "c27-a05", "c27-a06"],
+   "Ambient": [{"CamAt": [6, 7]}],
+   "Cast": {
+    "유비": {"At": [5, 8], "Face": "NE"},
+    "장비": {"At": [7, 9], "Face": "NE"},
+    "간옹": {"At": [4, 8], "Face": "NE"},
+    "유기": {"At": [5, 7], "Face": "SW"},
+    "관우": {"At": [4, 7], "Face": "SW"},
+    "제갈량": {"At": [6, 7], "Face": "SW"}
+   },
+   "Beats": {
+    "c27-a03": [
+     [
+      [{"Actor": "제갈량", "Move": [6, 8], "Face": "NW"}, {"Actor": "유비", "Face": "SE"}]
+     ]
+    ]
+   }
+  },
+  "c27-chaisang": {
+   "Map": "S_xuzhou_hall",
+   "Nodes": ["c27-chaisang", "c27-b00", "c27-b01", "c27-b02", "c27-b03", "c27-b04", "c27-b05", "c27-b06"],
+   "Cast": {
+    "손권": {"At": [4, 1], "Face": "SW"},
+    "주유": {"At": [2, 2], "Face": "SE"},
+    "노숙": {"At": [6, 2], "Face": "NW"},
+    "제갈량": {"At": [4, 4], "Face": "NE"},
+    "오군#1": {"At": [1, 6], "Face": "NE", "Sprite": "light_infantry", "Faction": "wu"},
+    "오군#2": {"At": [7, 6], "Face": "NW", "Sprite": "light_infantry", "Faction": "wu"}
+   },
+   "Beats": {
+    "c27-b04": [
+     [
+      [{"Actor": "손권", "Play": "action"}, {"Shake": 0.5}],
+      [{"Actor": "노숙", "Emote": "!"}]
+     ]
+    ],
+    "c27-b05": [
+     [
+      [{"Actor": "주유", "Face": "SW"}]
+     ]
+    ]
+   }
+  },
+  "c27-camp": {
+   "Map": "S_guangling_camp",
+   "Nodes": ["c27-camp", "c27-c01", "c27-c02", "c27-c03", "c27-c04"],
+   "Cast": {
+    "유비": {"At": [6, 6], "Face": "SE"},
+    "장비": {"At": [6, 5], "Face": "SE"},
+    "제갈량": {"At": [5, 7], "Face": "SE"},
+    "간옹": {"At": [4, 6], "Face": "SE"},
+    "곽준": {"At": [12, 6], "Face": "NW", "Off": true},
+    "부곡#1": {"At": [12, 5], "Face": "NW", "Sprite": "guards", "Faction": "shu", "Off": true},
+    "부곡#2": {"At": [12, 7], "Face": "NW", "Sprite": "guards", "Faction": "shu", "Off": true}
+   },
+   "Beats": {
+    "c27-c01": [
+     [
+      [{"Actor": "곽준", "Enter": [13, 6], "Move": [8, 6], "Face": "NW"}, {"Actor": "부곡#1", "Enter": [13, 6], "Via": [[9, 6]], "Move": [9, 5], "After": 0.6, "Face": "NW"}, {"Actor": "부곡#2", "Enter": [13, 6], "Via": [[10, 6]], "Move": [9, 7], "After": 1.2, "Face": "NW"}]
+     ]
+    ]
+   }
+  },
+  "c27-chibi": {
+   "Map": "S_bridge",
+   "Time": "night",
+   "Nodes": ["c27-chibi", "c27-d01", "c27-d02", "c27-d03", "c27-d04", "c27-d05"],
+   "Ambient": [{"CamAt": [6, 6]}, {"Effect": "bigfire", "At": [3, 1]}, {"Effect": "bigfire", "At": [8, 1]}, {"Effect": "bigfire", "At": [11, 2]}],
+   "Cast": {
+    "유비": {"At": [5, 8], "Face": "NE"},
+    "제갈량": {"At": [6, 8], "Face": "NW"},
+    "관우": {"At": [4, 8], "Face": "SE"},
+    "장비": {"At": [5, 9], "Face": "NE"},
+    "유기": {"At": [10, 8], "Face": "NE"}
+   },
+   "Beats": {
+    "c27-d01": [
+     [
+      [{"Actor": "제갈량", "Face": "NE"}]
+     ]
+    ],
+    "c27-d02": [
+     [
+      [{"Actor": "제갈량", "Face": "SW"}, {"Actor": "장비", "Face": "NE"}]
+     ]
+    ],
+    "c27-d03": [
+     [
+      [{"Actor": "제갈량", "Face": "NW"}]
+     ]
+    ],
+    "c27-d05": [
+     [
+      [{"Actor": "유기", "Move": [11, 7], "Speed": 2}],
+      [{"Actor": "유기", "Play": "action", "Emote": "!"}, {"Shake": 0.4}]
+     ]
+    ]
+   }
+  },
+  "c27-huarong": {
+   "Map": "S_field_road",
+   "Time": "night",
+   "Nodes": ["c27-huarong", "c27-e01", "c27-e02", "c27-e03", "c27-e04", "c27-e05", "c27-e06", "c27-e07", "c27-e08"],
+   "Cast": {
+    "관우": {"At": [4, 5], "Face": "SE"},
+    "교도수#1": {"At": [4, 3], "Face": "SE", "Sprite": "light_infantry", "Faction": "shu"},
+    "교도수#2": {"At": [4, 7], "Face": "SE", "Sprite": "light_infantry", "Faction": "shu"},
+    "교도수#3": {"At": [3, 4], "Face": "SE", "Sprite": "light_infantry", "Faction": "shu"},
+    "교도수#4": {"At": [3, 6], "Face": "SE", "Sprite": "light_infantry", "Faction": "shu"},
+    "조조": {"At": [7, 5], "Face": "NW"},
+    "허저": {"At": [8, 4], "Face": "NW"},
+    "패잔병#1": {"At": [9, 5], "Face": "NW", "Sprite": "wounded_noncombat", "Faction": "wei"},
+    "패잔병#2": {"At": [8, 6], "Face": "NW", "Sprite": "wounded_noncombat", "Faction": "wei"},
+    "패잔병#3": {"At": [10, 4], "Face": "NW", "Sprite": "wounded_noncombat", "Faction": "wei"},
+    "장료": {"At": [11, 5], "Face": "NW", "Off": true}
+   },
+   "Beats": {
+    "c27-e06": [
+     [
+      [{"Actor": "장료", "Enter": [12, 6], "Move": [9, 6], "Face": "NW"}]
+     ]
+    ],
+    "c27-e07": [
+     [
+      [{"Actor": "관우", "Face": "SE"}]
+     ]
+    ],
+    "c27-e08": [
+     [
+      [{"Actor": "관우", "Face": "NE"}]
+     ],
+     [
+      [{"Actor": "교도수#1", "Move": [4, 2]}, {"Actor": "교도수#2", "Move": [4, 8]}, {"Actor": "교도수#3", "Move": [3, 3]}, {"Actor": "교도수#4", "Move": [3, 7]}, {"Actor": "관우", "Move": [5, 7], "Face": "NE"}],
+      [{"Actor": "조조", "Move": [-3, 5], "Exit": true}, {"Actor": "허저", "Move": [-3, 5], "Exit": true, "After": 0.3}, {"Actor": "패잔병#1", "Move": [-3, 5], "Exit": true, "After": 0.6}, {"Actor": "패잔병#2", "Move": [-3, 5], "Exit": true, "After": 0.9}, {"Actor": "패잔병#3", "Move": [-3, 5], "Exit": true, "After": 1.2}],
+      [{"Actor": "장료", "Move": [5, 5], "Face": "SW"}],
+      [{"Actor": "장료", "Play": "action"}],
+      [{"Actor": "장료", "Move": [-3, 5], "Exit": true}]
+     ]
+    ]
+   }
+  },
+  "c27-end-camp": {
+   "Map": "S_guangling_camp",
+   "Nodes": ["c27-end-camp", "c27-f01", "c27-f02", "c27-f03", "c27-f04", "c27-f05", "c27-f06", "c27-f07", "c27-f08", "c27-f09", "c27-f10", "c27-f11", "c27-f12"],
+   "Cast": {
+    "유비": {"At": [6, 6], "Face": "SE"},
+    "장비": {"At": [6, 5], "Face": "SE"},
+    "제갈량": {"At": [5, 7], "Face": "SE"},
+    "간옹": {"At": [4, 6], "Face": "SE"},
+    "관우": {"At": [12, 6], "Face": "NW", "Off": true}
+   },
+   "Beats": {
+    "c27-f01": [
+     [
+      [{"Actor": "관우", "Enter": [13, 6], "Move": [8, 6], "Face": "NW"}],
+      [{"Actor": "유비", "Face": "SE"}]
+     ]
+    ],
+    "c27-f04": [
+     [
+      [{"Actor": "장비", "Face": "SE"}]
+     ]
+    ],
+    "c27-f11": [
+     [
+      [{"Actor": "유비", "Emote": "…"}]
+     ]
+    ]
+   }
+  }
+ }
+}

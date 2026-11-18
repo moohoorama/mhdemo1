@@ -1,0 +1,89 @@
+{
+ "Scenes": {
+  "c27v-start": {
+   "Map": "S_council",
+   "Nodes": ["c27v-start", "c27v-a01", "c27v-a02", "c27v-a03", "c27v-a04", "c27v-a05", "c27v-a06", "c27v-a07", "c27v-a08", "c27v-a09"],
+   "Cast": {
+    "주유": {"At": [3, 1], "Face": "SW"},
+    "노숙": {"At": [4, 1], "Face": "SW"},
+    "유기": {"At": [1, 3], "Face": "SE"},
+    "유비": {"At": [3, 5], "Face": "NE"},
+    "관우": {"At": [2, 5], "Face": "NE"},
+    "장비": {"At": [4, 5], "Face": "NE"},
+    "제갈량": {"At": [5, 5], "Face": "NE"},
+    "서서": {"At": [7, 5], "Face": "NE"},
+    "오군#1": {"At": [11, 2], "Face": "NW", "Sprite": "guards", "Faction": "wu"},
+    "오군#2": {"At": [11, 5], "Face": "NW", "Sprite": "guards", "Faction": "wu"}
+   },
+   "Beats": {
+    "c27v-a02": [
+     [
+      [{"Actor": "주유", "Play": "action"}]
+     ]
+    ],
+    "c27v-a03": [
+     [
+      [{"Actor": "유기", "Face": "NE"}]
+     ]
+    ],
+    "c27v-a06": [
+     [
+      [{"Actor": "주유", "Face": "SW"}]
+     ]
+    ],
+    "c27v-a09": [
+     [
+      [{"Actor": "장비", "Play": "action"}, {"Actor": "노숙", "Emote": "…"}]
+     ]
+    ]
+   }
+  },
+  "c27v-hall": {
+   "Map": "S_xuzhou_hall",
+   "Nodes": ["c27v-hall", "c27v-b01", "c27v-b02", "c27v-b03", "c27v-b04", "c27v-b05", "c27v-b06", "c27v-b07"],
+   "Cast": {
+    "유기": {"At": [4, 3], "Face": "NE"},
+    "유비": {"At": [2, 3], "Face": "SE"},
+    "제갈량": {"At": [2, 2], "Face": "SE"},
+    "관우": {"At": [2, 4], "Face": "SE"},
+    "장비": {"At": [3, 5], "Face": "NE"},
+    "주유": {"At": [6, 3], "Face": "NW"},
+    "노숙": {"At": [6, 4], "Face": "NW"},
+    "형주병#1": {"At": [1, 6], "Face": "NE", "Sprite": "light_infantry", "Faction": "jing"},
+    "형주병#2": {"At": [7, 6], "Face": "NW", "Sprite": "light_infantry", "Faction": "jing"}
+   },
+   "Beats": {
+    "c27v-b01": [
+     [
+      [{"Actor": "유기", "Face": "SW"}]
+     ]
+    ],
+    "c27v-b02": [
+     [
+      [{"Actor": "유비", "Play": "action"}]
+     ]
+    ],
+    "c27v-b03": [
+     [
+      [{"Actor": "유기", "Face": "SE"}]
+     ]
+    ],
+    "c27v-b04": [
+     [
+      [{"Actor": "주유", "Face": "NW"}]
+     ]
+    ],
+    "c27v-b06": [
+     [
+      [{"Actor": "장비", "Face": "NE"}]
+     ]
+    ],
+    "c27v-b07": [
+     [
+      [{"Actor": "유비", "Face": "SW"}]
+     ]
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,30 @@
+# map23 신야 전투 · 팔문금쇄진 (26x26). Screen north = (0,0). Middle: 조인의 진 — outer fence ring (Chebyshev 4
+# around (12,12)) with eight gates (corners and side middles), inner fence ring (radius 2) open only on the SE side so
+# the 생문 (16,12) has a straight road to the axis (12,12). 신야성 (22,22) at the south corner with a low hill west of it,
+# 조인 본진 camp (3,3) north, 이전 camp (10,2) north-east.
+g-- g-- g-- g-- g-- g-- g-- gt- gt- g-- gt- g-- gt- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- gt- g--
+g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- gt- gt-
+g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- gk- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- gt- gt- gt-
+g-- g-- g-- gk- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt-
+g-- g-- g-- gt- l-- l-- l-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- l-- g-- l-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- gt-
+g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- gz- g-- gz- gz- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- gt-
+g-- g-- gt- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- gz- l-- gz- gz- gz- gz- l-- l-- gz- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- gt- gt- g-- g-- g-- gz- l-- gz- l-- l-- l-- l-- l-- gz- g-- g-- g-- g-- gt- g-- g-- g-- g--
+g-- g-- gt- g-- g-- g-- g-- g-- g-- l-- gz- l-- l-- l-- l-- l-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- gz- l-- gz- l-- l-- l-- l-- l-- gz- l-- l-- l-- l-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- gz- l-- gz- gz- gz- gz- l-- l-- gz- g-- g-- g-- gt- l-- g-- g-- g-- g--
+g-- g-- gt- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- g-- g-- g-- g-- g-- l-- g-- g-- g-- gt-
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- gz- g-- gz- gz- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g--
+g-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- gt- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g--
+gt- gt- g-- gt- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- u-- g-- l-- g-- g-- g-- g--
+gt- gt- gt- g-- gt- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- u-- u-- g-- l-- g-- g-- g-- g--
+gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- l-- u-- u-- u-- l-- go- g-- g-- g--
+gt- g-- gt- gt- g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- u-- u-- g-- g-- g-- g--
+g-- gt- g-- gt- g-- g-- g-- g-- gt- g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--

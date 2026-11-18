@@ -58,7 +58,7 @@
      {
       "If": [
        "flag:chapter3",
-       "flag:ideal"
+       "flag:flag-mode-virtual"
       ],
       "Portrait": "liubei_late_ideal"
      }

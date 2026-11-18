@@ -492,14 +492,14 @@
      "Title": "기령이 장비를 막아서다",
      "Speech": "장비냐! 관운장은 지난번에 꽁무니를 뺐지. 네 목이라도 받아 가겠다!",
      "Side": 1,
-     "Duration": 3.0
+     "Duration": 3.6
     },
     {
      "Kind": "talk",
      "Title": "장비가 발끈하다",
      "Speech": "뭐여? 둘째 형이 꽁무니를 빼? 이 자식, 말 다 했냐!",
      "Side": 0,
-     "Duration": 2.6
+     "Duration": 3.4
     },
     {
      "Kind": "approach",
@@ -510,94 +510,220 @@
     },
     {
      "Kind": "block",
-     "Title": "장비가 삼첨도를 받아 내다",
+     "Title": "기령이 삼첨도 끝으로 떠 보자 장비가 가볍게 받아 넘기다",
      "Speech": "간지럽구먼! 그게 다여?",
      "Side": 1,
      "Duration": 1.05
     },
     {
      "Kind": "block",
-     "Title": "기령이 사모를 막다",
+     "Title": "장비가 곧바로 되받아 치다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.05
     },
     {
+     "Kind": "talk",
+     "Title": "기령이 코웃음 치다",
+     "Speech": "관우 그놈도 이 삼첨도 앞에서 말머리를 돌렸다. 네놈도 다르지 않을 것이다!",
+     "Side": 1,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "press",
+     "Title": "기령이 몰아붙이자 장비가 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.3
+    },
+    {
      "Kind": "rush-block",
-     "Title": "기령이 거푸 몰아치다",
+     "Title": "기령이 거푸 삼첨도을 휘몰아치다",
      "Speech": "세 갈래 날이면 뭐혀!",
      "Side": 1,
      "Duration": 1.1
     },
     {
+     "Kind": "yielding-block",
+     "Title": "장비가 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 이를 갈다",
+     "Speech": "둘째 형이 왜 갔는지도 모르는 놈이 말은 많구먼! 큰형이 위험하니께 간 거여!",
+     "Side": 0,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "dodge",
+     "Title": "기령이 크게 휘둘렀으나 장비가 몸을 틀어 피하다",
+     "Speech": "어딜 찔러!",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 사모을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "기령이 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "기령이 원술의 이름을 들먹이다",
+     "Speech": "우리 주공은 회남을 호령하신다! 돼지 잡던 백정 놈이 감히 덤비느냐!",
+     "Side": 1,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "기령이 힘을 실어 내려치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "장비가 정면으로 맞받아 불꽃이 튀다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장비가 힘으로 누르자 기령이 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
      "Kind": "hit",
-     "Title": "장비의 일격에 기령이 뒤로 밀리다",
+     "Title": "장비의 일격에 기령이 크게 밀리다",
      "Speech": "어딜!",
      "Side": 0,
-     "Duration": 1.1
+     "Duration": 1.2
     },
     {
      "Kind": "talk",
      "Title": "기령이 이를 악물다",
      "Speech": "이, 이까짓 것……!",
      "Side": 1,
-     "Duration": 2.0
+     "Duration": 2.5
     },
     {
      "Kind": "rush-block",
-     "Title": "기령이 다시 몰아치다",
+     "Title": "기령이 말을 몰아 들이치다",
      "Speech": "",
      "Side": 1,
      "Duration": 1.1
     },
     {
-     "Kind": "hit",
-     "Title": "다시 장비의 일격, 기령이 밀리다",
-     "Speech": "으랏차!",
+     "Kind": "dodge",
+     "Title": "기령이 크게 휘둘렀으나 장비가 몸을 틀어 피하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 호탕하게 웃다",
+     "Speech": "하하하! 백정 놈 사모 맛이 어떠냐! 돼지 뼈보다 단단할 거여!",
+     "Side": 0,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "press",
+     "Title": "장비가 몰아붙이자 기령이 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "장비가 거푸 사모을 휘몰아치다",
+     "Speech": "",
      "Side": 0,
      "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "기령이 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "hit",
+     "Title": "장비의 일격에 기령이 크게 밀리다",
+     "Speech": "으랏차!",
+     "Side": 0,
+     "Duration": 1.2
     },
     {
      "Kind": "talk",
      "Title": "기령이 숨을 몰아쉬다",
      "Speech": "(이놈…… 팔이 저려 온다!)",
      "Side": 1,
-     "Duration": 2.2
+     "Duration": 2.7
     },
     {
      "Kind": "block",
-     "Title": "기령이 힘을 짜내 내려치나 장비가 받아 내다",
+     "Title": "기령이 빈틈을 파고들어 되받다",
      "Speech": "",
      "Side": 1,
      "Duration": 1.05
     },
     {
+     "Kind": "talk",
+     "Title": "장비가 기세가 오르다",
+     "Speech": "아까 그 기세는 다 어디 갔슈! 더 와 보랑께!",
+     "Side": 0,
+     "Duration": 3.2
+    },
+    {
      "Kind": "hit",
-     "Title": "세 번째 일격, 기령이 크게 밀리다",
+     "Title": "장비의 일격에 기령이 크게 밀리다",
      "Speech": "하하하! 원술 밑에서 배만 불렸구먼!",
      "Side": 0,
-     "Duration": 1.3
+     "Duration": 1.2
     },
     {
      "Kind": "talk",
      "Title": "기령이 마지막으로 덤비다",
      "Speech": "으아아아!",
      "Side": 1,
-     "Duration": 1.6
+     "Duration": 2.2
     },
     {
      "Kind": "critical",
-     "Title": "장비가 사모를 내지르다",
+     "Title": "장비가 결정타를 넣다",
      "Speech": "으라앗! 사모 맛 좀 봐라!",
      "Side": 0,
-     "Duration": 1.3
+     "Duration": 1.2
     },
     {
      "Kind": "win",
      "Title": "기령이 말에서 떨어지다",
      "Speech": "",
      "Side": 0,
-     "Duration": 2.0
+     "Duration": 1.6
     }
    ]
   }

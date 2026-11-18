@@ -75,7 +75,9 @@ func (e *Engine) stats(u *Unit) Stats {
 	v[4] = max(1, percent(v[4], u.Status["morale"].Value))
 	v[3] = max(1, percent(v[3], u.Status["disrupt"].Value))
 	v[4] = max(1, percent(v[4], u.Status["disrupt"].Value))
-	return Stats{v[0], v[1], v[2], v[3], v[4], v[5], int(float64(c.MPBase) + R.ManaMaxFactor*R.StatNumerator/(R.StatDenominator-a[0])), int(float64(c.RecoveryBase) + R.ManaRecoveryFactor*R.StatNumerator/(R.StatDenominator-a[2]))}
+	return Stats{v[0], v[1], v[2], v[3], v[4], v[5],
+		int(float64(c.MPBase)+R.ManaMaxFactor*R.StatNumerator/(R.StatDenominator-a[0])) + int(e.fx(u, content.FxManaMax)),
+		int(float64(c.RecoveryBase)+R.ManaRecoveryFactor*R.StatNumerator/(R.StatDenominator-a[2])) + int(e.fx(u, content.FxManaPlus))}
 }
 
 // Cell is the cell at (x, y) with the state an event put on it; beyond the map's edge it is the edge cell.
@@ -106,11 +108,11 @@ func (e *Engine) Boats() bool { return e.data.Stages[e.state.Stage].Boats }
 // CellProps is what the cell at (x, y) does besides costing steps: recovery, water, ambush, castle.
 func (e *Engine) CellProps(x, y int) content.CellProps { return e.data.Props(e.Cell(x, y)) }
 func (e *Engine) terrain(u *Unit, x, y int) content.Terrain {
-	c := e.Cell(x, y)
-	t := e.data.Move(e.unitClass(u).Terrain, c, e.Boats())
 	if s := e.data.Stages[e.state.Stage]; x < 0 || y < 0 || x >= s.Width || y >= s.Height {
 		return content.Terrain{} // the edge cell is only scenery: nobody enters it, even by boat
 	}
+	c := e.Cell(x, y)
+	t := e.data.Move(e.unitClass(u).Terrain, c, e.Boats())
 	if e.has(u, content.FxIgnoreMoveCost) && t.Cost > 0 {
 		t.Cost = 1
 	}

@@ -439,7 +439,7 @@ func (g *Game) record(before *core.Observation, events []core.Event) {
 			l[1] = e.Amount
 			levels[e.Actor] = l
 		}
-		if line == "" || !important && !g.S.Settings.Detail {
+		if line == "" || !important && !g.S.Settings.Detail || wornAway(before, e) {
 			continue
 		}
 		g.notice = line

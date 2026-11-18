@@ -50,13 +50,16 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 	}
 	ids := map[string]bool{}
 	for _, event := range s.Events {
-		if event.ID == "" || ids[event.ID] || len(event.Do) == 0 {
+		if event.ID == "" || ids[event.ID] || len(event.Do) == 0 || event.Every < 0 || event.Every > 0 && event.Repeat {
 			return nil, nil, fmt.Errorf("battle event %s", event.ID)
 		}
 		ids[event.ID] = true
 		for _, a := range event.Do {
 			switch a.Kind {
 			case "join":
+				if event.Every > 0 {
+					return nil, nil, fmt.Errorf("battle event %s: join in an event that comes back", event.ID)
+				}
 				if event.Repeat || len(a.Spawns) == 0 {
 					return nil, nil, fmt.Errorf("battle event %s: join without officers", event.ID)
 				}
@@ -110,7 +113,8 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 					return nil, nil, fmt.Errorf("battle event %s: terrain action", event.ID)
 				}
 			case "buff":
-				if !contains(BuffStats, a.Stat) || a.Value == 0 || a.Value < -100 || a.Value > 100 || a.Turns < 0 || a.Turns > 99 || len(a.Targets) == 0 {
+				ailment := contains(BuffAilments, a.Stat)
+				if !ailment && !contains(BuffStats, a.Stat) || ailment != (a.Value == 0) || a.Value < -100 || a.Value > 100 || a.Turns < 0 || a.Turns > 99 || len(a.Targets) == 0 {
 					return nil, nil, fmt.Errorf("battle event %s: buff action", event.ID)
 				}
 			case "move":
@@ -139,7 +143,7 @@ func (d *Data) validateBattleEvents(s Stage) (map[string]bool, map[string]bool, 
 			}
 		}
 	}
-	refs := &battleRefs{targets: targets, areas: areas, duels: duels}
+	refs := &battleRefs{targets: targets, areas: areas, duels: duels, events: ids}
 	if err := d.validateObjectives(s, refs); err != nil {
 		return nil, nil, err
 	}
@@ -287,12 +291,13 @@ func validateCutscene(s Stage, event string, groups [][]Step, refs *battleRefs) 
 			ok := true
 			switch st.Kind {
 			case "move":
-				ok = refs.targets[st.Unit] && st.To != nil && st.To.X >= 0 && st.To.Y >= 0 && st.To.X < s.Width && st.To.Y < s.Height &&
+				ok = refs.targets[st.Unit] && (st.By != "") != (st.To != nil) && (st.By == "" || refs.targets[st.By]) &&
+					(st.To == nil || st.To.X >= 0 && st.To.Y >= 0 && st.To.X < s.Width && st.To.Y < s.Height) &&
 					(st.Facing == "" || in(st.Facing, "NE", "SE", "SW", "NW"))
 			case "play":
 				ok = refs.targets[st.Unit] && contains([]string{"attack", "hit", "block", "exhausted", "idle"}, st.Motion)
 			case "face":
-				ok = refs.targets[st.Unit] && in(st.Facing, "NE", "SE", "SW", "NW")
+				ok = refs.targets[st.Unit] && (st.By == "") == in(st.Facing, "NE", "SE", "SW", "NW") && (st.By == "" || refs.targets[st.By])
 			case "say":
 				ok = refs.targets[st.Unit] && st.Text != ""
 			case "leave":

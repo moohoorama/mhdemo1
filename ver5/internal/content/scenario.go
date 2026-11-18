@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"hash"
+	"maps"
 	"os"
 	"path/filepath"
 	"slices"
@@ -158,16 +159,56 @@ func (d *Data) loadScenario(dir, want string, h hash.Hash) error {
 		d.Maps[s.ID] = doc
 		d.Stages = append(d.Stages, doc.Compile())
 	}
-	order := map[string]int{}
-	for _, n := range d.Nodes {
-		if n.Kind == "battle" && order[n.Stage] == 0 {
-			order[n.Stage] = len(order) + 1
+	order, tier, count, opened := map[string]int{}, map[string]int{}, 0, map[int]int{}
+	for _, c := range d.Chapters {
+		count = d.chapterOpens(c, count, opened)
+		for _, id := range slices.Concat(c.Nodes, c.Events) {
+			if n := d.Node(id); n.Kind == "battle" && order[n.Stage] == 0 {
+				count++
+				order[n.Stage], tier[n.Stage] = count, d.Rules.GearTierOf(c.Number())
+			}
 		}
 	}
 	for i := range d.Stages {
 		d.Stages[i].Order = order[d.Stages[i].ID]
+		d.Stages[i].GearTier = tier[d.Stages[i].ID]
 	}
 	return nil
+}
+
+// Number is the chapter's number in the story: the leading digits of its ID, 0 when it has none. A chapter
+// whose number an earlier one already has ("25v" after "25") is another telling of it that a branch leads to.
+func (c Chapter) Number() int {
+	n := 0
+	for _, r := range c.ID {
+		if r < '0' || r > '9' {
+			break
+		}
+		n = n*10 + int(r-'0')
+	}
+	return n
+}
+
+// chapterOpens is the count of battles fought when chapter c opens: last for a new chapter, which it records in
+// opened, and what it was when the earlier telling of the same number opened for another telling.
+func (d *Data) chapterOpens(c Chapter, last int, opened map[int]int) int {
+	if k, ok := opened[c.Number()]; ok && c.Number() > 0 {
+		return k
+	}
+	opened[c.Number()] = last
+	return last
+}
+
+// ChapterNumber is the number of the chapter holding the node, or 0.
+func (d *Data) ChapterNumber(node string) int {
+	i := d.ChapterIndex(node)
+	if i < 0 {
+		return 0
+	}
+	if n := d.Chapters[i].Number(); n > 0 {
+		return n
+	}
+	return i + 1
 }
 
 // After is the node that follows id: its own Next, else the next node of its chapter, else the
@@ -199,6 +240,71 @@ func (d *Data) After(id string) string {
 		}
 	}
 	return ""
+}
+
+// Successors lists every node the story can go to from n: a branch's cases and where none matches, a choice's options, the
+// following node (After) for the rest, none after an end.
+func (d *Data) Successors(n Node) []string { return successors(n, d.After(n.ID)) }
+
+func successors(n Node, after string) []string {
+	var out []string
+	switch n.Kind {
+	case "end":
+		return nil
+	case "choice":
+		return slices.Sorted(maps.Values(n.Choices))
+	case "branch":
+		for _, c := range n.Cases {
+			out = append(out, c.Next)
+		}
+		if n.Else != "" {
+			return append(out, n.Else)
+		}
+	}
+	if after != "" {
+		out = append(out, after)
+	}
+	return out
+}
+
+// Leads is every story node from which the story can still come to target, whichever way its branches and
+// choices go, target among them: the route to a node of one telling (연의 25장, 가상 25v장) leaves out the
+// chapters of the other.
+func (d *Data) Leads(target string) map[string]bool {
+	nodes := make(map[string]Node, len(d.Nodes))
+	for _, n := range d.Nodes {
+		nodes[n.ID] = n
+	}
+	from := map[string][]string{}
+	next := "" // the first node of the chapter after, for a chapter's last node
+	for ci := len(d.Chapters) - 1; ci >= 0; ci-- {
+		c := d.Chapters[ci]
+		for j, id := range c.Nodes {
+			n := nodes[id]
+			after := n.Next
+			if after == "" && j+1 < len(c.Nodes) {
+				after = c.Nodes[j+1]
+			} else if after == "" {
+				after = next
+			}
+			for _, s := range successors(n, after) {
+				from[s] = append(from[s], id)
+			}
+		}
+		if len(c.Nodes) > 0 {
+			next = c.Nodes[0]
+		}
+	}
+	leads := map[string]bool{target: true}
+	for queue := []string{target}; len(queue) > 0; queue = queue[1:] {
+		for _, id := range from[queue[0]] {
+			if !leads[id] {
+				leads[id] = true
+				queue = append(queue, id)
+			}
+		}
+	}
+	return leads
 }
 
 // mapFile is a map document as stored in maps/: everything but the Stage, which has its own file.
@@ -250,8 +356,8 @@ type Waypoint struct {
 // Waypoints lists every chapter's start and every battle in story order.
 func (d *Data) Waypoints() []Waypoint {
 	out := []Waypoint{}
-	for i, c := range d.Chapters {
-		w := Waypoint{Node: c.Nodes[0], Chapter: i + 1}
+	for _, c := range d.Chapters {
+		w := Waypoint{Node: c.Nodes[0], Chapter: d.ChapterNumber(c.Nodes[0])}
 		for _, id := range c.Nodes {
 			if n := d.Node(id); n.Kind == "scene" && n.Place != "" {
 				w.Place = n.Place
@@ -265,7 +371,7 @@ func (d *Data) Waypoints() []Waypoint {
 		out = append(out, w)
 		for _, id := range c.Nodes {
 			if n := d.Node(id); n.Kind == "battle" {
-				out = append(out, Waypoint{Node: id, Chapter: i + 1, Stage: n.Stage})
+				out = append(out, Waypoint{Node: id, Chapter: w.Chapter, Stage: n.Stage})
 			}
 		}
 	}

@@ -187,3 +187,15 @@ func TestACutsceneEndsInTheSameStateEveryTime(t *testing.T) {
 	}
 	assert.Equal(t, run(), run())
 }
+
+func TestCutsceneWalksUpToAUnitWhereverItStands(t *testing.T) {
+	steps := [][]content.Step{
+		{{Kind: "move", Unit: "hero", By: "boss"}},
+		{{Kind: "face", Unit: "boss", By: "hero"}},
+	}
+	e := battleWith(t, withEvents(do("cutscene", content.Action{Steps: steps})))
+	hero, boss := e.unit("hero"), e.unit("boss")
+	assert.Equal(t, 1, dist(hero.X, hero.Y, boss.X, boss.Y), "beside the boss, who has not moved")
+	assert.Equal(t, content.Toward(content.Point{X: hero.X, Y: hero.Y}, content.Point{X: boss.X, Y: boss.Y}), hero.Facing)
+	assert.Equal(t, content.Toward(content.Point{X: boss.X, Y: boss.Y}, content.Point{X: hero.X, Y: hero.Y}), boss.Facing)
+}

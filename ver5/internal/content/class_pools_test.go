@@ -16,7 +16,7 @@ var classPools = map[string][]string{
 	"royal_guard":        {"diagonal", "charge_strike", "impact", "vital_strike"},
 	"horse_archer":       {"deputy_appoint", "snipe_prep", "aim_prep"},
 	"horse_crossbow":     {"reload_prep", "fire_arrow_art", "rapid_art"},
-	"archer":             {"relief", "accuracy_up", "aim_prep"},
+	"archer":             {"relief", "accuracy_up", "aim_prep", "snipe_prep"},
 	"crossbow":           {"deputy_appoint", "water", "fire_arrow_art", "reload_prep"},
 	"repeating_crossbow": {"exhort", "rapid_art", "penetrate_art"},
 	"catapult":           {"siegecraft", "cross_strike", "far_sight"},
@@ -65,7 +65,7 @@ func TestEveryLearnableSkillTraitOpensASkill(t *testing.T) {
 	}
 	for _, trait := range []string{"guard_prep", "brace_prep", "first_aid", "disrupt_prep", "press_prep",
 		"slander_prep", "focus", "spirit_prep", "inspire_prep", "extend_prep", "stance_prep",
-		"snipe_prep", "aim_prep", "fire_arrow_art", "reload_prep", "rapid_art", "penetrate_art"} {
+		"ambition", "snipe_prep", "aim_prep", "fire_arrow_art", "reload_prep", "rapid_art", "penetrate_art"} {
 		if !opens[trait] {
 			t.Errorf("trait %s opens no skill", trait)
 		}

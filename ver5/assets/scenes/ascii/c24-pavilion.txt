@@ -1,0 +1,14 @@
+# c24-pavilion  S_garden  ch24  origin 0 0
+.........Tre...Rck
+...Rck......Tre...
+Rck...PavZhuRck...
+...TreLntLnt~~~...
+.........RckRck~~~
+
+Zhu 제갈량
+Liu 유기  (off stage, enters later (cell 2 1))
+in1 하인#1  (infantry_noncombat, off stage, enters later (cell 1 0))
+
+# c24-p01: Liu -> 2 1
+# c24-p01: in1 -> 1 0
+# c24-p02: in1 -> -1 0 and leaves

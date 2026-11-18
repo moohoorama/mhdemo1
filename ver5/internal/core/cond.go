@@ -124,6 +124,9 @@ func (e *Engine) holds(c content.Cond, battle bool) bool {
 		return false
 	case "duel":
 		return e.state.Executed["duel-"+c.Arg]
+	case "since":
+		rounds := e.state.Fired["battle-"+e.data.Stages[e.state.Stage].ID+"-"+c.Arg]
+		return len(rounds) > 0 && e.state.Round >= rounds[len(rounds)-1]+c.N
 	case "fled":
 		for _, u := range e.matching(c.Arg) {
 			if e.state.Executed["fled-"+e.data.Stages[e.state.Stage].ID+"-"+u.ID] {

@@ -31,11 +31,14 @@ func (e *Engine) battleEvents() {
 }
 
 // fireEvent runs the event if it is due and reports whether it ran. A repeating event is due each
-// time its conditions turn true again; an event whose units do not fit is tried again later.
+// time its conditions turn true again, an event with Every each time they hold Every rounds after it
+// last ran; an event whose units do not fit is tried again later. The rounds it ran in are kept
+// (State.Fired) for since: conditions and for the units a save expects.
 func (e *Engine) fireEvent(stage content.Stage, ev content.BattleEvent) bool {
 	key := "battle-" + stage.ID + "-" + ev.ID
 	on := e.holdsIn(ev.If, true)
-	if ev.Repeat {
+	switch {
+	case ev.Repeat:
 		was := e.state.Executed[key+"~on"]
 		e.state.Executed[key+"~on"] = on
 		if !on || was {
@@ -45,12 +48,23 @@ func (e *Engine) fireEvent(stage content.Stage, ev content.BattleEvent) bool {
 			e.state.Executed[key+"~on"] = false
 			return false
 		}
-		return true
+	case ev.Every > 0:
+		rounds := e.state.Fired[key]
+		if !on || len(rounds) > 0 && e.state.Round < rounds[len(rounds)-1]+ev.Every || !e.runEvent(stage, ev) {
+			return false
+		}
+	default:
+		if e.state.Executed[key] || !on || !e.runEvent(stage, ev) {
+			return false
+		}
 	}
-	if e.state.Executed[key] || !on || !e.runEvent(stage, ev) {
-		return false
+	if e.state.Fired == nil {
+		e.state.Fired = map[string][]int{}
 	}
-	e.state.Executed[key] = true
+	e.state.Fired[key] = append(e.state.Fired[key], e.state.Round)
+	if !ev.Repeat {
+		e.state.Executed[key] = true
+	}
 	return true
 }
 
@@ -101,8 +115,8 @@ func (e *Engine) runEvent(stage content.Stage, ev content.BattleEvent) bool {
 			}
 			for _, t := range a.Targets {
 				for _, u := range e.matching(t) {
-					if u.HP > 0 {
-						e.applyStatus(u, a.Stat, turns, a.Value)
+					// an ailment shows only where it took hold (status immunity wards it off)
+					if u.HP > 0 && (e.applyStatus(u, a.Stat, turns, a.Value) || a.Value != 0) {
 						e.events = append(e.events, Event{Kind: "status", Target: u.ID, Text: a.Stat, Amount: a.Value})
 					}
 				}
@@ -403,14 +417,14 @@ func (e *Engine) shift(u *Unit, to content.Point, leaving map[*Unit]bool) []cont
 			held[content.Point{X: o.X, Y: o.Y}] = true
 		}
 	}
-	best, score := content.Point{X: -1, Y: -1}, stage.Width+stage.Height+1
+	best, score, near := content.Point{X: -1, Y: -1}, stage.Width+stage.Height+1, 0
 	for y := 0; y < stage.Height; y++ {
 		for x := 0; x < stage.Width; x++ {
 			if held[content.Point{X: x, Y: y}] || e.terrain(u, x, y).Cost <= 0 {
 				continue
 			}
-			if n := dist(x, y, to.X, to.Y); n < score {
-				best, score = content.Point{X: x, Y: y}, n
+			if n, m := dist(x, y, to.X, to.Y), dist(x, y, u.X, u.Y); n < score || n == score && m < near {
+				best, score, near = content.Point{X: x, Y: y}, n, m
 			}
 		}
 	}
@@ -492,6 +506,19 @@ func (e *Engine) leave(u *Unit) []content.Point {
 	return path
 }
 
+// standing is the first unit still on the field that a cutscene target names, or nil.
+func (e *Engine) standing(target string) *Unit {
+	if target == "" {
+		return nil
+	}
+	for _, u := range e.matching(target) {
+		if u.HP > 0 {
+			return u
+		}
+	}
+	return nil
+}
+
 // playCutscene applies a cutscene's end state (positions and facings; hit points and the rest stay
 // as they are) and sends the replay what it came to, step by step. Steps about units that are not on
 // the field are left out; a group's moves are carried out together.
@@ -500,13 +527,29 @@ func (e *Engine) playCutscene(groups [][]content.Step) {
 	for _, group := range groups {
 		var moves []content.Move
 		for _, st := range group {
-			if st.Kind == "move" {
+			if st.Kind != "move" {
+				continue
+			}
+			if st.To != nil {
 				moves = append(moves, content.Move{Unit: st.Unit, To: *st.To, Facing: st.Facing})
+			} else if by := e.standing(st.By); by != nil {
+				moves = append(moves, content.Move{Unit: st.Unit, To: content.Point{X: by.X, Y: by.Y}, Facing: st.Facing})
 			}
 		}
 		moved := map[*Unit]shifted{}
 		for _, m := range e.moveTogether(moves) {
 			moved[m.u] = m
+		}
+		for _, st := range group {
+			if by := e.standing(st.By); st.Kind == "move" && st.Facing == "" && by != nil {
+				for _, u := range e.matching(st.Unit) {
+					if m, ok := moved[u]; ok && u != by {
+						u.Facing = content.Toward(content.Point{X: u.X, Y: u.Y}, content.Point{X: by.X, Y: by.Y})
+						m.facing = u.Facing
+						moved[u] = m
+					}
+				}
+			}
 		}
 		var steps []CutStep
 		for _, st := range group {
@@ -522,8 +565,12 @@ func (e *Engine) playCutscene(groups [][]content.Step) {
 				case "play":
 					steps = append(steps, CutStep{Kind: "play", Unit: u.ID, Motion: st.Motion, Seconds: st.Seconds})
 				case "face":
-					u.Facing = st.Facing
-					steps = append(steps, CutStep{Kind: "face", Unit: u.ID, Facing: st.Facing})
+					if by := e.standing(st.By); by != nil && by != u {
+						u.Facing = content.Toward(content.Point{X: u.X, Y: u.Y}, content.Point{X: by.X, Y: by.Y})
+					} else if st.By == "" {
+						u.Facing = st.Facing
+					}
+					steps = append(steps, CutStep{Kind: "face", Unit: u.ID, Facing: u.Facing})
 				case "say":
 					steps = append(steps, CutStep{Kind: "say", Unit: u.ID, Text: st.Text})
 				case "leave":

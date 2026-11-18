@@ -1,0 +1,569 @@
+{
+ "Nodes": [
+  {
+   "ID": "c22-start",
+   "Kind": "scene",
+   "Place": "양양 · 관저 대청"
+  },
+  {
+   "ID": "c22-s101",
+   "Kind": "say",
+   "Speaker": "caimao",
+   "Text": "주공, 유비는 여포에게도, 조조에게도, 원소에게도 몸을 붙였다가 떠난 사람입니다. 그가 머문 곳마다 싸움이 났습니다."
+  },
+  {
+   "ID": "c22-s102",
+   "Kind": "say",
+   "Speaker": "kuaiyue",
+   "Text": "들이기는 쉬우나 내보내기는 어렵습니다. 유비가 들어오면 조조의 칼끝이 형주로 옵니다."
+  },
+  {
+   "ID": "c22-s103",
+   "Kind": "say",
+   "Speaker": "xianglang",
+   "Text": "한실의 종친이 조조에게 쫓겨 문을 두드리는데 내친다면, 천하가 형주를 어찌 보겠습니까."
+  },
+  {
+   "ID": "c22-s104",
+   "Kind": "say",
+   "Speaker": "yiji",
+   "Text": "쫓겨서 온 사람이 아닙니다. 싸움이 나기 전에 사람을 먼저 보내 예를 갖췄습니다. 저기 손 공이 그 사람입니다."
+  },
+  {
+   "ID": "c22-s105",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "같은 유씨다. 내 집 문 앞에서 종친이 길을 잃게 둘 수는 없다."
+  },
+  {
+   "ID": "c22-s106",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "신야를 내주어라. 북쪽 문턱이니, 조조가 오면 가장 먼저 닿는 곳이다."
+  },
+  {
+   "ID": "c22-s107",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "사군의 너그러우심, 돌아가 황숙께 그대로 전하겠습니다."
+  },
+  {
+   "ID": "c22-banquet",
+   "Kind": "scene",
+   "Place": "양양 · 환영 연회"
+  },
+  {
+   "ID": "c22-s201",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "현덕 아우, 내게 아들이 둘 있네. 큰아이 기는 어질지만 몸이 약하고, 작은아이 종은 영리하나 아직 어리네."
+  },
+  {
+   "ID": "c22-s202",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "누구에게 뒤를 맡겨야 할지, 밤마다 그 생각이네."
+  },
+  {
+   "ID": "c22-s203",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "남의 집안일을 말할 처지는 아닙니다만, 예로부터 법도대로 하시면 뒤탈이 적었습니다."
+  },
+  {
+   "ID": "c22-s204",
+   "Kind": "say",
+   "Speaker": "caimao",
+   "Text": "(괴월에게, 낮게) 법도라. 맏이를 세우라는 말이구려."
+  },
+  {
+   "ID": "c22-s205",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "(관우에게) 둘째 형, 저 양반 방금 형을 째려본 거 맞쥬?"
+  },
+  {
+   "ID": "c22-s206",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "조용히 하게. 남의 잔칫상일세."
+  },
+  {
+   "ID": "c22-study",
+   "Kind": "scene",
+   "Place": "양양 · 유표의 서재"
+  },
+  {
+   "ID": "c22-s301",
+   "Kind": "say",
+   "Speaker": "kuaiyue",
+   "Text": "주공께서 처음 형주에 오셨을 때를 기억하십니까. 의성의 연회 하나로 쉰다섯 집안의 우두머리가 사라졌습니다."
+  },
+  {
+   "ID": "c22-s302",
+   "Kind": "say",
+   "Speaker": "kuaiyue",
+   "Text": "그 꾀를 낸 것이 저였습니다. 그래서 압니다. 손님이 주인이 되는 데는 연회 한 번이면 족합니다."
+  },
+  {
+   "ID": "c22-s303",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "……현덕은 그럴 사람이 아니다."
+  },
+  {
+   "ID": "c22-s304",
+   "Kind": "say",
+   "Speaker": "caimao",
+   "Text": "그럴 사람인지 아닌지는 써 보면 압니다. 강하에서 장무와 진손이 들고일어났습니다."
+  },
+  {
+   "ID": "c22-s305",
+   "Kind": "say",
+   "Speaker": "caimao",
+   "Text": "보내 보시지요. 이기면 형주의 근심이 줄고, 지면 손님의 수가 줍니다."
+  },
+  {
+   "ID": "c22-s306",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "……보내라."
+  },
+  {
+   "ID": "c22-xinye",
+   "Kind": "scene",
+   "Place": "신야 · 관청"
+  },
+  {
+   "ID": "c22-s401",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "양양에서 명이 내려왔습니다. 강하에서 장무와 진손이 들고일어났으니 황숙께서 가서 평정하라 합니다."
+  },
+  {
+   "ID": "c22-s402",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "장무는 강 북쪽 언덕에, 진손은 강 남쪽 갈대밭 뒤에 진을 쳤다더군. 강을 사이에 두고 서로 기대는 꼴일세."
+  },
+  {
+   "ID": "c22-s403",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그럼 우리도 둘로 나뉘어야겠군. 운장, 배를 타고 강을 건너 남쪽을 맡아 주게."
+  },
+  {
+   "ID": "c22-s404",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "맡겠습니다, 형님."
+  },
+  {
+   "ID": "c22-gs-br",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "party:gaoshun"
+     ],
+     "Next": "c22-s405"
+    }
+   ],
+   "Else": "c22-s406"
+  },
+  {
+   "ID": "c22-s405",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "고 장군도 운장과 함께 강을 건너 주시오."
+  },
+  {
+   "ID": "c22-s405b",
+   "Kind": "say",
+   "Speaker": "gaoshun",
+   "Text": "예.",
+   "Next": "c22-s406"
+  },
+  {
+   "ID": "c22-s406",
+   "Kind": "say",
+   "Speaker": "quartermaster",
+   "Text": "관 장군, 강을 건너실 군사들 몫의 군량을 말씀드리러 왔습니다. 따로 가시는 군사에게는…… 추가 배급이 없습니다."
+  },
+  {
+   "ID": "c22-s407",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "싸우러 나가는 군사에게 줄 쌀이 없다니, 그게 말이 되는가!"
+  },
+  {
+   "ID": "c22-s408",
+   "Kind": "say",
+   "Speaker": "quartermaster",
+   "Text": "자, 자방께서…… 책임은 당신이 질 테니 그리 전하라 하셨습니다."
+  },
+  {
+   "ID": "c22-s409",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "곳간 열쇠를 쥔 사람이 쌀이 없다 한다라."
+  },
+  {
+   "ID": "c22-s410",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "미방 그 양반, 광릉에서도 쌀값 아끼다 일을 내더니만."
+  },
+  {
+   "ID": "c22-gs-br2",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "party:gaoshun"
+     ],
+     "Next": "c22-g01"
+    }
+   ],
+   "Else": "c22-n01"
+  },
+  {
+   "ID": "c22-g01",
+   "Kind": "say",
+   "Speaker": "gaoshun",
+   "Text": "관 장군, 순은 도겸 공 아래서 자방과 함께 일했소. 재물을 좋아하기는 하나, 공적인 일에 사심을 두는 사람은 아니오."
+  },
+  {
+   "ID": "c22-g02",
+   "Kind": "say",
+   "Speaker": "gaoshun",
+   "Text": "조조가 준 벼슬도 뿌리치고 황숙을 따른 사람이니, 믿어 주시오."
+  },
+  {
+   "ID": "c22-g03",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "……고 장군이 그리 말하니, 이번에는 참겠소.",
+   "Next": "c22-walk"
+  },
+  {
+   "ID": "c22-n01",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "붓을 가져오너라. 자방에게 한 자 적어 보내야겠다."
+  },
+  {
+   "ID": "c22-n02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "운장, 너무 몰아세우지는 말게."
+  },
+  {
+   "ID": "c22-n03",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "군사들 입에 들어갈 쌀입니다, 형님. 이것만은 따져야겠습니다."
+  },
+  {
+   "ID": "c22-walk",
+   "Kind": "explore",
+   "Explore": "explore22"
+  },
+  {
+   "ID": "c22-rice",
+   "Kind": "scene",
+   "Place": "신야 · 관청"
+  },
+  {
+   "ID": "c22-r01",
+   "Kind": "say",
+   "Speaker": "quartermaster",
+   "Text": "관 장군! 강을 건너실 군사들 몫의 군량이 들어왔습니다!"
+  },
+  {
+   "ID": "c22-rice-br",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "party:gaoshun"
+     ],
+     "Next": "c22-rg01"
+    }
+   ],
+   "Else": "c22-rn01"
+  },
+  {
+   "ID": "c22-rg01",
+   "Kind": "say",
+   "Speaker": "quartermaster",
+   "Text": "자방께서 따로 모아 두셨던 쌀이라 합니다. 양양에서 내려온 장부에는 없는 쌀입니다."
+  },
+  {
+   "ID": "c22-rg02",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "장부에 없는 쌀……. 양양의 눈을 피해 모아 두었단 말인가."
+  },
+  {
+   "ID": "c22-rg03",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "고 장군, 내가 사람을 잘못 본 모양이오."
+  },
+  {
+   "ID": "c22-rg04",
+   "Kind": "say",
+   "Speaker": "gaoshun",
+   "Text": "돌아와서 자방에게 직접 하실 말씀이오.",
+   "Next": "c22-b22"
+  },
+  {
+   "ID": "c22-rn01",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "꾸짖으니 그제야 보내는구먼."
+  },
+  {
+   "ID": "c22-rn02",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님, 채비가 끝났습니다. 강하로 가시지요."
+  },
+  {
+   "ID": "c22-b22",
+   "Kind": "battle",
+   "Stage": "B22",
+   "Text": "강하 전투 — 출전 준비"
+  },
+  {
+   "ID": "c22-after",
+   "Kind": "scene",
+   "Place": "강하 · 싸움터"
+  },
+  {
+   "ID": "c22-bow-br",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-b22-caizhong"
+     ],
+     "Next": "c22-a01"
+    }
+   ],
+   "Else": "c22-x01"
+  },
+  {
+   "ID": "c22-a01",
+   "Kind": "say",
+   "Speaker": "yiji",
+   "Text": "양유기의 활입니다. 초나라 때부터 전해 온다는 채씨 집안의 보물이지요."
+  },
+  {
+   "ID": "c22-a02",
+   "Kind": "say",
+   "Speaker": "yiji",
+   "Text": "이 활을 메고 나올 수 있는 사람은 채 장군의 아우 채중뿐입니다. 이것을 주공 앞에 내놓으면 채 장군은 할 말이 없습니다."
+  },
+  {
+   "ID": "c22-a03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "내놓으면 어찌 되오?"
+  },
+  {
+   "ID": "c22-a04",
+   "Kind": "say",
+   "Speaker": "yiji",
+   "Text": "……형주가 둘로 갈라집니다. 채씨를 따르는 이가 절반입니다."
+  },
+  {
+   "ID": "c22-a05",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그럼 내놓지 않겠소. 조조가 문턱에 있는데 집 안에서 칼을 뽑을 수는 없소."
+  },
+  {
+   "ID": "c22-a06",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형, 그럼 그냥 맞고만 있자는 거유?"
+  },
+  {
+   "ID": "c22-a07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "활은 이 공이 가지고 계시오. 쓸 날이 오면 그때 쓰겠소."
+  },
+  {
+   "ID": "c22-a08",
+   "Kind": "say",
+   "Speaker": "yiji",
+   "Text": "저도 신야로 가겠습니다. 양양에서는 이 활을 지킬 수 없습니다.",
+   "Next": "c22-join-yiji"
+  },
+  {
+   "ID": "c22-x01",
+   "Kind": "say",
+   "Speaker": "yiji",
+   "Text": "놓쳤습니다. 복면만 벗겼어도 얼굴을 보였을 텐데……."
+  },
+  {
+   "ID": "c22-x02",
+   "Kind": "say",
+   "Speaker": "yiji",
+   "Text": "도적이 석 줄로 번갈아 쏘지는 않습니다. 증좌는 없지만, 저것은 양양 수군의 대오였습니다."
+  },
+  {
+   "ID": "c22-x03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "증좌가 있었다 해도 내놓지 않았을 것이오. 조조가 문턱에 있는데 집 안에서 칼을 뽑을 수는 없소."
+  },
+  {
+   "ID": "c22-x04",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형, 그럼 그냥 맞고만 있자는 거유?"
+  },
+  {
+   "ID": "c22-x05",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "오늘 본 것은 잊지 않겠네. 그것으로 족하네."
+  },
+  {
+   "ID": "c22-x06",
+   "Kind": "say",
+   "Speaker": "yiji",
+   "Text": "저도 신야로 가겠습니다. 오늘 일을 본 이상, 양양에 남아 있기 어렵습니다."
+  },
+  {
+   "ID": "c22-join-yiji",
+   "Kind": "join",
+   "Character": "yiji",
+   "Event": "join-yiji"
+  },
+  {
+   "ID": "c22-dilu-br",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-b22-zhaoyun-duel"
+     ],
+     "Next": "c22-d01"
+    }
+   ],
+   "Else": "c22-d11"
+  },
+  {
+   "ID": "c22-d01",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "공, 장무가 타던 말입니다. 이만한 말은 처음 봅니다. 공께서 타십시오.",
+   "Next": "c22-d02"
+  },
+  {
+   "ID": "c22-d11",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "공, 장무가 타던 말이 주인을 잃고 강가를 헤매기에 끌고 왔습니다. 공께서 타십시오."
+  },
+  {
+   "ID": "c22-d02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "하하, 자룡이 탐낼 만한 말을 내게 주는가. 고맙네."
+  },
+  {
+   "ID": "c22-dilu",
+   "Kind": "grant",
+   "Item": "dilu",
+   "Count": 1,
+   "Event": "grant-dilu"
+  },
+  {
+   "ID": "c22-mifang",
+   "Kind": "scene",
+   "Place": "신야 · 곳간 앞"
+  },
+  {
+   "ID": "c22-mf-br",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "party:gaoshun"
+     ],
+     "Next": "c22-m01"
+    }
+   ],
+   "Else": "c22-m11"
+  },
+  {
+   "ID": "c22-m01",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "가, 갑자기 왜 이러시오?"
+  },
+  {
+   "ID": "c22-m02",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "내 그대를 오해했네. 부끄러워 왔네."
+  },
+  {
+   "ID": "c22-m03",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "이, 일어나시오. 쌀은 원래 제가 세는 것 아닙니까. 장부에 없는 쌀은 양양에서도 모릅니다."
+  },
+  {
+   "ID": "c22-m04",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "앞으로 쌀 일은 먼저 자방에게 묻겠네."
+  },
+  {
+   "ID": "c22-m05",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "그, 그럼 이번에 빼 둔 쌀값은…… 아, 아닙니다. 그만두시오."
+  },
+  {
+   "ID": "c22-mf-set",
+   "Kind": "set",
+   "Flags": {
+    "flag-guanyu-mifang": 1
+   },
+   "Next": "c22-done"
+  },
+  {
+   "ID": "c22-m11",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "관 장군, 강 건너 군사들 쌀은 제때 닿았습니까?"
+  },
+  {
+   "ID": "c22-m12",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "꾸짖은 뒤에야 닿았지. 다음에는 꾸짖기 전에 보내게."
+  },
+  {
+   "ID": "c22-m13",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "……예."
+  },
+  {
+   "ID": "c22-done",
+   "Kind": "set",
+   "Flags": {
+    "c22-jiangxia": 1
+   }
+  }
+ ]
+}

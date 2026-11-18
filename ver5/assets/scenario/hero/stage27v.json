@@ -1,0 +1,2054 @@
+{
+ "ID": "B27V",
+ "Name": "양양 공방전",
+ "Width": 0,
+ "Height": 0,
+ "Max": 10,
+ "Required": [
+  "liubei"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "any:[defeated:caoren, at:ally:60]"
+   ],
+   "Text": "조인을 물리치거나 관청에 선다"
+  }
+ ],
+ "Defeat": [
+  {
+   "If": [
+    "at:enemy:61",
+    "flag:flag-b27v-camp-w1",
+    "flag:flag-b27v-camp-w2"
+   ],
+   "Text": "서쪽 진채 함락 뒤 적이 서문에 선다"
+  },
+  {
+   "If": [
+    "any:[defeated:zhouyu, flag:flag-b27v-camps-lost]"
+   ],
+   "Text": "주유 퇴각, 또는 진채 넷 함락"
+  }
+ ],
+ "Sub": [
+  {
+   "ID": "camps",
+   "Text": "진채 넷을 하나도 잃지 않는다",
+   "If": [
+    "!flag:flag-b27v-camp-w1",
+    "!flag:flag-b27v-camp-w2",
+    "!flag:flag-b27v-camp-s1",
+    "!flag:flag-b27v-camp-s2"
+   ],
+   "Flag": "flag-b27v-camps",
+   "Reward": {
+    "insu_high": 1
+   }
+  },
+  {
+   "ID": "caimao",
+   "Text": "채모를 물리친다",
+   "If": [
+    "defeated:caimao"
+   ],
+   "Flag": "flag-b27v-caimao",
+   "Reward": {
+    "treasure_sword": 1
+   }
+  }
+ ],
+ "TurnLimit": 22,
+ "Map": "map27v.json",
+ "Boats": true,
+ "Allies": [
+  {
+   "X": 6,
+   "Y": 9
+  },
+  {
+   "X": 5,
+   "Y": 10
+  },
+  {
+   "X": 7,
+   "Y": 8
+  },
+  {
+   "X": 6,
+   "Y": 17
+  },
+  {
+   "X": 5,
+   "Y": 16
+  },
+  {
+   "X": 7,
+   "Y": 18
+  },
+  {
+   "X": 14,
+   "Y": 23
+  },
+  {
+   "X": 13,
+   "Y": 22
+  },
+  {
+   "X": 21,
+   "Y": 23
+  },
+  {
+   "X": 22,
+   "Y": 22
+  }
+ ],
+ "Recommend": {
+  "liubei": {
+   "X": 14,
+   "Y": 23
+  },
+  "zhangfei": {
+   "X": 6,
+   "Y": 9
+  },
+  "guanyu": {
+   "X": 6,
+   "Y": 17
+  }
+ },
+ "Party": [
+  {
+   "Character": "zhouyu",
+   "X": 32,
+   "Y": 11,
+   "AI": true,
+   "Group": "zhouyu",
+   "Policy": "hold",
+   "Faction": "wu",
+   "Facing": "NW"
+  },
+  {
+   "Character": "ganning",
+   "X": 30,
+   "Y": 5,
+   "AI": true,
+   "Group": "navy",
+   "Policy": "assault",
+   "Faction": "wu",
+   "Facing": "NW"
+  },
+  {
+   "Character": "huanggai",
+   "X": 31,
+   "Y": 9,
+   "AI": true,
+   "Group": "navy",
+   "Policy": "assault",
+   "Faction": "wu",
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 30,
+   "Y": 4,
+   "AI": true,
+   "Group": "navy",
+   "Policy": "assault",
+   "Faction": "wu",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 31,
+   "Y": 4,
+   "AI": true,
+   "Group": "navy",
+   "Policy": "assault",
+   "Faction": "wu",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 32,
+   "Y": 5,
+   "AI": true,
+   "Group": "navy",
+   "Policy": "assault",
+   "Faction": "wu",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 30,
+   "Y": 6,
+   "AI": true,
+   "Group": "navy",
+   "Policy": "assault",
+   "Faction": "wu",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 32,
+   "Y": 7,
+   "AI": true,
+   "Group": "navy",
+   "Policy": "assault",
+   "Faction": "wu",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 30,
+   "Y": 8,
+   "AI": true,
+   "Group": "navy",
+   "Policy": "assault",
+   "Faction": "wu",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 32,
+   "Y": 9,
+   "AI": true,
+   "Group": "navy",
+   "Policy": "assault",
+   "Faction": "wu",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 30,
+   "Y": 10,
+   "AI": true,
+   "Group": "navy",
+   "Policy": "assault",
+   "Faction": "wu",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "liuqi",
+   "X": 31,
+   "Y": 16,
+   "AI": true,
+   "Group": "liuqi-fleet",
+   "Policy": "hold",
+   "Faction": "liuqi",
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 30,
+   "Y": 15,
+   "AI": true,
+   "Group": "liuqi-fleet",
+   "Policy": "hold",
+   "Faction": "liuqi",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 32,
+   "Y": 15,
+   "AI": true,
+   "Group": "liuqi-fleet",
+   "Policy": "hold",
+   "Faction": "liuqi",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 30,
+   "Y": 17,
+   "AI": true,
+   "Group": "liuqi-fleet",
+   "Policy": "hold",
+   "Faction": "liuqi",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 32,
+   "Y": 17,
+   "AI": true,
+   "Group": "liuqi-fleet",
+   "Policy": "hold",
+   "Faction": "liuqi",
+   "Shift": -0.07,
+   "Facing": "NW"
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "caimao",
+   "X": 17,
+   "Y": 1,
+   "Rank": "commander",
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Faction": "jing",
+   "Facing": "SE"
+  },
+  {
+   "Character": "caizhong",
+   "X": 15,
+   "Y": 1,
+   "Group": "cai",
+   "Policy": "assault",
+   "Faction": "jing",
+   "Facing": "SE"
+  },
+  {
+   "Character": "caihe",
+   "X": 19,
+   "Y": 1,
+   "Group": "cai",
+   "Policy": "assault",
+   "Faction": "jing",
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 13,
+   "Y": 2,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 14,
+   "Y": 2,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 2,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 18,
+   "Y": 2,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 20,
+   "Y": 2,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 21,
+   "Y": 2,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 14,
+   "Y": 0,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 16,
+   "Y": 0,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 18,
+   "Y": 0,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "Faction": "jing"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 20,
+   "Y": 0,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.12,
+   "Faction": "jing"
+  },
+  {
+   "Character": "caoren",
+   "X": 17,
+   "Y": 11,
+   "Rank": "commander",
+   "Group": "caoren",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 13,
+   "Group": "castle",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 18,
+   "Y": 13,
+   "Group": "castle",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 17,
+   "Y": 12,
+   "Group": "castle",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 13,
+   "Group": "castle",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 17,
+   "Y": 18,
+   "Group": "castle",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 15,
+   "Group": "castle",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 19,
+   "Y": 11,
+   "Group": "castle",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 20,
+   "Y": 15,
+   "Group": "castle",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_archer",
+   "X": 12,
+   "Y": 11,
+   "Group": "walls",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 12,
+   "Y": 15,
+   "Group": "walls",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 15,
+   "Y": 18,
+   "Group": "walls",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 19,
+   "Y": 18,
+   "Group": "walls",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 17,
+   "Y": 8,
+   "Group": "walls",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Shift": -0.07,
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 22,
+   "Y": 11,
+   "Group": "walls",
+   "Policy": "hold",
+   "Faction": "wei",
+   "Shift": -0.07,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 24,
+   "Y": 13,
+   "Group": "sluice-turn",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Shift": -0.07,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 25,
+   "Y": 13,
+   "Group": "sluice-turn",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Shift": -0.07,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 26,
+   "Y": 13,
+   "Group": "sluice",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Shift": -0.07,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 27,
+   "Y": 13,
+   "Group": "sluice",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Shift": -0.07,
+   "Facing": "SE"
+  },
+  {
+   "Character": "xuchu",
+   "X": 3,
+   "Y": 12,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Facing": "SE"
+  },
+  {
+   "Character": "zhangliao",
+   "X": 3,
+   "Y": 14,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Facing": "SE"
+  },
+  {
+   "Character": "xuhuang",
+   "X": 3,
+   "Y": 10,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 1,
+   "Y": 8,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 1,
+   "Y": 9,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 1,
+   "Y": 10,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 1,
+   "Y": 11,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 1,
+   "Y": 12,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 1,
+   "Y": 14,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 1,
+   "Y": 15,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 1,
+   "Y": 16,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 1,
+   "Y": 17,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 1,
+   "Y": 18,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 2,
+   "Y": 9,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 2,
+   "Y": 17,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 0,
+   "Y": 8,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 0,
+   "Y": 10,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 0,
+   "Y": 12,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 0,
+   "Y": 14,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 0,
+   "Y": 16,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 0,
+   "Y": 18,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 2,
+   "Y": 13,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 0,
+   "Y": 13,
+   "Group": "cao-west",
+   "Policy": "assault",
+   "Faction": "wei",
+   "Shift": -0.12,
+   "Facing": "SE"
+  }
+ ],
+ "Reward": {
+  "money": 3000
+ },
+ "Areas": [
+  {
+   "ID": 60,
+   "Rect": {
+    "X": 17,
+    "Y": 13,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "양양 관청",
+   "Description": "아군이나 동맹이 서면 양양이 떨어진다"
+  },
+  {
+   "ID": 61,
+   "Rect": {
+    "X": 10,
+    "Y": 13,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "서문 앞",
+   "Description": "조조군이 서면 포위가 풀려 패배"
+  },
+  {
+   "ID": 62,
+   "Rect": {
+    "X": 24,
+    "Y": 11,
+    "W": 6,
+    "H": 5
+   },
+   "Name": "수문 앞",
+   "Description": "동맹 수군이 닿으면 유기가 이름을 밝힌다"
+  },
+  {
+   "ID": 67,
+   "Rect": {
+    "X": 23,
+    "Y": 13,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "수문",
+   "Description": "유기가 이름을 밝히면 열린다"
+  },
+  {
+   "ID": 63,
+   "Rect": {
+    "X": 6,
+    "Y": 9,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "서북쪽 진채",
+   "Description": "적이 서면 무너진다"
+  },
+  {
+   "ID": 64,
+   "Rect": {
+    "X": 6,
+    "Y": 17,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "서남쪽 진채",
+   "Description": "적이 서면 무너진다"
+  },
+  {
+   "ID": 65,
+   "Rect": {
+    "X": 14,
+    "Y": 23,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "남쪽 서편 진채",
+   "Description": "적이 서면 무너진다"
+  },
+  {
+   "ID": 66,
+   "Rect": {
+    "X": 21,
+    "Y": 23,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "남쪽 동편 진채",
+   "Description": "적이 서면 무너진다"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "opening",
+   "Do": [
+    {
+     "Kind": "buff",
+     "Targets": [
+      "zhouyu"
+     ],
+     "Stat": "defense",
+     "Value": 30
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caimao",
+       "Text": "강동의 쥐들이 한수까지 올라왔구나! 형주 수군의 수를 보여 줘라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhouyu",
+       "Text": "수는 봤소. 이제 솜씨를 보여 주시오."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "xuchu",
+       "Text": "목책 넷이다. 하나씩 밟고 서문으로 간다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "도독이 성을 떨어뜨릴 때까지다. 진채를 내주지 마라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "ganning-cuts",
+   "If": [
+    "any:[adjacent:ganning:caizhong, adjacent:ganning:caihe]"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "ganning",
+       "Text": "채씨 형제냐. 강에서 나를 만난 게 운이 없었다!"
+      }
+     ]
+    },
+    {
+     "Kind": "remove",
+     "Targets": [
+      "cai"
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "navy-turns",
+   "If": [
+    "any:[alldefeated:cai-fleet, round>=7]"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "navy",
+      "liuqi-fleet"
+     ],
+     "Policy": "march",
+     "GoalArea": 62
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhouyu",
+       "Text": "북쪽 물길은 치웠다. 수문으로 간다!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "liuqi-calls",
+   "If": [
+    "any:[at:navy:62, at:liuqi-fleet:62]"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liuqi",
+       "Text": "형주목의 맏아들 유기다! 아버님의 군사들은 창을 내려라!"
+      }
+     ]
+    },
+    {
+     "Kind": "remove",
+     "Targets": [
+      "sluice-turn"
+     ]
+    },
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_footman",
+       "X": 24,
+       "Y": 13,
+       "AI": true,
+       "Group": "liuqi-fleet",
+       "Policy": "march",
+       "GoalArea": 60,
+       "Faction": "liuqi",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_footman",
+       "X": 25,
+       "Y": 13,
+       "AI": true,
+       "Group": "liuqi-fleet",
+       "Policy": "march",
+       "GoalArea": 60,
+       "Faction": "liuqi",
+       "Shift": -0.07
+      }
+     ]
+    },
+    {
+     "Kind": "terrain",
+     "Area": 67,
+     "State": "O"
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "castle",
+      "walls",
+      "sluice"
+     ],
+     "Policy": "assault"
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "navy",
+      "liuqi-fleet"
+     ],
+     "Policy": "march",
+     "GoalArea": 60
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caoren",
+       "Text": "수문이 열렸다고? ……승상께 전하라. 양양은 여기까지다."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "cao-waves",
+   "Every": 3,
+   "If": [
+    "turnstart:enemy",
+    "round>=4"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_footman",
+       "X": 0,
+       "Y": 9,
+       "Side": "enemy",
+       "Group": "cao-west",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.12
+      },
+      {
+       "Character": "troop_footman",
+       "X": 0,
+       "Y": 11,
+       "Side": "enemy",
+       "Group": "cao-west",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.12
+      },
+      {
+       "Character": "troop_footman",
+       "X": 0,
+       "Y": 15,
+       "Side": "enemy",
+       "Group": "cao-west",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.12
+      },
+      {
+       "Character": "troop_footman",
+       "X": 0,
+       "Y": 17,
+       "Side": "enemy",
+       "Group": "cao-west",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.12
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 12,
+       "Side": "enemy",
+       "Group": "cao-west",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.12
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 0,
+       "Y": 14,
+       "Side": "enemy",
+       "Group": "cao-west",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.12
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "caocao-10",
+   "If": [
+    "round>=10",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "caocao",
+       "X": 1,
+       "Y": 13,
+       "Rank": "boss",
+       "Side": "enemy",
+       "Group": "cao-west",
+       "Policy": "assault",
+       "Faction": "wei"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caocao",
+       "Text": "현덕, 남의 성 밖에서 목책이나 두르고 있으니 보기 딱하군. 그 목책을 걷어 주지."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "승상, 이번에는 달아나지 않소."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "camp-w1-falls",
+   "If": [
+    "at:enemy:63"
+   ],
+   "Do": [
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-b27v-camp-w1": 1
+     }
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "서북쪽 진채가 넘어갔다! 남은 진채로 모여라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "camp-w2-falls",
+   "If": [
+    "at:enemy:64"
+   ],
+   "Do": [
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-b27v-camp-w2": 1
+     }
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "서남쪽 진채가 넘어갔다! 남은 진채로 모여라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "camp-s1-falls",
+   "If": [
+    "at:enemy:65"
+   ],
+   "Do": [
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-b27v-camp-s1": 1
+     }
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "남쪽 서편 진채가 넘어갔다! 남은 진채로 모여라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "camp-s2-falls",
+   "If": [
+    "at:enemy:66"
+   ],
+   "Do": [
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-b27v-camp-s2": 1
+     }
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "남쪽 동편 진채가 넘어갔다! 남은 진채로 모여라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "camps-lost",
+   "If": [
+    "flag:flag-b27v-camp-w1",
+    "flag:flag-b27v-camp-w2",
+    "flag:flag-b27v-camp-s1",
+    "flag:flag-b27v-camp-s2"
+   ],
+   "Do": [
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-b27v-camps-lost": 1
+     }
+    }
+   ]
+  },
+  {
+   "ID": "west-broken",
+   "If": [
+    "flag:flag-b27v-camp-w1",
+    "flag:flag-b27v-camp-w2"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "cao-west"
+     ],
+     "Policy": "march",
+     "GoalArea": 61
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "xushu",
+       "Text": "서쪽 진채가 다 넘어갔습니다! 조조군이 서문으로 달립니다. 서문 앞을 막으십시오!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "xiangyang-falls",
+   "If": [
+    "any:[defeated:caoren, at:ally:60]"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caocao",
+       "Text": "양양이 없으면 형주에 발 디딜 데가 없다. ……군사를 물려라.",
+       "Offstage": true
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "Faction": "wei",
+ "Duels": [
+  {
+   "ID": "xiangyang-zhangfei-xuchu",
+   "Ally": "zhangfei",
+   "Enemy": "xuchu",
+   "Outcome": "draw",
+   "AllyResult": "stay",
+   "EnemyResult": "stay",
+   "Text": "수십 합을 겨뤘으나 승부가 나지 않았다. 날이 저물자 허저가 먼저 말머리를 돌렸다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "허저가 목책 앞에 서다",
+     "Speech": "장비! 이번엔 끝을 보자!",
+     "Side": 1,
+     "Duration": 2.6
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 사모를 들다",
+     "Speech": "뚱땡이, 또 왔슈? 이번엔 진채 앞이라 한 발짝도 못 물러나는구먼!",
+     "Side": 0,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "approach",
+     "Title": "두 장수가 맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "허저가 칼을 내리치다",
+     "Speech": "진채 앞이라고 방심하지 마라. 이 칼은 해가 저물 때까지 쉬지 않는다!",
+     "Side": 1,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "block",
+     "Title": "허저가 칼 끝으로 떠 보자 장비가 가볍게 받아 넘기다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 곧바로 되받아 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 껄껄 웃다",
+     "Speech": "하하하! 그럼 날 저물 때까지 붙어 보랑께!",
+     "Side": 0,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "press",
+     "Title": "장비가 몰아붙이자 허저가 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "장비가 거푸 사모을 휘몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "허저가 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "dodge",
+     "Title": "허저가 크게 휘둘렀으나 장비가 몸을 틀어 피하다",
+     "Speech": "어딜 베랑께!",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "허저가 힘을 실어 내려치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "장비가 정면으로 맞받아 불꽃이 튀다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "허저가 낮게 으르렁거리다",
+     "Speech": "호치와 겨루고도 웃는 놈은 네놈이 처음이다.",
+     "Side": 1,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 사모을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "허저가 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "허저가 말을 몰아 들이치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 사모를 돌리다",
+     "Speech": "뚱보, 오늘은 끝내자고 혔는데 아직 팔이 안 아프구먼!",
+     "Side": 0,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "press",
+     "Title": "허저가 몰아붙이자 장비가 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "허저가 거푸 칼을 휘몰아치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장비가 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "허저가 숨을 고르다",
+     "Speech": "해가 기운다. 승상께서 돌아오라 하시면 물러서야 한다.",
+     "Side": 1,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 허저의 칼과 맞물려 힘겨루기를 하다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 허저의 칼과 맞물려 힘겨루기를 하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 눈을 번득이다",
+     "Speech": "돌아가라 해도 내가 안 보내 줄 건데? 한판 더 붙자니께!",
+     "Side": 0,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "장비가 힘껏 내려치나 허저가 막아 내다",
+     "Speech": "으랏차!",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "허저가 힘으로 누르자 장비가 밀려나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "허저가 이를 악물다",
+     "Speech": "네놈, 지치지도 않느냐…… 장비!",
+     "Side": 1,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 사모을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "허저가 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "장비가 크게 휘둘렀으나 허저가 몸을 틀어 피하다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "허저가 힘껏 내려치나 장비가 막아 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장비가 호통치다",
+     "Speech": "호치라더니 이 정도여? 더 와 보랑께!",
+     "Side": 0,
+     "Duration": 2.9
+    },
+    {
+     "Kind": "block",
+     "Title": "허저가 칼을 내리치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장비가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장비가 힘으로 누르자 허저가 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "허저가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "허저가 물러서다",
+     "Speech": "……날이 저물었다. 내일 다시 보자!",
+     "Side": 1,
+     "Duration": 2.9
+    },
+    {
+     "Kind": "draw",
+     "Title": "허저가 말머리를 돌리다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 2.5
+    }
+   ]
+  },
+  {
+   "ID": "xiangyang-guanyu-zhangliao",
+   "Ally": "guanyu",
+   "Enemy": "zhangliao",
+   "Outcome": "draw",
+   "AllyResult": "stay",
+   "EnemyResult": "stay",
+   "Unlisted": true,
+   "Text": "수십 합을 겨뤘으나 승부가 나지 않아 관우와 장료가 서로 말머리를 돌렸다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "장료가 관우를 막아서다",
+     "Speech": "하비에서는 내가 그대를 말렸소. 오늘은 말릴 말이 없군.",
+     "Side": 1,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 답하다",
+     "Speech": "문원, 말이 없으면 칼로 하겠소.",
+     "Side": 0,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "approach",
+     "Title": "두 장수가 맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장료가 칼 끝으로 떠 보자 관우가 가볍게 받아 넘기다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 곧바로 되받아 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "장료가 칼을 맞대다",
+     "Speech": "하비에서 그대를 설득한 것이 나요. 그 칼이 이제 내게 향하는구려.",
+     "Side": 1,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 청룡도을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장료가 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 청룡도를 거두다",
+     "Speech": "은혜는 안다. 허나 오늘은 각자의 주인이 있다.",
+     "Side": 0,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "press",
+     "Title": "관우가 몰아붙이자 장료가 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "관우가 거푸 청룡도을 휘몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장료가 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장료가 말을 몰아 다가서다",
+     "Speech": "그대의 주공은 형주를 끝까지 지킬 수 있겠소?",
+     "Side": 1,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "dodge",
+     "Title": "장료가 크게 휘둘렀으나 관우가 몸을 틀어 피하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 짧게 받다",
+     "Speech": "주공이 가는 길을 지키는 것이 내 칼이다.",
+     "Side": 0,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "관우가 말을 몰아 들이치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "block",
+     "Title": "장료가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "장료가 크게 휘둘렀으나 관우가 몸을 틀어 피하다",
+     "Speech": "가볍군.",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "장료가 숨을 고르다",
+     "Speech": "과연 운장이오. 수염을 날리며 칼을 휘두르는 모습은 변함이 없구려.",
+     "Side": 1,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "관우가 힘을 실어 내려치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "장료가 정면으로 맞받아 불꽃이 튀다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "backstep",
+     "Title": "장료가 말을 물려 거리를 벌리다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.6
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 낮게 읊조리다",
+     "Speech": "문원, 칼이 둔해졌구나. 마음이 흔들리고 있다.",
+     "Side": 0,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "close",
+     "Title": "장료가 다시 거리를 좁히다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "block",
+     "Title": "장료가 칼을 내리치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "장료가 쓴웃음을 짓다",
+     "Speech": "흔들리지 않는 칼이 어디 있겠소. 그대와는 싸우고 싶지 않았소.",
+     "Side": 1,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "press",
+     "Title": "장료가 몰아붙이자 관우가 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "장료가 거푸 칼을 휘몰아치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "관우가 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장료가 힘으로 누르자 관우가 밀려나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 고삐를 당기다",
+     "Speech": "나도 그렇다. 허나 멈출 수는 없다.",
+     "Side": 0,
+     "Duration": 2.9
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "관우가 힘껏 내려치나 장료가 막아 내다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "장료가 힘껏 내려치나 관우가 막아 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 청룡도을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "장료가 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "장료가 이를 악물다",
+     "Speech": "(끝이 나지 않는다…… 서로 베지 못하는 칼이란 이런 것인가.)",
+     "Side": 1,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "press",
+     "Title": "관우가 몰아붙이자 장료가 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "관우가 거푸 청룡도을 휘몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장료가 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-dodge",
+     "Title": "관우의 일격을 장료가 간신히 피하다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "장료가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 청룡도를 세우다",
+     "Speech": "이쯤 하자. 오늘은 승부가 나지 않겠구나.",
+     "Side": 0,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "장료가 힘으로 누르자 관우가 밀려나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "장료가 말머리를 돌리다",
+     "Speech": "다음에는…… 칼 말고 술잔으로 만납시다.",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "draw",
+     "Title": "두 장수가 말머리를 돌리다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 2.5
+    }
+   ]
+  }
+ ],
+ "Armies": [
+  {
+   "Faction": "liuqi",
+   "Name": "유기군",
+   "Ally": true
+  },
+  {
+   "Faction": "wu",
+   "Name": "손권군",
+   "Ally": true
+  },
+  {
+   "Faction": "jing",
+   "Name": "채모 수군"
+  },
+  {
+   "Faction": "wei",
+   "Name": "조조군"
+  }
+ ]
+}

@@ -218,7 +218,7 @@ func play(d *content.Data, i, level int, seed uint64, player string, damage, xp 
 }
 
 // sortie is who goes out to stage st: the officers it requires, then the starting roster and everyone the
-// story joins before its battle, up to the stage's limit; and the warehouse: the starting one with every piece
+// story joins on its way to the battle (content.Leads), up to the stage's limit; and the warehouse: the starting one with every piece
 // of equipment the story grants before the battle, its explore talks and bonus objectives included.
 func sortie(d *content.Data, st content.Stage) ([]string, map[string]int) {
 	joined := append([]string{}, d.Campaign.Roster...)
@@ -231,12 +231,21 @@ func sortie(d *content.Data, st content.Stage) ([]string, map[string]int) {
 			warehouse[n.Item] += n.Count
 		}
 	}
+	var leads map[string]bool // the route to the battle: 가상 B26V leaves out 연의 25~27장 (곽준 joins there)
+	for _, n := range d.Nodes {
+		if n.Kind == "battle" && n.Stage == st.ID {
+			leads = d.Leads(n.ID)
+		}
+	}
 chapters:
 	for _, c := range d.Chapters {
 		for _, id := range c.Nodes {
 			n := d.Node(id)
 			if n.Kind == "battle" && n.Stage == st.ID {
 				break chapters
+			}
+			if !leads[id] {
+				continue
 			}
 			grant(n)
 			if n.Kind == "battle" { // officers who join in the middle of an earlier battle (조운 in B19, 관우 in B20)

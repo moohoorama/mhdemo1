@@ -1,0 +1,116 @@
+{
+ "Scenes": {
+  "c26-start": {
+   "Map": "S_castle_out",
+   "Nodes": ["c26-start", "c26-a01", "c26-a02", "c26-a03", "c26-a04", "c26-a05", "c26-a06"],
+   "Cast": {
+    "채모": {"At": [3, 0], "Face": "SW", "Hold": true},
+    "형주병#1": {"At": [1, 0], "Face": "SW", "Sprite": "archer", "Faction": "jing"},
+    "형주병#2": {"At": [5, 0], "Face": "SW", "Sprite": "archer", "Faction": "jing"},
+    "유비": {"At": [3, 3], "Face": "NE"},
+    "장비": {"At": [4, 4], "Face": "NE"},
+    "간옹": {"At": [2, 4], "Face": "NE"},
+    "백성#1": {"At": [6, 3], "Face": "NW", "Sprite": "commoner_man", "Faction": "merchant"},
+    "백성#2": {"At": [7, 4], "Face": "NW", "Sprite": "commoner_woman", "Faction": "merchant"},
+    "백성#3": {"At": [6, 5], "Face": "NW", "Sprite": "commoner_elder", "Faction": "merchant"},
+    "백성#4": {"At": [7, 5], "Face": "NW", "Sprite": "commoner_man", "Faction": "merchant"}
+   },
+   "Beats": {
+    "c26-a02": [
+     [
+      [{"Actor": "형주병#1", "Play": "attack"}, {"Actor": "형주병#2", "Play": "attack"}],
+      [{"Actor": "유비", "Play": "action"}, {"Actor": "백성#1", "Move": [8, 3], "Speed": 2}, {"Actor": "백성#2", "Move": [8, 5], "Speed": 2}, {"Actor": "백성#3", "Emote": "!"}]
+     ]
+    ],
+    "c26-a05": [
+     [
+      [{"Actor": "간옹", "Face": "SE"}]
+     ]
+    ],
+    "c26-a06": [
+     [
+      [{"Actor": "유비", "Face": "SE"}]
+     ]
+    ]
+   }
+  },
+  "c26-village": {
+   "Map": "S_village_burnt",
+   "Time": "dawn",
+   "Nodes": ["c26-village", "c26-b01", "c26-b02", "c26-b03", "c26-b04", "c26-b05", "c26-b06", "c26-b07"],
+   "Cast": {
+    "조운": {"At": [4, 4], "Face": "SE"},
+    "미 부인": {"At": [8, 4], "Face": "NW"},
+    "하후은": {"At": [4, 0], "Face": "SW", "Off": true},
+    "조조군#1": {"At": [3, 0], "Face": "SW", "Sprite": "light_cavalry", "Faction": "wei", "Off": true},
+    "조조군#2": {"At": [5, 0], "Face": "SW", "Sprite": "light_cavalry", "Faction": "wei", "Off": true}
+   },
+   "Beats": {
+    "c26-b01": [
+     [
+      [{"Actor": "조운", "Move": [7, 4], "Face": "SE"}]
+     ]
+    ],
+    "c26-b05": [
+     [
+      [{"Actor": "조운", "Face": "NE"}, {"CamAt": [4, 1]}],
+      [{"Actor": "미 부인", "Move": [9, 4], "Exit": true}],
+      [{"CamAt": [6, 4]}, {"Actor": "조운", "Face": "SE"}]
+     ]
+    ],
+    "c26-b06": [
+     [
+      [{"Actor": "하후은", "Enter": [11, 3], "Move": [8, 3], "Face": "NW"}, {"Actor": "조조군#1", "Enter": [11, 3], "Move": [9, 2], "After": 0.4, "Face": "NW"}, {"Actor": "조조군#2", "Enter": [11, 3], "Via": [[8, 3]], "Move": [8, 2], "After": 0.8, "Face": "NW"}],
+      [{"Actor": "조운", "Face": "SE"}]
+     ],
+     [
+      [{"Actor": "조운", "Strike": "하후은", "React": "hit", "Crit": true}],
+      [{"Actor": "하후은", "Dead": true}],
+      [{"Actor": "조조군#1", "Move": [12, 2], "Exit": true, "Speed": 2}, {"Actor": "조조군#2", "Move": [12, 3], "Exit": true, "Speed": 2}]
+     ]
+    ]
+   }
+  },
+  "c26-camp": {
+   "Map": "S_guangling_camp",
+   "Time": "dusk",
+   "Nodes": ["c26-camp", "c26-c01", "c26-c02", "c26-c03", "c26-c04", "c26-c05", "c26-c06", "c26-c07", "c26-c07n"],
+   "Cast": {
+    "유비": {"At": [6, 6], "Face": "SE"},
+    "장비": {"At": [6, 5], "Face": "SE"},
+    "미축": {"At": [5, 7], "Face": "SE"},
+    "손건": {"At": [4, 6], "Face": "SE"},
+    "감 부인": {"At": [6, 8], "Face": "NE"},
+    "조운": {"At": [12, 6], "Face": "NW", "Off": true}
+   },
+   "Beats": {
+    "c26-c01": [
+     [
+      [{"Actor": "조운", "Enter": [13, 6], "Move": [8, 6], "Face": "NW"}]
+     ]
+    ],
+    "c26-c03": [
+     [
+      [{"Actor": "미축", "Emote": "…"}]
+     ]
+    ],
+    "c26-c04": [
+     [
+      [{"Actor": "유비", "Face": "SW"}, {"Actor": "감 부인", "Face": "NE"}],
+      [{"Actor": "유비", "Face": "SE"}]
+     ]
+    ],
+    "c26-c07": [
+     [
+      [{"Actor": "유비", "Emote": "…"}]
+     ]
+    ],
+    "c26-c07n": [
+     [
+      [{"Actor": "유비", "Emote": "…"}]
+     ]
+    ]
+   }
+  }
+ }
+}

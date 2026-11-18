@@ -1037,6 +1037,20 @@
     "spirit_spread"
    ]
   },
+  "ambition": {
+   "Kind": "buff",
+   "Mode": "self",
+   "Shape": "single",
+   "Cost": 36,
+   "Hit": 100,
+   "Duration": 3,
+   "Name": "패기",
+   "Desc": "자신에게 공격·정신·방어·순발·사기 버프.",
+   "Effect": "attack+defense+mind+agility+morale",
+   "Requires": [
+    "ambition"
+   ]
+  },
   "extend_range": {
    "Kind": "buff",
    "Mode": "any",

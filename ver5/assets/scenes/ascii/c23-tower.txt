@@ -1,0 +1,13 @@
+# c23-tower  S_baimen  ch23  origin 0 0
+Bnr###Bnr##################Bnr###Bnr
+####################################
+Brz###########################Brz###
+#########Flg###DaiFlg###############
+WpnBrz######LiuDan############BrzArm
+####################################
+
+Liu 유비
+Dan 단복
+Xus 서서  (off stage, enters later (cell 5 4))
+
+# c23-t02: Xus -> 5 4

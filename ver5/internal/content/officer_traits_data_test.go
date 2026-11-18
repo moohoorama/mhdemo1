@@ -39,7 +39,7 @@ func TestOfficerTraitDecisions(t *testing.T) {
 			requires []string
 			fx       map[string]float64
 		}{
-			{"ambition", "패기", 1000, nil, map[string]float64{"start_buff:attack": 20, "start_buff:mind": 20, "start_buff:defense": 20, "start_buff:agility": 20, "start_buff:morale": 20}},
+			{"ambition", "패기", 1000, nil, nil},
 			{"hegemony", "패도", 1500, []string{"ambition"}, map[string]float64{"turn_buff:attack": 20, "turn_buff:mind": 20, "turn_buff:defense": 20, "turn_buff:agility": 20, "turn_buff:morale": 20}},
 			{"awe", "위진화하", 1500, []string{"intimidate"}, map[string]float64{"crush": 1}},
 			{"arrogance", "안하무인", 1500, []string{"roar"}, map[string]float64{"scorn": .5}},
@@ -50,7 +50,7 @@ func TestOfficerTraitDecisions(t *testing.T) {
 			{"even_hand", "지균", 1500, nil, map[string]float64{"aura_buff:agility": 20}},
 			{"lecture", "강론", 1000, nil, map[string]float64{"aura_mana": .1}},
 			{"hold_ground", "진지고수", 1200, nil, map[string]float64{"hold_ground": .3}},
-			{"swiftness", "신속", 500, nil, map[string]float64{"haste": 2}},
+			{"swiftness", "신속", 1000, nil, map[string]float64{"haste": 2}},
 			{"swim", "수영", 1000, nil, map[string]float64{"wet_factor": .2, "ward:water": .5}},
 			{"mountain_footing", "산악지형보조", 1000, nil, map[string]float64{"ambush_factor": .05}},
 			{"terrain_mend", "지형정비", 1000, nil, nil},

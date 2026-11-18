@@ -1,0 +1,27 @@
+# map25 신야 전투 (26x24, dawn). North = row 0. 신야성 (21, 3) NE ringed by burning fences,
+# the road to 완 from the south gate (21, 5) west to the NW corner, puddles over the field,
+# the flooded 백하 SE (water on a diagonal from (25, 11) to (13, 23), shallows on both banks).
+l-- l-- g-- g-- g-- g-- g-- gt- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-e g--
+g-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- gvF g-- gzF gzF gzF gzF gzF g-- g--
+g-- g-- l-- l-- g-- g-- g-- g-- g-w g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gzF i-- i-- i-- gzF g-- gvF
+g-- g-- g-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-w g-- g-- g-- g-e g-- g-- gzF i-- go- i-- gzF g-- g--
+gt- g-- g-- g-- g-- l-- l-- l-- g-- g-- g-- g-w g-- g-- g-- g-- g-- g-- g-- gzF i-- i-- i-- gzF g-- g--
+g-- g-- g-- g-- gt- g-- g-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gzF gzF i-- gzF gzF g-- g-e
+g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- g-- g-- g-- g--
+g-- g-- gt- g-- g-- g-- g-w g-- g-- g-- g-- g-- g-- g-- g-w g-- g-- g-- g-e g-- g-- g-- g-- g-- gvF g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-w g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-w g-w g-- g-- g-- g-- g-- g-- g-w g-w g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s--
+g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-w g-- g-- g-- g-- g-w g-- g-- g-- g-- s-- s-- s-- s--
+g-- g-- g-- g-- g-- g-- g-- g-- g-w g-w g-- g-- g-- g-- g-w g-- g-- g-- g-- g-- g-- s-- s-- s-- w-- w--
+g-- g-- g-- g-w g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- w-- w-- s--
+gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-w g-w g-- g-- s-- s-- s-- w-- w-- s-- s--
+g-- g-- g-- g-- g-- g-- g-w g-w g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- w-- w-- s-- s-- s--
+g-- g-- g-- g-- u-- u-- g-- g-- g-- g-- g-- g-w g-- g-- g-- g-- g-- u-- u-- s-- w-- w-- s-- s-- s-- g--
+g-- g-- g-- gt- g-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- s-- s-- s-- w-- w-- s-- s-- s-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-w g-w g-- g-- g-- g-- s-- s-- s-- w-- w-- s-- s-- s-- g-- g-- g--
+g-- g-- g-- g-- g-- g-w g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- w-- w-- s-- s-- s-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- s-- s-- s-- w-- w-- s-- s-- s-- g-- g-- g-- g-- g--
+g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- w-- w-- s-- s-- s-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- s-- s-- s-- w-- w-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- s-- s-- s-- w-- w-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- w-- w-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g-- g--

@@ -26,6 +26,11 @@ func force(t *testing.T, e *Engine, c content.Cond) {
 		}
 	case "round":
 		e.state.Round = max(e.state.Round, c.N)
+	case "since": // the event has fired; its N rounds pass
+		key := "battle-" + e.data.Stages[e.state.Stage].ID + "-" + c.Arg
+		if rounds := e.state.Fired[key]; len(rounds) > 0 {
+			e.state.Round = max(e.state.Round, rounds[len(rounds)-1]+c.N)
+		}
 	case "duel":
 		e.state.Executed["duel-"+c.Arg] = true
 	case "fled":
@@ -102,13 +107,13 @@ func winStage(t *testing.T, e *Engine, bonus bool) {
 		}
 		endTurn(t, e)
 	}
-	require.Equal(t, "result", e.Observe().Phase, "%s was not won", stage.ID)
+	require.Equal(t, "result", e.Observe().Phase, "%s was not won (round %d, victory %v)", stage.ID, e.state.Round, e.battleGoals().Victory)
 	require.Equal(t, "victory", e.Observe().Result, stage.ID)
 }
 
-// playCampaign walks the whole story: pages through the lines, takes the first choice, wins every
-// battle, and reports which stages it fought and what the party ended up with.
-func playCampaign(t *testing.T, bonus bool) (*Engine, []string) {
+// playCampaign walks the whole story: pages through the lines, takes the option named prefer where a choice offers it
+// and otherwise the first, wins every battle, and reports which stages it fought and what the party ended up with.
+func playCampaign(t *testing.T, bonus bool, prefer string) (*Engine, []string) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 	e := New(d, 3)
@@ -132,6 +137,9 @@ func playCampaign(t *testing.T, bonus bool) (*Engine, []string) {
 					pick = k
 					break
 				}
+			}
+			if _, ok := o.Dialogue.Choices[prefer]; ok {
+				pick = prefer
 			}
 			applyOK(t, e, Command{Kind: "choose", Option: pick})
 		case e.Walking():
@@ -175,8 +183,11 @@ func falls(d *content.Data, id string) bool {
 func executed(e *Engine, key string) bool { return e.state.Executed[key] }
 
 func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
-	e, fought := playCampaign(t, true)
-	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21"}, fought)
+	e, fought := playCampaign(t, true, "빠른 길")
+	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27"}, fought)
+	assert.Equal(t, 1, e.state.Flags["flag-mode-yanyi"], "the fast road at Longzhong is the romance")
+	assert.Zero(t, e.state.Flags["flag-mode-virtual"])
+	assert.Nil(t, e.char("xushu"), "Xu Shu is taken after Changban")
 	assert.Positive(t, e.state.Warehouse["mirror_armor"], "driving Yue Jin off at Runan wins his armour")
 	assert.NotNil(t, e.char("liupi"), "Liu Pi, kept alive at Runan, joins")
 	assert.Equal(t, 1, e.state.Flags["flag-pengcheng-carts"])
@@ -208,8 +219,11 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 }
 
 func TestCampaignPlaysThroughWithNoBonusObjective(t *testing.T) {
-	e, fought := playCampaign(t, false)
-	assert.Len(t, fought, 21)
+	e, fought := playCampaign(t, false, "느린 길")
+	assert.Equal(t, []string{"B22", "B23", "B24", "B25V", "B26V", "B27V"}, fought[21:])
+	assert.Equal(t, 1, e.state.Flags["flag-mode-virtual"], "Gao Shun, the Zhuge Xuan flag and the Guan Yu–Mi Fang peace open the slow road")
+	assert.Zero(t, e.state.Flags["flag-mode-yanyi"])
+	assert.NotNil(t, e.char("xushu"), "Xu Shu stays in the other telling")
 	assert.Zero(t, e.state.Flags["flag-julu-clear"])
 	assert.True(t, executed(e, "battle-B10-vanguard-strong"), "Yan Liang comes back at Jiejiao")
 	assert.False(t, executed(e, "battle-B10-vanguard-clear"))
@@ -260,7 +274,9 @@ func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
 		for _, duel := range stage.Duels {
 			t.Run(duel.ID, func(t *testing.T) {
 				dd := *d
-				if !slices.Contains(dd.Campaign.Roster, duel.Ally) { // an officer who joins later stands in for the start
+				// an ally the stage fields itself (위연 at 강릉) is not sent out
+				npc := slices.ContainsFunc(stage.Party, func(sp content.Spawn) bool { return sp.Character == duel.Ally })
+				if !npc && !slices.Contains(dd.Campaign.Roster, duel.Ally) { // an officer who joins later stands in for the start
 					dd.Campaign.Roster = append(slices.Clone(dd.Campaign.Roster), duel.Ally)
 				}
 				for _, n := range d.Nodes {
@@ -271,7 +287,7 @@ func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
 				e := New(&dd, 5)
 				e.unchecked = true // the officer of the duel is sent out whether or not he can be
 				require.Equal(t, si, e.state.Stage)
-				if !slices.Contains(e.state.Deployment, duel.Ally) { // not a required officer: in for the last of the sortie when it is full
+				if !npc && !slices.Contains(e.state.Deployment, duel.Ally) { // not a required officer: in for the last of the sortie when it is full
 					if len(e.state.Deployment) >= stage.Max {
 						e.state.Deployment = e.state.Deployment[:stage.Max-1]
 					}
@@ -316,6 +332,7 @@ func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
 					}
 				}
 				require.True(t, placed, "no free cell next to the enemy")
+				satisfy(t, e, duel.If) // a duel that waits for its moment (관우 and 조인 from round 13)
 				applyOK(t, e, Command{Kind: "end"})
 				assert.True(t, e.state.Executed["duel-"+duel.ID], "the officers met and the duel did not start")
 				for who, result := range map[string]string{duel.Ally: duel.AllyResult, duel.Enemy: duel.EnemyResult} {

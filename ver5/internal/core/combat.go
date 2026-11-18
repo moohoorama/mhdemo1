@@ -276,11 +276,12 @@ func (e *Engine) hurt(v *Unit, n int, u *Unit) int {
 	return n
 }
 
-// blow is how one strike is made: its share of full damage, and whether it was set off by another attack
-// (a counter, assist, guard or reflection), which never sets off another.
+// blow is how one strike is made: its share of full damage, whether it was set off by another attack
+// (a counter, assist, guard or reflection), which never sets off another, and whether it is an attack's second strike.
 type blow struct {
 	share   float64
 	derived bool
+	second  bool
 }
 
 // strike is one blow: hit, critical and damage, with a missed blow still landing a share of it for 급소-like traits.
@@ -303,7 +304,7 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 		if !crit {
 			crit = float64(e.rand(100)) < e.critChance(u, v, s)
 		}
-		if crit && e.has(v, content.FxCritImmune) {
+		if crit && e.has(v, content.FxCritImmune) || b.second && e.has(v, content.FxDoubleWard) {
 			hit, crit = false, false
 		}
 	}
@@ -336,6 +337,11 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 		for id := range content.StatStatuses {
 			if e.has(u, content.FxHitDebuff+id) {
 				e.applyStatus(v, id, R.BuffTurns, -R.BuffPercent)
+			}
+		}
+		for id := range content.Harmful {
+			if k := int(e.fx(u, content.FxHitStatus+id)); k > 0 {
+				e.applyStatus(v, id, k, 0)
 			}
 		}
 	}
@@ -401,7 +407,7 @@ func (e *Engine) attackOn(u, aim *Unit, vs []*Unit, s content.Skill, share map[s
 			if v.HP <= 0 {
 				continue
 			}
-			b := blow{share: share[v.ID], derived: derived}
+			b := blow{share: share[v.ID], derived: derived, second: i == 1}
 			if i == 1 {
 				e.emit("double", u.ID, v.ID, 0)
 				b.share *= e.data.Rules.DoubleShare + e.fx(u, content.FxHeavy)
@@ -501,7 +507,9 @@ func (e *Engine) counterBack(u, v *Unit) {
 }
 
 // counterTaken is the share of a counter struck at share k that lands on u: its 반격피해감소 takes points off.
-func (e *Engine) counterTaken(u *Unit, k float64) float64 { return math.Max(0, k-e.fx(u, content.FxCounterWard)) }
+func (e *Engine) counterTaken(u *Unit, k float64) float64 {
+	return math.Max(0, k-e.fx(u, content.FxCounterWard))
+}
 
 // guard is what 호위 does after u's melee attack on the struck: each ally next to one of them that has
 // 호위 and reaches u strikes back once at its share.

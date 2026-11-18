@@ -23,6 +23,7 @@ assets/scenario/
 
 - 로더(`content.Load(<data 폴더>)`)는 데이터 묶음과, 그 옆(`../scenario`) 또는 안(`scenario/`)의 시나리오 폴더를 함께 읽는다. 해시에는 두 쪽의 모든 파일이 들어간다.
 - 장(`Chapters`)은 `{ID, File}`의 배열이고 순서가 진행 순서다. 장 파일의 노드는 파일 안 배열 순서가 의미를 가진다.
+- 장 번호는 장 ID의 앞자리 숫자다(화면의 「제 N 장」, 지점 목록, 저장 칸). 앞 장과 번호가 같은 장(`25v`는 `25`의 다른 갈래)은 분기(`branch`)로만 들어가는 다른 이야기다. 이런 장의 전투 순번(레벨)은 같은 번호의 첫 장이 시작할 때의 순번에서 다시 센다(가상 `B25V`도 연의 `B25`처럼 25번째 전투). 갈래 앞 장의 끝은 `end`로 캠페인을 닫아 기본 순서로 다른 갈래에 흘러들지 않게 한다(연의 `c27-end`).
 - 스테이지 파일은 `stage*.json`이면 모두 읽는다. 스테이지 ID는 시나리오를 통틀어 유일해야 한다.
 
 ## 1. 캠페인(시나리오 파일)
@@ -89,6 +90,7 @@ assets/scenario/
 | `Sub` | 부목표 `[{ID, Text, If, Flag, Reward, Later}]`(선택). `ID`는 유일, `Text`·`If` 필수, `Reward`는 아이템 ID → 1 이상 개수. `Later`는 `Flag`가 전투 뒤에 바꾸는 일을 적은 글로, 장면 이동 창의 "앞선 전투 결과"에만 나오고 플레이 중에는 보이지 않는다. |
 | `TurnLimit` | 0 이상. 0이면 무제한([logic-battle-event.md](logic-battle-event.md)). |
 | `Allies` | 출전 장수를 놓을 수 있는 칸 `{X, Y}` 목록. 기본 배치는 이 순서대로 칸을 채운다. |
+| `Groups` | 출전을 무리로 나눈다(선택): `[{Name, Area, Required}]`. 무리는 `Areas`의 구역 `Area` 안의 `Allies` 칸이고 칸 수가 그 무리 인원이다. 무리의 `Required` 장수는 그 무리 칸에만 설 수 있고(배치·교환·자동 배치 모두), 나머지 장수는 아무 무리에나 선다. 그래서 플레이어가 배치 화면에서 누가 어느 무리로 갈지 고른다(B22 강하: 본군 북쪽·별동대 남쪽 배 위). 6.1절. |
 | `Recommend` | 장수별 권장 배치: 인물 ID → `Allies` 칸 하나. 출전한 그 장수를 기본 배치(배치 화면을 처음 열 때, 자동 진행, 강제 출전)가 그 칸에 세우고, 나머지는 `Allies` 순서대로 채운다. 칸이 막혔거나 그 병종이 설 수 없으면 건너뛴다. 플레이어는 배치 화면에서 옮길 수 있다. 없으면 `Allies` 순서만 쓴다. |
 | `Enemies` | 적 스폰 목록. 비어 있을 수 없다(맵 문서 검증). |
 | `Party` | 처음부터 지도에 있는 고정 아군 스폰 목록(선택). |
@@ -97,10 +99,10 @@ assets/scenario/
 | `Areas` | 번호 붙은 구역 목록(6절). |
 | `Events` | 전투 이벤트 목록(7절). |
 | `Faction` | 자기 `Faction`이 없는 적 스폰의 진영색. `Factions`에 있어야 한다. |
-| `Forced` | 참이면 강제 출전이다. 출전하면 배치 화면 없이 출전 명단을 `Allies` 칸에 놓고 곧바로 전투가 시작된다([logic-campaign.md](logic-campaign.md) 4절). |
-| `Night` | 참이면 밤 전투로 그린다(그림만, 규칙에는 영향 없음, [presentation-ui.md](presentation-ui.md)의 밤). |
 
 진영색 표(`game.json`의 `Factions`)는 진영마다 `Colors`(밝음·중간·어두움 세 벌)가 병력의 색이고, 선택 필드 `OfficerColors`(같은 세 벌)가 있으면 이름 있는 인물과 직급이 `officer`·`commander`·`boss`인 템플릿 병력이 그 색으로 칠해져 병력과 구별된다(`internal/gui/look.go` `officerColor`). 없는 진영은 모두 `Colors`다. 현재 값: 오 병력 빨강·장수 주황, 원 병력 주황·장수 노랑, 황건 병력 노랑·장수 흰노랑, 위 병력 파랑·장수 보라, 촉은 그대로. 같은 전투에 나오는 진영끼리 색이 가까운지는 `internal/content/faction_colors_test.go`가 본다.
+| `Forced` | 참이면 강제 출전이다. 출전하면 배치 화면 없이 출전 명단을 `Allies` 칸에 놓고 곧바로 전투가 시작된다([logic-campaign.md](logic-campaign.md) 4절). |
+| `Night` | 참이면 밤 전투로 그린다(그림만, 규칙에는 영향 없음, [presentation-ui.md](presentation-ui.md)의 밤). |
 | `Boats` | 참이면 물을 배로 건너는 전투다. 물 칸의 비용·배율은 `terrain.json`의 `Boats` 표(병종군별)가 땅 바로 위에 덧씌우고, 물 위 병력은 배에 탄 모습으로 그린다. 없으면 물은 모두에게 진입 불가([logic-combat.md](logic-combat.md) 지형). |
 | `Lights` | 밤에 둘레를 밝히는 칸 `{X, Y}`(횃불) 목록(선택). 영역 안이어야 한다. |
 | `Armies` | 진영 목록(선택): `{Faction, Name, Ally}`. `Faction`은 진영색 ID, `Name`은 화면에 보이는 이름(유비군·조조군·황건군), `Ally`는 플레이어 편인지. 목록 순서가 AI 진영의 차례 순서다. 플레이어 편 진영의 색을 입은 적 유닛이 있으면 로드 오류. |
@@ -132,6 +134,7 @@ assets/scenario/
 | `Class` | 병종 덮어쓰기. 인물 병종과 같은 계열(`Class.Family`, 없으면 `Terrain`)이어야 한다. 적은 레벨이 15·30 이상이면 이 병종에서 다시 승급한다(logic-growth.md 4절). |
 | `Facing` | 처음 방향. `NE`, `SE`, `SW`, `NW` 중 하나. 생략하면 엔진이 전투 목표 쪽으로 돌린다([presentation-facing.md](presentation-facing.md) 3절). |
 | `HP`, `MP` | 처음 값. 생략하면 병력은 최대, 병법은 0. 최대치로 잘리고 `HP`는 1 이상, `MP`는 0 이상이어야 한다. |
+| `HPPct` | `HP` 대신 최대 병력에 대한 처음 병력 비율(1~99). 레벨이 난이도마다 달라 절댓값을 정하기 어려운 "깎인 채 시작하는 적"에 쓴다(B24·B25). `HP`와 함께 쓸 수 없다. |
 | `Traits` | 특성 목록 덮어쓰기. 생략하면 인물 정의를 쓰고, 빈 배열이면 비운다. 병종·장비가 주는 특성은 그대로 붙는다. |
 | `Equipment` | 장비 목록 덮어쓰기. 생략·빈 배열의 뜻은 `Traits`와 같다. |
 | `Faction` | 진영색 덮어쓰기. `Factions`에 있어야 한다. 우선순위는 스폰 > 스테이지 `Faction`(적만) > 인물의 `Look.Faction`. |
@@ -187,18 +190,33 @@ assets/scenario/
 {"ID": 3, "Rect": {"X": 20, "Y": 8, "W": 3, "H": 3}, "Name": "마을 입구", "Description": "방화병이 불을 붙이러 오는 점화 지점"}
 ```
 
+### 6.1 출전 무리(`Stage.Groups`)
+
+| 필드 | 뜻 |
+|---|---|
+| `Name` | 무리 이름(본군, 별동대). 스테이지 안에서 유일하고 비어 있을 수 없다. 배치 화면의 출전 목록이 장수마다 이 이름을 보인다. |
+| `Area` | 무리 자리인 구역 번호. 그 안의 `Allies` 칸이 하나 이상이어야 하고, 다른 무리의 구역과 `Allies` 칸을 나누면 안 된다. |
+| `Required` | 이 무리 칸에서만 시작하는 장수(선택). 스테이지 `Required`에도 있어야 하고(로스터에 없으면 건너뜀), 한 무리에만, 무리 칸 수 이하. `Recommend`가 있으면 제 무리 칸이어야 한다. |
+
+`Allies`·`Max`는 그대로 전체 출전의 칸과 인원이다. 무리 밖 `Allies` 칸이 있어도 된다(어느 무리도 아닌 자리).
+
+```json
+"Groups": [{"Name": "본군", "Area": 1, "Required": ["liubei"]}, {"Name": "별동대", "Area": 2, "Required": ["guanyu", "gaoshun"]}]
+```
+
 ## 7. 전투 이벤트 기록(`Stage.Events`)
 
 | 필드 | 뜻 |
 |---|---|
 | `ID` | 비어 있지 않고 스테이지 안에서 유일. |
 | `Repeat` | 참이면 조건이 거짓에서 참이 될 때마다 실행(선택). `spawn`은 쓸 수 없다. |
+| `Every` | 1 이상이면 조건이 참일 때 실행하고, 그 뒤 마지막 실행에서 이 라운드 수가 지난 검사마다(조건이 참이면) 다시 실행한다(선택, N턴마다 증원). `spawn`을 쓸 수 있고 `Repeat`과 함께 쓸 수 없으며 `join`은 넣을 수 없다. |
 | `If` | 조건 문자열 배열(선택). 비어 있으면 전투가 시작되는 첫 `settle()`에 실행된다. 조건은 [logic-battle-event.md](logic-battle-event.md) 5.1. |
 | `Do` | 동작 배열(비어 있을 수 없음). `say`(`Lines`) `spawn`(`Spawns`) `remove`(`Targets`) `join`(`Spawns`) `ai`(`Targets`·`Policy`·`Goal`) `terrain`(`Area`·`State`·`Turns`) `buff`(`Targets`·`Stat`·`Value`·`Turns`) `move`(`Moves`) `cutscene`(`Steps`) `duel`(`Duel`) `flag`(`Flags`). 모르는 `Kind`는 로드 오류. |
 
 `spawn`의 스폰은 일반 스폰 규칙에 더해 다음을 요구한다. `Side`는 비어 있거나 `ally`/`enemy`이고, `ally`이면 `AI`가 참이며, 좌표가 영역 안이고, 인물이 `Playable`도 `Lord`도 아니고, 이름 있는 인물은 이 스테이지의 다른 스폰·이전 이벤트 스폰·플레이어블 인물과 겹치지 않는다. `Faction`은 있다면 `Factions`에 있어야 한다. 스폰의 `Group`은 조건과 `remove`가 가리킬 수 있는 이름이 된다.
 
-`say` 검증은 다음과 같다. `Lines`가 비어 있을 수 없고, 줄의 `Text`가 비어 있을 수 없으며, 한 줄에 같은 `Actor`가 둘 있을 수 없다. `Actor`는 플레이어블 인물, 이 스테이지의 `Enemies`·`Party` 인물, 이 스테이지 이벤트가 만드는 인물 중 하나여야 한다. 줄에 `"Offstage": true`를 주면 필드에 없는 사람(전령 등)이 하는 말로, `Actor`는 아무 인물이나 되고 유닛이 없어도 나오며 스토리 대사창(초상 없이 이름판만)으로 보인다(18장 서주성 전투의 전령). `remove`·`ai`의 `Targets`는 유닛 ID나 그룹이어야 하고, `ai`의 `Policy`는 필수이며 `Goal`은 정책에 맞아야 하고, `join`은 반복 이벤트에 쓸 수 없고 스폰이 `Playable`이며 군주가 아니고 `AI`·`Side`·`Policy`가 없고 맵 안이며 이 스테이지의 다른 스폰에 없는 인물이어야 한다. `buff`는 `Stat`이 `attack` `defense` `mind` `morale` `agility` `speed` `range` 중 하나, `Value`가 0이 아닌 -100~100, `Turns`가 0~99이고 대상이 있어야 한다. `move`의 `Moves`는 비어 있을 수 없고 `Unit`은 유닛·그룹, `To`는 맵 안, `Facing`(선택)은 NE SE SW NW여야 한다. `cutscene`의 `Steps`는 비어 있지 않은 묶음들이고, 단계는 `move`(`Unit`·`To`·`Facing` 선택) `play`(`Unit`·`Motion`) `face`(`Unit`·`Facing`: NE SE SW NW) `say`(`Unit`·`Text`) `leave`(`Unit`) `wait`(`Seconds` 0 초과 30 이하)이며 `Unit`은 유닛·그룹이다. `duel`의 `Duel`은 이 스테이지의 일기토 ID여야 한다. `terrain`의 `Area`는 이 스테이지의 구역이고 `State`는 `game.json`의 `States`에 있는 글자이거나 `-`이며 `Turns`는 0 이상이어야 하고, `flag`의 `Flags`는 비어 있을 수 없다.
+`say` 검증은 다음과 같다. `Lines`가 비어 있을 수 없고, 줄의 `Text`가 비어 있을 수 없으며, 한 줄에 같은 `Actor`가 둘 있을 수 없다. `Actor`는 플레이어블 인물, 이 스테이지의 `Enemies`·`Party` 인물, 이 스테이지 이벤트가 만드는 인물 중 하나여야 한다. 줄에 `"Offstage": true`를 주면 필드에 없는 사람(전령 등)이 하는 말로, `Actor`는 아무 인물이나 되고 유닛이 없어도 나오며 스토리 대사창(초상 없이 이름판만)으로 보인다(18장 서주성 전투의 전령). `remove`·`ai`의 `Targets`는 유닛 ID나 그룹이어야 하고, `ai`의 `Policy`는 필수이며 `Goal`은 정책에 맞아야 하고, `join`은 반복 이벤트에 쓸 수 없고 스폰이 `Playable`이며 군주가 아니고 `AI`·`Side`·`Policy`가 없고 맵 안이며 이 스테이지의 다른 스폰에 없는 인물이어야 한다. `buff`는 `Stat`이 `attack` `defense` `mind` `morale` `agility` `speed` `range` 중 하나이고 `Value`가 0이 아닌 -100~100이거나, 상태이상 `confusion` `seal` `root` `disarm` 중 하나이고 `Value`가 없어야(0) 하며, `Turns`가 0~99이고 대상이 있어야 한다. `move`의 `Moves`는 비어 있을 수 없고 `Unit`은 유닛·그룹, `To`는 맵 안, `Facing`(선택)은 NE SE SW NW여야 한다. `cutscene`의 `Steps`는 비어 있지 않은 묶음들이고, 단계는 `move`(`Unit`·`To`·`Facing` 선택, 또는 `To` 대신 `By`: 그 유닛이 그때 서 있는 곳 옆 칸으로 걸어가 그쪽을 봄) `play`(`Unit`·`Motion`) `face`(`Unit`·`Facing`: NE SE SW NW, 또는 `Facing` 대신 `By`: 그 유닛 쪽을 봄) `say`(`Unit`·`Text`) `leave`(`Unit`) `wait`(`Seconds` 0 초과 30 이하)이며 `Unit`은 유닛·그룹이다. `duel`의 `Duel`은 이 스테이지의 일기토 ID여야 한다. `terrain`의 `Area`는 이 스테이지의 구역이고 `State`는 `game.json`의 `States`에 있는 글자이거나 `-`이며 `Turns`는 0 이상이어야 하고, `flag`의 `Flags`는 비어 있을 수 없다.
 
 ```json
 {"ID": "brothers-challenge", "If": ["any:[duel:hulao-mushun, duel:hulao-wuanguo]"],

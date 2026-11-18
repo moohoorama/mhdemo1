@@ -1,0 +1,43 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>일기토 무력차와 합 수</title>
+<style>
+:root{--bg:#faf8f4;--fg:#2a2622;--mut:#7a726a;--grid:#e3ddd3;--card:#fff;--a:#b3382c;--b:#2b6c8f;--c:#6b8f2b}
+@media(prefers-color-scheme:dark){:root{--bg:#1c1a18;--fg:#eee8df;--mut:#9d958a;--grid:#363230;--card:#26231f;--a:#e8685b;--b:#5ab0d8;--c:#9fcb55}}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 -apple-system,"Apple SD Gothic Neo",sans-serif;padding:16px}
+h1{font-size:20px;margin:4px 0}p.s{color:var(--mut);margin:0 0 14px}
+.card{background:var(--card);border-radius:10px;padding:12px;margin-bottom:16px;box-shadow:0 1px 3px #0002}
+svg{width:100%;height:auto;display:block}text{fill:var(--fg);font-size:11px}.m{fill:var(--mut)}
+.tip{position:fixed;pointer-events:none;background:var(--card);border:1px solid var(--grid);border-radius:6px;padding:6px 8px;font-size:12px;display:none;max-width:260px;box-shadow:0 2px 8px #0004}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:5px 8px;text-align:left;border-bottom:1px solid var(--grid)}th{cursor:pointer;color:var(--mut)}td.n,th.n{text-align:right}
+.lg span{margin-right:14px}.lg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+</style></head><body>
+<h1>일기토: 무력차와 합 수 (1~15장)</h1>
+<p class="s">1~15장 17판. 무력차 = 아군 무력 − 적 무력(여러 장수가 참여하면 주역 기준). 점선은 30 − |무력차| 기준. 합 수 = 연출(Beats)에서 막기·회피·강타·피격 등 공방 장면 수(대사·접근·퇴각 제외, 분기 연출이 있으면 기본 연출 기준).</p>
+<div class="card"><div class="lg"><span><i style="background:var(--a)"></i>아군 승</span><span><i style="background:var(--b)"></i>무승부/기타</span><span><i style="background:var(--c)"></i>아군 패</span></div>
+<svg id="c" viewBox="0 0 760 440"></svg></div>
+<div class="card"><table id="t"><thead><tr><th data-k="stage">장</th><th data-k="ally">아군</th><th class="n" data-k="aw">무력</th><th data-k="enemy">적</th><th class="n" data-k="ew">무력</th><th class="n" data-k="diff">무력차</th><th class="n" data-k="exp">기준 합</th><th class="n" data-k="rounds">현재 합</th><th class="n" data-k="gap">차이</th><th data-k="outcome">결과</th></tr></thead><tbody></tbody></table></div>
+<div class="tip" id="tip"></div>
+<script>
+const D=[{"id": "zhuo-zhangfei-dengmao", "stage": "01", "ally": "장비", "enemy": "등무", "aw": 99, "ew": 62, "rounds": 12, "rmin": 12, "rmax": 12, "outcome": "victory", "text": "등무: 어디서 굴러온 촌놈이냐! 장비: 연인 장익덕이다! 비켜라! 장비가 창으로 등무를 단번에 꿰뚫었다."}, {"id": "zhuo-guanyu-chengyuanzhi", "stage": "01", "ally": "관우", "enemy": "정원지", "aw": 98, "ew": 66, "rounds": 12, "rmin": 12, "rmax": 12, "outcome": "victory", "text": "정원지: 등무의 원수를 갚겠다! 관우: 그 목, 내가 거두겠다. 관우가 칼 한 번에 정원지를 베어 넘겼다."}, {"id": "yingchuan-liubei-bocai", "stage": "02", "ally": "유비", "enemy": "파재", "aw": 76, "ew": 76, "rounds": 12, "rmin": 12, "rmax": 12, "outcome": "victory", "text": "파재: 네놈이 불을 놓은 놈이냐! 유비: 탁현의 유비 현덕이다. 유비가 검으로 파재를 베었다."}, {"id": "sishui-guan-yu", "stage": "05", "ally": "관우", "enemy": "화웅", "aw": 98, "ew": 92, "rounds": 20, "rmin": 20, "rmax": 20, "outcome": "victory", "text": "화웅이 거듭 창을 휘둘렀으나 관우는 모두 막아냈다. 겁먹고 물러서는 화웅을 관우가 한칼에 베었다."}, {"id": "hulao-brothers", "stage": "06", "ally": "장비", "enemy": "여포", "aw": 99, "ew": 100, "rounds": 28, "rmin": 22, "rmax": 28, "outcome": "victory", "text": "세 형제가 합세하자 여포가 퇴각했다."}, {"id": "hulao-mushun", "stage": "06", "ally": "목순", "enemy": "여포", "aw": 61, "ew": 100, "rounds": 6, "rmin": 6, "rmax": 6, "outcome": "defeat", "text": "목순이 여포에게 패하고 전사했다."}, {"id": "hulao-fangyue", "stage": "06", "ally": "방열", "enemy": "여포", "aw": 63, "ew": 100, "rounds": 4, "rmin": 4, "rmax": 4, "outcome": "defeat", "text": "방열이 여포에게 패하고 전사했다."}, {"id": "bianshui-zhangfei-lubu", "stage": "07", "ally": "장비", "enemy": "여포", "aw": 99, "ew": 100, "rounds": 20, "rmin": 20, "rmax": 20, "outcome": "draw", "text": "장비가 수세에 몰리면서도 버텨 여포와 승부를 내지 못했다."}, {"id": "xindu-guanyu-chunyuqiong", "stage": "08", "ally": "관우", "enemy": "순우경", "aw": 98, "ew": 78, "rounds": 12, "rmin": 12, "rmax": 12, "outcome": "victory", "text": "순우경이 관우를 막아섰으나 몇 합을 버티지 못하고 달아났다."}, {"id": "julu-zhangfei-yanliang", "stage": "09", "ally": "장비", "enemy": "안량", "aw": 99, "ew": 94, "rounds": 20, "rmin": 20, "rmax": 20, "outcome": "victory", "text": "안량이 장비와 창을 섞다가 밀려 물러났다. 물러나며 다음을 기약했다."}, {"id": "jiejiao-zhangfei-wenchou", "stage": "10", "ally": "장비", "enemy": "문추", "aw": 99, "ew": 95, "rounds": 20, "rmin": 20, "rmax": 20, "outcome": "victory", "text": "문추가 장비와 맞붙어 버티다가 기병을 잃고 물러났다."}, {"id": "beihai-zhaoyun-guanhai", "stage": "11", "ally": "조운", "enemy": "관해", "aw": 97, "ew": 84, "rounds": 11, "rmin": 11, "rmax": 11, "outcome": "victory", "text": "관해가 조운의 창을 받아 내지 못하고 진채로 달아났다."}, {"id": "xuzhou-zhangfei-yujin", "stage": "12", "ally": "장비", "enemy": "우금", "aw": 99, "ew": 80, "rounds": 11, "rmin": 11, "rmax": 11, "outcome": "victory", "text": "우금이 장비의 사모를 받아 내지 못하고 진을 물렸다."}, {"id": "taishan-guanyu-zangba", "stage": "13", "ally": "관우", "enemy": "장패", "aw": 98, "ew": 82, "rounds": 9, "rmin": 9, "rmax": 9, "outcome": "victory", "text": "장패가 관우의 청룡도를 받아 내지 못하고 산채 뒤로 물러났다."}, {"id": "taishan-gaoshun-sunguan", "stage": "13", "ally": "고순", "enemy": "손관", "aw": 86, "ew": 78, "rounds": 7, "rmin": 7, "rmax": 7, "outcome": "victory", "text": "고순이 말없이 손관의 칼을 쳐 내고, 손관이 물러났다."}, {"id": "xuyi-guanyu-jiling", "stage": "14", "ally": "관우", "enemy": "기령", "aw": 98, "ew": 89, "rounds": 6, "rmin": 6, "rmax": 6, "outcome": "draw", "text": "관우가 기령을 몰아붙였으나, 여포군에 쫓기는 유비를 두고 볼 수 없어 말머리를 돌렸다."}, {"id": "xiaopei-xiahoudun-caoxing", "stage": "15", "ally": "하후돈", "enemy": "조성", "aw": 93, "ew": 74, "rounds": 5, "rmin": 5, "rmax": 5, "outcome": "defeat", "text": "조성의 화살이 하후돈의 왼눈에 박혔다. 하후돈은 화살을 뽑아 눈알을 삼켰으나, 피를 쏟으며 물러났다."}];D.forEach(d=>{d.diff=d.aw-d.ew;d.exp=Math.max(0,30-Math.abs(d.diff));d.gap=d.rounds-d.exp});
+const col={victory:'--a',defeat:'--c',draw:'--b'};
+const W=760,H=440,L=48,R=20,T=16,B=48;
+const xs=D.map(d=>d.diff),xmin=Math.min(-45,...xs)-2,xmax=Math.max(...xs)+3,ymax=32;
+const X=v=>L+(v-xmin)/(xmax-xmin)*(W-L-R),Y=v=>H-B-v/ymax*(H-B-T);
+let s='';
+for(let y=0;y<=ymax;y+=4)s+=`<line x1="${L}" x2="${W-R}" y1="${Y(y)}" y2="${Y(y)}" stroke="var(--grid)"/><text class="m" x="${L-6}" y="${Y(y)+4}" text-anchor="end">${y}</text>`;
+for(let x=Math.ceil(xmin/5)*5;x<=xmax;x+=5)s+=`<line x1="${X(x)}" x2="${X(x)}" y1="${T}" y2="${H-B}" stroke="${x==0?'var(--mut)':'var(--grid)'}"/><text class="m" x="${X(x)}" y="${H-B+14}" text-anchor="middle">${x}</text>`;
+s+=`<text class="m" x="${(L+W-R)/2}" y="${H-8}" text-anchor="middle">무력차 (아군 − 적)</text><text class="m" transform="translate(12 ${(T+H-B)/2}) rotate(-90)" text-anchor="middle">합 수</text>`;
+s+=`<line x1="${X(0)}" y1="${Y(30)}" x2="${X(30)}" y2="${Y(0)}" stroke="var(--mut)" stroke-dasharray="5 4" stroke-width="1.5"/><text class="m" x="${X(2)}" y="${Y(30)-6}">기준: 30 − |무력차|</text>`;
+D.forEach((d,i)=>{const c=`var(${col[d.outcome]||'--b'})`;
+ if(d.rmin!=d.rmax)s+=`<line x1="${X(d.diff)}" x2="${X(d.diff)}" y1="${Y(d.rmin)}" y2="${Y(d.rmax)}" stroke="${c}" stroke-width="2" opacity=".5"/>`;
+ s+=`<circle data-i="${i}" cx="${X(d.diff)}" cy="${Y(d.rounds)}" r="6" fill="${c}" fill-opacity=".75" stroke="var(--bg)" stroke-width="1.5"/>`});
+const svg=document.getElementById('c');svg.innerHTML=s;
+const tip=document.getElementById('tip');
+function show(e,d){tip.style.display='block';tip.style.left=Math.min(e.clientX+12,innerWidth-270)+'px';tip.style.top=(e.clientY+12)+'px';
+ tip.innerHTML=`<b>${d.ally}(${d.aw}) vs ${d.enemy}(${d.ew})</b><br>${d.stage}장 · 무력차 ${d.diff>0?'+':''}${d.diff} · 현재 ${d.rounds}합 / 기준 ${d.exp}합${d.rmin!=d.rmax?` (분기 ${d.rmin}~${d.rmax})`:''}<br><span style="color:var(--mut)">${d.text}</span>`}
+svg.addEventListener('mousemove',e=>{const i=e.target.dataset&&e.target.dataset.i;i!==undefined?show(e,D[i]):tip.style.display='none'});
+svg.addEventListener('mouseleave',()=>tip.style.display='none');
+let sk='stage',asc=1;
+function tb(){const r=[...D].sort((a,b)=>(a[sk]>b[sk]?1:a[sk]<b[sk]?-1:0)*asc);
+ document.querySelector('#t tbody').innerHTML=r.map(d=>`<tr><td>${d.stage}</td><td>${d.ally}</td><td class="n">${d.aw}</td><td>${d.enemy}</td><td class="n">${d.ew}</td><td class="n">${d.diff>0?'+':''}${d.diff}</td><td class="n">${d.exp}</td><td class="n">${d.rounds}${d.rmin!=d.rmax?` <span class="m">(${d.rmin}~${d.rmax})</span>`:''}</td><td class="n">${d.gap>0?'+':''}${d.gap}</td><td>${{victory:'승',defeat:'패',draw:'무'}[d.outcome]||d.outcome}</td></tr>`).join('')}
+document.querySelectorAll('th').forEach(h=>h.onclick=()=>{const k=h.dataset.k;asc=sk==k?-asc:1;sk=k;tb()});tb();
+</script></body></html>

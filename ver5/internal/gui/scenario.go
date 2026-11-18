@@ -307,8 +307,8 @@ func (g *Game) backdrop(dst *ebiten.Image, o core.Observation) {
 		k := float64(i) / float64(uiH)
 		rect(dst, 0, float32(i), float32(uiW), 10, color.NRGBA{R: uint8(36 - 20*k), G: uint8(28 - 14*k), B: uint8(26 - 10*k), A: 255})
 	}
-	if i := g.S.Data.ChapterIndex(o.Node); i >= 0 {
-		g.label(dst, fmt.Sprintf("제 %d 장", i+1), 60, 40, 22, gold)
+	if n := g.S.Data.ChapterNumber(o.Node); n > 0 {
+		g.label(dst, fmt.Sprintf("제 %d 장", n), 60, 40, 22, gold)
 	}
 	g.label(dst, o.Place, 60, 74, 16, muted)
 }

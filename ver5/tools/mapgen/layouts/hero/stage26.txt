@@ -1,0 +1,68 @@
+# B26  stage26.json  map_changban.json  origin 0 0
+,,,,,,,,,,,,,,,,,,,,,,,,.........................................................~~~~~~.....................
+,,,,,,,,,,,,,,,,,,,,,,,,.................................TRETRE..................~~~~~~.....................
+,,,,,,,,,pl1,,,,,,,,,,,,............ar1TRE......f10..............................~~~~~~.........TRETRE......
+,,,,,,,,,,,,'''''''''''''''......ca1.................................TRE.........~~~~~~.....................
+,,,,,,,,,,,,,,,,,,,,,,,,'''.........Wen......TRE...............ca3......ar3......~~~~~~...pl8...............
+........................'''............fo1........................Xuc............~~~~~~pl3pl6...............
+............ca6...ca8...''''''fo2''''''''''''''''''''''''''''''''''''''''''''''''BRGBRGpl4pl2CMP............
+...............Cao...................................................fo5.........~~~~~~pl5pl7...............
+............ca7...ca9................................. n  n ...fo6...............~~~~~~'''..................
+TRETRETRE............fo7........................ca2...ar2.........TRE............~~~~~~'''..................
+TRETRETRE.....................TRETRE...............Zha...........................~~~~~~'''............TRE...
+TRETRETRE.............................................fo3...............fo9......~~~~~~'''...............TRE
+TRETRE............ar4......ca4...............fo4...TRE...........................~~~~~~'''..................
+TRETRETRE..............................fo8..................ca5............TRE...~~~~~~'''..................
+TRETRETRE........................................................................~~~~~~'''.........TRE......
+TRETRETRETRE......TRE...TRETRE...TRE...TRETRETRE...TRETRETRE...TRE......TRETRETRE~~~~~~'''..................
+TRETRETRETRETRE...TRETRETRE.........TRETRETRETRETRETRETRETRETRETRETRETRETRE......~~~~~~'''..................
+.........TRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRETRE~~~~~~'''..................
+''''''''''''''''''''''''''''''f11''''''''''''''''''ar5'''''''''''''''f12''''''''';;;;;;.....................
+ n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n ~~~~~~.....................
+ n  n MMMMMMMMM n  n MMM n MMM n  n  n  n MMMMMMMMMMMMMMM n MMM n  n  n  n  n MMM~~~~~~ n  n  n  n  n  n  n 
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM~~~~~~ n  n  n  n  n  n  n 
+
+pl1 Allies[0]  player
+pl2 Allies[1]  player
+pl3 Allies[2]  player
+pl4 Allies[3]  player
+pl5 Allies[4]  player
+pl6 Allies[5]  player
+pl7 Allies[6]  player
+pl8 Allies[7]  player
+Wen Enemies[0]  wenpin, enemy, group field, policy react, rank officer
+ca1 Enemies[1]  troop_cavalry, enemy, group field, policy react
+fo1 Enemies[2]  troop_footman, enemy, group field, policy react
+ar1 Enemies[3]  troop_archer, enemy, group field, policy react
+fo2 Enemies[4]  troop_footman, enemy, group field, policy react
+Zha Enemies[5]  zhanghe, enemy, group field, policy react, rank commander
+ca2 Enemies[6]  troop_cavalry, enemy, group field, policy react
+fo3 Enemies[7]  troop_footman, enemy, group field, policy react
+ar2 Enemies[8]  troop_archer, enemy, group field, policy react
+fo4 Enemies[9]  troop_footman, enemy, group field, policy react
+Xuc Enemies[10]  xuchu, enemy, group field, policy react, rank officer
+ca3 Enemies[11]  troop_cavalry, enemy, group field, policy react
+fo5 Enemies[12]  troop_footman, enemy, group field, policy react
+fo6 Enemies[13]  troop_footman, enemy, group field, policy react
+ar3 Enemies[14]  troop_archer, enemy, group field, policy react
+fo7 Enemies[15]  troop_footman, enemy, group field, policy react
+ca4 Enemies[16]  troop_cavalry, enemy, group field, policy react
+fo8 Enemies[17]  troop_footman, enemy, group field, policy react
+ca5 Enemies[18]  troop_cavalry, enemy, group field, policy react
+fo9 Enemies[19]  troop_footman, enemy, group field, policy react
+ar4 Enemies[20]  troop_archer, enemy, group field, policy react
+f10 Enemies[21]  troop_footman, enemy, group field, policy react
+f11 Enemies[22]  troop_footman, enemy, group south, policy react
+ar5 Enemies[23]  troop_archer, enemy, group south, policy react
+f12 Enemies[24]  troop_footman, enemy, group south, policy react
+Cao Enemies[25]  caochun, enemy, group tiger, policy march, rank commander
+ca6 Enemies[26]  troop_cavalry, enemy, group tiger, policy march
+ca7 Enemies[27]  troop_cavalry, enemy, group tiger, policy march
+ca8 Enemies[28]  troop_cavalry, enemy, group tiger, policy march
+ca9 Enemies[29]  troop_cavalry, enemy, group tiger, policy march
+
+# area 70 다리 동쪽 진영: x 31..33, y 5..7
+# area 71 여울 건너: x 27..35, y 13..21
+# area 72 무너진 마을: x 3..3, y 2..2
+# area 73 다리 어귀: x 29..30, y 4..7
+# area 74 다리 서쪽 머리: x 24..26, y 5..7

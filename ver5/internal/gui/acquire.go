@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"slices"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -41,7 +42,7 @@ func acquireGains(before *core.Observation, events []core.Event) []gain {
 		}
 	}
 	for _, e := range events {
-		if e.Kind != "grant" || e.Amount <= 0 {
+		if e.Kind != "grant" || e.Amount <= 0 || wornAway(before, e) {
 			continue
 		}
 		merged := false
@@ -56,6 +57,15 @@ func acquireGains(before *core.Observation, events []core.Event) []gain {
 		}
 	}
 	return out
+}
+
+// wornAway reports a grant the story put straight on an officer who is not in the party: it comes in worn when they
+// join, with nothing to announce.
+func wornAway(before *core.Observation, e core.Event) bool {
+	if before == nil || e.Kind != "grant" || e.Actor == "" {
+		return false
+	}
+	return !slices.ContainsFunc(before.Characters, func(c core.Character) bool { return c.ID == e.Actor })
 }
 
 func owned(o *core.Observation, id string) bool {

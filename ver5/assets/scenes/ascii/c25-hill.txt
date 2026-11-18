@@ -1,0 +1,16 @@
+# c25-hill  S_road  ch25  origin 0 0
+TreMil...Tre...Bsh...
+...............Jia...
+............Liu......
+.........Zhu...MilZha
+......Bsh............
+
+Liu 유비
+Zha 장비
+Zhu 제갈량
+Jia 간옹
+Gua 관우  (off stage, enters later (cell 8 2))
+Miz 미축  (off stage, enters later (cell 8 3))
+
+# c25-f04: Gua -> 6 2
+# c25-f04: Miz -> 7 3

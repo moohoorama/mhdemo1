@@ -173,6 +173,18 @@ func statusText(id string, s core.Status) string {
 	return fmt.Sprintf("%s %d", statusLabels[id], s.Turns)
 }
 
+// statusChange is what a battle event's buff shows over a unit: a stat's percent, cells of speed or range, or
+// the ailment alone.
+func statusChange(id string, value int) string {
+	switch {
+	case percentStatus[id]:
+		return fmt.Sprintf("%s %+d%%", statusLabels[id], value)
+	case value != 0:
+		return fmt.Sprintf("%s %+d", statusLabels[id], value)
+	}
+	return statusLabels[id]
+}
+
 var errorNames = map[string]string{
 	"StaleRevision": "화면이 최신 상태가 아닙니다", "NotYourTurn": "지금은 행동할 수 없습니다",
 	"OutOfRange": "범위 밖입니다", "InvalidTarget": "대상이 올바르지 않습니다", "ActionSpent": "이미 행동했습니다",

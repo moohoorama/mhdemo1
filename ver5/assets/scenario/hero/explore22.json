@@ -1,0 +1,243 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   19,
+   5
+  ],
+  "Face": "SW"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_xiaopei",
+   "Name": "신야성",
+   "At": [
+    19,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "관청",
+     "At": [
+      5,
+      11
+     ],
+     "Object": [
+      2,
+      11
+     ],
+     "To": "office"
+    }
+   ],
+   "People": {
+    "장비@town": {
+     "At": [
+      17,
+      6
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "zhangfei",
+       "형, 성이 소패만 하구먼. 조조가 오면 맨 먼저 닿는 데라니, 유표 그 양반 인심 한번 후하슈."
+      ]
+     ]
+    },
+    "간옹@town": {
+     "At": [
+      11,
+      17
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "jianyong",
+       "북쪽 문턱에 손님을 세웠으니, 조조가 오면 우리가 먼저 맞는 걸세. 손님 대접치고는 날이 섰지."
+      ]
+     ]
+    },
+    "조운@town": {
+     "At": [
+      17,
+      12
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "zhaoyun",
+       "강하까지는 물길입니다. 말을 배에 싣는 것부터 군사들에게 익히게 하겠습니다."
+      ]
+     ]
+    },
+    "고순@town": {
+     "At": [
+      15,
+      5
+     ],
+     "Face": "SW",
+     "If": [
+      "party:gaoshun"
+     ],
+     "Talk": [
+      [
+       "gaoshun",
+       "관청 앞의 관리는 양양에서 왔소. 우리가 몇이고 쌀을 얼마나 먹는지 날마다 적어 가오."
+      ]
+     ]
+    },
+    "미방@town": {
+     "At": [
+      22,
+      10
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "mifang",
+       "쌀은 제가 셉니다. 걱정 마십시오."
+      ]
+     ]
+    },
+    "군사#1": {
+     "At": [
+      24,
+      9
+     ],
+     "Face": "SW",
+     "Sprite": "light_infantry",
+     "Faction": "shu"
+    },
+    "감시역 관리": {
+     "At": [5, 14],
+     "Face": "SE",
+     "Sprite": "official_crimson_noncombat",
+     "Faction": "jing",
+     "Talk": [
+      [
+       "감시역 관리",
+       "양양에서 왔소. 신야 관청에 드나드는 곡식은 한 섬까지 적어 올리라는 분부요."
+      ]
+     ]
+    },
+    "아낙": {
+     "At": [
+      13,
+      10
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "아낙",
+       "떠돌이 장수가 또 왔구먼. 이번 양반은 얼마나 머무르려나."
+      ]
+     ]
+    },
+    "노인": {
+     "At": [
+      22,
+      17
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "노인",
+       "유 황숙이라고? 여포 밑에도, 조조 밑에도, 원소 밑에도 있었다던 그분 아닌가."
+      ]
+     ]
+    },
+    "행상": {
+     "At": [
+      26,
+      16
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Shop": "ye"
+    },
+    "행인#1": {
+     "At": [
+      8,
+      15
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Move": {
+      "Patrol": [
+       [
+        8,
+        15
+       ],
+       [
+        30,
+        15
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "office": {
+   "Map": "S_xiaopei_office",
+   "Name": "신야 · 관청",
+   "At": [
+    5,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      5,
+      11
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "관우@office": {
+     "At": [
+      3,
+      7
+     ],
+     "Face": "SE",
+     "Sortie": {
+      "Ask": "형님, 배와 군사의 채비가 끝났습니다. 강하로 떠나시겠습니까?"
+     }
+    },
+    "손건@office": {
+     "At": [
+      7,
+      7
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "sunqian",
+       "유경승께서는 너그러우시지만, 양양의 채 장군 쪽은 우리를 반기지 않습니다."
+      ]
+     ]
+    },
+    "미축@office": {
+     "At": [
+      6,
+      4
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "mizhu",
+       "양양에서 내려오는 쌀이 줄었습니다. 신야에 사람은 늘었는데 말입니다."
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

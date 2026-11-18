@@ -524,7 +524,12 @@ func restore(d *content.Data, s State, checkpoint bool) (*Engine, []string, erro
 		}
 		if s.Phase != "deployment" {
 			for _, event := range stage.Events {
-				if s.Executed["battle-"+stage.ID+"-"+event.ID] {
+				key := "battle-" + stage.ID + "-" + event.ID
+				times := len(s.Fired[key]) // an event with Every brings its units each time it ran
+				if times == 0 && s.Executed[key] {
+					times = 1
+				}
+				for range times {
 					for _, a := range event.Do {
 						for _, sp := range a.Spawns {
 							side := "ally"

@@ -1,0 +1,18 @@
+# c24-office2  S_xiaopei_office  ch24  origin -1 -1
+Pil#####################Pil
+###...Cdl###Bnr.........Lnt
+###......Liu.........Map...
+###Wpn...DskZhu.........Jar
+###WpnZhaGua...TblTbl......
+###ArmZun..................
+PilLnt.....................
+
+Liu 유비
+Zhu 제갈량
+Zha 장비
+Gua 관우
+Zun 조운
+Mes 전령  (light_infantry, off stage, enters later (cell 2 5))
+
+# c24-e03: Mes -> 2 5
+# c24-e03: Mes -> 2 7 and leaves

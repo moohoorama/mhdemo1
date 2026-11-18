@@ -195,8 +195,8 @@ func (g *Game) goalSlot() *cornerSlot {
 
 // chapterName is "N장" for the chapter holding the node, or nothing.
 func (g *Game) chapterName(node string) string {
-	if i := g.S.Data.ChapterIndex(node); i >= 0 {
-		return fmt.Sprintf("%d장", i+1)
+	if n := g.S.Data.ChapterNumber(node); n > 0 {
+		return fmt.Sprintf("%d장", n)
 	}
 	return ""
 }

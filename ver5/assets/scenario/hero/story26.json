@@ -1,0 +1,178 @@
+{
+ "Nodes": [
+  {
+   "ID": "c26-start",
+   "Kind": "scene",
+   "Place": "양양 · 성문 앞"
+  },
+  {
+   "ID": "c26-a01",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "조카를 보러 온 것이 아니오. 백성만이라도 성에 들여 주시오!"
+  },
+  {
+   "ID": "c26-a02",
+   "Kind": "say",
+   "Speaker": "caimao",
+   "Text": "쏴라!"
+  },
+  {
+   "ID": "c26-a03",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형! 저 문 내가 부수겄슈!"
+  },
+  {
+   "ID": "c26-a04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "형님의 아들이 있는 성을 칠 수는 없네. 남쪽으로 간다."
+  },
+  {
+   "ID": "c26-a05",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "현덕, 백성을 데리고는 하루 십 리일세. 조조의 기병은 하루 삼백 리고."
+  },
+  {
+   "ID": "c26-a06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "나를 따라 나선 사람들이네. 두고 갈 수는 없네."
+  },
+  {
+   "ID": "c26-leave-xushu",
+   "Kind": "leave",
+   "Character": "xushu",
+   "Event": "leave-xushu"
+  },
+  {
+   "ID": "c26-village",
+   "Kind": "scene",
+   "Place": "당양 · 무너진 마을"
+  },
+  {
+   "ID": "c26-b01",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "부인! 말에 오르십시오. 저는 걸어서 길을 열겠습니다."
+  },
+  {
+   "ID": "c26-b02",
+   "Kind": "say",
+   "Speaker": "lady_mi",
+   "Text": "다리를 다쳤소. 장군이 말을 잃으면 이 아이도 못 사오. 아이를 받으시오."
+  },
+  {
+   "ID": "c26-b03",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "부인, 그럴 수는……."
+  },
+  {
+   "ID": "c26-b04",
+   "Kind": "say",
+   "Speaker": "lady_mi",
+   "Text": "먼지가 가까워지오. 어서!"
+  },
+  {
+   "ID": "c26-b05",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "……부인?"
+  },
+  {
+   "ID": "c26-b06",
+   "Kind": "say",
+   "Speaker": "xiahouen",
+   "Text": "하후은이다. 그 품에 든 것이 무엇이냐!"
+  },
+  {
+   "ID": "c26-qinggang",
+   "Kind": "grant",
+   "Item": "qinggang_sword",
+   "Count": 1,
+   "Event": "grant-qinggang_sword"
+  },
+  {
+   "ID": "c26-b07",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "좋은 검이군. 가져가야겠다."
+  },
+  {
+   "ID": "c26-battle",
+   "Kind": "battle",
+   "Stage": "B26",
+   "Text": "장판파 전투 — 출전 준비"
+  },
+  {
+   "ID": "c26-camp",
+   "Kind": "scene",
+   "Place": "장판교 · 동쪽 진영"
+  },
+  {
+   "ID": "c26-c01",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "공자는 무사합니다."
+  },
+  {
+   "ID": "c26-c02",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "미 부인은…… 모시지 못했습니다. 다리를 다치셔서 말에 오르지 않으셨습니다."
+  },
+  {
+   "ID": "c26-c03",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "……누이가 그럴 사람이오. 자룡, 고개를 드시오."
+  },
+  {
+   "ID": "c26-c04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "자룡, 다친 데는 없는가."
+  },
+  {
+   "ID": "c26-c05",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "주공, 원직도 노모를 모시고 맨 뒤에 있다가 조조군에 잡혔습니다."
+  },
+  {
+   "ID": "c26-c06",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "백성도 절반이 돌아오지 못했습니다."
+  },
+  {
+   "ID": "c26-c-path",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "choice:c24-path=빠른 길"
+     ],
+     "Next": "c26-c07"
+    }
+   ],
+   "Else": "c26-c07n"
+  },
+  {
+   "ID": "c26-c07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……빠른 길이라 했는데, 잃는 것만 빠르군.",
+   "Next": "c27-start"
+  },
+  {
+   "ID": "c26-c07n",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……힘을 먼저 갖추자 했는데, 남은 힘마저 길에 두고 왔군."
+  }
+ ]
+}

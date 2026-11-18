@@ -195,6 +195,18 @@ func (p *player) gameScreen() {
 	case "deployment":
 		p.printf("\n== %s · 배치 ==\n", o.Map.Name)
 		Board(p.d, o, p.out, cells(o.Map.Allies))
+		for _, g := range o.Map.Groups { // a split sortie: who must start where
+			n, lead := 0, []string{}
+			for _, c := range o.Map.Allies {
+				if o.Map.InArea(c, g.Area) {
+					n++
+				}
+			}
+			for _, id := range g.Required {
+				lead = append(lead, p.d.Characters[id].Name)
+			}
+			p.printf("  %s: %d칸 %s\n", g.Name, n, strings.Join(lead, "·"))
+		}
 		p.add("자동 배치하고 시작", func() { p.request(session.Request{Op: "auto"}) })
 	case "battle":
 		p.battleScreen(o)
@@ -545,7 +557,11 @@ func (p *player) events(evs []core.Event) {
 				}
 				who = append(who, name(f.Target))
 			}
-			p.printf("  %s %+d%%: %s\n", e.Text, e.Amount, strings.Join(who, " · "))
+			if e.Amount == 0 { // an ailment
+				p.printf("  %s: %s\n", e.Text, strings.Join(who, " · "))
+			} else {
+				p.printf("  %s %+d%%: %s\n", e.Text, e.Amount, strings.Join(who, " · "))
+			}
 		case "level":
 			p.printf("  ↑ %s Lv%d\n", name(e.Actor), e.Amount)
 		case "turn":

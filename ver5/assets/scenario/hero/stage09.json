@@ -276,6 +276,25 @@
    ]
   },
   {
+   "ID": "gaolan-boast",
+   "If": [
+    "round>=2",
+    "turnstart:enemy",
+    "alive:gaolan"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "gaolan",
+       "Text": "저게 공손찬이 부른 원군이냐? 고작 저 머릿수로 거록을 넘겠다고? 내 연노가 길목을 겨누고 있는 줄도 모르고!"
+      }
+     ]
+    }
+   ]
+  },
+  {
    "ID": "ambush-found",
    "If": [
     "at:ally:4",
@@ -455,6 +474,24 @@
      ]
     },
     {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "gaolan",
+       "Text": "장군께서 나서셨다! 이제 끝이다. 하간에서 장군 창끝을 피한 놈은 하나도 없다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "fengji",
+       "Text": "고 장군, 자중하시오."
+      }
+     ]
+    },
+    {
      "Kind": "ai",
      "Targets": [
       "bridge",
@@ -463,6 +500,42 @@
       "fort"
      ],
      "Policy": "assault"
+    }
+   ]
+  },
+  {
+   "ID": "gaolan-blurts",
+   "If": [
+    "hp:gaolan<100",
+    "alive:gaolan"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "gaolan",
+       "Text": "날 쳐 봐야 소용없다! 여기서 막히든 뚫리든 상관없어. 계교 다리 건너엔 국의 장군의 정병 팔백이 방패 뒤에 엎드려 있다. 공손찬의 백마가 다리에 오르는 순간……"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "fengji",
+       "Text": "고 장군! 입 다무시오!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "계교에 노병이……? 공손 장군이 위험하다. 서둘러 이 길목을 뚫어라!"
+      }
+     ]
     }
    ]
   },

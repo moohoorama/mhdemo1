@@ -27,6 +27,7 @@ type campaignPrep interface {
 
 type campaignAuto struct {
 	prep         campaignPrep // when set, preparations and learning are its
+	prefer       []string     // story options taken whenever a choice offers one (the end-to-end test's route)
 	player       *autoplay.Searcher
 	model        *autoplay.BattleModel
 	cancel       context.CancelFunc
@@ -141,6 +142,12 @@ func (g *Game) planCampaign(kind string, actor string) {
 				}
 			case "choice":
 				plan.commands = []core.Command{autoplay.ChooseStory(e, a.player)}
+				for _, option := range a.prefer {
+					if _, ok := e.Observe().Dialogue.Choices[option]; ok {
+						plan.commands = []core.Command{{Kind: "choose", Option: option}}
+						break
+					}
+				}
 			case "explore":
 				plan.commands = a.player.Explore(e)
 			}

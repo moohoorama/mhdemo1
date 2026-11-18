@@ -1,0 +1,241 @@
+{
+ "Scenes": {
+  "c23-start": {
+   "Map": "S_xuzhou_gate",
+   "Nodes": ["c23-start", "c23-g01", "c23-g02", "c23-g03", "c23-g04", "c23-g05", "c23-g06", "c23-g07", "c23-g08"],
+   "Ambient": [{"CamAt": [9, 6]}],
+   "Cast": {
+    "유비": {"At": [8, 6], "Face": "SE"},
+    "조운": {"At": [7, 5], "Face": "SE"},
+    "유표": {"At": [13, 6], "Face": "NW", "Off": true},
+    "괴월": {"At": [13, 6], "Face": "NW", "Off": true, "Hold": true},
+    "적로#1": {"At": [13, 6], "Face": "NW", "Off": true, "Sprite": "light_cavalry_horse", "Faction": "jing"},
+    "형주병#1": {"At": [12, 5], "Face": "NW", "Sprite": "light_infantry", "Faction": "jing"},
+    "형주병#2": {"At": [12, 7], "Face": "NW", "Sprite": "light_infantry", "Faction": "jing"},
+    "이적": {"At": [13, 6], "Face": "NW", "Off": true}
+   },
+   "Beats": {
+    "c23-g01": [
+     [
+      [{"Actor": "유표", "Enter": [13, 6], "Move": [10, 6], "Speed": 0.8}, {"Actor": "적로#1", "Enter": [13, 6], "Move": [10, 7], "Speed": 0.8, "After": 0.4}, {"Actor": "괴월", "Enter": [13, 6], "Move": [12, 4], "After": 1.2}],
+      [{"Actor": "유표", "Face": "NW"}, {"Actor": "적로#1", "Face": "NW"}, {"Actor": "괴월", "Face": "NW"}]
+     ]
+    ],
+    "c23-g02": [
+     [
+      [{"Actor": "유비", "Play": "action"}]
+     ]
+    ],
+    "c23-g04": [
+     [
+      [{"Actor": "유비", "Move": [9, 7]}],
+      [{"Actor": "유비", "Face": "SE"}]
+     ]
+    ],
+    "c23-g05": [
+     [
+      [{"Actor": "유비", "Move": [4, 7], "Speed": 0.8}, {"Actor": "적로#1", "Move": [5, 7], "Speed": 0.8, "After": 0.6}, {"Actor": "조운", "Move": [3, 6], "Speed": 0.8, "After": 0.5}],
+      [{"Actor": "유비", "Face": "NW"}, {"Actor": "적로#1", "Face": "NW"}, {"Actor": "유표", "Face": "NW"}]
+     ],
+     [
+      [{"Actor": "괴월", "Via": [[12, 6]], "Move": [13, 6], "Exit": true}, {"Actor": "유표", "Move": [13, 6], "Exit": true, "After": 0.6}]
+     ]
+    ],
+    "c23-g06": [
+     [
+      [{"Actor": "이적", "Enter": [13, 6], "Move": [6, 7], "Speed": 2}],
+      [{"Actor": "이적", "Face": "NW"}, {"Actor": "유비", "Face": "SE"}, {"Actor": "조운", "Face": "SE"}]
+     ]
+    ],
+    "c23-g07": [
+     [
+      [{"Actor": "유비", "Look": "NW"}]
+     ]
+    ],
+    "c23-g08": [
+     [
+      [{"Actor": "이적", "Look": "SE"}]
+     ],
+     [
+      [{"Actor": "유비", "Emote": "…"}]
+     ]
+    ]
+   }
+  },
+  "c23-market": {
+   "Map": "S_xiaopei",
+   "Nodes": ["c23-market", "c23-m01", "c23-m02"],
+   "Ambient": [{"CamAt": [8, 6]}, {"Actor": "백성#1", "Chatter": "노래 한번 구성지네|어디 선비래?"}, {"Actor": "백성#2", "Chatter": "쉿, 들어 봐요|……"}, {"Actor": "백성#3", "Chatter": "허허……"}],
+   "Cast": {
+    "유비": {"At": [11, 5], "Face": "NW", "Off": true},
+    "관우": {"At": [12, 4], "Face": "NW", "Off": true},
+    "장비": {"At": [12, 6], "Face": "NW", "Off": true},
+    "단복": {"At": [7, 6], "Face": "SE"},
+    "백성#1": {"At": [6, 8], "Face": "NE", "Sprite": "commoner_man", "Faction": "merchant"},
+    "백성#2": {"At": [8, 8], "Face": "NE", "Sprite": "commoner_woman", "Faction": "merchant"},
+    "백성#3": {"At": [5, 5], "Face": "SE", "Sprite": "commoner_elder", "Faction": "merchant"},
+    "백성#4": {"At": [9, 7], "Face": "NW", "Sprite": "commoner_man", "Faction": "merchant"}
+   },
+   "Beats": {
+    "c23-m01": [
+     [
+      [{"Actor": "단복", "Play": "action"}]
+     ]
+    ],
+    "c23-m02": [
+     [
+      [{"Actor": "유비", "Enter": [14, 5], "Move": [10, 5]}, {"Actor": "관우", "Enter": [14, 4], "Move": [11, 4], "After": 0.3}, {"Actor": "장비", "Enter": [14, 6], "Move": [11, 6], "After": 0.5}],
+      [{"Actor": "유비", "Face": "NW"}, {"Actor": "관우", "Face": "NW"}, {"Actor": "장비", "Face": "NW"}]
+     ],
+     [
+      [{"Actor": "단복", "Face": "SE"}],
+      [{"Actor": "유비", "Emote": "…"}]
+     ]
+    ]
+   }
+  },
+  "c23-flash": {
+   "Map": "S_village_burnt",
+   "Time": "memory",
+   "Nodes": ["c23-flash", "c23-f01"],
+   "Ambient": [{"Effect": "bigfire", "At": [1, 1]}, {"Effect": "bigfire", "At": [7, 2]}, {"Effect": "smoke", "At": [4, 1]}],
+   "Cast": {
+    "유비": {"At": [4, 4], "Face": "SE"},
+    "관우": {"At": [3, 3], "Face": "SE"},
+    "장비": {"At": [3, 5], "Face": "SE"},
+    "서복": {"At": [11, 4], "Face": "NW", "Off": true}
+   },
+   "Beats": {
+    "c23-f01": [
+     [
+      [{"Actor": "서복", "Enter": [11, 4], "Move": [6, 4], "Speed": 2}],
+      [{"Actor": "서복", "Face": "NW"}]
+     ]
+    ]
+   }
+  },
+  "c23-market2": {
+   "Map": "S_xiaopei",
+   "Nodes": ["c23-market2", "c23-m03", "c23-m04", "c23-m05", "c23-m06", "c23-m07", "c23-m08", "c23-m09"],
+   "Ambient": [{"CamAt": [9, 5]}],
+   "Cast": {
+    "유비": {"At": [10, 5], "Face": "NW"},
+    "관우": {"At": [11, 4], "Face": "NW"},
+    "장비": {"At": [11, 6], "Face": "NW"},
+    "단복": {"At": [8, 5], "Face": "SE"},
+    "백성#1": {"At": [6, 8], "Face": "NE", "Sprite": "commoner_man", "Faction": "merchant"},
+    "백성#2": {"At": [8, 8], "Face": "NE", "Sprite": "commoner_woman", "Faction": "merchant"},
+    "백성#3": {"At": [5, 5], "Face": "SE", "Sprite": "commoner_elder", "Faction": "merchant"},
+    "백성#4": {"At": [9, 7], "Face": "NW", "Sprite": "commoner_man", "Faction": "merchant"}
+   },
+   "Beats": {
+    "c23-m03": [
+     [
+      [{"Actor": "단복", "Play": "action"}]
+     ]
+    ],
+    "c23-m05": [
+     [
+      [{"Actor": "단복", "Look": "NE"}]
+     ]
+    ],
+    "c23-m06": [
+     [
+      [{"Actor": "유비", "Emote": "?"}]
+     ]
+    ],
+    "c23-m08": [
+     [
+      [{"Actor": "장비", "Face": "NE"}, {"Actor": "장비", "Emote": "?"}]
+     ]
+    ],
+    "c23-m09": [
+     [
+      [{"Actor": "유비", "Face": "SW"}]
+     ],
+     [
+      [{"Actor": "장비", "Emote": "…"}, {"Actor": "유비", "Face": "NW"}]
+     ]
+    ]
+   }
+  },
+  "c23-office": {
+   "Map": "S_xiaopei_office",
+   "Nodes": ["c23-office", "c23-o01", "c23-o02", "c23-o03", "c23-o04"],
+   "Cast": {
+    "유비": {"At": [2, 1], "Face": "SW"},
+    "관우": {"At": [1, 3], "Face": "NE"},
+    "장비": {"At": [3, 3], "Face": "NW"},
+    "조운": {"At": [1, 4], "Face": "NE"},
+    "간옹": {"At": [4, 2], "Face": "SW"},
+    "손건": {"At": [2, 3], "Face": "NE"},
+    "이적": {"At": [4, 3], "Face": "NW"},
+    "단복": {"At": [3, 4], "Face": "NE"},
+    "전령": {"At": [2, 5], "Face": "NE", "Sprite": "light_infantry", "Faction": "shu", "Off": true}
+   },
+   "Beats": {
+    "c23-o01": [
+     [
+      [{"Actor": "전령", "Enter": [2, 6], "Move": [2, 5], "Speed": 2}],
+      [{"Actor": "유비", "Emote": "!"}, {"Actor": "장비", "Face": "SW"}, {"Actor": "관우", "Face": "SE"}]
+     ]
+    ],
+    "c23-o02": [
+     [
+      [{"Actor": "관우", "Face": "SE"}]
+     ]
+    ],
+    "c23-o04": [
+     [
+      [{"Actor": "단복", "Face": "NE"}]
+     ],
+     [
+      [{"Actor": "유비", "Play": "action"}]
+     ]
+    ]
+   }
+  },
+  "c23-tower": {
+   "Map": "S_baimen",
+   "Time": "dusk",
+   "Nodes": ["c23-tower", "c23-t01", "c23-t02", "c23-t03", "c23-t04", "c23-t05", "c23-t06"],
+   "Ambient": [{"CamAt": [2.6, 0.6]}],
+   "Cast": {
+    "유비": {"At": [4, 4], "Face": "SE"},
+    "단복": {"At": [5, 4], "Face": "NW"},
+    "서서": {"At": [5, 4], "Face": "NW", "Off": true}
+   },
+   "Beats": {
+    "c23-t01": [
+     [
+      [{"Actor": "단복", "Play": "action"}]
+     ]
+    ],
+    "c23-t02": [
+     [
+      [{"Actor": "단복", "Place": [14, 5]}, {"Actor": "서서", "Enter": [5, 4], "Move": [5, 4]}],
+      [{"Actor": "서서", "Face": "NW"}]
+     ]
+    ],
+    "c23-t03": [
+     [
+      [{"Actor": "유비", "Look": "NE"}]
+     ]
+    ],
+    "c23-t04": [
+     [
+      [{"Actor": "서서", "Emote": "…"}]
+     ]
+    ],
+    "c23-t06": [
+     [
+      [{"Actor": "서서", "Play": "action"}]
+     ],
+     [
+      [{"Actor": "유비", "Play": "action"}]
+     ]
+    ]
+   }
+  }
+ }
+}

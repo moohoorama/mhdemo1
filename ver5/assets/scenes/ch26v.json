@@ -1,0 +1,136 @@
+{
+ "Scenes": {
+  "c26v-start": {
+   "Map": "S_castle_out",
+   "Nodes": ["c26v-start", "c26v-a01", "c26v-a02", "c26v-a03", "c26v-a04", "c26v-a05", "c26v-a06", "c26v-a07", "c26v-a08", "c26v-a09", "c26v-a10"],
+   "Cast": {
+    "장윤": {"At": [3, 0], "Face": "SW", "Hold": true},
+    "곽준": {"At": [4, 1], "Face": "SW", "Hold": true},
+    "강릉병#1": {"At": [1, 0], "Face": "SW", "Sprite": "archer", "Faction": "jing"},
+    "강릉병#2": {"At": [6, 0], "Face": "SW", "Sprite": "archer", "Faction": "jing"},
+    "유비": {"At": [3, 3], "Face": "NE"},
+    "장비": {"At": [4, 4], "Face": "NE"},
+    "간옹": {"At": [2, 4], "Face": "NE"},
+    "서서": {"At": [3, 5], "Face": "NE"},
+    "백성#1": {"At": [6, 3], "Face": "NW", "Sprite": "commoner_man", "Faction": "merchant"},
+    "백성#2": {"At": [7, 4], "Face": "NW", "Sprite": "commoner_woman", "Faction": "merchant"},
+    "백성#3": {"At": [6, 5], "Face": "NW", "Sprite": "commoner_elder", "Faction": "merchant"}
+   },
+   "Beats": {
+    "c26v-a03": [
+     [
+      [{"Actor": "곽준", "Face": "NW"}]
+     ]
+    ],
+    "c26v-a05": [
+     [
+      [{"Actor": "장윤", "Face": "SE"}]
+     ]
+    ],
+    "c26v-a06": [
+     [
+      [{"Actor": "장윤", "Emote": "…"}]
+     ]
+    ],
+    "c26v-a07": [
+     [
+      [{"Actor": "강릉병#1", "Emote": "!"}, {"Actor": "강릉병#2", "Emote": "!"}]
+     ]
+    ],
+    "c26v-a08": [
+     [
+     ],
+     [
+      [{"Actor": "장윤", "Face": "NE"}],
+      [{"Actor": "장윤", "Exit": true}]
+     ]
+    ],
+    "c26v-a09": [
+     [
+      [{"Actor": "곽준", "Face": "SW"}]
+     ]
+    ],
+    "c26v-a10": [
+     [
+      [{"Actor": "유비", "Play": "action"}]
+     ]
+    ]
+   }
+  },
+  "c26v-office": {
+   "Map": "S_xuzhou_hall",
+   "Nodes": ["c26v-office", "c26v-b01", "c26v-b02", "c26v-b03", "c26v-b04", "c26v-b05", "c26v-b06", "c26v-b07"],
+   "Cast": {
+    "호족": {"At": [2, 2], "Face": "SE", "Sprite": "official_noncombat", "Faction": "jing"},
+    "곽준": {"At": [2, 3], "Face": "SE"},
+    "위연": {"At": [2, 5], "Face": "SE"},
+    "유비": {"At": [6, 2], "Face": "NW"},
+    "장비": {"At": [6, 3], "Face": "NW"},
+    "서서": {"At": [6, 4], "Face": "NW"},
+    "간옹": {"At": [7, 3], "Face": "NW"},
+    "강릉병#1": {"At": [1, 6], "Face": "NE", "Sprite": "light_infantry", "Faction": "jing"},
+    "강릉병#2": {"At": [7, 6], "Face": "NW", "Sprite": "light_infantry", "Faction": "jing"}
+   },
+   "Beats": {
+    "c26v-b02": [
+     [
+      [{"Actor": "위연", "Face": "NE"}, {"Actor": "호족", "Face": "SW"}]
+     ]
+    ],
+    "c26v-b05": [
+     [
+      [{"Actor": "위연", "Emote": "?"}, {"Actor": "위연", "Face": "SE"}]
+     ]
+    ],
+    "c26v-b06": [
+     [
+      [{"Actor": "서서", "Face": "NW"}]
+     ]
+    ],
+    "c26v-b07": [
+     [
+      [{"Actor": "장비", "Emote": "♪"}]
+     ]
+    ]
+   }
+  },
+  "c26v-gate": {
+   "Map": "S_castle_out_open",
+   "Nodes": ["c26v-gate", "c26v-c01", "c26v-c02", "c26v-c03", "c26v-c04", "c26v-c05", "c26v-c06"],
+   "Cast": {
+    "곽준": {"At": [3, 3], "Face": "SW"},
+    "위연": {"At": [2, 4], "Face": "SE"},
+    "강릉병#1": {"At": [1, 0], "Face": "SW", "Sprite": "archer", "Faction": "jing"},
+    "강릉병#2": {"At": [6, 0], "Face": "SW", "Sprite": "archer", "Faction": "jing"},
+    "유비": {"At": [3, 5], "Face": "NE"},
+    "장비": {"At": [4, 4], "Face": "NW"},
+    "관우": {"At": [1, 5], "Face": "NE"},
+    "서서": {"At": [4, 5], "Face": "NE"},
+    "백성#1": {"At": [6, 3], "Face": "NW", "Sprite": "commoner_man", "Faction": "merchant"},
+    "백성#2": {"At": [6, 4], "Face": "NW", "Sprite": "commoner_woman", "Faction": "merchant"}
+   },
+   "Beats": {
+    "c26v-c02": [
+     [
+      [{"Actor": "위연", "Play": "action"}]
+     ]
+    ],
+    "c26v-c03": [
+     [
+      [{"Actor": "장비", "Face": "NW"}]
+     ]
+    ],
+    "c26v-c05": [
+     [
+      [{"Actor": "관우", "Face": "SE"}, {"Actor": "유비", "Face": "NW"}]
+     ]
+    ],
+    "c26v-c06": [
+     [
+      [{"Actor": "유비", "Face": "NE"}]
+     ]
+    ]
+   }
+  }
+ }
+}

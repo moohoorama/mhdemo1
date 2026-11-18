@@ -1,0 +1,458 @@
+{
+ "Nodes": [
+  {
+   "ID": "c25-start",
+   "Kind": "scene",
+   "Place": "양양 · 유표의 침소"
+  },
+  {
+   "ID": "c25-a01",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "아우, 내 병은 고칠 수 없네. 아이들은 그릇이 못 되네. 내가 죽거든 아우가 형주를 맡게."
+  },
+  {
+   "ID": "c25-a02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "형님, 적자가 있는데 남이 받을 땅이 아닙니다. 조카들을 힘껏 돕겠습니다."
+  },
+  {
+   "ID": "c25-a03",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "……도겸에게도 그리 말했다지. 그때도 세 번을 사양했다고 들었네."
+  },
+  {
+   "ID": "c25-a04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그때는 서주에 주인이 없었습니다. 지금 형주에는 주인이 있습니다."
+  },
+  {
+   "ID": "c25-road",
+   "Kind": "scene",
+   "Place": "신야 · 길목"
+  },
+  {
+   "ID": "c25-b01",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형, 이 양반이 양양에서 완으로 샛길로 가다 걸렸슈. 품에 조조한테 가는 글이 있어유."
+  },
+  {
+   "ID": "c25-b02",
+   "Kind": "say",
+   "Speaker": "songzhong",
+   "Text": "사, 살려 주십시오! 유 형주께서는 이미 돌아가셨습니다."
+  },
+  {
+   "ID": "c25-b03",
+   "Kind": "say",
+   "Speaker": "songzhong",
+   "Text": "둘째 공자가 뒤를 잇고, 채 장군과 괴 별가가 형주를 조 승상께 바치기로……."
+  },
+  {
+   "ID": "c25-b04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "형님이 돌아가셨는데 내게는 부고 한 장이 없었단 말이오?"
+  },
+  {
+   "ID": "c25-b05",
+   "Kind": "say",
+   "Speaker": "songzhong",
+   "Text": "채 장군이 북쪽으로 가는 전령을 모두 거뒀습니다. 신야가 모르는 채로 조 승상의 군사를 맞게 하라고……."
+  },
+  {
+   "ID": "c25-b06",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "우리를 통째로 선물로 싸 두었구먼."
+  },
+  {
+   "ID": "c25-b07",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "이놈부터 베고 양양으로 갑시다!"
+  },
+  {
+   "ID": "c25-b08",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "심부름한 사람이네. 놓아주게. 가서 본 대로 전하시오."
+  },
+  {
+   "ID": "c25-mode",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-mode-virtual"
+     ],
+     "Next": "c25v-start"
+    }
+   ]
+  },
+  {
+   "ID": "c25-office",
+   "Kind": "scene",
+   "Place": "신야 · 관청"
+  },
+  {
+   "ID": "c25-c01",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "양양 안에 우리 사람이 있습니다. 조문을 간다 하고 들어가 밤에 문을 열면,"
+  },
+  {
+   "ID": "c25-c02",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "조조가 닿기 전에 형주가 주공의 것입니다."
+  },
+  {
+   "ID": "c25-c03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "형님의 상중에, 형님의 성을 거짓으로 빼앗을 수는 없소."
+  },
+  {
+   "ID": "c25-c-path",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "choice:c24-path=빠른 길"
+     ],
+     "Next": "c25-c04f"
+    }
+   ],
+   "Else": "c25-c04n"
+  },
+  {
+   "ID": "c25-c04f",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "융중에서 빠른 길을 고르셨습니다."
+  },
+  {
+   "ID": "c25-c05f",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……그 길이 여기서부터인 줄은 몰랐소. 이번은 아니오.",
+   "Next": "c25-c06"
+  },
+  {
+   "ID": "c25-c04n",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "융중에서 힘을 먼저 갖추시라 말씀드렸고, 주공께서도 그러마 하셨습니다."
+  },
+  {
+   "ID": "c25-c05n",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……그 힘이 여기서부터인 줄은 몰랐소. 이번은 아니오."
+  },
+  {
+   "ID": "c25-c06",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "그럼 신야를 버리고 강릉으로 갑니다. 다만 버리는 성을 조인에게 그냥 내줄 까닭은 없습니다."
+  },
+  {
+   "ID": "c25-c07",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "지붕마다 섶과 유황을 올려 두고, 조인이 성에 들어 잠든 밤에 세 문에 불을 놓습니다."
+  },
+  {
+   "ID": "c25-c08",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "성 안에는 백성이 살고 있소."
+  },
+  {
+   "ID": "c25-c09",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "백성은 이미 번성으로 옮기고 있으니 걱정 마십시오."
+  },
+  {
+   "ID": "c25-c10",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "백하 상류를 모래자루로 막았다가, 달아나는 군사가 강을 건널 때 둑을 틉니다."
+  },
+  {
+   "ID": "c25-c11",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형, 우리가 일곱 해를 산 성이유."
+  },
+  {
+   "ID": "c25-c12",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……알겠소. 군사의 말대로 하시오. 둑은 운장이 맡게."
+  },
+  {
+   "ID": "c25-c13",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님. 알겠습니다."
+  },
+  {
+   "ID": "c25-dike",
+   "Kind": "scene",
+   "Place": "백하 · 둑 위"
+  },
+  {
+   "ID": "c25-d01",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "운장, 장수라면 앞에서 적을 맞는 쪽이 더 맞지 않으십니까. 둑은 다른 이에게 맡기셔도 됩니다."
+  },
+  {
+   "ID": "c25-d02",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "자중, 하비에서 에워싸였을 때 성 안 곳간을 돌아본 적이 있소. 며칠을 버틸지 세어 보려고."
+  },
+  {
+   "ID": "c25-flash1",
+   "Kind": "scene",
+   "Place": "하비 · 거리 (회상)"
+  },
+  {
+   "ID": "c25-d03",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "곳간에 남은 것이 이것뿐이오?"
+  },
+  {
+   "ID": "c25-d04",
+   "Kind": "say",
+   "Speaker": "old_woman",
+   "Text": "겨에 느릅 껍질을 빻아 넣은 것입니다. 물이 들었던 해에 묵은 곡식은 다 썩었고,"
+  },
+  {
+   "ID": "c25-d05",
+   "Kind": "say",
+   "Speaker": "old_woman",
+   "Text": "씨앗은 그해 겨울에 먹었습니다. 소도 그때 다 죽었지요."
+  },
+  {
+   "ID": "c25-d06",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "저 자루는."
+  },
+  {
+   "ID": "c25-d07",
+   "Kind": "say",
+   "Speaker": "old_woman",
+   "Text": "장군께서 오셔서 풀어 주신 것입니다. 이 골목에 멀쩡한 낟알은 그것뿐입니다."
+  },
+  {
+   "ID": "c25-d08",
+   "Kind": "say",
+   "Speaker": "soldier",
+   "Text": "장군, 성을 지키려면 집집의 곡식을 거둬야 합니다."
+  },
+  {
+   "ID": "c25-d09",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "……거둘 것이 없다."
+  },
+  {
+   "ID": "c25-flash2",
+   "Kind": "scene",
+   "Place": "하비 · 성 밖 (회상)"
+  },
+  {
+   "ID": "c25-d10",
+   "Kind": "say",
+   "Speaker": "zhangliao",
+   "Text": "운장, 저 수를 뚫을 수 있다고 보시오?"
+  },
+  {
+   "ID": "c25-d11",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "못 뚫으면 여기서 죽을 뿐이오."
+  },
+  {
+   "ID": "c25-d12",
+   "Kind": "say",
+   "Speaker": "zhangliao",
+   "Text": "한날한시에 죽자고 맹세한 사람들이 있다 들었소. 그대가 먼저 가면 그 맹세는 누가 지키오?"
+  },
+  {
+   "ID": "c25-d13",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "……세 가지를 들어주면 칼을 내리겠소."
+  },
+  {
+   "ID": "c25-dike2",
+   "Kind": "scene",
+   "Place": "백하 · 둑 위"
+  },
+  {
+   "ID": "c25-d14",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "……그래서 승상께 가셨군요."
+  },
+  {
+   "ID": "c25-d15",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "승상이 약속을 지켰소. 그래서 형님께 돌아왔고."
+  },
+  {
+   "ID": "c25-d16",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "물로 치자는 말을 들으니 그 곳간이 떠올랐소. 우리 군이 물을 써야 한다면 그 뒤를 본 사람이 터야 하오."
+  },
+  {
+   "ID": "c25-d17",
+   "Kind": "say",
+   "Speaker": "mizhu",
+   "Text": "덜 다치게 틀 수 있습니까."
+  },
+  {
+   "ID": "c25-d18",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "나루 쪽 자루만 트겠소. 아랫마을 쪽은 남기고."
+  },
+  {
+   "ID": "c25-d19",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "마을에는 사람을 보내 볏단을 높은 데로 올리게 했소."
+  },
+  {
+   "ID": "c25-d20",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님도 그래서 내게 맡기셨을 것이오."
+  },
+  {
+   "ID": "c25-night",
+   "Kind": "scene",
+   "Place": "신야 · 성 안"
+  },
+  {
+   "ID": "c25-e01",
+   "Kind": "say",
+   "Speaker": "caoren",
+   "Text": "솥에 불씨도 없다. 유비가 겁을 먹고 달아났구나. 오늘 밤은 지붕 밑에서 잔다."
+  },
+  {
+   "ID": "c25-e02",
+   "Kind": "say",
+   "Speaker": "xuchu",
+   "Text": "자효, 지붕에 섶이 너무 많소."
+  },
+  {
+   "ID": "c25-e03",
+   "Kind": "say",
+   "Speaker": "caoren",
+   "Text": "땔감까지 두고 갔으니 고마운 일이지."
+  },
+  {
+   "ID": "c25-e04",
+   "Kind": "say",
+   "Speaker": "caohong",
+   "Text": "불이다! 서문도 남문도 북문도……. 동문만 불이 없습니다! 동문으로!"
+  },
+  {
+   "ID": "c25-ford",
+   "Kind": "scene",
+   "Place": "백하 · 나루"
+  },
+  {
+   "ID": "c25-e05",
+   "Kind": "say",
+   "Speaker": "caohong",
+   "Text": "물이 얕다! 건너라, 건너!"
+  },
+  {
+   "ID": "c25-e06",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "……터라."
+  },
+  {
+   "ID": "c25-battle",
+   "Kind": "battle",
+   "Stage": "B25",
+   "Text": "신야 전투 — 출전 준비"
+  },
+  {
+   "ID": "c25-hill",
+   "Kind": "scene",
+   "Place": "번성 가는 길 · 강 건너 언덕"
+  },
+  {
+   "ID": "c25-f01",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "조인은 열흘은 군사를 다시 세우지 못합니다. 그 열흘에 강릉으로 가야 합니다."
+  },
+  {
+   "ID": "c25-f02",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "이기긴 이겼는디, 형. 돌아갈 데가 없어졌슈."
+  },
+  {
+   "ID": "c25-f03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……."
+  },
+  {
+   "ID": "c25-f04",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님, 물은 나루에서 멎었습니다. 아랫마을에는 닿지 않았습니다."
+  },
+  {
+   "ID": "c25-f05",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "수고했네, 운장."
+  },
+  {
+   "ID": "c25-f06",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "조조의 본대가 완을 떠났습니다. 운장과 저는 먼저 강하의 공자께 가서 배와 군사를 빌려 놓겠습니다."
+  },
+  {
+   "ID": "c25-f07",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "한진 나루에서 뵙겠습니다."
+  },
+  {
+   "ID": "c25-leave-guanyu",
+   "Kind": "leave",
+   "Character": "guanyu",
+   "Event": "leave-guanyu-25"
+  },
+  {
+   "ID": "c25-leave-zhugeliang",
+   "Kind": "leave",
+   "Character": "zhugeliang",
+   "Event": "leave-zhugeliang-25"
+  }
+ ]
+}

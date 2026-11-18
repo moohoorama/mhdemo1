@@ -1,0 +1,21 @@
+# c26-start  S_castle_out  ch26  origin -1 0
+......ar1BnrCaiBnrar2......
+###########################
+~~~~~~~~~~~~===~~~~~~~~~~~~
+......Bnr...Liu...Bnrmn1...
+.........Jia...Zha......wm1
+Tre..................el1mn2
+
+Cai 채모
+ar1 형주병#1  (archer)
+ar2 형주병#2  (archer)
+Liu 유비
+Zha 장비
+Jia 간옹
+mn1 백성#1  (commoner_man)
+wm1 백성#2  (commoner_woman)
+el1 백성#3  (commoner_elder)
+mn2 백성#4  (commoner_man)
+
+# c26-a02: mn1 -> 8 3
+# c26-a02: wm1 -> 8 5

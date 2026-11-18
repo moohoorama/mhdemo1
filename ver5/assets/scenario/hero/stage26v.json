@@ -1,0 +1,1485 @@
+{
+ "ID": "B26V",
+ "Name": "강릉 수비전",
+ "Width": 0,
+ "Height": 0,
+ "Max": 8,
+ "Required": [
+  "liubei"
+ ],
+ "Victory": [
+  {
+   "If": [
+    "round>=16"
+   ],
+   "Text": "15턴을 버틴다"
+  },
+  {
+   "If": [
+    "defeated:caoren"
+   ],
+   "Text": "조인을 물리친다"
+  }
+ ],
+ "Defeat": [
+  {
+   "If": [
+    "flag:flag-b26v-camp-w",
+    "flag:flag-b26v-camp-c",
+    "flag:flag-b26v-camp-e"
+   ],
+   "Text": "진채 셋이 모두 무너진다"
+  },
+  {
+   "If": [
+    "at:enemy:43"
+   ],
+   "Text": "적이 강릉성에 선다"
+  }
+ ],
+ "Sub": [
+  {
+   "ID": "camps",
+   "Text": "진채를 하나도 잃지 않는다",
+   "If": [
+    "!flag:flag-b26v-camp-w",
+    "!flag:flag-b26v-camp-c",
+    "!flag:flag-b26v-camp-e"
+   ],
+   "Flag": "flag-b26v-camps",
+   "Reward": {
+    "insu_high": 1
+   }
+  },
+  {
+   "ID": "zhangyun",
+   "Text": "장윤을 물리친다",
+   "If": [
+    "defeated:zhangyun"
+   ],
+   "Flag": "flag-b26v-zhangyun",
+   "Reward": {
+    "silk_robe": 1
+   }
+  }
+ ],
+ "TurnLimit": 0,
+ "Map": "map26v.json",
+ "Boats": true,
+ "Allies": [
+  {
+   "X": 13,
+   "Y": 9
+  },
+  {
+   "X": 12,
+   "Y": 9
+  },
+  {
+   "X": 14,
+   "Y": 9
+  },
+  {
+   "X": 13,
+   "Y": 8
+  },
+  {
+   "X": 6,
+   "Y": 9
+  },
+  {
+   "X": 7,
+   "Y": 9
+  },
+  {
+   "X": 20,
+   "Y": 9
+  },
+  {
+   "X": 19,
+   "Y": 9
+  }
+ ],
+ "Recommend": {
+  "liubei": {
+   "X": 13,
+   "Y": 9
+  }
+ },
+ "Party": [
+  {
+   "Character": "troop_archer",
+   "X": 5,
+   "Y": 11,
+   "AI": true,
+   "Group": "camp-w",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 7,
+   "Y": 11,
+   "AI": true,
+   "Group": "camp-w",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 5,
+   "Y": 12,
+   "AI": true,
+   "Group": "camp-w",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 6,
+   "Y": 11,
+   "AI": true,
+   "Group": "camp-w",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 7,
+   "Y": 12,
+   "AI": true,
+   "Group": "camp-w",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 12,
+   "Y": 11,
+   "AI": true,
+   "Group": "camp-c",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 14,
+   "Y": 11,
+   "AI": true,
+   "Group": "camp-c",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 12,
+   "Y": 12,
+   "AI": true,
+   "Group": "camp-c",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 13,
+   "Y": 11,
+   "AI": true,
+   "Group": "camp-c",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 14,
+   "Y": 12,
+   "AI": true,
+   "Group": "camp-c",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 19,
+   "Y": 11,
+   "AI": true,
+   "Group": "camp-e",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 21,
+   "Y": 11,
+   "AI": true,
+   "Group": "camp-e",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 19,
+   "Y": 12,
+   "AI": true,
+   "Group": "camp-e",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 20,
+   "Y": 11,
+   "AI": true,
+   "Group": "camp-e",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 21,
+   "Y": 12,
+   "AI": true,
+   "Group": "camp-e",
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "weiyan",
+   "X": 6,
+   "Y": 12,
+   "AI": true,
+   "Policy": "react",
+   "Faction": "jing",
+   "Facing": "NE"
+  },
+  {
+   "Character": "huojun",
+   "X": 13,
+   "Y": 12,
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "jing",
+   "Facing": "NE"
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "caoren",
+   "X": 13,
+   "Y": 1,
+   "Rank": "boss",
+   "Group": "caoren",
+   "Policy": "react",
+   "Facing": "SW"
+  },
+  {
+   "Character": "caochun",
+   "X": 12,
+   "Y": 2,
+   "Rank": "commander",
+   "Group": "tiger",
+   "Policy": "assault",
+   "Facing": "SW"
+  },
+  {
+   "Character": "wenpin",
+   "X": 7,
+   "Y": 2,
+   "Policy": "assault",
+   "Faction": "wei",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 10,
+   "Y": 3,
+   "Group": "tiger",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 11,
+   "Y": 3,
+   "Group": "tiger",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 12,
+   "Y": 3,
+   "Group": "tiger",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 14,
+   "Y": 3,
+   "Group": "tiger",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 15,
+   "Y": 3,
+   "Group": "tiger",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 16,
+   "Y": 3,
+   "Group": "tiger",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 10,
+   "Y": 1,
+   "Group": "wei-main",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 11,
+   "Y": 1,
+   "Group": "wei-main",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 12,
+   "Y": 1,
+   "Group": "wei-main",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 14,
+   "Y": 1,
+   "Group": "wei-main",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 1,
+   "Group": "wei-main",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 1,
+   "Group": "wei-main",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 11,
+   "Y": 0,
+   "Group": "wei-main",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 15,
+   "Y": 0,
+   "Group": "wei-main",
+   "Policy": "assault",
+   "Shift": -0.07,
+   "Facing": "SW"
+  }
+ ],
+ "Reward": {
+  "money": 2500
+ },
+ "Areas": [
+  {
+   "ID": 40,
+   "Rect": {
+    "X": 6,
+    "Y": 12,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "서쪽 진채",
+   "Description": "위연이 지킨다. 적이 서거나 수비가 둘 아래로 줄면 무너진다"
+  },
+  {
+   "ID": 41,
+   "Rect": {
+    "X": 13,
+    "Y": 12,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "가운데 진채",
+   "Description": "곽준이 지킨다. 적이 서거나 수비가 둘 아래로 줄면 무너진다"
+  },
+  {
+   "ID": 42,
+   "Rect": {
+    "X": 20,
+    "Y": 12,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "동쪽 진채",
+   "Description": "적이 서거나 수비가 둘 아래로 줄면 무너진다"
+  },
+  {
+   "ID": 43,
+   "Rect": {
+    "X": 13,
+    "Y": 23,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "강릉성",
+   "Description": "무너진 진채의 수비가 물러나는 곳. 적이 서면 패배"
+  },
+  {
+   "ID": 44,
+   "Rect": {
+    "X": 3,
+    "Y": 0,
+    "W": 22,
+    "H": 1
+   },
+   "Name": "북쪽 큰길 끝",
+   "Description": "15턴에 조인군이 물러나는 곳"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "camps-stand",
+   "Do": [
+    {
+     "Kind": "buff",
+     "Targets": [
+      "camp-w",
+      "camp-c",
+      "camp-e",
+      "weiyan",
+      "huojun"
+     ],
+     "Stat": "defense",
+     "Value": 20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "camp-w",
+      "camp-c",
+      "camp-e"
+     ],
+     "Stat": "range",
+     "Value": 1
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caoren",
+       "Text": "신야에서 진 빚을 여기서 받는다. 성 밖 진채부터 밟아라!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "huojun",
+       "Text": "유 사군의 군사가 우리 앞에 서 있소. 쏘시오, 물러나지 말고!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "진채 앞은 우리가 막는다. 강릉 군사가 활을 쏠 틈만 벌어 주면 되네."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "weiyan-stays",
+   "If": [
+    "round>=2",
+    "turnstart:ally"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "weiyan",
+       "Text": "물러나도 좋다더니 저쪽은 한 걸음도 안 물러나는군. 그럼 나도 못 물러나지."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "camp-w-falls",
+   "If": [
+    "any:[at:enemy:40, !alive:camp-w>=2]"
+   ],
+   "Do": [
+    {
+     "Kind": "buff",
+     "Targets": [
+      "camp-w"
+     ],
+     "Stat": "defense",
+     "Value": -20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "camp-w"
+     ],
+     "Stat": "range",
+     "Value": -1
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "camp-w"
+     ],
+     "Policy": "run",
+     "GoalArea": 43
+    },
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-b26v-camp-w": 1
+     }
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "weiyan",
+       "Text": "서쪽 진채가 무너졌다! 남은 자는 성으로 물러나라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "camp-c-falls",
+   "If": [
+    "any:[at:enemy:41, !alive:camp-c>=2]"
+   ],
+   "Do": [
+    {
+     "Kind": "buff",
+     "Targets": [
+      "camp-c"
+     ],
+     "Stat": "defense",
+     "Value": -20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "camp-c"
+     ],
+     "Stat": "range",
+     "Value": -1
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "camp-c"
+     ],
+     "Policy": "run",
+     "GoalArea": 43
+    },
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-b26v-camp-c": 1
+     }
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "huojun",
+       "Text": "가운데 진채를 내준다! 성으로, 성으로 물러나시오!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "camp-e-falls",
+   "If": [
+    "any:[at:enemy:42, !alive:camp-e>=2]"
+   ],
+   "Do": [
+    {
+     "Kind": "buff",
+     "Targets": [
+      "camp-e"
+     ],
+     "Stat": "defense",
+     "Value": -20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "camp-e"
+     ],
+     "Stat": "range",
+     "Value": -1
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "camp-e"
+     ],
+     "Policy": "run",
+     "GoalArea": 43
+    },
+    {
+     "Kind": "flag",
+     "Flags": {
+      "flag-b26v-camp-e": 1
+     }
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "huojun",
+       "Text": "동쪽 진채가 넘어갔소! 그쪽 군사는 성으로!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "foot-waves",
+   "Every": 3,
+   "If": [
+    "turnstart:enemy",
+    "round>=3",
+    "!round>=13"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "troop_footman",
+       "X": 12,
+       "Y": 0,
+       "Side": "enemy",
+       "Group": "wei-main",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_footman",
+       "X": 13,
+       "Y": 0,
+       "Side": "enemy",
+       "Group": "wei-main",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_footman",
+       "X": 14,
+       "Y": 0,
+       "Side": "enemy",
+       "Group": "wei-main",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_footman",
+       "X": 13,
+       "Y": 1,
+       "Side": "enemy",
+       "Group": "wei-main",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "zhangyun-lands",
+   "If": [
+    "round>=6",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "spawn",
+     "Spawns": [
+      {
+       "Character": "zhangyun",
+       "X": 1,
+       "Y": 11,
+       "Side": "enemy",
+       "Group": "zhangyun",
+       "Policy": "assault",
+       "Faction": "wei"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 1,
+       "Y": 10,
+       "Side": "enemy",
+       "Group": "zhangyun",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_footman",
+       "X": 1,
+       "Y": 12,
+       "Side": "enemy",
+       "Group": "zhangyun",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_archer",
+       "X": 0,
+       "Y": 11,
+       "Side": "enemy",
+       "Group": "zhangyun",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07
+      },
+      {
+       "Character": "troop_archer",
+       "X": 2,
+       "Y": 13,
+       "Side": "enemy",
+       "Group": "zhangyun",
+       "Policy": "assault",
+       "Faction": "wei",
+       "Shift": -0.07
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangyun",
+       "Text": "곽준, 네가 연 문이다. 네 목으로 닫아 주마!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "weiyan",
+       "Text": "장윤! 강릉 창고를 털어 배에 싣더니, 그 배로 강릉을 치러 왔느냐!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "guanyu-sails",
+   "If": [
+    "round>=9",
+    "turnstart:ally"
+   ],
+   "Do": [
+    {
+     "Kind": "join",
+     "Spawns": [
+      {
+       "Character": "guanyu",
+       "X": 25,
+       "Y": 12,
+       "Facing": "NW"
+      },
+      {
+       "Character": "guanping",
+       "X": 25,
+       "Y": 13,
+       "Facing": "NW"
+      },
+      {
+       "Character": "zhoucang",
+       "X": 25,
+       "Y": 11,
+       "Facing": "NW"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "guanyu",
+       "Text": "형님, 늦었습니다. 강하의 배 삼백 척입니다!"
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "zhangfei",
+       "Text": "둘째 형! 들판 몫은 못 남겨 줬어도 여기 몫은 넉넉하구먼!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "news-13",
+   "If": [
+    "round>=13",
+    "turnstart:ally"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "messenger",
+       "Text": "급보요! 주 도독과 유 공자의 수군이 양양을 에워쌌습니다!",
+       "Offstage": true
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caoren",
+       "Text": "양양이……! 진채 하나 못 밟고 돌아가란 말이냐."
+      }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liubei",
+       "Text": "조금만 더 버티면 되네. 조인이 등을 돌린다!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "jiangling-sally",
+   "If": [
+    "round>=13",
+    "turnstart:ally",
+    "!flag:flag-b26v-camp-w",
+    "!flag:flag-b26v-camp-c",
+    "!flag:flag-b26v-camp-e"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "camp-w",
+      "camp-c",
+      "camp-e",
+      "huojun"
+     ],
+     "Policy": "assault"
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "huojun",
+       "Text": "진채는 하나도 내주지 않았소! 강릉 군사들, 이제 나가서 쫓으시오!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "caoren-turns",
+   "If": [
+    "round>=15",
+    "turnstart:enemy"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "caoren",
+       "Text": "양양이 급하다. 물러난다!"
+      }
+     ]
+    },
+    {
+     "Kind": "ai",
+     "Targets": [
+      "caoren",
+      "tiger",
+      "wei-main",
+      "wenpin"
+     ],
+     "Policy": "flee",
+     "GoalArea": 44
+    }
+   ]
+  }
+ ],
+ "Faction": "wei",
+ "Duels": [
+  {
+   "ID": "jiangling-weiyan-wenpin",
+   "Ally": "weiyan",
+   "Enemy": "wenpin",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "Text": "스무 합 끝에 문빙이 얼굴을 붉히며 말머리를 돌렸다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "위연이 문빙을 알아보다",
+     "Speech": "문중업! 양양 문을 판 값이 얼마였소?",
+     "Side": 0,
+     "Duration": 2.9
+    },
+    {
+     "Kind": "talk",
+     "Title": "문빙이 칼을 들다",
+     "Speech": "……주공께서 돌아가신 뒤의 일이다. 너는 모른다!",
+     "Side": 1,
+     "Duration": 3.2
+    },
+    {
+     "Kind": "approach",
+     "Title": "두 장수가 맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "위연이 칼 끝으로 떠 보자 문빙이 가볍게 받아 넘기다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "문빙이 곧바로 되받아 치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "문빙이 칼을 맞대다",
+     "Speech": "주공께서 항복을 택하셨다. 나는 그 뜻을 따랐을 뿐이다!",
+     "Side": 1,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "press",
+     "Title": "위연이 몰아붙이자 문빙이 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "위연이 거푸 칼을 휘몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "문빙이 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "위연이 비꼬다",
+     "Speech": "뜻을 따랐으면 성문이나 조용히 열어 두시오. 왜 내 앞에서 칼을 드시오?",
+     "Side": 0,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "block",
+     "Title": "문빙이 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "문빙이 칼을 내리치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "위연이 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "문빙이 소리치다",
+     "Speech": "네놈은 모른다! 죽을 자리조차 고르지 못한 자의 심정을!",
+     "Side": 1,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "dodge",
+     "Title": "문빙이 크게 휘둘렀으나 위연이 몸을 틀어 피하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "위연이 말을 몰아 들이치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "talk",
+     "Title": "위연이 입꼬리를 올리다",
+     "Speech": "심정이라…… 칼보다 무거운 말이로군. 허나 힘은 덜하시오!",
+     "Side": 0,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "문빙이 힘을 실어 내려치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "위연이 정면으로 맞받아 불꽃이 튀다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "문빙이 이를 악물다",
+     "Speech": "(칼이 무겁다…… 마음이 무거워서인가!)",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "press",
+     "Title": "위연이 몰아붙이자 문빙이 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "위연이 거푸 칼을 휘몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "문빙이 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "문빙이 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "위연이 칼을 고쳐 잡다",
+     "Speech": "주군을 버린 자는 칼도 못 지키는 법이오. 이제 내려놓으시오!",
+     "Side": 0,
+     "Duration": 3.5
+    },
+    {
+     "Kind": "block",
+     "Title": "위연이 칼을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "문빙이 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "위연이 힘껏 내려치나 문빙이 막아 내다",
+     "Speech": "이래도 모르겠소!",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "문빙이 숨을 몰아쉬다",
+     "Speech": "……양양을 팔았다는 말 앞에서는, 어느 칼도 가벼울 수 없다.",
+     "Side": 1,
+     "Duration": 3.5
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "위연이 힘으로 누르자 문빙이 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "문빙이 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "위연이 힘으로 누르자 문빙이 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "위연이 다그치다",
+     "Speech": "모르니 묻는 것이오. 강릉 사람 앞에서 대답해 보시오!",
+     "Side": 0,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "retreat",
+     "Title": "문빙이 얼굴을 붉히며 물러나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "문빙이 사라지다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    }
+   ]
+  },
+  {
+   "ID": "jiangling-guanyu-caoren",
+   "Ally": "guanyu",
+   "Enemy": "caoren",
+   "Outcome": "victory",
+   "AllyResult": "stay",
+   "EnemyResult": "retreat",
+   "If": [
+    "round>=13"
+   ],
+   "Unlisted": true,
+   "Text": "십여 합 만에 조인이 양양이 급하다며 말머리를 돌렸다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "관우가 조인의 본진에 들다",
+     "Speech": "조자효, 신야에서 못다 한 싸움을 하러 왔소.",
+     "Side": 0,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "approach",
+     "Title": "두 장수가 맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "조인이 창을 맞대다",
+     "Speech": "신야에서는 내가 졌다. 하나 오늘은 다르다. 강릉은 승상의 땅이 될 것이다!",
+     "Side": 1,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "block",
+     "Title": "조인이 창 끝으로 떠 보자 관우가 가볍게 받아 넘기다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 곧바로 되받아 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 청룡도를 휘두르다",
+     "Speech": "땅은 힘으로 얻는 것이 아니다. 백성이 따르는 곳이 임자다.",
+     "Side": 0,
+     "Duration": 3.5
+    },
+    {
+     "Kind": "press",
+     "Title": "관우가 몰아붙이자 조인이 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "관우가 거푸 청룡도을 휘몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "조인이 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "dodge",
+     "Title": "조인이 크게 휘둘렀으나 관우가 몸을 틀어 피하다",
+     "Speech": "가볍군.",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "조인이 이를 악물다",
+     "Speech": "과연 운장이다. 이 창으로도 막기 버겁구나!",
+     "Side": 1,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "block",
+     "Title": "조인이 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 청룡도을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "조인이 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 낮게 이르다",
+     "Speech": "조자효. 그대와는 칼끝을 겨눌 이유가 없다. 허나 길을 막으면 베겠다.",
+     "Side": 0,
+     "Duration": 3.6
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "관우가 힘으로 누르자 조인이 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "조인이 버티다",
+     "Speech": "(여기서 군사를 잃으면 강릉은 끝이다…… 버텨야 한다!)",
+     "Side": 1,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "조인이 말을 몰아 들이치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "관우가 힘을 실어 내려치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "조인이 정면으로 맞받아 불꽃이 튀다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 말을 가까이 몰다",
+     "Speech": "물러서라. 목숨은 거두지 않겠다.",
+     "Side": 0,
+     "Duration": 2.8
+    },
+    {
+     "Kind": "press",
+     "Title": "관우가 몰아붙이자 조인이 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "관우가 거푸 청룡도을 휘몰아치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "조인이 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "관우가 힘으로 누르자 조인이 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "관우가 힘껏 내려치나 조인이 막아 내다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "조인이 이를 악물다",
+     "Speech": "……양양이 급하다. 오늘은 여기까지다!",
+     "Side": 1,
+     "Duration": 2.9
+    },
+    {
+     "Kind": "retreat",
+     "Title": "조인이 물러나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "withdrawn",
+     "Title": "조인이 사라지다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    }
+   ]
+  }
+ ],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "jing",
+   "Name": "강릉군",
+   "Ally": true
+  },
+  {
+   "Faction": "wei",
+   "Name": "조조군"
+  }
+ ]
+}

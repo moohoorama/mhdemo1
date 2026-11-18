@@ -459,6 +459,9 @@ func (d *Data) Validate() error {
 				!in(event.AllyResult, "stay", "retreat", "death") || !in(event.EnemyResult, "stay", "retreat", "death") {
 				return fmt.Errorf("duel %s", event.ID)
 			}
+			if event.Outcome == "draw" && (event.AllyResult != "stay" || event.EnemyResult != "stay") {
+				return fmt.Errorf("duel %s: a draw leaves both officers in place (stay)", event.ID)
+			}
 			duelIDs[event.ID] = true
 		}
 		for _, p := range s.Allies {
@@ -471,6 +474,9 @@ func (d *Data) Validate() error {
 			if !d.Characters[id].Playable || !seen[p] {
 				return fmt.Errorf("stage %s recommend %s %d,%d: a playable officer on one of the Allies cells", s.ID, id, p.X, p.Y)
 			}
+		}
+		if err := validateGroups(s); err != nil {
+			return fmt.Errorf("stage %s: %w", s.ID, err)
 		}
 		for _, p := range s.Lights {
 			if p.X < 0 || p.Y < 0 || p.X >= s.Width || p.Y >= s.Height {
@@ -560,4 +566,41 @@ func validSkillEffect(s Skill) bool {
 		}
 	}
 	return true
+}
+
+// validateGroups checks a split sortie's start groups: each names one of the stage's areas holding Allies cells
+// no other group holds, and its required officers are officers the stage requires, each in one group only, no
+// more than its cells, recommended (if at all) to one of its cells.
+func validateGroups(s Stage) error {
+	names, owner := map[string]bool{}, map[string]string{}
+	taken := map[Point]string{}
+	for _, g := range s.Groups {
+		if g.Name == "" || names[g.Name] {
+			return fmt.Errorf("start group %q", g.Name)
+		}
+		names[g.Name] = true
+		cells := 0
+		for _, p := range s.Allies {
+			if s.InArea(p, g.Area) {
+				if other, ok := taken[p]; ok {
+					return fmt.Errorf("start groups %s and %s share the ally cell %d,%d", other, g.Name, p.X, p.Y)
+				}
+				taken[p] = g.Name
+				cells++
+			}
+		}
+		if cells == 0 || len(g.Required) > cells {
+			return fmt.Errorf("start group %s: %d ally cells in area %d for %d required officers", g.Name, cells, g.Area, len(g.Required))
+		}
+		for _, id := range g.Required {
+			if !contains(s.Required, id) || owner[id] != "" {
+				return fmt.Errorf("start group %s: %s must be required by the stage and by one group only", g.Name, id)
+			}
+			owner[id] = g.Name
+			if p, ok := s.Recommend[id]; ok && !s.InArea(p, g.Area) {
+				return fmt.Errorf("start group %s: %s recommended off its cells", g.Name, id)
+			}
+		}
+	}
+	return nil
 }

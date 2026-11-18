@@ -550,7 +550,8 @@
    "Pool": [
     "relief",
     "accuracy_up",
-    "aim_prep"
+    "aim_prep",
+    "snipe_prep"
    ],
    "Promotes": [
     "crossbow"
@@ -1229,11 +1230,11 @@
    "Move": 4,
    "Range": 1,
    "Bonus": [
+    11,
     10,
-    5,
-    4,
-    10,
-    15,
+    2,
+    7,
+    14,
     24
    ],
    "HPFactor": 3,
@@ -1303,11 +1304,11 @@
    "Move": 5,
    "Range": 1,
    "Bonus": [
-    11,
-    5,
-    4,
-    11,
-    17,
+    12,
+    10,
+    2,
+    8,
+    16,
     25
    ],
    "HPFactor": 3,
@@ -1346,11 +1347,11 @@
    "Move": 5,
    "Range": 1,
    "Bonus": [
-    12,
-    6,
-    4,
+    13,
     11,
-    19,
+    2,
+    8,
+    18,
     26
    ],
    "HPFactor": 3,

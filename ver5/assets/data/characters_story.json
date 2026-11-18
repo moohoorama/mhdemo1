@@ -669,8 +669,16 @@
     50
    ],
    "Level": 7,
-   "Traits": [],
-   "Learn": [],
+   "Traits": [
+    "anti_cavalry",
+    "swiftness",
+    "guard_prep"
+   ],
+   "Learn": [
+    "anti_cavalry",
+    "swiftness",
+    "guard_prep"
+   ],
    "Equipment": [
     "short_bow",
     "leather_armor"
@@ -1394,12 +1402,23 @@
     95
    ],
    "Level": 9,
-   "Traits": [],
-   "Learn": [],
+   "Playable": true,
+   "Traits": [
+    "eight_formation",
+    "feint",
+    "deep_scheme",
+    "cunning"
+   ],
+   "Learn": [
+    "eight_formation",
+    "feint",
+    "deep_scheme",
+    "cunning"
+   ],
    "Equipment": [
-    "bamboo_fan",
-    "cotton_clothes",
-    "tactics_primer"
+    "white_feather_fan",
+    "crane_robe",
+    "zhuge_kerchief"
    ],
    "Look": {
     "Faction": "shu",
@@ -1589,8 +1608,16 @@
    ],
    "Level": 20,
    "Playable": true,
-   "Traits": [],
-   "Learn": [],
+   "Traits": [
+    "charge_aim",
+    "do_or_die",
+    "pursuit"
+   ],
+   "Learn": [
+    "charge_aim",
+    "do_or_die",
+    "pursuit"
+   ],
    "Equipment": [
     "copper_spear",
     "leather_armor"
@@ -1771,7 +1798,7 @@
   },
   "xushu": {
    "Name": "서서",
-   "Biography": "자는 원직, 가명 단복. 신야에서 유비의 군사가 되어 조인의 팔문금쇄진을 깬다. 어머니 때문에 조조에게 가며 제갈량을 천거하고 평생 계책을 내지 않는다.",
+   "Biography": "자는 원직. 영천에서 남의 원수를 갚아 주고 이름을 버려 한때 단복이라 했다. 신야에서 유비의 군사가 되어 조인의 팔문금쇄진을 깨고 제갈량을 천거한다.",
    "Class": "strategist",
    "Stats": [
     90,
@@ -1782,13 +1809,20 @@
     87
    ],
    "Level": 9,
+   "Playable": true,
    "Traits": [
     "civil_martial",
-    "break_formation"
+    "break_formation",
+    "stratagem",
+    "insight",
+    "hinder"
    ],
    "Learn": [
     "civil_martial",
-    "break_formation"
+    "break_formation",
+    "stratagem",
+    "insight",
+    "hinder"
    ],
    "Equipment": [
     "bamboo_fan",
@@ -2519,7 +2553,7 @@
   "xuhuang": {
    "Name": "서황",
    "Biography": "조조군의 장수. 큰 도끼를 쓰며 진을 무너뜨리는 데 능하다.",
-   "Class": "guards",
+   "Class": "chariot",
    "Stats": [
     84,
     90,
@@ -2536,7 +2570,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "copper_sword",
+    "copper_spear",
     "leather_armor"
    ],
    "Look": {
@@ -2900,8 +2934,16 @@
    ],
    "Level": 20,
    "Playable": true,
-   "Traits": [],
-   "Learn": [],
+   "Traits": [
+    "hold_ground",
+    "bodyguard",
+    "discipline"
+   ],
+   "Learn": [
+    "hold_ground",
+    "bodyguard",
+    "discipline"
+   ],
    "Equipment": [
     "copper_spear",
     "leather_armor"
@@ -3048,9 +3090,813 @@
    "Learn": [],
    "Equipment": [],
    "Look": {
-    "Faction": "han"
+    "Faction": "han",
+    "Sprite": "commoner_man"
    },
    "Template": true
+  },
+  "villager_woman": {
+   "Name": "마을 사람(여)",
+   "Biography": "산골 마을에 사는 사람.",
+   "Class": "commoner",
+   "Stats": [
+    30,
+    30,
+    30,
+    40,
+    30,
+    30
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [],
+   "Look": {
+    "Faction": "han",
+    "Sprite": "commoner_woman"
+   },
+   "Template": true
+  },
+  "villager_elder": {
+   "Name": "마을 사람(노인)",
+   "Biography": "산골 마을에 사는 사람.",
+   "Class": "commoner",
+   "Stats": [
+    30,
+    30,
+    30,
+    40,
+    30,
+    30
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [],
+   "Look": {
+    "Faction": "han",
+    "Sprite": "commoner_elder"
+   },
+   "Template": true
+  },
+  "yiji": {
+   "Name": "이적",
+   "Biography": "자는 기백. 산양 사람으로 유표에게 의탁해 있다가 유비를 따른다. 말솜씨가 좋아 사신으로 자주 나선다.",
+   "Class": "repeating_crossbow",
+   "Stats": [
+    58,
+    54,
+    80,
+    70,
+    72,
+    84
+   ],
+   "Level": 30,
+   "Playable": true,
+   "Traits": [
+    "aim_prep",
+    "snipe_prep",
+    "penetrate_art",
+    "slander_prep",
+    "adaptable"
+   ],
+   "Learn": [
+    "aim_prep",
+    "snipe_prep",
+    "penetrate_art",
+    "slander_prep",
+    "adaptable"
+   ],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "shu",
+    "Portrait": "qiaomao",
+    "Scene": "official_blue_noncombat"
+   }
+  },
+  "huojun": {
+   "Name": "곽준",
+   "Biography": "자는 중막. 남군 지강 사람으로 형의 부곡을 이끌고 유비를 따른다. 훗날 가맹관을 적은 군사로 한 해 넘게 지킨다.",
+   "Class": "guards",
+   "Stats": [
+    82,
+    74,
+    70,
+    70,
+    72,
+    78
+   ],
+   "Level": 30,
+   "Playable": true,
+   "Traits": [
+    "brace_prep",
+    "castle_defense",
+    "ironwall",
+    "bodyguard",
+    "iron_lock"
+   ],
+   "Learn": [
+    "brace_prep",
+    "castle_defense",
+    "ironwall",
+    "bodyguard",
+    "iron_lock"
+   ],
+   "Equipment": [
+    "copper_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "shu",
+    "Portrait": "zhujun"
+   }
+  },
+  "weiyan": {
+   "Name": "위연",
+   "Biography": "자는 문장. 의양 사람으로 부곡을 이끌던 장수. 용맹하고 자부심이 강하며, 훗날 한중을 맡고 자오곡 계책을 낸다.",
+   "Class": "royal_guard",
+   "Stats": [
+    86,
+    92,
+    66,
+    84,
+    46,
+    52
+   ],
+   "Level": 30,
+   "Playable": true,
+   "Traits": [
+    "vanguard",
+    "charge_strike",
+    "lone_warrior",
+    "ziwu_valley",
+    "do_or_die"
+   ],
+   "Learn": [
+    "vanguard",
+    "charge_strike",
+    "lone_warrior",
+    "ziwu_valley",
+    "do_or_die"
+   ],
+   "Equipment": [
+    "copper_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "shu",
+    "Portrait": "yangang"
+   }
+  },
+  "danfu": {
+   "Name": "단복",
+   "Biography": "영천에서 온 선비. 노모를 모시고 형주로 피난 와 있다. 이름을 바꾼 까닭은 말하지 않는다.",
+   "Class": "strategist",
+   "Stats": [
+    90,
+    64,
+    93,
+    82,
+    82,
+    87
+   ],
+   "Level": 30,
+   "Traits": [
+    "civil_martial",
+    "break_formation"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "cotton_clothes",
+    "tactics_primer"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "official_noncombat"
+   }
+  },
+  "liubiao": {
+   "Name": "유표",
+   "Biography": "자는 경승. 한실의 종친으로 형주를 다스린다. 너그럽고 선비를 아끼지만 결단이 더디다.",
+   "Class": "diplomat",
+   "Stats": [
+    62,
+    40,
+    76,
+    52,
+    60,
+    88
+   ],
+   "Level": 30,
+   "Traits": [
+    "lecture",
+    "exhort"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "cotton_clothes"
+   ],
+   "Look": {
+    "Faction": "jing",
+    "Portrait": "liuyan",
+    "Scene": "liuyan_noncombat"
+   }
+  },
+  "caimao": {
+   "Name": "채모",
+   "Biography": "자는 덕규. 유표의 처남이자 형주 수군의 대장. 채씨 집안을 이끌며 양양을 쥐고 있다.",
+   "Class": "guards",
+   "Stats": [
+    80,
+    74,
+    70,
+    66,
+    58,
+    52
+   ],
+   "Level": 30,
+   "Traits": [
+    "swim",
+    "ironwall",
+    "supply"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "copper_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "jing",
+    "Portrait": "xurong",
+    "Scene": "official_crimson_noncombat"
+   }
+  },
+  "caizhong": {
+   "Name": "채중",
+   "Biography": "채모의 아우. 집안의 보물인 양유기의 활을 쓰는 궁수.",
+   "Class": "repeating_crossbow",
+   "Stats": [
+    64,
+    74,
+    44,
+    70,
+    48,
+    40
+   ],
+   "Level": 30,
+   "Traits": [
+    "far_sight",
+    "accuracy_up",
+    "snipe_prep"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "jing",
+    "Portrait": "caocen"
+   }
+  },
+  "caihe": {
+   "Name": "채화",
+   "Biography": "채모의 아우. 채중과 함께 다니며 앞을 막는 보병 장수.",
+   "Class": "guards",
+   "Stats": [
+    62,
+    72,
+    38,
+    60,
+    46,
+    38
+   ],
+   "Level": 30,
+   "Traits": [
+    "ironwall",
+    "bodyguard"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "copper_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "jing",
+    "Portrait": "lisu"
+   }
+  },
+  "kuaiyue": {
+   "Name": "괴월",
+   "Biography": "자는 이도. 유표가 형주에 들 때 연회로 호족 우두머리들을 없애는 꾀를 낸 모사.",
+   "Class": "strategist",
+   "Stats": [
+    70,
+    30,
+    90,
+    58,
+    70,
+    72
+   ],
+   "Level": 30,
+   "Traits": [
+    "stratagem",
+    "hinder",
+    "adaptable"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "cotton_clothes"
+   ],
+   "Look": {
+    "Faction": "jing",
+    "Portrait": "liru",
+    "Scene": "official_black_noncombat"
+   }
+  },
+  "xianglang": {
+   "Name": "향랑",
+   "Biography": "자는 거달. 양양 사람으로 유표 밑에서 고을을 다스린다. 책을 아끼고 사람을 가려 사귄다.",
+   "Class": "diplomat",
+   "Stats": [
+    52,
+    30,
+    78,
+    50,
+    66,
+    80
+   ],
+   "Level": 30,
+   "Traits": [
+    "lecture"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "cotton_clothes"
+   ],
+   "Look": {
+    "Faction": "jing",
+    "Portrait": "hanfu",
+    "Scene": "official_green_noncombat"
+   }
+  },
+  "liuqi": {
+   "Name": "유기",
+   "Biography": "유표의 맏아들. 어질지만 몸이 약하다. 계모 채 부인의 눈을 피해 강하로 나간다.",
+   "Class": "guards",
+   "Stats": [
+    62,
+    52,
+    64,
+    58,
+    30,
+    78
+   ],
+   "Level": 30,
+   "Traits": [
+    "exhort",
+    "swim"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "copper_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "jing",
+    "Portrait": "gongzhou",
+    "Scene": "official_purple_noncombat"
+   }
+  },
+  "zhangwu": {
+   "Name": "장무",
+   "Biography": "강하에서 진손과 함께 들고일어난 장수. 좋은 말을 탐낸다.",
+   "Class": "royal_guard",
+   "Stats": [
+    70,
+    80,
+    40,
+    72,
+    42,
+    38
+   ],
+   "Level": 30,
+   "Traits": [
+    "charge_strike",
+    "vanguard"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "copper_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "jing",
+    "Portrait": "huzhen"
+   }
+  },
+  "chensun": {
+   "Name": "진손",
+   "Biography": "강하에서 장무와 함께 들고일어난 장수. 활 쏘는 군사를 이끈다.",
+   "Class": "repeating_crossbow",
+   "Stats": [
+    66,
+    72,
+    42,
+    64,
+    44,
+    40
+   ],
+   "Level": 30,
+   "Traits": [
+    "far_sight",
+    "accuracy_up"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "jing",
+    "Portrait": "wuanguo"
+   }
+  },
+  "songzhong": {
+   "Name": "송충",
+   "Biography": "유종의 사자. 형주를 조조에게 바치는 글을 들고 완으로 간다.",
+   "Class": "scholar",
+   "Stats": [
+    30,
+    20,
+    60,
+    40,
+    40,
+    40
+   ],
+   "Level": 30,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "cotton_clothes"
+   ],
+   "Look": {
+    "Faction": "jing",
+    "Portrait": "zuofeng",
+    "Scene": "official_noncombat"
+   }
+  },
+  "wenpin": {
+   "Name": "문빙",
+   "Biography": "자는 중업. 형주의 장수로 북쪽을 지키다 유종이 항복하자 조조를 따른다.",
+   "Class": "royal_guard",
+   "Stats": [
+    80,
+    82,
+    64,
+    74,
+    62,
+    72
+   ],
+   "Level": 30,
+   "Traits": [
+    "ironwall",
+    "hold_ground",
+    "bodyguard"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "copper_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "jing",
+    "Portrait": "zoujing"
+   }
+  },
+  "zhangyun": {
+   "Name": "장윤",
+   "Biography": "형주 수군의 장수. 채모와 함께 수군을 맡는다.",
+   "Class": "guards",
+   "Stats": [
+    62,
+    64,
+    52,
+    60,
+    46,
+    40
+   ],
+   "Level": 30,
+   "Traits": [
+    "swim",
+    "ironwall"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "copper_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "jing",
+    "Portrait": "lijue"
+   }
+  },
+  "caochun": {
+   "Name": "조순",
+   "Biography": "자는 자화. 조인의 아우로 조조의 정예 기병 호표기를 이끈다.",
+   "Class": "royal_guard",
+   "Stats": [
+    82,
+    80,
+    62,
+    82,
+    66,
+    70
+   ],
+   "Level": 30,
+   "Traits": [
+    "charge_strike",
+    "impact",
+    "dash"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "copper_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei",
+    "Portrait": "mushun"
+   }
+  },
+  "xiahouen": {
+   "Name": "하후은",
+   "Biography": "조조의 총애를 받는 장수. 조조의 보검 청홍검을 메고 다닌다.",
+   "Class": "royal_guard",
+   "Stats": [
+    56,
+    66,
+    40,
+    64,
+    40,
+    40
+   ],
+   "Level": 30,
+   "Traits": [
+    "accuracy_up"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "copper_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei",
+    "Portrait": "zumao"
+   }
+  },
+  "xiahoujie": {
+   "Name": "하후걸",
+   "Biography": "조조의 장수. 장판교에서 장비의 호통에 말에서 떨어진다.",
+   "Class": "royal_guard",
+   "Stats": [
+    50,
+    58,
+    36,
+    60,
+    30,
+    36
+   ],
+   "Level": 30,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "copper_spear",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "ganning": {
+   "Name": "감녕",
+   "Biography": "자는 흥패. 장강의 수적 출신으로 비단 돛을 달고 다녔다. 황조를 떠나 손권을 따른다.",
+   "Class": "outlaw",
+   "Stats": [
+    86,
+    94,
+    72,
+    90,
+    64,
+    70
+   ],
+   "Level": 30,
+   "Traits": [
+    "swim",
+    "charge_strike",
+    "plunder"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "copper_sword",
+    "cotton_clothes"
+   ],
+   "Look": {
+    "Faction": "wu",
+    "Portrait": "dengmao"
+   }
+  },
+  "lusu": {
+   "Name": "노숙",
+   "Biography": "자는 자경. 주유의 벗이자 손권의 모사. 유비와 손잡아 조조를 막자고 한다.",
+   "Class": "diplomat",
+   "Stats": [
+    90,
+    56,
+    92,
+    74,
+    82,
+    92
+   ],
+   "Level": 30,
+   "Traits": [
+    "lecture",
+    "exhort"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "cotton_clothes"
+   ],
+   "Look": {
+    "Faction": "wu",
+    "Portrait": "kongrong",
+    "Scene": "official_blue_noncombat"
+   }
+  },
+  "lady_mi": {
+   "Name": "미 부인",
+   "Biography": "미축·미방의 누이로 유비의 부인. 당양에서 아두를 조운에게 맡긴다.",
+   "Class": "commoner",
+   "Stats": [
+    20,
+    10,
+    50,
+    30,
+    40,
+    70
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [],
+   "Look": {
+    "Faction": "shu",
+    "Scene": "commoner_woman"
+   }
+  },
+  "lady_gan": {
+   "Name": "감 부인",
+   "Biography": "유비의 부인. 아두의 어머니.",
+   "Class": "commoner",
+   "Stats": [
+    20,
+    10,
+    50,
+    30,
+    40,
+    70
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [],
+   "Look": {
+    "Faction": "shu",
+    "Scene": "commoner_woman"
+   }
+  },
+  "page_boy": {
+   "Name": "동자",
+   "Biography": "융중 초가의 심부름하는 아이.",
+   "Class": "commoner",
+   "Stats": [
+    10,
+    10,
+    30,
+    30,
+    40,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [],
+   "Look": {
+    "Faction": "han",
+    "Scene": "child_boy_noncombat"
+   }
+  },
+  "zhugejun": {
+   "Name": "제갈균",
+   "Biography": "제갈량의 아우. 형과 함께 융중에서 농사를 짓는다.",
+   "Class": "scholar",
+   "Stats": [
+    30,
+    20,
+    70,
+    40,
+    50,
+    60
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "cotton_clothes"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "official_green_noncombat"
+   }
+  },
+  "quartermaster": {
+   "Name": "군량관",
+   "Biography": "군량을 나르고 나누는 관리.",
+   "Class": "light_infantry",
+   "Stats": [
+    30,
+    20,
+    50,
+    30,
+    40,
+    30
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "copper_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "shu",
+    "Scene": "official_noncombat"
+   }
+  },
+  "old_woman": {
+   "Name": "노파",
+   "Biography": "하비 골목의 늙은 아낙.",
+   "Class": "commoner",
+   "Stats": [
+    10,
+    10,
+    30,
+    20,
+    40,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [],
+   "Look": {
+    "Faction": "merchant",
+    "Scene": "commoner_oldwoman"
+   }
+  },
+  "magnate": {
+   "Name": "호족",
+   "Biography": "강릉의 호족.",
+   "Class": "light_infantry",
+   "Stats": [
+    40,
+    30,
+    50,
+    40,
+    50,
+    40
+   ],
+   "Level": 1,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "copper_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "jing",
+    "Scene": "official_purple_noncombat"
+   }
   }
  }
 }

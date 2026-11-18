@@ -583,14 +583,14 @@
      "Title": "기령이 관우를 막아서다",
      "Speech": "네가 관운장이냐. 이 삼첨도를 받아 보아라!",
      "Side": 1,
-     "Duration": 3.0
+     "Duration": 3.1
     },
     {
      "Kind": "talk",
      "Title": "관우가 답하다",
      "Speech": "말이 많구나.",
      "Side": 0,
-     "Duration": 2.0
+     "Duration": 2.3
     },
     {
      "Kind": "approach",
@@ -601,35 +601,126 @@
     },
     {
      "Kind": "block",
-     "Title": "관우가 삼첨도를 가볍게 받다",
+     "Title": "기령이 삼첨도 끝으로 떠 보자 관우가 가볍게 받아 넘기다",
      "Speech": "가볍군.",
      "Side": 1,
      "Duration": 1.05
     },
     {
+     "Kind": "block",
+     "Title": "관우가 곧바로 되받아 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
      "Kind": "rush-block",
-     "Title": "기령이 돌진하며 거듭 몰아치다",
+     "Title": "기령이 말을 몰아 들이치다",
      "Speech": "그것이 전부냐.",
      "Side": 1,
      "Duration": 1.1
     },
     {
      "Kind": "yielding-block",
-     "Title": "청룡도 한 번에 기령이 밀려나다",
+     "Title": "관우가 힘으로 누르자 기령이 밀려나다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.2
     },
     {
      "Kind": "talk",
-     "Title": "기령이 이를 악물다",
-     "Speech": "(이놈… 팔이 저려 온다.)",
+     "Title": "기령이 이를 갈다",
+     "Speech": "우습게 보지 마라! 원 공의 대장이 어찌 이리 밀린단 말이냐!",
      "Side": 1,
-     "Duration": 2.4
+     "Duration": 3.5
     },
     {
      "Kind": "block",
-     "Title": "관우가 청룡도를 내리치다",
+     "Title": "기령이 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "관우가 크게 휘둘렀으나 기령이 몸을 틀어 피하다",
+     "Speech": "흥!",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 청룡도을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "기령이 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "기령이 이를 악물다",
+     "Speech": "(이놈… 팔이 저려 온다.)",
+     "Side": 1,
+     "Duration": 2.7
+    },
+    {
+     "Kind": "talk",
+     "Title": "관우가 낮게 이르다",
+     "Speech": "삼첨도가 무겁다고 들었다. 무겁기만 하군.",
+     "Side": 0,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "기령이 말을 몰아 들이치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "관우가 힘으로 누르자 기령이 밀려나다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "기령이 소리치다",
+     "Speech": "네놈이 천하의 관우라도 오늘은 못 지나간다!",
+     "Side": 1,
+     "Duration": 3.1
+    },
+    {
+     "Kind": "block",
+     "Title": "기령이 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "dodge",
+     "Title": "기령이 크게 휘둘렀으나 관우가 몸을 틀어 피하다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 빈틈을 파고들어 되받다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.05
@@ -642,8 +733,43 @@
      "Duration": 1.2
     },
     {
+     "Kind": "talk",
+     "Title": "관우가 청룡도를 고쳐 잡다",
+     "Speech": "……비켜라.",
+     "Side": 0,
+     "Duration": 2.3
+    },
+    {
+     "Kind": "block",
+     "Title": "기령이 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "관우가 청룡도을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "기령이 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "talk",
+     "Title": "기령이 숨을 몰아쉬다",
+     "Speech": "(이놈은 숨도 흐트러지지 않는다…… 이것이 관운장인가!)",
+     "Side": 1,
+     "Duration": 3.4
+    },
+    {
      "Kind": "yielding-block",
-     "Title": "관우가 다시 밀어붙이다",
+     "Title": "관우가 힘으로 누르자 기령이 밀려나다",
      "Speech": "",
      "Side": 0,
      "Duration": 1.2
@@ -653,21 +779,21 @@
      "Title": "관우가 뒤쪽 북소리를 듣다",
      "Speech": "(여포의 군사가 형님의 뒤를 친다…)",
      "Side": 0,
-     "Duration": 2.8
+     "Duration": 2.9
     },
     {
      "Kind": "talk",
      "Title": "관우가 승부를 미루다",
      "Speech": "기령, 오래 상대해 줄 수 없다. 네 목은 다음에 받겠다.",
      "Side": 0,
-     "Duration": 3.2
+     "Duration": 3.4
     },
     {
      "Kind": "talk",
      "Title": "기령이 소리치다",
      "Speech": "어딜 가느냐! 승부는 아직 나지 않았다!",
      "Side": 1,
-     "Duration": 2.6
+     "Duration": 3.0
     },
     {
      "Kind": "backstep",
@@ -681,8 +807,7 @@
      "Title": "관우가 물러나고 기령은 숨을 몰아쉬다",
      "Speech": "",
      "Side": 0,
-     "Duration": 2.5,
-     "Tired": "enemy"
+     "Duration": 2.5
     }
    ],
    "If": [

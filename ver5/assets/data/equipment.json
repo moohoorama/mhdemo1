@@ -395,7 +395,7 @@
    ]
   },
   "qinggang_sword": {
-   "Name": "청공검",
+   "Name": "청홍검",
    "Desc": "조조가 아끼던 보검. 철을 진흙처럼 벤다. 청공: 앞을 치면 그 대상의 양옆 두 칸의 적도 50% 피해를 받는다.",
    "Slot": "weapon",
    "Type": "sword",
@@ -414,7 +414,7 @@
   },
   "yitian_sword": {
    "Name": "의천검",
-   "Desc": "조조의 보검. 의천: 적의 물리 공격 명중률이 15%p 낮아진다.",
+   "Desc": "조조의 보검. 의천: 적의 물리 공격 명중률이 15%p 낮아진다. 보법과 함께면 30%p.",
    "Slot": "weapon",
    "Type": "sword",
    "Icon": "yitian",
@@ -812,6 +812,188 @@
    ],
    "Traits": [
     "keen_edge"
+   ]
+  },
+  "dilu": {
+   "Owner": "liubei",
+   "Name": "적로",
+   "Desc": "이마에 흰 점이 박힌 명마. 눈 밑의 눈물 자국이 주인을 해친다는 말이 돈다. 답파: 험한 땅에서도 지형 보정이 100 아래로 떨어지지 않는다.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Icon": "horse",
+   "Bonus": [
+    0,
+    0,
+    0,
+    4,
+    0,
+    0
+   ],
+   "Traits": [
+    "sure_footing"
+   ]
+  },
+  "yang_youji_bow": {
+   "Owner": "yiji",
+   "Name": "양유기의 활",
+   "Desc": "초나라 명궁 양유기가 썼다는 채씨 집안의 보물. 백보천양: 사거리 +2.",
+   "Slot": "weapon",
+   "Type": "bow",
+   "Icon": "bow",
+   "Bonus": [
+    3,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "hundred_paces"
+   ]
+  },
+  "formation_manual": {
+   "Name": "진법서",
+   "Desc": "팔문금쇄진을 적은 진법서. 금쇄: 매 자기 차례 둘레 여덟 칸 아군의 방어력 강화.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Icon": "scroll",
+   "Bonus": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "iron_lock"
+   ]
+  },
+  "silk_robe": {
+   "Name": "비단 도포",
+   "Desc": "화려한 비단옷. 풍채: 매력 +10.",
+   "Slot": "armor",
+   "Type": "robe",
+   "Icon": "robe",
+   "Bonus": [
+    0,
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "silk_grace"
+   ]
+  },
+  "golden_breastplate": {
+   "Name": "금흉갑",
+   "Desc": "가슴에 금판을 댄 갑옷. 금흉: 적의 치명타와 연속 공격의 둘째 타를 반드시 막는다.",
+   "Slot": "armor",
+   "Type": "armor",
+   "Icon": "diamond",
+   "Bonus": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    1
+   ],
+   "Traits": [
+    "golden_guard"
+   ]
+  },
+  "mengde_book": {
+   "Name": "맹덕신서",
+   "Desc": "조조가 손수 주석을 단 병법서. 신서: 매 차례 병법치 회복 +10.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Icon": "sanlue",
+   "Bonus": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "mengde_notes"
+   ]
+  },
+  "meteor_hammer": {
+   "Name": "유성추",
+   "Desc": "쇠사슬 끝에 쇠망치를 단 무기. 유성: 맞힌 적을 반드시 봉격한다.",
+   "Slot": "weapon",
+   "Type": "fist",
+   "Icon": "knuckles",
+   "Bonus": [
+    2,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "meteor_strike"
+   ]
+  },
+  "white_feather_fan": {
+   "Name": "백우선",
+   "Desc": "흰 깃털 부채. 백출: 병법치 소모가 절반.",
+   "Slot": "weapon",
+   "Type": "fan",
+   "Icon": "fan",
+   "Bonus": [
+    0,
+    0,
+    3,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "half_cost"
+   ]
+  },
+  "crane_robe": {
+   "Name": "학창의",
+   "Desc": "학의 깃털처럼 흰 도사의 옷. 학창: 매 자기 차례 정신력 강화.",
+   "Slot": "armor",
+   "Type": "robe",
+   "Icon": "robe",
+   "Bonus": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "crane_calm"
+   ]
+  },
+  "zhuge_kerchief": {
+   "Name": "제갈건",
+   "Desc": "제갈량이 쓰는 비단 두건. 윤건: 최대 병법치 +30.",
+   "Slot": "accessory",
+   "Type": "any",
+   "Icon": "primer",
+   "Bonus": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "Traits": [
+    "silk_kerchief"
    ]
   }
  }

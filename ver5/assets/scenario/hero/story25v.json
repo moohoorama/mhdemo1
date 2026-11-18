@@ -1,0 +1,197 @@
+{
+ "Nodes": [
+  {
+   "ID": "c25v-start",
+   "Kind": "scene",
+   "Place": "신야 · 관청"
+  },
+  {
+   "ID": "c25v-mode",
+   "Kind": "set",
+   "Flags": {
+    "flag-mode-virtual": 1,
+    "flag-mode-yanyi": 0
+   }
+  },
+  {
+   "ID": "c25v-o01",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "조인의 선봉이 사흘 거리입니다. 신야를 비우고 지붕마다 섶을 올려 두면 조인을 열흘은 묶을 수 있습니다."
+  },
+  {
+   "ID": "c25v-o02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "돌아올 집을 태우고 떠나자는 말이오? 융중에서 느린 길을 골랐소. 태우지 않소."
+  },
+  {
+   "ID": "c25v-o03",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "그러면 조인은 멀쩡한 성을 지나 곧장 쫓아옵니다. 당양 들판에서 따라잡힙니다."
+  },
+  {
+   "ID": "c25v-o04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그럼 들판에서 막으세."
+  },
+  {
+   "ID": "c25v-o05",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "……알겠습니다. 저는 곧장 강동으로 가 손 장군의 군사를 청하겠습니다."
+  },
+  {
+   "ID": "c25v-o06",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "운장은 강하로 가 공자의 배를 빌리십시오. 강릉에서 뵙겠습니다."
+  },
+  {
+   "ID": "c25v-o07",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님, 강릉에서 뵙겠습니다."
+  },
+  {
+   "ID": "c25v-o08",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "둘째 형, 배 끌고 늦게 오면 내가 들판 몫까지 다 먹어 버릴 거유."
+  },
+  {
+   "ID": "c25v-o09",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "익덕, 형님 곁을 떠나지 마라. 평아, 가자."
+  },
+  {
+   "ID": "c25v-leave-zhugeliang",
+   "Kind": "leave",
+   "Character": "zhugeliang",
+   "Event": "leave-zhugeliang-25v"
+  },
+  {
+   "ID": "c25v-leave-guanyu",
+   "Kind": "leave",
+   "Character": "guanyu",
+   "Event": "leave-guanyu-25v"
+  },
+  {
+   "ID": "c25v-leave-guanping",
+   "Kind": "leave",
+   "Character": "guanping",
+   "Event": "leave-guanping-25v"
+  },
+  {
+   "ID": "c25v-leave-zhoucang",
+   "Kind": "leave",
+   "Character": "zhoucang",
+   "Event": "leave-zhoucang-25v"
+  },
+  {
+   "ID": "c25v-gate",
+   "Kind": "scene",
+   "Place": "양양 · 성문 앞"
+  },
+  {
+   "ID": "c25v-g01",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "조카를 보러 온 것이 아니오. 백성만이라도 성에 들여 주시오!"
+  },
+  {
+   "ID": "c25v-g02",
+   "Kind": "say",
+   "Speaker": "caimao",
+   "Text": "쏴라!"
+  },
+  {
+   "ID": "c25v-g03",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형! 저 문 내가 부수겄슈!"
+  },
+  {
+   "ID": "c25v-g04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "형님의 아들이 있는 성을 칠 수는 없네. 남쪽으로 간다."
+  },
+  {
+   "ID": "c25v-g05",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "현덕, 백성을 데리고는 하루 십 리일세. 조조의 기병은 하루 삼백 리고."
+  },
+  {
+   "ID": "c25v-g06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "나를 따라 나선 사람들이네. 두고 갈 수는 없네."
+  },
+  {
+   "ID": "c25v-battle",
+   "Kind": "battle",
+   "Stage": "B25V",
+   "Text": "장판파 전투 — 출전 준비"
+  },
+  {
+   "ID": "c25v-camp",
+   "Kind": "scene",
+   "Place": "장판교 · 동쪽 진영"
+  },
+  {
+   "ID": "c25v-c01",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "다 건넜슈, 형! 한 사람도 빠짐없이!"
+  },
+  {
+   "ID": "c25v-sword",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-b25v-qinggang"
+     ],
+     "Next": "c25v-c02"
+    }
+   ],
+   "Else": "c25v-c05"
+  },
+  {
+   "ID": "c25v-c02",
+   "Kind": "say",
+   "Speaker": "zhaoyun",
+   "Text": "좋은 검이라 가져왔습니다."
+  },
+  {
+   "ID": "c25v-c03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "자룡이 거둔 것이니 자룡이 맡아 두게."
+  },
+  {
+   "ID": "c25v-grant-qinggang",
+   "Kind": "grant",
+   "Item": "qinggang_sword",
+   "Count": 1,
+   "Event": "grant-qinggang_sword-25v"
+  },
+  {
+   "ID": "c25v-c05",
+   "Kind": "say",
+   "Speaker": "xushu",
+   "Text": "강릉까지 사흘입니다. 조조는 다리를 다시 놓는 데 하루면 됩니다."
+  },
+  {
+   "ID": "c25v-c06",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그럼 이틀을 벌었네. 가세."
+  }
+ ]
+}

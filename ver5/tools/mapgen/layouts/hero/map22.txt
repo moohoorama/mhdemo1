@@ -1,0 +1,32 @@
+# map22 강하 전투 (24x28, day). North = row 0. A wide river (rows 12-15, boats only) runs east-west across the
+# middle and ends at the rebels' landing on the east edge (x 23). 장무's camp (14,6) on the hills north of it, 진손's
+# camp (11,22) behind the southern reeds, a wood in the north-west corner (the masked raiders), a road from the
+# north edge (12,0) where 이적 comes with the grain.
+g-- gt- gt- g-- gt- gt- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- gt- g-- gt- g-- gt- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g--
+g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g--
+g-- gt- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- u-- u-- u-- u-- g-- g-- g-- g-- gt- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- u-- u-- u-- u-- u-- u-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- u-- u-- gk- u-- u-- u-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- u-- u-- u-- u-- u-- u-- g-- g-- gt- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- u-- u-- u-- u-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- s-- g-- s-- g-- g-- g-- s-- g-- g-- s-- s-- s-- s-- g-- s-- s-- s-- g-- g-- s-- s--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+s-- s-- s-- s-- s-- s-- s-- s-- g-- s-- s-- s-- g-- g-- s-- s-- s-- g-- s-- s-- s-- s-- s-- s--
+g-- g-- g-- g-- g-- g-- st- g-- g-- s-- st- g-- g-- s-- st- g-- g-- g-- g-- gt- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- s-- g-- s-- g-- g-- g-- st- g-- st- g-- st- s-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- gt- g-- g-- st- st- g-- st- st- st- g-- g-- g-- st- g-- st- g-- g-- g-- gt- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- gk- l-- l-- l-- g-- g-- g-- gt- g-- g-- g-- g-- g--
+g-- g-- g-- g-- gt- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g--
+g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--

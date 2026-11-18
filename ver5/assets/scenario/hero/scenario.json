@@ -95,6 +95,42 @@
   {
    "ID": "21",
    "File": "story21.json"
+  },
+  {
+   "ID": "22",
+   "File": "story22.json"
+  },
+  {
+   "ID": "23",
+   "File": "story23.json"
+  },
+  {
+   "ID": "24",
+   "File": "story24.json"
+  },
+  {
+   "ID": "25",
+   "File": "story25.json"
+  },
+  {
+   "ID": "26",
+   "File": "story26.json"
+  },
+  {
+   "ID": "27",
+   "File": "story27.json"
+  },
+  {
+   "ID": "25v",
+   "File": "story25v.json"
+  },
+  {
+   "ID": "26v",
+   "File": "story26v.json"
+  },
+  {
+   "ID": "27v",
+   "File": "story27v.json"
   }
  ]
 }

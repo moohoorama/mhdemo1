@@ -1,0 +1,136 @@
+{
+ "Scenes": {
+  "c25v-start": {
+   "Map": "S_xiaopei_office",
+   "Nodes": ["c25v-start", "c25v-o01", "c25v-o02", "c25v-o03", "c25v-o04", "c25v-o05", "c25v-o06", "c25v-o07", "c25v-o08", "c25v-o09"],
+   "Cast": {
+    "유비": {"At": [2, 1], "Face": "SW"},
+    "제갈량": {"At": [2, 3], "Face": "NE"},
+    "관우": {"At": [1, 3], "Face": "NE"},
+    "관평": {"At": [1, 4], "Face": "NE"},
+    "주창": {"At": [2, 4], "Face": "NE", "If": ["party:zhoucang"]},
+    "장비": {"At": [3, 3], "Face": "NW"},
+    "간옹": {"At": [4, 2], "Face": "NW"},
+    "서서": {"At": [4, 3], "Face": "NW"}
+   },
+   "Beats": {
+    "c25v-o02": [
+     [
+      [{"Actor": "유비", "Play": "action"}]
+     ]
+    ],
+    "c25v-o04": [
+     [
+      [{"Actor": "장비", "Face": "NE"}, {"Actor": "장비", "Emote": "!"}]
+     ]
+    ],
+    "c25v-o05": [
+     [
+      [{"Actor": "제갈량", "Emote": "…"}]
+     ]
+    ],
+    "c25v-o06": [
+     [
+      [{"Actor": "제갈량", "Face": "NW"}]
+     ]
+    ],
+    "c25v-o07": [
+     [
+      [{"Actor": "관우", "Face": "NE"}, {"Actor": "관우", "Play": "action"}]
+     ]
+    ],
+    "c25v-o08": [
+     [
+      [{"Actor": "장비", "Face": "NW"}]
+     ]
+    ],
+    "c25v-o09": [
+     [
+     ],
+     [
+      [{"Actor": "관우", "Via": [[1, 5]], "Move": [2, 5], "Exit": true}, {"Actor": "주창", "Move": [2, 5], "Exit": true, "After": 0.3}, {"Actor": "관평", "Move": [2, 5], "Exit": true, "After": 0.7}, {"Actor": "제갈량", "Move": [2, 5], "Exit": true, "After": 1.2}]
+     ]
+    ]
+   }
+  },
+  "c25v-gate": {
+   "Map": "S_castle_out",
+   "Nodes": ["c25v-gate", "c25v-g01", "c25v-g02", "c25v-g03", "c25v-g04", "c25v-g05", "c25v-g06"],
+   "Cast": {
+    "채모": {"At": [3, 0], "Face": "SW", "Hold": true},
+    "형주병#1": {"At": [1, 0], "Face": "SW", "Sprite": "archer", "Faction": "jing"},
+    "형주병#2": {"At": [5, 0], "Face": "SW", "Sprite": "archer", "Faction": "jing"},
+    "유비": {"At": [3, 3], "Face": "NE"},
+    "장비": {"At": [4, 4], "Face": "NE"},
+    "간옹": {"At": [2, 4], "Face": "NE"},
+    "서서": {"At": [3, 5], "Face": "NE"},
+    "백성#1": {"At": [6, 3], "Face": "NW", "Sprite": "commoner_man", "Faction": "merchant"},
+    "백성#2": {"At": [7, 4], "Face": "NW", "Sprite": "commoner_woman", "Faction": "merchant"},
+    "백성#3": {"At": [6, 5], "Face": "NW", "Sprite": "commoner_elder", "Faction": "merchant"},
+    "백성#4": {"At": [7, 5], "Face": "NW", "Sprite": "commoner_man", "Faction": "merchant"}
+   },
+   "Beats": {
+    "c25v-g02": [
+     [
+      [{"Actor": "형주병#1", "Play": "attack"}, {"Actor": "형주병#2", "Play": "attack"}],
+      [{"Actor": "유비", "Play": "action"}, {"Actor": "백성#1", "Move": [8, 3], "Speed": 2}, {"Actor": "백성#2", "Move": [8, 5], "Speed": 2}, {"Actor": "백성#3", "Emote": "!"}]
+     ]
+    ],
+    "c25v-g03": [
+     [
+      [{"Actor": "장비", "Emote": "!"}]
+     ]
+    ],
+    "c25v-g05": [
+     [
+      [{"Actor": "간옹", "Face": "SE"}]
+     ]
+    ],
+    "c25v-g06": [
+     [
+      [{"Actor": "유비", "Face": "SE"}]
+     ]
+    ]
+   }
+  },
+  "c25v-camp": {
+   "Map": "S_bridge",
+   "Time": "dusk",
+   "Nodes": ["c25v-camp", "c25v-c01", "c25v-c02", "c25v-c03", "c25v-c05", "c25v-c06"],
+   "Cast": {
+    "유비": {"At": [5, 8], "Face": "NE"},
+    "조운": {"At": [4, 8], "Face": "SE"},
+    "장비": {"At": [6, 7], "Face": "NW", "Off": true},
+    "서서": {"At": [6, 9], "Face": "NW"},
+    "간옹": {"At": [3, 8], "Face": "SE"},
+    "백성#1": {"At": [9, 8], "Face": "NW", "Sprite": "commoner_man", "Faction": "merchant"},
+    "백성#2": {"At": [9, 9], "Face": "NW", "Sprite": "commoner_woman", "Faction": "merchant"},
+    "백성#3": {"At": [8, 9], "Face": "NW", "Sprite": "commoner_elder", "Faction": "merchant"},
+    "백성#4": {"At": [10, 9], "Face": "NW", "Sprite": "commoner_woman", "Faction": "merchant"}
+   },
+   "Beats": {
+    "c25v-c01": [
+     [
+      [{"Actor": "장비", "Enter": [6, 6], "Move": [6, 7]}],
+      [{"Actor": "유비", "Face": "SE"}, {"Actor": "장비", "Face": "NW"}]
+     ]
+    ],
+    "c25v-c02": [
+     [
+      [{"Actor": "조운", "Face": "SE"}, {"Actor": "유비", "Face": "NW"}, {"Actor": "조운", "Play": "action"}]
+     ]
+    ],
+    "c25v-c05": [
+     [
+      [{"Actor": "유비", "Face": "SE"}, {"Actor": "서서", "Face": "NW"}]
+     ]
+    ],
+    "c25v-c06": [
+     [
+      [{"Actor": "유비", "Face": "NE"}]
+     ]
+    ]
+   }
+  }
+ }
+}

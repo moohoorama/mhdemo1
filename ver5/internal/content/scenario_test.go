@@ -23,6 +23,29 @@ func TestAfterFollowsNextThenChapterOrder(t *testing.T) {
 	}
 }
 
+func TestAlternateChapterTellsTheSameNumber(t *testing.T) {
+	d := &Data{
+		Nodes: []Node{{ID: "a", Kind: "battle", Stage: "B1"}, {ID: "b", Kind: "battle", Stage: "B2"}, {ID: "c"},
+			{ID: "x"}, {ID: "y", Kind: "battle", Stage: "B2V"}},
+		Chapters: []Chapter{
+			{ID: "01", Nodes: []string{"a"}},
+			{ID: "02", Nodes: []string{"b", "c"}},
+			{ID: "02v", Nodes: []string{"x", "y"}},
+		},
+		Stages: []Stage{{ID: "B1", Order: 1}, {ID: "B2", Order: 2}, {ID: "B2V", Order: 2}},
+	}
+	t.Run("the number is the ID's leading digits", func(t *testing.T) {
+		assert.Equal(t, 2, Chapter{ID: "02v"}.Number())
+		assert.Equal(t, 0, Chapter{ID: "trial"}.Number())
+		assert.Equal(t, 2, d.ChapterNumber("x"))
+		assert.Equal(t, 0, d.ChapterNumber("missing"))
+	})
+	t.Run("the other telling opens after the battles before the chapter it retells", func(t *testing.T) {
+		assert.Equal(t, 1, d.LastBattleOrder("x"))
+		assert.Equal(t, 2, d.LastBattleOrder("c"))
+	})
+}
+
 func copyTree(t *testing.T, from, to string) {
 	require.NoError(t, filepath.WalkDir(from, func(p string, e os.DirEntry, err error) error {
 		if err != nil {

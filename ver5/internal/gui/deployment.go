@@ -282,6 +282,11 @@ func (g *Game) drawDeployment(dst *ebiten.Image, o core.Observation) {
 		}
 		g.missingGear(dst, of.Class, of.Equipment, gx, float64(rr.Min.Y+11))
 		state, c := "배치됨", muted
+		if u := g.unitView(o, id); u != nil { // a split sortie names the group the officer starts with
+			if grp, ok := g.S.Data.Stages[o.Stage].GroupAt(content.Point{X: u.X, Y: u.Y}); ok {
+				state = grp.Name
+			}
+		}
 		switch {
 		case id == g.deploymentSelected:
 			state, c = "선택", gold
