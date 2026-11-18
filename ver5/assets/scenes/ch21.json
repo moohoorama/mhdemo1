@@ -156,7 +156,7 @@
     "수문장": {"At": [7, 1], "Face": "SW", "Faction": "shu"},
     "문지기#1": {"At": [9, 1], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"},
     "악진": {"At": [8, -3], "Sprite": "chariot", "Faction": "wei", "Off": true, "Face": "SW"},
-    "만총": {"At": [8, -3], "Faction": "wei", "Off": true, "Face": "SW"},
+    "고람": {"At": [8, -3], "Faction": "wei", "Off": true, "Face": "SW"},
     "조조군#1": {"At": [8, -4], "Sprite": "light_cavalry", "Faction": "wei", "Off": true, "Face": "SW"},
     "조조군#2": {"At": [8, -5], "Sprite": "light_cavalry", "Faction": "wei", "Off": true, "Face": "SW"}
    },
@@ -176,7 +176,7 @@
     ],
     "c21-g05": [
      [
-      [{"Actor": "만총", "Enter": [8, -3], "Move": [8, 0], "Speed": 1.2}]
+      [{"Actor": "고람", "Enter": [8, -3], "Move": [8, 0], "Speed": 1.2}]
      ]
     ],
     "c21-g08": [

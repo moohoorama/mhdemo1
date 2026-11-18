@@ -3351,3 +3351,10 @@
 - `Makefile`(`e2e`, `E2E_SEED`·`E2E_MINUTES`): `make e2e`로 쉬움 처음부터 엔딩까지 통합 시험 — 사용자 11-17
 - `internal/content/content.go`(`Difficulty.DealtPct`·`TakenPct`)·`validate.go`·`internal/core/combat.go`(`damage`)·`assets/data/game.json`(쉬움 120%·80%)·`internal/core/officer_traits_test.go`·`internal/content/officer_traits_data_test.go`·`internal/gui/campaign_e2e_test.go`(패배 이유 기록): 쉬움에서 아군이 주는 피해 +20%, 받는 피해 -20%(일기토는 따로 진행되어 그대로) — 사용자 11-17: 쉬움이 별로 안 쉬움
 - `assets/scenario/hero/stage21.json`(유벽·남문 군사 `flee` GoalArea 2, 부목표 `fled:liupi` "유벽이 남쪽 성으로 무사히 빠져나간다", `liupi-falls`는 빠져나가면 나오지 않음)·`docs/fullstory.md`·`internal/core/b21_liupi_test.go`: 유벽이 남쪽 성 칸을 차지해 유비가 승리 칸에 못 들어가던 것을, 유벽은 성에 닿으면 싸움터를 떠나게 — 사용자 11-17
+
+## 2026-11-18 여남 조조군 부관을 만총에서 고람으로
+
+- 결정: 21장 여남(B21)의 악진 부관과 S#3 북문 안 대사의 계책 떠벌이를 만총에서 고람으로 바꿈 · 이유: 9장 거록에서 입 가벼운 수다쟁이로 그려 둔 고람의 복선("21장 여남에서 조조군으로 다시 나와 계책을 떠벌린다")을 잇기 위해(사용자 결정). 정사에서 고람은 관도에서 장합과 함께 조조에게 항복해 조조군 장수가 됨
+- `assets/scenario/hero/story21.json`·`tools/mapgen/layouts/hero/stage21gen.py`: `c21-g05`(유비 "……악진. 원소 밑에 있던 고람까지.")·`c21-g06`·`g07`·`g09`(고람이 허도의 깃발·군호와 관우·장비를 떼어 놓는 계책을 자랑하다 "진짜는……"에서 끊김)·`c21-g10`(악진 "고 장군, 말은 그쯤 하시오!")
+- `assets/scenario/hero/stage21.json`(`Deputy: gaolan`)·`assets/scenes/ch21.json`·`tools/scene_maps/ch21_scenes.py`(장면 캐스트 `고람`, `Faction: wei`): 부관·장면 인물 교체. `characters_story.json`의 `manchong`은 다른 곳에 쓰이지 않아 삭제
+- `docs/fullstory.md`·`logic-traits.md`·`data-speech-style.md`(고람 항목 새로)

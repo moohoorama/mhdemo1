@@ -2978,33 +2978,6 @@
     }
    }
   },
-  "manchong": {
-   "Name": "만총",
-   "Biography": "허도의 현령. 법을 엄히 세워 권세가도 봐주지 않는다. 뒤에 여남 태수가 되어 원소 편에 선 무리를 평정한다.",
-   "Class": "strategist",
-   "Stats": [
-    84,
-    64,
-    82,
-    66,
-    70,
-    72
-   ],
-   "Level": 12,
-   "Traits": [
-    "strict_order",
-    "discipline"
-   ],
-   "Learn": [],
-   "Equipment": [
-    "bamboo_fan",
-    "plain_clothes"
-   ],
-   "Look": {
-    "Scene": "official_black_noncombat",
-    "Faction": "wei"
-   }
-  },
   "liupi": {
    "Name": "유벽",
    "Biography": "여남의 옛 황건 두령. 관도 싸움 때 원소 편에 서서 허도 뒤를 쳤고, 예주목 유비를 여남으로 맞아들였다.",

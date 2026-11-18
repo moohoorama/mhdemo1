@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Chapter 21 (여남): map21 layout, stage21.json, story21.json, three new characters, scenario entry.
+"""Chapter 21 (여남): map21 layout, stage21.json, story21.json, two new characters, scenario entry.
 Run from ver5/. Rewrites its outputs from scratch every time."""
 import json
 import re
@@ -56,11 +56,6 @@ subprocess.run(['python3', 'tools/mapgen/mapgen.py', str(layout), str(HERO / 'ma
 
 # ---------------------------------------------------------------- characters
 chars = {
-    'manchong': {
-        'Name': '만총', 'Biography': '허도의 현령. 법을 엄히 세워 권세가도 봐주지 않는다. 뒤에 여남 태수가 되어 원소 편에 선 무리를 평정한다.',
-        'Class': 'strategist', 'Stats': [84, 64, 82, 66, 70, 72], 'Level': 12, 'Traits': ['strict_order', 'discipline'],
-        'Learn': [], 'Equipment': ['bamboo_fan', 'plain_clothes'],
-        'Look': {'Scene': 'official_black_noncombat', 'Faction': 'wei'}},
     'liupi': {
         'Name': '유벽', 'Biography': '여남의 옛 황건 두령. 관도 싸움 때 원소 편에 서서 허도 뒤를 쳤고, 예주목 유비를 여남으로 맞아들였다.',
         'Class': 'outlaw', 'Stats': [68, 70, 42, 60, 56, 60], 'Level': 20, 'Playable': True, 'Traits': [], 'Learn': [],
@@ -118,7 +113,7 @@ stage = {
          'Faction': 'shu', 'Shift': -0.07},
     ],
     'Enemies': [
-        foe('yuejin', 10, 3, 'yue', Rank='commander', Deputy='manchong', DuelFirst=True),
+        foe('yuejin', 10, 3, 'yue', Rank='commander', Deputy='gaolan', DuelFirst=True),
         foe('troop_cavalry', 9, 3, 'yue'), foe('troop_cavalry', 11, 3, 'yue'),
         foe('troop_cavalry', 10, 2, 'yue'),
         # 조조군은 남쪽 길에도 미리 와 있다: 유벽이 뚫으러 나가면 여기에 걸린다
@@ -314,12 +309,12 @@ lines('c21-g', [
     ('liubei', '운장이 벌써? 하후돈을 이리 빨리 물리쳤단 말인가.'),
     ('gatekeeper', '조, 조조군이다! 조조군이 어떻게……!'),
     ('yuejin', '승상의 은혜를 저버린 놈, 유비! 여기 숨어 있었구나!'),
-    ('liubei', '……악진. 만 현령까지.'),
-    ('manchong', '너희가 허도에 머문 것이 며칠이었느냐? 성문을 드나든 깃발 하나, 밤마다 바꾼 군호 하나까지 내 장부에 다 적혀 있다.'),
-    ('manchong', '너희의 깃발과 군호는 승상의 손바닥 안이다!'),
+    ('liubei', '……악진. 원소 밑에 있던 고람까지.'),
+    ('gaolan', '허도에 머문 며칠 동안 너희가 성문으로 들인 깃발 하나, 밤마다 바꾼 군호 하나까지 승상의 장부에 다 적혀 있다!'),
+    ('gaolan', '너희 깃발도 군호도 승상의 손바닥 안이다! 거록에서 입 조심하라는 말을 들었다만, 이 계책만은 자랑해도 좋겠지!'),
     ('jianyong', '그럼 서쪽의 하후돈도, 동쪽의 공도도…….'),
-    ('manchong', '관우와 장비가 곁에 있는 유비를 누가 치겠느냐. 둘을 떼어 놓으라는 것이 승상의 명이었다.'),
-    ('yuejin', '말은 그쯤 하시오, 만 현령. 유비의 목은 이 악진이 가져간다!'),
+    ('gaolan', '관우와 장비가 곁에 있는 유비를 누가 치겠느냐? 둘을 떼어 놓으라는 것이 승상의 계책이시다. 서쪽의 하후돈은 미끼일 뿐, 진짜는……'),
+    ('yuejin', '고 장군, 말은 그쯤 하시오! 유비의 목은 이 악진이 가져간다!'),
     ('liupi', '유 예주, 남문은 아직 우리 군사가 쥐고 있소! 그리로 빠지시오!'),
     ('zhaoyun', '공, 제 뒤에 서십시오. 길은 제가 열겠습니다.'),
 ])
