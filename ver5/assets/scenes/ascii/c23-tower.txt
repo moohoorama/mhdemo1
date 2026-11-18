@@ -3,11 +3,13 @@ Bnr###Bnr##################Bnr###Bnr
 ####################################
 Brz###########################Brz###
 #########Flg###DaiFlg###############
-WpnBrz######LiuDan############BrzArm
+WpnBrz######LiuXus############BrzArm
 ####################################
 
 Liu 유비
-Dan 단복
-Xus 서서  (off stage, enters later (cell 5 4))
+Xus 서서
+Gua 관우  (off stage, enters later (cell 8 4))
+Zha 장비  (off stage, enters later (cell 7 4))
 
-# c23-t02: Xus -> 5 4
+# c23-t06: Gua -> 8 4
+# c23-t06: Zha -> 7 4

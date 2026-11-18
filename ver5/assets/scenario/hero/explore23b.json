@@ -1,0 +1,163 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   19,
+   5
+  ],
+  "Face": "SW"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_xiaopei",
+   "Name": "신야성",
+   "Time": "dawn",
+   "Grass": {
+    "hue": 0,
+    "sat": 0.04,
+    "val": 1.8
+   },
+   "At": [
+    19,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "관청",
+     "At": [
+      5,
+      11
+     ],
+     "Object": [
+      2,
+      11
+     ],
+     "Node": "c23-snow-end",
+     "If": [
+      "flag:c23-visit2"
+     ],
+     "Shut": [
+      [
+       "",
+       "아직 융중에 다녀오지 않았다."
+      ]
+     ]
+    },
+    {
+     "Name": "융중 가는 길",
+     "At": [
+      19,
+      -1
+     ],
+     "To": "longzhong"
+    }
+   ],
+   "People": {
+    "서서": {
+     "At": [
+      17,
+      6
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "xushu",
+       "눈이 옵니다. 길이 미끄러우니 조심해 다녀오십시오."
+      ]
+     ]
+    },
+    "신야 백성": {
+     "At": [
+      15,
+      13
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "이 눈에 사군께서 또 산에 가신다네. 한 번으로는 안 만나 주는 선생인가 보오."
+      ]
+     ]
+    }
+   }
+  },
+  "longzhong": {
+   "Map": "S_vil_peace",
+   "Name": "융중",
+   "Time": "dawn",
+   "Grass": {
+    "hue": 0,
+    "sat": 0.04,
+    "val": 1.8
+   },
+   "At": [
+    24,
+    8
+   ],
+   "Exits": [
+    {
+     "Name": "신야로",
+     "At": [
+      24,
+      8
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "제갈균@before": {
+     "At": [
+      7,
+      4
+     ],
+     "Face": "SE",
+     "Event": [
+      {
+       "If": [
+        "!flag:c23-visit2"
+       ],
+       "Node": "c23-visit2"
+      }
+     ],
+     "If": [
+      "!flag:c23-visit2"
+     ]
+    },
+    "제갈균@after": {
+     "At": [
+      7,
+      4
+     ],
+     "Face": "SE",
+     "If": [
+      "flag:c23-visit2"
+     ],
+     "Talk": [
+      [
+       "zhugejun",
+       "형님은 어제 벗과 함께 길을 나섰습니다."
+      ]
+     ]
+    },
+    "융중 나무꾼": {
+     "At": [
+      16,
+      12
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "이 눈에 누가 산을 오르나 했더니 신야 분들이시구려. 선생 댁은 저 위입니다."
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

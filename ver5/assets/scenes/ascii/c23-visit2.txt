@@ -1,0 +1,14 @@
+# c23-visit2  S_vil_peace  ch23  origin 0 0
+#########Tav...Bsh
+###Hse###.........
+###Hse###.........
+TreNtc............
+..................
+
+Liu 유비  (stands where the walk left them)
+Zhu 제갈균  (stands where the walk left them)
+Gua 관우  (off stage, enters later (cell 6 2))
+Zha 장비  (off stage, enters later (cell 5 3))
+
+# c23-b01: Gua -> 6 2
+# c23-b01: Zha -> 5 3

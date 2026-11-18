@@ -19,9 +19,9 @@
  "Defeat": [
   {
    "If": [
-    "defeated:danfu"
+    "defeated:xushu_guest"
    ],
-   "Text": "단복이 쓰러진다"
+   "Text": "서서가 쓰러진다"
   },
   {
    "If": [
@@ -100,7 +100,7 @@
  },
  "Party": [
   {
-   "Character": "danfu",
+   "Character": "xushu_guest",
    "X": 19,
    "Y": 21,
    "AI": true,
@@ -442,28 +442,28 @@
       [
        {
         "Kind": "face",
-        "Unit": "danfu",
+        "Unit": "xushu_guest",
         "Facing": "NE"
        }
       ],
       [
        {
         "Kind": "say",
-        "Unit": "danfu",
+        "Unit": "xushu_guest",
         "Text": "팔문금쇄진입니다. 조인은 진 가장 안쪽에 있습니다만, 먼저 보실 것은 남서와 남동의 군진입니다."
        }
       ],
       [
        {
         "Kind": "say",
-        "Unit": "danfu",
+        "Unit": "xushu_guest",
         "Text": "남서의 군사가 서 있는 한 적 전군에 분기가, 남동의 군사가 서 있는 한 견고가 걸려 공격과 방어가 함께 오릅니다."
        }
       ],
       [
        {
         "Kind": "say",
-        "Unit": "danfu",
+        "Unit": "xushu_guest",
         "Text": "두 군사를 먼저 없애야 합니다. 울타리에 둘러싸여 가까이 갈 수 없으니, 간옹 님과 진진 님 같은 원거리로 저격하십시오."
        }
       ]
@@ -508,7 +508,7 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "danfu",
+       "Actor": "xushu_guest",
        "Text": "남서의 군사가 물러났습니다. 이제 적 전군의 공격이 매 턴 꺾입니다."
       }
      ]
@@ -561,7 +561,7 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "danfu",
+       "Actor": "xushu_guest",
        "Text": "남동의 군사가 물러났습니다. 이제 적 전군의 방어가 매 턴 허물어집니다."
       }
      ]
@@ -606,7 +606,7 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "danfu",
+       "Actor": "xushu_guest",
        "Text": "두 군진이 모두 무너졌습니다. 이제 적은 정신과 순발, 사기까지 매 턴 꺾입니다. 조인을 치십시오."
       }
      ]

@@ -1,0 +1,224 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   21,
+   11
+  ],
+  "Face": "NW"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_xiaopei",
+   "Name": "신야성",
+   "At": [
+    19,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "관청",
+     "At": [
+      5,
+      11
+     ],
+     "Object": [
+      2,
+      11
+     ],
+     "Node": "c23-alarm",
+     "If": [
+      "flag:c23-visit1",
+      "!flag:c23-alarm"
+     ],
+     "Shut": [
+      [
+       "",
+       "먼저 융중에 다녀와야 한다."
+      ]
+     ]
+    },
+    {
+     "Name": "관청",
+     "At": [
+      5,
+      11
+     ],
+     "Object": [
+      2,
+      11
+     ],
+     "To": "office",
+     "If": [
+      "flag:c23-alarm"
+     ]
+    },
+    {
+     "Name": "융중 가는 길",
+     "At": [
+      19,
+      -1
+     ],
+     "To": "longzhong"
+    }
+   ],
+   "People": {
+    "서서": {
+     "At": [
+      17,
+      10
+     ],
+     "Face": "SE",
+     "If": [
+      "!flag:c23-visit1"
+     ],
+     "Talk": [
+      [
+       "xushu",
+       "융중은 성문을 나가 길을 따라가면 됩니다. 제가 앞장서겠습니다."
+      ]
+     ]
+    },
+    "성문 병사": {
+     "At": [
+      17,
+      4
+     ],
+     "Face": "NE",
+     "Sprite": "light_infantry",
+     "Faction": "shu",
+     "Talk": [
+      [
+       "",
+       "융중이요? 성문 밖 길을 따라가시면 산자락 초가가 몇 채 나옵니다. 그곳 선생을 찾으시는 겁니까?"
+      ]
+     ]
+    },
+    "백성": {
+     "At": [
+      15,
+      13
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "아까 노래하던 선비가 사군 일행과 함께 나가는구먼. 어디를 가는 걸까."
+      ]
+     ]
+    }
+   }
+  },
+  "office": {
+   "Map": "S_xiaopei_office",
+   "Name": "신야 · 관청",
+   "At": [
+    5,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      5,
+      11
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "관우": {
+     "At": [
+      3,
+      7
+     ],
+     "Face": "NE",
+     "Sortie": {
+      "Ask": "형님, 군사들의 채비가 끝났습니다. 출진하시겠습니까?"
+     }
+    }
+   }
+  },
+  "longzhong": {
+   "Map": "S_vil_peace",
+   "Name": "융중",
+   "Grass": {
+    "hue": -40,
+    "sat": 0.85,
+    "val": 0.95
+   },
+   "At": [
+    24,
+    8
+   ],
+   "Exits": [
+    {
+     "Name": "신야로",
+     "At": [
+      24,
+      8
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "동자@before": {
+     "At": [
+      7,
+      4
+     ],
+     "Face": "SE",
+     "Event": [
+      {
+       "If": [
+        "!flag:c23-visit1"
+       ],
+       "Node": "c23-visit1"
+      }
+     ],
+     "If": [
+      "!flag:c23-visit1"
+     ],
+     "Sprite": "child_boy_noncombat",
+     "Faction": "han"
+    },
+    "동자@after": {
+     "At": [
+      7,
+      4
+     ],
+     "Face": "SE",
+     "If": [
+      "flag:c23-visit1"
+     ],
+     "Sprite": "child_boy_noncombat",
+     "Faction": "han",
+     "Talk": [
+      [
+       "",
+       "언제 돌아오실지는 모릅니다. 사흘일 수도, 열흘일 수도 있습니다."
+      ]
+     ]
+    },
+    "융중 농부": {
+     "At": [
+      16,
+      12
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "이 산골에 손님이 오시다니. 와룡 선생 댁이라면 저 아래 초가입니다."
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

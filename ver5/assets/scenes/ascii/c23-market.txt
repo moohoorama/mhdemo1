@@ -22,7 +22,12 @@ mn1 백성#1  (commoner_man)
 wm1 백성#2  (commoner_woman)
 el1 백성#3  (commoner_elder)
 mn2 백성#4  (commoner_man)
+Xus 서서  (off stage, enters later (cell 6 6))
 
 # c23-m02: Liu -> 10 5
 # c23-m02: Gua -> 11 4
 # c23-m02: Zha -> 11 6
+# c23-m03: Liu -> 9 5
+# c23-m09: Dan -> 6 6
+# c23-m11: Xus -> 6 6
+# c23-m14: Zha -> 8 7

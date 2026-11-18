@@ -3278,6 +3278,33 @@
     "Faction": "han",
     "Scene": "official_noncombat"
    }
+  },  "xushu_guest": {
+   "Name": "서서",
+   "Biography": "본명을 밝힌 서서. 신야 전투에서 유비군과 함께하는 손님 장수로, 전투 뒤 정식으로 합류한다.",
+   "Class": "strategist",
+   "Stats": [
+    90,
+    64,
+    93,
+    82,
+    82,
+    87
+   ],
+   "Level": 30,
+   "Traits": [
+    "civil_martial",
+    "break_formation"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_fan",
+    "cotton_clothes",
+    "tactics_primer"
+   ],
+   "Look": {
+    "Faction": "han",
+    "Scene": "official_noncombat"
+   }
   },
   "liubiao": {
    "Name": "유표",
