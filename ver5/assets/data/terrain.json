@@ -87,7 +87,7 @@
      "Cost": 0
     },
     "O": {
-     "Factor": 1,
+     "Factor": 1.2,
      "Cost": 1
     },
     "r": {
@@ -186,7 +186,7 @@
      "Cost": 0
     },
     "O": {
-     "Factor": 1,
+     "Factor": 1.2,
      "Cost": 1
     },
     "r": {
@@ -281,7 +281,7 @@
      "Cost": 0
     },
     "O": {
-     "Factor": 1,
+     "Factor": 1.2,
      "Cost": 1
     },
     "r": {
@@ -376,7 +376,7 @@
      "Cost": 0
     },
     "O": {
-     "Factor": 1,
+     "Factor": 1.2,
      "Cost": 1
     },
     "r": {
@@ -471,7 +471,7 @@
      "Cost": 0
     },
     "O": {
-     "Factor": 1,
+     "Factor": 1.2,
      "Cost": 1
     },
     "r": {
@@ -566,7 +566,7 @@
      "Cost": 0
     },
     "O": {
-     "Factor": 1,
+     "Factor": 1.2,
      "Cost": 1
     },
     "r": {

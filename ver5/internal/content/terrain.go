@@ -43,8 +43,10 @@ type State struct {
 	Grounds string  `json:",omitempty"`
 	Look    string  `json:",omitempty"`
 	Wet     bool    `json:",omitempty"` // one stands in water on it (a wet patch): 수영
+	Castle  bool    `json:",omitempty"` // 수성 holds on it (an open gate counts as the castle)
 	Blaze   float64 `json:",omitempty"`
 	RestHP  *int    `json:",omitempty"`
+	RestMP  *int    `json:",omitempty"`
 }
 
 // TerrainRule is what one layer says about the cost and the strength of a class. A value left out is
@@ -132,8 +134,14 @@ func (d *Data) Props(c Cell) CellProps {
 			p.RestMP = *st.RestMP
 		}
 	}
-	if s, ok := d.States[string(c.State)]; ok && s.RestHP != nil {
-		p.RestHP = *s.RestHP
+	if s, ok := d.States[string(c.State)]; ok {
+		p.Castle = p.Castle || s.Castle
+		if s.RestHP != nil {
+			p.RestHP = *s.RestHP
+		}
+		if s.RestMP != nil {
+			p.RestMP = *s.RestMP
+		}
 	}
 	return p
 }

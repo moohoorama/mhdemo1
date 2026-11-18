@@ -371,7 +371,10 @@
   "O": {
    "Name": "열린 성문",
    "Grounds": "m",
-   "Look": "open"
+   "Look": "open",
+   "Castle": true,
+   "RestHP": 20,
+   "RestMP": 3
   }
  }
 }
