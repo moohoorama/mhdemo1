@@ -12,11 +12,9 @@
  "Victory": [
   {
    "If": [
-    "defeated:zhangwu",
-    "defeated:chensun",
-    "since:ambush"
+    "alldefeated:enemy"
    ],
-   "Text": "장무와 진손을 물리친다"
+   "Text": "반란군을 모두 물리친다"
   }
  ],
  "Defeat": [
@@ -25,20 +23,6 @@
     "defeated:guanyu"
    ],
    "Text": "관우 퇴각"
-  }
- ],
- "Sub": [
-  {
-   "ID": "boats",
-   "Text": "반란군의 배가 하나도 강 동쪽 끝으로 빠져나가지 못한다",
-   "If": [
-    "!fled:north",
-    "!fled:south"
-   ],
-   "Flag": "flag-b22-boats",
-   "Reward": {
-    "insu_high": 1
-   }
   }
  ],
  "TurnLimit": 28,
@@ -118,92 +102,169 @@
    "Character": "zhangwu",
    "X": 14,
    "Y": 6,
-   "Rank": "commander",
+   "Rank": "officer",
    "Group": "north",
-   "Policy": "react",
+   "Policy": "hold",
    "Faction": "jing",
-   "Facing": "SW",
-   "DuelFirst": true
+   "Facing": "SW"
   },
   {
-   "Character": "troop_cavalry",
+   "Character": "troop_bandit",
    "X": 13,
    "Y": 5,
    "Group": "north",
-   "Policy": "react",
+   "Policy": "assault",
    "Faction": "jing",
    "Facing": "SW",
-   "Shift": -0.07
+   "Shift": -0.12,
+   "Rank": "troop"
   },
   {
-   "Character": "troop_cavalry",
+   "Character": "troop_bandit",
    "X": 15,
    "Y": 5,
    "Group": "north",
-   "Policy": "react",
+   "Policy": "assault",
    "Faction": "jing",
    "Facing": "SW",
-   "Shift": -0.07
+   "Shift": -0.12,
+   "Rank": "troop"
   },
   {
-   "Character": "troop_cavalry",
+   "Character": "troop_bandit",
    "X": 13,
    "Y": 7,
    "Group": "north",
-   "Policy": "react",
+   "Policy": "assault",
    "Faction": "jing",
    "Facing": "SW",
-   "Shift": -0.07
+   "Shift": -0.12,
+   "Rank": "troop"
   },
   {
-   "Character": "troop_cavalry",
+   "Character": "troop_bandit",
    "X": 15,
    "Y": 7,
    "Group": "north",
-   "Policy": "react",
+   "Policy": "assault",
    "Faction": "jing",
    "Facing": "SW",
-   "Shift": -0.07
+   "Shift": -0.12,
+   "Rank": "troop"
   },
   {
-   "Character": "troop_footman",
+   "Character": "troop_bandit",
    "X": 12,
    "Y": 6,
    "Group": "north",
-   "Policy": "react",
+   "Policy": "assault",
    "Faction": "jing",
    "Facing": "SW",
-   "Shift": -0.07
+   "Shift": -0.12,
+   "Rank": "troop"
   },
   {
-   "Character": "troop_footman",
+   "Character": "troop_bandit",
+   "X": 16,
+   "Y": 6,
+   "Group": "north",
+   "Policy": "assault",
+   "Faction": "jing",
+   "Facing": "SW",
+   "Shift": -0.12,
+   "Rank": "troop"
+  },
+  {
+   "Character": "troop_bandit",
    "X": 14,
    "Y": 8,
    "Group": "north",
-   "Policy": "react",
+   "Policy": "assault",
    "Faction": "jing",
    "Facing": "SW",
-   "Shift": -0.07
+   "Shift": -0.12,
+   "Rank": "troop"
   },
   {
-   "Character": "troop_footman",
-   "X": 16,
-   "Y": 7,
-   "Group": "north",
-   "Policy": "react",
-   "Faction": "jing",
-   "Facing": "SW",
-   "Shift": -0.07
+   "Character": "caizhong",
+   "X": 21,
+   "Y": 3,
+   "Rank": "officer",
+   "Shift": -0.07,
+   "Group": "masked",
+   "Policy": "hold",
+   "Faction": "masked",
+   "Facing": "SW"
   },
   {
-   "Character": "troop_footman",
-   "X": 13,
+   "Character": "caihe",
+   "X": 19,
    "Y": 4,
-   "Group": "north",
-   "Policy": "react",
-   "Faction": "jing",
+   "Shift": -0.07,
+   "Group": "masked",
+   "Policy": "hold",
+   "Faction": "masked",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 18,
+   "Y": 3,
+   "Group": "masked",
+   "Policy": "hold",
+   "Faction": "masked",
    "Facing": "SW",
-   "Shift": -0.07
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 18,
+   "Y": 5,
+   "Group": "masked",
+   "Policy": "hold",
+   "Faction": "masked",
+   "Facing": "SW",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 19,
+   "Y": 6,
+   "Group": "masked",
+   "Policy": "hold",
+   "Faction": "masked",
+   "Facing": "SW",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_archer",
+   "X": 20,
+   "Y": 2,
+   "Group": "masked",
+   "Policy": "hold",
+   "Faction": "masked",
+   "Facing": "SW",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_archer",
+   "X": 21,
+   "Y": 4,
+   "Group": "masked",
+   "Policy": "hold",
+   "Faction": "masked",
+   "Facing": "SW",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_archer",
+   "X": 22,
+   "Y": 4,
+   "Group": "masked",
+   "Policy": "hold",
+   "Faction": "masked",
+   "Facing": "SW",
+   "Shift": -0.12
   },
   {
    "Character": "chensun",
@@ -216,68 +277,42 @@
    "Facing": "NE"
   },
   {
-   "Character": "troop_archer",
-   "X": 10,
-   "Y": 22,
-   "Group": "south",
-   "Policy": "react",
-   "Faction": "jing",
-   "Facing": "NE",
-   "Shift": -0.12
-  },
-  {
-   "Character": "troop_archer",
-   "X": 12,
-   "Y": 22,
-   "Group": "south",
-   "Policy": "react",
-   "Faction": "jing",
-   "Facing": "NE",
-   "Shift": -0.12
-  },
-  {
-   "Character": "troop_archer",
-   "X": 11,
-   "Y": 23,
-   "Group": "south",
-   "Policy": "react",
-   "Faction": "jing",
-   "Facing": "NE",
-   "Shift": -0.12
-  },
-  {
-   "Character": "troop_footman",
+   "Character": "troop_bandit",
    "X": 10,
    "Y": 20,
    "Group": "south",
    "Policy": "react",
    "Faction": "jing",
    "Facing": "NE",
-   "Shift": -0.12
+   "Shift": -0.12,
+   "Rank": "troop"
   },
   {
-   "Character": "troop_footman",
+   "Character": "troop_bandit",
    "X": 12,
    "Y": 20,
    "Group": "south",
    "Policy": "react",
    "Faction": "jing",
    "Facing": "NE",
-   "Shift": -0.12
+   "Shift": -0.12,
+   "Rank": "troop"
   },
   {
-   "Character": "troop_footman",
+   "Character": "troop_bandit",
    "X": 11,
    "Y": 21,
    "Group": "south",
    "Policy": "react",
    "Faction": "jing",
    "Facing": "NE",
-   "Shift": -0.12
+   "Shift": -0.12,
+   "Rank": "troop"
   }
  ],
  "Reward": {
-  "money": 1500
+  "money": 1500,
+  "yang_youji_bow": 1
  },
  "Areas": [
   {
@@ -305,27 +340,16 @@
   {
    "ID": 3,
    "Rect": {
-    "X": 0,
-    "Y": 0,
-    "W": 5,
-    "H": 5
-   },
-   "Name": "북서쪽 숲",
-   "Description": "복면 무리가 나오고 물러가는 곳"
-  },
-  {
-   "ID": 4,
-   "Rect": {
     "X": 10,
     "Y": 2,
     "W": 9,
     "H": 9
    },
-   "Name": "북쪽 진채 둘레",
-   "Description": "아군이 들어서면 장무 쪽이 싸우기 시작한 것"
+   "Name": "북동쪽 진채 둘레",
+   "Description": "아군이 들어서면 복면 무리가 움직이기 시작한 것"
   },
   {
-   "ID": 5,
+   "ID": 4,
    "Rect": {
     "X": 6,
     "Y": 17,
@@ -333,32 +357,10 @@
     "H": 9
    },
    "Name": "남쪽 진채 둘레",
-   "Description": "아군이 들어서면 진손 쪽이 싸우기 시작한 것"
+   "Description": "진손 쪽 진채와 언덕"
   },
   {
-   "ID": 6,
-   "Rect": {
-    "X": 23,
-    "Y": 12,
-    "W": 1,
-    "H": 4
-   },
-   "Name": "나루",
-   "Description": "반란군의 배가 묶인 강 동쪽 끝. 닿으면 빠져나간다"
-  },
-  {
-   "ID": 7,
-   "Rect": {
-    "X": 20,
-    "Y": 12,
-    "W": 3,
-    "H": 4
-   },
-   "Name": "나루 앞 물길",
-   "Description": "아군이 배로 막아서면 달아나던 반란군이 항복한다"
-  },
-  {
-   "ID": 8,
+   "ID": 5,
    "Rect": {
     "X": 0,
     "Y": 9,
@@ -366,7 +368,7 @@
     "H": 3
    },
    "Name": "강 북쪽 기슭",
-   "Description": "관우가 돌아와 닿으면 복면 무리가 흔들린다"
+   "Description": "관우가 돌아와 닿는 곳"
   }
  ],
  "Events": [
@@ -406,119 +408,6 @@
    ]
   },
   {
-   "ID": "north-relief",
-   "Every": 3,
-   "If": [
-    "turnstart:enemy",
-    "alive:zhangwu",
-    "any:[at:player:5, hp:south<100]",
-    "!any:[at:player:4, hp:north<100]"
-   ],
-   "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "troop_cavalry",
-       "X": 9,
-       "Y": 14,
-       "Side": "enemy",
-       "Group": "relief",
-       "Policy": "assault",
-       "Faction": "jing",
-       "Facing": "SW",
-       "Shift": -0.07
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 10,
-       "Y": 14,
-       "Side": "enemy",
-       "Group": "relief",
-       "Policy": "assault",
-       "Faction": "jing",
-       "Facing": "SW",
-       "Shift": -0.07
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "zhangwu",
-       "Text": "진 형이 물렸다! 기병은 배를 내어 건너가라!"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "south-relief",
-   "Every": 3,
-   "If": [
-    "turnstart:enemy",
-    "alive:chensun",
-    "any:[at:player:4, hp:north<100]",
-    "!any:[at:player:5, hp:south<100]"
-   ],
-   "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "troop_cavalry",
-       "X": 6,
-       "Y": 12,
-       "Side": "enemy",
-       "Group": "relief",
-       "Policy": "assault",
-       "Faction": "jing",
-       "Facing": "NE",
-       "Shift": -0.07
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 7,
-       "Y": 12,
-       "Side": "enemy",
-       "Group": "relief",
-       "Policy": "assault",
-       "Faction": "jing",
-       "Facing": "NE",
-       "Shift": -0.07
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "chensun",
-       "Text": "장 형 쪽이 붙었다! 건너가서 놈들 등을 쳐라!"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "relief-hint",
-   "If": [
-    "any:[since:north-relief>=0, since:south-relief>=0]"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "jianyong",
-       "Text": "현덕, 한쪽만 치면 다른 쪽이 건너오네. 둘을 한날한시에 물어야 하네."
-      }
-     ]
-    }
-   ]
-  },
-  {
    "ID": "zhaoyun-duel",
    "If": [
     "duel:jiangxia-zhaoyun-zhangwu"
@@ -533,227 +422,17 @@
    ]
   },
   {
-   "ID": "north-flees",
+   "ID": "masked-wake",
    "If": [
-    "defeated:zhangwu",
-    "alive:north"
+    "any:[hp:north<70, defeated:zhangwu]"
    ],
    "Do": [
     {
      "Kind": "ai",
      "Targets": [
-      "north"
+      "masked"
      ],
-     "Policy": "flee",
-     "GoalArea": 6
-    }
-   ]
-  },
-  {
-   "ID": "south-flees",
-   "If": [
-    "defeated:chensun",
-    "alive:south"
-   ],
-   "Do": [
-    {
-     "Kind": "ai",
-     "Targets": [
-      "south"
-     ],
-     "Policy": "flee",
-     "GoalArea": 6
-    }
-   ]
-  },
-  {
-   "ID": "flee-hint",
-   "If": [
-    "any:[since:north-flees>=0, since:south-flees>=0]"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "liubei",
-       "Text": "남은 군사가 나루로 달아난다! 배를 대어 물길을 막아라!"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "north-yields",
-   "If": [
-    "defeated:zhangwu",
-    "alive:north",
-    "at:player:7"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "guanyu",
-       "Text": "물길은 막혔다. 창을 버려라."
-      }
-     ]
-    },
-    {
-     "Kind": "remove",
-     "Targets": [
-      "north"
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "south-yields",
-   "If": [
-    "defeated:chensun",
-    "alive:south",
-    "at:player:7"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "guanyu",
-       "Text": "물길은 막혔다. 활을 내려놓아라."
-      }
-     ]
-    },
-    {
-     "Kind": "remove",
-     "Targets": [
-      "south"
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "ambush",
-   "If": [
-    "defeated:zhangwu",
-    "defeated:chensun",
-    "turnstart:ally"
-   ],
-   "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "caizhong",
-       "X": 1,
-       "Y": 1,
-       "Rank": "commander",
-       "Side": "enemy",
-       "Group": "masked",
-       "Policy": "assault",
-       "Faction": "masked",
-       "Facing": "SE"
-      },
-      {
-       "Character": "caihe",
-       "X": 3,
-       "Y": 2,
-       "Side": "enemy",
-       "Group": "masked",
-       "Policy": "assault",
-       "Faction": "masked",
-       "Facing": "SE"
-      },
-      {
-       "Character": "troop_archer",
-       "X": 0,
-       "Y": 1,
-       "Side": "enemy",
-       "Group": "masked",
-       "Policy": "assault",
-       "Faction": "masked",
-       "Facing": "SE",
-       "Shift": -0.12
-      },
-      {
-       "Character": "troop_archer",
-       "X": 2,
-       "Y": 0,
-       "Side": "enemy",
-       "Group": "masked",
-       "Policy": "assault",
-       "Faction": "masked",
-       "Facing": "SE",
-       "Shift": -0.12
-      },
-      {
-       "Character": "troop_archer",
-       "X": 0,
-       "Y": 3,
-       "Side": "enemy",
-       "Group": "masked",
-       "Policy": "assault",
-       "Faction": "masked",
-       "Facing": "SE",
-       "Shift": -0.12
-      },
-      {
-       "Character": "troop_archer",
-       "X": 4,
-       "Y": 1,
-       "Side": "enemy",
-       "Group": "masked",
-       "Policy": "assault",
-       "Faction": "masked",
-       "Facing": "SE",
-       "Shift": -0.12
-      },
-      {
-       "Character": "troop_footman",
-       "X": 3,
-       "Y": 4,
-       "Side": "enemy",
-       "Group": "masked",
-       "Policy": "assault",
-       "Faction": "masked",
-       "Facing": "SE",
-       "Shift": -0.12
-      },
-      {
-       "Character": "troop_footman",
-       "X": 4,
-       "Y": 3,
-       "Side": "enemy",
-       "Group": "masked",
-       "Policy": "assault",
-       "Faction": "masked",
-       "Facing": "SE",
-       "Shift": -0.12
-      },
-      {
-       "Character": "troop_footman",
-       "X": 5,
-       "Y": 2,
-       "Side": "enemy",
-       "Group": "masked",
-       "Policy": "assault",
-       "Faction": "masked",
-       "Facing": "SE",
-       "Shift": -0.12
-      }
-     ]
-    },
-    {
-     "Kind": "join",
-     "Spawns": [
-      {
-       "Character": "yiji",
-       "X": 15,
-       "Y": 1,
-       "Facing": "SW"
-      }
-     ]
+     "Policy": "assault"
     },
     {
      "Kind": "say",
@@ -769,69 +448,7 @@
      "Lines": [
       {
        "Actor": "liubei",
-       "Text": "숲에서……? 도적이 이런 데까지!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "yiji",
-       "Text": "군량을 싣고 오다 보았습니다! 유 황숙, 이적이 돕겠습니다!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "yiji",
-       "Text": "저 활 쏘는 품을 보십시오. 도적이 석 줄로 번갈아 쏩니까? 저것은 양양 수군의 대오입니다."
-      }
-     ]
-    },
-    {
-     "Kind": "goals",
-     "Victory": [
-      {
-       "If": [
-        "since:ambush>=6"
-       ],
-       "Text": "복면 무리를 여섯 턴 버틴다"
-      },
-      {
-       "If": [
-        "defeated:caizhong",
-        "defeated:caihe"
-       ],
-       "Text": "복면 장수 둘을 물리친다"
-      }
-     ],
-     "Sub": [
-      {
-       "ID": "boats",
-       "Text": "반란군의 배가 하나도 강 동쪽 끝으로 빠져나가지 못한다",
-       "If": [
-        "!fled:north",
-        "!fled:south"
-       ],
-       "Flag": "flag-b22-boats",
-       "Reward": {
-        "insu_high": 1
-       }
-      },
-      {
-       "ID": "masked",
-       "Text": "복면을 쓴 활잡이 장수를 물리친다",
-       "If": [
-        "defeated:caizhong",
-        "!fled:caizhong"
-       ],
-       "Flag": "flag-b22-caizhong",
-       "Reward": {
-        "yang_youji_bow": 1
-       }
+       "Text": "복면 무리가……! 도적이 이런 데까지!"
       }
      ]
     }
@@ -840,8 +457,8 @@
   {
    "ID": "guanyu-back",
    "If": [
-    "since:ambush>=0",
-    "at:guanyu:8",
+    "since:masked-wake>=0",
+    "at:guanyu:5",
     "alive:caihe"
    ],
    "Do": [
@@ -857,29 +474,16 @@
    ]
   },
   {
-   "ID": "masked-out",
+   "ID": "bow-flag",
    "If": [
-    "defeated:caizhong",
-    "!fled:caizhong"
+    "defeated:caizhong"
    ],
    "Do": [
     {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "caizhong",
-       "Text": "……물러난다! 얼굴을 보이지 마라!",
-       "Offstage": true
-      }
-     ]
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "masked"
-     ],
-     "Policy": "flee",
-     "GoalArea": 3
+     "Kind": "flag",
+     "Flags": {
+      "flag-b22-caizhong": 1
+     }
     }
    ]
   }
