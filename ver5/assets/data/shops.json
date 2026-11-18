@@ -3,13 +3,26 @@
   "weapons": {
    "Name": "대장간",
    "Items": [
-    "iron_sword",
-    "iron_spear",
+    "copper_sword",
+    "copper_spear",
     "short_bow",
     "bamboo_fan",
-    "iron_knuckles",
+    "cloth_gloves",
     "leather_armor",
-    "plain_clothes"
+    "cotton_clothes"
+   ]
+  },
+  "weapons_iron": {
+   "Name": "대장간",
+   "Mark": "red",
+   "Items": [
+    "iron_sword",
+    "iron_spear",
+    "long_bow",
+    "bamboo_fan",
+    "leather_gloves",
+    "bronze_armor",
+    "leather_clothes"
    ]
   },
   "tools": {

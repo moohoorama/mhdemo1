@@ -227,8 +227,12 @@ func (e *Engine) learn(c Command) error {
 func (e *Engine) welcome(id string, order int) *Character {
 	i := slices.IndexFunc(e.state.Away, func(c Character) bool { return c.ID == id })
 	if e.char(id) != nil || i < 0 {
+		fresh := e.char(id) == nil
 		o := e.addCharacter(id, id)
 		e.joinAt(o, e.joinLevel(order))
+		if fresh {
+			e.tierGear(o, e.data.GearTierAt(order))
+		}
 		return o
 	}
 	c := e.state.Away[i]

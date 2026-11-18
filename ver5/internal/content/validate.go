@@ -129,9 +129,22 @@ func (d *Data) Validate() error {
 			return fmt.Errorf("class %s: shoot form %s is not a ranged class", id, c.Shoot)
 		}
 	}
+	for i, g := range r.GearTiers {
+		if g.Tier < 1 || g.Chapter < 1 || i > 0 && (g.Chapter <= r.GearTiers[i-1].Chapter || g.Tier < r.GearTiers[i-1].Tier) {
+			return fmt.Errorf("gear tier step %d: chapter %d tier %d", i, g.Chapter, g.Tier)
+		}
+	}
 	for id, e := range d.Equipment {
 		if e.Name == "" || !in(e.Slot, "weapon", "armor", "accessory") {
 			return fmt.Errorf("equipment %s", id)
+		}
+		if (e.Line == "") != (e.Tier == 0) || e.Tier < 0 || e.Tier > r.maxGearTier() {
+			return fmt.Errorf("equipment %s: line %q tier %d", id, e.Line, e.Tier)
+		}
+		for other, o := range d.Equipment {
+			if other != id && e.Line != "" && o.Line == e.Line && (o.Tier == e.Tier || o.Slot != e.Slot || o.Type != e.Type) {
+				return fmt.Errorf("equipment %s: line %s clashes with %s", id, e.Line, other)
+			}
 		}
 		for _, t := range e.Traits {
 			if _, ok := d.Traits[t]; !ok {
@@ -150,6 +163,22 @@ func (d *Data) Validate() error {
 		}
 		if o, ok := d.Characters[e.Owner]; e.Owner != "" && (!ok || !o.Playable || !d.Carries(d.Classes[o.Class], o.Traits, e)) {
 			return fmt.Errorf("equipment %s: owner %s", id, e.Owner)
+		}
+	}
+	have := map[string]map[int]bool{}
+	for _, e := range d.Equipment {
+		if e.Line != "" {
+			if have[e.Line] == nil {
+				have[e.Line] = map[int]bool{}
+			}
+			have[e.Line][e.Tier] = true
+		}
+	}
+	for line, tiers := range have {
+		for _, g := range r.GearTiers {
+			if !tiers[g.Tier] {
+				return fmt.Errorf("equipment line %s has no tier %d", line, g.Tier)
+			}
 		}
 	}
 	for id, it := range d.Items {

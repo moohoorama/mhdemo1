@@ -18,7 +18,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -50,7 +50,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Portrait": "zhangliang",
@@ -81,7 +81,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Portrait": "zhangbao",
@@ -109,7 +109,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -141,7 +141,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -173,7 +173,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -204,7 +204,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor",
     "war_horse"
    ],
@@ -236,7 +236,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -295,7 +295,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor",
     "war_horse"
    ],
@@ -326,7 +326,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor"
    ],
    "Look": {
@@ -358,7 +358,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -386,7 +386,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor",
     "war_horse"
    ],
@@ -464,7 +464,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor"
    ],
    "Look": {
@@ -495,7 +495,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -525,7 +525,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -554,7 +554,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -582,7 +582,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -615,8 +615,8 @@
     "counter_boost"
    ],
    "Equipment": [
-    "iron_knuckles",
-    "plain_clothes"
+    "cloth_gloves",
+    "cotton_clothes"
    ],
    "Look": {
     "Faction": "shu",
@@ -704,7 +704,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor",
     "war_horse"
    ],
@@ -732,7 +732,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -756,7 +756,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -782,7 +782,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor",
     "war_horse"
    ],
@@ -812,7 +812,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -837,7 +837,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword"
+    "copper_sword"
    ],
    "Look": {
     "Portrait": "zuofeng",
@@ -861,7 +861,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword"
+    "copper_sword"
    ],
    "Look": {
     "Faction": "shu",
@@ -884,7 +884,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword"
+    "copper_sword"
    ],
    "Look": {
     "Faction": "han",
@@ -907,7 +907,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword"
+    "copper_sword"
    ],
    "Look": {
     "Faction": "shu",
@@ -930,7 +930,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword"
+    "copper_sword"
    ],
    "Look": {
     "Faction": "merchant",
@@ -955,7 +955,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword"
+    "copper_sword"
    ],
    "Look": {
     "Faction": "merchant",
@@ -980,7 +980,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword"
+    "copper_sword"
    ],
    "Look": {
     "Faction": "han",
@@ -1011,7 +1011,7 @@
     "breakthrough"
    ],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor"
    ],
    "Look": {
@@ -1039,7 +1039,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1064,7 +1064,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor",
     "war_horse"
    ],
@@ -1098,7 +1098,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
-    "plain_clothes",
+    "cotton_clothes",
     "tactics_primer"
    ],
    "Look": {
@@ -1123,7 +1123,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1147,8 +1147,8 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
-    "plain_clothes"
+    "copper_sword",
+    "cotton_clothes"
    ],
    "Look": {
     "Faction": "turban",
@@ -1174,7 +1174,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1198,7 +1198,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1223,7 +1223,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1248,7 +1248,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1273,7 +1273,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1297,7 +1297,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1321,7 +1321,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1349,7 +1349,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1373,7 +1373,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1398,7 +1398,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
-    "plain_clothes",
+    "cotton_clothes",
     "tactics_primer"
    ],
    "Look": {
@@ -1430,7 +1430,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_slips",
-    "plain_clothes",
+    "cotton_clothes",
     "tactics_primer"
    ],
    "Look": {
@@ -1562,7 +1562,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1592,7 +1592,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor"
    ],
    "Look": {
@@ -1616,7 +1616,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1675,8 +1675,8 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
-    "plain_clothes"
+    "copper_sword",
+    "cotton_clothes"
    ],
    "Look": {
     "Faction": "turban",
@@ -1706,7 +1706,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1734,7 +1734,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "mirror_armor"
    ],
    "Look": {
@@ -1761,7 +1761,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Faction": "han",
@@ -1792,7 +1792,7 @@
    ],
    "Equipment": [
     "bamboo_fan",
-    "plain_clothes",
+    "cotton_clothes",
     "tactics_primer"
    ],
    "Look": {
@@ -1826,7 +1826,7 @@
    ],
    "Equipment": [
     "bamboo_fan",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Faction": "shu",
@@ -1863,7 +1863,7 @@
     "fortune"
    ],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -1900,7 +1900,7 @@
    ],
    "Equipment": [
     "bamboo_fan",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Faction": "shu",
@@ -1932,7 +1932,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_slips",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Portrait": "chengong",
@@ -1964,8 +1964,8 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
-    "plain_clothes"
+    "copper_sword",
+    "cotton_clothes"
    ],
    "Look": {
     "Faction": "taishan",
@@ -1994,8 +1994,8 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
-    "plain_clothes"
+    "copper_sword",
+    "cotton_clothes"
    ],
    "Look": {
     "Faction": "yuan",
@@ -2021,8 +2021,8 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
-    "plain_clothes"
+    "copper_sword",
+    "cotton_clothes"
    ],
    "Look": {
     "Faction": "yuan",
@@ -2089,7 +2089,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -2122,7 +2122,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_slips",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Faction": "han",
@@ -2148,7 +2148,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -2175,8 +2175,8 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
-    "plain_clothes"
+    "copper_sword",
+    "cotton_clothes"
    ],
    "Look": {
     "Faction": "taishan",
@@ -2203,7 +2203,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -2227,7 +2227,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -2254,7 +2254,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor"
    ],
    "Look": {
@@ -2291,7 +2291,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor"
    ],
    "Look": {
@@ -2328,7 +2328,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor"
    ],
    "Look": {
@@ -2366,8 +2366,8 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_knuckles",
-    "plain_clothes"
+    "cloth_gloves",
+    "cotton_clothes"
    ],
    "Look": {
     "Faction": "dong"
@@ -2427,7 +2427,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_slips",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Scene": "official_purple_noncombat",
@@ -2451,7 +2451,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_slips",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Scene": "official_green_noncombat",
@@ -2477,7 +2477,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -2536,7 +2536,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -2570,8 +2570,8 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
-    "plain_clothes"
+    "copper_sword",
+    "cotton_clothes"
    ],
    "Look": {
     "Portrait": "xuchu",
@@ -2604,7 +2604,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_slips",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Portrait": "xunyu",
@@ -2636,7 +2636,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_fan",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Portrait": "xunyou",
@@ -2666,7 +2666,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_slips",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Portrait": "guojia",
@@ -2698,7 +2698,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_slips",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Portrait": "chengyu",
@@ -2730,7 +2730,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor"
    ],
    "Look": {
@@ -2756,7 +2756,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_slips",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Portrait": "dongcheng",
@@ -2780,7 +2780,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -2803,7 +2803,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor"
    ],
    "Look": {
@@ -2830,7 +2830,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_slips",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Portrait": "guotu",
@@ -2855,7 +2855,7 @@
    "Learn": [],
    "Equipment": [
     "bamboo_slips",
-    "plain_clothes"
+    "cotton_clothes"
    ],
    "Look": {
     "Scene": "official_purple_noncombat",
@@ -2878,7 +2878,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
+    "copper_sword",
     "leather_armor"
    ],
    "Look": {
@@ -2903,7 +2903,7 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor"
    ],
    "Look": {
@@ -2935,8 +2935,8 @@
     "swiftness"
    ],
    "Equipment": [
-    "iron_sword",
-    "plain_clothes"
+    "copper_sword",
+    "cotton_clothes"
    ],
    "Look": {
     "Portrait": "zhoucang",
@@ -2966,7 +2966,7 @@
    ],
    "Learn": [],
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor"
    ],
    "Look": {
@@ -3001,8 +3001,8 @@
     "earth_boost"
    ],
    "Equipment": [
-    "iron_sword",
-    "plain_clothes"
+    "copper_sword",
+    "cotton_clothes"
    ],
    "Look": {
     "Faction": "shu"
@@ -3024,8 +3024,8 @@
    "Traits": [],
    "Learn": [],
    "Equipment": [
-    "iron_sword",
-    "plain_clothes"
+    "copper_sword",
+    "cotton_clothes"
    ],
    "Look": {
     "Faction": "shu"

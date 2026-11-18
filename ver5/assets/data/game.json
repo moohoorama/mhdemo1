@@ -89,6 +89,20 @@
   ],
   "StageLevelBase": 3,
   "StageLevelStep": 1.5,
+  "GearTiers": [
+   {
+    "Chapter": 1,
+    "Tier": 1
+   },
+   {
+    "Chapter": 17,
+    "Tier": 2
+   },
+   {
+    "Chapter": 28,
+    "Tier": 3
+   }
+  ],
   "SideShareMax": 0.5,
   "TraitPlanStep": 15,
   "Difficulties": [

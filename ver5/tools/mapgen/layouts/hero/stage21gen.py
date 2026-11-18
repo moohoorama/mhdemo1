@@ -59,11 +59,11 @@ chars = {
     'liupi': {
         'Name': '유벽', 'Biography': '여남의 옛 황건 두령. 관도 싸움 때 원소 편에 서서 허도 뒤를 쳤고, 예주목 유비를 여남으로 맞아들였다.',
         'Class': 'outlaw', 'Stats': [68, 70, 42, 60, 56, 60], 'Level': 20, 'Playable': True, 'Traits': [], 'Learn': [],
-        'Equipment': ['iron_sword', 'plain_clothes'], 'Look': {'Faction': 'shu'}},
+        'Equipment': ['copper_sword', 'cotton_clothes'], 'Look': {'Faction': 'shu'}},
     'gongdu': {
         'Name': '공도', 'Biography': '여남의 옛 황건 두령. 유벽과 함께 여남에서 군사를 일으켰다.',
         'Class': 'outlaw', 'Stats': [60, 68, 36, 62, 50, 52], 'Level': 1, 'Traits': [], 'Learn': [],
-        'Equipment': ['iron_sword', 'plain_clothes'], 'Look': {'Faction': 'shu'}},
+        'Equipment': ['copper_sword', 'cotton_clothes'], 'Look': {'Faction': 'shu'}},
 }
 cpath = ROOT / 'assets/data/characters_story.json'
 text = cpath.read_text(encoding='utf-8')

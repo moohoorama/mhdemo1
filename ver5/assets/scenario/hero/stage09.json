@@ -102,7 +102,7 @@
    "Policy": "hold",
    "Class": "pikeman",
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor"
    ]
   },
@@ -115,7 +115,7 @@
    "Policy": "hold",
    "Class": "pikeman",
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor"
    ]
   },
@@ -128,7 +128,7 @@
    "Policy": "hold",
    "Class": "pikeman",
    "Equipment": [
-    "iron_spear",
+    "copper_spear",
     "leather_armor"
    ]
   },

@@ -1,12 +1,68 @@
 {
  "Equipment": {
+  "copper_sword": {
+   "Name": "구리검",
+   "Desc": "구리로 벼린 검.",
+   "Slot": "weapon",
+   "Type": "sword",
+   "Icon": "sword",
+   "Price": 1200,
+   "Line": "sword",
+   "Tier": 1,
+   "Bonus": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
   "iron_sword": {
    "Name": "철검",
    "Desc": "평범한 쇠 검.",
    "Slot": "weapon",
    "Type": "sword",
    "Icon": "sword",
+   "Price": 2400,
+   "Line": "sword",
+   "Tier": 2,
+   "Bonus": [
+    2,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "steel_sword": {
+   "Name": "강검",
+   "Desc": "담금질한 강철 검.",
+   "Slot": "weapon",
+   "Type": "sword",
+   "Icon": "sword",
+   "Price": 4800,
+   "Line": "sword",
+   "Tier": 3,
+   "Bonus": [
+    3,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "copper_spear": {
+   "Name": "구리창",
+   "Desc": "구리 날을 단 창.",
+   "Slot": "weapon",
+   "Type": "spear",
+   "Icon": "spear",
    "Price": 1200,
+   "Line": "spear",
+   "Tier": 1,
    "Bonus": [
     1,
     0,
@@ -22,9 +78,29 @@
    "Slot": "weapon",
    "Type": "spear",
    "Icon": "spear",
-   "Price": 1200,
+   "Price": 2400,
+   "Line": "spear",
+   "Tier": 2,
    "Bonus": [
-    1,
+    2,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "steel_spear": {
+   "Name": "강창",
+   "Desc": "강철 날을 단 창.",
+   "Slot": "weapon",
+   "Type": "spear",
+   "Icon": "spear",
+   "Price": 4800,
+   "Line": "spear",
+   "Tier": 3,
+   "Bonus": [
+    3,
     0,
     0,
     0,
@@ -39,8 +115,46 @@
    "Type": "bow",
    "Icon": "bow",
    "Price": 1200,
+   "Line": "bow",
+   "Tier": 1,
    "Bonus": [
     1,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "long_bow": {
+   "Name": "대궁",
+   "Desc": "시위가 굵은 큰 활.",
+   "Slot": "weapon",
+   "Type": "bow",
+   "Icon": "bow",
+   "Price": 2400,
+   "Line": "bow",
+   "Tier": 2,
+   "Bonus": [
+    2,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "steel_bow": {
+   "Name": "강궁",
+   "Desc": "강철 심을 댄 센 활.",
+   "Slot": "weapon",
+   "Type": "bow",
+   "Icon": "bow",
+   "Price": 4800,
+   "Line": "bow",
+   "Tier": 3,
+   "Bonus": [
+    3,
     0,
     0,
     0,
@@ -80,16 +194,162 @@
     0
    ]
   },
-  "iron_knuckles": {
-   "Name": "철권갑",
-   "Desc": "주먹에 감는 쇠 덧댐.",
+  "cloth_gloves": {
+   "Name": "천장갑",
+   "Desc": "주먹에 감는 천 덧댐.",
    "Slot": "weapon",
    "Type": "fist",
    "Icon": "knuckles",
    "Price": 1200,
+   "Line": "fist",
+   "Tier": 1,
    "Bonus": [
     1,
     0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "leather_gloves": {
+   "Name": "가죽장갑",
+   "Desc": "주먹에 끼는 가죽 장갑.",
+   "Slot": "weapon",
+   "Type": "fist",
+   "Icon": "knuckles",
+   "Price": 2400,
+   "Line": "fist",
+   "Tier": 2,
+   "Bonus": [
+    2,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "iron_gloves": {
+   "Name": "철장갑",
+   "Desc": "주먹에 끼는 쇠 장갑.",
+   "Slot": "weapon",
+   "Type": "fist",
+   "Icon": "knuckles",
+   "Price": 4800,
+   "Line": "fist",
+   "Tier": 3,
+   "Bonus": [
+    3,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "leather_armor": {
+   "Name": "가죽갑옷",
+   "Desc": "질긴 가죽을 덧댄 갑옷.",
+   "Slot": "armor",
+   "Type": "armor",
+   "Icon": "leather",
+   "Price": 1000,
+   "Line": "armor",
+   "Tier": 1,
+   "Bonus": [
+    0,
+    1,
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  "bronze_armor": {
+   "Name": "구리갑옷",
+   "Desc": "구리판을 이은 갑옷.",
+   "Slot": "armor",
+   "Type": "armor",
+   "Icon": "leather",
+   "Price": 2000,
+   "Line": "armor",
+   "Tier": 2,
+   "Bonus": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    2
+   ]
+  },
+  "iron_armor": {
+   "Name": "철갑옷",
+   "Desc": "쇠 미늘을 이은 갑옷.",
+   "Slot": "armor",
+   "Type": "armor",
+   "Icon": "diamond",
+   "Price": 4000,
+   "Line": "armor",
+   "Tier": 3,
+   "Bonus": [
+    0,
+    3,
+    0,
+    0,
+    0,
+    3
+   ]
+  },
+  "cotton_clothes": {
+   "Name": "무명옷",
+   "Desc": "무명으로 지은 가벼운 옷.",
+   "Slot": "armor",
+   "Type": "robe",
+   "Icon": "robe",
+   "Price": 600,
+   "Line": "robe",
+   "Tier": 1,
+   "Bonus": [
+    0,
+    1,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "leather_clothes": {
+   "Name": "가죽옷",
+   "Desc": "짐승 가죽으로 지은 옷.",
+   "Slot": "armor",
+   "Type": "robe",
+   "Icon": "robe",
+   "Price": 1200,
+   "Line": "robe",
+   "Tier": 2,
+   "Bonus": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "tiger_skin": {
+   "Name": "호피복",
+   "Desc": "범 가죽으로 지은 옷.",
+   "Slot": "armor",
+   "Type": "robe",
+   "Icon": "robe",
+   "Price": 2400,
+   "Line": "robe",
+   "Tier": 3,
+   "Bonus": [
+    0,
+    3,
     0,
     0,
     0,
@@ -180,38 +440,6 @@
     1,
     0,
     1,
-    0,
-    0,
-    0
-   ]
-  },
-  "leather_armor": {
-   "Name": "가죽갑옷",
-   "Desc": "질긴 가죽 갑옷.",
-   "Slot": "armor",
-   "Type": "armor",
-   "Icon": "leather",
-   "Price": 1000,
-   "Bonus": [
-    0,
-    1,
-    0,
-    0,
-    0,
-    1
-   ]
-  },
-  "plain_clothes": {
-   "Name": "평복",
-   "Desc": "평범한 옷.",
-   "Slot": "armor",
-   "Type": "robe",
-   "Icon": "robe",
-   "Price": 600,
-   "Bonus": [
-    0,
-    1,
-    0,
     0,
     0,
     0
@@ -364,7 +592,7 @@
    "Type": "spear",
    "Icon": "halberd",
    "Bonus": [
-    3,
+    4,
     0,
     0,
     0,
@@ -386,7 +614,7 @@
     0,
     0,
     0,
-    1,
+    4,
     0,
     0
    ],
@@ -432,7 +660,7 @@
    "Icon": "mirror",
    "Bonus": [
     0,
-    2,
+    4,
     0,
     0,
     0,
@@ -490,7 +718,7 @@
     3,
     0,
     0,
-    0,
+    1,
     0,
     0
    ],
@@ -510,7 +738,7 @@
     0,
     0,
     0,
-    0,
+    1,
     0
    ],
    "Traits": [

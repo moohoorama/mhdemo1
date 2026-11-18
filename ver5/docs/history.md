@@ -5,6 +5,47 @@
 
 ---
 
+## 2026-11-18 장비 단계(D·C·B)·고유 장비 수치·단복/제갈량 수치
+- 결정 · 이유: 일반 장비를 장 단계별로 나눈다 — 1장 D(구리검·구리창·단궁·천장갑·가죽갑옷·무명옷), 2장 C(철검·철창·대궁·가죽장갑·구리갑옷·가죽옷), 3장 B(강검·강창·강궁·철장갑·철갑옷·호피복). 등급 글자는 D=1·C=2·B=3·A=4(내부 값은 숫자 그대로, 글자 표시는 GUI 몫). 적 일반 부대는 장 단계의 장비를 처음부터 입고(스폰 `Equipment`가 있으면 그것이 우선), 상점은 업(19장)부터 철 계열을 판다 · 사용자 "숫자가 레벨에 따라 다르게 느껴져 글자로", 적이 장 따라 장비가 좋아져야 한다.
+- 결정 · 이유: 무도가 무기는 장갑 계열(`fist`), 방어구는 갑옷(`armor`, 무장)과 옷(`robe`, 문관·적병 계열·무도가) 두 계열이다 — 병종 `Armor`가 이미 적병 계열·무도가를 `robe`로 두고 있어 사용자의 "산적·무도가도 옷"과 맞다(어긋남 없음).
+- 결정 · 이유: 2장은 17장 광릉부터, 3장은 28장부터(현재 판 없음, 2장 끝 카드 뒤) — fullstory.md가 1장은 하비 뒤 「1장 난세도래 / 끝」, 2장은 적벽 뒤 「2장 주유천하 / 끝」(연의 화용도 B27·가상 양양 B27V)로 닫는다고 하고, 3장 전투는 아직 데이터에 없다.
+- `assets/data/equipment.json`: 일반 장비 18종(Line·Tier·값 추가), `iron_knuckles`·`plain_clothes` 삭제(→ `cloth_gloves`·`cotton_clothes`), `iron_sword`·`iron_spear`는 C 단계가 됨, 적로 민첩 4·특성 질풍→답파, 적토마 민첩 4, 방천화극 공격 4, 거울갑옷 방어 4, 청룡언월도 민첩 1 추가, 장팔사모 사기 1 추가 — 사용자 결정.
+- `assets/data/characters.json`·`characters_story.json`·`stage02·09·14.json`·`tools/mapgen/layouts/hero/stage21gen.py`: 철검·철창·철권갑·평복 → 구리검·구리창·천장갑·무명옷 — 시작 장비는 1장 단계. `stage23.json`: 2장이라 가죽갑옷 → 구리갑옷(철창은 C 그대로).
+- `assets/data/game.json`(`Rules.GearTiers`), `internal/content/content.go`·`spawn.go`·`scenario.go`·`validate.go`: 단계 표, `Equipment.Line/Tier`, `Stage.GearTier`(전투 노드의 장 번호에서), `GearAt`·`GearTierOf`·`GearTierAt`, 계열마다 모든 단계가 있는지 검사 — 스폰마다 덮어쓰지 않고 한 곳에서 장 단계를 정하려고.
+- `internal/core/engine.go`·`growth.go`·`gear_tier_test.go`·`battle_goals_test.go`: 적·AI 병력은 스폰 `Equipment`가 없으면 스테이지 단계로 바꿔 입고, 새 합류 장수는 합류 전투의 단계로 입음 — 장 규칙 적용·시험.
+- `assets/data/shops.json`(`weapons` 1단계·`weapons_iron` 2단계), `explore19_ye.json`(대장간 → `weapons_iron`): 철 계열은 업부터 판매 — 사용자 결정.
+- `internal/content/explore.go`(`Shop.Mark`), `internal/gui/walkmap.go`(`plateHot`)·`explore.go`: 상점 단위로 안내 판 색을 정한다. `weapons_iron`만 빨강(업), 다른 상점은 노랑 그대로 — 사용자 "업에서만 빨강, 다음 스테이지는 다시 주황".
+- `assets/data/characters_story.json`: 단복 지력 97 → 93, 제갈량 특성 화계·화계강화·팔진도·허실·확산 → 팔진도·허실·심모·귀모(`Learn`도 같게) — 사용자 결정.
+- `docs/data-item.md`·`data-character.md`·`balance-battle.md`: 위 사실에 맞춤.
+
+## 2026-11-18 시나리오 30장 독립 평가와 HTML 보고서
+- `output/chapters/ch*.md`: `make scenario-doc`로 정규 27장·분기 3장 대본 재생성 — 현재 구현 상태의 대본만 읽는 독립 평가의 입력을 고정.
+- `output/eval/2026-11-18_193445/A.jsonl`·`B.jsonl`·`C.jsonl`: 서브에이전트 셋이 대본·연출, 플레이어 경험, 전투 설계를 각 3개 기준으로 장마다 평가 — 장별 9개 점수와 구체적 노드·이벤트에 근거한 개선 의견 확보. Sonnet 선택이 불가능하여 기본 모델을 사용한 차이를 기록.
+- 같은 폴더의 `metadata.json`·`sources.json`·`report-plan.md`: 실행 시점·모델 차이·대본 SHA-256과 보고서 작성 계획 기록 — 이전 평가를 덮어쓰지 않고 입력과 절차를 확인할 수 있게 함.
+- 같은 폴더의 `build_report.py`·`results.json`·`index.html`: 90개 평가의 장 ID·점수 범위·합계와 입력 해시를 검증하고 단일 HTML 작성(누적 막대·추이·기준 평균, 점수표·기본 펼침 코멘트, 상하위·경향·한계, 검색·정렬·테마) — 평균 57.3/90과 수정 검토 우선순위를 확인. 탐험 호출 본문 누락·일기토 화자 표기는 게임 결함으로 단정하지 않도록 한계를 명시.
+- 같은 폴더의 `browser-validation.json`·`preview-desktop.png`·`preview-charts.png`·`preview-table-dark.png`·`preview-mobile.png`·`preview-mobile-table.png`: 실제 Chrome에서 그래프 툴팁·검색·정렬·접기·장 이동·라이트/다크·모바일 넘침과 자바스크립트 오류·외부 요청 부재를 확인하고 캡처 — 산출물을 화면으로 검증. 게임 코드·데이터는 수정하지 않음.
+
+## 2026-11-18 GUI·시스템 넷: 배 이동 모션, 장면 카메라 허용 영역, 장수 진영색, 장비 등급 글자
+- 결정 · 이유(배 이동, R-17a): 물 칸에서는 걷지 않고 배에 서서 배와 함께 가고, 땅↔물 걸음에서도 배가 보여야 한다(사용자: "스르륵 이동", "걸어 나올 때 배가 안 나온다"). 배는 아래로 가라앉는 정도의 알파가 아니라 물 칸에 놓인 것으로 보고, 걸음 경계에서 유닛과 배의 자리를 따로 계산한다.
+- `internal/gui/field_water.go`·`field.go`: `boat`가 `afloat{name, k, dx, dy, cu, cv, walks}`를 돌려줌 — 땅→물이면 배가 물 칸에 먼저 나타나 있고(걷는 동안 걷기 프레임), 물→땅이면 물 칸에 남은 배가 유닛이 멀어지며 가라앉음; `drawAfloat`가 배와 승조원을 따로 그리고(걸어 나가는 유닛은 땅 가림에 잘리지 않게 뒤에 그림), 그림자도 배 자리를 따름; `pose`는 물 위에서 걷기 대신 정지 — 걸어 들어올 때 배가 안 나오던 것과 물 위에서 걷는 모습을 막음
+- 결정 · 이유(장면 카메라, R-25): 장면 카메라가 말하는 사람·걷는 사람을 따라 너무 자주 움직였다(사용자). 대상이 화면 가운데 허용 영역을 벗어난 축만 그 대상으로 맞추고, 안이면 그대로 둔다. `Cam`·`CamAt`·`Follow`는 연출 의도라 그대로 따른다. 영역 기본 50%×50%, debug 설정에서 20~80%.
+- `internal/gui/scene.go`(`keepInView`, `zoneHeld`)·`internal/storage/storage.go`(`CamZoneW`·`CamZoneH`·`CamZonePcts`·`Settings.CamZone`, 검증)·`internal/gui/windows.go`(debug 설정 `장면 카메라 가로·세로` 두 줄, 창 높이 +128): 허용 영역 규칙 — 옛 규칙은 화면 가장자리 근처에서만 움직였으나 벗어나면 가장자리까지만 당겨 곧 또 움직였다; 벗어나면 그 자리를 새 기준으로 삼아 연이은 대사에서 되돌아가지 않게 함
+- 결정 · 이유(진영색, R-24): 적 장수가 병력에 묻혀 알아보기 힘들다(사용자). 병력과 장수를 다른 색으로: 오 병력 빨강·장수 주황, 원 병력 주황·장수 노랑, 황건 병력 노랑·장수 흰노랑, 위 병력 파랑·장수 보라, 촉 그대로.
+- `internal/content/content.go`·`validate.go`(`Faction.OfficerColors`, 선택·세 벌)·`assets/data/game.json`(오·원·황건·위)·`internal/gui/look.go`(`officerColor`·`unitColor`·`palette`, 이름 있는 인물과 직급 officer·commander·boss 템플릿이 장수색)·`internal/gui/view.go`: 전투 유닛 팔레트 선택. 황건 병력 색이 주황 기운에서 노랑으로, 원소 병력은 노랑에서 주황으로 바뀜. 첫 배색은 B02에서 황건 병력과 손견 장수의 중간색 거리가 66이라 오 장수를 붉은 주황으로 당김(거리 100).
+- `internal/content/faction_colors_test.go`: 같은 스테이지에 나오는 진영·역할끼리 중간색 거리가 60보다 큰지 보고, 겹침이 위험한 쌍(오 장수·원 병력, 원 장수·황건 병력)이 함께 나오는 스테이지를 로그로 냄(현재 없음)
+- 장비 등급 글자(C4): `bonusGrade`·`bonusText`가 11-01(70007eb)에 이미 D·C·B·A(5는 S)로 모든 장비 보너스 화면에 적용되어 있고 `equipment_window_test.go`가 변환을 시험한다. 이번에는 추가 변경 없음.
+
+## 2026-11-18 22~27장 검토 수정(대사·호칭·서서 퇴장)
+- 결정 · 이유: 22~27장 구현 검토의 이야기 어긋남을 고친다. 자세한 선택지는 `plan/_decision_22_27.md`의 [검토 수정] 항목.
+- `assets/scenario/hero/story26.json`: `c26-c-path` 갈래와 `c26-c07n`(빠른 길을 고르지 않은 판의 탄식), `c26-leave-xushu`를 당양 마을 장면 앞으로(B26에 서서가 나가지 않게), 조운의 청홍검 줄을 "주공께 가져가겠다"로 — 다재다능이 없으면 검을 차지 못하므로
+- `assets/scenario/hero/story25v.json`: 관우가 주창을 "창아"라 부르던 것 빼기, 유비 "자룡이 맡아 두게"(청홍검)
+- `assets/scenario/hero/story27v.json`: 양양 성문에 없던 관우 대신 장비가 "지난달 화살 받던 성"을 말함
+- `assets/scenario/hero/story22.json`·`story26v.json`·`stage27v.json`: 손건·곽준·유기가 유표를 자(경승)로 부르던 것을 사군·돌아가신 주공·형주목으로
+- `assets/scenario/hero/stage25v.json`: 유비가 문빙을 "문중업" 대신 "문 장군"으로
+- `assets/scenario/hero/story27.json`: 시상 첫머리 노숙의 제갈량 소개 `c27-b00`
+- `assets/scenario/hero/stage27.json`: 화용도 장비 대 허저 일기토 대사가 신야 일기토를 전제하지 않게
+- `assets/scenes/ch25v.json`(주창을 `party:zhoucang`일 때 세워 함께 퇴장)·`ch26.json`(`c26-c07n`)·`ch27.json`(`c27-b00`)·`ch27v.json`(장비 비트, 유비가 장비를 봄)
+
 ## 2026-11-17 장면 배치 검사 바로잡기와 소품에 겹친 배역 옮기기
 - `.claude/skills/scene-staging/check_scenes.py`: 걸을 수 있는 바닥 글자를 `scene.json`의 `walkable`에서 읽음(돗자리 `M` 등이 빠져 있었다), 색 객체로 끝나는 맵 물체에서 멈추던 것 고침, 납작한 소품(`field_bare`·`puddle`·`rubble`)은 밟는 땅으로, 작은 칸 가운데 선 배역은 같은 작은 칸의 소품에만 걸리게(탁자 옆 작은 칸은 괜찮다) — 그동안 검사가 중간에 멈춰 22건이 묻혀 있었고, 그 가운데 9건은 잘못 걸린 것이었다.
 - 소품과 같은 칸에 서 있던 배역 13명을 한 칸(작은 칸 장면은 반 칸) 옮김: `ch02` 하후돈(군기), `ch05` 객잔의 장비·유비·조조와 낙양 궁의 서량병(등롱), `ch11` 조운, `ch12` 손건·주검, `ch13` 피난민 둘(모닥불·방문), `ch14` 진등(깃발), `c14-e-sword`의 미축·유비. 하후돈·조조의 퇴장 길도 고쳐 소품을 지나지 않게 했다.

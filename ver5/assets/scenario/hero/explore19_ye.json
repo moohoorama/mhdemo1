@@ -799,7 +799,7 @@
      "Face": "SW",
      "Sprite": "blacksmith_noncombat",
      "Faction": "merchant",
-     "Shop": "weapons"
+     "Shop": "weapons_iron"
     }
    }
   }

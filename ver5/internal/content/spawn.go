@@ -146,6 +146,53 @@ func (r Rules) StageLevel(order int) int {
 	return r.StageLevelBase + int(math.Round(r.StageLevelStep*float64(max(order, 1)-1)))
 }
 
+// GearTier is one step of Rules.GearTiers: the tier of plain gear worn from the chapter numbered Chapter on.
+type GearTier struct{ Chapter, Tier int }
+
+// GearTierOf is the tier of plain gear soldiers wear in the chapter with the given number; 0 before the first step.
+func (r Rules) GearTierOf(chapter int) int {
+	tier := 0
+	for _, g := range r.GearTiers {
+		if chapter >= g.Chapter {
+			tier = g.Tier
+		}
+	}
+	return tier
+}
+
+func (r Rules) maxGearTier() int {
+	top := 0
+	for _, g := range r.GearTiers {
+		top = max(top, g.Tier)
+	}
+	return top
+}
+
+// GearAt is the piece of the same Line as gear id at the tier (a 구리검 in the third chapter is a 강검). Gear
+// that comes in no tiers, or has no piece at the tier, stays as it is.
+func (d *Data) GearAt(id string, tier int) string {
+	eq := d.Equipment[id]
+	if eq.Line == "" || eq.Tier == tier || tier == 0 {
+		return id
+	}
+	for other, v := range d.Equipment {
+		if v.Line == eq.Line && v.Tier == tier {
+			return other
+		}
+	}
+	return id
+}
+
+// GearTierAt is the gear tier of the order-th battle of the story; 0 when there is none.
+func (d *Data) GearTierAt(order int) int {
+	for _, s := range d.Stages {
+		if s.Order == order && order > 0 {
+			return s.GearTier
+		}
+	}
+	return 0
+}
+
 // JoinLevel is the level an officer who joins before the order-th battle is raised to: the stage level with a
 // troop's lead, shifted by the difficulty (EnemyShift), so the newcomer stands to that difficulty's enemy as on normal.
 func (r Rules) JoinLevel(order int, shift float64) int {

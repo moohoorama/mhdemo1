@@ -61,6 +61,7 @@ type Rules struct {
 	PromoteLevels         []int // minimum level to promote from tier i
 	StageLevelBase        int   // the n-th battle of the story is fought at StageLevelBase + StageLevelStep×(n−1), rounded; 0 leaves spawns at their characters' levels
 	StageLevelStep        float64
+	GearTiers             []GearTier         // the gear tier of ordinary soldiers from each chapter on, by chapter number, ascending
 	SideShareMax          float64            // the most damage share a blow deals to anyone it strikes besides its target (splash, sweep, pierce)
 	RankLead              map[string]float64 // a rank's lead over the stage level, as a share of (stage level + StatLevelBase) so it means the same strength at any level
 	TraitPlanStep         int                // an NPC officer holds the k-th trait of its own plan (Character.Traits) from level (k−1)×TraitPlanStep+1
@@ -172,6 +173,8 @@ type Equipment struct {
 	Icon                   string // the UI sheet's item_<Icon> picture
 	Price                  int    `json:",omitempty"` // what a shop asks in money; it buys it back for half
 	Bonus                  [6]float64
+	Line                   string `json:",omitempty"` // a family of plain gear that comes in tiers (sword, armor, robe …)
+	Tier                   int    `json:",omitempty"` // which step of its Line it is: 1 (D) in the first chapter, 2 (C) and 3 (B) after
 	Traits, Learn, Skills  []string
 	Palette                map[string]Colors `json:",omitempty"` // a horse of its own colour: tag group -> colours laid over the wearer's look while a mounted class rides it
 	Owner                  string            `json:",omitempty"` // the officer it suits; the AI and the waypoint games put it on them
@@ -506,6 +509,7 @@ type Stage struct {
 	Reward             map[string]int
 	Duels              []Duel
 	Party              []Spawn `json:",omitempty"` // a skirmish's allies
+	GearTier           int         `json:"-"` // the tier of plain gear the stage's soldiers wear (Rules.GearTiers by chapter); 0 when no battle node leads here
 	Map                string  `json:",omitempty"` // map document under maps/ that supplies the tiles; none means Tiles is inline
 	Faction            string  `json:",omitempty"` // color of this stage's enemies without a faction of their own
 	Forced             bool    `json:",omitempty"` // the officers sortie straight onto the Allies cells in order: no deployment screen

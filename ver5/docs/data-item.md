@@ -13,6 +13,7 @@
 | `Slot` | `weapon`, `armor`, `accessory` 중 하나. |
 | `Icon` | UI 그림 `item_<Icon>`(`tools/spritetool/assets/ver5-ui`). 같은 그림을 여러 장비가 나눠 써도 된다. 게임 데이터의 모든 장비가 시트에 그림을 갖는지는 GUI 시험(`TestEveryEquipmentIconIsOnTheUISheet`)이 본다. |
 | `Type` | 장착 형식. 무기는 `sword spear bow fan`, 방어구는 `armor robe`, 장신구는 `any`. |
+| `Line`, `Tier` | 단계가 있는 일반 장비의 계열(`sword spear bow fist armor robe`)과 그 계열의 단계(1 D·2 C·3 B). 둘 다 있거나 둘 다 없다. 같은 계열은 칸·종류가 같고 단계마다 하나뿐이며, `Rules.GearTiers`의 모든 단계에 장비가 있어야 한다. 고유 장비·장신구·부채는 단계가 없다. 아래 장비 단계 절. |
 | `Bonus` | 병종 보너스에 더하는 6개 값. 순서는 병종 `Bonus`와 같아서 공격, 방어, 정신, 민첩, 사기, 병력이다. |
 | `Traits` | 착용하는 동안 갖는 특성(주어진 특성, `Cost` 0). 모두 `traits.json`에 있어야 한다. |
 | `Learn` | 착용하는 동안 학습 후보에 더해지는 특성. 모두 배울 수 있는 특성(`Cost >= 1`)이어야 한다. |
@@ -23,6 +24,22 @@
 ```json
 "fangtian_halberd": {"Name": "방천화극", "Slot": "weapon", "Type": "spear", "Bonus": [3, 0, 0, 0, 0, 0], "Traits": ["halberd_sweep"]}
 ```
+
+### 장비 단계와 등급 글자
+
+보너스 숫자를 사용자에게는 글자로 보인다. D = 1, C = 2, B = 3, A = 4(내부 값은 숫자 그대로). 일반 장비는 장(章)에 따라 한 단계씩 오른다.
+
+| 단계 | 장 | 검 | 창 | 활 | 무도가 장갑 | 갑옷(무장) | 옷(문관·산적·무도가) |
+|---|---|---|---|---|---|---|---|
+| 1 (D) | 1장 | 구리검 `copper_sword` | 구리창 `copper_spear` | 단궁 `short_bow` | 천장갑 `cloth_gloves` | 가죽갑옷 `leather_armor` | 무명옷 `cotton_clothes` |
+| 2 (C) | 2장(17장 광릉부터) | 철검 `iron_sword` | 철창 `iron_spear` | 대궁 `long_bow` | 가죽장갑 `leather_gloves` | 구리갑옷 `bronze_armor` | 가죽옷 `leather_clothes` |
+| 3 (B) | 3장(28장부터, 아직 판 없음) | 강검 `steel_sword` | 강창 `steel_spear` | 강궁 `steel_bow` | 철장갑 `iron_gloves` | 철갑옷 `iron_armor` | 호피복 `tiger_skin` |
+
+무기는 주 능력치(공격) 하나가 등급 숫자이고, 갑옷은 방어와 병력이, 옷은 방어만 그 숫자다. 값은 무기 1200·2400·4800, 갑옷 1000·2000·4000, 옷 600·1200·2400이다. 어느 병종이 어느 계열을 입는지는 병종의 `Weapon`·`Armor`와 장비의 `Type`이 정한다(무장 병종은 `armor`, 서생·참모 계열과 적병·황건적·흉적·의적·무도가·권사·권성은 `robe`, 무도가 계열 무기는 `fist`).
+
+`Rules.GearTiers`(`game.json`)는 `{Chapter, Tier}`의 오름차순 표로, 장 번호가 `Chapter` 이상이면 그 `Tier`다. 로드할 때 전투 노드가 든 장 번호로 `Stage.GearTier`를 정한다. 전투에서 적·AI 병력(`Temp`)은 `Equipment`를 덮어쓰지 않은 스폰이라면 일반 장비를 그 스테이지의 단계로 바꿔 입는다(`Data.GearAt`, 같은 `Line`의 그 단계 장비). 스폰이 `Equipment`를 적으면 그대로 입는다. 단계가 없는 고유 장비는 그대로다. 새로 합류하는 장수도 합류하는 전투의 단계로 바꿔 입는다. 시작 장비는 모두 1단계로 적고, 병종이 못 드는 장비는 `refitGear`가 값이 가까운 같은 칸의 상점 장비로 바꾼다(단계마다 값이 같아 같은 단계끼리 맞는다).
+
+상점 `weapons`는 1단계, `weapons_iron`은 2단계 장비를 판다. 19장 업의 대장간만 `weapons_iron`이라, 철 계열은 업부터 살 수 있다. 상점의 `Mark`가 `"red"`이면 탐험 안내 판(대장장이와 그 가게로 드는 문)이 빨강이고(`plateHot`), 없으면 노랑이다. 업만 빨강이라 다음 스테이지에서는 다시 노랑이다.
 
 ### 장착 규칙
 

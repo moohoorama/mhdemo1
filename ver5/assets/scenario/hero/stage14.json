@@ -115,8 +115,8 @@
    "Faction": "yuan",
    "Class": "brawler",
    "Equipment": [
-    "iron_knuckles",
-    "plain_clothes"
+    "cloth_gloves",
+    "cotton_clothes"
    ],
    "Facing": "NW",
    "Shift": -0.12
@@ -130,8 +130,8 @@
    "Faction": "yuan",
    "Class": "brawler",
    "Equipment": [
-    "iron_knuckles",
-    "plain_clothes"
+    "cloth_gloves",
+    "cotton_clothes"
    ],
    "Facing": "NW",
    "Shift": -0.12

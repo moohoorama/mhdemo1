@@ -98,6 +98,6 @@ func TestASteppedBackNPCTakesTheShopWeaponOfItsClass(t *testing.T) {
 	g := e.char("gaoshun")
 	require.NotNil(t, g)
 	assert.Equal(t, "light_infantry", g.Class)
-	assert.Equal(t, "iron_sword", g.Equipment["weapon"], "철창 becomes 철검")
+	assert.Equal(t, "copper_sword", g.Equipment["weapon"], "구리창 becomes 구리검")
 	assert.Equal(t, "leather_armor", g.Equipment["armor"])
 }

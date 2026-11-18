@@ -688,24 +688,38 @@ func (g *Game) exploreGuide() (map[int]plate, map[string]plate) {
 	}
 	x := g.S.Engine.ExploreFile()
 	a := x.Areas[g.explore.area]
-	hasShop := func(area string) bool {
+	shopPlate := func(shop string) plate {
+		if g.S.Data.Shops[shop].Mark == "red" {
+			return plateHot
+		}
+		return plateSide
+	}
+	// shopIn is the plate of the shop in an area: the hottest of its shopkeepers', plateDim when it has none.
+	shopIn := func(area string) plate {
+		found := plateDim
 		if to := x.Areas[area]; to != nil {
 			for _, p := range to.People {
 				if p.Shop != "" {
-					return true
+					found = max(found, shopPlate(p.Shop))
 				}
 			}
 		}
-		return false
+		return found
 	}
 	for i, ex := range a.Exits {
-		if g.S.Engine.ExitOpen(ex) && hasShop(ex.To) {
+		if !g.S.Engine.ExitOpen(ex) {
+			continue
+		}
+		if shop := shopIn(ex.To); shop != plateDim {
 			mark(exits, i, true)
+			if shop == plateHot && exits[i] != plateMain {
+				exits[i] = plateHot
+			}
 		}
 	}
 	for key, p := range a.People {
 		if p.Shop != "" && people[key] != plateMain {
-			people[key] = plateSide
+			people[key] = shopPlate(p.Shop)
 		}
 	}
 	return exits, people

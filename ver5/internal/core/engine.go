@@ -969,6 +969,9 @@ func (e *Engine) spawn(id, def, side string, x, y int, sp content.Spawn) *Unit {
 		if f := e.data.Stages[e.state.Stage].Faction; f != "" && sp.Faction == "" {
 			color = f
 		}
+	if sp.Equipment == nil && c.Temp {
+		e.tierGear(c, e.stageGearTier())
+	}
 	}
 	if sp.Faction != "" {
 		color = sp.Faction
@@ -1020,6 +1023,22 @@ func (e *Engine) refitGear(c *Character) {
 			continue
 		}
 		delete(c.Equipment, slot)
+// stageGearTier is the tier of plain gear the current battle's soldiers wear.
+func (e *Engine) stageGearTier() int {
+	if e.state.Stage < 0 || e.state.Stage >= len(e.data.Stages) {
+		return 0
+	}
+	return e.data.Stages[e.state.Stage].GearTier
+}
+
+// tierGear steps the plain gear c wears (a 구리검) to the tier of the story's chapter (a 철검 in the second).
+// Named gear, which comes in no tiers, stays.
+func (e *Engine) tierGear(c *Character, tier int) {
+	for slot, id := range c.Equipment {
+		c.Equipment[slot] = e.data.GearAt(id, tier)
+	}
+}
+
 		best, gap := "", 0
 		for _, id := range slices.Sorted(maps.Keys(e.data.Equipment)) {
 			v := e.data.Equipment[id]

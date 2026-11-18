@@ -114,7 +114,8 @@ type ExploreSign struct {
 type Shop struct {
 	Name  string
 	Items []string
-	Rate  int `json:",omitempty"`
+	Rate  int    `json:",omitempty"`
+	Mark  string `json:",omitempty"` // the guide plate's hue: "" the usual shop yellow, "red" a shop with new stock
 }
 
 // PersonName is the shown name of a person key: the part before @ and #.
@@ -170,6 +171,9 @@ func (d *Data) validateExplores(nodes map[string]Node) error {
 	for id, s := range d.Shops {
 		if s.Name == "" {
 			return fmt.Errorf("shop %s: no name", id)
+		}
+		if !in(s.Mark, "", "red") {
+			return fmt.Errorf("shop %s: mark %q", id, s.Mark)
 		}
 		for _, item := range s.Items {
 			if d.Price(item) <= 0 {

@@ -37,7 +37,7 @@ func TestPickerListsTheWornPieceOnceAndOnlyWhatFits(t *testing.T) {
 	snap := start.Snapshot()
 	require.NotEmpty(t, snap.Characters)
 	snap.Characters[0].Equipment = map[string]string{"armor": "leather_armor"}
-	snap.Warehouse = map[string]int{"leather_armor": 2, "tangni_armor": 1, "plain_clothes": 1, "iron_sword": 1}
+	snap.Warehouse = map[string]int{"leather_armor": 2, "tangni_armor": 1, "cotton_clothes": 1, "iron_sword": 1}
 	e, err := core.Restore(d, snap)
 	require.NoError(t, err)
 	g := &Game{S: &session.Session{Data: d, Engine: e}, itemEffects: map[string]itemEffect{}}
@@ -50,7 +50,7 @@ func TestPickerListsTheWornPieceOnceAndOnlyWhatFits(t *testing.T) {
 	assert.Equal(t, pickNothing, ids[0])
 	assert.Equal(t, 1, countOf(ids, "leather_armor"))
 	assert.Contains(t, ids, "tangni_armor")
-	assert.NotContains(t, ids, "plain_clothes", "a robe the first officer's class cannot wear is left out")
+	assert.NotContains(t, ids, "cotton_clothes", "a robe the first officer's class cannot wear is left out")
 	assert.NotContains(t, ids, "iron_sword")
 }
 

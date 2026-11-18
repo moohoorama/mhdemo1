@@ -298,12 +298,13 @@ func (g *Game) smallDiamond(dst *ebiten.Image, t smallTile, fill, rim color.NRGB
 }
 
 // plate is a name plate's hue: grey, or marking where the walk's main story (green) or a side story (yellow) goes
-// on.
+// on; red marks a shop with new stock.
 type plate int
 
 const ( // in the order they are drawn, the later on top
 	plateDim plate = iota
 	plateSide
+	plateHot
 	plateMain
 )
 
@@ -317,6 +318,10 @@ var plateColors = map[plate][2][3]color.NRGBA{
 	plateMain: {
 		{{R: 40, G: 78, B: 44, A: 255}, {R: 100, G: 150, B: 100, A: 255}, {R: 170, G: 210, B: 160, A: 255}},
 		{{R: 78, G: 158, B: 88, A: 255}, {R: 190, G: 236, B: 190, A: 255}, {R: 255, G: 255, B: 255, A: 255}},
+	},
+	plateHot: {
+		{{R: 100, G: 34, B: 30, A: 255}, {R: 176, G: 82, B: 72, A: 255}, {R: 232, G: 154, B: 142, A: 255}},
+		{{R: 178, G: 62, B: 52, A: 255}, {R: 244, G: 170, B: 158, A: 255}, {R: 255, G: 255, B: 255, A: 255}},
 	},
 	plateSide: {
 		{{R: 84, G: 66, B: 16, A: 255}, {R: 160, G: 136, B: 60, A: 255}, {R: 222, G: 196, B: 110, A: 255}},
