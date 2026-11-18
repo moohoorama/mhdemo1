@@ -337,7 +337,7 @@ func (g *Game) subItems() []entry {
 
 func skillCategory(s content.Skill) string {
 	switch {
-	case s.Kind == "physical" || s.Name == "조준" || s.Name == "장전" || s.Name == "반격":
+	case s.Kind == content.KindPhysical || s.Tab == content.TabMartial:
 		return "무예"
 	case s.Kind == "magic":
 		return "공격"

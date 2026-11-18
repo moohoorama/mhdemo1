@@ -30,6 +30,7 @@
    ]
   },
   "counter": {
+   "Tab": "martial",
    "Name": "반격",
    "Desc": "다음 적 차례까지 반격 태세를 취한다.",
    "Kind": "buff",
@@ -843,6 +844,7 @@
    ]
   },
   "reload": {
+   "Tab": "martial",
    "Name": "장전",
    "Desc": "자신의 공격력을 3턴 높인다.",
    "Kind": "buff",
@@ -918,6 +920,7 @@
    ]
   },
   "aim": {
+   "Tab": "martial",
    "Name": "조준",
    "Desc": "자신의 순발·사기를 3턴 높인다.",
    "Kind": "buff",

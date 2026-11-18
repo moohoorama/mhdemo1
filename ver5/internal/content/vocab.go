@@ -160,6 +160,8 @@ const (
 	KindHeal     = "heal"
 	KindMixed    = "mixed" // helps the caster's side and harms the other in the same area
 
+	TabMartial = "martial" // a Skill.Tab: listed with the physical skills in the command menu
+
 	ModeMelee  = "melee"
 	ModeRanged = "ranged"
 	ModeSelf   = "self"

@@ -218,6 +218,7 @@ type Skill struct {
 	MagicCoeff    float64 // a physical skill also deals spell damage at this coefficient
 	HPCost        float64 // share of its own max HP the user pays besides the spell points
 	Mark          bool    // every cell it lands on takes its element's critical mark (화시's embers), critical or not
+	Tab           string  // the command menu tab the skill sits in when it is not chosen by Kind (TabMartial); empty follows Kind
 	Deprecated    bool
 }
 

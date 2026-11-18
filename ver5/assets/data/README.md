@@ -21,6 +21,7 @@ Scenes live in `assets/scenes.json`, not here.
 - Every map key and reference is an English snake_case id; Korean appears only in `Name`, `Desc`, `Text`, `Biography` (and choice labels).
 - Characters use pinyin matching portrait/sprite stems (`liubei`, `lubu`, ...). Soldier templates: `troop_turban`, `troop_footman`, `troop_archer`.
 - Classes: English names (`light_infantry`, `scholar`, `staff_officer`, `sorcerer`, ...). Equipment types: `sword spear bow fan` / `armor robe` / `any`.
+- Skill `Tab` is empty (the command menu tab follows `Kind`) or `martial` (listed with the physical skills).
 - Skills: English (`scorch`, `minor_supply`, `sweep`); traits: English (`valor`, `fire_boost`). Spell family roots (`fire water earth relief exhort hinder stratagem`) are given-only (Cost 0).
 - Promotion items: `insu_mid` (tier 1) and `insu_high` (tier 2); the class is picked when one is used. Scenario events: `join-<id>`, `grant-<id>`.
 

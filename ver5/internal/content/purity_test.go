@@ -35,6 +35,7 @@ func TestEngineSourceNamesNoGameContent(t *testing.T) {
 	for _, w := range []string{"장비", "신속", "원시", "반격", "혼란", "봉책", "봉격", "약화", "경계", "조준", "저격", "도발", "교란", "관리", "이전"} {
 		engine[w] = true
 	}
+	engine["계략"] = true // the command menu's tab of status skills, also a trait name
 	banned := map[string]string{}
 	add := func(kind, s string) {
 		if s != "" && !engine[s] && len(s) > 1 {
