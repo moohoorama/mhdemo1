@@ -15,6 +15,7 @@ import (
 	"srpg/internal/duelview"
 	"srpg/internal/scenes"
 	"srpg/internal/sprite"
+	"srpg/internal/storage"
 )
 
 // scene is the running scene (assets/scenes/*.json): one stretch of story nodes on one map. Its actors keep where
@@ -54,13 +55,16 @@ type scene struct {
 	shot      *sceneShot              // an arrow chased by the camera (a Shoot step)
 	free      map[string]bool         // walkers whose walk does not hold up the beats
 	follow    string                  // the actor the camera keeps on
-	focus     string                  // the named actor of the latest beat or line since the last camera step: the camera keeps them in view
-	stride    map[string]float64      // cells walked since each walker's last footfall sounded
-	back      map[string]string       // walkers backing away, with the way they keep facing
-	strikes   []*sceneStrike          // Strike steps playing out
-	swing     map[string]string       // riders dealing a blow on the move: the motion the walk must not cut short
-	dust      []dustPuff              // dust kicked up by targets driven back by a blow
-	tied      map[string]*sprite.Art  // bound prisoners, with the art they stand in once untied
+	zoneHeld  bool                    // the camera was moved off the scene's own shot by the still zone, to (heldX, heldY)
+	heldX     float64
+	heldY     float64
+	focus     string                 // the named actor of the latest beat or line since the last camera step: the camera keeps them in view
+	stride    map[string]float64     // cells walked since each walker's last footfall sounded
+	back      map[string]string      // walkers backing away, with the way they keep facing
+	strikes   []*sceneStrike         // Strike steps playing out
+	swing     map[string]string      // riders dealing a blow on the move: the motion the walk must not cut short
+	dust      []dustPuff             // dust kicked up by targets driven back by a blow
+	tied      map[string]*sprite.Art // bound prisoners, with the art they stand in once untied
 }
 
 type patrol struct {
@@ -354,6 +358,7 @@ func (g *Game) updateScene(dt float64) {
 	}
 	if a := s.actors[s.follow]; a != nil {
 		s.camU, s.camV = a.u, a.v
+		s.zoneHeld = false
 	}
 	tx, ty := g.sceneCam()
 	if len(s.def.Nodes) > 0 { // a story scene, not a walk the hero leads
@@ -412,35 +417,40 @@ func (g *Game) updateScene(dt float64) {
 	s.begun = false
 }
 
-// keepInView moves the camera target (tx, ty) as little as it takes to bring the latest beat's or line's actor
-// inside the screen, clear of its edges and of the dialogue scroll; a shot that already shows them stays as framed.
-// Zoomed in, the cells a scene frames by CamAt no longer fit, and the one acting or speaking would be off screen.
+// keepInView moves the camera target (tx, ty) only when the latest beat's or line's actor has left the still zone
+// in the middle of the screen (Settings.CamZone), bringing them back to its centre on the axis they left; inside the
+// zone the shot stays as framed, so a scene does not scroll with every speaker. The feet stay above the dialogue scroll.
 func (g *Game) keepInView(tx, ty float64) (float64, float64) {
 	s := g.scene
 	v := s.actors[s.focus]
+	if s.zoneHeld { // the zone is judged against the shot the camera was last brought to
+		tx, ty = s.heldX, s.heldY
+	}
 	if v == nil || v.gone || g.zoom <= 0 {
 		return tx, ty
 	}
 	x, feet := g.field.Center(v.u, v.v)
 	feet -= v.lift + g.field.groundLift(v.u, v.v)
-	head := feet - v.top
+	mid := feet - v.top/2
 	vp := g.battleViewport()
 	hw, hh := float64(vp.Dx())/2/g.zoom, float64(vp.Dy())/2/g.zoom
+	zw, zh := storage.DefaultSettings().CamZone()
+	if g.S != nil {
+		zw, zh = g.S.Settings.CamZone()
+	}
+	if math.Abs(x-tx) > hw*float64(zw)/100 {
+		tx = x
+	}
+	if math.Abs(mid-ty) > hh*float64(zh)/100 {
+		ty = mid
+	}
 	box := dialogueBox().top * uiPx / worldPx
 	floor := (box-float64(vp.Min.Y+vp.Dy()/2))/g.zoom - math.Max(8, hh*.2) // a little above the scroll's top edge
-	mx, my := math.Min(96, hw*.4), math.Min(24, hh*.15)                    // well inside the sides, not pressed to them
-	switch {
-	case x < tx-hw+mx:
-		tx = x + hw - mx
-	case x > tx+hw-mx:
-		tx = x - hw + mx
-	}
-	if head < ty-hh+my {
-		ty = head + hh - my
-	}
-	if feet > ty+floor { // with no room for both, the feet stay above the scroll
+	// with no room for both, the feet stay above the scroll
+	if feet > ty+floor {
 		ty = feet - floor
 	}
+	s.zoneHeld, s.heldX, s.heldY = true, tx, ty
 	return tx, ty
 }
 
@@ -631,8 +641,10 @@ func (g *Game) stageStep(st scenes.Step) {
 	}
 	if a := s.actors[st.Cam]; a != nil {
 		s.camU, s.camV = a.u, a.v
+		s.zoneHeld = false
 	} else if len(st.CamAt) == 2 {
 		s.camU, s.camV = st.CamAt[0], st.CamAt[1]
+		s.zoneHeld = false
 	}
 	if st.Zoom >= 1 {
 		g.setZoomImmediate(math.Round(st.Zoom))

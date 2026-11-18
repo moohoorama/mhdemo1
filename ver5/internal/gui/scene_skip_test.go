@@ -1,7 +1,6 @@
 package gui
 
 import (
-	"math"
 	"srpg/internal/sprite"
 	"testing"
 
@@ -131,17 +130,23 @@ func TestSceneKeepInView(t *testing.T) {
 		assert.Equal(t, x, tx)
 		assert.Equal(t, y, ty)
 	})
-	t.Run("an actor far off screen is brought just inside it", func(t *testing.T) {
+	t.Run("an actor outside the still zone is brought to its centre", func(t *testing.T) {
 		g := newGame(4)
 		g.scene.focus = "관우"
 		x, y := g.field.Center(5, 50)
 		tx, ty := g.keepInView(x, y)
 		ax, ay := g.field.Center(6, 68)
-		hw, hh := float64(worldW)/2/4, float64(worldH)/2/4
-		assert.InDelta(t, ax, tx, hw, "관우 is within the screen's width")
-		assert.Less(t, ty-hh, ay-40, "his head is below the top edge")
-		assert.Greater(t, ty+hh, ay, "his feet are above the bottom edge")
-		assert.Greater(t, math.Abs(ax-tx), hw/2, "the camera moved only as far as it had to")
+		assert.Equal(t, ax, tx)
+		assert.InDelta(t, ay-20, ty, 1, "the middle of his body, when the scroll leaves room")
+	})
+	t.Run("a shot brought to the actor stays while they move inside the zone", func(t *testing.T) {
+		g := newGame(4)
+		g.scene.focus = "관우"
+		x, y := g.field.Center(5, 50)
+		held, _ := g.keepInView(x, y)
+		g.scene.actors["관우"].u = 7
+		tx, _ := g.keepInView(x, y)
+		assert.Equal(t, held, tx, "the camera does not swing back to the authored shot")
 	})
 	t.Run("no focus keeps the shot", func(t *testing.T) {
 		g := newGame(4)

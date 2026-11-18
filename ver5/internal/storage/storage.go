@@ -40,6 +40,8 @@ type Settings struct {
 	UIScale     int    `json:"ui_scale,omitempty"`      // percent; 0 is the platform default
 	DamagePct   int    `json:"damage_pct,omitempty"`    // damage dealt in percent; 0 is DefaultScalePct
 	XPPct       int    `json:"xp_pct,omitempty"`        // experience gained in percent; 0 is DefaultScalePct
+	CamZoneW    int    `json:"cam_zone_w,omitempty"`    // debug: width of the story scene camera's still zone in percent of the screen; 0 is DefaultCamZonePct
+	CamZoneH    int    `json:"cam_zone_h,omitempty"`    // the same for its height
 	NoGuide     bool   `json:"no_guide,omitempty"`      // the walk does not mark where the story goes on
 	NoGoalGuide bool   `json:"no_goal_guide,omitempty"` // the battle does not outline what it is won and lost by
 	Sound       string `json:"sound,omitempty"`         // the GUI's sound: "" all, "sfx" effects only, "music" music only, "off"
@@ -70,9 +72,27 @@ func (s Settings) XPScale() int {
 	return s.XPPct
 }
 
+// CamZonePcts are the sizes the debug settings offer for the scene camera's still zone, in percent of the screen.
+var CamZonePcts = []int{20, 35, 50, 65, 80}
+
+// DefaultCamZonePct is the still zone's size when none is set.
+const DefaultCamZonePct = 50
+
+// CamZone is the scene camera's still zone, width and height in percent of the screen.
+func (s Settings) CamZone() (int, int) {
+	w, h := s.CamZoneW, s.CamZoneH
+	if w == 0 {
+		w = DefaultCamZonePct
+	}
+	if h == 0 {
+		h = DefaultCamZonePct
+	}
+	return w, h
+}
+
 func DefaultSettings() Settings { return Settings{Replay: "spells", Detail: true} }
 func (s Settings) Validate() error {
-	if !slices.Contains([]string{"together", "spells", "one"}, s.Replay) || s.TextDelayMS < 0 || s.TextDelayMS > 1000 || s.UIScale != 0 && (s.UIScale < 80 || s.UIScale > 160) || s.DamagePct != 0 && !slices.Contains(ScalePcts, s.DamagePct) || s.XPPct != 0 && !slices.Contains(ScalePcts, s.XPPct) || !slices.Contains([]string{"", "sfx", "music", "off"}, s.Sound) || s.ExploreZoom < 0 || s.ExploreZoom > 4 || s.BattleZoom < 0 || s.BattleZoom > 4 {
+	if !slices.Contains([]string{"together", "spells", "one"}, s.Replay) || s.TextDelayMS < 0 || s.TextDelayMS > 1000 || s.UIScale != 0 && (s.UIScale < 80 || s.UIScale > 160) || s.DamagePct != 0 && !slices.Contains(ScalePcts, s.DamagePct) || s.XPPct != 0 && !slices.Contains(ScalePcts, s.XPPct) || !slices.Contains([]string{"", "sfx", "music", "off"}, s.Sound) || s.CamZoneW != 0 && !slices.Contains(CamZonePcts, s.CamZoneW) || s.CamZoneH != 0 && !slices.Contains(CamZonePcts, s.CamZoneH) || s.ExploreZoom < 0 || s.ExploreZoom > 4 || s.BattleZoom < 0 || s.BattleZoom > 4 {
 		return fmt.Errorf("InvalidSettings")
 	}
 	return nil

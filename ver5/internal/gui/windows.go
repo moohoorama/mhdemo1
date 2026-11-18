@@ -165,6 +165,9 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 		w, h = deputyW, deputyH
 	case "settings":
 		w, h = 640, 668+64
+		if g.Debug {
+			h += 128
+		}
 	case "roster":
 		w, h = uiW-100, uiH-90
 	case "shop":
@@ -274,6 +277,13 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h, strip int) {
 			damages = append(damages, choice{fmt.Sprintf("%d%%", n), s.DamageScale() == n, set(func(v *storage.Settings) { v.DamagePct = n })})
 			xps = append(xps, choice{fmt.Sprintf("%d%%", n), s.XPScale() == n, set(func(v *storage.Settings) { v.XPPct = n })})
 		}
+		var camW, camH []choice
+		zw, zh := s.CamZone()
+		for _, n := range storage.CamZonePcts {
+			n := n
+			camW = append(camW, choice{fmt.Sprintf("%d%%", n), zw == n, set(func(v *storage.Settings) { v.CamZoneW = n })})
+			camH = append(camH, choice{fmt.Sprintf("%d%%", n), zh == n, set(func(v *storage.Settings) { v.CamZoneH = n })})
+		}
 		type row struct {
 			title string
 			opts  []choice
@@ -306,7 +316,7 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h, strip int) {
 			{"UI 크기", scales},
 		}
 		if g.Debug {
-			rows = append(rows, row{"데미지 배율", damages}, row{"경험치 배율", xps})
+			rows = append(rows, row{"데미지 배율", damages}, row{"경험치 배율", xps}, row{"장면 카메라 가로", camW}, row{"장면 카메라 세로", camH})
 		}
 		for i, it := range rows {
 			g.choiceRow(dst, left, y+64+i*64, x+w-32-left, it.title, it.opts)
