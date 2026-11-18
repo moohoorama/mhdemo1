@@ -42,6 +42,10 @@
      "Factor": 0.8,
      "Cost": 2
     },
+    "U": {
+     "Factor": 0.8,
+     "Cost": 2
+    },
     "n": {
      "Factor": 1,
      "Cost": 0
@@ -141,6 +145,10 @@
      "Factor": 1,
      "Cost": 1
     },
+    "U": {
+     "Factor": 1,
+     "Cost": 1
+    },
     "n": {
      "Factor": 1,
      "Cost": 0
@@ -233,6 +241,10 @@
      "Cost": 1
     },
     "u": {
+     "Factor": 1,
+     "Cost": 1
+    },
+    "U": {
      "Factor": 1,
      "Cost": 1
     },
@@ -331,6 +343,10 @@
      "Factor": 1,
      "Cost": 1
     },
+    "U": {
+     "Factor": 1,
+     "Cost": 1
+    },
     "n": {
      "Factor": 1,
      "Cost": 0
@@ -426,6 +442,10 @@
      "Factor": 1.2,
      "Cost": 1
     },
+    "U": {
+     "Factor": 1.2,
+     "Cost": 1
+    },
     "n": {
      "Factor": 1,
      "Cost": 0
@@ -518,6 +538,10 @@
      "Cost": 1
     },
     "u": {
+     "Factor": 1,
+     "Cost": 1
+    },
+    "U": {
      "Factor": 1,
      "Cost": 1
     },

@@ -77,13 +77,21 @@ func (f *Field) makeNativeFloors() {
 			f.bridges = append(f.bridges, f.bridgeEdges(x, y, at, px, py)...)
 		}
 	})
-	f.eachGameCell('u', func(x, y int, px, py float64) {
-		s := f.A.Props[fmt.Sprintf("bt_knoll_%02d", f.cellMask(x, y, 'u'))].Sprite
-		f.nativeGround = append(f.nativeGround, drawItem{rect: f.mapRect(s, px/K, py/K), draw: func() { f.blit(f.Canvas, s, px, py, nil) }})
-	})
+	for _, k := range []struct {
+		glyph byte
+		name  string
+	}{{'u', "bt_knoll_%02d"}, {'U', "bt_knoll_d_%02d"}} {
+		f.eachGameCell(k.glyph, func(x, y int, px, py float64) {
+			s := f.A.Props[fmt.Sprintf(k.name, f.cellMask(x, y, k.glyph))].Sprite
+			f.nativeGround = append(f.nativeGround, drawItem{rect: f.mapRect(s, px/K, py/K), draw: func() { f.blit(f.Canvas, s, px, py, nil) }})
+		})
+	}
 }
 
-// knollLift is how high a unit on a rolling hill (u) stands: the crest of its picture (tools/worldmap/gen_terrain.py
+// isKnoll reports a rolling hill: u on grass, U on wasteland.
+func isKnoll(t byte) bool { return t == 'u' || t == 'U' }
+
+// knollLift is how high a unit on a rolling hill (u, U) stands: the crest of its picture (tools/worldmap/gen_terrain.py
 // KNOLL). Only the unit rises; its cell's marks stay on the ground (markLift).
 const knollLift = 7
 

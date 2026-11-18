@@ -40,7 +40,7 @@ Scenes live in `assets/scenes.json`, not here.
 
 `mapeditor.json` defines terrain brush order, class families (including disabled choices),
 army tabs and officer-to-army membership. These labels remain content data, separate from faction colors.
-`Grounds.Surface` selects the ground atlas surface (0 water, 1 grass, 2 wasteland).
+`Grounds.Surface` selects the ground atlas surface (0 water, 1 grass, 2 wasteland). Ground `U` (wasteland hill) behaves like `u` (rolling hill, grass) but stands on the wasteland surface and draws `bt_knoll_d_*`.
 `Class.Family`, when present, overrides the movement group used for editor family selection.
 
 Stage spawns can override `Class`, `Level`, `Facing` (`NE SE SW NW`),

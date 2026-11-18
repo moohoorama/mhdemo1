@@ -15,7 +15,7 @@ diamond, x = 32(u - v), y = 16(u + v) - z with u, v in cells from the cell's cen
 
 terrain.json lists each piece's rect on the sheet, pivot (the cell centre on the ground) and layer (ground/object),
 the way assets/graphics/index.json lists "extra"; index.json's "terrain" names it and the game reads its pieces as
-props. The battle maps use the rolling hills (bt_knoll_*, ground u) and the mountains (wm_mtn_rock_*, wm_mtn_big_*,
+props. The battle maps use the rolling hills (bt_knoll_*, ground u; bt_knoll_d_* in wasteland earth, ground U) and the mountains (wm_mtn_rock_*, wm_mtn_big_*,
 ground n); the rest (other mountains, hills, roads, the flat-topped bt_hill_*) were drawn for a world map trial and
 are not used yet."""
 import argparse
@@ -350,10 +350,11 @@ def mesa(mask, seed=31):
 KNOLL = 7  # px: the rolling hill's crest, the height a unit standing on it is lifted by (the cell marks stay on the ground)
 
 
-def knoll(mask, seed=47):
+def knoll(mask, seed=47, material='grass'):
     """The rolling hill of one game cell: a low round rise KNOLL px high that runs on into the joined neighbours
     (mask bit i: (-1,0), (0,-1), (1,0), (0,1)) as one swell and falls to the ground at the open sides, inside the
-    cell. Only the picture is high: the cell is chosen and marked on the flat ground, as over the sunk water."""
+    cell. Only the picture is high: the cell is chosen and marked on the flat ground, as over the sunk water. material is the palette whose tone 3 is the
+    ground it rises from: grass for u, earth (the wasteland's sand) for the wasteland hill U."""
     from scipy import ndimage
     R = 48
     joined = [bool(mask & (1 << b)) for b in range(4)]
@@ -398,7 +399,7 @@ def knoll(mask, seed=47):
     grain = fbm(hu, hv, 11, seed, 2)
     tuft = fbm(hu, hv, 23, seed + 9, 1)
     img = np.zeros((hh, w, 4), np.uint8)
-    grass = PAL['grass']
+    grass = PAL[material]
     lit = n[..., 0] * LIGHT[0] + n[..., 1] * LIGHT[1]  # how far a slope turns to the light, ground level 0
     for j in range(hh):
         for i in range(w):
@@ -435,6 +436,7 @@ def pieces():
         out[f'wm_road_{m:02d}'] = (*road(m), 'ground')
         out[f'bt_hill_{m:02d}'] = (*mesa(m), 'ground')
         out[f'bt_knoll_{m:02d}'] = (*knoll(m), 'ground')
+        out[f'bt_knoll_d_{m:02d}'] = (*knoll(m, material='earth'), 'ground')
     return out
 
 

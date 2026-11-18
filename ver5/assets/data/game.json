@@ -62,7 +62,7 @@
   "ElementTerrain": {
    "fire": {"g": 15, "t": 30},
    "water": {"s": 15, "w": 30},
-   "earth": {"d": 15, "u": 30}
+   "earth": {"d": 15, "u": 30, "U": 30}
   },
   "BuffPercent": 20,
   "BuffTurns": 3,
@@ -331,6 +331,11 @@
    "Glyph": "u",
    "Surface": 2
   },
+  "U": {
+   "Name": "황무지 구릉",
+   "Glyph": "U",
+   "Surface": 4
+  },
   "n": {
    "Name": "산",
    "Glyph": "n",
@@ -393,18 +398,18 @@
    "Blaze": 0.8,
    "RestHP": -10,
    "Then": "s",
-   "Grounds": "gdilu"
+   "Grounds": "gdiluU"
   },
   "w": {
    "Name": "물웅덩이",
    "Look": "wet",
    "Wet": true,
-   "Grounds": "gdilu"
+   "Grounds": "gdiluU"
   },
   "r": {
    "Name": "돌무더기",
    "Look": "rubble",
-   "Grounds": "gdilu"
+   "Grounds": "gdiluU"
   },
   "F": {
    "Name": "화염",

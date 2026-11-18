@@ -236,7 +236,7 @@ func (f *Field) Lift(u, v int) float64 {
 		return -sunkDepth
 	} else if t == 's' && f.Map.SunkWater {
 		return -fordDepth
-	} else if t == 'u' && f.Map.Native {
+	} else if isKnoll(t) && f.Map.Native {
 		return knollLift
 	}
 	return 0
@@ -245,7 +245,7 @@ func (f *Field) Lift(u, v int) float64 {
 // markLift is how high a cell's marks (move range, goals) are drawn: on a wall's top, but on the flat ground over
 // sunk water and over a rolling hill, whose heights are only in the picture: the cell is chosen on the ground.
 func (f *Field) markLift(u, v int) float64 {
-	if f.Tile(u, v) == 'u' {
+	if isKnoll(f.Tile(u, v)) {
 		return 0
 	}
 	return max(0, f.Lift(u, v))
