@@ -21,7 +21,8 @@ import scene_format  # noqa: E402
 SCENES = Path(__file__).resolve().parents[2] / 'assets/scenes'
 TURN = {'SE': 'SW', 'SW': 'SE', 'NE': 'NW', 'NW': 'NE'}
 CRIES = ['문을 열어 주시오…', '아이가 굶고 있소', '제발…', '살려 주시오']
-HUNGER = ['굶은 지 사흘이오', '문을 열어 주시오', '아이가 우오…', '물 한 모금만…']
+WHISPERS = ['화살 날아오면……', '뛸 준비 해 둬라.', '유비님……', '내가 둘째 안고 뛸 테니……', '짐은 버려라, 목숨이 먼저다.',
+            '문이 닫히면 어쩌지……', '서쪽 길로 가면 된다더라.', '아이 손 놓지 말거라.', '군사들 뒤에 붙어 있자.', '신발 끈 단단히 매라.']
 COMMONERS = ['commoner_man', 'commoner_woman', 'commoner_elder', 'commoner_man', 'commoner_woman', 'commoner_oldwoman']
 
 
@@ -79,30 +80,27 @@ def wall(prefix, spears, officers):
     return cast, rows
 
 
-def field(rnd, party, soldiers, chatter):
-    """The crowd outside and Liu Bei's party at its front."""
-    cast, keep = {}, set()
-    for (name, u, v) in party:
-        cast[name] = {'At': [u, v], 'Face': 'SW'}
-        keep.add((u, v))
-    n = 0
-    for v in range(-5, -15, -1):
-        for u in range(0, 16):
-            if (u, v) in keep or any(abs(u - pu) < 2 and abs(v - pv) < 2 for _, pu, pv in party):
-                continue
-            if v == -8 and 5 <= u <= 11 or v == -9 and 5 <= u <= 11:
-                continue  # the escort's two rows
-            if rnd.random() < (.45 if v >= -6 else .62):
-                n += 1
-                cast[f'백성#{n}'] = {'At': [u, v], 'Face': rnd.choice(['SW'] * 7 + ['SE', 'NW', 'SE']),
-                                     'Sprite': rnd.choice(COMMONERS), 'Faction': 'merchant'}
-    for i, (u, v) in enumerate([(u, v) for v in (-8, -9) for u in range(5, 12)], 1):
-        cast[f'{soldiers}#{i}'] = {'At': [u, v], 'Face': 'SW', 'Sprite': 'light_infantry', 'Faction': 'shu'}
-    return cast
+def clumps(rnd, groups, faces):
+    """The townsfolk in loose clumps of 4 to 6 on a grid of slots (three cells wide, two deep, a cell between), behind
+    the army: v -11 and further back. Returns the cast and the keys of each clump."""
+    slots = [(u, v) for v in (-11, -14, -17) for u in (0, 4, 8, 12)]
+    rnd.shuffle(slots)
+    cast, clump, n = {}, [], 0
+    for su, sv in sorted(slots[:groups], key=lambda t: (-t[1], t[0])):
+        cells = [(su + du, sv - dv) for du in range(3) for dv in range(2)]
+        rnd.shuffle(cells)
+        keys = []
+        for u, v in cells[:rnd.randint(4, 6)]:
+            n += 1
+            keys.append(f'백성#{n}')
+            cast[keys[-1]] = {'At': [u, v], 'Face': rnd.choice(faces), 'Sprite': rnd.choice(COMMONERS),
+                              'Faction': 'merchant'}
+        clump.append(keys)
+    return cast, clump
 
 
-def field_behind(rnd, party, soldiers):
-    """강릉: the army stands at the front under the wall, four deep, and the townsfolk huddle behind it."""
+def field_behind(rnd, party, soldiers, groups, faces):
+    """Liu Bei's party and army stand at the front under the wall, four deep; the townsfolk are clumped behind."""
     cast = {name: {'At': [u, v], 'Face': 'SW'} for name, u, v in party}
     n = 0
     for v in (-5, -6, -7, -8):
@@ -111,28 +109,19 @@ def field_behind(rnd, party, soldiers):
                 continue
             n += 1
             cast[f'{soldiers}#{n}'] = {'At': [u, v], 'Face': 'SW', 'Sprite': 'light_infantry', 'Faction': 'shu'}
-    n = 0
-    for v in range(-11, -17, -1):
-        for u in range(0, 16):
-            if rnd.random() < .72:
-                n += 1
-                cast[f'백성#{n}'] = {'At': [u, v], 'Face': rnd.choice(['SW'] * 5 + ['SE', 'NW', 'NE']),
-                                     'Sprite': rnd.choice(COMMONERS), 'Faction': 'merchant'}
-    return cast
-
-
-def frontline(cast, depth=2.5):
-    return [k for k, x in cast.items() if k.startswith('백성#') and x['At'][1] >= -5 - depth]
+    crowd, clump = clumps(rnd, groups, faces)
+    cast.update(crowd)
+    return cast, clump
 
 
 def volley(cast, rows, prefix, rnd):
-    """Two waves of arrows from the battlement rows onto the ground in front of the crowd."""
+    """Two waves of arrows from the battlement rows onto the ground in front of the army."""
     waves = []
     for v, after in ((0, 0), (1, .9)):
         keys = [k for k in rows[v] if k.startswith(prefix)]
         wave = []
         for i, k in enumerate(keys):
-            tu, tv = round(rnd.uniform(1.5, 14), 1), round(rnd.uniform(-6.4, -5.4), 1)
+            tu, tv = round(rnd.uniform(2, 14), 1), round(rnd.uniform(-4.6, -3.8), 1)
             wave.append(a(k, Play='attack', Arrow=[tu, tv], After=round(after + rnd.uniform(0, .45), 2)))
         waves.append(wave)
     return [waves[0] + waves[1]]
@@ -142,19 +131,19 @@ def xiangyang(start, nodes, party_extra, lines):
     rnd = random.Random(26)
     cast, rows = wall('형주궁병', '형주병', [('채모', 7), ('채중', 5), ('괴월', 9)])
     party = [('유비', 8, -7), ('장비', 9, -6), ('간옹', 7, -6)] + party_extra
-    crowd = field(rnd, party, '유비군', None)
+    crowd, clump = field_behind(rnd, party, '유비군', 12, ['SW'] * 5 + ['SE', 'NW'])
     cast.update(crowd)
-    front = sorted(frontline(cast), key=lambda k: cast[k]['At'][0])
-    run = [k for i, k in enumerate(front) if i % 2 == 0]
-    scatter = [a(k, Move=[17 + i % 5, -5 - i // 5], Speed=2, After=round(rnd.uniform(.2, 1.0), 2))
-               for i, k in enumerate(run)]
-    scatter += [a(k, Emote='!') for k in front[1::4]]
-    chat = [k for k in cast if k.startswith('백성#')][::19][:4]
-    amb = [{'CamAt': [7, -3]}] + [a(k, Chatter=c) for k, c in zip(chat, CRIES)]
+    folk = [k for keys in clump for k in keys]
+    near = sorted(folk, key=lambda k: -cast[k]['At'][1])
+    step_back = [a(k, Move=[cast[k]['At'][0], cast[k]['At'][1] - 1], Speed=1.2, After=round(rnd.uniform(0, .5), 2))
+                 for k in folk]
+    shout = [a(k, Say=t) for k, t in zip(near[::5], ('으악!', '화살이다!', '어머나!'))]
+    shout += [a(k, Emote='!') for k in near[2::6][:6]]
+    amb = [{'CamAt': [7, -5]}] + [a(k, Chatter=c) for k, c in zip(folk[::9][:4], CRIES)]
     beats = {
         lines[1]: [[[a('채모', Face='NE', Play='action')]],
                    [volley(cast, rows, '형주궁병', rnd)[0],
-                    [a('유비', Play='action')] + scatter]],
+                    [a('유비', Play='action')] + shout + step_back]],
         lines[4]: [[[a('간옹', Face='SE')]]],
         lines[5]: [[[a('유비', Face='SE')]]],
     }
@@ -177,10 +166,13 @@ def build():
     rnd = random.Random(27)
     cast, rows = wall('강릉궁병', '강릉병', [('장윤', 6), ('곽준', 8)])
     party = [('유비', 8, -7), ('장비', 9, -6), ('간옹', 7, -6), ('서서', 8, -5)]
-    cast.update(field_behind(rnd, party, '유비군'))
+    crowd, clump = field_behind(rnd, party, '유비군', 10, ['NE'] * 4 + ['NW', 'SE', 'SW', 'SW'])
+    cast.update(crowd)
     follow = [k for k in rows[1] if cast[k]['At'][0] >= 9] + [k for k in rows[0] if cast[k]['At'][0] >= 11]
-    chat = [k for k in cast if k.startswith('백성#')][::19][:4]
-    amb = [{'CamAt': [7, -3]}] + [a(k, Chatter=c) for k, c in zip(chat, HUNGER)]
+    whisperers = [keys[len(keys) // 2] for keys in clump]
+    amb = [{'CamAt': [7, -5]}] + [
+        a(k, Chatter='|'.join([WHISPERS[i], '', '', WHISPERS[(i + 4) % len(WHISPERS)], '', '']), Lag=round(1 + 1.1 * i, 1))
+        for i, k in enumerate(whisperers)]
     beats = {
         'c26v-a03': [[[a('곽준', Face='NW')]]],
         'c26v-a05': [[[a('장윤', Face='SE')]]],
