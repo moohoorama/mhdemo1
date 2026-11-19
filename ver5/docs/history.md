@@ -1,3 +1,9 @@
+## 2026-11-19 융중 대나무
+
+- `../tools/unit3d/scene_props3d.py`, `../assets_candidate/tiles/stree_bamboo_0·1.png`·`stree_bamboo_thin.png`·`stree_sasa.png`(와 `_shadow.png`), `../assets_candidate/tiles/tiles.json`, `assets/graphics/map/extra.png`·`index.json`: 대나무 소품 4종을 3D 모델(마디 있는 줄기, 가지 끝에 휘어 드리운 긴 잎)로 만들어 소품 팩에 등록, 그림자는 모델에서 계산 — 사용자 "이참에 스킬로 대나무 한번 만들자". 기존 780개 조각의 픽셀·피벗·그림자 마스크는 그대로(시트 안 위치만 바뀜, 코드로 대조).
+- `tools/build_tree_sway.py`, `assets/graphics/map/sway.png`, `index.json`: 대나무도 흔들림(줄기 고정, 잎만, 진폭 1.7배). 기존 13그루 프레임은 그대로(대조).
+- `tools/scene_maps/longzhong.py`, `assets/graphics/maps/S_vil_peace.json`: 초가 뒤(북)와 서쪽 숲의 소나무·활엽수 일부를 대숲으로 바꾸고 대숲 아홉 곳, 길가 가는 줄기 셋, 조릿대 셋을 더함(손님 길 u 8~24, v 0~9는 그대로).
+
 ## 2026-11-19 23·24장 삼고초려를 탐험으로 다시 짜기
 
 - `assets/scenario/hero/story23.json`, `story24.json`, `explore23.json`, `explore23b.json`, `explore24.json`, `explore24b.json`, `assets/scenes/ch23.json`, `ch24.json`, `assets/scenes/ascii/c23-*.txt`·`c24-*.txt`: 사용자가 승낙한 새 대본 반영 — 삼고초려의 세 방문과 양양 연회 길을 이벤트로 넘기지 않고 플레이어가 신야·융중·양양을 걸어 다니게 함. 영천 회상(`c23-flash`)·재회 통성명·서서 천거 관청 장면·수어지교·성문 뒤 유기 누각(`c24-pavilion`)은 삭제. 서서는 저잣거리에서 본명을 밝히고(단복 `danfu`는 그 앞 줄만, 그 뒤는 `xushu`), 합류(`join`)는 B23 뒤로 둠(손님 서서가 전투 안에 있어 명단에 같이 있으면 둘이 됨).

@@ -81,6 +81,7 @@ def near_road(u, v):
 
 
 placed = []
+wood_from = len(obj)
 for _ in range(2600):
     u, v = rng.randint(-23, 33), rng.randint(-23, 31)
     north, west = v < -3, u < -5
@@ -99,6 +100,23 @@ for _ in range(2600):
 for u, v in placed[::5]:
     if not near_keep(u + 1, v + 1, 1):
         obj.append(['stree_bush_1', u + 1, v + 1])
+
+# bamboo, the hermit's own grove: some of the wood on the north and west near the cottage turns to it, a thick
+# stand stands right behind and beside the cottage, slim stems line the road and dwarf bamboo marks its end
+brng = random.Random(23)
+BAMBOO = ['stree_bamboo_0', 'stree_bamboo_1']
+for o in obj[wood_from:]:
+    u, v = o[1], o[2]
+    if o[0].startswith(('stree_pine', 'stree_broad')) and u < 14 and v < 13 and (v < -3 or u < -5) and brng.random() < .45:
+        o[0] = brng.choice(BAMBOO)
+GROVES = [(2, -2), (5, -3), (8, -2), (11, -3), (-5, 1), (-6, 4), (-5, 8), (-3, -4), (14, -5)]
+SLIM = [(17, 11), (22, 13), (-2, 13)]
+SASA = [(9, 10), (4, 10), (20, 11)]
+fixed = obj[:wood_from]
+wood = [o for o in obj[wood_from:] if not any(abs(o[1] - u) < 3 and abs(o[2] - v) < 3 for u, v in GROVES + SLIM + SASA)]
+obj = fixed + wood
+obj += [[BAMBOO[i % 2], u, v] for i, (u, v) in enumerate(GROVES)]
+obj += [['stree_bamboo_thin', u, v] for u, v in SLIM] + [['stree_sasa', u, v] for u, v in SASA]
 
 art = {'id': 'S_vil_peace', 'name': '마을(울타리)', 'format': 2, 'size': [6, 5], 'origin': [OX, OY],
        'ground': [''.join(r) for r in g], 'objects': obj}
