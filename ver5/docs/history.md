@@ -1,6 +1,6 @@
 ## 2026-11-19 25장 하비 회상·신야 화공·백하 수공 연출
 
-- `assets/scenes/ch25.json`, `assets/scenes/ascii/c25-*.txt`: 하비 거리 회상(`c25-flash1`)은 관우만 말 탄 `guanyu` 시트로(적토마 전이라 `Mount` 없음). 성 밖 회상(`c25-flash2`)은 `S_castle_out_siege`에 유비군 보병 위주 20(보병 15·기병 3·궁병 2)이 성문 앞에 서고 조조군 보·창·궁·기 80이 세 면을 두른 방진, 관우·장료는 두 칸 떨어져 마주 보며 장료는 방진 사이 길로 걸어 듦, `Zoom 1`. 신야 화공(`c25-night`)은 새 맵 `S_xinye_town`에서 마지막 줄 앞에 `Zoom 1`로 물러나 서·북·남 문과 지붕 다섯이 차례로 `bigfire`. 백하 수공(`c25-ford`)은 `S_yanjin` 큰 강에 조인군이 반쯤 건넌 채 서고 관우·미축은 가까운 기슭 땅 — 사용자 결정(조인의 군세 통일, 성 안이 타는 모습, 둘이 대사 없이 전투로).
+- `assets/scenes/ch25.json`, `assets/scenes/ascii/c25-*.txt`: 하비 거리 회상(`c25-flash1`)은 관우만 말 탄 `guanyu` 시트로(적토마 전이라 `Mount` 없음). 성 밖 회상(`c25-flash2`)은 `S_castle_out_siege`에 유비군 보병 위주 20(보병 15·기병 3·궁병 2)이 성문 앞에 서고 조조군 보·창·궁 186이 유비군에서 6칸 떨어져 맵 끝까지 세 면을 두른 줄(`Zoom 2`), 관우·장료는 두 칸 떨어져 마주 보며 장료는 방진 사이 길로 걸어 듦, `Zoom 1`. 신야 화공(`c25-night`)은 새 맵 `S_xinye_town`에서 마지막 줄 앞에 `Zoom 1`로 물러나 서·북·남 문과 지붕 다섯이 차례로 `bigfire`. 백하 수공(`c25-ford`)은 `S_yanjin` 큰 강에 조인군이 반쯤 건넌 채 서고 관우·미축은 가까운 기슭 땅 — 사용자 결정(조인의 군세 통일, 성 안이 타는 모습, 둘이 대사 없이 전투로).
 - `tools/scene_maps/castle_siege.py`, `tools/scene_maps/xinye_town.py`, `assets/graphics/maps/S_castle_out_siege.json`, `S_xinye_town.json`, `assets/graphics/index.json`: 새 장면 맵 둘 — 새 그림 없이 기존 맵 조각 재사용, 다른 장면이 쓰는 맵은 건드리지 않음.
 - `assets/scenario/hero/stage25.json`: 개전 사건(`routed`)에서 미축·관우 대사 둘을 없애 바로 전투로, 군 이름 `조조군`을 `조인의 군세`로 — 사용자 결정.
 - `docs/fullstory.md`, `docs/presentation-scene.md`: 25장 전투 앞 장면 줄거리와 새 맵 두 줄.

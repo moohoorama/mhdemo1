@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Make S_castle_out_siege, the field in front of 하비's open gate for chapter 25's memory of the siege (S25 d10~d13):
 S_castle_out_open with the trees taken out of the ground where 조조's squares and the cavalry that has just ridden
-out of the gate stand (scene cells u -6..12, v 3..16), so nine score people fit on the grass in whole cells.
+out of the gate stand (scene cells u -13..19, v 3..17), so a few hundred people fit on the grass in whole cells.
 
   python3 ver5/tools/scene_maps/castle_siege.py
 
@@ -14,7 +14,7 @@ from pathlib import Path
 
 GFX = Path(__file__).resolve().parents[2] / 'assets/graphics'
 SRC, ID = 'S_castle_out_open', 'S_castle_out_siege'
-CLEAR = (-6, 12, 3, 16)     # scene cells u0, u1, v0, v1
+CLEAR = (-13, 19, 3, 17)     # scene cells u0, u1, v0, v1
 
 art = json.load(open(GFX / f'maps/{SRC}.json'))
 art['id'], art['name'] = ID, '성 밖(포위)'
