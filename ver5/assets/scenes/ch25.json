@@ -307,16 +307,21 @@
    }
   },
   "c25-ford": {
-   "Map": "S_bridge",
+   "Map": "S_yanjin",
    "Time": "night",
    "Nodes": ["c25-ford", "c25-e05", "c25-e06"],
-   "Ambient": [{"CamAt": [6, 6]}],
+   "Ambient": [{"CamAt": [11, 33]}],
    "Cast": {
-    "조홍": {"At": [6, 8], "Face": "NE"},
-    "조조군#1": {"At": [5, 9], "Face": "NE", "Sprite": "light_infantry", "Faction": "wei"},
-    "조조군#2": {"At": [7, 9], "Face": "NE", "Sprite": "light_infantry", "Faction": "wei"},
-    "조조군#3": {"At": [10, 8], "Face": "NE", "Sprite": "light_cavalry", "Faction": "wei"},
-    "관우": {"At": [3, 2], "Face": "SE"}
+    "조홍": {"At": [14, 32], "Face": "NW"},
+    "관우": {"At": [6, 33], "Face": "SE"},
+    "미축": {"At": [6, 35], "Face": "SE"},
+    "조인군#1": {"At": [13, 31], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#2": {"At": [13, 33], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#3": {"At": [15, 31], "Face": "NW", "Sprite": "light_cavalry", "Faction": "wei"},
+    "조인군#4": {"At": [15, 33], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#5": {"At": [14, 30], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#6": {"At": [14, 34], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#7": {"At": [16, 32], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"}
    },
    "Beats": {
     "c25-e06": [
@@ -324,8 +329,8 @@
       [{"Actor": "관우", "Play": "action"}]
      ],
      [
-      [{"Shake": 1.2}, {"Effect": "steam", "At": [6, 5]}],
-      [{"Actor": "조홍", "Emote": "!"}, {"Actor": "조조군#1", "Say": "물이다!"}, {"Actor": "조조군#2", "Move": [9, 9], "Speed": 2}]
+      [{"Shake": 1.2}, {"Effect": "steam", "At": [13, 32]}, {"Effect": "steam", "At": [14, 34]}, {"Effect": "steam", "At": [15, 30]}],
+      [{"Actor": "조홍", "Emote": "!"}, {"Actor": "조인군#1", "Say": "물이다!"}, {"Actor": "조인군#1", "Play": "hit", "After": 0.15}, {"Actor": "조인군#2", "Play": "hit", "After": 0.3}, {"Actor": "조인군#3", "Play": "hit", "After": 0.44999999999999996}, {"Actor": "조인군#4", "Play": "hit", "After": 0.6}, {"Actor": "조인군#5", "Play": "hit", "After": 0.75}, {"Actor": "조인군#6", "Play": "hit", "After": 0.8999999999999999}, {"Actor": "조인군#7", "Play": "hit", "After": 1.05}]
      ]
     ]
    }
