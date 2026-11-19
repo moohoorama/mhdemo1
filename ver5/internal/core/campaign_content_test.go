@@ -189,7 +189,8 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	assert.Zero(t, e.state.Flags["flag-mode-virtual"])
 	assert.Nil(t, e.char("xushu"), "Xu Shu is taken after Changban")
 	assert.Positive(t, e.state.Warehouse["mirror_armor"], "driving Yue Jin off at Runan wins his armour")
-	assert.NotNil(t, e.char("liupi"), "Liu Pi, kept alive at Runan, joins")
+	assert.Nil(t, e.char("liupi"), "Liu Pi, kept alive at Runan, parts at the south road instead of joining")
+	assert.Positive(t, e.state.Inventory["insu_high"], "Liu Pi leaves his seal behind")
 	assert.Equal(t, 1, e.state.Flags["flag-pengcheng-carts"])
 	assert.Positive(t, e.state.Inventory["barley"], "Tao Qian shares the grain from the carts")
 	assert.Equal(t, 1, e.state.Flags["flag-sunjian-alive"])
@@ -206,7 +207,7 @@ func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	for _, id := range []string{"jianyong", "fangong", "sunqian", "gaoshun"} {
 		assert.NotNil(t, e.char(id), id+" joins the party")
 	}
-	assert.NotNil(t, e.char("fanya"), "Fan A finds Zhang Fei lost in the hills and joins at the Mangdang village")
+	assert.Nil(t, e.char("fanya"), "Fan A finds Zhang Fei in the hills but goes back to Xuzhou at once")
 	assert.NotNil(t, e.char("chendao"), "Chen Dao joins at the Mangdang village")
 	assert.NotNil(t, e.char("zhaoyun"), "Zhao Yun, wandering since Gongsun Zan fell, joins on the flight from Yuan Shao")
 	for _, id := range []string{"guanyu", "guanping", "zhoucang", "chenzhen"} {

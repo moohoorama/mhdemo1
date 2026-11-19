@@ -14,7 +14,6 @@
     "조운": {"At": [8, 3], "Face": "SW"},
     "번궁": {"At": [8, 5], "Face": "NW"},
     "고순": {"At": [6, 6], "Face": "NE", "If": ["party:gaoshun"]},
-    "번아": {"At": [4, 3], "Face": "SE"},
     "진도": {"At": [7, 2], "Face": "SE"},
     "마을 사람": {"At": [17, 4], "Face": "NW", "Off": true, "Sprite": "commoner_man", "Faction": "han"}
    },
@@ -56,7 +55,6 @@
     "미방": {"At": [10, 9], "Face": "SE"},
     "번궁": {"At": [11, 3], "Face": "SE"},
     "고순": {"At": [10, 6], "Face": "SE", "If": ["party:gaoshun"]},
-    "번아": {"At": [10, 5], "Face": "SE"},
     "진도": {"At": [11, 9], "Face": "SE"},
     "관우": {"At": [17, 5], "Face": "NW", "Off": true, "Sprite": "guanyu", "Mount": "red_hare"},
     "관평": {"At": [17, 5], "Face": "NW", "Off": true},

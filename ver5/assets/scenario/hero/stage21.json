@@ -23,14 +23,12 @@
  "Sub": [
   {
    "ID": "liupi",
-   "Text": "유벽이 남쪽 성으로 무사히 빠져나간다",
+   "Text": "유벽이 남쪽 성으로 무사히 빠져나간다 (유벽이 인수를 남긴다)",
    "If": [
     "fled:liupi"
    ],
    "Flag": "flag-b21-liupi",
-   "Reward": {
-    "insu_high": 1
-   }
+   "Later": "21장 끝에 유벽이 작별하며 상급 인수를 건넨다"
   },
   {
    "ID": "yuejin",

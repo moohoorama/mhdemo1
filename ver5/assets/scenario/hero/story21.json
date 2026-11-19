@@ -348,19 +348,38 @@
    "ID": "c21-p01",
    "Kind": "say",
    "Speaker": "liupi",
-   "Text": "공도는 도적으로 죽지 않았소. 예주의 군사로 죽었소."
+   "Text": "오랜 기간 같이 있던 공도도 죽었고. 이제는 지쳤소."
   },
   {
    "ID": "c21-p02",
    "Kind": "say",
    "Speaker": "liupi",
-   "Text": "성은 잃었지만 깃발은 남았소. 나도 형주까지 따르겠소."
+   "Text": "유 예주, 나는 여기서 갈라지겠소. 황건 때부터 칼을 놓은 적이 없는데, 이제는 조용히 지내고 싶구려."
   },
   {
-   "ID": "c21-join-liupi",
-   "Kind": "join",
-   "Character": "liupi",
-   "Event": "join-liupi"
+   "ID": "c21-p03",
+   "Kind": "say",
+   "Speaker": "liupi",
+   "Text": "아무도 나를 모르는 외진 곳에 들어가 작물이나 기르며 살겠소. 어디인지는 묻지 말아 주시오."
+  },
+  {
+   "ID": "c21-p04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……알겠소, 유 장군. 부디 평안하시오. 공도의 몫까지 오래 사시오."
+  },
+  {
+   "ID": "c21-p05",
+   "Kind": "say",
+   "Speaker": "liupi",
+   "Text": "여남에서 갖고 있던 것이오. 이제는 내게 쓸데없으니 유 예주가 쓰시오."
+  },
+  {
+   "ID": "c21-grant-insu",
+   "Kind": "grant",
+   "Item": "insu_high",
+   "Count": 1,
+   "Event": "grant-c21-insu"
   },
   {
    "ID": "c21-pi-br2",
@@ -391,7 +410,7 @@
    "ID": "c21-e01",
    "Kind": "say",
    "Speaker": "sunqian",
-   "Text": "황숙, 유경승께서 양양 밖까지 마중을 나오시겠답니다."
+   "Text": "황숙, 유경승께서 받아 주시겠다 하셨습니다. 양양으로 드시지요."
   },
   {
    "ID": "c21-e02",

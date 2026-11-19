@@ -513,7 +513,7 @@
   },
   "c19-mangdang": {
    "Map": "S_mangdang",
-   "Nodes": ["c19-mangdang", "c19-k01", "c19-k02", "c19-k03", "c19-k03b", "c19-k03c", "c19-k03d", "c19-k04", "c19-k05", "c19-k06", "c19-k07", "c19-k08", "c19-k09"],
+   "Nodes": ["c19-mangdang", "c19-k01", "c19-k02", "c19-k03", "c19-k03b", "c19-k03c", "c19-k03d", "c19-k03e", "c19-k03f", "c19-k04", "c19-k05", "c19-k06", "c19-k07", "c19-k08", "c19-k09"],
    "Ambient": [{"CamAt": [9, 4]}],
    "Cast": {
     "유비": {"At": [17, 4], "Face": "NW", "Off": true},
@@ -559,6 +559,13 @@
     "c19-k03d": [
      [
       [{"Actor": "진도", "Play": "action"}]
+     ]
+    ],
+    "c19-k03f": [
+     [
+     ],
+     [
+      [{"Actor": "번아", "Face": "SE"}, {"Actor": "번아", "Move": [9, 4], "Exit": true}]
      ]
     ],
     "c19-k05": [

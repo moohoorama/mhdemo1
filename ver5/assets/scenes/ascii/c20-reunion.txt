@@ -4,7 +4,7 @@
 ###Jar.....................###~~~~~~Tre~~~Tre~~~
 ###......Tre...Wel...Mat...###...Fan............
 ###......Sck.........Mat........................
-###........................###Fya...............
+###........................###..................
 ###Hse......Jar......Sck...###GaoZunZha.........
 ###Jar...Jar...............###SunLiu............
 ###...............Hse......###MizJia.........Tre
@@ -21,9 +21,8 @@ Miz 미축
 Mif 미방
 Fan 번궁
 Gao 고순
-Fya 번아
 Che 진도
-Gua 관우  (guanyu_royal_guard, off stage, enters later (cell 17 5))
+Gua 관우  (guanyu, off stage, enters later (cell 17 5))
 Gng 관평  (off stage, enters later (cell 17 5))
 Zho 주창  (off stage, enters later (cell 17 4))
 Cen 진진  (off stage, enters later (cell 17 4))

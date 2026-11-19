@@ -60,6 +60,18 @@
    "Text": "진도라 합니다. 예주 사람입니다."
   },
   {
+   "ID": "c19-k03e",
+   "Kind": "say",
+   "Speaker": "fanya",
+   "Text": "저는 이만 서주로 돌아갈게요. 도와줄 사람들이 아직 많이 남아 있어요."
+  },
+  {
+   "ID": "c19-k03f",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "번 의원, 익덕을 이끌어 주어 고맙소. 몸조심하시오."
+  },
+  {
    "ID": "c19-k04",
    "Kind": "say",
    "Speaker": "fangong",
@@ -106,12 +118,6 @@
    "Kind": "join",
    "Character": "fangong",
    "Event": "join-fangong-2"
-  },
-  {
-   "ID": "c19-join-fanya",
-   "Kind": "join",
-   "Character": "fanya",
-   "Event": "join-fanya"
   },
   {
    "ID": "c19-join-chendao",
