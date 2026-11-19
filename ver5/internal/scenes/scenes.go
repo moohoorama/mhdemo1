@@ -57,6 +57,7 @@ type Step struct {
 	Chatter   string    // short bubbles the actor keeps saying now and then, "|" between them; "-" stops
 	If        []string  // Ambient only: the step runs when these story conditions hold (carts there only once won back)
 	Shoot     *Shoot    // the actor looses an arrow at the stage's halberd and the camera chases it
+	Arrow     []float64 // with Play "attack": the actor's arrow leaves as the bow is let go and lands on this [u, v] (volleys from a wall)
 	Free      bool      // the walk goes on without holding up the beats: people talking as they ride
 	Stop      bool      // the actor stops walking at the next whole cell
 	Follow    string    // the camera keeps on this actor from now on ("-" stops)

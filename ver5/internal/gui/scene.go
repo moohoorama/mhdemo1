@@ -64,6 +64,7 @@ type scene struct {
 	strikes   []*sceneStrike         // Strike steps playing out
 	swing     map[string]string      // riders dealing a blow on the move: the motion the walk must not cut short
 	dust      []dustPuff             // dust kicked up by targets driven back by a blow
+	arrows    []*sceneArrow          // arrows loosed by Play steps with an Arrow
 	tied      map[string]*sprite.Art // bound prisoners, with the art they stand in once untied
 }
 
@@ -370,6 +371,7 @@ func (g *Game) updateScene(dt float64) {
 	g.panCamera(tx, ty, dt, len(s.def.Nodes) > 0)
 	g.updateShot(dt)
 	g.updateStrikes(dt)
+	g.updateArrows(dt)
 	if !g.sceneBusy() {
 		return
 	}
@@ -547,6 +549,9 @@ func (g *Game) startStep(st scenes.Step) {
 		g.sfxAtCell(g.sceneMotionCue(v, anim), v.u, v.v)
 		if !v.art.Animations[anim].Loop {
 			s.plays[v.id] = anim
+		}
+		if len(st.Arrow) == 2 {
+			g.looseArrow(v, anim, st.Arrow[0], st.Arrow[1])
 		}
 	}
 	if st.Emote != "" {
@@ -1005,6 +1010,7 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 		}
 		g.drawSceneEffects(dst)
 		g.drawDust(dst)
+		g.drawArrows(dst)
 		g.drawEffects(dst)
 		g.drawShot(dst)
 		g.drawGlow(dst)
