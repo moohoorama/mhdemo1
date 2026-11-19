@@ -273,6 +273,7 @@
   "c23-visit2": {
    "Map": "S_vil_peace",
    "Time": "dawn",
+   "Snow": 1,
    "Grass": {"hue": 0, "sat": 0.04, "val": 1.8},
    "Nodes": ["c23-visit2", "c23-b01", "c23-b02", "c23-b03", "c23-b04", "c23-b05"],
    "Cast": {

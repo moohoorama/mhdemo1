@@ -13,6 +13,7 @@
    "Map": "S_xiaopei",
    "Name": "신야성",
    "Time": "dawn",
+   "Snow": 1,
    "Grass": {
     "hue": 0,
     "sat": 0.04,
@@ -88,6 +89,7 @@
    "Map": "S_vil_peace",
    "Name": "융중",
    "Time": "dawn",
+   "Snow": 1,
    "Grass": {
     "hue": 0,
     "sat": 0.04,
