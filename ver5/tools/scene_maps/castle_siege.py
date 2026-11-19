@@ -14,7 +14,7 @@ from pathlib import Path
 
 GFX = Path(__file__).resolve().parents[2] / 'assets/graphics'
 SRC, ID = 'S_castle_out_open', 'S_castle_out_siege'
-CLEAR = (-13, 19, 3, 17)     # scene cells u0, u1, v0, v1
+CLEAR = (-13, 19, 3, 36)     # scene cells u0, u1, v0, v1
 
 art = json.load(open(GFX / f'maps/{SRC}.json'))
 art['id'], art['name'] = ID, '성 밖(포위)'
@@ -25,6 +25,15 @@ for o in art['objects']:
         continue
     kept.append(o)
 art['objects'] = kept
+
+# the ground runs on toward +v (down-left on screen) and sideways so the camera following a rider down the field never
+# reaches an edge: whole rows copied from the last one, columns from each row's end
+PAD_U, MORE_V = 36, 64
+rows = [r[0] * PAD_U + r + r[-1] * PAD_U for r in art['ground']]
+rows += [rows[-1]] * MORE_V
+art['ground'] = rows
+art['origin'] = [art['origin'][0] - PAD_U, art['origin'][1]]
+art['walls'] = [[n, [a[0] - PAD_U, a[1]], [b[0] + PAD_U, b[1]], *rest] for n, a, b, *rest in art['walls']]
 
 if __name__ == '__main__':
     json.dump(art, open(GFX / f'maps/{ID}.json', 'w'), ensure_ascii=False, indent=1)
