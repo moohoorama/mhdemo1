@@ -2,7 +2,7 @@
  "Scenes": {
   "c22-start": {
    "Map": "S_ye_hall",
-   "Nodes": ["c22-start", "c22-s101", "c22-s102", "c22-s103", "c22-s104", "c22-s105", "c22-s106", "c22-s107"],
+   "Nodes": ["c22-start", "c22-s101", "c22-s102", "c22-s103", "c22-s104", "c22-s105", "c22-s106", "c22-s107", "c22-s111", "c22-s112", "c22-s113", "c22-s114", "c22-s115", "c22-s116", "c22-s117", "c22-s118", "c22-s119", "c22-s120", "c22-s121"],
    "Ambient": [{"CamAt": [6, 4]}],
    "Cast": {
     "유표": {"At": [6, 1], "Face": "SW", "Pose": "sit", "Hold": true},
@@ -10,35 +10,82 @@
     "괴월": {"At": [4, 4], "Face": "SE"},
     "향랑": {"At": [8, 3], "Face": "NW"},
     "이적": {"At": [8, 4], "Face": "NW"},
-    "손건": {"At": [8, 6], "Face": "NW"},
-    "문관#1": {"At": [3, 3], "Face": "SE", "Sprite": "official_green_noncombat", "Faction": "jing"},
+    "유비": {"At": [6, 12], "Face": "NE", "Off": true},
+    "관우": {"At": [5, 12], "Face": "NE", "Off": true},
+    "장비": {"At": [7, 12], "Face": "NE", "Off": true},
+    "손건": {"At": [6, 13], "Face": "NE", "Off": true},
     "호위#1": {"At": [8, 1], "Face": "SW", "Sprite": "guards", "Faction": "jing"},
     "호위#2": {"At": [4, 1], "Face": "SW", "Sprite": "guards", "Faction": "jing"}
    },
    "Beats": {
+    "c22-s101": [
+     [
+      [{"Actor": "유비", "Enter": [6, 12], "Move": [6, 4], "Speed": 0.8}, {"Actor": "관우", "Enter": [5, 12], "Move": [5, 5], "Speed": 0.8, "After": 0.3}, {"Actor": "장비", "Enter": [7, 12], "Move": [7, 5], "Speed": 0.8, "After": 0.3}, {"Actor": "손건", "Enter": [6, 13], "Move": [6, 6], "Speed": 0.8, "After": 0.9}]
+     ]
+    ],
     "c22-s104": [
      [
-      [{"Actor": "이적", "Look": "SW"}]
+      [{"Actor": "유비", "Move": [6, 3]}]
      ]
     ],
     "c22-s105": [
      [
-      [{"Actor": "유표", "Emote": "…", "Wait": 0.6}]
+      [{"Actor": "유표", "Play": "action"}]
      ]
     ],
-    "c22-s106": [
+    "c22-s107": [
      [
      ],
      [
-      [{"Actor": "채모", "Look": "SW"}, {"Actor": "괴월", "Look": "NE"}],
-      [{"Actor": "손건", "Play": "action"}]
+      [{"Actor": "유비", "Face": "SW"}, {"Actor": "관우", "Face": "SW"}, {"Actor": "장비", "Face": "SW"}, {"Actor": "손건", "Face": "SW"}],
+      [{"Actor": "유비", "Move": [6, 12], "Speed": 0.8, "Exit": true}, {"Actor": "관우", "Move": [5, 12], "Speed": 0.8, "Exit": true, "After": 0.2}, {"Actor": "장비", "Move": [7, 12], "Speed": 0.8, "Exit": true, "After": 0.2}, {"Actor": "손건", "Move": [6, 13], "Speed": 0.8, "Exit": true, "After": 0.4}],
+      [{"Actor": "채모", "Look": "SW"}, {"Actor": "괴월", "Look": "SW"}]
+     ]
+    ],
+    "c22-s111": [
+     [
+      [{"Actor": "채모", "Move": [5, 4], "Face": "SE"}]
+     ]
+    ],
+    "c22-s113": [
+     [
+      [{"Actor": "이적", "Move": [7, 4], "Face": "NW"}]
+     ]
+    ],
+    "c22-s114": [
+     [
+      [{"Actor": "향랑", "Move": [7, 3], "Face": "NW"}]
+     ]
+    ],
+    "c22-s117": [
+     [
+      [{"Actor": "채모", "Emote": "…", "Wait": 0.6}]
+     ]
+    ],
+    "c22-s118": [
+     [
+      [{"Actor": "유표", "Play": "action"}]
+     ]
+    ],
+    "c22-s119": [
+     [
+      [{"Actor": "괴월", "Move": [5, 3], "Face": "NE"}]
+     ]
+    ],
+    "c22-s121": [
+     [
+      [{"Actor": "유표", "Emote": "…", "Wait": 0.8}]
+     ],
+     [
+      [{"Actor": "채모", "Look": "NW"}],
+      [{"Actor": "채모", "Move": [6, 12], "Exit": true}]
      ]
     ]
    }
   },
   "c22-banquet": {
    "Map": "S_council",
-   "Nodes": ["c22-banquet", "c22-s201", "c22-s202", "c22-s203", "c22-s204", "c22-s205", "c22-s206"],
+   "Nodes": ["c22-banquet", "c22-s201", "c22-s202", "c22-s203", "c22-s204", "c22-s205", "c22-s206", "c22-s207", "c22-s208", "c22-s209", "c22-s210", "c22-s211", "c22-s212", "c22-s213"],
    "Ambient": [{"CamAt": [3, 3]}],
    "Cast": {
     "유표": {"At": [1, 3], "Face": "SE", "Pose": "sit", "Hold": true},
@@ -51,24 +98,27 @@
     "호위#2": {"At": [11, 5], "Face": "NW", "Sprite": "guards", "Faction": "jing"}
    },
    "Beats": {
-    "c22-s203": [
+    "c22-s209": [
      [
-     ],
-     [
-      [{"Actor": "채모", "Emote": "…"}]
+      [{"Actor": "채모", "Look": "SW"}]
      ]
     ],
-    "c22-s204": [
+    "c22-s210": [
      [
       [{"Actor": "채모", "Face": "SE"}]
      ]
     ],
-    "c22-s205": [
+    "c22-s211": [
+     [
+      [{"Actor": "괴월", "Emote": "…", "Wait": 0.6}]
+     ]
+    ],
+    "c22-s212": [
      [
       [{"Actor": "장비", "Face": "NE"}]
      ]
     ],
-    "c22-s206": [
+    "c22-s213": [
      [
       [{"Actor": "관우", "Face": "SW"}]
      ],
@@ -78,241 +128,181 @@
     ]
    }
   },
-  "c22-study": {
-   "Map": "S_xuzhou_room",
-   "Time": "night",
-   "Nodes": ["c22-study", "c22-s301", "c22-s302", "c22-s303", "c22-s304", "c22-s305", "c22-s306"],
-   "Ambient": [{"CamAt": [3, 2]}],
+  "c22-meet": {
+   "Map": "S_luzhi_camp",
+   "Nodes": ["c22-meet", "c22-t01", "c22-t02", "c22-t03", "c22-t04", "c22-t05", "c22-t05b", "c22-t06", "c22-t07", "c22-t08"],
    "Cast": {
-    "유표": {"At": [2, 1], "Face": "SE", "Pose": "sit", "Hold": true},
-    "괴월": {"At": [4, 1], "Face": "NW"},
-    "채모": {"At": [4, 2], "Face": "NW"}
+    "유비": {"Stay": true},
+    "간옹": {"Stay": true},
+    "장비": {"Stay": true},
+    "미방": {"Stay": true},
+    "관우": {"Stay": true},
+    "고순": {"Stay": true, "If": ["party:gaoshun"]},
+    "조운": {"Stay": true}
    },
    "Beats": {
-    "c22-s303": [
+    "c22-t01": [
      [
-      [{"Actor": "유표", "Emote": "…", "Wait": 0.6}]
+      [{"Actor": "유비", "Move": [17, 8], "Face": "NE"}, {"Actor": "관우", "Move": [16, 8], "Face": "NE", "After": 0.3}, {"Actor": "고순", "Move": [15, 8], "Face": "NE", "After": 0.6}, {"Actor": "조운", "Move": [19, 8], "Face": "NW", "After": 0.2}, {"Actor": "장비", "Move": [18, 8], "Face": "NW", "After": 0.5}, {"Actor": "미방", "Via": [[25, 10], [19, 10]], "Move": [19, 9], "Face": "NW", "After": 0.8}]
      ]
     ],
-    "c22-s304": [
+    "c22-t03": [
      [
-      [{"Actor": "채모", "Move": [3, 2], "Face": "NW"}]
+      [{"Actor": "유비", "Face": "NE"}]
      ]
     ],
-    "c22-s306": [
-     [
-      [{"Actor": "유표", "Emote": "…", "Wait": 1.0}]
-     ]
-    ]
-   }
-  },
-  "c22-xinye": {
-   "Map": "S_xiaopei_office",
-   "Nodes": ["c22-xinye", "c22-s401", "c22-s402", "c22-s403", "c22-s404", "c22-s405", "c22-s405b", "c22-s406", "c22-s407", "c22-s408", "c22-s409", "c22-s410", "c22-g01", "c22-g02", "c22-g03", "c22-n01", "c22-n02", "c22-n03"],
-   "Cast": {
-    "유비": {"At": [2, 1], "Face": "SW"},
-    "관우": {"At": [1, 3], "Face": "NE"},
-    "손건": {"At": [2, 3], "Face": "NE"},
-    "장비": {"At": [3, 3], "Face": "NW"},
-    "간옹": {"At": [4, 2], "Face": "SW"},
-    "조운": {"At": [4, 4], "Face": "NW"},
-    "고순": {"At": [3, 4], "Face": "NW", "If": ["party:gaoshun"]},
-    "군량관": {"At": [2, 7], "Face": "NE", "Off": true}
-   },
-   "Beats": {
-    "c22-s403": [
-     [
-     ],
-     [
-      [{"Actor": "유비", "Face": "SW"}]
-     ]
-    ],
-    "c22-s404": [
+    "c22-t04": [
      [
       [{"Actor": "관우", "Play": "action"}]
      ]
     ],
-    "c22-s405": [
-     [
-      [{"Actor": "유비", "Face": "SE"}]
-     ]
-    ],
-    "c22-s406": [
-     [
-      [{"Actor": "군량관", "Enter": [2, 7], "Move": [2, 5], "Face": "NE"}, {"Actor": "관우", "Face": "SW", "After": 0.6}]
-     ]
-    ],
-    "c22-s407": [
-     [
-      [{"Actor": "관우", "Move": [1, 4], "Face": "SE"}]
-     ]
-    ],
-    "c22-s408": [
-     [
-      [{"Actor": "군량관", "Emote": "!"}]
-     ]
-    ],
-    "c22-s409": [
-     [
-      [{"Actor": "관우", "Emote": "…", "Wait": 0.6}]
-     ]
-    ],
-    "c22-s410": [
-     [
-      [{"Actor": "장비", "Face": "SW"}]
-     ]
-    ],
-    "c22-g01": [
-     [
-      [{"Actor": "고순", "Move": [2, 4], "Face": "NW"}]
-     ]
-    ],
-    "c22-g03": [
-     [
-      [{"Actor": "관우", "Emote": "…", "Wait": 0.6}]
-     ],
-     [
-      [{"Actor": "군량관", "Move": [2, 8], "Face": "SW", "Exit": true}]
-     ]
-    ],
-    "c22-n01": [
-     [
-      [{"Actor": "관우", "Play": "action"}]
-     ]
-    ],
-    "c22-n02": [
+    "c22-t06": [
      [
       [{"Actor": "유비", "Face": "SW"}]
      ]
     ],
-    "c22-n03": [
+    "c22-t07": [
      [
+      [{"Actor": "미방", "Emote": "!"}]
+     ]
+    ],
+    "c22-t08": [
+     [
+      [{"Actor": "장비", "Play": "action"}]
      ],
      [
-      [{"Actor": "군량관", "Move": [2, 8], "Face": "SW", "Exit": true}]
+      [{"Actor": "관우", "Face": "SW"}, {"Actor": "고순", "Face": "SW"}],
+      [{"Actor": "관우", "Move": [10, 10], "Exit": true}, {"Actor": "고순", "Move": [10, 10], "Exit": true, "After": 0.4}]
      ]
     ]
    }
   },
   "c22-rice": {
-   "Map": "S_xiaopei_office",
-   "Nodes": ["c22-rice", "c22-r01", "c22-rg01", "c22-rg02", "c22-rg03", "c22-rg04", "c22-rn01", "c22-rn02"],
+   "Map": "S_luzhi_camp",
+   "Nodes": ["c22-rice", "c22-q01", "c22-q02", "c22-q03", "c22-q04"],
    "Cast": {
-    "유비": {"At": [2, 1], "Face": "SW"},
-    "관우": {"At": [1, 3], "Face": "NE"},
-    "장비": {"At": [3, 3], "Face": "NW"},
-    "간옹": {"At": [4, 2], "Face": "SW"},
-    "조운": {"At": [1, 4], "Face": "NE"},
-    "고순": {"At": [3, 4], "Face": "NW", "If": ["party:gaoshun"]},
-    "군량관": {"At": [2, 7], "Face": "NE", "Off": true}
+    "유비": {"Stay": true},
+    "미방": {"Stay": true}
    },
    "Beats": {
-    "c22-r01": [
+    "c22-q02": [
      [
-      [{"Actor": "군량관", "Enter": [2, 7], "Move": [2, 5], "Face": "NE", "Speed": 2}, {"Actor": "관우", "Face": "SW", "After": 0.5}]
+      [{"Actor": "미방", "Emote": "…", "Wait": 0.6}]
      ]
     ],
-    "c22-rg02": [
+    "c22-q04": [
      [
-      [{"Actor": "관우", "Emote": "…", "Wait": 0.8}]
-     ]
-    ],
-    "c22-rg03": [
-     [
-      [{"Actor": "관우", "Face": "SE"}]
-     ]
-    ],
-    "c22-rn01": [
-     [
-      [{"Actor": "관우", "Emote": "…"}]
-     ]
-    ],
-    "c22-rn02": [
-     [
-      [{"Actor": "관우", "Face": "NE"}]
+      [{"Actor": "유비", "Play": "action"}]
      ]
     ]
    }
   },
   "c22-after": {
    "Map": "S_field_road",
-   "Nodes": ["c22-after", "c22-a01", "c22-a02", "c22-a03", "c22-a04", "c22-a05", "c22-a06", "c22-a07", "c22-a08", "c22-x01", "c22-x02", "c22-x03", "c22-x04", "c22-x05", "c22-x06", "c22-d01", "c22-d11", "c22-d02"],
+   "Nodes": ["c22-after", "c22-a01", "c22-a02", "c22-a03", "c22-a04", "c22-a05", "c22-a06", "c22-a07", "c22-a08", "c22-a09", "c22-a10", "c22-a11", "c22-a12", "c22-a13", "c22-x01", "c22-x02", "c22-x03", "c22-x04", "c22-x05", "c22-x06", "c22-x07", "c22-x08", "c22-x09", "c22-x10", "c22-x11", "c22-x12", "c22-d01", "c22-d11", "c22-d02"],
    "Ambient": [{"CamAt": [5, 4]}],
    "Cast": {
     "유비": {"At": [5, 5], "Face": "NE"},
     "장비": {"At": [6, 6], "Face": "NW"},
-    "조운": {"At": [4, 6], "Face": "NE"},
-    "간옹": {"At": [3, 5], "Face": "SE"},
-    "이적": {"At": [6, 3], "Face": "SW"},
+    "이적": {"At": [9, 1], "Face": "SW", "Off": true},
+    "조운": {"At": [0, 6], "Face": "SE", "Off": true},
+    "적로#1": {"At": [0, 7], "Face": "SE", "Off": true, "Sprite": "light_cavalry_horse", "Faction": "jing"},
     "관우": {"At": [8, 1], "Face": "SW", "Off": true},
     "고순": {"At": [9, 1], "Face": "SW", "Off": true, "If": ["party:gaoshun"]}
    },
    "Beats": {
     "c22-a01": [
      [
-      [{"Actor": "이적", "Move": [5, 4], "Face": "SW"}, {"Actor": "관우", "Enter": [8, 1], "Via": [[8, 3]], "Move": [7, 3], "Face": "SW", "After": 0.4}, {"Actor": "고순", "Enter": [9, 1], "Move": [8, 3], "Face": "SW", "After": 0.8}]
+      [{"Actor": "유비", "Face": "NE"}, {"Actor": "장비", "Play": "action"}]
      ]
     ],
-    "c22-a03": [
+    "c22-a04": [
      [
-      [{"Actor": "유비", "Face": "NE"}]
+      [{"Actor": "이적", "Enter": [9, 1], "Via": [[9, 4]], "Move": [5, 4], "Speed": 2}]
      ]
     ],
     "c22-a05": [
      [
-      [{"Actor": "유비", "Emote": "…", "Wait": 0.6}]
+      [{"Actor": "장비", "Move": [6, 5], "Face": "NW"}, {"Actor": "유비", "Play": "action"}]
      ]
     ],
-    "c22-a06": [
+    "c22-a12": [
      [
       [{"Actor": "장비", "Play": "action"}]
+     ]
+    ],
+    "c22-a13": [
+     [
+      [{"Actor": "유비", "Face": "SW"}]
+     ],
+     [
+      [{"Actor": "유비", "Play": "action"}]
      ]
     ],
     "c22-x01": [
      [
-      [{"Actor": "이적", "Move": [5, 4], "Face": "SW"}, {"Actor": "관우", "Enter": [8, 1], "Via": [[8, 3]], "Move": [7, 3], "Face": "SW", "After": 0.4}, {"Actor": "고순", "Enter": [9, 1], "Move": [8, 3], "Face": "SW", "After": 0.8}]
+      [{"Actor": "유비", "Face": "NE"}, {"Actor": "장비", "Play": "action"}]
      ]
     ],
     "c22-x03": [
      [
-      [{"Actor": "유비", "Emote": "…", "Wait": 0.6}]
+      [{"Actor": "이적", "Enter": [9, 1], "Via": [[9, 4]], "Move": [5, 4], "Speed": 2}]
      ]
     ],
     "c22-x04": [
      [
+      [{"Actor": "장비", "Move": [6, 5], "Face": "NW"}, {"Actor": "유비", "Play": "action"}]
+     ]
+    ],
+    "c22-x11": [
+     [
       [{"Actor": "장비", "Play": "action"}]
+     ]
+    ],
+    "c22-x12": [
+     [
+      [{"Actor": "유비", "Face": "SW"}]
+     ],
+     [
+      [{"Actor": "유비", "Play": "action"}]
      ]
     ],
     "c22-d01": [
      [
-      [{"Actor": "조운", "Move": [4, 5], "Face": "SE"}]
+      [{"Actor": "관우", "Enter": [8, 1], "Via": [[8, 3]], "Move": [7, 3], "Face": "SW"}, {"Actor": "고순", "Enter": [9, 1], "Move": [8, 3], "Face": "SW", "After": 0.6}],
+      [{"Actor": "조운", "Enter": [0, 6], "Move": [4, 5], "Face": "SE"}, {"Actor": "적로#1", "Enter": [0, 7], "Move": [5, 6], "Face": "NE", "After": 0.4}, {"Actor": "유비", "Face": "NW"}]
      ]
     ],
     "c22-d11": [
      [
-      [{"Actor": "조운", "Move": [4, 5], "Face": "SE"}]
+      [{"Actor": "관우", "Enter": [8, 1], "Via": [[8, 3]], "Move": [7, 3], "Face": "SW"}, {"Actor": "고순", "Enter": [9, 1], "Move": [8, 3], "Face": "SW", "After": 0.6}],
+      [{"Actor": "조운", "Enter": [0, 6], "Move": [4, 5], "Face": "SE"}, {"Actor": "적로#1", "Enter": [0, 7], "Move": [5, 6], "Face": "NE", "After": 0.4}, {"Actor": "유비", "Face": "NW"}]
      ]
     ],
     "c22-d02": [
      [
-      [{"Actor": "유비", "Face": "NW"}]
+      [{"Actor": "유비", "Face": "SW"}]
+     ],
+     [
+      [{"Actor": "유비", "Play": "action"}],
+      [{"Actor": "이적", "Face": "SW"}]
      ]
     ]
    }
   },
   "c22-mifang": {
-   "Map": "S_xiaopei",
+   "Map": "S_luzhi_camp",
    "Nodes": ["c22-mifang", "c22-m01", "c22-m02", "c22-m03", "c22-m04", "c22-m05", "c22-m11", "c22-m12", "c22-m13"],
-   "Ambient": [{"CamAt": [11, 5]}],
+   "Ambient": [{"CamAt": [25, 9]}],
    "Cast": {
-    "미방": {"At": [11, 4], "Face": "NE"},
-    "군사#1": {"At": [13, 4], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"},
-    "관우": {"At": [11, 9], "Face": "NE", "Off": true}
+    "미방": {"At": [25, 9], "Face": "NE"},
+    "군사#1": {"At": [27, 9], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"},
+    "관우": {"At": [24, 14], "Face": "NE", "Off": true}
    },
    "Beats": {
     "c22-m01": [
      [
-      [{"Actor": "관우", "Enter": [11, 9], "Move": [11, 6], "Face": "NE"}, {"Actor": "미방", "Face": "SW", "After": 1.0}],
+      [{"Actor": "관우", "Enter": [24, 14], "Move": [24, 10], "Face": "NE"}, {"Actor": "미방", "Face": "SW", "After": 1.0}],
       [{"Actor": "관우", "Pose": "bow"}]
      ]
     ],
@@ -328,14 +318,14 @@
     ],
     "c22-m11": [
      [
-      [{"Actor": "관우", "Enter": [11, 9], "Move": [11, 6], "Face": "NE"}, {"Actor": "미방", "Face": "SW", "After": 1.0}]
+      [{"Actor": "관우", "Enter": [24, 14], "Move": [24, 10], "Face": "NE"}, {"Actor": "미방", "Face": "SW", "After": 1.0}]
      ]
     ],
     "c22-m12": [
      [
      ],
      [
-      [{"Actor": "관우", "Move": [11, 9], "Face": "SW", "Exit": true}]
+      [{"Actor": "관우", "Move": [24, 14], "Face": "SW", "Exit": true}]
      ]
     ],
     "c22-m13": [

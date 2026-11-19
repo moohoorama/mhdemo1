@@ -1,0 +1,32 @@
+# c22-after  S_field_road  ch22  origin 0 0
+...~~~~~~~~~~~~~~~~~~~~~~~~Tre...Bsh...Tre
+...Tre~~~~~~~~~~~~~~~Bsh..................
+.........Bsh...Tre~~~.....................
+Bsh....................................Bsh
+..........................................
+...............Liu........................
+..................Zha.....................
+..........................................
+..........................................
+...Bsh..............................Bsh...
+
+Liu 유비
+Zha 장비
+Yij 이적  (off stage, enters later (cell 9 1))
+Zun 조운  (off stage, enters later (cell 0 6))
+li1 적로#1  (light_cavalry_horse, off stage, enters later (cell 0 7))
+Gua 관우  (off stage, enters later (cell 8 1))
+Gao 고순  (off stage, enters later (cell 9 1))
+
+# c22-a04: Yij -> 5 4
+# c22-a05: Zha -> 6 5
+# c22-x03: Yij -> 5 4
+# c22-x04: Zha -> 6 5
+# c22-d01: Gua -> 7 3
+# c22-d01: Gao -> 8 3
+# c22-d01: Zun -> 4 5
+# c22-d01: li1 -> 5 6
+# c22-d11: Gua -> 7 3
+# c22-d11: Gao -> 8 3
+# c22-d11: Zun -> 4 5
+# c22-d11: li1 -> 5 6

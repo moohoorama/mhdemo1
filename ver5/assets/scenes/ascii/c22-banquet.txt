@@ -1,0 +1,19 @@
+# c22-banquet  S_council  ch22  origin -1 -1
+Pil#################################Pil
+###...Brz...Bnr...Wpn...Bnr...Arm......
+###Bnr.........CaiKua............Brz...
+###Flg......TblTbl...Tbl...Tbl......gu1
+###CdlLiu...LeiGua.....................
+###Cdl...Dsk...Zha.....................
+###Bnr......TblTbl...Tbl...Tbl......gu2
+###Wpn.................................
+Pil...Brz........................Brz...
+
+Liu 유표  (sit)
+Lei 유비  (sit)
+Gua 관우
+Zha 장비
+Cai 채모  (sit)
+Kua 괴월  (sit)
+gu1 호위#1  (guards)
+gu2 호위#2  (guards)
