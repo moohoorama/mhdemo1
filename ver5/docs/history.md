@@ -3537,3 +3537,11 @@
 - 결정: 22장 강하의 정체불명 무리는 태산 도적 진영 대신 새 진영 "복면군"(`masked`, 회색)으로 · 이유: 13장 장패의 태산 도적과 이름·색이 겹쳐 어색하다(사용자 지적)
 - `assets/data/game.json`(`masked` 진영)·`assets/scenario/hero/stage22.json`(복면 유닛 `Faction: masked`, 군 이름 복면군)
 - `stage23.json`, `maps/map23.json`, `tools/mapgen/layouts/hero/map23.txt`: B23 팔문금쇄진을 큰 진영(북쪽 모서리가 전투 영역 밖으로 이어짐)으로 다시 설계 — 울타리에 둘러싸인 남서(분기)·남동(견고) 군사 둘이 서 있는 동안 적 전군 공격·방어 +20%, 퇴각하면 매 턴 −20%, 둘 다 퇴각하면 정신·순발·사기 −15%와 조인의 놀람. 단복이 개전 때 설명. 자동 AI(5시드) 군사 처치 전 0/5 → 둘 다 처치 5/5, 학습 AI 0/4 → 4/4.
+
+## 2026-11-19 눈 오는 날 나무와 덤불은 눈 맞은 그림으로
+
+- 결정: 눈 오는 장면·탐험에서 나무·덤불의 잎은 눈 맞아 하얗고 줄기는 회색조 · 이유: 초원만 희고 나무가 초록으로 남아 눈 온 느낌이 깨졌다(사용자 요청). 눈 버전은 원본 시트를 건드리지 않고 별도 시트로 구워 대나무처럼 시트에 새로 들어오는 나무도 도구를 다시 돌리면 눈 버전이 생기게 했다
+- `tools/snow_props.py`(새)·`tools/test_snow_props.py`(새): `index.json`의 흔들림 나무 띠와 `stree_*` 정지 그림을 픽셀 색으로 변환 — 초록(색상 60~170°)은 밝기 구조를 남긴 채 흰색(그늘은 청회색), 갈색(0~55°)은 청회색조, 외곽선은 짙은 청회색, 알파·그 밖의 색은 그대로. 소품군별 규칙표 `PROFILES`, 눈의 양 `--amount`. 대나무는 잎은 연녹빛 흰색, 줄기는 옅은 회녹색(노랑 초록 팔레트를 잎과 나눠 세로로 5픽셀 이어지면 줄기), 잎 없음(a)·조금(b)·전부(c) 세 변형
+- `assets/graphics/map/props_snow.png`·`props_snow.json`(새): `<이름>_snow`(대나무는 `_snow_a|b|c`) 그림과 띠(프레임 수·시간·중심점은 원본과 같음)
+- `internal/gui/field_snow.go`(새)·`field.go`·`assets.go`·`field_grass.go`·`scene.go`·`explore.go`·`internal/scenes/scenes.go`·`internal/content/explore.go`: 장면·탐험 지역·`MapArt`의 `Snow`(0~1, 0 초과면 켬)를 두고, 켜면 `snowAssets`가 나무 그림 자리에 눈 그림을 넣은 `Assets` 사본(한 번 만들어 둠)을 쓰고 `Grass`가 없으면 눈 오는 날 풀색을 씀. `Snow`가 0~1을 벗어난 탐험 지역은 데이터 검증이 거절. 시험 `TestSnowAssetsMatchTheOriginals`·`TestExploreAreaSnowStaysWithinZeroAndOne`
+- `assets/scenario/hero/explore23b.json`(신야성·융중)·`assets/scenes/ch23.json`(`c23-visit2`): `"Snow": 1`
