@@ -271,16 +271,17 @@
    }
   },
   "c25-night": {
-   "Map": "S_castle_town",
+   "Map": "S_xinye_town",
    "Time": "night",
    "Nodes": ["c25-night", "c25-e01", "c25-e02", "c25-e03", "c25-e04"],
+   "Ambient": [{"CamAt": [7, 6]}],
    "Cast": {
-    "조인": {"At": [4, 5], "Face": "NW"},
-    "허저": {"At": [5, 4], "Face": "SW"},
-    "조홍": {"At": [5, 6], "Face": "NW"},
-    "조조군#1": {"At": [6, 5], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
-    "조조군#2": {"At": [7, 6], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
-    "조조군#3": {"At": [7, 4], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"}
+    "조인": {"At": [7, 6], "Face": "NW"},
+    "허저": {"At": [8, 6], "Face": "SW"},
+    "조홍": {"At": [6, 6], "Face": "NW"},
+    "조인군#1": {"At": [6, 5], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#2": {"At": [7, 5], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"},
+    "조인군#3": {"At": [8, 7], "Face": "NW", "Sprite": "light_infantry", "Faction": "wei"}
    },
    "Beats": {
     "c25-e01": [
@@ -295,8 +296,12 @@
     ],
     "c25-e04": [
      [
-      [{"Effect": "bigfire", "At": [1, 1]}, {"Effect": "bigfire", "At": [8, 1]}, {"Effect": "bigfire", "At": [1, 8]}, {"Shake": 0.6}],
-      [{"Actor": "조인", "Emote": "!"}, {"Actor": "허저", "Emote": "!"}, {"Actor": "조조군#1", "Say": "불이야!"}]
+      [{"Zoom": 1}, {"CamAt": [8.7, 7.6]}],
+      [{"Effect": "bigfire", "At": [-0.5, 2.0]}, {"Shake": 0.6}],
+      [{"Effect": "bigfire", "At": [9.5, -0.5]}, {"Shake": 0.5}],
+      [{"Effect": "bigfire", "At": [9.5, 14.0]}, {"Shake": 0.5}],
+      [{"Effect": "bigfire", "At": [5.4, 2.4], "After": 0.0}, {"Effect": "bigfire", "At": [7.0, 0.4], "After": 0.35}, {"Effect": "bigfire", "At": [2.9, 0.4], "After": 0.7}, {"Effect": "bigfire", "At": [2.4, 9.4], "After": 1.0499999999999998}, {"Effect": "bigfire", "At": [8.0, 10.4], "After": 1.4}],
+      [{"Actor": "조인", "Emote": "!"}, {"Actor": "허저", "Emote": "!"}, {"Actor": "조인군#1", "Say": "불이야!"}]
      ]
     ]
    }
