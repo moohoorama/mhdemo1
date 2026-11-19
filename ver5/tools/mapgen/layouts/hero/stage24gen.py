@@ -140,6 +140,10 @@ DUEL_ID = 'bowang-zhaoyun-xiahoudun'
 
 fire_actions = [{'Kind': 'terrain', 'Area': aid, 'State': 'F', 'Turns': turns, 'Vacant': True} for aid, turns in FIRE_CELLS]
 
+# The bonus objective that guides 조운 to the lure area (shown until the fire is lit) gives way to this one.
+SUB_FORD = {'ID': 'before-ford', 'Text': '하후돈이 여울을 건너기 전에 물리친다',
+            'If': ['defeated:xiahoudun', '!fled:xiahoudun'], 'Flag': 'flag-b24-xiahoudun', 'Reward': {'insu_high': 1}}
+
 events = [
     {'ID': 'opening-duel', 'Do': [{'Kind': 'duel', 'Duel': DUEL_ID}]},
     # After the duel Zhao Yun backs off up the road and Xiahou Dun gives chase with the vanguard and the center;
@@ -157,6 +161,7 @@ events = [
                                     {'Character': 'zhangfei', 'X': 11, 'Y': 18, 'Facing': 'SW'}]},
         {'Kind': 'damage', 'Targets': ['enemy@area:%d' % TRAP], 'Value': 50},
         {'Kind': 'buff', 'Targets': ['enemy@area:%d' % TRAP], 'Stat': 'confusion', 'Turns': 2},
+        {'Kind': 'goals', 'Sub': [SUB_FORD]},
         {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'assault'},
         say('xiahoudun', '불이다……! 놈들의 계략이다! 흩어지지 말고 맞서라!'),
     ]},
@@ -199,9 +204,8 @@ stage = {
     'Required': ['liubei', 'zhugeliang', 'zhaoyun'],
     'Reserve': ['guanyu', 'zhangfei'],
     'Victory': [{'If': ['alldefeated:enemy'], 'Text': '조조군을 모두 물리친다'}],
-    'Sub': [{'ID': 'before-ford', 'Text': '하후돈이 여울을 건너기 전에 물리친다',
-             'If': ['defeated:xiahoudun', '!fled:xiahoudun'], 'Flag': 'flag-b24-xiahoudun',
-             'Reward': {'insu_high': 1}}],
+    'Sub': [{'ID': 'lure', 'Text': '조운이 유인 자리(표시된 길)에 닿으면 불을 놓는다', 'If': ['at:zhaoyun:%d' % LURE]},
+            SUB_FORD],
     'TurnLimit': 20,
     'Map': 'map24.json',
     'Allies': allies,

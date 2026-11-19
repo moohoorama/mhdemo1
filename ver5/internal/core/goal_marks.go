@@ -58,6 +58,7 @@ func (e *Engine) condMarks(stage content.Stage, conds []string, negated bool) (m
 		case c.Op == "flag" || c.Op == "round":
 			pending = pending || e.holds(c, true) == c.Not
 		case c.Not && !negated:
+		case c.Op == "alldefeated" && c.Arg == "enemy": // every enemy is a target already; no guide marks them all
 		case c.Op == "defeated" || c.Op == "alldefeated" || c.Op == "alive":
 			for _, u := range e.matching(c.Arg) {
 				if u.HP > 0 {

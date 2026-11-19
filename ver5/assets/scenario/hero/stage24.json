@@ -23,6 +23,13 @@
  ],
  "Sub": [
   {
+   "ID": "lure",
+   "Text": "조운이 유인 자리(표시된 길)에 닿으면 불을 놓는다",
+   "If": [
+    "at:zhaoyun:4"
+   ]
+  },
+  {
    "ID": "before-ford",
    "Text": "하후돈이 여울을 건너기 전에 물리친다",
    "If": [
@@ -1031,6 +1038,23 @@
      ],
      "Stat": "confusion",
      "Turns": 2
+    },
+    {
+     "Kind": "goals",
+     "Sub": [
+      {
+       "ID": "before-ford",
+       "Text": "하후돈이 여울을 건너기 전에 물리친다",
+       "If": [
+        "defeated:xiahoudun",
+        "!fled:xiahoudun"
+       ],
+       "Flag": "flag-b24-xiahoudun",
+       "Reward": {
+        "insu_high": 1
+       }
+      }
+     ]
     },
     {
      "Kind": "ai",
