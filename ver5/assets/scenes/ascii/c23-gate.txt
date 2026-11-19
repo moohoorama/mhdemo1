@@ -6,7 +6,7 @@
 ...............Bsh...Bkt...............###
 .........Tre.....................Bnr...###
 .....................Zha............in1###
-........................Liu............###
+.....................YijLiu............###
 ....................................in2###
 ...Tre......Bsh...Mil..................###
 ...............Tre...............Bnr...###
@@ -21,7 +21,7 @@ Kua 괴월  (off stage, enters later (cell 13 6))
 li1 적로#1  (light_cavalry_horse, off stage, enters later (cell 13 6))
 in1 형주병#1  (light_infantry)
 in2 형주병#2  (light_infantry)
-Yij 이적  (off stage, enters later (cell 13 6))
+Yij 이적
 
 # c23-g01: Lao -> 10 6
 # c23-g01: li1 -> 10 7
@@ -30,6 +30,10 @@ Yij 이적  (off stage, enters later (cell 13 6))
 # c23-g05: Liu -> 4 7
 # c23-g05: li1 -> 5 7
 # c23-g05: Zha -> 3 6
+# c23-g05: Yij -> 4 6
 # c23-g05: Kua -> 13 6 and leaves
 # c23-g05: Lao -> 13 6 and leaves
-# c23-g06: Yij -> 6 7
+# c23-g06: Liu -> 2 7
+# c23-g06: li1 -> 3 7
+# c23-g06: Zha -> 1 6
+# c23-g06: Yij -> 2 6

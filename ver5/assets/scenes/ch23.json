@@ -61,7 +61,7 @@
   },
   "c23-gate": {
    "Map": "S_xuzhou_gate",
-   "Nodes": ["c23-gate", "c23-g01", "c23-g02", "c23-g03", "c23-g04", "c23-g05", "c23-g06", "c23-g07", "c23-g08"],
+   "Nodes": ["c23-gate", "c23-g01", "c23-g02", "c23-g03", "c23-g04", "c23-g05", "c23-g06", "c23-g07", "c23-g08", "c23-g09"],
    "Ambient": [{"CamAt": [9, 6]}],
    "Cast": {
     "유비": {"At": [8, 6], "Face": "SE"},
@@ -71,7 +71,7 @@
     "적로#1": {"At": [13, 6], "Face": "NW", "Off": true, "Sprite": "light_cavalry_horse", "Faction": "jing"},
     "형주병#1": {"At": [12, 5], "Face": "NW", "Sprite": "light_infantry", "Faction": "jing"},
     "형주병#2": {"At": [12, 7], "Face": "NW", "Sprite": "light_infantry", "Faction": "jing"},
-    "이적": {"At": [13, 6], "Face": "NW", "Off": true}
+    "이적": {"At": [7, 6], "Face": "SE"}
    },
    "Beats": {
     "c23-g01": [
@@ -93,7 +93,7 @@
     ],
     "c23-g05": [
      [
-      [{"Actor": "유비", "Move": [4, 7], "Speed": 0.8}, {"Actor": "적로#1", "Move": [5, 7], "Speed": 0.8, "After": 0.6}, {"Actor": "조운", "Move": [3, 6], "Speed": 0.8, "After": 0.5}],
+      [{"Actor": "유비", "Move": [4, 7], "Speed": 0.8}, {"Actor": "적로#1", "Move": [5, 7], "Speed": 0.8, "After": 0.6}, {"Actor": "조운", "Move": [3, 6], "Speed": 0.8, "After": 0.5}, {"Actor": "이적", "Move": [4, 6], "Speed": 0.8, "After": 0.7}],
       [{"Actor": "유비", "Face": "NW"}, {"Actor": "적로#1", "Face": "NW"}, {"Actor": "유표", "Face": "NW"}]
      ],
      [
@@ -102,8 +102,8 @@
     ],
     "c23-g06": [
      [
-      [{"Actor": "이적", "Enter": [13, 6], "Move": [6, 7], "Speed": 2}],
-      [{"Actor": "이적", "Face": "NW"}, {"Actor": "유비", "Face": "SE"}, {"Actor": "조운", "Face": "SE"}]
+      [{"Actor": "유비", "Move": [2, 7], "Speed": 0.8}, {"Actor": "적로#1", "Move": [3, 7], "Speed": 0.8, "After": 0.4}, {"Actor": "조운", "Move": [1, 6], "Speed": 0.8, "After": 0.2}, {"Actor": "이적", "Move": [2, 6], "Speed": 0.8, "After": 0.5}],
+      [{"Actor": "이적", "Look": "SE"}, {"Actor": "유비", "Face": "NW"}, {"Actor": "조운", "Face": "NW"}]
      ]
     ],
     "c23-g07": [
