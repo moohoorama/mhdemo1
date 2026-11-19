@@ -5,6 +5,12 @@
 - `assets/scenario/hero/stage25.json`: 개전 사건(`routed`)에서 미축·관우 대사 둘을 없애 바로 전투로, 군 이름 `조조군`을 `조인의 군세`로 — 사용자 결정.
 - `docs/fullstory.md`, `docs/presentation-scene.md`: 25장 전투 앞 장면 줄거리와 새 맵 두 줄.
 
+## 2026-11-19 양양·강릉 성 위 장면
+
+- `tools/scene_maps/wall_top.py`, `assets/graphics/maps/S_wall_top.json`·`S_wall_top_flip.json`, `assets/graphics/index.json`: 하비 회상용 성 밖 맵(`S_castle_out`)을 성 위 대화에 쓰니 어색하다는 사용자 말에 따라, 영천 주준·황보숭 장면의 성벽 위 맵(`S_changshe_wall`)을 낮 장면으로 바꾼 `S_wall_top`(성 밖 우상단)과 그것을 u·v 전치로 좌우 반전한 `S_wall_top_flip`(성 밖 좌상단)을 만듦. 영천 맵은 그대로.
+- `internal/scenes/scenes.go`, `internal/gui/scene.go`, `internal/gui/scene_arrow.go`, `internal/gui/scene_arrow_test.go`: `Play`와 함께 쓰는 단계 `Arrow: [u, v]`. 궁병이 시위를 놓는 프레임에 화살이 성벽 높이에서 떠나 그 칸에 떨어진다. 없는 장면은 그대로. 기존 활 쏘는 비트는 궁병이 성벽 안쪽에 반투명하게 서 있어 활도 화살도 안 보였다.
+- `tools/scene_maps/wall_top_scenes.py`, `assets/scenes/ch26.json`·`ch25v.json`·`ch26v.json`: 양양(`c26-start`·`c25v-gate`)과 강릉(`c26v-start`)을 새 맵으로 재연출. 성 위에 궁병·보병·호위와 채모·채중·괴월(강릉은 장윤·곽준), 성 밑에 유비 일행·유비군 14·백성 약 70. 양양은 "쏴라!" 뒤 궁병 두 줄의 일제 사격과 달아나는 앞줄 백성, 강릉은 장윤이 궁병을 이끌고 성벽을 따라 나감. 대사·노드 순서는 그대로. 강릉 성문 열린 뒤 장면(`c26v-gate`)은 이번에 안 바꿈. `Zoom 1`(전체 보기)은 인물이 너무 작아 쓰지 않음.
+
 ## 2026-11-19 융중 대나무
 
 - `../tools/unit3d/scene_props3d.py`, `../assets_candidate/tiles/stree_bamboo_0·1.png`·`stree_bamboo_thin.png`·`stree_sasa.png`(와 `_shadow.png`), `../assets_candidate/tiles/tiles.json`, `assets/graphics/map/extra.png`·`index.json`: 대나무 소품 4종을 3D 모델(마디 있는 줄기, 가지 끝에 휘어 드리운 긴 잎)로 만들어 소품 팩에 등록, 그림자는 모델에서 계산 — 사용자 "이참에 스킬로 대나무 한번 만들자". 기존 780개 조각의 픽셀·피벗·그림자 마스크는 그대로(시트 안 위치만 바뀜, 코드로 대조).
