@@ -3560,3 +3560,12 @@
 - `assets/graphics/map/props_snow.png`·`props_snow.json`(새): `<이름>_snow`(대나무는 `_snow_a|b|c`) 그림과 띠(프레임 수·시간·중심점은 원본과 같음)
 - `internal/gui/field_snow.go`(새)·`field.go`·`assets.go`·`field_grass.go`·`scene.go`·`explore.go`·`internal/scenes/scenes.go`·`internal/content/explore.go`: 장면·탐험 지역·`MapArt`의 `Snow`(0~1, 0 초과면 켬)를 두고, 켜면 `snowAssets`가 나무 그림 자리에 눈 그림을 넣은 `Assets` 사본(한 번 만들어 둠)을 쓰고 `Grass`가 없으면 눈 오는 날 풀색을 씀. `Snow`가 0~1을 벗어난 탐험 지역은 데이터 검증이 거절. 시험 `TestSnowAssetsMatchTheOriginals`·`TestExploreAreaSnowStaysWithinZeroAndOne`
 - `assets/scenario/hero/explore23b.json`(신야성·융중)·`assets/scenes/ch23.json`(`c23-visit2`): `"Snow": 1`
+
+## 2026-11-19 22장 양양 알현·강하 진지 탐험·이적 별가, 번아·유벽은 합류하지 않음
+
+- 결정: 번아는 19장 망탕산에서 장비를 만난 자리에서 서주로 돌아가고(합류 없음), 유벽은 21장 끝에서 작별하며 상급 인수를 건네고 떠난다(합류 없음) · 이유: 사용자 개편안(scenario-22) · 영향받는 문서: fullstory.md(19~23장), 번성 관우 치료는 "서주의 번아가 불려 와"
+- 결정: 22장은 양양 인사→관청 다툼→잔칫상(신야를 내리는 줄)→강하 진지 탐험(회의·미방과 군량 대화)→B22→이적의 경고→적로→곳간 앞. 신야 장면·서재·별동대 막사·군량관 장면은 지움. 이적은 "별가", 괴월은 "괴 공"
+- `story19.json`·`assets/scenes/ch19.json`·`ch20.json`·`explore20.json`: 번아 작별 두 줄과 걸어 나감, 합류 노드·20장 번아 배역 삭제
+- `story21.json`·`stage21.json`·`ch21.json`: 유벽 작별 대사·`grant insu_high`, 합류 삭제, B21 부목표 `liupi` 보상 제거("(유벽이 인수를 남긴다)")
+- `story22.json`·`explore22.json`(강하 진지 `S_luzhi_camp`)·`ch22.json`: 새 구조, `story23.json`·`ch23.json`(성문 밖 이적 동행)·`story24.json`·`story25.json`(괴 별가→괴 공)
+- `internal/core/campaign_content_test.go`: 유벽·번아 합류 기대를 합류 없음·인수 지급으로
