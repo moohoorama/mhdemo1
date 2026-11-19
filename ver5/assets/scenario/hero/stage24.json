@@ -2028,11 +2028,19 @@
      "Policy": "assault"
     },
     {
+     "Kind": "ai",
+     "Targets": [
+      "enemy@area:6"
+     ],
+     "Policy": "flee",
+     "GoalArea": 9
+    },
+    {
      "Kind": "say",
      "Lines": [
       {
        "Actor": "xiahoudun",
-       "Text": "불이다……! 놈들의 계략이다! 흩어지지 말고 맞서라!"
+       "Text": "불이다……! 물러나라! 여울 너머까지 물러나라!"
       }
      ]
     },
