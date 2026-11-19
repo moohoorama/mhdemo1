@@ -133,7 +133,7 @@ func (b *bowang) endTurn() {
 // run lets 조운 walk into the lure area right after the duel and the chase.
 func (b *bowang) run(rounds int) {
 	for b.e.Observe().Round <= rounds && b.e.Observe().Phase == "battle" && !b.executed("fire") {
-		b.walk("zhaoyun", 8, 25, 9)
+		b.walk("zhaoyun", 8, 32, 9)
 		b.endTurn()
 	}
 }

@@ -95,13 +95,14 @@ FIRE_XS = (RX0 - 1, RX1 + 1)  # one column of woods each side of the road
 areas = [
     rect(1, 7, 37, 3, 3, '신야 앞 길', '유비·제갈량. 곁에 신야성'),
     rect(VAN_SEAT, 7, 19, 3, 1, '선봉 자리', '조운이 하후돈 가까이에서 시작한다'),
-    rect(LURE, RX0, 24, 3, 3, '유인 자리', '조운이 여기까지 오면 불을 놓는다'),
+    rect(LURE, 6, 30, 5, 5, '유인 자리', '조운이 여기까지 오면 불을 놓는다'),
     rect(TRAP, 5, FIRE_Y0, 7, FIRE_Y1 - FIRE_Y0 + 1, '불 놓을 길', '길과 양옆 숲. 이 안의 조조군이 불에 데고 혼란에 빠진다'),
     rect(REAR, 6, 17, 5, 3, '후방 자리', '후미 병졸이 따라 닿는 길'),
     rect(FLEE, 6, 0, 5, 2, '여울 너머', '여울 건너편'),
     rect(FORD, 6, 5, 5, 4, '여울 앞', '이전이 남은 군사를 거두는 강가'),
 ]
-FIRE_CELLS = []  # (area id, turns)
+FIRE_CELLS = [[], []]  # per side (west, east): (area id, turns)
+EMBER_CELLS = [[], []]  # per side: area ids of the embers on about half of the rest of the stretch
 n = 0
 for side, x in enumerate(FIRE_XS):
     for y in range(FIRE_Y0, FIRE_Y1 + 1):
@@ -109,8 +110,17 @@ for side, x in enumerate(FIRE_XS):
             continue
         aid = 30 + n
         areas.append(rect(aid, x, y, 1, 1, '불 %d' % (n + 1), '길 옆 숲 한 칸'))
-        FIRE_CELLS.append((aid, 2 + (n * 3) % 5))
+        FIRE_CELLS[side].append((aid, 2 + (n * 3) % 5))
         n += 1
+lit = {(a['Rect']['X'], a['Rect']['Y']) for a in areas if a['ID'] >= 30}
+m = 0
+for y in range(FIRE_Y0, FIRE_Y1 + 1):
+    for x in range(5, 12):
+        if (x, y) in lit or g[y][x][0] not in 'gluU' or h(x, y) % 2:
+            continue
+        areas.append(rect(100 + m, x, y, 1, 1, '불씨 %d' % (m + 1), '불길 곁에 남는 불씨 한 칸'))
+        EMBER_CELLS[0 if x <= RX0 + 1 else 1].append(100 + m)
+        m += 1
 
 # The column waits on the road, vanguard (선봉) at the head, center (중군) behind, then the rear guard (후방) with
 # the supply carts (군량 수레) last; 3 abreast.
@@ -138,7 +148,15 @@ for x, y in ((8, 5), (8, 3)):
 COLUMN = ['van', 'main', 'rear']
 DUEL_ID = 'bowang-zhaoyun-xiahoudun'
 
-fire_actions = [{'Kind': 'terrain', 'Area': aid, 'State': 'F', 'Turns': turns, 'Vacant': True} for aid, turns in FIRE_CELLS]
+def lit_side(side):
+    """Embers on half of the stretch of one side, then its line of woods in flames, each cell for its own rounds."""
+    return ([{'Kind': 'terrain', 'Area': aid, 'State': 'e', 'Turns': 3, 'Vacant': True} for aid in EMBER_CELLS[side]]
+            + [{'Kind': 'terrain', 'Area': aid, 'State': 'F', 'Turns': turns, 'Vacant': True} for aid, turns in FIRE_CELLS[side]])
+
+
+def join(character, x, y, facing):
+    return {'Kind': 'join', 'Spawns': [{'Character': character, 'X': x, 'Y': y, 'Facing': facing}]}
+
 
 # The bonus objective that guides 조운 to the lure area (shown until the fire is lit) gives way to this one.
 SUB_FORD = {'ID': 'before-ford', 'Text': '하후돈이 여울을 건너기 전에 물리친다',
@@ -156,11 +174,13 @@ events = [
     ]},
     # The whole fire is lit at once, then the Wei troops on that stretch of road burn and fall into confusion.
     {'ID': 'fire', 'If': ['any:[at:zhaoyun:%d, since:chase>=4, defeated:xiahoudun]' % LURE], 'Do': [
-        say('zhugeliang', '이때입니다! 불을 놓으십시오!')] + fire_actions + [
-        {'Kind': 'join', 'Spawns': [{'Character': 'guanyu', 'X': 5, 'Y': 20, 'Facing': 'SE'},
-                                    {'Character': 'zhangfei', 'X': 11, 'Y': 18, 'Facing': 'SW'}]},
+        say('zhugeliang', '이때입니다! 불을 놓으십시오!'),
+        join('guanyu', 5, 20, 'SE')] + lit_side(0) + [
+        join('zhangfei', 11, 18, 'SW')] + lit_side(1) + [
         {'Kind': 'damage', 'Targets': ['enemy@area:%d' % TRAP], 'Value': 50},
         {'Kind': 'buff', 'Targets': ['enemy@area:%d' % TRAP], 'Stat': 'confusion', 'Turns': 2},
+        {'Kind': 'buff', 'Targets': ['enemy@area:%d' % TRAP], 'Stat': 'attack', 'Value': -20, 'Turns': 3},
+        {'Kind': 'buff', 'Targets': ['enemy@area:%d' % TRAP], 'Stat': 'defense', 'Value': -20, 'Turns': 3},
         {'Kind': 'goals', 'Sub': [SUB_FORD]},
         {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'assault'},
         say('xiahoudun', '불이다……! 놈들의 계략이다! 흩어지지 말고 맞서라!'),
