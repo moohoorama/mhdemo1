@@ -6,16 +6,16 @@ is one straight line from the screen's NE corner to its SW corner. The road is 3
 class), the river crosses it near the NE end (a ford, 'w' and 's'), forest and hills line both sides, mountains wall
 the rest in. 신야 (one castle tile) lies beside the SW end of the road.
 
-Flow: the Wei column (Xiahou Dun and the vanguard, Yu Jin and the center, the rear guard with three supply carts)
-waits on the road, the ford guard (Li Dian) at the river. Zhao Yun walks up and baits Xiahou Dun (area LURE, or any
-damage to the column); Xiahou Dun then chases on his Jueying with the vanguard and center behind him (assault), the
-rear guard marches to its place. The fire zone covers the whole stretch of road the column stands on. When Xiahou Dun
-reaches the deep part of it (area DEEP) with the vanguard and center inside, Zhuge Liang lights the fire: Guan Yu
-comes out of the woods in the middle of the stretch and Zhang Fei behind it, at the rear guard, and the Wei troops
-standing in the zone lose half their strength and are confused; they flee for the ford. The ford guard is never touched.
+Flow: Zhao Yun starts a few cells from Xiahou Dun, who waits with the vanguard, the center and the rear guard on the road
+(the ford guard under Li Dian at the river). Guan Yu and Zhang Fei are in the party as ambush officers (Reserve, always sortie) and come out of the woods when the fire is lit. At the first round Zhao Yun and Xiahou Dun duel (a draw, both stay; Zhao Yun only backs off in
+the staging), then Xiahou Dun chases with the vanguard and center, the rear guard marches to its place. When Zhao Yun
+reaches the lure area (or four rounds after the chase) the fire is lit at once: only a thin line of woods beside the road
+burns (one column each side, a gap on every third cell, only cells no one stands on, each burning 2-6 rounds), and the
+Wei troops on that stretch of road lose half their strength and are confused. The win is to defeat every Wei unit.
 """
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path('.')
@@ -87,21 +87,30 @@ def wait(sec):
     return {'Kind': 'cutscene', 'Steps': [[{'Kind': 'wait', 'Seconds': sec}]]}
 
 
-# Areas. 11..15 are the fire strips, lit from the NE side (cutting the way back) to the SW.
+# Areas. Each fire cell is its own one-cell area (30..) so it can burn for its own number of rounds.
 LURE, DEEP, TRAP, FLEE, FORD, REAR = 4, 5, 6, 9, 10, 7
-FIRE_X, FIRE_W, FIRE_Y0, FIRE_ROWS, STRIP = 5, 7, 9, 20, 2
-STRIPS = [11 + i for i in range(FIRE_ROWS // STRIP)]
+VAN_SEAT = 21
+FIRE_Y0, FIRE_Y1 = 9, 28
+FIRE_XS = (RX0 - 1, RX1 + 1)  # one column of woods each side of the road
 areas = [
-    rect(1, 7, 37, 3, 3, '신야 앞 길', '유비·제갈량과 조운. 곁에 신야성'),
-    rect(LURE, RX0, 24, 3, 3, '유인 자리', '여기까지 오면 하후돈이 조운을 쫓는다'),
-    rect(DEEP, 6, 21, 5, 7, '덫 깊은 곳', '하후돈이 여기까지 쫓아 들어오면 불이 붙는다'),
-    rect(TRAP, FIRE_X, FIRE_Y0, FIRE_W, FIRE_ROWS, '불 놓을 길', '길과 양옆 숲. 화공이 번지는 곳'),
-    rect(REAR, 6, 17, 5, 3, '후방 자리', '보급 수레와 후미 병졸이 따라 닿는 길'),
-    rect(FLEE, 6, 0, 5, 2, '여울 너머', '하후돈이 닿으면 강을 건너 달아난다'),
+    rect(1, 7, 37, 3, 3, '신야 앞 길', '유비·제갈량. 곁에 신야성'),
+    rect(VAN_SEAT, 7, 19, 3, 1, '선봉 자리', '조운이 하후돈 가까이에서 시작한다'),
+    rect(LURE, RX0, 24, 3, 3, '유인 자리', '조운이 여기까지 오면 불을 놓는다'),
+    rect(TRAP, 5, FIRE_Y0, 7, FIRE_Y1 - FIRE_Y0 + 1, '불 놓을 길', '길과 양옆 숲. 이 안의 조조군이 불에 데고 혼란에 빠진다'),
+    rect(REAR, 6, 17, 5, 3, '후방 자리', '후미 병졸이 따라 닿는 길'),
+    rect(FLEE, 6, 0, 5, 2, '여울 너머', '여울 건너편'),
     rect(FORD, 6, 5, 5, 4, '여울 앞', '이전이 남은 군사를 거두는 강가'),
 ]
-for i, a in enumerate(STRIPS):
-    areas.append(rect(a, FIRE_X, FIRE_Y0 + i * STRIP, FIRE_W, STRIP, '불 %d' % (i + 1), '화공으로 불이 붙는 길가'))
+FIRE_CELLS = []  # (area id, turns)
+n = 0
+for side, x in enumerate(FIRE_XS):
+    for y in range(FIRE_Y0, FIRE_Y1 + 1):
+        if g[y][x][1] != 't' or (y - FIRE_Y0 + side) % 3 == 2:  # woods only, every third cell stays bare
+            continue
+        aid = 30 + n
+        areas.append(rect(aid, x, y, 1, 1, '불 %d' % (n + 1), '길 옆 숲 한 칸'))
+        FIRE_CELLS.append((aid, 2 + (n * 3) % 5))
+        n += 1
 
 # The column waits on the road, vanguard (선봉) at the head, center (중군) behind, then the rear guard (후방) with
 # the supply carts (군량 수레) last; 3 abreast.
@@ -119,7 +128,7 @@ for x, y in main_cells[1:]:
 for x, y in rear_cells:
     road_units.append(enemy('troop_footman', x, y, 'rear'))
 for x, y in cart_cells:
-    road_units.append(enemy('loot_cart', x, y, 'rear'))
+    road_units.append(enemy('loot_cart', x, y, 'cart'))
 ford_units = [enemy('lidian', 8, 7, 'ford', DuelFirst=True)]
 for x, y in ((7, 7), (9, 7), (7, 5), (9, 5)):
     ford_units.append(enemy('troop_footman', x, y, 'ford'))
@@ -127,43 +136,30 @@ for x, y in ((8, 5), (8, 3)):
     ford_units.append(enemy('troop_archer', x, y, 'ford'))
 
 COLUMN = ['van', 'main', 'rear']
-BURNT = ['enemy@area:%d' % a for a in STRIPS]  # the Wei troops standing in the fire zone
+DUEL_ID = 'bowang-zhaoyun-xiahoudun'
 
-fire_actions = []
-for i, a in enumerate(STRIPS):
-    fire_actions.append({'Kind': 'terrain', 'Area': a, 'State': 'F', 'Turns': 2})
-    fire_actions.append(wait(0.3))
-
-
-def fire_event(event_id, cond):
-    return {'ID': event_id, 'If': cond, 'Do': [
-        say('zhugeliang', '이때입니다! 불을 놓으십시오!'),
-    ] + fire_actions + [
-        {'Kind': 'join', 'Spawns': [
-            {'Character': 'guanyu', 'X': 5, 'Y': 19, 'Facing': 'SE'},
-            {'Character': 'zhangfei', 'X': 11, 'Y': 14, 'Facing': 'SW'}]},
-        {'Kind': 'damage', 'Targets': BURNT, 'Value': 50},
-        {'Kind': 'buff', 'Targets': BURNT, 'Stat': 'confusion', 'Turns': 2},
-        {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'flee', 'GoalArea': FLEE},
-        say('xiahoudun', '불이다……! 물러나라! 여울까지 물러나라!'),
-    ]}
-
+fire_actions = [{'Kind': 'terrain', 'Area': aid, 'State': 'F', 'Turns': turns, 'Vacant': True} for aid, turns in FIRE_CELLS]
 
 events = [
-    # Zhao Yun baits Xiahou Dun (or anyone strikes the column): he gives chase on his Jueying, the vanguard and the
-    # center follow, the rear guard walks to its place behind the fire zone.
-    {'ID': 'lure', 'If': ['any:[at:zhaoyun:%d, hp:van<100, hp:main<100]' % LURE], 'Do': [
-        say('xiahoudun', '겨우 이것이냐! 선봉도 중군도 따르라! 쫓아라!'),
+    {'ID': 'opening-duel', 'Do': [{'Kind': 'duel', 'Duel': DUEL_ID}]},
+    # After the duel Zhao Yun backs off up the road and Xiahou Dun gives chase with the vanguard and the center;
+    # the rear guard walks to its place. The carts stay where they are.
+    {'ID': 'chase', 'If': ['any:[duel:%s, round>=2]' % DUEL_ID], 'Do': [
+        {'Kind': 'cutscene', 'Steps': [[{'Kind': 'move', 'Unit': 'zhaoyun', 'To': P(8, 22), 'Facing': 'SW'}]]},
+        say('xiahoudun', '어딜 도망가느냐! 선봉도 중군도 따르라! 쫓아라!'),
         {'Kind': 'ai', 'Targets': ['van', 'main'], 'Policy': 'assault'},
         {'Kind': 'ai', 'Targets': ['rear'], 'Policy': 'march', 'GoalArea': REAR},
     ]},
-    # Xiahou Dun and the whole vanguard are in the fire zone with the head of the center. The fire itself waits on
-    # this or, as a safety net, on five rounds after the lure (a join may stand in one event only, hence the relay).
-    {'ID': 'column-in-trap', 'If': ['since:lure>=0', 'at:xiahoudun:%d' % DEEP, 'allat:van:%d' % TRAP, 'allat:main:%d' % TRAP], 'Do': [
-        {'Kind': 'ai', 'Targets': ['van', 'main'], 'Policy': 'assault'}]},
-    fire_event('fire', ['any:[since:column-in-trap>=0, since:lure>=5]']),
-    {'ID': 'advance-late', 'If': ['round>=10', '!since:lure'], 'Do': [
-        {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'assault'}]},
+    # The whole fire is lit at once, then the Wei troops on that stretch of road burn and fall into confusion.
+    {'ID': 'fire', 'If': ['any:[at:zhaoyun:%d, since:chase>=4, defeated:xiahoudun]' % LURE], 'Do': [
+        say('zhugeliang', '이때입니다! 불을 놓으십시오!')] + fire_actions + [
+        {'Kind': 'join', 'Spawns': [{'Character': 'guanyu', 'X': 5, 'Y': 20, 'Facing': 'SE'},
+                                    {'Character': 'zhangfei', 'X': 11, 'Y': 18, 'Facing': 'SW'}]},
+        {'Kind': 'damage', 'Targets': ['enemy@area:%d' % TRAP], 'Value': 50},
+        {'Kind': 'buff', 'Targets': ['enemy@area:%d' % TRAP], 'Stat': 'confusion', 'Turns': 2},
+        {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'assault'},
+        say('xiahoudun', '불이다……! 놈들의 계략이다! 흩어지지 말고 맞서라!'),
+    ]},
     {'ID': 'ford-near', 'If': ['at:xiahoudun:%d' % FORD], 'Do': [
         say('xiahoudun', '여울만 건너면 된다! 만백, 뒤를 막아라!'),
         say('lidian', '어서 건너시오! 남은 군사는 내가 거두겠소!')]},
@@ -171,29 +167,54 @@ events = [
         say('xiahoudun', '만백까지……! 이 하후돈이 서생 하나에게 놀아났단 말이냐!')]},
 ]
 
-# The duel is tuned with tools/duel_flow; keep what the stage file has.
-duel = json.loads((HERO / 'stage24.json').read_text(encoding='utf-8'))['Duels'][0]
+# The Guan Yu - Li Dian duel is tuned with tools/duel_flow; keep what the stage file has.
+sys.path.insert(0, str(ROOT / 'tools/duel_flow'))
+from flow import B, Duel as FlowDuel, tk  # noqa: E402
+old_duels = json.loads((HERO / 'stage24.json').read_text(encoding='utf-8'))['Duels']
+lidian_duel = next(d for d in old_duels if d['ID'] == 'bowang-guanyu-lidian')
+zy = FlowDuel(['조운', '하후돈'], ['창', '창'])
+zhaoyun_duel = {
+    'ID': DUEL_ID, 'Ally': 'zhaoyun', 'Enemy': 'xiahoudun', 'Outcome': 'draw', 'AllyResult': 'stay', 'EnemyResult': 'stay',
+    'Text': '조운과 하후돈이 십여 합을 겨루었으나 승부가 나지 않았다. 조운이 말머리를 돌려 물러나자 하후돈이 뒤를 쫓았다.',
+    'Beats': zy.build([
+        ('T', 1, '하후돈이 길을 막아서다', '신야의 유비가 보낸 놈이냐! 이름을 대라.'),
+        ('T', 0, '조운이 답하다', '상산의 조자룡이오. 하후 장군, 길을 열어 주시오.'),
+        ('B', B('approach', 0, '두 장수가 말을 몰아 맞붙다')),
+        ('probe', 1),
+        ('trade', 0),
+        ('press', 1),
+        ('T', 1, '하후돈이 창을 몰아치다', '창이 맵시만 좋구나! 유비 따위를 섬길 재목이 아니다!'),
+        ('evade', 0),
+        ('counter', 1),
+        ('clash', 0),
+        ('T', 0, '조운이 속으로 헤아리다', '(이 길 안쪽까지 끌어들여야 한다. 지금은 물러설 때다.)'),
+        ('B', B('backstep', 0, '조운이 말머리를 돌려 물러서다')),
+        ('B', B('draw', 0, '조운이 물러나고 하후돈이 쫓을 채비를 하다')),
+    ]),
+}
 
-allies = [P(8, 39), P(9, 39), P(8, 38), P(7, 39), P(7, 38), P(9, 38), P(7, 37), P(8, 37), P(9, 37)]
+allies = [P(8, 39), P(9, 39), P(8, 38), P(7, 39), P(7, 38), P(9, 38), P(7, 37), P(8, 37), P(9, 37), P(8, 19)]
 stage = {
     'ID': 'B24', 'Name': '박망파 전투', 'Width': 0, 'Height': 0, 'Max': 8,
     'Required': ['liubei', 'zhugeliang', 'zhaoyun'],
     'Reserve': ['guanyu', 'zhangfei'],
-    'Victory': [{'If': ['defeated:xiahoudun'], 'Text': '하후돈을 물리치거나 여울 너머로 쫓아낸다'}],
+    'Victory': [{'If': ['alldefeated:enemy'], 'Text': '조조군을 모두 물리친다'}],
     'Sub': [{'ID': 'before-ford', 'Text': '하후돈이 여울을 건너기 전에 물리친다',
              'If': ['defeated:xiahoudun', '!fled:xiahoudun'], 'Flag': 'flag-b24-xiahoudun',
              'Reward': {'insu_high': 1}}],
     'TurnLimit': 20,
     'Map': 'map24.json',
     'Allies': allies,
-    'Recommend': {'liubei': P(8, 39), 'zhugeliang': P(9, 39), 'zhaoyun': P(8, 37)},
-    'Groups': [{'Name': '본대', 'Area': 1, 'Required': ['liubei', 'zhugeliang', 'zhaoyun']}],
+    'Recommend': {'liubei': P(8, 39), 'zhugeliang': P(9, 39), 'zhaoyun': P(8, 19)},
+    'Groups': [{'Name': '본대', 'Area': 1, 'Required': ['liubei', 'zhugeliang']},
+               {'Name': '선봉', 'Area': VAN_SEAT, 'Required': ['zhaoyun']},
+],
     'Enemies': road_units + ford_units,
     'Reward': {'money': 2000, 'meteor_hammer': 1},
     'Areas': areas,
     'Events': events,
     'Faction': 'wei',
-    'Duels': [duel],
+    'Duels': [zhaoyun_duel, lidian_duel],
     'Armies': [{'Faction': 'shu', 'Name': '유비군', 'Ally': True}, {'Faction': 'wei', 'Name': '조조군'}],
 }
 (HERO / 'stage24.json').write_text(json.dumps(stage, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')

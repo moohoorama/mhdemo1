@@ -269,14 +269,21 @@ func (e *Engine) changeTerrain(stage content.Stage, a content.Action) {
 		if area.ID != a.Area {
 			continue
 		}
+		changed := false
 		for y := max(0, area.Rect.Y); y < min(stage.Height, area.Rect.Y+area.Rect.H); y++ {
 			for x := max(0, area.Rect.X); x < min(stage.Width, area.Rect.X+area.Rect.W); x++ {
+				if a.Vacant && e.occupied(x, y) != nil {
+					continue
+				}
 				if e.data.ValidCell(withState(e.Cell(x, y), a.State)) == "" {
 					e.setState(stage, x, y, a.State, a.Turns)
+					changed = true
 				}
 			}
 		}
-		e.emit("terrain", "", a.State, a.Area)
+		if changed || !a.Vacant {
+			e.emit("terrain", "", a.State, a.Area)
+		}
 	}
 }
 

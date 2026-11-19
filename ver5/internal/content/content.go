@@ -335,6 +335,7 @@ type Action struct {
 	Area     int            `json:",omitempty"` // terrain: the area whose cells change
 	State    string         `json:",omitempty"` // terrain: the state they get; NoLayer clears it
 	Turns    int            `json:",omitempty"` // terrain: for how many rounds; none is for good (the state then turns into its Then)
+	Vacant   bool           `json:",omitempty"` // terrain: leave the cells a unit stands on as they are; no event comes if none changed
 	Policy   string         `json:",omitempty"` // ai: the new policy of the Targets
 	Goal     *Point         `json:",omitempty"` // ai: its goal cell, for march and flee
 	GoalArea int            `json:",omitempty"` // ai: instead of Goal, any cell of this area

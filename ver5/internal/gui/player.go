@@ -595,8 +595,12 @@ func (g *Game) perform(a *replay.Action) []beat {
 				if x, y, ok := g.areaCenter(e.Amount); ok {
 					look("terrain", x, y, "")
 				}
-				add(.4, func() {
-					if g.S.Data.States[event.Target].Blaze > 0 { // an event's fire sounds like the big fire spells
+				wait := .4
+				if i > 0 && events[i-1].Kind == "terrain" { // a run of changes comes up together, like a fire taking hold
+					wait = .03
+				}
+				add(wait, func() {
+					if wait > .03 && g.S.Data.States[event.Target].Blaze > 0 { // an event's fire sounds like the big fire spells
 						g.sfx("fire-big")
 					}
 					g.changeLooks(event)

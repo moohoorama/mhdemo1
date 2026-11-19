@@ -16,9 +16,9 @@
  "Victory": [
   {
    "If": [
-    "defeated:xiahoudun"
+    "alldefeated:enemy"
    ],
-   "Text": "하후돈을 물리치거나 여울 너머로 쫓아낸다"
+   "Text": "조조군을 모두 물리친다"
   }
  ],
  "Sub": [
@@ -73,6 +73,10 @@
   {
    "X": 9,
    "Y": 37
+  },
+  {
+   "X": 8,
+   "Y": 19
   }
  ],
  "Recommend": {
@@ -86,7 +90,7 @@
   },
   "zhaoyun": {
    "X": 8,
-   "Y": 37
+   "Y": 19
   }
  },
  "Groups": [
@@ -95,7 +99,13 @@
    "Area": 1,
    "Required": [
     "liubei",
-    "zhugeliang",
+    "zhugeliang"
+   ]
+  },
+  {
+   "Name": "선봉",
+   "Area": 21,
+   "Required": [
     "zhaoyun"
    ]
   }
@@ -289,7 +299,7 @@
    "Character": "loot_cart",
    "X": 7,
    "Y": 9,
-   "Group": "rear",
+   "Group": "cart",
    "Faction": "wei",
    "Policy": "hold",
    "Facing": "SW"
@@ -298,7 +308,7 @@
    "Character": "loot_cart",
    "X": 8,
    "Y": 9,
-   "Group": "rear",
+   "Group": "cart",
    "Faction": "wei",
    "Policy": "hold",
    "Facing": "SW"
@@ -307,7 +317,7 @@
    "Character": "loot_cart",
    "X": 9,
    "Y": 9,
-   "Group": "rear",
+   "Group": "cart",
    "Faction": "wei",
    "Policy": "hold",
    "Facing": "SW"
@@ -397,7 +407,18 @@
     "H": 3
    },
    "Name": "신야 앞 길",
-   "Description": "유비·제갈량과 조운. 곁에 신야성"
+   "Description": "유비·제갈량. 곁에 신야성"
+  },
+  {
+   "ID": 21,
+   "Rect": {
+    "X": 7,
+    "Y": 19,
+    "W": 3,
+    "H": 1
+   },
+   "Name": "선봉 자리",
+   "Description": "조운이 하후돈 가까이에서 시작한다"
   },
   {
    "ID": 4,
@@ -408,18 +429,7 @@
     "H": 3
    },
    "Name": "유인 자리",
-   "Description": "여기까지 오면 하후돈이 조운을 쫓는다"
-  },
-  {
-   "ID": 5,
-   "Rect": {
-    "X": 6,
-    "Y": 21,
-    "W": 5,
-    "H": 7
-   },
-   "Name": "덫 깊은 곳",
-   "Description": "하후돈이 여기까지 쫓아 들어오면 불이 붙는다"
+   "Description": "조운이 여기까지 오면 불을 놓는다"
   },
   {
    "ID": 6,
@@ -430,7 +440,7 @@
     "H": 20
    },
    "Name": "불 놓을 길",
-   "Description": "길과 양옆 숲. 화공이 번지는 곳"
+   "Description": "길과 양옆 숲. 이 안의 조조군이 불에 데고 혼란에 빠진다"
   },
   {
    "ID": 7,
@@ -441,7 +451,7 @@
     "H": 3
    },
    "Name": "후방 자리",
-   "Description": "보급 수레와 후미 병졸이 따라 닿는 길"
+   "Description": "후미 병졸이 따라 닿는 길"
   },
   {
    "ID": 9,
@@ -452,7 +462,7 @@
     "H": 2
    },
    "Name": "여울 너머",
-   "Description": "하후돈이 닿으면 강을 건너 달아난다"
+   "Description": "여울 건너편"
   },
   {
    "ID": 10,
@@ -466,129 +476,319 @@
    "Description": "이전이 남은 군사를 거두는 강가"
   },
   {
-   "ID": 11,
+   "ID": 30,
    "Rect": {
-    "X": 5,
+    "X": 6,
     "Y": 9,
-    "W": 7,
-    "H": 2
+    "W": 1,
+    "H": 1
    },
    "Name": "불 1",
-   "Description": "화공으로 불이 붙는 길가"
+   "Description": "길 옆 숲 한 칸"
   },
   {
-   "ID": 12,
+   "ID": 31,
    "Rect": {
-    "X": 5,
-    "Y": 11,
-    "W": 7,
-    "H": 2
+    "X": 6,
+    "Y": 10,
+    "W": 1,
+    "H": 1
    },
    "Name": "불 2",
-   "Description": "화공으로 불이 붙는 길가"
+   "Description": "길 옆 숲 한 칸"
   },
   {
-   "ID": 13,
+   "ID": 32,
    "Rect": {
-    "X": 5,
+    "X": 6,
     "Y": 13,
-    "W": 7,
-    "H": 2
+    "W": 1,
+    "H": 1
    },
    "Name": "불 3",
-   "Description": "화공으로 불이 붙는 길가"
+   "Description": "길 옆 숲 한 칸"
   },
   {
-   "ID": 14,
+   "ID": 33,
    "Rect": {
-    "X": 5,
+    "X": 6,
     "Y": 15,
-    "W": 7,
-    "H": 2
+    "W": 1,
+    "H": 1
    },
    "Name": "불 4",
-   "Description": "화공으로 불이 붙는 길가"
+   "Description": "길 옆 숲 한 칸"
   },
   {
-   "ID": 15,
+   "ID": 34,
    "Rect": {
-    "X": 5,
-    "Y": 17,
-    "W": 7,
-    "H": 2
+    "X": 6,
+    "Y": 16,
+    "W": 1,
+    "H": 1
    },
    "Name": "불 5",
-   "Description": "화공으로 불이 붙는 길가"
+   "Description": "길 옆 숲 한 칸"
   },
   {
-   "ID": 16,
+   "ID": 35,
    "Rect": {
-    "X": 5,
-    "Y": 19,
-    "W": 7,
-    "H": 2
+    "X": 6,
+    "Y": 18,
+    "W": 1,
+    "H": 1
    },
    "Name": "불 6",
-   "Description": "화공으로 불이 붙는 길가"
+   "Description": "길 옆 숲 한 칸"
   },
   {
-   "ID": 17,
+   "ID": 36,
    "Rect": {
-    "X": 5,
-    "Y": 21,
-    "W": 7,
-    "H": 2
+    "X": 6,
+    "Y": 19,
+    "W": 1,
+    "H": 1
    },
    "Name": "불 7",
-   "Description": "화공으로 불이 붙는 길가"
+   "Description": "길 옆 숲 한 칸"
   },
   {
-   "ID": 18,
+   "ID": 37,
    "Rect": {
-    "X": 5,
-    "Y": 23,
-    "W": 7,
-    "H": 2
+    "X": 6,
+    "Y": 21,
+    "W": 1,
+    "H": 1
    },
    "Name": "불 8",
-   "Description": "화공으로 불이 붙는 길가"
+   "Description": "길 옆 숲 한 칸"
   },
   {
-   "ID": 19,
+   "ID": 38,
    "Rect": {
-    "X": 5,
-    "Y": 25,
-    "W": 7,
-    "H": 2
+    "X": 6,
+    "Y": 22,
+    "W": 1,
+    "H": 1
    },
    "Name": "불 9",
-   "Description": "화공으로 불이 붙는 길가"
+   "Description": "길 옆 숲 한 칸"
   },
   {
-   "ID": 20,
+   "ID": 39,
    "Rect": {
-    "X": 5,
-    "Y": 27,
-    "W": 7,
-    "H": 2
+    "X": 6,
+    "Y": 24,
+    "W": 1,
+    "H": 1
    },
    "Name": "불 10",
-   "Description": "화공으로 불이 붙는 길가"
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 40,
+   "Rect": {
+    "X": 6,
+    "Y": 25,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 11",
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 41,
+   "Rect": {
+    "X": 6,
+    "Y": 27,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 12",
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 42,
+   "Rect": {
+    "X": 6,
+    "Y": 28,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 13",
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 43,
+   "Rect": {
+    "X": 10,
+    "Y": 9,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 14",
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 44,
+   "Rect": {
+    "X": 10,
+    "Y": 11,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 15",
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 45,
+   "Rect": {
+    "X": 10,
+    "Y": 14,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 16",
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 46,
+   "Rect": {
+    "X": 10,
+    "Y": 15,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 17",
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 47,
+   "Rect": {
+    "X": 10,
+    "Y": 17,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 18",
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 48,
+   "Rect": {
+    "X": 10,
+    "Y": 18,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 19",
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 49,
+   "Rect": {
+    "X": 10,
+    "Y": 20,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 20",
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 50,
+   "Rect": {
+    "X": 10,
+    "Y": 21,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 21",
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 51,
+   "Rect": {
+    "X": 10,
+    "Y": 23,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 22",
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 52,
+   "Rect": {
+    "X": 10,
+    "Y": 24,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 23",
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 53,
+   "Rect": {
+    "X": 10,
+    "Y": 26,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 24",
+   "Description": "길 옆 숲 한 칸"
+  },
+  {
+   "ID": 54,
+   "Rect": {
+    "X": 10,
+    "Y": 27,
+    "W": 1,
+    "H": 1
+   },
+   "Name": "불 25",
+   "Description": "길 옆 숲 한 칸"
   }
  ],
  "Events": [
   {
-   "ID": "lure",
+   "ID": "opening-duel",
+   "Do": [
+    {
+     "Kind": "duel",
+     "Duel": "bowang-zhaoyun-xiahoudun"
+    }
+   ]
+  },
+  {
+   "ID": "chase",
    "If": [
-    "any:[at:zhaoyun:4, hp:van<100, hp:main<100]"
+    "any:[duel:bowang-zhaoyun-xiahoudun, round>=2]"
    ],
    "Do": [
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "move",
+        "Unit": "zhaoyun",
+        "To": {
+         "X": 8,
+         "Y": 22
+        },
+        "Facing": "SW"
+       }
+      ]
+     ]
+    },
     {
      "Kind": "say",
      "Lines": [
       {
        "Actor": "xiahoudun",
-       "Text": "겨우 이것이냐! 선봉도 중군도 따르라! 쫓아라!"
+       "Text": "어딜 도망가느냐! 선봉도 중군도 따르라! 쫓아라!"
       }
      ]
     },
@@ -611,28 +811,9 @@
    ]
   },
   {
-   "ID": "column-in-trap",
-   "If": [
-    "since:lure>=0",
-    "at:xiahoudun:5",
-    "allat:van:6",
-    "allat:main:6"
-   ],
-   "Do": [
-    {
-     "Kind": "ai",
-     "Targets": [
-      "van",
-      "main"
-     ],
-     "Policy": "assault"
-    }
-   ]
-  },
-  {
    "ID": "fire",
    "If": [
-    "any:[since:column-in-trap>=0, since:lure>=5]"
+    "any:[at:zhaoyun:4, since:chase>=4, defeated:xiahoudun]"
    ],
    "Do": [
     {
@@ -646,173 +827,178 @@
     },
     {
      "Kind": "terrain",
-     "Area": 11,
+     "Area": 30,
      "State": "F",
-     "Turns": 2
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "wait",
-        "Seconds": 0.3
-       }
-      ]
-     ]
+     "Turns": 2,
+     "Vacant": true
     },
     {
      "Kind": "terrain",
-     "Area": 12,
+     "Area": 31,
      "State": "F",
-     "Turns": 2
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "wait",
-        "Seconds": 0.3
-       }
-      ]
-     ]
+     "Turns": 5,
+     "Vacant": true
     },
     {
      "Kind": "terrain",
-     "Area": 13,
+     "Area": 32,
      "State": "F",
-     "Turns": 2
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "wait",
-        "Seconds": 0.3
-       }
-      ]
-     ]
+     "Turns": 3,
+     "Vacant": true
     },
     {
      "Kind": "terrain",
-     "Area": 14,
+     "Area": 33,
      "State": "F",
-     "Turns": 2
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "wait",
-        "Seconds": 0.3
-       }
-      ]
-     ]
+     "Turns": 6,
+     "Vacant": true
     },
     {
      "Kind": "terrain",
-     "Area": 15,
+     "Area": 34,
      "State": "F",
-     "Turns": 2
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "wait",
-        "Seconds": 0.3
-       }
-      ]
-     ]
+     "Turns": 4,
+     "Vacant": true
     },
     {
      "Kind": "terrain",
-     "Area": 16,
+     "Area": 35,
      "State": "F",
-     "Turns": 2
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "wait",
-        "Seconds": 0.3
-       }
-      ]
-     ]
+     "Turns": 2,
+     "Vacant": true
     },
     {
      "Kind": "terrain",
-     "Area": 17,
+     "Area": 36,
      "State": "F",
-     "Turns": 2
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "wait",
-        "Seconds": 0.3
-       }
-      ]
-     ]
+     "Turns": 5,
+     "Vacant": true
     },
     {
      "Kind": "terrain",
-     "Area": 18,
+     "Area": 37,
      "State": "F",
-     "Turns": 2
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "wait",
-        "Seconds": 0.3
-       }
-      ]
-     ]
+     "Turns": 3,
+     "Vacant": true
     },
     {
      "Kind": "terrain",
-     "Area": 19,
+     "Area": 38,
      "State": "F",
-     "Turns": 2
-    },
-    {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "wait",
-        "Seconds": 0.3
-       }
-      ]
-     ]
+     "Turns": 6,
+     "Vacant": true
     },
     {
      "Kind": "terrain",
-     "Area": 20,
+     "Area": 39,
      "State": "F",
-     "Turns": 2
+     "Turns": 4,
+     "Vacant": true
     },
     {
-     "Kind": "cutscene",
-     "Steps": [
-      [
-       {
-        "Kind": "wait",
-        "Seconds": 0.3
-       }
-      ]
-     ]
+     "Kind": "terrain",
+     "Area": 40,
+     "State": "F",
+     "Turns": 2,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 41,
+     "State": "F",
+     "Turns": 5,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 42,
+     "State": "F",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 43,
+     "State": "F",
+     "Turns": 6,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 44,
+     "State": "F",
+     "Turns": 4,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 45,
+     "State": "F",
+     "Turns": 2,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 46,
+     "State": "F",
+     "Turns": 5,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 47,
+     "State": "F",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 48,
+     "State": "F",
+     "Turns": 6,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 49,
+     "State": "F",
+     "Turns": 4,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 50,
+     "State": "F",
+     "Turns": 2,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 51,
+     "State": "F",
+     "Turns": 5,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 52,
+     "State": "F",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 53,
+     "State": "F",
+     "Turns": 6,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 54,
+     "State": "F",
+     "Turns": 4,
+     "Vacant": true
     },
     {
      "Kind": "join",
@@ -820,13 +1006,13 @@
       {
        "Character": "guanyu",
        "X": 5,
-       "Y": 19,
+       "Y": 20,
        "Facing": "SE"
       },
       {
        "Character": "zhangfei",
        "X": 11,
-       "Y": 14,
+       "Y": 18,
        "Facing": "SW"
       }
      ]
@@ -834,32 +1020,14 @@
     {
      "Kind": "damage",
      "Targets": [
-      "enemy@area:11",
-      "enemy@area:12",
-      "enemy@area:13",
-      "enemy@area:14",
-      "enemy@area:15",
-      "enemy@area:16",
-      "enemy@area:17",
-      "enemy@area:18",
-      "enemy@area:19",
-      "enemy@area:20"
+      "enemy@area:6"
      ],
      "Value": 50
     },
     {
      "Kind": "buff",
      "Targets": [
-      "enemy@area:11",
-      "enemy@area:12",
-      "enemy@area:13",
-      "enemy@area:14",
-      "enemy@area:15",
-      "enemy@area:16",
-      "enemy@area:17",
-      "enemy@area:18",
-      "enemy@area:19",
-      "enemy@area:20"
+      "enemy@area:6"
      ],
      "Stat": "confusion",
      "Turns": 2
@@ -871,35 +1039,16 @@
       "main",
       "rear"
      ],
-     "Policy": "flee",
-     "GoalArea": 9
+     "Policy": "assault"
     },
     {
      "Kind": "say",
      "Lines": [
       {
        "Actor": "xiahoudun",
-       "Text": "불이다……! 물러나라! 여울까지 물러나라!"
+       "Text": "불이다……! 놈들의 계략이다! 흩어지지 말고 맞서라!"
       }
      ]
-    }
-   ]
-  },
-  {
-   "ID": "advance-late",
-   "If": [
-    "round>=10",
-    "!since:lure"
-   ],
-   "Do": [
-    {
-     "Kind": "ai",
-     "Targets": [
-      "van",
-      "main",
-      "rear"
-     ],
-     "Policy": "assault"
     }
    ]
   },
@@ -950,6 +1099,143 @@
  ],
  "Faction": "wei",
  "Duels": [
+  {
+   "ID": "bowang-zhaoyun-xiahoudun",
+   "Ally": "zhaoyun",
+   "Enemy": "xiahoudun",
+   "Outcome": "draw",
+   "AllyResult": "stay",
+   "EnemyResult": "stay",
+   "Text": "조운과 하후돈이 십여 합을 겨루었으나 승부가 나지 않았다. 조운이 말머리를 돌려 물러나자 하후돈이 뒤를 쫓았다.",
+   "Beats": [
+    {
+     "Kind": "talk",
+     "Title": "하후돈이 길을 막아서다",
+     "Speech": "신야의 유비가 보낸 놈이냐! 이름을 대라.",
+     "Side": 1,
+     "Duration": 3.0
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 답하다",
+     "Speech": "상산의 조자룡이오. 하후 장군, 길을 열어 주시오.",
+     "Side": 0,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "approach",
+     "Title": "두 장수가 말을 몰아 맞붙다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "block",
+     "Title": "하후돈이 창 끝으로 떠 보자 조운이 가볍게 받아 넘기다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "조운이 곧바로 되받아 치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "조운이 창을 내리치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "하후돈이 맞받아 쳐 내다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "press",
+     "Title": "하후돈이 몰아붙이자 조운이 뒷걸음질 치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.3
+    },
+    {
+     "Kind": "rush-block",
+     "Title": "하후돈이 거푸 창을 휘몰아치다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.1
+    },
+    {
+     "Kind": "yielding-block",
+     "Title": "조운이 막아 내나 밀려나다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "하후돈이 창을 몰아치다",
+     "Speech": "창이 맵시만 좋구나! 유비 따위를 섬길 재목이 아니다!",
+     "Side": 1,
+     "Duration": 3.3
+    },
+    {
+     "Kind": "dodge",
+     "Title": "조운이 크게 휘둘렀으나 하후돈이 몸을 틀어 피하다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "block",
+     "Title": "하후돈이 빈틈을 파고들어 되받다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.05
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "조운이 힘을 실어 내려치다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "critical-block",
+     "Title": "하후돈이 정면으로 맞받아 불꽃이 튀다",
+     "Speech": "",
+     "Side": 1,
+     "Duration": 1.2
+    },
+    {
+     "Kind": "talk",
+     "Title": "조운이 속으로 헤아리다",
+     "Speech": "(이 길 안쪽까지 끌어들여야 한다. 지금은 물러설 때다.)",
+     "Side": 0,
+     "Duration": 3.4
+    },
+    {
+     "Kind": "backstep",
+     "Title": "조운이 말머리를 돌려 물러서다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 1.6
+    },
+    {
+     "Kind": "draw",
+     "Title": "조운이 물러나고 하후돈이 쫓을 채비를 하다",
+     "Speech": "",
+     "Side": 0,
+     "Duration": 2.5
+    }
+   ]
+  },
   {
    "ID": "bowang-guanyu-lidian",
    "Ally": "guanyu",

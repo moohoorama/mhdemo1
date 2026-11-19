@@ -3,7 +3,6 @@ package core_test
 import (
 	"math"
 	"slices"
-	"sort"
 	"strings"
 	"testing"
 
@@ -14,21 +13,14 @@ import (
 	"srpg/internal/core"
 )
 
-// bowang plays the real B24 from its battle node with a scripted 조운: he walks up to the Wei column, baits
-// 하후돈 and runs for 신야, while the other officers wait and the Wei side is driven by the game's AI.
+// bowang plays the real B24 from its battle node: the opening duel, the chase, a scripted 조운 who walks into the lure
+// area, and the game's AI for the Wei side.
 type bowang struct {
-	t         *testing.T
-	e         *core.Engine
-	burnt     int     // column units the fire event hit
-	size      int     // column units alive when it fired
-	fireRound int     // round the fire was lit, 0 while unlit
-	share     float64 // burnt / size
-	confused  int     // column units confused right after the fire
-	fleeing   int     // column units on the flee policy right after the fire
-	ford      float64 // the ford guard's strength right after the fire, 1 = untouched
-	fordHP    int
-	zhaoMin   int // the lowest strength 조운 reached, as a share of his start
-	zhaoHP    int
+	t       *testing.T
+	e       *core.Engine
+	cells   int // terrain events of the fire (cells lit)
+	burnt   int // column units the fire event hit
+	hpAfter map[string]int
 }
 
 func newBowang(t *testing.T, seed uint64) *bowang {
@@ -51,15 +43,6 @@ func newBowang(t *testing.T, seed uint64) *bowang {
 		b.apply(c)
 	}
 	require.Equal(t, "battle", e.Observe().Phase)
-	for _, u := range e.Observe().UnitViews {
-		if u.Group == "ford" {
-			b.fordHP += u.HP
-		}
-		if u.ID == "zhaoyun" {
-			b.zhaoHP = u.HP
-		}
-	}
-	b.zhaoMin = b.zhaoHP
 	return b
 }
 
@@ -83,41 +66,28 @@ func (b *bowang) apply(c core.Command) {
 	b.watch(r)
 }
 
-// watch counts the column units the fire event hits (a damage event without an actor).
+// watch counts the fire's lit cells and the column units it hurts (a damage event without an actor).
 func (b *bowang) watch(r core.Result) {
-	if z := b.unit("zhaoyun"); z != nil && z.HP < b.zhaoMin {
-		b.zhaoMin = z.HP
-	}
-	if b.fireRound > 0 {
+	if b.executed("fire") && b.hpAfter != nil {
 		return
 	}
 	for _, ev := range r.Events {
-		if ev.Kind == "damage" && ev.Actor == "" {
+		switch {
+		case ev.Kind == "terrain" && ev.Target == "F":
+			b.cells++
+		case ev.Kind == "damage" && ev.Actor == "":
 			if u := b.unit(ev.Target); u != nil && column(*u) {
 				b.burnt++
 			}
 		}
 	}
-	o := b.e.Observe()
-	if o.Executed["battle-B24-fire"] {
-		b.fireRound = o.Round
-		var hp int
-		for _, u := range o.UnitViews {
-			if column(u) {
-				b.size++
-				if _, ok := u.Status["confusion"]; ok {
-					b.confused++
-				}
-				if u.Policy == "flee" {
-					b.fleeing++
-				}
-			}
-			if u.Group == "ford" {
-				hp += u.HP
+	if b.executed("fire") {
+		b.hpAfter = map[string]int{}
+		for _, u := range b.e.Observe().UnitViews {
+			if column(u) && hasStatus(u, "confusion") {
+				b.hpAfter[u.ID] = u.HP
 			}
 		}
-		b.ford = float64(hp) / float64(b.fordHP)
-		b.share = float64(b.burnt) / float64(b.size)
 	}
 }
 
@@ -160,15 +130,10 @@ func (b *bowang) endTurn() {
 	}
 }
 
-// run plays rounds: 조운 walks up to the column and baits it, then falls back stepsBack cells a round toward 신야.
-func (b *bowang) run(stepsBack, rounds int) {
-	for b.e.Observe().Round <= rounds && b.e.Observe().Phase == "battle" && b.fireRound == 0 {
-		if b.executed("lure") {
-			b.walk("zhaoyun", 8, 40, stepsBack)
-		} else {
-			b.walk("zhaoyun", 8, 25, 9)
-			b.attackIf("zhaoyun", "xiahoudun")
-		}
+// run lets 조운 walk into the lure area right after the duel and the chase.
+func (b *bowang) run(rounds int) {
+	for b.e.Observe().Round <= rounds && b.e.Observe().Phase == "battle" && !b.executed("fire") {
+		b.walk("zhaoyun", 8, 25, 9)
 		b.endTurn()
 	}
 }
@@ -178,59 +143,36 @@ func TestB24FireTrap(t *testing.T) {
 	require.NoError(t, err)
 	st := d.Stages[slices.IndexFunc(d.Stages, func(s content.Stage) bool { return s.ID == "B24" })]
 	require.Equal(t, []string{"guanyu", "zhangfei"}, st.Reserve)
+	require.Equal(t, []string{"alldefeated:enemy"}, st.Victory[0].If)
 
-	t.Run("nothing burns and the column stands still until zhaoyun baits it", func(t *testing.T) {
+	t.Run("the duel is a draw and the chase starts at once", func(t *testing.T) {
 		b := newBowang(t, 1)
-		for i := 0; i < 3; i++ {
-			b.endTurn()
-		}
-		assert.False(t, b.executed("lure"))
-		assert.Zero(t, b.fireRound)
+		assert.True(t, b.executed("opening-duel"))
+		assert.True(t, b.executed("chase"))
+		assert.False(t, b.executed("fire"))
 		assert.Nil(t, b.unit("guanyu"), "the ambush is not on the map")
 		assert.Nil(t, b.unit("zhangfei"))
-		xhd := b.unit("xiahoudun")
-		assert.Equal(t, [2]int{8, 16}, [2]int{xhd.X, xhd.Y})
-		assert.Equal(t, "hold", xhd.Policy)
-		assert.Contains(t, xhd.Traits, "gale", "절영 gives 하후돈 the speed")
+		z, x := b.unit("zhaoyun"), b.unit("xiahoudun")
+		assert.Positive(t, z.HP)
+		assert.Positive(t, x.HP)
+		assert.Equal(t, "assault", x.Policy)
+		assert.Contains(t, x.Traits, "gale", "절영 gives 하후돈 the speed")
 	})
 
-	// The base case: 조운 baits the column and simply runs. Baiting it better, so that more of it stands in the
-	// fire, is the player's play; the numbers are logged, not asserted.
-	for _, tc := range []struct {
-		name string
-		back int
-	}{{"zhaoyun just runs for 신야", 99}, {"zhaoyun falls back three cells a round", 3}} {
-		t.Run(tc.name, func(t *testing.T) {
-			var shares []float64
-			for seed := uint64(1); seed <= 5; seed++ {
-				b := newBowang(t, seed)
-				b.run(tc.back, 14)
-				require.NotZero(t, b.fireRound, "seed %d: the fire is lit (lure %v)", seed, b.executed("lure"))
-				shares = append(shares, b.share)
-				t.Logf("seed %d: round %d, %d of %d column units in the fire, 조운 down to %d of %d, safety net %v",
-					seed, b.fireRound, b.burnt, b.size, b.zhaoMin, b.zhaoHP, !b.executed("column-in-trap"))
-
-				g, z := b.unit("guanyu"), b.unit("zhangfei")
-				require.NotNil(t, g, "the ambush comes out")
-				require.NotNil(t, z)
-				assert.False(t, g.AI)
-				assert.NotEmpty(t, b.e.LegalActions("guanyu").Commands, "the player moves them")
-				assert.True(t, g.Y >= 15 && g.Y <= 22, "관우 cuts the middle of the fire stretch (y 9..28): %d", g.Y)
-				assert.Less(t, z.Y, g.Y, "장비 comes in behind it, on the rear guard")
-				assert.Positive(t, b.burnt, "the fire catches the column")
-				assert.Equal(t, 1.0, b.ford, "the ford guard is untouched")
-				assert.Equal(t, b.size, b.fleeing, "the whole column is ordered back")
-			}
-			sort.Float64s(shares)
-			t.Logf("%s: share in the fire %v, median %.2f", tc.name, shares, shares[len(shares)/2])
-		})
-	}
-
-	t.Run("a column nobody baited advances by itself in the end", func(t *testing.T) {
-		b := newBowang(t, 1)
-		for b.e.Observe().Round < 11 && b.e.Observe().Phase == "battle" {
-			b.endTurn()
+	t.Run("the fire is lit at once when zhaoyun reaches the lure area", func(t *testing.T) {
+		for seed := uint64(1); seed <= 3; seed++ {
+			b := newBowang(t, seed)
+			b.run(8)
+			require.True(t, b.executed("fire"), "seed %d", seed)
+			assert.Greater(t, b.cells, 15, "a line of woods burns")
+			assert.Positive(t, b.burnt, "the column on the road is hurt")
+			assert.Positive(t, len(b.hpAfter), "the hurt are confused")
+			g, z := b.unit("guanyu"), b.unit("zhangfei")
+			require.NotNil(t, g, "the ambush comes out")
+			require.NotNil(t, z)
+			assert.False(t, g.AI)
 		}
-		assert.Equal(t, "assault", b.unit("xiahoudun").Policy)
 	})
 }
+
+func hasStatus(u core.UnitView, name string) bool { _, ok := u.Status[name]; return ok }
