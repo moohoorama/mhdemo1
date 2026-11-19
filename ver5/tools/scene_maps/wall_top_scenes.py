@@ -101,6 +101,26 @@ def field(rnd, party, soldiers, chatter):
     return cast
 
 
+def field_behind(rnd, party, soldiers):
+    """강릉: the army stands at the front under the wall, four deep, and the townsfolk huddle behind it."""
+    cast = {name: {'At': [u, v], 'Face': 'SW'} for name, u, v in party}
+    n = 0
+    for v in (-5, -6, -7, -8):
+        for u in range(2, 15):
+            if any(abs(u - pu) < 2 and abs(v - pv) < 2 for _, pu, pv in party):
+                continue
+            n += 1
+            cast[f'{soldiers}#{n}'] = {'At': [u, v], 'Face': 'SW', 'Sprite': 'light_infantry', 'Faction': 'shu'}
+    n = 0
+    for v in range(-11, -17, -1):
+        for u in range(0, 16):
+            if rnd.random() < .72:
+                n += 1
+                cast[f'백성#{n}'] = {'At': [u, v], 'Face': rnd.choice(['SW'] * 5 + ['SE', 'NW', 'NE']),
+                                     'Sprite': rnd.choice(COMMONERS), 'Faction': 'merchant'}
+    return cast
+
+
 def frontline(cast, depth=2.5):
     return [k for k, x in cast.items() if k.startswith('백성#') and x['At'][1] >= -5 - depth]
 
@@ -157,7 +177,7 @@ def build():
     rnd = random.Random(27)
     cast, rows = wall('강릉궁병', '강릉병', [('장윤', 6), ('곽준', 8)])
     party = [('유비', 8, -7), ('장비', 9, -6), ('간옹', 7, -6), ('서서', 8, -5)]
-    cast.update(field(rnd, party, '유비군', None))
+    cast.update(field_behind(rnd, party, '유비군'))
     follow = [k for k in rows[1] if cast[k]['At'][0] >= 9] + [k for k in rows[0] if cast[k]['At'][0] >= 11]
     chat = [k for k in cast if k.startswith('백성#')][::19][:4]
     amb = [{'CamAt': [7, -3]}] + [a(k, Chatter=c) for k, c in zip(chat, HUNGER)]
