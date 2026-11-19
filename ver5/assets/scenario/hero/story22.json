@@ -422,72 +422,9 @@
    "Event": "join-yiji"
   },
   {
-   "ID": "c22-mifang",
-   "Kind": "scene",
-   "Place": "강하 진지 · 곳간 앞"
-  },
-  {
-   "ID": "c22-mf-br",
-   "Kind": "branch",
-   "Cases": [
-    {
-     "If": [
-      "party:gaoshun"
-     ],
-     "Next": "c22-m01"
-    }
-   ],
-   "Else": "c22-m11"
-  },
-  {
-   "ID": "c22-m01",
-   "Kind": "say",
-   "Speaker": "mifang",
-   "Text": "가, 갑자기 왜 이러시오?"
-  },
-  {
-   "ID": "c22-m02",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "내 그대를 오해했네. 부끄러워 왔네."
-  },
-  {
-   "ID": "c22-m03",
-   "Kind": "say",
-   "Speaker": "mifang",
-   "Text": "채모가 감시하는 눈이 심해 장군에게 미처 알리지 못했습니다. 오히려 알아봐 주시니 너무 감사할 따름입니다."
-  },
-  {
-   "ID": "c22-m04",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "내 후방은 항상 자방 자네에게 맡기겠네."
-  },
-  {
-   "ID": "c22-mf-set",
-   "Kind": "set",
-   "Flags": {
-    "flag-guanyu-mifang": 1
-   },
-   "Next": "c22-done"
-  },
-  {
-   "ID": "c22-m11",
-   "Kind": "say",
-   "Speaker": "mifang",
-   "Text": "관 장군, 강 건너 군사들 쌀은 제때 닿았습니까?"
-  },
-  {
-   "ID": "c22-m12",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "내 그대의 형을 봐서 이번까지는 넘어가 주겠다. 다음에 또 군량으로 장난친다면, 군법으로 용서치 않으리라!"
-  },
-  {
-   "ID": "c22-m13",
-   "Kind": "say",
-   "Speaker": "mifang",
-   "Text": "……예."
+   "ID": "c22-walk2",
+   "Kind": "explore",
+   "Explore": "explore22b"
   },
   {
    "ID": "c22-done",
@@ -621,6 +558,79 @@
   {
    "ID": "c22-rice-back",
    "Kind": "back"
+  },
+  {
+   "ID": "c22-mifang",
+   "Kind": "scene",
+   "Place": "강하 진지 · 곳간 앞"
+  },
+  {
+   "ID": "c22-mf-br",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "party:gaoshun"
+     ],
+     "Next": "c22-m01"
+    }
+   ],
+   "Else": "c22-m11"
+  },
+  {
+   "ID": "c22-m01",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "가, 갑자기 왜 이러시오?"
+  },
+  {
+   "ID": "c22-m02",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "내 그대를 오해했네. 부끄러워 왔네."
+  },
+  {
+   "ID": "c22-m03",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "채모가 감시하는 눈이 심해 장군에게 미처 알리지 못했습니다. 오히려 알아봐 주시니 너무 감사할 따름입니다."
+  },
+  {
+   "ID": "c22-m04",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "내 후방은 항상 자방 자네에게 맡기겠네."
+  },
+  {
+   "ID": "c22-mf-set",
+   "Kind": "set",
+   "Flags": {
+    "flag-guanyu-mifang": 1
+   },
+   "Next": "c22-mf-back"
+  },
+  {
+   "ID": "c22-m11",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "관 장군, 강 건너 군사들 쌀은 제때 닿았습니까?"
+  },
+  {
+   "ID": "c22-m12",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "내 그대의 형을 봐서 이번까지는 넘어가 주겠다. 다음에 또 군량으로 장난친다면, 군법으로 용서치 않으리라!"
+  },
+  {
+   "ID": "c22-m13",
+   "Kind": "say",
+   "Speaker": "mifang",
+   "Text": "……예."
+  },
+  {
+   "ID": "c22-mf-back",
+   "Kind": "back",
+   "Leave": true
   }
  ]
 }

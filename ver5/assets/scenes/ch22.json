@@ -295,6 +295,7 @@
    "Nodes": ["c22-mifang", "c22-m01", "c22-m02", "c22-m03", "c22-m04", "c22-m11", "c22-m12", "c22-m13"],
    "Ambient": [{"CamAt": [25, 9]}],
    "Cast": {
+    "유비": {"Stay": true},
     "미방": {"At": [25, 9], "Face": "NE"},
     "군사#1": {"At": [27, 9], "Face": "SW", "Sprite": "light_infantry", "Faction": "shu"},
     "관우": {"At": [24, 14], "Face": "NE", "Off": true}
@@ -302,7 +303,7 @@
    "Beats": {
     "c22-m01": [
      [
-      [{"Actor": "관우", "Enter": [24, 14], "Move": [24, 10], "Face": "NE"}, {"Actor": "미방", "Face": "SW", "After": 1.0}],
+      [{"Actor": "유비", "Move": [24, 8], "Face": "SE"}, {"Actor": "관우", "Enter": [24, 14], "Move": [24, 10], "Face": "NE"}, {"Actor": "미방", "Face": "SW", "After": 1.0}],
       [{"Actor": "관우", "Pose": "bow"}]
      ]
     ],
@@ -313,7 +314,7 @@
     ],
     "c22-m11": [
      [
-      [{"Actor": "관우", "Enter": [24, 14], "Move": [24, 10], "Face": "NE"}, {"Actor": "미방", "Face": "SW", "After": 1.0}]
+      [{"Actor": "유비", "Move": [24, 8], "Face": "SE"}, {"Actor": "관우", "Enter": [24, 14], "Move": [24, 10], "Face": "NE"}, {"Actor": "미방", "Face": "SW", "After": 1.0}]
      ]
     ],
     "c22-m12": [
