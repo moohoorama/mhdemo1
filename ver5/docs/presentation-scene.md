@@ -138,6 +138,7 @@
 | `S_bridge` | 계교(12×10): 강이 u를 따라 v≈4.5~6, 가운데(u≈6) 나무다리, 가까운 둑에 방패 벽(v≈6.4)·망루 | | |
 | `S_road` | 길(v≈2.0~2.5로 u를 따라 −8~14) | | |
 | `S_castle_out` | 성 밖, 성문 닫힘 | `S_castle_out_open` | 성 밖, 성문 열림 |
+| `S_castle_out_siege` | 성 밖(포위): 성문 열림 맵에서 방진이 설 자리(u −6~12, v 3~16)의 나무만 뺌(`tools/scene_maps/castle_siege.py`). 25장 하비 회상 | `S_xinye_town` | 신야 성 안(14×12, `tools/scene_maps/xinye_town.py`): 소패 배치에 사방 성벽, 서·북·남 문 닫힘·동문 열림. 25장 화공 |
 | `S_office` | 관아 | | |
 | `S_palace` | 작은 궁궐(5×5) | `S_hall` | 궁궐 옥좌 앞(7×9): 금빛 병풍과 촛대 앞 황제 자리(3, 0.75; 옥좌는 헌제 시트의 `throne` 자세에 있다), 붉은 길 u=3, 대신 줄 u=2·4 |
 | `S_house` | 동승의 집 | `S_garden` | 조조의 후원 |
