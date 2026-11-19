@@ -153,9 +153,12 @@ func (g *Game) openScene(def *scenes.Scene) {
 		g.field.dispose()
 	}
 	art := g.mapArt(def.Map)
-	if def.Grass != nil {
+	if def.Grass != nil || def.Snow > 0 {
 		c := *art
-		c.Grass = def.Grass
+		if def.Grass != nil {
+			c.Grass = def.Grass
+		}
+		c.Snow = def.Snow
 		art = &c
 	}
 	g.field = NewField(g.assets, art)

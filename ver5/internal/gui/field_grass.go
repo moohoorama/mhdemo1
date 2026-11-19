@@ -102,7 +102,7 @@ func (a *Assets) grassAssets(t *content.GrassTint) *Assets {
 		return cut(t, img.Bounds())
 	}
 	c := *a
-	c.groundPattern, c.grassTints = nil, nil
+	c.groundPattern, c.grassTints, c.snowCopy = nil, nil, nil
 	c.Tiles = make(map[int]Sprite, len(a.Tiles))
 	for id, s := range a.Tiles {
 		s.Image = recut(s.Image)

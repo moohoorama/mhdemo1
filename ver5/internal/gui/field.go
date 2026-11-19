@@ -86,7 +86,15 @@ var maxBlend = ebiten.Blend{
 }
 
 func NewField(a *Assets, m *MapArt) *Field {
-	a = a.grassAssets(m.Grass)
+	if m.Snow > 0 {
+		grass := m.Grass
+		if grass == nil {
+			grass = &snowGrass
+		}
+		a = a.snowAssets().grassAssets(grass)
+	} else {
+		a = a.grassAssets(m.Grass)
+	}
 	w, h := (m.Bounds.Dx()+2*margin)*K, (m.Bounds.Dy()+2*margin)*K
 	f := &Field{worldSize: image.Pt(w, h), A: a, Map: m, OriginX: float64(margin - m.Bounds.Min.X), OriginY: float64(margin - m.Bounds.Min.Y),
 		shadows: newLayer(w, h), Canvas: newLayer(w, h), ShowExterior: m.Scene}

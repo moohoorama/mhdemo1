@@ -46,6 +46,8 @@ type Assets struct {
 	Shou          *ebiten.Image // grey shou pattern for central windows
 	groundPattern *ebiten.Image
 	grassTints    map[content.GrassTint]*Assets // the tiles and ground decoration with a map's grass, see grassAssets
+	snowArt       *snowArt                      // the snow pictures of trees and bushes (tools/snow_props.py), nil without the sheet
+	snowCopy      *Assets                       // these assets with the snow pictures put in the trees' places
 	StatusIcons   map[string]*ebiten.Image
 	Lib           *sprite.Library
 	Tiles         map[int]Sprite
@@ -128,6 +130,7 @@ type MapArt struct {
 	SceneMap *scenemap.Map
 	Scene    bool               // a scenario scene: drawn without the shaded exterior, to the edge of its picture
 	Grass    *content.GrassTint // the map's shade of grass, see grassAssets
+	Snow     float64            // above 0 snow lies on the map: see snowAssets
 }
 
 // MapProp places a prop with its pivot at cell (U, V), fractions allowed. With U1, V1 it
@@ -437,6 +440,9 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 		a.Maps[sm.ID] = sceneMapArt(sm)
 	}
 	if a.Scenery, err = loadScenery(dir); err != nil {
+		return nil, err
+	}
+	if a.snowArt, err = loadSnowArt(dir); err != nil {
 		return nil, err
 	}
 	if a.Projectiles, err = LoadShots(dir, "effects/projectiles"); err != nil {

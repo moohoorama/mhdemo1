@@ -93,7 +93,7 @@ func (g *Game) layOutExplore(o core.Observation) {
 	}
 	w := &exploreWalk{engine: e, node: o.Node, area: o.Spot.Area, hero: g.S.Data.Characters[x.Hero].Name, people: map[string]string{},
 		homes: map[string]string{}, rest: map[string]float64{}, leg: map[string]int{}, markT: math.Inf(1), rng: rand.New(rand.NewPCG(7, 11))}
-	def := &scenes.Scene{ID: "explore:" + w.area, Map: a.Map, Time: e.AreaTime(), Grass: a.Grass, Cast: map[string]scenes.Actor{}}
+	def := &scenes.Scene{ID: "explore:" + w.area, Map: a.Map, Time: e.AreaTime(), Grass: a.Grass, Snow: a.Snow, Cast: map[string]scenes.Actor{}}
 	at := func(t [2]int) []float64 { u, v := smallTile(t).cell(); return []float64{u, v} }
 	def.Cast[w.hero] = scenes.Actor{At: at(o.Spot.At), Face: o.Spot.Face}
 	for _, v := range e.Visitors() {

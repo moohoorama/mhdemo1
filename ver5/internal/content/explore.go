@@ -28,6 +28,7 @@ type ExploreArea struct {
 	Times     []ExploreTime `json:",omitempty"` // the first whose If holds stands in for Time (night falls)
 	Zoom      float64       `json:",omitempty"` // the camera's zoom on arrival, whole numbers; 2 when 0
 	Grass     *GrassTint    `json:",omitempty"` // the grass here when the map stands for another land; nil keeps the map's
+	Snow      float64       `json:",omitempty"` // 0..1: snow lies here, so its trees and bushes are the snow pictures (map/props_snow.json) and the grass white unless Grass says otherwise
 	At        [2]int        // where the hero stands on arriving where no exit leads back
 	Exits     []ExploreExit
 	People    map[string]*ExplorePerson `json:",omitempty"`
@@ -197,6 +198,9 @@ func (d *Data) validateExplores(nodes map[string]Node) error {
 			where := name + " " + aid
 			if a.Map == "" || a.Name == "" {
 				return fmt.Errorf("%s: map and name", where)
+			}
+			if a.Snow < 0 || a.Snow > 1 {
+				return fmt.Errorf("%s: snow %v is not within 0 and 1", where, a.Snow)
 			}
 			for _, t := range a.Times {
 				if err := conds(where+" time "+t.Time, t.If); err != nil {
