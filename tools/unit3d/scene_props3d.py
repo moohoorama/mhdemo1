@@ -663,6 +663,97 @@ def bush(seed=0):
     return draw()
 
 
+BAMBOO, BAMBOO_NODE, BAMBOO_LEAF, BAMBOO_LEAF_LIGHT = '#5e9a48', '#2f5c32', '#2f7a3c', '#6aa84a'
+R.add_ramps({BAMBOO: 'PQQR', BAMBOO_NODE: 'OPPQ', BAMBOO_LEAF: 'HIIJ', BAMBOO_LEAF_LIGHT: 'IJJJ'})
+
+
+def leaf_blade(p, ang, length, width, rise, droop, color):
+    """One long narrow bamboo leaf from p: it climbs a little, then arches over and hangs to its tip."""
+    d = V(math.cos(ang), math.sin(ang), 0)
+    side = V(-d[1], d[0], 0) * width
+    mid = p + d*length*.5 + V(0, 0, rise)
+    tip = p + d*length + V(0, 0, rise - droop)
+    m.poly([p, mid + side, mid - side], color)
+    m.poly([mid + side, tip, mid - side], color)
+
+
+def culm(rnd, base, height, r, lean, leaves=True, node=.6, marks=None):
+    """One bamboo stem: nodes every `node` units (a dark swollen ring each), tapering, bowing to `lean` at the top; its
+    upper nodes put out short branches carrying sprays of leaves that arch over and hang."""
+    n = max(3, round(height/node))
+    pts = [base + V(lean[0]*(i/n)**2.2, lean[1]*(i/n)**2.2, height*i/n) for i in range(n + 1)]
+    for i, (a, b) in enumerate(zip(pts, pts[1:])):
+        rr = r*(1 - .35*i/n)
+        m.rod(a, b, rr, BAMBOO)
+        if i:
+            m.ell(a, [rr*1.45, rr*1.45, rr*.55], BAMBOO_NODE)
+    if marks is not None:
+        marks += pts[2:]
+    if not leaves:
+        return pts
+    for i in range(max(2, round(n*.55)), n + 1):
+        a = rnd.uniform(0, math.tau)
+        for k in range(2 if i < n else 3):
+            ang = a + k*math.tau/(2 if i < n else 3) + rnd.uniform(-.4, .4)
+            reach = (.3 + .1*(i/n)) if i < n else .12
+            q = pts[i] + V(reach*math.cos(ang), reach*math.sin(ang), .05)
+            m.rod(pts[i], q, r*.22, BAMBOO)
+            for _ in range(3):
+                la = ang + rnd.uniform(-.9, .9)
+                leaf_blade(q, la, rnd.uniform(.6, .9), .08, rnd.uniform(.05, .18), rnd.uniform(.28, .5),
+                           BAMBOO_LEAF_LIGHT if rnd.random() < .4 else BAMBOO_LEAF)
+    return pts
+
+
+def node_glints(im, pivot, points):
+    """Retouch: a light dot on the lit (left) edge of a stem at each node, where the render's ring is one pixel too fine."""
+    stem = {R.COLOR[k] for k in 'PQ'}
+    for p in points:
+        x, y = R.project(p, S.VIEW, S.SCALE, (pivot[0] - 1, pivot[1] - 1))
+        x, y = int(x), int(y)
+        if 0 < x < im.width and 0 <= y < im.height and im.getpixel((x, y))[:3] in stem:
+            im.putpixel((x, y), (*R.COLOR['R'], 255))
+    return im
+
+
+def bamboo_grove(seed=0):
+    """대숲 한 무더기: five or six stems of different girth and height (3 to 5.5 people tall at most) standing close, each
+    leaning outward from the clump's middle, nodes along every stem, leafy sprays hanging off the upper third."""
+    rnd = np.random.default_rng(seed + 91)
+    m.meshes = []
+    n, marks = 5 + seed % 2, []
+    for k in range(n):
+        a = k*math.tau/n + rnd.uniform(-.4, .4)
+        d = rnd.uniform(.15, .5)
+        base = V(d*math.cos(a), d*math.sin(a), 0)
+        lean = (.55*math.cos(a)*rnd.uniform(.5, 1.1), .55*math.sin(a)*rnd.uniform(.5, 1.1))
+        culm(rnd, base, rnd.uniform(3.8, 6.0), rnd.uniform(.045, .07), lean, marks=marks)
+    im, pivot = draw(**BIG)
+    return cast_shadow(node_glints(im, pivot, marks)), pivot
+
+
+def bamboo_thin(seed=0):
+    """Two slim stems by a road or fence: tall, a hand's width apart, bowing a little the same way."""
+    rnd = np.random.default_rng(seed + 101)
+    m.meshes, marks = [], []
+    for k, (x, h) in enumerate(((-.12, 5.6), (.16, 4.4))):
+        culm(rnd, V(x, rnd.uniform(-.06, .06), 0), h, .05 - .006*k, (.5, .25 + .2*k), node=.55, marks=marks)
+    im, pivot = draw(**BIG)
+    return cast_shadow(node_glints(im, pivot, marks)), pivot
+
+
+def bamboo_shoots(seed=0):
+    """조릿대: a low thicket of dwarf bamboo at knee-to-waist height, thin canes with leaves spread out and hanging."""
+    rnd = np.random.default_rng(seed + 111)
+    m.meshes = []
+    for k in range(7):
+        a = k*math.tau/7 + rnd.uniform(-.3, .3)
+        d = rnd.uniform(.05, .3)
+        culm(rnd, V(d*math.cos(a), d*math.sin(a), 0), rnd.uniform(.9, 1.4), .03, (.3*math.cos(a), .3*math.sin(a)), node=.35)
+    im, pivot = draw()
+    return cast_shadow(im), pivot
+
+
 def fallen_petals(seed=0):
     """Pink petals fallen on the ground in loose drifts (drawn under the units)."""
     rnd = np.random.default_rng(seed + 5)
@@ -1137,7 +1228,8 @@ PROPS = {'weapon_rack': weapon_rack, 'armor_stand': armor_stand, 'candle_stand':
          'peach_bloom_2': lambda: peach_tree(2),
          'stree_pine_0': pine, 'stree_pine_1': lambda: pine(1), 'stree_broad_0': broadleaf, 'stree_broad_1': lambda: broadleaf(1),
          'stree_willow': willow, 'stree_old': old_tree, 'stree_dead': dead_tree, 'stree_bush_0': bush, 'stree_bush_1': lambda: bush(1),
-         'stree_plum_0': plum_tree, 'stree_plum_1': lambda: plum_tree(1),
+         'stree_bamboo_0': bamboo_grove, 'stree_bamboo_1': lambda: bamboo_grove(1), 'stree_bamboo_thin': bamboo_thin,
+         'stree_sasa': bamboo_shoots, 'stree_plum_0': plum_tree, 'stree_plum_1': lambda: plum_tree(1),
          'flagstones_0': flagstones, 'flagstones_1': lambda: flagstones(1), 'well': well, 'fallen_petals': fallen_petals,
          'market_stall': market_stall, 'market_stall_cloth': lambda: market_stall('cloth'),
          'market_stall_jar': lambda: market_stall('jar'), 'soup_stove': soup_stove, 'bench': bench, 'counter': counter,

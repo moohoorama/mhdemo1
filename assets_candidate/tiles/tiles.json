@@ -11703,6 +11703,82 @@
    "scale": "scene",
    "made": "open pavilion deck, pixel art on the small-tile grid (gen_pixel_pavilion.py)",
    "shadow": false
+  },
+  "stree_bamboo_0": {
+   "file": "tiles/stree_bamboo_0.png",
+   "size": [
+    75,
+    139
+   ],
+   "pivot": [
+    39,
+    132
+   ],
+   "layer": "object",
+   "shadow_mask": {
+    "file": "tiles/stree_bamboo_0_shadow.png",
+    "pivot": [
+     12,
+     3
+    ]
+   }
+  },
+  "stree_bamboo_1": {
+   "file": "tiles/stree_bamboo_1.png",
+   "size": [
+    77,
+    128
+   ],
+   "pivot": [
+    39,
+    122
+   ],
+   "layer": "object",
+   "shadow_mask": {
+    "file": "tiles/stree_bamboo_1_shadow.png",
+    "pivot": [
+     14,
+     4
+    ]
+   }
+  },
+  "stree_bamboo_thin": {
+   "file": "tiles/stree_bamboo_thin.png",
+   "size": [
+    53,
+    124
+   ],
+   "pivot": [
+    19,
+    120
+   ],
+   "layer": "object",
+   "shadow_mask": {
+    "file": "tiles/stree_bamboo_thin_shadow.png",
+    "pivot": [
+     2,
+     2
+    ]
+   }
+  },
+  "stree_sasa": {
+   "file": "tiles/stree_sasa.png",
+   "size": [
+    59,
+    38
+   ],
+   "pivot": [
+    28,
+    34
+   ],
+   "layer": "object",
+   "shadow_mask": {
+    "file": "tiles/stree_sasa_shadow.png",
+    "pivot": [
+     24,
+     13
+    ]
+   }
   }
  }
 }

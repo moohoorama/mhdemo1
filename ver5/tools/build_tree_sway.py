@@ -35,6 +35,10 @@ RAMPS = [  # dark to light
     [(196, 210, 217), (241, 246, 245)],
     [(63, 138, 74)],
 ]
+BAMBOO = {'stree_bamboo_0', 'stree_bamboo_1', 'stree_bamboo_thin', 'stree_sasa'}  # yellow-green stems stay, blue-green leaves sway
+BAMBOO_WOOD = {(64, 88, 38), (104, 134, 48), (152, 178, 66), (204, 214, 104)}
+BAMBOO_RAMP = [(42, 94, 53), (63, 138, 74), (121, 184, 102)]
+BAMBOO_AMP = 1.7  # a bamboo spray bows further than a crown of leaves
 HANGING = {'stree_willow'}  # strands hang to the ground, so the low leaves move as much as the high ones
 
 
@@ -55,12 +59,14 @@ class Tree:
         rim = (pad[:-2, 1:-1] | pad[2:, 1:-1] | pad[1:-1, :-2] | pad[1:-1, 2:]) & ~body
         line = solid & self.match(OUTLINE) & ~rim  # dark lines the outline rule does not draw (plum twigs) stay put
         self.line = line
-        self.wood = body & np.any([self.match(c) for c in WOOD], axis=0)
+        self.amp = BAMBOO_AMP if name in BAMBOO else 1.0
+        ramps = RAMPS + [BAMBOO_RAMP] if name in BAMBOO else RAMPS
+        self.wood = body & np.any([self.match(c) for c in WOOD | (BAMBOO_WOOD if name in BAMBOO else set())], axis=0)
         self.wood |= self.bark_shade(body & ~self.wood)
         self.leaf = body & ~self.wood
         self.ys, self.xs = np.mgrid[0:self.h, 0:self.w]
         self.down, lit = {}, []
-        for ramp in RAMPS:
+        for ramp in ramps:
             here = [c for c in ramp if self.match(c).any()]
             if not here:
                 continue
@@ -149,7 +155,7 @@ class Tree:
             c = self.colour.copy()
             moves = []
             for (ys, xs), p in zip(pieces, phases):
-                dx, dy = int(np.rint(.9 * math.sin(ph + p))), int(np.rint(.54 * math.sin(2 * ph + 1.7 * p)))
+                dx, dy = int(np.rint(.9 * self.amp * math.sin(ph + p))), int(np.rint(.54 * self.amp * math.sin(2 * ph + 1.7 * p)))
                 if dx or dy:
                     moves.append((ys, xs, dx, dy))
                     c[ys, xs] = [self.down[tuple(v)] for v in self.colour[ys, xs]]
@@ -158,8 +164,8 @@ class Tree:
                 ok = (ny >= 0) & (ny < self.h) & (nx >= 0) & (nx < self.w)
                 ok[ok] = self.leaf[ny[ok], nx[ok]]
                 c[ny[ok], nx[ok]] = self.colour[ys[ok], xs[ok]]
-            dx = 1.2 * wobble * np.sin(ph + tuft * 2.2)
-            dy = .9 * wobble * np.sin(2 * ph + tuft * 3.1 + 1)
+            dx = 1.2 * self.amp * wobble * np.sin(ph + tuft * 2.2)
+            dy = .9 * self.amp * wobble * np.sin(2 * ph + tuft * 3.1 + 1)
             sx = np.clip(self.xs - np.rint(dx).astype(int), 0, self.w - 1)
             sy = np.clip(self.ys - np.rint(dy).astype(int), 0, self.h - 1)
             inner = self.leaf & (rim > 3)
