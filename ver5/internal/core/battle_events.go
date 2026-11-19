@@ -575,7 +575,7 @@ func (e *Engine) playCutscene(groups [][]content.Step) {
 		var steps []CutStep
 		for _, st := range group {
 			for _, u := range e.matching(st.Unit) {
-				if u.HP <= 0 && st.Kind != "wait" {
+				if u.HP <= 0 && st.Kind != "wait" && st.Kind != "look" {
 					continue
 				}
 				switch st.Kind {
@@ -600,6 +600,9 @@ func (e *Engine) playCutscene(groups [][]content.Step) {
 			}
 			if st.Kind == "wait" {
 				steps = append(steps, CutStep{Kind: "wait", Seconds: st.Seconds})
+			}
+			if st.Kind == "look" {
+				steps = append(steps, CutStep{Kind: "look", Path: []content.Point{*st.To}, Seconds: st.Seconds})
 			}
 		}
 		if len(steps) > 0 {

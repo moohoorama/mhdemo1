@@ -331,6 +331,8 @@ func validateCutscene(s Stage, event string, groups [][]Step, refs *battleRefs) 
 				ok = refs.targets[st.Unit] && st.Text != ""
 			case "leave":
 				ok = refs.targets[st.Unit]
+			case "look":
+				ok = st.To != nil && st.To.X >= 0 && st.To.Y >= 0 && st.To.X < s.Width && st.To.Y < s.Height && st.Seconds >= 0 && st.Seconds <= 30
 			case "wait":
 				ok = st.Seconds > 0 && st.Seconds <= 30
 			default:

@@ -430,9 +430,9 @@
    "ID": 6,
    "Rect": {
     "X": 5,
-    "Y": 9,
+    "Y": 12,
     "W": 7,
-    "H": 20
+    "H": 17
    },
    "Name": "불 놓을 길",
    "Description": "길과 양옆 숲. 이 안의 조조군이 불에 데고 혼란에 빠진다"
@@ -474,7 +474,7 @@
    "ID": 30,
    "Rect": {
     "X": 6,
-    "Y": 9,
+    "Y": 13,
     "W": 1,
     "H": 1
    },
@@ -485,7 +485,7 @@
    "ID": 31,
    "Rect": {
     "X": 6,
-    "Y": 10,
+    "Y": 15,
     "W": 1,
     "H": 1
    },
@@ -496,7 +496,7 @@
    "ID": 32,
    "Rect": {
     "X": 6,
-    "Y": 13,
+    "Y": 16,
     "W": 1,
     "H": 1
    },
@@ -507,7 +507,7 @@
    "ID": 33,
    "Rect": {
     "X": 6,
-    "Y": 15,
+    "Y": 18,
     "W": 1,
     "H": 1
    },
@@ -518,7 +518,7 @@
    "ID": 34,
    "Rect": {
     "X": 6,
-    "Y": 16,
+    "Y": 19,
     "W": 1,
     "H": 1
    },
@@ -529,7 +529,7 @@
    "ID": 35,
    "Rect": {
     "X": 6,
-    "Y": 18,
+    "Y": 21,
     "W": 1,
     "H": 1
    },
@@ -540,7 +540,7 @@
    "ID": 36,
    "Rect": {
     "X": 6,
-    "Y": 19,
+    "Y": 22,
     "W": 1,
     "H": 1
    },
@@ -551,7 +551,7 @@
    "ID": 37,
    "Rect": {
     "X": 6,
-    "Y": 21,
+    "Y": 24,
     "W": 1,
     "H": 1
    },
@@ -562,7 +562,7 @@
    "ID": 38,
    "Rect": {
     "X": 6,
-    "Y": 22,
+    "Y": 25,
     "W": 1,
     "H": 1
    },
@@ -573,7 +573,7 @@
    "ID": 39,
    "Rect": {
     "X": 6,
-    "Y": 24,
+    "Y": 27,
     "W": 1,
     "H": 1
    },
@@ -584,7 +584,7 @@
    "ID": 40,
    "Rect": {
     "X": 6,
-    "Y": 25,
+    "Y": 28,
     "W": 1,
     "H": 1
    },
@@ -594,8 +594,8 @@
   {
    "ID": 41,
    "Rect": {
-    "X": 6,
-    "Y": 27,
+    "X": 10,
+    "Y": 14,
     "W": 1,
     "H": 1
    },
@@ -605,8 +605,8 @@
   {
    "ID": 42,
    "Rect": {
-    "X": 6,
-    "Y": 28,
+    "X": 10,
+    "Y": 15,
     "W": 1,
     "H": 1
    },
@@ -617,7 +617,7 @@
    "ID": 43,
    "Rect": {
     "X": 10,
-    "Y": 9,
+    "Y": 17,
     "W": 1,
     "H": 1
    },
@@ -628,7 +628,7 @@
    "ID": 44,
    "Rect": {
     "X": 10,
-    "Y": 11,
+    "Y": 18,
     "W": 1,
     "H": 1
    },
@@ -639,7 +639,7 @@
    "ID": 45,
    "Rect": {
     "X": 10,
-    "Y": 14,
+    "Y": 20,
     "W": 1,
     "H": 1
    },
@@ -650,7 +650,7 @@
    "ID": 46,
    "Rect": {
     "X": 10,
-    "Y": 15,
+    "Y": 21,
     "W": 1,
     "H": 1
    },
@@ -661,7 +661,7 @@
    "ID": 47,
    "Rect": {
     "X": 10,
-    "Y": 17,
+    "Y": 23,
     "W": 1,
     "H": 1
    },
@@ -672,7 +672,7 @@
    "ID": 48,
    "Rect": {
     "X": 10,
-    "Y": 18,
+    "Y": 24,
     "W": 1,
     "H": 1
    },
@@ -683,7 +683,7 @@
    "ID": 49,
    "Rect": {
     "X": 10,
-    "Y": 20,
+    "Y": 26,
     "W": 1,
     "H": 1
    },
@@ -694,7 +694,7 @@
    "ID": 50,
    "Rect": {
     "X": 10,
-    "Y": 21,
+    "Y": 27,
     "W": 1,
     "H": 1
    },
@@ -702,54 +702,10 @@
    "Description": "길 옆 숲 한 칸"
   },
   {
-   "ID": 51,
-   "Rect": {
-    "X": 10,
-    "Y": 23,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "불 22",
-   "Description": "길 옆 숲 한 칸"
-  },
-  {
-   "ID": 52,
-   "Rect": {
-    "X": 10,
-    "Y": 24,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "불 23",
-   "Description": "길 옆 숲 한 칸"
-  },
-  {
-   "ID": 53,
-   "Rect": {
-    "X": 10,
-    "Y": 26,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "불 24",
-   "Description": "길 옆 숲 한 칸"
-  },
-  {
-   "ID": 54,
-   "Rect": {
-    "X": 10,
-    "Y": 27,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "불 25",
-   "Description": "길 옆 숲 한 칸"
-  },
-  {
    "ID": 100,
    "Rect": {
-    "X": 7,
-    "Y": 9,
+    "X": 5,
+    "Y": 12,
     "W": 1,
     "H": 1
    },
@@ -759,8 +715,8 @@
   {
    "ID": 101,
    "Rect": {
-    "X": 8,
-    "Y": 9,
+    "X": 9,
+    "Y": 12,
     "W": 1,
     "H": 1
    },
@@ -770,8 +726,8 @@
   {
    "ID": 102,
    "Rect": {
-    "X": 9,
-    "Y": 9,
+    "X": 10,
+    "Y": 12,
     "W": 1,
     "H": 1
    },
@@ -782,7 +738,7 @@
    "ID": 103,
    "Rect": {
     "X": 11,
-    "Y": 9,
+    "Y": 12,
     "W": 1,
     "H": 1
    },
@@ -792,8 +748,8 @@
   {
    "ID": 104,
    "Rect": {
-    "X": 7,
-    "Y": 10,
+    "X": 5,
+    "Y": 13,
     "W": 1,
     "H": 1
    },
@@ -803,8 +759,8 @@
   {
    "ID": 105,
    "Rect": {
-    "X": 8,
-    "Y": 10,
+    "X": 9,
+    "Y": 13,
     "W": 1,
     "H": 1
    },
@@ -814,8 +770,8 @@
   {
    "ID": 106,
    "Rect": {
-    "X": 9,
-    "Y": 10,
+    "X": 11,
+    "Y": 13,
     "W": 1,
     "H": 1
    },
@@ -825,8 +781,8 @@
   {
    "ID": 107,
    "Rect": {
-    "X": 10,
-    "Y": 10,
+    "X": 5,
+    "Y": 14,
     "W": 1,
     "H": 1
    },
@@ -836,8 +792,8 @@
   {
    "ID": 108,
    "Rect": {
-    "X": 11,
-    "Y": 10,
+    "X": 7,
+    "Y": 14,
     "W": 1,
     "H": 1
    },
@@ -847,8 +803,8 @@
   {
    "ID": 109,
    "Rect": {
-    "X": 7,
-    "Y": 11,
+    "X": 9,
+    "Y": 14,
     "W": 1,
     "H": 1
    },
@@ -858,8 +814,8 @@
   {
    "ID": 110,
    "Rect": {
-    "X": 5,
-    "Y": 12,
+    "X": 11,
+    "Y": 14,
     "W": 1,
     "H": 1
    },
@@ -869,8 +825,8 @@
   {
    "ID": 111,
    "Rect": {
-    "X": 9,
-    "Y": 12,
+    "X": 5,
+    "Y": 15,
     "W": 1,
     "H": 1
    },
@@ -880,8 +836,8 @@
   {
    "ID": 112,
    "Rect": {
-    "X": 10,
-    "Y": 12,
+    "X": 11,
+    "Y": 15,
     "W": 1,
     "H": 1
    },
@@ -891,8 +847,8 @@
   {
    "ID": 113,
    "Rect": {
-    "X": 11,
-    "Y": 12,
+    "X": 7,
+    "Y": 16,
     "W": 1,
     "H": 1
    },
@@ -903,7 +859,7 @@
    "ID": 114,
    "Rect": {
     "X": 5,
-    "Y": 13,
+    "Y": 17,
     "W": 1,
     "H": 1
    },
@@ -913,8 +869,8 @@
   {
    "ID": 115,
    "Rect": {
-    "X": 9,
-    "Y": 13,
+    "X": 7,
+    "Y": 17,
     "W": 1,
     "H": 1
    },
@@ -924,8 +880,8 @@
   {
    "ID": 116,
    "Rect": {
-    "X": 11,
-    "Y": 13,
+    "X": 8,
+    "Y": 17,
     "W": 1,
     "H": 1
    },
@@ -935,8 +891,8 @@
   {
    "ID": 117,
    "Rect": {
-    "X": 5,
-    "Y": 14,
+    "X": 9,
+    "Y": 17,
     "W": 1,
     "H": 1
    },
@@ -946,8 +902,8 @@
   {
    "ID": 118,
    "Rect": {
-    "X": 7,
-    "Y": 14,
+    "X": 11,
+    "Y": 17,
     "W": 1,
     "H": 1
    },
@@ -957,8 +913,8 @@
   {
    "ID": 119,
    "Rect": {
-    "X": 9,
-    "Y": 14,
+    "X": 5,
+    "Y": 18,
     "W": 1,
     "H": 1
    },
@@ -968,8 +924,8 @@
   {
    "ID": 120,
    "Rect": {
-    "X": 11,
-    "Y": 14,
+    "X": 9,
+    "Y": 18,
     "W": 1,
     "H": 1
    },
@@ -979,8 +935,8 @@
   {
    "ID": 121,
    "Rect": {
-    "X": 5,
-    "Y": 15,
+    "X": 11,
+    "Y": 18,
     "W": 1,
     "H": 1
    },
@@ -990,8 +946,8 @@
   {
    "ID": 122,
    "Rect": {
-    "X": 11,
-    "Y": 15,
+    "X": 5,
+    "Y": 19,
     "W": 1,
     "H": 1
    },
@@ -1001,8 +957,8 @@
   {
    "ID": 123,
    "Rect": {
-    "X": 7,
-    "Y": 16,
+    "X": 11,
+    "Y": 19,
     "W": 1,
     "H": 1
    },
@@ -1012,8 +968,8 @@
   {
    "ID": 124,
    "Rect": {
-    "X": 5,
-    "Y": 17,
+    "X": 7,
+    "Y": 20,
     "W": 1,
     "H": 1
    },
@@ -1023,8 +979,8 @@
   {
    "ID": 125,
    "Rect": {
-    "X": 7,
-    "Y": 17,
+    "X": 9,
+    "Y": 20,
     "W": 1,
     "H": 1
    },
@@ -1034,8 +990,8 @@
   {
    "ID": 126,
    "Rect": {
-    "X": 8,
-    "Y": 17,
+    "X": 11,
+    "Y": 20,
     "W": 1,
     "H": 1
    },
@@ -1045,8 +1001,8 @@
   {
    "ID": 127,
    "Rect": {
-    "X": 9,
-    "Y": 17,
+    "X": 7,
+    "Y": 21,
     "W": 1,
     "H": 1
    },
@@ -1056,8 +1012,8 @@
   {
    "ID": 128,
    "Rect": {
-    "X": 11,
-    "Y": 17,
+    "X": 8,
+    "Y": 21,
     "W": 1,
     "H": 1
    },
@@ -1067,8 +1023,8 @@
   {
    "ID": 129,
    "Rect": {
-    "X": 5,
-    "Y": 18,
+    "X": 9,
+    "Y": 21,
     "W": 1,
     "H": 1
    },
@@ -1078,8 +1034,8 @@
   {
    "ID": 130,
    "Rect": {
-    "X": 9,
-    "Y": 18,
+    "X": 11,
+    "Y": 21,
     "W": 1,
     "H": 1
    },
@@ -1089,8 +1045,8 @@
   {
    "ID": 131,
    "Rect": {
-    "X": 11,
-    "Y": 18,
+    "X": 5,
+    "Y": 22,
     "W": 1,
     "H": 1
    },
@@ -1100,8 +1056,8 @@
   {
    "ID": 132,
    "Rect": {
-    "X": 5,
-    "Y": 19,
+    "X": 10,
+    "Y": 22,
     "W": 1,
     "H": 1
    },
@@ -1112,7 +1068,7 @@
    "ID": 133,
    "Rect": {
     "X": 11,
-    "Y": 19,
+    "Y": 22,
     "W": 1,
     "H": 1
    },
@@ -1122,8 +1078,8 @@
   {
    "ID": 134,
    "Rect": {
-    "X": 7,
-    "Y": 20,
+    "X": 8,
+    "Y": 23,
     "W": 1,
     "H": 1
    },
@@ -1134,7 +1090,7 @@
    "ID": 135,
    "Rect": {
     "X": 9,
-    "Y": 20,
+    "Y": 23,
     "W": 1,
     "H": 1
    },
@@ -1144,8 +1100,8 @@
   {
    "ID": 136,
    "Rect": {
-    "X": 11,
-    "Y": 20,
+    "X": 5,
+    "Y": 24,
     "W": 1,
     "H": 1
    },
@@ -1156,7 +1112,7 @@
    "ID": 137,
    "Rect": {
     "X": 7,
-    "Y": 21,
+    "Y": 24,
     "W": 1,
     "H": 1
    },
@@ -1167,7 +1123,7 @@
    "ID": 138,
    "Rect": {
     "X": 8,
-    "Y": 21,
+    "Y": 24,
     "W": 1,
     "H": 1
    },
@@ -1178,7 +1134,7 @@
    "ID": 139,
    "Rect": {
     "X": 9,
-    "Y": 21,
+    "Y": 24,
     "W": 1,
     "H": 1
    },
@@ -1189,7 +1145,7 @@
    "ID": 140,
    "Rect": {
     "X": 11,
-    "Y": 21,
+    "Y": 24,
     "W": 1,
     "H": 1
    },
@@ -1199,8 +1155,8 @@
   {
    "ID": 141,
    "Rect": {
-    "X": 5,
-    "Y": 22,
+    "X": 7,
+    "Y": 25,
     "W": 1,
     "H": 1
    },
@@ -1210,8 +1166,8 @@
   {
    "ID": 142,
    "Rect": {
-    "X": 10,
-    "Y": 22,
+    "X": 8,
+    "Y": 25,
     "W": 1,
     "H": 1
    },
@@ -1221,8 +1177,8 @@
   {
    "ID": 143,
    "Rect": {
-    "X": 11,
-    "Y": 22,
+    "X": 9,
+    "Y": 25,
     "W": 1,
     "H": 1
    },
@@ -1232,8 +1188,8 @@
   {
    "ID": 144,
    "Rect": {
-    "X": 8,
-    "Y": 23,
+    "X": 10,
+    "Y": 25,
     "W": 1,
     "H": 1
    },
@@ -1243,8 +1199,8 @@
   {
    "ID": 145,
    "Rect": {
-    "X": 9,
-    "Y": 23,
+    "X": 11,
+    "Y": 25,
     "W": 1,
     "H": 1
    },
@@ -1255,7 +1211,7 @@
    "ID": 146,
    "Rect": {
     "X": 5,
-    "Y": 24,
+    "Y": 26,
     "W": 1,
     "H": 1
    },
@@ -1265,8 +1221,8 @@
   {
    "ID": 147,
    "Rect": {
-    "X": 7,
-    "Y": 24,
+    "X": 6,
+    "Y": 26,
     "W": 1,
     "H": 1
    },
@@ -1277,7 +1233,7 @@
    "ID": 148,
    "Rect": {
     "X": 8,
-    "Y": 24,
+    "Y": 26,
     "W": 1,
     "H": 1
    },
@@ -1287,8 +1243,8 @@
   {
    "ID": 149,
    "Rect": {
-    "X": 9,
-    "Y": 24,
+    "X": 5,
+    "Y": 27,
     "W": 1,
     "H": 1
    },
@@ -1298,8 +1254,8 @@
   {
    "ID": 150,
    "Rect": {
-    "X": 11,
-    "Y": 24,
+    "X": 7,
+    "Y": 27,
     "W": 1,
     "H": 1
    },
@@ -1309,8 +1265,8 @@
   {
    "ID": 151,
    "Rect": {
-    "X": 7,
-    "Y": 25,
+    "X": 8,
+    "Y": 27,
     "W": 1,
     "H": 1
    },
@@ -1320,8 +1276,8 @@
   {
    "ID": 152,
    "Rect": {
-    "X": 8,
-    "Y": 25,
+    "X": 5,
+    "Y": 28,
     "W": 1,
     "H": 1
    },
@@ -1331,8 +1287,8 @@
   {
    "ID": 153,
    "Rect": {
-    "X": 9,
-    "Y": 25,
+    "X": 8,
+    "Y": 28,
     "W": 1,
     "H": 1
    },
@@ -1342,8 +1298,8 @@
   {
    "ID": 154,
    "Rect": {
-    "X": 10,
-    "Y": 25,
+    "X": 9,
+    "Y": 28,
     "W": 1,
     "H": 1
    },
@@ -1354,121 +1310,11 @@
    "ID": 155,
    "Rect": {
     "X": 11,
-    "Y": 25,
+    "Y": 28,
     "W": 1,
     "H": 1
    },
    "Name": "불씨 56",
-   "Description": "불길 곁에 남는 불씨 한 칸"
-  },
-  {
-   "ID": 156,
-   "Rect": {
-    "X": 5,
-    "Y": 26,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "불씨 57",
-   "Description": "불길 곁에 남는 불씨 한 칸"
-  },
-  {
-   "ID": 157,
-   "Rect": {
-    "X": 6,
-    "Y": 26,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "불씨 58",
-   "Description": "불길 곁에 남는 불씨 한 칸"
-  },
-  {
-   "ID": 158,
-   "Rect": {
-    "X": 8,
-    "Y": 26,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "불씨 59",
-   "Description": "불길 곁에 남는 불씨 한 칸"
-  },
-  {
-   "ID": 159,
-   "Rect": {
-    "X": 5,
-    "Y": 27,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "불씨 60",
-   "Description": "불길 곁에 남는 불씨 한 칸"
-  },
-  {
-   "ID": 160,
-   "Rect": {
-    "X": 7,
-    "Y": 27,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "불씨 61",
-   "Description": "불길 곁에 남는 불씨 한 칸"
-  },
-  {
-   "ID": 161,
-   "Rect": {
-    "X": 8,
-    "Y": 27,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "불씨 62",
-   "Description": "불길 곁에 남는 불씨 한 칸"
-  },
-  {
-   "ID": 162,
-   "Rect": {
-    "X": 5,
-    "Y": 28,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "불씨 63",
-   "Description": "불길 곁에 남는 불씨 한 칸"
-  },
-  {
-   "ID": 163,
-   "Rect": {
-    "X": 8,
-    "Y": 28,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "불씨 64",
-   "Description": "불길 곁에 남는 불씨 한 칸"
-  },
-  {
-   "ID": 164,
-   "Rect": {
-    "X": 9,
-    "Y": 28,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "불씨 65",
-   "Description": "불길 곁에 남는 불씨 한 칸"
-  },
-  {
-   "ID": 165,
-   "Rect": {
-    "X": 11,
-    "Y": 28,
-    "W": 1,
-    "H": 1
-   },
-   "Name": "불씨 66",
    "Description": "불길 곁에 남는 불씨 한 칸"
   }
  ],
@@ -1538,11 +1384,26 @@
    ],
    "Do": [
     {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "look",
+        "To": {
+         "X": 8,
+         "Y": 22
+        },
+        "Seconds": 0.4
+       }
+      ]
+     ]
+    },
+    {
      "Kind": "say",
      "Lines": [
       {
        "Actor": "zhugeliang",
-       "Text": "이때입니다! 불을 놓으십시오!"
+       "Text": "이때입니다! 불을 놓으십시오! 운장은 후방 군량을, 익덕은 중군을 치십시오!"
       }
      ]
     },
@@ -1551,9 +1412,9 @@
      "Spawns": [
       {
        "Character": "guanyu",
-       "X": 5,
-       "Y": 20,
-       "Facing": "SE"
+       "X": 11,
+       "Y": 8,
+       "Facing": "SW"
       }
      ]
     },
@@ -1567,6 +1428,20 @@
     {
      "Kind": "terrain",
      "Area": 101,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 102,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 103,
      "State": "e",
      "Turns": 3,
      "Vacant": true
@@ -1587,6 +1462,27 @@
     },
     {
      "Kind": "terrain",
+     "Area": 106,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 107,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 108,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
      "Area": 109,
      "State": "e",
      "Turns": 3,
@@ -1601,7 +1497,42 @@
     },
     {
      "Kind": "terrain",
+     "Area": 111,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 112,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 113,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
      "Area": 114,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 115,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 116,
      "State": "e",
      "Turns": 3,
      "Vacant": true
@@ -1622,7 +1553,28 @@
     },
     {
      "Kind": "terrain",
+     "Area": 119,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 120,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
      "Area": 121,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 122,
      "State": "e",
      "Turns": 3,
      "Vacant": true
@@ -1651,146 +1603,6 @@
     {
      "Kind": "terrain",
      "Area": 126,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 129,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 132,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 134,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 137,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 138,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 141,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 144,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 146,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 147,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 148,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 151,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 152,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 156,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 157,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 158,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 159,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 160,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 161,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 162,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 163,
      "State": "e",
      "Turns": 3,
      "Vacant": true
@@ -1828,6 +1640,255 @@
      "Area": 34,
      "State": "F",
      "Turns": 4,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 41,
+     "State": "F",
+     "Turns": 5,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 42,
+     "State": "F",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 43,
+     "State": "F",
+     "Turns": 6,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 44,
+     "State": "F",
+     "Turns": 4,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 45,
+     "State": "F",
+     "Turns": 2,
+     "Vacant": true
+    },
+    {
+     "Kind": "join",
+     "Spawns": [
+      {
+       "Character": "zhangfei",
+       "X": 5,
+       "Y": 20,
+       "Facing": "SE"
+      }
+     ]
+    },
+    {
+     "Kind": "terrain",
+     "Area": 127,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 128,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 129,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 130,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 131,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 132,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 133,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 134,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 135,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 136,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 137,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 138,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 139,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 140,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 141,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 142,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 143,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 144,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 145,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 146,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 147,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 148,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 149,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 150,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 151,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 152,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 153,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 154,
+     "State": "e",
+     "Turns": 3,
+     "Vacant": true
+    },
+    {
+     "Kind": "terrain",
+     "Area": 155,
+     "State": "e",
+     "Turns": 3,
      "Vacant": true
     },
     {
@@ -1874,276 +1935,6 @@
     },
     {
      "Kind": "terrain",
-     "Area": 41,
-     "State": "F",
-     "Turns": 5,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 42,
-     "State": "F",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "join",
-     "Spawns": [
-      {
-       "Character": "zhangfei",
-       "X": 11,
-       "Y": 18,
-       "Facing": "SW"
-      }
-     ]
-    },
-    {
-     "Kind": "terrain",
-     "Area": 102,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 103,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 106,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 107,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 108,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 111,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 112,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 113,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 115,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 116,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 119,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 120,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 122,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 127,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 128,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 130,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 131,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 133,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 135,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 136,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 139,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 140,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 142,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 143,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 145,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 149,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 150,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 153,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 154,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 155,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 164,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 165,
-     "State": "e",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 43,
-     "State": "F",
-     "Turns": 6,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 44,
-     "State": "F",
-     "Turns": 4,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 45,
-     "State": "F",
-     "Turns": 2,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
      "Area": 46,
      "State": "F",
      "Turns": 5,
@@ -2175,34 +1966,6 @@
      "Area": 50,
      "State": "F",
      "Turns": 2,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 51,
-     "State": "F",
-     "Turns": 5,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 52,
-     "State": "F",
-     "Turns": 3,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 53,
-     "State": "F",
-     "Turns": 6,
-     "Vacant": true
-    },
-    {
-     "Kind": "terrain",
-     "Area": 54,
-     "State": "F",
-     "Turns": 4,
      "Vacant": true
     },
     {
@@ -2272,6 +2035,30 @@
        "Text": "불이다……! 놈들의 계략이다! 흩어지지 말고 맞서라!"
       }
      ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "lidian",
+       "Text": "하후돈 장군을 구하라!"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ID": "ford-sorties",
+   "If": [
+    "since:fire>=2"
+   ],
+   "Do": [
+    {
+     "Kind": "ai",
+     "Targets": [
+      "ford"
+     ],
+     "Policy": "assault"
     }
    ]
   },

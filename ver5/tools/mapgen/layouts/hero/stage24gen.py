@@ -90,7 +90,8 @@ def wait(sec):
 # Areas. Each fire cell is its own one-cell area (30..) so it can burn for its own number of rounds.
 LURE, DEEP, TRAP, FLEE, FORD, REAR = 4, 5, 6, 9, 10, 7
 VAN_SEAT = 21
-FIRE_Y0, FIRE_Y1 = 9, 28
+FIRE_Y0, FIRE_Y1 = 12, 28
+SPLIT_Y = 20  # fire rows up to here belong to the rear half (관우's side), the rest to the front (장비's)
 FIRE_XS = (RX0 - 1, RX1 + 1)  # one column of woods each side of the road
 areas = [
     rect(1, 7, 37, 3, 3, '신야 앞 길', '유비·제갈량. 곁에 신야성'),
@@ -110,7 +111,7 @@ for side, x in enumerate(FIRE_XS):
             continue
         aid = 30 + n
         areas.append(rect(aid, x, y, 1, 1, '불 %d' % (n + 1), '길 옆 숲 한 칸'))
-        FIRE_CELLS[side].append((aid, 2 + (n * 3) % 5))
+        FIRE_CELLS[0 if y <= SPLIT_Y else 1].append((aid, 2 + (n * 3) % 5))
         n += 1
 lit = {(a['Rect']['X'], a['Rect']['Y']) for a in areas if a['ID'] >= 30}
 m = 0
@@ -119,7 +120,7 @@ for y in range(FIRE_Y0, FIRE_Y1 + 1):
         if (x, y) in lit or g[y][x][0] not in 'gluU' or h(x, y) % 2:
             continue
         areas.append(rect(100 + m, x, y, 1, 1, '불씨 %d' % (m + 1), '불길 곁에 남는 불씨 한 칸'))
-        EMBER_CELLS[0 if x <= RX0 + 1 else 1].append(100 + m)
+        EMBER_CELLS[0 if y <= SPLIT_Y else 1].append(100 + m)
         m += 1
 
 # The column waits on the road, vanguard (선봉) at the head, center (중군) behind, then the rear guard (후방) with
@@ -174,9 +175,10 @@ events = [
     ]},
     # The whole fire is lit at once, then the Wei troops on that stretch of road burn and fall into confusion.
     {'ID': 'fire', 'If': ['any:[at:zhaoyun:%d, since:chase>=4, defeated:xiahoudun]' % LURE], 'Do': [
-        say('zhugeliang', '이때입니다! 불을 놓으십시오!'),
-        join('guanyu', 5, 20, 'SE')] + lit_side(0) + [
-        join('zhangfei', 11, 18, 'SW')] + lit_side(1) + [
+        {'Kind': 'cutscene', 'Steps': [[{'Kind': 'look', 'To': P(8, 22), 'Seconds': 0.4}]]},
+        say('zhugeliang', '이때입니다! 불을 놓으십시오! 운장은 후방 군량을, 익덕은 중군을 치십시오!'),
+        join('guanyu', 11, 8, 'SW')] + lit_side(0) + [
+        join('zhangfei', 5, 20, 'SE')] + lit_side(1) + [
         {'Kind': 'damage', 'Targets': ['enemy@area:%d' % TRAP], 'Value': 50},
         {'Kind': 'buff', 'Targets': ['enemy@area:%d' % TRAP], 'Stat': 'confusion', 'Turns': 2},
         {'Kind': 'buff', 'Targets': ['enemy@area:%d' % TRAP], 'Stat': 'attack', 'Value': -20, 'Turns': 3},
@@ -184,7 +186,9 @@ events = [
         {'Kind': 'goals', 'Sub': [SUB_FORD]},
         {'Kind': 'ai', 'Targets': COLUMN, 'Policy': 'assault'},
         say('xiahoudun', '불이다……! 놈들의 계략이다! 흩어지지 말고 맞서라!'),
+        say('lidian', '하후돈 장군을 구하라!'),
     ]},
+    {'ID': 'ford-sorties', 'If': ['since:fire>=2'], 'Do': [{'Kind': 'ai', 'Targets': ['ford'], 'Policy': 'assault'}]},
     {'ID': 'ford-near', 'If': ['at:xiahoudun:%d' % FORD], 'Do': [
         say('xiahoudun', '여울만 건너면 된다! 만백, 뒤를 막아라!'),
         say('lidian', '어서 건너시오! 남은 군사는 내가 거두겠소!')]},

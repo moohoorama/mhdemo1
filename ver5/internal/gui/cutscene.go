@@ -143,6 +143,14 @@ func (g *Game) cutsceneTimeline(groups [][]core.CutStep) (entries []timedFn, tot
 				}
 				entries = append(entries, timedFn{total + walked, g.onUnit(st.Unit, func(v *unitVis) { g.leaveField(v, dir) })})
 				length = walked + leaveTime
+			case "look":
+				if n := len(st.Path); n > 0 && g.field != nil {
+					p := st.Path[0]
+					x, y := g.field.Center(float64(p.X), float64(p.Y))
+					cam = [2]float64{x, y}
+					entries = append(entries, timedFn{total, func() { g.panToCell(p.X, p.Y) }})
+					length = panTime + st.Seconds
+				}
 			case "wait":
 				length = st.Seconds
 			}
