@@ -1,0 +1,66 @@
+# B22  stage22.json  map22.json  origin 0 0
+,,,TRE,,,,,,TRE,,,,,,,,,,,,,,,,,,,,,,,, n  n MMMMMMMMMMMMMMMMMM n  n ,,,
+,,,TRE,,,TRE,,,TRE,,,,,,,,,,,,,,,,,,,,, n  n  n MMMMMMMMMMMM n  n  n ,,,
+,,,,,,,,,,,,,,,TRE,,,,,,TRE,,,,,,,,, n  n  n  n MMMMMM n  n ar1 n ,,,,,,
+,,,TRETRETRE,,,,,,,,,,,,,,,,,,,,, n  n  n  n  n  n  n fo1 n  n Cai,,,,,,
+TRE,,,,,,,,,,,,,,,,,,,,,,,,,,, n  n  n  n  n  n  n  n  n Che n ar2ar3,,,
+,,,,,,,,,,,,,,,,,,,,,,,,TRE,,,,,, n  n ba1 n ba2 n  n fo2 n  n  n  n MMM
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,, n ba5 n Zha n ba6 n  n fo3 n  n  n MMM
+,,,,,,pl2pl1pl3,,,,,,,,,,,,,,, n  n  n ba3 n ba4 n  n  n  n  n  n  n MMM
+,,,,,,pl4pl5pl6,,,,,,,,,,,,,,,,,, n  n  n ba7 n  n  n  n  n  n ,,,,,,MMM
+,,,,,,,,,,,,,,,,,,,,,TRE,,,,,,,,,,,, n  n  n  n  n ,,,,,,,,,,,,,,,,,,,,,
+...............TRE..............................TRE.....................
+.........;;;...;;;.........;;;......;;;;;;;;;;;;...;;;;;;;;;......;;;;;;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~pl8pl7pl9p10~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;;;;;;;;;;;;;;;;;;;;;;;;...;;;;;;;;;......;;;;;;;;;...;;;;;;;;;;;;;;;;;;
+..................TRE......;;;TRE......;;;TRE............TRE............
+..................;;;...;;;.........TRE...TRE...TRE;;;..................
+,,,,,,,,,TRE,,,,,, n  n ,,,,,,,,,,,,,,,,,,,,,,,, n  n ,,,TRE,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,, n  n ''''''ba8'''ba9''''''''' n  n ,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,, n  n '''''''''b10'''''''''''' n  n ,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,, n  n '''''''''Cun'''''''''''' n  n ,,,,,,,,,,,,,,,MMM
+,,,,,,,,,,,,TRE,,, n  n '''''''''''''''''''''''' n  n ,,,,,,,,,,,,MMMMMM
+,,,,,,,,,,,,,,,,,,,,, n  n '''''''''''''''''''''''' n  n ,,,,,,,,,MMMMMM
+,,,,,,,,,,,,,,,,,,,,,,,,,,, n  n  n  n  n  n  n  n ,,,,,,,,,,,,MMMMMMMMM
+,,,,,,TRE,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,TRE,,,,,,,,,MMMMMM,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,MMM
+
+pl1 Allies[0]  player
+pl2 Allies[1]  player
+pl3 Allies[2]  player
+pl4 Allies[3]  player
+pl5 Allies[4]  player
+pl6 Allies[5]  player
+pl7 Allies[6]  player
+pl8 Allies[7]  player
+pl9 Allies[8]  player
+p10 Allies[9]  player
+Zha Enemies[0]  zhangwu, enemy, group north, policy hold, rank officer, faction jing
+ba1 Enemies[1]  troop_bandit, enemy, group north, policy assault, rank troop, faction jing
+ba2 Enemies[2]  troop_bandit, enemy, group north, policy assault, rank troop, faction jing
+ba3 Enemies[3]  troop_bandit, enemy, group north, policy assault, rank troop, faction jing
+ba4 Enemies[4]  troop_bandit, enemy, group north, policy assault, rank troop, faction jing
+ba5 Enemies[5]  troop_bandit, enemy, group north, policy assault, rank troop, faction jing
+ba6 Enemies[6]  troop_bandit, enemy, group north, policy assault, rank troop, faction jing
+ba7 Enemies[7]  troop_bandit, enemy, group north, policy assault, rank troop, faction jing
+Cai Enemies[8]  caizhong, enemy, group masked, policy hold, rank officer, faction masked
+Che Enemies[9]  caihe, enemy, group masked, policy hold, faction masked
+fo1 Enemies[10]  troop_footman, enemy, group masked, policy hold, faction masked
+fo2 Enemies[11]  troop_footman, enemy, group masked, policy hold, faction masked
+fo3 Enemies[12]  troop_footman, enemy, group masked, policy hold, faction masked
+ar1 Enemies[13]  troop_archer, enemy, group masked, policy hold, faction masked
+ar2 Enemies[14]  troop_archer, enemy, group masked, policy hold, faction masked
+ar3 Enemies[15]  troop_archer, enemy, group masked, policy hold, faction masked
+Cun Enemies[16]  chensun, enemy, group south, policy react, rank officer, faction jing
+ba8 Enemies[17]  troop_bandit, enemy, group south, policy react, rank troop, faction jing
+ba9 Enemies[18]  troop_bandit, enemy, group south, policy react, rank troop, faction jing
+b10 Enemies[19]  troop_bandit, enemy, group south, policy react, rank troop, faction jing
+
+# area 1 본군 자리: x 2..4, y 7..8
+# area 2 별동대 자리: x 2..5, y 15..15
+# area 3 북동쪽 진채 둘레: x 10..18, y 2..10
+# area 4 남쪽 진채 둘레: x 6..16, y 17..25
+# area 5 강 북쪽 기슭: x 0..23, y 9..11

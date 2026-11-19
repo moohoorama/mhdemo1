@@ -175,7 +175,7 @@ func (g *Game) drawBoxBody(dst *ebiten.Image, x, y, w, h float64, tint [3]float3
 // storyPortrait is the character's own illustration. The story shows no face for troops or for
 // officers who have none, rather than their class's stand-in.
 func (g *Game) storyPortrait(c content.Character) *ebiten.Image {
-	if c.Template {
+	if c.Template || c.Look.NoPortrait {
 		return nil
 	}
 	return g.assets.portrait(g.laterLook(c.Look).Portrait)

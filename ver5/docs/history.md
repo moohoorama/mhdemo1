@@ -1,3 +1,17 @@
+## 2026-11-19 일반 장비 전용 아이콘
+
+- `tools/spritetool/assets/ver5-ui/sources/item_*.png`·`settings.json`·`pixels.json`, `assets/graphics/ui/ui.png`·`ui.json`: 검·창·활·장갑·갑옷·옷의 일반 장비 18종을 각각 그림에서 팔레트 도트로 변환해 추가 — 재질과 등급을 그림으로 구분하기 위해.
+- `assets/data/equipment.json`: 일반 장비 18종을 새 전용 아이콘에 연결 — 기존 공용 아이콘 대신 각 장비의 모습을 표시.
+
+## 2026-11-19 일반 장비 아이콘 제작 계획
+
+- `docs/plan-equipment-icons.md`: 일반 장비 18종의 전용 아이콘 제작·검수 계획 — 같은 계열 장비를 그림으로 구별하기 위해.
+
+## 2026-11-19 장판파 이후 두 갈래 얼개
+
+- `docs/story-branches-outline.md`: 연의·가상모드의 전투와 사이 이야기를 대화에서 정한 수정까지 정리 — 장별 작업에 앞서 최신 결정을 보존.
+- `docs/README.md`: 두 갈래 얼개 문서 연결 — 전체 이야기에서 후속 설계를 쉽게 찾도록.
+
 ## 2026-11-19 25장 하비 회상·신야 화공·백하 수공 연출
 
 - `assets/scenes/ch25.json`, `assets/scenes/ascii/c25-*.txt`: 하비 거리 회상(`c25-flash1`)은 관우만 말 탄 `guanyu` 시트로(적토마 전이라 `Mount` 없음). 성 밖 회상(`c25-flash2`)은 `S_castle_out_siege`에 유비군 보병 위주 20(보병 15·기병 3·궁병 2)이 성문 앞에 서고 조조군 보·창·궁·기 292가 유비군에서 6칸 떨어져 맵 끝까지 세 면을 두른 줄(`Zoom 2`, 장료는 v 30에서 걸어 나오고 `S_castle_out_siege` 땅을 +v로 v 49·옆으로 ±18칸 늘려 카메라가 어느 가장자리도 못 보게), 관우·장료는 두 칸 떨어져 마주 보며 장료는 방진 사이 길로 걸어 듦, `Zoom 1`. 신야 화공(`c25-night`)은 새 맵 `S_xinye_town`에서 마지막 줄 앞에 `Zoom 1`로 물러나 서·북·남 문과 지붕 다섯이 차례로 `bigfire`. 백하 수공(`c25-ford`)은 `S_yanjin` 큰 강에 조인군이 반쯤 건넌 채 서고 관우·미축은 가까운 기슭 땅 — 사용자 결정(조인의 군세 통일, 성 안이 타는 모습, 둘이 대사 없이 전투로).
@@ -12,6 +26,12 @@
 - `tools/scene_maps/wall_top_scenes.py`, `assets/scenes/ch26.json`·`ch25v.json`·`ch26v.json`: 양양(`c26-start`·`c25v-gate`)과 강릉(`c26v-start`)을 새 맵으로 재연출. 성 위에 궁병·보병·호위와 채모·채중·괴월(강릉은 장윤·곽준), 성 밑에 유비 일행·유비군 14·백성 약 70. 양양은 "쏴라!" 뒤 궁병 두 줄의 일제 사격과 달아나는 앞줄 백성, 강릉은 장윤이 궁병을 이끌고 성벽을 따라 나감. 대사·노드 순서는 그대로. 강릉 성문 열린 뒤 장면(`c26v-gate`)은 이번에 안 바꿈. `Zoom 1`(전체 보기)은 인물이 너무 작아 쓰지 않음.
 - `tools/scene_maps/wall_top_scenes.py`, `assets/scenes/ch26v.json`: 사용자 "강릉에서는 민중이 유비군 뒤쪽에" — 강릉(`c26v-start`)만 유비군 34명을 성벽 쪽 앞 네 줄에, 백성 약 67명을 그 뒤(v −11 뒤)에 세움. 양양 두 장면은 바이트 그대로.
 - `tools/scene_maps/wall_top_scenes.py`, `assets/scenes/ch26.json`·`ch25v.json`·`ch26v.json`, `internal/scenes/scenes.go`, `internal/gui/scene.go`·`scene_arrow.go`: 사용자 "양양도 백성들을 병력 뒤로, 강릉은 도망갈 준비 느낌으로 수군수군" — 양양은 백성을 군대 뒤 12개 무리로 옮기고 화살을 군대 앞 땅에 떨어뜨리며 백성은 한 칸 물러나 외침 말풍선("으악!"·"화살이다!"·"어머나!"), 강릉은 백성을 4~6명씩 10개 무리로 도망칠 쪽을 반쯤 보게 세우고 속삭임 열 줄을 시간차로 띄움. 엔진: `Chatter`의 첫 말풍선을 미루는 `Lag`과 빈 항목(쉼) 추가. 카메라 시작점은 (7, −5)로 올려 군대 뒤 백성이 화면에 들어오게 함.
+
+## 2026-11-19 인물 일러스트 제작 지침
+
+- `../tools/illustrations/README.md`: 인물별 전신 제작, 원본 보관, 상체 자르기와 256픽셀 게임 초상 검증 절차를 정리하고 고정 흉상·6인 시트를 과거 방식으로 표시 — 현재 선택한 작업 방식을 재사용하기 위해.
+- `../AGENTS.md`·`../CLAUDE.md`: 인물 일러스트의 핵심 원칙과 상세 지침 위치 추가 — 작업 도구가 바뀌어도 같은 절차를 따르도록.
+- `docs/plan-illustration-workflow-doc.md`: 지침 변경 범위와 취지 기록 — 문서 간 역할을 명확히 함.
 
 ## 2026-11-19 융중 대나무
 
@@ -30,12 +50,76 @@
 - `assets/scenario/hero/story25.json`·`story25v.json`, `assets/scenes/ch25.json`·`ch25v.json`: 신야 관청 첫머리에 유비의 물음과 제갈량의 답("처지가 곤란하시다기에 강하로 몸을 피하시라 말씀드렸을 뿐입니다") 한 줄 — 25장에는 탐험이 없어 NPC 대신 장면 안에 둠(사용자 지시의 대안).
 - `docs/fullstory.md` 23~25장 절을 새 흐름으로 고침.
 
+## 2026-11-19 제갈량 간파
+
+- `assets/data/characters_story.json`: 제갈량의 고유 특성 계획과 학습 풀에 간파 추가 — 적의 책략을 읽어내는 군사로 표현.
+- `docs/data-character.md`, `docs/logic-traits.md`: 제갈량의 간파와 다섯 특성 예외 기록 — 현재 구성과 적용 시점 명시.
+
+## 2026-11-19 사신 초상 제거
+
+- `assets/data/characters_story.json`: 사신과 송충의 `zuofeng` 초상 연결 제거 — 사용자 요청으로 불쾌한 일러스트가 표시되지 않도록 함
+- `assets/graphics/portraits/zuofeng.png`, `tools/illustrations/portraits/zuofeng.png`: 게임용 초상과 원본 삭제 — 해당 일러스트 제거
+
 # 결정 기록
 
 이 문서가 맡는 범위: 설계 결정과 그 이유. 현재 규칙은 각 분야 문서(`logic-*`, `data-*`, `presentation-*`, `tools-*`, `system-*`)가 말하고, 여기에는 **왜 바꿨는가**만 적는다.
 변경할 때마다 적는다. 변경한 파일 이름, 수정 내역, 의도(또는 이유)를 `파일이름: 수정내역 — 의도` 형식으로 남긴다. 새 항목을 위에 쌓는다. 설계 결정은 `결정 · 이유 · 영향받는 문서` 항목으로 쓴다.
 
 ---
+
+## 2026-11-19 형주 편 상체 초상
+
+- `../tools/illustrations/portraits/fullbody/`: 형주 편 15명 전신 원본 보관 — 추후 재사용과 구도 수정에 대비.
+- `../tools/illustrations/portraits/`와 `assets/graphics/portraits/`의 해당 15명: 원본에서 상체를 자르고 게임용 256픽셀로 축소 — 얼굴을 더 크게 보여 주면서 인물별 동작을 살림.
+- `reports/portraits-jingzhou/bust-contact-sheet.png`·`docs/plan-jingzhou-portrait-crops.md`: 상체 초상 비교와 작업 범위 기록 — 결과 검토와 전신 원본 관리.
+
+## 2026-11-19 형주 편 초상 구도 재작업
+
+- `../tools/illustrations/portraits/{kuaiyue,liubiao,yiji,caizhong,caihe,xianglang,xushu,zhugejun,wenpin,caochun,huojun,zhangyun,weiyan,ganning,lusu}.png`·`assets/graphics/portraits/`의 동명 파일: 15명의 전신과 역할에 맞는 자세로 재작업 — 반복되는 흉상 구도를 바꾸라는 사용자 요청. 채모는 유지.
+- `../tools/illustrations/portraits/fullbody-prompts-2026-11-19.md`: 전신 재작업 지시와 참조 관계 기록 — 생성 이력 보존.
+- `reports/portraits-jingzhou/index.html`·`fullbody-contact-sheet.png`: 변경된 초상 목록과 전신 비교 그림 — 인물별 자세와 표시 여부 확인.
+- `assets/data/characters_story.json`, `../tools/illustrations/portraits/xiahouen.png`, `assets/graphics/portraits/xiahouen.png`: 하후은의 초상 연결과 그림을 없애고 초상 숨김 설정 — 사용자 요청.
+- `docs/plan-jingzhou-portraits.md`: 전신 구도와 인물별 포즈로 재작업하는 범위 기록 — 비슷한 흉상 구도를 바꾸기 위해.
+
+## 2026-11-19 형주 편 전용 초상과 초상 숨김
+
+- `../tools/illustrations/portraits/{kuaiyue,liubiao,yiji,caimao,caizhong,caihe,xianglang,xushu,zhugejun,wenpin,caochun,xiahouen,huojun,zhangyun,weiyan,ganning,lusu}.png`·`../tools/illustrations/portraits/sheets/prompts.md`: 17명 수묵 담채 원본과 생성 지시 — 사용자 지정 인물에 각자의 얼굴을 부여.
+- `assets/graphics/portraits/{kuaiyue,liubiao,yiji,caimao,caizhong,caihe,xianglang,xushu,zhugejun,wenpin,caochun,xiahouen,huojun,zhangyun,weiyan,ganning,lusu}.png`·`assets/data/characters_story.json`: 게임용 초상 연결과 나머지 형주 편 인물 초상 숨김 — 단복·서서의 여러 인물 데이터는 같은 초상을 공유.
+- `internal/content/content.go`·`internal/gui/look.go`·`internal/gui/dialogue_box.go`·`internal/gui/portrait_suppression_test.go`: `Look.NoPortrait`와 화면별 숨김 시험 — 초상을 비운 인물에게 병종 그림이 대신 나오지 않도록.
+- `docs/presentation-scene.md`·`docs/plan-jingzhou-portraits.md`: 초상 숨김 규칙과 변경 계획 기록 — 데이터 설정의 의미와 범위를 명확히 함.
+- `reports/portraits-jingzhou/index.html`·`new-contact-sheet.png`: 현재 인물별 초상 목록과 신규 그림 비교 — 게임에 연결한 초상을 검토하기 쉽게 함.
+
+## 2026-11-19 형주 편 초상 목록
+
+- `reports/portraits-jingzhou/index.html`: 22~27장 첫 등장 인물의 현재 초상과 전용·대체 사용 여부를 정리 — 형주 편에서 새로 필요한 일러스트를 한눈에 확인.
+
+## 2026-11-19 유기·송충 초상 재작업
+
+- `../tools/illustrations/portraits/liuqi.png`·`songzhong.png`, `assets/graphics/portraits/liuqi.png`·`songzhong.png`: 유기는 정면에 옅은 억울함과 긴장, 송충은 관모를 쓴 노학자의 오른쪽 옆모습으로 수정 — 두 인물이 유비와 닮았다는 사용자 의견 반영.
+- `../tools/illustrations/portraits/sheets/prompts.md`: 재작업 지시 기록 — 초상 제작 이력 보존.
+
+## 2026-11-19 유기·송충 초상
+
+- `../tools/illustrations/portraits/liuqi.png`·`songzhong.png`, `../tools/illustrations/portraits/sheets/prompts.md`: 수묵 담채 원본과 생성 지시 기록 — 유기는 젊고 굳센 모습, 송충은 형주의 문관 사자로 표현.
+- `assets/graphics/portraits/liuqi.png`·`songzhong.png`, `assets/data/characters_story.json`: 게임용 초상과 인물 연결 — 공용 초상 대신 두 인물의 전용 그림을 표시.
+- `docs/plan-portraits-liuqi-songzhong.md`: 작업 범위와 검증 방법 기록 — 초상 교체의 영향을 명확히 함.
+
+## 2026-11-19 조조군 색상 확인 데모 정리
+
+- `internal/gui/uidemo_wei.go`: 색상 확인을 마친 전용 데모 삭제 — 게임 데이터 ID를 화면 코드에 두지 않는 검사 복구.
+
+## 2026-11-19 전투 턴 군대 이름
+
+- `internal/content/army_names_test.go`: 전투 초기 배치와 이벤트 증원의 AI 진영색을 군대 이름 목록과 대조 — 빠진 이름이 진영색 이름으로 표시되는 회귀 방지.
+- `assets/scenario/hero/stage23.json`: 신야 전투의 유비군과 조인군 이름 지정 — 턴에 실제 부대 이름 표시.
+
+## 2026-11-19 남은 결정 확인 페이지
+
+- `reports/decisions/2026-11-19.html`: 남은 사용자 결정과 화면·시안 확인 항목을 한 페이지에 정리 — 선택과 의견을 모아 전달하기 쉽게 함.
+
+## 2026-11-19 여남 구 생성기 정리
+
+- `tools/mapgen/layouts/hero/stage21gen.py`: 현재 데이터와 어긋난 생성기 삭제 — 실행할 때 여남 전투와 관련 데이터를 예전 내용으로 덮어쓰는 사고를 방지.
 
 ## 2026-11-19 조조군 흑마와 채도 재조정
 
@@ -61,6 +145,22 @@
 
 - `internal/gui/campaign_e2e_test.go`: 중단 시 마지막 실행 명령과 특성 학습 대상·학습 가능 목록·장비·부관·선행 조건을 기록 — `make e2e` 실패 원인을 확인하기 위해.
 - `internal/autoplay/variety.go`·`internal/autoplay/variety_test.go`: 장비·부관이 주는 특성을 보유 및 선행 조건에 반영하고 엔진의 학습 가능 목록으로 최종 확인, 회귀 시험 추가 — 이미 가진 특성을 다시 배우려다 자동실행이 중단되는 문제를 막기 위해.
+
+## 2026-11-19 B24 박망파: 하후돈의 직접 추격, 불은 대열 전체, 관우 중간·장비 후미
+
+- 결정: 유인 뒤 하후돈(절영)이 조운을 직접 쫓고(`assault`) 선봉·중군이 뒤따르며, 후방(병졸 4+군량 수레 3, `loot_cart`)은 `march`로 불 구역 북쪽 자리(구역 7)에 닿는다. 불 구역(구역 6)은 길 y 9..28 전체로 늘려 대열이 길어져도 들어 있게 하고, 트리거는 `since:lure`·`at:xiahoudun:5`(깊은 곳 y 21..27)·`allat:van:6`·`allat:main:6` · 이유: 사용자 "조운이 하후돈에게 맞아가며 끌고, 불은 대열을 덮어야", `march` 모임 방식은 조운이 맞지 않음. 비율 조건 문법이 없어 그룹 구성(선봉·중군은 전원, 후방은 불 구역이 덮음)으로 대신함
+- 결정: 관우는 불 구간 중간(5,19) 서쪽 숲, 장비는 후미 쪽(11,14) 동쪽 숲에 나타남(적은 남서로 진행, 후방은 북동) · 이유: 사용자 "관우는 허리, 장비는 보급과 후방"
+- 시험: 기본 시험은 조운이 그냥 도망가는 한 경우(비율·조운 피해는 출력만, 불변 조건만 단언)
+- 하후돈 특성 `composure`→`charge_aim` 영향: 새 설계에서 첫 추격 턴 조운 피해가 두 특성에서 같음(1311/3456)
+- `assets/scenario/hero/stage24.json`, `tools/mapgen/layouts/hero/stage24gen.py`·`stage24.txt`, `internal/core/b24_bowang_test.go`
+
+## 2026-11-18 B24 박망파를 곧은 길과 유인·화공으로 다시 설계
+
+- 결정: 길은 화면 북동→남서로 곧은 3칸 평지(`l`, 맵 x 7..9의 y 방향), 17×42, 양옆 숲·구릉·산. 적 본대는 길 위에 처음 병력 100%·`hold`, 조운이 유인 구역(`at:zhaoyun:4`) 또는 선봉·중군이 맞으면(`hp:van<100`) `march`로 덫(구역 5)을 향함 · 이유: 사용자 "ㄱ자 길이라 불 범위 밖으로 샌다", "조운의 유인 → 하후돈·전군 추격 → 하후돈이 특정 구역에 닿으면 화공"
+- 결정: 화공(`fire`)은 하후돈이 불 놓을 길(구역 6)에 있고 선봉·중군 전원이 그 안에 들었을 때(`column-in-trap`) 또는 유인 5라운드 뒤(안전장치) 발동 — 제갈량 "이때입니다", 불 6구역 순차 화염, 관우(여울 곁 숲)·장비(덫 북쪽 숲) `join`, 불 안의 조조군만(`enemy@area`) 병력 50%·혼란 2턴, 이후 전군 `flee`. 유인이 없으면 10라운드에 `assault` · 이유: 일찍 터지거나 하후돈만 앞서 불에 드는 일을 막고, 일반 AI가 유인하지 않아도 판이 끝나도록
+- 결정: 하후돈에게 `Equipment`로 절영(`gale` 이동 +2)을 줌, 관우·장비는 `Reserve`, 출전은 유비·제갈량·조운(`Required`)과 선택 인원(`Max` 8)을 신야 곁 한 구역에 모음. 일기토·이전 대사·보상은 그대로
+- 시험: `internal/core/b24_bowang_test.go`(스크립트 조운 유인, 조운이 3칸씩 물러나는 경우·전속력 도주 둘 다 5시드: 화공 순간 불 안 선봉·중군 18/18, 이전 병력 100%, 라운드 4). 밸런스 `-player ai -seeds 5`: 5/5 승, 8.4라운드(재설계 전 6.0, 직전 8.6), 학습형 `c24-battle` 4/4 승 10~12라운드(재설계 전 5~7, 제갈량 전사 3시드)
+- `assets/scenario/hero/stage24.json`, `maps/map24.json`, `tools/mapgen/layouts/hero/stage24gen.py`·`map24.txt`·`stage24.txt`, `internal/core/b24_bowang_test.go`
 
 ## 2026-11-18 병법창 분류
 - `plan/skill_tabs.md`: 병법 분류와 배치 설계 — 선택을 쉽게 하려고.
@@ -89,22 +189,6 @@
 
 ## 2026-11-18 GUI·시스템 넷: 배 이동 모션, 장면 카메라 허용 영역, 장수 진영색, 장비 등급 글자
 - 결정 · 이유(배 이동, R-17a): 물 칸에서는 걷지 않고 배에 서서 배와 함께 가고, 땅↔물 걸음에서도 배가 보여야 한다(사용자: "스르륵 이동", "걸어 나올 때 배가 안 나온다"). 배는 아래로 가라앉는 정도의 알파가 아니라 물 칸에 놓인 것으로 보고, 걸음 경계에서 유닛과 배의 자리를 따로 계산한다.
-## 2026-11-19 B24 박망파: 하후돈의 직접 추격, 불은 대열 전체, 관우 중간·장비 후미
-
-- 결정: 유인 뒤 하후돈(절영)이 조운을 직접 쫓고(`assault`) 선봉·중군이 뒤따르며, 후방(병졸 4+군량 수레 3, `loot_cart`)은 `march`로 불 구역 북쪽 자리(구역 7)에 닿는다. 불 구역(구역 6)은 길 y 9..28 전체로 늘려 대열이 길어져도 들어 있게 하고, 트리거는 `since:lure`·`at:xiahoudun:5`(깊은 곳 y 21..27)·`allat:van:6`·`allat:main:6` · 이유: 사용자 "조운이 하후돈에게 맞아가며 끌고, 불은 대열을 덮어야", `march` 모임 방식은 조운이 맞지 않음. 비율 조건 문법이 없어 그룹 구성(선봉·중군은 전원, 후방은 불 구역이 덮음)으로 대신함
-- 결정: 관우는 불 구간 중간(5,19) 서쪽 숲, 장비는 후미 쪽(11,14) 동쪽 숲에 나타남(적은 남서로 진행, 후방은 북동) · 이유: 사용자 "관우는 허리, 장비는 보급과 후방"
-- 시험: 기본 시험은 조운이 그냥 도망가는 한 경우(비율·조운 피해는 출력만, 불변 조건만 단언)
-- 하후돈 특성 `composure`→`charge_aim` 영향: 새 설계에서 첫 추격 턴 조운 피해가 두 특성에서 같음(1311/3456)
-- `assets/scenario/hero/stage24.json`, `tools/mapgen/layouts/hero/stage24gen.py`·`stage24.txt`, `internal/core/b24_bowang_test.go`
-
-## 2026-11-18 B24 박망파를 곧은 길과 유인·화공으로 다시 설계
-
-- 결정: 길은 화면 북동→남서로 곧은 3칸 평지(`l`, 맵 x 7..9의 y 방향), 17×42, 양옆 숲·구릉·산. 적 본대는 길 위에 처음 병력 100%·`hold`, 조운이 유인 구역(`at:zhaoyun:4`) 또는 선봉·중군이 맞으면(`hp:van<100`) `march`로 덫(구역 5)을 향함 · 이유: 사용자 "ㄱ자 길이라 불 범위 밖으로 샌다", "조운의 유인 → 하후돈·전군 추격 → 하후돈이 특정 구역에 닿으면 화공"
-- 결정: 화공(`fire`)은 하후돈이 불 놓을 길(구역 6)에 있고 선봉·중군 전원이 그 안에 들었을 때(`column-in-trap`) 또는 유인 5라운드 뒤(안전장치) 발동 — 제갈량 "이때입니다", 불 6구역 순차 화염, 관우(여울 곁 숲)·장비(덫 북쪽 숲) `join`, 불 안의 조조군만(`enemy@area`) 병력 50%·혼란 2턴, 이후 전군 `flee`. 유인이 없으면 10라운드에 `assault` · 이유: 일찍 터지거나 하후돈만 앞서 불에 드는 일을 막고, 일반 AI가 유인하지 않아도 판이 끝나도록
-- 결정: 하후돈에게 `Equipment`로 절영(`gale` 이동 +2)을 줌, 관우·장비는 `Reserve`, 출전은 유비·제갈량·조운(`Required`)과 선택 인원(`Max` 8)을 신야 곁 한 구역에 모음. 일기토·이전 대사·보상은 그대로
-- 시험: `internal/core/b24_bowang_test.go`(스크립트 조운 유인, 조운이 3칸씩 물러나는 경우·전속력 도주 둘 다 5시드: 화공 순간 불 안 선봉·중군 18/18, 이전 병력 100%, 라운드 4). 밸런스 `-player ai -seeds 5`: 5/5 승, 8.4라운드(재설계 전 6.0, 직전 8.6), 학습형 `c24-battle` 4/4 승 10~12라운드(재설계 전 5~7, 제갈량 전사 3시드)
-- `assets/scenario/hero/stage24.json`, `maps/map24.json`, `tools/mapgen/layouts/hero/stage24gen.py`·`map24.txt`·`stage24.txt`, `internal/core/b24_bowang_test.go`
-
 - `internal/gui/field_water.go`·`field.go`: `boat`가 `afloat{name, k, dx, dy, cu, cv, walks}`를 돌려줌 — 땅→물이면 배가 물 칸에 먼저 나타나 있고(걷는 동안 걷기 프레임), 물→땅이면 물 칸에 남은 배가 유닛이 멀어지며 가라앉음; `drawAfloat`가 배와 승조원을 따로 그리고(걸어 나가는 유닛은 땅 가림에 잘리지 않게 뒤에 그림), 그림자도 배 자리를 따름; `pose`는 물 위에서 걷기 대신 정지 — 걸어 들어올 때 배가 안 나오던 것과 물 위에서 걷는 모습을 막음
 - 결정 · 이유(장면 카메라, R-25): 장면 카메라가 말하는 사람·걷는 사람을 따라 너무 자주 움직였다(사용자). 대상이 화면 가운데 허용 영역을 벗어난 축만 그 대상으로 맞추고, 안이면 그대로 둔다. `Cam`·`CamAt`·`Follow`는 연출 의도라 그대로 따른다. 영역 기본 50%×50%, debug 설정에서 20~80%.
 - `internal/gui/scene.go`(`keepInView`, `zoneHeld`)·`internal/storage/storage.go`(`CamZoneW`·`CamZoneH`·`CamZonePcts`·`Settings.CamZone`, 검증)·`internal/gui/windows.go`(debug 설정 `장면 카메라 가로·세로` 두 줄, 창 높이 +128): 허용 영역 규칙 — 옛 규칙은 화면 가장자리 근처에서만 움직였으나 벗어나면 가장자리까지만 당겨 곧 또 움직였다; 벗어나면 그 자리를 새 기준으로 삼아 연이은 대사에서 되돌아가지 않게 함

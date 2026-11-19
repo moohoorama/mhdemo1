@@ -214,3 +214,36 @@ Edit the reference portrait of Xiahou Dun (Three Kingdoms general). Keep everyth
 - "crescent blade"라 적었더니 자루 끝 날이 낫·언월도처럼 나왔다. 지금 그림(`candidates/xuhuang.png`)을 참조로 넘겨 무기만 바꾼 `candidates/xuhuang-axefix-edit.png`를 게임에 씀. 새로 그린 안은 `candidates/xuhuang-axefix-new.png`(어깨에 멘 도끼)로 남김.
   - edit: Edit the first reference image (a portrait of Xu Huang). Keep EVERYTHING the same — his face, beard, helmet with navy plume, steel lamellar armour, navy tunic, hands, pose, composition, background and the ink-wash brushwork and paper — and change ONLY the weapon. Right now the blade at the end of the shaft looks like a scythe or a glaive; replace it with an unmistakable heavy Chinese battle axe (da fu): a broad, thick, fan-shaped iron axe head whose cutting edge is a wide gently convex arc, the head mounted SIDEWAYS on the haft (perpendicular to it) with the haft passing through the eye of the head, the blade projecting to one side only, a short square hammer-back or spike on the opposite side, a decorative iron collar where head meets haft. The axe head sits at the END of the long wooden haft he is gripping, near his lower-left, clearly reading as a woodsman's axe enlarged into a war axe — NOT a crescent moon blade, NOT a scythe, NOT a guandao, NOT a halberd. Square 1:1, no text, no watermark, no border. (참조: `portraits/xuhuang.png`, `style-samples/4-ink-wash.png`)
 - 다음에 도끼 든 인물은 "crescent" 대신 "broad fan-shaped axe head mounted sideways on the haft, spike on the back"처럼 적는다.
+# 유기·송충 단독 초상 (2026-11-19)
+
+공통 참조: `../../style-samples/4-ink-wash.png`.
+
+- 유기: Reference image is solely the style reference. Create a square character portrait for a Three Kingdoms game of Liu Qi, Liu Biao's eldest son: a resilient, determined young Chinese man in his twenties, visibly younger than the reference Liu Bei, clean-shaven, strong clear eyes, black hair in a simple topknot and modest late-Han headwear, dignified muted green-blue robe with understated light leather armor. Chest-up, three-quarter view facing left. Match the reference's East Asian ink wash, light watercolor, brush texture and rice-paper misty landscape. No words, border, seals or watermark.
+- 송충: Reference image is solely the style reference. Create a square character portrait for a Three Kingdoms game of Song Zhong, a late Han Jingzhou scholar-official and envoy: a mature Chinese man around forty-five, composed and thoughtful, modest neatly trimmed moustache and short beard, black hair beneath simple period scholar's cap, understated muted blue-green official robes, dignified scholarly bearing, not a warrior. Chest-up, three-quarter view facing left. Match the reference's East Asian ink wash, light watercolor, brush texture and rice-paper misty landscape. No words, border, seals or watermark.
+
+재작업 (기존 각 초상을 참조):
+
+- 유기: Edit this portrait of Liu Qi. Turn his face and gaze directly forward toward the viewer. Give a very subtle hint of feeling unfairly treated and slight tension, conveyed by the faintest tightening of the brows and lips; restrained and dignified, no tears, exaggerated sadness, anger or grimace. Distinguish his face from Liu Bei while keeping him a resilient young man. Preserve his existing clothing, armor, headwear, square chest-up composition and ink-wash watercolor on rice paper. No text, seals, borders or watermarks.
+- 송충: Edit this Three Kingdoms portrait of Song Zhong into an elderly scholar and envoy, distinctly older and visually different from Liu Bei. Show a clear side profile facing toward the right side of the image, with a dignified aged face, subtle wrinkles and gray-streaked beard. He wears a proper late Han scholar-official's black guanmao cap. Preserve the understated scholarly robe, chest-up square composition, East Asian ink wash watercolor style, rice paper and muted palette. No text, seal, border, or watermark.
+
+# 형주 편 단독 초상 (2026-11-19)
+
+공통 참조: `../../style-samples/4-ink-wash.png`. 공통 지시: Style reference only: match its East Asian ink-wash painting, pale watercolor and rice-paper texture. Create one distinct Three Kingdoms historical game character portrait: [아래 인물 설명]. Individual square chest-up portrait, quiet ink landscape background, distinctive face and silhouette, no lettering, no seal, no border, no watermark.
+
+- kuaiyue: Kuai Yue, shrewd Jingzhou adviser, middle aged, lean long face, dark scholar cap, charcoal scholar robe, thoughtful calculating eyes, three-quarter right, hand holding bamboo tablets
+- liubiao: Liu Biao, elderly Jingzhou governor and Han noble, kindly yet indecisive, silver beard, distinguished black official crown, muted violet robes, front three-quarter left
+- yiji: Yi Ji, articulate Jingzhou diplomat, middle aged, open intelligent face, short beard, muted teal official robes, black cap, facing right
+- caimao: Cai Mao, powerful Jingzhou naval commander, middle aged, severe narrow face, short dark beard, burgundy and black armor and official cap, facing left
+- caizhong: Cai Zhong, Jingzhou archer officer, young adult, clean shaven, athletic face, dark red light armor, simple archer headgear, facing right
+- caihe: Cai He, Jingzhou infantry officer, stout middle aged man, square face and short mustache, muted red brown armor and simple helmet, facing left
+- xianglang: Xiang Lang, Jingzhou scholarly official, elderly gentle thin man, slender gray beard, green scholar robes and simple black cap, facing right
+- xushu: Xu Shu also called Dan Fu, former swordsman turned strategist, man in his thirties, keen thoughtful eyes, short beard, plain dark headwrap and gray scholar robe, hint of sword hilt, front three-quarter right
+- zhugejun: Zhuge Jun, young scholarly brother of Zhuge Liang, youthful clean shaven face, modest blue gray robes and simple cloth headwrap, facing left
+- wenpin: Wen Pin, veteran Jingzhou border general, middle aged, sturdy face and neatly kept beard, dark blue practical lamellar armor and simple helmet, facing right
+- caochun: Cao Chun, commander of elite cavalry, stern middle aged officer with broad face and short beard, blue black cavalry armor and metal helmet, facing left
+- xiahouen: Xiahou En, young Cao Cao officer entrusted with a famous sword, clean-shaven confident face, dark blue armor and helmet, facing right
+- huojun: Huo Jun, Jingzhou officer, modest steadfast middle aged soldier, lean face, close-cropped mustache, green gray practical armor and unadorned helmet, facing left
+- zhangyun: Zhang Yun, Jingzhou naval officer, mature man with narrow eyes and neatly trimmed moustache, dark teal naval armor, official military cap, facing right
+- weiyan: Wei Yan, forceful formidable warrior, adult man with strong square jaw, thick eyebrows and short black beard, dark green armor, helmet, fierce but controlled expression, facing left
+- ganning: Gan Ning, former Yangtze river raider and warrior, vigorous adult man, bold expression, short rugged beard, red and brown practical armor, plain headwrap and a small bell, facing right
+- lusu: Lu Su, Wu diplomat, broad kind face, mature thoughtful man with neat beard, understated red brown scholar official robe and black cap, facing left

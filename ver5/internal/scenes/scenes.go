@@ -100,8 +100,8 @@ type Scene struct {
 	Glow     string             // a far light washing over the screen from one corner: "fire_nw" (a city burning beyond the north-west)
 	Music    string             // the theme while it plays (assets/music/themes, no extension): a light-hearted scene's own; empty goes by the map
 	Grass    *content.GrassTint `json:",omitempty"` // the grass here when the map stands for another land; nil keeps the map's
-	Steps    float64            `json:",omitempty"` // the walkers' footsteps and hoof beats at this share of their volume; 0 keeps them whole
 	Snow     float64            `json:",omitempty"` // 0..1: snow lies on the scene; its trees and bushes are the snow pictures and the grass white unless Grass says otherwise
+	Steps    float64            `json:",omitempty"` // the walkers' footsteps and hoof beats at this share of their volume; 0 keeps them whole
 	Nodes    []string
 	NoSkip   []string `json:",omitempty"` // nodes whose beats play out whole: a click waits for them (a duel whose blows and pushes land in turn)
 	Mute     []string `json:",omitempty"` // nodes whose speakers get no talking bubble on the map: the dialogue scroll alone carries the line

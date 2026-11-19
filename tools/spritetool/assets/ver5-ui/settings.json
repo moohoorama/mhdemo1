@@ -9,6 +9,24 @@
     "trait_strategy",
     "trait_tactic",
     "trait_talent",
+    "item_copper_sword",
+    "item_iron_sword",
+    "item_steel_sword",
+    "item_copper_spear",
+    "item_iron_spear",
+    "item_steel_spear",
+    "item_short_bow",
+    "item_long_bow",
+    "item_steel_bow",
+    "item_cloth_gloves",
+    "item_leather_gloves",
+    "item_iron_gloves",
+    "item_leather_armor",
+    "item_bronze_armor",
+    "item_iron_armor",
+    "item_cotton_clothes",
+    "item_leather_clothes",
+    "item_tiger_skin",
     "item_bow",
     "item_dao",
     "item_diamond",
@@ -558,6 +576,577 @@
           "alpha": 0.5,
           "palette": {
             "g": "#190c04"
+          }
+        }
+      }
+    },
+    "item_copper_sword": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_copper_sword.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "d": "#4b5157",
+            "b": "#7f868c",
+            "l": "#b3b9bd",
+            "h": "#e4e8e9",
+            "g": "#3a2416",
+            "G": "#634130",
+            "m": "#3e3a36",
+            "n": "#6e6861",
+            "N": "#9a928a"
+          }
+        }
+      }
+    },
+    "item_iron_sword": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_iron_sword.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "d": "#4b5157",
+            "b": "#7f868c",
+            "l": "#b3b9bd",
+            "h": "#e4e8e9",
+            "g": "#3a2416",
+            "G": "#634130",
+            "m": "#3e3a36",
+            "n": "#6e6861",
+            "N": "#9a928a"
+          }
+        }
+      }
+    },
+    "item_steel_sword": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_steel_sword.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "d": "#4b5157",
+            "b": "#7f868c",
+            "l": "#b3b9bd",
+            "h": "#e4e8e9",
+            "g": "#3a2416",
+            "G": "#634130",
+            "m": "#3e3a36",
+            "n": "#6e6861",
+            "N": "#9a928a"
+          }
+        }
+      }
+    },
+    "item_copper_spear": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_copper_spear.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "w": "#6b4426",
+            "W": "#9a6a3c",
+            "d": "#4b5157",
+            "b": "#7f868c",
+            "l": "#b3b9bd",
+            "h": "#e4e8e9",
+            "R": "#6e1c18",
+            "r": "#a4302a",
+            "q": "#d0604a"
+          }
+        }
+      }
+    },
+    "item_iron_spear": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_iron_spear.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "w": "#6b4426",
+            "W": "#9a6a3c",
+            "d": "#4b5157",
+            "b": "#7f868c",
+            "l": "#b3b9bd",
+            "h": "#e4e8e9",
+            "R": "#6e1c18",
+            "r": "#a4302a",
+            "q": "#d0604a"
+          }
+        }
+      }
+    },
+    "item_steel_spear": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_steel_spear.png",
+      "solid": 0.35,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "w": "#6b4426",
+            "W": "#9a6a3c",
+            "d": "#4b5157",
+            "b": "#7f868c",
+            "l": "#b3b9bd",
+            "h": "#e4e8e9",
+            "R": "#6e1c18",
+            "r": "#a4302a",
+            "q": "#d0604a"
+          }
+        }
+      }
+    },
+    "item_short_bow": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_short_bow.png",
+      "solid": 0.2,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "D": "#4a2c18",
+            "w": "#7a4a26",
+            "W": "#a8703c",
+            "V": "#cf9b5e",
+            "g": "#2e1f1a",
+            "G": "#5a3a2e",
+            "s": "#e6dcc2",
+            "a": "#8a6a44",
+            "A": "#c09a68",
+            "i": "#5a5f66",
+            "I": "#a9b0b6",
+            "f": "#e8e2d4",
+            "F": "#a8342c"
+          }
+        }
+      }
+    },
+    "item_long_bow": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_long_bow.png",
+      "solid": 0.2,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "D": "#4a2c18",
+            "w": "#7a4a26",
+            "W": "#a8703c",
+            "V": "#cf9b5e",
+            "g": "#2e1f1a",
+            "G": "#5a3a2e",
+            "s": "#e6dcc2",
+            "a": "#8a6a44",
+            "A": "#c09a68",
+            "i": "#5a5f66",
+            "I": "#a9b0b6",
+            "f": "#e8e2d4",
+            "F": "#a8342c"
+          }
+        }
+      }
+    },
+    "item_steel_bow": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_steel_bow.png",
+      "solid": 0.2,
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "D": "#4a2c18",
+            "w": "#7a4a26",
+            "W": "#a8703c",
+            "V": "#cf9b5e",
+            "g": "#2e1f1a",
+            "G": "#5a3a2e",
+            "s": "#e6dcc2",
+            "a": "#8a6a44",
+            "A": "#c09a68",
+            "i": "#5a5f66",
+            "I": "#a9b0b6",
+            "f": "#e8e2d4",
+            "F": "#a8342c"
+          }
+        }
+      }
+    },
+    "item_cloth_gloves": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_cloth_gloves.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#aab4b6",
+            "a": "#8a979c",
+            "b": "#6b7880",
+            "c": "#515c64",
+            "d": "#3a424a",
+            "w": "#d3c8ac",
+            "v": "#b0a387",
+            "u": "#857a63",
+            "Q": "#b08e62",
+            "q": "#977552",
+            "s": "#765838",
+            "r": "#56402a"
+          }
+        }
+      }
+    },
+    "item_leather_gloves": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_leather_gloves.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#c99a5e",
+            "a": "#a8743f",
+            "b": "#85552e",
+            "c": "#643c20",
+            "d": "#3e2414",
+            "n": "#5a3a26",
+            "s": "#2c1c12",
+            "g": "#9c7a3a",
+            "G": "#d4b46e"
+          }
+        }
+      }
+    },
+    "item_iron_gloves": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_iron_gloves.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#e2e8ea",
+            "a": "#aeb7bc",
+            "b": "#848e95",
+            "c": "#5a636a",
+            "d": "#383e44",
+            "Y": "#fff2b0",
+            "G": "#e2b94c",
+            "g": "#b0852a",
+            "o": "#6e4f18",
+            "r": "#b0352c",
+            "R": "#6a1a16"
+          }
+        }
+      }
+    },
+    "item_leather_armor": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_leather_armor.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#c99a5e",
+            "a": "#a8743f",
+            "b": "#85552e",
+            "c": "#643c20",
+            "d": "#3e2414",
+            "n": "#5a3a26",
+            "s": "#2c1c12",
+            "g": "#9c7a3a",
+            "G": "#d4b46e"
+          }
+        }
+      }
+    },
+    "item_bronze_armor": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_bronze_armor.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#c99a5e",
+            "a": "#a8743f",
+            "b": "#85552e",
+            "c": "#643c20",
+            "d": "#3e2414",
+            "n": "#5a3a26",
+            "s": "#2c1c12",
+            "g": "#9c7a3a",
+            "G": "#d4b46e"
+          }
+        }
+      }
+    },
+    "item_iron_armor": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_iron_armor.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#e2e8ea",
+            "a": "#aeb7bc",
+            "b": "#848e95",
+            "c": "#5a636a",
+            "d": "#383e44",
+            "Y": "#fff2b0",
+            "G": "#e2b94c",
+            "g": "#b0852a",
+            "o": "#6e4f18",
+            "r": "#b0352c",
+            "R": "#6a1a16"
+          }
+        }
+      }
+    },
+    "item_cotton_clothes": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_cotton_clothes.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#aab4b6",
+            "a": "#8a979c",
+            "b": "#6b7880",
+            "c": "#515c64",
+            "d": "#3a424a",
+            "w": "#d3c8ac",
+            "v": "#b0a387",
+            "u": "#857a63",
+            "Q": "#b08e62",
+            "q": "#977552",
+            "s": "#765838",
+            "r": "#56402a"
+          }
+        }
+      }
+    },
+    "item_leather_clothes": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_leather_clothes.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#c99a5e",
+            "a": "#a8743f",
+            "b": "#85552e",
+            "c": "#643c20",
+            "d": "#3e2414",
+            "n": "#5a3a26",
+            "s": "#2c1c12",
+            "g": "#9c7a3a",
+            "G": "#d4b46e"
+          }
+        }
+      }
+    },
+    "item_tiger_skin": {
+      "cell": [
+        144,
+        144
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "dot": 4,
+      "source": "sources/item_tiger_skin.png",
+      "frames": 1,
+      "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
+      "layers": {
+        "icon": {
+          "palette": {
+            "k": "#1c120c",
+            "h": "#c99a5e",
+            "a": "#a8743f",
+            "b": "#85552e",
+            "c": "#643c20",
+            "d": "#3e2414",
+            "n": "#5a3a26",
+            "s": "#2c1c12",
+            "g": "#9c7a3a",
+            "G": "#d4b46e"
           }
         }
       }

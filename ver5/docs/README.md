@@ -21,6 +21,7 @@
 |---|---|
 | [design.md](design.md) | 게임 방향, 성장·재미 목표, 설계 원칙 |
 | [fullstory.md](fullstory.md) | 전체 이야기: 기획, 인물, 공통부 1~24, 연의·가상모드 |
+| [story-branches-outline.md](story-branches-outline.md) | 장판파 이후 연의·가상모드의 전투와 사이 이야기 작업용 얼개, 최신 사용자 결정 |
 | [story-writing.md](story-writing.md) | 이야기·대사 쓰는 법: 기조, 서사·대사·연출 원칙, 작업 순서 |
 | [history.md](history.md) | 설계 결정과 이유 |
 

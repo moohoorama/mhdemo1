@@ -848,7 +848,6 @@
     "copper_sword"
    ],
    "Look": {
-    "Portrait": "zuofeng",
     "Faction": "han",
     "Scene": "eunuch_noncombat"
    }
@@ -1407,13 +1406,15 @@
     "eight_formation",
     "feint",
     "deep_scheme",
-    "cunning"
+    "cunning",
+    "insight"
    ],
    "Learn": [
     "eight_formation",
     "feint",
     "deep_scheme",
-    "cunning"
+    "cunning",
+    "insight"
    ],
    "Equipment": [
     "white_feather_fan",
@@ -1830,6 +1831,7 @@
     "tactics_primer"
    ],
    "Look": {
+    "Portrait": "xushu",
     "Faction": "shu",
     "Scene": "official_noncombat"
    }
@@ -3112,6 +3114,7 @@
    "Learn": [],
    "Equipment": [],
    "Look": {
+    "NoPortrait": true,
     "Faction": "han",
     "Sprite": "commoner_woman"
    },
@@ -3134,6 +3137,7 @@
    "Learn": [],
    "Equipment": [],
    "Look": {
+    "NoPortrait": true,
     "Faction": "han",
     "Sprite": "commoner_elder"
    },
@@ -3173,7 +3177,7 @@
    ],
    "Look": {
     "Faction": "shu",
-    "Portrait": "qiaomao",
+    "Portrait": "yiji",
     "Scene": "official_blue_noncombat"
    }
   },
@@ -3211,7 +3215,7 @@
    ],
    "Look": {
     "Faction": "shu",
-    "Portrait": "zhujun"
+    "Portrait": "huojun"
    }
   },
   "weiyan": {
@@ -3248,7 +3252,7 @@
    ],
    "Look": {
     "Faction": "shu",
-    "Portrait": "yangang"
+    "Portrait": "weiyan"
    }
   },
   "danfu": {
@@ -3275,6 +3279,7 @@
     "tactics_primer"
    ],
    "Look": {
+    "Portrait": "xushu",
     "Faction": "han",
     "Scene": "official_noncombat"
    }
@@ -3302,6 +3307,7 @@
     "tactics_primer"
    ],
    "Look": {
+    "Portrait": "xushu",
     "Faction": "han",
     "Scene": "official_noncombat"
    }
@@ -3330,7 +3336,7 @@
    ],
    "Look": {
     "Faction": "jing",
-    "Portrait": "liuyan",
+    "Portrait": "liubiao",
     "Scene": "liuyan_noncombat"
    }
   },
@@ -3359,7 +3365,7 @@
    ],
    "Look": {
     "Faction": "jing",
-    "Portrait": "xurong",
+    "Portrait": "caimao",
     "Scene": "official_crimson_noncombat"
    }
   },
@@ -3388,7 +3394,7 @@
    ],
    "Look": {
     "Faction": "jing",
-    "Portrait": "caocen"
+    "Portrait": "caizhong"
    }
   },
   "caihe": {
@@ -3415,7 +3421,7 @@
    ],
    "Look": {
     "Faction": "jing",
-    "Portrait": "lisu"
+    "Portrait": "caihe"
    }
   },
   "kuaiyue": {
@@ -3443,7 +3449,7 @@
    ],
    "Look": {
     "Faction": "jing",
-    "Portrait": "liru",
+    "Portrait": "kuaiyue",
     "Scene": "official_black_noncombat"
    }
   },
@@ -3470,7 +3476,7 @@
    ],
    "Look": {
     "Faction": "jing",
-    "Portrait": "hanfu",
+    "Portrait": "xianglang",
     "Scene": "official_green_noncombat"
    }
   },
@@ -3498,7 +3504,7 @@
    ],
    "Look": {
     "Faction": "jing",
-    "Portrait": "gongzhou",
+    "Portrait": "liuqi",
     "Scene": "official_purple_noncombat"
    }
   },
@@ -3525,8 +3531,8 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "jing",
-    "Portrait": "huzhen"
+    "NoPortrait": true,
+    "Faction": "jing"
    }
   },
   "chensun": {
@@ -3552,8 +3558,8 @@
     "leather_armor"
    ],
    "Look": {
-    "Faction": "jing",
-    "Portrait": "wuanguo"
+    "NoPortrait": true,
+    "Faction": "jing"
    }
   },
   "songzhong": {
@@ -3577,7 +3583,7 @@
    ],
    "Look": {
     "Faction": "jing",
-    "Portrait": "zuofeng",
+    "Portrait": "songzhong",
     "Scene": "official_noncombat"
    }
   },
@@ -3606,7 +3612,7 @@
    ],
    "Look": {
     "Faction": "jing",
-    "Portrait": "zoujing"
+    "Portrait": "wenpin"
    }
   },
   "zhangyun": {
@@ -3633,7 +3639,7 @@
    ],
    "Look": {
     "Faction": "jing",
-    "Portrait": "lijue"
+    "Portrait": "zhangyun"
    }
   },
   "caochun": {
@@ -3661,7 +3667,7 @@
    ],
    "Look": {
     "Faction": "wei",
-    "Portrait": "mushun"
+    "Portrait": "caochun"
    }
   },
   "xiahouen": {
@@ -3687,7 +3693,7 @@
    ],
    "Look": {
     "Faction": "wei",
-    "Portrait": "zumao"
+    "NoPortrait": true
    }
   },
   "xiahoujie": {
@@ -3710,6 +3716,7 @@
     "leather_armor"
    ],
    "Look": {
+    "NoPortrait": true,
     "Faction": "wei"
    }
   },
@@ -3738,7 +3745,7 @@
    ],
    "Look": {
     "Faction": "wu",
-    "Portrait": "dengmao"
+    "Portrait": "ganning"
    }
   },
   "lusu": {
@@ -3765,7 +3772,7 @@
    ],
    "Look": {
     "Faction": "wu",
-    "Portrait": "kongrong",
+    "Portrait": "lusu",
     "Scene": "official_blue_noncombat"
    }
   },
@@ -3786,6 +3793,7 @@
    "Learn": [],
    "Equipment": [],
    "Look": {
+    "NoPortrait": true,
     "Faction": "shu",
     "Scene": "commoner_woman"
    }
@@ -3828,6 +3836,7 @@
    "Learn": [],
    "Equipment": [],
    "Look": {
+    "NoPortrait": true,
     "Faction": "han",
     "Scene": "child_boy_noncombat"
    }
@@ -3852,6 +3861,7 @@
     "cotton_clothes"
    ],
    "Look": {
+    "Portrait": "zhugejun",
     "Faction": "han",
     "Scene": "official_green_noncombat"
    }
@@ -3876,6 +3886,7 @@
     "leather_armor"
    ],
    "Look": {
+    "NoPortrait": true,
     "Faction": "shu",
     "Scene": "official_noncombat"
    }
@@ -3897,6 +3908,7 @@
    "Learn": [],
    "Equipment": [],
    "Look": {
+    "NoPortrait": true,
     "Faction": "merchant",
     "Scene": "commoner_oldwoman"
    }
@@ -3921,6 +3933,7 @@
     "leather_armor"
    ],
    "Look": {
+    "NoPortrait": true,
     "Faction": "jing",
     "Scene": "official_purple_noncombat"
    }

@@ -46,6 +46,10 @@
  "TurnLimit": 25,
  "Map": "map23.json",
  "Faction": "wei",
+ "Armies": [
+  {"Faction": "shu", "Name": "유비군", "Ally": true},
+  {"Faction": "wei", "Name": "조인군"}
+ ],
  "Allies": [
   {
    "X": 20,

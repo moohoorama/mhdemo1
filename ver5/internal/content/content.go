@@ -146,13 +146,14 @@ func (c *Colors) UnmarshalJSON(b []byte) error {
 
 // Look is how a character is drawn.
 type Look struct {
-	Sprite   string            // battle sprite in the first class of the character's line when Sprites does not name it; the class's when empty
-	Sprites  map[string]string `json:",omitempty"` // class id, or class id:weapon type -> battle sprite while the character serves in that class (with that weapon); a character with any only promotes into the classes named
-	Scene    string            // non-combat sprite for scenes; Sprite when empty
-	Portrait string
-	Faction  string
-	Palette  map[string]Colors // tag group -> one base colour or three shades
-	Later    []LaterLook       `json:",omitempty"` // how the character looks once the story has moved on; the last that holds wins
+	Sprite     string            // battle sprite in the first class of the character's line when Sprites does not name it; the class's when empty
+	Sprites    map[string]string `json:",omitempty"` // class id, or class id:weapon type -> battle sprite while the character serves in that class (with that weapon); a character with any only promotes into the classes named
+	Scene      string            // non-combat sprite for scenes; Sprite when empty
+	Portrait   string
+	NoPortrait bool `json:",omitempty"` // suppress both the character and class portrait
+	Faction    string
+	Palette    map[string]Colors // tag group -> one base colour or three shades
+	Later      []LaterLook       `json:",omitempty"` // how the character looks once the story has moved on; the last that holds wins
 }
 
 // LaterLook replaces a character's portrait and scene sprite once its story conditions hold (하후돈 after he loses an eye).

@@ -17,6 +17,9 @@ import (
 // own class when class is empty).
 func (g *Game) portraitArt(c content.Character, class string) *ebiten.Image {
 	c.Look = g.laterLook(c.Look)
+	if c.Look.NoPortrait {
+		return nil
+	}
 	if src := g.assets.portrait(c.Look.Portrait); src != nil {
 		return src
 	}

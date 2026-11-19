@@ -19,6 +19,9 @@ new dot work goes through the dot editor (`hero-sprite` skill).
 Illustrations (officer portraits, event CGs, backgrounds, UI art) are not
 sprites: their sources live under `tools/illustrations/`. Read
 `tools/illustrations/README.md` first and keep the chosen ink-wash style.
+For new officer portraits, use the README's current full-body-to-upper-body workflow:
+give each character a pose and expression suited to their story and role, preserve the
+full-body original, crop the upper body for the 256×256 game portrait, and check a game capture.
 
 To check UI or on-screen output, capture it instead of guessing from code. `ver5/cmd/_uidemo-vm`
 plays a named UI demo (`ver5/internal/gui/uidemo_*.go`) headlessly and saves PNG frames and/or a

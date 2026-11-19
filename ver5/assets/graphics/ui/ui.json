@@ -141,7 +141,7 @@
    ]
   ]
  },
- "item_bow": {
+ "item_copper_sword": {
   "anchor": [
    8,
    8
@@ -155,7 +155,7 @@
    ]
   ]
  },
- "item_dao": {
+ "item_iron_sword": {
   "anchor": [
    8,
    8
@@ -169,7 +169,7 @@
    ]
   ]
  },
- "item_diamond": {
+ "item_steel_sword": {
   "anchor": [
    8,
    8
@@ -183,7 +183,7 @@
    ]
   ]
  },
- "item_fan": {
+ "item_copper_spear": {
   "anchor": [
    8,
    8
@@ -197,7 +197,7 @@
    ]
   ]
  },
- "item_firebook": {
+ "item_iron_spear": {
   "anchor": [
    8,
    8
@@ -211,7 +211,7 @@
    ]
   ]
  },
- "item_halberd": {
+ "item_steel_spear": {
   "anchor": [
    8,
    8
@@ -225,7 +225,7 @@
    ]
   ]
  },
- "item_yanyuedao": {
+ "item_short_bow": {
   "anchor": [
    8,
    8
@@ -239,7 +239,7 @@
    ]
   ]
  },
- "item_horse": {
+ "item_long_bow": {
   "anchor": [
    8,
    8
@@ -253,7 +253,7 @@
    ]
   ]
  },
- "item_jueying": {
+ "item_steel_bow": {
   "anchor": [
    8,
    8
@@ -267,7 +267,7 @@
    ]
   ]
  },
- "item_baima": {
+ "item_cloth_gloves": {
   "anchor": [
    8,
    8
@@ -281,7 +281,7 @@
    ]
   ]
  },
- "item_sanlue": {
+ "item_leather_gloves": {
   "anchor": [
    8,
    8
@@ -295,7 +295,7 @@
    ]
   ]
  },
- "item_knuckles": {
+ "item_iron_gloves": {
   "anchor": [
    8,
    8
@@ -309,7 +309,7 @@
    ]
   ]
  },
- "item_leather": {
+ "item_leather_armor": {
   "anchor": [
    8,
    8
@@ -323,7 +323,7 @@
    ]
   ]
  },
- "item_mirror": {
+ "item_bronze_armor": {
   "anchor": [
    8,
    8
@@ -337,7 +337,7 @@
    ]
   ]
  },
- "item_map": {
+ "item_iron_armor": {
   "anchor": [
    8,
    8
@@ -351,7 +351,7 @@
    ]
   ]
  },
- "item_medicine": {
+ "item_cotton_clothes": {
   "anchor": [
    8,
    8
@@ -365,7 +365,7 @@
    ]
   ]
  },
- "item_primer": {
+ "item_leather_clothes": {
   "anchor": [
    8,
    8
@@ -379,7 +379,7 @@
    ]
   ]
  },
- "item_qinggang": {
+ "item_tiger_skin": {
   "anchor": [
    8,
    8
@@ -393,7 +393,7 @@
    ]
   ]
  },
- "item_twin": {
+ "item_bow": {
   "anchor": [
    8,
    8
@@ -407,7 +407,7 @@
    ]
   ]
  },
- "item_ration": {
+ "item_dao": {
   "anchor": [
    8,
    8
@@ -421,7 +421,7 @@
    ]
   ]
  },
- "item_bean_pouch": {
+ "item_diamond": {
   "anchor": [
    8,
    8
@@ -435,7 +435,7 @@
    ]
   ]
  },
- "item_redhare": {
+ "item_fan": {
   "anchor": [
    8,
    8
@@ -449,7 +449,7 @@
    ]
   ]
  },
- "item_robe": {
+ "item_firebook": {
   "anchor": [
    8,
    8
@@ -463,7 +463,7 @@
    ]
   ]
  },
- "item_seal": {
+ "item_halberd": {
   "anchor": [
    8,
    8
@@ -477,7 +477,7 @@
    ]
   ]
  },
- "item_spear": {
+ "item_yanyuedao": {
   "anchor": [
    8,
    8
@@ -491,7 +491,7 @@
    ]
   ]
  },
- "item_sword": {
+ "item_horse": {
   "anchor": [
    8,
    8
@@ -505,7 +505,7 @@
    ]
   ]
  },
- "item_yitian": {
+ "item_jueying": {
   "anchor": [
    8,
    8
@@ -519,7 +519,7 @@
    ]
   ]
  },
- "item_treasure_sword": {
+ "item_baima": {
   "anchor": [
    8,
    8
@@ -533,7 +533,7 @@
    ]
   ]
  },
- "item_bean": {
+ "item_sanlue": {
   "anchor": [
    8,
    8
@@ -547,7 +547,7 @@
    ]
   ]
  },
- "item_barley": {
+ "item_knuckles": {
   "anchor": [
    8,
    8
@@ -561,7 +561,7 @@
    ]
   ]
  },
- "item_rice": {
+ "item_leather": {
   "anchor": [
    8,
    8
@@ -575,7 +575,7 @@
    ]
   ]
  },
- "item_liquor": {
+ "item_mirror": {
   "anchor": [
    8,
    8
@@ -589,7 +589,7 @@
    ]
   ]
  },
- "item_fine_liquor": {
+ "item_map": {
   "anchor": [
    8,
    8
@@ -603,7 +603,7 @@
    ]
   ]
  },
- "item_baijiu": {
+ "item_medicine": {
   "anchor": [
    8,
    8
@@ -617,7 +617,7 @@
    ]
   ]
  },
- "item_cure_all": {
+ "item_primer": {
   "anchor": [
    8,
    8
@@ -631,7 +631,7 @@
    ]
   ]
  },
- "item_scroll": {
+ "item_qinggang": {
   "anchor": [
    8,
    8
@@ -645,7 +645,7 @@
    ]
   ]
  },
- "item_insu": {
+ "item_twin": {
   "anchor": [
    8,
    8
@@ -659,6 +659,258 @@
    ]
   ]
  },
+ "item_ration": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    5817,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_bean_pouch": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    5961,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_redhare": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    6105,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_robe": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    6249,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_seal": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    6393,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_spear": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    6537,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_sword": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    6681,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_yitian": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    6825,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_treasure_sword": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    6969,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_bean": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    7113,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_barley": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    7257,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_rice": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    7401,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_liquor": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    7545,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_fine_liquor": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    7689,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_baijiu": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    7833,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_cure_all": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    7977,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_scroll": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    8121,
+    144,
+    144
+   ]
+  ]
+ },
+ "item_insu": {
+  "anchor": [
+   8,
+   8
+  ],
+  "frames": [
+   [
+    0,
+    8265,
+    144,
+    144
+   ]
+  ]
+ },
  "bar_frame": {
   "anchor": [
    1,
@@ -667,7 +919,7 @@
   "frames": [
    [
     0,
-    5817,
+    8409,
     26,
     9
    ]
@@ -681,13 +933,13 @@
   "frames": [
    [
     0,
-    5826,
+    8418,
     22,
     3
    ],
    [
     22,
-    5826,
+    8418,
     22,
     3
    ]
@@ -701,7 +953,7 @@
   "frames": [
    [
     0,
-    5829,
+    8421,
     22,
     3
    ]
@@ -715,7 +967,7 @@
   "frames": [
    [
     0,
-    5832,
+    8424,
     22,
     3
    ]
@@ -729,7 +981,7 @@
   "frames": [
    [
     0,
-    5835,
+    8427,
     22,
     1
    ]
@@ -743,7 +995,7 @@
   "frames": [
    [
     0,
-    5836,
+    8428,
     6,
     1
    ]
@@ -757,7 +1009,7 @@
   "frames": [
    [
     0,
-    5837,
+    8429,
     1,
     4
    ]
@@ -771,49 +1023,49 @@
   "frames": [
    [
     0,
-    5841,
+    8433,
     96,
     96
    ],
    [
     96,
-    5841,
+    8433,
     96,
     96
    ],
    [
     192,
-    5841,
+    8433,
     96,
     96
    ],
    [
     288,
-    5841,
+    8433,
     96,
     96
    ],
    [
     384,
-    5841,
+    8433,
     96,
     96
    ],
    [
     480,
-    5841,
+    8433,
     96,
     96
    ],
    [
     576,
-    5841,
+    8433,
     96,
     96
    ],
    [
     672,
-    5841,
+    8433,
     96,
     96
    ]
