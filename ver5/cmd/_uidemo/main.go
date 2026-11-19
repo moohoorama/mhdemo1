@@ -22,7 +22,7 @@ func main() {
 	name := flag.String("ui", "", "demo to play: "+strings.Join(gui.DemoNames(), ", "))
 	out := flag.String("out", "", "frame directory (default reports/uidemo/<ui>)")
 	frames := flag.Int("frames", 120, "frames to play (60 per second)")
-	every := flag.Int("every", 6, "save every n-th frame; 0 saves none (vmhost guest)")
+	every := flag.Int("every", 0, "save every n-th frame as PNG, e.g. 6; 0 saves none")
 	stage := flag.String("stage", "", "battle stage the demos play (default: the first)")
 	duel := flag.String("duel", "", "stage duel the duel demo plays (default: the first)")
 	node := flag.String("node", "", "story node the scene demos jump to")
@@ -68,6 +68,7 @@ func run(root, name, out, stage, duel, node, trace, size string, frames, every, 
 	}
 	loaded := time.Now()
 	ebiten.SetWindowSize(w, h)
+	ebiten.SetScreenClearedEveryFrame(false)
 	ebiten.SetWindowTitle("uidemo " + name)
 	err = ebiten.RunGame(d)
 	fmt.Fprintf(os.Stderr, "guest: loading %.1fs, playing %d frames %.1fs\n", loaded.Sub(start).Seconds(), frames, time.Since(loaded).Seconds())
