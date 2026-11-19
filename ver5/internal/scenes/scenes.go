@@ -55,6 +55,7 @@ type Step struct {
 	Patrol  []float64
 	// walk to [u, v] and back, over and over, without holding up the beats (a sentry); a Move ends it
 	Chatter   string    // short bubbles the actor keeps saying now and then, "|" between them; "-" stops
+	Lag       float64   // with Chatter: seconds before its first bubble (staggers a murmur across a crowd); an empty entry between the "|" is a turn of silence
 	If        []string  // Ambient only: the step runs when these story conditions hold (carts there only once won back)
 	Shoot     *Shoot    // the actor looses an arrow at the stage's halberd and the camera chases it
 	Arrow     []float64 // with Play "attack": the actor's arrow leaves as the bow is let go and lands on this [u, v] (volleys from a wall)

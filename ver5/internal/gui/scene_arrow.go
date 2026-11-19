@@ -4,6 +4,8 @@ import (
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
+
+	"srpg/internal/scenes"
 )
 
 // sceneArrow is an arrow of a Play step with an Arrow: it leaves the archer's chest as the bow is let go (the end of
@@ -75,4 +77,12 @@ func (g *Game) drawArrows(dst *ebiten.Image) {
 		i := int(math.Round(math.Atan2(y2-y, x2-x)/(2*math.Pi)*n+n)) % len(fx.Frames)
 		fx.draw(dst, i, x, y, g.toScreen, g.zoom)
 	}
+}
+
+// chatStart is the wait before an actor's first bubble: the step's Lag, else a spread by name.
+func chatStart(st scenes.Step, id string) float64 {
+	if st.Lag > 0 {
+		return st.Lag
+	}
+	return float64(len(id)%7) / 4
 }

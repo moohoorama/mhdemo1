@@ -355,7 +355,9 @@ func (g *Game) updateScene(dt float64) {
 	}
 	for key, c := range s.chatter {
 		if c.t -= dt; c.t <= 0 && s.emotes[key] == nil && !s.actors[key].gone {
-			s.emotes[key] = &emote{text: c.lines[c.i%len(c.lines)], life: emoteTime + .4}
+			if text := c.lines[c.i%len(c.lines)]; text != "" {
+				s.emotes[key] = &emote{text: text, life: emoteTime + .4}
+			}
 			c.i++
 			c.t = chatEvery + float64((len(key)*13+c.i*7)%10)/10
 		}
@@ -578,7 +580,7 @@ func (g *Game) startStep(st scenes.Step) {
 	case "-":
 		delete(s.chatter, v.id)
 	default:
-		s.chatter[v.id] = &chatterLine{lines: strings.Split(st.Chatter, "|"), t: float64(len(v.id)%7) / 4}
+		s.chatter[v.id] = &chatterLine{lines: strings.Split(st.Chatter, "|"), t: chatStart(st, v.id)}
 	}
 }
 

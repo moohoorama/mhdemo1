@@ -11,6 +11,7 @@
 - `internal/scenes/scenes.go`, `internal/gui/scene.go`, `internal/gui/scene_arrow.go`, `internal/gui/scene_arrow_test.go`: `Play`와 함께 쓰는 단계 `Arrow: [u, v]`. 궁병이 시위를 놓는 프레임에 화살이 성벽 높이에서 떠나 그 칸에 떨어진다. 없는 장면은 그대로. 기존 활 쏘는 비트는 궁병이 성벽 안쪽에 반투명하게 서 있어 활도 화살도 안 보였다.
 - `tools/scene_maps/wall_top_scenes.py`, `assets/scenes/ch26.json`·`ch25v.json`·`ch26v.json`: 양양(`c26-start`·`c25v-gate`)과 강릉(`c26v-start`)을 새 맵으로 재연출. 성 위에 궁병·보병·호위와 채모·채중·괴월(강릉은 장윤·곽준), 성 밑에 유비 일행·유비군 14·백성 약 70. 양양은 "쏴라!" 뒤 궁병 두 줄의 일제 사격과 달아나는 앞줄 백성, 강릉은 장윤이 궁병을 이끌고 성벽을 따라 나감. 대사·노드 순서는 그대로. 강릉 성문 열린 뒤 장면(`c26v-gate`)은 이번에 안 바꿈. `Zoom 1`(전체 보기)은 인물이 너무 작아 쓰지 않음.
 - `tools/scene_maps/wall_top_scenes.py`, `assets/scenes/ch26v.json`: 사용자 "강릉에서는 민중이 유비군 뒤쪽에" — 강릉(`c26v-start`)만 유비군 34명을 성벽 쪽 앞 네 줄에, 백성 약 67명을 그 뒤(v −11 뒤)에 세움. 양양 두 장면은 바이트 그대로.
+- `tools/scene_maps/wall_top_scenes.py`, `assets/scenes/ch26.json`·`ch25v.json`·`ch26v.json`, `internal/scenes/scenes.go`, `internal/gui/scene.go`·`scene_arrow.go`: 사용자 "양양도 백성들을 병력 뒤로, 강릉은 도망갈 준비 느낌으로 수군수군" — 양양은 백성을 군대 뒤 12개 무리로 옮기고 화살을 군대 앞 땅에 떨어뜨리며 백성은 한 칸 물러나 외침 말풍선("으악!"·"화살이다!"·"어머나!"), 강릉은 백성을 4~6명씩 10개 무리로 도망칠 쪽을 반쯤 보게 세우고 속삭임 열 줄을 시간차로 띄움. 엔진: `Chatter`의 첫 말풍선을 미루는 `Lag`과 빈 항목(쉼) 추가. 카메라 시작점은 (7, −5)로 올려 군대 뒤 백성이 화면에 들어오게 함.
 
 ## 2026-11-19 융중 대나무
 
