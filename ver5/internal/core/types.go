@@ -145,7 +145,7 @@ type Event struct {
 	DuelID                    string           `json:",omitempty"`
 	Outcome                   string           `json:",omitempty"`
 	First                     string           `json:",omitempty"` // duel: the officer who moved to meet the other
-	Fighter                   string           `json:",omitempty"` // duel: the deputy who fights for the Actor's unit
+	Fighter                   string           `json:",omitempty"` // duel: allied opener when different from the Actor's officer
 	Kind, Actor, Target, Text string
 	Amount                    int
 	Path                      []content.Point `json:",omitempty"` // move: cells walked, both ends included

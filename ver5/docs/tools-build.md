@@ -9,6 +9,18 @@
 
 `make`의 기본 목표는 `desktop`이며 기존 garble 데스크톱 빌드에 `-tags release`를 사용한다. `make desktop-mac`·`desktop-mac-intel`·`desktop-win`으로 대상을 고른다. `make android`·`android-arm64`도 `--release`로 빌드하며 설치 대상은 `bin/android/srpg-ver5-release.apk`다. 개발 APK는 `make android android-install ANDROID_MODE=debug`로 빌드·설치한다. 모드가 빌드 태그와 APK 경로를 함께 결정하도록 연결해, debug를 빌드하고 예전 release를 설치하는 일이 없게 한다. 기본 `ANDROID_MODE=release`는 유지한다. 이미 debug APK를 빌드했다면 `make android-install ANDROID_MODE=debug`로 설치만 한다.
 
+## Windows 설치 프로그램
+
+`make windows-portable-plain`은 garble 없는 Windows x64 release 단일 실행 파일 `bin/win/srpg-ver5-portable-plain.exe`를 만든다. 설치하지 않고 이 파일만 실행할 수 있다. 최초 실행 시 파일 안의 에셋을 `%LOCALAPPDATA%\srpg-portable`에 풀고 이후 재사용하므로 캐시 디스크 공간이 필요하다. 새 빌드는 별도 캐시를 사용하며 오래된 캐시는 자동 삭제하지 않는다. 저장 데이터와 설정은 기존 `%APPDATA%\srpg-cli`에 둔다. Windows 코드 서명은 없다.
+
+Defender 탐지 비교용으로 `make windows-installer-plain`을 실행하면 garble 없이 같은 release 태그와 설치 구성을 사용해 `bin/win/srpg-ver5-setup-plain.exe`를 만든다. 기존 난독화 빌드는 보존한다. 탐지가 해소되는지는 Windows에서 확인해야 한다.
+
+Go와 garble, NSIS (`makensis`)를 설치한 뒤 `make windows-installer`를 실행한다. macOS에서도 Windows x64 실행 파일을 교차 빌드하고 `bin/win/srpg-ver5-setup.exe`를 만든다. macOS에서 NSIS는 `brew install makensis`로 설치한다. 빌드 도구 경로는 `GARBLE`과 `MAKENSIS`로 지정할 수 있다.
+
+설치 파일은 게임 실행 파일과 `assets/`를 함께 담는다. Windows에서 실행하면 현재 사용자의 `%LOCALAPPDATA%\Programs\SRPG`에 설치하고 시작 메뉴 바로가기 및 앱 제거 항목을 만든다. 저장과 설정은 `%APPDATA%\srpg-cli`에 별도로 남으며 게임을 제거해도 지우지 않는다. 설치 파일은 코드 서명하지 않았다. 기존 `make desktop-win`은 설치 파일 없이 실행 파일만 만든다.
+
+Windows 실행 파일과 설치 프로그램은 Android와 같은 그림의 `tools/windows/app.ico`를 사용한다. 실행 파일 리소스 `cmd/srpg-gui/icon_windows_amd64.syso`도 함께 보관하므로 일반 빌드에는 추가 도구가 필요 없다. 그림을 변경한 뒤에는 uv·Pillow와 LLVM의 `llvm-rc`, `llvm-cvtres`를 설치하고 `make windows-icon`으로 둘을 다시 만든다. 도구가 PATH에 없으면 `LLVM_RC=/경로/llvm-rc LLVM_CVTRES=/경로/llvm-cvtres`를 지정한다.
+
 ## 에셋 빌드
 
 ```sh

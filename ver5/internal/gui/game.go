@@ -68,8 +68,8 @@ type Game struct {
 	textSeconds               float64   // the clock lines come out on: uiSeconds run at the replay speed
 	cursorHidden              bool
 	uiSeconds                 float64
-	moneyShown                int  // the money as the screen counts it toward the real sum
-	moneyReady                bool // moneyShown has been set from a game
+	moneyShown                int                      // the money as the screen counts it toward the real sum
+	moneyReady                bool                     // moneyShown has been set from a game
 	textCache                 map[string]*ebiten.Image // rendered text by key (ui_anim.go)
 	root                      string
 	assets                    *Assets
@@ -132,7 +132,7 @@ type Game struct {
 	itemEffects               map[string]itemEffect // itemEffect results by revision, officer, slot and piece
 	equip                     equipState
 	waypoints                 waypointList
-	jumpNode                  string // the waypoint the difficulty window starts at; none starts a new game
+	jumpNode                  string          // the waypoint the difficulty window starts at; none starts a new game
 	jumpLevel                 int             // the waypoint setup: the party's level; none is the next battle's
 	jumpFlags                 map[string]bool // the waypoint setup: the battle flags left on
 	question, yes, no         string
@@ -228,7 +228,7 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 		return nil, err
 	}
 	g := &Game{S: s, font: source, brushFont: brush, serifFont: serif, seed: seed, verified: map[string]bool{}, slot: 1, auditDir: auditDir,
-		vis: map[string]*unitVis{}, zoom: 1, zoomFrom: 1, zoomTo: 1, zoomT: .5, speed: savedSpeed(s.Settings.Speed), threats: map[string]core.Ranges{}, itemEffects: map[string]itemEffect{}}
+		vis: map[string]*unitVis{}, zoom: battleZoom, zoomFrom: battleZoom, zoomTo: battleZoom, zoomT: .5, speed: savedSpeed(s.Settings.Speed), threats: map[string]core.Ranges{}, itemEffects: map[string]itemEffect{}}
 	g.root = filepath.Dir(filepath.Dir(filepath.Dir(fontPath)))
 	g.Debug = DebugBuild
 	g.player.g = g
@@ -429,6 +429,9 @@ func (g *Game) record(before *core.Observation, events []core.Event) {
 	levels := map[string][2]int{}
 	order := []string{}
 	for _, e := range events {
+		if e.Kind == "learn" {
+			g.sfx("trait-learn")
+		}
 		line, important := g.eventText(e)
 		if e.Kind == "level" {
 			l, ok := levels[e.Actor]
@@ -906,7 +909,7 @@ func (g *Game) keys() {
 		return
 	}
 	if len(g.modals) > 0 {
-		if pressed(ebiten.KeyEnter) || pressed(ebiten.KeySpace) {
+		if pressed(ebiten.KeyEnter) || g.Debug && pressed(ebiten.KeySpace) {
 			g.closeModal()
 		}
 		return
@@ -919,7 +922,7 @@ func (g *Game) keys() {
 	if pressed(ebiten.KeyGraveAccent) {
 		g.input, g.entry = true, ""
 	}
-	if pressed(ebiten.KeySpace) {
+	if g.Debug && pressed(ebiten.KeySpace) {
 		if dialogue {
 			g.advanceDialogue()
 		} else {

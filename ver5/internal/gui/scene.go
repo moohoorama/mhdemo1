@@ -143,7 +143,7 @@ func (g *Game) enterScene(o core.Observation) bool {
 		}
 	}
 	s := g.scene
-	s.node, s.held = o.Node, map[string]bool{}
+	s.node, s.held, s.focus = o.Node, map[string]bool{}, ""
 	g.startLine(0)
 	return true
 }
@@ -519,7 +519,7 @@ func (g *Game) startStep(st scenes.Step) {
 	if v == nil {
 		return
 	}
-	if !s.extra[st.Actor] && !slices.Contains(s.def.NoFocus, s.node) && (len(st.Enter) == 2 || len(st.Move) == 2 || len(st.Place) == 2 || st.Strike != "" || st.Emote != "" ||
+	if !s.extra[st.Actor] && slices.Contains(s.def.Focus, s.node) && (len(st.Enter) == 2 || len(st.Move) == 2 || len(st.Place) == 2 || st.Strike != "" || st.Emote != "" ||
 		st.Say != "" || st.Play != "") {
 		s.focus = st.Actor
 	}
@@ -968,7 +968,7 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	for name, v := range s.actors { // a speaker turns and, standing, gestures once when their line comes up
 		if talking[name] && !s.spoke[name] && v.walk == nil && v.anim == v.rest() && !v.gone {
 			s.spoke[name] = true
-			if !slices.Contains(s.def.NoFocus, s.node) {
+			if slices.Contains(s.def.Focus, s.node) {
 				s.focus = name
 			}
 			g.faceSpeaker(name)

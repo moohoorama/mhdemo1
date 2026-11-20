@@ -263,3 +263,17 @@ func TestEverySkillSoundIsAFile(t *testing.T) {
 		}
 	}
 }
+
+func TestTraitLearnSound(t *testing.T) {
+	trace, err := os.CreateTemp(t.TempDir(), "sfx")
+	require.NoError(t, err)
+	old := sfxTrace
+	sfxTrace = trace
+	t.Cleanup(func() { sfxTrace = old; trace.Close() })
+	g := battleController(t)
+	g.record(nil, []core.Event{{Kind: "learn", Actor: "hero", Target: "keen"}})
+	g.record(nil, nil)
+	b, err := os.ReadFile(trace.Name())
+	require.NoError(t, err)
+	assert.Equal(t, "0 trait-learn\n", string(b))
+}

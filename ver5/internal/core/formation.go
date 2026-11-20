@@ -236,7 +236,7 @@ func (e *Engine) pendingDuel(u, v *Unit) (content.Duel, bool) {
 	}
 	for _, d := range e.data.Stages[e.state.Stage].Duels {
 		pair := e.duelistOn(d, u) != "" && d.Enemy == v.Character || d.Enemy == u.Character && e.duelistOn(d, v) != ""
-		if a, _ := e.duelAlly(d); pair && e.duelOpen(d) && a != nil {
+		if a := e.duelAlly(d); pair && e.duelOpen(d) && a != nil {
 			return d, true
 		}
 	}
@@ -265,7 +265,7 @@ func (e *Engine) DuelAt(id string, x, y int) string {
 		}
 		for _, other := range others {
 			if v := e.fieldUnit(other); v != nil && v.Faction != u.Faction && dist(x, y, v.X, v.Y) <= 1 && e.duelOpen(d) {
-				if a, _ := e.duelAlly(d); a != nil {
+				if a := e.duelAlly(d); a != nil {
 					return d.ID
 				}
 			}
@@ -315,16 +315,15 @@ func (e *Engine) fieldUnit(char string) *Unit {
 	return nil
 }
 
-// duelAlly is the officer who fights the duel on the ally side, whoever on his side met the enemy: the duel's
-// ally, or when he has left the field the first of its supports still on it; with the unit that carries him,
-// his own or, for a deputy, his officer's.
-func (e *Engine) duelAlly(d content.Duel) (*Unit, string) {
+// duelAlly returns the unit receiving the scripted ally result.
+// A support takes the designated ally's place if the ally has left the field.
+func (e *Engine) duelAlly(d content.Duel) *Unit {
 	for _, id := range append([]string{d.Ally}, d.Supports...) {
 		if a := e.fieldUnit(id); a != nil {
-			return a, id
+			return a
 		}
 	}
-	return nil, ""
+	return nil
 }
 
 // autoDuels holds every pending stage duel whose enemy stands next to its ally or one of its
@@ -340,38 +339,48 @@ func (e *Engine) autoDuels() {
 	for again := true; again; {
 		again = false
 		for _, d := range duels {
-			a, fighter := e.duelAlly(d)
+			a := e.duelAlly(d)
 			b := e.unit(d.Enemy)
 			if a == nil || b == nil || b.HP <= 0 || a.Faction == b.Faction || !e.duelOpen(d) {
 				continue
 			}
+			fighter := ""
 			for _, id := range append([]string{d.Ally}, d.Supports...) {
-				if m := e.fieldUnit(id); m != nil && m.Faction == a.Faction && dist(m.X, m.Y, b.X, b.Y) <= 1 {
-					e.duel(a, fighter, b, d)
-					again = true
+				m := e.fieldUnit(id)
+				if m == nil || m.Faction != a.Faction || dist(m.X, m.Y, b.X, b.Y) > 1 {
+					continue
+				}
+				if fighter == "" {
+					fighter = id
+				}
+				if m.ID == e.lastActor {
+					fighter = e.duelistOn(d, m)
 					break
 				}
 			}
-			if again {
+			if fighter != "" {
+				e.duel(a, fighter, b, d)
+				again = true
 				break
 			}
 		}
 	}
 }
 
-// duel resolves a stage duel between the two officers. The event names the ally's unit first, the
-// officer who fights for it as Fighter when that is the deputy riding with it, and the one who moved
-// to meet the other (if the command was one of theirs) as First.
+// duel applies the scripted results to the given units. Fighter identifies the allied opener
+// when it differs from the event's Actor, and First is the unit whose command brought them together.
 func (e *Engine) duel(ally *Unit, fighter string, enemy *Unit, d content.Duel) {
+	carrier := e.fieldUnit(fighter)
 	first := ""
-	if m := e.unit(e.lastActor); m == ally || m == enemy || m != nil && slices.Contains(d.Supports, m.Character) {
+	if m := e.unit(e.lastActor); m != nil && (m == carrier || m == enemy) {
 		first = m.ID
 	}
 	e.state.Executed["duel-"+d.ID] = true
+	shownFighter := fighter
 	if fighter == ally.Character {
-		fighter = ""
+		shownFighter = ""
 	}
-	e.events = append(e.events, Event{Kind: "duel", DuelID: d.ID, Outcome: d.Outcome, Actor: ally.ID, Target: enemy.ID, First: first, Fighter: fighter, Text: d.Text + " [" + d.Outcome + "]"})
+	e.events = append(e.events, Event{Kind: "duel", DuelID: d.ID, Outcome: d.Outcome, Actor: ally.ID, Target: enemy.ID, First: first, Fighter: shownFighter, Text: d.Text + " [" + d.Outcome + "]"})
 	outcome := func(q *Unit, result string) {
 		if result == "retreat" || result == "death" {
 			q.HP = 0
@@ -399,12 +408,8 @@ func (e *Engine) duel(ally *Unit, fighter string, enemy *Unit, d content.Duel) {
 	if enemy.HP == 0 && ally.HP > 0 {
 		e.retreatSweep(ally, enemy, false)
 	}
-	if ally.HP > 0 && !ally.AI {
-		who := ally.Character
-		if fighter != "" {
-			who = fighter
-		}
-		e.gainXP(who, XPPerLevel*e.data.Rules.DuelXPPct/100) // the duellist alone, never shared between an officer and its deputy
+	if carrier != nil && carrier.HP > 0 && !carrier.AI {
+		e.gainXP(fighter, XPPerLevel*e.data.Rules.DuelXPPct/100)
 	}
 }
 

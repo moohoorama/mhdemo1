@@ -125,11 +125,36 @@ func TestASupportMeetingTheEnemyStartsTheDuel(t *testing.T) {
 		s.Enemies[0].X, s.Enemies[0].Y = 4, 3 // on water
 	})
 	assert.Equal(t, "D", e.DuelAt("archer1", 3, 3), "the archer joins the hero's duel")
+	heroLevel, archerLevel := e.char("hero").Level, e.char("archer1").Level
 	r := moveAndWait(t, e, "archer1", 3, 3)
 	duels := duelsIn(r)
 	require.Len(t, duels, 1)
 	assert.Equal(t, "archer1", duels[0].First, "the staging opens with the support who met the boss")
-	assert.Equal(t, "hero", duels[0].Actor, "the duel is still the hero's")
+	assert.Equal(t, "hero", duels[0].Actor, "the designated ally still receives the scripted result")
+	assert.Equal(t, "archer1", duels[0].Fighter)
+	assert.Equal(t, heroLevel, e.char("hero").Level)
+	assert.Equal(t, archerLevel+1, e.char("archer1").Level)
+}
+
+func TestEnemyMeetingASupportAwardsThatSupportTheDuelExperience(t *testing.T) {
+	e := battleWith(t, func(s *content.Stage) {
+		neverWon(s)
+		s.Duels[0].Supports = []string{"archer1"}
+	})
+	e.unit("hero").X, e.unit("hero").Y = 1, 3
+	e.unit("archer1").X, e.unit("archer1").Y = 4, 2
+	e.unit("boss").X, e.unit("boss").Y, e.unit("boss").Done = 4, 3, true
+	e.lastActor = "boss"
+	heroLevel, archerLevel := e.char("hero").Level, e.char("archer1").Level
+	e.events = nil
+	e.autoDuels()
+
+	duels := duelsIn(Result{Events: e.events})
+	require.Len(t, duels, 1)
+	assert.Equal(t, "boss", duels[0].First)
+	assert.Equal(t, "archer1", duels[0].Fighter)
+	assert.Equal(t, heroLevel, e.char("hero").Level)
+	assert.Equal(t, archerLevel+1, e.char("archer1").Level)
 }
 
 func TestASupportFightsTheDuelWhenItsAllyHasLeft(t *testing.T) {

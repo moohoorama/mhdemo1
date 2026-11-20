@@ -770,6 +770,16 @@ func (e *Engine) Strike(a, b string) float64 {
 	return best
 }
 
+// MoveCosts gives the movement cost to each reachable cell this turn.
+func (e *Engine) MoveCosts(id string) map[content.Point]int {
+	u := e.unit(id)
+	if u == nil {
+		return nil
+	}
+	costs, _ := e.reach(u)
+	return costs
+}
+
 // AttackRange is the distance band the unit's basic attack falls in; CanStrikeFrom tells the exact cells.
 func (e *Engine) AttackRange(id string) (lo, hi int) {
 	u := e.unit(id)

@@ -18,15 +18,22 @@ GARBLE_FLAGS := -tiny -literals
 # ebiten v2.10 uses purego, so macOS and Windows build without CGO and cross-compile.
 DESKTOP_ENV := CGO_ENABLED=0
 DESKTOP_PKG := ./cmd/srpg-gui
+MAKENSIS ?= makensis
+LLVM_RC ?= llvm-rc
+LLVM_CVTRES ?= llvm-cvtres
 
 .PHONY: help android android-arm64 android-release android-install \
-	desktop desktop-mac desktop-mac-intel desktop-win e2e scenario-doc
+	desktop desktop-mac desktop-mac-intel desktop-win desktop-win-plain windows-portable-plain windows-installer windows-installer-plain windows-icon e2e scenario-doc
 
 help:
 	@echo 'make desktop         Build obfuscated macOS (arm64) and Windows (amd64) binaries'
 	@echo 'make desktop-mac     Build obfuscated macOS arm64 binary (bin/mac/srpg)'
 	@echo 'make desktop-mac-intel  Build obfuscated macOS amd64 binary'
 	@echo 'make desktop-win     Build obfuscated Windows amd64 binary (bin/win/srpg.exe)'
+	@echo 'make windows-installer Build Windows installer with assets (requires NSIS)'
+	@echo 'make windows-installer-plain Build a non-obfuscated installer for comparison'
+	@echo 'make windows-portable-plain Build a single Windows executable without garble'
+	@echo 'make windows-icon   Rebuild Windows icons (requires uv, Pillow and LLVM)'
 	@echo 'make android         Build APK for ARM64 phones and x86_64 emulators'
 	@echo 'make android-arm64   Build APK for ARM64 phones only'
 	@echo 'make android-release Build the release-tagged ARM64 APK'
@@ -51,6 +58,26 @@ desktop-mac-intel:
 desktop-win:
 	$(DESKTOP_ENV) GOOS=windows GOARCH=amd64 $(GARBLE) $(GARBLE_FLAGS) build \
 		-tags release -trimpath -ldflags="-s -w -H=windowsgui" -o bin/win/srpg.exe $(DESKTOP_PKG)
+
+desktop-win-plain:
+	$(DESKTOP_ENV) GOOS=windows GOARCH=amd64 go build -tags release -trimpath -ldflags="-s -w -H=windowsgui" -o bin/win/plain/srpg.exe $(DESKTOP_PKG)
+
+windows-portable-plain:
+	$(DESKTOP_ENV) GOOS=windows GOARCH=amd64 go build -tags 'release portable' -trimpath -ldflags="-s -w -H=windowsgui" -o bin/win/srpg-ver5-portable-plain.exe $(DESKTOP_PKG)
+	$(PYTHON) tools/windows/append_assets.py bin/win/srpg-ver5-portable-plain.exe
+
+# The checked-in COFF resource lets release builds run without LLVM or Pillow.
+windows-icon:
+	mkdir -p bin/win
+	uv run --with pillow python -c 'from PIL import Image; Image.open("assets/graphics/ui/app_icon.png").convert("RGBA").save("tools/windows/app.ico", format="ICO", bitmap_format="bmp", sizes=[(16,16),(24,24),(32,32),(48,48),(64,64),(128,128),(256,256)])'
+	$(LLVM_RC) /fo bin/win/app.res tools/windows/app.rc
+	$(LLVM_CVTRES) /machine:x64 /out:cmd/srpg-gui/icon_windows_amd64.syso bin/win/app.res
+
+windows-installer: desktop-win
+	$(MAKENSIS) tools/windows/installer.nsi
+
+windows-installer-plain: desktop-win-plain
+	$(MAKENSIS) -DGAME_EXE=../../bin/win/plain/srpg.exe -DINSTALLER_EXE=../../bin/win/srpg-ver5-setup-plain.exe tools/windows/installer.nsi
 
 android:
 	$(PYTHON) tools/build_android.py --sdk "$(ANDROID_SDK)" $(ANDROID_BUILD_FLAGS) --output "$(APK)"

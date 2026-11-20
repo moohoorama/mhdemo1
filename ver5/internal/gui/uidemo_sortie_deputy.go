@@ -67,7 +67,7 @@ func demoSortieDeputy(d *Demo) error {
 		p := &g.party
 		switch f {
 		case 1:
-			g.selected, p.sortieTab = lead, 3
+			g.selected, p.sortieView = lead, 5
 		case 40:
 			g.deputyPick = look
 		case 60:
@@ -81,14 +81,28 @@ func demoSortieDeputy(d *Demo) error {
 			}
 		case 101:
 			g.deputyInfo = equipChip{}
+		case 110:
+			g.selected, p.sortieView = lead, 1
+		case 114:
+			o := g.S.View()
+			if c := g.officer(o, "zhaoyun"); c != nil && g.mountOf(*c) == "baima" && !slices.Contains(o.Deployment, c.ID) && g.servedBy(o, c.ID) == "" {
+				ids := slices.Clone(o.Deployment)
+				for i, id := range ids {
+					if id != lead && !g.sortieLocked(id) {
+						ids[i] = c.ID
+						g.request(session.Request{Op: "command", Command: core.Command{Kind: "deploy", Deployment: ids}})
+						break
+					}
+				}
+			}
 		case 120:
-			g.selected, p.sortieTab = dep, 0
+			g.selected, p.sortieView = dep, 2
 		case 130:
-			g.selected, p.sortieTab = lead, 2
+			g.selected, p.sortieView = lead, 3
 		case 136:
-			p.sortieTab = 1
+			p.sortieView = 4
 		case 142:
-			p.sortieTab = 0
+			p.sortieView = 2
 		case 150:
 			g.selected = lead
 			g.openOverlay("deputy")

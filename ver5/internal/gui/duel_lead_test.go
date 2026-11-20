@@ -27,7 +27,7 @@ func TestTheEnemyComingUpToASupportPutsThatSupportInFront(t *testing.T) {
 	g.player.final.Stage = stage
 	g.player.final.UnitViews = []core.UnitView{at("zhangfei", 2, 20), at("guanyu", 10, 10), at("liubei", 12, 12), at("lubu", 10, 11)}
 
-	v := g.duelView(core.Event{Kind: "duel", DuelID: "hulao-brothers", Outcome: "victory", Actor: "zhangfei", Target: "lubu", First: "lubu"})
+	v := g.duelView(core.Event{Kind: "duel", DuelID: "hulao-brothers", Outcome: "victory", Actor: "zhangfei", Target: "lubu", First: "lubu", Fighter: "guanyu"})
 	assert.Equal(t, d.Characters["guanyu"].Name, v.Fighters[0].Name, "Guan Yu, whom Lu Bu came up to, opens the duel")
 	assert.Equal(t, g.assets.Duels.StoryFor("hulao-brothers", "victory", "guanyu"), v.Story)
 	assert.Equal(t, d.Characters["zhangfei"].Name, v.Fighters[2].Name, "Zhang Fei joins in Guan Yu's place")

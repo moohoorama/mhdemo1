@@ -32,20 +32,14 @@ func main() {
 	debug := flag.Bool("debug", gui.DebugBuild, "checking tools (non-release builds): scene jumps, duels, map editor, damage/XP scales, autoplay, pprof on "+debugAddr)
 	flag.Parse()
 	*debug = gui.DebugBuild && *debug
-	// Finder launches apps with an arbitrary working directory. Resolve bundled
-	// runtime assets beside the executable while respecting explicit flags.
+	if err := portableResources(path, font); err != nil {
+		fail(err)
+	}
+	// Launchers may choose an arbitrary working directory. Look beside the executable
+	// and in a macOS app bundle, while keeping an existing explicit path.
 	if exe, err := os.Executable(); err == nil {
-		resources := filepath.Join(filepath.Dir(exe), "..", "Resources")
-		if _, err := os.Stat(*path); err != nil {
-			if _, err := os.Stat(filepath.Join(resources, *path)); err == nil {
-				*path = filepath.Join(resources, *path)
-			}
-		}
-		if _, err := os.Stat(*font); err != nil {
-			if _, err := os.Stat(filepath.Join(resources, *font)); err == nil {
-				*font = filepath.Join(resources, *font)
-			}
-		}
+		*path = resourcePath(*path, exe)
+		*font = resourcePath(*font, exe)
 	}
 	if *dir == "" {
 		base, err := os.UserConfigDir()
@@ -105,6 +99,22 @@ func main() {
 		fail(err)
 	}
 }
+
+// resourcePath keeps an existing path and otherwise searches the installed layout.
+func resourcePath(path, exe string) string {
+	if _, err := os.Stat(path); err == nil || filepath.IsAbs(path) {
+		return path
+	}
+	base := filepath.Dir(exe)
+	for _, root := range []string{base, filepath.Join(base, "..", "Resources")} {
+		candidate := filepath.Join(root, path)
+		if _, err := os.Stat(candidate); err == nil {
+			return candidate
+		}
+	}
+	return path
+}
+
 func loadIcon(path string) (image.Image, error) {
 	f, err := os.Open(path)
 	if err != nil {

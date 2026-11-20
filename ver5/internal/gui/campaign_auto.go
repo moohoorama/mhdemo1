@@ -188,7 +188,7 @@ func (g *Game) presentCampaignCommand(c core.Command) {
 		case "equip", "unequip":
 			g.party.tab, g.party.sortieTab = 2, 2
 		case "deputy":
-			g.party.sortieTab = 3
+			g.party.sortieTab, g.party.sortieView = 3, 5
 			return // the sortie's deputy tab is already on screen
 		}
 		if g.overlay() == "" {

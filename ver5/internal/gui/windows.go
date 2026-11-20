@@ -321,8 +321,12 @@ func (g *Game) overlayWindow(dst *ebiten.Image, name string, w, h, strip int) {
 		for i, it := range rows {
 			g.choiceRow(dst, left, y+64+i*64, x+w-32-left, it.title, it.opts)
 		}
+		spaceHint := ""
+		if g.Debug {
+			spaceHint = "Space 추천 한 명령 · "
+		}
 		g.label(dst, "조작: 클릭 선택 · 우클릭/Esc 취소 · 드래그/가장자리 화살표 클릭/방향키 화면 이동 · 휠 확대\n"+
-			"Space 추천 한 명령 · F 재생 속도 · Enter 재생 건너뛰기 · F5/F9 저장/불러오기",
+			spaceHint+"F 재생 속도 · Enter 재생 건너뛰기 · F5/F9 저장/불러오기",
 			float64(left), float64(y+64+len(rows)*64+4), 13, muted)
 	case "equipment":
 		g.equipmentWindow(dst, x, y, w, h)

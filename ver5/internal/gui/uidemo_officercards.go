@@ -58,9 +58,9 @@ func demoOfficerCards(d *Demo) error {
 	d.step = func(f int) {
 		switch f {
 		case 10:
-			g.selected, g.party.sortieTab = pick, 0
+			g.selected, g.party.sortieView = pick, 2
 		case 30:
-			g.party.sortieTab = 2
+			g.party.sortieView = 3
 		case 50:
 			g.party.tab = 0
 			g.openOverlay("party")

@@ -1,3 +1,54 @@
+## 2026-11-21 출전 준비 표시와 이야기 연출
+
+- `internal/gui/sortie_unified.go`: 격자 스프라이트 기준 1배율과 낮은 창에서 공통 축소, 무기·말 적용, 출전 행 녹색 배경, 부관 포함 실수치와 노란 증감량 표시 — 편성·장비의 효과와 장수의 원래 크기 차이를 한눈에 확인.
+- `internal/core/formation.go`·`types.go`, `internal/gui/duel.go`·`events.go`: 합동 일기토의 첫 대결 장수를 엔진에서 정하고 화면·로그·경험치에 적용 — 여포와 먼저 맞붙은 장수에게 보상.
+- `internal/scenes/scenes.go`, `internal/gui/scene.go`·`scenario.go`·`dialogue_box.go`, `assets/scenes/ch01.json`·`ch19.json`: 자동 포커스를 노드별 선택으로 바꾸고 결의 대열에 카메라를 맞추며 해설을 아래로 이동 — 장면 구도와 세 장수의 위치를 함께 보여 줌.
+- `internal/storage/storage.go`, `internal/gui/game.go`: 첫 실행의 재생 1배속과 지도 2배율 지정 — 기본 표시와 재생 속도를 통일.
+- `internal/core/auto_duel_test.go`, `internal/gui/duel_lead_test.go`·`scene_skip_test.go`·`uidemo_sortie_deputy.go`·`uidemo_scenenode.go`·`zoom_keep_test.go`, `internal/storage/storage_test.go`: 양쪽에서 시작한 일기토 보상, 포커스 선택, 저장 설정과 게임 화면 검증 — 새 편성과 카메라 동작의 회귀 확인.
+- `docs/plan-sortie-story-feedback.md`·`logic-duel.md`·`presentation-scene.md`: 작업 범위, 일기토 보상과 장면 설정 기록 — 동작과 데이터 작성 규칙을 일치시킴.
+
+## 2026-11-20 필수 출전 표시와 대기 동작
+
+- `internal/gui/sortie_unified.go`·`idea/sortie-unified-proposal.md`: 모든 출전 부대에 대기 애니메이션을 적용하고 필수 장수는 칸 안의 금색 `필수` 표로 구별 — 움직임을 유지하면서 편성 제약을 알리기 위해.
+
+## 2026-11-20 특성 습득 효과음
+
+- `assets/sounds/trait-learn.ogg`, `assets/sounds/README.md`: 사용자 제공 getskill.mp3를 변환하고 음량·음색을 맞춘 효과음과 출처 기록 — 특성 습득 소리 적용
+- `internal/gui/game.go`, `internal/gui/sound_test.go`: 특성 습득 성공 시 전용 효과음을 재생하고 회귀 시험 추가 — 습득 시에만 소리 재생
+
+## 2026-11-20 출전 부대 진영색 수정
+
+- `internal/gui/sortie_unified.go`: 출전 격자에 장수의 실제 진영색을 적용 — 잘못된 고정 진영명 때문에 병종이 기본 파란색으로 보이는 문제 수정.
+
+## 2026-11-20 일반 게임 스페이스 입력 제한
+
+- `internal/gui/game.go`, `explore.go`, `duel.go`, `windows.go`: 일반 게임에서 스페이스 진행·추천 명령을 막고 조작 안내 수정 — 디버그 모드에서만 유지
+- `docs/plan-space-input.md`, `docs/presentation-ui.md`, `docs/presentation-explore.md`: 변경 계획과 조작 설명 기록 — 실제 입력과 문서 일치
+
+## 2026-11-20 이동 후 일반 공격 단축
+
+- `internal/gui/command.go`, `internal/core/api.go`: 아군 선택 시 이동 후 일반 공격 가능한 적을 표시하고 누르면 공격 가능한 위치로 임시 이동하여 대상 선택 — 조작 단축
+- `internal/gui/quick_attack_test.go`, `internal/gui/uidemo_quick_attack.go`: 단축 조작·취소 시험과 화면 재현 데모 추가 — 동작 검증
+- `docs/plan-quick-attack.md`, `docs/presentation-ui.md`: 계획과 조작 설명 기록 — 동작 명확화
+
+## 2026-11-20 출전 준비 통합 화면 구현
+
+- `internal/gui/sortie.go`·`sortie_unified.go`·`party.go`: 출전 격자와 편성 화살표 및 목록·장비·특성·부관 통합 탭을 구현하고 병종 그림자와 선택 출전 대기 동작을 표시 — 승인된 출전 준비 시안 반영.
+- `internal/gui/officer_cards.go`: 공통 특성 화면에 남은 특성치를 항상 표시 — 특성 선택과 무관하게 잔여치를 확인.
+- `internal/gui/campaign_auto.go`·`uidemo_sortie_deputy.go`·`uidemo_officercards.go`·`sortie_deputy_test.go`: 자동 진행과 화면 데모 및 부관 시험을 통합 탭에 맞춤 — 기존 조작 경로 유지.
+
+## 2026-11-20 출전 편성 화살표 축소
+
+- `reports/sortie-unified/index.html`·`idea/sortie-unified-proposal.md`: 편성 버튼을 작은 좌우 화살표로 변경 — 두 영역 사이 공간을 줄이기 위해.
+
+## 2026-11-20 출전 편성 버튼 배치
+
+- `reports/sortie-unified/index.html`·`idea/sortie-unified-proposal.md`: 출전과 출전 취소 버튼을 두 영역 사이의 위아래로 이동 — 편성 방향과 조작 위치를 분명히 하기 위해.
+
+## 2026-11-20 출전 준비 통합 탭 개선안
+
+- `idea/sortie-unified-proposal.md`·`reports/sortie-unified/index.html`: 출전 격자의 그림자와 대기 동작, 목록·편집 통합 탭, 남은 특성치 표시를 제안하고 대화형 시안으로 정리 — 출전 준비 화면의 새 구성을 검토하기 위해.
+
 ## 2026-11-20 장팔사모 아이콘 날 개선
 
 - `tools/spritetool/assets/ver5-ui/sources/item_spear.png`, `tools/spritetool/assets/ver5-ui/pixels.json`, `assets/graphics/ui/ui.png`: 장팔사모 쇠날의 좌우 굴곡을 강조한 원본을 도트 변환하고 아이콘 시트를 다시 만듦 — 지그재그 날을 드러내기 위해.
@@ -3700,3 +3751,26 @@
 ## 2026-11-20 공격 예측 영역 구분
 
 - `internal/gui/command.go`: 공격과 반격에 제목을 달고 반격 불가 또는 적 생존 조건을 표시 — 각 수치가 어느 행동의 결과인지 구별하기 위해.
+
+## 2026-11-20 Windows 설치 빌드
+
+- `Makefile`·`tools/windows/installer.nsi`: Windows release 실행 파일과 게임 에셋을 사용자별 폴더에 설치하고 시작 메뉴·제거 항목을 만드는 설치 대상 추가 — Windows에서 설치해 실행할 수 있도록 함.
+- `cmd/srpg-gui/main.go`·`main_test.go`: 실행 파일 옆의 에셋 탐색과 경로 우선순위 시험 추가 — 바로가기와 임의의 작업 폴더에서 실행할 수 있도록 함.
+- `README.md`·`docs/tools-build.md`·`docs/plan-windows-installer.md`: 빌드 명령·의존성·설치 및 저장 위치와 설계 기록 — 재현과 배포 안내.
+
+## 2026-11-20 Windows 아이콘
+
+- `tools/windows/app.ico`·`app.rc`·`cmd/srpg-gui/icon_windows_amd64.syso`: Android와 같은 그림을 크기별 Windows 아이콘과 실행 파일 리소스로 추가 — 탐색기와 시작 메뉴에서 게임을 식별.
+- `tools/windows/installer.nsi`: 설치·제거 프로그램에도 게임 아이콘 적용 — 설치 파일과 제거 항목의 모양을 통일.
+- `Makefile`·`docs/tools-build.md`·`docs/plan-windows-icon.md`: 아이콘 재생성 명령과 필요한 도구, 설계 기록 — 원본 변경 시 다시 빌드할 수 있도록 함.
+
+## 2026-11-20 Windows 난독화 없는 비교 빌드
+
+- `Makefile`·`tools/windows/installer.nsi`: garble을 쓰지 않는 Windows release 실행 파일과 별도 설치 파일 빌드 대상 추가 — Defender 탐지를 기존 빌드와 비교.
+- `docs/tools-build.md`: 비교 빌드 명령과 결과 경로 기록 — 기존 난독화 빌드를 보존하면서 재현할 수 있도록 함.
+
+## 2026-11-20 Windows 단일 실행 파일
+
+- `Makefile`·`tools/windows/append_assets.py`: 에셋을 포함하는 난독화 없는 Windows release 실행 파일 빌드 추가 — 설치 없이 파일 하나로 전달.
+- `cmd/srpg-gui/main.go`·`portable.go`·`portable_disabled.go`·`portable_test.go`: 내장 에셋을 버전별 사용자 캐시에 안전하게 풀어 기존 로더로 읽고 재사용 — 별도 에셋 배포 없이 기존 저장 경로 유지.
+- `README.md`·`docs/tools-build.md`·`docs/plan-windows-portable.md`: 빌드와 캐시 동작·설계 기록 — 단일 파일의 사용과 디스크 공간 안내.

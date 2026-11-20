@@ -309,7 +309,7 @@ func (g *Game) drawCard(dst *ebiten.Image, l line, key string) {
 	}
 }
 
-func (g *Game) drawNarration(dst *ebiten.Image, l line, key string) {
+func (g *Game) drawNarration(dst *ebiten.Image, l line, key string, below bool) {
 	a := &g.dialogueAnim
 	if a.key != key {
 		a.key, a.shownAt = key, g.uiSeconds
@@ -320,6 +320,9 @@ func (g *Game) drawNarration(dst *ebiten.Image, l line, key string) {
 	lines := strings.Count(wrapped, "\n") + 1
 	h := max(170, 58+float64(lines)*f.Size*1.45)
 	x, y := (float64(uiW)-w)/2, (float64(uiH)-h)/2
+	if below {
+		y = float64(uiH) - h - 34
+	}
 	alpha, dy := 1.0, 0.0
 	if g.narrationLeaving {
 		p := phase(g.uiSeconds-g.narrationExitAt, 0, .43)

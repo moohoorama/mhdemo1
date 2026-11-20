@@ -90,7 +90,9 @@ func (s Settings) CamZone() (int, int) {
 	return w, h
 }
 
-func DefaultSettings() Settings { return Settings{Replay: "spells", Detail: true} }
+func DefaultSettings() Settings {
+	return Settings{Replay: "spells", Detail: true, Speed: 1, ExploreZoom: 2, BattleZoom: 2}
+}
 func (s Settings) Validate() error {
 	if !slices.Contains([]string{"together", "spells", "one"}, s.Replay) || s.TextDelayMS < 0 || s.TextDelayMS > 1000 || s.UIScale != 0 && (s.UIScale < 80 || s.UIScale > 160) || s.DamagePct != 0 && !slices.Contains(ScalePcts, s.DamagePct) || s.XPPct != 0 && !slices.Contains(ScalePcts, s.XPPct) || !slices.Contains([]string{"", "sfx", "music", "off"}, s.Sound) || s.CamZoneW != 0 && !slices.Contains(CamZonePcts, s.CamZoneW) || s.CamZoneH != 0 && !slices.Contains(CamZonePcts, s.CamZoneH) || s.ExploreZoom < 0 || s.ExploreZoom > 4 || s.BattleZoom < 0 || s.BattleZoom > 4 {
 		return fmt.Errorf("InvalidSettings")

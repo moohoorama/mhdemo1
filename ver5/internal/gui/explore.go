@@ -314,7 +314,7 @@ func (g *Game) moveWalkers(dt float64) {
 }
 
 // exploreInput takes the keys of the walk: R or a right click shows the small tiles, the wheel zooms, Enter or
-// Space pages a talk.
+// Enter pages a talk; Space does so in debug mode.
 func (g *Game) exploreInput() {
 	w := g.explore
 	if keyJustPressed(ebiten.KeyR) || mouseJustPressed(ebiten.MouseButtonRight) {
@@ -323,7 +323,7 @@ func (g *Game) exploreInput() {
 	if _, wheel := ebiten.Wheel(); wheel != 0 {
 		g.setZoom(math.Max(1, math.Min(4, g.zoomTo+math.Copysign(1, wheel))))
 	}
-	if w.talk != nil && (keyJustPressed(ebiten.KeyEnter) || keyJustPressed(ebiten.KeySpace)) {
+	if w.talk != nil && (keyJustPressed(ebiten.KeyEnter) || g.Debug && keyJustPressed(ebiten.KeySpace)) {
 		g.nextExploreLine()
 	}
 }

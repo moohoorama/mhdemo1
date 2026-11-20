@@ -103,7 +103,6 @@
    "Nodes": ["c19-yj", "c19-yj01", "c19-yj02", "c19-yj03", "c19-yj04", "c19-yj05", "c19-yj06", "c19-yj07", "c19-yj08", "c19-yj09", "c19-yj10", "c19-yj10b", "c19-yj11", "c19-yj12", "c19-yj13"],
    "NoSkip": ["c19-yj11"],
    "Mute": ["c19-yj10b"],
-   "NoFocus": ["c19-yj10b"],
    "Ambient": [{"CamAt": [1, -2]}],
    "Cast": {
     "문추": {"At": [3, 6], "Face": "SW", "Sprite": "royal_guard", "Off": true, "Hold": true},

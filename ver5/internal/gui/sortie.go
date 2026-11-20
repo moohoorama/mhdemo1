@@ -31,70 +31,58 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 		g.selected = ids[0]
 	}
 	st := g.S.Data.Stages[o.Stage]
-	listW := min(340, w*9/25)
-	rect(dst, float32(x+listW), float32(y+8), 1, float32(h-16), goldDim)
 	g.label(dst, "출전 준비", float64(x+16), float64(y+12), 18, gold)
-	tx := float64(x+28) + g.width("출전 준비", 18)
 	count := fmt.Sprintf("출전 %d / %d", g.sortieCount(o, o.Deployment), st.Max)
 	if len(st.Reserve) > 0 {
 		count += " (복병 제외)"
 	}
-	g.label(dst, count, tx, float64(y+17), 13, muted)
-	rect(dst, float32(x+8), float32(y+56), float32(listW-16), 1, goldDim)
-	// 목표 and 메뉴 under the list, on the line of the actions, so the title row holds only the title and the count
+	g.label(dst, count, float64(x+120), float64(y+17), 13, muted)
 	foot := y + h - 60
-	listFoot := foot
-	if s := g.campaignSlot(); s != nil {
-		listFoot -= 44
-		g.cornerButton(dst, image.Rect(x+8, listFoot, x+listW-8, listFoot+34), s)
+	left := image.Rect(x+8, y+58, x+w*3/10, foot-8)
+	g.sortieGrid(dst, o, left)
+	g.mBtn(dst, image.Rect(x+8, foot, x+96, foot+touchH), "목표", false, g.openObjective)
+	g.mBtn(dst, image.Rect(x+104, foot, x+192, foot+touchH), "메뉴", false, func() { g.openOverlay("menu") })
+	ax := left.Max.X + 4
+	var add, remove func()
+	if slices.Contains(o.Deployment, g.selected) {
+		remove = func() { g.togglePrep(g.selected) }
+	} else {
+		add = func() { g.togglePrep(g.selected) }
 	}
-	if s := g.campaignPolicySlot(); s != nil {
-		listFoot -= 44
-		g.cornerButton(dst, image.Rect(x+8, listFoot, x+listW-8, listFoot+34), s)
-	}
-	g.mBtn(dst, image.Rect(x+8, foot, x+8+88, foot+touchH), "목표", false, g.openObjective)
-	g.mBtn(dst, image.Rect(x+8+96, foot, x+8+96+88, foot+touchH), "메뉴", false, func() { g.openOverlay("menu") })
-	_, gearOwner, _, guide := g.gearStep()
-	guide = guide && g.overlay() == ""
-	g.listRows(dst, &g.party.officers, image.Rect(x+6, y+58, x+listW-4, listFoot-6), len(ids), listRowH, func(i int, rr image.Rectangle) {
-		g.sortieRow(dst, o, rr, ids[i])
-		if guide && ids[i] == gearOwner && ids[i] != g.selected {
-			g.guideRim(dst, rr.Inset(4))
-		}
-	}, func(i int) { g.selected, g.party.trait, g.party.tip = ids[i], "", "" })
-
-	of := g.officer(o, g.selected)
-	if of == nil {
-		return
-	}
-	// the picked officer as in the officers' window, with a 부관 tab
-	rx, right := x+listW+16, x+w-16
-	g.label(dst, g.name(of.ID), float64(rx), float64(y+12), 18, gold)
+	g.mBtn(dst, image.Rect(ax, y+62, ax+40, y+102), "◀", false, add)
+	g.mBtn(dst, image.Rect(ax, foot-48, ax+40, foot-8), "▶", false, remove)
+	rx, right := ax+48, x+w-16
 	p := &g.party
-	p.sortieTab = min(p.sortieTab, len(sortieTabs)-1)
-	g.tabRow(dst, rx+int(g.width(g.name(of.ID), 18))+18, y+4, sortieTabs, p.sortieTab, func(i int) { p.sortieTab, p.tip = i, "" })
-	if tx := rx + int(g.width(g.name(of.ID), 18)) + 18; guide && of.ID == gearOwner && p.sortieTab != 2 {
-		g.guideRim(dst, g.tabRect(tx, y+4, sortieTabs, 2))
-	}
+	views := []string{"기본", "전투력", "열전", "장비", "특성", "부관"}
+	p.sortieView = min(p.sortieView, len(views)-1)
+	g.tabRow(dst, rx, y+4, views, p.sortieView, func(i int) { p.sortieView = i; p.officerList.order = tableSort{}; p.tip = "" })
 	rect(dst, float32(rx), float32(y+52), float32(right-rx), 1, goldDim)
-	body := image.Rect(rx, y+60, right, y+h-64)
+	body := image.Rect(rx, y+60, right, foot-4)
 	var acts []action
-	switch p.sortieTab {
-	case 0:
-		g.officerBio(dst, o, of, body)
-	case 1:
-		acts = g.officerTraits(dst, of, body)
-	case 2:
-		if lead := g.servedBy(o, of.ID); lead != "" { // a deputy wears nothing
-			c := image.Rect(body.Min.X, body.Min.Y, body.Max.X, body.Min.Y+64)
-			g.card(dst, c)
-			g.label(dst, g.name(lead)+"의 부관이라 장비를 들지 않습니다. 장비는 창고에 있습니다.", float64(c.Min.X+18), float64(c.Min.Y+22), 14, muted)
-		} else {
-			g.officerEquipment(dst, of, body)
+	if p.sortieView < 3 {
+		g.sortieTable(dst, o, ids, body)
+	} else if of := g.officer(o, g.selected); of != nil {
+		g.label(dst, g.name(of.ID), float64(body.Min.X+8), float64(body.Min.Y+4), 16, gold)
+		body.Min.Y += 30
+		switch p.sortieView {
+		case 3:
+			p.sortieTab = 2
+			if lead := g.servedBy(o, of.ID); lead != "" {
+				g.label(dst, g.name(lead)+"의 부관이라 장비를 들지 않습니다.", float64(body.Min.X), float64(body.Min.Y+16), 14, muted)
+			} else {
+				g.officerEquipment(dst, of, body)
+			}
+		case 4:
+			p.sortieTab = 1
+			acts = g.officerTraits(dst, of, body)
+		case 5:
+			p.sortieTab = 3
+			acts = g.officerDeputy(dst, o, of, body)
 		}
-	case 3:
-		acts = g.officerDeputy(dst, o, of, body)
 	}
+	_, _, _, guide := g.gearStep()
+	guide = guide && g.overlay() == ""
+
 	belongings := action{"소지품", false, func() { // the seals can be used before the battle too
 		p.items, p.table, p.insu = true, false, insuState{}
 		g.openOverlay("party")

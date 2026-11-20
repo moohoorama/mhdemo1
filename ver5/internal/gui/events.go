@@ -82,6 +82,9 @@ func (g *Game) eventText(e core.Event) (line string, important bool) {
 	case "promotion":
 		return fmt.Sprintf("%s 승급: %s", a, g.className(e.Target)), true
 	case "duel":
+		if e.Fighter != "" {
+			a = g.name(e.Fighter)
+		}
 		return fmt.Sprintf("일기토  %s VS %s", a, t), true
 	case "victory":
 		return "승리!", true

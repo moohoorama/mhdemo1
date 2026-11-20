@@ -126,6 +126,7 @@
   "c01-e-oath": {
    "Map": "S_peach_grove",
    "Music": "china-trailer",
+   "NarrationBelow": ["c01-o12", "c01-o14"],
    "Nodes": ["c01-e-oath", "c01-o1", "c01-o2", "c01-o3", "c01-o4", "c01-o5", "c01-o6", "c01-o7", "c01-o8", "c01-o9", "c01-o10", "c01-o11", "c01-o12", "c01-o13", "c01-o14", "c01-o18", "c01-o19", "c01-o20", "c01-o21", "c01-o22"],
    "Ambient": [{"Effect": "petals", "At": [4.75, 3.75]}],
    "Cast": {
@@ -150,7 +151,7 @@
       [{"Actor": "관우", "Emote": "…"}],
       [{"Actor": "유비", "Move": [3.75, 3.25]}, {"Actor": "관우", "Move": [4.75, 2.25]}, {"Actor": "장비", "Move": [5.25, 3.25]}],
       [{"Actor": "관우", "Move": [2.75, 2.25]}, {"Actor": "장비", "Move": [4.75, 3.25]}],
-      [{"Actor": "관우", "Move": [2.75, 3.25]}],
+      [{"Actor": "관우", "Move": [2.75, 3.25]}, {"CamAt": [3.75, 3.25]}],
       [{"Actor": "유비", "Face": "NE"}, {"Actor": "관우", "Face": "NE"}, {"Actor": "장비", "Face": "NE"}],
       [{"Effect": "smoke", "At": [3.75, 2.75]}]
      ]

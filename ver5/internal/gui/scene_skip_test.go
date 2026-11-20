@@ -1,7 +1,6 @@
 package gui
 
 import (
-	"srpg/internal/sprite"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -10,6 +9,7 @@ import (
 	"srpg/internal/core"
 	"srpg/internal/scenes"
 	"srpg/internal/session"
+	"srpg/internal/sprite"
 )
 
 // storyAt is a game at a chapter's first node with the scene book, its scene laid out without a map.
@@ -160,19 +160,17 @@ func TestSceneKeepInView(t *testing.T) {
 	})
 }
 
-// A NoFocus node's beats leave the camera on the shot it had ("문추, 네 이놈!" in c19-yj10b does not swing to 관우
-// riding in and back); other nodes follow their actors.
-func TestSceneNoFocus(t *testing.T) {
+func TestSceneFocusIsOptIn(t *testing.T) {
 	g := storyNode(t, "c19-yj10b")
-	require.Contains(t, g.scene.def.NoFocus, "c19-yj10b")
-	s := &scene{def: g.scene.def, node: "c19-yj10b", actors: map[string]*unitVis{"관우": {u: 6, v: 68, art: &sprite.Art{}}, "문추": {u: 6, v: 40, art: &sprite.Art{}}},
-		extra: map[string]bool{}, emotes: map[string]*emote{}, looks: map[string]*look{}, plays: map[string]string{},
-		paths: map[string][][2]float64{}, speed: map[string]float64{}}
-	g.scene, s.focus = s, "문추"
+	s := g.scene
+	def := *s.def
+	def.Focus = []string{"c19-yj11"}
+	s.def = &def
+	s.actors["관우"] = &unitVis{art: &sprite.Art{}}
 	g.startStep(scenes.Step{Actor: "관우", Emote: "!"})
-	assert.Equal(t, "문추", s.focus, "관우's beat does not draw the camera")
+	assert.Empty(t, s.focus, "an ordinary node keeps its authored shot")
 
 	s.node = "c19-yj11"
 	g.startStep(scenes.Step{Actor: "관우", Emote: "!"})
-	assert.Equal(t, "관우", s.focus, "an ordinary node follows its actors")
+	assert.Equal(t, "관우", s.focus, "an opted-in node follows its actors")
 }

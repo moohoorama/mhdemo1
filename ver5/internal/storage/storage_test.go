@@ -76,7 +76,14 @@ func TestSlotsChecksumAndAtomicFailure(t *testing.T) {
 }
 func TestSettingsIndependent(t *testing.T) {
 	s := Store{t.TempDir()}
-	v := DefaultSettings()
+	v, err := s.LoadSettings()
+	if err != nil {
+		t.Fatal(err)
+	}
+	assert.Equal(t, 1, v.Speed)
+	assert.Equal(t, 2, v.ExploreZoom)
+	assert.Equal(t, 2, v.BattleZoom)
+	v.Speed, v.ExploreZoom, v.BattleZoom = 4, 3, 1
 	v.Replay = "one"
 	v.Color = true
 	v.TextDelayMS = 5

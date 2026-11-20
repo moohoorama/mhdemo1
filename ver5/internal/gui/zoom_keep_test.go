@@ -26,7 +26,7 @@ func TestZoomKept(t *testing.T) {
 		assert.Equal(t, float64(battleZoom), g.zoom)
 		g.rememberZoom(4)
 		assert.Equal(t, 4, g.S.Settings.BattleZoom)
-		assert.Zero(t, g.S.Settings.ExploreZoom)
+		assert.Equal(t, 2, g.S.Settings.ExploreZoom)
 		g.field = nil
 		g.ensureField(g.S.View())
 		assert.Equal(t, 4.0, g.zoom)
@@ -39,6 +39,7 @@ func TestZoomKept(t *testing.T) {
 		g.held = nil
 		g.layOutExplore(g.S.View())
 		require.True(t, g.walkView())
+		assert.Equal(t, 2.0, g.zoom)
 		g.rememberZoom(1)
 		assert.Equal(t, 1, g.S.Settings.ExploreZoom)
 		assert.Equal(t, 4, g.S.Settings.BattleZoom)

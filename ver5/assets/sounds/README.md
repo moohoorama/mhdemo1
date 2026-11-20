@@ -4,6 +4,10 @@ Sound effects the GUI plays (`internal/gui/sound.go`). A file is a cue by its na
 the cue `name`, one picked at random each time. A duel plays swing, swing-crit, hit, crit and block at its exchanges and duel-fall when it is won. A skill's cue is its `Sound` in skills.json (a long spell also starts its quieter `Lead` as the effect begins, so 화룡·수룡·지룡 are heard while they coil and strike with fire-big, water-big, boulder), else its element (fire,
 water, earth) or kind (heal, buff, status → debuff); a physical skill has none of its own (its swing and blows). All files are 44.1 kHz stereo Vorbis.
 
+## User-provided recording
+
+`trait-learn.ogg` is `getskill.mp3`, provided by the user for successful trait learning. Fitted with `tools/sfx/fit.py` at .12, then matched 60% to chinese-traditional, empty-mountain and golden-bamboo with `tools/sfx/match.py`.
+
 ## Recordings from Pixabay
 
 Pixabay Content License (pixabay.com/service/license-summary): free to use and modify, no attribution needed; not to

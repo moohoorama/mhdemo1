@@ -11,6 +11,8 @@ go test ./... && go vet ./...
 python3 tools/spritebuild/build.py         # tools/doteditor/units/*.yaml → assets/sprites/*.spr
 (cd tools/doteditor && python3 -m http.server)  # 도트 에디터: http://localhost:8000
 make                                       # release 데스크톱 빌드
+make windows-installer                     # Windows 설치 프로그램 (NSIS 필요)
+make windows-portable-plain                 # 설치 없이 쓰는 Windows 단일 실행 파일
 make android                               # release APK (자세한 빌드: docs/tools-build.md)
 make android android-install ANDROID_MODE=debug  # Android에서 디버그 도구·자동실행 사용
 ```

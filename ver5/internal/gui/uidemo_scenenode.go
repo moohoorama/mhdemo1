@@ -69,6 +69,16 @@ func storySoFar(g *Game, node string) error {
 			}
 		}
 	}
+	if def, _ := g.scenes.For(node); def != nil {
+		if walk := g.S.Engine.ExploreFile(); walk != nil {
+			for _, area := range sorted(walk.Areas) {
+				if walk.Areas[area].Map == def.Map {
+					st.Spot = walk.Arrival(area, "")
+					break
+				}
+			}
+		}
+	}
 	e, err := core.Restore(g.S.Data, st)
 	if err != nil {
 		return err

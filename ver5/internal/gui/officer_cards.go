@@ -158,6 +158,8 @@ const shelfStep = 24
 // at the bottom while the shelves scroll above it. It gives the action that learns the picked trait.
 func (g *Game) officerTraits(dst *ebiten.Image, of *core.Character, r image.Rectangle) []action {
 	p := &g.party
+	g.label(dst, fmt.Sprintf("남은 특성치 %d", of.Points), float64(r.Min.X+8), float64(r.Min.Y+4), 15, gold)
+	r.Min.Y += 30
 	shelves := g.shelvesOf(of)
 	all := []traitEntry{}
 	for _, s := range shelves {

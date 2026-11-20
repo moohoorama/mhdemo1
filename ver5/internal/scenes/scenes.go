@@ -93,22 +93,23 @@ type Actor struct {
 
 // Scene is one stretch of story nodes staged on one map.
 type Scene struct {
-	ID       string `json:"-"`
-	Map      string
-	Time     string
-	Backdrop string             // the far picture behind an outdoor map (assets/graphics/backdrops)
-	Glow     string             // a far light washing over the screen from one corner: "fire_nw" (a city burning beyond the north-west)
-	Music    string             // the theme while it plays (assets/music/themes, no extension): a light-hearted scene's own; empty goes by the map
-	Grass    *content.GrassTint `json:",omitempty"` // the grass here when the map stands for another land; nil keeps the map's
-	Snow     float64            `json:",omitempty"` // 0..1: snow lies on the scene; its trees and bushes are the snow pictures and the grass white unless Grass says otherwise
-	Steps    float64            `json:",omitempty"` // the walkers' footsteps and hoof beats at this share of their volume; 0 keeps them whole
-	Nodes    []string
-	NoSkip   []string `json:",omitempty"` // nodes whose beats play out whole: a click waits for them (a duel whose blows and pushes land in turn)
-	Mute     []string `json:",omitempty"` // nodes whose speakers get no talking bubble on the map: the dialogue scroll alone carries the line
-	NoFocus  []string `json:",omitempty"` // nodes whose beats and lines do not draw the camera to their actor: it keeps the shot it had
-	Ambient  []Step   // run once as the scene opens (fires, braziers, smoke, sentries, chatter)
-	Cast     map[string]Actor
-	Beats    map[string][][][]Step // node -> per speaker line -> groups of steps
+	ID             string `json:"-"`
+	Map            string
+	Time           string
+	Backdrop       string             // the far picture behind an outdoor map (assets/graphics/backdrops)
+	Glow           string             // a far light washing over the screen from one corner: "fire_nw" (a city burning beyond the north-west)
+	Music          string             // the theme while it plays (assets/music/themes, no extension): a light-hearted scene's own; empty goes by the map
+	Grass          *content.GrassTint `json:",omitempty"` // the grass here when the map stands for another land; nil keeps the map's
+	Snow           float64            `json:",omitempty"` // 0..1: snow lies on the scene; its trees and bushes are the snow pictures and the grass white unless Grass says otherwise
+	Steps          float64            `json:",omitempty"` // the walkers' footsteps and hoof beats at this share of their volume; 0 keeps them whole
+	Nodes          []string
+	NoSkip         []string `json:",omitempty"` // nodes whose beats play out whole: a click waits for them (a duel whose blows and pushes land in turn)
+	Mute           []string `json:",omitempty"` // nodes whose speakers get no talking bubble on the map: the dialogue scroll alone carries the line
+	Focus          []string `json:",omitempty"` // nodes whose beats and lines bring their actors into view
+	NarrationBelow []string `json:",omitempty"` // narration nodes that leave the centre of the map visible
+	Ambient        []Step   // run once as the scene opens (fires, braziers, smoke, sentries, chatter)
+	Cast           map[string]Actor
+	Beats          map[string][][][]Step // node -> per speaker line -> groups of steps
 }
 
 type file struct {
@@ -162,7 +163,7 @@ func (b *Book) Add(path string) error {
 			}
 			b.byNode[n] = s
 		}
-		for _, n := range slices.Concat(s.NoSkip, s.Mute, s.NoFocus) {
+		for _, n := range slices.Concat(s.NoSkip, s.Mute, s.Focus, s.NarrationBelow) {
 			if !slices.Contains(s.Nodes, n) {
 				return fmt.Errorf("%s: scene %s names node %s that it does not stage", filepath.Base(path), id, n)
 			}

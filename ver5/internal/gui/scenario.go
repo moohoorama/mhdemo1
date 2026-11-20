@@ -355,7 +355,7 @@ func (g *Game) scenario(dst *ebiten.Image, o core.Observation) {
 		g.drawCard(dst, l, key)
 	} else if o.Dialogue.Kind == "narrate" {
 		if !staged || !g.scene.leaving { // it already faded out before the scene darkens
-			g.drawNarration(dst, l, key)
+			g.drawNarration(dst, l, key, staged && slices.Contains(g.scene.def.NarrationBelow, o.Node))
 		}
 	} else {
 		text, done := g.shownText(l)

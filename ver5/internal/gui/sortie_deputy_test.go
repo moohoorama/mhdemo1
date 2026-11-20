@@ -77,7 +77,7 @@ func TestSortieDeputy(t *testing.T) {
 	for _, sc := range screens {
 		for tab := range sortieTabs {
 			t.Run(fmt.Sprintf("buttons/%dx%d@%d/%s", sc.size.X, sc.size.Y, sc.scale, sortieTabs[tab]), func(t *testing.T) {
-				g.party.sortieTab = tab
+				g.party.sortieView = []int{2, 4, 3, 5}[tab]
 				draw(sc.size, sc.scale)
 				screen := image.Rect(0, 0, uiW, uiH)
 				for i, a := range g.buttons {

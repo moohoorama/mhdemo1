@@ -3,7 +3,6 @@ package gui
 import (
 	"image"
 	"image/color"
-	"slices"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/content"
@@ -12,9 +11,6 @@ import (
 )
 
 func (g *Game) duelView(e core.Event) *duelview.View {
-	// the officer who opens the duel stands in front: a support who met the enemy first, one the enemy
-	// came up to while the duel's ally stood away, or one who fights it because the ally has left; the
-	// ally then joins in that support's place
 	ally := e.Actor
 	var melee map[string]string
 	for _, d := range g.S.Data.Stages[g.player.final.Stage].Duels {
@@ -24,18 +20,8 @@ func (g *Game) duelView(e core.Event) *duelview.View {
 	}
 	supports := append([]string(nil), g.assets.Duels[e.DuelID].Supports...)
 	lead, key := e.Actor, e.First
-	if e.Fighter != "" { // the deputy riding with the Actor's unit fights it
+	if e.Fighter != "" {
 		lead = e.Fighter
-	}
-	if slices.Contains(supports, e.First) {
-		lead = e.First
-	} else if t := g.unitView(g.player.final, e.Target); t != nil && !g.besideUnit(e.Actor, t) {
-		for _, id := range supports {
-			if g.besideUnit(id, t) {
-				lead = id
-				break
-			}
-		}
 	}
 	if lead != ally {
 		key = lead
@@ -66,6 +52,9 @@ func (g *Game) duelView(e core.Event) *duelview.View {
 	stand := lead
 	if g.unitView(g.player.final, stand) == nil {
 		stand = e.Actor
+		if owner := g.servedBy(g.player.final, lead); owner != "" {
+			stand = owner
+		}
 	}
 	if a, t := g.unitView(g.player.final, stand), g.unitView(g.player.final, e.Target); a != nil && t != nil {
 		v.Axis = duelAxis(t.X-a.X, t.Y-a.Y)
@@ -85,12 +74,6 @@ func (g *Game) duelView(e core.Event) *duelview.View {
 		v.Focus = [2]float64{(ax + tx) / 2, (ay + ty) / 2}
 	}
 	return v
-}
-
-// besideUnit reports whether the unit stands on a cell next to t.
-func (g *Game) besideUnit(id string, t *core.UnitView) bool {
-	u := g.unitView(g.player.final, id)
-	return u != nil && abs(u.X-t.X)+abs(u.Y-t.Y) == 1
 }
 
 // duelAxis names the screen direction of a map offset on the (u-v, u+v) isometric grid.
@@ -119,7 +102,7 @@ func (p *Player) SkipDuel() {
 }
 
 func (g *Game) updateDuel() {
-	if keyJustPressed(ebiten.KeyEnter) || keyJustPressed(ebiten.KeySpace) || keyJustPressed(ebiten.KeyEscape) {
+	if keyJustPressed(ebiten.KeyEnter) || g.Debug && keyJustPressed(ebiten.KeySpace) || keyJustPressed(ebiten.KeyEscape) {
 		g.player.SkipDuel()
 	}
 	if keyJustPressed(ebiten.KeyF) {
