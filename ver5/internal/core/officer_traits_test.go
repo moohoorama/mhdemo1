@@ -147,16 +147,19 @@ func TestOfficerTraits(t *testing.T) {
 	})
 }
 
-// 조조 holds 패기 from level 15 and 패도 from 35, besides his plan.
+// 조조 gains each planned trait at its specified level.
 func TestTraitAtLevels(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 	cao := d.Characters["caocao"]
 	at := func(level int) []string { return d.PlannedTraits("caocao", cao.Class, level, nil) }
-	assert.NotContains(t, at(14), "ambition")
-	assert.Contains(t, at(15), "ambition")
-	assert.NotContains(t, at(34), "hegemony")
-	assert.Contains(t, at(35), "hegemony")
+	assert.Contains(t, at(1), "versatile")
+	for trait, level := range map[string]int{"civil_martial": 10, "ambition": 15, "feint": 20, "hegemony": 30} {
+		t.Run(trait, func(t *testing.T) {
+			assert.NotContains(t, at(level-1), trait)
+			assert.Contains(t, at(level), trait)
+		})
+	}
 }
 
 // 쉬움 has the player's side deal 120% and take 80%; the others leave blows as they are.

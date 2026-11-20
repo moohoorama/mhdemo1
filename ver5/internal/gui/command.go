@@ -693,26 +693,42 @@ func (g *Game) forecast(dst *ebiten.Image) {
 			lines = append(lines, "효과: "+effect)
 		}
 	}
-	if counter > 0 {
-		lines = append(lines, fmt.Sprintf("반격을 받음 (최대 %d)", e.CounterDamage(*c)))
-	}
 	if len(p.Targets) > 1 {
 		lines = append(lines, "대상 "+strings.Join(names(g, p.Targets), " · "))
 	}
 	self := t.ID == a.ID
+	hostile := t.Faction != a.Faction
 	w, h := 336, 58+len(lines)*18
 	h += sideHeight(a)
 	if !self {
-		h += sideHeight(t) + 8
+		h += sideHeight(t) + 34
+		if hostile {
+			h += 70
+		}
 	}
 	r := g.besideTarget(o, t, w, h)
 	title := map[string]string{"attack": "공격", "skill": g.skillName(c.Skill), "item": g.itemName(c.Item)}[c.Kind]
 	g.titled(dst, r, title)
 	x, y := r.Min.X+16, r.Min.Y+18
+	odds := fmt.Sprintf("명중 %.0f%%", p.Hit)
+	if c.Kind == "item" {
+		odds = "효과 확정"
+	} else {
+		odds += fmt.Sprintf("     치명 %.0f%%     2회 %.0f%%", p.Crit, p.Double)
+	}
 	if self {
 		y = g.side(dst, a, x, y, sideChange{hp: [2]int{p.Healing, p.Healing}, mp: p.MPRecovery - p.Cost, xp: [2]int{p.XP, p.CritXP}})
+		rect(dst, float32(x), float32(y+3), float32(w-32), 1, goldDim)
+		g.label(dst, odds, float64(x), float64(y+8), 16, gold)
 	} else {
-		// a counter only comes back when the target is still standing
+		if hostile {
+			g.label(dst, "공격", float64(x), float64(y), 14, gold)
+			y += 22
+		}
+		y = g.side(dst, t, x, y, sideChange{hp: [2]int{p.Healing - dmg, p.Healing - crit}, mp: p.MPRecovery})
+		g.label(dst, odds, float64(x), float64(y+4), 16, gold)
+		y += 26
+		rect(dst, float32(x), float32(y+3), float32(w-32), 1, goldDim)
 		back := [2]int{-counter, -counter}
 		if dmg >= t.HP {
 			back[0] = 0
@@ -720,21 +736,21 @@ func (g *Game) forecast(dst *ebiten.Image) {
 		if crit >= t.HP {
 			back[1] = 0
 		}
-		y = g.side(dst, a, x, y, sideChange{hp: back, mp: -p.Cost, xp: [2]int{p.XP, p.CritXP}})
+		if hostile {
+			label := "반격 불가"
+			if _, _, _, ok := e.CounterOdds(*c); ok {
+				label = "반격 · 적 생존 시"
+			}
+			g.label(dst, label, float64(x), float64(y+8), 14, gold)
+			y += 22
+		}
+		y = g.side(dst, a, x, y+8, sideChange{hp: back, mp: -p.Cost, xp: [2]int{p.XP, p.CritXP}})
+		if hit, critical, double, ok := e.CounterOdds(*c); hostile && ok {
+			g.label(dst, fmt.Sprintf("명중 %.0f%%   치명 %.0f%%   2회 %.0f%%", hit, critical, double), float64(x), float64(y+4), 14, gold)
+			y += 26
+		}
 		rect(dst, float32(x), float32(y+3), float32(w-32), 1, goldDim)
-		y = g.side(dst, t, x, y+8, sideChange{hp: [2]int{p.Healing - dmg, p.Healing - crit}, mp: p.MPRecovery})
 	}
-	rect(dst, float32(x), float32(y+3), float32(w-32), 1, goldDim)
-	odds := fmt.Sprintf("명중 %.0f%%", p.Hit)
-	if c.Kind == "item" {
-		odds = "효과 확정"
-	} else if p.Crit > 0 {
-		odds += fmt.Sprintf("     치명 %.0f%%", p.Crit)
-	}
-	if p.Double > 0 {
-		odds += fmt.Sprintf("     2회 %.0f%%", p.Double)
-	}
-	g.label(dst, odds, float64(x), float64(y+8), 16, gold)
 	g.label(dst, strings.Join(lines, "\n"), float64(x), float64(y+34), 12, ink)
 }
 

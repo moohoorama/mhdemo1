@@ -722,15 +722,34 @@ func (e *Engine) CharacterStatsAs(id, class string) (Stats, error) {
 // CounterDamage is the most damage the target can return to the actor after c lands,
 // or 0 when c is not a physical action or the actor is out of the target's reach.
 func (e *Engine) CounterDamage(c Command) int {
-	u, v := e.unit(c.Actor), e.unit(c.Target)
-	if u == nil || v == nil || v.HP <= 0 || v.Faction == u.Faction || confused(v) {
-		return 0
-	}
-	s, err := e.skillDef(c)
-	if err != nil || s.Kind != content.KindPhysical || !e.has(v, content.FxRetaliate) && !e.inRange(v, u, e.basic()) {
+	u, v := e.counterUnits(c)
+	if u == nil {
 		return 0
 	}
 	return int(math.Floor(e.damage(v, u, e.basic()) * (e.data.Rules.CritMultiplier + e.fx(v, content.FxCritBoost)) * e.counterTaken(u, e.counterShare(v))))
+}
+
+// CounterOdds returns the target's chances when it can counter the action. The counter
+// still requires the target to survive the attack.
+func (e *Engine) CounterOdds(c Command) (hit, crit, double float64, ok bool) {
+	u, v := e.counterUnits(c)
+	if u == nil {
+		return 0, 0, 0, false
+	}
+	s := e.basic()
+	return e.hitChance(v, u, s), e.critChance(v, u, s), e.doubleChance(v, u, s), true
+}
+
+func (e *Engine) counterUnits(c Command) (*Unit, *Unit) {
+	u, v := e.unit(c.Actor), e.unit(c.Target)
+	if u == nil || v == nil || v.HP <= 0 || v.Faction == u.Faction || confused(v) {
+		return nil, nil
+	}
+	s, err := e.skillDef(c)
+	if err != nil || s.Kind != content.KindPhysical || !e.has(v, content.FxRetaliate) && !e.inRange(v, u, e.basic()) {
+		return nil, nil
+	}
+	return u, v
 }
 
 // Strike is the expected damage of a's best blow on b that a can pay for, its basic attack or a

@@ -450,6 +450,21 @@ func TestOfficersJoinInTheClassTheirLevelReaches(t *testing.T) {
 			assert.Equal(t, level, e.char("zhaoyun").Level, difficulty)
 		}
 	})
+	t.Run("the brothers first join at level three on every difficulty", func(t *testing.T) {
+		for _, difficulty := range d.Rules.Difficulties {
+			t.Run(difficulty.ID, func(t *testing.T) {
+				e, err := NewGame(d, 1, difficulty.ID)
+				require.NoError(t, err)
+				for _, id := range []string{"guanyu", "zhangfei"} {
+					node := d.Node("c01-o-join-" + id)
+					require.Equal(t, 1, e.joinOrder(node))
+					e.once(node)
+					require.NotNil(t, e.char(id))
+					assert.Equal(t, 3, e.char(id).Level, id)
+				}
+			})
+		}
+	})
 	t.Run("a join between battles is at the last battle's level", func(t *testing.T) {
 		assert.Equal(t, d.StageOrder("B13"), d.LastBattleOrder("c14-d16"))
 	})

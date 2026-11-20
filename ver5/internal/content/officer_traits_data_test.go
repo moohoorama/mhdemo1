@@ -66,10 +66,10 @@ func TestOfficerTraitDecisions(t *testing.T) {
 		}
 	})
 
-	t.Run("조조 holds 패기 from 15 and 패도 from 35, not from the first battle", func(t *testing.T) {
+	t.Run("조조 holds planned traits at their assigned levels", func(t *testing.T) {
 		cao := d.Characters["caocao"]
 		assert.NotContains(t, cao.Traits, "ambition")
-		assert.Equal(t, map[string]int{"ambition": 15, "hegemony": 35}, cao.TraitAt)
+		assert.Equal(t, map[string]int{"civil_martial": 10, "ambition": 15, "feint": 20, "hegemony": 30}, cao.TraitAt)
 	})
 
 	t.Run("spells: 응급처치 10, 지형정비 3x3 for 20, 교란 two cells, no 도발", func(t *testing.T) {

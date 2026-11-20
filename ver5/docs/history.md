@@ -1,3 +1,17 @@
+## 2026-11-20 장팔사모 아이콘 날 개선
+
+- `tools/spritetool/assets/ver5-ui/sources/item_spear.png`, `tools/spritetool/assets/ver5-ui/pixels.json`, `assets/graphics/ui/ui.png`: 장팔사모 쇠날의 좌우 굴곡을 강조한 원본을 도트 변환하고 아이콘 시트를 다시 만듦 — 지그재그 날을 드러내기 위해.
+
+## 2026-11-20 합류 레벨·조조 특성·병력 표시 계획
+
+- `internal/core/growth.go`, `internal/core/campaign_content_test.go`: 관우·장비의 첫 전투 전 첫 합류는 모든 난이도에서 정의 레벨 3을 유지 — 유비와 시작 레벨을 맞춤.
+- `assets/data/characters.json`, `internal/content/officer_traits_data_test.go`, `internal/core/officer_traits_test.go`: 조조의 문무겸비 10·패기 15·허실 20·패도 30으로 조정 — 레벨별 특성 계획 반영.
+- `design/troop-display-scale.md`: 병력·피해 1/6 표시와 디버그 배율 설정 계획 — 내부 전투 수치를 유지하면서 표시 규모를 조정하기 위해.
+
+## 2026-11-19 박망파 변경 복원
+
+- `assets/scenario/hero/stage24.json`, 관련 엔진·화면·시험·문서와 화공 데모: 직전 박망파 변경을 되돌림 — 사용자 요청으로 기존 전투를 복원하고 다른 작업은 보존.
+
 ## 2026-11-19 일반 장비 전용 아이콘
 
 - `tools/spritetool/assets/ver5-ui/sources/item_*.png`·`settings.json`·`pixels.json`, `assets/graphics/ui/ui.png`·`ui.json`: 검·창·활·장갑·갑옷·옷의 일반 장비 18종을 각각 그림에서 팔레트 도트로 변환해 추가 — 재질과 등급을 그림으로 구분하기 위해.
@@ -3653,3 +3667,36 @@
 - `story21.json`·`stage21.json`·`ch21.json`: 유벽 작별 대사·`grant insu_high`, 합류 삭제, B21 부목표 `liupi` 보상 제거("(유벽이 인수를 남긴다)")
 - `story22.json`·`explore22.json`(강하 진지 `S_luzhi_camp`)·`ch22.json`: 새 구조, `story23.json`·`ch23.json`(성문 밖 이적 동행)·`story24.json`·`story25.json`(괴 별가→괴 공)
 - `internal/core/campaign_content_test.go`: 유벽·번아 합류 기대를 합류 없음·인수 지급으로
+
+## 2026-11-19 출전 준비 UI 시안
+
+- `reports/sortie-proposal/index.html`: 출전 부대·전체 목록·부대 상세의 슬라이딩 전환과 편성, 전력 열 및 창 취소 동작을 살펴보는 대화형 HTML 시안 — 출전창 개편에 대한 이해와 UI 통일성 검토
+- `reports/sortie-proposal/index.html`: 출진·확인 버튼을 닫기 왼쪽으로 이동 — 취소 버튼을 우하단 맨 끝에 두는 배치로 수정
+- `docs/plan-sortie-slide.md`: 출전 준비의 세 영역, 편성 제약, 전력 계산 및 검증 범위를 설계 — 구현 전 기존 기능과 개편안의 접점을 정리
+- `internal/gui/officer_window.go`: 관리 표 기본 항목에 전력 열 추가 — 장수 단독 전투 능력과 직접 습득한 특성 비용을 한 수치로 확인
+
+## 2026-11-19 UI 닫기·취소 통일성 검토
+
+- `reports/ui-consistency/index.html`·`reports/ui-consistency/*.png`: 주요 창의 버튼 위치와 창 밖 클릭·우클릭·Esc 처리 차이를 실제 게임 캡처와 개선 시안으로 정리 — 실행과 취소의 위치 및 중첩 창의 뒤로 가기 동작을 검토하기 위해
+- `internal/gui/sortie.go`·`sortie_slide.go`·`party.go`·`game.go`: 출전 준비를 출전 도트·부대 표·상세의 두 슬라이딩 보기로 바꾸고 화살표 편성 및 닫기·다시 열기 추가 — 선택과 장수 준비를 한 창에서 수행
+- `internal/gui/officer_window.go`·`officer_cards.go`: 관리 표와 출전 표의 전력 계산을 공유하고 짧은 상세 화면의 능력 막대 간격 조정 — 전력 비교와 작은 화면의 가독성
+- `internal/gui/sortie_slide_test.go`·`uidemo_sortie_slide.go`·`uidemo_sortie_deputy.go`: 전력·편성·전환·닫기 시험과 화면 캡처 데모 갱신 — 동작과 실제 배치 검증
+- `docs/presentation-ui.md`: 출전 준비의 새 화면과 전력 정의 기록 — 구현에 맞게 사용법 갱신
+- `internal/gui/campaign_auto.go`·`uidemo_sortie.go`: 자동 진행의 부관 상세와 출전 취소 데모를 새 화면에 연결 — 기존 자동 진행과 시연 경로 유지
+
+## 2026-11-19 출전 준비 슬라이딩 시안 보류
+
+- `idea/sortie-slide-prototype.md`: 화면 구성·전력 계산·시험 결과와 당시 코드 변경을 한 문서에 보관 — 사용자가 시안을 다시 검토하기로 함
+- `internal/gui/sortie.go`·`sortie_slide.go`·`party.go`·`game.go`·`officer_window.go`·`officer_cards.go`·`campaign_auto.go`·`uidemo_sortie.go`·`uidemo_sortie_deputy.go`·`uidemo_sortie_slide.go`·`sortie_slide_test.go`·`docs/presentation-ui.md`·`docs/plan-sortie-slide.md`: 출전창 개편과 전력 열을 이전 상태로 복원하고 새 구현·설계 파일 제거 — 시안 보류 요청
+
+## 2026-11-20 장면 바깥과 공격 예측·장팔사모 아이콘
+
+- `internal/gui/field.go`·`internal/gui/scene.go`: 장면 바깥 잔디 배경을 없애고 넓은 화면의 캔버스 바깥을 어두운 붉은색으로 통일 — 무대 바깥 색 경계 제거
+- `internal/core/api.go`·`internal/core/counter_odds_test.go`: 반격 가능 조건과 명중·치명·연속 공격 확률 제공 및 시험 — 실제 반격 규칙에 맞는 예측
+- `internal/gui/command.go`·`internal/gui/uidemo_forecast.go`: 대상과 받는 공격 확률을 위에, 행동자와 반격 확률을 아래에 배치하고 캡처 데모 추가 — 피해 대상별로 결과를 읽기 쉽게 정렬
+- `tools/spritetool/assets/ver5-ui/sources/item_spear.png`·`pixels.json`·`assets/graphics/ui/ui.png`: 장팔사모 쇠날을 물결 모양으로 바꾸고 아이콘 시트 재생성 — 무기의 특징을 표현
+- `docs/plan-forecast-scene-icon.md`: 변경 범위와 검증 방법 기록 — 구현 설계 보존
+
+## 2026-11-20 공격 예측 영역 구분
+
+- `internal/gui/command.go`: 공격과 반격에 제목을 달고 반격 불가 또는 적 생존 조건을 표시 — 각 수치가 어느 행동의 결과인지 구별하기 위해.

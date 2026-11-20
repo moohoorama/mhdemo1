@@ -229,7 +229,11 @@ func (e *Engine) welcome(id string, order int) *Character {
 	if e.char(id) != nil || i < 0 {
 		fresh := e.char(id) == nil
 		o := e.addCharacter(id, id)
-		e.joinAt(o, e.joinLevel(order))
+		level := e.joinLevel(order)
+		if fresh && order == 1 && (id == "guanyu" || id == "zhangfei") {
+			level = o.Level
+		}
+		e.joinAt(o, level)
 		if fresh {
 			e.tierGear(o, e.data.GearTierAt(order))
 		}

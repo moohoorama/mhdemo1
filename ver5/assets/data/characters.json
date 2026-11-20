@@ -1017,13 +1017,13 @@
    ],
    "Level": 14,
    "Traits": [
-    "versatile",
-    "civil_martial",
-    "feint"
+    "versatile"
    ],
    "TraitAt": {
+    "civil_martial": 10,
     "ambition": 15,
-    "hegemony": 35
+    "feint": 20,
+    "hegemony": 30
    },
    "Learn": [],
    "Equipment": [

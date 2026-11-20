@@ -997,7 +997,7 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	}
 	op.Filter = ebiten.FilterPixelated
 	inWorld(func() {
-		rect(dst, 0, 0, float32(worldW), float32(worldH), fieldGround) // a wide screen sees past the canvas
+		rect(dst, 0, 0, float32(worldW), float32(worldH), color.RGBA{68, 27, 13, 255}) // match the scene canvas beyond its edges
 		g.drawBackdrop(dst)
 		drawScaled(dst, g.field.Canvas, op)
 		for _, p := range s.props {

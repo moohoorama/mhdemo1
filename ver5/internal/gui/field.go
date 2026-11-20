@@ -562,9 +562,6 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	switch {
 	case f.Map.SceneMap != nil: // the canvas is clear past the ground: the shadows go on the ground alone, then the background under it
 		c.DrawImage(f.shadows, &ebiten.DrawImageOptions{Blend: ebiten.BlendSourceAtop})
-		if f.renderZoom > 0 && f.shows("background") {
-			f.renderBackground(c, ebiten.BlendDestinationOver)
-		}
 	case f.ground[0] != nil: // a battle map draws its floors tile by tile (makeFloors) and has no map-wide ground
 		clipOp := &ebiten.DrawImageOptions{Blend: ebiten.BlendDestinationIn}
 		f.renderOp(f.shadows, clipOp)
