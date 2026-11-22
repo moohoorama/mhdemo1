@@ -152,7 +152,7 @@ func (g *Game) advanceDialogue() {
 	g.nextNode()
 }
 
-// nextNode goes on to the next node; when that node opens another scene or goes back to the walk, the scene on
+// nextNode goes on to the next node; when that node opens another scene, returns to the walk or enters battle preparation, the scene on
 // screen first darkens to black (the new one then opens out of black). Beats set after the node's last line play
 // before that.
 func (g *Game) nextNode() {
@@ -166,7 +166,7 @@ func (g *Game) nextNode() {
 			return
 		}
 		next := g.S.Data.After(s.node)
-		if def, _ := g.scenes.For(next); def != nil && def != s.def || g.backToWalk(next) {
+		if def, _ := g.scenes.For(next); def != nil && def != s.def || g.backToWalk(next) || g.S.Data.Node(next).Kind == "battle" {
 			s.leaving = true
 			return
 		}

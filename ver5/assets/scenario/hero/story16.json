@@ -58,13 +58,149 @@
    "ID": "c16-f07",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "……성문이 열리면 지체하지 말고 들어가세. 하루라도 빨리 끝내야 하네."
+   "Text": "……하루라도 빨리 끝내야 하네."
   },
   {
    "ID": "c16-f08",
    "Kind": "say",
    "Speaker": "guanyu",
    "Text": "형님. 알겠습니다."
+  },
+  {
+   "ID": "c16-council",
+   "Kind": "scene",
+   "Place": "하비성 밖 · 조조의 군막"
+  },
+  {
+   "ID": "c16-k01",
+   "Kind": "say",
+   "Speaker": "xunyou",
+   "Text": "물이 장터를 지나 성 안 큰길까지 들었습니다. 낮은 길은 죄다 진창입니다."
+  },
+  {
+   "ID": "c16-k02",
+   "Kind": "say",
+   "Speaker": "guojia",
+   "Text": "여포가 자랑하는 기병도 그 길에서는 내달리지 못할 것입니다. 군량을 나르는 일도 어려워질 테고요."
+  },
+  {
+   "ID": "c16-k03",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "그럼 언제 칠 생각인가, 공달?"
+  },
+  {
+   "ID": "c16-k04",
+   "Kind": "say",
+   "Speaker": "xunyou",
+   "Text": "아직은 지켜보는 편이 좋겠습니다. 성 안에서 버티지 못하는 자들이 먼저 움직일 겁니다."
+  },
+  {
+   "ID": "c16-k05",
+   "Kind": "say",
+   "Speaker": "xiahouyuan",
+   "Text": "주공, 순찰 중 수상한 자를 잡아 왔는데, 제법 흥미로운 말을 합니다. 주공을 뵙고 싶다고 합니다."
+  },
+  {
+   "ID": "c16-k06",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "좋소. 데려오시오, 묘재."
+  },
+  {
+   "ID": "c16-k07",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "후성, 송헌, 위속 세 장군의 사신이옵니다. 내일 아침 조공께서 남문에 오시면, 후성 장군이 때에 맞춰 문을 열겠습니다."
+  },
+  {
+   "ID": "c16-k08",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "송헌과 위속 장군은 적토마와 방천화극을 빼돌리겠다고 하셨습니다."
+  },
+  {
+   "ID": "c16-k09",
+   "Kind": "say",
+   "Speaker": "guojia",
+   "Text": "위험합니다, 조공. 믿을 수도 없거니와 만에 하나 조공의 안위가 위태로울 수 있습니다."
+  },
+  {
+   "ID": "c16-k10",
+   "Kind": "say",
+   "Speaker": "chengyu",
+   "Text": "봉효의 말이 맞습니다. 어차피 수공에 적은 곤궁한 처지입니다."
+  },
+  {
+   "ID": "c16-k11",
+   "Kind": "say",
+   "Speaker": "xunyou",
+   "Text": "기다리면 적은 더더욱 스스로 무너질 것입니다. 이렇게 이탈하는 자가 나온 것도 그 조짐입니다."
+  },
+  {
+   "ID": "c16-k12",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "제가 남문에 서겠습니다. 그러면 조공의 안전도 지키면서 기회도 잡을 수 있지 않겠습니까?"
+  },
+  {
+   "ID": "c16-k13",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "어떻소?"
+  },
+  {
+   "ID": "c16-k14",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "그…… 세 장군의 목숨만 보장해 주실 분이라면 상관없을 듯합니다."
+  },
+  {
+   "ID": "c16-k15",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "알았소. 그 정도면 되겠구려. 현덕, 남문에 가시오. 봉효, 중덕, 공달. 이 정도면 괜찮지 않소?"
+  },
+  {
+   "ID": "c16-k16",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "감사합니다."
+  },
+  {
+   "ID": "c16-k17",
+   "Kind": "say",
+   "Speaker": "caocao",
+   "Text": "자, 모두들 돌아가 내일 전투를 준비하시오."
+  },
+  {
+   "ID": "c16-night",
+   "Kind": "scene",
+   "Place": "하비성 밖 · 유비군 진영으로"
+  },
+  {
+   "ID": "c16-n01",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형, 왜 그런 위험한 짓을 하슈?"
+  },
+  {
+   "ID": "c16-n02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "수공이 길어지면 여포군도 힘들겠지. 허나 하비 백성들은 더 힘들 걸세. 벌써 목숨을 잃은 이도 여럿일 테고."
+  },
+  {
+   "ID": "c16-n03",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "알겠습니다, 형님. 저는 형님 말씀을 따르겠습니다."
+  },
+  {
+   "ID": "c16-n04",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "허, 참……."
   },
   {
    "ID": "c16-battle",

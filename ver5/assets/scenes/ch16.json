@@ -43,6 +43,43 @@
     ]
    }
   },
+  "c16-council": {
+   "Map": "S_council",
+   "Nodes": ["c16-council", "c16-k01", "c16-k02", "c16-k03", "c16-k04", "c16-k05", "c16-k06", "c16-k07", "c16-k08", "c16-k09", "c16-k10", "c16-k11", "c16-k12", "c16-k13", "c16-k14", "c16-k15", "c16-k16", "c16-k17"],
+   "Cast": {
+    "조조": {"At": [1, 3], "Face": "SE", "Pose": "sit"},
+    "유비": {"At": [3, 4], "Face": "NW"},
+    "순유": {"At": [4, 1], "Face": "SW", "Sprite": "official_blue_noncombat"},
+    "곽가": {"At": [6, 1], "Face": "SW"},
+    "정욱": {"At": [8, 1], "Face": "SW"},
+    "하후연": {"At": [7, 3], "Face": "NW", "Off": true},
+    "허저": {"At": [2, 2], "Face": "SE"},
+    "전령": {"At": [10, 3], "Face": "NW", "Off": true, "Sprite": "light_infantry"}
+   },
+   "Beats": {
+    "c16-k01": [[[{"Actor": "순유", "Face": "SW"}, {"Actor": "조조", "Face": "SE"}]]],
+    "c16-k03": [[[{"Actor": "조조", "Face": "SE"}, {"Actor": "순유", "Face": "NW"}]]],
+    "c16-k05": [[[{"Actor": "하후연", "Enter": [12, 3], "Move": [7, 3], "Face": "NW"}]]],
+    "c16-k07": [[[{"Actor": "하후연", "Move": [12, 3], "Face": "SE", "Exit": true}], [{"Actor": "전령", "Enter": [12, 3], "Move": [10, 3], "Face": "NW"}, {"Actor": "하후연", "Enter": [12, 4], "Move": [11, 4], "Face": "NW"}, {"Actor": "허저", "Move": [2, 3], "Face": "SE"}]]],
+    "c16-k12": [[[{"Actor": "유비", "Face": "NW"}]]],
+    "c16-k13": [[[{"Actor": "유비", "Face": "SE"}, {"Actor": "전령", "Face": "NW"}]]],
+    "c16-k16": [[[{"Actor": "곽가", "Face": "NW", "Say": "예!"}, {"Actor": "정욱", "Face": "NW", "Say": "예!"}, {"Actor": "순유", "Face": "NW", "Say": "예!"}], [{"Actor": "유비", "Face": "NW", "Pose": "bow"}, {"Actor": "곽가", "Face": "NW", "Pose": "bow"}, {"Actor": "정욱", "Face": "NW", "Pose": "bow"}, {"Actor": "순유", "Face": "NW", "Pose": "bow"}]]]
+   }
+  },
+  "c16-night": {
+   "Map": "S_luzhi_camp",
+   "Time": "night",
+   "Nodes": ["c16-night", "c16-n01", "c16-n02", "c16-n03", "c16-n04"],
+   "Cast": {
+    "유비": {"At": [23, 9.25], "Face": "NW"},
+    "관우": {"At": [24, 9.25], "Face": "NW"},
+    "장비": {"At": [25, 9.25], "Face": "NW"}
+   },
+   "Beats": {
+    "c16-n01": [[[{"Actor": "유비", "Move": [19, 9.25], "Face": "SE"}, {"Actor": "관우", "Move": [20, 9.25], "Face": "NW", "After": 0.2}, {"Actor": "장비", "Move": [21, 9.25], "Face": "NW", "After": 0.4}]]],
+    "c16-n04": [[], [[{"Actor": "유비", "Move": [12, 9.25], "Face": "NW"}, {"Actor": "관우", "Move": [13, 9.25], "Face": "NW", "After": 0.2}, {"Actor": "장비", "Move": [14, 9.25], "Face": "NW", "After": 0.4}]]]
+   }
+  },
   "c16-baimen": {
    "Map": "S_baimen",
    "Music": "suno-intrigue",

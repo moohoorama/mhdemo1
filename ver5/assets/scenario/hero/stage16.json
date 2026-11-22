@@ -59,7 +59,96 @@
    "Y": 25
   }
  },
- "Party": [],
+ "Party": [
+  {
+   "Character": "caoren",
+   "X": 9,
+   "Y": 24,
+   "Group": "cao-nw",
+   "AI": true,
+   "Policy": "assault",
+   "Faction": "wei",
+   "Facing": "NE"
+  },
+  {
+   "Character": "xuchu",
+   "X": 8,
+   "Y": 24,
+   "Group": "cao-nw",
+   "AI": true,
+   "Policy": "assault",
+   "Faction": "wei",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 9,
+   "Y": 25,
+   "Group": "cao-nw",
+   "AI": true,
+   "Policy": "assault",
+   "Faction": "wei",
+   "Facing": "NE",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 8,
+   "Y": 25,
+   "Group": "cao-nw",
+   "AI": true,
+   "Policy": "assault",
+   "Faction": "wei",
+   "Facing": "NE",
+   "Shift": -0.07
+  },
+  {
+   "Character": "xiahouyuan",
+   "X": 17,
+   "Y": 24,
+   "Group": "cao-se",
+   "AI": true,
+   "Policy": "assault",
+   "Faction": "wei",
+   "Facing": "NE",
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ]
+  },
+  {
+   "Character": "lidian",
+   "X": 18,
+   "Y": 24,
+   "Group": "cao-se",
+   "AI": true,
+   "Policy": "assault",
+   "Faction": "wei",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 17,
+   "Y": 25,
+   "Group": "cao-se",
+   "AI": true,
+   "Policy": "assault",
+   "Faction": "wei",
+   "Facing": "NE",
+   "Shift": -0.07
+  },
+  {
+   "Character": "troop_footman",
+   "X": 18,
+   "Y": 25,
+   "Group": "cao-se",
+   "AI": true,
+   "Policy": "assault",
+   "Faction": "wei",
+   "Facing": "NE",
+   "Shift": -0.07
+  }
+ ],
  "Enemies": [
   {
    "Character": "houcheng",
@@ -129,115 +218,6 @@
   }
  ],
  "Events": [
-  {
-   "ID": "cao-gates",
-   "If": [
-    "round>=1"
-   ],
-   "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "xuhuang",
-       "X": 2,
-       "Y": 13,
-       "Group": "cao-nw",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Side": "ally",
-       "Facing": "SE"
-      },
-      {
-       "Character": "xuchu",
-       "X": 2,
-       "Y": 14,
-       "Group": "cao-nw",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Side": "ally",
-       "Facing": "SE"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 1,
-       "Y": 13,
-       "Group": "cao-nw",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Side": "ally",
-       "Facing": "SE",
-       "Shift": -0.07
-      },
-      {
-       "Character": "troop_footman",
-       "X": 1,
-       "Y": 14,
-       "Group": "cao-nw",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Side": "ally",
-       "Facing": "SE",
-       "Shift": -0.07
-      },
-      {
-       "Character": "xiahouyuan",
-       "X": 25,
-       "Y": 13,
-       "Group": "cao-se",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Side": "ally",
-       "Facing": "NW",
-       "Equipment": [
-        "short_bow",
-        "leather_armor"
-       ]
-      },
-      {
-       "Character": "lidian",
-       "X": 25,
-       "Y": 14,
-       "Group": "cao-se",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Side": "ally",
-       "Facing": "NW"
-      },
-      {
-       "Character": "troop_footman",
-       "X": 26,
-       "Y": 13,
-       "Group": "cao-se",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Side": "ally",
-       "Facing": "NW",
-       "Shift": -0.07
-      },
-      {
-       "Character": "troop_footman",
-       "X": 26,
-       "Y": 14,
-       "Group": "cao-se",
-       "AI": true,
-       "Policy": "assault",
-       "Faction": "wei",
-       "Side": "ally",
-       "Facing": "NW",
-       "Shift": -0.07
-      }
-     ]
-    }
-   ]
-  },
   {
    "ID": "opening",
    "If": [
@@ -311,28 +291,6 @@
        {
         "Kind": "wait",
         "Seconds": 0.8
-       }
-      ],
-      [
-       {
-        "Kind": "move",
-        "Unit": "cao-se",
-        "To": {
-         "X": 20,
-         "Y": 13
-        },
-        "Facing": "NW"
-       }
-      ],
-      [
-       {
-        "Kind": "move",
-        "Unit": "cao-nw",
-        "To": {
-         "X": 7,
-         "Y": 13
-        },
-        "Facing": "SE"
        }
       ],
       [
@@ -655,9 +613,45 @@
      "Kind": "say",
      "Lines": [
       {
-       "Actor": "xuhuang",
-       "Text": "매복이다! 항복은 거짓이었다!"
+       "Actor": "caoren",
+       "Text": "이런, 함정이었나."
       }
+     ]
+    },
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "xiahouyuan",
+       "Text": "우리도 어서 돌입한다!"
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "move",
+        "Unit": "cao-se",
+        "To": {
+         "X": 20,
+         "Y": 13
+        },
+        "Facing": "NW"
+       }
+      ],
+      [
+       {
+        "Kind": "move",
+        "Unit": "cao-nw",
+        "To": {
+         "X": 7,
+         "Y": 13
+        },
+        "Facing": "SE"
+       }
+      ]
      ]
     },
     {
@@ -1040,5 +1034,6 @@
    "Faction": "dong",
    "Name": "여포군"
   }
- ]
+ ],
+ "Night": true
 }
