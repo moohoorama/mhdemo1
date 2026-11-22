@@ -29,7 +29,7 @@ const (
 	// a looping theme dies away over its last seconds and comes back in, so its end does not cut off into its start
 	musicLoopFadeOut = 6.0
 	musicLoopFadeIn  = 1.0
-	sfxGapTicks  = 3 // the same cue struck again within this many ticks is not doubled
+	sfxGapTicks      = 3 // the same cue struck again within this many ticks is not doubled
 )
 
 // soundBank plays the sound effects (assets/sounds, a cue per file name, name-N files its variants) and one
@@ -340,8 +340,8 @@ func (s *soundBank) start(theme string) {
 // have their own (a town, a government office). A scene's own Music wins over its map's.
 type musicTable struct {
 	Title, World, Story, Explore, Sortie, Battle, Duel, Victory, Defeat string
-	Maps                                                          map[string]string // scene and walk maps' own themes
-	Stages                                                        map[string]string // battles' own themes, by stage ID
+	Maps                                                                map[string]string // scene and walk maps' own themes
+	Stages                                                              map[string]string // battles' own themes, by stage ID
 }
 
 func (g *Game) music() *musicTable {
@@ -375,6 +375,9 @@ func (g *Game) musicFor() string {
 		return fallback
 	}
 	o := g.S.View()
+	if o.Phase == "result" && g.busy() {
+		o.Phase = "battle"
+	}
 	switch o.Phase {
 	case "scenario":
 		switch o.Dialogue.Kind {

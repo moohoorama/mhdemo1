@@ -7,6 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"srpg/internal/content"
 	"srpg/internal/core"
+	"srpg/internal/replay"
 	"srpg/internal/session"
 )
 
@@ -31,4 +32,35 @@ func TestTheEnemyComingUpToASupportPutsThatSupportInFront(t *testing.T) {
 	assert.Equal(t, d.Characters["guanyu"].Name, v.Fighters[0].Name, "Guan Yu, whom Lu Bu came up to, opens the duel")
 	assert.Equal(t, g.assets.Duels.StoryFor("hulao-brothers", "victory", "guanyu"), v.Story)
 	assert.Equal(t, d.Characters["zhangfei"].Name, v.Fighters[2].Name, "Zhang Fei joins in Guan Yu's place")
+}
+
+func TestTurnEndWaitsForCaiyangDuelBeforeRetreat(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	s, err := session.New(d, t.TempDir())
+	require.NoError(t, err)
+	g, err := New(s, "../../assets/fonts/NotoSansKR.ttf", 17, "")
+	require.NoError(t, err)
+	defer g.Close()
+
+	g.player.final.Stage = d.StageIndex("B20")
+	g.vis = map[string]*unitVis{"caiyang": {id: "caiyang", shownHP: 20, dying: -1}}
+	action := &replay.Action{}
+	action.Add(core.Command{Kind: "end"}, []core.Event{
+		{Kind: "duel", DuelID: "mangdang-guanyu-caiyang", Outcome: "victory", Actor: "guanyu", Target: "caiyang"},
+		{Kind: "death", Actor: "caiyang"},
+	})
+	seenDuel := false
+	for _, beat := range g.perform(action) {
+		beat.fn()
+		if g.player.Duel != nil {
+			seenDuel = true
+		}
+		if !seenDuel || g.player.Duel != nil {
+			require.Equal(t, 20, g.vis["caiyang"].shownHP)
+		}
+	}
+	assert.True(t, seenDuel)
+	assert.Zero(t, g.vis["caiyang"].shownHP)
+	assert.Equal(t, 2, g.sfxCalls, "one duel cue and one fall cue")
 }

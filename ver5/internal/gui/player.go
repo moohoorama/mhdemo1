@@ -499,6 +499,9 @@ func (g *Game) perform(a *replay.Action) []beat {
 			add(.6, func() { g.say(actor, "학습: "+g.traitName(c.Trait)) })
 		case "end":
 			ev := events
+			if i := slices.IndexFunc(ev, func(e core.Event) bool { return e.Kind == "duel" }); i >= 0 {
+				ev = ev[:i] // The duel's aftermath plays after its presentation.
+			}
 			add(0, func() { g.strike(nil, ev) })
 			for _, e := range events {
 				if e.Kind == "turn" {
@@ -552,6 +555,9 @@ func (g *Game) perform(a *replay.Action) []beat {
 			case "duel":
 				view := g.duelView(e)
 				ev := events[i+1:]
+				if j := slices.IndexFunc(ev, func(e core.Event) bool { return e.Kind == "duel" }); j >= 0 {
+					ev = ev[:j]
+				}
 				add(view.Length()+cutInLength(view), func() {
 					g.player.Duel = view
 					if !view.Staged { // a staged duel's gong waits for its cut-in's clash

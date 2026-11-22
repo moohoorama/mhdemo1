@@ -54,3 +54,34 @@ func TestAITurnReplay(t *testing.T) {
 		g.command(core.Command{Kind: "end"})
 	}
 }
+
+func TestReplayGuardsSelectionAndResultMusic(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	s, err := session.New(d, t.TempDir())
+	require.NoError(t, err)
+	g, err := New(s, "../../assets/fonts/NotoSansKR.ttf", 17, "")
+	require.NoError(t, err)
+	defer g.Close()
+	require.NoError(t, (&Demo{g: g}).battle("B02"))
+	s = g.S
+	snapshot := s.Engine.Snapshot()
+	snapshot.Phase, snapshot.Result = "result", "victory"
+	s.Engine, err = core.Restore(s.Data, snapshot)
+	require.NoError(t, err)
+
+	g.musicTab = &musicTable{Battle: "battle", Victory: "victory", Stages: map[string]string{"B02": "stage"}}
+	o := s.View()
+	require.NotEmpty(t, o.UnitViews)
+	require.Positive(t, o.UnitViews[0].HP)
+	g.player.waiting = []int{0}
+	g.selected = ""
+	g.focusOfficer(o.UnitViews[0].ID)
+	assert.Empty(t, g.selected)
+	table := unitPanelTable.table(g, o)
+	assert.False(t, table.open(&o.UnitViews[0]))
+	assert.Equal(t, "stage", g.musicFor())
+
+	g.player.waiting = nil
+	assert.Equal(t, "victory", g.musicFor())
+}

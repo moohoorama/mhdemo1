@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"slices"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/core"
@@ -201,7 +202,7 @@ func (t unitTable) table(g *Game, o core.Observation) table[core.UnitView] {
 		cols: cols, rowH: t.rowH, headH: t.headH, size: t.size, center: t.center,
 		empty:    "해당하는 장수가 없습니다.",
 		rank:     func(u *core.UnitView) int { return b2i(u.HP <= 0) },
-		open:     func(u *core.UnitView) bool { return u.HP > 0 },
+		open:     func(u *core.UnitView) bool { return u.HP > 0 && !g.busy() },
 		dim:      func(u *core.UnitView) bool { return u.HP <= 0 || u.Faction == "ally" && !u.AI && !unitOrderable(o, u) },
 		selected: func(u *core.UnitView) bool { return g.selected == u.ID },
 		pick:     func(u *core.UnitView) { t.pick(u.ID) },
@@ -263,5 +264,9 @@ func (g *Game) unitFilterRow(dst *ebiten.Image, l *unitList, r image.Rectangle) 
 
 // unitTable draws the list's table in r.
 func (g *Game) unitTable(dst *ebiten.Image, o core.Observation, l *unitList, t unitTable, r image.Rectangle) {
-	drawTable(g, dst, &l.tableList, t.table(g, o), unitListRows(o, l), r)
+	rows := unitListRows(o, l)
+	if g.busy() {
+		rows = slices.DeleteFunc(rows, func(u core.UnitView) bool { return g.unitAt(u.ID) == nil })
+	}
+	drawTable(g, dst, &l.tableList, t.table(g, o), rows, r)
 }
