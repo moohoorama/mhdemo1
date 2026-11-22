@@ -198,7 +198,8 @@ func (g *Game) drawWindow(dst *ebiten.Image, name string) {
 	if name == "shop" && g.shopView.info.id != "" {
 		g.chipWindow(dst, "overlay:shop-info", g.shopView.info, func() { g.shopView.info = equipChip{} })
 	}
-	if name == "deputy" && g.deputyInfo.id != "" {
+	partyDeputy := name == "party" && !g.party.items && !g.party.table && g.party.tab == 3
+	if (name == "deputy" || partyDeputy) && g.deputyInfo.id != "" {
 		g.chipWindow(dst, "overlay:deputy-info", g.deputyInfo, func() { g.deputyInfo = equipChip{} })
 	}
 }

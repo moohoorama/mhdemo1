@@ -40,7 +40,7 @@ func TestPickerListsTheWornPieceOnceAndOnlyWhatFits(t *testing.T) {
 	snap.Warehouse = map[string]int{"leather_armor": 2, "tangni_armor": 1, "cotton_clothes": 1, "iron_sword": 1}
 	e, err := core.Restore(d, snap)
 	require.NoError(t, err)
-	g := &Game{S: &session.Session{Data: d, Engine: e}, itemEffects: map[string]itemEffect{}}
+	g := &Game{S: &session.Session{Data: d, Engine: e}}
 	o := e.Observe()
 	of := g.officer(o, snap.Characters[0].ID)
 	ids := []string{}
@@ -72,4 +72,40 @@ func TestBonusGrades(t *testing.T) {
 	assert.Equal(t, "공격 B · 정신 D", bonusText(b, nil))
 	assert.Equal(t, "공격 B (+39) · 정신 D (+13)", bonusText(b, []statDelta{{"공격", 39}, {"정신", 13}}))
 	assert.Equal(t, "없음", bonusText([6]float64{}, nil))
+}
+
+func TestEquipmentAdviceTracksSharedStock(t *testing.T) {
+	d, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+	e, err := core.NewAt(d, 1, "c14-battle", "")
+	require.NoError(t, err)
+	st := e.Snapshot()
+	st.Learning = nil
+	st.Warehouse = map[string]int{"fire_manual": 1}
+	for _, c := range st.Characters {
+		if c.ID == "liubei" || c.ID == "guanyu" {
+			delete(c.Equipment, "accessory")
+		}
+	}
+	e, err = core.Restore(d, st)
+	require.NoError(t, err)
+	g := &Game{S: &session.Session{Data: d, Engine: e}}
+	reason := func(actor string) string {
+		return g.equipmentAdvice(g.S.View(), actor)["accessory"]["fire_manual"]
+	}
+	assert.Contains(t, reason("liubei"), "사용 가능")
+	assert.NotEmpty(t, reason("guanyu"))
+
+	_, err = e.Apply(core.Command{Kind: "equip", Actor: "liubei", Item: "fire_manual"})
+	require.NoError(t, err)
+	assert.Empty(t, reason("liubei"))
+	assert.Empty(t, reason("guanyu"))
+
+	// A different save may come back with the same revision.
+	st.Revision = e.Observe().Revision
+	g.S.Engine, err = core.Restore(d, st)
+	require.NoError(t, err)
+	assert.NotEmpty(t, reason("liubei"))
+	g.S.Settings.NoGuide = true
+	assert.Empty(t, reason("liubei"))
 }

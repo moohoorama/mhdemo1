@@ -451,6 +451,17 @@
    "Text": "그 급한 와중에도 잔꾀라니. 역시 조조답습니다."
   },
   {
+   "ID": "c13-x-notice",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "조운이 할 말 있대유."
+  },
+  {
+   "ID": "c13-wait-zhaoyun",
+   "Kind": "explore",
+   "Explore": "explore13_farewell"
+  },
+  {
    "ID": "c13-x12",
    "Kind": "say",
    "Speaker": "zhaoyun",
@@ -606,6 +617,11 @@
   }
  ],
  "Events": [
+  {
+   "ID": "c13-hear-zhaoyun",
+   "Kind": "back",
+   "Leave": true
+  },
   {
    "ID": "c13-e-merchant",
    "Kind": "scene",

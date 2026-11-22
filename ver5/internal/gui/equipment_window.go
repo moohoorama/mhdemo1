@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"slices"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/core"
@@ -60,6 +59,12 @@ type itemEffect struct {
 	err          string
 }
 
+type itemEffectKey struct {
+	engine            *core.Engine
+	revision          uint64
+	actor, slot, item string
+}
+
 type statDelta struct {
 	name string
 	d    int
@@ -87,6 +92,7 @@ func (g *Game) equipmentWindow(dst *ebiten.Image, x, y, w, h int) {
 		g.openPicker("weapon")
 	}
 	slot := g.equip.slot
+	advice := g.equipmentAdvice(o, of.ID)
 	g.label(dst, "장비", float64(x+16), float64(y+12), 18, gold)
 	g.label(dst, fmt.Sprintf("%s · %s · %s 고르기", g.name(of.ID), g.className(of.Class), slotNames[slot]), float64(x+28)+g.width("장비", 18), float64(y+17), 13, muted)
 	rect(dst, float32(x+8), float32(y+56), float32(w-16), 1, goldDim)
@@ -94,6 +100,9 @@ func (g *Game) equipmentWindow(dst *ebiten.Image, x, y, w, h int) {
 	for i, sl := range equipSlots {
 		rr := image.Rect(x+6, y+58+i*72, x+slotW, y+58+(i+1)*72)
 		rowBack(dst, rr, sl == slot)
+		if len(advice[sl]) > 0 {
+			recommendationRim(dst, rr.Inset(4))
+		}
 		sl := sl
 		if !of.Dead && sl != slot {
 			g.addButton(rr, slotNames[sl], func() { g.openPicker(sl) })
@@ -138,7 +147,17 @@ func (g *Game) equipmentWindow(dst *ebiten.Image, x, y, w, h int) {
 		for _, ch := range r.chips {
 			sub += " · " + g.chipName(ch)
 		}
-		g.label(dst, ellipsis(g, sub, 12, listW-70), px+46, py+31, 12, muted)
+		sx, subWidth := px+46, listW-70
+		if reason := advice[slot][r.id]; reason != "" {
+			recommendationRim(dst, rr.Inset(3))
+			reason = ellipsis(g, reason, 12, subWidth)
+			g.label(dst, reason, sx, py+31, 12, guideGreen[1])
+			used := int(g.width(reason, 12)) + 10
+			sx, subWidth = sx+float64(used), subWidth-used
+		}
+		if subWidth > 0 {
+			g.label(dst, ellipsis(g, sub, 12, subWidth), sx, py+31, 12, muted)
+		}
 	}, func(i int) { g.equip.pick = rows[i].id })
 	rect(dst, float32(listX+listW+2), float32(y+58), 1, float32(h-66), cardRim)
 
@@ -217,34 +236,8 @@ func (g *Game) equipmentWindow(dst *ebiten.Image, x, y, w, h int) {
 	}
 	act := action{label, true, confirm}
 	g.closeRow(dst, right, y+h-60, g.closeOverlay, act)
-	g.guideEquip(dst, of, rows, image.Rect(x+6, y+58, x+slotW, y+58), image.Rect(listX, y+58, listX+listW, y+h-6), right, y+h-60, act)
-}
-
-// guideEquip puts the gear guide's rim on the next thing to press in the equipment window: 닫기 when another
-// officer's piece is waiting, the guided slot, the piece in the picker (the list when any piece fits), then the
-// button that puts it on.
-func (g *Game) guideEquip(dst *ebiten.Image, of *core.Character, rows []equipRow, slots, list image.Rectangle, right, y int, act action) {
-	piece, owner, slot, ok := g.gearStep()
-	switch {
-	case !ok:
-	case owner != of.ID:
-		g.guideRim(dst, image.Rect(right-96, y, right, y+touchH))
-	case g.equip.slot != slot:
-		i := slices.Index(equipSlots, slot)
-		g.guideRim(dst, image.Rect(slots.Min.X, slots.Min.Y+i*72, slots.Max.X, slots.Min.Y+(i+1)*72).Inset(4))
-	case piece == "" && g.equip.pick == equipCurrent: // any piece that fits: the list
-		g.guideRim(dst, list.Inset(4))
-	case piece != "" && g.equip.pick != piece:
-		i := slices.IndexFunc(rows, func(r equipRow) bool { return r.id == piece })
-		if top := g.equip.list.top; i >= top && i < top+max(1, list.Dy()/listRowH) {
-			r := image.Rect(list.Min.X, list.Min.Y+(i-top)*listRowH, list.Max.X, list.Min.Y+(i-top+1)*listRowH)
-			if len(rows) > max(1, list.Dy()/listRowH) {
-				r.Max.X -= tableBarW + 4
-			}
-			g.guideRim(dst, r.Inset(4))
-		}
-	default:
-		g.guideRim(dst, g.actionRect(right, y, act.label, act))
+	if confirm != nil && advice[slot][g.equip.pick] != "" {
+		recommendationRim(dst, g.actionRect(right, y+h-60, act.label, act).Inset(3))
 	}
 }
 
@@ -407,13 +400,13 @@ func (g *Game) chipWindow(dst *ebiten.Image, key string, c equipChip, close func
 // itemEffect plays the piece on a copy of the game: the stats with the slot empty, with the
 // piece, and as they are now.
 func (g *Game) itemEffect(actor, slot, item string) itemEffect {
-	key := fmt.Sprint(g.S.View().Revision, actor, slot, item)
+	key := itemEffectKey{g.S.Engine, g.S.View().Revision, actor, slot, item}
 	if e, ok := g.itemEffects[key]; ok {
 		return e
 	}
 	e := g.playItem(actor, slot, item)
-	if len(g.itemEffects) > 256 {
-		g.itemEffects = map[string]itemEffect{}
+	if g.itemEffects == nil || len(g.itemEffects) > 256 {
+		g.itemEffects = map[itemEffectKey]itemEffect{}
 	}
 	g.itemEffects[key] = e
 	return e
@@ -429,18 +422,19 @@ func (g *Game) playItem(actor, slot, item string) itemEffect {
 		return itemEffect{err: koreanError(err.Error())}
 	}
 	of := g.officer(sb.Observe(), actor)
-	worn := of.Equipment[slot]
-	if worn != "" {
-		if _, err := sb.Apply(core.Command{Kind: "unequip", Actor: actor, Item: worn}); err != nil {
+	with := now
+	if of.Equipment[slot] != item {
+		if _, err := sb.Apply(core.Command{Kind: "equip", Actor: actor, Item: item}); err != nil {
 			return itemEffect{err: koreanError(err.Error())}
 		}
+		with, _ = sb.CharacterStats(actor)
 	}
-	bare, _ := sb.CharacterStats(actor)
-	if _, err := sb.Apply(core.Command{Kind: "equip", Actor: actor, Item: item}); err != nil {
-		return itemEffect{err: koreanError(err.Error())}
+	result := itemEffect{change: statDeltas(now, with)}
+	if _, err := sb.Apply(core.Command{Kind: "unequip", Actor: actor, Item: item}); err == nil {
+		bare, _ := sb.CharacterStats(actor)
+		result.gain = statDeltas(bare, with)
 	}
-	with, _ := sb.CharacterStats(actor)
-	return itemEffect{gain: statDeltas(bare, with), change: statDeltas(now, with)}
+	return result
 }
 
 func statDeltas(a, b core.Stats) []statDelta {

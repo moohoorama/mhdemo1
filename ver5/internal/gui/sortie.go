@@ -44,10 +44,13 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 	g.mBtn(dst, image.Rect(x+104, foot, x+192, foot+touchH), "메뉴", false, func() { g.openOverlay("menu") })
 	ax := left.Max.X + 4
 	var add, remove func()
-	if slices.Contains(o.Deployment, g.selected) {
-		remove = func() { g.togglePrep(g.selected) }
-	} else {
-		add = func() { g.togglePrep(g.selected) }
+	lead := g.servedBy(o, g.selected)
+	if lead == "" {
+		if slices.Contains(o.Deployment, g.selected) {
+			remove = func() { g.togglePrep(g.selected) }
+		} else {
+			add = func() { g.togglePrep(g.selected) }
+		}
 	}
 	g.mBtn(dst, image.Rect(ax, y+62, ax+40, y+102), "◀", false, add)
 	g.mBtn(dst, image.Rect(ax, foot-48, ax+40, foot-8), "▶", false, remove)
@@ -56,18 +59,25 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 	views := []string{"기본", "전투력", "열전", "장비", "특성", "부관"}
 	p.sortieView = min(p.sortieView, len(views)-1)
 	g.tabRow(dst, rx, y+4, views, p.sortieView, func(i int) { p.sortieView = i; p.officerList.order = tableSort{}; p.tip = "" })
+	if g.overlay() == "" && p.sortieView != 3 && len(g.equipmentAdvice(o, g.selected)) > 0 {
+		recommendationRim(dst, g.tabRect(rx, y+4, views, 3).Inset(4))
+	}
 	rect(dst, float32(rx), float32(y+52), float32(right-rx), 1, goldDim)
 	body := image.Rect(rx, y+60, right, foot-4)
 	var acts []action
 	if p.sortieView < 3 {
 		g.sortieTable(dst, o, ids, body)
 	} else if of := g.officer(o, g.selected); of != nil {
-		g.label(dst, g.name(of.ID), float64(body.Min.X+8), float64(body.Min.Y+4), 16, gold)
+		nameInk := gold
+		if lead != "" {
+			nameInk = dimInk
+		}
+		g.label(dst, g.name(of.ID), float64(body.Min.X+8), float64(body.Min.Y+4), 16, nameInk)
 		body.Min.Y += 30
 		switch p.sortieView {
 		case 3:
 			p.sortieTab = 2
-			if lead := g.servedBy(o, of.ID); lead != "" {
+			if lead != "" {
 				g.label(dst, g.name(lead)+"의 부관이라 장비를 들지 않습니다.", float64(body.Min.X), float64(body.Min.Y+16), 14, muted)
 			} else {
 				g.officerEquipment(dst, of, body)
@@ -80,9 +90,6 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 			acts = g.officerDeputy(dst, o, of, body)
 		}
 	}
-	_, _, _, guide := g.gearStep()
-	guide = guide && g.overlay() == ""
-
 	belongings := action{"소지품", false, func() { // the seals can be used before the battle too
 		p.items, p.table, p.insu = true, false, insuState{}
 		g.openOverlay("party")
@@ -92,7 +99,7 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 	if left := g.actionRow(dst, right, y+h-60, row...); len(acts) > 0 {
 		g.actionRow(dst, left-closeGap, y+h-60, acts...)
 	}
-	if _, ok := g.promoteGuide(); ok && g.overlay() == "" && !guide {
+	if _, ok := g.promoteGuide(); ok && g.overlay() == "" {
 		g.promoteRim(dst, g.rowActionRect(right, y+h-60, belongings.label, row...))
 	}
 	if g.overlay() == "" && g.deputyInfo.id != "" {
@@ -101,7 +108,7 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 }
 
 // sortieTabs are the tabs of the picked officer in the sortie preparation: the officers' window's and 부관.
-var sortieTabs = append(append([]string{}, officerTabs...), "부관")
+var sortieTabs = officerManagementTabs
 
 // sortieRow is an officer's row: the state pill (출전, 필수, 부관 over whom, 대기), pressed to send out or call
 // back, then the officer as in the officers' list, the missing gear after the class.

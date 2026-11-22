@@ -14,7 +14,7 @@ func init() { demos["sortie-deputy"] = demoSortieDeputy }
 // 미축, 번궁, 번아 out, 진도, 고순 waiting), spends everyone's trait points, teaches 장비 (or the first officer out besides the lord) to name a
 // deputy, names 미방 (or the next officer) and walks the sortie's 부관 tab for cmd/_uidemo-vm: the table by weight
 // with the deputy now on top in blue (1), 진도 picked in gold (40), sorted by 매력 (60), every trait of the pick
-// (75), a trait's description (90), the deputy's own row picked in the list (120), the lead's 장비 (130), 특성 (136)
+// (75), a trait's description (90), the deputy's own row picked in the list (120, basic at 124), the lead's 장비 (130), 특성 (136)
 // and 열전 (142) tabs, the deputy window (150) and the officers' window with the deputy plates (190).
 func demoSortieDeputy(d *Demo) error {
 	g := d.g
@@ -97,6 +97,8 @@ func demoSortieDeputy(d *Demo) error {
 			}
 		case 120:
 			g.selected, p.sortieView = dep, 2
+		case 124:
+			p.sortieView = 0
 		case 130:
 			g.selected, p.sortieView = lead, 3
 		case 136:

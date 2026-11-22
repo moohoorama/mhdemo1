@@ -10,12 +10,8 @@ import (
 	"srpg/internal/core"
 )
 
-// The gear guide leads the eye in green, step by step, to putting a piece on — 관리, the officer's row, the 장비 tab,
-// the slot's 바꾸기, the piece in the picker and the button that puts it on. It has two reasons to: a piece that
-// belongs to an officer (its Owner), handed over by an event of the walk, is not put on by itself; and a seal used
-// off the field takes off a weapon the new class cannot carry (a sword on a 장창병), leaving the slot to fill with
-// any piece that fits. It lasts while the party stays where it began (the walk's area, or the battle's sortie
-// preparation) and until every slot it leads to is filled; the 길 안내 setting hides it.
+// The walk's gear guide highlights 관리 after a gift or when a promotion leaves a slot empty.
+// The officers' screens evaluate the warehouse independently for equipment recommendations.
 
 // gearTarget is a slot the guide leads to: the officer's slot to fill with piece, or with any piece that fits when
 // piece is "".

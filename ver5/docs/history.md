@@ -16,6 +16,18 @@
 - `assets/data/game.json`: 어려움 경험치 배율 100%에서 90%, 매우 어려움 85%에서 80%로 조정 — 아군의 전투 성장 속도를 낮춤.
 - `docs/stage_lv_balance.md`: 두 난이도의 경험치 배율과 조정 이유를 갱신 — 밸런스 기준을 게임 설정과 일치시킴.
 
+## 2026-11-21 스토리 관리의 부관과 조운 송별
+
+- `internal/gui/officer_window.go`·`officer_cards.go`·`deputy_window.go`·`sortie.go`·`windows.go`: 탐험의 관리 창에 부관 탭과 특성 설명을 연결 — 스토리에서 출전 여부와 관계없이 자격 있는 장수가 부관을 임명·해임.
+- `assets/scenario/hero/story13.json`·`explore13_farewell.json`, `assets/scenes/ch13.json`: 장비의 알림 뒤 소패 관아에서 조운에게 말을 거는 탐험 추가 — 이탈 전에 저장과 장비 해제 기회 제공.
+- `internal/gui/uidemo_story_farewell.go`·`sortie_deputy_test.go`: 13장 흐름의 캡처와 관리 창 임명·해임 시험 추가 — 실제 화면과 조작 확인.
+- `docs/plan-story-management-farewell.md`·`fullstory.md`·`data-speech-style.md`: 스토리 관리의 부관 탭과 송별 전 탐험·대사 기록 — 달라진 조작과 진행 순서 설명.
+
+## 2026-11-21 출전 준비의 부관 표시와 출전 칸
+
+- `internal/gui/sortie.go`·`sortie_unified.go`·`table.go`: 부관 행을 회색으로, 부관 상태를 흰색 굵은 글씨로 표시하고 필수를 굵게 표시. 부관의 출전 추가 버튼을 비활성화하고 출전 한도만큼 반투명 검은 칸을 그림 — 출전 가능 여부와 자리를 구분.
+- `internal/gui/sortie_deputy_test.go`·`uidemo_sortie_deputy.go`, `docs/plan-sortie-display.md`: 검증 기준과 부관 선택 화면 추가 — 출전 버튼과 격자 확인.
+
 ## 2026-11-21 시나리오와 전투 자동 저장 분리
 
 - `internal/storage/storage.go`: 시나리오와 전투의 자동 저장 슬롯 열 칸씩을 독립 순환 — 전투 턴 저장이 출진 직전 저장을 밀어내지 않도록 함.
@@ -29,6 +41,13 @@
 - `internal/gui/command.go`: 선택 시 계산한 이동칸을 표시와 입력에 재사용 — 그리기 중 전체 명령 목록 재계산을 제거.
 - `internal/gui/quick_attack_test.go`·`move_cancel_test.go`: 기존 구현과 이동칸·공격 위치를 비교하고 동일 전투에서 벤치마크 — 상태이상, 원거리 공격, 퇴각 및 취소 동작 검증.
 - `docs/plan-quick-attack.md`: 선택 처리 최적화와 퇴각 예외의 검증 계획 기록 — 기존 조작 유지 기준을 명시.
+
+## 2026-11-21 출전과 관리 장비 추천
+
+- `internal/core/equipment_advice.go`·`engine.go`: 창고 장착 가능 판정과 능력치·이동력·특성·사용 가능한 기술·학습 기회 비교 — 기존 효과를 유지하면서 이득이 생기는 장비 식별.
+- `internal/gui/equipment_advice.go`·`game.go`·`sortie.go`·`sortie_unified.go`·`officer_window.go`·`officer_cards.go`·`equipment_window.go`·`gear_guide.go`: 목록 이름부터 장비 슬롯과 후보까지 녹색 테두리와 이유 표시, 실제 교체 순서로 미리보기 계산 — 장착과 재고 변동을 즉시 반영.
+- `internal/core/equipment_advice_test.go`, `internal/gui/equipment_window_test.go`·`uidemo_equipment_advice.go`: 능력치 교환, 특성 유지, 공유 재고 및 장착 전후 화면 검증 — 추천 조건과 화면 흐름 확인.
+- `docs/plan-equipment-recommendations.md`·`presentation-ui.md`: 추천 기준과 표시 위치 기록 — 출전과 관리의 공통 동작 설명.
 
 ## 2026-11-21 출전 준비 표시와 이야기 연출
 

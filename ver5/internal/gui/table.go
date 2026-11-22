@@ -60,6 +60,7 @@ type column[R any] struct {
 	// show is what the cell shows within the width w and in what colour, when not get's text in
 	// the row's ink.
 	show  func(r *R, ink color.Color, w float64) (string, color.Color)
+	bold  func(r *R) bool
 	after func(dst *ebiten.Image, r *R, cell image.Rectangle)
 }
 
@@ -283,7 +284,7 @@ func tableRow[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], ws []
 			tx = float64(x) + (float64(w)-g.width(s, size))/2
 		}
 		ty := float64(rr.Min.Y) + (float64(t.rowH)-size*1.25)/2
-		if l.order.key == c.key && l.order.dir != 0 {
+		if l.order.key == c.key && l.order.dir != 0 || c.bold != nil && c.bold(row) {
 			write(dst, s, g.boldFace(size), tx, ty, tc)
 		} else {
 			g.label(dst, s, tx, ty, size, tc)
@@ -327,7 +328,7 @@ func (g *Game) sortMark(dst *ebiten.Image, cx, cy float32, up bool, c color.NRGB
 	g.drawUI(dst, "sort_mark", frame, float64(cx), float64(cy), 1, c)
 }
 
-// boldFace is the sans face at the weight used for the values a table is sorted by.
+// boldFace is the sans face for emphasized values.
 func (g *Game) boldFace(size float64) *text.GoTextFace {
 	f := &text.GoTextFace{Source: g.font, Size: size}
 	f.SetVariation(text.MustParseTag("wght"), 800)

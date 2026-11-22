@@ -11,11 +11,12 @@ import (
 	"srpg/internal/core"
 )
 
-// officerTabs are the tabs of an officer's detail.
+// officerTabs are the tabs available even during battle.
 var officerTabs = []string{"열전", "특성", "장비"}
+var officerManagementTabs = append(slices.Clone(officerTabs), "부관")
 
 // partyWindow is the officers' window of the walk, filling the screen: the officers listed on the left and the
-// picked one on the right in three tabs (열전, 특성, 장비), where traits are learned and equipment changed.
+// picked one on the right, where traits, equipment and deputies are managed.
 // It can show the officers as a table instead, or the belongings.
 func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 	if g.S.Engine == nil {
@@ -44,14 +45,14 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 		view = 1
 	}
 	viewsEnd := g.tabRow(dst, x+8, y+4, []string{"목록", "표", "소지품"}, view, func(i int) { p.table, p.items, p.insu = i == 1, i == 2, insuState{} })
-	_, gearOwner, _, guide := g.gearStep()
-	guide = guide && g.overlay() == "party"
-	if guide && view != 0 {
-		g.guideRim(dst, g.tabRect(x+8, y+4, []string{"목록", "표", "소지품"}, 0))
+	if view == 2 && g.overlay() == "party" && slices.ContainsFunc(roster, func(c core.Character) bool {
+		return len(g.equipmentAdvice(o, c.ID)) > 0
+	}) {
+		recommendationRim(dst, g.tabRect(x+8, y+4, []string{"목록", "표", "소지품"}, 0).Inset(4))
 	}
 	seal, promote := g.promoteGuide()
 	promote = promote && g.overlay() == "party"
-	if promote && !guide && view != 2 {
+	if promote && view != 2 {
 		g.promoteRim(dst, g.tabRect(x+8, y+4, []string{"목록", "표", "소지품"}, 2))
 	}
 	switch {
@@ -100,8 +101,10 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 			noteC = good
 		}
 		g.officerRow(dst, o, rr, c, c.ID == g.selected, note, noteC)
-		if guide && c.ID == gearOwner && c.ID != g.selected {
-			g.guideRim(dst, rr.Inset(4))
+		if g.overlay() == "party" && len(g.equipmentAdvice(o, c.ID)) > 0 {
+			left := rr.Min.X + 62
+			right := left + int(g.width(g.name(c.ID), 16)) + 4
+			recommendationRim(dst, image.Rect(left-4, rr.Min.Y+4, right, rr.Min.Y+29))
 		}
 	}, func(i int) { g.selected, p.trait = roster[i].ID, "" })
 
@@ -121,9 +124,15 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 		nx += g.width("레벨 업", 13) + 30
 	}
 	g.label(dst, g.name(of.ID), nx, float64(y+12), 18, gold)
-	g.tabRow(dst, int(nx+g.width(g.name(of.ID), 18))+18, y+4, officerTabs, p.tab, func(i int) { p.tab = i })
-	if guide && of.ID == gearOwner && p.tab != 2 {
-		g.guideRim(dst, g.tabRect(int(nx+g.width(g.name(of.ID), 18))+18, y+4, officerTabs, 2))
+	tx := int(nx+g.width(g.name(of.ID), 18)) + 18
+	tabs := officerTabs
+	if o.Dialogue.Kind == "explore" && !p.learning {
+		tabs = officerManagementTabs
+	}
+	p.tab = min(p.tab, len(tabs)-1)
+	g.tabRow(dst, tx, y+4, tabs, p.tab, func(i int) { p.tab = i })
+	if g.overlay() == "party" && p.tab != 2 && len(g.equipmentAdvice(o, of.ID)) > 0 {
+		recommendationRim(dst, g.tabRect(tx, y+4, officerTabs, 2).Inset(4))
 	}
 	rect(dst, float32(rx), float32(y+52), float32(x+w-16-rx), 1, goldDim)
 	body := image.Rect(rx, y+60, x+w-16, y+h-64)
@@ -135,6 +144,8 @@ func (g *Game) partyWindow(dst *ebiten.Image, x, y, w, h int) {
 		acts = append(acts, g.officerTraits(dst, of, body)...)
 	case 2:
 		g.officerEquipment(dst, of, body)
+	case 3:
+		acts = g.officerDeputy(dst, o, of, body)
 	}
 	g.closeRow(dst, x+w-16, y+h-60, g.closeOverlay, acts...)
 }
@@ -233,6 +244,10 @@ func (g *Game) officerTable(dst *ebiten.Image, o core.Observation, roster []core
 		get: func(r *row) (string, float64) { return g.name(r.c.ID), 0 },
 		after: func(dst *ebiten.Image, r *row, cell image.Rectangle) {
 			g.portrait(dst, r.c.ID, r.c.Class, float64(cell.Min.X+4), float64(cell.Min.Y+(cell.Dy()-32)/2), 32)
+			if g.overlay() == "party" && len(g.equipmentAdvice(o, r.c.ID)) > 0 {
+				cell.Min.X += 42
+				recommendationRim(dst, cell.Inset(4))
+			}
 		}}}
 	switch p.view {
 	case 0:

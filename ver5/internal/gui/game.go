@@ -129,7 +129,8 @@ type Game struct {
 	hover                     hoverCell
 	threatAll                 bool
 	threats                   map[string]core.Ranges
-	itemEffects               map[string]itemEffect // itemEffect results by revision, officer, slot and piece
+	itemEffects               map[itemEffectKey]itemEffect
+	gearAdvice                equipmentAdviceCache
 	equip                     equipState
 	waypoints                 waypointList
 	jumpNode                  string          // the waypoint the difficulty window starts at; none starts a new game
@@ -228,7 +229,7 @@ func New(s *session.Session, fontPath string, seed uint64, auditDir string) (*Ga
 		return nil, err
 	}
 	g := &Game{S: s, font: source, brushFont: brush, serifFont: serif, seed: seed, verified: map[string]bool{}, slot: 1, auditDir: auditDir,
-		vis: map[string]*unitVis{}, zoom: battleZoom, zoomFrom: battleZoom, zoomTo: battleZoom, zoomT: .5, speed: savedSpeed(s.Settings.Speed), threats: map[string]core.Ranges{}, itemEffects: map[string]itemEffect{}}
+		vis: map[string]*unitVis{}, zoom: battleZoom, zoomFrom: battleZoom, zoomTo: battleZoom, zoomT: .5, speed: savedSpeed(s.Settings.Speed), threats: map[string]core.Ranges{}}
 	g.root = filepath.Dir(filepath.Dir(filepath.Dir(fontPath)))
 	g.Debug = DebugBuild
 	g.player.g = g

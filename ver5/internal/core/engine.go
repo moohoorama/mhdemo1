@@ -665,6 +665,16 @@ func (e *Engine) dismiss(id string, order int) {
 	delete(e.charIDs, id)
 }
 
+func (e *Engine) checkWear(o *Character, item string, eq content.Equipment) error {
+	if !e.carries(o, eq) {
+		return fail("IncompatibleEquipment")
+	}
+	if e.state.Warehouse[item] < 1 {
+		return fail("MissingEquipment")
+	}
+	return nil
+}
+
 // wear puts a piece from the warehouse on o; the piece it replaces goes back to the warehouse.
 func (e *Engine) wear(o *Character, id string) {
 	slot := e.data.Equipment[id].Slot
@@ -860,11 +870,8 @@ func (e *Engine) prepare(c Command) error {
 			e.state.Warehouse[old]++
 			return nil
 		}
-		if !e.carries(o, eq) {
-			return fail("IncompatibleEquipment")
-		}
-		if e.state.Warehouse[c.Item] < 1 {
-			return fail("MissingEquipment")
+		if err := e.checkWear(o, c.Item, eq); err != nil {
+			return err
 		}
 		e.wear(o, c.Item)
 		return nil

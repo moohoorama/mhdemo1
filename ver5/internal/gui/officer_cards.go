@@ -464,8 +464,8 @@ func (g *Game) officerEquipment(dst *ebiten.Image, of *core.Character, r image.R
 			g.openOverlay("equipment")
 			g.openPicker(slot)
 		})
-		if _, owner, gearSlot, ok := g.gearStep(); ok && owner == of.ID && gearSlot == slot && (g.overlay() == "party" || g.overlay() == "") { // the party window or the sortie preparation
-			g.guideRim(dst, btn)
+		if (g.overlay() == "party" || g.overlay() == "") && len(g.equipmentAdvice(g.S.View(), of.ID)[slot]) > 0 {
+			recommendationRim(dst, btn.Inset(3))
 		}
 		nameW := right(top, top+22) - tx
 		shown := ellipsis(g, name, 16, nameW)
@@ -537,7 +537,7 @@ func gearLines(pieces []gearPiece, x0, y0 int, right func(y0, y1 int) int) ([]im
 	return at, top + h, fits
 }
 
-// officerDeputy is the sortie's 부관 tab for a lead going out: the candidates in a table (deputyTable), sorted by
+// officerDeputy is the 부관 tab: the candidates in a table (deputyTable), sorted by
 // the weight they would get, and under it a card of the one picked — class, level and weight, what naming it does
 // or why it cannot be, and every trait it would bring as a small chip ("+n" when they need more lines than the
 // card gets). It gives the actions that dismiss the deputy and appoint the one picked.
@@ -546,7 +546,7 @@ func (g *Game) officerDeputy(dst *ebiten.Image, o core.Observation, of *core.Cha
 	switch lead := g.servedBy(o, of.ID); {
 	case lead != "":
 		note = g.name(lead) + "의 부관입니다. 부관은 부관을 둘 수 없습니다."
-	case !slices.Contains(o.Deployment, of.ID):
+	case o.Dialogue.Kind == "battle" && !slices.Contains(o.Deployment, of.ID):
 		note = "출전하는 장수만 부관을 둘 수 있습니다."
 	case !g.S.Engine.CanDeputize(of.ID):
 		note = "지금은 부관을 둘 수 없습니다."

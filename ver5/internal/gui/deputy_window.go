@@ -94,7 +94,7 @@ func (g *Game) deputyRows(o core.Observation) []deputyRow {
 		case r.current:
 		case err == nil:
 			if slices.Contains(o.Deployment, c.ID) {
-				r.note = "출전 중입니다. 임명하면 전장에서 빠집니다."
+				r.note = "임명하면 출전 명단에서 빠집니다."
 			}
 		case lead != "":
 			r.reason = g.name(lead) + "의 부관이라 부관이 될 수 없습니다."

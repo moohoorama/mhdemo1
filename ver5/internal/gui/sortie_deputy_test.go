@@ -8,6 +8,8 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"srpg/internal/core"
+	"srpg/internal/session"
 )
 
 // TestSortieDeputy draws the sortie preparation of c20-battle with a benched officer as the first officer's deputy (the sortie-deputy demo) on
@@ -70,6 +72,22 @@ func TestSortieDeputy(t *testing.T) {
 		assert.Len(t, all, len(ids)+1)
 	})
 
+	t.Run("a deputy cannot be added to the sortie", func(t *testing.T) {
+		lead := g.selected
+		d.step(120)
+		d.step(124)
+		require.NotEmpty(t, g.servedBy(g.S.View(), g.selected))
+		draw(image.Pt(1280, 850), 100)
+		var start bool
+		for _, b := range g.buttons {
+			assert.NotEqual(t, "◀", b.label)
+			assert.NotEqual(t, "▶", b.label)
+			start = start || b.label == "출진 ›"
+		}
+		assert.True(t, start)
+		g.selected = lead
+	})
+
 	screens := []struct {
 		size  image.Point
 		scale int
@@ -97,4 +115,45 @@ func TestSortieDeputy(t *testing.T) {
 			})
 		}
 	}
+}
+
+func TestStoryManagementDeputy(t *testing.T) {
+	d, err := NewDemo("../..", DemoOptions{Name: "story-farewell"})
+	require.NoError(t, err)
+	g := d.g
+	defer g.Close()
+	g.fit(1280, 850)
+	dst := ebiten.NewImage(1280, 850)
+	defer dst.Deallocate()
+
+	result := g.request(session.Request{Op: "command", Command: core.Command{Kind: "next"}})
+	require.True(t, result.OK, result.Error)
+	require.Equal(t, "c13-wait-zhaoyun", g.S.View().Node)
+	result = g.request(session.Request{Op: "command", Command: core.Command{Kind: "learn", Actor: "liubei", Trait: "deputy_appoint"}})
+	require.True(t, result.OK, result.Error)
+	g.selected = "liubei"
+	g.Draw(dst)
+	g.pressLabel("관리")
+	require.Equal(t, "party", g.overlay())
+	g.Draw(dst)
+	g.pressLabel("부관")
+	require.Equal(t, 3, g.party.tab)
+	g.Draw(dst)
+	g.deputyPick = "jianyong"
+	g.Draw(dst)
+	g.pressLabel("간옹 임명")
+	require.Equal(t, "jianyong", g.officer(g.S.View(), "liubei").Deputy)
+	g.Draw(dst)
+	g.pressLabel("부관 해임")
+	assert.Empty(t, g.officer(g.S.View(), "liubei").Deputy)
+
+	require.NotContains(t, g.S.View().Deployment, "jianyong")
+	result = g.request(session.Request{Op: "command", Command: core.Command{Kind: "learn", Actor: "jianyong", Trait: "deputy_appoint"}})
+	require.True(t, result.OK, result.Error)
+	g.selected = "jianyong"
+	g.Draw(dst)
+	g.deputyPick = "guanyu"
+	g.Draw(dst)
+	g.pressLabel("관우 임명")
+	assert.Equal(t, "guanyu", g.officer(g.S.View(), "jianyong").Deputy)
 }

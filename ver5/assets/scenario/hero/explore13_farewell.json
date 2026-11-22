@@ -1,0 +1,18 @@
+{
+ "Hero": "liubei",
+ "Start": {"Area": "office", "At": [4, 3], "Face": "SE"},
+ "Areas": {
+  "office": {
+   "Map": "S_xiaopei_office",
+   "Name": "소패 관아",
+   "At": [4, 3],
+   "People": {
+    "조운": {
+     "At": [7, 5],
+     "Face": "NW",
+     "Event": [{"Node": "c13-hear-zhaoyun"}]
+    }
+   }
+  }
+ }
+}
