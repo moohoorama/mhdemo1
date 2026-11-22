@@ -148,8 +148,11 @@ func (e *Engine) zoc(u *Unit, x, y int) bool {
 }
 func (e *Engine) moves(u *Unit) []content.Point {
 	cost, _ := e.reach(u)
-	out := []content.Point{}
-	start := content.Point{X: u.X, Y: u.Y}
+	return moveDestinations(content.Point{X: u.X, Y: u.Y}, cost)
+}
+
+func moveDestinations(start content.Point, cost map[content.Point]int) []content.Point {
+	out := make([]content.Point, 0, len(cost))
 	for p := range cost {
 		if p != start {
 			out = append(out, p)
@@ -430,38 +433,8 @@ func (e *Engine) rangeFor(u *Unit, s content.Skill) (int, int) {
 }
 
 func (e *Engine) validateSkill(u *Unit, c Command, s content.Skill) (*Unit, error) {
-	if confused(u) {
-		return nil, fail("Confused")
-	}
-	if s.Kind == content.KindPhysical && u.Status["disarm"].Turns > 0 {
-		return nil, fail("Disarmed")
-	}
-	if c.Kind == "attack" {
-		if u.Acted || u.Attacked {
-			return nil, fail("ActionSpent")
-		}
-	} else {
-		if !contains(e.skills(e.char(u.Character)), c.Skill) {
-			return nil, fail("UnavailableSkill")
-		}
-		if u.Status["seal"].Turns > 0 && s.Kind != content.KindPhysical {
-			return nil, fail("Sealed")
-		}
-		if u.Acted {
-			return nil, fail("ActionSpent")
-		}
-	}
-	if _, ok := e.payable(u, e.cost(u, s)); !ok {
-		return nil, fail("InsufficientMP")
-	}
-	if hp := e.hpCost(u, s); hp > 0 && u.HP <= hp {
-		return nil, fail("InsufficientHP")
-	}
-	if s.Mode == content.ModeMelee && !e.canMelee(u) || s.Mode == content.ModeRanged && !e.canRange(u) {
-		return nil, fail("WrongAttackMode")
-	}
-	if s.Weapon != "" && e.weaponType(u) != s.Weapon {
-		return nil, fail("WrongWeapon")
+	if err := e.validateSkillUse(u, c, s); err != nil {
+		return nil, err
 	}
 	v := e.unit(c.Target)
 	if s.Mode == content.ModeSelf {
@@ -477,4 +450,41 @@ func (e *Engine) validateSkill(u *Unit, c Command, s content.Skill) (*Unit, erro
 		return nil, fail("OutOfRange")
 	}
 	return v, nil
+}
+
+func (e *Engine) validateSkillUse(u *Unit, c Command, s content.Skill) error {
+	if confused(u) {
+		return fail("Confused")
+	}
+	if s.Kind == content.KindPhysical && u.Status["disarm"].Turns > 0 {
+		return fail("Disarmed")
+	}
+	if c.Kind == "attack" {
+		if u.Acted || u.Attacked {
+			return fail("ActionSpent")
+		}
+	} else {
+		if !contains(e.skills(e.char(u.Character)), c.Skill) {
+			return fail("UnavailableSkill")
+		}
+		if u.Status["seal"].Turns > 0 && s.Kind != content.KindPhysical {
+			return fail("Sealed")
+		}
+		if u.Acted {
+			return fail("ActionSpent")
+		}
+	}
+	if _, ok := e.payable(u, e.cost(u, s)); !ok {
+		return fail("InsufficientMP")
+	}
+	if hp := e.hpCost(u, s); hp > 0 && u.HP <= hp {
+		return fail("InsufficientHP")
+	}
+	if s.Mode == content.ModeMelee && !e.canMelee(u) || s.Mode == content.ModeRanged && !e.canRange(u) {
+		return fail("WrongAttackMode")
+	}
+	if s.Weapon != "" && e.weaponType(u) != s.Weapon {
+		return fail("WrongWeapon")
+	}
+	return nil
 }

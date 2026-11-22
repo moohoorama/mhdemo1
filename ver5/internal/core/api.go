@@ -47,7 +47,7 @@ func (e *Engine) LegalActions(actor string) Options {
 		return out
 	}
 	u := e.unit(actor)
-	if e.state.Phase != "battle" || u == nil || u.HP <= 0 || !u.ActsIn(e.state.Turn, e.state.Army) || u.Done {
+	if !e.canOrder(u) {
 		return out
 	}
 	out.Commands = append(out.Commands, Command{Kind: "wait", Actor: actor})
@@ -88,6 +88,88 @@ func (e *Engine) LegalActions(actor string) Options {
 	}
 	return out
 }
+
+func (e *Engine) canOrder(u *Unit) bool {
+	return e.state.Phase == "battle" && u != nil && u.HP > 0 && u.ActsIn(e.state.Turn, e.state.Army) && !u.Done
+}
+
+// MoveAttackOptions returns legal destinations and the cheapest origin for a basic attack on each target.
+// Ties prefer staying put, then cells in map order.
+func (e *Engine) MoveAttackOptions(actor string) ([]content.Point, map[string]content.Point) {
+	u := e.unit(actor)
+	if len(e.state.Learning) > 0 || !e.canOrder(u) {
+		return nil, nil
+	}
+	start := content.Point{X: u.X, Y: u.Y}
+	cost, _ := e.reach(u)
+	moves := moveDestinations(start, cost)
+	s := e.basic()
+	if err := e.validateSkillUse(u, Command{Kind: "attack", Actor: actor}, s); err != nil {
+		return moves, nil
+	}
+	if s.Mode == content.ModeSelf {
+		return moves, map[string]content.Point{actor: start}
+	}
+
+	stage := e.data.Stages[e.state.Stage]
+	targets := make(map[content.Point]string)
+	leaving := make(map[content.Point]bool)
+	for id := range e.unitIDs {
+		v := e.unit(id)
+		if v.HP <= 0 || v.Faction == u.Faction {
+			continue
+		}
+		p := content.Point{X: v.X, Y: v.Y}
+		targets[p] = id
+		if content.Leaves(v.Policy) && slices.Contains(stage.GoalCells(v.Goal, v.GoalArea), p) {
+			leaving[p] = true
+		}
+	}
+	offsets := e.offsets(u, s)
+	attackFrom := make(map[string]content.Point)
+	record := func(id string, from content.Point) {
+		if old, found := attackFrom[id]; !found || cost[from] < cost[old] {
+			attackFrom[id] = from
+		}
+	}
+	check := func(from content.Point) {
+		for _, d := range offsets {
+			p := content.Point{X: from.X + d.X, Y: from.Y + d.Y}
+			if id, ok := targets[p]; ok && (from == start || !leaving[p]) {
+				record(id, from)
+			}
+		}
+	}
+	check(start)
+	if stage.TurnLimit > 0 && e.state.Round > stage.TurnLimit {
+		return moves, attackFrom
+	}
+	var exits []content.Point
+	if content.Leaves(u.Policy) {
+		exits = stage.GoalCells(u.Goal, u.GoalArea)
+	}
+	for _, p := range moves {
+		if !slices.Contains(exits, p) {
+			check(p)
+			continue
+		}
+		// An actor leaving the map can let battle events run before its next action.
+		sb, err := Restore(e.data, e.Snapshot())
+		if err != nil {
+			continue
+		}
+		if _, err := sb.Apply(Command{Kind: "move", Actor: actor, X: p.X, Y: p.Y}); err != nil {
+			continue
+		}
+		for _, c := range sb.LegalActions(actor).Commands {
+			if c.Kind == "attack" {
+				record(c.Target, p)
+			}
+		}
+	}
+	return moves, attackFrom
+}
+
 func (e *Engine) Preview(c Command) (Preview, error) {
 	u := e.unit(c.Actor)
 	if e.state.Phase != "battle" || u == nil || u.HP <= 0 {

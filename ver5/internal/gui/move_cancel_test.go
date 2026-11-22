@@ -11,7 +11,7 @@ import (
 )
 
 // moveGame is a started battle with the first ally ordered to a cell several steps away.
-func moveGame(t *testing.T) (*Game, core.UnitView, core.Command) {
+func moveGame(t testing.TB) (*Game, core.UnitView, core.Command) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
 	for _, n := range d.Nodes {

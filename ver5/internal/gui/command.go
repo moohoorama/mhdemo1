@@ -25,6 +25,7 @@ type order struct {
 	sub        string // skill, item
 	skillTab   string
 	pick       core.Command // the chosen action, Target unset
+	moves      []content.Point
 	attackFrom map[string]content.Point
 	armed      hoverCell // touch: the cell tapped once, waiting for a second tap
 }
@@ -68,49 +69,10 @@ func (g *Game) clearOrder() { g.ord = order{} }
 // begin starts an order for an ally that can still act.
 func (g *Game) begin(u core.UnitView) {
 	g.ord = order{actor: u.ID, stage: "move"}
-	g.ord.attackFrom = g.quickAttackPositions(u)
+	g.ord.moves, g.ord.attackFrom = g.S.Engine.MoveAttackOptions(u.ID)
 	if u.Moved {
 		g.ord.stage = "menu"
 	}
-}
-
-// quickAttackPositions uses the same legal commands as the action menu, including after a tentative move.
-func (g *Game) quickAttackPositions(u core.UnitView) map[string]content.Point {
-	result := map[string]content.Point{}
-	e := g.S.Engine
-	candidates := []content.Point{{X: u.X, Y: u.Y}}
-	for _, c := range e.LegalActions(u.ID).Commands {
-		if c.Kind == "move" {
-			candidates = append(candidates, content.Point{X: c.X, Y: c.Y})
-		}
-	}
-	costs := e.MoveCosts(u.ID)
-	sort.SliceStable(candidates, func(i, j int) bool {
-		return costs[candidates[i]] < costs[candidates[j]]
-	})
-	for _, p := range candidates {
-		var sb *core.Engine
-		if p.X == u.X && p.Y == u.Y {
-			sb = e
-		} else {
-			var err error
-			sb, err = core.Restore(g.S.Data, e.Snapshot())
-			if err != nil {
-				continue
-			}
-			if _, err = sb.Apply(core.Command{Kind: "move", Actor: u.ID, X: p.X, Y: p.Y}); err != nil {
-				continue
-			}
-		}
-		for _, c := range sb.LegalActions(u.ID).Commands {
-			if c.Kind == "attack" {
-				if _, ok := result[c.Target]; !ok {
-					result[c.Target] = p
-				}
-			}
-		}
-	}
-	return result
 }
 
 // cancel steps the order back one stage (right click or Esc); dropping the order also
@@ -237,8 +199,8 @@ func (g *Game) mapClick(x, y int) {
 				return
 			}
 		}
-		for _, c := range g.S.Engine.LegalActions(g.ord.actor).Commands {
-			if c.Kind == "move" && c.X == x && c.Y == y {
+		for _, p := range g.ord.moves {
+			if p.X == x && p.Y == y {
 				if g.arm(x, y) {
 					return
 				}
@@ -539,10 +501,8 @@ func (g *Game) orderMarks(o core.Observation) []Highlight {
 	}
 	switch g.ord.stage {
 	case "move":
-		for _, c := range g.S.Engine.LegalActions(g.ord.actor).Commands {
-			if c.Kind == "move" {
-				add(content.Point{X: c.X, Y: c.Y}, color.RGBA{60, 130, 230, 110})
-			}
+		for _, p := range g.ord.moves {
+			add(p, color.RGBA{60, 130, 230, 110})
 		}
 		for _, u := range o.UnitViews {
 			if _, ok := g.ord.attackFrom[u.ID]; ok {
