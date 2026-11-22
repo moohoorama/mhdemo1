@@ -16,8 +16,12 @@ func init() {
 
 // demoJump starts at the waypoint node with every learning window closed.
 func (d *Demo) demoJump(node string) error {
+	return d.demoJumpAtLevel(node, 0)
+}
+
+func (d *Demo) demoJumpAtLevel(node string, level int) error {
 	g := d.g
-	if r := g.request(session.Request{Op: "jump", Seed: 1, Node: node}); !r.OK {
+	if r := g.request(session.Request{Op: "jump", Seed: 1, Node: node, Level: level}); !r.OK {
 		return fmt.Errorf("jump %s: %s", node, r.Error)
 	}
 	for l := g.S.View().Learners; len(l) > 0; l = g.S.View().Learners {

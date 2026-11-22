@@ -11,7 +11,8 @@ func init() { demos["story-farewell"] = demoStoryFarewell }
 
 // demoStoryFarewell shows 장비's notice, the walk, deputy appointment and 조운's equipment before the farewell.
 func demoStoryFarewell(d *Demo) error {
-	if err := d.demoJump("c13-start"); err != nil {
+	level := d.g.S.Data.Rules.PromoteLevels[0]
+	if err := d.demoJumpAtLevel("c13-start", level); err != nil {
 		return err
 	}
 	g := d.g
