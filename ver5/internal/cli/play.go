@@ -12,6 +12,7 @@ import (
 	"srpg/internal/content"
 	"srpg/internal/core"
 	"srpg/internal/session"
+	"srpg/internal/storage"
 )
 
 // RunHuman plays the game as numbered menus: every screen ends with its choices, the answer is
@@ -162,8 +163,12 @@ func (p *player) loadScreen() {
 	p.printf("\n불러오기 (0: 뒤로)\n")
 	for _, slot := range slots {
 		name := "슬롯 " + slot
-		if n, ok := strings.CutPrefix(slot, "auto"); ok {
-			name = "자동 저장 " + n
+		if n, ok := strings.CutPrefix(slot, string(storage.AutoScenario)); ok {
+			name = "자동 시나리오 " + n
+		} else if n, ok := strings.CutPrefix(slot, string(storage.AutoBattle)); ok {
+			name = "자동 전투 " + n
+		} else if n, ok := strings.CutPrefix(slot, string(storage.LegacyAuto)); ok {
+			name = "이전 자동 저장 " + n
 		}
 		p.add(name, func() {
 			if p.request(session.Request{Op: "load", Slot: slot, Discard: true}) {

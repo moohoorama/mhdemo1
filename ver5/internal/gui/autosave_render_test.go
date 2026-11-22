@@ -20,6 +20,7 @@ func TestRenderedAutosaveSlots(t *testing.T) {
 	}
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
+	story := core.New(d, 17).Snapshot()
 	for _, n := range d.Nodes {
 		if n.Kind == "battle" && n.Stage == d.Stages[0].ID {
 			d.Campaign.Start = n.ID
@@ -43,6 +44,8 @@ func TestRenderedAutosaveSlots(t *testing.T) {
 		state.Round = round
 		require.NoError(t, s.Store.Autosave(state))
 	}
+	require.NoError(t, s.Store.Autosave(story))
+	require.NoError(t, s.Store.Save("auto1", story, false))
 	require.NoError(t, s.Store.Save("1", s.Engine.Snapshot(), false))
 	g, err := New(s, "../../assets/fonts/NotoSansKR.ttf", 17, "")
 	require.NoError(t, err)
@@ -80,34 +83,50 @@ func (p *autosaveRenderTest) Update() error {
 	g := p.g
 	switch p.step {
 	case 0:
-		auto, manual := 0, 0
+		counts := map[storage.SlotGroup]int{}
 		for _, r := range g.saves.rows {
-			if r.ok && storage.IsAutoSlot(r.slot) {
-				auto++
-			}
-			if r.ok && storage.IsManualSlot(r.slot) {
-				manual++
+			if r.ok {
+				counts[r.group]++
 			}
 		}
-		if auto != 4 || manual != 1 || g.saves.auto || g.saves.pick != "1" {
-			p.err = fmt.Errorf("slots: %d automatic, %d manual, auto tab %t, pick %s", auto, manual, g.saves.auto, g.saves.pick)
+		if counts[storage.AutoBattle] != 4 || counts[storage.AutoScenario] != 2 || counts[storage.Manual] != 1 ||
+			g.saves.group != storage.Manual || g.saves.pick != "1" {
+			p.err = fmt.Errorf("slots: %v, tab %q, pick %s", counts, g.saves.group, g.saves.pick)
 			return ebiten.Termination
 		}
 		g.openOverlay("save")
 	case 1:
-		if g.saves.auto {
+		if g.saves.group != storage.Manual {
 			p.err = fmt.Errorf("automatic slots writable in manual menu")
 			return ebiten.Termination
 		}
 		g.openOverlay("load")
 	case 2:
-		g.showSaveTab(true)
-		g.saves.pick = "auto4"
-		p.step++
-		return nil
+		for _, b := range g.buttons {
+			if b.label == "자동 시나리오" && b.click != nil {
+				b.click()
+				break
+			}
+		}
+		if g.saves.group != storage.AutoScenario {
+			p.err = fmt.Errorf("scenario autosave tab cannot be selected")
+			return ebiten.Termination
+		}
 	case 3:
 		for _, b := range g.buttons {
-			if b.label == "확인" && b.click != nil {
+			if b.label == "자동 전투" && b.click != nil {
+				b.click()
+				break
+			}
+		}
+		if g.saves.group != storage.AutoBattle {
+			p.err = fmt.Errorf("battle autosave tab cannot be selected")
+			return ebiten.Termination
+		}
+		g.saves.pick = "auto-battle4"
+	case 4:
+		for _, b := range g.buttons {
+			if b.label == "불러오기" && b.click != nil {
 				b.click()
 				p.step++
 				return nil
@@ -115,7 +134,7 @@ func (p *autosaveRenderTest) Update() error {
 		}
 		p.err = fmt.Errorf("automatic slot 4 cannot be loaded")
 		return ebiten.Termination
-	case 4:
+	case 5:
 		return ebiten.Termination
 	}
 	p.step++
@@ -126,7 +145,7 @@ func (p *autosaveRenderTest) Draw(dst *ebiten.Image) {
 		return
 	}
 	p.g.Draw(dst)
-	if name, ok := map[int]string{0: "load", 1: "save", 3: "load-auto"}[p.step]; ok {
+	if name, ok := map[int]string{0: "load", 1: "save", 3: "load-auto-scenario", 4: "load-auto-battle"}[p.step]; ok {
 		p.err = saveDuelFrame(dst, filepath.Join(p.out, name+".png"))
 	}
 	p.drawn = true

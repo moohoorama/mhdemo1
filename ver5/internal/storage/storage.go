@@ -14,21 +14,43 @@ import (
 
 type Store struct{ Dir string }
 
-// SlotCount is how many slots each of the manual and the automatic saves has.
+// SlotCount is the number of slots in each save group.
 const SlotCount = 10
 
-// ManualSlots are the player's slots "1".."10"; AutoSlots are "auto1".."auto10", written only by Autosave.
-func ManualSlots() []string { return slotIDs("") }
-func AutoSlots() []string   { return slotIDs("auto") }
-func slotIDs(prefix string) []string {
+type SlotGroup string
+
+const (
+	Manual       SlotGroup = ""
+	AutoScenario SlotGroup = "auto-scenario"
+	AutoBattle   SlotGroup = "auto-battle"
+	LegacyAuto   SlotGroup = "auto"
+)
+
+func (group SlotGroup) Slots() []string {
 	out := make([]string, SlotCount)
 	for i := range out {
-		out[i] = fmt.Sprint(prefix, i+1)
+		out[i] = fmt.Sprint(string(group), i+1)
 	}
 	return out
 }
+
+func ManualSlots() []string { return Manual.Slots() }
+func AutoSlots() []string {
+	return slices.Concat(AutoScenario.Slots(), AutoBattle.Slots(), LegacyAuto.Slots())
+}
+
 func IsManualSlot(slot string) bool { return slices.Contains(ManualSlots(), slot) }
 func IsAutoSlot(slot string) bool   { return slices.Contains(AutoSlots(), slot) }
+
+// AutoGroup classifies a snapshot for saving and for displaying legacy slots.
+func AutoGroup(state core.State) SlotGroup {
+	switch state.Phase {
+	case "deployment", "battle", "result":
+		return AutoBattle
+	default:
+		return AutoScenario
+	}
+}
 
 type Settings struct {
 	Replay      string `json:"replay"` // how an AI army's turn plays: "together", "spells" (a stratagem plays alone) or "one" action at a time
@@ -245,10 +267,10 @@ func (s Store) Latest() (string, bool) {
 	return best, best != ""
 }
 
-// Autosave stores the next snapshot and the rotation sequence in the same atomic write.
+// Autosave rotates through the snapshot's group and writes its sequence in the same atomic write.
 func (s Store) Autosave(state core.State) error {
 	var latest uint64
-	slots := AutoSlots()
+	slots := AutoGroup(state).Slots()
 	for _, slot := range slots {
 		p, _ := s.path(slot)
 		b, err := os.ReadFile(p)

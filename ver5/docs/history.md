@@ -16,6 +16,13 @@
 - `assets/data/game.json`: 어려움 경험치 배율 100%에서 90%, 매우 어려움 85%에서 80%로 조정 — 아군의 전투 성장 속도를 낮춤.
 - `docs/stage_lv_balance.md`: 두 난이도의 경험치 배율과 조정 이유를 갱신 — 밸런스 기준을 게임 설정과 일치시킴.
 
+## 2026-11-21 시나리오와 전투 자동 저장 분리
+
+- `internal/storage/storage.go`: 시나리오와 전투의 자동 저장 슬롯 열 칸씩을 독립 순환 — 전투 턴 저장이 출진 직전 저장을 밀어내지 않도록 함.
+- `internal/gui/save_window.go`, `internal/cli/play.go`: 자동 시나리오·자동 전투·수동 분류와 기존 자동 저장 접근 지원 — 원하는 저장을 찾아 복원.
+- `internal/storage/autosave_test.go`, `internal/session/autosave_test.go`, `internal/gui/autosave_render_test.go`·`uidemo_saves.go`: 회전과 복원 시험 및 저장·불러오기 화면 재현 — 저장 분리와 호환 검증.
+- `docs/plan-autosave-tabs.md`·`system-save.md`·`logic-campaign.md`: 탭, 슬롯 ID, 보존 규칙 기록 — 실제 저장 동작 설명.
+
 ## 2026-11-21 전투 부대 선택 속도 개선
 
 - `internal/core/api.go`·`rules.go`: 이동 범위를 한 번 구하고 일반 공격 사거리를 각 후보에 적용 — 후보마다 전투 상태를 복제하는 비용을 줄이고 기존 이동 비용 순서를 유지.

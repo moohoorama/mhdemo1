@@ -29,7 +29,7 @@ func TestAutosaveAtAlliedRoundStarts(t *testing.T) {
 	for _, mode := range []string{"resolve", "advance", "auto", "ai"} {
 		t.Run(mode, func(t *testing.T) {
 			s := autosaveBattle(t)
-			first, err := s.Store.Load("auto1")
+			first, err := s.Store.Load("auto-battle1")
 			require.NoError(t, err)
 			assert.Equal(t, "battle", first.Phase)
 			assert.Equal(t, "ally", first.Turn)
@@ -58,7 +58,7 @@ func TestAutosaveAtAlliedRoundStarts(t *testing.T) {
 				require.Equal(t, "ally", s.Engine.Observe().Turn)
 				assert.Equal(t, round, s.Engine.Observe().Round)
 			}
-			for slot, round := range map[string]int{"auto1": 11, "auto2": 12, "auto3": 3, "auto10": 10} {
+			for slot, round := range map[string]int{"auto-battle1": 11, "auto-battle2": 12, "auto-battle3": 3, "auto-battle10": 10} {
 				state, err := s.Store.Load(slot)
 				require.NoError(t, err)
 				assert.Equal(t, round, state.Round)
@@ -74,12 +74,12 @@ func TestAutosaveAtAlliedRoundStarts(t *testing.T) {
 			manual, err := s.Store.Load("1")
 			require.NoError(t, err)
 			assert.Equal(t, 1, manual.Round)
-			request(t, s, Request{Op: "load", Slot: "auto3", Discard: true})
+			request(t, s, Request{Op: "load", Slot: "auto-battle3", Discard: true})
 			assert.Len(t, s.Store.Slots(), 11)
 			request(t, s, Request{Op: "command", Command: core.Command{Kind: "end"}})
 			_, err = s.ResolvePhase()
 			require.NoError(t, err)
-			latest, err := s.Store.Load("auto3")
+			latest, err := s.Store.Load("auto-battle3")
 			require.NoError(t, err)
 			assert.Equal(t, 4, latest.Round)
 		})
@@ -88,12 +88,14 @@ func TestAutosaveAtAlliedRoundStarts(t *testing.T) {
 
 func TestAutosaveSlotsAreReadOnlyForManualSave(t *testing.T) {
 	s := autosaveBattle(t)
-	before, err := s.Store.Load("auto1")
+	before, err := s.Store.Load("auto-battle1")
 	require.NoError(t, err)
-	r := s.Handle(Request{Op: "save", Slot: "auto1", Overwrite: true})
-	assert.False(t, r.OK)
-	assert.Equal(t, "InvalidSlot", r.Error)
-	after, err := s.Store.Load("auto1")
+	for _, slot := range []string{"auto1", "auto-scenario1", "auto-battle1"} {
+		r := s.Handle(Request{Op: "save", Slot: slot, Overwrite: true})
+		assert.False(t, r.OK)
+		assert.Equal(t, "InvalidSlot", r.Error)
+	}
+	after, err := s.Store.Load("auto-battle1")
 	require.NoError(t, err)
 	assert.Equal(t, before, after)
 }
@@ -102,7 +104,7 @@ func TestAutosaveFailureKeepsAppliedCommand(t *testing.T) {
 	s := autosaveBattle(t)
 	request(t, s, Request{Op: "command", Command: core.Command{Kind: "end"}})
 	// Block the next automatic slot; the resolved phase must still reach the new round.
-	require.NoError(t, os.Mkdir(filepath.Join(s.Store.Dir, "slot-auto2.json"), 0700))
+	require.NoError(t, os.Mkdir(filepath.Join(s.Store.Dir, "slot-auto-battle2.json"), 0700))
 	actions, err := s.ResolvePhase()
 	require.NoError(t, err)
 	assert.Equal(t, 2, s.Engine.Observe().Round)
@@ -161,9 +163,9 @@ func TestAutosaveBeforeSortie(t *testing.T) {
 	request(t, s, Request{Op: "command", Command: core.Command{Kind: "sortie", Target: "관우"}})
 	assert.Equal(t, "pre", s.Engine.Observe().Node)
 
-	request(t, s, Request{Op: "load", Slot: "auto1", Discard: true})
+	request(t, s, Request{Op: "load", Slot: "auto-scenario1", Discard: true})
 	o := s.Engine.Observe()
 	assert.Equal(t, "walk", o.Node, "the save walks again before the confidant is answered")
 	assert.Equal(t, content.Spot{Area: "street", At: [2]int{2, 3}, Face: "NW"}, o.Spot)
-	assert.Equal(t, []string{"auto1"}, s.Store.Slots())
+	assert.Equal(t, []string{"auto-scenario1"}, s.Store.Slots())
 }

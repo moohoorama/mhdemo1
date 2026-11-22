@@ -12,10 +12,6 @@ import (
 	"srpg/internal/storage"
 )
 
-// The save and load windows list the slots in a table that sorts by its headers: the load window in two tabs, the
-// automatic saves (before each sortie and at each allied turn of a battle) and the player's own; the save window
-// only the player's. A row is picked first and 확인 saves or loads it.
-
 const (
 	saveW, saveH = 860, 640
 	saveRowH     = 36
@@ -24,17 +20,18 @@ const (
 // saveRow is one slot as the table shows it; ok is false for an empty slot, bad for one that cannot be read.
 type saveRow struct {
 	slot, kind, place string
+	group             storage.SlotGroup
 	num, chapter, lv  int
 	at                time.Time
-	ok, bad           bool
+	ok, bad, legacy   bool
 }
 
 // saveList is the state of the save and load windows: the tab, the slot picked and the table.
 type saveList struct {
-	auto bool
-	pick string
-	list tableList
-	rows map[string]saveRow
+	group storage.SlotGroup
+	pick  string
+	list  tableList
+	rows  map[string]saveRow
 }
 
 // openSaves reads the slots and picks, for saving, the slot last used; for loading, the newest save, in its tab.
@@ -50,14 +47,14 @@ func (g *Game) openSaves(op string) {
 			newest = r
 		}
 	}
-	g.showSaveTab(storage.IsAutoSlot(newest.slot))
+	g.showSaveTab(newest.group)
 	g.saves.pick = newest.slot
 }
 
 // showSaveTab switches the load window's tab; the automatic saves sort newest first.
-func (g *Game) showSaveTab(auto bool) {
-	g.saves.auto, g.saves.pick, g.saves.list = auto, "", tableList{}
-	if auto {
+func (g *Game) showSaveTab(group storage.SlotGroup) {
+	g.saves.group, g.saves.pick, g.saves.list = group, "", tableList{}
+	if group != storage.Manual {
 		g.saves.list.order = tableSort{"at", 2}
 	}
 }
@@ -66,19 +63,27 @@ func (g *Game) showSaveTab(auto bool) {
 func (g *Game) readSlots() map[string]saveRow {
 	d := g.S.Data
 	out := map[string]saveRow{}
-	for _, ids := range [][]string{storage.ManualSlots(), storage.AutoSlots()} {
-		for i, slot := range ids {
-			r := saveRow{slot: slot, num: i + 1}
-			out[slot] = r
+	for _, group := range []storage.SlotGroup{storage.Manual, storage.AutoScenario, storage.AutoBattle, storage.LegacyAuto} {
+		for i, slot := range group.Slots() {
+			r := saveRow{slot: slot, num: i + 1, group: group, legacy: group == storage.LegacyAuto}
 			if !g.S.Store.Exists(slot) {
+				if group != storage.LegacyAuto {
+					out[slot] = r
+				}
 				continue
 			}
 			r.ok, r.at = true, g.S.Store.SavedAt(slot)
 			s, err := g.S.Store.Load(slot)
 			if err != nil {
 				r.bad, r.place = true, "읽을 수 없음"
+				if group == storage.LegacyAuto {
+					r.group = storage.AutoBattle
+				}
 				out[slot] = r
 				continue
+			}
+			if group == storage.LegacyAuto {
+				r.group = storage.AutoGroup(s)
 			}
 			r.kind, r.place = "스토리", "이야기"
 			switch s.Phase {
@@ -132,7 +137,12 @@ func (g *Game) saveColumns() []column[saveRow] {
 		}}
 	}
 	return []column[saveRow]{
-		{key: "slot", label: "칸", w: 60, get: func(r *saveRow) (string, float64) { return fmt.Sprint(r.num), float64(r.num) }},
+		{key: "slot", label: "칸", w: 80, get: func(r *saveRow) (string, float64) {
+			if r.legacy {
+				return fmt.Sprintf("이전 %d", r.num), float64(r.num)
+			}
+			return fmt.Sprint(r.num), float64(r.num)
+		}},
 		{key: "kind", label: "구분", w: 90, text: true, get: func(r *saveRow) (string, float64) { return r.kind, 0 }},
 		num("chapter", "장", 70, func(r *saveRow) int { return r.chapter }),
 		{key: "place", label: "장소", text: true, left: true, get: func(r *saveRow) (string, float64) {
@@ -156,23 +166,38 @@ func (g *Game) saveWindow(dst *ebiten.Image, op string, x, y, w, h int) {
 	v := &g.saves
 	left, top := x+32, y+60
 	if op == "load" {
-		g.choiceBtn(dst, image.Rect(left, top, left+140, top+34), "자동 저장", v.auto, func() { g.showSaveTab(true) })
-		g.choiceBtn(dst, image.Rect(left+146, top, left+286, top+34), "일반 저장", !v.auto, func() { g.showSaveTab(false) })
+		for i, tab := range []struct {
+			group storage.SlotGroup
+			label string
+		}{{storage.AutoScenario, "자동 시나리오"}, {storage.AutoBattle, "자동 전투"}, {storage.Manual, "수동"}} {
+			tx := left + i*146
+			g.choiceBtn(dst, image.Rect(tx, top, tx+140, top+34), tab.label, v.group == tab.group, func() { g.showSaveTab(tab.group) })
+		}
 		top += 46
 	}
-	note := map[string]string{"save": "저장할 칸을 고르고 확인을 누르십시오.", "load": "불러올 저장을 고르고 확인을 누르십시오."}[op]
-	if op == "load" && v.auto {
-		note = "출진 직전과 전투의 아군 차례마다 저절로 저장됩니다."
+	group := storage.Manual
+	if op == "load" {
+		group = v.group
+	}
+	note := map[string]string{"save": "저장할 칸을 고르고 저장을 누르십시오.", "load": "불러올 저장을 고르고 불러오기를 누르십시오."}[op]
+	switch group {
+	case storage.AutoScenario:
+		note = "출진 직전의 시나리오 진행을 저장합니다."
+	case storage.AutoBattle:
+		note = "전투 시작과 매 아군 턴 시작에 저장합니다."
 	}
 	g.label(dst, note, float64(left), float64(top), 14, muted)
 	top += 30
-	ids := storage.ManualSlots()
-	if op == "load" && v.auto {
-		ids = storage.AutoSlots()
+	rows := make([]saveRow, 0, storage.SlotCount)
+	for _, id := range group.Slots() {
+		rows = append(rows, v.rows[id])
 	}
-	rows := make([]saveRow, len(ids))
-	for i, id := range ids {
-		rows[i] = v.rows[id]
+	if group != storage.Manual {
+		for _, id := range storage.LegacyAuto.Slots() {
+			if r, ok := v.rows[id]; ok && r.group == group {
+				rows = append(rows, r)
+			}
+		}
 	}
 	usable := func(r *saveRow) bool { return op == "save" || r.ok && !r.bad }
 	drawTable(g, dst, &v.list, table[saveRow]{
