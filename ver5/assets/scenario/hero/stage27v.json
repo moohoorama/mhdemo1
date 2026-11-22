@@ -10,9 +10,11 @@
  "Victory": [
   {
    "If": [
-    "any:[defeated:caoren, at:ally:60]"
+    "alldefeated:cai-fleet",
+    "alldefeated:cai",
+    "any:[at:zhouyu:60, at:navy:60, at:liuqi-fleet:60]"
    ],
-   "Text": "조인을 물리치거나 관청에 선다"
+   "Text": "채모 수군을 물리치고 양양성을 점령한다"
   }
  ],
  "Defeat": [
@@ -26,9 +28,9 @@
   },
   {
    "If": [
-    "any:[defeated:zhouyu, flag:flag-b27v-camps-lost]"
+    "defeated:zhouyu"
    ],
-   "Text": "주유 퇴각, 또는 진채 넷 함락"
+   "Text": "주유 퇴각"
   }
  ],
  "Sub": [
@@ -45,17 +47,6 @@
    "Reward": {
     "insu_high": 1
    }
-  },
-  {
-   "ID": "caimao",
-   "Text": "채모를 물리친다",
-   "If": [
-    "defeated:caimao"
-   ],
-   "Flag": "flag-b27v-caimao",
-   "Reward": {
-    "treasure_sword": 1
-   }
   }
  ],
  "TurnLimit": 22,
@@ -67,20 +58,28 @@
    "Y": 9
   },
   {
+   "X": 6,
+   "Y": 17
+  },
+  {
+   "X": 14,
+   "Y": 23
+  },
+  {
+   "X": 21,
+   "Y": 23
+  },
+  {
    "X": 5,
    "Y": 10
   },
   {
    "X": 7,
-   "Y": 8
-  },
-  {
-   "X": 6,
-   "Y": 17
+   "Y": 10
   },
   {
    "X": 5,
-   "Y": 16
+   "Y": 18
   },
   {
    "X": 7,
@@ -88,19 +87,11 @@
   },
   {
    "X": 14,
-   "Y": 23
-  },
-  {
-   "X": 13,
-   "Y": 22
+   "Y": 24
   },
   {
    "X": 21,
-   "Y": 23
-  },
-  {
-   "X": 22,
-   "Y": 22
+   "Y": 24
   }
  ],
  "Recommend": {
@@ -120,8 +111,8 @@
  "Party": [
   {
    "Character": "zhouyu",
-   "X": 32,
-   "Y": 11,
+   "X": 31,
+   "Y": 7,
    "AI": true,
    "Group": "zhouyu",
    "Policy": "hold",
@@ -130,8 +121,8 @@
   },
   {
    "Character": "ganning",
-   "X": 30,
-   "Y": 5,
+   "X": 25,
+   "Y": 4,
    "AI": true,
    "Group": "navy",
    "Policy": "assault",
@@ -140,8 +131,8 @@
   },
   {
    "Character": "huanggai",
-   "X": 31,
-   "Y": 9,
+   "X": 25,
+   "Y": 6,
    "AI": true,
    "Group": "navy",
    "Policy": "assault",
@@ -150,7 +141,7 @@
   },
   {
    "Character": "troop_footman",
-   "X": 30,
+   "X": 26,
    "Y": 4,
    "AI": true,
    "Group": "navy",
@@ -161,7 +152,29 @@
   },
   {
    "Character": "troop_archer",
-   "X": 31,
+   "X": 27,
+   "Y": 5,
+   "AI": true,
+   "Group": "navy",
+   "Policy": "assault",
+   "Faction": "wu",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 28,
+   "Y": 6,
+   "AI": true,
+   "Group": "navy",
+   "Policy": "assault",
+   "Faction": "wu",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 27,
    "Y": 4,
    "AI": true,
    "Group": "navy",
@@ -172,7 +185,7 @@
   },
   {
    "Character": "troop_footman",
-   "X": 32,
+   "X": 28,
    "Y": 5,
    "AI": true,
    "Group": "navy",
@@ -183,7 +196,7 @@
   },
   {
    "Character": "troop_archer",
-   "X": 30,
+   "X": 27,
    "Y": 6,
    "AI": true,
    "Group": "navy",
@@ -194,8 +207,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 32,
-   "Y": 7,
+   "X": 29,
+   "Y": 4,
    "AI": true,
    "Group": "navy",
    "Policy": "assault",
@@ -205,30 +218,8 @@
   },
   {
    "Character": "troop_archer",
-   "X": 30,
-   "Y": 8,
-   "AI": true,
-   "Group": "navy",
-   "Policy": "assault",
-   "Faction": "wu",
-   "Shift": -0.07,
-   "Facing": "NW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 32,
-   "Y": 9,
-   "AI": true,
-   "Group": "navy",
-   "Policy": "assault",
-   "Faction": "wu",
-   "Shift": -0.07,
-   "Facing": "NW"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 30,
-   "Y": 10,
+   "X": 29,
+   "Y": 5,
    "AI": true,
    "Group": "navy",
    "Policy": "assault",
@@ -238,21 +229,21 @@
   },
   {
    "Character": "liuqi",
+   "X": 30,
+   "Y": 8,
+   "AI": true,
+   "Group": "liuqi-fleet",
+   "Policy": "assault",
+   "Faction": "liuqi",
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
    "X": 31,
-   "Y": 16,
+   "Y": 8,
    "AI": true,
    "Group": "liuqi-fleet",
-   "Policy": "hold",
-   "Faction": "liuqi",
-   "Facing": "NW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 30,
-   "Y": 15,
-   "AI": true,
-   "Group": "liuqi-fleet",
-   "Policy": "hold",
+   "Policy": "assault",
    "Faction": "liuqi",
    "Shift": -0.07,
    "Facing": "NW"
@@ -260,10 +251,10 @@
   {
    "Character": "troop_footman",
    "X": 32,
-   "Y": 15,
+   "Y": 9,
    "AI": true,
    "Group": "liuqi-fleet",
-   "Policy": "hold",
+   "Policy": "assault",
    "Faction": "liuqi",
    "Shift": -0.07,
    "Facing": "NW"
@@ -271,567 +262,579 @@
   {
    "Character": "troop_footman",
    "X": 30,
-   "Y": 17,
+   "Y": 9,
    "AI": true,
    "Group": "liuqi-fleet",
-   "Policy": "hold",
+   "Policy": "assault",
    "Faction": "liuqi",
    "Shift": -0.07,
    "Facing": "NW"
   },
   {
    "Character": "troop_footman",
-   "X": 32,
-   "Y": 17,
+   "X": 31,
+   "Y": 10,
    "AI": true,
    "Group": "liuqi-fleet",
-   "Policy": "hold",
+   "Policy": "assault",
    "Faction": "liuqi",
    "Shift": -0.07,
    "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 5,
+   "Y": 9,
+   "AI": true,
+   "Rank": "troop",
+   "Facing": "NW",
+   "Group": "camp-defenders-1",
+   "Policy": "hold",
+   "Faction": "shu"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 7,
+   "Y": 9,
+   "AI": true,
+   "Rank": "troop",
+   "Facing": "NW",
+   "Group": "camp-defenders-1",
+   "Policy": "hold",
+   "Faction": "shu"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 5,
+   "Y": 17,
+   "AI": true,
+   "Rank": "troop",
+   "Facing": "NW",
+   "Group": "camp-defenders-2",
+   "Policy": "hold",
+   "Faction": "shu"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 7,
+   "Y": 17,
+   "AI": true,
+   "Rank": "troop",
+   "Facing": "NW",
+   "Group": "camp-defenders-2",
+   "Policy": "hold",
+   "Faction": "shu"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 13,
+   "Y": 23,
+   "AI": true,
+   "Rank": "troop",
+   "Facing": "NE",
+   "Group": "camp-defenders-3",
+   "Policy": "hold",
+   "Faction": "shu"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 15,
+   "Y": 23,
+   "AI": true,
+   "Rank": "troop",
+   "Facing": "NE",
+   "Group": "camp-defenders-3",
+   "Policy": "hold",
+   "Faction": "shu"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 20,
+   "Y": 23,
+   "AI": true,
+   "Rank": "troop",
+   "Facing": "NE",
+   "Group": "camp-defenders-4",
+   "Policy": "hold",
+   "Faction": "shu"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 22,
+   "Y": 23,
+   "AI": true,
+   "Rank": "troop",
+   "Facing": "NE",
+   "Group": "camp-defenders-4",
+   "Policy": "hold",
+   "Faction": "shu"
   }
  ],
  "Enemies": [
   {
    "Character": "caimao",
-   "X": 17,
-   "Y": 1,
+   "X": 21,
+   "Y": 5,
    "Rank": "commander",
    "Group": "cai-fleet",
    "Policy": "assault",
    "Faction": "jing",
-   "Facing": "SE"
+   "Facing": "SE",
+   "HPPct": 68,
+   "Shift": -0.15
   },
   {
    "Character": "caizhong",
-   "X": 15,
-   "Y": 1,
+   "X": 21,
+   "Y": 4,
    "Group": "cai",
    "Policy": "assault",
    "Faction": "jing",
-   "Facing": "SE"
+   "Facing": "SE",
+   "HPPct": 68,
+   "Shift": -0.15
   },
   {
    "Character": "caihe",
-   "X": 19,
-   "Y": 1,
+   "X": 21,
+   "Y": 6,
    "Group": "cai",
    "Policy": "assault",
    "Faction": "jing",
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 13,
-   "Y": 2,
-   "Group": "cai-fleet",
-   "Policy": "assault",
    "Facing": "SE",
-   "Shift": -0.12,
-   "Faction": "jing"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 14,
-   "Y": 2,
-   "Group": "cai-fleet",
-   "Policy": "assault",
-   "Facing": "SE",
-   "Shift": -0.12,
-   "Faction": "jing"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 16,
-   "Y": 2,
-   "Group": "cai-fleet",
-   "Policy": "assault",
-   "Facing": "SE",
-   "Shift": -0.12,
-   "Faction": "jing"
+   "HPPct": 68,
+   "Shift": -0.15
   },
   {
    "Character": "troop_footman",
    "X": 18,
-   "Y": 2,
+   "Y": 6,
    "Group": "cai-fleet",
    "Policy": "assault",
    "Facing": "SE",
-   "Shift": -0.12,
-   "Faction": "jing"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 20,
-   "Y": 2,
-   "Group": "cai-fleet",
-   "Policy": "assault",
-   "Facing": "SE",
-   "Shift": -0.12,
-   "Faction": "jing"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 21,
-   "Y": 2,
-   "Group": "cai-fleet",
-   "Policy": "assault",
-   "Facing": "SE",
-   "Shift": -0.12,
-   "Faction": "jing"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 14,
-   "Y": 0,
-   "Group": "cai-fleet",
-   "Policy": "assault",
-   "Facing": "SE",
-   "Shift": -0.12,
-   "Faction": "jing"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 16,
-   "Y": 0,
-   "Group": "cai-fleet",
-   "Policy": "assault",
-   "Facing": "SE",
-   "Shift": -0.12,
-   "Faction": "jing"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 18,
-   "Y": 0,
-   "Group": "cai-fleet",
-   "Policy": "assault",
-   "Facing": "SE",
-   "Shift": -0.12,
-   "Faction": "jing"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 20,
-   "Y": 0,
-   "Group": "cai-fleet",
-   "Policy": "assault",
-   "Facing": "SE",
-   "Shift": -0.12,
-   "Faction": "jing"
-  },
-  {
-   "Character": "caoren",
-   "X": 17,
-   "Y": 11,
-   "Rank": "commander",
-   "Group": "caoren",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 16,
-   "Y": 13,
-   "Group": "castle",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Shift": -0.12
-  },
-  {
-   "Character": "troop_footman",
-   "X": 18,
-   "Y": 13,
-   "Group": "castle",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Shift": -0.12
-  },
-  {
-   "Character": "troop_footman",
-   "X": 17,
-   "Y": 12,
-   "Group": "castle",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Shift": -0.12
-  },
-  {
-   "Character": "troop_footman",
-   "X": 12,
-   "Y": 13,
-   "Group": "castle",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Shift": -0.12
-  },
-  {
-   "Character": "troop_footman",
-   "X": 17,
-   "Y": 18,
-   "Group": "castle",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Shift": -0.12
-  },
-  {
-   "Character": "troop_footman",
-   "X": 15,
-   "Y": 15,
-   "Group": "castle",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Shift": -0.12
+   "Shift": -0.15,
+   "Faction": "jing",
+   "HPPct": 68
   },
   {
    "Character": "troop_footman",
    "X": 19,
-   "Y": 11,
-   "Group": "castle",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Shift": -0.12
+   "Y": 5,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.15,
+   "Faction": "jing",
+   "HPPct": 68
   },
   {
    "Character": "troop_footman",
    "X": 20,
-   "Y": 15,
-   "Group": "castle",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Shift": -0.12
+   "Y": 4,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.15,
+   "Faction": "jing",
+   "HPPct": 68
   },
   {
-   "Character": "troop_archer",
-   "X": 12,
-   "Y": 11,
-   "Group": "walls",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Shift": -0.07,
-   "Facing": "NW"
+   "Character": "troop_footman",
+   "X": 20,
+   "Y": 6,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.15,
+   "Faction": "jing",
+   "HPPct": 68
   },
   {
-   "Character": "troop_archer",
-   "X": 12,
-   "Y": 15,
-   "Group": "walls",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Shift": -0.07,
-   "Facing": "NW"
+   "Character": "troop_footman",
+   "X": 22,
+   "Y": 4,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.15,
+   "Faction": "jing",
+   "HPPct": 68
   },
   {
-   "Character": "troop_archer",
-   "X": 15,
-   "Y": 18,
-   "Group": "walls",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Shift": -0.07,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_archer",
-   "X": 19,
-   "Y": 18,
-   "Group": "walls",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Shift": -0.07,
-   "Facing": "SW"
+   "Character": "troop_footman",
+   "X": 22,
+   "Y": 6,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.15,
+   "Faction": "jing",
+   "HPPct": 68
   },
   {
    "Character": "troop_archer",
    "X": 17,
-   "Y": 8,
-   "Group": "walls",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Shift": -0.07,
-   "Facing": "NE"
+   "Y": 7,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.15,
+   "Faction": "jing",
+   "HPPct": 68
+  },
+  {
+   "Character": "troop_archer",
+   "X": 18,
+   "Y": 7,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.15,
+   "Faction": "jing",
+   "HPPct": 68
+  },
+  {
+   "Character": "troop_archer",
+   "X": 19,
+   "Y": 7,
+   "Group": "cai-fleet",
+   "Policy": "assault",
+   "Facing": "SE",
+   "Shift": -0.15,
+   "Faction": "jing",
+   "HPPct": 68
   },
   {
    "Character": "troop_archer",
    "X": 22,
-   "Y": 11,
-   "Group": "walls",
-   "Policy": "hold",
-   "Faction": "wei",
-   "Shift": -0.07,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 24,
-   "Y": 13,
-   "Group": "sluice-turn",
-   "Policy": "hold",
-   "Faction": "jing",
-   "Shift": -0.07,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 25,
-   "Y": 13,
-   "Group": "sluice-turn",
-   "Policy": "hold",
-   "Faction": "jing",
-   "Shift": -0.07,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 26,
-   "Y": 13,
-   "Group": "sluice",
-   "Policy": "hold",
-   "Faction": "jing",
-   "Shift": -0.07,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 27,
-   "Y": 13,
-   "Group": "sluice",
-   "Policy": "hold",
-   "Faction": "jing",
-   "Shift": -0.07,
-   "Facing": "SE"
-  },
-  {
-   "Character": "xuchu",
-   "X": 3,
-   "Y": 12,
-   "Group": "cao-west",
+   "Y": 5,
+   "Group": "cai-fleet",
    "Policy": "assault",
-   "Faction": "wei",
-   "Facing": "SE"
+   "Facing": "SE",
+   "Shift": -0.15,
+   "Faction": "jing",
+   "HPPct": 68
   },
   {
-   "Character": "zhangliao",
-   "X": 3,
+   "Character": "caoren",
+   "X": 17,
    "Y": 14,
-   "Group": "cao-west",
-   "Policy": "assault",
+   "Rank": "commander",
+   "Group": "caoren",
+   "Policy": "hold",
    "Faction": "wei",
-   "Facing": "SE"
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 11,
+   "Rank": "recruit",
+   "Group": "castle",
+   "Policy": "hold",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 18,
+   "Y": 11,
+   "Rank": "recruit",
+   "Group": "castle",
+   "Policy": "hold",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 16,
+   "Y": 13,
+   "Rank": "recruit",
+   "Group": "castle",
+   "Policy": "hold",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 18,
+   "Y": 13,
+   "Rank": "recruit",
+   "Group": "castle",
+   "Policy": "hold",
+   "Facing": "NE"
+  },
+  {
+   "Character": "caochun",
+   "Rank": "commander",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "react",
+   "X": 3,
+   "Y": 8
   },
   {
    "Character": "xuhuang",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "react",
+   "X": 3,
+   "Y": 11
+  },
+  {
+   "Character": "xuchu",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "react",
+   "X": 3,
+   "Y": 15
+  },
+  {
+   "Character": "zhangliao",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "react",
+   "X": 3,
+   "Y": 18
+  },
+  {
+   "Character": "xiahouyuan",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 1,
+   "Y": 6
+  },
+  {
+   "Character": "xiahouen",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 2,
+   "Y": 6
+  },
+  {
+   "Character": "xiahoudun",
+   "Rank": "commander",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 1,
+   "Y": 8
+  },
+  {
+   "Character": "caohong",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 2,
+   "Y": 8
+  },
+  {
+   "Character": "caocao",
+   "Rank": "boss",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 1,
+   "Y": 10
+  },
+  {
+   "Character": "zhanghe",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 2,
+   "Y": 10
+  },
+  {
+   "Character": "yuejin",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 1,
+   "Y": 12
+  },
+  {
+   "Character": "yujin",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 2,
+   "Y": 12
+  },
+  {
+   "Character": "chengyu",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 1,
+   "Y": 14
+  },
+  {
+   "Character": "jiaxu",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 2,
+   "Y": 14
+  },
+  {
+   "Character": "xunyou",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 1,
+   "Y": 16
+  },
+  {
+   "Character": "liuye",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 2,
+   "Y": 16
+  },
+  {
+   "Character": "hanhao",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 1,
+   "Y": 18
+  },
+  {
+   "Character": "caoxiu",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 2,
+   "Y": 18
+  },
+  {
+   "Character": "lidian",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 1,
+   "Y": 20
+  },
+  {
+   "Character": "zhuling",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 2,
+   "Y": 20
+  },
+  {
+   "Character": "wenpin_foot",
+   "Rank": "officer",
+   "Shift": -0.19,
+   "Group": "cao-west",
+   "Facing": "SE",
+   "Policy": "hold",
+   "X": 1,
+   "Y": 22
+  },
+  {
+   "Character": "troop_footman",
+   "X": 3,
+   "Y": 7,
+   "Group": "cao-west",
+   "Rank": "recruit",
+   "Shift": -0.12,
+   "Facing": "SE",
+   "Policy": "react"
+  },
+  {
+   "Character": "troop_archer",
    "X": 3,
    "Y": 10,
    "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Facing": "SE"
+   "Rank": "recruit",
+   "Shift": -0.12,
+   "Facing": "SE",
+   "Policy": "react"
   },
   {
    "Character": "troop_footman",
-   "X": 1,
-   "Y": 8,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 1,
-   "Y": 9,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 1,
-   "Y": 10,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 1,
-   "Y": 11,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 1,
-   "Y": 12,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 1,
-   "Y": 14,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 1,
-   "Y": 15,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 1,
-   "Y": 16,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 1,
-   "Y": 17,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 1,
-   "Y": 18,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 2,
-   "Y": 9,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 2,
-   "Y": 17,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 0,
-   "Y": 8,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 0,
-   "Y": 10,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 0,
-   "Y": 12,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 0,
-   "Y": 14,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 0,
-   "Y": 16,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 0,
-   "Y": 18,
-   "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
-   "Shift": -0.12,
-   "Facing": "SE"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 2,
+   "X": 3,
    "Y": 13,
    "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
+   "Rank": "recruit",
    "Shift": -0.12,
-   "Facing": "SE"
+   "Facing": "SE",
+   "Policy": "react"
   },
   {
-   "Character": "troop_cavalry",
-   "X": 0,
-   "Y": 13,
+   "Character": "troop_archer",
+   "X": 3,
+   "Y": 16,
    "Group": "cao-west",
-   "Policy": "assault",
-   "Faction": "wei",
+   "Rank": "recruit",
    "Shift": -0.12,
-   "Facing": "SE"
+   "Facing": "SE",
+   "Policy": "react"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 3,
+   "Y": 19,
+   "Group": "cao-west",
+   "Rank": "recruit",
+   "Shift": -0.12,
+   "Facing": "SE",
+   "Policy": "hold"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 3,
+   "Y": 21,
+   "Group": "cao-west",
+   "Rank": "recruit",
+   "Shift": -0.12,
+   "Facing": "SE",
+   "Policy": "hold"
   }
  ],
  "Reward": {
-  "money": 3000
+  "money": 3000,
+  "treasure_sword": 1
  },
  "Areas": [
   {
@@ -848,7 +851,7 @@
   {
    "ID": 61,
    "Rect": {
-    "X": 10,
+    "X": 13,
     "Y": 13,
     "W": 1,
     "H": 1
@@ -859,24 +862,24 @@
   {
    "ID": 62,
    "Rect": {
-    "X": 24,
-    "Y": 11,
-    "W": 6,
-    "H": 5
+    "X": 16,
+    "Y": 6,
+    "W": 4,
+    "H": 3
    },
-   "Name": "수문 앞",
-   "Description": "동맹 수군이 닿으면 유기가 이름을 밝힌다"
+   "Name": "북동쪽 수문 앞",
+   "Description": "채모 수군이 지키는 물길"
   },
   {
    "ID": 67,
    "Rect": {
-    "X": 23,
-    "Y": 13,
+    "X": 17,
+    "Y": 9,
     "W": 1,
     "H": 1
    },
-   "Name": "수문",
-   "Description": "유기가 이름을 밝히면 열린다"
+   "Name": "북동쪽 수문",
+   "Description": "성으로 이어지는 열린 문"
   },
   {
    "ID": 63,
@@ -999,17 +1002,19 @@
   {
    "ID": "navy-turns",
    "If": [
-    "any:[alldefeated:cai-fleet, round>=7]"
+    "alldefeated:cai-fleet",
+    "alldefeated:cai"
    ],
    "Do": [
     {
      "Kind": "ai",
      "Targets": [
+      "zhouyu",
       "navy",
       "liuqi-fleet"
      ],
      "Policy": "march",
-     "GoalArea": 62
+     "GoalArea": 60
     },
     {
      "Kind": "say",
@@ -1023,184 +1028,12 @@
    ]
   },
   {
-   "ID": "liuqi-calls",
-   "If": [
-    "any:[at:navy:62, at:liuqi-fleet:62]"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "liuqi",
-       "Text": "형주목의 맏아들 유기다! 아버님의 군사들은 창을 내려라!"
-      }
-     ]
-    },
-    {
-     "Kind": "remove",
-     "Targets": [
-      "sluice-turn"
-     ]
-    },
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "troop_footman",
-       "X": 24,
-       "Y": 13,
-       "AI": true,
-       "Group": "liuqi-fleet",
-       "Policy": "march",
-       "GoalArea": 60,
-       "Faction": "liuqi",
-       "Shift": -0.07
-      },
-      {
-       "Character": "troop_footman",
-       "X": 25,
-       "Y": 13,
-       "AI": true,
-       "Group": "liuqi-fleet",
-       "Policy": "march",
-       "GoalArea": 60,
-       "Faction": "liuqi",
-       "Shift": -0.07
-      }
-     ]
-    },
-    {
-     "Kind": "terrain",
-     "Area": 67,
-     "State": "O"
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "castle",
-      "walls",
-      "sluice"
-     ],
-     "Policy": "assault"
-    },
-    {
-     "Kind": "ai",
-     "Targets": [
-      "navy",
-      "liuqi-fleet"
-     ],
-     "Policy": "march",
-     "GoalArea": 60
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "caoren",
-       "Text": "수문이 열렸다고? ……승상께 전하라. 양양은 여기까지다."
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "cao-waves",
-   "Every": 3,
-   "If": [
-    "turnstart:enemy",
-    "round>=4"
-   ],
-   "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "troop_footman",
-       "X": 0,
-       "Y": 9,
-       "Side": "enemy",
-       "Group": "cao-west",
-       "Policy": "assault",
-       "Faction": "wei",
-       "Shift": -0.12
-      },
-      {
-       "Character": "troop_footman",
-       "X": 0,
-       "Y": 11,
-       "Side": "enemy",
-       "Group": "cao-west",
-       "Policy": "assault",
-       "Faction": "wei",
-       "Shift": -0.12
-      },
-      {
-       "Character": "troop_footman",
-       "X": 0,
-       "Y": 15,
-       "Side": "enemy",
-       "Group": "cao-west",
-       "Policy": "assault",
-       "Faction": "wei",
-       "Shift": -0.12
-      },
-      {
-       "Character": "troop_footman",
-       "X": 0,
-       "Y": 17,
-       "Side": "enemy",
-       "Group": "cao-west",
-       "Policy": "assault",
-       "Faction": "wei",
-       "Shift": -0.12
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 0,
-       "Y": 12,
-       "Side": "enemy",
-       "Group": "cao-west",
-       "Policy": "assault",
-       "Faction": "wei",
-       "Shift": -0.12
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 0,
-       "Y": 14,
-       "Side": "enemy",
-       "Group": "cao-west",
-       "Policy": "assault",
-       "Faction": "wei",
-       "Shift": -0.12
-      }
-     ]
-    }
-   ]
-  },
-  {
    "ID": "caocao-10",
    "If": [
-    "round>=10",
+    "round>=5",
     "turnstart:enemy"
    ],
    "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "caocao",
-       "X": 1,
-       "Y": 13,
-       "Rank": "boss",
-       "Side": "enemy",
-       "Group": "cao-west",
-       "Policy": "assault",
-       "Faction": "wei"
-      }
-     ]
-    },
     {
      "Kind": "say",
      "Lines": [
@@ -1314,23 +1147,6 @@
    ]
   },
   {
-   "ID": "camps-lost",
-   "If": [
-    "flag:flag-b27v-camp-w1",
-    "flag:flag-b27v-camp-w2",
-    "flag:flag-b27v-camp-s1",
-    "flag:flag-b27v-camp-s2"
-   ],
-   "Do": [
-    {
-     "Kind": "flag",
-     "Flags": {
-      "flag-b27v-camps-lost": 1
-     }
-    }
-   ]
-  },
-  {
    "ID": "west-broken",
    "If": [
     "flag:flag-b27v-camp-w1",
@@ -1359,7 +1175,9 @@
   {
    "ID": "xiangyang-falls",
    "If": [
-    "any:[defeated:caoren, at:ally:60]"
+    "alldefeated:cai-fleet",
+    "alldefeated:cai",
+    "any:[at:zhouyu:60, at:navy:60, at:liuqi-fleet:60]"
    ],
    "Do": [
     {
@@ -1371,6 +1189,159 @@
        "Offstage": true
       }
      ]
+    }
+   ]
+  },
+  {
+   "ID": "cao-camp-bonus-1",
+   "If": [
+    "any:[flag:flag-b27v-camp-w1, flag:flag-b27v-camp-w2, flag:flag-b27v-camp-s1, flag:flag-b27v-camp-s2]"
+   ],
+   "Do": [
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-west",
+      "caoren",
+      "castle"
+     ],
+     "Stat": "morale",
+     "Value": 20
+    }
+   ]
+  },
+  {
+   "ID": "cao-camp-bonus-2",
+   "If": [
+    "any:[flag:flag-b27v-camp-w1, flag:flag-b27v-camp-w2, flag:flag-b27v-camp-s1]",
+    "any:[flag:flag-b27v-camp-w1, flag:flag-b27v-camp-w2, flag:flag-b27v-camp-s2]",
+    "any:[flag:flag-b27v-camp-w1, flag:flag-b27v-camp-s1, flag:flag-b27v-camp-s2]",
+    "any:[flag:flag-b27v-camp-w2, flag:flag-b27v-camp-s1, flag:flag-b27v-camp-s2]"
+   ],
+   "Do": [
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-west",
+      "caoren",
+      "castle"
+     ],
+     "Stat": "morale",
+     "Value": 20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-west",
+      "caoren",
+      "castle"
+     ],
+     "Stat": "agility",
+     "Value": 20
+    }
+   ]
+  },
+  {
+   "ID": "cao-camp-bonus-3",
+   "If": [
+    "any:[flag:flag-b27v-camp-w1, flag:flag-b27v-camp-w2]",
+    "any:[flag:flag-b27v-camp-w1, flag:flag-b27v-camp-s1]",
+    "any:[flag:flag-b27v-camp-w1, flag:flag-b27v-camp-s2]",
+    "any:[flag:flag-b27v-camp-w2, flag:flag-b27v-camp-s1]",
+    "any:[flag:flag-b27v-camp-w2, flag:flag-b27v-camp-s2]",
+    "any:[flag:flag-b27v-camp-s1, flag:flag-b27v-camp-s2]"
+   ],
+   "Do": [
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-west",
+      "caoren",
+      "castle"
+     ],
+     "Stat": "morale",
+     "Value": 20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-west",
+      "caoren",
+      "castle"
+     ],
+     "Stat": "agility",
+     "Value": 20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-west",
+      "caoren",
+      "castle"
+     ],
+     "Stat": "defense",
+     "Value": 20
+    }
+   ]
+  },
+  {
+   "ID": "cao-camp-bonus-4",
+   "If": [
+    "flag:flag-b27v-camp-w1",
+    "flag:flag-b27v-camp-w2",
+    "flag:flag-b27v-camp-s1",
+    "flag:flag-b27v-camp-s2"
+   ],
+   "Do": [
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-west",
+      "caoren",
+      "castle"
+     ],
+     "Stat": "morale",
+     "Value": 20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-west",
+      "caoren",
+      "castle"
+     ],
+     "Stat": "agility",
+     "Value": 20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-west",
+      "caoren",
+      "castle"
+     ],
+     "Stat": "defense",
+     "Value": 20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-west",
+      "caoren",
+      "castle"
+     ],
+     "Stat": "attack",
+     "Value": 20
+    },
+    {
+     "Kind": "buff",
+     "Targets": [
+      "cao-west",
+      "caoren",
+      "castle"
+     ],
+     "Stat": "mind",
+     "Value": 20
     }
    ]
   }

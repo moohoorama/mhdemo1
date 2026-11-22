@@ -262,7 +262,7 @@
    ],
    "Level": 6,
    "Traits": [
-    "snipe_prep",
+    "cross_shot_art",
     "self_ward"
    ],
    "Learn": [],
@@ -1671,6 +1671,9 @@
     "lone_warrior",
     "retaliate"
    ],
+   "TraitAt": {
+    "volley": 20
+   },
    "Learn": [],
    "Equipment": [
     "short_bow",
@@ -2614,8 +2617,16 @@
     "Faction": "wei",
     "Palette": {
      "themeA": "#2a3a6a",
-     "themeB": ["#d97a1e", "#9c4c12", "#5a2a10"],
-     "themeC": ["#c2a878", "#977c52", "#6a5336"]
+     "themeB": [
+      "#d97a1e",
+      "#9c4c12",
+      "#5a2a10"
+     ],
+     "themeC": [
+      "#c2a878",
+      "#977c52",
+      "#6a5336"
+     ]
     }
    }
   },
@@ -3283,7 +3294,8 @@
     "Faction": "han",
     "Scene": "official_noncombat"
    }
-  },  "xushu_guest": {
+  },
+  "xushu_guest": {
    "Name": "서서",
    "Biography": "본명을 밝힌 서서. 신야 전투에서 유비군과 함께하는 손님 장수로, 전투 뒤 정식으로 합류한다.",
    "Class": "strategist",
@@ -3937,6 +3949,165 @@
     "Faction": "jing",
     "Scene": "official_purple_noncombat"
    }
+  },
+  "jiaxu": {
+   "Name": "가후",
+   "Class": "diplomat",
+   "Stats": [
+    66,
+    53,
+    96,
+    63,
+    73,
+    69
+   ],
+   "Level": 30,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "bamboo_slips",
+    "cotton_clothes"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "liuye": {
+   "Name": "유엽",
+   "Class": "catapult",
+   "Stats": [
+    72,
+    55,
+    88,
+    58,
+    67,
+    67
+   ],
+   "Level": 30,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "hanhao": {
+   "Name": "한호",
+   "Class": "heavy_infantry",
+   "Stats": [
+    71,
+    79,
+    63,
+    60,
+    72,
+    68
+   ],
+   "Level": 30,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "copper_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "caoxiu": {
+   "Name": "조휴",
+   "Class": "horse_archer",
+   "Stats": [
+    80,
+    68,
+    58,
+    85,
+    72,
+    62
+   ],
+   "Level": 30,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "zhuling": {
+   "Name": "주령",
+   "Class": "horse_archer",
+   "Stats": [
+    77,
+    71,
+    60,
+    80,
+    66,
+    65
+   ],
+   "Level": 30,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "wei"
+   }
+  },
+  "wenpin_foot": {
+   "Name": "문빙",
+   "Biography": "자는 중업. 형주의 장수로 북쪽을 지키다 유종이 항복하자 조조를 따른다.",
+   "Class": "heavy_infantry",
+   "Stats": [
+    80,
+    82,
+    64,
+    74,
+    62,
+    72
+   ],
+   "Level": 30,
+   "Traits": [
+    "ironwall",
+    "hold_ground",
+    "bodyguard"
+   ],
+   "Learn": [],
+   "Equipment": [
+    "copper_sword",
+    "leather_armor"
+   ],
+   "Look": {
+    "Faction": "jing",
+    "Portrait": "wenpin"
+   }
+  },
+  "troop_horse_archer": {
+   "Name": "일반 부대",
+   "Class": "horse_archer",
+   "Stats": [
+    50,
+    48,
+    30,
+    42,
+    40,
+    45
+   ],
+   "Level": 4,
+   "Template": true,
+   "Traits": [],
+   "Learn": [],
+   "Equipment": [
+    "short_bow",
+    "leather_armor"
+   ],
+   "Look": {}
   }
  }
 }

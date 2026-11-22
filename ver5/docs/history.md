@@ -1,3 +1,142 @@
+## 2026-11-22 감녕·방통의 역할과 논변·허실 정리
+
+- `docs/officer-trait-reform-final.md`·`docs/officer-trait-reform-pending.md` 및 각 HTML: 감녕 배치 후보를 장수별 본표로 이동하고 방통의 연환 역할과 논변·허실의 명중 범위를 갱신 — 인물 역할과 특성 배정 기준 명확화.
+
+## 2026-11-22 여몽의 심공과 곽가의 병종 특성 정정
+
+- `docs/officer-trait-reform-final.md`·`docs/officer-trait-reform-pending.md` 및 각 HTML: 여몽을 심공 50% 흡수 중심으로 수정하고 곽가의 민첩·사기 저하와 약점공략을 병종에만 배정 — 재배치 제안과 개인 슬롯 중복 정리.
+
+## 2026-11-22 미적용 개편안과 채택 후보 정리
+
+- `docs/officer-trait-reform-pending.md`·`docs/officer-trait-reform-pending.html`: 이미 적용한 변경을 제외하고 최신 채택안·추천·보류 및 장수 생성·중복 교체 후보 정리 — 다음 적용 범위 결정.
+
+## 2026-11-22 장합·장요 초상 교체
+
+- `tools/illustrations/portraits/sheets/zhanghe-zhangliao-approved.png`·`tools/illustrations/portraits/sheets/prompts.md`: 확정한 수묵 담채 시트와 편집 지시를 보관 — 원본과 제작 경위 추적.
+- `tools/illustrations/portraits/zhanghe.png`·`tools/illustrations/portraits/zhangliao.png`: 시트에서 두 장수의 정사각형 초상을 분리 — 장합의 풍성한 수염과 빈손, 장요의 선택된 자세를 반영.
+- `assets/graphics/portraits/zhanghe.png`·`assets/graphics/portraits/zhangliao.png`: 두 초상을 256×256으로 축소해 기존 초상 키에 적용 — 대화창과 일기토에 새 초상 표시.
+
+## 2026-11-22 태사자·한당·장합의 사격 배치 적용
+
+- `assets/data/characters.json`·`assets/data/characters_story.json`: 장합이 궁기병과 활을 사용하고 금강 대신 십자사격을 익히며, 한당의 저격을 십자사격으로 교체하고 태사자에게 난사를 추가 — 후반과 초기 궁수의 역할 구분.
+- `assets/data/skills.json`·`assets/data/traits.json`: 병법치 32를 쓰는 선택형 십자사격 등록 — 중심 피해 100%, 상하좌우 피해 50%.
+- `internal/content/content.go`·`internal/content/validate.go`·`internal/core/combat.go`: 물리 십자 병법의 중심·주변 비율 모델링과 공격 범위 계산 — 미리보기와 실제 피해의 범위를 일치시킴.
+- `internal/core/combat_followup_test.go`: 장수별 해금과 미리보기·비용·타격을 검증 — 사격의 실제 동작 확인.
+- `idea.md`·`docs/officer-trait-reform-final.md`·`docs/officer-trait-reform-final.html`: 사격 배치를 반영 완료로 갱신 — 문서와 게임 일치.
+
+## 2026-11-22 태사자·한당·장합의 사격 배치 조정
+
+- `idea.md`·`docs/officer-trait-reform-final.md`·`docs/officer-trait-reform-final.html`: 태사자 난사와 한당 십자사격을 채택하고 장합 궁기병·십자사격 검토안을 추가 — 황충 난사를 유지하며 사격 무예 배분 갱신.
+
+## 2026-11-22 장수 능력치·특성 개편 최종안 문서
+
+- `docs/officer-trait-reform-final.md`·`docs/officer-trait-reform-final.html`: 채택 사항, 게임 반영 항목과 미정 후보를 최신 기준으로 정리하고 원본에서 HTML 생성 — 검토와 구현의 기준을 한 문서로 맞춤.
+
+## 2026-11-22 화계 소모량 확정과 후반 장수 특성 검토
+
+- `assets/data/skills.json`: 화룡 48→40, 폭염 54→48 병법치 적용 — 사용자 지정 비용 반영.
+- `idea.md`·`docs/officer-trait-reform-preview.html`: 업화 비용과 새 효율, 가후 집요 채택, 주유 주변 정신력 강화 및 황충 십자사격 후보 정리 — 확정 수치와 역할 제안 확인.
+
+## 2026-11-22 양양 진채 함락에 따른 조조군 강화
+
+- `stage27vgen.py`·`stage27v.json`: 진채 누적 함락 수에 따라 조조군의 사기·민첩·방어·공격·정신에 단계별 20% 보정. 네 곳 함락 뒤에도 서문과 주유를 지키며 계속 싸울 수 있도록 패배 조건 수정 — 함락 순서와 관계없이 압박이 강해짐.
+- `xiangyang_content_test.go`·`plan-jingzhou-battles.md`: 서쪽과 남쪽에서 먼저 함락되는 경우, 조조군에만 적용되는 보정과 마지막 진채 이후의 진행을 검증 — 단계와 대상 확인.
+
+## 2026-11-22 범위 책략 효율 재검토와 능력치 보정 변경
+
+- `internal/core/rules.go`·`internal/content/vocab.go`·`assets/data/traits.json`: 문무겸비와 수호를 장비가 반영된 능력치 비교로 변경 — 장비를 바꾸면 낮은 쪽 보정도 달라지도록 적용.
+- `internal/core/guard_traits_test.go`: 장비 반영, 일시 약화 적용 순서와 두 특성의 정신력 보정 검증 — 보정 중첩 및 기존 수호 비용 할인 회귀 검출.
+- `idea.md`·`docs/officer-trait-reform-preview.html`: 범위 책략 효율, 혼란·대혼란의 독립 시전, 장수와 연노병 배치 기록 — 새 비교와 구현 범위 확인.
+
+## 2026-11-22 강릉·양양 진채 및 양양 수문과 신야 침수 조정
+
+- `jingzhou_battles.py`·`map25.txt`·`map26v.txt`·`map27v.txt`·`maps/{map25,map26v,map27v}.json`: 강릉과 양양의 숲을 경계 안쪽 군락으로 배치하고, 진채의 민가를 없애고 울타리를 연결함. 신야의 침수 가장자리를 비정형으로 변경 — 반복 무늬를 줄이고 지형과 진채의 용도를 드러냄.
+- `stage27vgen.py`·`stage27v.json`·`fullstory.md`: 양양성 내부를 6×6으로 줄이고 북동 수문만 개방. 조인과 성내 수비 네 부대, 진채별 보·궁병, 장판파의 조조군 장수 22명 배치 — 주유·유기의 선단이 채모 수군을 격파하고 관청을 점령하는 순서로 진행.
+- `plan-jingzhou-battles.md`·`reports/jingzhou-battles/index.html`: 세 전투의 실행 화면과 점검 기록 갱신 — 숲, 울타리, 수문, 침수 지형 비교.
+
+## 2026-11-22 병종 계통과 공격 책략의 약화 개편 검토
+
+- `docs/officer-trait-reform-preview.html`: 세객·종횡가, 책사·군사, 궁수·연노병 검토안과 장수 배치, 현행 피해 계수·약화 책략 대조 추가 — 배치 중복과 효과 변경을 함께 검토.
+- `idea.md`: 최신 검토안 링크와 이전 논의 기준 추가 — 서로 다른 시점의 배치 혼동 방지.
+
+## 2026-11-22 신야·강릉·양양 전투맵과 장판파 증원
+
+- `jingzhou_battles.py`·`stage25gen.py`·`map25.txt`·`map26v.txt`·`map27v.txt`·`maps/{map25,map26v,map27v}.json`: 불타는 신야성과 범람한 백하, 강릉성 밖 진채와 나루, 한수에 면한 양양성 제작 — 화공 추격, 수비, 공성이 각 지형에서 다른 방식으로 진행됨.
+- `stage25.json`·`stage26v.json`·`stage27v.json`·`fullstory.md`: 새 지형에 출전과 등장 방향, 신야 퇴각로와 양양 수문 동선을 반영 — 기존 목표와 후속 이야기를 연결.
+- `southern_battles.py`·`map_changban.txt`·`map_changban.json`·`stage26gen.py`·`stage26.json`: 여울을 깊은 강으로 바꾸고 연의 장판파 출전을 장비·조운과 추가 두 명으로 조정 — 조운이 장판교를 건너 진영에 합류하는 전투.
+- `stage25vgen.py`·`stage25v.json`·`characters_story.json`·`changban_content_test.go`: 가상 장판파에 20·20·40기와 지정 장수·병종을 배치하고, 피란민과 유비가 철수하면 다리를 끊도록 변경 — 대군을 상대로 피란 행렬을 지키는 전투. 증원 순번과 철수 판정을 시험함.
+- `field_floors.go`: 외곽 음수 좌표에서도 여울 바닥 그림의 번호를 0~7로 선택 — 강릉 지형을 읽을 때 렌더러가 멈추는 오류 해결.
+- `plan-jingzhou-battles.md`·`reports/jingzhou-battles/index.html`: 전장 설계와 실행 화면 기록 — 세 전장과 장판파 두 경로 확인.
+
+## 2026-11-22 연환 전용화와 지략가·궁수 특성 검토
+
+- `idea.md`: 방통에게 연환을 전용 배정하고 주유의 연환을 문무겸비로 교체, 순유의 연환을 회수 — 개인 특성 구분.
+- `docs/officer-trait-reform-preview.html`: 지략가와 궁수의 역할별 배치, 불씨 연계와 사격 효과 후보 추가 — 반복되는 치명타·사거리·명중 조합 대체 검토.
+
+## 2026-11-22 장료 특성 확정과 병종 학습 중복 검증
+
+- `idea.md`: 장료의 확정 배치를 일당백·연전·돌파·신속·료래로 수정 — 금강이 남아 있던 이전 제안 정정.
+- `docs/officer-trait-reform-preview.html`: 현행·개편안 중복과 대체 후보, 유사 효과 비교, 괄목상대 개편안, 장수별 추가·삭제 목록 정리 — 검증 근거와 비교 편의 개선.
+
+## 2026-11-22 장판교·적벽·화용도 전투맵 개편
+
+- `maps/{map_changban,map_redcliff,map27}.json`·`tools/mapgen/layouts/hero/{southern_battles.py,map_changban.txt,map_redcliff.txt,map27.txt}`: 목교와 여울, 오림 앞 수로, 늪지 둑과 산목의 새 지형 제작 — 세 전장의 지형을 구분하고 장면과 방향을 맞춤.
+- `stage25v.json`·`stage26.json`·`stage27.json`·`tools/mapgen/layouts/hero/{stage26gen,stage27gen}.py`: 조운과 피란민의 도강, 장비의 복병과 조조의 퇴로를 새 지형에 배치 — 기존 목표와 전투 이벤트를 새 좌표에 연결.
+- `stage27r.json`·`story27.json`·`ch27.json`·`c27-chibi.txt`·`campaign_content_test.go`: 오림 상륙이 목표인 적벽 수전을 추가하고 기존 유기의 추격 대사를 수전으로 이동 — 오림에서 화용도로 이어지는 진행을 플레이로 연결.
+- `S_changban.json`·`S_changban_broken.json`·`assets/graphics/index.json`·`southern_routes.py`·`ch25v.json`·`{c25v-camp,c26-camp,c27-detour}.txt`: 장면의 목교 폭과 대체 경로의 파괴 상태를 조정 — 전투 뒤에도 건넌 방향과 다리 상태가 이어짐.
+- `uidemo_battleview.go`·`docs/plan-southern-battles.md`·`reports/southern-battles/index.html`: 전장 전체와 끊어진 장판교를 실제 게임에서 캡처 — 이동 경로와 시작 배치 확인.
+
+## 2026-11-22 장수 능력치·특성 개편 미리보기
+
+- `docs/officer-trait-reform-preview.html`: 개편안과 현행 장수·병종·특성·전투 코드 비교 — 적용 후 전투 변화와 구현이 필요한 부분 검토. 장료의 금강은 제안 배치로 명시.
+
+## 2026-11-22 장판교·한진·강하·적벽·화용도 장면맵과 여남성 바깥 지면
+
+- `tools/scene_maps/southern_routes.py`·`assets/graphics/index.json`·`S_changban.json`·`S_hanjin_ferry.json`·`S_jiangxia_harbor.json`·`S_chibi_fleet.json`·`S_huarong_marsh.json`: 장판교 목교와 피란민 야영지, 한진 나루, 강하 부두, 적벽 선단과 화용도 둑길을 제작 — 장소와 사건이 화면에서 구별됨.
+- `tools/scene_maps/runan.py`·`S_runan.json`: 여남성 북동쪽 지면과 성문 앞 흙길을 연장 — 말을 탄 삼형제 뒤로 성 밖 길이 이어짐.
+- `ch25v.json`·`ch26.json`·`ch27.json`·`explore27_changban.json`·`explore27_ferry.json`·`explore27_redcliff.json`·`explore27_retreat.json`: 새 지형에 배역, 카메라, 이동과 출구를 연결 — 장판교의 두 경로와 강하행·번구행·화용도 귀환 조작을 이어감.
+- `assets/scenes/ascii/c21-arrival.txt`·`c21-gate.txt`·`c25v-camp.txt`·`c26-camp.txt`·`c27-detour.txt`·`c27-arrive.txt`·`c27-chibi.txt`: 새 지면과 자리 배치를 도면에 반영 — 장면맵과 연출 좌표 확인.
+- `docs/plan-southern-scene-maps.md`·`reports/southern-scenes/index.html`: 장소별 설계와 실제 게임 캡처 기록 — 화면과 이동 의도 확인.
+
+## 2026-11-22 신야 관청에서 제갈량의 보고와 송충의 등장
+
+- `explore25_report.json`·`story25.json`: 신야성에 들어와 관청까지 걷고 안에서 기다리던 제갈량에게 말을 건다 — 문병 뒤 귀환의 동선과 보고 장소 연결.
+- `ch25.json`·`assets/scenes/ascii/c25-road.txt`: 제갈량의 답 직후 장비가 송충을 관청 문으로 데려오는 배치와 걸음 수정 — 대화가 한 장소에서 이어짐.
+- `docs/plan-story-travel.md`·`reports/story-travel/index.html`: 신야 관청 동선과 수정 후 캡처 갱신 — 실행 화면과 비교 자료 일치.
+
+## 2026-11-22 단복 초상 체형 보강
+
+- `tools/illustrations/portraits/xushu.png`·`ver5/assets/graphics/portraits/xushu.png`·`fullbody-prompts-2026-11-19.md`: 왼쪽을 보는 단복의 어깨와 팔, 몸통을 적당히 보강 — 마른 인상을 줄이고 대사창의 팔짱 자세 유지.
+
+## 2026-11-22 단복 초상의 시선 방향
+
+- `tools/illustrations/portraits/{fullbody/xushu.png,xushu.png,fullbody-prompts-2026-11-19.md}`·`ver5/assets/graphics/portraits/xushu.png`: 전신과 상체 초상을 좌우 반전하고 자르기 좌표 갱신 — 단복·서서가 왼쪽을 바라보도록 조정.
+
+## 2026-11-22 이야기 장면의 단색 배경과 단복 초상
+
+- `internal/gui/scene.go`·`field.go`·`field_night.go`·`uidemo_scenespots.go`: 장면 뒤에 갈색을 한 번 깔고 시간대의 어둠을 맵 픽셀에 합성 — 장면 캔버스 경계에서 배경색이 달라지는 현상 제거.
+- `internal/gui/assets.go`·`internal/scenes/scenes.go`·`assets/graphics/index.json`·`assets/scenes/ch02.json`·`ch03.json`·`ch05.json`·`ch06.json`·`ch07.json`·`ch15.json`·`ch16.json`·`ch18.json`·`ch21.json`·`ch25.json`: 원경 필드와 런타임 등록 제거 — 장면의 원경을 단색 배경으로 통일.
+- `tools/scene_maps/{backdrops,ch14_15_scenes,ch21_scenes,scene_format}.py`·`docs/presentation-scene.md`·`docs/scene-composition.html`: 장면 작성 도구와 문서를 단색 배경 규칙에 맞춤 — 기존 원경 그림은 참고용으로 보관.
+- `tools/illustrations/portraits/fullbody/xushu.png`·`portraits/xushu.png`·`candidates/xushu-2026-11-19-fullbody.png`·`fullbody-prompts-2026-11-19.md`·`ver5/assets/graphics/portraits/xushu.png`: 기둥에 기대 팔짱을 낀 단복으로 전신 및 게임 초상 교체, 이전 전신과 제작 지시 보관 — 이적과 자세·차림을 구분하고 서서가 본명을 밝힐 때 같은 초상 유지.
+
+## 2026-11-22 장면과 전투맵의 배경 구성
+
+- `docs/scene-composition.html`: 원경 전환이 가능한 실제 장면 캡처와 전투맵 외곽을 한 페이지에 정리 — 타일 밖의 색이 어디서 생기는지 비교.
+- `docs/scene-composition.html`: 장면 예시의 원경을 제거하고 타일 밖을 단색으로 통일한 시안으로 교체 — 기존 캔버스 경계에서 색이 갈린 이유 설명.
+
+## 2026-11-22 망탕산 이후 여남과 형주의 이동
+
+- `story20.json`·`ch20.json`·`explore20_depart.json`: 재회 뒤 공동 대응을 청하는 유벽의 사자와 여남성 출구 추가 — 유비의 결정 뒤 직접 출발.
+- `story21.json`·`ch21.json`·`explore21.json`: 기마 삼형제의 여남 성문 검문과 관청 입장 — 성 안 탐험에서 첫 접견으로 이어짐.
+- `story22.json`·`ch22.json`·`explore22_travel.json`·`explore22_xiangyang.json`·`explore22b.json`: 양양행과 접견 전 논쟁, 강하 진채의 막사 대화와 출구 연결 — 유비의 이동을 플레이어가 맡고 관우·미방의 두 경위 유지.
+- `story23.json`·`ch23.json`·`explore23_xiangyang.json`: 양양 관청에서 신야를 받고 성문에서 적로·이적을 만남 — 신야에 도착한 뒤 단복을 만나는 순서.
+- `story24.json`·`explore24_return.json`·`story25.json`·`ch25.json`·`story25v.json`·`explore25_visit.json`·`explore25_back.json`·`explore25_report.json`: 융중 귀환과 유표 문병 동선, 신야에서 제갈량의 보고 직후 송충 등장 — 두 경로로 갈리기 전 출발과 귀환의 이유를 표시.
+- `story27.json`·`ch27.json`·`explore27_changban.json`·`explore27_ferry.json`·`explore27_redcliff.json`·`explore27_retreat.json`: 한진에서 강하까지 배로 이동하고 적벽과 화용도를 유비 일행이 오감 — 시상 협상과 관우의 일을 유비가 보고로 들음.
+- `story27v.json`·`explore27v_travel.json`·`explore27v_town.json`: 강릉에서 양양 연합 진영으로 출발하고 전투 뒤 양양 관청으로 입장 — 대체 경로의 장소 전환 연결.
+- `assets/scenes/ascii/c20-reunion.txt`·`c21-arrival.txt`·`c21-south.txt`·`c22-start.txt`·`c22-debate.txt`·`c22-mifang.txt`·`c23-start.txt`·`c25-road.txt`·`c27-detour.txt`·`c27-arrive.txt`·`c27-chaisang.txt`·`c27-end-camp.txt`: 변경된 자리와 걸음을 도면에 반영하고 `c23-whisper.txt`·`c27-huarong.txt`·`c27-start.txt` 정리 — 장면 데이터와 도면 일치.
+- `docs/fullstory.md`·`docs/plan-story-travel.md`·`docs/data-speech-style.md`: 확정된 이동·접견·보고 순서와 말투 정리 — 줄거리와 실제 진행 일치.
+- `reports/story-travel/index.html`: 수정 전후 실제 게임 캡처를 진행 순서대로 비교 — 주요 이동과 대사를 화면으로 검토.
+
 ## 2026-11-22 조운 송별 데모의 부관 임명 준비
 
 - `internal/gui/uidemo_insu.go`·`uidemo_story_farewell.go`: 송별 데모를 첫 승급 레벨에서 시작 — 전투 기준 레벨이 낮아진 뒤에도 부관임명 특성과 관리 조작을 재현.

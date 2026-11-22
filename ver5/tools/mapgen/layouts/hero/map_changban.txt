@@ -1,25 +1,37 @@
-# map_changban 장판파 (36x22). Shared by 연의 B26 and 가상 B25V. North = row 0.
-# River x 27-28, 장판교 at y 6 (one cell wide), ford at y 18 where the south path ends.
-# Camp east of the bridge at (31,6). Ruined village NW (3,2). Forest edge W x 0-2, y 9-16.
-d-- d-- d-- d-- d-s d-- d-- d-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- g-- g-- g-- g-- g-- g-- g--
-d-- d-r d-- d-- d-- d-r d-- d-s g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- w-- w-- g-- g-- g-- g-- g-- g-- g--
-d-- d-- d-- dv- d-- d-- d-- d-- g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- g-- g-- g-- gt- gt- g-- g--
-d-s d-- d-- d-- l-- l-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- w-- w-- g-- g-- g-- g-- g-- g-- g--
-d-- d-- d-r d-- d-- d-- d-- d-- l-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- wb- wb- l-- l-- gk- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- l-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- u-- u-- g-- g-- g-- g-- g-- g-- g-- w-- w-- l-- g-- g-- g-- g-- g-- g--
-gt- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- u-- g-- g-- g-- gt- g-- g-- g-- g-- w-- w-- l-- g-- g-- g-- g-- g-- g--
-gt- gt- gt- g-- g-- g-- g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- l-- g-- g-- g-- g-- gt- g--
-gt- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- l-- g-- g-- g-- g-- g-- gt-
-gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- l-- g-- g-- g-- g-- g-- g--
-gt- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- w-- w-- l-- g-- g-- g-- g-- g-- g--
-gt- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- l-- g-- g-- g-- gt- g-- g--
-gt- gt- gt- gt- g-- g-- gt- g-- gt- gt- g-- gt- g-- gt- gt- gt- g-- gt- gt- gt- g-- gt- g-- g-- gt- gt- gt- w-- w-- l-- g-- g-- g-- g-- g-- g--
-gt- gt- gt- gt- gt- g-- gt- gt- gt- g-- g-- g-- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- g-- g-- w-- w-- l-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- gt- w-- w-- l-- g-- g-- g-- g-- g-- g--
-l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- s-- s-- g-- g-- g-- g-- g-- g-- g--
-u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- u-- w-- w-- g-- g-- g-- g-- g-- g-- g--
-u-- u-- n-- n-- n-- u-- u-- n-- u-- n-- u-- u-- u-- u-- n-- n-- n-- n-- n-- u-- n-- u-- u-- u-- u-- u-- n-- w-- w-- u-- u-- u-- u-- u-- u-- u--
-n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- w-- w-- u-- u-- u-- u-- u-- u-- u--
+# 장판파 · 굽은 강과 남쪽 둑 (B26, B25V)
+gt- g-- gt- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- gt- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d--
+g-- g-- g-- gt- g-- g-- g-- g-- gt- g-- gt- g-- g-- g-- g-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d-- d--
+g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- d-- d-- d-- d-- dv- d-- d-- d-- d-- d-- d--
+gt- g-- g-- g-- g-- gt- g-- gt- g-- g-- g-- g-- gt- g-- g-- d-- d-- d-- d-- d-- d-r d-- d-- d-- d-- d--
+g-- gt- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- gt- g-- d-- d-- d-- d-- d-- d-- d-- d-- dv- d-- d--
+g-- g-- gt- g-- gt- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- d-- d-- d-- d-- d-- dv- d-- d-- d-- d-- d--
+g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- gt- g-- gt- g-- g-- d-- d-- d-- d-- d-- d-- d-- d-- d-s d-- d--
+g-- gt- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- gt- g-- d-- d-- d-- d-- d-- d-- d-r d-- d-- d-- d--
+g-- g-- gt- g-- g-- g-- g-- gt- g-- gt- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g--
+u-- u-- u-- gt- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- gt- g-- gt- g-- g-- g-- g-- gt- g-- g-- g--
+u-- u-- u-- g-- gt- g-- gt- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- gt- g-- gt-
+u-- u-- u-- g-- g-- g-- g-- gt- g-- g-- g-- g-- gt- g-- l-- l-- l-- l-- l-- l-- l-- g-- g-- g-- g-- g--
+u-- u-- u-- gt- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- g-- gt- g-- g-- g--
+u-- u-- u-- l-- l-- l-- l-- l-- g-- gt- g-- gt- g-- g-- l-- l-- l-- l-- l-- l-- l-- g-- g-- u-- u-- u--
+u-- u-- u-- l-- l-- l-- l-- l-- g-- g-- g-- g-- gt- g-- l-- l-- l-- l-- l-- l-- l-- g-- g-- d-r u-- u--
+u-- u-- u-- l-- l-- l-- l-- l-- gt- g-- g-- g-- g-- gt- l-- l-- l-- l-- l-- l-- l-- g-- g-- u-- d-- dv-
+u-- u-- u-- l-- l-- l-- l-- l-- g-- gt- g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- gt- g-- u-- l-- u--
+u-- u-- u-- l-- l-- l-- l-- l-- g-- g-- gt- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- g-- gt- l-- u-- u--
+u-- u-- u-- l-- l-- l-- l-- l-- g-- g-- g-- gt- g-- gt- l-- l-- l-- l-- l-- l-- l-- g-- l-- u-- u-- u--
+u-- u-- u-- l-- l-- l-- l-- l-- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- gt- g-- u-- u-- u--
+u-- u-- u-- l-- l-- l-- l-- l-- gt- g-- gt- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- g-- gt- u-- u-- u--
+u-- u-- u-- l-- l-- l-- l-- l-- g-- g-- g-- gt- g-- g-- l-- l-- l-- l-- l-- l-- l-- g-- g-- u-- u-- u--
+u-- u-- u-- l-- l-- l-- l-- l-- g-- g-- g-- g-- gt- g-- l-- l-- l-- l-- g-- l-- l-- g-- g-- u-- u-- u--
+u-- u-- u-- l-- l-- l-- w-- w-- w-- w-- w-- w-- w-- gt- l-- l-- l-- l-- l-- l-- l-- g-- g-- u-- u-- u--
+u-- u-- u-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- l-- l-- l-- l-- l-- gt- g-- u-- u-- u--
+u-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- wb- w-- l-- l-- g-- g-- g-- gt- g--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- wb- w-- w-- w-- w-- g-- g-- g-- gt-
+w-- w-- w-- w-- w-- w-- g-- gt- g-- gt- g-- g-- g-- w-- w-- w-- w-- wb- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- gt- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- l-- l-- w-- wb- w-- w-- w-- w-- w-- w-- w-- w--
+w-- g-- g-- g-- gt- g-- gt- g-- g-- g-- g-- gt- g-- d-- l-- l-- l-- l-- l-- w-- w-- w-- w-- w-- w-- w--
+gt- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- gt- d-- l-- l-- l-- l-- l-- l-- l-- d-- w-- w-- w-- w--
+g-- gt- g-- gt- g-- g-- g-- g-- gt- g-- g-- g-- g-- d-- l-- l-- l-- dk- l-- l-- l-- d-- d-- d-- g-- g--
+g-- g-- g-- g-- gt- g-- g-- g-- g-- gt- g-- gt- g-- d-- l-- dk- l-- l-- l-- l-- l-- dk- d-- d-- g-- g--
+gt- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- gt- d-- l-- l-- l-- l-- l-- l-- l-- d-- d-- d-- gt- g--
+g-- gt- g-- g-- g-- g-- gt- g-- gt- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- gt-
+g-- g-- gt- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- gt- g-- gt- g-- g-- g-- g-- gt- g-- g-- g-- g--

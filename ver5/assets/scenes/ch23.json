@@ -2,7 +2,7 @@
  "Scenes": {
   "c23-start": {
    "Map": "S_ye_hall",
-   "Nodes": ["c23-start", "c23-h01", "c23-h02", "c23-h03", "c23-h04", "c23-h05", "c23-h06"],
+   "Nodes": ["c23-start", "c23-h01", "c23-h02", "c23-h03", "c23-h04", "c23-h05", "c23-h06", "c23-shinya-grant"],
    "Ambient": [{"CamAt": [6, 4]}],
    "Cast": {
     "유표": {"At": [6, 1], "Face": "SW", "Pose": "sit", "Hold": true},
@@ -26,35 +26,12 @@
       [{"Actor": "유표", "Emote": "…"}]
      ]
     ],
-    "c23-h06": [
+    "c23-shinya-grant": [
      [
      ],
      [
       [{"Actor": "유비", "Face": "SW"}],
       [{"Actor": "유비", "Move": [6, 12], "Speed": 0.8, "Exit": true}]
-     ]
-    ]
-   }
-  },
-  "c23-whisper": {
-   "Map": "S_ye_hall",
-   "Music": "suno-intrigue",
-   "Nodes": ["c23-whisper", "c23-w01"],
-   "Ambient": [{"CamAt": [6, 4]}],
-   "Cast": {
-    "유표": {"At": [6, 1], "Face": "SW", "Pose": "sit", "Hold": true},
-    "괴월": {"At": [7, 4], "Face": "NW", "Off": true},
-    "호위#1": {"At": [8, 1], "Face": "SW", "Sprite": "guards", "Faction": "jing"},
-    "호위#2": {"At": [4, 1], "Face": "SW", "Sprite": "guards", "Faction": "jing"}
-   },
-   "Beats": {
-    "c23-w01": [
-     [
-      [{"Actor": "괴월", "Enter": [12, 4], "Move": [7, 2], "Speed": 0.8}],
-      [{"Actor": "괴월", "Face": "NW"}]
-     ],
-     [
-      [{"Actor": "유표", "Emote": "…", "Wait": 1.0}]
      ]
     ]
    }
@@ -273,8 +250,8 @@
   "c23-visit2": {
    "Map": "S_vil_peace",
    "Time": "dawn",
-   "Snow": 1,
    "Grass": {"hue": 0, "sat": 0.04, "val": 1.8},
+   "Snow": 1,
    "Nodes": ["c23-visit2", "c23-b01", "c23-b02", "c23-b03", "c23-b04", "c23-b05"],
    "Cast": {
     "유비": {"Stay": true},

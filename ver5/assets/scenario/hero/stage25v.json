@@ -17,9 +17,10 @@
     "fled:ref3",
     "fled:ref4",
     "fled:ref5",
-    "fled:ref6"
+    "fled:ref6",
+    "at:liubei:57"
    ],
-   "Text": "피난민 여섯 무리가 모두 다리를 건넌다"
+   "Text": "피난민 여섯 무리와 유비가 철수한다"
   }
  ],
  "Defeat": [
@@ -62,12 +63,6 @@
   },
   {
    "If": [
-    "any:[defeated:zhangfei, defeated:zhaoyun]"
-   ],
-   "Text": "장비나 조운이 쓰러진다"
-  },
-  {
-   "If": [
     "at:enemy:50"
    ],
    "Text": "적이 진영에 선다"
@@ -101,246 +96,377 @@
  "Allies": [
   {
    "X": 14,
-   "Y": 9
+   "Y": 14
   },
   {
    "X": 15,
-   "Y": 8
+   "Y": 15
   },
   {
    "X": 13,
-   "Y": 10
-  },
-  {
-   "X": 13,
-   "Y": 8
+   "Y": 13
   },
   {
    "X": 15,
-   "Y": 10
+   "Y": 13
   },
   {
-   "X": 14,
-   "Y": 7
+   "X": 13,
+   "Y": 15
   },
   {
    "X": 16,
-   "Y": 9
+   "Y": 14
   },
   {
    "X": 14,
-   "Y": 11
+   "Y": 16
+  },
+  {
+   "X": 12,
+   "Y": 14
   }
  ],
  "Recommend": {
   "liubei": {
    "X": 14,
-   "Y": 9
+   "Y": 14
   },
   "zhangfei": {
    "X": 15,
-   "Y": 8
+   "Y": 15
   },
   "zhaoyun": {
    "X": 13,
-   "Y": 10
+   "Y": 13
   }
  },
  "Party": [
   {
    "Character": "villager",
-   "X": 8,
-   "Y": 5,
+   "X": 16,
+   "Y": 20,
    "AI": true,
    "Rank": "officer",
    "Group": "ref1",
    "Policy": "run",
    "GoalArea": 53,
    "Faction": "han",
-   "Facing": "SE"
+   "Facing": "SW"
   },
   {
    "Character": "villager_woman",
-   "X": 8,
-   "Y": 4,
+   "X": 17,
+   "Y": 20,
    "AI": true,
    "Rank": "officer",
    "Group": "ref2",
    "Policy": "run",
    "GoalArea": 53,
    "Faction": "han",
-   "Facing": "SE"
+   "Facing": "SW"
   },
   {
    "Character": "villager_elder",
-   "X": 8,
-   "Y": 3,
+   "X": 18,
+   "Y": 20,
    "AI": true,
    "Rank": "officer",
    "Group": "ref3",
    "Policy": "run",
    "GoalArea": 53,
    "Faction": "han",
-   "Facing": "SE"
+   "Facing": "SW"
   },
   {
    "Character": "villager_woman",
-   "X": 7,
-   "Y": 3,
+   "X": 16,
+   "Y": 21,
    "AI": true,
    "Rank": "officer",
    "Group": "ref4",
    "Policy": "run",
    "GoalArea": 53,
    "Faction": "han",
-   "Facing": "SE"
+   "Facing": "SW"
   },
   {
    "Character": "villager",
-   "X": 6,
-   "Y": 3,
+   "X": 17,
+   "Y": 21,
    "AI": true,
    "Rank": "officer",
    "Group": "ref5",
    "Policy": "run",
    "GoalArea": 53,
    "Faction": "han",
-   "Facing": "SE"
+   "Facing": "SW"
   },
   {
    "Character": "villager_elder",
-   "X": 5,
-   "Y": 3,
+   "X": 18,
+   "Y": 21,
    "AI": true,
    "Rank": "officer",
    "Group": "ref6",
    "Policy": "run",
    "GoalArea": 53,
    "Faction": "han",
-   "Facing": "SE"
+   "Facing": "SW"
   },
   {
    "Character": "troop_footman",
-   "X": 29,
-   "Y": 9,
+   "X": 14,
+   "Y": 29,
    "AI": true,
    "Group": "camp-guard",
    "Policy": "react",
    "Faction": "shu",
    "Shift": -0.07,
-   "Facing": "SW"
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
-   "X": 31,
-   "Y": 9,
+   "X": 14,
+   "Y": 31,
    "AI": true,
    "Group": "camp-guard",
    "Policy": "react",
    "Faction": "shu",
    "Shift": -0.07,
-   "Facing": "SW"
+   "Facing": "NW"
   },
   {
    "Character": "troop_archer",
-   "X": 30,
-   "Y": 8,
+   "X": 15,
+   "Y": 30,
    "AI": true,
    "Group": "camp-guard",
    "Policy": "react",
    "Faction": "shu",
    "Shift": -0.07,
-   "Facing": "SW"
+   "Facing": "NW"
   }
  ],
  "Enemies": [
   {
    "Character": "caochun",
-   "X": 1,
-   "Y": 17,
+   "X": 12,
+   "Y": 9,
+   "Group": "vanguard",
+   "Policy": "march",
    "Rank": "commander",
-   "Group": "tiger",
-   "Policy": "assault",
-   "Facing": "NE"
+   "Shift": -0.07,
+   "Facing": "SW",
+   "GoalArea": 56
+  },
+  {
+   "Character": "xiahouyuan",
+   "X": 21,
+   "Y": 8,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "officer",
+   "Shift": -0.07,
+   "Facing": "SW",
+   "GoalArea": 56
   },
   {
    "Character": "troop_cavalry",
-   "X": 0,
-   "Y": 17,
-   "Group": "tiger",
-   "Policy": "assault",
-   "Shift": -0.07,
-   "Facing": "NE"
+   "X": 6,
+   "Y": 5,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
+  },
+  {
+   "Character": "troop_horse_archer",
+   "X": 8,
+   "Y": 5,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
   },
   {
    "Character": "troop_cavalry",
-   "X": 2,
-   "Y": 17,
-   "Group": "tiger",
-   "Policy": "assault",
-   "Shift": -0.07,
-   "Facing": "NE"
+   "X": 10,
+   "Y": 5,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
+  },
+  {
+   "Character": "troop_horse_archer",
+   "X": 12,
+   "Y": 5,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
   },
   {
    "Character": "troop_cavalry",
-   "X": 0,
-   "Y": 18,
-   "Group": "tiger",
-   "Policy": "assault",
-   "Shift": -0.07,
-   "Facing": "NE"
+   "X": 14,
+   "Y": 5,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
+  },
+  {
+   "Character": "troop_horse_archer",
+   "X": 16,
+   "Y": 5,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
   },
   {
    "Character": "troop_cavalry",
-   "X": 1,
-   "Y": 18,
-   "Group": "tiger",
-   "Policy": "assault",
-   "Shift": -0.07,
-   "Facing": "NE"
+   "X": 18,
+   "Y": 5,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
+  },
+  {
+   "Character": "troop_horse_archer",
+   "X": 20,
+   "Y": 5,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
   },
   {
    "Character": "troop_cavalry",
-   "X": 2,
-   "Y": 18,
-   "Group": "tiger",
-   "Policy": "assault",
-   "Shift": -0.07,
-   "Facing": "NE"
+   "X": 6,
+   "Y": 7,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
+  },
+  {
+   "Character": "troop_horse_archer",
+   "X": 8,
+   "Y": 7,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
   },
   {
    "Character": "troop_cavalry",
-   "X": 3,
-   "Y": 18,
-   "Group": "tiger",
-   "Policy": "assault",
-   "Shift": -0.07,
-   "Facing": "NE"
+   "X": 10,
+   "Y": 7,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
+  },
+  {
+   "Character": "troop_horse_archer",
+   "X": 12,
+   "Y": 7,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
   },
   {
    "Character": "troop_cavalry",
-   "X": 4,
-   "Y": 18,
-   "Group": "tiger",
-   "Policy": "assault",
-   "Shift": -0.07,
-   "Facing": "NE"
+   "X": 14,
+   "Y": 7,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
+  },
+  {
+   "Character": "troop_horse_archer",
+   "X": 16,
+   "Y": 7,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
   },
   {
    "Character": "troop_cavalry",
-   "X": 5,
-   "Y": 18,
-   "Group": "tiger",
-   "Policy": "assault",
-   "Shift": -0.07,
-   "Facing": "NE"
+   "X": 18,
+   "Y": 7,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
+  },
+  {
+   "Character": "troop_horse_archer",
+   "X": 20,
+   "Y": 7,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 22,
+   "Y": 6,
+   "Group": "vanguard",
+   "Policy": "march",
+   "Rank": "troop",
+   "Shift": -0.12,
+   "Facing": "SW",
+   "GoalArea": 56
   },
   {
    "Character": "xiahouen",
-   "X": 3,
-   "Y": 9,
+   "X": 16,
+   "Y": 11,
+   "Group": "duelist",
    "Policy": "react",
-   "Facing": "SE"
+   "Rank": "officer",
+   "Shift": -0.07,
+   "Facing": "SW"
   }
  ],
  "Reward": {
@@ -350,21 +476,21 @@
   {
    "ID": 50,
    "Rect": {
-    "X": 30,
-    "Y": 5,
+    "X": 16,
+    "Y": 30,
     "W": 3,
     "H": 3
    },
-   "Name": "다리 동쪽 진영",
+   "Name": "다리 건너 진영",
    "Description": "피난민이 닿으면 강을 건넌 것이다. 적이 서면 패배"
   },
   {
    "ID": 51,
    "Rect": {
-    "X": 27,
-    "Y": 6,
-    "W": 2,
-    "H": 1
+    "X": 17,
+    "Y": 25,
+    "W": 1,
+    "H": 4
    },
    "Name": "장판교",
    "Description": "한 칸 폭의 나무다리. 마지막 무리가 건너면 장비가 끊는다"
@@ -372,24 +498,54 @@
   {
    "ID": 53,
    "Rect": {
-    "X": 27,
-    "Y": 5,
-    "W": 6,
-    "H": 3
+    "X": 16,
+    "Y": 29,
+    "W": 3,
+    "H": 4
    },
-   "Name": "장판교와 진영",
-   "Description": "피난민이 다리에 오르면 건넌 것이다"
+   "Name": "장판교 건너편",
+   "Description": "피란민이 둑에 닿으면 다리를 건넌 것이다"
   },
   {
-   "ID": 52,
+   "ID": 54,
+   "Name": "조조 본군 집결지",
    "Rect": {
-    "X": 24,
-    "Y": 16,
-    "W": 6,
+    "X": 4,
+    "Y": 8,
+    "W": 19,
+    "H": 3
+   }
+  },
+  {
+   "ID": 55,
+   "Name": "중군 집결지",
+   "Rect": {
+    "X": 5,
+    "Y": 11,
+    "W": 19,
+    "H": 3
+   }
+  },
+  {
+   "ID": 56,
+   "Name": "기병 선봉 진격로",
+   "Rect": {
+    "X": 10,
+    "Y": 15,
+    "W": 12,
+    "H": 4
+   }
+  },
+  {
+   "ID": 57,
+   "Name": "철수 지점",
+   "Rect": {
+    "X": 16,
+    "Y": 31,
+    "W": 5,
     "H": 3
    },
-   "Name": "여울 어귀",
-   "Description": "남쪽 숲길 끝의 얕은 여울. 돌아온 호표기가 여기서 강을 건넌다"
+   "Description": "피난민을 모두 보낸 뒤 유비가 여기에 닿으면 승리"
   }
  ],
  "Events": [
@@ -445,15 +601,6 @@
      "Lines": [
       {
        "Actor": "xushu",
-       "Text": "주공, 남쪽 숲 끝의 물빛이 옅습니다. 말이 건널 여울입니다. 그리로 도는 군사가 있을 것입니다."
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "xushu",
        "Text": "맨 뒤 무리에 제 노모가 계십니다. ……다른 무리와 똑같이만 지켜 주십시오."
       }
      ]
@@ -470,55 +617,9 @@
    ]
   },
   {
-   "ID": "tiger-riders",
-   "Every": 1,
+   "ID": "second-line-arrives",
    "If": [
-    "turnstart:enemy",
     "round>=3",
-    "!round>=10"
-   ],
-   "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "troop_cavalry",
-       "X": 0,
-       "Y": 17,
-       "Group": "tiger",
-       "Side": "enemy",
-       "Policy": "assault",
-       "Faction": "wei",
-       "Shift": -0.12
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 1,
-       "Y": 17,
-       "Group": "tiger",
-       "Side": "enemy",
-       "Policy": "assault",
-       "Faction": "wei",
-       "Shift": -0.12
-      },
-      {
-       "Character": "troop_cavalry",
-       "X": 2,
-       "Y": 17,
-       "Group": "tiger",
-       "Side": "enemy",
-       "Policy": "assault",
-       "Faction": "wei",
-       "Shift": -0.12
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "wenpin-4",
-   "If": [
-    "round>=4",
     "turnstart:enemy"
    ],
    "Do": [
@@ -526,37 +627,251 @@
      "Kind": "spawn",
      "Spawns": [
       {
-       "Character": "wenpin",
-       "X": 1,
-       "Y": 17,
-       "Side": "enemy",
-       "Policy": "assault",
-       "Faction": "wei"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
+       "Character": "xiahoudun",
+       "X": 8,
+       "Y": 4,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "commander",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
       {
-       "Actor": "wenpin",
-       "Text": "형주의 문빙이다. ……유 황숙, 길을 비키시오. 백성까지 칼을 받게 하지 마시오."
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
+       "Character": "caoren",
+       "X": 14,
+       "Y": 4,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
       {
-       "Actor": "liubei",
-       "Text": "문 장군, 지키라고 맡긴 형주를 넘기고 이제 그 칼로 형주 백성을 쫓는가."
+       "Character": "caohong",
+       "X": 21,
+       "Y": 4,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 5,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 6,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 7,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 8,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 9,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 10,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 11,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 12,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 13,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 14,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 15,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 16,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 17,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 18,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 19,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 20,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 21,
+       "Y": 3,
+       "Group": "second-line",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 55,
+       "Side": "enemy"
       }
      ]
     }
    ]
   },
   {
-   "ID": "ford-riders",
+   "ID": "main-army-arrives",
    "If": [
     "round>=5",
     "turnstart:enemy"
@@ -566,138 +881,484 @@
      "Kind": "spawn",
      "Spawns": [
       {
-       "Character": "troop_cavalry",
-       "X": 0,
-       "Y": 18,
-       "Group": "ford",
-       "Side": "enemy",
-       "Policy": "assault",
-       "Faction": "wei",
-       "Shift": -0.07
+       "Character": "caocao",
+       "X": 5,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "boss",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
       },
       {
-       "Character": "troop_cavalry",
-       "X": 1,
-       "Y": 18,
-       "Group": "ford",
-       "Side": "enemy",
-       "Policy": "assault",
-       "Faction": "wei",
-       "Shift": -0.07
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "xushu",
-       "Text": "남쪽 숲길에 먼지가 입니다! 호표기가 여울로 돌아 진영 뒤를 칩니다!"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "ford-near",
-   "If": [
-    "at:ford:52"
-   ],
-   "Do": [
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "zhangfei",
-       "Text": "형, 저놈들이 여울로 올라오는구먼! 진영에 발 들이게 두면 안 되여!"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "zhanghe-7",
-   "If": [
-    "round>=7",
-    "turnstart:enemy"
-   ],
-   "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "zhanghe",
-       "X": 2,
-       "Y": 17,
-       "Side": "enemy",
-       "Policy": "assault",
-       "Faction": "wei"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
-      {
-       "Actor": "zhanghe",
-       "Text": "하북의 장합이 왔다. 행렬 꼬리부터 잘라 낸다!"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "ID": "caocao-10",
-   "If": [
-    "round>=10",
-    "turnstart:enemy"
-   ],
-   "Do": [
-    {
-     "Kind": "spawn",
-     "Spawns": [
-      {
-       "Character": "caocao",
-       "X": 1,
-       "Y": 7,
-       "Rank": "boss",
-       "Side": "enemy",
-       "Policy": "assault",
-       "Faction": "wei"
+       "Character": "xuhuang",
+       "X": 6,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
       },
       {
        "Character": "xuchu",
-       "X": 1,
-       "Y": 6,
-       "Side": "enemy",
-       "Policy": "assault",
-       "Faction": "wei"
+       "X": 7,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "zhanghe",
+       "X": 8,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "yuejin",
+       "X": 9,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "yujin",
+       "X": 10,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
       },
       {
        "Character": "zhangliao",
+       "X": 11,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "chengyu",
+       "X": 12,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "jiaxu",
+       "X": 13,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "xunyou",
+       "X": 14,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "liuye",
+       "X": 15,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "hanhao",
+       "X": 16,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "caoxiu",
+       "X": 17,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "lidian",
+       "X": 18,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "zhuling",
+       "X": 19,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "wenpin_foot",
+       "X": 20,
+       "Y": 2,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "officer",
+       "Shift": -0.07,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
        "X": 1,
-       "Y": 8,
-       "Side": "enemy",
-       "Policy": "assault",
-       "Faction": "wei"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
+       "Y": 0,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
       {
-       "Actor": "caocao",
-       "Text": "현덕은 백성을 성벽 삼아 걷는군. ……허저, 장료. 그 성벽을 허물어라!"
-      }
-     ]
-    },
-    {
-     "Kind": "say",
-     "Lines": [
+       "Character": "troop_archer",
+       "X": 3,
+       "Y": 0,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
       {
-       "Actor": "liubei",
-       "Text": "승상이 직접 왔군. 물러서지 마라! 저 사람들이 다리에 닿을 때까지다!"
+       "Character": "troop_footman",
+       "X": 5,
+       "Y": 0,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 7,
+       "Y": 0,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 9,
+       "Y": 0,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 11,
+       "Y": 0,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 13,
+       "Y": 0,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 15,
+       "Y": 0,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 17,
+       "Y": 0,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 19,
+       "Y": 0,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 21,
+       "Y": 0,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 23,
+       "Y": 0,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 1,
+       "Y": 1,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 3,
+       "Y": 1,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 5,
+       "Y": 1,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 7,
+       "Y": 1,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 9,
+       "Y": 1,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 11,
+       "Y": 1,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_footman",
+       "X": 13,
+       "Y": 1,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_archer",
+       "X": 15,
+       "Y": 1,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 17,
+       "Y": 1,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 19,
+       "Y": 1,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 21,
+       "Y": 1,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
+      },
+      {
+       "Character": "troop_cavalry",
+       "X": 23,
+       "Y": 1,
+       "Group": "main-army",
+       "Policy": "march",
+       "Rank": "troop",
+       "Shift": -0.12,
+       "Facing": "SW",
+       "GoalArea": 54,
+       "Side": "enemy"
       }
      ]
     }
@@ -711,7 +1372,8 @@
     "fled:ref3",
     "fled:ref4",
     "fled:ref5",
-    "fled:ref6"
+    "fled:ref6",
+    "at:liubei:57"
    ],
    "Do": [
     {

@@ -550,6 +550,14 @@ func (e *Engine) victims(u, v *Unit, s content.Skill) (out []*Unit, share map[st
 		}
 		add(e.occupied(x, y), k+e.fx(u, content.FxHeavy))
 	}
+	if s.SideCoeff > 0 {
+		add(v, 1)
+		side(v.X-1, v.Y, s.SideCoeff)
+		side(v.X+1, v.Y, s.SideCoeff)
+		side(v.X, v.Y-1, s.SideCoeff)
+		side(v.X, v.Y+1, s.SideCoeff)
+		return
+	}
 	if s.Shape != content.ShapeSingle {
 		for _, aim := range e.targets(u, v, s) {
 			hit, sh, ar := e.victims(u, aim, single(s))

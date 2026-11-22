@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-"""Draw the far pictures that lie behind outdoor scene maps (a scene's "Backdrop"): sky and ridges, a pass with its
-gate, a city wall, Luoyang burning. Small pixel pictures (the game scales them up without smoothing): a banded sky
+"""Regenerate the former scene backgrounds for art reference: sky and ridges, a pass with its
+gate, a city wall, Luoyang burning. Small pixel pictures: a banded sky
 with clouds, three ridges paler with distance and lit on one side, mist between them, a tree line on the nearest,
 and for the man-made ones walls, towers with curved eaves and banners. No outlines: they are far away. Writes
-assets/graphics/backdrops/<id>.png and the "backdrops" table of assets/graphics/index.json.
+assets/graphics/backdrops/<id>.png.
 
   python3 ver5/tools/scene_maps/backdrops.py
 """
-import json
 import math
 import random
 from pathlib import Path
@@ -242,15 +241,9 @@ BACKDROPS = {'mountains': mountains, 'pass': pass_gate, 'city_wall': city_wall, 
 def main():
     out = GFX / 'backdrops'
     out.mkdir(exist_ok=True)
-    index_path = GFX / 'index.json'
-    index = json.load(open(index_path))
-    index['backdrops'] = {}
     for name, draw in BACKDROPS.items():
         draw().save(out / f'{name}.png')
-        index['backdrops'][name] = f'backdrops/{name}.png'
         print(name)
-    json.dump(index, open(index_path, 'w'), ensure_ascii=False, indent=1)
-    open(index_path, 'a').write('\n')
 
 
 if __name__ == '__main__':

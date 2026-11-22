@@ -1,117 +1,14 @@
 {
  "Nodes": [
   {
-   "ID": "c22-start",
-   "Kind": "scene",
-   "Place": "양양 · 관청"
+   "ID": "c22-travel-walk",
+   "Kind": "explore",
+   "Explore": "explore22_travel"
   },
   {
-   "ID": "c22-s101",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "형님, 유비가 인사드립니다. 관우, 장비, 손건이 함께 왔습니다."
-  },
-  {
-   "ID": "c22-s102",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "관우, 형주목께 인사 올립니다."
-  },
-  {
-   "ID": "c22-s103",
-   "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "장비올시다. 신세 좀 지겠슈."
-  },
-  {
-   "ID": "c22-s104",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "여남에서 형님께 동맹을 청해 놓고도, 조조의 군세 앞에 속절없이 무너져 이렇게 뵈러 왔습니다. 부끄러울 따름입니다."
-  },
-  {
-   "ID": "c22-s105",
-   "Kind": "say",
-   "Speaker": "liubiao",
-   "Text": "허허, 무슨 말인가, 현덕 아우. 조조의 강함은 천하가 익히 아는 바이니 마음 쓰지 말게."
-  },
-  {
-   "ID": "c22-s106",
-   "Kind": "say",
-   "Speaker": "liubiao",
-   "Text": "먼 길에 고단했을 터이니, 일단 쉬도록 하게나."
-  },
-  {
-   "ID": "c22-s107",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "형님의 후의에 감사드립니다."
-  },
-  {
-   "ID": "c22-s111",
-   "Kind": "say",
-   "Speaker": "caimao",
-   "Text": "저런 약졸과 동맹을 주장하며 형주를 어쩌겠다는 거냐!"
-  },
-  {
-   "ID": "c22-s112",
-   "Kind": "say",
-   "Speaker": "caimao",
-   "Text": "유비는 여포에게도, 조조에게도, 원소에게도 붙었다 떠난 자다. 그가 머문 곳마다 싸움이 났다!"
-  },
-  {
-   "ID": "c22-s113",
-   "Kind": "say",
-   "Speaker": "yiji",
-   "Text": "그러면 천하에 조조와 홀로 맞서 싸울 수 있는 이가 있습니까? 있다면 말씀해 보십시오."
-  },
-  {
-   "ID": "c22-s114",
-   "Kind": "say",
-   "Speaker": "xianglang",
-   "Text": "주공께서 이미 마음 쓰지 말라 하셨소. 조조와 홀로 맞서기는 어려우니, 한실의 종친을 품어야 하오."
-  },
-  {
-   "ID": "c22-s115",
-   "Kind": "say",
-   "Speaker": "caimao",
-   "Text": "그럼 호랑이를 집 안에 들이자는 거냐!"
-  },
-  {
-   "ID": "c22-s116",
-   "Kind": "say",
-   "Speaker": "yiji",
-   "Text": "아까는 약졸이라 하시더니, 지금은 호랑이입니까?"
-  },
-  {
-   "ID": "c22-s117",
-   "Kind": "say",
-   "Speaker": "caimao",
-   "Text": "…"
-  },
-  {
-   "ID": "c22-s118",
-   "Kind": "say",
-   "Speaker": "liubiao",
-   "Text": "됐다. 내 받아들이기로 하지 않았느냐."
-  },
-  {
-   "ID": "c22-s119",
-   "Kind": "say",
-   "Speaker": "kuaiyue",
-   "Text": "주공, 우리가 곤궁한 저들에게 베푼 것도 사실이고, 저들이 쓸모를 입증해야 하는 것도 사실입니다."
-  },
-  {
-   "ID": "c22-s120",
-   "Kind": "say",
-   "Speaker": "kuaiyue",
-   "Text": "먼저 고기와 술로 한 차례 위로하시고, 골치덩이인 강하의 도적대를 저들에게 맡겨 보시지요."
-  },
-  {
-   "ID": "c22-s121",
-   "Kind": "say",
-   "Speaker": "liubiao",
-   "Text": "……알았소."
+   "ID": "c22-xiangyang-walk",
+   "Kind": "explore",
+   "Explore": "explore22_xiangyang"
   },
   {
    "ID": "c22-banquet",
@@ -424,7 +321,8 @@
   {
    "ID": "c22-walk2",
    "Kind": "explore",
-   "Explore": "explore22b"
+   "Explore": "explore22b",
+   "Opening": "c22-mifang"
   },
   {
    "ID": "c22-done",
@@ -562,7 +460,7 @@
   {
    "ID": "c22-mifang",
    "Kind": "scene",
-   "Place": "강하 진지 · 곳간 앞"
+   "Place": "강하 · 진채의 막사"
   },
   {
    "ID": "c22-mf-br",
@@ -629,6 +527,138 @@
   },
   {
    "ID": "c22-mf-back",
+   "Kind": "back"
+  },
+  {
+   "ID": "c22-travel-on",
+   "Kind": "back",
+   "Leave": true
+  },
+  {
+   "ID": "c22-debate",
+   "Kind": "scene",
+   "Place": "양양 · 관청"
+  },
+  {
+   "ID": "c22-s111",
+   "Kind": "say",
+   "Speaker": "caimao",
+   "Text": "여남에서 패해 오는 군사와 동맹을 맺어 형주에 무슨 득이 있습니까!"
+  },
+  {
+   "ID": "c22-s112",
+   "Kind": "say",
+   "Speaker": "caimao",
+   "Text": "유비는 여포에게도, 조조에게도, 원소에게도 붙었다 떠난 자요. 그가 머문 곳마다 싸움이 났소!"
+  },
+  {
+   "ID": "c22-s113",
+   "Kind": "say",
+   "Speaker": "yiji",
+   "Text": "그러면 천하에 조조와 홀로 맞서 싸울 수 있는 이가 있습니까? 있다면 말씀해 보십시오."
+  },
+  {
+   "ID": "c22-s114",
+   "Kind": "say",
+   "Speaker": "xianglang",
+   "Text": "주공께서 이미 마음 쓰지 말라 하셨소. 조조와 홀로 맞서기는 어려우니, 한실의 종친을 품어야 하오."
+  },
+  {
+   "ID": "c22-s115",
+   "Kind": "say",
+   "Speaker": "caimao",
+   "Text": "그럼 호랑이를 집 안에 들이자는 거냐!"
+  },
+  {
+   "ID": "c22-s116",
+   "Kind": "say",
+   "Speaker": "yiji",
+   "Text": "아까는 약졸이라 하시더니, 지금은 호랑이입니까?"
+  },
+  {
+   "ID": "c22-s117",
+   "Kind": "say",
+   "Speaker": "caimao",
+   "Text": "…"
+  },
+  {
+   "ID": "c22-s118",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "됐다. 내 맞아들이기로 하지 않았느냐."
+  },
+  {
+   "ID": "c22-s119",
+   "Kind": "say",
+   "Speaker": "kuaiyue",
+   "Text": "주공, 우리가 곤궁한 저들에게 베푼 것도 사실이고, 저들이 쓸모를 입증해야 하는 것도 사실입니다."
+  },
+  {
+   "ID": "c22-s120",
+   "Kind": "say",
+   "Speaker": "kuaiyue",
+   "Text": "먼저 고기와 술로 한 차례 위로하시고, 골치덩이인 강하의 도적대를 저들에게 맡겨 보시지요."
+  },
+  {
+   "ID": "c22-s121",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "……알았소. 현덕이 왔으면 들라 하게."
+  },
+  {
+   "ID": "c22-start",
+   "Kind": "scene",
+   "Place": "양양 · 관청"
+  },
+  {
+   "ID": "c22-s101",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "형님, 유비가 인사드립니다. 관우, 장비, 손건이 함께 왔습니다."
+  },
+  {
+   "ID": "c22-s102",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "관우, 형주목께 인사 올립니다."
+  },
+  {
+   "ID": "c22-s103",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "장비올시다. 신세 좀 지겠슈."
+  },
+  {
+   "ID": "c22-s104",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "여남에서 형님께 동맹을 청해 놓고도, 조조의 군세 앞에 속절없이 무너져 이렇게 뵈러 왔습니다. 부끄러울 따름입니다."
+  },
+  {
+   "ID": "c22-s105",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "허허, 무슨 말인가, 현덕 아우. 조조의 강함은 천하가 익히 아는 바이니 마음 쓰지 말게."
+  },
+  {
+   "ID": "c22-s106",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "먼 길에 고단했을 터이니, 일단 쉬도록 하게나."
+  },
+  {
+   "ID": "c22-s107",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "형님의 후의에 감사드립니다."
+  },
+  {
+   "ID": "c22-reception-back",
+   "Kind": "back",
+   "Leave": true
+  },
+  {
+   "ID": "c22-return-road",
    "Kind": "back",
    "Leave": true
   }

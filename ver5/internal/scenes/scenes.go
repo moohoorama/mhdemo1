@@ -96,7 +96,6 @@ type Scene struct {
 	ID             string `json:"-"`
 	Map            string
 	Time           string
-	Backdrop       string             // the far picture behind an outdoor map (assets/graphics/backdrops)
 	Glow           string             // a far light washing over the screen from one corner: "fire_nw" (a city burning beyond the north-west)
 	Music          string             // the theme while it plays (assets/music/themes, no extension): a light-hearted scene's own; empty goes by the map
 	Grass          *content.GrassTint `json:",omitempty"` // the grass here when the map stands for another land; nil keeps the map's

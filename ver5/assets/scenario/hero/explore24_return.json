@@ -1,0 +1,106 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "longzhong",
+  "At": [
+   9,
+   8
+  ],
+  "Face": "SE"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_xiaopei",
+   "Name": "신야성",
+   "At": [
+    19,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "관청",
+     "At": [
+      5,
+      11
+     ],
+     "Object": [
+      2,
+      11
+     ],
+     "Node": "c24-office-arrive"
+    },
+    {
+     "Name": "융중 가는 길",
+     "At": [
+      19,
+      -1
+     ],
+     "To": "longzhong"
+    }
+   ],
+   "People": {}
+  },
+  "longzhong": {
+   "Map": "S_vil_peace",
+   "Name": "융중",
+   "Grass": {
+    "hue": 0,
+    "sat": 1.1,
+    "val": 1.0
+   },
+   "At": [
+    24,
+    8
+   ],
+   "Exits": [
+    {
+     "Name": "신야로",
+     "At": [
+      24,
+      8
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "동자": {
+     "At": [
+      7,
+      4
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "page_boy",
+       "선생님, 장군과 함께 평안히 가십시오."
+      ]
+     ]
+    },
+    "융중 농부": {
+     "At": [
+      16,
+      12
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "봄이 되니 매화가 피었습니다. 선생 댁 앞에도 한창일 겁니다."
+      ]
+     ]
+    }
+   },
+   "Effects": [
+    {
+     "Effect": "petals",
+     "At": [
+      7,
+      4
+     ]
+    }
+   ]
+  }
+ }
+}

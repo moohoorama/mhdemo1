@@ -112,3 +112,46 @@ func TestWardsMeditationAndForesight(t *testing.T) {
 		assert.ErrorContains(t, err, "InsufficientHP", "it cannot pay its last troops")
 	})
 }
+
+func TestEquippedStatBalance(t *testing.T) {
+	t.Run("equipment affects both balances before temporary statuses", func(t *testing.T) {
+		e, u, _ := arena(t)
+		e.data.Traits["blend_attack_t"] = content.Trait{Effects: map[string]float64{content.FxBlendBonus: 1}}
+		e.data.Traits["blend_defense_t"] = content.Trait{Effects: map[string]float64{content.FxDefenseMindBalance: 1}}
+		e.data.Equipment["mind_gear_t"] = content.Equipment{Bonus: [6]float64{0, 0, 1000}}
+		e.char(u.Character).Equipment = map[string]string{"accessory": "mind_gear_t"}
+		base := e.stats(u)
+		require.Greater(t, base.Mind, base.Attack)
+		require.Greater(t, base.Mind, base.Defense)
+
+		with(e, u.Character, "blend_attack_t", "blend_defense_t")
+		balanced := e.stats(u)
+		assert.Equal(t, base.Attack+(base.Mind-base.Attack)/2, balanced.Attack)
+		assert.Equal(t, base.Defense+(base.Mind-base.Defense)/2, balanced.Defense)
+		assert.Equal(t, base.Mind, balanced.Mind)
+
+		u.Status = map[string]Status{"mind": {Turns: 1, Value: -20}}
+		weakened := e.stats(u)
+		assert.Equal(t, balanced.Attack, weakened.Attack)
+		assert.Equal(t, balanced.Defense, weakened.Defense)
+		assert.Equal(t, percent(base.Mind, -20), weakened.Mind)
+	})
+
+	t.Run("the larger mind bonus wins without stacking", func(t *testing.T) {
+		e, u, _ := arena(t)
+		e.data.Traits["blend_attack_t"] = content.Trait{Effects: map[string]float64{content.FxBlendBonus: 1}}
+		e.data.Traits["blend_defense_t"] = content.Trait{Effects: map[string]float64{content.FxDefenseMindBalance: 1}}
+		e.data.Equipment["guard_gear_t"] = content.Equipment{Bonus: [6]float64{500, 1000}}
+		e.char(u.Character).Equipment = map[string]string{"accessory": "guard_gear_t"}
+		base := e.stats(u)
+		require.Greater(t, base.Defense, base.Attack)
+		require.Greater(t, base.Attack, base.Mind)
+
+		with(e, u.Character, "blend_attack_t", "blend_defense_t")
+		balanced := e.stats(u)
+		assert.Equal(t, base.Attack, balanced.Attack)
+		assert.Equal(t, base.Defense, balanced.Defense)
+		assert.Equal(t, base.Mind+(base.Defense-base.Mind)/2, balanced.Mind)
+		assert.Equal(t, 24, e.cost(u, content.Skill{Kind: content.KindBuff, Mode: content.ModeSelf, Effect: "defense", Cost: 24}))
+	})
+}

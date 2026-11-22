@@ -1,29 +1,29 @@
-# map26v 강릉 수비전 (28x26). North = row 0: the road from 당양 runs down x 13.
-# 장강 x 0-2 with the landing x 3, the east river x 25-27. Three camps (5x5 palisade rings, gaps N and S)
-# west (6,12), centre (13,12), east (20,12). 강릉성 (13,23).
-w-- w-- w-- g-- g-- g-- u-- u-- u-- g-- g-- g-- g-- l-- g-- g-- g-- g-- u-- u-- g-- g-- g-- g-- g-- w-- w-- w--
-w-- w-- w-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- u-- g-- gt- g-- g-- w-- w-- w--
-w-- w-- w-- g-- gt- g-- g-- g-- g-- gt- g-- g-- g-- l-- g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- w-- w-- w--
-w-- w-- w-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- w-- w-- w--
-w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- w-- w-- w--
-w-- w-- w-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w--
-w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- l-- g-- g-- gt- g-- g-- g-- g-- g-- gt- g-- g-- w-- w-- w--
-w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w--
-w-- w-- w-- s-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w--
-w-- w-- w-- l-- g-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- g-- g-- g-- w-- w-- w--
-w-- w-- w-- l-- gz- gz- l-- gz- gz- g-- g-- gz- gz- l-- gz- gz- g-- g-- gz- gz- l-- gz- gz- g-- g-- w-- w-- w--
-w-- w-- w-- l-- gz- l-- l-- l-- gz- g-- g-- gz- l-- l-- l-- gz- g-- g-- gz- l-- l-- l-- gz- g-- g-- w-- w-- w--
-w-- w-- w-- l-- gz- l-- lk- l-- gz- g-- g-- gz- l-- lk- l-- gz- g-- g-- gz- l-- lk- l-- gz- g-- g-- w-- w-- w--
-w-- w-- w-- l-- gz- l-- l-- l-- gz- g-- g-- gz- l-- l-- l-- gz- g-- g-- gz- l-- l-- l-- gz- g-- g-- w-- w-- w--
-w-- w-- w-- l-- gz- gz- l-- gz- gz- g-- g-- gz- gz- l-- gz- gz- g-- g-- gz- gz- l-- gz- gz- g-- g-- w-- w-- w--
-w-- w-- w-- l-- g-- g-- l-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- w-- w-- w--
-w-- w-- w-- s-- g-- g-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- g-- g-- g-- g-- w-- w-- w--
-w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w--
-w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- l-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- w-- w-- w--
-w-- w-- w-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- w-- w-- w--
-w-- w-- w-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- gt- g-- g-- g-- g-- gt- g-- w-- w-- w--
-w-- w-- w-- g-- g-- g-- g-- g-- gt- gt- g-- g-- g-- l-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- w-- w-- w--
-w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w--
-w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- lo- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w--
-w-- w-- w-- g-- g-- g-- gt- g-- g-- g-- g-- g-- l-- l-- l-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- w-- w-- w--
-w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w--
+# 강릉 수비 · 장강 나루와 외곽 진채
+w-- w-- w-- s-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- w-- w--
+w-- w-- w-- s-- g-- gt- gt- g-- gt- g-- g-- g-- g-- g-- g-- l-- l-- g-- g-- gt- gt- g-- g-- g-- g-- g-- s-- w-- w--
+w-- w-- w-- w-- s-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- s-- w--
+w-- w-- w-- w-- s-- gt- g-- g-- g-- gt- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- gt- gt- g-- g-- g-- g-- s-- w--
+w-- w-- w-- w-- s-- gt- gt- g-- g-- g-- g-- g-- g-- g-- l-- l-- gt- gt- g-- gt- g-- g-- g-- g-- g-- g-- g-- s-- w--
+w-- w-- w-- w-- s-- g-- gt- g-- gt- g-- g-- g-- g-- g-- l-- l-- g-- gt- gt- gt- gt- gt- g-- g-- gt- g-- g-- s-- w--
+w-- w-- w-- w-- s-- gt- gt- g-- g-- g-w g-w g-- g-- g-- l-- l-- g-w g-w g-- g-- g-- gt- g-- g-- g-- g-- g-- s-- w--
+w-- w-- w-- w-- s-- g-- g-- g-- g-- g-w g-w g-- g-- l-- l-- gt- g-w s-- gt- g-- gt- g-- gt- g-- g-- g-- gt- s-- w--
+w-- w-- w-- s-- g-- g-- g-- g-- g-- g-w s-- g-- g-- l-- l-- g-- s-- s-- g-- gt- gt- gt- gt- gt- gt- g-- s-- w-- w--
+w-- w-- w-- s-- g-- l-- l-- l-- g-- s-- s-- g-- l-- l-- l-- g-- s-- g-w g-- l-- l-- l-- gt- gt- gt- g-- s-- w-- w--
+w-- w-- w-- s-- gz- gz- l-- gz- gz- s-- g-w gz- gz- l-- gz- gz- g-w g-w gz- gz- l-- gz- gz- g-- gt- g-- s-- w-- w--
+w-- w-- s-- l-- gz- l-- l-- l-- gz- g-w g-w gz- l-- l-- l-- gz- g-w g-w gz- l-- l-- l-- gz- l-- l-- w-- w-- w-- w--
+w-- w-- s-- dk- gz- l-- lk- l-- gz- g-w g-w gz- l-- lk- l-- gz- g-w g-w gz- l-- lk- l-- gz- l-- dk- w-- w-- w-- w--
+w-- w-- s-- l-- gz- l-- l-- l-- gz- g-w g-w gz- l-- l-- l-- gz- g-w s-- gz- l-- l-- l-- gz- l-- l-- w-- w-- w-- w--
+w-- w-- s-- g-- gz- gz- l-- gz- gz- g-w s-- gz- gz- l-- gz- gz- s-- s-- gz- gz- l-- gz- gz- g-- g-- s-- w-- w-- w--
+w-- w-- s-- g-- g-- g-- gt- g-- g-- s-- s-- l-- l-- l-- g-- g-- s-- g-w g-- g-- g-- g-- g-- g-- g-- s-- w-- w-- w--
+w-- w-- s-- g-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- s-- w-- w-- w--
+w-- w-- s-- g-- g-- g-- gt- g-- gt- g-w d-r l-- l-- l-- g-- g-- g-w g-w d-r g-- g-- g-- g-- g-- g-- g-- s-- w-- w--
+w-- w-- w-- s-- g-- gt- gt- gt- gt- g-w g-w l-- l-- l-- g-- g-- g-w g-w g-- g-- g-- gt- g-- g-- gt- gt- s-- w-- w--
+w-- w-- w-- s-- gt- gt- g-- g-- c-- c-- c-- c-- c-- ip- ip- c-- c-- c-- c-- c-- g-- g-- g-- gt- gt- g-- s-- w-- w--
+w-- w-- w-- s-- g-- g-- gt- g-- c-- i-- i-- i-- l-- l-- l-- i-- i-- i-- i-- c-- g-- g-- gt- g-- g-- g-- gt- s-- w--
+w-- w-- w-- w-- s-- g-- g-- g-- c-- i-- iv- i-- l-- l-- l-- i-- iv- i-- i-- c-- gt- g-- gt- gt- gt- g-- g-- s-- w--
+w-- w-- w-- w-- s-- g-- gt- gt- c-- i-- i-- i-- l-- l-- l-- i-- i-- i-- i-- c-- g-- g-- g-- gt- gt- g-- g-- s-- w--
+w-- w-- w-- w-- s-- gt- gt- g-- c-- i-- i-- i-- l-- lo- l-- i-- i-- i-- i-- c-- g-- g-- gt- gt- g-- g-- gt- s-- w--
+w-- w-- w-- w-- s-- gt- gt- gt- c-- i-- i-- i-- l-- l-- l-- i-- i-- iv- i-- c-- g-- g-- gt- gt- g-- g-- g-- s-- w--
+w-- w-- w-- w-- s-- gt- g-- gt- c-- i-- i-- i-- l-- l-- l-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- g-- g-- s-- w--
+w-- w-- w-- w-- s-- g-- gt- g-- c-- c-- c-- c-- c-- c-- c-- c-- c-- c-- c-- c-- g-- g-- g-- gt- g-- g-- g-- s-- w--
+w-- w-- w-- s-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- w-- w--

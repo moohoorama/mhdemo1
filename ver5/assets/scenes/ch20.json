@@ -43,7 +43,7 @@
   },
   "c20-reunion": {
    "Map": "S_mangdang",
-   "Nodes": ["c20-reunion", "c20-r01", "c20-r02", "c20-r03", "c20-r04", "c20-r05", "c20-r06", "c20-r07", "c20-r08", "c20-r09", "c20-r10", "c20-r10b", "c20-r10c", "c20-r10d", "c20-r11", "c20-r12"],
+   "Nodes": ["c20-reunion", "c20-r01", "c20-r02", "c20-r03", "c20-r03b", "c20-r04", "c20-r05", "c20-r06", "c20-r07", "c20-r08", "c20-r09", "c20-r10", "c20-r10b", "c20-r10c", "c20-r10d", "c20-r11", "c20-r12", "c20-envoy-01", "c20-envoy-02", "c20-envoy-03"],
    "Ambient": [{"CamAt": [12, 7]}],
    "Cast": {
     "유비": {"At": [11, 7], "Face": "SE"},
@@ -59,7 +59,8 @@
     "관우": {"At": [17, 5], "Face": "NW", "Off": true, "Sprite": "guanyu", "Mount": "red_hare"},
     "관평": {"At": [17, 5], "Face": "NW", "Off": true},
     "주창": {"At": [17, 4], "Face": "NW", "Off": true},
-    "진진": {"At": [17, 4], "Face": "NW", "Off": true}
+    "진진": {"At": [17, 4], "Face": "NW", "Off": true},
+    "전령": {"At": [21, 5], "Face": "NW", "Off": true, "Sprite": "light_infantry"}
    },
    "Beats": {
     "c20-r01": [
@@ -75,6 +76,11 @@
      ]
     ],
     "c20-r03": [
+     [
+      [{"Actor": "장비", "Move": [11, 4], "Face": "SE"}]
+     ]
+    ],
+    "c20-r03b": [
      [
       [{"Actor": "장비", "Move": [11, 4], "Face": "SE"}]
      ]
@@ -112,6 +118,22 @@
     "c20-r12": [
      [
       [{"Actor": "유비", "Face": "SE"}]
+     ]
+    ],
+    "c20-envoy-01": [
+     [
+      [{"Actor": "전령", "Move": [14, 7], "Face": "NW", "Enter": [21, 7]}]
+     ]
+    ],
+    "c20-envoy-02": [
+     [
+      [{"Actor": "유비", "Face": "SE"}]
+     ]
+    ],
+    "c20-envoy-03": [
+     [],
+     [
+      [{"Actor": "유비", "Move": [11, 4], "Face": "SE"}]
      ]
     ]
    }

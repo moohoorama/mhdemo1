@@ -756,7 +756,7 @@
   "zhanghe": {
    "Name": "장합",
    "Biography": "원래 한복과 원소의 장수로 관도에서 조조에게 항복했다. 임기응변에 능해 제갈량도 꺼렸다. 와구관에서 장비에게 패했고, 목문도에서 화살을 맞아 전사했다.",
-   "Class": "royal_guard",
+   "Class": "horse_archer",
    "Stats": [
     91,
     90,
@@ -769,12 +769,14 @@
    "Traits": [
     "adaptable",
     "sure_footing",
-    "charge_aim",
-    "diamond"
+    "charge_aim"
    ],
+   "TraitAt": {
+    "cross_shot_art": 20
+   },
    "Learn": [],
    "Equipment": [
-    "copper_spear",
+    "short_bow",
     "leather_armor"
    ],
    "Look": {

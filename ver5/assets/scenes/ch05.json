@@ -370,7 +370,6 @@
   "c05-field": {
    "Map": "S_road",
    "Time": "dusk",
-   "Backdrop": "mountains",
    "Nodes": ["c05-field", "c05-n10", "c05-s16", "c05-s17", "c05-s18", "c05-gift-n", "c05-gift-s", "c05-after", "c05-s19"],
    "Cast": {
     "유비": {"At": [5, 2], "Face": "NW"},

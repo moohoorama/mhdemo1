@@ -247,3 +247,13 @@ Edit the reference portrait of Xiahou Dun (Three Kingdoms general). Keep everyth
 - weiyan: Wei Yan, forceful formidable warrior, adult man with strong square jaw, thick eyebrows and short black beard, dark green armor, helmet, fierce but controlled expression, facing left
 - ganning: Gan Ning, former Yangtze river raider and warrior, vigorous adult man, bold expression, short rugged beard, red and brown practical armor, plain headwrap and a small bell, facing right
 - lusu: Lu Su, Wu diplomat, broad kind face, mature thoughtful man with neat beard, understated red brown scholar official robe and black cap, facing left
+
+## 장합·장요 확정 시트 (2026-11-22)
+
+원래 두 장수 초상과 수묵 담채 기준 이미지(`style-samples/4-ink-wash.png`)로 3종 비교 시트를 만들었다. 각각 왼쪽 시안을 선택한 뒤 두 칸을 한 장으로 재구성했다. 장합은 턱과 눈썹을 굵게 하고 볼과 턱을 덮는 풍성한 수염을 더했으며, 단풍 대신 옅은 회녹색 수묵 산을 그렸다. 장요는 왼쪽 시안의 자세와 군영 배경을 살렸다.
+
+최종 편집 지시
+
+> Remove only Zhang He's upright spear, including the spearhead, tassel, and shaft. Fill the space with matching pale ink-wash landscape and rice paper. Relax his hand near his waist, with no replacement object. Preserve the rugged face, full beard, helmet plume, armor, ochre sash, and framing. Keep Zhang Liao and his polearm in the right panel. Retain the two-panel composition and ink-wash style.
+
+채택 원본은 `zhanghe-zhangliao-approved.png`에 보관한다.

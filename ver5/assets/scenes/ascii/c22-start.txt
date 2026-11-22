@@ -34,8 +34,3 @@ gu2 호위#2  (guards)
 # c22-s107: Gua -> 5 12 and leaves
 # c22-s107: Zha -> 7 12 and leaves
 # c22-s107: Sun -> 6 13 and leaves
-# c22-s111: Cai -> 5 4
-# c22-s113: Yij -> 7 4
-# c22-s114: Xia -> 7 3
-# c22-s119: Kua -> 5 3
-# c22-s121: Cai -> 6 12 and leaves

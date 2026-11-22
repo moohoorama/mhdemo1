@@ -1,15 +1,18 @@
-# c25-road  S_road  ch25  origin 0 0
-TreMil...Tre...Bsh...
-.....................
-.........Liu.........
-......Jia......Mil...
-......Bsh............
+# c25-road  S_xiaopei_office  ch25  origin -1 -1
+Pil#####################Pil
+###...Cdl###Bnr.........Lnt
+###..................Map...
+###Wpn...Dsk............Jar
+###WpnJiaZhu...TblTbl......
+###Arm...Liu...............
+PilLnt.....................
 
 Liu 유비
 Jia 간옹
-Zha 장비  (off stage, enters later (cell 8 2))
-Son 송충  (off stage, enters later (cell 8 3))
+Zha 장비  (off stage, enters later (cell 2 6))
+Son 송충  (off stage, enters later (cell 2 6))
+Zhu 제갈량
 
-# c25-b01: Zha -> 5 2
-# c25-b01: Son -> 6 3
-# c25-b08: Son -> 9 3 and leaves
+# c25-b01: Zha -> 3 4
+# c25-b01: Son -> 3 5
+# c25-b08: Son -> 2 6 and leaves

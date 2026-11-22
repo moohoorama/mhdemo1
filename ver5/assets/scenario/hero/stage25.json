@@ -123,7 +123,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rout",
-   "Rank": "boss"
+   "Rank": "boss",
+   "Facing": "NW"
   },
   {
    "Character": "caohong",
@@ -133,7 +134,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rout",
-   "Rank": "officer"
+   "Rank": "officer",
+   "Facing": "NW"
   },
   {
    "Character": "xuchu",
@@ -142,7 +144,8 @@
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 60,
-   "Rank": "troop"
+   "Rank": "troop",
+   "Facing": "SW"
   },
   {
    "Character": "troop_footman",
@@ -152,7 +155,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rout",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
@@ -162,7 +166,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rout",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
@@ -172,7 +177,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rout",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
@@ -182,7 +188,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rout",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
@@ -192,7 +199,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rout",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
@@ -202,7 +210,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rout",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
@@ -212,7 +221,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rout",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
@@ -222,7 +232,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rout",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
@@ -232,7 +243,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rout",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
@@ -242,7 +254,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rout",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
@@ -252,7 +265,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rout",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
@@ -262,17 +276,19 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rout",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_cavalry",
    "X": 18,
-   "Y": 8,
+   "Y": 9,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rearguard",
-   "Shift": -0.12
+   "Shift": -0.12,
+   "Facing": "SW"
   },
   {
    "Character": "troop_cavalry",
@@ -282,7 +298,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rearguard",
-   "Shift": -0.12
+   "Shift": -0.12,
+   "Facing": "SW"
   },
   {
    "Character": "troop_cavalry",
@@ -292,7 +309,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rearguard",
-   "Shift": -0.12
+   "Shift": -0.12,
+   "Facing": "SW"
   },
   {
    "Character": "troop_cavalry",
@@ -302,7 +320,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rearguard",
-   "Shift": -0.12
+   "Shift": -0.12,
+   "Facing": "SW"
   },
   {
    "Character": "troop_cavalry",
@@ -312,7 +331,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rearguard",
-   "Shift": -0.12
+   "Shift": -0.12,
+   "Facing": "SW"
   },
   {
    "Character": "troop_cavalry",
@@ -322,7 +342,8 @@
    "GoalArea": 20,
    "HPPct": 70,
    "Group": "rearguard",
-   "Shift": -0.12
+   "Shift": -0.12,
+   "Facing": "SW"
   }
  ],
  "Reward": {
@@ -698,7 +719,7 @@
    "Rect": {
     "X": 0,
     "Y": 8,
-    "W": 26,
+    "W": 29,
     "H": 8
    },
    "Name": "들판 가운데",

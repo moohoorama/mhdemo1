@@ -3,7 +3,6 @@
   "c02-castle": {
    "Map": "S_changshe_wall",
    "Time": "night",
-   "Backdrop": "mountains",
    "Nodes": ["c02-castle", "c02-c0", "c02-c1", "c02-c2", "c02-c3"],
    "Ambient": [{"Effect": "smallfire", "At": [1, -6.5]}, {"Effect": "smallfire", "At": [5, -6]}, {"Effect": "smallfire", "At": [10, -6.5]}, {"Effect": "smallfire", "At": [14.5, -6]}, {"Effect": "smallfire", "At": [2.5, -11]}, {"Effect": "smallfire", "At": [9, -11]}, {"Effect": "smallfire", "At": [13, -11.5]}, {"Effect": "smallfire", "At": [-1, -11]}, {"Effect": "smallfire", "At": [7, -14.5]}, {"Effect": "smallfire", "At": [12, -15]}, {"Actor": "수비병#2", "Patrol": [12, 1]}, {"Actor": "부상병#2", "Chatter": "으으…|물…"}],
    "Cast": {
@@ -107,7 +106,6 @@
   "c02-night": {
    "Map": "S_army_camp",
    "Time": "night",
-   "Backdrop": "mountains",
    "Nodes": ["c02-night", "c02-n1", "c02-n2", "c02-n3", "c02-n4", "c02-n5", "c02-n6", "c02-n7"],
    "Ambient": [{"Effect": "bigfire", "At": [-2, 9]}, {"Effect": "bigfire", "At": [-2, 11]}, {"Effect": "smoke", "At": [-1, 8]}, {"Effect": "smoke", "At": [0, 9]}, {"Effect": "smoke", "At": [-2, 7]}],
    "Cast": {
@@ -182,7 +180,6 @@
   "c02-camp-empty": {
    "Map": "S_army_camp",
    "Time": "night",
-   "Backdrop": "mountains",
    "Nodes": ["c02-camp-empty", "c02-e1", "c02-e2", "c02-e3", "c02-e4", "c02-e5", "c02-e6", "c02-e7", "c02-e8", "c02-e9"],
    "Ambient": [{"Effect": "bigfire", "At": [-2, 9]}, {"Effect": "bigfire", "At": [-2, 11]}, {"Effect": "smoke", "At": [-1, 8]}, {"Effect": "smoke", "At": [0, 9]}, {"Effect": "smoke", "At": [-2, 7]}],
    "Cast": {

@@ -1,27 +1,26 @@
-# map25 신야 전투 (26x24, dawn). North = row 0. 신야성 (21, 3) NE ringed by burning fences,
-# the road to 완 from the south gate (21, 5) west to the NW corner, puddles over the field,
-# the flooded 백하 SE (water on a diagonal from (25, 11) to (13, 23), shallows on both banks).
-l-- l-- g-- g-- g-- g-- g-- gt- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-e g--
-g-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- gvF g-- gzF gzF gzF gzF gzF g-- g--
-g-- g-- l-- l-- g-- g-- g-- g-- g-w g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gzF i-- i-- i-- gzF g-- gvF
-g-- g-- g-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-w g-- g-- g-- g-e g-- g-- gzF i-- go- i-- gzF g-- g--
-gt- g-- g-- g-- g-- l-- l-- l-- g-- g-- g-- g-w g-- g-- g-- g-- g-- g-- g-- gzF i-- i-- i-- gzF g-- g--
-g-- g-- g-- g-- gt- g-- g-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gzF gzF i-- gzF gzF g-- g-e
-g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- g-- g-- g-- g--
-g-- g-- gt- g-- g-- g-- g-w g-- g-- g-- g-- g-- g-- g-- g-w g-- g-- g-- g-e g-- g-- g-- g-- g-- gvF g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-w g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-w g-w g-- g-- g-- g-- g-- g-- g-w g-w g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s--
-g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-w g-- g-- g-- g-- g-w g-- g-- g-- g-- s-- s-- s-- s--
-g-- g-- g-- g-- g-- g-- g-- g-- g-w g-w g-- g-- g-- g-- g-w g-- g-- g-- g-- g-- g-- s-- s-- s-- w-- w--
-g-- g-- g-- g-w g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- w-- w-- s--
-gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-w g-w g-- g-- s-- s-- s-- w-- w-- s-- s--
-g-- g-- g-- g-- g-- g-- g-w g-w g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- w-- w-- s-- s-- s--
-g-- g-- g-- g-- u-- u-- g-- g-- g-- g-- g-- g-w g-- g-- g-- g-- g-- u-- u-- s-- w-- w-- s-- s-- s-- g--
-g-- g-- g-- gt- g-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- s-- s-- s-- w-- w-- s-- s-- s-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-w g-w g-- g-- g-- g-- s-- s-- s-- w-- w-- s-- s-- s-- g-- g-- g--
-g-- g-- g-- g-- g-- g-w g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- w-- w-- s-- s-- s-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- s-- s-- s-- w-- w-- s-- s-- s-- g-- g-- g-- g-- g--
-g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- w-- w-- s-- s-- s-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- s-- s-- s-- w-- w-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- s-- s-- s-- w-- w-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- s-- w-- w-- s-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g-- g--
+# 신야 화공 · 불타는 성과 범람한 백하
+l-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s--
+g-- l-- l-- l-- l-- gt- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- s-- s--
+g-- g-- g-- l-- l-- l-- l-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- g-- c-- c-- c-- c-- c-- c-- c-- g-- g-- gt- s--
+g-- gt- g-- g-- g-- l-- l-- l-- l-- g-- g-- g-- g-- g-- g-- gt- g-- g-- c-- i-- i-- ivF i-- i-- c-- g-- g-- g-- s--
+g-- g-- g-- g-- g-- g-- gt- l-- l-- l-- l-- g-- g-- g-- g-- g-- g-- g-- c-- i-- ivF i-- io- i-- c-- g-- g-- g-- s--
+u-- gt- u-- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- g-- g-- g-- dvF c-- i-- i-- i-- i-- i-- c-- gt- g-- g-- s--
+gt- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- g-- ip- i-- i-- i-- i-- ivF c-- g-- g-- g-- s--
+u-- u-- gt- g-- gt- g-- g-- gt- g-- g-- d-r g-- g-- g-- g-- l-- l-- l-- c-- i-e i-- i-- i-- i-- c-F g-- g-- g-- s--
+u-- gt- u-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- dvF l-- c-- c-- c-- c-- ip- c-- c-- g-- gt- g-- s--
+gt- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- gt- l-- l-- l-- g-- d-e g-- g-- g-- s-- s-- w--
+u-- u-- gt- g-- g-- gt- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- d-e g-- g-- l-- l-- dvF gt- g-- g-- s-- s-- w-- w--
+u-- gt- u-- g-- g-- g-- g-- g-- g-- g-- l-- l-- g-w g-w g-w g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- w-- w-- w--
+gt- u-- u-- g-- g-- g-- g-- g-- g-- l-- l-- g-w s-- g-w d-r gt- g-- g-w g-w g-- g-- g-- g-- s-- s-- w-- w-- w-- s--
+u-- u-- gt- gt- g-- g-- gt- g-- g-- l-- l-- s-- s-- g-w g-w g-w g-- g-w g-w g-w g-w g-- s-- s-- w-- w-- w-- s-- s--
+u-- gt- u-- g-- g-- g-- g-- g-- gt- l-- l-- g-w g-w g-w g-w s-- g-w g-- g-- g-w g-w g-w s-- s-- w-- w-- w-- s-- s--
+gt- u-- u-- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-w g-w g-w g-w s-- s-- g-- g-- g-w s-- s-- w-- w-- w-- s-- s-- g--
+u-- u-- gt- g-- gt- g-- g-- g-- l-- l-- g-- g-- g-w s-- g-w g-w g-- g-w g-w g-w s-- s-- w-- w-- w-- s-- s-- g-- g--
+u-- gt- u-- g-- g-- g-- g-- g-- l-- l-- g-- g-w g-w g-w g-w g-- s-- s-- g-w g-w s-- s-- w-- w-- w-- s-- s-- g-- g--
+gt- g-- g-- g-- g-- g-- g-- dv- l-- g-w s-- s-- g-w g-- gt- g-w g-w g-w g-- g-- s-- s-- w-- w-- w-- s-- s-- g-- gt-
+g-- g-- gt- g-- g-- gt- g-- l-- l-- g-- g-w g-w g-- g-- s-- g-w g-w g-- g-- s-- s-- w-- w-- w-- s-- s-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- l-- l-- g-- gt- g-- g-- g-- g-- g-w g-w s-- g-- g-- s-- s-- w-- w-- w-- s-- s-- g-- g--
+g-- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- gt- g-- g-- gt- g-- g-- g-- s-- s-- w-- w-- w-- s-- s-- g-- g-- g--
+g-- g-- g-- dk- g-- g-- l-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- s-- s-- w-- w-- w-- s-- s-- g-- g-- g-- g--
+g-- g-- g-- g-- g-- g-- l-- l-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- s-- w-- w-- w-- s-- s-- gt- g-- g-- g--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- s-- s-- w-- w-- w-- s-- s-- g-- g-- g-- gt- g--

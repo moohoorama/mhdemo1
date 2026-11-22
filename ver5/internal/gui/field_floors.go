@@ -77,7 +77,7 @@ func (f *Field) makeFloors() {
 		d := depthOf(t)
 		bed := ""
 		if t == 's' {
-			bed = fmt.Sprint("ford_bed_", (x*7+y*13)%8)
+			bed = fmt.Sprint("ford_bed_", (x*7+y*13)&7)
 		}
 		ft := floorTile{cx: px * K, cy: py * K, depth: float64(d), walls: f.wallsOf(x, y, t)}
 		for i := range ft.floor {

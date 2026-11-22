@@ -26,10 +26,14 @@ Gua 관우  (guanyu, off stage, enters later (cell 17 5))
 Gng 관평  (off stage, enters later (cell 17 5))
 Zho 주창  (off stage, enters later (cell 17 4))
 Cen 진진  (off stage, enters later (cell 17 4))
+Mes 전령  (light_infantry, off stage, enters later (cell 21 5))
 
 # c20-r01: Gua -> 14 5
 # c20-r01: Gng -> 15 5
 # c20-r01: Zho -> 14 4
 # c20-r01: Cen -> 15 4
 # c20-r03: Zha -> 11 4
+# c20-r03b: Zha -> 11 4
 # c20-r10b: Zha -> 13 5
+# c20-envoy-01: Mes -> 14 7
+# c20-envoy-03: Liu -> 11 4

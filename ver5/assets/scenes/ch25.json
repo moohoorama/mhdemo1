@@ -16,18 +16,20 @@
    }
   },
   "c25-road": {
-   "Map": "S_road",
-   "Nodes": ["c25-road", "c25-b01", "c25-b02", "c25-b03", "c25-b04", "c25-b05", "c25-b06", "c25-b07", "c25-b08"],
+   "Map": "S_xiaopei_office",
+   "Nodes": ["c25-road", "c25-yr-01", "c25-yr-02", "c25-b01", "c25-b02", "c25-b03", "c25-b04", "c25-b05", "c25-b06", "c25-b07", "c25-b08"],
    "Cast": {
-    "유비": {"At": [3, 2], "Face": "SE"},
-    "간옹": {"At": [2, 3], "Face": "SE"},
-    "장비": {"At": [8, 2], "Face": "NW", "Off": true},
-    "송충": {"At": [8, 3], "Face": "NW", "Off": true}
+    "유비": {"At": [2, 4], "Face": "NE"},
+    "간옹": {"At": [1, 3], "Face": "SE"},
+    "장비": {"At": [2, 6], "Face": "NE", "Off": true},
+    "송충": {"At": [2, 6], "Face": "NE", "Off": true},
+    "제갈량": {"At": [2, 3], "Face": "SW"}
    },
    "Beats": {
     "c25-b01": [
      [
-      [{"Actor": "장비", "Enter": [9, 2], "Move": [5, 2], "Face": "NW"}, {"Actor": "송충", "Enter": [9, 3], "Move": [6, 3], "Face": "NW"}]
+      [{"Actor": "장비", "Enter": [2, 6], "Via": [[2, 5], [3, 5]], "Move": [3, 4], "Face": "NW"}, {"Actor": "송충", "Enter": [2, 6], "Via": [[2, 5]], "Move": [3, 5], "Face": "NW", "After": 0.45}],
+      [{"Actor": "유비", "Face": "SE"}, {"Actor": "제갈량", "Face": "SW"}]
      ]
     ],
     "c25-b02": [
@@ -45,7 +47,7 @@
       [{"Actor": "장비", "Face": "NW"}]
      ],
      [
-      [{"Actor": "송충", "Move": [9, 3], "Exit": true, "Speed": 2}]
+      [{"Actor": "송충", "Via": [[2, 5]], "Move": [2, 6], "Face": "SW", "Exit": true, "Speed": 2}]
      ]
     ]
    }
@@ -550,7 +552,6 @@
   "c25-hill": {
    "Map": "S_road",
    "Time": "dawn",
-   "Backdrop": "burning_city",
    "Nodes": ["c25-hill", "c25-f01", "c25-f02", "c25-f03", "c25-f04", "c25-f05", "c25-f06", "c25-f07"],
    "Cast": {
     "유비": {"At": [4, 2], "Face": "NW"},

@@ -18,7 +18,7 @@ def write(path, scenes):
     out = ['{', ' "Scenes": {']
     for si, (sid, sc) in enumerate(scenes.items()):
         out.append(f'  {D(sid)}: {{')
-        keys = [k for k in ('Map', 'Time', 'Backdrop', 'Glow', 'Music', 'Grass', 'Steps', 'Nodes', 'Ambient') if k in sc]
+        keys = [k for k in ('Map', 'Time', 'Glow', 'Music', 'Grass', 'Steps', 'Nodes', 'Ambient') if k in sc]
         unknown = set(sc) - set(keys) - {'Cast', 'Beats'}
         if unknown:
             raise SystemExit(f'{sid}: scene_format does not know {sorted(unknown)}')

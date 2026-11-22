@@ -1,0 +1,18 @@
+# c21-south  S_road  ch21  origin 0 0
+TreMil...Tre...Bsh...Bsh......
+.........Zun...............Bsh
+......Sun...Liu...Gua.........
+.........Jia...MilZha......Lpi
+......Bsh.....................
+
+Liu 유비
+Gua 관우
+Zha 장비
+Zun 조운
+Jia 간옹
+Sun 손건
+Lpi 유벽
+
+# c21-p01: Lpi -> 7 4
+# c21-p05: Lpi -> 14 4 and leaves
+# c21-e01: Sun -> 4 1

@@ -1,0 +1,52 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "ferry",
+  "At": [
+   12,
+   15
+  ],
+  "Face": "NE"
+ },
+ "Areas": {
+  "ferry": {
+   "Map": "S_hanjin_ferry",
+   "Name": "한진 나루",
+   "At": [
+    12,
+    15
+   ],
+   "Exits": [
+    {
+     "Name": "강하행 배",
+     "At": [
+      11,
+      8
+     ],
+     "Node": "c27-ferry-out",
+     "Object": [
+      9,
+      9
+     ]
+    }
+   ],
+   "People": {
+    "뱃사공": {
+     "At": [
+      14,
+      14
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Talk": [
+      [
+       "",
+       "관 장군이 보내신 배가 강가에 대기하고 있다."
+      ]
+     ]
+    }
+   },
+   "Time": "dusk"
+  }
+ }
+}

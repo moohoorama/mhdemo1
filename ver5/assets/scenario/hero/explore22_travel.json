@@ -1,0 +1,46 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "road",
+  "At": [
+   8,
+   5
+  ],
+  "Face": "NW"
+ },
+ "Areas": {
+  "road": {
+   "Map": "S_road",
+   "Name": "여남 남쪽 · 작은 성 밖",
+   "At": [
+    8,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "양양",
+     "At": [
+      -6,
+      5
+     ],
+     "Node": "c22-travel-on"
+    }
+   ],
+   "People": {
+    "손건": {
+     "At": [
+      6,
+      4
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "sunqian",
+       "황숙, 이 길로 남쪽으로 가면 양양입니다."
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

@@ -367,3 +367,57 @@ func TestRangedCrossSplash(t *testing.T) {
 		}
 	})
 }
+
+func TestCrossShot(t *testing.T) {
+	data, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+
+	t.Run("named officers receive the skills in their bow classes", func(t *testing.T) {
+		for _, tc := range []struct {
+			id, trait, class, skill string
+			level                   int
+		}{
+			{"handang", "cross_shot_art", "archer", "cross_shot", 6},
+			{"zhanghe", "cross_shot_art", "horse_archer", "cross_shot", 20},
+			{"taishici", "volley", "horse_archer", "barrage", 20},
+		} {
+			officer := data.Characters[tc.id]
+			class := data.PromotedAt(tc.id, officer.Class, tc.level)
+			assert.Equal(t, tc.class, class, tc.id)
+			assert.Equal(t, "bow", data.Classes[class].Weapon, tc.id)
+			assert.Contains(t, data.PlannedTraits(tc.id, class, tc.level, nil), tc.trait, tc.id)
+			assert.Contains(t, data.Skills[tc.skill].Requires, tc.trait, tc.id)
+		}
+	})
+
+	t.Run("pays once and hits only the center and the cross arms", func(t *testing.T) {
+		e, u, center := arena(t)
+		e.data.Skills["cross_shot"] = data.Skills["cross_shot"]
+		e.data.Traits["cross_shot_art"] = data.Traits["cross_shot_art"]
+		e.char(u.Character).Class = "archer"
+		e.char(u.Character).Equipment["weapon"] = "short_bow"
+		with(e, u.ID, "cross_shot_art")
+		e.data.Rules.HitFloor, e.data.Rules.HitCeil = 100, 100
+		center.X, center.Y, center.HP = 7, 6, 10000
+		arm, diagonal := e.unit("troop#1"), e.unit("troop#2")
+		arm.X, arm.Y, arm.HP = 7, 7, 10000
+		diagonal.X, diagonal.Y, diagonal.HP = 8, 7, 10000
+		u.MP = 64
+
+		s := e.data.Skills["cross_shot"]
+		_, share, cells := e.victims(u, center, s)
+		assert.Len(t, cells, 4)
+		assert.Equal(t, map[string]float64{center.ID: 1, arm.ID: .5}, share)
+
+		cmd := Command{Kind: "skill", Actor: u.ID, Target: center.ID, Skill: "cross_shot"}
+		preview, err := e.Preview(cmd)
+		require.NoError(t, err)
+		assert.Equal(t, 32, preview.Cost)
+		assert.ElementsMatch(t, []string{center.ID, arm.ID}, preview.Targets)
+		require.NoError(t, e.useSkill(u, cmd))
+		assert.Equal(t, 32, u.MP)
+		assert.Less(t, center.HP, 10000)
+		assert.Less(t, arm.HP, 10000)
+		assert.Equal(t, 10000, diagonal.HP)
+	})
+}

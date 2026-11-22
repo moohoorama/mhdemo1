@@ -19,4 +19,4 @@ gu1 호위#1  (guards)
 gu2 호위#2  (guards)
 
 # c23-h01: Lei -> 6 3
-# c23-h06: Lei -> 6 12 and leaves
+# c23-shinya-grant: Lei -> 6 12 and leaves

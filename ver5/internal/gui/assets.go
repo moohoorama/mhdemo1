@@ -71,16 +71,9 @@ type Assets struct {
 	dir           string                   // the graphics directory
 	Outside       Shots                    // pines and stones outside the battle area
 	UI            Shots                    // UI pictures: window frame, marks, icons, unit bar
-	Backdrops     map[string]backdrop      // far pictures behind outdoor scene maps (index.json "backdrops")
 	// Anims are the looping strips by name (index.json "anims"): flame tongues and smoke puffs the code places, and
 	// scene props that move (tree leaves, incense smoke), which play wherever a prop of that name stands
 	Anims map[string]FrameStrip
-}
-
-// backdrop is a far picture and the colour of its near ground, which runs on down behind the map.
-type backdrop struct {
-	*ebiten.Image
-	ground color.NRGBA
 }
 
 // FrameStrip is an animation whose frames are all the same size, drawn with one pivot.
@@ -259,9 +252,8 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			Image   string
 			Sprites map[string]propEntry
 		}
-		Terrain   string // the hills, mountains and roads of tools/worldmap/gen_terrain.py: a sheet like Extra, read as props
-		Backdrops map[string]string
-		Anims     map[string]struct { // packed by tools/build_extra.py (flames, smoke, incense) and tools/build_tree_sway.py
+		Terrain string              // the hills, mountains and roads of tools/worldmap/gen_terrain.py: a sheet like Extra, read as props
+		Anims   map[string]struct { // packed by tools/build_extra.py (flames, smoke, incense) and tools/build_tree_sway.py
 			Image   string
 			Rect    [4]int // frame 0; frame i lies i widths to the right
 			Frames  int
@@ -412,15 +404,6 @@ func LoadAssets(dir string, font *text.GoTextFaceSource, data *content.Data) (*A
 			}
 		}
 		a.Anims[name] = strip
-	}
-	a.Backdrops = map[string]backdrop{}
-	for name, path := range index.Backdrops {
-		im, err := loadRGBA(filepath.Join(dir, path))
-		if err != nil {
-			return nil, err
-		}
-		b := im.Bounds()
-		a.Backdrops[name] = backdrop{ebiten.NewImageFromImage(im), color.NRGBAModel.Convert(im.At(b.Min.X+b.Dx()/2, b.Max.Y-1)).(color.NRGBA)}
 	}
 	if a.SceneRules, err = scenemap.LoadCatalog(dir); err != nil {
 		return nil, err

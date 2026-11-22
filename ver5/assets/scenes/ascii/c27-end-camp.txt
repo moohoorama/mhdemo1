@@ -21,3 +21,4 @@ Jia 간옹
 Gua 관우  (off stage, enters later (cell 12 6))
 
 # c27-f01: Gua -> 8 6
+# c27-f01-won: Gua -> 8 6

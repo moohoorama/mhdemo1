@@ -95,6 +95,9 @@ func (d *Data) Validate() error {
 			s.Shape == ShapeLine && s.Length < 1 || s.Strikes < 0 || s.Strikes > 2 || s.Reach < 0 || !in(s.Tab, "", TabMartial) || s.Sure && s.Kind != KindStatus || s.Each && (s.Kind != KindPhysical || s.Shape == ShapeSingle) || s.Pierce < 0 || s.Pierce > 1 || s.Pierce > 0 && s.Shape != ShapeSingle || s.MagicCoeff < 0 || s.MagicCoeff > 0 && s.Kind != KindPhysical || s.Effect != "" && !validSkillEffect(s) || s.Kind != KindPhysical && s.Kind != KindMagic && s.Effect == "" {
 			return fmt.Errorf("skill %s", id)
 		}
+		if s.SideCoeff < 0 || s.SideCoeff > 1 || s.SideCoeff > 0 && (s.Kind != KindPhysical || s.Shape != ShapeCross || s.Each) {
+			return fmt.Errorf("skill %s: side coefficient requires a single physical exchange in a cross", id)
+		}
 		for _, t := range s.Requires {
 			if _, ok := d.Traits[t]; !ok {
 				return fmt.Errorf("skill %s: unknown trait %s", id, t)

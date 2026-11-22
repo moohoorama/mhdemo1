@@ -1,153 +1,40 @@
 {
  "Nodes": [
   {
-   "ID": "c21-runan",
+   "ID": "c21-arrival",
    "Kind": "scene",
-   "Place": "여남 · 관청"
+   "Place": "여남성 · 성문 밖"
   },
   {
-   "ID": "c21-r01",
+   "ID": "c21-pass-01",
    "Kind": "say",
-   "Speaker": "liupi",
-   "Text": "유 예주께서 오셨구려. 여남의 유벽이오. 이쪽은 공도요."
+   "Speaker": "gatekeeper",
+   "Text": "거기, 누구시오?"
   },
   {
-   "ID": "c21-r02",
-   "Kind": "say",
-   "Speaker": "gongdu",
-   "Text": "공도올시다. 한때 누런 두건을 썼던 몸이라 예법은 모르오."
-  },
-  {
-   "ID": "c21-r03",
+   "ID": "c21-pass-02",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "유비요. 성문을 열어 주어 고맙소."
+   "Text": "유비 현덕이오. 여남에서 불러서 왔소."
   },
   {
-   "ID": "c21-r04",
+   "ID": "c21-pass-03",
    "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "형, 누런 두건이면…… 우리가 탁군서부터 때려잡던 그 황건적 아니유?"
+   "Speaker": "gatekeeper",
+   "Text": "잠시 기다리시오."
   },
   {
-   "ID": "c21-r05",
+   "ID": "c21-pass-04",
    "Kind": "say",
-   "Speaker": "liupi",
-   "Text": "들리오, 장 장군. 맞소. 그 두건 벗은 지 십수 년인데, 아직도 그 소리를 듣소."
+   "Speaker": "gatekeeper",
+   "Text": "확인하였습니다. 들어오십시오."
   },
   {
-   "ID": "c21-r06",
-   "Kind": "say",
-   "Speaker": "liupi",
-   "Text": "관도 싸움 때 우리는 원소 공 편에 서서 허도 뒤를 쳤소. 조조가 이기면 우리는 토벌당할 도적 떼요."
-  },
-  {
-   "ID": "c21-r07",
-   "Kind": "say",
-   "Speaker": "liupi",
-   "Text": "예주목의 깃발 아래 서면 예주의 군사가 되오. 그래서 유 예주를 모신 거요."
-  },
-  {
-   "ID": "c21-r08",
-   "Kind": "say",
-   "Speaker": "messenger",
-   "Text": "급보요! 관도에서 원소 공의 대군이 무너졌습니다!"
-  },
-  {
-   "ID": "c21-r09",
-   "Kind": "say",
-   "Speaker": "messenger",
-   "Text": "오소의 군량이 불타고, 원소 공은 팔백 기만 데리고 강을 건너 달아났다 합니다!"
-  },
-  {
-   "ID": "c21-r10",
-   "Kind": "say",
-   "Speaker": "jianyong",
-   "Text": "……그 큰 군사가 무너졌다고?"
-  },
-  {
-   "ID": "c21-r11",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "조조라면 그럴 수 있습니다. 곁에서 보았습니다. 군사가 적을 때일수록 과감해지는 사람입니다."
-  },
-  {
-   "ID": "c21-r12",
-   "Kind": "say",
-   "Speaker": "gongdu",
-   "Text": "북쪽이 정리됐으니, 다음은 남쪽이겠구려."
-  },
-  {
-   "ID": "c21-r13",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "조조는 허도 등 뒤에 적을 두고 지내는 사람이 아니오. 머지않아 직접 올 것이오."
-  },
-  {
-   "ID": "c21-r14",
-   "Kind": "say",
-   "Speaker": "liupi",
-   "Text": "여남에도 군사가 있고 성이 있소."
-  },
-  {
-   "ID": "c21-r15",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "관도의 군사가 그대로 내려온다면, 성 하나로 오래 버티지는 못합니다."
-  },
-  {
-   "ID": "c21-r16",
-   "Kind": "say",
-   "Speaker": "sunqian",
-   "Text": "황숙, 남쪽 형주의 유경승은 황숙과 같은 한실의 종친입니다. 군사가 십만이고 땅이 넉넉합니다."
-  },
-  {
-   "ID": "c21-r17",
-   "Kind": "say",
-   "Speaker": "sunqian",
-   "Text": "여남이 버티든 못 버티든, 등 뒤에 기댈 곳을 마련해 두어야 합니다. 제가 다녀오겠습니다."
-  },
-  {
-   "ID": "c21-r18",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "유경승과는 얼굴 한 번 본 적이 없소."
-  },
-  {
-   "ID": "c21-r19",
-   "Kind": "say",
-   "Speaker": "sunqian",
-   "Text": "그러니 싸움이 벌어지기 전에 가야 합니다. 쫓겨서 문을 두드리는 것과, 미리 사람을 보내 예를 갖추는 것은 다릅니다."
-  },
-  {
-   "ID": "c21-r20",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "손 공, 부탁하오."
-  },
-  {
-   "ID": "c21-r21",
-   "Kind": "say",
-   "Speaker": "zhangfei",
-   "Text": "손 선생, 빨리 다녀오슈. 조조가 손 선생 기다려 줄 것 같진 않으니께."
-  },
-  {
-   "ID": "c21-r22",
-   "Kind": "say",
-   "Speaker": "liupi",
-   "Text": "우리는 성벽을 손보겠소. 공도, 자네는 고을을 돌며 군량을 거둬 오게."
-  },
-  {
-   "ID": "c21-r23",
-   "Kind": "say",
-   "Speaker": "gongdu",
-   "Text": "알았수."
-  },
-  {
-   "ID": "c21-leave-sunqian",
-   "Kind": "leave",
-   "Character": "sunqian",
-   "Event": "leave-sunqian-21"
+   "ID": "c21-in-town",
+   "Kind": "set",
+   "Flags": {
+    "c21-arrival-pending": 1
+   }
   },
   {
    "ID": "c21-walk",
@@ -426,5 +313,172 @@
    }
   }
  ],
- "Events": []
+ "Events": [
+  {
+   "ID": "c21-runan",
+   "Kind": "scene",
+   "Place": "여남 · 관청"
+  },
+  {
+   "ID": "c21-r01",
+   "Kind": "say",
+   "Speaker": "liupi",
+   "Text": "유 예주께서 오셨구려. 여남의 유벽이오. 이쪽은 공도요."
+  },
+  {
+   "ID": "c21-r02",
+   "Kind": "say",
+   "Speaker": "gongdu",
+   "Text": "공도올시다. 한때 누런 두건을 썼던 몸이라 예법은 모르오."
+  },
+  {
+   "ID": "c21-r03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "유비요. 함께 조조를 막자고 전해 들었소."
+  },
+  {
+   "ID": "c21-r04",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "형, 누런 두건이면…… 우리가 탁군서부터 때려잡던 그 황건적 아니유?"
+  },
+  {
+   "ID": "c21-r05",
+   "Kind": "say",
+   "Speaker": "liupi",
+   "Text": "들리오, 장 장군. 맞소. 그 두건 벗은 지 십수 년인데, 아직도 그 소리를 듣소."
+  },
+  {
+   "ID": "c21-r06",
+   "Kind": "say",
+   "Speaker": "liupi",
+   "Text": "관도 싸움 때 우리는 원소 공 편에 서서 허도 뒤를 쳤소. 조조가 이기면 우리는 토벌당할 도적 떼요."
+  },
+  {
+   "ID": "c21-r07",
+   "Kind": "say",
+   "Speaker": "liupi",
+   "Text": "예주목의 깃발 아래 서면 예주의 군사가 되오. 그래서 유 예주를 모신 거요."
+  },
+  {
+   "ID": "c21-r08",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "급보요! 관도에서 원소 공의 대군이 무너졌습니다!"
+  },
+  {
+   "ID": "c21-r09",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "오소의 군량이 불타고, 원소 공은 팔백 기만 데리고 강을 건너 달아났다 합니다!"
+  },
+  {
+   "ID": "c21-r10",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "……그 큰 군사가 무너졌다고?"
+  },
+  {
+   "ID": "c21-r11",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "조조라면 그럴 수 있습니다. 곁에서 보았습니다. 군사가 적을 때일수록 과감해지는 사람입니다."
+  },
+  {
+   "ID": "c21-r12",
+   "Kind": "say",
+   "Speaker": "gongdu",
+   "Text": "북쪽이 정리됐으니, 다음은 남쪽이겠구려."
+  },
+  {
+   "ID": "c21-r13",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "조조는 허도 등 뒤에 적을 두고 지내는 사람이 아니오. 머지않아 직접 올 것이오."
+  },
+  {
+   "ID": "c21-r14",
+   "Kind": "say",
+   "Speaker": "liupi",
+   "Text": "여남에도 군사가 있고 성이 있소."
+  },
+  {
+   "ID": "c21-r15",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "관도의 군사가 그대로 내려온다면, 성 하나로 오래 버티지는 못합니다."
+  },
+  {
+   "ID": "c21-r16",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "황숙, 남쪽 형주의 유경승은 황숙과 같은 한실의 종친입니다. 군사가 십만이고 땅이 넉넉합니다."
+  },
+  {
+   "ID": "c21-r17",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "여남이 버티든 못 버티든, 등 뒤에 기댈 곳을 마련해 두어야 합니다. 제가 다녀오겠습니다."
+  },
+  {
+   "ID": "c21-r18",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "유경승과는 얼굴 한 번 본 적이 없소."
+  },
+  {
+   "ID": "c21-r19",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "그러니 싸움이 벌어지기 전에 가야 합니다. 쫓겨서 문을 두드리는 것과, 미리 사람을 보내 예를 갖추는 것은 다릅니다."
+  },
+  {
+   "ID": "c21-r20",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "손 공, 부탁하오."
+  },
+  {
+   "ID": "c21-r21",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "손 선생, 빨리 다녀오슈. 조조가 손 선생 기다려 줄 것 같진 않으니께."
+  },
+  {
+   "ID": "c21-r22",
+   "Kind": "say",
+   "Speaker": "liupi",
+   "Text": "우리는 성벽을 손보겠소. 공도, 자네는 고을을 돌며 군량을 거둬 오게."
+  },
+  {
+   "ID": "c21-r23",
+   "Kind": "say",
+   "Speaker": "gongdu",
+   "Text": "알았수."
+  },
+  {
+   "ID": "c21-leave-sunqian",
+   "Kind": "leave",
+   "Character": "sunqian",
+   "Event": "leave-sunqian-21"
+  },
+  {
+   "ID": "c21-runan-received",
+   "Kind": "set",
+   "Flags": {
+    "c21-arrival-pending": 0
+   }
+  },
+  {
+   "ID": "c21-received-back",
+   "Kind": "back",
+   "Area": "office",
+   "At": [
+    12,
+    9
+   ],
+   "Face": "NW"
+  }
+ ]
 }

@@ -44,50 +44,46 @@
  "Night": true,
  "Lights": [
   {
-   "X": 23,
-   "Y": 18
+   "X": 27,
+   "Y": 12
   },
   {
-   "X": 22,
-   "Y": 19
+   "X": 25,
+   "Y": 14
   },
   {
-   "X": 19,
-   "Y": 22
-  },
-  {
-   "X": 6,
-   "Y": 6
+   "X": 7,
+   "Y": 7
   },
   {
    "X": 1,
-   "Y": 1
+   "Y": 7
   }
  ],
  "Allies": [
   {
-   "X": 19,
-   "Y": 20
+   "X": 25,
+   "Y": 11
   },
   {
-   "X": 20,
-   "Y": 21
+   "X": 26,
+   "Y": 12
   },
   {
-   "X": 18,
-   "Y": 20
+   "X": 24,
+   "Y": 10
   },
   {
-   "X": 19,
-   "Y": 21
+   "X": 25,
+   "Y": 12
   },
   {
-   "X": 18,
-   "Y": 21
+   "X": 24,
+   "Y": 12
   },
   {
-   "X": 20,
-   "Y": 22
+   "X": 26,
+   "Y": 13
   },
   {
    "X": 6,
@@ -104,8 +100,8 @@
  ],
  "Recommend": {
   "liubei": {
-   "X": 19,
-   "Y": 20
+   "X": 25,
+   "Y": 11
   },
   "zhangfei": {
    "X": 6,
@@ -132,178 +128,196 @@
   {
    "Character": "caocao",
    "X": 15,
-   "Y": 13,
+   "Y": 10,
    "Policy": "flee",
    "GoalArea": 30,
    "HPPct": 60,
-   "Rank": "boss"
+   "Rank": "boss",
+   "Facing": "NW"
   },
   {
    "Character": "xuchu",
    "X": 14,
-   "Y": 12,
+   "Y": 10,
    "Policy": "flee",
    "GoalArea": 30,
    "HPPct": 60,
-   "Rank": "officer"
+   "Rank": "officer",
+   "Facing": "NW"
   },
   {
    "Character": "zhangliao",
-   "X": 16,
-   "Y": 12,
+   "X": 15,
+   "Y": 9,
    "Policy": "flee",
    "GoalArea": 30,
    "HPPct": 60,
-   "Rank": "officer"
+   "Rank": "officer",
+   "Facing": "NW"
   },
   {
    "Character": "xuhuang",
-   "X": 17,
-   "Y": 15,
-   "Policy": "flee",
-   "GoalArea": 30,
-   "HPPct": 60,
-   "Rank": "officer"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 13,
+   "X": 19,
    "Y": 11,
    "Policy": "flee",
    "GoalArea": 30,
    "HPPct": 60,
-   "Group": "foot",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_footman",
-   "X": 14,
-   "Y": 11,
-   "Policy": "flee",
-   "GoalArea": 30,
-   "HPPct": 60,
-   "Group": "foot",
-   "Shift": -0.07
+   "Rank": "officer",
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
    "X": 12,
-   "Y": 13,
+   "Y": 9,
    "Policy": "flee",
    "GoalArea": 30,
    "HPPct": 60,
    "Group": "foot",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
    "X": 13,
-   "Y": 14,
+   "Y": 9,
    "Policy": "flee",
    "GoalArea": 30,
    "HPPct": 60,
    "Group": "foot",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
-   "X": 16,
-   "Y": 14,
+   "X": 13,
+   "Y": 10,
    "Policy": "flee",
    "GoalArea": 30,
    "HPPct": 60,
    "Group": "foot",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_footman",
-   "X": 15,
-   "Y": 16,
-   "Policy": "flee",
-   "GoalArea": 30,
-   "HPPct": 60,
-   "Group": "foot",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_footman",
-   "X": 17,
-   "Y": 13,
-   "Policy": "flee",
-   "GoalArea": 30,
-   "HPPct": 60,
-   "Group": "foot",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
    "X": 14,
-   "Y": 15,
+   "Y": 9,
    "Policy": "flee",
    "GoalArea": 30,
    "HPPct": 60,
    "Group": "foot",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_footman",
-   "X": 18,
-   "Y": 14,
-   "Policy": "flee",
-   "GoalArea": 30,
-   "HPPct": 60,
-   "Group": "foot",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_footman",
    "X": 16,
-   "Y": 17,
+   "Y": 10,
    "Policy": "flee",
    "GoalArea": 30,
    "HPPct": 60,
    "Group": "foot",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 17,
+   "Y": 9,
+   "Policy": "flee",
+   "GoalArea": 30,
+   "HPPct": 60,
+   "Group": "foot",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 9,
+   "Policy": "flee",
+   "GoalArea": 30,
+   "HPPct": 60,
+   "Group": "foot",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 17,
+   "Y": 10,
+   "Policy": "flee",
+   "GoalArea": 30,
+   "HPPct": 60,
+   "Group": "foot",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 18,
+   "Y": 10,
+   "Policy": "flee",
+   "GoalArea": 30,
+   "HPPct": 60,
+   "Group": "foot",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 17,
+   "Y": 11,
+   "Policy": "flee",
+   "GoalArea": 30,
+   "HPPct": 60,
+   "Group": "foot",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 21,
+   "Y": 11,
+   "Policy": "flee",
+   "GoalArea": 30,
+   "HPPct": 60,
+   "Group": "horse",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 20,
+   "Y": 11,
+   "Policy": "flee",
+   "GoalArea": 30,
+   "HPPct": 60,
+   "Group": "horse",
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_cavalry",
    "X": 18,
-   "Y": 16,
+   "Y": 11,
    "Policy": "flee",
    "GoalArea": 30,
    "HPPct": 60,
    "Group": "horse",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   },
   {
    "Character": "troop_cavalry",
-   "X": 19,
-   "Y": 16,
+   "X": 20,
+   "Y": 12,
    "Policy": "flee",
    "GoalArea": 30,
    "HPPct": 60,
    "Group": "horse",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 17,
-   "Y": 16,
-   "Policy": "flee",
-   "GoalArea": 30,
-   "HPPct": 60,
-   "Group": "horse",
-   "Shift": -0.07
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 19,
-   "Y": 15,
-   "Policy": "flee",
-   "GoalArea": 30,
-   "HPPct": 60,
-   "Group": "horse",
-   "Shift": -0.07
+   "Shift": -0.07,
+   "Facing": "NW"
   }
  ],
  "Reward": {
@@ -925,10 +939,10 @@
   {
    "ID": 1,
    "Rect": {
-    "X": 18,
-    "Y": 20,
+    "X": 24,
+    "Y": 10,
     "W": 3,
-    "H": 3
+    "H": 4
    },
    "Name": "오림 쪽 강가",
    "Description": "유비의 본군"
@@ -937,9 +951,9 @@
    "ID": 2,
    "Rect": {
     "X": 6,
-    "Y": 6,
+    "Y": 5,
     "W": 2,
-    "H": 2
+    "H": 3
    },
    "Name": "늪 어귀",
    "Description": "장비의 복병"
@@ -948,19 +962,19 @@
    "ID": 30,
    "Rect": {
     "X": 0,
-    "Y": 0,
+    "Y": 6,
     "W": 2,
-    "H": 2
+    "H": 4
    },
    "Name": "화용도로 가는 길",
-   "Description": "북서쪽 끝. 조조가 닿으면 빠져나간다"
+   "Description": "산목 쪽 끝. 조조가 닿으면 빠져나간다"
   },
   {
    "ID": 31,
    "Rect": {
-    "X": 7,
-    "Y": 7,
-    "W": 6,
+    "X": 8,
+    "Y": 5,
+    "W": 5,
     "H": 6
    },
    "Name": "늪 어귀 앞",
@@ -969,10 +983,10 @@
   {
    "ID": 32,
    "Rect": {
-    "X": 10,
-    "Y": 14,
-    "W": 14,
-    "H": 6
+    "X": 15,
+    "Y": 7,
+    "W": 9,
+    "H": 7
    },
    "Name": "늪 한가운데",
    "Description": "본군이 들어서면 서황과 기병이 돌아선다"

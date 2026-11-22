@@ -356,7 +356,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 	f.sceneryLayer = false
 	f.clockMS = clockMS
 	if f.Map.Scene || f.Layers != nil {
-		c.Clear() // a story scene: what lies past the picture is the scene's backdrop (or the ground colour)
+		c.Clear() // the scene map leaves the surrounding background visible
 	} else {
 		c.Fill(fieldGround)
 	}

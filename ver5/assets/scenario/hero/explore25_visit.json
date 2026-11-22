@@ -1,0 +1,32 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   19,
+   5
+  ],
+  "Face": "NE"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_xiaopei",
+   "Name": "신야성",
+   "At": [
+    19,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "양양",
+     "At": [
+      19,
+      -1
+     ],
+     "Node": "c25-visit-out"
+    }
+   ],
+   "People": {}
+  }
+ }
+}

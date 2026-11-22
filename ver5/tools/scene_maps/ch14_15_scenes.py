@@ -299,7 +299,6 @@ def ride_to(v0, speed, free):
 
 S['c15-clash'] = {
     'Map': 'S_long_field',
-    'Backdrop': 'mountains',
     'Cast': {
         '유비': {'At': [2, 9], 'Face': 'SE', 'Sprite': 'liubei_mounted'},
         '관우': {'At': [3, 8], 'Face': 'SE', 'Sprite': 'guanyu'},

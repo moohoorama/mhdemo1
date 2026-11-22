@@ -1,0 +1,286 @@
+{
+ "ID": "B27R",
+ "Name": "적벽 전투",
+ "Map": "map_redcliff.json",
+ "Boats": true,
+ "Night": true,
+ "Max": 8,
+ "Required": [
+  "liubei"
+ ],
+ "TurnLimit": 16,
+ "Faction": "wei",
+ "Allies": [
+  {
+   "X": 17,
+   "Y": 15
+  },
+  {
+   "X": 18,
+   "Y": 15
+  },
+  {
+   "X": 16,
+   "Y": 16
+  },
+  {
+   "X": 19,
+   "Y": 16
+  },
+  {
+   "X": 15,
+   "Y": 16
+  },
+  {
+   "X": 17,
+   "Y": 17
+  },
+  {
+   "X": 20,
+   "Y": 15
+  },
+  {
+   "X": 19,
+   "Y": 17
+  }
+ ],
+ "Enemies": [
+  {
+   "Character": "caimao",
+   "X": 20,
+   "Y": 7,
+   "Rank": "commander",
+   "Group": "east-flotilla",
+   "Shift": -0.12,
+   "HPPct": 85,
+   "Policy": "react",
+   "Facing": "SW"
+  },
+  {
+   "Character": "zhangyun",
+   "X": 7,
+   "Y": 9,
+   "Rank": "officer",
+   "Group": "west-flotilla",
+   "Shift": -0.12,
+   "HPPct": 85,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 5,
+   "Y": 10,
+   "Rank": "troop",
+   "Group": "west-flotilla",
+   "Shift": -0.12,
+   "HPPct": 65,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 8,
+   "Y": 12,
+   "Rank": "troop",
+   "Group": "west-flotilla",
+   "Shift": -0.12,
+   "HPPct": 65,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 7,
+   "Y": 13,
+   "Rank": "troop",
+   "Group": "west-flotilla",
+   "Shift": -0.12,
+   "HPPct": 65,
+   "Policy": "hold",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 17,
+   "Y": 9,
+   "Rank": "troop",
+   "Group": "east-flotilla",
+   "Shift": -0.12,
+   "HPPct": 65,
+   "Policy": "react",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 19,
+   "Y": 10,
+   "Rank": "troop",
+   "Group": "east-flotilla",
+   "Shift": -0.12,
+   "HPPct": 65,
+   "Policy": "react",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 22,
+   "Y": 7,
+   "Rank": "troop",
+   "Group": "east-flotilla",
+   "Shift": -0.12,
+   "HPPct": 65,
+   "Policy": "react",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 23,
+   "Y": 10,
+   "Rank": "troop",
+   "Group": "east-flotilla",
+   "Shift": -0.12,
+   "HPPct": 65,
+   "Policy": "react",
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 23,
+   "Y": 5,
+   "Rank": "troop",
+   "Group": "landing",
+   "Shift": -0.12,
+   "HPPct": 65,
+   "Policy": "hold",
+   "Facing": "SW"
+  }
+ ],
+ "Victory": [
+  {
+   "If": [
+    "defeated:caimao",
+    "at:liubei:81"
+   ],
+   "Text": "채모의 배를 물리고 유비가 오림 나루에 닿는다"
+  }
+ ],
+ "Defeat": [
+  {
+   "If": [
+    "defeated:liubei"
+   ],
+   "Text": "유비 퇴각"
+  }
+ ],
+ "Areas": [
+  {
+   "ID": 81,
+   "Rect": {
+    "X": 19,
+    "Y": 4,
+    "W": 3,
+    "H": 2
+   },
+   "Name": "오림 나루",
+   "Description": "채모를 물리친 뒤 유비가 닿으면 승리"
+  }
+ ],
+ "Lights": [
+  {
+   "X": 19,
+   "Y": 5
+  },
+  {
+   "X": 23,
+   "Y": 5
+  },
+  {
+   "X": 17,
+   "Y": 15
+  }
+ ],
+ "Events": [
+  {
+   "ID": "liuqi-pursuit",
+   "If": [
+    "defeated:caimao",
+    "!defeated:liuqi"
+   ],
+   "Do": [
+    {
+     "Kind": "say",
+     "Lines": [
+      {
+       "Actor": "liuqi",
+       "Text": "채모! 아버님의 부고를 감춘 값을……!"
+      }
+     ]
+    },
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "face",
+        "Unit": "liuqi",
+        "Facing": "NE"
+       }
+      ],
+      [
+       {
+        "Kind": "play",
+        "Unit": "liuqi",
+        "Motion": "hit"
+       }
+      ]
+     ]
+    },
+    {
+     "Kind": "remove",
+     "Targets": [
+      "liuqi"
+     ]
+    }
+   ]
+  }
+ ],
+ "Party": [
+  {
+   "Character": "liuqi",
+   "X": 20,
+   "Y": 14,
+   "AI": true,
+   "Policy": "hold",
+   "Faction": "liuqi",
+   "Rank": "officer",
+   "Facing": "NE"
+  },
+  {
+   "Character": "troop_archer",
+   "X": 21,
+   "Y": 15,
+   "AI": true,
+   "Policy": "react",
+   "Faction": "shu",
+   "Rank": "troop",
+   "Facing": "NE"
+  }
+ ],
+ "Armies": [
+  {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
+   "Faction": "wei",
+   "Name": "양양 수군"
+  },
+  {
+   "Faction": "liuqi",
+   "Name": "강하 수군",
+   "Ally": true
+  }
+ ]
+}

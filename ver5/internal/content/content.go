@@ -213,6 +213,7 @@ type Skill struct {
 	Coeff         float64
 	Weapon        string  // the weapon type that must be equipped
 	Pierce        float64 // share of damage the enemy behind the target takes
+	SideCoeff     float64 // share of damage to the arms of a fixed physical cross, zero for full damage on all targets
 	Strikes       int     // 2 makes every use strike twice
 	Each          bool    // strikes every target with an attack of its own, one after another
 	Sure          bool    // a status skill that always lands (immunities still hold)

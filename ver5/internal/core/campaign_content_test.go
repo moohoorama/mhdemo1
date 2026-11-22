@@ -184,7 +184,7 @@ func executed(e *Engine, key string) bool { return e.state.Executed[key] }
 
 func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, true, "빠른 길")
-	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27"}, fought)
+	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27R", "B27"}, fought)
 	assert.Equal(t, 1, e.state.Flags["flag-mode-yanyi"], "the fast road at Longzhong is the romance")
 	assert.Zero(t, e.state.Flags["flag-mode-virtual"])
 	assert.Nil(t, e.char("xushu"), "Xu Shu is taken after Changban")

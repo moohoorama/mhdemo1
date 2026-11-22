@@ -1,0 +1,56 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   14,
+   25
+  ],
+  "Face": "NE"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_xindu",
+   "Name": "양양성",
+   "At": [
+    14,
+    25
+   ],
+   "Exits": [
+    {
+     "Name": "관청",
+     "At": [
+      14,
+      6
+     ],
+     "Object": [
+      14,
+      3
+     ],
+     "Node": "c23-start",
+     "If": [
+      "!flag:c23-xiangyang-visited"
+     ]
+    },
+    {
+     "Name": "신야",
+     "At": [
+      14,
+      28
+     ],
+     "Node": "c23-gate",
+     "If": [
+      "flag:c23-xiangyang-visited"
+     ],
+     "Shut": [
+      [
+       "",
+       "먼저 관청에 들러 유표께 강하의 일을 알리자."
+      ]
+     ]
+    }
+   ],
+   "People": {}
+  }
+ }
+}

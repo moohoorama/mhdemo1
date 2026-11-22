@@ -1,0 +1,33 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "camp",
+  "At": [
+   12,
+   12
+  ],
+  "Face": "SE"
+ },
+ "Areas": {
+  "camp": {
+   "Map": "S_changban",
+   "Name": "장판교 · 동쪽 진영",
+   "At": [
+    12,
+    12
+   ],
+   "Exits": [
+    {
+     "Name": "한진 나루",
+     "At": [
+      31,
+      12
+     ],
+     "Node": "c27-detour-out"
+    }
+   ],
+   "People": {},
+   "Time": "dusk"
+  }
+ }
+}

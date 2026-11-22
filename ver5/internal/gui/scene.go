@@ -997,8 +997,7 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	}
 	op.Filter = ebiten.FilterPixelated
 	inWorld(func() {
-		rect(dst, 0, 0, float32(worldW), float32(worldH), color.RGBA{68, 27, 13, 255}) // match the scene canvas beyond its edges
-		g.drawBackdrop(dst)
+		rect(dst, 0, 0, float32(worldW), float32(worldH), color.RGBA{68, 27, 13, 255})
 		drawScaled(dst, g.field.Canvas, op)
 		for _, p := range s.props {
 			if pr, ok := g.assets.Props[p.art()]; ok {
@@ -1046,36 +1045,6 @@ func (g *Game) drawScene(dst *ebiten.Image, speakers []string) {
 	for _, b := range balloons {
 		g.bubble(dst, b.v, b.mark, b.talking)
 	}
-}
-
-// drawBackdrop lays the scene's far picture (mountains, a pass, a burning city) across the top of the screen,
-// behind the map, darkened with the scene's time of day.
-func (g *Game) drawBackdrop(dst *ebiten.Image) {
-	bd, ok := g.assets.Backdrops[g.scene.def.Backdrop]
-	im := bd.Image
-	if !ok {
-		return
-	}
-	w, h := im.Bounds().Dx(), im.Bounds().Dy()
-	k := float64(worldW) / float64(w)
-	bottom := float64(worldH) * .42
-	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterPixelated}
-	op.GeoM.Scale(k, k)
-	op.GeoM.Translate(0, bottom-float64(h)*k)
-	shade := float32(1)
-	if n := g.field.night; n.on && !n.flat {
-		dark := n.color
-		if dark.A == 0 {
-			dark = nightColor
-		}
-		shade = 1 - float32(dark.A)/255*.9
-		op.ColorScale.Scale(shade, shade, shade*1.05, 1)
-	}
-	drawScaled(dst, im, op)
-	// the near ground of the picture runs on down behind the map, so the backdrop has no bottom edge
-	r, gr, b := bd.ground.R, bd.ground.G, bd.ground.B
-	ground := color.NRGBA{R: uint8(float32(r) * shade), G: uint8(float32(gr) * shade), B: uint8(math.Min(255, float64(float32(b)*shade*1.05))), A: 255}
-	rect(dst, 0, float32(bottom), float32(worldW), float32(worldH)-float32(bottom), ground)
 }
 
 // glowImage is a corner light fading out along the diagonal, white at the top left corner.

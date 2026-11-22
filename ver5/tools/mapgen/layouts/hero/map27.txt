@@ -1,30 +1,23 @@
-# map27 화용도 전투 (28x26, night). North = row 0. The way out to 화용도 is the NW corner: a pass three
-# cells wide along the diagonal between hills and mountains. The middle is reed marsh (shallows, reeds,
-# mud with standing water) with a causeway of firm ground from 오림 (SE) to the pass. SE corner: the river
-# and the burning stockade on its bank.
-l-- l-- u-- gt- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-g-- l-- l-- u-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-u-- g-- l-- l-- u-- gt- n-- n-- n-- n-- n-- n-- n-- n-- n-- n-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-gt- u-- g-- l-- l-- u-- n-- n-- n-- n-- n-- n-- n-- n-- n-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g--
-n-- n-- u-- g-- l-- l-- u-- gt- n-- n-- n-- n-- n-- n-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g--
-n-- n-- gt- u-- g-- l-- l-- u-- n-- n-- n-- n-- n-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g--
-n-- n-- n-- n-- u-- g-- l-- l-- u-- n-- n-- n-- s-- s-- s-- s-- st- s-- s-- s-- s-- st- gt- s-- g-- g-- g-- g--
-n-- n-- n-- n-- gt- u-- g-- l-- l-- u-- n-- s-- st- s-- s-- s-- s-- st- s-- s-- s-- s-- st- s-- g-- g-- g-- g--
-n-- n-- n-- n-- n-- n-- u-- g-- l-- l-- s-- s-- s-- st- s-- s-- s-- s-- st- s-- s-- s-- s-- st- g-- g-- g-- g--
-n-- n-- n-- n-- n-- n-- n-- u-- g-- st- s-- s-- d-w s-- st- s-- s-- s-- s-- st- s-- s-- s-- s-- gt- g-- g-- g--
-n-- n-- n-- n-- n-- n-- n-- n-- s-- s-- l-- l-- s-- s-- s-- d-w d-w s-- s-- s-- st- s-- s-- s-- g-- g-- g-- g--
-n-- n-- n-- n-- n-- n-- n-- s-- s-- s-- s-- l-- l-- s-- s-- s-- st- s-- s-- s-- s-- st- s-- s-- g-- g-- gt- g--
-n-- n-- n-- n-- n-- n-- s-- st- s-- s-- d-w d-w l-- l-- s-- s-- s-- st- s-- s-- s-- s-- st- s-- g-- g-- g-- g--
-n-- n-- n-- n-- n-- g-- s-- s-- d-w s-- s-- s-- s-- l-- l-- s-- s-- s-- d-w s-- s-- s-- s-- st- g-- g-- g-- g--
-n-- n-- n-- n-- g-- g-- s-- s-- s-- st- s-- s-- s-- s-- l-- l-- s-- s-- s-- d-w s-- s-- s-- s-- g-- g-- g-e g--
-n-- n-- n-- g-- g-- g-- s-- s-- s-- s-- st- s-- d-w d-w s-- l-- l-- s-- s-- s-- st- s-- s-- s-- g-- g-e g-- g--
-n-- n-- g-- g-- g-- g-- st- s-- s-- d-w s-- st- s-- s-- s-- s-- l-- l-- s-- s-- s-- st- s-- s-- g-- g-- g-- gkF
-n-- g-- g-- g-- g-- g-- s-- st- s-- s-- s-- s-- st- s-- s-- s-- s-- l-- l-- s-- d-w s-- st- g-- g-e g-- gkF w--
-g-- g-- g-- g-- g-- g-- s-- s-- st- s-- s-- s-- s-- st- d-w s-- s-- d-w l-- l-- s-- s-- g-- g-e g-- gkF w-- w--
-g-- g-- g-- gt- g-- g-- s-- s-- s-- st- s-- s-- s-- s-- st- s-- s-- s-- s-- l-- l-- g-- g-e g-- gkF w-- w-- w--
-g-- g-- g-- g-- g-- g-- s-- s-- s-- s-- st- s-- s-- s-- s-- st- s-- s-- s-- s-- l-- l-- g-- gkF w-- w-- w-- w--
-g-- g-- g-- g-- g-- gt- st- s-- s-- s-- s-- st- s-- s-- s-- s-- st- s-- s-- g-- g-- g-- gkF w-- w-- w-- w-- w--
-g-- g-- gt- g-- g-- g-- s-- st- s-- s-- s-- s-- st- s-- s-- s-- s-- st- g-- g-e g-- gkF w-- w-- w-- w-- w-- w--
-g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gkF w-- w-- w-- w-- w-- w-- w--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-e g-- w-- w-- w-- w-- w-- w-- w-- w--
-g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+# 화용도 · 오림에서 산목까지 이어지는 늪길 (B27)
+n-- n-- n-- n-- n-- n-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- g-- g-- g-- g-- g-- w-- w-- w--
+n-- n-- n-- n-- n-- n-- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- g-- g-- g-- g-- g-- w-- w-- w--
+n-- n-- h-- h-- h-- h-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- g-- g-- g-- g-- g-- w-- w-- w--
+n-- n-- h-- h-- h-- h-- g-- g-- gt- g-- g-- w-- s-- s-- s-- w-- w-- w-- w-- w-- w-- s-- s-- s-- g-- g-- g-- g-- g-- g-- w-- w--
+n-- n-- h-- h-- h-- h-- g-- g-- g-- gt- g-- s-- s-- s-- w-- w-- w-- w-- w-- w-- s-- s-- s-- w-- g-- g-- g-- g-- g-- g-- w-- w--
+l-- l-- l-- s-- s-- st- g-- g-- g-- g-- gt- s-- s-- w-- w-- w-- w-- w-- w-- s-- s-- s-- w-- w-- g-- g-- g-- g-- g-- g-- w-- w--
+l-- l-- l-- l-- l-- s-- gt- g-- g-- g-- g-- s-- w-- w-- w-- w-- w-- w-- s-- s-- s-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- w--
+l-- l-- l-- l-- l-- l-- l-- l-- g-- g-- g-- s-- w-- w-- w-- w-- w-- s-- s-- s-- w-- s-- st- s-- g-- g-- d-e g-- g-- w-- w-- w--
+l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- g-- s-- s-- st- s-- s-- s-- s-- st- s-- s-- s-- s-- st- d-- d-- d-- d-- dkF w-- w-- w--
+s-- s-- s-- s-- st- l-- l-- l-- l-- l-- l-- l-- s-- s-- st- s-- s-- s-- s-- st- s-- l-- l-- l-- d-- d-- d-- d-- d-- w-- w-- w--
+n-- n-- h-- h-- h-- h-- g-- g-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- d-- d-- d-- d-- d-- d-- w-- w--
+n-- n-- h-- h-- h-- h-- gt- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- d-w l-- l-- l-- l-- l-- l-- d-- d-- d-- d-- d-- d-- w-- w--
+n-- n-- h-- h-- h-- h-- w-- w-- s-- s-- s-- s-- l-- l-- l-- l-- l-- l-- l-- l-- d-w s-- st- s-- d-- d-- d-- d-- d-- d-- w-- w--
+n-- n-- n-- n-- n-- n-- s-- s-- st- s-- s-- s-- s-- st- s-- s-- s-- s-- st- s-- s-- s-- s-- st- d-- d-- d-- d-- d-- d-- d-- w--
+n-- n-- n-- n-- n-- n-- s-- s-- s-- st- s-- s-- s-- s-- gt- g-- g-- g-- g-- gt- g-- g-- s-- s-- d-- d-- d-- d-- dkF w-- w-- w--
+n-- n-- n-- n-- n-- n-- s-- s-- s-- s-- st- s-- s-- s-- g-- gt- g-- g-- g-- g-- gt- g-- s-- s-- d-- d-e d-- d-- d-- w-- w-- w--
+n-- n-- n-- n-- n-- n-- w-- w-- s-- s-- s-- w-- w-- w-- g-- g-- gt- g-- g-- g-- g-- gt- w-- w-- d-- d-- d-- d-- d-- w-- w-- w--
+n-- n-- n-- n-- n-- n-- w-- s-- s-- s-- w-- w-- w-- w-- w-- w-- s-- s-- s-- w-- w-- w-- w-- w-- d-- d-- d-- dkF d-- d-- w-- w--
+n-- n-- n-- n-- n-- n-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- g-- g-- g-- g-- g-- g-- w-- w--
+n-- n-- n-- n-- n-- n-- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- g-- g-- g-- g-- g-- g-- w-- w--
+n-- n-- n-- n-- n-- n-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- g-- g-- g-- g-- g-- g-- g-- w--
+n-- n-- n-- n-- n-- n-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- gt- u-- u-- g-- g-- g-- g-- g-- w-- w-- w--

@@ -2,7 +2,6 @@
  "Scenes": {
   "c06-start": {
    "Map": "S_coalition_camp",
-   "Backdrop": "pass",
    "Nodes": ["c06-start", "c06-a1", "c06-a1b", "c06-a2", "c06-a3", "c06-a4", "c06-b1", "c06-b2", "c06-b2b", "c06-b3", "c06-b4", "c06-b5", "c06-b5b", "c06-b5c", "c06-b6", "c06-b7"],
    "Ambient": [{"CamAt": [22, 17.75]}],
    "Cast": {

@@ -3,10 +3,10 @@
  "Start": {
   "Area": "town",
   "At": [
-   19,
-   24
+   16,
+   1
   ],
-  "Face": "NE"
+  "Face": "SW"
  },
  "Areas": {
   "town": {
@@ -27,7 +27,25 @@
       21,
       20
      ],
-     "To": "office"
+     "Node": "c21-runan",
+     "If": [
+      "flag:c21-arrival-pending"
+     ]
+    },
+    {
+     "Name": "관청",
+     "At": [
+      21,
+      23
+     ],
+     "Object": [
+      21,
+      20
+     ],
+     "To": "office",
+     "If": [
+      "!flag:c21-arrival-pending"
+     ]
     },
     {
      "Name": "도구점",
@@ -63,7 +81,10 @@
      "Face": "SE",
      "Sortie": {
       "Ask": "형님, 날이 저뭅니다. 관청으로 돌아가시겠습니까?"
-     }
+     },
+     "If": [
+      "!flag:c21-arrival-pending"
+     ]
     },
     "장비@town": {
      "At": [
@@ -118,6 +139,9 @@
        "liupi",
        "성벽은 사흘이면 손볼 수 있소. 공도가 군량만 제때 거둬 오면 한 철은 버티오."
       ]
+     ],
+     "If": [
+      "!flag:c21-arrival-pending"
      ]
     },
     "미축@town": {

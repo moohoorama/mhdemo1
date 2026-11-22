@@ -2,6 +2,17 @@
  "Nodes": [
   {
    "ID": "c27-start",
+   "Kind": "explore",
+   "Explore": "explore27_changban",
+   "Opening": "c27-detour"
+  },
+  {
+   "ID": "c27-ferry-walk",
+   "Kind": "explore",
+   "Explore": "explore27_ferry"
+  },
+  {
+   "ID": "c27-arrive",
    "Kind": "scene",
    "Place": "강하 · 나루"
   },
@@ -54,51 +65,38 @@
    "Text": "남의 이름이기에 형주 사람들이 문을 엽니다."
   },
   {
-   "ID": "c27-chaisang",
-   "Kind": "scene",
-   "Place": "시상 · 손권의 막부"
+   "ID": "c27-a07",
+   "Kind": "say",
+   "Speaker": "zhugeliang",
+   "Text": "주공, 저는 강동에 다녀오겠습니다. 손 장군과 함께 조조를 막겠습니다."
   },
   {
    "ID": "c27-b00",
-   "Kind": "say",
-   "Speaker": "lusu",
-   "Text": "주공, 유 예주께서 보내신 제갈량입니다. 자는 공명이라 합니다."
+   "Kind": "narrate",
+   "Text": "며칠 뒤, 제갈량이 강하 진영으로 돌아왔다."
+  },
+  {
+   "ID": "c27-chaisang",
+   "Kind": "scene",
+   "Place": "강하 · 진영"
   },
   {
    "ID": "c27-b01",
    "Kind": "say",
-   "Speaker": "sunquan",
-   "Text": "조조가 팔십만이라 한다. 유 예주는 왜 항복하지 않았소?"
-  },
-  {
-   "ID": "c27-b02",
-   "Kind": "say",
    "Speaker": "zhugeliang",
-   "Text": "유 예주는 한실의 후예라 남의 밑에 설 수 없습니다."
-  },
-  {
-   "ID": "c27-b03",
-   "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "장군께서는 사정이 다르니, 일찍 갑옷을 벗고 북쪽을 향해 절하시지요."
-  },
-  {
-   "ID": "c27-b04",
-   "Kind": "say",
-   "Speaker": "sunquan",
-   "Text": "다시 항복을 말하는 자는 이 책상과 같을 것이다!"
+   "Text": "주공, 손 장군이 싸우기로 했습니다. 주유 도독이 수군을 이끌고 옵니다."
   },
   {
    "ID": "c27-b05",
    "Kind": "say",
-   "Speaker": "zhouyu",
-   "Text": "공명 선생, 싸움은 강동이 하오. 유 예주께서는 번구에서 구경이나 하시라 전하시오."
+   "Speaker": "zhugeliang",
+   "Text": "도독은 주공께 번구에서 기다리라 했습니다. 강 위쪽으로 오는 양양 수군은 우리가 맡겠다고 했습니다."
   },
   {
    "ID": "c27-b06",
    "Kind": "say",
-   "Speaker": "zhugeliang",
-   "Text": "구경하는 김에 강 위쪽은 저희가 막겠습니다. 양양의 수군이 그리로 내려옵니다."
+   "Speaker": "liubei",
+   "Text": "그럼 번구로 가세. 배에서 직접 살피겠소."
   },
   {
    "ID": "c27-camp",
@@ -136,6 +134,17 @@
    "Event": "join-huojun"
   },
   {
+   "ID": "c27-redcliff-walk",
+   "Kind": "explore",
+   "Explore": "explore27_redcliff"
+  },
+  {
+   "ID": "c27-redcliff-battle",
+   "Kind": "battle",
+   "Stage": "B27R",
+   "Text": "적벽 전투 — 출전 준비"
+  },
+  {
    "ID": "c27-chibi",
    "Kind": "scene",
    "Place": "적벽 · 강 위"
@@ -165,12 +174,6 @@
    "Text": "알겠소."
   },
   {
-   "ID": "c27-d05",
-   "Kind": "say",
-   "Speaker": "liuqi",
-   "Text": "채모! 아버님의 부고를 감춘 값을……!"
-  },
-  {
    "ID": "c27-leave-guanyu",
    "Kind": "leave",
    "Character": "guanyu",
@@ -183,57 +186,9 @@
    "Text": "화용도 전투 — 출전 준비"
   },
   {
-   "ID": "c27-huarong",
-   "Kind": "scene",
-   "Place": "화용도 · 길 끝"
-  },
-  {
-   "ID": "c27-e01",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "승상. 오랜만이오."
-  },
-  {
-   "ID": "c27-e02",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "……운장. 허도에서 술을 데워 주던 일을 기억하는가."
-  },
-  {
-   "ID": "c27-e03",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "백문루에서 문원의 목숨을 청하던 것도 자네였지."
-  },
-  {
-   "ID": "c27-e04",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "그 빚은 안량과 문추의 목으로 갚았소."
-  },
-  {
-   "ID": "c27-e05",
-   "Kind": "say",
-   "Speaker": "caocao",
-   "Text": "갚았지. 다섯 관문의 일은 어떤가. 그때 나는 쫓지 않았네."
-  },
-  {
-   "ID": "c27-e06",
-   "Kind": "say",
-   "Speaker": "zhangliao",
-   "Text": "운장."
-  },
-  {
-   "ID": "c27-e07",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "……문원."
-  },
-  {
-   "ID": "c27-e08",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "흩어져 길을 열어라."
+   "ID": "c27-retreat-walk",
+   "Kind": "explore",
+   "Explore": "explore27_retreat"
   },
   {
    "ID": "c27-end-camp",
@@ -247,22 +202,43 @@
    "Event": "back-guanyu-27b"
   },
   {
+   "ID": "c27-report-result",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-b27-caocao"
+     ],
+     "Next": "c27-f01-won"
+    }
+   ],
+   "Else": "c27-f01"
+  },
+  {
    "ID": "c27-f01",
    "Kind": "say",
    "Speaker": "guanyu",
-   "Text": "형님, 조조를 놓쳤습니다. 군령을 어겼으니 벌을 받겠습니다."
+   "Text": "형님, 조조와 장료가 화용도로 왔습니다. 제가 길을 열어 주었습니다."
   },
   {
    "ID": "c27-f02",
    "Kind": "say",
    "Speaker": "zhugeliang",
-   "Text": "놓친 것이 아니라 놓아준 것이지요."
+   "Text": "주공께서 맡기신 길입니다. 군령을 어긴 일은 밝히고 넘어가야 합니다."
   },
   {
    "ID": "c27-f03",
    "Kind": "say",
    "Speaker": "liubei",
-   "Text": "군사, 운장을 그 길에 세운 것도 그대였소. 벌은 나중에 정하겠소."
+   "Text": "군사, 운장을 그 길에 세운 것도 그대였소. 벌은 나중에 정하겠소.",
+   "Next": "c27-f04"
+  },
+  {
+   "ID": "c27-f01-won",
+   "Kind": "say",
+   "Speaker": "guanyu",
+   "Text": "형님. 화용도에서 기다렸으나 조조는 그 길로 오지 않았습니다.",
+   "Next": "c27-f04"
   },
   {
    "ID": "c27-f04",
@@ -327,6 +303,43 @@
   {
    "ID": "c27-end",
    "Kind": "end"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "c27-detour",
+   "Kind": "scene",
+   "Place": "장판교 · 동쪽 진영"
+  },
+  {
+   "ID": "c27-detour-line",
+   "Kind": "say",
+   "Speaker": "jianyong",
+   "Text": "조조군이 강릉 길을 먼저 잡았네. 한진 나루로 가세. 운장이 배를 마련해 두었을 걸세."
+  },
+  {
+   "ID": "c27-detour-back",
+   "Kind": "back"
+  },
+  {
+   "ID": "c27-detour-out",
+   "Kind": "back",
+   "Leave": true
+  },
+  {
+   "ID": "c27-ferry-out",
+   "Kind": "back",
+   "Leave": true
+  },
+  {
+   "ID": "c27-redcliff-out",
+   "Kind": "back",
+   "Leave": true
+  },
+  {
+   "ID": "c27-retreat-out",
+   "Kind": "back",
+   "Leave": true
   }
  ]
 }

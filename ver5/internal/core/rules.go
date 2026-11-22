@@ -2,10 +2,8 @@ package core
 
 import (
 	"math"
-	"slices"
 	"sort"
 	"srpg/internal/content"
-	"strings"
 )
 
 func clamp(v, lo, hi float64) float64 { return math.Max(lo, math.Min(hi, v)) }
@@ -42,10 +40,6 @@ func (e *Engine) stats(u *Unit) Stats {
 	a := e.attributes(o)
 	c := e.class(o)
 	b := c.Bonus
-	if e.has(u, content.FxBlendBonus) {
-		mean := (b[0] + b[2]) / 2
-		b[0], b[2] = math.Max(b[0], mean), math.Max(b[2], mean)
-	}
 	for _, eq := range o.Equipment {
 		for i, n := range e.data.Equipment[eq].Bonus {
 			b[i] += n
@@ -58,6 +52,15 @@ func (e *Engine) stats(u *Unit) Stats {
 			k = c.HPFactor
 		}
 		v[i] = int(math.Floor(float64(k*(o.Level+R.StatLevelBase)) * (R.StatNumerator/(R.StatDenominator-at) + b[i])))
+	}
+	attack, defense, mind := v[0], v[1], v[2]
+	if e.has(u, content.FxBlendBonus) {
+		v[0] += max(0, (mind-attack)/2)
+		v[2] += max(0, (attack-mind)/2)
+	}
+	if e.has(u, content.FxDefenseMindBalance) {
+		v[1] += max(0, (mind-defense)/2)
+		v[2] = max(v[2], mind+(defense-mind)/2)
 	}
 	if u.HP > 0 { // standing on the field: who is around, how far it walked
 		foes, allies := e.around(u, false), e.around(u, true)
@@ -247,13 +250,10 @@ func (e *Engine) skillDef(c Command) (content.Skill, error) {
 }
 func (e *Engine) basic() content.Skill { return e.data.Rules.BasicAttack }
 
-// cost is what the skill spends from the unit's spell points: halved by 백출, and by 수호 for a defense buff on itself.
+// cost is what the skill spends from the unit's spell points, halved by 백출.
 func (e *Engine) cost(u *Unit, s content.Skill) int {
 	n := s.Cost
 	if e.has(u, content.FxCostHalf) && n > 0 {
-		n = max(1, (n+1)/2)
-	}
-	if e.has(u, content.FxSelfGuardHalf) && n > 0 && s.Mode == content.ModeSelf && s.Kind == content.KindBuff && slices.Contains(strings.Split(s.Effect, "+"), "defense") {
 		n = max(1, (n+1)/2)
 	}
 	return n

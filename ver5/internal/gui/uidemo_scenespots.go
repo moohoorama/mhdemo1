@@ -36,7 +36,7 @@ var spotColors = []color.NRGBA{{230, 80, 60, 255}, {60, 150, 230, 255}, {70, 190
 
 // demoSceneSpots draws the whole map of each of a script's scenes with its cast and the script's places marked, one
 // PNG per shot next to the script (-stage plan/script/ch10.json → plan/script/ch10.<scene>.<shot>.png), for writing
-// directions against. It draws the field canvas itself, without the camera, the backdrop or the effects.
+// directions against. It draws the field canvas itself, without the camera, the screen background or the effects.
 func demoSceneSpots(d *Demo) error {
 	path := d.stage
 	raw, err := os.ReadFile(path)

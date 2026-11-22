@@ -1,31 +1,29 @@
-# map27v 양양 공방전 (34x28). North = row 0. 한수 north (rows 0-3) and east (x 29-33), a channel y 13 to the water gate.
-# 양양 walls x 11-23, y 7-19: west gate (11,13), south gate (17,19), water gate (23,13), 관청 (17,13).
-# Camps (5x5 palisades, gaps N and S): west (6,9) (6,17), south (14,23) (21,23). 조조 comes from the west hills.
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-g-- g-- g-- g-- g-- g-- g-- s-- g-- s-- g-- g-- s-- g-- g-- g-- s-- s-- g-- g-- g-- g-- g-- g-- g-- g-- s-- g-- s-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- gz- gz- l-- gz- gz- g-- g-- c-- c-- c-- c-- c-- c-- c-- c-- c-- c-- c-- c-- c-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- gz- l-- l-- l-- gz- g-- g-- c-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- gz- l-- lk- l-- gz- g-- g-- c-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- gt- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- gz- l-- l-- l-- gz- g-- g-- c-- i-- i-- iv- i-- i-- i-- i-- i-- iv- i-- i-- c-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- gz- gz- l-- gz- gz- g-- g-- c-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- c-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- l-- m-- i-- i-- i-- i-- i-- io- i-- i-- i-- i-- i-- m-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- c-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- gz- gz- l-- gz- gz- g-- g-- c-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- gz- l-- l-- l-- gz- g-- g-- c-- i-- i-- iv- i-- i-- i-- i-- i-- iv- i-- i-- c-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- gz- l-- lk- l-- gz- g-- g-- c-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- gz- l-- l-- l-- gz- g-- g-- c-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- i-- c-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- gz- gz- l-- gz- gz- g-- g-- c-- c-- c-- c-- c-- c-- m-- c-- c-- c-- c-- c-- c-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- gt- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- gt- g-- g-- g-- g-- g-- g-- g-- gz- gz- l-- gz- gz- l-- g-- gz- gz- l-- gz- gz- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- g-- g-- g-- g-- g-- g-- gt- g-- gz- l-- l-- l-- gz- l-- g-- gz- l-- l-- l-- gz- g-- gt- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- l-- lk- l-- gz- l-- g-- gz- l-- lk- l-- gz- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gz- l-- l-- l-- gz- l-- g-- gz- l-- l-- l-- gz- g-- g-- gt- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- gt- g-- g-- g-- g-- gt- g-- g-- g-- gz- gz- l-- gz- gz- l-- g-- gz- gz- l-- gz- gz- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
-u-- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- l-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w--
+# 양양 공방 · 한수 굽이의 성벽과 수문
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w--
+u-- u-- u-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- g-- g-- w-- w-- w-- w-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- w-- w-- w-- w-- w--
+u-- u-- u-- u-- u-- g-- g-- g-- gt- gt- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+u-- u-- u-- u-- u-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- g-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+u-- u-- u-- u-- u-- g-- gt- gt- g-- g-- g-- g-- g-- g-- g-- s-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+g-- g-- g-- g-- gz- gz- l-- gz- gz- g-- g-- d-r gt- g-- g-- s-- w-- w-- w-- w-- s-- s-- s-- s-- s-- g-- g-- g-- g-- s-- w-- w-- w-- w-- w--
+g-- g-- g-- g-- gz- l-- l-- l-- gz- g-- gt- g-- g-- g-- g-- s-- w-- s-- w-- w-- g-- g-- g-- g-- g-- gt- g-- g-- g-- s-- w-- w-- w-- w-- w--
+g-- g-- g-- g-- gz- l-- lk- l-- gz- g-- g-- gt- g-- g-- c-- c-- c-- m-O c-- c-- c-- c-- g-- g-- gt- g-- g-- g-- g-- s-- w-- w-- w-- w-- w--
+g-- g-- g-- g-- gz- l-- l-- l-- gz- g-- g-- g-- g-- g-- c-- i-- i-- l-- i-- i-- i-- c-- g-- g-- gt- g-- gt- gt- s-- w-- w-- w-- w-- w-- w--
+g-- g-- g-- g-- gz- gz- l-- gz- gz- g-- gt- g-- gt- g-- c-- i-- i-- l-- i-- i-- i-- c-- g-- g-- gt- g-- g-- gt- s-- w-- w-- w-- w-- w-- w--
+g-- g-- g-- g-- g-- g-- g-- gt- g-- g-- g-- g-- g-- g-- c-- i-- i-- l-- i-- i-- i-- c-- g-- gt- gt- g-- gt- gt- s-- w-- w-- w-- w-- w-- w--
+g-- g-- g-- g-- g-- g-- g-- l-- l-- l-- l-- l-- l-- l-- m-- i-- i-- io- i-- i-- i-- c-- gt- g-- gt- g-- g-- s-- w-- w-- w-- w-- w-- w-- w--
+g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- c-- i-- i-- i-- i-- i-- i-- c-- g-- g-- gt- g-- g-- s-- w-- w-- w-- w-- w-- w-- w--
+g-- g-- g-- g-- gz- gz- l-- gz- gz- g-- g-- g-- g-- g-- c-- i-- i-- i-- i-- i-- i-- c-- gt- gt- g-- gt- g-- s-- w-- w-- w-- w-- w-- w-- w--
+g-- g-- g-- g-- gz- l-- l-- l-- gz- g-- g-- g-- g-- g-- c-- c-- c-- m-- c-- c-- c-- c-- g-- g-- g-- g-- gt- s-- w-- w-- w-- w-- w-- w-- w--
+g-- g-- g-- g-- gz- l-- lk- l-- gz- gt- g-- g-- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- g-- g-- g-- gt- s-- w-- w-- w-- w-- w-- w-- w--
+g-- g-- g-- g-- gz- l-- l-- l-- gz- gt- g-- g-- gt- g-- g-- g-- g-- l-- l-- g-- g-- g-- gt- g-- gt- gt- g-- s-- w-- w-- w-- w-- w-- w-- w--
+g-- g-- g-- g-- gz- gz- l-- gz- gz- gt- gt- g-- gt- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- g-- gt- gt- g-- s-- w-- w-- w-- w-- w-- w-- w--
+u-- u-- u-- u-- u-- g-- g-- g-- g-- gt- d-r g-- g-- g-- g-- g-- g-- l-- l-- g-- g-- g-- g-- gt- g-- gt- g-- s-- w-- w-- w-- w-- w-- w-- w--
+u-- u-- u-- u-- u-- g-- g-- g-- gt- g-- g-- g-- gz- gz- l-- gz- gz- l-- l-- gz- gz- l-- gz- gz- g-- g-- gt- g-- s-- w-- w-- w-- w-- w-- w--
+u-- u-- u-- u-- u-- g-- g-- gt- gt- g-- g-- g-- gz- l-- l-- l-- gz- l-- l-- gz- l-- l-- l-- gz- gt- g-- g-- g-- s-- w-- w-- w-- w-- w-- w--
+u-- u-- u-- u-- u-- g-- g-- g-- g-- g-- g-- g-- gz- l-- lk- l-- gz- l-- l-- gz- l-- lk- l-- gz- gt- g-- gt- g-- s-- w-- w-- w-- w-- w-- w--
+u-- u-- u-- u-- u-- g-- g-- g-- g-- g-- g-- g-- gz- l-- l-- l-- gz- l-- l-- gz- l-- l-- l-- gz- gt- g-- gt- g-- g-- s-- w-- w-- w-- w-- w--
+u-- u-- u-- u-- u-- g-- g-- g-- g-- g-- g-- g-- gz- gz- l-- gz- gz- l-- l-- gz- gz- l-- gz- gz- gt- gt- gt- g-- g-- s-- w-- w-- w-- w-- w--
+u-- u-- u-- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- gt- g-- gt- gt- g-- s-- w-- w-- w-- w-- w--
+u-- u-- u-- u-- u-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- g-- s-- w-- w-- w-- w-- w--

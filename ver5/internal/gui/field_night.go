@@ -147,7 +147,11 @@ func (f *Field) drawNight(clockMS float64, units []*unitVis) {
 		op.Blend = ebiten.BlendDestinationOut
 		n.dark.DrawImage(n.light, op)
 	}
-	c.DrawImage(n.dark, nil)
+	var darkOp *ebiten.DrawImageOptions
+	if f.Map.Scene {
+		darkOp = &ebiten.DrawImageOptions{Blend: ebiten.BlendSourceAtop}
+	}
+	c.DrawImage(n.dark, darkOp)
 	for _, l := range lamps {
 		if !l.fire {
 			continue

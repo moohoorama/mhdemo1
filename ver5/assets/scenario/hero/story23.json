@@ -1,115 +1,14 @@
 {
  "Nodes": [
   {
-   "ID": "c23-start",
-   "Kind": "scene",
-   "Place": "양양 · 관청"
+   "ID": "c23-xiangyang-walk",
+   "Kind": "explore",
+   "Explore": "explore23_xiangyang"
   },
   {
-   "ID": "c23-h01",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "형님, 강하의 일을 알리러 왔습니다. 장무와 진손의 무리를 쳐서 흩었고, 강하는 다시 조용해졌습니다."
-  },
-  {
-   "ID": "c23-h02",
-   "Kind": "say",
-   "Speaker": "liubiao",
-   "Text": "허허, 장하네, 현덕 아우. 형주의 근심 하나를 아우가 덜어 주었구먼. 수고 많았네."
-  },
-  {
-   "ID": "c23-h03",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "그리고 형님께 드릴 것이 있습니다. 반란군에게서 얻은 말인데, 이마에 흰 점이 박힌 명마입니다. 형님께서 타시면 좋겠습니다."
-  },
-  {
-   "ID": "c23-h04",
-   "Kind": "say",
-   "Speaker": "liubiao",
-   "Text": "이런 명마를 나에게? 아닐세, 아우. 나는 성 안에 앉아 있는 사람이네. 전장에 자주 나가는 아우에게 어울리는 말이니, 도로 가져가게."
-  },
-  {
-   "ID": "c23-h05",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "형님, 저는 여남에서 패하고 몸 둘 곳 없던 사람입니다. 그런 저를 받아 주신 은혜를 갚을 길이 없습니다. 작은 마음이니 부디 받아 주십시오."
-  },
-  {
-   "ID": "c23-h06",
-   "Kind": "say",
-   "Speaker": "liubiao",
-   "Text": "……허허, 아우가 그리 말하니 어쩌겠는가. 알았네, 고맙게 받겠네."
-  },
-  {
-   "ID": "c23-whisper",
-   "Kind": "scene",
-   "Place": "양양 · 관청"
-  },
-  {
-   "ID": "c23-w01",
-   "Kind": "say",
-   "Speaker": "kuaiyue",
-   "Text": "속닥속닥속닥……"
-  },
-  {
-   "ID": "c23-gate",
-   "Kind": "scene",
-   "Place": "양양 · 성문 밖"
-  },
-  {
-   "ID": "c23-g01",
-   "Kind": "say",
-   "Speaker": "liubiao",
-   "Text": "현덕 아우, 이 말은 도로 가져가게. 나는 성 안에만 있는 사람이라 이런 말은 아깝네."
-  },
-  {
-   "ID": "c23-g02",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "형님께 드린 것을 어찌 도로 받겠습니까."
-  },
-  {
-   "ID": "c23-g03",
-   "Kind": "say",
-   "Speaker": "liubiao",
-   "Text": "싸움터에 설 사람이 타야 말도 제 값을 하지. 받게."
-  },
-  {
-   "ID": "c23-g04",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "그럼 감사히 타겠습니다. 걸음이 참 좋은 말입니다."
-  },
-  {
-   "ID": "c23-g05",
-   "Kind": "say",
-   "Speaker": "liubiao",
-   "Text": "(속으로) ……모르는 모양이구나."
-  },
-  {
-   "ID": "c23-g06",
-   "Kind": "say",
-   "Speaker": "yiji",
-   "Text": "주공, 괴 공이 그 말을 두고 눈 밑에 눈물 자국이 있어 주인을 해친다고 했답니다."
-  },
-  {
-   "ID": "c23-g07",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "사람이 죽고 사는 것이 말 한 마리에 달렸겠소."
-  },
-  {
-   "ID": "c23-g08",
-   "Kind": "say",
-   "Speaker": "yiji",
-   "Text": "말이 아니라, 말을 돌려보내게 한 사람을 조심하시라는 뜻입니다."
-  },
-  {
-   "ID": "c23-g09",
-   "Kind": "say",
-   "Speaker": "liubei",
-   "Text": "……알았소."
+   "ID": "c23-xinye-arrival",
+   "Kind": "narrate",
+   "Text": "신야에 닿자 저잣거리에서 노랫소리가 들려왔다."
   },
   {
    "ID": "c23-market",
@@ -471,6 +370,135 @@
   },
   {
    "ID": "c23-snow-end",
+   "Kind": "back",
+   "Leave": true
+  },
+  {
+   "ID": "c23-start",
+   "Kind": "scene",
+   "Place": "양양 · 관청"
+  },
+  {
+   "ID": "c23-h01",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "형님, 강하의 일을 알리러 왔습니다. 장무와 진손의 무리를 쳐서 흩었고, 강하는 다시 조용해졌습니다."
+  },
+  {
+   "ID": "c23-h02",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "허허, 장하네, 현덕 아우. 형주의 근심 하나를 아우가 덜어 주었구먼. 수고 많았네."
+  },
+  {
+   "ID": "c23-h03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그리고 형님께 드릴 것이 있습니다. 반란군에게서 얻은 말인데, 이마에 흰 점이 박힌 명마입니다. 형님께서 타시면 좋겠습니다."
+  },
+  {
+   "ID": "c23-h04",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "이런 명마를 나에게? 아닐세, 아우. 나는 성 안에 앉아 있는 사람이네. 전장에 자주 나가는 아우에게 어울리는 말이니, 도로 가져가게."
+  },
+  {
+   "ID": "c23-h05",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "형님, 저는 여남에서 패하고 몸 둘 곳 없던 사람입니다. 그런 저를 받아 주신 은혜를 갚을 길이 없습니다. 작은 마음이니 부디 받아 주십시오."
+  },
+  {
+   "ID": "c23-h06",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "……허허, 아우가 그리 말하니 어쩌겠는가. 알았네, 고맙게 받겠네.",
+   "Next": "c23-shinya-grant"
+  },
+  {
+   "ID": "c23-shinya-grant",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "그리고 약속한 대로 신야는 아우에게 맡기겠네. 성의 군사들에게도 일러 두겠네."
+  },
+  {
+   "ID": "c23-xiangyang-visited",
+   "Kind": "set",
+   "Flags": {
+    "c23-xiangyang-visited": 1
+   }
+  },
+  {
+   "ID": "c23-xiangyang-back",
+   "Kind": "back",
+   "Area": "town",
+   "At": [
+    14,
+    6
+   ],
+   "Face": "SW"
+  },
+  {
+   "ID": "c23-gate",
+   "Kind": "scene",
+   "Place": "양양 · 성문 밖"
+  },
+  {
+   "ID": "c23-g01",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "현덕 아우, 이 말은 도로 가져가게. 나는 성 안에만 있는 사람이라 이런 말은 아깝네."
+  },
+  {
+   "ID": "c23-g02",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "형님께 드린 것을 어찌 도로 받겠습니까."
+  },
+  {
+   "ID": "c23-g03",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "싸움터에 설 사람이 타야 말도 제 값을 하지. 받게."
+  },
+  {
+   "ID": "c23-g04",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "그럼 감사히 타겠습니다. 걸음이 참 좋은 말입니다."
+  },
+  {
+   "ID": "c23-g05",
+   "Kind": "say",
+   "Speaker": "liubiao",
+   "Text": "(속으로) ……모르는 모양이구나."
+  },
+  {
+   "ID": "c23-g06",
+   "Kind": "say",
+   "Speaker": "yiji",
+   "Text": "주공, 괴 공이 그 말을 두고 눈 밑에 눈물 자국이 있어 주인을 해친다고 했답니다."
+  },
+  {
+   "ID": "c23-g07",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "사람이 죽고 사는 것이 말 한 마리에 달렸겠소."
+  },
+  {
+   "ID": "c23-g08",
+   "Kind": "say",
+   "Speaker": "yiji",
+   "Text": "말이 아니라, 말을 돌려보내게 한 사람을 조심하시라는 뜻입니다."
+  },
+  {
+   "ID": "c23-g09",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "……알았소."
+  },
+  {
+   "ID": "c23-xiangyang-leave",
    "Kind": "back",
    "Leave": true
   }

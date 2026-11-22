@@ -724,7 +724,8 @@
        "Group": "wei-main",
        "Policy": "assault",
        "Faction": "wei",
-       "Shift": -0.07
+       "Shift": -0.07,
+       "Facing": "SW"
       },
       {
        "Character": "troop_footman",
@@ -734,7 +735,8 @@
        "Group": "wei-main",
        "Policy": "assault",
        "Faction": "wei",
-       "Shift": -0.07
+       "Shift": -0.07,
+       "Facing": "SW"
       },
       {
        "Character": "troop_footman",
@@ -744,7 +746,8 @@
        "Group": "wei-main",
        "Policy": "assault",
        "Faction": "wei",
-       "Shift": -0.07
+       "Shift": -0.07,
+       "Facing": "SW"
       },
       {
        "Character": "troop_footman",
@@ -754,7 +757,8 @@
        "Group": "wei-main",
        "Policy": "assault",
        "Faction": "wei",
-       "Shift": -0.07
+       "Shift": -0.07,
+       "Facing": "SW"
       }
      ]
     }
@@ -777,7 +781,8 @@
        "Side": "enemy",
        "Group": "zhangyun",
        "Policy": "assault",
-       "Faction": "wei"
+       "Faction": "wei",
+       "Facing": "SE"
       },
       {
        "Character": "troop_footman",
@@ -787,7 +792,8 @@
        "Group": "zhangyun",
        "Policy": "assault",
        "Faction": "wei",
-       "Shift": -0.07
+       "Shift": -0.07,
+       "Facing": "SE"
       },
       {
        "Character": "troop_footman",
@@ -797,7 +803,8 @@
        "Group": "zhangyun",
        "Policy": "assault",
        "Faction": "wei",
-       "Shift": -0.07
+       "Shift": -0.07,
+       "Facing": "SE"
       },
       {
        "Character": "troop_archer",
@@ -807,7 +814,8 @@
        "Group": "zhangyun",
        "Policy": "assault",
        "Faction": "wei",
-       "Shift": -0.07
+       "Shift": -0.07,
+       "Facing": "SE"
       },
       {
        "Character": "troop_archer",
@@ -817,7 +825,8 @@
        "Group": "zhangyun",
        "Policy": "assault",
        "Faction": "wei",
-       "Shift": -0.07
+       "Shift": -0.07,
+       "Facing": "SE"
       }
      ]
     },

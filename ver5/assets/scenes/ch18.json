@@ -51,7 +51,6 @@
   "c18-flight": {
    "Map": "S_road",
    "Time": "night",
-   "Backdrop": "mountains",
    "Nodes": ["c18-flight", "c18-f00", "c18-f01", "c18-f02", "c18-f03", "c18-f04", "c18-f05"],
    "Ambient": [{"CamAt": [3, 2]}],
    "Cast": {

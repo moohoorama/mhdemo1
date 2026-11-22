@@ -119,7 +119,7 @@ gate = {
 
 alive = ['flag:flag-b21-liupi']
 south = {
-    'Map': 'S_road', 'Time': 'dawn', 'Backdrop': 'mountains', 'Nodes': stretch('c21-south'), 'Ambient': [{'CamAt': [4, 2]}],
+    'Map': 'S_road', 'Time': 'dawn', 'Nodes': stretch('c21-south'), 'Ambient': [{'CamAt': [4, 2]}],
     'Cast': {
         '유비': {'At': [4, 2], 'Face': 'SE'}, '관우': {'At': [6, 2], 'Face': 'NW'}, '장비': {'At': [6, 3], 'Face': 'NW'},
         '조운': {'At': [3, 1], 'Face': 'SE'}, '간옹': {'At': [3, 3], 'Face': 'SE'}, '손건': {'At': [2, 2], 'Face': 'SE'},

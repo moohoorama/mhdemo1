@@ -1,0 +1,46 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   14,
+   24
+  ],
+  "Face": "SW"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_xindu",
+   "Name": "강릉성",
+   "At": [
+    14,
+    24
+   ],
+   "Exits": [
+    {
+     "Name": "양양 연합 진영",
+     "At": [
+      14,
+      28
+     ],
+     "Node": "c27v-travel-out"
+    }
+   ],
+   "People": {
+    "관우": {
+     "At": [
+      16,
+      24
+     ],
+     "Face": "NW",
+     "Talk": [
+      [
+       "guanyu",
+       "형님, 유기 공자와 주 도독이 양양 남쪽에서 기다립니다."
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

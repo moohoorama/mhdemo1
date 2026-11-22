@@ -1,0 +1,32 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "town",
+  "At": [
+   14,
+   6
+  ],
+  "Face": "SW"
+ },
+ "Areas": {
+  "town": {
+   "Map": "S_xindu",
+   "Name": "양양성",
+   "At": [
+    14,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "신야",
+     "At": [
+      14,
+      28
+     ],
+     "Node": "c25-back-out"
+    }
+   ],
+   "People": {}
+  }
+ }
+}

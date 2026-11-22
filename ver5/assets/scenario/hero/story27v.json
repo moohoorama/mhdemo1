@@ -1,6 +1,11 @@
 {
  "Nodes": [
   {
+   "ID": "c27v-travel-walk",
+   "Kind": "explore",
+   "Explore": "explore27v_travel"
+  },
+  {
    "ID": "c27v-start",
    "Kind": "scene",
    "Place": "양양 남쪽 · 연합 진영"
@@ -72,6 +77,11 @@
    "Text": "양양 공방전 — 출전 준비"
   },
   {
+   "ID": "c27v-town-walk",
+   "Kind": "explore",
+   "Explore": "explore27v_town"
+  },
+  {
    "ID": "c27v-hall",
    "Kind": "scene",
    "Place": "양양 · 관청"
@@ -127,6 +137,18 @@
   {
    "ID": "c27v-end",
    "Kind": "end"
+  }
+ ],
+ "Events": [
+  {
+   "ID": "c27v-travel-out",
+   "Kind": "back",
+   "Leave": true
+  },
+  {
+   "ID": "c27v-hall-out",
+   "Kind": "back",
+   "Leave": true
   }
  ]
 }

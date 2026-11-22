@@ -3,9 +3,8 @@
  "Name": "장판파 전투",
  "Width": 0,
  "Height": 0,
- "Max": 8,
+ "Max": 4,
  "Required": [
-  "liubei",
   "zhangfei",
   "zhaoyun"
  ],
@@ -14,7 +13,7 @@
    "If": [
     "at:zhaoyun:70"
    ],
-   "Text": "조운이 다리 동쪽 진영에 닿는다"
+   "Text": "조운이 다리 건너 진영에 닿는다"
   }
  ],
  "Defeat": [
@@ -37,67 +36,38 @@
    "Text": "적이 진영에 선다"
   }
  ],
- "Sub": [
-  {
-   "ID": "straight",
-   "Text": "조운이 여울로 돌지 않고 장판교로 건넌다",
-   "If": [
-    "!flag:flag-b26-ford"
-   ],
-   "Flag": "flag-b26-straight",
-   "Reward": {
-    "mirror_armor": 1
-   }
-  }
- ],
  "TurnLimit": 20,
  "Map": "map_changban.json",
  "Allies": [
   {
-   "X": 3,
-   "Y": 2
+   "X": 24,
+   "Y": 15
   },
   {
-   "X": 30,
-   "Y": 6
+   "X": 17,
+   "Y": 30
   },
   {
-   "X": 29,
-   "Y": 5
+   "X": 18,
+   "Y": 30
   },
   {
-   "X": 29,
-   "Y": 6
-  },
-  {
-   "X": 29,
-   "Y": 7
-  },
-  {
-   "X": 30,
-   "Y": 5
-  },
-  {
-   "X": 30,
-   "Y": 7
-  },
-  {
-   "X": 30,
-   "Y": 4
+   "X": 16,
+   "Y": 30
   }
  ],
  "Recommend": {
   "zhaoyun": {
-   "X": 3,
-   "Y": 2
+   "X": 24,
+   "Y": 15
   },
   "zhangfei": {
-   "X": 30,
-   "Y": 6
+   "X": 17,
+   "Y": 30
   },
   "liubei": {
-   "X": 30,
-   "Y": 5
+   "X": 18,
+   "Y": 30
   }
  },
  "Groups": [
@@ -112,7 +82,6 @@
    "Name": "본군",
    "Area": 73,
    "Required": [
-    "liubei",
     "zhangfei"
    ]
   }
@@ -120,64 +89,88 @@
  "Enemies": [
   {
    "Character": "wenpin",
-   "X": 12,
-   "Y": 4,
+   "X": 19,
+   "Y": 12,
    "Group": "field",
    "Policy": "hold",
    "Rank": "officer"
   },
   {
    "Character": "troop_cavalry",
-   "X": 11,
-   "Y": 3,
-   "Group": "field",
+   "X": 20,
+   "Y": 11,
+   "Group": "scouts",
    "Policy": "react",
    "Shift": -0.12
   },
   {
    "Character": "troop_footman",
-   "X": 13,
-   "Y": 5,
+   "X": 18,
+   "Y": 13,
    "Group": "field",
    "Policy": "hold",
    "Shift": -0.12
   },
   {
    "Character": "troop_archer",
-   "X": 12,
-   "Y": 2,
+   "X": 21,
+   "Y": 12,
    "Group": "field",
    "Policy": "hold",
    "Shift": -0.12
   },
   {
    "Character": "troop_footman",
-   "X": 10,
-   "Y": 6,
+   "X": 17,
+   "Y": 10,
    "Group": "field",
    "Policy": "hold",
    "Shift": -0.12
   },
   {
    "Character": "zhanghe",
-   "X": 17,
-   "Y": 10,
+   "X": 13,
+   "Y": 17,
    "Group": "field",
    "Policy": "hold",
    "Rank": "officer"
   },
   {
    "Character": "troop_footman",
-   "X": 18,
-   "Y": 11,
+   "X": 12,
+   "Y": 18,
    "Group": "field",
    "Policy": "hold",
    "Shift": -0.12
   },
   {
    "Character": "troop_archer",
+   "X": 14,
+   "Y": 18,
+   "Group": "field",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "troop_footman",
+   "X": 11,
+   "Y": 15,
+   "Group": "field",
+   "Policy": "hold",
+   "Shift": -0.12
+  },
+  {
+   "Character": "xuchu",
    "X": 18,
-   "Y": 9,
+   "Y": 19,
+   "Group": "field",
+   "Policy": "hold",
+   "Rank": "officer"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 16,
+   "Y": 20,
    "Group": "field",
    "Policy": "hold",
    "Shift": -0.12
@@ -185,46 +178,22 @@
   {
    "Character": "troop_footman",
    "X": 15,
-   "Y": 12,
-   "Group": "field",
-   "Policy": "hold",
-   "Shift": -0.12
-  },
-  {
-   "Character": "xuchu",
-   "X": 22,
-   "Y": 5,
-   "Group": "field",
-   "Policy": "hold",
-   "Rank": "officer"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 23,
-   "Y": 7,
-   "Group": "field",
-   "Policy": "hold",
-   "Shift": -0.12
-  },
-  {
-   "Character": "troop_footman",
-   "X": 21,
-   "Y": 8,
+   "Y": 21,
    "Group": "field",
    "Policy": "hold",
    "Shift": -0.12
   },
   {
    "Character": "troop_cavalry",
-   "X": 16,
-   "Y": 2,
-   "Group": "field",
+   "X": 21,
+   "Y": 16,
+   "Group": "scouts",
    "Policy": "react",
    "Shift": -0.12
   },
   {
    "Character": "troop_footman",
-   "X": 13,
+   "X": 10,
    "Y": 13,
    "Group": "field",
    "Policy": "hold",
@@ -232,32 +201,32 @@
   },
   {
    "Character": "troop_footman",
-   "X": 10,
-   "Y": 18,
+   "X": 5,
+   "Y": 10,
    "Group": "south",
    "Policy": "react",
    "Shift": -0.12
   },
   {
    "Character": "troop_archer",
-   "X": 17,
-   "Y": 18,
+   "X": 5,
+   "Y": 17,
    "Group": "south",
    "Policy": "react",
    "Shift": -0.12
   },
   {
    "Character": "troop_footman",
-   "X": 23,
-   "Y": 18,
+   "X": 5,
+   "Y": 23,
    "Group": "south",
    "Policy": "react",
    "Shift": -0.12
   },
   {
    "Character": "caochun",
-   "X": 21,
-   "Y": 12,
+   "X": 11,
+   "Y": 21,
    "Group": "tiger",
    "Policy": "march",
    "Rank": "commander",
@@ -265,8 +234,8 @@
   },
   {
    "Character": "troop_cavalry",
-   "X": 20,
-   "Y": 11,
+   "X": 12,
+   "Y": 20,
    "Group": "tiger",
    "Policy": "march",
    "Shift": -0.19,
@@ -274,8 +243,8 @@
   },
   {
    "Character": "troop_cavalry",
-   "X": 22,
-   "Y": 11,
+   "X": 12,
+   "Y": 22,
    "Group": "tiger",
    "Policy": "march",
    "Shift": -0.19,
@@ -283,8 +252,8 @@
   },
   {
    "Character": "troop_cavalry",
-   "X": 21,
-   "Y": 13,
+   "X": 10,
+   "Y": 21,
    "Group": "tiger",
    "Policy": "march",
    "Shift": -0.19,
@@ -292,36 +261,26 @@
   }
  ],
  "Reward": {
-  "money": 2000
+  "money": 2000,
+  "mirror_armor": 1
  },
  "Areas": [
   {
    "ID": 70,
    "Rect": {
-    "X": 31,
-    "Y": 5,
+    "X": 16,
+    "Y": 31,
     "W": 3,
     "H": 3
    },
-   "Name": "다리 동쪽 진영",
+   "Name": "다리 건너 진영",
    "Description": "조운이 닿으면 승리, 적이 서면 패배"
-  },
-  {
-   "ID": 71,
-   "Rect": {
-    "X": 27,
-    "Y": 13,
-    "W": 9,
-    "H": 9
-   },
-   "Name": "여울 건너",
-   "Description": "여울과 그 동쪽 강가. 조운이 여기 서면 다리로 건너지 않은 것"
   },
   {
    "ID": 72,
    "Rect": {
-    "X": 3,
-    "Y": 2,
+    "X": 24,
+    "Y": 15,
     "W": 1,
     "H": 1
    },
@@ -331,23 +290,23 @@
   {
    "ID": 73,
    "Rect": {
-    "X": 29,
-    "Y": 4,
-    "W": 2,
-    "H": 4
+    "X": 16,
+    "Y": 29,
+    "W": 4,
+    "H": 2
    },
    "Name": "다리 어귀",
-   "Description": "본군 일곱"
+   "Description": "장비와 본군 두 명"
   },
   {
    "ID": 74,
    "Rect": {
-    "X": 24,
-    "Y": 5,
+    "X": 13,
+    "Y": 22,
     "W": 3,
     "H": 3
    },
-   "Name": "다리 서쪽 머리",
+   "Name": "장판교 앞",
    "Description": "조순의 호표기가 몰려가는 곳"
   }
  ],
@@ -370,7 +329,16 @@
      ],
      "Stat": "defense",
      "Value": 20
-    },
+    }
+   ]
+  },
+  {
+   "ID": "opening-liubei",
+   "If": [
+    "!round>=2",
+    "alive:liubei"
+   ],
+   "Do": [
     {
      "Kind": "say",
      "Lines": [
@@ -388,7 +356,12 @@
        "Text": "자룡은 나를 버릴 사람이 아니네. 다리를 지키게. 올 걸세."
       }
      ]
-    },
+    }
+   ]
+  },
+  {
+   "ID": "opening-pursuit",
+   "Do": [
     {
      "Kind": "say",
      "Lines": [
@@ -410,20 +383,6 @@
    ]
   },
   {
-   "ID": "ford",
-   "If": [
-    "at:zhaoyun:71"
-   ],
-   "Do": [
-    {
-     "Kind": "flag",
-     "Flags": {
-      "flag-b26-ford": 1
-     }
-    }
-   ]
-  },
-  {
    "ID": "tiger-riders",
    "Every": 3,
    "If": [
@@ -437,8 +396,8 @@
      "Spawns": [
       {
        "Character": "troop_cavalry",
-       "X": 0,
-       "Y": 10,
+       "X": 13,
+       "Y": 0,
        "Group": "tiger",
        "Policy": "march",
        "Shift": -0.19,
@@ -447,8 +406,8 @@
       },
       {
        "Character": "troop_cavalry",
-       "X": 0,
-       "Y": 11,
+       "X": 12,
+       "Y": 0,
        "Group": "tiger",
        "Policy": "march",
        "Shift": -0.19,
@@ -457,8 +416,8 @@
       },
       {
        "Character": "troop_cavalry",
-       "X": 0,
-       "Y": 12,
+       "X": 11,
+       "Y": 0,
        "Group": "tiger",
        "Policy": "march",
        "Shift": -0.19,
@@ -467,8 +426,8 @@
       },
       {
        "Character": "troop_cavalry",
-       "X": 0,
-       "Y": 13,
+       "X": 10,
+       "Y": 0,
        "Group": "tiger",
        "Policy": "march",
        "Shift": -0.19,
@@ -502,10 +461,10 @@
         "Kind": "move",
         "Unit": "zhangfei",
         "To": {
-         "X": 28,
-         "Y": 6
+         "X": 17,
+         "Y": 28
         },
-        "Facing": "NW"
+        "Facing": "NE"
        }
       ],
       [
@@ -522,11 +481,11 @@
      "Spawns": [
       {
        "Character": "xiahoujie",
-       "X": 25,
-       "Y": 6,
+       "X": 17,
+       "Y": 24,
        "Group": "jie",
        "Policy": "hold",
-       "Facing": "SE",
+       "Facing": "SW",
        "Side": "enemy"
       }
      ]

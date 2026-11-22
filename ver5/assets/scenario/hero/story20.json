@@ -38,10 +38,30 @@
    "Text": "운장!"
   },
   {
+   "ID": "c20-reunion-result",
+   "Kind": "branch",
+   "Cases": [
+    {
+     "If": [
+      "flag:flag-b20-caiyang-duel"
+     ],
+     "Next": "c20-r03"
+    }
+   ],
+   "Else": "c20-r03b"
+  },
+  {
    "ID": "c20-r03",
    "Kind": "say",
    "Speaker": "zhangfei",
-   "Text": "둘째 형! 오자마자 채양 모가지를 베 버리다니, 역시 둘째 형이유!"
+   "Text": "둘째 형! 오자마자 채양 모가지를 베 버리다니, 역시 둘째 형이유!",
+   "Next": "c20-r04"
+  },
+  {
+   "ID": "c20-r03b",
+   "Kind": "say",
+   "Speaker": "zhangfei",
+   "Text": "둘째 형! 이제야 우리 셋이 다 모였구먼유!"
   },
   {
    "ID": "c20-r04",
@@ -116,6 +136,29 @@
    "Text": "그 마음은 내가 아네. 오늘은 우리 셋이 다시 모인 날일세."
   },
   {
+   "ID": "c20-envoy-01",
+   "Kind": "say",
+   "Speaker": "sunqian",
+   "Text": "황숙, 여남의 유벽 장군이 사자를 보냈습니다."
+  },
+  {
+   "ID": "c20-envoy-02",
+   "Kind": "say",
+   "Speaker": "messenger",
+   "Text": "저희도 조조의 위협을 받고 있습니다. 유벽 장군께서 유 예주와 힘을 합쳐 조조를 막고 싶다 하십니다."
+  },
+  {
+   "ID": "c20-envoy-03",
+   "Kind": "say",
+   "Speaker": "liubei",
+   "Text": "우리 군사가 여기 오래 있으면 산마을이 또 싸움터가 되겠지. 여남으로 가겠소."
+  },
+  {
+   "ID": "c20-depart-walk",
+   "Kind": "explore",
+   "Explore": "explore20_depart"
+  },
+  {
    "ID": "c20-done",
    "Kind": "set",
    "Flags": {
@@ -168,6 +211,11 @@
   {
    "ID": "c20-alarm-back",
    "Kind": "back"
+  },
+  {
+   "ID": "c20-depart",
+   "Kind": "back",
+   "Leave": true
   }
  ]
 }

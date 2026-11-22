@@ -3,7 +3,6 @@
   "c07-gate": {
    "Map": "S_coalition_camp",
    "Time": "night",
-   "Backdrop": "burning_city",
    "Glow": "fire_nw",
    "Nodes": ["c07-gate", "c07-g1", "c07-g2", "c07-g3", "c07-g4", "c07-g5", "c07-g7"],
    "Ambient": [{"CamAt": [32, 18]}, {"Effect": "fire", "At": [33, 19]}],
@@ -62,7 +61,6 @@
   "c07-out": {
    "Map": "S_coalition_camp",
    "Time": "night",
-   "Backdrop": "burning_city",
    "Glow": "fire_nw",
    "Nodes": ["c07-out", "c07-b1", "c07-b2", "c07-b3", "c07-b4", "c07-b5", "c07-b6", "c07-b7", "c07-b8"],
    "Cast": {
@@ -116,7 +114,6 @@
   "c07-out2": {
    "Map": "S_coalition_camp",
    "Time": "night",
-   "Backdrop": "burning_city",
    "Glow": "fire_nw",
    "Nodes": ["c07-out2", "c07-d1", "c07-d2", "c07-d3", "c07-d4", "c07-d5"],
    "Cast": {
@@ -150,7 +147,6 @@
   "c07-march": {
    "Map": "S_road",
    "Time": "dawn",
-   "Backdrop": "mountains",
    "Nodes": ["c07-march", "c07-e1", "c07-e2", "c07-e3", "c07-e4", "c07-e5", "c07-e6", "c07-e7", "c07-e8", "c07-e9"],
    "Cast": {
     "유비": {"At": [5, 2], "Face": "NW"},

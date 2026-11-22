@@ -102,7 +102,7 @@ const (
 	FxRegen              = "regen"                // recovers this share of max HP at turn start
 	FxWoundRegen         = "wound_regen"          // recovers this share of its missing HP at turn start
 	FxBuffExtend         = "buff_extend"          // buffs it casts last this many turns longer
-	FxSelfGuardHalf      = "self_guard_half"      // a defense buff it casts on itself costs half
+	FxDefenseMindBalance = "defense_mind_balance" // the lower of equipped defense and mind rises to their average
 	FxLastStand          = "last_stand"           // survives its first fall with 1 HP
 	FxCostHalf           = "cost_half"            // skill costs are halved
 	FxCleanse            = "cleanse"              // harmful statuses end at turn start
@@ -111,7 +111,7 @@ const (
 	FxStatusDouble       = "status_double"        // the debuffs and ailments it casts last twice as long
 	FxCritAiling         = "crit_vs_ailing"       // attacks and spells on a foe with an ailment always crit
 	FxPassAilments       = "pass_ailments"        // at turn start its harmful statuses pass to an adjacent ally
-	FxBlendBonus         = "blend_bonus"          // the lower of the class attack and mind bonuses rises to their average
+	FxBlendBonus         = "blend_bonus"          // the lower of equipped attack and mind rises to their average
 	FxDeputyAppoint      = "deputy_appoint"       // may name a deputy
 	FxWield              = "wield:"               // + weapon type: may also equip weapons of that type
 	FxEvade              = "evade"                // physical attacks on it hit this many percentage points less often
@@ -137,7 +137,7 @@ func init() {
 		FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxAuraHaste, FxRangedReach, FxMountedRange, FxSpellRange,
 		FxSpellSure, FxSpellWard, FxChain, FxSure, FxCritElement, FxPower, FxPatience, FxFinisher, FxDispelBuffs, FxSpellLeech, FxDispel,
 		FxStatusImmune, FxStatusWard, FxHealBonus, FxAura, FxAuraMana, FxItemShare, FxItemPower, FxManaRegen,
-		FxBloodCost, FxRegen, FxWoundRegen, FxBuffExtend, FxSelfGuardHalf, FxLastStand, FxCostHalf, FxCleanse, FxSpellCure, FxAbsorbMana, FxStatusDouble, FxCritAiling, FxPassAilments,
+		FxBloodCost, FxRegen, FxWoundRegen, FxBuffExtend, FxDefenseMindBalance, FxLastStand, FxCostHalf, FxCleanse, FxSpellCure, FxAbsorbMana, FxStatusDouble, FxCritAiling, FxPassAilments,
 		FxBlendBonus, FxDeputyAppoint, FxWield, FxEvade, FxAccuracy, FxPouchHeal,
 		FxHitStatus, FxDoubleWard, FxCharm, FxManaMax, FxManaPlus} {
 		TraitEffects[k] = true

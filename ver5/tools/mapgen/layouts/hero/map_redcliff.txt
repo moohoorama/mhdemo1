@@ -1,0 +1,22 @@
+# 적벽 · 오림 앞 강과 상륙지 (B27R)
+h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h--
+h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h--
+h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h-- h--
+d-- d-- d-- d-- d-- d-- d-- h-- h-- h-- h-- h-- h-- h-- h-- h-- d-- d-- d-- l-- l-- l-- l-- l-- d-- d--
+d-- d-- d-- d-- d-- d-- d-- d-- d-- d-e d-- d-- d-- d-- dkF d-- w-- dkF d-- l-- l-- l-- l-- l-- d-- d--
+d-- d-- d-- d-- dkF d-- d-- d-- d-- d-- d-- dkF w-- w-- w-- w-- w-- w-- w-- l-- l-- l-- l-- l-- dkF d-e
+d-- d-- d-- d-- d-- d-- d-- dkF d-- d-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- d--
+w-- w-- w-- d-- d-- d-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- s-- s-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- s-- s-- s-- s-- s-- d-- s-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- s-- d-- s-- s-- s-- s-- s-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- s-- s-- s-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--
+w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w-- w--

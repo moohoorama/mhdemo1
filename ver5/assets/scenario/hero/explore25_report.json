@@ -1,0 +1,68 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "road",
+  "At": [
+   19,
+   5
+  ],
+  "Face": "SW"
+ },
+ "Areas": {
+  "road": {
+   "Map": "S_xiaopei",
+   "Name": "신야성",
+   "At": [
+    19,
+    5
+   ],
+   "Exits": [
+    {
+     "Name": "관청",
+     "At": [
+      5,
+      11
+     ],
+     "Object": [
+      2,
+      11
+     ],
+     "To": "office"
+    }
+   ],
+   "People": {}
+  },
+  "office": {
+   "Map": "S_xiaopei_office",
+   "Name": "신야 · 관청",
+   "At": [
+    5,
+    10
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      5,
+      11
+     ],
+     "To": "road"
+    }
+   ],
+   "People": {
+    "제갈량": {
+     "At": [
+      4,
+      6
+     ],
+     "Face": "SW",
+     "Event": [
+      {
+       "Node": "c25-report-out"
+      }
+     ]
+    }
+   }
+  }
+ }
+}

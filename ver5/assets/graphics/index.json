@@ -1676,7 +1676,13 @@
   "maps/S_ye_hall.json",
   "maps/S_pond_deck.json",
   "maps/S_yanjin.json",
-  "maps/S_runan.json"
+  "maps/S_runan.json",
+  "maps/S_changban.json",
+  "maps/S_hanjin_ferry.json",
+  "maps/S_jiangxia_harbor.json",
+  "maps/S_huarong_marsh.json",
+  "maps/S_chibi_fleet.json",
+  "maps/S_changban_broken.json"
  ],
  "extra": {
   "version": 1,
@@ -12464,12 +12470,6 @@
     "layer": "object"
    }
   }
- },
- "backdrops": {
-  "mountains": "backdrops/mountains.png",
-  "pass": "backdrops/pass.png",
-  "city_wall": "backdrops/city_wall.png",
-  "burning_city": "backdrops/burning_city.png"
  },
  "anims": {
   "flame": {

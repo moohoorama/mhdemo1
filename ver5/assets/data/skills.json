@@ -44,6 +44,22 @@
     "counter_art"
    ]
   },
+  "cross_shot": {
+   "Name": "십자사격",
+   "Desc": "선택한 적을 중심으로 십자 5칸을 쏜다. 중심은 100%, 주변 적은 50% 피해.",
+   "Kind": "physical",
+   "Mode": "ranged",
+   "Weapon": "bow",
+   "Shape": "cross",
+   "Cost": 32,
+   "Hit": 90,
+   "Min": 1,
+   "Coeff": 1,
+   "SideCoeff": 0.5,
+   "Requires": [
+    "cross_shot_art"
+   ]
+  },
   "eightfold": {
    "Sound": "eightfold",
    "Name": "팔진도",
@@ -119,7 +135,7 @@
    "Kind": "magic",
    "Mode": "any",
    "Shape": "line",
-   "Cost": 54,
+   "Cost": 48,
    "Hit": 110,
    "Element": "fire",
    "Min": 1,
@@ -140,7 +156,7 @@
    "Kind": "magic",
    "Mode": "any",
    "Shape": "cross",
-   "Cost": 48,
+   "Cost": 40,
    "Hit": 110,
    "Element": "fire",
    "Min": 1,

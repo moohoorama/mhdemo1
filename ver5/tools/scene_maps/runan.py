@@ -16,21 +16,26 @@ from pathlib import Path
 
 GFX = Path(__file__).resolve().parents[2] / 'assets/graphics'
 W, H, M = 32, 28, 12
-g = [['.'] * (W + 2 * M) for _ in range(H + 2 * M)]
+NORTH = 38
+g = [['.'] * (W + 2 * M) for _ in range(H + NORTH + M)]
 obj = []
 
 
 def paint(u0, v0, u1, v1, ch):
-    for v in range(max(-M, v0), min(H + M - 1, v1) + 1):
+    for v in range(max(-NORTH, v0), min(H + M - 1, v1) + 1):
         for u in range(max(-M, u0), min(W + M - 1, u1) + 1):
-            g[v + M][u + M] = ch
+            g[v + NORTH][u + M] = ch
 
 
 def put(name, u, v):
     obj.append([name, u, v])
 
 
-paint(15, -M, 18, 21, 'd')             # the main street: in by the north gate, down into the 관아 yard
+for v in range(-NORTH, -1):
+    center = 16 + max(0, -v - 8) // 7
+    half_width = 2 if -19 <= v <= -3 else 1
+    paint(center - half_width, v, center + half_width + 1, v, 'd')
+paint(15, -1, 18, 21, 'd')             # the main street: in by the north gate, down into the 관아 yard
 paint(15, 27, 18, H + M, 'd')          # and on from the yard to the south
 paint(-M, 11, W - 1, 13, 'd')          # the cross street
 paint(11, 22, 26, 26, 'i')             # the 관아 yard
@@ -47,9 +52,16 @@ for u, v, name in ((26, 36, 'stree_pine_0'), (11, 36, 'stree_broad_1'), (-6, 24,
                    (-5, -3, 'stree_broad_1'), (38, 21, 'stree_pine_1'), (37, 5, 'stree_broad_0'), (23, -7, 'stree_pine_0'),
                    (5, -8, 'stree_old')):
     put(name, u, v)
+for name, u, v in (
+    ('stree_pine_0', 6, -20), ('stree_broad_1', 2, -29), ('stree_pine_1', 10, -32),
+    ('stree_broad_0', 27, -16), ('stree_pine_0', 30, -27), ('stree_pine_1', 37, -33),
+    ('stree_bush_0', 12, -23), ('stree_bush_1', 22, -28), ('stree_bush_0', 5, -13),
+    ('rock_pile_1', 23, -18), ('rock_pile_0', 11, -15), ('milestone', 21, -24),
+):
+    put(name, u, v)
 put('sgate_open', 17, -1)              # the north gate, in the back-right wall
 
-art = {'id': 'S_runan', 'name': '여남성 안', 'format': 2, 'size': [W // 2, H // 2], 'origin': [-M, -M],
+art = {'id': 'S_runan', 'name': '여남성 안', 'format': 2, 'size': [W // 2, H // 2], 'origin': [-M, -NORTH],
        'grass': {'hue': -6, 'sat': 0.8, 'val': 0.94},
        'ground': [''.join(r) for r in g], 'objects': obj,
        'walls': [['swall', [-M, -1], [W, -1]], ['swall', [W, 0], [W, H + M - 1]]]}

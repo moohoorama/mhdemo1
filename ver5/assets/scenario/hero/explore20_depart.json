@@ -1,0 +1,59 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "foot",
+  "At": [
+   22,
+   8
+  ],
+  "Face": "SE"
+ },
+ "Areas": {
+  "foot": {
+   "Map": "S_mangdang",
+   "Name": "망탕산 · 산기슭",
+   "At": [
+    22,
+    8
+   ],
+   "Exits": [
+    {
+     "Name": "여남성",
+     "At": [
+      38,
+      8
+     ],
+     "Node": "c20-depart"
+    }
+   ],
+   "People": {
+    "관우": {
+     "At": [
+      28,
+      10
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "guanyu",
+       "형님, 여남까지 모시겠습니다."
+      ]
+     ]
+    },
+    "장비": {
+     "At": [
+      22,
+      9
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "zhangfei",
+       "형, 말은 산길 어귀에 매 뒀슈."
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

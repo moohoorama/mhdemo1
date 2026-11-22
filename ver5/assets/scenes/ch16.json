@@ -262,7 +262,6 @@
   },
   "c16-march": {
    "Map": "S_road",
-   "Backdrop": "mountains",
    "Nodes": ["c16-march", "c16-m01"],
    "Ambient": [{"CamAt": [7, 4]}],
    "Cast": {

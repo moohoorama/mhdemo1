@@ -303,6 +303,11 @@
    "Event": "join-zhugeliang"
   },
   {
+   "ID": "c24-return-walk",
+   "Kind": "explore",
+   "Explore": "explore24_return"
+  },
+  {
    "ID": "c24-office2",
    "Kind": "scene",
    "Place": "신야 · 관청"
@@ -767,6 +772,11 @@
   },
   {
    "ID": "c24-cottage3-back",
+   "Kind": "back",
+   "Leave": true
+  },
+  {
+   "ID": "c24-office-arrive",
    "Kind": "back",
    "Leave": true
   }

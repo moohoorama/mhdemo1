@@ -217,21 +217,25 @@
    }
   },
   "c26-camp": {
-   "Map": "S_guangling_camp",
+   "Map": "S_changban",
    "Time": "dusk",
    "Nodes": ["c26-camp", "c26-c01", "c26-c02", "c26-c03", "c26-c04", "c26-c05", "c26-c06", "c26-c07", "c26-c07n"],
+   "Ambient": [{"CamAt": [7, 4]}],
    "Cast": {
     "유비": {"At": [6, 6], "Face": "SE"},
     "장비": {"At": [6, 5], "Face": "SE"},
     "미축": {"At": [5, 7], "Face": "SE"},
     "손건": {"At": [4, 6], "Face": "SE"},
     "감 부인": {"At": [6, 8], "Face": "NE"},
-    "조운": {"At": [12, 6], "Face": "NW", "Off": true}
+    "조운": {"At": [8, -5], "Face": "SW", "Off": true},
+    "백성#1": {"At": [10, 8], "Face": "NE", "Sprite": "commoner_man", "Faction": "merchant"},
+    "백성#2": {"At": [12, 9], "Face": "NE", "Sprite": "commoner_woman", "Faction": "merchant"},
+    "백성#3": {"At": [11, 10], "Face": "NE", "Sprite": "commoner_elder", "Faction": "merchant"}
    },
    "Beats": {
     "c26-c01": [
      [
-      [{"Actor": "조운", "Enter": [13, 6], "Move": [8, 6], "Face": "NW"}]
+      [{"Actor": "조운", "Enter": [8, -5], "Move": [8, 6], "Face": "NW"}]
      ]
     ],
     "c26-c03": [

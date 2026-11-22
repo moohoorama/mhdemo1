@@ -1,0 +1,37 @@
+{
+ "Hero": "liubei",
+ "Start": {
+  "Area": "camp",
+  "At": [
+   12,
+   17
+  ],
+  "Face": "NE"
+ },
+ "Areas": {
+  "camp": {
+   "Map": "S_jiangxia_harbor",
+   "Name": "강하 · 나루",
+   "At": [
+    12,
+    17
+   ],
+   "Exits": [
+    {
+     "Name": "번구 방면 나루",
+     "At": [
+      12,
+      3
+     ],
+     "Node": "c27-redcliff-out",
+     "Object": [
+      16,
+      4
+     ]
+    }
+   ],
+   "People": {},
+   "Time": "dusk"
+  }
+ }
+}
