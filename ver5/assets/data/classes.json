@@ -635,7 +635,8 @@
    "Pool": [
     "exhort",
     "penetrate_art",
-    "rapid_art"
+    "rapid_art",
+    "far_sight"
    ],
    "Plan": [
     {
@@ -652,15 +653,15 @@
     },
     {
      "Level": 40,
-     "Trait": "penetrate_art"
+     "Trait": "rapid_art"
     },
     {
      "Level": 50,
-     "Trait": "exhort"
+     "Trait": "penetrate_art"
     },
     {
      "Level": 60,
-     "Trait": "rapid_art"
+     "Trait": "far_sight"
     }
    ]
   },
@@ -752,7 +753,6 @@
    "Pool": [
     "fire",
     "relief",
-    "focus",
     "foresight"
    ],
    "Plan": [
@@ -772,7 +772,7 @@
    ]
   },
   "staff_officer": {
-   "Name": "참모",
+   "Name": "책사",
    "Desc": "화계·수계·지계로 적을 치는 참모.",
    "Terrain": "scholar",
    "Attack": "melee",
@@ -803,7 +803,11 @@
     "spread",
     "water",
     "earth",
-    "crush"
+    "crush",
+    "focus",
+    "fire_boost",
+    "water_boost",
+    "earth_boost"
    ],
    "Plan": [
     {
@@ -823,8 +827,28 @@
      "Trait": "earth"
     },
     {
+     "Level": 22,
+     "Trait": "focus"
+    },
+    {
      "Level": 25,
      "Trait": "foresight"
+    },
+    {
+     "Level": 30,
+     "Trait": "spread"
+    },
+    {
+     "Level": 33,
+     "Trait": "fire_boost"
+    },
+    {
+     "Level": 36,
+     "Trait": "water_boost"
+    },
+    {
+     "Level": 39,
+     "Trait": "earth_boost"
     }
    ],
    "Promotes": [
@@ -859,9 +883,7 @@
    ],
    "Prefer": "magic",
    "Pool": [
-    "fire_boost",
-    "water_boost",
-    "earth_boost"
+    "terrain_craft"
    ],
    "Plan": [
     {
@@ -881,6 +903,10 @@
      "Trait": "earth"
     },
     {
+     "Level": 22,
+     "Trait": "focus"
+    },
+    {
      "Level": 25,
      "Trait": "foresight"
     },
@@ -889,12 +915,20 @@
      "Trait": "spread"
     },
     {
-     "Level": 40,
+     "Level": 33,
      "Trait": "fire_boost"
     },
     {
-     "Level": 60,
+     "Level": 36,
      "Trait": "water_boost"
+    },
+    {
+     "Level": 39,
+     "Trait": "earth_boost"
+    },
+    {
+     "Level": 40,
+     "Trait": "terrain_craft"
     }
    ]
   },
@@ -927,9 +961,16 @@
    "Prefer": "status",
    "Pool": [
     "deputy_appoint",
-    "hinder",
+    "water",
     "stratagem",
-    "status_double"
+    "spell_lower_agility",
+    "spell_lower_morale",
+    "spell_lower_attack",
+    "spell_lower_defense",
+    "spell_lower_mind",
+    "break_formation",
+    "lasting",
+    "weak_point"
    ],
    "Plan": [
     {
@@ -942,15 +983,43 @@
     },
     {
      "Level": 15,
-     "Trait": "hinder"
-    },
-    {
-     "Level": 15,
      "Trait": "stratagem"
     },
     {
      "Level": 18,
-     "Trait": "status_double"
+     "Trait": "spell_lower_agility"
+    },
+    {
+     "Level": 20,
+     "Trait": "spell_lower_morale"
+    },
+    {
+     "Level": 22,
+     "Trait": "water"
+    },
+    {
+     "Level": 24,
+     "Trait": "lasting"
+    },
+    {
+     "Level": 28,
+     "Trait": "break_formation"
+    },
+    {
+     "Level": 30,
+     "Trait": "weak_point"
+    },
+    {
+     "Level": 32,
+     "Trait": "spell_lower_attack"
+    },
+    {
+     "Level": 34,
+     "Trait": "spell_lower_defense"
+    },
+    {
+     "Level": 36,
+     "Trait": "spell_lower_mind"
     }
    ],
    "Promotes": [
@@ -985,9 +1054,7 @@
    ],
    "Prefer": "status",
    "Pool": [
-    "stratagem_spread",
-    "stratagem_boost",
-    "weak_point"
+    "stratagem_spread"
    ],
    "Plan": [
     {
@@ -1000,27 +1067,47 @@
     },
     {
      "Level": 15,
-     "Trait": "hinder"
-    },
-    {
-     "Level": 15,
      "Trait": "stratagem"
     },
     {
      "Level": 18,
-     "Trait": "status_double"
+     "Trait": "spell_lower_agility"
+    },
+    {
+     "Level": 20,
+     "Trait": "spell_lower_morale"
+    },
+    {
+     "Level": 22,
+     "Trait": "water"
+    },
+    {
+     "Level": 24,
+     "Trait": "lasting"
+    },
+    {
+     "Level": 28,
+     "Trait": "break_formation"
     },
     {
      "Level": 30,
-     "Trait": "stratagem_spread"
+     "Trait": "weak_point"
     },
     {
-     "Level": 33,
-     "Trait": "stratagem_boost"
+     "Level": 32,
+     "Trait": "spell_lower_attack"
+    },
+    {
+     "Level": 34,
+     "Trait": "spell_lower_defense"
     },
     {
      "Level": 36,
-     "Trait": "weak_point"
+     "Trait": "spell_lower_mind"
+    },
+    {
+     "Level": 40,
+     "Trait": "stratagem_spread"
     }
    ]
   },
@@ -1117,7 +1204,7 @@
    "Prefer": "heal",
    "Pool": [
     "exhort_boost",
-    "lasting",
+    "lasting_buffs",
     "terrain_mend"
    ],
    "Plan": [
@@ -1151,7 +1238,7 @@
     },
     {
      "Level": 35,
-     "Trait": "lasting"
+     "Trait": "lasting_buffs"
     }
    ]
   },
@@ -1246,7 +1333,6 @@
    "Pool": [
     "counter_art",
     "earth",
-    "disrupt_prep",
     "plunder"
    ],
    "Promotes": [
@@ -1284,8 +1370,7 @@
    "Portrait": "bandit",
    "Pool": [
     "counter_art",
-    "earth",
-    "disrupt_prep"
+    "earth"
    ],
    "Plan": [
     {
@@ -1455,8 +1540,7 @@
    "Portrait": "pugilist",
    "Pool": [
     "deputy_appoint",
-    "diagonal",
-    "press_prep"
+    "diagonal"
    ],
    "Plan": [
     {
@@ -1512,10 +1596,6 @@
     {
      "Level": 30,
      "Trait": "fire"
-    },
-    {
-     "Level": 40,
-     "Trait": "press_prep"
     },
     {
      "Level": 50,

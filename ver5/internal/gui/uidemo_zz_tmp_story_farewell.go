@@ -41,7 +41,7 @@ func demoStoryFarewell(d *Demo) error {
 		case 230:
 			g.deputyPick = "jianyong"
 		case 270:
-			g.pressLabel("간옹 임명")
+			g.pressLabel("부관 임명")
 		case 310:
 			g.selected = "zhaoyun"
 			g.pressLabel("장비")

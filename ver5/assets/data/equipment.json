@@ -691,7 +691,7 @@
   },
   "sanlue": {
    "Name": "삼략",
-   "Desc": "장량이 하비에서 노인에게 얻었다는 병법서. 화계·수계·지계를 넓게 펼친다.",
+   "Desc": "장량이 하비에서 노인에게 얻었다는 병법서. 명상으로 병법치를 회복한다.",
    "Slot": "accessory",
    "Type": "any",
    "Icon": "sanlue",
@@ -704,7 +704,7 @@
     0
    ],
    "Traits": [
-    "spread"
+    "meditate_art"
    ]
   },
   "qinglong_blade": {
@@ -834,7 +834,6 @@
    ]
   },
   "yang_youji_bow": {
-   "Owner": "yiji",
    "Name": "양유기의 활",
    "Desc": "초나라 명궁 양유기가 썼다는 채씨 집안의 보물. 백보천양: 사거리 +2.",
    "Slot": "weapon",

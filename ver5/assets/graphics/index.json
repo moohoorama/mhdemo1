@@ -1682,7 +1682,10 @@
   "maps/S_jiangxia_harbor.json",
   "maps/S_huarong_marsh.json",
   "maps/S_chibi_fleet.json",
-  "maps/S_changban_broken.json"
+  "maps/S_changban_broken.json",
+  "maps/S_xinye.json",
+  "maps/S_xiangyang.json",
+  "maps/S_jiangling.json"
  ],
  "extra": {
   "version": 1,

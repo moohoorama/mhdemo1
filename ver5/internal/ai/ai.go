@@ -235,9 +235,13 @@ func burden(e *core.Engine, o core.Observation, v core.UnitView, status string, 
 		return float64(v.Stats.MaxHP*rules.BurnPercent/100) * n
 	}
 	harm := 0.0
+	strike := e.Strike
+	if status == "confusion" {
+		strike = e.StrikeAfterConfusion
+	}
 	for _, u := range o.UnitViews {
 		if u.Faction != v.Faction && u.HP > 0 {
-			harm = max(harm, e.Strike(v.ID, u.ID))
+			harm = max(harm, strike(v.ID, u.ID))
 		}
 	}
 	w := float64(rules.BuffPercent) / 100

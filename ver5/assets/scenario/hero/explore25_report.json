@@ -3,18 +3,18 @@
  "Start": {
   "Area": "road",
   "At": [
-   19,
-   5
+   26,
+   11
   ],
-  "Face": "SW"
+  "Face": "NW"
  },
  "Areas": {
   "road": {
-   "Map": "S_xiaopei",
+   "Map": "S_xinye",
    "Name": "신야성",
    "At": [
-    19,
-    5
+    26,
+    11
    ],
    "Exits": [
     {
@@ -28,9 +28,52 @@
       11
      ],
      "To": "office"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      11,
+      8
+     ],
+     "Object": [
+      11,
+      6
+     ],
+     "To": "tavern"
+    },
+    {
+     "Name": "도구점",
+     "At": [
+      24,
+      9
+     ],
+     "Object": [
+      24,
+      7
+     ],
+     "To": "tools"
     }
    ],
-   "People": {}
+   "People": {
+    "장터 상인": {
+     "At": [
+      22,
+      17
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    },
+    "우물가 백성": {
+     "At": [
+      12,
+      18
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant"
+    }
+   }
   },
   "office": {
    "Map": "S_xiaopei_office",
@@ -63,6 +106,77 @@
      ]
     }
    }
+  },
+  "tavern": {
+   "Map": "S_tavern",
+   "Name": "주점",
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "road"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tavern"
+    },
+    "손님": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    }
+   },
+   "Zoom": 3
+  },
+  "tools": {
+   "Map": "S_tool_shop",
+   "Name": "도구점",
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "road"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tools"
+    }
+   },
+   "Zoom": 3
   }
  }
 }

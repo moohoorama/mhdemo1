@@ -165,12 +165,12 @@
   },
   "drain": {
    "Name": "심공",
-   "Desc": "준 피해의 25%만큼 병력을 회복한다.",
+   "Desc": "실제로 준 물리 피해의 50%만큼 병력을 회복한다.",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 500,
    "Effects": {
-    "life_steal": 0.25
+    "life_steal": 0.5
    }
   },
   "vital_strike": {
@@ -331,7 +331,7 @@
    "Desc": "물리 공격이 명중하면 대상에게 방어력 저하.",
    "Kind": "talent",
    "Tone": "debuff",
-   "Cost": 700,
+   "Cost": 900,
    "Effects": {
     "hit_debuff:defense": 1
    }
@@ -341,12 +341,13 @@
    "Desc": "물리 공격이 명중하면 대상에게 공격력 저하.",
    "Kind": "talent",
    "Tone": "debuff",
-   "Cost": 700,
+   "Cost": 900,
    "Effects": {
     "hit_debuff:attack": 1
    }
   },
   "awe": {
+   "Owner": "guanyu",
    "Name": "위진화하",
    "Desc": "적을 퇴각시키면 그 적의 주변 8칸 적에게 공격·정신·방어·순발·사기 저하(-20%).",
    "Kind": "talent",
@@ -453,15 +454,13 @@
    }
   },
   "forced_march": {
-   "Name": "급행",
-   "Desc": "매 자기 차례 주변 8칸 아군에게 이동력 +2 버프.",
+   "Name": "추행진",
+   "Desc": "매 자기 차례 자신과 주변 8칸 아군의 이동력 +2.",
    "Kind": "talent",
    "Tone": "move",
    "Cost": 500,
-   "Requires": [
-    "swiftness"
-   ],
    "Effects": {
+    "haste": 2,
     "aura_haste": 2
    }
   },
@@ -517,12 +516,12 @@
   },
   "grit": {
    "Name": "근성",
-   "Desc": "병력이 절반 이하면 받는 피해 절반.",
+   "Desc": "병력 50% 미만에서 공격과 방어가 증가한다. 1%에서 1.5배.",
    "Kind": "talent",
    "Tone": "guard",
    "Cost": 1000,
    "Effects": {
-    "grit": 0.5
+    "low_hp_stats": 0.5
    }
   },
   "hold_ground": {
@@ -646,12 +645,12 @@
   },
   "adaptable": {
    "Name": "교변",
-   "Desc": "자신을 노린 적 책략의 성공률 −30%p.",
+   "Desc": "매 자기 차례 책략 피해 −20% 강화가 걸린다.",
    "Kind": "talent",
    "Tone": "guard",
-   "Cost": 500,
+   "Cost": 1000,
    "Effects": {
-    "spell_ward": 30
+    "turn_buff:magic_guard": 1
    }
   },
   "footwork": {
@@ -695,13 +694,48 @@
    }
   },
   "feint": {
+   "Owner": "caocao",
    "Name": "허실",
-   "Desc": "모든 책략이 반드시 성공한다.",
+   "Desc": "공격 책략이 반드시 명중한다.",
    "Kind": "talent",
    "Tone": "craft",
    "Cost": 500,
    "Effects": {
     "spell_sure": 1
+   }
+  },
+  "confusion_debate": {
+   "Owner": "guojia",
+   "Name": "논변",
+   "Desc": "단일 혼란 책략이 반드시 명중한다.",
+   "Kind": "talent",
+   "Tone": "craft",
+   "Cost": 1000,
+   "Effects": {
+    "confusion_sure": 1
+   }
+  },
+  "firecraft": {
+   "Name": "화공",
+   "Desc": "화계 공격 책략이 명중하면 반드시 치명타가 된다.",
+   "Kind": "talent",
+   "Tone": "craft",
+   "Cost": 700,
+   "Requires": [
+    "fire"
+   ],
+   "Effects": {
+    "crit:fire": 1
+   }
+  },
+  "spell_slowness": {
+   "Name": "이동속도 저하",
+   "Desc": "공격 책략으로 병력 피해를 준 적의 다음 차례 이동력을 2 낮춘다.",
+   "Kind": "talent",
+   "Tone": "debuff",
+   "Cost": 1200,
+   "Effects": {
+    "spell_slow": 2
    }
   },
   "deep_scheme": {
@@ -715,6 +749,7 @@
    }
   },
   "chain": {
+   "Owner": "pangtong",
    "Name": "연환",
    "Desc": "단일 대상 책략(공격·상태이상·버프·회복)이 대상 주변 8칸의 같은 편 중 병력이 가장 적은 1기에게도 걸린다.",
    "Kind": "talent",
@@ -741,15 +776,12 @@
   },
   "lasting": {
    "Name": "장구",
-   "Desc": "자신이 건 2턴 이상 버프의 지속이 3턴 늘어난다.",
+   "Desc": "자신이 거는 능력치 약화와 혼란의 지속시간 +2턴.",
    "Kind": "talent",
-   "Tone": "craft",
+   "Tone": "debuff",
    "Cost": 1000,
-   "Requires": [
-    "exhort"
-   ],
    "Effects": {
-    "buff_extend": 3
+    "debuff_turns": 2
    }
   },
   "blood_pay": {
@@ -774,12 +806,12 @@
   },
   "patience": {
    "Name": "인내",
-   "Desc": "병법치가 50을 넘으면 (병법치 − 50)%만큼 책략 위력이 오른다.",
+   "Desc": "매 자기 차례 물리 피해 −20% 강화가 걸린다.",
    "Kind": "talent",
-   "Tone": "craft",
-   "Cost": 500,
+   "Tone": "guard",
+   "Cost": 1000,
    "Effects": {
-    "patience": 1
+    "turn_buff:physical_guard": 1
    }
   },
   "rapid_growth": {
@@ -797,7 +829,7 @@
    "Desc": "책략에 맞은 적의 버프를 모두 지운다.",
    "Kind": "talent",
    "Tone": "craft",
-   "Cost": 500,
+   "Cost": 1500,
    "Effects": {
     "dispel_buffs": 1
    }
@@ -866,6 +898,7 @@
    }
   },
   "benevolence": {
+   "Owner": "liubei",
    "Name": "용인술",
    "Desc": "부관 능력치를 섞을 때 부관의 모든 능력치를 +10으로 본다.",
    "Kind": "talent",
@@ -1189,7 +1222,8 @@
    "Desc": "화계·수계·지계 책략의 범위 갈래를 연다. 강화와 함께 있으면 최상위 책략이 열린다.",
    "Kind": "strategy",
    "Tone": "attack",
-   "Cost": 1000
+   "Cost": 1000,
+   "LearnAfter": "B21"
   },
   "water_boost": {
    "Name": "수계강화",
@@ -1219,10 +1253,10 @@
    "Cost": 700
   },
   "stratagem": {
-   "Name": "계략",
-   "Desc": "방해계 책략을 쓴다.",
+   "Name": "혼란",
+   "Desc": "단일 혼란을 사용한다.",
    "Kind": "strategy",
-   "Tone": "debuff",
+   "Tone": "craft",
    "Cost": 700
   },
   "stratagem_boost": {
@@ -1236,11 +1270,11 @@
    ]
   },
   "stratagem_spread": {
-   "Name": "계략확산",
-   "Desc": "계략·견제 책략의 범위 갈래를 연다. 대혼란·독무·위축·와해를 쓴다.",
+   "Name": "대혼란",
+   "Desc": "십자 범위 대혼란을 사용한다.",
    "Kind": "strategy",
-   "Tone": "debuff",
-   "Cost": 1200,
+   "Tone": "craft",
+   "Cost": 1500,
    "Requires": [
     "stratagem"
    ]
@@ -1267,7 +1301,7 @@
   },
   "weak_point": {
    "Name": "약점공략",
-   "Desc": "상태이상이 걸린 적에게는 공격과 병법이 반드시 치명타가 된다.",
+   "Desc": "이미 능력치가 약화된 적에게 반드시 치명타.",
    "Kind": "talent",
    "Tone": "attack",
    "Cost": 1200,
@@ -1542,6 +1576,7 @@
    }
   },
   "daring": {
+   "Owner": "zhaoyun",
    "Name": "일신시담",
    "Desc": "주변 8칸에 아군이 없으면 공격력·방어력 +10%(일기당천과 합쳐 +20%).",
    "Kind": "talent",
@@ -1671,6 +1706,165 @@
    "Cost": 0,
    "Effects": {
     "mana_max": 30
+   }
+  },
+  "liaolai": {
+   "Owner": "zhangliao",
+   "Name": "료래",
+   "Desc": "물리 치명타가 명중하면 혼란을 1턴 건다.",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 1500,
+   "Effects": {
+    "crit_confusion": 1
+   }
+  },
+  "brocade_raider": {
+   "Owner": "ganning",
+   "Name": "금범적",
+   "Desc": "직접 물리 첫 타격이 명중하면 적 최대 병법치의 50%를 한도로 병법치를 깎고 감소량의 절반을 흡수한다.",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 1500,
+   "Effects": {
+    "mana_drain": 0.5
+   }
+  },
+  "still_recovery": {
+   "Name": "지구전",
+   "Desc": "직전 자기 차례에 이동하지 않았다면 자연 병법치 회복량이 두 배.",
+   "Kind": "talent",
+   "Tone": "craft",
+   "Cost": 1000,
+   "Effects": {
+    "still_recovery": 1
+   }
+  },
+  "ethical_renewal": {
+   "Name": "교화",
+   "Desc": "자신과 주변 8칸 아군의 능력치 약화를 차례 시작에 해제한다.",
+   "Kind": "talent",
+   "Tone": "heal",
+   "Cost": 1000,
+   "Effects": {
+    "aura_clean_stats": 1
+   }
+  },
+  "erudition": {
+   "Name": "박학",
+   "Desc": "최대 병법치 1.5배.",
+   "Kind": "talent",
+   "Tone": "craft",
+   "Cost": 1000,
+   "Effects": {
+    "mp_scale": 0.5
+   }
+  },
+  "noble_house": {
+   "Name": "명가",
+   "Desc": "최대 병력 1.5배.",
+   "Kind": "talent",
+   "Tone": "craft",
+   "Cost": 1500,
+   "Effects": {
+    "hp_scale": 0.5
+   }
+  },
+  "mind_aura": {
+   "Name": "고무",
+   "Desc": "아군 차례 시작에 주변 8칸 아군의 정신력을 20% 높인다.",
+   "Kind": "talent",
+   "Tone": "buff",
+   "Cost": 1000,
+   "Effects": {
+    "aura_buff:mind": 20
+   }
+  },
+  "suppressing_shot": {
+   "Name": "저지 사격",
+   "Desc": "직접 원거리 물리 첫 타격이 명중하면 대상의 다음 차례 이동력 −2.",
+   "Kind": "talent",
+   "Tone": "attack",
+   "Cost": 1000,
+   "Effects": {
+    "ranged_slow": 2
+   }
+  },
+  "guard_commission": {
+   "Name": "감군",
+   "Desc": "아군에게 인내와 교변을 건다. 구휼확산을 배우면 십자로 시전한다.",
+   "Kind": "strategy",
+   "Tone": "craft",
+   "Cost": 1000
+  },
+  "terrain_craft": {
+   "Name": "지형 조성",
+   "Desc": "화계·수계·지계에 맞춰 3×3에 지형 흔적을 만든다.",
+   "Kind": "strategy",
+   "Tone": "craft",
+   "Cost": 1000
+  },
+  "lasting_buffs": {
+   "Name": "강화 연장",
+   "Desc": "2턴 이상 지속되는 자신이 건 강화는 3턴 길어진다.",
+   "Kind": "talent",
+   "Tone": "craft",
+   "Cost": 1000,
+   "Effects": {
+    "buff_extend": 3
+   },
+   "Requires": [
+    "exhort"
+   ]
+  },
+  "spell_lower_agility": {
+   "Name": "민첩 저하",
+   "Desc": "공격 책략으로 피해를 준 상대의 민첩 −20%.",
+   "Kind": "talent",
+   "Tone": "debuff",
+   "Cost": 700,
+   "Effects": {
+    "spell_stat:agility": 20
+   }
+  },
+  "spell_lower_morale": {
+   "Name": "사기 저하",
+   "Desc": "공격 책략으로 피해를 준 상대의 사기 −20%.",
+   "Kind": "talent",
+   "Tone": "debuff",
+   "Cost": 700,
+   "Effects": {
+    "spell_stat:morale": 20
+   }
+  },
+  "spell_lower_attack": {
+   "Name": "공격력 저하",
+   "Desc": "공격 책략으로 피해를 준 상대의 공격력 −20%.",
+   "Kind": "talent",
+   "Tone": "debuff",
+   "Cost": 1200,
+   "Effects": {
+    "spell_stat:attack": 20
+   }
+  },
+  "spell_lower_defense": {
+   "Name": "방어력 저하",
+   "Desc": "공격 책략으로 피해를 준 상대의 방어력 −20%.",
+   "Kind": "talent",
+   "Tone": "debuff",
+   "Cost": 1200,
+   "Effects": {
+    "spell_stat:defense": 20
+   }
+  },
+  "spell_lower_mind": {
+   "Name": "정신력 저하",
+   "Desc": "공격 책략으로 피해를 준 상대의 정신력 −20%.",
+   "Kind": "talent",
+   "Tone": "debuff",
+   "Cost": 1200,
+   "Effects": {
+    "spell_stat:mind": 20
    }
   }
  }

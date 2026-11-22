@@ -83,12 +83,13 @@ type LevelTrait struct {
 	Trait string
 }
 type Campaign struct {
-	Start      string // first scenario node
-	Roster     []string
-	Deployment []string
-	Inventory  map[string]int
-	Warehouse  map[string]int `json:",omitempty"` // equipment owned but worn by no one
-	Money      int
+	Start                   string // first scenario node
+	Roster                  []string
+	Deployment              []string
+	OpeningJoinAtStageLevel []string `json:",omitempty"`
+	Inventory               map[string]int
+	Warehouse               map[string]int `json:",omitempty"` // equipment owned but worn by no one
+	Money                   int
 }
 
 // Chapter is one story file of the scenario, in play order. Nodes lists the ids of the story's flow; Events
@@ -194,6 +195,8 @@ type Trait struct {
 	Name, Desc string
 	Kind       string // strategy (책략), tactic (전법) or talent (특기): the icon's shape
 	Tone       string // attack, heal, buff, debuff, guard, move or craft: the icon's colour
+	Owner      string // officer who may keep this trait in their personal list
+	LearnAfter string // battle after which the player may learn the trait
 	Cost       int    // learning cost; 0 = given only
 	Requires   []string
 	Effects    map[string]float64
@@ -213,6 +216,8 @@ type Skill struct {
 	Coeff         float64
 	Weapon        string  // the weapon type that must be equipped
 	Pierce        float64 // share of damage the enemy behind the target takes
+	AcademyBuff   bool    // attack buff raises mind instead on fan classes
+	TerrainTurns  int     // rounds of elemental terrain an area spell creates
 	SideCoeff     float64 // share of damage to the arms of a fixed physical cross, zero for full damage on all targets
 	Strikes       int     // 2 makes every use strike twice
 	Each          bool    // strikes every target with an attack of its own, one after another

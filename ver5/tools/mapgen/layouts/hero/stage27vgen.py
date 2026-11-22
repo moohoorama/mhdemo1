@@ -84,6 +84,8 @@ def place(stage, changban):
         (5,10),(7,10),(5,18),(7,18),(14,24),(21,24),
     )]
     stage['Enemies'] = fleet + garrison + western
+    if not any(army['Faction'] == 'shu' for army in stage['Armies']):
+        stage['Armies'].insert(0, dict(Faction='shu', Name='유비군', Ally=True))
 
     areas = {a['ID']:a for a in stage['Areas']}
     for key, cell in ((60,(17,13)),(61,(13,13)),(67,(17,9))):

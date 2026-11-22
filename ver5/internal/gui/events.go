@@ -159,7 +159,7 @@ var statusLabels = map[string]string{"speed": "신속", "range": "사거리", "c
 	"stance_pierce": "찔러", "stance_cross": "사방", "stance_square": "팔방",
 	"mind": "정신", "morale": "사기", "attack": "공격", "defense": "방어", "agility": "순발", "poison": "중독", "burn": "화상",
 	"confusion": "혼란", "seal": "봉책", "root": "속박", "disarm": "봉격", "weak": "약화",
-	"guard": "경계", "disrupt": "교란", "hold_ground": "고수"}
+	"guard": "경계", "disrupt": "교란", "hold_ground": "고수", "physical_guard": "물리 피해 감소", "magic_guard": "책략 피해 감소"}
 
 // percentStatus lists the statuses whose value is a signed percent.
 var percentStatus = map[string]bool{"attack": true, "defense": true, "mind": true, "morale": true, "agility": true}
@@ -168,6 +168,8 @@ var percentStatus = map[string]bool{"attack": true, "defense": true, "mind": tru
 // the battle-long "-down" ones their cut, the rest their turns.
 func statusText(id string, s core.Status) string {
 	switch {
+	case id == "speed" && s.Value < 0:
+		return fmt.Sprintf("이동력 %+d %d", s.Value, s.Turns)
 	case percentStatus[id]:
 		return fmt.Sprintf("%s %+d%% %d", statusLabels[id], s.Value, s.Turns)
 	case strings.HasSuffix(id, "-down"):
@@ -180,6 +182,8 @@ func statusText(id string, s core.Status) string {
 // the ailment alone.
 func statusChange(id string, value int) string {
 	switch {
+	case id == "speed" && value < 0:
+		return fmt.Sprintf("이동력 %+d", value)
 	case percentStatus[id]:
 		return fmt.Sprintf("%s %+d%%", statusLabels[id], value)
 	case value != 0:

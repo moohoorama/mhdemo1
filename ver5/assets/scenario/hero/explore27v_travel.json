@@ -3,44 +3,218 @@
  "Start": {
   "Area": "town",
   "At": [
-   14,
-   24
+   6,
+   16
   ],
-  "Face": "SW"
+  "Face": "NW"
  },
  "Areas": {
   "town": {
-   "Map": "S_xindu",
+   "Map": "S_jiangling",
    "Name": "강릉성",
    "At": [
-    14,
-    24
+    6,
+    16
    ],
    "Exits": [
     {
      "Name": "양양 연합 진영",
      "At": [
-      14,
-      28
+      -1,
+      16
      ],
      "Node": "c27v-travel-out"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      25,
+      12
+     ],
+     "Object": [
+      25,
+      10
+     ],
+     "To": "tavern"
+    },
+    {
+     "Name": "도구점",
+     "At": [
+      36,
+      13
+     ],
+     "Object": [
+      36,
+      11
+     ],
+     "To": "tools"
+    },
+    {
+     "Name": "관청",
+     "At": [
+      12,
+      12
+     ],
+     "Object": [
+      12,
+      9
+     ],
+     "To": "office"
     }
    ],
    "People": {
     "관우": {
      "At": [
-      16,
-      24
+      5,
+      18
      ],
-     "Face": "NW",
+     "Face": "NE",
      "Talk": [
       [
        "guanyu",
        "형님, 유기 공자와 주 도독이 양양 남쪽에서 기다립니다."
       ]
      ]
+    },
+    "성문 병사": {
+     "At": [
+      2,
+      14
+     ],
+     "Face": "NW",
+     "Sprite": "guards",
+     "Faction": "shu"
+    },
+    "장터 상인": {
+     "At": [
+      25,
+      23
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant"
+    },
+    "나루 일꾼": {
+     "At": [
+      16,
+      37
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    },
+    "짐꾼": {
+     "At": [
+      20,
+      34
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
     }
-   }
+   },
+   "Zoom": 1.4
+  },
+  "tavern": {
+   "Map": "S_tavern",
+   "Name": "주점",
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tavern"
+    },
+    "손님": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    }
+   },
+   "Zoom": 3
+  },
+  "tools": {
+   "Map": "S_tool_shop",
+   "Name": "도구점",
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tools"
+    }
+   },
+   "Zoom": 3
+  },
+  "office": {
+   "Map": "S_xiaopei_office",
+   "Name": "관청",
+   "At": [
+    5,
+    10
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      5,
+      11
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "관청 병사": {
+     "At": [
+      4,
+      6
+     ],
+     "Face": "SW",
+     "Sprite": "guards",
+     "Faction": "shu"
+    }
+   },
+   "Zoom": 2
   }
  }
 }

@@ -456,11 +456,11 @@ func TestOfficersJoinInTheClassTheirLevelReaches(t *testing.T) {
 			level      int
 			class      string
 		}{
-			{"casual", 21, "crossbow"},
-			{"easy", 27, "crossbow"},
-			{"normal", 34, "crossbow"},
-			{"hard", 41, "repeating_crossbow"},
-			{"flat_hard", 23, "crossbow"},
+			{"casual", 21, "heavy_infantry"},
+			{"easy", 27, "heavy_infantry"},
+			{"normal", 34, "heavy_infantry"},
+			{"hard", 41, "guards"},
+			{"flat_hard", 23, "heavy_infantry"},
 		} {
 			t.Run(tc.difficulty, func(t *testing.T) {
 				e, err := NewGame(d, 1, tc.difficulty)

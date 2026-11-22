@@ -36,9 +36,10 @@ func (s tableSort) cycle(key string) tableSort {
 
 // tableList is the state of one table: its first row shown and its sort.
 type tableList struct {
-	top   int
-	order tableSort
-	wheel float64
+	top            int
+	order          tableSort
+	wheel          float64
+	revealSelected bool
 }
 
 func (l *tableList) scroll(wheel float64) {
@@ -72,6 +73,7 @@ type table[R any] struct {
 	size        float64
 	center      bool
 	empty       string
+	pinFirst    bool
 	rank        func(r *R) int
 	open        func(r *R) bool
 	dim         func(r *R) bool
@@ -145,9 +147,24 @@ func sortRows[R any](rows []R, cols []column[R], s tableSort, rank func(r *R) in
 func drawTable[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], rows []R, r image.Rectangle) {
 	keepSort(l, t.cols)
 	sortRows(rows, t.cols, l.order, t.rank)
-	fit := max(1, (r.Dy()-t.headH-tablePadBelow)/t.rowH)
-	l.top = max(0, min(l.top, len(rows)-fit))
-	scroll := len(rows) > fit
+	pinned := 0
+	if t.pinFirst && len(rows) > 0 {
+		pinned = 1
+	}
+	fit := max(1, (r.Dy()-t.headH-tablePadBelow)/t.rowH-pinned)
+	if l.revealSelected {
+		l.revealSelected = false
+		if t.selected != nil {
+			for i := range rows[pinned:] {
+				if t.selected(&rows[pinned+i]) {
+					l.top = max(i-fit+1, min(l.top, i))
+					break
+				}
+			}
+		}
+	}
+	l.top = max(0, min(l.top, len(rows)-pinned-fit))
+	scroll := len(rows)-pinned > fit
 	tw := r.Dx()
 	if scroll {
 		tw -= tableBarW + 4
@@ -161,8 +178,13 @@ func drawTable[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], rows
 	rect(dst, float32(r.Min.X), float32(hy+t.headH-1), float32(r.Dx()), 1, goldDim)
 
 	ry := hy + t.headH
-	for i := l.top; i < len(rows) && i < l.top+fit; i++ {
-		rr := image.Rect(r.Min.X, ry+(i-l.top)*t.rowH, r.Min.X+tw, ry+(i-l.top+1)*t.rowH)
+	if pinned > 0 {
+		tableRow(g, dst, l, t, ws, &rows[0], image.Rect(r.Min.X, ry, r.Min.X+tw, ry+t.rowH))
+		ry += t.rowH
+	}
+	start := pinned + l.top
+	for i := start; i < len(rows) && i < start+fit; i++ {
+		rr := image.Rect(r.Min.X, ry+(i-start)*t.rowH, r.Min.X+tw, ry+(i-start+1)*t.rowH)
 		tableRow(g, dst, l, t, ws, &rows[i], rr)
 		if t.guide != nil && t.guide(&rows[i]) {
 			g.promoteRim(dst, rr.Inset(3))
@@ -172,7 +194,7 @@ func drawTable[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], rows
 		g.label(dst, t.empty, float64(r.Min.X+4), float64(ry+8), t.size, muted)
 	}
 	if scroll {
-		g.tableBar(dst, l, image.Rect(r.Max.X-tableBarW, ry, r.Max.X, ry+fit*t.rowH), fit, len(rows))
+		g.tableBar(dst, l, image.Rect(r.Max.X-tableBarW, ry, r.Max.X, ry+fit*t.rowH), fit, len(rows)-pinned)
 	}
 }
 

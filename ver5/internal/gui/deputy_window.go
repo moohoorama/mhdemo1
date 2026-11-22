@@ -26,6 +26,7 @@ type deputyRow struct {
 	reason          string // why it cannot be named, "" when it can
 	note            string // what naming it does besides, as leaving the field
 	current         bool
+	otherLead       string
 	where           string  // 대기, 출전 or whose deputy it is now
 	charm           int     // the candidate's own charm
 	weight          float64 // the share of the deputy in the unit, 0 when it cannot be named
@@ -90,14 +91,22 @@ func (g *Game) deputyRows(o core.Observation) []deputyRow {
 		r := deputyRow{id: c.ID, name: g.name(c.ID), class: c.Class, level: c.Level, traits: g.S.Engine.DeputyTraits(c.ID), stats: st, attrs: at}
 		r.current = of != nil && of.Deputy == c.ID
 		lead := g.servedBy(o, c.ID)
+		if !r.current {
+			r.otherLead = lead
+		}
 		switch err := g.S.Engine.DeputyCheck(actor, c.ID); {
 		case r.current:
 		case err == nil:
-			if slices.Contains(o.Deployment, c.ID) {
+			switch {
+			case lead != "" && of != nil && of.Deputy != "":
+				r.note = fmt.Sprintf("교체 후 %s의 부관은 %s입니다.", g.name(lead), g.name(of.Deputy))
+			case lead != "":
+				r.note = g.name(lead) + "의 부관 자리는 비게 됩니다."
+			case slices.Contains(o.Deployment, c.ID):
 				r.note = "임명하면 출전 명단에서 빠집니다."
 			}
 		case lead != "":
-			r.reason = g.name(lead) + "의 부관이라 부관이 될 수 없습니다."
+			r.reason = g.name(lead) + "의 부관과 교체할 수 없습니다."
 		case c.Deputy != "":
 			r.reason = "부관을 거느린 장수라 부관이 될 수 없습니다."
 		case err.Error() == "LordDeputy":
@@ -223,10 +232,12 @@ func (g *Game) deputyTable(dst *ebiten.Image, l *tableList, of *core.Character, 
 			pick = rows[0].id
 		}
 	}
+	g.wheelAreas = append(g.wheelAreas, wheelArea{unframed(r), l})
 	drawTable(g, dst, l, table[deputyRow]{
 		cols: cols, rowH: touchH, headH: 32, size: 14,
 		empty:    "부관이 될 장수가 없습니다.",
 		rank:     deputyRank,
+		pinFirst: len(rows) > 0 && rows[0].current,
 		dim:      func(r *deputyRow) bool { return r.reason != "" },
 		selected: func(r *deputyRow) bool { return r.id == pick },
 		pick:     func(r *deputyRow) { g.deputyPick, g.deputyInfo, g.party.depAll = r.id, equipChip{}, false },
@@ -340,28 +351,28 @@ func (g *Game) deputyWindow(dst *ebiten.Image, x, y, w, h int) {
 			func(id string) { g.deputyInfo = equipChip{"deputy", id} })
 	}
 
-	var appoint, release func()
-	if picked != nil && pick != of.Deputy && picked.reason == "" {
-		p := pick
-		appoint = func() {
-			if g.request(session.Request{Op: "command", Command: core.Command{Kind: "deputy", Actor: of.ID, Target: p}}).OK {
-				g.deputyPick = ""
-			}
-		}
+	g.closeRow(dst, right, y+h-60, g.closeOverlay, g.deputyAction(of.ID, picked))
+}
+
+func (g *Game) deputyAction(lead string, picked *deputyRow) action {
+	label, kind := "부관 임명", "deputy"
+	if picked == nil {
+		return action{label, true, nil}
 	}
-	if of.Deputy != "" {
-		release = func() {
-			if g.request(session.Request{Op: "command", Command: core.Command{Kind: "undeputy", Actor: of.ID}}).OK {
-				g.deputyPick = ""
-			}
-		}
-	}
-	label := "임명"
 	switch {
-	case picked != nil && picked.current:
-		label = "지금 부관"
-	case picked != nil:
-		label = picked.name + " 임명"
+	case picked.current:
+		label, kind = "부관 해임", "undeputy"
+	case picked.otherLead != "":
+		label = "부관 교체"
 	}
-	g.closeRow(dst, right, y+h-60, g.closeOverlay, action{"부관 해임", false, release}, action{label, true, appoint})
+	var click func()
+	if picked.reason == "" {
+		target := picked.id
+		click = func() {
+			if g.request(session.Request{Op: "command", Command: core.Command{Kind: kind, Actor: lead, Target: target}}).OK {
+				g.deputyPick, g.deputyInfo = "", equipChip{}
+			}
+		}
+	}
+	return action{label, true, click}
 }

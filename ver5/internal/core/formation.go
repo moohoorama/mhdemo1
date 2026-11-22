@@ -7,13 +7,18 @@ import (
 )
 
 func (e *Engine) playable(c *Character) bool { return c != nil && e.def(c).Playable }
-func (e *Engine) isDeputy(id string) bool {
+func (e *Engine) isDeputy(id string) bool    { return e.deputyLeader(id) != nil }
+
+func (e *Engine) deputyLeader(id string) *Character {
+	if id == "" {
+		return nil
+	}
 	for _, key := range keys(e.charIDs) {
-		if e.char(key).Deputy == id {
-			return true
+		if officer := e.char(key); officer.Deputy == id {
+			return officer
 		}
 	}
-	return false
+	return nil
 }
 
 // CanDeputize reports whether the character may name a deputy.
@@ -34,6 +39,14 @@ func (e *Engine) assignDeputy(c Command) error {
 		return err
 	}
 	d := e.char(c.Target)
+	if other := e.deputyLeader(d.ID); other != nil {
+		other.Deputy, o.Deputy = o.Deputy, d.ID
+		if other.Deputy != "" {
+			e.emit("deputy", other.ID, other.Deputy, 0)
+		}
+		e.emit("deputy", o.ID, d.ID, 0)
+		return nil
+	}
 	// Assignment retires the independent deployment and warehouses equipment.
 	for _, item := range d.Equipment {
 		e.state.Warehouse[item]++
@@ -61,15 +74,34 @@ func (e *Engine) releaseRequired(s content.Stage) {
 	}
 }
 
-// DeputyCheck reports why the target cannot become the officer's deputy now, or nil: the officer
-// must be able to name one, and the target be a living officer who is neither the lord, nor one
-// the coming battle requires, nor one with or serving as a deputy.
+// DeputyCheck reports whether target can become actor's deputy, including by exchange.
 func (e *Engine) DeputyCheck(actor, target string) error {
+	o, d := e.char(actor), e.char(target)
+	if !e.playable(o) || o.Dead || e.isDeputy(actor) {
+		return fail("InvalidActor")
+	}
 	if !e.CanDeputize(actor) {
 		return fail("DeputyUnavailable")
 	}
-	d := e.char(target)
-	if !e.playable(d) || d.ID == actor || d.Dead || d.Deputy != "" || e.isDeputy(d.ID) {
+	if err := e.deputyCandidate(actor, d); err != nil {
+		return err
+	}
+	if other := e.deputyLeader(target); other != nil {
+		if other == o || !e.playable(other) || other.Dead {
+			return fail("InvalidDeputy")
+		}
+		if o.Deputy != "" {
+			if !e.CanDeputize(other.ID) {
+				return fail("DeputyUnavailable")
+			}
+			return e.deputyCandidate(other.ID, e.char(o.Deputy))
+		}
+	}
+	return nil
+}
+
+func (e *Engine) deputyCandidate(actor string, d *Character) error {
+	if !e.playable(d) || d.ID == actor || d.Dead || d.Deputy != "" {
 		return fail("InvalidDeputy")
 	}
 	if e.def(d).Lord {

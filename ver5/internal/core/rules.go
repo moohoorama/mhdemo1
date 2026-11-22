@@ -53,6 +53,7 @@ func (e *Engine) stats(u *Unit) Stats {
 		}
 		v[i] = int(math.Floor(float64(k*(o.Level+R.StatLevelBase)) * (R.StatNumerator/(R.StatDenominator-at) + b[i])))
 	}
+	v[5] = int(float64(v[5]) * (1 + e.fx(u, content.FxHPScale)))
 	attack, defense, mind := v[0], v[1], v[2]
 	if e.has(u, content.FxBlendBonus) {
 		v[0] += max(0, (mind-attack)/2)
@@ -71,6 +72,11 @@ func (e *Engine) stats(u *Unit) Stats {
 		v[0] = int(float64(v[0]) * (1 + k + e.fx(u, content.FxChargePower)*float64(u.Steps)))
 		v[1] = int(float64(v[1]) * (1 + k))
 	}
+	if k := e.fx(u, content.FxLowHPStats); k > 0 && u.HP > 0 {
+		r := float64(u.HP) / float64(max(1, v[5]))
+		bonus := 1 + k*clamp((.5-r)/.49, 0, 1)
+		v[0], v[1] = int(float64(v[0])*bonus), int(float64(v[1])*bonus)
+	}
 	v[0] = max(1, percent(v[0], u.Status["attack"].Value))
 	v[1] = max(1, percent(v[1], u.Status["defense"].Value))
 	v[2] = max(1, percent(v[2], u.Status["mind"].Value))
@@ -78,8 +84,9 @@ func (e *Engine) stats(u *Unit) Stats {
 	v[4] = max(1, percent(v[4], u.Status["morale"].Value))
 	v[3] = max(1, percent(v[3], u.Status["disrupt"].Value))
 	v[4] = max(1, percent(v[4], u.Status["disrupt"].Value))
-	return Stats{v[0], v[1], v[2], v[3], v[4], v[5],
-		int(float64(c.MPBase)+R.ManaMaxFactor*R.StatNumerator/(R.StatDenominator-a[0])) + int(e.fx(u, content.FxManaMax)),
+	maxMP := int(float64(c.MPBase)+R.ManaMaxFactor*R.StatNumerator/(R.StatDenominator-a[0])) + int(e.fx(u, content.FxManaMax))
+	maxMP = int(float64(maxMP) * (1 + e.fx(u, content.FxMPScale)))
+	return Stats{v[0], v[1], v[2], v[3], v[4], v[5], maxMP,
 		int(float64(c.RecoveryBase)+R.ManaRecoveryFactor*R.StatNumerator/(R.StatDenominator-a[2])) + int(e.fx(u, content.FxManaPlus))}
 }
 
@@ -439,6 +446,16 @@ func (e *Engine) validateSkill(u *Unit, c Command, s content.Skill) (*Unit, erro
 	v := e.unit(c.Target)
 	if s.Mode == content.ModeSelf {
 		v = u
+	}
+	if s.TerrainTurns > 0 && c.Target == "" {
+		st := e.data.Stages[e.state.Stage]
+		if c.X < 0 || c.Y < 0 || c.X >= st.Width || c.Y >= st.Height {
+			return nil, fail("InvalidTarget")
+		}
+		if !e.reachesFrom(u, s, content.Point{X: u.X, Y: u.Y}, c.X, c.Y) {
+			return nil, fail("OutOfRange")
+		}
+		return &Unit{X: c.X, Y: c.Y}, nil
 	}
 	if v == nil || v.HP <= 0 {
 		return nil, fail("InvalidTarget")

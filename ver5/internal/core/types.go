@@ -32,6 +32,7 @@ type Unit struct {
 	Facing                               string `json:",omitempty"`
 	X, Y, HP, MP                         int
 	Moved, Acted, Attacked, Done, Spared bool
+	WalkedLastTurn                       bool   `json:",omitempty"`
 	Steps                                int    `json:",omitempty"` // cells walked this turn (돌진, 충격)
 	Rank                                 string `json:",omitempty"` // the stage's rank for the spawn: commander and boss lead it (자오곡)
 	Status                               map[string]Status

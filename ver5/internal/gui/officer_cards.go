@@ -10,7 +10,6 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/core"
-	"srpg/internal/session"
 )
 
 // The officer's detail in cards (docs/plan-party-ui.md): 열전 with the face card, the hexagon card of the battle
@@ -584,28 +583,7 @@ func (g *Game) officerDeputy(dst *ebiten.Image, o core.Observation, of *core.Cha
 	}
 	g.deputyCard(dst, o, picked, image.Rect(r.Min.X, r.Max.Y-cardH, r.Max.X, r.Max.Y), lines(picked), p.depAll)
 
-	var appoint, release func()
-	if pick != of.Deputy && picked.reason == "" {
-		lead, dep := of.ID, pick
-		appoint = func() {
-			if g.request(session.Request{Op: "command", Command: core.Command{Kind: "deputy", Actor: lead, Target: dep}}).OK {
-				g.deputyPick = ""
-			}
-		}
-	}
-	if of.Deputy != "" {
-		lead := of.ID
-		release = func() {
-			if g.request(session.Request{Op: "command", Command: core.Command{Kind: "undeputy", Actor: lead}}).OK {
-				g.deputyPick = ""
-			}
-		}
-	}
-	label := picked.name + " 임명"
-	if picked.current {
-		label = "지금 부관"
-	}
-	return []action{{"부관 해임", false, release}, {label, true, appoint}}
+	return []action{g.deputyAction(of.ID, picked)}
 }
 
 // deputyShown is the candidate the table showed picked: the one previewed, else the deputy now.

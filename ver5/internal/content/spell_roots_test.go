@@ -6,7 +6,7 @@ import (
 )
 
 // spellRoots are the spell roots classes teach.
-var spellRoots = []string{"fire", "water", "earth", "relief", "exhort", "hinder", "stratagem"}
+var spellRoots = []string{"fire", "water", "earth", "relief", "exhort", "stratagem"}
 
 func TestSpellRootsAreLearnableAndTaught(t *testing.T) {
 	d, err := Load("../../assets/data")

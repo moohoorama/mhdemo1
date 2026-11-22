@@ -10,7 +10,7 @@
  },
  "Areas": {
   "town": {
-   "Map": "S_xiaopei",
+   "Map": "S_xinye",
    "Name": "신야성",
    "Time": "dawn",
    "Snow": 1,
@@ -52,6 +52,30 @@
       -1
      ],
      "To": "longzhong"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      11,
+      8
+     ],
+     "Object": [
+      11,
+      6
+     ],
+     "To": "tavern"
+    },
+    {
+     "Name": "도구점",
+     "At": [
+      24,
+      9
+     ],
+     "Object": [
+      24,
+      7
+     ],
+     "To": "tools"
     }
    ],
    "People": {
@@ -82,6 +106,24 @@
        "이 눈에 사군께서 또 산에 가신다네. 한 번으로는 안 만나 주는 선생인가 보오."
       ]
      ]
+    },
+    "장터 상인": {
+     "At": [
+      22,
+      17
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    },
+    "우물가 백성": {
+     "At": [
+      12,
+      18
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant"
     }
    }
   },
@@ -160,6 +202,77 @@
      ]
     }
    }
+  },
+  "tavern": {
+   "Map": "S_tavern",
+   "Name": "주점",
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tavern"
+    },
+    "손님": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    }
+   },
+   "Zoom": 3
+  },
+  "tools": {
+   "Map": "S_tool_shop",
+   "Name": "도구점",
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tools"
+    }
+   },
+   "Zoom": 3
   }
  }
 }

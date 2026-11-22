@@ -100,6 +100,15 @@ func Parse(line string) (core.Command, error) {
 			return c, err
 		}
 	case "skill", "item":
+		if c.Kind == "skill" && len(p) == 5 {
+			c.Actor, c.Skill = p[1], p[2]
+			var err error
+			if c.X, err = strconv.Atoi(p[3]); err != nil {
+				return c, err
+			}
+			c.Y, err = strconv.Atoi(p[4])
+			return c, err
+		}
 		if err := argc(4); err != nil {
 			return c, err
 		}

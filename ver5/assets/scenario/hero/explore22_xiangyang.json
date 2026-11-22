@@ -3,34 +3,293 @@
  "Start": {
   "Area": "town",
   "At": [
-   14,
-   25
+   3,
+   22
   ],
-  "Face": "NE"
+  "Face": "SE"
  },
  "Areas": {
   "town": {
-   "Map": "S_xindu",
+   "Map": "S_xiangyang",
    "Name": "양양성",
    "At": [
-    14,
-    25
+    3,
+    22
    ],
    "Exits": [
     {
      "Name": "관청",
      "At": [
-      14,
-      6
+      7,
+      27
      ],
      "Object": [
-      14,
-      3
+      4,
+      27
      ],
      "Node": "c22-debate"
+    },
+    {
+     "Name": "주점",
+     "At": [
+      32,
+      28
+     ],
+     "Object": [
+      32,
+      26
+     ],
+     "To": "tavern"
+    },
+    {
+     "Name": "도구점",
+     "At": [
+      41,
+      27
+     ],
+     "Object": [
+      41,
+      25
+     ],
+     "To": "tools"
+    },
+    {
+     "Name": "유표의 저택",
+     "At": [
+      12,
+      32
+     ],
+     "Object": [
+      12,
+      30
+     ],
+     "To": "liu"
+    },
+    {
+     "Name": "채씨 저택",
+     "At": [
+      12,
+      15
+     ],
+     "Object": [
+      12,
+      14
+     ],
+     "To": "cai"
+    },
+    {
+     "Name": "괴씨 저택",
+     "At": [
+      36,
+      15
+     ],
+     "Object": [
+      36,
+      14
+     ],
+     "To": "kuai"
     }
    ],
-   "People": {}
+   "People": {
+    "성문 병사": {
+     "At": [
+      3,
+      20
+     ],
+     "Face": "NW",
+     "Sprite": "guards",
+     "Faction": "neutral"
+    },
+    "장터 상인": {
+     "At": [
+      37,
+      32
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    },
+    "채씨 집안 하인": {
+     "At": [
+      14,
+      17
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    },
+    "괴씨 집안 하인": {
+     "At": [
+      38,
+      17
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    }
+   },
+   "Zoom": 1.4
+  },
+  "tavern": {
+   "Map": "S_tavern",
+   "Name": "주점",
+   "At": [
+    7,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      13,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      11,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tavern"
+    },
+    "손님": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant"
+    }
+   },
+   "Zoom": 3
+  },
+  "tools": {
+   "Map": "S_tool_shop",
+   "Name": "도구점",
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tools"
+    }
+   },
+   "Zoom": 3
+  },
+  "liu": {
+   "Map": "S_liu_house",
+   "Name": "유표의 저택",
+   "At": [
+    9,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      15,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "저택 문지기": {
+     "At": [
+      6,
+      6
+     ],
+     "Face": "SW",
+     "Sprite": "guards",
+     "Faction": "neutral"
+    }
+   },
+   "Zoom": 3
+  },
+  "cai": {
+   "Map": "S_liu_house",
+   "Name": "채씨 저택",
+   "At": [
+    9,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      15,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "저택 집사": {
+     "At": [
+      6,
+      6
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant"
+    }
+   },
+   "Zoom": 3
+  },
+  "kuai": {
+   "Map": "S_liu_house",
+   "Name": "괴씨 저택",
+   "At": [
+    9,
+    6
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      15,
+      9
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "저택 집사": {
+     "At": [
+      6,
+      6
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant"
+    }
+   },
+   "Zoom": 3
   }
  }
 }

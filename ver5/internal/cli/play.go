@@ -444,6 +444,12 @@ func (p *player) targetScreen(o core.Observation, kind string) {
 		}
 		t := p.unit(o, c.Target)
 		if t == nil {
+			if skill := p.d.Skills[c.Skill]; c.Kind == "skill" && skill.TerrainTurns > 0 {
+				p.add(fmt.Sprintf("%s → (%d,%d)", skill.Name, c.X, c.Y), func() {
+					p.command(c)
+					p.screen, p.actor = "", ""
+				})
+			}
 			continue
 		}
 		what := ""

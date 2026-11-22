@@ -403,6 +403,9 @@ func (e *Engine) learnable(c *Character) []string {
 	}
 	out := []string{}
 	for _, t := range keys(pool) {
+		if gate := e.data.Traits[t].LearnAfter; gate != "" && e.data.LastBattleOrder(e.state.Node) < e.data.StageOrder(gate) {
+			continue
+		}
 		if contains(owned, t) {
 			continue
 		}
@@ -436,7 +439,7 @@ func (e *Engine) skills(c *Character) []string {
 	}
 	owned := e.traits(c)
 	for id, s := range e.data.Skills {
-		if len(s.Requires) == 0 {
+		if s.Deprecated || len(s.Requires) == 0 {
 			continue
 		}
 		ok := true
@@ -445,6 +448,11 @@ func (e *Engine) skills(c *Character) []string {
 		}
 		if ok {
 			set[id] = true
+		}
+	}
+	for id := range set {
+		if e.data.Skills[id].Deprecated {
+			delete(set, id)
 		}
 	}
 	return keys(set)
@@ -1103,6 +1111,11 @@ func (e *Engine) turnBuffs(u *Unit) map[string]int {
 	for id := range content.StatStatuses {
 		if k := int(e.fx(u, content.FxTurnBuff+id)); k > 0 {
 			out[id] = k
+		}
+	}
+	for _, id := range []string{"physical_guard", "magic_guard"} {
+		if e.has(u, content.FxTurnBuff+id) {
+			out[id] = 1
 		}
 	}
 	return out

@@ -18,11 +18,11 @@ var classPools = map[string][]string{
 	"horse_crossbow":     {"reload_prep", "fire_arrow_art", "rapid_art"},
 	"archer":             {"relief", "accuracy_up", "aim_prep", "snipe_prep"},
 	"crossbow":           {"deputy_appoint", "water", "fire_arrow_art", "reload_prep"},
-	"repeating_crossbow": {"exhort", "rapid_art", "penetrate_art"},
+	"repeating_crossbow": {"exhort", "rapid_art", "penetrate_art", "far_sight"},
 	"catapult":           {"siegecraft", "cross_strike", "far_sight"},
-	"bandit":             {"counter_art", "earth", "disrupt_prep", "plunder"},
-	"turban":             {"counter_art", "earth", "disrupt_prep"},
-	"scholar":            {"fire", "relief", "focus", "foresight"},
+	"bandit":             {"counter_art", "earth", "plunder"},
+	"turban":             {"counter_art", "earth"},
+	"scholar":            {"fire", "relief", "foresight"},
 }
 
 func TestClassPoolsFollowTraitDesign(t *testing.T) {

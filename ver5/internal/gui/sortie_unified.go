@@ -10,8 +10,27 @@ import (
 	"srpg/internal/core"
 )
 
-// Guan Yu and Zhang Fei stand about 45 source pixels above their ground pivots.
-const sortieSpriteHeadroom = 48
+const sortieTransitionSeconds = 0.1
+
+type sortieTransition struct {
+	from, started float64
+	active        bool
+}
+
+func (f sortieTransition) value(now float64) float64 {
+	elapsed := (now - f.started) / sortieTransitionSeconds
+	if f.active {
+		return min(1, f.from+elapsed)
+	}
+	return max(0, f.from-elapsed)
+}
+
+func (f *sortieTransition) update(now float64, active bool) float64 {
+	if f.active != active {
+		*f = sortieTransition{from: f.value(now), started: now, active: active}
+	}
+	return f.value(now)
+}
 
 func (g *Game) sortieGrid(dst *ebiten.Image, o core.Observation, r image.Rectangle) {
 	g.label(dst, "출전 부대", float64(r.Min.X+4), float64(r.Min.Y+6), 15, gold)
@@ -25,47 +44,145 @@ func (g *Game) sortieGrid(dst *ebiten.Image, o core.Observation, r image.Rectang
 	top := r.Min.Y + 34
 	cw := max(1, r.Dx()/3)
 	ch := max(1, (r.Max.Y-top)/6)
-	z := min(1, float64(max(1, ch-25))/sortieSpriteHeadroom)
+	size := min(cw, ch) * 10 / 11
 	for i := range min(g.S.Data.Stages[o.Stage].Max, 18) {
-		x, y := r.Min.X+(i%3)*cw, top+(i/3)*ch
-		cell := image.Rect(x+2, y+2, x+cw-2, y+ch-2)
-		if cell.Max.Y > r.Max.Y {
-			break
-		}
-		rect(dst, float32(cell.Min.X), float32(cell.Min.Y), float32(cell.Dx()), float32(cell.Dy()), color.NRGBA{A: 96})
-		strokeRect(dst, float32(cell.Min.X), float32(cell.Min.Y), float32(cell.Dx()), float32(cell.Dy()), 1, cardRim)
+		x := r.Min.X + (i%3)*cw + (cw-size*11/10)/2
+		y := top + (i/3)*ch + (ch-size*11/10)/2
+		lead := image.Rect(x+size/10, y+size/10, x+size*9/10, y+size*9/10)
 		if i >= len(ids) {
+			g.sortieSlot(dst, lead)
 			continue
 		}
 		id := ids[i]
 		of := g.officer(o, id)
 		if of == nil {
+			g.sortieSlot(dst, lead)
 			continue
 		}
-		if id == g.selected {
-			strokeRect(dst, float32(cell.Min.X+1), float32(cell.Min.Y+1), float32(cell.Dx()-2), float32(cell.Dy()-2), 1, gold)
-		}
-		weapon := g.S.Data.Equipment[of.Equipment["weapon"]].Type
-		a := g.battleClassArt(of.Def, of.Class, weapon, g.mountOf(*of), g.S.Data.Characters[of.Def].Look.Faction)
-		if a != nil {
-			preview := clipped(dst, cell)
-			op := &ebiten.DrawImageOptions{}
-			op.GeoM.Scale(z, z)
-			op.GeoM.Translate(float64(cell.Min.X+cell.Dx()/2)-a.Pivot[0]*z, float64(cell.Max.Y-19)-a.Pivot[1]*z)
-			frame := a.FrameIndex("idle", g.uiSeconds*1000)
-			shadow := &ebiten.DrawImageOptions{}
-			shadow.GeoM.Scale(z, z)
-			shadow.GeoM.Translate(float64(cell.Min.X+cell.Dx()/2)-a.ShadowPivot[0]*z, float64(cell.Max.Y-19)-a.ShadowPivot[1]*z)
-			if sh := a.Shadow("SW", "idle", frame); sh != nil {
-				drawScaled(preview, sh, shadow)
+
+		var slot image.Rectangle
+		var deputy *core.Character
+		var deputyBrightness float64
+		if of.Deputy != "" || g.S.Engine.CanDeputize(id) {
+			slot = image.Rect(x+size*7/10, y+size*7/10, x+size*11/10, y+size*11/10)
+			g.sortieSlot(dst, slot)
+			deputy = g.officer(o, of.Deputy)
+			if deputy != nil {
+				deputyBrightness = g.sortiePortraitBrightness(deputy.ID)
+				g.sortiePortrait(dst, deputy, slot, deputyBrightness, 1)
 			}
-			drawScaled(preview, a.Frame("SW", "idle", frame), op)
 		}
+
+		g.sortieSlot(dst, lead)
+		g.sortieLeadSprite(dst, of, lead, g.sortiePortraitBrightness(id))
 		if g.sortieLocked(id) {
-			write(dst, "필수", g.boldFace(10), float64(cell.Min.X+3), float64(cell.Min.Y+2), gold)
+			x, y := float64(lead.Min.X+2), float64(lead.Min.Y+1)
+			write(dst, "필수", g.boldFace(9), x+1, y+1, color.Black)
+			write(dst, "필수", g.boldFace(9), x, y, gold)
 		}
-		g.centered(dst, ellipsis(g, g.name(id), 12, cell.Dx()-4), float64(cell.Min.X+cell.Dx()/2), float64(cell.Max.Y-18), 12, ink)
-		g.addButton(cell, "", func() { g.selected = id; g.party.trait = "" })
+		g.sortiePortraitName(dst, lead, id)
+		g.addButton(lead, "", func() { g.selected, g.party.trait, g.party.tip = id, "", "" })
+
+		if deputy != nil {
+			key := [2]string{id, deputy.ID}
+			if g.party.sortieFades == nil {
+				g.party.sortieFades = make(map[[2]string]sortieTransition)
+			}
+			transition := g.party.sortieFades[key]
+			active := g.overlay() == "" && len(g.modals) == 0 && hovered(slot)
+			opacity := transition.update(g.uiSeconds, active || deputy.ID == g.selected)
+			g.party.sortieFades[key] = transition
+			if overlap := slot.Intersect(lead); opacity > 0 && !overlap.Empty() {
+				layer := clipped(dst, overlap)
+				g.sortiePortrait(layer, deputy, slot, deputyBrightness, opacity)
+				g.sortieSlotRim(layer, slot, fade(cardRim, opacity))
+			}
+			g.sortiePortraitName(dst, slot, deputy.ID)
+			g.addButton(slot, g.name(deputy.ID), func() {
+				if g.party.sortieView == 5 && g.party.depLead == g.selected &&
+					g.S.Engine.CanDeputize(g.selected) && slices.Contains(o.Deployment, g.selected) {
+					g.deputyPick, g.deputyInfo, g.party.depAll = deputy.ID, equipChip{}, false
+					return
+				}
+				g.selected, g.party.trait, g.party.tip = deputy.ID, "", ""
+				g.party.officerList.revealSelected = g.party.sortieView < 3
+			})
+		} else if !slot.Empty() {
+			g.addButton(slot, g.name(id)+" 부관 선택", func() {
+				if g.openOverlay("deputy") {
+					g.selected, g.party.trait, g.party.tip = id, "", ""
+				}
+			})
+		}
+		switch {
+		case id == g.selected:
+			g.sortieSlotRim(dst, lead, gold)
+		case deputy != nil && deputy.ID == g.selected:
+			g.sortieSlotRim(dst, slot, gold)
+		}
+	}
+}
+
+func (g *Game) sortieLeadSprite(dst *ebiten.Image, officer *core.Character, r image.Rectangle, brightness float64) {
+	weapon := g.S.Data.Equipment[officer.Equipment["weapon"]].Type
+	faction := g.S.Data.Characters[officer.Def].Look.Faction
+	art := g.battleClassArt(officer.Def, officer.Class, weapon, g.mountOf(*officer), faction)
+	if art == nil {
+		return
+	}
+	scale := min(1, float64(max(1, r.Dy()-23))/max(1, art.TopOffset()))
+	x, y := float64(r.Min.X+r.Dx()/2), float64(r.Max.Y-15)
+	frame := art.FrameIndex("idle", g.uiSeconds*1000)
+	dst = clipped(dst, r)
+	draw := func(src *ebiten.Image, px, py float64) {
+		if src == nil {
+			return
+		}
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(scale, scale)
+		op.GeoM.Translate(x-px*scale, y-py*scale)
+		shade := float32(brightness)
+		op.ColorScale.Scale(shade, shade, shade, 1)
+		drawScaled(dst, src, op)
+	}
+	draw(art.Shadow("SW", "idle", frame), art.ShadowPivot[0], art.ShadowPivot[1])
+	draw(art.Frame("SW", "idle", frame), art.Pivot[0], art.Pivot[1])
+}
+
+func (g *Game) sortiePortraitName(dst *ebiten.Image, r image.Rectangle, id string) {
+	size := min(10, float64(r.Dy())/3)
+	name := ellipsis(g, g.name(id), size, r.Dx()-4)
+	g.outlined(dst, name, float64(r.Min.X+r.Dx()/2)-g.width(name, size)/2, float64(r.Max.Y)-size-2, size)
+}
+
+func (g *Game) sortieSlot(dst *ebiten.Image, r image.Rectangle) {
+	rect(dst, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy()), color.NRGBA{R: 31, G: 24, B: 20, A: 255})
+	g.sortieSlotRim(dst, r, cardRim)
+}
+
+func (g *Game) sortieSlotRim(dst *ebiten.Image, r image.Rectangle, rim color.Color) {
+	strokeRect(dst, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy()), 1, rim)
+}
+
+func (g *Game) sortiePortraitBrightness(id string) float64 {
+	if g.party.sortieBrightness == nil {
+		g.party.sortieBrightness = make(map[string]sortieTransition)
+	}
+	transition := g.party.sortieBrightness[id]
+	amount := transition.update(g.uiSeconds, id == g.selected)
+	g.party.sortieBrightness[id] = transition
+	return 0.7 + 0.3*amount
+}
+
+func (g *Game) sortiePortrait(dst *ebiten.Image, officer *core.Character, r image.Rectangle, brightness, opacity float64) {
+	look := g.laterLook(g.S.Data.Characters[officer.Def].Look)
+	if look.NoPortrait {
+		return
+	}
+	if src := g.assets.portrait(look.Portrait); src != nil {
+		shade := uint8(brightness*255 + 0.5)
+		tint := color.NRGBA{R: shade, G: shade, B: shade, A: uint8(opacity*255 + 0.5)}
+		blit(dst, src, float64(r.Min.X), float64(r.Min.Y), float64(r.Dx()), float64(r.Dy()), tint)
 	}
 }
 

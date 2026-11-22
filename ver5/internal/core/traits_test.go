@@ -1,6 +1,7 @@
 package core
 
 import (
+	"slices"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -328,17 +329,17 @@ func TestStatusDoubleLengthensTheCastersAilments(t *testing.T) {
 	}
 }
 
-func TestWeakPointCritsAnAilingFoe(t *testing.T) {
+func TestWeakPointCritsAStatWeakenedFoe(t *testing.T) {
 	e, hero, boss := arena(t)
 	flame := e.data.Skills["flame"]
 	assert.False(t, e.critForced(hero, boss, e.basic()))
 	with(e, "hero", "exploit")
 	assert.False(t, e.critForced(hero, boss, e.basic()), "a healthy foe")
 	boss.Status["confusion"] = Status{Turns: 2}
+	assert.False(t, e.critForced(hero, boss, e.basic()), "confusion alone does not lower a stat")
+	boss.Status = map[string]Status{"attack": {Turns: 2, Value: -20}}
 	assert.True(t, e.critForced(hero, boss, e.basic()), "an attack")
 	assert.True(t, e.critForced(hero, boss, flame), "a spell")
-	boss.Status = map[string]Status{"attack": {Turns: 2, Value: -20}}
-	assert.False(t, e.critForced(hero, boss, e.basic()), "a debuff is no ailment")
 }
 
 func TestDeputySharesExperience(t *testing.T) {
@@ -425,4 +426,208 @@ func TestPlunderPaysPerLandedBlow(t *testing.T) {
 	if e.state.Money != before {
 		t.Fatalf("an enemy's blow paid the party: %d, want %d", e.state.Money, before)
 	}
+}
+
+func TestOfficerSpellSpecialties(t *testing.T) {
+	data, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+
+	t.Run("debate and feint have separate accuracy scopes", func(t *testing.T) {
+		e, u, v := arena(t)
+		e.data.Traits["debate_test"] = data.Traits["confusion_debate"]
+		e.data.Traits["feint_test"] = data.Traits["feint"]
+		e.data.Traits["immunity_test"] = content.Trait{Effects: map[string]float64{content.FxStatusImmune: 1}}
+		single := data.Skills["confuse"]
+		area := data.Skills["great_confusion"]
+		attack := data.Skills["scorch"]
+		attack.Hit = 40
+
+		with(e, u.ID, "debate_test")
+		assert.Equal(t, 100.0, e.hitChance(u, v, single))
+		assert.Less(t, e.hitChance(u, v, area), 100.0)
+		assert.Less(t, e.hitChance(u, v, attack), 100.0)
+		with(e, v.ID, "immunity_test")
+		assert.Zero(t, e.hitChance(u, v, single))
+
+		e.char(u.Character).Learned = []string{"feint_test"}
+		e.char(v.Character).Learned = nil
+		assert.Equal(t, 100.0, e.hitChance(u, v, attack))
+		assert.Less(t, e.hitChance(u, v, single), 100.0)
+		assert.Less(t, e.hitChance(u, v, area), 100.0)
+	})
+
+	t.Run("fire critical and movement penalty reach the extra enemy through chain", func(t *testing.T) {
+		e, u, v := arena(t)
+		side := e.unit("troop#1")
+		side.X, side.Y, side.HP = v.X, v.Y+1, 10000
+		v.HP = 10000
+		for _, id := range []string{"chain", "firecraft", "spell_slowness"} {
+			e.data.Traits[id] = data.Traits[id]
+			with(e, u.ID, id)
+		}
+		fire, water := data.Skills["scorch"], data.Skills["torrent"]
+		fire.Sure = true
+		assert.True(t, e.critForced(u, v, fire))
+		assert.False(t, e.critForced(u, v, water))
+		e.spell(u, v, fire, Command{Kind: "skill"})
+		for _, target := range []*Unit{v, side} {
+			assert.Less(t, target.HP, 10000)
+			assert.Equal(t, Status{Value: -2, Turns: 1}, target.Status["speed"])
+			assert.Equal(t, e.unitClass(target).Move-2, e.movement(target))
+		}
+	})
+
+	t.Run("data assigns personal traits without class overlap", func(t *testing.T) {
+		for _, tc := range []struct {
+			id, class string
+			traits    []string
+		}{
+			{"guojia", "diplomat", []string{"confusion_debate"}},
+			{"pangtong", "strategist", []string{"chain", "firecraft", "spell_slowness"}},
+		} {
+			officer := data.Characters[tc.id]
+			assert.Equal(t, tc.class, officer.Class)
+			assert.Equal(t, tc.traits, officer.Traits)
+			for _, id := range tc.traits {
+				assert.NotContains(t, data.Classes[tc.class].AllPool(), id)
+			}
+		}
+	})
+}
+
+func TestOfficerReformBatch(t *testing.T) {
+	contentData, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+
+	t.Run("personal traits do not repeat inherited class learning", func(t *testing.T) {
+		for id, officer := range contentData.Characters {
+			pool := contentData.Classes[officer.Class].AllPool()
+			for _, trait := range append(slices.Clone(officer.Traits), officer.Learn...) {
+				assert.NotContains(t, pool, trait, id)
+			}
+			for trait := range officer.TraitAt {
+				assert.NotContains(t, pool, trait, id)
+			}
+		}
+		assert.Equal(t, .5, contentData.Traits["drain"].Effects[content.FxLifeSteal])
+		assert.Contains(t, contentData.Characters["lumeng"].TraitAt, "drain")
+		assert.Contains(t, contentData.Characters["luxun"].TraitAt, "noble_house")
+		assert.Equal(t, "pangtong", contentData.Node("c27v-join-pangtong").Character)
+		assert.Equal(t, []string{"meditate_art"}, contentData.Equipment["sanlue"].Traits)
+	})
+
+	t.Run("pa jin removes boosts before multiple magical debuffs", func(t *testing.T) {
+		e, u, v := arena(t)
+		for _, id := range []string{"break_formation", "spell_lower_agility", "spell_lower_defense", "lasting"} {
+			e.data.Traits[id] = contentData.Traits[id]
+			with(e, u.ID, id)
+		}
+		attack := e.data.Skills["flame"]
+		attack.Sure = true
+		v.HP = 10000
+		e.applyStatus(v, "defense", 3, 20)
+		e.spell(u, v, attack, Command{Kind: "skill"})
+		for _, stat := range []string{"agility", "defense"} {
+			assert.Equal(t, Status{Value: -20, Turns: e.data.Rules.BuffTurns + 2}, v.Status[stat])
+		}
+	})
+
+	t.Run("terrain spells select empty cells and leave two-round marks", func(t *testing.T) {
+		e, u, _ := arena(t)
+		s := contentData.Skills["terrain_fire"]
+		e.data.Skills["terrain_test"] = s
+		e.data.Traits["terrain_craft"] = contentData.Traits["terrain_craft"]
+		with(e, u.ID, "terrain_craft", "fire")
+		u.MP = 100
+		var choice Command
+		for _, c := range e.LegalActions(u.ID).Commands {
+			if c.Skill == "terrain_test" && e.occupied(c.X, c.Y) == nil &&
+				e.data.ValidCell(withState(e.Cell(c.X, c.Y), e.data.Rules.CritMarks[s.Element])) == "" {
+				choice = c
+				break
+			}
+		}
+		require.NotEmpty(t, choice.Skill)
+		assert.Empty(t, choice.Target)
+		_, err := e.Preview(choice)
+		require.NoError(t, err)
+		require.NoError(t, e.useSkill(u, choice))
+		assert.Equal(t, 100-s.Cost, u.MP)
+		assert.Equal(t, e.data.Rules.CritMarks["fire"], string(e.Cell(choice.X, choice.Y).State))
+		for _, tile := range e.state.TileStates {
+			if tile.X == choice.X && tile.Y == choice.Y {
+				assert.Equal(t, 2, tile.Turns)
+			}
+		}
+	})
+
+	t.Run("confusion duration and fan buff use distinct effects", func(t *testing.T) {
+		e, u, v := arena(t)
+		e.data.Traits["lasting"] = contentData.Traits["lasting"]
+		with(e, u.ID, "lasting")
+		confuse := contentData.Skills["confuse"]
+		confuse.Sure = true
+		e.spell(u, v, confuse, Command{Kind: "skill"})
+		assert.Equal(t, 3, v.Status["confusion"].Turns)
+		assert.Equal(t, 100.0, e.hitChance(u, v, e.basic()))
+		assert.Equal(t, 100.0, e.hitChance(u, v, contentData.Skills["scorch"]))
+		assert.Less(t, e.hitChance(u, v, contentData.Skills["great_confusion"]), 100.0)
+		assert.Zero(t, e.hitChance(v, u, e.basic()))
+
+		class := e.class(e.char(u.Character))
+		class.Weapon = "fan"
+		e.data.Classes[e.char(u.Character).Class] = class
+		buff := contentData.Skills["rouse"]
+		buff.Hit = 100
+		e.spell(u, u, buff, Command{Kind: "skill"})
+		assert.Positive(t, u.Status["mind"].Value)
+		assert.Zero(t, u.Status["attack"].Value)
+	})
+}
+
+func TestOfficerReformTraitsInBattle(t *testing.T) {
+	data, err := content.Load("../../assets/data")
+	require.NoError(t, err)
+
+	t.Run("physical critical confuses and the first strike drains spell points", func(t *testing.T) {
+		e, u, v := arena(t)
+		for _, id := range []string{"liaolai", "deadly", "brocade_raider"} {
+			e.data.Traits[id] = data.Traits[id]
+			with(e, u.ID, id)
+		}
+		e.data.Rules.HitFloor, e.data.Rules.HitCeil = 100, 100
+		u.MP = 0
+		v.HP, v.MP = 10000, 15
+		require.GreaterOrEqual(t, e.stats(v).MaxMP/2, 15)
+		s := e.basic()
+		s.Strikes = 2
+		e.physical(u, v, s, Command{Kind: "skill"})
+		assert.Equal(t, 1, v.Status["confusion"].Turns)
+		assert.Zero(t, v.MP)
+		assert.Equal(t, 7, u.MP)
+	})
+
+	t.Run("named guard reduces only its damage kind", func(t *testing.T) {
+		e, u, v := arena(t)
+		physical, magic := e.basic(), e.data.Skills["flame"]
+		blow, spell := e.damage(u, v, physical), e.damage(u, v, magic)
+		v.Status["physical_guard"] = Status{Value: 1, Turns: 3}
+		assert.InDelta(t, blow*.8, e.damage(u, v, physical), 0.01)
+		assert.InDelta(t, spell, e.damage(u, v, magic), 0.01)
+		delete(v.Status, "physical_guard")
+		v.Status["magic_guard"] = Status{Value: 1, Turns: 3}
+		assert.InDelta(t, blow, e.damage(u, v, physical), 0.01)
+		assert.InDelta(t, spell*.8, e.damage(u, v, magic), 0.01)
+	})
+
+	t.Run("spread is learned in Jingzhou and Pang Tong can join", func(t *testing.T) {
+		e := New(data, 1)
+		yiji := e.addCharacter("yiji", "yiji")
+		assert.NotContains(t, e.learnable(yiji), "spread")
+		e.state.Node = "c22-join-yiji"
+		assert.Contains(t, e.learnable(yiji), "spread")
+		e.once(data.Node("c27v-join-pangtong"))
+		require.NotNil(t, e.char("pangtong"))
+		assert.Contains(t, e.def(e.char("pangtong")).Learn, "chain")
+	})
 }

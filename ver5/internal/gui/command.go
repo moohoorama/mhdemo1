@@ -58,6 +58,9 @@ func (g *Game) unitView(o core.Observation, id string) *core.UnitView {
 // targetView is the unit whose cell picks command c: its target, or for an 인수 meant for the deputy riding
 // with the actor (a character with no unit of its own) the actor itself.
 func (g *Game) targetView(o core.Observation, c core.Command) *core.UnitView {
+	if c.Kind == "skill" && c.Target == "" && g.S.Data.Skills[c.Skill].TerrainTurns > 0 {
+		return &core.UnitView{X: c.X, Y: c.Y}
+	}
 	if t := g.unitView(o, c.Target); t != nil || c.Kind != "item" {
 		return t
 	}
@@ -365,7 +368,7 @@ func skillCategory(s content.Skill) string {
 	case s.Kind == "heal":
 		return "회복"
 	case s.Kind == "buff":
-		return "고무"
+		return "강화"
 	default:
 		return "진법"
 	}
@@ -409,7 +412,7 @@ func (g *Game) drawMenuAt(dst *ebiten.Image, sx, sy float64) {
 			if !present[g.ord.skillTab] {
 				g.ord.skillTab = ""
 			}
-			for _, name := range []string{"무예", "공격", "계략", "회복", "고무", "진법"} {
+			for _, name := range []string{"무예", "공격", "계략", "회복", "강화", "진법"} {
 				if !present[name] {
 					continue
 				}
@@ -553,7 +556,7 @@ func (g *Game) areaMarks(e *core.Engine, o core.Observation, a core.UnitView) []
 	}
 	var c *core.Command
 	for _, opt := range g.options(g.ord.pick) {
-		if t := g.unitView(o, opt.Target); t != nil && t.X == g.hover.x && t.Y == g.hover.y {
+		if t := g.targetView(o, opt); t != nil && t.X == g.hover.x && t.Y == g.hover.y {
 			cmd := opt
 			c = &cmd
 		}

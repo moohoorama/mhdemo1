@@ -521,7 +521,7 @@
   },
   "rouse": {
    "Name": "분기",
-   "Desc": "아군 한 명의 공격력 +20%.",
+   "Desc": "아군 한 명의 공격력 +20%. 부채 병종은 정신력 +20%.",
    "Kind": "buff",
    "Mode": "any",
    "Shape": "single",
@@ -532,7 +532,8 @@
    "Duration": 3,
    "Requires": [
     "exhort"
-   ]
+   ],
+   "AcademyBuff": true
   },
   "harden": {
    "Name": "견고",
@@ -627,7 +628,8 @@
    "Duration": 3,
    "Requires": [
     "hinder"
-   ]
+   ],
+   "Deprecated": true
   },
   "unrest": {
    "Sound": "scheme",
@@ -644,7 +646,8 @@
    "Duration": 3,
    "Requires": [
     "hinder"
-   ]
+   ],
+   "Deprecated": true
   },
   "weaken": {
    "Name": "쇠약",
@@ -660,7 +663,8 @@
    "Duration": 3,
    "Requires": [
     "hinder"
-   ]
+   ],
+   "Deprecated": true
   },
   "enfeeble": {
    "Name": "약화",
@@ -676,7 +680,8 @@
    "Duration": 3,
    "Requires": [
     "hinder"
-   ]
+   ],
+   "Deprecated": true
   },
   "shrink": {
    "Name": "위축",
@@ -693,7 +698,8 @@
    "Requires": [
     "hinder",
     "stratagem_spread"
-   ]
+   ],
+   "Deprecated": true
   },
   "collapse": {
    "Sound": "scheme",
@@ -711,7 +717,8 @@
    "Requires": [
     "hinder",
     "stratagem_spread"
-   ]
+   ],
+   "Deprecated": true
   },
   "seal_spell": {
    "Name": "봉책",
@@ -727,7 +734,8 @@
    "Duration": 2,
    "Requires": [
     "stratagem"
-   ]
+   ],
+   "Deprecated": true
   },
   "poison_mist": {
    "Name": "독연",
@@ -743,7 +751,8 @@
    "Duration": 3,
    "Requires": [
     "stratagem"
-   ]
+   ],
+   "Deprecated": true
   },
   "confuse": {
    "Sound": "scheme",
@@ -757,7 +766,7 @@
    "Effect": "confusion",
    "Min": 1,
    "Max": 3,
-   "Duration": 2,
+   "Duration": 1,
    "Requires": [
     "stratagem"
    ]
@@ -777,7 +786,8 @@
    "Requires": [
     "stratagem",
     "stratagem_boost"
-   ]
+   ],
+   "Deprecated": true
   },
   "disarm_spell": {
    "Name": "봉격",
@@ -794,7 +804,8 @@
    "Requires": [
     "stratagem",
     "stratagem_boost"
-   ]
+   ],
+   "Deprecated": true
   },
   "great_confusion": {
    "Sound": "scheme",
@@ -804,7 +815,7 @@
    "Mode": "any",
    "Shape": "cross",
    "Cost": 60,
-   "Hit": 35,
+   "Hit": 30,
    "Effect": "confusion",
    "Min": 1,
    "Max": 3,
@@ -829,7 +840,8 @@
    "Requires": [
     "stratagem",
     "stratagem_spread"
-   ]
+   ],
+   "Deprecated": true
   },
   "first_aid": {
    "Name": "응급처치",
@@ -980,7 +992,8 @@
    "Duration": 3,
    "Requires": [
     "disrupt_prep"
-   ]
+   ],
+   "Deprecated": true
   },
   "pressure": {
    "Kind": "status",
@@ -994,7 +1007,8 @@
    "Effect": "agility",
    "Requires": [
     "press_prep"
-   ]
+   ],
+   "Deprecated": true
   },
   "slander": {
    "Sound": "scheme",
@@ -1011,7 +1025,8 @@
    "Max": 3,
    "Requires": [
     "slander_prep"
-   ]
+   ],
+   "Deprecated": true
   },
   "focus": {
    "Kind": "buff",
@@ -1158,6 +1173,126 @@
    "Max": 3,
    "Requires": [
     "terrain_mend"
+   ]
+  },
+  "commission_physical": {
+   "Name": "인내",
+   "Desc": "3턴 동안 받는 물리 피해 −20%.",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "single",
+   "Effect": "physical_guard",
+   "Cost": 20,
+   "Hit": 100,
+   "Max": 3,
+   "Duration": 3,
+   "Coeff": 1,
+   "Requires": [
+    "guard_commission"
+   ]
+  },
+  "commission_physical_cross": {
+   "Name": "인내 확산",
+   "Desc": "3턴 동안 받는 물리 피해 −20%.",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "cross",
+   "Effect": "physical_guard",
+   "Cost": 40,
+   "Hit": 100,
+   "Max": 3,
+   "Duration": 3,
+   "Coeff": 1,
+   "Requires": [
+    "guard_commission",
+    "relief_spread"
+   ]
+  },
+  "commission_magic": {
+   "Name": "교변",
+   "Desc": "3턴 동안 받는 책략 피해 −20%.",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "single",
+   "Effect": "magic_guard",
+   "Cost": 20,
+   "Hit": 100,
+   "Max": 3,
+   "Duration": 3,
+   "Coeff": 1,
+   "Requires": [
+    "guard_commission"
+   ]
+  },
+  "commission_magic_cross": {
+   "Name": "교변 확산",
+   "Desc": "3턴 동안 받는 책략 피해 −20%.",
+   "Kind": "buff",
+   "Mode": "any",
+   "Shape": "cross",
+   "Effect": "magic_guard",
+   "Cost": 40,
+   "Hit": 100,
+   "Max": 3,
+   "Duration": 3,
+   "Coeff": 1,
+   "Requires": [
+    "guard_commission",
+    "relief_spread"
+   ]
+  },
+  "terrain_fire": {
+   "Name": "방화",
+   "Desc": "3×3에 원소 지형을 만들고 범위 내 적에게 약한 피해를 준다.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "square",
+   "Element": "fire",
+   "Cost": 32,
+   "Hit": 95,
+   "Min": 1,
+   "Max": 3,
+   "Coeff": 0.25,
+   "TerrainTurns": 2,
+   "Requires": [
+    "terrain_craft",
+    "fire"
+   ]
+  },
+  "terrain_water": {
+   "Name": "수몰",
+   "Desc": "3×3에 원소 지형을 만들고 범위 내 적에게 약한 피해를 준다.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "square",
+   "Element": "water",
+   "Cost": 32,
+   "Hit": 95,
+   "Min": 1,
+   "Max": 3,
+   "Coeff": 0.25,
+   "TerrainTurns": 2,
+   "Requires": [
+    "terrain_craft",
+    "water"
+   ]
+  },
+  "terrain_earth": {
+   "Name": "낙진",
+   "Desc": "3×3에 원소 지형을 만들고 범위 내 적에게 약한 피해를 준다.",
+   "Kind": "magic",
+   "Mode": "any",
+   "Shape": "square",
+   "Element": "earth",
+   "Cost": 32,
+   "Hit": 95,
+   "Min": 1,
+   "Max": 3,
+   "Coeff": 0.25,
+   "TerrainTurns": 2,
+   "Requires": [
+    "terrain_craft",
+    "earth"
    ]
   }
  }

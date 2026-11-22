@@ -1,5 +1,36 @@
 {
  "Characters": {
+  "pangtong": {
+   "Name": "방통",
+   "Class": "strategist",
+   "Stats": [
+    88,
+    35,
+    96,
+    70,
+    32,
+    82
+   ],
+   "Level": 30,
+   "Playable": true,
+   "Traits": [
+    "chain",
+    "firecraft",
+    "spell_slowness"
+   ],
+   "Learn": [
+    "chain",
+    "firecraft",
+    "spell_slowness"
+   ],
+   "Equipment": [
+    "bamboo_fan",
+    "cotton_clothes"
+   ],
+   "Look": {
+    "Faction": "shu"
+   }
+  },
   "liubei": {
    "Name": "유비",
    "Biography": "자는 현덕. 탁현에서 어머니와 짚신을 삼고 돗자리를 엮어 팔던 한실의 후예로, 도원에서 관우·장비와 의형제를 맺고 의용군을 일으킨다. 인덕으로 인재를 모아 촉한을 세운다.",
@@ -329,7 +360,7 @@
    ],
    "Level": 6,
    "Traits": [
-    "vital_strike",
+    "opening",
     "vanguard",
     "pursuit"
    ],
@@ -478,7 +509,7 @@
    ],
    "Level": 7,
    "Traits": [
-    "siegecraft",
+    "intimidate",
     "venom"
    ],
    "Learn": [],
@@ -668,7 +699,8 @@
    "Traits": [
     "four_generations",
     "exhort",
-    "even_hand"
+    "even_hand",
+    "noble_house"
    ],
    "Learn": [],
    "Equipment": [
@@ -734,7 +766,6 @@
    ],
    "Level": 10,
    "Traits": [
-    "awe",
     "relentless",
     "grit"
    ],
@@ -802,7 +833,7 @@
    ],
    "Level": 11,
    "Traits": [
-    "castle_defense",
+    "hold_ground",
     "supply"
    ],
    "Learn": [],
@@ -929,8 +960,7 @@
    ],
    "Level": 8,
    "Traits": [
-    "stratagem",
-    "shift_blame"
+    "tenacity"
    ],
    "Learn": [],
    "Equipment": [
@@ -1351,7 +1381,7 @@
     "hundred_foes",
     "relentless",
     "breakthrough",
-    "awe"
+    "swiftness"
    ],
    "Learn": [],
    "Equipment": [
@@ -1372,6 +1402,9 @@
      "heavy_cavalry": "zhangliao",
      "royal_guard": "zhangliao"
     }
+   },
+   "TraitAt": {
+    "liaolai": 20
    }
   },
   "troop_commoner_man": {

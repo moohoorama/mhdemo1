@@ -232,7 +232,7 @@ func (e *Engine) welcome(id string, order int) *Character {
 	}
 	i := slices.IndexFunc(e.state.Away, func(c Character) bool { return c.ID == id })
 	if i < 0 {
-		if order == 1 && (id == "guanyu" || id == "zhangfei") {
+		if order == 1 && slices.Contains(e.data.Campaign.OpeningJoinAtStageLevel, id) {
 			level = e.data.Rules.StageLevel(order)
 		}
 		if level == 0 {

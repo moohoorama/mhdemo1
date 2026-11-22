@@ -1,3 +1,92 @@
+## 2026-11-22 출전 부관 선택과 교체
+
+- `internal/gui/sortie_unified.go`: 기존 병종 대기 애니메이션을 복원하고 전환을 0.1초로 조정, 빈 부관 칸에 선택 창 연결 — 출전 준비에서 배정할 부대를 바로 선택.
+- `internal/core/formation.go`·`internal/core/deployment_test.go`: 두 부대의 부관 배정을 한 번에 검증하고 갱신 — 기존 부관을 맞교환하거나 자리가 비었으면 한쪽만 이동.
+- `internal/gui/deputy_window.go`·`internal/gui/officer_cards.go`·`internal/gui/table.go`: 임명·해임·교체를 선택 대상에 따라 한 버튼으로 표시하고 현재 부관 행을 고정 — 휠로 나머지 후보를 탐색.
+- `internal/gui/sortie_deputy_test.go`·`internal/gui/uidemo_zz_tmp_story_farewell.go`: 현재 부관 고정과 전환 시간을 검증하고 새 버튼 이름 적용 — 출전 준비와 장수 관리에서 동작 확인.
+- `reports/sortie-portraits/deputy-picker-design.md`·`reports/sortie-portraits/deputy-exchange/`: 배정 규칙과 실제 게임 캡처 기록 — 빈 칸에서 임명 창을 열고 두 부대의 부관을 바꾸는 흐름 확인.
+
+## 2026-11-22 출전 초상 선택 표시 조정
+
+- `internal/gui/sortie_unified.go`·`internal/gui/party.go`: 겹침과 초상 밝기에는 같은 0.2초 전환을 쓰고 노란 테두리는 현재 선택을 즉시 표시 — 클릭 응답과 초상 전환을 구분.
+- `internal/gui/sortie_deputy_test.go`: 전환 시간과 진행 중 방향 전환을 검증 — 선택이나 마우스 위치가 빠르게 바뀌어도 밝기와 겹침이 이어지도록 확인.
+- `reports/sortie-portraits/fast-transition/transition.mp4`: 클릭 직후 테두리 이동과 주장·부관 초상 밝기 변화를 게임 화면으로 캡처 — 선택 표시 확인.
+
+## 2026-11-22 출전 준비 초상 겹침
+
+- `internal/gui/sortie_unified.go`: 주장 이름을 외곽선과 함께 하단 중앙에 표시하고 필수를 좌상단으로 이동 — 초상 위의 검은 띠를 제거.
+- `internal/gui/party.go`·`internal/gui/sortie_unified.go`·`internal/gui/sortie_deputy_test.go`: 부관별 전환 상태를 UI 시간으로 계산해 겹친 부분만 0.5초 동안 합성하고 클릭과 전환을 검증 — 가리거나 선택하면 부관이 앞으로 보이고 해제하면 주장으로 복귀.
+
+## 2026-11-22 조창·오의·마속 전신 시안 재제작
+
+- `reports/officer-illustrations-2026-11-22.html`: 조창·오의·마속을 새 프롬프트로 다시 그린 시안으로 교체 — 복식 색을 재질·갑주·배경에 처음부터 어우러지게 구성.
+
+## 2026-11-22 조창·오의·마속 일러스트 색 조정
+
+- `reports/officer-illustrations-2026-11-22.html`: 조창의 눈매와 청색 옷·망토, 오의의 녹색 천, 마속의 밝은 연녹색 도포를 반영 — 장수별 표정과 색감 구분.
+
+## 2026-11-22 조창 기마 구도 수정
+
+- `reports/officer-illustrations-2026-11-22.html`: 조창이 왼쪽 뒤에서 오른쪽 앞으로 말을 타고 다가오는 시안으로 교체 — 정면에 가까운 구도에서 고개를 들고 진행 방향을 바라보도록 조정.
+- `reports/sortie-portraits/fade/transition.mp4`: 마우스 진입, 클릭 후 유지, 선택 해제 후 복귀를 게임 화면으로 캡처 — 겹친 영역의 전환 확인.
+
+## 2026-11-22 주장 초상 확대
+
+- `internal/gui/sortie_unified.go`: 주장 칸을 (1,1)~(9,9)로 확대 — 출전 준비에서 주장 얼굴을 더 크게 표시.
+- `reports/sortie-portraits/larger-lead/frame-0002.png`: 주장 초상을 확대한 출전 준비 화면 캡처 — 부관과 함께 표시될 때의 크기 확인.
+
+## 2026-11-22 주장·부관 초상 배치 조정
+
+- `internal/gui/sortie_unified.go`: 주장 칸을 초상 크기로 줄이고 이름과 필수 표시를 위에 배치, 부관 칸을 우하단으로 옮기고 하단 중앙에 이름 추가 — 두 초상의 겹침을 줄이고 이름을 바로 확인.
+- `reports/sortie-portraits/revised/frame-0002.png`: 변경한 출전 준비 화면 캡처 — 주장과 부관의 초상 및 이름 배치 확인.
+
+## 2026-11-22 조창·방덕·오의 일러스트 시안 재조정
+
+- `reports/officer-illustrations-2026-11-22.html`: 조창의 기마 걸음, 방덕의 투구·수염·다리 갑주, 오의의 표정을 수정 — 자연스러운 움직임과 절제된 인상을 반영.
+
+## 2026-11-22 출전 부대 초상
+
+- `internal/gui/sortie_unified.go`: 주장 초상을 슬롯 중앙에 배치하고 우하단에 빈 부관 칸 또는 부관 초상을 표시 — 출전 부대의 주장과 부관을 바로 확인하고 선택.
+- `internal/gui/table.go`·`internal/gui/sortie_deputy_test.go`: 선택된 부관 행이 보이도록 목록을 스크롤하고 실제 클릭을 검증 — 목록 아래에 있는 부관도 바로 확인.
+- `reports/sortie-portraits/index.html`: 변경 전후와 부관 클릭 전후의 게임 캡처를 비교 — 슬롯 배치와 선택 동작 확인.
+
+## 2026-11-22 장수 일러스트 자세 수정
+
+- `reports/officer-illustrations-2026-11-22.html`: 마속·마초·방덕·조창·오의·가후·조비·이엄·하후상의 검토 시안을 교체하고 데스크톱 갤러리를 3열로 조정 — 서로 다른 시선·자세·복장과 기마 구도를 비교하기 쉽게 구성.
+
+## 2026-11-22 장수 전신 일러스트 검토
+
+- `reports/officer-illustrations-2026-11-22.html`: 방통·마속·마초·방덕·조창·오의·가후·조비·이엄·하후상의 수묵 담채 전신 시안을 비교하고 확대할 수 있게 구성 — 게임 적용 전 외형과 병종 표현 검토.
+
+## 2026-11-22 양양 진영 이름과 엔진 데이터 분리
+
+- `assets/scenario/hero/stage27v.json`·`tools/mapgen/layouts/hero/stage27vgen.py`: 영채를 지키는 유비군의 턴 이름 등록 — 보조군 턴에 이름을 표시하고 재생성 시 보존.
+- `assets/scenario/hero/scenario.json`·`internal/content/content.go`·`internal/core/growth.go`: 첫 합류 레벨에 난이도 보정을 생략할 장수를 시나리오에 명시 — 관우·장비의 초기 레벨을 유지하며 엔진 내 장수 키를 제거.
+- `internal/gui/uidemo_zz_tmp_equipment_advice.go`·`internal/gui/uidemo_zz_tmp_sortie_deputy.go`·`internal/gui/uidemo_zz_tmp_story_farewell.go`: 특정 장면을 재현하는 데모를 콘텐츠 검증용 파일 규칙에 맞춰 이동 — 기존 데모 이름과 재생 절차 유지.
+
+## 2026-11-22 마속·방덕·오의·이엄 병종 조정
+
+- `assets/data/characters_story.json`: 마속을 종횡가로 바꾸고 백출·박학 부여, 방덕을 궁기병으로 바꾸고 기사를 십자사격으로 교체, 오의를 발석거로 이엄을 전차대로 변경 — 장수별 역할을 구분하고 병종의 무기 규격에 맞춰 장비를 조정.
+- `docs/officer-trait-reform-final.md`: 네 장수의 병종과 특성 표를 갱신 — 등록 데이터와 일치.
+
+## 2026-11-22 장수 능력치와 책략·특성 개편 일괄 적용
+
+- `assets/data/characters.json`·`assets/data/characters_story.json`: 여몽·육손·감녕·장료 등의 특성, 신규 장수와 능력치, 병종 학습 중복 교체 적용 — 장수 역할과 고유 특성 배정.
+- `assets/data/classes.json`·`assets/data/traits.json`·`assets/data/skills.json`·`assets/data/equipment.json`: 세객·책사·군사·연노병, 혼란·약화, 신규 특성·감군·분기 및 삼략 명상 적용 — 확정된 병종과 책략 변경 반영.
+- `assets/scenario/hero/story27v.json`: 양양 공방전 이후 방통 합류 연결 — 가상 경로 참여 시점 반영.
+- `internal/content/content.go`·`internal/content/vocab.go`·`internal/content/validate.go`·`internal/core/api.go`·`internal/core/battle_events.go`·`internal/core/combat.go`·`internal/core/engine.go`·`internal/core/rules.go`·`internal/core/types.go`: 피해·약화·이동·회복·지형과 소유자 및 해금 처리 — 책략 적용과 저장 호환.
+- `internal/ai/ai.go`: 해제 후 공격 가능성을 기준으로 혼란 치료 가치를 계산 — 혼란의 명중률 0%가 치료 우선순위를 가리지 않도록 보완.
+- `internal/cli/cli.go`·`internal/cli/play.go`·`internal/gui/command.go`·`internal/gui/events.go`·`internal/gui/uidemo_terrain_spell.go`: 지형 책략의 좌표 선택과 새 상태 표시, 화면 데모 — 빈 칸 지정과 실제 적용 확인.
+- `internal/content/class_pools_test.go`·`internal/content/spell_roots_test.go`·`internal/core/campaign_content_test.go`·`internal/core/traits_test.go`: 새 학습 계통과 이적의 병종, 명중·중복·지형 효과 검증 — 배치와 실행 규칙의 회귀 확인.
+- `docs/officer-trait-reform-final.md`·`docs/officer-trait-reform-pending.md` 및 각 HTML: 실제 적용과 후속 장에 남은 연결 정리 — 문서와 게임 상태 일치.
+
+## 2026-11-22 방통의 연환·화공·이동속도 저하와 곽가의 논변
+
+- `assets/data/characters.json`·`assets/data/characters_story.json`: 방통을 군사로 등록하고 연환·화공·이동속도 저하를 지정, 곽가를 종횡가 계통으로 옮겨 논변 배정, 제갈량의 허실 회수 — 각 장수의 책략 역할 구분.
+- `assets/data/traits.json`·`internal/content/vocab.go`·`internal/core/combat.go`: 화계 치명타, 공격 책략 피해 시 이동력 −2, 논변의 혼란 확정과 허실의 공격 책략 확정을 적용 — 연환의 추가 대상과 면역 판정도 반영.
+- `internal/core/traits_test.go`: 두 확정 명중의 범위, 연환을 통한 이동력 저하 및 병종 학습 중복 검증 — 전투 규칙 확인.
+- `docs/officer-trait-reform-final.md`·`docs/officer-trait-reform-pending.md` 및 각 HTML: 완료한 배치와 남은 합류·병종 개편 갱신 — 게임 데이터와 문서 일치.
+
 ## 2026-11-22 감녕·방통의 역할과 논변·허실 정리
 
 - `docs/officer-trait-reform-final.md`·`docs/officer-trait-reform-pending.md` 및 각 HTML: 감녕 배치 후보를 장수별 본표로 이동하고 방통의 연환 역할과 논변·허실의 명중 범위를 갱신 — 인물 역할과 특성 배정 기준 명확화.

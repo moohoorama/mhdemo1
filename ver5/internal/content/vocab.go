@@ -79,7 +79,20 @@ const (
 	FxRangedReach        = "ranged_reach"         // ranged attacks reach this many cells farther
 	FxMountedRange       = "mounted_range"        // mounted classes may shoot at this distance
 	FxSpellRange         = "spell_range"          // spell reach
-	FxSpellSure          = "spell_sure"           // its spells never fail
+	FxSpellSure          = "spell_sure"           // its damaging spells always hit
+	FxConfusionSure      = "confusion_sure"       // its single-target confusion spell always hits
+	FxSpellStat          = "spell_stat:"          // + stat: decreases that stat after damaging spells
+	FxDebuffTurns        = "debuff_turns"         // extra turns on this unit's debuffs and confusion
+	FxCritConfusion      = "crit_confusion"       // a physical critical applies confusion
+	FxRangedSlow         = "ranged_slow"          // move reduction from its first direct ranged hit
+	FxManaDrain          = "mana_drain"           // share of target's max MP drained by its first direct hit
+	FxStillRecovery      = "still_recovery"       // extra natural recovery as a share after a turn without movement
+	FxAuraCleanStats     = "aura_clean_stats"     // clears negative stats on self and nearby allies
+	FxHPScale            = "hp_scale"             // fraction added to maximum HP
+	FxMPScale            = "mp_scale"             // fraction added to maximum MP
+	FxPhysicalWard       = "physical_ward"        // physical damage this unit ignores
+	FxLowHPStats         = "low_hp_stats"         // attack and defense bonus at one percent HP
+	FxSpellSlow          = "spell_slow"           // movement points lost next turn by enemies damaged by its spells
 	FxSpellWard          = "spell_ward"           // enemy spells on it succeed this many percentage points less often
 	FxChain              = "chain"                // single-target spells also reach the weakest of the target's side in the eight cells around it
 	FxSure               = "sure:"                // + element: spells of the element never fail
@@ -135,7 +148,7 @@ func init() {
 		FxDesperate, FxGrit, FxHoldGround, FxRangedSure, FxRout,
 		FxHitDebuff, FxTurnBuff, FxCrush, FxScorn, FxImmune, FxAuraBuff, FxBulwark, FxCritImmune, FxRangedImmune, FxRangedWard, FxMagicWard, FxCounterWard, FxStartMana, FxReflect, FxReflectStatus,
 		FxMove, FxIgnoreMoveCost, FxIgnoreZOC, FxHaste, FxAuraHaste, FxRangedReach, FxMountedRange, FxSpellRange,
-		FxSpellSure, FxSpellWard, FxChain, FxSure, FxCritElement, FxPower, FxPatience, FxFinisher, FxDispelBuffs, FxSpellLeech, FxDispel,
+		FxSpellSure, FxConfusionSure, FxSpellSlow, FxSpellStat, FxDebuffTurns, FxCritConfusion, FxRangedSlow, FxManaDrain, FxStillRecovery, FxAuraCleanStats, FxHPScale, FxMPScale, FxPhysicalWard, FxLowHPStats, FxSpellWard, FxChain, FxSure, FxCritElement, FxPower, FxPatience, FxFinisher, FxDispelBuffs, FxSpellLeech, FxDispel,
 		FxStatusImmune, FxStatusWard, FxHealBonus, FxAura, FxAuraMana, FxItemShare, FxItemPower, FxManaRegen,
 		FxBloodCost, FxRegen, FxWoundRegen, FxBuffExtend, FxDefenseMindBalance, FxLastStand, FxCostHalf, FxCleanse, FxSpellCure, FxAbsorbMana, FxStatusDouble, FxCritAiling, FxPassAilments,
 		FxBlendBonus, FxDeputyAppoint, FxWield, FxEvade, FxAccuracy, FxPouchHeal,
@@ -146,9 +159,11 @@ func init() {
 
 // StatusEffects are the trait effects a unit holds while it carries the status: the stances a buff puts on it.
 var StatusEffects = map[string]map[string]float64{
-	"stance_pierce": {FxPierce: .5},
-	"stance_cross":  {FxSplashCross: .5},
-	"stance_square": {FxSplashSquare: .5},
+	"stance_pierce":  {FxPierce: .5},
+	"physical_guard": {FxPhysicalWard: .2},
+	"magic_guard":    {FxMagicWard: .2},
+	"stance_cross":   {FxSplashCross: .5},
+	"stance_square":  {FxSplashSquare: .5},
 }
 
 // Skill kinds, modes, shapes and effects.
@@ -189,7 +204,7 @@ var SkillEffects = map[string]bool{
 	"mind": true, "attack": true, "defense": true, "morale": true, "agility": true, "speed": true, "range": true,
 	"poison": true, "burn": true, "confusion": true, "seal": true, "root": true, "disarm": true, "refill": true,
 	"guard": true, "disrupt": true, "invert": true, "sure_crit": true, "meditate": true,
-	"stance_pierce": true, "stance_cross": true, "stance_square": true, "clear_marks": true,
+	"stance_pierce": true, "stance_cross": true, "stance_square": true, "clear_marks": true, "physical_guard": true, "magic_guard": true,
 }
 
 // StatStatuses are the statuses that raise or lower a battle stat by a percentage.
@@ -204,7 +219,7 @@ var Statuses = map[string]bool{
 	"speed": true, "range": true, "counter": true, "sure_crit": true,
 	"stance_pierce": true, "stance_cross": true, "stance_square": true,
 	"attack": true, "defense": true, "mind": true, "morale": true, "agility": true,
-	"guard": true, "disrupt": true, "hold_ground": true,
+	"guard": true, "disrupt": true, "hold_ground": true, "physical_guard": true, "magic_guard": true,
 }
 
 // Class tags the engine reads.

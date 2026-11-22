@@ -53,7 +53,7 @@ func (d *Data) Validate() error {
 		}
 	}
 	for id, t := range d.Traits {
-		if t.Name == "" || t.Cost < 0 {
+		if t.Name == "" || t.Cost < 0 || t.Owner != "" && !d.Has(t.Owner) || t.LearnAfter != "" && d.StageIndex(t.LearnAfter) < 0 {
 			return fmt.Errorf("trait %s", id)
 		}
 		if !in(t.Kind, "strategy", "tactic", "talent") || !in(t.Tone, "attack", "heal", "buff", "debuff", "guard", "move", "craft") {
@@ -94,6 +94,9 @@ func (d *Data) Validate() error {
 			!in(s.Shape, ShapeSingle, ShapeCross, ShapeSquare, ShapeLine, ShapeAll) || s.Cost < 0 || s.Hit < 0 || s.Min < 0 || s.Max < 0 ||
 			s.Shape == ShapeLine && s.Length < 1 || s.Strikes < 0 || s.Strikes > 2 || s.Reach < 0 || !in(s.Tab, "", TabMartial) || s.Sure && s.Kind != KindStatus || s.Each && (s.Kind != KindPhysical || s.Shape == ShapeSingle) || s.Pierce < 0 || s.Pierce > 1 || s.Pierce > 0 && s.Shape != ShapeSingle || s.MagicCoeff < 0 || s.MagicCoeff > 0 && s.Kind != KindPhysical || s.Effect != "" && !validSkillEffect(s) || s.Kind != KindPhysical && s.Kind != KindMagic && s.Effect == "" {
 			return fmt.Errorf("skill %s", id)
+		}
+		if s.TerrainTurns < 0 || s.TerrainTurns > 0 && (s.Kind != KindMagic || s.Shape != ShapeSquare || r.CritMarks[s.Element] == "") {
+			return fmt.Errorf("skill %s: terrain duration requires an elemental area spell", id)
 		}
 		if s.SideCoeff < 0 || s.SideCoeff > 1 || s.SideCoeff > 0 && (s.Kind != KindPhysical || s.Shape != ShapeCross || s.Each) {
 			return fmt.Errorf("skill %s: side coefficient requires a single physical exchange in a cross", id)
@@ -210,13 +213,13 @@ func (d *Data) Validate() error {
 			}
 		}
 		for t, l := range c.TraitAt {
-			if d.Traits[t].Name == "" || l < 1 || l > r.MaxLevel {
+			if v := d.Traits[t]; v.Name == "" || v.Owner != "" && v.Owner != id || l < 1 || l > r.MaxLevel {
 				return fmt.Errorf("character %s: trait %s at level %d", id, t, l)
 			}
 		}
 		for _, t := range append(append([]string{}, c.Traits...), c.Learn...) {
-			if d.Traits[t].Name == "" {
-				return fmt.Errorf("character %s: unknown trait %s", id, t)
+			if v := d.Traits[t]; v.Name == "" || v.Owner != "" && v.Owner != id {
+				return fmt.Errorf("character %s: unavailable trait %s", id, t)
 			}
 		}
 		for _, t := range c.Learn {

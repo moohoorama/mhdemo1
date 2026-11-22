@@ -14,24 +14,26 @@ import (
 // partyView is what the party window shows: the officers or the belongings, and of the belongings the kind
 // picked and the one looked at.
 type partyView struct {
-	items        bool
-	table        bool // the officers as a table rather than the list beside the one picked
-	tab, view    int  // the picked officer's tab (officerTabs) and the table's kind (officerViews)
-	learning     bool // opened by a level-up for the officers still learning; closing it ends their learning
-	filter, item string
-	trait        string
-	tip          string    // the equipment trait whose description shows on 장비, as "slot|trait"
-	sortieView   int       // table or editing view in the sortie
-	sortieTab    int       // the sortie's tab of the picked officer (sortieTabs)
-	depLead      string    // the lead the 부관 tab last showed, so another lead starts on their own deputy
-	depAll       bool      // the traits the candidate picked brings are all shown, past the lines they get
-	shelves      tableList // the 특성 tab's shelves scrolled, in steps of shelfStep
-	list         tableList
-	officers     tableList
-	officerList  tableList
-	deputies     tableList
-	placing      tableList // the deployment's list of the sortie
-	insu         insuState // the seal being used from the belongings
+	items            bool
+	table            bool // the officers as a table rather than the list beside the one picked
+	tab, view        int  // the picked officer's tab (officerTabs) and the table's kind (officerViews)
+	learning         bool // opened by a level-up for the officers still learning; closing it ends their learning
+	filter, item     string
+	trait            string
+	tip              string // the equipment trait whose description shows on 장비, as "slot|trait"
+	sortieFades      map[[2]string]sortieTransition
+	sortieBrightness map[string]sortieTransition
+	sortieView       int       // table or editing view in the sortie
+	sortieTab        int       // the sortie's tab of the picked officer (sortieTabs)
+	depLead          string    // the lead the 부관 tab last showed, so another lead starts on their own deputy
+	depAll           bool      // the traits the candidate picked brings are all shown, past the lines they get
+	shelves          tableList // the 특성 tab's shelves scrolled, in steps of shelfStep
+	list             tableList
+	officers         tableList
+	officerList      tableList
+	deputies         tableList
+	placing          tableList // the deployment's list of the sortie
+	insu             insuState // the seal being used from the belongings
 }
 
 // belonging is a kind of thing the party has: how many are carried or stored, and who wears the rest.

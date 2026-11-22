@@ -3,6 +3,7 @@ package gui
 import (
 	"fmt"
 	"image"
+	"slices"
 	"testing"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -88,6 +89,48 @@ func TestSortieDeputy(t *testing.T) {
 		g.selected = lead
 	})
 
+	t.Run("clicking the deputy portrait selects and reveals the deputy", func(t *testing.T) {
+		lead := g.selected
+		deputy := g.officer(g.S.View(), lead).Deputy
+		require.NotEmpty(t, deputy)
+		g.party.sortieView, g.party.officerList.top = 0, 0
+		draw(image.Pt(2400, 1080), 207)
+		g.pressLabel(g.name(deputy))
+		require.Equal(t, deputy, g.selected)
+		assert.Zero(t, g.party.sortieView)
+		require.True(t, g.party.officerList.revealSelected)
+		draw(image.Pt(2400, 1080), 207)
+		assert.False(t, g.party.officerList.revealSelected)
+		assert.Positive(t, g.party.officerList.top)
+		g.selected = lead
+	})
+
+	t.Run("the wheel scrolls candidates beneath the pinned deputy", func(t *testing.T) {
+		lead := g.selected
+		deputy := g.officer(g.S.View(), lead).Deputy
+		require.NotEmpty(t, deputy)
+		g.party.sortieView = 5
+		g.deputyFresh()
+		draw(image.Pt(2400, 1080), 207)
+		area := slices.IndexFunc(g.wheelAreas, func(a wheelArea) bool { return a.l == &g.party.deputies })
+		require.NotEqual(t, -1, area)
+		bounds := g.wheelAreas[area].r
+		g.wheelAreas[area].l.scroll(-20)
+		draw(image.Pt(2400, 1080), 207)
+		require.Positive(t, g.party.deputies.top)
+
+		g.deputyPick = lead
+		cursorPos = func() (int, int) { return bounds.Min.X + 15, bounds.Min.Y + 32 + touchH/2 }
+		defer func() { cursorPos = func() (int, int) { return -1000, -1000 } }()
+		g.leftClick()
+		require.NotNil(t, g.tableDrag)
+		pick := g.tableDrag.pick
+		g.tableDrag = nil
+		require.NotNil(t, pick)
+		pick()
+		assert.Equal(t, deputy, g.deputyPick)
+	})
+
 	screens := []struct {
 		size  image.Point
 		scale int
@@ -117,6 +160,26 @@ func TestSortieDeputy(t *testing.T) {
 	}
 }
 
+func TestSortieTransition(t *testing.T) {
+	var transition sortieTransition
+	check := func(now float64, active bool, want float64) {
+		t.Helper()
+		assert.InDelta(t, want, transition.update(now, active), 1e-9)
+	}
+	check(1, false, 0)
+	check(2, true, 0)
+	check(2.05, true, 0.5)
+	check(2.1, true, 1)
+	check(3, true, 1)
+	check(4, false, 1)
+	check(4.05, false, 0.5)
+	check(4.1, false, 0)
+	check(5, true, 0)
+	check(5.05, false, 0.5)
+	check(5.075, true, 0.25)
+	check(5.1, true, 0.5)
+}
+
 func TestStoryManagementDeputy(t *testing.T) {
 	d, err := NewDemo("../..", DemoOptions{Name: "story-farewell"})
 	require.NoError(t, err)
@@ -141,7 +204,7 @@ func TestStoryManagementDeputy(t *testing.T) {
 	g.Draw(dst)
 	g.deputyPick = "jianyong"
 	g.Draw(dst)
-	g.pressLabel("간옹 임명")
+	g.pressLabel("부관 임명")
 	require.Equal(t, "jianyong", g.officer(g.S.View(), "liubei").Deputy)
 	g.Draw(dst)
 	g.pressLabel("부관 해임")
@@ -154,6 +217,6 @@ func TestStoryManagementDeputy(t *testing.T) {
 	g.Draw(dst)
 	g.deputyPick = "guanyu"
 	g.Draw(dst)
-	g.pressLabel("관우 임명")
+	g.pressLabel("부관 임명")
 	assert.Equal(t, "guanyu", g.officer(g.S.View(), "jianyong").Deputy)
 }

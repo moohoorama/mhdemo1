@@ -65,6 +65,9 @@ func (e *Engine) damage(u, v *Unit, s content.Skill) float64 {
 	if k := e.fx(v, content.FxRangedWard); k > 0 && s.Kind == content.KindPhysical && e.rangedAttack(u, v, s) {
 		out *= 1 - min(k, 1) // shares from different traits (own 원거리피해감소, 거울) add up
 	}
+	if k := e.fx(v, content.FxPhysicalWard); k > 0 && s.Kind == content.KindPhysical {
+		out *= 1 - min(k, 1)
+	}
 	if k := e.fx(v, content.FxMagicWard); k > 0 && s.Kind == content.KindMagic {
 		out *= 1 - k
 	}
@@ -142,6 +145,9 @@ func (e *Engine) rangedAttack(u, v *Unit, s content.Skill) bool {
 func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 	R := e.data.Rules
 	h := float64(s.Hit)
+	if confused(u) && (s.Kind == content.KindPhysical || s.Kind == content.KindMagic || s.Kind == content.KindStatus) {
+		return 0
+	}
 	switch s.Kind {
 	case content.KindPhysical:
 		ranged := e.rangedAttack(u, v, s)
@@ -151,7 +157,7 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 		if e.has(v, content.FxRangedImmune) && ranged {
 			return 0
 		}
-		if e.has(u, content.FxRangedSure) && ranged {
+		if confused(v) || e.has(u, content.FxRangedSure) && ranged {
 			return 100
 		}
 		h += curve(e.ratio(e.stats(u).Agility, e.stats(v).Agility), R.HitCurve) - float64(R.BasicAttack.Hit) - e.fx(v, content.FxEvade) + e.fx(u, content.FxAccuracy) +
@@ -164,7 +170,9 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 		if s.Kind == content.KindStatus && e.statusImmune(v) && v.Faction != u.Faction {
 			return 0
 		}
-		if s.Sure || e.has(u, content.FxSpellSure) || e.fx(u, content.FxSure+s.Element) > 0 {
+		sureAttack := s.Kind == content.KindMagic && e.has(u, content.FxSpellSure)
+		sureConfusion := s.Kind == content.KindStatus && s.Shape == content.ShapeSingle && s.Effect == "confusion" && e.has(u, content.FxConfusionSure)
+		if confused(v) && s.Kind == content.KindMagic || s.Sure || sureAttack || sureConfusion || e.fx(u, content.FxSure+s.Element) > 0 {
 			return 100
 		}
 		h += float64(e.unitDef(u).Stats[4]-e.unitDef(v).Stats[4]) * .5
@@ -182,7 +190,7 @@ func (e *Engine) hitChance(u, v *Unit, s content.Skill) float64 {
 // critForced tells whether the blow is a certain critical.
 func (e *Engine) critForced(u, v *Unit, s content.Skill) bool {
 	if e.has(u, content.FxCritWounded) && e.wounded(v) || e.has(u, content.FxLoneCritLeader) && e.alone(u) && (v.Rank == "commander" || v.Rank == "boss") ||
-		e.has(u, content.FxCritAiling) && ailing(v) {
+		e.has(u, content.FxCritAiling) && statWeakened(v) {
 		return true
 	}
 	if s.Kind == content.KindMagic {
@@ -339,6 +347,9 @@ func (e *Engine) strike(u, v *Unit, s content.Skill, b blow) (int, bool, bool) {
 				e.applyStatus(v, id, R.BuffTurns, -R.BuffPercent)
 			}
 		}
+		if crit && v.HP > 0 && e.has(u, content.FxCritConfusion) {
+			e.applyStatus(v, "confusion", 1, 0)
+		}
 		for id := range content.Harmful {
 			if k := int(e.fx(u, content.FxHitStatus+id)); k > 0 {
 				e.applyStatus(v, id, k, 0)
@@ -421,6 +432,16 @@ func (e *Engine) attackOn(u, aim *Unit, vs []*Unit, s content.Skill, share map[s
 			}
 			n, hit, _ := e.strike(u, v, s, b)
 			dealt[v.ID] += n
+			if !derived && i == 0 && v == aim && hit && n > 0 && s.Kind == content.KindPhysical {
+				if k := e.fx(u, content.FxManaDrain); k > 0 {
+					lost := min(v.MP, int(float64(e.stats(v).MaxMP)*k))
+					v.MP -= lost
+					u.MP += min(max(0, e.stats(u).MaxMP-u.MP), lost/2)
+				}
+				if k := int(e.fx(u, content.FxRangedSlow)); k > 0 && v.HP > 0 && e.rangedAttack(u, v, s) {
+					e.applyStatus(v, "speed", 1, -k)
+				}
+			}
 			if hit && s.Mark && !slices.Contains(marked, v) {
 				marked = append(marked, v)
 			}
@@ -732,7 +753,6 @@ func (e *Engine) absorbMana(u, v *Unit) {
 	e.emit("effect", u.ID, u.ID, n)
 }
 
-// ailing tells whether the unit carries a harmful status (약점공략).
 // confused tells whether the unit is under 혼란: it neither moves nor acts, and answers no blow (counter, assist,
 // guardian, reflection, 경계, 역계).
 func confused(u *Unit) bool { return u.Status["confusion"].Turns > 0 }
@@ -742,6 +762,15 @@ func cure(v *Unit) {
 	for k := range content.Harmful {
 		delete(v.Status, k)
 	}
+}
+
+func statWeakened(v *Unit) bool {
+	for id := range content.StatStatuses {
+		if s := v.Status[id]; s.Turns > 0 && s.Value < 0 {
+			return true
+		}
+	}
+	return false
 }
 
 func ailing(v *Unit) bool {
@@ -923,11 +952,24 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 			struck = append(struck, q)
 			n, hit, crit := e.strike(u, q, s, blow{share: 1})
 			dealt[q.ID] += n
-			if crit {
+			if crit && s.TerrainTurns == 0 {
 				e.markCell(q.X, q.Y, s.Element)
 			}
 			if hit && q.HP > 0 && e.has(u, content.FxDispelBuffs) {
 				stripBuffs(q)
+			}
+			if hit && n > 0 && q.HP > 0 {
+				turns := R.BuffTurns + int(e.fx(u, content.FxDebuffTurns))
+				for stat := range content.StatStatuses {
+					if k := int(e.fx(u, content.FxSpellStat+stat)); k > 0 {
+						e.applyStatus(q, stat, turns, -k)
+					}
+				}
+			}
+			if slow := int(e.fx(u, content.FxSpellSlow)); hit && n > 0 && q.HP > 0 && slow > 0 {
+				if e.applyStatus(q, "speed", 1, -slow) {
+					e.emit("effect", u.ID, q.ID, 0)
+				}
 			}
 			if !derived && e.has(q, content.FxReflect) && q.HP > 0 && u.HP > 0 && !confused(q) {
 				e.strike(q, u, s, blow{share: 1, derived: true})
@@ -948,10 +990,17 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 		if s.Kind == content.KindBuff && turns >= 2 {
 			turns += int(e.fx(u, content.FxBuffExtend))
 		}
-		if s.Kind == content.KindStatus && q.Faction != u.Faction && e.has(u, content.FxStatusDouble) {
+		if s.Kind == content.KindStatus && s.Effect != "confusion" && q.Faction != u.Faction && e.has(u, content.FxStatusDouble) {
 			turns *= 2
 		}
-		switch s.Effect {
+		if s.Kind == content.KindStatus {
+			turns += int(e.fx(u, content.FxDebuffTurns))
+		}
+		effect := s.Effect
+		if effect == "attack" && s.AcademyBuff && e.unitClass(q).Weapon == "fan" {
+			effect = "mind"
+		}
+		switch effect {
 		case "heal":
 			n := e.healAmount(u, float64(e.stats(u).Mind)*s.Coeff)
 			actual := min(e.stats(q).MaxHP-q.HP, n)
@@ -977,10 +1026,10 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 					useful = true
 				}
 			}
-		case "speed", "range":
-			useful = e.applyStatus(q, s.Effect, turns, int(s.Coeff))
+		case "speed", "range", "physical_guard", "magic_guard":
+			useful = e.applyStatus(q, effect, turns, int(s.Coeff))
 		default:
-			if parts := strings.Split(s.Effect, "+"); content.StatStatuses[parts[0]] || s.Effect == "disrupt" {
+			if parts := strings.Split(effect, "+"); content.StatStatuses[parts[0]] || s.Effect == "disrupt" {
 				p := R.BuffPercent
 				if s.Kind == content.KindStatus || s.Kind == content.KindMixed && q.Faction != u.Faction {
 					p = -p
@@ -1017,6 +1066,14 @@ func (e *Engine) spell(u, v *Unit, s content.Skill, c Command) {
 	reached := e.targets(u, v, s)
 	for _, q := range reached {
 		apply(q, false)
+	}
+	if s.TerrainTurns > 0 {
+		st := e.data.Stages[e.state.Stage]
+		for y := max(0, v.Y-1); y <= min(st.Height-1, v.Y+1); y++ {
+			for x := max(0, v.X-1); x <= min(st.Width-1, v.X+1); x++ {
+				e.placeMark(x, y, s.Element, s.TerrainTurns)
+			}
+		}
 	}
 	if s.Shape == content.ShapeSingle && s.Mode != content.ModeSelf && e.has(u, content.FxChain) {
 		if q := e.weakestAround(v, v.Faction); q != nil {
@@ -1058,13 +1115,16 @@ func (e *Engine) weakestAround(v *Unit, faction string) *Unit {
 
 // buffStatuses are the statuses that help their holder besides stat raises: 파진 strips them with those.
 var buffStatuses = map[string]bool{"speed": true, "range": true, "counter": true, "guard": true, "sure_crit": true, holdGround: true,
-	"stance_pierce": true, "stance_cross": true, "stance_square": true}
+	"stance_pierce": true, "stance_cross": true, "stance_square": true, "physical_guard": true, "magic_guard": true}
 
 // stripBuffs removes every buff the unit holds.
 // stripBuffs ends q's buffs, reporting whether it had any.
 func stripBuffs(q *Unit) bool {
 	any := false
 	for k, st := range q.Status {
+		if (k == "speed" || k == "range") && st.Value <= 0 {
+			continue
+		}
 		if buffStatuses[k] || content.StatStatuses[k] && st.Value > 0 {
 			delete(q.Status, k)
 			any = true
@@ -1188,6 +1248,7 @@ func (e *Engine) endFaction() {
 		if !u.Done {
 			e.standFast(u) // a unit left standing when its side ends the turn holds its ground too
 		}
+		u.WalkedLastTurn = u.Steps > 0
 		u.Steps = 0 // 돌진 and 기습 count the walk of the unit's own turn: no charged counters on the other side's
 		for _, k := range keys(u.Status) {
 			s := u.Status[k]
@@ -1261,7 +1322,11 @@ func (e *Engine) endFaction() {
 		}
 		hp[id], mp[id] = u.HP, u.MP
 		lost := st.MaxHP - u.HP
-		r := int(float64(st.Recovery) * (1 + e.fx(u, content.FxManaRegen)))
+		recovery := 1 + e.fx(u, content.FxManaRegen)
+		if !u.WalkedLastTurn {
+			recovery += e.fx(u, content.FxStillRecovery)
+		}
+		r := int(float64(st.Recovery) * recovery)
 		heal := func(n int) { u.HP = min(st.MaxHP, u.HP+n) }
 		t := e.CellProps(u.X, u.Y)
 		if t.RestHP > 0 {
@@ -1295,6 +1360,7 @@ func (e *Engine) endFaction() {
 		if !v.ActsIn(starting, e.state.Army) || v.HP <= 0 {
 			continue
 		}
+		clearStats := e.has(v, content.FxAuraCleanStats)
 		got := map[string]bool{}
 		for _, aid := range keys(e.unitIDs) {
 			u := e.unit(aid)
@@ -1309,6 +1375,7 @@ func (e *Engine) endFaction() {
 				got[key] = true
 				return k
 			}
+			clearStats = clearStats || e.has(u, content.FxAuraCleanStats)
 			st := e.stats(v)
 			if k := once(content.FxAura); k > 0 {
 				v.HP = min(st.MaxHP, v.HP+int(float64(st.MaxHP)*k))
@@ -1322,6 +1389,13 @@ func (e *Engine) endFaction() {
 			for sid := range content.StatStatuses {
 				if k := once(content.FxAuraBuff + sid); k > 0 {
 					e.applyStatus(v, sid, R.BuffTurns, int(k))
+				}
+			}
+		}
+		if clearStats {
+			for stat := range content.StatStatuses {
+				if v.Status[stat].Value < 0 {
+					delete(v.Status, stat)
 				}
 			}
 		}

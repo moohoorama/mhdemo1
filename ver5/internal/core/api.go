@@ -61,9 +61,20 @@ func (e *Engine) LegalActions(actor string) Options {
 		if sk == "" {
 			k = "attack"
 		}
+		s, _ := e.skillDef(Command{Kind: k, Skill: sk})
+		if s.TerrainTurns > 0 {
+			if e.validateSkillUse(u, Command{Kind: k, Actor: actor, Skill: sk}, s) == nil {
+				st := e.data.Stages[e.state.Stage]
+				for _, p := range e.ActionCells(Command{Kind: k, Actor: actor, Skill: sk}) {
+					if p.X >= 0 && p.Y >= 0 && p.X < st.Width && p.Y < st.Height {
+						out.Commands = append(out.Commands, Command{Kind: k, Actor: actor, Skill: sk, X: p.X, Y: p.Y})
+					}
+				}
+			}
+			continue
+		}
 		for _, id := range keys(e.unitIDs) {
 			c := Command{Kind: k, Actor: actor, Target: id, Skill: sk}
-			s, _ := e.skillDef(c)
 			if s.Mode == content.ModeSelf && id != actor {
 				continue
 			}
@@ -208,9 +219,12 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 	if err != nil {
 		return Preview{}, err
 	}
-	p := Preview{Cost: e.cost(u, s), Hit: e.hitChance(u, v, s), Effect: s.Effect}
+	p := Preview{Cost: e.cost(u, s), Effect: s.Effect}
+	if v.ID != "" {
+		p.Hit = e.hitChance(u, v, s)
+	}
 	phys := s.Kind == content.KindPhysical
-	if phys || s.Kind == content.KindMagic {
+	if v.ID != "" && (phys || s.Kind == content.KindMagic) {
 		p.Crit = e.critChance(u, v, s)
 	}
 	if phys {
@@ -224,6 +238,9 @@ func (e *Engine) Preview(c Command) (Preview, error) {
 		hit = e.targets(u, v, s)
 	}
 	for _, q := range hit {
+		if v.ID == "" {
+			p.Hit += e.hitChance(u, q, s) / float64(len(hit))
+		}
 		p.Targets = append(p.Targets, q.ID)
 		heal := 0
 		if s.Effect == "heal" {
@@ -314,10 +331,20 @@ func reported(e *Engine, warnings []string, err error) (*Engine, error) {
 func adaptCharacters(d *content.Data, s *State) {
 	for _, o := range append(pointers(s.Characters), pointers(s.Away)...) {
 		def, ok := d.Characters[o.Def]
-		if !ok || o.Temp || o.Placement {
+		if !ok {
 			continue
 		}
-		o.Learned = slices.DeleteFunc(o.Learned, func(t string) bool { _, ok := d.Traits[t]; return !ok })
+		unavailable := func(id string) bool {
+			t, ok := d.Traits[id]
+			return !ok || t.Owner != "" && t.Owner != o.Def
+		}
+		o.Learned = slices.DeleteFunc(o.Learned, unavailable)
+		if o.TraitsOverride != nil {
+			*o.TraitsOverride = slices.DeleteFunc(*o.TraitsOverride, unavailable)
+		}
+		if o.Temp || o.Placement {
+			continue
+		}
 		if _, ok := d.Classes[o.Class]; !ok || !classReachable(d, d.ClassLine(def.Class)[0], o.Class) {
 			o.Class = d.PromotedAt(o.Def, def.Class, o.Level)
 		}
@@ -838,9 +865,24 @@ func (e *Engine) counterUnits(c Command) (*Unit, *Unit) {
 // damaging skill with normal hits weighed by their chance, wherever the two stand. The AI weighs
 // threats and the blows a move would open with it.
 func (e *Engine) Strike(a, b string) float64 {
+	return e.strikeEstimate(a, b, false)
+}
+
+// StrikeAfterConfusion estimates the threat restored by curing the attacker.
+func (e *Engine) StrikeAfterConfusion(a, b string) float64 {
+	return e.strikeEstimate(a, b, true)
+}
+
+func (e *Engine) strikeEstimate(a, b string, cureConfusion bool) float64 {
 	u, v := e.unit(a), e.unit(b)
 	if u == nil || v == nil || u.HP <= 0 || v.HP <= 0 {
 		return 0
+	}
+	if cureConfusion && confused(u) {
+		cured := *u
+		cured.Status = maps.Clone(u.Status)
+		delete(cured.Status, "confusion")
+		u = &cured
 	}
 	best := e.damage(u, v, e.basic()) * e.hitChance(u, v, e.basic()) / 100
 	for _, name := range e.skills(e.char(u.Character)) {

@@ -129,6 +129,12 @@
    "Text": "이번에는 안에서 문을 닫는군. ……가세, 할 일이 많네."
   },
   {
+   "ID": "c27v-join-pangtong",
+   "Kind": "join",
+   "Character": "pangtong",
+   "Event": "join-pangtong-27v"
+  },
+  {
    "ID": "c27v-card",
    "Kind": "narrate",
    "Text": "2장 주유천하\n끝",

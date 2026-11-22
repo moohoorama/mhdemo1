@@ -2004,6 +2004,11 @@
  ],
  "Armies": [
   {
+   "Faction": "shu",
+   "Name": "유비군",
+   "Ally": true
+  },
+  {
    "Faction": "liuqi",
    "Name": "유기군",
    "Ally": true

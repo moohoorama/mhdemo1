@@ -293,6 +293,37 @@ func TestDeploymentRedeploy(t *testing.T) {
 	})
 }
 
+func TestDeputyExchange(t *testing.T) {
+	for _, tc := range []struct {
+		name, oldDeputy string
+	}{
+		{name: "exchange deputies", oldDeputy: "deputyA"},
+		{name: "transfer to an empty slot"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			e := deployment(t)
+			def := e.def(e.char("archer1"))
+			for _, id := range []string{"deputyA", "deputyB"} {
+				e.data.Characters[id] = def
+				e.addCharacter(id, id)
+			}
+			with(e, "hero", "deputy_t")
+			with(e, "archer1", "deputy_t")
+			if tc.oldDeputy != "" {
+				apply(t, e, Command{Kind: "deputy", Actor: "hero", Target: tc.oldDeputy})
+			}
+			apply(t, e, Command{Kind: "deputy", Actor: "archer1", Target: "deputyB"})
+			warehouse := e.Snapshot().Warehouse
+			apply(t, e, Command{Kind: "deputy", Actor: "hero", Target: "deputyB"})
+			assert.Equal(t, "deputyB", e.char("hero").Deputy)
+			assert.Equal(t, tc.oldDeputy, e.char("archer1").Deputy)
+			assert.Equal(t, warehouse, e.Snapshot().Warehouse)
+			_, err := Restore(e.data, e.Snapshot())
+			require.NoError(t, err)
+		})
+	}
+}
+
 func TestRequiredDeputyGoesToBattle(t *testing.T) {
 	e := New(data(t), 17)
 	apply(t, e, Command{Kind: "next"})

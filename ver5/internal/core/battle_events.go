@@ -312,6 +312,10 @@ func (e *Engine) setState(stage content.Stage, x, y int, state string, turns int
 // embers, a wet patch or rubble. It lies only where the mark's state may lie, and only over a bare cell, another
 // mark or what a mark turns into; what an event put there (a fire, a broken bridge, an open gate) stays.
 func (e *Engine) markCell(x, y int, element string) {
+	e.placeMark(x, y, element, e.data.Rules.CritMarkTurns)
+}
+
+func (e *Engine) placeMark(x, y int, element string, turns int) {
 	R := e.data.Rules
 	state, ok := R.CritMarks[element]
 	if !ok {
@@ -321,7 +325,7 @@ func (e *Engine) markCell(x, y int, element string) {
 	if c.State != content.NoLayer && !e.markState(string(c.State)) || e.data.ValidCell(withState(c, state)) != "" {
 		return
 	}
-	e.setState(e.data.Stages[e.state.Stage], x, y, state, R.CritMarkTurns)
+	e.setState(e.data.Stages[e.state.Stage], x, y, state, turns)
 	e.events = append(e.events, Event{Kind: "mark", Target: state, Path: []content.Point{{X: x, Y: y}}})
 }
 
