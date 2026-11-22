@@ -1,3 +1,21 @@
+## 2026-11-22 첫 전투 기준 레벨 조정
+
+- `assets/data/game.json`: 첫 전투 기준 레벨을 3에서 1로 조정 — 정규 전투는 `1 + round(1.5 × (n − 1))`로 계산.
+- `internal/core/engine.go`: 초기 명단을 첫 전투 기준 레벨로 생성 — 유비도 관우·장비와 함께 Lv1로 시작.
+- `internal/core/campaign_content_test.go`·`coalition_test.go`·`difficulty_test.go`·`story_test.go`·`internal/content/stage_level_test.go`: 초기 명단·신규 합류·직급별 레벨을 새 기준으로 검증 — 난이도별 성장과 첫 전투 초기화 확인.
+- `docs/stage_lv_balance.md`·`logic-campaign.md`: 기준 레벨 공식과 예시 갱신 — 시작 장수와 전투 순번별 기준의 관계를 설명.
+
+## 2026-11-22 신규 합류 장수의 레벨
+
+- `internal/core/growth.go`·`engine.go`: 신규 합류 장수를 전투 진행도가 정한 레벨과 그에 맞는 특성치·병종·장비로 생성 — 이적처럼 캐릭터 기본 레벨이 높은 장수도 합류 시점의 성장에 맞춤.
+- `internal/core/campaign_content_test.go`: 이적의 난이도별 합류 레벨과 특성치·병종 검증 — 캐릭터 기본 레벨이 합류 레벨의 하한이 되던 문제를 재현.
+- `docs/logic-growth.md`·`stage_lv_balance.md`: 신규 합류의 초기화와 복귀의 성장 보정 규칙을 정리 — 실제 합류 동작을 문서에 반영.
+
+## 2026-11-22 어려움과 매우 어려움 경험치 조정
+
+- `assets/data/game.json`: 어려움 경험치 배율 100%에서 90%, 매우 어려움 85%에서 80%로 조정 — 아군의 전투 성장 속도를 낮춤.
+- `docs/stage_lv_balance.md`: 두 난이도의 경험치 배율과 조정 이유를 갱신 — 밸런스 기준을 게임 설정과 일치시킴.
+
 ## 2026-11-21 출전 준비 표시와 이야기 연출
 
 - `internal/gui/sortie_unified.go`: 격자 스프라이트 기준 1배율과 낮은 창에서 공통 축소, 무기·말 적용, 출전 행 녹색 배경, 부관 포함 실수치와 노란 증감량 표시 — 편성·장비의 효과와 장수의 원래 크기 차이를 한눈에 확인.

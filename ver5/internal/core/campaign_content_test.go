@@ -444,23 +444,51 @@ func TestOfficersJoinInTheClassTheirLevelReaches(t *testing.T) {
 	t.Run("the difficulty shifts the join level as it shifts the enemy; the flat debug curve does not", func(t *testing.T) {
 		dd := *d
 		dd.Campaign.Start = "c10-battle"
-		for difficulty, level := range map[string]int{"easy": 13, "normal": 17, "hard": 21, "flat_easy": 12, "flat_normal": 12, "flat_hard": 12} {
+		for difficulty, level := range map[string]int{"easy": 11, "normal": 15, "hard": 19, "flat_easy": 10, "flat_normal": 10, "flat_hard": 10} {
 			e, err := NewGame(&dd, 1, difficulty)
 			require.NoError(t, err)
 			assert.Equal(t, level, e.char("zhaoyun").Level, difficulty)
 		}
 	})
-	t.Run("the brothers first join at level three on every difficulty", func(t *testing.T) {
+	t.Run("Yi Ji joins at the campaign level even below his definition level", func(t *testing.T) {
+		for _, tc := range []struct {
+			difficulty string
+			level      int
+			class      string
+		}{
+			{"casual", 21, "crossbow"},
+			{"easy", 27, "crossbow"},
+			{"normal", 34, "crossbow"},
+			{"hard", 41, "repeating_crossbow"},
+			{"flat_hard", 23, "crossbow"},
+		} {
+			t.Run(tc.difficulty, func(t *testing.T) {
+				e, err := NewGame(d, 1, tc.difficulty)
+				require.NoError(t, err)
+				e.once(d.Node("c22-join-yiji"))
+				o := e.char("yiji")
+				require.NotNil(t, o)
+				assert.Equal(t, tc.level, o.Level)
+				assert.Equal(t, e.data.Rules.PointsPerLevel*(tc.level-1), o.Points)
+				assert.Equal(t, tc.class, o.Class)
+			})
+		}
+	})
+	t.Run("the initial roster and sworn brothers start at the first battle's level", func(t *testing.T) {
 		for _, difficulty := range d.Rules.Difficulties {
 			t.Run(difficulty.ID, func(t *testing.T) {
 				e, err := NewGame(d, 1, difficulty.ID)
 				require.NoError(t, err)
+				require.NotNil(t, e.char("liubei"))
+				assert.Equal(t, 1, e.char("liubei").Level)
+				assert.Zero(t, e.char("liubei").Points)
 				for _, id := range []string{"guanyu", "zhangfei"} {
 					node := d.Node("c01-o-join-" + id)
 					require.Equal(t, 1, e.joinOrder(node))
 					e.once(node)
 					require.NotNil(t, e.char(id))
-					assert.Equal(t, 3, e.char(id).Level, id)
+					assert.Equal(t, 1, e.char(id).Level, id)
+					assert.Zero(t, e.char(id).Points, id)
 				}
 			})
 		}

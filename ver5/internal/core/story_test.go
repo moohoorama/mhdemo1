@@ -186,8 +186,8 @@ func TestJoiningOfficerCatchesUpWithTheStory(t *testing.T) {
 	e := New(d, 1)
 	o := e.char("jianyong")
 	require.NotNil(t, o)
-	assert.Equal(t, 12, o.Level, "the level of the Dong Zhuo chase, the next battle")
-	assert.Equal(t, 1100, o.Points, "100 per level like the brothers")
+	assert.Equal(t, 10, o.Level, "the level of the Dong Zhuo chase, the next battle")
+	assert.Equal(t, 900, o.Points, "100 per level above level one")
 }
 
 func TestLeavingOfficerIsHiddenWithHisGear(t *testing.T) {

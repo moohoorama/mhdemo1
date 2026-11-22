@@ -92,8 +92,13 @@ func begin(d *content.Data, seed uint64, difficulty string) *Engine {
 		s.Warehouse = map[string]int{}
 	}
 	e := fromState(d, s)
+	level := e.data.Rules.StageLevel(1)
 	for _, id := range c.Roster {
-		e.addCharacter(id, id)
+		if level > 0 {
+			e.addCharacterAt(id, id, level)
+		} else {
+			e.addCharacter(id, id)
+		}
 	}
 	e.joinBefore(c.Start)
 	return e
@@ -168,11 +173,15 @@ func (e *Engine) name(c *Character) string {
 
 // addCharacter records a character made from definition def under id.
 func (e *Engine) addCharacter(id, def string) *Character {
+	return e.addCharacterAt(id, def, e.data.Characters[def].Level)
+}
+
+func (e *Engine) addCharacterAt(id, def string, level int) *Character {
 	if c := e.char(id); c != nil {
 		return c
 	}
 	d := e.data.Characters[def]
-	c := Character{ID: id, Def: def, Class: e.promotedAt(def, d.Class, d.Level), Level: d.Level, Points: e.data.Rules.PointsPerLevel * (d.Level - 1), Temp: d.Template, Equipment: map[string]string{}, Learned: []string{}}
+	c := Character{ID: id, Def: def, Class: e.promotedAt(def, d.Class, level), Level: level, Points: e.data.Rules.PointsPerLevel * (level - 1), Temp: d.Template, Equipment: map[string]string{}, Learned: []string{}}
 	for _, eq := range d.Equipment {
 		c.Equipment[e.data.Equipment[eq].Slot] = eq
 	}

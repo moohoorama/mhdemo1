@@ -87,7 +87,7 @@
    20,
    40
   ],
-  "StageLevelBase": 3,
+  "StageLevelBase": 1,
   "StageLevelStep": 1.5,
   "GearTiers": [
    {
@@ -108,8 +108,8 @@
   "Difficulties": [
    {"ID": "casual", "Name": "쉬움", "Desc": "이야기를 편하게 따라가고 싶은 분들을 위한 난이도입니다.", "EnemyShift": -0.3, "XPPct": 150, "DealtPct": 120, "TakenPct": 80},
    {"ID": "easy", "Name": "일반", "Desc": "SRPG 장르에 익숙하지 않은 분들을 위한 난이도입니다.", "EnemyShift": -0.15, "XPPct": 130},
-   {"ID": "normal", "Name": "어려움", "Desc": "SRPG 장르와 코에이 삼국지에 익숙한 분들을 위한 난이도입니다.", "EnemyShift": 0, "XPPct": 100},
-   {"ID": "hard", "Name": "매우 어려움", "Desc": "이 게임에 익숙한 분들을 위한 난이도입니다.", "EnemyShift": 0.15, "XPPct": 85},
+   {"ID": "normal", "Name": "어려움", "Desc": "SRPG 장르와 코에이 삼국지에 익숙한 분들을 위한 난이도입니다.", "EnemyShift": 0, "XPPct": 90},
+   {"ID": "hard", "Name": "매우 어려움", "Desc": "이 게임에 익숙한 분들을 위한 난이도입니다.", "EnemyShift": 0.15, "XPPct": 80},
    {"ID": "flat_easy", "Name": "완만 일반", "Desc": "2026-11-11~12 완만한 성장 곡선의 일반입니다(디버그).", "EnemyShift": -0.05, "XPPct": 150, "Debug": true,
     "Rules": {"StageLevelStep": 1, "ExpAction": 16, "ExpRatioPower": 4, "ExpMaxFactor": 3, "DuelXPPct": 70, "JoinShift": false}},
    {"ID": "flat_normal", "Name": "완만 어려움", "Desc": "2026-11-11~12 완만한 성장 곡선의 어려움입니다(디버그).", "EnemyShift": 0, "XPPct": 110, "Debug": true,

@@ -40,7 +40,7 @@ func TestDifficultyLeadsEnemiesAndScalesExperience(t *testing.T) {
 		flat := at(t, "flat_hard")
 		assert.Equal(t, 16.0, flat.data.Rules.ExpAction)
 		assert.Equal(t, 24.0, hard.data.Rules.ExpAction)
-		assert.Less(t, flat.char("yuanshao").Level, hard.char("yuanshao").Level, "the flat curve's B10 is 12, the story curve's 17")
+		assert.Less(t, flat.char("yuanshao").Level, hard.char("yuanshao").Level)
 		e, err := Restore(&dd, flat.Snapshot())
 		require.NoError(t, err)
 		assert.Equal(t, 16.0, e.data.Rules.ExpAction)

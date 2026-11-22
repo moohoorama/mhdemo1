@@ -225,18 +225,21 @@ func (e *Engine) learn(c Command) error {
 // who left comes back as they left, with the levels the battles they missed raise a stage by, and never below a
 // newcomer.
 func (e *Engine) welcome(id string, order int) *Character {
-	i := slices.IndexFunc(e.state.Away, func(c Character) bool { return c.ID == id })
-	if e.char(id) != nil || i < 0 {
-		fresh := e.char(id) == nil
-		o := e.addCharacter(id, id)
-		level := e.joinLevel(order)
-		if fresh && order == 1 && (id == "guanyu" || id == "zhangfei") {
-			level = o.Level
-		}
+	level := e.joinLevel(order)
+	if o := e.char(id); o != nil {
 		e.joinAt(o, level)
-		if fresh {
-			e.tierGear(o, e.data.GearTierAt(order))
+		return o
+	}
+	i := slices.IndexFunc(e.state.Away, func(c Character) bool { return c.ID == id })
+	if i < 0 {
+		if order == 1 && (id == "guanyu" || id == "zhangfei") {
+			level = e.data.Rules.StageLevel(order)
 		}
+		if level == 0 {
+			level = e.data.Characters[id].Level
+		}
+		o := e.addCharacterAt(id, id, level)
+		e.tierGear(o, e.data.GearTierAt(order))
 		return o
 	}
 	c := e.state.Away[i]
@@ -245,7 +248,7 @@ func (e *Engine) welcome(id string, order int) *Character {
 	c.Left = 0
 	e.charIDs[id] = e.chars.NewEntity(&c)
 	o := e.char(id)
-	e.raiseTo(o, max(o.Level+max(missed, 0), e.joinLevel(order)))
+	e.raiseTo(o, max(o.Level+max(missed, 0), level))
 	return o
 }
 
