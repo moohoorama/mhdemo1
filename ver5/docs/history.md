@@ -4083,3 +4083,9 @@
 - `Makefile`·`tools/windows/append_assets.py`: 에셋을 포함하는 난독화 없는 Windows release 실행 파일 빌드 추가 — 설치 없이 파일 하나로 전달.
 - `cmd/srpg-gui/main.go`·`portable.go`·`portable_disabled.go`·`portable_test.go`: 내장 에셋을 버전별 사용자 캐시에 안전하게 풀어 기존 로더로 읽고 재사용 — 별도 에셋 배포 없이 기존 저장 경로 유지.
 - `README.md`·`docs/tools-build.md`·`docs/plan-windows-portable.md`: 빌드와 캐시 동작·설계 기록 — 단일 파일의 사용과 디스크 공간 안내.
+
+## 2026-11-24 출전 카드 축소·도트 스크롤바 시안
+
+- 출전 창 폭 확장을 되돌리고, 카드를 PC 44×52(5열)·모바일 70×84(3열)로 줄여 원래 왼쪽 칸에 맞춤. 설계는 `docs/plan-sortie-card-scrollbar.md`.
+- 스크롤바 A~E(죽간 등) 거부분을 빼고, UI 시트의 도트 조각 5종(금테 쪽매·구슬 줄·두루마리 축·옥 장식·점무늬)으로 교체. `tools/spritetool/assets/ver5-ui/seed.py`.
+- 결과와 캡처: `result/20261124/20261124-scroll-sortie-pixel/`. 최종 시안 선택 전.

@@ -1,0 +1,53 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>스크롤바 도트 시안 5종 비교</title>
+<style>
+:root{--bg:#1a1410;--ink:#eadcc0;--muted:#a79a82;--gold:#e2b65d}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f6f1e7;--ink:#2a2118;--muted:#6b5f4e;--gold:#8a6218}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Noto Sans KR",sans-serif;padding:16px}
+h1{color:var(--gold);font-size:20px} h2{color:var(--gold);font-size:17px;margin:0 0 8px}
+p.note{color:var(--muted);font-size:13px;line-height:1.6}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+figure{margin:0} figcaption{font-size:12px;color:var(--muted);margin-top:4px;max-width:360px}
+img{image-rendering:pixelated;display:block;background:#2c1e18}
+img.full{max-width:640px;width:100%;height:auto}
+section.opt{border-top:1px solid #4a3a28;padding:14px 0}
+.pieces{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end}
+.pieces figure img{border:1px solid #4a3a28}
+.pieces figcaption{max-width:260px}
+</style></head><body>
+<h1>스크롤바 도트 시안 5종 (A~E) — 최종 선택 아님</h1>
+<p class="note">모든 그림은 게임 캡처(<code>cmd/_uidemo-vm -ui scrollbar</code>, 프레임 25·55·85·115·145·175)이거나 게임 UI 시트(<code>ver5/assets/graphics/ui/ui.png</code>)에서 잘라 확대한 픽셀이다. 목업이나 가짜 화면은 없다. 확대 크기만 다르다. 현행은 기준용이다.</p>
+<p class="note">스크롤바 트랙은 10 UI px 폭이고, 조각은 4 px 모서리로 9등분해 높이만 늘린다. 터치 판정은 트랙 전체 높이 그대로이며 그림보다 넓은 여백을 두지 않았다(기존 판정 유지).</p>
+<section class="opt"><h2>현행</h2>
+<div class="row">
+ <figure><img src="crops/desktop-track-0025.png" alt="desktop bar"><figcaption>PC 1280×850 게임 캡처 (스크롤바 트랙, 4배 확대)</figcaption></figure>
+ <figure><img src="crops/phone-track-0025.png" alt="phone bar"><figcaption>폰 2400×1080 @130% 게임 캡처 (스크롤바 트랙, 2배 확대)</figcaption></figure>
+ <figure><img src="captures/desktop/frame-0025.png" alt="desktop full" class="full"><figcaption>PC 전체 화면 (game capture)</figcaption></figure>
+</div></section><section class="opt"><h2>A 금테 쪽매</h2>
+<div class="row">
+ <figure><img src="crops/desktop-track-0055.png" alt="desktop bar"><figcaption>PC 1280×850 게임 캡처 (스크롤바 트랙, 4배 확대)</figcaption></figure>
+ <figure><img src="crops/phone-track-0055.png" alt="phone bar"><figcaption>폰 2400×1080 @130% 게임 캡처 (스크롤바 트랙, 2배 확대)</figcaption></figure>
+ <figure><img src="captures/desktop/frame-0055.png" alt="desktop full" class="full"><figcaption>PC 전체 화면 (game capture)</figcaption></figure>
+</div></section><section class="opt"><h2>B 구슬 줄</h2>
+<div class="row">
+ <figure><img src="crops/desktop-track-0085.png" alt="desktop bar"><figcaption>PC 1280×850 게임 캡처 (스크롤바 트랙, 4배 확대)</figcaption></figure>
+ <figure><img src="crops/phone-track-0085.png" alt="phone bar"><figcaption>폰 2400×1080 @130% 게임 캡처 (스크롤바 트랙, 2배 확대)</figcaption></figure>
+ <figure><img src="captures/desktop/frame-0085.png" alt="desktop full" class="full"><figcaption>PC 전체 화면 (game capture)</figcaption></figure>
+</div></section><section class="opt"><h2>C 두루마리 축</h2>
+<div class="row">
+ <figure><img src="crops/desktop-track-0115.png" alt="desktop bar"><figcaption>PC 1280×850 게임 캡처 (스크롤바 트랙, 4배 확대)</figcaption></figure>
+ <figure><img src="crops/phone-track-0115.png" alt="phone bar"><figcaption>폰 2400×1080 @130% 게임 캡처 (스크롤바 트랙, 2배 확대)</figcaption></figure>
+ <figure><img src="captures/desktop/frame-0115.png" alt="desktop full" class="full"><figcaption>PC 전체 화면 (game capture)</figcaption></figure>
+</div></section><section class="opt"><h2>D 옥 장식</h2>
+<div class="row">
+ <figure><img src="crops/desktop-track-0145.png" alt="desktop bar"><figcaption>PC 1280×850 게임 캡처 (스크롤바 트랙, 4배 확대)</figcaption></figure>
+ <figure><img src="crops/phone-track-0145.png" alt="phone bar"><figcaption>폰 2400×1080 @130% 게임 캡처 (스크롤바 트랙, 2배 확대)</figcaption></figure>
+ <figure><img src="captures/desktop/frame-0145.png" alt="desktop full" class="full"><figcaption>PC 전체 화면 (game capture)</figcaption></figure>
+</div></section><section class="opt"><h2>E 점무늬</h2>
+<div class="row">
+ <figure><img src="crops/desktop-track-0175.png" alt="desktop bar"><figcaption>PC 1280×850 게임 캡처 (스크롤바 트랙, 4배 확대)</figcaption></figure>
+ <figure><img src="crops/phone-track-0175.png" alt="phone bar"><figcaption>폰 2400×1080 @130% 게임 캡처 (스크롤바 트랙, 2배 확대)</figcaption></figure>
+ <figure><img src="captures/desktop/frame-0175.png" alt="desktop full" class="full"><figcaption>PC 전체 화면 (game capture)</figcaption></figure>
+</div></section>
+<section class="opt"><h2>도트 조각 원본 (UI 시트 픽셀, 16배)</h2><p class="note">트랙 조각과 썸 조각(두 번째 프레임은 마우스가 올라가거나 끌 때의 밝은 색).</p><div class="pieces"><figure><img src="pieces/scroll_a_track-0.png"><figcaption>scroll_a_track-0</figcaption></figure><figure><img src="pieces/scroll_a_thumb-0.png"><figcaption>scroll_a_thumb-0</figcaption></figure><figure><img src="pieces/scroll_a_thumb-1.png"><figcaption>scroll_a_thumb-1</figcaption></figure><figure><img src="pieces/scroll_b_track-0.png"><figcaption>scroll_b_track-0</figcaption></figure><figure><img src="pieces/scroll_b_thumb-0.png"><figcaption>scroll_b_thumb-0</figcaption></figure><figure><img src="pieces/scroll_b_thumb-1.png"><figcaption>scroll_b_thumb-1</figcaption></figure><figure><img src="pieces/scroll_c_track-0.png"><figcaption>scroll_c_track-0</figcaption></figure><figure><img src="pieces/scroll_c_thumb-0.png"><figcaption>scroll_c_thumb-0</figcaption></figure><figure><img src="pieces/scroll_c_thumb-1.png"><figcaption>scroll_c_thumb-1</figcaption></figure><figure><img src="pieces/scroll_d_track-0.png"><figcaption>scroll_d_track-0</figcaption></figure><figure><img src="pieces/scroll_d_thumb-0.png"><figcaption>scroll_d_thumb-0</figcaption></figure><figure><img src="pieces/scroll_d_thumb-1.png"><figcaption>scroll_d_thumb-1</figcaption></figure><figure><img src="pieces/scroll_e_track-0.png"><figcaption>scroll_e_track-0</figcaption></figure><figure><img src="pieces/scroll_e_thumb-0.png"><figcaption>scroll_e_thumb-0</figcaption></figure><figure><img src="pieces/scroll_e_thumb-1.png"><figcaption>scroll_e_thumb-1</figcaption></figure></div></section>
+</body></html>
