@@ -232,7 +232,6 @@ func (g *Game) deputyTable(dst *ebiten.Image, l *tableList, of *core.Character, 
 			pick = rows[0].id
 		}
 	}
-	g.wheelAreas = append(g.wheelAreas, wheelArea{unframed(r), l})
 	drawTable(g, dst, l, table[deputyRow]{
 		cols: cols, rowH: touchH, headH: 32, size: 14,
 		empty:    "부관이 될 장수가 없습니다.",

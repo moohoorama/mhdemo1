@@ -47,6 +47,7 @@ type unitVis struct {
 	art          *sprite.Art
 	look         string // the class and weapon art was picked for; a change picks it again
 	u, v, lift   float64
+	front        float64 // depth order: the unit is drawn as if this far down the map, after the cliff blocks it stands among
 	dir, anim    string
 	facing       string // the facing the rules state last gave; a change turns the unit to it
 	animT        float64
@@ -60,6 +61,7 @@ type unitVis struct {
 	grey         float64    // 0..1: how far they have drained
 	dying        float64    // < 0: alive
 	leave        *walkState // walking off the battle area, fading out; t runs to leaveTime
+	noFocus      bool       // the camera does not follow this unit's walk (a cutscene step's NoFocus)
 	arriving     float64    // a scene actor walking on: seconds left of fading in, from leaveTime
 	gone, greyed bool
 	ranged       bool
@@ -69,6 +71,8 @@ type unitVis struct {
 	mounted      bool    // rides a horse: takes the long boat on water
 	boatAxis     string  // "u" or "v": how its boat lies, kept while it faces straight N, E, S or W
 	wade         float64 // 0..1: how far it has sunk into a ford it stands on (field_wade.go)
+	flood        float64 // canvas pixels of a flood standing over its feet (field_surge.go)
+	fade         float64 // 0..1: how far a flood has washed it out of the picture (field_surge_show.go)
 	inactive     bool
 	actor        bool    // a scene actor: no HP bar, rests standing or in its pose
 	over         float64 // share of a cell the last step of a walk ran past its end: a path's next step starts that far in
@@ -244,6 +248,8 @@ type Player struct {
 	Duel   *duelview.View
 	Speech []*battleBubble
 	Fading []*battleBubble // lines done with, fading out
+	// SpeechScale draws the battlefield bubbles this many times larger, for a close-up; 0: as usual
+	SpeechScale float64
 	// nextLine asks the replay to move on from the line on screen (a click once it is all out)
 	nextLine bool
 	// ai marks an AI army's turn: its actions start on screen and log as they start (ai_view.go)
@@ -300,6 +306,20 @@ func (p *Player) play(actions []*replay.Action, final core.Observation, ai bool)
 		return
 	}
 	p.looks = p.g.shownLooks(final)
+}
+
+// eventPlaying reports whether a battle event (a cutscene or a forced move) is among the actions playing.
+func (p *Player) eventPlaying() bool {
+	for _, r := range p.running {
+		for _, st := range p.actions[r.index].Steps {
+			for _, e := range st.Events {
+				if e.Kind == "cutscene" || e.Kind == "move" && (st.Command.Kind != "move" || e.Actor != st.Command.Actor) {
+					return true
+				}
+			}
+		}
+	}
+	return false
 }
 
 func (p *Player) Update(dt float64) {

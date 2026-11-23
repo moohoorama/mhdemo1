@@ -114,9 +114,9 @@ func (p *Player) spell(i int) bool {
 }
 
 // cameraLocked reports whether the player's camera (scroll, zoom, minimap) waits: on an AI
-// army's turn and while one plays.
+// army's turn and while one plays, and in a story scene or while a battle event's replay plays.
 func (g *Game) cameraLocked() bool {
-	if g.player.ai && g.player.Busy() {
+	if g.player.ai && g.player.Busy() || g.scene != nil || g.player.eventPlaying() {
 		return true
 	}
 	if g.S == nil {

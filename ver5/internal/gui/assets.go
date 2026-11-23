@@ -68,6 +68,7 @@ type Assets struct {
 	Projectiles   Shots                    // thrown stones, their shadows and their landing dust
 	effects       Shots                    // effects and their particles; read through effect, which adds a spell on first use
 	spells        map[string]bool          // spell effects on disk under effects/spells, read the first time one plays
+	surges        map[string]*Surge        // baked floods under effects/flood, read the first time one plays
 	dir           string                   // the graphics directory
 	Outside       Shots                    // pines and stones outside the battle area
 	UI            Shots                    // UI pictures: window frame, marks, icons, unit bar

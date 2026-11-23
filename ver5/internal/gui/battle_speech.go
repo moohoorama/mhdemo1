@@ -101,6 +101,9 @@ func (g *Game) drawBubble(dst *ebiten.Image, bubble *battleBubble, placed *[]ima
 	}
 	bw, bh := g.assets.Bubble.Size(bubble.name, bubble.text)
 	k := 2.0 / 3 / smallScreen()
+	if g.player.SpeechScale > 0 {
+		k *= g.player.SpeechScale
+	}
 	w, h := int(bw*k), int(bh*k)
 	u := g.unitAt(bubble.actor)
 	if u == nil {

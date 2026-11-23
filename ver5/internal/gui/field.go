@@ -71,6 +71,10 @@ type Field struct {
 	groundSheet                  *ebiten.Image   // its ground's pictures, see makeSceneGround
 	clockMS                      float64
 
+	// Surge is a baked flood playing over the map and SurgeT the seconds into it (field_surge.go); nil: none
+	Surge  *Surge
+	SurgeT float64
+
 	// beatShadows are the ground shadows of the props a story scene's beats put down (canvas point, shadow):
 	// those props are drawn over the field, but their shadows lie on the ground under the units like the map's
 	beatShadows []beatShadow
@@ -463,6 +467,11 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 				items = append(items, it)
 			}
 		}
+		for _, it := range f.surgeItems() {
+			if f.DrawBounds.Empty() || it.rect.Overlaps(f.DrawBounds) {
+				items = append(items, it)
+			}
+		}
 	}
 	for v, row := range f.Map.Tiles {
 		for u, t := range row {
@@ -535,12 +544,21 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		ground := f.groundLift(u.u, u.v)
 		lift := u.lift + ground
 		f.updateWade(u)
+		u.flood = f.surgeDepth(u.u, u.v)
 		if u.visible() {
 			anim, frame := f.pose(u)
 			sh := Sprite{u.art.Shadow(u.dir, anim, frame), u.art.ShadowPivot[0], u.art.ShadowPivot[1]}
 			sop := &ebiten.DrawImageOptions{Blend: maxBlend}
-			sop.ColorScale.ScaleAlpha(float32((1 - u.leaving()) * (1 - .7*u.wade)))
-			f.castShadow(ground, sh, x, y-lift, sop)
+			sop.ColorScale.ScaleAlpha(float32((1 - u.leaving()) * (1 - .7*u.wade) * (1 - u.fade)))
+			if f.Map.SceneMap == nil && u.actor && u.lift > 0 {
+				// a unit of a show raised over its cell (the cliff of a flood show): the cliff blocks of the scenery are drawn over the
+				// shadow layer, so its shadow is drawn among the items, after the block it stands on and before the unit
+				fx, fy, fop := x, y-lift, &ebiten.DrawImageOptions{}
+				fop.ColorScale.ScaleAlpha(float32((1 - u.leaving()) * (1 - .7*u.wade) * (1 - u.fade)))
+				items = append(items, drawItem{y: y + u.front, kind: 1, draw: func() { f.blit(c, sh, fx, fy, fop) }})
+			} else {
+				f.castShadow(ground, sh, x, y-lift, sop)
+			}
 			if bt := f.boat(u); bt.k > 0 {
 				bop := &ebiten.DrawImageOptions{Blend: maxBlend}
 				bop.ColorScale.ScaleAlpha(float32(bt.k * (1 - u.leaving())))
@@ -550,7 +568,7 @@ func (f *Field) Draw(clockMS float64, units []*unitVis, marks []Highlight) {
 		unit := u
 		b := u.art.Frame(u.dir, u.anim, u.frame()).Bounds()
 		rx, ry := int(math.Round(x-u.art.Pivot[0])), int(math.Round(y-lift-u.art.Pivot[1]))
-		it := drawItem{y: y, kind: 1, draw: func() { f.drawUnit(unit, x, y-lift, 0) },
+		it := drawItem{y: y + u.front, kind: 1, draw: func() { f.drawUnit(unit, x, y-lift, 0) },
 			rect: image.Rect(rx, ry, rx+b.Dx(), ry+b.Dy()), ghost: func(a float32) { f.drawUnit(unit, x, y-lift, a) }}
 		if f.Map.SceneMap != nil {
 			k := f.sceneKey(x, y, ground, scenemap.RankPerson, it.rect)
@@ -716,6 +734,9 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost float32) {
 		op.ColorScale.Scale(b, b, b, 1)
 		op.ColorScale.ScaleAlpha(float32(1 - k*k))
 	}
+	if u.fade > 0 {
+		op.ColorScale.ScaleAlpha(float32(1 - u.fade))
+	}
 	anim, frame := f.pose(u)
 	s := Sprite{u.art.Frame(u.dir, anim, frame), u.art.Pivot[0], u.art.Pivot[1]}
 	if ghost == 0 {
@@ -723,7 +744,7 @@ func (f *Field) drawUnit(u *unitVis, x, y float64, ghost float32) {
 	}
 	if bt := f.boat(u); bt.k > 0 {
 		f.drawAfloat(u, s, bt, x, y, op)
-	} else if u.wade > .01 {
+	} else if u.wade > .01 || u.flood > 0 {
 		f.drawWading(u, s, x, y, op)
 	} else {
 		f.blit(f.Canvas, s, x, y, op)

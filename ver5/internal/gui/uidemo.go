@@ -130,6 +130,9 @@ func (d *Demo) battleWith(id string, tweak func(*mapedit.Document)) error {
 	}
 	g.editorTrial()
 	e := g.S.Engine
+	if e == nil {
+		return fmt.Errorf("the changed map does not start a battle: %s", g.editor.message)
+	}
 	if _, err := e.Apply(core.Command{Kind: "start"}); err != nil {
 		return err
 	}

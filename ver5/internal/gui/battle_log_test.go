@@ -173,3 +173,36 @@ func TestBattleLogScrollbar(t *testing.T) {
 	_, full := logScrollbar(r, 3, 7, 0)
 	check(t, full, track)
 }
+
+func TestBattleLogBodyDrag(t *testing.T) {
+	d, err := NewDemo("../..", DemoOptions{Name: "hudpanel"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := d.g
+	defer g.Close()
+	oldCursor, oldPointer := cursorPos, pointer
+	defer func() { cursorPos, pointer = oldCursor, oldPointer }()
+	g.hudShown = "log"
+	g.hudBody = image.Rect(0, 100, 300, 300)
+	for i := 0; i < 30; i++ {
+		g.history = append(g.history, "기록")
+	}
+	x, y := 100, 150
+	cursorPos = func() (int, int) { return x, y }
+	pointer = touchPointer{justPressed: true, held: true}
+	if !g.updateBattleLog() {
+		t.Fatal("press was not consumed")
+	}
+	pointer.justPressed = false
+	y += 2 * logLineHeight
+	g.updateBattleLog()
+	if g.logScroll != 2 {
+		t.Fatalf("drag down: got %d, want 2", g.logScroll)
+	}
+	pointer.held = false
+	g.updateBattleLog()
+	if g.logBodyDragging {
+		t.Fatal("drag remained active after release")
+	}
+}

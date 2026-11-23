@@ -78,7 +78,7 @@ func (g *Game) followWalk(dt float64) {
 		g.follow = ""
 		return
 	}
-	walking := func(v *unitVis) bool { return v != nil && v.walk != nil && v.anim == "walk" && v.leave == nil }
+	walking := func(v *unitVis) bool { return v != nil && v.walk != nil && v.anim == "walk" && v.leave == nil && !v.noFocus }
 	if !walking(g.vis[g.follow]) {
 		g.follow = ""
 		for _, id := range sorted(g.vis) {

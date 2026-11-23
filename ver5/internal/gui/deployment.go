@@ -83,9 +83,10 @@ func (g *Game) sortieLocked(id string) bool {
 // then the deputies, who cannot go.
 func (g *Game) sortieCards(o core.Observation) []string {
 	out := slices.Clone(o.Deployment)
+	excluded := g.S.Data.Stages[o.Stage].Excluded
 	for _, deputies := range []bool{false, true} {
 		for _, c := range g.roster(o) {
-			if !c.Dead && (g.servedBy(o, c.ID) != "") == deputies && !slices.Contains(out, c.ID) {
+			if !c.Dead && !slices.Contains(excluded, c.ID) && (g.servedBy(o, c.ID) != "") == deputies && !slices.Contains(out, c.ID) {
 				out = append(out, c.ID)
 			}
 		}

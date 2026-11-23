@@ -38,7 +38,11 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 	}
 	g.label(dst, count, float64(x+120), float64(y+17), 13, muted)
 	foot := y + h - 60
-	left := image.Rect(x+8, y+58, x+w*3/10, foot-8)
+	leftMax := x + w*3/10
+	if touchUI {
+		leftMax = max(leftMax, x+8+2*sortieCellW+tableBarW+4) // two cards across, the table gives way
+	}
+	left := image.Rect(x+8, y+58, leftMax, foot-8)
 	g.sortieGrid(dst, o, left)
 	g.mBtn(dst, image.Rect(x+8, foot, x+96, foot+touchH), "목표", false, g.openObjective)
 	g.mBtn(dst, image.Rect(x+104, foot, x+192, foot+touchH), "메뉴", false, func() { g.openOverlay("menu") })

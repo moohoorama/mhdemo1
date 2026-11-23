@@ -145,6 +145,7 @@ func sortRows[R any](rows []R, cols []column[R], s tableSort, rank func(r *R) in
 // on the scrollbar, and a press on the bar's track pages; a row is picked when a press on it is let
 // go without dragging.
 func drawTable[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], rows []R, r image.Rectangle) {
+	g.wheelAreas = append(g.wheelAreas, wheelArea{unframed(r), l})
 	keepSort(l, t.cols)
 	sortRows(rows, t.cols, l.order, t.rank)
 	pinned := 0

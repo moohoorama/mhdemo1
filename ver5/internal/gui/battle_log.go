@@ -44,6 +44,7 @@ func (g *Game) updateBattleLog() bool {
 	if !g.battleLogVisible() || g.hudShown != "log" || g.overlay() != "" || len(g.modals) > 0 || len(g.learn) > 0 || g.input {
 		g.logDragging = false
 		g.logThumbDragging = false
+		g.logBodyDragging = false
 		return false
 	}
 	x, y := cursorPos()
@@ -78,6 +79,17 @@ func (g *Game) updateBattleLog() bool {
 			g.logScroll = logScrollAt(y-g.logThumbOffset, track, thumb.Dy(), maxScroll)
 		} else {
 			g.logThumbDragging = false
+		}
+		return true
+	}
+	if inside && maxScroll > 0 && !image.Pt(x, y).In(track) && mouseJustPressed(ebiten.MouseButtonLeft) && !g.dragging {
+		g.logBodyDragging, g.logBodyPress, g.logBodyTop = true, y, g.logScroll
+	}
+	if g.logBodyDragging {
+		if mousePressed(ebiten.MouseButtonLeft) {
+			g.logScroll = max(0, min(maxScroll, g.logBodyTop+(y-g.logBodyPress)/logLineHeight))
+		} else {
+			g.logBodyDragging = false
 		}
 		return true
 	}
@@ -198,6 +210,7 @@ func (g *Game) resetBattleLog() {
 	g.logScroll = 0
 	g.logDragging = false
 	g.logThumbDragging = false
+	g.logBodyDragging = false
 }
 
 func (g *Game) bindBattleLogStage(id string) {

@@ -48,6 +48,9 @@ func (g *Game) screenKey() string {
 			return "map:" + g.S.Engine.ExploreFile().Areas[o.Spot.Area].Map
 		}
 		if def, _ := g.scenes.For(o.Node); def != nil {
+			if def.Cut {
+				return "scene:" + def.ID
+			}
 			return "map:" + def.Map
 		}
 		return "story"

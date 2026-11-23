@@ -91,15 +91,26 @@ func (g *Game) cutsceneTimeline(groups [][]core.CutStep) (entries []timedFn, tot
 	cam := [2]float64{g.camX, g.camY}
 	at := map[string]content.Point{} // where the cutscene has walked its people so far
 	for _, group := range groups {
+		if surge := surgeName(group); surge != "" {
+			shown, length := g.suigongTimeline(surge, group, total)
+			entries = append(entries, shown...)
+			total += length
+			continue
+		}
 		var cells []content.Point
 		for _, st := range group {
 			switch st.Kind {
 			case "move", "leave":
-				cells = append(cells, g.walkCells(st.Path)...)
+				if !st.NoFocus {
+					cells = append(cells, g.walkCells(st.Path)...)
+				}
 				if n := len(st.Path); n > 0 {
 					at[st.Unit] = st.Path[n-1]
 				}
 			case "play", "face", "say":
+				if st.NoFocus {
+					continue
+				}
 				if p, ok := at[st.Unit]; ok {
 					cells = append(cells, p)
 				} else if v := g.unitAt(st.Unit); v != nil {
@@ -118,6 +129,10 @@ func (g *Game) cutsceneTimeline(groups [][]core.CutStep) (entries []timedFn, tot
 			case "move":
 				entries = append(entries, g.walkTimeline(st.Unit, st.Path, st.Facing, total)...)
 				length = float64(max(0, len(st.Path)-1)) * stepTime
+				if st.NoFocus {
+					entries = append(entries, timedFn{total, g.onUnit(st.Unit, func(v *unitVis) { v.noFocus = true })},
+						timedFn{total + length, g.onUnit(st.Unit, func(v *unitVis) { v.noFocus = false })})
+				}
 			case "play":
 				entries = append(entries,
 					timedFn{total, g.onUnit(st.Unit, func(v *unitVis) { v.play(st.Motion) })},
@@ -151,6 +166,23 @@ func (g *Game) cutsceneTimeline(groups [][]core.CutStep) (entries []timedFn, tot
 					entries = append(entries, timedFn{total, func() { g.panToCell(p.X, p.Y) }})
 					length = panTime + st.Seconds
 				}
+			case "dust":
+				if n := len(st.Path); n > 0 && g.field != nil {
+					p := st.Path[0]
+					x, y := g.field.Center(float64(p.X), float64(p.Y))
+					cam = [2]float64{x, y}
+					entries = append(entries,
+						timedFn{total, func() { g.panToCell(p.X, p.Y) }},
+						timedFn{total + panTime, func() {
+							g.dustAt(float64(p.X), float64(p.Y), g.field.Lift(p.X, p.Y))
+						}})
+					length = panTime + st.Seconds
+				}
+			case "fall":
+				entries = append(entries, timedFn{total, func() {
+					g.strike(nil, []core.Event{{Kind: "retreat", Actor: st.Unit}})
+				}})
+				length = blinkTime
 			case "wait":
 				length = st.Seconds
 			}
@@ -167,4 +199,28 @@ func cutPlayTime(st core.CutStep) float64 {
 		return st.Seconds
 	}
 	return .7
+}
+
+// surgeName is the flood a cutscene group plays, if it has the step "surge".
+func surgeName(group []core.CutStep) string {
+	for _, st := range group {
+		if st.Kind == "surge" {
+			return st.Text
+		}
+	}
+	return ""
+}
+
+// suigongTimeline is a group that plays the baked flood over the battle (beginSuigong tells how the group casts it): the
+// show runs for as long as the surge takes. A show a skipped replay passes over is ended where it stands.
+func (g *Game) suigongTimeline(name string, group []core.CutStep, start float64) ([]timedFn, float64) {
+	surge, err := g.assets.Surge(name)
+	if err != nil {
+		return nil, 0
+	}
+	length := suigongSeconds(surge)
+	return []timedFn{
+		{start, func() { g.beginSuigong(name, group) }},
+		{start + length, g.endSuigong},
+	}, length
 }

@@ -50,7 +50,7 @@ func (g *Game) validateUIContent() error {
 		}
 	}
 	for i, st := range g.S.Data.Stages {
-		wins, losses := []string{}, []string{g.lordName() + " 퇴각"}
+		wins, losses := []string{}, g.lordDefeat(st)
 		for _, goal := range st.Victory {
 			wins = append(wins, goal.Text)
 		}

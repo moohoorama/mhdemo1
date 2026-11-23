@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/color"
 	"math"
+	"slices"
 	"sort"
 	"strings"
 
@@ -153,7 +154,7 @@ func (g *Game) objective(o core.Observation) briefing {
 	for _, goal := range st.Victory {
 		wins = append(wins, goal.Text)
 	}
-	lose := []string{g.lordName() + " 퇴각"}
+	lose := g.lordDefeat(st)
 	for _, goal := range st.Defeat {
 		if goal.Text != "" {
 			lose = append(lose, goal.Text)
@@ -171,14 +172,27 @@ func (g *Game) objective(o core.Observation) briefing {
 	return b
 }
 
-// lordName is the first lord of the starting roster, whose fall loses a battle.
-func (g *Game) lordName() string {
+func (g *Game) lordID() string {
 	for _, id := range g.S.Data.Campaign.Roster {
 		if g.S.Data.Characters[id].Lord {
-			return g.name(id)
+			return id
 		}
 	}
+	return ""
+}
+
+func (g *Game) lordName() string {
+	if id := g.lordID(); id != "" {
+		return g.name(id)
+	}
 	return "아군 지휘관"
+}
+
+func (g *Game) lordDefeat(st content.Stage) []string {
+	if slices.Contains(st.Excluded, g.lordID()) {
+		return nil
+	}
+	return []string{g.lordName() + " 퇴각"}
 }
 
 func (g *Game) pending(o core.Observation) (left, total int) {

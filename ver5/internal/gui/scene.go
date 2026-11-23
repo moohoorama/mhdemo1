@@ -127,6 +127,12 @@ const (
 	chatEvery = 2.6
 )
 
+// sceneZoom and sceneSpeed are fixed in a story scene; only the walk lets the player change them.
+const (
+	sceneZoom  = 2
+	sceneSpeed = 1.5
+)
+
 // enterScene sets up the scene of a dialogue node; false when the node has none.
 func (g *Game) enterScene(o core.Observation) bool {
 	def, at := g.scenes.For(o.Node)
@@ -183,7 +189,7 @@ func (g *Game) openScene(def *scenes.Scene) {
 			g.startStep(st)
 		}
 	}
-	g.setZoomImmediate(g.savedZoom(true, 2))
+	g.setZoomImmediate(sceneZoom)
 	g.camX, g.camY = g.sceneCam()
 }
 
@@ -656,7 +662,7 @@ func (g *Game) stageStep(st scenes.Step) {
 		s.camU, s.camV = st.CamAt[0], st.CamAt[1]
 		s.zoneHeld = false
 	}
-	if st.Zoom >= 1 {
+	if st.Zoom >= 1 && g.exploring() { // a story scene keeps its fixed zoom
 		g.setZoomImmediate(math.Round(st.Zoom))
 	}
 	if st.Bound != nil {

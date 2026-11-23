@@ -507,7 +507,10 @@ func (g *Game) resultWindow(dst *ebiten.Image, o core.Observation) {
 		r = image.Rect(uiW/2-280, 250, uiW/2+280, 560)
 		g.titled(dst, r, "패배")
 		g.centered(dst, st.Name, float64(uiW/2), 290, 28, bad)
-		reason := g.lordName() + " 퇴각 또는 아군 전멸"
+		reason := "전투 목표를 달성하지 못함"
+		if losses := g.lordDefeat(st); len(losses) > 0 {
+			reason = losses[0] + " 또는 아군 전멸"
+		}
 		if st.TurnLimit > 0 && o.Round > st.TurnLimit {
 			reason = fmt.Sprintf("%d턴 제한 초과", st.TurnLimit)
 		}

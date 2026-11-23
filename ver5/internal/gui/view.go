@@ -22,10 +22,18 @@ func (g *Game) briefed() bool {
 	return len(g.modals) > 0 && g.modals[0].kind == "objective" && !g.modals[0].manual && g.player.Busy()
 }
 
+// speedRate is the replay speed as a factor: fixed in a story scene, else the player's setting.
+func (g *Game) speedRate() float64 {
+	if g.scene != nil {
+		return sceneSpeed
+	}
+	return float64(g.speed)
+}
+
 // advance moves the clock, the replay and every unit's animation by one frame.
 func (g *Game) advance(dt float64) {
 	g.uiSeconds += dt
-	g.textSeconds += dt * float64(g.speed)
+	g.textSeconds += dt * g.speedRate()
 	g.advanceTurnBanner(dt)
 	if g.zoomTo != g.zoomFrom && g.zoomT < .5 {
 		g.zoomT = math.Min(.5, g.zoomT+dt)
@@ -36,11 +44,11 @@ func (g *Game) advance(dt float64) {
 		g.zoom = g.zoomFrom + (g.zoomTo-g.zoomFrom)*t
 	}
 	if g.player.Busy() {
-		g.advancePan(dt * float64(g.speed)) // a replay's camera keeps up with its beats
+		g.advancePan(dt * g.speedRate()) // a replay's camera keeps up with its beats
 	} else {
 		g.advancePan(dt)
 	}
-	dt *= float64(g.speed)
+	dt *= g.speedRate()
 	if g.duelPreview != nil {
 		dt *= g.previewRate
 		if g.previewPaused {
@@ -61,7 +69,7 @@ func (g *Game) advance(dt float64) {
 	g.updateScene(dt)
 	keptToasts := g.toasts[:0]
 	for _, t := range g.toasts {
-		t.t += dt / float64(g.speed)
+		t.t += dt / g.speedRate()
 		if t.t < toastTime {
 			keptToasts = append(keptToasts, t)
 		}
@@ -69,7 +77,7 @@ func (g *Game) advance(dt float64) {
 	g.toasts = keptToasts
 	for _, m := range g.modals[:min(1, len(g.modals))] {
 		if !g.busy() || g.briefed() {
-			m.t += dt / float64(g.speed)
+			m.t += dt / g.speedRate()
 		}
 	}
 	kept := g.popups[:0]
@@ -84,10 +92,13 @@ func (g *Game) advance(dt float64) {
 	g.hitFlashT = math.Max(0, g.hitFlashT-dt)
 	if !g.busy() {
 		o := g.S.View()
-		if o.Phase == "deployment" || o.Phase == "battle" || o.Phase == "result" {
+		if !g.unitsHeld && (o.Phase == "deployment" || o.Phase == "battle" || o.Phase == "result") {
 			g.sync(o)
 		}
 		g.watchSubs(o)
+	}
+	if g.show != nil && g.show.Advance(dt) {
+		g.show = nil
 	}
 }
 

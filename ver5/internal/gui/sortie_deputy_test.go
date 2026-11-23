@@ -95,6 +95,9 @@ func TestSortieDeputy(t *testing.T) {
 		require.NotEmpty(t, deputy)
 		g.party.sortieView, g.party.officerList.top = 0, 0
 		draw(image.Pt(2400, 1080), 207)
+		for g.party.sortieSlots.top = 0; !slices.ContainsFunc(g.buttons, func(b button) bool { return b.label == g.name(deputy) }) && g.party.sortieSlots.top < 20; g.party.sortieSlots.top++ {
+			draw(image.Pt(2400, 1080), 207)
+		}
 		g.pressLabel(g.name(deputy))
 		require.Equal(t, deputy, g.selected)
 		assert.Zero(t, g.party.sortieView)
@@ -167,17 +170,15 @@ func TestSortieTransition(t *testing.T) {
 		assert.InDelta(t, want, transition.update(now, active), 1e-9)
 	}
 	check(1, false, 0)
-	check(2, true, 0)
-	check(2.05, true, 0.5)
-	check(2.1, true, 1)
+	check(2, true, 1) // lights up at once
 	check(3, true, 1)
 	check(4, false, 1)
-	check(4.05, false, 0.5)
-	check(4.1, false, 0)
-	check(5, true, 0)
-	check(5.05, false, 0.5)
-	check(5.075, true, 0.25)
-	check(5.1, true, 0.5)
+	check(4.1, false, 0.5) // dims over sortieDimSeconds
+	check(4.2, false, 0)
+	check(5, true, 1)
+	check(5.1, false, 1)
+	check(5.15, false, 0.75)
+	check(5.16, true, 1)
 }
 
 func TestStoryManagementDeputy(t *testing.T) {

@@ -35,10 +35,12 @@ const Width, Height = 1280, 850
 
 type Game struct {
 	layer           int
-	sound           *soundBank // nil: silent (EnableSound)
-	tracedTheme     string     // the theme last written to sfxTrace
-	sfxCalls        int        // cues asked for so far: a plain click sounds only when what it did made none
-	accepting       bool       // window cleanup inside an approved action is silent
+	sound           *soundBank   // nil: silent (EnableSound)
+	tracedTheme     string       // the theme last written to sfxTrace
+	show            *suigongShow // the flood a battle's cutscene is playing over its field
+	unitsHeld       bool         // a demo moves the units itself: they are not put back on their rules-state cells each frame
+	sfxCalls        int          // cues asked for so far: a plain click sounds only when what it did made none
+	accepting       bool         // window cleanup inside an approved action is silent
 	musicTab        *musicTable
 	duelPreview     func() error
 	previewIdle     int
@@ -165,6 +167,8 @@ type Game struct {
 	logStage                  string
 	logThumbDragging          bool
 	logThumbOffset            int
+	logBodyDragging           bool
+	logBodyPress, logBodyTop  int
 	logHeight, logScroll      int
 	logDragging               bool
 	logDragOffset             int
@@ -1081,6 +1085,9 @@ func (g *Game) drawScreen(dst *ebiten.Image) {
 	}
 	g.showWindows(dst)
 	g.drawEdgeArrow(dst)
+	if g.show != nil {
+		g.show.overlay(dst)
+	}
 	if g.input {
 		rect(dst, 0, float32(uiH-40), float32(uiW), 40, color.NRGBA{A: 220})
 		g.label(dst, "> "+g.entry+"_", 16, float64(uiH-34), 18, gold)
@@ -1256,6 +1263,10 @@ func (g *Game) battle(dst *ebiten.Image, o core.Observation) {
 	if g.layer == layerMap {
 		return
 	}
+	if g.show != nil { // the flood fills the screen: only the bubbles of the people in it
+		g.drawBattleSpeech(dst)
+		return
+	}
 	g.battleHUD(dst, o)
 }
 
@@ -1267,6 +1278,13 @@ func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 	for _, u := range o.UnitViews {
 		if v, ok := g.vis[u.ID]; ok {
 			units = append(units, v)
+		}
+	}
+	if g.show != nil {
+		for _, id := range g.show.extras {
+			if v := g.vis[id]; v != nil {
+				units = append(units, v)
+			}
 		}
 	}
 	vp := g.battleViewport()
@@ -1286,7 +1304,11 @@ func (g *Game) battleMap(dst *ebiten.Image, o core.Observation) func() {
 		g.field.SetLooks(LooksOf(g.S.Data, o))
 	}
 	g.field.setNight(o.Map.Night, lightCells(o.Map.Lights))
-	g.field.setGoals(g.goalShapes(o))
+	if g.show != nil {
+		g.field.setGoals(nil)
+	} else {
+		g.field.setGoals(g.goalShapes(o))
+	}
 	g.field.RangeBorder = g.rangeBorder(o)
 	g.field.Draw(g.clockMS, units, g.marks(o))
 	g.drawDeploymentPreview(o)

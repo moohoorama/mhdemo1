@@ -27,7 +27,7 @@ func (f *Field) updateWade(u *unitVis) {
 	u.wade += math.Max(-.08, math.Min(.08, target-u.wade))
 }
 
-// drawWading draws u standing in the ford: the back half of the ripples round its legs, the sprite put together on a
+// drawWading draws u standing in the ford, or as deep as a flood has risen round it (u.flood): the back half of the ripples round its legs, the sprite put together on a
 // scratch layer with the part under the water line tinted with the water and half let through to the ground, then the
 // front half of the ripples.
 func (f *Field) drawWading(u *unitVis, s Sprite, x, y float64, op *ebiten.DrawImageOptions) {
@@ -45,7 +45,7 @@ func (f *Field) drawWading(u *unitVis, s Sprite, x, y float64, op *ebiten.DrawIm
 	if area.Empty() {
 		return
 	}
-	d := wadeDepth(u) * u.wade
+	d := math.Max(wadeDepth(u)*u.wade, u.flood)
 	f.drawRipples(u, x, y-d, false)
 	layer := f.wading.SubImage(area).(*ebiten.Image)
 	layer.Clear()

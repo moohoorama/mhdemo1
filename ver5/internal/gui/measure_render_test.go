@@ -248,3 +248,86 @@ func measureZoomed(ids []string, zooms ...float64) []struct {
 	}
 	return out
 }
+
+// TestMeasureSurge prints the GPU image memory the flood (assets/graphics/effects/flood/suigong) takes: loaded, and
+// at its most while every frame plays in turn, with the time to make each frame's pictures. SRPG_SHEET names a
+// sheet PNG (the format before the frames were packed) to be loaded the way that was, for the old figure.
+func TestMeasureSurge(t *testing.T) {
+	if os.Getenv("SRPG_RENDER_TEST") != "1" {
+		t.Skip("set SRPG_RENDER_TEST=1")
+	}
+	d, err := NewDemo("../..", DemoOptions{Name: "mapfx"})
+	require.NoError(t, err)
+	mb := func() float64 {
+		var info ebiten.DebugInfo
+		ebiten.ReadDebugInfo(&info)
+		return float64(info.TotalGPUImageMemoryUsageInBytes) / 1048576
+	}
+	p := &onceRenderTest{run: func() error {
+		base := mb()
+		fmt.Printf("SURGE base %7.1f MB\n", base)
+		if path := os.Getenv("SRPG_SHEET"); path != "" {
+			pix, err := loadRGBA(path)
+			if err != nil {
+				return err
+			}
+			sheet := ebiten.NewImageFromImage(pix)
+			dst := ebiten.NewImage(64, 64)
+			dst.DrawImage(sheet.SubImage(image.Rect(0, 0, 64, 64)).(*ebiten.Image), nil)
+			dst.At(0, 0)
+			fmt.Printf("SURGE sheet %dx%d loaded: +%.1f MB\n", pix.Bounds().Dx(), pix.Bounds().Dy(), mb()-base)
+			return nil
+		}
+		start := time.Now()
+		s, err := d.g.assets.Surge("suigong")
+		if err != nil {
+			return err
+		}
+		fmt.Printf("SURGE loaded in %v: +%.1f MB\n", time.Since(start).Round(time.Millisecond), mb()-base)
+		f := d.g.field
+		f.Surge = s
+		var peak float64
+		var times []float64
+		dst := ebiten.NewImage(1280, 850)
+		defer dst.Dispose()
+		warm := ebiten.NewImage(8, 8)
+		dst.DrawImage(warm, nil)
+		dst.At(0, 0)
+		base = mb()
+		for k := range s.ms {
+			t0 := time.Now()
+			ms := 0.0
+			for i := 0; i < k; i++ {
+				ms += float64(s.ms[i])
+			}
+			f.SurgeT = (ms + 1) / 1000
+			f.surgeItems()
+			for _, b := range s.bands[k] {
+				if b.img != nil {
+					dst.DrawImage(b.img, nil)
+				}
+			}
+			el := time.Since(t0)
+			if el > 50*time.Millisecond {
+				fmt.Printf("SURGE slow frame %d: %v with %d bands\n", k, el.Round(time.Millisecond), len(s.bands[k]))
+			}
+			times = append(times, float64(el.Microseconds())/1000)
+			if k%20 == 0 {
+				dst.At(0, 0) // makes the GPU finish, so the memory below counts what was drawn; not timed
+			}
+			if m := mb() - base; m > peak {
+				peak = m
+			}
+		}
+		first := times[0]
+		times = times[1:]
+		sort.Float64s(times)
+		fmt.Printf("SURGE %d frames: peak +%.1f MB; making and drawing a frame's pictures median %.2f ms, p90 %.2f ms, max %.2f ms (the first frame %.1f ms)\n",
+			len(times)+1, peak, times[len(times)/2], times[len(times)*9/10], times[len(times)-1], first)
+		return nil
+	}}
+	result := make(chan error, 1)
+	rendererMain <- func() { result <- ebiten.RunGame(p) }
+	require.NoError(t, <-result)
+	require.NoError(t, p.err)
+}

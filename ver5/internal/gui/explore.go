@@ -145,7 +145,7 @@ func (g *Game) layOutExplore(o core.Observation) {
 // cast marks Stay (or leaves out) stays where the walk left them, the others are put where the cast says.
 func (g *Game) adoptScene(def *scenes.Scene) bool {
 	s := g.scene
-	if g.explore == nil || s == nil || !strings.HasPrefix(s.def.ID, "explore:") || g.field.Map.ID != def.Map {
+	if def.Cut || g.explore == nil || s == nil || !strings.HasPrefix(s.def.ID, "explore:") || g.field.Map.ID != def.Map {
 		return false
 	}
 	s.def, s.held = def, map[string]bool{}
@@ -192,7 +192,7 @@ func (g *Game) adoptScene(def *scenes.Scene) bool {
 // false when the story is in no walk on that map.
 func (g *Game) layOutWalkFor(def *scenes.Scene) bool {
 	x := g.S.Engine.ExploreFile()
-	if x == nil {
+	if def.Cut || x == nil {
 		return false
 	}
 	o := g.S.View()

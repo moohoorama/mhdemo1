@@ -21,7 +21,9 @@ type partyView struct {
 	filter, item     string
 	trait            string
 	tip              string // the equipment trait whose description shows on 장비, as "slot|trait"
-	sortieFades      map[[2]string]sortieTransition
+	sortieSlots      tableList
+	deputyLayer      *ebiten.Image // the deputy plate drawn large, then masked to its rounded corners
+	deputyMask       *ebiten.Image
 	sortieBrightness map[string]sortieTransition
 	sortieView       int       // table or editing view in the sortie
 	sortieTab        int       // the sortie's tab of the picked officer (sortieTabs)
