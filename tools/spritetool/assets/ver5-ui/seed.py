@@ -148,6 +148,112 @@ def scroll_grain(s):
     return [{"grain": ["g"] * 4}]
 
 
+# The scrollbar options (10x10 UI px pieces, one art px per UI px, nearest sampled): the game slices each nine ways
+# with 4 px corners and stretches the middle rows and columns, so rows 4-5 of every piece are the same row.
+def _row(*parts):
+    s = "".join(c * n for c, n in parts)
+    assert len(s) == 10, s
+    return s
+
+
+def scroll_a_track(s):
+    """A: a gold-framed lacquer groove, the window rim's double gold line."""
+    edge, body = _row(("k", 1), ("g", 8), ("k", 1)), _row(("k", 1), ("d", 1), ("l", 6), ("g", 1), ("k", 1))
+    return [{"track": [_row(("k", 10)), edge, body, body, body, body, body, body, edge, _row(("k", 10))]}]
+
+
+def scroll_a_thumb(s):
+    """A: a solid gold block with a light top edge and a dark foot, lit when hovered (the second frame)."""
+    rows = [_row(("k", 10)), _row(("k", 1), ("w", 8), ("k", 1))]
+    rows += [_row(("k", 1), ("g", 7), ("d", 1), ("k", 1))] * 5
+    rows += [_row(("k", 1), ("d", 8), ("k", 1))] * 2 + [_row(("k", 10))]
+    lit = [r.translate(str.maketrans("wgdk", "WGDk")) for r in rows]
+    return [{"thumb": rows}, {"thumb": lit}]
+
+
+def scroll_b_track(s):
+    """B: a beaded groove, a dark capsule with a gold line down its middle."""
+    r0 = _row((".", 3), ("k", 4), (".", 3))
+    r1 = _row((".", 2), ("k", 1), ("l", 4), ("k", 1), (".", 2))
+    r2 = _row((".", 1), ("k", 1), ("l", 6), ("k", 1), (".", 1))
+    mid = _row((".", 1), ("k", 1), ("l", 2), ("g", 2), ("l", 2), ("k", 1), (".", 1))
+    return [{"track": [r0, r1, r2, mid, mid, r2, r1, r1, r1, r0]}]
+
+
+def scroll_b_thumb(s):
+    """B: a round-ended bead, gold with a white glint and a dark foot, lit when hovered."""
+    rows = [
+        _row((".", 3), ("k", 4), (".", 3)),
+        _row((".", 2), ("k", 1), ("w", 4), ("k", 1), (".", 2)),
+        _row((".", 1), ("k", 1), ("w", 1), ("g", 4), ("k", 1), (".", 2)),
+        _row((".", 1), ("k", 1), ("w", 1), ("g", 4), ("d", 1), ("k", 1), (".", 1)),
+        _row(("k", 1), ("w", 1), ("g", 6), ("d", 1), ("k", 1)),
+        _row(("k", 1), ("w", 1), ("g", 6), ("d", 1), ("k", 1)),
+        _row(("k", 1), ("g", 6), ("d", 2), ("k", 1)),
+        _row((".", 1), ("k", 1), ("g", 4), ("d", 2), ("k", 1), (".", 1)),
+        _row((".", 2), ("k", 1), ("d", 4), ("k", 1), (".", 2)),
+        _row((".", 3), ("k", 4), (".", 3)),
+    ]
+    lit = [r.translate(str.maketrans("wgdk", "WGDk")) for r in rows]
+    return [{"thumb": rows}, {"thumb": lit}]
+
+
+def scroll_c_track(s):
+    """C: a wooden roller, dark wood with light grain and a dark edge."""
+    v1 = _row(("k", 1), ("b", 8), ("k", 1))
+    v2 = _row(("k", 1), ("b", 3), ("l", 1), ("b", 4), ("k", 1))
+    v3 = _row(("k", 1), ("b", 1), ("l", 2), ("b", 5), ("k", 1))
+    dark = _row(("k", 1), ("d", 8), ("k", 1))
+    return [{"track": [_row(("k", 10)), v1, v2, v3, v2, v2, v3, v1, dark, _row(("k", 10))]}]
+
+
+def scroll_c_thumb(s):
+    """C: a paper slip with gold ends and a dark edge, lit when hovered."""
+    paper = _row(("k", 1), ("p", 8), ("k", 1))
+    slip = _row(("k", 1), ("p", 7), ("d", 1), ("k", 1))
+    rows = [_row(("k", 10)), _row(("k", 1), ("g", 8), ("k", 1)), slip, slip, paper, paper, paper, slip,
+            _row(("k", 1), ("d", 8), ("k", 1)), _row(("k", 10))]
+    lit = [r.translate(str.maketrans("pgdk", "PGDk")) for r in rows]
+    return [{"thumb": rows}, {"thumb": lit}]
+
+
+def scroll_d_track(s):
+    """D: dark lacquer with gold studs down the groove."""
+    edge = _row(("k", 1), ("d", 8), ("k", 1))
+    plain = _row(("k", 1), ("l", 8), ("k", 1))
+    frame = _row(("k", 1), ("d", 1), ("l", 6), ("d", 1), ("k", 1))
+    stud = _row(("k", 1), ("d", 1), ("l", 2), ("g", 2), ("l", 2), ("d", 1), ("k", 1))
+    return [{"track": [_row(("k", 10)), edge, frame, stud, plain, plain, stud, frame, edge, _row(("k", 10))]}]
+
+
+def scroll_d_thumb(s):
+    """D: a dark lacquer block with a gold frame and a gold stud at its middle, lit when hovered."""
+    gold = _row(("k", 1), ("g", 8), ("k", 1))
+    frame = _row(("k", 1), ("g", 1), ("l", 6), ("g", 1), ("k", 1))
+    mid = _row(("k", 1), ("g", 1), ("l", 2), ("g", 2), ("l", 2), ("g", 1), ("k", 1))
+    rows = [_row(("k", 10)), gold, frame, frame, mid, mid, frame, frame, gold, _row(("k", 10))]
+    lit = [r.translate(str.maketrans("lgk", "LGk")) for r in rows]
+    return [{"thumb": rows}, {"thumb": lit}]
+
+
+def scroll_e_track(s):
+    """E: a dotted fabric, dark pixels with holes where the table shows through (a dither)."""
+    odd = _row(("k", 1), ("a", 1), (".", 1), ("a", 1), (".", 1), ("a", 1), (".", 1), ("a", 1), (".", 1), ("k", 1))
+    even = _row(("k", 1), (".", 1), ("a", 1), (".", 1), ("a", 1), (".", 1), ("a", 1), (".", 1), ("a", 1), ("k", 1))
+    edge = _row(("k", 1), ("a", 8), ("k", 1))
+    return [{"track": [_row(("k", 10)), edge, even, odd, odd, odd, even, odd, edge, _row(("k", 10))]}]
+
+
+def scroll_e_thumb(s):
+    """E: a gold checker, gold and dark gold alternating (a dither), lit when hovered."""
+    a = _row(("k", 1), ("g", 1), ("d", 1), ("g", 1), ("d", 1), ("g", 1), ("d", 1), ("g", 1), ("d", 1), ("k", 1))
+    b = _row(("k", 1), ("d", 1), ("g", 1), ("d", 1), ("g", 1), ("d", 1), ("g", 1), ("d", 1), ("g", 1), ("k", 1))
+    edge = _row(("k", 1), ("d", 8), ("k", 1))
+    rows = [_row(("k", 10)), _row(("k", 1), ("g", 8), ("k", 1)), a, b, a, a, b, a, edge, _row(("k", 10))]
+    lit = [r.translate(str.maketrans("gdk", "GDk")) for r in rows]
+    return [{"thumb": rows}, {"thumb": lit}]
+
+
 if __name__ == "__main__":
     settings = json.loads((HERE / "settings.json").read_text())
     path = HERE / "pixels.json"

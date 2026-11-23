@@ -222,12 +222,11 @@ func (g *Game) tableBar(dst *ebiten.Image, l *tableList, track image.Rectangle, 
 	th := max(24, track.Dy()*fit/n)
 	ty := track.Min.Y + (track.Dy()-th)*l.top/(n-fit)
 	thumb := image.Rect(track.Min.X, ty, track.Max.X, ty+th)
-	rect(dst, float32(track.Min.X), float32(track.Min.Y), float32(track.Dx()), float32(track.Dy()), color.NRGBA{R: 90, G: 90, B: 90, A: 110})
 	c := color.NRGBA{R: 185, G: 170, B: 135, A: 220}
 	if d := g.tableDrag; hovered(thumb) || d != nil && d.l == l && d.perPx > 0 {
 		c = color.NRGBA{R: 225, G: 205, B: 150, A: 240}
 	}
-	scrollBarStyles[scrollBarStyle](dst, track, thumb, c)
+	scrollBarStyles[scrollBarStyle](g, dst, track, thumb, c)
 	g.addGrab(track, func() {
 		x, y := cursorPos()
 		switch p := image.Pt(x, y); {

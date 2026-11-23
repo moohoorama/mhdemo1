@@ -20,23 +20,9 @@ func (g *Game) sortieForced(o core.Observation) bool {
 	return g.S.Data.Stages[o.Stage].Forced
 }
 
-// The preparation's sheet is as wide as sortieCols cards and the detail panel take, and never narrower than sheetMax;
-// where the window is narrower the grid gives up columns first (sortieColumns), the detail panel keeps sortieDetailW.
-const (
-	sortieSideW   = 68  // the ◀ ▶ buttons and the margins to the sheet's right edge
-	sortieDetailW = 440 // the detail panel, wide enough for its six tabs
-)
-
-// sortieSheetSize is the preparation's sheet in UI px.
-func sortieSheetSize() (int, int) {
-	_, h := sheetSize()
-	w := 8 + sortieCols*sortieCellW + tableBarW + 4 + sortieSideW + sortieDetailW
-	return min(uiW-16, max(sheetMax, w)), h
-}
-
 // drawSortie draws the preparation over the battle node, filling the screen up to sheetMax.
 func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
-	w, h := sortieSheetSize()
+	w, h := sheetSize()
 	x, y := (uiW-w)/2, (uiH-h)/2
 	g.window(dst, image.Rect(x, y, x+w, y+h))
 	g.block(image.Rect(x, y, x+w, y+h))
@@ -52,7 +38,10 @@ func (g *Game) drawSortie(dst *ebiten.Image, o core.Observation) {
 	}
 	g.label(dst, count, float64(x+120), float64(y+17), 13, muted)
 	foot := y + h - 60
-	leftMax := min(x+w-sortieSideW-sortieDetailW, x+8+sortieCols*sortieCellW+tableBarW+4) // the cards a row, the detail panel keeps its room
+	leftMax := x + w*3/10
+	if touchUI {
+		leftMax = max(leftMax, x+8+2*sortieCellW+tableBarW+4) // two cards across, the table gives way
+	}
 	left := image.Rect(x+8, y+58, leftMax, foot-8)
 	g.sortieGrid(dst, o, left)
 	g.mBtn(dst, image.Rect(x+8, foot, x+96, foot+touchH), "목표", false, g.openObjective)

@@ -63,18 +63,20 @@ func (g *Game) sortieGrid(dst *ebiten.Image, o core.Observation, r image.Rectang
 func sortieColumns(avail int) int { return max(1, min(sortieCols, avail/sortieCellW)) }
 
 // The card is sized in fixed pixels, not for the window: the officer's card, the deputy's medal that overhangs its
-// bottom-right corner (sizes per platform in platform_*.go), and the margin around both.
+// bottom-right corner (sizes per platform in platform_*.go), and the margin around both. The cards of sortieCols
+// fit the grid's room beside the detail panel (drawSortie's leftMax).
 const (
+	sortiePad   = 3
 	sortieOutX  = sortieMedal / 11
 	sortieOutY  = sortieMedal * 9 / 56
-	sortieCellW = 6 + sortieLeadW + sortieOutX + 6
-	sortieCellH = 6 + sortieLeadH + sortieOutY + 6
+	sortieCellW = 2*sortiePad + sortieLeadW + sortieOutX
+	sortieCellH = 2*sortiePad + sortieLeadH + sortieOutY
 )
 
 // sortieCell draws the sortie slot i, an officer's card with its deputy's medal, with its corner at (x, y).
 // Rule: a picture selects that person; the swap mark (or an empty medal's +) opens the lead's deputy window.
 func (g *Game) sortieCell(dst *ebiten.Image, o core.Observation, ids []string, i, x, y int) {
-	lead := image.Rect(x+6, y+6, x+6+sortieLeadW, y+6+sortieLeadH)
+	lead := image.Rect(x+sortiePad, y+sortiePad, x+sortiePad+sortieLeadW, y+sortiePad+sortieLeadH)
 	if i >= len(ids) {
 		g.sortieSlot(dst, lead)
 		return
@@ -129,7 +131,7 @@ func (g *Game) sortieCell(dst *ebiten.Image, o core.Observation, ids []string, i
 			})
 			if showSwap {
 				g.sortieSwapMark(dst, swap)
-				g.addButton(swap.Inset(-6), g.name(id)+" 부관 교체", openDeputy)
+				g.addButton(sortieSwapHit(swap), g.name(id)+" 부관 교체", openDeputy)
 			}
 		} else {
 			g.sortieMedalPlate(dst, medal, nil, g.sortieLight(id+"/deputy", onMedal))
@@ -255,10 +257,19 @@ func (g *Game) sortieMedalPlate(dst *ebiten.Image, r image.Rectangle, deputy *co
 	op.GeoM.Scale(1.0/k, 1.0/k)
 	op.GeoM.Translate(float64(r.Min.X), float64(r.Min.Y))
 	drawScaled(dst, layer, op)
-	if deputy != nil {
+	if deputy != nil && touchUI { // the name needs the phone's medal: on the desktop it would be a few px high
 		g.sortieMedalName(dst, r, deputy.ID)
 	}
 	g.sortieRoundRim(dst, r, cardRim)
+}
+
+// sortieSwapHit is the swap mark's touch target: touchH square on the phone, centred on the mark, else the mark with a margin.
+func sortieSwapHit(swap image.Rectangle) image.Rectangle {
+	if !touchUI {
+		return swap.Inset(-6)
+	}
+	c := swap.Min.Add(swap.Size().Div(2))
+	return image.Rect(c.X-touchH/2, c.Y-touchH/2, c.X+touchH/2, c.Y+touchH/2)
 }
 
 // sortieSwapMark draws the swap mark (two opposite arrows on a round chip) in r.

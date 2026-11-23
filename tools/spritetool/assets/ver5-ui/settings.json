@@ -71,7 +71,17 @@
     "bar_mp",
     "scroll_curl",
     "scroll_grain",
-    "edge_arrow"
+    "edge_arrow",
+    "scroll_a_track",
+    "scroll_a_thumb",
+    "scroll_b_track",
+    "scroll_b_thumb",
+    "scroll_c_track",
+    "scroll_c_thumb",
+    "scroll_d_track",
+    "scroll_d_thumb",
+    "scroll_e_track",
+    "scroll_e_thumb"
   ],
   "outline": "#000000",
   "sprites": {
@@ -2123,6 +2133,234 @@
       "layers": {
         "icon": {
           "palette": {"k": "#1c120c", "W": "#ffffff", "h": "#e4ecf4", "l": "#b4d4ee", "a": "#a4aebc", "b": "#76829a", "c": "#4e5870", "d": "#2e3444"}
+        }
+      }
+    },
+    "scroll_a_track": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "scrollbar option (game draws the track or thumb nine ways, 4 px corners, middle rows and columns stretched; frame 2 is the hovered or dragged ink). A 금테 쪽매 — the groove's gold frame",
+      "layers": {
+        "track": {
+          "palette": {
+            "k": "#0c0806",
+            "g": "#e2b65d",
+            "d": "#846834",
+            "l": "#2c1e18"
+          }
+        }
+      }
+    },
+    "scroll_a_thumb": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 2,
+      "timing": "scrollbar option (game draws the track or thumb nine ways, 4 px corners, middle rows and columns stretched; frame 2 is the hovered or dragged ink). A 금테 쪽매 — the gold block (frame 2 lit)",
+      "layers": {
+        "thumb": {
+          "palette": {
+            "k": "#0c0806",
+            "w": "#f5dc9a",
+            "g": "#e2b65d",
+            "d": "#846834",
+            "W": "#ffffff",
+            "G": "#ffe9a8",
+            "D": "#c79c4a"
+          }
+        }
+      }
+    },
+    "scroll_b_track": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "scrollbar option (game draws the track or thumb nine ways, 4 px corners, middle rows and columns stretched; frame 2 is the hovered or dragged ink). B 구슬 줄 — the bead groove",
+      "layers": {
+        "track": {
+          "palette": {
+            "k": "#0c0806",
+            "l": "#2c1e18",
+            "g": "#e2b65d"
+          }
+        }
+      }
+    },
+    "scroll_b_thumb": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 2,
+      "timing": "scrollbar option (game draws the track or thumb nine ways, 4 px corners, middle rows and columns stretched; frame 2 is the hovered or dragged ink). B 구슬 줄 — the bead (frame 2 lit)",
+      "layers": {
+        "thumb": {
+          "palette": {
+            "k": "#0c0806",
+            "w": "#f5dc9a",
+            "g": "#e2b65d",
+            "d": "#846834",
+            "W": "#ffffff",
+            "G": "#ffe9a8",
+            "D": "#c79c4a"
+          }
+        }
+      }
+    },
+    "scroll_c_track": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "scrollbar option (game draws the track or thumb nine ways, 4 px corners, middle rows and columns stretched; frame 2 is the hovered or dragged ink). C 두루마리 축 — the wooden roller",
+      "layers": {
+        "track": {
+          "palette": {
+            "k": "#0c0806",
+            "b": "#6b4a2a",
+            "l": "#8a6238",
+            "d": "#3d2716"
+          }
+        }
+      }
+    },
+    "scroll_c_thumb": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 2,
+      "timing": "scrollbar option (game draws the track or thumb nine ways, 4 px corners, middle rows and columns stretched; frame 2 is the hovered or dragged ink). C 두루마리 축 — the paper slip (frame 2 lit)",
+      "layers": {
+        "thumb": {
+          "palette": {
+            "k": "#0c0806",
+            "p": "#d9c9a0",
+            "g": "#e2b65d",
+            "d": "#846834",
+            "P": "#f3e4bb",
+            "G": "#ffe9a8",
+            "D": "#c79c4a"
+          }
+        }
+      }
+    },
+    "scroll_d_track": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "scrollbar option (game draws the track or thumb nine ways, 4 px corners, middle rows and columns stretched; frame 2 is the hovered or dragged ink). D 옥 장식 — the lacquer groove with studs",
+      "layers": {
+        "track": {
+          "palette": {
+            "k": "#0c0806",
+            "d": "#846834",
+            "l": "#2c1e18",
+            "g": "#e2b65d"
+          }
+        }
+      }
+    },
+    "scroll_d_thumb": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 2,
+      "timing": "scrollbar option (game draws the track or thumb nine ways, 4 px corners, middle rows and columns stretched; frame 2 is the hovered or dragged ink). D 옥 장식 — the lacquer block (frame 2 lit)",
+      "layers": {
+        "thumb": {
+          "palette": {
+            "k": "#0c0806",
+            "g": "#e2b65d",
+            "l": "#2c1e18",
+            "G": "#ffe9a8",
+            "L": "#4a382e"
+          }
+        }
+      }
+    },
+    "scroll_e_track": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "scrollbar option (game draws the track or thumb nine ways, 4 px corners, middle rows and columns stretched; frame 2 is the hovered or dragged ink). E 점무늬 — the dotted fabric",
+      "layers": {
+        "track": {
+          "palette": {
+            "k": "#0c0806",
+            "a": "#3a2b21"
+          }
+        }
+      }
+    },
+    "scroll_e_thumb": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 2,
+      "timing": "scrollbar option (game draws the track or thumb nine ways, 4 px corners, middle rows and columns stretched; frame 2 is the hovered or dragged ink). E 점무늬 — the gold dither (frame 2 lit)",
+      "layers": {
+        "thumb": {
+          "palette": {
+            "k": "#0c0806",
+            "g": "#e2b65d",
+            "d": "#846834",
+            "G": "#ffe9a8",
+            "D": "#c79c4a"
+          }
         }
       }
     }

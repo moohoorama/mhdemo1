@@ -249,6 +249,19 @@ func TestSortieColumns(t *testing.T) {
 	assert.Equal(t, 2, sortieColumns(2*sortieCellW))
 }
 
+// The cards of sortieCols fit the grid's room beside the detail panel of the 960-wide sheet (the original 3/10 of it),
+// and on the phone the swap mark's touch target is at least touchH.
+func TestSortieCardFitsRoom(t *testing.T) {
+	room := sheetMax*3/10 - 8 - tableBarW - 4
+	assert.LessOrEqual(t, sortieCols*sortieCellW, room)
+	assert.Equal(t, sortieCols, sortieColumns(room))
+	if touchUI {
+		hit := sortieSwapHit(image.Rect(0, 0, sortieSwap, sortieSwap))
+		assert.GreaterOrEqual(t, hit.Dx(), touchH)
+		assert.GreaterOrEqual(t, hit.Dy(), touchH)
+	}
+}
+
 // sortieCardColumns draws the sortie preparation on a w×h screen at the UI size and counts the cards on the first row
 // (their lead buttons' distinct x), and the card buttons' rectangles.
 func sortieCardColumns(t *testing.T, sc image.Point, scale int) (int, []image.Rectangle) {
@@ -351,4 +364,19 @@ func TestSortieCardTapAndDrag(t *testing.T) {
 		assert.Greater(t, l.top, top, "dragged up: the grid moves to the next row")
 		assert.Equal(t, ids[1], g.selected, "a drag selects nothing")
 	})
+}
+
+// Every dot-art scrollbar option has its track and thumb (thumb with the lit frame) in the UI sheet.
+func TestScrollBarArtSprites(t *testing.T) {
+	d, err := NewDemo("../..", DemoOptions{Name: "scrollbar", Node: "c25-battle"})
+	require.NoError(t, err)
+	for _, p := range []string{"scroll_a", "scroll_b", "scroll_c", "scroll_d", "scroll_e"} {
+		track, ok := d.g.assets.UI[p+"_track"]
+		require.True(t, ok, p)
+		assert.Len(t, track.Frames, 1, p)
+		thumb, ok := d.g.assets.UI[p+"_thumb"]
+		require.True(t, ok, p)
+		assert.Len(t, thumb.Frames, 2, p)
+	}
+	assert.Len(t, scrollBarStyles, len(scrollBarNames))
 }
