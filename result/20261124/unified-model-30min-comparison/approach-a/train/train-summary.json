@@ -1,0 +1,20 @@
+{
+ "battle_temperature": 0.25,
+ "best_dev_completed": 0,
+ "best_dev_mean": 4.25,
+ "best_dev_min": 4,
+ "budget": "30m0s",
+ "collect": 8,
+ "content_hash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+ "dev_games": 4,
+ "dev_seed_first": 230001,
+ "eval_seed_first_unused": 240001,
+ "hidden": 32,
+ "initial_dev_mean": 3,
+ "par": 4,
+ "train_campaign_mean_wins": 2.74375,
+ "train_elapsed_sec": 1788.521311583,
+ "train_episodes": 1120,
+ "train_seed_first": 220001,
+ "warm_campaigns": 8
+}

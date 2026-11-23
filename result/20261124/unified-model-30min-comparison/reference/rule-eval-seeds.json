@@ -1,0 +1,980 @@
+[
+ {
+  "Player": "rule",
+  "Seed": 240001,
+  "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+  "ExpectedBattles": 30,
+  "EndNode": "c09-battle",
+  "Stages": [
+   {
+    "Stage": "B01",
+    "Order": 1,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 3,
+    "Levels": {
+     "guanyu": 2,
+     "liubei": 1,
+     "zhangfei": 2
+    }
+   },
+   {
+    "Stage": "B02",
+    "Order": 2,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 4,
+    "Levels": {
+     "guanyu": 4,
+     "liubei": 3,
+     "zhangfei": 3
+    }
+   },
+   {
+    "Stage": "B03",
+    "Order": 3,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 9,
+    "Levels": {
+     "guanyu": 5,
+     "liubei": 7,
+     "zhangfei": 5
+    }
+   },
+   {
+    "Stage": "B04",
+    "Order": 4,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 1,
+    "Rounds": 7,
+    "Levels": {
+     "guanyu": 7,
+     "jianyong": 8,
+     "liubei": 9,
+     "zhangfei": 5
+    }
+   },
+   {
+    "Stage": "B05",
+    "Order": 5,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 1,
+    "SubsTotal": 1,
+    "Rounds": 6,
+    "Levels": {
+     "guanyu": 9,
+     "jianyong": 9,
+     "liubei": 10,
+     "zhangfei": 6
+    }
+   },
+   {
+    "Stage": "B06",
+    "Order": 6,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 1,
+    "SubsTotal": 1,
+    "Rounds": 12,
+    "Levels": {
+     "guanyu": 12,
+     "jianyong": 12,
+     "liubei": 11,
+     "zhangfei": 10
+    }
+   },
+   {
+    "Stage": "B07",
+    "Order": 7,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 2,
+    "Rounds": 5,
+    "Levels": {
+     "guanyu": 13,
+     "jianyong": 12,
+     "liubei": 12,
+     "zhangfei": 10
+    }
+   },
+   {
+    "Stage": "B08",
+    "Order": 8,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 4,
+    "Levels": {
+     "guanyu": 15,
+     "jianyong": 12,
+     "liubei": 13,
+     "zhangfei": 11
+    }
+   },
+   {
+    "Stage": "B09",
+    "Order": 9,
+    "Tries": 1,
+    "Won": false,
+    "FirstWin": false,
+    "Subs": 0,
+    "SubsTotal": 2,
+    "Rounds": 7,
+    "Levels": {
+     "fangong": 16,
+     "guanyu": 15,
+     "jianyong": 14,
+     "liubei": 14,
+     "zhangfei": 12
+    }
+   }
+  ],
+  "Cleared": false,
+  "Levels": {
+   "fangong": 16,
+   "guanyu": 15,
+   "jianyong": 14,
+   "liubei": 14,
+   "zhangfei": 12
+  },
+  "LevelScore": 17.75,
+  "UnbeatenStages": 8,
+  "FirstDefeat": "B09"
+ },
+ {
+  "Player": "rule",
+  "Seed": 240002,
+  "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+  "ExpectedBattles": 30,
+  "EndNode": "c06-battle",
+  "Stages": [
+   {
+    "Stage": "B01",
+    "Order": 1,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 3,
+    "Levels": {
+     "guanyu": 2,
+     "liubei": 1,
+     "zhangfei": 2
+    }
+   },
+   {
+    "Stage": "B02",
+    "Order": 2,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 5,
+    "Levels": {
+     "guanyu": 3,
+     "liubei": 4,
+     "zhangfei": 3
+    }
+   },
+   {
+    "Stage": "B03",
+    "Order": 3,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 9,
+    "Levels": {
+     "guanyu": 4,
+     "liubei": 6,
+     "zhangfei": 5
+    }
+   },
+   {
+    "Stage": "B04",
+    "Order": 4,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 1,
+    "Rounds": 7,
+    "Levels": {
+     "guanyu": 5,
+     "jianyong": 8,
+     "liubei": 7,
+     "zhangfei": 5
+    }
+   },
+   {
+    "Stage": "B05",
+    "Order": 5,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 1,
+    "SubsTotal": 1,
+    "Rounds": 5,
+    "Levels": {
+     "guanyu": 7,
+     "jianyong": 9,
+     "liubei": 8,
+     "zhangfei": 5
+    }
+   },
+   {
+    "Stage": "B06",
+    "Order": 6,
+    "Tries": 1,
+    "Won": false,
+    "FirstWin": false,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 11,
+    "Levels": {
+     "guanyu": 10,
+     "jianyong": 11,
+     "liubei": 11,
+     "zhangfei": 8
+    }
+   }
+  ],
+  "Cleared": false,
+  "Levels": {
+   "guanyu": 10,
+   "jianyong": 11,
+   "liubei": 11,
+   "zhangfei": 8
+  },
+  "LevelScore": 10,
+  "UnbeatenStages": 5,
+  "FirstDefeat": "B06"
+ },
+ {
+  "Player": "rule",
+  "Seed": 240003,
+  "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+  "ExpectedBattles": 30,
+  "EndNode": "c06-battle",
+  "Stages": [
+   {
+    "Stage": "B01",
+    "Order": 1,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 3,
+    "Levels": {
+     "guanyu": 2,
+     "liubei": 1,
+     "zhangfei": 2
+    }
+   },
+   {
+    "Stage": "B02",
+    "Order": 2,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 4,
+    "Levels": {
+     "guanyu": 4,
+     "liubei": 4,
+     "zhangfei": 3
+    }
+   },
+   {
+    "Stage": "B03",
+    "Order": 3,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 8,
+    "Levels": {
+     "guanyu": 5,
+     "liubei": 6,
+     "zhangfei": 3
+    }
+   },
+   {
+    "Stage": "B04",
+    "Order": 4,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 1,
+    "Rounds": 7,
+    "Levels": {
+     "guanyu": 7,
+     "jianyong": 8,
+     "liubei": 8,
+     "zhangfei": 4
+    }
+   },
+   {
+    "Stage": "B05",
+    "Order": 5,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 1,
+    "SubsTotal": 1,
+    "Rounds": 9,
+    "Levels": {
+     "guanyu": 8,
+     "jianyong": 10,
+     "liubei": 10,
+     "zhangfei": 6
+    }
+   },
+   {
+    "Stage": "B06",
+    "Order": 6,
+    "Tries": 1,
+    "Won": false,
+    "FirstWin": false,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 10,
+    "Levels": {
+     "guanyu": 11,
+     "jianyong": 12,
+     "liubei": 11,
+     "zhangfei": 7
+    }
+   }
+  ],
+  "Cleared": false,
+  "Levels": {
+   "guanyu": 11,
+   "jianyong": 12,
+   "liubei": 11,
+   "zhangfei": 7
+  },
+  "LevelScore": 10.25,
+  "UnbeatenStages": 5,
+  "FirstDefeat": "B06"
+ },
+ {
+  "Player": "rule",
+  "Seed": 240004,
+  "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+  "ExpectedBattles": 30,
+  "EndNode": "c06-battle",
+  "Stages": [
+   {
+    "Stage": "B01",
+    "Order": 1,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 3,
+    "Levels": {
+     "guanyu": 2,
+     "liubei": 1,
+     "zhangfei": 2
+    }
+   },
+   {
+    "Stage": "B02",
+    "Order": 2,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 4,
+    "Levels": {
+     "guanyu": 3,
+     "liubei": 4,
+     "zhangfei": 3
+    }
+   },
+   {
+    "Stage": "B03",
+    "Order": 3,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 9,
+    "Levels": {
+     "guanyu": 4,
+     "liubei": 7,
+     "zhangfei": 5
+    }
+   },
+   {
+    "Stage": "B04",
+    "Order": 4,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 1,
+    "Rounds": 7,
+    "Levels": {
+     "guanyu": 6,
+     "jianyong": 8,
+     "liubei": 8,
+     "zhangfei": 6
+    }
+   },
+   {
+    "Stage": "B05",
+    "Order": 5,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 1,
+    "SubsTotal": 1,
+    "Rounds": 6,
+    "Levels": {
+     "guanyu": 9,
+     "jianyong": 9,
+     "liubei": 9,
+     "zhangfei": 7
+    }
+   },
+   {
+    "Stage": "B06",
+    "Order": 6,
+    "Tries": 1,
+    "Won": false,
+    "FirstWin": false,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 11,
+    "Levels": {
+     "guanyu": 11,
+     "jianyong": 11,
+     "liubei": 12,
+     "zhangfei": 9
+    }
+   }
+  ],
+  "Cleared": false,
+  "Levels": {
+   "guanyu": 11,
+   "jianyong": 11,
+   "liubei": 12,
+   "zhangfei": 9
+  },
+  "LevelScore": 10.75,
+  "UnbeatenStages": 5,
+  "FirstDefeat": "B06"
+ },
+ {
+  "Player": "rule",
+  "Seed": 240005,
+  "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+  "ExpectedBattles": 30,
+  "EndNode": "c08-battle",
+  "Stages": [
+   {
+    "Stage": "B01",
+    "Order": 1,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 3,
+    "Levels": {
+     "guanyu": 2,
+     "liubei": 1,
+     "zhangfei": 2
+    }
+   },
+   {
+    "Stage": "B02",
+    "Order": 2,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 4,
+    "Levels": {
+     "guanyu": 4,
+     "liubei": 3,
+     "zhangfei": 3
+    }
+   },
+   {
+    "Stage": "B03",
+    "Order": 3,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 8,
+    "Levels": {
+     "guanyu": 5,
+     "liubei": 6,
+     "zhangfei": 6
+    }
+   },
+   {
+    "Stage": "B04",
+    "Order": 4,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 1,
+    "Rounds": 6,
+    "Levels": {
+     "guanyu": 6,
+     "jianyong": 9,
+     "liubei": 8,
+     "zhangfei": 6
+    }
+   },
+   {
+    "Stage": "B05",
+    "Order": 5,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 1,
+    "SubsTotal": 1,
+    "Rounds": 6,
+    "Levels": {
+     "guanyu": 8,
+     "jianyong": 10,
+     "liubei": 9,
+     "zhangfei": 7
+    }
+   },
+   {
+    "Stage": "B06",
+    "Order": 6,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 1,
+    "SubsTotal": 1,
+    "Rounds": 13,
+    "Levels": {
+     "guanyu": 12,
+     "jianyong": 12,
+     "liubei": 13,
+     "zhangfei": 10
+    }
+   },
+   {
+    "Stage": "B07",
+    "Order": 7,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 2,
+    "Rounds": 5,
+    "Levels": {
+     "guanyu": 12,
+     "jianyong": 13,
+     "liubei": 13,
+     "zhangfei": 10
+    }
+   },
+   {
+    "Stage": "B08",
+    "Order": 8,
+    "Tries": 1,
+    "Won": false,
+    "FirstWin": false,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 6,
+    "Levels": {
+     "guanyu": 12,
+     "jianyong": 14,
+     "liubei": 15,
+     "zhangfei": 11
+    }
+   }
+  ],
+  "Cleared": false,
+  "Levels": {
+   "guanyu": 12,
+   "jianyong": 14,
+   "liubei": 15,
+   "zhangfei": 11
+  },
+  "LevelScore": 13,
+  "UnbeatenStages": 7,
+  "FirstDefeat": "B08"
+ },
+ {
+  "Player": "rule",
+  "Seed": 240006,
+  "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+  "ExpectedBattles": 30,
+  "EndNode": "c06-battle",
+  "Stages": [
+   {
+    "Stage": "B01",
+    "Order": 1,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 3,
+    "Levels": {
+     "guanyu": 2,
+     "liubei": 1,
+     "zhangfei": 2
+    }
+   },
+   {
+    "Stage": "B02",
+    "Order": 2,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 5,
+    "Levels": {
+     "guanyu": 4,
+     "liubei": 4,
+     "zhangfei": 3
+    }
+   },
+   {
+    "Stage": "B03",
+    "Order": 3,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 8,
+    "Levels": {
+     "guanyu": 4,
+     "liubei": 6,
+     "zhangfei": 6
+    }
+   },
+   {
+    "Stage": "B04",
+    "Order": 4,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 1,
+    "Rounds": 7,
+    "Levels": {
+     "guanyu": 6,
+     "jianyong": 8,
+     "liubei": 9,
+     "zhangfei": 7
+    }
+   },
+   {
+    "Stage": "B05",
+    "Order": 5,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 1,
+    "Rounds": 7,
+    "Levels": {
+     "guanyu": 9,
+     "jianyong": 9,
+     "liubei": 10,
+     "zhangfei": 8
+    }
+   },
+   {
+    "Stage": "B06",
+    "Order": 6,
+    "Tries": 1,
+    "Won": false,
+    "FirstWin": false,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 12,
+    "Levels": {
+     "guanyu": 12,
+     "jianyong": 11,
+     "liubei": 13,
+     "zhangfei": 10
+    }
+   }
+  ],
+  "Cleared": false,
+  "Levels": {
+   "guanyu": 12,
+   "jianyong": 11,
+   "liubei": 13,
+   "zhangfei": 10
+  },
+  "LevelScore": 11.5,
+  "UnbeatenStages": 5,
+  "FirstDefeat": "B06"
+ },
+ {
+  "Player": "rule",
+  "Seed": 240007,
+  "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+  "ExpectedBattles": 30,
+  "EndNode": "c06-battle",
+  "Stages": [
+   {
+    "Stage": "B01",
+    "Order": 1,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 3,
+    "Levels": {
+     "guanyu": 2,
+     "liubei": 1,
+     "zhangfei": 2
+    }
+   },
+   {
+    "Stage": "B02",
+    "Order": 2,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 5,
+    "Levels": {
+     "guanyu": 4,
+     "liubei": 4,
+     "zhangfei": 4
+    }
+   },
+   {
+    "Stage": "B03",
+    "Order": 3,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 9,
+    "Levels": {
+     "guanyu": 5,
+     "liubei": 6,
+     "zhangfei": 5
+    }
+   },
+   {
+    "Stage": "B04",
+    "Order": 4,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 1,
+    "Rounds": 7,
+    "Levels": {
+     "guanyu": 6,
+     "jianyong": 9,
+     "liubei": 7,
+     "zhangfei": 7
+    }
+   },
+   {
+    "Stage": "B05",
+    "Order": 5,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 1,
+    "SubsTotal": 1,
+    "Rounds": 9,
+    "Levels": {
+     "guanyu": 8,
+     "jianyong": 10,
+     "liubei": 10,
+     "zhangfei": 8
+    }
+   },
+   {
+    "Stage": "B06",
+    "Order": 6,
+    "Tries": 1,
+    "Won": false,
+    "FirstWin": false,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 9,
+    "Levels": {
+     "guanyu": 10,
+     "jianyong": 11,
+     "liubei": 13,
+     "zhangfei": 10
+    }
+   }
+  ],
+  "Cleared": false,
+  "Levels": {
+   "guanyu": 10,
+   "jianyong": 11,
+   "liubei": 13,
+   "zhangfei": 10
+  },
+  "LevelScore": 11,
+  "UnbeatenStages": 5,
+  "FirstDefeat": "B06"
+ },
+ {
+  "Player": "rule",
+  "Seed": 240008,
+  "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+  "ExpectedBattles": 30,
+  "EndNode": "c06-battle",
+  "Stages": [
+   {
+    "Stage": "B01",
+    "Order": 1,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 3,
+    "Levels": {
+     "guanyu": 2,
+     "liubei": 1,
+     "zhangfei": 2
+    }
+   },
+   {
+    "Stage": "B02",
+    "Order": 2,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 5,
+    "Levels": {
+     "guanyu": 4,
+     "liubei": 4,
+     "zhangfei": 3
+    }
+   },
+   {
+    "Stage": "B03",
+    "Order": 3,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 9,
+    "Levels": {
+     "guanyu": 6,
+     "liubei": 7,
+     "zhangfei": 5
+    }
+   },
+   {
+    "Stage": "B04",
+    "Order": 4,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 0,
+    "SubsTotal": 1,
+    "Rounds": 6,
+    "Levels": {
+     "guanyu": 7,
+     "jianyong": 8,
+     "liubei": 8,
+     "zhangfei": 6
+    }
+   },
+   {
+    "Stage": "B05",
+    "Order": 5,
+    "Tries": 1,
+    "Won": true,
+    "FirstWin": true,
+    "Subs": 1,
+    "SubsTotal": 1,
+    "Rounds": 6,
+    "Levels": {
+     "guanyu": 9,
+     "jianyong": 9,
+     "liubei": 9,
+     "zhangfei": 7
+    }
+   },
+   {
+    "Stage": "B06",
+    "Order": 6,
+    "Tries": 1,
+    "Won": false,
+    "FirstWin": false,
+    "Subs": 0,
+    "SubsTotal": 0,
+    "Rounds": 10,
+    "Levels": {
+     "guanyu": 11,
+     "jianyong": 10,
+     "liubei": 11,
+     "zhangfei": 9
+    }
+   }
+  ],
+  "Cleared": false,
+  "Levels": {
+   "guanyu": 11,
+   "jianyong": 10,
+   "liubei": 11,
+   "zhangfei": 9
+  },
+  "LevelScore": 10.25,
+  "UnbeatenStages": 5,
+  "FirstDefeat": "B06"
+ }
+]

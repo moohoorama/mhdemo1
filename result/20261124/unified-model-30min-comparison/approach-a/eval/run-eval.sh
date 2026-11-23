@@ -1,0 +1,7 @@
+#!/bin/sh
+# Approach A evaluation on held-out seeds 240001-240008 (never used in training or dev), hard difficulty, no retries.
+# Learned = the unified network with its learned preparation; rule = same network, rule preparation (same as approach B).
+cd "/private/tmp/claude-501/-Users-younwookim-orca-mhdemo1-ver5/e1c24e1a-75cd-4342-808c-482480821a91/scratchpad/frozen/ver5" && "/private/tmp/claude-501/-Users-younwookim-orca-mhdemo1-ver5/e1c24e1a-75cd-4342-808c-482480821a91/scratchpad/frozen/unifiedlearn-eval" eval -content assets/data -model "/Users/younwookim/orca/mhdemo1/result/20261124/unified-model-30min-comparison/approach-a/train/model.best.json" \
+  -prep learned -eval 8 -eval-seed 240001 -par 4 -out "/Users/younwookim/orca/mhdemo1/result/20261124/unified-model-30min-comparison/approach-a/eval/eval-learned.json"
+cd "/private/tmp/claude-501/-Users-younwookim-orca-mhdemo1-ver5/e1c24e1a-75cd-4342-808c-482480821a91/scratchpad/frozen/ver5" && "/private/tmp/claude-501/-Users-younwookim-orca-mhdemo1-ver5/e1c24e1a-75cd-4342-808c-482480821a91/scratchpad/frozen/unifiedlearn-eval" eval -content assets/data -model "/Users/younwookim/orca/mhdemo1/result/20261124/unified-model-30min-comparison/approach-a/train/model.best.json" \
+  -prep rule -eval 8 -eval-seed 240001 -par 4 -out "/Users/younwookim/orca/mhdemo1/result/20261124/unified-model-30min-comparison/approach-a/eval/eval-rule-prep.json"

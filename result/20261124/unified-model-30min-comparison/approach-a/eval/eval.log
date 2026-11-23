@@ -1,0 +1,19 @@
+eval seeds 8 mean 2.25 median 2.5 min 0 max 5 cleared 0 best 5 (seed 240005, first defeat B06) wall 5s
+neural   seed 240001  cleared false battles  1  streak  0 first-loss B01  first-try  0/1   tries   1  subs  0/0   level score   1.5
+neural   seed 240002  cleared false battles  3  streak  2 first-loss B03  first-try  2/3   tries   3  subs  0/0   level score   3.2
+neural   seed 240003  cleared false battles  5  streak  4 first-loss B05  first-try  4/5   tries   5  subs  0/1   level score   8.2
+neural   seed 240004  cleared false battles  1  streak  0 first-loss B01  first-try  0/1   tries   1  subs  0/0   level score   1.5
+neural   seed 240005  cleared false battles  6  streak  5 first-loss B06  first-try  5/6   tries   6  subs  1/2   level score  10.2
+neural   seed 240006  cleared false battles  5  streak  4 first-loss B05  first-try  4/5   tries   5  subs  1/1   level score   8.0
+neural   seed 240007  cleared false battles  4  streak  3 first-loss B04  first-try  3/4   tries   4  subs  0/0   level score   6.5
+neural   seed 240008  cleared false battles  1  streak  0 first-loss B01  first-try  0/1   tries   1  subs  0/0   level score   1.5
+eval seeds 8 mean 2.50 median 3.0 min 0 max 5 cleared 0 best 5 (seed 240005, first defeat B06) wall 20s
+neural   seed 240001  cleared false battles  1  streak  0 first-loss B01  first-try  0/1   tries   1  subs  0/0   level score   1.5
+neural   seed 240002  cleared false battles  3  streak  2 first-loss B03  first-try  2/3   tries   3  subs  0/0   level score   3.2
+neural   seed 240003  cleared false battles  5  streak  4 first-loss B05  first-try  4/5   tries   5  subs  0/1   level score   8.2
+neural   seed 240004  cleared false battles  1  streak  0 first-loss B01  first-try  0/1   tries   1  subs  0/0   level score   1.5
+neural   seed 240005  cleared false battles  6  streak  5 first-loss B06  first-try  5/6   tries   6  subs  1/2   level score  10.5
+neural   seed 240006  cleared false battles  5  streak  4 first-loss B05  first-try  4/5   tries   5  subs  1/1   level score   8.0
+neural   seed 240007  cleared false battles  6  streak  5 first-loss B06  first-try  5/6   tries   6  subs  2/2   level score  11.2
+neural   seed 240008  cleared false battles  1  streak  0 first-loss B01  first-try  0/1   tries   1  subs  0/0   level score   1.5
+sh $R/approach-a/eval/run-eval.sh  133.19s user 3.67s system 500% cpu 27.340 total

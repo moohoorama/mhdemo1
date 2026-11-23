@@ -1,0 +1,1511 @@
+{
+ "content_hash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+ "model": "/Users/younwookim/orca/mhdemo1/result/20261124/unified-model-30min-comparison/approach-a/train/model.best.json",
+ "difficulty": "hard",
+ "preparation": "rule",
+ "eval_seeds": [
+  240001,
+  240002,
+  240003,
+  240004,
+  240005,
+  240006,
+  240007,
+  240008
+ ],
+ "runs": [
+  {
+   "seed": 240001,
+   "first_loss_progress_wins": 0,
+   "first_defeat": "B01",
+   "cleared": false,
+   "level_score": 1.5,
+   "battles": [
+    {
+     "stage": "B01",
+     "won": false,
+     "tries": 1,
+     "turns": 6,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 1,
+      "liubei": 3,
+      "zhangfei": 2
+     },
+     "xp_gained": {
+      "guanyu": 7083,
+      "liubei": 22018,
+      "zhangfei": 19432
+     },
+     "spoils": null,
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 0,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": -1,
+      "liquor": -3
+     }
+    }
+   ],
+   "final_levels": {
+    "guanyu": 1,
+    "liubei": 3,
+    "zhangfei": 2
+   },
+   "start_money": 1000,
+   "report": {
+    "Player": "neural",
+    "Seed": 240001,
+    "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+    "ExpectedBattles": 30,
+    "EndNode": "c01-battle",
+    "Stages": [
+     {
+      "Stage": "B01",
+      "Order": 1,
+      "Tries": 1,
+      "Won": false,
+      "FirstWin": false,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 6,
+      "Levels": {
+       "guanyu": 1,
+       "liubei": 3,
+       "zhangfei": 2
+      }
+     }
+    ],
+    "Cleared": false,
+    "Levels": {
+     "guanyu": 1,
+     "liubei": 3,
+     "zhangfei": 2
+    },
+    "LevelScore": 1.5,
+    "UnbeatenStages": 0,
+    "FirstDefeat": "B01"
+   }
+  },
+  {
+   "seed": 240002,
+   "first_loss_progress_wins": 2,
+   "first_defeat": "B03",
+   "cleared": false,
+   "level_score": 3.25,
+   "battles": [
+    {
+     "stage": "B01",
+     "won": true,
+     "tries": 1,
+     "turns": 4,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 3,
+      "liubei": 1,
+      "zhangfei": 3
+     },
+     "xp_gained": {
+      "guanyu": 21162,
+      "liubei": 8704,
+      "zhangfei": 20098
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 1000,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "liquor": -3
+     }
+    },
+    {
+     "stage": "B02",
+     "won": true,
+     "tries": 1,
+     "turns": 5,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 4,
+      "liubei": 4,
+      "zhangfei": 4
+     },
+     "xp_gained": {
+      "guanyu": 17019,
+      "liubei": 21972,
+      "zhangfei": 10637
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": -1600,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": 5,
+      "liquor": 4
+     }
+    },
+    {
+     "stage": "B03",
+     "won": false,
+     "tries": 1,
+     "turns": 3,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 4,
+      "liubei": 5,
+      "zhangfei": 4
+     },
+     "xp_gained": {
+      "guanyu": 1024,
+      "liubei": 16039,
+      "zhangfei": 2048
+     },
+     "spoils": null,
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 0,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": -1,
+      "liquor": -4
+     }
+    }
+   ],
+   "final_levels": {
+    "guanyu": 4,
+    "liubei": 5,
+    "zhangfei": 4
+   },
+   "start_money": 1000,
+   "report": {
+    "Player": "neural",
+    "Seed": 240002,
+    "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+    "ExpectedBattles": 30,
+    "EndNode": "c03-battle",
+    "Stages": [
+     {
+      "Stage": "B01",
+      "Order": 1,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 4,
+      "Levels": {
+       "guanyu": 3,
+       "liubei": 1,
+       "zhangfei": 3
+      }
+     },
+     {
+      "Stage": "B02",
+      "Order": 2,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 5,
+      "Levels": {
+       "guanyu": 4,
+       "liubei": 4,
+       "zhangfei": 4
+      }
+     },
+     {
+      "Stage": "B03",
+      "Order": 3,
+      "Tries": 1,
+      "Won": false,
+      "FirstWin": false,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 3,
+      "Levels": {
+       "guanyu": 4,
+       "liubei": 5,
+       "zhangfei": 4
+      }
+     }
+    ],
+    "Cleared": false,
+    "Levels": {
+     "guanyu": 4,
+     "liubei": 5,
+     "zhangfei": 4
+    },
+    "LevelScore": 3.25,
+    "UnbeatenStages": 2,
+    "FirstDefeat": "B03"
+   }
+  },
+  {
+   "seed": 240003,
+   "first_loss_progress_wins": 4,
+   "first_defeat": "B05",
+   "cleared": false,
+   "level_score": 8.25,
+   "battles": [
+    {
+     "stage": "B01",
+     "won": true,
+     "tries": 1,
+     "turns": 5,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 3,
+      "liubei": 2,
+      "zhangfei": 3
+     },
+     "xp_gained": {
+      "guanyu": 22698,
+      "liubei": 14017,
+      "zhangfei": 20174
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 1000,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "liquor": -3
+     }
+    },
+    {
+     "stage": "B02",
+     "won": true,
+     "tries": 1,
+     "turns": 4,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 4,
+      "liubei": 4,
+      "zhangfei": 4
+     },
+     "xp_gained": {
+      "guanyu": 9216,
+      "liubei": 24683,
+      "zhangfei": 12166
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": -1400,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": 5,
+      "liquor": 4
+     }
+    },
+    {
+     "stage": "B03",
+     "won": true,
+     "tries": 1,
+     "turns": 9,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 5,
+      "liubei": 8,
+      "zhangfei": 5
+     },
+     "xp_gained": {
+      "guanyu": 9041,
+      "liubei": 32496,
+      "zhangfei": 8572
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 1000,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": -2,
+      "liquor": -4
+     }
+    },
+    {
+     "stage": "B04",
+     "won": true,
+     "tries": 1,
+     "turns": 6,
+     "subs_done": 0,
+     "subs_total": 1,
+     "levels_after": {
+      "guanyu": 6,
+      "jianyong": 8,
+      "liubei": 9,
+      "zhangfei": 5
+     },
+     "xp_gained": {
+      "guanyu": 15438,
+      "jianyong": 9959,
+      "liubei": 14814,
+      "zhangfei": 6120
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": -1400,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": 7,
+      "liquor": 2
+     }
+    },
+    {
+     "stage": "B05",
+     "won": false,
+     "tries": 1,
+     "turns": 4,
+     "subs_done": 0,
+     "subs_total": 1,
+     "levels_after": {
+      "guanyu": 7,
+      "jianyong": 9,
+      "liubei": 11,
+      "zhangfei": 6
+     },
+     "xp_gained": {
+      "guanyu": 9462,
+      "jianyong": 6557,
+      "liubei": 14044,
+      "zhangfei": 5850
+     },
+     "spoils": null,
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 0,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": -6,
+      "liquor": -2
+     }
+    }
+   ],
+   "final_levels": {
+    "guanyu": 7,
+    "jianyong": 9,
+    "liubei": 11,
+    "zhangfei": 6
+   },
+   "start_money": 1000,
+   "report": {
+    "Player": "neural",
+    "Seed": 240003,
+    "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+    "ExpectedBattles": 30,
+    "EndNode": "c05-battle",
+    "Stages": [
+     {
+      "Stage": "B01",
+      "Order": 1,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 5,
+      "Levels": {
+       "guanyu": 3,
+       "liubei": 2,
+       "zhangfei": 3
+      }
+     },
+     {
+      "Stage": "B02",
+      "Order": 2,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 4,
+      "Levels": {
+       "guanyu": 4,
+       "liubei": 4,
+       "zhangfei": 4
+      }
+     },
+     {
+      "Stage": "B03",
+      "Order": 3,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 9,
+      "Levels": {
+       "guanyu": 5,
+       "liubei": 8,
+       "zhangfei": 5
+      }
+     },
+     {
+      "Stage": "B04",
+      "Order": 4,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 1,
+      "Rounds": 6,
+      "Levels": {
+       "guanyu": 6,
+       "jianyong": 8,
+       "liubei": 9,
+       "zhangfei": 5
+      }
+     },
+     {
+      "Stage": "B05",
+      "Order": 5,
+      "Tries": 1,
+      "Won": false,
+      "FirstWin": false,
+      "Subs": 0,
+      "SubsTotal": 1,
+      "Rounds": 4,
+      "Levels": {
+       "guanyu": 7,
+       "jianyong": 9,
+       "liubei": 11,
+       "zhangfei": 6
+      }
+     }
+    ],
+    "Cleared": false,
+    "Levels": {
+     "guanyu": 7,
+     "jianyong": 9,
+     "liubei": 11,
+     "zhangfei": 6
+    },
+    "LevelScore": 8.25,
+    "UnbeatenStages": 4,
+    "FirstDefeat": "B05"
+   }
+  },
+  {
+   "seed": 240004,
+   "first_loss_progress_wins": 0,
+   "first_defeat": "B01",
+   "cleared": false,
+   "level_score": 1.5,
+   "battles": [
+    {
+     "stage": "B01",
+     "won": false,
+     "tries": 1,
+     "turns": 4,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 1,
+      "liubei": 2,
+      "zhangfei": 3
+     },
+     "xp_gained": {
+      "guanyu": 9480,
+      "liubei": 11662,
+      "zhangfei": 22138
+     },
+     "spoils": null,
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 0,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": -1,
+      "liquor": -3
+     }
+    }
+   ],
+   "final_levels": {
+    "guanyu": 1,
+    "liubei": 2,
+    "zhangfei": 3
+   },
+   "start_money": 1000,
+   "report": {
+    "Player": "neural",
+    "Seed": 240004,
+    "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+    "ExpectedBattles": 30,
+    "EndNode": "c01-battle",
+    "Stages": [
+     {
+      "Stage": "B01",
+      "Order": 1,
+      "Tries": 1,
+      "Won": false,
+      "FirstWin": false,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 4,
+      "Levels": {
+       "guanyu": 1,
+       "liubei": 2,
+       "zhangfei": 3
+      }
+     }
+    ],
+    "Cleared": false,
+    "Levels": {
+     "guanyu": 1,
+     "liubei": 2,
+     "zhangfei": 3
+    },
+    "LevelScore": 1.5,
+    "UnbeatenStages": 0,
+    "FirstDefeat": "B01"
+   }
+  },
+  {
+   "seed": 240005,
+   "first_loss_progress_wins": 5,
+   "first_defeat": "B06",
+   "cleared": false,
+   "level_score": 10.5,
+   "battles": [
+    {
+     "stage": "B01",
+     "won": true,
+     "tries": 1,
+     "turns": 4,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 2,
+      "liubei": 2,
+      "zhangfei": 3
+     },
+     "xp_gained": {
+      "guanyu": 18078,
+      "liubei": 12288,
+      "zhangfei": 20102
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 1000,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "liquor": -3
+     }
+    },
+    {
+     "stage": "B02",
+     "won": true,
+     "tries": 1,
+     "turns": 4,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 4,
+      "liubei": 4,
+      "zhangfei": 4
+     },
+     "xp_gained": {
+      "guanyu": 14960,
+      "liubei": 24929,
+      "zhangfei": 12934
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": -1400,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": 5,
+      "liquor": 4
+     }
+    },
+    {
+     "stage": "B03",
+     "won": true,
+     "tries": 1,
+     "turns": 9,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 5,
+      "liubei": 7,
+      "zhangfei": 5
+     },
+     "xp_gained": {
+      "guanyu": 15318,
+      "liubei": 30058,
+      "zhangfei": 11087
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 1000,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": -5,
+      "liquor": -4
+     }
+    },
+    {
+     "stage": "B04",
+     "won": true,
+     "tries": 1,
+     "turns": 6,
+     "subs_done": 0,
+     "subs_total": 1,
+     "levels_after": {
+      "guanyu": 7,
+      "jianyong": 9,
+      "liubei": 8,
+      "zhangfei": 6
+     },
+     "xp_gained": {
+      "guanyu": 14958,
+      "jianyong": 11368,
+      "liubei": 7821,
+      "zhangfei": 7012
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": -1600,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": 10
+     }
+    },
+    {
+     "stage": "B05",
+     "won": true,
+     "tries": 1,
+     "turns": 8,
+     "subs_done": 1,
+     "subs_total": 1,
+     "levels_after": {
+      "guanyu": 9,
+      "jianyong": 9,
+      "liubei": 11,
+      "zhangfei": 7
+     },
+     "xp_gained": {
+      "guanyu": 19622,
+      "jianyong": 6830,
+      "liubei": 27918,
+      "zhangfei": 12971
+     },
+     "spoils": null,
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 0,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": -13
+     }
+    },
+    {
+     "stage": "B06",
+     "won": false,
+     "tries": 1,
+     "turns": 9,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 10,
+      "jianyong": 10,
+      "liubei": 14,
+      "zhangfei": 8
+     },
+     "xp_gained": {
+      "guanyu": 8298,
+      "jianyong": 2931,
+      "liubei": 29608,
+      "zhangfei": 15225
+     },
+     "spoils": null,
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 0,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {}
+    }
+   ],
+   "final_levels": {
+    "guanyu": 10,
+    "jianyong": 10,
+    "liubei": 14,
+    "zhangfei": 8
+   },
+   "start_money": 1000,
+   "report": {
+    "Player": "neural",
+    "Seed": 240005,
+    "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+    "ExpectedBattles": 30,
+    "EndNode": "c06-battle",
+    "Stages": [
+     {
+      "Stage": "B01",
+      "Order": 1,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 4,
+      "Levels": {
+       "guanyu": 2,
+       "liubei": 2,
+       "zhangfei": 3
+      }
+     },
+     {
+      "Stage": "B02",
+      "Order": 2,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 4,
+      "Levels": {
+       "guanyu": 4,
+       "liubei": 4,
+       "zhangfei": 4
+      }
+     },
+     {
+      "Stage": "B03",
+      "Order": 3,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 9,
+      "Levels": {
+       "guanyu": 5,
+       "liubei": 7,
+       "zhangfei": 5
+      }
+     },
+     {
+      "Stage": "B04",
+      "Order": 4,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 1,
+      "Rounds": 6,
+      "Levels": {
+       "guanyu": 7,
+       "jianyong": 9,
+       "liubei": 8,
+       "zhangfei": 6
+      }
+     },
+     {
+      "Stage": "B05",
+      "Order": 5,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 1,
+      "SubsTotal": 1,
+      "Rounds": 8,
+      "Levels": {
+       "guanyu": 9,
+       "jianyong": 9,
+       "liubei": 11,
+       "zhangfei": 7
+      }
+     },
+     {
+      "Stage": "B06",
+      "Order": 6,
+      "Tries": 1,
+      "Won": false,
+      "FirstWin": false,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 9,
+      "Levels": {
+       "guanyu": 10,
+       "jianyong": 10,
+       "liubei": 14,
+       "zhangfei": 8
+      }
+     }
+    ],
+    "Cleared": false,
+    "Levels": {
+     "guanyu": 10,
+     "jianyong": 10,
+     "liubei": 14,
+     "zhangfei": 8
+    },
+    "LevelScore": 10.5,
+    "UnbeatenStages": 5,
+    "FirstDefeat": "B06"
+   }
+  },
+  {
+   "seed": 240006,
+   "first_loss_progress_wins": 4,
+   "first_defeat": "B05",
+   "cleared": false,
+   "level_score": 8,
+   "battles": [
+    {
+     "stage": "B01",
+     "won": true,
+     "tries": 1,
+     "turns": 4,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 3,
+      "liubei": 1,
+      "zhangfei": 3
+     },
+     "xp_gained": {
+      "guanyu": 20760,
+      "liubei": 8192,
+      "zhangfei": 22138
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 1000,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": -1,
+      "liquor": -3
+     }
+    },
+    {
+     "stage": "B02",
+     "won": true,
+     "tries": 1,
+     "turns": 4,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 4,
+      "liubei": 3,
+      "zhangfei": 4
+     },
+     "xp_gained": {
+      "guanyu": 15323,
+      "liubei": 20245,
+      "zhangfei": 13134
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": -1800,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": 6,
+      "liquor": 4
+     }
+    },
+    {
+     "stage": "B03",
+     "won": true,
+     "tries": 1,
+     "turns": 9,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 5,
+      "liubei": 6,
+      "zhangfei": 5
+     },
+     "xp_gained": {
+      "guanyu": 10904,
+      "liubei": 29256,
+      "zhangfei": 8307
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 1000,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": -5,
+      "liquor": -4
+     }
+    },
+    {
+     "stage": "B04",
+     "won": true,
+     "tries": 1,
+     "turns": 6,
+     "subs_done": 1,
+     "subs_total": 1,
+     "levels_after": {
+      "guanyu": 7,
+      "jianyong": 8,
+      "liubei": 8,
+      "zhangfei": 6
+     },
+     "xp_gained": {
+      "guanyu": 15846,
+      "jianyong": 9306,
+      "liubei": 20803,
+      "zhangfei": 13999
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": -1100,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "barley": 4,
+      "bean": 3,
+      "liquor": 3
+     }
+    },
+    {
+     "stage": "B05",
+     "won": false,
+     "tries": 1,
+     "turns": 3,
+     "subs_done": 0,
+     "subs_total": 1,
+     "levels_after": {
+      "guanyu": 7,
+      "jianyong": 9,
+      "liubei": 10,
+      "zhangfei": 6
+     },
+     "xp_gained": {
+      "guanyu": 1360,
+      "jianyong": 2774,
+      "liubei": 14065,
+      "zhangfei": 1544
+     },
+     "spoils": null,
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 0,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "barley": -4,
+      "bean": -2,
+      "liquor": -3
+     }
+    }
+   ],
+   "final_levels": {
+    "guanyu": 7,
+    "jianyong": 9,
+    "liubei": 10,
+    "zhangfei": 6
+   },
+   "start_money": 1000,
+   "report": {
+    "Player": "neural",
+    "Seed": 240006,
+    "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+    "ExpectedBattles": 30,
+    "EndNode": "c05-battle",
+    "Stages": [
+     {
+      "Stage": "B01",
+      "Order": 1,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 4,
+      "Levels": {
+       "guanyu": 3,
+       "liubei": 1,
+       "zhangfei": 3
+      }
+     },
+     {
+      "Stage": "B02",
+      "Order": 2,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 4,
+      "Levels": {
+       "guanyu": 4,
+       "liubei": 3,
+       "zhangfei": 4
+      }
+     },
+     {
+      "Stage": "B03",
+      "Order": 3,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 9,
+      "Levels": {
+       "guanyu": 5,
+       "liubei": 6,
+       "zhangfei": 5
+      }
+     },
+     {
+      "Stage": "B04",
+      "Order": 4,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 1,
+      "SubsTotal": 1,
+      "Rounds": 6,
+      "Levels": {
+       "guanyu": 7,
+       "jianyong": 8,
+       "liubei": 8,
+       "zhangfei": 6
+      }
+     },
+     {
+      "Stage": "B05",
+      "Order": 5,
+      "Tries": 1,
+      "Won": false,
+      "FirstWin": false,
+      "Subs": 0,
+      "SubsTotal": 1,
+      "Rounds": 3,
+      "Levels": {
+       "guanyu": 7,
+       "jianyong": 9,
+       "liubei": 10,
+       "zhangfei": 6
+      }
+     }
+    ],
+    "Cleared": false,
+    "Levels": {
+     "guanyu": 7,
+     "jianyong": 9,
+     "liubei": 10,
+     "zhangfei": 6
+    },
+    "LevelScore": 8,
+    "UnbeatenStages": 4,
+    "FirstDefeat": "B05"
+   }
+  },
+  {
+   "seed": 240007,
+   "first_loss_progress_wins": 5,
+   "first_defeat": "B06",
+   "cleared": false,
+   "level_score": 11.25,
+   "battles": [
+    {
+     "stage": "B01",
+     "won": true,
+     "tries": 1,
+     "turns": 5,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 2,
+      "liubei": 1,
+      "zhangfei": 3
+     },
+     "xp_gained": {
+      "guanyu": 17390,
+      "liubei": 9715,
+      "zhangfei": 28144
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 1000,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": -3,
+      "liquor": -3
+     }
+    },
+    {
+     "stage": "B02",
+     "won": true,
+     "tries": 1,
+     "turns": 4,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 3,
+      "liubei": 4,
+      "zhangfei": 4
+     },
+     "xp_gained": {
+      "guanyu": 11120,
+      "liubei": 26576,
+      "zhangfei": 9339
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": -1800,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": 8,
+      "liquor": 4
+     }
+    },
+    {
+     "stage": "B03",
+     "won": true,
+     "tries": 1,
+     "turns": 9,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 4,
+      "liubei": 7,
+      "zhangfei": 4
+     },
+     "xp_gained": {
+      "guanyu": 11216,
+      "liubei": 31814,
+      "zhangfei": 2048
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 1000,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": -8,
+      "liquor": -4
+     }
+    },
+    {
+     "stage": "B04",
+     "won": true,
+     "tries": 1,
+     "turns": 7,
+     "subs_done": 1,
+     "subs_total": 1,
+     "levels_after": {
+      "guanyu": 6,
+      "jianyong": 8,
+      "liubei": 9,
+      "zhangfei": 5
+     },
+     "xp_gained": {
+      "guanyu": 16325,
+      "jianyong": 5684,
+      "liubei": 21018,
+      "zhangfei": 7278
+     },
+     "spoils": {
+      "money": 1000
+     },
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": -1100,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "barley": 4,
+      "bean": 6,
+      "liquor": 3
+     }
+    },
+    {
+     "stage": "B05",
+     "won": true,
+     "tries": 1,
+     "turns": 6,
+     "subs_done": 1,
+     "subs_total": 1,
+     "levels_after": {
+      "guanyu": 9,
+      "jianyong": 9,
+      "liubei": 11,
+      "zhangfei": 6
+     },
+     "xp_gained": {
+      "guanyu": 28134,
+      "jianyong": 9308,
+      "liubei": 11654,
+      "zhangfei": 11138
+     },
+     "spoils": null,
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 0,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "barley": -4,
+      "bean": -1,
+      "liquor": -3
+     }
+    },
+    {
+     "stage": "B06",
+     "won": false,
+     "tries": 1,
+     "turns": 14,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 11,
+      "jianyong": 11,
+      "liubei": 14,
+      "zhangfei": 9
+     },
+     "xp_gained": {
+      "guanyu": 19265,
+      "jianyong": 20073,
+      "liubei": 32526,
+      "zhangfei": 25266
+     },
+     "spoils": null,
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 0,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "bean": -5
+     }
+    }
+   ],
+   "final_levels": {
+    "guanyu": 11,
+    "jianyong": 11,
+    "liubei": 14,
+    "zhangfei": 9
+   },
+   "start_money": 1000,
+   "report": {
+    "Player": "neural",
+    "Seed": 240007,
+    "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+    "ExpectedBattles": 30,
+    "EndNode": "c06-battle",
+    "Stages": [
+     {
+      "Stage": "B01",
+      "Order": 1,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 5,
+      "Levels": {
+       "guanyu": 2,
+       "liubei": 1,
+       "zhangfei": 3
+      }
+     },
+     {
+      "Stage": "B02",
+      "Order": 2,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 4,
+      "Levels": {
+       "guanyu": 3,
+       "liubei": 4,
+       "zhangfei": 4
+      }
+     },
+     {
+      "Stage": "B03",
+      "Order": 3,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 9,
+      "Levels": {
+       "guanyu": 4,
+       "liubei": 7,
+       "zhangfei": 4
+      }
+     },
+     {
+      "Stage": "B04",
+      "Order": 4,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 1,
+      "SubsTotal": 1,
+      "Rounds": 7,
+      "Levels": {
+       "guanyu": 6,
+       "jianyong": 8,
+       "liubei": 9,
+       "zhangfei": 5
+      }
+     },
+     {
+      "Stage": "B05",
+      "Order": 5,
+      "Tries": 1,
+      "Won": true,
+      "FirstWin": true,
+      "Subs": 1,
+      "SubsTotal": 1,
+      "Rounds": 6,
+      "Levels": {
+       "guanyu": 9,
+       "jianyong": 9,
+       "liubei": 11,
+       "zhangfei": 6
+      }
+     },
+     {
+      "Stage": "B06",
+      "Order": 6,
+      "Tries": 1,
+      "Won": false,
+      "FirstWin": false,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 14,
+      "Levels": {
+       "guanyu": 11,
+       "jianyong": 11,
+       "liubei": 14,
+       "zhangfei": 9
+      }
+     }
+    ],
+    "Cleared": false,
+    "Levels": {
+     "guanyu": 11,
+     "jianyong": 11,
+     "liubei": 14,
+     "zhangfei": 9
+    },
+    "LevelScore": 11.25,
+    "UnbeatenStages": 5,
+    "FirstDefeat": "B06"
+   }
+  },
+  {
+   "seed": 240008,
+   "first_loss_progress_wins": 0,
+   "first_defeat": "B01",
+   "cleared": false,
+   "level_score": 1.5,
+   "battles": [
+    {
+     "stage": "B01",
+     "won": false,
+     "tries": 1,
+     "turns": 5,
+     "subs_done": 0,
+     "subs_total": 0,
+     "levels_after": {
+      "guanyu": 1,
+      "liubei": 2,
+      "zhangfei": 3
+     },
+     "xp_gained": {
+      "guanyu": 5896,
+      "liubei": 18065,
+      "zhangfei": 21364
+     },
+     "spoils": null,
+     "money_change_preparation": 0,
+     "money_change_battle_and_after": 0,
+     "inventory_change_preparation": {},
+     "inventory_change_battle_and_after": {
+      "liquor": -3
+     }
+    }
+   ],
+   "final_levels": {
+    "guanyu": 1,
+    "liubei": 2,
+    "zhangfei": 3
+   },
+   "start_money": 1000,
+   "report": {
+    "Player": "neural",
+    "Seed": 240008,
+    "ContentHash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+    "ExpectedBattles": 30,
+    "EndNode": "c01-battle",
+    "Stages": [
+     {
+      "Stage": "B01",
+      "Order": 1,
+      "Tries": 1,
+      "Won": false,
+      "FirstWin": false,
+      "Subs": 0,
+      "SubsTotal": 0,
+      "Rounds": 5,
+      "Levels": {
+       "guanyu": 1,
+       "liubei": 2,
+       "zhangfei": 3
+      }
+     }
+    ],
+    "Cleared": false,
+    "Levels": {
+     "guanyu": 1,
+     "liubei": 2,
+     "zhangfei": 3
+    },
+    "LevelScore": 1.5,
+    "UnbeatenStages": 0,
+    "FirstDefeat": "B01"
+   }
+  }
+ ],
+ "summary": {
+  "seeds": 8,
+  "mean_wins": 2.5,
+  "median_wins": 3,
+  "min_wins": 0,
+  "max_wins": 5,
+  "cleared": 0,
+  "best_seed": 240005,
+  "best_wins": 5,
+  "best_first_defeat": "B06"
+ },
+ "note": "eval seeds are unused in training and dev; greedy battle and preparation; tries=1, no retries",
+ "eval_wall_sec": 20.251798416
+}

@@ -1,0 +1,34 @@
+{
+ "git_head_at_start": "ae5f7fb",
+ "content_hash": "8e1f8c056dd262f9cff2d480057f951e2dfd00801bc8aaf830c25f994082c25f",
+ "snapshot": "working tree frozen to scratch at start (ver5/internal, cmd, go.mod, go.sum, assets/data, assets/scenario)",
+ "difficulty": "hard (매우 어려움)",
+ "retries": "none (tries=1)",
+ "seeds": {
+  "train": "220001-220008 (warm) and 220009+ (episodes)",
+  "warm_start_teacher": "225001-225008",
+  "dev": "230001-230004",
+  "eval_unused": "240001-240008"
+ },
+ "approach_a": {
+  "model": "unified BattleModel hidden 32, no StageModels, learned preparation net",
+  "budget_sec": 1800,
+  "train_wall_sec": 1788.5,
+  "train_episodes": 1120,
+  "collect": 8,
+  "par": 4,
+  "dev_games": 4,
+  "battle_temperature": 0.25,
+  "checkpoint": "approach-a/train/model.best.json (dev best at episode 1088)"
+ },
+ "approach_b": {
+  "status": "not run: disk full, see result.md"
+ },
+ "tools": [
+  "ver5/cmd/_unifiedlearn/main.go",
+  "ver5/cmd/_unifiedlearn/laya.go",
+  "ver5/internal/autoplay/unified_candidates.go",
+  "ver5/tools/unified30/laya_bridge.py",
+  "ver5/tools/unified30/laya_train.py"
+ ]
+}
