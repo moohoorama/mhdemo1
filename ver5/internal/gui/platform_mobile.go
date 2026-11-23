@@ -11,4 +11,5 @@ const (
 	sortieLeadH = 124
 	sortieMedal = 84
 	sortieSwap  = 40
+	sortieCols  = 3
 )

@@ -32,6 +32,7 @@ type button struct {
 	label  string
 	click  func()
 	denied bool // a greyed-out row: a click on it only sounds the refusal
+	grab   bool // runs its click at once even inside a scroll area (the scrollbar)
 }
 
 // Screen coordinates are in one of two spaces, each uniform (the same in x and y):

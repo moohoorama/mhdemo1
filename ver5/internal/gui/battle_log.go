@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"math"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -45,9 +46,13 @@ func (g *Game) updateBattleLog() bool {
 		g.logDragging = false
 		g.logThumbDragging = false
 		g.logBodyDragging = false
+		g.logFling, g.logFrac = 0, 0
 		return false
 	}
 	x, y := cursorPos()
+	if mouseJustPressed(ebiten.MouseButtonLeft) {
+		g.logFling, g.logFrac = 0, 0
+	}
 	r := g.battleLogRect()
 	inside := image.Pt(x, y).In(r)
 	info := g.hudInfo
@@ -83,16 +88,22 @@ func (g *Game) updateBattleLog() bool {
 		return true
 	}
 	if inside && maxScroll > 0 && !image.Pt(x, y).In(track) && mouseJustPressed(ebiten.MouseButtonLeft) && !g.dragging {
-		g.logBodyDragging, g.logBodyPress, g.logBodyTop = true, y, g.logScroll
+		g.logBodyDragging, g.logBodyPress, g.logBodyTop, g.logLastY, g.logSpeed = true, y, g.logScroll, y, 0
 	}
 	if g.logBodyDragging {
 		if mousePressed(ebiten.MouseButtonLeft) {
 			g.logScroll = max(0, min(maxScroll, g.logBodyTop+(y-g.logBodyPress)/logLineHeight))
+			g.logSpeed = .6*g.logSpeed + .4*float64(y-g.logLastY)
+			g.logLastY = y
 		} else {
 			g.logBodyDragging = false
+			if math.Abs(g.logSpeed) >= flingMinPx {
+				g.logFling = g.logSpeed / logLineHeight
+			}
 		}
 		return true
 	}
+	g.glideLog(maxScroll)
 	if inside && !g.dragging {
 		if _, wheel := ebiten.Wheel(); wheel != 0 {
 			g.logScroll = max(0, g.logScroll+int(wheel*3))
@@ -277,4 +288,20 @@ func logScrollAt(top int, track image.Rectangle, height, limit int) int {
 	}
 	top = max(track.Min.Y, min(track.Max.Y-height, top))
 	return limit - (top-track.Min.Y)*limit/travel
+}
+
+// glideLog carries on a glide left by a body drag: the lines go on a little, each frame less, to the newest or the
+// oldest.
+func (g *Game) glideLog(maxScroll int) {
+	if g.logFling == 0 {
+		return
+	}
+	g.logFrac += g.logFling
+	step := int(g.logFrac)
+	g.logFrac -= float64(step)
+	g.logScroll = max(0, min(maxScroll, g.logScroll+step))
+	g.logFling *= flingFriction
+	if math.Abs(g.logFling) < flingRest || g.logScroll == 0 && g.logFling < 0 || g.logScroll == maxScroll && g.logFling > 0 {
+		g.logFling, g.logFrac = 0, 0
+	}
 }

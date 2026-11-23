@@ -48,6 +48,8 @@ func (g *Game) pressLabel(label string) {
 			at := b.rect.Min.Add(b.rect.Size().Div(2))
 			cursorPos = func() (int, int) { return at.X, at.Y }
 			g.leftClick()
+			pointer.held = false
+			g.updateTableDrag() // a press in a scroll area is a tap on release
 			cursorPos = func() (int, int) { return -1000, -1000 }
 			return
 		}

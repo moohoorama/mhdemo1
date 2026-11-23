@@ -3,6 +3,7 @@ package gui
 import (
 	"fmt"
 	"image"
+	"slices"
 	"testing"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -58,8 +59,9 @@ func TestBrowserLists(t *testing.T) {
 					x, y := row.rect.Min.X+20, row.rect.Min.Y+rowH/2
 					cursorPos = func() (int, int) { return x, y }
 					before := list.top
-					pointer.held = true
-					row.click()
+					pointer.held, pointer.justPressed = true, true
+					g.pressButton(slices.IndexFunc(g.buttons, func(b button) bool { return b.rect == row.rect }))
+					pointer.justPressed = false
 					y -= rowH
 					if g.editor != nil {
 						require.NoError(t, g.updateEditor())
@@ -96,7 +98,9 @@ func TestBrowserLists(t *testing.T) {
 			}
 			require.NotNil(t, row.click)
 			cursorPos = func() (int, int) { return row.rect.Min.X + 20, row.rect.Min.Y + rowH/2 }
-			row.click()
+			pointer.held, pointer.justPressed = true, true
+			g.pressButton(slices.IndexFunc(g.buttons, func(b button) bool { return b.rect == row.rect }))
+			pointer.held, pointer.justPressed = false, false
 			if g.editor != nil {
 				require.NoError(t, g.updateEditor())
 				require.NotNil(t, g.editor.doc)

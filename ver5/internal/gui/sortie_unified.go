@@ -47,7 +47,7 @@ func (g *Game) sortieGrid(dst *ebiten.Image, o core.Observation, r image.Rectang
 	slots := min(g.S.Data.Stages[o.Stage].Max, 18)
 	area := image.Rect(r.Min.X, top, r.Max.X, r.Max.Y)
 	avail := area.Dx() - tableBarW - 4
-	cols := max(1, min(2, avail/sortieCellW))
+	cols := sortieColumns(avail)
 	cw := max(1, avail/cols)
 	g.listRows(dst, &g.party.sortieSlots, area, (slots+cols-1)/cols, sortieCellH, func(row int, rr image.Rectangle) {
 		for col := range cols {
@@ -57,6 +57,10 @@ func (g *Game) sortieGrid(dst *ebiten.Image, o core.Observation, r image.Rectang
 		}
 	}, nil)
 }
+
+// sortieColumns is how many cards a row holds in avail px: sortieCols at most (5 on the desktop, 3 on the phone), and
+// fewer where the window is too narrow for that many.
+func sortieColumns(avail int) int { return max(1, min(sortieCols, avail/sortieCellW)) }
 
 // The card is sized in fixed pixels, not for the window: the officer's card, the deputy's medal that overhangs its
 // bottom-right corner (sizes per platform in platform_*.go), and the margin around both.

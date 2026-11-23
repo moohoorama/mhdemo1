@@ -169,6 +169,10 @@ type Game struct {
 	logThumbOffset            int
 	logBodyDragging           bool
 	logBodyPress, logBodyTop  int
+	logLastY                  int
+	logSpeed                  float64 // the body's recent drag speed, px a frame
+	logFling                  float64 // the glide left by a body drag, lines a frame
+	logFrac                   float64
 	logHeight, logScroll      int
 	logDragging               bool
 	logDragOffset             int
@@ -184,6 +188,7 @@ type Game struct {
 	learn                     []core.Learner    // learning windows open now, in order
 	shopView                  shopView
 	tableDrag                 *tableDrag // the press held on a table (table.go)
+	flinging                  *tableList // the list a release left gliding (table.go updateFlings)
 	scene                     *scene
 	tour                      *tourWalk    // the walk round the format 2 scene maps (tour.go, cmd/_town2)
 	world                     *worldWalk   // the walk over the world map (worldmap.go, cmd/_cnmap)
@@ -798,6 +803,7 @@ func (g *Game) Update() error {
 			g.exploreInput()
 		}
 	}
+	g.updateFlings()
 	logInput := g.updateTableDrag() || g.updateWheelLists() || g.updateBattleLog() || g.updateUnitList() || g.updateWaypoints() || g.updateShopList()
 	g.updateDeploymentPanel()
 	g.updateHover()
@@ -955,15 +961,13 @@ func (g *Game) leftClick() {
 	g.rushSpeech()
 	x, y := cursorPos()
 	for i := len(g.buttons) - 1; i >= 0; i-- {
-		if b := g.buttons[i]; image.Pt(x, y).In(b.rect) {
-			if b.denied {
-				g.sfx("ui-denied")
-			}
-			before := g.sfxCalls
-			b.click()
-			g.sfxUnless(before, "ui-select")
+		if image.Pt(x, y).In(g.buttons[i].rect) {
+			g.pressButton(i)
 			return
 		}
+	}
+	if g.pressArea(x, y) {
+		return
 	}
 	if g.overlay() != "" || len(g.modals) > 0 || len(g.learn) > 0 || g.S.Screen != "playing" || g.S.Engine == nil || g.field == nil || g.dragging {
 		return

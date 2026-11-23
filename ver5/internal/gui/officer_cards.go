@@ -233,9 +233,10 @@ func (g *Game) shelfCards(dst *ebiten.Image, r image.Rectangle, shelves []shelf,
 	total -= gap
 	steps := max(0, int(math.Ceil(float64(total-r.Dy())/shelfStep)))
 	l.top = max(0, min(l.top, steps))
+	l.end = steps
+	area := -1
 	if steps > 0 {
-		g.addButton(r, "", func() { g.pressTable(l, shelfStep, nil) })
-		g.wheelAreas = append(g.wheelAreas, wheelArea{unframed(r), l})
+		area = g.beginScroll(r, l, shelfStep)
 	} else {
 		right = r.Max.X
 	}
@@ -269,7 +270,7 @@ func (g *Game) shelfCards(dst *ebiten.Image, r image.Rectangle, shelves []shelf,
 					x, cy = chipsX, cy+touchH
 				}
 				id := e.id
-				x += g.traitChip(clip, x, cy, e, e.id == pick, func() { g.pressTable(l, shelfStep, func() { choose(id) }) }) + 6
+				x += g.traitChip(clip, x, cy, e, e.id == pick, func() { choose(id) }) + 6
 			}
 		}
 		y += heights[i] + gap
@@ -278,6 +279,7 @@ func (g *Game) shelfCards(dst *ebiten.Image, r image.Rectangle, shelves []shelf,
 	if steps > 0 {
 		fit := max(1, r.Dy()/shelfStep)
 		g.tableBar(dst, l, image.Rect(r.Max.X-tableBarW, r.Min.Y, r.Max.X, r.Max.Y), fit, fit+steps)
+		g.endScroll(area)
 	}
 }
 

@@ -215,9 +215,8 @@ func (g *Game) updateEditor() error {
 	}
 	if left {
 		for i := len(g.buttons) - 1; i >= 0; i-- {
-			b := g.buttons[i]
-			if image.Pt(x, y).In(b.rect) {
-				b.click()
+			if image.Pt(x, y).In(g.buttons[i].rect) {
+				g.pressButton(i)
 				return nil
 			}
 		}

@@ -3,6 +3,7 @@ package gui
 import (
 	"image"
 	"image/color"
+	"math"
 	"sort"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -34,11 +35,14 @@ func (s tableSort) cycle(key string) tableSort {
 	return tableSort{}
 }
 
-// tableList is the state of one table: its first row shown and its sort.
+// tableList is the state of one table: its first row shown, its sort, the glide left after a release
+// (rows a frame, see updateFlings) and the last row a glide may stop at (set when drawn).
 type tableList struct {
 	top            int
 	order          tableSort
 	wheel          float64
+	fling          float64
+	end            int
 	revealSelected bool
 }
 
@@ -145,7 +149,7 @@ func sortRows[R any](rows []R, cols []column[R], s tableSort, rank func(r *R) in
 // on the scrollbar, and a press on the bar's track pages; a row is picked when a press on it is let
 // go without dragging.
 func drawTable[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], rows []R, r image.Rectangle) {
-	g.wheelAreas = append(g.wheelAreas, wheelArea{unframed(r), l})
+	area := g.beginScroll(r, l, t.rowH)
 	keepSort(l, t.cols)
 	sortRows(rows, t.cols, l.order, t.rank)
 	pinned := 0
@@ -165,6 +169,7 @@ func drawTable[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], rows
 		}
 	}
 	l.top = max(0, min(l.top, len(rows)-pinned-fit))
+	l.end = max(0, len(rows)-pinned-fit)
 	scroll := len(rows)-pinned > fit
 	tw := r.Dx()
 	if scroll {
@@ -197,9 +202,19 @@ func drawTable[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], rows
 	if scroll {
 		g.tableBar(dst, l, image.Rect(r.Max.X-tableBarW, ry, r.Max.X, ry+fit*t.rowH), fit, len(rows)-pinned)
 	}
+	g.endScroll(area)
 }
 
 const tableBarW = 10
+
+// addGrab registers a button whose click runs at once, even inside a scroll area: the scrollbar's own.
+func (g *Game) addGrab(r image.Rectangle, click func()) {
+	n := len(g.buttons)
+	g.addButton(r, "", click)
+	if len(g.buttons) > n {
+		g.buttons[n].grab = true
+	}
+}
 
 // tableBar draws the scrollbar over track for fit of n rows and registers its press: on the thumb
 // it drags the thumb, elsewhere it pages toward the press.
@@ -212,8 +227,8 @@ func (g *Game) tableBar(dst *ebiten.Image, l *tableList, track image.Rectangle, 
 	if d := g.tableDrag; hovered(thumb) || d != nil && d.l == l && d.perPx > 0 {
 		c = color.NRGBA{R: 225, G: 205, B: 150, A: 240}
 	}
-	rect(dst, float32(thumb.Min.X), float32(thumb.Min.Y), float32(thumb.Dx()), float32(thumb.Dy()), c)
-	g.addButton(track, "", func() {
+	scrollBarStyles[scrollBarStyle](dst, track, thumb, c)
+	g.addGrab(track, func() {
 		x, y := cursorPos()
 		switch p := image.Pt(x, y); {
 		case p.In(unframed(thumb)):
@@ -227,7 +242,7 @@ func (g *Game) tableBar(dst *ebiten.Image, l *tableList, track image.Rectangle, 
 }
 
 // tableDrag is a press on a table being held: dragging the rows or the scrollbar's thumb, or a row
-// to pick when it is let go without moving.
+// to pick when it is let go without moving. speed is the pointer's recent speed in px a frame.
 type tableDrag struct {
 	l     *tableList
 	rowH  int
@@ -236,16 +251,27 @@ type tableDrag struct {
 	moved bool
 	perPx float64 // rows per px of the thumb's travel, while dragging the thumb
 	pick  func()
+	last  int
+	speed float64
 }
+
+// Glide after a release: the rows keep going a little, each frame less, and stop at the first or last row. A
+// press stops it at once.
+const (
+	flingFriction = .92
+	flingRest     = .02 // rows a frame
+	flingMinPx    = 3   // px a frame the pointer must have been moving at the release
+)
 
 // pressTable starts holding a press on l's rows; pick runs if it is let go without dragging.
 func (g *Game) pressTable(l *tableList, rowH int, pick func()) {
 	x, y := cursorPos()
-	g.tableDrag = &tableDrag{l: l, rowH: rowH, press: image.Pt(x, y), top: l.top, pick: pick}
+	g.tableDrag = &tableDrag{l: l, rowH: rowH, press: image.Pt(x, y), top: l.top, pick: pick, last: y}
 }
 
 // updateTableDrag follows the press held on a table: the rows follow the pointer once it moves
-// past dragStartPx, the thumb at once; letting go of a row that did not move picks it.
+// past dragStartPx, the thumb at once; letting go of a row that did not move picks it, and letting
+// go of rows that moved fast leaves them gliding.
 func (g *Game) updateTableDrag() bool {
 	d := g.tableDrag
 	if d == nil {
@@ -260,14 +286,40 @@ func (g *Game) updateTableDrag() bool {
 		case d.moved || abs(dy) > dragStartPx:
 			d.moved = true
 			d.l.top = d.top - dy/d.rowH
+			d.speed = .6*d.speed + .4*float64(y-d.last)
 		}
+		d.last = y
 		return true
 	}
 	g.tableDrag = nil
+	if d.moved && d.perPx == 0 && math.Abs(d.speed) >= flingMinPx {
+		d.l.fling = -d.speed / float64(d.rowH)
+		g.flinging = d.l
+	}
 	if !d.moved && d.pick != nil {
 		d.pick()
 	}
 	return true
+}
+
+// updateFlings carries on a glide left by a release. It never takes the input: a press stops it and goes on as
+// a press.
+func (g *Game) updateFlings() bool {
+	l := g.flinging
+	if l == nil {
+		return false
+	}
+	if mouseJustPressed(ebiten.MouseButtonLeft) || g.tableDrag != nil {
+		l.fling, g.flinging = 0, nil
+		return false
+	}
+	l.scroll(-l.fling)
+	l.fling *= flingFriction
+	l.top = max(0, min(l.end, l.top))
+	if math.Abs(l.fling) < flingRest || l.top == 0 && l.fling < 0 || l.top == l.end && l.fling > 0 {
+		l.fling, g.flinging = 0, nil
+	}
+	return false
 }
 
 // tableRow draws one row over rr and registers its click.
@@ -277,7 +329,11 @@ func tableRow[R any](g *Game, dst *ebiten.Image, l *tableList, t table[R], ws []
 	if open && t.pick != nil {
 		pick = func() { t.pick(row) }
 	}
-	g.addButton(rr, "", func() { g.pressTable(l, t.rowH, pick) })
+	g.addButton(rr, "", func() {
+		if pick != nil {
+			pick()
+		}
+	})
 	if t.back != nil {
 		t.back(dst, row, rr)
 	}

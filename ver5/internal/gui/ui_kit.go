@@ -111,21 +111,77 @@ func (g *Game) tabRow(dst *ebiten.Image, x, y int, labels []string, on int, pick
 	return x
 }
 
-// wheelArea is a list the wheel scrolls while the pointer is over it.
+// wheelArea is a scroll area: a list the wheel and the press scroll while the pointer is over it, with its rows
+// of rowH px. The buttons drawn from begin to end (indexes into g.buttons) belong to it: a press on one is held
+// as a tap or a drag (pressButton).
 type wheelArea struct {
-	r image.Rectangle
-	l *tableList
+	r        image.Rectangle
+	l        *tableList
+	rowH     int
+	from, to int
 }
 
-// updateWheelLists scrolls the list under the pointer by the wheel.
+// beginScroll opens the scroll area r of l. The returned index is for endScroll, which closes the buttons the area owns.
+func (g *Game) beginScroll(r image.Rectangle, l *tableList, rowH int) int {
+	g.wheelAreas = append(g.wheelAreas, wheelArea{r: unframed(r), l: l, rowH: rowH, from: len(g.buttons)})
+	return len(g.wheelAreas) - 1
+}
+
+// pressArea holds a press at (x, y) on the innermost scroll area under it, where no button took the press: a drag
+// scrolls it and a release picks nothing. It reports whether an area was under the press.
+func (g *Game) pressArea(x, y int) bool {
+	for k := len(g.wheelAreas) - 1; k >= 0; k-- {
+		if a := g.wheelAreas[k]; image.Pt(x, y).In(a.r) {
+			g.pressTable(a.l, a.rowH, nil)
+			return true
+		}
+	}
+	return false
+}
+
+// endScroll closes the area begun at i.
+func (g *Game) endScroll(i int) { g.wheelAreas[i].to = len(g.buttons) }
+
+// scrollAreaOf is the innermost scroll area that owns button i, nil for a button outside every area.
+func (g *Game) scrollAreaOf(i int) *wheelArea {
+	for k := len(g.wheelAreas) - 1; k >= 0; k-- {
+		if a := &g.wheelAreas[k]; i >= a.from && i < a.to {
+			return a
+		}
+	}
+	return nil
+}
+
+// pressButton handles a press on button i: a button in a scroll area is held until the press is let go (a tap runs
+// it, a drag scrolls), any other runs at once.
+func (g *Game) pressButton(i int) {
+	b := g.buttons[i]
+	if a := g.scrollAreaOf(i); a != nil && !b.grab {
+		g.pressTable(a.l, a.rowH, func() { g.runButton(b) })
+		return
+	}
+	g.runButton(b)
+}
+
+// runButton is a button's click with its sound: the refusal of a denied row or the select sound.
+func (g *Game) runButton(b button) {
+	if b.denied {
+		g.sfx("ui-denied")
+	}
+	before := g.sfxCalls
+	b.click()
+	g.sfxUnless(before, "ui-select")
+}
+
+// updateWheelLists scrolls the innermost list under the pointer by the wheel.
 func (g *Game) updateWheelLists() bool {
 	_, wheel := ebiten.Wheel()
 	if wheel == 0 {
 		return false
 	}
 	x, y := cursorPos()
-	for _, a := range g.wheelAreas {
-		if image.Pt(x, y).In(a.r) {
+	for k := len(g.wheelAreas) - 1; k >= 0; k-- {
+		if a := g.wheelAreas[k]; image.Pt(x, y).In(a.r) {
 			a.l.scroll(wheel)
 			return true
 		}
@@ -140,22 +196,24 @@ func (g *Game) updateWheelLists() bool {
 func (g *Game) listRows(dst *ebiten.Image, l *tableList, r image.Rectangle, n, rowH int, draw func(i int, rr image.Rectangle), pick func(i int)) {
 	fit := max(1, r.Dy()/rowH)
 	l.top = max(0, min(l.top, n-fit))
+	l.end = max(0, n-fit)
 	right := r.Max.X
 	if n > fit {
 		right -= tableBarW + 4
 	}
+	area := g.beginScroll(r, l, rowH)
 	for i := l.top; i < n && i < l.top+fit; i++ {
 		rr := image.Rect(r.Min.X, r.Min.Y+(i-l.top)*rowH, right, r.Min.Y+(i-l.top+1)*rowH)
 		if pick != nil {
 			i := i
-			g.addButton(rr, "", func() { g.pressTable(l, rowH, func() { pick(i) }) })
+			g.addButton(rr, "", func() { pick(i) })
 		}
 		draw(i, rr)
 	}
 	if n > fit {
 		g.tableBar(dst, l, image.Rect(r.Max.X-tableBarW, r.Min.Y+2, r.Max.X, r.Min.Y+fit*rowH-2), fit, n)
 	}
-	g.wheelAreas = append(g.wheelAreas, wheelArea{unframed(r), l})
+	g.endScroll(area)
 }
 
 // rowBack paints a list row's ground: picked rows lit with a gold bar on the left, and the line under every row.

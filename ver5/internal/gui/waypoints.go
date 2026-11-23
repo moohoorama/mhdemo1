@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/session"
@@ -24,12 +25,21 @@ const (
 // waypointList is the window's scroll and press, the way the equipment picker keeps them.
 type waypointList struct {
 	top      int             // scroll, UI px
+	end      int             // the last top the list stops at, as last drawn
 	view     image.Rectangle // the list as last drawn, in UI px
 	rows     []waypointRow
 	press    image.Point
 	pressTop int
 	pressed  bool
 	moved    bool
+	last     int             // the pointer's y at the last frame of the press
+	speed    float64         // the pointer's recent speed, px a frame
+	fling    float64         // the glide left after a release, px a frame
+	bar      image.Rectangle // the scrollbar's track as last drawn, empty when the list fits
+	barDrag  bool            // a press on the track is dragging the thumb
+	barPress int
+	barTop   int
+	barPerPx float64 // list px per px of the thumb's travel
 }
 
 type waypointRow struct {
@@ -45,6 +55,7 @@ func (g *Game) waypointWindow(dst *ebiten.Image, x, y, w, h int) {
 	content := len(ways)*(waypointRowH+waypointGap) - waypointGap
 	l := &g.waypoints
 	l.top = max(0, min(l.top, content-view.Dy()))
+	l.end = max(0, content-view.Dy())
 	l.view, l.rows = unframed(view), l.rows[:0]
 	clip := dst.SubImage(image.Rect(int(float64(view.Min.X)*drawPx+drawOX), int(float64(view.Min.Y)*drawPx+drawOY),
 		int(float64(view.Max.X)*drawPx+drawOX), int(float64(view.Max.Y)*drawPx+drawOY))).(*ebiten.Image)
@@ -76,10 +87,13 @@ func (g *Game) waypointWindow(dst *ebiten.Image, x, y, w, h int) {
 		lv := fmt.Sprintf("Lv %d", level)
 		g.label(clip, lv, float64(r.Max.X-20)-g.width(lv, 15), ty+1, 15, muted)
 	}
+	l.bar = image.Rectangle{}
 	if content > view.Dy() {
 		track := image.Rect(view.Max.X-6, view.Min.Y, view.Max.X, view.Max.Y)
+		l.bar = unframed(track)
 		rect(dst, float32(track.Min.X), float32(track.Min.Y), float32(track.Dx()), float32(track.Dy()), color.NRGBA{R: 90, G: 90, B: 90, A: 110})
 		th := max(24, view.Dy()*view.Dy()/content)
+		l.barPerPx = float64(content-view.Dy()) / float64(max(1, view.Dy()-th))
 		ty := view.Min.Y + (view.Dy()-th)*l.top/(content-view.Dy())
 		rect(dst, float32(track.Min.X), float32(ty), float32(track.Dx()), float32(th), color.NRGBA{R: 185, G: 170, B: 135, A: 220})
 	}
@@ -98,10 +112,26 @@ func (g *Game) updateWaypoints() bool {
 	if _, wheel := ebiten.Wheel(); wheel != 0 && p.In(l.view) {
 		l.top = max(0, l.top-int(wheel*40))
 	}
+	if mouseJustPressed(ebiten.MouseButtonLeft) {
+		l.fling = 0
+	}
+	if l.barDrag {
+		if mousePressed(ebiten.MouseButtonLeft) {
+			l.top = max(0, min(l.end, l.barTop+int(float64(p.Y-l.barPress)*l.barPerPx+.5)))
+		} else {
+			l.barDrag = false
+		}
+		return true
+	}
+	if mouseJustPressed(ebiten.MouseButtonLeft) && p.In(l.bar) {
+		l.barDrag, l.barPress, l.barTop = true, p.Y, l.top
+		return true
+	}
 	if mouseJustPressed(ebiten.MouseButtonLeft) && p.In(l.view) {
-		l.pressed, l.moved, l.press, l.pressTop = true, false, p, l.top
+		l.pressed, l.moved, l.press, l.pressTop, l.last, l.speed = true, false, p, l.top, p.Y, 0
 	}
 	if !l.pressed {
+		g.glideWaypoints()
 		return false
 	}
 	if mousePressed(ebiten.MouseButtonLeft) {
@@ -110,10 +140,15 @@ func (g *Game) updateWaypoints() bool {
 		}
 		if l.moved {
 			l.top = max(0, l.pressTop-(p.Y-l.press.Y))
+			l.speed = .6*l.speed + .4*float64(p.Y-l.last)
 		}
+		l.last = p.Y
 		return true
 	}
 	l.pressed = false
+	if l.moved && math.Abs(l.speed) >= flingMinPx {
+		l.fling = -l.speed
+	}
 	if !l.moved {
 		for _, r := range l.rows {
 			if l.press.In(r.r) {
@@ -203,4 +238,17 @@ func (g *Game) jump(node, difficulty string) {
 		}
 	}
 	g.request(session.Request{Op: "jump", Node: node, Seed: g.seed, Difficulty: difficulty, Flags: flags, Level: g.jumpLevel})
+}
+
+// glideWaypoints carries on a glide left by a release, px a frame, stopping at the first or last row.
+func (g *Game) glideWaypoints() {
+	l := &g.waypoints
+	if l.fling == 0 {
+		return
+	}
+	l.top = max(0, min(l.end, l.top+int(l.fling)))
+	l.fling *= flingFriction
+	if math.Abs(l.fling) < flingRest || l.top == 0 && l.fling < 0 || l.top == l.end && l.fling > 0 {
+		l.fling = 0
+	}
 }
