@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공통 스크롤바 시안 5종 비교</title>
+<style>
+:root { --bg:#16110f; --ink:#f1e6cf; --muted:#b9a88a; --gold:#e2b65d; --card:#241b17; --line:#4a3a2c; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --bg:#f6f1e7; --ink:#2a2118; --muted:#6d5d48; --gold:#9a6d1c; --card:#fffaf0; --line:#d9cbb0; } }
+:root[data-theme="dark"] { --bg:#16110f; --ink:#f1e6cf; --muted:#b9a88a; --gold:#e2b65d; --card:#241b17; --line:#4a3a2c; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif; line-height:1.5; }
+main { max-width:1320px; margin:0 auto; padding:24px 16px 48px; }
+h1 { font-size:22px; margin:0 0 6px; color:var(--gold); }
+h2 { font-size:17px; margin:28px 0 8px; color:var(--gold); }
+p { margin:6px 0; }
+.note { color:var(--muted); font-size:14px; }
+.box { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:12px; margin:10px 0; }
+.opts { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; }
+.opt { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:10px; }
+.opt b { color:var(--gold); }
+.opt ul { margin:6px 0 0; padding-left:18px; font-size:14px; color:var(--muted); }
+.strip img { width:100%; height:auto; image-rendering:auto; display:block; }
+.full { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:10px; }
+.full figure { margin:0; }
+.full img { width:100%; height:auto; border:1px solid var(--line); border-radius:4px; }
+figcaption { font-size:13px; color:var(--muted); margin-top:4px; }
+code { font-size:13px; }
+</style>
+</head>
+<body>
+<main>
+<h1>공통 스크롤바 시안 5종 (현행 참고 포함)</h1>
+<p class="note">모든 그림은 <b>실제 게임 화면 캡처</b>입니다(출전 준비, 제25장 c25-battle, 장수 표가 스크롤되는 상태). 실제 게임 밖의 모형은 없습니다. 같은 화면에서 손잡이 모양만 바꿔 찍었습니다. <b>어느 시안도 최종 채택이 아닙니다. 사용자가 고릅니다.</b></p>
+<p class="note">생성: <code>ver5/internal/gui/scrollbar_style.go</code>의 <code>scrollBarStyles</code>, 데모 <code>ver5/internal/gui/uidemo_scrollbar.go</code>(<code>-ui scrollbar</code>). PC는 기본 1280×850, 휴대폰 참고는 <code>UIDEMO_TAGS=mobile</code>, <code>-size 2400x1080 -uiscale 130</code>.</p>
+
+<h2>같은 화면의 스크롤바 6개 나란히 (확대)</h2>
+<div class="box"><p><b>PC 1280×850</b> — 왼쪽부터 현행, A, B, C, D, E. 각 칸은 같은 위치의 장수 표 스크롤바.</p>
+<div class="strip"><img src="capture/desktop/strip-table-bar.png" alt="PC 스크롤바 6종 확대"></div></div>
+<div class="box"><p><b>휴대폰 참고 2400×1080, UI 130%</b> — 같은 순서.</p>
+<div class="strip"><img src="capture/phone/strip-table-bar.png" alt="휴대폰 스크롤바 6종 확대"></div></div>
+
+<h2>시안별 설명</h2>
+<div class="opts">
+  <div class="opt"><b>현행</b> (참고, 시안 아님)
+    <ul><li>반투명 회색 홈, 밋밋한 베이지 손잡이.</li><li>지금 게임에 있는 그대로.</li><li>손잡이 폭 10px, 손으로 잡는 영역이 좁다.</li></ul></div>
+  <div class="opt"><b>A 죽간</b>
+    <ul><li>둥근 짙은 홈 위에 베이지 알약 모양 손잡이.</li><li>가운데 가로 결 두 줄로 잡을 곳을 표시.</li><li>손잡이 전체가 잡는 영역.</li></ul></div>
+  <div class="opt"><b>B 금테 홈</b>
+    <ul><li>금색 테두리 홈, 밝은 금색 손잡이.</li><li>홈 양 끝의 금줄이 위·아래 끝처럼 보인다.</li><li>대비가 커서 가장 잘 보인다. 홈 전체가 잡는 영역.</li></ul></div>
+  <div class="opt"><b>C 그립</b>
+    <ul><li>가는 선 홈과 세 줄 결이 있는 넓은 손잡이.</li><li>손잡이 아랫줄에 짙은 그림자.</li><li>잡는 곳 표시가 가장 분명하다. 홈은 덜 보인다.</li></ul></div>
+  <div class="opt"><b>D 눈금</b>
+    <ul><li>트랙에 5px 간격의 눈금, 손잡이는 금색 블록.</li><li>눈금 개수로 목록 길이를 어림할 수 있다.</li><li>가장 정보가 많고 가장 복잡하다.</li></ul></div>
+  <div class="opt"><b>E 먹</b>
+    <ul><li>먹색 손잡이에 왼쪽 금테 한 줄, 흐린 먹 번짐 홈.</li><li>대비가 가장 강하다. 어두운 바탕에서 손잡이가 가장 또렷하다.</li><li>금 테두리는 잡히거나 드래그 중일 때만 붙는다(현행 hover 규칙과 같음).</li></ul></div>
+</div>
+
+<h2>전체 화면 (PC · 휴대폰, 프레임 55 = A 죽간, 프레임 115 = C 그립)</h2>
+<p class="note">전체 화면은 각 프레임 PNG 그대로입니다. 각 시안은 프레임 25(현행), 55(A), 85(B), 115(C), 145(D), 175(E)에 해당합니다.</p>
+<div class="full">
+  <figure><img src="capture/desktop/frame-0025.png" alt="PC 현행"><figcaption>PC · 현행 (frame-0025)</figcaption></figure>
+  <figure><img src="capture/desktop/frame-0055.png" alt="PC A"><figcaption>PC · A 죽간 (frame-0055)</figcaption></figure>
+  <figure><img src="capture/desktop/frame-0085.png" alt="PC B"><figcaption>PC · B 금테 홈 (frame-0085)</figcaption></figure>
+  <figure><img src="capture/desktop/frame-0115.png" alt="PC C"><figcaption>PC · C 그립 (frame-0115)</figcaption></figure>
+  <figure><img src="capture/desktop/frame-0145.png" alt="PC D"><figcaption>PC · D 눈금 (frame-0145)</figcaption></figure>
+  <figure><img src="capture/desktop/frame-0175.png" alt="PC E"><figcaption>PC · E 먹 (frame-0175)</figcaption></figure>
+  <figure><img src="capture/phone/frame-0025.png" alt="휴대폰 현행"><figcaption>휴대폰 · 현행 (frame-0025)</figcaption></figure>
+  <figure><img src="capture/phone/frame-0055.png" alt="휴대폰 A"><figcaption>휴대폰 · A 죽간 (frame-0055)</figcaption></figure>
+  <figure><img src="capture/phone/frame-0085.png" alt="휴대폰 B"><figcaption>휴대폰 · B 금테 홈 (frame-0085)</figcaption></figure>
+  <figure><img src="capture/phone/frame-0115.png" alt="휴대폰 C"><figcaption>휴대폰 · C 그립 (frame-0115)</figcaption></figure>
+  <figure><img src="capture/phone/frame-0145.png" alt="휴대폰 D"><figcaption>휴대폰 · D 눈금 (frame-0145)</figcaption></figure>
+  <figure><img src="capture/phone/frame-0175.png" alt="휴대폰 E"><figcaption>휴대폰 · E 먹 (frame-0175)</figcaption></figure>
+</div>
+
+<h2>확인하지 않은 것</h2>
+<ul class="note">
+<li>실제 휴대폰 기기에서의 손가락 크기·터치 감각. 확대 캡처와 참고 크기로만 봤다.</li>
+<li>손잡이가 호버·드래그 상태일 때의 색 변화를 모든 시안에서 따로 캡처하지 않았다(코드는 같은 규칙).</li>
+<li>시안 중 무엇을 채택할지는 사용자가 정한다. 이 페이지에서 정한 것은 없다.</li>
+</ul>
+</main>
+</body>
+</html>
