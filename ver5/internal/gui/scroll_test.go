@@ -370,7 +370,7 @@ func TestSortieCardTapAndDrag(t *testing.T) {
 func TestScrollBarArtSprites(t *testing.T) {
 	d, err := NewDemo("../..", DemoOptions{Name: "scrollbar", Node: "c25-battle"})
 	require.NoError(t, err)
-	for _, p := range []string{"scroll_a", "scroll_b", "scroll_c", "scroll_d", "scroll_e"} {
+	for _, p := range []string{"scroll_a", "scroll_b", "scroll_c", "scroll_d", "scroll_e", "scroll_a_shade", "scroll_b_shade", "scroll_c_shade", "scroll_d_shade", "scroll_e_shade"} {
 		track, ok := d.g.assets.UI[p+"_track"]
 		require.True(t, ok, p)
 		assert.Len(t, track.Frames, 1, p)

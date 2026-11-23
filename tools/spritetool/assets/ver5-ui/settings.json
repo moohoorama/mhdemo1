@@ -81,7 +81,17 @@
     "scroll_d_track",
     "scroll_d_thumb",
     "scroll_e_track",
-    "scroll_e_thumb"
+    "scroll_e_thumb",
+    "scroll_a_shade_track",
+    "scroll_a_shade_thumb",
+    "scroll_b_shade_track",
+    "scroll_b_shade_thumb",
+    "scroll_c_shade_track",
+    "scroll_c_shade_thumb",
+    "scroll_d_shade_track",
+    "scroll_d_shade_thumb",
+    "scroll_e_shade_track",
+    "scroll_e_shade_thumb"
   ],
   "outline": "#000000",
   "sprites": {
@@ -2132,7 +2142,16 @@
       "timing": "an equipment icon, 36x36 dot art at 4 art px per dot (a 32 UI px picture inside a 2-dot clear margin), drawn in colour",
       "layers": {
         "icon": {
-          "palette": {"k": "#1c120c", "W": "#ffffff", "h": "#e4ecf4", "l": "#b4d4ee", "a": "#a4aebc", "b": "#76829a", "c": "#4e5870", "d": "#2e3444"}
+          "palette": {
+            "k": "#1c120c",
+            "W": "#ffffff",
+            "h": "#e4ecf4",
+            "l": "#b4d4ee",
+            "a": "#a4aebc",
+            "b": "#76829a",
+            "c": "#4e5870",
+            "d": "#2e3444"
+          }
         }
       }
     },
@@ -2360,6 +2379,272 @@
             "d": "#846834",
             "G": "#ffe9a8",
             "D": "#c79c4a"
+          }
+        }
+      }
+    },
+    "scroll_a_shade_track": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "scrollbar option, shaded (game draws the track or thumb nine ways, 4 px corners, middle rows and columns stretched). A 금테 쪽매 음영 — the groove lit top and left, the lacquer darkest under the top frame",
+      "layers": {
+        "track": {
+          "palette": {
+            "k": "#0c0806",
+            "G": "#f0cc7a",
+            "x": "#120a06",
+            "l": "#2c1e18",
+            "y": "#3f2c22",
+            "d": "#846834"
+          }
+        }
+      }
+    },
+    "scroll_a_shade_thumb": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 2,
+      "timing": "scrollbar option, shaded. A 금테 쪽매 음영 — the gold block with a lit top-left bevel stepping darker to the foot (frame 2 lit)",
+      "layers": {
+        "thumb": {
+          "palette": {
+            "k": "#0c0806",
+            "h": "#fbeec0",
+            "w": "#f5dc9a",
+            "g": "#e2b65d",
+            "m": "#c79c4a",
+            "d": "#846834",
+            "H": "#ffffff",
+            "W": "#fff6d8",
+            "G": "#ffe9a8",
+            "M": "#ecc878",
+            "D": "#a8823c"
+          }
+        }
+      }
+    },
+    "scroll_b_shade_track": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "scrollbar option, shaded. B 구슬 줄 음영 — the bead capsule shadowed at the top, gold line in the middle, lower lip lit",
+      "layers": {
+        "track": {
+          "palette": {
+            "k": "#0c0806",
+            "x": "#120a06",
+            "l": "#2c1e18",
+            "g": "#e2b65d",
+            "y": "#43302a",
+            "d": "#1a120d"
+          }
+        }
+      }
+    },
+    "scroll_b_shade_thumb": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 2,
+      "timing": "scrollbar option, shaded. B 구슬 줄 음영 — the round bead with a white glint at the upper left and shading to the lower right (frame 2 lit)",
+      "layers": {
+        "thumb": {
+          "palette": {
+            "k": "#0c0806",
+            "h": "#fff3c8",
+            "w": "#f5dc9a",
+            "g": "#e2b65d",
+            "m": "#c79c4a",
+            "d": "#846834",
+            "e": "#5e4620",
+            "H": "#ffffff",
+            "W": "#fff6d8",
+            "G": "#ffe9a8",
+            "M": "#ecc878",
+            "D": "#a8823c",
+            "E": "#7a5a2a"
+          }
+        }
+      }
+    },
+    "scroll_c_shade_track": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "scrollbar option, shaded. C 두루마리 축 음영 — the roller lit on its left and turning dark on the right, grain kept",
+      "layers": {
+        "track": {
+          "palette": {
+            "k": "#0c0806",
+            "h": "#a57a48",
+            "l": "#8a6238",
+            "b": "#6b4a2a",
+            "s": "#2a1a0e",
+            "d": "#3d2716"
+          }
+        }
+      }
+    },
+    "scroll_c_shade_thumb": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 2,
+      "timing": "scrollbar option, shaded. C 두루마리 축 음영 — the paper slip shaded toward its right and foot (frame 2 lit)",
+      "layers": {
+        "thumb": {
+          "palette": {
+            "k": "#0c0806",
+            "g": "#e2b65d",
+            "p": "#f3e4bb",
+            "o": "#d9c9a0",
+            "q": "#b3a06e",
+            "d": "#846834",
+            "G": "#ffe9a8",
+            "P": "#fffbea",
+            "O": "#f3e4bb",
+            "Q": "#d9c9a0",
+            "D": "#a8823c"
+          }
+        }
+      }
+    },
+    "scroll_d_shade_track": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "scrollbar option, shaded. D 옥 장식 음영 — the lacquer groove with studs, lit at the top and left, deep shadow at the foot",
+      "layers": {
+        "track": {
+          "palette": {
+            "k": "#0c0806",
+            "d": "#846834",
+            "L": "#4a382e",
+            "l": "#2c1e18",
+            "g": "#e2b65d",
+            "G": "#ffe9a8",
+            "x": "#120a06"
+          }
+        }
+      }
+    },
+    "scroll_d_shade_thumb": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 2,
+      "timing": "scrollbar option, shaded. D 옥 장식 음영 — the lacquer block in a gold frame lit from the upper left, the centre stud lighter (frame 2 lit)",
+      "layers": {
+        "thumb": {
+          "palette": {
+            "k": "#0c0806",
+            "h": "#ffe9a8",
+            "g": "#e2b65d",
+            "L": "#4a382e",
+            "l": "#2c1e18",
+            "x": "#120a06",
+            "d": "#846834",
+            "H": "#fff8e0",
+            "G": "#ffe9a8",
+            "T": "#6a5444",
+            "M": "#3e2c24",
+            "D": "#a8823c",
+            "X": "#1e140e"
+          }
+        }
+      }
+    },
+    "scroll_e_shade_track": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "timing": "scrollbar option, shaded. E 점무늬 음영 — the dotted fabric keeps its holes, dots lit at the top and left, dark at the foot",
+      "layers": {
+        "track": {
+          "palette": {
+            "k": "#0c0806",
+            "b": "#4a382c",
+            "a": "#3a2b21",
+            "z": "#2a1e17"
+          }
+        }
+      }
+    },
+    "scroll_e_shade_thumb": {
+      "cell": [
+        10,
+        10
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 2,
+      "timing": "scrollbar option, shaded. E 점무늬 음영 — the gold checker, lit gold at the top stepping to dark gold (the dither kept; frame 2 lit)",
+      "layers": {
+        "thumb": {
+          "palette": {
+            "k": "#0c0806",
+            "h": "#ffe9a8",
+            "g": "#e2b65d",
+            "d": "#846834",
+            "x": "#5a4220",
+            "W": "#fff6d8",
+            "G": "#ffe9a8",
+            "D": "#a8823c",
+            "X": "#7a5a2a"
           }
         }
       }

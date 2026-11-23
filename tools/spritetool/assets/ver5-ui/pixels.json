@@ -3419,5 +3419,235 @@
     "kkkkkkkkkk"
    ]
   }
+ ],
+ "scroll_a_shade_track": [
+  {
+   "track": [
+    "kkkkkkkkkk",
+    "kGGGGGGGGk",
+    "kGxxxxxxdk",
+    "kGlllllldk",
+    "kGlllllldk",
+    "kGlllllldk",
+    "kGlllllldk",
+    "kGyyyyyydk",
+    "kddddddddk",
+    "kkkkkkkkkk"
+   ]
+  }
+ ],
+ "scroll_a_shade_thumb": [
+  {
+   "thumb": [
+    "kkkkkkkkkk",
+    "khhhhhhhwk",
+    "khwwwwwwdk",
+    "khwgggggdk",
+    "khggggggdk",
+    "khggggggdk",
+    "khgmmmmgdk",
+    "khmmmmmmdk",
+    "kddddddddk",
+    "kkkkkkkkkk"
+   ]
+  },
+  {
+   "thumb": [
+    "kkkkkkkkkk",
+    "kHHHHHHHWk",
+    "kHWWWWWWDk",
+    "kHWGGGGGDk",
+    "kHGGGGGGDk",
+    "kHGGGGGGDk",
+    "kHGMMMMGDk",
+    "kHMMMMMMDk",
+    "kDDDDDDDDk",
+    "kkkkkkkkkk"
+   ]
+  }
+ ],
+ "scroll_b_shade_track": [
+  {
+   "track": [
+    "...kkkk...",
+    "..kxxxxk..",
+    ".kxxllxxk.",
+    ".kxlggllk.",
+    ".kylggllk.",
+    ".kylggllk.",
+    "..kllllk..",
+    "..kyyyyk..",
+    "..kddddk..",
+    "...kkkk..."
+   ]
+  }
+ ],
+ "scroll_b_shade_thumb": [
+  {
+   "thumb": [
+    "...kkkk...",
+    "..kwhhwk..",
+    ".kwhgggk..",
+    ".kwggggdk.",
+    "kwggggmmdk",
+    "kwggggmmdk",
+    "kgggggmddk",
+    ".kggggdek.",
+    "..keddek..",
+    "...kkkk..."
+   ]
+  },
+  {
+   "thumb": [
+    "...kkkk...",
+    "..kWHHWk..",
+    ".kWHGGGk..",
+    ".kWGGGGDk.",
+    "kWGGGGMMDk",
+    "kWGGGGMMDk",
+    "kGGGGGMDDk",
+    ".kGGGGDEk.",
+    "..kEDDEk..",
+    "...kkkk..."
+   ]
+  }
+ ],
+ "scroll_c_shade_track": [
+  {
+   "track": [
+    "kkkkkkkkkk",
+    "khlbbbbdsk",
+    "khbblbbdsk",
+    "kbllbbbdsk",
+    "khbblbbdsk",
+    "khbblbbdsk",
+    "kbllbbbdsk",
+    "khlbbbbdsk",
+    "kddddddddk",
+    "kkkkkkkkkk"
+   ]
+  }
+ ],
+ "scroll_c_shade_thumb": [
+  {
+   "thumb": [
+    "kkkkkkkkkk",
+    "kggggggggk",
+    "kpppppppdk",
+    "kpppppppdk",
+    "kpppoqqqdk",
+    "kpppoqqqdk",
+    "kppoqqqqdk",
+    "kqqqqqqqdk",
+    "kddddddddk",
+    "kkkkkkkkkk"
+   ]
+  },
+  {
+   "thumb": [
+    "kkkkkkkkkk",
+    "kGGGGGGGGk",
+    "kPPPPPPPDk",
+    "kPPPPPPPDk",
+    "kPPPOQQQDk",
+    "kPPPOQQQDk",
+    "kPPOQQQQDk",
+    "kQQQQQQQDk",
+    "kDDDDDDDDk",
+    "kkkkkkkkkk"
+   ]
+  }
+ ],
+ "scroll_d_shade_track": [
+  {
+   "track": [
+    "kkkkkkkkkk",
+    "kddddddddk",
+    "kdLLLLLLdk",
+    "kdlgGGglxk",
+    "kdllllllxk",
+    "kdllllllxk",
+    "kdlggGGlxk",
+    "kxllllllxk",
+    "kxxxxxxxxk",
+    "kkkkkkkkkk"
+   ]
+  }
+ ],
+ "scroll_d_shade_thumb": [
+  {
+   "thumb": [
+    "kkkkkkkkkk",
+    "khhhhhhhhk",
+    "khLLLLLLdk",
+    "khlllllldk",
+    "khllggllxk",
+    "khllggllxk",
+    "khlllllldk",
+    "kdllllllxk",
+    "kddddddddk",
+    "kkkkkkkkkk"
+   ]
+  },
+  {
+   "thumb": [
+    "kkkkkkkkkk",
+    "kHHHHHHHHk",
+    "kHTTTTTTDk",
+    "kHMMMMMMDk",
+    "kHMMGGMMXk",
+    "kHMMGGMMXk",
+    "kHMMMMMMDk",
+    "kDMMMMMMXk",
+    "kDDDDDDDDk",
+    "kkkkkkkkkk"
+   ]
+  }
+ ],
+ "scroll_e_shade_track": [
+  {
+   "track": [
+    "kkkkkkkkkk",
+    "kbbbbbbbbk",
+    "k.b.b.a.zk",
+    "kb.b.a.a.k",
+    "kb.a.a.z.k",
+    "kb.a.a.z.k",
+    "k.a.a.z.zk",
+    "ka.z.z.z.k",
+    "kzzzzzzzzk",
+    "kkkkkkkkkk"
+   ]
+  }
+ ],
+ "scroll_e_shade_thumb": [
+  {
+   "thumb": [
+    "kkkkkkkkkk",
+    "khhhhhhhhk",
+    "khghghghdk",
+    "kghghghddk",
+    "kgdgdgdgxk",
+    "kgdgdgdgxk",
+    "kdgdgdgdxk",
+    "kdxdxdxxxk",
+    "kxxxxxxxxk",
+    "kkkkkkkkkk"
+   ]
+  },
+  {
+   "thumb": [
+    "kkkkkkkkkk",
+    "kWWWWWWWWk",
+    "kWGWGWGWDk",
+    "kGWGWGWDDk",
+    "kGDGDGDGXk",
+    "kGDGDGDGXk",
+    "kDGDGDGDXk",
+    "kDXDXDXXXk",
+    "kXXXXXXXXk",
+    "kkkkkkkkkk"
+   ]
+  }
  ]
 }

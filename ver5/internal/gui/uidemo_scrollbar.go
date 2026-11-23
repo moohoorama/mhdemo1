@@ -10,8 +10,8 @@ import (
 func init() { demos["scrollbar"] = demoScrollbar }
 
 // demoScrollbar opens the sortie preparation of the -node battle node (default c25-battle: ten officers, so the detail
-// table scrolls) with the table scrolled three rows down, and shows the six scrollbar styles of scrollbar_style.go one after another: style k is on
-// from frame 30k to 30k+29, so the frames 25, 55, 85, 115, 145 and 175 show 현행 and A to E on the same screen. Each
+// table scrolls) with the table scrolled three rows down, and shows the eleven scrollbar styles of scrollbar_style.go one after another: style k is on
+// from frame 30k to 30k+29, so the frames 25, 55, ..., 325 show 현행, A to E and their shaded A to E on the same screen. Each
 // style is for comparing the designs only, not a chosen one.
 func demoScrollbar(d *Demo) error {
 	g := d.g

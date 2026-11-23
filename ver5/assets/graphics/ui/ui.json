@@ -1240,5 +1240,175 @@
     10
    ]
   ]
+ },
+ "scroll_a_shade_track": {
+  "anchor": [
+   0,
+   0
+  ],
+  "frames": [
+   [
+    0,
+    8629,
+    10,
+    10
+   ]
+  ]
+ },
+ "scroll_a_shade_thumb": {
+  "anchor": [
+   0,
+   0
+  ],
+  "frames": [
+   [
+    0,
+    8639,
+    10,
+    10
+   ],
+   [
+    10,
+    8639,
+    10,
+    10
+   ]
+  ]
+ },
+ "scroll_b_shade_track": {
+  "anchor": [
+   0,
+   0
+  ],
+  "frames": [
+   [
+    0,
+    8649,
+    10,
+    10
+   ]
+  ]
+ },
+ "scroll_b_shade_thumb": {
+  "anchor": [
+   0,
+   0
+  ],
+  "frames": [
+   [
+    0,
+    8659,
+    10,
+    10
+   ],
+   [
+    10,
+    8659,
+    10,
+    10
+   ]
+  ]
+ },
+ "scroll_c_shade_track": {
+  "anchor": [
+   0,
+   0
+  ],
+  "frames": [
+   [
+    0,
+    8669,
+    10,
+    10
+   ]
+  ]
+ },
+ "scroll_c_shade_thumb": {
+  "anchor": [
+   0,
+   0
+  ],
+  "frames": [
+   [
+    0,
+    8679,
+    10,
+    10
+   ],
+   [
+    10,
+    8679,
+    10,
+    10
+   ]
+  ]
+ },
+ "scroll_d_shade_track": {
+  "anchor": [
+   0,
+   0
+  ],
+  "frames": [
+   [
+    0,
+    8689,
+    10,
+    10
+   ]
+  ]
+ },
+ "scroll_d_shade_thumb": {
+  "anchor": [
+   0,
+   0
+  ],
+  "frames": [
+   [
+    0,
+    8699,
+    10,
+    10
+   ],
+   [
+    10,
+    8699,
+    10,
+    10
+   ]
+  ]
+ },
+ "scroll_e_shade_track": {
+  "anchor": [
+   0,
+   0
+  ],
+  "frames": [
+   [
+    0,
+    8709,
+    10,
+    10
+   ]
+  ]
+ },
+ "scroll_e_shade_thumb": {
+  "anchor": [
+   0,
+   0
+  ],
+  "frames": [
+   [
+    0,
+    8719,
+    10,
+    10
+   ],
+   [
+    10,
+    8719,
+    10,
+    10
+   ]
+  ]
  }
 }

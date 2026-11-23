@@ -19,10 +19,15 @@ var scrollBarStyles = [...]func(g *Game, dst *ebiten.Image, track, thumb image.R
 	barArt("scroll_c"),
 	barArt("scroll_d"),
 	barArt("scroll_e"),
+	barArt("scroll_a_shade"),
+	barArt("scroll_b_shade"),
+	barArt("scroll_c_shade"),
+	barArt("scroll_d_shade"),
+	barArt("scroll_e_shade"),
 }
 
 // scrollBarNames are the labels of the styles in the scrollbar demo, in the order of scrollBarStyles.
-var scrollBarNames = [...]string{"현행", "A 금테 쪽매", "B 구슬 줄", "C 두루마리 축", "D 옥 장식", "E 점무늬"}
+var scrollBarNames = [...]string{"현행", "A 금테 쪽매", "B 구슬 줄", "C 두루마리 축", "D 옥 장식", "E 점무늬", "A 금테 음영", "B 구슬 음영", "C 두루마리 음영", "D 옥 음영", "E 점무늬 음영"}
 
 // lit is the thumb's hovered or dragged ink (table.go's tableBar).
 func lit(c color.NRGBA) bool { return c.R >= 225 }

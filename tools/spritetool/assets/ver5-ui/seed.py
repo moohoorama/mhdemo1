@@ -254,6 +254,102 @@ def scroll_e_thumb(s):
     return [{"thumb": rows}, {"thumb": lit}]
 
 
+# Shaded options: the same colours and outlines as the flat A-E pieces above (the same masks), with light from the
+# upper left as in the window rim: the top and left bevels lit, the bottom and right in shadow, and colour steps down
+# the body. Each piece is 10x10 and is nine-sliced, so rows 4-5 are the stretched middle row (identical), rows 0-3 and
+# 6-9 are the fixed top and foot.
+def _check(rows):
+    assert len(rows) == 10 and all(len(r) == 10 for r in rows), rows
+    assert rows[4] == rows[5], rows
+    return rows
+
+
+def _lit(rows, table):
+    return [r.translate(str.maketrans(table)) for r in rows]
+
+
+def scroll_a_shade_track(s):
+    """A shaded: the gold-framed groove, lit top and left, the lacquer darkest under the top frame and lit at its foot."""
+    return [{"track": _check([
+        "k" * 10, "kGGGGGGGGk", "kGxxxxxxdk", "kGlllllldk", "kGlllllldk", "kGlllllldk", "kGlllllldk",
+        "kGyyyyyydk", "kddddddddk", "k" * 10])}]
+
+
+def scroll_a_shade_thumb(s):
+    """A shaded: the gold block, a light top-left bevel, the colour stepping darker down to a dark foot; lit frame bright."""
+    rows = _check([
+        "k" * 10, "khhhhhhhwk", "khwwwwwwdk", "khwgggggdk", "khggggggdk", "khggggggdk", "khgmmmmgdk",
+        "khmmmmmmdk", "k" + "d" * 8 + "k", "k" * 10])
+    lit = _lit(rows, {"h": "H", "w": "W", "g": "G", "m": "M", "d": "D"})
+    return [{"thumb": rows}, {"thumb": lit}]
+
+
+def scroll_b_shade_track(s):
+    """B shaded: the dark bead capsule, its top in shadow, the gold line down the middle, the lower lip lit."""
+    return [{"track": _check([
+        "...kkkk...", "..kxxxxk..", ".kxxllxxk.", ".kxlggllk.", ".kylggllk.", ".kylggllk.", "..kllllk..",
+        "..kyyyyk..", "..kddddk..", "...kkkk..."])}]
+
+
+def scroll_b_shade_thumb(s):
+    """B shaded: the round gold bead with a white glint at the top-left, shading toward the lower right."""
+    rows = _check([
+        "...kkkk...", "..kwhhwk..", ".kwhgggk..", ".kwggggdk.", "kwggggmmdk", "kwggggmmdk",
+        "kgggggmddk", ".kggggdek.", "..keddek..", "...kkkk..."])
+    lit = _lit(rows, {"h": "H", "w": "W", "g": "G", "m": "M", "d": "D", "e": "E"})
+    return [{"thumb": rows}, {"thumb": lit}]
+
+
+def scroll_c_shade_track(s):
+    """C shaded: the wooden roller, lit on its left and turning dark on the right, the grain kept as before."""
+    rows = _check([
+        "k" * 10, "khlbbbbdsk", "khbblbbdsk", "kbllbbbdsk", "khbblbbdsk", "khbblbbdsk", "kbllbbbdsk",
+        "khlbbbbdsk", "k" + "d" * 8 + "k", "k" * 10])
+    return [{"track": rows}]
+
+
+def scroll_c_shade_thumb(s):
+    """C shaded: the paper slip with a lit gold end and a shaded paper that darkens toward its right and foot."""
+    rows = _check([
+        "k" * 10, "k" + "g" * 8 + "k", "kpppppppdk", "kpppppppdk", "kpppoqqqdk", "kpppoqqqdk", "kppoqqqqdk",
+        "kqqqqqqqdk", "k" + "d" * 8 + "k", "k" * 10])
+    lit = _lit(rows, {"g": "G", "p": "P", "o": "O", "q": "Q", "d": "D"})
+    return [{"thumb": rows}, {"thumb": lit}]
+
+
+def scroll_d_shade_track(s):
+    """D shaded: the lacquer groove with its gold studs, lit on the top and left, the foot in deep shadow."""
+    return [{"track": _check([
+        "k" * 10, "k" + "d" * 8 + "k", "kdLLLLLLdk", "kdlgGGglxk", "kdllllllxk", "kdllllllxk", "kdlggGGlxk",
+        "kxllllllxk", "k" + "x" * 8 + "k", "k" * 10])}]
+
+
+def scroll_d_shade_thumb(s):
+    """D shaded: the lacquer block in a gold frame lit from the upper left, the centre lighter and the foot dark gold."""
+    rows = _check([
+        "k" * 10, "k" + "h" * 8 + "k", "khLLLLLLdk", "khlllllldk", "khllggllxk", "khllggllxk", "khlllllldk",
+        "kdllllllxk", "k" + "d" * 8 + "k", "k" * 10])
+    lit = _lit(rows, {"h": "H", "g": "G", "L": "T", "l": "M", "d": "D", "x": "X"})
+    return [{"thumb": rows}, {"thumb": lit}]
+
+
+def scroll_e_shade_track(s):
+    """E shaded: the dotted fabric keeps its holes and dark dots; lit dots at the top and left, dark dots at the foot."""
+    return [{"track": _check([
+        "k" * 10, "k" + "b" * 8 + "k", "k.b.b.a.zk",
+        "kb.b.a.a.k", "kb.a.a.z.k", "kb.a.a.z.k", "k.a.a.z.zk", "ka.z.z.z.k",
+        "k" + "z" * 8 + "k", "k" * 10])}]
+
+
+def scroll_e_shade_thumb(s):
+    """E shaded: the gold checker with lit gold at the top, stepping to dark gold and a dark foot (the dither kept)."""
+    rows = _check([
+        "k" * 10, "k" + "h" * 8 + "k", "khghghghdk", "kghghghddk", "kgdgdgdgxk", "kgdgdgdgxk", "kdgdgdgdxk",
+        "kdxdxdxxxk", "k" + "x" * 8 + "k", "k" * 10])
+    lit = _lit(rows, {"h": "W", "g": "G", "d": "D", "x": "X"})
+    return [{"thumb": rows}, {"thumb": lit}]
+
+
 if __name__ == "__main__":
     settings = json.loads((HERE / "settings.json").read_text())
     path = HERE / "pixels.json"
