@@ -109,4 +109,7 @@
 
 ## 커밋
 
-(아래 커밋 절은 최종 단계에서 채운다)
+- `cebd66d` feat(gui): tap-or-drag scroll areas with glide and 3/5-column sortie (코드·테스트·시안 데모)
+- `20c548c` docs(scroll): scroll window design, scrollbar options, result (설계 문서·비교 페이지·결과·history)
+- push 하지 않음.
+- 주의: `ver5/docs/history.md`의 다른 세션 미커밋 항목은 커밋하지 않았다(내 항목만 커밋).
