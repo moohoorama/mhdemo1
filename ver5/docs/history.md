@@ -1,9 +1,244 @@
+## 2026-11-24 요청 대기열 확인
+
+- `request/20261124-request-queue-check.md`·`result/20261124/request-queue-check/summary.md`: 요청 대기열과 최근 결과 상태 확인 — 파일 이동과 작업 완료 구분.
+
+## 2026-11-24 신야 수공 본편 적용 확인
+
+- `request/20261124-xinye-suigon-code-check.md`·`result/20261124/xinye-suigon-code-check/summary.md`: 본편 수공 이벤트·둑 장면 연결과 관련 테스트 확인 — 적용 범위와 미커밋 상태 전달.
+
+## 2026-11-24 스크롤바 그라데이션 진행 확인
+
+- `request/20261124-scrollbar-gradient-progress.md`·`result/20261124/scrollbar-gradient-progress/summary.md`: 결과 폴더와 프로세스 확인 — 진행 여부의 확인 범위 기록.
+
+## 2026-11-24 도트 스크롤바 그라데이션 상태 확인
+
+- `request/20261124-scrollbar-gradient-status.md`·`result/20261124/scrollbar-gradient-status/summary.md`: 시안 결과 존재 여부 확인 — 현재 상태 전달.
+
+## 2026-11-24 도트 스크롤바 그라데이션 시안 요청
+
+- `request/20261124-scrollbar-gradient.md`·`result/20261124/scrollbar-gradient-request/summary.md`: 도트 스크롤바의 명암 그라데이션과 게임 스크린샷 요청 기록 — 디자인 비교.
+
+## 2026-11-24 출전 카드·도트 스크롤바 상태 확인
+
+- `request/20261124-scroll-sortie-pixel-status.md`·`result/20261124/scroll-sortie-pixel-status/summary.md`: 카드 축소와 시안 결과·미검증 항목 확인 — 상태 전달.
+
+## 2026-11-24 출전 카드 크기 정정과 도트 스크롤바 요청
+
+- `request/20261124-scroll-sortie-pixel.md`·`result/20261124/scroll-sortie-pixel-request/summary.md`: 출전 영역을 넓히지 않는 카드 축소와 창 테두리에 어울리는 도트 시안 요청 — 사용자 의도에 맞춘 수정.
+
+## 2026-11-24 통합 스크롤 작업 완료 상태 확인
+
+- `request/20261124-scroll-execute-final-status.md`·`result/20261124/scroll-execute-final-status/summary.md`: 구현 보고와 시안·테스트 한계 확인 — 완료 범위 전달.
+
 ## 2026-11-24 공통 스크롤 영역과 출전 3·5열, 스크롤바 시안 5종
 
 - 목록 화면의 스크롤 영역에서 누름을 탭(놓을 때 실행)과 드래그(스크롤)로 나눠 처리하고, 놓은 뒤 관성을 이어 가게 했다. 설계는 `ver5/docs/scroll-window.md`. 경유지 목록에 스크롤바 썸 드래그를 추가했다.
 - 출전 부대 카드를 모바일 3열, PC 5열로 바꿨다(`sortieCols`, `sortieColumns`). 출전 시트 폭을 넓혀 PC 5열이 들어가게 했다.
 - 스크롤바 디자인 시안 5종(+현행 참고)을 같은 출전 화면에서 실제 게임 캡처로 비교했다. 비교 페이지와 캡처는 `result/20261124/20261124-scroll-execute/`. 최종 채택은 아직 없다.
 - 결과와 한계: `result/20261124/20261124-scroll-execute/result.md`.
+
+## 2026-11-24 통합 스크롤 작업 상태 확인
+
+- `request/20261124-scroll-execute-status.md`·`result/20261124/scroll-execute-status/summary.md`: 통합 요청의 1단계 보고와 미완료 범위 확인 — 진행 상태 전달.
+
+## 2026-11-24 스크롤 작업 실행 재요청
+
+- `request/20261124-scroll-execute.md`·`result/20261124/scroll-execute-request/summary.md`: 기존 변경을 검토하고 스크롤 구현·시안 제작을 실제 진행하도록 재요청 — 미착수 반복 해소.
+
+## 2026-11-24 스크롤 요청 미착수 이유 확인
+
+- `request/20261124-scroll-request-investigation.md`·`result/20261124/scroll-request-investigation/summary.md`: 전달 지시와 처리기 미착수 이유 대조 — 사용자가 승인한 범위 확인.
+
+## 2026-11-24 스크롤 작업 상태 확인
+
+- `request/20261124-scroll-work-status.md`·`result/20261124/scroll-work-status/summary.md`: 공통 스크롤 구현과 디자인 시안의 미착수 상태 확인 — 실제 작업 범위 전달.
+
+## 2026-11-24 기존 변경 커밋 후 스크롤 구현 요청
+
+- `request/20261124-scroll-sortie-checkpoint.md`·`result/20261124/scroll-sortie-checkpoint-request/summary.md`: 기존 변경의 안전한 커밋과 공통 스크롤·출전 배치 구현 재개 요청 — 미커밋 변경을 이유로 중단된 작업 진행.
+
+## 2026-11-24 스크롤바 디자인 시안 요청
+
+- `request/20261124-scrollbar-design.md`·`result/20261124/scrollbar-design-request/summary.md`: 스크롤바 5종 디자인과 게임 화면 캡처 요청 기록 — 사용자 비교와 선택 지원.
+
+## 2026-11-23 공통 스크롤·출전 배치 모두 수행 요청
+
+- `request/20261123-scroll-sortie-implement.md`·`result/20261123/scroll-sortie-resume-request/summary.md`: 두 작업 모두 수행하라는 답과 후속 구현 요청 기록 — 미착수된 작업 재개.
+
+## 2026-11-23 공통 스크롤·출전 배치 진행 상태 확인
+
+- `request/20261123-scroll-sortie-status.md`·`result/20261123/scroll-sortie-status/summary.md`: 처리 결과와 미착수 상태 기록 — 사용자에게 작업 상황 전달.
+
+## 2026-11-23 공통 스크롤과 출전 카드 열 수 요청
+
+- `request/20261123-scroll-sortie-layout.md`·`result/20261123/scroll-sortie-request/`: 공통 스크롤 적용과 모바일 3열·PC 5열 요청, 현재 PC 화면 캡처 — 화면별 카드 배치 확인.
+
+## 2026-11-23 새 세션 요청 처리와 MCP 대기 안내
+
+- `request/20261123-request-mcp-guidance.md`·`result/20261123/request-mcp-guidance/summary.md`: 기존 요청 대기 MCP와 폴더 경로 조사 — 새 세션 실행 방법 안내.
+
+## 2026-11-23 스크롤 시안 처리 경로 확인
+
+- `request/20261123-scroll-request-workflow.md`·`result/20261123/scroll-request-workflow/summary.md`: 시안 작성과 요청 처리 순서 기록 — 요청 등록 방식에 대한 사용자 의도 반영.
+
+## 2026-11-23 공통 스크롤 영역 검토와 시안
+
+- `request/20261123-scroll-window-proposal.md`·`result/20261123/scroll-window-proposal/index.html`·`summary.md`: 출전 부대 드래그 누락 원인과 공통 스크롤 동작 시안 기록 — 통일 방식과 화면 확인.
+
+## 2026-11-23 스크롤 입력 조사와 부분 수정
+
+- `internal/gui/table.go`·`deputy_window.go`·`sortie_unified.go`: 공통 표의 휠 영역 등록과 중복 등록 정리 — 휠이 빠진 표에 입력 연결.
+- `internal/gui/battle_log.go`·`game.go`·`battle_log_test.go`: 전투 기록 본문 드래그와 회귀 테스트 추가 — 마우스와 터치로 기록 스크롤.
+- `request/20261123-scroll-input-audit.md`·`result/20261123/scroll-input-audit/`: 조사·설계·테스트·캡처와 미완료 작업 기록 — 전체 화면 검증과 후속 작업 추적.
+
+## 2026-11-23 S_bridge 삭제
+
+- `assets/graphics/maps/S_bridge.json` 삭제, `assets/graphics/index.json`에서 등록 한 줄 제거. 장면·코드 참조는 없었다(`grep`). `docs/plan-small-tile-maps.md`·`docs/presentation-scene.md` 표의 행 제거. 옛 결정·이력 문서는 그대로 둠. 공유 다리 타일 `b`는 건드리지 않음. 삭제는 git에서 복구 가능.
+- 검증: `go test ./internal/scenemap/` 통과. `internal/gui` 테스트는 다른 작업의 미커밋 `sortie_unified.go` 빌드 오류로 실행하지 못함.
+- `request/20261123-s-bridge-removal.md`·`result/20261123/20261123-s-bridge-removal/result.md`
+
+## 2026-11-23 S_bridge 삭제 요청
+
+- `request/20261123-s-bridge-removal.md`·`result/20261123/s-bridge-removal-request/summary.md`: 미사용 장면맵 삭제와 관련 등록 정리 요청 기록 — 사용하지 않는 맵 제거.
+
+## 2026-11-23 S_bridge 사용 장면 확인
+
+- `request/20261123-s-bridge-usage.md`·`result/20261123/s-bridge-usage/summary.md`: S_bridge 참조 현황 기록 — 현재 사용 장면과 남은 등록 구분.
+
+## 2026-11-23 수공 해상도 작업 완료 확인
+
+- `request/20261123-suigong-resolution-final-status.md`·`result/20261123/suigong-resolution-final-status/summary.md`: 해상도 개선 결과와 검증 한계 확인 — 완료 여부 전달.
+
+## 2026-11-23 수공 해상도 작업 상태 확인
+
+- `request/20261123-suigong-resolution-watch.md`·`result/20261123/suigong-resolution-watch/summary.md`: 진행 중 작업의 주기적 상태 확인 요청 기록 — 완료 여부 전달.
+
+## 2026-11-23 수공 해상도 개선 상태 확인
+
+- `request/20261123-suigong-resolution-status.md`·`result/20261123/suigong-resolution-status/summary.md`: 미착수 보고와 실행 중인 굽기 프로세스 확인 — 현재 상태를 구분해 전달.
+
+## 2026-11-23 수공 물·파편 해상도 개선 요청
+
+- `request/20261123-suigong-resolution.md`·`result/20261123/suigong-resolution-request/summary.md`: 물과 둑 파편의 선형 해상도 2배 개선 및 비교 영상 요청 — 거친 표현 완화.
+
+## 2026-11-23 수공 장면 연결 수정 완료 확인
+
+- `request/20261123-suigong-continuity-final-status.md`·`result/20261123/suigong-continuity-final-status/summary.md`: 수정 결과와 검증 한계 확인 — 완료 여부 전달.
+
+## 2026-11-23 수공 장면 연결 수정 상태 확인
+
+- `request/20261123-suigong-continuity-status.md`·`result/20261123/suigong-continuity-status/summary.md`: 작업 중인 캡처와 결과 보고서 상태 확인 — 진행 상황 전달.
+
+## 2026-11-23 수공 장면 연결과 표시 수정 요청
+
+- `request/20261123-suigong-continuity.md`·`result/20261123/suigong-continuity-request/summary.md`: 조홍·둑 지형·바위·그림자 및 전투 전환의 확인과 수정 요청 — 본편 연출의 연속성과 표시 개선.
+
+## 2026-11-23 수공 본편 작업 결과 확인
+
+- `request/20261123-suigong-campaign-final-status.md`·`result/20261123/suigong-campaign-final-status/summary.md`: 결과물과 검증 한계 확인 — 구현 상태 전달.
+
+## 2026-11-23 수공 본편 작업 상태 확인
+
+- `request/20261123-suigong-campaign-status.md`·`result/20261123/suigong-campaign-status/summary.md`: 정정된 요청의 결과 존재 여부 확인 — 작업 상태 전달.
+
+## 2026-11-23 수공 본편 요청 대상 정정
+
+- `request/20261123-suigong-campaign-corrected.md`·`result/20261123/suigong-campaign-clarification/summary.md`: 백하 둑 장면과 동쪽 신야성이 불타는 기존 전투로 요청 대상 정정 — 하비 회상 맵과의 혼동 해소.
+
+## 2026-11-23 수공 본편 적용 결과 확인
+
+- `request/20261123-suigong-campaign-result-review.md`·`result/20261123/suigong-campaign-result-review/summary.md`: 조사에 그친 처리 결과와 질문을 확인 — 미완료 사유와 판단 가능한 선택지 설명.
+
+## 2026-11-23 수공 본편 적용과 장면·전투 재구성 요청
+
+- `request/20261123-suigong-campaign.md`·`result/20261123/suigong-campaign-request/summary.md`: 승인된 수공 적용과 하비 회상 장면맵·신야 전투 재구성 요청 기록 — 본편의 연출과 전투 맥락 연결.
+
+## 2026-11-23 수공 행군·물소리 작업 완료 확인
+
+- `request/20261123-suigong-march-status.md`·`result/20261123/suigong-march-status/summary.md`: 작업 보고서와 영상 확인 — 완료 여부 및 검증 한계 전달.
+
+## 2026-11-23 수공 행군·속도·물소리 수정 요청
+
+- `request/20261123-suigong-march-water-audio.md`·`result/20261123/suigong-march-water-audio-request/summary.md`: 장면 엔진 행군, 붕괴 후 속도 조정과 효과음 파형 분석·재구성 요청 기록 — 움직임과 소리를 새 영상에서 함께 검증.
+
+## 2026-11-23 수공 움직임 수정 완료 확인
+
+- `request/20261123-suigong-motion-status.md`·`result/20261123/suigong-motion-status/summary.md`: 작업 보고서와 영상 존재 확인 — 완료 여부와 검증 한계 전달.
+
+## 2026-11-23 수공 페이드·파편 회전·행군 요청
+
+- `request/20261123-suigong-motion.md`·`result/20261123/suigong-motion-request/summary.md`: 물 정지 원인과 페이드·파편·행군 수정 요청 기록 — 움직임이 자연스러운 새 영상 제작.
+
+## 2026-11-23 수공 수정 완료 대기
+
+- `request/20261123-suigong-watch.md`·`result/20261123/suigong-watch/summary.md`: 수공 수정 작업의 주기적 상태 확인 요청 기록 — 완료 시 결과 전달.
+
+## 2026-11-23 수공 속도와 인물 투명도 수정 요청
+
+- `request/20261123-suigong-speed-opacity.md`·`result/20261123/suigong-speed-opacity-request/summary.md`: 둑과 물의 속도 조절 및 인물 투명도 확인·수정 요청 기록 — 새 영상으로 결과 검증.
+
+## 2026-11-23 수공 시간·효과음 작업 완료 확인
+
+- `request/20261123-suigong-timing-completion-check.md`·`result/20261123/suigong-timing-completion-check/summary.md`: 작업 결과와 영상의 오디오 스트림 확인 — 완료 여부와 남은 한계 전달.
+
+## 2026-11-23 수공 연출 시간·효과음 수정 요청
+
+- `request/20261123-suigong-timing-and-sound.md`·`result/20261123/suigong-timing-request/summary.md`: 연출 순서·시간·효과음 변경과 새 영상 제작 요청 기록 — 후속 작업에 사용자 의도 전달.
+
+## 2026-11-23 수공 영상 속도 확인
+
+- `request/20261123-suigong-speed-check.md`·`result/20261123/suigong-speed-check/summary.md`: 영상 프레임과 연출 시간 계산 확인 — 2배속 여부 설명.
+
+## 2026-11-23 수공 데모 완료 여부 확인
+
+- `request/20261123-suigong-completion-check.md`·`result/20261123/suigong-completion-check/summary.md`: 구현 결과와 영상 존재 여부 확인 기록 — 완료 상태와 한계 전달.
+
+## 2026-11-23 수공 연출 구현 요청 전달
+
+- `request/20261123-suigong-implementation.md`·`result/20261123/suigong-implementation-request/summary.md`: 기존 코드에 기반한 실제 수정과 새 영상 제작을 요청 — 문서 정리에 그쳤던 이전 요청을 바로잡음.
+
+## 2026-11-23 수공 데모 코드 경로 확인
+
+- `request/20261123-suigong-code-paths.md`·`result/20261123/suigong-code-paths/summary.md`: 기존 데모의 코드와 에셋 경로 기록 — 후속 수정 위치 확인.
+
+## 2026-11-23 수공 수정 요청 진행 상태 확인
+
+- `result/20261123/suigong-status-check/summary.md`·`request/20261123-suigong-status-check.md`: 처리 결과와 상태 조회 요청 기록 — 실제 구현 여부 확인.
+
+## 2026-11-23 수공 연출 수정 요청 정리
+
+- `request/20261123-suigong-revision.md`·`result/20261123/suigong-revision-request/summary.md`: 기존 데모 경로와 수정 요구를 기록 — 후속 작업에 필요한 맥락 보존.
+
+## 2026-11-23 수행 결과 목록 확인
+
+- `request/20261123-result-inventory.md`·`result/20261123/result-inventory/summary.md`: 결과 목록 조회 요청과 확인 내용 기록 — 완료 항목과 남은 작업을 구분.
+
+## 2026-11-23 요청 기록 파일 복구
+
+- `request/20261123-request-recording.md`: 사라진 요청 기록 복원 — 이전 답변의 경로를 다시 사용할 수 있게 함.
+- `request/20261123-request-link-repair.md`·`result/20261123/request-link-repair/summary.md`: 파일 열기 오류와 확인 결과 기록 — 복구 내역 추적.
+
+## 2026-11-23 요청과 수행 결과 기록
+
+- `AGENTS.md`: 요청별 Markdown 기록과 결과 조회 규칙 추가 — 이후 요청과 수행 내역을 연결해 확인.
+- `request/20261123-request-recording.md`·`result/20261123/request-recording/summary.md`: 이번 요청과 수행 내용 기록 — 요청과 결과를 추적.
+
+## 2026-11-23 연의 장판파와 적벽
+
+- `plan/changban-redcliff.md`: 장판교 방어·강하와 번구의 왕복·적벽 화공·전후 군령 장면 계획 — 두 전투의 역할과 연의 경로를 일치시킴.
+- `stage26.json`·`stage26gen.py`·`story26.json`·`ch26.json`: 조운의 돌파, 체력 약 3분의 2인 잔류 보병, 장비의 교두보 고정, 하후은 일기토와 하후돈 상대 후 두 장수 철수 — 장판교 방어를 실제 승리 과정에 연결.
+- `stage27r.json`·`map_redcliff.json`·`map_redcliff.txt`·`southern_battles.py`: 적벽 수로와 장윤 수군, 황개 화공과 오군 진격, 조조 본대 퇴로 배치 — 유비군의 육상 지원과 조조 철수를 한 판에 구현.
+- `story27.json`·`ch27.json`·`explore27_changban.json`·`explore27_ferry.json`·`explore27_redcliff.json`·`explore27_jiangxia.json`: 부하와 재회, 번구 회의, 강하 정비와 세 장수의 복병 출발, 유기 부상과 관우의 군령 위반 보고 — 이동에서 정황을 듣고 전투 전후의 사건을 당사자에게서 확인.
+- `stage27.json`·`map27.json`·`stage27gen.py`·`stage27.txt`·`explore27_retreat.json`: 독립 화용도 전투와 그 귀환 탐험 제거 — 복병 결과는 강하 관청에서 보고.
+- `content.go`·`battle_events.go`(content/core)·`api.go`·`formation.go`·`deployment.go`·`cmd/_balance/main.go`·`types.go`·`rules.go`·`combat.go`·`engine.go`·`play.go`(CLI)·`cutscene.go`: 출전 제외, 지정 승리 조건, 강제 이동 고정, 장판교의 피격·흙먼지 재생 — 장판파의 전투 조건과 연출을 진행과 저장에서 유지.
+- `scenes.go`·`transition.go`·`explore.go`(GUI): 같은 맵에서도 새 장면으로 암전할 수 있게 함 — 강하 관청의 정비 확인 뒤 제갈량 귀환을 새로 연출.
+- `hud.go`·`ui_content_validation.go`·`windows.go`: 출전하지 않은 군주의 퇴각 조건을 표시에서 제외 — 장판파 목표와 패배 표시를 실제 규칙에 맞춤.
+- `uidemo_zz_tmp_changban.go`: 장판교 결말과 적벽 개막 데모 추가 — 실제 전투 화면을 재생하고 위치와 연출을 확인.
+- `20261123-changban-redcliff.md`·`result/20261123/20261123-changban-redcliff/summary.md`: 요청과 결과 기록 및 게임 캡처 저장 — 구현·검증 범위 확인.
+- `zhugeliang_noncombat.yaml`·`zhugeliang_noncombat.spr`·`zhugeliang_noncombat.png`: 제갈량 무릎 꿇는 자세와 검증 이미지 추가 — 강하 관청에서 유비와 마주 절하는 장면을 표현.
+- `explore22_xiangyang.json`·`explore23.json`·`explore23_xiangyang.json`·`explore23b.json`·`explore24.json`·`explore24_return.json`·`explore25_back.json`·`explore25_report.json`·`explore25_visit.json`·`explore27v_town.json`·`explore27v_travel.json`: 대화·상점·이벤트가 없는 배치를 엑스트라로 표시 — 기존 마을 탐험의 콘텐츠 로딩 오류 해소.
+- `campaign_content_test.go`·`gear_tier_test.go`·`changban_content_test.go`·`redcliff_content_test.go`·`core_test.go`: 연의 전투 순서, 장판교 고정과 승리, 적벽 화공과 철수, 저장 스테이지 재연결 검증 — 시나리오 연결과 새 전투 조건의 회귀 방지.
+- `fullstory.md`·`data-speech-style.md`: 두 전투의 흐름, 강하의 군령 장면과 화법 예시 갱신 — 게임 데이터와 이야기 문서의 일치.
 
 ## 2026-11-22 출전 부관 선택과 교체
 
@@ -4083,6 +4318,123 @@
 - `Makefile`·`tools/windows/append_assets.py`: 에셋을 포함하는 난독화 없는 Windows release 실행 파일 빌드 추가 — 설치 없이 파일 하나로 전달.
 - `cmd/srpg-gui/main.go`·`portable.go`·`portable_disabled.go`·`portable_test.go`: 내장 에셋을 버전별 사용자 캐시에 안전하게 풀어 기존 로더로 읽고 재사용 — 별도 에셋 배포 없이 기존 저장 경로 유지.
 - `README.md`·`docs/tools-build.md`·`docs/plan-windows-portable.md`: 빌드와 캐시 동작·설계 기록 — 단일 파일의 사용과 디스크 공간 안내.
+
+## 2026-11-23 수공 3초 데모 (백하 둑 붕괴)
+
+- `tools/floodsim.py`: 둑 붕괴를 얕은물방정식 높이장(2단위 격자, 정수압 재구성+Rusanov)으로 풀어 아이소 도트로 굽는 도구 추가. 프레임을 칸 대각선(u+v) 줄별 조각으로 자르고, 자리별 물 깊이·모래자루 궤적·여울 물보라(spellsim 입자 물)를 함께 낸다 — `~/idea/suigong-3sec.md`의 "강 전체가 아니라 붕괴와 충돌 두 순간만"을 기존 책략 시뮬레이션 방식으로 구현.
+- `assets/graphics/effects/flood/suigong.{png,json}`·`suigong_depth.png`: 위 도구가 구운 결과(67프레임, 시트 2048×2339, 약 0.5MB) — 게임이 읽는 자료.
+- `internal/gui/field_surge.go`: 구운 범람(`Surge`)을 읽어 줄별 조각을 유닛·절벽과 같은 깊이 정렬에 끼워 그리고, 자루는 맵의 `rock_pile_*` 그림으로, 물보라는 맨 위에 그린다 — 물이 뒤 절벽은 가리고 앞 절벽·앞 병사에게는 가려지도록.
+- `internal/gui/field.go`·`field_wade.go`·`player.go`·`assets.go`: `Field.Surge`/`SurgeT`, 유닛의 `flood`(발 위 물 깊이)를 더해 여울 발 잠김 렌더가 범람 깊이만큼 잠기게 함 — 새 그림 없이 기존 여울 걷기 렌더 재사용.
+- `internal/gui/uidemo_suigong.go`·`field_surge_test.go`: `-ui suigong -stage B25` 데모(협곡의 둑, 관우·미축, 여울을 건너는 조홍의 군세, 암전→"무너뜨려라!"→붕괴→물살→화이트아웃)와 그 설정 테스트 — 3초 연출을 게임 화면으로 확인.
+- `internal/gui/uidemo.go`: 바꾼 맵이 전투를 못 열면 nil 포인터 대신 검증 메시지를 돌려줌 — 데모 맵 오류 원인을 바로 보이게.
+- `docs/tools-build.md`: `floodsim.py` 사용법과 구조 기록.
+
+### 수공 3초 데모 2차: 두 장면으로 분리·바위 협곡·4배율 (2026-11-23)
+
+- `tools/floodsim.py`: 협곡과 둑을 절벽 타일·자루 그림 대신 높이장 바위로 바꿈(턱진 언덕에 반쯤 묻힌 바위, 둑은 바위 더미, 무너진 바위는 프레임에 함께 찍음). 물과 같은 도트 화가로 그리고 시뮬레이션 바닥에도 반영. 연출을 둑 장면(`T_CUT` 1.6초 전)과 여울 장면으로 나누고 장면마다 보이는 줄만 구움. 여울은 게임 맵에서 `GAP` 14칸 더 하류에 놓음 — "둑과 수공 당하는 곳이 한 화면에 보이면 안 된다", "바위도 물처럼 울퉁불퉁하게" 요청.
+- `tools/floodsim.py`: 바위 조각은 줄 번호를 `UNDER`만큼 낮춰 모든 유닛보다 먼저 깔리게 함 — 앞 칸 바위 윗면이 언덕 위 관우·미축의 발치를 덮던 문제 수정. 미리보기는 배경 캡처 없이 장면별 4배율 구도로 바꿈.
+- `assets/graphics/effects/flood/suigong.{png,json}`·`suigong_depth.png`: 다시 구움(61프레임, 시트 2048×1661, 약 0.4MB). 자루 궤적(`sacks`) 삭제, 장면 전환 시각 `cut` 추가.
+- `internal/gui/field_surge.go`: 자루 그리기 삭제, `Surge.Cut()` 추가, 줄 조각의 정렬 기준을 유닛과 같은 식(`Field.Center`)으로 계산.
+- `internal/gui/uidemo_suigong.go`: 맵을 26×44로 늘려 여울을 30행으로 옮기고 절벽 타일 제거. 관우·미축은 둑 위 언덕(`suigongStand`, 높이 27)에서 좌하단(SW)을 봄. 암전 뒤 둑 장면과 여울 장면을 4배율로, 장면 전환은 이동 없이 컷. 물이 올 때 병사 둘이 상류로 돌아서 "물이다!", "피해라!"를 외침(`suigongCries`).
+- `internal/gui/player.go`·`battle_speech.go`: `SpeechScale` 추가(전장 말풍선 배율) — 4배율 클로즈업에서 말풍선 글자가 너무 작아서.
+- `internal/gui/field_surge_test.go`: 관우·미축이 언덕 위에서 SW를 보는지 확인 추가.
+- `docs/tools-build.md`: 범람 설명을 두 장면·바위 방식으로 고침.
+
+## 2026-11-23 이벤트 포커스·장면 고정·출진 카드·7~8장 연출
+- internal/content/content.go, internal/core/types.go, internal/core/battle_events.go: 컷신 Step/CutStep에 `NoFocus` 추가 — 영천 전투에서 관우·장비 쪽으로 카메라가 따라가지 않게 하려고
+- internal/gui/cutscene.go, camera_pan.go, player.go: NoFocus 단계는 카메라 이동·걸음 추적에서 제외 (`unitVis.noFocus`)
+- assets/scenario/hero/stage02.json: 관우·장비 컷신 단계 12곳에 NoFocus — 영천 이벤트 포커스 끄기
+- internal/gui/ai_view.go, player.go: 장면 중·전투 이벤트(컷신·강제 이동) 재생 중 카메라 잠금 (`eventPlaying`) — 이벤트 중 스크롤 방지
+- internal/gui/scene.go, view.go, hud_corner.go, game.go: 스토리 장면은 확대 2배·배속 1.5 고정(`sceneZoom`, `sceneSpeed`, `speedRate`), 장면 Zoom 단계 무시, F키·배속 버튼 비활성; 탐험은 그대로 — 사용자 요청
+- internal/gui/sortie_unified.go, party.go: 출전 부대 카드를 2열·2배(도트 정수 배율, 이름 글씨 확대), 넘치면 스크롤 — 가독성
+- assets/scenario/hero/explore07.json: 반동탁 진영 병사 말풍선(원술군=군장·보물, 원소군=소문 확인), 원소군 병졸 2명 추가 — 말 안 걸어도 분위기가 느껴지게
+- assets/scenes/ch08.json: 군량 수레가 지날 때 유관장이 길을 비켰다가 돌아옴, 좌하단 왕복 병사(병사#2) 제거 — 수레가 일행을 뚫고 지나가던 문제
+- assets/scenario/hero/stage10.json: 문추·기병을 시작 배치에서 빼고 이벤트(ambush/ambush-crossed/ambush-late/hint-wait)로 유비군 출발점 근처에 등장, 여울을 건너면(또는 4턴) 원소·공손찬 전군 공격, 3턴 전풍 대기 대사, 초반 원소·전풍 대사 교체 — 사용자 계교 전환 요청
+- assets/scenario/hero/explore01.json, explore02.json: 간옹 튜토리얼 말풍선(주점→성문→주둔지, 2장 무기 관리) 상태별 변형 — 제3의 벽을 넘나드는 가이드
+- assets/scenario/hero/explore03·08·14·19_ye.json: 새 상품이 처음 나오는 주점·도구점·대장간 입구에 `점원#1`을 두고 상품 광고 말풍선 — 상점 광고
+- tools/unit3d/props.py, assets/graphics/map/props.png, index.json, tools/spritetool/assets/ver4-props/*: 단(dais)의 금 병풍을 양쪽 벽(ㄱ자)에서 의자 뒤 한 면(세 폭 지그재그)으로 — 황금 벽 의자 교체
+- tools/illustrations/portraits/fullbody-prompts-2026-11-23.md: 원소(귀공자)·원술(마른 원숭이상) 초상 프롬프트와 이전 초상 백업(prev/) — Codex 사용 한도로 생성은 보류
+
+## 2026-11-23 원소·원술 초상
+- assets/graphics/portraits/yuanshao.png, yuanshu.png: 새 초상(원소=잘생긴 귀공자, 원술=가늘고 약간 원숭이 느낌) — 사용자 요청 10번. 전신 원본은 tools/illustrations/portraits/fullbody/, 이전 초상은 portraits/prev/에 백업.
+- yuanshu.png: 너무 마른 느낌이라 살을 조금 붙여 다시 생성(전신 v1은 portraits/prev/yuanshu-v1-gaunt-2026-11-23.png) — 사용자 피드백
+
+## 2026-11-24 수공을 출전 준비 앞으로, 배속과 무관하게
+- internal/gui/field_surge_prelude.go(신규), game.go, view.go, cutscene.go, deployment.go: 수공 연출을 전투 첫 정리(출진·배치 뒤)가 아니라 전투 노드에 닿았을 때, 출전 준비 화면이 열리기 전에 재생(`startPrelude`). 전투 필드는 배치 단계부터 있으므로 노드에서 딴 엔진 사본(`core.Restore`)을 시작·배치까지 진행해 거기서 재생하고, 화면이 하얘지는 순간 진짜 엔진으로 되돌려 하얀색이 걷히며 출전 준비가 열림. 전투 컷신은 `surge` 묶음을 건너뜀(`suigongTimeline` 삭제). 사용자 지적: "출진 하고 나서 나온다고? 출진하기 전에 나와야지."
+- internal/gui/view.go: 수공이 도는 동안 `speedRate`는 1 — 시나리오 1.5배속·전투 배속이 구워 둔 속도에 곱해지지 않음.
+
+## 2026-11-23 수공 본편 적용 (25장)
+- 전투 컷신 단계 `surge`(`internal/content/battle_events.go`, `internal/core/battle_events.go`, `internal/gui/field_surge_show.go`, `cutscene.go`): 승인된 수공 장면(`uidemo_suigong.go`의 시간표·물 소리)을 전투 화면 위에서 재생한다. 데모와 전투가 같은 `suigongShow`를 쓰고, 데모(`-ui suigong`)는 스테이지의 `suigong` 이벤트 묶음을 그대로 읽는다.
+- B25: `maps/map25.json`을 구워 둔 수공 땅(48×44; `tools/mapgen/layouts/hero/map25flood.py`)으로 바꾸고 동쪽에 불타는 신야성을 둠. 조인군은 서쪽 기슭(x 2~11, y 12~17), 유비군은 남서쪽(x 2~5, y 33~35), 완으로 가는 길은 북서쪽 끝(구역 20). 첫 이벤트 `suigong`이 수공 장면을 재생하고 조홍·관우의 줄(옛 `c25-e05`·`c25-e06`)이 그 안에서 나온다. 옛 이야기 장면 `c25-ford`(S_yanjin)와 노드 `c25-ford`·`c25-e05`·`c25-e06`은 뺌.
+- 25장 백하 둑 장면맵 `S_baihe_dike`(36×30, 옛 `S_bridge` 12×10의 3배, `tools/scene_maps/baihe_dike.py`): 수공 장면이 터뜨리는 협곡·둑과 같은 칸. `c25-dike`·`c25-dike2`가 쓴다.
+- internal/gui/sortie_unified.go: 출전 카드를 창 높이에 맞추던 방식을 버리고 고정 크기(카드 104×124, 부관 칸 52, `sortieLeadW/H/Deputy`)로, 도트는 항상 정수 2배로 — 사용자 지적 "창에 맞춤된 것 같다, 기존엔 배율 없는 픽셀". 칸이 모자라면 목록이 스크롤
+- internal/gui/sortie_unified.go, party.go, sortie_deputy_test.go: 부관 칸을 카드 위에 항상 그려(전면) 보이게 하고, 카드·부관 칸은 평소 어둡다가 마우스를 올리거나 선택하면 즉시 밝아지고 0.2초에 걸쳐 어두워짐(`sortieLight`, `sortieDimSeconds`; 옛 겹침 페이드 `sortieFades` 제거). 이름 글씨가 카드 아래 테두리를 넘던 위치를 위로 올림 — 사용자 지적
+- internal/gui/sortie_unified.go: 이름을 카드 안 위쪽 가운데로(`sortieLeadName`), 부관 칸을 카드 기준 (60%,60%)~(110%,110%)로 — 사용자 지시(기존 75%~125%). 카드 칸 크기는 부관 튀어나온 만큼(10%)으로 줄임
+- internal/gui/sortie_unified.go, party.go: 부관 칸을 정사각형(카드 폭의 절반, 60%~110%)·둥근 모서리로, 초상은 위쪽 기준 정사각 크롭, 비었으면 + 표시(`sortieDeputyPlate`, `roundedPath`; 4배 크기 레이어에 그려 둥근 마스크) — 사용자 지시 "비율이 이상, 정사각형·RoundedRectangle, 비면 +"
+
+## 2026-11-23: 수공 물·둑 해상도 2배
+
+- `tools/floodsim.py`: `FLOOD_RES`(기본 2)로 도트를 반으로 줄임 — 물 격자 2→1단위(캔버스 1×1픽셀), 둑 복셀 한 변 4→2(몸 하나는 그대로, 복셀 8개로 나뉘어 그려짐, 물리·난수 흐름 불변). 높이·폴리곤·거품 무늬는 도트 크기로 나눠 같은 모양을 유지. `FLOOD_RES=1`은 옛 굽기와 모양이 같다(흙 알갱이 난수만 다름).
+- 시트가 4096×17048(RGBA 279MB)이 되어 ebiten 아틀라스가 거부(too big)하므로 저장을 바꿈: 프레임마다 팔레트 번호를 deflate로 눌러 `suigong.idx`에, 게임(`field_surge.go`)은 보이는 프레임의 조각만 그림으로 만들고 지난 프레임은 `Dispose`. 스프레이도 같은 방식. `suigong.png`는 없어짐.
+- 측정과 비교는 `result/20261123/20261123-suigong-resolution/`.
+
+## 2026-11-23: 출전 준비 카드 재설계 + 플랫폼 상수
+
+- `-tags mobile`(안드로이드 빌드, `tools/build_android.py`)이면 `touchUI = true`와 폰용 크기(`platform_mobile.go`: 카드 120×124, 부관 메달 72(카드 면적 약 35%), 스왑 표시 40; 폰은 좌측 패널을 넓혀 2열), 아니면 PC 값(`platform_desktop.go`: 104×124, 56, 20). 다른 화면도 이 상수로 갈라 쓴다.
+- 출전 카드: 도트 대신 초상 일러스트만(없으면 도트), 이름은 위 중앙 그늘 위에, 부관은 우하단에 걸친 원형 메달(비면 +). 그림=그 사람 선택, 스왑 표시(⇄)/+ = 주장의 부관 임명 창. PC는 메달에 올리면 ⇄, 폰은 선택된 부관 메달에만 ⇄, 눌림 영역 6 확장. 열 수는 폭에 맞춰 1~2열.
+- `cmd/_uidemo-vm`: 환경변수 `UIDEMO_TAGS=mobile`로 게스트 빌드에 태그를 더함(폰 모드 캡처).
+- 테스트는 두 태그 모두 통과(`go test -p 1 [-tags mobile] ./internal/gui -run 'Sortie|Party|Deputy'`).
+
+- process/request-session-setup/request-session-setup.md: 요청 처리 전용 세션의 지시를 기록 — 기존 처리기가 설정 요청을 중복 수신하지 않도록 보존.
+- result/20261123/request-session-setup/result.md: MCP 연결 및 기존 프로세스 확인 결과와 미완료 사항을 기록 — 처리기 중복과 연결 문제를 확인할 수 있도록 함.
+
+- process/jiejiao-wenchou-condition/jiejiao-wenchou-condition.md: 문추 출연 조건 확인 요청을 기록 — 조사 요청을 보존.
+- result/20261123/jiejiao-wenchou-condition/result.md: 계교 전투의 등장 조건과 판정 시점을 기록 — 여울 통과 후 미등장 원인을 설명.
+
+- ver5/assets/scenario/hero/stage10.json: 여울 건너편을 문추 복병 판정 구역으로 바꾸고 시작 대사에서 전술 노출을 제거 — 여울 도하에 반응하고 복병의 의외성을 살림.
+- ver5/docs/fullstory.md: 계교 전투의 복병 위치·발동과 시작 대사를 실제 전개에 맞춤 — 줄거리와 스테이지 일치.
+- ver5/docs/data-speech-style.md: 계교의 원소·전풍 대사 예시 추가 — 인물 말투 기록.
+- process/jiejiao-ford-ambush/jiejiao-ford-ambush.md: 여울 복병과 시작 대사 수정 요청 기록 — 작업 지시 보존.
+- result/20261123/jiejiao-ford-ambush/: 설계·화면 캡처·검증 결과 기록 — 변경과 남은 검증 확인.
+
+- process/jiejiao-battle-dialogue-draft/jiejiao-battle-dialogue-draft.md: 계교 전투 대사 수정안 요청 기록 — 사용자 지시 보존.
+- result/20261123/jiejiao-battle-dialogue-draft/result.md: 시작 대사 두 안과 전투 중 분기 대사 초안 작성 — 인물과 전투 맥락을 비교해 선택할 수 있도록 함.
+
+- ver5/assets/scenario/hero/stage10.json: 계교 전투 대사 B안과 분기 대사를 적용하고 안량의 거록 빚 대사를 교체 — 인물의 처지와 전투 경과에 맞춤.
+- ver5/docs/fullstory.md: 계교 시작 대사 설명을 B안에 맞춤 — 줄거리와 실제 대사 일치.
+- ver5/docs/data-speech-style.md: 계교 원소·전풍·안량의 말투 예시를 갱신 — 인물 대사 기록.
+- process/jiejiao-dialogue-b/jiejiao-dialogue-b.md: B안 적용과 안량 대사 수정 요청 기록 — 작업 지시 보존.
+- result/20261124/jiejiao-dialogue-b/: 설계와 검증 결과 및 미완료 사항 기록 — 작업 결과 확인.
+
+- process/zhaoyun-farewell-analysis/zhaoyun-farewell-analysis.md: 13장 조운 작별 장면 흐름 분석 요청 기록 — 조사 지시 보존.
+- result/20261124/zhaoyun-farewell-analysis/result.md: 대사와 장면·탐험 전환의 어색한 지점을 분석하고 캡처 실패 기록 — 수정 방향을 검토할 근거 마련.
+
+- process/zhaoyun-farewell-revised/zhaoyun-farewell-revised.md: 조운 작별 장면의 사용자 정정과 재검토 요청 기록 — 대사의 의도 보존.
+- result/20261124/zhaoyun-farewell-revised/result.md: 작별 이유를 유지하고 탐험 전환을 없애는 장면 흐름 제안 — 수정 전 사용자 검토 지원.
+
+- process/zhaoyun-farewell-script/zhaoyun-farewell-script.md: 조운 작별 대본 작성 요청 기록 — 요청 조건과 대사 의도 보존.
+- result/20261124/zhaoyun-farewell-script/: 소패 관청 대본 두 안과 비교 페이지 작성 — 선택 전에 대사와 연출을 검토할 수 있도록 함.
+
+- ver5/assets/scenario/hero/story13.json: 조운 작별 B안과 귀환 선언 직후 정비 탐험을 연결 — 조운이 떠나기 전에 준비할 기회 제공.
+- ver5/assets/scenario/hero/explore13_farewell.json: 관청 일행을 기존 위치에 배치하고 조운에게 말 걸어 이어지게 함 — 인물의 갑작스러운 소실 방지.
+- ver5/assets/scenes/ch13.json: 작별 대화와 성문 배웅 연출을 B안에 맞춤 — 자연스러운 대화와 퇴장.
+- ver5/internal/content/content.go: 탐험 노드의 자동저장 선택 필드 추가 — 필요한 이야기 구간만 저장.
+- ver5/internal/session/session.go: 지정 탐험 진입 시 시나리오 자동저장 — 조운의 장비를 정비할 시점 복원.
+- ver5/internal/session/autosave_test.go: 탐험 진입 자동저장·이동·복원 검사 추가 — 중복 저장과 복원 오류 방지.
+- ver5/docs/fullstory.md, ver5/docs/data-speech-style.md: 소패 대본과 조운 말투 예시 갱신 — 구현된 이야기와 일치.
+- ver5/docs/system-save.md, ver5/docs/presentation-explore.md: 탐험 진입 자동저장 규칙 문서화 — 저장 시점 명시.
+- process/zhaoyun-farewell-implementation/zhaoyun-farewell-implementation.md: B안·정비 탐험·자동저장 요청 기록 — 작업 지시 보존.
+- result/20261124/zhaoyun-farewell-implementation/: 설계·장면 캡처·검증 결과 기록 — 결과와 미완료 사항 확인.
+
+- process/learned-model-ollama-check/learned-model-ollama-check.md: Ollama와 학습 자동실행 조사 요청 기록 — 조사 범위 보존.
+- result/20261124/learned-model-ollama-check/result.md: 학습 모델 보존 및 콘텐츠 해시 불일치 재현과 Ollama 상태 기록 — 실행 거부 원인 확인.
+- ver5/tools/storydb 색인: bge-m3로 변경된 이야기 305개 청크를 갱신 — 최근 대본의 의미 검색 복구.
+
+- process/unified-campaign-model-design/unified-campaign-model-design.md: 단일 모델의 게임 전체 학습 설계 요청 기록 — 목표 입력과 전용 가중치 제외 조건 보존.
+- result/20261124/unified-campaign-model-design/result.md: 현재 구조·연구 자료·목표 입력·학습과 검증 단계 설계 — 구현 전 범용 모델 접근 검토.
+
+- process/laya-resource-strategy/laya-resource-strategy.md: 성장·물자 최적화와 Laya 검토 요청 기록 — 목표와 평가 조건 보존.
+- result/20261124/laya-resource-strategy/result.md: 경험치·아이템·턴의 장기 가치와 Laya 비교 실험 설계 — 단일 모델 방향 검토.
 
 ## 2026-11-24 출전 카드 축소·도트 스크롤바 시안
 

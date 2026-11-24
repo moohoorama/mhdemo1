@@ -12,7 +12,9 @@ import (
 	"srpg/internal/session"
 )
 
-func (g *Game) deploying() bool { return g.S != nil && g.S.Engine != nil && g.S.Engine.Deploying() }
+func (g *Game) deploying() bool {
+	return g.S != nil && g.S.Engine != nil && g.S.Engine.Deploying() && g.prelude == nil
+}
 func (g *Game) battleViewport() image.Rectangle {
 	return image.Rect(0, 0, worldW, worldH) // the whole window, HUD drawn over it
 }

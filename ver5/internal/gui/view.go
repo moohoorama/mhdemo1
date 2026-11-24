@@ -24,6 +24,9 @@ func (g *Game) briefed() bool {
 
 // speedRate is the replay speed as a factor: fixed in a story scene, else the player's setting.
 func (g *Game) speedRate() float64 {
+	if g.show != nil {
+		return 1 // the flood is baked at its own pace
+	}
 	if g.scene != nil {
 		return sceneSpeed
 	}
@@ -99,6 +102,9 @@ func (g *Game) advance(dt float64) {
 	}
 	if g.show != nil && g.show.Advance(dt) {
 		g.show = nil
+	}
+	if g.prelude != nil && (g.show == nil || g.show.over) {
+		g.endPrelude()
 	}
 }
 

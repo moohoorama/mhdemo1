@@ -418,23 +418,6 @@
    "Text": "불이다! 서문도 남문도 북문도……. 동문만 불이 없습니다! 동문으로!"
   },
   {
-   "ID": "c25-ford",
-   "Kind": "scene",
-   "Place": "백하 · 나루"
-  },
-  {
-   "ID": "c25-e05",
-   "Kind": "say",
-   "Speaker": "caohong",
-   "Text": "물이 얕다! 건너라, 건너!"
-  },
-  {
-   "ID": "c25-e06",
-   "Kind": "say",
-   "Speaker": "guanyu",
-   "Text": "……터라."
-  },
-  {
    "ID": "c25-battle",
    "Kind": "battle",
    "Stage": "B25",

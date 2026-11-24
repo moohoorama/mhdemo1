@@ -91,11 +91,8 @@ func (g *Game) cutsceneTimeline(groups [][]core.CutStep) (entries []timedFn, tot
 	cam := [2]float64{g.camX, g.camY}
 	at := map[string]content.Point{} // where the cutscene has walked its people so far
 	for _, group := range groups {
-		if surge := surgeName(group); surge != "" {
-			shown, length := g.suigongTimeline(surge, group, total)
-			entries = append(entries, shown...)
-			total += length
-			continue
+		if surgeName(group) != "" {
+			continue // the flood is played before the battle's preparation (startPrelude)
 		}
 		var cells []content.Point
 		for _, st := range group {
@@ -209,18 +206,4 @@ func surgeName(group []core.CutStep) string {
 		}
 	}
 	return ""
-}
-
-// suigongTimeline is a group that plays the baked flood over the battle (beginSuigong tells how the group casts it): the
-// show runs for as long as the surge takes. A show a skipped replay passes over is ended where it stands.
-func (g *Game) suigongTimeline(name string, group []core.CutStep, start float64) ([]timedFn, float64) {
-	surge, err := g.assets.Surge(name)
-	if err != nil {
-		return nil, 0
-	}
-	length := suigongSeconds(surge)
-	return []timedFn{
-		{start, func() { g.beginSuigong(name, group) }},
-		{start + length, g.endSuigong},
-	}, length
 }

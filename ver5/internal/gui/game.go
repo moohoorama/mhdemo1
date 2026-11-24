@@ -35,12 +35,14 @@ const Width, Height = 1280, 850
 
 type Game struct {
 	layer           int
-	sound           *soundBank   // nil: silent (EnableSound)
-	tracedTheme     string       // the theme last written to sfxTrace
-	show            *suigongShow // the flood a battle's cutscene is playing over its field
-	unitsHeld       bool         // a demo moves the units itself: they are not put back on their rules-state cells each frame
-	sfxCalls        int          // cues asked for so far: a plain click sounds only when what it did made none
-	accepting       bool         // window cleanup inside an approved action is silent
+	sound           *soundBank      // nil: silent (EnableSound)
+	tracedTheme     string          // the theme last written to sfxTrace
+	show            *suigongShow    // the flood a battle's cutscene is playing over its field
+	prelude         *suigongPrelude // the flood played before a battle node's preparation: the engine it plays on is a copy
+	preludeNode     string          // the battle node whose prelude has been tried
+	unitsHeld       bool            // a demo moves the units itself: they are not put back on their rules-state cells each frame
+	sfxCalls        int             // cues asked for so far: a plain click sounds only when what it did made none
+	accepting       bool            // window cleanup inside an approved action is silent
 	musicTab        *musicTable
 	duelPreview     func() error
 	previewIdle     int
@@ -818,8 +820,11 @@ func (g *Game) Update() error {
 	playing := g.S.Screen == "playing"
 	g.updateCampaignAuto()
 	if playing && !g.autoplay && !g.campaignActive() && !g.popupPending() {
-		if o := g.S.View(); o.Phase == "scenario" && o.Dialogue.Kind == "battle" && g.sortieForced(o) {
-			g.startSortie()
+		if o := g.S.View(); o.Phase == "scenario" && o.Dialogue.Kind == "battle" {
+			g.startPrelude(o)
+			if g.show == nil && g.sortieForced(o) {
+				g.startSortie()
+			}
 		}
 	}
 	if g.autoplay && len(g.modals) > 0 && g.modals[0].t > 1.2 {

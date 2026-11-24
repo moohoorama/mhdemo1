@@ -50,57 +50,57 @@
  "Allies": [
   {
    "X": 2,
-   "Y": 19
+   "Y": 33
   },
   {
    "X": 3,
-   "Y": 19
+   "Y": 33
   },
   {
    "X": 2,
-   "Y": 20
+   "Y": 34
   },
   {
    "X": 3,
-   "Y": 20
+   "Y": 34
   },
   {
    "X": 4,
-   "Y": 19
+   "Y": 33
   },
   {
    "X": 4,
-   "Y": 20
+   "Y": 34
   },
   {
    "X": 2,
-   "Y": 21
+   "Y": 35
   },
   {
    "X": 3,
-   "Y": 21
+   "Y": 35
   },
   {
    "X": 4,
-   "Y": 21
+   "Y": 35
   },
   {
    "X": 5,
-   "Y": 20
+   "Y": 34
   }
  ],
  "Recommend": {
   "liubei": {
    "X": 2,
-   "Y": 19
+   "Y": 33
   },
   "guanyu": {
    "X": 2,
-   "Y": 21
+   "Y": 35
   },
   "mizhu": {
    "X": 5,
-   "Y": 20
+   "Y": 34
   }
  },
  "Groups": [
@@ -117,8 +117,8 @@
  "Enemies": [
   {
    "Character": "caoren",
-   "X": 16,
-   "Y": 7,
+   "X": 8,
+   "Y": 13,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
@@ -128,8 +128,8 @@
   },
   {
    "Character": "caohong",
-   "X": 14,
-   "Y": 7,
+   "X": 6,
+   "Y": 13,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
@@ -139,8 +139,8 @@
   },
   {
    "Character": "xuchu",
-   "X": 17,
-   "Y": 8,
+   "X": 9,
+   "Y": 14,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 60,
@@ -149,8 +149,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 13,
-   "Y": 6,
+   "X": 5,
+   "Y": 12,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
@@ -160,8 +160,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 15,
-   "Y": 6,
+   "X": 7,
+   "Y": 12,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
@@ -171,8 +171,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 12,
-   "Y": 8,
+   "X": 4,
+   "Y": 14,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
@@ -182,8 +182,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 14,
-   "Y": 8,
+   "X": 6,
+   "Y": 14,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
@@ -193,8 +193,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 15,
-   "Y": 9,
+   "X": 7,
+   "Y": 15,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
@@ -204,8 +204,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 13,
-   "Y": 9,
+   "X": 5,
+   "Y": 15,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
@@ -215,8 +215,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 11,
-   "Y": 9,
+   "X": 3,
+   "Y": 15,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
@@ -226,8 +226,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 16,
-   "Y": 9,
+   "X": 8,
+   "Y": 15,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
@@ -237,8 +237,8 @@
   },
   {
    "Character": "troop_footman",
-   "X": 12,
-   "Y": 10,
+   "X": 4,
+   "Y": 16,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
@@ -248,41 +248,74 @@
   },
   {
    "Character": "troop_footman",
+   "X": 2,
+   "Y": 13,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 3,
+   "Y": 16,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_footman",
+   "X": 6,
+   "Y": 16,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rout",
+   "Shift": -0.07,
+   "Facing": "NW"
+  },
+  {
+   "Character": "troop_cavalry",
    "X": 10,
-   "Y": 7,
+   "Y": 15,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
-   "Group": "rout",
-   "Shift": -0.07,
-   "Facing": "NW"
+   "Group": "rearguard",
+   "Shift": -0.12,
+   "Facing": "SW"
   },
   {
-   "Character": "troop_footman",
+   "Character": "troop_cavalry",
+   "X": 10,
+   "Y": 16,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rearguard",
+   "Shift": -0.12,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
+   "X": 9,
+   "Y": 16,
+   "Policy": "flee",
+   "GoalArea": 20,
+   "HPPct": 70,
+   "Group": "rearguard",
+   "Shift": -0.12,
+   "Facing": "SW"
+  },
+  {
+   "Character": "troop_cavalry",
    "X": 11,
-   "Y": 10,
-   "Policy": "flee",
-   "GoalArea": 20,
-   "HPPct": 70,
-   "Group": "rout",
-   "Shift": -0.07,
-   "Facing": "NW"
-  },
-  {
-   "Character": "troop_footman",
-   "X": 14,
-   "Y": 10,
-   "Policy": "flee",
-   "GoalArea": 20,
-   "HPPct": 70,
-   "Group": "rout",
-   "Shift": -0.07,
-   "Facing": "NW"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 18,
-   "Y": 9,
+   "Y": 15,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
@@ -292,8 +325,8 @@
   },
   {
    "Character": "troop_cavalry",
-   "X": 18,
-   "Y": 10,
+   "X": 8,
+   "Y": 17,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
@@ -303,41 +336,8 @@
   },
   {
    "Character": "troop_cavalry",
-   "X": 17,
-   "Y": 10,
-   "Policy": "flee",
-   "GoalArea": 20,
-   "HPPct": 70,
-   "Group": "rearguard",
-   "Shift": -0.12,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 19,
-   "Y": 9,
-   "Policy": "flee",
-   "GoalArea": 20,
-   "HPPct": 70,
-   "Group": "rearguard",
-   "Shift": -0.12,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 16,
-   "Y": 11,
-   "Policy": "flee",
-   "GoalArea": 20,
-   "HPPct": 70,
-   "Group": "rearguard",
-   "Shift": -0.12,
-   "Facing": "SW"
-  },
-  {
-   "Character": "troop_cavalry",
-   "X": 19,
-   "Y": 7,
+   "X": 11,
+   "Y": 13,
    "Policy": "flee",
    "GoalArea": 20,
    "HPPct": 70,
@@ -696,7 +696,7 @@
    "ID": 1,
    "Rect": {
     "X": 2,
-    "Y": 19,
+    "Y": 33,
     "W": 4,
     "H": 3
    },
@@ -718,15 +718,72 @@
    "ID": 21,
    "Rect": {
     "X": 0,
-    "Y": 8,
-    "W": 29,
-    "H": 8
+    "Y": 14,
+    "W": 12,
+    "H": 9
    },
    "Name": "들판 가운데",
-   "Description": "아군이 들어서면 허저와 기병이 돌아서서 막는다"
+   "Description": "백하 서쪽 기슭 가운데. 아군이 들어서면 허저와 기병이 돌아서서 막는다"
   }
  ],
  "Events": [
+  {
+   "ID": "suigong",
+   "Do": [
+    {
+     "Kind": "cutscene",
+     "Steps": [
+      [
+       {
+        "Kind": "surge",
+        "Text": "suigong",
+        "Unit": "caohong"
+       },
+       {
+        "Kind": "face",
+        "Unit": "guanyu",
+        "Facing": "SW",
+        "NoFocus": true
+       },
+       {
+        "Kind": "face",
+        "Unit": "mizhu",
+        "Facing": "SW",
+        "NoFocus": true
+       },
+       {
+        "Kind": "say",
+        "Unit": "caohong",
+        "Text": "물이 얕다! 건너라, 건너!",
+        "Seconds": 0.6,
+        "NoFocus": true
+       },
+       {
+        "Kind": "say",
+        "Unit": "guanyu",
+        "Text": "……터라.",
+        "Seconds": 4.1,
+        "NoFocus": true
+       }
+      ],
+      [
+       {
+        "Kind": "face",
+        "Unit": "guanyu",
+        "Facing": "NW",
+        "NoFocus": true
+       },
+       {
+        "Kind": "face",
+        "Unit": "mizhu",
+        "Facing": "NW",
+        "NoFocus": true
+       }
+      ]
+     ]
+    }
+   ]
+  },
   {
    "ID": "routed",
    "Do": [
