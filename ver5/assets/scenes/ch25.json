@@ -2,7 +2,7 @@
  "Scenes": {
   "c25-start": {
    "Map": "S_xuzhou_room",
-   "Nodes": ["c25-start", "c25-a01", "c25-a02", "c25-a03", "c25-a04"],
+   "Nodes": ["c25-sick-news", "c25-start", "c25-a01", "c25-a02", "c25-a03", "c25-a04"],
    "Cast": {
     "유표": {"At": [2, 1], "Face": "SE", "Pose": "sit", "Hold": true},
     "유비": {"At": [2, 2], "Face": "NE"}
