@@ -32,7 +32,7 @@ func TestEngineSourceNamesNoGameContent(t *testing.T) {
 	engine["flood"] = true // a scene map's draw kind (scenemap.DrawFlood), also a trait id
 	engine["brace"] = true // a scene beat's React motion (a block held overhead), also a skill id
 	// Korean words the screens use as labels of engine vocabulary (statuses, the equipment tab) may coincide with data names.
-	for _, w := range []string{"장비", "신속", "원시", "반격", "혼란", "봉책", "봉격", "약화", "경계", "조준", "저격", "도발", "교란", "관리", "이전"} {
+	for _, w := range []string{"장비", "신속", "원시", "반격", "혼란", "봉책", "봉격", "약화", "경계", "조준", "저격", "도발", "교란", "보복", "관리", "이전"} {
 		engine[w] = true
 	}
 	engine["계략"] = true // the command menu's tab of status skills, also a trait name

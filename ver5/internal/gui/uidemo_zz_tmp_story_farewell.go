@@ -9,16 +9,16 @@ import (
 
 func init() { demos["story-farewell"] = demoStoryFarewell }
 
-// demoStoryFarewell shows 장비's notice, the walk, deputy appointment and 조운's equipment before the farewell.
+// demoStoryFarewell shows the talk in 소패, the walk, deputy appointment and 조운's equipment before the farewell.
 func demoStoryFarewell(d *Demo) error {
 	level := d.g.S.Data.Rules.PromoteLevels[0]
 	if err := d.demoJumpAtLevel("c13-start", level); err != nil {
 		return err
 	}
 	g := d.g
-	for g.S.View().Node != "c13-x-notice" {
+	for g.S.Data.After(g.S.View().Node) != "c13-wait-zhaoyun" { // the last line before the farewell walk
 		if _, err := g.S.Engine.Apply(core.Command{Kind: "next"}); err != nil {
-			return fmt.Errorf("reach the farewell notice from %s: %w", g.S.View().Node, err)
+			return fmt.Errorf("reach the farewell walk from %s: %w", g.S.View().Node, err)
 		}
 	}
 	g.intro = nil

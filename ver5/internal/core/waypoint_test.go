@@ -53,7 +53,19 @@ func TestNewAt(t *testing.T) {
 		}
 		// in story order, the last join or leave of each officer before the waypoint says whether they are with the party
 		with := map[string]bool{}
-		for _, n := range d.Nodes {
+		var played []content.Node // a chapter's events happen on its walk (the engine passes them at the explore node), before what follows it
+		for _, c := range d.Chapters {
+			for _, id := range c.Nodes {
+				n := d.Node(id)
+				played = append(played, n)
+				if n.Kind == "explore" {
+					for _, ev := range c.Events {
+						played = append(played, d.Node(ev))
+					}
+				}
+			}
+		}
+		for _, n := range played {
 			if n.ID == last.Node {
 				break
 			}
@@ -196,12 +208,12 @@ func TestNewAt(t *testing.T) {
 func TestJumpIntoTheOtherTelling(t *testing.T) {
 	d, err := content.Load("../../assets/data")
 	require.NoError(t, err)
-	for _, node := range []string{"c25v-start", "c26v-start", "c27v-start"} {
+	for _, node := range []string{"c25v-start", "c26v-start", "c27v-travel-walk"} {
 		t.Run(node, func(t *testing.T) {
 			e, err := NewAt(d, 1, node, "casual")
 			require.NoError(t, err)
 			assert.NotNil(t, e.char("xushu"), "Xu Shu leaves only after the romance's Changban")
-			if node != "c27v-start" { // he joins after 강릉 (B26V) in this telling
+			if node != "c27v-travel-walk" { // he joins after 강릉 (B26V) in this telling
 				assert.Nil(t, e.char("huojun"), "Huo Jun joins only in the romance's chapter 27")
 			}
 			assert.False(t, e.state.Executed["won-B25"], "the romance's battles are not played")

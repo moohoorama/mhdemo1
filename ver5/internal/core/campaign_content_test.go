@@ -184,7 +184,7 @@ func executed(e *Engine, key string) bool { return e.state.Executed[key] }
 
 func TestCampaignPlaysThroughWithEveryBonusObjective(t *testing.T) {
 	e, fought := playCampaign(t, true, "빠른 길")
-	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27R", "B27"}, fought)
+	assert.Equal(t, []string{"B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27R"}, fought)
 	assert.Equal(t, 1, e.state.Flags["flag-mode-yanyi"], "the fast road at Longzhong is the romance")
 	assert.Zero(t, e.state.Flags["flag-mode-virtual"])
 	assert.Nil(t, e.char("xushu"), "Xu Shu is taken after Changban")
@@ -289,8 +289,14 @@ func TestEveryCampaignDuelStartsWhenItsOfficersMeet(t *testing.T) {
 				e.unchecked = true // the officer of the duel is sent out whether or not he can be
 				require.Equal(t, si, e.state.Stage)
 				if !npc && !slices.Contains(e.state.Deployment, duel.Ally) { // not a required officer: in for the last of the sortie when it is full
-					if len(e.state.Deployment) >= stage.Max {
-						e.state.Deployment = e.state.Deployment[:stage.Max-1]
+					if len(e.state.Deployment) >= stage.Max { // the required officers stay, the others fill what is left
+						keep := slices.DeleteFunc(slices.Clone(e.state.Deployment), func(id string) bool { return !slices.Contains(stage.Required, id) })
+						for _, id := range e.state.Deployment {
+							if len(keep) < stage.Max-1 && !slices.Contains(keep, id) {
+								keep = append(keep, id)
+							}
+						}
+						e.state.Deployment = keep
 					}
 					e.state.Deployment = append(e.state.Deployment, duel.Ally)
 				}

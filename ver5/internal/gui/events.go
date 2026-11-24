@@ -159,7 +159,7 @@ var statusLabels = map[string]string{"speed": "신속", "range": "사거리", "c
 	"stance_pierce": "찔러", "stance_cross": "사방", "stance_square": "팔방",
 	"mind": "정신", "morale": "사기", "attack": "공격", "defense": "방어", "agility": "순발", "poison": "중독", "burn": "화상",
 	"confusion": "혼란", "seal": "봉책", "root": "속박", "disarm": "봉격", "weak": "약화",
-	"guard": "경계", "disrupt": "교란", "hold_ground": "고수", "physical_guard": "물리 피해 감소", "magic_guard": "책략 피해 감소"}
+	"guard": "경계", "disrupt": "교란", "hold_ground": "고수", "physical_guard": "물리 피해 감소", "magic_guard": "책략 피해 감소", "reprisal": "보복"}
 
 // percentStatus lists the statuses whose value is a signed percent.
 var percentStatus = map[string]bool{"attack": true, "defense": true, "mind": true, "morale": true, "agility": true}
