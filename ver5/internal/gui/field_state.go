@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"math"
+	"sort"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"srpg/internal/content"
@@ -116,10 +117,27 @@ var markSprites = map[string]string{"ember": "charred", "wet": "wet", "rubble": 
 
 const markVariants = 5
 
+// looksInOrder lists the cells with a look from the top row down, left to right. The pictures overlap their
+// neighbours and tie in depth, so ranging over the map would draw them in another order every frame and flicker.
+func (f *Field) looksInOrder() []image.Point {
+	cells := make([]image.Point, 0, len(f.looks))
+	for p := range f.looks {
+		cells = append(cells, p)
+	}
+	sort.Slice(cells, func(i, j int) bool {
+		if cells[i].Y != cells[j].Y {
+			return cells[i].Y < cells[j].Y
+		}
+		return cells[i].X < cells[j].X
+	})
+	return cells
+}
+
 // drawStateGround lays the ground marks: soot over the burnt ground, four small marks on a cell, and one
 // picture of charred, wet or stony ground on a cell a critical spell marked.
 func (f *Field) drawStateGround(dst *ebiten.Image) {
-	for p, look := range f.looks {
+	for _, p := range f.looksInOrder() {
+		look := f.looks[p]
 		if name, ok := markSprites[look]; ok {
 			if s, ok := f.A.Props[fmt.Sprintf("%s_%d", name, int(hash3(p.X, p.Y, 7)*markVariants))]; ok {
 				px, py := f.mapCenter(float64(p.X), float64(p.Y))
@@ -154,7 +172,8 @@ func hash3(a, b, c int) float64 {
 // stateItems are the depth-sorted pictures of the states: tongues of fire and the smoke over them.
 func (f *Field) stateItems(clockMS float64) []drawItem {
 	var items []drawItem
-	for p, look := range f.looks {
+	for _, p := range f.looksInOrder() {
+		look := f.looks[p]
 		if look != "ember" && look != "flame" {
 			continue
 		}
