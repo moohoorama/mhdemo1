@@ -2767,7 +2767,8 @@
    "Level": 12,
    "Traits": [
     "spell_leech",
-    "deadly_poison"
+    "deadly_poison",
+    "crush"
    ],
    "Learn": [],
    "Equipment": [
