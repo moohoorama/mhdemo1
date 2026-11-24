@@ -83,31 +83,8 @@
       12,
       30
      ],
-     "To": "liu"
-    },
-    {
-     "Name": "채씨 저택",
-     "At": [
-      12,
-      15
-     ],
-     "Object": [
-      12,
-      14
-     ],
-     "To": "cai"
-    },
-    {
-     "Name": "괴씨 저택",
-     "At": [
-      36,
-      15
-     ],
-     "Object": [
-      36,
-      14
-     ],
-     "To": "kuai"
+     "To": "liu",
+     "Residence": "large"
     }
    ],
    "People": {
@@ -129,26 +106,161 @@
      "Sprite": "commoner_man",
      "Faction": "merchant"
     },
-    "채씨 집안 하인#1": {
+    "관우": {
      "At": [
-      14,
-      17
+      10,
+      25
      ],
-     "Face": "SW",
-     "Sprite": "commoner_man",
-     "Faction": "merchant"
+     "Face": "NW",
+     "Talk": [
+      [
+       "guanyu",
+       "형님, 강하에서 거둔 병장기는 관청에 넘겼습니다. 도적들 장부도 함께 올렸습니다."
+      ]
+     ]
     },
-    "괴씨 집안 하인#1": {
+    "장비": {
      "At": [
-      38,
-      17
+      13,
+      23
+     ],
+     "Face": "NW",
+     "Talk": [
+      [
+       "zhangfei",
+       "형, 그 흰 이마 말 진짜 형주목한테 바칠 거유? 아깝구먼유."
+      ]
+     ]
+    },
+    "손건": {
+     "At": [
+      10,
+      23
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "sunqian",
+       "강하 일이 잘 풀렸으니, 형주목께서도 약속을 지키실 겁니다."
+      ]
+     ]
+    },
+    "조운@pre": {
+     "At": [
+      6,
+      20
+     ],
+     "Face": "SE",
+     "If": [
+      "!flag:c23-xiangyang-visited"
+     ],
+     "Talk": [
+      [
+       "zhaoyun",
+       "말은 성문 안쪽에 매어 두었습니다. 낯선 마부는 곁에 오지 못하게 하고 있습니다."
+      ]
+     ]
+    },
+    "조운@post": {
+     "At": [
+      6,
+      20
+     ],
+     "Face": "SE",
+     "If": [
+      "flag:c23-xiangyang-visited"
+     ],
+     "Talk": [
+      [
+       "zhaoyun",
+       "그 말을 형주목께 드렸으니, 돌아가실 때는 제 말을 타십시오."
+      ]
+     ]
+    },
+    "간옹": {
+     "At": [
+      29,
+      30
+     ],
+     "Face": "NE",
+     "Talk": [
+      [
+       "jianyong",
+       "도적 떼 쳐 주고 성 하나를 얻으면, 이번엔 셈이 맞는 장사구먼."
+      ]
+     ]
+    },
+    "미축": {
+     "At": [
+      35,
+      33
+     ],
+     "Face": "NE",
+     "Talk": [
+      [
+       "mizhu",
+       "신야로 옮길 짐은 미리 꾸려 두었습니다. 말씀만 하시면 바로 떠납니다."
+      ]
+     ]
+    },
+    "관청 문지기": {
+     "At": [
+      9,
+      28
+     ],
+     "Face": "SE",
+     "Sprite": "guards",
+     "Faction": "jing",
+     "Talk": [
+      [
+       "",
+       "강하의 도적을 치신 분이시군요. 주공께서 기다리십니다."
+      ]
+     ]
+    },
+    "양양 백성": {
+     "At": [
+      20,
+      21
      ],
      "Face": "SW",
      "Sprite": "commoner_man",
-     "Faction": "merchant"
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "강하 도적 떼를 쓸어버린 게 북쪽 손님들이라지? 뱃길이 다시 열리면 소금값이 좀 내리겠구먼."
+      ]
+     ]
+    },
+    "늙은 선비": {
+     "At": [
+      24,
+      26
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "형주목께서 요즘 기력이 예전 같지 않으시다오. 큰 공자는 몸이 약하고 작은 공자는 어리니, 형주가 어찌 될지."
+      ]
+     ]
+    },
+    "우물가 아낙#1": {
+     "At": [
+      16,
+      34
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Chatter": "강하 뱃길이 열렸대|소금값이 내리려나"
     }
    },
-   "Zoom": 1.4
+   "Zoom": 1.4,
+   "Lord": "liubiao"
   },
   "tavern": {
    "Map": "S_tavern",
@@ -247,66 +359,6 @@
      "Face": "SW",
      "Sprite": "guards",
      "Faction": "neutral"
-    }
-   },
-   "Zoom": 3
-  },
-  "cai": {
-   "Map": "S_liu_house",
-   "Name": "채씨 저택",
-   "At": [
-    9,
-    6
-   ],
-   "Exits": [
-    {
-     "Name": "거리로",
-     "At": [
-      15,
-      9
-     ],
-     "To": "town"
-    }
-   ],
-   "People": {
-    "저택 집사#1": {
-     "At": [
-      6,
-      6
-     ],
-     "Face": "SW",
-     "Sprite": "commoner_elder",
-     "Faction": "merchant"
-    }
-   },
-   "Zoom": 3
-  },
-  "kuai": {
-   "Map": "S_liu_house",
-   "Name": "괴씨 저택",
-   "At": [
-    9,
-    6
-   ],
-   "Exits": [
-    {
-     "Name": "거리로",
-     "At": [
-      15,
-      9
-     ],
-     "To": "town"
-    }
-   ],
-   "People": {
-    "저택 집사#1": {
-     "At": [
-      6,
-      6
-     ],
-     "Face": "SW",
-     "Sprite": "commoner_elder",
-     "Faction": "merchant"
     }
    },
    "Zoom": 3

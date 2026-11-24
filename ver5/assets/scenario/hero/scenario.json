@@ -7,6 +7,45 @@
   "guanyu",
   "zhangfei"
  ],
+ "CoreAllies": [
+  "guanyu",
+  "zhangfei",
+  "zhugeliang",
+  "zhaoyun",
+  "jianyong",
+  "mizhu",
+  "sunqian"
+ ],
+ "News": [
+  {
+   "ID": "dongzhuo-dead",
+   "Text": "동탁이 죽었다. 왕윤의 꾀로 양아들 여포가 제 손으로 찔렀다",
+   "From": "11",
+   "Until": "11"
+  },
+  {
+   "ID": "lijue-changan",
+   "Text": "이각과 곽사가 장안을 쳐서 왕윤이 죽고, 여포는 동탁의 머리를 들고 달아났다",
+   "From": "12",
+   "Until": "12"
+  },
+  {
+   "ID": "lubu-lost-yanzhou",
+   "Text": "조조가 연주를 되찾고 여포가 크게 져서 동쪽으로 달아났다",
+   "From": "14",
+   "Until": "14"
+  },
+  {
+   "ID": "guandu-standoff",
+   "Text": "조조와 원소가 관도에서 맞서고 있다",
+   "From": "18",
+   "Until": "20"
+  }
+ ],
+ "SwornBrothers": [
+  "guanyu",
+  "zhangfei"
+ ],
  "Deployment": [
   "liubei"
  ],

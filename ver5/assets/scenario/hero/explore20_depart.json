@@ -52,8 +52,48 @@
        "형, 말은 산길 어귀에 매 뒀슈."
       ]
      ]
+    },
+    "나무꾼": {
+     "At": [
+      32,
+      11
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "관도 소식 들었소?|아직 맞서고만 있다오",
+     "Talk": [
+      [
+       "",
+       "산 아래 장에서 들으니 관도에서 조 승상과 원소가 아직 맞서고만 있답디다. 어느 쪽이 이기든 우리 같은 사람은 땔감이나 해야지요."
+      ]
+     ],
+     "Notice": "news:guandu-standoff"
     }
-   }
+   },
+   "PopulationNote": "마을 밖 산기슭 길목이라 떠날 채비를 마친 관우·장비와 지나가는 나무꾼만 있다"
+  }
+ },
+ "Whereabouts": {
+  "jianyong": {
+   "Where": "elsewhere",
+   "Place": "망탕산 산속 마을",
+   "Reason": "fullstory 20장 망탕산: 일행은 산속 마을에 모여 있고(c20-walk), 이 지도는 마을 밖 산기슭이라 떠날 채비를 마친 관우·장비만 나와 있다"
+  },
+  "mizhu": {
+   "Where": "elsewhere",
+   "Place": "망탕산 산속 마을",
+   "Reason": "fullstory 20장 망탕산: 일행은 산속 마을에 모여 있고(c20-walk), 이 지도는 마을 밖 산기슭이라 떠날 채비를 마친 관우·장비만 나와 있다"
+  },
+  "sunqian": {
+   "Where": "elsewhere",
+   "Place": "망탕산 산속 마을",
+   "Reason": "fullstory 20장 망탕산: 일행은 산속 마을에 모여 있고(c20-walk), 이 지도는 마을 밖 산기슭이라 떠날 채비를 마친 관우·장비만 나와 있다"
+  },
+  "zhaoyun": {
+   "Where": "elsewhere",
+   "Place": "망탕산 산속 마을",
+   "Reason": "fullstory 20장 망탕산: 일행은 산속 마을에 모여 있고(c20-walk), 이 지도는 마을 밖 산기슭이라 떠날 채비를 마친 관우·장비만 나와 있다"
   }
  }
 }

@@ -63,35 +63,12 @@
       12,
       30
      ],
-     "To": "liu"
-    },
-    {
-     "Name": "채씨 저택",
-     "At": [
-      12,
-      15
-     ],
-     "Object": [
-      12,
-      14
-     ],
-     "To": "cai"
-    },
-    {
-     "Name": "괴씨 저택",
-     "At": [
-      36,
-      15
-     ],
-     "Object": [
-      36,
-      14
-     ],
-     "To": "kuai"
+     "To": "liu",
+     "Residence": "large"
     }
    ],
    "People": {
-    "성문 병사": {
+    "성문 병사#1": {
      "At": [
       3,
       20
@@ -100,7 +77,7 @@
      "Sprite": "guards",
      "Faction": "neutral"
     },
-    "장터 상인": {
+    "장터 상인#1": {
      "At": [
       37,
       32
@@ -109,26 +86,142 @@
      "Sprite": "commoner_man",
      "Faction": "merchant"
     },
-    "채씨 집안 하인": {
+    "관우": {
      "At": [
-      14,
-      17
+      10,
+      25
      ],
-     "Face": "SW",
-     "Sprite": "commoner_man",
-     "Faction": "merchant"
+     "Face": "NW",
+     "Talk": [
+      [
+       "guanyu",
+       "형님, 문지기가 기별을 넣었습니다. 안에서 의논이 길어지는 모양입니다."
+      ]
+     ]
     },
-    "괴씨 집안 하인": {
+    "장비": {
      "At": [
-      38,
-      17
+      13,
+      23
+     ],
+     "Face": "NW",
+     "Talk": [
+      [
+       "zhangfei",
+       "형, 이 성은 집도 크고 사람도 많구먼유. 우리 군사들 배 좀 채우게 해 줄랑가 모르겄슈."
+      ]
+     ]
+    },
+    "손건": {
+     "At": [
+      10,
+      23
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "sunqian",
+       "형주목께 올린 글에는 답이 왔습니다. 같은 종친을 문밖에 세워 두지는 않으실 겁니다."
+      ]
+     ]
+    },
+    "조운": {
+     "At": [
+      6,
+      20
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "zhaoyun",
+       "군사들은 성 밖에 머물게 했습니다. 말은 성문 안쪽에 매어 두었습니다."
+      ]
+     ]
+    },
+    "간옹": {
+     "At": [
+      29,
+      30
+     ],
+     "Face": "NE",
+     "Talk": [
+      [
+       "jianyong",
+       "주점에서 들으니 형주 사람들은 싸움 이야기만 나와도 손사래를 친다네. 우리 같은 손님이 반가울 리 없지."
+      ]
+     ]
+    },
+    "미축": {
+     "At": [
+      35,
+      33
+     ],
+     "Face": "NE",
+     "Talk": [
+      [
+       "mizhu",
+       "양양 장터는 물건이 넉넉합니다. 쌀값도 서주보다 쌉니다."
+      ]
+     ]
+    },
+    "관청 문지기": {
+     "At": [
+      9,
+      28
+     ],
+     "Face": "SE",
+     "Sprite": "guards",
+     "Faction": "jing",
+     "Talk": [
+      [
+       "",
+       "주공께서는 안에서 의논 중이십니다. 관청으로 드시지요."
+      ]
+     ]
+    },
+    "양양 백성": {
+     "At": [
+      20,
+      21
      ],
      "Face": "SW",
      "Sprite": "commoner_man",
-     "Faction": "merchant"
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "북쪽에서 손님이 오셨다고 관청이 시끌시끌합디다. 형주가 조용한 게 다 형주목 덕인데, 싸움만 안 따라오면 좋겠소."
+      ]
+     ]
+    },
+    "늙은 선비": {
+     "At": [
+      24,
+      26
+     ],
+     "Face": "SW",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "북쪽 난리를 피해 내려온 선비가 양양에만 수천이라오. 형주목께서 학당을 열어 먹여 주시니, 글 읽는 사람에겐 살 만한 곳이지요."
+      ]
+     ]
+    },
+    "우물가 아낙#1": {
+     "At": [
+      16,
+      34
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Chatter": "물이 맑아 좋구먼|북쪽 손님이 왔다지?"
     }
    },
-   "Zoom": 1.4
+   "Zoom": 1.4,
+   "Lord": "liubiao"
   },
   "tavern": {
    "Map": "S_tavern",
@@ -158,7 +251,7 @@
      "Faction": "merchant",
      "Shop": "tavern"
     },
-    "손님": {
+    "손님#1": {
      "At": [
       9,
       5
@@ -219,7 +312,7 @@
     }
    ],
    "People": {
-    "저택 문지기": {
+    "저택 문지기#1": {
      "At": [
       6,
       6
@@ -227,66 +320,6 @@
      "Face": "SW",
      "Sprite": "guards",
      "Faction": "neutral"
-    }
-   },
-   "Zoom": 3
-  },
-  "cai": {
-   "Map": "S_liu_house",
-   "Name": "채씨 저택",
-   "At": [
-    9,
-    6
-   ],
-   "Exits": [
-    {
-     "Name": "거리로",
-     "At": [
-      15,
-      9
-     ],
-     "To": "town"
-    }
-   ],
-   "People": {
-    "저택 집사": {
-     "At": [
-      6,
-      6
-     ],
-     "Face": "SW",
-     "Sprite": "commoner_elder",
-     "Faction": "merchant"
-    }
-   },
-   "Zoom": 3
-  },
-  "kuai": {
-   "Map": "S_liu_house",
-   "Name": "괴씨 저택",
-   "At": [
-    9,
-    6
-   ],
-   "Exits": [
-    {
-     "Name": "거리로",
-     "At": [
-      15,
-      9
-     ],
-     "To": "town"
-    }
-   ],
-   "People": {
-    "저택 집사": {
-     "At": [
-      6,
-      6
-     ],
-     "Face": "SW",
-     "Sprite": "commoner_elder",
-     "Faction": "merchant"
     }
    },
    "Zoom": 3

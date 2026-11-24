@@ -539,7 +539,8 @@
       ]
      ]
     }
-   ]
+   ],
+   "PopulationNote": "낙양 저잣거리의 구경꾼 무리(웅성임)라 말을 걸 사람은 몇뿐이다"
   },
   "tools": {
    "Map": "S_tool_shop",
@@ -829,6 +830,16 @@
      ],
      "Sprite": "commoner_elder",
      "Faction": "merchant"
+    },
+    "점원#1": {
+     "At": [
+      11,
+      9
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "콩 팝니다!|다른 곳에 없는 콩이 여기 있습니다!|보리 팝니다!|다른 곳에 없는 보리가 여기 있습니다!|술 팝니다!|다른 곳에 없는 술이 여기 있습니다!"
     }
    }
   }

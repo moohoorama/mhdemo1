@@ -26,7 +26,47 @@
      "To": "town"
     }
    ],
-   "People": {}
+   "People": {
+    "간옹": {
+     "At": [
+      9,
+      4
+     ],
+     "Face": "SW",
+     "Talk": [
+      [
+       "jianyong",
+       "연회라니 부럽구먼. 현덕, 양양 술맛이 어떤지 나중에 일러 주게."
+      ]
+     ]
+    },
+    "미축": {
+     "At": [
+      11,
+      9
+     ],
+     "Face": "NW",
+     "Talk": [
+      [
+       "mizhu",
+       "형주목께 드릴 예물은 비단 몇 필로 꾸렸습니다. 넘치지도 모자라지도 않게 했습니다."
+      ]
+     ]
+    },
+    "손건": {
+     "At": [
+      2,
+      9
+     ],
+     "Face": "NE",
+     "Talk": [
+      [
+       "sunqian",
+       "주공께서 안 계신 동안 신야 성문은 해 지면 닫겠습니다."
+      ]
+     ]
+    }
+   }
   },
   "town": {
    "Map": "S_xinye",
@@ -80,7 +120,7 @@
       11,
       6
      ],
-     "To": "tavern"
+     "To": "xinye_tavern"
     },
     {
      "Name": "도구점",
@@ -92,7 +132,20 @@
       24,
       7
      ],
-     "To": "tools"
+     "To": "xinye_tools"
+    },
+    {
+     "Name": "유비의 거처",
+     "At": [
+      7,
+      5
+     ],
+     "Object": [
+      7,
+      3
+     ],
+     "To": "home",
+     "Residence": "small"
     }
    ],
    "People": {
@@ -130,7 +183,7 @@
       "flag:c24-zhang"
      ]
     },
-    "장터 상인": {
+    "장터 상인#1": {
      "At": [
       22,
       17
@@ -139,7 +192,7 @@
      "Sprite": "commoner_man",
      "Faction": "merchant"
     },
-    "우물가 백성": {
+    "우물가 백성#1": {
      "At": [
       12,
       18
@@ -147,8 +200,41 @@
      "Face": "NE",
      "Sprite": "commoner_woman",
      "Faction": "merchant"
+    },
+    "관우": {
+     "At": [
+      21,
+      3
+     ],
+     "Face": "SW",
+     "If": [
+      "!flag:c24-zhang"
+     ],
+     "Talk": [
+      [
+       "guanyu",
+       "형님, 성은 저와 익덕이 지키겠습니다. 조심해 다녀오십시오."
+      ]
+     ]
+    },
+    "장비": {
+     "At": [
+      14,
+      11
+     ],
+     "Face": "NE",
+     "If": [
+      "!flag:c24-zhang"
+     ],
+     "Talk": [
+      [
+       "zhangfei",
+       "자룡만 데려가유? 나도 연회 구경 좀 하고 싶었는디."
+      ]
+     ]
     }
-   }
+   },
+   "Guest": true
   },
   "xiangyang": {
    "Map": "S_xiangyang",
@@ -230,31 +316,8 @@
       12,
       30
      ],
-     "To": "liu"
-    },
-    {
-     "Name": "채씨 저택",
-     "At": [
-      12,
-      15
-     ],
-     "Object": [
-      12,
-      14
-     ],
-     "To": "cai"
-    },
-    {
-     "Name": "괴씨 저택",
-     "At": [
-      36,
-      15
-     ],
-     "Object": [
-      36,
-      14
-     ],
-     "To": "kuai"
+     "To": "liu",
+     "Residence": "large"
     }
    ],
    "People": {
@@ -327,7 +390,7 @@
       ]
      ]
     },
-    "성문 병사": {
+    "성문 병사#1": {
      "At": [
       3,
       20
@@ -336,7 +399,7 @@
      "Sprite": "guards",
      "Faction": "neutral"
     },
-    "장터 상인": {
+    "장터 상인#1": {
      "At": [
       37,
       32
@@ -345,26 +408,84 @@
      "Sprite": "commoner_man",
      "Faction": "merchant"
     },
-    "채씨 집안 하인": {
+    "조운@pre": {
+     "At": [
+      11,
+      23
+     ],
+     "Face": "SW",
+     "If": [
+      "!flag:c24-banquet"
+     ],
+     "Talk": [
+      [
+       "zhaoyun",
+       "연회가 끝날 때까지 여기서 기다리겠습니다. 채 장군의 군사들이 관청 안팎에 많습니다."
+      ]
+     ]
+    },
+    "조운@post": {
+     "At": [
+      11,
+      23
+     ],
+     "Face": "SW",
+     "If": [
+      "flag:c24-banquet"
+     ],
+     "Talk": [
+      [
+       "zhaoyun",
+       "무사히 나오셨군요. 말은 성문 앞에 대 두었습니다."
+      ]
+     ]
+    },
+    "연회 하인": {
      "At": [
       14,
-      17
+      26
      ],
-     "Face": "SW",
+     "Face": "NW",
      "Sprite": "commoner_man",
-     "Faction": "merchant"
+     "Faction": "merchant",
+     "If": [
+      "!flag:c24-banquet"
+     ],
+     "Talk": [
+      [
+       "",
+       "오늘 연회에는 큰 공자께서도 나오신답니다. 공자께서 바깥 손님을 뵙는 일은 드문데요."
+      ]
+     ]
     },
-    "괴씨 집안 하인": {
+    "늙은 선비": {
      "At": [
-      38,
-      17
+      24,
+      26
      ],
      "Face": "SW",
-     "Sprite": "commoner_man",
-     "Faction": "merchant"
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "젊은 선비들이 요즘 와룡이니 봉추니 하며 서로 별호를 붙인다더군. 젊은 사람들 허풍이지."
+      ]
+     ]
+    },
+    "우물가 아낙#1": {
+     "At": [
+      16,
+      34
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_woman",
+     "Faction": "merchant",
+     "Chatter": "오늘 관청에 잔치가 있대|고기 굽는 냄새가 나네"
     }
    },
-   "Zoom": 1.4
+   "Zoom": 1.4,
+   "Lord": "liubiao"
   },
   "longzhong": {
    "Map": "S_vil_peace",
@@ -415,6 +536,32 @@
        "봄이 되니 매화가 피었습니다. 선생 댁 앞에도 한창일 겁니다."
       ]
      ]
+    },
+    "관우": {
+     "At": [
+      21,
+      9
+     ],
+     "Face": "NW",
+     "Talk": [
+      [
+       "guanyu",
+       "매화가 한창입니다. 형님, 천천히 오르시지요."
+      ]
+     ]
+    },
+    "장비": {
+     "At": [
+      22,
+      7
+     ],
+     "Face": "NW",
+     "Talk": [
+      [
+       "zhangfei",
+       "밧줄은 두고 왔슈. 형이 두고 오라 해서유."
+      ]
+     ]
     }
    },
    "Effects": [
@@ -455,7 +602,7 @@
      "Faction": "merchant",
      "Shop": "tavern"
     },
-    "손님": {
+    "손님#1": {
      "At": [
       9,
       5
@@ -516,7 +663,7 @@
     }
    ],
    "People": {
-    "저택 문지기": {
+    "저택 문지기#1": {
      "At": [
       6,
       6
@@ -528,39 +675,80 @@
    },
    "Zoom": 3
   },
-  "cai": {
-   "Map": "S_liu_house",
-   "Name": "채씨 저택",
+  "xinye_tavern": {
+   "Map": "S_tavern",
+   "Name": "신야 주점",
    "At": [
-    9,
-    6
+    7,
+    7
    ],
    "Exits": [
     {
      "Name": "거리로",
      "At": [
-      15,
+      13,
       9
      ],
-     "To": "xiangyang"
+     "To": "town"
     }
    ],
    "People": {
-    "저택 집사": {
+    "주인": {
      "At": [
-      6,
-      6
+      11,
+      3
      ],
      "Face": "SW",
-     "Sprite": "commoner_elder",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tavern"
+    },
+    "손님#1": {
+     "At": [
+      9,
+      5
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
      "Faction": "merchant"
     }
    },
    "Zoom": 3
   },
-  "kuai": {
+  "xinye_tools": {
+   "Map": "S_tool_shop",
+   "Name": "신야 도구점",
+   "At": [
+    6,
+    7
+   ],
+   "Exits": [
+    {
+     "Name": "거리로",
+     "At": [
+      11,
+      7
+     ],
+     "To": "town"
+    }
+   ],
+   "People": {
+    "주인": {
+     "At": [
+      9,
+      3
+     ],
+     "Face": "SW",
+     "Sprite": "innkeeper_noncombat",
+     "Faction": "merchant",
+     "Shop": "tools"
+    }
+   },
+   "Zoom": 3
+  },
+  "home": {
    "Map": "S_liu_house",
-   "Name": "괴씨 저택",
+   "Name": "신야 · 유비의 거처",
    "At": [
     9,
     6
@@ -572,18 +760,24 @@
       15,
       9
      ],
-     "To": "xiangyang"
+     "To": "town"
     }
    ],
    "People": {
-    "저택 집사": {
+    "집안 하인": {
      "At": [
       6,
       6
      ],
-     "Face": "SW",
-     "Sprite": "commoner_elder",
-     "Faction": "merchant"
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Talk": [
+      [
+       "",
+       "주인 어른, 다녀오셨습니까. 방은 늘 치워 두었습니다."
+      ]
+     ]
     }
    },
    "Zoom": 3

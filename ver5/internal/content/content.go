@@ -86,10 +86,21 @@ type Campaign struct {
 	Start                   string // first scenario node
 	Roster                  []string
 	Deployment              []string
-	OpeningJoinAtStageLevel []string `json:",omitempty"`
+	OpeningJoinAtStageLevel []string   `json:",omitempty"`
+	CoreAllies              []string   `json:",omitempty"` // officers whose whereabouts every walk must account for (Explore.Whereabouts); scenario checks only
+	News                    []NewsItem `json:",omitempty"` // what is going on in the world, for the people of the walks to tell; scenario checks only
+	SwornBrothers           []string   `json:",omitempty"` // the only ones who call the hero 형 or 형님; scenario checks only
 	Inventory               map[string]int
 	Warehouse               map[string]int `json:",omitempty"` // equipment owned but worn by no one
 	Money                   int
+}
+
+// NewsItem is something that happens in the world that the people of the settlements know from chapter From to
+// chapter Until (chapter ids, both included); each walk in that span has someone tell it (ExplorePerson.Notice
+// "news:<ID>"), so the player feels the times without talking to everyone.
+type NewsItem struct {
+	ID, Text    string
+	From, Until string
 }
 
 // Chapter is one story file of the scenario, in play order. Nodes lists the ids of the story's flow; Events
@@ -609,6 +620,7 @@ type Node struct {
 	Area                                                string  `json:",omitempty"` // back: the area the hero stands in afterwards; where he talked when empty
 	At                                                  *[2]int `json:",omitempty"` // back: his small tile there
 	Face                                                string  `json:",omitempty"` // back: the way he faces there
+	Autosave                                            bool    `json:",omitempty"` // explore: save on entry
 	Leave                                               bool    `json:",omitempty"` // back: the walk is over; the story goes on after the explore node
 	Card                                                bool    `json:",omitempty"` // narrate: alone in the middle of a black screen, a part's closing card ("1장 난세도래 / 끝")
 }

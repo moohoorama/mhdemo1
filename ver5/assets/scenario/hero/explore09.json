@@ -165,6 +165,16 @@
      "Face": "NE",
      "Sprite": "light_infantry",
      "Faction": "han"
+    },
+    "장꾼#1": {
+     "At": [
+      21,
+      18
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "han",
+     "Chatter": "쌀값이 내렸네|원소 군사는 갔나"
     }
    }
   },

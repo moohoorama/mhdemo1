@@ -1,0 +1,8 @@
+area:explore17/street 궁궐
+area:explore17/street 조조의 저택
+area:explore22_xiangyang/town 유표의 저택
+area:explore23_xiangyang/town 유표의 저택
+area:explore24/xiangyang 유표의 저택
+area:explore25_back/town 유표의 저택
+area:explore25_visit/xiangyang 유표의 저택
+area:explore27v_town/town 유표의 저택

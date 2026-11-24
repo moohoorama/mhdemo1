@@ -23,7 +23,8 @@
       0,
       13
      ],
-     "To": "pingyuan"
+     "To": "pingyuan",
+     "OneWay": true
     }
    ],
    "People": {
@@ -194,7 +195,8 @@
       ]
      ]
     }
-   }
+   },
+   "PopulationNote": "화친 뒤 짐을 꾸리는 진영이라 군사들은 수레와 막사 안에 있다"
   },
   "pingyuan": {
    "Map": "S_pingyuan",
@@ -300,7 +302,8 @@
        "현령님 돌아오셨네! 장안 소식 들으셨어요? 동탁이 죽었대요!"
       ]
      ],
-     "Chatter": "동탁이 죽었대요!|장안이 난리래요"
+     "Chatter": "동탁이 죽었대요!|장안이 난리래요",
+     "Notice": "news:dongzhuo-dead"
     },
     "노인": {
      "At": [
@@ -374,7 +377,8 @@
        ]
       ]
      },
-     "Chatter": "장안 소식 들었소?|동탁이 죽었다네"
+     "Chatter": "장안 소식 들었소?|동탁이 죽었다네",
+     "Notice": "news:dongzhuo-dead"
     },
     "행인#2": {
      "At": [

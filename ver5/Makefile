@@ -1,4 +1,6 @@
 PYTHON ?= python3
+ADMIN_ADDR ?= 127.0.0.1:18765
+SCENARIO ?= hero
 .DEFAULT_GOAL := desktop
 ANDROID_SDK ?= $(if $(ANDROID_HOME),$(ANDROID_HOME),$(if $(ANDROID_SDK_ROOT),$(ANDROID_SDK_ROOT),$(HOME)/Library/Android/sdk))
 ADB ?= $(ANDROID_SDK)/platform-tools/adb
@@ -23,7 +25,7 @@ LLVM_RC ?= llvm-rc
 LLVM_CVTRES ?= llvm-cvtres
 
 .PHONY: help android android-arm64 android-release android-install \
-	desktop desktop-mac desktop-mac-intel desktop-win desktop-win-plain windows-portable-plain windows-installer windows-installer-plain windows-icon e2e scenario-doc
+	desktop desktop-mac desktop-mac-intel desktop-win desktop-win-plain windows-portable-plain windows-installer windows-installer-plain windows-icon e2e scenario-doc scenario-admin
 
 help:
 	@echo 'make desktop         Build obfuscated macOS (arm64) and Windows (amd64) binaries'
@@ -41,6 +43,7 @@ help:
 	@echo 'make android android-install ANDROID_MODE=debug  Build and install with debug tools and autoplay'
 	@echo 'Override SDK path:   make android ANDROID_SDK=/path/to/sdk'
 	@echo 'make scenario-doc    Write the whole story as readable scripts to output/ (scenes, exploration, battles)'
+	@echo 'make scenario-admin  Serve the story graph web admin (ADMIN_ADDR=127.0.0.1:18765, SCENARIO=hero)'
 	@echo 'make e2e             Play a new game on 쉬움 from start to the ending through the GUI (about 6 min)'
 	@echo 'make e2e E2E_SEED=7  Another seed: other sorties, deputies, pieces and traits'
 	@echo 'make e2e E2E_ROUTE=virtual  The 가상 telling from 24장 (「느린 길」) instead of 연의'
@@ -106,3 +109,6 @@ e2e:
 
 scenario-doc:
 	$(PYTHON) tools/scenario_doc/build.py --out output
+
+scenario-admin:
+	go run ./cmd/scenario-admin -addr $(ADMIN_ADDR) -scenario $(SCENARIO)

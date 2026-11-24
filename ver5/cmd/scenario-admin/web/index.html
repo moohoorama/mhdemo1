@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>시나리오 어드민</title>
+<style>
+:root{--bg:#f3f5f7;--panel:#ffffff;--ink:#1d2733;--mute:#66727f;--line:#d5dce3;--soft:#e9eef2;--accent:#c4561c;
+ --explore:#6a5aa6;--area:#2b6f93;--event:#b9741a;--battle:#a8352c;--end:#555;--ok:#2f7d4f;--warn:#b9741a;--err:#b4382e;
+ --mono:ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#14191f;--panel:#1c232b;--ink:#e6ebf0;--mute:#8d99a6;--line:#2e3944;--soft:#252e38;--accent:#f08a52;
+ --explore:#a99be0;--area:#6db4d8;--event:#e3a553;--battle:#e5786d;--end:#aaa;--ok:#6fc08e;--warn:#e3a553;--err:#e5786d}}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;display:flex;flex-direction:column}
+header{display:flex;gap:10px;align-items:center;padding:8px 14px;border-bottom:1px solid var(--line);background:var(--panel);flex-wrap:wrap;flex:0 0 auto}
+header h1{font-size:15px;margin:0}
+header input{padding:3px 8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:6px;width:120px;font-family:var(--mono);font-size:12px}
+button{padding:3px 10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:6px;cursor:pointer;font:inherit;font-size:13px}
+button:hover{border-color:var(--accent)} button.on{border-color:var(--accent);color:var(--accent);font-weight:700}
+.badge{padding:1px 8px;border-radius:10px;font-size:12px;border:1px solid var(--line);white-space:nowrap}
+.err{color:var(--err);border-color:var(--err)}.warn{color:var(--warn);border-color:var(--warn)}.ok{color:var(--ok);border-color:var(--ok)}
+.sub{color:var(--mute);font-size:12px}.mono{font-family:var(--mono);font-size:11.5px}
+main{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:230px minmax(320px,1fr) minmax(380px,38%)}
+@media (max-width:1100px){main{grid-template-columns:200px 1fr;grid-template-rows:55% 45%} .side{grid-column:1/3}}
+@media (max-width:700px){main{display:block;overflow:auto}}
+.toc{overflow:auto;border-right:1px solid var(--line);background:var(--panel);padding:8px;font-size:13px}
+.toc .ch{display:flex;gap:6px;align-items:baseline;width:100%;text-align:left;border:0;background:transparent;padding:4px 6px;border-radius:6px;font-weight:700}
+.toc .ch:hover{background:var(--soft)} .toc .ch.cur{background:color-mix(in srgb,var(--area) 16%,transparent)}
+.toc .bt{display:block;width:100%;text-align:left;border:0;background:transparent;padding:2px 6px 2px 22px;color:var(--battle);font-size:12.5px}
+.toc .bt:hover{background:var(--soft)}
+.toc .stp{padding:3px 6px 3px 8px;border-left:2px solid var(--line);margin-left:14px;cursor:pointer;border-radius:0 6px 6px 0;display:flex;gap:7px}
+.toc .stp:hover{background:var(--soft)} .toc .stp.cur{background:color-mix(in srgb,var(--accent) 15%,transparent);border-left-color:var(--accent)}
+.toc .stp .n{flex:0 0 20px;height:20px;border-radius:50%;background:var(--ok);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;margin-top:1px}
+.toc .stp.side .n{background:var(--mute)} .toc .stp.battle .n{background:var(--battle)}
+.toc .stp small{display:block;color:var(--mute);font-size:11.5px}
+.graph{overflow:auto;border-right:1px solid var(--line);position:relative}
+.zoom{position:sticky;top:0;left:0;z-index:4;padding:6px 8px;display:flex;gap:4px;align-items:center;background:color-mix(in srgb,var(--bg) 88%,transparent);width:max-content}
+.side{overflow:auto;padding:14px 16px;background:var(--panel)}
+svg text{font-family:inherit}
+.card{cursor:pointer}
+.card .bg{fill:var(--panel);stroke-width:2}
+.card.sel .bg{fill:color-mix(in srgb,var(--accent) 14%,var(--panel))}
+.card.dim{opacity:.35}
+.card .t{font-size:13px;font-weight:700;fill:var(--ink)}.card .s{font-size:10.5px;fill:var(--mute)}
+.elabel{font-size:10.5px;fill:var(--mute);paint-order:stroke;stroke:var(--bg);stroke-width:3px}
+.gbox{fill:color-mix(in srgb,var(--area) 7%,transparent);stroke:var(--area);stroke-dasharray:5 4}
+.glabel{font-size:12px;font-weight:700;fill:var(--area)}
+.lane{font-size:11.5px;font-weight:700;fill:var(--mute)}
+.pathno circle{fill:var(--ok);stroke:var(--panel);stroke-width:2}.pathno text{fill:#fff;font-size:11px;font-weight:700;text-anchor:middle}
+h2{font-size:17px;margin:0 0 2px}h3{font-size:12px;margin:16px 0 6px;color:var(--mute);letter-spacing:.04em}
+.tag{display:inline-block;padding:0 7px;margin:0 4px 4px 0;border:1px solid var(--line);border-radius:9px;font-size:12px}
+.cond{font-size:12px;color:var(--mute)} .cond b{font-weight:600;color:var(--event)}
+table{border-collapse:collapse;width:100%}td,th{padding:3px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:13px}
+.link{color:var(--area);cursor:pointer;text-decoration:underline}
+.mapwrap{position:relative;border:1px solid var(--line);overflow:auto;max-height:46vh;background:#0002}
+.mapwrap>div{position:relative}
+.tip{position:fixed;z-index:20;pointer-events:none;max-width:260px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:10px 10px 10px 2px;padding:6px 10px;font-size:12.5px;box-shadow:0 3px 10px #0004}
+.tip b{display:block;font-size:12px;color:var(--event)}
+.stickybox{position:sticky;top:-14px;z-index:5;background:var(--panel);padding:8px 0 6px;margin:-8px 0 4px;border-bottom:1px solid var(--line)}
+.log{display:flex;flex-direction:column;gap:9px}
+.row{display:flex;gap:9px;align-items:flex-start}
+.face{flex:0 0 38px;height:38px;border-radius:7px;object-fit:cover;background:var(--soft);display:grid;place-items:center;font-weight:700;color:#fff;font-size:15px;overflow:hidden}
+.who{font-size:12px;font-weight:700} .who small{font-weight:400;color:var(--mute);font-family:var(--mono);font-size:10.5px;margin-left:4px}
+.bub{background:var(--soft);border-radius:2px 11px 11px 11px;padding:6px 11px;display:inline-block;max-width:100%;white-space:pre-wrap}
+.bub.me{background:color-mix(in srgb,var(--event) 17%,var(--panel))}
+.bub.chat{border-radius:11px;font-size:12.5px;padding:3px 10px;margin:0 4px 4px 0;border:1px dashed var(--line)}
+.nar{font-style:italic;color:var(--mute);padding-left:47px}
+.sys{color:var(--accent);font-size:12.5px;padding-left:47px}
+.who-card{display:flex;gap:10px;align-items:center;margin-bottom:6px}
+.who-card img{image-rendering:pixelated;background:var(--soft);border-radius:6px;padding:3px}
+.who-card .big{width:56px;height:56px;border-radius:9px;object-fit:cover;image-rendering:auto;padding:0}
+.issue{padding:4px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.mark{cursor:pointer}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--mute);margin:2px 0 6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:-1px}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/htm@3.1.1/dist/htm.umd.js"></script>
+</head>
+<body>
+<div id="root" style="display:contents"></div>
+<script>
+const {useState,useEffect,useMemo,useRef,useCallback} = React;
+const html = htm.bind(React.createElement);
+const KIND={explore:'var(--explore)',area:'var(--area)',event:'var(--event)',battle:'var(--battle)',end:'var(--end)'};
+const KIND_NAME={explore:'탐험',area:'구역',event:'이벤트',battle:'전투',end:'끝'};
+const EDGE={exit:'var(--area)',gate:'var(--area)',talk:'var(--event)',sortie:'var(--battle)',back:'var(--mute)',next:'var(--ink)',case:'var(--explore)',open:'var(--explore)',start:'var(--explore)'};
+const W=196,H=60;
+const FACE_COLORS=['#6a5aa6','#2f7d4f','#8a4b2a','#2b6f93','#a8352c','#7a7f86','#b9741a'];
+const faceColor=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return FACE_COLORS[h%FACE_COLORS.length]};
+const api=async p=>{const r=await fetch(p);if(!r.ok)throw new Error((await r.json().catch(()=>({}))).error||r.status);return r};
+const clip=(s,n)=>s&&s.length>n?s.slice(0,n-1)+'…':s;
+
+function Face({name,portrait,size=38}){
+  const [bad,setBad]=useState(false);
+  useEffect(()=>setBad(false),[portrait]);
+  if(portrait&&!bad) return html`<img class="face" style=${{width:size,height:size,flexBasis:size}} src=${'/api/portrait?name='+encodeURIComponent(portrait)} onError=${()=>setBad(true)} alt=${name}/>`;
+  return html`<div class="face" style=${{width:size,height:size,flexBasis:size,background:faceColor(name||'?')}}>${(name||'?')[0]}</div>`;
+}
+const Cond=({c,texts})=>c&&c.length?html`<div class="cond">🔒 ${c.map((x,i)=>html`<span key=${i}>${i?' 그리고 ':''}<b>${(texts&&texts[x])||x}</b></span>`)}<span class="mono"> ${c.join(' & ')}</span></div>`:null;
+
+/* ---------- graph ---------- */
+function Graph({g,sel,onSel,stepOf,follow,zoom}){
+  const pos=useMemo(()=>Object.fromEntries(g.vertices.map(v=>[v.id,v])),[g]);
+  const edges=useMemo(()=>{
+    const out=[],seen={},count={};
+    g.edges.forEach(e=>{
+      const rev=seen[e.to+'>'+e.from+'>exit'];
+      if(e.kind==='exit'&&rev&&!(e.cond&&e.cond.length)&&!(rev.cond&&rev.cond.length)){rev.bi=true;rev.tree=rev.tree||e.tree;return}
+      const c={...e};if(e.kind==='exit')seen[e.from+'>'+e.to+'>exit']=c;
+      const k=e.from+'>'+e.to;c._n=count[k]||0;count[k]=c._n+1;out.push(c)});
+    return out},[g]);
+  const lanes=useMemo(()=>{
+    const m={};g.vertices.forEach(v=>{if(!m[v.lane])m[v.lane]=v.x});return m},[g]);
+  return html`<svg width=${g.w*zoom} height=${g.h*zoom} viewBox=${`0 0 ${g.w} ${g.h}`} style=${{display:'block'}}>
+    <defs>${Object.entries(EDGE).map(([k,c])=>html`<marker key=${k} id=${'ar-'+k} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill=${c}/></marker>`)}</defs>
+    ${(g.groups||[]).map(b=>html`<g key=${b.id}><rect class="gbox" x=${b.x} y=${b.y} width=${b.w} height=${b.h} rx="14"/><text class="glabel" x=${b.x+14} y=${b.y+20}>${b.title}</text></g>`)}
+    ${edges.map((e,i)=>{
+      const a=pos[e.from],b=pos[e.to];if(!a||!b)return null;
+      const back=e.kind==='back';
+      const hot=sel&&(e.from===sel||e.to===sel);
+      if(back&&!hot&&e.label!=='탐험 종료')return null;
+      if(e.kind==='exit'&&!e.tree&&!hot)return null;
+      const off=(e._n||0)*10;
+      let d,lx,ly;
+      if(b.kind==='explore'&&b.y>a.y+H){const x1=a.x+W/2+off,y1=a.y+H,x2=b.x+W/2,y2=b.y,ym=y2-(b.y-a.y>H*3?30:12);d=`M${x1},${y1} L${x1},${ym} L${x2},${ym} L${x2},${y2}`;lx=(x1+x2)/2;ly=ym-3}
+      else if(b.x>a.x+W/2){const x1=a.x+W,y1=a.y+H/2+off,x2=b.x,y2=b.y+H/2,mx=(x1+x2)/2;d=`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`;lx=mx;ly=(y1+y2)/2-2}
+      else if(b.x<a.x-W/2){const x1=a.x,y1=a.y+H/2+off,x2=b.x+W,y2=b.y+H/2,mx=(x1+x2)/2;d=`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`;lx=mx;ly=(y1+y2)/2-2}
+      else{const up=b.y<a.y;const x=a.x+W/2+off,y1=up?a.y:a.y+H,y2=up?b.y+H:b.y,my=(y1+y2)/2;d=`M${x},${y1} C${x},${my} ${b.x+W/2},${my} ${b.x+W/2},${y2}`;lx=(x+b.x+W/2)/2;ly=my}
+      return html`<g key=${i} opacity=${sel&&!hot?.25:1}>
+        <path d=${d} fill="none" stroke=${EDGE[e.kind]||'#888'} stroke-width=${hot?2.6:1.5} stroke-dasharray=${back?'5 4':(e.cond&&e.cond.length)?'3 3':''} marker-end=${'url(#ar-'+e.kind+')'} marker-start=${e.bi?'url(#ar-'+e.kind+')':''}>
+          <title>${[e.label,(e.cond||[]).map(c=>g.texts[c]||c).join(' 그리고 ')].filter(Boolean).join(' · ')}</title></path>
+        ${e.label&&html`<text class="elabel" x=${lx} y=${ly} text-anchor="middle">${clip(e.label,12)}${e.cond&&e.cond.length?' 🔒':''}</text>`}
+      </g>`})}
+    ${['area','event','flow'].filter(l=>lanes[l]!==undefined).map(l=>html`<text key=${l} class="lane" x=${lanes[l]} y="22">${{area:'구역',event:'이벤트',flow:'이어지는 이야기'}[l]}</text>`)}
+    ${g.vertices.map(v=>{const c=KIND[v.kind];const st=stepOf[v.id];
+      return html`<g key=${v.id} class=${'card'+(sel===v.id?' sel':'')+(follow&&!st&&v.kind!=='area'&&v.kind!=='explore'?' dim':'')} transform=${`translate(${v.x},${v.y})`} onClick=${()=>onSel(v.id)}>
+        <rect class="bg" width=${W} height=${H} rx="9" stroke=${c}/><rect width="6" height=${H} rx="3" fill=${c}/>
+        <text class="t" x="16" y="24">${clip(v.title,15)}</text>
+        <text class="s" x="16" y="42">${clip(v.sub||'',27)}</text>
+        ${st&&html`<g class="pathno" transform=${`translate(${W-4},4)`}><circle r="11"/><text y="4">${st.n}</text></g>`}
+      </g>`})}
+  </svg>`;
+}
+
+/* ---------- detail ---------- */
+function useTip(){
+  const [tip,setTip]=useState(null);
+  return [tip,setTip,html`${tip&&html`<div class="tip" style=${{left:Math.min(tip.x+14,window.innerWidth-280),top:tip.y+14}}>${tip.head&&html`<b>${tip.head}</b>`}${tip.text}</div>`}`];
+}
+
+function MapView({id,d,focus,setFocus}){
+  const [fit,setFit]=useState(true),box=useRef(),[bw,setBw]=useState(600);
+  const [tip,setTip,tipEl]=useTip();
+  useEffect(()=>{if(box.current)setBw(box.current.clientWidth-2)},[id]);
+  const k=fit?Math.min(1,bw/d.frame.W):1;
+  const color=m=>!m.walk&&m.kind!=='sign'&&m.kind!=='exit'?'#d33':m.kind==='exit'?'#2f8fd0':m.kind==='person'?((m.events&&m.events.length)||m.sortie?'#e0902a':m.shop?'#c0a020':'#8a7bb0'):m.kind==='sign'?'#3f9d5b':'#777';
+  const say=m=>m.talk&&m.talk.length?m.talk[0].text:(m.chatter&&m.chatter[0])||'';
+  return html`<div>
+    <div class="legend"><span><i style=${{background:'#e0902a'}}/>이벤트·출진</span><span><i style=${{background:'#8a7bb0'}}/>사람</span><span><i style=${{background:'#2f8fd0'}}/>출구</span><span><i style=${{background:'#3f9d5b'}}/>표지</span><span><i style=${{background:'#d33'}}/>걸을 수 없는 칸</span>
+      <button onClick=${()=>setFit(!fit)}>${fit?'원본 크기':'폭에 맞춤'}</button></div>
+    <div class="mapwrap" ref=${box}><div style=${{width:d.frame.W*k,height:d.frame.H*k}}>
+      <img src=${'/api/map.png?id='+encodeURIComponent(id)} width=${d.frame.W*k} height=${d.frame.H*k} style=${{display:'block'}}/>
+      <svg width=${d.frame.W*k} height=${d.frame.H*k} viewBox=${`0 0 ${d.frame.W} ${d.frame.H}`} style=${{position:'absolute',left:0,top:0}}>
+        ${d.marks.map((m,i)=>html`<g class="mark" key=${i} onClick=${()=>setFocus(i)}
+            onMouseMove=${e=>setTip({x:e.clientX,y:e.clientY,head:(m.display||m.name),text:say(m)||(m.kind==='exit'?'출구 → '+(m.to||m.node):'(말이 없음)')})} onMouseLeave=${()=>setTip(null)}>
+          <circle cx=${m.px.x} cy=${m.px.y-8} r=${focus===i?14:10} fill=${color(m)} stroke="#fff" stroke-width="2.5" opacity=".93"/>
+          <text x=${m.px.x} y=${m.px.y-4} text-anchor="middle" font-size="11" fill="#fff" font-weight="700">${m.kind==='exit'?'⇥':m.kind==='sign'?'ⓘ':m.kind==='arrival'?'★':((m.display||m.name)[0]||'?')}</text>
+          ${(focus===i||m.kind==='person'||m.kind==='exit')&&html`<text x=${m.px.x} y=${m.px.y+14} text-anchor="middle" font-size="12" font-weight="700" fill="#fff" stroke="#000" stroke-width="3" paint-order="stroke">${m.display||m.name}</text>`}
+        </g>`)}
+      </svg></div></div>${tipEl}</div>`;
+}
+
+function MarkInfo({m,go,texts,dir}){
+  if(!m)return html`<p class="sub">지도의 표시나 아래 목록을 누르면 여기에 대사와 이야기가 나옵니다.</p>`;
+  const who=m.kind==='person';
+  return html`<div>
+    <div class="who-card">
+      ${who&&m.sprite&&html`<img src=${'/api/sprite?id='+encodeURIComponent(m.sprite)} height="56" alt=""/>`}
+      ${who&&(m.portrait)&&html`<${Face} name=${m.display} portrait=${m.portrait} size=${56}/>`}
+      <div><div style=${{fontWeight:700,fontSize:16}}>${m.display||m.name} <span class="badge">${({exit:'출구',person:'사람',sign:'표지',arrival:'도착 칸'})[m.kind]}</span></div>
+        <div class="sub">칸 [${m.at[0]}, ${m.at[1]}]${m.face?' · '+m.face+'쪽을 봄':''} ${m.walk?'':html`<span class="badge err">걸을 수 없는 칸</span>`}
+          ${who&&html`<span class="mono"> ${[m.char&&'인물 '+m.char,m.sprite&&'스프라이트 '+m.sprite].filter(Boolean).join(' · ')}</span>`}</div></div></div>
+    <${Cond} c=${m.if} texts=${texts}/>
+    ${m.to&&html`<div>이동 → <span class="link" onClick=${()=>go('to',m)}>${m.to}</span></div>`}
+    ${m.node&&html`<div>이벤트 → <span class="link" onClick=${()=>go('node',m.node)}>${m.node}</span></div>`}
+    ${(m.talk&&m.talk.length)?html`<h3>말을 걸면</h3><div class="log">${m.talk.map((l,i)=>l.name?html`<div class="row" key=${i}><${Face} name=${l.name} portrait=${l.portrait}/><div style=${{minWidth:0}}><div class="who">${l.name} ${l.id!==l.name&&html`<small>${l.id}</small>`}</div><div class="bub">${l.text}</div></div></div>`:html`<div class="nar" key=${i}>${l.text}</div>`)}</div>`:null}
+    ${(m.events||[]).map((e,i)=>html`<div key=${i} style=${{marginTop:8}}><b>이야기</b> → <span class="link" onClick=${()=>go('node',e.node)}>${(dir[e.node]&&dir[e.node].title)||e.node}</span>${e.side?' (곁가지)':''}<${Cond} c=${e.if} texts=${texts}/></div>`)}
+    ${m.sortie&&html`<div style=${{marginTop:8}}><b>출진 질문</b> “${m.sortie}”</div>`}
+    ${m.shop&&html`<div><b>상점</b> ${m.shop}</div>`}
+    ${(m.chatter&&m.chatter.length)?html`<h3>혼잣말 (가끔 머리 위에 말풍선)</h3><div>${m.chatter.map((c,i)=>html`<span class="bub chat" key=${i}>💬 ${c}</span>`)}</div>`:null}
+    ${m.extra&&Object.entries(m.extra).map(([k,v])=>html`<div class="sub" key=${k}>${k}: ${v}</div>`)}
+    ${m.shut&&m.shut.length?html`<h3>길이 닫혀 있을 때</h3><div class="log">${m.shut.map((l,i)=>html`<div class="bub" key=${i}>${l.text}</div>`)}</div>`:null}
+  </div>`;
+}
+
+function AreaPanel({id,d,go,texts,dir,flow}){
+  const [focus,setFocus]=useState(null);
+  useEffect(()=>setFocus(null),[id]);
+  const kinds={arrival:'도착',exit:'출구',person:'사람',sign:'표지'};
+  return html`<div>
+    <div class="stickybox"><h2>${d.name} ${d.start&&html`<span class="badge ok">시작 구역</span>`}</h2>
+      <div class="sub">${d.explore}/${d.area}${d.time?' · '+d.time:''} · 지도 ${d.map}</div></div>
+    ${d.marks.length?html`<${MapView} id=${id} d=${d} focus=${focus} setFocus=${setFocus}/>`:html`<p class="badge err">지도를 읽지 못했습니다</p>`}
+    <div style=${{marginTop:10}}><${MarkInfo} m=${focus!==null?d.marks[focus]:null} texts=${texts} dir=${dir} go=${(t,v)=>go(t==='to'?'area:'+d.explore+'/'+v.to:'event:'+v)}/></div>
+    <h3>이곳의 사람과 출구 (${d.marks.length})</h3>
+    <table><tbody>${d.marks.map((m,i)=>html`<tr key=${i} style=${{cursor:'pointer',background:focus===i?'color-mix(in srgb,var(--accent) 12%,transparent)':''}} onClick=${()=>setFocus(i)}>
+      <td>${kinds[m.kind]}</td><td>${m.display||m.name} ${m.sprite&&html`<img src=${'/api/sprite?id='+encodeURIComponent(m.sprite)} height="22" style=${{imageRendering:'pixelated',verticalAlign:'middle'}} alt=""/>`}</td>
+      <td class="mono">[${m.at[0]},${m.at[1]}]</td><td>${m.walk?'':html`<span class="badge err">불가</span>`}</td></tr>`)}</tbody></table>
+    ${flow}</div>`;
+}
+
+function EventPanel({d,flow,texts}){
+  return html`<div><div class="stickybox"><h2>${d.title||('이벤트 '+d.start)}</h2>
+    <div class="sub">${d.start} · ${d.nodes.length}개 노드${d.end?' · 끝: '+({back:'탐험으로 돌아감',battle:'전투',branch:'갈림길',choice:'선택지',explore:'탐험',end:'끝'}[d.end.kind]||d.end.kind)+(d.end.leave?' (탐험 종료)':''):''}</div></div>
+    ${d.sets&&d.sets.length?html`<h3>이 이벤트가 열어 주는 것</h3>${d.sets.map(s=>html`<span class="tag" key=${s}>${s}</span>`)}`:null}
+    <h3>내용</h3>
+    <div class="log">${d.nodes.map(n=>{
+      if(n.kind==='say'){const sp=(n.speakers&&n.speakers[0])||{name:n.speaker};const self=/^\(혼잣말\)/.test(n.text);
+        return html`<div class="row" key=${n.id}><${Face} name=${sp.name} portrait=${sp.portrait}/><div style=${{minWidth:0}}>
+          <div class="who">${(n.speakers||[]).map(s=>s.name).join('·')||n.speaker} <small>${n.speaker}</small></div><div class=${'bub'+(self?' me':'')}>${n.text}</div></div></div>`}
+      if(n.kind==='narrate')return html`<div class="nar" key=${n.id}>${n.text}</div>`;
+      if(n.kind==='scene')return html`<div class="sys" key=${n.id}>◼ 장면 · ${n.place}</div>`;
+      if(n.kind==='set')return html`<div class="sys" key=${n.id}>⚑ ${Object.entries(n.flags||{}).map(([k,v])=>k+(v===1?'':'='+v)).join(', ')} 를 세움</div>`;
+      if(n.kind==='join')return html`<div class="sys" key=${n.id}>➕ ${n.character} 합류</div>`;
+      return html`<div class="sys" key=${n.id}>◆ ${n.kind} ${n.character||n.item||n.event||n.text||''}</div>`;})}
+    ${d.end&&html`<div class="sys">⏹ ${d.end.kind==='back'?(d.end.leave?'탐험을 끝냄':'탐험으로 돌아감'+(d.end.area?' → '+d.end.area:'')):d.end.kind+' '+(d.end.stage||'')}</div>`}
+    </div>${flow}</div>`;
+}
+
+function Flow({g,id,go,texts}){
+  const ins=g.edges.filter(e=>e.to===id),outs=g.edges.filter(e=>e.from===id);
+  const t=x=>(g.vertices.find(v=>v.id===x)||{}).title||x;
+  const row=(e,dir)=>html`<tr key=${e.from+e.to+e.label+e.kind}><td class="sub">${e.label||e.kind}</td>
+    <td><span class="link" onClick=${()=>go(dir==='in'?e.from:e.to)}>${t(dir==='in'?e.from:e.to)}</span></td><td><${Cond} c=${e.cond} texts=${texts}/></td></tr>`;
+  return html`<div><h3>들어오는 길 (${ins.length})</h3><table><tbody>${ins.map(e=>row(e,'in'))}</tbody></table>
+    <h3>나가는 길 (${outs.length})</h3><table><tbody>${outs.map(e=>row(e,'out'))}</tbody></table></div>`;
+}
+
+function Detail({g,id,go}){
+  const [d,setD]=useState(null),[err,setErr]=useState('');
+  useEffect(()=>{setD(null);setErr('');api('/api/vertex?id='+encodeURIComponent(id)).then(r=>r.json()).then(setD).catch(e=>setErr(String(e)))},[id]);
+  if(err)return html`<p class="badge err">${err}</p>`;
+  if(!d)return html`<p class="sub">불러오는 중…</p>`;
+  const texts=g.texts||{},v=g.vertices.find(x=>x.id===id)||{};
+  const dir=Object.fromEntries(g.vertices.map(x=>[x.id.replace(/^[a-z]+:/,''),x]));
+  const flow=html`<${Flow} g=${g} id=${id} go=${go} texts=${texts}/>`;
+  if(d.kind==='area')return html`<${AreaPanel} id=${id} d=${d} go=${go} texts=${texts} dir=${dir} flow=${flow}/>`;
+  if(d.kind==='event')return html`<${EventPanel} d=${{...d,title:v.title}} flow=${flow} texts=${texts}/>`;
+  if(d.kind==='battle')return html`<div><div class="stickybox"><h2>전투 · ${d.stage.name}</h2><div class="sub">${d.stage.id} · 노드 ${d.node} · ${d.stage.width}×${d.stage.height} · 아군 ${d.allies} · 적 ${d.enemies}</div></div>
+    <h3>승리 조건</h3>${(d.stage.victory||[]).map((x,i)=>html`<div key=${i}>• ${x.Text||JSON.stringify(x.If)}</div>`)}
+    <h3>패배 조건</h3>${(d.stage.defeat||[]).map((x,i)=>html`<div key=${i}>• ${x.Text||JSON.stringify(x.If)}</div>`)}
+    <h3>부목표</h3>${(d.stage.sub||[]).map((x,i)=>html`<div key=${i}>• ${x.Text} ${x.Flag&&html`<span class="mono">(${x.Flag})</span>`}</div>`)}
+    ${flow}</div>`;
+  return html`<div><div class="stickybox"><h2>${KIND_NAME[d.kind]} · ${v.title||''}</h2></div><pre class="mono">${JSON.stringify(d,null,1)}</pre>${flow}</div>`;
+}
+
+function Issues({g,go}){
+  if(!g.issues.length)return html`<span class="badge ok">검증 이상 없음</span>`;
+  const title=id=>(g.vertices.find(v=>v.id===id)||{}).title;
+  return html`<div>${g.issues.map((i,k)=>html`<div class="issue" key=${k} onClick=${()=>i.where&&go(i.where)}><span class=${'badge '+(i.level==='error'?'err':'warn')}>${i.level==='error'?'오류':'경고'}</span> ${i.msg} ${i.where&&html`<span class="sub">${title(i.where)||i.where}</span>`}</div>`)}</div>`;
+}
+
+/* ---------- app ---------- */
+function Toc({outline,cur,g,sel,go,jump,fromBattle,more}){
+  const [open,setOpen]=useState({});
+  useEffect(()=>{if(cur)setOpen(o=>({...o,[cur]:true}))},[cur]);
+  return html`<nav class="toc">
+    <div class="sub" style=${{padding:'0 6px 6px'}}>장 · 전투로 점프 · 선택한 장 아래는 따라가기(플레이 순서)</div>
+    ${outline.chapters.map(c=>html`<div key=${c.id}>
+      <button class=${'ch'+(cur===c.id?' cur':'')} onClick=${()=>jump(c)}>${clip(c.title,22)}</button>
+      ${cur===c.id&&c.battles.map(b=>html`<button class="bt" key=${b.node} title=${b.node} onClick=${()=>go('battle:'+b.node)}>⚔ ${b.name||b.stage}</button>`)}
+      ${cur===c.id&&g&&html`<div style=${{margin:'4px 0 8px'}}>
+        ${(g.steps||[]).map(s=>html`<div class=${'stp'+(sel===s.vertex?' cur':'')+(s.side?' side':'')+(s.kind==='battle'?' battle':'')} key=${s.n} onClick=${()=>go(s.vertex)}>
+          <span class="n">${s.n}</span><div>${clip(s.title,18)}<small>${s.kind==='battle'?'전투':[s.where,s.via].filter(Boolean).join(' · ')}${s.side?' (선택)':''}</small></div></div>`)}
+        <div style=${{display:'flex',gap:4,flexWrap:'wrap',margin:'6px 0 0 14px'}}>
+          <button onClick=${more} title="다음 전투까지 이어서 그립니다">이후 펼치기 ▸</button></div></div>`}
+    </div>`)}
+  </nav>`;
+}
+
+function App(){
+  const [outline,setOutline]=useState(null),[g,setG]=useState(null),[sel,setSel]=useState(null),[err,setErr]=useState(''),[tab,setTab]=useState('detail');
+  const [ctx,setCtx]=useState({start:null,battles:1,assume:'',chapter:null}),[follow,setFollow]=useState(true);
+  const [zoom,setZoom]=useState(.8),gbox=useRef();
+  const fitTo=useCallback((min)=>{if(g&&gbox.current)setZoom(Math.max(min,Math.min(1,+((gbox.current.clientWidth-8)/g.w).toFixed(2))))},[g]);
+  const fit=useCallback(()=>fitTo(.3),[fitTo]);
+  useEffect(()=>fitTo(.6),[g]);
+  const load=useCallback((c)=>{
+    const q=new URLSearchParams({start:c.start,battles:c.battles});if(c.assume)q.set('assume',c.assume);
+    return api('/api/graph?'+q).then(r=>r.json()).then(x=>{setG(x);setErr('');setSel(s=>x.vertices.some(v=>v.id===s)?s:(x.vertices[1]||x.vertices[0]||{}).id)}).catch(e=>setErr(String(e)))},[]);
+  useEffect(()=>{api('/api/outline').then(r=>r.json()).then(o=>{setOutline(o);const c=o.chapters[0];const n={start:o.start,battles:1,assume:'',chapter:c&&c.id};setCtx(n);load(n)}).catch(e=>setErr(String(e)))},[]);
+  const jump=c=>{const n={start:c.start,battles:1,assume:c.id==='01'?'':'auto',chapter:c.id};setCtx(n);setTab('detail');load(n)};
+  const more=()=>{const n={...ctx,battles:ctx.battles+1};setCtx(n);load(n)};
+  const go=id=>{
+    if(id.startsWith('battle:')&&!(g&&g.vertices.some(v=>v.id===id))){return}
+    setSel(id);setTab('detail')};
+  const reload=()=>fetch('/api/reload',{method:'POST'}).then(()=>load(ctx));
+  const stepOf=useMemo(()=>g?Object.fromEntries((g.steps||[]).map(s=>[s.vertex,s])):{},[g]);
+  const nErr=g?g.issues.filter(i=>i.level==='error').length:0,nWarn=g?g.issues.length-nErr:0;
+  return html`<${React.Fragment}>
+    <header><h1>시나리오 어드민</h1>
+      ${g&&html`<span class="badge">${g.vertices.length}곳 · ${g.edges.length}길 · ${(g.steps||[]).length}단계${g.assumed&&g.assumed.length?' · 앞 장 플래그 '+g.assumed.length+'개 가정':''}</span>
+      <button onClick=${()=>setTab(tab==='issues'?'detail':'issues')}><span class=${'badge '+(nErr?'err':nWarn?'warn':'ok')}>검증 오류 ${nErr} · 경고 ${nWarn}</span></button>
+      <button class=${follow?'on':''} onClick=${()=>setFollow(!follow)} title="플레이 순서에 들어가지 않는 카드를 흐리게">따라가기 강조</button>`}
+      ${ctx.start&&html`<span class="sub">시작 노드 <span class="mono">${ctx.start}</span> · 전투 ${ctx.battles}번째까지</span>`}
+      <button onClick=${reload} title="데이터 파일을 다시 읽습니다">다시 읽기</button>
+      ${err&&html`<span class="badge err">${err}</span>`}
+    </header>
+    <main>
+      ${outline&&html`<${Toc} outline=${outline} cur=${ctx.chapter} g=${g} sel=${sel} go=${go} jump=${jump} more=${more}/>`}
+      <div class="graph" ref=${gbox}>${g&&html`<div class="zoom"><button onClick=${()=>setZoom(z=>Math.max(.3,+(z-.1).toFixed(2)))}>−</button><button onClick=${fit}>맞춤</button><button onClick=${()=>setZoom(z=>Math.min(1.6,+(z+.1).toFixed(2)))}>＋</button><span class="sub"> ${Math.round(zoom*100)}%</span></div>
+        <${Graph} g=${g} sel=${sel} onSel=${go} stepOf=${stepOf} follow=${follow} zoom=${zoom}/>`}</div>
+      <div class="side">${g&&(tab==='issues'?html`<h2>검증 결과</h2><${Issues} g=${g} go=${go}/><h3>플래그 (${g.flags.length}) — 누가 세우고 누가 읽는가</h3>
+        <table><thead><tr><th>이름</th><th>세우는 곳</th><th>읽는 곳</th></tr></thead><tbody>${g.flags.map(f=>html`<tr key=${f.name}><td class="mono">${f.name}</td><td>${(f.setBy||[]).map(x=>html`<div class="link" key=${x} onClick=${()=>go(x)}>${(g.vertices.find(v=>v.id===x)||{}).title||x}</div>`)}</td><td>${(f.usedBy||[]).map(x=>html`<div class="link" key=${x} onClick=${()=>go(x)}>${(g.vertices.find(v=>v.id===x)||{}).title||x}</div>`)}</td></tr>`)}</tbody></table>`
+        :sel&&html`<${Detail} g=${g} id=${sel} go=${go}/>`)}</div>
+    </main></${React.Fragment}>`;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(html`<${App}/>`);
+</script>
+</body>
+</html>

@@ -397,7 +397,9 @@
        "아낙",
        "관도 쪽으로 군량 수레가 날마다 나가오. 우리 집 양반도 수레꾼으로 뽑혀 갔지 뭐요."
       ]
-     ]
+     ],
+     "Notice": "news:guandu-standoff",
+     "Chatter": "관도로 수레가 또 나가네|우리 양반은 언제 오려나"
     },
     "상인#1": {
      "At": [
@@ -553,6 +555,23 @@
        "성안에서는 소란을 피우지 마시오."
       ]
      ]
+    },
+    "대장간 견습공": {
+     "At": [
+      40,
+      48
+     ],
+     "Face": "SE",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "새 쇠가 들어왔소!|하북 쇠로 벼린 칼이오",
+     "Talk": [
+      [
+       "",
+       "병주에서 좋은 쇠가 들어왔소. 칼이며 창이며 새로 벼린 것이 대장간에 걸려 있으니 구경하고 가시오."
+      ]
+     ],
+     "Notice": "shop:weapons_iron"
     }
    }
   },
@@ -800,6 +819,16 @@
      "Sprite": "blacksmith_noncombat",
      "Faction": "merchant",
      "Shop": "weapons_iron"
+    },
+    "점원#1": {
+     "At": [
+      9,
+      7
+     ],
+     "Face": "NW",
+     "Sprite": "commoner_man",
+     "Faction": "merchant",
+     "Chatter": "철검 팝니다!|다른 곳에 없는 철검이 여기 있습니다!|철창 팝니다!|다른 곳에 없는 철창이 여기 있습니다!|대궁 팝니다!|다른 곳에 없는 대궁이 여기 있습니다!"
     }
    }
   }

@@ -152,6 +152,49 @@
      "Face": "NE",
      "Sprite": "light_infantry",
      "Faction": "gongsun"
+    },
+    "장비": {
+     "At": [
+      11,
+      7
+     ],
+     "Face": "SE",
+     "Talk": [
+      [
+       "zhangfei",
+       "서주까지 간다니 몸이 근질근질허유. 형, 이번엔 나부터 내보내 주슈."
+      ]
+     ]
+    },
+    "조운": {
+     "At": [
+      18,
+      13
+     ],
+     "Face": "NW",
+     "Talk": [
+      [
+       "zhaoyun",
+       "공손 장군께서 저를 공과 함께 보내셨습니다. 서주까지 모시겠습니다."
+      ]
+     ]
+    },
+    "노인": {
+     "At": [
+      8,
+      18
+     ],
+     "Face": "NE",
+     "Sprite": "commoner_elder",
+     "Faction": "merchant",
+     "Chatter": "동탁이 죽었대|양아들이 찔렀다지",
+     "Talk": [
+      [
+       "",
+       "장안 소식 들었소? 동탁이 죽었다오. 왕 사도가 꾀를 내서 양아들 여포가 제 손으로 찔렀다지."
+      ]
+     ],
+     "Notice": "news:dongzhuo-dead"
     }
    }
   },
@@ -283,6 +326,13 @@
      ]
     }
    }
+  }
+ },
+ "Whereabouts": {
+  "jianyong": {
+   "Where": "elsewhere",
+   "Place": "북평성 밖 군량 수레",
+   "Reason": "fullstory 11장 북평: 공손찬 접견에는 유비·관우·장비·조운만 나가고 \"장면에는 간옹·번궁을 세우지 않는다\". 간옹은 서주로 떠날 군량을 성 밖에서 챙긴다"
   }
  }
 }

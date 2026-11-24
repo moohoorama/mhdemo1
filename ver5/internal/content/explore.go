@@ -13,6 +13,17 @@ type Explore struct {
 	Hero  string // the walker: a character id
 	Start Spot
 	Areas map[string]*ExploreArea
+	// Whereabouts says, for each of the scenario's core allies who is in the party as the walk begins but stands in
+	// none of its areas, where they are instead. It is read by the scenario checks only.
+	Whereabouts map[string]Whereabout `json:",omitempty"`
+}
+
+// Whereabout is why a core ally is not in a walk: Where is "elsewhere" (at Place, not on these maps) or "absent"
+// (nowhere the story shows); Reason is the story's own reason, in a line.
+type Whereabout struct {
+	Where  string
+	Place  string `json:",omitempty"`
+	Reason string
 }
 
 // Spot is where someone stands: an area's small tile, facing NE, NW, SE or SW.
@@ -30,10 +41,20 @@ type ExploreArea struct {
 	Grass     *GrassTint    `json:",omitempty"` // the grass here when the map stands for another land; nil keeps the map's
 	Snow      float64       `json:",omitempty"` // 0..1: snow lies here, so its trees and bushes are the snow pictures (map/props_snow.json) and the grass white unless Grass says otherwise
 	At        [2]int        // where the hero stands on arriving where no exit leads back
-	Exits     []ExploreExit
-	People    map[string]*ExplorePerson `json:",omitempty"`
-	Effects   []ExploreEffect           `json:",omitempty"`
-	Signs     []ExploreSign             `json:",omitempty"`
+	// Density says how many people the settlement this area shows holds for the ground the hero can walk: sparse, normal
+	// (the default) or dense. PopulationNote says why when the people do not fit it (a desert, a mountain pass, a
+	// camp for a coalition). Lord is the character who rules the place and lives here; Guest says the hero is put up
+	// here, Court that the emperor holds court here: each asks for a residence of its kind (ExploreExit.Residence).
+	// The scenario checks read these; the game does not.
+	Density        string `json:",omitempty"`
+	PopulationNote string `json:",omitempty"`
+	Lord           string `json:",omitempty"`
+	Guest          bool   `json:",omitempty"`
+	Court          bool   `json:",omitempty"`
+	Exits          []ExploreExit
+	People         map[string]*ExplorePerson `json:",omitempty"`
+	Effects        []ExploreEffect           `json:",omitempty"`
+	Signs          []ExploreSign             `json:",omitempty"`
 }
 
 // ExploreExit leads to area To while every If holds: the hero walks to small tile At, then stands at the exit of To
@@ -49,6 +70,11 @@ type ExploreExit struct {
 	Node   string   `json:",omitempty"`
 	If     []string `json:",omitempty"`
 	Shut   []Line   `json:",omitempty"`
+	// OneWay marks an exit meant to have no way back from the area it leads to (a road traveled once); the scenario
+	// checks expect every other exit to be returnable.
+	OneWay bool `json:",omitempty"`
+	// Residence says the exit enters a home: small (a guest's), large (the lord's, a great house's) or palace.
+	Residence string `json:",omitempty"`
 }
 
 // Line is one line of a talk: [speaker, text]; an empty speaker is narration. The speaker is a character id or
@@ -71,6 +97,9 @@ type ExplorePerson struct {
 	Event            []ExploreEvent `json:",omitempty"` // the first whose If holds starts on talking
 	Sortie           *ExploreSortie `json:",omitempty"` // the confidant
 	Shop             string         `json:",omitempty"` // a shop id of Data.Shops
+	// Notice says what the person tells passers-by in their bubbles (Chatter): "shop:<shop id>" that the shop has new
+	// stock, "news:<id>" a piece of the scenario's News.
+	Notice string `json:",omitempty"`
 }
 
 // PersonMove is how a person walks about: to and fro along Patrol (small tiles from At on), or now and then to an
