@@ -11779,6 +11779,726 @@
      13
     ]
    }
+  },
+  "ccliff_00_0": {
+   "file": "tiles/ccliff_00_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_00_1": {
+   "file": "tiles/ccliff_00_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_00_2": {
+   "file": "tiles/ccliff_00_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_01_0": {
+   "file": "tiles/ccliff_01_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_01_1": {
+   "file": "tiles/ccliff_01_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_01_2": {
+   "file": "tiles/ccliff_01_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_02_0": {
+   "file": "tiles/ccliff_02_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_02_1": {
+   "file": "tiles/ccliff_02_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_02_2": {
+   "file": "tiles/ccliff_02_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_03_0": {
+   "file": "tiles/ccliff_03_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_03_1": {
+   "file": "tiles/ccliff_03_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_03_2": {
+   "file": "tiles/ccliff_03_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_04_0": {
+   "file": "tiles/ccliff_04_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_04_1": {
+   "file": "tiles/ccliff_04_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_04_2": {
+   "file": "tiles/ccliff_04_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_05_0": {
+   "file": "tiles/ccliff_05_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_05_1": {
+   "file": "tiles/ccliff_05_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_05_2": {
+   "file": "tiles/ccliff_05_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_06_0": {
+   "file": "tiles/ccliff_06_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_06_1": {
+   "file": "tiles/ccliff_06_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_06_2": {
+   "file": "tiles/ccliff_06_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_07_0": {
+   "file": "tiles/ccliff_07_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_07_1": {
+   "file": "tiles/ccliff_07_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_07_2": {
+   "file": "tiles/ccliff_07_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_08_0": {
+   "file": "tiles/ccliff_08_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_08_1": {
+   "file": "tiles/ccliff_08_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_08_2": {
+   "file": "tiles/ccliff_08_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_09_0": {
+   "file": "tiles/ccliff_09_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_09_1": {
+   "file": "tiles/ccliff_09_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_09_2": {
+   "file": "tiles/ccliff_09_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_10_0": {
+   "file": "tiles/ccliff_10_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_10_1": {
+   "file": "tiles/ccliff_10_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_10_2": {
+   "file": "tiles/ccliff_10_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_11_0": {
+   "file": "tiles/ccliff_11_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_11_1": {
+   "file": "tiles/ccliff_11_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_11_2": {
+   "file": "tiles/ccliff_11_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_12_0": {
+   "file": "tiles/ccliff_12_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_12_1": {
+   "file": "tiles/ccliff_12_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_12_2": {
+   "file": "tiles/ccliff_12_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_13_0": {
+   "file": "tiles/ccliff_13_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_13_1": {
+   "file": "tiles/ccliff_13_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_13_2": {
+   "file": "tiles/ccliff_13_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_14_0": {
+   "file": "tiles/ccliff_14_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_14_1": {
+   "file": "tiles/ccliff_14_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_14_2": {
+   "file": "tiles/ccliff_14_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_15_0": {
+   "file": "tiles/ccliff_15_0.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_15_1": {
+   "file": "tiles/ccliff_15_1.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
+  },
+  "ccliff_15_2": {
+   "file": "tiles/ccliff_15_2.png",
+   "size": [
+    40,
+    48
+   ],
+   "pivot": [
+    21,
+    39
+   ],
+   "layer": "object",
+   "scale": "scene",
+   "made": "battle cliff block as it is (tall_cliff.py)",
+   "shadow": false
   }
  }
 }

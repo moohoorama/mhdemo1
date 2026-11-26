@@ -165,10 +165,9 @@ def dais(screen=True):
     m.box(V(bx, by, .18), V(1.1, 1.1, .12), LACQUER)
     m.box(V(bx*1.4, by*1.4, .42), V(.5, .5, .36), PLANK_DARK)  # chair
     m.box(V(bx*1.4 + bx*.4, by*1.4 + by*.4, .75), V(.5 if bx == 0 else .1, .1 if bx == 0 else .5, .7), PLANK_DARK)
-    if screen:  # three panels along each back edge
+    if screen:  # a folding screen of three panels, zigzagged, behind the chair only (the edge its back runs along)
         for k in (-1, 0, 1):
-            m.box(V(S.BACK[0]*.62, k*.48, .8), V(.06, .46, 1.3), GOLD)
-            m.box(V(k*.48, S.BACK[1]*.62, .8), V(.46, .06, 1.3), GOLD)
+            m.box(V(k*.48, S.BACK[1]*.62 + (.07 if k else 0), .8), V(.46, .06, 1.3), GOLD)
     return draw((80, 80), (40, 58))
 
 

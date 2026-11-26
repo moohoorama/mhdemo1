@@ -38,7 +38,8 @@ R.add_ramps({BLANKET: '«»¬¬'})
 SLEEP_HAIR, SLEEP_CAP, SLEEP_EYE = '#d4d8d8', '#1e2832', '#15191b'
 R.add_ramps({SLEEP_HAIR: '3456', SLEEP_CAP: '0112'})
 # the sleeper's own look by kit (default: dark hair, bare head, no beard)
-SLEEPERS = {'taoqian_civ1': dict(hair=SLEEP_HAIR, cap=True, beard=True)}
+SLEEPERS = {'taoqian_civ1': dict(hair=SLEEP_HAIR, cap=True, beard=True),
+            'liuyan_civ1': dict(hair=SLEEP_HAIR, cap=True, beard=True)}  # 유표 on his sickbed (25장) wears 유언's look
 
 POSES = ['sit', 'throne', 'bow', 'prostrate', 'lie', 'sitground', 'fist', 'point', 'draw', 'bed']
 ROWS = C.ANIMATIONS + [p for p in POSES if p not in C.ANIMATIONS]  # scene sheet rows: civilian's, then these

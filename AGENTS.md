@@ -97,5 +97,22 @@ stage sets it (adjacency, `DuelFirst`, a scripted event at a story moment). If a
 partner first, the duel simply does not happen; write the story after the battle so it does not depend on who
 struck the last blow.
 
+Every task leaves a result folder: make `~/orca/mhdemo1/result/YYYYMMDD/<task-name>/` (today's date, one
+directory per task) and save what was done there as md, html, mp4, PNG or whatever fits (a summary of what changed
+and why, plus captures, videos or comparison pages). Do this for every task, not only art or UI work, and give the
+user the folder path when you report.
+
 Every time you change something, record it in `ver5/docs/history.md`. Each entry lists the changed
 file name, what was changed, and the intent (or reason): `파일이름: 수정내역 — 의도`.
+
+For each user request, create a descriptively named Markdown file under `~/orca/mhdemo1/request/`
+that summarizes the request, preserving its requirements and linking its result folder when known.
+The request-watcher moves each file from `request/` to `~/orca/mhdemo1/process/<name>/<name>.md` shortly
+after it appears (and writes `process/<name>/progress.md` every minute with the real Asia/Seoul time). When the work
+is done the file moves to `~/orca/mhdemo1/test/<name>/<name>.md` and is tested there (`test/<name>/test-log.md`), and
+only after every required test passes it moves to `result/YYYYMMDD/<name>/<name>.md`; a request that is not in
+`result/` is not finished. So when pointing the user to a request record, find where the file is now
+(`python3 tools/request_mcp/requestflow.py where <name>` tells the stage) and link that path (check that the file
+exists first), never the `request/` path.
+When asked how a request was carried out, find the corresponding records under
+`~/orca/mhdemo1/result/YYYYMMDD/` and explain the recorded work, noting any gaps.
